@@ -1,0 +1,17 @@
+[
+{
+  "modid": "Psi",
+  "name": "Psi",
+  "description": "",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "logoFile": "assets/psi/textures/logo.png",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["Vazkii"],
+  "credits": "",
+  "parent": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
