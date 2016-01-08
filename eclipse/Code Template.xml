@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><templates><template autoinsert="false" context="filecomment_context" deleted="false" description="Comment for created Java files" enabled="true" id="org.eclipse.jdt.ui.text.codetemplates.filecomment" name="filecomment">/**
+ * This class was created by &lt;Vazkii&gt;. It's distributed as
+ * part of the ${project_name} Mod. Get the Source Code in github:
+ * https://github.com/Vazkii/${project_name}
+ * 
+ * ${project_name} is Open Source and distributed under the
+ * {todo-put-license-here}
+ * 
+ * File Created @ [${date}, ${time} (GMT)]
+ */</template></templates>
