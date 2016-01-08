@@ -1,0 +1,206 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        maven {
+            name = "forge"
+            url = "http://files.minecraftforge.net/maven"
+        }
+        maven {
+            name = "sonatype"
+            url = "https://oss.sonatype.org/content/repositories/snapshots/"
+        }
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.1-SNAPSHOT'
+        classpath 'com.matthewprenger:CurseGradle:1.0-SNAPSHOT'
+    }
+}
+
+apply plugin: 'net.minecraftforge.gradle.forge'
+apply plugin: 'com.matthewprenger.cursegradle'
+
+ext.configFile = file('build.properties')
+
+ext.config = parseConfig(configFile)
+ext.priv = parseConfig(file('private.properties'))
+
+version = "${config.version}-${config.build_number}"
+group = "vazkii.psi" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = config.mod_name
+
+minecraft {
+    version = "${config.mc_version}-${config.forge_version}"
+    runDir = "eclipse/assets"
+
+    mappings = "snapshot_20151128"
+    replace 'GRADLE:BUILD', config.build_number
+    replace 'GRADLE:VERSION', config.version
+
+    replaceIn 'LibMisc.java' //I may have missed another file, though I can only find it in here.
+}
+
+//This here is for SCP
+repositories {
+    mavenCentral()
+}
+configurations {
+    sshAntTask
+}
+
+//End of the SCP config
+
+dependencies {
+    sshAntTask "org.apache.ant:ant-jsch:1.7.1", "jsch:jsch:0.1.29"
+}
+
+processResources {
+    // replace stuff in mcmod.info, nothing else
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
+
+        // replace version and mcversion
+        expand 'version': project.version, 'mcversion': project.minecraft.version
+    }
+
+    // copy everything else, thats not the mcmod.info
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info', '**/psd/**'
+    }
+}
+
+task deobfJar(type: Jar) {
+    from(sourceSets.main.output)
+    archiveName = "${baseName}-${version}-deobf.${extension}"
+}
+
+artifacts {
+    archives deobfJar
+}
+/**
+ * Increments the buildnumber in your config file, and saves it
+ */
+task incrementBuildNumber {
+    config.build_number = (config.build_number.toString().toInteger()) + 1
+    configFile.withWriter {
+        config.toProperties().store(it, "")
+    }
+
+    /*
+    file('web/versions.ini').append("\n${version}=${minecraft.version}")
+    file("${config.dir_repo}/version/${minecraft.version}.txt").write("${version}")
+    */
+}
+
+// I have no idea what I'm doing
+task wtfGradle2(type: Copy) {
+    from(jar.destinationDir)
+    into file("${config.dir_output}/wtf")
+}
+
+// Seriously, I'm desperate to make this work
+task wtfGradle1(type: Delete) {
+    dependsOn "wtfGradle2"
+    delete "${config.dir_output}/wtf/${deobfJar.archiveName}"
+}
+
+task output(type: Copy) {
+    dependsOn "wtfGradle1"
+    from(jar.destinationDir)
+    into file(config.dir_output)
+}
+
+task outputDeobf(type: Copy) {
+    dependsOn "output"
+    from(config.dir_output) {
+        include deobfJar.archiveName
+    }
+    into file("${config.dir_output}/deobf")
+}
+
+task forgecraft(type: Copy) {
+    dependsOn "outputDeobf"
+    from "${config.dir_output}/wtf"
+    into file(priv.dir_forgecraft)
+}
+
+task sort(type: Delete) {
+    dependsOn "forgecraft"
+    delete "${config.dir_output}/${deobfJar.archiveName}", "${config.dir_output}/wtf"
+}
+
+def parseConfig(File config) {
+    config.withReader {
+        def prop = new Properties()
+        prop.load(it)
+        return (new ConfigSlurper().parse(prop))
+    }
+}
+
+/**
+ * This is the upload task from the build.xml
+ */
+task upload() << {
+    scp('/files') {
+        fileset(file: jar.archivePath)
+    }
+    
+    scp('/files/deobf') {
+        fileset(file: deobfJar.archivePath)
+    }
+
+    scp('/') {
+        fileset(file: 'web/changelog.txt')
+        fileset(file: 'web/versions.ini')
+    }
+}
+
+/**
+ * This is deply_web task
+ */
+task deployWeb << {
+    scp('/') {
+        fileset(dir: 'web') //everything from the web directory
+    }
+}
+
+def scp(String dir, Closure antFileset = {}) {
+    ant {
+        taskdef(
+            name: 'scp',
+            classname: 'org.apache.tools.ant.taskdefs.optional.ssh.Scp',
+            classpath: configurations.sshAntTask.asPath)
+
+        String dirstr = priv.scp_dir + dir
+        Map scpArgs = [
+           todir  : dirstr,
+           password  : priv.scp_pass,
+           sftp: true,
+           trust: 'yes'
+        ]
+
+        delegate.scp(scpArgs) {
+            antFileset.delegate = delegate
+            antFileset()
+        }
+    }
+}
+
+
+
+/*
+curseforge {
+    apiKey = priv.cfkey
+    project {
+        id = "225643"
+        changelog = """
+            See http://botaniamod.net/changelog.php#${version}
+        """
+        releaseType = "release"
+        relations {
+            requiredLibrary 'baubles'
+        }
+    }
+}
+*/
+
+defaultTasks 'clean', 'build', 'sort', /*'forgecraft',*/ 'incrementBuildNumber'//, 'curse', 'upload'
