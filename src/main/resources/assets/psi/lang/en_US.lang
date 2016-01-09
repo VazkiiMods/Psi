@@ -16,6 +16,7 @@ item.psi:cadAssemblyPsimetal.name=Psimetal CAD Assembly
 item.psi:cadCoreBasic.name=Basic CAD Core
 item.psi:cadSocketBasic.name=Basic CAD Socket
 item.psi:cadBatteryBasic.name=Basic CAD Battery
+item.psi:spellBullet.name=Spell Bullet
 
 # COMPONENT NAMES
 psi.component.assembly=Assembly
