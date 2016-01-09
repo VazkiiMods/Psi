@@ -13,7 +13,9 @@ package vazkii.psi.common.item;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
@@ -75,6 +77,12 @@ public class ItemMod extends Item implements IVariantHolder {
 	
 	public int getSubItemCount(ItemStack stack) {
 		return 1;
+	}
+	
+	public void tooltipIfShift(EntityPlayer playerIn, List<String> tooltip, Runnable r) {
+		if(GuiScreen.isShiftKeyDown())
+			r.run();
+		else addToTooltip(tooltip, "psimisc.shiftForInfo");
 	}
 	
 	public void addToTooltip(List<String> tooltip, String s, Object... format) {

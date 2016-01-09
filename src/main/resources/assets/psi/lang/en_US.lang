@@ -2,6 +2,7 @@
 itemGroup.Psi=Psi
 
 psimisc.componentType=&aComponent Type&7: %s
+psimisc.shiftForInfo=Hold &bSHIFT&7 for more info
 
 # ITEM NAMES
 item.psi:psidust.name=Psidust
