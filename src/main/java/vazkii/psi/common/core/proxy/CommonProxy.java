@@ -10,6 +10,22 @@
  */
 package vazkii.psi.common.core.proxy;
 
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import vazkii.psi.common.core.handler.ConfigHandler;
+import vazkii.psi.common.item.ModItems;
+
 public class CommonProxy {
 
+	public void preInit(FMLPreInitializationEvent event) {
+		ConfigHandler.init(event.getSuggestedConfigurationFile());
+		
+		ModItems.init();
+		
+		registerModels();
+	}
+	
+	public void registerModels() {
+		// NO-OP
+	}
+	
 }

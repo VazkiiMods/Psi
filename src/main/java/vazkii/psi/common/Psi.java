@@ -11,9 +11,25 @@
 package vazkii.psi.common;
 
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.Mod.Instance;
+import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import vazkii.psi.common.core.proxy.CommonProxy;
 import vazkii.psi.common.lib.LibMisc;
 
 @Mod(modid = LibMisc.MOD_ID, name = LibMisc.MOD_NAME, version = LibMisc.VERSION, dependencies = LibMisc.DEPENDENCIES)
 public class Psi {
 
+	@Instance(LibMisc.MOD_ID)
+	public static Psi instance;
+
+	@SidedProxy(serverSide = LibMisc.PROXY_COMMON, clientSide = LibMisc.PROXY_CLIENT)
+	public static CommonProxy proxy;
+	
+	@EventHandler
+	public void preInit(FMLPreInitializationEvent event) {
+		proxy.preInit(event);
+	}
+	
 }

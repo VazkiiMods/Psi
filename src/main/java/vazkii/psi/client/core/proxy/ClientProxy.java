@@ -10,8 +10,19 @@
  */
 package vazkii.psi.client.core.proxy;
 
+import net.minecraftforge.client.model.ModelLoader;
+import vazkii.psi.client.core.handler.ModelHandler;
 import vazkii.psi.common.core.proxy.CommonProxy;
+import vazkii.psi.common.item.ItemMaterial;
+import vazkii.psi.common.item.ModItems;
+import vazkii.psi.common.item.component.ItemCADAssembly;
 
 public class ClientProxy extends CommonProxy {
 
+	@Override
+	public void registerModels() {
+		ModelHandler.init();
+	}
+	
+	
 }
