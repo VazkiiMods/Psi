@@ -27,7 +27,7 @@ public class PsiCreativeTab extends CreativeTabs {
 
 	public PsiCreativeTab() {
 		super(LibMisc.MOD_ID);
-		setNoTitle();
+//		setNoTitle();
 //		setBackgroundImageName(LibResources.GUI_CREATIVE);
 	}
 
@@ -44,6 +44,18 @@ public class PsiCreativeTab extends CreativeTabs {
 	@Override
 	public boolean hasSearchBar() {
 		return true;
+	}
+	
+	@Override
+	public void displayAllReleventItems(List<ItemStack> p_78018_1_) {
+		list = p_78018_1_;
+		
+		addItem(ModItems.material);
+		
+		addItem(ModItems.cadAssembly);
+		addItem(ModItems.cadCore);
+		addItem(ModItems.cadSocket);
+		addItem(ModItems.cadBattery);
 	}
 
 	private void addItem(Item item) {

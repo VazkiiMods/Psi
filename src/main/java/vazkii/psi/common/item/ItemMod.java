@@ -10,6 +10,7 @@
  */
 package vazkii.psi.common.item;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.creativetab.CreativeTabs;
@@ -21,6 +22,8 @@ import vazkii.psi.common.lib.LibResources;
 
 public class ItemMod extends Item implements IVariantHolder {
 
+	public static final List<IVariantHolder> variantHolders = new ArrayList();
+	
 	private final String[] variants;
 	private final String bareName;
 	
@@ -36,6 +39,7 @@ public class ItemMod extends Item implements IVariantHolder {
 		
 		bareName = name;
 		this.variants = variants;
+		variantHolders.add(this);
 	}
 	
 	@Override

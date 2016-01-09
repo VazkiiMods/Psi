@@ -16,6 +16,7 @@ import net.minecraft.item.Item;
 import net.minecraftforge.client.model.ModelLoader;
 import vazkii.psi.common.item.IVariantHolder;
 import vazkii.psi.common.item.ItemMaterial;
+import vazkii.psi.common.item.ItemMod;
 import vazkii.psi.common.item.ModItems;
 import vazkii.psi.common.item.component.ItemCADAssembly;
 import vazkii.psi.common.lib.LibResources;
@@ -23,9 +24,8 @@ import vazkii.psi.common.lib.LibResources;
 public class ModelHandler {
 
 	public static void init() {
-		registerModels(ModItems.material);
-
-		registerModels(ModItems.cadAssembly);
+		for(IVariantHolder holder : ItemMod.variantHolders)
+			registerModels(holder);
 	}
 
 	public static void registerModels(IVariantHolder holder) {

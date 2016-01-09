@@ -11,3 +11,6 @@ item.psi:psigem.name=Psigem
 ## COMPONENTS
 item.psi:cadAssemblyIron.name=Iron CAD Assembly
 item.psi:cadAssemblyGold.name=Gold CAD Assembly
+item.psi:cadCoreBasic.name=Basic CAD Core
+item.psi:cadSocketBasic.name=Basic CAD Socket
+item.psi:cadBatteryBasic.name=Basic CAD Battery
