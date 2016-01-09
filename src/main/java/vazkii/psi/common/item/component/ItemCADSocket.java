@@ -10,6 +10,9 @@
  */
 package vazkii.psi.common.item.component;
 
+import net.minecraft.item.ItemStack;
+import vazkii.psi.api.cad.EnumCADComponent;
+import vazkii.psi.api.cad.EnumCADStat;
 import vazkii.psi.common.lib.LibItemNames;
 
 public class ItemCADSocket extends ItemCADComponent {
@@ -20,6 +23,17 @@ public class ItemCADSocket extends ItemCADComponent {
 	
 	public ItemCADSocket() {
 		super(LibItemNames.CAD_SOCKET, VARIANTS);
+	}
+	
+	@Override
+	public void registerStats() {
+		addStat(EnumCADStat.BANDWIDTH, 0, 5);
+		addStat(EnumCADStat.SOCKETS, 0, 4);
+	}
+
+	@Override
+	public EnumCADComponent getComponentType(ItemStack stack) {
+		return EnumCADComponent.SOCKET;
 	}
 
 }

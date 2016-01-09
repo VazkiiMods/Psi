@@ -14,4 +14,6 @@ public class LibResources {
 
 	public static final String PREFIX_MOD = "psi:";
 	
+	public static final String GUI_CREATIVE = "psi.png";
+	
 }

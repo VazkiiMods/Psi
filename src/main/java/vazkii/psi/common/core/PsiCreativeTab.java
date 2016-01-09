@@ -14,11 +14,11 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import vazkii.psi.common.item.ModItems;
 import vazkii.psi.common.lib.LibMisc;
+import vazkii.psi.common.lib.LibResources;
 
 public class PsiCreativeTab extends CreativeTabs {
 
@@ -27,8 +27,8 @@ public class PsiCreativeTab extends CreativeTabs {
 
 	public PsiCreativeTab() {
 		super(LibMisc.MOD_ID);
-//		setNoTitle();
-//		setBackgroundImageName(LibResources.GUI_CREATIVE);
+		setNoTitle();
+		setBackgroundImageName(LibResources.GUI_CREATIVE);
 	}
 
 	@Override

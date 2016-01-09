@@ -1,16 +1,30 @@
 # MISC
 itemGroup.Psi=Psi
 
-# ITEM NAMES
+psimisc.componentType=&aComponent Type&7: %s
 
-## MATERIALS
+# ITEM NAMES
 item.psi:psidust.name=Psidust
 item.psi:psimetal.name=Psimetal Ingot
 item.psi:psigem.name=Psigem
-
-## COMPONENTS
 item.psi:cadAssemblyIron.name=Iron CAD Assembly
 item.psi:cadAssemblyGold.name=Gold CAD Assembly
+item.psi:cadAssemblyPsimetal.name=Psimetal CAD Assembly
 item.psi:cadCoreBasic.name=Basic CAD Core
 item.psi:cadSocketBasic.name=Basic CAD Socket
 item.psi:cadBatteryBasic.name=Basic CAD Battery
+
+# COMPONENT NAMES
+psi.component.assembly=Assembly
+psi.component.core=Core
+psi.component.socket=Socket
+psi.component.battery=Battery
+
+# STAT NAMES
+psi.cadstat.efficiency=Efficiency
+psi.cadstat.potency=Potency
+psi.cadstat.complexity=Complexity
+psi.cadstat.projection=Projection
+psi.cadstat.bandwidth=Bandwidth
+psi.cadstat.sockets=Sockets
+psi.cadstat.overflow=Overflow

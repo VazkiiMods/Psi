@@ -10,17 +10,38 @@
  */
 package vazkii.psi.common.item.component;
 
+import net.minecraft.item.ItemStack;
+import vazkii.psi.api.cad.EnumCADComponent;
+import vazkii.psi.api.cad.EnumCADStat;
 import vazkii.psi.common.lib.LibItemNames;
 
 public class ItemCADAssembly extends ItemCADComponent {
 
 	public static final String[] VARIANTS = {
 		"cadAssemblyIron",
-		"cadAssemblyGold"
+		"cadAssemblyGold",
+		"cadAssemblyPsimetal"
 	};
 	
 	public ItemCADAssembly() {
 		super(LibItemNames.CAD_ASSEMBLY, VARIANTS);
+	}
+	
+	@Override
+	public void registerStats() {
+		addStat(EnumCADStat.EFFICIENCY, 0, 50);
+		addStat(EnumCADStat.POTENCY, 0, 100);
+		
+		addStat(EnumCADStat.EFFICIENCY, 1, 40);
+		addStat(EnumCADStat.POTENCY, 1, 150);
+		
+		addStat(EnumCADStat.EFFICIENCY, 2, 60);
+		addStat(EnumCADStat.POTENCY, 2, 200);
+	}
+
+	@Override
+	public EnumCADComponent getComponentType(ItemStack stack) {
+		return EnumCADComponent.ASSEMBLY;
 	}
 	
 }

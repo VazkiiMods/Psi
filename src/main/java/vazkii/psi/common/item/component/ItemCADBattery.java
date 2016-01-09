@@ -10,6 +10,9 @@
  */
 package vazkii.psi.common.item.component;
 
+import net.minecraft.item.ItemStack;
+import vazkii.psi.api.cad.EnumCADComponent;
+import vazkii.psi.api.cad.EnumCADStat;
 import vazkii.psi.common.lib.LibItemNames;
 
 public class ItemCADBattery extends ItemCADComponent {
@@ -20,6 +23,16 @@ public class ItemCADBattery extends ItemCADComponent {
 	
 	public ItemCADBattery() {
 		super(LibItemNames.CAD_BATTERY, VARIANTS);
+	}
+	
+	@Override
+	public void registerStats() {
+		addStat(EnumCADStat.OVERFLOW, 0, 100);
+	}
+	
+	@Override
+	public EnumCADComponent getComponentType(ItemStack stack) {
+		return EnumCADComponent.BATTERY;
 	}
 
 }

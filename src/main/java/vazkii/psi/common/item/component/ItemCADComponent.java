@@ -10,13 +10,63 @@
  */
 package vazkii.psi.common.item.component;
 
+import java.util.HashMap;
+import java.util.List;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+
+import org.apache.commons.lang3.tuple.Pair;
+
+import vazkii.psi.api.cad.EnumCADComponent;
+import vazkii.psi.api.cad.EnumCADStat;
+import vazkii.psi.api.cad.ICADComponent;
 import vazkii.psi.common.item.ItemMod;
 
-public class ItemCADComponent extends ItemMod {
+public abstract class ItemCADComponent extends ItemMod implements ICADComponent {
 
+	private final HashMap<Pair<EnumCADStat, Integer>, Integer> stats;
+	
 	public ItemCADComponent(String name, String... variants) {
 		super(name, variants);
 		setMaxStackSize(1);
+		stats = new HashMap();
+		registerStats();
+	}
+	
+	public void registerStats() {
+		// NO-OP
+	}
+	
+	@Override
+	public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
+		EnumCADComponent componentType = getComponentType(stack);
+		
+		String componentName = StatCollector.translateToLocal("psi.component." + componentType.name().toLowerCase());
+		addToTooltip(tooltip, "psimisc.componentType", componentName);
+		
+		for(EnumCADStat stat : EnumCADStat.class.getEnumConstants()) {
+			if(stat.getSourceType() == componentType) {
+				int value = getCADStatValue(stack, stat);
+				String name = StatCollector.translateToLocal("psi.cadstat." + stat.name().toLowerCase());
+				addToTooltip(tooltip, " " + EnumChatFormatting.AQUA + name + EnumChatFormatting.GRAY + ": " + value);
+			}
+		}
+	}
+	
+	public void addStat(EnumCADStat stat, int meta, int value) {
+		stats.put(Pair.of(stat, meta), value);
+	}
+
+	@Override
+	public int getCADStatValue(ItemStack stack, EnumCADStat stat) {
+		Pair p = Pair.of(stat, stack.getItemDamage());
+		if(stats.containsKey(p))
+			return stats.get(p);
+		
+		return 0;
 	}
 	
 }

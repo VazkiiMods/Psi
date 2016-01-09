@@ -10,6 +10,9 @@
  */
 package vazkii.psi.common.item.component;
 
+import net.minecraft.item.ItemStack;
+import vazkii.psi.api.cad.EnumCADComponent;
+import vazkii.psi.api.cad.EnumCADStat;
 import vazkii.psi.common.lib.LibItemNames;
 
 public class ItemCADCore extends ItemCADComponent {
@@ -20,6 +23,17 @@ public class ItemCADCore extends ItemCADComponent {
 	
 	public ItemCADCore() {
 		super(LibItemNames.CAD_CORE, VARIANTS);
+	}
+	
+	@Override
+	public void registerStats() {
+		addStat(EnumCADStat.COMPLEXITY, 0, 6);
+		addStat(EnumCADStat.PROJECTION, 0, 1);
+	}
+
+	@Override
+	public EnumCADComponent getComponentType(ItemStack stack) {
+		return EnumCADComponent.CORE;
 	}
 
 }

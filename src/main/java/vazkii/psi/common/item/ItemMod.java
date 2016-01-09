@@ -16,6 +16,7 @@ import java.util.List;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import vazkii.psi.common.core.PsiCreativeTab;
 import vazkii.psi.common.lib.LibResources;
@@ -60,19 +61,29 @@ public class ItemMod extends Item implements IVariantHolder {
 		
 		return "item." + LibResources.PREFIX_MOD + name;
 	}
-	
-	public int getSubItemCount(ItemStack stack) {
-		return 1;
-	}
 	 
 	@Override
 	public void getSubItems(Item itemIn, CreativeTabs tab, List<ItemStack> subItems) {
 		for(int i = 0; i < getVariants().length; i++)
 			subItems.add(new ItemStack(itemIn, 1, i));
 	}
+	
 	@Override
 	public String[] getVariants() {
 		return variants;
+	}
+	
+	public int getSubItemCount(ItemStack stack) {
+		return 1;
+	}
+	
+	public void addToTooltip(List<String> tooltip, String s, Object... format) {
+		s = StatCollector.translateToLocal(s).replaceAll("&", "\u00a7");
+		
+		if(format != null && format.length > 0)
+			s = String.format(s, format);
+		
+		tooltip.add(s);
 	}
 	
 }
