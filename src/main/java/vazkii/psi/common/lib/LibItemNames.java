@@ -13,7 +13,7 @@ package vazkii.psi.common.lib;
 public final class LibItemNames {
 
 	public static final String MATERIAL = "material";
-	
+	public static final String CAD = "cad";
 	public static final String CAD_ASSEMBLY = "cadAssembly";
 	public static final String CAD_CORE = "cadCore";
 	public static final String CAD_SOCKET = "cadSocket";

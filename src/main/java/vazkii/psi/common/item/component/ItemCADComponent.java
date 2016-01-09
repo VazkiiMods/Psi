@@ -22,7 +22,7 @@ import net.minecraft.util.StatCollector;
 import vazkii.psi.api.cad.EnumCADComponent;
 import vazkii.psi.api.cad.EnumCADStat;
 import vazkii.psi.api.cad.ICADComponent;
-import vazkii.psi.common.item.ItemMod;
+import vazkii.psi.common.item.base.ItemMod;
 
 public abstract class ItemCADComponent extends ItemMod implements ICADComponent {
 
@@ -44,12 +44,12 @@ public abstract class ItemCADComponent extends ItemMod implements ICADComponent 
 		tooltipIfShift(playerIn, tooltip, () -> {
 			EnumCADComponent componentType = getComponentType(stack);
 			
-			String componentName = StatCollector.translateToLocal("psi.component." + componentType.name().toLowerCase());
+			String componentName = local(componentType.getName());
 			addToTooltip(tooltip, "psimisc.componentType", componentName);
 			for(EnumCADStat stat : EnumCADStat.class.getEnumConstants()) {
 				if(stat.getSourceType() == componentType) {
 					int value = getCADStatValue(stack, stat);
-					String name = StatCollector.translateToLocal("psi.cadstat." + stat.name().toLowerCase());
+					String name = local(stat.getName());
 					addToTooltip(tooltip, " " + EnumChatFormatting.AQUA + name + EnumChatFormatting.GRAY + ": " + value);
 				}
 			}

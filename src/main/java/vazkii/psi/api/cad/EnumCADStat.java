@@ -10,6 +10,8 @@
  */
 package vazkii.psi.api.cad;
 
+import net.minecraft.util.StatCollector;
+
 public enum EnumCADStat {
 
 	EFFICIENCY(EnumCADComponent.ASSEMBLY),
@@ -28,6 +30,10 @@ public enum EnumCADStat {
 	
 	public EnumCADComponent getSourceType() {
 		return source;
+	}
+	
+	public String getName() {
+		return "psi.cadstat." + name().toLowerCase();
 	}
 	
 }

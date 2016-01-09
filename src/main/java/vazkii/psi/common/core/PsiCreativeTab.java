@@ -16,7 +16,7 @@ import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import vazkii.psi.common.item.ModItems;
+import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.lib.LibResources;
 
@@ -56,6 +56,8 @@ public class PsiCreativeTab extends CreativeTabs {
 		addItem(ModItems.cadCore);
 		addItem(ModItems.cadSocket);
 		addItem(ModItems.cadBattery);
+		
+		addItem(ModItems.cad);
 	}
 
 	private void addItem(Item item) {

@@ -8,8 +8,10 @@
  * 
  * File Created @ [08/01/2016, 21:48:12 (GMT)]
  */
-package vazkii.psi.common.item;
+package vazkii.psi.common.item.base;
 
+import vazkii.psi.common.item.ItemCAD;
+import vazkii.psi.common.item.ItemMaterial;
 import vazkii.psi.common.item.component.ItemCADAssembly;
 import vazkii.psi.common.item.component.ItemCADBattery;
 import vazkii.psi.common.item.component.ItemCADCore;
@@ -18,11 +20,13 @@ import vazkii.psi.common.item.component.ItemCADSocket;
 public final class ModItems {
 
 	public static ItemMod material;
-
+	
 	public static ItemMod cadAssembly;
 	public static ItemMod cadCore;
 	public static ItemMod cadSocket;
 	public static ItemMod cadBattery;
+	
+	public static ItemMod cad;
 
 	public static void init() {
 		material = new ItemMaterial();
@@ -31,6 +35,8 @@ public final class ModItems {
 		cadCore = new ItemCADCore();
 		cadSocket = new ItemCADSocket();
 		cadBattery = new ItemCADBattery();
+		
+		cad = new ItemCAD();
 	}
 	
 }

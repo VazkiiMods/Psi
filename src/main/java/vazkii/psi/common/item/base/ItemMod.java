@@ -8,12 +8,13 @@
  * 
  * File Created @ [08/01/2016, 21:47:43 (GMT)]
  */
-package vazkii.psi.common.item;
+package vazkii.psi.common.item.base;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -59,7 +60,7 @@ public class ItemMod extends Item implements IVariantHolder {
 		String name;
 		if(dmg >= variants.length)
 			name = bareName;
-		name = variants[dmg];
+		else name = variants[dmg];
 		
 		return "item." + LibResources.PREFIX_MOD + name;
 	}
@@ -86,12 +87,21 @@ public class ItemMod extends Item implements IVariantHolder {
 	}
 	
 	public void addToTooltip(List<String> tooltip, String s, Object... format) {
-		s = StatCollector.translateToLocal(s).replaceAll("&", "\u00a7");
+		s = local(s).replaceAll("&", "\u00a7");
 		
 		if(format != null && format.length > 0)
 			s = String.format(s, format);
 		
 		tooltip.add(s);
+	}
+	
+	public String local(String s) {
+		return StatCollector.translateToLocal(s);
+	}
+
+	@Override
+	public ItemMeshDefinition getCustomMeshDefinition() {
+		return null;
 	}
 	
 }

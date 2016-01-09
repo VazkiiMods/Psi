@@ -6,22 +6,16 @@
  * Psi is Open Source and distributed under the
  * Psi License: http://botaniamod.net/license.php
  * 
- * File Created @ [09/01/2016, 01:05:44 (GMT)]
+ * File Created @ [09/01/2016, 17:08:06 (GMT)]
  */
 package vazkii.psi.api.cad;
 
-import net.minecraft.util.StatCollector;
+import net.minecraft.item.ItemStack;
 
-public enum EnumCADComponent {
+public interface ICAD {
 
-	ASSEMBLY,
-	CORE,
-	SOCKET,
-	BATTERY,
-	DYE;
+	public ItemStack getComponentInSlot(ItemStack stack, EnumCADComponent type);
 	
-	public String getName() {
-		return "psi.component." + name().toLowerCase();
-	}
+	public int getStatValue(ItemStack stack, EnumCADStat stat);
 	
 }

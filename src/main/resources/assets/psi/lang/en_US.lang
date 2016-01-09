@@ -3,11 +3,13 @@ itemGroup.Psi=Psi
 
 psimisc.componentType=&aComponent Type&7: %s
 psimisc.shiftForInfo=Hold &bSHIFT&7 for more info
+psimisc.none=(none)
 
 # ITEM NAMES
 item.psi:psidust.name=Psidust
 item.psi:psimetal.name=Psimetal Ingot
 item.psi:psigem.name=Psigem
+item.psi:cad.name=Casting Assistant Device
 item.psi:cadAssemblyIron.name=Iron CAD Assembly
 item.psi:cadAssemblyGold.name=Gold CAD Assembly
 item.psi:cadAssemblyPsimetal.name=Psimetal CAD Assembly
@@ -20,6 +22,7 @@ psi.component.assembly=Assembly
 psi.component.core=Core
 psi.component.socket=Socket
 psi.component.battery=Battery
+psi.component.dye=Coloration
 
 # STAT NAMES
 psi.cadstat.efficiency=Efficiency

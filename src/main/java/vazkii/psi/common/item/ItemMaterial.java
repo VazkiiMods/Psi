@@ -10,6 +10,7 @@
  */
 package vazkii.psi.common.item;
 
+import vazkii.psi.common.item.base.ItemMod;
 import vazkii.psi.common.lib.LibItemNames;
 
 public class ItemMaterial extends ItemMod {
