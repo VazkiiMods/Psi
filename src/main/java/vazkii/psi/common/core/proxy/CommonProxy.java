@@ -11,6 +11,7 @@
 package vazkii.psi.common.core.proxy;
 
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import vazkii.psi.common.block.base.ModBlocks;
 import vazkii.psi.common.core.handler.ConfigHandler;
 import vazkii.psi.common.item.base.ModItems;
 
@@ -20,6 +21,7 @@ public class CommonProxy {
 		ConfigHandler.init(event.getSuggestedConfigurationFile());
 		
 		ModItems.init();
+		ModBlocks.init();
 		
 		registerModels();
 	}

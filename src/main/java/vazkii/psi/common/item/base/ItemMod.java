@@ -31,15 +31,14 @@ public class ItemMod extends Item implements IVariantHolder {
 	private final String[] variants;
 	private final String bareName;
 	
-	public ItemMod(String name) {
-		this(name, name);
-	}
-	
 	public ItemMod(String name, String... variants) {
 		setUnlocalizedName(name);
 		setCreativeTab(PsiCreativeTab.INSTANCE);
 		if(variants.length > 1)
 			setHasSubtypes(true);
+		
+		if(variants.length == 0)
+			variants = new String[] { name };
 		
 		bareName = name;
 		this.variants = variants;
@@ -47,9 +46,12 @@ public class ItemMod extends Item implements IVariantHolder {
 	}
 	
 	@Override
-	public Item setUnlocalizedName(String par1Str) {
-		GameRegistry.registerItem(this, par1Str);
-		return super.setUnlocalizedName(par1Str);
+	public Item setUnlocalizedName(String name) {
+		super.setUnlocalizedName(name);
+		setRegistryName(name);
+		GameRegistry.registerItem(this, name);
+		
+		return this;
 	}
 
 	@Override
@@ -76,17 +78,13 @@ public class ItemMod extends Item implements IVariantHolder {
 		return variants;
 	}
 	
-	public int getSubItemCount(ItemStack stack) {
-		return 1;
-	}
-	
-	public void tooltipIfShift(EntityPlayer playerIn, List<String> tooltip, Runnable r) {
+	public static void tooltipIfShift(EntityPlayer playerIn, List<String> tooltip, Runnable r) {
 		if(GuiScreen.isShiftKeyDown())
 			r.run();
 		else addToTooltip(tooltip, "psimisc.shiftForInfo");
 	}
 	
-	public void addToTooltip(List<String> tooltip, String s, Object... format) {
+	public static void addToTooltip(List<String> tooltip, String s, Object... format) {
 		s = local(s).replaceAll("&", "\u00a7");
 		
 		if(format != null && format.length > 0)
@@ -94,14 +92,14 @@ public class ItemMod extends Item implements IVariantHolder {
 		
 		tooltip.add(s);
 	}
-	
-	public String local(String s) {
-		return StatCollector.translateToLocal(s);
-	}
 
 	@Override
 	public ItemMeshDefinition getCustomMeshDefinition() {
 		return null;
+	}
+	
+	public static String local(String s) {
+		return StatCollector.translateToLocal(s);
 	}
 	
 }

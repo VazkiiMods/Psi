@@ -1,0 +1,10 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "psi:cadAssembler"
+  },
+  "variants": {
+    "normal": [{}],
+    "inventory": [{}]
+  }
+}

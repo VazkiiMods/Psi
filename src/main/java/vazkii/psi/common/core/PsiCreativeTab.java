@@ -16,6 +16,7 @@ import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import vazkii.psi.common.block.base.ModBlocks;
 import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.lib.LibResources;
@@ -49,6 +50,8 @@ public class PsiCreativeTab extends CreativeTabs {
 	@Override
 	public void displayAllReleventItems(List<ItemStack> p_78018_1_) {
 		list = p_78018_1_;
+		
+		addBlock(ModBlocks.cadAssembler);
 		
 		addItem(ModItems.material);
 		
