@@ -4,7 +4,7 @@
  * https://github.com/Vazkii/Psi
  * 
  * Psi is Open Source and distributed under the
- * Psi License: http://botaniamod.net/license.php
+ * CC-BY-NC-SA 3.0 License: https://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB
  * 
  * File Created @ [09/01/2016, 23:12:53 (GMT)]
  */

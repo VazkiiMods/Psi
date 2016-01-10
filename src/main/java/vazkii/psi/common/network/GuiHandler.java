@@ -6,16 +6,10 @@
  * Psi is Open Source and distributed under the
  * CC-BY-NC-SA 3.0 License: https://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB
  * 
- * File Created @ [09/01/2016, 17:08:06 (GMT)]
+ * File Created @ [10/01/2016, 14:53:05 (GMT)]
  */
-package vazkii.psi.api.cad;
+package vazkii.psi.common.network;
 
-import net.minecraft.item.ItemStack;
+public class GuiHandler {
 
-public interface ICAD {
-
-	public ItemStack getComponentInSlot(ItemStack stack, EnumCADComponent type);
-	
-	public int getStatValue(ItemStack stack, EnumCADStat stat);
-	
 }
