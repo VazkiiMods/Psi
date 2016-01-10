@@ -4,6 +4,11 @@ itemGroup.Psi=Psi
 psimisc.componentType=&aComponent Type&7: %s
 psimisc.shiftForInfo=Hold &bSHIFT&7 for more info
 psimisc.none=(none)
+psimisc.stats=Stats
+psimisc.socketing=Socketing
+
+# BLOCK NAMES
+tile.psi:cadAssembler.name=CAD Assembler
 
 # ITEM NAMES
 item.psi:psidust.name=Psidust

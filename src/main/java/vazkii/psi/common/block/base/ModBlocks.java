@@ -10,9 +10,12 @@
  */
 package vazkii.psi.common.block.base;
 
-import com.ibm.icu.util.Calendar;
-
+import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import vazkii.psi.common.block.BlockCADAssembler;
+import vazkii.psi.common.block.tile.TileCADAssembler;
+import vazkii.psi.common.lib.LibBlockNames;
+import vazkii.psi.common.lib.LibResources;
 
 public class ModBlocks {
 
@@ -25,7 +28,11 @@ public class ModBlocks {
 	}
 
 	private static void initTileEntities() {
-		
+		registerTile(TileCADAssembler.class, LibBlockNames.CAD_ASSEMBLER);
+	}
+	
+	private static void registerTile(Class<? extends TileEntity> clazz, String key) {
+		GameRegistry.registerTileEntity(clazz, LibResources.PREFIX_MOD + key);
 	}
 	
 }

@@ -10,6 +10,36 @@
  */
 package vazkii.psi.common.network;
 
-public class GuiHandler {
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.BlockPos;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.common.network.IGuiHandler;
+import vazkii.psi.client.gui.GuiCADAssembler;
+import vazkii.psi.common.block.tile.TileCADAssembler;
+import vazkii.psi.common.block.tile.container.ContainerCADAssembler;
+import vazkii.psi.common.lib.LibGuiIDs;
+
+public class GuiHandler implements IGuiHandler {
+
+	@Override
+	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+		switch(ID) {
+		case LibGuiIDs.CAD_ASSEMBLER:
+			return new ContainerCADAssembler(player.inventory, (TileCADAssembler) world.getTileEntity(new BlockPos(x, y, z)));
+		}
+
+		return null;
+	}
+
+	@Override
+	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+		switch(ID) {
+		case LibGuiIDs.CAD_ASSEMBLER:
+			return new GuiCADAssembler(player.inventory, (TileCADAssembler) world.getTileEntity(new BlockPos(x, y, z)));
+		}
+
+		return null;
+	}
+
 
 }

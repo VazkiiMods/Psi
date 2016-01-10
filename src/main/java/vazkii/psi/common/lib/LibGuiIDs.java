@@ -6,17 +6,13 @@
  * Psi is Open Source and distributed under the
  * CC-BY-NC-SA 3.0 License: https://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB
  * 
- * File Created @ [08/01/2016, 21:52:28 (GMT)]
+ * File Created @ [10/01/2016, 15:10:23 (GMT)]
  */
 package vazkii.psi.common.lib;
 
-public class LibResources {
+public final class LibGuiIDs {
 
-	public static final String PREFIX_MOD = "psi:";
-	
-	public static final String PREFIX_GUI = PREFIX_MOD + "textures/gui/";
-	
-	public static final String GUI_CREATIVE = "psi.png";
-	public static final String GUI_CAD_ASSEMBLER = PREFIX_GUI + "cadAssembler.png";
+	public static final int CAD_ASSEMBLER = 0;
+	public static final int PROGRAMMING = 1;
 	
 }
