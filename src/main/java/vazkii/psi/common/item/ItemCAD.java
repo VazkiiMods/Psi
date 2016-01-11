@@ -19,7 +19,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vazkii.psi.api.cad.EnumCADComponent;
@@ -27,6 +29,8 @@ import vazkii.psi.api.cad.EnumCADStat;
 import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.cad.ICADComponent;
 import vazkii.psi.client.core.handler.ModelHandler;
+import vazkii.psi.common.core.handler.PlayerDataHandler;
+import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
 import vazkii.psi.common.core.helper.ItemNBTHelper;
 import vazkii.psi.common.item.base.ItemMod;
 import vazkii.psi.common.item.base.ModItems;
@@ -39,6 +43,20 @@ public class ItemCAD extends ItemMod implements ICAD {
 	public ItemCAD() {
 		super(LibItemNames.CAD);
 		setMaxStackSize(1);
+	}
+	
+	@Override
+	public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn) {
+		if(!playerIn.worldObj.isRemote) {
+			if(playerIn.isSneaking())
+				PlayerDataHandler.get(playerIn).deductPsi(10, 40);
+			else {
+				PlayerData data = PlayerDataHandler.get(playerIn);
+				playerIn.addChatMessage(new ChatComponentText("Psi: " + data.availablePsi + " cd: " + data.regenCooldown));
+			}
+		}
+		
+		return itemStackIn;
 	}
 	
 	public static void setComponent(ItemStack stack, ItemStack componentStack) {

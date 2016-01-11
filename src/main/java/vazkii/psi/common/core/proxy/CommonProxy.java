@@ -10,11 +10,14 @@
  */
 package vazkii.psi.common.core.proxy;
 
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.base.ModBlocks;
 import vazkii.psi.common.core.handler.ConfigHandler;
+import vazkii.psi.common.core.handler.PlayerTickHandler;
 import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.network.GuiHandler;
 
@@ -29,6 +32,8 @@ public class CommonProxy {
 		registerModels();
 		
 		NetworkRegistry.INSTANCE.registerGuiHandler(Psi.instance, new GuiHandler());
+		
+		MinecraftForge.EVENT_BUS.register(new PlayerTickHandler());
 	}
 	
 	public void registerModels() {
