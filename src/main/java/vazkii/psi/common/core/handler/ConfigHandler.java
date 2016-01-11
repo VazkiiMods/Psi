@@ -12,10 +12,30 @@ package vazkii.psi.common.core.handler;
 
 import java.io.File;
 
+import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+
 public class ConfigHandler {
 
-	public static void init(File f) {
-		// TODO
+	public static Configuration config;
+	
+	public static boolean useShaders = true;
+	public static boolean psiBarOnRight = true;
+	
+	public static void init(File configFile) {
+		config = new Configuration(configFile);
+
+		config.load();
+		load();
+	}
+
+	public static void load() {
+		String desc;
+	
+		// TODO stuff here
+		
+		if(config.hasChanged())
+			config.save();
 	}
 	
 }

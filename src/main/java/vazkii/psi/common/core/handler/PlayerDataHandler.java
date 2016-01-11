@@ -70,6 +70,7 @@ public class PlayerDataHandler {
 
 		public int level;
 		public int availablePsi;
+		public int lastAvailablePsi;
 		public int regenCooldown;
 
 		public final List<Deduction> deductions = new ArrayList();
@@ -84,6 +85,8 @@ public class PlayerDataHandler {
 		}
 
 		public void tick() {
+			lastAvailablePsi = availablePsi;
+			
 			level = 1; // TODO Debug
 			
 			if(regenCooldown == 0) {

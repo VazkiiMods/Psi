@@ -47,7 +47,7 @@ public class ItemCAD extends ItemMod implements ICAD {
 	
 	@Override
 	public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn) {
-		PlayerDataHandler.get(playerIn).deductPsi(10, 40, true);
+		PlayerDataHandler.get(playerIn).deductPsi(playerIn.isSneaking() ? 50 : 200, 40, true);
 		
 		return itemStackIn;
 	}

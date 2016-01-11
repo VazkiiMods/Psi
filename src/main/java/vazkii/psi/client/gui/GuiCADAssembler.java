@@ -69,8 +69,8 @@ public class GuiCADAssembler extends GuiContainer {
 	
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-        GlStateManager.resetColor();
-        mc.getTextureManager().bindTexture(texture);
+		GlStateManager.color(1F, 1F, 1F);
+		mc.getTextureManager().bindTexture(texture);
         int x = (width - xSize) / 2;
         int y = (height - ySize) / 2;
         drawTexturedModalRect(x, y, 0, 0, xSize, ySize);

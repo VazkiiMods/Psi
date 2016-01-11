@@ -14,10 +14,14 @@ public class LibResources {
 
 	public static final String PREFIX_MOD = "psi:";
 	
+	public static final String PREFIX_SHADER = "/assets/psi/shaders/";
 	public static final String PREFIX_GUI = PREFIX_MOD + "textures/gui/";
+	
+	public static final String SHADER_PSI_BAR = PREFIX_SHADER + "psiBar";
 	
 	public static final String GUI_CREATIVE = "psi.png";
 	public static final String GUI_CAD_ASSEMBLER = PREFIX_GUI + "cadAssembler.png";
 	public static final String GUI_PSI_BAR = PREFIX_GUI + "psiBar.png";
-	
+	public static final String GUI_PSI_BAR_MASK = PREFIX_GUI + "psiBarMask.png";
+
 }
