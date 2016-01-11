@@ -29,15 +29,8 @@ public class CommonProxy {
 		ModItems.init();
 		ModBlocks.init();
 		
-		registerModels();
-		
 		NetworkRegistry.INSTANCE.registerGuiHandler(Psi.instance, new GuiHandler());
-		
 		MinecraftForge.EVENT_BUS.register(new PlayerTickHandler());
-	}
-	
-	public void registerModels() {
-		// NO-OP
 	}
 	
 }

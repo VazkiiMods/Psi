@@ -47,14 +47,7 @@ public class ItemCAD extends ItemMod implements ICAD {
 	
 	@Override
 	public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn) {
-		if(!playerIn.worldObj.isRemote) {
-			if(playerIn.isSneaking())
-				PlayerDataHandler.get(playerIn).deductPsi(10, 40);
-			else {
-				PlayerData data = PlayerDataHandler.get(playerIn);
-				playerIn.addChatMessage(new ChatComponentText("Psi: " + data.availablePsi + " cd: " + data.regenCooldown));
-			}
-		}
+		PlayerDataHandler.get(playerIn).deductPsi(10, 40);
 		
 		return itemStackIn;
 	}
