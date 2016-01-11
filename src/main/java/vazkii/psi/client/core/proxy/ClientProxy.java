@@ -10,15 +10,11 @@
  */
 package vazkii.psi.client.core.proxy;
 
-import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import vazkii.psi.client.core.handler.HUDHandler;
 import vazkii.psi.client.core.handler.ModelHandler;
 import vazkii.psi.common.core.proxy.CommonProxy;
-import vazkii.psi.common.item.ItemMaterial;
-import vazkii.psi.common.item.base.ModItems;
-import vazkii.psi.common.item.component.ItemCADAssembly;
 
 public class ClientProxy extends CommonProxy {
 
@@ -29,6 +25,7 @@ public class ClientProxy extends CommonProxy {
 		ModelHandler.init();
 		
 		MinecraftForge.EVENT_BUS.register(new HUDHandler());
+
 	}
 	
 }

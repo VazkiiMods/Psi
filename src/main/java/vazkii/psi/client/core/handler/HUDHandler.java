@@ -22,6 +22,7 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
+import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData.Deduction;
 import vazkii.psi.common.lib.LibResources;
 
 public final class HUDHandler {
@@ -31,11 +32,11 @@ public final class HUDHandler {
 	@SubscribeEvent
 	public void onDraw(RenderGameOverlayEvent.Post event) {
 		if(event.type == ElementType.ALL) {
-			drawPsiBar(event.resolution);
+			drawPsiBar(event.resolution, event.partialTicks);
 		}
 	}
 	
-	public void drawPsiBar(ScaledResolution res) {
+	public void drawPsiBar(ScaledResolution res, float pticks) {
 		Minecraft mc = Minecraft.getMinecraft();
 		boolean right = true;
 		
@@ -58,15 +59,33 @@ public final class HUDHandler {
 		width = 16;
 		height = 106;
 		
+		float r = 0F;
+		float g = 1F;
+		float b = 1F;
+		
+		int origHeight = height;
+		int origY = y;
 		PlayerData data = PlayerDataHandler.get(mc.thePlayer);
 		int max = data.getTotalPsi();
+		
+		GlStateManager.disableAlpha();
+		for(Deduction d : data.deductions) {
+			float a = d.getPercentile(pticks);
+			GlStateManager.color(r, g, b, a);
+			height = (int) Math.ceil((origHeight * (double) d.deduct / (double) max));
+			int effHeight = (int) (origHeight * (double) d.current / (double) max);
+			y = origY + (origHeight - effHeight);
+			
+			Gui.drawModalRectWithCustomSizedTexture(x, y, 32, 0, width, height, 256, 256);
+		}
+		GlStateManager.enableAlpha();
+		
 		if(max > 0) {
-			int origHeight = height;
-			height *= (double) data.availablePsi / (double) max;
-			y += (origHeight - height);
+			height = (int) ((double) origHeight * (double) data.availablePsi / (double) max);
+			y = origY + (origHeight - height);
 		} else height = 0;
 		
-		GlStateManager.color(0F, 1F, 1F);
+		GlStateManager.color(r, g, b);
 		Gui.drawModalRectWithCustomSizedTexture(x, y, 32, 0, width, height, 256, 256);
 		
 		String s = "" + data.availablePsi;

@@ -10,16 +10,25 @@
  */
 package vazkii.psi.common.core.handler;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent.ServerTickEvent;
 
-public final class PlayerTickHandler {
+public final class CommonTickHandler {
 
 	@SubscribeEvent
-	public void onPlayerTick(PlayerTickEvent event) {
+	public void onServerTick(ServerTickEvent event) {
 		if(event.phase == Phase.END)
-			PlayerDataHandler.get(event.player).tick();
+			PlayerDataHandler.cleanup();
+	}
+	
+	@SubscribeEvent
+	public void onPlayerTick(LivingUpdateEvent event) {
+		if(event.entityLiving instanceof EntityPlayer)
+			PlayerDataHandler.get((EntityPlayer) event.entityLiving).tick();
 	}
 	
 }

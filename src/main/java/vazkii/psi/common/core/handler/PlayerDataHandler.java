@@ -11,9 +11,9 @@
 package vazkii.psi.common.core.handler;
 
 import java.lang.ref.WeakReference;
-import java.util.WeakHashMap;
-
-import com.sun.org.apache.bcel.internal.generic.AALOAD;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -21,15 +21,33 @@ import net.minecraft.util.DamageSource;
 
 public class PlayerDataHandler {
 
-	private static WeakHashMap<EntityPlayer, PlayerData> playerData = new WeakHashMap();
+	private static HashMap<Integer, PlayerData> playerData = new HashMap();
 	
 	private static final String DATA_TAG = "PsiData";
 
 	public static PlayerData get(EntityPlayer player) {
-		if(!playerData.containsKey(player))
-			playerData.put(player, new PlayerData(player));
+		int key = getKey(player);
+		if(!playerData.containsKey(key))
+			playerData.put(key, new PlayerData(player));
 		
-		return playerData.get(player);
+		return playerData.get(key);
+	}
+	
+	public static void cleanup() {
+		List<Integer> remove = new ArrayList();
+		
+		for(int i : playerData.keySet()) {
+			PlayerData d = playerData.get(i);
+			if(d.playerWR.get() == null)
+				remove.add(i);
+		}
+		
+		for(int i : remove)
+			playerData.remove(i);
+	}
+	
+	private static int getKey(EntityPlayer player) {
+		return player.hashCode() << 1 + (player.worldObj.isRemote ? 1 : 0);
 	}
 	
 	public static NBTTagCompound getDataCompoundForPlayer(EntityPlayer player) {
@@ -54,6 +72,7 @@ public class PlayerDataHandler {
 		public int availablePsi;
 		public int regenCooldown;
 
+		public final List<Deduction> deductions = new ArrayList();
 		public final WeakReference<EntityPlayer> playerWR;
 		private final boolean client;
 		
@@ -65,6 +84,8 @@ public class PlayerDataHandler {
 		}
 
 		public void tick() {
+			level = 1; // TODO Debug
+			
 			if(regenCooldown == 0) {
 				int max = getTotalPsi();
 				if(availablePsi < max && regenCooldown == 0) {
@@ -75,9 +96,18 @@ public class PlayerDataHandler {
 				regenCooldown--;
 				save();
 			}
+			
+			List<Deduction> remove = new ArrayList();
+			for(Deduction d : deductions) {
+				if(d.invalid)
+					remove.add(d);
+				else d.tick();
+			}
+			deductions.removeAll(remove);
 		}
 
-		public void deductPsi(int psi, int cd) {
+		public void deductPsi(int psi, int cd, boolean sync) {
+			int currentPsi = availablePsi;
 			availablePsi -= psi;
 			if(regenCooldown < cd)
 				regenCooldown = cd;
@@ -95,12 +125,28 @@ public class PlayerDataHandler {
 						player.attackEntityFrom(DamageSource.magic, dmg); // TODO better DS
 				}
 			}
-			
-			if(client) {
-				// TODO Sync
+
+			if(sync) {
+				if(client)
+					addDeduction(currentPsi, psi, cd);
+				else {
+					// TODO Sync
+				}
 			}
 			
 			save(); 
+		}
+		
+		public void addDeduction(int current, int deduct, int cd) {
+			if(deduct > current)
+				deduct = current;
+			if(deduct < 0)
+				deduct = 0;
+			
+			if(deduct == 0)
+				return;
+			
+			deductions.add(new Deduction(current, deduct, 20));
 		}
 		
 		public int getTotalPsi() {
@@ -134,6 +180,34 @@ public class PlayerDataHandler {
 					availablePsi = cmp.getInteger(TAG_AVAILABLE_PSI);
 					regenCooldown = cmp.getInteger(TAG_REGEN_CD);
 				}
+			}
+		}
+		
+		public static class Deduction {
+			
+			public final int current; 
+			public final int deduct; 
+			public final int cd;
+			
+			public int elapsed;
+			
+			public boolean invalid;
+			
+			public Deduction(int current, int deduct, int cd) {
+				this.current = current;
+				this.deduct = deduct;
+				this.cd = cd;
+			}
+			
+			public void tick() {
+				elapsed++;
+				
+				if(elapsed >= cd)
+					invalid = true;
+			}
+			
+			public float getPercentile(float partTicks) {
+				return 1F - Math.min(1F, (elapsed + partTicks) / cd);
 			}
 		}
 		
