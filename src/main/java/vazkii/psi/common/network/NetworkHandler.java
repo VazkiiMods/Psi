@@ -14,6 +14,8 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
 import vazkii.psi.common.lib.LibMisc;
+import vazkii.psi.common.network.message.MessageDataSync;
+import vazkii.psi.common.network.message.MessageDeductPsi;
 import vazkii.psi.common.network.message.TestMessage;
 
 public class NetworkHandler {
@@ -24,10 +26,13 @@ public class NetworkHandler {
 	
 	public static void init() {
 		register(TestMessage.class, Side.CLIENT);
+		
+		register(MessageDataSync.class, Side.CLIENT);
+		register(MessageDeductPsi.class, Side.CLIENT);
 	}
 	
-	private static void register(Class clazz, Side side) {
-		INSTANCE.registerMessage(clazz, clazz, i++, side);
+	private static void register(Class clazz, Side handlerSide) {
+		INSTANCE.registerMessage(clazz, clazz, i++, handlerSide);
 	}
 	
 }

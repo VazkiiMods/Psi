@@ -16,45 +16,50 @@ import java.util.HashMap;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ServerTickEvent;
+import vazkii.psi.common.network.NetworkHandler;
+import vazkii.psi.common.network.message.MessageDataSync;
+import vazkii.psi.common.network.message.MessageDeductPsi;
 
 public class PlayerDataHandler {
 
 	private static HashMap<Integer, PlayerData> playerData = new HashMap();
-	
+
 	private static final String DATA_TAG = "PsiData";
 
 	public static PlayerData get(EntityPlayer player) {
 		int key = getKey(player);
 		if(!playerData.containsKey(key))
 			playerData.put(key, new PlayerData(player));
-		
+
 		return playerData.get(key);
 	}
-	
+
 	public static void cleanup() {
 		List<Integer> remove = new ArrayList();
-		
+
 		for(int i : playerData.keySet()) {
 			PlayerData d = playerData.get(i);
 			if(d.playerWR.get() == null)
 				remove.add(i);
 		}
-		
+
 		for(int i : remove)
 			playerData.remove(i);
 	}
-	
+
 	private static int getKey(EntityPlayer player) {
 		return player.hashCode() << 1 + (player.worldObj.isRemote ? 1 : 0);
 	}
-	
+
 	public static NBTTagCompound getDataCompoundForPlayer(EntityPlayer player) {
 		NBTTagCompound forgeData = player.getEntityData();
 		if(!forgeData.hasKey(EntityPlayer.PERSISTED_NBT_TAG))
@@ -66,27 +71,35 @@ public class PlayerDataHandler {
 
 		return persistentData.getCompoundTag(DATA_TAG);
 	}
-	
+
 	public static class EventHandler {
-		
+
 		@SubscribeEvent
 		public void onServerTick(ServerTickEvent event) {
 			if(event.phase == Phase.END)
 				PlayerDataHandler.cleanup();
 		}
-		
+
 		@SubscribeEvent
 		public void onPlayerTick(LivingUpdateEvent event) {
 			if(event.entityLiving instanceof EntityPlayer)
 				PlayerDataHandler.get((EntityPlayer) event.entityLiving).tick();
 		}
-		
+
 		@SubscribeEvent
 		public void onEntityDamage(LivingHurtEvent event) {
 			if(event.entityLiving instanceof EntityPlayer)
 				PlayerDataHandler.get((EntityPlayer) event.entityLiving).damage(event.ammount);
 		}
 		
+		@SubscribeEvent
+		public void onPlayerLogin(PlayerLoggedInEvent event) {
+			if(event.player instanceof EntityPlayerMP) {
+				MessageDataSync message = new MessageDataSync(get(event.player));
+				NetworkHandler.INSTANCE.sendTo(message, (EntityPlayerMP) event.player);
+			}
+		}
+
 	}
 
 	public static class PlayerData {
@@ -99,24 +112,28 @@ public class PlayerDataHandler {
 		public int availablePsi;
 		public int lastAvailablePsi;
 		public int regenCooldown;
+		
+		public boolean deductTick;
 
 		public final List<Deduction> deductions = new ArrayList();
 		public final WeakReference<EntityPlayer> playerWR;
 		private final boolean client;
-		
+
 		public PlayerData(EntityPlayer player) {
 			playerWR = new WeakReference(player);
 			client = player.worldObj.isRemote;
-			
+
 			load();
 		}
 
 		public void tick() {
-			lastAvailablePsi = availablePsi;
+			if(deductTick)
+				deductTick = false;
+			else lastAvailablePsi = availablePsi;
 			
 			level = 1; // TODO Debug
-			
-			if(regenCooldown == 0) {
+
+			if(regenCooldown == 0) {			
 				int max = getTotalPsi();
 				if(availablePsi < max && regenCooldown == 0) {
 					availablePsi = Math.min(max, availablePsi + getRegenPerTick());
@@ -126,7 +143,7 @@ public class PlayerDataHandler {
 				regenCooldown--;
 				save();
 			}
-			
+
 			List<Deduction> remove = new ArrayList();
 			for(Deduction d : deductions) {
 				if(d.invalid)
@@ -135,9 +152,9 @@ public class PlayerDataHandler {
 			}
 			deductions.removeAll(remove);
 		}
-		
+
 		public void damage(float amount) {
-			int psi = (int) (getTotalPsi() * 0.01 * amount);
+			int psi = (int) (getTotalPsi() * 0.02 * amount);
 			if(psi > 0 && availablePsi > 0) {
 				psi = Math.min(psi, availablePsi);
 				deductPsi(psi, 20, true, true);
@@ -147,50 +164,49 @@ public class PlayerDataHandler {
 		public void deductPsi(int psi, int cd, boolean sync) {
 			deductPsi(psi, cd, sync, false);
 		}
-		
+
 		public void deductPsi(int psi, int cd, boolean sync, boolean shatter) {
 			int currentPsi = availablePsi;
 			availablePsi -= psi;
 			if(regenCooldown < cd)
 				regenCooldown = cd;
-			
+
 			if(availablePsi < 0) {
 				int overflow = -availablePsi;
 				availablePsi = 0;
-				
+
 				// TODO Use CAD batteries
-				
-				float dmg = (float) overflow / 50;
-				if(!client) {
-					EntityPlayer player = playerWR.get();
-					if(player != null)
-						player.attackEntityFrom(DamageSource.magic, dmg); // TODO better DS
+
+				if(!shatter) {
+					float dmg = (float) overflow / 50;
+					if(!client) {
+						EntityPlayer player = playerWR.get();
+						if(player != null)
+							player.attackEntityFrom(DamageSource.magic, dmg); // TODO better DS
+					}
 				}
 			}
 
-			if(sync) {
-				if(client)
-					addDeduction(currentPsi, psi, shatter);
-				else {
-					// TODO Sync
-				}
+			if(sync && playerWR.get() instanceof EntityPlayerMP) {
+				MessageDeductPsi message = new MessageDeductPsi(currentPsi, availablePsi, regenCooldown, shatter);
+				NetworkHandler.INSTANCE.sendTo(message, (EntityPlayerMP) playerWR.get());
 			}
-			
+
 			save(); 
 		}
-		
+
 		public void addDeduction(int current, int deduct, boolean shatter) {
 			if(deduct > current)
 				deduct = current;
 			if(deduct < 0)
 				deduct = 0;
-			
+
 			if(deduct == 0)
 				return;
-			
+
 			deductions.add(new Deduction(current, deduct, 20, shatter));
 		}
-		
+
 		public int getTotalPsi() {
 			return level * 200;
 		}
@@ -205,11 +221,15 @@ public class PlayerDataHandler {
 
 				if(player != null) {
 					NBTTagCompound cmp = getDataCompoundForPlayer(player);
-					cmp.setInteger(TAG_LEVEL, level);
-					cmp.setInteger(TAG_AVAILABLE_PSI, availablePsi);
-					cmp.setInteger(TAG_REGEN_CD, regenCooldown);	
+					writeToNBT(cmp);
 				}
 			}
+		}
+
+		public void writeToNBT(NBTTagCompound cmp) {
+			cmp.setInteger(TAG_LEVEL, level);
+			cmp.setInteger(TAG_AVAILABLE_PSI, availablePsi);
+			cmp.setInteger(TAG_REGEN_CD, regenCooldown);	
 		}
 
 		public void load() {
@@ -218,42 +238,46 @@ public class PlayerDataHandler {
 
 				if(player != null) {
 					NBTTagCompound cmp = getDataCompoundForPlayer(player);
-					level = cmp.getInteger(TAG_LEVEL);
-					availablePsi = cmp.getInteger(TAG_AVAILABLE_PSI);
-					regenCooldown = cmp.getInteger(TAG_REGEN_CD);
+					readFromNBT(cmp);
 				}
 			}
 		}
 		
+		public void readFromNBT(NBTTagCompound cmp) {
+			level = cmp.getInteger(TAG_LEVEL);
+			availablePsi = cmp.getInteger(TAG_AVAILABLE_PSI);
+			regenCooldown = cmp.getInteger(TAG_REGEN_CD);
+		}
+
 		public static class Deduction {
-			
+
 			public final int current; 
 			public final int deduct; 
 			public final int cd;
 			public final boolean shatter;
-			
+
 			public int elapsed;
-			
+
 			public boolean invalid;
-			
+
 			public Deduction(int current, int deduct, int cd, boolean shatter) {
 				this.current = current;
 				this.deduct = deduct;
 				this.cd = cd;
 				this.shatter = shatter;
 			}
-			
+
 			public void tick() {
 				elapsed++;
-				
+
 				if(elapsed >= cd)
 					invalid = true;
 			}
-			
+
 			public float getPercentile(float partTicks) {
 				return 1F - Math.min(1F, (elapsed + partTicks) / cd);
 			}
 		}
-		
+
 	}
 }

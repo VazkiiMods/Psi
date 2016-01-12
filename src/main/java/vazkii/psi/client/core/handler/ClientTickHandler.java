@@ -10,21 +10,22 @@
  */
 package vazkii.psi.client.core.handler;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Queue;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.RenderTickEvent;
+import vazkii.psi.common.core.handler.PlayerDataHandler;
 
 public class ClientTickHandler {
 
+	public static volatile Queue<Runnable> scheduledActions = new ArrayDeque();
+	
 	public static int ticksInGame = 0;
 	public static float partialTicks = 0;
 	public static float delta = 0;
@@ -45,7 +46,14 @@ public class ClientTickHandler {
 	@SubscribeEvent
 	public void clientTickEnd(ClientTickEvent event) {
 		if(event.phase == Phase.END) {
-			GuiScreen gui = Minecraft.getMinecraft().currentScreen;
+			Minecraft mc = Minecraft.getMinecraft();
+			if(mc.theWorld == null)
+				PlayerDataHandler.cleanup();
+			else if(mc.thePlayer != null)
+				while(!scheduledActions.isEmpty())
+					scheduledActions.poll().run();
+			
+			GuiScreen gui = mc.currentScreen;
 			if(gui == null || !gui.doesGuiPauseGame()) {
 				ticksInGame++;
 				partialTicks = 0;
