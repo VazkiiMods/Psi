@@ -16,9 +16,11 @@ import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
@@ -35,6 +37,8 @@ import vazkii.psi.common.core.helper.ItemNBTHelper;
 import vazkii.psi.common.item.base.ItemMod;
 import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.lib.LibItemNames;
+import vazkii.psi.common.network.NetworkHandler;
+import vazkii.psi.common.network.message.TestMessage;
 
 public class ItemCAD extends ItemMod implements ICAD {
 

@@ -35,6 +35,8 @@ public final class HUDHandler {
 
 	private static final ResourceLocation psiBar = new ResourceLocation(LibResources.GUI_PSI_BAR);
 	private static final ResourceLocation psiBarMask = new ResourceLocation(LibResources.GUI_PSI_BAR_MASK);
+	private static final ResourceLocation psiBarShatter = new ResourceLocation(LibResources.GUI_PSI_BAR_SHATTER);
+
 	private static final int secondaryTextureUnit = 7;
 	
 	private static boolean registeredMask = false;
@@ -62,6 +64,7 @@ public final class HUDHandler {
 		
 		if(!registeredMask) {
 			mc.renderEngine.bindTexture(psiBarMask);
+			mc.renderEngine.bindTexture(psiBarShatter);
 			registeredMask = true;
 		}
 		mc.renderEngine.bindTexture(psiBar);
@@ -100,7 +103,7 @@ public final class HUDHandler {
 			v = (origHeight - effHeight);
 			y = origY + v;
 			
-			ShaderHandler.useShader(ShaderHandler.psiBar, generateCallback(a));
+			ShaderHandler.useShader(ShaderHandler.psiBar, generateCallback(a, d.shatter));
 			Gui.drawModalRectWithCustomSizedTexture(x, y, 32, v, width, height, 64, 256);
 		}
 		GlStateManager.enableAlpha();
@@ -118,7 +121,7 @@ public final class HUDHandler {
 		} else height = 0;
 		
 		GlStateManager.color(r, g, b);
-		ShaderHandler.useShader(ShaderHandler.psiBar, generateCallback(1F));
+		ShaderHandler.useShader(ShaderHandler.psiBar, generateCallback(1F, false));
 		Gui.drawModalRectWithCustomSizedTexture(x, y, 32, v, width, height, 64, 256);
 		ShaderHandler.releaseShader();
 		
@@ -149,7 +152,7 @@ public final class HUDHandler {
 		GlStateManager.popMatrix();
 	}
 	
-	private static Consumer<Integer> generateCallback(final float percentile) {
+	private static Consumer<Integer> generateCallback(final float percentile, final boolean shatter) {
 		Minecraft mc = Minecraft.getMinecraft();
 		return (Integer shader) -> {
 			int percentileUniform = ARBShaderObjects.glGetUniformLocationARB(shader, "percentile");
@@ -165,7 +168,7 @@ public final class HUDHandler {
 			GlStateManager.enableTexture2D();
 			GL11.glGetInteger(GL11.GL_TEXTURE_BINDING_2D);
 
-			GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture(psiBarMask).getGlTextureId());
+			GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture(shatter ? psiBarShatter : psiBarMask).getGlTextureId());
 			ARBShaderObjects.glUniform1iARB(maskUniform, secondaryTextureUnit);
 
 			ARBShaderObjects.glUniform1fARB(percentileUniform, percentile);

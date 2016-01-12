@@ -18,6 +18,11 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
+import net.minecraftforge.fml.common.gameevent.TickEvent.ServerTickEvent;
 
 public class PlayerDataHandler {
 
@@ -60,6 +65,28 @@ public class PlayerDataHandler {
 			persistentData.setTag(DATA_TAG, new NBTTagCompound());
 
 		return persistentData.getCompoundTag(DATA_TAG);
+	}
+	
+	public static class EventHandler {
+		
+		@SubscribeEvent
+		public void onServerTick(ServerTickEvent event) {
+			if(event.phase == Phase.END)
+				PlayerDataHandler.cleanup();
+		}
+		
+		@SubscribeEvent
+		public void onPlayerTick(LivingUpdateEvent event) {
+			if(event.entityLiving instanceof EntityPlayer)
+				PlayerDataHandler.get((EntityPlayer) event.entityLiving).tick();
+		}
+		
+		@SubscribeEvent
+		public void onEntityDamage(LivingHurtEvent event) {
+			if(event.entityLiving instanceof EntityPlayer)
+				PlayerDataHandler.get((EntityPlayer) event.entityLiving).damage(event.ammount);
+		}
+		
 	}
 
 	public static class PlayerData {
@@ -108,8 +135,20 @@ public class PlayerDataHandler {
 			}
 			deductions.removeAll(remove);
 		}
+		
+		public void damage(float amount) {
+			int psi = (int) (getTotalPsi() * 0.01 * amount);
+			if(psi > 0 && availablePsi > 0) {
+				psi = Math.min(psi, availablePsi);
+				deductPsi(psi, 20, true, true);
+			}
+		}
 
 		public void deductPsi(int psi, int cd, boolean sync) {
+			deductPsi(psi, cd, sync, false);
+		}
+		
+		public void deductPsi(int psi, int cd, boolean sync, boolean shatter) {
 			int currentPsi = availablePsi;
 			availablePsi -= psi;
 			if(regenCooldown < cd)
@@ -131,7 +170,7 @@ public class PlayerDataHandler {
 
 			if(sync) {
 				if(client)
-					addDeduction(currentPsi, psi, cd);
+					addDeduction(currentPsi, psi, shatter);
 				else {
 					// TODO Sync
 				}
@@ -140,7 +179,7 @@ public class PlayerDataHandler {
 			save(); 
 		}
 		
-		public void addDeduction(int current, int deduct, int cd) {
+		public void addDeduction(int current, int deduct, boolean shatter) {
 			if(deduct > current)
 				deduct = current;
 			if(deduct < 0)
@@ -149,7 +188,7 @@ public class PlayerDataHandler {
 			if(deduct == 0)
 				return;
 			
-			deductions.add(new Deduction(current, deduct, 20));
+			deductions.add(new Deduction(current, deduct, 20, shatter));
 		}
 		
 		public int getTotalPsi() {
@@ -191,15 +230,17 @@ public class PlayerDataHandler {
 			public final int current; 
 			public final int deduct; 
 			public final int cd;
+			public final boolean shatter;
 			
 			public int elapsed;
 			
 			public boolean invalid;
 			
-			public Deduction(int current, int deduct, int cd) {
+			public Deduction(int current, int deduct, int cd, boolean shatter) {
 				this.current = current;
 				this.deduct = deduct;
 				this.cd = cd;
+				this.shatter = shatter;
 			}
 			
 			public void tick() {

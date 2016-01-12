@@ -23,5 +23,6 @@ public class LibResources {
 	public static final String GUI_CAD_ASSEMBLER = PREFIX_GUI + "cadAssembler.png";
 	public static final String GUI_PSI_BAR = PREFIX_GUI + "psiBar.png";
 	public static final String GUI_PSI_BAR_MASK = PREFIX_GUI + "psiBarMask.png";
+	public static final String GUI_PSI_BAR_SHATTER = PREFIX_GUI + "psiBarShatter.png";
 
 }
