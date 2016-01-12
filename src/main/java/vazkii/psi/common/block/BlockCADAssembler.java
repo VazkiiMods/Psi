@@ -19,11 +19,12 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.base.BlockMod;
+import vazkii.psi.common.block.base.BlockModContainer;
 import vazkii.psi.common.block.tile.TileCADAssembler;
 import vazkii.psi.common.lib.LibBlockNames;
 import vazkii.psi.common.lib.LibGuiIDs;
 
-public class BlockCADAssembler extends BlockMod {
+public class BlockCADAssembler extends BlockModContainer {
 
 	public BlockCADAssembler() {
 		super(LibBlockNames.CAD_ASSEMBLER, Material.iron);

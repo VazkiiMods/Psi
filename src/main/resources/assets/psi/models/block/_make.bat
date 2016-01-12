@@ -26,7 +26,7 @@ for %%x in (%*) do (
 	echo Making %%x.json item
 	(
 		echo {
-		echo 	"parent": "%modid%:block/%%x"
+		echo 	"parent": "%modid%:block/%%x",
 		echo 	"display": {
 		echo 		"thirdperson": {
 		echo 			"rotation": [ 10, -45, 170 ],

@@ -13,5 +13,6 @@ package vazkii.psi.common.lib;
 public final class LibBlockNames {
 
 	public static final String CAD_ASSEMBLER = "cadAssembler";
+	public static final String PROGRAMMER = "programmer";
 	
 }

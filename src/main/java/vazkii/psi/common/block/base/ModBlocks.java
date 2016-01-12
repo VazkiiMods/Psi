@@ -13,6 +13,7 @@ package vazkii.psi.common.block.base;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import vazkii.psi.common.block.BlockCADAssembler;
+import vazkii.psi.common.block.BlockProgrammer;
 import vazkii.psi.common.block.tile.TileCADAssembler;
 import vazkii.psi.common.lib.LibBlockNames;
 import vazkii.psi.common.lib.LibResources;
@@ -20,10 +21,12 @@ import vazkii.psi.common.lib.LibResources;
 public class ModBlocks {
 
 	public static BlockMod cadAssembler; 
+	public static BlockMod programmer; 
 	
 	public static void init() {
 		cadAssembler = new BlockCADAssembler();
-
+		programmer = new BlockProgrammer();
+		
 		initTileEntities();
 	}
 

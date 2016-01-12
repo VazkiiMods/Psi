@@ -9,6 +9,7 @@ psimisc.socketing=Socketing
 
 # BLOCK NAMES
 tile.psi:cadAssembler.name=CAD Assembler
+tile.psi:programmer.name=Spell Programmer
 
 # ITEM NAMES
 item.psi:psidust.name=Psidust

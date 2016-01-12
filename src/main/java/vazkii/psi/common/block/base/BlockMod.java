@@ -22,7 +22,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import vazkii.psi.common.core.PsiCreativeTab;
 import vazkii.psi.common.item.base.ItemModBlock;
 
-public class BlockMod extends BlockContainer implements IPsiBlock {
+public class BlockMod extends Block implements IPsiBlock {
 
 	private final String[] variants;
 	private final String bareName;
@@ -72,9 +72,5 @@ public class BlockMod extends BlockContainer implements IPsiBlock {
 		return EnumRarity.COMMON;
 	}
 
-	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
-		return null;
-	}
 	
 }

@@ -52,6 +52,7 @@ public class PsiCreativeTab extends CreativeTabs {
 		list = p_78018_1_;
 		
 		addBlock(ModBlocks.cadAssembler);
+		addBlock(ModBlocks.programmer);
 		
 		addItem(ModItems.material);
 		
