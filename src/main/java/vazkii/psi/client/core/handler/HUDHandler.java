@@ -52,7 +52,7 @@ public final class HUDHandler {
 		Minecraft mc = Minecraft.getMinecraft();
 		boolean right = ConfigHandler.psiBarOnRight;
 		
-		int pad = 4;
+		int pad = 3;
 		int width = 32;
 		int height = 140;
 		
@@ -141,10 +141,10 @@ public final class HUDHandler {
 		String s = "" + data.availablePsi;
 
 		int offBar = 22;
-		int offStr = 10 + mc.fontRendererObj.getStringWidth(s);
+		int offStr = 7 + mc.fontRendererObj.getStringWidth(s);
 		if(!right) {
 			offBar = 6;
-			offStr = -26;
+			offStr = -23;
 		}
 		
 		Gui.drawModalRectWithCustomSizedTexture(x - offBar, -2, 0, 140, width, height, 64, 256);
