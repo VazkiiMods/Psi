@@ -201,16 +201,11 @@ public class Message<REQ extends Message> implements Serializable, IMessage, IMe
 	}
 
 	private static BlockPos readBlockPos(ByteBuf buf) {
-		int x = buf.readInt();
-		int y = buf.readInt();
-		int z = buf.readInt();
-		return new BlockPos(x, y, z);
+		return BlockPos.fromLong(buf.readLong());
 	}
 
 	private static void writeBlockPos(BlockPos pos, ByteBuf buf) {
-		buf.writeInt(pos.getX());
-		buf.writeInt(pos.getY());
-		buf.writeInt(pos.getZ());
+		buf.writeLong(pos.toLong());
 	}
 
 	public static interface Writer<T extends Object> {
