@@ -26,7 +26,6 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-// TODO Test this damn thing
 public class Message<REQ extends Message> implements Serializable, IMessage, IMessageHandler<REQ, IMessage> {
 
 	private static final HashMap<Class, Pair<Reader, Writer>> handlers = new HashMap();
@@ -51,6 +50,7 @@ public class Message<REQ extends Message> implements Serializable, IMessage, IMe
 		return null;
 	}
 
+	@Override
 	public final IMessage onMessage(REQ message, MessageContext context) {
 		return message.handleMessage(context);
 	}
