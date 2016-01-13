@@ -10,6 +10,8 @@
  */
 package vazkii.psi.common.item;
 
+import net.minecraft.item.EnumRarity;
+import net.minecraft.item.ItemStack;
 import vazkii.psi.common.item.base.ItemMod;
 import vazkii.psi.common.lib.LibItemNames;
 
@@ -18,6 +20,11 @@ public class ItemSpellBullet extends ItemMod {
 	public ItemSpellBullet() {
 		super(LibItemNames.SPELL_BULLET);
 		setMaxStackSize(1);
+	}
+
+	@Override
+	public EnumRarity getRarity(ItemStack stack) {
+		return EnumRarity.RARE;
 	}
 	
 }

@@ -11,6 +11,8 @@
 package vazkii.psi.common.block;
 
 import net.minecraft.block.material.Material;
+import net.minecraft.item.EnumRarity;
+import net.minecraft.item.ItemStack;
 import vazkii.psi.common.block.base.BlockMod;
 import vazkii.psi.common.lib.LibBlockNames;
 
@@ -23,4 +25,9 @@ public class BlockProgrammer extends BlockMod {
 		setStepSound(soundTypeMetal);
 	}
 
+	@Override
+	public EnumRarity getBlockRarity(ItemStack stack) {
+		return EnumRarity.UNCOMMON;
+	}
+	
 }
