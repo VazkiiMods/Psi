@@ -10,31 +10,40 @@
  */
 package vazkii.psi.common.block.tile.container;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.FurnaceRecipes;
+import net.minecraft.tileentity.TileEntityFurnace;
 import vazkii.psi.api.cad.EnumCADComponent;
+import vazkii.psi.api.cad.ICAD;
+import vazkii.psi.api.cad.ICADComponent;
 import vazkii.psi.common.block.tile.TileCADAssembler;
 import vazkii.psi.common.block.tile.container.slot.SlotBullet;
 import vazkii.psi.common.block.tile.container.slot.SlotCAD;
 import vazkii.psi.common.block.tile.container.slot.SlotCADComponent;
 import vazkii.psi.common.block.tile.container.slot.SlotCADOutput;
+import vazkii.psi.common.item.base.ModItems;
 
 public class ContainerCADAssembler extends Container {
 
 	public TileCADAssembler assembler;
+	private Map<EnumCADComponent, Slot> componentToSlotMap = new HashMap();
 
 	public ContainerCADAssembler(InventoryPlayer playerInventory, TileCADAssembler assembler) {
 		this.assembler = assembler;
 
 		addSlotToContainer(new SlotCADOutput(assembler, 0, 120, 35));
-		addSlotToContainer(new SlotCADComponent(assembler, 1, 100, 91, EnumCADComponent.CORE));
-		addSlotToContainer(new SlotCADComponent(assembler, 2, 120, 91, EnumCADComponent.ASSEMBLY));
-		addSlotToContainer(new SlotCADComponent(assembler, 3, 140, 91, EnumCADComponent.SOCKET));
-		addSlotToContainer(new SlotCADComponent(assembler, 4, 110, 111, EnumCADComponent.BATTERY));
-		addSlotToContainer(new SlotCADComponent(assembler, 5, 130, 111, EnumCADComponent.DYE));
+		addSlotToContainer(new SlotCADComponent(assembler, 1, 100, 91, EnumCADComponent.CORE).map(componentToSlotMap));
+		addSlotToContainer(new SlotCADComponent(assembler, 2, 120, 91, EnumCADComponent.ASSEMBLY).map(componentToSlotMap));
+		addSlotToContainer(new SlotCADComponent(assembler, 3, 140, 91, EnumCADComponent.SOCKET).map(componentToSlotMap));
+		addSlotToContainer(new SlotCADComponent(assembler, 4, 110, 111, EnumCADComponent.BATTERY).map(componentToSlotMap));
+		addSlotToContainer(new SlotCADComponent(assembler, 5, 130, 111, EnumCADComponent.DYE).map(componentToSlotMap));
 
 		addSlotToContainer(new SlotCAD(assembler, 6, 35, 21));
 		
@@ -58,8 +67,52 @@ public class ContainerCADAssembler extends Container {
 		return assembler.isUseableByPlayer(playerIn);
 	}
 
-	public ItemStack transferStackInSlot(EntityPlayer playerIn, int index) {
-		return null; // TODO shift-handling
-	}
+	@Override
+    public ItemStack transferStackInSlot(EntityPlayer playerIn, int index) {
+        ItemStack itemstack = null;
+        Slot slot = (Slot) this.inventorySlots.get(index);
+
+        if(slot != null && slot.getHasStack()) {
+            ItemStack itemstack1 = slot.getStack();
+            itemstack = itemstack1.copy();
+            
+            int invStart = 19;
+            int hotbarStart = invStart + 27;
+            int invEnd = hotbarStart + 9;
+
+            if(index > invStart) {
+                if(itemstack1.getItem() instanceof ICADComponent) { // Component slots
+                	ICADComponent component = (ICADComponent) itemstack1.getItem();
+                	Slot compSlot = componentToSlotMap.get(component.getComponentType(itemstack1));
+                    if(!this.mergeItemStack(itemstack1, compSlot.slotNumber, compSlot.slotNumber + 1, false))
+                        return null;
+                } else if(itemstack1.getItem() instanceof ICAD) { // CAD Input slot
+                    if(!this.mergeItemStack(itemstack1, 6, 7, false))
+                        return null;
+                } else if(itemstack1.getItem() == ModItems.spellBullet) {
+                    if(!this.mergeItemStack(itemstack1, 7, 19, false))
+                        return null;
+                } else if(index >= invStart && index < hotbarStart)  { // Inv -> Hotbar
+                    if (!this.mergeItemStack(itemstack1, hotbarStart, invEnd , false))
+                        return null;
+                } else if(index >= hotbarStart && index < invEnd) { // Hotbar -> inv
+                	if(!this.mergeItemStack(itemstack1, invStart, hotbarStart, false)) 
+                        return null;
+                }
+            } else if(!this.mergeItemStack(itemstack1, invStart, invEnd, true)) // Assembler -> Inv+hotbar
+                return null;
+
+            if(itemstack1.stackSize == 0)
+                slot.putStack((ItemStack)null);
+            else slot.onSlotChanged();
+
+            if(itemstack1.stackSize == itemstack.stackSize)
+                return null;
+
+            slot.onPickupFromSlot(playerIn, itemstack1);
+        }
+
+        return itemstack;
+    }
 
 }

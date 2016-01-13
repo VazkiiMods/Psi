@@ -10,11 +10,12 @@
  */
 package vazkii.psi.common.block.tile.container.slot;
 
+import java.util.Map;
+
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import vazkii.psi.api.cad.EnumCADComponent;
-import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.cad.ICADComponent;
 
 public class SlotCADComponent extends Slot {
@@ -24,6 +25,11 @@ public class SlotCADComponent extends Slot {
 	public SlotCADComponent(IInventory inventoryIn, int index, int xPosition, int yPosition, EnumCADComponent componentType) {
 		super(inventoryIn, index, xPosition, yPosition);
 		this.componentType = componentType;
+	}
+	
+	public SlotCADComponent map(Map<EnumCADComponent, Slot> map) {
+		map.put(componentType, this);
+		return this;
 	}
 	
 	@Override
