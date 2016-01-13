@@ -28,6 +28,9 @@ public class BlockCADAssembler extends BlockModContainer {
 
 	public BlockCADAssembler() {
 		super(LibBlockNames.CAD_ASSEMBLER, Material.iron);
+		setHardness(5.0F);
+		setResistance(10.0F);
+		setStepSound(soundTypeMetal);
 	}
 	
 	@Override

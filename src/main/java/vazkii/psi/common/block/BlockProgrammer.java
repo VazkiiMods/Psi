@@ -18,6 +18,9 @@ public class BlockProgrammer extends BlockMod {
 
 	public BlockProgrammer() {
 		super(LibBlockNames.PROGRAMMER, Material.iron);
+		setHardness(5.0F);
+		setResistance(10.0F);
+		setStepSound(soundTypeMetal);
 	}
 
 }
