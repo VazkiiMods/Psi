@@ -24,16 +24,16 @@ public class TileCADAssembler extends TileSimpleInventory implements ITickable {
 
 	@Override
 	public void inventoryChanged(int i) {
-		ItemStack socketableStack = getStackInSlot(6);
-
 		if(!ignoreChanges) {
-			ignoreChanges = true;
-			ItemStack cad = null;
-			if(getStackInSlot(2) != null)
-				cad = ItemCAD.makeCAD(Arrays.copyOfRange(inventorySlots, 1, 6));
+			if(i != 0) {
+				ItemStack cad = null;
+				if(getStackInSlot(2) != null)
+					cad = ItemCAD.makeCAD(Arrays.copyOfRange(inventorySlots, 1, 6));
 
-			setInventorySlotContents(0, cad);
+				setInventorySlotContents(0, cad);
+			}
 
+			ItemStack socketableStack = getStackInSlot(6);
 			if(i == 6 && socketableStack != null && socketableStack.getItem() instanceof ISocketable) {
 				ISocketable socketable = (ISocketable) socketableStack.getItem();
 
@@ -42,10 +42,7 @@ public class TileCADAssembler extends TileSimpleInventory implements ITickable {
 						ItemStack bullet = socketable.getBulletInSocket(socketableStack, j);
 						setInventorySlotContents(j + 7, bullet);
 					}
-
 			}
-
-			ignoreChanges = false;
 		}
 	}
 	
