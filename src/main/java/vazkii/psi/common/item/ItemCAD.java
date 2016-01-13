@@ -142,6 +142,11 @@ public class ItemCAD extends ItemMod implements ICAD {
 	}
 	
 	@Override
+	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+		return slotChanged;
+	}
+	
+	@Override
 	public void getSubItems(Item itemIn, CreativeTabs tab, List<ItemStack> subItems) {
 		// Basic Iron CAD
 		subItems.add(makeCAD(new ItemStack(ModItems.cadAssembly, 1, 0)));
