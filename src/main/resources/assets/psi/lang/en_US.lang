@@ -39,3 +39,6 @@ psi.cadstat.projection=Projection
 psi.cadstat.bandwidth=Bandwidth
 psi.cadstat.sockets=Sockets
 psi.cadstat.overflow=Overflow
+
+# DEATH MESSAGES
+death.attack.psi-overload=%s overflowed their Psionic Energy

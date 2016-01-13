@@ -34,6 +34,8 @@ public class PlayerDataHandler {
 	private static HashMap<Integer, PlayerData> playerData = new HashMap();
 
 	private static final String DATA_TAG = "PsiData";
+	
+	public static final DamageSource damageSourceOverload = new DamageSource("psi-overload").setDamageBypassesArmor().setMagicDamage();
 
 	public static PlayerData get(EntityPlayer player) {
 		int key = getKey(player);
@@ -182,7 +184,7 @@ public class PlayerDataHandler {
 					if(!client) {
 						EntityPlayer player = playerWR.get();
 						if(player != null)
-							player.attackEntityFrom(DamageSource.magic, dmg); // TODO better DS
+							player.attackEntityFrom(damageSourceOverload, dmg); 
 					}
 				}
 			}
