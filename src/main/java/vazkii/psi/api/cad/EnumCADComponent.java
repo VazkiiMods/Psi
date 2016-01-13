@@ -12,12 +12,16 @@ package vazkii.psi.api.cad;
 
 import net.minecraft.util.StatCollector;
 
+/**
+ * An Enum defining all types of CAD components. 
+ */
 public enum EnumCADComponent {
 
 	ASSEMBLY,
 	CORE,
 	SOCKET,
 	BATTERY,
+	/** If you define an item using this component, it must implement ICADColorizer */
 	DYE;
 	
 	public String getName() {

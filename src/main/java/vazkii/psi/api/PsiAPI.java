@@ -13,11 +13,24 @@ package vazkii.psi.api;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import vazkii.psi.api.cad.ICAD;
+import vazkii.psi.api.internal.DummyMethodHandler;
+import vazkii.psi.api.internal.IInternalMethodHandler;
 
 public final class PsiAPI {
 	
-	// TODO internal handler
+	/**
+	 * The internal method handler in use. This object allows the API to interact with the mod.
+	 * By default this is a dummy. In the mod itself, this is replaced with an implementation that
+	 * can handle all of its queries.<br><br>
+	 * 
+	 * <b>DO NOT EVER, EVER, OVERWRITE THIS VALUE</b>
+	 */
+	public static IInternalMethodHandler internalHandler = new DummyMethodHandler();
 
+	/**
+	 * Gets the CAD the passed EntityPlayer is using. As a player can only have one CAD, if there's
+	 * more than one, this will return null.
+	 */
 	public static ItemStack getPlayerCAD(EntityPlayer player) {
 		if(player == null)
 			return null;

@@ -14,18 +14,42 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+/**
+ * Base interface for a CAD. You probably shouldn't implement this.
+ */
 public interface ICAD {
 
+	/**
+	 * Gets the component used for this CAD in the given slot.
+	 */
 	public ItemStack getComponentInSlot(ItemStack stack, EnumCADComponent type);
 	
+	/**
+	 * Gets the value of a given CAD stat.
+	 */
 	public int getStatValue(ItemStack stack, EnumCADStat stat);
 	
+	/**
+	 * Gets how much Psi is stored in this CAD's battery.
+	 */
 	public int getStoredPsi(ItemStack stack);
 	
+	/**
+	 * Has the CAD regen psi equal to the amount passed in. Will never go above
+	 * the value of the CAD's OVERFLOW stat.
+	 */
 	public void regenPsi(ItemStack stack, int psi);
 	
+	/**
+	 * Consumes psi from the CAD's battery equal to the amount passed in. Returns
+	 * the remainder that couldn't be consumed. Used to prevent damage.
+	 */
 	public int consumePsi(ItemStack stack, int psi);
 	
+	/**
+	 * Gets the color of the spells projected by this CAD. Usually just goes back
+	 * to ICADColorizer.getColor().
+	 */
 	@SideOnly(Side.CLIENT)
 	public int getSpellColor(ItemStack stack);
 	

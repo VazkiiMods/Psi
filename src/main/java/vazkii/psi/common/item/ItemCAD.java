@@ -138,7 +138,7 @@ public class ItemCAD extends ItemMod implements ICAD {
 		if(dye != null && dye.getItem() instanceof ICADColorizer)
 			return ((ICADColorizer) dye.getItem()).getColor(dye);
 		
-		return 0x13C5FF;
+		return ICADColorizer.DEFAULT_SPELL_COLOR;
 	}
 	
 	@Override

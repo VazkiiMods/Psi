@@ -60,11 +60,6 @@ public class ItemCADColorizer extends ItemCADComponent implements ICADColorizer 
 	}
 	
 	@Override
-	public EnumCADComponent getComponentType(ItemStack stack) {
-		return EnumCADComponent.DYE;
-	}
-
-	@Override
 	public int getColor(ItemStack stack) {
 		if(stack.getItemDamage() < 16)
 			return ItemDye.dyeColors[15 - stack.getItemDamage()];

@@ -29,6 +29,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.ServerTickEvent;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.EnumCADStat;
 import vazkii.psi.api.cad.ICAD;
+import vazkii.psi.api.internal.IPlayerData;
 import vazkii.psi.common.network.NetworkHandler;
 import vazkii.psi.common.network.message.MessageDataSync;
 import vazkii.psi.common.network.message.MessageDeductPsi;
@@ -108,7 +109,7 @@ public class PlayerDataHandler {
 
 	}
 
-	public static class PlayerData {
+	public static class PlayerData implements IPlayerData {
 
 		private static final String TAG_LEVEL = "level";
 		private static final String TAG_AVAILABLE_PSI = "availablePsi";
@@ -191,6 +192,7 @@ public class PlayerDataHandler {
 			deductPsi(psi, cd, sync, false);
 		}
 
+		@Override
 		public void deductPsi(int psi, int cd, boolean sync, boolean shatter) {
 			int currentPsi = availablePsi;
 
@@ -238,12 +240,33 @@ public class PlayerDataHandler {
 			deductions.add(new Deduction(current, deduct, 20, shatter));
 		}
 
+		@Override
+		public int getLevel() {
+			return level;
+		}
+		
+		@Override
+		public int getAvailablePsi() {
+			return availablePsi;
+		}
+		
+		@Override
+		public int getLastAvailablePsi() {
+			return lastAvailablePsi;
+		}
+		
 		public int getTotalPsi() {
 			return level * 200;
 		}
 
+		@Override
 		public int getRegenPerTick() {
 			return level;
+		}
+		
+		@Override
+		public int getRegenCooldown() {
+			return regenCooldown;
 		}
 
 		public void save() {
