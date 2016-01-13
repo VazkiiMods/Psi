@@ -2,7 +2,7 @@
     "parent": "psi:item/_standard_item",
     "textures": { 
         "layer0": "psi:items/dyeCannister",
-        "layer1": "psi:items/dyeCannisterSpecial_golden",
-        "layer2": "psi:items/dyeCannister_overlay2"
+        "layer1": "psi:items/dyeCannisterInside",
+        "layer2": "psi:items/dyeCannisterOverlay"
     }
 }

@@ -22,6 +22,24 @@ item.psi:cadAssemblyPsimetal.name=Psimetal CAD Assembly
 item.psi:cadCoreBasic.name=Basic CAD Core
 item.psi:cadSocketBasic.name=Basic CAD Socket
 item.psi:cadBatteryBasic.name=Basic CAD Battery
+item.psi:cadColorizerWhite.name=White CAD Colorizer
+item.psi:cadColorizerOrange.name=Orange CAD Colorizer
+item.psi:cadColorizerMagenta.name=Magenta CAD Colorizer
+item.psi:cadColorizerLightBlue.name=Light Blue CAD Colorizer
+item.psi:cadColorizerYellow.name=Yellow CAD Colorizer
+item.psi:cadColorizerLime.name=Lime CAD Colorizer
+item.psi:cadColorizerPink.name=Pink CAD Colorizer
+item.psi:cadColorizerGray.name=Gray CAD Colorizer
+item.psi:cadColorizerSilver.name=Light Gray CAD Colorizer
+item.psi:cadColorizerCyan.name=Cyan CAD Colorizer
+item.psi:cadColorizerPurple.name=Purple CAD Colorizer
+item.psi:cadColorizerBlue.name=Blue CAD Colorizer
+item.psi:cadColorizerBrown.name=Brown CAD Colorizer
+item.psi:cadColorizerGreen.name=Green CAD Colorizer
+item.psi:cadColorizerRed.name=Red CAD Colorizer
+item.psi:cadColorizerBlack.name=Black CAD Colorizer
+item.psi:cadColorizerRainbow.name=Full-Spectrum CAD Colorizer
+item.psi:cadColorizerGolden.name=Golden CAD Colorizer
 item.psi:spellBullet.name=Spell Bullet
 
 # COMPONENT NAMES
@@ -29,7 +47,7 @@ psi.component.assembly=Assembly
 psi.component.core=Core
 psi.component.socket=Socket
 psi.component.battery=Battery
-psi.component.dye=Coloration
+psi.component.dye=Colorizer
 
 # STAT NAMES
 psi.cadstat.efficiency=Efficiency

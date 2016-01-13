@@ -60,6 +60,8 @@ public class PsiCreativeTab extends CreativeTabs {
 		addItem(ModItems.cadCore);
 		addItem(ModItems.cadSocket);
 		addItem(ModItems.cadBattery);
+		addItem(ModItems.cadColorizer);
+		
 		addItem(ModItems.spellBullet);
 		
 		addItem(ModItems.cad);

@@ -17,10 +17,7 @@ for %%x in (%*) do (
 	echo Making %%x.json
 	(
 		echo {
-		echo 	"parent": "%modid%:item/_standard_item",
-		echo 	"textures": { 
-		echo 		"layer0": "%modid%:items/%%x"
-		echo 	}
+		echo 	"parent": "%modid%:item/_standard_colorizer"
 		echo }
 	) > %%x.json
 

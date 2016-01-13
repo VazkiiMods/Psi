@@ -15,6 +15,7 @@ import vazkii.psi.common.item.ItemMaterial;
 import vazkii.psi.common.item.ItemSpellBullet;
 import vazkii.psi.common.item.component.ItemCADAssembly;
 import vazkii.psi.common.item.component.ItemCADBattery;
+import vazkii.psi.common.item.component.ItemCADColorizer;
 import vazkii.psi.common.item.component.ItemCADCore;
 import vazkii.psi.common.item.component.ItemCADSocket;
 
@@ -26,6 +27,7 @@ public final class ModItems {
 	public static ItemMod cadCore;
 	public static ItemMod cadSocket;
 	public static ItemMod cadBattery;
+	public static ItemMod cadColorizer;
 	public static ItemMod spellBullet;
 	
 	public static ItemMod cad;
@@ -37,6 +39,7 @@ public final class ModItems {
 		cadCore = new ItemCADCore();
 		cadSocket = new ItemCADSocket();
 		cadBattery = new ItemCADBattery();
+		cadColorizer = new ItemCADColorizer();
 		spellBullet = new ItemSpellBullet();
 		
 		cad = new ItemCAD();
