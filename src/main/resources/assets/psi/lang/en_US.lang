@@ -15,6 +15,7 @@ tile.psi:programmer.name=Spell Programmer
 item.psi:psidust.name=Psidust
 item.psi:psimetal.name=Psimetal Ingot
 item.psi:psigem.name=Psigem
+item.psi:spellBulletInactive.name=Spell Bullet
 item.psi:cad.name=Casting Assistant Device
 item.psi:cadAssemblyIron.name=Iron CAD Assembly
 item.psi:cadAssemblyGold.name=Gold CAD Assembly
@@ -40,7 +41,7 @@ item.psi:cadColorizerRed.name=Red CAD Colorizer
 item.psi:cadColorizerBlack.name=Black CAD Colorizer
 item.psi:cadColorizerRainbow.name=Full-Spectrum CAD Colorizer
 item.psi:cadColorizerGolden.name=Golden CAD Colorizer
-item.psi:spellBullet.name=Spell Bullet
+item.psi:spellBullet.name=Programmed Spell Bullet
 
 # COMPONENT NAMES
 psi.component.assembly=Assembly

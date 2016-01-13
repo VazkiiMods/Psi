@@ -1,6 +1,6 @@
 {
 	"parent": "psi:item/_standard_item",
 	"textures": { 
-		"layer0": "psi:items/spellBullet"
+		"layer0": "psi:items/spellBulletInactive"
 	}
 }

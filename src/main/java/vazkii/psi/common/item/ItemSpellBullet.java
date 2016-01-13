@@ -6,7 +6,7 @@
  * Psi is Open Source and distributed under the
  * CC-BY-NC-SA 3.0 License: https://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB
  * 
- * File Created @ [09/01/2016, 21:29:06 (GMT)]
+ * File Created @ [13/01/2016, 16:48:52 (GMT)]
  */
 package vazkii.psi.common.item;
 
@@ -17,6 +17,7 @@ public class ItemSpellBullet extends ItemMod {
 
 	public ItemSpellBullet() {
 		super(LibItemNames.SPELL_BULLET);
+		setMaxStackSize(1);
 	}
-
+	
 }

@@ -23,6 +23,6 @@ public class SlotBullet extends Slot {
 	
 	@Override
 	public boolean isItemValid(ItemStack stack) {
-		return stack.getItem() == ModItems.spellBullet; // TODO Change to programmed bullet once it's there
+		return stack.getItem() == ModItems.spellBullet;
 	}
 }
