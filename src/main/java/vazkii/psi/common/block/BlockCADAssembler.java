@@ -10,27 +10,72 @@
  */
 package vazkii.psi.common.block;
 
+import java.util.Random;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import vazkii.psi.common.Psi;
-import vazkii.psi.common.block.base.BlockMod;
 import vazkii.psi.common.block.base.BlockModContainer;
 import vazkii.psi.common.block.tile.TileCADAssembler;
+import vazkii.psi.common.block.tile.TileSimpleInventory;
 import vazkii.psi.common.lib.LibBlockNames;
 import vazkii.psi.common.lib.LibGuiIDs;
 
 public class BlockCADAssembler extends BlockModContainer {
 
+	Random random;
+	
 	public BlockCADAssembler() {
 		super(LibBlockNames.CAD_ASSEMBLER, Material.iron);
 		setHardness(5.0F);
 		setResistance(10.0F);
 		setStepSound(soundTypeMetal);
+		
+		random = new Random();
+	}
+	
+	@Override
+	public void breakBlock(World par1World, BlockPos pos, IBlockState state) {
+		TileSimpleInventory inv = (TileSimpleInventory) par1World.getTileEntity(pos);
+
+		if(inv != null) {
+			for(int j1 = 1; j1 < 7; ++j1) {
+				ItemStack itemstack = inv.getStackInSlot(j1);
+
+				if(itemstack != null) {
+					float f = random.nextFloat() * 0.8F + 0.1F;
+					float f1 = random.nextFloat() * 0.8F + 0.1F;
+					EntityItem entityitem;
+
+					for (float f2 = random.nextFloat() * 0.8F + 0.1F; itemstack.stackSize > 0; par1World.spawnEntityInWorld(entityitem)) {
+						int k1 = random.nextInt(21) + 10;
+
+						if (k1 > itemstack.stackSize)
+							k1 = itemstack.stackSize;
+
+						itemstack.stackSize -= k1;
+						entityitem = new EntityItem(par1World, pos.getX() + f, pos.getY() + f1, pos.getZ() + f2, new ItemStack(itemstack.getItem(), k1, itemstack.getItemDamage()));
+						float f3 = 0.05F;
+						entityitem.motionX = (float)random.nextGaussian() * f3;
+						entityitem.motionY = (float)random.nextGaussian() * f3 + 0.2F;
+						entityitem.motionZ = (float)random.nextGaussian() * f3;
+
+						if(itemstack.hasTagCompound())
+							entityitem.getEntityItem().setTagCompound((NBTTagCompound)itemstack.getTagCompound().copy());
+					}
+				}
+			}
+		}
+
+		super.breakBlock(par1World, pos, state);
 	}
 	
 	@Override
