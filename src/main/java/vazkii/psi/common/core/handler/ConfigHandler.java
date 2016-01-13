@@ -37,8 +37,6 @@ public class ConfigHandler {
 
 	public static void load() {
 		String desc;
-	
-		// TODO implement config adaptor from botania
 		
 		desc = "Controls whether Psi's shaders are used. If you're using the GLSL Shaders mod and are having graphical troubles with Psi stuff, you may want to turn this off.";
 		useShaders = loadPropBool("Use Shaders", desc, useShaders);

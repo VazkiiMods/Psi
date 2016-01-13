@@ -10,6 +10,7 @@
  */
 package vazkii.psi.client.core.handler;
 
+import java.awt.Color;
 import java.util.function.Consumer;
 
 import org.lwjgl.opengl.ARBMultitexture;
@@ -21,10 +22,13 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import vazkii.psi.api.PsiAPI;
+import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.common.core.handler.ConfigHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
@@ -50,6 +54,16 @@ public final class HUDHandler {
 	
 	public void drawPsiBar(ScaledResolution res, float pticks) {
 		Minecraft mc = Minecraft.getMinecraft();
+		ItemStack cadStack = PsiAPI.getPlayerCAD(mc.thePlayer);
+		
+		if(cadStack == null)
+			return;
+		
+		ICAD cad = (ICAD) cadStack.getItem();
+		PlayerData data = PlayerDataHandler.get(mc.thePlayer);
+		if(data.level == 0)
+			return;
+		
 		boolean right = ConfigHandler.psiBarOnRight;
 		
 		int pad = 3;
@@ -83,7 +97,6 @@ public final class HUDHandler {
 		int origHeight = height;
 		int origY = y;
 		int v = 0;
-		PlayerData data = PlayerDataHandler.get(mc.thePlayer);
 		int max = data.getTotalPsi();
 		
 		int texture = 0;
@@ -138,17 +151,29 @@ public final class HUDHandler {
 		width = 44;
 		height = 3;
 		
-		String s = "" + data.availablePsi;
+		String s1 = "" + data.availablePsi;
+		String s2 = "" + cad.getStoredPsi(cadStack);
 
 		int offBar = 22;
-		int offStr = 7 + mc.fontRendererObj.getStringWidth(s);
+		int offStr1 = 7 + mc.fontRendererObj.getStringWidth(s1);
+		int offStr2 = 7 + mc.fontRendererObj.getStringWidth(s2);
+		
 		if(!right) {
 			offBar = 6;
-			offStr = -23;
+			offStr1 = -23;
+			offStr2 = -23;
 		}
 		
+		Color color = new Color(cad.getSpellColor(cadStack));
+		GlStateManager.color((float) color.getRed() / 255F, (float) color.getGreen() / 255F, (float) color.getBlue() / 255F);
+		
 		Gui.drawModalRectWithCustomSizedTexture(x - offBar, -2, 0, 140, width, height, 64, 256);
-		mc.fontRendererObj.drawStringWithShadow(s, x - offStr, -11, 0xFFFFFF);
+		mc.fontRendererObj.drawStringWithShadow(s1, x - offStr1, -11, 0xFFFFFF);
+		GlStateManager.popMatrix();
+		
+		GlStateManager.pushMatrix();
+		GlStateManager.translate(0F, Math.max(textY + 3, origY + 100), 0F);
+		mc.fontRendererObj.drawStringWithShadow(s2, x - offStr2, 0, 0xFFFFFF);
 		GlStateManager.popMatrix();
 	}
 	

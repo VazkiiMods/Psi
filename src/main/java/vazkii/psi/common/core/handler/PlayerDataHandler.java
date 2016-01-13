@@ -17,6 +17,7 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
@@ -25,6 +26,9 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ServerTickEvent;
+import vazkii.psi.api.PsiAPI;
+import vazkii.psi.api.cad.EnumCADStat;
+import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.common.network.NetworkHandler;
 import vazkii.psi.common.network.message.MessageDataSync;
 import vazkii.psi.common.network.message.MessageDeductPsi;
@@ -34,7 +38,7 @@ public class PlayerDataHandler {
 	private static HashMap<Integer, PlayerData> playerData = new HashMap();
 
 	private static final String DATA_TAG = "PsiData";
-	
+
 	public static final DamageSource damageSourceOverload = new DamageSource("psi-overload").setDamageBypassesArmor().setMagicDamage();
 
 	public static PlayerData get(EntityPlayer player) {
@@ -93,7 +97,7 @@ public class PlayerDataHandler {
 			if(event.entityLiving instanceof EntityPlayer)
 				PlayerDataHandler.get((EntityPlayer) event.entityLiving).damage(event.ammount);
 		}
-		
+
 		@SubscribeEvent
 		public void onPlayerLogin(PlayerLoggedInEvent event) {
 			if(event.player instanceof EntityPlayerMP) {
@@ -114,7 +118,7 @@ public class PlayerDataHandler {
 		public int availablePsi;
 		public int lastAvailablePsi;
 		public int regenCooldown;
-		
+
 		public boolean deductTick;
 
 		public final List<Deduction> deductions = new ArrayList();
@@ -132,14 +136,26 @@ public class PlayerDataHandler {
 			if(deductTick)
 				deductTick = false;
 			else lastAvailablePsi = availablePsi;
-			
-			level = 1; // TODO Debug
 
 			if(regenCooldown == 0) {			
 				int max = getTotalPsi();
 				if(availablePsi < max && regenCooldown == 0) {
-					availablePsi = Math.min(max, availablePsi + getRegenPerTick());
-					save();
+					boolean doRegen = true;
+					ItemStack cadStack = getCAD();
+					if(cadStack != null) {
+						ICAD cad = (ICAD) cadStack.getItem();
+						int maxPsi = cad.getStatValue(cadStack, EnumCADStat.OVERFLOW);
+						int currPsi = cad.getStoredPsi(cadStack);
+						if(currPsi < maxPsi) {
+							cad.regenPsi(cadStack, getRegenPerTick());
+							doRegen = false;
+						}
+					}
+
+					if(doRegen) {
+						availablePsi = Math.min(max, availablePsi + getRegenPerTick());
+						save();
+					}
 				}
 			} else {
 				regenCooldown--;
@@ -163,12 +179,21 @@ public class PlayerDataHandler {
 			}
 		}
 
+		public void levelUp() {
+			level++;
+		}
+
+		public ItemStack getCAD() {
+			return PsiAPI.getPlayerCAD(playerWR.get());
+		}
+
 		public void deductPsi(int psi, int cd, boolean sync) {
 			deductPsi(psi, cd, sync, false);
 		}
 
 		public void deductPsi(int psi, int cd, boolean sync, boolean shatter) {
 			int currentPsi = availablePsi;
+
 			availablePsi -= psi;
 			if(regenCooldown < cd)
 				regenCooldown = cd;
@@ -177,9 +202,13 @@ public class PlayerDataHandler {
 				int overflow = -availablePsi;
 				availablePsi = 0;
 
-				// TODO Use CAD batteries
+				ItemStack cadStack = getCAD();
+				if(cadStack != null) {
+					ICAD cad = (ICAD) cadStack.getItem();
+					overflow = cad.consumePsi(cadStack, overflow);
+				}
 
-				if(!shatter) {
+				if(!shatter && overflow > 0) {
 					float dmg = (float) overflow / 50;
 					if(!client) {
 						EntityPlayer player = playerWR.get();
@@ -244,7 +273,7 @@ public class PlayerDataHandler {
 				}
 			}
 		}
-		
+
 		public void readFromNBT(NBTTagCompound cmp) {
 			level = cmp.getInteger(TAG_LEVEL);
 			availablePsi = cmp.getInteger(TAG_AVAILABLE_PSI);

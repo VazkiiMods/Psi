@@ -59,7 +59,7 @@ public class ContainerCADAssembler extends Container {
 	}
 
 	public ItemStack transferStackInSlot(EntityPlayer playerIn, int index) {
-		return null; // TODO
+		return null; // TODO shift-handling
 	}
 
 }

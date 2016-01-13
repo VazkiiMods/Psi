@@ -11,11 +11,22 @@
 package vazkii.psi.api.cad;
 
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public interface ICAD {
 
 	public ItemStack getComponentInSlot(ItemStack stack, EnumCADComponent type);
 	
 	public int getStatValue(ItemStack stack, EnumCADStat stat);
+	
+	public int getStoredPsi(ItemStack stack);
+	
+	public void regenPsi(ItemStack stack, int psi);
+	
+	public int consumePsi(ItemStack stack, int psi);
+	
+	@SideOnly(Side.CLIENT)
+	public int getSpellColor(ItemStack stack);
 	
 }

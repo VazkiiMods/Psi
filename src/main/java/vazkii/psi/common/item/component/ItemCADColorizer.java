@@ -10,6 +10,7 @@
  */
 package vazkii.psi.common.item.component;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
@@ -21,6 +22,7 @@ import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import vazkii.psi.api.cad.EnumCADComponent;
 import vazkii.psi.api.cad.ICADColorizer;
+import vazkii.psi.client.core.handler.ClientTickHandler;
 import vazkii.psi.common.lib.LibItemNames;
 
 public class ItemCADColorizer extends ItemCADComponent implements ICADColorizer {
@@ -67,7 +69,17 @@ public class ItemCADColorizer extends ItemCADComponent implements ICADColorizer 
 		if(stack.getItemDamage() < 16)
 			return ItemDye.dyeColors[15 - stack.getItemDamage()];
 		
-		return 0xFFFFFF; // TODO
+		switch(stack.getItemDamage()) {
+		case 16: {
+			float time = ClientTickHandler.total;
+			int color = Color.HSBtoRGB(time * 0.005F, 1F, 1F);
+			return color;
+		}
+		case 17: return 0xD7B32C;
+
+		}
+		
+		return 0xFFFFFF;
 	}
 	
 	private static final String getProperDyeName(EnumDyeColor color) {

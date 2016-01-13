@@ -29,6 +29,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import vazkii.psi.api.cad.EnumCADComponent;
 import vazkii.psi.api.cad.EnumCADStat;
 import vazkii.psi.api.cad.ICAD;
+import vazkii.psi.api.cad.ICADColorizer;
 import vazkii.psi.api.cad.ICADComponent;
 import vazkii.psi.client.core.handler.ModelHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
@@ -38,11 +39,13 @@ import vazkii.psi.common.item.base.ItemMod;
 import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.lib.LibItemNames;
 import vazkii.psi.common.network.NetworkHandler;
+import vazkii.psi.common.network.message.MessageDataSync;
 import vazkii.psi.common.network.message.TestMessage;
 
 public class ItemCAD extends ItemMod implements ICAD {
 
 	private static final String TAG_COMPONENT_PREFIX = "component";
+	private static final String TAG_STORED_PSI = "storedPsi";
 	
 	public ItemCAD() {
 		super(LibItemNames.CAD);
@@ -51,7 +54,12 @@ public class ItemCAD extends ItemMod implements ICAD {
 	
 	@Override
 	public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn) {
-		PlayerDataHandler.get(playerIn).deductPsi(playerIn.isSneaking() ? 50 : 200, 40, true);
+		PlayerData data = PlayerDataHandler.get(playerIn);
+		data.deductPsi(playerIn.isSneaking() ? 50 : 200, 40, true); // TODO DEBUG
+		if(data.level == 0 && playerIn instanceof EntityPlayerMP) {
+			data.levelUp();
+			NetworkHandler.INSTANCE.sendTo(new MessageDataSync(data), (EntityPlayerMP) playerIn);
+		}
 		
 		return itemStackIn;
 	}
@@ -98,6 +106,42 @@ public class ItemCAD extends ItemMod implements ICAD {
 	}
 	
 	@Override
+	public int getStoredPsi(ItemStack stack) {
+		return ItemNBTHelper.getInt(stack, TAG_STORED_PSI, 0);
+	}
+
+	@Override
+	public void regenPsi(ItemStack stack, int psi) {
+		int maxPsi = getStatValue(stack, EnumCADStat.OVERFLOW);
+		int currPsi = getStoredPsi(stack);
+		int endPsi = Math.min(currPsi + psi, maxPsi);
+		
+		if(endPsi != currPsi)
+			ItemNBTHelper.setInt(stack, TAG_STORED_PSI, endPsi);
+	}
+
+	@Override
+	public int consumePsi(ItemStack stack, int psi) {
+		int currPsi = getStoredPsi(stack);
+		if(currPsi >= psi) {
+			ItemNBTHelper.setInt(stack, TAG_STORED_PSI, currPsi - psi);
+			return 0;
+		}
+		
+		ItemNBTHelper.setInt(stack, TAG_STORED_PSI, 0);
+		return psi - currPsi;
+	}
+	
+	@Override
+	public int getSpellColor(ItemStack stack) {
+		ItemStack dye = getComponentInSlot(stack, EnumCADComponent.DYE);
+		if(dye != null && dye.getItem() instanceof ICADColorizer)
+			return ((ICADColorizer) dye.getItem()).getColor(dye);
+		
+		return 0x13C5FF;
+	}
+	
+	@Override
 	public void getSubItems(Item itemIn, CreativeTabs tab, List<ItemStack> subItems) {
 		// Basic Iron CAD
 		subItems.add(makeCAD(new ItemStack(ModItems.cadAssembly, 1, 0)));
@@ -116,7 +160,6 @@ public class ItemCAD extends ItemMod implements ICAD {
 				new ItemStack(ModItems.cadBattery, 1, 0)));	
 		
 		// Psimetal CAD
-		// TODO Make better
 		subItems.add(makeCAD(new ItemStack(ModItems.cadAssembly, 1, 2), 
 				new ItemStack(ModItems.cadCore, 1, 0), 
 				new ItemStack(ModItems.cadSocket, 1, 0), 
@@ -146,8 +189,6 @@ public class ItemCAD extends ItemMod implements ICAD {
 							addToTooltip(tooltip, line);
 					}
 				}
-				
-
 			}
 		});
 	}
