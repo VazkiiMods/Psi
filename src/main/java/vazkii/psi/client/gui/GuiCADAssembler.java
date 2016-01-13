@@ -74,6 +74,10 @@ public class GuiCADAssembler extends GuiContainer {
         int x = (width - xSize) / 2;
         int y = (height - ySize) / 2;
         drawTexturedModalRect(x, y, 0, 0, xSize, ySize);
+        
+        for(int i = 0; i < 12; i++)
+        	if(!assembler.isBulletSlotEnabled(i))
+        		drawTexturedModalRect(x + 17 + (i % 3) * 18, y + 57 + (i / 3) * 18, 16, ySize, 16, 16);
 	}
 
 }

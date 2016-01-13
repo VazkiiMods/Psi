@@ -14,16 +14,17 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import vazkii.psi.api.cad.ICAD;
+import vazkii.psi.api.cad.ISocketable;
 
-public class SlotCAD extends Slot {
+public class SlotSocketable extends Slot {
 
-	public SlotCAD(IInventory inventoryIn, int index, int xPosition, int yPosition) {
+	public SlotSocketable(IInventory inventoryIn, int index, int xPosition, int yPosition) {
 		super(inventoryIn, index, xPosition, yPosition);
 	}
 	
 	@Override
 	public boolean isItemValid(ItemStack stack) {
-		return stack.getItem() instanceof ICAD;
+		return stack.getItem() instanceof ISocketable;
 	}
 
 }

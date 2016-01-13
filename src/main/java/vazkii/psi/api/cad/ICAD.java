@@ -17,7 +17,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 /**
  * Base interface for a CAD. You probably shouldn't implement this.
  */
-public interface ICAD {
+public interface ICAD extends ISocketable {
 
 	/**
 	 * Gets the component used for this CAD in the given slot.

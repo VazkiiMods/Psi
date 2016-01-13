@@ -46,6 +46,7 @@ public class ItemCAD extends ItemMod implements ICAD {
 
 	private static final String TAG_COMPONENT_PREFIX = "component";
 	private static final String TAG_STORED_PSI = "storedPsi";
+	private static final String TAG_BULLET_PREFIX = "bullet";
 	
 	public ItemCAD() {
 		super(LibItemNames.CAD);
@@ -139,6 +140,34 @@ public class ItemCAD extends ItemMod implements ICAD {
 			return ((ICADColorizer) dye.getItem()).getColor(dye);
 		
 		return ICADColorizer.DEFAULT_SPELL_COLOR;
+	}
+	
+	@Override
+	public boolean isSocketSlotAvailable(ItemStack stack, int slot) {
+		int sockets = getStatValue(stack, EnumCADStat.SOCKETS);
+		return slot < sockets;
+	}
+
+	@Override
+	public ItemStack getBulletInSocket(ItemStack stack, int slot) {
+		String name = TAG_BULLET_PREFIX + slot;
+		NBTTagCompound cmp = ItemNBTHelper.getCompound(stack, name, true);
+		
+		if(cmp == null)
+			return null;
+		
+		return ItemStack.loadItemStackFromNBT(cmp);
+	}
+
+	@Override
+	public void setBulletInSocket(ItemStack stack, int slot, ItemStack bullet) {
+		String name = TAG_BULLET_PREFIX + slot;
+		NBTTagCompound cmp = new NBTTagCompound();
+		
+		if(bullet != null)
+			bullet.writeToNBT(cmp);
+		
+		ItemNBTHelper.setCompound(stack, name, cmp);
 	}
 	
 	@Override

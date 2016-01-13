@@ -13,16 +13,28 @@ package vazkii.psi.common.block.tile.container.slot;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import vazkii.psi.api.cad.ISocketable;
+import vazkii.psi.common.block.tile.TileCADAssembler;
 import vazkii.psi.common.item.base.ModItems;
+import vazkii.psi.common.item.component.ItemCADSocket;
 
 public class SlotBullet extends Slot {
+	
+	TileCADAssembler assembler;
+	int socketSlot;
 
-	public SlotBullet(IInventory inventoryIn, int index, int xPosition, int yPosition) {
+	public SlotBullet(TileCADAssembler inventoryIn, int index, int xPosition, int yPosition, int socketSlot) {
 		super(inventoryIn, index, xPosition, yPosition);
+		assembler = inventoryIn;
+		this.socketSlot = socketSlot;
 	}
 	
 	@Override
 	public boolean isItemValid(ItemStack stack) {
-		return stack.getItem() == ModItems.spellBullet;
+		if(stack.getItem() != ModItems.spellBullet)
+			return false;
+			
+		return assembler.isBulletSlotEnabled(socketSlot);
 	}
+	
 }

@@ -25,7 +25,7 @@ import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.cad.ICADComponent;
 import vazkii.psi.common.block.tile.TileCADAssembler;
 import vazkii.psi.common.block.tile.container.slot.SlotBullet;
-import vazkii.psi.common.block.tile.container.slot.SlotCAD;
+import vazkii.psi.common.block.tile.container.slot.SlotSocketable;
 import vazkii.psi.common.block.tile.container.slot.SlotCADComponent;
 import vazkii.psi.common.block.tile.container.slot.SlotCADOutput;
 import vazkii.psi.common.item.base.ModItems;
@@ -45,11 +45,13 @@ public class ContainerCADAssembler extends Container {
 		addSlotToContainer(new SlotCADComponent(assembler, 4, 110, 111, EnumCADComponent.BATTERY).map(componentToSlotMap));
 		addSlotToContainer(new SlotCADComponent(assembler, 5, 130, 111, EnumCADComponent.DYE).map(componentToSlotMap));
 
-		addSlotToContainer(new SlotCAD(assembler, 6, 35, 21));
+		addSlotToContainer(new SlotSocketable(assembler, 6, 35, 21));
 		
 		for(int i = 0; i < 4; i++)
-			for(int j = 0; j < 3; j++)
-				addSlotToContainer(new SlotBullet(assembler, 7 + j + i * 3, 17 + j * 18, 57 + i * 18));
+			for(int j = 0; j < 3; j++) {
+				int slot = j + i * 3;
+				addSlotToContainer(new SlotBullet(assembler, slot + 7, 17 + j * 18, 57 + i * 18, slot));
+			}
 		
 		int xs = 48;
 		int ys = 143;
@@ -76,8 +78,8 @@ public class ContainerCADAssembler extends Container {
             ItemStack itemstack1 = slot.getStack();
             itemstack = itemstack1.copy();
             
-            int invStart = 19;
-            int hotbarStart = invStart + 27;
+            int invStart = 18;
+            int hotbarStart = invStart + 28;
             int invEnd = hotbarStart + 9;
 
             if(index > invStart) {
@@ -93,7 +95,7 @@ public class ContainerCADAssembler extends Container {
                     if(!this.mergeItemStack(itemstack1, 7, 19, false))
                         return null;
                 } else if(index >= invStart && index < hotbarStart)  { // Inv -> Hotbar
-                    if (!this.mergeItemStack(itemstack1, hotbarStart, invEnd , false))
+                    if (!this.mergeItemStack(itemstack1, hotbarStart, invEnd, true))
                         return null;
                 } else if(index >= hotbarStart && index < invEnd) { // Hotbar -> inv
                 	if(!this.mergeItemStack(itemstack1, invStart, hotbarStart, false)) 
