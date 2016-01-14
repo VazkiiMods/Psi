@@ -1,8 +1,7 @@
 {
   "forge_marker": 1,
   "defaults": {
-    "model": "psi:programmer",
-    "transform": "forge:default-block"
+    "model": "psi:programmer"
   },
   "variants": {
     "normal": [{}],
