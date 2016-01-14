@@ -32,6 +32,7 @@ import vazkii.psi.api.cad.EnumCADStat;
 import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.cad.ICADColorizer;
 import vazkii.psi.api.cad.ICADComponent;
+import vazkii.psi.api.cad.ISocketable;
 import vazkii.psi.client.core.handler.ModelHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
@@ -215,6 +216,9 @@ public class ItemCAD extends ItemMod implements ICAD {
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
 		tooltipIfShift(playerIn, tooltip, () -> {
+			String componentName = local(ISocketable.getSocketedItemName(stack, "psimisc.none"));
+			addToTooltip(tooltip, "psimisc.spellSelected", componentName);
+			
 			for(EnumCADComponent componentType : EnumCADComponent.class.getEnumConstants()) {
 				ItemStack componentStack = getComponentInSlot(stack, componentType);
 				String name = "psimisc.none";

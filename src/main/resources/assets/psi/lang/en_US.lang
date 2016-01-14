@@ -7,6 +7,7 @@ psimisc.none=(none)
 psimisc.stats=Stats
 psimisc.socketing=Socketing
 psimisc.keybind=Psi Master Keybind
+psimisc.spellSelected=&dSpell Selected&7: %s
 
 # BLOCK NAMES
 tile.psi:cadAssembler.name=CAD Assembler

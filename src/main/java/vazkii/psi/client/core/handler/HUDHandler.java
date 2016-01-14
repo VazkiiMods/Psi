@@ -19,20 +19,27 @@ import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiIngame;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.item.ItemStack;
+import net.minecraft.profiler.Profiler;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ICAD;
+import vazkii.psi.api.cad.ICADColorizer;
+import vazkii.psi.api.cad.ISocketable;
 import vazkii.psi.common.core.handler.ConfigHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData.Deduction;
+import vazkii.psi.common.lib.LibObfuscation;
 import vazkii.psi.common.lib.LibResources;
 
 public final class HUDHandler {
@@ -49,6 +56,7 @@ public final class HUDHandler {
 	public void onDraw(RenderGameOverlayEvent.Post event) {
 		if(event.type == ElementType.ALL) {
 			drawPsiBar(event.resolution, event.partialTicks);
+			renderSocketableEquippedName(event.resolution, event.partialTicks);
 		}
 	}
 	
@@ -175,6 +183,32 @@ public final class HUDHandler {
 		GlStateManager.translate(0F, Math.max(textY + 3, origY + 100), 0F);
 		mc.fontRendererObj.drawStringWithShadow(s2, x - offStr2, 0, 0xFFFFFF);
 		GlStateManager.popMatrix();
+	}
+	
+	private void renderSocketableEquippedName(ScaledResolution res, float pticks) {
+		Minecraft mc = Minecraft.getMinecraft();
+		ItemStack stack = mc.thePlayer.getCurrentEquippedItem();
+		String name = ISocketable.getSocketedItemName(stack, "");
+		if(name == null || name.trim().isEmpty())
+			return;
+		
+		int ticks = ReflectionHelper.getPrivateValue(GuiIngame.class, mc.ingameGUI, LibObfuscation.REMAINING_HIGHLIGHT_TICKS);
+		ticks -= 10;
+		
+		if(ticks > 0) {
+			int alpha = Math.min(255, (int) ((ticks + pticks) * 256.0F / 10.0F));
+			int color = ICADColorizer.DEFAULT_SPELL_COLOR + (alpha << 24);
+
+			int x = res.getScaledWidth() / 2 - mc.fontRendererObj.getStringWidth(name) / 2;
+			int y = res.getScaledHeight() - 71;
+			if(mc.thePlayer.capabilities.isCreativeMode)
+				y += 14;
+
+			GlStateManager.enableBlend();
+			GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+			mc.fontRendererObj.drawStringWithShadow(name, x, y, color);
+			GlStateManager.disableBlend();
+		}
 	}
 	
 	private static Consumer<Integer> generateCallback(final float percentile, final boolean shatter) {

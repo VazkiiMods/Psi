@@ -21,13 +21,18 @@ import org.lwjgl.util.vector.Vector2f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.ItemRenderer;
+import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.Mod.Instance;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.cad.ISocketable;
 import vazkii.psi.client.core.handler.KeybindHandler;
 import vazkii.psi.common.lib.LibResources;
+import vazkii.psi.common.network.NetworkHandler;
+import vazkii.psi.common.network.message.MessageChangeSocketableSlot;
 
 public class GuiSocketSelect extends GuiScreen {
 
@@ -48,6 +53,7 @@ public class GuiSocketSelect extends GuiScreen {
 	};
 	
 	int timeIn = 0;
+	int slotSelected = -1;
 	ItemStack socketableStack;
 	ISocketable socketable;
 	List<Integer> slots;
@@ -78,7 +84,6 @@ public class GuiSocketSelect extends GuiScreen {
 
 		boolean mouseIn = true;
 		float angle = mouseAngle(x, y, mx, my);
-		int selected = -1;
 		
 		int highlight = 5;
 
@@ -91,6 +96,8 @@ public class GuiSocketSelect extends GuiScreen {
 		List<int[]> stringPositions = new ArrayList();
 		
 		ItemStack cadStack = PsiAPI.getPlayerCAD(Minecraft.getMinecraft().thePlayer);
+		slotSelected = -1;
+		
 		for(int seg = 0; seg < segments; seg++) {
 			boolean mouseInSector = mouseIn && angle > totalDeg && angle < totalDeg + degPer;
 			float radius = Math.max(0F, Math.min(((float) timeIn + partialTicks - (seg * 6F / segments)) * 40F, maxRadius));
@@ -105,7 +112,7 @@ public class GuiSocketSelect extends GuiScreen {
 			float b = gs;
 			float a = 0.4F;
 			if(mouseInSector) {
-				selected = seg;
+				slotSelected = seg;
 				
 				if(cadStack != null) {
 					ICAD cad = (ICAD) cadStack.getItem();
@@ -167,6 +174,12 @@ public class GuiSocketSelect extends GuiScreen {
 			}
 		}
 		
+		float stime = 5F;
+		float s = (3F * Math.min(stime, timeIn + partialTicks) / stime);
+		GlStateManager.scale(s, s, s);
+		GlStateManager.translate((float) x / s - 8, (float) y / s - 8, 0);
+		mc.getRenderItem().renderItemAndEffectIntoGUI(cadStack, 0, 0);
+		
 		GlStateManager.popMatrix();
 	}
 	
@@ -174,9 +187,14 @@ public class GuiSocketSelect extends GuiScreen {
 	public void updateScreen() {
 		super.updateScreen();
 		
-//		Mouse.setGrabbed(true);
-		if(!Keyboard.isKeyDown(KeybindHandler.keybind.getKeyCode()))
+		if(!Keyboard.isKeyDown(KeybindHandler.keybind.getKeyCode())) {
 			mc.displayGuiScreen(null);
+			if(slotSelected != -1) {
+				int slot = slots.get(slotSelected);
+				MessageChangeSocketableSlot message = new MessageChangeSocketableSlot(slot);
+				NetworkHandler.INSTANCE.sendToServer(message);
+			}
+		}
 		
 		timeIn++;
 	}

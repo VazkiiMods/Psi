@@ -20,6 +20,18 @@ public interface ISocketable {
 
 	public static final int MAX_SLOTS = 12;
 	
+	public static String getSocketedItemName(ItemStack stack, String fallback) {
+		if(stack == null || !(stack.getItem() instanceof ISocketable))
+			return fallback;
+		
+		ISocketable socketable = (ISocketable) stack.getItem();
+		ItemStack item = socketable.getBulletInSocket(stack, socketable.getSelectedSlot(stack));
+		if(item == null)
+			return fallback;
+		
+		return item.getDisplayName();
+	}
+	
 	/**
 	 * Gets if the passed in slot is available for inserting bullets given the ItemStack passed in.
 	 */
