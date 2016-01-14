@@ -48,6 +48,7 @@ public class ItemCAD extends ItemMod implements ICAD {
 	private static final String TAG_COMPONENT_PREFIX = "component";
 	private static final String TAG_STORED_PSI = "storedPsi";
 	private static final String TAG_BULLET_PREFIX = "bullet";
+	private static final String TAG_SELECTED_SLOT = "selectedSlot";
 	
 	public ItemCAD() {
 		super(LibItemNames.CAD);
@@ -169,6 +170,16 @@ public class ItemCAD extends ItemMod implements ICAD {
 			bullet.writeToNBT(cmp);
 		
 		ItemNBTHelper.setCompound(stack, name, cmp);
+	}
+	
+	@Override
+	public int getSelectedSlot(ItemStack stack) {
+		return ItemNBTHelper.getInt(stack, TAG_SELECTED_SLOT, 0);
+	}
+
+	@Override
+	public void setSelectedSlot(ItemStack stack, int slot) {
+		ItemNBTHelper.setInt(stack, TAG_SELECTED_SLOT, slot);
 	}
 	
 	@Override

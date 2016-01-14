@@ -6,6 +6,7 @@ psimisc.shiftForInfo=Hold &bSHIFT&7 for more info
 psimisc.none=(none)
 psimisc.stats=Stats
 psimisc.socketing=Socketing
+psimisc.keybind=Psi Master Keybind
 
 # BLOCK NAMES
 tile.psi:cadAssembler.name=CAD Assembler

@@ -55,6 +55,9 @@ public class ClientTickHandler {
 			
 			GuiScreen gui = mc.currentScreen;
 			if(gui == null || !gui.doesGuiPauseGame()) {
+				if(gui == null && KeybindHandler.keybind.isKeyDown())
+					KeybindHandler.keyDown();
+				
 				ticksInGame++;
 				partialTicks = 0;
 			}

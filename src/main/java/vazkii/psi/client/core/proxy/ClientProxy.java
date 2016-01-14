@@ -14,6 +14,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import vazkii.psi.client.core.handler.ClientTickHandler;
 import vazkii.psi.client.core.handler.HUDHandler;
+import vazkii.psi.client.core.handler.KeybindHandler;
 import vazkii.psi.client.core.handler.ModelHandler;
 import vazkii.psi.client.core.handler.ShaderHandler;
 import vazkii.psi.common.core.proxy.CommonProxy;
@@ -26,10 +27,10 @@ public class ClientProxy extends CommonProxy {
 		
 		ModelHandler.init();
 		ShaderHandler.init();
+		KeybindHandler.init();
 		
 		MinecraftForge.EVENT_BUS.register(new HUDHandler());
 		MinecraftForge.EVENT_BUS.register(new ClientTickHandler());
-
 	}
 	
 }
