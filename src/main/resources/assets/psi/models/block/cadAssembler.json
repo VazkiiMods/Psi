@@ -1,6 +1,37 @@
 {
-    "parent": "block/cube_all",
+    "__comment": "",
     "textures": {
-        "all": "psi:blocks/cadAssembler"
-    }
+        "0": "psi:blocks/cadAssemblerSide",
+        "1": "psi:blocks/cadAssemblerTop",
+        "2": "psi:blocks/cadAssemblerBottom",
+        "3": "psi:blocks/cadAssemblerBottom2"
+    },
+    "elements": [
+        {
+            "name": "Cube1",
+            "from": [ 0.0, 4.0, 0.0 ], 
+            "to": [ 16.0, 16.0, 16.0 ], 
+            "faces": {
+                "north": { "texture": "#0", "uv": [ 0.0, 0.0, 16.0, 12.0 ] },
+                "east": { "texture": "#0", "uv": [ 0.0, 0.0, 16.0, 12.0 ] },
+                "south": { "texture": "#0", "uv": [ 0.0, 0.0, 16.0, 12.0 ] },
+                "west": { "texture": "#0", "uv": [ 0.0, 0.0, 16.0, 12.0 ] },
+                "up": { "texture": "#1", "uv": [ 0.0, 0.0, 16.0, 16.0 ] },
+                "down": { "texture": "#2", "uv": [ 0.0, 0.0, 16.0, 16.0 ] }
+            }
+        },
+        {
+            "name": "Cube2",
+            "from": [ 3.0, 0.0, 3.0 ], 
+            "to": [ 13.0, 4.0, 13.0 ], 
+            "faces": {
+                "north": { "texture": "#0", "uv": [ 3.0, 12.0, 13.0, 16.0 ] },
+                "east": { "texture": "#0", "uv": [ 3.0, 12.0, 13.0, 16.0 ] },
+                "south": { "texture": "#0", "uv": [ 3.0, 12.0, 13.0, 16.0 ] },
+                "west": { "texture": "#0", "uv": [ 3.0, 12.0, 13.0, 16.0 ] },
+                "up": { "texture": "#3", "uv": [ 3.0, 3.0, 13.0, 13.0 ] },
+                "down": { "texture": "#3", "uv": [ 3.0, 3.0, 13.0, 13.0 ] }
+            }
+        }
+    ]
 }
