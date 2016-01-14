@@ -1,8 +1,9 @@
 {
     "__comment": "",
     "textures": {
-        "0": "psi:blocks/programmerSide",
-        "1": "psi:blocks/programmerTop",
+        "particle": "psi:blocks/programmerTopInactive",
+        "0": "psi:blocks/programmerSideInactive",
+        "1": "psi:blocks/programmerTopInactive",
         "2": "psi:blocks/programmerBottom",
         "3": "psi:blocks/programmerLegs"
     },

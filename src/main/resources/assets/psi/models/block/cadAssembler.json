@@ -1,6 +1,7 @@
 {
     "__comment": "",
     "textures": {
+        "particle": "psi:blocks/cadAssemblerTop",
         "0": "psi:blocks/cadAssemblerSide",
         "1": "psi:blocks/cadAssemblerTop",
         "2": "psi:blocks/cadAssemblerBottom",

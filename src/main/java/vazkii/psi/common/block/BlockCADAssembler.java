@@ -24,13 +24,13 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import vazkii.psi.common.Psi;
-import vazkii.psi.common.block.base.BlockModContainer;
+import vazkii.psi.common.block.base.BlockFacing;
 import vazkii.psi.common.block.tile.TileCADAssembler;
 import vazkii.psi.common.block.tile.TileSimpleInventory;
 import vazkii.psi.common.lib.LibBlockNames;
 import vazkii.psi.common.lib.LibGuiIDs;
 
-public class BlockCADAssembler extends BlockModContainer {
+public class BlockCADAssembler extends BlockFacing {
 
 	Random random;
 	
@@ -41,6 +41,16 @@ public class BlockCADAssembler extends BlockModContainer {
 		setStepSound(soundTypeMetal);
 		
 		random = new Random();
+	}
+	
+	@Override
+	public boolean isFullBlock() {
+		return false;
+	}
+	
+	@Override
+	public boolean isOpaqueCube() {
+		return false;
 	}
 	
 	@Override
