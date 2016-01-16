@@ -41,7 +41,7 @@ public abstract class ItemCADComponent extends ItemMod implements ICADComponent 
 	
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
-		tooltipIfShift(playerIn, tooltip, () -> {
+		tooltipIfShift(tooltip, () -> {
 			EnumCADComponent componentType = getComponentType(stack);
 			
 			String componentName = local(componentType.getName());

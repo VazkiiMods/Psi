@@ -21,6 +21,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vazkii.psi.api.PsiAPI;
+import vazkii.psi.api.internal.TooltipHelper;
 
 public class SpellPiece {
 
@@ -47,8 +48,17 @@ public class SpellPiece {
 		wr.pos(0, 0, 0).tex(0, 0).endVertex();
 		Tessellator.getInstance().draw();
 	}
-
-	public void getShownPieces(Spell spell, List<SpellPiece> pieces) {
+	
+	@SideOnly(Side.CLIENT)
+	public void getTooltip(List<String> tooltip) {
+		TooltipHelper.addToTooltip(tooltip, getUnlocalizedName());
+	}
+	
+	public String getUnlocalizedName() {
+		return "psi.spellpiece." + registryKey;
+	}
+	
+	public void getShownPieces(List<SpellPiece> pieces) {
 		pieces.add(this);
 	}
 	
@@ -72,7 +82,7 @@ public class SpellPiece {
 		}
 	}
 	
-	public SpellPiece copy(Spell spell) {
+	public SpellPiece copy() {
 		NBTTagCompound cmp = new NBTTagCompound();
 		writeToNBT(cmp);
 		return createFromNBT(spell, cmp);

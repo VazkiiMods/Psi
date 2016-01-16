@@ -215,7 +215,7 @@ public class ItemCAD extends ItemMod implements ICAD {
 	
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
-		tooltipIfShift(playerIn, tooltip, () -> {
+		tooltipIfShift(tooltip, () -> {
 			String componentName = local(ISocketable.getSocketedItemName(stack, "psimisc.none"));
 			addToTooltip(tooltip, "psimisc.spellSelected", componentName);
 			

@@ -23,6 +23,7 @@ import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellGrid;
 import vazkii.psi.api.spell.SpellPiece;
+import vazkii.psi.client.core.helper.RenderHelper;
 import vazkii.psi.client.gui.button.GuiButtonSpellPiece;
 import vazkii.psi.common.block.tile.TileProgrammer;
 import vazkii.psi.common.lib.LibResources;
@@ -33,6 +34,8 @@ public class GuiProgrammer extends GuiScreen {
 
 	TileProgrammer programmer;
 	Spell spell;
+	
+	public List<String> tooltip = new ArrayList();
 	
 	int xSize, ySize, padLeft, padTop, left, top, gridLeft, gridTop;
 	int cursorX, cursorY;
@@ -68,6 +71,7 @@ public class GuiProgrammer extends GuiScreen {
 	
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+		tooltip.clear();
 		drawDefaultBackground();
 		
 		GlStateManager.color(1F, 1F, 1F);
@@ -92,6 +96,10 @@ public class GuiProgrammer extends GuiScreen {
         if(selectedX > -1 && selectedY > -1)
             drawTexturedModalRect(gridLeft + selectedX * 18, gridTop + selectedY * 18, 32, ySize, 16, 16);
         if(cursorX > -1 && cursorY > -1) {
+        	SpellPiece pieceAt = spell.grid.gridData[cursorX][cursorY];
+        	if(pieceAt != null)
+        		pieceAt.getTooltip(tooltip);
+        	
         	if(cursorX == selectedX && cursorY == selectedY)
         		drawTexturedModalRect(gridLeft + cursorX * 18, gridTop + cursorY * 18, 16, ySize, 8, 16);
         	else drawTexturedModalRect(gridLeft + cursorX * 18, gridTop + cursorY * 18, 16, ySize, 16, 16);
@@ -104,9 +112,11 @@ public class GuiProgrammer extends GuiScreen {
         	searchField.drawTextBox();
         }
         
-        
 		super.drawScreen(mouseX, mouseY, partialTicks);
-	}
+		
+		if(!tooltip.isEmpty())
+			RenderHelper.renderTooltip(mouseX, mouseY, tooltip);
+		}
 	
 	@Override
 	protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
@@ -122,8 +132,11 @@ public class GuiProgrammer extends GuiScreen {
 	        if(cursorX > -1 && cursorY > -1) {
 	        	selectedX = cursorX;
 	        	selectedY = cursorY;
-	        	if(mouseButton == 1)
-	        		openPanel();
+	        	if(mouseButton == 1) {
+	        		if(isShiftKeyDown())
+	        			spell.grid.gridData[selectedX][selectedY] = null;
+	        		else openPanel();
+	        	}
 	        }
 		}
 	}
@@ -148,10 +161,10 @@ public class GuiProgrammer extends GuiScreen {
 			Class<? extends SpellPiece> clazz = PsiAPI.spellPieceRegistry.getObject(key);
 			SpellPiece p = SpellPiece.create(clazz, spell);
 			List<SpellPiece> pieces = new ArrayList();
-			p.getShownPieces(spell, pieces);
+			p.getShownPieces(pieces);
 			
 			for(SpellPiece piece : pieces) {
-				panelButtons.add(new GuiButtonSpellPiece(p, panelX + 4 + (i % 5) * 18, panelY + 20 + (i / 5) * 18));
+				panelButtons.add(new GuiButtonSpellPiece(this, p, panelX + 4 + (i % 5) * 18, panelY + 20 + (i / 5) * 18));
 				i++;
 			}
 		}
@@ -177,7 +190,7 @@ public class GuiProgrammer extends GuiScreen {
 			closePanel();
 		
 		if(button instanceof GuiButtonSpellPiece) {
-			SpellPiece piece = ((GuiButtonSpellPiece) button).piece.copy(spell);
+			SpellPiece piece = ((GuiButtonSpellPiece) button).piece.copy();
 			spell.grid.gridData[selectedX][selectedY] = piece;
 			closePanel();
 		}

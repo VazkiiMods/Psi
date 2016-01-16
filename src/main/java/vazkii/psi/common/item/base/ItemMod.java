@@ -21,6 +21,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import vazkii.psi.api.internal.TooltipHelper;
 import vazkii.psi.common.core.PsiCreativeTab;
 import vazkii.psi.common.lib.LibResources;
 
@@ -78,28 +79,21 @@ public class ItemMod extends Item implements IVariantHolder {
 		return variants;
 	}
 	
-	public static void tooltipIfShift(EntityPlayer playerIn, List<String> tooltip, Runnable r) {
-		if(GuiScreen.isShiftKeyDown())
-			r.run();
-		else addToTooltip(tooltip, "psimisc.shiftForInfo");
+	public static void tooltipIfShift(List<String> tooltip, Runnable r) {
+		TooltipHelper.tooltipIfShift(tooltip, r);
 	}
 	
 	public static void addToTooltip(List<String> tooltip, String s, Object... format) {
-		s = local(s).replaceAll("&", "\u00a7");
-		
-		if(format != null && format.length > 0)
-			s = String.format(s, format);
-		
-		tooltip.add(s);
+		TooltipHelper.addToTooltip(tooltip, s, format);
+	}
+	
+	public static String local(String s) {
+		return TooltipHelper.local(s);
 	}
 
 	@Override
 	public ItemMeshDefinition getCustomMeshDefinition() {
 		return null;
-	}
-	
-	public static String local(String s) {
-		return StatCollector.translateToLocal(s);
 	}
 	
 }

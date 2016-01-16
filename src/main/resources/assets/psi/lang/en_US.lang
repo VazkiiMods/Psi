@@ -61,5 +61,16 @@ psi.cadstat.bandwidth=Bandwidth
 psi.cadstat.sockets=Sockets
 psi.cadstat.overflow=Overflow
 
+# SPELl PIECE NAMES
+# -- SELECTORS
+psi.spellpiece.selectorCaster=Selector: Caster
+
+# -- CONSTANTS
+
+# -- OPERATORS
+
+# -- TRICKS
+psi.spellpiece.trickDebug=Trick: Debug
+
 # DEATH MESSAGES
 death.attack.psi-overload=%s overflowed their Psionic Energy
