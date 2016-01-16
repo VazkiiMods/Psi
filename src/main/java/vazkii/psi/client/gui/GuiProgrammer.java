@@ -10,33 +10,60 @@
  */
 package vazkii.psi.client.gui;
 
-import org.lwjgl.opengl.GL11;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
+import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
+import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellGrid;
+import vazkii.psi.api.spell.SpellPiece;
+import vazkii.psi.client.gui.button.GuiButtonSpellPiece;
 import vazkii.psi.common.block.tile.TileProgrammer;
 import vazkii.psi.common.lib.LibResources;
-import vazkii.psi.common.spell.base.ModSpellPieces;
 
 public class GuiProgrammer extends GuiScreen {
 
 	private static final ResourceLocation texture = new ResourceLocation(LibResources.GUI_PROGRAMMER);
 
 	TileProgrammer programmer;
-	int xSize, ySize;
+	Spell spell;
+	
+	int xSize, ySize, padLeft, padTop, left, top, gridLeft, gridTop;
+	int cursorX, cursorY;
+	int selectedX, selectedY;
+    boolean panelEnabled;
+    int panelX, panelY, panelWidth, panelHeight;
+    List<GuiButton> panelButtons = new ArrayList();
+    GuiTextField searchField;
 	
 	public GuiProgrammer(TileProgrammer programmer) {
 		this.programmer = programmer;
+		spell = new Spell();
 	}
 	
 	@Override
 	public void initGui() {
 		xSize = 174;
 		ySize = 174;
+		padLeft = 7;
+		padTop = 7;
+        left = (width - xSize) / 2;
+        top = (height - ySize) / 2;
+        gridLeft = left + padLeft;
+        gridTop = top + padTop;
+        panelWidth = 100;
+        panelHeight = 125;
+		cursorX = cursorY = selectedX = selectedY = -1;
+		searchField = new GuiTextField(0, fontRendererObj, 0, 0, 70, 10);
+		searchField.setCanLoseFocus(false);
+		searchField.setFocused(true);
+		searchField.setEnableBackgroundDrawing(false);
 	}
 	
 	@Override
@@ -45,20 +72,120 @@ public class GuiProgrammer extends GuiScreen {
 		
 		GlStateManager.color(1F, 1F, 1F);
 		mc.getTextureManager().bindTexture(texture);
-        int x = (width - xSize) / 2;
-        int y = (height - ySize) / 2;
-        drawTexturedModalRect(x, y, 0, 0, xSize, ySize);
+
+        drawTexturedModalRect(left, top, 0, 0, xSize, ySize);
+        
+        cursorX = (mouseX - gridLeft) / 18;
+        cursorY = (mouseY - gridTop) / 18;
+        if(panelEnabled || cursorX > 8 || cursorY > 8 || cursorX < 0 || cursorY < 0) {
+        	cursorX = -1;
+        	cursorY = -1;
+        }
         
         GlStateManager.pushMatrix();
-        GlStateManager.translate(x + 7, y + 7, 0);
-        Spell spell = new Spell();
-        SpellGrid grid = spell.grid;
-        grid.gridData[2][3] = ModSpellPieces.trickDebug.get(spell);
-        grid.gridData[3][3] = ModSpellPieces.selectorCaster.get(spell);
+        GlStateManager.translate(gridLeft, gridTop, 0);
         spell.draw();
         GlStateManager.popMatrix();
-		
+        
+		mc.getTextureManager().bindTexture(texture);
+
+        if(selectedX > -1 && selectedY > -1)
+            drawTexturedModalRect(gridLeft + selectedX * 18, gridTop + selectedY * 18, 32, ySize, 16, 16);
+        if(cursorX > -1 && cursorY > -1) {
+        	if(cursorX == selectedX && cursorY == selectedY)
+        		drawTexturedModalRect(gridLeft + cursorX * 18, gridTop + cursorY * 18, 16, ySize, 8, 16);
+        	else drawTexturedModalRect(gridLeft + cursorX * 18, gridTop + cursorY * 18, 16, ySize, 16, 16);
+        }
+        
+        if(panelEnabled) {
+        	drawRect(panelX, panelY, panelX + panelWidth, panelY + panelHeight, 0x88000000);
+    		GlStateManager.color(1F, 1F, 1F);
+    		drawTexturedModalRect(searchField.xPosition - 14, searchField.yPosition - 2, 0, ySize + 16, 12, 12);
+        	searchField.drawTextBox();
+        }
+        
+        
 		super.drawScreen(mouseX, mouseY, partialTicks);
+	}
+	
+	@Override
+	protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
+		super.mouseClicked(mouseX, mouseY, mouseButton);
+		
+		if(panelEnabled) {
+			searchField.mouseClicked(mouseX, mouseY, mouseButton);
+
+			if(mouseX < panelX || mouseY < panelY || mouseX > panelX + panelWidth || mouseY > panelY + panelHeight)
+				closePanel();
+		} else {
+			SpellGrid grid = spell.grid;
+	        if(cursorX > -1 && cursorY > -1) {
+	        	selectedX = cursorX;
+	        	selectedY = cursorY;
+	        	if(mouseButton == 1)
+	        		openPanel();
+	        }
+		}
+	}
+	
+	@Override
+	protected void keyTyped(char par1, int par2) throws IOException {
+		super.keyTyped(par1, par2);
+
+		if(panelEnabled)
+			searchField.textboxKeyTyped(par1, par2);
+	}
+
+	private void openPanel() {
+		closePanel();
+		panelEnabled = true;
+		
+		panelX = gridLeft + (selectedX + 1) * 18;
+		panelY = gridTop;
+		
+		int i = 0;
+		for(String key : PsiAPI.spellPieceRegistry.getKeys()) {
+			Class<? extends SpellPiece> clazz = PsiAPI.spellPieceRegistry.getObject(key);
+			SpellPiece p = SpellPiece.create(clazz, spell);
+			List<SpellPiece> pieces = new ArrayList();
+			p.getShownPieces(spell, pieces);
+			
+			for(SpellPiece piece : pieces) {
+				panelButtons.add(new GuiButtonSpellPiece(p, panelX + 4 + (i % 5) * 18, panelY + 20 + (i / 5) * 18));
+				i++;
+			}
+		}
+		
+		searchField.xPosition = panelX + 18;
+		searchField.yPosition = panelY + 4;
+
+		buttonList.addAll(panelButtons);
+	}
+	
+	private void closePanel() {
+		panelEnabled = false;
+		buttonList.removeAll(panelButtons);
+		panelButtons.clear();
+		searchField.setText("");
+	}
+	
+	@Override
+	protected void actionPerformed(GuiButton button) throws IOException {
+		super.actionPerformed(button);
+		
+		if(button.id == 9000)
+			closePanel();
+		
+		if(button instanceof GuiButtonSpellPiece) {
+			SpellPiece piece = ((GuiButtonSpellPiece) button).piece.copy(spell);
+			spell.grid.gridData[selectedX][selectedY] = piece;
+			closePanel();
+		}
+	}
+	
+	@Override
+	public boolean doesGuiPauseGame() {
+		return false;
 	}
 	
 }

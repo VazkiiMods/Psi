@@ -10,9 +10,7 @@
  */
 package vazkii.psi.api.spell;
 
-import java.lang.reflect.InvocationTargetException;
-
-import javax.annotation.Resource;
+import java.util.List;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
@@ -50,6 +48,10 @@ public class SpellPiece {
 		Tessellator.getInstance().draw();
 	}
 
+	public void getShownPieces(Spell spell, List<SpellPiece> pieces) {
+		pieces.add(this);
+	}
+	
 	public static SpellPiece createFromNBT(Spell spell, NBTTagCompound cmp) {
 		String key = cmp.getString(TAG_KEY);
 		Class<? extends SpellPiece> clazz = PsiAPI.spellPieceRegistry.getObject(key);
@@ -68,6 +70,12 @@ public class SpellPiece {
 		} catch(Exception e) {
 			throw new RuntimeException(e);
 		}
+	}
+	
+	public SpellPiece copy(Spell spell) {
+		NBTTagCompound cmp = new NBTTagCompound();
+		writeToNBT(cmp);
+		return createFromNBT(spell, cmp);
 	}
 
 	public void readFromNBT(NBTTagCompound cmp) {
