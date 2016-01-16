@@ -10,11 +10,17 @@
  */
 package vazkii.psi.api;
 
+import java.util.HashMap;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.RegistryNamespaced;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.Loader;
 import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.internal.DummyMethodHandler;
 import vazkii.psi.api.internal.IInternalMethodHandler;
+import vazkii.psi.api.spell.SpellPiece;
 
 public final class PsiAPI {
 	
@@ -27,6 +33,23 @@ public final class PsiAPI {
 	 */
 	public static IInternalMethodHandler internalHandler = new DummyMethodHandler();
 
+	public static RegistryNamespaced<String, Class<? extends SpellPiece>> spellPieceRegistry = new RegistryNamespaced();
+	public static HashMap<String, ResourceLocation> simpleSpellTextures = new HashMap();
+	
+	public static void registerSpellPiece(String key, Class<? extends SpellPiece> clazz) {
+		spellPieceRegistry.putObject(key, clazz);
+	}
+	
+	public static void registerSpellPieceAndTexture(String key, Class<? extends SpellPiece> clazz) {
+		String currMod = Loader.instance().activeModContainer().getModId().toLowerCase();
+		registerSpellPieceAndTexture(key, currMod, clazz);
+	}
+	
+	public static void registerSpellPieceAndTexture(String key, String mod, Class<? extends SpellPiece> clazz) {
+		registerSpellPiece(key, clazz);
+		simpleSpellTextures.put(key, new ResourceLocation(mod, String.format("textures/spell/%s.png", key)));
+	}
+	
 	/**
 	 * Gets the CAD the passed EntityPlayer is using. As a player can only have one CAD, if there's
 	 * more than one, this will return null.

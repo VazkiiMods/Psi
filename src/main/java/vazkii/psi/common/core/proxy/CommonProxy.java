@@ -22,6 +22,7 @@ import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.network.GuiHandler;
 import vazkii.psi.common.network.NetworkHandler;
+import vazkii.psi.common.spell.base.ModSpellPieces;
 
 public class CommonProxy {
 
@@ -32,6 +33,7 @@ public class CommonProxy {
 		
 		ModItems.init();
 		ModBlocks.init();
+		ModSpellPieces.init();
 		
 		NetworkHandler.init();
 		NetworkRegistry.INSTANCE.registerGuiHandler(Psi.instance, new GuiHandler());
