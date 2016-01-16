@@ -94,9 +94,17 @@ public class GuiProgrammer extends GuiScreen {
         	int color = 4210752;
         	SpellPiece piece = programmer.spell.grid.gridData[selectedX][selectedY];
         	int i = 0;
+        	
         	for(String s : piece.params.keySet()) {
+            	int x = left - 75;
+            	int y = top + 70 + i * 26;
+            	
+        		GlStateManager.color(1F, 1F, 1F);
+            	mc.getTextureManager().bindTexture(texture);
+                drawTexturedModalRect(x + 50, y - 8, xSize, 145, 24, 24);
+        		
         		String localized = StatCollector.translateToLocal(s);
-        		mc.fontRendererObj.drawString(localized, left - 75, top + 70 + i * 26, color);
+        		mc.fontRendererObj.drawString(localized, x, y, color);
         		i++;
         	}
         }
