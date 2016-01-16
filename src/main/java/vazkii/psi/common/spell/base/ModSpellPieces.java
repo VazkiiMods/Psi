@@ -30,14 +30,12 @@ public final class ModSpellPieces {
 	}
 	
 	public static PieceContainer register(Class<? extends SpellPiece> clazz, String name) {
-		PsiAPI.registerSpellPiece(name, clazz);
+		PsiAPI.registerSpellPieceAndTexture(name, clazz);
 		return (Spell s) -> { return SpellPiece.create(clazz, s); };
 	}
 	
 	public static interface PieceContainer {
-		
 		public SpellPiece get(Spell s);
-		
 	}
 	
 }

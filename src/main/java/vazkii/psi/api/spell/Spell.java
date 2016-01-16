@@ -21,7 +21,7 @@ public final class Spell {
 	
 	@SideOnly(Side.CLIENT)
 	public void draw() {
-		
+		grid.draw();
 	}
 	
 	public static Spell createFromNBT(NBTTagCompound cmp) {

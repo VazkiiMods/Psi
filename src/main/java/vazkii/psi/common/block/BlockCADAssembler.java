@@ -26,7 +26,7 @@ import net.minecraft.world.World;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.base.BlockFacing;
 import vazkii.psi.common.block.tile.TileCADAssembler;
-import vazkii.psi.common.block.tile.TileSimpleInventory;
+import vazkii.psi.common.block.tile.base.TileSimpleInventory;
 import vazkii.psi.common.lib.LibBlockNames;
 import vazkii.psi.common.lib.LibGuiIDs;
 

@@ -15,6 +15,7 @@ import java.util.Arrays;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ITickable;
 import vazkii.psi.api.cad.ISocketable;
+import vazkii.psi.common.block.tile.base.TileSimpleInventory;
 import vazkii.psi.common.item.ItemCAD;
 import vazkii.psi.common.lib.LibBlockNames;
 

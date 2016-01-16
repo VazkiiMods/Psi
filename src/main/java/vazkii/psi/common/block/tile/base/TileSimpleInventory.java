@@ -8,7 +8,7 @@
  * 
  * File Created @ [10/01/2016, 15:13:46 (GMT)]
  */
-package vazkii.psi.common.block.tile;
+package vazkii.psi.common.block.tile.base;
 
 import java.util.Arrays;
 
@@ -24,7 +24,7 @@ import net.minecraft.util.IChatComponent;
 
 public abstract class TileSimpleInventory extends TileMod implements ISidedInventory {
 
-	ItemStack[] inventorySlots = new ItemStack[getSizeInventory()];
+	protected ItemStack[] inventorySlots = new ItemStack[getSizeInventory()];
 
 	@Override
 	public void readSharedNBT(NBTTagCompound par1NBTTagCompound) {

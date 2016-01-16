@@ -13,9 +13,9 @@ package vazkii.psi.common.block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
@@ -24,11 +24,11 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.client.model.b3d.B3DModel.Face;
+import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.base.BlockFacing;
-import vazkii.psi.common.block.base.BlockMod;
-import vazkii.psi.common.block.tile.TileCADAssembler;
+import vazkii.psi.common.block.tile.TileProgrammer;
 import vazkii.psi.common.lib.LibBlockNames;
+import vazkii.psi.common.lib.LibGuiIDs;
 
 public class BlockProgrammer extends BlockFacing {
 
@@ -39,6 +39,12 @@ public class BlockProgrammer extends BlockFacing {
 		setHardness(5.0F);
 		setResistance(10.0F);
 		setStepSound(soundTypeMetal);
+	}
+	
+	@Override
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ) {
+		playerIn.openGui(Psi.instance, LibGuiIDs.PROGRAMMER, worldIn, pos.getX(), pos.getY(), pos.getZ());
+		return true;
 	}
 	
 	@Override
@@ -73,7 +79,7 @@ public class BlockProgrammer extends BlockFacing {
 	
 	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
-		return new TileCADAssembler(); // TODO replace with proper one
+		return new TileProgrammer(); 
 	}
 	
 }

@@ -8,7 +8,7 @@
  * 
  * File Created @ [Jan 21, 2014, 9:18:28 PM (GMT)]
  */
-package vazkii.psi.common.block.tile;
+package vazkii.psi.common.block.tile.base;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;

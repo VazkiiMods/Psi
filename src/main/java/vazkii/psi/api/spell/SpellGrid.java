@@ -33,18 +33,16 @@ public final class SpellGrid {
 	
 	@SideOnly(Side.CLIENT)
 	public void draw() {
-		GlStateManager.pushMatrix();
-		for(int i = 0; i < w; i++)
-			for(int j = 0; j < h; j++) {
-				SpellPiece p = gridData[i][j];
-				if(p != null) {
-					GlStateManager.pushMatrix();
-					GlStateManager.translate(i * 18, j * 18, 0);
-					p.draw();
-					GlStateManager.popMatrix();
-				}
+	for(int i = 0; i < w; i++)
+		for(int j = 0; j < h; j++) {
+			SpellPiece p = gridData[i][j];
+			if(p != null) {
+				GlStateManager.pushMatrix();
+				GlStateManager.translate(i * 18, j * 18, 0);
+				p.draw();
+				GlStateManager.popMatrix();
 			}
-		GlStateManager.popMatrix();
+		}
 	}
 	
 	public SpellGrid(Spell spell, int w, int h) {

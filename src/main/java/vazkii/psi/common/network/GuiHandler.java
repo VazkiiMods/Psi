@@ -15,7 +15,9 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 import vazkii.psi.client.gui.GuiCADAssembler;
+import vazkii.psi.client.gui.GuiProgrammer;
 import vazkii.psi.common.block.tile.TileCADAssembler;
+import vazkii.psi.common.block.tile.TileProgrammer;
 import vazkii.psi.common.block.tile.container.ContainerCADAssembler;
 import vazkii.psi.common.lib.LibGuiIDs;
 
@@ -36,6 +38,8 @@ public class GuiHandler implements IGuiHandler {
 		switch(ID) {
 		case LibGuiIDs.CAD_ASSEMBLER:
 			return new GuiCADAssembler(player.inventory, (TileCADAssembler) world.getTileEntity(new BlockPos(x, y, z)));
+		case LibGuiIDs.PROGRAMMER:
+			return new GuiProgrammer((TileProgrammer) world.getTileEntity(new BlockPos(x, y, z)));
 		}
 
 		return null;
