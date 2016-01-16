@@ -17,6 +17,7 @@ import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.network.message.MessageChangeSocketableSlot;
 import vazkii.psi.common.network.message.MessageDataSync;
 import vazkii.psi.common.network.message.MessageDeductPsi;
+import vazkii.psi.common.network.message.MessageSpellModified;
 import vazkii.psi.common.network.message.TestMessage;
 
 public class NetworkHandler {
@@ -31,6 +32,7 @@ public class NetworkHandler {
 		register(MessageDataSync.class, Side.CLIENT);
 		register(MessageDeductPsi.class, Side.CLIENT);
 		register(MessageChangeSocketableSlot.class, Side.SERVER);
+		register(MessageSpellModified.class, Side.SERVER);
 	}
 	
 	private static void register(Class clazz, Side handlerSide) {

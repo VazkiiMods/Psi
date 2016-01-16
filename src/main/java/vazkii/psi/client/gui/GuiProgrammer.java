@@ -18,6 +18,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.spell.Spell;
@@ -27,13 +28,14 @@ import vazkii.psi.client.core.helper.RenderHelper;
 import vazkii.psi.client.gui.button.GuiButtonSpellPiece;
 import vazkii.psi.common.block.tile.TileProgrammer;
 import vazkii.psi.common.lib.LibResources;
+import vazkii.psi.common.network.NetworkHandler;
+import vazkii.psi.common.network.message.MessageSpellModified;
 
 public class GuiProgrammer extends GuiScreen {
 
 	private static final ResourceLocation texture = new ResourceLocation(LibResources.GUI_PROGRAMMER);
 
 	TileProgrammer programmer;
-	Spell spell;
 	
 	public List<String> tooltip = new ArrayList();
 	
@@ -47,7 +49,6 @@ public class GuiProgrammer extends GuiScreen {
 	
 	public GuiProgrammer(TileProgrammer programmer) {
 		this.programmer = programmer;
-		spell = new Spell();
 	}
 	
 	@Override
@@ -67,6 +68,9 @@ public class GuiProgrammer extends GuiScreen {
 		searchField.setCanLoseFocus(false);
 		searchField.setFocused(true);
 		searchField.setEnableBackgroundDrawing(false);
+		
+		if(programmer.spell == null)
+			programmer.spell = new Spell();
 	}
 	
 	@Override
@@ -88,7 +92,7 @@ public class GuiProgrammer extends GuiScreen {
         
         GlStateManager.pushMatrix();
         GlStateManager.translate(gridLeft, gridTop, 0);
-        spell.draw();
+        programmer.spell.draw();
         GlStateManager.popMatrix();
         
 		mc.getTextureManager().bindTexture(texture);
@@ -96,7 +100,7 @@ public class GuiProgrammer extends GuiScreen {
         if(selectedX > -1 && selectedY > -1)
             drawTexturedModalRect(gridLeft + selectedX * 18, gridTop + selectedY * 18, 32, ySize, 16, 16);
         if(cursorX > -1 && cursorY > -1) {
-        	SpellPiece pieceAt = spell.grid.gridData[cursorX][cursorY];
+        	SpellPiece pieceAt = programmer.spell.grid.gridData[cursorX][cursorY];
         	if(pieceAt != null)
         		pieceAt.getTooltip(tooltip);
         	
@@ -128,14 +132,15 @@ public class GuiProgrammer extends GuiScreen {
 			if(mouseX < panelX || mouseY < panelY || mouseX > panelX + panelWidth || mouseY > panelY + panelHeight)
 				closePanel();
 		} else {
-			SpellGrid grid = spell.grid;
+			SpellGrid grid = programmer.spell.grid;
 	        if(cursorX > -1 && cursorY > -1) {
 	        	selectedX = cursorX;
 	        	selectedY = cursorY;
 	        	if(mouseButton == 1) {
-	        		if(isShiftKeyDown())
-	        			spell.grid.gridData[selectedX][selectedY] = null;
-	        		else openPanel();
+	        		if(isShiftKeyDown()) {
+	        			programmer.spell.grid.gridData[selectedX][selectedY] = null;
+	        			onSpellChanged();
+	        		} else openPanel();
 	        	}
 	        }
 		}
@@ -149,6 +154,26 @@ public class GuiProgrammer extends GuiScreen {
 			searchField.textboxKeyTyped(par1, par2);
 	}
 
+	@Override
+	protected void actionPerformed(GuiButton button) throws IOException {
+		super.actionPerformed(button);
+		
+		if(button.id == 9000)
+			closePanel();
+		
+		if(button instanceof GuiButtonSpellPiece) {
+			SpellPiece piece = ((GuiButtonSpellPiece) button).piece.copy();
+			programmer.spell.grid.gridData[selectedX][selectedY] = piece;
+			onSpellChanged();
+			closePanel();
+		}
+	}
+	
+	@Override
+	public boolean doesGuiPauseGame() {
+		return false;
+	}
+	
 	private void openPanel() {
 		closePanel();
 		panelEnabled = true;
@@ -159,7 +184,7 @@ public class GuiProgrammer extends GuiScreen {
 		int i = 0;
 		for(String key : PsiAPI.spellPieceRegistry.getKeys()) {
 			Class<? extends SpellPiece> clazz = PsiAPI.spellPieceRegistry.getObject(key);
-			SpellPiece p = SpellPiece.create(clazz, spell);
+			SpellPiece p = SpellPiece.create(clazz, programmer.spell);
 			List<SpellPiece> pieces = new ArrayList();
 			p.getShownPieces(pieces);
 			
@@ -182,23 +207,8 @@ public class GuiProgrammer extends GuiScreen {
 		searchField.setText("");
 	}
 	
-	@Override
-	protected void actionPerformed(GuiButton button) throws IOException {
-		super.actionPerformed(button);
-		
-		if(button.id == 9000)
-			closePanel();
-		
-		if(button instanceof GuiButtonSpellPiece) {
-			SpellPiece piece = ((GuiButtonSpellPiece) button).piece.copy();
-			spell.grid.gridData[selectedX][selectedY] = piece;
-			closePanel();
-		}
-	}
-	
-	@Override
-	public boolean doesGuiPauseGame() {
-		return false;
+	public void onSpellChanged() {
+		NetworkHandler.INSTANCE.sendToServer(new MessageSpellModified(programmer.getPos(), programmer.spell));
 	}
 	
 }

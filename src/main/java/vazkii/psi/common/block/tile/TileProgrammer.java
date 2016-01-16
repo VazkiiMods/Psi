@@ -10,8 +10,34 @@
  */
 package vazkii.psi.common.block.tile;
 
+import net.minecraft.nbt.NBTTagCompound;
+import vazkii.psi.api.spell.Spell;
 import vazkii.psi.common.block.tile.base.TileMod;
 
 public class TileProgrammer extends TileMod {
 
+	private static final String TAG_SPELL = "spell";
+	
+	public Spell spell;
+	
+	@Override
+	public void writeSharedNBT(NBTTagCompound cmp) {
+		super.writeSharedNBT(cmp);
+		
+		NBTTagCompound spellCmp = new NBTTagCompound();
+		if(spell != null)
+			spell.writeToNBT(spellCmp);
+		cmp.setTag(TAG_SPELL, spellCmp);
+	}
+	
+	@Override
+	public void readSharedNBT(NBTTagCompound cmp) {
+		super.readSharedNBT(cmp);
+		
+		NBTTagCompound spellCmp = cmp.getCompoundTag(TAG_SPELL);
+		if(spell == null)
+			spell = Spell.createFromNBT(spellCmp);
+		else spell.readFromNBT(spellCmp);
+	}
+	
 }

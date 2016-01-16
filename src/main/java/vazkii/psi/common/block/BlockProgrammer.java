@@ -16,6 +16,7 @@ import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
@@ -24,6 +25,7 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import vazkii.psi.api.internal.VanillaPacketDispatcher;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.base.BlockFacing;
 import vazkii.psi.common.block.tile.TileProgrammer;
@@ -43,6 +45,9 @@ public class BlockProgrammer extends BlockFacing {
 	
 	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ) {
+		if(playerIn instanceof EntityPlayerMP)
+			VanillaPacketDispatcher.dispatchTEToPlayer(worldIn.getTileEntity(pos), (EntityPlayerMP) playerIn);
+		
 		playerIn.openGui(Psi.instance, LibGuiIDs.PROGRAMMER, worldIn, pos.getX(), pos.getY(), pos.getZ());
 		return true;
 	}

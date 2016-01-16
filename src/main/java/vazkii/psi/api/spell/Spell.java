@@ -16,8 +16,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public final class Spell {
 
-	private static final int SPELL_GRID_SIZE = 9;
-	public SpellGrid grid = new SpellGrid(this, SPELL_GRID_SIZE, SPELL_GRID_SIZE);
+	private static final String TAG_VALID = "validSpell";
+	
+	public SpellGrid grid = new SpellGrid(this);
 	
 	@SideOnly(Side.CLIENT)
 	public void draw() {
@@ -25,6 +26,9 @@ public final class Spell {
 	}
 	
 	public static Spell createFromNBT(NBTTagCompound cmp) {
+		if(!cmp.getBoolean(TAG_VALID))
+			return null;
+		
 		Spell spell = new Spell();
 		spell.readFromNBT(cmp);
 		return spell;
@@ -35,6 +39,7 @@ public final class Spell {
 	}
 	
 	public void writeToNBT(NBTTagCompound cmp) {
+		cmp.setBoolean(TAG_VALID, true);
 		grid.writeToNBT(cmp);
 	}
 	

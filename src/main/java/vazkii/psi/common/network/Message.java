@@ -26,6 +26,7 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import vazkii.psi.api.spell.Spell;
 
 public class Message<REQ extends Message> implements Serializable, IMessage, IMessageHandler<REQ, IMessage> {
 
@@ -45,6 +46,9 @@ public class Message<REQ extends Message> implements Serializable, IMessage, IMe
 		map(NBTTagCompound.class, Message::readNBT, Message::writeNBT);
 		map(ItemStack.class, Message::readItemStack, Message::writeItemStack);
 		map(BlockPos.class, Message::readBlockPos, Message::writeBlockPos);
+		
+		// Psi stuff
+		map(Spell.class, Message::readSpell, Message::writeSpell);
 	}
 
 	// The thing you override!
@@ -224,7 +228,21 @@ public class Message<REQ extends Message> implements Serializable, IMessage, IMe
 	private static void writeBlockPos(BlockPos pos, ByteBuf buf) {
 		buf.writeLong(pos.toLong());
 	}
+	
+	// Psi stuff
+	private static Spell readSpell(ByteBuf buf) {
+		NBTTagCompound cmp = readNBT(buf);
+		return Spell.createFromNBT(cmp);
+	}
 
+	private static void writeSpell(Spell spell, ByteBuf buf) {
+		NBTTagCompound cmp = new NBTTagCompound();
+		if(spell != null)
+			spell.writeToNBT(cmp);
+		writeNBT(cmp, buf);
+	}
+
+	// Functional interfaces
 	public static interface Writer<T extends Object> {
 		public void write(T t, ByteBuf buf);
 	}
