@@ -19,6 +19,18 @@ public class TileProgrammer extends TileMod {
 	private static final String TAG_SPELL = "spell";
 	
 	public Spell spell;
+	public boolean enabled;
+	
+	public boolean isEnabled() {
+		return spell != null && !spell.grid.isEmpty();
+	}
+	
+	public void onSpellChanged() {
+		boolean wasEnabled = enabled;
+		enabled = isEnabled();
+		if(wasEnabled != enabled)
+			worldObj.markBlockRangeForRenderUpdate(pos, pos);
+	}
 	
 	@Override
 	public void writeSharedNBT(NBTTagCompound cmp) {

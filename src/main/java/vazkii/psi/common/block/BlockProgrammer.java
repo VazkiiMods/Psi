@@ -59,7 +59,7 @@ public class BlockProgrammer extends BlockFacing {
 	
 	@Override
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
-        return super.getActualState(state, worldIn, pos).withProperty(ENABLED, worldIn.getBlockState(pos.add(0, -1, 0)).getBlock() == Blocks.redstone_block); // TODO make this reflect TE
+        return super.getActualState(state, worldIn, pos).withProperty(ENABLED, ((TileProgrammer) worldIn.getTileEntity(pos)).isEnabled());
     }
 
 	@Override

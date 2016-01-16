@@ -49,6 +49,17 @@ public final class SpellGrid {
 		gridData = new SpellPiece[GRID_SIZE][GRID_SIZE];
 	}
 	
+	public boolean isEmpty() {
+		for(int i = 0; i < GRID_SIZE; i++)
+			for(int j = 0; j < GRID_SIZE; j++) {
+				SpellPiece piece = gridData[i][j];
+				if(piece != null)
+					return false;
+			}
+		
+		return true;
+	}
+	
 	public void readFromNBT(NBTTagCompound cmp) {
 		gridData = new SpellPiece[GRID_SIZE][GRID_SIZE];
 		

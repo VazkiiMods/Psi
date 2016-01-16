@@ -34,6 +34,7 @@ public class MessageSpellModified extends TileEntityMessage<TileProgrammer> {
 		return () -> {
 			if(tile != null) {
 				tile.spell = spell;
+				tile.onSpellChanged();
 				VanillaPacketDispatcher.dispatchTEToNearbyPlayers(tile);
 			}
 		};

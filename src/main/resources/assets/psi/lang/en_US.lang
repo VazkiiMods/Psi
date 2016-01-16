@@ -72,5 +72,10 @@ psi.spellpiece.selectorCaster=Selector: Caster
 # -- TRICKS
 psi.spellpiece.trickDebug=Trick: Debug
 
+# SPELL PARAMETER NAMES
+psi.spellparam.target=Target
+psi.spellparam.number=Number
+
 # DEATH MESSAGES
 death.attack.psi-overload=%s overflowed their Psionic Energy
+

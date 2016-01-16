@@ -11,14 +11,21 @@
 package vazkii.psi.common.core.handler;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.ResourceLocation;
 import vazkii.psi.api.internal.IInternalMethodHandler;
 import vazkii.psi.api.internal.IPlayerData;
+import vazkii.psi.client.gui.GuiProgrammer;
 
 public final class InternalMethodHandler implements IInternalMethodHandler {
 
 	@Override
 	public IPlayerData getDataForPlayer(EntityPlayer player) {
 		return PlayerDataHandler.get(player);
+	}
+
+	@Override
+	public ResourceLocation getProgrammerTexture() {
+		return GuiProgrammer.texture;
 	}
 
 }

@@ -11,6 +11,7 @@
 package vazkii.psi.api.internal;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.ResourceLocation;
 
 public interface IInternalMethodHandler {
 
@@ -20,4 +21,9 @@ public interface IInternalMethodHandler {
 	 */
 	public IPlayerData getDataForPlayer(EntityPlayer player);
 	
+	/**
+	 * Gets the texture for the programmer. Used for drawing the arrows in a SpellPiece's
+	 * params.
+	 */
+	public ResourceLocation getProgrammerTexture();
 }

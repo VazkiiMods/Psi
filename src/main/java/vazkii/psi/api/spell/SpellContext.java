@@ -6,19 +6,14 @@
  * Psi is Open Source and distributed under the
  * CC-BY-NC-SA 3.0 License: https://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB
  * 
- * File Created @ [16/01/2016, 16:13:56 (GMT)]
+ * File Created @ [16/01/2016, 19:56:25 (GMT)]
  */
-package vazkii.psi.common.spell.selector;
+package vazkii.psi.api.spell;
 
 import net.minecraft.entity.player.EntityPlayer;
-import vazkii.psi.api.spell.Spell;
-import vazkii.psi.api.spell.SpellGrid;
-import vazkii.psi.api.spell.SpellPiece;
 
-public class PieceSelectorCaster extends SpellPiece {
+public final class SpellContext {
 
-	public PieceSelectorCaster(Spell spell) {
-		super(spell);
-	}
-
+	public EntityPlayer caster;
+	
 }

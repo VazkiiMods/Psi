@@ -11,6 +11,7 @@
 package vazkii.psi.api.internal;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.ResourceLocation;
 
 /**
  * This is a dummy class. You'll never interact with it, it's just here so
@@ -21,6 +22,11 @@ public final class DummyMethodHandler implements IInternalMethodHandler {
 	@Override
 	public IPlayerData getDataForPlayer(EntityPlayer player) {
 		return new DummyPlayerData();
+	}
+
+	@Override
+	public ResourceLocation getProgrammerTexture() {
+		return new ResourceLocation("");
 	}
 
 }
