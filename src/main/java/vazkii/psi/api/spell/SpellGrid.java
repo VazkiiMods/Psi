@@ -54,7 +54,6 @@ public final class SpellGrid {
 		
 		NBTTagList list = cmp.getTagList(TAG_SPELL_LIST, 10);
 		int len = list.tagCount();
-		System.out.println("read " + len);
 		for(int i = 0; i < len; i++) {
 			NBTTagCompound lcmp = list.getCompoundTagAt(i);
 			int posX = lcmp.getInteger(TAG_SPELL_POS_X);
@@ -84,7 +83,6 @@ public final class SpellGrid {
 				}
 			}
 		
-		System.out.println("write " + list.tagCount());
 		cmp.setTag(TAG_SPELL_LIST, list);
 	}
 	
