@@ -10,9 +10,11 @@
  */
 package vazkii.psi.common.lib;
 
-public final class LibSpellNames {
+public final class LibPieceNames {
 
 	public static final String SELECTOR_CASTER = "selectorCaster";
+	
+	public static final String CONNECTOR = "connector";
 	
 	public static final String TRICK_DEBUG = "trickDebug";
 	

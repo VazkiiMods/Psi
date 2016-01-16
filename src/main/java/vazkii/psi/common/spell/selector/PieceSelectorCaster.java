@@ -11,6 +11,7 @@
 package vazkii.psi.common.spell.selector;
 
 import net.minecraft.entity.player.EntityPlayer;
+import vazkii.psi.api.spell.EnumPieceType;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellGrid;
 import vazkii.psi.api.spell.SpellPiece;
@@ -19,6 +20,11 @@ public class PieceSelectorCaster extends SpellPiece {
 
 	public PieceSelectorCaster(Spell spell) {
 		super(spell);
+	}
+
+	@Override
+	public EnumPieceType getPieceType() {
+		return EnumPieceType.SELECTOR;
 	}
 
 }

@@ -44,6 +44,19 @@ public final class SpellGrid {
 		}
 	}
 	
+	public boolean exists(int x, int y) {
+		return x > 0 && y > 0 && x < GRID_SIZE && y < GRID_SIZE;
+	}
+	
+	public SpellPiece getPieceAtSideSafely(int x, int y, SpellParam.Side side) {
+		int xp = x + side.offx;
+		int yp = y + side.offy;
+		if(!exists(x, y))
+			return null;
+		
+		return gridData[xp][yp];
+	}
+	
 	public SpellGrid(Spell spell) {
 		this.spell = spell;
 		gridData = new SpellPiece[GRID_SIZE][GRID_SIZE];
@@ -73,6 +86,9 @@ public final class SpellGrid {
 			NBTTagCompound data = lcmp.getCompoundTag(TAG_SPELL_DATA);
 			SpellPiece piece = SpellPiece.createFromNBT(spell, data);
 			gridData[posX][posY] = piece;
+			piece.isInGrid = true;
+			piece.x = posX;
+			piece.y = posY;
 		}
 	}
 	

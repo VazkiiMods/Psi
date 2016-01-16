@@ -65,9 +65,13 @@ psi.cadstat.overflow=Overflow
 # -- SELECTORS
 psi.spellpiece.selectorCaster=Selector: Caster
 
-# -- CONSTANTS
-
 # -- OPERATORS
+
+# -- CONSTANTS
+psi.spellpiece.constantNumber=Constant: Number
+
+# -- CONNECTORS
+psi.spellpiece.connector=Connector
 
 # -- TRICKS
 psi.spellpiece.trickDebug=Trick: Debug

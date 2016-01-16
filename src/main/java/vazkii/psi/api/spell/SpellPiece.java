@@ -34,6 +34,9 @@ public abstract class SpellPiece {
 
 	public final String registryKey;
 	public final Spell spell;
+	
+	public boolean isInGrid = false;
+	public int x, y;
 
 	public Map<String, SpellParam> params = new HashMap();
 	public Map<SpellParam, SpellParam.Side> paramSides = new HashMap();
@@ -47,6 +50,8 @@ public abstract class SpellPiece {
 	public void initParams() {
 		// NO-OP
 	}
+	
+	public abstract EnumPieceType getPieceType();
 
 	public void addParam(SpellParam param) {
 		params.put(param.name, param);
@@ -55,6 +60,13 @@ public abstract class SpellPiece {
 
 	@SideOnly(Side.CLIENT)
 	public void draw() {
+		drawBackground();
+		drawParams();
+		GlStateManager.color(1F, 1F, 1F);
+	}
+	
+	@SideOnly(Side.CLIENT)
+	public void drawBackground() {
 		ResourceLocation res = PsiAPI.simpleSpellTextures.get(registryKey);
 		Minecraft.getMinecraft().renderEngine.bindTexture(res);
 		
@@ -66,9 +78,6 @@ public abstract class SpellPiece {
 		wr.pos(16, 0, 0).tex(1, 0).endVertex();;
 		wr.pos(0, 0, 0).tex(0, 0).endVertex();
 		Tessellator.getInstance().draw();
-
-		drawParams();
-		GlStateManager.color(1F, 1F, 1F);
 	}
 
 	@SideOnly(Side.CLIENT)

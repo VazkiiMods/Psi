@@ -13,7 +13,8 @@ package vazkii.psi.common.spell.base;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellPiece;
-import vazkii.psi.common.lib.LibSpellNames;
+import vazkii.psi.common.lib.LibPieceNames;
+import vazkii.psi.common.spell.other.PieceConnector;
 import vazkii.psi.common.spell.selector.PieceSelectorCaster;
 import vazkii.psi.common.spell.trick.PieceTrickDebug;
 
@@ -21,12 +22,16 @@ public final class ModSpellPieces {
 
 	public static PieceContainer selectorCaster;
 	
+	public static PieceContainer connector;
+	
 	public static PieceContainer trickDebug;
 	
 	public static void init() {
-		selectorCaster = register(PieceSelectorCaster.class, LibSpellNames.SELECTOR_CASTER);
+		selectorCaster = register(PieceSelectorCaster.class, LibPieceNames.SELECTOR_CASTER);
 		
-		trickDebug = register(PieceTrickDebug.class, LibSpellNames.TRICK_DEBUG);
+		connector = register(PieceConnector.class, LibPieceNames.CONNECTOR);
+		
+		trickDebug = register(PieceTrickDebug.class, LibPieceNames.TRICK_DEBUG);
 	}
 	
 	public static PieceContainer register(Class<? extends SpellPiece> clazz, String name) {

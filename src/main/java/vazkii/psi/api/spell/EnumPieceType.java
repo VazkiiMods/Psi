@@ -13,8 +13,9 @@ package vazkii.psi.api.spell;
 public enum EnumPieceType {
 
 	SELECTOR,
-	CONSTANT,
 	OPERATOR,
+	CONSTANT,
+	CONNECTOR,
 	TRICK;
 	
 }

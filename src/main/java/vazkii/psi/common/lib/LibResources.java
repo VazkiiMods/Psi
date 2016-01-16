@@ -16,7 +16,8 @@ public class LibResources {
 	
 	public static final String PREFIX_SHADER = "/assets/psi/shaders/";
 	public static final String PREFIX_GUI = PREFIX_MOD + "textures/gui/";
-	
+	public static final String PREFIX_SPELL = PREFIX_MOD + "textures/spell/";
+
 	public static final String SHADER_PSI_BAR = PREFIX_SHADER + "psiBar";
 	
 	public static final String GUI_CREATIVE = "psi.png";
@@ -27,4 +28,6 @@ public class LibResources {
 	public static final String GUI_SIGN = PREFIX_GUI + "signs/sign%d.png";
 	public static final String GUI_PROGRAMMER = PREFIX_GUI + "programmer.png";
 
+	public static final String SPELL_CONNECTOR_LINES = PREFIX_SPELL + "connectorLines.png"; 
+	
 }

@@ -193,6 +193,9 @@ public class GuiProgrammer extends GuiScreen {
 		if(button instanceof GuiButtonSpellPiece) {
 			SpellPiece piece = ((GuiButtonSpellPiece) button).piece.copy();
 			programmer.spell.grid.gridData[selectedX][selectedY] = piece;
+			piece.isInGrid = true;
+			piece.x = selectedX;
+			piece.y = selectedY;
 			onSpellChanged();
 			closePanel();
 		} else if(button instanceof GuiButtonSideConfig) {

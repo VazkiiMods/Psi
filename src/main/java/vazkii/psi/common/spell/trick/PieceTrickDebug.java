@@ -10,6 +10,7 @@
  */
 package vazkii.psi.common.spell.trick;
 
+import vazkii.psi.api.spell.EnumPieceType;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellParam;
 import vazkii.psi.api.spell.SpellPiece;
@@ -29,6 +30,11 @@ public class PieceTrickDebug extends SpellPiece {
 	public void initParams() {
 		addParam(target = new ParamAny(SpellParam.GENERIC_NAME_TARGET, SpellParam.BLUE, false));
 		addParam(number = new ParamNumber(SpellParam.GENERIC_NAME_NUMBER, SpellParam.RED, true));
+	}
+
+	@Override
+	public EnumPieceType getPieceType() {
+		return EnumPieceType.TRICK;
 	}
 
 
