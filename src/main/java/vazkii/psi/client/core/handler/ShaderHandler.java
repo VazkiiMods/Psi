@@ -36,12 +36,14 @@ public final class ShaderHandler {
 	private static final String VERT_EXTENSION = ".vsh";
 	private static final String FRAG_EXTENSION = ".fsh";
 	
+	public static int rawColor;
 	public static int psiBar;
 	
 	public static void init() {
 		if(!useShaders())
 			return;
 
+		rawColor = createProgram(LibResources.SHADER_RAW_COLOR, FRAG);
 		psiBar = createProgram(LibResources.SHADER_PSI_BAR, FRAG);
 	}
 

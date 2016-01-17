@@ -65,7 +65,9 @@ public abstract class SpellPiece {
 	@SideOnly(Side.CLIENT)
 	public void draw() {
 		drawBackground();
+		GlStateManager.translate(0F, 0F, 0.1F);
 		drawAdditional();
+		GlStateManager.translate(0F, 0F, 0.1F);
 		drawParams();
 		GlStateManager.color(1F, 1F, 1F);
 	}

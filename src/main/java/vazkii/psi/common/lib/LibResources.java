@@ -18,6 +18,7 @@ public class LibResources {
 	public static final String PREFIX_GUI = PREFIX_MOD + "textures/gui/";
 	public static final String PREFIX_SPELL = PREFIX_MOD + "textures/spell/";
 
+	public static final String SHADER_RAW_COLOR = PREFIX_SHADER + "rawColor";
 	public static final String SHADER_PSI_BAR = PREFIX_SHADER + "psiBar";
 	
 	public static final String GUI_CREATIVE = "psi.png";

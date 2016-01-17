@@ -45,13 +45,13 @@ public final class SpellGrid {
 	}
 	
 	public boolean exists(int x, int y) {
-		return x > 0 && y > 0 && x < GRID_SIZE && y < GRID_SIZE;
+		return x >= 0 && y >= 0 && x < GRID_SIZE && y < GRID_SIZE;
 	}
 	
 	public SpellPiece getPieceAtSideSafely(int x, int y, SpellParam.Side side) {
 		int xp = x + side.offx;
 		int yp = y + side.offy;
-		if(!exists(x, y))
+		if(!exists(xp, yp))
 			return null;
 		
 		return gridData[xp][yp];

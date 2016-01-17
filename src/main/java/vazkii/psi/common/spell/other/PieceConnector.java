@@ -41,18 +41,20 @@ public class PieceConnector extends SpellPiece {
 	@SideOnly(Side.CLIENT)
 	public void drawAdditional() {
 		drawSide(paramSides.get(target));
-		for(SpellParam.Side side : SpellParam.Side.class.getEnumConstants())
-			if(side.isEnabled()) {
-				SpellPiece piece = spell.grid.getPieceAtSideSafely(x, y, side);
-				if(piece != null)
-					for(SpellParam param : piece.paramSides.keySet()) {
-						SpellParam.Side paramSide = piece.paramSides.get(param);
-						if(paramSide.getOpposite() == side) {
-							drawSide(side);
-							break;
+		
+		if(isInGrid)
+			for(SpellParam.Side side : SpellParam.Side.class.getEnumConstants())
+				if(side.isEnabled()) {
+					SpellPiece piece = spell.grid.getPieceAtSideSafely(x, y, side);
+					if(piece != null)
+						for(SpellParam param : piece.paramSides.keySet()) {
+							SpellParam.Side paramSide = piece.paramSides.get(param);
+							if(paramSide.getOpposite() == side) {
+								drawSide(side);
+								break;
+							}
 						}
-					}
-			}
+				}
 	}
 
 	@SideOnly(Side.CLIENT)

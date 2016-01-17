@@ -11,12 +11,15 @@
 package vazkii.psi.client.core.proxy;
 
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import vazkii.psi.client.core.handler.ClientTickHandler;
 import vazkii.psi.client.core.handler.HUDHandler;
 import vazkii.psi.client.core.handler.KeybindHandler;
 import vazkii.psi.client.core.handler.ModelHandler;
 import vazkii.psi.client.core.handler.ShaderHandler;
+import vazkii.psi.client.render.tile.RenderTileProgrammer;
+import vazkii.psi.common.block.tile.TileProgrammer;
 import vazkii.psi.common.core.proxy.CommonProxy;
 
 public class ClientProxy extends CommonProxy {
@@ -31,6 +34,8 @@ public class ClientProxy extends CommonProxy {
 		
 		MinecraftForge.EVENT_BUS.register(new HUDHandler());
 		MinecraftForge.EVENT_BUS.register(new ClientTickHandler());
+		
+		ClientRegistry.bindTileEntitySpecialRenderer(TileProgrammer.class, new RenderTileProgrammer());
 	}
 	
 }

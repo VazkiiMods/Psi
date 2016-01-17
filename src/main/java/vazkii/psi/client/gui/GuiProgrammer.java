@@ -81,6 +81,7 @@ public class GuiProgrammer extends GuiScreen {
 	
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+		GlStateManager.pushMatrix();
 		tooltip.clear();
 		drawDefaultBackground();
 		
@@ -120,6 +121,7 @@ public class GuiProgrammer extends GuiScreen {
         GlStateManager.translate(gridLeft, gridTop, 0);
         programmer.spell.draw();
         GlStateManager.popMatrix();
+        GlStateManager.translate(0, 0, 1);
         
 		mc.getTextureManager().bindTexture(texture);
 
@@ -146,7 +148,9 @@ public class GuiProgrammer extends GuiScreen {
 		
 		if(!tooltip.isEmpty())
 			RenderHelper.renderTooltip(mouseX, mouseY, tooltip);
-		}
+		
+		GlStateManager.popMatrix();
+	}
 	
 	@Override
 	protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
