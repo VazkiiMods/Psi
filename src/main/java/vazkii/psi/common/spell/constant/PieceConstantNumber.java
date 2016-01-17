@@ -70,12 +70,22 @@ public class PieceConstantNumber extends SpellPiece {
 			return false;
 		
 		String newStr = valueStr;
-		if(newStr.equals("0") && c != '.')
-			newStr = "";
+		if(newStr.equals("0") || newStr.equals("-0")) {
+			if(c == '-')
+				newStr = "-0";
+			else if(c != '.')
+				newStr = newStr.replace("0", "");
+		}
 		
-		if(i == Keyboard.KEY_BACK)
-			newStr = newStr.isEmpty() ? "" : newStr.substring(0, newStr.length() - 1);
-		else newStr += c;
+		if(i == Keyboard.KEY_BACK) {
+			if(newStr.length() == 2 && newStr.startsWith("-"))
+				newStr = "-0";
+			else if(newStr.equals("-"))
+				newStr = "0";
+			else if(!newStr.isEmpty())
+				newStr = newStr.substring(0, newStr.length() - 1);
+		} else if(c != '-')
+			newStr += c;
 		
 		if(newStr.isEmpty())
 			newStr = "0";

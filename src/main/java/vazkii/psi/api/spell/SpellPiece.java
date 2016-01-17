@@ -11,7 +11,7 @@
 package vazkii.psi.api.spell;
 
 import java.awt.Color;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -21,6 +21,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -39,8 +40,8 @@ public abstract class SpellPiece {
 	public boolean isInGrid = false;
 	public int x, y;
 
-	public Map<String, SpellParam> params = new HashMap();
-	public Map<SpellParam, SpellParam.Side> paramSides = new HashMap<SpellParam, SpellParam.Side>();
+	public Map<String, SpellParam> params = new LinkedHashMap();
+	public Map<SpellParam, SpellParam.Side> paramSides = new LinkedHashMap<SpellParam, SpellParam.Side>();
 
 	public SpellPiece(Spell spell) {
 		this.spell = spell;
@@ -103,6 +104,10 @@ public abstract class SpellPiece {
 
 	public String getUnlocalizedName() {
 		return "psi.spellpiece." + registryKey;
+	}
+	
+	public String getUnlocalizedDesc() {
+		return "psi.spellpiece." + registryKey + ".desc";
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -173,6 +178,7 @@ public abstract class SpellPiece {
 	@SideOnly(Side.CLIENT)
 	public void getTooltip(List<String> tooltip) {
 		TooltipHelper.addToTooltip(tooltip, getUnlocalizedName());
+		TooltipHelper.addToTooltip(tooltip, EnumChatFormatting.GRAY + "%s", getUnlocalizedDesc());
 	}
 
 	@SideOnly(Side.CLIENT)

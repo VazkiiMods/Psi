@@ -29,8 +29,12 @@ public final class TooltipHelper {
 	public static void addToTooltip(List<String> tooltip, String s, Object... format) {
 		s = local(s).replaceAll("&", "\u00a7");
 		
-		if(format != null && format.length > 0)
-			s = String.format(s, format);
+		Object[] formatVals = new String[format.length];
+		for(int i = 0; i < format.length; i++)
+			formatVals[i] = local(format[i].toString()).replaceAll("&", "\u00a7");
+		
+		if(formatVals != null && formatVals.length > 0)
+			s = String.format(s, formatVals);
 		
 		tooltip.add(s);
 	}

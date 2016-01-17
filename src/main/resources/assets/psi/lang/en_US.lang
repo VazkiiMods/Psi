@@ -69,21 +69,33 @@ psi.cadstat.overflow=Overflow
 # SPELl PIECE NAMES
 # -- SELECTORS
 psi.spellpiece.selectorCaster=Selector: Caster
+psi.spellpiece.selectorCaster.desc=Selects the person casting the spell
 
 # -- OPERATORS
+psi.spellpiece.operatorSum=Operator: Sum
+psi.spellpiece.operatorSum.desc=A + B (+ C)
+psi.spellpiece.operatorSubtract=Operator: Subtract
+psi.spellpiece.operatorSubtract.desc=A - B (- C)
 
 # -- CONSTANTS
 psi.spellpiece.constantNumber=Constant: Number
+psi.spellpiece.constantNumber.desc=Select and type to set value
 
 # -- CONNECTORS
 psi.spellpiece.connector=Connector
+psi.spellpiece.connector.desc=Connects stuff and things
 
 # -- TRICKS
 psi.spellpiece.trickDebug=Trick: Debug
+psi.spellpiece.trickDebug.desc=For testing. Prints out the target
 
 # SPELL PARAMETER NAMES
 psi.spellparam.target=Target
 psi.spellparam.number=Number
+psi.spellparam.number1=Number A
+psi.spellparam.number2=Number B
+psi.spellparam.number3=Number C
+psi.spellparam.number4=Number D
 
 # COMPILER ERRORS
 psi.spellerror.nospell=No Spell to compile
@@ -96,5 +108,4 @@ psi.spellerror.loop=Connections create an endless loop
 
 # DEATH MESSAGES
 death.attack.psi-overload=%s overflowed their Psionic Energy
-
 

@@ -22,7 +22,11 @@ public abstract class SpellParam {
 
 	public static final String GENERIC_NAME_TARGET = "psi.spellparam.target";
 	public static final String GENERIC_NAME_NUMBER = "psi.spellparam.number";
-
+	public static final String GENERIC_NAME_NUMBER1 = "psi.spellparam.number1";
+	public static final String GENERIC_NAME_NUMBER2 = "psi.spellparam.number2";
+	public static final String GENERIC_NAME_NUMBER3 = "psi.spellparam.number3";
+	public static final String GENERIC_NAME_NUMBER4 = "psi.spellparam.number4";
+	
 	public final String name;
 	public final int color;
 	public final boolean canDisable;

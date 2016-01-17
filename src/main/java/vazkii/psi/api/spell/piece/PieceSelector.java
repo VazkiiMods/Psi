@@ -18,7 +18,7 @@ import vazkii.psi.api.spell.SpellMetadata;
 import vazkii.psi.api.spell.SpellPiece;
 import vazkii.psi.common.spell.SpellCompiler.SpellCompilationException;
 
-public abstract class PieceSelector<T> extends SpellPiece {
+public abstract class PieceSelector extends SpellPiece {
 
 	public PieceSelector(Spell spell) {
 		super(spell);
