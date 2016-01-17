@@ -241,7 +241,7 @@ public class GuiProgrammer extends GuiScreen {
 			p.getShownPieces(pieces);
 			
 			for(SpellPiece piece : pieces)
-				if(piece.getUnlocalizedName().contains(searchField.getText())) {
+				if(StatCollector.translateToLocal(piece.getUnlocalizedName()).toLowerCase().contains(searchField.getText().toLowerCase())) {
 					panelButtons.add(new GuiButtonSpellPiece(this, piece, panelX + 4 + (i % 5) * 18, panelY + 20 + (i / 5) * 18));
 					i++;
 				}
