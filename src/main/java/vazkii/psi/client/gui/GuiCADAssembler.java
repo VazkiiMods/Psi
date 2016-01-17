@@ -22,7 +22,6 @@ import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.common.block.base.ModBlocks;
 import vazkii.psi.common.block.tile.TileCADAssembler;
 import vazkii.psi.common.block.tile.container.ContainerCADAssembler;
-import vazkii.psi.common.item.ItemCAD;
 import vazkii.psi.common.lib.LibResources;
 
 public class GuiCADAssembler extends GuiContainer {

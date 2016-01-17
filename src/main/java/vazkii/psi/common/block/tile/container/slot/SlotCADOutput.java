@@ -11,10 +11,8 @@
 package vazkii.psi.common.block.tile.container.slot;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import vazkii.psi.common.block.tile.TileCADAssembler;
-import vazkii.psi.common.block.tile.container.ContainerCADAssembler;
 
 public class SlotCADOutput extends SlotExtractOnly {
 

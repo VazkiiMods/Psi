@@ -11,7 +11,6 @@
 package vazkii.psi.client.core.handler;
 
 import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.Queue;
 
 import net.minecraft.client.Minecraft;

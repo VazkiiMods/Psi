@@ -12,11 +12,7 @@ package vazkii.psi.client.core.handler;
 
 import java.util.HashMap;
 
-import org.apache.commons.lang3.tuple.Pair;
-
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemMeshDefinition;
-import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;

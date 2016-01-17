@@ -21,6 +21,7 @@ import vazkii.psi.api.spell.CompiledSpell;
 import vazkii.psi.api.spell.EnumPieceType;
 import vazkii.psi.api.spell.ISpellCompiler;
 import vazkii.psi.api.spell.Spell;
+import vazkii.psi.api.spell.SpellCompilationException;
 import vazkii.psi.api.spell.SpellGrid;
 import vazkii.psi.api.spell.SpellParam;
 import vazkii.psi.api.spell.SpellPiece;
@@ -130,19 +131,4 @@ public final class SpellCompiler implements ISpellCompiler {
 		return error != null;
 	}
 	
-	public static class SpellCompilationException extends Exception {
-
-		public final Pair<Integer, Integer> location;
-		
-		public SpellCompilationException(String s) {
-			this(s, -1, -1);
-		}
-		
-		public SpellCompilationException(String s, int x, int y) {
-			super("psi.spellerror." + s);
-			location = Pair.of(x, y);
-		}
-		
-	}
-
 }

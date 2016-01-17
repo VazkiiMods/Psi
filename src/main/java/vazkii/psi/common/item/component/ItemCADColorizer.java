@@ -11,16 +11,12 @@
 package vazkii.psi.common.item.component;
 
 import java.awt.Color;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Supplier;
 
 import org.apache.commons.lang3.text.WordUtils;
 
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
-import vazkii.psi.api.cad.EnumCADComponent;
 import vazkii.psi.api.cad.ICADColorizer;
 import vazkii.psi.client.core.handler.ClientTickHandler;
 import vazkii.psi.common.lib.LibItemNames;

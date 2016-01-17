@@ -13,7 +13,6 @@ package vazkii.psi.common.block.tile.container.slot;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.cad.ISocketable;
 
 public class SlotSocketable extends Slot {

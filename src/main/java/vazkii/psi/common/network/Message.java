@@ -20,7 +20,6 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.BlockPos;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
@@ -28,7 +27,6 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import vazkii.psi.api.spell.Spell;
-import vazkii.psi.common.core.helper.ItemNBTHelper;
 
 public class Message<REQ extends Message> implements Serializable, IMessage, IMessageHandler<REQ, IMessage> {
 

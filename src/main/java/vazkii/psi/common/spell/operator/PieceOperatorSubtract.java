@@ -13,9 +13,7 @@ package vazkii.psi.common.spell.operator;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellParam;
-import vazkii.psi.api.spell.param.ParamAny;
 import vazkii.psi.api.spell.param.ParamNumber;
-import vazkii.psi.api.spell.param.ParamNumberConstant;
 import vazkii.psi.api.spell.piece.PieceOperator;
 
 public class PieceOperatorSubtract extends PieceOperator {

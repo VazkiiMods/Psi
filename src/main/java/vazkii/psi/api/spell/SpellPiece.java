@@ -27,7 +27,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.internal.TooltipHelper;
-import vazkii.psi.common.spell.SpellCompiler.SpellCompilationException;
 
 public abstract class SpellPiece {
 

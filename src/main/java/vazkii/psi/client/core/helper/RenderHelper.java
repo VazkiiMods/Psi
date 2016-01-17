@@ -23,9 +23,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 import vazkii.psi.client.core.handler.ClientTickHandler;
-import vazkii.psi.common.lib.LibResources;
 
 public final class RenderHelper {
 

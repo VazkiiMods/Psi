@@ -12,13 +12,10 @@ package vazkii.psi.client.render.tile;
 
 import org.lwjgl.opengl.GL11;
 
-import com.sun.prism.ps.Shader;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.util.StatCollector;
-import sun.security.jgss.GSSCaller;
 import vazkii.psi.client.core.handler.ShaderHandler;
 import vazkii.psi.client.core.helper.RenderHelper;
 import vazkii.psi.client.gui.GuiProgrammer;

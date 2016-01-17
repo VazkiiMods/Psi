@@ -10,8 +10,6 @@
  */
 package vazkii.psi.api.cad;
 
-import net.minecraft.util.StatCollector;
-
 /**
  * An Enum defining all types of CAD components. 
  */

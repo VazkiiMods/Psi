@@ -14,14 +14,13 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import vazkii.psi.api.spell.EnumSpellStat;
 import vazkii.psi.api.spell.Spell;
+import vazkii.psi.api.spell.SpellCompilationException;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellMetadata;
 import vazkii.psi.api.spell.SpellParam;
 import vazkii.psi.api.spell.param.ParamAny;
-import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.param.ParamNumberConstant;
 import vazkii.psi.api.spell.piece.PieceTrick;
-import vazkii.psi.common.spell.SpellCompiler.SpellCompilationException;
 
 public class PieceTrickDebug extends PieceTrick {
 

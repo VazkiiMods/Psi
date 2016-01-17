@@ -12,8 +12,6 @@ package vazkii.psi.common.spell.constant;
 
 import org.lwjgl.input.Keyboard;
 
-import com.ibm.icu.impl.ICUService.Key;import com.sun.javafx.scene.control.behavior.KeyBinding;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.nbt.NBTTagCompound;

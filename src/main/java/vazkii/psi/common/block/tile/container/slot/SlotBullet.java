@@ -10,14 +10,10 @@
  */
 package vazkii.psi.common.block.tile.container.slot;
 
-import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import vazkii.psi.api.cad.ISocketable;
 import vazkii.psi.api.spell.ISpellContainer;
 import vazkii.psi.common.block.tile.TileCADAssembler;
-import vazkii.psi.common.item.base.ModItems;
-import vazkii.psi.common.item.component.ItemCADSocket;
 
 public class SlotBullet extends Slot {
 

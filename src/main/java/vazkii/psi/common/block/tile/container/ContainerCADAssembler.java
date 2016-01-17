@@ -18,16 +18,14 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.FurnaceRecipes;
-import net.minecraft.tileentity.TileEntityFurnace;
 import vazkii.psi.api.cad.EnumCADComponent;
 import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.cad.ICADComponent;
 import vazkii.psi.common.block.tile.TileCADAssembler;
 import vazkii.psi.common.block.tile.container.slot.SlotBullet;
-import vazkii.psi.common.block.tile.container.slot.SlotSocketable;
 import vazkii.psi.common.block.tile.container.slot.SlotCADComponent;
 import vazkii.psi.common.block.tile.container.slot.SlotCADOutput;
+import vazkii.psi.common.block.tile.container.slot.SlotSocketable;
 import vazkii.psi.common.item.base.ModItems;
 
 public class ContainerCADAssembler extends Container {
