@@ -10,8 +10,7 @@
  */
 package vazkii.psi.common.spell;
 
-import java.util.ArrayDeque;
-import java.util.Queue;
+import java.util.Stack;
 
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -32,7 +31,7 @@ public final class SpellCompiler implements ISpellCompiler {
 	String error = null;
 	Pair<Integer, Integer> errorLocation = null;
 	
-	Queue<SpellPiece> tricks = new ArrayDeque();
+	Stack<SpellPiece> tricks = new Stack();
 	
 	public SpellCompiler(Spell spell) {
 		this.spell = spell;
@@ -40,6 +39,8 @@ public final class SpellCompiler implements ISpellCompiler {
 		try {
 			compile();
 		} catch(SpellCompilationException e) {
+			e.printStackTrace();
+			
 			error = StatCollector.translateToLocal(e.getMessage());
 			errorLocation = e.location;
 		}
@@ -53,7 +54,7 @@ public final class SpellCompiler implements ISpellCompiler {
 		findTricks();
 		
 		while(!tricks.isEmpty())
-			buildPiece(tricks.poll());
+			buildPiece(tricks.pop());
 	}
 	
 	public void buildPiece(SpellPiece piece) throws SpellCompilationException {
@@ -62,11 +63,15 @@ public final class SpellCompiler implements ISpellCompiler {
 		
 		for(SpellParam param : piece.paramSides.keySet()) {
 			SpellParam.Side side = piece.paramSides.get(param);
-			if(!param.canDisable && !side.isEnabled())
-				throw new SpellCompilationException("unsetparam", piece.x, piece.y);
+			if(!side.isEnabled()) {
+				if(!param.canDisable)
+					throw new SpellCompilationException("unsetparam", piece.x, piece.y);
+				
+				continue;
+			}
 			
 			SpellPiece pieceAt = spell.grid.getPieceAtSideWithRedirections(piece.x, piece.y, side);
-			if(pieceAt == null || param.canAccept(pieceAt))
+			if(pieceAt == null || !param.canAccept(pieceAt))
 				throw new SpellCompilationException("invalidparam", piece.x, piece.y);
 			
 			buildPiece(pieceAt);

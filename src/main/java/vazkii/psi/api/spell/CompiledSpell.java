@@ -50,7 +50,7 @@ public class CompiledSpell {
 		}
 		
 		public void execute(SpellContext context) {
-			Object o = piece.execute(context); 
+			Object o = piece.execute(context);
 			
 			if(piece.getEvaluationType() != null)
 				evaluatedObjects[piece.x][piece.y] = o;

@@ -21,7 +21,7 @@ public class ParamNumber extends SpellParam {
 
 	@Override
 	public boolean canAccept(SpellPiece piece) {
-		return piece.getEvaluationType().isAssignableFrom(Number.class);
+		return Number.class.isAssignableFrom(piece.getEvaluationType());
 	}
 
 }

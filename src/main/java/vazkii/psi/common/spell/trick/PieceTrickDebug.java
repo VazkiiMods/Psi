@@ -36,12 +36,22 @@ public class PieceTrickDebug extends PieceTrick {
 	
 	@Override
 	public Object execute(SpellContext context) {
-		Double numberVal = this.<Double>getParamValue(number);
-		Object targetVal = getParamValue(target);
+		if(context.caster.worldObj.isRemote)
+			return null;
+			
+		Double numberVal = this.<Double>getParamValue(context, number);
+		Object targetVal = getParamValue(context, target);
 		
 		String s = targetVal.toString();
-		if(numberVal != null)
-			s = EnumChatFormatting.AQUA + "[" + numberVal + "] " + EnumChatFormatting.RESET + s;
+		if(numberVal != null) {
+			String numStr = "" + numberVal;
+			if(numberVal - (int)(double) numberVal == 0) {
+				int numInt = (int)(double) numberVal;
+				numStr = "" + numInt;
+			}
+			
+			s = EnumChatFormatting.AQUA + "[" + numStr + "] " + EnumChatFormatting.RESET + s;
+		}
 		
 		context.caster.addChatMessage(new ChatComponentText(s));
 		

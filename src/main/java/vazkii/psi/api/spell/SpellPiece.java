@@ -68,12 +68,19 @@ public abstract class SpellPiece {
 		paramSides.put(param, SpellParam.Side.OFF);
 	}
 	
-	public <T>T getParamValue(SpellParam param) {
+	public <T>T getParamValue(SpellContext context, SpellParam param) {
 		SpellParam.Side side = paramSides.get(param);
 		if(!side.isEnabled())
 			return null;
 		
-		return (T) spell.grid.getPieceAtSideWithRedirections(x, y, side);
+		SpellPiece piece = spell.grid.getPieceAtSideWithRedirections(x, y, side);
+		if(piece == null)
+			return null;
+		
+		if(context == null)
+			return (T) piece.execute(context);
+		
+		return (T) context.cspell.evaluatedObjects[piece.x][piece.y];
 	}
 
 	public String getUnlocalizedName() {

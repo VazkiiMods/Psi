@@ -84,11 +84,11 @@ public class ItemSpellBullet extends ItemMod implements ISpellContainer {
 	@Override
 	public void castSpell(ItemStack stack, SpellContext context) {
 		switch(stack.getItemDamage()) {
-		case 0: // Basic
+		case 1: // Basic
 			context.cspell.execute(context);
 			break;
 		
-		case 1: // Projectile
+		case 3: // Projectile
 			// TODO
 			break;
 		}
