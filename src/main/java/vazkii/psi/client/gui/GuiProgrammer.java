@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.tuple.Pair;
+import org.lwjgl.input.Keyboard;
 
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -301,6 +302,21 @@ public class GuiProgrammer extends GuiScreen {
 					if(piece.onKeyPressed(par1, par2))
 						onSpellChanged(false);
 					pieceHandled = true;
+				}
+			}
+			
+			if(par2 == Keyboard.KEY_DELETE) {
+				if(isShiftKeyDown() && isCtrlKeyDown()) {
+					if(!programmer.spell.grid.isEmpty()) {
+						programmer.spell = new Spell();
+						spellNameField.setText("");
+						onSpellChanged(false);
+						return;
+					}
+				} if(selectedX != -1 && selectedY != -1 && programmer.spell.grid.gridData[selectedX][selectedY] != null) {
+					programmer.spell.grid.gridData[selectedX][selectedY] = null;
+					onSpellChanged(false);
+					return;
 				}
 			}
 			
