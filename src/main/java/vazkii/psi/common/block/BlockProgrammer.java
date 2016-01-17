@@ -17,7 +17,6 @@ import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -26,6 +25,8 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import vazkii.psi.api.internal.VanillaPacketDispatcher;
+import vazkii.psi.api.spell.ISpellContainer;
+import vazkii.psi.api.spell.Spell;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.base.BlockFacing;
 import vazkii.psi.common.block.tile.TileProgrammer;
@@ -45,9 +46,25 @@ public class BlockProgrammer extends BlockFacing {
 	
 	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ) {
-		if(playerIn instanceof EntityPlayerMP)
-			VanillaPacketDispatcher.dispatchTEToPlayer(worldIn.getTileEntity(pos), (EntityPlayerMP) playerIn);
+		TileProgrammer programmer = (TileProgrammer) worldIn.getTileEntity(pos);
+		Runnable dispatch = () -> {
+			if(playerIn instanceof EntityPlayerMP)
+				VanillaPacketDispatcher.dispatchTEToPlayer(programmer, (EntityPlayerMP) playerIn);
+		};
 		
+		ItemStack stack = playerIn.getCurrentEquippedItem();
+		if(programmer.isEnabled() && stack != null && stack.getItem() instanceof ISpellContainer && programmer.spell != null && !programmer.spell.name.trim().isEmpty()) {
+			ISpellContainer container = (ISpellContainer) stack.getItem();
+			if(container.canSetSpell(stack)) {
+				container.setSpell(stack, programmer.spell);
+				programmer.spell = new Spell();
+				programmer.onSpellChanged();
+				dispatch.run();
+				return true;
+			}
+		}
+
+		dispatch.run();
 		playerIn.openGui(Psi.instance, LibGuiIDs.PROGRAMMER, worldIn, pos.getX(), pos.getY(), pos.getZ());
 		return true;
 	}

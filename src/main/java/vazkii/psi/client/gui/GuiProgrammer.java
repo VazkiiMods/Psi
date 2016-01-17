@@ -43,142 +43,159 @@ public class GuiProgrammer extends GuiScreen {
 
 	public TileProgrammer programmer;
 	public List<String> tooltip = new ArrayList();
-	
+
 	int xSize, ySize, padLeft, padTop, left, top, gridLeft, gridTop;
 	int cursorX, cursorY;
 	int selectedX, selectedY;
-    boolean panelEnabled, configEnabled;
-    int panelX, panelY, panelWidth, panelHeight;
-    List<GuiButton> panelButtons = new ArrayList();
-    List<GuiButton> configButtons = new ArrayList();
-    GuiTextField searchField;
-	
+	boolean panelEnabled, configEnabled;
+	int panelX, panelY, panelWidth, panelHeight;
+	List<GuiButton> panelButtons = new ArrayList();
+	List<GuiButton> configButtons = new ArrayList();
+	GuiTextField searchField;
+	GuiTextField spellNameField;
+
 	public GuiProgrammer(TileProgrammer programmer) {
 		this.programmer = programmer;
 	}
-	
+
 	@Override
 	public void initGui() {
 		xSize = 174;
-		ySize = 174;
+		ySize = 184;
 		padLeft = 7;
 		padTop = 7;
-        left = (width - xSize) / 2;
-        top = (height - ySize) / 2;
-        gridLeft = left + padLeft;
-        gridTop = top + padTop;
-        panelWidth = 100;
-        panelHeight = 125;
+		left = (width - xSize) / 2;
+		top = (height - ySize) / 2;
+		gridLeft = left + padLeft;
+		gridTop = top + padTop;
+		panelWidth = 100;
+		panelHeight = 125;
 		cursorX = cursorY = selectedX = selectedY = -1;
 		searchField = new GuiTextField(0, fontRendererObj, 0, 0, 70, 10);
 		searchField.setCanLoseFocus(false);
 		searchField.setFocused(true);
 		searchField.setEnableBackgroundDrawing(false);
-		
+
+		spellNameField = new GuiTextField(0, fontRendererObj, left + xSize - 130, top + ySize - 14, 120, 10);
+		spellNameField.setCanLoseFocus(false);
+		spellNameField.setFocused(true);
+		spellNameField.setEnableBackgroundDrawing(false);
+		spellNameField.setMaxStringLength(20);
+
 		if(programmer.spell == null)
 			programmer.spell = new Spell();
+		
+		spellNameField.setText(programmer.spell.name);
 	}
-	
+
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+		int color = 4210752;
+
 		GlStateManager.pushMatrix();
 		tooltip.clear();
 		drawDefaultBackground();
-		
+
 		GlStateManager.color(1F, 1F, 1F);
 		mc.getTextureManager().bindTexture(texture);
 
-        drawTexturedModalRect(left, top, 0, 0, xSize, ySize);
-        if(configEnabled) {
-        	drawTexturedModalRect(left - 81, top + 55, xSize, 30, 81, 115);
-        	
-        	int color = 4210752;
-        	SpellPiece piece = programmer.spell.grid.gridData[selectedX][selectedY];
-        	int i = 0;
-        	
-        	for(String s : piece.params.keySet()) {
-            	int x = left - 75;
-            	int y = top + 70 + i * 26;
-            	
-        		GlStateManager.color(1F, 1F, 1F);
-            	mc.getTextureManager().bindTexture(texture);
-                drawTexturedModalRect(x + 50, y - 8, xSize, 145, 24, 24);
-        		
-        		String localized = StatCollector.translateToLocal(s);
-        		mc.fontRendererObj.drawString(localized, x, y, color);
-        		i++;
-        	}
-        }
-        
-        cursorX = (mouseX - gridLeft) / 18;
-        cursorY = (mouseY - gridTop) / 18;
-        if(panelEnabled || cursorX > 8 || cursorY > 8 || cursorX < 0 || cursorY < 0 || mouseX < gridLeft || mouseY < gridTop) {
-        	cursorX = -1;
-        	cursorY = -1;
-        }
-        
-        GlStateManager.pushMatrix();
-        GlStateManager.translate(gridLeft, gridTop, 0);
-        programmer.spell.draw();
-        GlStateManager.popMatrix();
-        GlStateManager.translate(0, 0, 1);
-        
+		drawTexturedModalRect(left, top, 0, 0, xSize, ySize);
+		if(configEnabled) {
+			drawTexturedModalRect(left - 81, top + 55, xSize, 30, 81, 115);
+
+			SpellPiece piece = programmer.spell.grid.gridData[selectedX][selectedY];
+			int i = 0;
+
+			for(String s : piece.params.keySet()) {
+				int x = left - 75;
+				int y = top + 70 + i * 26;
+
+				GlStateManager.color(1F, 1F, 1F);
+				mc.getTextureManager().bindTexture(texture);
+				drawTexturedModalRect(x + 50, y - 8, xSize, 145, 24, 24);
+
+				String localized = StatCollector.translateToLocal(s);
+				mc.fontRendererObj.drawString(localized, x, y, color);
+				i++;
+			}
+		}
+
+		cursorX = (mouseX - gridLeft) / 18;
+		cursorY = (mouseY - gridTop) / 18;
+		if(panelEnabled || cursorX > 8 || cursorY > 8 || cursorX < 0 || cursorY < 0 || mouseX < gridLeft || mouseY < gridTop) {
+			cursorX = -1;
+			cursorY = -1;
+		}
+
+		GlStateManager.pushMatrix();
+		GlStateManager.translate(gridLeft, gridTop, 0);
+		programmer.spell.draw();
+		GlStateManager.popMatrix();
+		GlStateManager.translate(0, 0, 1);
+
 		mc.getTextureManager().bindTexture(texture);
 
-        if(selectedX != -1 && selectedY != -1)
-            drawTexturedModalRect(gridLeft + selectedX * 18, gridTop + selectedY * 18, 32, ySize, 16, 16);
-        if(cursorX != -1 && cursorY != -1) {
-        	SpellPiece pieceAt = programmer.spell.grid.gridData[cursorX][cursorY];
-        	if(pieceAt != null)
-        		pieceAt.getTooltip(tooltip);
-        	
-        	if(cursorX == selectedX && cursorY == selectedY)
-        		drawTexturedModalRect(gridLeft + cursorX * 18, gridTop + cursorY * 18, 16, ySize, 8, 16);
-        	else drawTexturedModalRect(gridLeft + cursorX * 18, gridTop + cursorY * 18, 16, ySize, 16, 16);
-        }
-        
-        if(panelEnabled) {
-        	drawRect(panelX, panelY, panelX + panelWidth, panelY + panelHeight, 0x88000000);
-    		GlStateManager.color(1F, 1F, 1F);
-    		drawTexturedModalRect(searchField.xPosition - 14, searchField.yPosition - 2, 0, ySize + 16, 12, 12);
-        	searchField.drawTextBox();
-        }
-        
+		if(selectedX != -1 && selectedY != -1)
+			drawTexturedModalRect(gridLeft + selectedX * 18, gridTop + selectedY * 18, 32, ySize, 16, 16);
+		if(cursorX != -1 && cursorY != -1) {
+			SpellPiece pieceAt = programmer.spell.grid.gridData[cursorX][cursorY];
+			if(pieceAt != null)
+				pieceAt.getTooltip(tooltip);
+
+			if(cursorX == selectedX && cursorY == selectedY)
+				drawTexturedModalRect(gridLeft + cursorX * 18, gridTop + cursorY * 18, 16, ySize, 8, 16);
+			else drawTexturedModalRect(gridLeft + cursorX * 18, gridTop + cursorY * 18, 16, ySize, 16, 16);
+		}
+
+		mc.fontRendererObj.drawString(StatCollector.translateToLocal("psimisc.name"), left + padLeft, spellNameField.yPosition + 1, color);
+		spellNameField.drawTextBox();
+		if(panelEnabled) {
+			mc.getTextureManager().bindTexture(texture);
+
+			drawRect(panelX, panelY, panelX + panelWidth, panelY + panelHeight, 0x88000000);
+			GlStateManager.color(1F, 1F, 1F);
+			drawTexturedModalRect(searchField.xPosition - 14, searchField.yPosition - 2, 0, ySize + 16, 12, 12);
+			searchField.drawTextBox();
+		}
+
+
 		super.drawScreen(mouseX, mouseY, partialTicks);
-		
+
 		if(!tooltip.isEmpty())
 			RenderHelper.renderTooltip(mouseX, mouseY, tooltip);
-		
+
 		GlStateManager.popMatrix();
 	}
-	
+
 	@Override
 	protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
 		super.mouseClicked(mouseX, mouseY, mouseButton);
-		
+
 		if(panelEnabled) {
 			searchField.mouseClicked(mouseX, mouseY, mouseButton);
 
 			if(mouseX < panelX || mouseY < panelY || mouseX > panelX + panelWidth || mouseY > panelY + panelHeight)
 				closePanel();
 		} else {
+			spellNameField.mouseClicked(mouseX, mouseY, mouseButton);
+
 			SpellGrid grid = programmer.spell.grid;
-	        if(cursorX != -1 && cursorY != -1) {
-	        	selectedX = cursorX;
-	        	selectedY = cursorY;
-	        	if(mouseButton == 1) {
-	        		if(isShiftKeyDown()) {
-	        			programmer.spell.grid.gridData[selectedX][selectedY] = null;
-	        			onSpellChanged();
-	        			return;
-	        		}
-	        		openPanel();
-	        	}
-	        	onSelectedChanged();
-	        }
+			if(cursorX != -1 && cursorY != -1) {
+				selectedX = cursorX;
+				selectedY = cursorY;
+				if(mouseButton == 1) {
+					if(isShiftKeyDown()) {
+						programmer.spell.grid.gridData[selectedX][selectedY] = null;
+						onSpellChanged();
+						return;
+					}
+					openPanel();
+				}
+				onSelectedChanged();
+			}
 		}
 	}
-	
+
 	@Override
 	protected void keyTyped(char par1, int par2) throws IOException {
 		super.keyTyped(par1, par2);
@@ -186,20 +203,37 @@ public class GuiProgrammer extends GuiScreen {
 		if(panelEnabled) {
 			searchField.textboxKeyTyped(par1, par2);
 			updatePanelButtons();
-		} else if(selectedX != -1 && selectedY != -1) {
-        	SpellPiece piece = programmer.spell.grid.gridData[selectedX][selectedY];
-        	if(piece != null && piece.onKeyPressed(par1, par2))
-        		onSpellChanged();
+		} else {
+			boolean pieceHandled = false;
+			
+			if(selectedX != -1 && selectedY != -1) {
+				SpellPiece piece = programmer.spell.grid.gridData[selectedX][selectedY];
+				if(piece != null && piece.interceptKeystrokes()) {
+					if(piece.onKeyPressed(par1, par2))
+						onSpellChanged();
+					pieceHandled = true;
+				}
+			}
+			
+			if(!pieceHandled) {
+				String lastName = spellNameField.getText();
+				spellNameField.textboxKeyTyped(par1, par2);
+				String currName = spellNameField.getText();
+				if(!lastName.equals(currName)) {
+					programmer.spell.name = currName;
+					onSpellChanged();
+				}
+			}
 		}
 	}
 
 	@Override
 	protected void actionPerformed(GuiButton button) throws IOException {
 		super.actionPerformed(button);
-		
+
 		if(button.id == 9000)
 			closePanel();
-		
+
 		if(button instanceof GuiButtonSpellPiece) {
 			SpellPiece piece = ((GuiButtonSpellPiece) button).piece.copy();
 			programmer.spell.grid.gridData[selectedX][selectedY] = piece;
@@ -213,63 +247,67 @@ public class GuiProgrammer extends GuiScreen {
 			onSpellChanged();
 		}
 	}
-	
+
 	@Override
 	public boolean doesGuiPauseGame() {
 		return false;
 	}
-	
+
 	private void openPanel() {
 		closePanel();
 		panelEnabled = true;
-		
+
 		panelX = gridLeft + (selectedX + 1) * 18;
 		panelY = gridTop;
-		
+
 		searchField.xPosition = panelX + 18;
 		searchField.yPosition = panelY + 4;
-		
+		spellNameField.setCanLoseFocus(true);
+		spellNameField.setFocused(false);
+
 		updatePanelButtons();
 	}
-	
+
 	private void updatePanelButtons() {
 		int i = 0;
-		
+
 		buttonList.removeAll(panelButtons);
 		panelButtons.clear();
-		
+
 		for(String key : PsiAPI.spellPieceRegistry.getKeys()) {
 			Class<? extends SpellPiece> clazz = PsiAPI.spellPieceRegistry.getObject(key);
 			SpellPiece p = SpellPiece.create(clazz, programmer.spell);
 			List<SpellPiece> pieces = new ArrayList();
 			p.getShownPieces(pieces);
-			
+
 			for(SpellPiece piece : pieces)
 				if(StatCollector.translateToLocal(piece.getUnlocalizedName()).toLowerCase().contains(searchField.getText().toLowerCase())) {
 					panelButtons.add(new GuiButtonSpellPiece(this, piece, panelX + 4 + (i % 5) * 18, panelY + 20 + (i / 5) * 18));
 					i++;
 				}
 		}
-		
+
 		buttonList.addAll(panelButtons);
 	}
-	
+
 	private void closePanel() {
 		panelEnabled = false;
 		buttonList.removeAll(panelButtons);
 		panelButtons.clear();
+		spellNameField.setCanLoseFocus(false);
+		spellNameField.setFocused(true);
 	}
-	
+
 	public void onSpellChanged() {
 		NetworkHandler.INSTANCE.sendToServer(new MessageSpellModified(programmer.getPos(), programmer.spell));
 		programmer.onSpellChanged();
 		onSelectedChanged();
 	}
-	
+
 	public void onSelectedChanged() {
 		buttonList.removeAll(configButtons);
 		configButtons.clear();
-		
+
 		if(selectedX != -1 && selectedY != -1) {
 			SpellPiece piece = programmer.spell.grid.gridData[selectedX][selectedY];
 			if(piece != null && piece.hasConfig()) {
@@ -281,22 +319,22 @@ public class GuiProgrammer extends GuiScreen {
 					for(SpellParam.Side side : SpellParam.Side.class.getEnumConstants()) {
 						if(!side.isEnabled() && !param.canDisable)
 							continue;
-						
+
 						int xp = x + side.offx * 8;
 						int yp = y + side.offy * 8;
 						configButtons.add(new GuiButtonSideConfig(this, selectedX, selectedY, paramName, side, xp, yp));
 					}
-					
+
 					i++;
 				}
-				
+
 				buttonList.addAll(configButtons);
 				configEnabled = true;
 				return;
 			}
 		}
-		
+
 		configEnabled = false;
 	}
-	
+
 }

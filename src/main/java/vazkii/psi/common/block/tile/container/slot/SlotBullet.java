@@ -14,12 +14,13 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import vazkii.psi.api.cad.ISocketable;
+import vazkii.psi.api.spell.ISpellContainer;
 import vazkii.psi.common.block.tile.TileCADAssembler;
 import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.item.component.ItemCADSocket;
 
 public class SlotBullet extends Slot {
-	
+
 	TileCADAssembler assembler;
 	int socketSlot;
 
@@ -28,13 +29,16 @@ public class SlotBullet extends Slot {
 		assembler = inventoryIn;
 		this.socketSlot = socketSlot;
 	}
-	
+
 	@Override
 	public boolean isItemValid(ItemStack stack) {
-		if(stack.getItem() != ModItems.spellBullet)
-			return false;
-			
-		return assembler.isBulletSlotEnabled(socketSlot);
+		if(stack.getItem() instanceof ISpellContainer) {
+			ISpellContainer container = (ISpellContainer) stack.getItem();
+			if(container.containsSpell(stack))
+				return assembler.isBulletSlotEnabled(socketSlot);
+		}
+		
+		return false;
 	}
-	
+
 }

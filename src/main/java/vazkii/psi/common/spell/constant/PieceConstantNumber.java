@@ -59,6 +59,11 @@ public class PieceConstantNumber extends SpellPiece {
 	}
 	
 	@Override
+	public boolean interceptKeystrokes() {
+		return true;
+	}
+	
+	@Override
 	public boolean onKeyPressed(char c, int i) {
 		String newStr = valueStr;
 		if(newStr.equals("0") && c != '.')

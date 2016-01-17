@@ -18,8 +18,7 @@ public class ItemMaterial extends ItemMod {
 	public static final String[] VARIANTS = {
 			"psidust",
 			"psimetal",
-			"psigem",
-			"spellBulletInactive"
+			"psigem"
 	};
 	
 	public ItemMaterial() {

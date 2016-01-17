@@ -8,6 +8,7 @@ psimisc.stats=Stats
 psimisc.socketing=Socketing
 psimisc.keybind=Psi Master Keybind
 psimisc.spellSelected=&dSpell Selected&7: %s
+psimisc.name=Name:
 
 # BLOCK NAMES
 tile.psi:cadAssembler.name=CAD Assembler
@@ -17,7 +18,6 @@ tile.psi:programmer.name=Spell Programmer
 item.psi:psidust.name=Psidust
 item.psi:psimetal.name=Psimetal Ingot
 item.psi:psigem.name=Psigem
-item.psi:spellBulletInactive.name=Spell Bullet
 item.psi:cad.name=Casting Assistant Device
 item.psi:cadAssemblyIron.name=Iron CAD Assembly
 item.psi:cadAssemblyGold.name=Gold CAD Assembly
@@ -43,7 +43,10 @@ item.psi:cadColorizerRed.name=Red CAD Colorizer
 item.psi:cadColorizerBlack.name=Black CAD Colorizer
 item.psi:cadColorizerRainbow.name=Full-Spectrum CAD Colorizer
 item.psi:cadColorizerGolden.name=Golden CAD Colorizer
-item.psi:spellBullet.name=Programmed Spell Bullet
+item.psi:spellBullet.name=Spell Bullet
+item.psi:spellBulletActive.name=Programmed Spell Bullet
+item.psi:spellBulletProjectile.name=Projectile Spell Bullet
+item.psi:spellBulletProjectileActive.name=Programmed Projectile Spell Bullet
 
 # COMPONENT NAMES
 psi.component.assembly=Assembly

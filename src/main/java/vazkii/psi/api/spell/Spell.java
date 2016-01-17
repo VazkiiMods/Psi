@@ -17,8 +17,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public final class Spell {
 
 	private static final String TAG_VALID = "validSpell";
-	
+	public static final String TAG_SPELL_NAME = "spellName";
+
 	public SpellGrid grid = new SpellGrid(this);
+	public String name = "";
 	
 	@SideOnly(Side.CLIENT)
 	public void draw() {
@@ -35,11 +37,15 @@ public final class Spell {
 	}
 	
 	public void readFromNBT(NBTTagCompound cmp) {
+		name = cmp.getString(TAG_SPELL_NAME);
+		
 		grid.readFromNBT(cmp);
 	}
 	
 	public void writeToNBT(NBTTagCompound cmp) {
 		cmp.setBoolean(TAG_VALID, true);
+		cmp.setString(TAG_SPELL_NAME, name);
+		
 		grid.writeToNBT(cmp);
 	}
 	

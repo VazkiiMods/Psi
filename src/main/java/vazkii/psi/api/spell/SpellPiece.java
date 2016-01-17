@@ -67,8 +67,11 @@ public abstract class SpellPiece {
 		drawBackground();
 		GlStateManager.translate(0F, 0F, 0.1F);
 		drawAdditional();
-		GlStateManager.translate(0F, 0F, 0.1F);
-		drawParams();
+		if(isInGrid) {
+			GlStateManager.translate(0F, 0F, 0.1F);
+			drawParams();
+		}
+		
 		GlStateManager.color(1F, 1F, 1F);
 	}
 	
@@ -99,8 +102,8 @@ public abstract class SpellPiece {
 			if(side.isEnabled()) {
 				int minX = 4;
 				int minY = 4;
-				minX += side.offx * 8;
-				minY += side.offy * 8;
+				minX += side.offx * 9;
+				minY += side.offy * 9;
 				
 				int maxX = minX + 8;
 				int maxY = minY + 8;
@@ -130,10 +133,15 @@ public abstract class SpellPiece {
 	}
 
 	@SideOnly(Side.CLIENT)
+	public boolean interceptKeystrokes() {
+		return false;
+	}
+	
+	@SideOnly(Side.CLIENT)
 	public boolean onKeyPressed(char c, int i) {
 		return false;
 	}
-
+	
 	@SideOnly(Side.CLIENT)
 	public boolean hasConfig() {
 		return !params.isEmpty();

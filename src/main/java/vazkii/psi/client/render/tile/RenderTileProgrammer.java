@@ -17,6 +17,7 @@ import com.sun.prism.ps.Shader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.util.StatCollector;
 import sun.security.jgss.GSSCaller;
 import vazkii.psi.client.core.handler.ShaderHandler;
 import vazkii.psi.client.core.helper.RenderHelper;
@@ -32,7 +33,7 @@ public class RenderTileProgrammer extends TileEntitySpecialRenderer<TileProgramm
 			GlStateManager.disableLighting();
 			GlStateManager.disableCull();
 			ShaderHandler.useShader(ShaderHandler.rawColor);
-			GlStateManager.translate(x, y + 1.6F, z);
+			GlStateManager.translate(x, y + 1.62F, z);
 			GL11.glRotatef(180F, 0F, 0F, 1F);
 			GL11.glRotatef(-90F, 0F, 1F, 0F);
 
@@ -42,14 +43,19 @@ public class RenderTileProgrammer extends TileEntitySpecialRenderer<TileProgramm
 
 			te.spell.draw();
 
-			Minecraft.getMinecraft().renderEngine.bindTexture(GuiProgrammer.texture);
+			Minecraft mc = Minecraft.getMinecraft(); 
+			mc.renderEngine.bindTexture(GuiProgrammer.texture);
 			
 			GlStateManager.enableBlend();
 			GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 			GlStateManager.color(1F, 1F, 1F, 0.5F);
 			GL11.glTranslatef(0F, 0F, -0.01F);
-			RenderHelper.drawTexturedModalRect(-7, -7, 0, 0, 0, 174, 174, 1F / 256F, 1F / 256F);
+			RenderHelper.drawTexturedModalRect(-7, -7, 0, 0, 0, 174, 184, 1F / 256F, 1F / 256F);
 
+			GL11.glTranslatef(0F, 0F, 0.01F);
+			mc.fontRendererObj.drawString(StatCollector.translateToLocal("psimisc.name"), 0, 164, 0xFFFFFF);
+			mc.fontRendererObj.drawString(te.spell.name, 38, 164, 0xFFFFFF);
+			
 			ShaderHandler.releaseShader();
 			GlStateManager.enableLighting();
 			GlStateManager.enableCull();
