@@ -11,6 +11,7 @@ psimisc.spellSelected=&dSpell Selected&7: %s
 psimisc.name=Name:
 psimisc.compiled=Compilation Successful
 psimisc.errored=Compilation Errored
+psimisc.weakCad=Your CAD's Stats are too weak to cast this Spell.
 
 # BLOCK NAMES
 tile.psi:cadAssembler.name=CAD Assembler
@@ -57,7 +58,7 @@ psi.component.socket=Socket
 psi.component.battery=Battery
 psi.component.dye=Colorizer
 
-# STAT NAMES
+# CAD STAT NAMES
 psi.cadstat.efficiency=Efficiency
 psi.cadstat.potency=Potency
 psi.cadstat.complexity=Complexity
@@ -65,6 +66,18 @@ psi.cadstat.projection=Projection
 psi.cadstat.bandwidth=Bandwidth
 psi.cadstat.sockets=Sockets
 psi.cadstat.overflow=Overflow
+
+# SPELL STAT NAMES
+psi.spellstat.complexity=Complexity
+psi.spellstat.complexity.desc=Amount of actions
+psi.spellstat.potency=Potency
+psi.spellstat.potency.desc=Power of the spell
+psi.spellstat.cost=Cost
+psi.spellstat.cost.desc=Psi cost on casting
+psi.spellstat.projection=Projection
+psi.spellstat.projection.desc=Amount of tricks
+psi.spellstat.bandwidth=Bandwidth
+psi.spellstat.bandwidth.desc=Spell width or height (largest)
 
 # SPELl PIECE NAMES
 # -- SELECTORS

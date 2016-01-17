@@ -59,12 +59,19 @@ public final class SpellCompiler implements ISpellCompiler {
 	}
 	
 	public void buildPiece(SpellPiece piece) throws SpellCompilationException {
+		buildPiece(piece, new ArrayList());
+	}
+	
+	public void buildPiece(SpellPiece piece, List<SpellPiece> visited) throws SpellCompilationException {
+		if(visited.contains(piece))
+			throw new SpellCompilationException("loop", piece.x, piece.y);
 		if(builtPieces.contains(piece))
 			return;
 		
 		compiled.actions.add(compiled.new Action(piece));
 		piece.addToMetadata(compiled.metadata);
 		builtPieces.add(piece);
+		visited.add(piece);
 		
 		List<SpellParam.Side> usedSides = new ArrayList();
 		
@@ -87,7 +94,7 @@ public final class SpellCompiler implements ISpellCompiler {
 			if(!param.canAccept(pieceAt))
 				throw new SpellCompilationException("invalidparam", piece.x, piece.y);
 			
-			buildPiece(pieceAt);
+			buildPiece(pieceAt, new ArrayList(visited));
 		}
 	}
 	

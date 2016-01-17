@@ -34,5 +34,8 @@ public enum EnumSpellStat {
 		return "psi.spellstat." + name().toLowerCase();
 	}
 	
+	public String getDesc() {
+		return getName() + ".desc";
+	}
 	
 }

@@ -115,7 +115,9 @@ public final class HUDHandler {
 			texture = GL11.glGetInteger(GL11.GL_TEXTURE_BINDING_2D);
 		}
 		
-		GlStateManager.disableAlpha();
+		GlStateManager.enableBlend();
+		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		
 		for(Deduction d : data.deductions) {
 			float a = d.getPercentile(pticks);
 			GlStateManager.color(r, g, b, a);
@@ -127,7 +129,6 @@ public final class HUDHandler {
 			ShaderHandler.useShader(ShaderHandler.psiBar, generateCallback(a, d.shatter));
 			Gui.drawModalRectWithCustomSizedTexture(x, y, 32, v, width, height, 64, 256);
 		}
-		GlStateManager.enableAlpha();
 		
 		float textY = origY;
 		if(max > 0) {

@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.tuple.Pair;
+import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -162,12 +163,20 @@ public class GuiProgrammer extends GuiScreen {
 				if(cadVal != -1)
 					s += "/" + cadVal;
 				
+				GlStateManager.color(1F, 1F, 1F);
 				drawTexturedModalRect(statX, statY, (stat.ordinal() + 1) * 12, ySize + 16, 12, 12);
-				mc.fontRendererObj.drawString(s, statX + 16, statY + 2, 0xFFFFFF);
+				mc.fontRendererObj.drawString(s, statX + 16, statY + 2, (cadStat != null && cadVal < val) ? 0xFF6666 : 0xFFFFFF);
 				mc.getTextureManager().bindTexture(texture);
+				
+				if(mouseX > statX && mouseY > statY && mouseX < statX + 12 && mouseY < statY + 12) {
+					tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal(stat.getName()));
+					tooltip.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal(stat.getDesc()));
+				}
+				
 				i++;
 			}
 		}
+		GlStateManager.color(1F, 1F, 1F);
 		
 		if(configEnabled) {
 			drawTexturedModalRect(left - 81, top + 55, xSize, 30, 81, 115);

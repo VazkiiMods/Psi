@@ -13,6 +13,7 @@ package vazkii.psi.common.block.tile;
 import net.minecraft.nbt.NBTTagCompound;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.common.block.tile.base.TileMod;
+import vazkii.psi.common.spell.SpellCompiler;
 
 public class TileProgrammer extends TileMod {
 
@@ -23,6 +24,10 @@ public class TileProgrammer extends TileMod {
 	
 	public boolean isEnabled() {
 		return spell != null && !spell.grid.isEmpty();
+	}
+	
+	public boolean canCompile() {
+		return isEnabled() && !(new SpellCompiler(spell).isErrored());
 	}
 	
 	public void onSpellChanged() {

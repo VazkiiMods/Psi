@@ -22,8 +22,6 @@ public interface ISpellContainer {
 	
 	public void castSpell(ItemStack stack, SpellContext context);
 	
-	public default boolean canSetSpell(ItemStack stack) {
-		return !containsSpell(stack);
-	}
+	public boolean canSetSpell(ItemStack stack);
 	
 }

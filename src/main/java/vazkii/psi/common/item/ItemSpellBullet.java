@@ -74,6 +74,11 @@ public class ItemSpellBullet extends ItemMod implements ISpellContainer {
 	public boolean containsSpell(ItemStack stack) {
 		return stack.getItemDamage() % 2 == 1;
 	}
+
+	@Override
+	public boolean canSetSpell(ItemStack stack) {
+		return true;
+	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)

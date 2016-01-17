@@ -53,12 +53,10 @@ public class BlockProgrammer extends BlockFacing {
 		};
 		
 		ItemStack stack = playerIn.getCurrentEquippedItem();
-		if(programmer.isEnabled() && stack != null && stack.getItem() instanceof ISpellContainer && programmer.spell != null && !programmer.spell.name.trim().isEmpty()) {
+		if(programmer.isEnabled() && stack != null && stack.getItem() instanceof ISpellContainer && programmer.spell != null && !programmer.spell.name.trim().isEmpty() && programmer.canCompile()) {
 			ISpellContainer container = (ISpellContainer) stack.getItem();
 			if(container.canSetSpell(stack)) {
 				container.setSpell(stack, programmer.spell);
-				programmer.spell = new Spell();
-				programmer.onSpellChanged();
 				dispatch.run();
 				return true;
 			}
