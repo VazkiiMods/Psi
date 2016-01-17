@@ -30,18 +30,16 @@ import vazkii.psi.common.lib.LibResources;
 public class PieceConnector extends SpellPiece {
 
 	private static final ResourceLocation lines = new ResourceLocation(LibResources.SPELL_CONNECTOR_LINES);
-	
+
 	public SpellParam target;
-	
+
 	public PieceConnector(Spell spell) {
 		super(spell);
 	}
-	
+
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void draw() {
-		drawBackground();
-		
+	public void drawAdditional() {
 		drawSide(paramSides.get(target));
 		for(SpellParam.Side side : SpellParam.Side.class.getEnumConstants())
 			if(side.isEnabled()) {
@@ -53,19 +51,16 @@ public class PieceConnector extends SpellPiece {
 							drawSide(side);
 							break;
 						}
-				}
+					}
 			}
-		
-		drawParams();
-		GlStateManager.color(1F, 1F, 1F);
 	}
-	
+
 	@SideOnly(Side.CLIENT)
 	public void drawSide(SpellParam.Side side) {
 		if(side.isEnabled()) {
 			Minecraft mc = Minecraft.getMinecraft();
 			mc.renderEngine.bindTexture(lines);
-			
+
 			double minU = 0;
 			double minV = 0;
 			switch(side) {
@@ -82,10 +77,10 @@ public class PieceConnector extends SpellPiece {
 				break;
 			default: break;
 			}
-			
+
 			double maxU = minU + 0.5;
 			double maxV = minV + 0.5;
-			
+
 			GlStateManager.color(1F, 1F, 1F);
 			WorldRenderer wr = Tessellator.getInstance().getWorldRenderer();
 			wr.begin(7, DefaultVertexFormats.POSITION_TEX);
@@ -96,7 +91,7 @@ public class PieceConnector extends SpellPiece {
 			Tessellator.getInstance().draw();
 		}
 	}
-	
+
 	@Override
 	public void getShownPieces(List<SpellPiece> pieces) {
 		for(SpellParam.Side side : SpellParam.Side.class.getEnumConstants())
@@ -106,7 +101,7 @@ public class PieceConnector extends SpellPiece {
 				pieces.add(piece);
 			}
 	}
-	
+
 	@Override
 	public void initParams() {
 		addParam(target = new ParamAny(SpellParam.GENERIC_NAME_TARGET, SpellParam.GRAY, false));

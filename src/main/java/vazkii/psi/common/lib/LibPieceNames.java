@@ -14,6 +14,8 @@ public final class LibPieceNames {
 
 	public static final String SELECTOR_CASTER = "selectorCaster";
 	
+	public static final String CONSTANT_NUMBER = "constantNumber";
+	
 	public static final String CONNECTOR = "connector";
 	
 	public static final String TRICK_DEBUG = "trickDebug";

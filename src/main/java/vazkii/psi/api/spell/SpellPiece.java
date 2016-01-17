@@ -58,9 +58,14 @@ public abstract class SpellPiece {
 		paramSides.put(param, SpellParam.Side.OFF);
 	}
 
+	public String getUnlocalizedName() {
+		return "psi.spellpiece." + registryKey;
+	}
+
 	@SideOnly(Side.CLIENT)
 	public void draw() {
 		drawBackground();
+		drawAdditional();
 		drawParams();
 		GlStateManager.color(1F, 1F, 1F);
 	}
@@ -78,6 +83,10 @@ public abstract class SpellPiece {
 		wr.pos(16, 0, 0).tex(1, 0).endVertex();;
 		wr.pos(0, 0, 0).tex(0, 0).endVertex();
 		Tessellator.getInstance().draw();
+	}
+	
+	public void drawAdditional() {
+		// NO-OP
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -118,14 +127,17 @@ public abstract class SpellPiece {
 		TooltipHelper.addToTooltip(tooltip, getUnlocalizedName());
 	}
 
+	@SideOnly(Side.CLIENT)
+	public boolean onKeyPressed(char c, int i) {
+		return false;
+	}
+
+	@SideOnly(Side.CLIENT)
 	public boolean hasConfig() {
 		return !params.isEmpty();
 	}
 	
-	public String getUnlocalizedName() {
-		return "psi.spellpiece." + registryKey;
-	}
-
+	@SideOnly(Side.CLIENT)
 	public void getShownPieces(List<SpellPiece> pieces) {
 		pieces.add(this);
 	}

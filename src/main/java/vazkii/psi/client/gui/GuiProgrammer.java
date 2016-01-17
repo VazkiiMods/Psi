@@ -179,8 +179,14 @@ public class GuiProgrammer extends GuiScreen {
 	protected void keyTyped(char par1, int par2) throws IOException {
 		super.keyTyped(par1, par2);
 
-		if(panelEnabled)
+		if(panelEnabled) {
 			searchField.textboxKeyTyped(par1, par2);
+			updatePanelButtons();
+		} else if(selectedX != -1 && selectedY != -1) {
+        	SpellPiece piece = programmer.spell.grid.gridData[selectedX][selectedY];
+        	if(piece != null && piece.onKeyPressed(par1, par2))
+        		onSpellChanged();
+		}
 	}
 
 	@Override
@@ -216,22 +222,31 @@ public class GuiProgrammer extends GuiScreen {
 		panelX = gridLeft + (selectedX + 1) * 18;
 		panelY = gridTop;
 		
+		searchField.xPosition = panelX + 18;
+		searchField.yPosition = panelY + 4;
+		
+		updatePanelButtons();
+	}
+	
+	private void updatePanelButtons() {
 		int i = 0;
+		
+		buttonList.removeAll(panelButtons);
+		panelButtons.clear();
+		
 		for(String key : PsiAPI.spellPieceRegistry.getKeys()) {
 			Class<? extends SpellPiece> clazz = PsiAPI.spellPieceRegistry.getObject(key);
 			SpellPiece p = SpellPiece.create(clazz, programmer.spell);
 			List<SpellPiece> pieces = new ArrayList();
 			p.getShownPieces(pieces);
 			
-			for(SpellPiece piece : pieces) {
-				panelButtons.add(new GuiButtonSpellPiece(this, piece, panelX + 4 + (i % 5) * 18, panelY + 20 + (i / 5) * 18));
-				i++;
-			}
+			for(SpellPiece piece : pieces)
+				if(piece.getUnlocalizedName().contains(searchField.getText())) {
+					panelButtons.add(new GuiButtonSpellPiece(this, piece, panelX + 4 + (i % 5) * 18, panelY + 20 + (i / 5) * 18));
+					i++;
+				}
 		}
 		
-		searchField.xPosition = panelX + 18;
-		searchField.yPosition = panelY + 4;
-
 		buttonList.addAll(panelButtons);
 	}
 	
@@ -239,7 +254,6 @@ public class GuiProgrammer extends GuiScreen {
 		panelEnabled = false;
 		buttonList.removeAll(panelButtons);
 		panelButtons.clear();
-		searchField.setText("");
 	}
 	
 	public void onSpellChanged() {

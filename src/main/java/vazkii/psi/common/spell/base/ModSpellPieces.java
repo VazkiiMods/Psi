@@ -14,6 +14,7 @@ import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellPiece;
 import vazkii.psi.common.lib.LibPieceNames;
+import vazkii.psi.common.spell.constant.PieceConstantNumber;
 import vazkii.psi.common.spell.other.PieceConnector;
 import vazkii.psi.common.spell.selector.PieceSelectorCaster;
 import vazkii.psi.common.spell.trick.PieceTrickDebug;
@@ -22,12 +23,16 @@ public final class ModSpellPieces {
 
 	public static PieceContainer selectorCaster;
 	
+	public static PieceContainer constantNumber;
+	
 	public static PieceContainer connector;
 	
 	public static PieceContainer trickDebug;
 	
 	public static void init() {
 		selectorCaster = register(PieceSelectorCaster.class, LibPieceNames.SELECTOR_CASTER);
+		
+		constantNumber = register(PieceConstantNumber.class, LibPieceNames.CONSTANT_NUMBER);
 		
 		connector = register(PieceConnector.class, LibPieceNames.CONNECTOR);
 		
