@@ -14,19 +14,23 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.tools.Tool;
+import org.apache.commons.lang3.tuple.Pair;
 
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import vazkii.psi.api.PsiAPI;
-import vazkii.psi.api.internal.TooltipHelper;
+import vazkii.psi.api.cad.EnumCADStat;
+import vazkii.psi.api.cad.ICAD;
+import vazkii.psi.api.spell.EnumSpellStat;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellGrid;
+import vazkii.psi.api.spell.SpellMetadata;
 import vazkii.psi.api.spell.SpellParam;
 import vazkii.psi.api.spell.SpellPiece;
 import vazkii.psi.client.core.helper.RenderHelper;
@@ -36,6 +40,7 @@ import vazkii.psi.common.block.tile.TileProgrammer;
 import vazkii.psi.common.lib.LibResources;
 import vazkii.psi.common.network.NetworkHandler;
 import vazkii.psi.common.network.message.MessageSpellModified;
+import vazkii.psi.common.spell.SpellCompiler;
 
 public class GuiProgrammer extends GuiScreen {
 
@@ -44,6 +49,8 @@ public class GuiProgrammer extends GuiScreen {
 	public TileProgrammer programmer;
 	public List<String> tooltip = new ArrayList();
 
+	SpellCompiler compiler;
+	
 	int xSize, ySize, padLeft, padTop, left, top, gridLeft, gridTop;
 	int cursorX, cursorY;
 	int selectedX, selectedY;
@@ -56,6 +63,7 @@ public class GuiProgrammer extends GuiScreen {
 
 	public GuiProgrammer(TileProgrammer programmer) {
 		this.programmer = programmer;
+		compiler = new SpellCompiler(programmer.spell);
 	}
 
 	@Override
@@ -100,6 +108,67 @@ public class GuiProgrammer extends GuiScreen {
 		mc.getTextureManager().bindTexture(texture);
 
 		drawTexturedModalRect(left, top, 0, 0, xSize, ySize);
+		drawTexturedModalRect(left - 48, top + 5, xSize, 0, 48, 30);
+		
+		int statusX = left - 16;
+		int statusY = top + 13;
+		drawTexturedModalRect(statusX, statusY, compiler.isErrored() ? 12 : 0, ySize + 28, 12, 12);
+		if(mouseX > statusX && mouseY > statusY && mouseX < statusX + 12 && mouseY < statusY + 12) {
+			if(compiler.isErrored()) {
+				tooltip.add(EnumChatFormatting.RED + StatCollector.translateToLocal("psimisc.errored"));
+				tooltip.add(EnumChatFormatting.GRAY + compiler.getError());
+				Pair<Integer, Integer> errorPos = compiler.getErrorLocation();
+				if(errorPos != null && errorPos.getLeft() != -1 && errorPos.getRight() != -1)
+					tooltip.add(EnumChatFormatting.GRAY + "[" + (errorPos.getLeft() + 1) + ", " + (errorPos.getRight() + 1) + "]");
+			} else tooltip.add(EnumChatFormatting.GREEN + StatCollector.translateToLocal("psimisc.compiled"));
+		}
+		
+		ItemStack cad = PsiAPI.getPlayerCAD(mc.thePlayer);
+		if(cad != null) {
+			int cadX = left - 42;
+			int cadY = top + 12;
+			mc.getRenderItem().renderItemAndEffectIntoGUI(cad, cadX, cadY);
+			if(mouseX > cadX && mouseY > cadY && mouseX < cadX + 16 && mouseY < cadY + 16) {
+				List<String> itemTooltip = cad.getTooltip(mc.thePlayer, false);
+		        for (int i = 0; i < itemTooltip.size(); ++i)
+		            if (i == 0)
+		            	itemTooltip.set(i, cad.getRarity().rarityColor + itemTooltip.get(i));
+		            else itemTooltip.set(i, EnumChatFormatting.GRAY + itemTooltip.get(i));
+				
+				tooltip.addAll(itemTooltip);
+			}
+		}
+		mc.getTextureManager().bindTexture(texture);
+		
+		SpellMetadata meta = null;
+		if(!compiler.isErrored()) {
+			int i = 0;
+			meta = compiler.getCompiledSpell().metadata;
+			
+			for(EnumSpellStat stat : meta.stats.keySet()) {
+				int statX = left + xSize + 3;
+				int statY = top + 20 + i * 20;
+				int val = meta.stats.get(stat);
+				
+				EnumCADStat cadStat = stat.getTarget();
+				int cadVal = 0;
+				if(cadStat == null)
+					cadVal = -1;
+				else if(cad != null) {
+					ICAD cadItem = (ICAD) cad.getItem();
+					cadVal = cadItem.getStatValue(cad, cadStat);
+				}
+				String s = "" + val;
+				if(cadVal != -1)
+					s += "/" + cadVal;
+				
+				drawTexturedModalRect(statX, statY, (stat.ordinal() + 1) * 12, ySize + 16, 12, 12);
+				mc.fontRendererObj.drawString(s, statX + 16, statY + 2, 0xFFFFFF);
+				mc.getTextureManager().bindTexture(texture);
+				i++;
+			}
+		}
+		
 		if(configEnabled) {
 			drawTexturedModalRect(left - 81, top + 55, xSize, 30, 81, 115);
 
@@ -130,7 +199,18 @@ public class GuiProgrammer extends GuiScreen {
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(gridLeft, gridTop, 0);
 		programmer.spell.draw();
+		
+		if(compiler.isErrored()) {
+			Pair<Integer, Integer> errorPos = compiler.getErrorLocation();
+			if(errorPos != null && errorPos.getLeft() != -1 && errorPos.getRight() != -1) {
+				int errorX = errorPos.getLeft() * 18 + 12;
+				int errorY = errorPos.getRight() * 18 + 8;
+				mc.fontRendererObj.drawStringWithShadow("!!", errorX, errorY, 0xFF0000);
+			}
+		}
+		
 		GlStateManager.popMatrix();
+		GlStateManager.color(1F, 1F, 1F);
 		GlStateManager.translate(0, 0, 1);
 
 		mc.getTextureManager().bindTexture(texture);
@@ -150,6 +230,7 @@ public class GuiProgrammer extends GuiScreen {
 		mc.fontRendererObj.drawString(StatCollector.translateToLocal("psimisc.name"), left + padLeft, spellNameField.yPosition + 1, color);
 		spellNameField.drawTextBox();
 		if(panelEnabled) {
+			tooltip.clear();
 			mc.getTextureManager().bindTexture(texture);
 
 			drawRect(panelX, panelY, panelX + panelWidth, panelY + panelHeight, 0x88000000);
@@ -186,7 +267,7 @@ public class GuiProgrammer extends GuiScreen {
 				if(mouseButton == 1) {
 					if(isShiftKeyDown()) {
 						programmer.spell.grid.gridData[selectedX][selectedY] = null;
-						onSpellChanged();
+						onSpellChanged(false);
 						return;
 					}
 					openPanel();
@@ -210,7 +291,7 @@ public class GuiProgrammer extends GuiScreen {
 				SpellPiece piece = programmer.spell.grid.gridData[selectedX][selectedY];
 				if(piece != null && piece.interceptKeystrokes()) {
 					if(piece.onKeyPressed(par1, par2))
-						onSpellChanged();
+						onSpellChanged(false);
 					pieceHandled = true;
 				}
 			}
@@ -221,7 +302,7 @@ public class GuiProgrammer extends GuiScreen {
 				String currName = spellNameField.getText();
 				if(!lastName.equals(currName)) {
 					programmer.spell.name = currName;
-					onSpellChanged();
+					onSpellChanged(true);
 				}
 			}
 		}
@@ -240,11 +321,11 @@ public class GuiProgrammer extends GuiScreen {
 			piece.isInGrid = true;
 			piece.x = selectedX;
 			piece.y = selectedY;
-			onSpellChanged();
+			onSpellChanged(false);
 			closePanel();
 		} else if(button instanceof GuiButtonSideConfig) {
 			((GuiButtonSideConfig) button).onClick();
-			onSpellChanged();
+			onSpellChanged(false);
 		}
 	}
 
@@ -298,10 +379,13 @@ public class GuiProgrammer extends GuiScreen {
 		spellNameField.setFocused(true);
 	}
 
-	public void onSpellChanged() {
+	public void onSpellChanged(boolean nameOnly) {
 		NetworkHandler.INSTANCE.sendToServer(new MessageSpellModified(programmer.getPos(), programmer.spell));
 		programmer.onSpellChanged();
 		onSelectedChanged();
+		
+		if(!nameOnly)
+			compiler = new SpellCompiler(programmer.spell);
 	}
 
 	public void onSelectedChanged() {

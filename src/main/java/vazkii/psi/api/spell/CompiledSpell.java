@@ -24,6 +24,7 @@ public class CompiledSpell {
 	
 	public CompiledSpell(Spell source) {
 		sourceSpell = source;
+		metadata.setStat(EnumSpellStat.BANDWIDTH, source.grid.getSize());
 		
 		spotsEvaluated = new boolean[SpellGrid.GRID_SIZE][SpellGrid.GRID_SIZE];
 		evaluatedObjects = new Object[SpellGrid.GRID_SIZE][SpellGrid.GRID_SIZE];

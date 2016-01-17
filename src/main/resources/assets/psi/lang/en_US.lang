@@ -9,6 +9,8 @@ psimisc.socketing=Socketing
 psimisc.keybind=Psi Master Keybind
 psimisc.spellSelected=&dSpell Selected&7: %s
 psimisc.name=Name:
+psimisc.compiled=Compilation Successful
+psimisc.errored=Compilation Errored
 
 # BLOCK NAMES
 tile.psi:cadAssembler.name=CAD Assembler
@@ -83,6 +85,16 @@ psi.spellpiece.trickDebug=Trick: Debug
 psi.spellparam.target=Target
 psi.spellparam.number=Number
 
+# COMPILER ERRORS
+psi.spellerror.nospell=No Spell to compile
+psi.spellerror.notricks=Spell has no Tricks
+psi.spellerror.unsetparam=Required Parameter is not set
+psi.spellerror.nullparam=Parameter is pointing to empty spot
+psi.spellerror.invalidparam=Parameter is pointing to invalid piece
+psi.spellerror.samesideparams=Two or more parameters are sharing a side
+psi.spellerror.loop=Connections create an endless loop
+
 # DEATH MESSAGES
 death.attack.psi-overload=%s overflowed their Psionic Energy
+
 

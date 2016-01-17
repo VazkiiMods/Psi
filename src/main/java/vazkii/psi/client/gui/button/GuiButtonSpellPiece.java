@@ -39,10 +39,8 @@ public class GuiButtonSpellPiece extends GuiButton {
 			piece.draw();
 			GlStateManager.popMatrix();
 			
-			if(i == 2) {
-				gui.tooltip.clear();
+			if(i == 2)
 				piece.getTooltip(gui.tooltip);
-			}
 		}
 	}
 

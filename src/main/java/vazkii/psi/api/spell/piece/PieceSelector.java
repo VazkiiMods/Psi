@@ -11,9 +11,12 @@
 package vazkii.psi.api.spell.piece;
 
 import vazkii.psi.api.spell.EnumPieceType;
+import vazkii.psi.api.spell.EnumSpellStat;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
+import vazkii.psi.api.spell.SpellMetadata;
 import vazkii.psi.api.spell.SpellPiece;
+import vazkii.psi.common.spell.SpellCompiler.SpellCompilationException;
 
 public abstract class PieceSelector<T> extends SpellPiece {
 
@@ -24,6 +27,11 @@ public abstract class PieceSelector<T> extends SpellPiece {
 	@Override
 	public EnumPieceType getPieceType() {
 		return EnumPieceType.SELECTOR;
+	}
+	
+	@Override
+	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
+		meta.addStat(EnumSpellStat.COMPLEXITY, 1);
 	}
 
 	@Override

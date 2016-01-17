@@ -66,6 +66,9 @@ public class PieceConstantNumber extends SpellPiece {
 	
 	@Override
 	public boolean onKeyPressed(char c, int i) {
+		if("FDfd".indexOf(c) >= 0)
+			return false;
+		
 		String newStr = valueStr;
 		if(newStr.equals("0") && c != '.')
 			newStr = "";

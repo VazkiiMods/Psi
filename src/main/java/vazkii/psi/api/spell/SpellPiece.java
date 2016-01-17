@@ -26,6 +26,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.internal.TooltipHelper;
+import vazkii.psi.common.spell.SpellCompiler.SpellCompilationException;
 
 public abstract class SpellPiece {
 
@@ -59,7 +60,7 @@ public abstract class SpellPiece {
 
 	public abstract Object execute(SpellContext context);
 	
-	public void addToMetadata(SpellMetadata meta) {
+	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
 		// NO-OP
 	}
 	
@@ -73,14 +74,31 @@ public abstract class SpellPiece {
 		if(!side.isEnabled())
 			return null;
 		
-		SpellPiece piece = spell.grid.getPieceAtSideWithRedirections(x, y, side);
-		if(piece == null)
+		try {
+			SpellPiece piece = spell.grid.getPieceAtSideWithRedirections(x, y, side);
+			if(piece == null || !param.canAccept(piece))
+				return null;
+			
+			if(context == null)
+				return (T) piece.execute(context);
+			
+			return (T) context.cspell.evaluatedObjects[piece.x][piece.y];
+		} catch(SpellCompilationException e) {
+			return null;
+		}
+	}
+	
+	public <T>T getParamEvaluation(SpellParam param) throws SpellCompilationException {
+		SpellParam.Side side = paramSides.get(param);
+		if(!side.isEnabled())
 			return null;
 		
-		if(context == null)
-			return (T) piece.execute(context);
+		SpellPiece piece = spell.grid.getPieceAtSideWithRedirections(x, y, side);
 		
-		return (T) context.cspell.evaluatedObjects[piece.x][piece.y];
+		if(piece == null || !param.canAccept(piece))
+			return null;
+		
+		return (T) piece.evaluate();
 	}
 
 	public String getUnlocalizedName() {

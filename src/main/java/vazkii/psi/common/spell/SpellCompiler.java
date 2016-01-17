@@ -10,6 +10,8 @@
  */
 package vazkii.psi.common.spell;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -31,6 +33,7 @@ public final class SpellCompiler implements ISpellCompiler {
 	String error = null;
 	Pair<Integer, Integer> errorLocation = null;
 	
+	List<SpellPiece> builtPieces = new ArrayList();
 	Stack<SpellPiece> tricks = new Stack();
 	
 	public SpellCompiler(Spell spell) {
@@ -39,8 +42,6 @@ public final class SpellCompiler implements ISpellCompiler {
 		try {
 			compile();
 		} catch(SpellCompilationException e) {
-			e.printStackTrace();
-			
 			error = StatCollector.translateToLocal(e.getMessage());
 			errorLocation = e.location;
 		}
@@ -58,8 +59,14 @@ public final class SpellCompiler implements ISpellCompiler {
 	}
 	
 	public void buildPiece(SpellPiece piece) throws SpellCompilationException {
+		if(builtPieces.contains(piece))
+			return;
+		
 		compiled.actions.add(compiled.new Action(piece));
 		piece.addToMetadata(compiled.metadata);
+		builtPieces.add(piece);
+		
+		List<SpellParam.Side> usedSides = new ArrayList();
 		
 		for(SpellParam param : piece.paramSides.keySet()) {
 			SpellParam.Side side = piece.paramSides.get(param);
@@ -70,8 +77,14 @@ public final class SpellCompiler implements ISpellCompiler {
 				continue;
 			}
 			
+			if(usedSides.contains(side))
+				throw new SpellCompilationException("samesideparams", piece.x, piece.y);
+			usedSides.add(side);
+			
 			SpellPiece pieceAt = spell.grid.getPieceAtSideWithRedirections(piece.x, piece.y, side);
-			if(pieceAt == null || !param.canAccept(pieceAt))
+			if(pieceAt == null)
+				throw new SpellCompilationException("nullparam", piece.x, piece.y);
+			if(!param.canAccept(pieceAt))
 				throw new SpellCompilationException("invalidparam", piece.x, piece.y);
 			
 			buildPiece(pieceAt);
@@ -81,7 +94,7 @@ public final class SpellCompiler implements ISpellCompiler {
 	public void findTricks() throws SpellCompilationException {
 		for(int i = 0; i < SpellGrid.GRID_SIZE; i++)
 			for(int j = 0; j < SpellGrid.GRID_SIZE; j++) {
-				SpellPiece piece = spell.grid.gridData[i][j];
+				SpellPiece piece = spell.grid.gridData[j][i];
 				if(piece != null && piece.getPieceType() == EnumPieceType.TRICK)
 					tricks.add(piece);
 			}

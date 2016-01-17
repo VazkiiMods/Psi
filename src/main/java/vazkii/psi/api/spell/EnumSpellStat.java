@@ -14,9 +14,9 @@ import vazkii.psi.api.cad.EnumCADStat;
 
 public enum EnumSpellStat {
 
+	COMPLEXITY(EnumCADStat.COMPLEXITY),
 	POTENCY(EnumCADStat.POTENCY),
 	COST(null),
-	COMPLEXITY(EnumCADStat.COMPLEXITY),
 	PROJECTION(EnumCADStat.PROJECTION),
 	BANDWIDTH(EnumCADStat.BANDWIDTH);
 	

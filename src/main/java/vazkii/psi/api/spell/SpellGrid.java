@@ -10,13 +10,15 @@
  */
 package vazkii.psi.api.spell;
 
-import org.lwjgl.opengl.GLSync;
+import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import vazkii.psi.common.spell.SpellCompiler.SpellCompilationException;
 
 public final class SpellGrid {
 
@@ -44,12 +46,49 @@ public final class SpellGrid {
 		}
 	}
 	
+	public int getSize() {
+		boolean empty = false;
+		int leftmost = GRID_SIZE;
+		int rightmost = -1;
+		int topmost = GRID_SIZE;
+		int bottommost = -1;
+		
+		for(int i = 0; i < GRID_SIZE; i++)
+			for(int j = 0; j < GRID_SIZE; j++) {
+				SpellPiece p = gridData[i][j];
+				if(p != null) {
+					empty = false;
+					if(i < leftmost)
+						leftmost = i;
+					if(i > rightmost)
+						rightmost = i;
+					if(j < topmost)
+						topmost = j;
+					if(j > bottommost)
+						bottommost = j;
+				}
+			}
+		
+		if(empty)
+			return 0;
+		
+		return Math.max(rightmost - leftmost + 1, bottommost - topmost + 1);
+	}
+	
 	public static boolean exists(int x, int y) {
 		return x >= 0 && y >= 0 && x < GRID_SIZE && y < GRID_SIZE;
 	}
 	
-	public SpellPiece getPieceAtSideWithRedirections(int x, int y, SpellParam.Side side) {
+	public SpellPiece getPieceAtSideWithRedirections(int x, int y, SpellParam.Side side) throws SpellCompilationException {
+		return getPieceAtSideWithRedirections(new ArrayList(), x, y, side);
+	}
+	
+	public SpellPiece getPieceAtSideWithRedirections(List<SpellPiece> traversed, int x, int y, SpellParam.Side side) throws SpellCompilationException {
 		SpellPiece atSide = getPieceAtSideSafely(x, y, side);
+		if(traversed.contains(atSide))
+			throw new SpellCompilationException("loop");
+			
+		traversed.add(atSide);
 		if(atSide == null || !(atSide instanceof IRedirector))
 			return atSide;
 		
@@ -58,7 +97,7 @@ public final class SpellGrid {
 		if(!rside.isEnabled())
 			return null;
 		
-		return getPieceAtSideWithRedirections(atSide.x, atSide.y, rside);
+		return getPieceAtSideWithRedirections(traversed, atSide.x, atSide.y, rside);
 	}
 	
 	public SpellPiece getPieceAtSideSafely(int x, int y, SpellParam.Side side) {

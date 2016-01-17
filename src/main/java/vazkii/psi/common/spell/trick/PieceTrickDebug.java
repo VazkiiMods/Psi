@@ -12,12 +12,15 @@ package vazkii.psi.common.spell.trick;
 
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
+import vazkii.psi.api.spell.EnumSpellStat;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
+import vazkii.psi.api.spell.SpellMetadata;
 import vazkii.psi.api.spell.SpellParam;
 import vazkii.psi.api.spell.param.ParamAny;
 import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.piece.PieceTrick;
+import vazkii.psi.common.spell.SpellCompiler.SpellCompilationException;
 
 public class PieceTrickDebug extends PieceTrick {
 
@@ -35,6 +38,15 @@ public class PieceTrickDebug extends PieceTrick {
 	}
 	
 	@Override
+	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
+		Double numberVal = this.<Double>getParamEvaluation(number);
+		if(numberVal != null) {
+			meta.addStat(EnumSpellStat.POTENCY, numberVal.intValue());
+			meta.addStat(EnumSpellStat.COST, numberVal.intValue() * 3);
+		}
+	}
+	
+	@Override
 	public Object execute(SpellContext context) {
 		if(context.caster.worldObj.isRemote)
 			return null;
@@ -45,8 +57,8 @@ public class PieceTrickDebug extends PieceTrick {
 		String s = targetVal.toString();
 		if(numberVal != null) {
 			String numStr = "" + numberVal;
-			if(numberVal - (int)(double) numberVal == 0) {
-				int numInt = (int)(double) numberVal;
+			if(numberVal - numberVal.intValue() == 0) {
+				int numInt = numberVal.intValue();
 				numStr = "" + numInt;
 			}
 			

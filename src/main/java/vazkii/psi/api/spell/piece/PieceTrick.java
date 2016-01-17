@@ -11,9 +11,12 @@
 package vazkii.psi.api.spell.piece;
 
 import vazkii.psi.api.spell.EnumPieceType;
+import vazkii.psi.api.spell.EnumSpellStat;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
+import vazkii.psi.api.spell.SpellMetadata;
 import vazkii.psi.api.spell.SpellPiece;
+import vazkii.psi.common.spell.SpellCompiler.SpellCompilationException;
 
 public class PieceTrick extends SpellPiece {
 
@@ -26,6 +29,12 @@ public class PieceTrick extends SpellPiece {
 		return EnumPieceType.TRICK;
 	}
 
+	@Override
+	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
+		meta.addStat(EnumSpellStat.COMPLEXITY, 1);
+		meta.addStat(EnumSpellStat.PROJECTION, 1);
+	}
+	
 	@Override
 	public Class<?> getEvaluationType() {
 		return Null.class;
