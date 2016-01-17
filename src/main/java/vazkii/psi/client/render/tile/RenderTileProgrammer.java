@@ -12,13 +12,18 @@ package vazkii.psi.client.render.tile;
 
 import org.lwjgl.opengl.GL11;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.GlStateManager;import net.minecraft.client.renderer.block.model.BlockFaceUV;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.dispenser.IBlockSource;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.StatCollector;
+import vazkii.psi.client.core.handler.ClientTickHandler;
 import vazkii.psi.client.core.handler.ShaderHandler;
 import vazkii.psi.client.core.helper.RenderHelper;
 import vazkii.psi.client.gui.GuiProgrammer;
+import vazkii.psi.common.block.base.BlockFacing;
 import vazkii.psi.common.block.tile.TileProgrammer;
 
 public class RenderTileProgrammer extends TileEntitySpecialRenderer<TileProgrammer> {
@@ -31,13 +36,33 @@ public class RenderTileProgrammer extends TileEntitySpecialRenderer<TileProgramm
 			GlStateManager.disableCull();
 			ShaderHandler.useShader(ShaderHandler.rawColor);
 			GlStateManager.translate(x, y + 1.62F, z);
-			GL11.glRotatef(180F, 0F, 0F, 1F);
-			GL11.glRotatef(-90F, 0F, 1F, 0F);
-
+			GlStateManager.rotate(180F, 0F, 0F, 1F);
+			GlStateManager.rotate(-90F, 0F, 1F, 0F);
+			
+			float rot = 90F;
+			IBlockState state = te.getBlockType().getActualState(te.getWorld().getBlockState(te.getPos()), te.getWorld(), te.getPos());
+			EnumFacing facing = state.getValue(BlockFacing.FACING);
+			switch(facing) {
+			case SOUTH: 
+				rot = -90F;
+				break;
+			case EAST:
+				rot = 180F;
+				break;
+			case WEST:
+				rot = 0F;
+				break;
+			default: break;
+			}
+			
+			GlStateManager.translate(0.5F, 0F, 0.5F);
+			GlStateManager.rotate(rot, 0F, 1F, 0F);
+			GlStateManager.translate(-0.5F, 0F, -0.5F);
+			
 			float f = 1F / 300F;
 			GlStateManager.scale(f, f, -f);
-			GL11.glTranslatef(70F, 0F, -200F);
-
+			GlStateManager.translate(70F, 0F, -200F);
+			
 			te.spell.draw();
 
 			Minecraft mc = Minecraft.getMinecraft(); 
@@ -46,10 +71,10 @@ public class RenderTileProgrammer extends TileEntitySpecialRenderer<TileProgramm
 			GlStateManager.enableBlend();
 			GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 			GlStateManager.color(1F, 1F, 1F, 0.5F);
-			GL11.glTranslatef(0F, 0F, -0.01F);
+			GlStateManager.translate(0F, 0F, -0.01F);			
 			RenderHelper.drawTexturedModalRect(-7, -7, 0, 0, 0, 174, 184, 1F / 256F, 1F / 256F);
 
-			GL11.glTranslatef(0F, 0F, 0.01F);
+			GlStateManager.translate(0F, 0F, 0.01F);
 			mc.fontRendererObj.drawString(StatCollector.translateToLocal("psimisc.name"), 0, 164, 0xFFFFFF);
 			mc.fontRendererObj.drawString(te.spell.name, 38, 164, 0xFFFFFF);
 			
