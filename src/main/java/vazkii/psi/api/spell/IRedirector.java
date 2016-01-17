@@ -12,4 +12,6 @@ package vazkii.psi.api.spell;
 
 public interface IRedirector {
 
+	public SpellParam.Side getRedirectionSide();
+	
 }

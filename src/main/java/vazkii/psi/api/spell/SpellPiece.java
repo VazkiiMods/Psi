@@ -39,7 +39,7 @@ public abstract class SpellPiece {
 	public int x, y;
 
 	public Map<String, SpellParam> params = new HashMap();
-	public Map<SpellParam, SpellParam.Side> paramSides = new HashMap();
+	public Map<SpellParam, SpellParam.Side> paramSides = new HashMap<SpellParam, SpellParam.Side>();
 
 	public SpellPiece(Spell spell) {
 		this.spell = spell;
@@ -52,10 +52,28 @@ public abstract class SpellPiece {
 	}
 	
 	public abstract EnumPieceType getPieceType();
+	
+	public abstract Class<?> getEvaluationType();
+	
+	public abstract Object evaluate();
 
+	public abstract Object execute(SpellContext context);
+	
+	public void addToMetadata(SpellMetadata meta) {
+		// NO-OP
+	}
+	
 	public void addParam(SpellParam param) {
 		params.put(param.name, param);
 		paramSides.put(param, SpellParam.Side.OFF);
+	}
+	
+	public <T>T getParamValue(SpellParam param) {
+		SpellParam.Side side = paramSides.get(param);
+		if(!side.isEnabled())
+			return null;
+		
+		return (T) spell.grid.getPieceAtSideWithRedirections(x, y, side);
 	}
 
 	public String getUnlocalizedName() {
@@ -198,4 +216,6 @@ public abstract class SpellPiece {
 		cmp.setTag(TAG_PARAMS, paramCmp);
 	}
 
+	public static class Null { };
+	
 }

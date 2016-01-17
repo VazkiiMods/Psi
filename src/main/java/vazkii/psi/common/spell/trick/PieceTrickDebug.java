@@ -10,14 +10,16 @@
  */
 package vazkii.psi.common.spell.trick;
 
-import vazkii.psi.api.spell.EnumPieceType;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumChatFormatting;
 import vazkii.psi.api.spell.Spell;
+import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellParam;
-import vazkii.psi.api.spell.SpellPiece;
 import vazkii.psi.api.spell.param.ParamAny;
 import vazkii.psi.api.spell.param.ParamNumber;
+import vazkii.psi.api.spell.piece.PieceTrick;
 
-public class PieceTrickDebug extends SpellPiece {
+public class PieceTrickDebug extends PieceTrick {
 
 	SpellParam target;
 	SpellParam number;
@@ -31,10 +33,19 @@ public class PieceTrickDebug extends SpellPiece {
 		addParam(target = new ParamAny(SpellParam.GENERIC_NAME_TARGET, SpellParam.BLUE, false));
 		addParam(number = new ParamNumber(SpellParam.GENERIC_NAME_NUMBER, SpellParam.RED, true));
 	}
-
+	
 	@Override
-	public EnumPieceType getPieceType() {
-		return EnumPieceType.TRICK;
+	public Object execute(SpellContext context) {
+		Double numberVal = this.<Double>getParamValue(number);
+		Object targetVal = getParamValue(target);
+		
+		String s = targetVal.toString();
+		if(numberVal != null)
+			s = EnumChatFormatting.AQUA + "[" + numberVal + "] " + EnumChatFormatting.RESET + s;
+		
+		context.caster.addChatMessage(new ChatComponentText(s));
+		
+		return null;
 	}
 
 

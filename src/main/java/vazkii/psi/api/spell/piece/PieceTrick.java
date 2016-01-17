@@ -6,30 +6,39 @@
  * Psi is Open Source and distributed under the
  * CC-BY-NC-SA 3.0 License: https://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB
  * 
- * File Created @ [16/01/2016, 16:13:56 (GMT)]
+ * File Created @ [17/01/2016, 15:04:04 (GMT)]
  */
-package vazkii.psi.common.spell.selector;
+package vazkii.psi.api.spell.piece;
 
-import net.minecraft.entity.player.EntityPlayer;
+import vazkii.psi.api.spell.EnumPieceType;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
-import vazkii.psi.api.spell.piece.PieceSelector;
+import vazkii.psi.api.spell.SpellPiece;
 
-public class PieceSelectorCaster extends PieceSelector {
+public class PieceTrick extends SpellPiece {
 
-	public PieceSelectorCaster(Spell spell) {
+	public PieceTrick(Spell spell) {
 		super(spell);
 	}
 
 	@Override
-	public Class<?> getEvaluationType() {
-		return EntityPlayer.class;
-	}
-	
-	@Override
-	public Object execute(SpellContext context) {
-		return context.caster;
+	public EnumPieceType getPieceType() {
+		return EnumPieceType.TRICK;
 	}
 
+	@Override
+	public Class<?> getEvaluationType() {
+		return Null.class;
+	}
+
+	@Override
+	public Object evaluate() {
+		return null;
+	}
+
+	@Override
+	public Object execute(SpellContext context) {
+		return null;
+	}
 
 }

@@ -21,13 +21,15 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vazkii.psi.api.spell.EnumPieceType;
+import vazkii.psi.api.spell.IRedirector;
 import vazkii.psi.api.spell.Spell;
+import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellParam;
 import vazkii.psi.api.spell.SpellPiece;
 import vazkii.psi.api.spell.param.ParamAny;
 import vazkii.psi.common.lib.LibResources;
 
-public class PieceConnector extends SpellPiece {
+public class PieceConnector extends SpellPiece implements IRedirector {
 
 	private static final ResourceLocation lines = new ResourceLocation(LibResources.SPELL_CONNECTOR_LINES);
 
@@ -113,5 +115,27 @@ public class PieceConnector extends SpellPiece {
 	public EnumPieceType getPieceType() {
 		return EnumPieceType.CONNECTOR;
 	}
+
+	@Override
+	public SpellParam.Side getRedirectionSide() {
+		return paramSides.get(target);
+	}
+	
+	// Side this class implements IRedirector we don't need this
+	@Override
+	public Class<?> getEvaluationType() {
+		return null;
+	}
+
+	@Override
+	public Object evaluate() {
+		return null;
+	}
+
+	@Override
+	public Object execute(SpellContext context) {
+		return null;
+	}
+
 
 }

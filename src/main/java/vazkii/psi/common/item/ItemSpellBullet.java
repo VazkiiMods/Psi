@@ -20,6 +20,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vazkii.psi.api.spell.ISpellContainer;
 import vazkii.psi.api.spell.Spell;
+import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.common.core.helper.ItemNBTHelper;
 import vazkii.psi.common.item.base.ItemMod;
 import vazkii.psi.common.lib.LibItemNames;
@@ -78,6 +79,19 @@ public class ItemSpellBullet extends ItemMod implements ISpellContainer {
 	@SideOnly(Side.CLIENT)
 	public EnumRarity getRarity(ItemStack stack) {
 		return EnumRarity.RARE;
+	}
+
+	@Override
+	public void castSpell(ItemStack stack, SpellContext context) {
+		switch(stack.getItemDamage()) {
+		case 0: // Basic
+			context.cspell.execute(context);
+			break;
+		
+		case 1: // Projectile
+			// TODO
+			break;
+		}
 	}
 
 }

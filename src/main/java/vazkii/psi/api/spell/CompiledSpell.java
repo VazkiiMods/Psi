@@ -10,6 +10,52 @@
  */
 package vazkii.psi.api.spell;
 
+import java.util.Stack;
+
 public class CompiledSpell {
 
+	public Spell sourceSpell;
+	public SpellMetadata metadata = new SpellMetadata();
+
+	public Stack<Action> actions = new Stack();
+	
+	public boolean[][] spotsEvaluated;
+	public Object[][] evaluatedObjects;
+	
+	public CompiledSpell(Spell source) {
+		sourceSpell = source;
+		
+		spotsEvaluated = new boolean[SpellGrid.GRID_SIZE][SpellGrid.GRID_SIZE];
+		evaluatedObjects = new Object[SpellGrid.GRID_SIZE][SpellGrid.GRID_SIZE];
+	}
+
+	public boolean hasEvaluated(int x, int y) {
+		if(!SpellGrid.exists(x, y))
+			return false;
+		
+		return spotsEvaluated[x][y];
+	}
+	
+	public void execute(SpellContext context) {
+		while(!actions.isEmpty())
+			actions.pop().execute(context);
+	}
+	
+	public class Action {
+		
+		final SpellPiece piece;
+		
+		public Action(SpellPiece piece) {
+			this.piece = piece;
+		}
+		
+		public void execute(SpellContext context) {
+			Object o = piece.execute(context); 
+			
+			if(piece.getEvaluationType() != null)
+				evaluatedObjects[piece.x][piece.y] = o;
+		}
+		
+	}
+	
 }

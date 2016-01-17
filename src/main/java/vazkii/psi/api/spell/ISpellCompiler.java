@@ -10,8 +10,16 @@
  */
 package vazkii.psi.api.spell;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 public interface ISpellCompiler {
 
-	public CompiledSpell compile(Spell s) throws SpellCompilationException;
+	public CompiledSpell getCompiledSpell();
+	
+	public String getError();
+	
+	public Pair<Integer, Integer> getErrorLocation();
+	
+	public boolean isErrored();
 	
 }

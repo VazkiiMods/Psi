@@ -11,6 +11,7 @@
 package vazkii.psi.api.spell.param;
 
 import vazkii.psi.api.spell.SpellParam;
+import vazkii.psi.api.spell.SpellPiece;
 
 public class ParamNumber extends SpellParam {
 
@@ -19,8 +20,8 @@ public class ParamNumber extends SpellParam {
 	}
 
 	@Override
-	public boolean canAccept(Class<?> type) {
-		return type.isAssignableFrom(Number.class);
+	public boolean canAccept(SpellPiece piece) {
+		return piece.getEvaluationType().isAssignableFrom(Number.class);
 	}
 
 }

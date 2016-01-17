@@ -20,6 +20,8 @@ public interface ISpellContainer {
 	
 	public boolean containsSpell(ItemStack stack);
 	
+	public void castSpell(ItemStack stack, SpellContext context);
+	
 	public default boolean canSetSpell(ItemStack stack) {
 		return !containsSpell(stack);
 	}

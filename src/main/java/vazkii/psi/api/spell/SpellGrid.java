@@ -25,7 +25,7 @@ public final class SpellGrid {
 	private static final String TAG_SPELL_POS_Y = "spellPosY";
 	private static final String TAG_SPELL_DATA = "spellData";
 	
-	private static final int GRID_SIZE = 9;
+	public static final int GRID_SIZE = 9;
 	
 	public final Spell spell;
 	public SpellPiece[][] gridData; 
@@ -44,8 +44,21 @@ public final class SpellGrid {
 		}
 	}
 	
-	public boolean exists(int x, int y) {
+	public static boolean exists(int x, int y) {
 		return x >= 0 && y >= 0 && x < GRID_SIZE && y < GRID_SIZE;
+	}
+	
+	public SpellPiece getPieceAtSideWithRedirections(int x, int y, SpellParam.Side side) {
+		SpellPiece atSide = getPieceAtSideSafely(x, y, side);
+		if(atSide == null || !(atSide instanceof IRedirector))
+			return atSide;
+		
+		IRedirector redirector = (IRedirector) atSide;
+		SpellParam.Side rside = redirector.getRedirectionSide();
+		if(!rside.isEnabled())
+			return null;
+		
+		return getPieceAtSideWithRedirections(atSide.x, atSide.y, rside);
 	}
 	
 	public SpellPiece getPieceAtSideSafely(int x, int y, SpellParam.Side side) {

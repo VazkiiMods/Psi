@@ -19,6 +19,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.nbt.NBTTagCompound;
 import vazkii.psi.api.spell.EnumPieceType;
 import vazkii.psi.api.spell.Spell;
+import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellPiece;
 
 public class PieceConstantNumber extends SpellPiece {
@@ -105,6 +106,21 @@ public class PieceConstantNumber extends SpellPiece {
 	public void readFromNBT(NBTTagCompound cmp) {
 		super.readFromNBT(cmp);
 		valueStr = cmp.getString(TAG_CONSTANT_VALUE);
+	}
+
+	@Override
+	public Class<?> getEvaluationType() {
+		return Double.class;
+	}
+
+	@Override
+	public Object evaluate() {
+		return Double.parseDouble(valueStr);
+	}
+
+	@Override
+	public Object execute(SpellContext context) {
+		return evaluate();
 	}
 	
 }

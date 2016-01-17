@@ -33,7 +33,7 @@ public abstract class SpellParam {
 		this.canDisable = canDisable;
 	}
 
-	public abstract boolean canAccept(Class<?> type);
+	public abstract boolean canAccept(SpellPiece piece);
 
 	public enum Side {
 		OFF(0, 0, 238, 0),

@@ -10,10 +10,42 @@
  */
 package vazkii.psi.api.spell;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import vazkii.psi.common.spell.SpellCompiler;
 
 public final class SpellContext {
 
 	public EntityPlayer caster;
+	public Entity focalPoint; 
+	public CompiledSpell cspell;
+	
+	public SpellContext setPlayer(EntityPlayer player) {
+		caster = player;
+		return setFocalPoint(player);
+	}
+	
+	public SpellContext setFocalPoint(Entity e) {
+		focalPoint = e;
+		return this;
+	}
+	
+	public SpellContext setCompiledSpell(CompiledSpell spell) {
+		cspell = spell;
+		return this;
+	}
+	
+	public SpellContext setSpell(Spell spell) {
+		SpellCompiler compiler = new SpellCompiler(spell);
+		
+		if(!compiler.isErrored())
+			setCompiledSpell(compiler.getCompiledSpell());
+		
+		return this;
+	}
+
+	public boolean isValid() {
+		return cspell != null;
+	}
 	
 }
