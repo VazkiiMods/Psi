@@ -18,6 +18,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import net.minecraft.util.StatCollector;
 import vazkii.psi.api.spell.CompiledSpell;
+import vazkii.psi.api.spell.CompiledSpell.Action;
 import vazkii.psi.api.spell.EnumPieceType;
 import vazkii.psi.api.spell.ISpellCompiler;
 import vazkii.psi.api.spell.Spell;
@@ -34,7 +35,6 @@ public final class SpellCompiler implements ISpellCompiler {
 	String error = null;
 	Pair<Integer, Integer> errorLocation = null;
 	
-	List<SpellPiece> builtPieces = new ArrayList();
 	Stack<SpellPiece> tricks = new Stack();
 	
 	public SpellCompiler(Spell spell) {
@@ -66,12 +66,18 @@ public final class SpellCompiler implements ISpellCompiler {
 	public void buildPiece(SpellPiece piece, List<SpellPiece> visited) throws SpellCompilationException {
 		if(visited.contains(piece))
 			throw new SpellCompilationException("loop", piece.x, piece.y);
-		if(builtPieces.contains(piece))
-			return;
 		
-		compiled.actions.add(compiled.new Action(piece));
+		if(compiled.actionMap.containsKey(piece)) { // move to top
+			Action a = compiled.actionMap.get(piece);
+			compiled.actions.remove(a);
+			compiled.actions.add(a);
+		} else {
+			Action a = compiled.new Action(piece);
+			compiled.actions.add(a);
+			compiled.actionMap.put(piece, a);
+		}
+		
 		piece.addToMetadata(compiled.metadata);
-		builtPieces.add(piece);
 		visited.add(piece);
 		
 		List<SpellParam.Side> usedSides = new ArrayList();

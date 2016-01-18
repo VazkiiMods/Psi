@@ -15,13 +15,17 @@ import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellPiece;
 import vazkii.psi.common.lib.LibPieceNames;
 import vazkii.psi.common.spell.constant.PieceConstantNumber;
-import vazkii.psi.common.spell.operator.PieceOperatorDivide;
-import vazkii.psi.common.spell.operator.PieceOperatorMultiply;
-import vazkii.psi.common.spell.operator.PieceOperatorSubtract;
-import vazkii.psi.common.spell.operator.PieceOperatorSum;
+import vazkii.psi.common.spell.operator.number.PieceOperatorDivide;
+import vazkii.psi.common.spell.operator.number.PieceOperatorMultiply;
+import vazkii.psi.common.spell.operator.number.PieceOperatorSubtract;
+import vazkii.psi.common.spell.operator.number.PieceOperatorSum;
+import vazkii.psi.common.spell.operator.vector.PieceOperatorEntityLook;
+import vazkii.psi.common.spell.operator.vector.PieceOperatorEntityPosition;
 import vazkii.psi.common.spell.other.PieceConnector;
 import vazkii.psi.common.spell.selector.PieceSelectorCaster;
+import vazkii.psi.common.spell.trick.PieceTrickAddMotion;
 import vazkii.psi.common.spell.trick.PieceTrickDebug;
+import vazkii.psi.common.spell.trick.PieceTrickExplode;
 
 public final class ModSpellPieces {
 
@@ -31,13 +35,18 @@ public final class ModSpellPieces {
 	public static PieceContainer operatorSubtract;
 	public static PieceContainer operatorMultiply;
 	public static PieceContainer operatorDivide;
-	
+	public static PieceContainer operatorEntityPosition;
+	public static PieceContainer operatorEntityLook;
+	public static PieceContainer operatorVectorRaycast;
+
 	public static PieceContainer constantNumber;
 	
 	public static PieceContainer connector;
 	
 	public static PieceContainer trickDebug;
-	
+	public static PieceContainer trickAddMotion;
+	public static PieceContainer trickExplode;
+
 	public static void init() {
 		selectorCaster = register(PieceSelectorCaster.class, LibPieceNames.SELECTOR_CASTER);
 		
@@ -45,12 +54,16 @@ public final class ModSpellPieces {
 		operatorSubtract = register(PieceOperatorSubtract.class, LibPieceNames.OPERATOR_SUBTRACT);
 		operatorMultiply = register(PieceOperatorMultiply.class, LibPieceNames.OPERATOR_MULTIPLY);
 		operatorDivide = register(PieceOperatorDivide.class, LibPieceNames.OPERATOR_DIVIDE);
+		operatorEntityPosition = register(PieceOperatorEntityPosition.class, LibPieceNames.OPERATOR_ENTITY_POSITION);
+		operatorEntityLook = register(PieceOperatorEntityLook.class, LibPieceNames.OPERATOR_ENTITY_LOOK);
 
 		constantNumber = register(PieceConstantNumber.class, LibPieceNames.CONSTANT_NUMBER);
 		
 		connector = register(PieceConnector.class, LibPieceNames.CONNECTOR);
 		
 		trickDebug = register(PieceTrickDebug.class, LibPieceNames.TRICK_DEBUG);
+		trickAddMotion = register(PieceTrickAddMotion.class, LibPieceNames.TRICK_ADD_MOTION);
+		trickExplode = register(PieceTrickExplode.class, LibPieceNames.TRICK_EXPLODE);
 	}
 	
 	public static PieceContainer register(Class<? extends SpellPiece> clazz, String name) {

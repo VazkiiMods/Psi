@@ -96,6 +96,12 @@ psi.spellpiece.operatorMultiply=Operator: Multiply
 psi.spellpiece.operatorMultiply.desc=A * B (* C)
 psi.spellpiece.operatorDivide=Operator: Divide
 psi.spellpiece.operatorDivide.desc=A / B
+psi.spellpiece.operatorEntityPosition=Operator: Entity Position
+psi.spellpiece.operatorEntityPosition.desc=Gets an Entity's position
+psi.spellpiece.operatorEntityLook=Operator: Entity Look
+psi.spellpiece.operatorEntityLook.desc=Gets an Entity's look vector
+psi.spellpiece.operatorVectorRaycast=Operator: Vector Raycast
+psi.spellpiece.operatorVectorRaycast.desc=Gets a localized raycast's result
 
 # -- CONSTANTS
 psi.spellpiece.constantNumber=Constant: Number
@@ -108,6 +114,10 @@ psi.spellpiece.connector.desc=Connects stuff and things
 # -- TRICKS
 psi.spellpiece.trickDebug=Trick: Debug
 psi.spellpiece.trickDebug.desc=For testing. Prints out the target
+psi.spellpiece.trickAddMotion=Trick: Add Motion
+psi.spellpiece.trickAddMotion.desc=Adds motion to target Entity
+psi.spellpiece.trickExplode=Trick: Explode
+psi.spellpiece.trickExplode.desc=Goes boom
 
 # SPELL PARAMETER NAMES
 psi.spellparam.target=Target
@@ -116,6 +126,13 @@ psi.spellparam.number1=Number A
 psi.spellparam.number2=Number B
 psi.spellparam.number3=Number C
 psi.spellparam.number4=Number D
+psi.spellparam.position=Position
+psi.spellparam.ray=Ray
+psi.spellparam.max=Max
+psi.spellparam.min=Min
+psi.spellparam.power=Power
+psi.spellparam.direction=Direction
+psi.spellparam.speed=Speed
 
 # DATA TYPE NAMES
 psi.datatype.Null=None
@@ -123,10 +140,10 @@ psi.datatype.Any=Any
 psi.datatype.Double=Number
 psi.datatype.Integer=Number
 psi.datatype.Number=Number
-psi.datatype.Vector3d=Vector
+psi.datatype.Vector3=Vector
 psi.datatype.Entity=Entity
 psi.datatype.EntityLiving=Entity (Living)
-psi.datatype.EntityPlayer=Entity (Player)
+psi.datatype.EntityPlayer=Entity (Player, Living)
 
 # COMPILER ERRORS
 psi.spellerror.nospell=No Spell to compile
@@ -136,9 +153,12 @@ psi.spellerror.nullparam=A Parameter is facing an empty cell
 psi.spellerror.invalidparam=A Parameter is facing an invalid piece
 psi.spellerror.samesideparams=Two or more Parameters are sharing a side
 psi.spellerror.loop=Can't resolve due to endless loop
+psi.spellerror.nonpositivevalue=A Number Parameter that needs to be positive isn't
 
 # RUNTIME ERRORS
 psi.spellerror.dividebyzero=ERROR: Divide by zero.
+psi.spellerror.nulltarget=ERROR: Spell Entity target is non existent.
+psi.spellerror.nullvector=ERROR: Spell Operation Vector is non existent or null.
 
 # DEATH MESSAGES
 death.attack.psi-overload=%s overflowed their Psionic Energy

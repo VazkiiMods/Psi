@@ -99,7 +99,7 @@ public class ItemCAD extends ItemMod implements ICAD {
 				return cost;
 			
 			double effPercentile = (double) eff / 100;
-			return cost / eff;
+			return (int) ((double) cost / effPercentile);
 		}
 		
 		return cost;

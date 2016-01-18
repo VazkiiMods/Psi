@@ -18,11 +18,16 @@ public final class LibPieceNames {
 	public static final String OPERATOR_SUBTRACT = "operatorSubtract";
 	public static final String OPERATOR_MULTIPLY = "operatorMultiply";
 	public static final String OPERATOR_DIVIDE = "operatorDivide";
-	
+	public static final String OPERATOR_ENTITY_POSITION = "operatorEntityPosition";
+	public static final String OPERATOR_ENTITY_LOOK = "operatorEntityLook";
+	public static final String OPERATOR_VECTOR_RAYCAST = "operatorVectorRaycast";
+
 	public static final String CONSTANT_NUMBER = "constantNumber";
 	
 	public static final String CONNECTOR = "connector";
 	
 	public static final String TRICK_DEBUG = "trickDebug";
+	public static final String TRICK_ADD_MOTION = "trickAddMotion";
+	public static final String TRICK_EXPLODE = "trickExplode";
 	
 }

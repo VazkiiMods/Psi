@@ -8,7 +8,7 @@
  * 
  * File Created @ [17/01/2016, 19:18:25 (GMT)]
  */
-package vazkii.psi.common.spell.operator;
+package vazkii.psi.common.spell.operator.number;
 
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;

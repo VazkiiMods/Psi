@@ -6,25 +6,24 @@
  * Psi is Open Source and distributed under the
  * CC-BY-NC-SA 3.0 License: https://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB
  * 
- * File Created @ [18/01/2016, 19:29:43 (GMT)]
+ * File Created @ [17/01/2016, 19:18:25 (GMT)]
  */
-package vazkii.psi.common.spell.operator;
+package vazkii.psi.common.spell.operator.number;
 
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellParam;
-import vazkii.psi.api.spell.SpellPiece;
 import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.piece.PieceOperator;
 
-public class PieceOperatorMultiply extends PieceOperator {
+public class PieceOperatorSum extends PieceOperator {
 
 	SpellParam num1;
 	SpellParam num2;
 	SpellParam num3;
 	
-	public PieceOperatorMultiply(Spell spell) {
+	public PieceOperatorSum(Spell spell) {
 		super(spell);
 	}
 	
@@ -41,9 +40,9 @@ public class PieceOperatorMultiply extends PieceOperator {
 		Double d2 = this.<Double>getParamValue(context, num2);
 		Double d3 = this.<Double>getParamValue(context, num3);
 		if(d3 == null)
-			d3 = 1D;
+			d3 = 0D;
 		
-		return d1 * d2 * d3;
+		return d1 + d2 + d3;
 	}
 	
 	@Override

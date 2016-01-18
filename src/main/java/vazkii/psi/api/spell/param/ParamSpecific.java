@@ -6,22 +6,24 @@
  * Psi is Open Source and distributed under the
  * CC-BY-NC-SA 3.0 License: https://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB
  * 
- * File Created @ [16/01/2016, 22:24:15 (GMT)]
+ * File Created @ [18/01/2016, 21:56:58 (GMT)]
  */
 package vazkii.psi.api.spell.param;
 
 import vazkii.psi.api.spell.SpellParam;
-import vazkii.psi.api.spell.SpellPiece;
 
-public class ParamNumber extends ParamSpecific {
+public abstract class ParamSpecific extends SpellParam {
 
-	public ParamNumber(String name, int color, boolean canDisable, boolean constant) {
-		super(name, color, canDisable, constant);
+	boolean constant;
+	
+	public ParamSpecific(String name, int color, boolean canDisable, boolean constant) {
+		super(name, color, canDisable);
+		this.constant = constant;
 	}
-
+	
 	@Override
-	public Class<?> getEvaluationType() {
-		return Number.class;
+	public boolean requiresConstant() {
+		return constant;
 	}
-
+	
 }

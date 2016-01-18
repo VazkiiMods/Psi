@@ -6,46 +6,46 @@
  * Psi is Open Source and distributed under the
  * CC-BY-NC-SA 3.0 License: https://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB
  * 
- * File Created @ [18/01/2016, 19:30:30 (GMT)]
+ * File Created @ [18/01/2016, 21:50:51 (GMT)]
  */
-package vazkii.psi.common.spell.operator;
+package vazkii.psi.common.spell.operator.vector;
 
+import net.minecraft.entity.Entity;
+import net.minecraft.util.Vector3d;
+import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellParam;
 import vazkii.psi.api.spell.SpellRuntimeException;
-import vazkii.psi.api.spell.param.ParamNumber;
+import vazkii.psi.api.spell.param.ParamEntity;
 import vazkii.psi.api.spell.piece.PieceOperator;
 
-public class PieceOperatorDivide extends PieceOperator {
+public class PieceOperatorEntityPosition extends PieceOperator {
 
-	SpellParam num1;
-	SpellParam num2;
+	SpellParam target;
 	
-	public PieceOperatorDivide(Spell spell) {
+	public PieceOperatorEntityPosition(Spell spell) {
 		super(spell);
 	}
 	
 	@Override
 	public void initParams() {
-		addParam(num1 = new ParamNumber(SpellParam.GENERIC_NAME_NUMBER1, SpellParam.RED, false, false));
-		addParam(num2 = new ParamNumber(SpellParam.GENERIC_NAME_NUMBER2, SpellParam.GREEN, false, false));
+		addParam(target = new ParamEntity(SpellParam.GENERIC_NAME_TARGET, SpellParam.YELLOW, false, false));
 	}
 	
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
-		Double d1 = this.<Double>getParamValue(context, num1);
-		Double d2 = this.<Double>getParamValue(context, num2);
+		Entity e = this.<Entity>getParamValue(context, target);
 		
-		if(d2 == 0)
-			throw new SpellRuntimeException("dividebyzero");
+		if(e == null)
+			throw new SpellRuntimeException("nulltarget");
 		
-		return d1 / d2;
+		return Vector3.fromEntityCenter(e);
 	}
 	
 	@Override
 	public Class<?> getEvaluationType() {
-		return Double.class;
+		return Vector3.class;
 	}
 
 }

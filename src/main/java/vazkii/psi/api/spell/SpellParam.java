@@ -19,8 +19,8 @@ public abstract class SpellParam {
 	public static final int BLUE = 0x2A55D2;
 	public static final int PURPLE = 0x752AD2;
 	public static final int CYAN = 0x2AD0D2;
-	public static final int YELLOW = 0xD2CC2A;
-	public static final int GRAY = 0x767676;
+	public static final int YELLOW = 0xD2CC2A; // For entities
+	public static final int GRAY = 0x767676; // For connectors
 
 	public static final String GENERIC_NAME_TARGET = "psi.spellparam.target";
 	public static final String GENERIC_NAME_NUMBER = "psi.spellparam.number";
@@ -28,7 +28,11 @@ public abstract class SpellParam {
 	public static final String GENERIC_NAME_NUMBER2 = "psi.spellparam.number2";
 	public static final String GENERIC_NAME_NUMBER3 = "psi.spellparam.number3";
 	public static final String GENERIC_NAME_NUMBER4 = "psi.spellparam.number4";
-	
+	public static final String GENERIC_NAME_POSITION = "psi.spellparam.position";
+	public static final String GENERIC_NAME_MIN = "psi.spellparam.min";
+	public static final String GENERIC_NAME_MAX = "psi.spellparam.max";
+	public static final String GENERIC_NAME_POWER = "psi.spellparam.power";
+
 	public final String name;
 	public final int color;
 	public final boolean canDisable;

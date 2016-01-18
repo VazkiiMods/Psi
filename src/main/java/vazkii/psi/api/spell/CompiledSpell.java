@@ -10,6 +10,8 @@
  */
 package vazkii.psi.api.spell;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Stack;
 
 public class CompiledSpell {
@@ -18,6 +20,7 @@ public class CompiledSpell {
 	public SpellMetadata metadata = new SpellMetadata();
 
 	public Stack<Action> actions = new Stack();
+	public Map<SpellPiece, Action> actionMap = new HashMap();
 	
 	public boolean[][] spotsEvaluated;
 	public Object[][] evaluatedObjects;
