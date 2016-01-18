@@ -40,7 +40,7 @@ public class PieceConstantNumber extends SpellPiece {
 	@Override
 	public void drawAdditional() {
 		Minecraft mc = Minecraft.getMinecraft();
-		int color = 4210752;
+		int color = 0xFFFFFF;
 		int len = mc.fontRendererObj.getStringWidth(valueStr);
 		float efflen = len;
 		float scale = 1;
@@ -52,7 +52,7 @@ public class PieceConstantNumber extends SpellPiece {
 		
 		GlStateManager.pushMatrix();
 		GlStateManager.scale(1F / scale, 1F / scale, 1F);
-		GlStateManager.translate((8 - efflen / 2) * scale, 5 * scale, 0);
+		GlStateManager.translate((9 - efflen / 2) * scale, 4 * scale, 0);
 		mc.fontRendererObj.drawString(valueStr, 0, 0, color);
 		GlStateManager.popMatrix();
 	}

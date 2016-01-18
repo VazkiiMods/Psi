@@ -39,11 +39,7 @@ public class PieceTrickDebug extends PieceTrick {
 	
 	@Override
 	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
-		Double numberVal = this.<Double>getParamEvaluation(number);
-		if(numberVal != null) {
-			meta.addStat(EnumSpellStat.POTENCY, numberVal.intValue());
-			meta.addStat(EnumSpellStat.COST, numberVal.intValue() * 3);
-		}
+		// NO-OP
 	}
 	
 	@Override

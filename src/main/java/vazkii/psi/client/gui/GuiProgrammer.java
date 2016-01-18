@@ -99,7 +99,7 @@ public class GuiProgrammer extends GuiScreen {
 
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-		int color = 4210752;
+		int color = 0xFFFFFF;
 
 		GlStateManager.pushMatrix();
 		tooltip.clear();
@@ -236,7 +236,7 @@ public class GuiProgrammer extends GuiScreen {
 			else drawTexturedModalRect(gridLeft + cursorX * 18, gridTop + cursorY * 18, 16, ySize, 16, 16);
 		}
 
-		mc.fontRendererObj.drawString(StatCollector.translateToLocal("psimisc.name"), left + padLeft, spellNameField.yPosition + 1, color);
+		mc.fontRendererObj.drawStringWithShadow(StatCollector.translateToLocal("psimisc.name"), left + padLeft, spellNameField.yPosition + 1, color);
 		spellNameField.drawTextBox();
 		if(panelEnabled) {
 			tooltip.clear();
