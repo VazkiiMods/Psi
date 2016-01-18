@@ -13,6 +13,7 @@ package vazkii.psi.common.spell.operator;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellParam;
+import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.piece.PieceOperator;
 
@@ -34,7 +35,7 @@ public class PieceOperatorSubtract extends PieceOperator {
 	}
 	
 	@Override
-	public Object execute(SpellContext context) {
+	public Object execute(SpellContext context) throws SpellRuntimeException {
 		Double d1 = this.<Double>getParamValue(context, num1);
 		Double d2 = this.<Double>getParamValue(context, num2);
 		Double d3 = this.<Double>getParamValue(context, num3);

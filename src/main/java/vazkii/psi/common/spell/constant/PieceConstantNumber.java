@@ -21,6 +21,7 @@ import vazkii.psi.api.spell.EnumPieceType;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellPiece;
+import vazkii.psi.api.spell.SpellRuntimeException;
 
 public class PieceConstantNumber extends SpellPiece {
 
@@ -137,7 +138,7 @@ public class PieceConstantNumber extends SpellPiece {
 	}
 
 	@Override
-	public Object execute(SpellContext context) {
+	public Object execute(SpellContext context) throws SpellRuntimeException {
 		return evaluate();
 	}
 	

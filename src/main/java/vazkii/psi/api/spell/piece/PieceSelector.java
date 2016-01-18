@@ -17,6 +17,7 @@ import vazkii.psi.api.spell.SpellCompilationException;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellMetadata;
 import vazkii.psi.api.spell.SpellPiece;
+import vazkii.psi.api.spell.SpellRuntimeException;
 
 public abstract class PieceSelector extends SpellPiece {
 
@@ -40,7 +41,7 @@ public abstract class PieceSelector extends SpellPiece {
 	}
 
 	@Override
-	public Object execute(SpellContext context) {
+	public Object execute(SpellContext context) throws SpellRuntimeException {
 		return null;
 	}
 

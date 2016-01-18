@@ -59,7 +59,7 @@ public abstract class SpellPiece {
 	
 	public abstract Object evaluate();
 
-	public abstract Object execute(SpellContext context);
+	public abstract Object execute(SpellContext context) throws SpellRuntimeException;
 	
 	public String getEvaluationTypeString() {
 		Class<?> evalType = getEvaluationType();
@@ -89,9 +89,6 @@ public abstract class SpellPiece {
 			SpellPiece piece = spell.grid.getPieceAtSideWithRedirections(x, y, side);
 			if(piece == null || !param.canAccept(piece))
 				return null;
-			
-			if(context == null)
-				return (T) piece.execute(context);
 			
 			return (T) context.cspell.evaluatedObjects[piece.x][piece.y];
 		} catch(SpellCompilationException e) {

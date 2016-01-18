@@ -16,6 +16,8 @@ public final class LibPieceNames {
 	
 	public static final String OPERATOR_SUM = "operatorSum";
 	public static final String OPERATOR_SUBTRACT = "operatorSubtract";
+	public static final String OPERATOR_MULTIPLY = "operatorMultiply";
+	public static final String OPERATOR_DIVIDE = "operatorDivide";
 	
 	public static final String CONSTANT_NUMBER = "constantNumber";
 	

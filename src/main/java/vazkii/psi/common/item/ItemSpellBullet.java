@@ -13,11 +13,16 @@ package vazkii.psi.common.item;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.ChatStyle;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vazkii.psi.api.spell.ISpellContainer;
 import vazkii.psi.api.spell.Spell;
+import vazkii.psi.api.spell.SpellCompilationException;
 import vazkii.psi.api.spell.SpellContext;
+import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.common.core.helper.ItemNBTHelper;
 import vazkii.psi.common.item.base.ItemMod;
 import vazkii.psi.common.lib.LibItemNames;
@@ -87,7 +92,13 @@ public class ItemSpellBullet extends ItemMod implements ISpellContainer {
 	public void castSpell(ItemStack stack, SpellContext context) {
 		switch(stack.getItemDamage()) {
 		case 1: // Basic
-			context.cspell.execute(context);
+			try {
+				context.cspell.execute(context);
+			} catch(SpellRuntimeException e) {
+				if(!context.caster.worldObj.isRemote)
+					context.caster.addChatComponentMessage(new ChatComponentTranslation(e.getMessage()).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
+			}
+			
 			break;
 		
 		case 3: // Projectile

@@ -13,6 +13,7 @@ package vazkii.psi.common.spell.selector;
 import net.minecraft.entity.player.EntityPlayer;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
+import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.api.spell.piece.PieceSelector;
 
 public class PieceSelectorCaster extends PieceSelector {
@@ -27,7 +28,7 @@ public class PieceSelectorCaster extends PieceSelector {
 	}
 	
 	@Override
-	public Object execute(SpellContext context) {
+	public Object execute(SpellContext context) throws SpellRuntimeException {
 		return context.caster;
 	}
 

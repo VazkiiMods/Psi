@@ -92,6 +92,10 @@ psi.spellpiece.operatorSum=Operator: Sum
 psi.spellpiece.operatorSum.desc=A + B (+ C)
 psi.spellpiece.operatorSubtract=Operator: Subtract
 psi.spellpiece.operatorSubtract.desc=A - B (- C)
+psi.spellpiece.operatorMultiply=Operator: Multiply
+psi.spellpiece.operatorMultiply.desc=A * B (* C)
+psi.spellpiece.operatorDivide=Operator: Divide
+psi.spellpiece.operatorDivide.desc=A / B
 
 # -- CONSTANTS
 psi.spellpiece.constantNumber=Constant: Number
@@ -127,11 +131,14 @@ psi.datatype.EntityPlayer=Entity (Player)
 # COMPILER ERRORS
 psi.spellerror.nospell=No Spell to compile
 psi.spellerror.notricks=Spell has no Tricks
-psi.spellerror.unsetparam=Required Parameter is not set
-psi.spellerror.nullparam=Parameter is pointing to empty spot
-psi.spellerror.invalidparam=Parameter is pointing to invalid piece
-psi.spellerror.samesideparams=Two or more parameters are sharing a side
-psi.spellerror.loop=Connections create an endless loop
+psi.spellerror.unsetparam=A required Parameter is not set
+psi.spellerror.nullparam=A Parameter is facing an empty cell
+psi.spellerror.invalidparam=A Parameter is facing an invalid piece
+psi.spellerror.samesideparams=Two or more Parameters are sharing a side
+psi.spellerror.loop=Can't resolve due to endless loop
+
+# RUNTIME ERRORS
+psi.spellerror.dividebyzero=ERROR: Divide by zero.
 
 # DEATH MESSAGES
 death.attack.psi-overload=%s overflowed their Psionic Energy

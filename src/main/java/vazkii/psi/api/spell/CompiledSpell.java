@@ -37,7 +37,7 @@ public class CompiledSpell {
 		return spotsEvaluated[x][y];
 	}
 	
-	public void execute(SpellContext context) {
+	public void execute(SpellContext context) throws SpellRuntimeException {
 		while(!actions.isEmpty())
 			actions.pop().execute(context);
 	}
@@ -50,7 +50,7 @@ public class CompiledSpell {
 			this.piece = piece;
 		}
 		
-		public void execute(SpellContext context) {
+		public void execute(SpellContext context) throws SpellRuntimeException {
 			Object o = piece.execute(context);
 			
 			if(piece.getEvaluationType() != null)
