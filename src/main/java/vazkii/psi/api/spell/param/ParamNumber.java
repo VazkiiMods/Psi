@@ -15,13 +15,21 @@ import vazkii.psi.api.spell.SpellPiece;
 
 public class ParamNumber extends SpellParam {
 
-	public ParamNumber(String name, int color, boolean canDisable) {
+	boolean constant;
+	
+	public ParamNumber(String name, int color, boolean canDisable, boolean constant) {
 		super(name, color, canDisable);
+		this.constant = constant;
+	}
+	
+	@Override
+	public boolean requiresConstant() {
+		return constant;
 	}
 
 	@Override
-	public boolean canAccept(SpellPiece piece) {
-		return Number.class.isAssignableFrom(piece.getEvaluationType());
+	public Class<?> getEvaluationType() {
+		return Number.class;
 	}
 
 }

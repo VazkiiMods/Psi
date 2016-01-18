@@ -10,6 +10,8 @@
  */
 package vazkii.psi.api.spell;
 
+import net.minecraft.util.StatCollector;
+
 public abstract class SpellParam {
 
 	public static final int RED = 0xD22A2A;
@@ -36,9 +38,27 @@ public abstract class SpellParam {
 		this.color = color;
 		this.canDisable = canDisable;
 	}
+	
+	public abstract Class<?> getEvaluationType();
+	
+	public boolean requiresConstant() {
+		return false;
+	}
+	
+	public String getEvaluationTypeString() {
+		Class<?> evalType = getEvaluationType();
+		String evalStr = evalType == null ? "Any" : evalType.getSimpleName();
+		String s = StatCollector.translateToLocal("psi.datatype." + evalStr);
+		if(requiresConstant())
+			s += " " + StatCollector.translateToLocal("psimisc.constant");
+		
+		return s;
+	}
 
-	public abstract boolean canAccept(SpellPiece piece);
-
+	public boolean canAccept(SpellPiece piece) {
+		return (getEvaluationType() == null || getEvaluationType().isAssignableFrom(piece.getEvaluationType())) && (!requiresConstant() || piece.getPieceType() == EnumPieceType.CONSTANT);
+	}
+	
 	public enum Side {
 		OFF(0, 0, 238, 0),
 		TOP(0, -1, 222, 8),

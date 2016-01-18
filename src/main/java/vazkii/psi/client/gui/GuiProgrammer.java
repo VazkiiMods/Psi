@@ -16,6 +16,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -35,6 +36,7 @@ import vazkii.psi.api.spell.SpellMetadata;
 import vazkii.psi.api.spell.SpellParam;
 import vazkii.psi.api.spell.SpellPiece;
 import vazkii.psi.client.core.helper.RenderHelper;
+import vazkii.psi.client.gui.button.GuiButtonPage;
 import vazkii.psi.client.gui.button.GuiButtonSideConfig;
 import vazkii.psi.client.gui.button.GuiButtonSpellPiece;
 import vazkii.psi.common.block.tile.TileProgrammer;
@@ -47,7 +49,8 @@ import vazkii.psi.common.spell.SpellCompiler;
 public class GuiProgrammer extends GuiScreen {
 
 	public static final ResourceLocation texture = new ResourceLocation(LibResources.GUI_PROGRAMMER);
-
+	private static final int PIECES_PER_PAGE = 25;
+	
 	public TileProgrammer programmer;
 	public List<String> tooltip = new ArrayList();
 
@@ -58,6 +61,9 @@ public class GuiProgrammer extends GuiScreen {
 	int selectedX, selectedY;
 	boolean panelEnabled, configEnabled;
 	int panelX, panelY, panelWidth, panelHeight;
+	int page = 0;
+	boolean scheduleButtonUpdate = false;
+	List<SpellPiece> visiblePieces = new ArrayList();
 	List<GuiButton> panelButtons = new ArrayList();
 	List<GuiButton> configButtons = new ArrayList();
 	GuiTextField searchField;
@@ -101,6 +107,11 @@ public class GuiProgrammer extends GuiScreen {
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		int color = 0xFFFFFF;
+		
+		if(scheduleButtonUpdate) {
+			updatePanelButtons();
+			scheduleButtonUpdate = false;
+		}
 
 		GlStateManager.pushMatrix();
 		tooltip.clear();
@@ -249,8 +260,10 @@ public class GuiProgrammer extends GuiScreen {
 			GlStateManager.color(1F, 1F, 1F);
 			drawTexturedModalRect(searchField.xPosition - 14, searchField.yPosition - 2, 0, ySize + 16, 12, 12);
 			searchField.drawTextBox();
+			
+			String s = (page + 1) + "/" + getPageCount();
+			fontRendererObj.drawStringWithShadow(s, panelX + panelWidth / 2 - fontRendererObj.getStringWidth(s) / 2, panelY + panelHeight - 12, 0xFFFFFF);
 		}
-
 
 		super.drawScreen(mouseX, mouseY, partialTicks);
 
@@ -259,11 +272,29 @@ public class GuiProgrammer extends GuiScreen {
 
 		GlStateManager.popMatrix();
 	}
+	
+	@Override
+	public void handleMouseInput() throws IOException {
+		super.handleMouseInput();
+
+		int w = Mouse.getEventDWheel();
+		int max = getPageCount();
+		if(w != 0) {
+			int next = page - w / Math.abs(w);
+			
+			if(next >= 0 && next < max) {
+				page = next;
+				updatePanelButtons();
+			}
+		}
+	}
 
 	@Override
 	protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
 		super.mouseClicked(mouseX, mouseY, mouseButton);
 
+		System.out.println(mouseButton);
+		
 		if(panelEnabled) {
 			searchField.mouseClicked(mouseX, mouseY, mouseButton);
 
@@ -294,8 +325,12 @@ public class GuiProgrammer extends GuiScreen {
 		super.keyTyped(par1, par2);
 
 		if(panelEnabled) {
+			String last = searchField.getText();
 			searchField.textboxKeyTyped(par1, par2);
-			updatePanelButtons();
+			if(!searchField.getText().equals(last)) {
+				page = 0;
+				updatePanelButtons();
+			}
 		} else {
 			boolean pieceHandled = false;
 			
@@ -353,6 +388,14 @@ public class GuiProgrammer extends GuiScreen {
 		} else if(button instanceof GuiButtonSideConfig) {
 			((GuiButtonSideConfig) button).onClick();
 			onSpellChanged(false);
+		} else if(button instanceof GuiButtonPage) {
+			int max = getPageCount();
+			int next = page + (((GuiButtonPage) button).right ? 1 : -1);
+			
+			if(next >= 0 && next < max) {
+				page = next;
+				scheduleButtonUpdate = true;
+			}
 		}
 	}
 
@@ -364,6 +407,7 @@ public class GuiProgrammer extends GuiScreen {
 	private void openPanel() {
 		closePanel();
 		panelEnabled = true;
+		page = Math.min(page, getPageCount() - 1);
 
 		panelX = gridLeft + (selectedX + 1) * 18;
 		panelY = gridTop;
@@ -377,27 +421,46 @@ public class GuiProgrammer extends GuiScreen {
 	}
 
 	private void updatePanelButtons() {
-		int i = 0;
-
 		buttonList.removeAll(panelButtons);
 		panelButtons.clear();
-
+		visiblePieces.clear();
+		
 		for(String key : PsiAPI.spellPieceRegistry.getKeys()) {
 			Class<? extends SpellPiece> clazz = PsiAPI.spellPieceRegistry.getObject(key);
 			SpellPiece p = SpellPiece.create(clazz, programmer.spell);
-			List<SpellPiece> pieces = new ArrayList();
-			p.getShownPieces(pieces);
-
-			for(SpellPiece piece : pieces)
-				if(StatCollector.translateToLocal(piece.getUnlocalizedName()).toLowerCase().contains(searchField.getText().toLowerCase())) {
-					panelButtons.add(new GuiButtonSpellPiece(this, piece, panelX + 4 + (i % 5) * 18, panelY + 20 + (i / 5) * 18));
-					i++;
-				}
+			
+			if(StatCollector.translateToLocal(p.getUnlocalizedName()).toLowerCase().contains(searchField.getText().toLowerCase()))
+				p.getShownPieces(visiblePieces);
 		}
+		
+		visiblePieces.sort((SpellPiece a, SpellPiece b) -> {
+			return a.getSortingName().compareTo(b.getSortingName());
+		});
 
+		int start = page * PIECES_PER_PAGE;
+		
+		for(int i = start; i < visiblePieces.size(); i++) {
+			int c = i - start;
+			if(c >= PIECES_PER_PAGE)
+				break;
+			
+			SpellPiece piece = visiblePieces.get(i);
+			panelButtons.add(new GuiButtonSpellPiece(this, piece, panelX + 5 + (c % 5) * 18, panelY + 20 + (c / 5) * 18));
+		}
+		
+		if(page > 0)
+			panelButtons.add(new GuiButtonPage(panelX + 4, panelY + panelHeight - 15, false));
+		
+		if(page < getPageCount() - 1)
+			panelButtons.add(new GuiButtonPage(panelX + panelWidth - 22, panelY + panelHeight - 15, true));
+		
 		buttonList.addAll(panelButtons);
 	}
 
+	private int getPageCount() {
+		return visiblePieces.size() / PIECES_PER_PAGE + 1;
+	}
+	
 	private void closePanel() {
 		panelEnabled = false;
 		buttonList.removeAll(panelButtons);

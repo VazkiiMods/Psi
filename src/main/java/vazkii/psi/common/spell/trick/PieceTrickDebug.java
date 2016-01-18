@@ -12,14 +12,13 @@ package vazkii.psi.common.spell.trick;
 
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
-import vazkii.psi.api.spell.EnumSpellStat;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellCompilationException;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellMetadata;
 import vazkii.psi.api.spell.SpellParam;
 import vazkii.psi.api.spell.param.ParamAny;
-import vazkii.psi.api.spell.param.ParamNumberConstant;
+import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.piece.PieceTrick;
 
 public class PieceTrickDebug extends PieceTrick {
@@ -34,7 +33,7 @@ public class PieceTrickDebug extends PieceTrick {
 	@Override
 	public void initParams() {
 		addParam(target = new ParamAny(SpellParam.GENERIC_NAME_TARGET, SpellParam.BLUE, false));
-		addParam(number = new ParamNumberConstant(SpellParam.GENERIC_NAME_NUMBER, SpellParam.RED, true));
+		addParam(number = new ParamNumber(SpellParam.GENERIC_NAME_NUMBER, SpellParam.RED, true, true));
 	}
 	
 	@Override

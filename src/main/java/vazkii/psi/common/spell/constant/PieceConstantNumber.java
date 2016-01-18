@@ -10,6 +10,8 @@
  */
 package vazkii.psi.common.spell.constant;
 
+import java.util.List;
+
 import org.lwjgl.input.Keyboard;
 
 import net.minecraft.client.Minecraft;
@@ -35,6 +37,11 @@ public class PieceConstantNumber extends SpellPiece {
 		super.initParams();
 		
 		valueStr = "0";
+	}
+	
+	@Override
+	public void getShownPieces(List<SpellPiece> pieces) {
+		super.getShownPieces(pieces);
 	}
 
 	@Override

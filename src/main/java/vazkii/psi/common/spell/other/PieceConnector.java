@@ -38,6 +38,11 @@ public class PieceConnector extends SpellPiece implements IRedirector {
 	public PieceConnector(Spell spell) {
 		super(spell);
 	}
+	
+	@Override
+	public String getSortingName() {
+		return "00000000000";
+	}
 
 	@Override
 	@SideOnly(Side.CLIENT)

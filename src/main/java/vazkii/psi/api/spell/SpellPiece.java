@@ -23,6 +23,7 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vazkii.psi.api.PsiAPI;
@@ -59,6 +60,16 @@ public abstract class SpellPiece {
 	public abstract Object evaluate();
 
 	public abstract Object execute(SpellContext context);
+	
+	public String getEvaluationTypeString() {
+		Class<?> evalType = getEvaluationType();
+		String evalStr = evalType == null ? "Null" : evalType.getSimpleName();
+		String s = StatCollector.translateToLocal("psi.datatype." + evalStr);
+		if(getPieceType() == EnumPieceType.CONSTANT)
+			s += " " + StatCollector.translateToLocal("psimisc.constant");
+		
+		return s;
+	}
 	
 	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
 		// NO-OP
@@ -103,6 +114,10 @@ public abstract class SpellPiece {
 
 	public String getUnlocalizedName() {
 		return "psi.spellpiece." + registryKey;
+	}
+	
+	public String getSortingName() {
+		return StatCollector.translateToLocal(getUnlocalizedName());
 	}
 	
 	public String getUnlocalizedDesc() {
@@ -177,7 +192,19 @@ public abstract class SpellPiece {
 	@SideOnly(Side.CLIENT)
 	public void getTooltip(List<String> tooltip) {
 		TooltipHelper.addToTooltip(tooltip, getUnlocalizedName());
-		TooltipHelper.addToTooltip(tooltip, EnumChatFormatting.GRAY + "%s", getUnlocalizedDesc());
+		TooltipHelper.tooltipIfShift(tooltip, () -> {
+			TooltipHelper.addToTooltip(tooltip, EnumChatFormatting.GRAY + "%s", getUnlocalizedDesc());
+			
+			TooltipHelper.addToTooltip(tooltip, "");
+			String eval = getEvaluationTypeString();
+			TooltipHelper.addToTooltip(tooltip, "<- " + EnumChatFormatting.GOLD + eval);
+			
+			for(SpellParam param : paramSides.keySet()) {
+				String pName = StatCollector.translateToLocal(param.name);
+				String pEval = param.getEvaluationTypeString();
+				TooltipHelper.addToTooltip(tooltip, (param.canDisable ? "[->] " : " ->  ") + EnumChatFormatting.YELLOW + pName + " [" + pEval + "]");
+			}
+		});
 	}
 
 	@SideOnly(Side.CLIENT)

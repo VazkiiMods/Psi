@@ -10,6 +10,8 @@
  */
 package vazkii.psi.api.spell.param;
 
+import net.minecraft.util.StatCollector;
+import vazkii.psi.api.spell.EnumPieceType;
 import vazkii.psi.api.spell.SpellParam;
 import vazkii.psi.api.spell.SpellPiece;
 
@@ -20,8 +22,9 @@ public class ParamAny extends SpellParam {
 	}
 
 	@Override
-	public boolean canAccept(SpellPiece piece) {
-		return true;
+	public Class<?> getEvaluationType() {
+		return null;
 	}
+	
 
 }
