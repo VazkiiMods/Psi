@@ -29,13 +29,13 @@ public class ItemCADAssembly extends ItemCADComponent {
 	
 	@Override
 	public void registerStats() {
-		addStat(EnumCADStat.EFFICIENCY, 0, 50);
+		addStat(EnumCADStat.EFFICIENCY, 0, 70);
 		addStat(EnumCADStat.POTENCY, 0, 100);
 		
-		addStat(EnumCADStat.EFFICIENCY, 1, 40);
+		addStat(EnumCADStat.EFFICIENCY, 1, 65);
 		addStat(EnumCADStat.POTENCY, 1, 150);
 		
-		addStat(EnumCADStat.EFFICIENCY, 2, 60);
+		addStat(EnumCADStat.EFFICIENCY, 2, 80);
 		addStat(EnumCADStat.POTENCY, 2, 200);
 	}
 

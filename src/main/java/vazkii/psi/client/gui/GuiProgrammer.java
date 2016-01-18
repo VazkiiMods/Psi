@@ -38,6 +38,7 @@ import vazkii.psi.client.core.helper.RenderHelper;
 import vazkii.psi.client.gui.button.GuiButtonSideConfig;
 import vazkii.psi.client.gui.button.GuiButtonSpellPiece;
 import vazkii.psi.common.block.tile.TileProgrammer;
+import vazkii.psi.common.item.ItemCAD;
 import vazkii.psi.common.lib.LibResources;
 import vazkii.psi.common.network.NetworkHandler;
 import vazkii.psi.common.network.message.MessageSpellModified;
@@ -162,6 +163,8 @@ public class GuiProgrammer extends GuiScreen {
 				String s = "" + val;
 				if(cadVal != -1)
 					s += "/" + cadVal;
+				if(stat == EnumSpellStat.COST)
+					s += " (" + ItemCAD.getRealCost(cad, val) + ")";
 				
 				GlStateManager.color(1F, 1F, 1F);
 				drawTexturedModalRect(statX, statY, (stat.ordinal() + 1) * 12, ySize + 16, 12, 12);
