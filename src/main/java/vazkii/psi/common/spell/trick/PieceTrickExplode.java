@@ -40,8 +40,9 @@ public class PieceTrickExplode extends PieceTrick {
 	@Override
 	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
 		super.addToMetadata(meta);
-		double powerVal = this.<Double>getParamEvaluation(power);
-		if(powerVal <= 0)
+		
+		Double powerVal = this.<Double>getParamEvaluation(power);
+		if(powerVal == null || powerVal <= 0)
 			throw new SpellCompilationException("nonpositivevalue", x, y);
 		
 		meta.addStat(EnumSpellStat.POTENCY, (int) (powerVal * 70));

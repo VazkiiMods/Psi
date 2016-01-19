@@ -293,8 +293,6 @@ public class GuiProgrammer extends GuiScreen {
 	protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
 		super.mouseClicked(mouseX, mouseY, mouseButton);
 
-		System.out.println(mouseButton);
-		
 		if(panelEnabled) {
 			searchField.mouseClicked(mouseX, mouseY, mouseButton);
 

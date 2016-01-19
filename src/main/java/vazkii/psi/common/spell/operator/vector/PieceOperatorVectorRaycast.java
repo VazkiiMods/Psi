@@ -49,7 +49,8 @@ public class PieceOperatorVectorRaycast extends PieceOperator {
 		Double numberVal = this.<Double>getParamValue(context, max);
 		if(numberVal != null)
 			maxLen = numberVal.doubleValue();
-			
+		maxLen = Math.min(16, maxLen);	
+		
 		Vector3 end = originVal.copy().add(rayVal.copy().normalize().multiply(maxLen));
 		
 		MovingObjectPosition pos = context.caster.worldObj.rayTraceBlocks(originVal.toVec3D(), end.toVec3D());

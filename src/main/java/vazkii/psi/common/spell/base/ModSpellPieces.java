@@ -21,6 +21,7 @@ import vazkii.psi.common.spell.operator.number.PieceOperatorSubtract;
 import vazkii.psi.common.spell.operator.number.PieceOperatorSum;
 import vazkii.psi.common.spell.operator.vector.PieceOperatorEntityLook;
 import vazkii.psi.common.spell.operator.vector.PieceOperatorEntityPosition;
+import vazkii.psi.common.spell.operator.vector.PieceOperatorVectorRaycast;
 import vazkii.psi.common.spell.other.PieceConnector;
 import vazkii.psi.common.spell.selector.PieceSelectorCaster;
 import vazkii.psi.common.spell.trick.PieceTrickAddMotion;
@@ -56,6 +57,7 @@ public final class ModSpellPieces {
 		operatorDivide = register(PieceOperatorDivide.class, LibPieceNames.OPERATOR_DIVIDE);
 		operatorEntityPosition = register(PieceOperatorEntityPosition.class, LibPieceNames.OPERATOR_ENTITY_POSITION);
 		operatorEntityLook = register(PieceOperatorEntityLook.class, LibPieceNames.OPERATOR_ENTITY_LOOK);
+		operatorVectorRaycast = register(PieceOperatorVectorRaycast.class, LibPieceNames.OPERATOR_VECTOR_RAYCAST);
 
 		constantNumber = register(PieceConstantNumber.class, LibPieceNames.CONSTANT_NUMBER);
 		
