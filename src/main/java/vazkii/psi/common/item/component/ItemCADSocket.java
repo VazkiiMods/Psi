@@ -19,6 +19,10 @@ public class ItemCADSocket extends ItemCADComponent {
 
 	public static final String[] VARIANTS = {
 		"cadSocketBasic",
+		"cadSocketSignaling",
+		"cadSocketLarge",
+		"cadSocketTransmissive",
+		"cadSocketHuge"
 	};
 	
 	public ItemCADSocket() {
@@ -27,8 +31,25 @@ public class ItemCADSocket extends ItemCADComponent {
 	
 	@Override
 	public void registerStats() {
+		// Basic
 		addStat(EnumCADStat.BANDWIDTH, 0, 5);
 		addStat(EnumCADStat.SOCKETS, 0, 4);
+		
+		// Signaling
+		addStat(EnumCADStat.BANDWIDTH, 1, 7);
+		addStat(EnumCADStat.SOCKETS, 1, 6);
+		
+		// Large
+		addStat(EnumCADStat.BANDWIDTH, 2, 6);
+		addStat(EnumCADStat.SOCKETS, 2, 8);
+		
+		// Transmissive
+		addStat(EnumCADStat.BANDWIDTH, 3, 9);
+		addStat(EnumCADStat.SOCKETS, 3, 10);
+		
+		// Huge
+		addStat(EnumCADStat.BANDWIDTH, 4, 8);
+		addStat(EnumCADStat.SOCKETS, 4, 12);
 	}
 
 	@Override

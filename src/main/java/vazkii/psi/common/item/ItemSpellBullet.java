@@ -10,7 +10,11 @@
  */
 package vazkii.psi.common.item;
 
+import java.util.List;
+
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumRarity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentTranslation;
@@ -35,7 +39,9 @@ public class ItemSpellBullet extends ItemMod implements ISpellContainer {
 			"spellBullet",
 			"spellBulletActive",
 			"spellBulletProjectile",
-			"spellBulletProjectileActive"
+			"spellBulletProjectileActive",
+			"spellBulletLoop",
+			"spellBulletLoopActive",
 	};
 	
 	public ItemSpellBullet() {
@@ -85,7 +91,14 @@ public class ItemSpellBullet extends ItemMod implements ISpellContainer {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public EnumRarity getRarity(ItemStack stack) {
-		return EnumRarity.RARE;
+		return containsSpell(stack) ? EnumRarity.RARE : EnumRarity.COMMON;
+	}
+	
+	@Override
+	public void getSubItems(Item itemIn, CreativeTabs tab, List<ItemStack> subItems) {
+		for(int i = 0; i < getVariants().length; i++)
+			if(i % 2 == 0)
+				subItems.add(new ItemStack(itemIn, 1, i));
 	}
 
 	@Override

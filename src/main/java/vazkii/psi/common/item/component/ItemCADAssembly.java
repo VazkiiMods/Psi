@@ -29,14 +29,17 @@ public class ItemCADAssembly extends ItemCADComponent {
 	
 	@Override
 	public void registerStats() {
+		// Iron
 		addStat(EnumCADStat.EFFICIENCY, 0, 70);
 		addStat(EnumCADStat.POTENCY, 0, 100);
 		
+		// Gold
 		addStat(EnumCADStat.EFFICIENCY, 1, 65);
 		addStat(EnumCADStat.POTENCY, 1, 150);
 		
+		// Psimetal
 		addStat(EnumCADStat.EFFICIENCY, 2, 80);
-		addStat(EnumCADStat.POTENCY, 2, 200);
+		addStat(EnumCADStat.POTENCY, 2, 250);
 	}
 
 	@Override

@@ -19,6 +19,10 @@ public class ItemCADCore extends ItemCADComponent {
 
 	public static final String[] VARIANTS = {
 		"cadCoreBasic",
+		"cadCoreOverclocked",
+		"cadCoreConductive",
+		"cadCoreHyperclocked",
+		"cadCoreRadiative"
 	};
 	
 	public ItemCADCore() {
@@ -27,8 +31,25 @@ public class ItemCADCore extends ItemCADComponent {
 	
 	@Override
 	public void registerStats() {
+		// Basic
 		addStat(EnumCADStat.COMPLEXITY, 0, 6);
 		addStat(EnumCADStat.PROJECTION, 0, 1);
+		
+		// Overclocked
+		addStat(EnumCADStat.COMPLEXITY, 1, 14);
+		addStat(EnumCADStat.PROJECTION, 1, 3);
+		
+		// Conductive
+		addStat(EnumCADStat.COMPLEXITY, 2, 12);
+		addStat(EnumCADStat.PROJECTION, 2, 4);
+		
+		// Hyperclocked
+		addStat(EnumCADStat.COMPLEXITY, 3, 20);
+		addStat(EnumCADStat.PROJECTION, 3, 5);
+		
+		// Radiative
+		addStat(EnumCADStat.COMPLEXITY, 4, 16);
+		addStat(EnumCADStat.PROJECTION, 4, 6);
 	}
 
 	@Override

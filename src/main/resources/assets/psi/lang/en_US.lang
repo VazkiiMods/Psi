@@ -29,8 +29,18 @@ item.psi:cadAssemblyIron.name=Iron CAD Assembly
 item.psi:cadAssemblyGold.name=Gold CAD Assembly
 item.psi:cadAssemblyPsimetal.name=Psimetal CAD Assembly
 item.psi:cadCoreBasic.name=Basic CAD Core
+item.psi:cadCoreOverclocked.name=Overclocked CAD Core
+item.psi:cadCoreConductive.name=Conductive CAD Core
+item.psi:cadCoreHyperclocked.name=Hyperclocked CAD Core
+item.psi:cadCoreRadiative.name=Radiative CAD Core
 item.psi:cadSocketBasic.name=Basic CAD Socket
+item.psi:cadSocketSignaling.name=Signaling CAD Socket
+item.psi:cadSocketLarge.name=Large CAD Socket
+item.psi:cadSocketTransmissive.name=Transmissive CAD Socket
+item.psi:cadSocketHuge.name=Huge CAD Socket
 item.psi:cadBatteryBasic.name=Basic CAD Battery
+item.psi:cadBatteryExtended.name=Extended CAD Battery
+item.psi:cadBatteryUltradense.name=Ultradense CAD Battery
 item.psi:cadColorizerWhite.name=White CAD Colorizer
 item.psi:cadColorizerOrange.name=Orange CAD Colorizer
 item.psi:cadColorizerMagenta.name=Magenta CAD Colorizer
@@ -53,6 +63,8 @@ item.psi:spellBullet.name=Spell Bullet
 item.psi:spellBulletActive.name=Programmed Spell Bullet
 item.psi:spellBulletProjectile.name=Projectile Spell Bullet
 item.psi:spellBulletProjectileActive.name=Programmed Projectile Spell Bullet
+item.psi:spellBulletLoop.name=Loopcast Spell Bullet
+item.psi:spellBulletLoopActive.name=Programmed Loopcast Spell Bullet
 
 # COMPONENT NAMES
 psi.component.assembly=Assembly

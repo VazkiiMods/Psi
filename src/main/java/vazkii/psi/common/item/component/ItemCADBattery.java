@@ -19,6 +19,8 @@ public class ItemCADBattery extends ItemCADComponent {
 
 	public static final String[] VARIANTS = {
 		"cadBatteryBasic",
+		"cadBatteryExtended",
+		"cadBatteryUltradense"
 	};
 	
 	public ItemCADBattery() {
@@ -27,7 +29,14 @@ public class ItemCADBattery extends ItemCADComponent {
 	
 	@Override
 	public void registerStats() {
+		// Basic
 		addStat(EnumCADStat.OVERFLOW, 0, 100);
+		
+		// Extended
+		addStat(EnumCADStat.OVERFLOW, 1, 200);
+		
+		// Ultradense
+		addStat(EnumCADStat.OVERFLOW, 2, 400);
 	}
 	
 	@Override
