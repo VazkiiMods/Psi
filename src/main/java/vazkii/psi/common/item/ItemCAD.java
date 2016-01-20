@@ -78,6 +78,9 @@ public class ItemCAD extends ItemMod implements ICAD {
 							int cost = getRealCost(itemStackIn, context.cspell.metadata.stats.get(EnumSpellStat.COST)); 
 							if(cost > 0) {
 								data.deductPsi(cost, 40, true);
+
+								if(!worldIn.isRemote)
+									worldIn.playSoundAtEntity(playerIn, "psi:cadShoot", 0.5F, (float) (0.5 + Math.random() * 0.5));
 								
 								Color color = new Color(getSpellColor(itemStackIn));
 								float r = (float) color.getRed() / 255F;

@@ -18,6 +18,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vazkii.psi.api.spell.EnumPieceType;
@@ -43,6 +44,11 @@ public class PieceConnector extends SpellPiece implements IRedirector {
 	@Override
 	public String getSortingName() {
 		return "00000000000";
+	}
+	
+	@Override
+	public String getEvaluationTypeString() {
+		return StatCollector.translateToLocal("psi.datatype.Any");
 	}
 
 	@Override
