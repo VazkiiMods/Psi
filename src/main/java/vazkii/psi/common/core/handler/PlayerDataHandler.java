@@ -138,25 +138,23 @@ public class PlayerDataHandler {
 				deductTick = false;
 			else lastAvailablePsi = availablePsi;
 
-			if(regenCooldown == 0) {			
+			if(regenCooldown == 0) {
 				int max = getTotalPsi();
-				if(availablePsi < max && regenCooldown == 0) {
-					boolean doRegen = true;
-					ItemStack cadStack = getCAD();
-					if(cadStack != null) {
-						ICAD cad = (ICAD) cadStack.getItem();
-						int maxPsi = cad.getStatValue(cadStack, EnumCADStat.OVERFLOW);
-						int currPsi = cad.getStoredPsi(cadStack);
-						if(currPsi < maxPsi) {
-							cad.regenPsi(cadStack, getRegenPerTick());
-							doRegen = false;
-						}
+				boolean doRegen = true;
+				ItemStack cadStack = getCAD();
+				if(cadStack != null) {
+					ICAD cad = (ICAD) cadStack.getItem();
+					int maxPsi = cad.getStatValue(cadStack, EnumCADStat.OVERFLOW);
+					int currPsi = cad.getStoredPsi(cadStack);
+					if(currPsi < maxPsi) {
+						cad.regenPsi(cadStack, getRegenPerTick());
+						doRegen = false;
 					}
-
-					if(doRegen) {
+				}
+				
+				if(doRegen && availablePsi < max && regenCooldown == 0) {
 						availablePsi = Math.min(max, availablePsi + getRegenPerTick());
 						save();
-					}
 				}
 			} else {
 				regenCooldown--;
