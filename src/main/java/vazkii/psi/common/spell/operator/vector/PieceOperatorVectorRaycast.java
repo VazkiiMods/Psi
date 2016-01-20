@@ -49,7 +49,7 @@ public class PieceOperatorVectorRaycast extends PieceOperator {
 		Double numberVal = this.<Double>getParamValue(context, max);
 		if(numberVal != null)
 			maxLen = numberVal.doubleValue();
-		maxLen = Math.min(16, maxLen);	
+		maxLen = Math.min(32, maxLen);	
 		
 		Vector3 end = originVal.copy().add(rayVal.copy().normalize().multiply(maxLen));
 		

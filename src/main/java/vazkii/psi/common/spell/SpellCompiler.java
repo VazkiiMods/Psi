@@ -75,9 +75,9 @@ public final class SpellCompiler implements ISpellCompiler {
 			Action a = compiled.new Action(piece);
 			compiled.actions.add(a);
 			compiled.actionMap.put(piece, a);
+			piece.addToMetadata(compiled.metadata);
 		}
 		
-		piece.addToMetadata(compiled.metadata);
 		visited.add(piece);
 		
 		List<SpellParam.Side> usedSides = new ArrayList();

@@ -28,10 +28,17 @@ public abstract class SpellParam {
 	public static final String GENERIC_NAME_NUMBER2 = "psi.spellparam.number2";
 	public static final String GENERIC_NAME_NUMBER3 = "psi.spellparam.number3";
 	public static final String GENERIC_NAME_NUMBER4 = "psi.spellparam.number4";
+	public static final String GENERIC_NAME_VECTOR1 = "psi.spellparam.vector1";
+	public static final String GENERIC_NAME_VECTOR2 = "psi.spellparam.vector2";
+	public static final String GENERIC_NAME_VECTOR3 = "psi.spellparam.vector3";
+	public static final String GENERIC_NAME_VECTOR4 = "psi.spellparam.vector4";
 	public static final String GENERIC_NAME_POSITION = "psi.spellparam.position";
 	public static final String GENERIC_NAME_MIN = "psi.spellparam.min";
 	public static final String GENERIC_NAME_MAX = "psi.spellparam.max";
 	public static final String GENERIC_NAME_POWER = "psi.spellparam.power";
+	public static final String GENERIC_NAME_X = "psi.spellparam.x";
+	public static final String GENERIC_NAME_Y = "psi.spellparam.y";
+	public static final String GENERIC_NAME_Z = "psi.spellparam.z";
 
 	public final String name;
 	public final int color;
