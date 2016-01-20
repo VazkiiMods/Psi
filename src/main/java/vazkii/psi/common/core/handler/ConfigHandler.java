@@ -25,6 +25,7 @@ public class ConfigHandler {
 	
 	public static boolean useShaders = true;
 	public static boolean psiBarOnRight = true;
+	public static boolean useVanillaParticleLimiter = true;
 	
 	public static void init(File configFile) {
 		config = new Configuration(configFile);
@@ -43,6 +44,10 @@ public class ConfigHandler {
 		
 		desc = "Controls whether the Psi Bar should be rendered on the right of the screen or not.";
 		psiBarOnRight = loadPropBool("Psi Bar on the Right", desc, psiBarOnRight);
+		
+		desc = "Controls whether the \"Particles\" setting in the Vanilla options menu is accounted for when creating particles. Set to false to always have particles even if you change the Vanilla setting.";
+		useVanillaParticleLimiter = loadPropBool("Use Vanilla Particle Limiter", desc, useVanillaParticleLimiter);
+		
 		
 		if(config.hasChanged())
 			config.save();

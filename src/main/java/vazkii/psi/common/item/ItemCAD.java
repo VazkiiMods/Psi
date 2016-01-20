@@ -10,6 +10,7 @@
  */
 package vazkii.psi.common.item;
 
+import java.awt.Color;
 import java.util.List;
 
 import net.minecraft.client.renderer.ItemMeshDefinition;
@@ -33,11 +34,13 @@ import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.cad.ICADColorizer;
 import vazkii.psi.api.cad.ICADComponent;
 import vazkii.psi.api.cad.ISocketable;
+import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.EnumSpellStat;
 import vazkii.psi.api.spell.ISpellContainer;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.client.core.handler.ModelHandler;
+import vazkii.psi.common.Psi;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
 import vazkii.psi.common.core.helper.ItemNBTHelper;
@@ -73,8 +76,38 @@ public class ItemCAD extends ItemMod implements ICAD {
 					if(context.isValid()) {
 						if(context.cspell.metadata.evaluateAgainst(itemStackIn)) {
 							int cost = getRealCost(itemStackIn, context.cspell.metadata.stats.get(EnumSpellStat.COST)); 
-							if(cost > 0)
+							if(cost > 0) {
 								data.deductPsi(cost, 40, true);
+								
+								Color color = new Color(getSpellColor(itemStackIn));
+								float r = (float) color.getRed() / 255F;
+								float g = (float) color.getGreen() / 255F;
+								float b = (float) color.getBlue() / 255F;
+								for(int i = 0; i < 25; i++) {
+									double x = playerIn.posX + ((Math.random() - 0.5) * 2.1) * playerIn.width;
+									double y = playerIn.posY - playerIn.getYOffset();
+									double z = playerIn.posZ + ((Math.random() - 0.5) * 2.1) * playerIn.width;
+									float grav = -0.15F - (float) Math.random() * 0.03F;
+									Psi.proxy.sparkleFX(worldIn, x, y, z, r, g, b, grav, 0.25F, 15);
+								}
+								
+								double x = playerIn.posX;
+								double y = playerIn.posY + playerIn.getEyeHeight() - 0.1;
+								double z = playerIn.posZ;
+								Vector3 lookOrig = new Vector3(playerIn.getLookVec());
+								for(int i = 0; i < 25; i++) {
+									Vector3 look = lookOrig.copy();
+									look.x += (Math.random() - 0.5) * 0.25;
+									look.y += (Math.random() - 0.5) * 0.25;
+									look.z += (Math.random() - 0.5) * 0.25;
+									look.normalize().multiply(0.15);
+									
+									Psi.proxy.sparkleFX(worldIn, x, y, z, r, g, b, (float) look.x, (float) look.y, (float) look.z, 0.3F, 5);
+								}
+							}
+							
+							if(playerIn.worldObj.isRemote)
+								playerIn.swingItem();
 							
 							spellContainer.castSpell(bullet, context);
 							

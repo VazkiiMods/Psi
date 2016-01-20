@@ -299,7 +299,7 @@ public class Vector3
 		Quat.aroundAxis(axis.copy().normalize(), angle).rotate(this);
 		return this;
 	}
-
+	
 	@Override
 	public boolean equals(Object o) {
 		if(!(o instanceof Vector3))
