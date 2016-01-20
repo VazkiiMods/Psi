@@ -127,7 +127,7 @@ public class GuiSocketSelect extends GuiScreen {
 				float rad = (float) ((i + totalDeg) / 180F * Math.PI);
 				double xp = x + Math.cos(rad) * radius;
 				double yp = y + Math.sin(rad) * radius;
-				if(i == degPer / 2)
+				if(i == (int) (degPer / 2))
 					stringPositions.add(new int[] { seg, (int) xp, (int) yp, (mouseInSector ? 'n' : 'r') });
 				
 				GL11.glVertex2d(xp, yp);

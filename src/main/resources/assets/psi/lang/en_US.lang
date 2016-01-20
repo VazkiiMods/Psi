@@ -2,7 +2,7 @@
 itemGroup.Psi=Psi
 
 psimisc.componentType=&aComponent Type&7: %s
-psimisc.shiftForInfo=Hold &bSHIFT&7 for more info
+psimisc.shiftForInfo=&7Hold &bSHIFT&7 for more info
 psimisc.none=(none)
 psimisc.stats=Stats
 psimisc.socketing=Socketing

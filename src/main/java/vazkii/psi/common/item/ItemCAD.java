@@ -28,6 +28,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.EnumCADComponent;
 import vazkii.psi.api.cad.EnumCADStat;
 import vazkii.psi.api.cad.ICAD;
@@ -65,6 +66,9 @@ public class ItemCAD extends ItemMod implements ICAD {
 	@Override
 	public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn) {
 		PlayerData data = PlayerDataHandler.get(playerIn);
+		ItemStack playerCad = PsiAPI.getPlayerCAD(playerIn);
+		if(playerCad != itemStackIn)
+			return itemStackIn;
 
 		if(data.getAvailablePsi() > 0) {
 			ItemStack bullet = getBulletInSocket(itemStackIn, getSelectedSlot(itemStackIn));
