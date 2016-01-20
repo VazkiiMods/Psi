@@ -98,6 +98,8 @@ psi.spellstat.bandwidth.desc=Spell width or height (largest)
 # -- SELECTORS
 psi.spellpiece.selectorCaster=Selector: Caster
 psi.spellpiece.selectorCaster.desc=Selects the person casting the spell
+psi.spellpiece.selectorFocalPoint=Selector: Focal Point
+psi.spellpiece.selectorFocalPoint.desc=Selects the focal point Entity of this spell
 
 # -- OPERATORS
 psi.spellpiece.operatorSum=Operator: Sum

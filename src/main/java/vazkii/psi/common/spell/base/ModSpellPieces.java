@@ -38,6 +38,7 @@ import vazkii.psi.common.spell.operator.vector.PieceOperatorVectorSubtract;
 import vazkii.psi.common.spell.operator.vector.PieceOperatorVectorSum;
 import vazkii.psi.common.spell.other.PieceConnector;
 import vazkii.psi.common.spell.selector.PieceSelectorCaster;
+import vazkii.psi.common.spell.selector.PieceSelectorFocalPoint;
 import vazkii.psi.common.spell.trick.PieceTrickAddMotion;
 import vazkii.psi.common.spell.trick.PieceTrickDebug;
 import vazkii.psi.common.spell.trick.PieceTrickExplode;
@@ -45,7 +46,8 @@ import vazkii.psi.common.spell.trick.PieceTrickExplode;
 public final class ModSpellPieces {
 
 	public static PieceContainer selectorCaster;
-	
+	public static PieceContainer selectorFocalPoint;
+
 	public static PieceContainer operatorSum;
 	public static PieceContainer operatorSubtract;
 	public static PieceContainer operatorMultiply;
@@ -79,6 +81,7 @@ public final class ModSpellPieces {
 
 	public static void init() {
 		selectorCaster = register(PieceSelectorCaster.class, LibPieceNames.SELECTOR_CASTER);
+		selectorFocalPoint = register(PieceSelectorFocalPoint.class, LibPieceNames.SELECTOR_FOCAL_POINT);
 		
 		operatorSum = register(PieceOperatorSum.class, LibPieceNames.OPERATOR_SUM);
 		operatorSubtract = register(PieceOperatorSubtract.class, LibPieceNames.OPERATOR_SUBTRACT);

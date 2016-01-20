@@ -13,7 +13,8 @@ package vazkii.psi.common.lib;
 public final class LibPieceNames {
 
 	public static final String SELECTOR_CASTER = "selectorCaster";
-	
+	public static final String SELECTOR_FOCAL_POINT = "selectorFocalPoint";
+
 	public static final String OPERATOR_SUM = "operatorSum";
 	public static final String OPERATOR_SUBTRACT = "operatorSubtract";
 	public static final String OPERATOR_MULTIPLY = "operatorMultiply";
