@@ -22,12 +22,15 @@ import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import vazkii.psi.api.PsiAPI;
+import vazkii.psi.api.cad.EnumCADComponent;
+import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.spell.ISpellContainer;
 import vazkii.psi.api.spell.Spell;
-import vazkii.psi.api.spell.SpellCompilationException;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.common.core.helper.ItemNBTHelper;
+import vazkii.psi.common.entity.EntitySpellProjectile;
 import vazkii.psi.common.item.base.ItemMod;
 import vazkii.psi.common.lib.LibItemNames;
 
@@ -115,6 +118,16 @@ public class ItemSpellBullet extends ItemMod implements ISpellContainer {
 			break;
 		
 		case 3: // Projectile
+			if(!context.caster.worldObj.isRemote) {
+				EntitySpellProjectile proj = new EntitySpellProjectile(context.caster.worldObj, context.caster);
+				ItemStack cad = PsiAPI.getPlayerCAD(context.caster);
+				ItemStack colorizer = ((ICAD) cad.getItem()).getComponentInSlot(cad, EnumCADComponent.DYE);
+				proj.setInfo(colorizer, stack);
+				proj.worldObj.spawnEntityInWorld(proj);
+			}
+			break;
+			
+		case 5: // Loopcast
 			// TODO
 			break;
 		}
