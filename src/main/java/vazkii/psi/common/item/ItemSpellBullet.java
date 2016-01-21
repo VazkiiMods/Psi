@@ -122,7 +122,7 @@ public class ItemSpellBullet extends ItemMod implements ISpellContainer {
 				EntitySpellProjectile proj = new EntitySpellProjectile(context.caster.worldObj, context.caster);
 				ItemStack cad = PsiAPI.getPlayerCAD(context.caster);
 				ItemStack colorizer = ((ICAD) cad.getItem()).getComponentInSlot(cad, EnumCADComponent.DYE);
-				proj.setInfo(colorizer, stack);
+				proj.setInfo(context.caster, colorizer, stack);
 				proj.worldObj.spawnEntityInWorld(proj);
 			}
 			break;

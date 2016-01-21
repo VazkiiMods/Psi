@@ -52,9 +52,10 @@ public class EntitySpellProjectile extends EntityThrowable {
         motionZ *= speed;
     }
     
-    public EntitySpellProjectile setInfo(ItemStack colorizer, ItemStack bullet) {
+    public EntitySpellProjectile setInfo(EntityPlayer player, ItemStack colorizer, ItemStack bullet) {
     	dataWatcher.updateObject(20, colorizer);
     	dataWatcher.updateObject(21, bullet);
+    	dataWatcher.updateObject(22, player.getName());
     	return this;
     }
     
@@ -62,8 +63,10 @@ public class EntitySpellProjectile extends EntityThrowable {
     protected void entityInit() {
     	dataWatcher.addObject(20, new ItemStack(Blocks.stone));
     	dataWatcher.addObject(21, new ItemStack(Blocks.stone));
+    	dataWatcher.addObject(22, "");
     	dataWatcher.setObjectWatched(20);
     	dataWatcher.setObjectWatched(21);
+    	dataWatcher.setObjectWatched(22);
     }
 
     @Override
@@ -94,6 +97,10 @@ public class EntitySpellProjectile extends EntityThrowable {
     	NBTTagCompound bulletCmp = tagCompund.getCompoundTag(TAG_BULLET);
     	ItemStack bullet = ItemStack.loadItemStackFromNBT(bulletCmp);
     	dataWatcher.updateObject(21, bullet);
+    	
+    	EntityLivingBase thrower = getThrower();
+    	if(thrower != null && thrower instanceof EntityPlayer)
+    		dataWatcher.updateObject(22, ((EntityPlayer) thrower).getName());
     }
     
     @Override
@@ -130,6 +137,7 @@ public class EntitySpellProjectile extends EntityThrowable {
 	protected void onImpact(MovingObjectPosition pos) {
 		SpellContext context = null;
 		Entity thrower = getThrower();
+		System.out.println("thrower: " + thrower);
 		if(thrower != null && thrower instanceof EntityPlayer) {
 			ItemStack spellContainer = dataWatcher.getWatchableObjectItemStack(21);
 			if(spellContainer != null && spellContainer.getItem() instanceof ISpellContainer) {
@@ -140,6 +148,7 @@ public class EntitySpellProjectile extends EntityThrowable {
 		}
 		
 		try {
+			System.out.println(context);
 			if(context != null)
 				context.cspell.execute(context);
 		} catch(SpellRuntimeException e) {
@@ -148,6 +157,17 @@ public class EntitySpellProjectile extends EntityThrowable {
 		}
 		
 		setDead();
+	}
+	
+	@Override
+	public EntityLivingBase getThrower() {
+		EntityLivingBase superThrower = super.getThrower();
+		if(superThrower != null)
+			return superThrower;
+		
+		String name = dataWatcher.getWatchableObjectString(22);
+		EntityPlayer player = worldObj.getPlayerEntityByName(name);
+		return player;
 	}
 	
 	@Override
