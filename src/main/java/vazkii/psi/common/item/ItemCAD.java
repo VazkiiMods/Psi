@@ -104,9 +104,10 @@ public class ItemCAD extends ItemMod implements ICAD {
 								Vector3 lookOrig = new Vector3(playerIn.getLookVec());
 								for(int i = 0; i < 25; i++) {
 									Vector3 look = lookOrig.copy();
-									look.x += (Math.random() - 0.5) * 0.25;
-									look.y += (Math.random() - 0.5) * 0.25;
-									look.z += (Math.random() - 0.5) * 0.25;
+									double spread = 0.25;
+									look.x += (Math.random() - 0.5) * spread;
+									look.y += (Math.random() - 0.5) * spread;
+									look.z += (Math.random() - 0.5) * spread;
 									look.normalize().multiply(0.15);
 									
 									Psi.proxy.sparkleFX(worldIn, x, y, z, r, g, b, (float) look.x, (float) look.y, (float) look.z, 0.3F, 5);
