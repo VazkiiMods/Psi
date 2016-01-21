@@ -70,6 +70,11 @@ public class ItemCAD extends ItemMod implements ICAD {
 		if(playerCad != itemStackIn)
 			return itemStackIn;
 
+		if(data.level == 0 && playerIn instanceof EntityPlayerMP) {
+			data.levelUp();
+			NetworkHandler.INSTANCE.sendTo(new MessageDataSync(data), (EntityPlayerMP) playerIn);
+		}
+		
 		if(data.getAvailablePsi() > 0) {
 			ItemStack bullet = getBulletInSocket(itemStackIn, getSelectedSlot(itemStackIn));
 			if(bullet != null && bullet.getItem() instanceof ISpellContainer) {
@@ -118,11 +123,6 @@ public class ItemCAD extends ItemMod implements ICAD {
 								playerIn.swingItem();
 							
 							spellContainer.castSpell(bullet, context);
-							
-							if(data.level == 0 && playerIn instanceof EntityPlayerMP) {
-								data.levelUp();
-								NetworkHandler.INSTANCE.sendTo(new MessageDataSync(data), (EntityPlayerMP) playerIn);
-							}
 						} else if(!playerIn.worldObj.isRemote)
 							playerIn.addChatComponentMessage(new ChatComponentTranslation("psimisc.weakCad").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
 					}

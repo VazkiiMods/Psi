@@ -61,6 +61,7 @@ public class PieceTrickDebug extends PieceTrick {
 			s = EnumChatFormatting.AQUA + "[" + numStr + "] " + EnumChatFormatting.RESET + s;
 		}
 		
+		System.out.println(s);
 		context.caster.addChatMessage(new ChatComponentText(s));
 		
 		return null;
