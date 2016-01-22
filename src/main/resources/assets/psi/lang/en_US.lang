@@ -211,6 +211,7 @@ psi.spellerror.nonpositivevalue=A Number Parameter that needs to be positive isn
 psi.spellerror.dividebyzero=ERROR: Divide by zero.
 psi.spellerror.nulltarget=ERROR: Spell Entity target is non existent.
 psi.spellerror.nullvector=ERROR: Spell Operation Vector is non existent or null.
+psi.spellerror.outsideradius=ERROR: Spell target is outside maximum 32 block radius.
 
 # DEATH MESSAGES
 death.attack.psi-overload=%s overflowed their Psionic Energy

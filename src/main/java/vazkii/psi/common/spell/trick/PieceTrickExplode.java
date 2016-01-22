@@ -43,7 +43,7 @@ public class PieceTrickExplode extends PieceTrick {
 		
 		Double powerVal = this.<Double>getParamEvaluation(power);
 		if(powerVal == null || powerVal <= 0)
-			throw new SpellCompilationException("nonpositivevalue", x, y);
+			throw new SpellCompilationException(SpellCompilationException.NON_POSITIVE_VALUE, x, y);
 		
 		meta.addStat(EnumSpellStat.POTENCY, (int) (powerVal * 70));
 		meta.addStat(EnumSpellStat.COST, (int) (powerVal * 70));
@@ -58,7 +58,9 @@ public class PieceTrickExplode extends PieceTrick {
 		Double powerVal = this.<Double>getParamValue(context, power);
 		
 		if(positionVal == null)
-			throw new SpellRuntimeException("nullvector");
+			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
+		if(!context.isInRadius(positionVal))
+			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 		
 		context.caster.worldObj.createExplosion(context.focalPoint, positionVal.x, positionVal.y, positionVal.z, powerVal.floatValue(), true);
 		

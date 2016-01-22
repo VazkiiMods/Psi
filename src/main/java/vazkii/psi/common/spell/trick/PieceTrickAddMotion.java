@@ -59,9 +59,11 @@ public class PieceTrickAddMotion extends PieceTrick {
 		Double speedVal = this.<Double>getParamValue(context, speed);
 
 		if(targetVal == null)
-			throw new SpellRuntimeException("nulltarget");
+			throw new SpellRuntimeException(SpellRuntimeException.NULL_TARGET);
 		if(directionVal == null)
-			throw new SpellRuntimeException("nullvector");
+			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
+		if(!context.isInRadius(targetVal))
+			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 		if(speedVal == null)
 			speedVal = 1D;
 		

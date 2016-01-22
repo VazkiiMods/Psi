@@ -43,13 +43,13 @@ public class PieceOperatorVectorRaycast extends PieceOperator {
 		Vector3 rayVal = this.<Vector3>getParamValue(context, ray);
 		
 		if(originVal == null || rayVal == null)
-			throw new SpellRuntimeException("nullvector");
+			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
 
-		double maxLen = 64;
+		double maxLen = SpellContext.MAX_DISTANCE;
 		Double numberVal = this.<Double>getParamValue(context, max);
 		if(numberVal != null)
 			maxLen = numberVal.doubleValue();
-		maxLen = Math.min(32, maxLen);	
+		maxLen = Math.min(SpellContext.MAX_DISTANCE, maxLen);	
 		
 		Vector3 end = originVal.copy().add(rayVal.copy().normalize().multiply(maxLen));
 		

@@ -36,7 +36,7 @@ public class PieceOperatorInverse extends PieceOperator {
 		Double d = this.<Double>getParamValue(context, num);
 
 		if(d == 0)
-			throw new SpellRuntimeException("dividebyzero");
+			throw new SpellRuntimeException(SpellRuntimeException.DIVIDE_BY_ZERO);
 		
 		return 1.0 / d;
 	}

@@ -12,8 +12,13 @@ package vazkii.psi.api.spell;
 
 public class SpellRuntimeException extends Exception {
 
+	public static final String DIVIDE_BY_ZERO = "psi.spellerror.dividebyzero";
+	public static final String NULL_TARGET = "psi.spellerror.nulltarget";
+	public static final String NULL_VECTOR = "psi.spellerror.nullvector";
+	public static final String OUTSIDE_RADIUS = "psi.spellerror.outsideradius";
+	
 	public SpellRuntimeException(String s) {
-		super("psi.spellerror." + s);
+		super(s);
 	}
 	
 }

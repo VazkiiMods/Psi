@@ -50,7 +50,7 @@ public final class SpellCompiler implements ISpellCompiler {
 	
 	public void compile() throws SpellCompilationException {
 		if(spell == null)
-			throw new SpellCompilationException("nospell");
+			throw new SpellCompilationException(SpellCompilationException.NO_SPELL);
 		
 		compiled = new CompiledSpell(spell);
 		findTricks();
@@ -86,20 +86,20 @@ public final class SpellCompiler implements ISpellCompiler {
 			SpellParam.Side side = piece.paramSides.get(param);
 			if(!side.isEnabled()) {
 				if(!param.canDisable)
-					throw new SpellCompilationException("unsetparam", piece.x, piece.y);
+					throw new SpellCompilationException(SpellCompilationException.UNSET_PARAM, piece.x, piece.y);
 				
 				continue;
 			}
 			
 			if(usedSides.contains(side))
-				throw new SpellCompilationException("samesideparams", piece.x, piece.y);
+				throw new SpellCompilationException(SpellCompilationException.SAME_SIDE_PARAMS, piece.x, piece.y);
 			usedSides.add(side);
 			
 			SpellPiece pieceAt = spell.grid.getPieceAtSideWithRedirections(piece.x, piece.y, side);
 			if(pieceAt == null)
-				throw new SpellCompilationException("nullparam", piece.x, piece.y);
+				throw new SpellCompilationException(SpellCompilationException.NULL_PARAM, piece.x, piece.y);
 			if(!param.canAccept(pieceAt))
-				throw new SpellCompilationException("invalidparam", piece.x, piece.y);
+				throw new SpellCompilationException(SpellCompilationException.INVALID_PARAM, piece.x, piece.y);
 			
 			buildPiece(pieceAt, new ArrayList(visited));
 		}
@@ -114,7 +114,7 @@ public final class SpellCompiler implements ISpellCompiler {
 			}
 
 		if(tricks.isEmpty())
-			throw new SpellCompilationException("notricks");
+			throw new SpellCompilationException(SpellCompilationException.NO_TRICKS);
 	}
 	
 	@Override

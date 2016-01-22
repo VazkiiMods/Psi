@@ -38,7 +38,7 @@ public class PieceOperatorEntityPosition extends PieceOperator {
 		Entity e = this.<Entity>getParamValue(context, target);
 		
 		if(e == null)
-			throw new SpellRuntimeException("nulltarget");
+			throw new SpellRuntimeException(SpellRuntimeException.NULL_TARGET);
 		
 		return Vector3.fromEntityCenter(e);
 	}

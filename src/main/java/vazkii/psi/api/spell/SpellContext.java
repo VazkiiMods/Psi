@@ -12,11 +12,13 @@ package vazkii.psi.api.spell;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.common.spell.SpellCache;
-import vazkii.psi.common.spell.SpellCompiler;
 
 public final class SpellContext {
 
+	public static final double MAX_DISTANCE = 32;
+	
 	public EntityPlayer caster;
 	public Entity focalPoint; 
 	public CompiledSpell cspell;
@@ -43,6 +45,22 @@ public final class SpellContext {
 
 	public boolean isValid() {
 		return cspell != null;
+	}
+	
+	public boolean isInRadius(Vector3 vec) {
+		return isInRadius(vec.x, vec.y, vec.z);
+	}
+	
+	public boolean isInRadius(Entity e) {
+		return isInRadius(e.posX, e.posY, e.posZ); 
+	}
+	
+	public boolean isInRadius(double x, double y, double z) {
+		return pointDistanceSpace(x, y, z, focalPoint.posX, focalPoint.posY, focalPoint.posZ) <= MAX_DISTANCE; 
+	}
+	
+	public static double pointDistanceSpace(double x1, double y1, double z1, double x2, double y2, double z2) {
+		return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2) + Math.pow(z1 - z2, 2));
 	}
 	
 }

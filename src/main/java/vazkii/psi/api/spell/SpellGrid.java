@@ -85,7 +85,7 @@ public final class SpellGrid {
 	public SpellPiece getPieceAtSideWithRedirections(List<SpellPiece> traversed, int x, int y, SpellParam.Side side) throws SpellCompilationException {
 		SpellPiece atSide = getPieceAtSideSafely(x, y, side);
 		if(traversed.contains(atSide))
-			throw new SpellCompilationException("loop");
+			throw new SpellCompilationException(SpellCompilationException.INFINITE_LOOP);
 			
 		traversed.add(atSide);
 		if(atSide == null || !(atSide instanceof IRedirector))

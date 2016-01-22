@@ -38,7 +38,7 @@ public class PieceOperatorDivide extends PieceOperator {
 		Double d2 = this.<Double>getParamValue(context, num2);
 		
 		if(d2 == 0)
-			throw new SpellRuntimeException("dividebyzero");
+			throw new SpellRuntimeException(SpellRuntimeException.DIVIDE_BY_ZERO);
 		
 		return d1 / d2;
 	}
