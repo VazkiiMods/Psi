@@ -18,9 +18,12 @@ import vazkii.psi.common.spell.SpellCompiler;
 public class TileProgrammer extends TileMod {
 
 	private static final String TAG_SPELL = "spell";
-	
+	private static final String TAG_PLAYER_LOCK = "playerLock";
+
 	public Spell spell;
 	public boolean enabled;
+	
+	public String playerLock = "";
 	
 	public boolean isEnabled() {
 		return spell != null && !spell.grid.isEmpty();
@@ -45,6 +48,7 @@ public class TileProgrammer extends TileMod {
 		if(spell != null)
 			spell.writeToNBT(spellCmp);
 		cmp.setTag(TAG_SPELL, spellCmp);
+		cmp.setString(TAG_PLAYER_LOCK, playerLock);
 	}
 	
 	@Override
@@ -55,6 +59,7 @@ public class TileProgrammer extends TileMod {
 		if(spell == null)
 			spell = Spell.createFromNBT(spellCmp);
 		else spell.readFromNBT(spellCmp);
+		playerLock = cmp.getString(TAG_PLAYER_LOCK);
 	}
 	
 }

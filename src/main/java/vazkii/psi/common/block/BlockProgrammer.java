@@ -21,6 +21,9 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.ChatStyle;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -46,13 +49,23 @@ public class BlockProgrammer extends BlockFacing {
 	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ) {
 		TileProgrammer programmer = (TileProgrammer) worldIn.getTileEntity(pos);
+
+		boolean enabled = programmer.isEnabled();
+		if(enabled) {
+			if(!programmer.playerLock.equals(playerIn.getName())) {
+				if(!worldIn.isRemote)
+					playerIn.addChatComponentMessage(new ChatComponentTranslation("psimisc.notYourProgrammer").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
+				return true;
+			}
+		} else programmer.playerLock = playerIn.getName();
+		
 		Runnable dispatch = () -> {
 			if(playerIn instanceof EntityPlayerMP)
 				VanillaPacketDispatcher.dispatchTEToPlayer(programmer, (EntityPlayerMP) playerIn);
 		};
 		
 		ItemStack stack = playerIn.getCurrentEquippedItem();
-		if(programmer.isEnabled() && stack != null && stack.getItem() instanceof ISpellContainer && programmer.spell != null && !programmer.spell.name.trim().isEmpty()) {
+		if(enabled && stack != null && stack.getItem() instanceof ISpellContainer && programmer.spell != null && !programmer.spell.name.trim().isEmpty()) {
 			if(programmer.canCompile()) {
 				ISpellContainer container = (ISpellContainer) stack.getItem();
 				if(container.canSetSpell(stack)) {

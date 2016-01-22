@@ -16,6 +16,7 @@ psimisc.constant=Constant
 psimisc.nextPage=Next Page
 psimisc.prevPage=Previous Page
 psimisc.config=Config
+psimisc.notYourProgrammer=It seems like someone else is using this. Probably better not to mess with it. 
 
 # BLOCK NAMES
 tile.psi:cadAssembler.name=CAD Assembler
