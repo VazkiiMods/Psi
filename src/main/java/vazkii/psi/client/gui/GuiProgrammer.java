@@ -194,7 +194,9 @@ public class GuiProgrammer extends GuiScreen {
 		
 		if(configEnabled) {
 			drawTexturedModalRect(left - 81, top + 55, xSize, 30, 81, 115);
-
+			String configStr = StatCollector.translateToLocal("psimisc.config");
+			mc.fontRendererObj.drawString(configStr, left - mc.fontRendererObj.getStringWidth(configStr) - 2, top + 45, 0xFFFFFF);
+			
 			SpellPiece piece = programmer.spell.grid.gridData[selectedX][selectedY];
 			int i = 0;
 
@@ -479,30 +481,36 @@ public class GuiProgrammer extends GuiScreen {
 	public void onSelectedChanged() {
 		buttonList.removeAll(configButtons);
 		configButtons.clear();
-
+		spellNameField.setEnabled(true);
+		
 		if(selectedX != -1 && selectedY != -1) {
 			SpellPiece piece = programmer.spell.grid.gridData[selectedX][selectedY];
-			if(piece != null && piece.hasConfig()) {
-				int i = 0;
-				for(String paramName : piece.params.keySet()) {
-					SpellParam param = piece.params.get(paramName);
-					int x = left - 17;
-					int y = top + 70 + i * 26;
-					for(SpellParam.Side side : SpellParam.Side.class.getEnumConstants()) {
-						if(!side.isEnabled() && !param.canDisable)
-							continue;
+			if(piece != null) {
+				boolean intercept = piece.interceptKeystrokes();
+				spellNameField.setEnabled(!intercept);
+				
+				if(piece.hasConfig()) {
+					int i = 0;
+					for(String paramName : piece.params.keySet()) {
+						SpellParam param = piece.params.get(paramName);
+						int x = left - 17;
+						int y = top + 70 + i * 26;
+						for(SpellParam.Side side : SpellParam.Side.class.getEnumConstants()) {
+							if(!side.isEnabled() && !param.canDisable)
+								continue;
 
-						int xp = x + side.offx * 8;
-						int yp = y + side.offy * 8;
-						configButtons.add(new GuiButtonSideConfig(this, selectedX, selectedY, paramName, side, xp, yp));
+							int xp = x + side.offx * 8;
+							int yp = y + side.offy * 8;
+							configButtons.add(new GuiButtonSideConfig(this, selectedX, selectedY, paramName, side, xp, yp));
+						}
+
+						i++;
 					}
 
-					i++;
+					buttonList.addAll(configButtons);
+					configEnabled = true;
+					return;
 				}
-
-				buttonList.addAll(configButtons);
-				configEnabled = true;
-				return;
 			}
 		}
 

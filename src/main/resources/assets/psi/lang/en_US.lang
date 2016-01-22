@@ -15,6 +15,7 @@ psimisc.weakCad=Your CAD's Stats are too weak to cast this Spell.
 psimisc.constant=Constant
 psimisc.nextPage=Next Page
 psimisc.prevPage=Previous Page
+psimisc.config=Config
 
 # BLOCK NAMES
 tile.psi:cadAssembler.name=CAD Assembler
