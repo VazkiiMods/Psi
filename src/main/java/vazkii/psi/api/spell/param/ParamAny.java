@@ -22,8 +22,8 @@ public class ParamAny extends SpellParam {
 	}
 
 	@Override
-	public Class<?> getEvaluationType() {
-		return null;
+	public Class<?> getRequiredType() {
+		return Any.class;
 	}
 	
 

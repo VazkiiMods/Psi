@@ -12,6 +12,11 @@ package vazkii.psi.api.spell;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+/**
+ * An exception thrown on spell compilation. This is caught by the programmer GUI
+ * and will show up as an error in it, as well as its {@link #location} as a "warning"
+ * display next to the piece it indicates.
+ */
 public class SpellCompilationException extends Exception {
 
 	public static final String NO_SPELL = "psi.spellerror.nospell";

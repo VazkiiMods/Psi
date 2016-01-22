@@ -12,6 +12,10 @@ package vazkii.psi.api.spell;
 
 import net.minecraft.item.ItemStack;
 
+/**
+ * An ItemStack that implements this counts as a Spell Container, by which
+ * a {@link Spell} can be derived and casted sfrom it. This is used by Spell Bullets.
+ */
 public interface ISpellContainer {
 
 	public void setSpell(ItemStack stack, Spell spell);
@@ -20,8 +24,12 @@ public interface ISpellContainer {
 	
 	public boolean containsSpell(ItemStack stack);
 	
+	/**
+	 * Casts this spell given the passed in context. The spell should be casted
+	 * using {@link CompiledSpell#execute(SpellContext)} on {@link SpellContext#cspell}. Thrown exceptions
+	 * must be handled and not leaked. Ideal implementation of exception catching is to
+	 * alarm the player through a chat message.
+	 */
 	public void castSpell(ItemStack stack, SpellContext context);
-	
-	public boolean canSetSpell(ItemStack stack);
 	
 }

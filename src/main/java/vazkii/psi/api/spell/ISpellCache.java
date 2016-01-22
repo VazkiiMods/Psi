@@ -10,8 +10,17 @@
  */
 package vazkii.psi.api.spell;
 
+/**
+ * Base interface for the spell cache. To get an instance use PsiAPI.internalHandler.getCompiler.
+ * This is where compiled spells are stored. Instead of compiling a spell using a {@link ISpellCompiler},
+ * use {@link #getCompiledSpell(Spell)}.
+ */
 public interface ISpellCache {
 
+	/**
+	 * Gets a {@link CompiledSpell} for the {@link Spell} passed in, checking the cache for it. If it's
+	 * not present, a compiler is created to provide the spell.
+	 */
 	public CompiledSpell getCompiledSpell(Spell spell);
 	
 }

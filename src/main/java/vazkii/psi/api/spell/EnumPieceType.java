@@ -10,6 +10,9 @@
  */
 package vazkii.psi.api.spell;
 
+/**
+ * An Enum defining the various spell piece types.
+ */
 public enum EnumPieceType {
 
 	SELECTOR,

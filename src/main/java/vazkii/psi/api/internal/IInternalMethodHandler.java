@@ -30,7 +30,13 @@ public interface IInternalMethodHandler {
 	 */
 	public ResourceLocation getProgrammerTexture();
 	
+	/**
+	 * Gets an instance of a spell compiler. In most cases, you should use {@link #getSpellCache()} instead.
+	 */
 	public ISpellCompiler getCompiler(Spell spell);
 	
+	/**
+	 * Gets the singleton instance of the spell cache.
+	 */
 	public ISpellCache getSpellCache();
 }

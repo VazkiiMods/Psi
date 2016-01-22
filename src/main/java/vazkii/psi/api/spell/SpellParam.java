@@ -12,8 +12,13 @@ package vazkii.psi.api.spell;
 
 import net.minecraft.util.StatCollector;
 
+/**
+ * Base abstract class for a spell parameter. See implementations
+ * in vazkii.psi.api.spell.param.
+ */
 public abstract class SpellParam {
 
+	// Colors
 	public static final int RED = 0xD22A2A;
 	public static final int GREEN = 0x3ED22A;
 	public static final int BLUE = 0x2A55D2;
@@ -22,6 +27,7 @@ public abstract class SpellParam {
 	public static final int YELLOW = 0xD2CC2A; // For entities
 	public static final int GRAY = 0x767676; // For connectors
 
+	// Generic names
 	public static final String GENERIC_NAME_TARGET = "psi.spellparam.target";
 	public static final String GENERIC_NAME_NUMBER = "psi.spellparam.number";
 	public static final String GENERIC_NAME_NUMBER1 = "psi.spellparam.number1";
@@ -50,15 +56,30 @@ public abstract class SpellParam {
 		this.canDisable = canDisable;
 	}
 	
-	public abstract Class<?> getEvaluationType();
+	/**
+	 * Gets the type that this parameter requires. This is evaluated against
+	 * {@link SpellPiece#getEvaluationType()}.<br>
+	 * If you want any type to be able to be accepted, use {@link Any}.class.<br>
+	 * This method is to only be used internally, and as such, is not required to be
+	 * implemented fully. For better control, use {@link #canAccept(SpellPiece)} and
+	 * override {@link #getRequiredTypeString()} for display.
+	 */
+	protected abstract Class<?> getRequiredType();
 	
-	public boolean requiresConstant() {
+	/**
+	 * Gets if this parameter requires a constant ({@link EnumPieceType#CONSTANT}). Similarly to {@link #getRequiredType()} this
+	 * is for internal use only.
+	 */
+	protected boolean requiresConstant() {
 		return false;
 	}
 	
-	public String getEvaluationTypeString() {
-		Class<?> evalType = getEvaluationType();
-		String evalStr = evalType == null ? "Any" : evalType.getSimpleName();
+	/**
+	 * Gets the string for display for the required type.
+	 */
+	public String getRequiredTypeString() {
+		Class<?> evalType = getRequiredType();
+		String evalStr = evalType.getSimpleName();
 		String s = StatCollector.translateToLocal("psi.datatype." + evalStr);
 		if(requiresConstant())
 			s += " " + StatCollector.translateToLocal("psimisc.constant");
@@ -66,10 +87,17 @@ public abstract class SpellParam {
 		return s;
 	}
 
+	/**
+	 * Gets if this paramtere can accept the piece passed in. Default implementation
+	 * checks against {@link #getRequiredType()} and {@link #requiresConstant()}.
+	 */
 	public boolean canAccept(SpellPiece piece) {
-		return (getEvaluationType() == null || getEvaluationType().isAssignableFrom(piece.getEvaluationType())) && (!requiresConstant() || piece.getPieceType() == EnumPieceType.CONSTANT);
+		return (getRequiredType() == Any.class || getRequiredType().isAssignableFrom(piece.getEvaluationType())) && (!requiresConstant() || piece.getPieceType() == EnumPieceType.CONSTANT);
 	}
 	
+	/**
+	 * Helper Enum for the various sides a parameter can take.
+	 */
 	public enum Side {
 		OFF(0, 0, 238, 0),
 		TOP(0, -1, 222, 8),
@@ -109,4 +137,9 @@ public abstract class SpellParam {
 		}
 	}
 
+	/**
+	 * Empty helper class for use with required types when any type is accepted.
+	 */
+	public static class Any { }
+	
 }

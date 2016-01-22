@@ -19,7 +19,7 @@ public class ParamVector extends ParamSpecific {
 	}
 
 	@Override
-	public Class<?> getEvaluationType() {
+	public Class<?> getRequiredType() {
 		return Vector3.class;
 	}
 

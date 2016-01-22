@@ -16,6 +16,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+/**
+ * Basic class for a spell. Not much to see here.
+ */
 public final class Spell {
 
 	private static final String TAG_VALID = "validSpell";

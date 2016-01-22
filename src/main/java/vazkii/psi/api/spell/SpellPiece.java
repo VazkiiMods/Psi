@@ -29,6 +29,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.internal.TooltipHelper;
 
+/**
+ * A basic abstract piece of a spell. Instances of this class are created as needed
+ * by the {@link Spell} object.
+ */
 public abstract class SpellPiece {
 
 	private static final String TAG_KEY = "spellKey";
@@ -49,18 +53,46 @@ public abstract class SpellPiece {
 		initParams();
 	}
 
+	/**
+	 * Called to init this SpellPiece's {@link #params}. It's recommended you keep all params
+	 * registered here as fields in your implementation, as they should be used in {@link #getParamValue(SpellContext, 
+	 * SpellParam)} or {@link #getParamEvaluation(SpellParam)}.
+	 */
 	public void initParams() {
 		// NO-OP
 	}
 	
+	/**
+	 * Gets what type of piece this is.
+	 */
 	public abstract EnumPieceType getPieceType();
 	
+	/**
+	 * Gets what type this piece evaluates as. This is what other pieces
+	 * linked to it will read. For example, a number sum operator will return
+	 * Double.class, whereas a vector sum operator will return Vector3.class.<br>
+	 * If you want this piece to not evaluate to anything (for Tricks, for example),
+	 * return {@link Null}.class.
+	 */
 	public abstract Class<?> getEvaluationType();
 	
+	/**
+	 * Evaluates this piece for the purpose of spell metadata calculation. If the piece
+	 * is not a constant, you can safely return null.
+	 */
 	public abstract Object evaluate();
 
+	/**
+	 * Executes this piece and returns the value of this piece for later pieces to pick up
+	 * on. For example, the number sum operator would use this function to act upon its parameters
+	 * and return the result.
+	 */
 	public abstract Object execute(SpellContext context) throws SpellRuntimeException;
 	
+	/**
+	 * Gets the string to be displayed describing this piece's evaluation type.
+	 * @see {@link #getEvaluationType()}
+	 */
 	public String getEvaluationTypeString() {
 		Class<?> evalType = getEvaluationType();
 		String evalStr = evalType == null ? "Null" : evalType.getSimpleName();
@@ -71,15 +103,24 @@ public abstract class SpellPiece {
 		return s;
 	}
 	
+	/**
+	 * Adds this piece's stats to the Spell's metadata.
+	 */
 	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
 		// NO-OP
 	}
 	
+	/**
+	 * Adds a {@link SpellParam} to this piece.
+	 */
 	public void addParam(SpellParam param) {
 		params.put(param.name, param);
 		paramSides.put(param, SpellParam.Side.OFF);
 	}
 	
+	/**
+	 * Gets the value of one of this piece's params in the given context.
+	 */
 	public <T>T getParamValue(SpellContext context, SpellParam param) {
 		SpellParam.Side side = paramSides.get(param);
 		if(!side.isEnabled())
@@ -96,6 +137,10 @@ public abstract class SpellPiece {
 		}
 	}
 	
+	/**
+	 * Gets the evaluation of one of this piece's params in the given context. This calls
+	 * {@link #evaluate()} and should only be used for {@link #addToMetadata(SpellMetadata)}
+	 */
 	public <T>T getParamEvaluation(SpellParam param) throws SpellCompilationException {
 		SpellParam.Side side = paramSides.get(param);
 		if(!side.isEnabled())
@@ -121,6 +166,11 @@ public abstract class SpellPiece {
 		return "psi.spellpiece." + registryKey + ".desc";
 	}
 
+	/**
+	 * Draws this piece onto the programmer GUI or the programmer TE projection.<br>
+	 * All appropriate transformations are already done. Canvas is 16x16 starting from (0, 0, 0).<br>
+	 * To avoid z-fighting in the TE projection, translations are applied every step.
+	 */
 	@SideOnly(Side.CLIENT)
 	public void draw() {
 		drawBackground();
@@ -134,6 +184,10 @@ public abstract class SpellPiece {
 		GlStateManager.color(1F, 1F, 1F);
 	}
 	
+	/**
+	 * Draws this piece's background.
+	 * @see #draw()
+	 */
 	@SideOnly(Side.CLIENT)
 	public void drawBackground() {
 		ResourceLocation res = PsiAPI.simpleSpellTextures.get(registryKey);
@@ -149,10 +203,19 @@ public abstract class SpellPiece {
 		Tessellator.getInstance().draw();
 	}
 	
+	/**
+	 * Draws any additional stuff for this piece. Used in connectors
+	 * to draw the lines.
+	 * @see #draw()
+	 */
 	public void drawAdditional() {
 		// NO-OP
 	}
 
+	/**
+	 * Draws the parameters coming into this piece.
+	 * @see #draw()
+	 */
 	@SideOnly(Side.CLIENT)
 	public void drawParams() {
 		Minecraft.getMinecraft().renderEngine.bindTexture(PsiAPI.internalHandler.getProgrammerTexture());
@@ -190,20 +253,29 @@ public abstract class SpellPiece {
 	public void getTooltip(List<String> tooltip) {
 		TooltipHelper.addToTooltip(tooltip, getUnlocalizedName());
 		TooltipHelper.tooltipIfShift(tooltip, () -> {
-			TooltipHelper.addToTooltip(tooltip, EnumChatFormatting.GRAY + "%s", getUnlocalizedDesc());
-			
-			TooltipHelper.addToTooltip(tooltip, "");
-			String eval = getEvaluationTypeString();
-			TooltipHelper.addToTooltip(tooltip, "<- " + EnumChatFormatting.GOLD + eval);
-			
-			for(SpellParam param : paramSides.keySet()) {
-				String pName = StatCollector.translateToLocal(param.name);
-				String pEval = param.getEvaluationTypeString();
-				TooltipHelper.addToTooltip(tooltip, (param.canDisable ? "[->] " : " ->  ") + EnumChatFormatting.YELLOW + pName + " [" + pEval + "]");
-			}
+			addToTooltipAfterShift(tooltip);
 		});
 	}
+	
+	@SideOnly(Side.CLIENT)
+	public void addToTooltipAfterShift(List<String> tooltip) {
+		TooltipHelper.addToTooltip(tooltip, EnumChatFormatting.GRAY + "%s", getUnlocalizedDesc());
+		
+		TooltipHelper.addToTooltip(tooltip, "");
+		String eval = getEvaluationTypeString();
+		TooltipHelper.addToTooltip(tooltip, "<- " + EnumChatFormatting.GOLD + eval);
+		
+		for(SpellParam param : paramSides.keySet()) {
+			String pName = StatCollector.translateToLocal(param.name);
+			String pEval = param.getRequiredTypeString();
+			TooltipHelper.addToTooltip(tooltip, (param.canDisable ? "[->] " : " ->  ") + EnumChatFormatting.YELLOW + pName + " [" + pEval + "]");
+		}
+	}
 
+	/**
+	 * Checks whether this piece should intercept keystrokes in the programmer interface.
+	 * This is used for the number constant piece to change its value.
+	 */
 	@SideOnly(Side.CLIENT)
 	public boolean interceptKeystrokes() {
 		return false;
@@ -270,6 +342,9 @@ public abstract class SpellPiece {
 		cmp.setTag(TAG_PARAMS, paramCmp);
 	}
 
-	public static class Null { };
+	/**
+	 * Empty helper class for use with evaluation types when none is present.
+	 */
+	public static class Null { }
 	
 }

@@ -19,6 +19,9 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+/**
+ * Holder class for a spell's piece grid. Pretty much all internal, nothing to see here.
+ */
 public final class SpellGrid {
 
 	private static final String TAG_SPELL_LIST = "spellList";

@@ -10,6 +10,9 @@
  */
 package vazkii.psi.api.spell;
 
+/**
+ * Interface for a SpellPiece that redirects parameters. Used for Connectors.
+ */
 public interface IRedirector {
 
 	public SpellParam.Side getRedirectionSide();

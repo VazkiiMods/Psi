@@ -14,6 +14,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
 
+/**
+ * A spell that has been compiled by a compiler and is ready to be executed.
+ */
 public class CompiledSpell {
 
 	public Spell sourceSpell;
@@ -33,13 +36,10 @@ public class CompiledSpell {
 		evaluatedObjects = new Object[SpellGrid.GRID_SIZE][SpellGrid.GRID_SIZE];
 	}
 
-	public boolean hasEvaluated(int x, int y) {
-		if(!SpellGrid.exists(x, y))
-			return false;
-		
-		return spotsEvaluated[x][y];
-	}
-	
+	/**
+	 * Executes the spell, making a copy of the {@link #actions} stack so it
+	 * can be reused if cached.
+	 */
 	public void execute(SpellContext context) throws SpellRuntimeException {
 		Stack<Action> actions = (Stack<Action>) this.actions.clone();
 		
@@ -48,6 +48,14 @@ public class CompiledSpell {
 		
 		evaluatedObjects = new Object[SpellGrid.GRID_SIZE][SpellGrid.GRID_SIZE];
 	}
+	
+	public boolean hasEvaluated(int x, int y) {
+		if(!SpellGrid.exists(x, y))
+			return false;
+		
+		return spotsEvaluated[x][y];
+	}
+	
 	
 	public class Action {
 		

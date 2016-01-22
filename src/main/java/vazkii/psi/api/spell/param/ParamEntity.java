@@ -20,7 +20,7 @@ public class ParamEntity extends ParamSpecific {
 	}
 	
 	@Override
-	public Class<?> getEvaluationType() {
+	public Class<?> getRequiredType() {
 		return Entity.class;
 	}
 

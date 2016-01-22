@@ -68,13 +68,11 @@ public class BlockProgrammer extends BlockFacing {
 		if(enabled && stack != null && stack.getItem() instanceof ISpellContainer && programmer.spell != null && !programmer.spell.name.trim().isEmpty()) {
 			if(programmer.canCompile()) {
 				ISpellContainer container = (ISpellContainer) stack.getItem();
-				if(container.canSetSpell(stack)) {
-					if(!worldIn.isRemote)
-						worldIn.playSoundEffect(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, "psi:bulletCreate", 0.5F, 1F);
-					container.setSpell(stack, programmer.spell);
-					dispatch.run();
-					return true;
-				}
+				if(!worldIn.isRemote)
+					worldIn.playSoundEffect(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, "psi:bulletCreate", 0.5F, 1F);
+				container.setSpell(stack, programmer.spell);
+				dispatch.run();
+				return true;
 			} else {
 				if(!worldIn.isRemote)
 					worldIn.playSoundEffect(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, "psi:compileError", 0.5F, 1F);

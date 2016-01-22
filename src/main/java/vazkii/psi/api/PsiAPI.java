@@ -36,16 +36,27 @@ public final class PsiAPI {
 	public static RegistryNamespaced<String, Class<? extends SpellPiece>> spellPieceRegistry = new RegistryNamespaced();
 	public static HashMap<String, ResourceLocation> simpleSpellTextures = new HashMap();
 	
+	/**
+	 * Registers a Spell Piece given its class, by which, it puts it in the registry
+	 */
 	public static void registerSpellPiece(String key, Class<? extends SpellPiece> clazz) {
 		spellPieceRegistry.putObject(key, clazz);
 	}
 	
+	/**
+	 * Registers a spell piece and tries to create its relative texture given the current loading mod.
+	 * The spell texture should be in /assets/(yourmod)/textures/spell/(key).png.<br>
+	 * If you want to put the spell piece elsewhere or use some other type of resource location, feel free to map
+	 * the texture directly through {@link #simpleSpellTextures}.<br> 
+	 * As SpellPiece objects can have custom renders, depending on how you wish to handle yours, you might 
+	 * not even need to use this. In that case use {@link #registerSpellPiece(String, Class)}
+	 */
 	public static void registerSpellPieceAndTexture(String key, Class<? extends SpellPiece> clazz) {
 		String currMod = Loader.instance().activeModContainer().getModId().toLowerCase();
 		registerSpellPieceAndTexture(key, currMod, clazz);
 	}
 	
-	public static void registerSpellPieceAndTexture(String key, String mod, Class<? extends SpellPiece> clazz) {
+	private static void registerSpellPieceAndTexture(String key, String mod, Class<? extends SpellPiece> clazz) {
 		registerSpellPiece(key, clazz);
 		simpleSpellTextures.put(key, new ResourceLocation(mod, String.format("textures/spell/%s.png", key)));
 	}

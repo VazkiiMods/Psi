@@ -17,6 +17,10 @@ import net.minecraft.item.ItemStack;
 import vazkii.psi.api.cad.EnumCADStat;
 import vazkii.psi.api.cad.ICAD;
 
+/**
+ * Metadata for a given spell. Basically just a fancy holder for a map of the spell's
+ * stats.
+ */
 public final class SpellMetadata {
 
 	public Map<EnumSpellStat, Integer> stats = new EnumMap(EnumSpellStat.class);
@@ -26,15 +30,26 @@ public final class SpellMetadata {
 			stats.put(stat, 0);
 	}
 	
+	/**
+	 * Adds a stat to the metadata, incrementing over the previous value.
+	 */
 	public void addStat(EnumSpellStat stat, int val) {
 		int curr = stats.get(stat);
 		setStat(stat, val + curr);
 	}
 	
+	/**
+	 * Sets a stat's value. No consideration over the previous value is done, so
+	 * unless you really want to be weird, use {@link #addStat(EnumSpellStat, int)} instead.
+	 */
 	public void setStat(EnumSpellStat stat, int val) {
 		stats.put(stat, val);
 	}
 	
+	/**
+	 * Evaluates this metadata's stats against a passed in stack (whose item must be an implementation
+	 * of {@link ICAD}). Returns true if the stats are equal to or above the CAD.
+	 */
 	public boolean evaluateAgainst(ItemStack stack) {
 		if(stack == null || !(stack.getItem() instanceof ICAD))
 			return false;

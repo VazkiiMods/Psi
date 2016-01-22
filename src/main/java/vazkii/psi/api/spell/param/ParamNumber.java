@@ -20,7 +20,7 @@ public class ParamNumber extends ParamSpecific {
 	}
 
 	@Override
-	public Class<?> getEvaluationType() {
+	public Class<?> getRequiredType() {
 		return Number.class;
 	}
 

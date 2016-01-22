@@ -12,6 +12,9 @@ package vazkii.psi.api.spell;
 
 import vazkii.psi.api.cad.EnumCADStat;
 
+/**
+ * An Enum defining all spell stats and the CAD stats to compare against.
+ */
 public enum EnumSpellStat {
 
 	COMPLEXITY(EnumCADStat.COMPLEXITY),
