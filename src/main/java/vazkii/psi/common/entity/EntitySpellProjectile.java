@@ -38,6 +38,11 @@ public class EntitySpellProjectile extends EntityThrowable {
 	private static final String TAG_COLORIZER = "colorizer";
 	private static final String TAG_BULLET = "bullet";
 	
+	private static final String TAG_LAST_MOTION_X = "lastMotionX";
+	private static final String TAG_LAST_MOTION_Y = "lastMotionY";
+	private static final String TAG_LAST_MOTION_Z = "lastMotionZ";
+
+	
     public EntitySpellProjectile(World worldIn) {
         super(worldIn);
         setSize(0F, 0F);
@@ -84,28 +89,42 @@ public class EntitySpellProjectile extends EntityThrowable {
     	if(bullet != null)
     		bullet.writeToNBT(bulletCmp);
     	tagCompound.setTag(TAG_BULLET, bulletCmp);
+    	
+    	tagCompound.setDouble(TAG_LAST_MOTION_X, motionX);
+    	tagCompound.setDouble(TAG_LAST_MOTION_Y, motionY);
+    	tagCompound.setDouble(TAG_LAST_MOTION_Z, motionZ);
     }
     
     @Override
-    public void readEntityFromNBT(NBTTagCompound tagCompund) {
-    	super.readEntityFromNBT(tagCompund);
+    public void readEntityFromNBT(NBTTagCompound tagCompound) {
+    	super.readEntityFromNBT(tagCompound);
     	
-    	NBTTagCompound colorizerCmp = tagCompund.getCompoundTag(TAG_COLORIZER);
+    	NBTTagCompound colorizerCmp = tagCompound.getCompoundTag(TAG_COLORIZER);
     	ItemStack colorizer = ItemStack.loadItemStackFromNBT(colorizerCmp);
     	dataWatcher.updateObject(20, colorizer);
     	
-    	NBTTagCompound bulletCmp = tagCompund.getCompoundTag(TAG_BULLET);
+    	NBTTagCompound bulletCmp = tagCompound.getCompoundTag(TAG_BULLET);
     	ItemStack bullet = ItemStack.loadItemStackFromNBT(bulletCmp);
     	dataWatcher.updateObject(21, bullet);
     	
     	EntityLivingBase thrower = getThrower();
     	if(thrower != null && thrower instanceof EntityPlayer)
     		dataWatcher.updateObject(22, ((EntityPlayer) thrower).getName());
+    	
+		double lastMotionX = tagCompound.getDouble(TAG_LAST_MOTION_X);
+		double lastMotionY = tagCompound.getDouble(TAG_LAST_MOTION_Y);
+		double lastMotionZ = tagCompound.getDouble(TAG_LAST_MOTION_Z);
+		motionX = lastMotionX;
+		motionY = lastMotionY;
+		motionZ = lastMotionZ;
     }
     
     @Override
     public void onUpdate() {
     	super.onUpdate();
+    	
+    	if(ticksExisted > 600)
+    		setDead();
     	
     	int colorVal = ICADColorizer.DEFAULT_SPELL_COLOR;
     	ItemStack colorizer = dataWatcher.getWatchableObjectItemStack(20);
