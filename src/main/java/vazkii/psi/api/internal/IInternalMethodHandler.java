@@ -12,6 +12,9 @@ package vazkii.psi.api.internal;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
+import vazkii.psi.api.spell.ISpellCache;
+import vazkii.psi.api.spell.ISpellCompiler;
+import vazkii.psi.api.spell.Spell;
 
 public interface IInternalMethodHandler {
 
@@ -26,4 +29,8 @@ public interface IInternalMethodHandler {
 	 * params.
 	 */
 	public ResourceLocation getProgrammerTexture();
+	
+	public ISpellCompiler getCompiler(Spell spell);
+	
+	public ISpellCache getSpellCache();
 }

@@ -12,6 +12,7 @@ package vazkii.psi.api.spell;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import vazkii.psi.common.spell.SpellCache;
 import vazkii.psi.common.spell.SpellCompiler;
 
 public final class SpellContext {
@@ -36,11 +37,7 @@ public final class SpellContext {
 	}
 	
 	public SpellContext setSpell(Spell spell) {
-		SpellCompiler compiler = new SpellCompiler(spell);
-		
-		if(!compiler.isErrored())
-			setCompiledSpell(compiler.getCompiledSpell());
-		
+		setCompiledSpell(SpellCache.instance.getCompiledSpell(spell));
 		return this;
 	}
 

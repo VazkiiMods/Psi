@@ -41,8 +41,12 @@ public class CompiledSpell {
 	}
 	
 	public void execute(SpellContext context) throws SpellRuntimeException {
+		Stack<Action> actions = (Stack<Action>) this.actions.clone();
+		
 		while(!actions.isEmpty())
 			actions.pop().execute(context);
+		
+		evaluatedObjects = new Object[SpellGrid.GRID_SIZE][SpellGrid.GRID_SIZE];
 	}
 	
 	public class Action {

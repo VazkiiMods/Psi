@@ -19,6 +19,6 @@ public final class ModEntities {
 	public static void init() {
 		int id = 0;
 		
-		EntityRegistry.registerModEntity(EntitySpellProjectile.class, LibEntityNames.SPELL_PROJECTILE, id++, Psi.instance, 64, 10, true);
+		EntityRegistry.registerModEntity(EntitySpellProjectile.class, LibEntityNames.SPELL_PROJECTILE, id++, Psi.instance, 256, 10, true);
 	}
 }

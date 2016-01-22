@@ -26,7 +26,8 @@ public class ConfigHandler {
 	public static boolean useShaders = true;
 	public static boolean psiBarOnRight = true;
 	public static boolean useVanillaParticleLimiter = true;
-	
+	public static int spellCacheSize = 100;
+
 	public static void init(File configFile) {
 		config = new Configuration(configFile);
 
@@ -48,6 +49,8 @@ public class ConfigHandler {
 		desc = "Controls whether the \"Particles\" setting in the Vanilla options menu is accounted for when creating particles. Set to false to always have particles even if you change the Vanilla setting.";
 		useVanillaParticleLimiter = loadPropBool("Use Vanilla Particle Limiter", desc, useVanillaParticleLimiter);
 		
+		desc = "How many compiled spells should be kept in a cache. Probably best not to mess with it if you don't know what you're doing.";
+		spellCacheSize = loadPropInt("Spell Cache Size", desc, spellCacheSize);
 		
 		if(config.hasChanged())
 			config.save();

@@ -137,7 +137,6 @@ public class EntitySpellProjectile extends EntityThrowable {
 	protected void onImpact(MovingObjectPosition pos) {
 		SpellContext context = null;
 		Entity thrower = getThrower();
-		System.out.println("thrower: " + thrower);
 		if(thrower != null && thrower instanceof EntityPlayer) {
 			ItemStack spellContainer = dataWatcher.getWatchableObjectItemStack(21);
 			if(spellContainer != null && spellContainer.getItem() instanceof ISpellContainer) {
@@ -148,7 +147,6 @@ public class EntitySpellProjectile extends EntityThrowable {
 		}
 		
 		try {
-			System.out.println(context);
 			if(context != null)
 				context.cspell.execute(context);
 		} catch(SpellRuntimeException e) {

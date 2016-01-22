@@ -14,6 +14,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import vazkii.psi.api.internal.IInternalMethodHandler;
 import vazkii.psi.api.internal.IPlayerData;
+import vazkii.psi.api.spell.ISpellCache;
+import vazkii.psi.api.spell.ISpellCompiler;
+import vazkii.psi.api.spell.Spell;
 import vazkii.psi.client.gui.GuiProgrammer;
 
 public final class InternalMethodHandler implements IInternalMethodHandler {
@@ -26,6 +29,16 @@ public final class InternalMethodHandler implements IInternalMethodHandler {
 	@Override
 	public ResourceLocation getProgrammerTexture() {
 		return GuiProgrammer.texture;
+	}
+
+	@Override
+	public ISpellCompiler getCompiler(Spell spell) {
+		return null;
+	}
+
+	@Override
+	public ISpellCache getSpellCache() {
+		return null;
 	}
 
 }

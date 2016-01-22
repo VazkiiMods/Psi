@@ -12,6 +12,11 @@ package vazkii.psi.api.internal;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
+import vazkii.psi.api.spell.ISpellCache;
+import vazkii.psi.api.spell.ISpellCompiler;
+import vazkii.psi.api.spell.Spell;
+import vazkii.psi.common.spell.SpellCache;
+import vazkii.psi.common.spell.SpellCompiler;
 
 /**
  * This is a dummy class. You'll never interact with it, it's just here so
@@ -27,6 +32,16 @@ public final class DummyMethodHandler implements IInternalMethodHandler {
 	@Override
 	public ResourceLocation getProgrammerTexture() {
 		return new ResourceLocation("");
+	}
+
+	@Override
+	public ISpellCompiler getCompiler(Spell spell) {
+		return new SpellCompiler(spell);
+	}
+
+	@Override
+	public ISpellCache getSpellCache() {
+		return SpellCache.instance;
 	}
 
 }
