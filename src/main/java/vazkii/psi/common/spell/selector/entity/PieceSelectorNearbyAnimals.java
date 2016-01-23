@@ -10,6 +10,9 @@
  */
 package vazkii.psi.common.spell.selector.entity;
 
+import com.google.common.base.Predicate;
+
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.IAnimals;
@@ -22,8 +25,8 @@ public class PieceSelectorNearbyAnimals extends PieceSelectorNearby {
 	}
 
 	@Override
-	public Class getTargetClass() {
-		return IAnimals.class;
+	public Predicate<Entity> getTargetPredicate() {
+		return (Entity e) -> { return e instanceof IAnimals && !(e instanceof IMob); };
 	}
 
 }

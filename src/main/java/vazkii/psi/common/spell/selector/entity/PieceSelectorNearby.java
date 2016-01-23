@@ -12,6 +12,8 @@ package vazkii.psi.common.spell.selector.entity;
 
 import java.util.List;
 
+import com.google.common.base.Predicate;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.util.AxisAlignedBB;
 import vazkii.psi.api.internal.Vector3;
@@ -59,14 +61,17 @@ public abstract class PieceSelectorNearby extends PieceSelector {
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 		
 		AxisAlignedBB axis = new AxisAlignedBB(positionVal.x - radiusVal, positionVal.y - radiusVal, positionVal.z - radiusVal, positionVal.x + radiusVal, positionVal.y + radiusVal, positionVal.z + radiusVal);
-		List<Entity> list = context.caster.worldObj.getEntitiesWithinAABB(getTargetClass(), axis, (Entity e) -> {
-			return e != context.caster && e != context.focalPoint && context.isInRadius(e);
+		
+		Predicate<Entity> pred = getTargetPredicate();
+		
+		List<Entity> list = context.caster.worldObj.getEntitiesWithinAABB(Entity.class, axis, (Entity e) -> {
+			return pred.apply(e) && e != context.caster && e != context.focalPoint && context.isInRadius(e);
 		});
 		
 		return new EntityListWrapper(list);
 	}
 	
-	public abstract Class getTargetClass();
+	public abstract Predicate<Entity> getTargetPredicate();
 	
 	@Override
 	public Class<?> getEvaluationType() {
