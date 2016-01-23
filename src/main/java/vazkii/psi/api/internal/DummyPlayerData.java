@@ -10,6 +10,8 @@
  */
 package vazkii.psi.api.internal;
 
+import vazkii.psi.api.spell.SpellPiece;
+
 /**
  * This is a dummy class. You'll never interact with it, it's just here so
  * in case something goes really wrong the field isn't null.
@@ -58,6 +60,11 @@ public class DummyPlayerData implements IPlayerData {
 
 	@Override
 	public void unlockPieceGroup(String group) {
+		// NO-OP
+	}
+
+	@Override
+	public void markPieceExecuted(SpellPiece piece) {
 		// NO-OP
 	}
 

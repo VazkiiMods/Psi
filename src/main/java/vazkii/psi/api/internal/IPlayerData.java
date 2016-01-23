@@ -10,6 +10,8 @@
  */
 package vazkii.psi.api.internal;
 
+import vazkii.psi.api.spell.SpellPiece;
+
 public interface IPlayerData {
 
 	/**
@@ -62,5 +64,10 @@ public interface IPlayerData {
 	 * Unlocks the given piece group.
 	 */
 	public void unlockPieceGroup(String group);
+	
+	/**
+	 * Marks a spell piece as executed. Used for leveling.
+	 */
+	public void markPieceExecuted(SpellPiece piece);
 
 }

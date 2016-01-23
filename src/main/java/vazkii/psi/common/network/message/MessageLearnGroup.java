@@ -34,8 +34,10 @@ public class MessageLearnGroup extends Message {
 		EntityPlayer player = context.getServerHandler().playerEntity;
 		PlayerData data = PlayerDataHandler.get(player);
 		PieceGroup group = PsiAPI.groupsForName.get(this.group);
-		if(data.getLevelPoints() > 0 && group.isAvailable(data))
+		if(data.getLevelPoints() > 0 && group.isAvailable(data)) {
+			System.out.println("unlock");
 			data.unlockPieceGroup(group.name);
+		}
 		
 		return null;
 	}

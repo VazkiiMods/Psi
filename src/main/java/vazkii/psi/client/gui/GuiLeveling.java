@@ -28,6 +28,7 @@ import vazkii.psi.api.spell.PieceGroup;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellPiece;
 import vazkii.psi.client.core.helper.RenderHelper;
+import vazkii.psi.client.core.helper.TextHelper;
 import vazkii.psi.client.gui.button.GuiButtonLearn;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
@@ -42,6 +43,8 @@ public class GuiLeveling extends GuiScreen {
 	public List<String> tooltip = new ArrayList();
 	
 	GuiScrollingList listGroups;
+	GuiScrollingList listText;
+
 	int xSize, ySize, left, top;
 	
 	Spell spellWrapper;
@@ -49,6 +52,7 @@ public class GuiLeveling extends GuiScreen {
 	List<PieceGroup> groups;
 	List<SpellPiece> drawPieces = new ArrayList();
 	int selected;
+	List<String> desc;
 	
 	@Override
 	public void initGui() {
@@ -67,11 +71,19 @@ public class GuiLeveling extends GuiScreen {
 	public void initGroupList() {
 		groups = new ArrayList();
 		
+		String last = data.lastSpellGroup;
+		PieceGroup lastGroup = PsiAPI.groupsForName.get(last);
+		if(lastGroup != null)
+			groups.add(lastGroup);
+		
 		ArrayList available = new ArrayList();
 		ArrayList notAvailable = new ArrayList();
 		ArrayList taken = new ArrayList();
 		
 		for(PieceGroup group : PsiAPI.groupsForName.values()) {
+			if(group == lastGroup)
+				continue;
+			
 			if(data.isPieceGroupUnlocked(group.name))
 				taken.add(group);
 			else if(group.isAvailable(data))
@@ -123,6 +135,28 @@ public class GuiLeveling extends GuiScreen {
 			}
 			
 			mc.fontRendererObj.drawStringWithShadow(StatCollector.translateToLocal(group.getUnlocalizedName()), left + 134, top + 12, 0xFFFFFF);
+			
+			if(taken) {
+				if(listText != null) {
+					boolean unicode = fontRendererObj.getUnicodeFlag();
+					fontRendererObj.setUnicodeFlag(true);
+					listText.drawScreen(mouseX, mouseY, partialTicks);
+					fontRendererObj.setUnicodeFlag(unicode);
+				}
+			} else {
+				int colorOff = 0x777777;
+				int colorOn = 0x77FF77;
+				
+				mc.fontRendererObj.drawStringWithShadow(StatCollector.translateToLocal("psimisc.requirements"), left + 134, top + 32, 0xFFFFFF);
+				mc.fontRendererObj.drawString(String.format(StatCollector.translateToLocal("psimisc.levelDisplay"), group.levelRequirement), left + 138, top + 42, data.getLevel() >= group.levelRequirement ? colorOn : colorOff);
+				int i = 0;
+				for(String s : group.requirements) {
+					PieceGroup reqGroup = PsiAPI.groupsForName.get(s);
+					mc.fontRendererObj.drawString(StatCollector.translateToLocal(reqGroup.getUnlocalizedName()), left + 138, top + 52 + i * 10, data.isPieceGroupUnlocked(s) ? colorOn : colorOff);
+
+					i++;
+				}
+			}
 		}
 		
 		String key = "psimisc.levelInfo";
@@ -146,8 +180,7 @@ public class GuiLeveling extends GuiScreen {
 			NetworkHandler.INSTANCE.sendToServer(new MessageLearnGroup(group.name));
 			data.unlockPieceGroup(group.name);
 			initGroupList();
-			
-			buttonList.clear();
+			select(0);
 		}
 	}
 	
@@ -167,6 +200,15 @@ public class GuiLeveling extends GuiScreen {
 		buttonList.clear();
 		if(!taken && available && data.getLevelPoints() > 0)
 			buttonList.add(new GuiButtonLearn(this, left + xSize, top + ySize - 30));
+
+		int lines = (drawPieces.size() - 1) / 6 + 1;
+		if(taken) {
+			desc = TextHelper.renderText(left + 2, 0, 110, group.getUnlocalizedDesc(), false);
+			listText = new BigTextList(mc, 120, 168, top + 23, top + 174 - lines * 18, left + 130, 10, width, height);
+		} else listText = null;
+	}
+	
+	public void initTextList() {
 	}
 	
 	public void addToDrawList(Class<? extends SpellPiece> clazz) {
@@ -175,6 +217,46 @@ public class GuiLeveling extends GuiScreen {
 		
 		SpellPiece piece = SpellPiece.create(clazz, spellWrapper);
 		drawPieces.add(piece);
+	}
+	
+	private class BigTextList extends GuiScrollingList {
+
+		int scrollUp, scrollDown;
+		
+		public BigTextList(Minecraft client, int width, int height, int top, int bottom, int left, int entryHeight, int screenWidth, int screenHeight) {
+			super(client, width, height, top, bottom, left, entryHeight, screenWidth, screenHeight);
+		}
+		
+		@Override
+		protected int getSize() {
+			return desc.size();
+		}
+
+		@Override
+		protected void elementClicked(int index, boolean doubleClick) {
+			// NO-OP
+		}
+
+		@Override
+		protected boolean isSelected(int index) {
+			return false;
+		}
+
+		@Override
+		protected void drawBackground() {
+			// NO-OP
+		}
+
+		@Override
+		protected void drawSlot(int slotIdx, int entryRight, int slotTop, int slotBuffer, Tessellator tess) {
+			mc.fontRendererObj.drawString(desc.get(slotIdx), left + 4, slotTop, 0xFFFFFF);
+		}
+		
+		@Override
+		protected void drawGradientRect(int left, int top, int right, int bottom, int color1, int color2) {
+			// NO-OP
+		}
+		
 	}
 	
 	private class GroupList extends GuiScrollingList {

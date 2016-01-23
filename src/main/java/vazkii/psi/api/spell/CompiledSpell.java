@@ -16,6 +16,10 @@ import java.util.Stack;
 
 import com.typesafe.config.ConfigException.Null;
 
+import vazkii.psi.api.PsiAPI;
+import vazkii.psi.api.internal.IPlayerData;
+import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
+
 /**
  * A spell that has been compiled by a compiler and is ready to be executed.
  */
@@ -45,8 +49,9 @@ public class CompiledSpell {
 	public void execute(SpellContext context) throws SpellRuntimeException {
 		Stack<Action> actions = (Stack<Action>) this.actions.clone();
 		
+		IPlayerData data = PsiAPI.internalHandler.getDataForPlayer(context.caster);
 		while(!actions.isEmpty())
-			actions.pop().execute(context);
+			actions.pop().execute(data, context);
 		
 		evaluatedObjects = new Object[SpellGrid.GRID_SIZE][SpellGrid.GRID_SIZE];
 	}
@@ -58,7 +63,6 @@ public class CompiledSpell {
 		return spotsEvaluated[x][y];
 	}
 	
-	
 	public class Action {
 		
 		final SpellPiece piece;
@@ -67,7 +71,8 @@ public class CompiledSpell {
 			this.piece = piece;
 		}
 		
-		public void execute(SpellContext context) throws SpellRuntimeException {
+		public void execute(IPlayerData data, SpellContext context) throws SpellRuntimeException {
+			data.markPieceExecuted(piece);
 			Object o = piece.execute(context);
 			
 			Class<?> eval = piece.getEvaluationType();

@@ -32,6 +32,8 @@ import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.EnumCADStat;
 import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.internal.IPlayerData;
+import vazkii.psi.api.spell.PieceGroup;
+import vazkii.psi.api.spell.SpellPiece;
 import vazkii.psi.common.network.NetworkHandler;
 import vazkii.psi.common.network.message.MessageDataSync;
 import vazkii.psi.common.network.message.MessageDeductPsi;
@@ -303,6 +305,16 @@ public class PlayerDataHandler {
 				lastSpellGroup = group;
 				levelPoints--;
 			}
+		}
+		
+		@Override
+		public void markPieceExecuted(SpellPiece piece) {
+			if(lastSpellGroup.isEmpty())
+				return;
+			
+			PieceGroup group = PsiAPI.groupsForName.get(lastSpellGroup);
+			if(group.mainPiece == piece.getClass())
+				levelUp();
 		}
 		
 		public void save() {
