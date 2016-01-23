@@ -18,6 +18,8 @@ import vazkii.psi.api.spell.ISpellCache;
 import vazkii.psi.api.spell.ISpellCompiler;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.client.gui.GuiProgrammer;
+import vazkii.psi.common.spell.SpellCache;
+import vazkii.psi.common.spell.SpellCompiler;
 
 public final class InternalMethodHandler implements IInternalMethodHandler {
 
@@ -33,12 +35,12 @@ public final class InternalMethodHandler implements IInternalMethodHandler {
 
 	@Override
 	public ISpellCompiler getCompiler(Spell spell) {
-		return null;
+		return new SpellCompiler(spell);
 	}
 
 	@Override
 	public ISpellCache getSpellCache() {
-		return null;
+		return SpellCache.instance;
 	}
 
 }

@@ -6,11 +6,12 @@
  * Psi is Open Source and distributed under the
  * CC-BY-NC-SA 3.0 License: https://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB
  * 
- * File Created @ [18/01/2016, 22:01:07 (GMT)]
+ * File Created @ [18/01/2016, 21:50:51 (GMT)]
  */
-package vazkii.psi.common.spell.operator.vector;
+package vazkii.psi.common.spell.operator.entity;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.util.Vector3d;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
@@ -19,11 +20,11 @@ import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.api.spell.param.ParamEntity;
 import vazkii.psi.api.spell.piece.PieceOperator;
 
-public class PieceOperatorEntityLook extends PieceOperator {
+public class PieceOperatorEntityPosition extends PieceOperator {
 
 	SpellParam target;
 	
-	public PieceOperatorEntityLook(Spell spell) {
+	public PieceOperatorEntityPosition(Spell spell) {
 		super(spell);
 	}
 	
@@ -39,7 +40,7 @@ public class PieceOperatorEntityLook extends PieceOperator {
 		if(e == null)
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_TARGET);
 		
-		return new Vector3(e.getLook(1F));
+		return Vector3.fromEntityCenter(e);
 	}
 	
 	@Override

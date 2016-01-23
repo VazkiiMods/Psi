@@ -102,6 +102,14 @@ psi.spellpiece.selectorCaster=Selector: Caster
 psi.spellpiece.selectorCaster.desc=Selects the person casting the spell
 psi.spellpiece.selectorFocalPoint=Selector: Focal Point
 psi.spellpiece.selectorFocalPoint.desc=Selects the focal point Entity of this spell
+psi.spellpiece.selectorNearbyItems=Selector: Nearby Items
+psi.spellpiece.selectorNearbyItems.desc=Selects items near the given position
+psi.spellpiece.selectorNearbyLiving=Selector: Nearby Living
+psi.spellpiece.selectorNearbyLiving.desc=Selects living beings near the given position
+psi.spellpiece.selectorNearbyEnemies=Selector: Nearby Enemies
+psi.spellpiece.selectorNearbyEnemies.desc=Selects enemies near the given position
+psi.spellpiece.selectorNearbyAnimals=Selector: Nearby Animals
+psi.spellpiece.selectorNearbyAnimals.desc=Selects animals near the given position
 
 # -- OPERATORS
 psi.spellpiece.operatorSum=Operator: Sum
@@ -121,6 +129,8 @@ psi.spellpiece.operatorEntityPosition=Operator: Entity Position
 psi.spellpiece.operatorEntityPosition.desc=Gets an Entity's position
 psi.spellpiece.operatorEntityLook=Operator: Entity Look
 psi.spellpiece.operatorEntityLook.desc=Gets an Entity's look vector
+psi.spellpiece.operatorEntityMotion=Operator: Entity Motion
+psi.spellpiece.operatorEntityMotion.desc=Gets an Entity's motion vector
 psi.spellpiece.operatorVectorRaycast=Operator: Vector Raycast
 psi.spellpiece.operatorVectorRaycast.desc=Gets a localized raycast's result (max 32)
 psi.spellpiece.operatorVectorSum=Operator: Vector Sum
@@ -144,9 +154,13 @@ psi.spellpiece.operatorVectorConstruct.desc=Constructs a Vector from XYZ paramet
 psi.spellpiece.operatorVectorExtractX=Operator: Vector Extract X
 psi.spellpiece.operatorVectorExtractX.desc=Extracts the X coordinate from a Vector
 psi.spellpiece.operatorVectorExtractY=Operator: Vector Extract Y
-psi.spellpiece.operatorVectorExtracty.desc=Extracts the Y coordinate from a Vector
+psi.spellpiece.operatorVectorExtractY.desc=Extracts the Y coordinate from a Vector
 psi.spellpiece.operatorVectorExtractZ=Operator: Vector Extract Z
 psi.spellpiece.operatorVectorExtractZ.desc=Extracts the Z coordinate from a Vector
+psi.spellpiece.operatorClosestToPoint=Operator: Closest to Point
+psi.spellpiece.operatorClosestToPoint.desc=Gets the closest entity in a list to a point 
+psi.spellpiece.operatorRandomEntity=Operator: Random Entity
+psi.spellpiece.operatorRandomEntity.desc=Gets a random entity from a list
 
 # -- CONSTANTS
 psi.spellpiece.constantNumber=Constant: Number
@@ -185,6 +199,7 @@ psi.spellparam.speed=Speed
 psi.spellparam.x=X
 psi.spellparam.y=Y
 psi.spellparam.z=Z
+psi.spellparam.radius=Radius
 
 # DATA TYPE NAMES
 psi.datatype.Null=None
@@ -196,6 +211,7 @@ psi.datatype.Vector3=Vector
 psi.datatype.Entity=Entity
 psi.datatype.EntityLiving=Entity (Living)
 psi.datatype.EntityPlayer=Entity (Player, Living)
+psi.datatype.EntityListWrapper=Entity List
 
 # COMPILER ERRORS
 psi.spellerror.nospell=No Spell to compile

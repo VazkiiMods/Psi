@@ -50,7 +50,10 @@ public class PieceTrickDebug extends PieceTrick {
 		Double numberVal = this.<Double>getParamValue(context, number);
 		Object targetVal = getParamValue(context, target);
 		
-		String s = targetVal.toString();
+		String s = "null";
+		if(targetVal != null)
+			s = targetVal.toString();
+		
 		if(numberVal != null) {
 			String numStr = "" + numberVal;
 			if(numberVal - numberVal.intValue() == 0) {
@@ -61,7 +64,6 @@ public class PieceTrickDebug extends PieceTrick {
 			s = EnumChatFormatting.AQUA + "[" + numStr + "] " + EnumChatFormatting.RESET + s;
 		}
 		
-		System.out.println(s);
 		context.caster.addChatMessage(new ChatComponentText(s));
 		
 		return null;

@@ -36,12 +36,12 @@ public final class DummyMethodHandler implements IInternalMethodHandler {
 
 	@Override
 	public ISpellCompiler getCompiler(Spell spell) {
-		return new SpellCompiler(spell);
+		return null;
 	}
 
 	@Override
 	public ISpellCache getSpellCache() {
-		return SpellCache.instance;
+		return null;
 	}
 
 }

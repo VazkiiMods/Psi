@@ -15,14 +15,17 @@ import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellPiece;
 import vazkii.psi.common.lib.LibPieceNames;
 import vazkii.psi.common.spell.constant.PieceConstantNumber;
+import vazkii.psi.common.spell.operator.entity.PieceOperatorClosestToPoint;
+import vazkii.psi.common.spell.operator.entity.PieceOperatorEntityLook;
+import vazkii.psi.common.spell.operator.entity.PieceOperatorEntityMotion;
+import vazkii.psi.common.spell.operator.entity.PieceOperatorEntityPosition;
+import vazkii.psi.common.spell.operator.entity.PieceOperatorRandomEntity;
 import vazkii.psi.common.spell.operator.number.PieceOperatorAbsolute;
 import vazkii.psi.common.spell.operator.number.PieceOperatorDivide;
 import vazkii.psi.common.spell.operator.number.PieceOperatorInverse;
 import vazkii.psi.common.spell.operator.number.PieceOperatorMultiply;
 import vazkii.psi.common.spell.operator.number.PieceOperatorSubtract;
 import vazkii.psi.common.spell.operator.number.PieceOperatorSum;
-import vazkii.psi.common.spell.operator.vector.PieceOperatorEntityLook;
-import vazkii.psi.common.spell.operator.vector.PieceOperatorEntityPosition;
 import vazkii.psi.common.spell.operator.vector.PieceOperatorVectorConstruct;
 import vazkii.psi.common.spell.operator.vector.PieceOperatorVectorCrossProduct;
 import vazkii.psi.common.spell.operator.vector.PieceOperatorVectorDivide;
@@ -39,6 +42,10 @@ import vazkii.psi.common.spell.operator.vector.PieceOperatorVectorSum;
 import vazkii.psi.common.spell.other.PieceConnector;
 import vazkii.psi.common.spell.selector.PieceSelectorCaster;
 import vazkii.psi.common.spell.selector.PieceSelectorFocalPoint;
+import vazkii.psi.common.spell.selector.entity.PieceSelectorNearbyAnimals;
+import vazkii.psi.common.spell.selector.entity.PieceSelectorNearbyEnemies;
+import vazkii.psi.common.spell.selector.entity.PieceSelectorNearbyItems;
+import vazkii.psi.common.spell.selector.entity.PieceSelectorNearbyLiving;
 import vazkii.psi.common.spell.trick.PieceTrickAddMotion;
 import vazkii.psi.common.spell.trick.PieceTrickDebug;
 import vazkii.psi.common.spell.trick.PieceTrickExplode;
@@ -47,6 +54,10 @@ public final class ModSpellPieces {
 
 	public static PieceContainer selectorCaster;
 	public static PieceContainer selectorFocalPoint;
+	public static PieceContainer selectorNearbyItems;
+	public static PieceContainer selectorNearbyLiving;
+	public static PieceContainer selectorNearbyEnemies;
+	public static PieceContainer selectorNearbyAnimals;
 
 	public static PieceContainer operatorSum;
 	public static PieceContainer operatorSubtract;
@@ -56,8 +67,10 @@ public final class ModSpellPieces {
 	public static PieceContainer operatorInverse;
 	public static PieceContainer operatorEntityPosition;
 	public static PieceContainer operatorEntityLook;
+	public static PieceContainer operatorEntityMotion;
+	public static PieceContainer operatorClosestToPoint;
+	public static PieceContainer operatorRandomEntity;
 	public static PieceContainer operatorVectorRaycast;
-	
 	public static PieceContainer operatorVectorSum;
 	public static PieceContainer operatorVectorSubtract;
 	public static PieceContainer operatorVectorMultiply;
@@ -82,7 +95,11 @@ public final class ModSpellPieces {
 	public static void init() {
 		selectorCaster = register(PieceSelectorCaster.class, LibPieceNames.SELECTOR_CASTER);
 		selectorFocalPoint = register(PieceSelectorFocalPoint.class, LibPieceNames.SELECTOR_FOCAL_POINT);
-		
+		selectorNearbyItems = register(PieceSelectorNearbyItems.class, LibPieceNames.SELECTOR_NEARBY_ITEMS);
+		selectorNearbyLiving = register(PieceSelectorNearbyLiving.class, LibPieceNames.SELECTOR_NEARBY_LIVING);
+		selectorNearbyEnemies = register(PieceSelectorNearbyEnemies.class, LibPieceNames.SELECTOR_NEARBY_ENEMIES);
+		selectorNearbyAnimals = register(PieceSelectorNearbyAnimals.class, LibPieceNames.SELECTOR_NEARBY_ANIMALS);
+
 		operatorSum = register(PieceOperatorSum.class, LibPieceNames.OPERATOR_SUM);
 		operatorSubtract = register(PieceOperatorSubtract.class, LibPieceNames.OPERATOR_SUBTRACT);
 		operatorMultiply = register(PieceOperatorMultiply.class, LibPieceNames.OPERATOR_MULTIPLY);
@@ -91,6 +108,9 @@ public final class ModSpellPieces {
 		operatorInverse = register(PieceOperatorInverse.class, LibPieceNames.OPERATOR_INVERSE);
 		operatorEntityPosition = register(PieceOperatorEntityPosition.class, LibPieceNames.OPERATOR_ENTITY_POSITION);
 		operatorEntityLook = register(PieceOperatorEntityLook.class, LibPieceNames.OPERATOR_ENTITY_LOOK);
+		operatorEntityMotion = register(PieceOperatorEntityMotion.class, LibPieceNames.OPERATOR_ENTITY_MOTION);
+		operatorClosestToPoint = register(PieceOperatorClosestToPoint.class, LibPieceNames.OPERATOR_CLOSEST_TO_POINT);
+		operatorRandomEntity = register(PieceOperatorRandomEntity.class, LibPieceNames.OPERATOR_RANDOM_ENTITY);
 		operatorVectorRaycast = register(PieceOperatorVectorRaycast.class, LibPieceNames.OPERATOR_VECTOR_RAYCAST);
 		operatorVectorSum = register(PieceOperatorVectorSum.class, LibPieceNames.OPERATOR_VECTOR_SUM);
 		operatorVectorSubtract = register(PieceOperatorVectorSubtract.class, LibPieceNames.OPERATOR_VECTOR_SUBTRACT);

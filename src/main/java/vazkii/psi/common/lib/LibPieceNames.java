@@ -14,6 +14,10 @@ public final class LibPieceNames {
 
 	public static final String SELECTOR_CASTER = "selectorCaster";
 	public static final String SELECTOR_FOCAL_POINT = "selectorFocalPoint";
+	public static final String SELECTOR_NEARBY_ITEMS = "selectorNearbyItems";
+	public static final String SELECTOR_NEARBY_LIVING = "selectorNearbyLiving";
+	public static final String SELECTOR_NEARBY_ENEMIES = "selectorNearbyEnemies";
+	public static final String SELECTOR_NEARBY_ANIMALS = "selectorNearbyAnimals";
 
 	public static final String OPERATOR_SUM = "operatorSum";
 	public static final String OPERATOR_SUBTRACT = "operatorSubtract";
@@ -23,6 +27,9 @@ public final class LibPieceNames {
 	public static final String OPERATOR_INVERSE = "operatorInverse";
 	public static final String OPERATOR_ENTITY_POSITION = "operatorEntityPosition";
 	public static final String OPERATOR_ENTITY_LOOK = "operatorEntityLook";
+	public static final String OPERATOR_ENTITY_MOTION = "operatorEntityMotion";
+	public static final String OPERATOR_CLOSEST_TO_POINT = "operatorClosestToPoint";
+	public static final String OPERATOR_RANDOM_ENTITY = "operatorRandomEntity";
 	public static final String OPERATOR_VECTOR_RAYCAST = "operatorVectorRaycast";
 	public static final String OPERATOR_VECTOR_SUM = "operatorVectorSum";
 	public static final String OPERATOR_VECTOR_SUBTRACT = "operatorVectorSubtract";

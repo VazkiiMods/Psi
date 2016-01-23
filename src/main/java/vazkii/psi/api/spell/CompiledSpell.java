@@ -14,6 +14,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
 
+import com.typesafe.config.ConfigException.Null;
+
 /**
  * A spell that has been compiled by a compiler and is ready to be executed.
  */
@@ -68,7 +70,8 @@ public class CompiledSpell {
 		public void execute(SpellContext context) throws SpellRuntimeException {
 			Object o = piece.execute(context);
 			
-			if(piece.getEvaluationType() != null)
+			Class<?> eval = piece.getEvaluationType();
+			if(eval != null && eval != Null.class)
 				evaluatedObjects[piece.x][piece.y] = o;
 		}
 		

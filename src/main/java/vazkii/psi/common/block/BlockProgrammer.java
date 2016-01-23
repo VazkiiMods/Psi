@@ -10,6 +10,8 @@
  */
 package vazkii.psi.common.block;
 
+import java.util.UUID;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
@@ -59,20 +61,17 @@ public class BlockProgrammer extends BlockFacing {
 			}
 		} else programmer.playerLock = playerIn.getName();
 		
-		Runnable dispatch = () -> {
-			if(playerIn instanceof EntityPlayerMP)
-				VanillaPacketDispatcher.dispatchTEToPlayer(programmer, (EntityPlayerMP) playerIn);
-		};
-		
 		ItemStack stack = playerIn.getCurrentEquippedItem();
 		if(enabled && stack != null && stack.getItem() instanceof ISpellContainer && programmer.spell != null && !programmer.spell.name.trim().isEmpty()) {
 			if(programmer.canCompile()) {
 				ISpellContainer container = (ISpellContainer) stack.getItem();
 				if(!worldIn.isRemote)
 					worldIn.playSoundEffect(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, "psi:bulletCreate", 0.5F, 1F);
+				
+				programmer.spell.uuid = UUID.randomUUID();
 				container.setSpell(stack, programmer.spell);
-				dispatch.run();
-				return true;
+				if(playerIn instanceof EntityPlayerMP)
+					VanillaPacketDispatcher.dispatchTEToPlayer(programmer, (EntityPlayerMP) playerIn);				return true;
 			} else {
 				if(!worldIn.isRemote)
 					worldIn.playSoundEffect(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, "psi:compileError", 0.5F, 1F);
@@ -80,7 +79,8 @@ public class BlockProgrammer extends BlockFacing {
 			}
 		}
 
-		dispatch.run();
+		if(playerIn instanceof EntityPlayerMP)
+			VanillaPacketDispatcher.dispatchTEToPlayer(programmer, (EntityPlayerMP) playerIn);
 		playerIn.openGui(Psi.instance, LibGuiIDs.PROGRAMMER, worldIn, pos.getX(), pos.getY(), pos.getZ());
 		return true;
 	}
