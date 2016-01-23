@@ -19,6 +19,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
@@ -114,6 +116,7 @@ public class PlayerDataHandler {
 		private static final String TAG_LEVEL = "level";
 		private static final String TAG_AVAILABLE_PSI = "availablePsi";
 		private static final String TAG_REGEN_CD = "regenCd";
+		private static final String SPELL_GROUPS_UNLOCKED = "spellGroupsUnlocked";
 
 		public int level;
 		public int availablePsi;
@@ -122,6 +125,7 @@ public class PlayerDataHandler {
 
 		public boolean deductTick;
 
+		public final List<String> spellGroupsUnlocked = new ArrayList();
 		public final List<Deduction> deductions = new ArrayList();
 		public final WeakReference<EntityPlayer> playerWR;
 		private final boolean client;
@@ -267,6 +271,21 @@ public class PlayerDataHandler {
 			return regenCooldown;
 		}
 
+		@Override
+		public boolean isSpellGroupUnlocked(String group) {
+			EntityPlayer player = playerWR.get();
+			if(player != null && player.capabilities.isCreativeMode)
+				return true;
+			
+			return spellGroupsUnlocked.contains(group);
+		}
+
+		@Override
+		public void unlockSpellGroup(String group) {
+			if(!isSpellGroupUnlocked(group))
+				spellGroupsUnlocked.add(group);
+		}
+		
 		public void save() {
 			if(!client) {
 				EntityPlayer player = playerWR.get();
@@ -282,6 +301,11 @@ public class PlayerDataHandler {
 			cmp.setInteger(TAG_LEVEL, level);
 			cmp.setInteger(TAG_AVAILABLE_PSI, availablePsi);
 			cmp.setInteger(TAG_REGEN_CD, regenCooldown);	
+			
+			NBTTagList list = new NBTTagList();
+			for(String s : spellGroupsUnlocked)
+				list.appendTag(new NBTTagString(s));
+			cmp.setTag(SPELL_GROUPS_UNLOCKED, list);
 		}
 
 		public void load() {
@@ -299,6 +323,14 @@ public class PlayerDataHandler {
 			level = cmp.getInteger(TAG_LEVEL);
 			availablePsi = cmp.getInteger(TAG_AVAILABLE_PSI);
 			regenCooldown = cmp.getInteger(TAG_REGEN_CD);
+			
+			if(cmp.hasKey(SPELL_GROUPS_UNLOCKED)) {
+				spellGroupsUnlocked.clear();
+				NBTTagList list = cmp.getTagList(SPELL_GROUPS_UNLOCKED, 8); // 8 -> String
+				int count = list.tagCount();
+				for(int i = 0; i < count; i++)
+					spellGroupsUnlocked.add(list.getStringTagAt(i));
+			}
 		}
 
 		public static class Deduction {

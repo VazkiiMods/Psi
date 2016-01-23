@@ -30,6 +30,7 @@ import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.EnumCADStat;
 import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.spell.EnumSpellStat;
+import vazkii.psi.api.spell.PieceGroup;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellGrid;
 import vazkii.psi.api.spell.SpellMetadata;
@@ -40,6 +41,8 @@ import vazkii.psi.client.gui.button.GuiButtonPage;
 import vazkii.psi.client.gui.button.GuiButtonSideConfig;
 import vazkii.psi.client.gui.button.GuiButtonSpellPiece;
 import vazkii.psi.common.block.tile.TileProgrammer;
+import vazkii.psi.common.core.handler.PlayerDataHandler;
+import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
 import vazkii.psi.common.item.ItemCAD;
 import vazkii.psi.common.lib.LibResources;
 import vazkii.psi.common.network.NetworkHandler;
@@ -424,11 +427,15 @@ public class GuiProgrammer extends GuiScreen {
 		buttonList.removeAll(panelButtons);
 		panelButtons.clear();
 		visiblePieces.clear();
-		
+
+		PlayerData data = PlayerDataHandler.get(mc.thePlayer);
 		for(String key : PsiAPI.spellPieceRegistry.getKeys()) {
 			Class<? extends SpellPiece> clazz = PsiAPI.spellPieceRegistry.getObject(key);
-			SpellPiece p = SpellPiece.create(clazz, programmer.spell);
+			PieceGroup group = PsiAPI.groupsForPiece.get(clazz);
+			if(group == null || !data.isSpellGroupUnlocked(group.name))
+				continue;
 			
+			SpellPiece p = SpellPiece.create(clazz, programmer.spell);
 			if(StatCollector.translateToLocal(p.getUnlocalizedName()).toLowerCase().contains(searchField.getText().toLowerCase()))
 				p.getShownPieces(visiblePieces);
 		}

@@ -98,6 +98,9 @@ public final class SpellContext {
 	 * @see #MAX_DISTANCE 
 	 */
 	public boolean isInRadius(Entity e) {
+		if(e == focalPoint || e == caster)
+			return true;
+		
 		return isInRadius(e.posX, e.posY, e.posZ); 
 	}
 	

@@ -34,6 +34,8 @@ import vazkii.psi.api.spell.ISpellContainer;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.base.BlockFacing;
 import vazkii.psi.common.block.tile.TileProgrammer;
+import vazkii.psi.common.core.handler.PlayerDataHandler;
+import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
 import vazkii.psi.common.lib.LibBlockNames;
 import vazkii.psi.common.lib.LibGuiIDs;
 
@@ -52,6 +54,15 @@ public class BlockProgrammer extends BlockFacing {
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ) {
 		TileProgrammer programmer = (TileProgrammer) worldIn.getTileEntity(pos);
 
+		if(!playerIn.capabilities.isCreativeMode) {
+			PlayerData data = PlayerDataHandler.get(playerIn);
+			if(data.spellGroupsUnlocked.isEmpty()) {
+				if(!worldIn.isRemote)
+					playerIn.addChatComponentMessage(new ChatComponentTranslation("psimisc.cantUseProgrammer").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
+				return true;
+			}
+		}
+		
 		boolean enabled = programmer.isEnabled();
 		if(enabled) {
 			if(!programmer.playerLock.equals(playerIn.getName())) {

@@ -51,4 +51,14 @@ public class DummyPlayerData implements IPlayerData {
 		// NO-OP
 	}
 
+	@Override
+	public boolean isSpellGroupUnlocked(String group) {
+		return false;
+	}
+
+	@Override
+	public void unlockSpellGroup(String group) {
+		// NO-OP
+	}
+
 }
