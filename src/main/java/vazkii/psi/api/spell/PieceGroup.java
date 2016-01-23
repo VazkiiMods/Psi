@@ -48,7 +48,7 @@ public class PieceGroup implements Comparable<PieceGroup> {
 			return false;
 		
 		for(String s : requirements)
-			if(!data.isSpellGroupUnlocked(s))
+			if(!data.isPieceGroupUnlocked(s))
 				return false;
 		return true;
 	}

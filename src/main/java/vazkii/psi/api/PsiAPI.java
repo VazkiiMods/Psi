@@ -40,7 +40,7 @@ public final class PsiAPI {
 	public static HashMap<Class<? extends SpellPiece>, PieceGroup> groupsForPiece = new HashMap();
 	public static HashMap<String, PieceGroup> groupsForName = new HashMap();
 	
-	public static int levelCap = 0;
+	public static int levelCap = 1;
 	
 	/**
 	 * Registers a Spell Piece given its class, by which, it puts it in the registry.

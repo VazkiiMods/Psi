@@ -134,13 +134,14 @@ public final class ModSpellPieces {
 		trickAddMotion = register(PieceTrickAddMotion.class, LibPieceNames.TRICK_ADD_MOTION, LibPieceGroups.TUTORIAL_3, true);
 		trickExplode = register(PieceTrickExplode.class, LibPieceNames.TRICK_EXPLODE, LibPieceGroups.TUTORIAL_4, true);
 		
-		PsiAPI.setGroupRequirements(LibPieceGroups.TUTORIAL_2, 1, LibPieceGroups.TUTORIAL_1);
-		PsiAPI.setGroupRequirements(LibPieceGroups.TUTORIAL_3, 2, LibPieceGroups.TUTORIAL_2);
-		PsiAPI.setGroupRequirements(LibPieceGroups.TUTORIAL_4, 3, LibPieceGroups.TUTORIAL_3);
-		PsiAPI.setGroupRequirements(LibPieceGroups.NUMBERS_INTRO, 4, LibPieceGroups.TUTORIAL_4);
-		PsiAPI.setGroupRequirements(LibPieceGroups.VECTORS_INTRO, 4, LibPieceGroups.TUTORIAL_4);
-		PsiAPI.setGroupRequirements(LibPieceGroups.ENTITIES_INTRO, 4, LibPieceGroups.TUTORIAL_4);
-		PsiAPI.setGroupRequirements(LibPieceGroups.PROJECTILES, 7);
+		PsiAPI.setGroupRequirements(LibPieceGroups.TUTORIAL_1, 1, LibPieceGroups.TUTORIAL_1);
+		PsiAPI.setGroupRequirements(LibPieceGroups.TUTORIAL_2, 2, LibPieceGroups.TUTORIAL_1);
+		PsiAPI.setGroupRequirements(LibPieceGroups.TUTORIAL_3, 3, LibPieceGroups.TUTORIAL_2);
+		PsiAPI.setGroupRequirements(LibPieceGroups.TUTORIAL_4, 4, LibPieceGroups.TUTORIAL_3);
+		PsiAPI.setGroupRequirements(LibPieceGroups.NUMBERS_INTRO, 5, LibPieceGroups.TUTORIAL_4);
+		PsiAPI.setGroupRequirements(LibPieceGroups.VECTORS_INTRO, 5, LibPieceGroups.TUTORIAL_4);
+		PsiAPI.setGroupRequirements(LibPieceGroups.ENTITIES_INTRO, 5, LibPieceGroups.TUTORIAL_4);
+		PsiAPI.setGroupRequirements(LibPieceGroups.PROJECTILES, 8);
 	}
 	
 	public static PieceContainer register(Class<? extends SpellPiece> clazz, String name, String group) {

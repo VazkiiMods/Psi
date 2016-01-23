@@ -19,8 +19,11 @@ psimisc.config=Config
 psimisc.notYourProgrammer=It seems like someone else is using this. Probably better not to mess with it. 
 psimisc.cantUseProgrammer=You have no idea how to operate this.
 psimisc.levelDisplay=Level %d
-psimisc.levelInfo=Level %d - %d Level Points
-psimisc.levelInfoCreative=Level %d (Creative) - %d Level Points
+psimisc.levelInfo=Level %d - Level Points: %d
+psimisc.levelInfoCreative=Level %d (Creative) - Level Points: %d
+psimisc.locked=Locked
+psimisc.requirements=Requirements
+psimisc.learn=Learn
 
 # BLOCK NAMES
 tile.psi:cadAssembler.name=CAD Assembler

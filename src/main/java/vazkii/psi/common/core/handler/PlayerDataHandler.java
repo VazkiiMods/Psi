@@ -116,12 +116,16 @@ public class PlayerDataHandler {
 		private static final String TAG_LEVEL = "level";
 		private static final String TAG_AVAILABLE_PSI = "availablePsi";
 		private static final String TAG_REGEN_CD = "regenCd";
-		private static final String SPELL_GROUPS_UNLOCKED = "spellGroupsUnlocked";
-
+		private static final String TAG_SPELL_GROUPS_UNLOCKED = "spellGroupsUnlocked";
+		private static final String TAG_LAST_SPELL_GROUP = "lastSpellPoint";
+		private static final String TAG_LEVEL_POINTS = "levelPoints";
+		
 		public int level;
 		public int availablePsi;
 		public int lastAvailablePsi;
 		public int regenCooldown;
+		public String lastSpellGroup;
+		public int levelPoints;
 
 		public boolean deductTick;
 
@@ -184,9 +188,11 @@ public class PlayerDataHandler {
 				deductPsi(psi, 20, true, true);
 			}
 		}
-
+		
 		public void levelUp() {
 			level++;
+			levelPoints++;
+			lastSpellGroup = "";
 		}
 
 		public ItemStack getCAD() {
@@ -253,6 +259,10 @@ public class PlayerDataHandler {
 			return level;
 		}
 		
+		public int getLevelPoints() {
+			return levelPoints;
+		}
+		
 		@Override
 		public int getAvailablePsi() {
 			return availablePsi;
@@ -278,7 +288,7 @@ public class PlayerDataHandler {
 		}
 
 		@Override
-		public boolean isSpellGroupUnlocked(String group) {
+		public boolean isPieceGroupUnlocked(String group) {
 			EntityPlayer player = playerWR.get();
 			if(player != null && player.capabilities.isCreativeMode)
 				return true;
@@ -287,9 +297,12 @@ public class PlayerDataHandler {
 		}
 
 		@Override
-		public void unlockSpellGroup(String group) {
-			if(!isSpellGroupUnlocked(group))
+		public void unlockPieceGroup(String group) {
+			if(!isPieceGroupUnlocked(group)) {
 				spellGroupsUnlocked.add(group);
+				lastSpellGroup = group;
+				levelPoints--;
+			}
 		}
 		
 		public void save() {
@@ -307,11 +320,13 @@ public class PlayerDataHandler {
 			cmp.setInteger(TAG_LEVEL, level);
 			cmp.setInteger(TAG_AVAILABLE_PSI, availablePsi);
 			cmp.setInteger(TAG_REGEN_CD, regenCooldown);	
+			cmp.setInteger(TAG_LEVEL_POINTS, levelPoints);
+			cmp.setString(TAG_LAST_SPELL_GROUP, lastSpellGroup);
 			
 			NBTTagList list = new NBTTagList();
 			for(String s : spellGroupsUnlocked)
 				list.appendTag(new NBTTagString(s));
-			cmp.setTag(SPELL_GROUPS_UNLOCKED, list);
+			cmp.setTag(TAG_SPELL_GROUPS_UNLOCKED, list);
 		}
 
 		public void load() {
@@ -329,10 +344,12 @@ public class PlayerDataHandler {
 			level = cmp.getInteger(TAG_LEVEL);
 			availablePsi = cmp.getInteger(TAG_AVAILABLE_PSI);
 			regenCooldown = cmp.getInteger(TAG_REGEN_CD);
+			levelPoints = cmp.getInteger(TAG_LEVEL_POINTS);
+			lastSpellGroup = cmp.getString(TAG_LAST_SPELL_GROUP);
 			
-			if(cmp.hasKey(SPELL_GROUPS_UNLOCKED)) {
+			if(cmp.hasKey(TAG_SPELL_GROUPS_UNLOCKED)) {
 				spellGroupsUnlocked.clear();
-				NBTTagList list = cmp.getTagList(SPELL_GROUPS_UNLOCKED, 8); // 8 -> String
+				NBTTagList list = cmp.getTagList(TAG_SPELL_GROUPS_UNLOCKED, 8); // 8 -> String
 				int count = list.tagCount();
 				for(int i = 0; i < count; i++)
 					spellGroupsUnlocked.add(list.getStringTagAt(i));

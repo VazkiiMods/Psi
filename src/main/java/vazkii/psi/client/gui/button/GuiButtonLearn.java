@@ -15,18 +15,18 @@ import java.util.Arrays;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import vazkii.psi.client.core.helper.RenderHelper;
+import vazkii.psi.client.gui.GuiLeveling;
 import vazkii.psi.client.gui.GuiProgrammer;
 
-public class GuiButtonPage extends GuiButton {
+public class GuiButtonLearn extends GuiButton {
 
-	public boolean right;
-	GuiProgrammer gui;
+	GuiLeveling gui;
 
-	public GuiButtonPage(GuiProgrammer gui, int par2, int par3, boolean right) {
-		super(0, par2, par3, 18, 10, "");
-		this.right = right;
+	public GuiButtonLearn(GuiLeveling gui, int par2, int par3) {
+		super(0, par2, par3, 26, 22, "");
 		this.gui = gui;
 	}
 
@@ -36,12 +36,12 @@ public class GuiButtonPage extends GuiButton {
 			hovered = par2 >= xPosition && par3 >= yPosition && par2 < xPosition + width && par3 < yPosition + height;
 			int k = getHoverState(hovered);
 
-			par1Minecraft.renderEngine.bindTexture(GuiProgrammer.texture);
+			par1Minecraft.renderEngine.bindTexture(GuiLeveling.texture);
 			GlStateManager.color(1F, 1F, 1F, 1F);
-			drawTexturedModalRect(xPosition, yPosition, k == 2 ? 216 : 198, right ? 145 : 155, width, height);
+			drawTexturedModalRect(xPosition, yPosition, k == 2 ? 44 : 18, 184, width, height);
 
 			if(k == 2)
-				gui.tooltip.add(StatCollector.translateToLocal(right ? "psimisc.nextPage" : "psimisc.prevPage"));
+				gui.tooltip.add(EnumChatFormatting.GREEN + StatCollector.translateToLocal("psimisc.learn"));
 		}
 	}
 

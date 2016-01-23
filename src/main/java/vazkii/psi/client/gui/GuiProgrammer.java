@@ -432,7 +432,7 @@ public class GuiProgrammer extends GuiScreen {
 		for(String key : PsiAPI.spellPieceRegistry.getKeys()) {
 			Class<? extends SpellPiece> clazz = PsiAPI.spellPieceRegistry.getObject(key);
 			PieceGroup group = PsiAPI.groupsForPiece.get(clazz);
-			if(group == null || !data.isSpellGroupUnlocked(group.name))
+			if(group == null || !data.isPieceGroupUnlocked(group.name))
 				continue;
 			
 			SpellPiece p = SpellPiece.create(clazz, programmer.spell);
@@ -456,10 +456,10 @@ public class GuiProgrammer extends GuiScreen {
 		}
 		
 		if(page > 0)
-			panelButtons.add(new GuiButtonPage(panelX + 4, panelY + panelHeight - 15, false));
+			panelButtons.add(new GuiButtonPage(this, panelX + 4, panelY + panelHeight - 15, false));
 		
 		if(page < getPageCount() - 1)
-			panelButtons.add(new GuiButtonPage(panelX + panelWidth - 22, panelY + panelHeight - 15, true));
+			panelButtons.add(new GuiButtonPage(this, panelX + panelWidth - 22, panelY + panelHeight - 15, true));
 		
 		buttonList.addAll(panelButtons);
 	}

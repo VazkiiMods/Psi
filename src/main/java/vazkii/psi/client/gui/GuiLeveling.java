@@ -10,11 +10,13 @@
  */
 package vazkii.psi.client.gui;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
@@ -26,13 +28,18 @@ import vazkii.psi.api.spell.PieceGroup;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellPiece;
 import vazkii.psi.client.core.helper.RenderHelper;
+import vazkii.psi.client.gui.button.GuiButtonLearn;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
 import vazkii.psi.common.lib.LibResources;
+import vazkii.psi.common.network.NetworkHandler;
+import vazkii.psi.common.network.message.MessageLearnGroup;
 
 public class GuiLeveling extends GuiScreen {
 	
 	public static final ResourceLocation texture = new ResourceLocation(LibResources.GUI_LEVELING);
+	
+	public List<String> tooltip = new ArrayList();
 	
 	GuiScrollingList listGroups;
 	int xSize, ySize, left, top;
@@ -65,7 +72,7 @@ public class GuiLeveling extends GuiScreen {
 		ArrayList taken = new ArrayList();
 		
 		for(PieceGroup group : PsiAPI.groupsForName.values()) {
-			if(data.isSpellGroupUnlocked(group.name))
+			if(data.isPieceGroupUnlocked(group.name))
 				taken.add(group);
 			else if(group.isAvailable(data))
 				available.add(group);
@@ -83,7 +90,7 @@ public class GuiLeveling extends GuiScreen {
 	
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-		List<String> tooltip = new ArrayList();
+		tooltip.clear();
 		drawDefaultBackground();
 
 		GlStateManager.color(1F, 1F, 1F);
@@ -93,7 +100,7 @@ public class GuiLeveling extends GuiScreen {
 		super.drawScreen(mouseX, mouseY, partialTicks);
 		
 		PieceGroup group = groups.get(selected);
-		boolean taken = data.isSpellGroupUnlocked(group.name);
+		boolean taken = data.isPieceGroupUnlocked(group.name);
 		boolean available = taken || group.isAvailable(data);
 		
 		if(group != null) {
@@ -121,13 +128,27 @@ public class GuiLeveling extends GuiScreen {
 		String key = "psimisc.levelInfo";
 		if(mc.thePlayer.capabilities.isCreativeMode)
 			key = "psimisc.levelInfoCreative";
-		String s = String.format(StatCollector.translateToLocal(key), data.getLevel(), 0); // TODO points
+		String s = String.format(StatCollector.translateToLocal(key), data.getLevel(), data.getLevelPoints()); 
 		mc.fontRendererObj.drawStringWithShadow(s, left + 4, top + ySize + 2, 0xFFFFFF);
 		
 		listGroups.drawScreen(mouseX, mouseY, partialTicks);
 		
 		if(!tooltip.isEmpty())
 			RenderHelper.renderTooltip(mouseX, mouseY, tooltip);			
+	}
+	
+	@Override
+	protected void actionPerformed(GuiButton button) throws IOException {
+		super.actionPerformed(button);
+		
+		PieceGroup group = groups.get(selected);
+		if(group != null) {
+			NetworkHandler.INSTANCE.sendToServer(new MessageLearnGroup(group.name));
+			data.unlockPieceGroup(group.name);
+			initGroupList();
+			
+			buttonList.clear();
+		}
 	}
 	
 	public void select(int i) {
@@ -139,6 +160,13 @@ public class GuiLeveling extends GuiScreen {
 				if(clazz != group.mainPiece)
 					addToDrawList(clazz);
 		}
+		
+		boolean taken = data.isPieceGroupUnlocked(group.name);
+		boolean available = taken || group.isAvailable(data);
+		
+		buttonList.clear();
+		if(!taken && available && data.getLevelPoints() > 0)
+			buttonList.add(new GuiButtonLearn(this, left + xSize, top + ySize - 30));
 	}
 	
 	public void addToDrawList(Class<? extends SpellPiece> clazz) {
@@ -186,7 +214,7 @@ public class GuiLeveling extends GuiScreen {
 			if(isSelected(slotId))
 				drawRect(left, slotTop, left + width, slotTop + slotHeight, 0x44005555);
 
-			boolean taken = data.isSpellGroupUnlocked(group.name);
+			boolean taken = data.isPieceGroupUnlocked(group.name);
 			boolean available = taken || group.isAvailable(data);
 			int color = 0x777777;
 			if(available)

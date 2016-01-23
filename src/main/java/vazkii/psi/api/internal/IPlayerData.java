@@ -54,14 +54,13 @@ public interface IPlayerData {
 	public void deductPsi(int psi, int cd, boolean sync, boolean shatter);
 	
 	/**
-	 * Gets it the spell group name is unlocked.
+	 * Gets it the piece group name is unlocked.
 	 */
-	public boolean isSpellGroupUnlocked(String group);
+	public boolean isPieceGroupUnlocked(String group);
 	
 	/**
-	 * Unlocks the given spell group.
+	 * Unlocks the given piece group.
 	 */
-	public void unlockSpellGroup(String group);
-	
-}
+	public void unlockPieceGroup(String group);
 
+}
