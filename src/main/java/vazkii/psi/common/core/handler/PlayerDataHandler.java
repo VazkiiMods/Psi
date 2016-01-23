@@ -142,8 +142,11 @@ public class PlayerDataHandler {
 				deductTick = false;
 			else lastAvailablePsi = availablePsi;
 
+			int max = getTotalPsi();
+			if(availablePsi > max)
+				availablePsi = max;
+			
 			if(regenCooldown == 0) {
-				int max = getTotalPsi();
 				boolean doRegen = true;
 				ItemStack cadStack = getCAD();
 				if(cadStack != null) {
@@ -244,6 +247,9 @@ public class PlayerDataHandler {
 
 		@Override
 		public int getLevel() {
+			EntityPlayer player = playerWR.get();
+			if(player != null && player.capabilities.isCreativeMode)
+				return PsiAPI.levelCap;
 			return level;
 		}
 		
@@ -258,12 +264,12 @@ public class PlayerDataHandler {
 		}
 		
 		public int getTotalPsi() {
-			return level * 200;
+			return getLevel() * 200;
 		}
 
 		@Override
 		public int getRegenPerTick() {
-			return level;
+			return getLevel();
 		}
 		
 		@Override

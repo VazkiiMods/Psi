@@ -14,12 +14,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import net.minecraft.util.StatCollector;
 import vazkii.psi.api.internal.IPlayerData;
 
 /**
  * Base class for a "Piece Group", used for the leveling system.
  */
-public class PieceGroup {
+public class PieceGroup implements Comparable<PieceGroup> {
 
 	public final String name;
 	public List<Class<? extends SpellPiece>> pieces = new ArrayList();
@@ -38,6 +39,7 @@ public class PieceGroup {
 	}
 	
 	public void setRequirements(int level, String... reqs) {
+		levelRequirement = level;
 		requirements = Arrays.asList(reqs);
 	}
 	
@@ -49,6 +51,22 @@ public class PieceGroup {
 			if(!data.isSpellGroupUnlocked(s))
 				return false;
 		return true;
+	}
+	
+	public String getUnlocalizedName() {
+		return "psi.piecegroup." + name;
+	}
+	
+	public String getUnlocalizedDesc() {
+		return getUnlocalizedName() + ".desc";
+	}
+
+	@Override
+	public int compareTo(PieceGroup o) {
+		if(o.levelRequirement == levelRequirement)
+			return StatCollector.translateToLocal(getUnlocalizedName()).compareTo(StatCollector.translateToLocal(o.getUnlocalizedName()));
+		
+		return levelRequirement - o.levelRequirement;
 	}
 	
 }

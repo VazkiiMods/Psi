@@ -39,7 +39,9 @@ public final class PsiAPI {
 	public static HashMap<String, ResourceLocation> simpleSpellTextures = new HashMap();
 	public static HashMap<Class<? extends SpellPiece>, PieceGroup> groupsForPiece = new HashMap();
 	public static HashMap<String, PieceGroup> groupsForName = new HashMap();
-
+	
+	public static int levelCap = 0;
+	
 	/**
 	 * Registers a Spell Piece given its class, by which, it puts it in the registry.
 	 */
@@ -72,7 +74,7 @@ public final class PsiAPI {
 	 */
 	public static void addPieceToGroup(Class<? extends SpellPiece> clazz, String groupName, boolean main) {
 		if(!groupsForName.containsKey(groupName))
-			groupsForName.put(groupName, new PieceGroup(groupName));
+			addGroup(groupName);
 		
 		PieceGroup group = groupsForName.get(groupName);
 		group.addPiece(clazz, main);
@@ -84,10 +86,15 @@ public final class PsiAPI {
 	 */
 	public static void setGroupRequirements(String groupName, int level, String... reqs) {
 		if(!groupsForName.containsKey(groupName))
-			groupsForName.put(groupName, new PieceGroup(groupName));
+			addGroup(groupName);
 		
 		PieceGroup group = groupsForName.get(groupName);
 		group.setRequirements(level, reqs);
+	}
+	
+	private static void addGroup(String groupName) {
+		groupsForName.put(groupName, new PieceGroup(groupName));
+		levelCap++;
 	}
 	
 	/**
