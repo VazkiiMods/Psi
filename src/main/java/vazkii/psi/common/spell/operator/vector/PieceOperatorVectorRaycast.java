@@ -34,7 +34,7 @@ public class PieceOperatorVectorRaycast extends PieceOperator {
 	public void initParams() {
 		addParam(origin = new ParamVector(SpellParam.GENERIC_NAME_POSITION, SpellParam.BLUE, false, false));
 		addParam(ray = new ParamVector("psi.spellparam.ray", SpellParam.GREEN, false, false));
-		addParam(max = new ParamNumber(SpellParam.GENERIC_NAME_MAX, SpellParam.PURPLE, false, false));
+		addParam(max = new ParamNumber(SpellParam.GENERIC_NAME_MAX, SpellParam.PURPLE, true, false));
 	}
 	
 	@Override

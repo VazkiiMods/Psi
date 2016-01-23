@@ -68,8 +68,7 @@ public class PieceTrickAddMotion extends PieceTrick {
 			speedVal = 1D;
 		
 		final double mul = 0.3;
-		// TODO check against max values so you can't go hyperspeed
-		directionVal.copy().normalize();
+		directionVal = directionVal.copy().normalize();
 		targetVal.motionX += directionVal.x * speedVal * mul;
 		targetVal.motionY += directionVal.y * speedVal * mul;
 		targetVal.motionZ += directionVal.z * speedVal * mul;
