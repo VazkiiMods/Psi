@@ -20,7 +20,9 @@ public class ItemCADAssembly extends ItemCADComponent {
 	public static final String[] VARIANTS = {
 		"cadAssemblyIron",
 		"cadAssemblyGold",
-		"cadAssemblyPsimetal"
+		"cadAssemblyPsimetal",
+		"cadAssemblyEbonyPsimetal",
+		"cadAssemblyIvoryPsimetal"
 	};
 	
 	public ItemCADAssembly() {
@@ -40,6 +42,14 @@ public class ItemCADAssembly extends ItemCADComponent {
 		// Psimetal
 		addStat(EnumCADStat.EFFICIENCY, 2, 80);
 		addStat(EnumCADStat.POTENCY, 2, 250);
+		
+		// Ebony Psimetal
+		addStat(EnumCADStat.EFFICIENCY, 3, 90);
+		addStat(EnumCADStat.POTENCY, 3, 350);
+		
+		// Ivory Psimetal
+		addStat(EnumCADStat.EFFICIENCY, 4, 95);
+		addStat(EnumCADStat.POTENCY, 4, 320);
 	}
 
 	@Override
