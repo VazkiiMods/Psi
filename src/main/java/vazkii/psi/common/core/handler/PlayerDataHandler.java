@@ -21,7 +21,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.ChatStyle;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -192,9 +195,14 @@ public class PlayerDataHandler {
 		}
 		
 		public void levelUp() {
-			level++;
-			levelPoints++;
-			lastSpellGroup = "";
+			EntityPlayer player = playerWR.get();
+			if(player != null) {
+				level++;
+				levelPoints++;
+				lastSpellGroup = "";
+				if(!player.worldObj.isRemote)
+					player.addChatComponentMessage(new ChatComponentTranslation("psimisc.levelup").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GREEN))); // TODO replace with fancier thing
+			}
 		}
 
 		public ItemStack getCAD() {
