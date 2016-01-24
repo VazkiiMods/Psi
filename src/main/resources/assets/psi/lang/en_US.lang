@@ -141,6 +141,8 @@ psi.spellpiece.operatorEntityLook=Operator: Entity Look
 psi.spellpiece.operatorEntityLook.desc=Gets an Entity's look vector
 psi.spellpiece.operatorEntityMotion=Operator: Entity Motion
 psi.spellpiece.operatorEntityMotion.desc=Gets an Entity's motion vector
+psi.spellpiece.operatorEntityAxialLook=Operator: Entity Axial Look
+psi.spellpiece.operatorEntityAxialLook.desc=Gets an Entity's look vector, aligned to an axis
 psi.spellpiece.operatorVectorRaycast=Operator: Vector Raycast
 psi.spellpiece.operatorVectorRaycast.desc=Gets a localized raycast's result (max 32)
 psi.spellpiece.operatorVectorSum=Operator: Vector Sum
@@ -148,7 +150,6 @@ psi.spellpiece.operatorVectorSum.desc=A + B (+ C)
 psi.spellpiece.operatorVectorSubtract=Operator: Vector Subtract
 psi.spellpiece.operatorVectorSubtract.desc=A - B (- C)
 psi.spellpiece.operatorVectorMultiply=Operator: Vector Multiply
-psi.spellpiece.operatorVectorMultiply.desc=A * B
 psi.spellpiece.operatorVectorDivide=Operator: Vector Divide
 psi.spellpiece.operatorVectorDivide.desc=A / B
 psi.spellpiece.operatorVectorCrossProduct=Operator: Vector Cross Product
@@ -210,6 +211,7 @@ psi.spellparam.x=X
 psi.spellparam.y=Y
 psi.spellparam.z=Z
 psi.spellparam.radius=Radius
+psi.spellparam.maxBlocks=Max Blocks
 
 # DATA TYPE NAMES
 psi.datatype.Null=None

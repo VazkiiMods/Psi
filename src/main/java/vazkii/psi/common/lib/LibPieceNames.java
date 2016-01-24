@@ -28,6 +28,7 @@ public final class LibPieceNames {
 	public static final String OPERATOR_ENTITY_POSITION = "operatorEntityPosition";
 	public static final String OPERATOR_ENTITY_LOOK = "operatorEntityLook";
 	public static final String OPERATOR_ENTITY_MOTION = "operatorEntityMotion";
+	public static final String OPERATOR_ENTITY_AXIAL_LOOK = "operatorEntityAxialLook";
 	public static final String OPERATOR_CLOSEST_TO_POINT = "operatorClosestToPoint";
 	public static final String OPERATOR_RANDOM_ENTITY = "operatorRandomEntity";
 	public static final String OPERATOR_VECTOR_RAYCAST = "operatorVectorRaycast";
@@ -51,5 +52,9 @@ public final class LibPieceNames {
 	public static final String TRICK_DEBUG = "trickDebug";
 	public static final String TRICK_ADD_MOTION = "trickAddMotion";
 	public static final String TRICK_EXPLODE = "trickExplode";
-	
+	public static final String TRICK_BREAK_BLOCK = "trickBreakBlock";
+	public static final String TRICK_BREAK_IN_SEQUENCE = "trickBreakInSequence";
+	public static final String TRICK_PLACE_BLOCK = "trickPlaceBlock";
+	public static final String TRICK_PLACE_IN_SEQUENCE = "trickPlaceInSequence";
+
 }

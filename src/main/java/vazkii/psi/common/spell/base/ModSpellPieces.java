@@ -17,6 +17,7 @@ import vazkii.psi.common.lib.LibPieceGroups;
 import vazkii.psi.common.lib.LibPieceNames;
 import vazkii.psi.common.spell.constant.PieceConstantNumber;
 import vazkii.psi.common.spell.operator.entity.PieceOperatorClosestToPoint;
+import vazkii.psi.common.spell.operator.entity.PieceOperatorEntityAxialLook;
 import vazkii.psi.common.spell.operator.entity.PieceOperatorEntityLook;
 import vazkii.psi.common.spell.operator.entity.PieceOperatorEntityMotion;
 import vazkii.psi.common.spell.operator.entity.PieceOperatorEntityPosition;
@@ -50,6 +51,8 @@ import vazkii.psi.common.spell.selector.entity.PieceSelectorNearbyLiving;
 import vazkii.psi.common.spell.trick.PieceTrickAddMotion;
 import vazkii.psi.common.spell.trick.PieceTrickDebug;
 import vazkii.psi.common.spell.trick.PieceTrickExplode;
+import vazkii.psi.common.spell.trick.block.PieceTrickBreakBlock;
+import vazkii.psi.common.spell.trick.block.PieceTrickBreakInSequence;
 
 public final class ModSpellPieces {
 
@@ -92,6 +95,10 @@ public final class ModSpellPieces {
 	public static PieceContainer trickDebug;
 	public static PieceContainer trickAddMotion;
 	public static PieceContainer trickExplode;
+	public static PieceContainer trickBreakBlock;
+	public static PieceContainer trickBreakInSequence;
+	public static PieceContainer trickPlaceBlock;
+	public static PieceContainer trickPlaceInSequence;
 
 	public static void init() {
 		selectorCaster = register(PieceSelectorCaster.class, LibPieceNames.SELECTOR_CASTER, LibPieceGroups.TUTORIAL_1);
@@ -110,6 +117,7 @@ public final class ModSpellPieces {
 		operatorEntityPosition = register(PieceOperatorEntityPosition.class, LibPieceNames.OPERATOR_ENTITY_POSITION, LibPieceGroups.TUTORIAL_4);
 		operatorEntityLook = register(PieceOperatorEntityLook.class, LibPieceNames.OPERATOR_ENTITY_LOOK, LibPieceGroups.TUTORIAL_3);
 		operatorEntityMotion = register(PieceOperatorEntityMotion.class, LibPieceNames.OPERATOR_ENTITY_MOTION, LibPieceGroups.ENTITIES_INTRO);
+		operatorEntityMotion = register(PieceOperatorEntityAxialLook.class, LibPieceNames.OPERATOR_ENTITY_AXIAL_LOOK, LibPieceGroups.BLOCK_WORKS);
 		operatorClosestToPoint = register(PieceOperatorClosestToPoint.class, LibPieceNames.OPERATOR_CLOSEST_TO_POINT, LibPieceGroups.ENTITIES_INTRO, true);
 		operatorRandomEntity = register(PieceOperatorRandomEntity.class, LibPieceNames.OPERATOR_RANDOM_ENTITY, LibPieceGroups.ENTITIES_INTRO);
 		operatorVectorRaycast = register(PieceOperatorVectorRaycast.class, LibPieceNames.OPERATOR_VECTOR_RAYCAST, LibPieceGroups.TUTORIAL_4);
@@ -133,7 +141,9 @@ public final class ModSpellPieces {
 		trickDebug = register(PieceTrickDebug.class, LibPieceNames.TRICK_DEBUG, LibPieceGroups.TUTORIAL_1, true);
 		trickAddMotion = register(PieceTrickAddMotion.class, LibPieceNames.TRICK_ADD_MOTION, LibPieceGroups.TUTORIAL_3, true);
 		trickExplode = register(PieceTrickExplode.class, LibPieceNames.TRICK_EXPLODE, LibPieceGroups.TUTORIAL_4, true);
-		
+		trickBreakBlock = register(PieceTrickBreakBlock.class, LibPieceNames.TRICK_BREAK_BLOCK, LibPieceGroups.BLOCK_WORKS);
+		trickBreakInSequence = register(PieceTrickBreakInSequence.class, LibPieceNames.TRICK_BREAK_IN_SEQUENCE, LibPieceGroups.BLOCK_WORKS, true);
+
 		PsiAPI.setGroupRequirements(LibPieceGroups.TUTORIAL_1, 1);
 		PsiAPI.setGroupRequirements(LibPieceGroups.TUTORIAL_2, 2, LibPieceGroups.TUTORIAL_1);
 		PsiAPI.setGroupRequirements(LibPieceGroups.TUTORIAL_3, 3, LibPieceGroups.TUTORIAL_2);
@@ -141,7 +151,8 @@ public final class ModSpellPieces {
 		PsiAPI.setGroupRequirements(LibPieceGroups.NUMBERS_INTRO, 5, LibPieceGroups.TUTORIAL_4);
 		PsiAPI.setGroupRequirements(LibPieceGroups.VECTORS_INTRO, 5, LibPieceGroups.TUTORIAL_4);
 		PsiAPI.setGroupRequirements(LibPieceGroups.ENTITIES_INTRO, 5, LibPieceGroups.TUTORIAL_4);
-		PsiAPI.setGroupRequirements(LibPieceGroups.PROJECTILES, 8);
+		PsiAPI.setGroupRequirements(LibPieceGroups.PROJECTILES, 6, LibPieceGroups.ENTITIES_INTRO);
+		PsiAPI.setGroupRequirements(LibPieceGroups.BLOCK_WORKS, 6, LibPieceGroups.VECTORS_INTRO);
 	}
 	
 	public static PieceContainer register(Class<? extends SpellPiece> clazz, String name, String group) {

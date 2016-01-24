@@ -54,10 +54,10 @@ public class PieceOperatorVectorRaycast extends PieceOperator {
 		Vector3 end = originVal.copy().add(rayVal.copy().normalize().multiply(maxLen));
 		
 		MovingObjectPosition pos = context.caster.worldObj.rayTraceBlocks(originVal.toVec3D(), end.toVec3D());
-		if(pos == null)
-			return end;
+		if(pos == null || pos.getBlockPos() == null)
+			return null;
 		
-		return new Vector3(pos.hitVec);
+		return new Vector3(pos.getBlockPos().getX(), pos.getBlockPos().getY(), pos.getBlockPos().getZ());
 	}
 	
 	@Override

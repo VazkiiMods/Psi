@@ -160,7 +160,7 @@ public class PlayerDataHandler {
 					int maxPsi = cad.getStatValue(cadStack, EnumCADStat.OVERFLOW);
 					int currPsi = cad.getStoredPsi(cadStack);
 					if(currPsi < maxPsi) {
-						cad.regenPsi(cadStack, getRegenPerTick());
+						cad.regenPsi(cadStack, Math.max(1, getRegenPerTick() / 2));
 						doRegen = false;
 					}
 				}

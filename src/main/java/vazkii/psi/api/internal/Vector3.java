@@ -31,6 +31,13 @@ public class Vector3
 	public static Vector3 zero = new Vector3();
 	public static Vector3 one = new Vector3(1, 1, 1);
 	public static Vector3 center = new Vector3(0.5, 0.5, 0.5);
+	
+	public static Vector3 up = new Vector3(0, 1, 0);
+	public static Vector3 down = new Vector3(0, -1, 0);
+	public static Vector3 forward = new Vector3(0, 0, 1);
+	public static Vector3 back = new Vector3(0, 0, -1);
+	public static Vector3 right = new Vector3(1, 0, 0);
+	public static Vector3 left = new Vector3(-1, 0, 0);
 
 	public double x;
 	public double y;

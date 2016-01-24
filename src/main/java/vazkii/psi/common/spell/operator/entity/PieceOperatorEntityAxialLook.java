@@ -6,12 +6,13 @@
  * Psi is Open Source and distributed under the
  * CC-BY-NC-SA 3.0 License: https://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB
  * 
- * File Created @ [18/01/2016, 21:50:51 (GMT)]
+ * File Created @ [24/01/2016, 15:03:19 (GMT)]
  */
 package vazkii.psi.common.spell.operator.entity;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Vec3;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
@@ -20,11 +21,11 @@ import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.api.spell.param.ParamEntity;
 import vazkii.psi.api.spell.piece.PieceOperator;
 
-public class PieceOperatorEntityPosition extends PieceOperator {
+public class PieceOperatorEntityAxialLook extends PieceOperator {
 
 	SpellParam target;
 	
-	public PieceOperatorEntityPosition(Spell spell) {
+	public PieceOperatorEntityAxialLook(Spell spell) {
 		super(spell);
 	}
 	
@@ -39,12 +40,10 @@ public class PieceOperatorEntityPosition extends PieceOperator {
 		
 		if(e == null)
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_TARGET);
+		Vec3 look = e.getLook(1F);
+		EnumFacing facing = EnumFacing.getFacingFromVector((float) look.xCoord, (float) look.yCoord, (float) look.zCoord);
 		
-		Vector3 vec = Vector3.fromEntity(e);
-		if(e instanceof EntityPlayer)
-			vec.add(0, e.getEyeHeight(), 0);
-		
-		return vec;
+		return new Vector3(facing.getFrontOffsetX(), facing.getFrontOffsetY(), facing.getFrontOffsetZ());
 	}
 	
 	@Override
