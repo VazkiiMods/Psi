@@ -211,7 +211,6 @@ psi.spellparam.x=X
 psi.spellparam.y=Y
 psi.spellparam.z=Z
 psi.spellparam.radius=Radius
-psi.spellparam.maxBlocks=Max Blocks
 
 # DATA TYPE NAMES
 psi.datatype.Null=None

@@ -6,7 +6,7 @@
  * Psi is Open Source and distributed under the
  * CC-BY-NC-SA 3.0 License: https://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB
  * 
- * File Created @ [24/01/2016, 16:20:58 (GMT)]
+ * File Created @ [24/01/2016, 17:29:47 (GMT)]
  */
 package vazkii.psi.common.spell.trick.block;
 
@@ -24,13 +24,13 @@ import vazkii.psi.api.spell.param.ParamVector;
 import vazkii.psi.api.spell.piece.PieceTrick;
 import vazkii.psi.common.core.handler.ConfigHandler;
 
-public class PieceTrickBreakInSequence extends PieceTrick {
+public class PieceTrickPlaceInSequence extends PieceTrick {
 
 	SpellParam position;
 	SpellParam target;
 	SpellParam maxBlocks;
 
-	public PieceTrickBreakInSequence(Spell spell) {
+	public PieceTrickPlaceInSequence(Spell spell) {
 		super(spell);
 	}
 
@@ -49,15 +49,12 @@ public class PieceTrickBreakInSequence extends PieceTrick {
 		if(maxBlocksVal == null || maxBlocksVal <= 0)
 			throw new SpellCompilationException(SpellCompilationException.NON_POSITIVE_VALUE, x, y);
 		
-		meta.addStat(EnumSpellStat.POTENCY, (int) (maxBlocksVal * 20));
-		meta.addStat(EnumSpellStat.COST, (int) (maxBlocksVal * 40));
+		meta.addStat(EnumSpellStat.POTENCY, (int) (maxBlocksVal * 8));
+		meta.addStat(EnumSpellStat.COST, (int) (maxBlocksVal * 8));
 	}
 
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
-		if(context.caster.worldObj.isRemote)
-			return null;
-
 		Vector3 positionVal = this.<Vector3>getParamValue(context, position);
 		Vector3 targetVal = this.<Vector3>getParamValue(context, target);
 		Double maxBlocksVal = this.<Double>getParamValue(context, maxBlocks);
@@ -75,7 +72,7 @@ public class PieceTrickBreakInSequence extends PieceTrick {
 				throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 			
 			BlockPos pos = new BlockPos(blockVec.x, blockVec.y, blockVec.z);
-			PieceTrickBreakBlock.removeBlockWithDrops(context.caster, context.caster.worldObj, pos, ConfigHandler.cadHarvestLevel, false, 0, true);
+			PieceTrickPlaceBlock.placeBlock(context.caster, context.caster.worldObj, pos, false);
 		}
 		
 		return null;

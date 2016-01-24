@@ -139,10 +139,12 @@ public final class SpellGrid {
 			
 			NBTTagCompound data = lcmp.getCompoundTag(TAG_SPELL_DATA);
 			SpellPiece piece = SpellPiece.createFromNBT(spell, data);
-			gridData[posX][posY] = piece;
-			piece.isInGrid = true;
-			piece.x = posX;
-			piece.y = posY;
+			if(piece != null) {
+				gridData[posX][posY] = piece;
+				piece.isInGrid = true;
+				piece.x = posX;
+				piece.y = posY;
+			}
 		}
 	}
 	

@@ -44,6 +44,8 @@ public final class LibPieceNames {
 	public static final String OPERATOR_VECTOR_EXTRACT_X = "operatorVectorExtractX";
 	public static final String OPERATOR_VECTOR_EXTRACT_Y = "operatorVectorExtractY";
 	public static final String OPERATOR_VECTOR_EXTRACT_Z = "operatorVectorExtractZ";
+	public static final String OPERATOR_VECTOR_PROJECT = "operatorVectorProject";
+	public static final String OPERATOR_VECTOR_RAYCAST_AXIS = "operatorVectorRaycastAxis";
 
 	public static final String CONSTANT_NUMBER = "constantNumber";
 	

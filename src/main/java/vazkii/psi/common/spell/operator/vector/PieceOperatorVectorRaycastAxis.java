@@ -6,10 +6,11 @@
  * Psi is Open Source and distributed under the
  * CC-BY-NC-SA 3.0 License: https://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB
  * 
- * File Created @ [18/01/2016, 22:02:05 (GMT)]
+ * File Created @ [24/01/2016, 17:56:30 (GMT)]
  */
 package vazkii.psi.common.spell.operator.vector;
 
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MovingObjectPosition;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.Spell;
@@ -20,13 +21,13 @@ import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.param.ParamVector;
 import vazkii.psi.api.spell.piece.PieceOperator;
 
-public class PieceOperatorVectorRaycast extends PieceOperator {
+public class PieceOperatorVectorRaycastAxis extends PieceOperator {
 
 	SpellParam origin;
 	SpellParam ray;
 	SpellParam max;
 	
-	public PieceOperatorVectorRaycast(Spell spell) {
+	public PieceOperatorVectorRaycastAxis(Spell spell) {
 		super(spell);
 	}
 	
@@ -57,7 +58,8 @@ public class PieceOperatorVectorRaycast extends PieceOperator {
 		if(pos == null || pos.getBlockPos() == null)
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
 		
-		return new Vector3(pos.getBlockPos().getX(), pos.getBlockPos().getY(), pos.getBlockPos().getZ());
+		EnumFacing facing = pos.sideHit;
+		return new Vector3(facing.getFrontOffsetX(), facing.getFrontOffsetY(), facing.getFrontOffsetZ());
 	}
 	
 	@Override

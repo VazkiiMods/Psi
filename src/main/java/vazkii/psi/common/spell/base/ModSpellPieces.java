@@ -28,6 +28,8 @@ import vazkii.psi.common.spell.operator.number.PieceOperatorInverse;
 import vazkii.psi.common.spell.operator.number.PieceOperatorMultiply;
 import vazkii.psi.common.spell.operator.number.PieceOperatorSubtract;
 import vazkii.psi.common.spell.operator.number.PieceOperatorSum;
+import vazkii.psi.common.spell.operator.vector.PieceOperatorVectorProject;
+import vazkii.psi.common.spell.operator.vector.PieceOperatorVectorRaycastAxis;
 import vazkii.psi.common.spell.operator.vector.PieceOperatorVectorConstruct;
 import vazkii.psi.common.spell.operator.vector.PieceOperatorVectorCrossProduct;
 import vazkii.psi.common.spell.operator.vector.PieceOperatorVectorDivide;
@@ -53,6 +55,8 @@ import vazkii.psi.common.spell.trick.PieceTrickDebug;
 import vazkii.psi.common.spell.trick.PieceTrickExplode;
 import vazkii.psi.common.spell.trick.block.PieceTrickBreakBlock;
 import vazkii.psi.common.spell.trick.block.PieceTrickBreakInSequence;
+import vazkii.psi.common.spell.trick.block.PieceTrickPlaceBlock;
+import vazkii.psi.common.spell.trick.block.PieceTrickPlaceInSequence;
 
 public final class ModSpellPieces {
 
@@ -87,6 +91,8 @@ public final class ModSpellPieces {
 	public static PieceContainer operatorVectorExtractX;
 	public static PieceContainer operatorVectorExtractY;
 	public static PieceContainer operatorVectorExtractZ;
+	public static PieceContainer operatorVectorRaycastAxis;
+	public static PieceContainer operatorVectorProject;
 
 	public static PieceContainer constantNumber;
 	
@@ -99,7 +105,7 @@ public final class ModSpellPieces {
 	public static PieceContainer trickBreakInSequence;
 	public static PieceContainer trickPlaceBlock;
 	public static PieceContainer trickPlaceInSequence;
-
+	
 	public static void init() {
 		selectorCaster = register(PieceSelectorCaster.class, LibPieceNames.SELECTOR_CASTER, LibPieceGroups.TUTORIAL_1);
 		selectorFocalPoint = register(PieceSelectorFocalPoint.class, LibPieceNames.SELECTOR_FOCAL_POINT, LibPieceGroups.PROJECTILES, true);
@@ -133,6 +139,8 @@ public final class ModSpellPieces {
 		operatorVectorExtractX = register(PieceOperatorVectorExtractX.class, LibPieceNames.OPERATOR_VECTOR_EXTRACT_X, LibPieceGroups.VECTORS_INTRO);
 		operatorVectorExtractY = register(PieceOperatorVectorExtractY.class, LibPieceNames.OPERATOR_VECTOR_EXTRACT_Y, LibPieceGroups.VECTORS_INTRO);
 		operatorVectorExtractZ = register(PieceOperatorVectorExtractZ.class, LibPieceNames.OPERATOR_VECTOR_EXTRACT_Z, LibPieceGroups.VECTORS_INTRO);
+		operatorVectorRaycastAxis = register(PieceOperatorVectorRaycastAxis.class, LibPieceNames.OPERATOR_VECTOR_RAYCAST_AXIS, LibPieceGroups.BLOCK_WORKS);
+		operatorVectorProject = register(PieceOperatorVectorProject.class, LibPieceNames.OPERATOR_VECTOR_PROJECT, LibPieceGroups.BLOCK_WORKS);
 
 		constantNumber = register(PieceConstantNumber.class, LibPieceNames.CONSTANT_NUMBER, LibPieceGroups.TUTORIAL_2, true);
 		
@@ -143,6 +151,8 @@ public final class ModSpellPieces {
 		trickExplode = register(PieceTrickExplode.class, LibPieceNames.TRICK_EXPLODE, LibPieceGroups.TUTORIAL_4, true);
 		trickBreakBlock = register(PieceTrickBreakBlock.class, LibPieceNames.TRICK_BREAK_BLOCK, LibPieceGroups.BLOCK_WORKS);
 		trickBreakInSequence = register(PieceTrickBreakInSequence.class, LibPieceNames.TRICK_BREAK_IN_SEQUENCE, LibPieceGroups.BLOCK_WORKS, true);
+		trickPlaceBlock = register(PieceTrickPlaceBlock.class, LibPieceNames.TRICK_PLACE_BLOCK, LibPieceGroups.BLOCK_WORKS);
+		trickPlaceInSequence = register(PieceTrickPlaceInSequence.class, LibPieceNames.TRICK_PLACE_IN_SEQUENCE, LibPieceGroups.BLOCK_WORKS);
 
 		PsiAPI.setGroupRequirements(LibPieceGroups.TUTORIAL_1, 1);
 		PsiAPI.setGroupRequirements(LibPieceGroups.TUTORIAL_2, 2, LibPieceGroups.TUTORIAL_1);

@@ -6,20 +6,19 @@
  * Psi is Open Source and distributed under the
  * CC-BY-NC-SA 3.0 License: https://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB
  * 
- * File Created @ [24/01/2016, 15:35:27 (GMT)]
+ * File Created @ [24/01/2016, 17:14:15 (GMT)]
  */
 package vazkii.psi.common.spell.trick.block;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.world.BlockEvent.BreakEvent;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.EnumSpellStat;
 import vazkii.psi.api.spell.Spell;
@@ -32,11 +31,11 @@ import vazkii.psi.api.spell.param.ParamVector;
 import vazkii.psi.api.spell.piece.PieceTrick;
 import vazkii.psi.common.core.handler.ConfigHandler;
 
-public class PieceTrickBreakBlock extends PieceTrick {
+public class PieceTrickPlaceBlock extends PieceTrick {
 
 	SpellParam position;
 
-	public PieceTrickBreakBlock(Spell spell) {
+	public PieceTrickPlaceBlock(Spell spell) {
 		super(spell);
 	}
 
@@ -49,15 +48,12 @@ public class PieceTrickBreakBlock extends PieceTrick {
 	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
 		super.addToMetadata(meta);
 
-		meta.addStat(EnumSpellStat.POTENCY, 20);
-		meta.addStat(EnumSpellStat.COST, 40);
+		meta.addStat(EnumSpellStat.POTENCY, 8);
+		meta.addStat(EnumSpellStat.COST, 8);
 	}
 
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
-		if(context.caster.worldObj.isRemote)
-			return null;
-
 		Vector3 positionVal = this.<Vector3>getParamValue(context, position);
 		
 		if(positionVal == null)
@@ -66,37 +62,47 @@ public class PieceTrickBreakBlock extends PieceTrick {
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 
 		BlockPos pos = new BlockPos(positionVal.x, positionVal.y, positionVal.z);
-		removeBlockWithDrops(context.caster, context.caster.worldObj, pos, ConfigHandler.cadHarvestLevel, false, 0, true);
+		placeBlock(context.caster, context.caster.worldObj, pos, false);
 
 		return null;
 	}
-
-	public static void removeBlockWithDrops(EntityPlayer player, World world, BlockPos pos, int harvestLevel, boolean silk, int fortune, boolean particles) {
+	
+	public static void placeBlock(EntityPlayer player, World world, BlockPos pos, boolean particles) {
 		if(!world.isBlockLoaded(pos))
 			return;
 		
 		IBlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
-		if(!world.isRemote && block != null && !block.isAir(world, pos) && block.getPlayerRelativeBlockHardness(player, world, pos) > 0) {
-			int neededHarvestLevel = block.getHarvestLevel(state);
-			if(neededHarvestLevel > harvestLevel)
+		if(block == null || block.isAir(world, pos) || block.isReplaceable(world, pos)) {
+			int slot = player.inventory.currentItem;
+			if(slot == 9)
 				return;
-
-			BreakEvent event = new BreakEvent(world, pos, state, player);
-			MinecraftForge.EVENT_BUS.post(event);
-			if(!event.isCanceled()) {
-				if(!player.capabilities.isCreativeMode) {
-					block.onBlockHarvested(world, pos, state, player);
-
-					if(block.removedByPlayer(world, pos, player, true)) {
-						block.onBlockDestroyedByPlayer(world, pos, state);
-						block.harvestBlock(world, player, pos, state, world.getTileEntity(pos));
-					}
-				} else world.setBlockToAir(pos);	
+			ItemStack stack = player.inventory.getStackInSlot(slot + 1);
+			if(stack != null && stack.getItem() instanceof ItemBlock) {
+				ItemStack rem = removeFromInventory(player, block, stack);
+				Block blockToPlace = Block.getBlockFromItem(rem.getItem());
+				world.setBlockState(pos, blockToPlace.getStateFromMeta(rem.getItemDamage()));
 			}
-
-			if(particles)
-				world.playAuxSFX(2001, pos, Block.getStateId(state));
+			
+			if(particles && !world.isRemote)
+				world.playAuxSFX(2001, pos, Block.getStateId(world.getBlockState(pos)));
 		}
 	}
+	
+	public static ItemStack removeFromInventory(EntityPlayer player, Block block, ItemStack stack) {
+		InventoryPlayer inv = player.inventory;
+		for(int i = inv.getSizeInventory() - 1; i >= 0; i--) {
+			ItemStack invStack = inv.getStackInSlot(i);
+			if(invStack != null && invStack.isItemEqual(stack)) {
+				ItemStack retStack = invStack.copy();
+				invStack.stackSize--;
+				if(invStack.stackSize == 0)
+					inv.setInventorySlotContents(i, null);
+				return retStack;
+			}
+		}
+
+		return null;
+	}
+	
 }
