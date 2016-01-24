@@ -62,6 +62,7 @@ public final class TextHelper {
 		List<String> textLines = new ArrayList();
 		
 		int i = 0;
+		String lastLine = "";
 		for(List<String> words : lines) {
 			words.size();
 			int xi = x;
@@ -91,9 +92,13 @@ public final class TextHelper {
 				xi += font.getStringWidth(s) + spacing + extra;
 				lineStr += s + " ";
 			}
-			textLines.add(lineStr);
 			
-			y += 10;
+			if(!lineStr.isEmpty() || lastLine.isEmpty()) {
+				y += 10;
+				textLines.add(lineStr);
+			}
+			lastLine = lineStr;
+			
 			i++;
 		}
 

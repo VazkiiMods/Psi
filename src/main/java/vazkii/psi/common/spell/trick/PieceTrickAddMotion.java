@@ -48,8 +48,8 @@ public class PieceTrickAddMotion extends PieceTrick {
 		if(speedVal == null)
 			speedVal = 1D;
 		
-		meta.addStat(EnumSpellStat.POTENCY, (int) (Math.abs(speedVal) * 5));
-		meta.addStat(EnumSpellStat.COST, (int) (Math.abs(speedVal) * 20));
+		meta.addStat(EnumSpellStat.POTENCY, (int) (Math.abs(speedVal) * 25));
+		meta.addStat(EnumSpellStat.COST, (int) (Math.abs(speedVal) * 30));
 	}
 	
 	@Override
