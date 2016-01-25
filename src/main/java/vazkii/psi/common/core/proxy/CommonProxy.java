@@ -10,6 +10,7 @@
  */
 package vazkii.psi.common.core.proxy;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -44,6 +45,10 @@ public class CommonProxy {
 		NetworkRegistry.INSTANCE.registerGuiHandler(Psi.instance, new GuiHandler());
 		
 		MinecraftForge.EVENT_BUS.register(new PlayerDataHandler.EventHandler());
+	}
+	
+	public EntityPlayer getClientPlayer() {
+		return null;
 	}
 	
 	public void setSparkleFXNoClip(boolean noclip) {

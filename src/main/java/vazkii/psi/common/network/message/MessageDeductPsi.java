@@ -14,6 +14,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import vazkii.psi.client.core.handler.ClientTickHandler;
+import vazkii.psi.common.Psi;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
 import vazkii.psi.common.network.Message;
@@ -37,7 +38,7 @@ public class MessageDeductPsi extends Message {
 	@Override
 	public IMessage handleMessage(MessageContext context) {
 		ClientTickHandler.scheduledActions.add(() -> {
-			PlayerData data = PlayerDataHandler.get(Minecraft.getMinecraft().thePlayer);
+			PlayerData data = PlayerDataHandler.get(Psi.proxy.getClientPlayer());
 			data.availablePsi = current;
 			data.regenCooldown = cd;
 			data.deductTick = true;

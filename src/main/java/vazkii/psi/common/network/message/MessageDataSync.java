@@ -17,6 +17,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vazkii.psi.client.core.handler.ClientTickHandler;
+import vazkii.psi.common.Psi;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
 import vazkii.psi.common.network.Message;
@@ -36,7 +37,7 @@ public class MessageDataSync extends Message {
 	@SideOnly(Side.CLIENT)
 	public IMessage handleMessage(MessageContext context) {
 		ClientTickHandler.scheduledActions.add(() -> {
-			PlayerDataHandler.get(Minecraft.getMinecraft().thePlayer).readFromNBT(cmp);
+			PlayerDataHandler.get(Psi.proxy.getClientPlayer()).readFromNBT(cmp);
 		});
 		
 		return null;
