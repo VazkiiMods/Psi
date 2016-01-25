@@ -25,7 +25,7 @@ import vazkii.psi.common.core.handler.ConfigHandler;
 public final class TextHelper {
 	
 	@SideOnly(Side.CLIENT)
-	public static List<String> renderText(int x, int y, int width, String unlocalizedText, boolean doit) {
+	public static List<String> renderText(int x, int y, int width, String unlocalizedText, boolean centered, boolean doit) {
 		FontRenderer font = Minecraft.getMinecraft().fontRendererObj;
 		boolean unicode = font.getUnicodeFlag();
 		font.setUnicodeFlag(true);
@@ -87,9 +87,14 @@ public final class TextHelper {
 					compensationSpaces--;
 					extra++;
 				}
-				if(doit)
-					font.drawString(s, xi, y, 0xFFFFFF);
-				xi += font.getStringWidth(s) + spacing + extra;
+				
+				int swidth = font.getStringWidth(s); 
+				if(doit) {
+					if(centered)
+						font.drawString(s, xi + width / 2 - swidth / 2, y, 0xFFFFFF);
+					else font.drawString(s, xi, y, 0xFFFFFF);
+				}
+				xi += swidth + spacing + extra;
 				lineStr += s + " ";
 			}
 			

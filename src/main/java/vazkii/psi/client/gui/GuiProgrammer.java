@@ -44,6 +44,7 @@ import vazkii.psi.common.block.tile.TileProgrammer;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
 import vazkii.psi.common.item.ItemCAD;
+import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.lib.LibResources;
 import vazkii.psi.common.network.NetworkHandler;
 import vazkii.psi.common.network.message.MessageSpellModified;
@@ -255,6 +256,10 @@ public class GuiProgrammer extends GuiScreen {
 			else drawTexturedModalRect(gridLeft + cursorX * 18, gridTop + cursorY * 18, 16, ySize, 16, 16);
 		}
 
+		if(LibMisc.BETA_TESTING) {
+			String betaTest = StatCollector.translateToLocal("psimisc.wip");
+			mc.fontRendererObj.drawStringWithShadow(betaTest, left + xSize / 2 - mc.fontRendererObj.getStringWidth(betaTest) / 2, top - 12, 0xFFFFFF);
+		}
 		mc.fontRendererObj.drawStringWithShadow(StatCollector.translateToLocal("psimisc.name"), left + padLeft, spellNameField.yPosition + 1, color);
 		spellNameField.drawTextBox();
 		if(panelEnabled) {

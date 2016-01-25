@@ -32,6 +32,7 @@ import vazkii.psi.client.core.helper.TextHelper;
 import vazkii.psi.client.gui.button.GuiButtonLearn;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
+import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.lib.LibResources;
 import vazkii.psi.common.network.NetworkHandler;
 import vazkii.psi.common.network.message.MessageLearnGroup;
@@ -102,6 +103,11 @@ public class GuiLeveling extends GuiScreen {
 	
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+		if(data.getLevel() == 0 && data.getLevelPoints() == 0) {
+			mc.displayGuiScreen(new GuiIntroduction());
+			return;
+		}
+		
 		tooltip.clear();
 		drawDefaultBackground();
 
@@ -159,6 +165,11 @@ public class GuiLeveling extends GuiScreen {
 			}
 		}
 		
+		if(LibMisc.BETA_TESTING) {
+			String betaTest = StatCollector.translateToLocal("psimisc.wip");
+			mc.fontRendererObj.drawStringWithShadow(betaTest, left + xSize / 2 - mc.fontRendererObj.getStringWidth(betaTest) / 2, top - 12, 0xFFFFFFFF);
+		}
+		
 		String key = "psimisc.levelInfo";
 		if(mc.thePlayer.capabilities.isCreativeMode)
 			key = "psimisc.levelInfoCreative";
@@ -203,7 +214,7 @@ public class GuiLeveling extends GuiScreen {
 
 		int lines = (drawPieces.size() - 1) / 6 + 1;
 		if(taken) {
-			desc = TextHelper.renderText(left + 2, 0, 110, group.getUnlocalizedDesc(), false);
+			desc = TextHelper.renderText(left + 2, 0, 110, group.getUnlocalizedDesc(), false, false);
 			listText = new BigTextList(mc, 120, 168, top + 23, top + 174 - lines * 18, left + 130, 10, width, height);
 		} else listText = null;
 	}
