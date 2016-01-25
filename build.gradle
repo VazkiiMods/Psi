@@ -19,6 +19,9 @@ buildscript {
 apply plugin: 'net.minecraftforge.gradle.forge'
 apply plugin: 'com.matthewprenger.cursegradle'
 
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
 ext.configFile = file('build.properties')
 
 ext.config = parseConfig(configFile)
@@ -203,4 +206,4 @@ curseforge {
 }
 */
 
-defaultTasks 'clean', 'build', 'sort', /*'forgecraft',*/ 'incrementBuildNumber'//, 'curse', 'upload'
+defaultTasks 'clean', 'build', 'sort', 'forgecraft', 'incrementBuildNumber'//, 'curse', 'upload'
