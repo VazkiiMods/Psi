@@ -15,6 +15,7 @@ import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellParam;
 import vazkii.psi.api.spell.SpellRuntimeException;
+import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.param.ParamVector;
 import vazkii.psi.api.spell.piece.PieceOperator;
 
@@ -30,7 +31,7 @@ public class PieceOperatorVectorDivide extends PieceOperator {
 	@Override
 	public void initParams() {
 		addParam(vec1 = new ParamVector(SpellParam.GENERIC_NAME_VECTOR1, SpellParam.RED, false, false));
-		addParam(num2 = new ParamVector(SpellParam.GENERIC_NAME_NUMBER2, SpellParam.GREEN, false, false));
+		addParam(num2 = new ParamNumber(SpellParam.GENERIC_NAME_NUMBER2, SpellParam.GREEN, false, false));
 	}
 	
 	@Override
