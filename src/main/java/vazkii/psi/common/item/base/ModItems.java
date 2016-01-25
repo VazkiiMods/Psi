@@ -10,6 +10,9 @@
  */
 package vazkii.psi.common.item.base;
 
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 import vazkii.psi.common.item.ItemCAD;
 import vazkii.psi.common.item.ItemMaterial;
 import vazkii.psi.common.item.ItemSpellBullet;
@@ -43,6 +46,17 @@ public final class ModItems {
 		spellBullet = new ItemSpellBullet();
 		
 		cad = new ItemCAD();
+		
+		// Missing vanilla oredict mappings
+		OreDictionary.registerOre("shardPrismarine", new ItemStack(Items.prismarine_shard));
+		OreDictionary.registerOre("crystalsPrismarine", new ItemStack(Items.prismarine_crystals));
+
+		// Psi oredict mappings
+		OreDictionary.registerOre("dustPsi", new ItemStack(material, 1, 0));
+		OreDictionary.registerOre("ingotPsi", new ItemStack(material, 1, 1));
+		OreDictionary.registerOre("gemPsi", new ItemStack(material, 1, 2));
+		OreDictionary.registerOre("ignotEbonyPsi", new ItemStack(material, 1, 3));
+		OreDictionary.registerOre("ignotIvoryPsi", new ItemStack(material, 1, 4));
 	}
 	
 }
