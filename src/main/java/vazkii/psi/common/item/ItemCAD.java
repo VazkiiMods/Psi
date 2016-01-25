@@ -392,11 +392,14 @@ public class ItemCAD extends ItemMod implements ICAD {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public ItemMeshDefinition getCustomMeshDefinition() {
-		return (ItemStack stack) -> {
-			ICAD cad = (ICAD) stack.getItem();
-			ItemStack assembly = cad.getComponentInSlot(stack, EnumCADComponent.ASSEMBLY);
-			ModelResourceLocation loc = ModelHandler.getModelLocation(assembly); 
-			return loc;
+		return new ItemMeshDefinition() { // This isn't a Lambda because of a ForgeGradle bug that messes them up
+			@Override
+			public ModelResourceLocation getModelLocation(ItemStack stack) {
+				ICAD cad = (ICAD) stack.getItem();
+				ItemStack assembly = cad.getComponentInSlot(stack, EnumCADComponent.ASSEMBLY);
+				ModelResourceLocation loc = ModelHandler.getModelLocation(assembly); 
+				return loc;			
+			}
 		};
 	}
 
