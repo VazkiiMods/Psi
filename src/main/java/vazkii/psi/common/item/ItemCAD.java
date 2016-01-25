@@ -286,9 +286,21 @@ public class ItemCAD extends ItemMod implements ICAD {
 		
 		// Psimetal CAD
 		subItems.add(makeCAD(new ItemStack(ModItems.cadAssembly, 1, 2), 
-				new ItemStack(ModItems.cadCore, 1, 0), 
-				new ItemStack(ModItems.cadSocket, 1, 0), 
-				new ItemStack(ModItems.cadBattery, 1, 0)));	
+				new ItemStack(ModItems.cadCore, 1, 1), 
+				new ItemStack(ModItems.cadSocket, 1, 1), 
+				new ItemStack(ModItems.cadBattery, 1, 1)));
+		
+		// Ebony Psimetal CAD
+		subItems.add(makeCAD(new ItemStack(ModItems.cadAssembly, 1, 3), 
+				new ItemStack(ModItems.cadCore, 1, 3), 
+				new ItemStack(ModItems.cadSocket, 1, 3), 
+				new ItemStack(ModItems.cadBattery, 1, 2)));
+		
+		// Ivory Psimetal CAD
+		subItems.add(makeCAD(new ItemStack(ModItems.cadAssembly, 1, 4), 
+				new ItemStack(ModItems.cadCore, 1, 3), 
+				new ItemStack(ModItems.cadSocket, 1, 3), 
+				new ItemStack(ModItems.cadBattery, 1, 2)));
 	}
 	
 	@Override
