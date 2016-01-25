@@ -53,6 +53,7 @@ import vazkii.psi.common.spell.selector.entity.PieceSelectorNearbyLiving;
 import vazkii.psi.common.spell.trick.PieceTrickAddMotion;
 import vazkii.psi.common.spell.trick.PieceTrickDebug;
 import vazkii.psi.common.spell.trick.PieceTrickExplode;
+import vazkii.psi.common.spell.trick.PieceTrickInfusion;
 import vazkii.psi.common.spell.trick.block.PieceTrickBreakBlock;
 import vazkii.psi.common.spell.trick.block.PieceTrickBreakInSequence;
 import vazkii.psi.common.spell.trick.block.PieceTrickPlaceBlock;
@@ -105,7 +106,8 @@ public final class ModSpellPieces {
 	public static PieceContainer trickBreakInSequence;
 	public static PieceContainer trickPlaceBlock;
 	public static PieceContainer trickPlaceInSequence;
-	
+	public static PieceContainer trickInfusion;
+
 	public static void init() {
 		selectorCaster = register(PieceSelectorCaster.class, LibPieceNames.SELECTOR_CASTER, LibPieceGroups.TUTORIAL_1);
 		selectorFocalPoint = register(PieceSelectorFocalPoint.class, LibPieceNames.SELECTOR_FOCAL_POINT, LibPieceGroups.PROJECTILES, true);
@@ -153,7 +155,8 @@ public final class ModSpellPieces {
 		trickBreakInSequence = register(PieceTrickBreakInSequence.class, LibPieceNames.TRICK_BREAK_IN_SEQUENCE, LibPieceGroups.BLOCK_WORKS, true);
 		trickPlaceBlock = register(PieceTrickPlaceBlock.class, LibPieceNames.TRICK_PLACE_BLOCK, LibPieceGroups.BLOCK_WORKS);
 		trickPlaceInSequence = register(PieceTrickPlaceInSequence.class, LibPieceNames.TRICK_PLACE_IN_SEQUENCE, LibPieceGroups.BLOCK_WORKS);
-
+		trickInfusion = register(PieceTrickInfusion.class, LibPieceNames.TRICK_INFUSION, LibPieceGroups.INFUSION, true);
+	
 		PsiAPI.setGroupRequirements(LibPieceGroups.TUTORIAL_1, 1);
 		PsiAPI.setGroupRequirements(LibPieceGroups.TUTORIAL_2, 2, LibPieceGroups.TUTORIAL_1);
 		PsiAPI.setGroupRequirements(LibPieceGroups.TUTORIAL_3, 3, LibPieceGroups.TUTORIAL_2);
@@ -163,6 +166,7 @@ public final class ModSpellPieces {
 		PsiAPI.setGroupRequirements(LibPieceGroups.ENTITIES_INTRO, 5, LibPieceGroups.TUTORIAL_4);
 		PsiAPI.setGroupRequirements(LibPieceGroups.PROJECTILES, 6, LibPieceGroups.ENTITIES_INTRO);
 		PsiAPI.setGroupRequirements(LibPieceGroups.BLOCK_WORKS, 6, LibPieceGroups.VECTORS_INTRO);
+		PsiAPI.setGroupRequirements(LibPieceGroups.INFUSION, 10, LibPieceGroups.VECTORS_INTRO, LibPieceGroups.ENTITIES_INTRO, LibPieceGroups.NUMBERS_INTRO);
 	}
 	
 	public static PieceContainer register(Class<? extends SpellPiece> clazz, String name, String group) {
