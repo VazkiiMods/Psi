@@ -59,5 +59,9 @@ public final class LibPieceNames {
 	public static final String TRICK_PLACE_BLOCK = "trickPlaceBlock";
 	public static final String TRICK_PLACE_IN_SEQUENCE = "trickPlaceInSequence";
 	public static final String TRICK_INFUSION = "trickInfusion";
+	public static final String TRICK_BLINK = "trickBlink";
+	public static final String TRICK_MASS_BLINK = "trickMassBlink";
+	public static final String TRICK_MASS_ADD_MOTION = "trickMassAddMotion";
+	public static final String TRICK_MASS_EXODUS = "trickMassExodus";
 
 }

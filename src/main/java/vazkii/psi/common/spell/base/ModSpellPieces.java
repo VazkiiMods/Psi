@@ -28,8 +28,6 @@ import vazkii.psi.common.spell.operator.number.PieceOperatorInverse;
 import vazkii.psi.common.spell.operator.number.PieceOperatorMultiply;
 import vazkii.psi.common.spell.operator.number.PieceOperatorSubtract;
 import vazkii.psi.common.spell.operator.number.PieceOperatorSum;
-import vazkii.psi.common.spell.operator.vector.PieceOperatorVectorProject;
-import vazkii.psi.common.spell.operator.vector.PieceOperatorVectorRaycastAxis;
 import vazkii.psi.common.spell.operator.vector.PieceOperatorVectorConstruct;
 import vazkii.psi.common.spell.operator.vector.PieceOperatorVectorCrossProduct;
 import vazkii.psi.common.spell.operator.vector.PieceOperatorVectorDivide;
@@ -40,7 +38,9 @@ import vazkii.psi.common.spell.operator.vector.PieceOperatorVectorMagnitude;
 import vazkii.psi.common.spell.operator.vector.PieceOperatorVectorMultiply;
 import vazkii.psi.common.spell.operator.vector.PieceOperatorVectorNegate;
 import vazkii.psi.common.spell.operator.vector.PieceOperatorVectorNormalize;
+import vazkii.psi.common.spell.operator.vector.PieceOperatorVectorProject;
 import vazkii.psi.common.spell.operator.vector.PieceOperatorVectorRaycast;
+import vazkii.psi.common.spell.operator.vector.PieceOperatorVectorRaycastAxis;
 import vazkii.psi.common.spell.operator.vector.PieceOperatorVectorSubtract;
 import vazkii.psi.common.spell.operator.vector.PieceOperatorVectorSum;
 import vazkii.psi.common.spell.other.PieceConnector;
@@ -50,7 +50,6 @@ import vazkii.psi.common.spell.selector.entity.PieceSelectorNearbyAnimals;
 import vazkii.psi.common.spell.selector.entity.PieceSelectorNearbyEnemies;
 import vazkii.psi.common.spell.selector.entity.PieceSelectorNearbyItems;
 import vazkii.psi.common.spell.selector.entity.PieceSelectorNearbyLiving;
-import vazkii.psi.common.spell.trick.PieceTrickAddMotion;
 import vazkii.psi.common.spell.trick.PieceTrickDebug;
 import vazkii.psi.common.spell.trick.PieceTrickExplode;
 import vazkii.psi.common.spell.trick.PieceTrickInfusion;
@@ -58,6 +57,11 @@ import vazkii.psi.common.spell.trick.block.PieceTrickBreakBlock;
 import vazkii.psi.common.spell.trick.block.PieceTrickBreakInSequence;
 import vazkii.psi.common.spell.trick.block.PieceTrickPlaceBlock;
 import vazkii.psi.common.spell.trick.block.PieceTrickPlaceInSequence;
+import vazkii.psi.common.spell.trick.entity.PieceTrickAddMotion;
+import vazkii.psi.common.spell.trick.entity.PieceTrickBlink;
+import vazkii.psi.common.spell.trick.entity.PieceTrickMassAddMotion;
+import vazkii.psi.common.spell.trick.entity.PieceTrickMassBlink;
+import vazkii.psi.common.spell.trick.entity.PieceTrickMassExodus;
 
 public final class ModSpellPieces {
 
@@ -107,6 +111,10 @@ public final class ModSpellPieces {
 	public static PieceContainer trickPlaceBlock;
 	public static PieceContainer trickPlaceInSequence;
 	public static PieceContainer trickInfusion;
+	public static PieceContainer trickBlink;
+	public static PieceContainer trickMassBlink;
+	public static PieceContainer trickMassAddMotion;
+	public static PieceContainer trickMassExodus;
 
 	public static void init() {
 		selectorCaster = register(PieceSelectorCaster.class, LibPieceNames.SELECTOR_CASTER, LibPieceGroups.TUTORIAL_1);
@@ -156,7 +164,11 @@ public final class ModSpellPieces {
 		trickPlaceBlock = register(PieceTrickPlaceBlock.class, LibPieceNames.TRICK_PLACE_BLOCK, LibPieceGroups.BLOCK_WORKS);
 		trickPlaceInSequence = register(PieceTrickPlaceInSequence.class, LibPieceNames.TRICK_PLACE_IN_SEQUENCE, LibPieceGroups.BLOCK_WORKS);
 		trickInfusion = register(PieceTrickInfusion.class, LibPieceNames.TRICK_INFUSION, LibPieceGroups.INFUSION, true);
-	
+		trickBlink = register(PieceTrickBlink.class, LibPieceNames.TRICK_BLINK, LibPieceGroups.MOVEMENT, true);
+		trickMassBlink = register(PieceTrickMassBlink.class, LibPieceNames.TRICK_MASS_BLINK, LibPieceGroups.MOVEMENT);
+		trickMassAddMotion = register(PieceTrickMassAddMotion.class, LibPieceNames.TRICK_MASS_ADD_MOTION, LibPieceGroups.MOVEMENT);
+		trickMassExodus = register(PieceTrickMassExodus.class, LibPieceNames.TRICK_MASS_EXODUS, LibPieceGroups.MOVEMENT);
+
 		PsiAPI.setGroupRequirements(LibPieceGroups.TUTORIAL_1, 1);
 		PsiAPI.setGroupRequirements(LibPieceGroups.TUTORIAL_2, 2, LibPieceGroups.TUTORIAL_1);
 		PsiAPI.setGroupRequirements(LibPieceGroups.TUTORIAL_3, 3, LibPieceGroups.TUTORIAL_2);
@@ -167,6 +179,7 @@ public final class ModSpellPieces {
 		PsiAPI.setGroupRequirements(LibPieceGroups.PROJECTILES, 6, LibPieceGroups.ENTITIES_INTRO);
 		PsiAPI.setGroupRequirements(LibPieceGroups.BLOCK_WORKS, 6, LibPieceGroups.VECTORS_INTRO);
 		PsiAPI.setGroupRequirements(LibPieceGroups.INFUSION, 10, LibPieceGroups.VECTORS_INTRO, LibPieceGroups.ENTITIES_INTRO, LibPieceGroups.NUMBERS_INTRO);
+		PsiAPI.setGroupRequirements(LibPieceGroups.MOVEMENT, 11, LibPieceGroups.ENTITIES_INTRO);
 	}
 	
 	public static PieceContainer register(Class<? extends SpellPiece> clazz, String name, String group) {

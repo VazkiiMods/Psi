@@ -8,7 +8,7 @@
  * 
  * File Created @ [18/01/2016, 22:32:11 (GMT)]
  */
-package vazkii.psi.common.spell.trick;
+package vazkii.psi.common.spell.trick.entity;
 
 import net.minecraft.entity.Entity;
 import vazkii.psi.api.internal.Vector3;
@@ -58,22 +58,20 @@ public class PieceTrickAddMotion extends PieceTrick {
 		Vector3 directionVal = this.<Vector3>getParamValue(context, direction);
 		Double speedVal = this.<Double>getParamValue(context, speed);
 
-		if(targetVal == null)
-			throw new SpellRuntimeException(SpellRuntimeException.NULL_TARGET);
-		if(directionVal == null)
-			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
-		if(!context.isInRadius(targetVal))
-			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
-		if(speedVal == null)
-			speedVal = 1D;
-		
-		final double mul = 0.3;
-		directionVal = directionVal.copy().normalize();
-		targetVal.motionX += directionVal.x * speedVal * mul;
-		targetVal.motionY += directionVal.y * speedVal * mul;
-		targetVal.motionZ += directionVal.z * speedVal * mul;
+		addMotion(context, targetVal, directionVal, speedVal);
 		
 		return null;
+	}
+	
+	public static void addMotion(SpellContext context, Entity e, Vector3 dir, double speed) throws SpellRuntimeException {
+		if(!context.isInRadius(e))
+			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
+		
+		final double mul = 0.3;
+		dir = dir.copy().normalize().multiply(mul * speed);
+		e.motionX += dir.x;
+		e.motionY += dir.y;
+		e.motionZ += dir.z;
 	}
 
 }

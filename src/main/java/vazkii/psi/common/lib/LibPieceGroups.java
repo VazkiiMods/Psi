@@ -22,5 +22,6 @@ public final class LibPieceGroups {
 	public static final String PROJECTILES = "projectiles";
 	public static final String BLOCK_WORKS = "blockWorks";
 	public static final String INFUSION = "infusion";
+	public static final String MOVEMENT = "movement";
 
 }

@@ -10,6 +10,7 @@
  */
 package vazkii.psi.api.spell.wrapper;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -23,7 +24,11 @@ public class EntityListWrapper implements Iterable<Entity> {
 	private final List<Entity> list;
 	
 	public EntityListWrapper(List<Entity> list) {
-		this.list = list;
+		List<Entity> copy = new ArrayList();
+		for(Entity e : list)
+			if(e != null)
+				copy.add(e);
+		this.list = copy;
 	}
 
 	public List<Entity> unwrap() {

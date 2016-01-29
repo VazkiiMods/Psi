@@ -216,6 +216,14 @@ psi.spellpiece.trickPlaceInSequence=Trick: Place Block Sequence
 psi.spellpiece.trickPlaceInSequence.desc=Places a sequence of blocks defined by a Vector
 psi.spellpiece.trickInfusion=Trick: Infusion
 psi.spellpiece.trickInfusion.desc=Infuses Gold into Psimetal
+psi.spellpiece.trickBlink=Trick: Blink
+psi.spellpiece.trickBlink.desc=Blinks forward
+psi.spellpiece.trickMassBlink=Trick: Mass Blink
+psi.spellpiece.trickMassBlink.desc=Blinks everybody forward
+psi.spellpiece.trickMassAddMotion=Trick: Mass Add Motion
+psi.spellpiece.trickMassAddMotion.desc=Adds motion to all entities in target Entity List
+psi.spellpiece.trickMassExodus=Trick: Mass Exodus
+psi.spellpiece.trickMassExodus.desc=Moves all entities in target Entity List to target position
 
 # SPELL PARAMETER NAMES
 psi.spellparam.target=Target
@@ -239,6 +247,7 @@ psi.spellparam.x=X
 psi.spellparam.y=Y
 psi.spellparam.z=Z
 psi.spellparam.radius=Radius
+psi.spellparam.distance=Distance
 
 # DATA TYPE NAMES
 psi.datatype.Null=None
