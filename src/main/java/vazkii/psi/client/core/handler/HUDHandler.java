@@ -19,6 +19,8 @@ import org.lwjgl.opengl.ARBShaderObjects;
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.ISound;
+import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiIngame;
 import net.minecraft.client.gui.ScaledResolution;
@@ -262,6 +264,9 @@ public final class HUDHandler {
 		y += 10;
 		
 		if(levelDisplayTime > fadeTime) {
+			if(levelDisplayTime - fadeTime == 1)
+				mc.getSoundHandler().playSound(PositionedSoundRecord.create(new ResourceLocation("psi:levelUp"), 0.5F));
+				
 			float a1 = Math.min(1F, (float) (levelDisplayTime - fadeTime) / fadeTime) * a;
 			int color1 = 0x00FFFFFF + ((int) (a1 * 0xFF) << 24); 
 			mc.fontRendererObj.drawStringWithShadow(EnumChatFormatting.GOLD + currLevel, x, y, color1);

@@ -2,5 +2,6 @@
 	"bulletCreate": { "category": "block", "sounds":["bulletCreate"] },
 	"cadCreate": { "category": "block", "sounds":["cadCreate"] },
 	"cadShoot": { "category": "player", "sounds":["cadShoot"] },
-	"compileError": { "category": "block", "sounds":["compileError"] }
+	"compileError": { "category": "block", "sounds":["compileError"] },
+	"levelUp": { "category": "player", "sounds":["levelUp"] }
 }
