@@ -179,7 +179,7 @@ public class GuiProgrammer extends GuiScreen {
 				if(cadVal != -1)
 					s += "/" + cadVal;
 				if(stat == EnumSpellStat.COST)
-					s += " (" + ItemCAD.getRealCost(cad, val) + ")";
+					s += " (" + ItemCAD.getRealCost(cad, null, val) + ")";
 				
 				GlStateManager.color(1F, 1F, 1F);
 				drawTexturedModalRect(statX, statY, (stat.ordinal() + 1) * 12, ySize + 16, 12, 12);

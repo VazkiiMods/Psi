@@ -95,7 +95,7 @@ public class ItemCAD extends ItemMod implements ICAD {
 				SpellContext context = new SpellContext().setPlayer(playerIn).setSpell(spell);
 				if(context.isValid()) {
 					if(context.cspell.metadata.evaluateAgainst(itemStackIn)) {
-						int cost = getRealCost(itemStackIn, context.cspell.metadata.stats.get(EnumSpellStat.COST)); 
+						int cost = getRealCost(itemStackIn, bullet, context.cspell.metadata.stats.get(EnumSpellStat.COST)); 
 						if(cost > 0) {
 							data.deductPsi(cost, 40, true);
 
@@ -184,14 +184,18 @@ public class ItemCAD extends ItemMod implements ICAD {
 		return did;
 	}
 
-	public static int getRealCost(ItemStack stack, int cost) {
+	public static int getRealCost(ItemStack stack, ItemStack bullet, int cost) {
 		if(stack != null && stack.getItem() instanceof ICAD) {
 			int eff = ((ICAD) stack.getItem()).getStatValue(stack, EnumCADStat.EFFICIENCY);
 			if(eff == 0)
 				return cost;
 
 			double effPercentile = (double) eff / 100;
-			return (int) ((double) cost / effPercentile);
+			double procCost = (double) cost / effPercentile;
+			if(bullet != null)
+				procCost *= ((ISpellContainer) bullet.getItem()).getCostModifier(bullet);
+			
+			return (int) procCost;
 		}
 
 		return cost;

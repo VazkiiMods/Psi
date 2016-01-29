@@ -26,6 +26,8 @@ psimisc.requirements=Requirements
 psimisc.learn=Learn
 psimisc.levelup=Level Up!
 psimisc.wip=Psi Beta | Not final!
+psimisc.bulletType=&bType&7: %s
+psimisc.bulletCost=&bCost Multiplier&7: %s%%
 
 # BLOCK NAMES
 tile.psi:cadAssembler.name=CAD Assembler
@@ -111,6 +113,12 @@ psi.spellstat.projection=Projection
 psi.spellstat.projection.desc=Amount of tricks
 psi.spellstat.bandwidth=Bandwidth
 psi.spellstat.bandwidth.desc=Spell width or height (largest)
+
+# BULLET TYPES
+psi.bulletType0=Normal
+psi.bulletType1=Projectile
+psi.bulletType2=Loopcast
+psi.bulletType3=Spell Circle
 
 # SPELl PIECE NAMES
 # -- SELECTORS

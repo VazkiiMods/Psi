@@ -23,9 +23,11 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.cad.ISocketable;
+import vazkii.psi.api.spell.ISpellContainer;
 import vazkii.psi.client.core.handler.KeybindHandler;
 import vazkii.psi.common.lib.LibResources;
 import vazkii.psi.common.network.NetworkHandler;
@@ -34,19 +36,19 @@ import vazkii.psi.common.network.message.MessageChangeSocketableSlot;
 public class GuiSocketSelect extends GuiScreen {
 
 	private static final ResourceLocation[] signs = new ResourceLocation[] {
-			new ResourceLocation(String.format(LibResources.GUI_SIGN, 0)),
-			new ResourceLocation(String.format(LibResources.GUI_SIGN, 1)),
-			new ResourceLocation(String.format(LibResources.GUI_SIGN, 2)),
-			new ResourceLocation(String.format(LibResources.GUI_SIGN, 3)),
-			new ResourceLocation(String.format(LibResources.GUI_SIGN, 4)),
-			new ResourceLocation(String.format(LibResources.GUI_SIGN, 5)),
-			new ResourceLocation(String.format(LibResources.GUI_SIGN, 6)),
-			new ResourceLocation(String.format(LibResources.GUI_SIGN, 7)),
-			new ResourceLocation(String.format(LibResources.GUI_SIGN, 8)),
-			new ResourceLocation(String.format(LibResources.GUI_SIGN, 9)),
-			new ResourceLocation(String.format(LibResources.GUI_SIGN, 10)),
-			new ResourceLocation(String.format(LibResources.GUI_SIGN, 11)),
-			new ResourceLocation(String.format(LibResources.GUI_SIGN, 12))
+		new ResourceLocation(String.format(LibResources.GUI_SIGN, 0)),
+		new ResourceLocation(String.format(LibResources.GUI_SIGN, 1)),
+		new ResourceLocation(String.format(LibResources.GUI_SIGN, 2)),
+		new ResourceLocation(String.format(LibResources.GUI_SIGN, 3)),
+		new ResourceLocation(String.format(LibResources.GUI_SIGN, 4)),
+		new ResourceLocation(String.format(LibResources.GUI_SIGN, 5)),
+		new ResourceLocation(String.format(LibResources.GUI_SIGN, 6)),
+		new ResourceLocation(String.format(LibResources.GUI_SIGN, 7)),
+		new ResourceLocation(String.format(LibResources.GUI_SIGN, 8)),
+		new ResourceLocation(String.format(LibResources.GUI_SIGN, 9)),
+		new ResourceLocation(String.format(LibResources.GUI_SIGN, 10)),
+		new ResourceLocation(String.format(LibResources.GUI_SIGN, 11)),
+		new ResourceLocation(String.format(LibResources.GUI_SIGN, 12))
 	};
 	
 	int timeIn = 0;
@@ -155,19 +157,26 @@ public class GuiSocketSelect extends GuiScreen {
 				int ysp = yp;
 				String name = "\u00a7" + c + stack.getDisplayName();
 				int width = fontRendererObj.getStringWidth(name);
+				
+				double mod = 0.6;
+				int xdp = (int) ((xp - x) * mod + x);
+				int ydp = (int) ((yp - y) * mod + y);
+				
+				mc.getRenderItem().renderItemIntoGUI(stack, xdp - 8, ydp - 8);
+
 				if(xsp < x)
 					xsp -= (width - 8);
 				if(ysp < y)
 					ysp -= 9;
 				
 				fontRendererObj.drawStringWithShadow(name, xsp, ysp, 0xFFFFFF);
-				
-				double mod = 0.8;
-				xp = (int) ((xp - x) * mod + x);
-				yp = (int) ((yp - y) * mod + y);
+
+				mod = 0.8;
+				xdp = (int) ((xp - x) * mod + x);
+				ydp = (int) ((yp - y) * mod + y);
 				
 				mc.renderEngine.bindTexture(signs[slot]);
-				drawModalRectWithCustomSizedTexture(xp - 8, yp - 8, 0, 0, 16, 16, 16, 16);
+				drawModalRectWithCustomSizedTexture(xdp - 8, ydp - 8, 0, 0, 16, 16, 16, 16);
 			}
 		}
 		

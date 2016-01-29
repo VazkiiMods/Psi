@@ -32,4 +32,6 @@ public interface ISpellContainer {
 	 */
 	public void castSpell(ItemStack stack, SpellContext context);
 	
+	public double getCostModifier(ItemStack stack);
+	
 }

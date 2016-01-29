@@ -13,6 +13,7 @@ package vazkii.psi.common.item;
 import java.util.List;
 
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -20,6 +21,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vazkii.psi.api.PsiAPI;
@@ -98,6 +100,14 @@ public class ItemSpellBullet extends ItemMod implements ISpellContainer {
 			if(i % 2 == 0)
 				subItems.add(new ItemStack(itemIn, 1, i));
 	}
+	
+	@Override
+	public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
+		tooltipIfShift(tooltip, () -> {
+			addToTooltip(tooltip, "psimisc.bulletType", local("psi.bulletType" + stack.getItemDamage() / 2));
+			addToTooltip(tooltip, "psimisc.bulletCost", (int) (getCostModifier(stack) * 100));
+		});
+	}
 
 	@Override
 	public void castSpell(ItemStack stack, SpellContext context) {
@@ -126,6 +136,21 @@ public class ItemSpellBullet extends ItemMod implements ISpellContainer {
 			// TODO
 			break;
 		}
+	}
+
+	@Override
+	public double getCostModifier(ItemStack stack) {
+		switch(stack.getItemDamage()) {
+		case 0: case 1: // Normal
+			return 1.0;
+		case 2: case 3: // Projectile
+			return 1.02;
+		case 4: case 5: // Loopcast
+			return 1.0;
+		case 6: case 7: // Spell Circle
+			return 20.0;
+		}
+		return 0;
 	}
 
 }
