@@ -24,10 +24,12 @@ psimisc.levelInfoCreative=Level %d (Creative) - Level Points: %d
 psimisc.locked=Locked
 psimisc.requirements=Requirements
 psimisc.learn=Learn
-psimisc.levelup=Level Up!
+psimisc.levelup=Level Up
 psimisc.wip=Psi Beta | Not final!
 psimisc.bulletType=&bType&7: %s
 psimisc.bulletCost=&bCost Multiplier&7: %s%%
+psimisc.levelUpInfo1=You got 1 Level Point
+psimisc.levelUpInfo2=Unequip your CAD and press [%s] to use it!
 
 # BLOCK NAMES
 tile.psi:cadAssembler.name=CAD Assembler

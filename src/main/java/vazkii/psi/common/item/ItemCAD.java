@@ -45,6 +45,7 @@ import vazkii.psi.api.spell.EnumSpellStat;
 import vazkii.psi.api.spell.ISpellContainer;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
+import vazkii.psi.client.core.handler.HUDHandler;
 import vazkii.psi.client.core.handler.ModelHandler;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
@@ -76,16 +77,14 @@ public class ItemCAD extends ItemMod implements ICAD {
 			return itemStackIn;
 
 		ItemStack bullet = getBulletInSocket(itemStackIn, getSelectedSlot(itemStackIn));
-
+		
 		if(bullet == null && craft(playerIn, new ItemStack(Items.redstone), new ItemStack(ModItems.material))) {
 			if(!worldIn.isRemote)
 				worldIn.playSoundAtEntity(playerIn, "psi:cadShoot", 0.5F, (float) (0.5 + Math.random() * 0.5));
 			data.deductPsi(100, 60, true);
 
-			if(data.level == 0 && playerIn instanceof EntityPlayerMP) {
+			if(data.level == 0)
 				data.levelUp();
-				NetworkHandler.INSTANCE.sendTo(new MessageDataSync(data), (EntityPlayerMP) playerIn);
-			}
 		}
 
 		if(data.getAvailablePsi() > 0 && bullet != null && bullet.getItem() instanceof ISpellContainer) {

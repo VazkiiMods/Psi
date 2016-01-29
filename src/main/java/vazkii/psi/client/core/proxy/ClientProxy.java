@@ -51,6 +51,12 @@ public class ClientProxy extends CommonProxy {
 		return Minecraft.getMinecraft().thePlayer;
 	}
 	
+	@Override
+	public void onLevelUp(EntityPlayer player, int level) {
+		if(player == Minecraft.getMinecraft().thePlayer)
+			HUDHandler.levelUp(level);
+	}
+	
 	private static boolean noclipEnabled = false;
 	private static boolean corruptSparkle = false;
 

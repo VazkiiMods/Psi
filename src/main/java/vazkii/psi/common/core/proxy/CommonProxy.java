@@ -51,6 +51,10 @@ public class CommonProxy {
 		return null;
 	}
 	
+	public void onLevelUp(EntityPlayer player, int level) {
+		// Proxy override
+	}
+	
 	public void setSparkleFXNoClip(boolean noclip) {
 		// Proxy override
 	}

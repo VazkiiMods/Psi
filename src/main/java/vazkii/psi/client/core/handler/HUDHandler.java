@@ -13,6 +13,7 @@ package vazkii.psi.client.core.handler;
 import java.awt.Color;
 import java.util.function.Consumer;
 
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.ARBMultitexture;
 import org.lwjgl.opengl.ARBShaderObjects;
 import org.lwjgl.opengl.GL11;
@@ -24,7 +25,9 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -33,6 +36,7 @@ import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.cad.ICADColorizer;
 import vazkii.psi.api.cad.ISocketable;
+import vazkii.psi.client.gui.GuiLeveling;
 import vazkii.psi.common.core.handler.ConfigHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
@@ -49,12 +53,17 @@ public final class HUDHandler {
 	private static final int secondaryTextureUnit = 7;
 	
 	private static boolean registeredMask = false;
-
+	
+	public static boolean showLevelUp = false;
+	public static int levelDisplayTime = 0;
+	public static int levelValue = 0;
+	
 	@SubscribeEvent
 	public void onDraw(RenderGameOverlayEvent.Post event) {
 		if(event.type == ElementType.ALL) {
 			drawPsiBar(event.resolution, event.partialTicks);
 			renderSocketableEquippedName(event.resolution, event.partialTicks);
+			renderLevelUpIndicator(event.resolution, event.partialTicks);
 		}
 	}
 	
@@ -208,6 +217,85 @@ public final class HUDHandler {
 			mc.fontRendererObj.drawStringWithShadow(name, x, y, color);
 			GlStateManager.disableBlend();
 		}
+	}
+	
+	public static void levelUp(int level) {
+		levelValue = level; 
+		levelDisplayTime = 0;
+		showLevelUp = true;
+	}
+	
+	private void renderLevelUpIndicator(ScaledResolution res, float pticks) {
+		Minecraft mc = Minecraft.getMinecraft();
+		if(mc.currentScreen instanceof GuiLeveling)
+			showLevelUp = false;
+		
+		if(!showLevelUp)
+			return;
+		
+		GlStateManager.enableBlend();
+		GlStateManager.disableAlpha();
+		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		
+		int time = 100;
+		int fadeTime = (time / 10);
+		int fadeoutTime = fadeTime * 2;
+
+		String levelUp = StatCollector.translateToLocal("psimisc.levelup");
+		int len = levelUp.length();
+		int effLen = Math.min(len, len * (levelDisplayTime) / fadeTime);
+		levelUp = levelUp.substring(0, effLen);
+		
+		int swidth = mc.fontRendererObj.getStringWidth(levelUp);
+		int x = res.getScaledWidth() / 4 - swidth / 2; 
+		int y = 25;
+		float a = 1F - Math.max(0F, Math.min(1F, (float) (levelDisplayTime - time) / fadeoutTime));
+		int alphaOverlay = ((int) (a * 0xFF) << 24); 
+
+		GlStateManager.pushMatrix();
+		GlStateManager.scale(2F, 2F, 2F);
+		mc.fontRendererObj.drawStringWithShadow(levelUp, x, y, 0x0013C5FF + alphaOverlay);
+		
+		String currLevel = "" + levelValue;
+		swidth = mc.fontRendererObj.getStringWidth(currLevel);
+		x = res.getScaledWidth() / 4;
+		y += 10;
+		
+		if(levelDisplayTime > fadeTime) {
+			float a1 = Math.min(1F, (float) (levelDisplayTime - fadeTime) / fadeTime) * a;
+			int color1 = 0x00FFFFFF + ((int) (a1 * 0xFF) << 24); 
+			mc.fontRendererObj.drawStringWithShadow(EnumChatFormatting.GOLD + currLevel, x, y, color1);
+		}
+		GlStateManager.popMatrix();
+		
+		if(levelDisplayTime > fadeTime * 2) {
+			String s = StatCollector.translateToLocal("psimisc.levelUpInfo1");
+			swidth = mc.fontRendererObj.getStringWidth(s);
+			len = s.length();
+			effLen = Math.min(len, len * (levelDisplayTime - fadeTime * 2) / fadeTime);
+			s = s.substring(0, effLen);
+			x = res.getScaledWidth() / 2 - swidth / 2; 
+			y += 65;
+			
+			mc.fontRendererObj.drawStringWithShadow(s, x, y, 0x00FFFFFF + alphaOverlay);
+		}
+		
+		if(levelDisplayTime > fadeTime * 3) {
+			String s = StatCollector.translateToLocal("psimisc.levelUpInfo2");
+			s = String.format(s, EnumChatFormatting.GREEN + Keyboard.getKeyName(KeybindHandler.keybind.getKeyCode()) + EnumChatFormatting.RESET);
+			swidth = mc.fontRendererObj.getStringWidth(s);
+			len = s.length();
+			effLen = Math.min(len, len * (levelDisplayTime - fadeTime * 3) / fadeTime);
+			s = s.substring(0, effLen);
+			x = res.getScaledWidth() / 2 - swidth / 2; 
+			y += 10;
+			
+			mc.fontRendererObj.drawStringWithShadow(s, x, y, 0x00FFFFFF + alphaOverlay);
+		}
+		
+		GlStateManager.enableAlpha();
+		if(levelValue > 1 && levelDisplayTime >= (time + fadeoutTime))
+			showLevelUp = false;
 	}
 	
 	private static Consumer<Integer> generateCallback(final float percentile, final boolean shatter) {

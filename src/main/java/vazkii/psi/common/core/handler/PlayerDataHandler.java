@@ -37,6 +37,7 @@ import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.internal.IPlayerData;
 import vazkii.psi.api.spell.PieceGroup;
 import vazkii.psi.api.spell.SpellPiece;
+import vazkii.psi.common.Psi;
 import vazkii.psi.common.network.NetworkHandler;
 import vazkii.psi.common.network.message.MessageDataSync;
 import vazkii.psi.common.network.message.MessageDeductPsi;
@@ -200,8 +201,7 @@ public class PlayerDataHandler {
 				level++;
 				levelPoints++;
 				lastSpellGroup = "";
-				if(!player.worldObj.isRemote)
-					player.addChatComponentMessage(new ChatComponentTranslation("psimisc.levelup").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GREEN))); // TODO replace with fancier thing
+				Psi.proxy.onLevelUp(player, level);
 			}
 		}
 
