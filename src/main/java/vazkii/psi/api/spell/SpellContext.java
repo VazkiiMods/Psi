@@ -47,6 +47,12 @@ public final class SpellContext {
 	public CompiledSpell cspell;
 	
 	/**
+	 * The loopcast index of this context. This is always 0 when the spell is cast as not a 
+	 * loopcast. Increments every time for each loopcast iteration.
+	 */
+	public int loopcastIndex = 0;
+	
+	/**
 	 * Sets the {@link #caster} and returns itself. This also calls {@link #setFocalPoint(Entity)}.
 	 */
 	public SpellContext setPlayer(EntityPlayer player) {

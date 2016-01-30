@@ -165,13 +165,8 @@ public class EntitySpellProjectile extends EntityThrowable {
 			}
 		}
 		
-		try {
-			if(context != null)
-				context.cspell.execute(context);
-		} catch(SpellRuntimeException e) {
-			if(!context.caster.worldObj.isRemote && !context.shouldSuppressErrors())
-				context.caster.addChatComponentMessage(new ChatComponentTranslation(e.getMessage()).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));			
-		}
+		if(context != null)
+			context.cspell.safeExecute(context);
 		
 		setDead();
 	}

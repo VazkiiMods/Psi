@@ -16,6 +16,9 @@ import java.util.Stack;
 
 import com.typesafe.config.ConfigException.Null;
 
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.ChatStyle;
+import net.minecraft.util.EnumChatFormatting;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.internal.IPlayerData;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
@@ -41,7 +44,7 @@ public class CompiledSpell {
 		spotsEvaluated = new boolean[SpellGrid.GRID_SIZE][SpellGrid.GRID_SIZE];
 		evaluatedObjects = new Object[SpellGrid.GRID_SIZE][SpellGrid.GRID_SIZE];
 	}
-
+	
 	/**
 	 * Executes the spell, making a copy of the {@link #actions} stack so it
 	 * can be reused if cached.
@@ -54,6 +57,18 @@ public class CompiledSpell {
 			actions.pop().execute(data, context);
 		
 		evaluatedObjects = new Object[SpellGrid.GRID_SIZE][SpellGrid.GRID_SIZE];
+	}
+	
+	/**
+	 * @see #execute
+	 */
+	public void safeExecute(SpellContext context) {
+		try {
+			context.cspell.execute(context);
+		} catch(SpellRuntimeException e) {
+			if(!context.caster.worldObj.isRemote && !context.shouldSuppressErrors())
+				context.caster.addChatComponentMessage(new ChatComponentTranslation(e.getMessage()).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
+		}
 	}
 	
 	public boolean hasEvaluated(int x, int y) {

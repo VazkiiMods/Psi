@@ -111,7 +111,7 @@ public final class PsiAPI {
 			if(stackAt != null && stackAt.getItem() instanceof ICAD) {
 				if(cad != null)
 					return null; // Player can only have one CAD
-				
+
 				cad = stackAt;
 			}
 		}

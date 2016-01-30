@@ -12,6 +12,7 @@ package vazkii.psi.client.render.entity;
 
 import java.awt.Color;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.Render;
@@ -41,13 +42,20 @@ public class RenderSpellCircle extends Render<EntitySpellCircle> {
 	public void doRender(EntitySpellCircle entity, double x, double y, double z, float entityYaw, float partialTicks) {
 		super.doRender(entity, x, y, z, entityYaw, partialTicks);
 		
-		float s = 1F / 16F;
-		
+    	int colorVal = ICADColorizer.DEFAULT_SPELL_COLOR;
+    	ItemStack colorizer = entity.getDataWatcher().getWatchableObjectItemStack(20);
+    	if(colorizer != null && colorizer.getItem() instanceof ICADColorizer)
+    		colorVal = ((ICADColorizer) colorizer.getItem()).getColor(colorizer);
 		float alive = entity.getTimeAlive() + partialTicks;
 		float s1 = Math.min(1F, alive / EntitySpellCircle.CAST_DELAY);
 		if(alive > EntitySpellCircle.LIVE_TIME - EntitySpellCircle.CAST_DELAY)
 			s1 = 1F - Math.min(1F, Math.max(0, (alive - (EntitySpellCircle.LIVE_TIME - EntitySpellCircle.CAST_DELAY))) / EntitySpellCircle.CAST_DELAY);
 		
+		renderSpellCircle(alive, s1, x, y, z, colorVal);
+	}
+	
+	public static void renderSpellCircle(float time, float s1, double x, double y, double z, int colorVal) {
+		float s = 1F / 16F;
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(x - s1 * 2, y + 0.01, z - s1 * 2);
 		GlStateManager.scale(s, s, s);
@@ -57,11 +65,6 @@ public class RenderSpellCircle extends Render<EntitySpellCircle> {
 		GlStateManager.disableLighting();
 		ShaderHandler.useShader(ShaderHandler.rawColor);
 		
-    	int colorVal = ICADColorizer.DEFAULT_SPELL_COLOR;
-    	ItemStack colorizer = entity.getDataWatcher().getWatchableObjectItemStack(20);
-    	if(colorizer != null && colorizer.getItem() instanceof ICADColorizer)
-    		colorVal = ((ICADColorizer) colorizer.getItem()).getColor(colorizer);
-
 		for(int i = 0; i < layers.length; i++) {
 			Color color = new Color(colorVal);
 			if(i == 2)
@@ -74,7 +77,7 @@ public class RenderSpellCircle extends Render<EntitySpellCircle> {
 			float d = 2F / s;
 			GlStateManager.pushMatrix();
 			GlStateManager.translate(d, d, 0F);
-			float rot = alive;
+			float rot = time;
 			if(i == 0)
 				rot = -rot;
 			GlStateManager.rotate(rot, 0F, 0F, 1F);
@@ -84,7 +87,7 @@ public class RenderSpellCircle extends Render<EntitySpellCircle> {
 				GlStateManager.color(1F, 1F, 1F);
 			else GlStateManager.color(r, g, b);
 			
-			renderManager.renderEngine.bindTexture(layers[i]);
+			Minecraft.getMinecraft().renderEngine.bindTexture(layers[i]);
 			Gui.drawModalRectWithCustomSizedTexture(0, 0, 0, 0, 64, 64, 64, 64);
 			GlStateManager.popMatrix();
 			GlStateManager.translate(0F, 0F, -0.5F);
@@ -92,7 +95,6 @@ public class RenderSpellCircle extends Render<EntitySpellCircle> {
 		
 		ShaderHandler.releaseShader();
 		GlStateManager.enableCull();
-		GlStateManager.enableLighting();
 		GlStateManager.popMatrix();
 	}
 

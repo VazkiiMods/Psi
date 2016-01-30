@@ -29,6 +29,7 @@ import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.cad.ISocketable;
 import vazkii.psi.api.spell.ISpellContainer;
 import vazkii.psi.client.core.handler.KeybindHandler;
+import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.lib.LibResources;
 import vazkii.psi.common.network.NetworkHandler;
 import vazkii.psi.common.network.message.MessageChangeSocketableSlot;
@@ -197,6 +198,7 @@ public class GuiSocketSelect extends GuiScreen {
 			mc.displayGuiScreen(null);
 			if(slotSelected != -1) {
 				int slot = slots.get(slotSelected);
+				PlayerDataHandler.get(mc.thePlayer).stopLoopcast();
 				MessageChangeSocketableSlot message = new MessageChangeSocketableSlot(slot);
 				NetworkHandler.INSTANCE.sendToServer(message);
 			}

@@ -3,5 +3,6 @@
 	"cadCreate": { "category": "block", "sounds":["cadCreate"] },
 	"cadShoot": { "category": "player", "sounds":["cadShoot"] },
 	"compileError": { "category": "block", "sounds":["compileError"] },
-	"levelUp": { "category": "player", "sounds":["levelUp"] }
+	"levelUp": { "category": "player", "sounds":["levelUp"] },
+	"loopcast": { "category": "player", "sounds":["loopcast"] }
 }

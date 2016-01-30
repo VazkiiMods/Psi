@@ -32,6 +32,8 @@ import vazkii.psi.api.spell.ISpellContainer;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellRuntimeException;
+import vazkii.psi.common.core.handler.PlayerDataHandler;
+import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
 import vazkii.psi.common.core.helper.ItemNBTHelper;
 import vazkii.psi.common.entity.EntitySpellCircle;
 import vazkii.psi.common.entity.EntitySpellProjectile;
@@ -118,13 +120,7 @@ public class ItemSpellBullet extends ItemMod implements ISpellContainer {
 	public void castSpell(ItemStack stack, SpellContext context) {
 		switch(stack.getItemDamage()) {
 		case 1: // Basic
-			try {
-				context.cspell.execute(context);
-			} catch(SpellRuntimeException e) {
-				if(!context.caster.worldObj.isRemote && !context.shouldSuppressErrors())
-					context.caster.addChatComponentMessage(new ChatComponentTranslation(e.getMessage()).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
-			}
-			
+			context.cspell.safeExecute(context);
 			break;
 		
 		case 3: // Projectile
@@ -138,7 +134,8 @@ public class ItemSpellBullet extends ItemMod implements ISpellContainer {
 			break;
 			
 		case 5: // Loopcast
-			// TODO
+			context.cspell.safeExecute(context);
+			PlayerDataHandler.get(context.caster).loopcasting = true;
 			break;
 		case 7: // Spell Circle
 			if(!context.caster.worldObj.isRemote) {

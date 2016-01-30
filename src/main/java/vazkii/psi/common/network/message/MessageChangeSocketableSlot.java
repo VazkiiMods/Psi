@@ -15,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import vazkii.psi.api.cad.ISocketable;
+import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.network.Message;
 
 public class MessageChangeSocketableSlot extends Message {
@@ -34,6 +35,7 @@ public class MessageChangeSocketableSlot extends Message {
 		
 		if(stack != null && stack.getItem() instanceof ISocketable)
 			((ISocketable) stack.getItem()).setSelectedSlot(stack, slot);
+		PlayerDataHandler.get(player).stopLoopcast();
 		
 		return null;
 	}

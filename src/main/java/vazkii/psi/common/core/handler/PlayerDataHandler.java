@@ -10,34 +10,51 @@
  */
 package vazkii.psi.common.core.handler;
 
+import java.awt.Color;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.culling.Frustum;
+import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ServerTickEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.EnumCADStat;
 import vazkii.psi.api.cad.ICAD;
+import vazkii.psi.api.cad.ICADColorizer;
 import vazkii.psi.api.internal.IPlayerData;
+import vazkii.psi.api.spell.EnumSpellStat;
+import vazkii.psi.api.spell.ISpellContainer;
 import vazkii.psi.api.spell.PieceGroup;
+import vazkii.psi.api.spell.Spell;
+import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellPiece;
+import vazkii.psi.client.core.handler.ClientTickHandler;
+import vazkii.psi.client.render.entity.RenderSpellCircle;
 import vazkii.psi.common.Psi;
+import vazkii.psi.common.item.ItemCAD;
 import vazkii.psi.common.network.NetworkHandler;
 import vazkii.psi.common.network.message.MessageDataSync;
 import vazkii.psi.common.network.message.MessageDeductPsi;
@@ -55,7 +72,13 @@ public class PlayerDataHandler {
 		if(!playerData.containsKey(key))
 			playerData.put(key, new PlayerData(player));
 
-		return playerData.get(key);
+		PlayerData data = playerData.get(key);
+		if(data.playerWR.get() != player) {
+			playerData.remove(key);
+			return get(player);
+		}
+		
+		return data;
 	}
 
 	public static void cleanup() {
@@ -115,6 +138,23 @@ public class PlayerDataHandler {
 			}
 		}
 
+		@SubscribeEvent
+		@SideOnly(Side.CLIENT)
+		public void onRenderWorldLast(RenderWorldLastEvent event) {
+			Minecraft mc = Minecraft.getMinecraft();
+			Entity cameraEntity = mc.getRenderViewEntity();
+			BlockPos renderingVector = cameraEntity.getPosition();
+			Frustum frustum = new Frustum();
+
+			double viewX = cameraEntity.lastTickPosX + (cameraEntity.posX - cameraEntity.lastTickPosX) * event.partialTicks;
+			double viewY = cameraEntity.lastTickPosY + (cameraEntity.posY - cameraEntity.lastTickPosY) * event.partialTicks;
+			double viewZ = cameraEntity.lastTickPosZ + (cameraEntity.posZ - cameraEntity.lastTickPosZ) * event.partialTicks;
+			frustum.setPosition(viewX, viewY, viewZ);
+
+			for(EntityPlayer player : mc.theWorld.playerEntities)
+				PlayerDataHandler.get(player).render(player, event.partialTicks);
+		}
+
 	}
 
 	public static class PlayerData implements IPlayerData {
@@ -125,19 +165,23 @@ public class PlayerDataHandler {
 		private static final String TAG_SPELL_GROUPS_UNLOCKED = "spellGroupsUnlocked";
 		private static final String TAG_LAST_SPELL_GROUP = "lastSpellPoint";
 		private static final String TAG_LEVEL_POINTS = "levelPoints";
-		
+
 		public int level;
 		public int availablePsi;
 		public int lastAvailablePsi;
 		public int regenCooldown;
 		public String lastSpellGroup;
 		public int levelPoints;
+		public boolean loopcasting = false;
+		public int loopcastTime = 0;
+		public int loopcastAmount = 0;
+		public int loopcastFadeTime = 0;
 
 		public boolean deductTick;
 
 		public final List<String> spellGroupsUnlocked = new ArrayList();
 		public final List<Deduction> deductions = new ArrayList();
-		public final WeakReference<EntityPlayer> playerWR;
+		public WeakReference<EntityPlayer> playerWR;
 		private final boolean client;
 
 		public PlayerData(EntityPlayer player) {
@@ -155,10 +199,10 @@ public class PlayerDataHandler {
 			int max = getTotalPsi();
 			if(availablePsi > max)
 				availablePsi = max;
-			
+
+			ItemStack cadStack = getCAD();
 			if(regenCooldown == 0) {
 				boolean doRegen = true;
-				ItemStack cadStack = getCAD();
 				if(cadStack != null) {
 					ICAD cad = (ICAD) cadStack.getItem();
 					int maxPsi = cad.getStatValue(cadStack, EnumCADStat.OVERFLOW);
@@ -168,14 +212,69 @@ public class PlayerDataHandler {
 						doRegen = false;
 					}
 				}
-				
+
 				if(doRegen && availablePsi < max && regenCooldown == 0) {
-						availablePsi = Math.min(max, availablePsi + getRegenPerTick());
-						save();
+					availablePsi = Math.min(max, availablePsi + getRegenPerTick());
+					save();
 				}
 			} else {
 				regenCooldown--;
 				save();
+			}
+
+			cadStack = getCAD();
+			loopcast: {
+				if(loopcasting) {
+					EntityPlayer player = playerWR.get();
+					if(player == null || cadStack == null || player.getCurrentEquippedItem() != cadStack) {
+						stopLoopcast();
+						break loopcast;
+					}
+
+					ICAD icad = ((ICAD) cadStack.getItem());
+					Color color = new Color(icad.getSpellColor(cadStack));
+					float r = (float) color.getRed() / 255F;
+					float g = (float) color.getGreen() / 255F;
+					float b = (float) color.getBlue() / 255F;
+					for(int i = 0; i < 5; i++) {
+						double x = player.posX + ((Math.random() - 0.5) * 2.1) * player.width;
+						double y = player.posY - player.getYOffset();
+						double z = player.posZ + ((Math.random() - 0.5) * 2.1) * player.width;
+						float grav = -0.15F - (float) Math.random() * 0.03F;
+						Psi.proxy.sparkleFX(player.worldObj, x, y, z, r, g, b, grav, 0.25F, 15);
+					}
+					
+					if(loopcastTime > 0 && loopcastTime % 5 == 0) {
+						ItemStack bullet = icad.getBulletInSocket(cadStack, icad.getSelectedSlot(cadStack));
+						if(bullet == null) {
+							stopLoopcast();
+							break loopcast;
+						}
+
+						ISpellContainer spellContainer = (ISpellContainer) bullet.getItem();
+						if(spellContainer.containsSpell(bullet)) {
+							Spell spell = spellContainer.getSpell(bullet);
+							SpellContext context = new SpellContext().setPlayer(player).setSpell(spell);
+							if(context.isValid()) {
+								if(context.cspell.metadata.evaluateAgainst(cadStack)) {
+									int cost = ItemCAD.getRealCost(cadStack, bullet, context.cspell.metadata.stats.get(EnumSpellStat.COST)); 
+									if(cost > 0) {
+										deductPsi(cost, 3, true);
+
+										if(!player.worldObj.isRemote && loopcastTime % 10 == 0)
+											player.worldObj.playSoundAtEntity(player, "psi:loopcast", 0.5F, (float) (0.35 + Math.random() * 0.85));
+									}
+
+									context.cspell.safeExecute(context);
+									loopcastAmount++;
+								}
+							}
+						}
+					}
+
+					loopcastTime++;
+				} else if(loopcastFadeTime > 0)
+					loopcastFadeTime--;
 			}
 
 			List<Deduction> remove = new ArrayList();
@@ -187,6 +286,12 @@ public class PlayerDataHandler {
 			deductions.removeAll(remove);
 		}
 
+		public void stopLoopcast() {
+			loopcasting = false;
+			loopcastTime = 0;
+			loopcastFadeTime = 5;
+		}
+
 		public void damage(float amount) {
 			int psi = (int) (getTotalPsi() * 0.02 * amount);
 			if(psi > 0 && availablePsi > 0) {
@@ -194,7 +299,7 @@ public class PlayerDataHandler {
 				deductPsi(psi, 20, true, true);
 			}
 		}
-		
+
 		public void levelUp() {
 			EntityPlayer player = playerWR.get();
 			if(player != null) {
@@ -232,7 +337,7 @@ public class PlayerDataHandler {
 				}
 
 				if(!shatter && overflow > 0) {
-					float dmg = (float) overflow / 50;
+					float dmg = (float) overflow / (loopcasting ? 10 : 25);
 					if(!client) {
 						EntityPlayer player = playerWR.get();
 						if(player != null)
@@ -268,21 +373,21 @@ public class PlayerDataHandler {
 				return PsiAPI.levelCap;
 			return level;
 		}
-		
+
 		public int getLevelPoints() {
 			return levelPoints;
 		}
-		
+
 		@Override
 		public int getAvailablePsi() {
 			return availablePsi;
 		}
-		
+
 		@Override
 		public int getLastAvailablePsi() {
 			return lastAvailablePsi;
 		}
-		
+
 		public int getTotalPsi() {
 			return getLevel() * 200;
 		}
@@ -291,7 +396,7 @@ public class PlayerDataHandler {
 		public int getRegenPerTick() {
 			return getLevel();
 		}
-		
+
 		@Override
 		public int getRegenCooldown() {
 			return regenCooldown;
@@ -302,7 +407,7 @@ public class PlayerDataHandler {
 			EntityPlayer player = playerWR.get();
 			if(player != null && player.capabilities.isCreativeMode)
 				return true;
-			
+
 			return spellGroupsUnlocked.contains(group);
 		}
 
@@ -314,17 +419,17 @@ public class PlayerDataHandler {
 				levelPoints--;
 			}
 		}
-		
+
 		@Override
 		public void markPieceExecuted(SpellPiece piece) {
 			if(lastSpellGroup.isEmpty())
 				return;
-			
+
 			PieceGroup group = PsiAPI.groupsForName.get(lastSpellGroup);
 			if(group.mainPiece == piece.getClass())
 				levelUp();
 		}
-		
+
 		public void save() {
 			if(!client) {
 				EntityPlayer player = playerWR.get();
@@ -342,7 +447,7 @@ public class PlayerDataHandler {
 			cmp.setInteger(TAG_REGEN_CD, regenCooldown);	
 			cmp.setInteger(TAG_LEVEL_POINTS, levelPoints);
 			cmp.setString(TAG_LAST_SPELL_GROUP, lastSpellGroup);
-			
+
 			NBTTagList list = new NBTTagList();
 			for(String s : spellGroupsUnlocked)
 				list.appendTag(new NBTTagString(s));
@@ -366,7 +471,7 @@ public class PlayerDataHandler {
 			regenCooldown = cmp.getInteger(TAG_REGEN_CD);
 			levelPoints = cmp.getInteger(TAG_LEVEL_POINTS);
 			lastSpellGroup = cmp.getString(TAG_LAST_SPELL_GROUP);
-			
+
 			if(cmp.hasKey(TAG_SPELL_GROUPS_UNLOCKED)) {
 				spellGroupsUnlocked.clear();
 				NBTTagList list = cmp.getTagList(TAG_SPELL_GROUPS_UNLOCKED, 8); // 8 -> String
@@ -374,6 +479,25 @@ public class PlayerDataHandler {
 				for(int i = 0; i < count; i++)
 					spellGroupsUnlocked.add(list.getStringTagAt(i));
 			}
+		}
+
+		@SideOnly(Side.CLIENT)
+		public void render(EntityPlayer player, float partTicks) {
+			RenderManager renderManager = Minecraft.getMinecraft().getRenderManager();
+			double x = player.lastTickPosX + (player.posX - player.lastTickPosX) * partTicks - renderManager.viewerPosX;
+			double y = player.lastTickPosY + (player.posY - player.lastTickPosY) * partTicks - renderManager.viewerPosY;
+			double z = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * partTicks - renderManager.viewerPosZ;
+
+			float scale = 0.75F;
+			if(loopcasting) {
+				float mul = Math.min(5F, loopcastTime + partTicks) / 5F;
+				scale *= mul;
+			} else if(loopcastFadeTime > 0) {
+				float mul = Math.min(5F, loopcastFadeTime - partTicks) / 5F;
+				scale *= mul;
+			} else return;
+			
+			RenderSpellCircle.renderSpellCircle(ClientTickHandler.ticksInGame + partTicks, scale, x, y, z, ICADColorizer.DEFAULT_SPELL_COLOR);
 		}
 
 		public static class Deduction {
