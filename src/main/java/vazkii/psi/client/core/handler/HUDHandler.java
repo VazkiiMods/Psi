@@ -12,11 +12,13 @@ package vazkii.psi.client.core.handler;
 
 import java.awt.Color;
 import java.util.function.Consumer;
+import java.util.regex.Pattern;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.ARBMultitexture;
 import org.lwjgl.opengl.ARBShaderObjects;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.ISound;
@@ -26,6 +28,8 @@ import net.minecraft.client.gui.GuiIngame;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
@@ -34,6 +38,8 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.cad.ICADColorizer;
@@ -55,20 +61,37 @@ public final class HUDHandler {
 	private static final int secondaryTextureUnit = 7;
 	
 	private static boolean registeredMask = false;
+	private static int maxRemainingTicks = 30;
+	private static int remainingLeaveTicks = 20;
 	
 	public static boolean showLevelUp = false;
 	public static int levelDisplayTime = 0;
 	public static int levelValue = 0;
 	
+	private static ItemStack remainingDisplayStack;
+	private static int remainingTime;
+	private static int remainingCount;
+	
 	@SubscribeEvent
+	@SideOnly(Side.CLIENT)
 	public void onDraw(RenderGameOverlayEvent.Post event) {
 		if(event.type == ElementType.ALL) {
 			drawPsiBar(event.resolution, event.partialTicks);
 			renderSocketableEquippedName(event.resolution, event.partialTicks);
 			renderLevelUpIndicator(event.resolution, event.partialTicks);
+			renderRemainingItems(event.resolution, event.partialTicks);
 		}
 	}
 	
+	public static void tick() {
+		if(showLevelUp)
+			levelDisplayTime++;
+		
+		if(remainingTime > 0)
+			--remainingTime;
+	}
+
+	@SideOnly(Side.CLIENT)
 	public void drawPsiBar(ScaledResolution res, float pticks) {
 		Minecraft mc = Minecraft.getMinecraft();
 		ItemStack cadStack = PsiAPI.getPlayerCAD(mc.thePlayer);
@@ -195,6 +218,7 @@ public final class HUDHandler {
 		GlStateManager.popMatrix();
 	}
 	
+	@SideOnly(Side.CLIENT)
 	private void renderSocketableEquippedName(ScaledResolution res, float pticks) {
 		Minecraft mc = Minecraft.getMinecraft();
 		ItemStack stack = mc.thePlayer.getCurrentEquippedItem();
@@ -227,6 +251,7 @@ public final class HUDHandler {
 		showLevelUp = true;
 	}
 	
+	@SideOnly(Side.CLIENT)
 	private void renderLevelUpIndicator(ScaledResolution res, float pticks) {
 		Minecraft mc = Minecraft.getMinecraft();
 		if(mc.currentScreen instanceof GuiLeveling)
@@ -303,6 +328,72 @@ public final class HUDHandler {
 			showLevelUp = false;
 	}
 	
+	@SideOnly(Side.CLIENT)
+	public static void renderRemainingItems(ScaledResolution resolution, float partTicks) {
+		if(remainingTime > 0 && remainingDisplayStack != null) {
+			int pos = maxRemainingTicks - remainingTime;
+			Minecraft mc = Minecraft.getMinecraft();
+			int x = resolution.getScaledWidth() / 2 + 10 + Math.max(0, pos - remainingLeaveTicks);
+			int y = resolution.getScaledHeight() / 2;
+
+			int start = maxRemainingTicks - remainingLeaveTicks;
+			float alpha = remainingTime + partTicks > start ? 1F : (remainingTime + partTicks) / start;
+
+			GlStateManager.disableAlpha();
+			GlStateManager.disableBlend();
+			GlStateManager.disableRescaleNormal();
+			GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+
+			GlStateManager.color(1F, 1F, 1F, alpha);
+			RenderHelper.enableGUIStandardItemLighting();
+			int xp = x + (int) (16F * (1F - alpha));
+			GlStateManager.translate(xp, y, 0F);
+			GlStateManager.scale(alpha, 1F, 1F);
+			mc.getRenderItem().renderItemAndEffectIntoGUI(remainingDisplayStack, 0, 0);
+			GlStateManager.scale(1F / alpha,1F, 1F);
+			GlStateManager.translate(-xp, -y, 0F);
+			RenderHelper.disableStandardItemLighting();
+			GlStateManager.color(1F, 1F, 1F, 1F);
+			GlStateManager.enableBlend();
+			
+			String text = EnumChatFormatting.GREEN + remainingDisplayStack.getDisplayName();
+			if(remainingCount >= 0) {
+				int max = remainingDisplayStack.getMaxStackSize();
+				int stacks = remainingCount / max;
+				int rem = remainingCount % max;
+
+				if(stacks == 0)
+					text = "" + remainingCount;
+				else text = remainingCount + " (" + EnumChatFormatting.AQUA + stacks + EnumChatFormatting.RESET + "*" + EnumChatFormatting.GRAY + max + EnumChatFormatting.RESET + "+" + EnumChatFormatting.YELLOW + rem + EnumChatFormatting.RESET + ")";
+			} else if(remainingCount == -1)
+				text = "\u221E";
+
+			int color = 0x00FFFFFF | (int) (alpha * 0xFF) << 24;
+			mc.fontRendererObj.drawStringWithShadow(text, x + 20, y + 6, color);
+
+			GlStateManager.disableBlend();
+			GlStateManager.enableAlpha();
+		}
+	}
+	
+	public static void setRemaining(ItemStack stack, int count) {
+		HUDHandler.remainingDisplayStack = stack;
+		HUDHandler.remainingCount = count;
+		remainingTime = stack == null ? 0 : maxRemainingTicks;
+	}
+
+	public static void setRemaining(EntityPlayer player, ItemStack displayStack, Pattern pattern) {
+		int count = 0;
+		for(int i = 0; i < player.inventory.getSizeInventory(); i++) {
+			ItemStack stack = player.inventory.getStackInSlot(i);
+			if(stack != null && (pattern == null ? stack.areItemsEqual(displayStack, stack) : pattern.matcher(stack.getUnlocalizedName()).find()))
+				count += stack.stackSize;
+		}
+
+		setRemaining(displayStack, count);
+	}
+	
+	@SideOnly(Side.CLIENT)
 	private static Consumer<Integer> generateCallback(final float percentile, final boolean shatter) {
 		Minecraft mc = Minecraft.getMinecraft();
 		return (Integer shader) -> {

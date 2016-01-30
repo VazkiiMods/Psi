@@ -29,6 +29,7 @@ import vazkii.psi.api.spell.SpellParam;
 import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.api.spell.param.ParamVector;
 import vazkii.psi.api.spell.piece.PieceTrick;
+import vazkii.psi.client.core.handler.HUDHandler;
 import vazkii.psi.common.core.handler.ConfigHandler;
 
 public class PieceTrickPlaceBlock extends PieceTrick {
@@ -77,11 +78,16 @@ public class PieceTrickPlaceBlock extends PieceTrick {
 			int slot = player.inventory.currentItem;
 			if(slot == 9)
 				return;
+			
 			ItemStack stack = player.inventory.getStackInSlot(slot + 1);
 			if(stack != null && stack.getItem() instanceof ItemBlock) {
 				ItemStack rem = removeFromInventory(player, block, stack);
 				Block blockToPlace = Block.getBlockFromItem(rem.getItem());
 				world.setBlockState(pos, blockToPlace.getStateFromMeta(rem.getItemDamage()));
+				
+				if(player.capabilities.isCreativeMode)
+					HUDHandler.setRemaining(rem, -1);
+				else HUDHandler.setRemaining(player, rem, null);
 			}
 			
 			if(particles && !world.isRemote)
@@ -90,6 +96,9 @@ public class PieceTrickPlaceBlock extends PieceTrick {
 	}
 	
 	public static ItemStack removeFromInventory(EntityPlayer player, Block block, ItemStack stack) {
+		if(player.capabilities.isCreativeMode)
+			return stack.copy();
+		
 		InventoryPlayer inv = player.inventory;
 		for(int i = inv.getSizeInventory() - 1; i >= 0; i--) {
 			ItemStack invStack = inv.getStackInSlot(i);

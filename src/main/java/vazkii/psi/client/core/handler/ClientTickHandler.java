@@ -52,8 +52,7 @@ public class ClientTickHandler {
 				while(!scheduledActions.isEmpty())
 					scheduledActions.poll().run();
 			
-			if(HUDHandler.showLevelUp)
-				HUDHandler.levelDisplayTime++;
+			HUDHandler.tick();
 			
 			GuiScreen gui = mc.currentScreen;
 			if(gui == null || !gui.doesGuiPauseGame()) {
