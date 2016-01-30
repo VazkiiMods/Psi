@@ -50,7 +50,8 @@ public final class LibPieceNames {
 	public static final String CONSTANT_NUMBER = "constantNumber";
 	
 	public static final String CONNECTOR = "connector";
-	
+	public static final String ERROR_SUPPRESSOR = "errorSuppressor";
+
 	public static final String TRICK_DEBUG = "trickDebug";
 	public static final String TRICK_ADD_MOTION = "trickAddMotion";
 	public static final String TRICK_EXPLODE = "trickExplode";

@@ -109,8 +109,13 @@ public final class SpellCompiler implements ISpellCompiler {
 		for(int i = 0; i < SpellGrid.GRID_SIZE; i++)
 			for(int j = 0; j < SpellGrid.GRID_SIZE; j++) {
 				SpellPiece piece = spell.grid.gridData[j][i];
-				if(piece != null && piece.getPieceType() == EnumPieceType.TRICK)
-					tricks.add(piece);
+				if(piece != null) {
+					if(piece.getPieceType() == EnumPieceType.TRICK)
+						tricks.add(piece);
+					else if(piece.getPieceType() == EnumPieceType.MODIFIER)
+						piece.addToMetadata(compiled.metadata);
+				}
+					
 			}
 
 		if(tricks.isEmpty())

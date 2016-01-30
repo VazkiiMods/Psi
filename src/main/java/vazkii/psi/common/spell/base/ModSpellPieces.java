@@ -44,6 +44,7 @@ import vazkii.psi.common.spell.operator.vector.PieceOperatorVectorRaycastAxis;
 import vazkii.psi.common.spell.operator.vector.PieceOperatorVectorSubtract;
 import vazkii.psi.common.spell.operator.vector.PieceOperatorVectorSum;
 import vazkii.psi.common.spell.other.PieceConnector;
+import vazkii.psi.common.spell.other.PieceErrorSuppressor;
 import vazkii.psi.common.spell.selector.PieceSelectorCaster;
 import vazkii.psi.common.spell.selector.PieceSelectorFocalPoint;
 import vazkii.psi.common.spell.selector.entity.PieceSelectorNearbyAnimals;
@@ -102,7 +103,8 @@ public final class ModSpellPieces {
 	public static PieceContainer constantNumber;
 	
 	public static PieceContainer connector;
-	
+	public static PieceContainer errorSuppressor;
+
 	public static PieceContainer trickDebug;
 	public static PieceContainer trickAddMotion;
 	public static PieceContainer trickExplode;
@@ -155,6 +157,7 @@ public final class ModSpellPieces {
 		constantNumber = register(PieceConstantNumber.class, LibPieceNames.CONSTANT_NUMBER, LibPieceGroups.TUTORIAL_2, true);
 		
 		connector = register(PieceConnector.class, LibPieceNames.CONNECTOR, LibPieceGroups.TUTORIAL_2);
+		errorSuppressor = register(PieceErrorSuppressor.class, LibPieceNames.ERROR_SUPPRESSOR, LibPieceGroups.TUTORIAL_4);
 		
 		trickDebug = register(PieceTrickDebug.class, LibPieceNames.TRICK_DEBUG, LibPieceGroups.TUTORIAL_1, true);
 		trickAddMotion = register(PieceTrickAddMotion.class, LibPieceNames.TRICK_ADD_MOTION, LibPieceGroups.TUTORIAL_3, true);

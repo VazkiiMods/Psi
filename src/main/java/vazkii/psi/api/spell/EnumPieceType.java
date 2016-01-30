@@ -19,6 +19,7 @@ public enum EnumPieceType {
 	OPERATOR,
 	CONSTANT,
 	CONNECTOR,
+	MODIFIER, // eg: Error Suppressor
 	TRICK;
 	
 }
