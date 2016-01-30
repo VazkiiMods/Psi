@@ -13,5 +13,6 @@ package vazkii.psi.common.lib;
 public final class LibEntityNames {
 
 	public static final String SPELL_PROJECTILE = LibResources.PREFIX_MOD + "spellProjectile";
-	
+	public static final String SPELL_CIRCLE = LibResources.PREFIX_MOD + "spellCircle";
+
 }

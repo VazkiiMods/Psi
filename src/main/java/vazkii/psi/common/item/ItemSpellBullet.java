@@ -21,6 +21,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -32,9 +33,11 @@ import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.common.core.helper.ItemNBTHelper;
+import vazkii.psi.common.entity.EntitySpellCircle;
 import vazkii.psi.common.entity.EntitySpellProjectile;
 import vazkii.psi.common.item.base.ItemMod;
 import vazkii.psi.common.lib.LibItemNames;
+import vazkii.psi.common.spell.operator.vector.PieceOperatorVectorRaycast;
 
 public class ItemSpellBullet extends ItemMod implements ISpellContainer {
 
@@ -47,6 +50,8 @@ public class ItemSpellBullet extends ItemMod implements ISpellContainer {
 			"spellBulletProjectileActive",
 			"spellBulletLoop",
 			"spellBulletLoopActive",
+			"spellBulletCircle",
+			"spellBulletCircleActive"
 	};
 	
 	public ItemSpellBullet() {
@@ -116,7 +121,7 @@ public class ItemSpellBullet extends ItemMod implements ISpellContainer {
 			try {
 				context.cspell.execute(context);
 			} catch(SpellRuntimeException e) {
-				if(!context.caster.worldObj.isRemote)
+				if(!context.caster.worldObj.isRemote && !context.shouldSuppressErrors())
 					context.caster.addChatComponentMessage(new ChatComponentTranslation(e.getMessage()).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
 			}
 			
@@ -135,6 +140,21 @@ public class ItemSpellBullet extends ItemMod implements ISpellContainer {
 		case 5: // Loopcast
 			// TODO
 			break;
+		case 7: // Spell Circle
+			if(!context.caster.worldObj.isRemote) {
+				MovingObjectPosition pos = PieceOperatorVectorRaycast.raycast(context.caster, 32);
+				
+				if(pos != null) {
+					EntitySpellCircle circle = new EntitySpellCircle(context.caster.worldObj);
+					ItemStack cad = PsiAPI.getPlayerCAD(context.caster);
+					ItemStack colorizer = ((ICAD) cad.getItem()).getComponentInSlot(cad, EnumCADComponent.DYE);
+					circle.setInfo(context.caster, colorizer, stack);
+					circle.setPosition(pos.hitVec.xCoord, pos.hitVec.yCoord, pos.hitVec.zCoord);
+					
+					circle.worldObj.spawnEntityInWorld(circle);
+				}
+			}
+			break;
 		}
 	}
 
@@ -148,7 +168,7 @@ public class ItemSpellBullet extends ItemMod implements ISpellContainer {
 		case 4: case 5: // Loopcast
 			return 1.0;
 		case 6: case 7: // Spell Circle
-			return 20.0;
+			return EntitySpellCircle.CAST_TIMES * 0.75;
 		}
 		return 0;
 	}

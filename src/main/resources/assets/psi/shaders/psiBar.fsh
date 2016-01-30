@@ -1,6 +1,6 @@
 #version 120
 
-uniform int time; // Passed in, see ShaderHelper.java
+uniform int time; // Passed in, see ShaderHandler.java
 
 uniform float percentile; // Passed in via Callback
 uniform sampler2D image;

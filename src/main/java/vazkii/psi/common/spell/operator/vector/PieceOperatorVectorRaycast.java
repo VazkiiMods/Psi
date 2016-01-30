@@ -10,7 +10,12 @@
  */
 package vazkii.psi.common.spell.operator.vector;
 
+
+
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.world.World;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
@@ -51,13 +56,26 @@ public class PieceOperatorVectorRaycast extends PieceOperator {
 			maxLen = numberVal.doubleValue();
 		maxLen = Math.min(SpellContext.MAX_DISTANCE, maxLen);	
 		
-		Vector3 end = originVal.copy().add(rayVal.copy().normalize().multiply(maxLen));
-		
-		MovingObjectPosition pos = context.caster.worldObj.rayTraceBlocks(originVal.toVec3D(), end.toVec3D());
+		MovingObjectPosition pos = raycast(context.caster.worldObj, originVal, rayVal, maxLen);
 		if(pos == null || pos.getBlockPos() == null)
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
 		
 		return new Vector3(pos.getBlockPos().getX(), pos.getBlockPos().getY(), pos.getBlockPos().getZ());
+	}
+	
+	public static MovingObjectPosition raycast(Entity e, double len) {
+		Vector3 vec = Vector3.fromEntity(e);
+		if(e instanceof EntityPlayer)
+			vec.add(0, e.getEyeHeight(), 0);
+		Vector3 look = new Vector3(e.getLookVec());
+		
+		return raycast(e.worldObj, vec, look, len);
+	}
+	
+	public static MovingObjectPosition raycast(World world, Vector3 origin, Vector3 ray, double len) {
+		Vector3 end = origin.copy().add(ray.copy().normalize().multiply(len));
+		MovingObjectPosition pos = world.rayTraceBlocks(origin.toVec3D(), end.toVec3D());
+		return pos;
 	}
 	
 	@Override

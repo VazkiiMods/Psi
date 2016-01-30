@@ -11,10 +11,12 @@
 package vazkii.psi.client.core.proxy;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import vazkii.psi.client.core.handler.ClientTickHandler;
 import vazkii.psi.client.core.handler.HUDHandler;
@@ -24,10 +26,12 @@ import vazkii.psi.client.core.handler.ShaderHandler;
 import vazkii.psi.client.fx.FXSparkle;
 import vazkii.psi.client.fx.FXWisp;
 import vazkii.psi.client.fx.ParticleRenderDispatcher;
+import vazkii.psi.client.render.entity.RenderSpellCircle;
 import vazkii.psi.client.render.tile.RenderTileProgrammer;
 import vazkii.psi.common.block.tile.TileProgrammer;
 import vazkii.psi.common.core.handler.ConfigHandler;
 import vazkii.psi.common.core.proxy.CommonProxy;
+import vazkii.psi.common.entity.EntitySpellCircle;
 
 public class ClientProxy extends CommonProxy {
 
@@ -44,6 +48,8 @@ public class ClientProxy extends CommonProxy {
 		MinecraftForge.EVENT_BUS.register(new ParticleRenderDispatcher());
 
 		ClientRegistry.bindTileEntitySpecialRenderer(TileProgrammer.class, new RenderTileProgrammer());
+		
+		RenderingRegistry.registerEntityRenderingHandler(EntitySpellCircle.class, (RenderManager manager) -> { return new RenderSpellCircle(manager); });
 	}
 	
 	@Override

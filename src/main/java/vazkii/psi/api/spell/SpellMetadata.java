@@ -24,6 +24,11 @@ import vazkii.psi.api.cad.ICAD;
 public final class SpellMetadata {
 
 	public Map<EnumSpellStat, Integer> stats = new EnumMap(EnumSpellStat.class);
+
+	/**
+	 * Should errors from this spell not be sent to the player's chat?
+	 */
+	public boolean errorsSuppressed = false;
 	
 	public SpellMetadata() {
 		for(EnumSpellStat stat : EnumSpellStat.class.getEnumConstants())

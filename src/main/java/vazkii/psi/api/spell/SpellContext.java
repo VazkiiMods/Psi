@@ -85,6 +85,10 @@ public final class SpellContext {
 		return cspell != null;
 	}
 	
+	public boolean shouldSuppressErrors() {
+		return isValid() && cspell.metadata.errorsSuppressed;
+	}
+	
 	/**
 	 * Used to check if a vector is within this context's radius.
 	 * @see #MAX_DISTANCE 
@@ -98,6 +102,8 @@ public final class SpellContext {
 	 * @see #MAX_DISTANCE 
 	 */
 	public boolean isInRadius(Entity e) {
+		if(e == null)
+			return false;
 		if(e == focalPoint || e == caster)
 			return true;
 		

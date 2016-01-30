@@ -84,6 +84,8 @@ item.psi:spellBulletProjectile.name=Projectile Spell Bullet
 item.psi:spellBulletProjectileActive.name=Programmed Projectile Spell Bullet
 item.psi:spellBulletLoop.name=Loopcast Spell Bullet
 item.psi:spellBulletLoopActive.name=Programmed Loopcast Spell Bullet
+item.psi:spellBulletCircle.name=Circle Spell Bullet
+item.psi:spellBulletCircleActive.name=Programmed Circle Spell Bullet
 
 # DEATH MESSAGES
 death.attack.psi-overload=%s overflowed their Psionic Energy

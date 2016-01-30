@@ -38,13 +38,15 @@ public final class ShaderHandler {
 	
 	public static int rawColor;
 	public static int psiBar;
-	
+	public static int simpleBloom;
+
 	public static void init() {
 		if(!useShaders())
 			return;
 
 		rawColor = createProgram(LibResources.SHADER_RAW_COLOR, FRAG);
 		psiBar = createProgram(LibResources.SHADER_PSI_BAR, FRAG);
+		simpleBloom = createProgram(LibResources.SHADER_SIMPLE_BLOOM, FRAG);
 	}
 
 	public static void useShader(int shader, Consumer<Integer> callback) {

@@ -21,7 +21,8 @@ public class LibResources {
 
 	public static final String SHADER_RAW_COLOR = PREFIX_SHADER + "rawColor";
 	public static final String SHADER_PSI_BAR = PREFIX_SHADER + "psiBar";
-	
+	public static final String SHADER_SIMPLE_BLOOM = PREFIX_SHADER + "simpleBloom";
+
 	public static final String GUI_CREATIVE = "psi.png";
 	public static final String GUI_CAD_ASSEMBLER = PREFIX_GUI + "cadAssembler.png";
 	public static final String GUI_PSI_BAR = PREFIX_GUI + "psiBar.png";
@@ -36,5 +37,6 @@ public class LibResources {
 	
 	public static final String MISC_PARTICLES = PREFIX_MISC + "particles.png";
 	public static final String MISC_WISP_LARGE = PREFIX_MISC + "wispLarge.png";
-	
+	public static final String MISC_SPELL_CIRCLE = PREFIX_MISC + "spellCircle%d.png";
+
 }

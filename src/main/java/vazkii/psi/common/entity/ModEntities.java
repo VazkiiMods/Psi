@@ -20,5 +20,6 @@ public final class ModEntities {
 		int id = 0;
 		
 		EntityRegistry.registerModEntity(EntitySpellProjectile.class, LibEntityNames.SPELL_PROJECTILE, id++, Psi.instance, 256, 10, true);
+		EntityRegistry.registerModEntity(EntitySpellCircle.class, LibEntityNames.SPELL_CIRCLE, id++, Psi.instance, 256, 64, false);
 	}
 }
