@@ -67,7 +67,7 @@ public final class SpellMetadata {
 			
 			int statVal = stats.get(stat);
 			int cadVal = cad.getStatValue(stack, cadStat);
-			if(cadVal < statVal)
+			if(cadVal != -1 && cadVal < statVal)
 				return false;
 		}
 		

@@ -186,6 +186,8 @@ public class ItemCAD extends ItemMod implements ICAD {
 	public static int getRealCost(ItemStack stack, ItemStack bullet, int cost) {
 		if(stack != null && stack.getItem() instanceof ICAD) {
 			int eff = ((ICAD) stack.getItem()).getStatValue(stack, EnumCADStat.EFFICIENCY);
+			if(eff == -1)
+				return 0;
 			if(eff == 0)
 				return cost;
 
@@ -355,6 +357,12 @@ public class ItemCAD extends ItemMod implements ICAD {
 				new ItemStack(ModItems.cadCore, 1, 3), 
 				new ItemStack(ModItems.cadSocket, 1, 3), 
 				new ItemStack(ModItems.cadBattery, 1, 2)));
+		
+		// Creative CAD
+		subItems.add(makeCAD(new ItemStack(ModItems.cadAssembly, 1, 5), 
+				new ItemStack(ModItems.cadCore, 1, 3), 
+				new ItemStack(ModItems.cadSocket, 1, 3), 
+				new ItemStack(ModItems.cadBattery, 1, 2)));
 	}
 
 	@Override
@@ -378,7 +386,9 @@ public class ItemCAD extends ItemMod implements ICAD {
 					if(stat.getSourceType() == componentType) {
 						String shrt = stat.getName();
 						int statVal = getStatValue(stack, stat);
-						line = " " + EnumChatFormatting.AQUA + local(shrt) + EnumChatFormatting.GRAY + ": " + statVal;
+						String statValStr = statVal == -1 ?	"\u221E" : ""+statVal; 
+						
+						line = " " + EnumChatFormatting.AQUA + local(shrt) + EnumChatFormatting.GRAY + ": " + statValStr;
 						if(!line.isEmpty())
 							addToTooltip(tooltip, line);
 					}

@@ -22,7 +22,8 @@ public class ItemCADAssembly extends ItemCADComponent {
 		"cadAssemblyGold",
 		"cadAssemblyPsimetal",
 		"cadAssemblyEbonyPsimetal",
-		"cadAssemblyIvoryPsimetal"
+		"cadAssemblyIvoryPsimetal",
+		"cadAssemblyCreative"
 	};
 	
 	public ItemCADAssembly() {
@@ -50,6 +51,10 @@ public class ItemCADAssembly extends ItemCADComponent {
 		// Ivory Psimetal
 		addStat(EnumCADStat.EFFICIENCY, 4, 95);
 		addStat(EnumCADStat.POTENCY, 4, 320);
+		
+		// Creative
+		addStat(EnumCADStat.EFFICIENCY, 5, -1);
+		addStat(EnumCADStat.POTENCY, 5, -1);
 	}
 
 	@Override

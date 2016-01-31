@@ -47,9 +47,11 @@ public abstract class ItemCADComponent extends ItemMod implements ICADComponent 
 			addToTooltip(tooltip, "psimisc.componentType", componentName);
 			for(EnumCADStat stat : EnumCADStat.class.getEnumConstants()) {
 				if(stat.getSourceType() == componentType) {
-					int value = getCADStatValue(stack, stat);
+					int statVal = getCADStatValue(stack, stat);
+					String statValStr = statVal == -1 ?	"\u221E" : ""+statVal; 
+					
 					String name = local(stat.getName());
-					addToTooltip(tooltip, " " + EnumChatFormatting.AQUA + name + EnumChatFormatting.GRAY + ": " + value);
+					addToTooltip(tooltip, " " + EnumChatFormatting.AQUA + name + EnumChatFormatting.GRAY + ": " + statValStr);
 				}
 			}
 		});

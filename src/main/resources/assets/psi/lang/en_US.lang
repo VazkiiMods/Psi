@@ -47,6 +47,7 @@ item.psi:cadAssemblyGold.name=Gold CAD Assembly
 item.psi:cadAssemblyPsimetal.name=Psimetal CAD Assembly
 item.psi:cadAssemblyEbonyPsimetal.name=Ebony Psimetal CAD Assembly
 item.psi:cadAssemblyIvoryPsimetal.name=Ivory Psimetal CAD Assembly
+item.psi:cadAssemblyCreative.name=Creative CAD Assembly
 item.psi:cadCoreBasic.name=Basic CAD Core
 item.psi:cadCoreOverclocked.name=Overclocked CAD Core
 item.psi:cadCoreConductive.name=Conductive CAD Core

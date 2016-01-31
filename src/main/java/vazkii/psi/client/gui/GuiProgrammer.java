@@ -176,14 +176,13 @@ public class GuiProgrammer extends GuiScreen {
 					cadVal = cadItem.getStatValue(cad, cadStat);
 				}
 				String s = "" + val;
-				if(cadVal != -1)
-					s += "/" + cadVal;
 				if(stat == EnumSpellStat.COST)
 					s += " (" + ItemCAD.getRealCost(cad, null, val) + ")";
+				else s += "/" + (cadVal == -1 ? "\u221E" : cadVal);
 				
 				GlStateManager.color(1F, 1F, 1F);
 				drawTexturedModalRect(statX, statY, (stat.ordinal() + 1) * 12, ySize + 16, 12, 12);
-				mc.fontRendererObj.drawString(s, statX + 16, statY + 2, (cadStat != null && cadVal < val) ? 0xFF6666 : 0xFFFFFF);
+				mc.fontRendererObj.drawString(s, statX + 16, statY + 2, (cadStat != null && cadVal < val && cadVal != -1) ? 0xFF6666 : 0xFFFFFF);
 				mc.getTextureManager().bindTexture(texture);
 				
 				if(mouseX > statX && mouseY > statY && mouseX < statX + 12 && mouseY < statY + 12) {
