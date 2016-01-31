@@ -1,16 +1,33 @@
 {
 	"forge_marker": 1,
 	"defaults": {
-		"model": "minecraft:cube_all",
-		"transform": "forge:default-block"
+		"model": "minecraft:cube",
+		"transform": "forge:default-block",
+		"textures": {
+			"particle": "#all",
+			"down": "#all",
+			"up": "#all",
+			"south": "#all",
+			"north": "#all",
+			"east": "#all",
+			"west": "#all"
+		}
 	},
 	"variants": {
 		"variant=psidust_block": [{ "textures": { "all": "psi:blocks/psidustBlock" } }],
 		"variant=psimetal_block": [{ "textures": { "all": "psi:blocks/psimetalBlock" } }],
 		"variant=psigem_block": [{ "textures": { "all": "psi:blocks/psigemBlock" } }],
 		"variant=psimetal_plate_black": [{ "textures": { "all": "psi:blocks/psimetalPlateBlack" } }],
-		"variant=psimetal_plate_black_light": [{ "textures": { "all": "psi:blocks/psimetalPlateBlackLight" } }],
 		"variant=psimetal_plate_white": [{ "textures": { "all": "psi:blocks/psimetalPlateWhite" } }],
-		"variant=psimetal_plate_white_light": [{ "textures": { "all": "psi:blocks/psimetalPlateBlackWhite" } }]
+		"variant=psimetal_plate_black_light": [{ "textures": { 
+			"all": "psi:blocks/psimetalPlateBlackLight",
+			"up": "psi:blocks/psimetalPlateBlack",
+			"down": "psi:blocks/psimetalPlateBlack"
+		} }],
+		"variant=psimetal_plate_white_light": [{ "textures": { 
+			"all": "psi:blocks/psimetalPlateWhiteLight",
+			"up": "psi:blocks/psimetalPlateWhite",
+			"down": "psi:blocks/psimetalPlateWhite"
+		} }]
 	}
 }

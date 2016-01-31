@@ -15,7 +15,12 @@ import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelBlockDefinition.Variants;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.world.World;
 
 public class BlockMetaVariants<T extends Enum<T> & IStringSerializable> extends BlockMod implements IVariantEnumHolder<T> {
 
@@ -49,6 +54,16 @@ public class BlockMetaVariants<T extends Enum<T> & IStringSerializable> extends 
 			meta = 0;
 		
 		return getDefaultState().withProperty(variantProp, variantsEnum.getEnumConstants()[meta]);
+	}
+	
+	@Override
+	public int damageDropped(IBlockState state) {
+		return getMetaFromState(state);
+	}
+	
+	@Override
+	public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos, EntityPlayer player) {
+		return new ItemStack(this, 1, getMetaFromState(world.getBlockState(pos)));
 	}
 	
 	@Override

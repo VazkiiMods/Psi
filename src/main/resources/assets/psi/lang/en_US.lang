@@ -34,6 +34,13 @@ psimisc.levelUpInfo2=Unequip your CAD and press [%s] to use it!
 # BLOCK NAMES
 tile.psi:cadAssembler.name=CAD Assembler
 tile.psi:programmer.name=Spell Programmer
+tile.psi:psidust_block.name=Psidust Block
+tile.psi:psimetal_block.name=Psimetal Block
+tile.psi:psigem_block.name=Psigem Block
+tile.psi:psimetal_plate_black.name=Dark Psimetal Plate
+tile.psi:psimetal_plate_black_light.name=Dark Psimetal Flow Plate
+tile.psi:psimetal_plate_white.name=Bright Psimetal Plate
+tile.psi:psimetal_plate_white_light.name=Bright Psimetal Flow Plate 
 
 # ITEM NAMES
 item.psi:psidust.name=Psidust
