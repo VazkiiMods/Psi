@@ -86,6 +86,11 @@ public final class SpellContext {
 		setCompiledSpell(PsiAPI.internalHandler.getSpellCache().getCompiledSpell(spell));
 		return this;
 	}
+	
+	public SpellContext setLoopcastIndex(int i) {
+		loopcastIndex = i;
+		return this;
+	}
 
 	public boolean isValid() {
 		return cspell != null;

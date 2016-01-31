@@ -106,6 +106,16 @@ public class ModCraftingRecipes {
 				'A', new ItemStack(Items.arrow),
 				'I', "ingotIron",
 				'D', "dustPsi");
+		addOreDictRecipe(new ItemStack(ModItems.spellBullet, 1, 4),
+				"AID",
+				'A', new ItemStack(Items.string),
+				'I', "ingotIron",
+				'D', "dustPsi");
+		addOreDictRecipe(new ItemStack(ModItems.spellBullet, 1, 6),
+				"AID",
+				'A', new ItemStack(Items.gunpowder),
+				'I', "ingotIron",
+				'D', "dustPsi");
 	}
 	
 	private static void addOreDictRecipe(ItemStack output, Object... recipe) {

@@ -254,7 +254,7 @@ public class PlayerDataHandler {
 						ISpellContainer spellContainer = (ISpellContainer) bullet.getItem();
 						if(spellContainer.containsSpell(bullet)) {
 							Spell spell = spellContainer.getSpell(bullet);
-							SpellContext context = new SpellContext().setPlayer(player).setSpell(spell);
+							SpellContext context = new SpellContext().setPlayer(player).setSpell(spell).setLoopcastIndex(loopcastAmount + 1);
 							if(context.isValid()) {
 								if(context.cspell.metadata.evaluateAgainst(cadStack)) {
 									int cost = ItemCAD.getRealCost(cadStack, bullet, context.cspell.metadata.stats.get(EnumSpellStat.COST)); 
@@ -289,6 +289,7 @@ public class PlayerDataHandler {
 		public void stopLoopcast() {
 			loopcasting = false;
 			loopcastTime = 0;
+			loopcastAmount = 0;
 			loopcastFadeTime = 5;
 		}
 

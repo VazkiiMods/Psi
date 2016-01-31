@@ -18,6 +18,7 @@ public final class LibPieceNames {
 	public static final String SELECTOR_NEARBY_LIVING = "selectorNearbyLiving";
 	public static final String SELECTOR_NEARBY_ENEMIES = "selectorNearbyEnemies";
 	public static final String SELECTOR_NEARBY_ANIMALS = "selectorNearbyAnimals";
+	public static final String SELECTOR_LOOPCAST_INDEX = "selectorLoopcastIndex";
 
 	public static final String OPERATOR_SUM = "operatorSum";
 	public static final String OPERATOR_SUBTRACT = "operatorSubtract";
@@ -25,6 +26,8 @@ public final class LibPieceNames {
 	public static final String OPERATOR_DIVIDE = "operatorDivide";
 	public static final String OPERATOR_ABSOLUTE = "operatorAbsolute";
 	public static final String OPERATOR_INVERSE = "operatorInverse";
+	public static final String OPERATOR_MODULUS = "operatorModulus";
+	public static final String OPERATOR_INTEGER_DIVIDE = "operatorIntegerDivide";
 	public static final String OPERATOR_ENTITY_POSITION = "operatorEntityPosition";
 	public static final String OPERATOR_ENTITY_LOOK = "operatorEntityLook";
 	public static final String OPERATOR_ENTITY_MOTION = "operatorEntityMotion";

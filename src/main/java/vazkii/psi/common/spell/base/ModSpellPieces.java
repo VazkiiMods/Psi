@@ -24,7 +24,9 @@ import vazkii.psi.common.spell.operator.entity.PieceOperatorEntityPosition;
 import vazkii.psi.common.spell.operator.entity.PieceOperatorRandomEntity;
 import vazkii.psi.common.spell.operator.number.PieceOperatorAbsolute;
 import vazkii.psi.common.spell.operator.number.PieceOperatorDivide;
+import vazkii.psi.common.spell.operator.number.PieceOperatorIntegerDivide;
 import vazkii.psi.common.spell.operator.number.PieceOperatorInverse;
+import vazkii.psi.common.spell.operator.number.PieceOperatorModulus;
 import vazkii.psi.common.spell.operator.number.PieceOperatorMultiply;
 import vazkii.psi.common.spell.operator.number.PieceOperatorSubtract;
 import vazkii.psi.common.spell.operator.number.PieceOperatorSum;
@@ -47,6 +49,7 @@ import vazkii.psi.common.spell.other.PieceConnector;
 import vazkii.psi.common.spell.other.PieceErrorSuppressor;
 import vazkii.psi.common.spell.selector.PieceSelectorCaster;
 import vazkii.psi.common.spell.selector.PieceSelectorFocalPoint;
+import vazkii.psi.common.spell.selector.PieceSelectorLoopcastIndex;
 import vazkii.psi.common.spell.selector.entity.PieceSelectorNearbyAnimals;
 import vazkii.psi.common.spell.selector.entity.PieceSelectorNearbyEnemies;
 import vazkii.psi.common.spell.selector.entity.PieceSelectorNearbyItems;
@@ -72,6 +75,7 @@ public final class ModSpellPieces {
 	public static PieceContainer selectorNearbyLiving;
 	public static PieceContainer selectorNearbyEnemies;
 	public static PieceContainer selectorNearbyAnimals;
+	public static PieceContainer selectorLoopcastIndex;
 
 	public static PieceContainer operatorSum;
 	public static PieceContainer operatorSubtract;
@@ -79,6 +83,8 @@ public final class ModSpellPieces {
 	public static PieceContainer operatorDivide;
 	public static PieceContainer operatorAbsolute;
 	public static PieceContainer operatorInverse;
+	public static PieceContainer operatorModulus;
+	public static PieceContainer operatorIntegerDivide;
 	public static PieceContainer operatorEntityPosition;
 	public static PieceContainer operatorEntityLook;
 	public static PieceContainer operatorEntityMotion;
@@ -125,13 +131,16 @@ public final class ModSpellPieces {
 		selectorNearbyLiving = register(PieceSelectorNearbyLiving.class, LibPieceNames.SELECTOR_NEARBY_LIVING, LibPieceGroups.ENTITIES_INTRO);
 		selectorNearbyEnemies = register(PieceSelectorNearbyEnemies.class, LibPieceNames.SELECTOR_NEARBY_ENEMIES, LibPieceGroups.ENTITIES_INTRO);
 		selectorNearbyAnimals = register(PieceSelectorNearbyAnimals.class, LibPieceNames.SELECTOR_NEARBY_ANIMALS, LibPieceGroups.ENTITIES_INTRO);
-
+		selectorLoopcastIndex = register(PieceSelectorLoopcastIndex.class, LibPieceNames.SELECTOR_LOOPCAST_INDEX, LibPieceGroups.LOOPCASTING, true);
+		
 		operatorSum = register(PieceOperatorSum.class, LibPieceNames.OPERATOR_SUM, LibPieceGroups.NUMBERS_INTRO, true);
 		operatorSubtract = register(PieceOperatorSubtract.class, LibPieceNames.OPERATOR_SUBTRACT, LibPieceGroups.NUMBERS_INTRO);
 		operatorMultiply = register(PieceOperatorMultiply.class, LibPieceNames.OPERATOR_MULTIPLY, LibPieceGroups.NUMBERS_INTRO);
 		operatorDivide = register(PieceOperatorDivide.class, LibPieceNames.OPERATOR_DIVIDE, LibPieceGroups.NUMBERS_INTRO);
 		operatorAbsolute = register(PieceOperatorAbsolute.class, LibPieceNames.OPERATOR_ABSOLUTE, LibPieceGroups.NUMBERS_INTRO);
 		operatorInverse = register(PieceOperatorInverse.class, LibPieceNames.OPERATOR_INVERSE, LibPieceGroups.NUMBERS_INTRO);
+		operatorModulus = register(PieceOperatorModulus.class, LibPieceNames.OPERATOR_MODULUS, LibPieceGroups.LOOPCASTING);
+		operatorIntegerDivide = register(PieceOperatorIntegerDivide.class, LibPieceNames.OPERATOR_INTEGER_DIVIDE, LibPieceGroups.LOOPCASTING);
 		operatorEntityPosition = register(PieceOperatorEntityPosition.class, LibPieceNames.OPERATOR_ENTITY_POSITION, LibPieceGroups.TUTORIAL_4);
 		operatorEntityLook = register(PieceOperatorEntityLook.class, LibPieceNames.OPERATOR_ENTITY_LOOK, LibPieceGroups.TUTORIAL_3);
 		operatorEntityMotion = register(PieceOperatorEntityMotion.class, LibPieceNames.OPERATOR_ENTITY_MOTION, LibPieceGroups.ENTITIES_INTRO);
@@ -183,6 +192,9 @@ public final class ModSpellPieces {
 		PsiAPI.setGroupRequirements(LibPieceGroups.BLOCK_WORKS, 6, LibPieceGroups.VECTORS_INTRO);
 		PsiAPI.setGroupRequirements(LibPieceGroups.INFUSION, 10, LibPieceGroups.VECTORS_INTRO, LibPieceGroups.ENTITIES_INTRO, LibPieceGroups.NUMBERS_INTRO);
 		PsiAPI.setGroupRequirements(LibPieceGroups.MOVEMENT, 11, LibPieceGroups.ENTITIES_INTRO);
+		// Block Transport
+		// Elemental Arts
+		PsiAPI.setGroupRequirements(LibPieceGroups.LOOPCASTING, 12, LibPieceGroups.INFUSION);
 	}
 	
 	public static PieceContainer register(Class<? extends SpellPiece> clazz, String name, String group) {
