@@ -76,9 +76,7 @@ public class ItemSpellBullet extends ItemMod implements ISpellContainer {
 	
 	@Override
 	public void setSpell(ItemStack stack, Spell spell) {
-		NBTTagCompound cmp = new NBTTagCompound();
-		spell.writeToNBT(cmp);
-		ItemNBTHelper.setCompound(stack, TAG_SPELL, cmp);
+		ItemSpellDrive.setSpell(stack, spell);
 		
 		if(!containsSpell(stack))
 			stack.setItemDamage(stack.getItemDamage() + 1);
@@ -86,8 +84,7 @@ public class ItemSpellBullet extends ItemMod implements ISpellContainer {
 
 	@Override
 	public Spell getSpell(ItemStack stack) {
-		NBTTagCompound cmp = ItemNBTHelper.getCompound(stack, TAG_SPELL, false);
-		return Spell.createFromNBT(cmp);
+		return ItemSpellDrive.getSpell(stack);
 	}
 
 	@Override

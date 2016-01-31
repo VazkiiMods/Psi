@@ -63,7 +63,8 @@ public class PsiCreativeTab extends CreativeTabs {
 		addItem(ModItems.cadColorizer);
 		
 		addItem(ModItems.spellBullet);
-		
+		addItem(ModItems.spellDrive);
+
 		addItem(ModItems.cad);
 	}
 

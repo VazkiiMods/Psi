@@ -64,7 +64,7 @@ public class BlockProgrammer extends BlockFacing {
 		}
 		
 		boolean enabled = programmer.isEnabled();
-		if(enabled) {
+		if(enabled && !programmer.playerLock.isEmpty()) {
 			if(!programmer.playerLock.equals(playerIn.getName())) {
 				if(!worldIn.isRemote)
 					playerIn.addChatComponentMessage(new ChatComponentTranslation("psimisc.notYourProgrammer").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
@@ -82,7 +82,8 @@ public class BlockProgrammer extends BlockFacing {
 				programmer.spell.uuid = UUID.randomUUID();
 				container.setSpell(stack, programmer.spell);
 				if(playerIn instanceof EntityPlayerMP)
-					VanillaPacketDispatcher.dispatchTEToPlayer(programmer, (EntityPlayerMP) playerIn);				return true;
+					VanillaPacketDispatcher.dispatchTEToPlayer(programmer, (EntityPlayerMP) playerIn);				
+				return true;
 			} else {
 				if(!worldIn.isRemote)
 					worldIn.playSoundEffect(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, "psi:compileError", 0.5F, 1F);

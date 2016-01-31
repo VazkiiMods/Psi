@@ -16,6 +16,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import vazkii.psi.common.item.ItemCAD;
 import vazkii.psi.common.item.ItemMaterial;
 import vazkii.psi.common.item.ItemSpellBullet;
+import vazkii.psi.common.item.ItemSpellDrive;
 import vazkii.psi.common.item.component.ItemCADAssembly;
 import vazkii.psi.common.item.component.ItemCADBattery;
 import vazkii.psi.common.item.component.ItemCADColorizer;
@@ -32,7 +33,8 @@ public final class ModItems {
 	public static ItemMod cadBattery;
 	public static ItemMod cadColorizer;
 	public static ItemMod spellBullet;
-	
+	public static ItemMod spellDrive;
+
 	public static ItemMod cad;
 
 	public static void init() {
@@ -44,6 +46,7 @@ public final class ModItems {
 		cadBattery = new ItemCADBattery();
 		cadColorizer = new ItemCADColorizer();
 		spellBullet = new ItemSpellBullet();
+		spellDrive = new ItemSpellDrive();
 		
 		cad = new ItemCAD();
 		
