@@ -14,6 +14,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import vazkii.psi.common.block.BlockCADAssembler;
 import vazkii.psi.common.block.BlockProgrammer;
+import vazkii.psi.common.block.BlockPsiDecorative;
 import vazkii.psi.common.block.tile.TileCADAssembler;
 import vazkii.psi.common.block.tile.TileProgrammer;
 import vazkii.psi.common.lib.LibBlockNames;
@@ -23,11 +24,13 @@ public class ModBlocks {
 
 	public static BlockMod cadAssembler; 
 	public static BlockMod programmer; 
-	
+	public static BlockMod psiDecorative; 
+
 	public static void init() {
 		cadAssembler = new BlockCADAssembler();
 		programmer = new BlockProgrammer();
-		
+		psiDecorative = new BlockPsiDecorative();
+
 		initTileEntities();
 	}
 

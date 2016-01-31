@@ -53,7 +53,7 @@ public class PsiCreativeTab extends CreativeTabs {
 		
 		addBlock(ModBlocks.cadAssembler);
 		addBlock(ModBlocks.programmer);
-		
+
 		addItem(ModItems.material);
 		
 		addItem(ModItems.cadAssembly);
@@ -66,6 +66,8 @@ public class PsiCreativeTab extends CreativeTabs {
 		addItem(ModItems.spellDrive);
 
 		addItem(ModItems.cad);
+		
+		addBlock(ModBlocks.psiDecorative);
 	}
 
 	private void addItem(Item item) {
@@ -73,8 +75,7 @@ public class PsiCreativeTab extends CreativeTabs {
 	}
 
 	private void addBlock(Block block) {
-		ItemStack stack = new ItemStack(block);
-		block.getSubBlocks(stack.getItem(), this, list);
+		addItem(Item.getItemFromBlock(block));
 	}
 
 	private void addStack(ItemStack stack) {

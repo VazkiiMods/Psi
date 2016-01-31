@@ -27,14 +27,14 @@ public class BlockMod extends Block implements IPsiBlock {
 	public BlockMod(String name, Material materialIn, String... variants) {
 		super(materialIn);
 		
-		setUnlocalizedName(name);
-		setCreativeTab(PsiCreativeTab.INSTANCE);
-		
 		if(variants.length == 0)
 			variants = new String[] { name };
 		
 		bareName = name;
 		this.variants = variants;
+		
+		setUnlocalizedName(name);
+		setCreativeTab(PsiCreativeTab.INSTANCE);
 	}
 	
 	@Override
@@ -68,6 +68,5 @@ public class BlockMod extends Block implements IPsiBlock {
 	public EnumRarity getBlockRarity(ItemStack stack) {
 		return EnumRarity.COMMON;
 	}
-
 	
 }

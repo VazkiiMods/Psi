@@ -6,14 +6,16 @@
  * Psi is Open Source and distributed under the
  * CC-BY-NC-SA 3.0 License: https://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB
  * 
- * File Created @ [09/01/2016, 23:12:53 (GMT)]
+ * File Created @ [31/01/2016, 20:32:53 (GMT)]
  */
-package vazkii.psi.common.lib;
+package vazkii.psi.common.block.base;
 
-public final class LibBlockNames {
+import net.minecraft.util.IStringSerializable;
 
-	public static final String CAD_ASSEMBLER = "cadAssembler";
-	public static final String PROGRAMMER = "programmer";
-	public static final String PSI_DECORATIVE = "psiDecorative";
+public interface IVariantEnumHolder<T extends Enum<T> & IStringSerializable> {
 
+	public static final String HEADER = "variant";
+	
+	public Class<T> getVariantEnum();
+	
 }

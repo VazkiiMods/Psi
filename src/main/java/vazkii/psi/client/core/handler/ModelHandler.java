@@ -12,11 +12,16 @@ package vazkii.psi.client.core.handler;
 
 import java.util.HashMap;
 
+import net.minecraft.block.Block;
 import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IStringSerializable;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.common.registry.GameData;
+import vazkii.psi.common.block.base.IVariantEnumHolder;
 import vazkii.psi.common.item.base.IVariantHolder;
 import vazkii.psi.common.item.base.ItemMod;
 import vazkii.psi.common.lib.LibResources;
@@ -38,6 +43,13 @@ public class ModelHandler {
 	}
 	
 	public static void registerModels(Item item, String[] variants) {
+		if(item instanceof ItemBlock && ((ItemBlock) item).getBlock() instanceof IVariantEnumHolder) {
+			IVariantEnumHolder holder = (IVariantEnumHolder) ((ItemBlock) item).getBlock();
+			Class clazz = holder.getVariantEnum();
+			registerVariantsDefaulted(item, (Block) holder, clazz, IVariantEnumHolder.HEADER);
+			return;
+		}
+		
 		for(int i = 0; i < variants.length; i++) {
 			String name = LibResources.PREFIX_MOD + variants[i];
 			ModelResourceLocation loc = new ModelResourceLocation(name, "inventory");
@@ -45,6 +57,17 @@ public class ModelHandler {
 			resourceLocations.put(getKey(item, i), loc);
 		}
 	}
+	
+    private static <T extends Enum<T> & IStringSerializable> void registerVariantsDefaulted(Item item, Block b, Class<T> enumclazz, String variantHeader) {
+        String baseName = GameData.getBlockRegistry().getNameForObject(b).toString();
+        for(T e : enumclazz.getEnumConstants()) {
+            String variantName = variantHeader + "=" + e.getName();
+            ModelResourceLocation loc = new ModelResourceLocation(baseName, variantName);
+            int i = e.ordinal();
+            ModelLoader.setCustomModelResourceLocation(item, i, loc);
+            resourceLocations.put(getKey(item, i), loc);
+        }
+    }
 	
 	public static ModelResourceLocation getModelLocation(ItemStack stack) {
 		if(stack == null)

@@ -1,0 +1,16 @@
+{
+	"forge_marker": 1,
+	"defaults": {
+		"model": "minecraft:cube_all",
+		"transform": "forge:default-block"
+	},
+	"variants": {
+		"variant=psidust_block": [{ "textures": { "all": "psi:blocks/psidustBlock" } }],
+		"variant=psimetal_block": [{ "textures": { "all": "psi:blocks/psimetalBlock" } }],
+		"variant=psigem_block": [{ "textures": { "all": "psi:blocks/psigemBlock" } }],
+		"variant=psimetal_plate_black": [{ "textures": { "all": "psi:blocks/psimetalPlateBlack" } }],
+		"variant=psimetal_plate_black_light": [{ "textures": { "all": "psi:blocks/psimetalPlateBlackLight" } }],
+		"variant=psimetal_plate_white": [{ "textures": { "all": "psi:blocks/psimetalPlateWhite" } }],
+		"variant=psimetal_plate_white_light": [{ "textures": { "all": "psi:blocks/psimetalPlateBlackWhite" } }]
+	}
+}

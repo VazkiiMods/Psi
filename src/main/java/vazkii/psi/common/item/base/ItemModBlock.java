@@ -32,6 +32,13 @@ public class ItemModBlock extends ItemBlock implements IVariantHolder {
 		psiBlock = (IPsiBlock) block;
 		
 		ItemMod.variantHolders.add(this);
+		if(getVariants().length > 1)
+			setHasSubtypes(true);
+	}
+	
+	@Override
+	public int getMetadata(int damage) {
+		return damage;
 	}
 	
 	@Override
@@ -55,7 +62,8 @@ public class ItemModBlock extends ItemBlock implements IVariantHolder {
 	 
 	@Override
 	public void getSubItems(Item itemIn, CreativeTabs tab, List<ItemStack> subItems) {
-		for(int i = 0; i < getVariants().length; i++)
+		String[] variants = getVariants();
+		for(int i = 0; i < variants.length; i++)
 			subItems.add(new ItemStack(itemIn, 1, i));
 	}
 	
