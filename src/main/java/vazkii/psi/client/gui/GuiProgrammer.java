@@ -177,7 +177,7 @@ public class GuiProgrammer extends GuiScreen {
 				}
 				String s = "" + val;
 				if(stat == EnumSpellStat.COST)
-					s += " (" + ItemCAD.getRealCost(cad, null, val) + ")";
+					s += " (" + Math.max(0, ItemCAD.getRealCost(cad, null, val)) + ")";
 				else s += "/" + (cadVal == -1 ? "\u221E" : cadVal);
 				
 				GlStateManager.color(1F, 1F, 1F);

@@ -95,8 +95,9 @@ public class ItemCAD extends ItemMod implements ICAD {
 				if(context.isValid()) {
 					if(context.cspell.metadata.evaluateAgainst(itemStackIn)) {
 						int cost = getRealCost(itemStackIn, bullet, context.cspell.metadata.stats.get(EnumSpellStat.COST)); 
-						if(cost > 0) {
-							data.deductPsi(cost, 40, true);
+						if(cost > 0 || cost == -1) {
+							if(cost != -1)
+								data.deductPsi(cost, 40, true);
 
 							if(!worldIn.isRemote)
 								worldIn.playSoundAtEntity(playerIn, "psi:cadShoot", 0.5F, (float) (0.5 + Math.random() * 0.5));
@@ -187,7 +188,7 @@ public class ItemCAD extends ItemMod implements ICAD {
 		if(stack != null && stack.getItem() instanceof ICAD) {
 			int eff = ((ICAD) stack.getItem()).getStatValue(stack, EnumCADStat.EFFICIENCY);
 			if(eff == -1)
-				return 0;
+				return -1;
 			if(eff == 0)
 				return cost;
 

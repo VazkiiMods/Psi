@@ -258,8 +258,9 @@ public class PlayerDataHandler {
 							if(context.isValid()) {
 								if(context.cspell.metadata.evaluateAgainst(cadStack)) {
 									int cost = ItemCAD.getRealCost(cadStack, bullet, context.cspell.metadata.stats.get(EnumSpellStat.COST)); 
-									if(cost > 0) {
-										deductPsi(cost, 3, true);
+									if(cost > 0 || cost == -1) {
+										if(cost != -1)
+											deductPsi(cost, 3, true);
 
 										if(!player.worldObj.isRemote && loopcastTime % 10 == 0)
 											player.worldObj.playSoundAtEntity(player, "psi:loopcast", 0.5F, (float) (0.35 + Math.random() * 0.85));
