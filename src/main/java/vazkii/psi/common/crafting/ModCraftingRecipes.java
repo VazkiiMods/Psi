@@ -116,6 +116,11 @@ public class ModCraftingRecipes {
 				'A', new ItemStack(Items.gunpowder),
 				'I', "ingotIron",
 				'D', "dustPsi");
+		
+		addOreDictRecipe(new ItemStack(ModItems.spellDrive),
+				"I", "R", "I",
+				'I', "ingotPsi",
+				'R', "dustRedstone");
 	}
 	
 	private static void addOreDictRecipe(ItemStack output, Object... recipe) {
