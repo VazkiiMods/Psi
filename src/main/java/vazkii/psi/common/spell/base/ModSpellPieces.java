@@ -59,6 +59,8 @@ import vazkii.psi.common.spell.trick.PieceTrickExplode;
 import vazkii.psi.common.spell.trick.PieceTrickInfusion;
 import vazkii.psi.common.spell.trick.block.PieceTrickBreakBlock;
 import vazkii.psi.common.spell.trick.block.PieceTrickBreakInSequence;
+import vazkii.psi.common.spell.trick.block.PieceTrickCollapseBlock;
+import vazkii.psi.common.spell.trick.block.PieceTrickMoveBlock;
 import vazkii.psi.common.spell.trick.block.PieceTrickPlaceBlock;
 import vazkii.psi.common.spell.trick.block.PieceTrickPlaceInSequence;
 import vazkii.psi.common.spell.trick.entity.PieceTrickAddMotion;
@@ -123,6 +125,8 @@ public final class ModSpellPieces {
 	public static PieceContainer trickMassBlink;
 	public static PieceContainer trickMassAddMotion;
 	public static PieceContainer trickMassExodus;
+	public static PieceContainer trickMoveBlock;
+	public static PieceContainer trickCollapseBlock;
 
 	public static void init() {
 		selectorCaster = register(PieceSelectorCaster.class, LibPieceNames.SELECTOR_CASTER, LibPieceGroups.TUTORIAL_1);
@@ -180,6 +184,8 @@ public final class ModSpellPieces {
 		trickMassBlink = register(PieceTrickMassBlink.class, LibPieceNames.TRICK_MASS_BLINK, LibPieceGroups.MOVEMENT);
 		trickMassAddMotion = register(PieceTrickMassAddMotion.class, LibPieceNames.TRICK_MASS_ADD_MOTION, LibPieceGroups.MOVEMENT);
 		trickMassExodus = register(PieceTrickMassExodus.class, LibPieceNames.TRICK_MASS_EXODUS, LibPieceGroups.MOVEMENT);
+		trickMoveBlock = register(PieceTrickMoveBlock.class, LibPieceNames.TRICK_MOVE_BLOCK, LibPieceGroups.BLOCK_MOVEMENT, true);
+		trickCollapseBlock = register(PieceTrickCollapseBlock.class, LibPieceNames.TRICK_COLLAPSE_BLOCK, LibPieceGroups.BLOCK_MOVEMENT);
 
 		PsiAPI.setGroupRequirements(LibPieceGroups.TUTORIAL_1, 1);
 		PsiAPI.setGroupRequirements(LibPieceGroups.TUTORIAL_2, 2, LibPieceGroups.TUTORIAL_1);
@@ -192,7 +198,7 @@ public final class ModSpellPieces {
 		PsiAPI.setGroupRequirements(LibPieceGroups.BLOCK_WORKS, 6, LibPieceGroups.VECTORS_INTRO);
 		PsiAPI.setGroupRequirements(LibPieceGroups.INFUSION, 10, LibPieceGroups.VECTORS_INTRO, LibPieceGroups.ENTITIES_INTRO, LibPieceGroups.NUMBERS_INTRO);
 		PsiAPI.setGroupRequirements(LibPieceGroups.MOVEMENT, 11, LibPieceGroups.ENTITIES_INTRO);
-		// Block Transport
+		PsiAPI.setGroupRequirements(LibPieceGroups.BLOCK_MOVEMENT, 11, LibPieceGroups.BLOCK_WORKS);
 		// Elemental Arts
 		PsiAPI.setGroupRequirements(LibPieceGroups.LOOPCASTING, 12, LibPieceGroups.INFUSION);
 	}

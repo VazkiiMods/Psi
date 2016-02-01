@@ -24,5 +24,6 @@ public final class LibPieceGroups {
 	public static final String INFUSION = "infusion";
 	public static final String MOVEMENT = "movement";
 	public static final String LOOPCASTING = "loopcasting";
+	public static final String BLOCK_MOVEMENT = "blockMovement";
 
 }

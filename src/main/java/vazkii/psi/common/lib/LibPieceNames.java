@@ -67,5 +67,7 @@ public final class LibPieceNames {
 	public static final String TRICK_MASS_BLINK = "trickMassBlink";
 	public static final String TRICK_MASS_ADD_MOTION = "trickMassAddMotion";
 	public static final String TRICK_MASS_EXODUS = "trickMassExodus";
+	public static final String TRICK_MOVE_BLOCK = "trickMoveBlock";
+	public static final String TRICK_COLLAPSE_BLOCK = "trickCollapseBlock";
 
 }
