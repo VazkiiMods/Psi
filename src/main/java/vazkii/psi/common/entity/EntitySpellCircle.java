@@ -41,6 +41,7 @@ public class EntitySpellCircle extends Entity {
 	private static final String TAG_BULLET = "bullet";
 	private static final String TAG_CASTER = "caster";
 	private static final String TAG_TIME_ALIVE = "timeAlive";
+	private static final String TAG_TIMES_CAST = "timesCast";
 
     public EntitySpellCircle(World worldIn) {
         super(worldIn);
@@ -60,10 +61,12 @@ public class EntitySpellCircle extends Entity {
     	dataWatcher.addObject(21, new ItemStack(Blocks.stone));
     	dataWatcher.addObject(22, "");
     	dataWatcher.addObject(23, 0);
+    	dataWatcher.addObject(24, 0);
     	dataWatcher.setObjectWatched(20);
     	dataWatcher.setObjectWatched(21);
     	dataWatcher.setObjectWatched(22);
     	dataWatcher.setObjectWatched(23);
+    	dataWatcher.setObjectWatched(24);
     }
 
     @Override
@@ -82,6 +85,7 @@ public class EntitySpellCircle extends Entity {
     	
     	tagCompound.setString(TAG_CASTER, dataWatcher.getWatchableObjectString(22));
     	tagCompound.setInteger(TAG_TIME_ALIVE, getTimeAlive());
+    	tagCompound.setInteger(TAG_TIMES_CAST, dataWatcher.getWatchableObjectInt(24));
     }
     
     @Override
@@ -96,6 +100,7 @@ public class EntitySpellCircle extends Entity {
     	
     	dataWatcher.updateObject(22, tagCompound.getString(TAG_CASTER));
     	setTimeAlive(tagCompound.getInteger(TAG_TIME_ALIVE));
+    	dataWatcher.updateObject(24, tagCompound.getInteger(TAG_TIMES_CAST));
     }
     
     @Override
@@ -107,15 +112,18 @@ public class EntitySpellCircle extends Entity {
     		setDead();
     	
     	setTimeAlive(timeAlive + 1);
-    	if(timeAlive > CAST_DELAY && timeAlive % CAST_DELAY == 0) {
+		int times = dataWatcher.getWatchableObjectInt(24);
+
+    	if(timeAlive > CAST_DELAY && timeAlive % CAST_DELAY == 0 && times < 20) {
     		SpellContext context = null;
     		Entity thrower = getCaster();
     		if(thrower != null && thrower instanceof EntityPlayer) {
     			ItemStack spellContainer = dataWatcher.getWatchableObjectItemStack(21);
     			if(spellContainer != null && spellContainer.getItem() instanceof ISpellContainer) {
+    				dataWatcher.updateObject(24, times + 1);
     				Spell spell = ((ISpellContainer) spellContainer.getItem()).getSpell(spellContainer);
     				if(spell != null)
-    					context = new SpellContext().setPlayer((EntityPlayer) thrower).setFocalPoint(this).setSpell(spell);
+    					context = new SpellContext().setPlayer((EntityPlayer) thrower).setFocalPoint(this).setSpell(spell).setLoopcastIndex(times);
     			}
     		}
     		

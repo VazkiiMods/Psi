@@ -40,6 +40,8 @@ public class PieceOperatorVectorConstruct extends PieceOperator {
 		Double d1 = this.<Double>getParamValue(context, num1);
 		Double d2 = this.<Double>getParamValue(context, num2);
 		Double d3 = this.<Double>getParamValue(context, num3);
+		if(d1 == null || d2 == null || d3 == null)
+			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
 		
 		return new Vector3(d1, d2, d3);
 	}
