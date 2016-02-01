@@ -53,6 +53,7 @@ public final class ModItems {
 		// Missing vanilla oredict mappings
 		OreDictionary.registerOre("shardPrismarine", new ItemStack(Items.prismarine_shard));
 		OreDictionary.registerOre("crystalsPrismarine", new ItemStack(Items.prismarine_crystals));
+		OreDictionary.registerOre("coal", new ItemStack(Items.coal));
 
 		// Psi oredict mappings
 		OreDictionary.registerOre("dustPsi", new ItemStack(material, 1, 0));

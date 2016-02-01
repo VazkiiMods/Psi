@@ -121,6 +121,30 @@ public class ModCraftingRecipes {
 				"I", "R", "I",
 				'I', "ingotPsi",
 				'R', "dustRedstone");
+		
+		addOreDictRecipe(new ItemStack(ModBlocks.psiDecorative, 1, 0), 
+				"OOO", "OOO", "OOO",
+				'O', "dustPsi");
+		addOreDictRecipe(new ItemStack(ModBlocks.psiDecorative, 1, 1), 
+				"OOO", "OOO", "OOO",
+				'O', "ingotPsi");
+		addOreDictRecipe(new ItemStack(ModBlocks.psiDecorative, 1, 2), 
+				"OOO", "OOO", "OOO",
+				'O', "gemPsi");
+		addShapelessOreDictRecipe(new ItemStack(ModItems.material, 1, 0), new ItemStack(ModBlocks.psiDecorative, 1, 0));
+		addShapelessOreDictRecipe(new ItemStack(ModItems.material, 1, 1), new ItemStack(ModBlocks.psiDecorative, 1, 1));
+		addShapelessOreDictRecipe(new ItemStack(ModItems.material, 1, 2), new ItemStack(ModBlocks.psiDecorative, 1, 2));
+		
+		addOreDictRecipe(new ItemStack(ModBlocks.psiDecorative, 6, 3), 
+				" C ", "CIC", " C ",
+				'C', "coal",
+				'I', "ingotPsi");
+		addOreDictRecipe(new ItemStack(ModBlocks.psiDecorative, 6, 5), 
+				" C ", "CIC", " C ",
+				'C', "gemQuartz",
+				'I', "ingotPsi");
+		addShapelessOreDictRecipe(new ItemStack(ModBlocks.psiDecorative, 1, 4), new ItemStack(ModBlocks.psiDecorative, 1, 3), "dustGlowstone");
+		addShapelessOreDictRecipe(new ItemStack(ModBlocks.psiDecorative, 1, 6), new ItemStack(ModBlocks.psiDecorative, 1, 5), "dustGlowstone");
 	}
 	
 	private static void addOreDictRecipe(ItemStack output, Object... recipe) {
