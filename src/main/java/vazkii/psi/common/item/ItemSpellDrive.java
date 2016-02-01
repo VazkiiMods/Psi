@@ -15,6 +15,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
@@ -74,6 +76,15 @@ public class ItemSpellDrive extends ItemMod {
 					worldIn.playSoundEffect(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, "psi:bulletCreate", 0.5F, 1F);
 				return true;
 			} else if(spell != null) {
+				boolean enabled = programmer.isEnabled();
+				if(enabled && !programmer.playerLock.isEmpty()) {
+					if(!programmer.playerLock.equals(playerIn.getName())) {
+						if(!worldIn.isRemote)
+							playerIn.addChatComponentMessage(new ChatComponentTranslation("psimisc.notYourProgrammer").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
+						return true;
+					}
+				} else programmer.playerLock = playerIn.getName();
+				
 				programmer.spell = spell;
 				programmer.onSpellChanged();
 				if(!worldIn.isRemote) {

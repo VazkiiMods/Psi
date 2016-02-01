@@ -26,6 +26,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
+import scala.tools.nsc.ast.TreeBrowsers.ProgramTree;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.EnumCADStat;
 import vazkii.psi.api.cad.ICAD;
@@ -110,6 +111,11 @@ public class GuiProgrammer extends GuiScreen {
 
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+		if(programmer == null || programmer.getWorld().getTileEntity(programmer.getPos()) != programmer) {
+			mc.displayGuiScreen(null);
+			return;
+		}
+		
 		int color = 0xFFFFFF;
 		
 		if(scheduleButtonUpdate) {
