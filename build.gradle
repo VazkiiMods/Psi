@@ -40,6 +40,7 @@ minecraft {
     replace 'GRADLE:VERSION', config.version
 
     replaceIn 'LibMisc.java' //I may have missed another file, though I can only find it in here.
+    makeObfSourceJar = false
 }
 
 //This here is for SCP
