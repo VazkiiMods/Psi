@@ -231,8 +231,8 @@ public class PlayerDataHandler {
 						break loopcast;
 					}
 
-					ICAD icad = ((ICAD) cadStack.getItem());
-					Color color = new Color(icad.getSpellColor(cadStack));
+					ICAD icad = (ICAD) cadStack.getItem();
+					Color color = Psi.proxy.getCADColor(cadStack);
 					float r = (float) color.getRed() / 255F;
 					float g = (float) color.getGreen() / 255F;
 					float b = (float) color.getBlue() / 255F;

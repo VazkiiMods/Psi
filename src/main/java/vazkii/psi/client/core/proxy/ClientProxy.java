@@ -10,14 +10,18 @@
  */
 package vazkii.psi.client.core.proxy;
 
+import java.awt.Color;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.client.core.handler.ClientTickHandler;
 import vazkii.psi.client.core.handler.HUDHandler;
 import vazkii.psi.client.core.handler.KeybindHandler;
@@ -61,6 +65,13 @@ public class ClientProxy extends CommonProxy {
 	public void onLevelUp(EntityPlayer player, int level) {
 		if(player == Minecraft.getMinecraft().thePlayer)
 			HUDHandler.levelUp(level);
+	}
+	
+	@Override
+	public Color getCADColor(ItemStack cadStack) {
+		ICAD icad = ((ICAD) cadStack.getItem());
+		Color color = new Color(icad.getSpellColor(cadStack));
+		return color;
 	}
 	
 	private static boolean noclipEnabled = false;

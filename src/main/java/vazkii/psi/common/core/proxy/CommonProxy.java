@@ -10,12 +10,16 @@
  */
 package vazkii.psi.common.core.proxy;
 
+import java.awt.Color;
+
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import vazkii.psi.api.PsiAPI;
+import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.base.ModBlocks;
 import vazkii.psi.common.core.handler.ConfigHandler;
@@ -53,6 +57,10 @@ public class CommonProxy {
 	
 	public void onLevelUp(EntityPlayer player, int level) {
 		// Proxy override
+	}
+	
+	public Color getCADColor(ItemStack cadStack) {
+		return new Color(1F, 1F, 1F);
 	}
 	
 	public void setSparkleFXNoClip(boolean noclip) {
