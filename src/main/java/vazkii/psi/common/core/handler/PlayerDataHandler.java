@@ -427,11 +427,11 @@ public class PlayerDataHandler {
 
 		@Override
 		public void markPieceExecuted(SpellPiece piece) {
-			if(lastSpellGroup.isEmpty())
+			if(lastSpellGroup == null || lastSpellGroup.isEmpty())
 				return;
 
 			PieceGroup group = PsiAPI.groupsForName.get(lastSpellGroup);
-			if(group.mainPiece == piece.getClass())
+			if(group != null && group.mainPiece == piece.getClass())
 				levelUp();
 		}
 
