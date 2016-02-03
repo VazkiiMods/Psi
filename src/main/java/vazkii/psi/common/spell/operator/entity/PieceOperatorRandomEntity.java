@@ -39,7 +39,7 @@ public class PieceOperatorRandomEntity extends PieceOperator {
 		EntityListWrapper listVal = this.<EntityListWrapper>getParamValue(context, list);
 		List<Entity> entities = listVal.unwrap();
 		if(entities.size() == 0)
-			return null;
+			throw new SpellRuntimeException(SpellRuntimeException.NULL_TARGET);
 		
 		return entities.get(context.caster.worldObj.rand.nextInt(entities.size()));
 	}

@@ -52,6 +52,9 @@ public class PieceOperatorClosestToPoint extends PieceOperator {
 			}
 		}
 		
+		if(closestEntity == null)
+			throw new SpellRuntimeException(SpellRuntimeException.NULL_TARGET);
+		
 		return closestEntity;
 	}
 	
