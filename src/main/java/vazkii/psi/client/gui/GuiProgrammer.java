@@ -427,6 +427,7 @@ public class GuiProgrammer extends GuiScreen {
 
 		searchField.xPosition = panelX + 18;
 		searchField.yPosition = panelY + 4;
+		searchField.setText("");
 		spellNameField.setCanLoseFocus(true);
 		spellNameField.setFocused(false);
 
