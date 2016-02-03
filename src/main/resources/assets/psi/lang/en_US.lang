@@ -30,6 +30,11 @@ psimisc.bulletType=&bType&7: %s
 psimisc.bulletCost=&bCost Multiplier&7: %s%%
 psimisc.levelUpInfo1=You got 1 Level Point
 psimisc.levelUpInfo2=Unequip your CAD and press [%s] to use it!
+psimisc.importFromClipboard=Import from Clipboard
+psimisc.exportToClipboard=Export to Clipboard
+psimisc.mustHoldShift=(Must be holding SHIFT)
+psimisc.malformedJson=Import error: Malformed String.
+psimisc.missingPieces=Import error: Missing spell pieces used for import.
 
 # BLOCK NAMES
 tile.psi:cadAssembler.name=CAD Assembler

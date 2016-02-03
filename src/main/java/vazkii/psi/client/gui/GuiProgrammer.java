@@ -10,22 +10,32 @@
  */
 package vazkii.psi.client.gui;
 
+import java.awt.datatransfer.Clipboard;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.sound.sampled.Clip;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
+import ibxm.Player;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.JsonToNBT;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.event.entity.PlaySoundAtEntityEvent;
+import scala.reflect.internal.Trees.Throw;
 import scala.tools.nsc.ast.TreeBrowsers.ProgramTree;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.EnumCADStat;
@@ -38,6 +48,7 @@ import vazkii.psi.api.spell.SpellMetadata;
 import vazkii.psi.api.spell.SpellParam;
 import vazkii.psi.api.spell.SpellPiece;
 import vazkii.psi.client.core.helper.RenderHelper;
+import vazkii.psi.client.gui.button.GuiButtonIO;
 import vazkii.psi.client.gui.button.GuiButtonPage;
 import vazkii.psi.client.gui.button.GuiButtonSideConfig;
 import vazkii.psi.client.gui.button.GuiButtonSpellPiece;
@@ -107,6 +118,11 @@ public class GuiProgrammer extends GuiScreen {
 			programmer.spell = new Spell();
 		
 		spellNameField.setText(programmer.spell.name);
+		
+		buttonList.clear();
+		onSelectedChanged();
+		buttonList.add(new GuiButtonIO(this, left + xSize + 2, top + ySize - 32, true));
+		buttonList.add(new GuiButtonIO(this, left + xSize + 2, top + ySize - 16, false));
 	}
 
 	@Override
@@ -409,6 +425,38 @@ public class GuiProgrammer extends GuiScreen {
 				page = next;
 				scheduleButtonUpdate = true;
 			}
+		} else if(button instanceof GuiButtonIO) {
+			if(isShiftKeyDown()) {
+				if(((GuiButtonIO) button).out) {
+					NBTTagCompound cmp = new NBTTagCompound();
+					if(programmer.spell != null)
+						programmer.spell.writeToNBT(cmp);
+					setClipboardString(cmp.toString());
+				} else {
+					String cb = getClipboardString();
+					try {
+						NBTTagCompound cmp = JsonToNBT.getTagFromJson(cb);
+						Spell spell = Spell.createFromNBT(cmp);
+						PlayerData data = PlayerDataHandler.get(mc.thePlayer);
+						for(int i = 0; i < SpellGrid.GRID_SIZE; i++)
+							for(int j = 0; j < SpellGrid.GRID_SIZE; j++) {
+								SpellPiece piece = spell.grid.gridData[i][j];
+								if(piece != null) {
+									PieceGroup group = PsiAPI.groupsForPiece.get(piece.getClass());
+									if(!mc.thePlayer.capabilities.isCreativeMode && (group == null || !data.isPieceGroupUnlocked(group.name))) {
+										mc.thePlayer.addChatComponentMessage(new ChatComponentTranslation("psimisc.missingPieces").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
+										return;
+									}
+								}
+							}
+						
+						programmer.spell = spell;
+						onSpellChanged(false);
+					} catch(Throwable t) { 
+						mc.thePlayer.addChatComponentMessage(new ChatComponentTranslation("psimisc.malformedJson").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
+					}
+				}
+			}
 		}
 	}
 
@@ -488,7 +536,8 @@ public class GuiProgrammer extends GuiScreen {
 	}
 
 	public void onSpellChanged(boolean nameOnly) {
-		NetworkHandler.INSTANCE.sendToServer(new MessageSpellModified(programmer.getPos(), programmer.spell));
+		MessageSpellModified message = new MessageSpellModified(programmer.getPos(), programmer.spell);
+		NetworkHandler.INSTANCE.sendToServer(message);
 		programmer.onSpellChanged();
 		onSelectedChanged();
 		
