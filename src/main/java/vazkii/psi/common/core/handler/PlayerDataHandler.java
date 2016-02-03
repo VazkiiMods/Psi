@@ -74,8 +74,11 @@ public class PlayerDataHandler {
 
 		PlayerData data = playerData.get(key);
 		if(data.playerWR.get() != player) {
+			NBTTagCompound cmp = new NBTTagCompound();
+			data.writeToNBT(cmp);
 			playerData.remove(key);
-			return get(player);
+			data = get(player);
+			data.readFromNBT(cmp);
 		}
 		
 		return data;
