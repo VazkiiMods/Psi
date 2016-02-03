@@ -32,7 +32,7 @@ public class ItemCADCore extends ItemCADComponent {
 	@Override
 	public void registerStats() {
 		// Basic
-		addStat(EnumCADStat.COMPLEXITY, 0, 6);
+		addStat(EnumCADStat.COMPLEXITY, 0, 10);
 		addStat(EnumCADStat.PROJECTION, 0, 1);
 		
 		// Overclocked
