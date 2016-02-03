@@ -39,8 +39,8 @@ tile.psi:psimetal_block.name=Psimetal Block
 tile.psi:psigem_block.name=Psigem Block
 tile.psi:psimetal_plate_black.name=Dark Psimetal Plate
 tile.psi:psimetal_plate_black_light.name=Dark Psimetal Flow Plate
-tile.psi:psimetal_plate_white.name=Bright Psimetal Plate
-tile.psi:psimetal_plate_white_light.name=Bright Psimetal Flow Plate 
+tile.psi:psimetal_plate_cyan.name=Bright Psimetal Plate
+tile.psi:psimetal_plate_cyan_light.name=Bright Psimetal Flow Plate 
 
 # ITEM NAMES
 item.psi:psidust.name=Psidust
