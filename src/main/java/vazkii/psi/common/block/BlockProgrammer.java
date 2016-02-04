@@ -104,7 +104,8 @@ public class BlockProgrammer extends BlockFacing {
 	
 	@Override
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
-        return super.getActualState(state, worldIn, pos).withProperty(ENABLED, ((TileProgrammer) worldIn.getTileEntity(pos)).isEnabled());
+		TileEntity tile = worldIn.getTileEntity(pos);
+        return super.getActualState(state, worldIn, pos).withProperty(ENABLED, tile != null && tile instanceof TileProgrammer && ((TileProgrammer) tile).isEnabled());
     }
 
 	@Override
