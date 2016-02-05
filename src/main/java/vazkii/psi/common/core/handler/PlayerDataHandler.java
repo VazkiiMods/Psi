@@ -462,8 +462,10 @@ public class PlayerDataHandler {
 			cmp.setString(TAG_LAST_SPELL_GROUP, lastSpellGroup);
 
 			NBTTagList list = new NBTTagList();
-			for(String s : spellGroupsUnlocked)
-				list.appendTag(new NBTTagString(s));
+			for(String s : spellGroupsUnlocked) {
+				if(s != null && !s.isEmpty())
+					list.appendTag(new NBTTagString(s));
+			}
 			cmp.setTag(TAG_SPELL_GROUPS_UNLOCKED, list);
 		}
 
