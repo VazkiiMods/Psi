@@ -340,7 +340,6 @@ public class ItemCAD extends ItemMod implements ICAD {
 				new ItemStack(ModItems.cadSocket, 1, 0), 
 				new ItemStack(ModItems.cadBattery, 1, 0)));		
 
-
 		// Gold CAD
 		subItems.add(makeCAD(new ItemStack(ModItems.cadAssembly, 1, 1), 
 				new ItemStack(ModItems.cadCore, 1, 0), 
