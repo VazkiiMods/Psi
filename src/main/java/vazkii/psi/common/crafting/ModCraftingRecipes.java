@@ -96,6 +96,11 @@ public class ModCraftingRecipes {
 				'G', "blockGlass",
 				'C', "crystalsPrismarine",
 				'D', "dustPsi");
+		addOreDictRecipe(new ItemStack(ModItems.cadColorizer, 1, 17),
+				" D ", "GDG", " I ",
+				'I', "ingotIron",
+				'G', "blockGlass",
+				'D', "dustPsi");
 		
 		addOreDictRecipe(new ItemStack(ModItems.spellBullet, 1, 0),
 				"ID",
