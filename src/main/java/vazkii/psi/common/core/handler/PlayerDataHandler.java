@@ -514,7 +514,14 @@ public class PlayerDataHandler {
 				scale *= mul;
 			} else return;
 			
-			RenderSpellCircle.renderSpellCircle(ClientTickHandler.ticksInGame + partTicks, scale, x, y, z, ICADColorizer.DEFAULT_SPELL_COLOR);
+			int color = ICADColorizer.DEFAULT_SPELL_COLOR;
+			ItemStack cad = PsiAPI.getPlayerCAD(playerWR.get());
+			if(cad != null && cad.getItem() instanceof ICAD) {
+				ICAD icad = (ICAD) cad.getItem();
+				color = icad.getSpellColor(cad);
+			}
+			
+			RenderSpellCircle.renderSpellCircle(ClientTickHandler.ticksInGame + partTicks, scale, x, y, z, color);
 		}
 
 		public static class Deduction {
