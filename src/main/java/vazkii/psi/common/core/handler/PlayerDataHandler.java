@@ -291,10 +291,11 @@ public class PlayerDataHandler {
 		}
 
 		public void stopLoopcast() {
+			if(loopcasting)
+				loopcastFadeTime = 5;
 			loopcasting = false;
 			loopcastTime = 0;
 			loopcastAmount = 0;
-			loopcastFadeTime = 5;
 		}
 
 		public void damage(float amount) {
