@@ -12,14 +12,13 @@ package vazkii.psi.client.render.tile;
 
 import org.lwjgl.opengl.GL11;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;import net.minecraft.client.renderer.block.model.BlockFaceUV;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.dispenser.IBlockSource;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.StatCollector;
-import vazkii.psi.client.core.handler.ClientTickHandler;
 import vazkii.psi.client.core.handler.ShaderHandler;
 import vazkii.psi.client.core.helper.RenderHelper;
 import vazkii.psi.client.gui.GuiProgrammer;
