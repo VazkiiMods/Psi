@@ -24,6 +24,7 @@ import vazkii.psi.client.core.handler.ShaderHandler;
 import vazkii.psi.client.core.helper.RenderHelper;
 import vazkii.psi.client.gui.GuiProgrammer;
 import vazkii.psi.common.block.base.BlockFacing;
+import vazkii.psi.common.block.base.ModBlocks;
 import vazkii.psi.common.block.tile.TileProgrammer;
 
 public class RenderTileProgrammer extends TileEntitySpecialRenderer<TileProgrammer> {
@@ -40,6 +41,10 @@ public class RenderTileProgrammer extends TileEntitySpecialRenderer<TileProgramm
 			GlStateManager.rotate(-90F, 0F, 1F, 0F);
 			
 			float rot = 90F;
+			Block block = te.getBlockType();
+			if(block != ModBlocks.programmer)
+				return;
+			
 			IBlockState state = te.getBlockType().getActualState(te.getWorld().getBlockState(te.getPos()), te.getWorld(), te.getPos());
 			EnumFacing facing = state.getValue(BlockFacing.FACING);
 			switch(facing) {
