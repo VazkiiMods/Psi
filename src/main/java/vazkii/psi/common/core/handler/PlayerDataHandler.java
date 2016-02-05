@@ -461,7 +461,8 @@ public class PlayerDataHandler {
 			cmp.setInteger(TAG_AVAILABLE_PSI, availablePsi);
 			cmp.setInteger(TAG_REGEN_CD, regenCooldown);	
 			cmp.setInteger(TAG_LEVEL_POINTS, levelPoints);
-			cmp.setString(TAG_LAST_SPELL_GROUP, lastSpellGroup);
+			if(lastSpellGroup != null && !lastSpellGroup.isEmpty())
+				cmp.setString(TAG_LAST_SPELL_GROUP, lastSpellGroup);
 
 			NBTTagList list = new NBTTagList();
 			for(String s : spellGroupsUnlocked) {
