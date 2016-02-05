@@ -1,0 +1,6 @@
+{
+	"parent": "psi:item/_standard_cad",
+	"textures": { 
+		"layer0": "psi:items/cadCreative"
+	}
+}

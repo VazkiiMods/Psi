@@ -23,6 +23,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
@@ -37,6 +38,7 @@ import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.EnumCADComponent;
 import vazkii.psi.api.cad.EnumCADStat;
 import vazkii.psi.api.cad.ICAD;
+import vazkii.psi.api.cad.ICADAssembly;
 import vazkii.psi.api.cad.ICADColorizer;
 import vazkii.psi.api.cad.ICADComponent;
 import vazkii.psi.api.cad.ISocketable;
@@ -129,9 +131,6 @@ public class ItemCAD extends ItemMod implements ICAD {
 								Psi.proxy.sparkleFX(worldIn, x, y, z, r, g, b, (float) look.x, (float) look.y, (float) look.z, 0.3F, 5);
 							}
 						}
-
-						if(playerIn.worldObj.isRemote)
-							playerIn.swingItem();
 
 						spellContainer.castSpell(bullet, context);
 					} else if(!playerIn.worldObj.isRemote)
@@ -322,6 +321,13 @@ public class ItemCAD extends ItemMod implements ICAD {
 	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
 		return slotChanged;
 	}
+	
+	@Override
+	public int getColorFromItemStack(ItemStack stack, int renderPass) {
+		if(renderPass == 1)
+			return getSpellColor(stack);
+		return 0xFFFFFF;
+	}
 
 	@Override
 	public void getSubItems(Item itemIn, CreativeTabs tab, List<ItemStack> subItems) {
@@ -410,9 +416,9 @@ public class ItemCAD extends ItemMod implements ICAD {
 			@Override
 			public ModelResourceLocation getModelLocation(ItemStack stack) {
 				ICAD cad = (ICAD) stack.getItem();
-				ItemStack assembly = cad.getComponentInSlot(stack, EnumCADComponent.ASSEMBLY);
-				ModelResourceLocation loc = ModelHandler.getModelLocation(assembly); 
-				return loc;			
+				ItemStack assemblyStack = cad.getComponentInSlot(stack, EnumCADComponent.ASSEMBLY);
+				ICADAssembly assembly = (ICADAssembly) assemblyStack.getItem();
+				return assembly.getCADModel(assemblyStack, stack);
 			}
 		};
 	}

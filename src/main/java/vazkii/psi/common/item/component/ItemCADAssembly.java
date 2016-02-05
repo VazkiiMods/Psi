@@ -10,12 +10,16 @@
  */
 package vazkii.psi.common.item.component;
 
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.item.ItemStack;
 import vazkii.psi.api.cad.EnumCADComponent;
 import vazkii.psi.api.cad.EnumCADStat;
+import vazkii.psi.api.cad.ICADAssembly;
+import vazkii.psi.client.core.handler.ModelHandler;
+import vazkii.psi.common.item.base.IExtraVariantHolder;
 import vazkii.psi.common.lib.LibItemNames;
 
-public class ItemCADAssembly extends ItemCADComponent {
+public class ItemCADAssembly extends ItemCADComponent implements ICADAssembly, IExtraVariantHolder {
 
 	public static final String[] VARIANTS = {
 		"cadAssemblyIron",
@@ -25,6 +29,15 @@ public class ItemCADAssembly extends ItemCADComponent {
 		"cadAssemblyIvoryPsimetal",
 		"cadAssemblyCreative"
 	};
+	
+	public static final String[] CAD_MODELS = {
+			"cadIron",
+			"cadGold",
+			"cadPsimetal",
+			"cadEbonyPsimetal",
+			"cadIvoryPsimetal",
+			"cadCreative"
+		};
 	
 	public ItemCADAssembly() {
 		super(LibItemNames.CAD_ASSEMBLY, VARIANTS);
@@ -60,6 +73,16 @@ public class ItemCADAssembly extends ItemCADComponent {
 	@Override
 	public EnumCADComponent getComponentType(ItemStack stack) {
 		return EnumCADComponent.ASSEMBLY;
+	}
+
+	@Override
+	public String[] getExtraVariants() {
+		return CAD_MODELS;
+	}
+	
+	@Override
+	public ModelResourceLocation getCADModel(ItemStack stack, ItemStack cad) {
+		return ModelHandler.resourceLocations.get(CAD_MODELS[Math.min(CAD_MODELS.length - 1, stack.getItemDamage())]);
 	}
 	
 }

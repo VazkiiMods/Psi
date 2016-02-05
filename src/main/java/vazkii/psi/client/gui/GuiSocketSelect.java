@@ -21,6 +21,7 @@ import org.lwjgl.util.vector.Vector2f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
@@ -162,9 +163,9 @@ public class GuiSocketSelect extends GuiScreen {
 				double mod = 0.6;
 				int xdp = (int) ((xp - x) * mod + x);
 				int ydp = (int) ((yp - y) * mod + y);
-				
-				mc.getRenderItem().renderItemIntoGUI(stack, xdp - 8, ydp - 8);
 
+	            mc.getRenderItem().renderItemIntoGUI(stack, xdp - 8, ydp - 8);
+	            
 				if(xsp < x)
 					xsp -= (width - 8);
 				if(ysp < y)
@@ -185,8 +186,17 @@ public class GuiSocketSelect extends GuiScreen {
 		float s = (3F * Math.min(stime, timeIn + partialTicks) / stime);
 		GlStateManager.scale(s, s, s);
 		GlStateManager.translate((float) x / s - 8, (float) y / s - 8, 0);
-		mc.getRenderItem().renderItemAndEffectIntoGUI(cadStack, 0, 0);
 		
+		
+        GlStateManager.enableRescaleNormal();
+        GlStateManager.enableBlend();
+        GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
+        RenderHelper.enableGUIStandardItemLighting();
+		mc.getRenderItem().renderItemAndEffectIntoGUI(cadStack, 0, 0);
+        RenderHelper.disableStandardItemLighting();
+        GlStateManager.disableBlend();
+        GlStateManager.disableRescaleNormal();
+        
 		GlStateManager.popMatrix();
 	}
 	

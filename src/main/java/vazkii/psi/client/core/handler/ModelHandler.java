@@ -14,6 +14,7 @@ import java.util.HashMap;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.ItemMeshDefinition;
+import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -22,6 +23,7 @@ import net.minecraft.util.IStringSerializable;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.registry.GameData;
 import vazkii.psi.common.block.base.IVariantEnumHolder;
+import vazkii.psi.common.item.base.IExtraVariantHolder;
 import vazkii.psi.common.item.base.IVariantHolder;
 import vazkii.psi.common.item.base.ItemMod;
 import vazkii.psi.common.lib.LibResources;
@@ -39,10 +41,17 @@ public class ModelHandler {
 		ItemMeshDefinition def = holder.getCustomMeshDefinition();
 		if(def != null)
 			ModelLoader.setCustomMeshDefinition((Item) holder, def);
-		else registerModels((Item) holder, holder.getVariants());
+		else {
+			Item i = (Item) holder;
+			registerModels(i, holder.getVariants(), false);
+			if(holder instanceof IExtraVariantHolder) {
+				IExtraVariantHolder extra = (IExtraVariantHolder) holder;
+				registerModels(i, extra.getExtraVariants(), true);
+			}
+		}
 	}
 	
-	public static void registerModels(Item item, String[] variants) {
+	public static void registerModels(Item item, String[] variants, boolean extra) {
 		if(item instanceof ItemBlock && ((ItemBlock) item).getBlock() instanceof IVariantEnumHolder) {
 			IVariantEnumHolder holder = (IVariantEnumHolder) ((ItemBlock) item).getBlock();
 			Class clazz = holder.getVariantEnum();
@@ -53,8 +62,13 @@ public class ModelHandler {
 		for(int i = 0; i < variants.length; i++) {
 			String name = LibResources.PREFIX_MOD + variants[i];
 			ModelResourceLocation loc = new ModelResourceLocation(name, "inventory");
-			ModelLoader.setCustomModelResourceLocation(item, i, loc);
-			resourceLocations.put(getKey(item, i), loc);
+			if(!extra) {
+				ModelLoader.setCustomModelResourceLocation(item, i, loc);
+				resourceLocations.put(getKey(item, i), loc);
+			} else {
+				ModelLoader.registerItemVariants(item, loc);
+				resourceLocations.put(variants[i], loc);
+			}
 		}
 	}
 	
@@ -85,7 +99,7 @@ public class ModelHandler {
 	}
 	
 	private static String getKey(Item item, int meta) {
-		return item.getRegistryName() + "@" + meta;
+		return "i_" + item.getRegistryName() + "@" + meta;
 	}
 	
 

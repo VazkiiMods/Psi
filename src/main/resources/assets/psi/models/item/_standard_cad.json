@@ -113,7 +113,7 @@
                 "east": { "texture": "#layer0", "uv": [ 11.0, 7.0, 12.0, 8.0 ] },
                 "south": { "texture": "#layer0", "uv": [ 11.0, 7.0, 11.5, 8.0 ] },
                 "west": { "texture": "#layer0", "uv": [ 11.0, 7.0, 12.0, 8.0 ] },
-                "up": { "texture": "#-1", "uv": [ 0.0, 0.0, 8.0, 5.0 ] }
+                "up": { "texture": "#layer0", "uv": [ 0.0, 0.0, 8.0, 5.0 ] }
             }
         },
         {
@@ -121,12 +121,12 @@
             "from": [ 3.5, 11.0, 6.0 ], 
             "to": [ 17.5, 12.0, 10.0 ], 
             "faces": {
-                "north": { "texture": "#layer1", "uv": [ 0.0, 0.0, 8.0, 5.0 ] },
-                "east": { "texture": "#layer1", "uv": [ 0.0, 0.0, 5.0, 5.0 ] },
-                "south": { "texture": "#layer1", "uv": [ 0.0, 0.0, 8.0, 5.0 ] },
-                "west": { "texture": "#layer1", "uv": [ 0.0, 0.0, 5.0, 5.0 ] },
-                "up": { "texture": "#layer1", "uv": [ 0.0, 0.0, 8.0, 5.0 ] },
-                "down": { "texture": "#layer1", "uv": [ 0.0, 0.0, 8.0, 5.0 ] }
+                "north": { "texture": "#layer1", "uv": [ 0.0, 0.0, 8.0, 5.0 ], "tintindex": 1 },
+                "east": { "texture": "#layer1", "uv": [ 0.0, 0.0, 5.0, 5.0 ], "tintindex": 1 },
+                "south": { "texture": "#layer1", "uv": [ 0.0, 0.0, 8.0, 5.0 ], "tintindex": 1 },
+                "west": { "texture": "#layer1", "uv": [ 0.0, 0.0, 5.0, 5.0 ], "tintindex": 1 },
+                "up": { "texture": "#layer1", "uv": [ 0.0, 0.0, 8.0, 5.0 ], "tintindex": 1 },
+                "down": { "texture": "#layer1", "uv": [ 0.0, 0.0, 8.0, 5.0 ], "tintindex": 1 }
             }
         }
     ],
@@ -143,8 +143,8 @@
         },
         "fixed": {
             "rotation": [ 0, 0, 0 ],
-            "translation": [ 2, 0, -2 ],
-            "scale": [ 1.3, 1.3, 1.3 ]
+            "translation": [ 0, 0, 0 ],
+            "scale": [ 0.9, 0.9, 0.9 ]
         },
         "thirdperson": {
             "rotation": [ 0, 90, -90 ],
@@ -152,9 +152,9 @@
             "scale": [ 0.4, 0.4, 0.4 ]
         },
         "firstperson": {
-            "rotation": [ 10, -135, -15 ],
-            "translation": [ -2, 2 , 0 ],
-            "scale": [ 1.0, 1.0, 1.0 ]
+            "rotation": [ 10, -135, -5 ],
+            "translation": [ -1.8, 3 , 0 ],
+            "scale": [ 0.9, 0.9, 0.9 ]
         }
     }
 }

@@ -15,6 +15,7 @@ package vazkii.psi.api.cad;
  */
 public enum EnumCADComponent {
 
+	/** If you define an item using this component, it must implement ICADAssembly */
 	ASSEMBLY,
 	CORE,
 	SOCKET,
