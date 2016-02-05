@@ -59,6 +59,10 @@ public class CommonProxy {
 		// Proxy override
 	}
 	
+	public void savePersistency() {
+		// proxy override
+	}
+	
 	public Color getCADColor(ItemStack cadStack) {
 		return new Color(1F, 1F, 1F);
 	}

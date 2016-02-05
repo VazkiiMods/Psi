@@ -38,6 +38,7 @@ public class MessageDataSync extends Message {
 	public IMessage handleMessage(MessageContext context) {
 		ClientTickHandler.scheduledActions.add(() -> {
 			PlayerDataHandler.get(Psi.proxy.getClientPlayer()).readFromNBT(cmp);
+			Psi.proxy.savePersistency();
 		});
 		
 		return null;

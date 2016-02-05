@@ -427,7 +427,7 @@ public class PlayerDataHandler {
 
 		@Override
 		public void markPieceExecuted(SpellPiece piece) {
-			if(lastSpellGroup == null || lastSpellGroup.isEmpty())
+			if(lastSpellGroup == null || lastSpellGroup.isEmpty() || levelPoints != 0)
 				return;
 
 			PieceGroup group = PsiAPI.groupsForName.get(lastSpellGroup);

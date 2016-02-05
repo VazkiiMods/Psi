@@ -23,6 +23,7 @@ public class ConfigHandler {
 
 	public static Configuration config;
 	
+	public static boolean usePersistentData = true;
 	public static boolean useShaders = true;
 	public static boolean psiBarOnRight = true;
 	public static boolean useVanillaParticleLimiter = true;
@@ -40,6 +41,9 @@ public class ConfigHandler {
 
 	public static void load() {
 		String desc;
+		
+		desc = "Controls whether Psi is allowed to save and load Persistent Data outside your instance. This data is stored where .minecraft would be by default and is independent of instance, world or modpack, and allows you to instantly get back to the highest level you were at previously in your last world.";
+		usePersistentData = loadPropBool("Use Persistent Data", desc, usePersistentData);
 		
 		desc = "Controls whether Psi's shaders are used. If you're using the GLSL Shaders mod and are having graphical troubles with Psi stuff, you may want to turn this off.";
 		useShaders = loadPropBool("Use Shaders", desc, useShaders);

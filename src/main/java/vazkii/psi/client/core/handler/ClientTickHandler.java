@@ -19,6 +19,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.RenderTickEvent;
+import vazkii.psi.common.core.handler.PersistencyHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 
 public class ClientTickHandler {
@@ -48,9 +49,12 @@ public class ClientTickHandler {
 			Minecraft mc = Minecraft.getMinecraft();
 			if(mc.theWorld == null)
 				PlayerDataHandler.cleanup();
-			else if(mc.thePlayer != null)
+			else if(mc.thePlayer != null) {
+				PersistencyHandler.init();
+
 				while(!scheduledActions.isEmpty())
 					scheduledActions.poll().run();
+			}
 			
 			HUDHandler.tick();
 			

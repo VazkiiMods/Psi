@@ -34,6 +34,8 @@ import vazkii.psi.client.render.entity.RenderSpellCircle;
 import vazkii.psi.client.render.tile.RenderTileProgrammer;
 import vazkii.psi.common.block.tile.TileProgrammer;
 import vazkii.psi.common.core.handler.ConfigHandler;
+import vazkii.psi.common.core.handler.PersistencyHandler;
+import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.proxy.CommonProxy;
 import vazkii.psi.common.entity.EntitySpellCircle;
 
@@ -65,6 +67,11 @@ public class ClientProxy extends CommonProxy {
 	public void onLevelUp(EntityPlayer player, int level) {
 		if(player == Minecraft.getMinecraft().thePlayer)
 			HUDHandler.levelUp(level);
+	}
+	
+	@Override
+	public void savePersistency() {
+		PersistencyHandler.save(PlayerDataHandler.get(getClientPlayer()).level);
 	}
 	
 	@Override

@@ -30,6 +30,7 @@ import vazkii.psi.api.spell.SpellPiece;
 import vazkii.psi.client.core.helper.RenderHelper;
 import vazkii.psi.client.core.helper.TextHelper;
 import vazkii.psi.client.gui.button.GuiButtonLearn;
+import vazkii.psi.common.Psi;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
 import vazkii.psi.common.lib.LibMisc;
@@ -190,6 +191,7 @@ public class GuiLeveling extends GuiScreen {
 		if(group != null) {
 			NetworkHandler.INSTANCE.sendToServer(new MessageLearnGroup(group.name));
 			data.unlockPieceGroup(group.name);
+			Psi.proxy.savePersistency();
 			initGroupList();
 			select(0);
 		}
@@ -217,9 +219,6 @@ public class GuiLeveling extends GuiScreen {
 			desc = TextHelper.renderText(left + 2, 0, 110, group.getUnlocalizedDesc(), false, false);
 			listText = new BigTextList(mc, 120, 168, top + 23, top + 174 - lines * 18, left + 130, 10, width, height);
 		} else listText = null;
-	}
-	
-	public void initTextList() {
 	}
 	
 	public void addToDrawList(Class<? extends SpellPiece> clazz) {
