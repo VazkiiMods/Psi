@@ -41,7 +41,7 @@ public class ItemCADColorizer extends ItemCADComponent implements ICADColorizer 
 			LibItemNames.CAD_COLORIZER + getProperDyeName(EnumDyeColor.RED),
 			LibItemNames.CAD_COLORIZER + getProperDyeName(EnumDyeColor.BLACK),
 			LibItemNames.CAD_COLORIZER + "Rainbow",
-			LibItemNames.CAD_COLORIZER + "Golden"
+			LibItemNames.CAD_COLORIZER + "Psi"
 		};	
 	
 	public ItemCADColorizer() {
