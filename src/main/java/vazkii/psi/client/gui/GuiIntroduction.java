@@ -25,6 +25,7 @@ import vazkii.psi.common.core.handler.PersistencyHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.lib.LibResources;
+import vazkii.psi.common.network.NetworkHandler;
 import vazkii.psi.common.network.message.MessageSkipToLevel;
 
 public class GuiIntroduction extends GuiScreen {
@@ -79,6 +80,8 @@ public class GuiIntroduction extends GuiScreen {
 			GuiButtonBoolean bool = (GuiButtonBoolean) button;
 			if(bool.yes) {
 				MessageSkipToLevel message = new MessageSkipToLevel(PersistencyHandler.persistentLevel);
+				NetworkHandler.INSTANCE.sendToServer(message);
+				
 				PlayerDataHandler.get(mc.thePlayer).skipToLevel(PersistencyHandler.persistentLevel);
 				mc.displayGuiScreen(new GuiLeveling());
 			} else {

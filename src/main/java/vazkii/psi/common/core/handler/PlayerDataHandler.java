@@ -311,6 +311,7 @@ public class PlayerDataHandler {
 			
 			this.level = Math.max(currLevel, Math.min(PsiAPI.levelCap, level));
 			this.levelPoints = Math.max(0, Math.max(points, this.levelPoints));
+			save();
 		}
 		
 		public void levelUp() {
