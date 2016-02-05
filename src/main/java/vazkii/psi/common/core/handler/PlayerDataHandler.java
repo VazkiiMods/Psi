@@ -305,6 +305,14 @@ public class PlayerDataHandler {
 			}
 		}
 
+		public void skipToLevel(int level) {
+			int currLevel = this.level;
+			int points = level - currLevel;
+			
+			this.level = Math.max(currLevel, Math.min(PsiAPI.levelCap, level));
+			this.levelPoints = Math.max(0, Math.max(points, this.levelPoints));
+		}
+		
 		public void levelUp() {
 			EntityPlayer player = playerWR.get();
 			if(player != null) {

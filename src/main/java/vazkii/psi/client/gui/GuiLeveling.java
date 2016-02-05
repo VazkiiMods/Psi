@@ -68,6 +68,8 @@ public class GuiLeveling extends GuiScreen {
 		top = (height - ySize) / 2;
 		listGroups = new GroupList(mc, 120, 168, top + 8, top + 176, left + 8, 26, width, height);
 		select(selected);
+		
+		
 	}
 	
 	public void initGroupList() {

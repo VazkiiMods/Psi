@@ -25,13 +25,15 @@ import vazkii.psi.common.core.handler.ConfigHandler;
 public final class TextHelper {
 	
 	@SideOnly(Side.CLIENT)
-	public static List<String> renderText(int x, int y, int width, String unlocalizedText, boolean centered, boolean doit) {
+	public static List<String> renderText(int x, int y, int width, String unlocalizedText, boolean centered, boolean doit, Object... format) {
 		FontRenderer font = Minecraft.getMinecraft().fontRendererObj;
 		boolean unicode = font.getUnicodeFlag();
 		font.setUnicodeFlag(true);
 		String text = StatCollector.translateToLocal(unlocalizedText).replaceAll("&", "\u00a7");
+		if(format != null && format.length > 0)
+			text = String.format(text, format);
+		
 		String[] textEntries = text.split("<br>");
-
 		List<List<String>> lines = new ArrayList();
 
 		String controlCodes = "";

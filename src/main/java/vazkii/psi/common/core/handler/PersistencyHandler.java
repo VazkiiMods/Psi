@@ -26,6 +26,7 @@ public final class PersistencyHandler {
 	private static boolean doneInit = false;
 	private static File persistentFile;
 	public static int persistentLevel;
+	public static boolean ignore = false;
 
 	public static void init() {
 		if(doneInit)
@@ -53,7 +54,8 @@ public final class PersistencyHandler {
 				info.createNewFile();
 				writer.write("This is Psi's Persistent Data directory.\n");
 				writer.write("Files stored here are persistent info on what levels each player has gotten to.\n");
-				writer.write("These allow you to skip tutorials on new worlds or new instances.\n");
+				writer.write("The files in here are the same for every instance and modpack you play, they always end up here.\n");
+				writer.write("This allows you to skip tutorials on new worlds or even new modpacks.\n");
 				writer.write("\n");
 				writer.write("If you wish to disable this feature, you can turn it off in the Psi config file.");
 				writer.flush();
