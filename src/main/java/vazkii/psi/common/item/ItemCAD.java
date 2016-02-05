@@ -32,8 +32,11 @@ import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.oredict.RecipeSorter;
+import net.minecraftforge.oredict.RecipeSorter.Category;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.EnumCADComponent;
 import vazkii.psi.api.cad.EnumCADStat;
@@ -53,6 +56,8 @@ import vazkii.psi.common.Psi;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
 import vazkii.psi.common.core.helper.ItemNBTHelper;
+import vazkii.psi.common.crafting.recipe.AssemblyScavengeRecipe;
+import vazkii.psi.common.crafting.recipe.DriveDuplicateRecipe;
 import vazkii.psi.common.item.base.ItemMod;
 import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.lib.LibItemNames;
@@ -69,6 +74,9 @@ public class ItemCAD extends ItemMod implements ICAD {
 	public ItemCAD() {
 		super(LibItemNames.CAD);
 		setMaxStackSize(1);
+		
+		GameRegistry.addRecipe(new AssemblyScavengeRecipe());
+		RecipeSorter.register("psi:assemblyScavenge", AssemblyScavengeRecipe.class, Category.SHAPELESS, "");
 	}
 
 	@Override
