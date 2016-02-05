@@ -66,8 +66,14 @@ public class ItemCADColorizer extends ItemCADComponent implements ICADColorizer 
 			int color = Color.HSBtoRGB(time * 0.005F, 1F, 1F);
 			return color;
 		}
-		case 17: return 0xD7B32C;
-
+		case 17: 
+			float time = ClientTickHandler.total;
+			float w = (float) (Math.sin(time * 0.4) * 0.5 + 0.5) * 0.1F;
+			float r = (float) (Math.sin(time * 0.1) * 0.5 + 0.5) * 0.5F + 0.25F + w;
+			float g = 0.5F + w;
+			float b = 1F;
+			
+			return new Color((int) (r * 255), (int) (g * 255), (int) (b * 255)).getRGB();
 		}
 		
 		return 0xFFFFFF;
