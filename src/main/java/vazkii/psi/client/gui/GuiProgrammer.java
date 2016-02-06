@@ -36,6 +36,7 @@ import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.spell.EnumSpellStat;
 import vazkii.psi.api.spell.PieceGroup;
 import vazkii.psi.api.spell.Spell;
+import vazkii.psi.api.spell.SpellCompilationException;
 import vazkii.psi.api.spell.SpellGrid;
 import vazkii.psi.api.spell.SpellMetadata;
 import vazkii.psi.api.spell.SpellParam;
@@ -153,7 +154,7 @@ public class GuiProgrammer extends GuiScreen {
 		if(mouseX > statusX && mouseY > statusY && mouseX < statusX + 12 && mouseY < statusY + 12) {
 			if(compiler.isErrored()) {
 				tooltip.add(EnumChatFormatting.RED + StatCollector.translateToLocal("psimisc.errored"));
-				tooltip.add(EnumChatFormatting.GRAY + compiler.getError());
+				tooltip.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal(compiler.getError()));
 				Pair<Integer, Integer> errorPos = compiler.getErrorLocation();
 				if(errorPos != null && errorPos.getLeft() != -1 && errorPos.getRight() != -1)
 					tooltip.add(EnumChatFormatting.GRAY + "[" + (errorPos.getLeft() + 1) + ", " + (errorPos.getRight() + 1) + "]");
@@ -566,7 +567,7 @@ public class GuiProgrammer extends GuiScreen {
 		programmer.onSpellChanged();
 		onSelectedChanged();
 		
-		if(!nameOnly)
+		if(!nameOnly || (compiler != null && compiler.getError() != null && compiler.getError().equals(SpellCompilationException.NO_NAME)) || programmer.spell.name.isEmpty())
 			compiler = new SpellCompiler(programmer.spell);
 	}
 

@@ -43,7 +43,7 @@ public final class SpellCompiler implements ISpellCompiler {
 		try {
 			compile();
 		} catch(SpellCompilationException e) {
-			error = StatCollector.translateToLocal(e.getMessage());
+			error = e.getMessage();
 			errorLocation = e.location;
 		}
 	}
@@ -67,7 +67,7 @@ public final class SpellCompiler implements ISpellCompiler {
 	
 	public void buildPiece(SpellPiece piece, List<SpellPiece> visited) throws SpellCompilationException {
 		if(visited.contains(piece))
-			throw new SpellCompilationException("loop", piece.x, piece.y);
+			throw new SpellCompilationException(SpellCompilationException.INFINITE_LOOP, piece.x, piece.y);
 		
 		if(compiled.actionMap.containsKey(piece)) { // move to top
 			Action a = compiled.actionMap.get(piece);

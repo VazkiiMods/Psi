@@ -68,7 +68,7 @@ public class BlockProgrammer extends BlockFacing {
 			programmer.playerLock = playerIn.getName();
 		
 		ItemStack stack = playerIn.getCurrentEquippedItem();
-		if(enabled && stack != null && stack.getItem() instanceof ISpellContainer && programmer.spell != null && !programmer.spell.name.trim().isEmpty()) {
+		if(enabled && stack != null && stack.getItem() instanceof ISpellContainer && programmer.spell != null) {
 			if(programmer.canCompile()) {
 				ISpellContainer container = (ISpellContainer) stack.getItem();
 				if(!worldIn.isRemote)
