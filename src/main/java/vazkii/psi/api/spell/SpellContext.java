@@ -61,6 +61,11 @@ public final class SpellContext {
 	public EntityLivingBase attackedEntity;
 	
 	/**
+	 * A map for custom data where addon authors can put stuff.
+	 */
+	public Map<String, Object> customData = new HashMap();
+	
+	/**
 	 * Sets the {@link #caster} and returns itself. This also calls {@link #setFocalPoint(Entity)}.
 	 */
 	public SpellContext setPlayer(EntityPlayer player) {
