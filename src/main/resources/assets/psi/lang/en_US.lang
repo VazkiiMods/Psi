@@ -295,6 +295,7 @@ psi.datatype.EntityListWrapper=Entity List
 
 # COMPILER ERRORS
 psi.spellerror.nospell=No Spell to compile
+psi.spellerror.noname=Spell is Unnamed
 psi.spellerror.notricks=Spell has no Tricks
 psi.spellerror.unsetparam=A required Parameter is not set
 psi.spellerror.nullparam=A Parameter is facing an empty cell

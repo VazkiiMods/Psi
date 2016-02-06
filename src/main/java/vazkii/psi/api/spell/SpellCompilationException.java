@@ -20,6 +20,7 @@ import org.apache.commons.lang3.tuple.Pair;
 public class SpellCompilationException extends Exception {
 
 	public static final String NO_SPELL = "psi.spellerror.nospell";
+	public static final String NO_NAME = "psi.spellerror.noname";
 	public static final String NO_TRICKS = "psi.spellerror.notricks";
 	public static final String UNSET_PARAM = "psi.spellerror.unsetparam";
 	public static final String NULL_PARAM = "psi.spellerror.nullparam";

@@ -51,6 +51,8 @@ public final class SpellCompiler implements ISpellCompiler {
 	public void compile() throws SpellCompilationException {
 		if(spell == null)
 			throw new SpellCompilationException(SpellCompilationException.NO_SPELL);
+		if(spell.name == null || spell.name.isEmpty())
+			throw new SpellCompilationException(SpellCompilationException.NO_NAME);
 		
 		compiled = new CompiledSpell(spell);
 		findTricks();
