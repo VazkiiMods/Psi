@@ -22,7 +22,8 @@ public final class LibPieceNames {
 	public static final String SELECTOR_LOOPCAST_INDEX = "selectorLoopcastIndex";
 	public static final String SELECTOR_BLOCK_BROKEN = "selectorBlockBroken";
 	public static final String SELECTOR_BLOCK_SIDE_BROKEN = "selectorBlockSideBroken";
-	
+	public static final String SELECTOR_ATTACK_TARGET = "selectorAttackTarget";
+
 	public static final String OPERATOR_SUM = "operatorSum";
 	public static final String OPERATOR_SUBTRACT = "operatorSubtract";
 	public static final String OPERATOR_MULTIPLY = "operatorMultiply";

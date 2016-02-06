@@ -11,6 +11,7 @@
 package vazkii.psi.api.spell;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MovingObjectPosition;
@@ -53,8 +54,11 @@ public final class SpellContext {
 	 */
 	public int loopcastIndex = 0;
 	
+	// Tool stuff. Only available if the spell is casted from a Psimetal Tool
 	public ItemStack tool;
 	public MovingObjectPosition positionBroken;
+	// Sword stuff
+	public EntityLivingBase attackedEntity;
 	
 	/**
 	 * Sets the {@link #caster} and returns itself. This also calls {@link #setFocalPoint(Entity)}.

@@ -1,0 +1,68 @@
+/**
+ * This class was created by <Vazkii>. It's distributed as
+ * part of the Psi Mod. Get the Source Code in github:
+ * https://github.com/Vazkii/Psi
+ * 
+ * Psi is Open Source and distributed under the
+ * CC-BY-NC-SA 3.0 License: https://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB
+ * 
+ * File Created @ [06/02/2016, 21:14:38 (GMT)]
+ */
+package vazkii.psi.common.item.tool;
+
+import java.util.List;
+
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import vazkii.psi.api.PsiAPI;
+import vazkii.psi.api.cad.ISocketable;
+import vazkii.psi.api.spell.SpellContext;
+import vazkii.psi.common.core.handler.PlayerDataHandler;
+import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
+import vazkii.psi.common.item.ItemCAD;
+import vazkii.psi.common.item.base.ItemMod;
+import vazkii.psi.common.item.base.ItemModSword;
+import vazkii.psi.common.item.base.ItemModTool;
+import vazkii.psi.common.item.base.ModItems;
+import vazkii.psi.common.lib.LibItemNames;
+
+public class ItemPsimetalSword extends ItemModSword implements IPsimetalTool {
+
+	public ItemPsimetalSword() {
+		super(LibItemNames.PSIMETAL_SWORD, PsiAPI.PSIMETAL_MATERIAL);
+	}
+
+	@Override
+	public boolean hitEntity(ItemStack itemstack, EntityLivingBase target, EntityLivingBase attacker) {
+		super.hitEntity(itemstack, target, attacker);
+		
+		if(attacker instanceof EntityPlayer) {
+			EntityPlayer player = (EntityPlayer) attacker;
+			
+			PlayerData data = PlayerDataHandler.get(player);
+			ItemStack playerCad = PsiAPI.getPlayerCAD(player);
+
+			if(playerCad != null) {
+				ItemStack bullet = getBulletInSocket(itemstack, getSelectedSlot(itemstack));
+				ItemCAD.cast(player.worldObj, player, data, bullet, playerCad, 5, 10, 0.05F, (SpellContext context) -> {
+					context.attackedEntity = target;
+				});	
+			}
+		}
+		
+		return true;
+	}
+	
+	@Override
+	public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
+		String componentName = ItemMod.local(ISocketable.getSocketedItemName(stack, "psimisc.none"));
+		ItemMod.addToTooltip(tooltip, "psimisc.spellSelected", componentName);
+	}
+	
+	@Override
+	public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack) {
+		return par2ItemStack.getItem() == ModItems.material && par2ItemStack.getItemDamage() == 1 ? true : super.getIsRepairable(par1ItemStack, par2ItemStack);
+	}
+	
+}

@@ -48,6 +48,7 @@ import vazkii.psi.common.spell.operator.vector.PieceOperatorVectorSubtract;
 import vazkii.psi.common.spell.operator.vector.PieceOperatorVectorSum;
 import vazkii.psi.common.spell.other.PieceConnector;
 import vazkii.psi.common.spell.other.PieceErrorSuppressor;
+import vazkii.psi.common.spell.selector.PieceSelectorAttackTarget;
 import vazkii.psi.common.spell.selector.PieceSelectorBlockBroken;
 import vazkii.psi.common.spell.selector.PieceSelectorBlockSideBroken;
 import vazkii.psi.common.spell.selector.PieceSelectorCaster;
@@ -91,6 +92,7 @@ public final class ModSpellPieces {
 	public static PieceContainer selectorLoopcastIndex;
 	public static PieceContainer selectorBlockBroken;
 	public static PieceContainer selectorBlockSideBroken;
+	public static PieceContainer selectorAttackTarget;
 
 	public static PieceContainer operatorSum;
 	public static PieceContainer operatorSubtract;
@@ -159,6 +161,7 @@ public final class ModSpellPieces {
 		selectorLoopcastIndex = register(PieceSelectorLoopcastIndex.class, LibPieceNames.SELECTOR_LOOPCAST_INDEX, LibPieceGroups.LOOPCASTING, true);
 		selectorBlockBroken = register(PieceSelectorBlockBroken.class, LibPieceNames.SELECTOR_BLOCK_BROKEN, LibPieceGroups.TOOL_CASTING, true);
 		selectorBlockSideBroken = register(PieceSelectorBlockSideBroken.class, LibPieceNames.SELECTOR_BLOCK_SIDE_BROKEN, LibPieceGroups.TOOL_CASTING);
+		selectorAttackTarget = register(PieceSelectorAttackTarget.class, LibPieceNames.SELECTOR_ATTACK_TARGET, LibPieceGroups.TOOL_CASTING);
 		
 		operatorSum = register(PieceOperatorSum.class, LibPieceNames.OPERATOR_SUM, LibPieceGroups.NUMBERS_INTRO, true);
 		operatorSubtract = register(PieceOperatorSubtract.class, LibPieceNames.OPERATOR_SUBTRACT, LibPieceGroups.NUMBERS_INTRO);

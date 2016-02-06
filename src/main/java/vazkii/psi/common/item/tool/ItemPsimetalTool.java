@@ -17,7 +17,6 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
@@ -28,17 +27,13 @@ import vazkii.psi.api.cad.ISocketable;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
-import vazkii.psi.common.core.helper.ItemNBTHelper;
 import vazkii.psi.common.item.ItemCAD;
 import vazkii.psi.common.item.base.ItemMod;
 import vazkii.psi.common.item.base.ItemModTool;
 import vazkii.psi.common.item.base.ModItems;
 
-public class ItemPsimetalTool extends ItemModTool implements ISocketable {
+public class ItemPsimetalTool extends ItemModTool implements IPsimetalTool {
 
-	private static final String TAG_BULLET_PREFIX = "bullet";
-	private static final String TAG_SELECTED_SLOT = "selectedSlot";
-	
 	protected ItemPsimetalTool(String name, float attackDamage, Set<Block> effectiveBlocks, String... variants) {
 		super(name, attackDamage, PsiAPI.PSIMETAL_MATERIAL, effectiveBlocks, variants);
 	}
@@ -61,7 +56,6 @@ public class ItemPsimetalTool extends ItemModTool implements ISocketable {
 		return false;
 	}
 	
-	
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
 		String componentName = ItemMod.local(ISocketable.getSocketedItemName(stack, "psimisc.none"));
@@ -73,48 +67,6 @@ public class ItemPsimetalTool extends ItemModTool implements ISocketable {
 		return par2ItemStack.getItem() == ModItems.material && par2ItemStack.getItemDamage() == 1 ? true : super.getIsRepairable(par1ItemStack, par2ItemStack);
 	}
 
-	@Override
-	public boolean isSocketSlotAvailable(ItemStack stack, int slot) {
-		return slot < 3;
-	}
-	
-	@Override
-	public boolean showSlotInRadialMenu(ItemStack stack, int slot) {
-		return isSocketSlotAvailable(stack, slot - 1);
-	}
-
-	@Override
-	public ItemStack getBulletInSocket(ItemStack stack, int slot) {
-		String name = TAG_BULLET_PREFIX + slot;
-		NBTTagCompound cmp = ItemNBTHelper.getCompound(stack, name, true);
-
-		if(cmp == null)
-			return null;
-
-		return ItemStack.loadItemStackFromNBT(cmp);
-	}
-
-	@Override
-	public void setBulletInSocket(ItemStack stack, int slot, ItemStack bullet) {
-		String name = TAG_BULLET_PREFIX + slot;
-		NBTTagCompound cmp = new NBTTagCompound();
-
-		if(bullet != null)
-			bullet.writeToNBT(cmp);
-
-		ItemNBTHelper.setCompound(stack, name, cmp);
-	}
-
-	@Override
-	public int getSelectedSlot(ItemStack stack) {
-		return ItemNBTHelper.getInt(stack, TAG_SELECTED_SLOT, 0);
-	}
-
-	@Override
-	public void setSelectedSlot(ItemStack stack, int slot) {
-		ItemNBTHelper.setInt(stack, TAG_SELECTED_SLOT, slot);
-	}
-	
 	public static MovingObjectPosition raytraceFromEntity(World world, Entity player, boolean par3, double range) {
 		float f = 1.0F;
 		float f1 = player.prevRotationPitch + (player.rotationPitch - player.prevRotationPitch) * f;

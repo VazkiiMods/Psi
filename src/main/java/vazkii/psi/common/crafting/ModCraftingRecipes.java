@@ -167,6 +167,27 @@ public class ModCraftingRecipes {
 				'I', "ingotPsi",
 				'R', "dustRedstone");
 		
+		addOreDictRecipe(new ItemStack(ModItems.psimetalShovel),
+				"GP", " I", " I",
+				'P', "ingotPsi",
+				'G', "gemPsi",
+				'I', "ingotIron");
+		addOreDictRecipe(new ItemStack(ModItems.psimetalPickaxe),
+				"PGP", " I ", " I ",
+				'P', "ingotPsi",
+				'G', "gemPsi",
+				'I', "ingotIron");
+		addOreDictRecipe(new ItemStack(ModItems.psimetalAxe),
+				"GP", "PI", " I",
+				'P', "ingotPsi",
+				'G', "gemPsi",
+				'I', "ingotIron");
+		addOreDictRecipe(new ItemStack(ModItems.psimetalSword),
+				"P", "G", "I",
+				'P', "ingotPsi",
+				'G', "gemPsi",
+				'I', "ingotIron");
+		
 		addOreDictRecipe(new ItemStack(ModBlocks.psiDecorative, 1, 0), 
 				"OOO", "OOO", "OOO",
 				'O', "dustPsi");
