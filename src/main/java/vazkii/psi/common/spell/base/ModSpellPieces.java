@@ -28,6 +28,7 @@ import vazkii.psi.common.spell.operator.number.PieceOperatorIntegerDivide;
 import vazkii.psi.common.spell.operator.number.PieceOperatorInverse;
 import vazkii.psi.common.spell.operator.number.PieceOperatorModulus;
 import vazkii.psi.common.spell.operator.number.PieceOperatorMultiply;
+import vazkii.psi.common.spell.operator.number.PieceOperatorRandom;
 import vazkii.psi.common.spell.operator.number.PieceOperatorSubtract;
 import vazkii.psi.common.spell.operator.number.PieceOperatorSum;
 import vazkii.psi.common.spell.operator.vector.PieceOperatorVectorConstruct;
@@ -54,9 +55,13 @@ import vazkii.psi.common.spell.selector.entity.PieceSelectorNearbyAnimals;
 import vazkii.psi.common.spell.selector.entity.PieceSelectorNearbyEnemies;
 import vazkii.psi.common.spell.selector.entity.PieceSelectorNearbyItems;
 import vazkii.psi.common.spell.selector.entity.PieceSelectorNearbyLiving;
+import vazkii.psi.common.spell.trick.PieceTrickBlaze;
 import vazkii.psi.common.spell.trick.PieceTrickDebug;
 import vazkii.psi.common.spell.trick.PieceTrickExplode;
 import vazkii.psi.common.spell.trick.PieceTrickInfusion;
+import vazkii.psi.common.spell.trick.PieceTrickOvergrow;
+import vazkii.psi.common.spell.trick.PieceTrickSmite;
+import vazkii.psi.common.spell.trick.PieceTrickTorrent;
 import vazkii.psi.common.spell.trick.block.PieceTrickBreakBlock;
 import vazkii.psi.common.spell.trick.block.PieceTrickBreakInSequence;
 import vazkii.psi.common.spell.trick.block.PieceTrickCollapseBlock;
@@ -86,6 +91,7 @@ public final class ModSpellPieces {
 	public static PieceContainer operatorAbsolute;
 	public static PieceContainer operatorInverse;
 	public static PieceContainer operatorModulus;
+	public static PieceContainer operatorRandom;
 	public static PieceContainer operatorIntegerDivide;
 	public static PieceContainer operatorEntityPosition;
 	public static PieceContainer operatorEntityLook;
@@ -127,6 +133,10 @@ public final class ModSpellPieces {
 	public static PieceContainer trickMassExodus;
 	public static PieceContainer trickMoveBlock;
 	public static PieceContainer trickCollapseBlock;
+	public static PieceContainer trickSmite;
+	public static PieceContainer trickBlaze;
+	public static PieceContainer trickTorrent;
+	public static PieceContainer trickOvergrow;
 
 	public static void init() {
 		selectorCaster = register(PieceSelectorCaster.class, LibPieceNames.SELECTOR_CASTER, LibPieceGroups.TUTORIAL_1);
@@ -144,6 +154,7 @@ public final class ModSpellPieces {
 		operatorAbsolute = register(PieceOperatorAbsolute.class, LibPieceNames.OPERATOR_ABSOLUTE, LibPieceGroups.NUMBERS_INTRO);
 		operatorInverse = register(PieceOperatorInverse.class, LibPieceNames.OPERATOR_INVERSE, LibPieceGroups.NUMBERS_INTRO);
 		operatorModulus = register(PieceOperatorModulus.class, LibPieceNames.OPERATOR_MODULUS, LibPieceGroups.LOOPCASTING);
+		operatorRandom = register(PieceOperatorRandom.class, LibPieceNames.OPERATOR_RANDOM, LibPieceGroups.ELEMENTAL_ARTS);
 		operatorIntegerDivide = register(PieceOperatorIntegerDivide.class, LibPieceNames.OPERATOR_INTEGER_DIVIDE, LibPieceGroups.LOOPCASTING);
 		operatorEntityPosition = register(PieceOperatorEntityPosition.class, LibPieceNames.OPERATOR_ENTITY_POSITION, LibPieceGroups.TUTORIAL_4);
 		operatorEntityLook = register(PieceOperatorEntityLook.class, LibPieceNames.OPERATOR_ENTITY_LOOK, LibPieceGroups.TUTORIAL_3);
@@ -186,7 +197,11 @@ public final class ModSpellPieces {
 		trickMassExodus = register(PieceTrickMassExodus.class, LibPieceNames.TRICK_MASS_EXODUS, LibPieceGroups.MOVEMENT);
 		trickMoveBlock = register(PieceTrickMoveBlock.class, LibPieceNames.TRICK_MOVE_BLOCK, LibPieceGroups.BLOCK_MOVEMENT, true);
 		trickCollapseBlock = register(PieceTrickCollapseBlock.class, LibPieceNames.TRICK_COLLAPSE_BLOCK, LibPieceGroups.BLOCK_MOVEMENT);
-
+		trickSmite = register(PieceTrickSmite.class, LibPieceNames.TRICK_SMITE, LibPieceGroups.ELEMENTAL_ARTS, true);
+		trickBlaze = register(PieceTrickBlaze.class, LibPieceNames.TRICK_BLAZE, LibPieceGroups.ELEMENTAL_ARTS);
+		trickTorrent = register(PieceTrickTorrent.class, LibPieceNames.TRICK_TORRENT, LibPieceGroups.ELEMENTAL_ARTS);
+		trickOvergrow = register(PieceTrickOvergrow.class, LibPieceNames.TRICK_OVERGROW, LibPieceGroups.ELEMENTAL_ARTS);
+		
 		PsiAPI.setGroupRequirements(LibPieceGroups.TUTORIAL_1, 1);
 		PsiAPI.setGroupRequirements(LibPieceGroups.TUTORIAL_2, 2, LibPieceGroups.TUTORIAL_1);
 		PsiAPI.setGroupRequirements(LibPieceGroups.TUTORIAL_3, 3, LibPieceGroups.TUTORIAL_2);
@@ -199,7 +214,7 @@ public final class ModSpellPieces {
 		PsiAPI.setGroupRequirements(LibPieceGroups.INFUSION, 10, LibPieceGroups.VECTORS_INTRO, LibPieceGroups.ENTITIES_INTRO, LibPieceGroups.NUMBERS_INTRO);
 		PsiAPI.setGroupRequirements(LibPieceGroups.MOVEMENT, 11, LibPieceGroups.ENTITIES_INTRO);
 		PsiAPI.setGroupRequirements(LibPieceGroups.BLOCK_MOVEMENT, 11, LibPieceGroups.BLOCK_WORKS);
-		// Elemental Arts
+		PsiAPI.setGroupRequirements(LibPieceGroups.ELEMENTAL_ARTS, 11, LibPieceGroups.VECTORS_INTRO);
 		PsiAPI.setGroupRequirements(LibPieceGroups.LOOPCASTING, 12, LibPieceGroups.INFUSION);
 	}
 	

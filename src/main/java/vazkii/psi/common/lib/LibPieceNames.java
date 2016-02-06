@@ -27,6 +27,7 @@ public final class LibPieceNames {
 	public static final String OPERATOR_ABSOLUTE = "operatorAbsolute";
 	public static final String OPERATOR_INVERSE = "operatorInverse";
 	public static final String OPERATOR_MODULUS = "operatorModulus";
+	public static final String OPERATOR_RANDOM = "operatorRandom";
 	public static final String OPERATOR_INTEGER_DIVIDE = "operatorIntegerDivide";
 	public static final String OPERATOR_ENTITY_POSITION = "operatorEntityPosition";
 	public static final String OPERATOR_ENTITY_LOOK = "operatorEntityLook";
@@ -69,5 +70,9 @@ public final class LibPieceNames {
 	public static final String TRICK_MASS_EXODUS = "trickMassExodus";
 	public static final String TRICK_MOVE_BLOCK = "trickMoveBlock";
 	public static final String TRICK_COLLAPSE_BLOCK = "trickCollapseBlock";
+	public static final String TRICK_SMITE = "trickSmite";
+	public static final String TRICK_BLAZE = "trickBlaze";
+	public static final String TRICK_TORRENT = "trickTorrent";
+	public static final String TRICK_OVERGROW = "trickOvergrow";
 
 }

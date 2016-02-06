@@ -174,6 +174,8 @@ psi.spellpiece.operatorModulus=Operator: Modulus
 psi.spellpiece.operatorModulus.desc=A % B (Integer)
 psi.spellpiece.operatorIntegerDivide=Operator: Integer Divide
 psi.spellpiece.operatorIntegerDivide.desc=A / B (Integer)
+psi.spellpiece.operatorRandom=Operator: Random
+psi.spellpiece.operatorRandom.desc=Random between 0 and the given number (exclusive)
 
 psi.spellpiece.operatorEntityPosition=Operator: Entity Position
 psi.spellpiece.operatorEntityPosition.desc=Gets an Entity's position
@@ -256,6 +258,14 @@ psi.spellpiece.trickMoveBlock=Trick: Move Block
 psi.spellpiece.trickMoveBlock.desc=Moves a block by target (normalized) axial vector
 psi.spellpiece.trickCollapseBlock=Trick: Collapse Block
 psi.spellpiece.trickCollapseBlock.desc=Collapses a block, as if it were sand
+psi.spellpiece.trickSmite=Trick: Smite
+psi.spellpiece.trickSmite.desc=Calls down lightning at the given point
+psi.spellpiece.trickBlaze=Trick: Blaze
+psi.spellpiece.trickBlaze.desc=Creates fire at the given point
+psi.spellpiece.trickTorrent=Trick: Torrent
+psi.spellpiece.trickTorrent.desc=Creates water at the given point
+psi.spellpiece.trickOvergrow=Trick: Overgrow
+psi.spellpiece.trickOvergrow.desc=Fertilizes a block at the given point
 
 # SPELL PARAMETER NAMES
 psi.spellparam.target=Target
@@ -339,3 +349,5 @@ psi.piecegroup.loopcasting=Loopcasting
 psi.piecegroup.loopcasting.desc=Loopcasting is a style of magic defined by the usage of Loopcast Spell Bullets. When a spell is cast from a Loopcast Spell Bullet, it executes as if it was cast from a normal one, but also puts the player into a "loopcasting" state, where, until they unequip their CAD, will continuously cast the same spell at a rate of 4 times a second. The advantage of loopcasting is the fact that the initial cooldown to psi regeneration is only applied on the first spell in full. For each subsequent cast, the cooldown will be much shorter than usual, so, given a caster with a high enough level to sustain psi regeneration to cover the cost of a spell, said spell can be endlessly loopcasted.<br><br>The red piece of this group is "Selector: Loopcast Index". This piece selects the amount of times a spell has been loopcasted. For the initial cast this will be 0, and will be incremented once for every subsequent loopcast. This can be used alongside "Operator: Modulus" and "Operator: Integer Division" to alter how the spell functions every time it's cast.<br><br>"Operator: Integer Division" does exactly as it says on the tin, and executes division of the integer parts of the two numbers. "Operator: Modulus" calculates the remainer of the division of the integer parts of the two numbers. Using these pieces, it's possible to do things such as digging undergound bunkers in any given size.<br><br>"Selector: Loopcast Index" also works with Circle Spell Bullets, returning the amount of times the spell has been cast by the spell circle, up to 20. 
 psi.piecegroup.blockMovement=Block Movement
 psi.piecegroup.blockMovement.desc=The ability to move blocks isn't as important as the ability to break and place them, but under some cases can come in handy.<br><br>The red piece of this group, "Trick: Move Block" takes a position for a block in the world and moves it given the target vector. The target vector must be axial, if it isn't, the trick will fail.<br><br>The other piece, "Trick: Collapse Block", simply collapses a block as if it were sand or gravel.<br><br>Both these tricks will fail on complex blocks (also known as Tile Entities) or blocks that can't be harvested with Silk Touch.
+psi.piecegroup.elementalArts=Elemental Arts
+psi.piecegroup.elementalArts.desc=wip
