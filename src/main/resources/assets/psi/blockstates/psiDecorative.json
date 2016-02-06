@@ -28,6 +28,8 @@
 			"all": "psi:blocks/psimetalPlateCyanLight",
 			"up": "psi:blocks/psimetalPlateCyan",
 			"down": "psi:blocks/psimetalPlateCyan"
-		} }]
+		} }],
+		"variant=ebony_psimetal_block": [{ "textures": { "all": "psi:blocks/ebonyPsimetalBlock" } }],
+		"variant=ivory_psimetal_block": [{ "textures": { "all": "psi:blocks/ivoryPsimetalBlock" } }]
 	}
 }
