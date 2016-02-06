@@ -13,8 +13,7 @@ package vazkii.psi.common.spell.selector.entity;
 import com.google.common.base.Predicate;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.EntityLivingBase;
 import vazkii.psi.api.spell.Spell;
 
 public class PieceSelectorNearbyLiving extends PieceSelectorNearby {
@@ -25,7 +24,7 @@ public class PieceSelectorNearbyLiving extends PieceSelectorNearby {
 
 	@Override
 	public Predicate<Entity> getTargetPredicate() {
-		return (Entity e) -> { return e instanceof EntityLiving; };
+		return (Entity e) -> { return e instanceof EntityLivingBase; };
 	}
 
 }
