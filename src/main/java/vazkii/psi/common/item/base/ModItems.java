@@ -59,8 +59,10 @@ public final class ModItems {
 		OreDictionary.registerOre("dustPsi", new ItemStack(material, 1, 0));
 		OreDictionary.registerOre("ingotPsi", new ItemStack(material, 1, 1));
 		OreDictionary.registerOre("gemPsi", new ItemStack(material, 1, 2));
-		OreDictionary.registerOre("ignotEbonyPsi", new ItemStack(material, 1, 3));
-		OreDictionary.registerOre("ignotIvoryPsi", new ItemStack(material, 1, 4));
+		OreDictionary.registerOre("ingotEbonyPsi", new ItemStack(material, 1, 3));
+		OreDictionary.registerOre("ingotIvoryPsi", new ItemStack(material, 1, 4));
+		OreDictionary.registerOre("substanceEbony", new ItemStack(material, 1, 5));
+		OreDictionary.registerOre("substanceIvory", new ItemStack(material, 1, 6));
 	}
 	
 }

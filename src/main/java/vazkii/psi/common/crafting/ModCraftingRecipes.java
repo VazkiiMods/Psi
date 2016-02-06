@@ -33,6 +33,15 @@ public class ModCraftingRecipes {
 				'I', "ingotIron",
 				'D', "dustPsi");
 		
+		addOreDictRecipe(new ItemStack(ModItems.material, 1, 3), 
+				"SSS", "SIS", "SSS",
+				'S', "substanceEbony",
+				'I', "ingotPsi");
+		addOreDictRecipe(new ItemStack(ModItems.material, 1, 4), 
+				"SSS", "SIS", "SSS",
+				'S', "substanceIvory",
+				'I', "ingotPsi");
+		
 		addOreDictRecipe(new ItemStack(ModItems.cadAssembly, 1, 0),
 				"III", "I  ",
 				'I', "ingotIron");
@@ -42,6 +51,12 @@ public class ModCraftingRecipes {
 		addOreDictRecipe(new ItemStack(ModItems.cadAssembly, 1, 2),
 				"III", "I  ",
 				'I', "ingotPsi");
+		addOreDictRecipe(new ItemStack(ModItems.cadAssembly, 1, 3),
+				"III", "I  ",
+				'I', "ingotEbonyPsi");
+		addOreDictRecipe(new ItemStack(ModItems.cadAssembly, 1, 4),
+				"III", "I  ",
+				'I', "ingotIvoryPsi");
 		
 		addOreDictRecipe(new ItemStack(ModItems.cadCore, 1, 0),
 				" I ", "IDI", " I ",
@@ -54,6 +69,16 @@ public class ModCraftingRecipes {
 		addOreDictRecipe(new ItemStack(ModItems.cadCore, 1, 2),
 				" I ", "IDI", " I ",
 				'I', "ingotPsi",
+				'D', "dustGlowstone");
+		addOreDictRecipe(new ItemStack(ModItems.cadCore, 1, 3),
+				" G ", "IDI", " G ",
+				'I', "ingotPsi",
+				'G', "gemPsi",
+				'D', "dustRedstone");
+		addOreDictRecipe(new ItemStack(ModItems.cadCore, 1, 4),
+				" G ", "IDI", " G ",
+				'I', "ingotPsi",
+				'G', "gemPsi",
 				'D', "dustGlowstone");
 		
 		addOreDictRecipe(new ItemStack(ModItems.cadSocket, 1, 0),
@@ -68,6 +93,16 @@ public class ModCraftingRecipes {
 				"DI", "I ",
 				'I', "ingotPsi",
 				'D', "dustGlowstone");
+		addOreDictRecipe(new ItemStack(ModItems.cadSocket, 1, 3),
+				"DI", "IG",
+				'I', "ingotPsi",
+				'G', "gemPsi",
+				'D', "dustRedstone");
+		addOreDictRecipe(new ItemStack(ModItems.cadSocket, 1, 4),
+				"DI", "IG",
+				'I', "ingotPsi",
+				'G', "gemPsi",
+				'D', "dustGlowstone");
 		
 		addOreDictRecipe(new ItemStack(ModItems.cadBattery, 1, 0),
 				"I", "D", "G",
@@ -79,6 +114,11 @@ public class ModCraftingRecipes {
 				'I', "ingotIron",
 				'G', "ingotGold",
 				'D', "ingotPsi");
+		addOreDictRecipe(new ItemStack(ModItems.cadBattery, 1, 2),
+				"I", "D", "G",
+				'I', "ingotIron",
+				'G', "ingotGold",
+				'D', "gemPsi");
 		
         String[] dyes = {
             "White", "Orange", "Magenta", "LightBlue", "Yellow", "Lime", "Pink", "Gray", "LightGray", "Cyan", "Purple", "Blue", "Brown", "Green", "Red"," Black"
