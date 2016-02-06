@@ -13,10 +13,11 @@ package vazkii.psi.api;
 import java.util.HashMap;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.RegistryNamespaced;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.gen.structure.StructureOceanMonumentPieces.Piece;
+import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.Loader;
 import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.internal.DummyMethodHandler;
@@ -39,6 +40,8 @@ public final class PsiAPI {
 	public static HashMap<String, ResourceLocation> simpleSpellTextures = new HashMap();
 	public static HashMap<Class<? extends SpellPiece>, PieceGroup> groupsForPiece = new HashMap();
 	public static HashMap<String, PieceGroup> groupsForName = new HashMap();
+	
+    public static ToolMaterial PSIMETAL_MATERIAL = EnumHelper.addToolMaterial("PSIMETAL", 3, 900, 7.8F, 3F, 12);
 	
 	public static int levelCap = 1;
 	

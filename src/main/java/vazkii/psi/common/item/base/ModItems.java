@@ -22,6 +22,9 @@ import vazkii.psi.common.item.component.ItemCADBattery;
 import vazkii.psi.common.item.component.ItemCADColorizer;
 import vazkii.psi.common.item.component.ItemCADCore;
 import vazkii.psi.common.item.component.ItemCADSocket;
+import vazkii.psi.common.item.tool.ItemPsimetalAxe;
+import vazkii.psi.common.item.tool.ItemPsimetalPickaxe;
+import vazkii.psi.common.item.tool.ItemPsimetalShovel;
 
 public final class ModItems {
 
@@ -37,6 +40,10 @@ public final class ModItems {
 
 	public static ItemMod cad;
 
+	public static ItemModTool psimetalShovel;
+	public static ItemModTool psimetalPickaxe;
+	public static ItemModTool psimetalAxe;
+	
 	public static void init() {
 		material = new ItemMaterial();
 		
@@ -49,6 +56,10 @@ public final class ModItems {
 		spellDrive = new ItemSpellDrive();
 		
 		cad = new ItemCAD();
+		
+		psimetalShovel = new ItemPsimetalShovel();
+		psimetalPickaxe = new ItemPsimetalPickaxe();
+		psimetalAxe = new ItemPsimetalAxe();
 		
 		// Missing vanilla oredict mappings
 		OreDictionary.registerOre("shardPrismarine", new ItemStack(Items.prismarine_shard));

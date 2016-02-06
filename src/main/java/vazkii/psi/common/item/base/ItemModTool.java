@@ -6,30 +6,31 @@
  * Psi is Open Source and distributed under the
  * CC-BY-NC-SA 3.0 License: https://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB
  * 
- * File Created @ [08/01/2016, 21:47:43 (GMT)]
+ * File Created @ [06/02/2016, 20:07:08 (GMT)]
  */
 package vazkii.psi.common.item.base;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
+import net.minecraft.block.Block;
 import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemTool;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import vazkii.psi.api.internal.TooltipHelper;
 import vazkii.psi.common.core.PsiCreativeTab;
 import vazkii.psi.common.lib.LibResources;
 
-public class ItemMod extends Item implements IVariantHolder {
+public class ItemModTool extends ItemTool implements IVariantHolder {
 
-	public static final List<IVariantHolder> variantHolders = new ArrayList();
-	
 	private final String[] variants;
 	private final String bareName;
 	
-	public ItemMod(String name, String... variants) {
+	protected ItemModTool(String name, float attackDamage, ToolMaterial material, Set<Block> effectiveBlocks, String... variants) {
+		super(attackDamage, material, effectiveBlocks);
 		setUnlocalizedName(name);
 		setCreativeTab(PsiCreativeTab.INSTANCE);
 		if(variants.length > 1)
@@ -40,7 +41,7 @@ public class ItemMod extends Item implements IVariantHolder {
 		
 		bareName = name;
 		this.variants = variants;
-		variantHolders.add(this);
+		ItemMod.variantHolders.add(this);
 	}
 	
 	@Override
@@ -79,18 +80,6 @@ public class ItemMod extends Item implements IVariantHolder {
 	@Override
 	public ItemMeshDefinition getCustomMeshDefinition() {
 		return null;
-	}
-	
-	public static void tooltipIfShift(List<String> tooltip, Runnable r) {
-		TooltipHelper.tooltipIfShift(tooltip, r);
-	}
-	
-	public static void addToTooltip(List<String> tooltip, String s, Object... format) {
-		TooltipHelper.addToTooltip(tooltip, s, format);
-	}
-	
-	public static String local(String s) {
-		return TooltipHelper.local(s);
 	}
 
 }

@@ -21,5 +21,8 @@ public final class LibItemNames {
 	public static final String CAD_COLORIZER = "cadColorizer";
 	public static final String SPELL_BULLET = "spellBullet";
 	public static final String SPELL_DRIVE = "spellDrive";
+	public static final String PSIMETAL_SHOVEL = "psimetalShovel";
+	public static final String PSIMETAL_PICKAXE = "psimetalPickaxe";
+	public static final String PSIMETAL_AXE = "psimetalAxe";
 
 }

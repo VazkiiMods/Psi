@@ -67,6 +67,10 @@ public class PsiCreativeTab extends CreativeTabs {
 
 		addItem(ModItems.cad);
 		
+		addItem(ModItems.psimetalShovel);
+		addItem(ModItems.psimetalPickaxe);
+		addItem(ModItems.psimetalAxe);
+		
 		addBlock(ModBlocks.psiDecorative);
 	}
 
