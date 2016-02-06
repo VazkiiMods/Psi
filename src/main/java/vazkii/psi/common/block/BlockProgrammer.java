@@ -64,13 +64,8 @@ public class BlockProgrammer extends BlockFacing {
 		}
 		
 		boolean enabled = programmer.isEnabled();
-		if(enabled && !programmer.playerLock.isEmpty()) {
-			if(!programmer.playerLock.equals(playerIn.getName())) {
-				if(!worldIn.isRemote)
-					playerIn.addChatComponentMessage(new ChatComponentTranslation("psimisc.notYourProgrammer").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
-				return true;
-			}
-		} else programmer.playerLock = playerIn.getName();
+		if(!enabled || programmer.playerLock.isEmpty())
+			programmer.playerLock = playerIn.getName();
 		
 		ItemStack stack = playerIn.getCurrentEquippedItem();
 		if(enabled && stack != null && stack.getItem() instanceof ISpellContainer && programmer.spell != null && !programmer.spell.name.trim().isEmpty()) {

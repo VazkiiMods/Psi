@@ -36,6 +36,7 @@ psimisc.mustHoldShift=(Must be holding SHIFT)
 psimisc.malformedJson=Import error: Malformed String.
 psimisc.missingPieces=Import error: Missing spell pieces used for import.
 psimisc.loadPrompt=Load?
+psimisc.spectator=[Spectator Mode]
 
 # BLOCK NAMES
 tile.psi:cadAssembler.name=CAD Assembler

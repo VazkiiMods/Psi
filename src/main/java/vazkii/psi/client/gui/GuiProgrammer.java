@@ -10,18 +10,14 @@
  */
 package vazkii.psi.client.gui;
 
-import java.awt.datatransfer.Clipboard;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.sound.sampled.Clip;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
-import ibxm.Player;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
@@ -34,9 +30,6 @@ import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
-import net.minecraftforge.event.entity.PlaySoundAtEntityEvent;
-import scala.reflect.internal.Trees.Throw;
-import scala.tools.nsc.ast.TreeBrowsers.ProgramTree;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.EnumCADStat;
 import vazkii.psi.api.cad.ICAD;
@@ -84,6 +77,7 @@ public class GuiProgrammer extends GuiScreen {
 	List<GuiButton> configButtons = new ArrayList();
 	GuiTextField searchField;
 	GuiTextField spellNameField;
+	boolean spectator;
 
 	public GuiProgrammer(TileProgrammer programmer) {
 		this.programmer = programmer;
@@ -108,11 +102,14 @@ public class GuiProgrammer extends GuiScreen {
 		searchField.setFocused(true);
 		searchField.setEnableBackgroundDrawing(false);
 
+		spectator = programmer.playerLock != null && !programmer.playerLock.isEmpty() && !programmer.playerLock.equals(mc.thePlayer.getName());
+		
 		spellNameField = new GuiTextField(0, fontRendererObj, left + xSize - 130, top + ySize - 14, 120, 10);
 		spellNameField.setCanLoseFocus(false);
 		spellNameField.setFocused(true);
 		spellNameField.setEnableBackgroundDrawing(false);
 		spellNameField.setMaxStringLength(20);
+		spellNameField.setEnabled(!spectator);
 
 		if(programmer.spell == null)
 			programmer.spell = new Spell();
@@ -121,8 +118,9 @@ public class GuiProgrammer extends GuiScreen {
 		
 		buttonList.clear();
 		onSelectedChanged();
-		buttonList.add(new GuiButtonIO(this, left + xSize + 2, top + ySize - 32, true));
-		buttonList.add(new GuiButtonIO(this, left + xSize + 2, top + ySize - 16, false));
+		buttonList.add(new GuiButtonIO(this, left + xSize + 2, top + ySize - (spectator ? 16 : 32), true));
+		if(!spectator)
+			buttonList.add(new GuiButtonIO(this, left + xSize + 2, top + ySize - 16, false));	
 	}
 
 	@Override
@@ -166,7 +164,14 @@ public class GuiProgrammer extends GuiScreen {
 		if(cad != null) {
 			int cadX = left - 42;
 			int cadY = top + 12;
+	        GlStateManager.enableRescaleNormal();
+	        GlStateManager.enableBlend();
+	        GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
+	        net.minecraft.client.renderer.RenderHelper.enableGUIStandardItemLighting();
 			mc.getRenderItem().renderItemAndEffectIntoGUI(cad, cadX, cadY);
+			net.minecraft.client.renderer.RenderHelper.disableStandardItemLighting();
+	        GlStateManager.disableRescaleNormal();
+			
 			if(mouseX > cadX && mouseY > cadY && mouseX < cadX + 16 && mouseY < cadY + 16) {
 				List<String> itemTooltip = cad.getTooltip(mc.thePlayer, false);
 		        for (int i = 0; i < itemTooltip.size(); ++i)
@@ -277,10 +282,18 @@ public class GuiProgrammer extends GuiScreen {
 			else drawTexturedModalRect(gridLeft + cursorX * 18, gridTop + cursorY * 18, 16, ySize, 16, 16);
 		}
 
+		int topy = top - 12;
+		if(spectator) {
+			String betaTest = EnumChatFormatting.RED + StatCollector.translateToLocal("psimisc.spectator");
+			mc.fontRendererObj.drawStringWithShadow(betaTest, left + xSize / 2 - mc.fontRendererObj.getStringWidth(betaTest) / 2, topy, 0xFFFFFF);
+			topy -= 10;
+		}
 		if(LibMisc.BETA_TESTING) {
 			String betaTest = StatCollector.translateToLocal("psimisc.wip");
-			mc.fontRendererObj.drawStringWithShadow(betaTest, left + xSize / 2 - mc.fontRendererObj.getStringWidth(betaTest) / 2, top - 12, 0xFFFFFF);
+			mc.fontRendererObj.drawStringWithShadow(betaTest, left + xSize / 2 - mc.fontRendererObj.getStringWidth(betaTest) / 2, topy, 0xFFFFFF);
 		}
+		
+		
 		mc.fontRendererObj.drawStringWithShadow(StatCollector.translateToLocal("psimisc.name"), left + padLeft, spellNameField.yPosition + 1, color);
 		spellNameField.drawTextBox();
 		if(panelEnabled) {
@@ -336,7 +349,7 @@ public class GuiProgrammer extends GuiScreen {
 			if(cursorX != -1 && cursorY != -1) {
 				selectedX = cursorX;
 				selectedY = cursorY;
-				if(mouseButton == 1) {
+				if(mouseButton == 1 && !spectator) {
 					if(isShiftKeyDown()) {
 						programmer.spell.grid.gridData[selectedX][selectedY] = null;
 						onSpellChanged(false);
@@ -353,6 +366,9 @@ public class GuiProgrammer extends GuiScreen {
 	protected void keyTyped(char par1, int par2) throws IOException {
 		super.keyTyped(par1, par2);
 
+		if(spectator)
+			return;
+		
 		if(panelEnabled) {
 			String last = searchField.getText();
 			searchField.textboxKeyTyped(par1, par2);
@@ -415,8 +431,10 @@ public class GuiProgrammer extends GuiScreen {
 			onSpellChanged(false);
 			closePanel();
 		} else if(button instanceof GuiButtonSideConfig) {
-			((GuiButtonSideConfig) button).onClick();
-			onSpellChanged(false);
+			if(!spectator) {
+				((GuiButtonSideConfig) button).onClick();
+				onSpellChanged(false);
+			}
 		} else if(button instanceof GuiButtonPage) {
 			int max = getPageCount();
 			int next = page + (((GuiButtonPage) button).right ? 1 : -1);
@@ -433,6 +451,9 @@ public class GuiProgrammer extends GuiScreen {
 						programmer.spell.writeToNBT(cmp);
 					setClipboardString(cmp.toString());
 				} else {
+					if(spectator)
+						return;
+					
 					String cb = getClipboardString();
 					try {
 						NBTTagCompound cmp = JsonToNBT.getTagFromJson(cb);
@@ -451,6 +472,7 @@ public class GuiProgrammer extends GuiScreen {
 							}
 						
 						programmer.spell = spell;
+						spellNameField.setText(spell.name);
 						onSpellChanged(false);
 					} catch(Throwable t) { 
 						mc.thePlayer.addChatComponentMessage(new ChatComponentTranslation("psimisc.malformedJson").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
@@ -536,8 +558,11 @@ public class GuiProgrammer extends GuiScreen {
 	}
 
 	public void onSpellChanged(boolean nameOnly) {
-		MessageSpellModified message = new MessageSpellModified(programmer.getPos(), programmer.spell);
-		NetworkHandler.INSTANCE.sendToServer(message);
+		if(!spectator) {
+			MessageSpellModified message = new MessageSpellModified(programmer.getPos(), programmer.spell);
+			NetworkHandler.INSTANCE.sendToServer(message);
+		}
+			
 		programmer.onSpellChanged();
 		onSelectedChanged();
 		
@@ -548,13 +573,13 @@ public class GuiProgrammer extends GuiScreen {
 	public void onSelectedChanged() {
 		buttonList.removeAll(configButtons);
 		configButtons.clear();
-		spellNameField.setEnabled(true);
+		spellNameField.setEnabled(!spectator);
 		
 		if(selectedX != -1 && selectedY != -1) {
 			SpellPiece piece = programmer.spell.grid.gridData[selectedX][selectedY];
 			if(piece != null) {
 				boolean intercept = piece.interceptKeystrokes();
-				spellNameField.setEnabled(!intercept);
+				spellNameField.setEnabled(!spectator && !intercept);
 				
 				if(piece.hasConfig()) {
 					int i = 0;
