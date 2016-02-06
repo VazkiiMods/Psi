@@ -69,6 +69,9 @@ public class PieceTrickBlink extends PieceTrick {
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 		
 		Vec3 look = e.getLookVec();
+		if(look == null)
+			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
+
 		double x = e.posX += look.xCoord * dist;
 		double y = e.posY += look.yCoord * dist;
 		double z = e.posZ += look.zCoord * dist;

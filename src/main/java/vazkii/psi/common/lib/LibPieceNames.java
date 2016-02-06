@@ -18,6 +18,7 @@ public final class LibPieceNames {
 	public static final String SELECTOR_NEARBY_LIVING = "selectorNearbyLiving";
 	public static final String SELECTOR_NEARBY_ENEMIES = "selectorNearbyEnemies";
 	public static final String SELECTOR_NEARBY_ANIMALS = "selectorNearbyAnimals";
+	public static final String SELECTOR_NEARBY_PROJECTILES = "selectorNearbyProjectiles";
 	public static final String SELECTOR_LOOPCAST_INDEX = "selectorLoopcastIndex";
 
 	public static final String OPERATOR_SUM = "operatorSum";

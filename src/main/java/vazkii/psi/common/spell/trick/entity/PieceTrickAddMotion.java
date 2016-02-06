@@ -11,6 +11,7 @@
 package vazkii.psi.common.spell.trick.entity;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.projectile.EntityThrowable;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.EnumSpellStat;
 import vazkii.psi.api.spell.Spell;
@@ -70,7 +71,10 @@ public class PieceTrickAddMotion extends PieceTrick {
 		if(!context.isInRadius(e))
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 		
-		final double mul = 0.3;
+		double mul = 0.3;
+		if(e instanceof EntityThrowable)
+			mul *= 10;
+		
 		dir = dir.copy().normalize().multiply(mul * speed);
 		e.motionX += dir.x;
 		e.motionY += dir.y;

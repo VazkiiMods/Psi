@@ -55,6 +55,7 @@ import vazkii.psi.common.spell.selector.entity.PieceSelectorNearbyAnimals;
 import vazkii.psi.common.spell.selector.entity.PieceSelectorNearbyEnemies;
 import vazkii.psi.common.spell.selector.entity.PieceSelectorNearbyItems;
 import vazkii.psi.common.spell.selector.entity.PieceSelectorNearbyLiving;
+import vazkii.psi.common.spell.selector.entity.PieceSelectorNearbyProjectiles;
 import vazkii.psi.common.spell.trick.PieceTrickBlaze;
 import vazkii.psi.common.spell.trick.PieceTrickDebug;
 import vazkii.psi.common.spell.trick.PieceTrickExplode;
@@ -82,6 +83,7 @@ public final class ModSpellPieces {
 	public static PieceContainer selectorNearbyLiving;
 	public static PieceContainer selectorNearbyEnemies;
 	public static PieceContainer selectorNearbyAnimals;
+	public static PieceContainer selectorNearbyProjectiles;
 	public static PieceContainer selectorLoopcastIndex;
 
 	public static PieceContainer operatorSum;
@@ -145,6 +147,7 @@ public final class ModSpellPieces {
 		selectorNearbyLiving = register(PieceSelectorNearbyLiving.class, LibPieceNames.SELECTOR_NEARBY_LIVING, LibPieceGroups.ENTITIES_INTRO);
 		selectorNearbyEnemies = register(PieceSelectorNearbyEnemies.class, LibPieceNames.SELECTOR_NEARBY_ENEMIES, LibPieceGroups.ENTITIES_INTRO);
 		selectorNearbyAnimals = register(PieceSelectorNearbyAnimals.class, LibPieceNames.SELECTOR_NEARBY_ANIMALS, LibPieceGroups.ENTITIES_INTRO);
+		selectorNearbyProjectiles = register(PieceSelectorNearbyProjectiles.class, LibPieceNames.SELECTOR_NEARBY_PROJECTILES, LibPieceGroups.ENTITIES_INTRO);
 		selectorLoopcastIndex = register(PieceSelectorLoopcastIndex.class, LibPieceNames.SELECTOR_LOOPCAST_INDEX, LibPieceGroups.LOOPCASTING, true);
 		
 		operatorSum = register(PieceOperatorSum.class, LibPieceNames.OPERATOR_SUM, LibPieceGroups.NUMBERS_INTRO, true);

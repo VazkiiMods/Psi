@@ -154,6 +154,8 @@ psi.spellpiece.selectorNearbyEnemies=Selector: Nearby Enemies
 psi.spellpiece.selectorNearbyEnemies.desc=Selects enemies near the given position
 psi.spellpiece.selectorNearbyAnimals=Selector: Nearby Animals
 psi.spellpiece.selectorNearbyAnimals.desc=Selects animals near the given position
+psi.spellpiece.selectorNearbyProjectiles=Selector: Nearby Projectiles
+psi.spellpiece.selectorNearbyProjectiles.desc=Selects projectiles near the given position
 psi.spellpiece.selectorLoopcastIndex=Selector: Loopcast Index
 psi.spellpiece.selectorLoopcastIndex.desc=Selects the amount of loopcast executions done
 
