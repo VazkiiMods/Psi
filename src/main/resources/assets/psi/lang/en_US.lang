@@ -55,6 +55,8 @@ item.psi:psimetal.name=Psimetal Ingot
 item.psi:psigem.name=Psigem
 item.psi:ebonyPsimetal.name=Ebony Psimetal Ingot
 item.psi:ivoryPsimetal.name=Ivory Psimetal Ingot
+item.psi:ebonySubstance.name=Ebony Substance
+item.psi:ivorySubstance.name=Ivory Substance
 item.psi:cad.name=Casting Assistant Device
 item.psi:cadAssemblyIron.name=Iron CAD Assembly
 item.psi:cadAssemblyGold.name=Gold CAD Assembly
@@ -268,6 +270,10 @@ psi.spellpiece.trickTorrent=Trick: Torrent
 psi.spellpiece.trickTorrent.desc=Creates water at the given point
 psi.spellpiece.trickOvergrow=Trick: Overgrow
 psi.spellpiece.trickOvergrow.desc=Fertilizes a block at the given point
+psi.spellpiece.trickGreaterInfusion=Trick: Greater Infusion
+psi.spellpiece.trickGreaterInfusion.desc=Infuses Diamonds into Psigems
+psi.spellpiece.trickEbonyIvory=Trick: Ebony And Ivory
+psi.spellpiece.trickEbonyIvory.desc=Infuses Coal and Quartz. Must be used in the End
 
 # SPELL PARAMETER NAMES
 psi.spellparam.target=Target
@@ -353,3 +359,5 @@ psi.piecegroup.blockMovement=Block Movement
 psi.piecegroup.blockMovement.desc=The ability to move blocks isn't as important as the ability to break and place them, but under some cases can come in handy.<br><br>The red piece of this group, "Trick: Move Block" takes a position for a block in the world and moves it given the target vector. The target vector must be axial, if it isn't, the trick will fail.<br><br>The other piece, "Trick: Collapse Block", simply collapses a block as if it were sand or gravel.<br><br>Both these tricks will fail on complex blocks (also known as Tile Entities) or blocks that can't be harvested with Silk Touch.
 psi.piecegroup.elementalArts=Elemental Arts
 psi.piecegroup.elementalArts.desc=What is a system that allows for manipulation of the world's properties if it didn't include some good old fashioned elemental themed magic?<br><br>This group contains Tricks for the four elements. The red piece of this group is "Trick: Smite", which creates a lightning bolt at the position passed in. The other tricks also do things of the sort.<br><br>The group also contains "Operator: Random", a piece that will generate a random number between 0 (inclusive) and the number passed in (exclusive). This can be used alongside Loopcast or Spell Circle spells in many ways. For example, one can create a spell that would use "Trick: Overgrow" to mass bone meal a plantation.
+psi.piecegroup.greaterInfusion=Greater Infusion
+psi.piecegroup.greaterInfusion.desc=wip

@@ -22,7 +22,9 @@ public class ItemMaterial extends ItemMod {
 			"psimetal",
 			"psigem",
 			"ebonyPsimetal",
-			"ivoryPsimetal"
+			"ivoryPsimetal",
+			"ebonySubstance",
+			"ivorySubstance"
 	};
 	
 	public ItemMaterial() {

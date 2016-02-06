@@ -75,5 +75,7 @@ public final class LibPieceNames {
 	public static final String TRICK_BLAZE = "trickBlaze";
 	public static final String TRICK_TORRENT = "trickTorrent";
 	public static final String TRICK_OVERGROW = "trickOvergrow";
+	public static final String TRICK_GREATER_INFUSION = "trickGreaterInfusion";
+	public static final String TRICK_EBONY_IVORY = "trickEbonyIvory";
 
 }

@@ -59,7 +59,6 @@ import vazkii.psi.common.spell.selector.entity.PieceSelectorNearbyProjectiles;
 import vazkii.psi.common.spell.trick.PieceTrickBlaze;
 import vazkii.psi.common.spell.trick.PieceTrickDebug;
 import vazkii.psi.common.spell.trick.PieceTrickExplode;
-import vazkii.psi.common.spell.trick.PieceTrickInfusion;
 import vazkii.psi.common.spell.trick.PieceTrickOvergrow;
 import vazkii.psi.common.spell.trick.PieceTrickSmite;
 import vazkii.psi.common.spell.trick.PieceTrickTorrent;
@@ -74,6 +73,9 @@ import vazkii.psi.common.spell.trick.entity.PieceTrickBlink;
 import vazkii.psi.common.spell.trick.entity.PieceTrickMassAddMotion;
 import vazkii.psi.common.spell.trick.entity.PieceTrickMassBlink;
 import vazkii.psi.common.spell.trick.entity.PieceTrickMassExodus;
+import vazkii.psi.common.spell.trick.infusion.PieceTrickEbonyIvory;
+import vazkii.psi.common.spell.trick.infusion.PieceTrickGreaterInfusion;
+import vazkii.psi.common.spell.trick.infusion.PieceTrickInfusion;
 
 public final class ModSpellPieces {
 
@@ -139,6 +141,8 @@ public final class ModSpellPieces {
 	public static PieceContainer trickBlaze;
 	public static PieceContainer trickTorrent;
 	public static PieceContainer trickOvergrow;
+	public static PieceContainer trickGreaterInfusion;
+	public static PieceContainer trickEbonyIvory;
 
 	public static void init() {
 		selectorCaster = register(PieceSelectorCaster.class, LibPieceNames.SELECTOR_CASTER, LibPieceGroups.TUTORIAL_1);
@@ -204,7 +208,9 @@ public final class ModSpellPieces {
 		trickBlaze = register(PieceTrickBlaze.class, LibPieceNames.TRICK_BLAZE, LibPieceGroups.ELEMENTAL_ARTS);
 		trickTorrent = register(PieceTrickTorrent.class, LibPieceNames.TRICK_TORRENT, LibPieceGroups.ELEMENTAL_ARTS);
 		trickOvergrow = register(PieceTrickOvergrow.class, LibPieceNames.TRICK_OVERGROW, LibPieceGroups.ELEMENTAL_ARTS);
-		
+		trickGreaterInfusion = register(PieceTrickGreaterInfusion.class, LibPieceNames.TRICK_GREATER_INFUSION, LibPieceGroups.GREATER_INFUSION, true);
+		trickEbonyIvory = register(PieceTrickEbonyIvory.class, LibPieceNames.TRICK_EBONY_IVORY, LibPieceGroups.GREATER_INFUSION);
+
 		PsiAPI.setGroupRequirements(LibPieceGroups.TUTORIAL_1, 1);
 		PsiAPI.setGroupRequirements(LibPieceGroups.TUTORIAL_2, 2, LibPieceGroups.TUTORIAL_1);
 		PsiAPI.setGroupRequirements(LibPieceGroups.TUTORIAL_3, 3, LibPieceGroups.TUTORIAL_2);
@@ -219,6 +225,7 @@ public final class ModSpellPieces {
 		PsiAPI.setGroupRequirements(LibPieceGroups.BLOCK_MOVEMENT, 11, LibPieceGroups.BLOCK_WORKS);
 		PsiAPI.setGroupRequirements(LibPieceGroups.ELEMENTAL_ARTS, 11, LibPieceGroups.VECTORS_INTRO);
 		PsiAPI.setGroupRequirements(LibPieceGroups.LOOPCASTING, 12, LibPieceGroups.INFUSION);
+		PsiAPI.setGroupRequirements(LibPieceGroups.GREATER_INFUSION, 15, LibPieceGroups.INFUSION);
 	}
 	
 	public static PieceContainer register(Class<? extends SpellPiece> clazz, String name, String group) {
