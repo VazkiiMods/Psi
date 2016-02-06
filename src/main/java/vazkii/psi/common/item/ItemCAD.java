@@ -11,19 +11,17 @@
 package vazkii.psi.common.item;
 
 import java.awt.Color;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
@@ -50,19 +48,14 @@ import vazkii.psi.api.spell.EnumSpellStat;
 import vazkii.psi.api.spell.ISpellContainer;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
-import vazkii.psi.client.core.handler.HUDHandler;
-import vazkii.psi.client.core.handler.ModelHandler;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
 import vazkii.psi.common.core.helper.ItemNBTHelper;
 import vazkii.psi.common.crafting.recipe.AssemblyScavengeRecipe;
-import vazkii.psi.common.crafting.recipe.DriveDuplicateRecipe;
 import vazkii.psi.common.item.base.ItemMod;
 import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.lib.LibItemNames;
-import vazkii.psi.common.network.NetworkHandler;
-import vazkii.psi.common.network.message.MessageDataSync;
 
 public class ItemCAD extends ItemMod implements ICAD {
 
@@ -87,6 +80,7 @@ public class ItemCAD extends ItemMod implements ICAD {
 			return itemStackIn;
 
 		ItemStack bullet = getBulletInSocket(itemStackIn, getSelectedSlot(itemStackIn));
+		cast(worldIn, playerIn, data, bullet, itemStackIn, 40, 25, 0.5F, null);
 		
 		if(bullet == null && craft(playerIn, new ItemStack(Items.redstone), new ItemStack(ModItems.material))) {
 			if(!worldIn.isRemote)
@@ -97,37 +91,44 @@ public class ItemCAD extends ItemMod implements ICAD {
 				data.levelUp();
 		}
 
-		if(data.getAvailablePsi() > 0 && bullet != null && bullet.getItem() instanceof ISpellContainer) {
+		return itemStackIn;
+	}
+
+	public static void cast(World world, EntityPlayer player, PlayerData data, ItemStack bullet, ItemStack cad, int cd, int particles, float sound, Consumer<SpellContext> predicate) {
+		if(data.getAvailablePsi() > 0 && cad != null && bullet != null && bullet.getItem() instanceof ISpellContainer) {
 			ISpellContainer spellContainer = (ISpellContainer) bullet.getItem();
 			if(spellContainer.containsSpell(bullet)) {
 				Spell spell = spellContainer.getSpell(bullet);
-				SpellContext context = new SpellContext().setPlayer(playerIn).setSpell(spell);
+				SpellContext context = new SpellContext().setPlayer(player).setSpell(spell);
+				if(predicate != null)
+					predicate.accept(context);
+				
 				if(context.isValid()) {
-					if(context.cspell.metadata.evaluateAgainst(itemStackIn)) {
-						int cost = getRealCost(itemStackIn, bullet, context.cspell.metadata.stats.get(EnumSpellStat.COST)); 
+					if(context.cspell.metadata.evaluateAgainst(cad)) {
+						int cost = getRealCost(cad, bullet, context.cspell.metadata.stats.get(EnumSpellStat.COST)); 
 						if(cost > 0 || cost == -1) {
 							if(cost != -1)
-								data.deductPsi(cost, 40, true);
+								data.deductPsi(cost, cd, true);
 
-							if(!worldIn.isRemote)
-								worldIn.playSoundAtEntity(playerIn, "psi:cadShoot", 0.5F, (float) (0.5 + Math.random() * 0.5));
+							if(!world.isRemote)
+								world.playSoundAtEntity(player, "psi:cadShoot", sound, (float) (0.5 + Math.random() * 0.5));
 
-							Color color = Psi.proxy.getCADColor(itemStackIn);
+							Color color = Psi.proxy.getCADColor(cad);
 							float r = (float) color.getRed() / 255F;
 							float g = (float) color.getGreen() / 255F;
 							float b = (float) color.getBlue() / 255F;
-							for(int i = 0; i < 25; i++) {
-								double x = playerIn.posX + ((Math.random() - 0.5) * 2.1) * playerIn.width;
-								double y = playerIn.posY - playerIn.getYOffset();
-								double z = playerIn.posZ + ((Math.random() - 0.5) * 2.1) * playerIn.width;
+							for(int i = 0; i < particles; i++) {
+								double x = player.posX + ((Math.random() - 0.5) * 2.1) * player.width;
+								double y = player.posY - player.getYOffset();
+								double z = player.posZ + ((Math.random() - 0.5) * 2.1) * player.width;
 								float grav = -0.15F - (float) Math.random() * 0.03F;
-								Psi.proxy.sparkleFX(worldIn, x, y, z, r, g, b, grav, 0.25F, 15);
+								Psi.proxy.sparkleFX(world, x, y, z, r, g, b, grav, 0.25F, 15);
 							}
 
-							double x = playerIn.posX;
-							double y = playerIn.posY + playerIn.getEyeHeight() - 0.1;
-							double z = playerIn.posZ;
-							Vector3 lookOrig = new Vector3(playerIn.getLookVec());
+							double x = player.posX;
+							double y = player.posY + player.getEyeHeight() - 0.1;
+							double z = player.posZ;
+							Vector3 lookOrig = new Vector3(player.getLookVec());
 							for(int i = 0; i < 25; i++) {
 								Vector3 look = lookOrig.copy();
 								double spread = 0.25;
@@ -136,20 +137,18 @@ public class ItemCAD extends ItemMod implements ICAD {
 								look.z += (Math.random() - 0.5) * spread;
 								look.normalize().multiply(0.15);
 
-								Psi.proxy.sparkleFX(worldIn, x, y, z, r, g, b, (float) look.x, (float) look.y, (float) look.z, 0.3F, 5);
+								Psi.proxy.sparkleFX(world, x, y, z, r, g, b, (float) look.x, (float) look.y, (float) look.z, 0.3F, 5);
 							}
 						}
 
 						spellContainer.castSpell(bullet, context);
-					} else if(!playerIn.worldObj.isRemote)
-						playerIn.addChatComponentMessage(new ChatComponentTranslation("psimisc.weakCad").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
+					} else if(!world.isRemote)
+						player.addChatComponentMessage(new ChatComponentTranslation("psimisc.weakCad").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
 				}
 			}
 		}
-
-		return itemStackIn;
 	}
-
+	
 	public static boolean craft(EntityPlayer player, ItemStack in, ItemStack out) {
 		List<EntityItem> items = player.worldObj.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(player.posX - 8, player.posY - 8, player.posZ - 8, player.posX + 8, player.posY + 8, player.posZ + 8));
 

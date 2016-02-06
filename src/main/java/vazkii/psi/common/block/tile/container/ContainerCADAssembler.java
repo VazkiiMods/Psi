@@ -19,8 +19,8 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import vazkii.psi.api.cad.EnumCADComponent;
-import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.cad.ICADComponent;
+import vazkii.psi.api.cad.ISocketable;
 import vazkii.psi.common.block.tile.TileCADAssembler;
 import vazkii.psi.common.block.tile.container.slot.SlotBullet;
 import vazkii.psi.common.block.tile.container.slot.SlotCADComponent;
@@ -86,7 +86,7 @@ public class ContainerCADAssembler extends Container {
                 	Slot compSlot = componentToSlotMap.get(component.getComponentType(itemstack1));
                     if(!this.mergeItemStack(itemstack1, compSlot.slotNumber, compSlot.slotNumber + 1, false))
                         return null;
-                } else if(itemstack1.getItem() instanceof ICAD) { // CAD Input slot
+                } else if(itemstack1.getItem() instanceof ISocketable) { // CAD Input slot
                     if(!this.mergeItemStack(itemstack1, 6, 7, false))
                         return null;
                 } else if(itemstack1.getItem() == ModItems.spellBullet) {

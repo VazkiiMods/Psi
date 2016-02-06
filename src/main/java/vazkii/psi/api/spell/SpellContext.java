@@ -12,10 +12,11 @@ package vazkii.psi.api.spell;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.MovingObjectPosition;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.internal.MathHelper;
 import vazkii.psi.api.internal.Vector3;
-import vazkii.psi.common.spell.SpellCache;
 
 /**
  * Context for a spell. Used for casting it.
@@ -51,6 +52,9 @@ public final class SpellContext {
 	 * loopcast. Increments every time for each loopcast iteration.
 	 */
 	public int loopcastIndex = 0;
+	
+	public ItemStack tool;
+	public MovingObjectPosition positionBroken;
 	
 	/**
 	 * Sets the {@link #caster} and returns itself. This also calls {@link #setFocalPoint(Entity)}.

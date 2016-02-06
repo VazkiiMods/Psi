@@ -11,11 +11,10 @@
 package vazkii.psi.common.spell.trick.block;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemTool;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
@@ -66,15 +65,16 @@ public class PieceTrickBreakBlock extends PieceTrick {
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 
 		BlockPos pos = new BlockPos(positionVal.x, positionVal.y, positionVal.z);
-		removeBlockWithDrops(context.caster, context.caster.worldObj, pos, ConfigHandler.cadHarvestLevel, false, 0, true);
+		removeBlockWithDrops(context.caster, context.caster.worldObj, context.tool, pos, true);
 
 		return null;
 	}
 
-	public static void removeBlockWithDrops(EntityPlayer player, World world, BlockPos pos, int harvestLevel, boolean silk, int fortune, boolean particles) {
+	public static void removeBlockWithDrops(EntityPlayer player, World world, ItemStack tool, BlockPos pos, boolean particles) {
 		if(!world.isBlockLoaded(pos))
 			return;
 		
+		int harvestLevel = ConfigHandler.cadHarvestLevel;
 		IBlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
 		if(!world.isRemote && block != null && !block.isAir(world, pos) && block.getPlayerRelativeBlockHardness(player, world, pos) > 0) {

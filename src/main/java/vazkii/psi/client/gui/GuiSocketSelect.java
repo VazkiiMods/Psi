@@ -187,12 +187,11 @@ public class GuiSocketSelect extends GuiScreen {
 		GlStateManager.scale(s, s, s);
 		GlStateManager.translate((float) x / s - 8, (float) y / s - 8, 0);
 		
-		
         GlStateManager.enableRescaleNormal();
         GlStateManager.enableBlend();
         GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
         RenderHelper.enableGUIStandardItemLighting();
-		mc.getRenderItem().renderItemAndEffectIntoGUI(cadStack, 0, 0);
+		mc.getRenderItem().renderItemAndEffectIntoGUI(socketableStack, 0, 0);
         RenderHelper.disableStandardItemLighting();
         GlStateManager.disableBlend();
         GlStateManager.disableRescaleNormal();
