@@ -13,10 +13,12 @@ package vazkii.psi.common.item;
 import java.awt.Color;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.regex.Pattern;
 
 import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -30,6 +32,7 @@ import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -63,6 +66,8 @@ public class ItemCAD extends ItemMod implements ICAD {
 	private static final String TAG_STORED_PSI = "storedPsi";
 	private static final String TAG_BULLET_PREFIX = "bullet";
 	private static final String TAG_SELECTED_SLOT = "selectedSlot";
+	
+	private static final Pattern FAKE_PLAYER_PATTERN = Pattern.compile("^(?:\\[.*\\])|(?:ComputerCraft)$");
 
 	public ItemCAD() {
 		super(LibItemNames.CAD);
@@ -95,7 +100,7 @@ public class ItemCAD extends ItemMod implements ICAD {
 	}
 
 	public static void cast(World world, EntityPlayer player, PlayerData data, ItemStack bullet, ItemStack cad, int cd, int particles, float sound, Consumer<SpellContext> predicate) {
-		if(data.getAvailablePsi() > 0 && cad != null && bullet != null && bullet.getItem() instanceof ISpellContainer) {
+		if(data.getAvailablePsi() > 0 && cad != null && bullet != null && bullet.getItem() instanceof ISpellContainer && isTruePlayer(player)) {
 			ISpellContainer spellContainer = (ISpellContainer) bullet.getItem();
 			if(spellContainer.containsSpell(bullet)) {
 				Spell spell = spellContainer.getSpell(bullet);
@@ -207,6 +212,16 @@ public class ItemCAD extends ItemMod implements ICAD {
 		}
 
 		return cost;
+	}
+	
+	public static boolean isTruePlayer(Entity e) {
+		if(!(e instanceof EntityPlayer))
+			return false;
+
+		EntityPlayer player = (EntityPlayer) e;
+
+		String name = player.getName();
+		return !(player instanceof FakePlayer || FAKE_PLAYER_PATTERN.matcher(name).matches());
 	}
 
 	public static void setComponent(ItemStack stack, ItemStack componentStack) {
