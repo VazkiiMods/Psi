@@ -42,7 +42,6 @@ public class GuiIntroduction extends GuiScreen {
 		left = (width - xSize) / 2;
 		top = (height - ySize) / 2;
 		
-		PersistencyHandler.ignore = false;
 		skip = PersistencyHandler.persistentLevel > 0 && !PersistencyHandler.ignore; 
 		
 		buttonList.clear();
