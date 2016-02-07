@@ -101,7 +101,7 @@ public final class HUDHandler {
 		
 		ICAD cad = (ICAD) cadStack.getItem();
 		PlayerData data = PlayerDataHandler.get(mc.thePlayer);
-		if(data.level == 0)
+		if(data.level == 0 && !mc.thePlayer.capabilities.isCreativeMode)
 			return;
 		
 		boolean right = ConfigHandler.psiBarOnRight;
