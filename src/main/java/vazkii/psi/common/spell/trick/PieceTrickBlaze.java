@@ -39,6 +39,7 @@ public class PieceTrickBlaze extends PieceTrick {
 	
 	@Override
 	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
+		super.addToMetadata(meta);
 		meta.addStat(EnumSpellStat.POTENCY, 20);
 		meta.addStat(EnumSpellStat.COST, 40);
 	}
