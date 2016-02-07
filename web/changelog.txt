@@ -1,0 +1,73 @@
+beta-9
+*Addded spectator mode to the Spell Programmer.
+*Added a "Spell is Unnamed" compilation error. Previously trying to put an unnamed spell into a bullet would just not do anything.
+*Added a Random integer operator.
+*Added Elemental Arts with 4 tricks.
+*Added Greater Infusion and Ebony&Ivory. T3 CAD components are now craftable.
+*Added Selector: Nearby Projectiles to Entities 101.
+*Added Tool Casting and a Psimetal toolset to use with it.
+*Fixed a crash with Trick: Blink on an entity that techncailly doesn't have a look vector.
+*Fixed compressed blocks making 1 item instead of 9 when de-compressed.
+*Fixed Spell Bullets not being able to set a spell from a programmer being used by someone else.
+*Fixed the Infinite Loop error not showing up properly.
+*Fixed the Introduction skip menu not being skippable (yes, ironic).
+*Fixed the player's CAD rendering wrong in the programmer GUI.
+*Fixed the Programmer render crash. Again. I think. Maybe. Hopefully.
+*Fixed the programmer's Import button not setting the spell's name.
+*Fixed the Psi bar not showing up in creative if you have level 0.
+*Fixed tooltips going offscreen on larger gui scales.
+*Selector: Nearby Living now also picks up players.
+*The cost and power for Trick: Add Motion is now exponential.
+beta-8
+*Fixed a crash when saving player data if an invalid spell group gets registered somehow. (for real this time >_>)
+*Fixed a crash when someone else in a server breaks a programmer in creative. (for real this time >_>)
+*Fixed the Psidust Block texture not rendering.
+*Replaced the Golden CAD Colorizer (uncraftable) with a Psi CAD Colorizer, with a recipe!
+beta-7
+*Added a persistency system, where, in survival worlds, the player's highest level is registered, and they can revert back to it on a new world.
+*Added models for CADs. Textures are WIP.
+*CADs built only with an Assembly can now be scavenged by placing them in the crafting grid.
+*Loopcast spell circles now reflect the color of the player's CAD.
+*Fixed a crash when saving player data if an invalid spell group gets registered somehow.
+*Fixed a crash when someone else in a server breaks a programmer in creative.
+*Fixed a spell circle appearing under the player for a tiny bit after they change bullet socket.
+*Tweaked some icons.
+beta-6
+*Added a note to the first tutorial telling you that you can only have 1 CAD.
+*Added Import/Export (to/from clipboard) to the Programmer GUI.
+*Cyan plates are cyaner.
+*Fixed a (client-side) crash on multiplayer if another player casts a projectile or circle spell)
+*Fixed a desync where if a player dies, their information, in the client side only, is reset.
+*Fixed desyncs because I messed the coordinate check in the packet dispatcher :V
+*Fixed loopcasting not working on servers.
+*Increased Simple CAD Core's Complexity to 10 (from 6).
+*Operator: Closest to Point and Operator: Random Entity now throw a spell error if there's no valid targets instead of crashing the game \:D/
+*Spell search bar in spell programmers now clears when you re-open the piece selection panel.
+*Vector Construct is now the red piece of Vectors 101, rather than Vector Cross Product.
+beta-5
+*Fixed Error Suppressors crashing the game if put next to something that takes a parameter.
+beta-4
+*Added a display for remaining blocks straight out of Botania.
+*Added an Error Suppressor piece. It does what you expect.
+*Added Block Movement tricks: Move Block, Collapse Block
+*Added Circle bullets for Spell Circle type magic.
+*Added Creative CAD Assembly with infinity Potency and Efficiency.
+*Added decorative blocks so you can create your own lab!
+*Added Entity Movement tricks: Blink, Mass Blink, Mass Exodus, Mass Add Motion.
+*Added Integer operator tricks: Integer Division, Modulus.
+*Added Loopcast Bullets and relevant pieces (Selector: Loopcast Index)
+*Added Spell Drives, means of copying and transporting spells.
+*Bullets can now have cost multipliers.
+*Improved bullet tooltips with type and cost multiplier.
+*Improved the Level Up indicator to no longer be a dumb chat message.
+*Improved the radial selector so it shows what type of bullet a spell is.
+*The programming GUI now closes if the programmer is broken.
+*Tricks that place blocks no longer remove them from your inventory in creative.
+*Tweaked some icons.
+beta-3
+*Removed lambda to hopefully fix the problem beta-2 was supposed to fix.
+beta-2
+*Removed F in shaders becase screw AMD.
+*Recompiled to hopefully fix a problem caused by a ForgeGradle bug that made lambas mess up.
+beta-1
+*First Release
