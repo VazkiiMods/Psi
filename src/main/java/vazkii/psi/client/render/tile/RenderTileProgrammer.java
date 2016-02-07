@@ -40,12 +40,12 @@ public class RenderTileProgrammer extends TileEntitySpecialRenderer<TileProgramm
 			GlStateManager.rotate(-90F, 0F, 1F, 0F);
 			
 			float rot = 90F;
-			Block block = te.getBlockType();
-			if(block != ModBlocks.programmer)
+			IBlockState state = te.getWorld().getBlockState(te.getPos());
+			if(state.getBlock() != ModBlocks.programmer)
 				return;
 			
-			IBlockState state = te.getBlockType().getActualState(te.getWorld().getBlockState(te.getPos()), te.getWorld(), te.getPos());
-			EnumFacing facing = state.getValue(BlockFacing.FACING);
+			IBlockState actualState = state.getBlock().getActualState(state, te.getWorld(), te.getPos());
+			EnumFacing facing = actualState.getValue(BlockFacing.FACING);
 			switch(facing) {
 			case SOUTH: 
 				rot = -90F;
