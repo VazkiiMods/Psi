@@ -18,6 +18,7 @@ import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -68,6 +69,22 @@ public final class RenderHelper {
 			int var9 = 8;
 			if (tooltipData.size() > 1)
 				var9 += 2 + (tooltipData.size() - 1) * 10;
+
+			ScaledResolution res = new ScaledResolution(Minecraft.getMinecraft());
+			int right = var6 + var5 + 5;
+			int swidth = res.getScaledWidth();
+			if(right > swidth) {
+				int diff = right - swidth;
+				var6 -= diff;
+			}
+			
+			int bottom = var7 + var9 + 5;
+			int sheight = res.getScaledHeight();
+			if(bottom > sheight) {
+				int diff = bottom - sheight;
+				var7 -= diff;
+			}
+			
 			float z = 300F;
 			drawGradientRect(var6 - 3, var7 - 4, z, var6 + var5 + 3, var7 - 3, color2, color2);
 			drawGradientRect(var6 - 3, var7 + var9 + 3, z, var6 + var5 + 3, var7 + var9 + 4, color2, color2);
