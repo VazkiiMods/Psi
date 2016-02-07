@@ -13,6 +13,7 @@ package vazkii.psi.common.item.tool;
 import java.util.List;
 import java.util.Set;
 
+import ibxm.Player;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -54,6 +55,21 @@ public class ItemPsimetalTool extends ItemModTool implements IPsimetalTool {
 		}
 		
 		return false;
+	}
+	
+	@Override
+	public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
+		if(entityIn instanceof EntityPlayer && worldIn.getTotalWorldTime() % 80 == 0 && stack.getItemDamage() > 0) {
+			EntityPlayer player = (EntityPlayer) entityIn;
+			PlayerData data = PlayerDataHandler.get(player);
+			data.deductPsi(600, 5, true);
+			stack.setItemDamage(stack.getItemDamage() - 1);
+		}
+	}
+	
+	@Override
+	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+		return slotChanged;
 	}
 	
 	@Override
