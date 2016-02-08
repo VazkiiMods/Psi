@@ -26,7 +26,7 @@ public class PieceTrickRegeneration extends PieceTrickPotionBase {
 	
 	@Override
 	public int getPotency(int power, int time) {
-		return (power * 2) * power * time * 6;
+		return power * power * power * time * 5;
 	}
 
 }
