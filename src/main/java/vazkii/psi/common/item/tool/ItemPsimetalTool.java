@@ -28,6 +28,7 @@ import vazkii.psi.api.cad.ISocketable;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
+import vazkii.psi.common.core.helper.ItemNBTHelper;
 import vazkii.psi.common.item.ItemCAD;
 import vazkii.psi.common.item.base.ItemMod;
 import vazkii.psi.common.item.base.ItemModTool;
@@ -35,6 +36,8 @@ import vazkii.psi.common.item.base.ModItems;
 
 public class ItemPsimetalTool extends ItemModTool implements IPsimetalTool {
 
+	private static final String TAG_REGEN_TIME = "regenTime";
+	
 	protected ItemPsimetalTool(String name, float attackDamage, Set<Block> effectiveBlocks, String... variants) {
 		super(name, attackDamage, PsiAPI.PSIMETAL_MATERIAL, effectiveBlocks, variants);
 	}
@@ -59,11 +62,15 @@ public class ItemPsimetalTool extends ItemModTool implements IPsimetalTool {
 	
 	@Override
 	public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
-		if(entityIn instanceof EntityPlayer && worldIn.getTotalWorldTime() % 80 == 0 && stack.getItemDamage() > 0) {
-			EntityPlayer player = (EntityPlayer) entityIn;
-			PlayerData data = PlayerDataHandler.get(player);
-			data.deductPsi(600, 5, true);
-			stack.setItemDamage(stack.getItemDamage() - 1);
+		if(entityIn instanceof EntityPlayer && stack.getItemDamage() > 0 && !isSelected) {
+			int regenTime = ItemNBTHelper.getInt(stack, TAG_REGEN_TIME, 0);
+			if(regenTime % 80 == 0) {
+				EntityPlayer player = (EntityPlayer) entityIn;
+				PlayerData data = PlayerDataHandler.get(player);
+				data.deductPsi(600, 5, true);
+				stack.setItemDamage(stack.getItemDamage() - 1);
+			}
+			ItemNBTHelper.setInt(stack, TAG_REGEN_TIME, regenTime + 1);
 		}
 	}
 	
