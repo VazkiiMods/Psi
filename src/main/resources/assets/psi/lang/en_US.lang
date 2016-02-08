@@ -307,6 +307,14 @@ psi.spellpiece.trickRegeneration=Trick: Regeneration
 psi.spellpiece.trickRegeneration.desc=Applies a Regeneration effect
 psi.spellpiece.trickResistance=Trick: Resistance
 psi.spellpiece.trickResistance.desc=Applies a Resistance effect
+psi.spellpiece.trickSlowness=Trick: Slowness
+psi.spellpiece.trickSlowness.desc=Applies a Slowness effect
+psi.spellpiece.trickWeakness=Trick: Weakness
+psi.spellpiece.trickWeakness.desc=Applies a Weakness effect
+psi.spellpiece.trickWither=Trick: Wither
+psi.spellpiece.trickWither.desc=Applies a Wither effect
+psi.spellpiece.trickIgnite=Trick: Ignite
+psi.spellpiece.trickIgnite.desc=Sets an entity on fire
 
 # SPELL PARAMETER NAMES
 psi.spellparam.target=Target
@@ -402,3 +410,5 @@ psi.piecegroup.toolCasting=Tool Casting
 psi.piecegroup.toolCasting.desc=Psimetal and Psigems can be crafted into a Toolset: Shovel, Pickaxe, Axe and Sword.<br><br>These tools can be socketed with up to 3 Spell Bullets. When their relative action is executed, that being breaking a block for tools or attacking a mob for the sword, the selected spell is activated. The spell in a Psimetal tool is selected the same way as a CAD. A fourth slot is also shown in the radial menu in case one wants to disable the tool's spells entirely. Psimetal tools will slowly regenerate and restore their damage using the player's Psi energy, in bursts, as long as the tool isn't the item currently in the player's hand.<br><br>Spells in a tool aren't casted by the tool, but rather by the CAD, therefore, the limitations imposed by the CAD's stats still stand.<br><br>This group introduces a few pieces that can be used in conjuction with the tools. The red piece of this group, "Selector: Block Broken" is meant to be used with tools, and gets you a vector respective to where you broke the block in the world. "Selector: Block Broken Side" gets the side in which you broke that block.<br><br>Lastly "Selector: Attack Target" does exactly as it sounds, it gets you the entity you attacked with a sword when the spell is casted.
 psi.piecegroup.positiveEffects=Positive Effects
 psi.piecegroup.positiveEffects.desc=The ability to apply effects to entities is a must of any magical spellbook worth its weight. Luckily, you are not making spells with a spellbook, but you can still apply effects anyway.<br><br>All of the pieces in this group will apply the respective potion effect to the target entity, for the target time (in seconds). If the piece also has a Power parameter, that defines the level of the effect to apply.<br><br>So, for example, "Trick: Speed" with Time 20 and Power 2 would apply a Spell II effect for 20 seconds to the target entity.
+psi.piecegroup.negativeEffects=Negative Effects
+psi.piecegroup.negativeEffects.desc=As to be expected, after Positive Effects come Negative Effects.<br><br>There isn't much to say here, really. Everything in this group works exactly as expected. Have fun.

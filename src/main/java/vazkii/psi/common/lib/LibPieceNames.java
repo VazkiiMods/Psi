@@ -89,5 +89,9 @@ public final class LibPieceNames {
 	public static final String TRICK_INVISIBILITY = "trickInvisibility";
 	public static final String TRICK_REGENERATION = "trickRegeneration";
 	public static final String TRICK_RESISTANCE = "trickResistance";
+	public static final String TRICK_SLOWNESS = "trickSlowness";
+	public static final String TRICK_WEAKNESS = "trickWeakness";
+	public static final String TRICK_WITHER = "trickWither";
+	public static final String TRICK_IGNITE = "trickIgnite";
 
 }

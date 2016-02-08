@@ -29,5 +29,6 @@ public final class LibPieceGroups {
 	public static final String GREATER_INFUSION = "greaterInfusion";
 	public static final String TOOL_CASTING = "toolCasting";
 	public static final String POSITIVE_EFFECTS = "positiveEffects";
+	public static final String NEGATIVE_EFFECTS = "negativeEffects";
 
 }

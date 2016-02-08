@@ -73,6 +73,7 @@ import vazkii.psi.common.spell.trick.block.PieceTrickPlaceBlock;
 import vazkii.psi.common.spell.trick.block.PieceTrickPlaceInSequence;
 import vazkii.psi.common.spell.trick.entity.PieceTrickAddMotion;
 import vazkii.psi.common.spell.trick.entity.PieceTrickBlink;
+import vazkii.psi.common.spell.trick.entity.PieceTrickIgnite;
 import vazkii.psi.common.spell.trick.entity.PieceTrickMassAddMotion;
 import vazkii.psi.common.spell.trick.entity.PieceTrickMassBlink;
 import vazkii.psi.common.spell.trick.entity.PieceTrickMassExodus;
@@ -85,9 +86,12 @@ import vazkii.psi.common.spell.trick.potion.PieceTrickInvisibility;
 import vazkii.psi.common.spell.trick.potion.PieceTrickJumpBoost;
 import vazkii.psi.common.spell.trick.potion.PieceTrickRegeneration;
 import vazkii.psi.common.spell.trick.potion.PieceTrickResistance;
+import vazkii.psi.common.spell.trick.potion.PieceTrickSlowness;
 import vazkii.psi.common.spell.trick.potion.PieceTrickSpeed;
 import vazkii.psi.common.spell.trick.potion.PieceTrickStrength;
 import vazkii.psi.common.spell.trick.potion.PieceTrickWaterBreathing;
+import vazkii.psi.common.spell.trick.potion.PieceTrickWeakness;
+import vazkii.psi.common.spell.trick.potion.PieceTrickWither;
 
 public final class ModSpellPieces {
 
@@ -167,6 +171,10 @@ public final class ModSpellPieces {
 	public static PieceContainer trickInvisibility;
 	public static PieceContainer trickRegeneration;
 	public static PieceContainer trickResistance;
+	public static PieceContainer trickSlowness;
+	public static PieceContainer trickWeakness;
+	public static PieceContainer trickWither;
+	public static PieceContainer trickIgnite;
 
 	public static void init() {
 		selectorCaster = register(PieceSelectorCaster.class, LibPieceNames.SELECTOR_CASTER, LibPieceGroups.TUTORIAL_1);
@@ -246,6 +254,10 @@ public final class ModSpellPieces {
 		trickInvisibility = register(PieceTrickInvisibility.class, LibPieceNames.TRICK_INVISIBILITY, LibPieceGroups.POSITIVE_EFFECTS);
 		trickRegeneration = register(PieceTrickRegeneration.class, LibPieceNames.TRICK_REGENERATION, LibPieceGroups.POSITIVE_EFFECTS);
 		trickResistance = register(PieceTrickResistance.class, LibPieceNames.TRICK_RESISTANCE, LibPieceGroups.POSITIVE_EFFECTS);
+		trickSlowness = register(PieceTrickSlowness.class, LibPieceNames.TRICK_SLOWNESS, LibPieceGroups.NEGATIVE_EFFECTS);
+		trickWeakness = register(PieceTrickWeakness.class, LibPieceNames.TRICK_WEAKNESS, LibPieceGroups.NEGATIVE_EFFECTS);
+		trickIgnite = register(PieceTrickIgnite.class, LibPieceNames.TRICK_IGNITE, LibPieceGroups.NEGATIVE_EFFECTS);
+		trickWither = register(PieceTrickWither.class, LibPieceNames.TRICK_WITHER, LibPieceGroups.NEGATIVE_EFFECTS, true);
 
 		PsiAPI.setGroupRequirements(LibPieceGroups.TUTORIAL_1, 1);
 		PsiAPI.setGroupRequirements(LibPieceGroups.TUTORIAL_2, 2, LibPieceGroups.TUTORIAL_1);
@@ -264,6 +276,7 @@ public final class ModSpellPieces {
 		PsiAPI.setGroupRequirements(LibPieceGroups.GREATER_INFUSION, 15, LibPieceGroups.INFUSION);
 		PsiAPI.setGroupRequirements(LibPieceGroups.TOOL_CASTING, 16, LibPieceGroups.GREATER_INFUSION);
 		PsiAPI.setGroupRequirements(LibPieceGroups.POSITIVE_EFFECTS, 16, LibPieceGroups.GREATER_INFUSION);
+		PsiAPI.setGroupRequirements(LibPieceGroups.NEGATIVE_EFFECTS, 17, LibPieceGroups.POSITIVE_EFFECTS);
 	}
 	
 	public static PieceContainer register(Class<? extends SpellPiece> clazz, String name, String group) {
