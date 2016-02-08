@@ -1,4 +1,4 @@
-# MISC
+f# MISC
 itemGroup.Psi=Psi
 
 psimisc.componentType=&aComponent Type&7: %s
@@ -289,6 +289,24 @@ psi.spellpiece.trickGreaterInfusion=Trick: Greater Infusion
 psi.spellpiece.trickGreaterInfusion.desc=Infuses Diamonds into Psigems
 psi.spellpiece.trickEbonyIvory=Trick: Ebony And Ivory
 psi.spellpiece.trickEbonyIvory.desc=Infuses Coal and Quartz. Must be used in the End
+psi.spellpiece.trickSpeed=Trick: Speed
+psi.spellpiece.trickSpeed.desc=Applies a Speed effect
+psi.spellpiece.trickHaste=Trick: Haste
+psi.spellpiece.trickHaste.desc=Applies a Haste effect
+psi.spellpiece.trickStrength=Trick: Strength
+psi.spellpiece.trickStrength.desc=Applies a Strength effect
+psi.spellpiece.trickJumpBoost=Trick: Jump Boost
+psi.spellpiece.trickJumpBoost.desc=Applies a Jump Boost effect
+psi.spellpiece.trickWaterBreathing=Trick: Water Breathing
+psi.spellpiece.trickWaterBreathing.desc=Applies a Water Breathing effect
+psi.spellpiece.trickFireResistance=Trick: Fire Resistance
+psi.spellpiece.trickFireResistance.desc=Applies a Fire Resistance effect
+psi.spellpiece.trickInvisibility=Trick: Invisibility
+psi.spellpiece.trickInvisibility.desc=Applies an Invisibility effect
+psi.spellpiece.trickRegeneration=Trick: Regeneration
+psi.spellpiece.trickRegeneration.desc=Applies a Regeneration effect
+psi.spellpiece.trickResistance=Trick: Resistance
+psi.spellpiece.trickResistance.desc=Applies a Resistance effect
 
 # SPELL PARAMETER NAMES
 psi.spellparam.target=Target
@@ -313,6 +331,7 @@ psi.spellparam.y=Y
 psi.spellparam.z=Z
 psi.spellparam.radius=Radius
 psi.spellparam.distance=Distance
+psi.spellparam.time=Time
 
 # DATA TYPE NAMES
 psi.datatype.Null=None
@@ -337,6 +356,8 @@ psi.spellerror.invalidparam=A Parameter is facing an invalid piece
 psi.spellerror.samesideparams=Two or more Parameters are sharing a side
 psi.spellerror.loop=Can't resolve due to endless loop
 psi.spellerror.nonpositivevalue=A Number Parameter that needs to be positive isn't
+psi.spellerror.noninteger=A Number Parameter that needs to an integer isn't
+psi.spellerror.nonpositiveinteger=A Number Parameter that needs to be a positive integer isn't
 
 # RUNTIME ERRORS
 psi.spellerror.dividebyzero=ERROR: Divide by zero.
@@ -379,3 +400,5 @@ psi.piecegroup.greaterInfusion=Greater Infusion
 psi.piecegroup.greaterInfusion.desc=The ability to infuse Diamonds into Psigems is very important in the progress of spellslinging. Using Psigems, stronger CAD components can be created. Similarly to "Trick: Infusion", "Trick: Greater Infusion" will infuse nearby Diamonds, turning them into Psigems.<br><br>Furthermore, "Trick: Ebony And Ivory" will infuse Coal into an Ebony Substance and Nether Quartz into an Ivory Substance, both of which can be combined with a Psimetal Ingot to create the respective alloy. These alloys can later be used to create stronger CAD Assemblies. "Trick: Ebony And Ivory" can only be used while in the End. 
 psi.piecegroup.toolCasting=Tool Casting
 psi.piecegroup.toolCasting.desc=Psimetal and Psigems can be crafted into a Toolset: Shovel, Pickaxe, Axe and Sword.<br><br>These tools can be socketed with up to 3 Spell Bullets. When their relative action is executed, that being breaking a block for tools or attacking a mob for the sword, the selected spell is activated. The spell in a Psimetal tool is selected the same way as a CAD. A fourth slot is also shown in the radial menu in case one wants to disable the tool's spells entirely. Psimetal tools will slowly regenerate and restore their damage using the player's Psi energy, in bursts, as long as the tool isn't the item currently in the player's hand.<br><br>Spells in a tool aren't casted by the tool, but rather by the CAD, therefore, the limitations imposed by the CAD's stats still stand.<br><br>This group introduces a few pieces that can be used in conjuction with the tools. The red piece of this group, "Selector: Block Broken" is meant to be used with tools, and gets you a vector respective to where you broke the block in the world. "Selector: Block Broken Side" gets the side in which you broke that block.<br><br>Lastly "Selector: Attack Target" does exactly as it sounds, it gets you the entity you attacked with a sword when the spell is casted.
+psi.piecegroup.positiveEffects=Positive Effects
+psi.piecegroup.positiveEffects.desc=The ability to apply effects to entities is a must of any magical spellbook worth its weight. Luckily, you are not making spells with a spellbook, but you can still apply effects anyway.<br><br>All of the pieces in this group will apply the respective potion effect to the target entity, for the target time (in seconds). If the piece also has a Power parameter, that defines the level of the effect to apply.<br><br>So, for example, "Trick: Speed" with Time 20 and Power 2 would apply a Spell II effect for 20 seconds to the target entity.

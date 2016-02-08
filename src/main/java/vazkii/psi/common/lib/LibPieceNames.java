@@ -80,5 +80,14 @@ public final class LibPieceNames {
 	public static final String TRICK_OVERGROW = "trickOvergrow";
 	public static final String TRICK_GREATER_INFUSION = "trickGreaterInfusion";
 	public static final String TRICK_EBONY_IVORY = "trickEbonyIvory";
+	public static final String TRICK_SPEED = "trickSpeed";
+	public static final String TRICK_HASTE = "trickHaste";
+	public static final String TRICK_STRENGTH = "trickStrength";
+	public static final String TRICK_JUMP_BOOST = "trickJumpBoost";
+	public static final String TRICK_WATER_BREATHING = "trickWaterBreathing";
+	public static final String TRICK_FIRE_RESISTANCE = "trickFireResistance";
+	public static final String TRICK_INVISIBILITY = "trickInvisibility";
+	public static final String TRICK_REGENERATION = "trickRegeneration";
+	public static final String TRICK_RESISTANCE = "trickResistance";
 
 }

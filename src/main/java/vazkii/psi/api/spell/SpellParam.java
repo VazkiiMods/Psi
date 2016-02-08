@@ -46,6 +46,7 @@ public abstract class SpellParam {
 	public static final String GENERIC_NAME_Y = "psi.spellparam.y";
 	public static final String GENERIC_NAME_Z = "psi.spellparam.z";
 	public static final String GENERIC_NAME_RADIUS = "psi.spellparam.radius";
+	public static final String GENERIC_NAME_TIME = "psi.spellparam.time";
 
 	public final String name;
 	public final int color;

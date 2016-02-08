@@ -28,6 +28,8 @@ public class SpellCompilationException extends Exception {
 	public static final String SAME_SIDE_PARAMS = "psi.spellerror.samesideprams";
 	public static final String INFINITE_LOOP = "psi.spellerror.loop";
 	public static final String NON_POSITIVE_VALUE = "psi.spellerror.nonpositivevalue";
+	public static final String NON_INTEGER = "psi.spellerror.noninteger";
+	public static final String NON_POSITIVE_INTEGER = "psi.spellerror.nonpositiveinteger";
 
 	public final Pair<Integer, Integer> location;
 	

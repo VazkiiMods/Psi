@@ -79,6 +79,15 @@ import vazkii.psi.common.spell.trick.entity.PieceTrickMassExodus;
 import vazkii.psi.common.spell.trick.infusion.PieceTrickEbonyIvory;
 import vazkii.psi.common.spell.trick.infusion.PieceTrickGreaterInfusion;
 import vazkii.psi.common.spell.trick.infusion.PieceTrickInfusion;
+import vazkii.psi.common.spell.trick.potion.PieceTrickFireResistance;
+import vazkii.psi.common.spell.trick.potion.PieceTrickHaste;
+import vazkii.psi.common.spell.trick.potion.PieceTrickInvisibility;
+import vazkii.psi.common.spell.trick.potion.PieceTrickJumpBoost;
+import vazkii.psi.common.spell.trick.potion.PieceTrickRegeneration;
+import vazkii.psi.common.spell.trick.potion.PieceTrickResistance;
+import vazkii.psi.common.spell.trick.potion.PieceTrickSpeed;
+import vazkii.psi.common.spell.trick.potion.PieceTrickStrength;
+import vazkii.psi.common.spell.trick.potion.PieceTrickWaterBreathing;
 
 public final class ModSpellPieces {
 
@@ -149,6 +158,15 @@ public final class ModSpellPieces {
 	public static PieceContainer trickOvergrow;
 	public static PieceContainer trickGreaterInfusion;
 	public static PieceContainer trickEbonyIvory;
+	public static PieceContainer trickSpeed;
+	public static PieceContainer trickHaste;
+	public static PieceContainer trickStrength;
+	public static PieceContainer trickJumpBoost;
+	public static PieceContainer trickWaterBreathing;
+	public static PieceContainer trickFireResistance;
+	public static PieceContainer trickInvisibility;
+	public static PieceContainer trickRegeneration;
+	public static PieceContainer trickResistance;
 
 	public static void init() {
 		selectorCaster = register(PieceSelectorCaster.class, LibPieceNames.SELECTOR_CASTER, LibPieceGroups.TUTORIAL_1);
@@ -219,6 +237,15 @@ public final class ModSpellPieces {
 		trickOvergrow = register(PieceTrickOvergrow.class, LibPieceNames.TRICK_OVERGROW, LibPieceGroups.ELEMENTAL_ARTS);
 		trickGreaterInfusion = register(PieceTrickGreaterInfusion.class, LibPieceNames.TRICK_GREATER_INFUSION, LibPieceGroups.GREATER_INFUSION, true);
 		trickEbonyIvory = register(PieceTrickEbonyIvory.class, LibPieceNames.TRICK_EBONY_IVORY, LibPieceGroups.GREATER_INFUSION);
+		trickSpeed = register(PieceTrickSpeed.class, LibPieceNames.TRICK_SPEED, LibPieceGroups.POSITIVE_EFFECTS, true);
+		trickHaste = register(PieceTrickHaste.class, LibPieceNames.TRICK_HASTE, LibPieceGroups.POSITIVE_EFFECTS);
+		trickStrength = register(PieceTrickStrength.class, LibPieceNames.TRICK_STRENGTH, LibPieceGroups.POSITIVE_EFFECTS);
+		trickJumpBoost = register(PieceTrickJumpBoost.class, LibPieceNames.TRICK_JUMP_BOOST, LibPieceGroups.POSITIVE_EFFECTS);
+		trickWaterBreathing = register(PieceTrickWaterBreathing.class, LibPieceNames.TRICK_WATER_BREATHING, LibPieceGroups.POSITIVE_EFFECTS);
+		trickFireResistance = register(PieceTrickFireResistance.class, LibPieceNames.TRICK_FIRE_RESISTANCE, LibPieceGroups.POSITIVE_EFFECTS);
+		trickInvisibility = register(PieceTrickInvisibility.class, LibPieceNames.TRICK_INVISIBILITY, LibPieceGroups.POSITIVE_EFFECTS);
+		trickRegeneration = register(PieceTrickRegeneration.class, LibPieceNames.TRICK_REGENERATION, LibPieceGroups.POSITIVE_EFFECTS);
+		trickResistance = register(PieceTrickResistance.class, LibPieceNames.TRICK_RESISTANCE, LibPieceGroups.POSITIVE_EFFECTS);
 
 		PsiAPI.setGroupRequirements(LibPieceGroups.TUTORIAL_1, 1);
 		PsiAPI.setGroupRequirements(LibPieceGroups.TUTORIAL_2, 2, LibPieceGroups.TUTORIAL_1);
@@ -236,6 +263,7 @@ public final class ModSpellPieces {
 		PsiAPI.setGroupRequirements(LibPieceGroups.LOOPCASTING, 12, LibPieceGroups.INFUSION);
 		PsiAPI.setGroupRequirements(LibPieceGroups.GREATER_INFUSION, 15, LibPieceGroups.INFUSION);
 		PsiAPI.setGroupRequirements(LibPieceGroups.TOOL_CASTING, 16, LibPieceGroups.GREATER_INFUSION);
+		PsiAPI.setGroupRequirements(LibPieceGroups.POSITIVE_EFFECTS, 16, LibPieceGroups.GREATER_INFUSION);
 	}
 	
 	public static PieceContainer register(Class<? extends SpellPiece> clazz, String name, String group) {

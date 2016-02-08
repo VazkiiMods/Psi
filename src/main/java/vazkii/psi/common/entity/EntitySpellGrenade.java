@@ -18,6 +18,8 @@ import vazkii.psi.api.internal.Vector3;
 
 public class EntitySpellGrenade extends EntitySpellProjectile {
 
+	boolean sound = false;
+	
 	public EntitySpellGrenade(World worldIn) {
 		super(worldIn);
 	}
@@ -54,13 +56,15 @@ public class EntitySpellGrenade extends EntitySpellProjectile {
 				worldObj.spawnParticle(EnumParticleTypes.EXPLOSION_NORMAL, posX + worldObj.rand.nextFloat() * width * 2.0F - width - d0 * d3, posY + worldObj.rand.nextFloat() * height - d1 * d3, posZ + worldObj.rand.nextFloat() * width * 2.0F - width - d2 * d3, d0, d1, d2);
 			}
 		}
-		
-		if(alive == 0)
-			playSound("creeper.primed", 1.0F, 1F);
 	}
 	
 	@Override
 	protected void onImpact(MovingObjectPosition pos) {
+		if(!worldObj.isRemote && !sound) {
+			playSound("creeper.primed", 2F, 1F);
+			sound = true;
+		}
+		
 		motionX = 0;
 		motionY = 0;
 		motionZ = 0;
