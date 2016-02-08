@@ -46,7 +46,7 @@ public class PieceTrickExplode extends PieceTrick {
 			throw new SpellCompilationException(SpellCompilationException.NON_POSITIVE_VALUE, x, y);
 		
 		meta.addStat(EnumSpellStat.POTENCY, (int) (powerVal * 70));
-		meta.addStat(EnumSpellStat.COST, (int) (powerVal * 70));
+		meta.addStat(EnumSpellStat.COST, (int) (powerVal * 210));
 	}
 	
 	@Override

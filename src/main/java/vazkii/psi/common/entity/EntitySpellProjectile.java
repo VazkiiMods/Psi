@@ -151,10 +151,18 @@ public class EntitySpellProjectile extends EntityThrowable {
 		for(int i = 0; i < 5; i++) {
 			Vector3 look = lookOrig.copy();
 			double spread = 0.6;
+			double dist = 0.15;
+			if(this instanceof EntitySpellGrenade) {
+				look.y += 1;
+				dist = 0.05;
+			}
+			
 			look.x += (Math.random() - 0.5) * spread;
 			look.y += (Math.random() - 0.5) * spread;
 			look.z += (Math.random() - 0.5) * spread;
-			look.normalize().multiply(0.15);
+
+			
+			look.normalize().multiply(dist);
 			
 			Psi.proxy.sparkleFX(worldObj, x, y, z, r, g, b, (float) look.x, (float) look.y, (float) look.z, 1.2F, 12);
 		}
