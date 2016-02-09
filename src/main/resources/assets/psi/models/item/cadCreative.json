@@ -1,5 +1,5 @@
 {
-	"parent": "psi:item/_standard_cad",
+	"parent": "psi:item/cadIron",
 	"textures": { 
 		"layer0": "psi:items/cadCreative"
 	}
