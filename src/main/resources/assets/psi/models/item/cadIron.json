@@ -1,7 +1,7 @@
 {
-	//"parent": "psi:item/_standard_cad",
 	"textures": { 
-		"layer0": "psi:items/cadIron"
+		"layer0": "psi:items/cadIron",
+        "layer1": "psi:items/cadColor"
 	},
     "elements": [
         {
@@ -130,7 +130,7 @@
             }
         }
     ],
-	"display": {
+    "display": {
         "gui": {
             "rotation": [ -45, 90, 0 ],
             "translation": [ 0, 0, 0 ],
