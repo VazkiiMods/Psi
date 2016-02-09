@@ -237,6 +237,10 @@ psi.spellpiece.operatorClosestToPoint=Operator: Closest to Point
 psi.spellpiece.operatorClosestToPoint.desc=Gets the closest entity in a list to a point 
 psi.spellpiece.operatorRandomEntity=Operator: Random Entity
 psi.spellpiece.operatorRandomEntity.desc=Gets a random entity from a list
+psi.spellpiece.operatorListAdd=Operator: Add To List
+psi.spellpiece.operatorListAdd.desc=Adds target entity to a list
+psi.spellpiece.operatorListRemove=Operator: Remove From List
+psi.spellpiece.operatorListRemove.desc=Removes target entity from a list
 
 # -- CONSTANTS
 psi.spellpiece.constantNumber=Constant: Number
@@ -340,6 +344,7 @@ psi.spellparam.z=Z
 psi.spellparam.radius=Radius
 psi.spellparam.distance=Distance
 psi.spellparam.time=Time
+psi.spellparam.list=List
 
 # DATA TYPE NAMES
 psi.datatype.Null=None

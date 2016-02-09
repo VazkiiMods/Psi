@@ -21,6 +21,8 @@ import vazkii.psi.common.spell.operator.entity.PieceOperatorEntityAxialLook;
 import vazkii.psi.common.spell.operator.entity.PieceOperatorEntityLook;
 import vazkii.psi.common.spell.operator.entity.PieceOperatorEntityMotion;
 import vazkii.psi.common.spell.operator.entity.PieceOperatorEntityPosition;
+import vazkii.psi.common.spell.operator.entity.PieceOperatorListAdd;
+import vazkii.psi.common.spell.operator.entity.PieceOperatorListRemove;
 import vazkii.psi.common.spell.operator.entity.PieceOperatorRandomEntity;
 import vazkii.psi.common.spell.operator.number.PieceOperatorAbsolute;
 import vazkii.psi.common.spell.operator.number.PieceOperatorDivide;
@@ -121,6 +123,8 @@ public final class ModSpellPieces {
 	public static PieceContainer operatorEntityMotion;
 	public static PieceContainer operatorClosestToPoint;
 	public static PieceContainer operatorRandomEntity;
+	public static PieceContainer operatorListAdd;
+	public static PieceContainer operatorListRemove;
 	public static PieceContainer operatorVectorRaycast;
 	public static PieceContainer operatorVectorSum;
 	public static PieceContainer operatorVectorSubtract;
@@ -204,6 +208,8 @@ public final class ModSpellPieces {
 		operatorEntityMotion = register(PieceOperatorEntityAxialLook.class, LibPieceNames.OPERATOR_ENTITY_AXIAL_LOOK, LibPieceGroups.BLOCK_WORKS);
 		operatorClosestToPoint = register(PieceOperatorClosestToPoint.class, LibPieceNames.OPERATOR_CLOSEST_TO_POINT, LibPieceGroups.ENTITIES_INTRO, true);
 		operatorRandomEntity = register(PieceOperatorRandomEntity.class, LibPieceNames.OPERATOR_RANDOM_ENTITY, LibPieceGroups.ENTITIES_INTRO);
+		operatorListAdd = register(PieceOperatorListAdd.class, LibPieceNames.OPERATOR_LIST_ADD, LibPieceGroups.ENTITIES_INTRO);
+		operatorListRemove = register(PieceOperatorListRemove.class, LibPieceNames.OPERATOR_LIST_REMOVE, LibPieceGroups.ENTITIES_INTRO);
 		operatorVectorRaycast = register(PieceOperatorVectorRaycast.class, LibPieceNames.OPERATOR_VECTOR_RAYCAST, LibPieceGroups.TUTORIAL_4);
 		operatorVectorSum = register(PieceOperatorVectorSum.class, LibPieceNames.OPERATOR_VECTOR_SUM, LibPieceGroups.VECTORS_INTRO);
 		operatorVectorSubtract = register(PieceOperatorVectorSubtract.class, LibPieceNames.OPERATOR_VECTOR_SUBTRACT, LibPieceGroups.VECTORS_INTRO);

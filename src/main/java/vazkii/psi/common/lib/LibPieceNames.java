@@ -39,6 +39,8 @@ public final class LibPieceNames {
 	public static final String OPERATOR_ENTITY_AXIAL_LOOK = "operatorEntityAxialLook";
 	public static final String OPERATOR_CLOSEST_TO_POINT = "operatorClosestToPoint";
 	public static final String OPERATOR_RANDOM_ENTITY = "operatorRandomEntity";
+	public static final String OPERATOR_LIST_ADD = "operatorListAdd";
+	public static final String OPERATOR_LIST_REMOVE = "operatorListRemove";
 	public static final String OPERATOR_VECTOR_RAYCAST = "operatorVectorRaycast";
 	public static final String OPERATOR_VECTOR_SUM = "operatorVectorSum";
 	public static final String OPERATOR_VECTOR_SUBTRACT = "operatorVectorSubtract";
