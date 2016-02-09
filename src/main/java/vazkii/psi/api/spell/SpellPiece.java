@@ -15,6 +15,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
@@ -219,6 +221,7 @@ public abstract class SpellPiece {
 	@SideOnly(Side.CLIENT)
 	public void drawParams() {
 		Minecraft.getMinecraft().renderEngine.bindTexture(PsiAPI.internalHandler.getProgrammerTexture());
+		GlStateManager.enableAlpha();
 		for(SpellParam param : paramSides.keySet()) {
 			SpellParam.Side side = paramSides.get(param);
 			if(side.isEnabled()) {
@@ -236,7 +239,7 @@ public abstract class SpellPiece {
 				float maxU = (side.u + wh) / 256F;
 				float maxV = (side.v + wh) / 256F;
 				Color color = new Color(param.color);
-				GlStateManager.color((float) color.getRed() / 255F, (float) color.getGreen() / 255F, (float) color.getBlue() / 255F);
+				GlStateManager.color((float) color.getRed() / 255F, (float) color.getGreen() / 255F, (float) color.getBlue() / 255F, 1F);
 				
 				WorldRenderer wr = Tessellator.getInstance().getWorldRenderer();
 				wr.begin(7, DefaultVertexFormats.POSITION_TEX);
