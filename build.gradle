@@ -89,10 +89,8 @@ task incrementBuildNumber {
         config.toProperties().store(it, "")
     }
 
-    /*
     file('web/versions.ini').append("\n${version}=${minecraft.version}")
-    file("${config.dir_repo}/version/${minecraft.version}.txt").write("${version}")
-    */
+    //file("${config.dir_repo}/version/${minecraft.version}.txt").write("${version}")
 }
 
 // I have no idea what I'm doing
@@ -191,20 +189,17 @@ def scp(String dir, Closure antFileset = {}) {
 
 
 
-/*
+
 curseforge {
     apiKey = priv.cfkey
     project {
-        id = "225643"
+        id = "241665"
         changelog = """
-            See http://botaniamod.net/changelog.php#${version}
+            See http://psi.vazkii.us/changelog.php#${version}
         """
-        releaseType = "release"
-        relations {
-            requiredLibrary 'baubles'
-        }
+        releaseType = "beta" // TODO change to release sometime
     }
 }
-*/
 
-defaultTasks 'clean', 'build', 'sort', 'forgecraft', 'incrementBuildNumber'//, 'curse', 'upload'
+
+defaultTasks 'clean', 'build', 'sort', 'forgecraft', 'incrementBuildNumber', 'curse', 'upload'

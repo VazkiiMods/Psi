@@ -1,3 +1,15 @@
+beta-10
+*Addded Positive Effects and Negative Effects as new groups containing a bunch of Tricks.
+*Added Eidos spells, Eidos Reversal and Eidos Anchor.
+*Added Grenade Spell Bullets and changed the recipe for Circle Spell Bullets to fit them.
+*Added Operators to Add/Remove an entity to/from a list to Entities 101.
+*CADs now detect fake players and refuse to work on them.
+*Changed the projectile spell bullet's "Time Alive" value to be persistent and synced.
+*Fixed parameter arrows not rendering properly when a piece has errored.
+*Improved Psimetal tool regeneration to not be synced with world time and only work when the tool isn't equipped.
+*Made Trick: Explode a bit (lot) more expensive.
+*Tweaked some text in Numbers 101 to be more obvious.
+*Updated the model for the Gold CAD. More models coming soon(tm).
 beta-9
 *Addded spectator mode to the Spell Programmer.
 *Added a "Spell is Unnamed" compilation error. Previously trying to put an unnamed spell into a bullet would just not do anything.
