@@ -30,5 +30,6 @@ public final class LibPieceGroups {
 	public static final String TOOL_CASTING = "toolCasting";
 	public static final String POSITIVE_EFFECTS = "positiveEffects";
 	public static final String NEGATIVE_EFFECTS = "negativeEffects";
+	public static final String EIDOS_REVERSAL = "eidosReversal";
 
 }

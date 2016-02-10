@@ -63,6 +63,8 @@ import vazkii.psi.common.spell.selector.entity.PieceSelectorNearbyLiving;
 import vazkii.psi.common.spell.selector.entity.PieceSelectorNearbyProjectiles;
 import vazkii.psi.common.spell.trick.PieceTrickBlaze;
 import vazkii.psi.common.spell.trick.PieceTrickDebug;
+import vazkii.psi.common.spell.trick.PieceTrickEidosAnchor;
+import vazkii.psi.common.spell.trick.PieceTrickEidosReversal;
 import vazkii.psi.common.spell.trick.PieceTrickExplode;
 import vazkii.psi.common.spell.trick.PieceTrickOvergrow;
 import vazkii.psi.common.spell.trick.PieceTrickSmite;
@@ -179,6 +181,8 @@ public final class ModSpellPieces {
 	public static PieceContainer trickWeakness;
 	public static PieceContainer trickWither;
 	public static PieceContainer trickIgnite;
+	public static PieceContainer trickEidosAnchor;
+	public static PieceContainer trickEidosReversal;
 
 	public static void init() {
 		selectorCaster = register(PieceSelectorCaster.class, LibPieceNames.SELECTOR_CASTER, LibPieceGroups.TUTORIAL_1);
@@ -262,8 +266,10 @@ public final class ModSpellPieces {
 		trickResistance = register(PieceTrickResistance.class, LibPieceNames.TRICK_RESISTANCE, LibPieceGroups.POSITIVE_EFFECTS);
 		trickSlowness = register(PieceTrickSlowness.class, LibPieceNames.TRICK_SLOWNESS, LibPieceGroups.NEGATIVE_EFFECTS);
 		trickWeakness = register(PieceTrickWeakness.class, LibPieceNames.TRICK_WEAKNESS, LibPieceGroups.NEGATIVE_EFFECTS);
-		trickIgnite = register(PieceTrickIgnite.class, LibPieceNames.TRICK_IGNITE, LibPieceGroups.NEGATIVE_EFFECTS);
 		trickWither = register(PieceTrickWither.class, LibPieceNames.TRICK_WITHER, LibPieceGroups.NEGATIVE_EFFECTS, true);
+		trickIgnite = register(PieceTrickIgnite.class, LibPieceNames.TRICK_IGNITE, LibPieceGroups.NEGATIVE_EFFECTS);
+		trickEidosAnchor = register(PieceTrickEidosAnchor.class, LibPieceNames.TRICK_EIDOS_ANCHOR, LibPieceGroups.EIDOS_REVERSAL);
+		trickEidosReversal = register(PieceTrickEidosReversal.class, LibPieceNames.TRICK_EIDOS_REVERSAL, LibPieceGroups.EIDOS_REVERSAL, true); // TODO
 
 		PsiAPI.setGroupRequirements(LibPieceGroups.TUTORIAL_1, 1);
 		PsiAPI.setGroupRequirements(LibPieceGroups.TUTORIAL_2, 2, LibPieceGroups.TUTORIAL_1);
@@ -283,6 +289,7 @@ public final class ModSpellPieces {
 		PsiAPI.setGroupRequirements(LibPieceGroups.TOOL_CASTING, 16, LibPieceGroups.GREATER_INFUSION);
 		PsiAPI.setGroupRequirements(LibPieceGroups.POSITIVE_EFFECTS, 16, LibPieceGroups.GREATER_INFUSION);
 		PsiAPI.setGroupRequirements(LibPieceGroups.NEGATIVE_EFFECTS, 17, LibPieceGroups.POSITIVE_EFFECTS);
+		PsiAPI.setGroupRequirements(LibPieceGroups.EIDOS_REVERSAL, 19, LibPieceGroups.GREATER_INFUSION);
 	}
 	
 	public static PieceContainer register(Class<? extends SpellPiece> clazz, String name, String group) {

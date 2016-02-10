@@ -95,5 +95,7 @@ public final class LibPieceNames {
 	public static final String TRICK_WEAKNESS = "trickWeakness";
 	public static final String TRICK_WITHER = "trickWither";
 	public static final String TRICK_IGNITE = "trickIgnite";
+	public static final String TRICK_EIDOS_ANCHOR = "trickEidosAnchor";
+	public static final String TRICK_EIDOS_REVERSAL = "trickEidosReversal";
 
 }
