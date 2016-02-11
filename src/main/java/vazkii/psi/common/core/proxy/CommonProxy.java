@@ -67,6 +67,10 @@ public class CommonProxy {
 		return new Color(1F, 1F, 1F);
 	}
 	
+	public Color getColorizerColor(ItemStack colorizer) {
+		return new Color(1F, 1F, 1F);
+	}
+	
 	public void setSparkleFXNoClip(boolean noclip) {
 		// Proxy override
 	}

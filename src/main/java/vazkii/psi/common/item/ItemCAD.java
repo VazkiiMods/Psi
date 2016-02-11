@@ -293,6 +293,7 @@ public class ItemCAD extends ItemMod implements ICAD {
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public int getSpellColor(ItemStack stack) {
 		ItemStack dye = getComponentInSlot(stack, EnumCADComponent.DYE);
 		if(dye != null && dye.getItem() instanceof ICADColorizer)

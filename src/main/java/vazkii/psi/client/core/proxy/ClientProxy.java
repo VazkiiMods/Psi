@@ -22,6 +22,7 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import vazkii.psi.api.cad.ICAD;
+import vazkii.psi.api.cad.ICADColorizer;
 import vazkii.psi.client.core.handler.ClientTickHandler;
 import vazkii.psi.client.core.handler.HUDHandler;
 import vazkii.psi.client.core.handler.KeybindHandler;
@@ -76,8 +77,15 @@ public class ClientProxy extends CommonProxy {
 	
 	@Override
 	public Color getCADColor(ItemStack cadStack) {
-		ICAD icad = ((ICAD) cadStack.getItem());
+		ICAD icad = (ICAD) cadStack.getItem();
 		Color color = new Color(icad.getSpellColor(cadStack));
+		return color;
+	}
+	
+	@Override
+	public Color getColorizerColor(ItemStack colorizer) {
+		ICADColorizer icc = (ICADColorizer) colorizer.getItem();
+		Color color = new Color(icc.getColor(colorizer));
 		return color;
 	}
 	

@@ -134,7 +134,7 @@ public class EntitySpellCircle extends Entity {
     	int colorVal = ICADColorizer.DEFAULT_SPELL_COLOR;
     	ItemStack colorizer = dataWatcher.getWatchableObjectItemStack(20);
     	if(colorizer != null && colorizer.getItem() instanceof ICADColorizer)
-    		colorVal = ((ICADColorizer) colorizer.getItem()).getColor(colorizer);
+    		colorVal = Psi.proxy.getColorizerColor(colorizer).getRGB();
     	
 		Color color = new Color(colorVal);
 		float r = (float) color.getRed() / 255F;
