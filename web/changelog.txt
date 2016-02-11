@@ -1,3 +1,8 @@
+beta-11
+*Added models and icons for the remaining CADs.
+*Changed the color of the signs in the radial menu.
+*Fixed projectiles/spell circles fired by CADs with colorizers crashing servers.
+*Tweaked some piece icons.
 beta-10
 *Addded Positive Effects and Negative Effects as new groups containing a bunch of Tricks.
 *Added Eidos spells, Eidos Reversal and Eidos Anchor.

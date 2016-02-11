@@ -200,4 +200,4 @@ curseforge {
 }
 
 
-defaultTasks 'clean', 'build', 'sort', 'forgecraft', 'incrementBuildNumber', 'curse', 'upload'
+defaultTasks 'clean', 'build', 'sort', 'forgecraft', 'incrementBuildNumber', 'curseforge', 'upload'
