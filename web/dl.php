@@ -5,11 +5,9 @@
 
 	function dl_mod($mod) {
 		if(strlen($mod) > 0 && file_exists("files/$mod") && strpos($mod, "/") === false) {
-			/*
 			increment_dl_counter($mod);
 			header("Location: files/$mod");
-			*/
-			include 'dog.php';
+			//include 'dog.php';
 		} else echo("Hm, doesn't seem like that file exists :( <br><a href='./'>Back</a>");
 	}
 	

@@ -18,7 +18,7 @@ Check the <a href="http://vazkii.us/about-me/contact/">contact</a> section on my
 I made a <a href="http://vazkii.us/br101/">website</a> to teach people how to report bugs, read what's on there and then go report it on the <a href="https://github.com/Vazkii/Psi/issues">issue tracker</a>.</li><br>
 
 <li id="q5-fake"><b>I have a suggestion for Psi. Where do I put it?</b> <a href="#q5">(permalink)</a><br>
-Currently there's no good place to throw suggestions for Psi. I guess you could tweet them at me or tell me on IRC.</li><br>
+You can discuss the mod on the <a href="http://forum.feed-the-beast.com/threads/psi-discussion-thread.144282/">FTB Forums</a>, throw suggestions there. Alternatively I guess you could tweet them at me or tell me on IRC.</li><br>
 
 <li id="q6-fake"><b>Is this mod based on Mahouka Kokou no Rettousei/The Irregular at Magic High School?</b> <a href="#q6">(permalink)</a><br>
 <a href="http://vazkii.us/mahouka.html">http://vazkii.us/mahouka.html</a></li><br>

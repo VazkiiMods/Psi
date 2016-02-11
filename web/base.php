@@ -38,7 +38,7 @@
 			<div class="container text-muted">
 				Psi (this website included) is licensed under the <a href="license.php">Psi License</a>.<br>
 				Powered by <a href="http://fezvrasta.github.io/bootstrap-material-design/">Bootstrap Material Design</a> by <a href="https://github.com/FezVrasta">Fez Vrasta</a>.<br>
-				TODO: insert forum link here. remind me if I forget thanks<br>				
+				Discuss Psi on the <a href="http://forum.feed-the-beast.com/threads/psi-discussion-thread.144282/">FTB Forums</a>.<br>				
 				Misc Links: <a href="https://twitter.com/Vazkii">Twitter</a> <b>|</b> <a href="http://www.patreon.com/Vazkii">Patreon</a> <b>|</b> <a href="https://github.com/Vazkii/Psi">Github</a> <b>|</b> <a href="http://webchat.esper.net/?channels=vazkii">IRC</a><br><br>
 				<i>I accept different opinions and objections, but this desire can't be fulfilled without carelessly using science, huh?</i> - <a href="https://www.youtube.com/watch?v=IzhMzY5avLI">LiSA</a>
 			</div>
