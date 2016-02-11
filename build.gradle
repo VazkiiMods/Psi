@@ -188,8 +188,6 @@ def scp(String dir, Closure antFileset = {}) {
 }
 
 
-
-
 curseforge {
     apiKey = priv.cfkey
     project {
