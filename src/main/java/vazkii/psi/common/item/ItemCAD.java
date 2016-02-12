@@ -442,6 +442,8 @@ public class ItemCAD extends ItemMod implements ICAD {
 			public ModelResourceLocation getModelLocation(ItemStack stack) {
 				ICAD cad = (ICAD) stack.getItem();
 				ItemStack assemblyStack = cad.getComponentInSlot(stack, EnumCADComponent.ASSEMBLY);
+				if(assemblyStack == null)
+					return null;
 				ICADAssembly assembly = (ICADAssembly) assemblyStack.getItem();
 				return assembly.getCADModel(assemblyStack, stack);
 			}
