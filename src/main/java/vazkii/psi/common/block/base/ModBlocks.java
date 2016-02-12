@@ -10,8 +10,10 @@
  */
 package vazkii.psi.common.block.base;
 
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.oredict.OreDictionary;
 import vazkii.psi.common.block.BlockCADAssembler;
 import vazkii.psi.common.block.BlockProgrammer;
 import vazkii.psi.common.block.BlockPsiDecorative;
@@ -32,6 +34,11 @@ public class ModBlocks {
 		psiDecorative = new BlockPsiDecorative();
 
 		initTileEntities();
+		
+		// Psi oredict mappings
+		OreDictionary.registerOre("blockPsiDust", new ItemStack(psiDecorative, 1, 0));
+		OreDictionary.registerOre("blockPsiMetal", new ItemStack(psiDecorative, 1, 1));
+		OreDictionary.registerOre("blockPsiGem", new ItemStack(psiDecorative, 1, 2));
 	}
 
 	private static void initTileEntities() {
