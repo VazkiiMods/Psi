@@ -25,7 +25,7 @@ public class SpellCompilationException extends Exception {
 	public static final String UNSET_PARAM = "psi.spellerror.unsetparam";
 	public static final String NULL_PARAM = "psi.spellerror.nullparam";
 	public static final String INVALID_PARAM = "psi.spellerror.invalidparam";
-	public static final String SAME_SIDE_PARAMS = "psi.spellerror.samesideprams";
+	public static final String SAME_SIDE_PARAMS = "psi.spellerror.samesideparams";
 	public static final String INFINITE_LOOP = "psi.spellerror.loop";
 	public static final String NON_POSITIVE_VALUE = "psi.spellerror.nonpositivevalue";
 	public static final String NON_INTEGER = "psi.spellerror.noninteger";
