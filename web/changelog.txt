@@ -1,3 +1,13 @@
+beta-12
+*Fixed a crash in the Programmer GUI.
+*Fixed a crash when casting a spell.
+*Fixed a crash when firing a Projectile bullet through a portal. (Thog)
+*Fixed the creative CAD not having its colorizer piece tinted
+*If you have multiple CADs you now get a chat message alerting you you're messing up.
+*Operator: Entity Motion now tries to approximate player motion from the player's position, since client input doesn't reflect on the motion values.
+*Spell stats can no longer be overloaded to make the cost and potency negative.
+*Trick: Debug's Number parameter now takes a Number rather than a Number Constant.
+*Using /give to give yourself a CAD will no longer crash the game.
 beta-11
 *Added models and icons for the remaining CADs.
 *Changed the color of the signs in the radial menu.
