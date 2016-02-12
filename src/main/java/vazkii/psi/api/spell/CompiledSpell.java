@@ -14,14 +14,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
 
-import com.typesafe.config.ConfigException.Null;
-
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.internal.IPlayerData;
-import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
+import vazkii.psi.api.spell.SpellPiece.Null;
 
 /**
  * A spell that has been compiled by a compiler and is ready to be executed.
