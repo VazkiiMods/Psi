@@ -81,8 +81,11 @@ public class ItemCAD extends ItemMod implements ICAD {
 	public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn) {
 		PlayerData data = PlayerDataHandler.get(playerIn);
 		ItemStack playerCad = PsiAPI.getPlayerCAD(playerIn);
-		if(playerCad != itemStackIn)
+		if(playerCad != itemStackIn) {
+			if(!worldIn.isRemote)
+				playerIn.addChatComponentMessage(new ChatComponentTranslation("psimisc.multipleCads").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
 			return itemStackIn;
+		}
 
 		ItemStack bullet = getBulletInSocket(itemStackIn, getSelectedSlot(itemStackIn));
 		cast(worldIn, playerIn, data, bullet, itemStackIn, 40, 25, 0.5F, null);
