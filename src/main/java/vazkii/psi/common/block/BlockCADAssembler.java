@@ -2,10 +2,10 @@
  * This class was created by <Vazkii>. It's distributed as
  * part of the Psi Mod. Get the Source Code in github:
  * https://github.com/Vazkii/Psi
- * 
+ *
  * Psi is Open Source and distributed under the
  * Psi License: http://psi.vazkii.us/license.php
- * 
+ *
  * File Created @ [09/01/2016, 23:01:02 (GMT)]
  */
 package vazkii.psi.common.block;
@@ -33,26 +33,26 @@ import vazkii.psi.common.lib.LibGuiIDs;
 public class BlockCADAssembler extends BlockFacing {
 
 	Random random;
-	
+
 	public BlockCADAssembler() {
 		super(LibBlockNames.CAD_ASSEMBLER, Material.iron);
 		setHardness(5.0F);
 		setResistance(10.0F);
 		setStepSound(soundTypeMetal);
-		
+
 		random = new Random();
 	}
-	
+
 	@Override
 	public boolean isFullBlock() {
 		return false;
 	}
-	
+
 	@Override
 	public boolean isOpaqueCube() {
 		return false;
 	}
-	
+
 	@Override
 	public void breakBlock(World par1World, BlockPos pos, IBlockState state) {
 		TileSimpleInventory inv = (TileSimpleInventory) par1World.getTileEntity(pos);
@@ -88,18 +88,18 @@ public class BlockCADAssembler extends BlockFacing {
 
 		super.breakBlock(par1World, pos, state);
 	}
-	
+
 	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ) {
 		playerIn.openGui(Psi.instance, LibGuiIDs.CAD_ASSEMBLER, worldIn, pos.getX(), pos.getY(), pos.getZ());
 		return true;
 	}
-	
+
 	@Override
 	public EnumRarity getBlockRarity(ItemStack stack) {
 		return EnumRarity.UNCOMMON;
 	}
-	
+
 	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		return new TileCADAssembler();

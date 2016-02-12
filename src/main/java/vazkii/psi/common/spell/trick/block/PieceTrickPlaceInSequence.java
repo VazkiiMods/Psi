@@ -2,10 +2,10 @@
  * This class was created by <Vazkii>. It's distributed as
  * part of the Psi Mod. Get the Source Code in github:
  * https://github.com/Vazkii/Psi
- * 
+ *
  * Psi is Open Source and distributed under the
  * Psi License: http://psi.vazkii.us/license.php
- * 
+ *
  * File Created @ [24/01/2016, 17:29:47 (GMT)]
  */
 package vazkii.psi.common.spell.trick.block;
@@ -22,7 +22,6 @@ import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.param.ParamVector;
 import vazkii.psi.api.spell.piece.PieceTrick;
-import vazkii.psi.common.core.handler.ConfigHandler;
 
 public class PieceTrickPlaceInSequence extends PieceTrick {
 
@@ -44,11 +43,11 @@ public class PieceTrickPlaceInSequence extends PieceTrick {
 	@Override
 	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
 		super.addToMetadata(meta);
-		
+
 		Double maxBlocksVal = this.<Double>getParamEvaluation(maxBlocks);
 		if(maxBlocksVal == null || maxBlocksVal <= 0)
 			throw new SpellCompilationException(SpellCompilationException.NON_POSITIVE_VALUE, x, y);
-		
+
 		meta.addStat(EnumSpellStat.POTENCY, (int) (maxBlocksVal * 8));
 		meta.addStat(EnumSpellStat.COST, (int) (maxBlocksVal * 8));
 	}
@@ -59,22 +58,22 @@ public class PieceTrickPlaceInSequence extends PieceTrick {
 		Vector3 targetVal = this.<Vector3>getParamValue(context, target);
 		Double maxBlocksVal = this.<Double>getParamValue(context, maxBlocks);
 		int maxBlocksInt = maxBlocksVal.intValue();
-		
+
 		if(positionVal == null)
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
-		
+
 		int len = (int) targetVal.mag();
 		Vector3 targetNorm = targetVal.copy().normalize();
 		for(int i = 0; i < Math.min(len, maxBlocksInt); i++) {
 			Vector3 blockVec = positionVal.copy().add(targetNorm.copy().multiply(i));
-			
+
 			if(!context.isInRadius(blockVec))
 				throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
-			
+
 			BlockPos pos = new BlockPos(blockVec.x, blockVec.y, blockVec.z);
 			PieceTrickPlaceBlock.placeBlock(context.caster, context.caster.worldObj, pos, false);
 		}
-		
+
 		return null;
 	}
 

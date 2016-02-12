@@ -2,10 +2,10 @@
  * This class was created by <Vazkii>. It's distributed as
  * part of the Psi Mod. Get the Source Code in github:
  * https://github.com/Vazkii/Psi
- * 
+ *
  * Psi is Open Source and distributed under the
  * Psi License: http://psi.vazkii.us/license.php
- * 
+ *
  * File Created @ [20/01/2016, 15:47:39 (GMT)]
  */
 package vazkii.psi.common.spell.operator.vector;
@@ -23,28 +23,28 @@ public class PieceOperatorVectorDivide extends PieceOperator {
 
 	SpellParam vec1;
 	SpellParam num2;
-	
+
 	public PieceOperatorVectorDivide(Spell spell) {
 		super(spell);
 	}
-	
+
 	@Override
 	public void initParams() {
 		addParam(vec1 = new ParamVector(SpellParam.GENERIC_NAME_VECTOR1, SpellParam.RED, false, false));
 		addParam(num2 = new ParamNumber(SpellParam.GENERIC_NAME_NUMBER2, SpellParam.GREEN, false, false));
 	}
-	
+
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		Vector3 v1 = this.<Vector3>getParamValue(context, vec1);
 		Double d = this.<Double>getParamValue(context, num2);
-		
+
 		if(d == 0)
 			throw new SpellRuntimeException(SpellRuntimeException.DIVIDE_BY_ZERO);
-		
+
 		return v1.copy().multiply(1.0 / d);
 	}
-	
+
 	@Override
 	public Class<?> getEvaluationType() {
 		return Vector3.class;

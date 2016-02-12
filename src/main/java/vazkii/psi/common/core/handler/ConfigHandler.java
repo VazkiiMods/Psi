@@ -2,10 +2,10 @@
  * This class was created by <Vazkii>. It's distributed as
  * part of the Psi Mod. Get the Source Code in github:
  * https://github.com/Vazkii/Psi
- * 
+ *
  * Psi is Open Source and distributed under the
  * Psi License: http://psi.vazkii.us/license.php
- * 
+ *
  * File Created @ [08/01/2016, 22:27:53 (GMT)]
  */
 package vazkii.psi.common.core.handler;
@@ -22,7 +22,7 @@ import vazkii.psi.common.lib.LibMisc;
 public class ConfigHandler {
 
 	public static Configuration config;
-	
+
 	public static boolean usePersistentData = true;
 	public static boolean useShaders = true;
 	public static boolean psiBarOnRight = true;
@@ -35,41 +35,41 @@ public class ConfigHandler {
 
 		config.load();
 		load();
-		
+
 		MinecraftForge.EVENT_BUS.register(new ChangeListener());
 	}
 
 	public static void load() {
 		String desc;
-		
+
 		desc = "Controls whether Psi is allowed to save and load Persistent Data outside your instance. This data is stored where .minecraft would be by default and is independent of instance, world or modpack, and allows you to instantly get back to the highest level you were at previously in your last world.";
 		usePersistentData = loadPropBool("Use Persistent Data", desc, usePersistentData);
-		
+
 		desc = "Controls whether Psi's shaders are used. If you're using the GLSL Shaders mod and are having graphical troubles with Psi stuff, you may want to turn this off.";
 		useShaders = loadPropBool("Use Shaders", desc, useShaders);
-		
+
 		desc = "Controls whether the Psi Bar should be rendered on the right of the screen or not.";
 		psiBarOnRight = loadPropBool("Psi Bar on the Right", desc, psiBarOnRight);
-		
+
 		desc = "Controls whether the \"Particles\" setting in the Vanilla options menu is accounted for when creating particles. Set to false to always have particles even if you change the Vanilla setting.";
 		useVanillaParticleLimiter = loadPropBool("Use Vanilla Particle Limiter", desc, useVanillaParticleLimiter);
-		
+
 		desc = "How many compiled spells should be kept in a cache. Probably best not to mess with it if you don't know what you're doing.";
 		spellCacheSize = loadPropInt("Spell Cache Size", desc, spellCacheSize);
-		
+
 		desc = "The harvest level of a CAD for the purposes of block breaking spells. 3 is diamond level. Defaults to 2 (iron level)";
 		cadHarvestLevel = loadPropInt("CAD Harvest Level", desc, cadHarvestLevel);
-		
+
 		if(config.hasChanged())
 			config.save();
 	}
-	
+
 	public static int loadPropInt(String propName, String desc, int default_) {
 		Property prop = config.get(Configuration.CATEGORY_GENERAL, propName, default_);
 		prop.comment = desc;
 
-//		if(adaptor != null)
-//			adaptor.adaptPropertyInt(prop, prop.getInt(default_));
+		//		if(adaptor != null)
+		//			adaptor.adaptPropertyInt(prop, prop.getInt(default_));
 
 		return prop.getInt(default_);
 	}
@@ -78,8 +78,8 @@ public class ConfigHandler {
 		Property prop = config.get(Configuration.CATEGORY_GENERAL, propName, default_);
 		prop.comment = desc;
 
-//		if(adaptor != null)
-//			adaptor.adaptPropertyDouble(prop, prop.getDouble(default_));
+		//		if(adaptor != null)
+		//			adaptor.adaptPropertyDouble(prop, prop.getDouble(default_));
 
 		return prop.getDouble(default_);
 	}
@@ -88,12 +88,12 @@ public class ConfigHandler {
 		Property prop = config.get(Configuration.CATEGORY_GENERAL, propName, default_);
 		prop.comment = desc;
 
-//		if(adaptor != null)
-//			adaptor.adaptPropertyBool(prop, prop.getBoolean(default_));
+		//		if(adaptor != null)
+		//			adaptor.adaptPropertyBool(prop, prop.getBoolean(default_));
 
 		return prop.getBoolean(default_);
 	}
-	
+
 	public static class ChangeListener {
 
 		@SubscribeEvent
@@ -103,5 +103,5 @@ public class ConfigHandler {
 		}
 
 	}
-	
+
 }

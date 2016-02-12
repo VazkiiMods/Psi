@@ -2,10 +2,10 @@
  * This class was created by <Vazkii>. It's distributed as
  * part of the Psi Mod. Get the Source Code in github:
  * https://github.com/Vazkii/Psi
- * 
+ *
  * Psi is Open Source and distributed under the
  * Psi License: http://psi.vazkii.us/license.php
- * 
+ *
  * File Created @ [13/01/2016, 12:30:38 (GMT)]
  */
 package vazkii.psi.api.cad;
@@ -21,7 +21,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public interface ICADColorizer extends ICADComponent {
 
 	public static final int DEFAULT_SPELL_COLOR = 0x13C5FF;
-	
+
 	/**
 	 * Gets the color of the spells projected by the CAD that has
 	 * this colorizer.

@@ -2,10 +2,10 @@
  * This class was created by <Vazkii>. It's distributed as
  * part of the Psi Mod. Get the Source Code in github:
  * https://github.com/Vazkii/Psi
- * 
+ *
  * Psi is Open Source and distributed under the
  * Psi License: http://psi.vazkii.us/license.php
- * 
+ *
  * File Created @ [01/02/2016, 19:59:33 (GMT)]
  */
 package vazkii.psi.common.spell.trick.block;
@@ -68,10 +68,10 @@ public class PieceTrickMoveBlock extends PieceTrick {
 		Block block = state.getBlock();
 		if(world.getTileEntity(pos) != null || block.getMobilityFlag() != 0 || !block.canSilkHarvest(world, pos, state, context.caster) || block.getHarvestLevel(state) > ConfigHandler.cadHarvestLevel)
 			return null;
-		
+
 		if(!targetVal.isAxial() || targetVal.isZero())
 			return null;
-		
+
 		Vector3 axis = targetVal.normalize();
 		int x = pos.getX() + (int) axis.x;
 		int y = pos.getY() + (int) axis.y;
@@ -84,7 +84,7 @@ public class PieceTrickMoveBlock extends PieceTrick {
 			world.setBlockToAir(pos);
 			world.playAuxSFX(2001, pos, Block.getIdFromBlock(block) + (block.getMetaFromState(state) << 12));
 		}
-		
+
 		return null;
 	}
 

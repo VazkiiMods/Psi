@@ -2,10 +2,10 @@
  * This class was created by <Vazkii>. It's distributed as
  * part of the Psi Mod. Get the Source Code in github:
  * https://github.com/Vazkii/Psi
- * 
+ *
  * Psi is Open Source and distributed under the
  * Psi License: http://psi.vazkii.us/license.php
- * 
+ *
  * File Created @ [08/01/2016, 21:52:28 (GMT)]
  */
 package vazkii.psi.common.lib;
@@ -13,7 +13,7 @@ package vazkii.psi.common.lib;
 public class LibResources {
 
 	public static final String PREFIX_MOD = "psi:";
-	
+
 	public static final String PREFIX_SHADER = "/assets/psi/shaders/";
 	public static final String PREFIX_GUI = PREFIX_MOD + "textures/gui/";
 	public static final String PREFIX_SPELL = PREFIX_MOD + "textures/spell/";
@@ -33,8 +33,8 @@ public class LibResources {
 	public static final String GUI_LEVELING = PREFIX_GUI + "leveling.png";
 	public static final String GUI_INTRODUCTION = PREFIX_GUI + "introduction.png";
 
-	public static final String SPELL_CONNECTOR_LINES = PREFIX_SPELL + "connectorLines.png"; 
-	
+	public static final String SPELL_CONNECTOR_LINES = PREFIX_SPELL + "connectorLines.png";
+
 	public static final String MISC_PARTICLES = PREFIX_MISC + "particles.png";
 	public static final String MISC_WISP_LARGE = PREFIX_MISC + "wispLarge.png";
 	public static final String MISC_SPELL_CIRCLE = PREFIX_MISC + "spellCircle%d.png";

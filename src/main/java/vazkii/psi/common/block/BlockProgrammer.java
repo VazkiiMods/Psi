@@ -2,10 +2,10 @@
  * This class was created by <Vazkii>. It's distributed as
  * part of the Psi Mod. Get the Source Code in github:
  * https://github.com/Vazkii/Psi
- * 
+ *
  * Psi is Open Source and distributed under the
  * Psi License: http://psi.vazkii.us/license.php
- * 
+ *
  * File Created @ [12/01/2016, 17:41:48 (GMT)]
  */
 package vazkii.psi.common.block;
@@ -41,15 +41,15 @@ import vazkii.psi.common.lib.LibGuiIDs;
 
 public class BlockProgrammer extends BlockFacing {
 
-    public static final PropertyBool ENABLED = PropertyBool.create("enabled");
-	
+	public static final PropertyBool ENABLED = PropertyBool.create("enabled");
+
 	public BlockProgrammer() {
 		super(LibBlockNames.PROGRAMMER, Material.iron);
 		setHardness(5.0F);
 		setResistance(10.0F);
 		setStepSound(soundTypeMetal);
 	}
-	
+
 	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ) {
 		TileProgrammer programmer = (TileProgrammer) worldIn.getTileEntity(pos);
@@ -62,22 +62,22 @@ public class BlockProgrammer extends BlockFacing {
 				return true;
 			}
 		}
-		
+
 		boolean enabled = programmer.isEnabled();
 		if(!enabled || programmer.playerLock.isEmpty())
 			programmer.playerLock = playerIn.getName();
-		
+
 		ItemStack stack = playerIn.getCurrentEquippedItem();
 		if(enabled && stack != null && stack.getItem() instanceof ISpellContainer && programmer.spell != null) {
 			if(programmer.canCompile()) {
 				ISpellContainer container = (ISpellContainer) stack.getItem();
 				if(!worldIn.isRemote)
 					worldIn.playSoundEffect(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, "psi:bulletCreate", 0.5F, 1F);
-				
+
 				programmer.spell.uuid = UUID.randomUUID();
 				container.setSpell(stack, programmer.spell);
 				if(playerIn instanceof EntityPlayerMP)
-					VanillaPacketDispatcher.dispatchTEToPlayer(programmer, (EntityPlayerMP) playerIn);				
+					VanillaPacketDispatcher.dispatchTEToPlayer(programmer, (EntityPlayerMP) playerIn);
 				return true;
 			} else {
 				if(!worldIn.isRemote)
@@ -91,41 +91,41 @@ public class BlockProgrammer extends BlockFacing {
 		playerIn.openGui(Psi.instance, LibGuiIDs.PROGRAMMER, worldIn, pos.getX(), pos.getY(), pos.getZ());
 		return true;
 	}
-	
+
 	@Override
 	public IBlockState makeDefaultState() {
 		return super.makeDefaultState().withProperty(ENABLED, false);
 	}
-	
-	@Override
-    public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
-		TileEntity tile = worldIn.getTileEntity(pos);
-        return super.getActualState(state, worldIn, pos).withProperty(ENABLED, tile != null && tile instanceof TileProgrammer && ((TileProgrammer) tile).isEnabled());
-    }
 
 	@Override
-    protected BlockState createBlockState() {
-        return new BlockState(this, new IProperty[] { FACING, ENABLED });
-    }
-	
+	public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+		TileEntity tile = worldIn.getTileEntity(pos);
+		return super.getActualState(state, worldIn, pos).withProperty(ENABLED, tile != null && tile instanceof TileProgrammer && ((TileProgrammer) tile).isEnabled());
+	}
+
+	@Override
+	protected BlockState createBlockState() {
+		return new BlockState(this, new IProperty[] { FACING, ENABLED });
+	}
+
 	@Override
 	public boolean isFullBlock() {
 		return false;
 	}
-	
+
 	@Override
 	public boolean isOpaqueCube() {
 		return false;
 	}
-	
+
 	@Override
 	public EnumRarity getBlockRarity(ItemStack stack) {
 		return EnumRarity.UNCOMMON;
 	}
-	
+
 	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
-		return new TileProgrammer(); 
+		return new TileProgrammer();
 	}
-	
+
 }

@@ -2,10 +2,10 @@
  * This class was created by <Vazkii>. It's distributed as
  * part of the Psi Mod. Get the Source Code in github:
  * https://github.com/Vazkii/Psi
- * 
+ *
  * Psi is Open Source and distributed under the
  * Psi License: http://psi.vazkii.us/license.php
- * 
+ *
  * File Created @ [29/01/2016, 17:28:58 (GMT)]
  */
 package vazkii.psi.common.spell.trick.entity;
@@ -30,29 +30,29 @@ public class PieceTrickMassAddMotion extends PieceTrick {
 	SpellParam target;
 	SpellParam direction;
 	SpellParam speed;
-	
+
 	public PieceTrickMassAddMotion(Spell spell) {
 		super(spell);
 	}
-	
+
 	@Override
 	public void initParams() {
 		addParam(target = new ParamEntityListWrapper(SpellParam.GENERIC_NAME_TARGET, SpellParam.YELLOW, false, false));
 		addParam(direction = new ParamVector("psi.spellparam.direction", SpellParam.GREEN, false, false));
 		addParam(speed = new ParamNumber("psi.spellparam.speed", SpellParam.RED, false, true));
 	}
-	
+
 	@Override
 	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
 		super.addToMetadata(meta);
 		Double speedVal = this.<Double>getParamEvaluation(speed);
 		if(speedVal == null)
 			speedVal = 1D;
-		
+
 		meta.addStat(EnumSpellStat.POTENCY, (int) (Math.abs(speedVal) * 100));
 		meta.addStat(EnumSpellStat.COST, (int) (Math.abs(speedVal) * 120));
 	}
-	
+
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		EntityListWrapper targetVal = this.<EntityListWrapper>getParamValue(context, target);
@@ -61,8 +61,8 @@ public class PieceTrickMassAddMotion extends PieceTrick {
 
 		for(Entity e : targetVal)
 			PieceTrickAddMotion.addMotion(context, e, directionVal, speedVal);
-		
+
 		return null;
 	}
-	
+
 }

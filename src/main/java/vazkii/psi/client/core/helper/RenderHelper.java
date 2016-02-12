@@ -2,10 +2,10 @@
  * This class was created by <Vazkii>. It's distributed as
  * part of the Botania Mod. Get the Source Code in github:
  * https://github.com/Vazkii/Botania
- * 
+ *
  * Botania is Open Source and distributed under the
  * Botania License: http://botaniamod.net/license.php
- * 
+ *
  * File Created @ [Jan 19, 2014, 5:40:38 PM (GMT)]
  */
 package vazkii.psi.client.core.helper;
@@ -77,14 +77,14 @@ public final class RenderHelper {
 				int diff = right - swidth;
 				var6 -= diff;
 			}
-			
+
 			int bottom = var7 + var9 + 5;
 			int sheight = res.getScaledHeight();
 			if(bottom > sheight) {
 				int diff = bottom - sheight;
 				var7 -= diff;
 			}
-			
+
 			float z = 300F;
 			drawGradientRect(var6 - 3, var7 - 4, z, var6 + var5 + 3, var7 - 3, color2, color2);
 			drawGradientRect(var6 - 3, var7 + var9 + 3, z, var6 + var5 + 3, var7 + var9 + 4, color2, color2);
@@ -187,14 +187,14 @@ public final class RenderHelper {
 			float f3 = random.nextFloat() * 20F + 5F + f2 * 10F;
 			float f4 = random.nextFloat() * 2F + 1F + f2 * 2F;
 			int r = (color & 0xFF0000) >> 16;
-			int g = (color & 0xFF00) >> 8;
-			int b = (color & 0xFF);
-			tessellator.getWorldRenderer().pos(0, 0, 0).color(r, g, b, 255F * (1F - f2)).endVertex();
-			tessellator.getWorldRenderer().pos(-0.866D * f4, f3, -0.5F * f4).color(0, 0, 0, 0).endVertex();
-			tessellator.getWorldRenderer().pos(0.866D * f4, f3, -0.5F * f4).color(0, 0, 0, 0).endVertex();
-			tessellator.getWorldRenderer().pos(0, f3, 1F * f4).color(0, 0, 0, 0).endVertex();
-			tessellator.getWorldRenderer().pos(-0.866D * f4, f3, -0.5F * f4).color(0, 0, 0, 0).endVertex();
-			tessellator.draw();
+		int g = (color & 0xFF00) >> 8;
+		int b = color & 0xFF;
+		tessellator.getWorldRenderer().pos(0, 0, 0).color(r, g, b, 255F * (1F - f2)).endVertex();
+		tessellator.getWorldRenderer().pos(-0.866D * f4, f3, -0.5F * f4).color(0, 0, 0, 0).endVertex();
+		tessellator.getWorldRenderer().pos(0.866D * f4, f3, -0.5F * f4).color(0, 0, 0, 0).endVertex();
+		tessellator.getWorldRenderer().pos(0, f3, 1F * f4).color(0, 0, 0, 0).endVertex();
+		tessellator.getWorldRenderer().pos(-0.866D * f4, f3, -0.5F * f4).color(0, 0, 0, 0).endVertex();
+		tessellator.draw();
 		}
 
 		GlStateManager.depthMask(true);

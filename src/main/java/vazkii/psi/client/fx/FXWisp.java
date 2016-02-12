@@ -2,10 +2,10 @@
  * This class was created by <Azanor>. It's distributed as
  * part of the Botania Mod. Get the Source Code in github:
  * https://github.com/Vazkii/Botania
- * 
+ *
  * Botania is Open Source and distributed under the
  * Botania License: http://botaniamod.net/license.php
- * 
+ *
  * File Created @ [? (GMT)]
  */
 package vazkii.psi.client.fx;
@@ -25,7 +25,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.FMLClientHandler;
-import vazkii.psi.common.core.handler.ConfigHandler;
 import vazkii.psi.common.lib.LibResources;
 
 public class FXWisp extends EntityFX {

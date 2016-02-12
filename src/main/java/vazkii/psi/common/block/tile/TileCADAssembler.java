@@ -2,10 +2,10 @@
  * This class was created by <Vazkii>. It's distributed as
  * part of the Psi Mod. Get the Source Code in github:
  * https://github.com/Vazkii/Psi
- * 
+ *
  * Psi is Open Source and distributed under the
  * Psi License: http://psi.vazkii.us/license.php
- * 
+ *
  * File Created @ [10/01/2016, 15:52:20 (GMT)]
  */
 package vazkii.psi.common.block.tile;
@@ -46,7 +46,7 @@ public class TileCADAssembler extends TileSimpleInventory implements ITickable {
 			}
 		}
 	}
-	
+
 	@Override
 	public void update() {
 		ItemStack socketableStack = getStackInSlot(6);
@@ -60,7 +60,7 @@ public class TileCADAssembler extends TileSimpleInventory implements ITickable {
 		} else for(int j = 0; j < 12; j++)
 			setInventorySlotContents(j + 7, null);
 	}
-	
+
 	public void onCraftCAD() {
 		ignoreChanges = true;
 		for(int i = 1; i < 6; i++)

@@ -2,10 +2,10 @@
  * This class was created by <Vazkii>. It's distributed as
  * part of the Psi Mod. Get the Source Code in github:
  * https://github.com/Vazkii/Psi
- * 
+ *
  * Psi is Open Source and distributed under the
  * Psi License: http://psi.vazkii.us/license.php
- * 
+ *
  * File Created @ [25/01/2016, 20:38:39 (GMT)]
  */
 package vazkii.psi.common.crafting;
@@ -14,7 +14,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
-import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import vazkii.psi.common.block.base.ModBlocks;
@@ -27,21 +26,21 @@ public class ModCraftingRecipes {
 				"IPI", "I I", " I ",
 				'I', "ingotIron",
 				'P', new ItemStack(Blocks.piston));
-		
+
 		addOreDictRecipe(new ItemStack(ModBlocks.programmer),
 				"IDI", "I I", "I I",
 				'I', "ingotIron",
 				'D', "dustPsi");
-		
-		addOreDictRecipe(new ItemStack(ModItems.material, 1, 3), 
+
+		addOreDictRecipe(new ItemStack(ModItems.material, 1, 3),
 				"SSS", "SIS", "SSS",
 				'S', "substanceEbony",
 				'I', "ingotPsi");
-		addOreDictRecipe(new ItemStack(ModItems.material, 1, 4), 
+		addOreDictRecipe(new ItemStack(ModItems.material, 1, 4),
 				"SSS", "SIS", "SSS",
 				'S', "substanceIvory",
 				'I', "ingotPsi");
-		
+
 		addOreDictRecipe(new ItemStack(ModItems.cadAssembly, 1, 0),
 				"III", "I  ",
 				'I', "ingotIron");
@@ -57,7 +56,7 @@ public class ModCraftingRecipes {
 		addOreDictRecipe(new ItemStack(ModItems.cadAssembly, 1, 4),
 				"III", "I  ",
 				'I', "ingotIvoryPsi");
-		
+
 		addOreDictRecipe(new ItemStack(ModItems.cadCore, 1, 0),
 				" I ", "IDI", " I ",
 				'I', "ingotIron",
@@ -80,7 +79,7 @@ public class ModCraftingRecipes {
 				'I', "ingotPsi",
 				'G', "gemPsi",
 				'D', "dustGlowstone");
-		
+
 		addOreDictRecipe(new ItemStack(ModItems.cadSocket, 1, 0),
 				"DI", "I ",
 				'I', "ingotIron",
@@ -103,7 +102,7 @@ public class ModCraftingRecipes {
 				'I', "ingotPsi",
 				'G', "gemPsi",
 				'D', "dustGlowstone");
-		
+
 		addOreDictRecipe(new ItemStack(ModItems.cadBattery, 1, 0),
 				"I", "D", "G",
 				'I', "ingotIron",
@@ -119,10 +118,10 @@ public class ModCraftingRecipes {
 				'I', "ingotIron",
 				'G', "ingotGold",
 				'D', "gemPsi");
-		
-        String[] dyes = {
-            "White", "Orange", "Magenta", "LightBlue", "Yellow", "Lime", "Pink", "Gray", "LightGray", "Cyan", "Purple", "Blue", "Brown", "Green", "Red"," Black"
-        };
+
+		String[] dyes = {
+				"White", "Orange", "Magenta", "LightBlue", "Yellow", "Lime", "Pink", "Gray", "LightGray", "Cyan", "Purple", "Blue", "Brown", "Green", "Red"," Black"
+		};
 		for(int i = 0; i < 16; i++)
 			addOreDictRecipe(new ItemStack(ModItems.cadColorizer, 1, i),
 					" D ", "GCG", " I ",
@@ -141,7 +140,7 @@ public class ModCraftingRecipes {
 				'I', "ingotIron",
 				'G', "blockGlass",
 				'D', "dustPsi");
-		
+
 		addOreDictRecipe(new ItemStack(ModItems.spellBullet, 1, 0),
 				"ID",
 				'I', "ingotIron",
@@ -171,12 +170,12 @@ public class ModCraftingRecipes {
 				'A', new ItemStack(Items.gunpowder),
 				'I', "ingotIron",
 				'D', "dustPsi");
-		
+
 		addOreDictRecipe(new ItemStack(ModItems.spellDrive),
 				"I", "R", "I",
 				'I', "ingotPsi",
 				'R', "dustRedstone");
-		
+
 		addOreDictRecipe(new ItemStack(ModItems.psimetalShovel),
 				"GP", " I", " I",
 				'P', "ingotPsi",
@@ -197,20 +196,20 @@ public class ModCraftingRecipes {
 				'P', "ingotPsi",
 				'G', "gemPsi",
 				'I', "ingotIron");
-		
-		addOreDictRecipe(new ItemStack(ModBlocks.psiDecorative, 1, 0), 
+
+		addOreDictRecipe(new ItemStack(ModBlocks.psiDecorative, 1, 0),
 				"OOO", "OOO", "OOO",
 				'O', "dustPsi");
-		addOreDictRecipe(new ItemStack(ModBlocks.psiDecorative, 1, 1), 
+		addOreDictRecipe(new ItemStack(ModBlocks.psiDecorative, 1, 1),
 				"OOO", "OOO", "OOO",
 				'O', "ingotPsi");
-		addOreDictRecipe(new ItemStack(ModBlocks.psiDecorative, 1, 2), 
+		addOreDictRecipe(new ItemStack(ModBlocks.psiDecorative, 1, 2),
 				"OOO", "OOO", "OOO",
 				'O', "gemPsi");
-		addOreDictRecipe(new ItemStack(ModBlocks.psiDecorative, 1, 7), 
+		addOreDictRecipe(new ItemStack(ModBlocks.psiDecorative, 1, 7),
 				"OOO", "OOO", "OOO",
 				'O', "ingotEbonyPsi");
-		addOreDictRecipe(new ItemStack(ModBlocks.psiDecorative, 1, 8), 
+		addOreDictRecipe(new ItemStack(ModBlocks.psiDecorative, 1, 8),
 				"OOO", "OOO", "OOO",
 				'O', "ingotIvoryPsi");
 		addShapelessOreDictRecipe(new ItemStack(ModItems.material, 9, 0), new ItemStack(ModBlocks.psiDecorative, 1, 0));
@@ -219,20 +218,20 @@ public class ModCraftingRecipes {
 		addShapelessOreDictRecipe(new ItemStack(ModItems.material, 9, 3), new ItemStack(ModBlocks.psiDecorative, 1, 7));
 		addShapelessOreDictRecipe(new ItemStack(ModItems.material, 9, 4), new ItemStack(ModBlocks.psiDecorative, 1, 8));
 
-		addOreDictRecipe(new ItemStack(ModBlocks.psiDecorative, 6, 3), 
+		addOreDictRecipe(new ItemStack(ModBlocks.psiDecorative, 6, 3),
 				" C ", "CIC", " C ",
 				'C', "coal",
 				'I', "ingotPsi");
-		addOreDictRecipe(new ItemStack(ModBlocks.psiDecorative, 6, 5), 
+		addOreDictRecipe(new ItemStack(ModBlocks.psiDecorative, 6, 5),
 				" C ", "CIC", " C ",
 				'C', "gemQuartz",
 				'I', "ingotPsi");
 		addShapelessOreDictRecipe(new ItemStack(ModBlocks.psiDecorative, 1, 4), new ItemStack(ModBlocks.psiDecorative, 1, 3), "dustGlowstone");
 		addShapelessOreDictRecipe(new ItemStack(ModBlocks.psiDecorative, 1, 6), new ItemStack(ModBlocks.psiDecorative, 1, 5), "dustGlowstone");
 
-		
+
 	}
-	
+
 	private static void addOreDictRecipe(ItemStack output, Object... recipe) {
 		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(output, recipe));
 	}
@@ -240,5 +239,5 @@ public class ModCraftingRecipes {
 	private static void addShapelessOreDictRecipe(ItemStack output, Object... recipe) {
 		CraftingManager.getInstance().getRecipeList().add(new ShapelessOreRecipe(output, recipe));
 	}
-	
+
 }

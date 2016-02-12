@@ -2,10 +2,10 @@
  * This class was created by <Vazkii>. It's distributed as
  * part of the Psi Mod. Get the Source Code in github:
  * https://github.com/Vazkii/Psi
- * 
+ *
  * Psi is Open Source and distributed under the
  * Psi License: http://psi.vazkii.us/license.php
- * 
+ *
  * File Created @ [08/02/2016, 19:24:01 (GMT)]
  */
 package vazkii.psi.common.spell.trick.potion;
@@ -34,7 +34,7 @@ public abstract class PieceTrickPotionBase extends PieceTrickBlaze {
 	public PieceTrickPotionBase(Spell spell) {
 		super(spell);
 	}
-	
+
 	@Override
 	public void initParams() {
 		addParam(target = new ParamEntity(SpellParam.GENERIC_NAME_TARGET, SpellParam.YELLOW, false, false));
@@ -42,7 +42,7 @@ public abstract class PieceTrickPotionBase extends PieceTrickBlaze {
 			addParam(power = new ParamNumber(SpellParam.GENERIC_NAME_POWER, SpellParam.RED, false, true));
 		addParam(time = new ParamNumber(SpellParam.GENERIC_NAME_TIME, SpellParam.BLUE, false, true));
 	}
-	
+
 	@Override
 	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
 		super.addToMetadata(meta);
@@ -53,11 +53,11 @@ public abstract class PieceTrickPotionBase extends PieceTrickBlaze {
 
 		if(powerVal == null || timeVal == null || powerVal <= 0 || powerVal.doubleValue() != powerVal.intValue() || timeVal <= 0 || timeVal.doubleValue() != timeVal.intValue())
 			throw new SpellCompilationException(SpellCompilationException.NON_POSITIVE_INTEGER, x, y);
-		
+
 		meta.addStat(EnumSpellStat.POTENCY, getPotency(powerVal.intValue(), timeVal.intValue()));
 		meta.addStat(EnumSpellStat.COST, getCost(powerVal.intValue(), timeVal.intValue()));
 	}
-	
+
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		Entity targetVal = this.<Entity>getParamValue(context, target);
@@ -66,29 +66,29 @@ public abstract class PieceTrickPotionBase extends PieceTrickBlaze {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_TARGET);
 		if(!context.isInRadius(targetVal))
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
-		
+
 		Double powerVal = null;
 		if(hasPower())
 			powerVal = this.<Double>getParamValue(context, power);
 		Double timeVal = this.<Double>getParamValue(context, time);
-		
+
 		((EntityLivingBase) targetVal).addPotionEffect(new PotionEffect(getPotion().id, timeVal.intValue() * 20, hasPower() ? powerVal.intValue() - 1 : 0));
-		
+
 		return null;
 	}
-	
+
 	public abstract Potion getPotion();
-	
+
 	public int getCost(int power, int time) {
 		return getPotency(power, time) * 5;
 	}
-	
+
 	public int getPotency(int power, int time) {
 		return time * power * power * 5;
 	}
-	
+
 	public boolean hasPower() {
 		return true;
 	}
-	
+
 }

@@ -2,10 +2,10 @@
  * This class was created by <Vazkii>. It's distributed as
  * part of the Psi Mod. Get the Source Code in github:
  * https://github.com/Vazkii/Psi
- * 
+ *
  * Psi is Open Source and distributed under the
  * Psi License: http://psi.vazkii.us/license.php
- * 
+ *
  * File Created @ [31/01/2016, 18:06:16 (GMT)]
  */
 package vazkii.psi.common.item;
@@ -38,21 +38,21 @@ public class ItemSpellDrive extends ItemMod {
 	public ItemSpellDrive() {
 		super(LibItemNames.SPELL_DRIVE);
 		setMaxStackSize(1);
-		
+
 		GameRegistry.addRecipe(new DriveDuplicateRecipe());
 		RecipeSorter.register("psi:driveDuplicate", DriveDuplicateRecipe.class, Category.SHAPELESS, "");
 	}
-	
+
 	@Override
 	public boolean hasContainerItem(ItemStack stack) {
 		return getSpell(stack) != null;
 	}
-	
+
 	@Override
 	public ItemStack getContainerItem(ItemStack itemStack) {
 		return itemStack.copy();
 	}
-	
+
 	@Override
 	public String getItemStackDisplayName(ItemStack stack) {
 		String name = super.getItemStackDisplayName(stack);
@@ -60,10 +60,10 @@ public class ItemSpellDrive extends ItemMod {
 		String spellName = cmp.getString(Spell.TAG_SPELL_NAME); // We don't need to load the whole spell just for the name
 		if(spellName == null || spellName.isEmpty())
 			return name;
-		
+
 		return name + " (" + EnumChatFormatting.GREEN + spellName + EnumChatFormatting.RESET + ")";
 	}
-	
+
 	@Override
 	public boolean onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ) {
 		TileEntity tile = worldIn.getTileEntity(pos);
@@ -84,7 +84,7 @@ public class ItemSpellDrive extends ItemMod {
 						return true;
 					}
 				} else programmer.playerLock = playerIn.getName();
-				
+
 				programmer.spell = spell;
 				programmer.onSpellChanged();
 				if(!worldIn.isRemote) {
@@ -97,7 +97,7 @@ public class ItemSpellDrive extends ItemMod {
 
 		return false;
 	}
-	
+
 	@Override
 	public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn)  {
 		if(getSpell(itemStackIn) != null && playerIn.isSneaking()) {
@@ -106,7 +106,7 @@ public class ItemSpellDrive extends ItemMod {
 			else playerIn.swingItem();
 			setSpell(itemStackIn, null);
 		}
-		
+
 		return itemStackIn;
 	}
 

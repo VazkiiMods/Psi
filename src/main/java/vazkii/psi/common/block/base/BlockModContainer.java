@@ -2,10 +2,10 @@
  * This class was created by <Vazkii>. It's distributed as
  * part of the Psi Mod. Get the Source Code in github:
  * https://github.com/Vazkii/Psi
- * 
+ *
  * Psi is Open Source and distributed under the
  * Psi License: http://psi.vazkii.us/license.php
- * 
+ *
  * File Created @ [12/01/2016, 18:00:03 (GMT)]
  */
 package vazkii.psi.common.block.base;
@@ -25,17 +25,17 @@ public class BlockModContainer extends BlockMod implements ITileEntityProvider {
 	}
 
 	@Override
-    public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
-        super.breakBlock(worldIn, pos, state);
-        worldIn.removeTileEntity(pos);
-    }
+	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+		super.breakBlock(worldIn, pos, state);
+		worldIn.removeTileEntity(pos);
+	}
 
-    @Override
-    public boolean onBlockEventReceived(World worldIn, BlockPos pos, IBlockState state, int eventID, int eventParam) {
-        super.onBlockEventReceived(worldIn, pos, state, eventID, eventParam);
-        TileEntity tileentity = worldIn.getTileEntity(pos);
-        return tileentity == null ? false : tileentity.receiveClientEvent(eventID, eventParam);
-    }
+	@Override
+	public boolean onBlockEventReceived(World worldIn, BlockPos pos, IBlockState state, int eventID, int eventParam) {
+		super.onBlockEventReceived(worldIn, pos, state, eventID, eventParam);
+		TileEntity tileentity = worldIn.getTileEntity(pos);
+		return tileentity == null ? false : tileentity.receiveClientEvent(eventID, eventParam);
+	}
 
 	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {

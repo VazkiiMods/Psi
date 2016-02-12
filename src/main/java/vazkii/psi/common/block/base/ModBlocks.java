@@ -2,10 +2,10 @@
  * This class was created by <Vazkii>. It's distributed as
  * part of the Psi Mod. Get the Source Code in github:
  * https://github.com/Vazkii/Psi
- * 
+ *
  * Psi is Open Source and distributed under the
  * Psi License: http://psi.vazkii.us/license.php
- * 
+ *
  * File Created @ [09/01/2016, 23:13:36 (GMT)]
  */
 package vazkii.psi.common.block.base;
@@ -22,9 +22,9 @@ import vazkii.psi.common.lib.LibResources;
 
 public class ModBlocks {
 
-	public static BlockMod cadAssembler; 
-	public static BlockMod programmer; 
-	public static BlockMod psiDecorative; 
+	public static BlockMod cadAssembler;
+	public static BlockMod programmer;
+	public static BlockMod psiDecorative;
 
 	public static void init() {
 		cadAssembler = new BlockCADAssembler();
@@ -38,9 +38,9 @@ public class ModBlocks {
 		registerTile(TileCADAssembler.class, LibBlockNames.CAD_ASSEMBLER);
 		registerTile(TileProgrammer.class, LibBlockNames.PROGRAMMER);
 	}
-	
+
 	private static void registerTile(Class<? extends TileEntity> clazz, String key) {
 		GameRegistry.registerTileEntity(clazz, LibResources.PREFIX_MOD + key);
 	}
-	
+
 }

@@ -2,10 +2,10 @@
  * This class was created by <Vazkii>. It's distributed as
  * part of the Psi Mod. Get the Source Code in github:
  * https://github.com/Vazkii/Psi
- * 
+ *
  * Psi is Open Source and distributed under the
  * Psi License: http://psi.vazkii.us/license.php
- * 
+ *
  * File Created @ [16/01/2016, 23:47:11 (GMT)]
  */
 package vazkii.psi.common.spell.constant;
@@ -26,20 +26,20 @@ import vazkii.psi.api.spell.SpellRuntimeException;
 public class PieceConstantNumber extends SpellPiece {
 
 	private static final String TAG_CONSTANT_VALUE = "constantValue";
-	
+
 	private String valueStr;
-	
+
 	public PieceConstantNumber(Spell spell) {
 		super(spell);
 	}
-	
+
 	@Override
 	public void initParams() {
 		super.initParams();
-		
+
 		valueStr = "0";
 	}
-	
+
 	@Override
 	public void getShownPieces(List<SpellPiece> pieces) {
 		super.getShownPieces(pieces);
@@ -52,29 +52,29 @@ public class PieceConstantNumber extends SpellPiece {
 		int len = mc.fontRendererObj.getStringWidth(valueStr);
 		float efflen = len;
 		float scale = 1;
-		
+
 		while(efflen > 16) {
 			scale++;
 			efflen = mc.fontRendererObj.getStringWidth(valueStr) / scale;
 		}
-		
+
 		GlStateManager.pushMatrix();
 		GlStateManager.scale(1F / scale, 1F / scale, 1F);
 		GlStateManager.translate((9 - efflen / 2) * scale, 4 * scale, 0);
 		mc.fontRendererObj.drawString(valueStr, 0, 0, color);
 		GlStateManager.popMatrix();
 	}
-	
+
 	@Override
 	public boolean interceptKeystrokes() {
 		return true;
 	}
-	
+
 	@Override
 	public boolean onKeyPressed(char c, int i) {
 		if("FDfd".indexOf(c) >= 0)
 			return false;
-		
+
 		String newStr = valueStr;
 		if(newStr.equals("0") || newStr.equals("-0")) {
 			if(c == '-')
@@ -82,7 +82,7 @@ public class PieceConstantNumber extends SpellPiece {
 			else if(c != '.')
 				newStr = newStr.replace("0", "");
 		}
-		
+
 		if(i == Keyboard.KEY_BACK) {
 			if(newStr.length() == 2 && newStr.startsWith("-"))
 				newStr = "-0";
@@ -92,14 +92,14 @@ public class PieceConstantNumber extends SpellPiece {
 				newStr = newStr.substring(0, newStr.length() - 1);
 		} else if(c != '-')
 			newStr += c;
-		
+
 		if(newStr.isEmpty())
 			newStr = "0";
 		newStr = newStr.trim();
-		
+
 		if(newStr.length() > 5)
 			return false;
-		
+
 		try {
 			Double.parseDouble(newStr);
 			valueStr = newStr;
@@ -109,7 +109,7 @@ public class PieceConstantNumber extends SpellPiece {
 
 		return true;
 	}
-	
+
 	@Override
 	public EnumPieceType getPieceType() {
 		return EnumPieceType.CONSTANT;
@@ -120,7 +120,7 @@ public class PieceConstantNumber extends SpellPiece {
 		super.writeToNBT(cmp);
 		cmp.setString(TAG_CONSTANT_VALUE, valueStr);
 	}
-	
+
 	@Override
 	public void readFromNBT(NBTTagCompound cmp) {
 		super.readFromNBT(cmp);
@@ -141,5 +141,5 @@ public class PieceConstantNumber extends SpellPiece {
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		return evaluate();
 	}
-	
+
 }

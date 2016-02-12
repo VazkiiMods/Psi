@@ -2,10 +2,10 @@
  * This class was created by <Vazkii>. It's distributed as
  * part of the Psi Mod. Get the Source Code in github:
  * https://github.com/Vazkii/Psi
- * 
+ *
  * Psi is Open Source and distributed under the
  * Psi License: http://psi.vazkii.us/license.php
- * 
+ *
  * File Created @ [16/01/2016, 15:19:22 (GMT)]
  */
 package vazkii.psi.api.spell;
@@ -14,8 +14,6 @@ import java.awt.Color;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -42,7 +40,7 @@ public abstract class SpellPiece {
 
 	public final String registryKey;
 	public final Spell spell;
-	
+
 	public boolean isInGrid = false;
 	public int x, y;
 
@@ -57,18 +55,18 @@ public abstract class SpellPiece {
 
 	/**
 	 * Called to init this SpellPiece's {@link #params}. It's recommended you keep all params
-	 * registered here as fields in your implementation, as they should be used in {@link #getParamValue(SpellContext, 
+	 * registered here as fields in your implementation, as they should be used in {@link #getParamValue(SpellContext,
 	 * SpellParam)} or {@link #getParamEvaluation(SpellParam)}.
 	 */
 	public void initParams() {
 		// NO-OP
 	}
-	
+
 	/**
 	 * Gets what type of piece this is.
 	 */
 	public abstract EnumPieceType getPieceType();
-	
+
 	/**
 	 * Gets what type this piece evaluates as. This is what other pieces
 	 * linked to it will read. For example, a number sum operator will return
@@ -77,7 +75,7 @@ public abstract class SpellPiece {
 	 * return {@link Null}.class.
 	 */
 	public abstract Class<?> getEvaluationType();
-	
+
 	/**
 	 * Evaluates this piece for the purpose of spell metadata calculation. If the piece
 	 * is not a constant, you can safely return null.
@@ -90,7 +88,7 @@ public abstract class SpellPiece {
 	 * and return the result.
 	 */
 	public abstract Object execute(SpellContext context) throws SpellRuntimeException;
-	
+
 	/**
 	 * Gets the string to be displayed describing this piece's evaluation type.
 	 * @see {@link #getEvaluationType()}
@@ -101,17 +99,17 @@ public abstract class SpellPiece {
 		String s = StatCollector.translateToLocal("psi.datatype." + evalStr);
 		if(getPieceType() == EnumPieceType.CONSTANT)
 			s += " " + StatCollector.translateToLocal("psimisc.constant");
-		
+
 		return s;
 	}
-	
+
 	/**
 	 * Adds this piece's stats to the Spell's metadata.
 	 */
 	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
 		// NO-OP
 	}
-	
+
 	/**
 	 * Adds a {@link SpellParam} to this piece.
 	 */
@@ -119,7 +117,7 @@ public abstract class SpellPiece {
 		params.put(param.name, param);
 		paramSides.put(param, SpellParam.Side.OFF);
 	}
-	
+
 	/**
 	 * Gets the value of one of this piece's params in the given context.
 	 */
@@ -127,18 +125,18 @@ public abstract class SpellPiece {
 		SpellParam.Side side = paramSides.get(param);
 		if(!side.isEnabled())
 			return null;
-		
+
 		try {
 			SpellPiece piece = spell.grid.getPieceAtSideWithRedirections(x, y, side);
 			if(piece == null || !param.canAccept(piece))
 				return null;
-			
+
 			return (T) context.cspell.evaluatedObjects[piece.x][piece.y];
 		} catch(SpellCompilationException e) {
 			return null;
 		}
 	}
-	
+
 	/**
 	 * Gets the evaluation of one of this piece's params in the given context. This calls
 	 * {@link #evaluate()} and should only be used for {@link #addToMetadata(SpellMetadata)}
@@ -147,23 +145,23 @@ public abstract class SpellPiece {
 		SpellParam.Side side = paramSides.get(param);
 		if(!side.isEnabled())
 			return null;
-		
+
 		SpellPiece piece = spell.grid.getPieceAtSideWithRedirections(x, y, side);
-		
+
 		if(piece == null || !param.canAccept(piece))
 			return null;
-		
+
 		return (T) piece.evaluate();
 	}
 
 	public String getUnlocalizedName() {
 		return "psi.spellpiece." + registryKey;
 	}
-	
+
 	public String getSortingName() {
 		return StatCollector.translateToLocal(getUnlocalizedName());
 	}
-	
+
 	public String getUnlocalizedDesc() {
 		return "psi.spellpiece." + registryKey + ".desc";
 	}
@@ -182,10 +180,10 @@ public abstract class SpellPiece {
 			GlStateManager.translate(0F, 0F, 0.1F);
 			drawParams();
 		}
-		
+
 		GlStateManager.color(1F, 1F, 1F);
 	}
-	
+
 	/**
 	 * Draws this piece's background.
 	 * @see #draw()
@@ -194,7 +192,7 @@ public abstract class SpellPiece {
 	public void drawBackground() {
 		ResourceLocation res = PsiAPI.simpleSpellTextures.get(registryKey);
 		Minecraft.getMinecraft().renderEngine.bindTexture(res);
-		
+
 		GlStateManager.color(1F, 1F, 1F);
 		WorldRenderer wr = Tessellator.getInstance().getWorldRenderer();
 		wr.begin(7, DefaultVertexFormats.POSITION_TEX);
@@ -204,7 +202,7 @@ public abstract class SpellPiece {
 		wr.pos(0, 0, 0).tex(0, 0).endVertex();
 		Tessellator.getInstance().draw();
 	}
-	
+
 	/**
 	 * Draws any additional stuff for this piece. Used in connectors
 	 * to draw the lines.
@@ -229,18 +227,18 @@ public abstract class SpellPiece {
 				int minY = 4;
 				minX += side.offx * 9;
 				minY += side.offy * 9;
-				
+
 				int maxX = minX + 8;
 				int maxY = minY + 8;
-				
+
 				float wh = 8F;
-				float minU = (side.u) / 256F;
-				float minV = (side.v) / 256F;
+				float minU = side.u / 256F;
+				float minV = side.v / 256F;
 				float maxU = (side.u + wh) / 256F;
 				float maxV = (side.v + wh) / 256F;
 				Color color = new Color(param.color);
-				GlStateManager.color((float) color.getRed() / 255F, (float) color.getGreen() / 255F, (float) color.getBlue() / 255F, 1F);
-				
+				GlStateManager.color(color.getRed() / 255F, color.getGreen() / 255F, color.getBlue() / 255F, 1F);
+
 				WorldRenderer wr = Tessellator.getInstance().getWorldRenderer();
 				wr.begin(7, DefaultVertexFormats.POSITION_TEX);
 				wr.pos(minX, maxY, 0).tex(minU, maxV).endVertex();
@@ -259,15 +257,15 @@ public abstract class SpellPiece {
 			addToTooltipAfterShift(tooltip);
 		});
 	}
-	
+
 	@SideOnly(Side.CLIENT)
 	public void addToTooltipAfterShift(List<String> tooltip) {
 		TooltipHelper.addToTooltip(tooltip, EnumChatFormatting.GRAY + "%s", getUnlocalizedDesc());
-		
+
 		TooltipHelper.addToTooltip(tooltip, "");
 		String eval = getEvaluationTypeString();
 		TooltipHelper.addToTooltip(tooltip, "<- " + EnumChatFormatting.GOLD + eval);
-		
+
 		for(SpellParam param : paramSides.keySet()) {
 			String pName = StatCollector.translateToLocal(param.name);
 			String pEval = param.getRequiredTypeString();
@@ -283,22 +281,22 @@ public abstract class SpellPiece {
 	public boolean interceptKeystrokes() {
 		return false;
 	}
-	
+
 	@SideOnly(Side.CLIENT)
 	public boolean onKeyPressed(char c, int i) {
 		return false;
 	}
-	
+
 	@SideOnly(Side.CLIENT)
 	public boolean hasConfig() {
 		return !params.isEmpty();
 	}
-	
+
 	@SideOnly(Side.CLIENT)
 	public void getShownPieces(List<SpellPiece> pieces) {
 		pieces.add(this);
 	}
-	
+
 	public static SpellPiece createFromNBT(Spell spell, NBTTagCompound cmp) {
 		String key = cmp.getString(TAG_KEY);
 		Class<? extends SpellPiece> clazz = PsiAPI.spellPieceRegistry.getObject(key);
@@ -335,7 +333,7 @@ public abstract class SpellPiece {
 
 	public void writeToNBT(NBTTagCompound cmp) {
 		cmp.setString(TAG_KEY, registryKey);
-		
+
 		NBTTagCompound paramCmp = new NBTTagCompound();
 		for(String s : params.keySet()) {
 			SpellParam param = params.get(s);
@@ -349,5 +347,5 @@ public abstract class SpellPiece {
 	 * Empty helper class for use with evaluation types when none is present.
 	 */
 	public static class Null { }
-	
+
 }

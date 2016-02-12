@@ -2,10 +2,10 @@
  * This class was created by <Vazkii>. It's distributed as
  * part of the Psi Mod. Get the Source Code in github:
  * https://github.com/Vazkii/Psi
- * 
+ *
  * Psi is Open Source and distributed under the
  * Psi License: http://psi.vazkii.us/license.php
- * 
+ *
  * File Created @ [06/02/2016, 20:09:22 (GMT)]
  */
 package vazkii.psi.common.item.tool;
@@ -13,7 +13,6 @@ package vazkii.psi.common.item.tool;
 import java.util.List;
 import java.util.Set;
 
-import ibxm.Player;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -37,15 +36,15 @@ import vazkii.psi.common.item.base.ModItems;
 public class ItemPsimetalTool extends ItemModTool implements IPsimetalTool {
 
 	private static final String TAG_REGEN_TIME = "regenTime";
-	
+
 	protected ItemPsimetalTool(String name, float attackDamage, Set<Block> effectiveBlocks, String... variants) {
 		super(name, attackDamage, PsiAPI.PSIMETAL_MATERIAL, effectiveBlocks, variants);
 	}
-	
+
 	@Override
 	public boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, EntityPlayer player) {
 		super.onBlockStartBreak(itemstack, pos, player);
-	
+
 		PlayerData data = PlayerDataHandler.get(player);
 		ItemStack playerCad = PsiAPI.getPlayerCAD(player);
 
@@ -54,12 +53,12 @@ public class ItemPsimetalTool extends ItemModTool implements IPsimetalTool {
 			ItemCAD.cast(player.worldObj, player, data, bullet, playerCad, 5, 10, 0.05F, (SpellContext context) -> {
 				context.tool = itemstack;
 				context.positionBroken = raytraceFromEntity(player.worldObj, player, false, 4.5);
-			});	
+			});
 		}
-		
+
 		return false;
 	}
-	
+
 	@Override
 	public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
 		if(entityIn instanceof EntityPlayer && stack.getItemDamage() > 0 && !isSelected) {
@@ -73,18 +72,18 @@ public class ItemPsimetalTool extends ItemModTool implements IPsimetalTool {
 			ItemNBTHelper.setInt(stack, TAG_REGEN_TIME, regenTime + 1);
 		}
 	}
-	
+
 	@Override
 	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
 		return slotChanged;
 	}
-	
+
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
 		String componentName = ItemMod.local(ISocketable.getSocketedItemName(stack, "psimisc.none"));
 		ItemMod.addToTooltip(tooltip, "psimisc.spellSelected", componentName);
 	}
-	
+
 	@Override
 	public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack) {
 		return par2ItemStack.getItem() == ModItems.material && par2ItemStack.getItemDamage() == 1 ? true : super.getIsRepairable(par1ItemStack, par2ItemStack);
@@ -110,5 +109,5 @@ public class ItemPsimetalTool extends ItemModTool implements IPsimetalTool {
 		Vec3 vec31 = vec3.addVector(f7 * d3, f6 * d3, f8 * d3);
 		return world.rayTraceBlocks(vec3, vec31, par3);
 	}
-	
+
 }

@@ -2,10 +2,10 @@
  * This class was created by <Vazkii>. It's distributed as
  * part of the Psi Mod. Get the Source Code in github:
  * https://github.com/Vazkii/Psi
- * 
+ *
  * Psi is Open Source and distributed under the
  * Psi License: http://psi.vazkii.us/license.php
- * 
+ *
  * File Created @ [16/01/2016, 16:19:10 (GMT)]
  */
 package vazkii.psi.common.lib;
@@ -58,7 +58,7 @@ public final class LibPieceNames {
 	public static final String OPERATOR_VECTOR_RAYCAST_AXIS = "operatorVectorRaycastAxis";
 
 	public static final String CONSTANT_NUMBER = "constantNumber";
-	
+
 	public static final String CONNECTOR = "connector";
 	public static final String ERROR_SUPPRESSOR = "errorSuppressor";
 

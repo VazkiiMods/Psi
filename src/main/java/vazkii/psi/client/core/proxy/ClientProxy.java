@@ -2,10 +2,10 @@
  * This class was created by <Vazkii>. It's distributed as
  * part of the Psi Mod. Get the Source Code in github:
  * https://github.com/Vazkii/Psi
- * 
+ *
  * Psi is Open Source and distributed under the
  * Psi License: http://psi.vazkii.us/license.php
- * 
+ *
  * File Created @ [08/01/2016, 21:23:11 (GMT)]
  */
 package vazkii.psi.client.core.proxy;
@@ -45,58 +45,56 @@ public class ClientProxy extends CommonProxy {
 	@Override
 	public void preInit(FMLPreInitializationEvent event) {
 		super.preInit(event);
-		
+
 		ModelHandler.init();
 		ShaderHandler.init();
 		KeybindHandler.init();
-		
+
 		MinecraftForge.EVENT_BUS.register(new HUDHandler());
 		MinecraftForge.EVENT_BUS.register(new ClientTickHandler());
 		MinecraftForge.EVENT_BUS.register(new ParticleRenderDispatcher());
 
 		ClientRegistry.bindTileEntitySpecialRenderer(TileProgrammer.class, new RenderTileProgrammer());
-		
+
 		RenderingRegistry.registerEntityRenderingHandler(EntitySpellCircle.class, (RenderManager manager) -> { return new RenderSpellCircle(manager); });
 	}
-	
+
 	@Override
 	public EntityPlayer getClientPlayer() {
 		return Minecraft.getMinecraft().thePlayer;
 	}
-	
+
 	@Override
 	public void onLevelUp(EntityPlayer player, int level) {
 		if(player == Minecraft.getMinecraft().thePlayer)
 			HUDHandler.levelUp(level);
 	}
-	
+
 	@Override
 	public void savePersistency() {
 		PersistencyHandler.save(PlayerDataHandler.get(getClientPlayer()).level);
 	}
-	
+
 	@Override
 	public Color getCADColor(ItemStack cadStack) {
 		ICAD icad = (ICAD) cadStack.getItem();
 		Color color = new Color(icad.getSpellColor(cadStack));
 		return color;
 	}
-	
+
 	@Override
 	public Color getColorizerColor(ItemStack colorizer) {
 		ICADColorizer icc = (ICADColorizer) colorizer.getItem();
 		Color color = new Color(icc.getColor(colorizer));
 		return color;
 	}
-	
-	private static boolean noclipEnabled = false;
-	private static boolean corruptSparkle = false;
 
+	private static boolean noclipEnabled = false;
 	@Override
 	public void setSparkleFXNoClip(boolean noclip) {
 		noclipEnabled = noclip;
 	}
-	
+
 	@Override
 	public void sparkleFX(World world, double x, double y, double z, float r, float g, float b, float motionx, float motiony, float motionz, float size, int m) {
 		if(!doParticle(world))
@@ -136,7 +134,7 @@ public class ClientProxy extends CommonProxy {
 
 		Minecraft.getMinecraft().effectRenderer.addEffect(wisp);
 	}
-	
+
 	private boolean doParticle(World world) {
 		if(!world.isRemote)
 			return false;
@@ -152,5 +150,5 @@ public class ClientProxy extends CommonProxy {
 
 		return chance == 1F || Math.random() < chance;
 	}
-	
+
 }

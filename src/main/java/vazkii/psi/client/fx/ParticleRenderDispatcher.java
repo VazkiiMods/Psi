@@ -2,11 +2,11 @@
  * This class was created by <Vazkii>. It's distributed as
  * part of the Botania Mod. Get the Source Code in github:
  * https://github.com/Vazkii/Botania
- * 
+ *
  * Botania is Open Source and distributed under a
  * Creative Commons Attribution-NonCommercial-ShareAlike 3.0 License
  * (http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB)
- * 
+ *
  * File Created @ [Jul 2, 2014, 12:12:45 AM (GMT)]
  */
 package vazkii.psi.client.fx;
@@ -32,7 +32,7 @@ public final class ParticleRenderDispatcher {
 
 		Profiler profiler = Minecraft.getMinecraft().mcProfiler;
 
-		GL11.glPushAttrib(GL11.GL_LIGHTING);	
+		GL11.glPushAttrib(GL11.GL_LIGHTING);
 		GlStateManager.depthMask(false);
 		GlStateManager.enableBlend();
 		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);

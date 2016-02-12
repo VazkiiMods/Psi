@@ -2,10 +2,10 @@
  * This class was created by <Vazkii>. It's distributed as
  * part of the Psi Mod. Get the Source Code in github:
  * https://github.com/Vazkii/Psi
- * 
+ *
  * Psi is Open Source and distributed under the
  * Psi License: http://psi.vazkii.us/license.php
- * 
+ *
  * File Created @ [09/01/2016, 17:04:30 (GMT)]
  */
 package vazkii.psi.common.item;
@@ -66,13 +66,13 @@ public class ItemCAD extends ItemMod implements ICAD {
 	private static final String TAG_STORED_PSI = "storedPsi";
 	private static final String TAG_BULLET_PREFIX = "bullet";
 	private static final String TAG_SELECTED_SLOT = "selectedSlot";
-	
+
 	private static final Pattern FAKE_PLAYER_PATTERN = Pattern.compile("^(?:\\[.*\\])|(?:ComputerCraft)$");
 
 	public ItemCAD() {
 		super(LibItemNames.CAD);
 		setMaxStackSize(1);
-		
+
 		GameRegistry.addRecipe(new AssemblyScavengeRecipe());
 		RecipeSorter.register("psi:assemblyScavenge", AssemblyScavengeRecipe.class, Category.SHAPELESS, "");
 	}
@@ -89,7 +89,7 @@ public class ItemCAD extends ItemMod implements ICAD {
 
 		ItemStack bullet = getBulletInSocket(itemStackIn, getSelectedSlot(itemStackIn));
 		cast(worldIn, playerIn, data, bullet, itemStackIn, 40, 25, 0.5F, null);
-		
+
 		if(bullet == null && craft(playerIn, new ItemStack(Items.redstone), new ItemStack(ModItems.material))) {
 			if(!worldIn.isRemote)
 				worldIn.playSoundAtEntity(playerIn, "psi:cadShoot", 0.5F, (float) (0.5 + Math.random() * 0.5));
@@ -110,10 +110,10 @@ public class ItemCAD extends ItemMod implements ICAD {
 				SpellContext context = new SpellContext().setPlayer(player).setSpell(spell);
 				if(predicate != null)
 					predicate.accept(context);
-				
+
 				if(context.isValid()) {
 					if(context.cspell.metadata.evaluateAgainst(cad)) {
-						int cost = getRealCost(cad, bullet, context.cspell.metadata.stats.get(EnumSpellStat.COST)); 
+						int cost = getRealCost(cad, bullet, context.cspell.metadata.stats.get(EnumSpellStat.COST));
 						if(cost > 0 || cost == -1) {
 							if(cost != -1)
 								data.deductPsi(cost, cd, true);
@@ -122,13 +122,13 @@ public class ItemCAD extends ItemMod implements ICAD {
 								world.playSoundAtEntity(player, "psi:cadShoot", sound, (float) (0.5 + Math.random() * 0.5));
 
 							Color color = Psi.proxy.getCADColor(cad);
-							float r = (float) color.getRed() / 255F;
-							float g = (float) color.getGreen() / 255F;
-							float b = (float) color.getBlue() / 255F;
+							float r = color.getRed() / 255F;
+							float g = color.getGreen() / 255F;
+							float b = color.getBlue() / 255F;
 							for(int i = 0; i < particles; i++) {
-								double x = player.posX + ((Math.random() - 0.5) * 2.1) * player.width;
+								double x = player.posX + (Math.random() - 0.5) * 2.1 * player.width;
 								double y = player.posY - player.getYOffset();
-								double z = player.posZ + ((Math.random() - 0.5) * 2.1) * player.width;
+								double z = player.posZ + (Math.random() - 0.5) * 2.1 * player.width;
 								float grav = -0.15F - (float) Math.random() * 0.03F;
 								Psi.proxy.sparkleFX(world, x, y, z, r, g, b, grav, 0.25F, 15);
 							}
@@ -156,16 +156,16 @@ public class ItemCAD extends ItemMod implements ICAD {
 			}
 		}
 	}
-	
+
 	public static boolean craft(EntityPlayer player, ItemStack in, ItemStack out) {
 		List<EntityItem> items = player.worldObj.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(player.posX - 8, player.posY - 8, player.posZ - 8, player.posX + 8, player.posY + 8, player.posZ + 8));
 
 		Color color = new Color(ICADColorizer.DEFAULT_SPELL_COLOR);
-		float r = (float) color.getRed() / 255F;
-		float g = (float) color.getGreen() / 255F;
-		float b = (float) color.getBlue() / 255F;
+		float r = color.getRed() / 255F;
+		float g = color.getGreen() / 255F;
+		float b = color.getBlue() / 255F;
 
-		
+
 		boolean did = false;
 		for(EntityItem item : items) {
 			ItemStack stack = item.getEntityItem();
@@ -174,21 +174,21 @@ public class ItemCAD extends ItemMod implements ICAD {
 				outCopy.stackSize = stack.stackSize;
 				item.setEntityItemStack(outCopy);
 				did = true;
-				
+
 				for(int i = 0; i < 5; i++) {
-					double x = item.posX + ((Math.random() - 0.5) * 2.1) * item.width;
+					double x = item.posX + (Math.random() - 0.5) * 2.1 * item.width;
 					double y = item.posY - item.getYOffset();
-					double z = item.posZ + ((Math.random() - 0.5) * 2.1) * item.width;
+					double z = item.posZ + (Math.random() - 0.5) * 2.1 * item.width;
 					float grav = -0.05F - (float) Math.random() * 0.01F;
 					Psi.proxy.sparkleFX(item.worldObj, x, y, z, r, g, b, grav, 3.5F, 15);
-					
+
 					double m = 0.01;
 					double d3 = 10.0D;
 					for(int j = 0; j < 3; j++) {
 						double d0 = item.worldObj.rand.nextGaussian() * m;
 						double d1 = item.worldObj.rand.nextGaussian() * m;
 						double d2 = item.worldObj.rand.nextGaussian() * m;
-						
+
 						item.worldObj.spawnParticle(EnumParticleTypes.EXPLOSION_NORMAL, item.posX + item.worldObj.rand.nextFloat() * item.width * 2.0F - item.width - d0 * d3, item.posY + item.worldObj.rand.nextFloat() * item.height - d1 * d3, item.posZ + item.worldObj.rand.nextFloat() * item.width * 2.0F - item.width - d2 * d3, d0, d1, d2);
 					}
 				}
@@ -207,16 +207,16 @@ public class ItemCAD extends ItemMod implements ICAD {
 				return cost;
 
 			double effPercentile = (double) eff / 100;
-			double procCost = (double) cost / effPercentile;
+			double procCost = cost / effPercentile;
 			if(bullet != null)
 				procCost *= ((ISpellContainer) bullet.getItem()).getCostModifier(bullet);
-			
+
 			return (int) procCost;
 		}
 
 		return cost;
 	}
-	
+
 	public static boolean isTruePlayer(Entity e) {
 		if(!(e instanceof EntityPlayer))
 			return false;
@@ -347,7 +347,7 @@ public class ItemCAD extends ItemMod implements ICAD {
 	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
 		return slotChanged;
 	}
-	
+
 	@Override
 	public int getColorFromItemStack(ItemStack stack, int renderPass) {
 		if(renderPass == 1)
@@ -361,39 +361,39 @@ public class ItemCAD extends ItemMod implements ICAD {
 		subItems.add(makeCAD(new ItemStack(ModItems.cadAssembly, 1, 0)));
 
 		// Iron CAD
-		subItems.add(makeCAD(new ItemStack(ModItems.cadAssembly, 1, 0), 
-				new ItemStack(ModItems.cadCore, 1, 0), 
-				new ItemStack(ModItems.cadSocket, 1, 0), 
-				new ItemStack(ModItems.cadBattery, 1, 0)));		
+		subItems.add(makeCAD(new ItemStack(ModItems.cadAssembly, 1, 0),
+				new ItemStack(ModItems.cadCore, 1, 0),
+				new ItemStack(ModItems.cadSocket, 1, 0),
+				new ItemStack(ModItems.cadBattery, 1, 0)));
 
 		// Gold CAD
-		subItems.add(makeCAD(new ItemStack(ModItems.cadAssembly, 1, 1), 
-				new ItemStack(ModItems.cadCore, 1, 0), 
-				new ItemStack(ModItems.cadSocket, 1, 0), 
-				new ItemStack(ModItems.cadBattery, 1, 0)));	
+		subItems.add(makeCAD(new ItemStack(ModItems.cadAssembly, 1, 1),
+				new ItemStack(ModItems.cadCore, 1, 0),
+				new ItemStack(ModItems.cadSocket, 1, 0),
+				new ItemStack(ModItems.cadBattery, 1, 0)));
 
 		// Psimetal CAD
-		subItems.add(makeCAD(new ItemStack(ModItems.cadAssembly, 1, 2), 
-				new ItemStack(ModItems.cadCore, 1, 1), 
-				new ItemStack(ModItems.cadSocket, 1, 1), 
+		subItems.add(makeCAD(new ItemStack(ModItems.cadAssembly, 1, 2),
+				new ItemStack(ModItems.cadCore, 1, 1),
+				new ItemStack(ModItems.cadSocket, 1, 1),
 				new ItemStack(ModItems.cadBattery, 1, 1)));
 
 		// Ebony Psimetal CAD
-		subItems.add(makeCAD(new ItemStack(ModItems.cadAssembly, 1, 3), 
-				new ItemStack(ModItems.cadCore, 1, 3), 
-				new ItemStack(ModItems.cadSocket, 1, 3), 
+		subItems.add(makeCAD(new ItemStack(ModItems.cadAssembly, 1, 3),
+				new ItemStack(ModItems.cadCore, 1, 3),
+				new ItemStack(ModItems.cadSocket, 1, 3),
 				new ItemStack(ModItems.cadBattery, 1, 2)));
 
 		// Ivory Psimetal CAD
-		subItems.add(makeCAD(new ItemStack(ModItems.cadAssembly, 1, 4), 
-				new ItemStack(ModItems.cadCore, 1, 3), 
-				new ItemStack(ModItems.cadSocket, 1, 3), 
+		subItems.add(makeCAD(new ItemStack(ModItems.cadAssembly, 1, 4),
+				new ItemStack(ModItems.cadCore, 1, 3),
+				new ItemStack(ModItems.cadSocket, 1, 3),
 				new ItemStack(ModItems.cadBattery, 1, 2)));
-		
+
 		// Creative CAD
-		subItems.add(makeCAD(new ItemStack(ModItems.cadAssembly, 1, 5), 
-				new ItemStack(ModItems.cadCore, 1, 3), 
-				new ItemStack(ModItems.cadSocket, 1, 3), 
+		subItems.add(makeCAD(new ItemStack(ModItems.cadAssembly, 1, 5),
+				new ItemStack(ModItems.cadCore, 1, 3),
+				new ItemStack(ModItems.cadSocket, 1, 3),
 				new ItemStack(ModItems.cadBattery, 1, 2)));
 	}
 
@@ -418,8 +418,8 @@ public class ItemCAD extends ItemMod implements ICAD {
 					if(stat.getSourceType() == componentType) {
 						String shrt = stat.getName();
 						int statVal = getStatValue(stack, stat);
-						String statValStr = statVal == -1 ?	"\u221E" : ""+statVal; 
-						
+						String statValStr = statVal == -1 ?	"\u221E" : ""+statVal;
+
 						line = " " + EnumChatFormatting.AQUA + local(shrt) + EnumChatFormatting.GRAY + ": " + statValStr;
 						if(!line.isEmpty())
 							addToTooltip(tooltip, line);

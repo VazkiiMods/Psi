@@ -2,10 +2,10 @@
  * This class was created by <Vazkii>. It's distributed as
  * part of the Psi Mod. Get the Source Code in github:
  * https://github.com/Vazkii/Psi
- * 
+ *
  * Psi is Open Source and distributed under the
  * Psi License: http://psi.vazkii.us/license.php
- * 
+ *
  * File Created @ [23/01/2016, 00:36:43 (GMT)]
  */
 package vazkii.psi.common.spell.operator.entity;
@@ -26,17 +26,17 @@ public class PieceOperatorClosestToPoint extends PieceOperator {
 
 	SpellParam position;
 	SpellParam list;
-	
+
 	public PieceOperatorClosestToPoint(Spell spell) {
 		super(spell);
 	}
-	
+
 	@Override
 	public void initParams() {
 		addParam(position = new ParamVector(SpellParam.GENERIC_NAME_POSITION, SpellParam.BLUE, false, false));
 		addParam(list = new ParamEntityListWrapper(SpellParam.GENERIC_NAME_TARGET, SpellParam.YELLOW, false, false));
 	}
-	
+
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		EntityListWrapper listVal = this.<EntityListWrapper>getParamValue(context, list);
@@ -51,13 +51,13 @@ public class PieceOperatorClosestToPoint extends PieceOperator {
 				closestEntity = e;
 			}
 		}
-		
+
 		if(closestEntity == null)
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_TARGET);
-		
+
 		return closestEntity;
 	}
-	
+
 	@Override
 	public Class<?> getEvaluationType() {
 		return Entity.class;

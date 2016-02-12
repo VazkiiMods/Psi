@@ -2,10 +2,10 @@
  * This class was created by <Vazkii>. It's distributed as
  * part of the Psi Mod. Get the Source Code in github:
  * https://github.com/Vazkii/Psi
- * 
+ *
  * Psi is Open Source and distributed under the
  * Psi License: http://psi.vazkii.us/license.php
- * 
+ *
  * File Created @ [420/02/2016, 18:12:57 (GMT)]
  */
 package vazkii.psi.common.spell.trick;
@@ -27,37 +27,37 @@ import vazkii.psi.api.spell.piece.PieceTrick;
 public class PieceTrickBlaze extends PieceTrick {
 
 	SpellParam position;
-	
+
 	public PieceTrickBlaze(Spell spell) {
 		super(spell);
 	}
-	
+
 	@Override
 	public void initParams() {
 		addParam(position = new ParamVector(SpellParam.GENERIC_NAME_POSITION, SpellParam.BLUE, false, false));
 	}
-	
+
 	@Override
 	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
 		super.addToMetadata(meta);
 		meta.addStat(EnumSpellStat.POTENCY, 20);
 		meta.addStat(EnumSpellStat.COST, 40);
 	}
-	
+
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		if(context.caster.worldObj.isRemote)
 			return null;
-			
+
 		Vector3 positionVal = this.<Vector3>getParamValue(context, position);
-		
+
 		if(positionVal == null)
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
 		if(!context.isInRadius(positionVal))
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 
 		BlockPos pos = positionVal.toBlockPos();
-		
+
 		pos = pos.down();
 		IBlockState state = context.caster.worldObj.getBlockState(pos);
 		if(state.getBlock().isAir(context.caster.worldObj, pos) || state.getBlock().isReplaceable(context.caster.worldObj, pos))
@@ -68,7 +68,7 @@ public class PieceTrickBlaze extends PieceTrick {
 			if(state.getBlock().isAir(context.caster.worldObj, pos) || state.getBlock().isReplaceable(context.caster.worldObj, pos))
 				context.caster.worldObj.setBlockState(pos, Blocks.fire.getDefaultState());
 		}
-		
+
 		return null;
 	}
 

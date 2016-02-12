@@ -2,10 +2,10 @@
  * This class was created by <Vazkii>. It's distributed as
  * part of the Botania Mod. Get the Source Code in github:
  * https://github.com/Vazkii/Botania
- * 
+ *
  * Botania is Open Source and distributed under the
  * Botania License: http://botaniamod.net/license.php
- * 
+ *
  * File Created @ [Apr 9, 2014, 11:20:26 PM (GMT)]
  */
 package vazkii.psi.client.core.handler;
@@ -32,10 +32,10 @@ public final class ShaderHandler {
 
 	private static final int VERT = 1;
 	private static final int FRAG = 2;
-	
+
 	private static final String VERT_EXTENSION = ".vsh";
 	private static final String FRAG_EXTENSION = ".fsh";
-	
+
 	public static int rawColor;
 	public static int psiBar;
 	public static int simpleBloom;
@@ -75,12 +75,12 @@ public final class ShaderHandler {
 	public static boolean useShaders() {
 		return ConfigHandler.useShaders && OpenGlHelper.shadersSupported;
 	}
-	
+
 	private static int createProgram(String s, int sides) {
 		boolean vert = (sides & VERT) != 0;
 		boolean frag = (sides & FRAG) != 0;
-		
-		return createProgram(vert ? (s + VERT_EXTENSION) : null, frag ? (s + FRAG_EXTENSION) : null);
+
+		return createProgram(vert ? s + VERT_EXTENSION : null, frag ? s + FRAG_EXTENSION : null);
 	}
 
 	// Most of the code taken from the LWJGL wiki

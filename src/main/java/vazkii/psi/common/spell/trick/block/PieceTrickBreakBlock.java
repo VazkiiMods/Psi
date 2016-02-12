@@ -2,10 +2,10 @@
  * This class was created by <Vazkii>. It's distributed as
  * part of the Psi Mod. Get the Source Code in github:
  * https://github.com/Vazkii/Psi
- * 
+ *
  * Psi is Open Source and distributed under the
  * Psi License: http://psi.vazkii.us/license.php
- * 
+ *
  * File Created @ [24/01/2016, 15:35:27 (GMT)]
  */
 package vazkii.psi.common.spell.trick.block;
@@ -14,7 +14,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemTool;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
@@ -58,7 +57,7 @@ public class PieceTrickBreakBlock extends PieceTrick {
 			return null;
 
 		Vector3 positionVal = this.<Vector3>getParamValue(context, position);
-		
+
 		if(positionVal == null)
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
 		if(!context.isInRadius(positionVal))
@@ -73,7 +72,7 @@ public class PieceTrickBreakBlock extends PieceTrick {
 	public static void removeBlockWithDrops(EntityPlayer player, World world, ItemStack tool, BlockPos pos, boolean particles) {
 		if(!world.isBlockLoaded(pos))
 			return;
-		
+
 		int harvestLevel = ConfigHandler.cadHarvestLevel;
 		IBlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
@@ -92,7 +91,7 @@ public class PieceTrickBreakBlock extends PieceTrick {
 						block.onBlockDestroyedByPlayer(world, pos, state);
 						block.harvestBlock(world, player, pos, state, world.getTileEntity(pos));
 					}
-				} else world.setBlockToAir(pos);	
+				} else world.setBlockToAir(pos);
 			}
 
 			if(particles)

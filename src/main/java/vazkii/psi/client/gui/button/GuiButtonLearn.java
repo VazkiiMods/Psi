@@ -2,24 +2,20 @@
  * This class was created by <Vazkii>. It's distributed as
  * part of the Botania Mod. Get the Source Code in github:
  * https://github.com/Vazkii/Botania
- * 
+ *
  * Botania is Open Source and distributed under the
  * Botania License: http://botaniamod.net/license.php
- * 
+ *
  * File Created @ [Jan 16, 2014, 4:52:06 PM (GMT)]
  */
 package vazkii.psi.client.gui.button;
-
-import java.util.Arrays;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
-import vazkii.psi.client.core.helper.RenderHelper;
 import vazkii.psi.client.gui.GuiLeveling;
-import vazkii.psi.client.gui.GuiProgrammer;
 
 public class GuiButtonLearn extends GuiButton {
 

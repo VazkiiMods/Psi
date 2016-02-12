@@ -2,10 +2,10 @@
  * This class was created by <Vazkii>. It's distributed as
  * part of the Psi Mod. Get the Source Code in github:
  * https://github.com/Vazkii/Psi
- * 
+ *
  * Psi is Open Source and distributed under the
  * Psi License: http://psi.vazkii.us/license.php
- * 
+ *
  * File Created @ [16/01/2016, 22:57:27 (GMT)]
  */
 package vazkii.psi.common.spell.other;
@@ -40,12 +40,12 @@ public class PieceConnector extends SpellPiece implements IRedirector {
 	public PieceConnector(Spell spell) {
 		super(spell);
 	}
-	
+
 	@Override
 	public String getSortingName() {
 		return "00000000000";
 	}
-	
+
 	@Override
 	public String getEvaluationTypeString() {
 		return StatCollector.translateToLocal("psi.datatype.Any");
@@ -55,7 +55,7 @@ public class PieceConnector extends SpellPiece implements IRedirector {
 	@SideOnly(Side.CLIENT)
 	public void drawAdditional() {
 		drawSide(paramSides.get(target));
-		
+
 		if(isInGrid)
 			for(SpellParam.Side side : SpellParam.Side.class.getEnumConstants())
 				if(side.isEnabled()) {
@@ -132,7 +132,7 @@ public class PieceConnector extends SpellPiece implements IRedirector {
 	public SpellParam.Side getRedirectionSide() {
 		return paramSides.get(target);
 	}
-	
+
 	// Side this class implements IRedirector we don't need this
 	@Override
 	public Class<?> getEvaluationType() {

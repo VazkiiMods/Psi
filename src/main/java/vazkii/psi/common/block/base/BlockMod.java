@@ -2,10 +2,10 @@
  * This class was created by <Vazkii>. It's distributed as
  * part of the Psi Mod. Get the Source Code in github:
  * https://github.com/Vazkii/Psi
- * 
+ *
  * Psi is Open Source and distributed under the
  * Psi License: http://psi.vazkii.us/license.php
- * 
+ *
  * File Created @ [09/01/2016, 22:43:48 (GMT)]
  */
 package vazkii.psi.common.block.base;
@@ -23,20 +23,20 @@ public class BlockMod extends Block implements IPsiBlock {
 
 	private final String[] variants;
 	private final String bareName;
-	
+
 	public BlockMod(String name, Material materialIn, String... variants) {
 		super(materialIn);
-		
+
 		if(variants.length == 0)
 			variants = new String[] { name };
-		
+
 		bareName = name;
 		this.variants = variants;
-		
+
 		setUnlocalizedName(name);
 		setCreativeTab(PsiCreativeTab.INSTANCE);
 	}
-	
+
 	@Override
 	public Block setUnlocalizedName(String name) {
 		super.setUnlocalizedName(name);
@@ -44,16 +44,17 @@ public class BlockMod extends Block implements IPsiBlock {
 		GameRegistry.registerBlock(this, ItemModBlock.class);
 		return this;
 	}
-	
+
 	@Override
 	public int getRenderType() {
 		return 3;
 	}
 
+	@Override
 	public String getBareName() {
 		return bareName;
 	}
-	
+
 	@Override
 	public String[] getVariants() {
 		return variants;
@@ -68,5 +69,5 @@ public class BlockMod extends Block implements IPsiBlock {
 	public EnumRarity getBlockRarity(ItemStack stack) {
 		return EnumRarity.COMMON;
 	}
-	
+
 }

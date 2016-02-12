@@ -2,10 +2,10 @@
  * This class was created by <Vazkii>. It's distributed as
  * part of the Psi Mod. Get the Source Code in github:
  * https://github.com/Vazkii/Psi
- * 
+ *
  * Psi is Open Source and distributed under the
  * Psi License: http://psi.vazkii.us/license.php
- * 
+ *
  * File Created @ [25/01/2016, 20:16:02 (GMT)]
  */
 package vazkii.psi.common.spell.trick.infusion;
@@ -31,15 +31,15 @@ public class PieceTrickInfusion extends PieceTrick {
 	@Override
 	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
 		super.addToMetadata(meta);
-		
+
 		meta.addStat(EnumSpellStat.POTENCY, 100);
 		meta.addStat(EnumSpellStat.COST, 1200);
 	}
-	
+
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		ItemCAD.craft(context.caster, new ItemStack(Items.gold_ingot), new ItemStack(ModItems.material, 1, 1));
 		return null;
 	}
-	
+
 }

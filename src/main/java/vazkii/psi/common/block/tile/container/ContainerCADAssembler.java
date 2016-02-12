@@ -2,10 +2,10 @@
  * This class was created by <Vazkii>. It's distributed as
  * part of the Psi Mod. Get the Source Code in github:
  * https://github.com/Vazkii/Psi
- * 
+ *
  * Psi is Open Source and distributed under the
  * Psi License: http://psi.vazkii.us/license.php
- * 
+ *
  * File Created @ [10/01/2016, 16:52:47 (GMT)]
  */
 package vazkii.psi.common.block.tile.container;
@@ -44,13 +44,13 @@ public class ContainerCADAssembler extends Container {
 		addSlotToContainer(new SlotCADComponent(assembler, 5, 130, 111, EnumCADComponent.DYE).map(componentToSlotMap));
 
 		addSlotToContainer(new SlotSocketable(assembler, 6, 35, 21));
-		
+
 		for(int i = 0; i < 4; i++)
 			for(int j = 0; j < 3; j++) {
 				int slot = j + i * 3;
 				addSlotToContainer(new SlotBullet(assembler, slot + 7, 17 + j * 18, 57 + i * 18, slot));
 			}
-		
+
 		int xs = 48;
 		int ys = 143;
 
@@ -68,51 +68,51 @@ public class ContainerCADAssembler extends Container {
 	}
 
 	@Override
-    public ItemStack transferStackInSlot(EntityPlayer playerIn, int index) {
-        ItemStack itemstack = null;
-        Slot slot = (Slot) this.inventorySlots.get(index);
+	public ItemStack transferStackInSlot(EntityPlayer playerIn, int index) {
+		ItemStack itemstack = null;
+		Slot slot = inventorySlots.get(index);
 
-        if(slot != null && slot.getHasStack()) {
-            ItemStack itemstack1 = slot.getStack();
-            itemstack = itemstack1.copy();
-            
-            int invStart = 18;
-            int hotbarStart = invStart + 28;
-            int invEnd = hotbarStart + 9;
+		if(slot != null && slot.getHasStack()) {
+			ItemStack itemstack1 = slot.getStack();
+			itemstack = itemstack1.copy();
 
-            if(index > invStart) {
-                if(itemstack1.getItem() instanceof ICADComponent) { // Component slots
-                	ICADComponent component = (ICADComponent) itemstack1.getItem();
-                	Slot compSlot = componentToSlotMap.get(component.getComponentType(itemstack1));
-                    if(!this.mergeItemStack(itemstack1, compSlot.slotNumber, compSlot.slotNumber + 1, false))
-                        return null;
-                } else if(itemstack1.getItem() instanceof ISocketable) { // CAD Input slot
-                    if(!this.mergeItemStack(itemstack1, 6, 7, false))
-                        return null;
-                } else if(itemstack1.getItem() == ModItems.spellBullet) {
-                    if(!this.mergeItemStack(itemstack1, 7, 19, false))
-                        return null;
-                } else if(index >= invStart && index < hotbarStart)  { // Inv -> Hotbar
-                    if (!this.mergeItemStack(itemstack1, hotbarStart, invEnd, true))
-                        return null;
-                } else if(index >= hotbarStart && index < invEnd) { // Hotbar -> inv
-                	if(!this.mergeItemStack(itemstack1, invStart, hotbarStart, false)) 
-                        return null;
-                }
-            } else if(!this.mergeItemStack(itemstack1, invStart, invEnd, true)) // Assembler -> Inv+hotbar
-                return null;
+			int invStart = 18;
+			int hotbarStart = invStart + 28;
+			int invEnd = hotbarStart + 9;
 
-            if(itemstack1.stackSize == 0)
-                slot.putStack((ItemStack)null);
-            else slot.onSlotChanged();
+			if(index > invStart) {
+				if(itemstack1.getItem() instanceof ICADComponent) { // Component slots
+					ICADComponent component = (ICADComponent) itemstack1.getItem();
+					Slot compSlot = componentToSlotMap.get(component.getComponentType(itemstack1));
+					if(!mergeItemStack(itemstack1, compSlot.slotNumber, compSlot.slotNumber + 1, false))
+						return null;
+				} else if(itemstack1.getItem() instanceof ISocketable) { // CAD Input slot
+					if(!mergeItemStack(itemstack1, 6, 7, false))
+						return null;
+				} else if(itemstack1.getItem() == ModItems.spellBullet) {
+					if(!mergeItemStack(itemstack1, 7, 19, false))
+						return null;
+				} else if(index >= invStart && index < hotbarStart)  { // Inv -> Hotbar
+					if (!mergeItemStack(itemstack1, hotbarStart, invEnd, true))
+						return null;
+				} else if(index >= hotbarStart && index < invEnd) { // Hotbar -> inv
+					if(!mergeItemStack(itemstack1, invStart, hotbarStart, false))
+						return null;
+				}
+			} else if(!mergeItemStack(itemstack1, invStart, invEnd, true)) // Assembler -> Inv+hotbar
+				return null;
 
-            if(itemstack1.stackSize == itemstack.stackSize)
-                return null;
+			if(itemstack1.stackSize == 0)
+				slot.putStack((ItemStack)null);
+			else slot.onSlotChanged();
 
-            slot.onPickupFromSlot(playerIn, itemstack1);
-        }
+			if(itemstack1.stackSize == itemstack.stackSize)
+				return null;
 
-        return itemstack;
-    }
+			slot.onPickupFromSlot(playerIn, itemstack1);
+		}
+
+		return itemstack;
+	}
 
 }

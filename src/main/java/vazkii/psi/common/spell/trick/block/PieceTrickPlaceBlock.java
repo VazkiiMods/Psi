@@ -2,10 +2,10 @@
  * This class was created by <Vazkii>. It's distributed as
  * part of the Psi Mod. Get the Source Code in github:
  * https://github.com/Vazkii/Psi
- * 
+ *
  * Psi is Open Source and distributed under the
  * Psi License: http://psi.vazkii.us/license.php
- * 
+ *
  * File Created @ [24/01/2016, 17:14:15 (GMT)]
  */
 package vazkii.psi.common.spell.trick.block;
@@ -14,7 +14,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
@@ -30,7 +29,6 @@ import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.api.spell.param.ParamVector;
 import vazkii.psi.api.spell.piece.PieceTrick;
 import vazkii.psi.client.core.handler.HUDHandler;
-import vazkii.psi.common.core.handler.ConfigHandler;
 
 public class PieceTrickPlaceBlock extends PieceTrick {
 
@@ -56,7 +54,7 @@ public class PieceTrickPlaceBlock extends PieceTrick {
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		Vector3 positionVal = this.<Vector3>getParamValue(context, position);
-		
+
 		if(positionVal == null)
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
 		if(!context.isInRadius(positionVal))
@@ -67,38 +65,38 @@ public class PieceTrickPlaceBlock extends PieceTrick {
 
 		return null;
 	}
-	
+
 	public static void placeBlock(EntityPlayer player, World world, BlockPos pos, boolean particles) {
 		if(!world.isBlockLoaded(pos))
 			return;
-		
+
 		IBlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
 		if(block == null || block.isAir(world, pos) || block.isReplaceable(world, pos)) {
 			int slot = player.inventory.currentItem;
 			if(slot == 9)
 				return;
-			
+
 			ItemStack stack = player.inventory.getStackInSlot(slot + 1);
 			if(stack != null && stack.getItem() instanceof ItemBlock) {
 				ItemStack rem = removeFromInventory(player, block, stack);
 				Block blockToPlace = Block.getBlockFromItem(rem.getItem());
 				world.setBlockState(pos, blockToPlace.getStateFromMeta(rem.getItemDamage()));
-				
+
 				if(player.capabilities.isCreativeMode)
 					HUDHandler.setRemaining(rem, -1);
 				else HUDHandler.setRemaining(player, rem, null);
 			}
-			
+
 			if(particles && !world.isRemote)
 				world.playAuxSFX(2001, pos, Block.getStateId(world.getBlockState(pos)));
 		}
 	}
-	
+
 	public static ItemStack removeFromInventory(EntityPlayer player, Block block, ItemStack stack) {
 		if(player.capabilities.isCreativeMode)
 			return stack.copy();
-		
+
 		InventoryPlayer inv = player.inventory;
 		for(int i = inv.getSizeInventory() - 1; i >= 0; i--) {
 			ItemStack invStack = inv.getStackInSlot(i);
@@ -113,5 +111,5 @@ public class PieceTrickPlaceBlock extends PieceTrick {
 
 		return null;
 	}
-	
+
 }

@@ -2,10 +2,10 @@
  * This class was created by <Vazkii>. It's distributed as
  * part of the Psi Mod. Get the Source Code in github:
  * https://github.com/Vazkii/Psi
- * 
+ *
  * Psi is Open Source and distributed under the
  * Psi License: http://psi.vazkii.us/license.php
- * 
+ *
  * File Created @ [05/02/2016, 21:23:39 (GMT)]
  */
 package vazkii.psi.common.crafting.recipe;
@@ -17,8 +17,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 import vazkii.psi.api.cad.EnumCADComponent;
 import vazkii.psi.api.cad.ICAD;
-import vazkii.psi.api.spell.Spell;
-import vazkii.psi.common.item.ItemSpellDrive;
 
 public class AssemblyScavengeRecipe implements IRecipe {
 
@@ -32,17 +30,17 @@ public class AssemblyScavengeRecipe implements IRecipe {
 				if(stack.getItem() instanceof ICAD) {
 					if(foundTarget)
 						return false;
-					
+
 					for(EnumCADComponent comp : EnumCADComponent.class.getEnumConstants()) {
 						if(comp == EnumCADComponent.ASSEMBLY)
 							continue;
-						
+
 						ItemStack compStack = ((ICAD) stack.getItem()).getComponentInSlot(stack, comp);
-						
+
 						if(compStack != null)
 							return false;
 					}
-					
+
 					foundTarget = true;
 				} else return false;
 			}

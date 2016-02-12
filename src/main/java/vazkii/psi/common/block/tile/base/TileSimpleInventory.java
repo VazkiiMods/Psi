@@ -2,10 +2,10 @@
  * This class was created by <Vazkii>. It's distributed as
  * part of the Psi Mod. Get the Source Code in github:
  * https://github.com/Vazkii/Psi
- * 
+ *
  * Psi is Open Source and distributed under the
  * Psi License: http://psi.vazkii.us/license.php
- * 
+ *
  * File Created @ [10/01/2016, 15:13:46 (GMT)]
  */
 package vazkii.psi.common.block.tile.base;
@@ -148,25 +148,25 @@ public abstract class TileSimpleInventory extends TileMod implements ISidedInven
 	public IChatComponent getDisplayName() {
 		return new ChatComponentText(getName());
 	}
-	
+
 	public void inventoryChanged(int i) {
 		// NO-OP
 	}
-	
+
 	public boolean isAutomationEnabled() {
 		return true;
 	}
-	
+
 	@Override
 	public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction) {
 		return isAutomationEnabled();
 	}
-	
+
 	@Override
 	public boolean canInsertItem(int index, ItemStack itemStackIn, EnumFacing direction) {
 		return isAutomationEnabled();
 	}
-	
+
 	@Override
 	public int[] getSlotsForFace(EnumFacing side) {
 		if(isAutomationEnabled()) {
@@ -175,7 +175,7 @@ public abstract class TileSimpleInventory extends TileMod implements ISidedInven
 				slots[i] = i;
 			return slots;
 		}
-		
+
 		return new int[0];
 	}
 }

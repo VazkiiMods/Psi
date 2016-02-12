@@ -2,10 +2,10 @@
  * This class was created by <Vazkii>. It's distributed as
  * part of the Psi Mod. Get the Source Code in github:
  * https://github.com/Vazkii/Psi
- * 
+ *
  * Psi is Open Source and distributed under the
  * Psi License: http://psi.vazkii.us/license.php
- * 
+ *
  * File Created @ [16/01/2016, 16:10:43 (GMT)]
  */
 package vazkii.psi.common.spell.base;
@@ -144,7 +144,7 @@ public final class ModSpellPieces {
 	public static PieceContainer operatorVectorProject;
 
 	public static PieceContainer constantNumber;
-	
+
 	public static PieceContainer connector;
 	public static PieceContainer errorSuppressor;
 
@@ -196,7 +196,7 @@ public final class ModSpellPieces {
 		selectorBlockBroken = register(PieceSelectorBlockBroken.class, LibPieceNames.SELECTOR_BLOCK_BROKEN, LibPieceGroups.TOOL_CASTING, true);
 		selectorBlockSideBroken = register(PieceSelectorBlockSideBroken.class, LibPieceNames.SELECTOR_BLOCK_SIDE_BROKEN, LibPieceGroups.TOOL_CASTING);
 		selectorAttackTarget = register(PieceSelectorAttackTarget.class, LibPieceNames.SELECTOR_ATTACK_TARGET, LibPieceGroups.TOOL_CASTING);
-		
+
 		operatorSum = register(PieceOperatorSum.class, LibPieceNames.OPERATOR_SUM, LibPieceGroups.NUMBERS_INTRO, true);
 		operatorSubtract = register(PieceOperatorSubtract.class, LibPieceNames.OPERATOR_SUBTRACT, LibPieceGroups.NUMBERS_INTRO);
 		operatorMultiply = register(PieceOperatorMultiply.class, LibPieceNames.OPERATOR_MULTIPLY, LibPieceGroups.NUMBERS_INTRO);
@@ -231,10 +231,10 @@ public final class ModSpellPieces {
 		operatorVectorProject = register(PieceOperatorVectorProject.class, LibPieceNames.OPERATOR_VECTOR_PROJECT, LibPieceGroups.BLOCK_WORKS);
 
 		constantNumber = register(PieceConstantNumber.class, LibPieceNames.CONSTANT_NUMBER, LibPieceGroups.TUTORIAL_2, true);
-		
+
 		connector = register(PieceConnector.class, LibPieceNames.CONNECTOR, LibPieceGroups.TUTORIAL_2);
 		errorSuppressor = register(PieceErrorSuppressor.class, LibPieceNames.ERROR_SUPPRESSOR, LibPieceGroups.TUTORIAL_4);
-		
+
 		trickDebug = register(PieceTrickDebug.class, LibPieceNames.TRICK_DEBUG, LibPieceGroups.TUTORIAL_1, true);
 		trickAddMotion = register(PieceTrickAddMotion.class, LibPieceNames.TRICK_ADD_MOTION, LibPieceGroups.TUTORIAL_3, true);
 		trickExplode = register(PieceTrickExplode.class, LibPieceNames.TRICK_EXPLODE, LibPieceGroups.TUTORIAL_4, true);
@@ -291,19 +291,19 @@ public final class ModSpellPieces {
 		PsiAPI.setGroupRequirements(LibPieceGroups.NEGATIVE_EFFECTS, 17, LibPieceGroups.POSITIVE_EFFECTS);
 		PsiAPI.setGroupRequirements(LibPieceGroups.EIDOS_REVERSAL, 19, LibPieceGroups.GREATER_INFUSION);
 	}
-	
+
 	public static PieceContainer register(Class<? extends SpellPiece> clazz, String name, String group) {
 		return register(clazz, name, group, false);
 	}
-	
+
 	public static PieceContainer register(Class<? extends SpellPiece> clazz, String name, String group, boolean main) {
 		PsiAPI.registerSpellPieceAndTexture(name, clazz);
 		PsiAPI.addPieceToGroup(clazz, group, main);
 		return (Spell s) -> { return SpellPiece.create(clazz, s); };
 	}
-	
+
 	public static interface PieceContainer {
 		public SpellPiece get(Spell s);
 	}
-	
+
 }

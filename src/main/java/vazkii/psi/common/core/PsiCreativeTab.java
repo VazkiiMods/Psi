@@ -2,10 +2,10 @@
  * This class was created by <Vazkii>. It's distributed as
  * part of the Psi Mod. Get the Source Code in github:
  * https://github.com/Vazkii/Psi
- * 
+ *
  * Psi is Open Source and distributed under the
  * Psi License: http://psi.vazkii.us/license.php
- * 
+ *
  * File Created @ [08/01/2016, 21:49:46 (GMT)]
  */
 package vazkii.psi.common.core;
@@ -46,27 +46,27 @@ public class PsiCreativeTab extends CreativeTabs {
 	public boolean hasSearchBar() {
 		return true;
 	}
-	
+
 	@Override
 	public void displayAllReleventItems(List<ItemStack> p_78018_1_) {
 		list = p_78018_1_;
-		
+
 		addBlock(ModBlocks.cadAssembler);
 		addBlock(ModBlocks.programmer);
 
 		addItem(ModItems.material);
-		
+
 		addItem(ModItems.cadAssembly);
 		addItem(ModItems.cadCore);
 		addItem(ModItems.cadSocket);
 		addItem(ModItems.cadBattery);
 		addItem(ModItems.cadColorizer);
-		
+
 		addItem(ModItems.spellBullet);
 		addItem(ModItems.spellDrive);
 
 		addItem(ModItems.cad);
-		
+
 		addItem(ModItems.psimetalShovel);
 		addItem(ModItems.psimetalPickaxe);
 		addItem(ModItems.psimetalAxe);
@@ -83,8 +83,4 @@ public class PsiCreativeTab extends CreativeTabs {
 		addItem(Item.getItemFromBlock(block));
 	}
 
-	private void addStack(ItemStack stack) {
-		list.add(stack);
-	}
-	
 }

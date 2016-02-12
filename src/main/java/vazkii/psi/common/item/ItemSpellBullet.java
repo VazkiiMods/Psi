@@ -2,10 +2,10 @@
  * This class was created by <Vazkii>. It's distributed as
  * part of the Psi Mod. Get the Source Code in github:
  * https://github.com/Vazkii/Psi
- * 
+ *
  * Psi is Open Source and distributed under the
  * Psi License: http://psi.vazkii.us/license.php
- * 
+ *
  * File Created @ [13/01/2016, 16:48:52 (GMT)]
  */
 package vazkii.psi.common.item;
@@ -39,7 +39,7 @@ import vazkii.psi.common.spell.operator.vector.PieceOperatorVectorRaycast;
 public class ItemSpellBullet extends ItemMod implements ISpellContainer {
 
 	private static final String TAG_SPELL = "spell";
-	
+
 	public static final String[] VARIANTS = {
 			"spellBullet",
 			"spellBulletActive",
@@ -52,29 +52,29 @@ public class ItemSpellBullet extends ItemMod implements ISpellContainer {
 			"spellBulletGrenade",
 			"spellBulletGrenadeActive"
 	};
-	
+
 	public ItemSpellBullet() {
 		super(LibItemNames.SPELL_BULLET, VARIANTS);
 		setMaxStackSize(1);
 	}
-	
+
 	@Override
 	public String getItemStackDisplayName(ItemStack stack) {
 		if(!containsSpell(stack))
 			return super.getItemStackDisplayName(stack);
-		
+
 		NBTTagCompound cmp = ItemNBTHelper.getCompound(stack, TAG_SPELL, false);
 		String name = cmp.getString(Spell.TAG_SPELL_NAME); // We don't need to load the whole spell just for the name
 		if(name == null || name.isEmpty())
 			return super.getItemStackDisplayName(stack);
-		
+
 		return name;
 	}
-	
+
 	@Override
 	public void setSpell(ItemStack stack, Spell spell) {
 		ItemSpellDrive.setSpell(stack, spell);
-		
+
 		if(!containsSpell(stack))
 			stack.setItemDamage(stack.getItemDamage() + 1);
 	}
@@ -88,20 +88,20 @@ public class ItemSpellBullet extends ItemMod implements ISpellContainer {
 	public boolean containsSpell(ItemStack stack) {
 		return stack.getItemDamage() % 2 == 1;
 	}
-	
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public EnumRarity getRarity(ItemStack stack) {
 		return containsSpell(stack) ? EnumRarity.RARE : EnumRarity.COMMON;
 	}
-	
+
 	@Override
 	public void getSubItems(Item itemIn, CreativeTabs tab, List<ItemStack> subItems) {
 		for(int i = 0; i < getVariants().length; i++)
 			if(i % 2 == 0)
 				subItems.add(new ItemStack(itemIn, 1, i));
 	}
-	
+
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
 		tooltipIfShift(tooltip, () -> {
@@ -116,7 +116,7 @@ public class ItemSpellBullet extends ItemMod implements ISpellContainer {
 		case 1: // Basic
 			context.cspell.safeExecute(context);
 			break;
-		
+
 		case 3: // Projectile
 			if(!context.caster.worldObj.isRemote) {
 				EntitySpellProjectile proj = new EntitySpellProjectile(context.caster.worldObj, context.caster);
@@ -126,28 +126,28 @@ public class ItemSpellBullet extends ItemMod implements ISpellContainer {
 				proj.worldObj.spawnEntityInWorld(proj);
 			}
 			break;
-			
+
 		case 5: // Loopcast
 			context.cspell.safeExecute(context);
 			PlayerDataHandler.get(context.caster).loopcasting = true;
 			break;
-			
+
 		case 7: // Spell Circle
 			if(!context.caster.worldObj.isRemote) {
 				MovingObjectPosition pos = PieceOperatorVectorRaycast.raycast(context.caster, 32);
-				
+
 				if(pos != null) {
 					EntitySpellCircle circle = new EntitySpellCircle(context.caster.worldObj);
 					ItemStack cad = PsiAPI.getPlayerCAD(context.caster);
 					ItemStack colorizer = ((ICAD) cad.getItem()).getComponentInSlot(cad, EnumCADComponent.DYE);
 					circle.setInfo(context.caster, colorizer, stack);
 					circle.setPosition(pos.hitVec.xCoord, pos.hitVec.yCoord, pos.hitVec.zCoord);
-					
+
 					circle.worldObj.spawnEntityInWorld(circle);
 				}
 			}
 			break;
-			
+
 		case 9: // Grenade
 			if(!context.caster.worldObj.isRemote) {
 				EntitySpellProjectile proj = new EntitySpellGrenade(context.caster.worldObj, context.caster);

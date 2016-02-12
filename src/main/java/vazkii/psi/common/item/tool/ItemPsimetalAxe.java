@@ -2,10 +2,10 @@
  * This class was created by <Vazkii>. It's distributed as
  * part of the Psi Mod. Get the Source Code in github:
  * https://github.com/Vazkii/Psi
- * 
+ *
  * Psi is Open Source and distributed under the
  * Psi License: http://psi.vazkii.us/license.php
- * 
+ *
  * File Created @ [06/02/2016, 20:16:28 (GMT)]
  */
 package vazkii.psi.common.item.tool;
@@ -22,17 +22,17 @@ import vazkii.psi.common.lib.LibItemNames;
 
 public class ItemPsimetalAxe extends ItemPsimetalTool {
 
-    private static final Set<Block> EFFECTIVE_ON = Sets.newHashSet(new Block[] {Blocks.planks, Blocks.bookshelf, Blocks.log, Blocks.log2, Blocks.chest, Blocks.pumpkin, Blocks.lit_pumpkin, Blocks.melon_block, Blocks.ladder});
-	
+	private static final Set<Block> EFFECTIVE_ON = Sets.newHashSet(new Block[] {Blocks.planks, Blocks.bookshelf, Blocks.log, Blocks.log2, Blocks.chest, Blocks.pumpkin, Blocks.lit_pumpkin, Blocks.melon_block, Blocks.ladder});
+
 	public ItemPsimetalAxe() {
 		super(LibItemNames.PSIMETAL_AXE, 3F, EFFECTIVE_ON);
 	}
-	
+
 	// ItemAxe copypasta:
-	
+
 	@Override
-    public float getStrVsBlock(ItemStack stack, Block block) {
-        return block.getMaterial() != Material.wood && block.getMaterial() != Material.plants && block.getMaterial() != Material.vine ? super.getStrVsBlock(stack, block) : this.efficiencyOnProperMaterial;
-    }
+	public float getStrVsBlock(ItemStack stack, Block block) {
+		return block.getMaterial() != Material.wood && block.getMaterial() != Material.plants && block.getMaterial() != Material.vine ? super.getStrVsBlock(stack, block) : efficiencyOnProperMaterial;
+	}
 
 }

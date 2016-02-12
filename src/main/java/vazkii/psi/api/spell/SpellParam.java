@@ -2,10 +2,10 @@
  * This class was created by <Vazkii>. It's distributed as
  * part of the Psi Mod. Get the Source Code in github:
  * https://github.com/Vazkii/Psi
- * 
+ *
  * Psi is Open Source and distributed under the
  * Psi License: http://psi.vazkii.us/license.php
- * 
+ *
  * File Created @ [16/01/2016, 15:19:38 (GMT)]
  */
 package vazkii.psi.api.spell;
@@ -58,7 +58,7 @@ public abstract class SpellParam {
 		this.color = color;
 		this.canDisable = canDisable;
 	}
-	
+
 	/**
 	 * Gets the type that this parameter requires. This is evaluated against
 	 * {@link SpellPiece#getEvaluationType()}.<br>
@@ -68,7 +68,7 @@ public abstract class SpellParam {
 	 * override {@link #getRequiredTypeString()} for display.
 	 */
 	protected abstract Class<?> getRequiredType();
-	
+
 	/**
 	 * Gets if this parameter requires a constant ({@link EnumPieceType#CONSTANT}). Similarly to {@link #getRequiredType()} this
 	 * is for internal use only.
@@ -76,7 +76,7 @@ public abstract class SpellParam {
 	protected boolean requiresConstant() {
 		return false;
 	}
-	
+
 	/**
 	 * Gets the string for display for the required type.
 	 */
@@ -86,7 +86,7 @@ public abstract class SpellParam {
 		String s = StatCollector.translateToLocal("psi.datatype." + evalStr);
 		if(requiresConstant())
 			s += " " + StatCollector.translateToLocal("psimisc.constant");
-		
+
 		return s;
 	}
 
@@ -97,7 +97,7 @@ public abstract class SpellParam {
 	public boolean canAccept(SpellPiece piece) {
 		return (getRequiredType() == Any.class || getRequiredType().isAssignableFrom(piece.getEvaluationType())) && (!requiresConstant() || piece.getPieceType() == EnumPieceType.CONSTANT);
 	}
-	
+
 	/**
 	 * Helper Enum for the various sides a parameter can take.
 	 */
@@ -144,5 +144,5 @@ public abstract class SpellParam {
 	 * Empty helper class for use with required types when any type is accepted.
 	 */
 	public static class Any { }
-	
+
 }

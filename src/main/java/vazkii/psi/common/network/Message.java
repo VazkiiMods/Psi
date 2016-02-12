@@ -2,10 +2,10 @@
  * This class was created by <Vazkii>. It's distributed as
  * part of the Psi Mod. Get the Source Code in github:
  * https://github.com/Vazkii/Psi
- * 
+ *
  * Psi is Open Source and distributed under the
  * Psi License: http://psi.vazkii.us/license.php
- * 
+ *
  * File Created @ [11/01/2016, 22:00:30 (GMT)]
  */
 package vazkii.psi.common.network;
@@ -46,7 +46,7 @@ public class Message<REQ extends Message> implements Serializable, IMessage, IMe
 		map(NBTTagCompound.class, Message::readNBT, Message::writeNBT);
 		map(ItemStack.class, Message::readItemStack, Message::writeItemStack);
 		map(BlockPos.class, Message::readBlockPos, Message::writeBlockPos);
-		
+
 		// Psi stuff
 		map(Spell.class, Message::readSpell, Message::writeSpell);
 	}
@@ -133,76 +133,76 @@ public class Message<REQ extends Message> implements Serializable, IMessage, IMe
 		handlers.put(type, Pair.of(reader, writer));
 	}
 
-	private static byte readByte(ByteBuf buf) { 
-		return buf.readByte(); 
+	private static byte readByte(ByteBuf buf) {
+		return buf.readByte();
 	}
 
-	private static void writeByte(byte b, ByteBuf buf) { 
-		buf.writeByte(b); 
+	private static void writeByte(byte b, ByteBuf buf) {
+		buf.writeByte(b);
 	}
 
-	private static short readShort(ByteBuf buf) { 
-		return buf.readShort(); 
+	private static short readShort(ByteBuf buf) {
+		return buf.readShort();
 	}
 
-	private static void writeShort(short s, ByteBuf buf) { 
-		buf.writeShort(s); 
+	private static void writeShort(short s, ByteBuf buf) {
+		buf.writeShort(s);
 	}
 
-	private static int readInt(ByteBuf buf) { 
-		return buf.readInt(); 
+	private static int readInt(ByteBuf buf) {
+		return buf.readInt();
 	}
 
-	private static void writeInt(int i, ByteBuf buf) { 
-		buf.writeInt(i); 
+	private static void writeInt(int i, ByteBuf buf) {
+		buf.writeInt(i);
 	}
 
-	private static long readLong(ByteBuf buf) { 
-		return buf.readLong(); 
+	private static long readLong(ByteBuf buf) {
+		return buf.readLong();
 	}
 
-	private static void writeLong(long l, ByteBuf buf) { 
-		buf.writeLong(l); 
+	private static void writeLong(long l, ByteBuf buf) {
+		buf.writeLong(l);
 	}
 
-	private static float readFloat(ByteBuf buf) { 
-		return buf.readFloat(); 
+	private static float readFloat(ByteBuf buf) {
+		return buf.readFloat();
 	}
 
-	private static void writeFloat(float f, ByteBuf buf) { 
-		buf.writeFloat(f); 
+	private static void writeFloat(float f, ByteBuf buf) {
+		buf.writeFloat(f);
 	}
 
-	private static double readDouble(ByteBuf buf) { 
-		return buf.readDouble(); 
+	private static double readDouble(ByteBuf buf) {
+		return buf.readDouble();
 	}
 
-	private static void writeDouble(double d, ByteBuf buf) { 
-		buf.writeDouble(d); 
+	private static void writeDouble(double d, ByteBuf buf) {
+		buf.writeDouble(d);
 	}
 
-	private static boolean readBoolean(ByteBuf buf) { 
-		return buf.readBoolean(); 
+	private static boolean readBoolean(ByteBuf buf) {
+		return buf.readBoolean();
 	}
 
-	private static void writeBoolean(boolean b, ByteBuf buf) { 
-		buf.writeBoolean(b); 
+	private static void writeBoolean(boolean b, ByteBuf buf) {
+		buf.writeBoolean(b);
 	}
 
-	private static char readChar(ByteBuf buf) { 
-		return buf.readChar(); 
+	private static char readChar(ByteBuf buf) {
+		return buf.readChar();
 	}
 
-	private static void writeChar(char c, ByteBuf buf) { 
-		buf.writeChar(c); 
+	private static void writeChar(char c, ByteBuf buf) {
+		buf.writeChar(c);
 	}
 
-	private static String readString(ByteBuf buf) { 
+	private static String readString(ByteBuf buf) {
 		return ByteBufUtils.readUTF8String(buf);
 	}
 
-	private static void writeString(String s, ByteBuf buf) { 
-		ByteBufUtils.writeUTF8String(buf, s); 
+	private static void writeString(String s, ByteBuf buf) {
+		ByteBufUtils.writeUTF8String(buf, s);
 	}
 
 	private static NBTTagCompound readNBT(ByteBuf buf) {
@@ -228,7 +228,7 @@ public class Message<REQ extends Message> implements Serializable, IMessage, IMe
 	private static void writeBlockPos(BlockPos pos, ByteBuf buf) {
 		buf.writeLong(pos.toLong());
 	}
-	
+
 	// Psi stuff
 	private static Spell readSpell(ByteBuf buf) {
 		NBTTagCompound cmp = readNBT(buf);
@@ -239,7 +239,7 @@ public class Message<REQ extends Message> implements Serializable, IMessage, IMe
 		NBTTagCompound cmp = new NBTTagCompound();
 		if(spell != null)
 			spell.writeToNBT(cmp);
-		
+
 		writeNBT(cmp, buf);
 	}
 

@@ -2,10 +2,10 @@
  * This class was created by <Vazkii>. It's distributed as
  * part of the Psi Mod. Get the Source Code in github:
  * https://github.com/Vazkii/Psi
- * 
+ *
  * Psi is Open Source and distributed under the
  * Psi License: http://psi.vazkii.us/license.php
- * 
+ *
  * File Created @ [30/01/2016, 17:54:56 (GMT)]
  */
 package vazkii.psi.common.spell.other;
@@ -23,7 +23,7 @@ public class PieceErrorSuppressor extends SpellPiece {
 	public PieceErrorSuppressor(Spell spell) {
 		super(spell);
 	}
-	
+
 	@Override
 	public String getSortingName() {
 		return "00000000001";
@@ -33,7 +33,7 @@ public class PieceErrorSuppressor extends SpellPiece {
 	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
 		meta.errorsSuppressed = true;
 	}
-	
+
 	@Override
 	public EnumPieceType getPieceType() {
 		return EnumPieceType.MODIFIER;

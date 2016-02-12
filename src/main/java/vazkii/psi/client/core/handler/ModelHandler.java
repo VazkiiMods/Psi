@@ -2,10 +2,10 @@
  * This class was created by <Vazkii>. It's distributed as
  * part of the Psi Mod. Get the Source Code in github:
  * https://github.com/Vazkii/Psi
- * 
+ *
  * Psi is Open Source and distributed under the
  * Psi License: http://psi.vazkii.us/license.php
- * 
+ *
  * File Created @ [08/01/2016, 23:02:00 (GMT)]
  */
 package vazkii.psi.client.core.handler;
@@ -31,7 +31,7 @@ import vazkii.psi.common.lib.LibResources;
 public class ModelHandler {
 
 	public static HashMap<String, ModelResourceLocation> resourceLocations = new HashMap();
-	
+
 	public static void init() {
 		for(IVariantHolder holder : ItemMod.variantHolders)
 			registerModels(holder);
@@ -50,7 +50,7 @@ public class ModelHandler {
 			}
 		}
 	}
-	
+
 	public static void registerModels(Item item, String[] variants, boolean extra) {
 		if(item instanceof ItemBlock && ((ItemBlock) item).getBlock() instanceof IVariantEnumHolder) {
 			IVariantEnumHolder holder = (IVariantEnumHolder) ((ItemBlock) item).getBlock();
@@ -58,7 +58,7 @@ public class ModelHandler {
 			registerVariantsDefaulted(item, (Block) holder, clazz, IVariantEnumHolder.HEADER);
 			return;
 		}
-		
+
 		for(int i = 0; i < variants.length; i++) {
 			String name = LibResources.PREFIX_MOD + variants[i];
 			ModelResourceLocation loc = new ModelResourceLocation(name, "inventory");
@@ -66,41 +66,41 @@ public class ModelHandler {
 				ModelLoader.setCustomModelResourceLocation(item, i, loc);
 				resourceLocations.put(getKey(item, i), loc);
 			} else {
-				ModelLoader.registerItemVariants(item, loc);
+				ModelBakery.registerItemVariants(item, loc);
 				resourceLocations.put(variants[i], loc);
 			}
 		}
 	}
-	
-    private static <T extends Enum<T> & IStringSerializable> void registerVariantsDefaulted(Item item, Block b, Class<T> enumclazz, String variantHeader) {
-        String baseName = GameData.getBlockRegistry().getNameForObject(b).toString();
-        for(T e : enumclazz.getEnumConstants()) {
-            String variantName = variantHeader + "=" + e.getName();
-            ModelResourceLocation loc = new ModelResourceLocation(baseName, variantName);
-            int i = e.ordinal();
-            ModelLoader.setCustomModelResourceLocation(item, i, loc);
-            resourceLocations.put(getKey(item, i), loc);
-        }
-    }
-	
+
+	private static <T extends Enum<T> & IStringSerializable> void registerVariantsDefaulted(Item item, Block b, Class<T> enumclazz, String variantHeader) {
+		String baseName = GameData.getBlockRegistry().getNameForObject(b).toString();
+		for(T e : enumclazz.getEnumConstants()) {
+			String variantName = variantHeader + "=" + e.getName();
+			ModelResourceLocation loc = new ModelResourceLocation(baseName, variantName);
+			int i = e.ordinal();
+			ModelLoader.setCustomModelResourceLocation(item, i, loc);
+			resourceLocations.put(getKey(item, i), loc);
+		}
+	}
+
 	public static ModelResourceLocation getModelLocation(ItemStack stack) {
 		if(stack == null)
 			return null;
-		
+
 		return getModelLocation(stack.getItem(), stack.getItemDamage());
 	}
-	
+
 	public static ModelResourceLocation getModelLocation(Item item, int meta) {
 		String key = getKey(item, meta);
 		if(resourceLocations.containsKey(key))
 			return resourceLocations.get(key);
-		
+
 		return null;
 	}
-	
+
 	private static String getKey(Item item, int meta) {
 		return "i_" + item.getRegistryName() + "@" + meta;
 	}
-	
+
 
 }

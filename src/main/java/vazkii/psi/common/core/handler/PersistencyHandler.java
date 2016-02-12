@@ -2,10 +2,10 @@
  * This class was created by <Vazkii>. It's distributed as
  * part of the Psi Mod. Get the Source Code in github:
  * https://github.com/Vazkii/Psi
- * 
+ *
  * Psi is Open Source and distributed under the
  * Psi License: http://psi.vazkii.us/license.php
- * 
+ *
  * File Created @ [05/02/2016, 18:22:14 (GMT)]
  */
 package vazkii.psi.common.core.handler;
@@ -13,12 +13,12 @@ package vazkii.psi.common.core.handler;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayer;
 import vazkii.psi.api.PsiAPI;
 
 public final class PersistencyHandler {
@@ -42,7 +42,7 @@ public final class PersistencyHandler {
 			userhome += "\\AppData\\Roaming\\.minecraft\\psi_persistent";
 		else if(os.startsWith("Mac"))
 			userhome += "/Library/Application Support/minecraft/psi_persistent";
-		else userhome += "/.minecraft/psi_persistent"; 
+		else userhome += "/.minecraft/psi_persistent";
 
 		File dir = new File(userhome);
 		if(!dir.exists())
@@ -65,14 +65,14 @@ public final class PersistencyHandler {
 		}
 
 		Minecraft mc = Minecraft.getMinecraft();
-		String uuid = mc.thePlayer.getUUID(mc.thePlayer.getGameProfile()).toString();
+		String uuid = EntityPlayer.getUUID(mc.thePlayer.getGameProfile()).toString();
 		persistentFile = new File(userhome, uuid);
 
 		if(persistentFile.exists()) {
 			try(BufferedReader reader = new BufferedReader(new FileReader(persistentFile))) {
 				String l = reader.readLine();
 				if(l != null) {
-					int n = Integer.parseInt(l.trim());	
+					int n = Integer.parseInt(l.trim());
 					n = Math.min(n, PsiAPI.levelCap);
 					persistentLevel = n;
 				}

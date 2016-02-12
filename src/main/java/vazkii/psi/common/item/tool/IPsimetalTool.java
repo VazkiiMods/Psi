@@ -2,10 +2,10 @@
  * This class was created by <Vazkii>. It's distributed as
  * part of the Psi Mod. Get the Source Code in github:
  * https://github.com/Vazkii/Psi
- * 
+ *
  * Psi is Open Source and distributed under the
  * Psi License: http://psi.vazkii.us/license.php
- * 
+ *
  * File Created @ [06/02/2016, 21:14:58 (GMT)]
  */
 package vazkii.psi.common.item.tool;
@@ -19,12 +19,12 @@ public interface IPsimetalTool extends ISocketable {
 
 	public static final String TAG_BULLET_PREFIX = "bullet";
 	public static final String TAG_SELECTED_SLOT = "selectedSlot";
-	
+
 	@Override
 	public default boolean isSocketSlotAvailable(ItemStack stack, int slot) {
 		return slot < 3;
 	}
-	
+
 	@Override
 	public default boolean showSlotInRadialMenu(ItemStack stack, int slot) {
 		return isSocketSlotAvailable(stack, slot - 1);
@@ -61,5 +61,5 @@ public interface IPsimetalTool extends ISocketable {
 	public default void setSelectedSlot(ItemStack stack, int slot) {
 		ItemNBTHelper.setInt(stack, TAG_SELECTED_SLOT, slot);
 	}
-	
+
 }

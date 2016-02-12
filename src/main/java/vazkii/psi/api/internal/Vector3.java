@@ -2,10 +2,10 @@
  * This class was created by <ChickenBones>. It's distributed as
  * part of the Botania Mod. Get the Source Code in github:
  * https://github.com/Vazkii/Botania
- * 
+ *
  * Botania is Open Source and distributed under the
  * Botania License: http://botaniamod.net/license.php
- * 
+ *
  * File Created @ [? (GMT)]
  */
 package vazkii.psi.api.internal;
@@ -31,7 +31,7 @@ public class Vector3
 	public static Vector3 zero = new Vector3();
 	public static Vector3 one = new Vector3(1, 1, 1);
 	public static Vector3 center = new Vector3(0.5, 0.5, 0.5);
-	
+
 	public static Vector3 up = new Vector3(0, 1, 0);
 	public static Vector3 down = new Vector3(0, -1, 0);
 	public static Vector3 forward = new Vector3(0, 0, 1);
@@ -83,11 +83,11 @@ public class Vector3
 	public static Vector3 fromTileEntityCenter(TileEntity e) {
 		return fromTileEntity(e).add(0.5, 0.5, 0.5);
 	}
-	
+
 	public static Vector3 fromBlockPos(BlockPos pos) {
 		return new Vector3(pos.getX(), pos.getY(), pos.getZ());
 	}
-	
+
 	public Vector3 set(double d, double d1, double d2) {
 		x = d;
 		y = d1;
@@ -246,7 +246,7 @@ public class Vector3
 	public BlockPos toBlockPos() {
 		return new BlockPos(toVec3D());
 	}
-	
+
 	public double angle(Vector3 vec) {
 		return Math.acos(copy().normalize().dotProduct(vec.copy().normalize()));
 	}
@@ -306,7 +306,7 @@ public class Vector3
 		Quat.aroundAxis(axis.copy().normalize(), angle).rotate(this);
 		return this;
 	}
-	
+
 	@Override
 	public boolean equals(Object o) {
 		if(!(o instanceof Vector3))

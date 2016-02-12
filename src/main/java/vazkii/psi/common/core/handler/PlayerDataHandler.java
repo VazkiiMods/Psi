@@ -2,10 +2,10 @@
  * This class was created by <Vazkii>. It's distributed as
  * part of the Psi Mod. Get the Source Code in github:
  * https://github.com/Vazkii/Psi
- * 
+ *
  * Psi is Open Source and distributed under the
  * Psi License: http://psi.vazkii.us/license.php
- * 
+ *
  * File Created @ [10/01/2016, 23:21:21 (GMT)]
  */
 package vazkii.psi.common.core.handler;
@@ -30,7 +30,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.network.play.server.S08PacketPlayerPosLook.EnumFlags;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
@@ -58,7 +57,6 @@ import vazkii.psi.api.spell.SpellPiece;
 import vazkii.psi.client.core.handler.ClientTickHandler;
 import vazkii.psi.client.render.entity.RenderSpellCircle;
 import vazkii.psi.common.Psi;
-import vazkii.psi.common.entity.EntitySpellGrenade;
 import vazkii.psi.common.item.ItemCAD;
 import vazkii.psi.common.network.NetworkHandler;
 import vazkii.psi.common.network.message.MessageDataSync;
@@ -85,7 +83,7 @@ public class PlayerDataHandler {
 			data = get(player);
 			data.readFromNBT(cmp);
 		}
-		
+
 		return data;
 	}
 
@@ -145,7 +143,7 @@ public class PlayerDataHandler {
 				NetworkHandler.INSTANCE.sendTo(message, (EntityPlayerMP) event.player);
 			}
 		}
-		
+
 		@SubscribeEvent
 		public void onChangeDimension(PlayerChangedDimensionEvent event) {
 			get(event.player).eidosChangelog.clear();
@@ -156,7 +154,7 @@ public class PlayerDataHandler {
 		public void onRenderWorldLast(RenderWorldLastEvent event) {
 			Minecraft mc = Minecraft.getMinecraft();
 			Entity cameraEntity = mc.getRenderViewEntity();
-			BlockPos renderingVector = cameraEntity.getPosition();
+			cameraEntity.getPosition();
 			Frustum frustum = new Frustum();
 
 			double viewX = cameraEntity.lastTickPosX + (cameraEntity.posX - cameraEntity.lastTickPosX) * event.partialTicks;
@@ -167,7 +165,7 @@ public class PlayerDataHandler {
 			for(EntityPlayer player : mc.theWorld.playerEntities)
 				PlayerDataHandler.get(player).render(player, event.partialTicks);
 		}
-		
+
 		@SubscribeEvent
 		@SideOnly(Side.CLIENT)
 		public void onFOVUpdate(FOVUpdateEvent event) {
@@ -175,8 +173,8 @@ public class PlayerDataHandler {
 			if(data.isAnchored) {
 				float fov = event.newfov;
 				if(data.eidosAnchorTime > 0)
-					fov *= (Math.min(5, data.eidosAnchorTime - ClientTickHandler.partialTicks)) / 5;
-				else fov *= (10 - (Math.min(10, data.postAnchorRecallTime + ClientTickHandler.partialTicks))) / 10;
+					fov *= Math.min(5, data.eidosAnchorTime - ClientTickHandler.partialTicks) / 5;
+				else fov *= (10 - Math.min(10, data.postAnchorRecallTime + ClientTickHandler.partialTicks)) / 10;
 				event.newfov = fov;
 			}
 		}
@@ -191,7 +189,7 @@ public class PlayerDataHandler {
 		private static final String TAG_SPELL_GROUPS_UNLOCKED = "spellGroupsUnlocked";
 		private static final String TAG_LAST_SPELL_GROUP = "lastSpellPoint";
 		private static final String TAG_LEVEL_POINTS = "levelPoints";
-		
+
 		private static final String TAG_EIDOS_ANCHOR_X = "eidosAnchorX";
 		private static final String TAG_EIDOS_ANCHOR_Y = "eidosAnchorY";
 		private static final String TAG_EIDOS_ANCHOR_Z = "eidosAnchorZ";
@@ -207,7 +205,7 @@ public class PlayerDataHandler {
 		public int loopcastTime = 0;
 		public int loopcastAmount = 0;
 		public int loopcastFadeTime = 0;
-		
+
 		// Eidos stuff
 		public Stack<Vector3> eidosChangelog = new Stack();
 		public Vector3 eidosAnchor = new Vector3(0, 0, 0);
@@ -216,7 +214,7 @@ public class PlayerDataHandler {
 		public int eidosAnchorTime;
 		public int postAnchorRecallTime;
 		public int eidosReversionTime;
-		
+
 		public boolean deductTick;
 
 		public final List<String> spellGroupsUnlocked = new ArrayList();
@@ -262,30 +260,30 @@ public class PlayerDataHandler {
 				regenCooldown--;
 				save();
 			}
-			
+
 			cadStack = getCAD();
 			ICAD icad = null;
 			Color color = new Color(ICADColorizer.DEFAULT_SPELL_COLOR);
-			
+
 			if(cadStack != null) {
 				icad = (ICAD) cadStack.getItem();
 				color = Psi.proxy.getCADColor(cadStack);
 			}
-			float r = (float) color.getRed() / 255F;
-			float g = (float) color.getGreen() / 255F;
-			float b = (float) color.getBlue() / 255F;
-			
+			float r = color.getRed() / 255F;
+			float g = color.getGreen() / 255F;
+			float b = color.getBlue() / 255F;
+
 			loopcast: {
 				if(loopcasting) {
 					if(player == null || cadStack == null || player.getCurrentEquippedItem() != cadStack) {
 						stopLoopcast();
 						break loopcast;
 					}
-					
+
 					for(int i = 0; i < 5; i++) {
-						double x = player.posX + ((Math.random() - 0.5) * 2.1) * player.width;
+						double x = player.posX + (Math.random() - 0.5) * 2.1 * player.width;
 						double y = player.posY - player.getYOffset();
-						double z = player.posZ + ((Math.random() - 0.5) * 2.1) * player.width;
+						double z = player.posZ + (Math.random() - 0.5) * 2.1 * player.width;
 						float grav = -0.15F - (float) Math.random() * 0.03F;
 						Psi.proxy.sparkleFX(player.worldObj, x, y, z, r, g, b, grav, 0.25F, 15);
 					}
@@ -303,7 +301,7 @@ public class PlayerDataHandler {
 							SpellContext context = new SpellContext().setPlayer(player).setSpell(spell).setLoopcastIndex(loopcastAmount + 1);
 							if(context.isValid()) {
 								if(context.cspell.metadata.evaluateAgainst(cadStack)) {
-									int cost = ItemCAD.getRealCost(cadStack, bullet, context.cspell.metadata.stats.get(EnumSpellStat.COST)); 
+									int cost = ItemCAD.getRealCost(cadStack, bullet, context.cspell.metadata.stats.get(EnumSpellStat.COST));
 									if(cost > 0 || cost == -1) {
 										if(cost != -1)
 											deductPsi(cost, 3, true);
@@ -323,7 +321,7 @@ public class PlayerDataHandler {
 				} else if(loopcastFadeTime > 0)
 					loopcastFadeTime--;
 			}
-			
+
 
 			if(eidosAnchorTime > 0) {
 				if(eidosAnchorTime == 1) {
@@ -338,7 +336,7 @@ public class PlayerDataHandler {
 				postAnchorRecallTime--;
 				isAnchored = false;
 			}
-			
+
 			if(eidosReversionTime > 0) {
 				if(eidosChangelog.isEmpty()) {
 					eidosReversionTime = 0;
@@ -359,17 +357,17 @@ public class PlayerDataHandler {
 								player.posY = vec.y;
 								player.posZ = vec.z;
 							}
-							
+
 							for(int i = 0; i < 5; i++) {
 								double spread = 0.6;
-								
+
 								double x = player.posX + (Math.random() - 0.5) * spread;
 								double y = player.posY + (Math.random() - 0.5) * spread;
 								double z = player.posZ + (Math.random() - 0.5) * spread;
-								
+
 								Psi.proxy.sparkleFX(player.worldObj, x, y, z, r, g, b, (float) x, (float) y, (float) z, 1.2F, 12);
 							}
-							
+
 							player.motionX = 0;
 							player.motionY = 0;
 							player.motionZ = 0;
@@ -377,7 +375,7 @@ public class PlayerDataHandler {
 						}
 					}
 				}
-				
+
 				eidosReversionTime--;
 				if(eidosReversionTime == 0 || player.isSneaking()) {
 					eidosChangelog.clear();
@@ -417,12 +415,12 @@ public class PlayerDataHandler {
 		public void skipToLevel(int level) {
 			int currLevel = this.level;
 			int points = level - currLevel;
-			
+
 			this.level = Math.max(currLevel, Math.min(PsiAPI.levelCap, level));
-			this.levelPoints = Math.max(0, Math.max(points, this.levelPoints));
+			levelPoints = Math.max(0, Math.max(points, levelPoints));
 			save();
 		}
-		
+
 		public void levelUp() {
 			EntityPlayer player = playerWR.get();
 			if(player != null) {
@@ -464,7 +462,7 @@ public class PlayerDataHandler {
 					if(!client) {
 						EntityPlayer player = playerWR.get();
 						if(player != null)
-							player.attackEntityFrom(damageSourceOverload, dmg); 
+							player.attackEntityFrom(damageSourceOverload, dmg);
 					}
 				}
 			}
@@ -474,7 +472,7 @@ public class PlayerDataHandler {
 				NetworkHandler.INSTANCE.sendTo(message, (EntityPlayerMP) playerWR.get());
 			}
 
-			save(); 
+			save();
 		}
 
 		public void addDeduction(int current, int deduct, boolean shatter) {
@@ -511,6 +509,7 @@ public class PlayerDataHandler {
 			return lastAvailablePsi;
 		}
 
+		@Override
 		public int getTotalPsi() {
 			return getLevel() * 200;
 		}
@@ -567,7 +566,7 @@ public class PlayerDataHandler {
 		public void writeToNBT(NBTTagCompound cmp) {
 			cmp.setInteger(TAG_LEVEL, level);
 			cmp.setInteger(TAG_AVAILABLE_PSI, availablePsi);
-			cmp.setInteger(TAG_REGEN_CD, regenCooldown);	
+			cmp.setInteger(TAG_REGEN_CD, regenCooldown);
 			cmp.setInteger(TAG_LEVEL_POINTS, levelPoints);
 			if(lastSpellGroup != null && !lastSpellGroup.isEmpty())
 				cmp.setString(TAG_LAST_SPELL_GROUP, lastSpellGroup);
@@ -578,7 +577,7 @@ public class PlayerDataHandler {
 					list.appendTag(new NBTTagString(s));
 			}
 			cmp.setTag(TAG_SPELL_GROUPS_UNLOCKED, list);
-			
+
 			cmp.setDouble(TAG_EIDOS_ANCHOR_X, eidosAnchor.x);
 			cmp.setDouble(TAG_EIDOS_ANCHOR_Y, eidosAnchor.y);
 			cmp.setDouble(TAG_EIDOS_ANCHOR_Z, eidosAnchor.z);
@@ -610,7 +609,7 @@ public class PlayerDataHandler {
 				for(int i = 0; i < count; i++)
 					spellGroupsUnlocked.add(list.getStringTagAt(i));
 			}
-			
+
 			double x = cmp.getDouble(TAG_EIDOS_ANCHOR_X);
 			double y = cmp.getDouble(TAG_EIDOS_ANCHOR_X);
 			double z = cmp.getDouble(TAG_EIDOS_ANCHOR_X);
@@ -633,21 +632,21 @@ public class PlayerDataHandler {
 				float mul = Math.min(5F, loopcastFadeTime - partTicks) / 5F;
 				scale *= mul;
 			} else return;
-			
+
 			int color = ICADColorizer.DEFAULT_SPELL_COLOR;
 			ItemStack cad = PsiAPI.getPlayerCAD(playerWR.get());
 			if(cad != null && cad.getItem() instanceof ICAD) {
 				ICAD icad = (ICAD) cad.getItem();
 				color = icad.getSpellColor(cad);
 			}
-			
+
 			RenderSpellCircle.renderSpellCircle(ClientTickHandler.ticksInGame + partTicks, scale, x, y, z, color);
 		}
 
 		public static class Deduction {
 
-			public final int current; 
-			public final int deduct; 
+			public final int current;
+			public final int deduct;
 			public final int cd;
 			public final boolean shatter;
 
