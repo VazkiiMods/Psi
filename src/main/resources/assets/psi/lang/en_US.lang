@@ -376,6 +376,7 @@ psi.spellerror.loop=Can't resolve due to endless loop
 psi.spellerror.nonpositivevalue=A Number Parameter that needs to be positive isn't
 psi.spellerror.noninteger=A Number Parameter that needs to an integer isn't
 psi.spellerror.nonpositiveinteger=A Number Parameter that needs to be a positive integer isn't
+psi.spellerror.statoverflow=Spell Stats overflow past maximum possible integer
 
 # RUNTIME ERRORS
 psi.spellerror.dividebyzero=ERROR: Divide by zero.

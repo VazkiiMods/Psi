@@ -20,6 +20,7 @@ import net.minecraft.util.StatCollector;
 import vazkii.psi.api.spell.CompiledSpell;
 import vazkii.psi.api.spell.CompiledSpell.Action;
 import vazkii.psi.api.spell.EnumPieceType;
+import vazkii.psi.api.spell.EnumSpellStat;
 import vazkii.psi.api.spell.ISpellCompiler;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellCompilationException;
@@ -59,6 +60,9 @@ public final class SpellCompiler implements ISpellCompiler {
 		
 		while(!tricks.isEmpty())
 			buildPiece(tricks.pop());
+		
+		if(compiled.metadata.stats.get(EnumSpellStat.COST) < 0 || compiled.metadata.stats.get(EnumSpellStat.POTENCY) < 0)
+			throw new SpellCompilationException(SpellCompilationException.STAT_OVERFLOW);
 	}
 	
 	public void buildPiece(SpellPiece piece) throws SpellCompilationException {
