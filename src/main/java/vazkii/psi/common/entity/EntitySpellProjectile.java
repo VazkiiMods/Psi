@@ -114,8 +114,8 @@ public class EntitySpellProjectile extends EntityThrowable {
     	EntityLivingBase thrower = getThrower();
     	if(thrower != null && thrower instanceof EntityPlayer)
     		dataWatcher.updateObject(22, ((EntityPlayer) thrower).getName());
-    	
-    	dataWatcher.addObject(23, tagCompound.getInteger(TAG_TIME_ALIVE));
+
+    	dataWatcher.updateObject(23, tagCompound.getInteger(TAG_TIME_ALIVE));
     	
 		double lastMotionX = tagCompound.getDouble(TAG_LAST_MOTION_X);
 		double lastMotionY = tagCompound.getDouble(TAG_LAST_MOTION_Y);
@@ -124,7 +124,7 @@ public class EntitySpellProjectile extends EntityThrowable {
 		motionY = lastMotionY;
 		motionZ = lastMotionZ;
     }
-    
+
     @Override
     public void onUpdate() {
     	super.onUpdate();
