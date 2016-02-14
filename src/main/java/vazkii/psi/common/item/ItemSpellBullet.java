@@ -59,6 +59,16 @@ public class ItemSpellBullet extends ItemMod implements ISpellContainer {
 	}
 
 	@Override
+	public boolean hasContainerItem(ItemStack stack) {
+		return getSpell(stack) != null;
+	}
+
+	@Override
+	public ItemStack getContainerItem(ItemStack itemStack) {
+		return itemStack.copy();
+	}
+	
+	@Override
 	public String getItemStackDisplayName(ItemStack stack) {
 		if(!containsSpell(stack))
 			return super.getItemStackDisplayName(stack);

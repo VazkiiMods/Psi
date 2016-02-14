@@ -27,6 +27,7 @@ import vazkii.psi.api.internal.VanillaPacketDispatcher;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.common.block.tile.TileProgrammer;
 import vazkii.psi.common.core.helper.ItemNBTHelper;
+import vazkii.psi.common.crafting.recipe.BulletToDriveRecipe;
 import vazkii.psi.common.crafting.recipe.DriveDuplicateRecipe;
 import vazkii.psi.common.item.base.ItemMod;
 import vazkii.psi.common.lib.LibItemNames;
@@ -40,7 +41,9 @@ public class ItemSpellDrive extends ItemMod {
 		setMaxStackSize(1);
 
 		GameRegistry.addRecipe(new DriveDuplicateRecipe());
+		GameRegistry.addRecipe(new BulletToDriveRecipe());
 		RecipeSorter.register("psi:driveDuplicate", DriveDuplicateRecipe.class, Category.SHAPELESS, "");
+		RecipeSorter.register("psi:bulletToDrive", BulletToDriveRecipe.class, Category.SHAPELESS, "");
 	}
 
 	@Override
