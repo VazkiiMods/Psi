@@ -12,9 +12,11 @@ package vazkii.psi.common.item.tool;
 
 import java.util.List;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ISocketable;
 import vazkii.psi.api.spell.SpellContext;
@@ -51,6 +53,11 @@ public class ItemPsimetalSword extends ItemModSword implements IPsimetalTool {
 		}
 
 		return true;
+	}
+	
+	@Override
+	public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
+		ItemPsimetalTool.regen(stack, entityIn, isSelected);
 	}
 
 	@Override

@@ -61,6 +61,10 @@ public class ItemPsimetalTool extends ItemModTool implements IPsimetalTool {
 
 	@Override
 	public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
+		regen(stack, entityIn, isSelected);
+	}
+	
+	public static void regen(ItemStack stack, Entity entityIn, boolean isSelected) {
 		if(entityIn instanceof EntityPlayer && stack.getItemDamage() > 0 && !isSelected) {
 			int regenTime = ItemNBTHelper.getInt(stack, TAG_REGEN_TIME, 0);
 			if(regenTime % 80 == 0) {
