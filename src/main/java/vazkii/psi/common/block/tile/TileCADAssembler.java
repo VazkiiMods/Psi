@@ -42,7 +42,7 @@ public class TileCADAssembler extends TileSimpleInventory implements ITickable {
 					if(socketable.isSocketSlotAvailable(socketableStack, j)) {
 						ItemStack bullet = socketable.getBulletInSocket(socketableStack, j);
 						setInventorySlotContents(j + 7, bullet);
-					}
+					} else setInventorySlotContents(j + 7, null);
 			}
 		}
 	}
