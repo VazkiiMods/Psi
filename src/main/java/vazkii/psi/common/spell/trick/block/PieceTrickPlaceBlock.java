@@ -67,7 +67,7 @@ public class PieceTrickPlaceBlock extends PieceTrick {
 	}
 
 	public static void placeBlock(EntityPlayer player, World world, BlockPos pos, boolean particles) {
-		if(!world.isBlockLoaded(pos))
+		if(!world.isBlockLoaded(pos) || world.isRemote)
 			return;
 
 		IBlockState state = world.getBlockState(pos);
