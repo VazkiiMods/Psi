@@ -51,8 +51,6 @@ public final class SpellCompiler implements ISpellCompiler {
 	public void compile() throws SpellCompilationException {
 		if(spell == null)
 			throw new SpellCompilationException(SpellCompilationException.NO_SPELL);
-		if(spell.name == null || spell.name.isEmpty())
-			throw new SpellCompilationException(SpellCompilationException.NO_NAME);
 
 		compiled = new CompiledSpell(spell);
 		findTricks();
@@ -62,6 +60,9 @@ public final class SpellCompiler implements ISpellCompiler {
 
 		if(compiled.metadata.stats.get(EnumSpellStat.COST) < 0 || compiled.metadata.stats.get(EnumSpellStat.POTENCY) < 0)
 			throw new SpellCompilationException(SpellCompilationException.STAT_OVERFLOW);
+		
+		if(spell.name == null || spell.name.isEmpty())
+			throw new SpellCompilationException(SpellCompilationException.NO_NAME);
 	}
 
 	public void buildPiece(SpellPiece piece) throws SpellCompilationException {
