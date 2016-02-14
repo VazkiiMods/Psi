@@ -458,7 +458,7 @@ public class PlayerDataHandler {
 				}
 
 				if(!shatter && overflow > 0) {
-					float dmg = (float) overflow / (loopcasting ? 10 : 25);
+					float dmg = (float) overflow / (loopcasting ? 50 : 125);
 					if(!client) {
 						EntityPlayer player = playerWR.get();
 						if(player != null)
