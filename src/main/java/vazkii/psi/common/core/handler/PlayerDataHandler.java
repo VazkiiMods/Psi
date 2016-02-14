@@ -539,6 +539,7 @@ public class PlayerDataHandler {
 				spellGroupsUnlocked.add(group);
 				lastSpellGroup = group;
 				levelPoints--;
+				save();
 			}
 		}
 
