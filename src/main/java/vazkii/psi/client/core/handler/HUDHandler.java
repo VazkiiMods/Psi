@@ -101,6 +101,17 @@ public final class HUDHandler {
 		PlayerData data = PlayerDataHandler.get(mc.thePlayer);
 		if(data.level == 0 && !mc.thePlayer.capabilities.isCreativeMode)
 			return;
+		
+		GlStateManager.pushMatrix();
+		int scaleFactor = res.getScaleFactor();
+		if(scaleFactor > ConfigHandler.maxPsiBarScale) {
+			mc.gameSettings.guiScale = ConfigHandler.maxPsiBarScale;
+			res = new ScaledResolution(mc);
+			mc.gameSettings.guiScale = scaleFactor;
+			
+			float s = (float) ConfigHandler.maxPsiBarScale / (float) scaleFactor;
+			GlStateManager.scale(s, s, s);
+		}
 
 		boolean right = ConfigHandler.psiBarOnRight;
 
@@ -111,9 +122,8 @@ public final class HUDHandler {
 		int x = -pad;
 		if(right)
 			x = res.getScaledWidth() + pad - width;
-
 		int y = res.getScaledHeight() / 2 - height / 2;
-
+		
 		if(!registeredMask) {
 			mc.renderEngine.bindTexture(psiBarMask);
 			mc.renderEngine.bindTexture(psiBarShatter);
@@ -214,6 +224,9 @@ public final class HUDHandler {
 		GlStateManager.translate(0F, Math.max(textY + 3, origY + 100), 0F);
 		mc.fontRendererObj.drawStringWithShadow(s2, x - offStr2, 0, 0xFFFFFF);
 		GlStateManager.popMatrix();
+		GlStateManager.popMatrix();
+		
+		mc.gameSettings.guiScale = scaleFactor;
 	}
 
 	@SideOnly(Side.CLIENT)
