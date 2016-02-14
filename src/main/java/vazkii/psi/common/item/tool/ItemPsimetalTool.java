@@ -52,7 +52,7 @@ public class ItemPsimetalTool extends ItemModTool implements IPsimetalTool {
 			ItemStack bullet = getBulletInSocket(itemstack, getSelectedSlot(itemstack));
 			ItemCAD.cast(player.worldObj, player, data, bullet, playerCad, 5, 10, 0.05F, (SpellContext context) -> {
 				context.tool = itemstack;
-				context.positionBroken = raytraceFromEntity(player.worldObj, player, false, 4.5);
+				context.positionBroken = raytraceFromEntity(player.worldObj, player, false, 5);
 			});
 		}
 
