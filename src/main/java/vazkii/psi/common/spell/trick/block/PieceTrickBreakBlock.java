@@ -64,13 +64,13 @@ public class PieceTrickBreakBlock extends PieceTrick {
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 
 		BlockPos pos = new BlockPos(positionVal.x, positionVal.y, positionVal.z);
-		removeBlockWithDrops(context.caster, context.caster.worldObj, context.tool, pos, true);
+		removeBlockWithDrops(context, context.caster, context.caster.worldObj, context.tool, pos, true);
 
 		return null;
 	}
 
-	public static void removeBlockWithDrops(EntityPlayer player, World world, ItemStack tool, BlockPos pos, boolean particles) {
-		if(!world.isBlockLoaded(pos))
+	public static void removeBlockWithDrops(SpellContext context, EntityPlayer player, World world, ItemStack tool, BlockPos pos, boolean particles) {
+		if(!world.isBlockLoaded(pos) || (context.positionBroken != null && pos.equals(context.positionBroken.getBlockPos())))
 			return;
 
 		int harvestLevel = ConfigHandler.cadHarvestLevel;

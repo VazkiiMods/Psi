@@ -74,7 +74,7 @@ public class PieceTrickBreakInSequence extends PieceTrick {
 				throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 
 			BlockPos pos = new BlockPos(blockVec.x, blockVec.y, blockVec.z);
-			PieceTrickBreakBlock.removeBlockWithDrops(context.caster, context.caster.worldObj, context.tool, pos, true);
+			PieceTrickBreakBlock.removeBlockWithDrops(context, context.caster, context.caster.worldObj, context.tool, pos, true);
 		}
 
 		return null;
