@@ -16,9 +16,7 @@ import net.minecraft.item.ItemStack;
  * An ItemStack that implements this counts as a Spell Container, by which
  * a {@link Spell} can be derived and casted sfrom it. This is used by Spell Bullets.
  */
-public interface ISpellContainer {
-
-	public void setSpell(ItemStack stack, Spell spell);
+public interface ISpellContainer extends ISpellSettable {
 
 	public Spell getSpell(ItemStack stack);
 

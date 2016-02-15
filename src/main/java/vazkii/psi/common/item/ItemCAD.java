@@ -49,6 +49,7 @@ import vazkii.psi.api.cad.ISocketable;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.EnumSpellStat;
 import vazkii.psi.api.spell.ISpellContainer;
+import vazkii.psi.api.spell.ISpellSettable;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.common.Psi;
@@ -60,7 +61,7 @@ import vazkii.psi.common.item.base.ItemMod;
 import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.lib.LibItemNames;
 
-public class ItemCAD extends ItemMod implements ICAD {
+public class ItemCAD extends ItemMod implements ICAD, ISpellSettable {
 
 	private static final String TAG_COMPONENT_PREFIX = "component";
 	private static final String TAG_STORED_PSI = "storedPsi";
@@ -100,6 +101,17 @@ public class ItemCAD extends ItemMod implements ICAD {
 		}
 
 		return itemStackIn;
+	}
+	
+
+	@Override
+	public void setSpell(ItemStack stack, Spell spell) {
+		int slot = getSelectedSlot(stack);
+		ItemStack bullet = getBulletInSocket(stack, slot);
+		if(bullet != null && bullet.getItem() instanceof ISpellSettable) {
+			((ISpellSettable) bullet.getItem()).setSpell(bullet, spell);
+			setBulletInSocket(stack, slot, bullet);
+		}
 	}
 
 	public static void cast(World world, EntityPlayer player, PlayerData data, ItemStack bullet, ItemStack cad, int cd, int particles, float sound, Consumer<SpellContext> predicate) {
@@ -449,5 +461,4 @@ public class ItemCAD extends ItemMod implements ICAD {
 			}
 		};
 	}
-
 }

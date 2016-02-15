@@ -31,6 +31,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import vazkii.psi.api.internal.VanillaPacketDispatcher;
 import vazkii.psi.api.spell.ISpellContainer;
+import vazkii.psi.api.spell.ISpellSettable;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.base.BlockFacing;
 import vazkii.psi.common.block.tile.TileProgrammer;
@@ -68,14 +69,14 @@ public class BlockProgrammer extends BlockFacing {
 			programmer.playerLock = playerIn.getName();
 
 		ItemStack stack = playerIn.getCurrentEquippedItem();
-		if(enabled && stack != null && stack.getItem() instanceof ISpellContainer && programmer.spell != null) {
+		if(enabled && stack != null && stack.getItem() instanceof ISpellSettable && programmer.spell != null) {
 			if(programmer.canCompile()) {
-				ISpellContainer container = (ISpellContainer) stack.getItem();
+				ISpellSettable settable = (ISpellSettable) stack.getItem();
 				if(!worldIn.isRemote)
 					worldIn.playSoundEffect(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, "psi:bulletCreate", 0.5F, 1F);
 
 				programmer.spell.uuid = UUID.randomUUID();
-				container.setSpell(stack, programmer.spell);
+				settable.setSpell(stack, programmer.spell);
 				if(playerIn instanceof EntityPlayerMP)
 					VanillaPacketDispatcher.dispatchTEToPlayer(programmer, (EntityPlayerMP) playerIn);
 				return true;
