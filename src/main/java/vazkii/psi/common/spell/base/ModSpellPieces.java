@@ -269,7 +269,7 @@ public final class ModSpellPieces {
 		trickWither = register(PieceTrickWither.class, LibPieceNames.TRICK_WITHER, LibPieceGroups.NEGATIVE_EFFECTS, true);
 		trickIgnite = register(PieceTrickIgnite.class, LibPieceNames.TRICK_IGNITE, LibPieceGroups.NEGATIVE_EFFECTS);
 		trickEidosAnchor = register(PieceTrickEidosAnchor.class, LibPieceNames.TRICK_EIDOS_ANCHOR, LibPieceGroups.EIDOS_REVERSAL);
-		trickEidosReversal = register(PieceTrickEidosReversal.class, LibPieceNames.TRICK_EIDOS_REVERSAL, LibPieceGroups.EIDOS_REVERSAL, true); // TODO
+		trickEidosReversal = register(PieceTrickEidosReversal.class, LibPieceNames.TRICK_EIDOS_REVERSAL, LibPieceGroups.EIDOS_REVERSAL, true);
 
 		PsiAPI.setGroupRequirements(LibPieceGroups.TUTORIAL_1, 1);
 		PsiAPI.setGroupRequirements(LibPieceGroups.TUTORIAL_2, 2, LibPieceGroups.TUTORIAL_1);
