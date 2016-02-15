@@ -1,3 +1,18 @@
+beta-13
+*Fixed a crash with Operator: Closest to Point.
+*Fixed a crash with Psimetal tools when using break block tricks.
+*Fixed a Spell Bullet dupe by placing a tool in the slot of the CAD when the CAD has bullets.
+*Fixed player data not saving after a piece group is selected and only when it's fulfilled and the player levels up.
+*Fixed Selector: Block Broken not working if the player is standing at the maximum range that they can break blocks.
+*Fixed the error for two parameters sharing a side not being localized properly.
+*Fixed the Psimetal Sword not regenerating with Psi.
+*Fixed Trick: Place Block placing blocks on the client when it shouldn't.
+*Psi material storage blocks are now registered in the Ore Dictionary. (VapourDrive)
+*Psionic Overflow now deals 5x less damage.
+*Spells in Spell Bullets can now be copied onto Spell Drives.
+*The "Spell is Unnamed" error now has the lowest priority rather than the second highest.
+*The Psi bar now scales down to a non crazy value if your scale factor is too high. There's a config for this.
+*Trick: Add Motion now negates fall damage if the resulting motion is positive. Furthermore, multiple casts of Trick: Add Motion can not be stacked to create ridiculous speeds.
 beta-12
 *Fixed a crash in the Programmer GUI.
 *Fixed a crash when casting a spell.
