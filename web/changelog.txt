@@ -1,3 +1,13 @@
+beta-14
+*Added the update system from Botania. Puns included!
+*Fixed a dupe when cloning Spell Bullets into Spell Drives.
+*Fixed Eidos Anchor ignoring your look.
+*Fixed Eidos spells not working when the player is mounted.
+*Fixed the Black CAD colorizer having no recipe.
+*Fixed Trick: Add Motion being weird with negative directions.
+*Rebalanced the cost of Trick: Add Motion. 
+*Right clicking a CAD onto a Spell Programmer sets the spell in the current selected bullet to be the spell in the programmer.
+*Trick: Blink no longer works downwards so it can't push you into blocks at your level if you look just slightly downwards.
 beta-13
 *Fixed a crash with Operator: Closest to Point.
 *Fixed a crash with Psimetal tools when using break block tricks.
