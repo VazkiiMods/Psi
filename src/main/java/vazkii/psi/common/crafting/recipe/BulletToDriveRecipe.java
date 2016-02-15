@@ -33,7 +33,7 @@ public class BulletToDriveRecipe implements IRecipe {
 					if(foundTarget)
 						return false;
 					foundTarget = true;
-				} else if(stack.getItem() instanceof ItemSpellDrive) {
+				} else if(stack.getItem() instanceof ItemSpellDrive && ((ItemSpellDrive) stack.getItem()).getSpell(stack) == null) {
 					if(foundSource)
 						return false;
 					foundSource = true;
