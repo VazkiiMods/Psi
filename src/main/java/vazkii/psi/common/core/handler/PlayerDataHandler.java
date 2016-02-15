@@ -23,6 +23,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -331,6 +332,12 @@ public class PlayerDataHandler {
 					if(player != null && player instanceof EntityPlayerMP) {
 						EntityPlayerMP pmp = (EntityPlayerMP) player;
 						pmp.playerNetServerHandler.setPlayerLocation(eidosAnchor.x, eidosAnchor.y, eidosAnchor.z, (float) eidosAnchorYaw, (float) eidosAnchorPitch);
+
+						Entity riding = player.ridingEntity;
+						while(riding != null) {
+							riding.setPosition(eidosAnchor.x, eidosAnchor.y, eidosAnchor.z);
+							riding = riding.ridingEntity;
+						}
 					}
 					postAnchorRecallTime = 0;
 				}
@@ -361,6 +368,12 @@ public class PlayerDataHandler {
 								player.posZ = vec.z;
 							}
 
+							Entity riding = player.ridingEntity;
+							while(riding != null) {
+								riding.setPosition(vec.x, vec.y, vec.z);
+								riding = riding.ridingEntity;
+							}
+							
 							for(int i = 0; i < 5; i++) {
 								double spread = 0.6;
 
