@@ -50,7 +50,6 @@ public final class VersionChecker {
 				if(onlineBuild > clientBuild) {
 					player.addChatComponentMessage(new ChatComponentTranslation("psi.versioning.flavour" + player.worldObj.rand.nextInt(FLAVOUR_MESSAGES)).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.LIGHT_PURPLE)));
 					player.addChatComponentMessage(new ChatComponentTranslation("psi.versioning.outdated", clientBuild, onlineBuild));
-					// TODO Write messages
 
 					IChatComponent component = IChatComponent.Serializer.jsonToComponent(StatCollector.translateToLocal("psi.versioning.updateMessage").replaceAll("%version%", onlineVersion));
 					player.addChatComponentMessage(component);
