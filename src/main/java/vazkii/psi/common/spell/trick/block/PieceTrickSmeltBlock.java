@@ -45,7 +45,7 @@ public class PieceTrickSmeltBlock extends PieceTrick {
 		super.addToMetadata(meta);
 
 		meta.addStat(EnumSpellStat.POTENCY, 20);
-		meta.addStat(EnumSpellStat.COST, 200);
+		meta.addStat(EnumSpellStat.COST, 80);
 	}
 
 	@Override
