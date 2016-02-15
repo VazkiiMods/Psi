@@ -33,6 +33,10 @@ public final class LibPieceNames {
 	public static final String OPERATOR_MODULUS = "operatorModulus";
 	public static final String OPERATOR_RANDOM = "operatorRandom";
 	public static final String OPERATOR_INTEGER_DIVIDE = "operatorIntegerDivide";
+	public static final String OPERATOR_SIN = "operatorSin";
+	public static final String OPERATOR_COS = "operatorCos";
+	public static final String OPERATOR_ASIN = "operatorAsin";
+	public static final String OPERATOR_ACOS = "operatorAcos";
 	public static final String OPERATOR_ENTITY_POSITION = "operatorEntityPosition";
 	public static final String OPERATOR_ENTITY_LOOK = "operatorEntityLook";
 	public static final String OPERATOR_ENTITY_MOTION = "operatorEntityMotion";
@@ -56,8 +60,10 @@ public final class LibPieceNames {
 	public static final String OPERATOR_VECTOR_EXTRACT_Z = "operatorVectorExtractZ";
 	public static final String OPERATOR_VECTOR_PROJECT = "operatorVectorProject";
 	public static final String OPERATOR_VECTOR_RAYCAST_AXIS = "operatorVectorRaycastAxis";
+	public static final String OPERATOR_VECTOR_DOT_PRODUCT = "operatorVectorDotProduct";
 
 	public static final String CONSTANT_NUMBER = "constantNumber";
+	public static final String CONSTANT_PI = "constantPi";
 
 	public static final String CONNECTOR = "connector";
 	public static final String ERROR_SUPPRESSOR = "errorSuppressor";

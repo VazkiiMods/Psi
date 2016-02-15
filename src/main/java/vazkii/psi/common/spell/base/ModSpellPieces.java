@@ -16,6 +16,7 @@ import vazkii.psi.api.spell.SpellPiece;
 import vazkii.psi.common.lib.LibPieceGroups;
 import vazkii.psi.common.lib.LibPieceNames;
 import vazkii.psi.common.spell.constant.PieceConstantNumber;
+import vazkii.psi.common.spell.constant.PieceConstantPi;
 import vazkii.psi.common.spell.operator.entity.PieceOperatorClosestToPoint;
 import vazkii.psi.common.spell.operator.entity.PieceOperatorEntityAxialLook;
 import vazkii.psi.common.spell.operator.entity.PieceOperatorEntityLook;
@@ -33,9 +34,14 @@ import vazkii.psi.common.spell.operator.number.PieceOperatorMultiply;
 import vazkii.psi.common.spell.operator.number.PieceOperatorRandom;
 import vazkii.psi.common.spell.operator.number.PieceOperatorSubtract;
 import vazkii.psi.common.spell.operator.number.PieceOperatorSum;
+import vazkii.psi.common.spell.operator.number.trig.PieceOperatorAcos;
+import vazkii.psi.common.spell.operator.number.trig.PieceOperatorAsin;
+import vazkii.psi.common.spell.operator.number.trig.PieceOperatorCos;
+import vazkii.psi.common.spell.operator.number.trig.PieceOperatorSin;
 import vazkii.psi.common.spell.operator.vector.PieceOperatorVectorConstruct;
 import vazkii.psi.common.spell.operator.vector.PieceOperatorVectorCrossProduct;
 import vazkii.psi.common.spell.operator.vector.PieceOperatorVectorDivide;
+import vazkii.psi.common.spell.operator.vector.PieceOperatorVectorDotProduct;
 import vazkii.psi.common.spell.operator.vector.PieceOperatorVectorExtractX;
 import vazkii.psi.common.spell.operator.vector.PieceOperatorVectorExtractY;
 import vazkii.psi.common.spell.operator.vector.PieceOperatorVectorExtractZ;
@@ -120,6 +126,10 @@ public final class ModSpellPieces {
 	public static PieceContainer operatorModulus;
 	public static PieceContainer operatorRandom;
 	public static PieceContainer operatorIntegerDivide;
+	public static PieceContainer operatorSin;
+	public static PieceContainer operatorCos;
+	public static PieceContainer operatorAsin;
+	public static PieceContainer operatorAcos;
 	public static PieceContainer operatorEntityPosition;
 	public static PieceContainer operatorEntityLook;
 	public static PieceContainer operatorEntityMotion;
@@ -142,8 +152,10 @@ public final class ModSpellPieces {
 	public static PieceContainer operatorVectorExtractZ;
 	public static PieceContainer operatorVectorRaycastAxis;
 	public static PieceContainer operatorVectorProject;
+	public static PieceContainer operatorVectorDotProduct;
 
 	public static PieceContainer constantNumber;
+	public static PieceContainer constantPi;
 
 	public static PieceContainer connector;
 	public static PieceContainer errorSuppressor;
@@ -206,6 +218,10 @@ public final class ModSpellPieces {
 		operatorModulus = register(PieceOperatorModulus.class, LibPieceNames.OPERATOR_MODULUS, LibPieceGroups.LOOPCASTING);
 		operatorRandom = register(PieceOperatorRandom.class, LibPieceNames.OPERATOR_RANDOM, LibPieceGroups.ELEMENTAL_ARTS);
 		operatorIntegerDivide = register(PieceOperatorIntegerDivide.class, LibPieceNames.OPERATOR_INTEGER_DIVIDE, LibPieceGroups.LOOPCASTING);
+		operatorSin = register(PieceOperatorSin.class, LibPieceNames.OPERATOR_SIN, LibPieceGroups.TRIGNOMETRY);
+		operatorCos = register(PieceOperatorCos.class, LibPieceNames.OPERATOR_COS, LibPieceGroups.TRIGNOMETRY);
+		operatorAsin = register(PieceOperatorAsin.class, LibPieceNames.OPERATOR_ASIN, LibPieceGroups.TRIGNOMETRY);
+		operatorAcos = register(PieceOperatorAcos.class, LibPieceNames.OPERATOR_ACOS, LibPieceGroups.TRIGNOMETRY);
 		operatorEntityPosition = register(PieceOperatorEntityPosition.class, LibPieceNames.OPERATOR_ENTITY_POSITION, LibPieceGroups.TUTORIAL_4);
 		operatorEntityLook = register(PieceOperatorEntityLook.class, LibPieceNames.OPERATOR_ENTITY_LOOK, LibPieceGroups.TUTORIAL_3);
 		operatorEntityMotion = register(PieceOperatorEntityMotion.class, LibPieceNames.OPERATOR_ENTITY_MOTION, LibPieceGroups.ENTITIES_INTRO);
@@ -229,8 +245,10 @@ public final class ModSpellPieces {
 		operatorVectorExtractZ = register(PieceOperatorVectorExtractZ.class, LibPieceNames.OPERATOR_VECTOR_EXTRACT_Z, LibPieceGroups.VECTORS_INTRO);
 		operatorVectorRaycastAxis = register(PieceOperatorVectorRaycastAxis.class, LibPieceNames.OPERATOR_VECTOR_RAYCAST_AXIS, LibPieceGroups.BLOCK_WORKS);
 		operatorVectorProject = register(PieceOperatorVectorProject.class, LibPieceNames.OPERATOR_VECTOR_PROJECT, LibPieceGroups.BLOCK_WORKS);
+		operatorVectorDotProduct = register(PieceOperatorVectorDotProduct.class, LibPieceNames.OPERATOR_VECTOR_DOT_PRODUCT, LibPieceGroups.TRIGNOMETRY);
 
 		constantNumber = register(PieceConstantNumber.class, LibPieceNames.CONSTANT_NUMBER, LibPieceGroups.TUTORIAL_2, true);
+		constantPi = register(PieceConstantPi.class, LibPieceNames.CONSTANT_PI, LibPieceGroups.TRIGNOMETRY, true);
 
 		connector = register(PieceConnector.class, LibPieceNames.CONNECTOR, LibPieceGroups.TUTORIAL_2);
 		errorSuppressor = register(PieceErrorSuppressor.class, LibPieceNames.ERROR_SUPPRESSOR, LibPieceGroups.TUTORIAL_4);
@@ -289,7 +307,9 @@ public final class ModSpellPieces {
 		PsiAPI.setGroupRequirements(LibPieceGroups.TOOL_CASTING, 16, LibPieceGroups.GREATER_INFUSION);
 		PsiAPI.setGroupRequirements(LibPieceGroups.POSITIVE_EFFECTS, 16, LibPieceGroups.GREATER_INFUSION);
 		PsiAPI.setGroupRequirements(LibPieceGroups.NEGATIVE_EFFECTS, 17, LibPieceGroups.POSITIVE_EFFECTS);
-		PsiAPI.setGroupRequirements(LibPieceGroups.EIDOS_REVERSAL, 19, LibPieceGroups.GREATER_INFUSION);
+		// TODO Exosuit Casting at 19
+		PsiAPI.setGroupRequirements(LibPieceGroups.EIDOS_REVERSAL, 19, LibPieceGroups.GREATER_INFUSION); // TODO Move to 25 later
+		PsiAPI.setGroupRequirements(LibPieceGroups.TRIGNOMETRY, 20, LibPieceGroups.GREATER_INFUSION);
 	}
 
 	public static PieceContainer register(Class<? extends SpellPiece> clazz, String name, String group) {

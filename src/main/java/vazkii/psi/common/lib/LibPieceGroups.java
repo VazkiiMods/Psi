@@ -31,5 +31,6 @@ public final class LibPieceGroups {
 	public static final String POSITIVE_EFFECTS = "positiveEffects";
 	public static final String NEGATIVE_EFFECTS = "negativeEffects";
 	public static final String EIDOS_REVERSAL = "eidosReversal";
+	public static final String TRIGNOMETRY = "trignometry";
 
 }

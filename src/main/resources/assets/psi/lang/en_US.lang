@@ -216,7 +216,14 @@ psi.spellpiece.operatorIntegerDivide=Operator: Integer Divide
 psi.spellpiece.operatorIntegerDivide.desc=A / B (Integer)
 psi.spellpiece.operatorRandom=Operator: Random
 psi.spellpiece.operatorRandom.desc=Random between 0 and the given number (exclusive)
-
+psi.spellpiece.operatorSin=Operator: Sine
+psi.spellpiece.operatorSin.desc=sin(A)
+psi.spellpiece.operatorCos=Operator: Cosine
+psi.spellpiece.operatorCos.desc=cos(A)
+psi.spellpiece.operatorAsin=Operator: Arc Sine
+psi.spellpiece.operatorAsin.desc=asin(A)
+psi.spellpiece.operatorAcos=Operator: Arc Cosine
+psi.spellpiece.operatorAcos.desc=acos(A)
 psi.spellpiece.operatorEntityPosition=Operator: Entity Position
 psi.spellpiece.operatorEntityPosition.desc=Gets an Entity's position
 psi.spellpiece.operatorEntityLook=Operator: Entity Look
@@ -254,6 +261,8 @@ psi.spellpiece.operatorVectorExtractZ=Operator: Vector Extract Z
 psi.spellpiece.operatorVectorExtractZ.desc=Extracts the Z coordinate from a Vector
 psi.spellpiece.operatorVectorProject=Operator: Vector Project
 psi.spellpiece.operatorVectorProject.desc=Projects Vector A onto Vector B
+psi.spellpiece.operatorVectorDotProduct=Operator: Vector Dot Product
+psi.spellpiece.operatorVectorDotProduct.desc=A . B
 psi.spellpiece.operatorClosestToPoint=Operator: Closest to Point
 psi.spellpiece.operatorClosestToPoint.desc=Gets the closest entity in a list to a point 
 psi.spellpiece.operatorRandomEntity=Operator: Random Entity
@@ -266,6 +275,8 @@ psi.spellpiece.operatorListRemove.desc=Removes target entity from a list
 # -- CONSTANTS
 psi.spellpiece.constantNumber=Constant: Number
 psi.spellpiece.constantNumber.desc=Select and type to set value
+psi.spellpiece.constantPi=Constant: Pi
+psi.spellpiece.constantPi.desc=Returns the value of Pi
 
 # -- OTHERS
 psi.spellpiece.connector=Connector
@@ -403,6 +414,7 @@ psi.spellerror.dividebyzero=ERROR: Divide by zero.
 psi.spellerror.nulltarget=ERROR: Spell Entity target is non existent.
 psi.spellerror.nullvector=ERROR: Spell Operation Vector is non existent or null.
 psi.spellerror.outsideradius=ERROR: Spell target is outside maximum 32 block radius.
+psi.spellerror.outsidetrigdomain=ERROR: Value is outside inverse trignometric function's domain.
 
 # PIECE GROUPS
 psi.introduction=Welcome to Psi, the best spell programming magic tech mod in this side of the universe. Please keep in mind that having Just Enough Items (JEI) or some other method of looking up recipes is essential for playing with Psi, as recipes are not included in this guide. In order to get started spellslinging, you'll need some Psidust. To get Psidust, you need to start by crafting a CAD Assembler and an Iron CAD Assembly. Place down the CAD Assembler and put the Iron CAD Assembly in it to construct a very barebones Casting Assistance Device (CAD). From there, drop some Redstone Dust in the world. Equip your CAD, point at the dropped items and right click to make your Psidust.
@@ -445,3 +457,5 @@ psi.piecegroup.negativeEffects=Negative Effects
 psi.piecegroup.negativeEffects.desc=As to be expected, after Positive Effects come Negative Effects.<br><br>There isn't much to say here, really. Everything in this group works exactly as expected. Have fun.
 psi.piecegroup.eidosReversal=Eidos Manipulation
 psi.piecegroup.eidosReversal.desc=Eidos Spells allow for the caster to manipulate the spacetime continuum in their favor.<br><br>The red piece of this group, "Trick: Eidos Reversal" retraces the caster's steps, at double speed, for the amount of time (in seconds) specified. Only one Reversal may be active at a time, and after a Reversal is cast, the effect of any subsequent cast is only available until the point where the last one ended. Sneaking will stop an ongoing Reversal.<br><br>The other piece of the group, "Trick: Eidos Anchor" creates an "anchor" effect on the caster. After the target amount of time (in seconds), the caster will be taken back to where their anchor was. Multiple casts of "Trick: Eidos Anchor" can be done, but only the last one will take effect.
+psi.piecegroup.trignometry=Trignometry
+psi.piecegroup.trignometry.desc=wip
