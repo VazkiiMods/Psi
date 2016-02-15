@@ -13,9 +13,11 @@ package vazkii.psi.common.item.tool;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import vazkii.psi.api.cad.ISocketable;
+import vazkii.psi.api.spell.ISpellSettable;
+import vazkii.psi.api.spell.Spell;
 import vazkii.psi.common.core.helper.ItemNBTHelper;
 
-public interface IPsimetalTool extends ISocketable {
+public interface IPsimetalTool extends ISocketable, ISpellSettable {
 
 	public static final String TAG_BULLET_PREFIX = "bullet";
 	public static final String TAG_SELECTED_SLOT = "selectedSlot";
@@ -62,4 +64,14 @@ public interface IPsimetalTool extends ISocketable {
 		ItemNBTHelper.setInt(stack, TAG_SELECTED_SLOT, slot);
 	}
 
+	@Override
+	public default void setSpell(ItemStack stack, Spell spell) {
+		int slot = getSelectedSlot(stack);
+		ItemStack bullet = getBulletInSocket(stack, slot);
+		if(bullet != null && bullet.getItem() instanceof ISpellSettable) {
+			((ISpellSettable) bullet.getItem()).setSpell(bullet, spell);
+			setBulletInSocket(stack, slot, bullet);
+		}
+	}
+	
 }
