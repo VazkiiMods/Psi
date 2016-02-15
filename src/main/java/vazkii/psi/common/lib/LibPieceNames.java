@@ -103,5 +103,7 @@ public final class LibPieceNames {
 	public static final String TRICK_IGNITE = "trickIgnite";
 	public static final String TRICK_EIDOS_ANCHOR = "trickEidosAnchor";
 	public static final String TRICK_EIDOS_REVERSAL = "trickEidosReversal";
+	public static final String TRICK_SMELT_BLOCK = "trickSmeltBlock";
+	public static final String TRICK_SMELT_ITEM = "trickSmeltItem";
 
 }

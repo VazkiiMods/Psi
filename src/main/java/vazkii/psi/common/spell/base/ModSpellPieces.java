@@ -81,12 +81,14 @@ import vazkii.psi.common.spell.trick.block.PieceTrickCollapseBlock;
 import vazkii.psi.common.spell.trick.block.PieceTrickMoveBlock;
 import vazkii.psi.common.spell.trick.block.PieceTrickPlaceBlock;
 import vazkii.psi.common.spell.trick.block.PieceTrickPlaceInSequence;
+import vazkii.psi.common.spell.trick.block.PieceTrickSmeltBlock;
 import vazkii.psi.common.spell.trick.entity.PieceTrickAddMotion;
 import vazkii.psi.common.spell.trick.entity.PieceTrickBlink;
 import vazkii.psi.common.spell.trick.entity.PieceTrickIgnite;
 import vazkii.psi.common.spell.trick.entity.PieceTrickMassAddMotion;
 import vazkii.psi.common.spell.trick.entity.PieceTrickMassBlink;
 import vazkii.psi.common.spell.trick.entity.PieceTrickMassExodus;
+import vazkii.psi.common.spell.trick.entity.PieceTrickSmeltItem;
 import vazkii.psi.common.spell.trick.infusion.PieceTrickEbonyIvory;
 import vazkii.psi.common.spell.trick.infusion.PieceTrickGreaterInfusion;
 import vazkii.psi.common.spell.trick.infusion.PieceTrickInfusion;
@@ -195,6 +197,8 @@ public final class ModSpellPieces {
 	public static PieceContainer trickIgnite;
 	public static PieceContainer trickEidosAnchor;
 	public static PieceContainer trickEidosReversal;
+	public static PieceContainer trickSmeltBlock;
+	public static PieceContainer trickSmeltItem;
 
 	public static void init() {
 		selectorCaster = register(PieceSelectorCaster.class, LibPieceNames.SELECTOR_CASTER, LibPieceGroups.TUTORIAL_1);
@@ -288,6 +292,8 @@ public final class ModSpellPieces {
 		trickIgnite = register(PieceTrickIgnite.class, LibPieceNames.TRICK_IGNITE, LibPieceGroups.NEGATIVE_EFFECTS);
 		trickEidosAnchor = register(PieceTrickEidosAnchor.class, LibPieceNames.TRICK_EIDOS_ANCHOR, LibPieceGroups.EIDOS_REVERSAL);
 		trickEidosReversal = register(PieceTrickEidosReversal.class, LibPieceNames.TRICK_EIDOS_REVERSAL, LibPieceGroups.EIDOS_REVERSAL, true);
+		trickSmeltBlock = register(PieceTrickSmeltBlock.class, LibPieceNames.TRICK_SMELT_BLOCK, LibPieceGroups.SMELTERY);
+		trickSmeltItem = register(PieceTrickSmeltItem.class, LibPieceNames.TRICK_SMELT_ITEM, LibPieceGroups.SMELTERY, true);
 
 		PsiAPI.setGroupRequirements(LibPieceGroups.TUTORIAL_1, 1);
 		PsiAPI.setGroupRequirements(LibPieceGroups.TUTORIAL_2, 2, LibPieceGroups.TUTORIAL_1);
@@ -310,6 +316,7 @@ public final class ModSpellPieces {
 		// TODO Exosuit Casting at 19
 		PsiAPI.setGroupRequirements(LibPieceGroups.EIDOS_REVERSAL, 19, LibPieceGroups.GREATER_INFUSION); // TODO Move to 25 later
 		PsiAPI.setGroupRequirements(LibPieceGroups.TRIGNOMETRY, 20, LibPieceGroups.GREATER_INFUSION);
+		PsiAPI.setGroupRequirements(LibPieceGroups.SMELTERY, 20, LibPieceGroups.GREATER_INFUSION);
 	}
 
 	public static PieceContainer register(Class<? extends SpellPiece> clazz, String name, String group) {

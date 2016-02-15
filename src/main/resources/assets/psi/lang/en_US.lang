@@ -355,6 +355,10 @@ psi.spellpiece.trickEidosAnchor=Trick: Eidos Anchor
 psi.spellpiece.trickEidosAnchor.desc=Returns the caster to current position after target Time
 psi.spellpiece.trickEidosReversal=Trick: Eidos Reversal
 psi.spellpiece.trickEidosReversal.desc=Takes the caster back in time
+psi.spellpiece.trickSmeltItem=Trick: Smelt Item
+psi.spellpiece.trickSmeltItem.desc=Smelts an item entity into its smelted counterpart
+psi.spellpiece.trickSmeltBlock=Trick: Smelt Block
+psi.spellpiece.trickSmeltBlock.desc=Smelts a block into its smelted counterpart
 
 # SPELL PARAMETER NAMES
 psi.spellparam.target=Target
@@ -459,3 +463,5 @@ psi.piecegroup.eidosReversal=Eidos Manipulation
 psi.piecegroup.eidosReversal.desc=Eidos Spells allow for the caster to manipulate the spacetime continuum in their favor.<br><br>The red piece of this group, "Trick: Eidos Reversal" retraces the caster's steps, at double speed, for the amount of time (in seconds) specified. Only one Reversal may be active at a time, and after a Reversal is cast, the effect of any subsequent cast is only available until the point where the last one ended. Sneaking will stop an ongoing Reversal.<br><br>The other piece of the group, "Trick: Eidos Anchor" creates an "anchor" effect on the caster. After the target amount of time (in seconds), the caster will be taken back to where their anchor was. Multiple casts of "Trick: Eidos Anchor" can be done, but only the last one will take effect.
 psi.piecegroup.trignometry=Trignometry
 psi.piecegroup.trignometry.desc=wip
+psi.piecegroup.smeltery=Smeltery
+psi.piecegroup.smeltery.desc=wip
