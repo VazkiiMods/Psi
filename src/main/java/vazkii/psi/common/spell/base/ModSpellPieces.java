@@ -22,6 +22,7 @@ import vazkii.psi.common.spell.operator.entity.PieceOperatorEntityAxialLook;
 import vazkii.psi.common.spell.operator.entity.PieceOperatorEntityLook;
 import vazkii.psi.common.spell.operator.entity.PieceOperatorEntityMotion;
 import vazkii.psi.common.spell.operator.entity.PieceOperatorEntityPosition;
+import vazkii.psi.common.spell.operator.entity.PieceOperatorFocusedEntity;
 import vazkii.psi.common.spell.operator.entity.PieceOperatorListAdd;
 import vazkii.psi.common.spell.operator.entity.PieceOperatorListRemove;
 import vazkii.psi.common.spell.operator.entity.PieceOperatorRandomEntity;
@@ -137,6 +138,7 @@ public final class ModSpellPieces {
 	public static PieceContainer operatorEntityMotion;
 	public static PieceContainer operatorClosestToPoint;
 	public static PieceContainer operatorRandomEntity;
+	public static PieceContainer operatorFocusedEntity;
 	public static PieceContainer operatorListAdd;
 	public static PieceContainer operatorListRemove;
 	public static PieceContainer operatorVectorRaycast;
@@ -232,6 +234,7 @@ public final class ModSpellPieces {
 		operatorEntityMotion = register(PieceOperatorEntityAxialLook.class, LibPieceNames.OPERATOR_ENTITY_AXIAL_LOOK, LibPieceGroups.BLOCK_WORKS);
 		operatorClosestToPoint = register(PieceOperatorClosestToPoint.class, LibPieceNames.OPERATOR_CLOSEST_TO_POINT, LibPieceGroups.ENTITIES_INTRO, true);
 		operatorRandomEntity = register(PieceOperatorRandomEntity.class, LibPieceNames.OPERATOR_RANDOM_ENTITY, LibPieceGroups.ENTITIES_INTRO);
+		operatorFocusedEntity = register(PieceOperatorFocusedEntity.class, LibPieceNames.OPERATOR_FOCUSED_ENTITY, LibPieceGroups.ENTITIES_INTRO);
 		operatorListAdd = register(PieceOperatorListAdd.class, LibPieceNames.OPERATOR_LIST_ADD, LibPieceGroups.ENTITIES_INTRO);
 		operatorListRemove = register(PieceOperatorListRemove.class, LibPieceNames.OPERATOR_LIST_REMOVE, LibPieceGroups.ENTITIES_INTRO);
 		operatorVectorRaycast = register(PieceOperatorVectorRaycast.class, LibPieceNames.OPERATOR_VECTOR_RAYCAST, LibPieceGroups.TUTORIAL_4);
