@@ -39,6 +39,26 @@ psimisc.loadPrompt=Load?
 psimisc.spectator=[Spectator Mode]
 psimisc.multipleCads=The other CAD in your inventory is interfering with your cast. You can only have one CAD.
 
+# VERSIONING
+psi.versioning.flavour0=Seems like Psi is outdated. What a shame.
+psi.versioning.flavour1=Are you Psiched to update Psi?
+psi.versioning.flavour2=Psi is outdated. You expected a funny message but it's just outdated, sorry :(
+psi.versioning.flavour3=You can download the new Psi update from the servers at Magic High School.
+psi.versioning.flavour4=Psi is outdated. On the flip pside, you can update it.
+psi.versioning.flavour5=Only Weeds leave Psi outdated.
+psi.versioning.flavour6=Don't be a Psicho, update Psi.
+psi.versioning.flavour7=Psi is up to date. Psiche! I fooled you.
+psi.versioning.flavour8=You should update Psi, get it from the webpsite.
+psi.versioning.flavour9=Don't confuse yourself like a Psiduck, update Psi.
+psi.versioning.outdated=You are running Psi build %s, the latest is build %s.
+psi.versioning.updateMessage=["Click for... [",{"text":"Download","color":"aqua","hoverEvent":{"action":"show_text","value":{"text":"Click this to automatically download the latest version","color":"aqua"}},"clickEvent":{"action":"run_command","value":"/psi-download-latest %version%"}},"] [",{"text":"Website","color":"aqua","hoverEvent":{"action":"show_text","value":{"text":"Click this to go to the mod's website","color":"aqua"}},"clickEvent":{"action":"open_url","value":"http://psi.vazkii.us/downloads.php"}},"] [",{"text":"Changelog","color":"aqua","hoverEvent":{"action":"show_text","value":{"text":"Click this to go to the version's Changelog","color":"aqua"}},"clickEvent":{"action":"open_url","value":"http://psi.vazkii.us/changelog.php#%version%"}},"]"]
+psi.versioning.startingDownload=[{"text":"Starting download of %s. Please do not remove your hard disk. Enjoying ","color":"yellow"},{"text":"Psi","color":"aqua"},{"text":"? Consider supporting ","color":"yellow"},{"text":"Vazkii","color":"light_purple"},{"text":" on ","color":"yellow"},{"text":"[Patreon]","color":"gold","hoverEvent":{"action":"show_text","value":{"text":"Click this to go to Vazkii's Patreon","color":"light_purple"}},"clickEvent":{"action":"open_url","value":"http://www.patreon.com/Vazkii"}},{"text":"!","color":"yellow"}]
+psi.versioning.doneDownloading=Finished downloading %s. Delete your old Psi .jar and reload your game to update.
+psi.versioning.downloadedAlready=You already downloaded the latest version. Close your game, delete the old version from your mods folder and load it again to update!
+psi.versioning.downloadingAlready=The update is already downloading, give it some time, will you?
+psi.versioning.error=Woah! It seems like something went wrong while trying to download the Psi update. Is psi.vazkii.us down?
+psi.versioning.disabled=Sorry. This feature is currently disabled due to server host problems, it should be back soon.
+
 # BLOCK NAMES
 tile.psi:cadAssembler.name=CAD Assembler
 tile.psi:programmer.name=Spell Programmer

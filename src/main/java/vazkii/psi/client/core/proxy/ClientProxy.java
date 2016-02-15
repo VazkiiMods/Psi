@@ -28,6 +28,7 @@ import vazkii.psi.client.core.handler.HUDHandler;
 import vazkii.psi.client.core.handler.KeybindHandler;
 import vazkii.psi.client.core.handler.ModelHandler;
 import vazkii.psi.client.core.handler.ShaderHandler;
+import vazkii.psi.client.core.version.VersionChecker;
 import vazkii.psi.client.fx.FXSparkle;
 import vazkii.psi.client.fx.FXWisp;
 import vazkii.psi.client.fx.ParticleRenderDispatcher;
@@ -49,6 +50,8 @@ public class ClientProxy extends CommonProxy {
 		ModelHandler.init();
 		ShaderHandler.init();
 		KeybindHandler.init();
+		
+		(new VersionChecker()).init();
 
 		MinecraftForge.EVENT_BUS.register(new HUDHandler());
 		MinecraftForge.EVENT_BUS.register(new ClientTickHandler());
