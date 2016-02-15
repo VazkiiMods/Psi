@@ -193,6 +193,8 @@ public class PlayerDataHandler {
 		private static final String TAG_EIDOS_ANCHOR_X = "eidosAnchorX";
 		private static final String TAG_EIDOS_ANCHOR_Y = "eidosAnchorY";
 		private static final String TAG_EIDOS_ANCHOR_Z = "eidosAnchorZ";
+		private static final String TAG_EIDOS_ANCHOR_PITCH = "eidosAnchorPitch";
+		private static final String TAG_EIDOS_ANCHOR_YAW = "eidosAnchorYaw";
 		private static final String TAG_EIDOS_ANCHOR_TIME = "eidosAnchorTime";
 
 		public int level;
@@ -209,6 +211,7 @@ public class PlayerDataHandler {
 		// Eidos stuff
 		public Stack<Vector3> eidosChangelog = new Stack();
 		public Vector3 eidosAnchor = new Vector3(0, 0, 0);
+		public double eidosAnchorPitch, eidosAnchorYaw;
 		public boolean isAnchored;
 		public boolean isReverting;
 		public int eidosAnchorTime;
@@ -327,7 +330,7 @@ public class PlayerDataHandler {
 				if(eidosAnchorTime == 1) {
 					if(player != null && player instanceof EntityPlayerMP) {
 						EntityPlayerMP pmp = (EntityPlayerMP) player;
-						pmp.playerNetServerHandler.setPlayerLocation(eidosAnchor.x, eidosAnchor.y, eidosAnchor.z, player.rotationYaw, player.rotationPitch);
+						pmp.playerNetServerHandler.setPlayerLocation(eidosAnchor.x, eidosAnchor.y, eidosAnchor.z, (float) eidosAnchorYaw, (float) eidosAnchorPitch);
 					}
 					postAnchorRecallTime = 0;
 				}
@@ -582,6 +585,8 @@ public class PlayerDataHandler {
 			cmp.setDouble(TAG_EIDOS_ANCHOR_X, eidosAnchor.x);
 			cmp.setDouble(TAG_EIDOS_ANCHOR_Y, eidosAnchor.y);
 			cmp.setDouble(TAG_EIDOS_ANCHOR_Z, eidosAnchor.z);
+			cmp.setDouble(TAG_EIDOS_ANCHOR_PITCH, eidosAnchorPitch);
+			cmp.setDouble(TAG_EIDOS_ANCHOR_YAW, eidosAnchorYaw);
 			cmp.setInteger(TAG_EIDOS_ANCHOR_TIME, eidosAnchorTime);
 		}
 
@@ -615,6 +620,8 @@ public class PlayerDataHandler {
 			double y = cmp.getDouble(TAG_EIDOS_ANCHOR_X);
 			double z = cmp.getDouble(TAG_EIDOS_ANCHOR_X);
 			eidosAnchor.set(x, y, z);
+			eidosAnchorPitch = cmp.getDouble(TAG_EIDOS_ANCHOR_PITCH);
+			eidosAnchorYaw = cmp.getDouble(TAG_EIDOS_ANCHOR_YAW);
 			eidosAnchorTime = cmp.getInteger(TAG_EIDOS_ANCHOR_TIME);
 		}
 

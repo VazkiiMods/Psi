@@ -53,6 +53,8 @@ public class PieceTrickEidosAnchor extends PieceTrick {
 		Double timeVal = this.<Double>getParamValue(context, time);
 		PlayerData data = PlayerDataHandler.get(context.caster);
 		data.eidosAnchor = Vector3.fromEntity(context.caster);
+		data.eidosAnchorPitch = context.caster.rotationPitch;
+		data.eidosAnchorYaw = context.caster.rotationYaw;
 		data.eidosAnchorTime = timeVal.intValue() * 20;
 		data.postAnchorRecallTime = 0;
 		data.isAnchored = true;
