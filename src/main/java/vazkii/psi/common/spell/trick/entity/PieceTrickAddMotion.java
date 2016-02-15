@@ -50,10 +50,8 @@ public class PieceTrickAddMotion extends PieceTrick {
 			speedVal = 1D;
 
 		double absSpeed = Math.abs(speedVal);
-		double speedPo2 = absSpeed * absSpeed;
-
-		meta.addStat(EnumSpellStat.POTENCY, (int) (speedPo2 * 3.5));
-		meta.addStat(EnumSpellStat.COST, (int) (speedPo2 * 8));
+		meta.addStat(EnumSpellStat.POTENCY, (int) (absSpeed * absSpeed * 3.5));
+		meta.addStat(EnumSpellStat.COST, (int) ((absSpeed * Math.max(1, absSpeed * 0.5)) * 60));
 	}
 
 	@Override
@@ -78,23 +76,11 @@ public class PieceTrickAddMotion extends PieceTrick {
 		dir = dir.copy().normalize().multiply(mul * speed);
 		
 		e.motionX += dir.x;
-		if(!isInBounds(e.motionX, dir.x))
-			e.motionX = dir.x;
-		
 		e.motionY += dir.y;
-		if(!isInBounds(e.motionY, dir.y))
-			e.motionY = dir.y;
-		
 		e.motionZ += dir.z;
-		if(!isInBounds(e.motionZ, dir.z))
-			e.motionZ = dir.z;
 		
 		if(e.motionY >= 0)
 			e.fallDistance = 0;
 	}
 	
-	private static boolean isInBounds(double d, double bound) {
-		return bound < 0 ? -Math.abs(d) > bound : Math.abs(d) < bound;
-	}
-
 }
