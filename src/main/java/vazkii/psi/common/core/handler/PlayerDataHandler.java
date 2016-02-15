@@ -534,7 +534,7 @@ public class PlayerDataHandler {
 
 		@Override
 		public int getTotalPsi() {
-			return getLevel() * 200;
+			return Math.min(5000, getLevel() * 200);
 		}
 
 		@Override
