@@ -68,9 +68,8 @@ public class ClientProxy extends CommonProxy {
 	}
 
 	@Override
-	public void onLevelUp(EntityPlayer player, int level) {
-		if(player == Minecraft.getMinecraft().thePlayer)
-			HUDHandler.levelUp(level);
+	public void onLevelUp(int level) {
+		HUDHandler.levelUp(level);
 	}
 
 	@Override

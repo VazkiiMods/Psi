@@ -44,14 +44,14 @@ public class CompiledSpell {
 	}
 
 	/**
-	 * Executes the spell, making a copy of the {@link #actions} stack so it
-	 * can be reused if cached.
+	 * Executes the spell, making a copy of the {@link #actions} stack so it can
+	 * be reused if cached.
 	 */
 	public void execute(SpellContext context) throws SpellRuntimeException {
 		Stack<Action> actions = (Stack<Action>) this.actions.clone();
 
 		IPlayerData data = PsiAPI.internalHandler.getDataForPlayer(context.caster);
-		while(!actions.isEmpty())
+		while (!actions.isEmpty())
 			actions.pop().execute(data, context);
 
 		evaluatedObjects = new Object[SpellGrid.GRID_SIZE][SpellGrid.GRID_SIZE];
@@ -63,14 +63,15 @@ public class CompiledSpell {
 	public void safeExecute(SpellContext context) {
 		try {
 			context.cspell.execute(context);
-		} catch(SpellRuntimeException e) {
-			if(!context.caster.worldObj.isRemote && !context.shouldSuppressErrors())
-				context.caster.addChatComponentMessage(new ChatComponentTranslation(e.getMessage()).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
+		} catch (SpellRuntimeException e) {
+			if (!context.caster.worldObj.isRemote && !context.shouldSuppressErrors())
+				context.caster.addChatComponentMessage(new ChatComponentTranslation(e.getMessage())
+						.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
 		}
 	}
 
 	public boolean hasEvaluated(int x, int y) {
-		if(!SpellGrid.exists(x, y))
+		if (!SpellGrid.exists(x, y))
 			return false;
 
 		return spotsEvaluated[x][y];
@@ -89,7 +90,7 @@ public class CompiledSpell {
 			Object o = piece.execute(context);
 
 			Class<?> eval = piece.getEvaluationType();
-			if(eval != null && eval != Null.class)
+			if (eval != null && eval != Null.class)
 				evaluatedObjects[piece.x][piece.y] = o;
 		}
 

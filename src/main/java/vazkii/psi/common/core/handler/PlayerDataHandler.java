@@ -23,7 +23,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -62,6 +61,7 @@ import vazkii.psi.common.item.ItemCAD;
 import vazkii.psi.common.network.NetworkHandler;
 import vazkii.psi.common.network.message.MessageDataSync;
 import vazkii.psi.common.network.message.MessageDeductPsi;
+import vazkii.psi.common.network.message.MessageLevelUp;
 
 public class PlayerDataHandler {
 
@@ -443,7 +443,14 @@ public class PlayerDataHandler {
 				level++;
 				levelPoints++;
 				lastSpellGroup = "";
-				Psi.proxy.onLevelUp(player, level);
+				
+				if(player instanceof EntityPlayerMP) {
+					MessageLevelUp message = new MessageLevelUp(level);
+					MessageDataSync message2 = new MessageDataSync(this);
+
+					NetworkHandler.INSTANCE.sendTo(message, (EntityPlayerMP) player);
+					NetworkHandler.INSTANCE.sendTo(message2, (EntityPlayerMP) player);
+				}
 			}
 		}
 

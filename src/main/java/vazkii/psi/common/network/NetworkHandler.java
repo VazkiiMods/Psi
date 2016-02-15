@@ -18,6 +18,7 @@ import vazkii.psi.common.network.message.MessageChangeSocketableSlot;
 import vazkii.psi.common.network.message.MessageDataSync;
 import vazkii.psi.common.network.message.MessageDeductPsi;
 import vazkii.psi.common.network.message.MessageLearnGroup;
+import vazkii.psi.common.network.message.MessageLevelUp;
 import vazkii.psi.common.network.message.MessageSkipToLevel;
 import vazkii.psi.common.network.message.MessageSpellModified;
 import vazkii.psi.common.network.message.TestMessage;
@@ -37,6 +38,7 @@ public class NetworkHandler {
 		register(MessageSpellModified.class, Side.SERVER);
 		register(MessageLearnGroup.class, Side.SERVER);
 		register(MessageSkipToLevel.class, Side.SERVER);
+		register(MessageLevelUp.class, Side.CLIENT);
 	}
 
 	private static void register(Class clazz, Side handlerSide) {

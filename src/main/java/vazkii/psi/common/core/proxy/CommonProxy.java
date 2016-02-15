@@ -54,8 +54,8 @@ public class CommonProxy {
 		return null;
 	}
 
-	public void onLevelUp(EntityPlayer player, int level) {
-		// Proxy override
+	public void onLevelUp(int level) {
+		// proxy override
 	}
 
 	public void savePersistency() {
