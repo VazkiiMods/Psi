@@ -120,7 +120,7 @@ public class ModCraftingRecipes {
 				'D', "gemPsi");
 
 		String[] dyes = {
-				"White", "Orange", "Magenta", "LightBlue", "Yellow", "Lime", "Pink", "Gray", "LightGray", "Cyan", "Purple", "Blue", "Brown", "Green", "Red"," Black"
+				"White", "Orange", "Magenta", "LightBlue", "Yellow", "Lime", "Pink", "Gray", "LightGray", "Cyan", "Purple", "Blue", "Brown", "Green", "Red", "Black"
 		};
 		for(int i = 0; i < 16; i++)
 			addOreDictRecipe(new ItemStack(ModItems.cadColorizer, 1, i),
