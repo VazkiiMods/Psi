@@ -30,9 +30,9 @@ public class PieceOperatorVectorConstruct extends PieceOperator {
 
 	@Override
 	public void initParams() {
-		addParam(num1 = new ParamNumber(SpellParam.GENERIC_NAME_X, SpellParam.RED, false, false));
-		addParam(num2 = new ParamNumber(SpellParam.GENERIC_NAME_Y, SpellParam.GREEN, false, false));
-		addParam(num3 = new ParamNumber(SpellParam.GENERIC_NAME_Z, SpellParam.BLUE, false, false));
+		addParam(num1 = new ParamNumber(SpellParam.GENERIC_NAME_X, SpellParam.RED, true, false));
+		addParam(num2 = new ParamNumber(SpellParam.GENERIC_NAME_Y, SpellParam.GREEN, true, false));
+		addParam(num3 = new ParamNumber(SpellParam.GENERIC_NAME_Z, SpellParam.BLUE, true, false));
 	}
 
 	@Override
@@ -40,9 +40,14 @@ public class PieceOperatorVectorConstruct extends PieceOperator {
 		Double d1 = this.<Double>getParamValue(context, num1);
 		Double d2 = this.<Double>getParamValue(context, num2);
 		Double d3 = this.<Double>getParamValue(context, num3);
-		if(d1 == null || d2 == null || d3 == null)
-			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
 
+		if(d1 == null)
+			d1 = 0D;
+		if(d2 == null)
+			d2 = 0D;
+		if(d3 == null)
+			d3 = 0D;
+		
 		return new Vector3(d1, d2, d3);
 	}
 
