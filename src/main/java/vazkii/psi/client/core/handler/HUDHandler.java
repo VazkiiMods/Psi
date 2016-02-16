@@ -234,14 +234,16 @@ public final class HUDHandler {
 		Minecraft mc = Minecraft.getMinecraft();
 		ItemStack stack = mc.thePlayer.getCurrentEquippedItem();
 		String name = ISocketable.getSocketedItemName(stack, "");
-		if(name == null || name.trim().isEmpty())
+		if(stack == null || name == null || name.trim().isEmpty())
 			return;
-
+		
 		int ticks = ReflectionHelper.getPrivateValue(GuiIngame.class, mc.ingameGUI, LibObfuscation.REMAINING_HIGHLIGHT_TICKS);
 		ticks -= 10;
 
 		if(ticks > 0) {
-			int alpha = Math.min(255, (int) ((ticks + pticks) * 256.0F / 10.0F));
+			ItemStack socketable = ((ISocketable) stack.getItem()).getBulletInSocket(stack, ((ISocketable) stack.getItem()).getSelectedSlot(stack));
+
+			int alpha = Math.min(255, (int) ((ticks - pticks) * 256.0F / 10.0F));
 			int color = ICADColorizer.DEFAULT_SPELL_COLOR + (alpha << 24);
 
 			int x = res.getScaledWidth() / 2 - mc.fontRendererObj.getStringWidth(name) / 2;
@@ -252,6 +254,14 @@ public final class HUDHandler {
 			GlStateManager.enableBlend();
 			GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 			mc.fontRendererObj.drawStringWithShadow(name, x, y, color);
+			
+			int w = mc.fontRendererObj.getStringWidth(name);
+			GlStateManager.pushMatrix();
+			GlStateManager.translate(x + w, y - 6, 0);
+			GlStateManager.scale(alpha / 255F, 1F, 1);
+			GlStateManager.color(1F, 1F, 1F);
+			mc.getRenderItem().renderItemIntoGUI(socketable, 0, 0);
+			GlStateManager.popMatrix();
 			GlStateManager.disableBlend();
 		}
 	}
