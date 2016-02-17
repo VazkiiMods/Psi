@@ -67,7 +67,7 @@ public class PieceTrickPlaceBlock extends PieceTrick {
 	}
 
 	public static void placeBlock(EntityPlayer player, World world, BlockPos pos, boolean particles) {
-		if(!world.isBlockLoaded(pos) || world.isRemote)
+		if(!world.isBlockLoaded(pos))
 			return;
 
 		IBlockState state = world.getBlockState(pos);
@@ -81,7 +81,8 @@ public class PieceTrickPlaceBlock extends PieceTrick {
 			if(stack != null && stack.getItem() instanceof ItemBlock) {
 				ItemStack rem = removeFromInventory(player, block, stack);
 				Block blockToPlace = Block.getBlockFromItem(rem.getItem());
-				world.setBlockState(pos, blockToPlace.getStateFromMeta(rem.getItemDamage()));
+				if(!world.isRemote)
+					world.setBlockState(pos, blockToPlace.getStateFromMeta(rem.getItemDamage()));
 
 				if(player.capabilities.isCreativeMode)
 					HUDHandler.setRemaining(rem, -1);
