@@ -21,7 +21,7 @@ import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 
-public class BlockMetaVariants<T extends Enum<T> & IStringSerializable> extends BlockMod implements IVariantEnumHolder<T> {
+public class BlockMetaVariants<T extends Enum<T> & IStringSerializable> extends BlockMod  {
 
 	public static Class temporaryVariantsEnum; // This is a massive hack, but such is life with constructors
 	public static PropertyEnum temporaryVariantProp;

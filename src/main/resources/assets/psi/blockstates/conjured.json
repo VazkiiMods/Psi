@@ -1,0 +1,15 @@
+{
+	"forge_marker": 1,
+	"defaults": {
+		"model": "minecraft:cube_all",
+		"transform": "forge:default-block",
+		"textures": {
+			"particle": "psi:blocks/empty",
+			"all": "psi:blocks/empty"
+		}
+	}, 
+	"variants": {
+		"normal": [{ "textures": { "all": "psi:blocks/empty" } }],
+		"inventory": [{ "textures": { "all": "psi:blocks/empty" } }]
+	}
+}

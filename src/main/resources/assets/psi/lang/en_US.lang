@@ -71,6 +71,7 @@ tile.psi:psimetal_plate_cyan.name=Bright Psimetal Plate
 tile.psi:psimetal_plate_cyan_light.name=Bright Psimetal Flow Plate 
 tile.psi:ebony_psimetal_block.name=Ebony Psimetal Block
 tile.psi:ivory_psimetal_block.name=Ivory Psimetal Block
+tile.psi:conjured.name=Conjured Block
 
 # ITEM NAMES
 item.psi:psidust.name=Psidust
@@ -367,6 +368,10 @@ psi.spellpiece.trickSmeltItem=Trick: Smelt Item
 psi.spellpiece.trickSmeltItem.desc=Smelts an item entity into its smelted counterpart
 psi.spellpiece.trickSmeltBlock=Trick: Smelt Block
 psi.spellpiece.trickSmeltBlock.desc=Smelts a block into its smelted counterpart
+psi.spellpiece.trickConjureBlock=Trick: Conjure Block
+psi.spellpiece.trickConjureBlock.desc=Conjures a block in the given position
+psi.spellpiece.trickConjureLight=Trick: Conjure Light
+psi.spellpiece.trickConjureLight.desc=Conjures a light in the given position
 
 # SPELL PARAMETER NAMES
 psi.spellparam.target=Target
@@ -475,3 +480,5 @@ psi.piecegroup.smeltery=Smeltery
 psi.piecegroup.smeltery.desc=The pieces included in this group are very simplistic in the way they function, as both revolve around the concept of smelting things into other things as if they were put in a furnace.<br>"Trick: Smelt Item" will smelt a dropped item (Entity) in the world into its smelted counterpart, one item at a time.<br><br>"Trick: Smelt Block" will smelt a block in the world into its smelted version, provided it's also a block. So while Cobblestone may be turned into Stone, Wood can't be turned into Charcoal. 
 psi.piecegroup.flowControl=Flow Control
 psi.piecegroup.flowControl.desc=wip
+psi.piecegroup.blockConjuration=Block Conjuration
+psi.piecegroup.blockConjuration.desc=wip

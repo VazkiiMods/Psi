@@ -10,6 +10,7 @@
  */
 package vazkii.psi.common.item.base;
 
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -17,7 +18,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public interface IVariantHolder {
 
 	public String[] getVariants();
-
+	
 	@SideOnly(Side.CLIENT)
 	public ItemMeshDefinition getCustomMeshDefinition();
 

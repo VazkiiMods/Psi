@@ -82,6 +82,8 @@ import vazkii.psi.common.spell.trick.PieceTrickTorrent;
 import vazkii.psi.common.spell.trick.block.PieceTrickBreakBlock;
 import vazkii.psi.common.spell.trick.block.PieceTrickBreakInSequence;
 import vazkii.psi.common.spell.trick.block.PieceTrickCollapseBlock;
+import vazkii.psi.common.spell.trick.block.PieceTrickConjureBlock;
+import vazkii.psi.common.spell.trick.block.PieceTrickConjureLight;
 import vazkii.psi.common.spell.trick.block.PieceTrickMoveBlock;
 import vazkii.psi.common.spell.trick.block.PieceTrickPlaceBlock;
 import vazkii.psi.common.spell.trick.block.PieceTrickPlaceInSequence;
@@ -207,6 +209,8 @@ public final class ModSpellPieces {
 	public static PieceContainer trickEidosReversal;
 	public static PieceContainer trickSmeltBlock;
 	public static PieceContainer trickSmeltItem;
+	public static PieceContainer trickConjureBlock;
+	public static PieceContainer trickConjureLight;
 
 	public static void init() {
 		selectorCaster = register(PieceSelectorCaster.class, LibPieceNames.SELECTOR_CASTER, LibPieceGroups.TUTORIAL_1);
@@ -306,7 +310,9 @@ public final class ModSpellPieces {
 		trickEidosReversal = register(PieceTrickEidosReversal.class, LibPieceNames.TRICK_EIDOS_REVERSAL, LibPieceGroups.EIDOS_REVERSAL, true);
 		trickSmeltBlock = register(PieceTrickSmeltBlock.class, LibPieceNames.TRICK_SMELT_BLOCK, LibPieceGroups.SMELTERY);
 		trickSmeltItem = register(PieceTrickSmeltItem.class, LibPieceNames.TRICK_SMELT_ITEM, LibPieceGroups.SMELTERY, true);
-
+		trickConjureBlock = register(PieceTrickConjureBlock.class, LibPieceNames.TRICK_CONJURE_BLOCK, LibPieceGroups.BLOCK_CONJURATION, true);
+		trickConjureLight = register(PieceTrickConjureLight.class, LibPieceNames.TRICK_CONJURE_LIGHT, LibPieceGroups.BLOCK_CONJURATION);
+		
 		PsiAPI.setGroupRequirements(LibPieceGroups.TUTORIAL_1, 1);
 		PsiAPI.setGroupRequirements(LibPieceGroups.TUTORIAL_2, 2, LibPieceGroups.TUTORIAL_1);
 		PsiAPI.setGroupRequirements(LibPieceGroups.TUTORIAL_3, 3, LibPieceGroups.TUTORIAL_2);
@@ -330,6 +336,7 @@ public final class ModSpellPieces {
 		PsiAPI.setGroupRequirements(LibPieceGroups.TRIGNOMETRY, 20, LibPieceGroups.GREATER_INFUSION);
 		PsiAPI.setGroupRequirements(LibPieceGroups.SMELTERY, 20, LibPieceGroups.GREATER_INFUSION);
 		PsiAPI.setGroupRequirements(LibPieceGroups.FLOW_CONTROL, 20, LibPieceGroups.GREATER_INFUSION);
+		PsiAPI.setGroupRequirements(LibPieceGroups.BLOCK_CONJURATION, 20, LibPieceGroups.GREATER_INFUSION);
 	}
 
 	public static PieceContainer register(Class<? extends SpellPiece> clazz, String name, String group) {

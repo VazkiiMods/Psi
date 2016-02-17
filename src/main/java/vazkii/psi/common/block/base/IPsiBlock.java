@@ -10,14 +10,17 @@
  */
 package vazkii.psi.common.block.base;
 
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import vazkii.psi.common.item.base.IVariantHolder;
 
-public interface IPsiBlock extends IVariantHolder {
+public interface IPsiBlock extends IVariantHolder, IVariantEnumHolder {
 
 	public String getBareName();
 
+	public IProperty[] getIgnoredProperties();
+	
 	public EnumRarity getBlockRarity(ItemStack stack);
 
 }

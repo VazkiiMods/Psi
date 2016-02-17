@@ -15,9 +15,11 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import vazkii.psi.common.block.BlockCADAssembler;
+import vazkii.psi.common.block.BlockConjured;
 import vazkii.psi.common.block.BlockProgrammer;
 import vazkii.psi.common.block.BlockPsiDecorative;
 import vazkii.psi.common.block.tile.TileCADAssembler;
+import vazkii.psi.common.block.tile.TileConjured;
 import vazkii.psi.common.block.tile.TileProgrammer;
 import vazkii.psi.common.lib.LibBlockNames;
 import vazkii.psi.common.lib.LibResources;
@@ -27,11 +29,13 @@ public class ModBlocks {
 	public static BlockMod cadAssembler;
 	public static BlockMod programmer;
 	public static BlockMod psiDecorative;
+	public static BlockMod conjured;
 
 	public static void init() {
 		cadAssembler = new BlockCADAssembler();
 		programmer = new BlockProgrammer();
 		psiDecorative = new BlockPsiDecorative();
+		conjured = new BlockConjured();
 
 		initTileEntities();
 		
@@ -44,6 +48,7 @@ public class ModBlocks {
 	private static void initTileEntities() {
 		registerTile(TileCADAssembler.class, LibBlockNames.CAD_ASSEMBLER);
 		registerTile(TileProgrammer.class, LibBlockNames.PROGRAMMER);
+		registerTile(TileConjured.class, LibBlockNames.CONJURED);
 	}
 
 	private static void registerTile(Class<? extends TileEntity> clazz, String key) {

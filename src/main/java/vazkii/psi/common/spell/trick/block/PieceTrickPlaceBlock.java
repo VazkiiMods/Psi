@@ -18,6 +18,9 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.world.BlockEvent.BreakEvent;
+import net.minecraftforge.event.world.BlockEvent.PlaceEvent;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.EnumSpellStat;
 import vazkii.psi.api.spell.Spell;
@@ -29,6 +32,7 @@ import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.api.spell.param.ParamVector;
 import vazkii.psi.api.spell.piece.PieceTrick;
 import vazkii.psi.client.core.handler.HUDHandler;
+import vazkii.psi.common.block.base.ModBlocks;
 
 public class PieceTrickPlaceBlock extends PieceTrick {
 
@@ -67,6 +71,10 @@ public class PieceTrickPlaceBlock extends PieceTrick {
 	}
 
 	public static void placeBlock(EntityPlayer player, World world, BlockPos pos, boolean particles) {
+		placeBlock(player, world, pos, particles, false);
+	}
+	
+	public static void placeBlock(EntityPlayer player, World world, BlockPos pos, boolean particles, boolean conjure) {
 		if(!world.isBlockLoaded(pos))
 			return;
 
@@ -76,17 +84,22 @@ public class PieceTrickPlaceBlock extends PieceTrick {
 			int slot = player.inventory.currentItem;
 			if(slot == 9)
 				return;
-
-			ItemStack stack = player.inventory.getStackInSlot(slot + 1);
-			if(stack != null && stack.getItem() instanceof ItemBlock) {
-				ItemStack rem = removeFromInventory(player, block, stack);
-				Block blockToPlace = Block.getBlockFromItem(rem.getItem());
+			
+			if(conjure) {
 				if(!world.isRemote)
-					world.setBlockState(pos, blockToPlace.getStateFromMeta(rem.getItemDamage()));
+					world.setBlockState(pos, ModBlocks.conjured.getDefaultState());
+			} else {
+				ItemStack stack = player.inventory.getStackInSlot(slot + 1);
+				if(stack != null && stack.getItem() instanceof ItemBlock) {
+					ItemStack rem = removeFromInventory(player, block, stack);
+					Block blockToPlace = Block.getBlockFromItem(rem.getItem());
+					if(!world.isRemote)
+						world.setBlockState(pos, blockToPlace.getStateFromMeta(rem.getItemDamage()));
 
-				if(player.capabilities.isCreativeMode)
-					HUDHandler.setRemaining(rem, -1);
-				else HUDHandler.setRemaining(player, rem, null);
+					if(player.capabilities.isCreativeMode)
+						HUDHandler.setRemaining(rem, -1);
+					else HUDHandler.setRemaining(player, rem, null);
+				}
 			}
 
 			if(particles && !world.isRemote)

@@ -34,5 +34,6 @@ public final class LibPieceGroups {
 	public static final String TRIGNOMETRY = "trignometry";
 	public static final String SMELTERY = "smeltery";
 	public static final String FLOW_CONTROL = "flowControl";
+	public static final String BLOCK_CONJURATION = "blockConjuration";
 
 }

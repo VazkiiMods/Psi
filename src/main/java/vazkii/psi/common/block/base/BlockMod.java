@@ -12,6 +12,7 @@ package vazkii.psi.common.block.base;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
@@ -68,6 +69,16 @@ public class BlockMod extends Block implements IPsiBlock {
 	@Override
 	public EnumRarity getBlockRarity(ItemStack stack) {
 		return EnumRarity.COMMON;
+	}
+
+	@Override
+	public IProperty[] getIgnoredProperties() {
+		return new IProperty[0];
+	}
+
+	@Override
+	public Class getVariantEnum() {
+		return null;
 	}
 
 }

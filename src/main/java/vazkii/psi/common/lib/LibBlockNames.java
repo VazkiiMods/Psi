@@ -15,5 +15,6 @@ public final class LibBlockNames {
 	public static final String CAD_ASSEMBLER = "cadAssembler";
 	public static final String PROGRAMMER = "programmer";
 	public static final String PSI_DECORATIVE = "psiDecorative";
+	public static final String CONJURED = "conjured";
 
 }

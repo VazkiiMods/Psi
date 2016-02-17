@@ -13,7 +13,9 @@ package vazkii.psi.client.core.handler;
 import java.util.HashMap;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.client.renderer.ItemMeshDefinition;
+import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.item.Item;
@@ -22,6 +24,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.registry.GameData;
+import vazkii.psi.common.block.base.IPsiBlock;
 import vazkii.psi.common.block.base.IVariantEnumHolder;
 import vazkii.psi.common.item.base.IExtraVariantHolder;
 import vazkii.psi.common.item.base.IVariantHolder;
@@ -52,11 +55,23 @@ public class ModelHandler {
 	}
 
 	public static void registerModels(Item item, String[] variants, boolean extra) {
-		if(item instanceof ItemBlock && ((ItemBlock) item).getBlock() instanceof IVariantEnumHolder) {
-			IVariantEnumHolder holder = (IVariantEnumHolder) ((ItemBlock) item).getBlock();
-			Class clazz = holder.getVariantEnum();
-			registerVariantsDefaulted(item, (Block) holder, clazz, IVariantEnumHolder.HEADER);
-			return;
+		if(item instanceof ItemBlock && ((ItemBlock) item).getBlock() instanceof IPsiBlock) {
+			IPsiBlock psiBlock = (IPsiBlock) ((ItemBlock) item).getBlock();
+			Class clazz = psiBlock.getVariantEnum();
+			
+			IProperty[] ignored = psiBlock.getIgnoredProperties();
+			if(ignored != null && ignored.length > 0) {
+				StateMap.Builder builder = new StateMap.Builder();
+				for(IProperty p : ignored)
+					builder.ignore(p);
+				
+				ModelLoader.setCustomStateMapper((Block) psiBlock, builder.build());
+			} 
+			
+			if(clazz != null) {
+				registerVariantsDefaulted(item, (Block) psiBlock, clazz, IVariantEnumHolder.HEADER);
+				return;
+			}
 		}
 
 		for(int i = 0; i < variants.length; i++) {
