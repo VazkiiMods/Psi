@@ -38,6 +38,8 @@ public class EntitySpellProjectile extends EntityThrowable {
 	private static final String TAG_LAST_MOTION_Y = "lastMotionY";
 	private static final String TAG_LAST_MOTION_Z = "lastMotionZ";
 
+	public SpellContext context;
+	
 	public EntitySpellProjectile(World worldIn) {
 		super(worldIn);
 		setSize(0F, 0F);
@@ -169,18 +171,22 @@ public class EntitySpellProjectile extends EntityThrowable {
 	}
 
 	public void cast() {
-		SpellContext context = null;
 		Entity thrower = getThrower();
+		boolean canCast = false;
+		
 		if(thrower != null && thrower instanceof EntityPlayer) {
 			ItemStack spellContainer = dataWatcher.getWatchableObjectItemStack(21);
 			if(spellContainer != null && spellContainer.getItem() instanceof ISpellContainer) {
 				Spell spell = ((ISpellContainer) spellContainer.getItem()).getSpell(spellContainer);
-				if(spell != null)
-					context = new SpellContext().setPlayer((EntityPlayer) thrower).setFocalPoint(this).setSpell(spell);
+				if(spell != null) {
+					canCast = true;
+					if(context == null)
+						context = new SpellContext().setPlayer((EntityPlayer) thrower).setFocalPoint(this).setSpell(spell);
+				}
 			}
 		}
 
-		if(context != null)
+		if(canCast && context != null)
 			context.cspell.safeExecute(context);
 
 		setDead();

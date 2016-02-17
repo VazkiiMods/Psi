@@ -30,7 +30,7 @@ public class PieceSelectorBlockSideBroken extends PieceSelector {
 
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
-		if(context.positionBroken == null)
+		if(context.positionBroken == null || context.positionBroken.sideHit == null)
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
 
 		EnumFacing facing = context.positionBroken.sideHit;

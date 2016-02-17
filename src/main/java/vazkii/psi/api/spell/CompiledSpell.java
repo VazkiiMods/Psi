@@ -67,6 +67,7 @@ public class CompiledSpell {
 		try {
 			if(context.actions == null)
 				context.actions = (Stack<Action>) actions.clone();
+			
 			if(context.cspell.execute(context))
 				PsiAPI.internalHandler.delayContext(context);
 		} catch(SpellRuntimeException e) {

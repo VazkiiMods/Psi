@@ -31,5 +31,7 @@ public interface ISpellContainer extends ISpellSettable {
 	public void castSpell(ItemStack stack, SpellContext context);
 
 	public double getCostModifier(ItemStack stack);
+	
+	public boolean isCADOnlyContainer(ItemStack stack);
 
 }

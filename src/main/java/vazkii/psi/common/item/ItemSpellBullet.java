@@ -12,6 +12,8 @@ package vazkii.psi.common.item;
 
 import java.util.List;
 
+import com.google.common.collect.ImmutableSet;
+
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
@@ -133,6 +135,7 @@ public class ItemSpellBullet extends ItemMod implements ISpellContainer {
 				ItemStack cad = PsiAPI.getPlayerCAD(context.caster);
 				ItemStack colorizer = ((ICAD) cad.getItem()).getComponentInSlot(cad, EnumCADComponent.DYE);
 				proj.setInfo(context.caster, colorizer, stack);
+				proj.context = context;
 				proj.worldObj.spawnEntityInWorld(proj);
 			}
 			break;
@@ -152,7 +155,6 @@ public class ItemSpellBullet extends ItemMod implements ISpellContainer {
 					ItemStack colorizer = ((ICAD) cad.getItem()).getComponentInSlot(cad, EnumCADComponent.DYE);
 					circle.setInfo(context.caster, colorizer, stack);
 					circle.setPosition(pos.hitVec.xCoord, pos.hitVec.yCoord, pos.hitVec.zCoord);
-
 					circle.worldObj.spawnEntityInWorld(circle);
 				}
 			}
@@ -164,6 +166,7 @@ public class ItemSpellBullet extends ItemMod implements ISpellContainer {
 				ItemStack cad = PsiAPI.getPlayerCAD(context.caster);
 				ItemStack colorizer = ((ICAD) cad.getItem()).getComponentInSlot(cad, EnumCADComponent.DYE);
 				proj.setInfo(context.caster, colorizer, stack);
+				proj.context = context;
 				proj.worldObj.spawnEntityInWorld(proj);
 			}
 			break;
@@ -185,6 +188,11 @@ public class ItemSpellBullet extends ItemMod implements ISpellContainer {
 			return 1.05;
 		}
 		return 0;
+	}
+
+	@Override
+	public boolean isCADOnlyContainer(ItemStack stack) {
+		return ImmutableSet.of(4, 5, 6, 7).contains(stack.getItemDamage());
 	}
 
 }

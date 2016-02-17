@@ -65,6 +65,10 @@ public final class SpellContext {
 	// Sword stuff
 	public EntityLivingBase attackedEntity;
 	
+	/**
+	 * A map for custom data where addon authors can put stuff.
+	 */
+	public Map<String, Object> customData = new HashMap();
 
 	// Runtime information, do not mess with.
 	public Object[][] evaluatedObjects = new Object[SpellGrid.GRID_SIZE][SpellGrid.GRID_SIZE];
@@ -72,11 +76,6 @@ public final class SpellContext {
 
 	public boolean stopped = false;
 	public int delay = 0;
-
-	/**
-	 * A map for custom data where addon authors can put stuff.
-	 */
-	public Map<String, Object> customData = new HashMap();
 
 	/**
 	 * Sets the {@link #caster} and returns itself. This also calls {@link #setFocalPoint(Entity)}.
@@ -154,5 +153,5 @@ public final class SpellContext {
 	public boolean isInRadius(double x, double y, double z) {
 		return MathHelper.pointDistanceSpace(x, y, z, focalPoint.posX, focalPoint.posY, focalPoint.posZ) <= MAX_DISTANCE;
 	}
-
+	
 }
