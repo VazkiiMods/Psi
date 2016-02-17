@@ -63,6 +63,7 @@ import vazkii.psi.common.spell.selector.PieceSelectorBlockSideBroken;
 import vazkii.psi.common.spell.selector.PieceSelectorCaster;
 import vazkii.psi.common.spell.selector.PieceSelectorFocalPoint;
 import vazkii.psi.common.spell.selector.PieceSelectorLoopcastIndex;
+import vazkii.psi.common.spell.selector.PieceSelectorSneakStatus;
 import vazkii.psi.common.spell.selector.entity.PieceSelectorNearbyAnimals;
 import vazkii.psi.common.spell.selector.entity.PieceSelectorNearbyEnemies;
 import vazkii.psi.common.spell.selector.entity.PieceSelectorNearbyItems;
@@ -71,6 +72,7 @@ import vazkii.psi.common.spell.selector.entity.PieceSelectorNearbyProjectiles;
 import vazkii.psi.common.spell.trick.PieceTrickBlaze;
 import vazkii.psi.common.spell.trick.PieceTrickDebug;
 import vazkii.psi.common.spell.trick.PieceTrickDelay;
+import vazkii.psi.common.spell.trick.PieceTrickDie;
 import vazkii.psi.common.spell.trick.PieceTrickEidosAnchor;
 import vazkii.psi.common.spell.trick.PieceTrickEidosReversal;
 import vazkii.psi.common.spell.trick.PieceTrickExplode;
@@ -120,6 +122,7 @@ public final class ModSpellPieces {
 	public static PieceContainer selectorBlockBroken;
 	public static PieceContainer selectorBlockSideBroken;
 	public static PieceContainer selectorAttackTarget;
+	public static PieceContainer selectorSneakStatus;
 
 	public static PieceContainer operatorSum;
 	public static PieceContainer operatorSubtract;
@@ -167,6 +170,7 @@ public final class ModSpellPieces {
 
 	public static PieceContainer trickDebug;
 	public static PieceContainer trickDelay;
+	public static PieceContainer trickDie;
 	public static PieceContainer trickAddMotion;
 	public static PieceContainer trickExplode;
 	public static PieceContainer trickBreakBlock;
@@ -216,6 +220,7 @@ public final class ModSpellPieces {
 		selectorBlockBroken = register(PieceSelectorBlockBroken.class, LibPieceNames.SELECTOR_BLOCK_BROKEN, LibPieceGroups.TOOL_CASTING, true);
 		selectorBlockSideBroken = register(PieceSelectorBlockSideBroken.class, LibPieceNames.SELECTOR_BLOCK_SIDE_BROKEN, LibPieceGroups.TOOL_CASTING);
 		selectorAttackTarget = register(PieceSelectorAttackTarget.class, LibPieceNames.SELECTOR_ATTACK_TARGET, LibPieceGroups.TOOL_CASTING);
+		selectorSneakStatus = register(PieceSelectorSneakStatus.class, LibPieceNames.SELECTOR_SNEAK_STATUS, LibPieceGroups.FLOW_CONTROL);
 
 		operatorSum = register(PieceOperatorSum.class, LibPieceNames.OPERATOR_SUM, LibPieceGroups.NUMBERS_INTRO, true);
 		operatorSubtract = register(PieceOperatorSubtract.class, LibPieceNames.OPERATOR_SUBTRACT, LibPieceGroups.NUMBERS_INTRO);
@@ -264,6 +269,7 @@ public final class ModSpellPieces {
 
 		trickDebug = register(PieceTrickDebug.class, LibPieceNames.TRICK_DEBUG, LibPieceGroups.TUTORIAL_1, true);
 		trickDelay = register(PieceTrickDelay.class, LibPieceNames.TRICK_DELAY, LibPieceGroups.FLOW_CONTROL, true);
+		trickDie = register(PieceTrickDie.class, LibPieceNames.TRICK_DIE, LibPieceGroups.FLOW_CONTROL);
 		trickAddMotion = register(PieceTrickAddMotion.class, LibPieceNames.TRICK_ADD_MOTION, LibPieceGroups.TUTORIAL_3, true);
 		trickExplode = register(PieceTrickExplode.class, LibPieceNames.TRICK_EXPLODE, LibPieceGroups.TUTORIAL_4, true);
 		trickBreakBlock = register(PieceTrickBreakBlock.class, LibPieceNames.TRICK_BREAK_BLOCK, LibPieceGroups.BLOCK_WORKS);

@@ -51,6 +51,9 @@ public class CompiledSpell {
 		while(!context.actions.isEmpty()) {
 			context.actions.pop().execute(data, context);
 			
+			if(context.stopped)
+				return false;
+			
 			if(context.delay > 0)
 				return true;
 		}

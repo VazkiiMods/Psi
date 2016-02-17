@@ -196,6 +196,8 @@ psi.spellpiece.selectorBlockSideBroken=Selector: Block Broken Side
 psi.spellpiece.selectorBlockSideBroken.desc=Selects the side in which a Block was broken (for Tools)
 psi.spellpiece.selectorAttackTarget=Selector: Attack Target
 psi.spellpiece.selectorAttackTarget.desc=Selects the entity that was attacked (for Swords only)
+psi.spellpiece.selectorSneakStatus=Selector: Sneak Status
+psi.spellpiece.selectorSneakStatus.desc=Selects if the caster is sneaking (1 if no, 0 if yes)
 
 # -- OPERATORS
 psi.spellpiece.operatorSum=Operator: Sum
@@ -291,6 +293,8 @@ psi.spellpiece.trickDebug=Trick: Debug
 psi.spellpiece.trickDebug.desc=For testing. Prints out the target
 psi.spellpiece.trickDelay=Trick: Sleep
 psi.spellpiece.trickDelay.desc=Delays the spell for the amount of ticks passed in
+psi.spellpiece.trickDie=Trick: Die
+psi.spellpiece.trickDie.desc=Stops spell execution if target is within ]-1, 1[
 psi.spellpiece.trickAddMotion=Trick: Add Motion
 psi.spellpiece.trickAddMotion.desc=Adds motion to target Entity
 psi.spellpiece.trickExplode=Trick: Explode
@@ -469,3 +473,5 @@ psi.piecegroup.trignometry=Trigonometry
 psi.piecegroup.trignometry.desc=This group includes operators relevant to trigonometric functions. The red piece of this group: "Constant: Pi" is exactly what it says on the tin, a constant that gives you the value of Pi.<br><br>The group includes elementary trigonometric operations: sin, cos, asin and acos. The latter two being the inverse operators of sin and cos, also known as "sin^-1" or "cos^-1".<br><br>Lastly, "Operator: Vector Dot Product" gives you the Dot Product of two vectors, the product of the two vectors' magnitudes and the cosine of the angle between them. Using "Operator: Arc Cosine" on the result will allow you to get the angle between two vectors.
 psi.piecegroup.smeltery=Smeltery
 psi.piecegroup.smeltery.desc=The pieces included in this group are very simplistic in the way they function, as both revolve around the concept of smelting things into other things as if they were put in a furnace.<br>"Trick: Smelt Item" will smelt a dropped item (Entity) in the world into its smelted counterpart, one item at a time.<br><br>"Trick: Smelt Block" will smelt a block in the world into its smelted version, provided it's also a block. So while Cobblestone may be turned into Stone, Wood can't be turned into Charcoal. 
+psi.piecegroup.flowControl=Flow Control
+psi.piecegroup.flowControl.desc=wip
