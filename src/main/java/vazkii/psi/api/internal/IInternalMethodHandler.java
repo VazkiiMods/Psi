@@ -15,6 +15,7 @@ import net.minecraft.util.ResourceLocation;
 import vazkii.psi.api.spell.ISpellCache;
 import vazkii.psi.api.spell.ISpellCompiler;
 import vazkii.psi.api.spell.Spell;
+import vazkii.psi.api.spell.SpellContext;
 
 public interface IInternalMethodHandler {
 
@@ -39,4 +40,9 @@ public interface IInternalMethodHandler {
 	 * Gets the singleton instance of the spell cache.
 	 */
 	public ISpellCache getSpellCache();
+	
+	/**
+	 * Delays a spell context.
+	 */
+	public void delayContext(SpellContext context);
 }

@@ -289,6 +289,8 @@ psi.spellpiece.errorSuppressor.desc=Suppresses errors thrown by the spell
 # -- TRICKS
 psi.spellpiece.trickDebug=Trick: Debug
 psi.spellpiece.trickDebug.desc=For testing. Prints out the target
+psi.spellpiece.trickDelay=Trick: Sleep
+psi.spellpiece.trickDelay.desc=Delays the spell for the amount of ticks passed in
 psi.spellpiece.trickAddMotion=Trick: Add Motion
 psi.spellpiece.trickAddMotion.desc=Adds motion to target Entity
 psi.spellpiece.trickExplode=Trick: Explode

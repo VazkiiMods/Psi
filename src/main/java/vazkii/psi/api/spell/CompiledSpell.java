@@ -19,6 +19,7 @@ import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.internal.IPlayerData;
+import vazkii.psi.api.spell.CompiledSpell.Action;
 import vazkii.psi.api.spell.SpellPiece.Null;
 
 /**
@@ -33,28 +34,27 @@ public class CompiledSpell {
 	public Map<SpellPiece, Action> actionMap = new HashMap();
 
 	public boolean[][] spotsEvaluated;
-	public Object[][] evaluatedObjects;
 
 	public CompiledSpell(Spell source) {
 		sourceSpell = source;
 		metadata.setStat(EnumSpellStat.BANDWIDTH, source.grid.getSize());
 
 		spotsEvaluated = new boolean[SpellGrid.GRID_SIZE][SpellGrid.GRID_SIZE];
-		evaluatedObjects = new Object[SpellGrid.GRID_SIZE][SpellGrid.GRID_SIZE];
 	}
 
 	/**
 	 * Executes the spell, making a copy of the {@link #actions} stack so it can
 	 * be reused if cached.
 	 */
-	public void execute(SpellContext context) throws SpellRuntimeException {
-		Stack<Action> actions = (Stack<Action>) this.actions.clone();
-
+	public boolean execute(SpellContext context) throws SpellRuntimeException {
 		IPlayerData data = PsiAPI.internalHandler.getDataForPlayer(context.caster);
-		while (!actions.isEmpty())
-			actions.pop().execute(data, context);
-
-		evaluatedObjects = new Object[SpellGrid.GRID_SIZE][SpellGrid.GRID_SIZE];
+		while(!context.actions.isEmpty()) {
+			context.actions.pop().execute(data, context);
+			
+			if(context.delay > 0)
+				return true;
+		}
+		return false;
 	}
 
 	/**
@@ -62,16 +62,18 @@ public class CompiledSpell {
 	 */
 	public void safeExecute(SpellContext context) {
 		try {
-			context.cspell.execute(context);
-		} catch (SpellRuntimeException e) {
-			if (!context.caster.worldObj.isRemote && !context.shouldSuppressErrors())
-				context.caster.addChatComponentMessage(new ChatComponentTranslation(e.getMessage())
-						.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
+			if(context.actions == null)
+				context.actions = (Stack<Action>) actions.clone();
+			if(context.cspell.execute(context))
+				PsiAPI.internalHandler.delayContext(context);
+		} catch(SpellRuntimeException e) {
+			if(!context.caster.worldObj.isRemote && !context.shouldSuppressErrors())
+				context.caster.addChatComponentMessage(new ChatComponentTranslation(e.getMessage()).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
 		}
 	}
 
 	public boolean hasEvaluated(int x, int y) {
-		if (!SpellGrid.exists(x, y))
+		if(!SpellGrid.exists(x, y))
 			return false;
 
 		return spotsEvaluated[x][y];
@@ -90,8 +92,8 @@ public class CompiledSpell {
 			Object o = piece.execute(context);
 
 			Class<?> eval = piece.getEvaluationType();
-			if (eval != null && eval != Null.class)
-				evaluatedObjects[piece.x][piece.y] = o;
+			if(eval != null && eval != Null.class)
+				context.evaluatedObjects[piece.x][piece.y] = o;
 		}
 
 	}

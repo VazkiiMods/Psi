@@ -14,7 +14,9 @@ import java.awt.Color;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.Stack;
 
 import com.google.common.collect.ImmutableSet;
@@ -66,7 +68,8 @@ import vazkii.psi.common.network.message.MessageLevelUp;
 public class PlayerDataHandler {
 
 	private static HashMap<Integer, PlayerData> playerData = new HashMap();
-
+	public static Set<SpellContext> delayedContexts = new HashSet();
+	
 	private static final String DATA_TAG = "PsiData";
 
 	public static final DamageSource damageSourceOverload = new DamageSource("psi-overload").setDamageBypassesArmor().setMagicDamage();
@@ -121,8 +124,25 @@ public class PlayerDataHandler {
 
 		@SubscribeEvent
 		public void onServerTick(ServerTickEvent event) {
-			if(event.phase == Phase.END)
+			if(event.phase == Phase.END) {
 				PlayerDataHandler.cleanup();
+				
+				List<SpellContext> remove = new ArrayList();
+				for(SpellContext context : delayedContexts) {
+					context.delay--;
+					
+					if(context.delay <= 0) {
+						context.delay = 0; // Just in case it goes under 0
+						context.cspell.safeExecute(context);
+						
+						if(context.delay == 0)
+							remove.add(context);
+					}
+				}
+				
+				if(!remove.isEmpty())
+					delayedContexts.removeAll(remove);
+			}
 		}
 
 		@SubscribeEvent

@@ -17,6 +17,7 @@ import vazkii.psi.api.internal.IPlayerData;
 import vazkii.psi.api.spell.ISpellCache;
 import vazkii.psi.api.spell.ISpellCompiler;
 import vazkii.psi.api.spell.Spell;
+import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.client.gui.GuiProgrammer;
 import vazkii.psi.common.spell.SpellCache;
 import vazkii.psi.common.spell.SpellCompiler;
@@ -41,6 +42,11 @@ public final class InternalMethodHandler implements IInternalMethodHandler {
 	@Override
 	public ISpellCache getSpellCache() {
 		return SpellCache.instance;
+	}
+
+	@Override
+	public void delayContext(SpellContext context) {
+		PlayerDataHandler.delayedContexts.add(context);
 	}
 
 }

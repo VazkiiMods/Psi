@@ -15,6 +15,7 @@ import net.minecraft.util.ResourceLocation;
 import vazkii.psi.api.spell.ISpellCache;
 import vazkii.psi.api.spell.ISpellCompiler;
 import vazkii.psi.api.spell.Spell;
+import vazkii.psi.api.spell.SpellContext;
 
 /**
  * This is a dummy class. You'll never interact with it, it's just here so
@@ -40,6 +41,11 @@ public final class DummyMethodHandler implements IInternalMethodHandler {
 	@Override
 	public ISpellCache getSpellCache() {
 		return null;
+	}
+
+	@Override
+	public void delayContext(SpellContext context) {
+		// NO-OP
 	}
 
 }

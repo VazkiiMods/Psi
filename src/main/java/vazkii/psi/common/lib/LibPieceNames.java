@@ -70,6 +70,7 @@ public final class LibPieceNames {
 	public static final String ERROR_SUPPRESSOR = "errorSuppressor";
 
 	public static final String TRICK_DEBUG = "trickDebug";
+	public static final String TRICK_DELAY = "trickDelay";
 	public static final String TRICK_ADD_MOTION = "trickAddMotion";
 	public static final String TRICK_EXPLODE = "trickExplode";
 	public static final String TRICK_BREAK_BLOCK = "trickBreakBlock";

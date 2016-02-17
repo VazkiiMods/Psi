@@ -131,7 +131,7 @@ public abstract class SpellPiece {
 			if(piece == null || !param.canAccept(piece))
 				return null;
 
-			return (T) context.cspell.evaluatedObjects[piece.x][piece.y];
+			return (T) context.evaluatedObjects[piece.x][piece.y];
 		} catch(SpellCompilationException e) {
 			return null;
 		}

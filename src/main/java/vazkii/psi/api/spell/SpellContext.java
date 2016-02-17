@@ -12,6 +12,7 @@ package vazkii.psi.api.spell;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Stack;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -21,6 +22,7 @@ import net.minecraft.util.MovingObjectPosition;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.internal.MathHelper;
 import vazkii.psi.api.internal.Vector3;
+import vazkii.psi.api.spell.CompiledSpell.Action;
 
 /**
  * Context for a spell. Used for casting it.
@@ -62,6 +64,14 @@ public final class SpellContext {
 	public MovingObjectPosition positionBroken;
 	// Sword stuff
 	public EntityLivingBase attackedEntity;
+	
+
+	// Runtime information, do not mess with.
+	public Object[][] evaluatedObjects = new Object[SpellGrid.GRID_SIZE][SpellGrid.GRID_SIZE];
+	public Stack<Action> actions = null; 
+
+	public boolean stopped = false;
+	public int delay = 0;
 
 	/**
 	 * A map for custom data where addon authors can put stuff.

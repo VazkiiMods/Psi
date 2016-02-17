@@ -70,6 +70,7 @@ import vazkii.psi.common.spell.selector.entity.PieceSelectorNearbyLiving;
 import vazkii.psi.common.spell.selector.entity.PieceSelectorNearbyProjectiles;
 import vazkii.psi.common.spell.trick.PieceTrickBlaze;
 import vazkii.psi.common.spell.trick.PieceTrickDebug;
+import vazkii.psi.common.spell.trick.PieceTrickDelay;
 import vazkii.psi.common.spell.trick.PieceTrickEidosAnchor;
 import vazkii.psi.common.spell.trick.PieceTrickEidosReversal;
 import vazkii.psi.common.spell.trick.PieceTrickExplode;
@@ -165,6 +166,7 @@ public final class ModSpellPieces {
 	public static PieceContainer errorSuppressor;
 
 	public static PieceContainer trickDebug;
+	public static PieceContainer trickDelay;
 	public static PieceContainer trickAddMotion;
 	public static PieceContainer trickExplode;
 	public static PieceContainer trickBreakBlock;
@@ -261,6 +263,7 @@ public final class ModSpellPieces {
 		errorSuppressor = register(PieceErrorSuppressor.class, LibPieceNames.ERROR_SUPPRESSOR, LibPieceGroups.TUTORIAL_4);
 
 		trickDebug = register(PieceTrickDebug.class, LibPieceNames.TRICK_DEBUG, LibPieceGroups.TUTORIAL_1, true);
+		trickDelay = register(PieceTrickDelay.class, LibPieceNames.TRICK_DELAY, LibPieceGroups.FLOW_CONTROL, true);
 		trickAddMotion = register(PieceTrickAddMotion.class, LibPieceNames.TRICK_ADD_MOTION, LibPieceGroups.TUTORIAL_3, true);
 		trickExplode = register(PieceTrickExplode.class, LibPieceNames.TRICK_EXPLODE, LibPieceGroups.TUTORIAL_4, true);
 		trickBreakBlock = register(PieceTrickBreakBlock.class, LibPieceNames.TRICK_BREAK_BLOCK, LibPieceGroups.BLOCK_WORKS);
@@ -320,6 +323,7 @@ public final class ModSpellPieces {
 		PsiAPI.setGroupRequirements(LibPieceGroups.EIDOS_REVERSAL, 19, LibPieceGroups.GREATER_INFUSION); // TODO Move to 25 later
 		PsiAPI.setGroupRequirements(LibPieceGroups.TRIGNOMETRY, 20, LibPieceGroups.GREATER_INFUSION);
 		PsiAPI.setGroupRequirements(LibPieceGroups.SMELTERY, 20, LibPieceGroups.GREATER_INFUSION);
+		PsiAPI.setGroupRequirements(LibPieceGroups.FLOW_CONTROL, 20, LibPieceGroups.GREATER_INFUSION);
 	}
 
 	public static PieceContainer register(Class<? extends SpellPiece> clazz, String name, String group) {
