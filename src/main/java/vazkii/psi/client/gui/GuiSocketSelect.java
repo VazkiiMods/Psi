@@ -15,13 +15,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector2f;
+
+import com.google.common.collect.ImmutableSet;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.settings.GameSettings;
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import vazkii.psi.api.PsiAPI;
@@ -201,7 +206,7 @@ public class GuiSocketSelect extends GuiScreen {
 	public void updateScreen() {
 		super.updateScreen();
 
-		if(!Keyboard.isKeyDown(KeybindHandler.keybind.getKeyCode())) {
+		if(!isKeyDown(KeybindHandler.keybind)) {
 			mc.displayGuiScreen(null);
 			if(slotSelected != -1) {
 				int slot = slots.get(slotSelected);
@@ -210,10 +215,23 @@ public class GuiSocketSelect extends GuiScreen {
 				NetworkHandler.INSTANCE.sendToServer(message);
 			}
 		}
-
+		
+		ImmutableSet<KeyBinding> set = ImmutableSet.of(mc.gameSettings.keyBindForward, mc.gameSettings.keyBindLeft, mc.gameSettings.keyBindBack, mc.gameSettings.keyBindRight, mc.gameSettings.keyBindSneak, mc.gameSettings.keyBindSprint, mc.gameSettings.keyBindJump);
+		for(KeyBinding k : set)
+			KeyBinding.setKeyBindState(k.getKeyCode(), isKeyDown(k));
+			
 		timeIn++;
 	}
 
+	public boolean isKeyDown(KeyBinding keybind) {
+		int key = keybind.getKeyCode();
+		if(key < 0) {
+			int button = 100 + key;
+			return Mouse.isButtonDown(button);
+		} 
+		return Keyboard.isKeyDown(key);
+	}
+	
 	@Override
 	public boolean doesGuiPauseGame() {
 		return false;
