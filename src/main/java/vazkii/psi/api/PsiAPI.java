@@ -39,6 +39,7 @@ public final class PsiAPI {
 	public static RegistryNamespaced<String, Class<? extends SpellPiece>> spellPieceRegistry = new RegistryNamespaced();
 	public static HashMap<String, ResourceLocation> simpleSpellTextures = new HashMap();
 	public static HashMap<Class<? extends SpellPiece>, PieceGroup> groupsForPiece = new HashMap();
+	public static HashMap<Class<? extends SpellPiece>, String> pieceMods = new HashMap();
 	public static HashMap<String, PieceGroup> groupsForName = new HashMap();
 
 	public static ToolMaterial PSIMETAL_MATERIAL = EnumHelper.addToolMaterial("PSIMETAL", 3, 900, 7.8F, 3F, 12);
@@ -50,6 +51,7 @@ public final class PsiAPI {
 	 */
 	public static void registerSpellPiece(String key, Class<? extends SpellPiece> clazz) {
 		spellPieceRegistry.putObject(key, clazz);
+		pieceMods.put(clazz, Loader.instance().activeModContainer().getName());
 	}
 
 	/**

@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
@@ -28,6 +29,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.internal.TooltipHelper;
+import vazkii.psi.common.lib.LibMisc;
 
 /**
  * A basic abstract piece of a spell. Instances of this class are created as needed
@@ -256,6 +258,10 @@ public abstract class SpellPiece {
 		TooltipHelper.tooltipIfShift(tooltip, () -> {
 			addToTooltipAfterShift(tooltip);
 		});
+		
+		String addon = PsiAPI.pieceMods.get(getClass());
+		if(!addon.equals(LibMisc.MOD_NAME))
+			TooltipHelper.addToTooltip(tooltip, "psimisc.providerMod", addon);
 	}
 
 	@SideOnly(Side.CLIENT)

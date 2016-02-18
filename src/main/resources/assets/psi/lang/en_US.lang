@@ -38,6 +38,7 @@ psimisc.missingPieces=Import error: Missing spell pieces used for import.
 psimisc.loadPrompt=Load?
 psimisc.spectator=[Spectator Mode]
 psimisc.multipleCads=The other CAD in your inventory is interfering with your cast. You can only have one CAD.
+psimisc.providerMod=&7Addon: &9%s
 
 # VERSIONING
 psi.versioning.flavour0=Seems like Psi is outdated. What a shame.
