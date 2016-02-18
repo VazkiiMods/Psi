@@ -46,7 +46,7 @@ public class PieceTrickTorrent extends PieceTrick {
 
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
-		if(context.caster.worldObj.isRemote)
+		if(context.caster.worldObj.isRemote || context.caster.worldObj.provider.doesWaterVaporize())
 			return null;
 
 		Vector3 positionVal = this.<Vector3>getParamValue(context, position);
