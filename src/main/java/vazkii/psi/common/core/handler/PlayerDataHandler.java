@@ -24,6 +24,7 @@ import com.google.common.collect.ImmutableSet;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.stream.IStream;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -346,6 +347,14 @@ public class PlayerDataHandler {
 					loopcastFadeTime--;
 			}
 
+			
+			if(player.isDead) {
+				eidosAnchorTime = 0;
+				eidosReversionTime = 0;
+				eidosChangelog.clear();
+				isAnchored = false;
+				isReverting = false;
+			}
 
 			if(eidosAnchorTime > 0) {
 				if(eidosAnchorTime == 1) {
