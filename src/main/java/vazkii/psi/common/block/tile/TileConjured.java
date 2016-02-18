@@ -34,6 +34,9 @@ public class TileConjured extends TileMod implements ITickable {
 
 	@Override
 	public void update() {
+		if(!worldObj.isRemote)
+			return;
+		
 		Color color = new Color(ICADColorizer.DEFAULT_SPELL_COLOR);
 		if(colorizer != null)
 			color = Psi.proxy.getColorizerColor(colorizer);
@@ -110,11 +113,16 @@ public class TileConjured extends TileMod implements ITickable {
 	}
 
 	public void makeParticle(boolean doit, float r, float g, float b, double xp, double yp, double zp, double xv, double yv, double zv) {
-		if(doit) {
-			double x = xp + Math.random() * xv;
-			double y = yp + Math.random() * yv;
-			double z = zp + Math.random() * zv;
-			Psi.proxy.sparkleFX(worldObj, x, y, z, r, g, b, 0.75F, 7);
+		if(doit && Math.random() < 0.3) {
+			float m = 0.1F;
+			xv *= m;
+			yv *= m;
+			zv *= m;
+			
+			double x = xp; //+ Math.random() * xv;
+			double y = yp; //+ Math.random() * yv;
+			double z = zp; //+ Math.random() * zv;
+			Psi.proxy.sparkleFX(worldObj, x, y, z, r, g, b, (float) xv, (float) yv, (float) zv, 1.25F, 20);
 		}
 	}
 
