@@ -23,5 +23,10 @@ public class PieceTrickStrength extends PieceTrickPotionBase {
 	public Potion getPotion() {
 		return Potion.damageBoost;
 	}
+	
+	@Override
+	public int getPotency(int power, int time) {
+		return power * power * power * time * 5;
+	}
 
 }
