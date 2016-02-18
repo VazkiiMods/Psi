@@ -44,8 +44,8 @@ public class GuiIntroduction extends GuiScreen {
 
 		buttonList.clear();
 		if(skip) {
-			buttonList.add(new GuiButtonBoolean(width / 2 - 32, top + 130, true));
-			buttonList.add(new GuiButtonBoolean(width / 2 + 20, top + 130, false));
+			buttonList.add(new GuiButtonBoolean(width / 2 - 32, top + 145, true));
+			buttonList.add(new GuiButtonBoolean(width / 2 + 20, top + 145, false));
 		}
 	}
 
@@ -64,10 +64,10 @@ public class GuiIntroduction extends GuiScreen {
 			mc.fontRendererObj.drawStringWithShadow(betaTest, left + xSize / 2 - mc.fontRendererObj.getStringWidth(betaTest) / 2, top - 12, 0xFFFFFF);
 		}
 
-		TextHelper.renderText(width / 2 - 122, height / 2 - 35, 250, skip ? "psi.levelskip" : "psi.introduction", false, true, PersistencyHandler.persistentLevel);
+		TextHelper.renderText(width / 2 - 120, height / 2 - 30, 245, skip ? "psi.levelskip" : "psi.introduction", false, true, PersistencyHandler.persistentLevel);
 		if(skip) {
 			String loadPrompt = StatCollector.translateToLocal("psimisc.loadPrompt");
-			mc.fontRendererObj.drawStringWithShadow(loadPrompt, left + xSize / 2 - mc.fontRendererObj.getStringWidth(loadPrompt) / 2, top + 118, 0xFFFFFF);
+			mc.fontRendererObj.drawStringWithShadow(loadPrompt, left + xSize / 2 - mc.fontRendererObj.getStringWidth(loadPrompt) / 2, top + 133, 0xFFFFFF);
 		}
 	}
 
