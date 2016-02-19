@@ -170,7 +170,17 @@ public class ModCraftingRecipes {
 				'A', new ItemStack(Items.gunpowder),
 				'I', "ingotIron",
 				'D', "dustPsi");
-
+		addOreDictRecipe(new ItemStack(ModItems.spellBullet, 1, 10),
+				"AID",
+				'A', "dustRedstone",
+				'I', "ingotIron",
+				'D', "dustPsi");
+		addOreDictRecipe(new ItemStack(ModItems.spellBullet, 1, 12),
+				"AID",
+				'A', new ItemStack(Blocks.stone_button),
+				'I', "ingotIron",
+				'D', "dustPsi");
+		
 		addOreDictRecipe(new ItemStack(ModItems.spellDrive),
 				"I", "R", "I",
 				'I', "ingotPsi",
@@ -195,6 +205,12 @@ public class ModCraftingRecipes {
 				"P", "G", "I",
 				'P', "ingotPsi",
 				'G', "gemPsi",
+				'I', "ingotIron");
+		
+		addOreDictRecipe(new ItemStack(ModItems.detonator),
+				" B ", "IPI",
+				'P', "dustPsi",
+				'B', new ItemStack(Blocks.stone_button),
 				'I', "ingotIron");
 
 		addOreDictRecipe(new ItemStack(ModBlocks.psiDecorative, 1, 0),

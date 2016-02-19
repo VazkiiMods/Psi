@@ -23,6 +23,7 @@ public class ItemDetonator extends ItemMod {
 
 	public ItemDetonator() {
 		super(LibItemNames.DETONATOR);
+		setMaxStackSize(1);
 	}
 	
 	@Override
