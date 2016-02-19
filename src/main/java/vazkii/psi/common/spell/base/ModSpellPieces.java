@@ -17,6 +17,7 @@ import vazkii.psi.common.lib.LibPieceGroups;
 import vazkii.psi.common.lib.LibPieceNames;
 import vazkii.psi.common.spell.constant.PieceConstantNumber;
 import vazkii.psi.common.spell.constant.PieceConstantPi;
+import vazkii.psi.common.spell.constant.PieceConstantWrapper;
 import vazkii.psi.common.spell.operator.entity.PieceOperatorClosestToPoint;
 import vazkii.psi.common.spell.operator.entity.PieceOperatorEntityAxialLook;
 import vazkii.psi.common.spell.operator.entity.PieceOperatorEntityLook;
@@ -172,6 +173,7 @@ public final class ModSpellPieces {
 
 	public static PieceContainer constantNumber;
 	public static PieceContainer constantPi;
+	public static PieceContainer constantWrapper;
 
 	public static PieceContainer connector;
 	public static PieceContainer errorSuppressor;
@@ -277,6 +279,7 @@ public final class ModSpellPieces {
 
 		constantNumber = register(PieceConstantNumber.class, LibPieceNames.CONSTANT_NUMBER, LibPieceGroups.TUTORIAL_2, true);
 		constantPi = register(PieceConstantPi.class, LibPieceNames.CONSTANT_PI, LibPieceGroups.TRIGNOMETRY, true);
+		constantWrapper = register(PieceConstantWrapper.class, LibPieceNames.CONSTANT_WRAPPER, LibPieceGroups.FLOW_CONTROL);
 
 		connector = register(PieceConnector.class, LibPieceNames.CONNECTOR, LibPieceGroups.TUTORIAL_2);
 		errorSuppressor = register(PieceErrorSuppressor.class, LibPieceNames.ERROR_SUPPRESSOR, LibPieceGroups.TUTORIAL_4);

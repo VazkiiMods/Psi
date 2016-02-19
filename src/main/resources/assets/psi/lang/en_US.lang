@@ -294,6 +294,8 @@ psi.spellpiece.constantNumber=Constant: Number
 psi.spellpiece.constantNumber.desc=Select and type to set value
 psi.spellpiece.constantPi=Constant: Pi
 psi.spellpiece.constantPi.desc=Returns the value of Pi
+psi.spellpiece.constantWrapper=Constant: Wrapper
+psi.spellpiece.constantWrapper.desc=A wrapper for a constant for stat calculation
 
 # -- OTHERS
 psi.spellpiece.connector=Connector
@@ -414,6 +416,7 @@ psi.spellparam.radius=Radius
 psi.spellparam.distance=Distance
 psi.spellparam.time=Time
 psi.spellparam.list=List
+psi.spellparam.constant=Constant
 
 # DATA TYPE NAMES
 psi.datatype.Null=None

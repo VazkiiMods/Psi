@@ -68,6 +68,7 @@ public final class LibPieceNames {
 
 	public static final String CONSTANT_NUMBER = "constantNumber";
 	public static final String CONSTANT_PI = "constantPi";
+	public static final String CONSTANT_WRAPPER = "constantWrapper";
 
 	public static final String CONNECTOR = "connector";
 	public static final String ERROR_SUPPRESSOR = "errorSuppressor";

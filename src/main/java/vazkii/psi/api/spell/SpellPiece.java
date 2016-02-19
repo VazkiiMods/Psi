@@ -82,7 +82,7 @@ public abstract class SpellPiece {
 	 * Evaluates this piece for the purpose of spell metadata calculation. If the piece
 	 * is not a constant, you can safely return null.
 	 */
-	public abstract Object evaluate();
+	public abstract Object evaluate() throws SpellCompilationException;
 
 	/**
 	 * Executes this piece and returns the value of this piece for later pieces to pick up
