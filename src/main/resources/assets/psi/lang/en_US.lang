@@ -130,11 +130,16 @@ item.psi:spellBulletCircle.name=Circle Spell Bullet
 item.psi:spellBulletCircleActive.name=Programmed Circle Spell Bullet
 item.psi:spellBulletGrenade.name=Grenade Spell Bullet
 item.psi:spellBulletGrenadeActive.name=Programmed Grenade Spell Bullet
+item.psi:spellBulletCharge.name=Charge Spell Bullet
+item.psi:spellBulletChargeActive.name=Programmed Charge Spell Bullet
+item.psi:spellBulletMine.name=Mine Spell Bullet
+item.psi:spellBulletMineActive.name=Programmed Mine Spell Bullet
 item.psi:spellDrive.name=Spell Drive
 item.psi:psimetalShovel.name=Psimetal Shovel
 item.psi:psimetalPickaxe.name=Psimetal Pickaxe
 item.psi:psimetalAxe.name=Psimetal Axe
 item.psi:psimetalSword.name=Psimetal Sword
+item.psi:detonator.name=Spell Detonator
 
 # DEATH MESSAGES
 death.attack.psi-overload=%s overflowed their Psionic Energy
@@ -173,6 +178,8 @@ psi.bulletType1=Projectile
 psi.bulletType2=Loopcast
 psi.bulletType3=Spell Circle
 psi.bulletType4=Grenade
+psi.bulletType5=Charge
+psi.bulletType6=Mine
 
 # SPELl PIECE NAMES
 # -- SELECTORS

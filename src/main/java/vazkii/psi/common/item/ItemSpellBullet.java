@@ -31,8 +31,10 @@ import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.helper.ItemNBTHelper;
+import vazkii.psi.common.entity.EntitySpellCharge;
 import vazkii.psi.common.entity.EntitySpellCircle;
 import vazkii.psi.common.entity.EntitySpellGrenade;
+import vazkii.psi.common.entity.EntitySpellMine;
 import vazkii.psi.common.entity.EntitySpellProjectile;
 import vazkii.psi.common.item.base.ItemMod;
 import vazkii.psi.common.lib.LibItemNames;
@@ -52,7 +54,11 @@ public class ItemSpellBullet extends ItemMod implements ISpellContainer {
 			"spellBulletCircle",
 			"spellBulletCircleActive",
 			"spellBulletGrenade",
-			"spellBulletGrenadeActive"
+			"spellBulletGrenadeActive",
+			"spellBulletCharge",
+			"spellBulletChargeActive",
+			"spellBulletMine",
+			"spellBulletMineActive"
 	};
 
 	public ItemSpellBullet() {
@@ -170,6 +176,28 @@ public class ItemSpellBullet extends ItemMod implements ISpellContainer {
 				proj.worldObj.spawnEntityInWorld(proj);
 			}
 			break;
+			
+		case 11: // Charge
+			if(!context.caster.worldObj.isRemote) {
+				EntitySpellProjectile proj = new EntitySpellCharge(context.caster.worldObj, context.caster);
+				ItemStack cad = PsiAPI.getPlayerCAD(context.caster);
+				ItemStack colorizer = ((ICAD) cad.getItem()).getComponentInSlot(cad, EnumCADComponent.DYE);
+				proj.setInfo(context.caster, colorizer, stack);
+				proj.context = context;
+				proj.worldObj.spawnEntityInWorld(proj);
+			}
+			break;
+			
+		case 13: // Mine
+			if(!context.caster.worldObj.isRemote) {
+				EntitySpellProjectile proj = new EntitySpellMine(context.caster.worldObj, context.caster);
+				ItemStack cad = PsiAPI.getPlayerCAD(context.caster);
+				ItemStack colorizer = ((ICAD) cad.getItem()).getComponentInSlot(cad, EnumCADComponent.DYE);
+				proj.setInfo(context.caster, colorizer, stack);
+				proj.context = context;
+				proj.worldObj.spawnEntityInWorld(proj);
+			}
+			break;
 		}
 	}
 
@@ -186,6 +214,10 @@ public class ItemSpellBullet extends ItemMod implements ISpellContainer {
 			return EntitySpellCircle.CAST_TIMES * 0.75;
 		case 8: case 9: // Grenade
 			return 1.05;
+		case 10: case 11: // Charge
+			return 1.151;
+		case 12: case 13: // Mine
+			return 1.151;
 		}
 		return 0;
 	}

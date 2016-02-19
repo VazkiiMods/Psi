@@ -25,5 +25,6 @@ public final class LibItemNames {
 	public static final String PSIMETAL_PICKAXE = "psimetalPickaxe";
 	public static final String PSIMETAL_AXE = "psimetalAxe";
 	public static final String PSIMETAL_SWORD = "psimetalSword";
+	public static final String DETONATOR = "detonator";
 
 }

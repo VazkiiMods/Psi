@@ -14,6 +14,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import vazkii.psi.common.item.ItemCAD;
+import vazkii.psi.common.item.ItemDetonator;
 import vazkii.psi.common.item.ItemMaterial;
 import vazkii.psi.common.item.ItemSpellBullet;
 import vazkii.psi.common.item.ItemSpellDrive;
@@ -46,6 +47,8 @@ public final class ModItems {
 	public static ItemModTool psimetalAxe;
 	public static ItemModSword psimetalSword;
 
+	public static ItemMod detonator;
+	
 	public static void init() {
 		material = new ItemMaterial();
 
@@ -64,6 +67,8 @@ public final class ModItems {
 		psimetalAxe = new ItemPsimetalAxe();
 		psimetalSword = new ItemPsimetalSword();
 
+		detonator = new ItemDetonator();
+		
 		// Missing vanilla oredict mappings
 		OreDictionary.registerOre("shardPrismarine", new ItemStack(Items.prismarine_shard));
 		OreDictionary.registerOre("crystalsPrismarine", new ItemStack(Items.prismarine_crystals));

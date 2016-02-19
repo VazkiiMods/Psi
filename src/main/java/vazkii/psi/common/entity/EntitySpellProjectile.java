@@ -127,7 +127,7 @@ public class EntitySpellProjectile extends EntityThrowable {
 		super.onUpdate();
 
 		int timeAlive = dataWatcher.getWatchableObjectInt(23);
-		if(timeAlive > 600)
+		if(timeAlive > getLiveTime())
 			setDead();
 		dataWatcher.updateObject(23, timeAlive + 1);
 
@@ -145,7 +145,7 @@ public class EntitySpellProjectile extends EntityThrowable {
 		double y = posY;
 		double z = posZ;
 		Vector3 lookOrig = new Vector3(motionX, motionY, motionZ).normalize();
-		for(int i = 0; i < 5; i++) {
+		for(int i = 0; i < getParticleCount(); i++) {
 			Vector3 look = lookOrig.copy();
 			double spread = 0.6;
 			double dist = 0.15;
@@ -163,6 +163,14 @@ public class EntitySpellProjectile extends EntityThrowable {
 
 			Psi.proxy.sparkleFX(worldObj, x, y, z, r, g, b, (float) look.x, (float) look.y, (float) look.z, 1.2F, 12);
 		}
+	}
+	
+	public int getLiveTime() {
+		return 600;
+	}
+	
+	public int getParticleCount() {
+		return 5;
 	}
 
 	@Override
@@ -182,6 +190,7 @@ public class EntitySpellProjectile extends EntityThrowable {
 					canCast = true;
 					if(context == null)
 						context = new SpellContext().setPlayer((EntityPlayer) thrower).setFocalPoint(this).setSpell(spell);
+					context.setFocalPoint(this);
 				}
 			}
 		}
