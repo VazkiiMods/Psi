@@ -38,6 +38,8 @@ public final class LibPieceNames {
 	public static final String OPERATOR_COS = "operatorCos";
 	public static final String OPERATOR_ASIN = "operatorAsin";
 	public static final String OPERATOR_ACOS = "operatorAcos";
+	public static final String OPERATOR_MIN = "operatorMin";
+	public static final String OPERATOR_MAX = "operatorMax";
 	public static final String OPERATOR_ENTITY_POSITION = "operatorEntityPosition";
 	public static final String OPERATOR_ENTITY_LOOK = "operatorEntityLook";
 	public static final String OPERATOR_ENTITY_MOTION = "operatorEntityMotion";
@@ -73,6 +75,7 @@ public final class LibPieceNames {
 	public static final String TRICK_DEBUG = "trickDebug";
 	public static final String TRICK_DELAY = "trickDelay";
 	public static final String TRICK_DIE = "trickDie";
+	public static final String TRICK_EVALUATE = "trickEvaluate";
 	public static final String TRICK_ADD_MOTION = "trickAddMotion";
 	public static final String TRICK_EXPLODE = "trickExplode";
 	public static final String TRICK_BREAK_BLOCK = "trickBreakBlock";
