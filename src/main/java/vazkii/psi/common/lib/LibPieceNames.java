@@ -114,5 +114,6 @@ public final class LibPieceNames {
 	public static final String TRICK_SMELT_ITEM = "trickSmeltItem";
 	public static final String TRICK_CONJURE_BLOCK = "trickConjureBlock";
 	public static final String TRICK_CONJURE_LIGHT = "trickConjureLight";
+	public static final String TRICK_CONJURE_BLOCK_SEQUENCE = "trickConjureBlockSequence";
 
 }

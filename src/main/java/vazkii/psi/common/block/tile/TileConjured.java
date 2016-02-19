@@ -34,74 +34,73 @@ public class TileConjured extends TileMod implements ITickable {
 
 	@Override
 	public void update() {
-		if(!worldObj.isRemote)
-			return;
-		
-		Color color = new Color(ICADColorizer.DEFAULT_SPELL_COLOR);
-		if(colorizer != null)
-			color = Psi.proxy.getColorizerColor(colorizer);
+		if(worldObj.isRemote) {
+			Color color = new Color(ICADColorizer.DEFAULT_SPELL_COLOR);
+			if(colorizer != null)
+				color = Psi.proxy.getColorizerColor(colorizer);
 
-		float r = color.getRed() / 255F;
-		float g = color.getGreen() / 255F;
-		float b = color.getBlue() / 255F;
+			float r = color.getRed() / 255F;
+			float g = color.getGreen() / 255F;
+			float b = color.getBlue() / 255F;
 
-		IBlockState state = worldObj.getBlockState(getPos());
-		state = state.getBlock().getActualState(state, worldObj, getPos());
+			IBlockState state = worldObj.getBlockState(getPos());
+			state = state.getBlock().getActualState(state, worldObj, getPos());
 
-		if(state.getValue(BlockConjured.SOLID)) {
-			// http://cns-alumni.bu.edu/~lavanya/Graphics/cs580/p5/web-page/cube_edges.gif
-			boolean[] edges = new boolean[12];
-			Arrays.fill(edges, true);
+			if(state.getValue(BlockConjured.SOLID)) {
+				// http://cns-alumni.bu.edu/~lavanya/Graphics/cs580/p5/web-page/cube_edges.gif
+				boolean[] edges = new boolean[12];
+				Arrays.fill(edges, true);
 
-			if(state.getValue(BlockConjured.BLOCK_DOWN))
-				removeEdges(edges, 0, 1, 2, 3);
-			if(state.getValue(BlockConjured.BLOCK_UP))
-				removeEdges(edges, 4, 5, 6, 7);
-			if(state.getValue(BlockConjured.BLOCK_NORTH))
-				removeEdges(edges, 3, 7, 8, 11);
-			if(state.getValue(BlockConjured.BLOCK_SOUTH))
-				removeEdges(edges, 1, 5, 9, 10);
-			if(state.getValue(BlockConjured.BLOCK_EAST))
-				removeEdges(edges, 2, 6, 10, 11);
-			if(state.getValue(BlockConjured.BLOCK_WEST))
-				removeEdges(edges, 0, 4, 8, 9);
+				if(state.getValue(BlockConjured.BLOCK_DOWN))
+					removeEdges(edges, 0, 1, 2, 3);
+				if(state.getValue(BlockConjured.BLOCK_UP))
+					removeEdges(edges, 4, 5, 6, 7);
+				if(state.getValue(BlockConjured.BLOCK_NORTH))
+					removeEdges(edges, 3, 7, 8, 11);
+				if(state.getValue(BlockConjured.BLOCK_SOUTH))
+					removeEdges(edges, 1, 5, 9, 10);
+				if(state.getValue(BlockConjured.BLOCK_EAST))
+					removeEdges(edges, 2, 6, 10, 11);
+				if(state.getValue(BlockConjured.BLOCK_WEST))
+					removeEdges(edges, 0, 4, 8, 9);
 
-			double x = getPos().getX();
-			double y = getPos().getY();
-			double z = getPos().getZ();
+				double x = getPos().getX();
+				double y = getPos().getY();
+				double z = getPos().getZ();
 
-			Psi.proxy.setSparkleFXNoClip(true);
+				Psi.proxy.setSparkleFXNoClip(true);
 
-			// Bottom
-			makeParticle(edges[0],  r, g, b, x + 0, y + 0, z + 0, 0, 0, 1);
-			makeParticle(edges[1],  r, g, b, x + 0, y + 0, z + 1, 1, 0, 0);
-			makeParticle(edges[2],  r, g, b, x + 1, y + 0, z + 0, 0, 0, 1);
-			makeParticle(edges[3],  r, g, b, x + 0, y + 0, z + 0, 1, 0, 0);
+				// Bottom
+				makeParticle(edges[0],  r, g, b, x + 0, y + 0, z + 0, 0, 0, 1);
+				makeParticle(edges[1],  r, g, b, x + 0, y + 0, z + 1, 1, 0, 0);
+				makeParticle(edges[2],  r, g, b, x + 1, y + 0, z + 0, 0, 0, 1);
+				makeParticle(edges[3],  r, g, b, x + 0, y + 0, z + 0, 1, 0, 0);
 
-			// Top
-			makeParticle(edges[4],  r, g, b, x + 0, y + 1, z + 0, 0, 0, 1);
-			makeParticle(edges[5],  r, g, b, x + 0, y + 1, z + 1, 1, 0, 0);
-			makeParticle(edges[6],  r, g, b, x + 1, y + 1, z + 0, 0, 0, 1);
-			makeParticle(edges[7],  r, g, b, x + 0, y + 1, z + 0, 1, 0, 0);
+				// Top
+				makeParticle(edges[4],  r, g, b, x + 0, y + 1, z + 0, 0, 0, 1);
+				makeParticle(edges[5],  r, g, b, x + 0, y + 1, z + 1, 1, 0, 0);
+				makeParticle(edges[6],  r, g, b, x + 1, y + 1, z + 0, 0, 0, 1);
+				makeParticle(edges[7],  r, g, b, x + 0, y + 1, z + 0, 1, 0, 0);
 
-			// Sides
-			makeParticle(edges[8],  r, g, b, x + 0, y + 0, z + 0, 0, 1, 0);
-			makeParticle(edges[9],  r, g, b, x + 0, y + 0, z + 1, 0, 1, 0);		
-			makeParticle(edges[10], r, g, b, x + 1, y + 0, z + 1, 0, 1, 0);
-			makeParticle(edges[11], r, g, b, x + 1, y + 0, z + 0, 0, 1, 0);
+				// Sides
+				makeParticle(edges[8],  r, g, b, x + 0, y + 0, z + 0, 0, 1, 0);
+				makeParticle(edges[9],  r, g, b, x + 0, y + 0, z + 1, 0, 1, 0);		
+				makeParticle(edges[10], r, g, b, x + 1, y + 0, z + 1, 0, 1, 0);
+				makeParticle(edges[11], r, g, b, x + 1, y + 0, z + 0, 0, 1, 0);
 
-			Psi.proxy.setSparkleFXNoClip(false);
-		} else if(Math.random() < 0.5) {
-			float w = 0.15F;
-			float h = 0.05F;
-			double x = getPos().getX() + 0.5 + (Math.random() - 0.5) * w;
-			double y = getPos().getY() + 0.25 + (Math.random() - 0.5) * h;
-			double z = getPos().getZ() + 0.5 + (Math.random() - 0.5) * w;
+				Psi.proxy.setSparkleFXNoClip(false);
+			} else if(Math.random() < 0.5) {
+				float w = 0.15F;
+				float h = 0.05F;
+				double x = getPos().getX() + 0.5 + (Math.random() - 0.5) * w;
+				double y = getPos().getY() + 0.25 + (Math.random() - 0.5) * h;
+				double z = getPos().getZ() + 0.5 + (Math.random() - 0.5) * w;
 
-			float s = 0.2F + (float) Math.random() * 0.1F;
-			float m = 0.01F + (float) Math.random() * 0.015F;
+				float s = 0.2F + (float) Math.random() * 0.1F;
+				float m = 0.01F + (float) Math.random() * 0.015F;
 
-			Psi.proxy.wispFX(worldObj, x, y, z, r, g, b, s, -m);
+				Psi.proxy.wispFX(worldObj, x, y, z, r, g, b, s, -m);
+			}
 		}
 
 		if(time < 0)

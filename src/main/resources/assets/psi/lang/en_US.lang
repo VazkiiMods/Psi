@@ -379,6 +379,8 @@ psi.spellpiece.trickConjureBlock=Trick: Conjure Block
 psi.spellpiece.trickConjureBlock.desc=Conjures a block in the given position
 psi.spellpiece.trickConjureLight=Trick: Conjure Light
 psi.spellpiece.trickConjureLight.desc=Conjures a light in the given position
+psi.spellpiece.trickConjureBlockSequence=Trick: Conjure Block Sequence
+psi.spellpiece.trickConjureBlockSequence.desc=Conjures a block sequence
 
 # SPELL PARAMETER NAMES
 psi.spellparam.target=Target
