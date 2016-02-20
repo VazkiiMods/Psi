@@ -27,7 +27,7 @@ public class PieceConstantNumber extends SpellPiece {
 
 	private static final String TAG_CONSTANT_VALUE = "constantValue";
 
-	private String valueStr;
+	public String valueStr;
 
 	public PieceConstantNumber(Spell spell) {
 		super(spell);

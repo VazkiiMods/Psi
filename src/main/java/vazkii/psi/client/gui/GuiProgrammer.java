@@ -61,6 +61,7 @@ import vazkii.psi.common.lib.LibResources;
 import vazkii.psi.common.network.NetworkHandler;
 import vazkii.psi.common.network.message.MessageSpellModified;
 import vazkii.psi.common.spell.SpellCompiler;
+import vazkii.psi.common.spell.constant.PieceConstantNumber;
 
 public class GuiProgrammer extends GuiScreen {
 
@@ -690,6 +691,18 @@ public class GuiProgrammer extends GuiScreen {
 			SpellPiece p = SpellPiece.create(clazz, programmer.spell);
 			if(shouldShow(p))
 				p.getShownPieces(visiblePieces);
+		}
+		
+		if(visiblePieces.isEmpty()) {
+			try {
+				String text = searchField.getText();
+				if(!text.isEmpty() && text.length() < 5 && !text.matches(".*(?:F|D|f|d).*")) {
+					Double.parseDouble(text);
+					SpellPiece p = SpellPiece.create(PieceConstantNumber.class, programmer.spell);
+					((PieceConstantNumber) p).valueStr = text;
+					visiblePieces.add(p);
+				}
+			} catch(NumberFormatException e) {}
 		}
 
 		visiblePieces.sort((SpellPiece a, SpellPiece b) -> {
