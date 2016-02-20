@@ -72,7 +72,7 @@ public abstract class PieceTrickPotionBase extends PieceTrickBlaze {
 			powerVal = this.<Double>getParamValue(context, power);
 		Double timeVal = this.<Double>getParamValue(context, time);
 
-		((EntityLivingBase) targetVal).addPotionEffect(new PotionEffect(getPotion().id, timeVal.intValue() * 20, hasPower() ? powerVal.intValue() - 1 : 0));
+		((EntityLivingBase) targetVal).addPotionEffect(new PotionEffect(getPotion().id, Math.max(1, timeVal.intValue()) * 20, hasPower() ? Math.max(0, powerVal.intValue() - 1) : 0));
 
 		return null;
 	}
