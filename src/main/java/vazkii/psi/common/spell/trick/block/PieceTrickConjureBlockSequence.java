@@ -67,7 +67,7 @@ public class PieceTrickConjureBlockSequence extends PieceTrick {
 		Vector3 positionVal = this.<Vector3>getParamValue(context, position);
 		Vector3 targetVal = this.<Vector3>getParamValue(context, target);
 		Double maxBlocksVal = this.<Double>getParamValue(context, maxBlocks);
-		Double timeVal = this.<Double>getParamValue(context, maxBlocks);
+		Double timeVal = this.<Double>getParamValue(context, time);
 		int maxBlocksInt = maxBlocksVal.intValue();
 
 		if(positionVal == null)
