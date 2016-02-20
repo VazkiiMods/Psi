@@ -18,6 +18,10 @@ import vazkii.psi.common.item.ItemDetonator;
 import vazkii.psi.common.item.ItemMaterial;
 import vazkii.psi.common.item.ItemSpellBullet;
 import vazkii.psi.common.item.ItemSpellDrive;
+import vazkii.psi.common.item.armor.ItemPsimetalExosuitBoots;
+import vazkii.psi.common.item.armor.ItemPsimetalExosuitChestplate;
+import vazkii.psi.common.item.armor.ItemPsimetalExosuitHelmet;
+import vazkii.psi.common.item.armor.ItemPsimetalExosuitLeggings;
 import vazkii.psi.common.item.component.ItemCADAssembly;
 import vazkii.psi.common.item.component.ItemCADBattery;
 import vazkii.psi.common.item.component.ItemCADColorizer;
@@ -39,16 +43,19 @@ public final class ModItems {
 	public static ItemMod cadColorizer;
 	public static ItemMod spellBullet;
 	public static ItemMod spellDrive;
-
+	public static ItemMod detonator;
+	
 	public static ItemMod cad;
 
 	public static ItemModTool psimetalShovel;
 	public static ItemModTool psimetalPickaxe;
 	public static ItemModTool psimetalAxe;
 	public static ItemModSword psimetalSword;
+	public static ItemModArmor psimetalExosuitHelmet;
+	public static ItemModArmor psimetalExosuitChestplate;
+	public static ItemModArmor psimetalExosuitLeggings;
+	public static ItemModArmor psimetalExosuitBoots;
 
-	public static ItemMod detonator;
-	
 	public static void init() {
 		material = new ItemMaterial();
 
@@ -59,6 +66,7 @@ public final class ModItems {
 		cadColorizer = new ItemCADColorizer();
 		spellBullet = new ItemSpellBullet();
 		spellDrive = new ItemSpellDrive();
+		detonator = new ItemDetonator();
 
 		cad = new ItemCAD();
 
@@ -66,9 +74,11 @@ public final class ModItems {
 		psimetalPickaxe = new ItemPsimetalPickaxe();
 		psimetalAxe = new ItemPsimetalAxe();
 		psimetalSword = new ItemPsimetalSword();
+		psimetalExosuitHelmet = new ItemPsimetalExosuitHelmet();
+		psimetalExosuitChestplate = new ItemPsimetalExosuitChestplate();
+		psimetalExosuitLeggings = new ItemPsimetalExosuitLeggings();
+		psimetalExosuitBoots = new ItemPsimetalExosuitBoots();
 
-		detonator = new ItemDetonator();
-		
 		// Missing vanilla oredict mappings
 		OreDictionary.registerOre("shardPrismarine", new ItemStack(Items.prismarine_shard));
 		OreDictionary.registerOre("crystalsPrismarine", new ItemStack(Items.prismarine_crystals));

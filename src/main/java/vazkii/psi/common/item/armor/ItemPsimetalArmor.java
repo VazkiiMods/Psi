@@ -1,0 +1,91 @@
+/**
+ * This class was created by <Vazkii>. It's distributed as
+ * part of the Psi Mod. Get the Source Code in github:
+ * https://github.com/Vazkii/Psi
+ * 
+ * Psi is Open Source and distributed under the
+ * Psi License: http://psi.vazkii.us/license.php
+ * 
+ * File Created @ [20/02/2016, 22:20:00 (GMT)]
+ */
+package vazkii.psi.common.item.armor;
+
+import net.minecraft.client.model.ModelBiped;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import vazkii.psi.api.PsiAPI;
+import vazkii.psi.api.cad.ICADColorizer;
+import vazkii.psi.client.model.ModelPsimetalExosuit;
+import vazkii.psi.common.core.handler.ConfigHandler;
+import vazkii.psi.common.item.base.ItemModArmor;
+import vazkii.psi.common.item.tool.IPsimetalTool;
+import vazkii.psi.common.item.tool.ItemPsimetalTool;
+import vazkii.psi.common.lib.LibResources;
+
+public class ItemPsimetalArmor extends ItemModArmor implements IPsimetalTool {
+
+	protected ModelBiped[] models = null;
+	
+	public ItemPsimetalArmor(String name, int type) {
+		super(name, PsiAPI.PSIMETAL_ARMOR_MATERIAL, type);
+	}
+	
+	@Override
+	public void onArmorTick(World world, EntityPlayer player, ItemStack itemStack) {
+		ItemPsimetalTool.regen(itemStack, player, true);
+	}
+	
+	@Override
+	public final String getArmorTexture(ItemStack stack, Entity entity, int slot, String type) {
+		boolean overlay = type != null && type.equals("overlay");
+		return overlay ? LibResources.MODEL_PSIMETAL_EXOSUIT : LibResources.MODEL_PSIMETAL_EXOSUIT_SENSOR;
+	}
+	
+	@Override
+	public boolean hasColor(ItemStack stack) {
+		return true;
+	}
+	
+	@Override
+	public int getColor(ItemStack stack) { // TODO
+		return ICADColorizer.DEFAULT_SPELL_COLOR;
+	}
+	
+	@Override
+	public int getColorFromItemStack(ItemStack stack, int renderPass) {
+		return super.getColorFromItemStack(stack, ~renderPass & 1); // do the switcheroo
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, int armorSlot) {
+		ModelBiped model = getArmorModelForSlot(entityLiving, itemStack, armorSlot - 1);
+		if(model == null)
+			model = provideArmorModelForSlot(itemStack, armorSlot - 1);
+
+		if(model != null)
+			return model;
+
+		return super.getArmorModel(entityLiving, itemStack, armorSlot);
+	}
+
+	@SideOnly(Side.CLIENT)
+	public ModelBiped getArmorModelForSlot(EntityLivingBase entity, ItemStack stack, int slot) {
+		if(models == null)
+			models = new ModelBiped[4];
+
+		return models[slot];
+	}
+
+	@SideOnly(Side.CLIENT)
+	public ModelBiped provideArmorModelForSlot(ItemStack stack, int slot) {
+		models[slot] = new ModelPsimetalExosuit(slot);
+		return models[slot];
+	}
+
+}

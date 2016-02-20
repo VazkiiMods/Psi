@@ -140,6 +140,10 @@ item.psi:psimetalPickaxe.name=Psimetal Pickaxe
 item.psi:psimetalAxe.name=Psimetal Axe
 item.psi:psimetalSword.name=Psimetal Sword
 item.psi:detonator.name=Spell Detonator
+item.psi:psimetalExosuitHelmet.name=Psimetal Exosuit Helmet
+item.psi:psimetalExosuitChestplate.name=Psimetal Exosuit Chestplate
+item.psi:psimetalExosuitLeggings.name=Psimetal Exosuit Leggings
+item.psi:psimetalExosuitBoots.name=Psimetal Exosuit Boots
 
 # DEATH MESSAGES
 death.attack.psi-overload=%s overflowed their Psionic Energy

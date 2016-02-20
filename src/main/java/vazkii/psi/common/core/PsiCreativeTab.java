@@ -72,6 +72,10 @@ public class PsiCreativeTab extends CreativeTabs {
 		addItem(ModItems.psimetalPickaxe);
 		addItem(ModItems.psimetalAxe);
 		addItem(ModItems.psimetalSword);
+		addItem(ModItems.psimetalExosuitHelmet);
+		addItem(ModItems.psimetalExosuitChestplate);
+		addItem(ModItems.psimetalExosuitLeggings);
+		addItem(ModItems.psimetalExosuitBoots);
 
 		addBlock(ModBlocks.psiDecorative);
 	}

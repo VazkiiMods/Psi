@@ -14,6 +14,7 @@ import java.util.HashMap;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item.ToolMaterial;
+import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.RegistryNamespaced;
 import net.minecraft.util.ResourceLocation;
@@ -42,8 +43,9 @@ public final class PsiAPI {
 	public static HashMap<Class<? extends SpellPiece>, String> pieceMods = new HashMap();
 	public static HashMap<String, PieceGroup> groupsForName = new HashMap();
 
-	public static ToolMaterial PSIMETAL_MATERIAL = EnumHelper.addToolMaterial("PSIMETAL", 3, 900, 7.8F, 3F, 12);
-
+	public static ToolMaterial PSIMETAL_TOOL_MATERIAL = EnumHelper.addToolMaterial("PSIMETAL", 3, 900, 7.8F, 3F, 12);
+	public static ArmorMaterial PSIMETAL_ARMOR_MATERIAL = EnumHelper.addArmorMaterial("PSIMETAL", "", 18, new int[]{2, 6, 5, 2}, 12);
+	
 	public static int levelCap = 1;
 
 	/**

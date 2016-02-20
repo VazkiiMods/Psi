@@ -38,7 +38,7 @@ public class ItemPsimetalTool extends ItemModTool implements IPsimetalTool {
 	private static final String TAG_REGEN_TIME = "regenTime";
 
 	protected ItemPsimetalTool(String name, float attackDamage, Set<Block> effectiveBlocks, String... variants) {
-		super(name, attackDamage, PsiAPI.PSIMETAL_MATERIAL, effectiveBlocks, variants);
+		super(name, attackDamage, PsiAPI.PSIMETAL_TOOL_MATERIAL, effectiveBlocks, variants);
 	}
 
 	@Override

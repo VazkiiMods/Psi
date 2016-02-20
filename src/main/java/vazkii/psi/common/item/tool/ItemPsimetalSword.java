@@ -31,7 +31,7 @@ import vazkii.psi.common.lib.LibItemNames;
 public class ItemPsimetalSword extends ItemModSword implements IPsimetalTool {
 
 	public ItemPsimetalSword() {
-		super(LibItemNames.PSIMETAL_SWORD, PsiAPI.PSIMETAL_MATERIAL);
+		super(LibItemNames.PSIMETAL_SWORD, PsiAPI.PSIMETAL_TOOL_MATERIAL);
 	}
 
 	@Override

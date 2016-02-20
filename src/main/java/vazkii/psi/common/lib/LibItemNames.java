@@ -26,5 +26,9 @@ public final class LibItemNames {
 	public static final String PSIMETAL_AXE = "psimetalAxe";
 	public static final String PSIMETAL_SWORD = "psimetalSword";
 	public static final String DETONATOR = "detonator";
+	public static final String PSIMETAL_EXOSUIT_HELMET = "psimetalExosuitHelmet";
+	public static final String PSIMETAL_EXOSUIT_CHESTPLATE = "psimetalExosuitChestplate";
+	public static final String PSIMETAL_EXOSUIT_LEGGINGS = "psimetalExosuitLeggings";
+	public static final String PSIMETAL_EXOSUIT_BOOTS = "psimetalExosuitBoots";
 
 }
