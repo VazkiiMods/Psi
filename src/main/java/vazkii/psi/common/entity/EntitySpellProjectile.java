@@ -11,6 +11,7 @@
 package vazkii.psi.common.entity;
 
 import java.awt.Color;
+import java.util.function.Consumer;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -175,10 +176,18 @@ public class EntitySpellProjectile extends EntityThrowable {
 
 	@Override
 	protected void onImpact(MovingObjectPosition pos) {
-		cast();
+		if(pos.entityHit != null && pos.entityHit instanceof EntityLivingBase)
+			cast((SpellContext context) -> {
+				context.attackedEntity = (EntityLivingBase) pos.entityHit;
+			});
+		else cast();
 	}
 
 	public void cast() {
+		cast(null);
+	}
+	
+	public void cast(Consumer<SpellContext> callback) {
 		Entity thrower = getThrower();
 		boolean canCast = false;
 		
@@ -194,6 +203,9 @@ public class EntitySpellProjectile extends EntityThrowable {
 				}
 			}
 		}
+		
+		if(callback != null)
+			callback.accept(context);
 
 		if(canCast && context != null)
 			context.cspell.safeExecute(context);
