@@ -36,7 +36,7 @@ public class PieceTrickConjureBlockSequence extends PieceTrick {
 	SpellParam position;
 	SpellParam target;
 	SpellParam maxBlocks;
-	SpellParam timeVal;
+	SpellParam time;
 
 	public PieceTrickConjureBlockSequence(Spell spell) {
 		super(spell);
@@ -47,7 +47,7 @@ public class PieceTrickConjureBlockSequence extends PieceTrick {
 		addParam(position = new ParamVector(SpellParam.GENERIC_NAME_POSITION, SpellParam.BLUE, false, false));
 		addParam(target = new ParamVector(SpellParam.GENERIC_NAME_TARGET, SpellParam.GREEN, false, false));
 		addParam(maxBlocks = new ParamNumber(SpellParam.GENERIC_NAME_MAX, SpellParam.RED, false, true));
-		addParam(timeVal = new ParamNumber(SpellParam.GENERIC_NAME_TIME, SpellParam.PURPLE, true, false));
+		addParam(time = new ParamNumber(SpellParam.GENERIC_NAME_TIME, SpellParam.PURPLE, true, false));
 	}
 
 	@Override
