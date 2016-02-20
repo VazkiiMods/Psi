@@ -40,6 +40,7 @@ import vazkii.psi.api.spell.SpellCompilationException;
 import vazkii.psi.api.spell.SpellGrid;
 import vazkii.psi.api.spell.SpellMetadata;
 import vazkii.psi.api.spell.SpellParam;
+import vazkii.psi.api.spell.SpellParam.Side;
 import vazkii.psi.api.spell.SpellPiece;
 import vazkii.psi.client.core.helper.RenderHelper;
 import vazkii.psi.client.gui.button.GuiButtonIO;
@@ -106,8 +107,6 @@ public class GuiProgrammer extends GuiScreen {
 		spectator = programmer.playerLock != null && !programmer.playerLock.isEmpty() && !programmer.playerLock.equals(mc.thePlayer.getName());
 
 		spellNameField = new GuiTextField(0, fontRendererObj, left + xSize - 130, top + ySize - 14, 120, 10);
-		spellNameField.setCanLoseFocus(false);
-		spellNameField.setFocused(true);
 		spellNameField.setEnableBackgroundDrawing(false);
 		spellNameField.setMaxStringLength(20);
 		spellNameField.setEnabled(!spectator);
@@ -389,8 +388,11 @@ public class GuiProgrammer extends GuiScreen {
 				}
 			}
 
+			boolean shift = isShiftKeyDown();
+			boolean ctrl = isCtrlKeyDown();
+			
 			if(par2 == Keyboard.KEY_DELETE) {
-				if(isShiftKeyDown() && isCtrlKeyDown()) {
+				if(shift && ctrl) {
 					if(!programmer.spell.grid.isEmpty()) {
 						programmer.spell = new Spell();
 						spellNameField.setText("");
@@ -412,6 +414,31 @@ public class GuiProgrammer extends GuiScreen {
 					programmer.spell.name = currName;
 					onSpellChanged(true);
 				}
+				
+				if(!spellNameField.isFocused()) {
+					if(ctrl) {
+						switch(par2) {
+						case 200: // Up arrow
+							if(programmer.spell.grid.shift(Side.TOP))
+								onSpellChanged(false);
+							break;
+						case 203: // Left arrow
+							if(programmer.spell.grid.shift(Side.LEFT))
+								onSpellChanged(false);
+							break;
+						case 205: // Right arrow
+							if(programmer.spell.grid.shift(Side.RIGHT))
+								onSpellChanged(false);
+							break;
+						case 208: // Down arrow
+							if(programmer.spell.grid.shift(Side.BOTTOM))
+								onSpellChanged(false);
+							break;
+						
+						}
+					}
+				}
+
 			}
 		}
 	}
@@ -499,7 +526,6 @@ public class GuiProgrammer extends GuiScreen {
 		searchField.xPosition = panelX + 18;
 		searchField.yPosition = panelY + 4;
 		searchField.setText("");
-		spellNameField.setCanLoseFocus(true);
 		spellNameField.setFocused(false);
 
 		updatePanelButtons();
@@ -554,8 +580,6 @@ public class GuiProgrammer extends GuiScreen {
 		panelEnabled = false;
 		buttonList.removeAll(panelButtons);
 		panelButtons.clear();
-		spellNameField.setCanLoseFocus(false);
-		spellNameField.setFocused(true);
 	}
 
 	public void onSpellChanged(boolean nameOnly) {
@@ -566,6 +590,7 @@ public class GuiProgrammer extends GuiScreen {
 
 		programmer.onSpellChanged();
 		onSelectedChanged();
+		spellNameField.setFocused(nameOnly);
 
 		if(!nameOnly || compiler != null && compiler.getError() != null && compiler.getError().equals(SpellCompilationException.NO_NAME) || programmer.spell.name.isEmpty())
 			compiler = new SpellCompiler(programmer.spell);
@@ -575,6 +600,7 @@ public class GuiProgrammer extends GuiScreen {
 		buttonList.removeAll(configButtons);
 		configButtons.clear();
 		spellNameField.setEnabled(!spectator);
+		spellNameField.setFocused(false);
 
 		if(selectedX != -1 && selectedY != -1) {
 			SpellPiece piece = programmer.spell.grid.gridData[selectedX][selectedY];
