@@ -79,7 +79,7 @@ public final class SpellGrid {
 		return Math.max(rightmost - leftmost + 1, bottommost - topmost + 1);
 	}
 	
-	public boolean shift(SpellParam.Side side) {
+	public boolean shift(SpellParam.Side side, boolean doit) {
 		boolean empty = false;
 		int leftmost = GRID_SIZE;
 		int rightmost = -1;
@@ -106,6 +106,9 @@ public final class SpellGrid {
 			return false;
 		
 		if(exists(leftmost + side.offx, topmost + side.offy) && exists(rightmost + side.offx, bottommost + side.offy)) {
+			if(!doit)
+				return true;
+			
 			SpellPiece[][] newGrid = new SpellPiece[GRID_SIZE][GRID_SIZE];
 			
 			for(int i = 0; i < GRID_SIZE; i++)

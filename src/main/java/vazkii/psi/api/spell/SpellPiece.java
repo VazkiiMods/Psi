@@ -289,7 +289,7 @@ public abstract class SpellPiece {
 	}
 
 	@SideOnly(Side.CLIENT)
-	public boolean onKeyPressed(char c, int i) {
+	public boolean onKeyPressed(char c, int i, boolean doit) {
 		return false;
 	}
 

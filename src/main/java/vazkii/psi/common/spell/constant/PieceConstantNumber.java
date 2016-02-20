@@ -71,10 +71,11 @@ public class PieceConstantNumber extends SpellPiece {
 	}
 
 	@Override
-	public boolean onKeyPressed(char c, int i) {
+	public boolean onKeyPressed(char c, int i, boolean doit) {
 		if("FDfd".indexOf(c) >= 0)
 			return false;
 
+		String oldStr = valueStr;
 		String newStr = valueStr;
 		if(newStr.equals("0") || newStr.equals("-0")) {
 			if(c == '-')
@@ -100,14 +101,18 @@ public class PieceConstantNumber extends SpellPiece {
 		if(newStr.length() > 5)
 			return false;
 
+		String newValueStr = null;
 		try {
 			Double.parseDouble(newStr);
-			valueStr = newStr;
+			newValueStr = newStr;
 		} catch(NumberFormatException e) {
 			return false;
 		}
 
-		return true;
+		if(newValueStr != null && doit)
+			valueStr = newValueStr;
+		
+		return !newValueStr.equals(oldStr);
 	}
 
 	@Override

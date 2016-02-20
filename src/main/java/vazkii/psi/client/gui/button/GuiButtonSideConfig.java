@@ -26,16 +26,22 @@ public class GuiButtonSideConfig extends GuiButton {
 
 	GuiProgrammer gui;
 	int gridX, gridY;
-	String paramName;
+	public String paramName;
+	int paramIndex;
 	SpellParam.Side side;
 
-	public GuiButtonSideConfig(GuiProgrammer gui, int gridX, int gridY, String paramName, SpellParam.Side side, int x, int y) {
+	public GuiButtonSideConfig(GuiProgrammer gui, int gridX, int gridY, int paramIndex, String paramName, SpellParam.Side side, int x, int y) {
 		super(0, x, y, 8, 8, "");
 		this.gui = gui;
 		this.gridX = gridX;
 		this.gridY = gridY;
+		this.paramIndex = paramIndex;
 		this.paramName = paramName;
 		this.side = side;
+	}
+	
+	public boolean matches(int index, SpellParam.Side side) {
+		return paramIndex == index && this.side == side;
 	}
 
 	public void onClick() {
