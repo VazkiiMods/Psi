@@ -21,6 +21,7 @@ import vazkii.psi.api.spell.param.ParamEntity;
 import vazkii.psi.api.spell.piece.PieceOperator;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
+import vazkii.psi.common.spell.trick.entity.PieceTrickAddMotion;
 
 public class PieceOperatorEntityMotion extends PieceOperator {
 
@@ -53,7 +54,7 @@ public class PieceOperatorEntityMotion extends PieceOperator {
 			}
 		}
 
-		return new Vector3(e.motionX, e.motionY, e.motionZ);
+		return new Vector3(e.motionX, e.motionY, e.motionZ).multiply(1.0 / PieceTrickAddMotion.MULTIPLIER);
 	}
 
 	@Override

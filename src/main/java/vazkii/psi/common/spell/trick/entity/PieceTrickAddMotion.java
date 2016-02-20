@@ -27,6 +27,8 @@ import vazkii.psi.api.spell.piece.PieceTrick;
 
 public class PieceTrickAddMotion extends PieceTrick {
 
+	public static final double MULTIPLIER = 0.3;
+	
 	SpellParam target;
 	SpellParam direction;
 	SpellParam speed;
@@ -69,11 +71,7 @@ public class PieceTrickAddMotion extends PieceTrick {
 		if(!context.isInRadius(e))
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 
-		double mul = 0.3;
-		if(e instanceof EntityThrowable)
-			mul *= 10;
-
-		dir = dir.copy().normalize().multiply(mul * speed);
+		dir = dir.copy().normalize().multiply(MULTIPLIER * speed);
 		
 		e.motionX += dir.x;
 		e.motionY += dir.y;
