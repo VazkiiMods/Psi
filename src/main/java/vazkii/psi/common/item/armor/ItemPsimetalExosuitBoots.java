@@ -10,6 +10,8 @@
  */
 package vazkii.psi.common.item.armor;
 
+import net.minecraft.item.ItemStack;
+import vazkii.psi.api.exosuit.PsiArmorEvent;
 import vazkii.psi.common.lib.LibItemNames;
 
 public class ItemPsimetalExosuitBoots extends ItemPsimetalArmor {
@@ -18,4 +20,10 @@ public class ItemPsimetalExosuitBoots extends ItemPsimetalArmor {
 		super(LibItemNames.PSIMETAL_EXOSUIT_BOOTS, 3);
 	}
 
+	@Override
+	public void onEvent(ItemStack stack, PsiArmorEvent event) {
+		if(event.type.equals(PsiArmorEvent.JUMP))
+			cast(stack, event);
+	}
+	
 }

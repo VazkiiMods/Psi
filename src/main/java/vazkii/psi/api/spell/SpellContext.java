@@ -64,6 +64,9 @@ public final class SpellContext {
 	public MovingObjectPosition positionBroken;
 	// Sword stuff
 	public EntityLivingBase attackedEntity;
+	// Armor Stuff
+	public EntityLivingBase attackingEntity;
+	public double damageDealt;
 	
 	/**
 	 * A map for custom data where addon authors can put stuff.

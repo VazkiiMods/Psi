@@ -23,8 +23,14 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ICADColorizer;
 import vazkii.psi.api.cad.ISocketable;
+import vazkii.psi.api.exosuit.IPsiEventArmor;
+import vazkii.psi.api.exosuit.PsiArmorEvent;
+import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.client.model.ModelPsimetalExosuit;
 import vazkii.psi.common.core.handler.ConfigHandler;
+import vazkii.psi.common.core.handler.PlayerDataHandler;
+import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
+import vazkii.psi.common.item.ItemCAD;
 import vazkii.psi.common.item.base.ItemMod;
 import vazkii.psi.common.item.base.ItemModArmor;
 import vazkii.psi.common.item.base.ModItems;
@@ -32,7 +38,7 @@ import vazkii.psi.common.item.tool.IPsimetalTool;
 import vazkii.psi.common.item.tool.ItemPsimetalTool;
 import vazkii.psi.common.lib.LibResources;
 
-public class ItemPsimetalArmor extends ItemModArmor implements IPsimetalTool {
+public abstract class ItemPsimetalArmor extends ItemModArmor implements IPsimetalTool, IPsiEventArmor {
 
 	protected ModelBiped[] models = null;
 	
@@ -42,7 +48,25 @@ public class ItemPsimetalArmor extends ItemModArmor implements IPsimetalTool {
 	
 	@Override
 	public void onArmorTick(World world, EntityPlayer player, ItemStack itemStack) {
-		ItemPsimetalTool.regen(itemStack, player, true);
+		ItemPsimetalTool.regen(itemStack, player, false);
+	}
+	
+	public void cast(ItemStack stack, PsiArmorEvent event) {
+		PlayerData data = PlayerDataHandler.get(event.entityPlayer);
+		ItemStack playerCad = PsiAPI.getPlayerCAD(event.entityPlayer);
+
+		if(playerCad != null) {
+			ItemStack bullet = getBulletInSocket(stack, getSelectedSlot(stack));
+			ItemCAD.cast(event.entityPlayer.worldObj, event.entityPlayer, data, bullet, playerCad, 5, 10, getCastVolume(), (SpellContext context) -> {
+				context.tool = stack;
+				context.attackingEntity = event.attacker;
+				context.damageDealt = event.damage;
+			});
+		}
+	}
+	
+	public float getCastVolume() {
+		return 0.025F;
 	}
 	
 	@Override

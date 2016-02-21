@@ -10,6 +10,8 @@
  */
 package vazkii.psi.common.item.armor;
 
+import net.minecraft.item.ItemStack;
+import vazkii.psi.api.exosuit.PsiArmorEvent;
 import vazkii.psi.common.lib.LibItemNames;
 
 public class ItemPsimetalExosuitHelmet extends ItemPsimetalArmor {
@@ -18,4 +20,9 @@ public class ItemPsimetalExosuitHelmet extends ItemPsimetalArmor {
 		super(LibItemNames.PSIMETAL_EXOSUIT_HELMET, 0);
 	}
 
+	@Override
+	public void onEvent(ItemStack stack, PsiArmorEvent event) {
+		// TODO
+	}
+	
 }

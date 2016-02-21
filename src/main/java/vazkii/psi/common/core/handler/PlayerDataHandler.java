@@ -24,8 +24,8 @@ import com.google.common.collect.ImmutableSet;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.stream.IStream;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -36,6 +36,7 @@ import net.minecraft.network.play.server.S08PacketPlayerPosLook.EnumFlags;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -49,6 +50,8 @@ import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.EnumCADStat;
 import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.cad.ICADColorizer;
+import vazkii.psi.api.exosuit.IPsiEventArmor;
+import vazkii.psi.api.exosuit.PsiArmorEvent;
 import vazkii.psi.api.internal.IPlayerData;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.EnumSpellStat;
@@ -148,14 +151,25 @@ public class PlayerDataHandler {
 
 		@SubscribeEvent
 		public void onPlayerTick(LivingUpdateEvent event) {
-			if(event.entityLiving instanceof EntityPlayer)
-				PlayerDataHandler.get((EntityPlayer) event.entityLiving).tick();
+			if(event.entityLiving instanceof EntityPlayer) {
+				EntityPlayer player = (EntityPlayer) event.entityLiving;
+				PlayerDataHandler.get(player).tick();
+				PsiArmorEvent.post(new PsiArmorEvent(player, PsiArmorEvent.TICK));
+			}
 		}
 
 		@SubscribeEvent
 		public void onEntityDamage(LivingHurtEvent event) {
-			if(event.entityLiving instanceof EntityPlayer)
-				PlayerDataHandler.get((EntityPlayer) event.entityLiving).damage(event.ammount);
+			if(event.entityLiving instanceof EntityPlayer) {
+				EntityPlayer player = (EntityPlayer) event.entityLiving;
+				PlayerDataHandler.get(player).damage(event.ammount);
+				
+				EntityLivingBase attacker = null;
+				if(event.source.getEntity() != null && event.source.getEntity() instanceof EntityLivingBase)
+					attacker = (EntityLivingBase) event.source.getEntity();
+				
+				PsiArmorEvent.post(new PsiArmorEvent(player, PsiArmorEvent.DAMAGE, event.ammount, attacker));
+			}
 		}
 
 		@SubscribeEvent
@@ -163,6 +177,25 @@ public class PlayerDataHandler {
 			if(event.player instanceof EntityPlayerMP) {
 				MessageDataSync message = new MessageDataSync(get(event.player));
 				NetworkHandler.INSTANCE.sendTo(message, (EntityPlayerMP) event.player);
+			}
+		}
+
+		@SubscribeEvent
+		public void onEntityJump(LivingJumpEvent event) {
+			if(event.entityLiving instanceof EntityPlayer) {
+				EntityPlayer player = (EntityPlayer) event.entityLiving;
+				PsiArmorEvent.post(new PsiArmorEvent(player, PsiArmorEvent.JUMP));
+			}
+		}
+		
+		@SubscribeEvent
+		public void onPsiArmorEvent(PsiArmorEvent event) {
+			for(int i = 0; i < 4; i++) {
+				ItemStack armor = event.entityPlayer.inventory.armorInventory[i];
+				if(armor != null && armor.getItem() instanceof IPsiEventArmor) {
+					IPsiEventArmor handler = (IPsiEventArmor) armor.getItem();
+					handler.onEvent(armor, event);
+				}
 			}
 		}
 

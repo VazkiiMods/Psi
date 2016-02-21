@@ -10,6 +10,9 @@
  */
 package vazkii.psi.common.item;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import vazkii.psi.api.cad.ISocketable;
@@ -28,14 +31,14 @@ public class ItemExosuitController extends ItemMod implements ISocketableControl
 
 	@Override
 	public ItemStack[] getControlledStacks(EntityPlayer player, ItemStack stack) {
-		ItemStack[] stacks = new ItemStack[4];
+		List<ItemStack> stacks = new ArrayList();
 		for(int i = 0; i < 4; i++) {
 			ItemStack armor = player.inventory.armorInventory[3 - i];
 			if(armor != null && armor.getItem() instanceof ISocketable)
-				stacks[i] = armor;
+				stacks.add(armor);
 		}
 		
-		return stacks;
+		return stacks.toArray(new ItemStack[stacks.size()]);
 	}
 
 	@Override

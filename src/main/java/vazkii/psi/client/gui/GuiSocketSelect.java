@@ -80,7 +80,10 @@ public class GuiSocketSelect extends GuiScreen {
 			controller = (ISocketableController) stack.getItem();
 			controlledStacks = controller.getControlledStacks(mc.thePlayer, stack);
 			controlSlot = controller.getDefaultControlSlot(controllerStack);
-			setSocketable(controlledStacks[controlSlot]);
+			if(controlSlot >= controlledStacks.length)
+				controlSlot = 0;
+			
+			setSocketable(controlledStacks.length == 0 ? null : controlledStacks[controlSlot]);
 		}
 	}
 
@@ -247,7 +250,7 @@ public class GuiSocketSelect extends GuiScreen {
 	protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
 		super.mouseClicked(mouseX, mouseY, mouseButton);
 
-		if(controllerStack != null) {
+		if(controllerStack != null && controlledStacks.length > 0) {
 			if(mouseButton == 0) {
 				controlSlot++;
 				if(controlSlot >= controlledStacks.length)
