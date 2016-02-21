@@ -108,7 +108,7 @@ public class ItemPsimetalArmor extends ItemModArmor implements IPsimetalTool, IP
 	}
 	
 	@Override
-	public int getColor(ItemStack stack) { // TODO
+	public int getColor(ItemStack stack) {
 		return ICADColorizer.DEFAULT_SPELL_COLOR;
 	}
 	

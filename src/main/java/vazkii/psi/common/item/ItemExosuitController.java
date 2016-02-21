@@ -28,6 +28,7 @@ public class ItemExosuitController extends ItemMod implements ISocketableControl
 	
 	public ItemExosuitController() {
 		super(LibItemNames.EXOSUIT_CONTROLLER);
+		setMaxStackSize(1);
 	}
 
 	@Override

@@ -145,6 +145,10 @@ item.psi:psimetalExosuitChestplate.name=Psimetal Exosuit Chestplate
 item.psi:psimetalExosuitLeggings.name=Psimetal Exosuit Leggings
 item.psi:psimetalExosuitBoots.name=Psimetal Exosuit Boots
 item.psi:exosuitController.name=Exosuit Controller
+item.psi:exosuitSensorLight.name=Exosuit Light Sensor
+item.psi:exosuitSensorWater.name=Exosuit Water Sensor
+item.psi:exosuitSensorHeat.name=Exosuit Heat Sensor
+item.psi:exosuitSensorStress.name=Exosuit Stress Sensor
 
 # DEATH MESSAGES
 death.attack.psi-overload=%s overflowed their Psionic Energy
@@ -191,6 +195,10 @@ psi.event.none=(No Event Handler)
 psi.event.damage=&bEvent&7: Damage
 psi.event.tick=&bEvent&7: Tick
 psi.event.jump=&bEvent&7: Jump
+psi.event.lowLight=&bEvent&7: Low Light
+psi.event.underwater=&bEvent&7: Underwater
+psi.event.onFire=&bEvent&7: On Fire
+psi.event.lowHp=&bEvent&7: Low Health
 
 # SPELl PIECE NAMES
 # -- SELECTORS

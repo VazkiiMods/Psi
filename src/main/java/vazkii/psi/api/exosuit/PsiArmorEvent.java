@@ -25,6 +25,11 @@ public class PsiArmorEvent extends PlayerEvent {
 	public static final String TICK = "psi.event.tick";
 	public static final String JUMP = "psi.event.jump";
 
+	public static final String LOW_LIGHT = "psi.event.lowLight";
+	public static final String UNDERWATER = "psi.event.underwater";
+	public static final String ON_FIRE = "psi.event.onFire";
+	public static final String LOW_HP = "psi.event.lowHp";
+
 	private static boolean posting = false;
 	
 	public final String type;

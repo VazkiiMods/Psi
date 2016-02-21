@@ -6,19 +6,20 @@
  * Psi is Open Source and distributed under the
  * Psi License: http://psi.vazkii.us/license.php
  * 
- * File Created @ [21/02/2016, 14:13:27 (GMT)]
+ * File Created @ [21/02/2016, 16:42:36 (GMT)]
  */
 package vazkii.psi.api.exosuit;
 
 import net.minecraft.item.ItemStack;
 
 /**
- * An Item that implements this counts as a Sensor, and can be put on an Exosuit helmet.
+ * An item that implements this can have a sensor attacked to it.
+ * What did you expect?
  */
-public interface IExosuitSensor {
+public interface ISensorHoldable {
 
-	public String getEventType(ItemStack stack);
+	public ItemStack getAttachedSensor(ItemStack stack);
 	
-	public int getColor(ItemStack stack);
+	public void attachSensor(ItemStack stack, ItemStack sensor);
 	
 }

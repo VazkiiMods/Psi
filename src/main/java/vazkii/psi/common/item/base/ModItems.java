@@ -16,6 +16,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import vazkii.psi.common.item.ItemCAD;
 import vazkii.psi.common.item.ItemDetonator;
 import vazkii.psi.common.item.ItemExosuitController;
+import vazkii.psi.common.item.ItemExosuitSensor;
 import vazkii.psi.common.item.ItemMaterial;
 import vazkii.psi.common.item.ItemSpellBullet;
 import vazkii.psi.common.item.ItemSpellDrive;
@@ -46,6 +47,7 @@ public final class ModItems {
 	public static ItemMod spellDrive;
 	public static ItemMod detonator;
 	public static ItemMod exosuitController;
+	public static ItemMod exosuitSensor;
 
 	public static ItemMod cad;
 
@@ -70,6 +72,7 @@ public final class ModItems {
 		spellDrive = new ItemSpellDrive();
 		detonator = new ItemDetonator();
 		exosuitController = new ItemExosuitController();
+		exosuitSensor = new ItemExosuitSensor();
 
 		cad = new ItemCAD();
 

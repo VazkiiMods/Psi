@@ -21,6 +21,7 @@ import java.util.Stack;
 
 import com.google.common.collect.ImmutableSet;
 
+import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -33,7 +34,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.network.play.server.S08PacketPlayerPosLook.EnumFlags;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.DamageSource;
+import net.minecraft.world.EnumSkyBlock;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
@@ -169,6 +173,8 @@ public class PlayerDataHandler {
 					attacker = (EntityLivingBase) event.source.getEntity();
 				
 				PsiArmorEvent.post(new PsiArmorEvent(player, PsiArmorEvent.DAMAGE, event.ammount, attacker));
+				if(event.source.isFireDamage())
+					PsiArmorEvent.post(new PsiArmorEvent(player, PsiArmorEvent.ON_FIRE));
 			}
 		}
 
@@ -272,6 +278,9 @@ public class PlayerDataHandler {
 		public int eidosAnchorTime;
 		public int postAnchorRecallTime;
 		public int eidosReversionTime;
+		
+		// Exosuit Event Stuff
+		boolean lowLight, underwater, lowHp;
 
 		public boolean deductTick;
 
@@ -464,7 +473,26 @@ public class PlayerDataHandler {
 					eidosChangelog.remove(0);
 				eidosChangelog.push(Vector3.fromEntity(player));
 			}
+			
+			BlockPos pos = player.getPosition();
+			Chunk chunk = player.worldObj.getChunkFromBlockCoords(pos);
+			int light = chunk.getLightFor(EnumSkyBlock.BLOCK, pos);
+			
+			boolean lowLight = light < 7;
+			if(!this.lowLight && lowLight)
+				PsiArmorEvent.post(new PsiArmorEvent(player, PsiArmorEvent.LOW_LIGHT));
+			this.lowLight = lowLight;
+			
+			boolean underwater = player.isInsideOfMaterial(Material.water);
+			if(!this.underwater && underwater)
+				PsiArmorEvent.post(new PsiArmorEvent(player, PsiArmorEvent.UNDERWATER));
+			this.underwater = underwater;
 
+			boolean lowHp = player.getHealth() <= 6;
+			if(!this.lowHp && lowHp)
+				PsiArmorEvent.post(new PsiArmorEvent(player, PsiArmorEvent.LOW_HP));
+			this.lowHp = lowHp;
+			
 			List<Deduction> remove = new ArrayList();
 			for(Deduction d : deductions) {
 				if(d.invalid)
