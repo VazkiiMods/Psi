@@ -80,8 +80,6 @@ public final class PersistencyHandler {
 				e.printStackTrace();
 			}
 		}
-		
-		persistentLevel = 17; // TODO temp
 	}
 
 	public static void save(int level) {
