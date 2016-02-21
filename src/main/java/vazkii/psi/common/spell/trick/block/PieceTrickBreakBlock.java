@@ -11,6 +11,7 @@
 package vazkii.psi.common.spell.trick.block;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -76,7 +77,7 @@ public class PieceTrickBreakBlock extends PieceTrick {
 		int harvestLevel = ConfigHandler.cadHarvestLevel;
 		IBlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
-		if(!world.isRemote && block != null && !block.isAir(world, pos) && block.getPlayerRelativeBlockHardness(player, world, pos) > 0) {
+		if(!world.isRemote && block != null && !block.isAir(world, pos) && !(block instanceof BlockLiquid) && block.getPlayerRelativeBlockHardness(player, world, pos) > 0) {
 			int neededHarvestLevel = block.getHarvestLevel(state);
 			if(neededHarvestLevel > harvestLevel)
 				return;
