@@ -132,31 +132,33 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable {
 							if(!world.isRemote)
 								world.playSoundAtEntity(player, "psi:cadShoot", sound, (float) (0.5 + Math.random() * 0.5));
 
-							Color color = Psi.proxy.getCADColor(cad);
-							float r = color.getRed() / 255F;
-							float g = color.getGreen() / 255F;
-							float b = color.getBlue() / 255F;
-							for(int i = 0; i < particles; i++) {
-								double x = player.posX + (Math.random() - 0.5) * 2.1 * player.width;
-								double y = player.posY - player.getYOffset();
-								double z = player.posZ + (Math.random() - 0.5) * 2.1 * player.width;
-								float grav = -0.15F - (float) Math.random() * 0.03F;
-								Psi.proxy.sparkleFX(world, x, y, z, r, g, b, grav, 0.25F, 15);
-							}
+							if(sound > 0) {
+								Color color = Psi.proxy.getCADColor(cad);
+								float r = color.getRed() / 255F;
+								float g = color.getGreen() / 255F;
+								float b = color.getBlue() / 255F;
+								for(int i = 0; i < particles; i++) {
+									double x = player.posX + (Math.random() - 0.5) * 2.1 * player.width;
+									double y = player.posY - player.getYOffset();
+									double z = player.posZ + (Math.random() - 0.5) * 2.1 * player.width;
+									float grav = -0.15F - (float) Math.random() * 0.03F;
+									Psi.proxy.sparkleFX(world, x, y, z, r, g, b, grav, 0.25F, 15);
+								}
 
-							double x = player.posX;
-							double y = player.posY + player.getEyeHeight() - 0.1;
-							double z = player.posZ;
-							Vector3 lookOrig = new Vector3(player.getLookVec());
-							for(int i = 0; i < 25; i++) {
-								Vector3 look = lookOrig.copy();
-								double spread = 0.25;
-								look.x += (Math.random() - 0.5) * spread;
-								look.y += (Math.random() - 0.5) * spread;
-								look.z += (Math.random() - 0.5) * spread;
-								look.normalize().multiply(0.15);
+								double x = player.posX;
+								double y = player.posY + player.getEyeHeight() - 0.1;
+								double z = player.posZ;
+								Vector3 lookOrig = new Vector3(player.getLookVec());
+								for(int i = 0; i < 25; i++) {
+									Vector3 look = lookOrig.copy();
+									double spread = 0.25;
+									look.x += (Math.random() - 0.5) * spread;
+									look.y += (Math.random() - 0.5) * spread;
+									look.z += (Math.random() - 0.5) * spread;
+									look.normalize().multiply(0.15);
 
-								Psi.proxy.sparkleFX(world, x, y, z, r, g, b, (float) look.x, (float) look.y, (float) look.z, 0.3F, 5);
+									Psi.proxy.sparkleFX(world, x, y, z, r, g, b, (float) look.x, (float) look.y, (float) look.z, 0.3F, 5);
+								}
 							}
 						}
 

@@ -186,6 +186,12 @@ psi.bulletType4=Grenade
 psi.bulletType5=Charge
 psi.bulletType6=Mine
 
+# EXOSUIT EVENTS
+psi.event.none=(No Event Handler)
+psi.event.damage=&bEvent&7: Damage
+psi.event.tick=&bEvent&7: Tick
+psi.event.jump=&bEvent&7: Jump
+
 # SPELl PIECE NAMES
 # -- SELECTORS
 psi.spellpiece.selectorCaster=Selector: Caster

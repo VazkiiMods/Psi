@@ -19,11 +19,15 @@ public class ItemPsimetalExosuitLeggings extends ItemPsimetalArmor {
 	public ItemPsimetalExosuitLeggings() {
 		super(LibItemNames.PSIMETAL_EXOSUIT_LEGGINGS, 2);
 	}
-
+	
 	@Override
-	public void onEvent(ItemStack stack, PsiArmorEvent event) {
-		if(event.type.equals(PsiArmorEvent.TICK))
-			cast(stack, event);
+	public String getEvent(ItemStack stack) {
+		return PsiArmorEvent.TICK;
+	}
+	
+	@Override
+	public int getCastCooldown(ItemStack stack) {
+		return 0;
 	}
 	
 	@Override

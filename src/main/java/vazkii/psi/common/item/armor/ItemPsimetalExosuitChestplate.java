@@ -21,9 +21,8 @@ public class ItemPsimetalExosuitChestplate extends ItemPsimetalArmor {
 	}
 	
 	@Override
-	public void onEvent(ItemStack stack, PsiArmorEvent event) {
-		if(event.type.equals(PsiArmorEvent.DAMAGE))
-			cast(stack, event);
+	public String getEvent(ItemStack stack) {
+		return PsiArmorEvent.DAMAGE;
 	}
 
 }

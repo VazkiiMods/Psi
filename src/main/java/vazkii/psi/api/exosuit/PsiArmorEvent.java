@@ -18,9 +18,12 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 
 public class PsiArmorEvent extends PlayerEvent {
 
-	public static final String DAMAGE = "psi:damage";
-	public static final String TICK = "psi:tick";
-	public static final String JUMP = "psi:jump";
+	// DO NOT FIRE AN EVENT WITH THIS
+	public static final String NONE = "psi.event.none";
+
+	public static final String DAMAGE = "psi.event.damage";
+	public static final String TICK = "psi.event.tick";
+	public static final String JUMP = "psi.event.jump";
 
 	private static boolean posting = false;
 	
@@ -37,6 +40,9 @@ public class PsiArmorEvent extends PlayerEvent {
 		this.type = type;
 		this.damage = damage;
 		this.attacker = attacker;
+		
+		if(type.equals(NONE))
+			throw new IllegalArgumentException("Can't you read?");
 	}
 	
 	public static void post(PsiArmorEvent event) {

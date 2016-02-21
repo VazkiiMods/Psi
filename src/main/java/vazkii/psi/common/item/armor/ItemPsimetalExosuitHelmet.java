@@ -25,4 +25,5 @@ public class ItemPsimetalExosuitHelmet extends ItemPsimetalArmor {
 		// TODO
 	}
 	
+	
 }

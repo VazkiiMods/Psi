@@ -27,7 +27,6 @@ import vazkii.psi.api.exosuit.IPsiEventArmor;
 import vazkii.psi.api.exosuit.PsiArmorEvent;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.client.model.ModelPsimetalExosuit;
-import vazkii.psi.common.core.handler.ConfigHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
 import vazkii.psi.common.item.ItemCAD;
@@ -38,7 +37,7 @@ import vazkii.psi.common.item.tool.IPsimetalTool;
 import vazkii.psi.common.item.tool.ItemPsimetalTool;
 import vazkii.psi.common.lib.LibResources;
 
-public abstract class ItemPsimetalArmor extends ItemModArmor implements IPsimetalTool, IPsiEventArmor {
+public class ItemPsimetalArmor extends ItemModArmor implements IPsimetalTool, IPsiEventArmor {
 
 	protected ModelBiped[] models = null;
 	
@@ -57,12 +56,26 @@ public abstract class ItemPsimetalArmor extends ItemModArmor implements IPsimeta
 
 		if(playerCad != null) {
 			ItemStack bullet = getBulletInSocket(stack, getSelectedSlot(stack));
-			ItemCAD.cast(event.entityPlayer.worldObj, event.entityPlayer, data, bullet, playerCad, 5, 10, getCastVolume(), (SpellContext context) -> {
+			ItemCAD.cast(event.entityPlayer.worldObj, event.entityPlayer, data, bullet, playerCad, getCastCooldown(stack), 0, getCastVolume(), (SpellContext context) -> {
 				context.tool = stack;
 				context.attackingEntity = event.attacker;
 				context.damageDealt = event.damage;
 			});
 		}
+	}
+
+	@Override
+	public void onEvent(ItemStack stack, PsiArmorEvent event) {
+		if(event.type.equals(getEvent(stack)))
+			cast(stack, event);
+	}
+	
+	public String getEvent(ItemStack stack) {
+		return PsiArmorEvent.NONE;
+	}
+	
+	public int getCastCooldown(ItemStack stack) {
+		return 5;
 	}
 	
 	public float getCastVolume() {
@@ -71,8 +84,11 @@ public abstract class ItemPsimetalArmor extends ItemModArmor implements IPsimeta
 	
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
-		String componentName = ItemMod.local(ISocketable.getSocketedItemName(stack, "psimisc.none"));
-		ItemMod.addToTooltip(tooltip, "psimisc.spellSelected", componentName);
+		ItemMod.tooltipIfShift(tooltip, () -> {
+			String componentName = ItemMod.local(ISocketable.getSocketedItemName(stack, "psimisc.none"));
+			ItemMod.addToTooltip(tooltip, "psimisc.spellSelected", componentName);
+			ItemMod.addToTooltip(tooltip, getEvent(stack));
+		});
 	}
 
 	@Override

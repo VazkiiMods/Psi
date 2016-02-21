@@ -15,6 +15,7 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 import vazkii.psi.api.cad.ISocketable;
 import vazkii.psi.api.cad.ISocketableController;
 import vazkii.psi.common.core.helper.ItemNBTHelper;
@@ -29,6 +30,24 @@ public class ItemExosuitController extends ItemMod implements ISocketableControl
 		super(LibItemNames.EXOSUIT_CONTROLLER);
 	}
 
+	@Override
+	public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn) {
+		if(playerIn.isSneaking()) {
+			if(!worldIn.isRemote)
+				worldIn.playSoundAtEntity(playerIn, "psi:compileError", 0.25F, 1F);
+			else playerIn.swingItem();
+			
+			ItemStack[] stacks = getControlledStacks(playerIn, itemStackIn);
+			
+			for(int i = 0; i < stacks.length; i++) {
+				ISocketable socketable = (ISocketable) stacks[i].getItem();
+				socketable.setSelectedSlot(stacks[i], 3);	
+			}
+		}
+		
+		return itemStackIn;
+	}
+	
 	@Override
 	public ItemStack[] getControlledStacks(EntityPlayer player, ItemStack stack) {
 		List<ItemStack> stacks = new ArrayList();
