@@ -65,4 +65,14 @@ public class ItemPsimetalExosuitHelmet extends ItemPsimetalArmor implements ISen
 		ItemNBTHelper.setCompound(stack, TAG_SENSOR, cmp);
 	}
 	
+	@Override
+	public boolean hasContainerItem(ItemStack stack) {
+		return getContainerItem(stack) != null;
+	}
+	
+	@Override
+	public ItemStack getContainerItem(ItemStack itemStack) {
+		return getAttachedSensor(itemStack);
+	}
+	
 }
