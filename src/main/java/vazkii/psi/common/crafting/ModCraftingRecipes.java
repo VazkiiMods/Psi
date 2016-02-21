@@ -207,12 +207,55 @@ public class ModCraftingRecipes {
 				'G', "gemPsi",
 				'I', "ingotIron");
 		
+		addOreDictRecipe(new ItemStack(ModItems.psimetalExosuitHelmet),
+				"GPG", "P P",
+				'P', "ingotPsi",
+				'G', "gemPsi");
+		addOreDictRecipe(new ItemStack(ModItems.psimetalExosuitChestplate),
+				"P P", "GPG", "PPP",
+				'P', "ingotPsi",
+				'G', "gemPsi");
+		addOreDictRecipe(new ItemStack(ModItems.psimetalExosuitLeggings),
+				"GPG", "P P", "P P",
+				'P', "ingotPsi",
+				'G', "gemPsi");
+		addOreDictRecipe(new ItemStack(ModItems.psimetalExosuitBoots),
+				"G G", "P P",
+				'P', "ingotPsi",
+				'G', "gemPsi");
+		
 		addOreDictRecipe(new ItemStack(ModItems.detonator),
 				" B ", "IPI",
 				'P', "dustPsi",
 				'B', new ItemStack(Blocks.stone_button),
 				'I', "ingotIron");
-
+		addOreDictRecipe(new ItemStack(ModItems.exosuitController),
+				"R", "G", "I",
+				'R', "dustRedstone",
+				'G', "blockGlassColorless",
+				'I', "ingotPsi");
+		
+		addOreDictRecipe(new ItemStack(ModItems.exosuitSensor, 1, 0),
+				" I ", "IMR", " R ",
+				'M', "dustGlowstone",
+				'I', "ingotPsi",
+				'R', "ingotIron");
+		addOreDictRecipe(new ItemStack(ModItems.exosuitSensor, 1, 1),
+				" I ", "IMR", " R ",
+				'M', "shardPrismarine",
+				'I', "ingotPsi",
+				'R', "ingotIron");
+		addOreDictRecipe(new ItemStack(ModItems.exosuitSensor, 1, 2),
+				" I ", "IMR", " R ",
+				'M', new ItemStack(Items.fire_charge),
+				'I', "ingotPsi",
+				'R', "ingotIron");
+		addOreDictRecipe(new ItemStack(ModItems.exosuitSensor, 1, 3),
+				" I ", "IMR", " R ",
+				'M', new ItemStack(Items.speckled_melon),
+				'I', "ingotPsi",
+				'R', "ingotIron");
+		
 		addOreDictRecipe(new ItemStack(ModBlocks.psiDecorative, 1, 0),
 				"OOO", "OOO", "OOO",
 				'O', "dustPsi");
