@@ -21,6 +21,7 @@ import vazkii.psi.api.cad.ICADColorizer;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.BlockConjured;
+import vazkii.psi.common.block.base.ModBlocks;
 import vazkii.psi.common.block.tile.base.TileMod;
 import vazkii.psi.common.entity.EntitySpellGrenade;
 
@@ -46,7 +47,7 @@ public class TileConjured extends TileMod implements ITickable {
 			IBlockState state = worldObj.getBlockState(getPos());
 			state = state.getBlock().getActualState(state, worldObj, getPos());
 
-			if(state.getValue(BlockConjured.SOLID)) {
+			if(state.getBlock() == ModBlocks.conjured && state.getValue(BlockConjured.SOLID)) {
 				// http://cns-alumni.bu.edu/~lavanya/Graphics/cs580/p5/web-page/cube_edges.gif
 				boolean[] edges = new boolean[12];
 				Arrays.fill(edges, true);
