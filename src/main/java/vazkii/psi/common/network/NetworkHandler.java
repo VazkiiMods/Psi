@@ -14,6 +14,7 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
 import vazkii.psi.common.lib.LibMisc;
+import vazkii.psi.common.network.message.MessageChangeControllerSlot;
 import vazkii.psi.common.network.message.MessageChangeSocketableSlot;
 import vazkii.psi.common.network.message.MessageDataSync;
 import vazkii.psi.common.network.message.MessageDeductPsi;
@@ -39,6 +40,7 @@ public class NetworkHandler {
 		register(MessageLearnGroup.class, Side.SERVER);
 		register(MessageSkipToLevel.class, Side.SERVER);
 		register(MessageLevelUp.class, Side.CLIENT);
+		register(MessageChangeControllerSlot.class, Side.SERVER);
 	}
 
 	private static void register(Class clazz, Side handlerSide) {

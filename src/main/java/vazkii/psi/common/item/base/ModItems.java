@@ -15,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import vazkii.psi.common.item.ItemCAD;
 import vazkii.psi.common.item.ItemDetonator;
+import vazkii.psi.common.item.ItemExosuitController;
 import vazkii.psi.common.item.ItemMaterial;
 import vazkii.psi.common.item.ItemSpellBullet;
 import vazkii.psi.common.item.ItemSpellDrive;
@@ -44,7 +45,8 @@ public final class ModItems {
 	public static ItemMod spellBullet;
 	public static ItemMod spellDrive;
 	public static ItemMod detonator;
-	
+	public static ItemMod exosuitController;
+
 	public static ItemMod cad;
 
 	public static ItemModTool psimetalShovel;
@@ -67,6 +69,7 @@ public final class ModItems {
 		spellBullet = new ItemSpellBullet();
 		spellDrive = new ItemSpellDrive();
 		detonator = new ItemDetonator();
+		exosuitController = new ItemExosuitController();
 
 		cad = new ItemCAD();
 

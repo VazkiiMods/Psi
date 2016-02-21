@@ -10,6 +10,8 @@
  */
 package vazkii.psi.common.item.armor;
 
+import java.util.List;
+
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -20,9 +22,12 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ICADColorizer;
+import vazkii.psi.api.cad.ISocketable;
 import vazkii.psi.client.model.ModelPsimetalExosuit;
 import vazkii.psi.common.core.handler.ConfigHandler;
+import vazkii.psi.common.item.base.ItemMod;
 import vazkii.psi.common.item.base.ItemModArmor;
+import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.item.tool.IPsimetalTool;
 import vazkii.psi.common.item.tool.ItemPsimetalTool;
 import vazkii.psi.common.lib.LibResources;
@@ -38,6 +43,17 @@ public class ItemPsimetalArmor extends ItemModArmor implements IPsimetalTool {
 	@Override
 	public void onArmorTick(World world, EntityPlayer player, ItemStack itemStack) {
 		ItemPsimetalTool.regen(itemStack, player, true);
+	}
+	
+	@Override
+	public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
+		String componentName = ItemMod.local(ISocketable.getSocketedItemName(stack, "psimisc.none"));
+		ItemMod.addToTooltip(tooltip, "psimisc.spellSelected", componentName);
+	}
+
+	@Override
+	public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack) {
+		return par2ItemStack.getItem() == ModItems.material && par2ItemStack.getItemDamage() == 1 ? true : super.getIsRepairable(par1ItemStack, par2ItemStack);
 	}
 	
 	@Override

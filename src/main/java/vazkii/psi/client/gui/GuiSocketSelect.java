@@ -11,6 +11,7 @@
 package vazkii.psi.client.gui;
 
 import java.awt.Color;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,17 +26,19 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.settings.GameSettings;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.cad.ISocketable;
+import vazkii.psi.api.cad.ISocketableController;
 import vazkii.psi.client.core.handler.KeybindHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.lib.LibResources;
+import vazkii.psi.common.network.Message;
 import vazkii.psi.common.network.NetworkHandler;
+import vazkii.psi.common.network.message.MessageChangeControllerSlot;
 import vazkii.psi.common.network.message.MessageChangeSocketableSlot;
 
 public class GuiSocketSelect extends GuiScreen {
@@ -58,18 +61,37 @@ public class GuiSocketSelect extends GuiScreen {
 
 	int timeIn = 0;
 	int slotSelected = -1;
+
+	ItemStack controllerStack;
+	ISocketableController controller;
+	ItemStack[] controlledStacks;
+	int controlSlot;
+
 	ItemStack socketableStack;
 	ISocketable socketable;
 	List<Integer> slots;
 
 	public GuiSocketSelect(ItemStack stack) {
-		socketableStack = stack;
+		mc = Minecraft.getMinecraft();
+		if(stack.getItem() instanceof ISocketable)
+			setSocketable(stack);
+		else if(stack.getItem() instanceof ISocketableController) {
+			controllerStack = stack;
+			controller = (ISocketableController) stack.getItem();
+			controlledStacks = controller.getControlledStacks(mc.thePlayer, stack);
+			controlSlot = controller.getDefaultControlSlot(controllerStack);
+			setSocketable(controlledStacks[controlSlot]);
+		}
+	}
 
-		if(stack != null && stack.getItem() instanceof ISocketable)
-			socketable = (ISocketable) stack.getItem();
-		else throw new IllegalArgumentException("Stack must be non-null and ISocketable");
-
+	public void setSocketable(ItemStack stack) {
 		slots = new ArrayList();
+		if(stack == null)
+			return;
+
+		socketableStack = stack;
+		socketable = (ISocketable) stack.getItem();
+
 		for(int i = 0; i < ISocketable.MAX_SLOTS; i++)
 			if(socketable.showSlotInRadialMenu(stack, i))
 				slots.add(i);
@@ -186,20 +208,58 @@ public class GuiSocketSelect extends GuiScreen {
 		}
 
 		float stime = 5F;
-		float s = 3F * Math.min(stime, timeIn + partialTicks) / stime;
-		GlStateManager.scale(s, s, s);
-		GlStateManager.translate(x / s - 8, y / s - 8, 0);
-
+		float fract = Math.min(stime, timeIn + partialTicks) / stime;
+		float s = 3F * fract;
 		GlStateManager.enableRescaleNormal();
 		GlStateManager.enableBlend();
 		GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
 		RenderHelper.enableGUIStandardItemLighting();
-		mc.getRenderItem().renderItemAndEffectIntoGUI(socketableStack, 0, 0);
+
+		if(controlledStacks != null && controlledStacks.length > 0) {
+			int xs = width / 2 - (18 * controlledStacks.length) / 2;
+			int ys = height / 2;
+			
+			for(int i = 0; i < controlledStacks.length; i++) {
+				float yoff = 25F + maxRadius;
+				if(i == controlSlot)
+					yoff += 5F;
+				
+				GlStateManager.translate(0, -yoff * fract, 0F);
+				mc.getRenderItem().renderItemAndEffectIntoGUI(controlledStacks[i], xs + i * 18, ys);
+				GlStateManager.translate(0, yoff * fract, 0F);
+			}
+			
+		}
+		
+		if(socketableStack != null) {
+			GlStateManager.scale(s, s, s);
+			GlStateManager.translate(x / s - 8, y / s - 8, 0);
+			mc.getRenderItem().renderItemAndEffectIntoGUI(socketableStack, 0, 0);
+		}
 		RenderHelper.disableStandardItemLighting();
 		GlStateManager.disableBlend();
 		GlStateManager.disableRescaleNormal();
 
 		GlStateManager.popMatrix();
+	}
+
+	@Override
+	protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
+		super.mouseClicked(mouseX, mouseY, mouseButton);
+
+		if(controllerStack != null) {
+			if(mouseButton == 0) {
+				controlSlot++;
+				if(controlSlot >= controlledStacks.length)
+					controlSlot = 0;
+			} else if(mouseButton == 1) {
+				controlSlot--;
+				if(controlSlot < 0)
+					controlSlot = controlledStacks.length - 1;
+			}
+
+			setSocketable(controlledStacks[controlSlot]);
+		}
 	}
 
 	@Override
@@ -211,15 +271,19 @@ public class GuiSocketSelect extends GuiScreen {
 			if(slotSelected != -1) {
 				int slot = slots.get(slotSelected);
 				PlayerDataHandler.get(mc.thePlayer).stopLoopcast();
-				MessageChangeSocketableSlot message = new MessageChangeSocketableSlot(slot);
+
+				Message message = null;
+				if(controllerStack != null)
+					message = new MessageChangeControllerSlot(controlSlot, slot);
+				else message = new MessageChangeSocketableSlot(slot);
 				NetworkHandler.INSTANCE.sendToServer(message);
 			}
 		}
-		
+
 		ImmutableSet<KeyBinding> set = ImmutableSet.of(mc.gameSettings.keyBindForward, mc.gameSettings.keyBindLeft, mc.gameSettings.keyBindBack, mc.gameSettings.keyBindRight, mc.gameSettings.keyBindSneak, mc.gameSettings.keyBindSprint, mc.gameSettings.keyBindJump);
 		for(KeyBinding k : set)
 			KeyBinding.setKeyBindState(k.getKeyCode(), isKeyDown(k));
-			
+
 		timeIn++;
 	}
 
@@ -231,7 +295,7 @@ public class GuiSocketSelect extends GuiScreen {
 		} 
 		return Keyboard.isKeyDown(key);
 	}
-	
+
 	@Override
 	public boolean doesGuiPauseGame() {
 		return false;

@@ -144,6 +144,7 @@ item.psi:psimetalExosuitHelmet.name=Psimetal Exosuit Helmet
 item.psi:psimetalExosuitChestplate.name=Psimetal Exosuit Chestplate
 item.psi:psimetalExosuitLeggings.name=Psimetal Exosuit Leggings
 item.psi:psimetalExosuitBoots.name=Psimetal Exosuit Boots
+item.psi:exosuitController.name=Exosuit Controller
 
 # DEATH MESSAGES
 death.attack.psi-overload=%s overflowed their Psionic Energy

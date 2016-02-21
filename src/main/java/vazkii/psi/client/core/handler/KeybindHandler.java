@@ -17,6 +17,7 @@ import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import vazkii.psi.api.cad.ISocketable;
+import vazkii.psi.api.cad.ISocketableController;
 import vazkii.psi.client.gui.GuiLeveling;
 import vazkii.psi.client.gui.GuiSocketSelect;
 
@@ -32,7 +33,7 @@ public class KeybindHandler {
 	public static void keyDown() {
 		Minecraft mc = Minecraft.getMinecraft();
 		ItemStack stack = mc.thePlayer.getCurrentEquippedItem();
-		if(stack != null && stack.getItem() instanceof ISocketable)
+		if(stack != null && (stack.getItem() instanceof ISocketable || stack.getItem() instanceof ISocketableController))
 			mc.displayGuiScreen(new GuiSocketSelect(stack));
 		else mc.displayGuiScreen(new GuiLeveling());
 	}

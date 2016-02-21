@@ -30,5 +30,6 @@ public final class LibItemNames {
 	public static final String PSIMETAL_EXOSUIT_CHESTPLATE = "psimetalExosuitChestplate";
 	public static final String PSIMETAL_EXOSUIT_LEGGINGS = "psimetalExosuitLeggings";
 	public static final String PSIMETAL_EXOSUIT_BOOTS = "psimetalExosuitBoots";
+	public static final String EXOSUIT_CONTROLLER = "exosuitController";
 
 }
