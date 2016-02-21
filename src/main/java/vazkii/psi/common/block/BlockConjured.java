@@ -46,6 +46,7 @@ public class BlockConjured extends BlockModContainer {
 	public BlockConjured() {
 		super(LibBlockNames.CONJURED, Material.glass);
 		setDefaultState(makeDefaultState());
+		setLightOpacity(0);
 	}
 	
 	public IBlockState makeDefaultState() {
@@ -71,6 +72,11 @@ public class BlockConjured extends BlockModContainer {
         return EnumWorldBlockLayer.TRANSLUCENT;
     }
 	
+    @Override
+    public boolean isFullCube() {
+        return false;
+    }
+    
 	@Override
 	public boolean isFullBlock() {
 		return false;
@@ -137,14 +143,14 @@ public class BlockConjured extends BlockModContainer {
 		boolean solid = state.getValue(SOLID);
 		float f = solid ? 0F : 0.25F;
 		
-		minX = f;
-		minY = f;
-		minZ = f;
-		maxX = 1F - f; 
-		maxY = 1F - f; 
-		maxZ = 1F - f; 
-
-		return super.getSelectedBoundingBox(world, pos);
+		double minX = f;
+		double minY = f;
+		double minZ = f;
+		double maxX = 1F - f; 
+		double maxY = 1F - f; 
+		double maxZ = 1F - f;
+		
+		return new AxisAlignedBB(pos.getX() + minX, pos.getY() + minY, pos.getZ() + minZ, pos.getX() + maxX, pos.getY() + maxY, pos.getZ() + maxZ);
 	}
 	
 	@Override
