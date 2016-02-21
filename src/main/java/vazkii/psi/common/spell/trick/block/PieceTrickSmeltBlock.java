@@ -2,10 +2,10 @@
  * This class was created by <Vazkii>. It's distributed as
  * part of the Psi Mod. Get the Source Code in github:
  * https://github.com/Vazkii/Psi
- * 
+ *
  * Psi is Open Source and distributed under the
  * Psi License: http://psi.vazkii.us/license.php
- * 
+ *
  * File Created @ [15/02/2016, 18:08:02 (GMT)]
  */
 package vazkii.psi.common.spell.trick.block;
@@ -75,7 +75,7 @@ public class PieceTrickSmeltBlock extends PieceTrick {
 				context.caster.worldObj.playAuxSFX(2001, pos, Block.getStateId(state));
 			}
 		}
-		
+
 		return null;
 	}
 

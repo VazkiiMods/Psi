@@ -40,7 +40,7 @@ public interface IInternalMethodHandler {
 	 * Gets the singleton instance of the spell cache.
 	 */
 	public ISpellCache getSpellCache();
-	
+
 	/**
 	 * Delays a spell context.
 	 */

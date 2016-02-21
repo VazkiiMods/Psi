@@ -101,14 +101,14 @@ public final class HUDHandler {
 		PlayerData data = PlayerDataHandler.get(mc.thePlayer);
 		if(data.level == 0 && !mc.thePlayer.capabilities.isCreativeMode)
 			return;
-		
+
 		GlStateManager.pushMatrix();
 		int scaleFactor = res.getScaleFactor();
 		if(scaleFactor > ConfigHandler.maxPsiBarScale) {
 			mc.gameSettings.guiScale = ConfigHandler.maxPsiBarScale;
 			res = new ScaledResolution(mc);
 			mc.gameSettings.guiScale = scaleFactor;
-			
+
 			float s = (float) ConfigHandler.maxPsiBarScale / (float) scaleFactor;
 			GlStateManager.scale(s, s, s);
 		}
@@ -123,7 +123,7 @@ public final class HUDHandler {
 		if(right)
 			x = res.getScaledWidth() + pad - width;
 		int y = res.getScaledHeight() / 2 - height / 2;
-		
+
 		if(!registeredMask) {
 			mc.renderEngine.bindTexture(psiBarMask);
 			mc.renderEngine.bindTexture(psiBarShatter);
@@ -225,7 +225,7 @@ public final class HUDHandler {
 		mc.fontRendererObj.drawStringWithShadow(s2, x - offStr2, 0, 0xFFFFFF);
 		GlStateManager.popMatrix();
 		GlStateManager.popMatrix();
-		
+
 		mc.gameSettings.guiScale = scaleFactor;
 	}
 
@@ -236,7 +236,7 @@ public final class HUDHandler {
 		String name = ISocketable.getSocketedItemName(stack, "");
 		if(stack == null || name == null || name.trim().isEmpty())
 			return;
-		
+
 		int ticks = ReflectionHelper.getPrivateValue(GuiIngame.class, mc.ingameGUI, LibObfuscation.REMAINING_HIGHLIGHT_TICKS);
 		ticks -= 10;
 
@@ -254,7 +254,7 @@ public final class HUDHandler {
 			GlStateManager.enableBlend();
 			GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 			mc.fontRendererObj.drawStringWithShadow(name, x, y, color);
-			
+
 			int w = mc.fontRendererObj.getStringWidth(name);
 			GlStateManager.pushMatrix();
 			GlStateManager.translate(x + w, y - 6, 0);

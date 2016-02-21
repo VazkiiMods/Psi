@@ -49,7 +49,7 @@ public class PieceConstantNumber extends SpellPiece {
 	public void drawAdditional() {
 		if(valueStr == null || valueStr.isEmpty())
 			valueStr = "0";
-		
+
 		Minecraft mc = Minecraft.getMinecraft();
 		int color = 0xFFFFFF;
 		int len = mc.fontRendererObj.getStringWidth(valueStr);
@@ -114,7 +114,7 @@ public class PieceConstantNumber extends SpellPiece {
 
 		if(newValueStr != null && doit)
 			valueStr = newValueStr;
-		
+
 		return !newValueStr.equals(oldStr);
 	}
 
@@ -144,7 +144,7 @@ public class PieceConstantNumber extends SpellPiece {
 	public Object evaluate() {
 		if(valueStr == null || valueStr.isEmpty())
 			valueStr = "0";
-		
+
 		try {
 			return Double.parseDouble(valueStr);
 		} catch(NumberFormatException e) {

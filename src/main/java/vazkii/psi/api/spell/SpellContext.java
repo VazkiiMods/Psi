@@ -67,7 +67,7 @@ public final class SpellContext {
 	// Armor Stuff
 	public EntityLivingBase attackingEntity;
 	public double damageTaken;
-	
+
 	/**
 	 * A map for custom data where addon authors can put stuff.
 	 */
@@ -75,7 +75,7 @@ public final class SpellContext {
 
 	// Runtime information, do not mess with.
 	public Object[][] evaluatedObjects = new Object[SpellGrid.GRID_SIZE][SpellGrid.GRID_SIZE];
-	public Stack<Action> actions = null; 
+	public Stack<Action> actions = null;
 
 	public boolean stopped = false;
 	public int delay = 0;
@@ -156,5 +156,5 @@ public final class SpellContext {
 	public boolean isInRadius(double x, double y, double z) {
 		return MathHelper.pointDistanceSpace(x, y, z, focalPoint.posX, focalPoint.posY, focalPoint.posZ) <= MAX_DISTANCE;
 	}
-	
+
 }

@@ -13,8 +13,6 @@ package vazkii.psi.api.spell;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.sun.jna.platform.win32.BaseTSD.SSIZE_T;
-
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -78,7 +76,7 @@ public final class SpellGrid {
 
 		return Math.max(rightmost - leftmost + 1, bottommost - topmost + 1);
 	}
-	
+
 	public boolean shift(SpellParam.Side side, boolean doit) {
 		boolean empty = false;
 		int leftmost = GRID_SIZE;
@@ -101,20 +99,20 @@ public final class SpellGrid {
 						bottommost = j;
 				}
 			}
-		
+
 		if(empty)
 			return false;
-		
+
 		if(exists(leftmost + side.offx, topmost + side.offy) && exists(rightmost + side.offx, bottommost + side.offy)) {
 			if(!doit)
 				return true;
-			
+
 			SpellPiece[][] newGrid = new SpellPiece[GRID_SIZE][GRID_SIZE];
-			
+
 			for(int i = 0; i < GRID_SIZE; i++)
 				for(int j = 0; j < GRID_SIZE; j++) {
 					SpellPiece p = gridData[i][j];
-					
+
 					if(p != null) {
 						int newx = i + side.offx;
 						int newy = j + side.offy;
@@ -123,7 +121,7 @@ public final class SpellGrid {
 						p.y = newy;
 					}
 				}
-			
+
 			gridData = newGrid;
 			return true;
 		}

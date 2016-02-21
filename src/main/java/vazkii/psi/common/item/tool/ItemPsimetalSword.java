@@ -54,7 +54,7 @@ public class ItemPsimetalSword extends ItemModSword implements IPsimetalTool {
 
 		return true;
 	}
-	
+
 	@Override
 	public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
 		ItemPsimetalTool.regen(stack, entityIn, isSelected);

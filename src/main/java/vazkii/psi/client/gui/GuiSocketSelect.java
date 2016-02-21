@@ -82,7 +82,7 @@ public class GuiSocketSelect extends GuiScreen {
 			controlSlot = controller.getDefaultControlSlot(controllerStack);
 			if(controlSlot >= controlledStacks.length)
 				controlSlot = 0;
-			
+
 			setSocketable(controlledStacks.length == 0 ? null : controlledStacks[controlSlot]);
 		}
 	}
@@ -219,21 +219,21 @@ public class GuiSocketSelect extends GuiScreen {
 		RenderHelper.enableGUIStandardItemLighting();
 
 		if(controlledStacks != null && controlledStacks.length > 0) {
-			int xs = width / 2 - (18 * controlledStacks.length) / 2;
+			int xs = width / 2 - 18 * controlledStacks.length / 2;
 			int ys = height / 2;
-			
+
 			for(int i = 0; i < controlledStacks.length; i++) {
 				float yoff = 25F + maxRadius;
 				if(i == controlSlot)
 					yoff += 5F;
-				
+
 				GlStateManager.translate(0, -yoff * fract, 0F);
 				mc.getRenderItem().renderItemAndEffectIntoGUI(controlledStacks[i], xs + i * 18, ys);
 				GlStateManager.translate(0, yoff * fract, 0F);
 			}
-			
+
 		}
-		
+
 		if(socketableStack != null) {
 			GlStateManager.scale(s, s, s);
 			GlStateManager.translate(x / s - 8, y / s - 8, 0);
@@ -295,7 +295,7 @@ public class GuiSocketSelect extends GuiScreen {
 		if(key < 0) {
 			int button = 100 + key;
 			return Mouse.isButtonDown(button);
-		} 
+		}
 		return Keyboard.isKeyDown(key);
 	}
 

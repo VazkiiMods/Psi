@@ -47,7 +47,7 @@ public class PieceOperatorVectorConstruct extends PieceOperator {
 			d2 = 0D;
 		if(d3 == null)
 			d3 = 0D;
-		
+
 		return new Vector3(d1, d2, d3);
 	}
 

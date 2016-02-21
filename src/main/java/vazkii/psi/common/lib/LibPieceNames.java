@@ -27,7 +27,7 @@ public final class LibPieceNames {
 	public static final String SELECTOR_TIME = "selectorTime";
 	public static final String SELECTOR_ATTACKER = "selectorAttacker";
 	public static final String SELECTOR_DAMAGE_TAKEN = "selectorDamageTaken";
-	
+
 	public static final String OPERATOR_SUM = "operatorSum";
 	public static final String OPERATOR_SUBTRACT = "operatorSubtract";
 	public static final String OPERATOR_MULTIPLY = "operatorMultiply";

@@ -102,7 +102,7 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable {
 
 		return itemStackIn;
 	}
-	
+
 	@Override
 	public void setSpell(ItemStack stack, Spell spell) {
 		int slot = getSelectedSlot(stack);

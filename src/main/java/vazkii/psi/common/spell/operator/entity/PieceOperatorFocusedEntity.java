@@ -2,10 +2,10 @@
  * This class was created by <Vazkii>. It's distributed as
  * part of the Psi Mod. Get the Source Code in github:
  * https://github.com/Vazkii/Psi
- * 
+ *
  * Psi is Open Source and distributed under the
  * Psi License: http://psi.vazkii.us/license.php
- * 
+ *
  * File Created @ [15/02/2016, 19:14:10 (GMT)]
  */
 package vazkii.psi.common.spell.operator.entity;
@@ -17,14 +17,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
-import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellParam;
 import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.api.spell.param.ParamEntity;
 import vazkii.psi.api.spell.piece.PieceOperator;
-import vazkii.psi.common.Psi;
 import vazkii.psi.common.spell.operator.vector.PieceOperatorVectorRaycast;
 
 public class PieceOperatorFocusedEntity extends PieceOperator {
@@ -64,12 +62,12 @@ public class PieceOperatorFocusedEntity extends PieceOperator {
 		if(e instanceof EntityPlayer)
 			positionVector = positionVector.addVector(0, e.getEyeHeight(), 0);
 
-		if(pos != null) 
+		if(pos != null)
 			distance = pos.hitVec.distanceTo(positionVector);
 
 		Vec3 lookVector = e.getLookVec();
 		Vec3 reachVector = positionVector.addVector(lookVector.xCoord * finalDistance, lookVector.yCoord * finalDistance, lookVector.zCoord * finalDistance);
-		
+
 		Entity lookedEntity = null;
 		List<Entity> entitiesInBoundingBox = e.worldObj.getEntitiesWithinAABBExcludingEntity(e, e.getEntityBoundingBox().addCoord(lookVector.xCoord * finalDistance, lookVector.yCoord * finalDistance, lookVector.zCoord * finalDistance).expand(1F, 1F, 1F));
 		double minDistance = distance;
@@ -95,7 +93,7 @@ public class PieceOperatorFocusedEntity extends PieceOperator {
 				}
 			}
 
-			if(lookedEntity != null && (minDistance < distance || pos == null)) 
+			if(lookedEntity != null && (minDistance < distance || pos == null))
 				foundEntity = lookedEntity;
 		}
 

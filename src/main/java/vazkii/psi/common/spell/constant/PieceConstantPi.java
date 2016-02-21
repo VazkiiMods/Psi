@@ -2,10 +2,10 @@
  * This class was created by <Vazkii>. It's distributed as
  * part of the Psi Mod. Get the Source Code in github:
  * https://github.com/Vazkii/Psi
- * 
+ *
  * Psi is Open Source and distributed under the
  * Psi License: http://psi.vazkii.us/license.php
- * 
+ *
  * File Created @ [15/02/2016, 17:26:14 (GMT)]
  */
 package vazkii.psi.common.spell.constant;
@@ -41,5 +41,5 @@ public class PieceConstantPi extends SpellPiece {
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		return evaluate();
 	}
-	
+
 }

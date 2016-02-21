@@ -180,7 +180,7 @@ public class ModCraftingRecipes {
 				'A', new ItemStack(Blocks.stone_button),
 				'I', "ingotIron",
 				'D', "dustPsi");
-		
+
 		addOreDictRecipe(new ItemStack(ModItems.spellDrive),
 				"I", "R", "I",
 				'I', "ingotPsi",
@@ -206,7 +206,7 @@ public class ModCraftingRecipes {
 				'P', "ingotPsi",
 				'G', "gemPsi",
 				'I', "ingotIron");
-		
+
 		addOreDictRecipe(new ItemStack(ModItems.psimetalExosuitHelmet),
 				"GPG", "P P",
 				'P', "ingotPsi",
@@ -223,7 +223,7 @@ public class ModCraftingRecipes {
 				"G G", "P P",
 				'P', "ingotPsi",
 				'G', "gemPsi");
-		
+
 		addOreDictRecipe(new ItemStack(ModItems.detonator),
 				" B ", "IPI",
 				'P', "dustPsi",
@@ -234,7 +234,7 @@ public class ModCraftingRecipes {
 				'R', "dustRedstone",
 				'G', "blockGlassColorless",
 				'I', "ingotPsi");
-		
+
 		addOreDictRecipe(new ItemStack(ModItems.exosuitSensor, 1, 0),
 				" I ", "IMR", " R ",
 				'M', "dustGlowstone",
@@ -255,7 +255,7 @@ public class ModCraftingRecipes {
 				'M', new ItemStack(Items.speckled_melon),
 				'I', "ingotPsi",
 				'R', "ingotIron");
-		
+
 		addOreDictRecipe(new ItemStack(ModBlocks.psiDecorative, 1, 0),
 				"OOO", "OOO", "OOO",
 				'O', "dustPsi");

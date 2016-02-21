@@ -71,7 +71,7 @@ public class PieceTrickBreakBlock extends PieceTrick {
 	}
 
 	public static void removeBlockWithDrops(SpellContext context, EntityPlayer player, World world, ItemStack tool, BlockPos pos, boolean particles) {
-		if(!world.isBlockLoaded(pos) || (context.positionBroken != null && pos.equals(context.positionBroken.getBlockPos())))
+		if(!world.isBlockLoaded(pos) || context.positionBroken != null && pos.equals(context.positionBroken.getBlockPos()))
 			return;
 
 		int harvestLevel = ConfigHandler.cadHarvestLevel;

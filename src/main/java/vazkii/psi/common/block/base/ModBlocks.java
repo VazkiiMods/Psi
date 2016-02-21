@@ -38,7 +38,7 @@ public class ModBlocks {
 		conjured = new BlockConjured();
 
 		initTileEntities();
-		
+
 		// Psi oredict mappings
 		OreDictionary.registerOre("blockPsiDust", new ItemStack(psiDecorative, 1, 0));
 		OreDictionary.registerOre("blockPsiMetal", new ItemStack(psiDecorative, 1, 1));

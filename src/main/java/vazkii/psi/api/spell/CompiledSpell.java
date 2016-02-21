@@ -19,7 +19,6 @@ import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.internal.IPlayerData;
-import vazkii.psi.api.spell.CompiledSpell.Action;
 import vazkii.psi.api.spell.SpellPiece.Null;
 
 /**
@@ -50,10 +49,10 @@ public class CompiledSpell {
 		IPlayerData data = PsiAPI.internalHandler.getDataForPlayer(context.caster);
 		while(!context.actions.isEmpty()) {
 			context.actions.pop().execute(data, context);
-			
+
 			if(context.stopped)
 				return false;
-			
+
 			if(context.delay > 0)
 				return true;
 		}
@@ -67,7 +66,7 @@ public class CompiledSpell {
 		try {
 			if(context.actions == null)
 				context.actions = (Stack<Action>) actions.clone();
-			
+
 			if(context.cspell.execute(context))
 				PsiAPI.internalHandler.delayContext(context);
 		} catch(SpellRuntimeException e) {

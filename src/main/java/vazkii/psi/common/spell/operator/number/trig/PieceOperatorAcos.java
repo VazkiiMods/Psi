@@ -2,16 +2,15 @@
  * This class was created by <Vazkii>. It's distributed as
  * part of the Psi Mod. Get the Source Code in github:
  * https://github.com/Vazkii/Psi
- * 
+ *
  * Psi is Open Source and distributed under the
  * Psi License: http://psi.vazkii.us/license.php
- * 
+ *
  * File Created @ [15/02/2016, 17:31:20 (GMT)]
  */
 package vazkii.psi.common.spell.operator.number.trig;
 
 import vazkii.psi.api.spell.Spell;
-import vazkii.psi.api.spell.SpellCompilationException;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellParam;
 import vazkii.psi.api.spell.SpellRuntimeException;
@@ -36,7 +35,7 @@ public class PieceOperatorAcos extends PieceOperator {
 		Double d = this.<Double>getParamValue(context, num);
 		if(d < -1 || d > 1)
 			throw new SpellRuntimeException("psi.spellerror.outsidetrigdomain");
-		
+
 		return Math.acos(d);
 	}
 

@@ -20,7 +20,7 @@ public interface IPsiBlock extends IVariantHolder, IVariantEnumHolder {
 	public String getBareName();
 
 	public IProperty[] getIgnoredProperties();
-	
+
 	public EnumRarity getBlockRarity(ItemStack stack);
 
 }

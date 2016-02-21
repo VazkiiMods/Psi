@@ -70,7 +70,7 @@ public final class Spell {
 
 		grid.writeToNBT(cmp);
 	}
-	
+
 	public Spell copy() {
 		NBTTagCompound cmp = new NBTTagCompound();
 		writeToNBT(cmp);

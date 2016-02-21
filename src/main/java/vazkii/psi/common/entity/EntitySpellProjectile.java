@@ -40,7 +40,7 @@ public class EntitySpellProjectile extends EntityThrowable {
 	private static final String TAG_LAST_MOTION_Z = "lastMotionZ";
 
 	public SpellContext context;
-	
+
 	public EntitySpellProjectile(World worldIn) {
 		super(worldIn);
 		setSize(0F, 0F);
@@ -165,11 +165,11 @@ public class EntitySpellProjectile extends EntityThrowable {
 			Psi.proxy.sparkleFX(worldObj, x, y, z, r, g, b, (float) look.x, (float) look.y, (float) look.z, 1.2F, 12);
 		}
 	}
-	
+
 	public int getLiveTime() {
 		return 600;
 	}
-	
+
 	public int getParticleCount() {
 		return 5;
 	}
@@ -186,11 +186,11 @@ public class EntitySpellProjectile extends EntityThrowable {
 	public void cast() {
 		cast(null);
 	}
-	
+
 	public void cast(Consumer<SpellContext> callback) {
 		Entity thrower = getThrower();
 		boolean canCast = false;
-		
+
 		if(thrower != null && thrower instanceof EntityPlayer) {
 			ItemStack spellContainer = dataWatcher.getWatchableObjectItemStack(21);
 			if(spellContainer != null && spellContainer.getItem() instanceof ISpellContainer) {
@@ -203,7 +203,7 @@ public class EntitySpellProjectile extends EntityThrowable {
 				}
 			}
 		}
-		
+
 		if(callback != null)
 			callback.accept(context);
 

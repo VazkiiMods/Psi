@@ -2,10 +2,10 @@
  * This class was created by <Vazkii>. It's distributed as
  * part of the Psi Mod. Get the Source Code in github:
  * https://github.com/Vazkii/Psi
- * 
+ *
  * Psi is Open Source and distributed under the
  * Psi License: http://psi.vazkii.us/license.php
- * 
+ *
  * File Created @ [17/02/2016, 17:28:34 (GMT)]
  */
 package vazkii.psi.common.spell.trick;
@@ -43,7 +43,7 @@ public class PieceTrickDie extends PieceTrick {
 		Double timeVal = this.<Double>getParamValue(context, target);
 		if(Math.abs(timeVal) < 1)
 			context.stopped = true;
-		
+
 		return null;
 	}
 

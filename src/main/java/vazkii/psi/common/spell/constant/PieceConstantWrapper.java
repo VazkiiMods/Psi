@@ -2,10 +2,10 @@
  * This class was created by <Vazkii>. It's distributed as
  * part of the Psi Mod. Get the Source Code in github:
  * https://github.com/Vazkii/Psi
- * 
+ *
  * Psi is Open Source and distributed under the
  * Psi License: http://psi.vazkii.us/license.php
- * 
+ *
  * File Created @ [19/02/2016, 19:11:22 (GMT)]
  */
 package vazkii.psi.common.spell.constant;
@@ -29,13 +29,13 @@ public class PieceConstantWrapper extends SpellPiece {
 	public PieceConstantWrapper(Spell spell) {
 		super(spell);
 	}
-	
+
 	@Override
 	public void initParams() {
 		addParam(target = new ParamNumber(SpellParam.GENERIC_NAME_TARGET, SpellParam.RED, false, false));
 		addParam(max = new ParamNumber("psi.spellparam.constant", SpellParam.GREEN, false, true));
 	}
-	
+
 	@Override
 	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
 		meta.addStat(EnumSpellStat.COMPLEXITY, 1);
@@ -52,12 +52,12 @@ public class PieceConstantWrapper extends SpellPiece {
 			return Math.max(maxVal, -Math.abs(targetVal));
 		else return 0;
 	}
-	
+
 	@Override
 	public Object evaluate() throws SpellCompilationException {
 		return getParamEvaluation(max);
 	}
-	
+
 	@Override
 	public EnumPieceType getPieceType() {
 		return EnumPieceType.CONSTANT;

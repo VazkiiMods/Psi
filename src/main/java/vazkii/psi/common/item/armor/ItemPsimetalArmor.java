@@ -2,10 +2,10 @@
  * This class was created by <Vazkii>. It's distributed as
  * part of the Psi Mod. Get the Source Code in github:
  * https://github.com/Vazkii/Psi
- * 
+ *
  * Psi is Open Source and distributed under the
  * Psi License: http://psi.vazkii.us/license.php
- * 
+ *
  * File Created @ [20/02/2016, 22:20:00 (GMT)]
  */
 package vazkii.psi.common.item.armor;
@@ -40,16 +40,16 @@ import vazkii.psi.common.lib.LibResources;
 public class ItemPsimetalArmor extends ItemModArmor implements IPsimetalTool, IPsiEventArmor {
 
 	protected ModelBiped[] models = null;
-	
+
 	public ItemPsimetalArmor(String name, int type) {
 		super(name, PsiAPI.PSIMETAL_ARMOR_MATERIAL, type);
 	}
-	
+
 	@Override
 	public void onArmorTick(World world, EntityPlayer player, ItemStack itemStack) {
 		ItemPsimetalTool.regen(itemStack, player, false);
 	}
-	
+
 	public void cast(ItemStack stack, PsiArmorEvent event) {
 		PlayerData data = PlayerDataHandler.get(event.entityPlayer);
 		ItemStack playerCad = PsiAPI.getPlayerCAD(event.entityPlayer);
@@ -69,19 +69,19 @@ public class ItemPsimetalArmor extends ItemModArmor implements IPsimetalTool, IP
 		if(event.type.equals(getEvent(stack)))
 			cast(stack, event);
 	}
-	
+
 	public String getEvent(ItemStack stack) {
 		return PsiArmorEvent.NONE;
 	}
-	
+
 	public int getCastCooldown(ItemStack stack) {
 		return 5;
 	}
-	
+
 	public float getCastVolume() {
 		return 0.025F;
 	}
-	
+
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
 		ItemMod.tooltipIfShift(tooltip, () -> {
@@ -95,23 +95,23 @@ public class ItemPsimetalArmor extends ItemModArmor implements IPsimetalTool, IP
 	public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack) {
 		return par2ItemStack.getItem() == ModItems.material && par2ItemStack.getItemDamage() == 1 ? true : super.getIsRepairable(par1ItemStack, par2ItemStack);
 	}
-	
+
 	@Override
 	public final String getArmorTexture(ItemStack stack, Entity entity, int slot, String type) {
 		boolean overlay = type != null && type.equals("overlay");
 		return overlay ? LibResources.MODEL_PSIMETAL_EXOSUIT : LibResources.MODEL_PSIMETAL_EXOSUIT_SENSOR;
 	}
-	
+
 	@Override
 	public boolean hasColor(ItemStack stack) {
 		return true;
 	}
-	
+
 	@Override
 	public int getColor(ItemStack stack) {
 		return ICADColorizer.DEFAULT_SPELL_COLOR;
 	}
-	
+
 	@Override
 	public int getColorFromItemStack(ItemStack stack, int renderPass) {
 		return super.getColorFromItemStack(stack, ~renderPass & 1); // do the switcheroo

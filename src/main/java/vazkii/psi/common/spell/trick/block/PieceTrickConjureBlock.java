@@ -2,10 +2,10 @@
  * This class was created by <Vazkii>. It's distributed as
  * part of the Psi Mod. Get the Source Code in github:
  * https://github.com/Vazkii/Psi
- * 
+ *
  * Psi is Open Source and distributed under the
  * Psi License: http://psi.vazkii.us/license.php
- * 
+ *
  * File Created @ [17/02/2016, 18:35:25 (GMT)]
  */
 package vazkii.psi.common.spell.trick.block;
@@ -51,7 +51,7 @@ public class PieceTrickConjureBlock extends PieceTrick {
 		super.addToMetadata(meta);
 		addStats(meta);
 	}
-	
+
 	public void addStats(SpellMetadata meta) {
 		meta.addStat(EnumSpellStat.POTENCY, 15);
 		meta.addStat(EnumSpellStat.COST, 20);
@@ -70,7 +70,7 @@ public class PieceTrickConjureBlock extends PieceTrick {
 		BlockPos pos = new BlockPos(positionVal.x, positionVal.y, positionVal.z);
 		PieceTrickPlaceBlock.placeBlock(context.caster, context.caster.worldObj, pos, false, true);
 		IBlockState state = context.caster.worldObj.getBlockState(pos);
-		
+
 		if(!context.caster.worldObj.isRemote && state.getBlock() == ModBlocks.conjured) {
 			context.caster.worldObj.setBlockState(pos, messWithState(state));
 			TileConjured tile = (TileConjured) context.caster.worldObj.getTileEntity(pos);
@@ -79,15 +79,15 @@ public class PieceTrickConjureBlock extends PieceTrick {
 				int val = timeVal.intValue();
 				tile.time = val * 20;
 			}
-			
+
 			ItemStack cad = PsiAPI.getPlayerCAD(context.caster);
 			if(cad != null)
 				tile.colorizer = ((ICAD) cad.getItem()).getComponentInSlot(cad, EnumCADComponent.DYE);
 		}
-		
+
 		return null;
 	}
-	
+
 	public IBlockState messWithState(IBlockState state) {
 		return state.withProperty(BlockConjured.SOLID, true);
 	}

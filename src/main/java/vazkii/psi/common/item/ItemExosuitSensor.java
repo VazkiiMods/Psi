@@ -2,10 +2,10 @@
  * This class was created by <Vazkii>. It's distributed as
  * part of the Psi Mod. Get the Source Code in github:
  * https://github.com/Vazkii/Psi
- * 
+ *
  * Psi is Open Source and distributed under the
  * Psi License: http://psi.vazkii.us/license.php
- * 
+ *
  * File Created @ [21/02/2016, 16:34:43 (GMT)]
  */
 package vazkii.psi.common.item;
@@ -30,11 +30,11 @@ public class ItemExosuitSensor extends ItemMod implements IExosuitSensor {
 			"exosuitSensorHeat",
 			"exosuitSensorStress"
 	};
-	
+
 	public ItemExosuitSensor() {
 		super(LibItemNames.EXOSUIT_SENSOR, VARIANTS);
 		setMaxStackSize(1);
-		
+
 		GameRegistry.addRecipe(new SensorAttachRecipe());
 		GameRegistry.addRecipe(new SensorRemoveRecipe());
 		RecipeSorter.register("psi:sensorAttach", SensorAttachRecipe.class, Category.SHAPELESS, "");
@@ -62,7 +62,7 @@ public class ItemExosuitSensor extends ItemMod implements IExosuitSensor {
 		default: return ICADColorizer.DEFAULT_SPELL_COLOR;
 		}
 	}
-	
+
 	@Override
 	public int getColorFromItemStack(ItemStack stack, int renderPass) {
 		return renderPass == 1 ? getColor(stack) : super.getColorFromItemStack(stack, renderPass);

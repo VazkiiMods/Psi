@@ -77,7 +77,7 @@ public class PlayerDataHandler {
 
 	private static HashMap<Integer, PlayerData> playerData = new HashMap();
 	public static Set<SpellContext> delayedContexts = new HashSet();
-	
+
 	private static final String DATA_TAG = "PsiData";
 
 	public static final DamageSource damageSourceOverload = new DamageSource("psi-overload").setDamageBypassesArmor().setMagicDamage();
@@ -134,20 +134,20 @@ public class PlayerDataHandler {
 		public void onServerTick(ServerTickEvent event) {
 			if(event.phase == Phase.END) {
 				PlayerDataHandler.cleanup();
-				
+
 				List<SpellContext> remove = new ArrayList();
 				for(SpellContext context : delayedContexts) {
 					context.delay--;
-					
+
 					if(context.delay <= 0) {
 						context.delay = 0; // Just in case it goes under 0
 						context.cspell.safeExecute(context);
-						
+
 						if(context.delay == 0)
 							remove.add(context);
 					}
 				}
-				
+
 				if(!remove.isEmpty())
 					delayedContexts.removeAll(remove);
 			}
@@ -167,11 +167,11 @@ public class PlayerDataHandler {
 			if(event.entityLiving instanceof EntityPlayer) {
 				EntityPlayer player = (EntityPlayer) event.entityLiving;
 				PlayerDataHandler.get(player).damage(event.ammount);
-				
+
 				EntityLivingBase attacker = null;
 				if(event.source.getEntity() != null && event.source.getEntity() instanceof EntityLivingBase)
 					attacker = (EntityLivingBase) event.source.getEntity();
-				
+
 				PsiArmorEvent.post(new PsiArmorEvent(player, PsiArmorEvent.DAMAGE, event.ammount, attacker));
 				if(event.source.isFireDamage())
 					PsiArmorEvent.post(new PsiArmorEvent(player, PsiArmorEvent.ON_FIRE));
@@ -193,7 +193,7 @@ public class PlayerDataHandler {
 				PsiArmorEvent.post(new PsiArmorEvent(player, PsiArmorEvent.JUMP));
 			}
 		}
-		
+
 		@SubscribeEvent
 		public void onPsiArmorEvent(PsiArmorEvent event) {
 			for(int i = 0; i < 4; i++) {
@@ -278,7 +278,7 @@ public class PlayerDataHandler {
 		public int eidosAnchorTime;
 		public int postAnchorRecallTime;
 		public int eidosReversionTime;
-		
+
 		// Exosuit Event Stuff
 		boolean lowLight, underwater, lowHp;
 
@@ -389,7 +389,7 @@ public class PlayerDataHandler {
 					loopcastFadeTime--;
 			}
 
-			
+
 			if(player.isDead) {
 				eidosAnchorTime = 0;
 				eidosReversionTime = 0;
@@ -444,7 +444,7 @@ public class PlayerDataHandler {
 								riding.setPosition(vec.x, vec.y, vec.z);
 								riding = riding.ridingEntity;
 							}
-							
+
 							for(int i = 0; i < 5; i++) {
 								double spread = 0.6;
 
@@ -473,16 +473,16 @@ public class PlayerDataHandler {
 					eidosChangelog.remove(0);
 				eidosChangelog.push(Vector3.fromEntity(player));
 			}
-			
+
 			BlockPos pos = player.getPosition();
 			Chunk chunk = player.worldObj.getChunkFromBlockCoords(pos);
 			int light = chunk.getLightFor(EnumSkyBlock.BLOCK, pos);
-			
+
 			boolean lowLight = light < 7;
 			if(!this.lowLight && lowLight)
 				PsiArmorEvent.post(new PsiArmorEvent(player, PsiArmorEvent.LOW_LIGHT));
 			this.lowLight = lowLight;
-			
+
 			boolean underwater = player.isInsideOfMaterial(Material.water);
 			if(!this.underwater && underwater)
 				PsiArmorEvent.post(new PsiArmorEvent(player, PsiArmorEvent.UNDERWATER));
@@ -492,7 +492,7 @@ public class PlayerDataHandler {
 			if(!this.lowHp && lowHp)
 				PsiArmorEvent.post(new PsiArmorEvent(player, PsiArmorEvent.LOW_HP));
 			this.lowHp = lowHp;
-			
+
 			List<Deduction> remove = new ArrayList();
 			for(Deduction d : deductions) {
 				if(d.invalid)
@@ -533,7 +533,7 @@ public class PlayerDataHandler {
 				level++;
 				levelPoints++;
 				lastSpellGroup = "";
-				
+
 				if(player instanceof EntityPlayerMP) {
 					MessageLevelUp message = new MessageLevelUp(level);
 					MessageDataSync message2 = new MessageDataSync(this);

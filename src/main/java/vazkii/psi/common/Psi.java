@@ -33,7 +33,7 @@ public class Psi {
 	public void preInit(FMLPreInitializationEvent event) {
 		proxy.preInit(event);
 	}
-	
+
 	@EventHandler
 	public void serverStartingEvent(FMLServerStartingEvent event) {
 		event.registerServerCommand(new CommandDownloadLatest());

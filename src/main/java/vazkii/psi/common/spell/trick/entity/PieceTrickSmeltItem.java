@@ -2,10 +2,10 @@
  * This class was created by <Vazkii>. It's distributed as
  * part of the Psi Mod. Get the Source Code in github:
  * https://github.com/Vazkii/Psi
- * 
+ *
  * Psi is Open Source and distributed under the
  * Psi License: http://psi.vazkii.us/license.php
- * 
+ *
  * File Created @ [15/02/2016, 18:11:08 (GMT)]
  */
 package vazkii.psi.common.spell.trick.entity;
@@ -53,12 +53,12 @@ public class PieceTrickSmeltItem extends PieceTrick {
 			EntityItem eitem = (EntityItem) targetVal;
 			ItemStack stack = eitem.getEntityItem();
 			ItemStack result = FurnaceRecipes.instance().getSmeltingResult(stack);
-			
+
 			if(result != null) {
 				stack.stackSize--;
 				if(stack.stackSize == 0 && !eitem.worldObj.isRemote)
 					eitem.setDead();
-				
+
 				EntityItem item = new EntityItem(context.caster.worldObj, eitem.posX, eitem.posY, eitem.posZ, result.copy());
 				if(!context.caster.worldObj.isRemote)
 					context.caster.worldObj.spawnEntityInWorld(item);

@@ -73,5 +73,5 @@ public interface IPsimetalTool extends ISocketable, ISpellSettable {
 			setBulletInSocket(stack, slot, bullet);
 		}
 	}
-	
+
 }

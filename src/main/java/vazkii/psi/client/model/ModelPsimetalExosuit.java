@@ -2,10 +2,10 @@
  * This class was created by <Vazkii>. It's distributed as
  * part of the Psi Mod. Get the Source Code in github:
  * https://github.com/Vazkii/Psi
- * 
+ *
  * Psi is Open Source and distributed under the
  * Psi License: http://psi.vazkii.us/license.php
- * 
+ *
  * File Created @ [20/02/2016, 22:41:34 (GMT)]
  */
 package vazkii.psi.client.model;
@@ -38,14 +38,14 @@ public class ModelPsimetalExosuit extends ModelBiped {
 	public ModelRenderer body3;
 
 	int slot;
-	
+
 	public ModelPsimetalExosuit(int slot) {
 		this.slot = slot;
-		
+
 		textureWidth = 64;
 		textureHeight = 128;
 		float s = 0.2F;
-		
+
 		sensorcolor = new ModelRenderer(this, 38, 40);
 		sensorcolor.mirror = true;
 		sensorcolor.setRotationPoint(0.0F, 0.0F, 0.0F);
@@ -107,7 +107,7 @@ public class ModelPsimetalExosuit extends ModelBiped {
 		bootL.mirror = true;
 		bootL.setRotationPoint(2.0F, 12.0F, 0.0F);
 		bootL.addBox(-2.0F, 8.0F, -3.0F, 4, 4, 5, s);
-		
+
 		sensor.addChild(sensorcolor);
 		body.addChild(body2);
 		helm.addChild(sensor);
@@ -168,10 +168,10 @@ public class ModelPsimetalExosuit extends ModelBiped {
 		}
 	}
 
-    public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z) {
-        modelRenderer.rotateAngleX = x;
-        modelRenderer.rotateAngleY = y;
-        modelRenderer.rotateAngleZ = z;
-    }
+	public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z) {
+		modelRenderer.rotateAngleX = x;
+		modelRenderer.rotateAngleY = y;
+		modelRenderer.rotateAngleZ = z;
+	}
 
 }

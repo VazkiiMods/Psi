@@ -67,7 +67,7 @@ public class GuiProgrammer extends GuiScreen {
 
 	public static final ResourceLocation texture = new ResourceLocation(LibResources.GUI_PROGRAMMER);
 	private static final int PIECES_PER_PAGE = 25;
-	
+
 	private static final Pattern inPattern = Pattern.compile("^in:(\\w+)(?:\\s?(.*))?$");
 	private static final Pattern outPattern = Pattern.compile("^out:(\\w+)(?:\\s(.*))?$");
 
@@ -259,7 +259,7 @@ public class GuiProgrammer extends GuiScreen {
 					String localized = StatCollector.translateToLocal(s);
 					if(i == param)
 						localized = EnumChatFormatting.UNDERLINE + localized;
-					
+
 					mc.fontRendererObj.drawString(localized, x, y, color);
 					i++;
 				}
@@ -389,7 +389,7 @@ public class GuiProgrammer extends GuiScreen {
 			closePanel();
 			return;
 		}
-		
+
 		super.keyTyped(par1, par2);
 
 		if(spectator)
@@ -402,7 +402,7 @@ public class GuiProgrammer extends GuiScreen {
 				page = 0;
 				updatePanelButtons();
 			}
-			
+
 			if(panelButtons.size() == 1 && par2 == Keyboard.KEY_RETURN)
 				actionPerformed(panelButtons.get(0));
 		} else {
@@ -450,7 +450,7 @@ public class GuiProgrammer extends GuiScreen {
 					programmer.spell.name = currName;
 					onSpellChanged(true);
 				}
-				
+
 				if(par2 == Keyboard.KEY_TAB && !intercepts)
 					spellNameField.setFocused(!spellNameField.isFocused());
 				else if(!spellNameField.isFocused()) {
@@ -529,7 +529,7 @@ public class GuiProgrammer extends GuiScreen {
 
 						switch(par2) {
 						case Keyboard.KEY_UP:
-							 if(!onSideButtonKeybind(piece, param, Side.TOP) && selectedY > 0) {
+							if(!onSideButtonKeybind(piece, param, Side.TOP) && selectedY > 0) {
 								selectedY--;
 								onSelectedChanged();
 							}
@@ -561,7 +561,7 @@ public class GuiProgrammer extends GuiScreen {
 			}
 		}
 	}
-	
+
 	public boolean onSideButtonKeybind(SpellPiece piece, int param, SpellParam.Side side) {
 		if(param > -1 && piece != null && piece.params.size() >= param) {
 			for(GuiButton b : configButtons) {
@@ -581,7 +581,7 @@ public class GuiProgrammer extends GuiScreen {
 				}
 			}
 		}
-		
+
 		return side == Side.OFF;
 	}
 
@@ -692,7 +692,7 @@ public class GuiProgrammer extends GuiScreen {
 			if(shouldShow(p))
 				p.getShownPieces(visiblePieces);
 		}
-		
+
 		if(visiblePieces.isEmpty()) {
 			try {
 				String text = searchField.getText();
@@ -732,7 +732,7 @@ public class GuiProgrammer extends GuiScreen {
 	private boolean shouldShow(SpellPiece p) {
 		String searchToken = searchField.getText().toLowerCase();
 		String nameToken = searchToken;
-		
+
 		Matcher inMatcher = inPattern.matcher(searchToken);
 		Matcher outMatcher = outPattern.matcher(searchToken);
 
@@ -744,27 +744,27 @@ public class GuiProgrammer extends GuiScreen {
 				if(type.contains(in))
 					hasIn = true;
 			}
-			
+
 			if(!hasIn)
 				return false;
-			
+
 			nameToken = inMatcher.group(2);
 		} else if(outMatcher.matches()) {
 			String out = outMatcher.group(1);
-			
+
 			String type = p.getEvaluationTypeString().toLowerCase();
 			if(!type.contains(out))
 				return false;
-				
+
 			nameToken = outMatcher.group(2);
 		}
-		
+
 		if(nameToken == null)
 			nameToken = "";
-		
+
 		return StatCollector.translateToLocal(p.getUnlocalizedName()).toLowerCase().contains(nameToken);
 	}
-	
+
 	private int getPageCount() {
 		return visiblePieces.size() / PIECES_PER_PAGE + 1;
 	}

@@ -2,10 +2,10 @@
  * This class was created by <Vazkii>. It's distributed as
  * part of the Psi Mod. Get the Source Code in github:
  * https://github.com/Vazkii/Psi
- * 
+ *
  * Psi is Open Source and distributed under the
  * Psi License: http://psi.vazkii.us/license.php
- * 
+ *
  * File Created @ [21/02/2016, 16:57:14 (GMT)]
  */
 package vazkii.psi.common.crafting.recipe;
@@ -18,7 +18,7 @@ import net.minecraftforge.common.ForgeHooks;
 import vazkii.psi.api.exosuit.ISensorHoldable;
 
 public class SensorRemoveRecipe implements IRecipe {
-	
+
 	@Override
 	public boolean matches(InventoryCrafting var1, World var2) {
 		boolean foundHoldable = false;
@@ -48,10 +48,10 @@ public class SensorRemoveRecipe implements IRecipe {
 		ItemStack copy = holdableItem.copy();
 		ISensorHoldable holdable = (ISensorHoldable) holdableItem.getItem();
 		holdable.attachSensor(copy, null);
-		
+
 		return copy;
 	}
-	
+
 	@Override
 	public int getRecipeSize() {
 		return 10;

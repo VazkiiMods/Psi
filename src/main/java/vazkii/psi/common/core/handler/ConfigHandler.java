@@ -28,7 +28,7 @@ public class ConfigHandler {
 	public static boolean psiBarOnRight = true;
 	public static boolean useVanillaParticleLimiter = true;
 	public static int maxPsiBarScale = 3;
-	
+
 	public static int spellCacheSize = 100;
 	public static int cadHarvestLevel = 2;
 
@@ -58,7 +58,7 @@ public class ConfigHandler {
 
 		desc = "The maximum scale your Psi bar can be. This prevents it from being too large on a bigger GUI scale. This is maximum amount of \"on screen pixels\" each actual pixel can take.";
 		maxPsiBarScale = loadPropInt("Maximum Psi Bar Scale", desc, maxPsiBarScale);
-		
+
 		desc = "How many compiled spells should be kept in a cache. Probably best not to mess with it if you don't know what you're doing.";
 		spellCacheSize = loadPropInt("Spell Cache Size", desc, spellCacheSize);
 

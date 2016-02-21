@@ -58,16 +58,16 @@ public class ModelHandler {
 		if(item instanceof ItemBlock && ((ItemBlock) item).getBlock() instanceof IPsiBlock) {
 			IPsiBlock psiBlock = (IPsiBlock) ((ItemBlock) item).getBlock();
 			Class clazz = psiBlock.getVariantEnum();
-			
+
 			IProperty[] ignored = psiBlock.getIgnoredProperties();
 			if(ignored != null && ignored.length > 0) {
 				StateMap.Builder builder = new StateMap.Builder();
 				for(IProperty p : ignored)
 					builder.ignore(p);
-				
+
 				ModelLoader.setCustomStateMapper((Block) psiBlock, builder.build());
-			} 
-			
+			}
+
 			if(clazz != null) {
 				registerVariantsDefaulted(item, (Block) psiBlock, clazz, IVariantEnumHolder.HEADER);
 				return;

@@ -2,10 +2,10 @@
  * This class was created by <Vazkii>. It's distributed as
  * part of the Psi Mod. Get the Source Code in github:
  * https://github.com/Vazkii/Psi
- * 
+ *
  * Psi is Open Source and distributed under the
  * Psi License: http://psi.vazkii.us/license.php
- * 
+ *
  * File Created @ [14/02/2016, 21:54:35 (GMT)]
  */
 package vazkii.psi.common.crafting.recipe;
@@ -33,7 +33,7 @@ public class BulletToDriveRecipe implements IRecipe {
 					if(foundTarget)
 						return false;
 					foundTarget = true;
-				} else if(stack.getItem() instanceof ItemSpellDrive && ((ItemSpellDrive) stack.getItem()).getSpell(stack) == null) {
+				} else if(stack.getItem() instanceof ItemSpellDrive && ItemSpellDrive.getSpell(stack) == null) {
 					if(foundSource)
 						return false;
 					foundSource = true;
@@ -77,5 +77,5 @@ public class BulletToDriveRecipe implements IRecipe {
 	public ItemStack[] getRemainingItems(InventoryCrafting inv) {
 		return ForgeHooks.defaultRecipeGetRemainingItems(inv);
 	}
-	
+
 }

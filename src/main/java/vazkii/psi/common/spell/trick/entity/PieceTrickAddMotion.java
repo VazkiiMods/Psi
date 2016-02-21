@@ -11,7 +11,6 @@
 package vazkii.psi.common.spell.trick.entity;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.projectile.EntityThrowable;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.EnumSpellStat;
 import vazkii.psi.api.spell.Spell;
@@ -28,7 +27,7 @@ import vazkii.psi.api.spell.piece.PieceTrick;
 public class PieceTrickAddMotion extends PieceTrick {
 
 	public static final double MULTIPLIER = 0.3;
-	
+
 	SpellParam target;
 	SpellParam direction;
 	SpellParam speed;
@@ -53,7 +52,7 @@ public class PieceTrickAddMotion extends PieceTrick {
 
 		double absSpeed = Math.abs(speedVal);
 		meta.addStat(EnumSpellStat.POTENCY, (int) (absSpeed * absSpeed * 3.5));
-		meta.addStat(EnumSpellStat.COST, (int) ((absSpeed * Math.max(1, absSpeed * 0.5)) * 60));
+		meta.addStat(EnumSpellStat.COST, (int) (absSpeed * Math.max(1, absSpeed * 0.5) * 60));
 	}
 
 	@Override
@@ -72,13 +71,13 @@ public class PieceTrickAddMotion extends PieceTrick {
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 
 		dir = dir.copy().normalize().multiply(MULTIPLIER * speed);
-		
+
 		e.motionX += dir.x;
 		e.motionY += dir.y;
 		e.motionZ += dir.z;
-		
+
 		if(e.motionY >= 0)
 			e.fallDistance = 0;
 	}
-	
+
 }

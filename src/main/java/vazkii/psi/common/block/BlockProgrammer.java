@@ -30,7 +30,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import vazkii.psi.api.internal.VanillaPacketDispatcher;
-import vazkii.psi.api.spell.ISpellContainer;
 import vazkii.psi.api.spell.ISpellSettable;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.base.BlockFacing;

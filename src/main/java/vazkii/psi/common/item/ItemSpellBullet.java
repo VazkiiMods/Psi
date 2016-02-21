@@ -75,7 +75,7 @@ public class ItemSpellBullet extends ItemMod implements ISpellContainer {
 	public ItemStack getContainerItem(ItemStack itemStack) {
 		return itemStack.copy();
 	}
-	
+
 	@Override
 	public String getItemStackDisplayName(ItemStack stack) {
 		if(!containsSpell(stack))
@@ -176,7 +176,7 @@ public class ItemSpellBullet extends ItemMod implements ISpellContainer {
 				proj.worldObj.spawnEntityInWorld(proj);
 			}
 			break;
-			
+
 		case 11: // Charge
 			if(!context.caster.worldObj.isRemote) {
 				EntitySpellProjectile proj = new EntitySpellCharge(context.caster.worldObj, context.caster);
@@ -187,7 +187,7 @@ public class ItemSpellBullet extends ItemMod implements ISpellContainer {
 				proj.worldObj.spawnEntityInWorld(proj);
 			}
 			break;
-			
+
 		case 13: // Mine
 			if(!context.caster.worldObj.isRemote) {
 				EntitySpellProjectile proj = new EntitySpellMine(context.caster.worldObj, context.caster);

@@ -39,7 +39,7 @@ public class GuiButtonSideConfig extends GuiButton {
 		this.paramName = paramName;
 		this.side = side;
 	}
-	
+
 	public boolean matches(int index, SpellParam.Side side) {
 		return paramIndex == index && this.side == side;
 	}

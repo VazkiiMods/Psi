@@ -2,10 +2,10 @@
  * This class was created by <Vazkii>. It's distributed as
  * part of the Psi Mod. Get the Source Code in github:
  * https://github.com/Vazkii/Psi
- * 
+ *
  * Psi is Open Source and distributed under the
  * Psi License: http://psi.vazkii.us/license.php
- * 
+ *
  * File Created @ [17/02/2016, 18:30:46 (GMT)]
  */
 package vazkii.psi.common.block.tile;
@@ -18,12 +18,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ITickable;
 import vazkii.psi.api.cad.ICADColorizer;
-import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.BlockConjured;
 import vazkii.psi.common.block.base.ModBlocks;
 import vazkii.psi.common.block.tile.base.TileMod;
-import vazkii.psi.common.entity.EntitySpellGrenade;
 
 public class TileConjured extends TileMod implements ITickable {
 
@@ -85,7 +83,7 @@ public class TileConjured extends TileMod implements ITickable {
 
 				// Sides
 				makeParticle(edges[8],  r, g, b, x + 0, y + 0, z + 0, 0, 1, 0);
-				makeParticle(edges[9],  r, g, b, x + 0, y + 0, z + 1, 0, 1, 0);		
+				makeParticle(edges[9],  r, g, b, x + 0, y + 0, z + 1, 0, 1, 0);
 				makeParticle(edges[10], r, g, b, x + 1, y + 0, z + 1, 0, 1, 0);
 				makeParticle(edges[11], r, g, b, x + 1, y + 0, z + 0, 0, 1, 0);
 
@@ -118,7 +116,7 @@ public class TileConjured extends TileMod implements ITickable {
 			xv *= m;
 			yv *= m;
 			zv *= m;
-			
+
 			double x = xp; //+ Math.random() * xv;
 			double y = yp; //+ Math.random() * yv;
 			double z = zp; //+ Math.random() * zv;
@@ -128,7 +126,7 @@ public class TileConjured extends TileMod implements ITickable {
 
 	public void removeEdges(boolean[] edges, int... posArray) {
 		for(int i : posArray)
-			edges[i] = false; 
+			edges[i] = false;
 	}
 
 	@Override
