@@ -61,12 +61,15 @@ import vazkii.psi.common.spell.operator.vector.PieceOperatorVectorSum;
 import vazkii.psi.common.spell.other.PieceConnector;
 import vazkii.psi.common.spell.other.PieceErrorSuppressor;
 import vazkii.psi.common.spell.selector.PieceSelectorAttackTarget;
+import vazkii.psi.common.spell.selector.PieceSelectorAttacker;
 import vazkii.psi.common.spell.selector.PieceSelectorBlockBroken;
 import vazkii.psi.common.spell.selector.PieceSelectorBlockSideBroken;
 import vazkii.psi.common.spell.selector.PieceSelectorCaster;
+import vazkii.psi.common.spell.selector.PieceSelectorDamageTaken;
 import vazkii.psi.common.spell.selector.PieceSelectorFocalPoint;
 import vazkii.psi.common.spell.selector.PieceSelectorLoopcastIndex;
 import vazkii.psi.common.spell.selector.PieceSelectorSneakStatus;
+import vazkii.psi.common.spell.selector.PieceSelectorTime;
 import vazkii.psi.common.spell.selector.entity.PieceSelectorNearbyAnimals;
 import vazkii.psi.common.spell.selector.entity.PieceSelectorNearbyEnemies;
 import vazkii.psi.common.spell.selector.entity.PieceSelectorNearbyItems;
@@ -130,6 +133,9 @@ public final class ModSpellPieces {
 	public static PieceContainer selectorBlockSideBroken;
 	public static PieceContainer selectorAttackTarget;
 	public static PieceContainer selectorSneakStatus;
+	public static PieceContainer selectorTime;
+	public static PieceContainer selectorAttacker;
+	public static PieceContainer selectorDamageTaken;
 
 	public static PieceContainer operatorSum;
 	public static PieceContainer operatorSubtract;
@@ -235,6 +241,9 @@ public final class ModSpellPieces {
 		selectorBlockSideBroken = register(PieceSelectorBlockSideBroken.class, LibPieceNames.SELECTOR_BLOCK_SIDE_BROKEN, LibPieceGroups.TOOL_CASTING);
 		selectorAttackTarget = register(PieceSelectorAttackTarget.class, LibPieceNames.SELECTOR_ATTACK_TARGET, LibPieceGroups.TOOL_CASTING);
 		selectorSneakStatus = register(PieceSelectorSneakStatus.class, LibPieceNames.SELECTOR_SNEAK_STATUS, LibPieceGroups.FLOW_CONTROL);
+		selectorTime = register(PieceSelectorTime.class, LibPieceNames.SELECTOR_TIME, LibPieceGroups.EXOSUIT_CASTING, true);
+		selectorAttacker = register(PieceSelectorAttacker.class, LibPieceNames.SELECTOR_ATTACKER, LibPieceGroups.EXOSUIT_CASTING);
+		selectorDamageTaken = register(PieceSelectorDamageTaken.class, LibPieceNames.SELECTOR_DAMAGE_TAKEN, LibPieceGroups.EXOSUIT_CASTING);
 
 		operatorSum = register(PieceOperatorSum.class, LibPieceNames.OPERATOR_SUM, LibPieceGroups.NUMBERS_INTRO, true);
 		operatorSubtract = register(PieceOperatorSubtract.class, LibPieceNames.OPERATOR_SUBTRACT, LibPieceGroups.NUMBERS_INTRO);
@@ -346,12 +355,12 @@ public final class ModSpellPieces {
 		PsiAPI.setGroupRequirements(LibPieceGroups.TOOL_CASTING, 16, LibPieceGroups.GREATER_INFUSION);
 		PsiAPI.setGroupRequirements(LibPieceGroups.POSITIVE_EFFECTS, 16, LibPieceGroups.GREATER_INFUSION);
 		PsiAPI.setGroupRequirements(LibPieceGroups.NEGATIVE_EFFECTS, 17, LibPieceGroups.POSITIVE_EFFECTS);
-		// TODO Exosuit Casting at 19
-		PsiAPI.setGroupRequirements(LibPieceGroups.EIDOS_REVERSAL, 19, LibPieceGroups.GREATER_INFUSION); // TODO Move to 25 later
+		PsiAPI.setGroupRequirements(LibPieceGroups.EXOSUIT_CASTING, 19, LibPieceGroups.GREATER_INFUSION);
 		PsiAPI.setGroupRequirements(LibPieceGroups.TRIGNOMETRY, 20, LibPieceGroups.GREATER_INFUSION);
 		PsiAPI.setGroupRequirements(LibPieceGroups.SMELTERY, 20, LibPieceGroups.GREATER_INFUSION);
 		PsiAPI.setGroupRequirements(LibPieceGroups.FLOW_CONTROL, 20, LibPieceGroups.GREATER_INFUSION);
 		PsiAPI.setGroupRequirements(LibPieceGroups.BLOCK_CONJURATION, 20, LibPieceGroups.GREATER_INFUSION);
+		PsiAPI.setGroupRequirements(LibPieceGroups.EIDOS_REVERSAL, 24, LibPieceGroups.FLOW_CONTROL, LibPieceGroups.EXOSUIT_CASTING);
 	}
 
 	public static PieceContainer register(Class<? extends SpellPiece> clazz, String name, String group) {

@@ -59,7 +59,7 @@ public class ItemPsimetalArmor extends ItemModArmor implements IPsimetalTool, IP
 			ItemCAD.cast(event.entityPlayer.worldObj, event.entityPlayer, data, bullet, playerCad, getCastCooldown(stack), 0, getCastVolume(), (SpellContext context) -> {
 				context.tool = stack;
 				context.attackingEntity = event.attacker;
-				context.damageDealt = event.damage;
+				context.damageTaken = event.damage;
 			});
 		}
 	}

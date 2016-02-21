@@ -30,10 +30,11 @@ public final class LibPieceGroups {
 	public static final String TOOL_CASTING = "toolCasting";
 	public static final String POSITIVE_EFFECTS = "positiveEffects";
 	public static final String NEGATIVE_EFFECTS = "negativeEffects";
-	public static final String EIDOS_REVERSAL = "eidosReversal";
+	public static final String EXOSUIT_CASTING = "exosuitCasting";
 	public static final String TRIGNOMETRY = "trignometry";
 	public static final String SMELTERY = "smeltery";
 	public static final String FLOW_CONTROL = "flowControl";
 	public static final String BLOCK_CONJURATION = "blockConjuration";
+	public static final String EIDOS_REVERSAL = "eidosReversal";
 
 }
