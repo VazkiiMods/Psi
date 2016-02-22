@@ -47,6 +47,7 @@ import vazkii.psi.common.core.handler.ConfigHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData.Deduction;
+import vazkii.psi.common.item.base.IHUDItem;
 import vazkii.psi.common.lib.LibObfuscation;
 import vazkii.psi.common.lib.LibResources;
 
@@ -78,6 +79,7 @@ public final class HUDHandler {
 			renderSocketableEquippedName(event.resolution, event.partialTicks);
 			renderLevelUpIndicator(event.resolution, event.partialTicks);
 			renderRemainingItems(event.resolution, event.partialTicks);
+			renderHUDItem(event.resolution, event.partialTicks);
 		}
 	}
 
@@ -350,7 +352,7 @@ public final class HUDHandler {
 	}
 
 	@SideOnly(Side.CLIENT)
-	public static void renderRemainingItems(ScaledResolution resolution, float partTicks) {
+	private void renderRemainingItems(ScaledResolution resolution, float partTicks) {
 		if(remainingTime > 0 && remainingDisplayStack != null) {
 			int pos = maxRemainingTicks - remainingTime;
 			Minecraft mc = Minecraft.getMinecraft();
@@ -397,6 +399,14 @@ public final class HUDHandler {
 		}
 	}
 
+	@SideOnly(Side.CLIENT)
+	private void renderHUDItem(ScaledResolution resolution, float partTicks) {
+		Minecraft mc = Minecraft.getMinecraft();
+		ItemStack stack = mc.thePlayer.getCurrentEquippedItem();
+		if(stack != null && stack.getItem() != null && stack.getItem() instanceof IHUDItem)
+			((IHUDItem) stack.getItem()).drawHUD(resolution, partTicks, stack);
+	}
+	
 	public static void setRemaining(ItemStack stack, int count) {
 		HUDHandler.remainingDisplayStack = stack;
 		HUDHandler.remainingCount = count;

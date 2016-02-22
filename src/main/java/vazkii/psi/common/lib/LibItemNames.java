@@ -32,5 +32,6 @@ public final class LibItemNames {
 	public static final String PSIMETAL_EXOSUIT_BOOTS = "psimetalExosuitBoots";
 	public static final String EXOSUIT_CONTROLLER = "exosuitController";
 	public static final String EXOSUIT_SENSOR = "exosuitSensor";
+	public static final String VECTOR_RULER = "vectorRuler";
 
 }

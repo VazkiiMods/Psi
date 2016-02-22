@@ -20,6 +20,7 @@ import vazkii.psi.common.item.ItemExosuitSensor;
 import vazkii.psi.common.item.ItemMaterial;
 import vazkii.psi.common.item.ItemSpellBullet;
 import vazkii.psi.common.item.ItemSpellDrive;
+import vazkii.psi.common.item.ItemVectorRuler;
 import vazkii.psi.common.item.armor.ItemPsimetalExosuitBoots;
 import vazkii.psi.common.item.armor.ItemPsimetalExosuitChestplate;
 import vazkii.psi.common.item.armor.ItemPsimetalExosuitHelmet;
@@ -48,6 +49,7 @@ public final class ModItems {
 	public static ItemMod detonator;
 	public static ItemMod exosuitController;
 	public static ItemMod exosuitSensor;
+	public static ItemMod vectorRuler;
 
 	public static ItemMod cad;
 
@@ -73,7 +75,8 @@ public final class ModItems {
 		detonator = new ItemDetonator();
 		exosuitController = new ItemExosuitController();
 		exosuitSensor = new ItemExosuitSensor();
-
+		vectorRuler = new ItemVectorRuler();
+		
 		cad = new ItemCAD();
 
 		psimetalShovel = new ItemPsimetalShovel();

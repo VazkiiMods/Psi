@@ -68,6 +68,7 @@ import vazkii.psi.common.spell.selector.PieceSelectorCaster;
 import vazkii.psi.common.spell.selector.PieceSelectorDamageTaken;
 import vazkii.psi.common.spell.selector.PieceSelectorFocalPoint;
 import vazkii.psi.common.spell.selector.PieceSelectorLoopcastIndex;
+import vazkii.psi.common.spell.selector.PieceSelectorRulerVector;
 import vazkii.psi.common.spell.selector.PieceSelectorSneakStatus;
 import vazkii.psi.common.spell.selector.PieceSelectorTime;
 import vazkii.psi.common.spell.selector.entity.PieceSelectorNearbyAnimals;
@@ -138,6 +139,7 @@ public final class ModSpellPieces {
 	public static PieceContainer selectorTime;
 	public static PieceContainer selectorAttacker;
 	public static PieceContainer selectorDamageTaken;
+	public static PieceContainer selectorRulerVector;
 
 	public static PieceContainer operatorSum;
 	public static PieceContainer operatorSubtract;
@@ -247,7 +249,8 @@ public final class ModSpellPieces {
 		selectorTime = register(PieceSelectorTime.class, LibPieceNames.SELECTOR_TIME, LibPieceGroups.EXOSUIT_CASTING, true);
 		selectorAttacker = register(PieceSelectorAttacker.class, LibPieceNames.SELECTOR_ATTACKER, LibPieceGroups.EXOSUIT_CASTING);
 		selectorDamageTaken = register(PieceSelectorDamageTaken.class, LibPieceNames.SELECTOR_DAMAGE_TAKEN, LibPieceGroups.EXOSUIT_CASTING);
-
+		selectorRulerVector = register(PieceSelectorRulerVector.class, LibPieceNames.SELECTOR_RULER_VECTOR, LibPieceGroups.PROJECTILES);
+		
 		operatorSum = register(PieceOperatorSum.class, LibPieceNames.OPERATOR_SUM, LibPieceGroups.NUMBERS_INTRO, true);
 		operatorSubtract = register(PieceOperatorSubtract.class, LibPieceNames.OPERATOR_SUBTRACT, LibPieceGroups.NUMBERS_INTRO);
 		operatorMultiply = register(PieceOperatorMultiply.class, LibPieceNames.OPERATOR_MULTIPLY, LibPieceGroups.NUMBERS_INTRO);

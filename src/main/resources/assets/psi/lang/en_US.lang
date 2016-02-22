@@ -149,6 +149,7 @@ item.psi:exosuitSensorLight.name=Exosuit Light Sensor
 item.psi:exosuitSensorWater.name=Exosuit Water Sensor
 item.psi:exosuitSensorHeat.name=Exosuit Heat Sensor
 item.psi:exosuitSensorStress.name=Exosuit Stress Sensor
+item.psi:vectorRuler.name=Vector Ruler
 
 # DEATH MESSAGES
 death.attack.psi-overload=%s overflowed their Psionic Energy
@@ -234,6 +235,8 @@ psi.spellpiece.selectorAttacker=Selector: Attacker
 psi.spellpiece.selectorAttacker.desc=Selects the entity that attacked the caster
 psi.spellpiece.selectorDamageTaken=Selector: Damage Taken 
 psi.spellpiece.selectorDamageTaken.desc=Selects the amount of damage the caster took
+psi.spellpiece.selectorRulerVector=Selector: Ruler Vector 
+psi.spellpiece.selectorRulerVector.desc=Selects the vector defined by a Vector Ruler
 
 # -- OPERATORS
 psi.spellpiece.operatorSum=Operator: Sum

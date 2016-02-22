@@ -67,6 +67,7 @@ public class PsiCreativeTab extends CreativeTabs {
 		addItem(ModItems.spellDrive);
 		addItem(ModItems.exosuitController);
 		addItem(ModItems.exosuitSensor);
+		addItem(ModItems.vectorRuler);
 
 		addItem(ModItems.cad);
 

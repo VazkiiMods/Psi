@@ -204,7 +204,7 @@ public class Vector3
 		MathContext cont = new MathContext(4, RoundingMode.HALF_UP);
 		return "Vector[" + new BigDecimal(x, cont) + ", " +new BigDecimal(y, cont) + ", " + new BigDecimal(z, cont) + "]";
 	}
-
+	
 	public Vector3 perpendicular() {
 		if(z == 0)
 			return zCrossProduct();
