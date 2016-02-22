@@ -66,7 +66,7 @@ public class PieceTrickMoveBlock extends PieceTrick {
 		BlockPos pos = new BlockPos(positionVal.x, positionVal.y, positionVal.z);
 		IBlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
-		if(world.getTileEntity(pos) != null || block.getMobilityFlag() != 0 || !block.canSilkHarvest(world, pos, state, context.caster) || block.getHarvestLevel(state) > ConfigHandler.cadHarvestLevel)
+		if(world.getTileEntity(pos) != null || block.getMobilityFlag() != 0 || !block.canSilkHarvest(world, pos, state, context.caster) || block.getPlayerRelativeBlockHardness(context.caster, world, pos) <= 0 || block.getHarvestLevel(state) > ConfigHandler.cadHarvestLevel)
 			return null;
 
 		if(!targetVal.isAxial() || targetVal.isZero())
