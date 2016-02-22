@@ -1,3 +1,38 @@
+beta-15
+*Added an indicator to the tooltip of any spell pieces added by potential addons.
+*Added Block Conjuration tricks: Conjure Block, Conjure Light, Conjure Block Sequence.
+*Added Flow Control pieces: Sleep, Die, Evaluate, Sneak Status and Constant Wrapper. Also includes Min/Max operators.
+*Added Operator: Focused Entity, which lets you get the entity an entity is looking at.
+*Added Smeltery tricks: Smelt Item and Smelt Block.
+*Added the Psimetal Exosuit armorset, Exosuit Controller, Exosuit Sensors and the Exosuit Casting group.
+*Added Trignometry operators, Pi, and Dot Product.
+*Added two new spell bullets: Charge and Mine. Added a Spell Detonator item for the Charge Bullet.
+*Capped the amount of Psi you can have to 5000. If you go above level 25 you'll still have 5000. Furthermore the maximum regen you can have is 25 Psi per tick.
+*Fixed Break Block tricks breaking liquids.
+*Fixed Constant: Number pieces crashing the game if a spell is imported with invalid json.
+*Fixed Eidos spells messing up if you die in the middle of their execution.
+*Fixed null entities sometimes getting picked up by selectors somehow and crashing the game. I think.
+*Fixed setting the Psi Master keybind to a mouse button crashing the game in the bullet selection radial menu.
+*Fixed tools desyncing on levelup.
+*Fixed Trick: Torrent being able to place water in the nether.
+*Fixed tricks that place blocks not updating the inventory stacks properly in the client.
+*Fixed white lines in the CAD models.
+*Improved UX for the Spell Programmer:<ul>	<li>Ctrl+arrow keys shifts the spell around.</li><li>Ctrl-C, Ctrl-X and Ctrl-V work as Copy/Cut/Paste.</li><li>Ctrl-Z and Ctrl-Y work as Undo/Redo.</li><li>Enter can now open the piece selection panel. If you're in the selection panel and have only one visible piece (because of searching), you can use Enter to put it in the board.</li><li>If you have the piece selection panel open, you can use Esc to close it instead of closing the whole interface.</li><li>Number keys + arrow keys let you change the values of spell parameters using your keyboard. Double tap the same key to disable a parameter (if available).</li><li>Searching for a number in the piece selection panel allows you to place the respective Constant: Number piece directly from there.</li><li>Spell name field is no longer force selected (no more v spam for direwolf :<).</li><li>Tab changes your cursor between the text box and the spell grid.</li><li>The arrow keys can be used to change the selected position.</li><li>You can search for "in:(type)" or "out:(type)" to get pieces that take a specific data type as input or have it as output.</li><li><i>(If you're on Mac, use Cmd instead of Ctrl).</i></li></ul>
+*Loopcast and Circle Spell Bullets can no longer be put on anything that isn't a CAD.
+*Made Trick: Strength more expensive. Same curve as Regeneration and Resistance.
+*Moved Eidos Manipulation to level 24 to accomodate Exosuit Casting.
+*Projectiles now remember the context of when they were created (by a tool), so pieces like Selector: Block Broken will work on non Normal bullets.
+*Psimetal tools now only regen if you're above 50% Psi. 
+*Raised level cap to 25.
+*Removed the "Psi Beta | Not Final" indicator from GUIs. The mod is still beta, but this doesn't need to be there any more as it's not as early.
+*Rewrote Alternative Casting a bit to accomodate for the new bullets.
+*Selector: Attack Target now also works with Projectile Spell Bullets and returns the entity the projectile collided against.
+*The parameters for Operator: Vector Construct are now all optional. Any non set values default to 0.
+*Tools can also be right clicked on a Spell Programmer to set the bullet in them, similarly to a CAD.
+*Tweaked more spell piece icons.
+*Tweaked the texture for the Introduction GUI.
+*When you select an item with Spell Bullets, the type of bullet is now displayed above the name alongside with the spell's name.
+*You can now move, sprint, sneak and jump while in the bullet selection radial menu.
 beta-14
 *Added the update system from Botania. Puns included!
 *Fixed a dupe when cloning Spell Bullets into Spell Drives.
