@@ -71,7 +71,7 @@ public class PieceTrickBlink extends PieceTrick {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
 
 		double x = e.posX += look.xCoord * dist;
-		double y = e.posY += Math.max(0, look.yCoord) * dist;
+		double y = e.posY += Math.max(0, look.yCoord * dist);
 		double z = e.posZ += look.zCoord * dist;
 
 		if(e instanceof EntityPlayerMP) {
