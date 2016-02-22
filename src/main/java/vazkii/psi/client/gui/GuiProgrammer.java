@@ -21,6 +21,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
+import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableSet;
 
 import net.minecraft.client.gui.GuiButton;
@@ -403,7 +404,7 @@ public class GuiProgrammer extends GuiScreen {
 				updatePanelButtons();
 			}
 
-			if(panelButtons.size() == 1 && par2 == Keyboard.KEY_RETURN)
+			if(panelButtons.size() >= 1 && par2 == Keyboard.KEY_RETURN)
 				actionPerformed(panelButtons.get(0));
 		} else {
 			boolean pieceHandled = false;
@@ -758,11 +759,22 @@ public class GuiProgrammer extends GuiScreen {
 
 			nameToken = outMatcher.group(2);
 		}
-
+		
+		String haystack = StatCollector.translateToLocal(p.getUnlocalizedName()).toLowerCase(); 
+		Predicate<String> pred = haystack::contains;
+		
 		if(nameToken == null)
 			nameToken = "";
+		
+		if(nameToken.startsWith("_")) {
+			nameToken = nameToken.substring(1);
+			pred = haystack::endsWith;
+		} else if(nameToken.endsWith("_")) {
+			nameToken = nameToken.substring(0, nameToken.length() - 1);
+			pred = haystack::startsWith;
+		}
 
-		return StatCollector.translateToLocal(p.getUnlocalizedName()).toLowerCase().contains(nameToken);
+		return pred.apply(nameToken);
 	}
 
 	private int getPageCount() {
