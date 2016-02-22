@@ -425,7 +425,7 @@ public class GuiProgrammer extends GuiScreen {
 			boolean shift = isShiftKeyDown();
 			boolean ctrl = isCtrlKeyDown();
 
-			if(par2 == Keyboard.KEY_DELETE) {
+			if(par2 == Keyboard.KEY_DELETE || par2 == Keyboard.KEY_BACK) {
 				if(shift && ctrl) {
 					if(!programmer.spell.grid.isEmpty()) {
 						pushState(true);
