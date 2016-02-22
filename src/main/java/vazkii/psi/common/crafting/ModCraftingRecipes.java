@@ -234,6 +234,10 @@ public class ModCraftingRecipes {
 				'R', "dustRedstone",
 				'G', "blockGlassColorless",
 				'I', "ingotPsi");
+		addOreDictRecipe(new ItemStack(ModItems.vectorRuler),
+				"D", "I", "I",
+				'D', "dustPsi",
+				'I', "ingotIron");
 
 		addOreDictRecipe(new ItemStack(ModItems.exosuitSensor, 1, 0),
 				" I ", "IMR", " R ",
