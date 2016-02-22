@@ -1,3 +1,8 @@
+beta-17
+*Changed the Vector Ruler icon a bit.
+*Fixed Backspace deleting a piece instead of the name if the name field is selected.
+*Fixed the Light sensor not working on the surface.
+*Fixed Trick: Blink being able to put you into the ground if you use a negative distance value.
 beta-16
 *Added "Selector: Nearby Smeltables" to Smeltery.
 *Added the ability search for "_(name)" or "(name)_" on the Spell Programmer to find pieces that end with or begin with the name, respectively.
