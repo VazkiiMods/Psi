@@ -475,7 +475,7 @@ public class PlayerDataHandler {
 			}
 
 			BlockPos pos = player.getPosition();
-			int light = player.worldObj.getLight(pos);
+			int light = player.worldObj.getLightFor(EnumSkyBlock.BLOCK, pos);
 
 			boolean lowLight = light < 7;
 			if(!this.lowLight && lowLight)
