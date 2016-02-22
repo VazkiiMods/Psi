@@ -235,14 +235,16 @@ public class GuiProgrammer extends GuiScreen {
 		}
 		GlStateManager.color(1F, 1F, 1F);
 
+		SpellPiece piece = null;
+		if(programmer.spell.grid.exists(selectedX, selectedY))
+			piece = programmer.spell.grid.gridData[selectedX][selectedY];
+		
 		if(configEnabled) {
 			drawTexturedModalRect(left - 81, top + 55, xSize, 30, 81, 115);
 			String configStr = StatCollector.translateToLocal("psimisc.config");
 			mc.fontRendererObj.drawString(configStr, left - mc.fontRendererObj.getStringWidth(configStr) - 2, top + 45, 0xFFFFFF);
 
-			SpellPiece piece = programmer.spell.grid.gridData[selectedX][selectedY];
 			int i = 0;
-
 			if(piece != null) {
 				int param = -1;
 				for(int j = 0; j < 4; j++)
@@ -314,6 +316,10 @@ public class GuiProgrammer extends GuiScreen {
 		if(LibMisc.BETA_TESTING) {
 			String betaTest = StatCollector.translateToLocal("psimisc.wip");
 			mc.fontRendererObj.drawStringWithShadow(betaTest, left + xSize / 2 - mc.fontRendererObj.getStringWidth(betaTest) / 2, topy, 0xFFFFFF);
+		}
+		if(piece != null) {
+			String name = StatCollector.translateToLocal(piece.getUnlocalizedName());
+			mc.fontRendererObj.drawStringWithShadow(name, left + xSize / 2 - mc.fontRendererObj.getStringWidth(name) / 2, topy, 0xFFFFFF);
 		}
 
 		mc.fontRendererObj.drawStringWithShadow(StatCollector.translateToLocal("psimisc.name"), left + padLeft, spellNameField.yPosition + 1, color);
