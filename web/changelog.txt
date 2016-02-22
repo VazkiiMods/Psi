@@ -1,3 +1,16 @@
+beta-16
+*Added "Selector: Nearby Smeltables" to Smeltery.
+*Added the ability search for "_(name)" or "(name)_" on the Spell Programmer to find pieces that end with or begin with the name, respectively.
+*Added the Vector Ruler and "Selector: Ruler Vector", it allows you to define vectors in world. Check out the new (last) paragraph of Alternative Casting, because I couldn't find a better place to sneak it in.
+*Fixed a crash if you go below Y=0 or above Y=255.
+*Fixed Block Conjuration tricks using seconds instead of ticks.
+*Fixed Trick: Move Block being able to move Bedrock.
+*Fixed Trick: Smelt Item eating up items.
+*Rebalanced the stats for Trick: Smelt Item.
+*The Backspace key can now be used instead of the Delete key on the Spell Programmer.
+*The piece you have selected in the programmer GUI will now show up at the top.
+*Tweaked icons, again.
+*Tweaked the "you can only have one CAD" message.
 beta-15
 *Added an indicator to the tooltip of any spell pieces added by potential addons.
 *Added Block Conjuration tricks: Conjure Block, Conjure Light, Conjure Block Sequence.
