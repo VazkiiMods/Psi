@@ -93,7 +93,7 @@ public class PieceTrickConjureBlockSequence extends PieceTrick {
 
 				if(timeVal != null && timeVal.intValue() > 0) {
 					int val = timeVal.intValue();
-					tile.time = val * 20;
+					tile.time = val;
 				}
 
 				if(cad != null)
