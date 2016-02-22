@@ -433,7 +433,7 @@ public class GuiProgrammer extends GuiScreen {
 			boolean ctrl = isCtrlKeyDown();
 
 			if(!pieceHandled) {
-				if(par2 == Keyboard.KEY_DELETE || par2 == Keyboard.KEY_BACK) {
+				if((par2 == Keyboard.KEY_DELETE || par2 == Keyboard.KEY_BACK) && !spellNameField.isFocused()) {
 					if(shift && ctrl) {
 						if(!programmer.spell.grid.isEmpty()) {
 							pushState(true);
