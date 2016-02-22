@@ -19,6 +19,7 @@ public final class LibPieceNames {
 	public static final String SELECTOR_NEARBY_ENEMIES = "selectorNearbyEnemies";
 	public static final String SELECTOR_NEARBY_ANIMALS = "selectorNearbyAnimals";
 	public static final String SELECTOR_NEARBY_PROJECTILES = "selectorNearbyProjectiles";
+	public static final String SELECTOR_NEARBY_SMELTABLES = "selectorNearbySmeltables";
 	public static final String SELECTOR_LOOPCAST_INDEX = "selectorLoopcastIndex";
 	public static final String SELECTOR_BLOCK_BROKEN = "selectorBlockBroken";
 	public static final String SELECTOR_BLOCK_SIDE_BROKEN = "selectorBlockSideBroken";

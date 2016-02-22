@@ -75,6 +75,7 @@ import vazkii.psi.common.spell.selector.entity.PieceSelectorNearbyEnemies;
 import vazkii.psi.common.spell.selector.entity.PieceSelectorNearbyItems;
 import vazkii.psi.common.spell.selector.entity.PieceSelectorNearbyLiving;
 import vazkii.psi.common.spell.selector.entity.PieceSelectorNearbyProjectiles;
+import vazkii.psi.common.spell.selector.entity.PieceSelectorNearbySmeltables;
 import vazkii.psi.common.spell.trick.PieceTrickBlaze;
 import vazkii.psi.common.spell.trick.PieceTrickDebug;
 import vazkii.psi.common.spell.trick.PieceTrickDelay;
@@ -128,6 +129,7 @@ public final class ModSpellPieces {
 	public static PieceContainer selectorNearbyEnemies;
 	public static PieceContainer selectorNearbyAnimals;
 	public static PieceContainer selectorNearbyProjectiles;
+	public static PieceContainer selectorNearbySmeltables;
 	public static PieceContainer selectorLoopcastIndex;
 	public static PieceContainer selectorBlockBroken;
 	public static PieceContainer selectorBlockSideBroken;
@@ -236,6 +238,7 @@ public final class ModSpellPieces {
 		selectorNearbyEnemies = register(PieceSelectorNearbyEnemies.class, LibPieceNames.SELECTOR_NEARBY_ENEMIES, LibPieceGroups.ENTITIES_INTRO);
 		selectorNearbyAnimals = register(PieceSelectorNearbyAnimals.class, LibPieceNames.SELECTOR_NEARBY_ANIMALS, LibPieceGroups.ENTITIES_INTRO);
 		selectorNearbyProjectiles = register(PieceSelectorNearbyProjectiles.class, LibPieceNames.SELECTOR_NEARBY_PROJECTILES, LibPieceGroups.ENTITIES_INTRO);
+		selectorNearbySmeltables = register(PieceSelectorNearbySmeltables.class, LibPieceNames.SELECTOR_NEARBY_SMELTABLES, LibPieceGroups.SMELTERY);
 		selectorLoopcastIndex = register(PieceSelectorLoopcastIndex.class, LibPieceNames.SELECTOR_LOOPCAST_INDEX, LibPieceGroups.LOOPCASTING, true);
 		selectorBlockBroken = register(PieceSelectorBlockBroken.class, LibPieceNames.SELECTOR_BLOCK_BROKEN, LibPieceGroups.TOOL_CASTING, true);
 		selectorBlockSideBroken = register(PieceSelectorBlockSideBroken.class, LibPieceNames.SELECTOR_BLOCK_SIDE_BROKEN, LibPieceGroups.TOOL_CASTING);

@@ -41,8 +41,8 @@ public class PieceTrickSmeltItem extends PieceTrick {
 	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
 		super.addToMetadata(meta);
 
-		meta.addStat(EnumSpellStat.POTENCY, 20);
-		meta.addStat(EnumSpellStat.COST, 80);
+		meta.addStat(EnumSpellStat.POTENCY, 80);
+		meta.addStat(EnumSpellStat.COST, 240);
 	}
 
 	@Override
@@ -55,9 +55,11 @@ public class PieceTrickSmeltItem extends PieceTrick {
 			ItemStack result = FurnaceRecipes.instance().getSmeltingResult(stack);
 
 			if(result != null) {
-				stack.stackSize--;
-				if(stack.stackSize == 0 && !eitem.worldObj.isRemote)
-					eitem.setDead();
+				if(!eitem.worldObj.isRemote) {
+					stack.stackSize--;
+					if(stack.stackSize == 0)
+						eitem.setDead();
+				}
 
 				EntityItem item = new EntityItem(context.caster.worldObj, eitem.posX, eitem.posY, eitem.posZ, result.copy());
 				if(!context.caster.worldObj.isRemote)
