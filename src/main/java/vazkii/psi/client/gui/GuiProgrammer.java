@@ -426,24 +426,24 @@ public class GuiProgrammer extends GuiScreen {
 			boolean shift = isShiftKeyDown();
 			boolean ctrl = isCtrlKeyDown();
 
-			if(par2 == Keyboard.KEY_DELETE || par2 == Keyboard.KEY_BACK) {
-				if(shift && ctrl) {
-					if(!programmer.spell.grid.isEmpty()) {
+			if(!pieceHandled) {
+				if(par2 == Keyboard.KEY_DELETE || par2 == Keyboard.KEY_BACK) {
+					if(shift && ctrl) {
+						if(!programmer.spell.grid.isEmpty()) {
+							pushState(true);
+							programmer.spell = new Spell();
+							spellNameField.setText("");
+							onSpellChanged(false);
+							return;
+						}
+					} if(selectedX != -1 && selectedY != -1 && piece != null) {
 						pushState(true);
-						programmer.spell = new Spell();
-						spellNameField.setText("");
+						programmer.spell.grid.gridData[selectedX][selectedY] = null;
 						onSpellChanged(false);
 						return;
 					}
-				} if(selectedX != -1 && selectedY != -1 && piece != null) {
-					pushState(true);
-					programmer.spell.grid.gridData[selectedX][selectedY] = null;
-					onSpellChanged(false);
-					return;
 				}
-			}
-
-			if(!pieceHandled) {
+				
 				String lastName = spellNameField.getText();
 				spellNameField.textboxKeyTyped(par1, par2);
 				String currName = spellNameField.getText();
