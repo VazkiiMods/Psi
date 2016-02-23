@@ -52,7 +52,7 @@ public class PieceOperatorFocusedEntity extends PieceOperator {
 		return looked;
 	}
 
-	public static Entity getEntityLookedAt(Entity e) {
+	public static Entity getEntityLookedAt(Entity e) throws SpellRuntimeException {
 		Entity foundEntity = null;
 
 		final double finalDistance = 32;

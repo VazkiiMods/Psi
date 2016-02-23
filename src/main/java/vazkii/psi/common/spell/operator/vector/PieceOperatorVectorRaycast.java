@@ -15,6 +15,7 @@ package vazkii.psi.common.spell.operator.vector;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.Spell;
@@ -63,13 +64,16 @@ public class PieceOperatorVectorRaycast extends PieceOperator {
 		return new Vector3(pos.getBlockPos().getX(), pos.getBlockPos().getY(), pos.getBlockPos().getZ());
 	}
 
-	public static MovingObjectPosition raycast(Entity e, double len) {
+	public static MovingObjectPosition raycast(Entity e, double len) throws SpellRuntimeException {
 		Vector3 vec = Vector3.fromEntity(e);
 		if(e instanceof EntityPlayer)
 			vec.add(0, e.getEyeHeight(), 0);
-		Vector3 look = new Vector3(e.getLookVec());
+		
+		Vec3 look = e.getLookVec();
+		if(look == null)
+			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
 
-		return raycast(e.worldObj, vec, look, len);
+		return raycast(e.worldObj, vec, new Vector3(look), len);
 	}
 
 	public static MovingObjectPosition raycast(World world, Vector3 origin, Vector3 ray, double len) {

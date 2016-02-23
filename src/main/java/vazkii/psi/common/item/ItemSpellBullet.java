@@ -29,6 +29,7 @@ import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.spell.ISpellContainer;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
+import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.helper.ItemNBTHelper;
 import vazkii.psi.common.entity.EntitySpellCharge;
@@ -153,16 +154,18 @@ public class ItemSpellBullet extends ItemMod implements ISpellContainer {
 
 		case 7: // Spell Circle
 			if(!context.caster.worldObj.isRemote) {
-				MovingObjectPosition pos = PieceOperatorVectorRaycast.raycast(context.caster, 32);
+				try {
+					MovingObjectPosition pos = PieceOperatorVectorRaycast.raycast(context.caster, 32);
 
-				if(pos != null) {
-					EntitySpellCircle circle = new EntitySpellCircle(context.caster.worldObj);
-					ItemStack cad = PsiAPI.getPlayerCAD(context.caster);
-					ItemStack colorizer = ((ICAD) cad.getItem()).getComponentInSlot(cad, EnumCADComponent.DYE);
-					circle.setInfo(context.caster, colorizer, stack);
-					circle.setPosition(pos.hitVec.xCoord, pos.hitVec.yCoord, pos.hitVec.zCoord);
-					circle.worldObj.spawnEntityInWorld(circle);
-				}
+					if(pos != null) {
+						EntitySpellCircle circle = new EntitySpellCircle(context.caster.worldObj);
+						ItemStack cad = PsiAPI.getPlayerCAD(context.caster);
+						ItemStack colorizer = ((ICAD) cad.getItem()).getComponentInSlot(cad, EnumCADComponent.DYE);
+						circle.setInfo(context.caster, colorizer, stack);
+						circle.setPosition(pos.hitVec.xCoord, pos.hitVec.yCoord, pos.hitVec.zCoord);
+						circle.worldObj.spawnEntityInWorld(circle);
+					}
+				} catch(SpellRuntimeException e) { }
 			}
 			break;
 
