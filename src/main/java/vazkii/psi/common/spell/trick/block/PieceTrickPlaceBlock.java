@@ -17,6 +17,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.EnumSpellStat;
@@ -26,6 +27,7 @@ import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellMetadata;
 import vazkii.psi.api.spell.SpellParam;
 import vazkii.psi.api.spell.SpellRuntimeException;
+import vazkii.psi.api.spell.SpellParam.Side;
 import vazkii.psi.api.spell.param.ParamVector;
 import vazkii.psi.api.spell.piece.PieceTrick;
 import vazkii.psi.client.core.handler.HUDHandler;
@@ -89,9 +91,13 @@ public class PieceTrickPlaceBlock extends PieceTrick {
 				ItemStack stack = player.inventory.getStackInSlot(slot + 1);
 				if(stack != null && stack.getItem() instanceof ItemBlock) {
 					ItemStack rem = removeFromInventory(player, block, stack);
-					Block blockToPlace = Block.getBlockFromItem(rem.getItem());
-					if(!world.isRemote)
-						world.setBlockState(pos, blockToPlace.getStateFromMeta(rem.getItemDamage()));
+					ItemBlock iblock = (ItemBlock) stack.getItem();
+					
+					Block blockToPlace = Block.getBlockFromItem(rem.getItem()); 
+					if(!world.isRemote) {
+						IBlockState newState = blockToPlace.onBlockPlaced(world, pos, EnumFacing.UP, 0, 0, 0, rem.getItemDamage(), player);
+						iblock.placeBlockAt(stack, player, world, pos, EnumFacing.UP, 0, 0, 0, newState);
+					}
 
 					if(player.capabilities.isCreativeMode)
 						HUDHandler.setRemaining(rem, -1);
