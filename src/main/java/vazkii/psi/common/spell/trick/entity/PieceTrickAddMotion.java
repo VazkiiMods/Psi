@@ -88,6 +88,9 @@ public class PieceTrickAddMotion extends PieceTrick {
 				e.motionY += dir.y;
 				context.customData.put(keyv, 0);
 			}
+			
+			if(dir.y > 0)
+				e.fallDistance = 0;
 		}
 		
 		if(Math.abs(dir.z) > 0.0001) {
@@ -97,8 +100,6 @@ public class PieceTrickAddMotion extends PieceTrick {
 				context.customData.put(keyv, 0);
 			}
 		}
-
-		e.fallDistance = 0;
 	}
 
 }
