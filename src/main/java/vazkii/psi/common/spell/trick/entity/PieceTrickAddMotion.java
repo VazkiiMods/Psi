@@ -76,8 +76,7 @@ public class PieceTrickAddMotion extends PieceTrick {
 		e.motionY += dir.y;
 		e.motionZ += dir.z;
 
-		if(e.motionY >= 0)
-			e.fallDistance = 0;
+		e.fallDistance = 0;
 	}
 
 }
