@@ -50,7 +50,7 @@ public class PieceConstantWrapper extends SpellPiece {
 			return Math.min(maxVal, Math.abs(targetVal));
 		else if(maxVal < 0)
 			return Math.max(maxVal, -Math.abs(targetVal));
-		else return 0;
+		else return 0.0;
 	}
 
 	@Override
