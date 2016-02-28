@@ -69,7 +69,9 @@ public final class SpellContext {
 	public double damageTaken;
 
 	/**
-	 * A map for custom data where addon authors can put stuff.
+	 * A map for custom data where addon authors can put stuff. If you're going to put
+	 * anything here, prefix it with your mod ID to prevent collision. For example, Trick: Add Motion
+	 * uses psi:Entity1MotionX.
 	 */
 	public Map<String, Object> customData = new HashMap();
 
