@@ -157,8 +157,8 @@ public class PlayerDataHandler {
 		public void onPlayerTick(LivingUpdateEvent event) {
 			if(event.entityLiving instanceof EntityPlayer) {
 				EntityPlayer player = (EntityPlayer) event.entityLiving;
-				PlayerDataHandler.get(player).tick();
 				PsiArmorEvent.post(new PsiArmorEvent(player, PsiArmorEvent.TICK));
+				PlayerDataHandler.get(player).tick();
 			}
 		}
 
