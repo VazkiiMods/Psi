@@ -18,6 +18,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import vazkii.psi.api.cad.ICADColorizer;
 import vazkii.psi.api.spell.ISpellContainer;
@@ -37,6 +38,10 @@ public class EntitySpellCircle extends Entity {
 	private static final String TAG_TIME_ALIVE = "timeAlive";
 	private static final String TAG_TIMES_CAST = "timesCast";
 
+	private static final String TAG_LOOK_X = "savedLookX";
+	private static final String TAG_LOOK_Y = "savedLookY";
+	private static final String TAG_LOOK_Z = "savedLookZ";
+	
 	public EntitySpellCircle(World worldIn) {
 		super(worldIn);
 		setSize(3F, 0F);
@@ -46,6 +51,11 @@ public class EntitySpellCircle extends Entity {
 		dataWatcher.updateObject(20, colorizer);
 		dataWatcher.updateObject(21, bullet);
 		dataWatcher.updateObject(22, player.getName());
+		
+		Vec3 lookVec = player.getLook(1F);
+		dataWatcher.updateObject(25, (float) lookVec.xCoord);
+		dataWatcher.updateObject(26, (float) lookVec.yCoord);
+		dataWatcher.updateObject(27, (float) lookVec.zCoord);
 		return this;
 	}
 
@@ -56,11 +66,11 @@ public class EntitySpellCircle extends Entity {
 		dataWatcher.addObject(22, "");
 		dataWatcher.addObject(23, 0);
 		dataWatcher.addObject(24, 0);
-		dataWatcher.setObjectWatched(20);
-		dataWatcher.setObjectWatched(21);
-		dataWatcher.setObjectWatched(22);
-		dataWatcher.setObjectWatched(23);
-		dataWatcher.setObjectWatched(24);
+		dataWatcher.addObject(25, 0F);
+		dataWatcher.addObject(26, 0F);
+		dataWatcher.addObject(27, 0F);
+		for(int i = 0; i < 8; i++)
+			dataWatcher.setObjectWatched(20 + i);
 	}
 
 	@Override
@@ -80,6 +90,10 @@ public class EntitySpellCircle extends Entity {
 		tagCompound.setString(TAG_CASTER, dataWatcher.getWatchableObjectString(22));
 		tagCompound.setInteger(TAG_TIME_ALIVE, getTimeAlive());
 		tagCompound.setInteger(TAG_TIMES_CAST, dataWatcher.getWatchableObjectInt(24));
+		
+		tagCompound.setFloat(TAG_LOOK_X, dataWatcher.getWatchableObjectFloat(25));
+		tagCompound.setFloat(TAG_LOOK_Y, dataWatcher.getWatchableObjectFloat(26));
+		tagCompound.setFloat(TAG_LOOK_Z, dataWatcher.getWatchableObjectFloat(27));
 	}
 
 	@Override
@@ -95,6 +109,10 @@ public class EntitySpellCircle extends Entity {
 		dataWatcher.updateObject(22, tagCompound.getString(TAG_CASTER));
 		setTimeAlive(tagCompound.getInteger(TAG_TIME_ALIVE));
 		dataWatcher.updateObject(24, tagCompound.getInteger(TAG_TIMES_CAST));
+		
+		dataWatcher.updateObject(25, tagCompound.getFloat(TAG_LOOK_X));
+		dataWatcher.updateObject(26, tagCompound.getFloat(TAG_LOOK_Y));
+		dataWatcher.updateObject(27, tagCompound.getFloat(TAG_LOOK_Z));
 	}
 
 	@Override
@@ -141,6 +159,14 @@ public class EntitySpellCircle extends Entity {
 			float grav = -0.15F - (float) Math.random() * 0.03F;
 			Psi.proxy.sparkleFX(worldObj, x, y, z, r, g, b, grav, 0.25F, 15);
 		}
+	}
+	
+	@Override
+	public Vec3 getLook(float f) {
+		float x = dataWatcher.getWatchableObjectFloat(25);
+		float y = dataWatcher.getWatchableObjectFloat(26);
+		float z = dataWatcher.getWatchableObjectFloat(27);
+		return new Vec3(x, y, z);
 	}
 
 	public int getTimeAlive() {
