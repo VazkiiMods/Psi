@@ -24,6 +24,7 @@ import org.lwjgl.input.Mouse;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableSet;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
@@ -58,6 +59,7 @@ import vazkii.psi.common.block.tile.TileProgrammer;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
 import vazkii.psi.common.item.ItemCAD;
+import vazkii.psi.common.item.base.ItemMod;
 import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.lib.LibResources;
 import vazkii.psi.common.network.NetworkHandler;
@@ -336,6 +338,21 @@ public class GuiProgrammer extends GuiScreen {
 
 			String s = page + 1 + "/" + getPageCount();
 			fontRendererObj.drawStringWithShadow(s, panelX + panelWidth / 2 - fontRendererObj.getStringWidth(s) / 2, panelY + panelHeight - 12, 0xFFFFFF);
+		}
+		
+		mc.getTextureManager().bindTexture(texture);
+		int helpX = left + xSize + 2;
+		int helpY = top + ySize - (spectator ? 32 : 48);
+		boolean overHelp = mouseX > helpX && mouseY > helpY && mouseX < helpX + 12 && mouseY < helpY + 12;
+		drawTexturedModalRect(helpX, helpY, xSize + (overHelp ? 12 : 0), ySize + 9, 12, 12);
+		
+		if(overHelp) {
+			ItemMod.addToTooltip(tooltip, "psimisc.programmerHelp");
+			String ctrl = StatCollector.translateToLocal(Minecraft.isRunningOnMac ? "psimisc.ctrlMac" : "psimisc.ctrlWindows");
+			ItemMod.tooltipIfShift(tooltip, () -> {
+				for(int i = 0; i < 16; i++)
+					ItemMod.addToTooltip(tooltip, "psi.programmerReference" + i, ctrl);
+			});
 		}
 
 		super.drawScreen(mouseX, mouseY, partialTicks);
