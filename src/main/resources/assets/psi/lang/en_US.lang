@@ -289,6 +289,7 @@ psi.spellpiece.operatorVectorSum.desc=A + B (+ C)
 psi.spellpiece.operatorVectorSubtract=Operator: Vector Subtract
 psi.spellpiece.operatorVectorSubtract.desc=A - B (- C)
 psi.spellpiece.operatorVectorMultiply=Operator: Vector Multiply
+psi.spellpiece.operatorVectorMultiply.desc=A * B
 psi.spellpiece.operatorVectorDivide=Operator: Vector Divide
 psi.spellpiece.operatorVectorDivide.desc=A / B
 psi.spellpiece.operatorVectorCrossProduct=Operator: Vector Cross Product
