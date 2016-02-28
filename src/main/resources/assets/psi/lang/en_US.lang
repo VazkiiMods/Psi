@@ -39,6 +39,7 @@ psimisc.loadPrompt=Load?
 psimisc.spectator=[Spectator Mode]
 psimisc.multipleCads=The other CAD in your inventory is interfering with your cast. You can only have one CAD on you at a time.
 psimisc.providerMod=&7Addon: &9%s
+psimisc.trickPattern=^Trick: (.+)$
 
 # VERSIONING
 psi.versioning.flavour0=Seems like Psi is outdated. What a shame.

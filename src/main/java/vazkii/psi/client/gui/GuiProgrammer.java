@@ -39,6 +39,7 @@ import net.minecraft.util.StatCollector;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.EnumCADStat;
 import vazkii.psi.api.cad.ICAD;
+import vazkii.psi.api.spell.EnumPieceType;
 import vazkii.psi.api.spell.EnumSpellStat;
 import vazkii.psi.api.spell.PieceGroup;
 import vazkii.psi.api.spell.Spell;
@@ -602,6 +603,17 @@ public class GuiProgrammer extends GuiScreen {
 		if(button instanceof GuiButtonSpellPiece) {
 			pushState(true);
 			SpellPiece piece = ((GuiButtonSpellPiece) button).piece.copy();
+			if(piece.getPieceType() == EnumPieceType.TRICK && spellNameField.getText().isEmpty()) {
+				String pieceName = StatCollector.translateToLocal(piece.getUnlocalizedName());
+				String patternStr = StatCollector.translateToLocal("psimisc.trickPattern");
+				Pattern pattern = Pattern.compile(patternStr);
+				Matcher matcher = pattern.matcher(pieceName);
+				if(matcher.matches()) {
+					String spellName = matcher.group(1);
+					programmer.spell.name = spellName;
+					spellNameField.setText(spellName);
+				}
+			}
 			programmer.spell.grid.gridData[selectedX][selectedY] = piece;
 			piece.isInGrid = true;
 			piece.x = selectedX;
