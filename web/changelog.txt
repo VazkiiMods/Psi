@@ -1,3 +1,15 @@
+beta-19
+*Added a help tooltip to the Spell Programmer GUI.
+*Adding a Trick to the Spell Programmer while the spell has no name defaults the spell's name to the name of the trick.
+*Fixed a crash when using Constant: Wrapper and the constant value is 0.
+*Fixed Exosuit Leggings not working with Selector: Entity Motion.
+*Fixed Operator: Vector Multiply not having a proper description.
+*Fixed setting conjured blocks overriding values from conjured blocks already placed. 
+*Fixed the Exosuit Light Sensor not taking sky light in mind properly.
+*Fixed the Spell Programmer GUI not closing if you die or get too far.
+*Spell Circles now maintain the look vector of the caster when they cast the spell.
+*Trick: Add Motion is now limited to one call per axis to prevent cost calculation problems.
+*Trick: Add Motion now always disables fall damage if the Y value is positive.
 beta-18
 *Place block tricks now respect custom item block handlers, like Botania flowers.
 *Fixed a crash when using Selector: Focused Entity on non-normal bullets.
