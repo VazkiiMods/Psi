@@ -475,8 +475,10 @@ public class PlayerDataHandler {
 			}
 
 			BlockPos pos = player.getPosition();
-			int light = player.worldObj.getLightFor(EnumSkyBlock.BLOCK, pos);
-
+			int skylight = (int) (player.worldObj.getLightFor(EnumSkyBlock.SKY, pos) * player.worldObj.provider.getSunBrightnessFactor(1F));
+			int blocklight = player.worldObj.getLightFor(EnumSkyBlock.BLOCK, pos);
+			int light = Math.max(skylight, blocklight);
+			
 			boolean lowLight = light < 7;
 			if(!this.lowLight && lowLight)
 				PsiArmorEvent.post(new PsiArmorEvent(player, PsiArmorEvent.LOW_LIGHT));
