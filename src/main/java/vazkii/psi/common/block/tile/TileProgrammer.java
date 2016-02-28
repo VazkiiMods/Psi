@@ -10,6 +10,7 @@
  */
 package vazkii.psi.common.block.tile;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.common.block.tile.base.TileMod;
@@ -60,6 +61,10 @@ public class TileProgrammer extends TileMod {
 			spell = Spell.createFromNBT(spellCmp);
 		else spell.readFromNBT(spellCmp);
 		playerLock = cmp.getString(TAG_PLAYER_LOCK);
+	}
+	
+	public boolean canPlayerInteract(EntityPlayer player) {
+		return !player.isDead && player.getDistanceSq((double)this.pos.getX() + 0.5D, (double)this.pos.getY() + 0.5D, (double)this.pos.getZ() + 0.5D) <= 64.0D;
 	}
 
 }

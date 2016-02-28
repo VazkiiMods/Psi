@@ -138,7 +138,7 @@ public class GuiProgrammer extends GuiScreen {
 
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-		if(programmer == null || programmer.getWorld().getTileEntity(programmer.getPos()) != programmer) {
+		if(programmer == null || programmer.getWorld().getTileEntity(programmer.getPos()) != programmer || !programmer.canPlayerInteract(mc.thePlayer)) {
 			mc.displayGuiScreen(null);
 			return;
 		}
