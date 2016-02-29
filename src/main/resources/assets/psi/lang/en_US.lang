@@ -39,6 +39,10 @@ psimisc.loadPrompt=Load?
 psimisc.spectator=[Spectator Mode]
 psimisc.multipleCads=The other CAD in your inventory is interfering with your cast. You can only have one CAD on you at a time.
 psimisc.providerMod=&7Addon: &9%s
+psimisc.trickPattern=^Trick: (.+)$
+psimisc.programmerHelp=&aProgrammer Help
+psimisc.ctrlWindows=Ctrl
+psimisc.ctrlMac=Cmd
 
 # VERSIONING
 psi.versioning.flavour0=Seems like Psi is outdated. What a shame.
@@ -201,6 +205,26 @@ psi.event.underwater=&bEvent&7: Underwater
 psi.event.onFire=&bEvent&7: On Fire
 psi.event.lowHp=&bEvent&7: Low Health
 
+# PROGRAMMER REFERENCE
+# %1$s is Ctrl or Cmd, depending on whether you're on windows or mac
+# spaces are important
+psi.programmerReference0= &bKeybinds
+psi.programmerReference1=  Delete Piece: &bDelete
+psi.programmerReference2=  Clear Grid: &b%1$s-Shift-Delete
+psi.programmerReference3=  Shift Grid: &b%1$s + Arrow Keys
+psi.programmerReference4=  Copy/Cut/Paste: &b%1$s-C/%1$s-X/%1$s-V
+psi.programmerReference5=  Undo/Redo: &b%1$s-Z/%1$s-Y
+psi.programmerReference6=  Open Panel/Select Piece: &bEnter
+psi.programmerReference7=  Set Parameter: &bNumber Keys + Arrow Keys
+psi.programmerReference8=  Switch Focus: &bTab
+psi.programmerReference9=  Move Cursor: &bArrow Keys
+psi.programmerReference10=
+psi.programmerReference11= &bSearch Terms
+psi.programmerReference12=  Accepting Type: &bin:(type)
+psi.programmerReference13=  Outputting Type: &bout:(type)
+psi.programmerReference14=  Name Begins With: &b(name)_
+psi.programmerReference15=  Name Ends With: &b_(name)
+
 # SPELl PIECE NAMES
 # -- SELECTORS
 psi.spellpiece.selectorCaster=Selector: Caster
@@ -288,6 +312,7 @@ psi.spellpiece.operatorVectorSum.desc=A + B (+ C)
 psi.spellpiece.operatorVectorSubtract=Operator: Vector Subtract
 psi.spellpiece.operatorVectorSubtract.desc=A - B (- C)
 psi.spellpiece.operatorVectorMultiply=Operator: Vector Multiply
+psi.spellpiece.operatorVectorMultiply.desc=A * B
 psi.spellpiece.operatorVectorDivide=Operator: Vector Divide
 psi.spellpiece.operatorVectorDivide.desc=A / B
 psi.spellpiece.operatorVectorCrossProduct=Operator: Vector Cross Product

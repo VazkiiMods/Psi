@@ -72,12 +72,34 @@ public class PieceTrickAddMotion extends PieceTrick {
 
 		dir = dir.copy().normalize().multiply(MULTIPLIER * speed);
 
-		e.motionX += dir.x;
-		e.motionY += dir.y;
-		e.motionZ += dir.z;
+		String key = "psi:Entity" + e.getEntityId() + "Motion";
+		
+		if(Math.abs(dir.x) > 0.0001) {
+			String keyv = key + "X";
+			if(!context.customData.containsKey(keyv)) {
+				e.motionX += dir.x;
+				context.customData.put(keyv, 0);
+			}
+		}
 
-		if(e.motionY >= 0)
-			e.fallDistance = 0;
+		if(Math.abs(dir.y) > 0.0001) {
+			String keyv = key + "Y";
+			if(!context.customData.containsKey(keyv)) {
+				e.motionY += dir.y;
+				context.customData.put(keyv, 0);
+			}
+			
+			if(dir.y > 0)
+				e.fallDistance = 0;
+		}
+		
+		if(Math.abs(dir.z) > 0.0001) {
+			String keyv = key + "Z";
+			if(!context.customData.containsKey(keyv)) {
+				e.motionZ += dir.z;
+				context.customData.put(keyv, 0);
+			}
+		}
 	}
 
 }

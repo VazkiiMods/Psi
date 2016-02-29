@@ -66,23 +66,27 @@ public class PieceTrickConjureBlock extends PieceTrick {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
 		if(!context.isInRadius(positionVal))
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
-
+		
 		BlockPos pos = new BlockPos(positionVal.x, positionVal.y, positionVal.z);
-		PieceTrickPlaceBlock.placeBlock(context.caster, context.caster.worldObj, pos, false, true);
 		IBlockState state = context.caster.worldObj.getBlockState(pos);
+		if(state.getBlock() != ModBlocks.conjured) {
+			PieceTrickPlaceBlock.placeBlock(context.caster, context.caster.worldObj, pos, false, true);
+			
+			state = context.caster.worldObj.getBlockState(pos);
 
-		if(!context.caster.worldObj.isRemote && state.getBlock() == ModBlocks.conjured) {
-			context.caster.worldObj.setBlockState(pos, messWithState(state));
-			TileConjured tile = (TileConjured) context.caster.worldObj.getTileEntity(pos);
+			if(!context.caster.worldObj.isRemote && state.getBlock() == ModBlocks.conjured) {
+				context.caster.worldObj.setBlockState(pos, messWithState(state));
+				TileConjured tile = (TileConjured) context.caster.worldObj.getTileEntity(pos);
 
-			if(timeVal != null && timeVal.intValue() > 0) {
-				int val = timeVal.intValue();
-				tile.time = val;
+				if(timeVal != null && timeVal.intValue() > 0) {
+					int val = timeVal.intValue();
+					tile.time = val;
+				}
+
+				ItemStack cad = PsiAPI.getPlayerCAD(context.caster);
+				if(cad != null)
+					tile.colorizer = ((ICAD) cad.getItem()).getComponentInSlot(cad, EnumCADComponent.DYE);
 			}
-
-			ItemStack cad = PsiAPI.getPlayerCAD(context.caster);
-			if(cad != null)
-				tile.colorizer = ((ICAD) cad.getItem()).getComponentInSlot(cad, EnumCADComponent.DYE);
 		}
 
 		return null;

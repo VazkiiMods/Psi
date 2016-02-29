@@ -24,6 +24,7 @@ import org.lwjgl.input.Mouse;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableSet;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
@@ -39,6 +40,7 @@ import net.minecraft.util.StatCollector;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.EnumCADStat;
 import vazkii.psi.api.cad.ICAD;
+import vazkii.psi.api.spell.EnumPieceType;
 import vazkii.psi.api.spell.EnumSpellStat;
 import vazkii.psi.api.spell.PieceGroup;
 import vazkii.psi.api.spell.Spell;
@@ -57,6 +59,7 @@ import vazkii.psi.common.block.tile.TileProgrammer;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
 import vazkii.psi.common.item.ItemCAD;
+import vazkii.psi.common.item.base.ItemMod;
 import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.lib.LibResources;
 import vazkii.psi.common.network.NetworkHandler;
@@ -138,7 +141,7 @@ public class GuiProgrammer extends GuiScreen {
 
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-		if(programmer == null || programmer.getWorld().getTileEntity(programmer.getPos()) != programmer) {
+		if(programmer == null || programmer.getWorld().getTileEntity(programmer.getPos()) != programmer || !programmer.canPlayerInteract(mc.thePlayer)) {
 			mc.displayGuiScreen(null);
 			return;
 		}
@@ -335,6 +338,21 @@ public class GuiProgrammer extends GuiScreen {
 
 			String s = page + 1 + "/" + getPageCount();
 			fontRendererObj.drawStringWithShadow(s, panelX + panelWidth / 2 - fontRendererObj.getStringWidth(s) / 2, panelY + panelHeight - 12, 0xFFFFFF);
+		}
+		
+		mc.getTextureManager().bindTexture(texture);
+		int helpX = left + xSize + 2;
+		int helpY = top + ySize - (spectator ? 32 : 48);
+		boolean overHelp = mouseX > helpX && mouseY > helpY && mouseX < helpX + 12 && mouseY < helpY + 12;
+		drawTexturedModalRect(helpX, helpY, xSize + (overHelp ? 12 : 0), ySize + 9, 12, 12);
+		
+		if(overHelp) {
+			ItemMod.addToTooltip(tooltip, "psimisc.programmerHelp");
+			String ctrl = StatCollector.translateToLocal(Minecraft.isRunningOnMac ? "psimisc.ctrlMac" : "psimisc.ctrlWindows");
+			ItemMod.tooltipIfShift(tooltip, () -> {
+				for(int i = 0; i < 16; i++)
+					ItemMod.addToTooltip(tooltip, "psi.programmerReference" + i, ctrl);
+			});
 		}
 
 		super.drawScreen(mouseX, mouseY, partialTicks);
@@ -602,6 +620,17 @@ public class GuiProgrammer extends GuiScreen {
 		if(button instanceof GuiButtonSpellPiece) {
 			pushState(true);
 			SpellPiece piece = ((GuiButtonSpellPiece) button).piece.copy();
+			if(piece.getPieceType() == EnumPieceType.TRICK && spellNameField.getText().isEmpty()) {
+				String pieceName = StatCollector.translateToLocal(piece.getUnlocalizedName());
+				String patternStr = StatCollector.translateToLocal("psimisc.trickPattern");
+				Pattern pattern = Pattern.compile(patternStr);
+				Matcher matcher = pattern.matcher(pieceName);
+				if(matcher.matches()) {
+					String spellName = matcher.group(1);
+					programmer.spell.name = spellName;
+					spellNameField.setText(spellName);
+				}
+			}
 			programmer.spell.grid.gridData[selectedX][selectedY] = piece;
 			piece.isInGrid = true;
 			piece.x = selectedX;
