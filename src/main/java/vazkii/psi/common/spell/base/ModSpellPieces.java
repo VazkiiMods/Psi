@@ -105,6 +105,7 @@ import vazkii.psi.common.spell.trick.entity.PieceTrickMassAddMotion;
 import vazkii.psi.common.spell.trick.entity.PieceTrickMassBlink;
 import vazkii.psi.common.spell.trick.entity.PieceTrickMassExodus;
 import vazkii.psi.common.spell.trick.entity.PieceTrickSmeltItem;
+import vazkii.psi.common.spell.trick.entity.PieceTrickTeleport;
 import vazkii.psi.common.spell.trick.infusion.PieceTrickEbonyIvory;
 import vazkii.psi.common.spell.trick.infusion.PieceTrickGreaterInfusion;
 import vazkii.psi.common.spell.trick.infusion.PieceTrickInfusion;
@@ -231,6 +232,7 @@ public final class ModSpellPieces {
 	public static PieceContainer trickConjureBlock;
 	public static PieceContainer trickConjureLight;
 	public static PieceContainer trickConjureBlockSequence;
+	public static PieceContainer trickTeleport;
 
 	public static void init() {
 		selectorCaster = register(PieceSelectorCaster.class, LibPieceNames.SELECTOR_CASTER, LibPieceGroups.TUTORIAL_1);
@@ -342,7 +344,8 @@ public final class ModSpellPieces {
 		trickConjureBlock = register(PieceTrickConjureBlock.class, LibPieceNames.TRICK_CONJURE_BLOCK, LibPieceGroups.BLOCK_CONJURATION, true);
 		trickConjureLight = register(PieceTrickConjureLight.class, LibPieceNames.TRICK_CONJURE_LIGHT, LibPieceGroups.BLOCK_CONJURATION);
 		trickConjureBlockSequence = register(PieceTrickConjureBlockSequence.class, LibPieceNames.TRICK_CONJURE_BLOCK_SEQUENCE, LibPieceGroups.BLOCK_CONJURATION);
-
+		trickTeleport = register(PieceTrickTeleport.class, LibPieceNames.TRICK_TELEPORT, LibPieceGroups.EIDOS_REVERSAL);
+		
 		PsiAPI.setGroupRequirements(LibPieceGroups.TUTORIAL_1, 1);
 		PsiAPI.setGroupRequirements(LibPieceGroups.TUTORIAL_2, 2, LibPieceGroups.TUTORIAL_1);
 		PsiAPI.setGroupRequirements(LibPieceGroups.TUTORIAL_3, 3, LibPieceGroups.TUTORIAL_2);
