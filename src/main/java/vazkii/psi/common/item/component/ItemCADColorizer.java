@@ -12,6 +12,8 @@ package vazkii.psi.common.item.component;
 
 import java.awt.Color;
 
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.oredict.RecipeSorter;
 import org.apache.commons.lang3.text.WordUtils;
 
 import net.minecraft.item.EnumDyeColor;
@@ -19,6 +21,7 @@ import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import vazkii.psi.api.cad.ICADColorizer;
 import vazkii.psi.client.core.handler.ClientTickHandler;
+import vazkii.psi.common.crafting.recipe.ColorizerChangeRecipe;
 import vazkii.psi.common.lib.LibItemNames;
 
 public class ItemCADColorizer extends ItemCADComponent implements ICADColorizer {
@@ -46,6 +49,9 @@ public class ItemCADColorizer extends ItemCADComponent implements ICADColorizer 
 
 	public ItemCADColorizer() {
 		super(LibItemNames.CAD_COLORIZER, VARIANTS);
+
+		GameRegistry.addRecipe(new ColorizerChangeRecipe());
+		RecipeSorter.register("psi:colorizerChange", ColorizerChangeRecipe.class, RecipeSorter.Category.SHAPELESS, "");
 	}
 
 	@Override
@@ -63,8 +69,7 @@ public class ItemCADColorizer extends ItemCADComponent implements ICADColorizer 
 		switch(stack.getItemDamage()) {
 		case 16: {
 			float time = ClientTickHandler.total;
-			int color = Color.HSBtoRGB(time * 0.005F, 1F, 1F);
-			return color;
+			return Color.HSBtoRGB(time * 0.005F, 1F, 1F);
 		}
 		case 17:
 			float time = ClientTickHandler.total;
@@ -79,7 +84,7 @@ public class ItemCADColorizer extends ItemCADComponent implements ICADColorizer 
 		return 0xFFFFFF;
 	}
 
-	private static final String getProperDyeName(EnumDyeColor color) {
+	private static String getProperDyeName(EnumDyeColor color) {
 		return WordUtils.capitalize(color.getName(), '_').replaceAll("_", "");
 	}
 
