@@ -12,6 +12,7 @@ package vazkii.psi.common.spell.trick.potion;
 
 import net.minecraft.potion.Potion;
 import vazkii.psi.api.spell.Spell;
+import vazkii.psi.api.spell.SpellCompilationException;
 
 public class PieceTrickWither extends PieceTrickPotionBase {
 
@@ -25,8 +26,8 @@ public class PieceTrickWither extends PieceTrickPotionBase {
 	}
 
 	@Override
-	public int getPotency(int power, int time) {
-		return power * 2 * power * time * 10;
+	public int getPotency(int power, int time) throws SpellCompilationException {
+		return super.getPotency(power, time) * 4;
 	}
 
 }

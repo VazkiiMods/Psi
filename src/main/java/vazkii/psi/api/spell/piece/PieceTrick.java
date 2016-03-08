@@ -31,7 +31,7 @@ public abstract class PieceTrick extends SpellPiece {
 	}
 
 	@Override
-	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
+	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException, ArithmeticException {
 		meta.addStat(EnumSpellStat.COMPLEXITY, 1);
 		meta.addStat(EnumSpellStat.PROJECTION, 1);
 	}
@@ -49,6 +49,24 @@ public abstract class PieceTrick extends SpellPiece {
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		return null;
+	}
+	
+	public double multiplySafe(double v1, double... arr) throws SpellCompilationException {
+		double a = v1;
+		for(int i = 0; i < arr.length; i++) {
+			double b = arr[i];
+			
+			double bound = Long.signum((long) a) == Long.signum((long) b) ? Double.MAX_VALUE : Double.MIN_VALUE;
+			if(a != 0 && (b > 0 && b > bound / a ||  b < 0 && b < bound / a))
+				throw new SpellCompilationException(SpellCompilationException.STAT_OVERFLOW);
+			
+			a = a * b;
+		}
+		
+		if((int) a < 0 || (int) a == Integer.MAX_VALUE)
+			throw new SpellCompilationException(SpellCompilationException.STAT_OVERFLOW);
+		
+		return a;
 	}
 
 }

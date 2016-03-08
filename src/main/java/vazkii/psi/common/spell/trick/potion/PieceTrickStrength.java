@@ -12,6 +12,7 @@ package vazkii.psi.common.spell.trick.potion;
 
 import net.minecraft.potion.Potion;
 import vazkii.psi.api.spell.Spell;
+import vazkii.psi.api.spell.SpellCompilationException;
 
 public class PieceTrickStrength extends PieceTrickPotionBase {
 
@@ -25,8 +26,8 @@ public class PieceTrickStrength extends PieceTrickPotionBase {
 	}
 
 	@Override
-	public int getPotency(int power, int time) {
-		return power * power * power * time * 5;
+	public int getPotency(int power, int time) throws SpellCompilationException {
+		return (int) multiplySafe(power, power, power, time, 5);
 	}
 
 }

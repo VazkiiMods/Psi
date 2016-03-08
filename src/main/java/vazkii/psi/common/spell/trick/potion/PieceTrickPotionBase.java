@@ -23,9 +23,10 @@ import vazkii.psi.api.spell.SpellParam;
 import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.api.spell.param.ParamEntity;
 import vazkii.psi.api.spell.param.ParamNumber;
+import vazkii.psi.api.spell.piece.PieceTrick;
 import vazkii.psi.common.spell.trick.PieceTrickBlaze;
 
-public abstract class PieceTrickPotionBase extends PieceTrickBlaze {
+public abstract class PieceTrickPotionBase extends PieceTrick {
 
 	SpellParam target;
 	SpellParam power;
@@ -54,8 +55,8 @@ public abstract class PieceTrickPotionBase extends PieceTrickBlaze {
 		if(powerVal == null || timeVal == null || powerVal <= 0 || powerVal.doubleValue() != powerVal.intValue() || timeVal <= 0 || timeVal.doubleValue() != timeVal.intValue())
 			throw new SpellCompilationException(SpellCompilationException.NON_POSITIVE_INTEGER, x, y);
 
-		meta.addStat(EnumSpellStat.POTENCY, getPotency(powerVal.intValue(), timeVal.intValue()));
-		meta.addStat(EnumSpellStat.COST, getCost(powerVal.intValue(), timeVal.intValue()));
+		meta.addStat(EnumSpellStat.POTENCY, 20 + getPotency(powerVal.intValue(), timeVal.intValue()));
+		meta.addStat(EnumSpellStat.COST, 40 + getCost(powerVal.intValue(), timeVal.intValue()));
 	}
 
 	@Override
@@ -79,12 +80,12 @@ public abstract class PieceTrickPotionBase extends PieceTrickBlaze {
 
 	public abstract Potion getPotion();
 
-	public int getCost(int power, int time) {
-		return getPotency(power, time) * 5;
+	public int getCost(int power, int time) throws SpellCompilationException {
+		return (int) multiplySafe(getPotency(power, time) * 5);
 	}
 
-	public int getPotency(int power, int time) {
-		return time * power * power * 5;
+	public int getPotency(int power, int time) throws SpellCompilationException {
+		return (int) multiplySafe(time, power, power, 5);
 	}
 
 	public boolean hasPower() {
