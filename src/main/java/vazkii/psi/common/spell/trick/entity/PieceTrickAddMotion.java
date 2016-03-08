@@ -89,7 +89,7 @@ public class PieceTrickAddMotion extends PieceTrick {
 				context.customData.put(keyv, 0);
 			}
 			
-			if(dir.y > 0)
+			if(e.motionY >= 0)
 				e.fallDistance = 0;
 		}
 		
