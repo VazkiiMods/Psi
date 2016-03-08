@@ -49,7 +49,7 @@ public class PieceTrickSmeltItem extends PieceTrick {
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		Entity targetVal = this.<Entity>getParamValue(context, target);
 
-		if(targetVal instanceof EntityItem) {
+		if(targetVal instanceof EntityItem && !targetVal.isDead) {
 			EntityItem eitem = (EntityItem) targetVal;
 			ItemStack stack = eitem.getEntityItem();
 			ItemStack result = FurnaceRecipes.instance().getSmeltingResult(stack);

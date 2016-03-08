@@ -104,6 +104,8 @@ public class GuiProgrammer extends GuiScreen {
 
 	@Override
 	public void initGui() {
+		Keyboard.enableRepeatEvents(true);
+
 		xSize = 174;
 		ySize = 184;
 		padLeft = 7;
