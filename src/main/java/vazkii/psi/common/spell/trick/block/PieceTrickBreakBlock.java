@@ -79,7 +79,7 @@ public class PieceTrickBreakBlock extends PieceTrick {
 		Block block = state.getBlock();
 		if(!world.isRemote && block != null && !block.isAir(world, pos) && !(block instanceof BlockLiquid) && block.getPlayerRelativeBlockHardness(player, world, pos) > 0) {
 			int neededHarvestLevel = block.getHarvestLevel(state);
-			if(neededHarvestLevel > harvestLevel)
+			if(neededHarvestLevel > harvestLevel && (tool != null && !tool.canHarvestBlock(block)))
 				return;
 
 			BreakEvent event = new BreakEvent(world, pos, state, player);
