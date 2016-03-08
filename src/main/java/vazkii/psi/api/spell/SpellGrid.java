@@ -25,9 +25,14 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public final class SpellGrid {
 
 	private static final String TAG_SPELL_LIST = "spellList";
-	private static final String TAG_SPELL_POS_X = "spellPosX";
-	private static final String TAG_SPELL_POS_Y = "spellPosY";
-	private static final String TAG_SPELL_DATA = "spellData";
+	
+	private static final String TAG_SPELL_POS_X_LEGACY = "spellPosX";
+	private static final String TAG_SPELL_POS_Y_LEGACY = "spellPosY";
+	private static final String TAG_SPELL_DATA_LEGACY = "spellData";
+	
+	private static final String TAG_SPELL_POS_X = "x";
+	private static final String TAG_SPELL_POS_Y = "y";
+	private static final String TAG_SPELL_DATA = "data";
 
 	public static final int GRID_SIZE = 9;
 
@@ -185,10 +190,21 @@ public final class SpellGrid {
 		int len = list.tagCount();
 		for(int i = 0; i < len; i++) {
 			NBTTagCompound lcmp = list.getCompoundTagAt(i);
-			int posX = lcmp.getInteger(TAG_SPELL_POS_X);
-			int posY = lcmp.getInteger(TAG_SPELL_POS_Y);
-
-			NBTTagCompound data = lcmp.getCompoundTag(TAG_SPELL_DATA);
+			int posX, posY;
+			
+			if(lcmp.hasKey(TAG_SPELL_POS_X_LEGACY)) {
+				posX = lcmp.getInteger(TAG_SPELL_POS_X_LEGACY);
+				posY = lcmp.getInteger(TAG_SPELL_POS_Y_LEGACY);
+			} else {
+				posX = lcmp.getInteger(TAG_SPELL_POS_X);
+				posY = lcmp.getInteger(TAG_SPELL_POS_Y);
+			}
+			
+			NBTTagCompound data;
+			if(lcmp.hasKey(TAG_SPELL_DATA_LEGACY))
+				data = lcmp.getCompoundTag(TAG_SPELL_DATA_LEGACY);
+			else data = lcmp.getCompoundTag(TAG_SPELL_DATA);
+			
 			SpellPiece piece = SpellPiece.createFromNBT(spell, data);
 			if(piece != null) {
 				gridData[posX][posY] = piece;

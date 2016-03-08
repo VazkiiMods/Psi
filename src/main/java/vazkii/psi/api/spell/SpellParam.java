@@ -27,27 +27,29 @@ public abstract class SpellParam {
 	public static final int YELLOW = 0xD2CC2A; // For entities
 	public static final int GRAY = 0x767676; // For connectors
 
+	public static final String PSI_PREFIX = "psi.spellparam.";
+
 	// Generic names
-	public static final String GENERIC_NAME_TARGET = "psi.spellparam.target";
-	public static final String GENERIC_NAME_NUMBER = "psi.spellparam.number";
-	public static final String GENERIC_NAME_NUMBER1 = "psi.spellparam.number1";
-	public static final String GENERIC_NAME_NUMBER2 = "psi.spellparam.number2";
-	public static final String GENERIC_NAME_NUMBER3 = "psi.spellparam.number3";
-	public static final String GENERIC_NAME_NUMBER4 = "psi.spellparam.number4";
-	public static final String GENERIC_NAME_VECTOR1 = "psi.spellparam.vector1";
-	public static final String GENERIC_NAME_VECTOR2 = "psi.spellparam.vector2";
-	public static final String GENERIC_NAME_VECTOR3 = "psi.spellparam.vector3";
-	public static final String GENERIC_NAME_VECTOR4 = "psi.spellparam.vector4";
-	public static final String GENERIC_NAME_POSITION = "psi.spellparam.position";
-	public static final String GENERIC_NAME_MIN = "psi.spellparam.min";
-	public static final String GENERIC_NAME_MAX = "psi.spellparam.max";
-	public static final String GENERIC_NAME_POWER = "psi.spellparam.power";
-	public static final String GENERIC_NAME_X = "psi.spellparam.x";
-	public static final String GENERIC_NAME_Y = "psi.spellparam.y";
-	public static final String GENERIC_NAME_Z = "psi.spellparam.z";
-	public static final String GENERIC_NAME_RADIUS = "psi.spellparam.radius";
-	public static final String GENERIC_NAME_DISTANCE = "psi.spellparam.distance";
-	public static final String GENERIC_NAME_TIME = "psi.spellparam.time";
+	public static final String GENERIC_NAME_TARGET = PSI_PREFIX + "target";
+	public static final String GENERIC_NAME_NUMBER = PSI_PREFIX + "number";
+	public static final String GENERIC_NAME_NUMBER1 = PSI_PREFIX + "number1";
+	public static final String GENERIC_NAME_NUMBER2 = PSI_PREFIX + "number2";
+	public static final String GENERIC_NAME_NUMBER3 = PSI_PREFIX + "number3";
+	public static final String GENERIC_NAME_NUMBER4 = PSI_PREFIX + "number4";
+	public static final String GENERIC_NAME_VECTOR1 = PSI_PREFIX + "vector1";
+	public static final String GENERIC_NAME_VECTOR2 = PSI_PREFIX + "vector2";
+	public static final String GENERIC_NAME_VECTOR3 = PSI_PREFIX + "vector3";
+	public static final String GENERIC_NAME_VECTOR4 = PSI_PREFIX + "vector4";
+	public static final String GENERIC_NAME_POSITION = PSI_PREFIX + "position";
+	public static final String GENERIC_NAME_MIN = PSI_PREFIX + "min";
+	public static final String GENERIC_NAME_MAX = PSI_PREFIX + "max";
+	public static final String GENERIC_NAME_POWER = PSI_PREFIX + "power";
+	public static final String GENERIC_NAME_X = PSI_PREFIX + "x";
+	public static final String GENERIC_NAME_Y = PSI_PREFIX + "y";
+	public static final String GENERIC_NAME_Z = PSI_PREFIX + "z";
+	public static final String GENERIC_NAME_RADIUS = PSI_PREFIX + "radius";
+	public static final String GENERIC_NAME_DISTANCE = PSI_PREFIX + "distance";
+	public static final String GENERIC_NAME_TIME = PSI_PREFIX + "time";
 
 	public final String name;
 	public final int color;

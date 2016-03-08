@@ -36,9 +36,13 @@ import vazkii.psi.common.lib.LibMisc;
  */
 public abstract class SpellPiece {
 
-	private static final String TAG_KEY = "spellKey";
+	private static final String TAG_KEY_LEGACY = "spellKey";
+	
+	private static final String TAG_KEY = "key";
 	private static final String TAG_PARAMS = "params";
 
+	private static final String PSI_PREFIX = "psi.spellparam.";
+	
 	public final String registryKey;
 	public final Spell spell;
 
@@ -303,7 +307,14 @@ public abstract class SpellPiece {
 	}
 
 	public static SpellPiece createFromNBT(Spell spell, NBTTagCompound cmp) {
-		String key = cmp.getString(TAG_KEY);
+		String key;
+		if(cmp.hasKey(TAG_KEY_LEGACY))
+			key = cmp.getString(TAG_KEY_LEGACY);
+		else key = cmp.getString(TAG_KEY);
+		
+		if(key.startsWith("_"))
+			key = PSI_PREFIX + key.substring(1);
+		
 		Class<? extends SpellPiece> clazz = PsiAPI.spellPieceRegistry.getObject(key);
 		if(clazz != null) {
 			SpellPiece p = create(clazz, spell);
@@ -332,20 +343,32 @@ public abstract class SpellPiece {
 		NBTTagCompound paramCmp = cmp.getCompoundTag(TAG_PARAMS);
 		for(String s : params.keySet()) {
 			SpellParam param = params.get(s);
-			paramSides.put(param, SpellParam.Side.fromInt(paramCmp.getInteger(s)));
+
+			String key = s;
+			if(paramCmp.hasKey(key))
+				paramSides.put(param, SpellParam.Side.fromInt(paramCmp.getInteger(key)));
+			else {
+				if(key.startsWith(SpellParam.PSI_PREFIX))
+					key = "_" + key.substring(SpellParam.PSI_PREFIX.length());
+				paramSides.put(param, SpellParam.Side.fromInt(paramCmp.getInteger(key)));
+			}
 		}
 	}
 
 	public void writeToNBT(NBTTagCompound cmp) {
-		cmp.setString(TAG_KEY, registryKey);
-
+		cmp.setString(TAG_KEY, registryKey.replaceAll("^" + PSI_PREFIX, "_"));
+		
+		int paramCount = 0;
 		NBTTagCompound paramCmp = new NBTTagCompound();
 		for(String s : params.keySet()) {
 			SpellParam param = params.get(s);
 			SpellParam.Side side = paramSides.get(param);
-			paramCmp.setInteger(s, side.asInt());
+			paramCmp.setInteger(s.replaceAll("^" + SpellParam.PSI_PREFIX, "_"), side.asInt());
+			paramCount++;
 		}
-		cmp.setTag(TAG_PARAMS, paramCmp);
+		
+		if(paramCount > 0)
+			cmp.setTag(TAG_PARAMS, paramCmp);
 	}
 
 	/**
