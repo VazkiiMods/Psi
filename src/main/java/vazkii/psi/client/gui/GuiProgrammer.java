@@ -52,6 +52,7 @@ import vazkii.psi.api.spell.SpellMetadata;
 import vazkii.psi.api.spell.SpellParam;
 import vazkii.psi.api.spell.SpellParam.Side;
 import vazkii.psi.api.spell.SpellPiece;
+import vazkii.psi.client.core.helper.SharingHelper;
 import vazkii.psi.client.core.helper.RenderHelper;
 import vazkii.psi.client.gui.button.GuiButtonIO;
 import vazkii.psi.client.gui.button.GuiButtonPage;
@@ -99,6 +100,8 @@ public class GuiProgrammer extends GuiScreen {
 	GuiTextField spellNameField;
 	GuiTextField commentField;
 	
+	public boolean takingScreenshot = false;
+	public boolean shareToReddit = false;
 	boolean spectator;
 
 	public GuiProgrammer(TileProgrammer programmer) {
@@ -218,7 +221,7 @@ public class GuiProgrammer extends GuiScreen {
 
 			for(EnumSpellStat stat : meta.stats.keySet()) {
 				int statX = left + xSize + 3;
-				int statY = top + 20 + i * 20;
+				int statY = top + (takingScreenshot ? 40 : 20) + i * 20;
 				int val = meta.stats.get(stat);
 
 				EnumCADStat cadStat = stat.getTarget();
@@ -253,7 +256,7 @@ public class GuiProgrammer extends GuiScreen {
 		if(programmer.spell.grid.exists(selectedX, selectedY))
 			piece = programmer.spell.grid.gridData[selectedX][selectedY];
 		
-		if(configEnabled) {
+		if(configEnabled && !takingScreenshot) {
 			drawTexturedModalRect(left - 81, top + 55, xSize, 30, 81, 115);
 			String configStr = StatCollector.translateToLocal("psimisc.config");
 			mc.fontRendererObj.drawString(configStr, left - mc.fontRendererObj.getStringWidth(configStr) - 2, top + 45, 0xFFFFFF);
@@ -311,7 +314,7 @@ public class GuiProgrammer extends GuiScreen {
 
 		mc.getTextureManager().bindTexture(texture);
 
-		if(selectedX != -1 && selectedY != -1)
+		if(selectedX != -1 && selectedY != -1 && !takingScreenshot)
 			drawTexturedModalRect(gridLeft + selectedX * 18, gridTop + selectedY * 18, 32, ySize, 16, 16);
 		
 		if(isAltKeyDown()) {
@@ -329,24 +332,28 @@ public class GuiProgrammer extends GuiScreen {
 				comment = pieceAt.comment;
 			}
 
-			if(cursorX == selectedX && cursorY == selectedY)
-				drawTexturedModalRect(gridLeft + cursorX * 18, gridTop + cursorY * 18, 16, ySize, 8, 16);
-			else drawTexturedModalRect(gridLeft + cursorX * 18, gridTop + cursorY * 18, 16, ySize, 16, 16);
+			if(!takingScreenshot) {
+				if(cursorX == selectedX && cursorY == selectedY)
+					drawTexturedModalRect(gridLeft + cursorX * 18, gridTop + cursorY * 18, 16, ySize, 8, 16);
+				else drawTexturedModalRect(gridLeft + cursorX * 18, gridTop + cursorY * 18, 16, ySize, 16, 16);
+			}
 		}
 
 		int topy = top - 12;
-		if(spectator) {
-			String betaTest = EnumChatFormatting.RED + StatCollector.translateToLocal("psimisc.spectator");
-			mc.fontRendererObj.drawStringWithShadow(betaTest, left + xSize / 2 - mc.fontRendererObj.getStringWidth(betaTest) / 2, topy, 0xFFFFFF);
-			topy -= 10;
-		}
-		if(LibMisc.BETA_TESTING) {
-			String betaTest = StatCollector.translateToLocal("psimisc.wip");
-			mc.fontRendererObj.drawStringWithShadow(betaTest, left + xSize / 2 - mc.fontRendererObj.getStringWidth(betaTest) / 2, topy, 0xFFFFFF);
-		}
-		if(piece != null) {
-			String name = StatCollector.translateToLocal(piece.getUnlocalizedName());
-			mc.fontRendererObj.drawStringWithShadow(name, left + xSize / 2 - mc.fontRendererObj.getStringWidth(name) / 2, topy, 0xFFFFFF);
+		if(!takingScreenshot) {
+			if(spectator) {
+				String betaTest = EnumChatFormatting.RED + StatCollector.translateToLocal("psimisc.spectator");
+				mc.fontRendererObj.drawStringWithShadow(betaTest, left + xSize / 2 - mc.fontRendererObj.getStringWidth(betaTest) / 2, topy, 0xFFFFFF);
+				topy -= 10;
+			}
+			if(LibMisc.BETA_TESTING) {
+				String betaTest = StatCollector.translateToLocal("psimisc.wip");
+				mc.fontRendererObj.drawStringWithShadow(betaTest, left + xSize / 2 - mc.fontRendererObj.getStringWidth(betaTest) / 2, topy, 0xFFFFFF);
+			}
+			if(piece != null) {
+				String name = StatCollector.translateToLocal(piece.getUnlocalizedName());
+				mc.fontRendererObj.drawStringWithShadow(name, left + xSize / 2 - mc.fontRendererObj.getStringWidth(name) / 2, topy, 0xFFFFFF);
+			}
 		}
 
 		mc.fontRendererObj.drawStringWithShadow(StatCollector.translateToLocal("psimisc.name"), left + padLeft, spellNameField.yPosition + 1, color);
@@ -371,21 +378,22 @@ public class GuiProgrammer extends GuiScreen {
 		}
 		GlStateManager.color(1F, 1F, 1F);
 		
-		mc.getTextureManager().bindTexture(texture);
-		int helpX = left + xSize + 2;
-		int helpY = top + ySize - (spectator ? 32 : 48);
-		boolean overHelp = mouseX > helpX && mouseY > helpY && mouseX < helpX + 12 && mouseY < helpY + 12;
-		drawTexturedModalRect(helpX, helpY, xSize + (overHelp ? 12 : 0), ySize + 9, 12, 12);
-		
-		if(overHelp && !isAltKeyDown()) {
-			ItemMod.addToTooltip(tooltip, "psimisc.programmerHelp");
-			String ctrl = StatCollector.translateToLocal(Minecraft.isRunningOnMac ? "psimisc.ctrlMac" : "psimisc.ctrlWindows");
-			ItemMod.tooltipIfShift(tooltip, () -> {
-				for(int i = 0; i < 16; i++)
-					ItemMod.addToTooltip(tooltip, "psi.programmerReference" + i, ctrl);
-			});
+		if(!takingScreenshot) {
+			mc.getTextureManager().bindTexture(texture);
+			int helpX = left + xSize + 2;
+			int helpY = top + ySize - (spectator ? 32 : 48);
+			boolean overHelp = mouseX > helpX && mouseY > helpY && mouseX < helpX + 12 && mouseY < helpY + 12;
+			drawTexturedModalRect(helpX, helpY, xSize + (overHelp ? 12 : 0), ySize + 9, 12, 12);
+			
+			if(overHelp && !isAltKeyDown()) {
+				ItemMod.addToTooltip(tooltip, "psimisc.programmerHelp");
+				String ctrl = StatCollector.translateToLocal(Minecraft.isRunningOnMac ? "psimisc.ctrlMac" : "psimisc.ctrlWindows");
+				ItemMod.tooltipIfShift(tooltip, () -> {
+					for(int i = 0; i < 20; i++)
+						ItemMod.addToTooltip(tooltip, "psi.programmerReference" + i, ctrl);
+				});
+			}
 		}
-		
 		List<String> legitTooltip = null;
 		if(isAltKeyDown())
 			legitTooltip = new ArrayList(tooltip);
@@ -395,13 +403,28 @@ public class GuiProgrammer extends GuiScreen {
 		if(isAltKeyDown())
 			tooltip = legitTooltip;
 
-		if(!tooltip.isEmpty())
-			RenderHelper.renderTooltip(tooltipX, tooltipY, tooltip);
-		
-		if(comment != null && !comment.isEmpty())
-			RenderHelper.renderTooltipGreen(tooltipX, tooltipY - 17, Arrays.asList(new String[]{ comment }));
+		if(!takingScreenshot) {
+			if(!tooltip.isEmpty())
+				RenderHelper.renderTooltip(tooltipX, tooltipY, tooltip);
+			
+			if(comment != null && !comment.isEmpty())
+				RenderHelper.renderTooltipGreen(tooltipX, tooltipY - 17, Arrays.asList(new String[]{ comment }));
+		}
 
 		GlStateManager.popMatrix();
+		
+		if(takingScreenshot) {
+			if(shareToReddit) {
+				NBTTagCompound cmp = new NBTTagCompound();
+				if(programmer.spell != null)
+					programmer.spell.writeToNBT(cmp);
+				
+				SharingHelper.uploadAndShare(spellNameField.getText(), cmp.toString());
+			} else SharingHelper.uploadAndOpen();
+			
+			takingScreenshot = false;
+			shareToReddit = false;
+		}
 	}
 
 	@Override
@@ -601,7 +624,6 @@ public class GuiProgrammer extends GuiScreen {
 							break;
 						case Keyboard.KEY_D:
 							if(piece != null) {
-								System.out.println("do");
 								commentField.setVisible(true);
 								commentField.setFocused(true);
 								commentField.setEnabled(true);
@@ -609,6 +631,16 @@ public class GuiProgrammer extends GuiScreen {
 								commentField.setText(piece.comment);
 								commentEnabled = true;
 							}
+							break;
+						case Keyboard.KEY_G:
+							shareToReddit = false;
+							if(shift && isAltKeyDown())
+								takingScreenshot = true;
+							break;
+						case Keyboard.KEY_R:
+							shareToReddit = true;
+							if(shift && isAltKeyDown())
+								takingScreenshot = true;
 							break;
 						}
 					} else {

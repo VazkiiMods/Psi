@@ -221,12 +221,14 @@ psi.programmerReference8=  Set Comment: &b%1$s-D
 psi.programmerReference9=  Switch Focus: &bTab
 psi.programmerReference10=  Show Tooltip: &bAlt
 psi.programmerReference11=  Move Cursor: &bArrow Keys
-psi.programmerReference12=
-psi.programmerReference13= &bSearch Terms
-psi.programmerReference14=  Accepting Type: &bin:(type)
-psi.programmerReference15=  Outputting Type: &bout:(type)
-psi.programmerReference16=  Name Begins With: &b(name)_
-psi.programmerReference17=  Name Ends With: &b_(name)
+psi.programmerReference12=  Upload To Imgur: &b%1$s-Shift-Alt-G
+psi.programmerReference13=  Share To Reddit: &b%1$s-Shift-Alt-R
+psi.programmerReference14=
+psi.programmerReference15= &bSearch Terms
+psi.programmerReference16=  Accepting Type: &bin:(type)
+psi.programmerReference17=  Outputting Type: &bout:(type)
+psi.programmerReference18=  Name Begins With: &b(name)_
+psi.programmerReference19=  Name Ends With: &b_(name)
 
 # SPELl PIECE NAMES
 # -- SELECTORS

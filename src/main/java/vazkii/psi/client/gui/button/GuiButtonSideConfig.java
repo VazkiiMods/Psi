@@ -58,7 +58,7 @@ public class GuiButtonSideConfig extends GuiButton {
 
 	@Override
 	public void drawButton(Minecraft mc, int mouseX, int mouseY) {
-		if(enabled && visible) {
+		if(enabled && visible && !gui.takingScreenshot) {
 			int minX = xPosition;
 			int minY = yPosition;
 			int maxX = minX + 8;
