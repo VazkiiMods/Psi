@@ -38,6 +38,7 @@ public class MessageDeductPsi extends Message {
 	public IMessage handleMessage(MessageContext context) {
 		ClientTickHandler.scheduledActions.add(() -> {
 			PlayerData data = PlayerDataHandler.get(Psi.proxy.getClientPlayer());
+			data.lastAvailablePsi = data.availablePsi;
 			data.availablePsi = current;
 			data.regenCooldown = cd;
 			data.deductTick = true;
