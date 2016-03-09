@@ -129,8 +129,9 @@ public class ContainerCADAssembler extends Container {
 				if(itemstack1.getItem() instanceof ItemArmor) {
 					ItemArmor armor = (ItemArmor) itemstack1.getItem();
 					int armorSlot = armor.armorType;
-					if(!mergeItemStack(itemstack1, invEnd + armorSlot, invEnd + armorSlot + 1, true)) // Assembler -> Armor
+					if(!mergeItemStack(itemstack1, invEnd + armorSlot, invEnd + armorSlot + 1, true) && !mergeItemStack(itemstack1, invStart, invEnd, true)) // Assembler -> Armor+Inv+Hotbar
 						return null;
+					
 					break merge;
 				}
 
