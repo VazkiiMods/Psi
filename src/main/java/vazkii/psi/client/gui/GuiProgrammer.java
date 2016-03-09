@@ -23,6 +23,7 @@ import org.lwjgl.input.Mouse;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableSet;
+import com.ibm.icu.impl.ICUService.Key;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
@@ -37,6 +38,7 @@ import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
+import scala.actors.threadpool.Arrays;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.EnumCADStat;
 import vazkii.psi.api.cad.ICAD;
@@ -86,7 +88,7 @@ public class GuiProgrammer extends GuiScreen {
 	int xSize, ySize, padLeft, padTop, left, top, gridLeft, gridTop;
 	int cursorX, cursorY;
 	static int selectedX, selectedY;
-	boolean panelEnabled, configEnabled;
+	boolean panelEnabled, configEnabled, commentEnabled;
 	int panelX, panelY, panelWidth, panelHeight;
 	int page = 0;
 	boolean scheduleButtonUpdate = false;
@@ -95,6 +97,8 @@ public class GuiProgrammer extends GuiScreen {
 	List<GuiButton> configButtons = new ArrayList();
 	GuiTextField searchField;
 	GuiTextField spellNameField;
+	GuiTextField commentField;
+	
 	boolean spectator;
 
 	public GuiProgrammer(TileProgrammer programmer) {
@@ -128,6 +132,10 @@ public class GuiProgrammer extends GuiScreen {
 		spellNameField.setEnableBackgroundDrawing(false);
 		spellNameField.setMaxStringLength(20);
 		spellNameField.setEnabled(!spectator);
+		
+		commentField = new GuiTextField(0, fontRendererObj, left, top + ySize / 2 - 10, xSize, 20);
+		commentField.setEnabled(false);
+		commentField.setVisible(false);
 
 		if(programmer.spell == null)
 			programmer.spell = new Spell();
@@ -148,6 +156,7 @@ public class GuiProgrammer extends GuiScreen {
 			return;
 		}
 
+		String comment = "";
 		int color = 0xFFFFFF;
 
 		if(scheduleButtonUpdate) {
@@ -280,7 +289,9 @@ public class GuiProgrammer extends GuiScreen {
 			cursorX = -1;
 			cursorY = -1;
 		}
-
+		int tooltipX = mouseX;
+		int tooltipY = mouseY;
+		
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(gridLeft, gridTop, 0);
 		programmer.spell.draw();
@@ -302,10 +313,21 @@ public class GuiProgrammer extends GuiScreen {
 
 		if(selectedX != -1 && selectedY != -1)
 			drawTexturedModalRect(gridLeft + selectedX * 18, gridTop + selectedY * 18, 32, ySize, 16, 16);
+		
+		if(isAltKeyDown()) {
+			tooltip.clear();
+			cursorX = selectedX;
+			cursorY = selectedY;
+			tooltipX = gridLeft + cursorX * 18 + 10;
+			tooltipY = gridTop + cursorY * 18 + 8;
+		}
+		
 		if(cursorX != -1 && cursorY != -1) {
 			SpellPiece pieceAt = programmer.spell.grid.gridData[cursorX][cursorY];
-			if(pieceAt != null)
+			if(pieceAt != null) {
 				pieceAt.getTooltip(tooltip);
+				comment = pieceAt.comment;
+			}
 
 			if(cursorX == selectedX && cursorY == selectedY)
 				drawTexturedModalRect(gridLeft + cursorX * 18, gridTop + cursorY * 18, 16, ySize, 8, 16);
@@ -342,13 +364,20 @@ public class GuiProgrammer extends GuiScreen {
 			fontRendererObj.drawStringWithShadow(s, panelX + panelWidth / 2 - fontRendererObj.getStringWidth(s) / 2, panelY + panelHeight - 12, 0xFFFFFF);
 		}
 		
+		commentField.drawTextBox();
+		if(commentEnabled) {
+			String commit = StatCollector.translateToLocal("psimisc.enterCommit");
+			mc.fontRendererObj.drawStringWithShadow(commit, left + xSize / 2 - mc.fontRendererObj.getStringWidth(commit) / 2, commentField.yPosition + 24, 0xFFFFFF);
+		}
+		GlStateManager.color(1F, 1F, 1F);
+		
 		mc.getTextureManager().bindTexture(texture);
 		int helpX = left + xSize + 2;
 		int helpY = top + ySize - (spectator ? 32 : 48);
 		boolean overHelp = mouseX > helpX && mouseY > helpY && mouseX < helpX + 12 && mouseY < helpY + 12;
 		drawTexturedModalRect(helpX, helpY, xSize + (overHelp ? 12 : 0), ySize + 9, 12, 12);
 		
-		if(overHelp) {
+		if(overHelp && !isAltKeyDown()) {
 			ItemMod.addToTooltip(tooltip, "psimisc.programmerHelp");
 			String ctrl = StatCollector.translateToLocal(Minecraft.isRunningOnMac ? "psimisc.ctrlMac" : "psimisc.ctrlWindows");
 			ItemMod.tooltipIfShift(tooltip, () -> {
@@ -356,11 +385,21 @@ public class GuiProgrammer extends GuiScreen {
 					ItemMod.addToTooltip(tooltip, "psi.programmerReference" + i, ctrl);
 			});
 		}
-
+		
+		List<String> legitTooltip = null;
+		if(isAltKeyDown())
+			legitTooltip = new ArrayList(tooltip);
+		
 		super.drawScreen(mouseX, mouseY, partialTicks);
+		
+		if(isAltKeyDown())
+			tooltip = legitTooltip;
 
 		if(!tooltip.isEmpty())
-			RenderHelper.renderTooltip(mouseX, mouseY, tooltip);
+			RenderHelper.renderTooltip(tooltipX, tooltipY, tooltip);
+		
+		if(comment != null && !comment.isEmpty())
+			RenderHelper.renderTooltipGreen(tooltipX, tooltipY - 17, Arrays.asList(new String[]{ comment }));
 
 		GlStateManager.popMatrix();
 	}
@@ -390,8 +429,10 @@ public class GuiProgrammer extends GuiScreen {
 
 			if(mouseX < panelX || mouseY < panelY || mouseX > panelX + panelWidth || mouseY > panelY + panelHeight)
 				closePanel();
-		} else {
+		} else if(!commentEnabled) {
 			spellNameField.mouseClicked(mouseX, mouseY, mouseButton);
+			if(commentField.getVisible())
+				commentField.mouseClicked(mouseX, mouseY, mouseButton);
 
 			if(cursorX != -1 && cursorY != -1) {
 				selectedX = cursorX;
@@ -412,9 +453,16 @@ public class GuiProgrammer extends GuiScreen {
 
 	@Override
 	protected void keyTyped(char par1, int par2) throws IOException {
-		if(panelEnabled && par2 == Keyboard.KEY_ESCAPE) {
-			closePanel();
-			return;
+		if(par2 == Keyboard.KEY_ESCAPE) {
+			if(panelEnabled) {
+				closePanel();
+				return;
+			}
+			
+			if(commentEnabled) {
+				closeComment(false);
+				return;
+			}
 		}
 
 		super.keyTyped(par1, par2);
@@ -432,6 +480,10 @@ public class GuiProgrammer extends GuiScreen {
 
 			if(panelButtons.size() >= 1 && par2 == Keyboard.KEY_RETURN)
 				actionPerformed(panelButtons.get(0));
+		} else if(commentEnabled) {
+			if(par2 == Keyboard.KEY_RETURN)
+				closeComment(true);
+			commentField.textboxKeyTyped(par1, par2);
 		} else {
 			boolean pieceHandled = false;
 			boolean intercepts = false;
@@ -477,7 +529,7 @@ public class GuiProgrammer extends GuiScreen {
 					programmer.spell.name = currName;
 					onSpellChanged(true);
 				}
-
+				
 				if(par2 == Keyboard.KEY_TAB && !intercepts)
 					spellNameField.setFocused(!spellNameField.isFocused());
 				else if(!spellNameField.isFocused()) {
@@ -545,6 +597,17 @@ public class GuiProgrammer extends GuiScreen {
 								copy.y = selectedY;
 								programmer.spell.grid.gridData[selectedX][selectedY] = copy;
 								onSpellChanged(false);
+							}
+							break;
+						case Keyboard.KEY_D:
+							if(piece != null) {
+								System.out.println("do");
+								commentField.setVisible(true);
+								commentField.setFocused(true);
+								commentField.setEnabled(true);
+								spellNameField.setEnabled(false);
+								commentField.setText(piece.comment);
+								commentEnabled = true;
 							}
 							break;
 						}
@@ -824,6 +887,26 @@ public class GuiProgrammer extends GuiScreen {
 		panelButtons.clear();
 	}
 
+	private void closeComment(boolean save) {
+		SpellPiece piece = null;
+		if(selectedX != -1 && selectedY != -1)
+			piece = programmer.spell.grid.gridData[selectedX][selectedY];
+			
+		if(save && piece != null) {
+			String text = commentField.getText();
+			pushState(true);
+			piece.comment = text;
+			onSpellChanged(false);
+		}
+		
+		spellNameField.setEnabled(!spectator && (piece == null || !piece.interceptKeystrokes()));
+		commentField.setFocused(false);
+		commentField.setVisible(false);
+		commentField.setEnabled(false);
+		commentField.setText("");
+		commentEnabled = false;
+	}
+	
 	public void onSpellChanged(boolean nameOnly) {
 		if(!spectator) {
 			MessageSpellModified message = new MessageSpellModified(programmer.getPos(), programmer.spell);

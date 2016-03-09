@@ -40,6 +40,7 @@ public abstract class SpellPiece {
 	
 	private static final String TAG_KEY = "key";
 	private static final String TAG_PARAMS = "params";
+	private static final String TAG_COMMENT = "comment";
 
 	private static final String PSI_PREFIX = "psi.spellparam.";
 	
@@ -48,7 +49,8 @@ public abstract class SpellPiece {
 
 	public boolean isInGrid = false;
 	public int x, y;
-
+	public String comment;
+	
 	public Map<String, SpellParam> params = new LinkedHashMap();
 	public Map<SpellParam, SpellParam.Side> paramSides = new LinkedHashMap<SpellParam, SpellParam.Side>();
 
@@ -184,6 +186,8 @@ public abstract class SpellPiece {
 		if(isInGrid) {
 			GlStateManager.translate(0F, 0F, 0.1F);
 			drawParams();
+			GlStateManager.translate(0F, 0F, 0.1F);
+			drawComment();
 		}
 
 		GlStateManager.color(1F, 1F, 1F);
@@ -207,16 +211,43 @@ public abstract class SpellPiece {
 		wr.pos(0, 0, 0).tex(0, 0).endVertex();
 		Tessellator.getInstance().draw();
 	}
-
+	
 	/**
 	 * Draws any additional stuff for this piece. Used in connectors
 	 * to draw the lines.
 	 * @see #draw()
 	 */
+	@SideOnly(Side.CLIENT)
 	public void drawAdditional() {
 		// NO-OP
 	}
+	
+	/**
+	 * Draws the little comment indicator in this piece, if one exists.
+	 * @see #draw()
+	 */
+	@SideOnly(Side.CLIENT)
+	public void drawComment() {
+		if(comment != null && !comment.isEmpty()) {
+			Minecraft.getMinecraft().renderEngine.bindTexture(PsiAPI.internalHandler.getProgrammerTexture());
+			
+			float wh = 6F;
+			float minU = 150 / 256F;
+			float minV = 184 / 256F;
+			float maxU = (150 + wh) / 256F;
+			float maxV = (184 + wh) / 256F;
+			GlStateManager.color(1F, 1F, 1F, 1F);
 
+			WorldRenderer wr = Tessellator.getInstance().getWorldRenderer();
+			wr.begin(7, DefaultVertexFormats.POSITION_TEX);
+			wr.pos(-2, 4, 0).tex(minU, maxV).endVertex();
+			wr.pos(4, 4, 0).tex(maxU, maxV).endVertex();
+			wr.pos(4, -2, 0).tex(maxU, minV).endVertex();;
+			wr.pos(-2, -2, 0).tex(minU, minV).endVertex();
+			Tessellator.getInstance().draw();
+		}
+	}
+	
 	/**
 	 * Draws the parameters coming into this piece.
 	 * @see #draw()
@@ -353,9 +384,14 @@ public abstract class SpellPiece {
 				paramSides.put(param, SpellParam.Side.fromInt(paramCmp.getInteger(key)));
 			}
 		}
+		
+		comment = cmp.getString(TAG_COMMENT);
 	}
 
 	public void writeToNBT(NBTTagCompound cmp) {
+		if(comment == null)
+			comment = "";
+		
 		cmp.setString(TAG_KEY, registryKey.replaceAll("^" + PSI_PREFIX, "_"));
 		
 		int paramCount = 0;
@@ -369,6 +405,8 @@ public abstract class SpellPiece {
 		
 		if(paramCount > 0)
 			cmp.setTag(TAG_PARAMS, paramCmp);
+		if(!comment.isEmpty())
+			cmp.setString(TAG_COMMENT, comment);
 	}
 
 	/**

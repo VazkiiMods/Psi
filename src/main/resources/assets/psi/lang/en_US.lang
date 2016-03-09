@@ -43,6 +43,7 @@ psimisc.trickPattern=^Trick: (.+)$
 psimisc.programmerHelp=&aProgrammer Help
 psimisc.ctrlWindows=Ctrl
 psimisc.ctrlMac=Cmd
+psimisc.enterCommit=Press Enter to commit
 
 # VERSIONING
 psi.versioning.flavour0=Seems like Psi is outdated. What a shame.
@@ -216,14 +217,16 @@ psi.programmerReference4=  Copy/Cut/Paste: &b%1$s-C/%1$s-X/%1$s-V
 psi.programmerReference5=  Undo/Redo: &b%1$s-Z/%1$s-Y
 psi.programmerReference6=  Open Panel/Select Piece: &bEnter
 psi.programmerReference7=  Set Parameter: &bNumber Keys + Arrow Keys
-psi.programmerReference8=  Switch Focus: &bTab
-psi.programmerReference9=  Move Cursor: &bArrow Keys
-psi.programmerReference10=
-psi.programmerReference11= &bSearch Terms
-psi.programmerReference12=  Accepting Type: &bin:(type)
-psi.programmerReference13=  Outputting Type: &bout:(type)
-psi.programmerReference14=  Name Begins With: &b(name)_
-psi.programmerReference15=  Name Ends With: &b_(name)
+psi.programmerReference8=  Set Comment: &b%1$s-D
+psi.programmerReference9=  Switch Focus: &bTab
+psi.programmerReference10=  Show Tooltip: &bAlt
+psi.programmerReference11=  Move Cursor: &bArrow Keys
+psi.programmerReference12=
+psi.programmerReference13= &bSearch Terms
+psi.programmerReference14=  Accepting Type: &bin:(type)
+psi.programmerReference15=  Outputting Type: &bout:(type)
+psi.programmerReference16=  Name Begins With: &b(name)_
+psi.programmerReference17=  Name Ends With: &b_(name)
 
 # SPELl PIECE NAMES
 # -- SELECTORS
