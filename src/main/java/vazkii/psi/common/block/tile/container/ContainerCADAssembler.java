@@ -17,7 +17,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vazkii.psi.api.cad.EnumCADComponent;
 import vazkii.psi.api.cad.ICADComponent;
 import vazkii.psi.api.cad.ISocketable;
@@ -33,7 +36,8 @@ public class ContainerCADAssembler extends Container {
 	public TileCADAssembler assembler;
 	private Map<EnumCADComponent, Slot> componentToSlotMap = new HashMap();
 
-	public ContainerCADAssembler(InventoryPlayer playerInventory, TileCADAssembler assembler) {
+	public ContainerCADAssembler(EntityPlayer player, TileCADAssembler assembler) {
+		InventoryPlayer playerInventory = player.inventory;
 		this.assembler = assembler;
 
 		addSlotToContainer(new SlotCADOutput(assembler, 0, 120, 35));
@@ -60,6 +64,25 @@ public class ContainerCADAssembler extends Container {
 
 		for(int k = 0; k < 9; k++)
 			addSlotToContainer(new Slot(playerInventory, k, xs + k * 18, ys + 58));
+
+		for(int k = 0; k < 4; k++) {
+			final int kf = k;
+			addSlotToContainer(new Slot(playerInventory, playerInventory.getSizeInventory() - 1 - k, xs - 27, ys + 18 * k) {
+
+				public int getSlotStackLimit() {
+					return 1;
+				}
+
+				public boolean isItemValid(ItemStack stack) {
+					return stack != null && stack.getItem().isValidArmor(stack, kf, player);
+				}
+
+				@SideOnly(Side.CLIENT)
+				public String getSlotTexture() {
+					return ItemArmor.EMPTY_SLOT_NAMES[kf];
+				}
+			});
+		}
 	}
 
 	@Override
@@ -80,27 +103,40 @@ public class ContainerCADAssembler extends Container {
 			int hotbarStart = invStart + 28;
 			int invEnd = hotbarStart + 9;
 
-			if(index > invStart) {
-				if(itemstack1.getItem() instanceof ICADComponent) { // Component slots
-					ICADComponent component = (ICADComponent) itemstack1.getItem();
-					Slot compSlot = componentToSlotMap.get(component.getComponentType(itemstack1));
-					if(!mergeItemStack(itemstack1, compSlot.slotNumber, compSlot.slotNumber + 1, false))
+			merge: {
+				if(index > invStart) {
+					if(itemstack1.getItem() instanceof ICADComponent) { // Component slots
+						ICADComponent component = (ICADComponent) itemstack1.getItem();
+						Slot compSlot = componentToSlotMap.get(component.getComponentType(itemstack1));
+						if(!mergeItemStack(itemstack1, compSlot.slotNumber, compSlot.slotNumber + 1, false))
+							return null;
+					} else if(itemstack1.getItem() instanceof ISocketable) { // CAD Input slot
+						if(!mergeItemStack(itemstack1, 6, 7, false))
+							return null;
+					} else if(itemstack1.getItem() == ModItems.spellBullet) {
+						if(!mergeItemStack(itemstack1, 7, 19, false))
+							return null;
+					} else if(index >= invStart && index < hotbarStart)  { // Inv -> Hotbar
+						if (!mergeItemStack(itemstack1, hotbarStart, invEnd, true))
+							return null;
+					} else if(index >= hotbarStart && index < invEnd) { // Hotbar -> inv
+						if(!mergeItemStack(itemstack1, invStart, hotbarStart, false))
+							return null;
+					}
+					break merge;
+				} 
+				
+				if(itemstack1.getItem() instanceof ItemArmor) {
+					ItemArmor armor = (ItemArmor) itemstack1.getItem();
+					int armorSlot = armor.armorType;
+					if(!mergeItemStack(itemstack1, invEnd + armorSlot, invEnd + armorSlot + 1, true)) // Assembler -> Armor
 						return null;
-				} else if(itemstack1.getItem() instanceof ISocketable) { // CAD Input slot
-					if(!mergeItemStack(itemstack1, 6, 7, false))
-						return null;
-				} else if(itemstack1.getItem() == ModItems.spellBullet) {
-					if(!mergeItemStack(itemstack1, 7, 19, false))
-						return null;
-				} else if(index >= invStart && index < hotbarStart)  { // Inv -> Hotbar
-					if (!mergeItemStack(itemstack1, hotbarStart, invEnd, true))
-						return null;
-				} else if(index >= hotbarStart && index < invEnd) { // Hotbar -> inv
-					if(!mergeItemStack(itemstack1, invStart, hotbarStart, false))
-						return null;
+					break merge;
 				}
-			} else if(!mergeItemStack(itemstack1, invStart, invEnd, true)) // Assembler -> Inv+hotbar
-				return null;
+
+				if(!mergeItemStack(itemstack1, invStart, invEnd, true)) // Assembler -> Inv+hotbar
+					return null;
+			}
 
 			if(itemstack1.stackSize == 0)
 				slot.putStack((ItemStack)null);

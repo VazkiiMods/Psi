@@ -12,7 +12,7 @@ package vazkii.psi.client.gui;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
@@ -29,8 +29,8 @@ public class GuiCADAssembler extends GuiContainer {
 	private static final ResourceLocation texture = new ResourceLocation(LibResources.GUI_CAD_ASSEMBLER);
 	TileCADAssembler assembler;
 
-	public GuiCADAssembler(InventoryPlayer playerInv, TileCADAssembler assembler) {
-		super(new ContainerCADAssembler(playerInv, assembler));
+	public GuiCADAssembler(EntityPlayer player, TileCADAssembler assembler) {
+		super(new ContainerCADAssembler(player, assembler));
 		this.assembler = assembler;
 	}
 

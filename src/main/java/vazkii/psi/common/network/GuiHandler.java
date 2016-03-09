@@ -27,7 +27,7 @@ public class GuiHandler implements IGuiHandler {
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
 		switch(ID) {
 		case LibGuiIDs.CAD_ASSEMBLER:
-			return new ContainerCADAssembler(player.inventory, (TileCADAssembler) world.getTileEntity(new BlockPos(x, y, z)));
+			return new ContainerCADAssembler(player, (TileCADAssembler) world.getTileEntity(new BlockPos(x, y, z)));
 		}
 
 		return null;
@@ -37,7 +37,7 @@ public class GuiHandler implements IGuiHandler {
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
 		switch(ID) {
 		case LibGuiIDs.CAD_ASSEMBLER:
-			return new GuiCADAssembler(player.inventory, (TileCADAssembler) world.getTileEntity(new BlockPos(x, y, z)));
+			return new GuiCADAssembler(player, (TileCADAssembler) world.getTileEntity(new BlockPos(x, y, z)));
 		case LibGuiIDs.PROGRAMMER:
 			return new GuiProgrammer((TileProgrammer) world.getTileEntity(new BlockPos(x, y, z)));
 		}
