@@ -52,7 +52,7 @@ public class PieceTrickConjureBlock extends PieceTrick {
 		addStats(meta);
 	}
 
-	public void addStats(SpellMetadata meta) {
+	public void addStats(SpellMetadata meta) throws SpellCompilationException {
 		meta.addStat(EnumSpellStat.POTENCY, 15);
 		meta.addStat(EnumSpellStat.COST, 20);
 	}

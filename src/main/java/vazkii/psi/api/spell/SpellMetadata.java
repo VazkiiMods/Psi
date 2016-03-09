@@ -38,9 +38,19 @@ public final class SpellMetadata {
 	/**
 	 * Adds a stat to the metadata, incrementing over the previous value.
 	 */
-	public void addStat(EnumSpellStat stat, int val) {
+	public void addStat(EnumSpellStat stat, int val) throws SpellCompilationException {
 		int curr = stats.get(stat);
-		setStat(stat, val + curr);
+		setStat(stat, safeSum(val, curr));
+	}
+
+	/**
+	 * Adds two numbers together, and throws a {@link SpellCompilationException} if they overflow MAX_INT.
+     */
+	private int safeSum(int a, int b) throws SpellCompilationException {
+		long r = ((long) a) + b;
+		if (r >>> 32 != 0)
+			throw new SpellCompilationException(SpellCompilationException.STAT_OVERFLOW);
+		return (int) r;
 	}
 
 	/**
