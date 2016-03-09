@@ -53,10 +53,12 @@ public class ItemVectorRuler extends ItemMod implements IHUDItem {
 			ItemNBTHelper.setInt(stack, TAG_SRC_X, pos.getX());
 			ItemNBTHelper.setInt(stack, TAG_SRC_Y, pos.getY());
 			ItemNBTHelper.setInt(stack, TAG_SRC_Z, pos.getZ());
+			ItemNBTHelper.setInt(stack, TAG_DST_Y, -1);
+		} else {
+			ItemNBTHelper.setInt(stack, TAG_DST_X, pos.getX());
+			ItemNBTHelper.setInt(stack, TAG_DST_Y, pos.getY());
+			ItemNBTHelper.setInt(stack, TAG_DST_Z, pos.getZ());
 		}
-		ItemNBTHelper.setInt(stack, TAG_DST_X, pos.getX());
-		ItemNBTHelper.setInt(stack, TAG_DST_Y, pos.getY());
-		ItemNBTHelper.setInt(stack, TAG_DST_Z, pos.getZ());
 		
 		return true;
 	}
@@ -67,13 +69,14 @@ public class ItemVectorRuler extends ItemMod implements IHUDItem {
 	}
 	
 	public Vector3 getVector(ItemStack stack) {
-		int srcY = ItemNBTHelper.getInt(stack, TAG_SRC_Y, -1);
-		int dstY = ItemNBTHelper.getInt(stack, TAG_DST_Y, -1);
-		if(srcY == -1 || dstY == -1)
-			return Vector3.zero;
-		
 		int srcX = ItemNBTHelper.getInt(stack, TAG_SRC_X, 0);
+		int srcY = ItemNBTHelper.getInt(stack, TAG_SRC_Y, 0);
 		int srcZ = ItemNBTHelper.getInt(stack, TAG_SRC_Z, 0);
+		
+		int dstY = ItemNBTHelper.getInt(stack, TAG_DST_Y, -1);
+		if(dstY == -1)
+			return new Vector3(srcX, srcY, srcZ);
+
 		int dstX = ItemNBTHelper.getInt(stack, TAG_DST_X, 0);
 		int dstZ = ItemNBTHelper.getInt(stack, TAG_DST_Z, 0);
 		
