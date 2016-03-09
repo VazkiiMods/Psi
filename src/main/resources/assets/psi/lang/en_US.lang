@@ -44,6 +44,7 @@ psimisc.programmerHelp=&aProgrammer Help
 psimisc.ctrlWindows=Ctrl
 psimisc.ctrlMac=Cmd
 psimisc.enterCommit=Press Enter to commit
+psimisc.semicolonLine=Use ; to change line
 
 # VERSIONING
 psi.versioning.flavour0=Seems like Psi is outdated. What a shame.

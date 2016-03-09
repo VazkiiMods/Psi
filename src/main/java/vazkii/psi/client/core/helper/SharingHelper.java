@@ -51,25 +51,24 @@ public final class SharingHelper {
 	private static int[] pixelValues;
 
 	public static void uploadAndShare(String title, String export) {
-		String url = uploadImage();
+		String url = uploadImage(title, export);
 
 		try {
-			String contents = "# " + title + "  \n" +
-					"## [Screenshot](" + url + ")\n" +
+			String contents = "## " + title + "  \n" +
+					"### [Image + Code](" + url + ")\n" +
+					"(to get the code click the link, RES won't show it)\n" +
 					"\n" +
+					"---" +
+					"\n" + 
 					"*REPLACE THIS WITH A DESCRIPTION OF YOUR SPELL  \n" +
 					"Make sure you read the rules before posting. Look on the sidebar: https://www.reddit.com/r/psispellcompendium/  \n" +
-					"Delete these 3 lines before you submit.*\n" +
-					"\n" +
-					"**Spell Code**:\n" + 
-					"\n" +
-					"    " + export;
+					"Delete this part before you submit.*";
 
 			String encodedContents = URLEncoder.encode(contents, "UTF-8");
 			String encodedTitle = URLEncoder.encode(title, "UTF-8");
 
 			String redditUrl = "https://www.reddit.com/r/psispellcompendium/submit?title=" + encodedTitle + "&text=" + encodedContents;
-
+			
 			if(Desktop.isDesktopSupported())
 				Desktop.getDesktop().browse(new URI(redditUrl));
 		} catch(Exception e) {
@@ -77,8 +76,8 @@ public final class SharingHelper {
 		}
 	}
 
-	public static void uploadAndOpen() {
-		String url = uploadImage();
+	public static void uploadAndOpen(String title, String export) {
+		String url = uploadImage(title, export);
 		try {    	
 			if(Desktop.isDesktopSupported())
 				Desktop.getDesktop().browse(new URI(url));
@@ -87,8 +86,9 @@ public final class SharingHelper {
 		}
 	}
 
-	public static String uploadImage() {
+	public static String uploadImage(String title, String export) {
 		try {
+			String desc = "Spell Code:\n\n" + export;
 			HttpClient client = HttpClients.createDefault();
 
 			String url = "https://api.imgur.com/3/image";
@@ -97,7 +97,9 @@ public final class SharingHelper {
 			List<NameValuePair> list = new ArrayList();
 			list.add(new BasicNameValuePair("type", "base64"));
 			list.add(new BasicNameValuePair("image", takeScreenshot()));
-
+			list.add(new BasicNameValuePair("name", title));
+			list.add(new BasicNameValuePair("description", desc));
+			
 			post.setEntity(new UrlEncodedFormEntity(list));
 			post.addHeader("Authorization", "Client-ID " + CLIENT_ID);
 
@@ -105,8 +107,9 @@ public final class SharingHelper {
 			JsonObject resJson = new JsonParser().parse(EntityUtils.toString(res.getEntity())).getAsJsonObject();
 			if(resJson.has("success") && resJson.get("success").getAsBoolean()) {
 				JsonObject data = resJson.get("data").getAsJsonObject();
-				String link = data.get("link").getAsString();
-				return link;
+				String id = data.get("id").getAsString();
+				
+				return "https://imgur.com/" + id;
 			}
 		} catch(Exception e) {
 			e.printStackTrace();

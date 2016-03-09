@@ -139,6 +139,7 @@ public class GuiProgrammer extends GuiScreen {
 		commentField = new GuiTextField(0, fontRendererObj, left, top + ySize / 2 - 10, xSize, 20);
 		commentField.setEnabled(false);
 		commentField.setVisible(false);
+		commentField.setMaxStringLength(500);
 
 		if(programmer.spell == null)
 			programmer.spell = new Spell();
@@ -373,8 +374,10 @@ public class GuiProgrammer extends GuiScreen {
 		
 		commentField.drawTextBox();
 		if(commentEnabled) {
-			String commit = StatCollector.translateToLocal("psimisc.enterCommit");
-			mc.fontRendererObj.drawStringWithShadow(commit, left + xSize / 2 - mc.fontRendererObj.getStringWidth(commit) / 2, commentField.yPosition + 24, 0xFFFFFF);
+			String s = StatCollector.translateToLocal("psimisc.enterCommit");
+			mc.fontRendererObj.drawStringWithShadow(s, left + xSize / 2 - mc.fontRendererObj.getStringWidth(s) / 2, commentField.yPosition + 24, 0xFFFFFF);
+			s = StatCollector.translateToLocal("psimisc.semicolonLine");
+			mc.fontRendererObj.drawStringWithShadow(s, left + xSize / 2 - mc.fontRendererObj.getStringWidth(s) / 2, commentField.yPosition + 34, 0xFFFFFF);
 		}
 		GlStateManager.color(1F, 1F, 1F);
 		
@@ -407,20 +410,24 @@ public class GuiProgrammer extends GuiScreen {
 			if(!tooltip.isEmpty())
 				RenderHelper.renderTooltip(tooltipX, tooltipY, tooltip);
 			
-			if(comment != null && !comment.isEmpty())
-				RenderHelper.renderTooltipGreen(tooltipX, tooltipY - 17, Arrays.asList(new String[]{ comment }));
+			if(comment != null && !comment.isEmpty()) {
+				List l = Arrays.asList(comment.split(";"));
+				RenderHelper.renderTooltipGreen(tooltipX, tooltipY - 9 - l.size() * 10, l);
+			}
 		}
 
 		GlStateManager.popMatrix();
 		
 		if(takingScreenshot) {
-			if(shareToReddit) {
-				NBTTagCompound cmp = new NBTTagCompound();
-				if(programmer.spell != null)
-					programmer.spell.writeToNBT(cmp);
-				
-				SharingHelper.uploadAndShare(spellNameField.getText(), cmp.toString());
-			} else SharingHelper.uploadAndOpen();
+			String name = spellNameField.getText();
+			NBTTagCompound cmp = new NBTTagCompound();
+			if(programmer.spell != null)
+				programmer.spell.writeToNBT(cmp);
+			String export = cmp.toString();
+			
+			if(shareToReddit)
+				SharingHelper.uploadAndShare(name, export);
+			else SharingHelper.uploadAndOpen(name, export);
 			
 			takingScreenshot = false;
 			shareToReddit = false;
