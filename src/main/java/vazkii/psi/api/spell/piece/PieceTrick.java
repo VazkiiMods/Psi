@@ -56,15 +56,10 @@ public abstract class PieceTrick extends SpellPiece {
 		for(int i = 0; i < arr.length; i++) {
 			double b = arr[i];
 			
-			double bound = Long.signum((long) a) == Long.signum((long) b) ? Double.MAX_VALUE : Double.MIN_VALUE;
-			if(a != 0 && (b > 0 && b > bound / a ||  b < 0 && b < bound / a))
-				throw new SpellCompilationException(SpellCompilationException.STAT_OVERFLOW);
-			
 			a = a * b;
+			if((int) a < 0 || (int) a == Integer.MAX_VALUE)
+				throw new SpellCompilationException(SpellCompilationException.STAT_OVERFLOW);
 		}
-		
-		if((int) a < 0 || (int) a == Integer.MAX_VALUE)
-			throw new SpellCompilationException(SpellCompilationException.STAT_OVERFLOW);
 		
 		return a;
 	}
