@@ -70,7 +70,7 @@ public class PieceTrickConjureBlock extends PieceTrick {
 		BlockPos pos = new BlockPos(positionVal.x, positionVal.y, positionVal.z);
 		IBlockState state = context.caster.worldObj.getBlockState(pos);
 		if(state.getBlock() != ModBlocks.conjured) {
-			PieceTrickPlaceBlock.placeBlock(context.caster, context.caster.worldObj, pos, false, true);
+			PieceTrickPlaceBlock.placeBlock(context.caster, context.caster.worldObj, pos, context.getTargetSlot(), false, true);
 			
 			state = context.caster.worldObj.getBlockState(pos);
 

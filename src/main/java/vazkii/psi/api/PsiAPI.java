@@ -125,5 +125,23 @@ public final class PsiAPI {
 
 		return cad;
 	}
+	
+	public static int getPlayerCADSlot(EntityPlayer player) {
+		if(player == null)
+			return -1;
+
+		int slot = -1;
+		for(int i = 0; i < player.inventory.getSizeInventory(); i++) {
+			ItemStack stackAt = player.inventory.getStackInSlot(i);
+			if(stackAt != null && stackAt.getItem() instanceof ICAD) {
+				if(slot != -1)
+					return -1; // Player can only have one CAD
+
+				slot = i;
+			}
+		}
+
+		return slot;
+	}
 
 }

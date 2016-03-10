@@ -63,10 +63,12 @@ import vazkii.psi.common.spell.other.PieceErrorSuppressor;
 import vazkii.psi.common.spell.selector.PieceSelectorAttackTarget;
 import vazkii.psi.common.spell.selector.PieceSelectorAttacker;
 import vazkii.psi.common.spell.selector.PieceSelectorBlockBroken;
+import vazkii.psi.common.spell.selector.PieceSelectorBlockPresence;
 import vazkii.psi.common.spell.selector.PieceSelectorBlockSideBroken;
 import vazkii.psi.common.spell.selector.PieceSelectorCaster;
 import vazkii.psi.common.spell.selector.PieceSelectorDamageTaken;
 import vazkii.psi.common.spell.selector.PieceSelectorFocalPoint;
+import vazkii.psi.common.spell.selector.PieceSelectorItemPresence;
 import vazkii.psi.common.spell.selector.PieceSelectorLoopcastIndex;
 import vazkii.psi.common.spell.selector.PieceSelectorRulerVector;
 import vazkii.psi.common.spell.selector.PieceSelectorSneakStatus;
@@ -87,6 +89,7 @@ import vazkii.psi.common.spell.trick.PieceTrickEvaluate;
 import vazkii.psi.common.spell.trick.PieceTrickExplode;
 import vazkii.psi.common.spell.trick.PieceTrickOvergrow;
 import vazkii.psi.common.spell.trick.PieceTrickSmite;
+import vazkii.psi.common.spell.trick.PieceTrickSwitchTargetSlot;
 import vazkii.psi.common.spell.trick.PieceTrickTorrent;
 import vazkii.psi.common.spell.trick.block.PieceTrickBreakBlock;
 import vazkii.psi.common.spell.trick.block.PieceTrickBreakInSequence;
@@ -140,6 +143,8 @@ public final class ModSpellPieces {
 	public static PieceContainer selectorAttacker;
 	public static PieceContainer selectorDamageTaken;
 	public static PieceContainer selectorRulerVector;
+	public static PieceContainer selectorItemPresence;
+	public static PieceContainer selectorBlockPresence;
 
 	public static PieceContainer operatorSum;
 	public static PieceContainer operatorSubtract;
@@ -231,6 +236,7 @@ public final class ModSpellPieces {
 	public static PieceContainer trickConjureBlock;
 	public static PieceContainer trickConjureLight;
 	public static PieceContainer trickConjureBlockSequence;
+	public static PieceContainer trickSwitchTargetSlot;
 
 	public static void init() {
 		selectorCaster = register(PieceSelectorCaster.class, LibPieceNames.SELECTOR_CASTER, LibPieceGroups.TUTORIAL_1);
@@ -250,7 +256,9 @@ public final class ModSpellPieces {
 		selectorAttacker = register(PieceSelectorAttacker.class, LibPieceNames.SELECTOR_ATTACKER, LibPieceGroups.EXOSUIT_CASTING);
 		selectorDamageTaken = register(PieceSelectorDamageTaken.class, LibPieceNames.SELECTOR_DAMAGE_TAKEN, LibPieceGroups.EXOSUIT_CASTING);
 		selectorRulerVector = register(PieceSelectorRulerVector.class, LibPieceNames.SELECTOR_RULER_VECTOR, LibPieceGroups.PROJECTILES);
-		
+		selectorItemPresence = register(PieceSelectorItemPresence.class, LibPieceNames.SELECTOR_ITEM_PRESENCE, LibPieceGroups.DETECTION_DYNAMICS);
+		selectorBlockPresence = register(PieceSelectorBlockPresence.class, LibPieceNames.SELECTOR_BLOCK_PRESENCE, LibPieceGroups.DETECTION_DYNAMICS);
+
 		operatorSum = register(PieceOperatorSum.class, LibPieceNames.OPERATOR_SUM, LibPieceGroups.NUMBERS_INTRO, true);
 		operatorSubtract = register(PieceOperatorSubtract.class, LibPieceNames.OPERATOR_SUBTRACT, LibPieceGroups.NUMBERS_INTRO);
 		operatorMultiply = register(PieceOperatorMultiply.class, LibPieceNames.OPERATOR_MULTIPLY, LibPieceGroups.NUMBERS_INTRO);
@@ -342,7 +350,8 @@ public final class ModSpellPieces {
 		trickConjureBlock = register(PieceTrickConjureBlock.class, LibPieceNames.TRICK_CONJURE_BLOCK, LibPieceGroups.BLOCK_CONJURATION, true);
 		trickConjureLight = register(PieceTrickConjureLight.class, LibPieceNames.TRICK_CONJURE_LIGHT, LibPieceGroups.BLOCK_CONJURATION);
 		trickConjureBlockSequence = register(PieceTrickConjureBlockSequence.class, LibPieceNames.TRICK_CONJURE_BLOCK_SEQUENCE, LibPieceGroups.BLOCK_CONJURATION);
-
+		trickSwitchTargetSlot = register(PieceTrickSwitchTargetSlot.class, LibPieceNames.TRICK_SWITCH_TARGET_SLOT, LibPieceGroups.DETECTION_DYNAMICS, true);
+		
 		PsiAPI.setGroupRequirements(LibPieceGroups.TUTORIAL_1, 1);
 		PsiAPI.setGroupRequirements(LibPieceGroups.TUTORIAL_2, 2, LibPieceGroups.TUTORIAL_1);
 		PsiAPI.setGroupRequirements(LibPieceGroups.TUTORIAL_3, 3, LibPieceGroups.TUTORIAL_2);
@@ -366,6 +375,7 @@ public final class ModSpellPieces {
 		PsiAPI.setGroupRequirements(LibPieceGroups.SMELTERY, 20, LibPieceGroups.GREATER_INFUSION);
 		PsiAPI.setGroupRequirements(LibPieceGroups.FLOW_CONTROL, 20, LibPieceGroups.GREATER_INFUSION);
 		PsiAPI.setGroupRequirements(LibPieceGroups.BLOCK_CONJURATION, 20, LibPieceGroups.GREATER_INFUSION);
+		PsiAPI.setGroupRequirements(LibPieceGroups.DETECTION_DYNAMICS, 21, LibPieceGroups.FLOW_CONTROL);
 		PsiAPI.setGroupRequirements(LibPieceGroups.EIDOS_REVERSAL, 24, LibPieceGroups.FLOW_CONTROL, LibPieceGroups.EXOSUIT_CASTING);
 	}
 

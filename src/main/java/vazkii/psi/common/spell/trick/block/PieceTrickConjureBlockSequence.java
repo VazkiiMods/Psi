@@ -87,7 +87,7 @@ public class PieceTrickConjureBlockSequence extends PieceTrick {
 			IBlockState state = context.caster.worldObj.getBlockState(pos);
 
 			if(state.getBlock() != ModBlocks.conjured) {
-				PieceTrickPlaceBlock.placeBlock(context.caster, context.caster.worldObj, pos, false, true);
+				PieceTrickPlaceBlock.placeBlock(context.caster, context.caster.worldObj, pos, context.getTargetSlot(), false, true);
 				state = context.caster.worldObj.getBlockState(pos);
 				
 				if(!context.caster.worldObj.isRemote && state.getBlock() == ModBlocks.conjured) {

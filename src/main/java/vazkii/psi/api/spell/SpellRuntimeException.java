@@ -21,6 +21,8 @@ public class SpellRuntimeException extends Exception {
 	public static final String NULL_TARGET = "psi.spellerror.nulltarget";
 	public static final String NULL_VECTOR = "psi.spellerror.nullvector";
 	public static final String OUTSIDE_RADIUS = "psi.spellerror.outsideradius";
+	public static final String BOSS_IMMUNE = "psi.spellerror.bossimmune";
+	public static final String NO_CAD = "psi.spellerror.nocad";
 
 	public SpellRuntimeException(String s) {
 		super(s);

@@ -36,20 +36,20 @@ public class ItemCADCore extends ItemCADComponent {
 		addStat(EnumCADStat.PROJECTION, 0, 1);
 
 		// Overclocked
-		addStat(EnumCADStat.COMPLEXITY, 1, 18);
+		addStat(EnumCADStat.COMPLEXITY, 1, 20);
 		addStat(EnumCADStat.PROJECTION, 1, 3);
 
 		// Conductive
-		addStat(EnumCADStat.COMPLEXITY, 2, 15);
+		addStat(EnumCADStat.COMPLEXITY, 2, 16);
 		addStat(EnumCADStat.PROJECTION, 2, 4);
 
 		// Hyperclocked
-		addStat(EnumCADStat.COMPLEXITY, 3, 25);
-		addStat(EnumCADStat.PROJECTION, 3, 5);
+		addStat(EnumCADStat.COMPLEXITY, 3, 32);
+		addStat(EnumCADStat.PROJECTION, 3, 6);
 
 		// Radiative
-		addStat(EnumCADStat.COMPLEXITY, 4, 22);
-		addStat(EnumCADStat.PROJECTION, 4, 6);
+		addStat(EnumCADStat.COMPLEXITY, 4, 26);
+		addStat(EnumCADStat.PROJECTION, 4, 7);
 	}
 
 	@Override

@@ -64,31 +64,29 @@ public class PieceTrickPlaceBlock extends PieceTrick {
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 
 		BlockPos pos = new BlockPos(positionVal.x, positionVal.y, positionVal.z);
-		placeBlock(context.caster, context.caster.worldObj, pos, false);
+		placeBlock(context.caster, context.caster.worldObj, pos, context.getTargetSlot(), false);
 
 		return null;
 	}
 
-	public static void placeBlock(EntityPlayer player, World world, BlockPos pos, boolean particles) {
-		placeBlock(player, world, pos, particles, false);
+	public static void placeBlock(EntityPlayer player, World world, BlockPos pos, int slot, boolean particles) {
+		placeBlock(player, world, pos, slot, particles, false);
 	}
 
-	public static void placeBlock(EntityPlayer player, World world, BlockPos pos, boolean particles, boolean conjure) {
+	public static void placeBlock(EntityPlayer player, World world, BlockPos pos, int slot, boolean particles, boolean conjure) {
 		if(!world.isBlockLoaded(pos))
 			return;
-
+		
+		System.out.println(slot);
+		
 		IBlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
 		if(block == null || block.isAir(world, pos) || block.isReplaceable(world, pos)) {
-			int slot = player.inventory.currentItem;
-			if(slot == 9)
-				return;
-
 			if(conjure) {
 				if(!world.isRemote)
 					world.setBlockState(pos, ModBlocks.conjured.getDefaultState());
 			} else {
-				ItemStack stack = player.inventory.getStackInSlot(slot + 1);
+				ItemStack stack = player.inventory.getStackInSlot(slot);
 				if(stack != null && stack.getItem() instanceof ItemBlock) {
 					ItemStack rem = removeFromInventory(player, block, stack);
 					ItemBlock iblock = (ItemBlock) stack.getItem();

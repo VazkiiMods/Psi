@@ -68,6 +68,10 @@ public final class SpellContext {
 	public EntityLivingBase attackingEntity;
 	public double damageTaken;
 
+	// Target slot stuff, for building tricks
+	public int targetSlot = 1;
+	public boolean shiftTargetSlot = true;
+	
 	/**
 	 * A map for custom data where addon authors can put stuff. If you're going to put
 	 * anything here, prefix it with your mod ID to prevent collision. For example, Trick: Add Motion
@@ -75,12 +79,13 @@ public final class SpellContext {
 	 */
 	public Map<String, Object> customData = new HashMap();
 
-	// Runtime information, do not mess with.
+	// Runtime information, do not mess with =================================================
 	public Object[][] evaluatedObjects = new Object[SpellGrid.GRID_SIZE][SpellGrid.GRID_SIZE];
 	public Stack<Action> actions = null;
 
 	public boolean stopped = false;
 	public int delay = 0;
+	// End Runtime information ===============================================================
 
 	/**
 	 * Sets the {@link #caster} and returns itself. This also calls {@link #setFocalPoint(Entity)}.
@@ -157,6 +162,21 @@ public final class SpellContext {
 	 */
 	public boolean isInRadius(double x, double y, double z) {
 		return MathHelper.pointDistanceSpace(x, y, z, focalPoint.posX, focalPoint.posY, focalPoint.posZ) <= MAX_DISTANCE;
+	}
+	
+	public int getTargetSlot() throws SpellRuntimeException {
+		int slot = 0;
+		if(shiftTargetSlot) {
+			int cadSlot = PsiAPI.getPlayerCADSlot(caster);
+			if(cadSlot == -1)
+				throw new SpellRuntimeException(SpellRuntimeException.NO_CAD);
+			
+			slot = (cadSlot + targetSlot) % 9;
+		} else slot = (targetSlot - 1) % 9; 
+			
+		if(slot < 0)
+			slot = 10 + slot;
+		return slot;
 	}
 
 }

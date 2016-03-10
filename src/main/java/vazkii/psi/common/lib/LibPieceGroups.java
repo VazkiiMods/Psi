@@ -36,5 +36,6 @@ public final class LibPieceGroups {
 	public static final String FLOW_CONTROL = "flowControl";
 	public static final String BLOCK_CONJURATION = "blockConjuration";
 	public static final String EIDOS_REVERSAL = "eidosReversal";
+	public static final String DETECTION_DYNAMICS = "detectionDynamics";
 
 }

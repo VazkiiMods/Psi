@@ -29,6 +29,8 @@ public final class LibPieceNames {
 	public static final String SELECTOR_ATTACKER = "selectorAttacker";
 	public static final String SELECTOR_DAMAGE_TAKEN = "selectorDamageTaken";
 	public static final String SELECTOR_RULER_VECTOR = "selectorRulerVector";
+	public static final String SELECTOR_ITEM_PRESENCE = "selectorItemPresence";
+	public static final String SELECTOR_BLOCK_PRESENCE = "selectorBlockPresence";
 
 	public static final String OPERATOR_SUM = "operatorSum";
 	public static final String OPERATOR_SUBTRACT = "operatorSubtract";
@@ -121,5 +123,6 @@ public final class LibPieceNames {
 	public static final String TRICK_CONJURE_BLOCK = "trickConjureBlock";
 	public static final String TRICK_CONJURE_LIGHT = "trickConjureLight";
 	public static final String TRICK_CONJURE_BLOCK_SEQUENCE = "trickConjureBlockSequence";
+	public static final String TRICK_SWITCH_TARGET_SLOT = "trickSwitchTargetSlot";
 
 }
