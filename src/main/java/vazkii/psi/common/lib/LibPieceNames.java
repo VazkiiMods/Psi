@@ -31,6 +31,7 @@ public final class LibPieceNames {
 	public static final String SELECTOR_RULER_VECTOR = "selectorRulerVector";
 	public static final String SELECTOR_ITEM_PRESENCE = "selectorItemPresence";
 	public static final String SELECTOR_BLOCK_PRESENCE = "selectorBlockPresence";
+	public static final String SELECTOR_SAVED_VECTOR = "selectorSavedVector";
 
 	public static final String OPERATOR_SUM = "operatorSum";
 	public static final String OPERATOR_SUBTRACT = "operatorSubtract";
@@ -124,5 +125,6 @@ public final class LibPieceNames {
 	public static final String TRICK_CONJURE_LIGHT = "trickConjureLight";
 	public static final String TRICK_CONJURE_BLOCK_SEQUENCE = "trickConjureBlockSequence";
 	public static final String TRICK_SWITCH_TARGET_SLOT = "trickSwitchTargetSlot";
+	public static final String TRICK_SAVE_VECTOR = "trickSaveVector";
 
 }

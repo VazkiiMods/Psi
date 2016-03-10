@@ -71,6 +71,7 @@ import vazkii.psi.common.spell.selector.PieceSelectorFocalPoint;
 import vazkii.psi.common.spell.selector.PieceSelectorItemPresence;
 import vazkii.psi.common.spell.selector.PieceSelectorLoopcastIndex;
 import vazkii.psi.common.spell.selector.PieceSelectorRulerVector;
+import vazkii.psi.common.spell.selector.PieceSelectorSavedVector;
 import vazkii.psi.common.spell.selector.PieceSelectorSneakStatus;
 import vazkii.psi.common.spell.selector.PieceSelectorTime;
 import vazkii.psi.common.spell.selector.entity.PieceSelectorNearbyAnimals;
@@ -88,6 +89,7 @@ import vazkii.psi.common.spell.trick.PieceTrickEidosReversal;
 import vazkii.psi.common.spell.trick.PieceTrickEvaluate;
 import vazkii.psi.common.spell.trick.PieceTrickExplode;
 import vazkii.psi.common.spell.trick.PieceTrickOvergrow;
+import vazkii.psi.common.spell.trick.PieceTrickSaveVector;
 import vazkii.psi.common.spell.trick.PieceTrickSmite;
 import vazkii.psi.common.spell.trick.PieceTrickSwitchTargetSlot;
 import vazkii.psi.common.spell.trick.PieceTrickTorrent;
@@ -145,6 +147,7 @@ public final class ModSpellPieces {
 	public static PieceContainer selectorRulerVector;
 	public static PieceContainer selectorItemPresence;
 	public static PieceContainer selectorBlockPresence;
+	public static PieceContainer selectorSaveVector;
 
 	public static PieceContainer operatorSum;
 	public static PieceContainer operatorSubtract;
@@ -237,6 +240,7 @@ public final class ModSpellPieces {
 	public static PieceContainer trickConjureLight;
 	public static PieceContainer trickConjureBlockSequence;
 	public static PieceContainer trickSwitchTargetSlot;
+	public static PieceContainer trickSaveVector;
 
 	public static void init() {
 		selectorCaster = register(PieceSelectorCaster.class, LibPieceNames.SELECTOR_CASTER, LibPieceGroups.TUTORIAL_1);
@@ -258,6 +262,7 @@ public final class ModSpellPieces {
 		selectorRulerVector = register(PieceSelectorRulerVector.class, LibPieceNames.SELECTOR_RULER_VECTOR, LibPieceGroups.PROJECTILES);
 		selectorItemPresence = register(PieceSelectorItemPresence.class, LibPieceNames.SELECTOR_ITEM_PRESENCE, LibPieceGroups.DETECTION_DYNAMICS);
 		selectorBlockPresence = register(PieceSelectorBlockPresence.class, LibPieceNames.SELECTOR_BLOCK_PRESENCE, LibPieceGroups.DETECTION_DYNAMICS);
+		selectorSaveVector = register(PieceSelectorSavedVector.class, LibPieceNames.SELECTOR_SAVED_VECTOR, LibPieceGroups.MEMORY_MANAGEMENT);
 
 		operatorSum = register(PieceOperatorSum.class, LibPieceNames.OPERATOR_SUM, LibPieceGroups.NUMBERS_INTRO, true);
 		operatorSubtract = register(PieceOperatorSubtract.class, LibPieceNames.OPERATOR_SUBTRACT, LibPieceGroups.NUMBERS_INTRO);
@@ -351,6 +356,7 @@ public final class ModSpellPieces {
 		trickConjureLight = register(PieceTrickConjureLight.class, LibPieceNames.TRICK_CONJURE_LIGHT, LibPieceGroups.BLOCK_CONJURATION);
 		trickConjureBlockSequence = register(PieceTrickConjureBlockSequence.class, LibPieceNames.TRICK_CONJURE_BLOCK_SEQUENCE, LibPieceGroups.BLOCK_CONJURATION);
 		trickSwitchTargetSlot = register(PieceTrickSwitchTargetSlot.class, LibPieceNames.TRICK_SWITCH_TARGET_SLOT, LibPieceGroups.DETECTION_DYNAMICS, true);
+		trickSaveVector = register(PieceTrickSaveVector.class, LibPieceNames.TRICK_SAVE_VECTOR, LibPieceGroups.MEMORY_MANAGEMENT, true);
 		
 		PsiAPI.setGroupRequirements(LibPieceGroups.TUTORIAL_1, 1);
 		PsiAPI.setGroupRequirements(LibPieceGroups.TUTORIAL_2, 2, LibPieceGroups.TUTORIAL_1);
@@ -376,7 +382,8 @@ public final class ModSpellPieces {
 		PsiAPI.setGroupRequirements(LibPieceGroups.FLOW_CONTROL, 20, LibPieceGroups.GREATER_INFUSION);
 		PsiAPI.setGroupRequirements(LibPieceGroups.BLOCK_CONJURATION, 20, LibPieceGroups.GREATER_INFUSION);
 		PsiAPI.setGroupRequirements(LibPieceGroups.DETECTION_DYNAMICS, 21, LibPieceGroups.FLOW_CONTROL);
-		PsiAPI.setGroupRequirements(LibPieceGroups.EIDOS_REVERSAL, 24, LibPieceGroups.FLOW_CONTROL, LibPieceGroups.EXOSUIT_CASTING);
+		PsiAPI.setGroupRequirements(LibPieceGroups.MEMORY_MANAGEMENT, 21, LibPieceGroups.FLOW_CONTROL);
+		PsiAPI.setGroupRequirements(LibPieceGroups.EIDOS_REVERSAL, 24, LibPieceGroups.DETECTION_DYNAMICS, LibPieceGroups.MEMORY_MANAGEMENT, LibPieceGroups.EXOSUIT_CASTING);
 	}
 
 	public static PieceContainer register(Class<? extends SpellPiece> clazz, String name, String group) {

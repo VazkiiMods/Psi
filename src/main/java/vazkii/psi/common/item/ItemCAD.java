@@ -52,6 +52,7 @@ import vazkii.psi.api.spell.ISpellContainer;
 import vazkii.psi.api.spell.ISpellSettable;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
+import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
@@ -68,6 +69,11 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable {
 	private static final String TAG_BULLET_PREFIX = "bullet";
 	private static final String TAG_SELECTED_SLOT = "selectedSlot";
 
+	private static final String TAG_STORED_VECTOR_PREFIX = "storedVector";
+	private static final String TAG_X = "x";
+	private static final String TAG_Y = "y";
+	private static final String TAG_Z = "z";
+	
 	private static final Pattern FAKE_PLAYER_PATTERN = Pattern.compile("^(?:\\[.*\\])|(?:ComputerCraft)$");
 
 	public ItemCAD() {
@@ -367,6 +373,37 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable {
 			return getSpellColor(stack);
 		return 0xFFFFFF;
 	}
+	
+	@Override
+	public int getMemorySize(ItemStack stack) {
+		return getStatValue(stack, EnumCADStat.SOCKETS) / 3;
+	}
+
+	@Override
+	public void setStoredVector(ItemStack stack, int memorySlot, Vector3 vec) throws SpellRuntimeException {
+		int size = getMemorySize(stack);
+		if(memorySlot < 0 || memorySlot >= size)
+			throw new SpellRuntimeException(SpellRuntimeException.MEMORY_OUT_OF_BOUNDS);
+		
+		NBTTagCompound cmp = new NBTTagCompound();
+		cmp.setDouble(TAG_X, vec.x);
+		cmp.setDouble(TAG_Y, vec.y);
+		cmp.setDouble(TAG_Z, vec.z);
+		ItemNBTHelper.setCompound(stack, TAG_STORED_VECTOR_PREFIX + memorySlot, cmp);
+	}
+
+	@Override
+	public Vector3 getStoredVector(ItemStack stack, int memorySlot) throws SpellRuntimeException {
+		int size = getMemorySize(stack);
+		if(memorySlot < 0 || memorySlot >= size)
+			throw new SpellRuntimeException(SpellRuntimeException.MEMORY_OUT_OF_BOUNDS);
+		
+		NBTTagCompound cmp = ItemNBTHelper.getCompound(stack, TAG_STORED_VECTOR_PREFIX + memorySlot, false);
+		double x = cmp.getInteger(TAG_X);
+		double y = cmp.getInteger(TAG_Y);
+		double z = cmp.getInteger(TAG_Z);
+		return new Vector3(x, y, z);
+	}
 
 	@Override
 	public void getSubItems(Item itemIn, CreativeTabs tab, List<ItemStack> subItems) {
@@ -462,4 +499,5 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable {
 			}
 		};
 	}
+
 }

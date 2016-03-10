@@ -13,6 +13,8 @@ package vazkii.psi.api.cad;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import vazkii.psi.api.internal.Vector3;
+import vazkii.psi.api.spell.SpellRuntimeException;
 
 /**
  * Base interface for a CAD. You probably shouldn't implement this.
@@ -46,6 +48,15 @@ public interface ICAD extends ISocketable {
 	 */
 	public int consumePsi(ItemStack stack, int psi);
 
+	/**
+	 * Gets how many vectors this CAD can store in memory.
+	 */
+	public int getMemorySize(ItemStack stack);
+	
+	public void setStoredVector(ItemStack stack, int memorySlot, Vector3 vec) throws SpellRuntimeException;
+	
+	public Vector3 getStoredVector(ItemStack stack, int memorySlot) throws SpellRuntimeException;
+	
 	/**
 	 * Gets the color of the spells projected by this CAD. Usually just goes back
 	 * to ICADColorizer.getColor().

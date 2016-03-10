@@ -23,6 +23,7 @@ public class SpellRuntimeException extends Exception {
 	public static final String OUTSIDE_RADIUS = "psi.spellerror.outsideradius";
 	public static final String BOSS_IMMUNE = "psi.spellerror.bossimmune";
 	public static final String NO_CAD = "psi.spellerror.nocad";
+	public static final String MEMORY_OUT_OF_BOUNDS = "psi.spellerror.memoryoutofbounds";
 
 	public SpellRuntimeException(String s) {
 		super(s);

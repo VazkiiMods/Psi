@@ -271,6 +271,8 @@ psi.spellpiece.selectorItemPresence=Selector: Item Presence
 psi.spellpiece.selectorItemPresence.desc=Selects the size of an inventory item stack
 psi.spellpiece.selectorBlockPresence=Selector: Block Presence
 psi.spellpiece.selectorBlockPresence.desc=Selects a block's presence and solidity
+psi.spellpiece.selectorSavedVector=Selector: Saved Vector
+psi.spellpiece.selectorSavedVector.desc=Selects a saved vector from CAD Memory
 
 # -- OPERATORS
 psi.spellpiece.operatorSum=Operator: Sum
@@ -457,6 +459,8 @@ psi.spellpiece.trickConjureBlockSequence=Trick: Conjure Block Sequence
 psi.spellpiece.trickConjureBlockSequence.desc=Conjures a block sequence
 psi.spellpiece.trickSwitchTargetSlot=Trick: Switch Focus Slot
 psi.spellpiece.trickSwitchTargetSlot.desc=Changes the focused slot of this spell
+psi.spellpiece.trickSaveVector=Trick: Save Vector
+psi.spellpiece.trickSaveVector.desc=Saves a vector to CAD Memory
 
 # SPELL PARAMETER NAMES
 psi.spellparam.target=Target
@@ -523,6 +527,7 @@ psi.spellerror.outsideradius=ERROR: Spell target is outside maximum 32 block rad
 psi.spellerror.outsidetrigdomain=ERROR: Value is outside inverse trignometric function's domain.
 psi.spellerror.bossimmune=ERROR: Attempted to cast a spell on an immune entity or a boss.
 psi.spellerror.nocad=ERROR: Caster has no CAD.
+psi.spellerror.memoryoutofbounds=ERROR: Memory access out of bounds.
 
 # PIECE GROUPS
 psi.introduction=Welcome to Psi, the best spell programming magic tech mod in this side of the universe. Please keep in mind that having Just Enough Items (JEI) or some other method of looking up recipes is essential for playing with Psi, as recipes are not included in this guide. In order to get started spellslinging, you'll need some Psidust. To get Psidust, you need to start by crafting a CAD Assembler and an Iron CAD Assembly. Place down the CAD Assembler and put the Iron CAD Assembly in it to construct a very barebones Casting Assistance Device (CAD). From there, drop some Redstone Dust in the world. Equip your CAD, point at the dropped items and right click to make your Psidust.
@@ -577,3 +582,5 @@ psi.piecegroup.eidosReversal=Eidos Manipulation
 psi.piecegroup.eidosReversal.desc=Eidos Spells allow for the caster to manipulate the spacetime continuum in their favor.<br><br>The red piece of this group, "Trick: Eidos Reversal" retraces the caster's steps, at double speed, for the amount of time (in seconds) specified. Only one Reversal may be active at a time, and after a Reversal is cast, the effect of any subsequent cast is only available until the point where the last one ended. Sneaking will stop an ongoing Reversal.<br><br>The other piece of the group, "Trick: Eidos Anchor" creates an "anchor" effect on the caster. After the target amount of time (in seconds), the caster will be taken back to where their anchor was. Multiple casts of "Trick: Eidos Anchor" can be done, but only the last one will take effect.
 psi.piecegroup.detectionDynamics=Detection & Dynamics
 psi.piecegroup.detectionDynamics.desc=wip
+psi.piecegroup.memoryManagement=Memory Management
+psi.piecegroup.memoryManagement.desc=wip
