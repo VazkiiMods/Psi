@@ -67,6 +67,7 @@ public class PieceTrickAddMotion extends PieceTrick {
 	}
 
 	public static void addMotion(SpellContext context, Entity e, Vector3 dir, double speed) throws SpellRuntimeException {
+		context.verifyEntity(e);
 		if(!context.isInRadius(e))
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 

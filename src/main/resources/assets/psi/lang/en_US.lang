@@ -532,6 +532,7 @@ psi.spellerror.bossimmune=ERROR: Attempted to cast a spell on an immune entity o
 psi.spellerror.nocad=ERROR: Caster has no CAD.
 psi.spellerror.memoryoutofbounds=ERROR: Memory access out of bounds.
 psi.spellerror.lockedmemory=ERROR: Memory slot is locked.
+psi.spellerror.immunetarget=ERROR: Target entity is immune or a boss.
 
 # PIECE GROUPS
 psi.introduction=Welcome to Psi, the best spell programming magic tech mod in this side of the universe. Please keep in mind that having Just Enough Items (JEI) or some other method of looking up recipes is essential for playing with Psi, as recipes are not included in this guide. In order to get started spellslinging, you'll need some Psidust. To get Psidust, you need to start by crafting a CAD Assembler and an Iron CAD Assembly. Place down the CAD Assembler and put the Iron CAD Assembly in it to construct a very barebones Casting Assistance Device (CAD). From there, drop some Redstone Dust in the world. Equip your CAD, point at the dropped items and right click to make your Psidust.

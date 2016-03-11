@@ -164,6 +164,14 @@ public final class SpellContext {
 		return MathHelper.pointDistanceSpace(x, y, z, focalPoint.posX, focalPoint.posY, focalPoint.posZ) <= MAX_DISTANCE;
 	}
 	
+	public void verifyEntity(Entity e) throws SpellRuntimeException {
+		if(e == null)
+			throw new SpellRuntimeException(SpellRuntimeException.NULL_TARGET);
+		
+		if(ISpellImmune.isImmune(e))
+			throw new SpellRuntimeException(SpellRuntimeException.IMMUNE_TARGET);
+	}
+	
 	public int getTargetSlot() throws SpellRuntimeException {
 		int slot = 0;
 		if(shiftTargetSlot) {
