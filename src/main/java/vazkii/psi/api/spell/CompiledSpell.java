@@ -32,6 +32,7 @@ public class CompiledSpell {
 	public Stack<Action> actions = new Stack();
 	public Map<SpellPiece, Action> actionMap = new HashMap();
 
+	public Action currentAction;
 	public boolean[][] spotsEvaluated;
 
 	public CompiledSpell(Spell source) {
@@ -48,7 +49,10 @@ public class CompiledSpell {
 	public boolean execute(SpellContext context) throws SpellRuntimeException {
 		IPlayerData data = PsiAPI.internalHandler.getDataForPlayer(context.caster);
 		while(!context.actions.isEmpty()) {
-			context.actions.pop().execute(data, context);
+			Action a = context.actions.pop();
+			currentAction = a;
+			a.execute(data, context);
+			currentAction = null;
 
 			if(context.stopped)
 				return false;
@@ -56,6 +60,7 @@ public class CompiledSpell {
 			if(context.delay > 0)
 				return true;
 		}
+		
 		return false;
 	}
 
@@ -70,8 +75,13 @@ public class CompiledSpell {
 			if(context.cspell.execute(context))
 				PsiAPI.internalHandler.delayContext(context);
 		} catch(SpellRuntimeException e) {
-			if(!context.caster.worldObj.isRemote && !context.shouldSuppressErrors())
+			if(!context.caster.worldObj.isRemote && !context.shouldSuppressErrors()) {
 				context.caster.addChatComponentMessage(new ChatComponentTranslation(e.getMessage()).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
+				
+				int x = context.cspell.currentAction.piece.x + 1;
+				int y = context.cspell.currentAction.piece.y + 1;
+				context.caster.addChatComponentMessage(new ChatComponentTranslation("psi.spellerror.position", x, y).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
+			}
 		}
 	}
 
@@ -84,7 +94,7 @@ public class CompiledSpell {
 
 	public class Action {
 
-		final SpellPiece piece;
+		public final SpellPiece piece;
 
 		public Action(SpellPiece piece) {
 			this.piece = piece;

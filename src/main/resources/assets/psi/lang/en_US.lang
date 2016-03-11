@@ -45,6 +45,8 @@ psimisc.ctrlWindows=Ctrl
 psimisc.ctrlMac=Cmd
 psimisc.enterCommit=Press Enter to commit
 psimisc.semicolonLine=Use ; to change line
+psimisc.programmerCoords=Selected: [%d, %d] | Cursor: [%d, %d]
+psimisc.programmerCoordsNoCursor=Selected: [%d, %d]
 
 # VERSIONING
 psi.versioning.flavour0=Seems like Psi is outdated. What a shame.
@@ -520,6 +522,7 @@ psi.spellerror.statoverflow=Spell Stats overflow past maximum possible integer
 psi.spellerror.exclusiveparams=Two mutually exclusive parameters are set
 
 # RUNTIME ERRORS
+psi.spellerror.position=Error Position: [%d, %d].
 psi.spellerror.dividebyzero=ERROR: Divide by zero.
 psi.spellerror.nulltarget=ERROR: Spell Entity target is non existent.
 psi.spellerror.nullvector=ERROR: Spell Operation Vector is non existent or null.
