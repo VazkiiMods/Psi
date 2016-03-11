@@ -49,6 +49,14 @@ public final class LibPieceNames {
 	public static final String OPERATOR_ACOS = "operatorAcos";
 	public static final String OPERATOR_MIN = "operatorMin";
 	public static final String OPERATOR_MAX = "operatorMax";
+	public static final String OPERATOR_SQUARE = "operatorSquare";
+	public static final String OPERATOR_CUBE = "operatorCube";
+	public static final String OPERATOR_POWER = "operatorPower";
+	public static final String OPERATOR_SQUARE_ROOT = "operatorSquareRoot";
+	public static final String OPERATOR_LOG = "operatorLog";
+	public static final String OPERATOR_CEILING = "operatorCeiling";
+	public static final String OPERATOR_FLOOR = "operatorFloor";
+	public static final String OPERATOR_ROUND = "operatorRound";
 	public static final String OPERATOR_ENTITY_POSITION = "operatorEntityPosition";
 	public static final String OPERATOR_ENTITY_LOOK = "operatorEntityLook";
 	public static final String OPERATOR_ENTITY_MOTION = "operatorEntityMotion";
@@ -77,6 +85,7 @@ public final class LibPieceNames {
 
 	public static final String CONSTANT_NUMBER = "constantNumber";
 	public static final String CONSTANT_PI = "constantPi";
+	public static final String CONSTANT_E = "constantE";
 	public static final String CONSTANT_WRAPPER = "constantWrapper";
 
 	public static final String CONNECTOR = "connector";

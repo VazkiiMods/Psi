@@ -38,5 +38,6 @@ public final class LibPieceGroups {
 	public static final String EIDOS_REVERSAL = "eidosReversal";
 	public static final String DETECTION_DYNAMICS = "detectionDynamics";
 	public static final String MEMORY_MANAGEMENT = "memoryManagement";
+	public static final String SECONDARY_OPERATORS = "secondaryOperators";
 
 }

@@ -15,6 +15,7 @@ import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellPiece;
 import vazkii.psi.common.lib.LibPieceGroups;
 import vazkii.psi.common.lib.LibPieceNames;
+import vazkii.psi.common.spell.constant.PieceConstantE;
 import vazkii.psi.common.spell.constant.PieceConstantNumber;
 import vazkii.psi.common.spell.constant.PieceConstantPi;
 import vazkii.psi.common.spell.constant.PieceConstantWrapper;
@@ -28,14 +29,22 @@ import vazkii.psi.common.spell.operator.entity.PieceOperatorListAdd;
 import vazkii.psi.common.spell.operator.entity.PieceOperatorListRemove;
 import vazkii.psi.common.spell.operator.entity.PieceOperatorRandomEntity;
 import vazkii.psi.common.spell.operator.number.PieceOperatorAbsolute;
+import vazkii.psi.common.spell.operator.number.PieceOperatorCeiling;
+import vazkii.psi.common.spell.operator.number.PieceOperatorCube;
 import vazkii.psi.common.spell.operator.number.PieceOperatorDivide;
+import vazkii.psi.common.spell.operator.number.PieceOperatorFloor;
 import vazkii.psi.common.spell.operator.number.PieceOperatorIntegerDivide;
 import vazkii.psi.common.spell.operator.number.PieceOperatorInverse;
+import vazkii.psi.common.spell.operator.number.PieceOperatorLog;
 import vazkii.psi.common.spell.operator.number.PieceOperatorMax;
 import vazkii.psi.common.spell.operator.number.PieceOperatorMin;
 import vazkii.psi.common.spell.operator.number.PieceOperatorModulus;
 import vazkii.psi.common.spell.operator.number.PieceOperatorMultiply;
+import vazkii.psi.common.spell.operator.number.PieceOperatorPower;
 import vazkii.psi.common.spell.operator.number.PieceOperatorRandom;
+import vazkii.psi.common.spell.operator.number.PieceOperatorRound;
+import vazkii.psi.common.spell.operator.number.PieceOperatorSquare;
+import vazkii.psi.common.spell.operator.number.PieceOperatorSquareRoot;
 import vazkii.psi.common.spell.operator.number.PieceOperatorSubtract;
 import vazkii.psi.common.spell.operator.number.PieceOperatorSum;
 import vazkii.psi.common.spell.operator.number.trig.PieceOperatorAcos;
@@ -166,6 +175,14 @@ public final class ModSpellPieces {
 	public static PieceContainer operatorAcos;
 	public static PieceContainer operatorMin;
 	public static PieceContainer operatorMax;
+	public static PieceContainer operatorSquare;
+	public static PieceContainer operatorCube;
+	public static PieceContainer operatorPower;
+	public static PieceContainer operatorSquareRoot;
+	public static PieceContainer operatorLog;
+	public static PieceContainer operatorCeiling;
+	public static PieceContainer operatorFloor;
+	public static PieceContainer operatorRound;
 	public static PieceContainer operatorEntityPosition;
 	public static PieceContainer operatorEntityLook;
 	public static PieceContainer operatorEntityMotion;
@@ -193,6 +210,7 @@ public final class ModSpellPieces {
 
 	public static PieceContainer constantNumber;
 	public static PieceContainer constantPi;
+	public static PieceContainer constantE;
 	public static PieceContainer constantWrapper;
 
 	public static PieceContainer connector;
@@ -280,8 +298,16 @@ public final class ModSpellPieces {
 		operatorCos = register(PieceOperatorCos.class, LibPieceNames.OPERATOR_COS, LibPieceGroups.TRIGNOMETRY);
 		operatorAsin = register(PieceOperatorAsin.class, LibPieceNames.OPERATOR_ASIN, LibPieceGroups.TRIGNOMETRY);
 		operatorAcos = register(PieceOperatorAcos.class, LibPieceNames.OPERATOR_ACOS, LibPieceGroups.TRIGNOMETRY);
-		operatorMin = register(PieceOperatorMin.class, LibPieceNames.OPERATOR_MIN, LibPieceGroups.FLOW_CONTROL);
-		operatorMax = register(PieceOperatorMax.class, LibPieceNames.OPERATOR_MAX, LibPieceGroups.FLOW_CONTROL);
+		operatorMin = register(PieceOperatorMin.class, LibPieceNames.OPERATOR_MIN, LibPieceGroups.SECONDARY_OPERATORS);
+		operatorMax = register(PieceOperatorMax.class, LibPieceNames.OPERATOR_MAX, LibPieceGroups.SECONDARY_OPERATORS);
+		operatorSquare = register(PieceOperatorSquare.class, LibPieceNames.OPERATOR_SQUARE, LibPieceGroups.SECONDARY_OPERATORS, true);
+		operatorCube = register(PieceOperatorCube.class, LibPieceNames.OPERATOR_CUBE, LibPieceGroups.SECONDARY_OPERATORS);
+		operatorPower = register(PieceOperatorPower.class, LibPieceNames.OPERATOR_POWER, LibPieceGroups.SECONDARY_OPERATORS);
+		operatorSquareRoot = register(PieceOperatorSquareRoot.class, LibPieceNames.OPERATOR_SQUARE_ROOT, LibPieceGroups.SECONDARY_OPERATORS);
+		operatorLog = register(PieceOperatorLog.class, LibPieceNames.OPERATOR_LOG, LibPieceGroups.SECONDARY_OPERATORS);
+		operatorCeiling = register(PieceOperatorCeiling.class, LibPieceNames.OPERATOR_CEILING, LibPieceGroups.SECONDARY_OPERATORS);
+		operatorFloor = register(PieceOperatorFloor.class, LibPieceNames.OPERATOR_FLOOR, LibPieceGroups.SECONDARY_OPERATORS);
+		operatorRound = register(PieceOperatorRound.class, LibPieceNames.OPERATOR_ROUND, LibPieceGroups.SECONDARY_OPERATORS);
 		operatorEntityPosition = register(PieceOperatorEntityPosition.class, LibPieceNames.OPERATOR_ENTITY_POSITION, LibPieceGroups.TUTORIAL_4);
 		operatorEntityLook = register(PieceOperatorEntityLook.class, LibPieceNames.OPERATOR_ENTITY_LOOK, LibPieceGroups.TUTORIAL_3);
 		operatorEntityMotion = register(PieceOperatorEntityMotion.class, LibPieceNames.OPERATOR_ENTITY_MOTION, LibPieceGroups.ENTITIES_INTRO);
@@ -310,6 +336,8 @@ public final class ModSpellPieces {
 
 		constantNumber = register(PieceConstantNumber.class, LibPieceNames.CONSTANT_NUMBER, LibPieceGroups.TUTORIAL_2, true);
 		constantPi = register(PieceConstantPi.class, LibPieceNames.CONSTANT_PI, LibPieceGroups.TRIGNOMETRY, true);
+		constantE = register(PieceConstantE.class, LibPieceNames.CONSTANT_E, LibPieceGroups.SECONDARY_OPERATORS);
+
 		constantWrapper = register(PieceConstantWrapper.class, LibPieceNames.CONSTANT_WRAPPER, LibPieceGroups.FLOW_CONTROL);
 
 		connector = register(PieceConnector.class, LibPieceNames.CONNECTOR, LibPieceGroups.TUTORIAL_2);
@@ -386,6 +414,7 @@ public final class ModSpellPieces {
 		PsiAPI.setGroupRequirements(LibPieceGroups.BLOCK_CONJURATION, 20, LibPieceGroups.GREATER_INFUSION);
 		PsiAPI.setGroupRequirements(LibPieceGroups.DETECTION_DYNAMICS, 21, LibPieceGroups.FLOW_CONTROL);
 		PsiAPI.setGroupRequirements(LibPieceGroups.MEMORY_MANAGEMENT, 21, LibPieceGroups.FLOW_CONTROL);
+		PsiAPI.setGroupRequirements(LibPieceGroups.SECONDARY_OPERATORS, 21, LibPieceGroups.TRIGNOMETRY);
 		PsiAPI.setGroupRequirements(LibPieceGroups.EIDOS_REVERSAL, 24, LibPieceGroups.DETECTION_DYNAMICS, LibPieceGroups.MEMORY_MANAGEMENT, LibPieceGroups.EXOSUIT_CASTING);
 	}
 

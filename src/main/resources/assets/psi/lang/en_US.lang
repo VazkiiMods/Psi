@@ -310,6 +310,22 @@ psi.spellpiece.operatorMax=Operator: Max
 psi.spellpiece.operatorMax.desc=Gets the largest value of those passed in
 psi.spellpiece.operatorMin=Operator: Min
 psi.spellpiece.operatorMin.desc=Gets the smallest value of those passed in
+psi.spellpiece.operatorSquare=Operator: Square
+psi.spellpiece.operatorSquare.desc=A^2
+psi.spellpiece.operatorCube=Operator: Cube
+psi.spellpiece.operatorCube.desc=A^3
+psi.spellpiece.operatorPower=Operator: Power
+psi.spellpiece.operatorPower.desc=A^B
+psi.spellpiece.operatorSquareRoot=Operator: Square Root
+psi.spellpiece.operatorSquareRoot.desc=sqrt(A)
+psi.spellpiece.operatorLog=Operator: Logarithm
+psi.spellpiece.operatorLog.desc=log(A) or logB(A)
+psi.spellpiece.operatorCeiling=Operator: Ceiling
+psi.spellpiece.operatorCeiling.desc=Rounds up a number to an integer
+psi.spellpiece.operatorFloor=Operator: Floor
+psi.spellpiece.operatorFloor.desc=Rounds down a number to an integer
+psi.spellpiece.operatorRound=Operator: Round
+psi.spellpiece.operatorRound.desc=Rounds a number to an integer
 psi.spellpiece.operatorEntityPosition=Operator: Entity Position
 psi.spellpiece.operatorEntityPosition.desc=Gets an Entity's position
 psi.spellpiece.operatorEntityLook=Operator: Entity Look
@@ -366,6 +382,8 @@ psi.spellpiece.constantNumber=Constant: Number
 psi.spellpiece.constantNumber.desc=Select and type to set value
 psi.spellpiece.constantPi=Constant: Pi
 psi.spellpiece.constantPi.desc=Returns the value of Pi
+psi.spellpiece.constantE=Constant: e
+psi.spellpiece.constantE.desc=Returns the value of e
 psi.spellpiece.constantWrapper=Constant: Wrapper
 psi.spellpiece.constantWrapper.desc=A wrapper for a constant for stat calculation
 
@@ -495,6 +513,7 @@ psi.spellparam.list=List
 psi.spellparam.constant=Constant
 psi.spellparam.shift=Shift
 psi.spellparam.slot=Slot
+psi.spellparam.base=Base
 
 # DATA TYPE NAMES
 psi.datatype.Null=None
@@ -536,6 +555,7 @@ psi.spellerror.nocad=ERROR: Caster has no CAD.
 psi.spellerror.memoryoutofbounds=ERROR: Memory access out of bounds.
 psi.spellerror.lockedmemory=ERROR: Memory slot is locked.
 psi.spellerror.immunetarget=ERROR: Target entity is immune or a boss.
+psi.spellerror.negativenumber=ERROR: Target number is negative in a piece where it can't be.
 
 # PIECE GROUPS
 psi.introduction=Welcome to Psi, the best spell programming magic tech mod in this side of the universe. Please keep in mind that having Just Enough Items (JEI) or some other method of looking up recipes is essential for playing with Psi, as recipes are not included in this guide. In order to get started spellslinging, you'll need some Psidust. To get Psidust, you need to start by crafting a CAD Assembler and an Iron CAD Assembly. Place down the CAD Assembler and put the Iron CAD Assembly in it to construct a very barebones Casting Assistance Device (CAD). From there, drop some Redstone Dust in the world. Equip your CAD, point at the dropped items and right click to make your Psidust.
@@ -592,3 +612,5 @@ psi.piecegroup.detectionDynamics=Detection & Dynamics
 psi.piecegroup.detectionDynamics.desc=wip
 psi.piecegroup.memoryManagement=Memory Management
 psi.piecegroup.memoryManagement.desc=wip
+psi.piecegroup.secondaryOperators=Secondary Operators
+psi.piecegroup.secondaryOperators.desc=wip
