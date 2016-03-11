@@ -35,7 +35,10 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.network.play.server.S08PacketPlayerPosLook.EnumFlags;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.ChatStyle;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.client.event.FOVUpdateEvent;
@@ -541,6 +544,8 @@ public class PlayerDataHandler {
 
 					NetworkHandler.INSTANCE.sendTo(message, (EntityPlayerMP) player);
 					NetworkHandler.INSTANCE.sendTo(message2, (EntityPlayerMP) player);
+					if(level == 25)
+						player.addChatComponentMessage(new ChatComponentTranslation("psimisc.softcapIndicator").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.AQUA)));
 				}
 			}
 		}
