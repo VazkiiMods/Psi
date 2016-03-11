@@ -24,6 +24,7 @@ import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.param.ParamVector;
 import vazkii.psi.api.spell.piece.PieceSelector;
+import vazkii.psi.common.spell.trick.PieceTrickSaveVector;
 
 public class PieceSelectorSavedVector extends PieceSelector {
 
@@ -53,11 +54,15 @@ public class PieceSelectorSavedVector extends PieceSelector {
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		Double numberVal = this.<Double>getParamValue(context, number);
 		
+		int n = numberVal.intValue();
+		if(context.customData.containsKey(PieceTrickSaveVector.KEY_SLOT_LOCKED + n))
+			throw new SpellRuntimeException(SpellRuntimeException.LOCKED_MEMORY);
+		
 		ItemStack cadStack = PsiAPI.getPlayerCAD(context.caster);
 		if(cadStack == null || !(cadStack.getItem() instanceof ICAD))
 			throw new SpellRuntimeException(SpellRuntimeException.NO_CAD);
 		ICAD cad = (ICAD) cadStack.getItem();
-		return cad.getStoredVector(cadStack, numberVal.intValue());
+		return cad.getStoredVector(cadStack, n);
 	}
 
 	@Override

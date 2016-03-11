@@ -26,7 +26,9 @@ import vazkii.psi.api.spell.param.ParamVector;
 import vazkii.psi.api.spell.piece.PieceTrick;
 
 public class PieceTrickSaveVector extends PieceTrick {
-
+	
+	public static final String KEY_SLOT_LOCKED = "psi:SlotLocked";
+	
 	SpellParam number;
 	SpellParam target;
 
@@ -55,12 +57,19 @@ public class PieceTrickSaveVector extends PieceTrick {
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		Double numberVal = this.<Double>getParamValue(context, number);
 		Vector3 targetVal = this.<Vector3>getParamValue(context, target);
+
+		int n = numberVal.intValue();
+
+		if(context.customData.containsKey(KEY_SLOT_LOCKED + n))
+			return null;
 		
 		ItemStack cadStack = PsiAPI.getPlayerCAD(context.caster);
 		if(cadStack == null || !(cadStack.getItem() instanceof ICAD))
 			throw new SpellRuntimeException(SpellRuntimeException.NO_CAD);
 		ICAD cad = (ICAD) cadStack.getItem();
-		cad.setStoredVector(cadStack, numberVal.intValue(), targetVal);
+		cad.setStoredVector(cadStack, n, targetVal);
+		
+		context.customData.put(KEY_SLOT_LOCKED + n, 0);
 		
 		return null;
 	}
