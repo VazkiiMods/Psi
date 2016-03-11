@@ -32,6 +32,7 @@ public final class LibPieceNames {
 	public static final String SELECTOR_ITEM_PRESENCE = "selectorItemPresence";
 	public static final String SELECTOR_BLOCK_PRESENCE = "selectorBlockPresence";
 	public static final String SELECTOR_SAVED_VECTOR = "selectorSavedVector";
+	public static final String SELECTOR_EIDOS_CHANGELOG = "selectorEidosChangelog";
 
 	public static final String OPERATOR_SUM = "operatorSum";
 	public static final String OPERATOR_SUBTRACT = "operatorSubtract";

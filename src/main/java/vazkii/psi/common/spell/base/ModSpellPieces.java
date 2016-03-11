@@ -67,6 +67,7 @@ import vazkii.psi.common.spell.selector.PieceSelectorBlockPresence;
 import vazkii.psi.common.spell.selector.PieceSelectorBlockSideBroken;
 import vazkii.psi.common.spell.selector.PieceSelectorCaster;
 import vazkii.psi.common.spell.selector.PieceSelectorDamageTaken;
+import vazkii.psi.common.spell.selector.PieceSelectorEidosChangelog;
 import vazkii.psi.common.spell.selector.PieceSelectorFocalPoint;
 import vazkii.psi.common.spell.selector.PieceSelectorItemPresence;
 import vazkii.psi.common.spell.selector.PieceSelectorLoopcastIndex;
@@ -148,6 +149,7 @@ public final class ModSpellPieces {
 	public static PieceContainer selectorItemPresence;
 	public static PieceContainer selectorBlockPresence;
 	public static PieceContainer selectorSaveVector;
+	public static PieceContainer selectorEidosChangelog;
 
 	public static PieceContainer operatorSum;
 	public static PieceContainer operatorSubtract;
@@ -263,6 +265,7 @@ public final class ModSpellPieces {
 		selectorItemPresence = register(PieceSelectorItemPresence.class, LibPieceNames.SELECTOR_ITEM_PRESENCE, LibPieceGroups.DETECTION_DYNAMICS);
 		selectorBlockPresence = register(PieceSelectorBlockPresence.class, LibPieceNames.SELECTOR_BLOCK_PRESENCE, LibPieceGroups.DETECTION_DYNAMICS);
 		selectorSaveVector = register(PieceSelectorSavedVector.class, LibPieceNames.SELECTOR_SAVED_VECTOR, LibPieceGroups.MEMORY_MANAGEMENT);
+		selectorEidosChangelog = register(PieceSelectorEidosChangelog.class, LibPieceNames.SELECTOR_EIDOS_CHANGELOG, LibPieceGroups.EIDOS_REVERSAL);
 
 		operatorSum = register(PieceOperatorSum.class, LibPieceNames.OPERATOR_SUM, LibPieceGroups.NUMBERS_INTRO, true);
 		operatorSubtract = register(PieceOperatorSubtract.class, LibPieceNames.OPERATOR_SUBTRACT, LibPieceGroups.NUMBERS_INTRO);

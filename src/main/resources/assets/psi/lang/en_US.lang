@@ -276,6 +276,8 @@ psi.spellpiece.selectorBlockPresence=Selector: Block Presence
 psi.spellpiece.selectorBlockPresence.desc=Selects a block's presence and solidity
 psi.spellpiece.selectorSavedVector=Selector: Saved Vector
 psi.spellpiece.selectorSavedVector.desc=Selects a saved vector from CAD Memory
+psi.spellpiece.selectorEidosChangelog=Selector: Eidos Changelog
+psi.spellpiece.selectorEidosChangelog.desc=Selects a position from the Eidos Changelog
 
 # -- OPERATORS
 psi.spellpiece.operatorSum=Operator: Sum
