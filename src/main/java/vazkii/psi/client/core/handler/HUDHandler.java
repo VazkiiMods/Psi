@@ -106,10 +106,13 @@ public final class HUDHandler {
 
 		GlStateManager.pushMatrix();
 		int scaleFactor = res.getScaleFactor();
+		
 		if(scaleFactor > ConfigHandler.maxPsiBarScale) {
+			int guiScale = mc.gameSettings.guiScale;
+			
 			mc.gameSettings.guiScale = ConfigHandler.maxPsiBarScale;
 			res = new ScaledResolution(mc);
-			mc.gameSettings.guiScale = scaleFactor;
+			mc.gameSettings.guiScale = guiScale;
 
 			float s = (float) ConfigHandler.maxPsiBarScale / (float) scaleFactor;
 			GlStateManager.scale(s, s, s);
