@@ -1,3 +1,28 @@
+beta-20
+*A Vector Ruler without a defined vector with both source and destination will now convert the coordinates of the source into a vector instead of returning (0, 0, 0).
+*Added a coordinate indicator to the Programmer GUI.
+*Added a recipe to swap a CAD's colorizer by crafting it with the CAD. (yrsegal)
+*Added a Secondary Operators group. The group includes: Square, Cube, Power, Square Root, Logarithm, Ceiling, Floor, Round and Constant: e.
+*Added armor slots to the CAD Assembler.
+*Added Detection & Dynamism pieces. Selectors for a block's existance or solidity, and the amount of items in an inventory stack. Also a trick to change which slot is used by block placing tricks.
+*Added keybinds to upload a screenshot of a spell to imgur (Ctrl-Shift-Alt-G) and to share it on reddit (Ctrl-Shift-Alt-R).
+*Added Memory Management pieces that allow for spells to store presistant data in the CAD.
+*Added Selector: Eidos Changelog, which lets you get the position the caster was X ticks ago.
+*Added the ability to add comments to spell pieces by using Ctrl-D.
+*Added the ability to view a spell piece's tooltip without hovering over it by using Alt.
+*Bosses are now immune to spells.
+*Buffed the stats of T2 and T3 CAD Cores.
+*Fixed spell stats being able to be overflowed twice to create ridiculously powerful spells that cost virtually nothing.
+*Fixed the Programmer GUI not registering keys being held down (like backspace). (yrsegal)
+*Fixed the Psi bar spazzing out if you have a spell in your exosuit leggings.
+*Fixed tools not being able to break some things they should. (yrsegal)
+*Fixed Trick: Smelt Item being able to dupe items if multiple are used in one cast. (yrsegal)
+*Increased level cap to 28. The player's Psi energy is still capped at 5000, so there's a "soft cap" of 25. When you reach that level you get a message telling you about it.
+*Made Add Motion a bit more expensive, because people keep finding exploits with it.
+*Moved Min/Max operators to the new Secondary Operators group.
+*Optimized spell JSON output. Exported spell JSON is now a lot smaller. Old ones will still work, but the new format won't work on older versions. (<a href="https://puu.sh/nzExG/8d13fd1330.txt">comparison</a>)
+*Runtime spell errors now come with information on where the error happened in the spell.
+*Trick: Add Motion now needs to propel you upwards to negate fall damage again. Basically the same as before.
 beta-19
 *Added a help tooltip to the Spell Programmer GUI.
 *Adding a Trick to the Spell Programmer while the spell has no name defaults the spell's name to the name of the trick.
