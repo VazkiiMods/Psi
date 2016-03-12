@@ -1,3 +1,6 @@
+beta-21
+*Fixed a crash when adding comments to pieces if Scala isn't present.
+*Fixed an edge case with the Psi bar's auto rescaling modifying the game's gui scale? Maybe? I couldn't reproduce it.
 beta-20
 *A Vector Ruler without a defined vector with both source and destination will now convert the coordinates of the source into a vector instead of returning (0, 0, 0).
 *Added a coordinate indicator to the Programmer GUI.
