@@ -54,7 +54,7 @@ public class PieceSelectorSavedVector extends PieceSelector {
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		Double numberVal = this.<Double>getParamValue(context, number);
 		
-		int n = numberVal.intValue();
+		int n = numberVal.intValue() - 1;
 		if(context.customData.containsKey(PieceTrickSaveVector.KEY_SLOT_LOCKED + n))
 			throw new SpellRuntimeException(SpellRuntimeException.LOCKED_MEMORY);
 		

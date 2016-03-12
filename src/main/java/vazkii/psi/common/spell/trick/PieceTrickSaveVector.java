@@ -58,7 +58,7 @@ public class PieceTrickSaveVector extends PieceTrick {
 		Double numberVal = this.<Double>getParamValue(context, number);
 		Vector3 targetVal = this.<Vector3>getParamValue(context, target);
 
-		int n = numberVal.intValue();
+		int n = numberVal.intValue() - 1;
 
 		if(context.customData.containsKey(KEY_SLOT_LOCKED + n))
 			return null;
