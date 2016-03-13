@@ -341,18 +341,19 @@ public class GuiProgrammer extends GuiScreen {
 
 		int topy = top - 12;
 		if(!takingScreenshot) {
+			int topyText = topy;
 			if(spectator) {
 				String betaTest = EnumChatFormatting.RED + StatCollector.translateToLocal("psimisc.spectator");
-				mc.fontRendererObj.drawStringWithShadow(betaTest, left + xSize / 2 - mc.fontRendererObj.getStringWidth(betaTest) / 2, topy, 0xFFFFFF);
-				topy -= 10;
+				mc.fontRendererObj.drawStringWithShadow(betaTest, left + xSize / 2 - mc.fontRendererObj.getStringWidth(betaTest) / 2, topyText, 0xFFFFFF);
+				topyText -= 10;
 			}
 			if(LibMisc.BETA_TESTING) {
 				String betaTest = StatCollector.translateToLocal("psimisc.wip");
-				mc.fontRendererObj.drawStringWithShadow(betaTest, left + xSize / 2 - mc.fontRendererObj.getStringWidth(betaTest) / 2, topy, 0xFFFFFF);
+				mc.fontRendererObj.drawStringWithShadow(betaTest, left + xSize / 2 - mc.fontRendererObj.getStringWidth(betaTest) / 2, topyText, 0xFFFFFF);
 			}
 			if(piece != null) {
 				String name = StatCollector.translateToLocal(piece.getUnlocalizedName());
-				mc.fontRendererObj.drawStringWithShadow(name, left + xSize / 2 - mc.fontRendererObj.getStringWidth(name) / 2, topy, 0xFFFFFF);
+				mc.fontRendererObj.drawStringWithShadow(name, left + xSize / 2 - mc.fontRendererObj.getStringWidth(name) / 2, topyText, 0xFFFFFF);
 			}
 			
 			String coords = "";
