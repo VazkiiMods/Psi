@@ -160,6 +160,11 @@ public class PlayerDataHandler {
 		public void onPlayerTick(LivingUpdateEvent event) {
 			if(event.entityLiving instanceof EntityPlayer) {
 				EntityPlayer player = (EntityPlayer) event.entityLiving;
+				
+				ItemStack cadStack = PsiAPI.getPlayerCAD(player);
+				if(cadStack != null && cadStack.getItem() instanceof ICAD)
+					((ICAD) cadStack.getItem()).incrementTime(cadStack);
+				
 				PsiArmorEvent.post(new PsiArmorEvent(player, PsiArmorEvent.TICK));
 				PlayerDataHandler.get(player).tick();
 			}

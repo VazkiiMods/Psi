@@ -57,6 +57,10 @@ public interface ICAD extends ISocketable {
 	
 	public Vector3 getStoredVector(ItemStack stack, int memorySlot) throws SpellRuntimeException;
 	
+	public int getTime(ItemStack stack);
+	
+	public void incrementTime(ItemStack stack);
+	
 	/**
 	 * Gets the color of the spells projected by this CAD. Usually just goes back
 	 * to ICADColorizer.getColor().

@@ -68,6 +68,7 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable {
 	private static final String TAG_STORED_PSI = "storedPsi";
 	private static final String TAG_BULLET_PREFIX = "bullet";
 	private static final String TAG_SELECTED_SLOT = "selectedSlot";
+	private static final String TAG_TIME = "time";
 
 	private static final String TAG_STORED_VECTOR_PREFIX = "storedVector";
 	private static final String TAG_X = "x";
@@ -373,12 +374,23 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable {
 			return getSpellColor(stack);
 		return 0xFFFFFF;
 	}
+
+	@Override
+	public int getTime(ItemStack stack) {
+		return ItemNBTHelper.getInt(stack, TAG_TIME, 0);
+	}
+	
+	@Override
+	public void incrementTime(ItemStack stack) {
+		int time = getTime(stack);
+		ItemNBTHelper.setInt(stack, TAG_TIME, time + 1);
+	}
 	
 	@Override
 	public int getMemorySize(ItemStack stack) {
 		return getStatValue(stack, EnumCADStat.SOCKETS) / 3;
 	}
-
+	
 	@Override
 	public void setStoredVector(ItemStack stack, int memorySlot, Vector3 vec) throws SpellRuntimeException {
 		int size = getMemorySize(stack);

@@ -10,6 +10,9 @@
  */
 package vazkii.psi.common.spell.selector;
 
+import net.minecraft.item.ItemStack;
+import vazkii.psi.api.PsiAPI;
+import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellRuntimeException;
@@ -28,7 +31,10 @@ public class PieceSelectorTime extends PieceSelector {
 
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
-		return Double.valueOf(context.caster.worldObj.getTotalWorldTime());
+		ItemStack cadStack = PsiAPI.getPlayerCAD(context.caster);
+		if(cadStack != null && cadStack.getItem() instanceof ICAD)
+			return Double.valueOf(((ICAD) cadStack.getItem()).getTime(cadStack));
+		else throw new SpellRuntimeException(SpellRuntimeException.NO_CAD);
 	}
 
 
