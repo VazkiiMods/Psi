@@ -230,8 +230,6 @@ public final class HUDHandler {
 		mc.fontRendererObj.drawStringWithShadow(s2, x - offStr2, 0, 0xFFFFFF);
 		GlStateManager.popMatrix();
 		GlStateManager.popMatrix();
-
-		mc.gameSettings.guiScale = scaleFactor;
 	}
 
 	@SideOnly(Side.CLIENT)
