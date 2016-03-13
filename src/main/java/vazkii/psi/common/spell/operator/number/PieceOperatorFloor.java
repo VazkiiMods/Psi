@@ -34,7 +34,7 @@ public class PieceOperatorFloor extends PieceOperator {
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		Double d = this.<Double>getParamValue(context, num);
 
-		return Math.floor(d);
+		return Double.valueOf(Math.floor(d));
 	}
 
 	@Override

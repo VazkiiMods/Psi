@@ -34,7 +34,7 @@ public class PieceOperatorCeiling extends PieceOperator {
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		Double d = this.<Double>getParamValue(context, num);
 
-		return Math.ceil(d);
+		return Double.valueOf(Math.ceil(d));
 	}
 
 	@Override
