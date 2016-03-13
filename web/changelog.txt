@@ -1,3 +1,8 @@
+beta-22
+*Fixed a crash with the Round, Floor, and Ceiling operators.
+*Fixed Selector: Time missing ticks and having some in double. It now uses an internal clock in the CAD instead of the world time to prevent this.
+*Fixed the coordinate display in the Programmer GUI being off if the GUI is in spectator mode.
+*Fixed the Psi energy bar messing with your gui scale, for real this time.
 beta-21
 *Fixed a crash when adding comments to pieces if Scala isn't present.
 *Fixed an edge case with the Psi bar's auto rescaling modifying the game's gui scale? Maybe? I couldn't reproduce it.
