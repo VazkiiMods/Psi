@@ -1,3 +1,7 @@
+beta-23
+*Fixed invalid number constants being available through the import feature.
+*Fixed loopcast spells being able to be cast via right click while a loopcast is already going on.
+*Trick: Explode will no longer break blocks if the explosion is in a liquid.
 beta-22
 *Fixed a crash with the Round, Floor, and Ceiling operators.
 *Fixed Selector: Time missing ticks and having some in double. It now uses an internal clock in the CAD instead of the world time to prevent this.
