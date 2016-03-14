@@ -12,6 +12,8 @@ package vazkii.psi.client.render.entity;
 
 import java.awt.Color;
 
+import javax.swing.text.html.parser.Entity;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
@@ -42,7 +44,7 @@ public class RenderSpellCircle extends Render<EntitySpellCircle> {
 		super.doRender(entity, x, y, z, entityYaw, partialTicks);
 
 		int colorVal = ICADColorizer.DEFAULT_SPELL_COLOR;
-		ItemStack colorizer = entity.getDataWatcher().getWatchableObjectItemStack(20);
+		ItemStack colorizer = (ItemStack) entity.getDataManager().get(EntitySpellCircle.COLORIZER_DATA);
 		if(colorizer != null && colorizer.getItem() instanceof ICADColorizer)
 			colorVal = Psi.proxy.getColorizerColor(colorizer).getRGB();
 		float alive = entity.getTimeAlive() + partialTicks;

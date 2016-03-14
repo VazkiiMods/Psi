@@ -12,8 +12,7 @@ package vazkii.psi.common.spell.selector;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
@@ -46,9 +45,9 @@ public class PieceSelectorBlockPresence extends PieceSelector {
 		IBlockState state = context.caster.worldObj.getBlockState(pos);
 		Block block = state.getBlock();
 		
-		if(block.isAir(context.caster.worldObj, pos) || block.isReplaceable(context.caster.worldObj, pos))
+		if(block.isAir(state, context.caster.worldObj, pos) || block.isReplaceable(context.caster.worldObj, pos))
 			return 0.0;
-		else if(block.getCollisionBoundingBox(context.caster.worldObj, pos, state) == null)
+		else if(state.getBoundingBox(context.caster.worldObj, pos).offset(pos) == null)
 			return 1.0;
 		return 2.0;
 	}

@@ -18,7 +18,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.Vec3;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import vazkii.psi.api.cad.ICADColorizer;
 import vazkii.psi.api.spell.ISpellContainer;
@@ -26,6 +29,7 @@ import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.common.Psi;
 
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class EntitySpellCircle extends Entity {
 
 	public static final int CAST_TIMES = 20;
@@ -42,77 +46,86 @@ public class EntitySpellCircle extends Entity {
 	private static final String TAG_LOOK_Y = "savedLookY";
 	private static final String TAG_LOOK_Z = "savedLookZ";
 	
+	// Generics are borked :|
+	public static final DataParameter COLORIZER_DATA = EntityDataManager.createKey(EntitySpellCircle.class, DataSerializers.OPTIONAL_ITEM_STACK);
+	private static final DataParameter BULLET_DATA = EntityDataManager.createKey(EntitySpellCircle.class, DataSerializers.OPTIONAL_ITEM_STACK);
+	private static final DataParameter CASTER_NAME = EntityDataManager.createKey(EntitySpellCircle.class, DataSerializers.STRING);
+	private static final DataParameter TIME_ALIVE = EntityDataManager.createKey(EntitySpellCircle.class, DataSerializers.VARINT);
+	private static final DataParameter TIMES_CAST = EntityDataManager.createKey(EntitySpellCircle.class, DataSerializers.VARINT);
+
+	private static final DataParameter LOOK_X = EntityDataManager.createKey(EntitySpellCircle.class, DataSerializers.FLOAT);
+	private static final DataParameter LOOK_Y = EntityDataManager.createKey(EntitySpellCircle.class, DataSerializers.FLOAT);
+	private static final DataParameter LOOK_Z = EntityDataManager.createKey(EntitySpellCircle.class, DataSerializers.FLOAT);
+	
 	public EntitySpellCircle(World worldIn) {
 		super(worldIn);
 		setSize(3F, 0F);
 	}
 
 	public EntitySpellCircle setInfo(EntityPlayer player, ItemStack colorizer, ItemStack bullet) {
-		dataWatcher.updateObject(20, colorizer);
-		dataWatcher.updateObject(21, bullet);
-		dataWatcher.updateObject(22, player.getName());
+		dataWatcher.set(COLORIZER_DATA, colorizer);
+		dataWatcher.set(BULLET_DATA, colorizer);
+		dataWatcher.set(CASTER_NAME, player.getName());
 		
-		Vec3 lookVec = player.getLook(1F);
-		dataWatcher.updateObject(25, (float) lookVec.xCoord);
-		dataWatcher.updateObject(26, (float) lookVec.yCoord);
-		dataWatcher.updateObject(27, (float) lookVec.zCoord);
-		return this;
+		Vec3d lookVec = player.getLook(1F);
+		dataWatcher.set(LOOK_X, (double) lookVec.xCoord);
+		dataWatcher.set(LOOK_Y, (double) lookVec.yCoord);
+		dataWatcher.set(LOOK_Z, (double) lookVec.zCoord);
+		return this;	
 	}
 
 	@Override
 	protected void entityInit() {
-		dataWatcher.addObject(20, new ItemStack(Blocks.stone));
-		dataWatcher.addObject(21, new ItemStack(Blocks.stone));
-		dataWatcher.addObject(22, "");
-		dataWatcher.addObject(23, 0);
-		dataWatcher.addObject(24, 0);
-		dataWatcher.addObject(25, 0F);
-		dataWatcher.addObject(26, 0F);
-		dataWatcher.addObject(27, 0F);
-		for(int i = 0; i < 8; i++)
-			dataWatcher.setObjectWatched(20 + i);
+		dataWatcher.register(COLORIZER_DATA, new ItemStack(Blocks.stone));
+		dataWatcher.register(BULLET_DATA, new ItemStack(Blocks.stone));
+		dataWatcher.register(CASTER_NAME, "");
+		dataWatcher.register(TIME_ALIVE, 0);
+		dataWatcher.register(TIMES_CAST, 0);
+		dataWatcher.register(LOOK_X, 0F);
+		dataWatcher.register(LOOK_Y, 0F);
+		dataWatcher.register(LOOK_Z, 0F);
 	}
 
 	@Override
 	public void writeEntityToNBT(NBTTagCompound tagCompound) {
 		NBTTagCompound colorizerCmp = new NBTTagCompound();
-		ItemStack colorizer = dataWatcher.getWatchableObjectItemStack(20);
+		ItemStack colorizer = (ItemStack) dataWatcher.get(COLORIZER_DATA);
 		if(colorizer != null)
 			colorizer.writeToNBT(colorizerCmp);
 		tagCompound.setTag(TAG_COLORIZER, colorizerCmp);
 
 		NBTTagCompound bulletCmp = new NBTTagCompound();
-		ItemStack bullet = dataWatcher.getWatchableObjectItemStack(21);
+		ItemStack bullet = (ItemStack) dataWatcher.get(BULLET_DATA);
 		if(bullet != null)
 			bullet.writeToNBT(bulletCmp);
 		tagCompound.setTag(TAG_BULLET, bulletCmp);
 
-		tagCompound.setString(TAG_CASTER, dataWatcher.getWatchableObjectString(22));
+		tagCompound.setString(TAG_CASTER, (String) dataWatcher.get(CASTER_NAME));
 		tagCompound.setInteger(TAG_TIME_ALIVE, getTimeAlive());
-		tagCompound.setInteger(TAG_TIMES_CAST, dataWatcher.getWatchableObjectInt(24));
+		tagCompound.setInteger(TAG_TIMES_CAST, (int) dataWatcher.get(TIMES_CAST));
 		
-		tagCompound.setFloat(TAG_LOOK_X, dataWatcher.getWatchableObjectFloat(25));
-		tagCompound.setFloat(TAG_LOOK_Y, dataWatcher.getWatchableObjectFloat(26));
-		tagCompound.setFloat(TAG_LOOK_Z, dataWatcher.getWatchableObjectFloat(27));
+		tagCompound.setFloat(TAG_LOOK_X, (float) dataWatcher.get(LOOK_X));
+		tagCompound.setFloat(TAG_LOOK_Y, (float) dataWatcher.get(LOOK_Y));
+		tagCompound.setFloat(TAG_LOOK_Z, (float) dataWatcher.get(LOOK_Z));
 	}
 
 	@Override
 	public void readEntityFromNBT(NBTTagCompound tagCompound) {
 		NBTTagCompound colorizerCmp = tagCompound.getCompoundTag(TAG_COLORIZER);
 		ItemStack colorizer = ItemStack.loadItemStackFromNBT(colorizerCmp);
-		dataWatcher.updateObject(20, colorizer);
+		dataWatcher.set(COLORIZER_DATA, colorizer);
 
 		NBTTagCompound bulletCmp = tagCompound.getCompoundTag(TAG_BULLET);
 		ItemStack bullet = ItemStack.loadItemStackFromNBT(bulletCmp);
-		dataWatcher.updateObject(21, bullet);
+		dataWatcher.set(BULLET_DATA, bullet);
 
-		dataWatcher.updateObject(22, tagCompound.getString(TAG_CASTER));
+		dataWatcher.set(CASTER_NAME, tagCompound.getString(TAG_CASTER));
 		setTimeAlive(tagCompound.getInteger(TAG_TIME_ALIVE));
-		dataWatcher.updateObject(24, tagCompound.getInteger(TAG_TIMES_CAST));
+		dataWatcher.set(TIMES_CAST, tagCompound.getInteger(TAG_TIMES_CAST));
 		
-		dataWatcher.updateObject(25, tagCompound.getFloat(TAG_LOOK_X));
-		dataWatcher.updateObject(26, tagCompound.getFloat(TAG_LOOK_Y));
-		dataWatcher.updateObject(27, tagCompound.getFloat(TAG_LOOK_Z));
+		dataWatcher.set(LOOK_X, tagCompound.getFloat(TAG_LOOK_X));
+		dataWatcher.set(LOOK_Y, tagCompound.getFloat(TAG_LOOK_Y));
+		dataWatcher.set(LOOK_Z, tagCompound.getFloat(TAG_LOOK_Z));
 	}
 
 	@Override
@@ -124,15 +137,15 @@ public class EntitySpellCircle extends Entity {
 			setDead();
 
 		setTimeAlive(timeAlive + 1);
-		int times = dataWatcher.getWatchableObjectInt(24);
+		int times = (int) dataWatcher.get(TIMES_CAST);
 
 		if(timeAlive > CAST_DELAY && timeAlive % CAST_DELAY == 0 && times < 20) {
 			SpellContext context = null;
 			Entity thrower = getCaster();
 			if(thrower != null && thrower instanceof EntityPlayer) {
-				ItemStack spellContainer = dataWatcher.getWatchableObjectItemStack(21);
+				ItemStack spellContainer = (ItemStack) dataWatcher.get(BULLET_DATA);
 				if(spellContainer != null && spellContainer.getItem() instanceof ISpellContainer) {
-					dataWatcher.updateObject(24, times + 1);
+					dataWatcher.set(TIMES_CAST, times + 1);
 					Spell spell = ((ISpellContainer) spellContainer.getItem()).getSpell(spellContainer);
 					if(spell != null)
 						context = new SpellContext().setPlayer((EntityPlayer) thrower).setFocalPoint(this).setSpell(spell).setLoopcastIndex(times);
@@ -144,7 +157,7 @@ public class EntitySpellCircle extends Entity {
 		}
 
 		int colorVal = ICADColorizer.DEFAULT_SPELL_COLOR;
-		ItemStack colorizer = dataWatcher.getWatchableObjectItemStack(20);
+		ItemStack colorizer = (ItemStack) dataWatcher.get(COLORIZER_DATA);
 		if(colorizer != null && colorizer.getItem() instanceof ICADColorizer)
 			colorVal = Psi.proxy.getColorizerColor(colorizer).getRGB();
 
@@ -162,23 +175,23 @@ public class EntitySpellCircle extends Entity {
 	}
 	
 	@Override
-	public Vec3 getLook(float f) {
-		float x = dataWatcher.getWatchableObjectFloat(25);
-		float y = dataWatcher.getWatchableObjectFloat(26);
-		float z = dataWatcher.getWatchableObjectFloat(27);
-		return new Vec3(x, y, z);
+	public Vec3d getLook(float f) {
+		float x = (float) dataWatcher.get(LOOK_X);
+		float y = (float) dataWatcher.get(LOOK_Y);
+		float z = (float) dataWatcher.get(LOOK_Z);
+		return new Vec3d(x, y, z);
 	}
 
 	public int getTimeAlive() {
-		return dataWatcher.getWatchableObjectInt(23);
+		return (int) dataWatcher.get(TIME_ALIVE);
 	}
 
 	public void setTimeAlive(int i) {
-		dataWatcher.updateObject(23, i);
+		dataWatcher.set(TIME_ALIVE, i);
 	}
 
 	public EntityLivingBase getCaster() {
-		String name = dataWatcher.getWatchableObjectString(22);
+		String name = (String) dataWatcher.get(CASTER_NAME);
 		EntityPlayer player = worldObj.getPlayerEntityByName(name);
 		return player;
 	}

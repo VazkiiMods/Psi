@@ -24,7 +24,6 @@ import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.api.spell.param.ParamEntity;
 import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.piece.PieceTrick;
-import vazkii.psi.common.spell.trick.PieceTrickBlaze;
 
 public abstract class PieceTrickPotionBase extends PieceTrick {
 
@@ -74,7 +73,7 @@ public abstract class PieceTrickPotionBase extends PieceTrick {
 			powerVal = this.<Double>getParamValue(context, power);
 		Double timeVal = this.<Double>getParamValue(context, time);
 
-		((EntityLivingBase) targetVal).addPotionEffect(new PotionEffect(getPotion().id, Math.max(1, timeVal.intValue()) * 20, hasPower() ? Math.max(0, powerVal.intValue() - 1) : 0));
+		((EntityLivingBase) targetVal).addPotionEffect(new PotionEffect(getPotion(), Math.max(1, timeVal.intValue()) * 20, hasPower() ? Math.max(0, powerVal.intValue() - 1) : 0));
 
 		return null;
 	}

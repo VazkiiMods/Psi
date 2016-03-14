@@ -16,7 +16,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.translation.I18n;
 import vazkii.psi.client.core.helper.TextHelper;
 import vazkii.psi.client.gui.button.GuiButtonBoolean;
 import vazkii.psi.common.core.handler.PersistencyHandler;
@@ -60,13 +60,13 @@ public class GuiIntroduction extends GuiScreen {
 		super.drawScreen(mouseX, mouseY, partialTicks);
 
 		if(LibMisc.BETA_TESTING) {
-			String betaTest = StatCollector.translateToLocal("psimisc.wip");
+			String betaTest = I18n.translateToLocal("psimisc.wip");
 			mc.fontRendererObj.drawStringWithShadow(betaTest, left + xSize / 2 - mc.fontRendererObj.getStringWidth(betaTest) / 2, top - 12, 0xFFFFFF);
 		}
 
 		TextHelper.renderText(width / 2 - 120, height / 2 - 30, 245, skip ? "psi.levelskip" : "psi.introduction", false, true, PersistencyHandler.persistentLevel);
 		if(skip) {
-			String loadPrompt = StatCollector.translateToLocal("psimisc.loadPrompt");
+			String loadPrompt = I18n.translateToLocal("psimisc.loadPrompt");
 			mc.fontRendererObj.drawStringWithShadow(loadPrompt, left + xSize / 2 - mc.fontRendererObj.getStringWidth(loadPrompt) / 2, top + 133, 0xFFFFFF);
 		}
 	}

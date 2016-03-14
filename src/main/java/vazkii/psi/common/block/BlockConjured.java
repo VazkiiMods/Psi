@@ -10,18 +10,20 @@
  */
 package vazkii.psi.common.block;
 
+import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumWorldBlockLayer;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -52,8 +54,8 @@ public class BlockConjured extends BlockModContainer {
 	}
 
 	@Override
-	protected BlockState createBlockState() {
-		return new BlockState(this, getAllProperties());
+	protected BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, getAllProperties());
 	}
 
 	@Override
@@ -66,23 +68,22 @@ public class BlockConjured extends BlockModContainer {
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
-	public EnumWorldBlockLayer getBlockLayer() {
-		return EnumWorldBlockLayer.TRANSLUCENT;
+	public BlockRenderLayer getBlockLayer() {
+		return BlockRenderLayer.TRANSLUCENT;
 	}
 
 	@Override
-	public boolean isFullCube() {
+	public boolean isFullCube(IBlockState state) {
 		return false;
 	}
 
 	@Override
-	public boolean isFullBlock() {
+	public boolean isFullBlock(IBlockState state) {
 		return false;
 	}
 
 	@Override
-	public boolean isOpaqueCube() {
+	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
 
@@ -126,19 +127,18 @@ public class BlockConjured extends BlockModContainer {
 	}
 
 	@Override
-	public int getLightValue(IBlockAccess world, BlockPos pos) {
-		IBlockState state = world.getBlockState(pos);
+	public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos) {
 		return state.getValue(LIGHT) ? 15 : 0;
 	}
 
 	@Override
-	public AxisAlignedBB getCollisionBoundingBox(World worldIn, BlockPos pos, IBlockState state) {
-		return state.getValue(SOLID) ? super.getCollisionBoundingBox(worldIn, pos, state) : null;
+    public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB aabb, List<AxisAlignedBB> list, Entity entity) {
+		if(state.getValue(SOLID))
+			super.addCollisionBoxToList(state, worldIn, pos, aabb, list, entity);
 	}
 
 	@Override
-	public AxisAlignedBB getSelectedBoundingBox(World world, BlockPos pos) {
-		IBlockState state = world.getBlockState(pos);
+	public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World world, BlockPos pos) {
 		boolean solid = state.getValue(SOLID);
 		float f = solid ? 0F : 0.25F;
 

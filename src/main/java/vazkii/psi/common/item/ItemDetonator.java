@@ -13,7 +13,12 @@ package vazkii.psi.common.item;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 import vazkii.psi.common.entity.EntitySpellCharge;
 import vazkii.psi.common.item.base.ItemMod;
@@ -27,17 +32,17 @@ public class ItemDetonator extends ItemMod {
 	}
 
 	@Override
-	public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn) {
+	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
 		List<EntitySpellCharge> charges = worldIn.getEntitiesWithinAABB(EntitySpellCharge.class, playerIn.getEntityBoundingBox().expand(32, 32, 32));
 		if(!charges.isEmpty())
 			for(EntitySpellCharge c : charges)
 				c.doExplosion();
 
 		if(!worldIn.isRemote)
-			worldIn.playSoundAtEntity(playerIn, "gui.button.press", 1F, 1F);
-		else playerIn.swingItem();
+			worldIn.playSound(playerIn, playerIn.posX, playerIn.posY, playerIn.posZ, SoundEvents.ui_button_click, SoundCategory.PLAYERS, 1F, 1F);
+//		else playerIn.swingItem(); TODO 1.9 swing
 
-		return itemStackIn;
+		return new ActionResult<ItemStack>(charges.isEmpty() ? EnumActionResult.PASS : EnumActionResult.SUCCESS, itemStackIn);
 	}
 
 }

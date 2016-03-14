@@ -13,7 +13,7 @@ package vazkii.psi.api.internal;
 import java.util.List;
 
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -40,7 +40,7 @@ public final class TooltipHelper {
 	}
 
 	public static String local(String s) {
-		return StatCollector.translateToLocal(s);
+		return I18n.translateToLocal(s);
 	}
 
 }

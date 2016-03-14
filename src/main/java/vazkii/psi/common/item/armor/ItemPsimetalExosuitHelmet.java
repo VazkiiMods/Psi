@@ -10,6 +10,7 @@
  */
 package vazkii.psi.common.item.armor;
 
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import vazkii.psi.api.exosuit.IExosuitSensor;
@@ -22,7 +23,7 @@ public class ItemPsimetalExosuitHelmet extends ItemPsimetalArmor implements ISen
 	private static final String TAG_SENSOR = "sensor";
 
 	public ItemPsimetalExosuitHelmet() {
-		super(LibItemNames.PSIMETAL_EXOSUIT_HELMET, 0);
+		super(LibItemNames.PSIMETAL_EXOSUIT_HELMET, 0, EntityEquipmentSlot.HEAD);
 	}
 
 	@Override

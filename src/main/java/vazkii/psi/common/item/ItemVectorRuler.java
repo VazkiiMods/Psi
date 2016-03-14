@@ -16,14 +16,14 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import scala.collection.parallel.ParIterableLike.Min;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.common.core.helper.ItemNBTHelper;
 import vazkii.psi.common.item.base.IHUDItem;
@@ -46,7 +46,7 @@ public class ItemVectorRuler extends ItemMod implements IHUDItem {
 	}
 	
 	@Override
-	public boolean onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ) {
+	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
 		int srcY = ItemNBTHelper.getInt(stack, TAG_SRC_Y, -1);
 		
 		if(srcY == -1 || playerIn.isSneaking()) {
@@ -60,7 +60,7 @@ public class ItemVectorRuler extends ItemMod implements IHUDItem {
 			ItemNBTHelper.setInt(stack, TAG_DST_Z, pos.getZ());
 		}
 		
-		return true;
+		return EnumActionResult.SUCCESS;
 	}
 	
 	@Override

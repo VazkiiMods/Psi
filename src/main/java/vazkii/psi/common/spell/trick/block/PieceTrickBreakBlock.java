@@ -15,7 +15,7 @@ import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.BlockEvent.BreakEvent;
@@ -77,9 +77,9 @@ public class PieceTrickBreakBlock extends PieceTrick {
 		int harvestLevel = ConfigHandler.cadHarvestLevel;
 		IBlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
-		if(!world.isRemote && block != null && !block.isAir(world, pos) && !(block instanceof BlockLiquid) && block.getPlayerRelativeBlockHardness(player, world, pos) > 0) {
+		if(!world.isRemote && block != null && !block.isAir(state, world, pos) && !(block instanceof BlockLiquid) && block.getPlayerRelativeBlockHardness(state, player, world, pos) > 0) {
 			int neededHarvestLevel = block.getHarvestLevel(state);
-			if(neededHarvestLevel > harvestLevel && (tool != null && !tool.canHarvestBlock(block)))
+			if(neededHarvestLevel > harvestLevel && (tool != null && !tool.canHarvestBlock(state)))
 				return;
 
 			BreakEvent event = new BreakEvent(world, pos, state, player);
@@ -88,9 +88,9 @@ public class PieceTrickBreakBlock extends PieceTrick {
 				if(!player.capabilities.isCreativeMode) {
 					block.onBlockHarvested(world, pos, state, player);
 
-					if(block.removedByPlayer(world, pos, player, true)) {
+					if(block.removedByPlayer(state, world, pos, player, true)) {
 						block.onBlockDestroyedByPlayer(world, pos, state);
-						block.harvestBlock(world, player, pos, state, world.getTileEntity(pos));
+						block.harvestBlock(world, player, pos, state, world.getTileEntity(pos), tool);
 					}
 				} else world.setBlockToAir(pos);
 			}

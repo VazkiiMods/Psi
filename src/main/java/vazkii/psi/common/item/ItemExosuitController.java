@@ -15,9 +15,15 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
+import scala.reflect.internal.StdAttachments.PlainAttachment;
 import vazkii.psi.api.cad.ISocketable;
 import vazkii.psi.api.cad.ISocketableController;
+import vazkii.psi.client.core.handler.PsiSoundHandler;
 import vazkii.psi.common.core.helper.ItemNBTHelper;
 import vazkii.psi.common.item.base.ItemMod;
 import vazkii.psi.common.lib.LibItemNames;
@@ -32,21 +38,23 @@ public class ItemExosuitController extends ItemMod implements ISocketableControl
 	}
 
 	@Override
-	public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn) {
+	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
 		if(playerIn.isSneaking()) {
 			if(!worldIn.isRemote)
-				worldIn.playSoundAtEntity(playerIn, "psi:compileError", 0.25F, 1F);
-			else playerIn.swingItem();
+				worldIn.playSound(playerIn, playerIn.posX, playerIn.posY, playerIn.posZ, PsiSoundHandler.compileError, SoundCategory.PLAYERS, 0.25F, 1F);
+//			else playerIn.swingItem(); TODO 1.9 swing
 
 			ItemStack[] stacks = getControlledStacks(playerIn, itemStackIn);
 
-			for (ItemStack stack : stacks) {
+			for(ItemStack stack : stacks) {
 				ISocketable socketable = (ISocketable) stack.getItem();
 				socketable.setSelectedSlot(stack, 3);
 			}
+			
+			return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
 		}
 
-		return itemStackIn;
+		return new ActionResult<ItemStack>(EnumActionResult.PASS, itemStackIn);
 	}
 
 	@Override

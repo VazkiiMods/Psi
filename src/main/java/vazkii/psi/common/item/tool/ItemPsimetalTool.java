@@ -17,10 +17,10 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ISocketable;
@@ -37,8 +37,8 @@ public class ItemPsimetalTool extends ItemModTool implements IPsimetalTool {
 
 	private static final String TAG_REGEN_TIME = "regenTime";
 
-	protected ItemPsimetalTool(String name, float attackDamage, Set<Block> effectiveBlocks, String... variants) {
-		super(name, attackDamage, PsiAPI.PSIMETAL_TOOL_MATERIAL, effectiveBlocks, variants);
+	protected ItemPsimetalTool(String name, float attackDamage, float speed, Set<Block> effectiveBlocks, String... variants) {
+		super(name, attackDamage, speed, PsiAPI.PSIMETAL_TOOL_MATERIAL, effectiveBlocks, variants);
 	}
 
 	@Override
@@ -94,7 +94,7 @@ public class ItemPsimetalTool extends ItemModTool implements IPsimetalTool {
 		return par2ItemStack.getItem() == ModItems.material && par2ItemStack.getItemDamage() == 1 ? true : super.getIsRepairable(par1ItemStack, par2ItemStack);
 	}
 
-	public static MovingObjectPosition raytraceFromEntity(World world, Entity player, boolean par3, double range) {
+	public static RayTraceResult raytraceFromEntity(World world, Entity player, boolean par3, double range) {
 		float f = 1.0F;
 		float f1 = player.prevRotationPitch + (player.rotationPitch - player.prevRotationPitch) * f;
 		float f2 = player.prevRotationYaw + (player.rotationYaw - player.prevRotationYaw) * f;
@@ -103,7 +103,7 @@ public class ItemPsimetalTool extends ItemModTool implements IPsimetalTool {
 		if (player instanceof EntityPlayer)
 			d1 += ((EntityPlayer) player).eyeHeight;
 		double d2 = player.prevPosZ + (player.posZ - player.prevPosZ) * f;
-		Vec3 vec3 = new Vec3(d0, d1, d2);
+		Vec3d vec3 = new Vec3d(d0, d1, d2);
 		float f3 = MathHelper.cos(-f2 * 0.017453292F - (float) Math.PI);
 		float f4 = MathHelper.sin(-f2 * 0.017453292F - (float) Math.PI);
 		float f5 = -MathHelper.cos(-f1 * 0.017453292F);
@@ -111,7 +111,7 @@ public class ItemPsimetalTool extends ItemModTool implements IPsimetalTool {
 		float f7 = f4 * f5;
 		float f8 = f3 * f5;
 		double d3 = range;
-		Vec3 vec31 = vec3.addVector(f7 * d3, f6 * d3, f8 * d3);
+		Vec3d vec31 = vec3.addVector(f7 * d3, f6 * d3, f8 * d3);
 		return world.rayTraceBlocks(vec3, vec31, par3);
 	}
 

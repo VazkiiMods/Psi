@@ -17,7 +17,7 @@ import com.google.common.base.Joiner;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -28,7 +28,7 @@ public final class TextHelper {
 		FontRenderer font = Minecraft.getMinecraft().fontRendererObj;
 		boolean unicode = font.getUnicodeFlag();
 		font.setUnicodeFlag(true);
-		String text = StatCollector.translateToLocal(unlocalizedText).replaceAll("&", "\u00a7");
+		String text = I18n.translateToLocal(unlocalizedText).replaceAll("&", "\u00a7");
 		if(format != null && format.length > 0)
 			text = String.format(text, format);
 

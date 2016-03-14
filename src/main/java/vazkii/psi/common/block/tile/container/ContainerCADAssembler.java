@@ -16,6 +16,7 @@ import java.util.Map;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
@@ -33,6 +34,8 @@ import vazkii.psi.common.item.base.ModItems;
 
 public class ContainerCADAssembler extends Container {
 
+    private static final EntityEquipmentSlot[] equipmentSlots = new EntityEquipmentSlot[] {EntityEquipmentSlot.HEAD, EntityEquipmentSlot.CHEST, EntityEquipmentSlot.LEGS, EntityEquipmentSlot.FEET};
+	
 	public TileCADAssembler assembler;
 	private Map<EnumCADComponent, Slot> componentToSlotMap = new HashMap();
 
@@ -66,7 +69,8 @@ public class ContainerCADAssembler extends Container {
 			addSlotToContainer(new Slot(playerInventory, k, xs + k * 18, ys + 58));
 
 		for(int k = 0; k < 4; k++) {
-			final int kf = k;
+            final EntityEquipmentSlot slot = equipmentSlots[k];
+
 			addSlotToContainer(new Slot(playerInventory, playerInventory.getSizeInventory() - 1 - k, xs - 27, ys + 18 * k) {
 
 				public int getSlotStackLimit() {
@@ -74,12 +78,12 @@ public class ContainerCADAssembler extends Container {
 				}
 
 				public boolean isItemValid(ItemStack stack) {
-					return stack != null && stack.getItem().isValidArmor(stack, kf, player);
+					return stack != null && stack.getItem().isValidArmor(stack, slot, player);
 				}
 
 				@SideOnly(Side.CLIENT)
 				public String getSlotTexture() {
-					return ItemArmor.EMPTY_SLOT_NAMES[kf];
+					return ItemArmor.EMPTY_SLOT_NAMES[slot.getIndex()];
 				}
 			});
 		}
@@ -128,7 +132,7 @@ public class ContainerCADAssembler extends Container {
 				
 				if(itemstack1.getItem() instanceof ItemArmor) {
 					ItemArmor armor = (ItemArmor) itemstack1.getItem();
-					int armorSlot = armor.armorType;
+					int armorSlot = armor.armorType.getIndex();
 					if(!mergeItemStack(itemstack1, invEnd + armorSlot, invEnd + armorSlot + 1, true) && !mergeItemStack(itemstack1, invStart, invEnd, true)) // Assembler -> Armor+Inv+Hotbar
 						return null;
 					

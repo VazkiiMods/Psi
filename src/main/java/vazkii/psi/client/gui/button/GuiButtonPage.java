@@ -13,7 +13,7 @@ package vazkii.psi.client.gui.button;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.translation.I18n;
 import vazkii.psi.client.gui.GuiProgrammer;
 
 public class GuiButtonPage extends GuiButton {
@@ -38,7 +38,7 @@ public class GuiButtonPage extends GuiButton {
 			drawTexturedModalRect(xPosition, yPosition, k == 2 ? 216 : 198, right ? 145 : 155, width, height);
 
 			if(k == 2)
-				gui.tooltip.add(StatCollector.translateToLocal(right ? "psimisc.nextPage" : "psimisc.prevPage"));
+				gui.tooltip.add(I18n.translateToLocal(right ? "psimisc.nextPage" : "psimisc.prevPage"));
 		}
 	}
 

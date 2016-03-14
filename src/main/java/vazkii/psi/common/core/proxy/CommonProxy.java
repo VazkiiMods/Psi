@@ -70,10 +70,6 @@ public class CommonProxy {
 		return new Color(1F, 1F, 1F);
 	}
 
-	public void setSparkleFXNoClip(boolean noclip) {
-		// Proxy override
-	}
-
 	public void setWispFXDistanceLimit(boolean limit) {
 		// Proxy override
 	}

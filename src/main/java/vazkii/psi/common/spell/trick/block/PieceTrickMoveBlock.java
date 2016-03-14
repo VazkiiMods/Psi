@@ -11,8 +11,9 @@
 package vazkii.psi.common.spell.trick.block;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.material.EnumPushReaction;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.EnumSpellStat;
@@ -66,7 +67,7 @@ public class PieceTrickMoveBlock extends PieceTrick {
 		BlockPos pos = new BlockPos(positionVal.x, positionVal.y, positionVal.z);
 		IBlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
-		if(world.getTileEntity(pos) != null || block.getMobilityFlag() != 0 || !block.canSilkHarvest(world, pos, state, context.caster) || block.getPlayerRelativeBlockHardness(context.caster, world, pos) <= 0 || block.getHarvestLevel(state) > ConfigHandler.cadHarvestLevel)
+		if(world.getTileEntity(pos) != null || block.getMobilityFlag(state) != EnumPushReaction.NORMAL || !block.canSilkHarvest(world, pos, state, context.caster) || block.getPlayerRelativeBlockHardness(state, context.caster, world, pos) <= 0 || block.getHarvestLevel(state) > ConfigHandler.cadHarvestLevel)
 			return null;
 
 		if(!targetVal.isAxial() || targetVal.isZero())

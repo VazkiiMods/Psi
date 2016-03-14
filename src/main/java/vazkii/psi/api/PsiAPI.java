@@ -16,8 +16,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.RegistryNamespaced;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.registry.RegistryNamespaced;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.Loader;
 import vazkii.psi.api.cad.ICAD;
@@ -108,7 +108,7 @@ public final class PsiAPI {
 	 * Gets the CAD the passed EntityPlayer is using. As a player can only have one CAD, if there's
 	 * more than one, this will return null.
 	 */
-	public static ItemStack getPlayerCAD(EntityPlayer player) {
+	public static ItemStack getPlayerCAD(EntityPlayer player) { // TODO 1.9: does this check offhand?
 		if(player == null)
 			return null;
 

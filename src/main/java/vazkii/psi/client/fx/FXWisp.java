@@ -19,7 +19,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
@@ -49,14 +49,13 @@ public class FXWisp extends EntityFX {
 		particleBlue = blue;
 		particleAlpha = 0.5F; // So MC renders us on the alpha layer, value not actually used
 		particleGravity = 0;
-		motionX = motionY = motionZ = 0;
+		xSpeed = ySpeed = zSpeed = 0;
 		particleScale *= size;
 		moteParticleScale = particleScale;
 		particleMaxAge = (int)(28D / (Math.random() * 0.3D + 0.7D) * maxAgeMul);
 		this.depthTest = depthTest;
 
 		moteHalfLife = particleMaxAge / 2;
-		noClip = true;
 		setSize(0.01F, 0.01F);
 		Entity renderentity = FMLClientHandler.instance().getClient().getRenderViewEntity();
 
@@ -73,6 +72,12 @@ public class FXWisp extends EntityFX {
 		prevPosY = posY;
 		prevPosZ = posZ;
 	}
+	
+	public void setSpeed(double x, double y, double z) {
+		xSpeed = x;
+		ySpeed = y;
+		zSpeed = z;
+	}
 
 	public static void dispatchQueuedRenders(Tessellator tessellator) {
 		ParticleRenderDispatcher.wispFxCount = 0;
@@ -82,7 +87,7 @@ public class FXWisp extends EntityFX {
 		Minecraft.getMinecraft().renderEngine.bindTexture(particles);
 
 		if(!queuedRenders.isEmpty()) {
-			tessellator.getWorldRenderer().begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
+			tessellator.getBuffer().begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
 			for(FXWisp wisp : queuedRenders)
 				wisp.renderQueued(tessellator, true);
 			tessellator.draw();
@@ -90,7 +95,7 @@ public class FXWisp extends EntityFX {
 
 		if(!queuedDepthIgnoringRenders.isEmpty()) {
 			GlStateManager.disableDepth();
-			tessellator.getWorldRenderer().begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
+			tessellator.getBuffer().begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
 			for(FXWisp wisp : queuedDepthIgnoringRenders)
 				wisp.renderQueued(tessellator, false);
 			tessellator.draw();
@@ -118,14 +123,15 @@ public class FXWisp extends EntityFX {
 		float f12 = (float)(prevPosY + (posY - prevPosY) * f - interpPosY);
 		float f13 = (float)(prevPosZ + (posZ - prevPosZ) * f - interpPosZ);
 
-		tessellator.getWorldRenderer().pos(f11 - f1 * f10 - f4 * f10, f12 - f2 * f10, f13 - f3 * f10 - f5 * f10).tex(0, 1).color(particleRed, particleGreen, particleBlue, 0.5F).endVertex();
-		tessellator.getWorldRenderer().pos(f11 - f1 * f10 + f4 * f10, f12 + f2 * f10, f13 - f3 * f10 + f5 * f10).tex(1, 1).color(particleRed, particleGreen, particleBlue, 0.5F).endVertex();
-		tessellator.getWorldRenderer().pos(f11 + f1 * f10 + f4 * f10, f12 + f2 * f10, f13 + f3 * f10 + f5 * f10).tex(1, 0).color(particleRed, particleGreen, particleBlue, 0.5F).endVertex();
-		tessellator.getWorldRenderer().pos(f11 + f1 * f10 - f4 * f10, f12 - f2 * f10, f13 + f3 * f10 - f5 * f10).tex(0, 0).color(particleRed, particleGreen, particleBlue, 0.5F).endVertex();
+		VertexBuffer buff = tessellator.getBuffer();
+		buff.pos(f11 - f1 * f10 - f4 * f10, f12 - f2 * f10, f13 - f3 * f10 - f5 * f10).tex(0, 1).color(particleRed, particleGreen, particleBlue, 0.5F).endVertex();
+		buff.pos(f11 - f1 * f10 + f4 * f10, f12 + f2 * f10, f13 - f3 * f10 + f5 * f10).tex(1, 1).color(particleRed, particleGreen, particleBlue, 0.5F).endVertex();
+		buff.pos(f11 + f1 * f10 + f4 * f10, f12 + f2 * f10, f13 + f3 * f10 + f5 * f10).tex(1, 0).color(particleRed, particleGreen, particleBlue, 0.5F).endVertex();
+		buff.pos(f11 + f1 * f10 - f4 * f10, f12 - f2 * f10, f13 + f3 * f10 - f5 * f10).tex(0, 0).color(particleRed, particleGreen, particleBlue, 0.5F).endVertex();
 	}
 
 	@Override
-	public void renderParticle(WorldRenderer wr, Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
+	public void renderParticle(VertexBuffer wr, Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
 		this.f = f;
 		this.f1 = f1;
 		this.f2 = f2;
@@ -145,15 +151,15 @@ public class FXWisp extends EntityFX {
 		prevPosZ = posZ;
 
 		if (particleAge++ >= particleMaxAge)
-			setDead();
+			setExpired();
 
-		motionY -= 0.04D * particleGravity;
-		posX += motionX;
-		posY += motionY;
-		posZ += motionZ;
-		motionX *= 0.98000001907348633D;
-		motionY *= 0.98000001907348633D;
-		motionZ *= 0.98000001907348633D;
+		ySpeed -= 0.04D * particleGravity;
+		posX += xSpeed;
+		posY += ySpeed;
+		posZ += zSpeed;
+		xSpeed *= 0.98000001907348633D;
+		ySpeed *= 0.98000001907348633D;
+		zSpeed *= 0.98000001907348633D;
 	}
 
 	public void setGravity(float value) {

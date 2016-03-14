@@ -91,23 +91,13 @@ public class ClientProxy extends CommonProxy {
 		return color;
 	}
 
-	private static boolean noclipEnabled = false;
-	@Override
-	public void setSparkleFXNoClip(boolean noclip) {
-		noclipEnabled = noclip;
-	}
-
 	@Override
 	public void sparkleFX(World world, double x, double y, double z, float r, float g, float b, float motionx, float motiony, float motionz, float size, int m) {
 		if(!doParticle(world))
 			return;
 
 		FXSparkle sparkle = new FXSparkle(world, x, y, z, size, r, g, b, m);
-		if(noclipEnabled)
-			sparkle.noClip = true;
-		sparkle.motionX = motionx;
-		sparkle.motionY = motiony;
-		sparkle.motionZ = motionz;
+		sparkle.setSpeed(motionx, motiony, motionz);
 		Minecraft.getMinecraft().effectRenderer.addEffect(sparkle);
 	}
 
@@ -130,9 +120,7 @@ public class ClientProxy extends CommonProxy {
 			return;
 
 		FXWisp wisp = new FXWisp(world, x, y, z, size, r, g, b, distanceLimit, depthTest, maxAgeMul);
-		wisp.motionX = motionx;
-		wisp.motionY = motiony;
-		wisp.motionZ = motionz;
+		wisp.setSpeed(motionx, motiony, motionz);
 
 		Minecraft.getMinecraft().effectRenderer.addEffect(wisp);
 	}

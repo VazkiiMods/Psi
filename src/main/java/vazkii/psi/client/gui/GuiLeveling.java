@@ -21,7 +21,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.client.GuiScrollingList;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.spell.PieceGroup;
@@ -143,7 +143,7 @@ public class GuiLeveling extends GuiScreen {
 				GlStateManager.translate(-x, -y, 0);
 			}
 
-			mc.fontRendererObj.drawStringWithShadow(StatCollector.translateToLocal(group.getUnlocalizedName()), left + 134, top + 12, 0xFFFFFF);
+			mc.fontRendererObj.drawStringWithShadow(I18n.translateToLocal(group.getUnlocalizedName()), left + 134, top + 12, 0xFFFFFF);
 
 			if(taken) {
 				if(listText != null) {
@@ -156,12 +156,12 @@ public class GuiLeveling extends GuiScreen {
 				int colorOff = 0x777777;
 				int colorOn = 0x77FF77;
 
-				mc.fontRendererObj.drawStringWithShadow(StatCollector.translateToLocal("psimisc.requirements"), left + 134, top + 32, 0xFFFFFF);
-				mc.fontRendererObj.drawString(String.format(StatCollector.translateToLocal("psimisc.levelDisplay"), group.levelRequirement), left + 138, top + 42, data.getLevel() >= group.levelRequirement ? colorOn : colorOff);
+				mc.fontRendererObj.drawStringWithShadow(I18n.translateToLocal("psimisc.requirements"), left + 134, top + 32, 0xFFFFFF);
+				mc.fontRendererObj.drawString(String.format(I18n.translateToLocal("psimisc.levelDisplay"), group.levelRequirement), left + 138, top + 42, data.getLevel() >= group.levelRequirement ? colorOn : colorOff);
 				int i = 0;
 				for(String s : group.requirements) {
 					PieceGroup reqGroup = PsiAPI.groupsForName.get(s);
-					mc.fontRendererObj.drawString(StatCollector.translateToLocal(reqGroup.getUnlocalizedName()), left + 138, top + 52 + i * 10, data.isPieceGroupUnlocked(s) ? colorOn : colorOff);
+					mc.fontRendererObj.drawString(I18n.translateToLocal(reqGroup.getUnlocalizedName()), left + 138, top + 52 + i * 10, data.isPieceGroupUnlocked(s) ? colorOn : colorOff);
 
 					i++;
 				}
@@ -169,14 +169,14 @@ public class GuiLeveling extends GuiScreen {
 		}
 
 		if(LibMisc.BETA_TESTING) {
-			String betaTest = StatCollector.translateToLocal("psimisc.wip");
+			String betaTest = I18n.translateToLocal("psimisc.wip");
 			mc.fontRendererObj.drawStringWithShadow(betaTest, left + xSize / 2 - mc.fontRendererObj.getStringWidth(betaTest) / 2, top - 12, 0xFFFFFFFF);
 		}
 
 		String key = "psimisc.levelInfo";
 		if(mc.thePlayer.capabilities.isCreativeMode)
 			key = "psimisc.levelInfoCreative";
-		String s = String.format(StatCollector.translateToLocal(key), data.getLevel(), data.getLevelPoints());
+		String s = String.format(I18n.translateToLocal(key), data.getLevel(), data.getLevelPoints());
 		mc.fontRendererObj.drawStringWithShadow(s, left + 4, top + ySize + 2, 0xFFFFFF);
 
 		listGroups.drawScreen(mouseX, mouseY, partialTicks);
@@ -314,8 +314,8 @@ public class GuiLeveling extends GuiScreen {
 			if(taken)
 				color = 0x77FF77;
 
-			mc.fontRendererObj.drawString(StatCollector.translateToLocal(group.getUnlocalizedName()), left + 3, slotTop + 4, color);
-			mc.fontRendererObj.drawString(String.format(StatCollector.translateToLocal("psimisc.levelDisplay"), group.levelRequirement), left + 3, slotTop + 14, color);
+			mc.fontRendererObj.drawString(I18n.translateToLocal(group.getUnlocalizedName()), left + 3, slotTop + 4, color);
+			mc.fontRendererObj.drawString(String.format(I18n.translateToLocal("psimisc.levelDisplay"), group.levelRequirement), left + 3, slotTop + 14, color);
 		}
 
 		@Override

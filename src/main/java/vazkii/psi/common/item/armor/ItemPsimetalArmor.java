@@ -13,9 +13,11 @@ package vazkii.psi.common.item.armor;
 import java.util.List;
 
 import net.minecraft.client.model.ModelBiped;
+import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -30,6 +32,7 @@ import vazkii.psi.client.model.ModelPsimetalExosuit;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
 import vazkii.psi.common.item.ItemCAD;
+import vazkii.psi.common.item.base.IColorProvider;
 import vazkii.psi.common.item.base.ItemMod;
 import vazkii.psi.common.item.base.ItemModArmor;
 import vazkii.psi.common.item.base.ModItems;
@@ -37,12 +40,12 @@ import vazkii.psi.common.item.tool.IPsimetalTool;
 import vazkii.psi.common.item.tool.ItemPsimetalTool;
 import vazkii.psi.common.lib.LibResources;
 
-public class ItemPsimetalArmor extends ItemModArmor implements IPsimetalTool, IPsiEventArmor {
+public class ItemPsimetalArmor extends ItemModArmor implements IPsimetalTool, IPsiEventArmor, IColorProvider {
 
 	protected ModelBiped[] models = null;
 
-	public ItemPsimetalArmor(String name, int type) {
-		super(name, PsiAPI.PSIMETAL_ARMOR_MATERIAL, type);
+	public ItemPsimetalArmor(String name, int type, EntityEquipmentSlot slot) {
+		super(name, PsiAPI.PSIMETAL_ARMOR_MATERIAL, type, slot);
 	}
 
 	@Override
@@ -97,7 +100,7 @@ public class ItemPsimetalArmor extends ItemModArmor implements IPsimetalTool, IP
 	}
 
 	@Override
-	public final String getArmorTexture(ItemStack stack, Entity entity, int slot, String type) {
+    public String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type) {
 		boolean overlay = type != null && type.equals("overlay");
 		return overlay ? LibResources.MODEL_PSIMETAL_EXOSUIT : LibResources.MODEL_PSIMETAL_EXOSUIT_SENSOR;
 	}
@@ -111,23 +114,22 @@ public class ItemPsimetalArmor extends ItemModArmor implements IPsimetalTool, IP
 	public int getColor(ItemStack stack) {
 		return ICADColorizer.DEFAULT_SPELL_COLOR;
 	}
-
+	
 	@Override
-	public int getColorFromItemStack(ItemStack stack, int renderPass) {
-		return super.getColorFromItemStack(stack, ~renderPass & 1); // do the switcheroo
+	@SideOnly(Side.CLIENT)
+	public IItemColor getColor() {
+		return (stack, renderIndex) -> renderIndex == 1 ? getColor(stack) : 0xFFFFFF;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, int armorSlot) {
-		ModelBiped model = getArmorModelForSlot(entityLiving, itemStack, armorSlot - 1);
+	public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, EntityEquipmentSlot armorSlot, ModelBiped _default) {
+		int slotIndex = armorSlot.ordinal();
+		ModelBiped model = getArmorModelForSlot(entityLiving, itemStack, slotIndex);
 		if(model == null)
-			model = provideArmorModelForSlot(itemStack, armorSlot - 1);
+			model = provideArmorModelForSlot(itemStack, slotIndex);
 
-		if(model != null)
-			return model;
-
-		return super.getArmorModel(entityLiving, itemStack, armorSlot);
+		return model;
 	}
 
 	@SideOnly(Side.CLIENT)

@@ -15,6 +15,8 @@ import java.util.Set;
 import com.google.common.collect.Sets;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.dispenser.IBlockSource;
 import net.minecraft.init.Blocks;
 import vazkii.psi.common.lib.LibItemNames;
 
@@ -23,13 +25,14 @@ public class ItemPsimetalShovel extends ItemPsimetalTool {
 	private static final Set<Block> EFFECTIVE_ON = Sets.newHashSet(new Block[] {Blocks.clay, Blocks.dirt, Blocks.farmland, Blocks.grass, Blocks.gravel, Blocks.mycelium, Blocks.sand, Blocks.snow, Blocks.snow_layer, Blocks.soul_sand});
 
 	public ItemPsimetalShovel() {
-		super(LibItemNames.PSIMETAL_SHOVEL, 1F, EFFECTIVE_ON);
+		super(LibItemNames.PSIMETAL_SHOVEL, 1.5F, -3.0F, EFFECTIVE_ON);
 	}
 
 	// ItemSpade copypasta:
 
 	@Override
-	public boolean canHarvestBlock(Block blockIn) {
+	public boolean canHarvestBlock(IBlockState state) {
+		Block blockIn = state.getBlock();
 		return blockIn == Blocks.snow_layer ? true : blockIn == Blocks.snow;
 	}
 

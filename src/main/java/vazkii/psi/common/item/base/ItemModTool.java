@@ -28,8 +28,8 @@ public class ItemModTool extends ItemTool implements IVariantHolder {
 	private final String[] variants;
 	private final String bareName;
 
-	protected ItemModTool(String name, float attackDamage, ToolMaterial material, Set<Block> effectiveBlocks, String... variants) {
-		super(attackDamage, material, effectiveBlocks);
+	protected ItemModTool(String name, float attackDamage, float speed, ToolMaterial material, Set<Block> effectiveBlocks, String... variants) {
+		super(attackDamage, speed, material, effectiveBlocks);
 		setUnlocalizedName(name);
 		setCreativeTab(PsiCreativeTab.INSTANCE);
 		if(variants.length > 1)

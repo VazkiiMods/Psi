@@ -146,26 +146,26 @@ public class ModelPsimetalExosuit extends ModelBiped {
 		super.render(entity, f, f1, f2, f3, f4, f5);
 	}
 
-	public void prepareForRender(Entity entity) {
-		EntityLivingBase living = (EntityLivingBase) entity;
-		isSneak = living != null ? living.isSneaking() : false;
-		isChild = living != null ? living.isChild() : false;
-		if(living != null && living instanceof EntityPlayer) {
-			EntityPlayer player = (EntityPlayer) living;
-
-			ItemStack itemstack = player.inventory.getCurrentItem();
-			heldItemRight = itemstack != null ? 1 : 0;
-
-			aimedBow = false;
-			if (itemstack != null && player.getItemInUseCount() > 0) {
-				EnumAction enumaction = itemstack.getItemUseAction();
-
-				if (enumaction == EnumAction.BLOCK)
-					heldItemRight = 3;
-				else if(enumaction == EnumAction.BOW)
-					aimedBow = true;
-			}
-		}
+	public void prepareForRender(Entity entity) { // TODO: 1.9 broke this :(
+//		EntityLivingBase living = (EntityLivingBase) entity;
+//		isSneak = living != null ? living.isSneaking() : false;
+//		isChild = living != null ? living.isChild() : false;
+//		if(living != null && living instanceof EntityPlayer) {
+//			EntityPlayer player = (EntityPlayer) living;
+//
+//			ItemStack itemstack = player.inventory.getCurrentItem();
+//			heldItemRight = itemstack != null ? 1 : 0;
+//
+//			aimedBow = false;
+//			if (itemstack != null && player.getItemInUseCount() > 0) {
+//				EnumAction enumaction = itemstack.getItemUseAction();
+//
+//				if (enumaction == EnumAction.BLOCK)
+//					heldItemRight = 3;
+//				else if(enumaction == EnumAction.BOW)
+//					aimedBow = true;
+//			}
+//		}
 	}
 
 	public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z) {

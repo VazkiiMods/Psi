@@ -11,7 +11,7 @@
 package vazkii.psi.common.network;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 import vazkii.psi.client.gui.GuiCADAssembler;

@@ -10,8 +10,8 @@
  */
 package vazkii.psi.common.spell.trick;
 
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextFormatting;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellCompilationException;
 import vazkii.psi.api.spell.SpellContext;
@@ -61,10 +61,10 @@ public class PieceTrickDebug extends PieceTrick {
 				numStr = "" + numInt;
 			}
 
-			s = EnumChatFormatting.AQUA + "[" + numStr + "] " + EnumChatFormatting.RESET + s;
+			s = TextFormatting.AQUA + "[" + numStr + "] " + TextFormatting.RESET + s;
 		}
 
-		context.caster.addChatMessage(new ChatComponentText(s));
+		context.caster.addChatMessage(new TextComponentString(s));
 
 		return null;
 	}

@@ -10,7 +10,7 @@
  */
 package vazkii.psi.api.spell;
 
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.translation.I18n;
 
 /**
  * Base abstract class for a spell parameter. See implementations
@@ -86,9 +86,9 @@ public abstract class SpellParam {
 	public String getRequiredTypeString() {
 		Class<?> evalType = getRequiredType();
 		String evalStr = evalType.getSimpleName();
-		String s = StatCollector.translateToLocal("psi.datatype." + evalStr);
+		String s = I18n.translateToLocal("psi.datatype." + evalStr);
 		if(requiresConstant())
-			s += " " + StatCollector.translateToLocal("psimisc.constant");
+			s += " " + I18n.translateToLocal("psimisc.constant");
 
 		return s;
 	}

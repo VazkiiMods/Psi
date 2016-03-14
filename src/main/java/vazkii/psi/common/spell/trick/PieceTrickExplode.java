@@ -11,7 +11,7 @@
 package vazkii.psi.common.spell.trick;
 
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.EnumSpellStat;
 import vazkii.psi.api.spell.Spell;
@@ -67,7 +67,7 @@ public class PieceTrickExplode extends PieceTrick {
 		BlockPos pos = positionVal.toBlockPos();
 		IBlockState state = context.caster.worldObj.getBlockState(pos);
 		
-		context.caster.worldObj.createExplosion(context.focalPoint, positionVal.x, positionVal.y, positionVal.z, powerVal.floatValue(), !state.getBlock().getMaterial().isLiquid());
+		context.caster.worldObj.createExplosion(context.focalPoint, positionVal.x, positionVal.y, positionVal.z, powerVal.floatValue(), !state.getBlock().getMaterial(state).isLiquid());
 		return null;
 	}
 	

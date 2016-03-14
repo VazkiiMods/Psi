@@ -31,7 +31,7 @@ public class MessageChangeSocketableSlot extends Message {
 	@Override
 	public IMessage handleMessage(MessageContext context) {
 		EntityPlayerMP player = context.getServerHandler().playerEntity;
-		ItemStack stack = player.getCurrentEquippedItem();
+		ItemStack stack = player.getActiveItemStack(); // TODO 1.9: does this work? 
 
 		if(stack != null && stack.getItem() instanceof ISocketable)
 			((ISocketable) stack.getItem()).setSelectedSlot(stack, slot);

@@ -10,6 +10,7 @@
  */
 package vazkii.psi.common.item.armor;
 
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import vazkii.psi.api.exosuit.PsiArmorEvent;
 import vazkii.psi.common.lib.LibItemNames;
@@ -17,7 +18,7 @@ import vazkii.psi.common.lib.LibItemNames;
 public class ItemPsimetalExosuitBoots extends ItemPsimetalArmor {
 
 	public ItemPsimetalExosuitBoots() {
-		super(LibItemNames.PSIMETAL_EXOSUIT_BOOTS, 3);
+		super(LibItemNames.PSIMETAL_EXOSUIT_BOOTS, 3, EntityEquipmentSlot.FEET);
 	}
 
 	@Override

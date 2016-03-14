@@ -14,9 +14,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
 
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.ChatStyle;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.text.Style;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextFormatting;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.internal.IPlayerData;
 import vazkii.psi.api.spell.SpellPiece.Null;
@@ -76,11 +76,11 @@ public class CompiledSpell {
 				PsiAPI.internalHandler.delayContext(context);
 		} catch(SpellRuntimeException e) {
 			if(!context.caster.worldObj.isRemote && !context.shouldSuppressErrors()) {
-				context.caster.addChatComponentMessage(new ChatComponentTranslation(e.getMessage()).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
+				context.caster.addChatComponentMessage(new TextComponentTranslation(e.getMessage()).setChatStyle(new Style().setColor(TextFormatting.RED)));
 				
 				int x = context.cspell.currentAction.piece.x + 1;
 				int y = context.cspell.currentAction.piece.y + 1;
-				context.caster.addChatComponentMessage(new ChatComponentTranslation("psi.spellerror.position", x, y).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
+				context.caster.addChatComponentMessage(new TextComponentTranslation("psi.spellerror.position", x, y).setChatStyle(new Style().setColor(TextFormatting.RED)));
 			}
 		}
 	}

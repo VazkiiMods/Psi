@@ -16,7 +16,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import vazkii.psi.api.spell.SpellParam;
 import vazkii.psi.api.spell.SpellPiece;
@@ -85,7 +85,7 @@ public class GuiButtonSideConfig extends GuiButton {
 			float maxU = (side.u + wh) / 256F;
 			float maxV = (side.v + wh) / 256F;
 
-			WorldRenderer wr = Tessellator.getInstance().getWorldRenderer();
+			VertexBuffer wr = Tessellator.getInstance().getBuffer();
 			wr.begin(7, DefaultVertexFormats.POSITION_TEX);
 			wr.pos(minX, maxY, 0).tex(minU, maxV).endVertex();
 			wr.pos(maxX, maxY, 0).tex(maxU, maxV).endVertex();

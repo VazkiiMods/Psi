@@ -10,7 +10,7 @@
  */
 package vazkii.psi.common.spell.trick.block;
 
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.EnumSpellStat;
 import vazkii.psi.api.spell.Spell;

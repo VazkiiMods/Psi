@@ -14,8 +14,11 @@ import java.util.Arrays;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.SoundCategory;
 import vazkii.psi.api.cad.ISocketable;
+import vazkii.psi.client.core.handler.PsiSoundHandler;
 import vazkii.psi.common.block.tile.base.TileSimpleInventory;
+import vazkii.psi.common.core.PsiCreativeTab;
 import vazkii.psi.common.item.ItemCAD;
 import vazkii.psi.common.lib.LibBlockNames;
 
@@ -66,7 +69,7 @@ public class TileCADAssembler extends TileSimpleInventory implements ITickable {
 		for(int i = 1; i < 6; i++)
 			setInventorySlotContents(i, null);
 		if(!worldObj.isRemote)
-			worldObj.playSoundEffect(getPos().getX() + 0.5, getPos().getY() + 0.5, getPos().getZ() + 0.5, "psi:cadCreate", 0.5F, 1F);
+			worldObj.playSound(getPos().getX() + 0.5, getPos().getY() + 0.5, getPos().getZ() + 0.5, PsiSoundHandler.cadCreate, SoundCategory.BLOCKS, 0.5F, 1F, false);
 		ignoreChanges = false;
 	}
 

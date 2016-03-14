@@ -54,7 +54,7 @@ public class PieceTrickSmite extends PieceTrick {
 		if(!context.isInRadius(positionVal))
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 
-		EntityLightningBolt lightning = new EntityLightningBolt(context.caster.worldObj, positionVal.x, positionVal.y, positionVal.z);
+		EntityLightningBolt lightning = new EntityLightningBolt(context.caster.worldObj, positionVal.x, positionVal.y, positionVal.z, false);
 		context.caster.worldObj.addWeatherEffect(lightning);
 
 		return null;

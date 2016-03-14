@@ -14,6 +14,7 @@ import java.util.List;
 
 import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
@@ -26,8 +27,8 @@ public class ItemModArmor extends ItemArmor implements IVariantHolder {
 	private final String[] variants;
 	private final String bareName;
 
-	protected ItemModArmor(String name, ArmorMaterial material, int type, String... variants) {
-		super(material, type, type);
+	protected ItemModArmor(String name, ArmorMaterial material, int type, EntityEquipmentSlot slot, String... variants) {
+		super(material, type, slot);
 		setUnlocalizedName(name);
 		setCreativeTab(PsiCreativeTab.INSTANCE);
 

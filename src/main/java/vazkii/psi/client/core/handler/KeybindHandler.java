@@ -32,7 +32,7 @@ public class KeybindHandler {
 
 	public static void keyDown() {
 		Minecraft mc = Minecraft.getMinecraft();
-		ItemStack stack = mc.thePlayer.getCurrentEquippedItem();
+		ItemStack stack = mc.thePlayer.getActiveItemStack();
 		if(stack != null && (stack.getItem() instanceof ISocketable || stack.getItem() instanceof ISocketableController))
 			mc.displayGuiScreen(new GuiSocketSelect(stack));
 		else mc.displayGuiScreen(new GuiLeveling());

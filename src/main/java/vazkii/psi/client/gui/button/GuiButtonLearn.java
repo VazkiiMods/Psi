@@ -13,8 +13,8 @@ package vazkii.psi.client.gui.button;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.translation.I18n;
 import vazkii.psi.client.gui.GuiLeveling;
 
 public class GuiButtonLearn extends GuiButton {
@@ -37,7 +37,7 @@ public class GuiButtonLearn extends GuiButton {
 			drawTexturedModalRect(xPosition, yPosition, k == 2 ? 44 : 18, 184, width, height);
 
 			if(k == 2)
-				gui.tooltip.add(EnumChatFormatting.GREEN + StatCollector.translateToLocal("psimisc.learn"));
+				gui.tooltip.add(TextFormatting.GREEN + I18n.translateToLocal("psimisc.learn"));
 		}
 	}
 

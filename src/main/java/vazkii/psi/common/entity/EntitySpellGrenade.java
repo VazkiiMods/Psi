@@ -11,8 +11,10 @@
 package vazkii.psi.common.entity;
 
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
 public class EntitySpellGrenade extends EntitySpellProjectile {
@@ -39,7 +41,7 @@ public class EntitySpellGrenade extends EntitySpellProjectile {
 
 	@Override
 	public void onUpdate() {
-		int alive = dataWatcher.getWatchableObjectInt(23);
+		int alive = (int) dataWatcher.get(TIME_ALIVE);
 		super.onUpdate();
 
 		if(alive > 60 && !isDead && explodes())
@@ -48,7 +50,7 @@ public class EntitySpellGrenade extends EntitySpellProjectile {
 
 	public void doExplosion() {
 		cast();
-		playSound("random.explode", 0.5F, 1F);
+		playSound(SoundEvents.entity_generic_explode, 0.5F, 1F);
 		double m = 0.1;
 		double d3 = 0.0D;
 		for(int j = 0; j < 40; j++) {
@@ -65,9 +67,9 @@ public class EntitySpellGrenade extends EntitySpellProjectile {
 	}
 
 	@Override
-	protected void onImpact(MovingObjectPosition pos) {
+	protected void onImpact(RayTraceResult pos) {
 		if(!worldObj.isRemote && !sound && explodes()) {
-			playSound("creeper.primed", 2F, 1F);
+			playSound(SoundEvents.entity_creeper_primed, 2F, 1F);
 			sound = true;
 		}
 

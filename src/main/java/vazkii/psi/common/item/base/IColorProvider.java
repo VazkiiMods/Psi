@@ -2,22 +2,23 @@
  * This class was created by <Vazkii>. It's distributed as
  * part of the Psi Mod. Get the Source Code in github:
  * https://github.com/Vazkii/Psi
- *
+ * 
  * Psi is Open Source and distributed under the
  * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [05/02/2016, 00:40:08 (GMT)]
+ * 
+ * File Created @ [14/03/2016, 16:42:38 (GMT)]
  */
-package vazkii.psi.api.cad;
+package vazkii.psi.common.item.base;
 
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.item.ItemStack;
+import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public interface ICADAssembly {
-
+public interface IColorProvider {
+	
+	// TODO 1.9: actually register these damn things
+	
 	@SideOnly(Side.CLIENT)
-	public ModelResourceLocation getCADModel(ItemStack stack, ItemStack cad);
+	public IItemColor getColor();
 
 }

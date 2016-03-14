@@ -13,8 +13,8 @@ package vazkii.psi.client.gui.button;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.translation.I18n;
 import vazkii.psi.client.gui.GuiProgrammer;
 
 public class GuiButtonIO extends GuiButton {
@@ -39,8 +39,8 @@ public class GuiButtonIO extends GuiButton {
 			drawTexturedModalRect(xPosition, yPosition, k == 2 ? 186 : 174, out ? 169 : 181, width, height);
 
 			if(k == 2) {
-				gui.tooltip.add((out ? EnumChatFormatting.RED : EnumChatFormatting.BLUE) + StatCollector.translateToLocal(out ? "psimisc.exportToClipboard" : "psimisc.importFromClipboard"));
-				gui.tooltip.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("psimisc.mustHoldShift"));
+				gui.tooltip.add((out ? TextFormatting.RED : TextFormatting.BLUE) + I18n.translateToLocal(out ? "psimisc.exportToClipboard" : "psimisc.importFromClipboard"));
+				gui.tooltip.add(TextFormatting.GRAY + I18n.translateToLocal("psimisc.mustHoldShift"));
 			}
 		}
 	}
