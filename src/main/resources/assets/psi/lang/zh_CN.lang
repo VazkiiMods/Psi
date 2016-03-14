@@ -43,12 +43,17 @@ psimisc.trickPattern=^Trick: (.+)$
 psimisc.programmerHelp=&a编程帮助
 psimisc.ctrlWindows=Ctrl
 psimisc.ctrlMac=Cmd
+psimisc.enterCommit=Press Enter to commit
+psimisc.semicolonLine=Use ; to change line
+psimisc.programmerCoords=选定: [%d, %d] | 光标: [%d, %d]
+psimisc.programmerCoordsNoCursor=选定: [%d, %d]
+psimisc.softcapIndicator=你已经到达了25级。尽管还有很多要解锁的功能块和要获取的等级，但Psi能量从现在开始就不会再增长了，只会停留在5000的上限。
 
 # VERSIONING
 psi.versioning.flavour0=看样子Psi还没有更新，残念。
 psi.versioning.flavour1=Are you Psiched to update Psi?
 psi.versioning.flavour2=Psi版本落后了。你或许在期待着有趣的提示但它确实版本落后了，抱歉:(
-psi.versioning.flavour3=You can download the new Psi update from the servers at Magic High School.
+psi.versioning.flavour3=你可以从魔法科高校的服务器下载新版的Psi了。
 psi.versioning.flavour4=Psi版本落后了。另一Psi面，你可以下载它。
 psi.versioning.flavour5=只有渣渣二等生的Psi才会版本落后。
 psi.versioning.flavour6=别闹Psi心理了，快去更新Psi。
@@ -203,7 +208,7 @@ psi.event.jump=&b事件&7: 跳跃
 psi.event.lowLight=&b事件&7: 弱光
 psi.event.underwater=&b事件&7: 水下
 psi.event.onFire=&b事件&7: 起火
-psi.event.lowHp=&b事件&7: Low Health
+psi.event.lowHp=&b事件&7: 濒死
 
 # PROGRAMMER REFERENCE
 # %1$s代表Ctrl或Cmd, 取决于windows或mac系统
@@ -211,19 +216,23 @@ psi.event.lowHp=&b事件&7: Low Health
 psi.programmerReference0= &b键位绑定
 psi.programmerReference1=  删除块: &bDelete
 psi.programmerReference2=  清空网格: &b%1$s-Shift-Delete
-psi.programmerReference3=  Shift Grid: &b%1$s + 方向键
+psi.programmerReference3=  移动网格: &b%1$s + 方向键
 psi.programmerReference4=  复制/剪切/粘贴: &b%1$s-C/%1$s-X/%1$s-V
 psi.programmerReference5=  撤销/重做: &b%1$s-Z/%1$s-Y
 psi.programmerReference6=  打开面板/选择块: &bEnter
 psi.programmerReference7=  设定参数: &b数字键 + 方向键
-psi.programmerReference8=  切换焦点: &bTab
-psi.programmerReference9=  移动光标: &b方向键
-psi.programmerReference10=
-psi.programmerReference11= &b搜索词
-psi.programmerReference12=  接收类型: &bin:(类型)
-psi.programmerReference13=  输出类型: &bout:(类型)
-psi.programmerReference14=  开头词: &b(名称)_
-psi.programmerReference15=  结尾词: &b_(名称)
+psi.programmerReference8=  设定注释: &b%1$s-D
+psi.programmerReference9=  切换焦点: &bTab
+psi.programmerReference10=  显示提示文本: &bAlt
+psi.programmerReference11=  移动光标: &b方向键
+psi.programmerReference12=  上传到Imgur: &b%1$s-Shift-Alt-G
+psi.programmerReference13=  分享至Reddit: &b%1$s-Shift-Alt-R
+psi.programmerReference14=
+psi.programmerReference15= &b搜索词
+psi.programmerReference16=  接收类型: &bin:(类型)
+psi.programmerReference17=  输出类型: &bout:(类型)
+psi.programmerReference18=  开头词: &b(名称)_
+psi.programmerReference19=  结尾词: &b_(名称)
 
 # SPELl PIECE NAMES
 # -- SELECTORS
@@ -261,6 +270,14 @@ psi.spellpiece.selectorDamageTaken=选择符: 承受伤害
 psi.spellpiece.selectorDamageTaken.desc=选择施法者承受的伤害值
 psi.spellpiece.selectorRulerVector=选择符:测量向量 
 psi.spellpiece.selectorRulerVector.desc=选择向量尺界定的向量
+psi.spellpiece.selectorItemPresence=选择符: 物品存在
+psi.spellpiece.selectorItemPresence.desc=选择物品栏中一叠物品的数量
+psi.spellpiece.selectorBlockPresence=选择符: 方块存在
+psi.spellpiece.selectorBlockPresence.desc=选择一个方块的存在及其固态
+psi.spellpiece.selectorSavedVector=选择符: 储存向量
+psi.spellpiece.selectorSavedVector.desc=从CAD内存中选取一个储存的向量
+psi.spellpiece.selectorEidosChangelog=选择符: Eidos变更记录
+psi.spellpiece.selectorEidosChangelog.desc=从Eidos变更记录中选取一个位置
 
 # -- OPERATORS
 psi.spellpiece.operatorSum=运算符: 加法
@@ -293,6 +310,22 @@ psi.spellpiece.operatorMax=运算符: 最大
 psi.spellpiece.operatorMax.desc=获取输入值中的最大值
 psi.spellpiece.operatorMin=运算符: 最小
 psi.spellpiece.operatorMin.desc=获取输入值中的最小值
+psi.spellpiece.operatorSquare=运算符: 平方
+psi.spellpiece.operatorSquare.desc=A^2
+psi.spellpiece.operatorCube=运算符: 立方
+psi.spellpiece.operatorCube.desc=A^3
+psi.spellpiece.operatorPower=运算符: 幂
+psi.spellpiece.operatorPower.desc=A^B
+psi.spellpiece.operatorSquareRoot=运算符: 平方根
+psi.spellpiece.operatorSquareRoot.desc=sqrt(A)
+psi.spellpiece.operatorLog=运算符: 对数
+psi.spellpiece.operatorLog.desc=log(A)或logB(A)
+psi.spellpiece.operatorCeiling=运算符: 向上圆整
+psi.spellpiece.operatorCeiling.desc=将一个数向上圆整
+psi.spellpiece.operatorFloor=运算符: 向下圆整
+psi.spellpiece.operatorFloor.desc=将一个数向下圆整
+psi.spellpiece.operatorRound=运算符: 四舍五入
+psi.spellpiece.operatorRound.desc=将一个数四舍五入取整
 psi.spellpiece.operatorEntityPosition=运算符: 实体位置
 psi.spellpiece.operatorEntityPosition.desc=获取一个实体的位置
 psi.spellpiece.operatorEntityLook=运算符: 实体视线
@@ -349,6 +382,8 @@ psi.spellpiece.constantNumber=常量: 数字
 psi.spellpiece.constantNumber.desc=选择然后输入设定值
 psi.spellpiece.constantPi=常量: Pi
 psi.spellpiece.constantPi.desc=返回圆周率Pi的值
+psi.spellpiece.constantE=常量: e
+psi.spellpiece.constantE.desc=返回自然对数底数e的值
 psi.spellpiece.constantWrapper=常量: 封装
 psi.spellpiece.constantWrapper.desc=为要计算的常量而准备的封装
 
@@ -445,6 +480,10 @@ psi.spellpiece.trickConjureLight=启动式: 构筑光线
 psi.spellpiece.trickConjureLight.desc=在指定位置构筑一团亮光
 psi.spellpiece.trickConjureBlockSequence=启动式: 构筑方块序列
 psi.spellpiece.trickConjureBlockSequence.desc=构筑一系列的方块
+psi.spellpiece.trickSwitchTargetSlot=启动式: 切换焦点槽位
+psi.spellpiece.trickSwitchTargetSlot.desc=改变此术式的焦点槽位
+psi.spellpiece.trickSaveVector=启动式: 储存向量
+psi.spellpiece.trickSaveVector.desc=将一个向量存入CAD的内存中
 
 # SPELL PARAMETER NAMES
 psi.spellparam.target=目标
@@ -472,6 +511,9 @@ psi.spellparam.distance=距离
 psi.spellparam.time=时间
 psi.spellparam.list=列表
 psi.spellparam.constant=常量
+psi.spellparam.shift=移位
+psi.spellparam.slot=槽位
+psi.spellparam.base=底
 
 # DATA TYPE NAMES(为了玩家能正常使用搜索词,此段不翻译)
 psi.datatype.Null=None
@@ -499,13 +541,21 @@ psi.spellerror.nonpositivevalue=指定的数字参数必须是一个正数
 psi.spellerror.noninteger=指定的数字参数必须是一个整数
 psi.spellerror.nonpositiveinteger=指定的数字参数必须是一个正整数
 psi.spellerror.statoverflow=魔法式溢值超出了最大合理整数
+psi.spellerror.exclusiveparams=设定了两个相互排斥的参数
 
 # RUNTIME ERRORS
+psi.spellerror.position=错误位置·: [%d, %d].
 psi.spellerror.dividebyzero=错误: 不能除以0.
 psi.spellerror.nulltarget=错误: 术式目标实体不存在.
 psi.spellerror.nullvector=错误: 术式运算向量不存在或无效.
 psi.spellerror.outsideradius=错误: 术式目标超出了32格半径范围.
 psi.spellerror.outsidetrigdomain=错误: 数值超出了反三角函数域.
+psi.spellerror.bossimmune=错误: 尝试对免疫实体或boss施展魔法式.
+psi.spellerror.nocad=错误: 施法者无CAD.
+psi.spellerror.memoryoutofbounds=错误: 内存访问出界.
+psi.spellerror.lockedmemory=错误: 内存槽位锁定.
+psi.spellerror.immunetarget=错误: 目标实体免疫或为boss.
+psi.spellerror.negativenumber=错误: 功能块中的目标数字不能为负数.
 
 # PIECE GROUPS
 psi.introduction=欢迎来到全宇宙最好的术式编程型魔法科技mod——Psi(Ψ)的 世界。请别忘了安装JustEnoughItems(JEI)或其他能查看合 成配方的mod，这些都是使用Psi时所必需的，因为配方并不在本 指南的介绍范围内。在开始前，你需要准备一些Psi粉末。而要 获得Psi粉末，你就需要先制作一个CAD装配器和一个铁质CAD 机体。放下CAD装配器再放入铁质CAD机体就能组装出最基本 的术式辅助演算机(CAD)了。这之后你只要将一些红石粉扔在 地上。再拿起你的CAD，对着这些物品右击即可获得Psi粉末。
@@ -558,3 +608,9 @@ psi.piecegroup.blockConjuration=方块构筑
 psi.piecegroup.blockConjuration.desc=这部分包括的是构筑方块的 功能块。<br><br>红色块“启动式:构筑方块” 会在给定位置创造一个构筑 方块。构筑方块是一个半透 明的实体块，如果设定了“时 间参数”，它还会在一段时间 后消失。“时间”参数的单位 是tick。提醒一下，一个tick 是1/20秒，如果你想要产生一 个半秒后消失的方块，那么就 可以将“时间”设为10。<br><br>“启动式:构筑光线”会生成一 个光源，没有碰撞体积。“启 动式:构筑方块序列”则类似 于“启动式:构筑方块”，但它构 筑的是多个方块。这些功能 块都有“时间”参数。<br><br>创造的构筑方块的颜色取决 于CAD中所用的着色器(没有 的情况下默认淡蓝色)。而变 换颜色的着色器，如全色着色 器，也会影响到构筑方块的外 观。
 psi.piecegroup.eidosReversal=Eidos操控
 psi.piecegroup.eidosReversal.desc=Eidos术式能让施法者随意 掌控时空连续体。<br><br>这部分中红色的是“启动式: Eidos时光倒流”，它会以双倍 速逆转施法者的步伐，持续指 定时间(秒)。一次只能激活 一个倒流，并且当其施展后，后 续施展的效果只对最后一个 结束时的点有效。潜行会终 止倒流过程。<br><br>另一个功能块是“启动式:Ei dos之锚”，它会给施法者附加 一个“锚”的效果。在目标时 间(秒)经过后，施法者就会被 带回锚的所在处。“启动式: Eidos之锚”可以施展多个，但 只有最后一个才会起效。
+psi.piecegroup.detectionDynamics=检测&聚焦
+psi.piecegroup.detectionDynamics.desc=这部分包括了两类功能块，如 题所说:检测与聚焦。红色块 属于“聚焦”范畴，然而，要理解 它的话，还需要先介绍槽位焦 点的概念。<br><br>槽位焦点已知的一个例子就 是放置方块类型的启动式。 它们直接使用邻近CAD的方 块。槽位焦点就是这类启动 式使用的槽位。它可以是相 对的(基于CAD的位置)也可以 是绝对的，但只能是位于工具 栏中从1到9的。默认情况下 ，魔法式施展时，它的值是“相 对1”，即CAD右侧那一个槽位 。如果是“相对-1”，那么则是 CAD左侧的那个槽位。“绝对3 ”指工具栏中第三个槽位。当 然它也会循环，因此如果你的 CAD在最后一格并且值为“相 对1”，指代的就是工具栏的第 一个槽位。<br><br>为了设定焦点槽位，你可以使 用“启动式:切换焦点槽位”，也 就是这部分的红色块。它需 要两个参数。两者都是可选 并且互斥的，如果你不作定义 ，它就会将焦点设定为默认的 “相对1”。如果你选择设定“ 位置”参数，就会设定一个绝 对值，而“移位”参数则会设定 一个相对值。举例来说，你能 根据情况用不同的方块进行 建造。这个启动式只对当前 施放的魔法式有效，并且焦点 会在下一个魔法式施展时重 置(即便是同一个魔法式也一 样)。<br><br>这里的另外两个功能块属于“ 检测”范畴。首先，“选择符:物 品存在”有一个可选的槽数( 如果不作设定就默认为焦点 槽位)，它会返回指定槽位中 的物品数量，当然空的就会是 0。最后，“选择符:方块存在” 需要一个向量，用于寻找指定 坐标的方块，如果没有方块或 可替换方块(如高草)就会返 回0，非固体方块为1，固体方块 为2。
+psi.piecegroup.memoryManagement=内存管理
+psi.piecegroup.memoryManagement.desc=这部分介绍了魔法式掌控C AD中永久内存的能力。一台 CAD能储存向量类型的值以 便后续魔法的使用。能储存 的量等于CAD的“弹夹”数值 除以3并向下圆整。这也就 是CAD中存在的内存槽位的 数量。<br><br>这部分包括了两个功能块，用 于读取和写入向量的简单IO 型功能块。红色块，“启动式: 储存向量”会向目标内存槽位 中存入一个向量，而“选择符: 储存向量”则会从自身参数 指定的内存槽位中获取向量 。这些块的内存槽位从1开 始，因此一台拥有3个内存槽 位的CAD能接受1,2,3这几个值 。这些功能块都会增加术式 的强度，数值与使用的槽数有 关。<br><br>这些功能块有个缺点，那就是 “启动式:储存向量”在使用时 会“锁定”目标内存槽，以防其 他功能块在其执行时与同一 个内存槽交互，不管是读取还 是写入。因此如果你需要在 写入之前读取槽位中的值，务 必牢记流控制的基本原则，保 证先读后写。
+psi.piecegroup.secondaryOperators=次要运算
+psi.piecegroup.secondaryOperators.desc=顾名思义，这部分包括了一些 不太重要的运算符。实际上 就是一个由各种数学或逻辑 块组成的混合体，能用于辅助 魔法式的创造。为了方便解 释，这里将它们分为两部分。<br><br>第一部分与幂有关。包括“ 运算符:平方”，“运算符:幂”， “运算符:平方根”甚至是“运 算符:对数”。其中大部分都 以标准形式运算无需多讲，除 了“运算符:对数”。这个功能 块，就如其名，会计算出给定 数字的对数。它有一个可选 的底参数，用于对数运算的底 。如果不给定底，默认的底就 为10。这里也提供了“常量: e”，你可以随意使用。<br><br>第二部分与逻辑相关。包括 了圆整的功能块，“运算符:向 上圆整”，“运算符:向下圆整” 和“运算符:四舍五入”，它们会 根据数字的小数部分进行圆 整。这里也有“运算符:最小 ”和“运算符:最大”。这些都 很简单，它们会从给定的各个 数中获取最小数和最大数。
