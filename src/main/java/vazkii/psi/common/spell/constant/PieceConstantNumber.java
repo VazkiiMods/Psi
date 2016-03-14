@@ -47,7 +47,7 @@ public class PieceConstantNumber extends SpellPiece {
 
 	@Override
 	public void drawAdditional() {
-		if(valueStr == null || valueStr.isEmpty())
+		if(valueStr == null || valueStr.isEmpty() || valueStr.length() > 5)
 			valueStr = "0";
 
 		Minecraft mc = Minecraft.getMinecraft();
@@ -142,7 +142,7 @@ public class PieceConstantNumber extends SpellPiece {
 
 	@Override
 	public Object evaluate() {
-		if(valueStr == null || valueStr.isEmpty())
+		if(valueStr == null || valueStr.isEmpty() || valueStr.length() > 5)
 			valueStr = "0";
 
 		try {
