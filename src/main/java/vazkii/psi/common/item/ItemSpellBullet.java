@@ -148,8 +148,11 @@ public class ItemSpellBullet extends ItemMod implements ISpellContainer {
 			break;
 
 		case 5: // Loopcast
-			context.cspell.safeExecute(context);
-			PlayerDataHandler.get(context.caster).loopcasting = true;
+			if(!PlayerDataHandler.get(context.caster).loopcasting) {
+				context.cspell.safeExecute(context);
+				PlayerDataHandler.get(context.caster).loopcasting = true;
+			}
+
 			break;
 
 		case 7: // Spell Circle
