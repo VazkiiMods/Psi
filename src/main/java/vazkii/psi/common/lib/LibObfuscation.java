@@ -13,6 +13,10 @@ package vazkii.psi.common.lib;
 public final class LibObfuscation {
 
 	// GuiIngame
-	public static final String[] REMAINING_HIGHLIGHT_TICKS = new String[] { "remainingHighlightTicks", "field_92017_k", "r" };
+	public static final String[] REMAINING_HIGHLIGHT_TICKS = new String[] { "remainingHighlightTicks", "field_92017_k", "q" };
 
+	// Minecraft
+	public static final String[] ITEM_COLORS = new String[] { "itemColors", "f", "field_184395_f" };
+	// TODO 1.9: remove this once it's available
+	
 }

@@ -20,6 +20,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.cad.ICADColorizer;
@@ -47,7 +48,7 @@ public class ClientProxy extends CommonProxy {
 	public void preInit(FMLPreInitializationEvent event) {
 		super.preInit(event);
 
-		ModelHandler.init();
+		ModelHandler.preInit();
 		ShaderHandler.init();
 		KeybindHandler.init();
 
@@ -59,9 +60,14 @@ public class ClientProxy extends CommonProxy {
 
 		ClientRegistry.bindTileEntitySpecialRenderer(TileProgrammer.class, new RenderTileProgrammer());
 
-		RenderingRegistry.registerEntityRenderingHandler(EntitySpellCircle.class, (RenderManager manager) -> { return new RenderSpellCircle(manager); });
+		RenderingRegistry.registerEntityRenderingHandler(EntitySpellCircle.class, manager -> new RenderSpellCircle(manager));
 	}
 
+	@Override
+	public void init(FMLInitializationEvent event) {
+		ModelHandler.init();
+	}
+	
 	@Override
 	public EntityPlayer getClientPlayer() {
 		return Minecraft.getMinecraft().thePlayer;
