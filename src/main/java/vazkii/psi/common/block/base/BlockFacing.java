@@ -61,7 +61,7 @@ public abstract class BlockFacing extends BlockModContainer {
 			else if(enumfacing == EnumFacing.EAST && state3.isFullBlock() && !state2.isFullBlock())
 				enumfacing = EnumFacing.WEST;
 
-			worldIn.setBlockState(pos, state.withProperty(FACING, enumfacing), 2);
+			worldIn.setBlockState(pos, thisState.withProperty(FACING, enumfacing), 2);
 		}
 	}
 
