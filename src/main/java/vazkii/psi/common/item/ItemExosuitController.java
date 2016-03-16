@@ -42,7 +42,7 @@ public class ItemExosuitController extends ItemMod implements ISocketableControl
 		if(playerIn.isSneaking()) {
 			if(!worldIn.isRemote)
 				worldIn.playSound(playerIn, playerIn.posX, playerIn.posY, playerIn.posZ, PsiSoundHandler.compileError, SoundCategory.PLAYERS, 0.25F, 1F);
-//			else playerIn.swingItem(); TODO 1.9 swing
+			else playerIn.swingArm(hand);
 
 			ItemStack[] stacks = getControlledStacks(playerIn, itemStackIn);
 

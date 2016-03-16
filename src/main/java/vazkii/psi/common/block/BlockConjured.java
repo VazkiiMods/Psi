@@ -134,7 +134,7 @@ public class BlockConjured extends BlockModContainer {
 	@Override
     public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB aabb, List<AxisAlignedBB> list, Entity entity) {
 		if(state.getValue(SOLID))
-			super.addCollisionBoxToList(state, worldIn, pos, aabb, list, entity);
+			addCollisionBoxToList(pos, aabb, list, new AxisAlignedBB(0, 0, 0, 1, 1, 1));
 	}
 
 	@Override

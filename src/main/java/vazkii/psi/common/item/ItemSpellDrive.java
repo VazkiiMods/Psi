@@ -111,7 +111,7 @@ public class ItemSpellDrive extends ItemMod {
 		if(getSpell(itemStackIn) != null && playerIn.isSneaking()) {
 			if(!worldIn.isRemote)
 				worldIn.playSound(playerIn, playerIn.posX, playerIn.posY, playerIn.posZ, PsiSoundHandler.compileError, SoundCategory.PLAYERS, 0.5F, 1F);
-//			else playerIn.swingItem(); TODO 1.9 swing
+			else playerIn.swingArm(hand);
 			setSpell(itemStackIn, null);
 			
 			return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);

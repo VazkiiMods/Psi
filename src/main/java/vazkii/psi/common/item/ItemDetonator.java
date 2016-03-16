@@ -40,7 +40,7 @@ public class ItemDetonator extends ItemMod {
 
 		if(!worldIn.isRemote)
 			worldIn.playSound(playerIn, playerIn.posX, playerIn.posY, playerIn.posZ, SoundEvents.ui_button_click, SoundCategory.PLAYERS, 1F, 1F);
-//		else playerIn.swingItem(); TODO 1.9 swing
+		else playerIn.swingArm(hand);
 
 		return new ActionResult<ItemStack>(charges.isEmpty() ? EnumActionResult.PASS : EnumActionResult.SUCCESS, itemStackIn);
 	}

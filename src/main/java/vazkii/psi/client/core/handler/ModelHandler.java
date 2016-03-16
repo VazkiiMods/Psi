@@ -41,7 +41,6 @@ public class ModelHandler {
 
 	public static HashMap<String, ModelResourceLocation> resourceLocations = new HashMap();
 
-	private static ItemColors colors;
 	
 	public static void preInit() {
 		for(IVariantHolder holder : ItemMod.variantHolders)
@@ -49,7 +48,7 @@ public class ModelHandler {
 	}
 	
 	public static void init() {
-		colors = ReflectionHelper.getPrivateValue(Minecraft.class, Minecraft.getMinecraft(), LibObfuscation.ITEM_COLORS);
+		ItemColors colors = Minecraft.getMinecraft().getItemColors();
 		for(IVariantHolder holder : ItemMod.variantHolders)
 			if(holder instanceof IColorProvider)
 				colors.registerItemColorHandler(((IColorProvider) holder).getColor(), (Item) holder);

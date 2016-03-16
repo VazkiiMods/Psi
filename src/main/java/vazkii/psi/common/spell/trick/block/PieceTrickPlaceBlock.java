@@ -76,8 +76,6 @@ public class PieceTrickPlaceBlock extends PieceTrick {
 		if(!world.isBlockLoaded(pos))
 			return;
 		
-		System.out.println(slot);
-		
 		IBlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
 		if(block == null || block.isAir(state, world, pos) || block.isReplaceable(world, pos)) {
