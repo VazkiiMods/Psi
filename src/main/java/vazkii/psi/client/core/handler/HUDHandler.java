@@ -29,6 +29,7 @@ import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
@@ -235,7 +236,7 @@ public final class HUDHandler {
 	@SideOnly(Side.CLIENT)
 	private void renderSocketableEquippedName(ScaledResolution res, float pticks) {
 		Minecraft mc = Minecraft.getMinecraft();
-		ItemStack stack = mc.thePlayer.getActiveItemStack();
+		ItemStack stack = mc.thePlayer.getHeldItem(EnumHand.MAIN_HAND);
 		String name = ISocketable.getSocketedItemName(stack, "");
 		if(stack == null || name == null || name.trim().isEmpty())
 			return;
