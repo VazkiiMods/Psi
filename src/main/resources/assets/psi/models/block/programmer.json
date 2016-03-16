@@ -1,5 +1,5 @@
 {
-    "__comment": "",
+    "parent": "block/block",
     "textures": {
         "particle": "psi:blocks/programmerTopInactive",
         "0": "psi:blocks/programmerSideInactive",
