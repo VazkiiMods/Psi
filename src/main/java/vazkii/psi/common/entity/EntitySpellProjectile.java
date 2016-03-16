@@ -13,6 +13,8 @@ package vazkii.psi.common.entity;
 import java.awt.Color;
 import java.util.function.Consumer;
 
+import com.google.common.base.Optional;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -25,7 +27,6 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
-import scala.reflect.internal.Trees.CaseDef;
 import vazkii.psi.api.cad.ICADColorizer;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.ISpellContainer;
@@ -58,7 +59,8 @@ public class EntitySpellProjectile extends EntityThrowable {
 
 	public EntitySpellProjectile(World worldIn, EntityLivingBase throwerIn) {
 		super(worldIn, throwerIn);
-
+		
+		func_184538_a(throwerIn, throwerIn.rotationPitch, throwerIn.rotationYaw, 0.0F, 1.5F, 1.0F);
 		double speed = 1.5;
 		motionX *= speed;
 		motionY *= speed;
@@ -66,16 +68,16 @@ public class EntitySpellProjectile extends EntityThrowable {
 	}
 
 	public EntitySpellProjectile setInfo(EntityPlayer player, ItemStack colorizer, ItemStack bullet) {
-		dataWatcher.set(COLORIZER_DATA, colorizer);
-		dataWatcher.set(BULLET_DATA, bullet);
+		dataWatcher.set(COLORIZER_DATA, Optional.fromNullable(colorizer));
+		dataWatcher.set(BULLET_DATA, Optional.of(bullet));
 		dataWatcher.set(CASTER_NAME, player.getName());
 		return this;
 	}
 
 	@Override
 	protected void entityInit() {
-		dataWatcher.register(COLORIZER_DATA, new ItemStack(Blocks.stone));
-		dataWatcher.register(BULLET_DATA, new ItemStack(Blocks.stone));
+		dataWatcher.register(COLORIZER_DATA, Optional.of(new ItemStack(Blocks.stone)));
+		dataWatcher.register(BULLET_DATA, Optional.of(new ItemStack(Blocks.stone)));
 		dataWatcher.register(CASTER_NAME, "");
 		dataWatcher.register(TIME_ALIVE, 0);
 	}
@@ -85,18 +87,18 @@ public class EntitySpellProjectile extends EntityThrowable {
 		super.writeEntityToNBT(tagCompound);
 
 		NBTTagCompound colorizerCmp = new NBTTagCompound();
-		ItemStack colorizer = (ItemStack) dataWatcher.get(COLORIZER_DATA);
+		ItemStack colorizer = ((Optional<ItemStack>) dataWatcher.get(COLORIZER_DATA)).orNull();
 		if(colorizer != null)
 			colorizer.writeToNBT(colorizerCmp);
 		tagCompound.setTag(TAG_COLORIZER, colorizerCmp);
 
 		NBTTagCompound bulletCmp = new NBTTagCompound();
-		ItemStack bullet = (ItemStack) dataWatcher.get(BULLET_DATA);
+		ItemStack bullet = ((Optional<ItemStack>) dataWatcher.get(BULLET_DATA)).orNull();
 		if(bullet != null)
 			bullet.writeToNBT(bulletCmp);
 		tagCompound.setTag(TAG_BULLET, bulletCmp);
 
-		tagCompound.setInteger(TAG_TIME_ALIVE, (int) dataWatcher.get(CASTER_NAME));
+		tagCompound.setInteger(TAG_TIME_ALIVE, (int) dataWatcher.get(TIME_ALIVE));
 
 		tagCompound.setDouble(TAG_LAST_MOTION_X, motionX);
 		tagCompound.setDouble(TAG_LAST_MOTION_Y, motionY);
@@ -109,11 +111,11 @@ public class EntitySpellProjectile extends EntityThrowable {
 
 		NBTTagCompound colorizerCmp = tagCompound.getCompoundTag(TAG_COLORIZER);
 		ItemStack colorizer = ItemStack.loadItemStackFromNBT(colorizerCmp);
-		dataWatcher.set(COLORIZER_DATA, colorizer);
+		dataWatcher.set(COLORIZER_DATA, Optional.of(colorizer));
 
 		NBTTagCompound bulletCmp = tagCompound.getCompoundTag(TAG_BULLET);
 		ItemStack bullet = ItemStack.loadItemStackFromNBT(bulletCmp);
-		dataWatcher.set(BULLET_DATA, bullet);
+		dataWatcher.set(BULLET_DATA, Optional.of(bullet));
 
 		EntityLivingBase thrower = getThrower();
 		if(thrower != null && thrower instanceof EntityPlayer)
@@ -139,7 +141,7 @@ public class EntitySpellProjectile extends EntityThrowable {
 		dataWatcher.set(TIME_ALIVE, timeAlive + 1);
 
 		int colorVal = ICADColorizer.DEFAULT_SPELL_COLOR;
-		ItemStack colorizer = (ItemStack) dataWatcher.get(COLORIZER_DATA);
+		ItemStack colorizer = ((Optional<ItemStack>) dataWatcher.get(COLORIZER_DATA)).orNull();
 		if(colorizer != null && colorizer.getItem() instanceof ICADColorizer)
 			colorVal = Psi.proxy.getColorizerColor(colorizer).getRGB();
 
@@ -151,6 +153,7 @@ public class EntitySpellProjectile extends EntityThrowable {
 		double x = posX;
 		double y = posY;
 		double z = posZ;
+		
 		Vector3 lookOrig = new Vector3(motionX, motionY, motionZ).normalize();
 		for(int i = 0; i < getParticleCount(); i++) {
 			Vector3 look = lookOrig.copy();
@@ -164,7 +167,6 @@ public class EntitySpellProjectile extends EntityThrowable {
 			look.x += (Math.random() - 0.5) * spread;
 			look.y += (Math.random() - 0.5) * spread;
 			look.z += (Math.random() - 0.5) * spread;
-
 
 			look.normalize().multiply(dist);
 
@@ -198,7 +200,7 @@ public class EntitySpellProjectile extends EntityThrowable {
 		boolean canCast = false;
 
 		if(thrower != null && thrower instanceof EntityPlayer) {
-			ItemStack spellContainer = (ItemStack) dataWatcher.get(BULLET_DATA);
+			ItemStack spellContainer = ((Optional<ItemStack>) dataWatcher.get(BULLET_DATA)).orNull();
 			if(spellContainer != null && spellContainer.getItem() instanceof ISpellContainer) {
 				Spell spell = ((ISpellContainer) spellContainer.getItem()).getSpell(spellContainer);
 				if(spell != null) {

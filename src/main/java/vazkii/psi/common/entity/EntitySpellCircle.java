@@ -12,6 +12,8 @@ package vazkii.psi.common.entity;
 
 import java.awt.Color;
 
+import com.google.common.base.Optional;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -63,8 +65,8 @@ public class EntitySpellCircle extends Entity {
 	}
 
 	public EntitySpellCircle setInfo(EntityPlayer player, ItemStack colorizer, ItemStack bullet) {
-		dataWatcher.set(COLORIZER_DATA, colorizer);
-		dataWatcher.set(BULLET_DATA, colorizer);
+		dataWatcher.set(COLORIZER_DATA, Optional.fromNullable(colorizer));
+		dataWatcher.set(BULLET_DATA, Optional.of(colorizer));
 		dataWatcher.set(CASTER_NAME, player.getName());
 		
 		Vec3d lookVec = player.getLook(1F);
@@ -76,8 +78,8 @@ public class EntitySpellCircle extends Entity {
 
 	@Override
 	protected void entityInit() {
-		dataWatcher.register(COLORIZER_DATA, new ItemStack(Blocks.stone));
-		dataWatcher.register(BULLET_DATA, new ItemStack(Blocks.stone));
+		dataWatcher.register(COLORIZER_DATA, Optional.of(new ItemStack(Blocks.stone)));
+		dataWatcher.register(BULLET_DATA, Optional.of(new ItemStack(Blocks.stone)));
 		dataWatcher.register(CASTER_NAME, "");
 		dataWatcher.register(TIME_ALIVE, 0);
 		dataWatcher.register(TIMES_CAST, 0);
@@ -89,13 +91,13 @@ public class EntitySpellCircle extends Entity {
 	@Override
 	public void writeEntityToNBT(NBTTagCompound tagCompound) {
 		NBTTagCompound colorizerCmp = new NBTTagCompound();
-		ItemStack colorizer = (ItemStack) dataWatcher.get(COLORIZER_DATA);
+		ItemStack colorizer = ((Optional<ItemStack>) dataWatcher.get(COLORIZER_DATA)).orNull();
 		if(colorizer != null)
 			colorizer.writeToNBT(colorizerCmp);
 		tagCompound.setTag(TAG_COLORIZER, colorizerCmp);
 
 		NBTTagCompound bulletCmp = new NBTTagCompound();
-		ItemStack bullet = (ItemStack) dataWatcher.get(BULLET_DATA);
+		ItemStack bullet = ((Optional<ItemStack>) dataWatcher.get(BULLET_DATA)).orNull();
 		if(bullet != null)
 			bullet.writeToNBT(bulletCmp);
 		tagCompound.setTag(TAG_BULLET, bulletCmp);
@@ -113,11 +115,11 @@ public class EntitySpellCircle extends Entity {
 	public void readEntityFromNBT(NBTTagCompound tagCompound) {
 		NBTTagCompound colorizerCmp = tagCompound.getCompoundTag(TAG_COLORIZER);
 		ItemStack colorizer = ItemStack.loadItemStackFromNBT(colorizerCmp);
-		dataWatcher.set(COLORIZER_DATA, colorizer);
+		dataWatcher.set(COLORIZER_DATA, Optional.of(colorizer));
 
 		NBTTagCompound bulletCmp = tagCompound.getCompoundTag(TAG_BULLET);
 		ItemStack bullet = ItemStack.loadItemStackFromNBT(bulletCmp);
-		dataWatcher.set(BULLET_DATA, bullet);
+		dataWatcher.set(BULLET_DATA, Optional.of(bullet));
 
 		dataWatcher.set(CASTER_NAME, tagCompound.getString(TAG_CASTER));
 		setTimeAlive(tagCompound.getInteger(TAG_TIME_ALIVE));
@@ -143,7 +145,7 @@ public class EntitySpellCircle extends Entity {
 			SpellContext context = null;
 			Entity thrower = getCaster();
 			if(thrower != null && thrower instanceof EntityPlayer) {
-				ItemStack spellContainer = (ItemStack) dataWatcher.get(BULLET_DATA);
+				ItemStack spellContainer = ((Optional<ItemStack>)dataWatcher.get(BULLET_DATA)).orNull();
 				if(spellContainer != null && spellContainer.getItem() instanceof ISpellContainer) {
 					dataWatcher.set(TIMES_CAST, times + 1);
 					Spell spell = ((ISpellContainer) spellContainer.getItem()).getSpell(spellContainer);
@@ -157,7 +159,7 @@ public class EntitySpellCircle extends Entity {
 		}
 
 		int colorVal = ICADColorizer.DEFAULT_SPELL_COLOR;
-		ItemStack colorizer = (ItemStack) dataWatcher.get(COLORIZER_DATA);
+		ItemStack colorizer = ((Optional<ItemStack>) dataWatcher.get(COLORIZER_DATA)).orNull();
 		if(colorizer != null && colorizer.getItem() instanceof ICADColorizer)
 			colorVal = Psi.proxy.getColorizerColor(colorizer).getRGB();
 
