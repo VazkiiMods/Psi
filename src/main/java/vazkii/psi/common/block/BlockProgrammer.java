@@ -71,15 +71,14 @@ public class BlockProgrammer extends BlockFacing {
 		if(!enabled || programmer.playerLock.isEmpty())
 			programmer.playerLock = playerIn.getName();
 
-		ItemStack stack = playerIn.getActiveItemStack();
-		if(enabled && stack != null && stack.getItem() instanceof ISpellSettable && programmer.spell != null) {
+		if(enabled && heldItem != null && heldItem.getItem() instanceof ISpellSettable && programmer.spell != null) {
 			if(programmer.canCompile()) {
-				ISpellSettable settable = (ISpellSettable) stack.getItem();
+				ISpellSettable settable = (ISpellSettable) heldItem.getItem();
 				if(!worldIn.isRemote)
 					worldIn.playSound(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, PsiSoundHandler.bulletCreate, SoundCategory.BLOCKS, 0.5F, 1F, false);
 
 				programmer.spell.uuid = UUID.randomUUID();
-				settable.setSpell(stack, programmer.spell);
+				settable.setSpell(heldItem, programmer.spell);
 				if(playerIn instanceof EntityPlayerMP)
 					VanillaPacketDispatcher.dispatchTEToPlayer(programmer, (EntityPlayerMP) playerIn);
 				return true;

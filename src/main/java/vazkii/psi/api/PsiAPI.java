@@ -109,7 +109,7 @@ public final class PsiAPI {
 	 * Gets the CAD the passed EntityPlayer is using. As a player can only have one CAD, if there's
 	 * more than one, this will return null.
 	 */
-	public static ItemStack getPlayerCAD(EntityPlayer player) { // TODO 1.9: does this check offhand?
+	public static ItemStack getPlayerCAD(EntityPlayer player) {
 		if(player == null)
 			return null;
 
