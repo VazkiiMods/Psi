@@ -99,7 +99,7 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IColorProv
 		if(playerCad != itemStackIn) {
 			if(!worldIn.isRemote)
 				playerIn.addChatComponentMessage(new TextComponentTranslation("psimisc.multipleCads").setChatStyle(new Style().setColor(TextFormatting.RED)));
-			return new ActionResult<ItemStack>(EnumActionResult.PASS, itemStackIn);
+			return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
 		}
 
 		ItemStack bullet = getBulletInSocket(itemStackIn, getSelectedSlot(itemStackIn));

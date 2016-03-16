@@ -12,6 +12,7 @@ package vazkii.psi.common.network.message;
 
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumHand;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import vazkii.psi.api.cad.ISocketableController;
@@ -33,10 +34,14 @@ public class MessageChangeControllerSlot extends Message {
 	@Override
 	public IMessage handleMessage(MessageContext context) {
 		EntityPlayerMP player = context.getServerHandler().playerEntity;
-		ItemStack stack = player.getActiveItemStack(); // TODO 1.9: does this work?
-
-		if(stack != null && stack.getItem() instanceof ISocketableController)
+		ItemStack stack = player.getHeldItem(EnumHand.MAIN_HAND);
+		if(stack != null && stack.getItem() instanceof ISocketableController) {
 			((ISocketableController) stack.getItem()).setSelectedSlot(player, stack, controlSlot, slot);
+		} else {
+			stack = player.getHeldItem(EnumHand.MAIN_HAND);
+			if(stack != null && stack.getItem() instanceof ISocketableController)
+				((ISocketableController) stack.getItem()).setSelectedSlot(player, stack, controlSlot, slot);
+		}
 		PlayerDataHandler.get(player).stopLoopcast();
 
 		return null;
