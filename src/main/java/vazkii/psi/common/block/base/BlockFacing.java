@@ -50,7 +50,7 @@ public abstract class BlockFacing extends BlockModContainer {
 			IBlockState state1 = worldIn.getBlockState(pos.south());
 			IBlockState state2 = worldIn.getBlockState(pos.west());
 			IBlockState state3 = worldIn.getBlockState(pos.east());
-			EnumFacing enumfacing = state.getValue(FACING);
+			EnumFacing enumfacing = thisState.getValue(FACING);
 
 			if(enumfacing == EnumFacing.NORTH && state.isFullBlock() && !state1.isFullBlock())
 				enumfacing = EnumFacing.SOUTH;
