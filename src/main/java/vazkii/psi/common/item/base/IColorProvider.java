@@ -16,8 +16,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public interface IColorProvider {
 	
-	// TODO 1.9: actually register these damn things
-	
 	@SideOnly(Side.CLIENT)
 	public IItemColor getColor();
 

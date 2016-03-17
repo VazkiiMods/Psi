@@ -66,13 +66,13 @@ public class EntitySpellCircle extends Entity {
 
 	public EntitySpellCircle setInfo(EntityPlayer player, ItemStack colorizer, ItemStack bullet) {
 		dataWatcher.set(COLORIZER_DATA, Optional.fromNullable(colorizer));
-		dataWatcher.set(BULLET_DATA, Optional.of(colorizer));
+		dataWatcher.set(BULLET_DATA, Optional.of(bullet));
 		dataWatcher.set(CASTER_NAME, player.getName());
 		
 		Vec3d lookVec = player.getLook(1F);
-		dataWatcher.set(LOOK_X, (double) lookVec.xCoord);
-		dataWatcher.set(LOOK_Y, (double) lookVec.yCoord);
-		dataWatcher.set(LOOK_Z, (double) lookVec.zCoord);
+		dataWatcher.set(LOOK_X, (float) lookVec.xCoord);
+		dataWatcher.set(LOOK_Y, (float) lookVec.yCoord);
+		dataWatcher.set(LOOK_Z, (float) lookVec.zCoord);
 		return this;	
 	}
 
@@ -115,7 +115,7 @@ public class EntitySpellCircle extends Entity {
 	public void readEntityFromNBT(NBTTagCompound tagCompound) {
 		NBTTagCompound colorizerCmp = tagCompound.getCompoundTag(TAG_COLORIZER);
 		ItemStack colorizer = ItemStack.loadItemStackFromNBT(colorizerCmp);
-		dataWatcher.set(COLORIZER_DATA, Optional.of(colorizer));
+		dataWatcher.set(COLORIZER_DATA, Optional.fromNullable(colorizer));
 
 		NBTTagCompound bulletCmp = tagCompound.getCompoundTag(TAG_BULLET);
 		ItemStack bullet = ItemStack.loadItemStackFromNBT(bulletCmp);

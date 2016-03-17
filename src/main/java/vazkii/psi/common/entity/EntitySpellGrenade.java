@@ -41,10 +41,9 @@ public class EntitySpellGrenade extends EntitySpellProjectile {
 
 	@Override
 	public void onUpdate() {
-		int alive = (int) dataWatcher.get(TIME_ALIVE);
 		super.onUpdate();
 
-		if(alive > 60 && !isDead && explodes())
+		if(timeAlive > 60 && !isDead && explodes())
 			doExplosion();
 	}
 

@@ -48,9 +48,9 @@ public class EntitySpellProjectile extends EntityThrowable {
 	private static final DataParameter COLORIZER_DATA = EntityDataManager.createKey(EntitySpellProjectile.class, DataSerializers.OPTIONAL_ITEM_STACK);
 	private static final DataParameter BULLET_DATA = EntityDataManager.createKey(EntitySpellProjectile.class, DataSerializers.OPTIONAL_ITEM_STACK);
 	private static final DataParameter CASTER_NAME = EntityDataManager.createKey(EntitySpellProjectile.class, DataSerializers.STRING);
-	public static final DataParameter TIME_ALIVE = EntityDataManager.createKey(EntitySpellProjectile.class, DataSerializers.VARINT);
 
 	public SpellContext context;
+	public int timeAlive;
 
 	public EntitySpellProjectile(World worldIn) {
 		super(worldIn);
@@ -79,7 +79,6 @@ public class EntitySpellProjectile extends EntityThrowable {
 		dataWatcher.register(COLORIZER_DATA, Optional.of(new ItemStack(Blocks.stone)));
 		dataWatcher.register(BULLET_DATA, Optional.of(new ItemStack(Blocks.stone)));
 		dataWatcher.register(CASTER_NAME, "");
-		dataWatcher.register(TIME_ALIVE, 0);
 	}
 
 	@Override
@@ -98,7 +97,7 @@ public class EntitySpellProjectile extends EntityThrowable {
 			bullet.writeToNBT(bulletCmp);
 		tagCompound.setTag(TAG_BULLET, bulletCmp);
 
-		tagCompound.setInteger(TAG_TIME_ALIVE, (int) dataWatcher.get(TIME_ALIVE));
+		tagCompound.setInteger(TAG_TIME_ALIVE, timeAlive);
 
 		tagCompound.setDouble(TAG_LAST_MOTION_X, motionX);
 		tagCompound.setDouble(TAG_LAST_MOTION_Y, motionY);
@@ -111,7 +110,7 @@ public class EntitySpellProjectile extends EntityThrowable {
 
 		NBTTagCompound colorizerCmp = tagCompound.getCompoundTag(TAG_COLORIZER);
 		ItemStack colorizer = ItemStack.loadItemStackFromNBT(colorizerCmp);
-		dataWatcher.set(COLORIZER_DATA, Optional.of(colorizer));
+		dataWatcher.set(COLORIZER_DATA, Optional.fromNullable(colorizer));
 
 		NBTTagCompound bulletCmp = tagCompound.getCompoundTag(TAG_BULLET);
 		ItemStack bullet = ItemStack.loadItemStackFromNBT(bulletCmp);
@@ -121,7 +120,7 @@ public class EntitySpellProjectile extends EntityThrowable {
 		if(thrower != null && thrower instanceof EntityPlayer)
 			dataWatcher.set(CASTER_NAME, ((EntityPlayer) thrower).getName());
 
-		dataWatcher.set(TIME_ALIVE, tagCompound.getInteger(TAG_TIME_ALIVE));
+		timeAlive = tagCompound.getInteger(TAG_TIME_ALIVE);
 
 		double lastMotionX = tagCompound.getDouble(TAG_LAST_MOTION_X);
 		double lastMotionY = tagCompound.getDouble(TAG_LAST_MOTION_Y);
@@ -134,12 +133,12 @@ public class EntitySpellProjectile extends EntityThrowable {
 	@Override
 	public void onUpdate() {
 		super.onUpdate();
-
-		int timeAlive = (int) dataWatcher.get(TIME_ALIVE);
+		
+		int timeAlive = ticksExisted;
 		if(timeAlive > getLiveTime())
 			setDead();
-		dataWatcher.set(TIME_ALIVE, timeAlive + 1);
-
+		timeAlive++;
+		
 		int colorVal = ICADColorizer.DEFAULT_SPELL_COLOR;
 		ItemStack colorizer = ((Optional<ItemStack>) dataWatcher.get(COLORIZER_DATA)).orNull();
 		if(colorizer != null && colorizer.getItem() instanceof ICADColorizer)
