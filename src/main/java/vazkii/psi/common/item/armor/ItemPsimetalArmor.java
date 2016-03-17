@@ -137,11 +137,13 @@ public class ItemPsimetalArmor extends ItemModArmor implements IPsimetalTool, IP
 		if(models == null)
 			models = new ModelBiped[4];
 
+		slot -= 2; // WHY YOU DO THIS MOJANG
 		return models[slot];
 	}
 
 	@SideOnly(Side.CLIENT)
 	public ModelBiped provideArmorModelForSlot(ItemStack stack, int slot) {
+		slot -= 2; // JUST PLEASE STOP
 		models[slot] = new ModelPsimetalExosuit(slot);
 		return models[slot];
 	}
