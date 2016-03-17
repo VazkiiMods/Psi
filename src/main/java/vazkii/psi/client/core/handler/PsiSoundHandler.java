@@ -10,6 +10,8 @@
  */
 package vazkii.psi.client.core.handler;
 
+import net.minecraft.init.SoundEvents;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 
 public final class PsiSoundHandler {
@@ -20,9 +22,9 @@ public final class PsiSoundHandler {
 	public static SoundEvent compileError;
 	public static SoundEvent levelUp;
 	public static SoundEvent loopcast;
-
+	
 	public static void init() {
-		// TODO add sounds
+		// TODO Wait for forge to fix this mess :D
 	}
 	
 }

@@ -28,6 +28,7 @@ import vazkii.psi.client.core.handler.ClientTickHandler;
 import vazkii.psi.client.core.handler.HUDHandler;
 import vazkii.psi.client.core.handler.KeybindHandler;
 import vazkii.psi.client.core.handler.ModelHandler;
+import vazkii.psi.client.core.handler.PsiSoundHandler;
 import vazkii.psi.client.core.handler.ShaderHandler;
 import vazkii.psi.client.core.version.VersionChecker;
 import vazkii.psi.client.fx.FXSparkle;
@@ -66,6 +67,7 @@ public class ClientProxy extends CommonProxy {
 	@Override
 	public void init(FMLInitializationEvent event) {
 		ModelHandler.init();
+		PsiSoundHandler.init();
 	}
 	
 	@Override
