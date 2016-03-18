@@ -1,3 +1,8 @@
+beta-24
+*<b>Updated the mod to Minecraft 1.9</b>
+*Added support for the two handed system to the Psi master keybind.
+*Sounds are missing because forge doesn't support them yet.
+*Tweaked the CAD renders to work with the two handed system.
 beta-23
 *Fixed invalid number constants being available through the import feature.
 *Fixed loopcast spells being able to be cast via right click while a loopcast is already going on.

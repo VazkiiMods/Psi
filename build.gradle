@@ -32,7 +32,7 @@ group = "vazkii.psi" // http://maven.apache.org/guides/mini/guide-naming-convent
 archivesBaseName = config.mod_name
 
 minecraft {
-    version = "${config.mc_version}-${config.forge_version}"
+    version = "${config.mc_version}-${config.forge_version}-${config.mc_version}"
     runDir = "eclipse/assets"
 
     mappings = config.mc_mappings
@@ -68,7 +68,7 @@ processResources {
         include 'mcmod.info'
 
         // replace version and mcversion
-        expand 'version': project.version, 'mcversion': project.minecraft.version
+        expand 'version': project.version, 'mcversion': config.mc_version
     }
 
     // copy everything else, thats not the mcmod.info
