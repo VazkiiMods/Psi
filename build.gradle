@@ -35,7 +35,7 @@ minecraft {
     version = "${config.mc_version}-${config.forge_version}"
     runDir = "eclipse/assets"
 
-    mappings = "stable_22"
+    mappings = config.mc_mappings
     replace 'GRADLE:BUILD', config.build_number
     replace 'GRADLE:VERSION', config.version
 
