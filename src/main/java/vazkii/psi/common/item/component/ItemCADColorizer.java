@@ -61,7 +61,11 @@ public class ItemCADColorizer extends ItemCADComponent implements ICADColorizer,
 	@Override
 	@SideOnly(Side.CLIENT)
 	public IItemColor getColor() {
-		return (stack, renderPass) -> renderPass == 1 && stack.getItemDamage() < 16 ? ItemDye.dyeColors[15 - stack.getItemDamage()] : 0xFFFFFF;
+		return this::getColor;
+	}
+
+	public int getColor(ItemStack stack, int renderPass) {
+		return renderPass == 1 && stack.getItemDamage() < 16 ? ItemDye.dyeColors[15 - stack.getItemDamage()] : 0xFFFFFF;
 	}
 
 	@Override

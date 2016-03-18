@@ -70,7 +70,11 @@ public class ItemExosuitSensor extends ItemMod implements IExosuitSensor, IColor
 	@Override
 	@SideOnly(Side.CLIENT)
 	public IItemColor getColor() {
-		return (stack, renderPass) -> renderPass == 1 ? getColor(stack) : 0xFFFFFF;
+		return this::getColor;
+	}
+
+	public int getColor(ItemStack stack, int renderPass) {
+		return renderPass == 1 ? getColor(stack) : 0xFFFFFF;
 	}
 
 }

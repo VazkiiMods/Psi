@@ -382,9 +382,13 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IColorProv
 	@Override
 	@SideOnly(Side.CLIENT)
 	public IItemColor getColor() {
-		return (stack, renderPass) -> renderPass == 1 ? getSpellColor(stack) : 0xFFFFFF;
+		return this::getColor;
 	}
 
+	public int getColor(ItemStack stack, int renderPass) {
+		return renderPass == 1 ? getSpellColor(stack) : 0xFFFFFF;
+	}
+	
 	@Override
 	public int getTime(ItemStack stack) {
 		return ItemNBTHelper.getInt(stack, TAG_TIME, 0);
