@@ -1,3 +1,7 @@
+beta-26
+*Fixed the crash I tried to fix in 25 but actually didn't fix it. Let's hope the changelog for 27 isn't a copy of this one, it only happens after the mod is built.
+beta-25
+*Fixed a crash when using Psi items because SpecialSource hates lambdas.
 beta-24
 *<b>Updated the mod to Minecraft 1.9</b>
 *Added support for the two handed system to the Psi master keybind.
