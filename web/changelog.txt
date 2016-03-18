@@ -1,4 +1,6 @@
 beta-26
+*Fixed backwards CADs in the newest forge.
+beta-26
 *Fixed the crash I tried to fix in 25 but actually didn't fix it. Let's hope the changelog for 27 isn't a copy of this one, it only happens after the mod is built.
 beta-25
 *Fixed a crash when using Psi items because SpecialSource hates lambdas.
