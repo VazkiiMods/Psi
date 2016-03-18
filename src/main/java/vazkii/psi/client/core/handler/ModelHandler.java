@@ -14,30 +14,44 @@ import java.util.HashMap;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemMeshDefinition;
+import net.minecraft.client.renderer.block.model.ModelBakery;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMap;
-import net.minecraft.client.resources.model.ModelBakery;
-import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.common.registry.GameData;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import vazkii.psi.common.block.base.IPsiBlock;
 import vazkii.psi.common.block.base.IVariantEnumHolder;
+import vazkii.psi.common.item.base.IColorProvider;
 import vazkii.psi.common.item.base.IExtraVariantHolder;
 import vazkii.psi.common.item.base.IVariantHolder;
 import vazkii.psi.common.item.base.ItemMod;
+import vazkii.psi.common.lib.LibObfuscation;
 import vazkii.psi.common.lib.LibResources;
 
 public class ModelHandler {
 
 	public static HashMap<String, ModelResourceLocation> resourceLocations = new HashMap();
 
-	public static void init() {
+	
+	public static void preInit() {
 		for(IVariantHolder holder : ItemMod.variantHolders)
 			registerModels(holder);
+	}
+	
+	public static void init() {
+		ItemColors colors = Minecraft.getMinecraft().getItemColors();
+		for(IVariantHolder holder : ItemMod.variantHolders)
+			if(holder instanceof IColorProvider)
+				colors.registerItemColorHandler(((IColorProvider) holder).getColor(), (Item) holder);
 	}
 
 	public static void registerModels(IVariantHolder holder) {
@@ -52,7 +66,7 @@ public class ModelHandler {
 				registerModels(i, extra.getExtraVariants(), true);
 			}
 		}
-	}
+	} 
 
 	public static void registerModels(Item item, String[] variants, boolean extra) {
 		if(item instanceof ItemBlock && ((ItemBlock) item).getBlock() instanceof IPsiBlock) {

@@ -33,14 +33,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
-import net.minecraft.network.play.server.S08PacketPlayerPosLook.EnumFlags;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.ChatStyle;
+import net.minecraft.network.play.server.SPacketPlayerPosLook.EnumFlags;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.Style;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.EnumSkyBlock;
-import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
@@ -68,6 +68,7 @@ import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellPiece;
 import vazkii.psi.client.core.handler.ClientTickHandler;
+import vazkii.psi.client.core.handler.PsiSoundHandler;
 import vazkii.psi.client.render.entity.RenderSpellCircle;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.item.ItemCAD;
@@ -350,7 +351,7 @@ public class PlayerDataHandler {
 
 			loopcast: {
 				if(loopcasting) {
-					if(player == null || cadStack == null || player.getCurrentEquippedItem() != cadStack) {
+					if(player == null || cadStack == null || player.getActiveItemStack() != cadStack) {
 						stopLoopcast();
 						break loopcast;
 					}
@@ -382,7 +383,7 @@ public class PlayerDataHandler {
 											deductPsi(cost, 3, true);
 
 										if(!player.worldObj.isRemote && loopcastTime % 10 == 0)
-											player.worldObj.playSoundAtEntity(player, "psi:loopcast", 0.5F, (float) (0.35 + Math.random() * 0.85));
+											player.worldObj.playSound(player, player.posX, player.posX, player.posZ, PsiSoundHandler.loopcast, SoundCategory.PLAYERS, 0.5F, (float) (0.35 + Math.random() * 0.85));
 									}
 
 									context.cspell.safeExecute(context);
@@ -412,10 +413,10 @@ public class PlayerDataHandler {
 						EntityPlayerMP pmp = (EntityPlayerMP) player;
 						pmp.playerNetServerHandler.setPlayerLocation(eidosAnchor.x, eidosAnchor.y, eidosAnchor.z, (float) eidosAnchorYaw, (float) eidosAnchorPitch);
 
-						Entity riding = player.ridingEntity;
+						Entity riding = player.getRidingEntity();
 						while(riding != null) {
 							riding.setPosition(eidosAnchor.x, eidosAnchor.y, eidosAnchor.z);
-							riding = riding.ridingEntity;
+							riding = riding.getRidingEntity();
 						}
 					}
 					postAnchorRecallTime = 0;
@@ -447,10 +448,10 @@ public class PlayerDataHandler {
 								player.posZ = vec.z;
 							}
 
-							Entity riding = player.ridingEntity;
+							Entity riding = player.getRidingEntity();
 							while(riding != null) {
 								riding.setPosition(vec.x, vec.y, vec.z);
-								riding = riding.ridingEntity;
+								riding = riding.getRidingEntity();
 							}
 
 							for(int i = 0; i < 5; i++) {
@@ -550,7 +551,7 @@ public class PlayerDataHandler {
 					NetworkHandler.INSTANCE.sendTo(message, (EntityPlayerMP) player);
 					NetworkHandler.INSTANCE.sendTo(message2, (EntityPlayerMP) player);
 					if(level == 25)
-						player.addChatComponentMessage(new ChatComponentTranslation("psimisc.softcapIndicator").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.AQUA)));
+						player.addChatComponentMessage(new TextComponentTranslation("psimisc.softcapIndicator").setChatStyle(new Style().setColor(TextFormatting.AQUA)));
 				}
 			}
 		}

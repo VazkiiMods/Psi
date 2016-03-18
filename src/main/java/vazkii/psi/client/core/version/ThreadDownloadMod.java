@@ -18,11 +18,11 @@ import java.io.InputStream;
 import java.net.URL;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.ChatStyle;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IChatComponent;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.Style;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.translation.I18n;
 
 public class ThreadDownloadMod extends Thread {
 
@@ -46,7 +46,7 @@ public class ThreadDownloadMod extends Thread {
 	@Override
 	public void run() {
 		try {
-			IChatComponent component = IChatComponent.Serializer.jsonToComponent(String.format(StatCollector.translateToLocal("psi.versioning.startingDownload"), fileName));
+			ITextComponent component = ITextComponent.Serializer.jsonToComponent(String.format(I18n.translateToLocal("psi.versioning.startingDownload"), fileName));
 			if(Minecraft.getMinecraft().thePlayer != null)
 				Minecraft.getMinecraft().thePlayer.addChatMessage(component);
 
@@ -81,7 +81,7 @@ public class ThreadDownloadMod extends Thread {
 				f.renameTo(f1);
 
 			if(Minecraft.getMinecraft().thePlayer != null)
-				Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentTranslation("psi.versioning.doneDownloading", fileName).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GREEN)));
+				Minecraft.getMinecraft().thePlayer.addChatMessage(new TextComponentTranslation("psi.versioning.doneDownloading", fileName).setChatStyle(new Style().setColor(TextFormatting.GREEN)));
 
 			Desktop.getDesktop().open(dir);
 			VersionChecker.downloadedFile = true;
@@ -100,6 +100,6 @@ public class ThreadDownloadMod extends Thread {
 
 	private void sendError() {
 		if(Minecraft.getMinecraft().thePlayer != null)
-			Minecraft.getMinecraft().thePlayer.addChatComponentMessage(new ChatComponentTranslation("psi.versioning.error").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
+			Minecraft.getMinecraft().thePlayer.addChatComponentMessage(new TextComponentTranslation("psi.versioning.error").setChatStyle(new Style().setColor(TextFormatting.RED)));
 	}
 }

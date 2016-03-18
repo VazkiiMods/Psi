@@ -11,10 +11,12 @@
 package vazkii.psi.client.core.version;
 
 import net.minecraft.command.CommandBase;
+import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.ChatStyle;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.text.Style;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextFormatting;
 
 public class CommandDownloadLatest extends CommandBase {
 
@@ -31,16 +33,16 @@ public class CommandDownloadLatest extends CommandBase {
 	}
 
 	@Override
-	public void processCommand(ICommandSender var1, String[] var2) {
+	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
 		if(!ENABLED)
-			var1.addChatMessage(new ChatComponentTranslation("psi.versioning.disabled").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
+			sender.addChatMessage(new TextComponentTranslation("psi.versioning.disabled").setChatStyle(new Style().setColor(TextFormatting.RED)));
 
-		else if(var2.length == 1)
+		else if(args.length == 1)
 			if(VersionChecker.downloadedFile)
-				var1.addChatMessage(new ChatComponentTranslation("psi.versioning.downloadedAlready").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
+				sender.addChatMessage(new TextComponentTranslation("psi.versioning.downloadedAlready").setChatStyle(new Style().setColor(TextFormatting.RED)));
 			else if(VersionChecker.startedDownload)
-				var1.addChatMessage(new ChatComponentTranslation("psi.versioning.downloadingAlready").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
-			else new ThreadDownloadMod("Psi-" + var2[0] + ".jar");
+				sender.addChatMessage(new TextComponentTranslation("psi.versioning.downloadingAlready").setChatStyle(new Style().setColor(TextFormatting.RED)));
+			else new ThreadDownloadMod("Psi-" + args[0] + ".jar");
 	}
 
 }

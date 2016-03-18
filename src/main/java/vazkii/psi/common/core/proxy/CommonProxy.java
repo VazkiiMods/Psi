@@ -16,6 +16,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import vazkii.psi.api.PsiAPI;
@@ -49,6 +50,10 @@ public class CommonProxy {
 
 		MinecraftForge.EVENT_BUS.register(new PlayerDataHandler.EventHandler());
 	}
+	
+	public void init(FMLInitializationEvent event) {
+		// proxy override
+	}
 
 	public EntityPlayer getClientPlayer() {
 		return null;
@@ -68,10 +73,6 @@ public class CommonProxy {
 
 	public Color getColorizerColor(ItemStack colorizer) {
 		return new Color(1F, 1F, 1F);
-	}
-
-	public void setSparkleFXNoClip(boolean noclip) {
-		// Proxy override
 	}
 
 	public void setWispFXDistanceLimit(boolean limit) {

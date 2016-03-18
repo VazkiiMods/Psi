@@ -10,8 +10,11 @@
  */
 package vazkii.psi.common.item;
 
+import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.RecipeSorter;
 import net.minecraftforge.oredict.RecipeSorter.Category;
 import vazkii.psi.api.cad.ICADColorizer;
@@ -19,10 +22,11 @@ import vazkii.psi.api.exosuit.IExosuitSensor;
 import vazkii.psi.api.exosuit.PsiArmorEvent;
 import vazkii.psi.common.crafting.recipe.SensorAttachRecipe;
 import vazkii.psi.common.crafting.recipe.SensorRemoveRecipe;
+import vazkii.psi.common.item.base.IColorProvider;
 import vazkii.psi.common.item.base.ItemMod;
 import vazkii.psi.common.lib.LibItemNames;
 
-public class ItemExosuitSensor extends ItemMod implements IExosuitSensor {
+public class ItemExosuitSensor extends ItemMod implements IExosuitSensor, IColorProvider {
 
 	public static final String[] VARIANTS = {
 			"exosuitSensorLight",
@@ -62,10 +66,11 @@ public class ItemExosuitSensor extends ItemMod implements IExosuitSensor {
 		default: return ICADColorizer.DEFAULT_SPELL_COLOR;
 		}
 	}
-
+	
 	@Override
-	public int getColorFromItemStack(ItemStack stack, int renderPass) {
-		return renderPass == 1 ? getColor(stack) : super.getColorFromItemStack(stack, renderPass);
+	@SideOnly(Side.CLIENT)
+	public IItemColor getColor() {
+		return (stack, renderPass) -> renderPass == 1 ? getColor(stack) : 0xFFFFFF;
 	}
 
 }

@@ -29,9 +29,10 @@ import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -235,7 +236,7 @@ public final class HUDHandler {
 	@SideOnly(Side.CLIENT)
 	private void renderSocketableEquippedName(ScaledResolution res, float pticks) {
 		Minecraft mc = Minecraft.getMinecraft();
-		ItemStack stack = mc.thePlayer.getCurrentEquippedItem();
+		ItemStack stack = mc.thePlayer.getHeldItem(EnumHand.MAIN_HAND);
 		String name = ISocketable.getSocketedItemName(stack, "");
 		if(stack == null || name == null || name.trim().isEmpty())
 			return;
@@ -292,7 +293,7 @@ public final class HUDHandler {
 		int fadeTime = time / 10;
 		int fadeoutTime = fadeTime * 2;
 
-		String levelUp = StatCollector.translateToLocal("psimisc.levelup");
+		String levelUp = I18n.translateToLocal("psimisc.levelup");
 		int len = levelUp.length();
 		int effLen = Math.min(len, len * levelDisplayTime / fadeTime);
 		levelUp = levelUp.substring(0, effLen);
@@ -314,16 +315,16 @@ public final class HUDHandler {
 
 		if(levelDisplayTime > fadeTime) {
 			if(levelDisplayTime - fadeTime == 1)
-				mc.getSoundHandler().playSound(PositionedSoundRecord.create(new ResourceLocation("psi:levelUp"), 0.5F));
+				mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(PsiSoundHandler.levelUp, 0.5F));
 
 			float a1 = Math.min(1F, (float) (levelDisplayTime - fadeTime) / fadeTime) * a;
 			int color1 = 0x00FFFFFF + ((int) (a1 * 0xFF) << 24);
-			mc.fontRendererObj.drawStringWithShadow(EnumChatFormatting.GOLD + currLevel, x, y, color1);
+			mc.fontRendererObj.drawStringWithShadow(TextFormatting.GOLD + currLevel, x, y, color1);
 		}
 		GlStateManager.popMatrix();
 
 		if(levelDisplayTime > fadeTime * 2) {
-			String s = StatCollector.translateToLocal("psimisc.levelUpInfo1");
+			String s = I18n.translateToLocal("psimisc.levelUpInfo1");
 			swidth = mc.fontRendererObj.getStringWidth(s);
 			len = s.length();
 			effLen = Math.min(len, len * (levelDisplayTime - fadeTime * 2) / fadeTime);
@@ -335,8 +336,8 @@ public final class HUDHandler {
 		}
 
 		if(levelDisplayTime > fadeTime * 3) {
-			String s = StatCollector.translateToLocal("psimisc.levelUpInfo2");
-			s = String.format(s, EnumChatFormatting.GREEN + Keyboard.getKeyName(KeybindHandler.keybind.getKeyCode()) + EnumChatFormatting.RESET);
+			String s = I18n.translateToLocal("psimisc.levelUpInfo2");
+			s = String.format(s, TextFormatting.GREEN + Keyboard.getKeyName(KeybindHandler.keybind.getKeyCode()) + TextFormatting.RESET);
 			swidth = mc.fontRendererObj.getStringWidth(s);
 			len = s.length();
 			effLen = Math.min(len, len * (levelDisplayTime - fadeTime * 3) / fadeTime);
@@ -380,7 +381,7 @@ public final class HUDHandler {
 			GlStateManager.color(1F, 1F, 1F, 1F);
 			GlStateManager.enableBlend();
 
-			String text = EnumChatFormatting.GREEN + remainingDisplayStack.getDisplayName();
+			String text = TextFormatting.GREEN + remainingDisplayStack.getDisplayName();
 			if(remainingCount >= 0) {
 				int max = remainingDisplayStack.getMaxStackSize();
 				int stacks = remainingCount / max;
@@ -388,7 +389,7 @@ public final class HUDHandler {
 
 				if(stacks == 0)
 					text = "" + remainingCount;
-				else text = remainingCount + " (" + EnumChatFormatting.AQUA + stacks + EnumChatFormatting.RESET + "*" + EnumChatFormatting.GRAY + max + EnumChatFormatting.RESET + "+" + EnumChatFormatting.YELLOW + rem + EnumChatFormatting.RESET + ")";
+				else text = remainingCount + " (" + TextFormatting.AQUA + stacks + TextFormatting.RESET + "*" + TextFormatting.GRAY + max + TextFormatting.RESET + "+" + TextFormatting.YELLOW + rem + TextFormatting.RESET + ")";
 			} else if(remainingCount == -1)
 				text = "\u221E";
 
@@ -403,7 +404,7 @@ public final class HUDHandler {
 	@SideOnly(Side.CLIENT)
 	private void renderHUDItem(ScaledResolution resolution, float partTicks) {
 		Minecraft mc = Minecraft.getMinecraft();
-		ItemStack stack = mc.thePlayer.getCurrentEquippedItem();
+		ItemStack stack = mc.thePlayer.getActiveItemStack();
 		if(stack != null && stack.getItem() != null && stack.getItem() instanceof IHUDItem)
 			((IHUDItem) stack.getItem()).drawHUD(resolution, partTicks, stack);
 	}

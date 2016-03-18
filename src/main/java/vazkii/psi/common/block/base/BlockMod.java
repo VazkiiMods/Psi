@@ -47,11 +47,6 @@ public class BlockMod extends Block implements IPsiBlock {
 	}
 
 	@Override
-	public int getRenderType() {
-		return 3;
-	}
-
-	@Override
 	public String getBareName() {
 		return bareName;
 	}

@@ -1,8 +1,8 @@
 {
-	"bulletCreate": { "category": "block", "sounds":["bulletCreate"] },
-	"cadCreate": { "category": "block", "sounds":["cadCreate"] },
-	"cadShoot": { "category": "player", "sounds":["cadShoot"] },
-	"compileError": { "category": "block", "sounds":["compileError"] },
-	"levelUp": { "category": "player", "sounds":["levelUp"] },
-	"loopcast": { "category": "player", "sounds":["loopcast"] }
+	"bulletCreate": { "category": "block", "sounds":["psi:bulletCreate"] },
+	"cadCreate": { "category": "block", "sounds":["psi:cadCreate"] },
+	"cadShoot": { "category": "player", "sounds":["psi:cadShoot"] },
+	"compileError": { "category": "block", "sounds":["psi:compileError"] },
+	"levelUp": { "category": "player", "sounds":["psi:levelUp"] },
+	"loopcast": { "category": "player", "sounds":["psi:loopcast"] }
 }

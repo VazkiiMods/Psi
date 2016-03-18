@@ -21,6 +21,7 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.item.ItemStack;
@@ -127,11 +128,12 @@ public final class RenderHelper {
 		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		GlStateManager.shadeModel(GL11.GL_SMOOTH);
 		Tessellator var15 = Tessellator.getInstance();
-		var15.getWorldRenderer().begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
-		var15.getWorldRenderer().pos(par3, par2, z).color(var8, var9, var10, var7).endVertex();
-		var15.getWorldRenderer().pos(par1, par2, z).color(var8, var9, var10, var7).endVertex();
-		var15.getWorldRenderer().pos(par1, par4, z).color(var12, var13, var14, var11).endVertex();
-		var15.getWorldRenderer().pos(par3, par4, z).color(var12, var13, var14, var11).endVertex();
+		VertexBuffer buff = var15.getBuffer();
+		buff.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
+		buff.pos(par3, par2, z).color(var8, var9, var10, var7).endVertex();
+		buff.pos(par1, par2, z).color(var8, var9, var10, var7).endVertex();
+		buff.pos(par1, par4, z).color(var12, var13, var14, var11).endVertex();
+		buff.pos(par3, par4, z).color(var12, var13, var14, var11).endVertex();
 		var15.draw();
 		GlStateManager.shadeModel(GL11.GL_FLAT);
 		GlStateManager.disableBlend();
@@ -145,16 +147,18 @@ public final class RenderHelper {
 
 	public static void drawTexturedModalRect(int par1, int par2, float z, int par3, int par4, int par5, int par6, float f, float f1) {
 		Tessellator tessellator = Tessellator.getInstance();
-		tessellator.getWorldRenderer().begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-		tessellator.getWorldRenderer().pos(par1 + 0, par2 + par6, z).tex((par3 + 0) * f, (par4 + par6) * f1).endVertex();
-		tessellator.getWorldRenderer().pos(par1 + par5, par2 + par6, z).tex((par3 + par5) * f, (par4 + par6) * f1).endVertex();
-		tessellator.getWorldRenderer().pos(par1 + par5, par2 + 0, z).tex((par3 + par5) * f, (par4 + 0) * f1).endVertex();
-		tessellator.getWorldRenderer().pos(par1 + 0, par2 + 0, z).tex((par3 + 0) * f, (par4 + 0) * f1).endVertex();
+		VertexBuffer buff = tessellator.getBuffer();
+		buff.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+		buff.pos(par1 + 0, par2 + par6, z).tex((par3 + 0) * f, (par4 + par6) * f1).endVertex();
+		buff.pos(par1 + par5, par2 + par6, z).tex((par3 + par5) * f, (par4 + par6) * f1).endVertex();
+		buff.pos(par1 + par5, par2 + 0, z).tex((par3 + par5) * f, (par4 + 0) * f1).endVertex();
+		buff.pos(par1 + 0, par2 + 0, z).tex((par3 + 0) * f, (par4 + 0) * f1).endVertex();
 		tessellator.draw();
 	}
 
 	public static void renderStar(int color, float xScale, float yScale, float zScale, long seed) {
 		Tessellator tessellator = Tessellator.getInstance();
+		VertexBuffer buff = tessellator.getBuffer();
 
 		int ticks = ClientTickHandler.ticksInGame % 200;
 		if (ticks >= 100)
@@ -183,18 +187,18 @@ public final class RenderHelper {
 			GlStateManager.rotate(random.nextFloat() * 360F, 1F, 0F, 0F);
 			GlStateManager.rotate(random.nextFloat() * 360F, 0F, 1F, 0F);
 			GlStateManager.rotate(random.nextFloat() * 360F + f1 * 90F, 0F, 0F, 1F);
-			tessellator.getWorldRenderer().begin(GL11.GL_TRIANGLE_FAN, DefaultVertexFormats.POSITION_COLOR);
+			buff.begin(GL11.GL_TRIANGLE_FAN, DefaultVertexFormats.POSITION_COLOR);
 			float f3 = random.nextFloat() * 20F + 5F + f2 * 10F;
 			float f4 = random.nextFloat() * 2F + 1F + f2 * 2F;
 			int r = (color & 0xFF0000) >> 16;
-		int g = (color & 0xFF00) >> 8;
-		int b = color & 0xFF;
-		tessellator.getWorldRenderer().pos(0, 0, 0).color(r, g, b, 255F * (1F - f2)).endVertex();
-		tessellator.getWorldRenderer().pos(-0.866D * f4, f3, -0.5F * f4).color(0, 0, 0, 0).endVertex();
-		tessellator.getWorldRenderer().pos(0.866D * f4, f3, -0.5F * f4).color(0, 0, 0, 0).endVertex();
-		tessellator.getWorldRenderer().pos(0, f3, 1F * f4).color(0, 0, 0, 0).endVertex();
-		tessellator.getWorldRenderer().pos(-0.866D * f4, f3, -0.5F * f4).color(0, 0, 0, 0).endVertex();
-		tessellator.draw();
+			int g = (color & 0xFF00) >> 8;
+			int b = color & 0xFF;
+			buff.pos(0, 0, 0).color(r, g, b, 255F * (1F - f2)).endVertex();
+			buff.pos(-0.866D * f4, f3, -0.5F * f4).color(0, 0, 0, 0).endVertex();
+			buff.pos(0.866D * f4, f3, -0.5F * f4).color(0, 0, 0, 0).endVertex();
+			buff.pos(0, f3, 1F * f4).color(0, 0, 0, 0).endVertex();
+			buff.pos(-0.866D * f4, f3, -0.5F * f4).color(0, 0, 0, 0).endVertex();
+			tessellator.draw();
 		}
 
 		GlStateManager.depthMask(true);

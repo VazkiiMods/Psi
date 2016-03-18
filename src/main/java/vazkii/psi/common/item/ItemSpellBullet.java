@@ -20,7 +20,7 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vazkii.psi.api.PsiAPI;
@@ -158,7 +158,7 @@ public class ItemSpellBullet extends ItemMod implements ISpellContainer {
 		case 7: // Spell Circle
 			if(!context.caster.worldObj.isRemote) {
 				try {
-					MovingObjectPosition pos = PieceOperatorVectorRaycast.raycast(context.caster, 32);
+					RayTraceResult pos = PieceOperatorVectorRaycast.raycast(context.caster, 32);
 
 					if(pos != null) {
 						EntitySpellCircle circle = new EntitySpellCircle(context.caster.worldObj);

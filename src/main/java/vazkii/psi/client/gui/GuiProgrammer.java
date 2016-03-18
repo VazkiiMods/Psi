@@ -33,11 +33,11 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.ChatStyle;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.Style;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.translation.I18n;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.EnumCADStat;
 import vazkii.psi.api.cad.ICAD;
@@ -182,12 +182,12 @@ public class GuiProgrammer extends GuiScreen {
 		drawTexturedModalRect(statusX, statusY, compiler.isErrored() ? 12 : 0, ySize + 28, 12, 12);
 		if(mouseX > statusX && mouseY > statusY && mouseX < statusX + 12 && mouseY < statusY + 12) {
 			if(compiler.isErrored()) {
-				tooltip.add(EnumChatFormatting.RED + StatCollector.translateToLocal("psimisc.errored"));
-				tooltip.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal(compiler.getError()));
+				tooltip.add(TextFormatting.RED + I18n.translateToLocal("psimisc.errored"));
+				tooltip.add(TextFormatting.GRAY + I18n.translateToLocal(compiler.getError()));
 				Pair<Integer, Integer> errorPos = compiler.getErrorLocation();
 				if(errorPos != null && errorPos.getLeft() != -1 && errorPos.getRight() != -1)
-					tooltip.add(EnumChatFormatting.GRAY + "[" + (errorPos.getLeft() + 1) + ", " + (errorPos.getRight() + 1) + "]");
-			} else tooltip.add(EnumChatFormatting.GREEN + StatCollector.translateToLocal("psimisc.compiled"));
+					tooltip.add(TextFormatting.GRAY + "[" + (errorPos.getLeft() + 1) + ", " + (errorPos.getRight() + 1) + "]");
+			} else tooltip.add(TextFormatting.GREEN + I18n.translateToLocal("psimisc.compiled"));
 		}
 
 		ItemStack cad = PsiAPI.getPlayerCAD(mc.thePlayer);
@@ -207,7 +207,7 @@ public class GuiProgrammer extends GuiScreen {
 				for (int i = 0; i < itemTooltip.size(); ++i)
 					if (i == 0)
 						itemTooltip.set(i, cad.getRarity().rarityColor + itemTooltip.get(i));
-					else itemTooltip.set(i, EnumChatFormatting.GRAY + itemTooltip.get(i));
+					else itemTooltip.set(i, TextFormatting.GRAY + itemTooltip.get(i));
 
 				tooltip.addAll(itemTooltip);
 			}
@@ -243,8 +243,8 @@ public class GuiProgrammer extends GuiScreen {
 				mc.getTextureManager().bindTexture(texture);
 
 				if(mouseX > statX && mouseY > statY && mouseX < statX + 12 && mouseY < statY + 12) {
-					tooltip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal(stat.getName()));
-					tooltip.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal(stat.getDesc()));
+					tooltip.add(TextFormatting.AQUA + I18n.translateToLocal(stat.getName()));
+					tooltip.add(TextFormatting.GRAY + I18n.translateToLocal(stat.getDesc()));
 				}
 
 				i++;
@@ -258,7 +258,7 @@ public class GuiProgrammer extends GuiScreen {
 		
 		if(configEnabled && !takingScreenshot) {
 			drawTexturedModalRect(left - 81, top + 55, xSize, 30, 81, 115);
-			String configStr = StatCollector.translateToLocal("psimisc.config");
+			String configStr = I18n.translateToLocal("psimisc.config");
 			mc.fontRendererObj.drawString(configStr, left - mc.fontRendererObj.getStringWidth(configStr) - 2, top + 45, 0xFFFFFF);
 
 			int i = 0;
@@ -276,9 +276,9 @@ public class GuiProgrammer extends GuiScreen {
 					mc.getTextureManager().bindTexture(texture);
 					drawTexturedModalRect(x + 50, y - 8, xSize, 145, 24, 24);
 
-					String localized = StatCollector.translateToLocal(s);
+					String localized = I18n.translateToLocal(s);
 					if(i == param)
-						localized = EnumChatFormatting.UNDERLINE + localized;
+						localized = TextFormatting.UNDERLINE + localized;
 
 					mc.fontRendererObj.drawString(localized, x, y, color);
 					i++;
@@ -343,27 +343,27 @@ public class GuiProgrammer extends GuiScreen {
 		if(!takingScreenshot) {
 			int topyText = topy;
 			if(spectator) {
-				String betaTest = EnumChatFormatting.RED + StatCollector.translateToLocal("psimisc.spectator");
+				String betaTest = TextFormatting.RED + I18n.translateToLocal("psimisc.spectator");
 				mc.fontRendererObj.drawStringWithShadow(betaTest, left + xSize / 2 - mc.fontRendererObj.getStringWidth(betaTest) / 2, topyText, 0xFFFFFF);
 				topyText -= 10;
 			}
 			if(LibMisc.BETA_TESTING) {
-				String betaTest = StatCollector.translateToLocal("psimisc.wip");
+				String betaTest = I18n.translateToLocal("psimisc.wip");
 				mc.fontRendererObj.drawStringWithShadow(betaTest, left + xSize / 2 - mc.fontRendererObj.getStringWidth(betaTest) / 2, topyText, 0xFFFFFF);
 			}
 			if(piece != null) {
-				String name = StatCollector.translateToLocal(piece.getUnlocalizedName());
+				String name = I18n.translateToLocal(piece.getUnlocalizedName());
 				mc.fontRendererObj.drawStringWithShadow(name, left + xSize / 2 - mc.fontRendererObj.getStringWidth(name) / 2, topyText, 0xFFFFFF);
 			}
 			
 			String coords = "";
 			if(SpellGrid.exists(cursorX, cursorY))
-				coords = String.format(StatCollector.translateToLocal("psimisc.programmerCoords"), selectedX + 1, selectedY + 1, cursorX + 1, cursorY + 1);
-			else coords = String.format(StatCollector.translateToLocal("psimisc.programmerCoordsNoCursor"), selectedX + 1, selectedY + 1);
+				coords = String.format(I18n.translateToLocal("psimisc.programmerCoords"), selectedX + 1, selectedY + 1, cursorX + 1, cursorY + 1);
+			else coords = String.format(I18n.translateToLocal("psimisc.programmerCoordsNoCursor"), selectedX + 1, selectedY + 1);
 			mc.fontRendererObj.drawString(coords, left + 4, topy + ySize + 14, 0x44FFFFFF);
 		}
 
-		mc.fontRendererObj.drawStringWithShadow(StatCollector.translateToLocal("psimisc.name"), left + padLeft, spellNameField.yPosition + 1, color);
+		mc.fontRendererObj.drawStringWithShadow(I18n.translateToLocal("psimisc.name"), left + padLeft, spellNameField.yPosition + 1, color);
 		spellNameField.drawTextBox();
 		if(panelEnabled) {
 			tooltip.clear();
@@ -380,9 +380,9 @@ public class GuiProgrammer extends GuiScreen {
 		
 		commentField.drawTextBox();
 		if(commentEnabled) {
-			String s = StatCollector.translateToLocal("psimisc.enterCommit");
+			String s = I18n.translateToLocal("psimisc.enterCommit");
 			mc.fontRendererObj.drawStringWithShadow(s, left + xSize / 2 - mc.fontRendererObj.getStringWidth(s) / 2, commentField.yPosition + 24, 0xFFFFFF);
-			s = StatCollector.translateToLocal("psimisc.semicolonLine");
+			s = I18n.translateToLocal("psimisc.semicolonLine");
 			mc.fontRendererObj.drawStringWithShadow(s, left + xSize / 2 - mc.fontRendererObj.getStringWidth(s) / 2, commentField.yPosition + 34, 0xFFFFFF);
 		}
 		GlStateManager.color(1F, 1F, 1F);
@@ -396,7 +396,7 @@ public class GuiProgrammer extends GuiScreen {
 			
 			if(overHelp && !isAltKeyDown()) {
 				ItemMod.addToTooltip(tooltip, "psimisc.programmerHelp");
-				String ctrl = StatCollector.translateToLocal(Minecraft.isRunningOnMac ? "psimisc.ctrlMac" : "psimisc.ctrlWindows");
+				String ctrl = I18n.translateToLocal(Minecraft.isRunningOnMac ? "psimisc.ctrlMac" : "psimisc.ctrlWindows");
 				ItemMod.tooltipIfShift(tooltip, () -> {
 					for(int i = 0; i < 20; i++)
 						ItemMod.addToTooltip(tooltip, "psi.programmerReference" + i, ctrl);
@@ -731,8 +731,8 @@ public class GuiProgrammer extends GuiScreen {
 			pushState(true);
 			SpellPiece piece = ((GuiButtonSpellPiece) button).piece.copy();
 			if(piece.getPieceType() == EnumPieceType.TRICK && spellNameField.getText().isEmpty()) {
-				String pieceName = StatCollector.translateToLocal(piece.getUnlocalizedName());
-				String patternStr = StatCollector.translateToLocal("psimisc.trickPattern");
+				String pieceName = I18n.translateToLocal(piece.getUnlocalizedName());
+				String patternStr = I18n.translateToLocal("psimisc.trickPattern");
 				Pattern pattern = Pattern.compile(patternStr);
 				Matcher matcher = pattern.matcher(pieceName);
 				if(matcher.matches()) {
@@ -783,7 +783,7 @@ public class GuiProgrammer extends GuiScreen {
 								if(piece != null) {
 									PieceGroup group = PsiAPI.groupsForPiece.get(piece.getClass());
 									if(!mc.thePlayer.capabilities.isCreativeMode && (group == null || !data.isPieceGroupUnlocked(group.name))) {
-										mc.thePlayer.addChatComponentMessage(new ChatComponentTranslation("psimisc.missingPieces").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
+										mc.thePlayer.addChatComponentMessage(new TextComponentTranslation("psimisc.missingPieces").setChatStyle(new Style().setColor(TextFormatting.RED)));
 										return;
 									}
 								}
@@ -794,7 +794,7 @@ public class GuiProgrammer extends GuiScreen {
 						spellNameField.setText(spell.name);
 						onSpellChanged(false);
 					} catch(Throwable t) {
-						mc.thePlayer.addChatComponentMessage(new ChatComponentTranslation("psimisc.malformedJson").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
+						mc.thePlayer.addChatComponentMessage(new TextComponentTranslation("psimisc.malformedJson").setChatStyle(new Style().setColor(TextFormatting.RED)));
 					}
 				}
 			}
@@ -905,7 +905,7 @@ public class GuiProgrammer extends GuiScreen {
 			nameToken = outMatcher.group(2);
 		}
 		
-		String haystack = StatCollector.translateToLocal(p.getUnlocalizedName()).toLowerCase(); 
+		String haystack = I18n.translateToLocal(p.getUnlocalizedName()).toLowerCase(); 
 		Predicate<String> pred = haystack::contains;
 		
 		if(nameToken == null)

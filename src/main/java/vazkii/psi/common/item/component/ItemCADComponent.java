@@ -13,11 +13,13 @@ package vazkii.psi.common.item.component;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.xml.soap.Text;
+
 import org.apache.commons.lang3.tuple.Pair;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.text.TextFormatting;
 import vazkii.psi.api.cad.EnumCADComponent;
 import vazkii.psi.api.cad.EnumCADStat;
 import vazkii.psi.api.cad.ICADComponent;
@@ -51,7 +53,7 @@ public abstract class ItemCADComponent extends ItemMod implements ICADComponent 
 					String statValStr = statVal == -1 ?	"\u221E" : ""+statVal;
 
 					String name = local(stat.getName());
-					addToTooltip(tooltip, " " + EnumChatFormatting.AQUA + name + EnumChatFormatting.GRAY + ": " + statValStr);
+					addToTooltip(tooltip, " " + TextFormatting.AQUA + name + TextFormatting.GRAY + ": " + statValStr);
 				}
 			}
 		});

@@ -18,12 +18,12 @@ import java.util.Map;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vazkii.psi.api.PsiAPI;
@@ -103,9 +103,9 @@ public abstract class SpellPiece {
 	public String getEvaluationTypeString() {
 		Class<?> evalType = getEvaluationType();
 		String evalStr = evalType == null ? "Null" : evalType.getSimpleName();
-		String s = StatCollector.translateToLocal("psi.datatype." + evalStr);
+		String s = I18n.translateToLocal("psi.datatype." + evalStr);
 		if(getPieceType() == EnumPieceType.CONSTANT)
-			s += " " + StatCollector.translateToLocal("psimisc.constant");
+			s += " " + I18n.translateToLocal("psimisc.constant");
 
 		return s;
 	}
@@ -166,7 +166,7 @@ public abstract class SpellPiece {
 	}
 
 	public String getSortingName() {
-		return StatCollector.translateToLocal(getUnlocalizedName());
+		return I18n.translateToLocal(getUnlocalizedName());
 	}
 
 	public String getUnlocalizedDesc() {
@@ -203,7 +203,7 @@ public abstract class SpellPiece {
 		Minecraft.getMinecraft().renderEngine.bindTexture(res);
 
 		GlStateManager.color(1F, 1F, 1F);
-		WorldRenderer wr = Tessellator.getInstance().getWorldRenderer();
+		VertexBuffer wr = Tessellator.getInstance().getBuffer();
 		wr.begin(7, DefaultVertexFormats.POSITION_TEX);
 		wr.pos(0, 16, 0).tex(0, 1).endVertex();
 		wr.pos(16, 16, 0).tex(1, 1).endVertex();
@@ -238,7 +238,7 @@ public abstract class SpellPiece {
 			float maxV = (184 + wh) / 256F;
 			GlStateManager.color(1F, 1F, 1F, 1F);
 
-			WorldRenderer wr = Tessellator.getInstance().getWorldRenderer();
+			VertexBuffer wr = Tessellator.getInstance().getBuffer();
 			wr.begin(7, DefaultVertexFormats.POSITION_TEX);
 			wr.pos(-2, 4, 0).tex(minU, maxV).endVertex();
 			wr.pos(4, 4, 0).tex(maxU, maxV).endVertex();
@@ -275,7 +275,7 @@ public abstract class SpellPiece {
 				Color color = new Color(param.color);
 				GlStateManager.color(color.getRed() / 255F, color.getGreen() / 255F, color.getBlue() / 255F, 1F);
 
-				WorldRenderer wr = Tessellator.getInstance().getWorldRenderer();
+				VertexBuffer wr = Tessellator.getInstance().getBuffer();
 				wr.begin(7, DefaultVertexFormats.POSITION_TEX);
 				wr.pos(minX, maxY, 0).tex(minU, maxV).endVertex();
 				wr.pos(maxX, maxY, 0).tex(maxU, maxV).endVertex();
@@ -300,16 +300,16 @@ public abstract class SpellPiece {
 
 	@SideOnly(Side.CLIENT)
 	public void addToTooltipAfterShift(List<String> tooltip) {
-		TooltipHelper.addToTooltip(tooltip, EnumChatFormatting.GRAY + "%s", getUnlocalizedDesc());
+		TooltipHelper.addToTooltip(tooltip, TextFormatting.GRAY + "%s", getUnlocalizedDesc());
 
 		TooltipHelper.addToTooltip(tooltip, "");
 		String eval = getEvaluationTypeString();
-		TooltipHelper.addToTooltip(tooltip, "<- " + EnumChatFormatting.GOLD + eval);
+		TooltipHelper.addToTooltip(tooltip, "<- " + TextFormatting.GOLD + eval);
 
 		for(SpellParam param : paramSides.keySet()) {
-			String pName = StatCollector.translateToLocal(param.name);
+			String pName = I18n.translateToLocal(param.name);
 			String pEval = param.getRequiredTypeString();
-			TooltipHelper.addToTooltip(tooltip, (param.canDisable ? "[->] " : " ->  ") + EnumChatFormatting.YELLOW + pName + " [" + pEval + "]");
+			TooltipHelper.addToTooltip(tooltip, (param.canDisable ? "[->] " : " ->  ") + TextFormatting.YELLOW + pName + " [" + pEval + "]");
 		}
 	}
 

@@ -14,9 +14,9 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.translation.I18n;
 import vazkii.psi.api.cad.EnumCADStat;
 import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.common.block.base.ModBlocks;
@@ -54,12 +54,12 @@ public class GuiCADAssembler extends GuiContainer {
 
 			int i = 0;
 			ICAD cadItem = (ICAD) cad.getItem();
-			String stats = StatCollector.translateToLocal("psimisc.stats");
-			String s = EnumChatFormatting.BOLD + stats;
+			String stats = I18n.translateToLocal("psimisc.stats");
+			String s = TextFormatting.BOLD + stats;
 			fontRendererObj.drawStringWithShadow(s, 213 - fontRendererObj.getStringWidth(s) / 2, 34, color);
 
 			for(EnumCADStat stat : EnumCADStat.class.getEnumConstants()) {
-				s = EnumChatFormatting.AQUA + StatCollector.translateToLocal(stat.getName()) + EnumChatFormatting.RESET + ": " + cadItem.getStatValue(cad, stat);
+				s = TextFormatting.AQUA + I18n.translateToLocal(stat.getName()) + TextFormatting.RESET + ": " + cadItem.getStatValue(cad, stat);
 				fontRendererObj.drawStringWithShadow(s, 179, 50 + i * 10, color);
 				i++;
 			}

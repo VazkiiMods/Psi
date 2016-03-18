@@ -48,7 +48,7 @@ public class PsiCreativeTab extends CreativeTabs {
 	}
 
 	@Override
-	public void displayAllReleventItems(List<ItemStack> p_78018_1_) {
+	public void displayAllRelevantItems(List<ItemStack> p_78018_1_) {
 		list = p_78018_1_;
 
 		addBlock(ModBlocks.cadAssembler);

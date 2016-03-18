@@ -11,7 +11,6 @@
 package vazkii.psi.api.spell;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.boss.IBossDisplayData;
 
 /**
  * This interface defines an entity that's immune to spells. Any bosses (IBossDisplayData)
@@ -22,7 +21,7 @@ public interface ISpellImmune {
 	public boolean isImmune();
 	
 	public static boolean isImmune(Entity e) {
-		return e instanceof IBossDisplayData || (e instanceof ISpellImmune && ((ISpellImmune) e).isImmune());
+		return !e.isNonBoss() || (e instanceof ISpellImmune && ((ISpellImmune) e).isImmune());
 	}
 	
 }

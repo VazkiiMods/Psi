@@ -16,8 +16,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.EnumSpellStat;
@@ -27,7 +27,6 @@ import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellMetadata;
 import vazkii.psi.api.spell.SpellParam;
 import vazkii.psi.api.spell.SpellRuntimeException;
-import vazkii.psi.api.spell.SpellParam.Side;
 import vazkii.psi.api.spell.param.ParamVector;
 import vazkii.psi.api.spell.piece.PieceTrick;
 import vazkii.psi.client.core.handler.HUDHandler;
@@ -77,11 +76,9 @@ public class PieceTrickPlaceBlock extends PieceTrick {
 		if(!world.isBlockLoaded(pos))
 			return;
 		
-		System.out.println(slot);
-		
 		IBlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
-		if(block == null || block.isAir(world, pos) || block.isReplaceable(world, pos)) {
+		if(block == null || block.isAir(state, world, pos) || block.isReplaceable(world, pos)) {
 			if(conjure) {
 				if(!world.isRemote)
 					world.setBlockState(pos, ModBlocks.conjured.getDefaultState());

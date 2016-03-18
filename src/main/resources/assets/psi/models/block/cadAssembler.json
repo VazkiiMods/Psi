@@ -1,5 +1,5 @@
 {
-    "__comment": "",
+    "parent": "block/block",
     "textures": {
         "particle": "psi:blocks/cadAssemblerTop",
         "0": "psi:blocks/cadAssemblerSide",

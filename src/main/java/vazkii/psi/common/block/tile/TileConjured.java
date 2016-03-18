@@ -67,8 +67,6 @@ public class TileConjured extends TileMod implements ITickable {
 				double y = getPos().getY();
 				double z = getPos().getZ();
 
-				Psi.proxy.setSparkleFXNoClip(true);
-
 				// Bottom
 				makeParticle(edges[0],  r, g, b, x + 0, y + 0, z + 0, 0, 0, 1);
 				makeParticle(edges[1],  r, g, b, x + 0, y + 0, z + 1, 1, 0, 0);
@@ -87,7 +85,6 @@ public class TileConjured extends TileMod implements ITickable {
 				makeParticle(edges[10], r, g, b, x + 1, y + 0, z + 1, 0, 1, 0);
 				makeParticle(edges[11], r, g, b, x + 1, y + 0, z + 0, 0, 1, 0);
 
-				Psi.proxy.setSparkleFXNoClip(false);
 			} else if(Math.random() < 0.5) {
 				float w = 0.15F;
 				float h = 0.05F;

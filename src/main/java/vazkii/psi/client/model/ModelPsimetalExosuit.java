@@ -17,6 +17,9 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumHandSide;
+import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
+import vazkii.psi.client.core.handler.ClientTickHandler;
 
 public class ModelPsimetalExosuit extends ModelBiped {
 
@@ -130,6 +133,12 @@ public class ModelPsimetalExosuit extends ModelBiped {
 		bootR.showModel = slot == 0;
 		bipedHeadwear.showModel = false;
 
+		setModelParts();
+		prepareForRender(entity, ClientTickHandler.partialTicks);
+		super.render(entity, f, f1, f2, f3, f4, f5);
+	}
+	
+	public void setModelParts() {
 		bipedHead = helm;
 		bipedBody = body;
 		bipedRightArm = armR;
@@ -141,30 +150,53 @@ public class ModelPsimetalExosuit extends ModelBiped {
 			bipedRightLeg = bootR;
 			bipedLeftLeg = bootL;
 		}
-
-		prepareForRender(entity);
-		super.render(entity, f, f1, f2, f3, f4, f5);
 	}
-
-	public void prepareForRender(Entity entity) {
+	
+	public void prepareForRender(Entity entity, float pticks) {
 		EntityLivingBase living = (EntityLivingBase) entity;
 		isSneak = living != null ? living.isSneaking() : false;
 		isChild = living != null ? living.isChild() : false;
 		if(living != null && living instanceof EntityPlayer) {
 			EntityPlayer player = (EntityPlayer) living;
+			
+			swingProgress = player.getSwingProgress(pticks);
+			
+            ModelBiped.ArmPose modelbiped$armpose = ModelBiped.ArmPose.EMPTY;
+            ModelBiped.ArmPose modelbiped$armpose1 = ModelBiped.ArmPose.EMPTY;
+            ItemStack itemstack = player.getHeldItemMainhand();
+            ItemStack itemstack1 = player.getHeldItemOffhand();
+            
+            if(itemstack != null) {
+                modelbiped$armpose = ModelBiped.ArmPose.ITEM;
 
-			ItemStack itemstack = player.inventory.getCurrentItem();
-			heldItemRight = itemstack != null ? 1 : 0;
+                if(player.getItemInUseCount() > 0) {
+                    EnumAction enumaction = itemstack.getItemUseAction();
 
-			aimedBow = false;
-			if (itemstack != null && player.getItemInUseCount() > 0) {
-				EnumAction enumaction = itemstack.getItemUseAction();
+                    if(enumaction == EnumAction.BLOCK)
+                        modelbiped$armpose = ModelBiped.ArmPose.BLOCK;
+                    else if(enumaction == EnumAction.BOW)
+                        modelbiped$armpose = ModelBiped.ArmPose.BOW_AND_ARROW;
+                }
+            }
 
-				if (enumaction == EnumAction.BLOCK)
-					heldItemRight = 3;
-				else if(enumaction == EnumAction.BOW)
-					aimedBow = true;
-			}
+            if(itemstack1 != null) {
+                modelbiped$armpose1 = ModelBiped.ArmPose.ITEM;
+
+                if(player.getItemInUseCount() > 0) {
+                    EnumAction enumaction1 = itemstack1.getItemUseAction();
+
+                    if(enumaction1 == EnumAction.BLOCK)
+                        modelbiped$armpose1 = ModelBiped.ArmPose.BLOCK;
+                }
+            }
+
+            if(player.getPrimaryHand() == EnumHandSide.RIGHT) {
+                rightArmPose = modelbiped$armpose;
+                leftArmPose = modelbiped$armpose1;
+            } else {
+                rightArmPose = modelbiped$armpose1;
+                leftArmPose = modelbiped$armpose;
+            }
 		}
 	}
 

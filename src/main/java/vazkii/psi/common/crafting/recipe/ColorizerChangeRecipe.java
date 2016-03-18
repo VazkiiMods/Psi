@@ -18,8 +18,6 @@ import net.minecraftforge.common.ForgeHooks;
 import vazkii.psi.api.cad.EnumCADComponent;
 import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.cad.ICADColorizer;
-import vazkii.psi.api.exosuit.IExosuitSensor;
-import vazkii.psi.api.exosuit.ISensorHoldable;
 import vazkii.psi.common.item.ItemCAD;
 
 public class ColorizerChangeRecipe implements IRecipe {

@@ -18,7 +18,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.math.RayTraceResult;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.internal.MathHelper;
 import vazkii.psi.api.internal.Vector3;
@@ -61,7 +61,7 @@ public final class SpellContext {
 
 	// Tool stuff. Only available if the spell is casted from a Psimetal Tool
 	public ItemStack tool;
-	public MovingObjectPosition positionBroken;
+	public RayTraceResult positionBroken;
 	// Sword stuff
 	public EntityLivingBase attackedEntity;
 	// Armor Stuff

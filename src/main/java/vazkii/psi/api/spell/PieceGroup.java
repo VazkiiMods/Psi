@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.translation.I18n;
 import vazkii.psi.api.internal.IPlayerData;
 
 /**
@@ -64,7 +64,7 @@ public class PieceGroup implements Comparable<PieceGroup> {
 	@Override
 	public int compareTo(PieceGroup o) {
 		if(o.levelRequirement == levelRequirement)
-			return StatCollector.translateToLocal(getUnlocalizedName()).compareTo(StatCollector.translateToLocal(o.getUnlocalizedName()));
+			return I18n.translateToLocal(getUnlocalizedName()).compareTo(I18n.translateToLocal(o.getUnlocalizedName()));
 
 		return levelRequirement - o.levelRequirement;
 	}

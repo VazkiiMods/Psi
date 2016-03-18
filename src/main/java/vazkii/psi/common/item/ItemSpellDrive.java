@@ -14,17 +14,22 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.ChatStyle;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.Style;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.RecipeSorter;
 import net.minecraftforge.oredict.RecipeSorter.Category;
 import vazkii.psi.api.internal.VanillaPacketDispatcher;
 import vazkii.psi.api.spell.Spell;
+import vazkii.psi.client.core.handler.PsiSoundHandler;
 import vazkii.psi.common.block.tile.TileProgrammer;
 import vazkii.psi.common.core.helper.ItemNBTHelper;
 import vazkii.psi.common.crafting.recipe.BulletToDriveRecipe;
@@ -64,11 +69,11 @@ public class ItemSpellDrive extends ItemMod {
 		if(spellName == null || spellName.isEmpty())
 			return name;
 
-		return name + " (" + EnumChatFormatting.GREEN + spellName + EnumChatFormatting.RESET + ")";
+		return name + " (" + TextFormatting.GREEN + spellName + TextFormatting.RESET + ")";
 	}
 
 	@Override
-	public boolean onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ) {
+	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
 		TileEntity tile = worldIn.getTileEntity(pos);
 		if(tile instanceof TileProgrammer) {
 			TileProgrammer programmer = (TileProgrammer) tile;
@@ -76,41 +81,43 @@ public class ItemSpellDrive extends ItemMod {
 			if(spell == null && programmer.canCompile()) {
 				setSpell(stack, programmer.spell);
 				if(!worldIn.isRemote)
-					worldIn.playSoundEffect(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, "psi:bulletCreate", 0.5F, 1F);
-				return true;
+					worldIn.playSound(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, PsiSoundHandler.bulletCreate, SoundCategory.PLAYERS, 0.5F, 1F, false);
+				return EnumActionResult.SUCCESS;
 			} else if(spell != null) {
 				boolean enabled = programmer.isEnabled();
 				if(enabled && !programmer.playerLock.isEmpty()) {
 					if(!programmer.playerLock.equals(playerIn.getName())) {
 						if(!worldIn.isRemote)
-							playerIn.addChatComponentMessage(new ChatComponentTranslation("psimisc.notYourProgrammer").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
-						return true;
+							playerIn.addChatComponentMessage(new TextComponentTranslation("psimisc.notYourProgrammer").setChatStyle(new Style().setColor(TextFormatting.RED)));
+						return EnumActionResult.SUCCESS;
 					}
 				} else programmer.playerLock = playerIn.getName();
 
 				programmer.spell = spell;
 				programmer.onSpellChanged();
 				if(!worldIn.isRemote) {
-					worldIn.playSoundEffect(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, "psi:bulletCreate", 0.5F, 1F);
+					worldIn.playSound(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, PsiSoundHandler.bulletCreate, SoundCategory.PLAYERS, 0.5F, 1F, false);
 					VanillaPacketDispatcher.dispatchTEToNearbyPlayers(programmer);
 				}
-				return true;
+				return EnumActionResult.SUCCESS;
 			}
 		}
 
-		return false;
+		return EnumActionResult.PASS;
 	}
 
 	@Override
-	public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn)  {
+	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand){
 		if(getSpell(itemStackIn) != null && playerIn.isSneaking()) {
 			if(!worldIn.isRemote)
-				worldIn.playSoundAtEntity(playerIn, "psi:compileError", 0.5F, 1F);
-			else playerIn.swingItem();
+				worldIn.playSound(playerIn, playerIn.posX, playerIn.posY, playerIn.posZ, PsiSoundHandler.compileError, SoundCategory.PLAYERS, 0.5F, 1F);
+			else playerIn.swingArm(hand);
 			setSpell(itemStackIn, null);
+			
+			return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
 		}
 
-		return itemStackIn;
+		return new ActionResult<ItemStack>(EnumActionResult.PASS, itemStackIn);
 	}
 
 	public static void setSpell(ItemStack stack, Spell spell) {

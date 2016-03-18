@@ -12,19 +12,23 @@ package vazkii.psi.common.item.component;
 
 import java.awt.Color;
 
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.oredict.RecipeSorter;
 import org.apache.commons.lang3.text.WordUtils;
 
+import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.oredict.RecipeSorter;
 import vazkii.psi.api.cad.ICADColorizer;
 import vazkii.psi.client.core.handler.ClientTickHandler;
 import vazkii.psi.common.crafting.recipe.ColorizerChangeRecipe;
+import vazkii.psi.common.item.base.IColorProvider;
 import vazkii.psi.common.lib.LibItemNames;
 
-public class ItemCADColorizer extends ItemCADComponent implements ICADColorizer {
+public class ItemCADColorizer extends ItemCADComponent implements ICADColorizer, IColorProvider {
 
 	public static final String[] VARIANTS = {
 			LibItemNames.CAD_COLORIZER + getProperDyeName(EnumDyeColor.WHITE),
@@ -53,12 +57,11 @@ public class ItemCADColorizer extends ItemCADComponent implements ICADColorizer 
 		GameRegistry.addRecipe(new ColorizerChangeRecipe());
 		RecipeSorter.register("psi:colorizerChange", ColorizerChangeRecipe.class, RecipeSorter.Category.SHAPELESS, "");
 	}
-
+	
 	@Override
-	public int getColorFromItemStack(ItemStack stack, int renderPass) {
-		if(renderPass == 1 && stack.getItemDamage() < 16)
-			return ItemDye.dyeColors[15 - stack.getItemDamage()];
-		return 0xFFFFFF;
+	@SideOnly(Side.CLIENT)
+	public IItemColor getColor() {
+		return (stack, renderPass) -> renderPass == 1 && stack.getItemDamage() < 16 ? ItemDye.dyeColors[15 - stack.getItemDamage()] : 0xFFFFFF;
 	}
 
 	@Override

@@ -16,7 +16,8 @@ import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
 import net.minecraft.client.renderer.ItemMeshDefinition;
-import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -26,11 +27,15 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.ChatStyle;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.text.Style;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -53,16 +58,18 @@ import vazkii.psi.api.spell.ISpellSettable;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellRuntimeException;
+import vazkii.psi.client.core.handler.PsiSoundHandler;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
 import vazkii.psi.common.core.helper.ItemNBTHelper;
 import vazkii.psi.common.crafting.recipe.AssemblyScavengeRecipe;
+import vazkii.psi.common.item.base.IColorProvider;
 import vazkii.psi.common.item.base.ItemMod;
 import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.lib.LibItemNames;
 
-public class ItemCAD extends ItemMod implements ICAD, ISpellSettable {
+public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IColorProvider {
 
 	private static final String TAG_COMPONENT_PREFIX = "component";
 	private static final String TAG_STORED_PSI = "storedPsi";
@@ -86,28 +93,29 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable {
 	}
 
 	@Override
-	public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn) {
+	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
 		PlayerData data = PlayerDataHandler.get(playerIn);
 		ItemStack playerCad = PsiAPI.getPlayerCAD(playerIn);
 		if(playerCad != itemStackIn) {
 			if(!worldIn.isRemote)
-				playerIn.addChatComponentMessage(new ChatComponentTranslation("psimisc.multipleCads").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
-			return itemStackIn;
+				playerIn.addChatComponentMessage(new TextComponentTranslation("psimisc.multipleCads").setChatStyle(new Style().setColor(TextFormatting.RED)));
+			return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
 		}
 
 		ItemStack bullet = getBulletInSocket(itemStackIn, getSelectedSlot(itemStackIn));
-		cast(worldIn, playerIn, data, bullet, itemStackIn, 40, 25, 0.5F, null);
+		boolean did = cast(worldIn, playerIn, data, bullet, itemStackIn, 40, 25, 0.5F, null);
 
 		if(bullet == null && craft(playerIn, new ItemStack(Items.redstone), new ItemStack(ModItems.material))) {
 			if(!worldIn.isRemote)
-				worldIn.playSoundAtEntity(playerIn, "psi:cadShoot", 0.5F, (float) (0.5 + Math.random() * 0.5));
+				worldIn.playSound(playerIn, playerIn.posX, playerIn.posY, playerIn.posZ, PsiSoundHandler.cadShoot, SoundCategory.PLAYERS, 0.5F, (float) (0.5 + Math.random() * 0.5));
 			data.deductPsi(100, 60, true);
 
 			if(data.level == 0)
 				data.levelUp();
+			did = true;
 		}
 
-		return itemStackIn;
+		return new ActionResult<ItemStack>(did ? EnumActionResult.SUCCESS : EnumActionResult.PASS, itemStackIn);
 	}
 
 	@Override
@@ -120,7 +128,7 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable {
 		}
 	}
 
-	public static void cast(World world, EntityPlayer player, PlayerData data, ItemStack bullet, ItemStack cad, int cd, int particles, float sound, Consumer<SpellContext> predicate) {
+	public static boolean cast(World world, EntityPlayer player, PlayerData data, ItemStack bullet, ItemStack cad, int cd, int particles, float sound, Consumer<SpellContext> predicate) {
 		if(data.getAvailablePsi() > 0 && cad != null && bullet != null && bullet.getItem() instanceof ISpellContainer && isTruePlayer(player)) {
 			ISpellContainer spellContainer = (ISpellContainer) bullet.getItem();
 			if(spellContainer.containsSpell(bullet)) {
@@ -137,7 +145,7 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable {
 								data.deductPsi(cost, cd, true);
 
 							if(!world.isRemote)
-								world.playSoundAtEntity(player, "psi:cadShoot", sound, (float) (0.5 + Math.random() * 0.5));
+								world.playSound(player, player.posX, player.posY, player.posZ, PsiSoundHandler.cadShoot, SoundCategory.PLAYERS, sound, (float) (0.5 + Math.random() * 0.5));
 
 							if(sound > 0) {
 								Color color = Psi.proxy.getCADColor(cad);
@@ -170,11 +178,14 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable {
 						}
 
 						spellContainer.castSpell(bullet, context);
+						return true;
 					} else if(!world.isRemote)
-						player.addChatComponentMessage(new ChatComponentTranslation("psimisc.weakCad").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
+						player.addChatComponentMessage(new TextComponentTranslation("psimisc.weakCad").setChatStyle(new Style().setColor(TextFormatting.RED)));
 				}
 			}
 		}
+		
+		return false;
 	}
 
 	public static boolean craft(EntityPlayer player, ItemStack in, ItemStack out) {
@@ -369,10 +380,9 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable {
 	}
 
 	@Override
-	public int getColorFromItemStack(ItemStack stack, int renderPass) {
-		if(renderPass == 1)
-			return getSpellColor(stack);
-		return 0xFFFFFF;
+	@SideOnly(Side.CLIENT)
+	public IItemColor getColor() {
+		return (stack, renderPass) -> renderPass == 1 ? getSpellColor(stack) : 0xFFFFFF;
 	}
 
 	@Override
@@ -472,7 +482,7 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable {
 					name = componentStack.getDisplayName();
 
 				name = local(name);
-				String line = EnumChatFormatting.GREEN + local(componentType.getName()) + EnumChatFormatting.GRAY + ": " + name;
+				String line = TextFormatting.GREEN + local(componentType.getName()) + TextFormatting.GRAY + ": " + name;
 				addToTooltip(tooltip, line);
 
 				line = "";
@@ -482,7 +492,7 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable {
 						int statVal = getStatValue(stack, stat);
 						String statValStr = statVal == -1 ?	"\u221E" : ""+statVal;
 
-						line = " " + EnumChatFormatting.AQUA + local(shrt) + EnumChatFormatting.GRAY + ": " + statValStr;
+						line = " " + TextFormatting.AQUA + local(shrt) + TextFormatting.GRAY + ": " + statValStr;
 						if(!line.isEmpty())
 							addToTooltip(tooltip, line);
 					}

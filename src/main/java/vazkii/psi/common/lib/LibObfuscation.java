@@ -13,6 +13,6 @@ package vazkii.psi.common.lib;
 public final class LibObfuscation {
 
 	// GuiIngame
-	public static final String[] REMAINING_HIGHLIGHT_TICKS = new String[] { "remainingHighlightTicks", "field_92017_k", "r" };
-
+	public static final String[] REMAINING_HIGHLIGHT_TICKS = new String[] { "remainingHighlightTicks", "field_92017_k", "q" };
+	
 }

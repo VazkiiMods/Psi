@@ -15,10 +15,10 @@ import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vazkii.psi.api.spell.EnumPieceType;
@@ -48,7 +48,7 @@ public class PieceConnector extends SpellPiece implements IRedirector {
 
 	@Override
 	public String getEvaluationTypeString() {
-		return StatCollector.translateToLocal("psi.datatype.Any");
+		return I18n.translateToLocal("psi.datatype.Any");
 	}
 
 	@Override
@@ -98,7 +98,7 @@ public class PieceConnector extends SpellPiece implements IRedirector {
 			double maxV = minV + 0.5;
 
 			GlStateManager.color(1F, 1F, 1F);
-			WorldRenderer wr = Tessellator.getInstance().getWorldRenderer();
+			VertexBuffer wr = Tessellator.getInstance().getBuffer();
 			wr.begin(7, DefaultVertexFormats.POSITION_TEX);
 			wr.pos(0, 16, 0).tex(minU, maxV).endVertex();
 			wr.pos(16, 16, 0).tex(maxU, maxV).endVertex();

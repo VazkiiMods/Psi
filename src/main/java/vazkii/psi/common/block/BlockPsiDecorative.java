@@ -10,8 +10,10 @@
  */
 package vazkii.psi.common.block;
 
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.util.BlockPos;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import vazkii.psi.common.block.base.BlockMetaVariants;
 import vazkii.psi.common.lib.LibBlockNames;
@@ -22,12 +24,12 @@ public class BlockPsiDecorative extends BlockMetaVariants {
 		super(LibBlockNames.PSI_DECORATIVE, Material.iron, Variants.class);
 		setHardness(5.0F);
 		setResistance(10.0F);
-		setStepSound(soundTypeMetal);
+		setStepSound(SoundType.METAL);
 	}
 
 	@Override
-	public int getLightValue(IBlockAccess world, BlockPos pos) {
-		Variants variant = (Variants) world.getBlockState(pos).getValue(variantProp);
+	public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos) {
+		Variants variant = (Variants) state.getValue(variantProp);
 		return variant == Variants.PSIMETAL_PLATE_BLACK_LIGHT || variant == Variants.PSIMETAL_PLATE_CYAN_LIGHT ? 15 : 0;
 	}
 

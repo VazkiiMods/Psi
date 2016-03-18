@@ -10,22 +10,15 @@
  */
 package vazkii.psi.common.spell.selector;
 
-import net.minecraft.item.ItemStack;
-import vazkii.psi.api.PsiAPI;
-import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.internal.Vector3;
-import vazkii.psi.api.spell.EnumSpellStat;
 import vazkii.psi.api.spell.Spell;
-import vazkii.psi.api.spell.SpellCompilationException;
 import vazkii.psi.api.spell.SpellContext;
-import vazkii.psi.api.spell.SpellMetadata;
 import vazkii.psi.api.spell.SpellParam;
 import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.piece.PieceSelector;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
-import vazkii.psi.common.spell.trick.PieceTrickSaveVector;
 
 public class PieceSelectorEidosChangelog extends PieceSelector {
 

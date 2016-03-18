@@ -17,7 +17,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.translation.I18n;
 import vazkii.psi.client.core.handler.ShaderHandler;
 import vazkii.psi.client.core.helper.RenderHelper;
 import vazkii.psi.client.gui.GuiProgrammer;
@@ -78,7 +78,7 @@ public class RenderTileProgrammer extends TileEntitySpecialRenderer<TileProgramm
 			RenderHelper.drawTexturedModalRect(-7, -7, 0, 0, 0, 174, 184, 1F / 256F, 1F / 256F);
 
 			GlStateManager.translate(0F, 0F, 0.01F);
-			mc.fontRendererObj.drawString(StatCollector.translateToLocal("psimisc.name"), 0, 164, 0xFFFFFF);
+			mc.fontRendererObj.drawString(I18n.translateToLocal("psimisc.name"), 0, 164, 0xFFFFFF);
 			mc.fontRendererObj.drawString(te.spell.name, 38, 164, 0xFFFFFF);
 
 			ShaderHandler.releaseShader();

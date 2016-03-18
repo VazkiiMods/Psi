@@ -12,7 +12,7 @@ package vazkii.psi.common.spell.trick;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.EnumSpellStat;
 import vazkii.psi.api.spell.Spell;
@@ -60,12 +60,12 @@ public class PieceTrickTorrent extends PieceTrick {
 
 		pos = pos.down();
 		IBlockState state = context.caster.worldObj.getBlockState(pos);
-		if(state.getBlock().isAir(context.caster.worldObj, pos) || state.getBlock().isReplaceable(context.caster.worldObj, pos))
+		if(state.getBlock().isAir(state, context.caster.worldObj, pos) || state.getBlock().isReplaceable(context.caster.worldObj, pos))
 			context.caster.worldObj.setBlockState(pos, Blocks.flowing_water.getDefaultState());
 		else {
 			pos = pos.up();
 			state = context.caster.worldObj.getBlockState(pos);
-			if(state.getBlock().isAir(context.caster.worldObj, pos) || state.getBlock().isReplaceable(context.caster.worldObj, pos))
+			if(state.getBlock().isAir(state, context.caster.worldObj, pos) || state.getBlock().isReplaceable(context.caster.worldObj, pos))
 				context.caster.worldObj.setBlockState(pos, Blocks.flowing_water.getDefaultState());
 		}
 

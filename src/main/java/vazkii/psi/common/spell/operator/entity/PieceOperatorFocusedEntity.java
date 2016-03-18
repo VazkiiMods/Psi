@@ -14,9 +14,9 @@ import java.util.List;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellParam;
@@ -57,16 +57,16 @@ public class PieceOperatorFocusedEntity extends PieceOperator {
 
 		final double finalDistance = 32;
 		double distance = finalDistance;
-		MovingObjectPosition pos = PieceOperatorVectorRaycast.raycast(e, finalDistance);
-		Vec3 positionVector = e.getPositionVector();
+		RayTraceResult pos = PieceOperatorVectorRaycast.raycast(e, finalDistance);
+		Vec3d positionVector = e.getPositionVector();
 		if(e instanceof EntityPlayer)
 			positionVector = positionVector.addVector(0, e.getEyeHeight(), 0);
 
 		if(pos != null)
 			distance = pos.hitVec.distanceTo(positionVector);
 
-		Vec3 lookVector = e.getLookVec();
-		Vec3 reachVector = positionVector.addVector(lookVector.xCoord * finalDistance, lookVector.yCoord * finalDistance, lookVector.zCoord * finalDistance);
+		Vec3d lookVector = e.getLookVec();
+		Vec3d reachVector = positionVector.addVector(lookVector.xCoord * finalDistance, lookVector.yCoord * finalDistance, lookVector.zCoord * finalDistance);
 
 		Entity lookedEntity = null;
 		List<Entity> entitiesInBoundingBox = e.worldObj.getEntitiesWithinAABBExcludingEntity(e, e.getEntityBoundingBox().addCoord(lookVector.xCoord * finalDistance, lookVector.yCoord * finalDistance, lookVector.zCoord * finalDistance).expand(1F, 1F, 1F));
@@ -76,7 +76,7 @@ public class PieceOperatorFocusedEntity extends PieceOperator {
 			if(entity.canBeCollidedWith()) {
 				float collisionBorderSize = entity.getCollisionBorderSize();
 				AxisAlignedBB hitbox = entity.getEntityBoundingBox().expand(collisionBorderSize, collisionBorderSize, collisionBorderSize);
-				MovingObjectPosition interceptPosition = hitbox.calculateIntercept(positionVector, reachVector);
+				RayTraceResult interceptPosition = hitbox.calculateIntercept(positionVector, reachVector);
 
 				if(hitbox.isVecInside(positionVector)) {
 					if(0.0D < minDistance || minDistance == 0.0D) {

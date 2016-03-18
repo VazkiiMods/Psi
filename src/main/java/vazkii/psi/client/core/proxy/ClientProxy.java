@@ -20,6 +20,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.cad.ICADColorizer;
@@ -27,6 +28,7 @@ import vazkii.psi.client.core.handler.ClientTickHandler;
 import vazkii.psi.client.core.handler.HUDHandler;
 import vazkii.psi.client.core.handler.KeybindHandler;
 import vazkii.psi.client.core.handler.ModelHandler;
+import vazkii.psi.client.core.handler.PsiSoundHandler;
 import vazkii.psi.client.core.handler.ShaderHandler;
 import vazkii.psi.client.core.version.VersionChecker;
 import vazkii.psi.client.fx.FXSparkle;
@@ -47,7 +49,7 @@ public class ClientProxy extends CommonProxy {
 	public void preInit(FMLPreInitializationEvent event) {
 		super.preInit(event);
 
-		ModelHandler.init();
+		ModelHandler.preInit();
 		ShaderHandler.init();
 		KeybindHandler.init();
 
@@ -59,9 +61,15 @@ public class ClientProxy extends CommonProxy {
 
 		ClientRegistry.bindTileEntitySpecialRenderer(TileProgrammer.class, new RenderTileProgrammer());
 
-		RenderingRegistry.registerEntityRenderingHandler(EntitySpellCircle.class, (RenderManager manager) -> { return new RenderSpellCircle(manager); });
+		RenderingRegistry.registerEntityRenderingHandler(EntitySpellCircle.class, manager -> new RenderSpellCircle(manager));
 	}
 
+	@Override
+	public void init(FMLInitializationEvent event) {
+		ModelHandler.init();
+		PsiSoundHandler.init();
+	}
+	
 	@Override
 	public EntityPlayer getClientPlayer() {
 		return Minecraft.getMinecraft().thePlayer;
@@ -91,23 +99,13 @@ public class ClientProxy extends CommonProxy {
 		return color;
 	}
 
-	private static boolean noclipEnabled = false;
-	@Override
-	public void setSparkleFXNoClip(boolean noclip) {
-		noclipEnabled = noclip;
-	}
-
 	@Override
 	public void sparkleFX(World world, double x, double y, double z, float r, float g, float b, float motionx, float motiony, float motionz, float size, int m) {
 		if(!doParticle(world))
 			return;
 
 		FXSparkle sparkle = new FXSparkle(world, x, y, z, size, r, g, b, m);
-		if(noclipEnabled)
-			sparkle.noClip = true;
-		sparkle.motionX = motionx;
-		sparkle.motionY = motiony;
-		sparkle.motionZ = motionz;
+		sparkle.setSpeed(motionx, motiony, motionz);
 		Minecraft.getMinecraft().effectRenderer.addEffect(sparkle);
 	}
 
@@ -130,9 +128,7 @@ public class ClientProxy extends CommonProxy {
 			return;
 
 		FXWisp wisp = new FXWisp(world, x, y, z, size, r, g, b, distanceLimit, depthTest, maxAgeMul);
-		wisp.motionX = motionx;
-		wisp.motionY = motiony;
-		wisp.motionZ = motionz;
+		wisp.setSpeed(motionx, motiony, motionz);
 
 		Minecraft.getMinecraft().effectRenderer.addEffect(wisp);
 	}
