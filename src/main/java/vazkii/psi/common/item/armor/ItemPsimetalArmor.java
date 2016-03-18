@@ -118,11 +118,12 @@ public class ItemPsimetalArmor extends ItemModArmor implements IPsimetalTool, IP
 	@Override
 	@SideOnly(Side.CLIENT)
 	public IItemColor getColor() {
-		return this::getColor;
-	}
-
-	public int getColor(ItemStack stack, int renderPass) {
-		return renderPass == 1 ? getColor(stack) : 0xFFFFFF;
+		return new IItemColor() {
+			@Override
+			public int getColorFromItemstack(ItemStack stack, int tintIndex) {
+				return tintIndex == 1 ? getColor(stack) : 0xFFFFFF;
+			}
+		};
 	}
 
 	@Override
