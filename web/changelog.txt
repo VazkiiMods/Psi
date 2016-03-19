@@ -1,3 +1,5 @@
+beta-27
+*Fixed crash on leveling up.
 beta-26
 *Fixed backwards CADs in the newest forge.
 beta-26
