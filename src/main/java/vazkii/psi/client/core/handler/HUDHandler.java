@@ -314,8 +314,8 @@ public final class HUDHandler {
 		y += 10;
 
 		if(levelDisplayTime > fadeTime) {
-			if(levelDisplayTime - fadeTime == 1)
-				mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(PsiSoundHandler.levelUp, 0.5F));
+//			if(levelDisplayTime - fadeTime == 1) TODO Wait for forge to fix sounds
+//				mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(PsiSoundHandler.levelUp, 0.5F));
 
 			float a1 = Math.min(1F, (float) (levelDisplayTime - fadeTime) / fadeTime) * a;
 			int color1 = 0x00FFFFFF + ((int) (a1 * 0xFF) << 24);
