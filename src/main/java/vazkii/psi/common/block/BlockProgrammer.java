@@ -78,7 +78,7 @@ public class BlockProgrammer extends BlockFacing {
 					worldIn.playSound(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, PsiSoundHandler.bulletCreate, SoundCategory.BLOCKS, 0.5F, 1F, false);
 
 				programmer.spell.uuid = UUID.randomUUID();
-				settable.setSpell(heldItem, programmer.spell);
+				settable.setSpell(playerIn, heldItem, programmer.spell);
 				if(playerIn instanceof EntityPlayerMP)
 					VanillaPacketDispatcher.dispatchTEToPlayer(programmer, (EntityPlayerMP) playerIn);
 				return true;

@@ -119,11 +119,11 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IColorProv
 	}
 
 	@Override
-	public void setSpell(ItemStack stack, Spell spell) {
+	public void setSpell(EntityPlayer player, ItemStack stack, Spell spell) {
 		int slot = getSelectedSlot(stack);
 		ItemStack bullet = getBulletInSocket(stack, slot);
 		if(bullet != null && bullet.getItem() instanceof ISpellSettable) {
-			((ISpellSettable) bullet.getItem()).setSpell(bullet, spell);
+			((ISpellSettable) bullet.getItem()).setSpell(player, bullet, spell);
 			setBulletInSocket(stack, slot, bullet);
 		}
 	}
