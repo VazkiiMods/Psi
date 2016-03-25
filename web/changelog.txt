@@ -1,3 +1,9 @@
+beta-29
+*Fixed the whole mod being broken, because of Forge 12.16.0.1809.
+*Fixed loopcast being broken, because of 1.9.
+*Fixed the CAD Assembler armor slots being broken, because of 1.9.
+*Fixed Trick: Collapse being broken, because of 1.9.
+*Sounds are still broken, because of 1.9.
 beta-28
 *Fixed crash on leveling up.
 beta-27
