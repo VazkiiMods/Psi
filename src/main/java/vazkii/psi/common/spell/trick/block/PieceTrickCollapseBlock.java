@@ -68,7 +68,7 @@ public class PieceTrickCollapseBlock extends PieceTrick {
 		Block block = state.getBlock();
 		Block blockBelow = stateDown.getBlock();
 
-		if(blockBelow.isAir(state, world, posDown) && block.getBlockHardness(state, world, pos) != -1 && block.getHarvestLevel(state) <= ConfigHandler.cadHarvestLevel && world.getTileEntity(pos) == null && block.canSilkHarvest(world, pos, state, context.caster)) {
+		if(blockBelow.isAir(stateDown, world, posDown) && block.getBlockHardness(state, world, pos) != -1 && block.getHarvestLevel(state) <= ConfigHandler.cadHarvestLevel && world.getTileEntity(pos) == null && block.canSilkHarvest(world, pos, state, context.caster)) {
 			EntityFallingBlock falling = new EntityFallingBlock(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, state);
 			world.spawnEntityInWorld(falling);
 		}
