@@ -159,8 +159,8 @@ public class PlayerDataHandler {
 
 		@SubscribeEvent
 		public void onPlayerTick(LivingUpdateEvent event) {
-			if(event.entityLiving instanceof EntityPlayer) {
-				EntityPlayer player = (EntityPlayer) event.entityLiving;
+			if(event.getEntityLiving() instanceof EntityPlayer) {
+				EntityPlayer player = (EntityPlayer) event.getEntityLiving();
 				
 				ItemStack cadStack = PsiAPI.getPlayerCAD(player);
 				if(cadStack != null && cadStack.getItem() instanceof ICAD)
@@ -173,16 +173,16 @@ public class PlayerDataHandler {
 
 		@SubscribeEvent
 		public void onEntityDamage(LivingHurtEvent event) {
-			if(event.entityLiving instanceof EntityPlayer) {
-				EntityPlayer player = (EntityPlayer) event.entityLiving;
-				PlayerDataHandler.get(player).damage(event.ammount);
+			if(event.getEntityLiving() instanceof EntityPlayer) {
+				EntityPlayer player = (EntityPlayer) event.getEntityLiving();
+				PlayerDataHandler.get(player).damage(event.getAmount());
 
 				EntityLivingBase attacker = null;
-				if(event.source.getEntity() != null && event.source.getEntity() instanceof EntityLivingBase)
-					attacker = (EntityLivingBase) event.source.getEntity();
+				if(event.getSource().getEntity() != null && event.getSource().getEntity() instanceof EntityLivingBase)
+					attacker = (EntityLivingBase) event.getSource().getEntity();
 
-				PsiArmorEvent.post(new PsiArmorEvent(player, PsiArmorEvent.DAMAGE, event.ammount, attacker));
-				if(event.source.isFireDamage())
+				PsiArmorEvent.post(new PsiArmorEvent(player, PsiArmorEvent.DAMAGE, event.getAmount(), attacker));
+				if(event.getSource().isFireDamage())
 					PsiArmorEvent.post(new PsiArmorEvent(player, PsiArmorEvent.ON_FIRE));
 			}
 		}
@@ -197,8 +197,8 @@ public class PlayerDataHandler {
 
 		@SubscribeEvent
 		public void onEntityJump(LivingJumpEvent event) {
-			if(event.entityLiving instanceof EntityPlayer) {
-				EntityPlayer player = (EntityPlayer) event.entityLiving;
+			if(event.getEntityLiving() instanceof EntityPlayer) {
+				EntityPlayer player = (EntityPlayer) event.getEntityLiving();
 				PsiArmorEvent.post(new PsiArmorEvent(player, PsiArmorEvent.JUMP));
 			}
 		}
@@ -206,7 +206,7 @@ public class PlayerDataHandler {
 		@SubscribeEvent
 		public void onPsiArmorEvent(PsiArmorEvent event) {
 			for(int i = 0; i < 4; i++) {
-				ItemStack armor = event.entityPlayer.inventory.armorInventory[i];
+				ItemStack armor = event.getEntityPlayer().inventory.armorInventory[i];
 				if(armor != null && armor.getItem() instanceof IPsiEventArmor) {
 					IPsiEventArmor handler = (IPsiEventArmor) armor.getItem();
 					handler.onEvent(armor, event);
@@ -227,13 +227,14 @@ public class PlayerDataHandler {
 			cameraEntity.getPosition();
 			Frustum frustum = new Frustum();
 
-			double viewX = cameraEntity.lastTickPosX + (cameraEntity.posX - cameraEntity.lastTickPosX) * event.partialTicks;
-			double viewY = cameraEntity.lastTickPosY + (cameraEntity.posY - cameraEntity.lastTickPosY) * event.partialTicks;
-			double viewZ = cameraEntity.lastTickPosZ + (cameraEntity.posZ - cameraEntity.lastTickPosZ) * event.partialTicks;
+			float partialTicks = event.getPartialTicks();
+			double viewX = cameraEntity.lastTickPosX + (cameraEntity.posX - cameraEntity.lastTickPosX) * partialTicks;
+			double viewY = cameraEntity.lastTickPosY + (cameraEntity.posY - cameraEntity.lastTickPosY) * partialTicks;
+			double viewZ = cameraEntity.lastTickPosZ + (cameraEntity.posZ - cameraEntity.lastTickPosZ) * partialTicks;
 			frustum.setPosition(viewX, viewY, viewZ);
 
 			for(EntityPlayer player : mc.theWorld.playerEntities)
-				PlayerDataHandler.get(player).render(player, event.partialTicks);
+				PlayerDataHandler.get(player).render(player, partialTicks);
 		}
 
 		@SubscribeEvent
@@ -241,11 +242,11 @@ public class PlayerDataHandler {
 		public void onFOVUpdate(FOVUpdateEvent event) {
 			PlayerData data = get(Minecraft.getMinecraft().thePlayer);
 			if(data.isAnchored) {
-				float fov = event.newfov;
+				float fov = event.getNewfov();
 				if(data.eidosAnchorTime > 0)
 					fov *= Math.min(5, data.eidosAnchorTime - ClientTickHandler.partialTicks) / 5;
 				else fov *= (10 - Math.min(10, data.postAnchorRecallTime + ClientTickHandler.partialTicks)) / 10;
-				event.newfov = fov;
+				event.setNewfov(fov);
 			}
 		}
 

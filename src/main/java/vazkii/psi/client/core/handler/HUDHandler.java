@@ -75,12 +75,15 @@ public final class HUDHandler {
 	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
 	public void onDraw(RenderGameOverlayEvent.Post event) {
-		if(event.type == ElementType.ALL) {
-			drawPsiBar(event.resolution, event.partialTicks);
-			renderSocketableEquippedName(event.resolution, event.partialTicks);
-			renderLevelUpIndicator(event.resolution, event.partialTicks);
-			renderRemainingItems(event.resolution, event.partialTicks);
-			renderHUDItem(event.resolution, event.partialTicks);
+		if(event.getType() == ElementType.ALL) {
+			ScaledResolution resolution = event.getResolution();
+			float partialTicks = event.getPartialTicks();
+			
+			drawPsiBar(resolution, partialTicks);
+			renderSocketableEquippedName(resolution, partialTicks);
+			renderLevelUpIndicator(resolution, partialTicks);
+			renderRemainingItems(resolution, partialTicks);
+			renderHUDItem(resolution, partialTicks);
 		}
 	}
 
