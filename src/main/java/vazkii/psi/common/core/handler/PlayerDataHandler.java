@@ -352,7 +352,7 @@ public class PlayerDataHandler {
 
 			loopcast: {
 				if(loopcasting) {
-					if(player == null || cadStack == null || player.getActiveItemStack() != cadStack) {
+					if(player == null || cadStack == null || (player.getHeldItemMainhand() != cadStack && player.getHeldItemOffhand() != cadStack)) {
 						stopLoopcast();
 						break loopcast;
 					}
