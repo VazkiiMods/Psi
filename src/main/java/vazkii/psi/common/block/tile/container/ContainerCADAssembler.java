@@ -71,7 +71,7 @@ public class ContainerCADAssembler extends Container {
 		for(int k = 0; k < 4; k++) {
             final EntityEquipmentSlot slot = equipmentSlots[k];
 
-			addSlotToContainer(new Slot(playerInventory, playerInventory.getSizeInventory() - 1 - k, xs - 27, ys + 18 * k) {
+			addSlotToContainer(new Slot(playerInventory, playerInventory.getSizeInventory() - 2 - k, xs - 27, ys + 18 * k) {
 
 				public int getSlotStackLimit() {
 					return 1;
@@ -132,7 +132,7 @@ public class ContainerCADAssembler extends Container {
 				
 				if(itemstack1.getItem() instanceof ItemArmor) {
 					ItemArmor armor = (ItemArmor) itemstack1.getItem();
-					int armorSlot = armor.armorType.getIndex();
+					int armorSlot = 3 - armor.armorType.getIndex();
 					if(!mergeItemStack(itemstack1, invEnd + armorSlot, invEnd + armorSlot + 1, true) && !mergeItemStack(itemstack1, invStart, invEnd, true)) // Assembler -> Armor+Inv+Hotbar
 						return null;
 					
