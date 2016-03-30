@@ -10,6 +10,7 @@
  */
 package vazkii.psi.api.spell;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
 /**
@@ -18,6 +19,6 @@ import net.minecraft.item.ItemStack;
  */
 public interface ISpellSettable {
 
-	public void setSpell(ItemStack stack, Spell spell);
+	public void setSpell(EntityPlayer player, ItemStack stack, Spell spell);
 
 }

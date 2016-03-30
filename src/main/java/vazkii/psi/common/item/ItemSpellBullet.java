@@ -91,7 +91,7 @@ public class ItemSpellBullet extends ItemMod implements ISpellContainer {
 	}
 
 	@Override
-	public void setSpell(ItemStack stack, Spell spell) {
+	public void setSpell(EntityPlayer player, ItemStack stack, Spell spell) {
 		ItemSpellDrive.setSpell(stack, spell);
 
 		if(!containsSpell(stack))

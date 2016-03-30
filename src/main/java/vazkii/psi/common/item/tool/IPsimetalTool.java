@@ -10,6 +10,7 @@
  */
 package vazkii.psi.common.item.tool;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import vazkii.psi.api.cad.ISocketable;
@@ -65,11 +66,11 @@ public interface IPsimetalTool extends ISocketable, ISpellSettable {
 	}
 
 	@Override
-	public default void setSpell(ItemStack stack, Spell spell) {
+	public default void setSpell(EntityPlayer player, ItemStack stack, Spell spell) {
 		int slot = getSelectedSlot(stack);
 		ItemStack bullet = getBulletInSocket(stack, slot);
 		if(bullet != null && bullet.getItem() instanceof ISpellSettable) {
-			((ISpellSettable) bullet.getItem()).setSpell(bullet, spell);
+			((ISpellSettable) bullet.getItem()).setSpell(player, bullet, spell);
 			setBulletInSocket(stack, slot, bullet);
 		}
 	}
