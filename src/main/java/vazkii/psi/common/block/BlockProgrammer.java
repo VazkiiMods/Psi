@@ -75,7 +75,7 @@ public class BlockProgrammer extends BlockFacing {
 			if(programmer.canCompile()) {
 				ISpellSettable settable = (ISpellSettable) heldItem.getItem();
 				if(!worldIn.isRemote)
-					worldIn.playSound(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, PsiSoundHandler.bulletCreate, SoundCategory.BLOCKS, 0.5F, 1F, false);
+					worldIn.playSound(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, PsiSoundHandler.bulletCreate, SoundCategory.BLOCKS, 0.5F, 1F);
 
 				programmer.spell.uuid = UUID.randomUUID();
 				settable.setSpell(heldItem, programmer.spell);
@@ -84,7 +84,7 @@ public class BlockProgrammer extends BlockFacing {
 				return true;
 			} else {
 				if(!worldIn.isRemote)
-					worldIn.playSound(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, PsiSoundHandler.compileError, SoundCategory.BLOCKS, 0.5F, 1F, false);
+					worldIn.playSound(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, PsiSoundHandler.compileError, SoundCategory.BLOCKS, 0.5F, 1F);
 				return false;
 			}
 		}

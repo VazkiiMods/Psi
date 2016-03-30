@@ -10,9 +10,9 @@
  */
 package vazkii.psi.client.core.handler;
 
-import net.minecraft.init.SoundEvents;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import vazkii.psi.common.lib.LibResources;
 
 public final class PsiSoundHandler {
 
@@ -23,8 +23,27 @@ public final class PsiSoundHandler {
 	public static SoundEvent levelUp;
 	public static SoundEvent loopcast;
 	
+	private static int size = 0;
+	
 	public static void init() {
-		// TODO Wait for forge to fix this mess :D
+		size = SoundEvent.soundEventRegistry.getKeys().size();
+		
+		bulletCreate = register("bulletCreate");
+		cadCreate = register("cadCreate");
+		cadShoot = register("cadShoot");
+		compileError = register("compileError");
+		levelUp = register("levelUp");
+		loopcast = register("loopcast");
+	}
+	
+	public static SoundEvent register(String name) {
+		ResourceLocation loc = new ResourceLocation(LibResources.PREFIX_MOD + name);
+		SoundEvent e = new SoundEvent(loc);
+		
+		SoundEvent.soundEventRegistry.register(size, loc, e);
+		size++;
+		
+		return e;
 	}
 	
 }

@@ -384,7 +384,7 @@ public class PlayerDataHandler {
 											deductPsi(cost, 3, true);
 
 										if(!player.worldObj.isRemote && loopcastTime % 10 == 0)
-											player.worldObj.playSound(player, player.posX, player.posX, player.posZ, PsiSoundHandler.loopcast, SoundCategory.PLAYERS, 0.5F, (float) (0.35 + Math.random() * 0.85));
+											player.worldObj.playSound(null, player.posX, player.posX, player.posZ, PsiSoundHandler.loopcast, SoundCategory.PLAYERS, 0.5F, (float) (0.35 + Math.random() * 0.85));
 									}
 
 									context.cspell.safeExecute(context);

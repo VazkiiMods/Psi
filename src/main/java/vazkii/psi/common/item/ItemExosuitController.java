@@ -41,7 +41,7 @@ public class ItemExosuitController extends ItemMod implements ISocketableControl
 	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
 		if(playerIn.isSneaking()) {
 			if(!worldIn.isRemote)
-				worldIn.playSound(playerIn, playerIn.posX, playerIn.posY, playerIn.posZ, PsiSoundHandler.compileError, SoundCategory.PLAYERS, 0.25F, 1F);
+				worldIn.playSound(null, playerIn.posX, playerIn.posY, playerIn.posZ, PsiSoundHandler.compileError, SoundCategory.PLAYERS, 0.25F, 1F);
 			else playerIn.swingArm(hand);
 
 			ItemStack[] stacks = getControlledStacks(playerIn, itemStackIn);

@@ -52,7 +52,8 @@ public class ClientProxy extends CommonProxy {
 		ModelHandler.preInit();
 		ShaderHandler.init();
 		KeybindHandler.init();
-
+		PsiSoundHandler.init();
+		
 		new VersionChecker().init();
 
 		MinecraftForge.EVENT_BUS.register(new HUDHandler());
@@ -67,7 +68,6 @@ public class ClientProxy extends CommonProxy {
 	@Override
 	public void init(FMLInitializationEvent event) {
 		ModelHandler.init();
-		PsiSoundHandler.init();
 	}
 	
 	@Override

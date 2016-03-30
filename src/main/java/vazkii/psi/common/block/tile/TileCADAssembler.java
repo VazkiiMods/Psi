@@ -69,7 +69,7 @@ public class TileCADAssembler extends TileSimpleInventory implements ITickable {
 		for(int i = 1; i < 6; i++)
 			setInventorySlotContents(i, null);
 		if(!worldObj.isRemote)
-			worldObj.playSound(getPos().getX() + 0.5, getPos().getY() + 0.5, getPos().getZ() + 0.5, PsiSoundHandler.cadCreate, SoundCategory.BLOCKS, 0.5F, 1F, false);
+			worldObj.playSound(null, getPos().getX() + 0.5, getPos().getY() + 0.5, getPos().getZ() + 0.5, PsiSoundHandler.cadCreate, SoundCategory.BLOCKS, 0.5F, 1F);
 		ignoreChanges = false;
 	}
 

@@ -107,7 +107,7 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IColorProv
 
 		if(bullet == null && craft(playerIn, new ItemStack(Items.redstone), new ItemStack(ModItems.material))) {
 			if(!worldIn.isRemote)
-				worldIn.playSound(playerIn, playerIn.posX, playerIn.posY, playerIn.posZ, PsiSoundHandler.cadShoot, SoundCategory.PLAYERS, 0.5F, (float) (0.5 + Math.random() * 0.5));
+				worldIn.playSound(null, playerIn.posX, playerIn.posY, playerIn.posZ, PsiSoundHandler.cadShoot, SoundCategory.PLAYERS, 0.5F, (float) (0.5 + Math.random() * 0.5));
 			data.deductPsi(100, 60, true);
 
 			if(data.level == 0)
@@ -145,7 +145,7 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IColorProv
 								data.deductPsi(cost, cd, true);
 
 							if(!world.isRemote)
-								world.playSound(player, player.posX, player.posY, player.posZ, PsiSoundHandler.cadShoot, SoundCategory.PLAYERS, sound, (float) (0.5 + Math.random() * 0.5));
+								world.playSound(null, player.posX, player.posY, player.posZ, PsiSoundHandler.cadShoot, SoundCategory.PLAYERS, sound, (float) (0.5 + Math.random() * 0.5));
 
 							if(sound > 0) {
 								Color color = Psi.proxy.getCADColor(cad);

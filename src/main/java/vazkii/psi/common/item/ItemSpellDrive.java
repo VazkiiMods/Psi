@@ -81,7 +81,7 @@ public class ItemSpellDrive extends ItemMod {
 			if(spell == null && programmer.canCompile()) {
 				setSpell(stack, programmer.spell);
 				if(!worldIn.isRemote)
-					worldIn.playSound(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, PsiSoundHandler.bulletCreate, SoundCategory.PLAYERS, 0.5F, 1F, false);
+					worldIn.playSound(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, PsiSoundHandler.bulletCreate, SoundCategory.PLAYERS, 0.5F, 1F);
 				return EnumActionResult.SUCCESS;
 			} else if(spell != null) {
 				boolean enabled = programmer.isEnabled();
@@ -96,7 +96,7 @@ public class ItemSpellDrive extends ItemMod {
 				programmer.spell = spell;
 				programmer.onSpellChanged();
 				if(!worldIn.isRemote) {
-					worldIn.playSound(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, PsiSoundHandler.bulletCreate, SoundCategory.PLAYERS, 0.5F, 1F, false);
+					worldIn.playSound(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, PsiSoundHandler.bulletCreate, SoundCategory.PLAYERS, 0.5F, 1F);
 					VanillaPacketDispatcher.dispatchTEToNearbyPlayers(programmer);
 				}
 				return EnumActionResult.SUCCESS;
@@ -110,7 +110,7 @@ public class ItemSpellDrive extends ItemMod {
 	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand){
 		if(getSpell(itemStackIn) != null && playerIn.isSneaking()) {
 			if(!worldIn.isRemote)
-				worldIn.playSound(playerIn, playerIn.posX, playerIn.posY, playerIn.posZ, PsiSoundHandler.compileError, SoundCategory.PLAYERS, 0.5F, 1F);
+				worldIn.playSound(null, playerIn.posX, playerIn.posY, playerIn.posZ, PsiSoundHandler.compileError, SoundCategory.PLAYERS, 0.5F, 1F);
 			else playerIn.swingArm(hand);
 			setSpell(itemStackIn, null);
 			
