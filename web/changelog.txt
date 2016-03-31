@@ -1,3 +1,6 @@
+beta-30
+*Fixed psimetal tools having higher attack values than they should.
+*Sounds are back!
 beta-29
 *Fixed the whole mod being broken, because of Forge 12.16.0.1809.
 *Fixed loopcast being broken, because of 1.9.
