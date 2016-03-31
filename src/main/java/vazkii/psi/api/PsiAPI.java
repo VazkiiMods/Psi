@@ -44,7 +44,7 @@ public final class PsiAPI {
 	public static HashMap<Class<? extends SpellPiece>, String> pieceMods = new HashMap();
 	public static HashMap<String, PieceGroup> groupsForName = new HashMap();
 
-	public static ToolMaterial PSIMETAL_TOOL_MATERIAL = EnumHelper.addToolMaterial("PSIMETAL", 3, 900, 7.8F, 3F, 12);
+	public static ToolMaterial PSIMETAL_TOOL_MATERIAL = EnumHelper.addToolMaterial("PSIMETAL", 3, 900, 7.8F, 2F, 12);
 	public static ArmorMaterial PSIMETAL_ARMOR_MATERIAL = EnumHelper.addArmorMaterial("PSIMETAL", "", 18, new int[]{2, 6, 5, 2}, 12, SoundEvents.item_armor_equip_iron);
 
 	public static int levelCap = 1;

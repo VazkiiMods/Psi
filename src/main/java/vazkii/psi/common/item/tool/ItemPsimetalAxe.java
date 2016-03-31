@@ -26,7 +26,7 @@ public class ItemPsimetalAxe extends ItemPsimetalTool {
 	private static final Set<Block> EFFECTIVE_ON = Sets.newHashSet(new Block[] {Blocks.planks, Blocks.bookshelf, Blocks.log, Blocks.log2, Blocks.chest, Blocks.pumpkin, Blocks.lit_pumpkin, Blocks.melon_block, Blocks.ladder});
 
 	public ItemPsimetalAxe() {
-		super(LibItemNames.PSIMETAL_AXE, 8F, -3.1F, EFFECTIVE_ON);
+		super(LibItemNames.PSIMETAL_AXE, 6F, -3.1F, EFFECTIVE_ON);
 	}
 
 	// ItemAxe copypasta:
