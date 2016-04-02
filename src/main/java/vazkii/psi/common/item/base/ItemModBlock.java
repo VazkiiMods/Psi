@@ -48,7 +48,7 @@ public class ItemModBlock extends ItemBlock implements IVariantHolder {
 
 	@Override
 	public ItemBlock setUnlocalizedName(String par1Str) {
-		GameRegistry.registerItem(this, par1Str);
+		GameRegistry.register(this);
 		return super.setUnlocalizedName(par1Str);
 	}
 

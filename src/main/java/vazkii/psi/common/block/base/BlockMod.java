@@ -16,9 +16,11 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import vazkii.psi.common.core.PsiCreativeTab;
 import vazkii.psi.common.item.base.ItemModBlock;
+import vazkii.psi.common.lib.LibResources;
 
 public class BlockMod extends Block implements IPsiBlock {
 
@@ -41,8 +43,9 @@ public class BlockMod extends Block implements IPsiBlock {
 	@Override
 	public Block setUnlocalizedName(String name) {
 		super.setUnlocalizedName(name);
-		setRegistryName(name);
-		GameRegistry.registerBlock(this, ItemModBlock.class);
+		setRegistryName(LibResources.PREFIX_MOD + name);
+		GameRegistry.register(this);
+		GameRegistry.register(new ItemModBlock(this), new ResourceLocation(LibResources.PREFIX_MOD + name));
 		return this;
 	}
 

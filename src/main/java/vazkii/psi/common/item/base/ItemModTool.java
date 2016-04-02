@@ -19,6 +19,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import vazkii.psi.common.core.PsiCreativeTab;
 import vazkii.psi.common.lib.LibResources;
@@ -46,8 +47,7 @@ public class ItemModTool extends ItemTool implements IVariantHolder {
 	@Override
 	public Item setUnlocalizedName(String name) {
 		super.setUnlocalizedName(name);
-		setRegistryName(name);
-		GameRegistry.registerItem(this, name);
+		GameRegistry.register(this, new ResourceLocation(LibResources.PREFIX_MOD + name));
 
 		return this;
 	}

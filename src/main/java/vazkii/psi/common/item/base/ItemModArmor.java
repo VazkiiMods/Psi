@@ -18,6 +18,7 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import vazkii.psi.common.core.PsiCreativeTab;
 import vazkii.psi.common.lib.LibResources;
@@ -43,8 +44,7 @@ public class ItemModArmor extends ItemArmor implements IVariantHolder {
 	@Override
 	public Item setUnlocalizedName(String name) {
 		super.setUnlocalizedName(name);
-		setRegistryName(name);
-		GameRegistry.registerItem(this, name);
+		GameRegistry.register(this, new ResourceLocation(LibResources.PREFIX_MOD + name));
 
 		return this;
 	}
