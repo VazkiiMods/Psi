@@ -48,6 +48,7 @@ public final class ParticleRenderDispatcher {
 		profiler.endSection();
 
 		GlStateManager.alphaFunc(GL11.GL_GREATER, 0.1F);
+		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		GlStateManager.disableBlend();
 		GlStateManager.depthMask(true);
 		GL11.glPopAttrib();
