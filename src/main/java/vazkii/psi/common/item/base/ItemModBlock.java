@@ -19,6 +19,7 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import vazkii.psi.common.block.base.IPsiBlock;
 import vazkii.psi.common.lib.LibResources;
@@ -28,6 +29,10 @@ public class ItemModBlock extends ItemBlock implements IVariantHolder {
 	private IPsiBlock psiBlock;
 
 	public ItemModBlock(Block block) {
+		this(block, null);
+	}
+	
+	public ItemModBlock(Block block, ResourceLocation res) {
 		super(block);
 		psiBlock = (IPsiBlock) block;
 
