@@ -1,3 +1,7 @@
+beta-31
+*Updated for Forge 1826. It's now a requirement.
+*Fixed translucent hands in first person.
+*Fixed a typo. You probably didn't even notice it. It took me 5 minutes to find it when the guy sent me the phrase it was in.
 beta-30
 *Fixed psimetal tools having higher attack values than they should.
 *Sounds are back!
