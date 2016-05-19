@@ -18,6 +18,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.Stack;
+import java.util.Map.Entry;
+import java.util.Iterator;
 
 import com.google.common.collect.ImmutableSet;
 
@@ -104,16 +106,16 @@ public class PlayerDataHandler {
 	}
 
 	public static void cleanup() {
-		List<Integer> remove = new ArrayList();
 
-		for(int i : playerData.keySet()) {
-			PlayerData d = playerData.get(i);
-			if(d.playerWR.get() == null)
-				remove.add(i);
+		Iterator<Entry<Integer, PlayerData>> it = playerData.entrySet().iterator();
+		while(it.hasNext()) {
+			Entry<Integer, PlayerData> item = it.next();
+			PlayerData d = item.getValue();
+			if(d != null && d.playerWR.get() == null) {
+				it.remove();
+			}
 		}
 
-		for(int i : remove)
-			playerData.remove(i);
 	}
 
 	private static int getKey(EntityPlayer player) {
