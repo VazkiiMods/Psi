@@ -101,12 +101,18 @@ public final class HUDHandler {
 
 		if(cadStack == null)
 			return;
-
+		
 		ICAD cad = (ICAD) cadStack.getItem();
 		PlayerData data = PlayerDataHandler.get(mc.thePlayer);
 		if(data.level == 0 && !mc.thePlayer.capabilities.isCreativeMode)
 			return;
-
+		
+		int totalPsi = data.getTotalPsi();
+		int currPsi = data.getAvailablePsi();
+		
+		if(ConfigHandler.contextSensitiveBar && currPsi == totalPsi && (mc.thePlayer.getHeldItemMainhand() == null || !(mc.thePlayer.getHeldItemMainhand().getItem() instanceof ISocketable)) && (mc.thePlayer.getHeldItemOffhand() == null || !(mc.thePlayer.getHeldItemOffhand().getItem() instanceof ISocketable)))
+			return;
+			
 		GlStateManager.pushMatrix();
 		int scaleFactor = res.getScaleFactor();
 		
@@ -153,8 +159,8 @@ public final class HUDHandler {
 		int origHeight = height;
 		int origY = y;
 		int v = 0;
-		int max = data.getTotalPsi();
-
+		int max = totalPsi;
+		
 		int texture = 0;
 		boolean shaders = ShaderHandler.useShaders();
 
