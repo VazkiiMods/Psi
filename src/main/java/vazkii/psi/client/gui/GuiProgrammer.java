@@ -358,8 +358,8 @@ public class GuiProgrammer extends GuiScreen {
 			
 			String coords = "";
 			if(SpellGrid.exists(cursorX, cursorY))
-				coords = String.format(I18n.format("psimisc.programmerCoords"), selectedX + 1, selectedY + 1, cursorX + 1, cursorY + 1);
-			else coords = String.format(I18n.format("psimisc.programmerCoordsNoCursor"), selectedX + 1, selectedY + 1);
+				coords = I18n.format("psimisc.programmerCoords", selectedX + 1, selectedY + 1, cursorX + 1, cursorY + 1);
+			else coords = I18n.format("psimisc.programmerCoordsNoCursor", selectedX + 1, selectedY + 1);
 			mc.fontRendererObj.drawString(coords, left + 4, topy + ySize + 14, 0x44FFFFFF);
 		}
 
