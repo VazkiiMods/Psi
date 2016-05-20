@@ -16,8 +16,15 @@ import com.google.common.collect.Sets;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.dispenser.IBlockSource;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import vazkii.psi.common.lib.LibItemNames;
 
 public class ItemPsimetalShovel extends ItemPsimetalTool {
@@ -35,5 +42,11 @@ public class ItemPsimetalShovel extends ItemPsimetalTool {
 		Block blockIn = state.getBlock();
 		return blockIn == Blocks.SNOW_LAYER ? true : blockIn == Blocks.SNOW;
 	}
+	
+	@Override
+    public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    	return Items.IRON_SHOVEL.onItemUse(stack, playerIn, worldIn, pos, hand, facing, hitX, hitY, hitZ);
+    }
+
 
 }
