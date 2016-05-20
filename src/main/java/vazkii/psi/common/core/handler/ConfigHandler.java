@@ -54,7 +54,7 @@ public class ConfigHandler {
 		desc = "Controls whether the Psi Bar should be rendered on the right of the screen or not.";
 		psiBarOnRight = loadPropBool("Psi Bar on the Right", desc, psiBarOnRight);
 
-		desc = "Controls whether the Psi Bar should be hidden if it's full and the player is holding an item that uses Psi.";~
+		desc = "Controls whether the Psi Bar should be hidden if it's full and the player is holding an item that uses Psi.";
 		contextSensitiveBar = loadPropBool("Context Sensitive Bar", desc, contextSensitiveBar);
 		
 		desc = "Controls whether the \"Particles\" setting in the Vanilla options menu is accounted for when creating particles. Set to false to always have particles even if you change the Vanilla setting.";

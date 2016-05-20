@@ -106,14 +106,12 @@ public class PlayerDataHandler {
 	}
 
 	public static void cleanup() {
-
 		Iterator<Entry<Integer, PlayerData>> it = playerData.entrySet().iterator();
 		while(it.hasNext()) {
 			Entry<Integer, PlayerData> item = it.next();
 			PlayerData d = item.getValue();
-			if(d != null && d.playerWR.get() == null) {
+			if(d != null && d.playerWR.get() == null)
 				it.remove();
-			}
 		}
 
 	}
