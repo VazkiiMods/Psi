@@ -23,6 +23,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
@@ -71,7 +72,18 @@ public class BlockProgrammer extends BlockFacing {
 		if(!enabled || programmer.playerLock.isEmpty())
 			programmer.playerLock = playerIn.getName();
 
-		if(enabled && heldItem != null && heldItem.getItem() instanceof ISpellSettable && programmer.spell != null) {
+		if(playerIn instanceof EntityPlayerMP)
+			VanillaPacketDispatcher.dispatchTEToPlayer(programmer, (EntityPlayerMP) playerIn);
+		playerIn.openGui(Psi.instance, LibGuiIDs.PROGRAMMER, worldIn, pos.getX(), pos.getY(), pos.getZ());
+		return true;
+	}
+
+	public EnumActionResult setSpell(World worldIn, BlockPos pos, EntityPlayer playerIn, ItemStack heldItem) {
+		TileProgrammer programmer = (TileProgrammer) worldIn.getTileEntity(pos);
+
+		boolean enabled = programmer.isEnabled();
+		
+		if(enabled && heldItem != null && heldItem.getItem() instanceof ISpellSettable && programmer.spell != null && playerIn.isSneaking()) {
 			if(programmer.canCompile()) {
 				ISpellSettable settable = (ISpellSettable) heldItem.getItem();
 				if(!worldIn.isRemote)
@@ -81,20 +93,17 @@ public class BlockProgrammer extends BlockFacing {
 				settable.setSpell(playerIn, heldItem, programmer.spell);
 				if(playerIn instanceof EntityPlayerMP)
 					VanillaPacketDispatcher.dispatchTEToPlayer(programmer, (EntityPlayerMP) playerIn);
-				return true;
+				return EnumActionResult.SUCCESS;
 			} else {
 				if(!worldIn.isRemote)
 					worldIn.playSound(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, PsiSoundHandler.compileError, SoundCategory.BLOCKS, 0.5F, 1F);
-				return false;
+				return EnumActionResult.FAIL;
 			}
 		}
-
-		if(playerIn instanceof EntityPlayerMP)
-			VanillaPacketDispatcher.dispatchTEToPlayer(programmer, (EntityPlayerMP) playerIn);
-		playerIn.openGui(Psi.instance, LibGuiIDs.PROGRAMMER, worldIn, pos.getX(), pos.getY(), pos.getZ());
-		return true;
+		
+		return EnumActionResult.PASS;
 	}
-
+	
 	@Override
 	public IBlockState makeDefaultState() {
 		return super.makeDefaultState().withProperty(ENABLED, false);
