@@ -87,8 +87,6 @@ public class PieceTrickBreakBlock extends PieceTrick {
 			MinecraftForge.EVENT_BUS.post(event);
 			if(!event.isCanceled()) {
 				if(!player.capabilities.isCreativeMode) {
-					block.onBlockHarvested(world, pos, state, player);
-
 					if(block.removedByPlayer(state, world, pos, player, true)) {
 						block.onBlockDestroyedByPlayer(world, pos, state);
 						block.harvestBlock(world, player, pos, state, world.getTileEntity(pos), tool);
