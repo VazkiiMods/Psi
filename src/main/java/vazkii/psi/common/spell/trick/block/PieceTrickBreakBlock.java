@@ -19,6 +19,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.BlockEvent.BreakEvent;
+import net.minecraftforge.fluids.IFluidBlock;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.EnumSpellStat;
 import vazkii.psi.api.spell.Spell;
@@ -77,7 +78,7 @@ public class PieceTrickBreakBlock extends PieceTrick {
 		int harvestLevel = ConfigHandler.cadHarvestLevel;
 		IBlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
-		if(!world.isRemote && block != null && !block.isAir(state, world, pos) && !(block instanceof BlockLiquid) && block.getPlayerRelativeBlockHardness(state, player, world, pos) > 0) {
+		if(!world.isRemote && block != null && !block.isAir(state, world, pos) && !(block instanceof BlockLiquid) && !(block instanceof IFluidBlock) && block.getPlayerRelativeBlockHardness(state, player, world, pos) > 0) {
 			int neededHarvestLevel = block.getHarvestLevel(state);
 			if(neededHarvestLevel > harvestLevel && (tool != null && !tool.canHarvestBlock(state)))
 				return;
