@@ -14,7 +14,6 @@ import java.awt.Color;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.ARBMultitexture;
 import org.lwjgl.opengl.ARBShaderObjects;
 import org.lwjgl.opengl.GL11;
@@ -340,7 +339,7 @@ public final class HUDHandler {
 
 		if(levelDisplayTime > fadeTime * 3) {
 			String s = I18n.translateToLocal("psimisc.levelUpInfo2");
-			s = String.format(s, TextFormatting.GREEN + Keyboard.getKeyName(KeybindHandler.keybind.getKeyCode()) + TextFormatting.RESET);
+			s = String.format(s, TextFormatting.GREEN + I18n.translateToLocal(KeybindHandler.keybind.getDisplayName()) + TextFormatting.RESET);
 			swidth = mc.fontRendererObj.getStringWidth(s);
 			len = s.length();
 			effLen = Math.min(len, len * (levelDisplayTime - fadeTime * 3) / fadeTime);
