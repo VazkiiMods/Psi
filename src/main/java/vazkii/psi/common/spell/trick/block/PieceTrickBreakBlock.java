@@ -96,7 +96,7 @@ public class PieceTrickBreakBlock extends PieceTrick {
 			}
 
 			if(particles)
-				world.playAuxSFX(2001, pos, Block.getStateId(state));
+				world.playEvent(2001, pos, Block.getStateId(state));
 		}
 	}
 }

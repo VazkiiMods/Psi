@@ -26,7 +26,7 @@ public final class PsiSoundHandler {
 	private static int size = 0;
 	
 	public static void init() {
-		size = SoundEvent.soundEventRegistry.getKeys().size();
+		size = SoundEvent.REGISTRY.getKeys().size();
 		
 		bulletCreate = register("bulletCreate");
 		cadCreate = register("cadCreate");
@@ -40,7 +40,7 @@ public final class PsiSoundHandler {
 		ResourceLocation loc = new ResourceLocation(LibResources.PREFIX_MOD + name);
 		SoundEvent e = new SoundEvent(loc);
 		
-		SoundEvent.soundEventRegistry.register(size, loc, e);
+		SoundEvent.REGISTRY.register(size, loc, e);
 		size++;
 		
 		return e;

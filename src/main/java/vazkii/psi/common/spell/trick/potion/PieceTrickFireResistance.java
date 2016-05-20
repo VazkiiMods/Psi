@@ -22,7 +22,7 @@ public class PieceTrickFireResistance extends PieceTrickPotionBase {
 
 	@Override
 	public Potion getPotion() {
-		return MobEffects.fireResistance;
+		return MobEffects.FIRE_RESISTANCE;
 	}
 
 	@Override

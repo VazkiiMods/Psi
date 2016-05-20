@@ -89,9 +89,9 @@ public final class ModItems {
 		psimetalExosuitBoots = new ItemPsimetalExosuitBoots();
 
 		// Missing vanilla oredict mappings
-		OreDictionary.registerOre("shardPrismarine", new ItemStack(Items.prismarine_shard));
-		OreDictionary.registerOre("crystalsPrismarine", new ItemStack(Items.prismarine_crystals));
-		OreDictionary.registerOre("coal", new ItemStack(Items.coal));
+		OreDictionary.registerOre("shardPrismarine", new ItemStack(Items.PRISMARINE_SHARD));
+		OreDictionary.registerOre("crystalsPrismarine", new ItemStack(Items.PRISMARINE_CRYSTALS));
+		OreDictionary.registerOre("coal", new ItemStack(Items.COAL));
 
 		// Psi oredict mappings
 		OreDictionary.registerOre("dustPsi", new ItemStack(material, 1, 0));

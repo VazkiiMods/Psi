@@ -22,7 +22,7 @@ public class PieceTrickWeakness extends PieceTrickPotionBase {
 
 	@Override
 	public Potion getPotion() {
-		return MobEffects.weakness;
+		return MobEffects.WEAKNESS;
 	}
 
 }

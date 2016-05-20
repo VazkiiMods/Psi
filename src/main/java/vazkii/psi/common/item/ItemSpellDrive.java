@@ -88,7 +88,7 @@ public class ItemSpellDrive extends ItemMod {
 				if(enabled && !programmer.playerLock.isEmpty()) {
 					if(!programmer.playerLock.equals(playerIn.getName())) {
 						if(!worldIn.isRemote)
-							playerIn.addChatComponentMessage(new TextComponentTranslation("psimisc.notYourProgrammer").setChatStyle(new Style().setColor(TextFormatting.RED)));
+							playerIn.addChatComponentMessage(new TextComponentTranslation("psimisc.notYourProgrammer").setStyle(new Style().setColor(TextFormatting.RED)));
 						return EnumActionResult.SUCCESS;
 					}
 				} else programmer.playerLock = playerIn.getName();

@@ -60,7 +60,7 @@ public class EntitySpellProjectile extends EntityThrowable {
 	public EntitySpellProjectile(World worldIn, EntityLivingBase throwerIn) {
 		super(worldIn, throwerIn);
 		
-		func_184538_a(throwerIn, throwerIn.rotationPitch, throwerIn.rotationYaw, 0.0F, 1.5F, 1.0F);
+		setHeadingFromThrower(throwerIn, throwerIn.rotationPitch, throwerIn.rotationYaw, 0.0F, 1.5F, 1.0F);
 		double speed = 1.5;
 		motionX *= speed;
 		motionY *= speed;
@@ -68,17 +68,17 @@ public class EntitySpellProjectile extends EntityThrowable {
 	}
 
 	public EntitySpellProjectile setInfo(EntityPlayer player, ItemStack colorizer, ItemStack bullet) {
-		dataWatcher.set(COLORIZER_DATA, Optional.fromNullable(colorizer));
-		dataWatcher.set(BULLET_DATA, Optional.of(bullet));
-		dataWatcher.set(CASTER_NAME, player.getName());
+		dataManager.set(COLORIZER_DATA, Optional.fromNullable(colorizer));
+		dataManager.set(BULLET_DATA, Optional.of(bullet));
+		dataManager.set(CASTER_NAME, player.getName());
 		return this;
 	}
 
 	@Override
 	protected void entityInit() {
-		dataWatcher.register(COLORIZER_DATA, Optional.of(new ItemStack(Blocks.stone)));
-		dataWatcher.register(BULLET_DATA, Optional.of(new ItemStack(Blocks.stone)));
-		dataWatcher.register(CASTER_NAME, "");
+		dataManager.register(COLORIZER_DATA, Optional.of(new ItemStack(Blocks.STONE)));
+		dataManager.register(BULLET_DATA, Optional.of(new ItemStack(Blocks.STONE)));
+		dataManager.register(CASTER_NAME, "");
 	}
 
 	@Override
@@ -86,13 +86,13 @@ public class EntitySpellProjectile extends EntityThrowable {
 		super.writeEntityToNBT(tagCompound);
 
 		NBTTagCompound colorizerCmp = new NBTTagCompound();
-		ItemStack colorizer = ((Optional<ItemStack>) dataWatcher.get(COLORIZER_DATA)).orNull();
+		ItemStack colorizer = ((Optional<ItemStack>) dataManager.get(COLORIZER_DATA)).orNull();
 		if(colorizer != null)
 			colorizer.writeToNBT(colorizerCmp);
 		tagCompound.setTag(TAG_COLORIZER, colorizerCmp);
 
 		NBTTagCompound bulletCmp = new NBTTagCompound();
-		ItemStack bullet = ((Optional<ItemStack>) dataWatcher.get(BULLET_DATA)).orNull();
+		ItemStack bullet = ((Optional<ItemStack>) dataManager.get(BULLET_DATA)).orNull();
 		if(bullet != null)
 			bullet.writeToNBT(bulletCmp);
 		tagCompound.setTag(TAG_BULLET, bulletCmp);
@@ -110,15 +110,15 @@ public class EntitySpellProjectile extends EntityThrowable {
 
 		NBTTagCompound colorizerCmp = tagCompound.getCompoundTag(TAG_COLORIZER);
 		ItemStack colorizer = ItemStack.loadItemStackFromNBT(colorizerCmp);
-		dataWatcher.set(COLORIZER_DATA, Optional.fromNullable(colorizer));
+		dataManager.set(COLORIZER_DATA, Optional.fromNullable(colorizer));
 
 		NBTTagCompound bulletCmp = tagCompound.getCompoundTag(TAG_BULLET);
 		ItemStack bullet = ItemStack.loadItemStackFromNBT(bulletCmp);
-		dataWatcher.set(BULLET_DATA, Optional.of(bullet));
+		dataManager.set(BULLET_DATA, Optional.of(bullet));
 
 		EntityLivingBase thrower = getThrower();
 		if(thrower != null && thrower instanceof EntityPlayer)
-			dataWatcher.set(CASTER_NAME, ((EntityPlayer) thrower).getName());
+			dataManager.set(CASTER_NAME, ((EntityPlayer) thrower).getName());
 
 		timeAlive = tagCompound.getInteger(TAG_TIME_ALIVE);
 
@@ -140,7 +140,7 @@ public class EntitySpellProjectile extends EntityThrowable {
 		timeAlive++;
 		
 		int colorVal = ICADColorizer.DEFAULT_SPELL_COLOR;
-		ItemStack colorizer = ((Optional<ItemStack>) dataWatcher.get(COLORIZER_DATA)).orNull();
+		ItemStack colorizer = ((Optional<ItemStack>) dataManager.get(COLORIZER_DATA)).orNull();
 		if(colorizer != null && colorizer.getItem() instanceof ICADColorizer)
 			colorVal = Psi.proxy.getColorizerColor(colorizer).getRGB();
 
@@ -199,7 +199,7 @@ public class EntitySpellProjectile extends EntityThrowable {
 		boolean canCast = false;
 
 		if(thrower != null && thrower instanceof EntityPlayer) {
-			ItemStack spellContainer = ((Optional<ItemStack>) dataWatcher.get(BULLET_DATA)).orNull();
+			ItemStack spellContainer = ((Optional<ItemStack>) dataManager.get(BULLET_DATA)).orNull();
 			if(spellContainer != null && spellContainer.getItem() instanceof ISpellContainer) {
 				Spell spell = ((ISpellContainer) spellContainer.getItem()).getSpell(spellContainer);
 				if(spell != null) {
@@ -226,7 +226,7 @@ public class EntitySpellProjectile extends EntityThrowable {
 		if(superThrower != null)
 			return superThrower;
 
-		String name = (String) dataWatcher.get(CASTER_NAME);
+		String name = (String) dataManager.get(CASTER_NAME);
 		EntityPlayer player = worldObj.getPlayerEntityByName(name);
 		return player;
 	}

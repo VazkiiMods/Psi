@@ -61,12 +61,12 @@ public class PieceTrickTorrent extends PieceTrick {
 		pos = pos.down();
 		IBlockState state = context.caster.worldObj.getBlockState(pos);
 		if(state.getBlock().isAir(state, context.caster.worldObj, pos) || state.getBlock().isReplaceable(context.caster.worldObj, pos))
-			context.caster.worldObj.setBlockState(pos, Blocks.flowing_water.getDefaultState());
+			context.caster.worldObj.setBlockState(pos, Blocks.FLOWING_WATER.getDefaultState());
 		else {
 			pos = pos.up();
 			state = context.caster.worldObj.getBlockState(pos);
 			if(state.getBlock().isAir(state, context.caster.worldObj, pos) || state.getBlock().isReplaceable(context.caster.worldObj, pos))
-				context.caster.worldObj.setBlockState(pos, Blocks.flowing_water.getDefaultState());
+				context.caster.worldObj.setBlockState(pos, Blocks.FLOWING_WATER.getDefaultState());
 		}
 
 		return null;

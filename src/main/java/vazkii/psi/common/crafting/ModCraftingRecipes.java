@@ -25,7 +25,7 @@ public class ModCraftingRecipes {
 		addOreDictRecipe(new ItemStack(ModBlocks.cadAssembler),
 				"IPI", "I I", " I ",
 				'I', "ingotIron",
-				'P', new ItemStack(Blocks.piston));
+				'P', new ItemStack(Blocks.PISTON));
 
 		addOreDictRecipe(new ItemStack(ModBlocks.programmer),
 				"IDI", "I I", "I I",
@@ -147,12 +147,12 @@ public class ModCraftingRecipes {
 				'D', "dustPsi");
 		addOreDictRecipe(new ItemStack(ModItems.spellBullet, 1, 2),
 				"AID",
-				'A', new ItemStack(Items.arrow),
+				'A', new ItemStack(Items.ARROW),
 				'I', "ingotIron",
 				'D', "dustPsi");
 		addOreDictRecipe(new ItemStack(ModItems.spellBullet, 1, 4),
 				"AID",
-				'A', new ItemStack(Items.string),
+				'A', new ItemStack(Items.STRING),
 				'I', "ingotIron",
 				'D', "dustPsi");
 		addOreDictRecipe(new ItemStack(ModItems.spellBullet, 1, 6),
@@ -162,12 +162,12 @@ public class ModCraftingRecipes {
 				'D', "dustPsi");
 		addOreDictRecipe(new ItemStack(ModItems.spellBullet, 1, 6),
 				"AID",
-				'A', new ItemStack(Items.snowball),
+				'A', new ItemStack(Items.SNOWBALL),
 				'I', "ingotIron",
 				'D', "dustPsi");
 		addOreDictRecipe(new ItemStack(ModItems.spellBullet, 1, 8),
 				"AID",
-				'A', new ItemStack(Items.gunpowder),
+				'A', new ItemStack(Items.GUNPOWDER),
 				'I', "ingotIron",
 				'D', "dustPsi");
 		addOreDictRecipe(new ItemStack(ModItems.spellBullet, 1, 10),
@@ -177,7 +177,7 @@ public class ModCraftingRecipes {
 				'D', "dustPsi");
 		addOreDictRecipe(new ItemStack(ModItems.spellBullet, 1, 12),
 				"AID",
-				'A', new ItemStack(Blocks.stone_button),
+				'A', new ItemStack(Blocks.STONE_BUTTON),
 				'I', "ingotIron",
 				'D', "dustPsi");
 
@@ -227,7 +227,7 @@ public class ModCraftingRecipes {
 		addOreDictRecipe(new ItemStack(ModItems.detonator),
 				" B ", "IPI",
 				'P', "dustPsi",
-				'B', new ItemStack(Blocks.stone_button),
+				'B', new ItemStack(Blocks.STONE_BUTTON),
 				'I', "ingotIron");
 		addOreDictRecipe(new ItemStack(ModItems.exosuitController),
 				"R", "G", "I",
@@ -251,12 +251,12 @@ public class ModCraftingRecipes {
 				'R', "ingotIron");
 		addOreDictRecipe(new ItemStack(ModItems.exosuitSensor, 1, 2),
 				" I ", "IMR", " R ",
-				'M', new ItemStack(Items.fire_charge),
+				'M', new ItemStack(Items.FIRE_CHARGE),
 				'I', "ingotPsi",
 				'R', "ingotIron");
 		addOreDictRecipe(new ItemStack(ModItems.exosuitSensor, 1, 3),
 				" I ", "IMR", " R ",
-				'M', new ItemStack(Items.speckled_melon),
+				'M', new ItemStack(Items.SPECKLED_MELON),
 				'I', "ingotPsi",
 				'R', "ingotIron");
 

@@ -76,11 +76,11 @@ public class CompiledSpell {
 				PsiAPI.internalHandler.delayContext(context);
 		} catch(SpellRuntimeException e) {
 			if(!context.caster.worldObj.isRemote && !context.shouldSuppressErrors()) {
-				context.caster.addChatComponentMessage(new TextComponentTranslation(e.getMessage()).setChatStyle(new Style().setColor(TextFormatting.RED)));
+				context.caster.addChatComponentMessage(new TextComponentTranslation(e.getMessage()).setStyle(new Style().setColor(TextFormatting.RED)));
 				
 				int x = context.cspell.currentAction.piece.x + 1;
 				int y = context.cspell.currentAction.piece.y + 1;
-				context.caster.addChatComponentMessage(new TextComponentTranslation("psi.spellerror.position", x, y).setChatStyle(new Style().setColor(TextFormatting.RED)));
+				context.caster.addChatComponentMessage(new TextComponentTranslation("psi.spellerror.position", x, y).setStyle(new Style().setColor(TextFormatting.RED)));
 			}
 		}
 	}

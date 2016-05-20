@@ -23,7 +23,7 @@ public class PieceTrickStrength extends PieceTrickPotionBase {
 
 	@Override
 	public Potion getPotion() {
-		return MobEffects.damageBoost;
+		return MobEffects.STRENGTH;
 	}
 
 	@Override

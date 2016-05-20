@@ -18,6 +18,7 @@ import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.registry.RegistryNamespaced;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.Loader;
@@ -45,7 +46,10 @@ public final class PsiAPI {
 	public static HashMap<String, PieceGroup> groupsForName = new HashMap();
 
 	public static ToolMaterial PSIMETAL_TOOL_MATERIAL = EnumHelper.addToolMaterial("PSIMETAL", 3, 900, 7.8F, 2F, 12);
-	public static ArmorMaterial PSIMETAL_ARMOR_MATERIAL = EnumHelper.addArmorMaterial("PSIMETAL", "", 18, new int[]{2, 6, 5, 2}, 12, SoundEvents.item_armor_equip_iron);
+	
+	// temporary workaround til this is fixed in forge
+	private static final Class<?>[] ARMOR_PARAMETERS = {String.class, int.class, int[].class, int.class, SoundEvent.class, float.class};
+	public static ArmorMaterial PSIMETAL_ARMOR_MATERIAL = EnumHelper.addEnum(ArmorMaterial.class, "PSIMETAL", ARMOR_PARAMETERS, "psimetal", 18, new int[]{2, 6, 5, 2}, 12, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0F);
 
 	public static int levelCap = 1;
 

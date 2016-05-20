@@ -23,7 +23,7 @@ import vazkii.psi.common.lib.LibItemNames;
 
 public class ItemPsimetalPickaxe extends ItemPsimetalTool {
 
-	private static final Set<Block> EFFECTIVE_ON = Sets.newHashSet(new Block[] {Blocks.activator_rail, Blocks.coal_ore, Blocks.cobblestone, Blocks.detector_rail, Blocks.diamond_block, Blocks.diamond_ore, Blocks.double_stone_slab, Blocks.golden_rail, Blocks.gold_block, Blocks.gold_ore, Blocks.ice, Blocks.iron_block, Blocks.iron_ore, Blocks.lapis_block, Blocks.lapis_ore, Blocks.lit_redstone_ore, Blocks.mossy_cobblestone, Blocks.netherrack, Blocks.packed_ice, Blocks.rail, Blocks.redstone_ore, Blocks.sandstone, Blocks.red_sandstone, Blocks.stone, Blocks.stone_slab});
+	private static final Set<Block> EFFECTIVE_ON = Sets.newHashSet(new Block[] {Blocks.ACTIVATOR_RAIL, Blocks.COAL_ORE, Blocks.COBBLESTONE, Blocks.DETECTOR_RAIL, Blocks.DIAMOND_BLOCK, Blocks.DIAMOND_ORE, Blocks.DOUBLE_STONE_SLAB, Blocks.GOLDEN_RAIL, Blocks.GOLD_BLOCK, Blocks.GOLD_ORE, Blocks.ICE, Blocks.IRON_BLOCK, Blocks.IRON_ORE, Blocks.LAPIS_BLOCK, Blocks.LAPIS_ORE, Blocks.LIT_REDSTONE_ORE, Blocks.MOSSY_COBBLESTONE, Blocks.NETHERRACK, Blocks.PACKED_ICE, Blocks.RAIL, Blocks.REDSTONE_ORE, Blocks.SANDSTONE, Blocks.RED_SANDSTONE, Blocks.STONE, Blocks.STONE_SLAB});
 
 	public ItemPsimetalPickaxe() {
 		super(LibItemNames.PSIMETAL_PICKAXE, 1.0F, -2.8F, EFFECTIVE_ON);
@@ -34,12 +34,12 @@ public class ItemPsimetalPickaxe extends ItemPsimetalTool {
 	@Override
 	public boolean canHarvestBlock(IBlockState state) {
 		Block blockIn = state.getBlock();
-		return blockIn == Blocks.obsidian ? toolMaterial.getHarvestLevel() == 3 : blockIn != Blocks.diamond_block && blockIn != Blocks.diamond_ore ? blockIn != Blocks.emerald_ore && blockIn != Blocks.emerald_block ? blockIn != Blocks.gold_block && blockIn != Blocks.gold_ore ? blockIn != Blocks.iron_block && blockIn != Blocks.iron_ore ? blockIn != Blocks.lapis_block && blockIn != Blocks.lapis_ore ? blockIn != Blocks.redstone_ore && blockIn != Blocks.lit_redstone_ore ? state.getMaterial() == Material.rock ? true : state.getMaterial() == Material.iron ? true : state.getMaterial() == Material.anvil : toolMaterial.getHarvestLevel() >= 2 : toolMaterial.getHarvestLevel() >= 1 : toolMaterial.getHarvestLevel() >= 1 : toolMaterial.getHarvestLevel() >= 2 : toolMaterial.getHarvestLevel() >= 2 : toolMaterial.getHarvestLevel() >= 2;
+		return blockIn == Blocks.OBSIDIAN ? toolMaterial.getHarvestLevel() == 3 : blockIn != Blocks.DIAMOND_BLOCK && blockIn != Blocks.DIAMOND_ORE ? blockIn != Blocks.EMERALD_ORE && blockIn != Blocks.EMERALD_BLOCK ? blockIn != Blocks.GOLD_BLOCK && blockIn != Blocks.GOLD_ORE ? blockIn != Blocks.IRON_BLOCK && blockIn != Blocks.IRON_ORE ? blockIn != Blocks.LAPIS_BLOCK && blockIn != Blocks.LAPIS_ORE ? blockIn != Blocks.REDSTONE_ORE && blockIn != Blocks.LIT_REDSTONE_ORE ? state.getMaterial() == Material.ROCK ? true : state.getMaterial() == Material.IRON ? true : state.getMaterial() == Material.ANVIL : toolMaterial.getHarvestLevel() >= 2 : toolMaterial.getHarvestLevel() >= 1 : toolMaterial.getHarvestLevel() >= 1 : toolMaterial.getHarvestLevel() >= 2 : toolMaterial.getHarvestLevel() >= 2 : toolMaterial.getHarvestLevel() >= 2;
 	}
 
 	@Override
 	public float getStrVsBlock(ItemStack stack, IBlockState state) {
-		return state.getMaterial() != Material.iron && state.getMaterial() != Material.anvil && state.getMaterial() != Material.rock ? super.getStrVsBlock(stack, state) : efficiencyOnProperMaterial;
+		return state.getMaterial() != Material.IRON && state.getMaterial() != Material.ANVIL && state.getMaterial() != Material.ROCK ? super.getStrVsBlock(stack, state) : efficiencyOnProperMaterial;
 	}
 
 }

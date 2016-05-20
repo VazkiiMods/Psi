@@ -101,7 +101,7 @@ public class PieceTrickPlaceBlock extends PieceTrick {
 			}
 
 			if(particles && !world.isRemote)
-				world.playAuxSFX(2001, pos, Block.getStateId(world.getBlockState(pos)));
+				world.playEvent(2001, pos, Block.getStateId(world.getBlockState(pos)));
 		}
 	}
 

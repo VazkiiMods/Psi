@@ -22,7 +22,7 @@ public class PieceTrickInvisibility extends PieceTrickPotionBase {
 
 	@Override
 	public Potion getPotion() {
-		return MobEffects.invisibility;
+		return MobEffects.INVISIBILITY;
 	}
 
 	@Override

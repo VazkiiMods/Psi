@@ -39,7 +39,7 @@ public class ItemDetonator extends ItemMod {
 				c.doExplosion();
 
 		if(!worldIn.isRemote)
-			worldIn.playSound(playerIn, playerIn.posX, playerIn.posY, playerIn.posZ, SoundEvents.ui_button_click, SoundCategory.PLAYERS, 1F, 1F);
+			worldIn.playSound(playerIn, playerIn.posX, playerIn.posY, playerIn.posZ, SoundEvents.UI_BUTTON_CLICK, SoundCategory.PLAYERS, 1F, 1F);
 		else playerIn.swingArm(hand);
 
 		return new ActionResult<ItemStack>(charges.isEmpty() ? EnumActionResult.PASS : EnumActionResult.SUCCESS, itemStackIn);

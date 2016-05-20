@@ -22,7 +22,7 @@ public class PieceTrickSlowness extends PieceTrickPotionBase {
 
 	@Override
 	public Potion getPotion() {
-		return MobEffects.moveSlowdown;
+		return MobEffects.SLOWNESS;
 	}
 
 }

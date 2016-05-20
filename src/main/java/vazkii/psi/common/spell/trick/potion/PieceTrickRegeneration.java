@@ -23,7 +23,7 @@ public class PieceTrickRegeneration extends PieceTrickPotionBase {
 
 	@Override
 	public Potion getPotion() {
-		return MobEffects.regeneration;
+		return MobEffects.REGENERATION;
 	}
 
 	@Override

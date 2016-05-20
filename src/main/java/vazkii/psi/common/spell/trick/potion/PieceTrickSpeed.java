@@ -22,7 +22,7 @@ public class PieceTrickSpeed extends PieceTrickPotionBase {
 
 	@Override
 	public Potion getPotion() {
-		return MobEffects.moveSpeed;
+		return MobEffects.SPEED;
 	}
 
 }

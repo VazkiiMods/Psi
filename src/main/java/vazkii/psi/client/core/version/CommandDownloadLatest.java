@@ -35,13 +35,13 @@ public class CommandDownloadLatest extends CommandBase {
 	@Override
 	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
 		if(!ENABLED)
-			sender.addChatMessage(new TextComponentTranslation("psi.versioning.disabled").setChatStyle(new Style().setColor(TextFormatting.RED)));
+			sender.addChatMessage(new TextComponentTranslation("psi.versioning.disabled").setStyle(new Style().setColor(TextFormatting.RED)));
 
 		else if(args.length == 1)
 			if(VersionChecker.downloadedFile)
-				sender.addChatMessage(new TextComponentTranslation("psi.versioning.downloadedAlready").setChatStyle(new Style().setColor(TextFormatting.RED)));
+				sender.addChatMessage(new TextComponentTranslation("psi.versioning.downloadedAlready").setStyle(new Style().setColor(TextFormatting.RED)));
 			else if(VersionChecker.startedDownload)
-				sender.addChatMessage(new TextComponentTranslation("psi.versioning.downloadingAlready").setChatStyle(new Style().setColor(TextFormatting.RED)));
+				sender.addChatMessage(new TextComponentTranslation("psi.versioning.downloadingAlready").setStyle(new Style().setColor(TextFormatting.RED)));
 			else new ThreadDownloadMod("Psi-" + args[0] + ".jar");
 	}
 

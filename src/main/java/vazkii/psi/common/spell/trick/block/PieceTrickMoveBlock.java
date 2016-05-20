@@ -83,7 +83,7 @@ public class PieceTrickMoveBlock extends PieceTrick {
 		if(world.isAirBlock(pos1) || state1.getBlock().isReplaceable(world, pos1)) {
 			world.setBlockState(pos1, state, 1 | 2);
 			world.setBlockToAir(pos);
-			world.playAuxSFX(2001, pos, Block.getIdFromBlock(block) + (block.getMetaFromState(state) << 12));
+			world.playEvent(2001, pos, Block.getIdFromBlock(block) + (block.getMetaFromState(state) << 12));
 		}
 
 		return null;

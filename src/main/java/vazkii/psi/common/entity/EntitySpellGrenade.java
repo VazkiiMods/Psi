@@ -49,7 +49,7 @@ public class EntitySpellGrenade extends EntitySpellProjectile {
 
 	public void doExplosion() {
 		cast();
-		playSound(SoundEvents.entity_generic_explode, 0.5F, 1F);
+		playSound(SoundEvents.ENTITY_GENERIC_EXPLODE, 0.5F, 1F);
 		double m = 0.1;
 		double d3 = 0.0D;
 		for(int j = 0; j < 40; j++) {
@@ -68,7 +68,7 @@ public class EntitySpellGrenade extends EntitySpellProjectile {
 	@Override
 	protected void onImpact(RayTraceResult pos) {
 		if(!worldObj.isRemote && !sound && explodes()) {
-			playSound(SoundEvents.entity_creeper_primed, 2F, 1F);
+			playSound(SoundEvents.ENTITY_CREEPER_PRIMED, 2F, 1F);
 			sound = true;
 		}
 

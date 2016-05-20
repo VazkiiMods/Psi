@@ -412,7 +412,7 @@ public class PlayerDataHandler {
 				if(eidosAnchorTime == 1) {
 					if(player != null && player instanceof EntityPlayerMP) {
 						EntityPlayerMP pmp = (EntityPlayerMP) player;
-						pmp.playerNetServerHandler.setPlayerLocation(eidosAnchor.x, eidosAnchor.y, eidosAnchor.z, (float) eidosAnchorYaw, (float) eidosAnchorPitch);
+						pmp.connection.setPlayerLocation(eidosAnchor.x, eidosAnchor.y, eidosAnchor.z, (float) eidosAnchorYaw, (float) eidosAnchorPitch);
 
 						Entity riding = player.getRidingEntity();
 						while(riding != null) {
@@ -442,7 +442,7 @@ public class PlayerDataHandler {
 						if(player != null) {
 							if(player instanceof EntityPlayerMP) {
 								EntityPlayerMP pmp = (EntityPlayerMP) player;
-								pmp.playerNetServerHandler.setPlayerLocation(vec.x, vec.y, vec.z, 0, 0, ImmutableSet.of(EnumFlags.X_ROT, EnumFlags.Y_ROT));
+								pmp.connection.setPlayerLocation(vec.x, vec.y, vec.z, 0, 0, ImmutableSet.of(EnumFlags.X_ROT, EnumFlags.Y_ROT));
 							} else {
 								player.posX = vec.x;
 								player.posY = vec.y;
@@ -494,7 +494,7 @@ public class PlayerDataHandler {
 				PsiArmorEvent.post(new PsiArmorEvent(player, PsiArmorEvent.LOW_LIGHT));
 			this.lowLight = lowLight;
 
-			boolean underwater = player.isInsideOfMaterial(Material.water);
+			boolean underwater = player.isInsideOfMaterial(Material.WATER);
 			if(!this.underwater && underwater)
 				PsiArmorEvent.post(new PsiArmorEvent(player, PsiArmorEvent.UNDERWATER));
 			this.underwater = underwater;
@@ -552,7 +552,7 @@ public class PlayerDataHandler {
 					NetworkHandler.INSTANCE.sendTo(message, (EntityPlayerMP) player);
 					NetworkHandler.INSTANCE.sendTo(message2, (EntityPlayerMP) player);
 					if(level == 25)
-						player.addChatComponentMessage(new TextComponentTranslation("psimisc.softcapIndicator").setChatStyle(new Style().setColor(TextFormatting.AQUA)));
+						player.addChatComponentMessage(new TextComponentTranslation("psimisc.softcapIndicator").setStyle(new Style().setColor(TextFormatting.AQUA)));
 				}
 			}
 		}

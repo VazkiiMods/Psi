@@ -37,10 +37,10 @@ public class BlockCADAssembler extends BlockFacing {
 	Random random;
 
 	public BlockCADAssembler() {
-		super(LibBlockNames.CAD_ASSEMBLER, Material.iron);
+		super(LibBlockNames.CAD_ASSEMBLER, Material.IRON);
 		setHardness(5.0F);
 		setResistance(10.0F);
-		setStepSound(SoundType.METAL);
+		setSoundType(SoundType.METAL);
 
 		random = new Random();
 	}

@@ -22,7 +22,7 @@ import vazkii.psi.common.lib.LibItemNames;
 
 public class ItemPsimetalShovel extends ItemPsimetalTool {
 
-	private static final Set<Block> EFFECTIVE_ON = Sets.newHashSet(new Block[] {Blocks.clay, Blocks.dirt, Blocks.farmland, Blocks.grass, Blocks.gravel, Blocks.mycelium, Blocks.sand, Blocks.snow, Blocks.snow_layer, Blocks.soul_sand});
+	private static final Set<Block> EFFECTIVE_ON = Sets.newHashSet(new Block[] {Blocks.CLAY, Blocks.DIRT, Blocks.FARMLAND, Blocks.GRASS, Blocks.GRAVEL, Blocks.MYCELIUM, Blocks.SAND, Blocks.SNOW, Blocks.SNOW_LAYER, Blocks.SOUL_SAND});
 
 	public ItemPsimetalShovel() {
 		super(LibItemNames.PSIMETAL_SHOVEL, 1.5F, -3.0F, EFFECTIVE_ON);
@@ -33,7 +33,7 @@ public class ItemPsimetalShovel extends ItemPsimetalTool {
 	@Override
 	public boolean canHarvestBlock(IBlockState state) {
 		Block blockIn = state.getBlock();
-		return blockIn == Blocks.snow_layer ? true : blockIn == Blocks.snow;
+		return blockIn == Blocks.SNOW_LAYER ? true : blockIn == Blocks.SNOW;
 	}
 
 }

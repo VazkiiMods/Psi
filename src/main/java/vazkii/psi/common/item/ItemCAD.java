@@ -98,14 +98,14 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IColorProv
 		ItemStack playerCad = PsiAPI.getPlayerCAD(playerIn);
 		if(playerCad != itemStackIn) {
 			if(!worldIn.isRemote)
-				playerIn.addChatComponentMessage(new TextComponentTranslation("psimisc.multipleCads").setChatStyle(new Style().setColor(TextFormatting.RED)));
+				playerIn.addChatComponentMessage(new TextComponentTranslation("psimisc.multipleCads").setStyle(new Style().setColor(TextFormatting.RED)));
 			return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
 		}
 
 		ItemStack bullet = getBulletInSocket(itemStackIn, getSelectedSlot(itemStackIn));
 		boolean did = cast(worldIn, playerIn, data, bullet, itemStackIn, 40, 25, 0.5F, null);
 
-		if(bullet == null && craft(playerIn, new ItemStack(Items.redstone), new ItemStack(ModItems.material))) {
+		if(bullet == null && craft(playerIn, new ItemStack(Items.REDSTONE), new ItemStack(ModItems.material))) {
 			if(!worldIn.isRemote)
 				worldIn.playSound(null, playerIn.posX, playerIn.posY, playerIn.posZ, PsiSoundHandler.cadShoot, SoundCategory.PLAYERS, 0.5F, (float) (0.5 + Math.random() * 0.5));
 			data.deductPsi(100, 60, true);
@@ -180,7 +180,7 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IColorProv
 						spellContainer.castSpell(bullet, context);
 						return true;
 					} else if(!world.isRemote)
-						player.addChatComponentMessage(new TextComponentTranslation("psimisc.weakCad").setChatStyle(new Style().setColor(TextFormatting.RED)));
+						player.addChatComponentMessage(new TextComponentTranslation("psimisc.weakCad").setStyle(new Style().setColor(TextFormatting.RED)));
 				}
 			}
 		}

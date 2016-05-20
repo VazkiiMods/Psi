@@ -22,7 +22,7 @@ public class PieceTrickWaterBreathing extends PieceTrickPotionBase {
 
 	@Override
 	public Potion getPotion() {
-		return MobEffects.waterBreathing;
+		return MobEffects.WATER_BREATHING;
 	}
 
 	@Override

@@ -72,7 +72,7 @@ public class PieceTrickSmeltBlock extends PieceTrick {
 			if(block1 != null) {
 				context.caster.worldObj.setBlockState(pos, block1.getStateFromMeta(result.getMetadata()));
 				state = context.caster.worldObj.getBlockState(pos);
-				context.caster.worldObj.playAuxSFX(2001, pos, Block.getStateId(state));
+				context.caster.worldObj.playEvent(2001, pos, Block.getStateId(state));
 			}
 		}
 

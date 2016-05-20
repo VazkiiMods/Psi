@@ -47,7 +47,7 @@ public final class VersionChecker {
 				int onlineBuild = Integer.parseInt(onlineVersion.split("-")[1]);
 				int clientBuild = LibMisc.BUILD.contains("GRADLE") ? Integer.MAX_VALUE : Integer.parseInt(LibMisc.BUILD);
 				if(onlineBuild > clientBuild) {
-					player.addChatComponentMessage(new TextComponentTranslation("psi.versioning.flavour" + player.worldObj.rand.nextInt(FLAVOUR_MESSAGES)).setChatStyle(new Style().setColor(TextFormatting.LIGHT_PURPLE)));
+					player.addChatComponentMessage(new TextComponentTranslation("psi.versioning.flavour" + player.worldObj.rand.nextInt(FLAVOUR_MESSAGES)).setStyle(new Style().setColor(TextFormatting.LIGHT_PURPLE)));
 					player.addChatComponentMessage(new TextComponentTranslation("psi.versioning.outdated", clientBuild, onlineBuild));
 
 					ITextComponent component = ITextComponent.Serializer.jsonToComponent(I18n.translateToLocal("psi.versioning.updateMessage").replaceAll("%version%", onlineVersion));

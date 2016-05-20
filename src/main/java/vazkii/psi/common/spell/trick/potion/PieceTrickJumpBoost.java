@@ -22,7 +22,7 @@ public class PieceTrickJumpBoost extends PieceTrickPotionBase {
 
 	@Override
 	public Potion getPotion() {
-		return MobEffects.jump;
+		return MobEffects.JUMP_BOOST;
 	}
 
 }

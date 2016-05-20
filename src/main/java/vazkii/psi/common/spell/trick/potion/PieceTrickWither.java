@@ -23,7 +23,7 @@ public class PieceTrickWither extends PieceTrickPotionBase {
 
 	@Override
 	public Potion getPotion() {
-		return MobEffects.wither;
+		return MobEffects.WITHER;
 	}
 
 	@Override

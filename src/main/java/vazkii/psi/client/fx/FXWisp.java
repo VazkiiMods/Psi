@@ -16,7 +16,7 @@ import java.util.Queue;
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.EntityFX;
+import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
@@ -27,7 +27,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import vazkii.psi.common.lib.LibResources;
 
-public class FXWisp extends EntityFX {
+public class FXWisp extends Particle {
 
 	public static final ResourceLocation particles = new ResourceLocation(LibResources.MISC_WISP_LARGE);
 
@@ -49,7 +49,7 @@ public class FXWisp extends EntityFX {
 		particleBlue = blue;
 		particleAlpha = 0.5F; // So MC renders us on the alpha layer, value not actually used
 		particleGravity = 0;
-		xSpeed = ySpeed = zSpeed = 0;
+		motionX = motionY = motionZ = 0;
 		particleScale *= size;
 		moteParticleScale = particleScale;
 		particleMaxAge = (int)(28D / (Math.random() * 0.3D + 0.7D) * maxAgeMul);
@@ -74,9 +74,9 @@ public class FXWisp extends EntityFX {
 	}
 	
 	public void setSpeed(double x, double y, double z) {
-		xSpeed = x;
-		ySpeed = y;
-		zSpeed = z;
+		motionX = x;
+		motionY = y;
+		motionZ = z;
 	}
 
 	public static void dispatchQueuedRenders(Tessellator tessellator) {
@@ -153,13 +153,13 @@ public class FXWisp extends EntityFX {
 		if (particleAge++ >= particleMaxAge)
 			setExpired();
 
-		ySpeed -= 0.04D * particleGravity;
-		posX += xSpeed;
-		posY += ySpeed;
-		posZ += zSpeed;
-		xSpeed *= 0.98000001907348633D;
-		ySpeed *= 0.98000001907348633D;
-		zSpeed *= 0.98000001907348633D;
+		motionY -= 0.04D * particleGravity;
+		posX += motionX;
+		posY += motionY;
+		posZ += motionZ;
+		motionX *= 0.98000001907348633D;
+		motionY *= 0.98000001907348633D;
+		motionZ *= 0.98000001907348633D;
 	}
 
 	public void setGravity(float value) {

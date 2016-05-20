@@ -23,7 +23,7 @@ import vazkii.psi.common.lib.LibItemNames;
 
 public class ItemPsimetalAxe extends ItemPsimetalTool {
 
-	private static final Set<Block> EFFECTIVE_ON = Sets.newHashSet(new Block[] {Blocks.planks, Blocks.bookshelf, Blocks.log, Blocks.log2, Blocks.chest, Blocks.pumpkin, Blocks.lit_pumpkin, Blocks.melon_block, Blocks.ladder});
+	private static final Set<Block> EFFECTIVE_ON = Sets.newHashSet(new Block[] {Blocks.PLANKS, Blocks.BOOKSHELF, Blocks.LOG, Blocks.LOG2, Blocks.CHEST, Blocks.PUMPKIN, Blocks.LIT_PUMPKIN, Blocks.MELON_BLOCK, Blocks.LADDER});
 
 	public ItemPsimetalAxe() {
 		super(LibItemNames.PSIMETAL_AXE, 6F, -3.1F, EFFECTIVE_ON);
@@ -33,7 +33,7 @@ public class ItemPsimetalAxe extends ItemPsimetalTool {
 
 	@Override
 	public float getStrVsBlock(ItemStack stack, IBlockState state) {
-		return state.getMaterial() != Material.wood && state.getMaterial() != Material.plants && state.getMaterial() != Material.vine ? super.getStrVsBlock(stack, state) : efficiencyOnProperMaterial;
+		return state.getMaterial() != Material.WOOD && state.getMaterial() != Material.PLANTS && state.getMaterial() != Material.VINE ? super.getStrVsBlock(stack, state) : efficiencyOnProperMaterial;
 	}
 
 }

@@ -64,7 +64,7 @@ public class ItemCADColorizer extends ItemCADComponent implements ICADColorizer,
 		return new IItemColor() {
 			@Override
 			public int getColorFromItemstack(ItemStack stack, int tintIndex) {
-				return tintIndex == 1 && stack.getItemDamage() < 16 ? ItemDye.dyeColors[15 - stack.getItemDamage()] : 0xFFFFFF;
+				return tintIndex == 1 && stack.getItemDamage() < 16 ? ItemDye.DYE_COLORS[15 - stack.getItemDamage()] : 0xFFFFFF;
 			}
 		};
 	}
@@ -72,7 +72,7 @@ public class ItemCADColorizer extends ItemCADComponent implements ICADColorizer,
 	@Override
 	public int getColor(ItemStack stack) {
 		if(stack.getItemDamage() < 16)
-			return ItemDye.dyeColors[15 - stack.getItemDamage()];
+			return ItemDye.DYE_COLORS[15 - stack.getItemDamage()];
 
 		switch(stack.getItemDamage()) {
 		case 16: {

@@ -21,10 +21,10 @@ import vazkii.psi.common.lib.LibBlockNames;
 public class BlockPsiDecorative extends BlockMetaVariants {
 
 	public BlockPsiDecorative() {
-		super(LibBlockNames.PSI_DECORATIVE, Material.iron, Variants.class);
+		super(LibBlockNames.PSI_DECORATIVE, Material.IRON, Variants.class);
 		setHardness(5.0F);
 		setResistance(10.0F);
-		setStepSound(SoundType.METAL);
+		setSoundType(SoundType.METAL);
 	}
 
 	@Override

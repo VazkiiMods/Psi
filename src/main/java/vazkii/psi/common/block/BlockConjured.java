@@ -44,7 +44,7 @@ public class BlockConjured extends BlockModContainer {
 	public static final PropertyBool BLOCK_EAST = PropertyBool.create("block_east");
 
 	public BlockConjured() {
-		super(LibBlockNames.CONJURED, Material.glass);
+		super(LibBlockNames.CONJURED, Material.GLASS);
 		setDefaultState(makeDefaultState());
 		setLightOpacity(0);
 	}

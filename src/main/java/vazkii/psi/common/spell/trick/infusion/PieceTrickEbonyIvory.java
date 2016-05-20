@@ -39,8 +39,8 @@ public class PieceTrickEbonyIvory extends PieceTrick {
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		if(context.caster.worldObj.provider.getDimension() == 1) {
-			ItemCAD.craft(context.caster, new ItemStack(Items.coal), new ItemStack(ModItems.material, 1, 5));
-			ItemCAD.craft(context.caster, new ItemStack(Items.quartz), new ItemStack(ModItems.material, 1, 6));
+			ItemCAD.craft(context.caster, new ItemStack(Items.COAL), new ItemStack(ModItems.material, 1, 5));
+			ItemCAD.craft(context.caster, new ItemStack(Items.QUARTZ), new ItemStack(ModItems.material, 1, 6));
 		}
 
 		return null;

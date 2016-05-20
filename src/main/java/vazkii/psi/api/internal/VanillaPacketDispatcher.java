@@ -37,7 +37,7 @@ public final class VanillaPacketDispatcher {
 	}
 
 	public static void dispatchTEToPlayer(TileEntity tile, EntityPlayerMP p) {
-		p.playerNetServerHandler.sendPacket(tile.getDescriptionPacket());
+		p.connection.sendPacket(tile.getUpdatePacket());
 	}
 
 }

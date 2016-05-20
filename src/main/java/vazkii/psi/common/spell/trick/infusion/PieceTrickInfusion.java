@@ -38,7 +38,7 @@ public class PieceTrickInfusion extends PieceTrick {
 
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
-		ItemCAD.craft(context.caster, new ItemStack(Items.gold_ingot), new ItemStack(ModItems.material, 1, 1));
+		ItemCAD.craft(context.caster, new ItemStack(Items.GOLD_INGOT), new ItemStack(ModItems.material, 1, 1));
 		return null;
 	}
 

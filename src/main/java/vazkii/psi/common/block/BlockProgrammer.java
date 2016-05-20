@@ -48,10 +48,10 @@ public class BlockProgrammer extends BlockFacing {
 	public static final PropertyBool ENABLED = PropertyBool.create("enabled");
 
 	public BlockProgrammer() {
-		super(LibBlockNames.PROGRAMMER, Material.iron);
+		super(LibBlockNames.PROGRAMMER, Material.IRON);
 		setHardness(5.0F);
 		setResistance(10.0F);
-		setStepSound(SoundType.METAL);
+		setSoundType(SoundType.METAL);
 	}
 
 	@Override
@@ -62,7 +62,7 @@ public class BlockProgrammer extends BlockFacing {
 			PlayerData data = PlayerDataHandler.get(playerIn);
 			if(data.spellGroupsUnlocked.isEmpty()) {
 				if(!worldIn.isRemote)
-					playerIn.addChatComponentMessage(new TextComponentTranslation("psimisc.cantUseProgrammer").setChatStyle(new Style().setColor(TextFormatting.RED)));
+					playerIn.addChatComponentMessage(new TextComponentTranslation("psimisc.cantUseProgrammer").setStyle(new Style().setColor(TextFormatting.RED)));
 				return true;
 			}
 		}
