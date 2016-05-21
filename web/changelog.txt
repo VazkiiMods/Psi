@@ -1,3 +1,5 @@
+beta-33
+*Fixed Spell Bullets not being settable.
 beta-32
 *<b>Updated the mod to Minecraft 1.9.4.</b>
 *Added a context sensitive bar config, which hides the Psi bar if it's full and the player is not holding an item that uses Psi.
