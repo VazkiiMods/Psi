@@ -1,3 +1,16 @@
+beta-32
+*<b>Updated the mod to Minecraft 1.9.4.</b>
+*Added a context sensitive bar config, which hides the Psi bar if it's full and the player is not holding an item that uses Psi.
+*Changed the Programmer Help icon to one that fits better with the interface.
+*Fixed a crash when cleaning up player data.
+*Fixed a dupe with some some blocks (like skulls and potentially other metadata related blocks like botania flowers) and block breaking tricks.
+*Fixed block breaking tricks breaking forge fluid blocks.
+*Fixed Fireballs not being considered as projectiles for the purposes of the Nearby Projectiles selector.
+*Fixed the level up HUD crashing the game if you have the keybind set to a mouse button. Also added support for displaying forge keybind modifiers.
+*Fixed the Psimetal shovel not being able to make path blocks.
+*Fixed the the Entity Motion selector being broken for players by making Entity Motion now use the eidos changelog 2 ticks ago rather than 1.
+*Fixed the Y coordinate shift of the Entity Position operator not being documented.
+*You now need to hold shift to set a CAD's spells by right clicking a programmer.
 beta-31
 *Updated for Forge 1826. It's now a requirement.
 *Fixed translucent hands in first person.
