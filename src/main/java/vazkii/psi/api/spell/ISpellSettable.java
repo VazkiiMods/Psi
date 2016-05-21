@@ -20,5 +20,7 @@ import net.minecraft.item.ItemStack;
 public interface ISpellSettable {
 
 	public void setSpell(EntityPlayer player, ItemStack stack, Spell spell);
+	
+	public boolean requiresSneakForSpellSet(ItemStack stack);
 
 }

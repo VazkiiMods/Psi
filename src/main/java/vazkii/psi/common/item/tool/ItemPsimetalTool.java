@@ -114,5 +114,10 @@ public class ItemPsimetalTool extends ItemModTool implements IPsimetalTool {
 		Vec3d vec31 = vec3.addVector(f7 * d3, f6 * d3, f8 * d3);
 		return world.rayTraceBlocks(vec3, vec31, par3);
 	}
+	
+	@Override
+	public boolean requiresSneakForSpellSet(ItemStack stack) {
+		return false;
+	}
 
 }

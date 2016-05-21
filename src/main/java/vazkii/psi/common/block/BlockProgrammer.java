@@ -67,6 +67,10 @@ public class BlockProgrammer extends BlockFacing {
 				return true;
 			}
 		}
+		
+		EnumActionResult result = setSpell(worldIn, pos, playerIn, heldItem);
+		if(result == EnumActionResult.SUCCESS)
+			return true;
 
 		boolean enabled = programmer.isEnabled();
 		if(!enabled || programmer.playerLock.isEmpty())
@@ -83,7 +87,7 @@ public class BlockProgrammer extends BlockFacing {
 
 		boolean enabled = programmer.isEnabled();
 		
-		if(enabled && heldItem != null && heldItem.getItem() instanceof ISpellSettable && programmer.spell != null && playerIn.isSneaking()) {
+		if(enabled && heldItem != null && heldItem.getItem() instanceof ISpellSettable && programmer.spell != null && playerIn.isSneaking() == ((ISpellSettable) heldItem.getItem()).requiresSneakForSpellSet(heldItem)) {
 			if(programmer.canCompile()) {
 				ISpellSettable settable = (ISpellSettable) heldItem.getItem();
 				if(!worldIn.isRemote)

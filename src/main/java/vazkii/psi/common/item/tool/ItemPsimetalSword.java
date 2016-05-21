@@ -70,5 +70,10 @@ public class ItemPsimetalSword extends ItemModSword implements IPsimetalTool {
 	public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack) {
 		return par2ItemStack.getItem() == ModItems.material && par2ItemStack.getItemDamage() == 1 ? true : super.getIsRepairable(par1ItemStack, par2ItemStack);
 	}
+	
+	@Override
+	public boolean requiresSneakForSpellSet(ItemStack stack) {
+		return false;
+	}
 
 }

@@ -518,6 +518,11 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IColorProv
 	}
 
 	@Override
+	public boolean requiresSneakForSpellSet(ItemStack stack) {
+		return true;
+	}
+	
+	@Override
 	public EnumRarity getRarity(ItemStack stack) {
 		return EnumRarity.RARE;
 	}

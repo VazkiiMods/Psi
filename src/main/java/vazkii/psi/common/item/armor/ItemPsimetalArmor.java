@@ -153,4 +153,9 @@ public class ItemPsimetalArmor extends ItemModArmor implements IPsimetalTool, IP
 		return models[slot];
 	}
 
+	@Override
+	public boolean requiresSneakForSpellSet(ItemStack stack) {
+		return false;
+	}
+	
 }

@@ -232,5 +232,10 @@ public class ItemSpellBullet extends ItemMod implements ISpellContainer {
 	public boolean isCADOnlyContainer(ItemStack stack) {
 		return ImmutableSet.of(4, 5, 6, 7).contains(stack.getItemDamage());
 	}
+	
+	@Override
+	public boolean requiresSneakForSpellSet(ItemStack stack) {
+		return false;
+	}
 
 }
