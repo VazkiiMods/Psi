@@ -288,7 +288,8 @@ public class PlayerDataHandler {
 		public int eidosAnchorTime;
 		public int postAnchorRecallTime;
 		public int eidosReversionTime;
-
+		public int lastDimension;
+		
 		// Exosuit Event Stuff
 		boolean lowLight, underwater, lowHp;
 
@@ -307,6 +308,8 @@ public class PlayerDataHandler {
 		}
 
 		public void tick() {
+			int dimension = playerWR.get().worldObj.provider.getDimension();
+			
 			if(deductTick)
 				deductTick = false;
 			else lastAvailablePsi = availablePsi;
@@ -400,7 +403,7 @@ public class PlayerDataHandler {
 			}
 
 
-			if(player.isDead) {
+			if(player.isDead || dimension != lastDimension) {
 				eidosAnchorTime = 0;
 				eidosReversionTime = 0;
 				eidosChangelog.clear();
@@ -511,6 +514,8 @@ public class PlayerDataHandler {
 				else d.tick();
 			}
 			deductions.removeAll(remove);
+			
+			lastDimension = dimension;
 		}
 
 		public void stopLoopcast() {
