@@ -14,6 +14,7 @@ import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityArmorStand;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
@@ -123,6 +124,14 @@ public class ModelPsimetalExosuit extends ModelBiped {
 
 	@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
+		if(entity instanceof EntityArmorStand) {
+			f = 0;
+			f1 = 0;
+			f2 = 0;
+			f3 = 0;
+			f4 = 0;
+		}
+		
 		helm.showModel = slot == 3;
 		body.showModel = slot == 2;
 		armR.showModel = slot == 2;
