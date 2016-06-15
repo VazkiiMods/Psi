@@ -50,12 +50,17 @@ public class TileMod extends TileEntity {
 	}
 
 	@Override
+    public NBTTagCompound getUpdateTag()  {
+        return writeToNBT(new NBTTagCompound());
+    }
+	
+	@Override
 	public SPacketUpdateTileEntity getUpdatePacket() {
-		NBTTagCompound nbttagcompound = new NBTTagCompound();
-		writeSharedNBT(nbttagcompound);
-		return new SPacketUpdateTileEntity(pos, -999, nbttagcompound);
+		NBTTagCompound cmp = new NBTTagCompound();
+		writeSharedNBT(cmp);
+		return new SPacketUpdateTileEntity(getPos(), getBlockMetadata(), cmp);
 	}
-
+	
 	@Override
 	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet) {
 		super.onDataPacket(net, packet);
