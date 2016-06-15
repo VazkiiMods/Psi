@@ -1,3 +1,10 @@
+beta-34
+*Eidos spells now reset if you change dimensions.
+*Fixed a crash with chisels and bits. (AlgorithmX2)
+*Fixed armor rendering on armor stands.
+*Fixed desyncs with the spell programmer visuals and conjured blocks.
+*Fixed sounds not working if you're on a server.
+*Fixed the scrolling panes in the leveling GUI not working with the scroll wheel.
 beta-33
 *Fixed Spell Bullets not being settable.
 beta-32
