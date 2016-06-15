@@ -18,6 +18,8 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vazkii.psi.common.core.PsiCreativeTab;
 import vazkii.psi.common.item.base.ItemModBlock;
 import vazkii.psi.common.lib.LibResources;
@@ -60,6 +62,7 @@ public class BlockMod extends Block implements IPsiBlock {
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public ItemMeshDefinition getCustomMeshDefinition() {
 		return null;
 	}
