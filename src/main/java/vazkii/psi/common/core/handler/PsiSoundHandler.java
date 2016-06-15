@@ -8,7 +8,7 @@
  * 
  * File Created @ [14/03/2016, 16:30:00 (GMT)]
  */
-package vazkii.psi.client.core.handler;
+package vazkii.psi.common.core.handler;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;

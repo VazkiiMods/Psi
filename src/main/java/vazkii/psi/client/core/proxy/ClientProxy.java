@@ -28,7 +28,6 @@ import vazkii.psi.client.core.handler.ClientTickHandler;
 import vazkii.psi.client.core.handler.HUDHandler;
 import vazkii.psi.client.core.handler.KeybindHandler;
 import vazkii.psi.client.core.handler.ModelHandler;
-import vazkii.psi.client.core.handler.PsiSoundHandler;
 import vazkii.psi.client.core.handler.ShaderHandler;
 import vazkii.psi.client.core.version.VersionChecker;
 import vazkii.psi.client.fx.FXSparkle;
@@ -40,6 +39,7 @@ import vazkii.psi.common.block.tile.TileProgrammer;
 import vazkii.psi.common.core.handler.ConfigHandler;
 import vazkii.psi.common.core.handler.PersistencyHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
+import vazkii.psi.common.core.handler.PsiSoundHandler;
 import vazkii.psi.common.core.proxy.CommonProxy;
 import vazkii.psi.common.entity.EntitySpellCircle;
 
@@ -52,7 +52,6 @@ public class ClientProxy extends CommonProxy {
 		ModelHandler.preInit();
 		ShaderHandler.init();
 		KeybindHandler.init();
-		PsiSoundHandler.init();
 		
 		new VersionChecker().init();
 

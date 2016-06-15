@@ -45,6 +45,7 @@ import vazkii.psi.api.cad.ISocketable;
 import vazkii.psi.client.gui.GuiLeveling;
 import vazkii.psi.common.core.handler.ConfigHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
+import vazkii.psi.common.core.handler.PsiSoundHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData.Deduction;
 import vazkii.psi.common.item.base.IHUDItem;

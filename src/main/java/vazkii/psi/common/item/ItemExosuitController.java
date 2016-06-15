@@ -23,7 +23,7 @@ import net.minecraft.world.World;
 import scala.reflect.internal.StdAttachments.PlainAttachment;
 import vazkii.psi.api.cad.ISocketable;
 import vazkii.psi.api.cad.ISocketableController;
-import vazkii.psi.client.core.handler.PsiSoundHandler;
+import vazkii.psi.common.core.handler.PsiSoundHandler;
 import vazkii.psi.common.core.helper.ItemNBTHelper;
 import vazkii.psi.common.item.base.ItemMod;
 import vazkii.psi.common.lib.LibItemNames;

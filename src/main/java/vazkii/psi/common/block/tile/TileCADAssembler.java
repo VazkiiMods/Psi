@@ -16,9 +16,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
 import vazkii.psi.api.cad.ISocketable;
-import vazkii.psi.client.core.handler.PsiSoundHandler;
 import vazkii.psi.common.block.tile.base.TileSimpleInventory;
 import vazkii.psi.common.core.PsiCreativeTab;
+import vazkii.psi.common.core.handler.PsiSoundHandler;
 import vazkii.psi.common.item.ItemCAD;
 import vazkii.psi.common.lib.LibBlockNames;
 

@@ -25,6 +25,7 @@ import vazkii.psi.common.block.base.ModBlocks;
 import vazkii.psi.common.core.handler.ConfigHandler;
 import vazkii.psi.common.core.handler.InternalMethodHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
+import vazkii.psi.common.core.handler.PsiSoundHandler;
 import vazkii.psi.common.crafting.ModCraftingRecipes;
 import vazkii.psi.common.entity.ModEntities;
 import vazkii.psi.common.item.base.ModItems;
@@ -44,6 +45,7 @@ public class CommonProxy {
 		ModEntities.init();
 		ModSpellPieces.init();
 		ModCraftingRecipes.init();
+		PsiSoundHandler.init();
 
 		NetworkHandler.init();
 		NetworkRegistry.INSTANCE.registerGuiHandler(Psi.instance, new GuiHandler());
