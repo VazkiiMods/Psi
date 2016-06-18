@@ -94,16 +94,6 @@ public class ContainerCADAssembler extends Container {
         final EntityEquipmentSlot slot = EntityEquipmentSlot.OFFHAND;
 		addSlotToContainer(new Slot(playerInventory, playerInventory.getSizeInventory() - 1, 219, 143) {
 
-			@Override
-			public int getSlotStackLimit() {
-				return 1;
-			}
-
-			@Override
-			public boolean isItemValid(ItemStack stack) {
-				return super.isItemValid(stack);
-			}
-
 			@SideOnly(Side.CLIENT)
 			@Override
 			public String getSlotTexture() {
