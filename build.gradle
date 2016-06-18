@@ -200,7 +200,7 @@ curseforge {
         changelog = """
             See http://psi.vazkii.us/changelog.php#${version}
         """
-        releaseType = "beta" // TODO change to release sometime
+        releaseType = "release"
     }
 }
 

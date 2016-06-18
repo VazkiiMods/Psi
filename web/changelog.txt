@@ -1,3 +1,7 @@
+r1.0-35
+*<b>Out of beta! FeelsGoodMan.</b>
+*Added an offhand slot to the CAD Assembler.
+*Trick: Collapse Block used on lit redstone ore will have normal redstone ore drop so you get the drops properly.
 beta-34
 *Eidos spells now reset if you change dimensions.
 *Fixed a crash with chisels and bits. (AlgorithmX2)
