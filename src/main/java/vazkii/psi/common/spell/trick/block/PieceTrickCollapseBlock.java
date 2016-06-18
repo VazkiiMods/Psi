@@ -13,6 +13,7 @@ package vazkii.psi.common.spell.trick.block;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityFallingBlock;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import vazkii.psi.api.internal.Vector3;
@@ -69,6 +70,11 @@ public class PieceTrickCollapseBlock extends PieceTrick {
 		Block blockBelow = stateDown.getBlock();
 
 		if(blockBelow.isAir(stateDown, world, posDown) && block.getBlockHardness(state, world, pos) != -1 && block.getHarvestLevel(state) <= ConfigHandler.cadHarvestLevel && world.getTileEntity(pos) == null && block.canSilkHarvest(world, pos, state, context.caster)) {
+			if(state.getBlock() == Blocks.LIT_REDSTONE_ORE) {
+				state = Blocks.REDSTONE_ORE.getDefaultState();
+				world.setBlockState(pos, state);
+			}
+			
 			EntityFallingBlock falling = new EntityFallingBlock(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, state);
 			world.spawnEntityInWorld(falling);
 		}
