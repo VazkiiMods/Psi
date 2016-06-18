@@ -73,20 +73,43 @@ public class ContainerCADAssembler extends Container {
 
 			addSlotToContainer(new Slot(playerInventory, playerInventory.getSizeInventory() - 2 - k, xs - 27, ys + 18 * k) {
 
+				@Override
 				public int getSlotStackLimit() {
 					return 1;
 				}
 
+				@Override
 				public boolean isItemValid(ItemStack stack) {
 					return stack != null && stack.getItem().isValidArmor(stack, slot, player);
 				}
 
 				@SideOnly(Side.CLIENT)
+				@Override
 				public String getSlotTexture() {
 					return ItemArmor.EMPTY_SLOT_NAMES[slot.getIndex()];
 				}
 			});
 		}
+		
+        final EntityEquipmentSlot slot = EntityEquipmentSlot.OFFHAND;
+		addSlotToContainer(new Slot(playerInventory, playerInventory.getSizeInventory() - 1, 219, 143) {
+
+			@Override
+			public int getSlotStackLimit() {
+				return 1;
+			}
+
+			@Override
+			public boolean isItemValid(ItemStack stack) {
+				return super.isItemValid(stack);
+			}
+
+			@SideOnly(Side.CLIENT)
+			@Override
+			public String getSlotTexture() {
+                return "minecraft:items/empty_armor_slot_shield";
+			}
+		});
 	}
 
 	@Override
