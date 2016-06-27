@@ -646,7 +646,7 @@ public class PlayerDataHandler {
 
 		@Override
 		public int getRegenPerTick() {
-			return Math.min(25, getLevel());
+			return Math.max(100, getLevel());
 		}
 
 		@Override
