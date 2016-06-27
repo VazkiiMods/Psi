@@ -61,7 +61,6 @@ public class PieceTrickBlink extends PieceTrick {
 	}
 
 	public static void blink(SpellContext context, Entity e, double dist) throws SpellRuntimeException {
-		context.verifyEntity(e);
 		if(!context.isInRadius(e))
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 
