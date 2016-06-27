@@ -62,8 +62,7 @@ public abstract class PieceTrickPotionBase extends PieceTrick {
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		Entity targetVal = this.<Entity>getParamValue(context, target);
 
-		context.verifyEntity(targetVal);
-		if(!(targetVal instanceof EntityLivingBase))
+		if(targetVal == null || !(targetVal instanceof EntityLivingBase))
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_TARGET);
 		if(!context.isInRadius(targetVal))
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
