@@ -25,7 +25,6 @@ public class SpellRuntimeException extends Exception {
 	public static final String NO_CAD = "psi.spellerror.nocad";
 	public static final String MEMORY_OUT_OF_BOUNDS = "psi.spellerror.memoryoutofbounds";
 	public static final String LOCKED_MEMORY = "psi.spellerror.lockedmemory";
-	public static final String IMMUNE_TARGET = "psi.spellerror.immunetarget";
 	public static final String NEGATIVE_NUMBER = "psi.spellerror.negativenumber";
 
 	public SpellRuntimeException(String s) {
