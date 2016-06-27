@@ -53,8 +53,6 @@ public class PieceTrickIgnite extends PieceTrick {
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		Entity targetVal = this.<Entity>getParamValue(context, target);
 		Double timeVal = this.<Double>getParamValue(context, time);
-		
-		context.verifyEntity(targetVal);
 		targetVal.setFire(timeVal.intValue());
 
 		return null;
