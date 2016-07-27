@@ -38,10 +38,16 @@ public class BlockMod extends Block implements IPsiBlock {
 		bareName = name;
 		this.variants = variants;
 
-		setUnlocalizedName(name);
+		if(registerInConstruction())
+			setUnlocalizedName(name);
+		
 		setCreativeTab(PsiCreativeTab.INSTANCE);
 	}
 
+	public boolean registerInConstruction() {
+		return true;
+	}
+	
 	@Override
 	public Block setUnlocalizedName(String name) {
 		super.setUnlocalizedName(name);
