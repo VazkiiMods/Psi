@@ -1,3 +1,7 @@
+r1.0-37
+*Fixed a crash with newer versions of Forge
+r1.0-36
+*<b>Updated the mod to Minecraft 1.10.</b>
 r1.0-35
 *<b>Out of beta! FeelsGoodMan.</b>
 *Added an offhand slot to the CAD Assembler.
