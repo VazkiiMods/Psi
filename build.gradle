@@ -11,7 +11,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.1-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
         classpath 'com.matthewprenger:CurseGradle:1.0-SNAPSHOT'
     }
 }
@@ -32,7 +32,7 @@ group = "vazkii.psi" // http://maven.apache.org/guides/mini/guide-naming-convent
 archivesBaseName = config.mod_name
 
 minecraft {
-    version = "${config.mc_version}-${config.forge_version}-${config.mc_version}"
+    version = "${config.mc_version}-${config.forge_version}-${config.mc_version_suffix}"
     runDir = "eclipse/assets"
 
     mappings = config.mc_mappings
