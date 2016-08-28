@@ -183,11 +183,12 @@ public class EntitySpellProjectile extends EntityThrowable {
 
 	@Override
 	protected void onImpact(RayTraceResult pos) {
-		if(pos.entityHit != null && pos.entityHit instanceof EntityLivingBase)
+		if(pos.entityHit != null && pos.entityHit instanceof EntityLivingBase) {
+			EntityLivingBase e = (EntityLivingBase) pos.entityHit; // apparently RayTraceResult is mutable \:D/
 			cast((SpellContext context) -> {
-				context.attackedEntity = (EntityLivingBase) pos.entityHit;
+				context.attackedEntity = e;
 			});
-		else cast();
+		} else cast();
 	}
 
 	public void cast() {
