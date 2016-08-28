@@ -1,3 +1,10 @@
+r1.0-38
+*<b>Removed core systems and moved them to AutoRegLib, which is now a dependency.</b>
+*Block interaction tricks now check against world spawn protection to prevent it from being broken.
+*Fixed a crash with projectile bullets.
+*Fixed a mistake in the relative focus section.
+*Fixed CAD harvest level not being checked properly.
+*The explode trick now has a lower bound on cost and potency.
 r1.0-37
 *Fixed a crash with newer versions of Forge
 r1.0-36
