@@ -16,6 +16,7 @@ import net.minecraft.entity.item.EntityFallingBlock;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeHooks;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.EnumSpellStat;
 import vazkii.psi.api.spell.Spell;
@@ -72,7 +73,7 @@ public class PieceTrickCollapseBlock extends PieceTrick {
 		if(!world.isBlockModifiable(context.caster, pos))
 			return null;
 
-		if(blockBelow.isAir(stateDown, world, posDown) && block.getBlockHardness(state, world, pos) != -1 && block.getHarvestLevel(state) <= ConfigHandler.cadHarvestLevel && world.getTileEntity(pos) == null && block.canSilkHarvest(world, pos, state, context.caster)) {
+		if(blockBelow.isAir(stateDown, world, posDown) && block.getBlockHardness(state, world, pos) != -1 && ForgeHooks.canHarvestBlock(block, context.caster, world, pos) && world.getTileEntity(pos) == null && block.canSilkHarvest(world, pos, state, context.caster)) {
 			if(state.getBlock() == Blocks.LIT_REDSTONE_ORE) {
 				state = Blocks.REDSTONE_ORE.getDefaultState();
 				world.setBlockState(pos, state);

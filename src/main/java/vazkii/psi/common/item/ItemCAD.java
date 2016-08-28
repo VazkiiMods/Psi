@@ -67,6 +67,7 @@ import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.BlockProgrammer;
 import vazkii.psi.common.block.base.ModBlocks;
+import vazkii.psi.common.core.handler.ConfigHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
 import vazkii.psi.common.core.handler.PsiSoundHandler;
@@ -96,6 +97,11 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 
 		GameRegistry.addRecipe(new AssemblyScavengeRecipe());
 		RecipeSorter.register("psi:assemblyScavenge", AssemblyScavengeRecipe.class, Category.SHAPELESS, "");
+	}
+	
+	@Override
+	public int getHarvestLevel(ItemStack stack, String toolClass) {
+		return ConfigHandler.cadHarvestLevel;
 	}
 	
 	@Override
