@@ -12,8 +12,6 @@ package vazkii.psi.client.render.entity;
 
 import java.awt.Color;
 
-import javax.swing.text.html.parser.Entity;
-
 import com.google.common.base.Optional;
 
 import net.minecraft.client.Minecraft;

@@ -17,13 +17,13 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.translation.I18n;
+import vazkii.arl.network.NetworkHandler;
 import vazkii.psi.client.core.helper.TextHelper;
 import vazkii.psi.client.gui.button.GuiButtonBoolean;
 import vazkii.psi.common.core.handler.PersistencyHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.lib.LibResources;
-import vazkii.psi.common.network.NetworkHandler;
 import vazkii.psi.common.network.message.MessageSkipToLevel;
 
 public class GuiIntroduction extends GuiScreen {

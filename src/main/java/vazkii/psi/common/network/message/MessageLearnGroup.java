@@ -13,13 +13,13 @@ package vazkii.psi.common.network.message;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import vazkii.arl.network.NetworkMessage;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.spell.PieceGroup;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
-import vazkii.psi.common.network.Message;
 
-public class MessageLearnGroup extends Message {
+public class MessageLearnGroup extends NetworkMessage {
 
 	public String group;
 
@@ -40,4 +40,4 @@ public class MessageLearnGroup extends Message {
 		return null;
 	}
 
-}
+}	

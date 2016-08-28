@@ -22,15 +22,16 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import vazkii.arl.item.ItemMod;
+import vazkii.arl.item.ItemModTool;
+import vazkii.arl.util.ItemNBTHelper;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ISocketable;
 import vazkii.psi.api.spell.SpellContext;
+import vazkii.psi.common.core.PsiCreativeTab;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
-import vazkii.psi.common.core.helper.ItemNBTHelper;
 import vazkii.psi.common.item.ItemCAD;
-import vazkii.psi.common.item.base.ItemMod;
-import vazkii.psi.common.item.base.ItemModTool;
 import vazkii.psi.common.item.base.ModItems;
 
 public class ItemPsimetalTool extends ItemModTool implements IPsimetalTool {
@@ -39,6 +40,7 @@ public class ItemPsimetalTool extends ItemModTool implements IPsimetalTool {
 
 	protected ItemPsimetalTool(String name, float attackDamage, float speed, Set<Block> effectiveBlocks, String... variants) {
 		super(name, attackDamage, speed, PsiAPI.PSIMETAL_TOOL_MATERIAL, effectiveBlocks, variants);
+		setCreativeTab(PsiCreativeTab.INSTANCE);
 	}
 
 	@Override

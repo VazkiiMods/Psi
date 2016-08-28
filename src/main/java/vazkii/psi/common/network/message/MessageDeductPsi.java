@@ -12,13 +12,13 @@ package vazkii.psi.common.network.message;
 
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import vazkii.arl.network.NetworkMessage;
 import vazkii.psi.client.core.handler.ClientTickHandler;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
-import vazkii.psi.common.network.Message;
 
-public class MessageDeductPsi extends Message {
+public class MessageDeductPsi extends NetworkMessage {
 
 	public int prev;
 	public int current;

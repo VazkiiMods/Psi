@@ -12,11 +12,11 @@ package vazkii.psi.common.item.component;
 
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.ItemStack;
+import vazkii.arl.interf.IExtraVariantHolder;
+import vazkii.arl.util.ModelHandler;
 import vazkii.psi.api.cad.EnumCADComponent;
 import vazkii.psi.api.cad.EnumCADStat;
 import vazkii.psi.api.cad.ICADAssembly;
-import vazkii.psi.client.core.handler.ModelHandler;
-import vazkii.psi.common.item.base.IExtraVariantHolder;
 import vazkii.psi.common.lib.LibItemNames;
 
 public class ItemCADAssembly extends ItemCADComponent implements ICADAssembly, IExtraVariantHolder {

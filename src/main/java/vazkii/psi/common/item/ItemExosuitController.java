@@ -20,15 +20,15 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
-import scala.reflect.internal.StdAttachments.PlainAttachment;
+import vazkii.arl.item.ItemMod;
+import vazkii.arl.util.ItemNBTHelper;
 import vazkii.psi.api.cad.ISocketable;
 import vazkii.psi.api.cad.ISocketableController;
 import vazkii.psi.common.core.handler.PsiSoundHandler;
-import vazkii.psi.common.core.helper.ItemNBTHelper;
-import vazkii.psi.common.item.base.ItemMod;
+import vazkii.psi.common.item.base.IPsiItem;
 import vazkii.psi.common.lib.LibItemNames;
 
-public class ItemExosuitController extends ItemMod implements ISocketableController {
+public class ItemExosuitController extends ItemMod implements ISocketableController, IPsiItem {
 
 	private static final String TAG_SELECTED_CONTROL_SLOT = "selectedControlSlot";
 

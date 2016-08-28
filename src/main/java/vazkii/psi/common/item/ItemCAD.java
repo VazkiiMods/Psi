@@ -46,6 +46,9 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.RecipeSorter;
 import net.minecraftforge.oredict.RecipeSorter.Category;
+import vazkii.arl.interf.IItemColorProvider;
+import vazkii.arl.item.ItemMod;
+import vazkii.arl.util.ItemNBTHelper;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.EnumCADComponent;
 import vazkii.psi.api.cad.EnumCADStat;
@@ -65,16 +68,14 @@ import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.BlockProgrammer;
 import vazkii.psi.common.block.base.ModBlocks;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
-import vazkii.psi.common.core.handler.PsiSoundHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
-import vazkii.psi.common.core.helper.ItemNBTHelper;
+import vazkii.psi.common.core.handler.PsiSoundHandler;
 import vazkii.psi.common.crafting.recipe.AssemblyScavengeRecipe;
-import vazkii.psi.common.item.base.IColorProvider;
-import vazkii.psi.common.item.base.ItemMod;
+import vazkii.psi.common.item.base.IPsiItem;
 import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.lib.LibItemNames;
 
-public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IColorProvider {
+public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColorProvider, IPsiItem {
 
 	private static final String TAG_COMPONENT_PREFIX = "component";
 	private static final String TAG_STORED_PSI = "storedPsi";
@@ -392,7 +393,7 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IColorProv
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public IItemColor getColor() {
+	public IItemColor getItemColor() {
 		return new IItemColor() {
 			@Override
 			public int getColorFromItemstack(ItemStack stack, int tintIndex) {

@@ -38,6 +38,9 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
+import vazkii.arl.network.NetworkHandler;
+import vazkii.arl.util.RenderHelper;
+import vazkii.arl.util.TooltipHandler;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.EnumCADStat;
 import vazkii.psi.api.cad.ICAD;
@@ -51,7 +54,6 @@ import vazkii.psi.api.spell.SpellMetadata;
 import vazkii.psi.api.spell.SpellParam;
 import vazkii.psi.api.spell.SpellParam.Side;
 import vazkii.psi.api.spell.SpellPiece;
-import vazkii.psi.client.core.helper.RenderHelper;
 import vazkii.psi.client.core.helper.SharingHelper;
 import vazkii.psi.client.gui.button.GuiButtonIO;
 import vazkii.psi.client.gui.button.GuiButtonPage;
@@ -61,10 +63,8 @@ import vazkii.psi.common.block.tile.TileProgrammer;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
 import vazkii.psi.common.item.ItemCAD;
-import vazkii.psi.common.item.base.ItemMod;
 import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.lib.LibResources;
-import vazkii.psi.common.network.NetworkHandler;
 import vazkii.psi.common.network.message.MessageSpellModified;
 import vazkii.psi.common.spell.SpellCompiler;
 import vazkii.psi.common.spell.constant.PieceConstantNumber;
@@ -395,11 +395,11 @@ public class GuiProgrammer extends GuiScreen {
 			drawTexturedModalRect(helpX, helpY, xSize + (overHelp ? 12 : 0), ySize + 9, 12, 12);
 			
 			if(overHelp && !isAltKeyDown()) {
-				ItemMod.addToTooltip(tooltip, "psimisc.programmerHelp");
+				TooltipHandler.addToTooltip(tooltip, "psimisc.programmerHelp");
 				String ctrl = I18n.format(Minecraft.IS_RUNNING_ON_MAC ? "psimisc.ctrlMac" : "psimisc.ctrlWindows");
-				ItemMod.tooltipIfShift(tooltip, () -> {
+				TooltipHandler.tooltipIfShift(tooltip, () -> {
 					for(int i = 0; i < 20; i++)
-						ItemMod.addToTooltip(tooltip, "psi.programmerReference" + i, ctrl);
+						TooltipHandler.addToTooltip(tooltip, "psi.programmerReference" + i, ctrl);
 				});
 			}
 		}

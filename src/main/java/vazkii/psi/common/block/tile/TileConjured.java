@@ -17,11 +17,11 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ITickable;
+import vazkii.arl.block.tile.TileMod;
 import vazkii.psi.api.cad.ICADColorizer;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.BlockConjured;
 import vazkii.psi.common.block.base.ModBlocks;
-import vazkii.psi.common.block.tile.base.TileMod;
 
 public class TileConjured extends TileMod implements ITickable {
 

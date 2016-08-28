@@ -25,14 +25,15 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import vazkii.arl.block.BlockFacing;
+import vazkii.arl.block.tile.TileSimpleInventory;
 import vazkii.psi.common.Psi;
-import vazkii.psi.common.block.base.BlockFacing;
+import vazkii.psi.common.block.base.IPsiBlock;
 import vazkii.psi.common.block.tile.TileCADAssembler;
-import vazkii.psi.common.block.tile.base.TileSimpleInventory;
 import vazkii.psi.common.lib.LibBlockNames;
 import vazkii.psi.common.lib.LibGuiIDs;
 
-public class BlockCADAssembler extends BlockFacing {
+public class BlockCADAssembler extends BlockFacing implements IPsiBlock {
 
 	Random random;
 

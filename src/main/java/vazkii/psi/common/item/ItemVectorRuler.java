@@ -24,13 +24,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import vazkii.arl.item.ItemMod;
+import vazkii.arl.util.ItemNBTHelper;
 import vazkii.psi.api.internal.Vector3;
-import vazkii.psi.common.core.helper.ItemNBTHelper;
 import vazkii.psi.common.item.base.IHUDItem;
-import vazkii.psi.common.item.base.ItemMod;
+import vazkii.psi.common.item.base.IPsiItem;
 import vazkii.psi.common.lib.LibItemNames;
 
-public class ItemVectorRuler extends ItemMod implements IHUDItem {
+public class ItemVectorRuler extends ItemMod implements IHUDItem, IPsiItem {
 
 	private static final String TAG_SRC_X = "srcX";
 	private static final String TAG_SRC_Y = "srcY";

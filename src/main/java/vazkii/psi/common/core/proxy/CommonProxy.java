@@ -30,7 +30,7 @@ import vazkii.psi.common.crafting.ModCraftingRecipes;
 import vazkii.psi.common.entity.ModEntities;
 import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.network.GuiHandler;
-import vazkii.psi.common.network.NetworkHandler;
+import vazkii.psi.common.network.MessageRegister;
 import vazkii.psi.common.spell.base.ModSpellPieces;
 
 public class CommonProxy {
@@ -47,7 +47,7 @@ public class CommonProxy {
 		ModCraftingRecipes.init();
 		PsiSoundHandler.init();
 
-		NetworkHandler.init();
+		MessageRegister.init();
 		NetworkRegistry.INSTANCE.registerGuiHandler(Psi.instance, new GuiHandler());
 
 		MinecraftForge.EVENT_BUS.register(new PlayerDataHandler.EventHandler());

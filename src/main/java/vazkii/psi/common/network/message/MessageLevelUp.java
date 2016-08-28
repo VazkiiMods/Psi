@@ -12,10 +12,10 @@ package vazkii.psi.common.network.message;
 
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import vazkii.arl.network.NetworkMessage;
 import vazkii.psi.common.Psi;
-import vazkii.psi.common.network.Message;
 
-public class MessageLevelUp extends Message {
+public class MessageLevelUp extends NetworkMessage {
 
 	public int level;
 

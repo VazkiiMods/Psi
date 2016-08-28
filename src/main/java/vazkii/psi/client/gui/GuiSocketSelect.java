@@ -29,6 +29,8 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import vazkii.arl.network.NetworkMessage;
+import vazkii.arl.network.NetworkHandler;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.cad.ISocketable;
@@ -36,8 +38,6 @@ import vazkii.psi.api.cad.ISocketableController;
 import vazkii.psi.client.core.handler.KeybindHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.lib.LibResources;
-import vazkii.psi.common.network.Message;
-import vazkii.psi.common.network.NetworkHandler;
 import vazkii.psi.common.network.message.MessageChangeControllerSlot;
 import vazkii.psi.common.network.message.MessageChangeSocketableSlot;
 
@@ -275,7 +275,7 @@ public class GuiSocketSelect extends GuiScreen {
 				int slot = slots.get(slotSelected);
 				PlayerDataHandler.get(mc.thePlayer).stopLoopcast();
 
-				Message message = null;
+				NetworkMessage message = null;
 				if(controllerStack != null)
 					message = new MessageChangeControllerSlot(controlSlot, slot);
 				else message = new MessageChangeSocketableSlot(slot);

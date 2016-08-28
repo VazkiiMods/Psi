@@ -17,16 +17,17 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.RecipeSorter;
 import net.minecraftforge.oredict.RecipeSorter.Category;
+import vazkii.arl.interf.IItemColorProvider;
+import vazkii.arl.item.ItemMod;
 import vazkii.psi.api.cad.ICADColorizer;
 import vazkii.psi.api.exosuit.IExosuitSensor;
 import vazkii.psi.api.exosuit.PsiArmorEvent;
 import vazkii.psi.common.crafting.recipe.SensorAttachRecipe;
 import vazkii.psi.common.crafting.recipe.SensorRemoveRecipe;
-import vazkii.psi.common.item.base.IColorProvider;
-import vazkii.psi.common.item.base.ItemMod;
+import vazkii.psi.common.item.base.IPsiItem;
 import vazkii.psi.common.lib.LibItemNames;
 
-public class ItemExosuitSensor extends ItemMod implements IExosuitSensor, IColorProvider {
+public class ItemExosuitSensor extends ItemMod implements IExosuitSensor, IItemColorProvider, IPsiItem {
 
 	public static final String[] VARIANTS = {
 			"exosuitSensorLight",
@@ -69,7 +70,7 @@ public class ItemExosuitSensor extends ItemMod implements IExosuitSensor, IColor
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public IItemColor getColor() {
+	public IItemColor getItemColor() {
 		return new IItemColor() {
 			@Override
 			public int getColorFromItemstack(ItemStack stack, int tintIndex) {

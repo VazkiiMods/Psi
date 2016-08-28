@@ -27,17 +27,18 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.RecipeSorter;
 import net.minecraftforge.oredict.RecipeSorter.Category;
+import vazkii.arl.item.ItemMod;
+import vazkii.arl.util.ItemNBTHelper;
 import vazkii.psi.api.internal.VanillaPacketDispatcher;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.common.block.tile.TileProgrammer;
 import vazkii.psi.common.core.handler.PsiSoundHandler;
-import vazkii.psi.common.core.helper.ItemNBTHelper;
 import vazkii.psi.common.crafting.recipe.BulletToDriveRecipe;
 import vazkii.psi.common.crafting.recipe.DriveDuplicateRecipe;
-import vazkii.psi.common.item.base.ItemMod;
+import vazkii.psi.common.item.base.IPsiItem;
 import vazkii.psi.common.lib.LibItemNames;
 
-public class ItemSpellDrive extends ItemMod {
+public class ItemSpellDrive extends ItemMod implements IPsiItem {
 
 	private static final String TAG_SPELL = "spell";
 

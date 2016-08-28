@@ -12,8 +12,8 @@ package vazkii.psi.common.block.tile;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import vazkii.arl.block.tile.TileMod;
 import vazkii.psi.api.spell.Spell;
-import vazkii.psi.common.block.tile.base.TileMod;
 import vazkii.psi.common.spell.SpellCompiler;
 
 public class TileProgrammer extends TileMod {

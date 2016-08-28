@@ -25,11 +25,12 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.client.GuiScrollingList;
+import vazkii.arl.network.NetworkHandler;
+import vazkii.arl.util.RenderHelper;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.spell.PieceGroup;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellPiece;
-import vazkii.psi.client.core.helper.RenderHelper;
 import vazkii.psi.client.core.helper.TextHelper;
 import vazkii.psi.client.gui.button.GuiButtonLearn;
 import vazkii.psi.common.Psi;
@@ -37,7 +38,6 @@ import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
 import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.lib.LibResources;
-import vazkii.psi.common.network.NetworkHandler;
 import vazkii.psi.common.network.message.MessageLearnGroup;
 
 public class GuiLeveling extends GuiScreen {

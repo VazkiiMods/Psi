@@ -13,21 +13,18 @@ package vazkii.psi.client.core.proxy;
 import java.awt.Color;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.cad.ICADColorizer;
 import vazkii.psi.client.core.handler.ClientTickHandler;
 import vazkii.psi.client.core.handler.HUDHandler;
 import vazkii.psi.client.core.handler.KeybindHandler;
-import vazkii.psi.client.core.handler.ModelHandler;
 import vazkii.psi.client.core.handler.ShaderHandler;
 import vazkii.psi.client.core.version.VersionChecker;
 import vazkii.psi.client.fx.FXSparkle;
@@ -39,7 +36,6 @@ import vazkii.psi.common.block.tile.TileProgrammer;
 import vazkii.psi.common.core.handler.ConfigHandler;
 import vazkii.psi.common.core.handler.PersistencyHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
-import vazkii.psi.common.core.handler.PsiSoundHandler;
 import vazkii.psi.common.core.proxy.CommonProxy;
 import vazkii.psi.common.entity.EntitySpellCircle;
 
@@ -49,7 +45,6 @@ public class ClientProxy extends CommonProxy {
 	public void preInit(FMLPreInitializationEvent event) {
 		super.preInit(event);
 
-		ModelHandler.preInit();
 		ShaderHandler.init();
 		KeybindHandler.init();
 		
@@ -64,11 +59,6 @@ public class ClientProxy extends CommonProxy {
 		RenderingRegistry.registerEntityRenderingHandler(EntitySpellCircle.class, manager -> new RenderSpellCircle(manager));
 	}
 
-	@Override
-	public void init(FMLInitializationEvent event) {
-		ModelHandler.init();
-	}
-	
 	@Override
 	public EntityPlayer getClientPlayer() {
 		return Minecraft.getMinecraft().thePlayer;

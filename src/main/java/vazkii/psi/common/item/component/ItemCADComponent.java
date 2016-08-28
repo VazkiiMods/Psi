@@ -13,19 +13,18 @@ package vazkii.psi.common.item.component;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.xml.soap.Text;
-
 import org.apache.commons.lang3.tuple.Pair;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextFormatting;
+import vazkii.arl.item.ItemMod;
 import vazkii.psi.api.cad.EnumCADComponent;
 import vazkii.psi.api.cad.EnumCADStat;
 import vazkii.psi.api.cad.ICADComponent;
-import vazkii.psi.common.item.base.ItemMod;
+import vazkii.psi.common.item.base.IPsiItem;
 
-public abstract class ItemCADComponent extends ItemMod implements ICADComponent {
+public abstract class ItemCADComponent extends ItemMod implements ICADComponent, IPsiItem {
 
 	private final HashMap<Pair<EnumCADStat, Integer>, Integer> stats;
 

@@ -22,13 +22,13 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.RecipeSorter;
+import vazkii.arl.interf.IItemColorProvider;
 import vazkii.psi.api.cad.ICADColorizer;
 import vazkii.psi.client.core.handler.ClientTickHandler;
 import vazkii.psi.common.crafting.recipe.ColorizerChangeRecipe;
-import vazkii.psi.common.item.base.IColorProvider;
 import vazkii.psi.common.lib.LibItemNames;
 
-public class ItemCADColorizer extends ItemCADComponent implements ICADColorizer, IColorProvider {
+public class ItemCADColorizer extends ItemCADComponent implements ICADColorizer, IItemColorProvider {
 
 	public static final String[] VARIANTS = {
 			LibItemNames.CAD_COLORIZER + getProperDyeName(EnumDyeColor.WHITE),
@@ -60,7 +60,7 @@ public class ItemCADColorizer extends ItemCADComponent implements ICADColorizer,
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public IItemColor getColor() {
+	public IItemColor getItemColor() {
 		return new IItemColor() {
 			@Override
 			public int getColorFromItemstack(ItemStack stack, int tintIndex) {
