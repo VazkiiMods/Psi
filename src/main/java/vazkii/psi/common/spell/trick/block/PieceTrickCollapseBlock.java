@@ -68,6 +68,9 @@ public class PieceTrickCollapseBlock extends PieceTrick {
 		IBlockState stateDown = world.getBlockState(posDown);
 		Block block = state.getBlock();
 		Block blockBelow = stateDown.getBlock();
+		
+		if(!world.isBlockModifiable(context.caster, pos))
+			return null;
 
 		if(blockBelow.isAir(stateDown, world, posDown) && block.getBlockHardness(state, world, pos) != -1 && block.getHarvestLevel(state) <= ConfigHandler.cadHarvestLevel && world.getTileEntity(pos) == null && block.canSilkHarvest(world, pos, state, context.caster)) {
 			if(state.getBlock() == Blocks.LIT_REDSTONE_ORE) {

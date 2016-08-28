@@ -84,6 +84,9 @@ public class PieceTrickConjureBlockSequence extends PieceTrick {
 				throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 
 			BlockPos pos = new BlockPos(blockVec.x, blockVec.y, blockVec.z);
+			if(!context.caster.worldObj.isBlockModifiable(context.caster, pos))
+				continue;
+			
 			IBlockState state = context.caster.worldObj.getBlockState(pos);
 
 			if(state.getBlock() != ModBlocks.conjured) {

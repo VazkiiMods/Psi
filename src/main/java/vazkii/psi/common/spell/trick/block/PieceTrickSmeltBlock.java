@@ -61,6 +61,9 @@ public class PieceTrickSmeltBlock extends PieceTrick {
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 
 		BlockPos pos = new BlockPos(positionVal.x, positionVal.y, positionVal.z);
+		if(!context.caster.worldObj.isBlockModifiable(context.caster, pos))
+			return null;
+		
 		IBlockState state = context.caster.worldObj.getBlockState(pos);
 		Block block = state.getBlock();
 		int meta = block.getMetaFromState(state);

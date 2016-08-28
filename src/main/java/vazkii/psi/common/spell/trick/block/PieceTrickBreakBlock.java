@@ -15,6 +15,7 @@ import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
@@ -72,7 +73,7 @@ public class PieceTrickBreakBlock extends PieceTrick {
 	}
 
 	public static void removeBlockWithDrops(SpellContext context, EntityPlayer player, World world, ItemStack tool, BlockPos pos, boolean particles) {
-		if(!world.isBlockLoaded(pos) || context.positionBroken != null && pos.equals(context.positionBroken.getBlockPos()))
+		if(!world.isBlockLoaded(pos) || (context.positionBroken != null && pos.equals(context.positionBroken.getBlockPos())) || !world.isBlockModifiable(player, pos))
 			return;
 
 		int harvestLevel = ConfigHandler.cadHarvestLevel;

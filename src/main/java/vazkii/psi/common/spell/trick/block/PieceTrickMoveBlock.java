@@ -80,6 +80,9 @@ public class PieceTrickMoveBlock extends PieceTrick {
 		BlockPos pos1 = new BlockPos(x, y, z);
 		IBlockState state1 = world.getBlockState(pos1);
 
+		if(!world.isBlockModifiable(context.caster, pos) || !world.isBlockModifiable(context.caster, pos1))
+			return null;
+		
 		if(world.isAirBlock(pos1) || state1.getBlock().isReplaceable(world, pos1)) {
 			world.setBlockState(pos1, state, 1 | 2);
 			world.setBlockToAir(pos);

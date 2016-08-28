@@ -73,7 +73,7 @@ public class PieceTrickPlaceBlock extends PieceTrick {
 	}
 
 	public static void placeBlock(EntityPlayer player, World world, BlockPos pos, int slot, boolean particles, boolean conjure) {
-		if(!world.isBlockLoaded(pos))
+		if(!world.isBlockLoaded(pos) || !world.isBlockModifiable(player, pos))
 			return;
 		
 		IBlockState state = world.getBlockState(pos);
