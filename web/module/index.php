@@ -1,6 +1,6 @@
 <div class="featurettes">
 	<img class="featurette-image image-stretch" src="img/header.jpg"></img>
-	<img id="sellout" src="http://vazkii.us/sellout.png"></img>
+	<a href="https://www.creeperhost.net/"><img id="sellout" src="http://vazkii.us/sellout.png"></img></a>
 
 	<div class="row featurette">
 		<h2 class="featurette-heading">Science, Magic. <span class="text-muted">Coming Soon.</span></h2>

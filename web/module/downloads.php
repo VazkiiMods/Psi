@@ -71,7 +71,7 @@
 		<span class='warning-txt'>As of build 38, Psi requires <a href='https://minecraft.curseforge.com/projects/autoreglib'>AutoRegLib</a>. Make sure to have it.</span><br>
 		<br><br>
 		<font size='4'>Misc Downloads</font><br>
-		<div class='btn-group'><a href='http://www.curseforge.com/projects/225643/' class='btn btn-material-orange'><b>CurseForge</b></a></div> 
+		<div class='btn-group'><a href='http://www.curseforge.com/projects/psi/' class='btn btn-material-orange'><b>CurseForge</b></a></div> 
 		<br><br>
 		<font size='5'>Latest Download</font><br>");
 	print($downloads_str);
