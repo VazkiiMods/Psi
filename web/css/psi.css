@@ -158,6 +158,12 @@ hr {
 	margin-bottom: 10px;
 }
 
+#sellout {
+	position: absolute;
+	width: 200px;
+	top: 540px;
+}
+
 .grid-image-container {
 	padding-top: 20px;
 	text-align: center;

@@ -67,12 +67,11 @@
 	$total_dl_str = number_format($total_dls);
 	
 	print("<div class='total-dls'><span class='glyphicon glyphicon-star moe-scroll'></span> Psi has been downloaded a total of <b class='moe-scroll'>$total_dl_str</b> times.</div>
-		<span class='whore-txt warning-txt'>Enjoy the mod? Why not support my endeavours on <a href='http://www.patreon.com/Vazkii'>Patreon</a>?</span>
-		<br>
-		Like it? Discuss the mod on the <a href='http://forum.feed-the-beast.com/threads/psi-discussion-thread.144282/'>FTB Forums</a>!
+		<span class='whore-txt warning-txt'>Enjoy the mod? Why not support my endeavours on <a href='http://www.patreon.com/Vazkii'>Patreon</a>?</span><br><br>
+		<span class='warning-txt'>As of build 38, Psi requires <a href='https://minecraft.curseforge.com/projects/autoreglib'>AutoRegLib</a>. Make sure to have it.</span><br>
 		<br><br>
 		<font size='4'>Misc Downloads</font><br>
-		<div class='btn-group'><a href='http://minecraft.curseforge.com/projects/psi' class='btn btn-material-orange'><b>CurseForge</b></a></div> 
+		<div class='btn-group'><a href='http://www.curseforge.com/projects/225643/' class='btn btn-material-orange'><b>CurseForge</b></a></div> 
 		<br><br>
 		<font size='5'>Latest Download</font><br>");
 	print($downloads_str);
