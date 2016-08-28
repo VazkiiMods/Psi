@@ -46,6 +46,8 @@ public class PieceTrickExplode extends PieceTrick {
 		Double powerVal = this.<Double>getParamEvaluation(power);
 		if(powerVal == null || powerVal <= 0)
 			throw new SpellCompilationException(SpellCompilationException.NON_POSITIVE_VALUE, x, y);
+		
+		powerVal = Math.max(1, powerVal);
 
 		meta.addStat(EnumSpellStat.POTENCY, (int) (powerVal * 70));
 		meta.addStat(EnumSpellStat.COST, (int) (powerVal * 210));
