@@ -6,17 +6,18 @@
  * Psi is Open Source and distributed under the
  * Psi License: http://psi.vazkii.us/license.php
  * 
- * File Created @ [14/03/2016, 16:42:38 (GMT)]
+ * File Created @ [28/08/2016, 01:43:03 (GMT)]
  */
 package vazkii.psi.common.item.base;
 
-import net.minecraft.client.renderer.color.IItemColor;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import vazkii.arl.interf.IVariantHolder;
+import vazkii.psi.common.lib.LibMisc;
 
-public interface IColorProvider {
+public interface IPsiItem extends IVariantHolder {
+
+	@Override
+	default String getModNamespace() {
+		return LibMisc.RESOURCE_NAMESPACE;
+	}
 	
-	@SideOnly(Side.CLIENT)
-	public IItemColor getColor();
-
 }

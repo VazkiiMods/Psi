@@ -201,6 +201,9 @@ curseforge {
             See http://psi.vazkii.us/changelog.php#${version}
         """
         releaseType = "release"
+        relations {
+            requiredLibrary 'autoreglib'
+        }
     }
 }
 

@@ -1,8 +1,9 @@
 <div class="featurettes">
 	<img class="featurette-image image-stretch" src="img/header.jpg"></img>
+	<a href="https://www.creeperhost.net/"><img id="sellout" src="http://vazkii.us/sellout.png"></img></a>
 
 	<div class="row featurette">
-		<h2 class="featurette-heading">Science, Magic. <span class="text-muted">Rising Hope.</span></h2>
+		<h2 class="featurette-heading">Science, Magic. <span class="text-muted">Coming Soon.</span></h2>
 		<div class="col-md-5 grid-image-container">
 			<img class="featurette-image" src="img/grid.png"></img><br><br>
 			<img class="featurette-image" src="img/grid2.png"></img>

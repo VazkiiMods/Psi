@@ -10,17 +10,14 @@
  */
 package vazkii.psi.common.block.base;
 
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.item.EnumRarity;
-import net.minecraft.item.ItemStack;
-import vazkii.psi.common.item.base.IVariantHolder;
+import vazkii.arl.interf.IModBlock;
+import vazkii.psi.common.lib.LibMisc;
 
-public interface IPsiBlock extends IVariantHolder, IVariantEnumHolder {
+public interface IPsiBlock extends IModBlock {
 
-	public String getBareName();
-
-	public IProperty[] getIgnoredProperties();
-
-	public EnumRarity getBlockRarity(ItemStack stack);
+	@Override
+	default String getModNamespace() {
+		return LibMisc.RESOURCE_NAMESPACE;
+	}
 
 }

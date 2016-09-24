@@ -22,6 +22,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import vazkii.arl.interf.IItemColorProvider;
+import vazkii.arl.item.ItemMod;
+import vazkii.arl.item.ItemModArmor;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ICADColorizer;
 import vazkii.psi.api.cad.ISocketable;
@@ -29,23 +32,22 @@ import vazkii.psi.api.exosuit.IPsiEventArmor;
 import vazkii.psi.api.exosuit.PsiArmorEvent;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.client.model.ModelPsimetalExosuit;
+import vazkii.psi.common.core.PsiCreativeTab;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
 import vazkii.psi.common.item.ItemCAD;
-import vazkii.psi.common.item.base.IColorProvider;
-import vazkii.psi.common.item.base.ItemMod;
-import vazkii.psi.common.item.base.ItemModArmor;
 import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.item.tool.IPsimetalTool;
 import vazkii.psi.common.item.tool.ItemPsimetalTool;
 import vazkii.psi.common.lib.LibResources;
 
-public class ItemPsimetalArmor extends ItemModArmor implements IPsimetalTool, IPsiEventArmor, IColorProvider {
+public class ItemPsimetalArmor extends ItemModArmor implements IPsimetalTool, IPsiEventArmor, IItemColorProvider {
 
 	protected ModelBiped[] models = null;
 
 	public ItemPsimetalArmor(String name, int type, EntityEquipmentSlot slot) {
 		super(name, PsiAPI.PSIMETAL_ARMOR_MATERIAL, type, slot);
+		setCreativeTab(PsiCreativeTab.INSTANCE);
 	}
 
 	@Override
@@ -117,7 +119,7 @@ public class ItemPsimetalArmor extends ItemModArmor implements IPsimetalTool, IP
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public IItemColor getColor() {
+	public IItemColor getItemColor() {
 		return new IItemColor() {
 			@Override
 			public int getColorFromItemstack(ItemStack stack, int tintIndex) {

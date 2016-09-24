@@ -15,13 +15,13 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import vazkii.arl.network.NetworkMessage;
 import vazkii.psi.client.core.handler.ClientTickHandler;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
-import vazkii.psi.common.network.Message;
 
-public class MessageDataSync extends Message {
+public class MessageDataSync extends NetworkMessage {
 
 	public NBTTagCompound cmp;
 

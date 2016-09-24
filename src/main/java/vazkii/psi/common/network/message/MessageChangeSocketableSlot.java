@@ -15,11 +15,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import vazkii.arl.network.NetworkMessage;
 import vazkii.psi.api.cad.ISocketable;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
-import vazkii.psi.common.network.Message;
 
-public class MessageChangeSocketableSlot extends Message {
+public class MessageChangeSocketableSlot extends NetworkMessage {
 
 	public int slot;
 

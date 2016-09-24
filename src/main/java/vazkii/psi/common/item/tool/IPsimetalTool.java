@@ -13,12 +13,13 @@ package vazkii.psi.common.item.tool;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import vazkii.arl.util.ItemNBTHelper;
 import vazkii.psi.api.cad.ISocketable;
 import vazkii.psi.api.spell.ISpellSettable;
 import vazkii.psi.api.spell.Spell;
-import vazkii.psi.common.core.helper.ItemNBTHelper;
+import vazkii.psi.common.item.base.IPsiItem;
 
-public interface IPsimetalTool extends ISocketable, ISpellSettable {
+public interface IPsimetalTool extends ISocketable, ISpellSettable, IPsiItem {
 
 	public static final String TAG_BULLET_PREFIX = "bullet";
 	public static final String TAG_SELECTED_SLOT = "selectedSlot";

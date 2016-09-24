@@ -20,11 +20,12 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
+import vazkii.arl.item.ItemMod;
 import vazkii.psi.common.entity.EntitySpellCharge;
-import vazkii.psi.common.item.base.ItemMod;
+import vazkii.psi.common.item.base.IPsiItem;
 import vazkii.psi.common.lib.LibItemNames;
 
-public class ItemDetonator extends ItemMod {
+public class ItemDetonator extends ItemMod implements IPsiItem {
 
 	public ItemDetonator() {
 		super(LibItemNames.DETONATOR);

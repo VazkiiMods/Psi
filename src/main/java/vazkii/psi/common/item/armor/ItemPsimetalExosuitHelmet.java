@@ -13,9 +13,9 @@ package vazkii.psi.common.item.armor;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import vazkii.arl.util.ItemNBTHelper;
 import vazkii.psi.api.exosuit.IExosuitSensor;
 import vazkii.psi.api.exosuit.ISensorHoldable;
-import vazkii.psi.common.core.helper.ItemNBTHelper;
 import vazkii.psi.common.lib.LibItemNames;
 
 public class ItemPsimetalExosuitHelmet extends ItemPsimetalArmor implements ISensorHoldable {

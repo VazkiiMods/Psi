@@ -11,6 +11,7 @@
 package vazkii.psi.common.network.message;
 
 import net.minecraft.util.math.BlockPos;
+import vazkii.arl.network.TileEntityMessage;
 import vazkii.psi.api.internal.VanillaPacketDispatcher;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.common.block.tile.TileProgrammer;

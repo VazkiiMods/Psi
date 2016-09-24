@@ -33,18 +33,19 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import vazkii.arl.block.BlockFacing;
 import vazkii.psi.api.internal.VanillaPacketDispatcher;
 import vazkii.psi.api.spell.ISpellSettable;
 import vazkii.psi.common.Psi;
-import vazkii.psi.common.block.base.BlockFacing;
+import vazkii.psi.common.block.base.IPsiBlock;
 import vazkii.psi.common.block.tile.TileProgrammer;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
-import vazkii.psi.common.core.handler.PsiSoundHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
+import vazkii.psi.common.core.handler.PsiSoundHandler;
 import vazkii.psi.common.lib.LibBlockNames;
 import vazkii.psi.common.lib.LibGuiIDs;
 
-public class BlockProgrammer extends BlockFacing {
+public class BlockProgrammer extends BlockFacing implements IPsiBlock {
 
 	public static final PropertyBool ENABLED = PropertyBool.create("enabled");
 

@@ -15,8 +15,10 @@ import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.BlockEvent.BreakEvent;
 import net.minecraftforge.fluids.IFluidBlock;
@@ -72,15 +74,13 @@ public class PieceTrickBreakBlock extends PieceTrick {
 	}
 
 	public static void removeBlockWithDrops(SpellContext context, EntityPlayer player, World world, ItemStack tool, BlockPos pos, boolean particles) {
-		if(!world.isBlockLoaded(pos) || context.positionBroken != null && pos.equals(context.positionBroken.getBlockPos()))
+		if(!world.isBlockLoaded(pos) || (context.positionBroken != null && pos.equals(context.positionBroken.getBlockPos())) || !world.isBlockModifiable(player, pos))
 			return;
 
-		int harvestLevel = ConfigHandler.cadHarvestLevel;
 		IBlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
 		if(!world.isRemote && block != null && !block.isAir(state, world, pos) && !(block instanceof BlockLiquid) && !(block instanceof IFluidBlock) && block.getPlayerRelativeBlockHardness(state, player, world, pos) > 0) {
-			int neededHarvestLevel = block.getHarvestLevel(state);
-			if(neededHarvestLevel > harvestLevel && (tool != null && !tool.canHarvestBlock(state)))
+			if(!ForgeHooks.canHarvestBlock(block, player, world, pos))
 				return;
 
 			BreakEvent event = new BreakEvent(world, pos, state, player);

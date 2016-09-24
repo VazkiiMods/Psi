@@ -26,13 +26,12 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import vazkii.psi.common.block.base.BlockModContainer;
+import vazkii.arl.block.BlockModContainer;
+import vazkii.psi.common.block.base.IPsiBlock;
 import vazkii.psi.common.block.tile.TileConjured;
 import vazkii.psi.common.lib.LibBlockNames;
 
-public class BlockConjured extends BlockModContainer {
+public class BlockConjured extends BlockModContainer implements IPsiBlock {
 
 	public static final PropertyBool SOLID = PropertyBool.create("solid");
 	public static final PropertyBool LIGHT = PropertyBool.create("light");

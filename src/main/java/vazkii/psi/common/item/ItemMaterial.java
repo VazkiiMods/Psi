@@ -10,10 +10,11 @@
  */
 package vazkii.psi.common.item;
 
-import vazkii.psi.common.item.base.ItemMod;
+import vazkii.arl.item.ItemMod;
+import vazkii.psi.common.item.base.IPsiItem;
 import vazkii.psi.common.lib.LibItemNames;
 
-public class ItemMaterial extends ItemMod {
+public class ItemMaterial extends ItemMod implements IPsiItem {
 
 	public static final String[] VARIANTS = {
 			"psidust",

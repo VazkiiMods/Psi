@@ -18,10 +18,10 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.text.translation.I18n;
+import vazkii.arl.block.BlockFacing;
+import vazkii.arl.util.RenderHelper;
 import vazkii.psi.client.core.handler.ShaderHandler;
-import vazkii.psi.client.core.helper.RenderHelper;
 import vazkii.psi.client.gui.GuiProgrammer;
-import vazkii.psi.common.block.base.BlockFacing;
 import vazkii.psi.common.block.base.ModBlocks;
 import vazkii.psi.common.block.tile.TileProgrammer;
 

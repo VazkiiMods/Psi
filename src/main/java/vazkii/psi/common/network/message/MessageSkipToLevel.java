@@ -13,11 +13,11 @@ package vazkii.psi.common.network.message;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import vazkii.arl.network.NetworkMessage;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
-import vazkii.psi.common.network.Message;
 
-public class MessageSkipToLevel extends Message {
+public class MessageSkipToLevel extends NetworkMessage {
 
 	public int level;
 

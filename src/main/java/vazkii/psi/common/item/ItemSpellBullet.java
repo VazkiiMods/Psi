@@ -23,6 +23,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import vazkii.arl.item.ItemMod;
+import vazkii.arl.util.ItemNBTHelper;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.EnumCADComponent;
 import vazkii.psi.api.cad.ICAD;
@@ -31,17 +33,16 @@ import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
-import vazkii.psi.common.core.helper.ItemNBTHelper;
 import vazkii.psi.common.entity.EntitySpellCharge;
 import vazkii.psi.common.entity.EntitySpellCircle;
 import vazkii.psi.common.entity.EntitySpellGrenade;
 import vazkii.psi.common.entity.EntitySpellMine;
 import vazkii.psi.common.entity.EntitySpellProjectile;
-import vazkii.psi.common.item.base.ItemMod;
+import vazkii.psi.common.item.base.IPsiItem;
 import vazkii.psi.common.lib.LibItemNames;
 import vazkii.psi.common.spell.operator.vector.PieceOperatorVectorRaycast;
 
-public class ItemSpellBullet extends ItemMod implements ISpellContainer {
+public class ItemSpellBullet extends ItemMod implements ISpellContainer, IPsiItem {
 
 	private static final String TAG_SPELL = "spell";
 

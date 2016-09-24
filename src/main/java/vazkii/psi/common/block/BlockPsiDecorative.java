@@ -15,10 +15,11 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
-import vazkii.psi.common.block.base.BlockMetaVariants;
+import vazkii.arl.block.BlockMetaVariants;
+import vazkii.psi.common.block.base.IPsiBlock;
 import vazkii.psi.common.lib.LibBlockNames;
 
-public class BlockPsiDecorative extends BlockMetaVariants {
+public class BlockPsiDecorative extends BlockMetaVariants implements IPsiBlock {
 
 	public BlockPsiDecorative() {
 		super(LibBlockNames.PSI_DECORATIVE, Material.IRON, Variants.class);
