@@ -106,7 +106,7 @@ public class GuiLeveling extends GuiScreen {
 
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-		if(data.getLevel() == 0 && data.getLevelPoints() == 0) {
+		if(data.getLevel() == 0 && data.getLevelPoints() == 0 || data.getLevel() == 1 && data.getLevelPoints() == 1) {
 			mc.displayGuiScreen(new GuiIntroduction());
 			return;
 		}

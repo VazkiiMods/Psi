@@ -40,7 +40,7 @@ public class GuiIntroduction extends GuiScreen {
 		left = (width - xSize) / 2;
 		top = (height - ySize) / 2;
 
-		skip = PersistencyHandler.persistentLevel > 0 && !PersistencyHandler.ignore;
+		skip = PersistencyHandler.persistentLevel > 0;
 
 		buttonList.clear();
 		if(skip) {
@@ -82,7 +82,6 @@ public class GuiIntroduction extends GuiScreen {
 				PlayerDataHandler.get(mc.thePlayer).skipToLevel(PersistencyHandler.persistentLevel);
 				mc.displayGuiScreen(new GuiLeveling());
 			} else {
-				PersistencyHandler.ignore = true;
 				skip = false;
 				buttonList.clear();
 			}
