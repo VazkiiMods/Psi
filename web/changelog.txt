@@ -1,3 +1,5 @@
+r1.0-39
+*Fixed the ARL dependency being in the wrong order, causing items to not load their models in some cases.
 r1.0-38
 *<b>Removed core systems and moved them to AutoRegLib, which is now a dependency.</b>
 *Block interaction tricks now check against world spawn protection to prevent it from being broken.
