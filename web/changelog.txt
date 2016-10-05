@@ -1,3 +1,7 @@
+r1.0-40
+*CADs now handle block harvest tools and levels properly.
+*Pressing the X button when loading your old world data will no longer prevent you from loading your data for the rest of the session.
+*You can now load your Psi data from an old world after you make your first psidust. 
 r1.0-39
 *Fixed the ARL dependency being in the wrong order, causing items to not load their models in some cases.
 r1.0-38
