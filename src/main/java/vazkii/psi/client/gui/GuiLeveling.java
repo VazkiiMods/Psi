@@ -57,6 +57,16 @@ public class GuiLeveling extends GuiScreen {
 	List<SpellPiece> drawPieces = new ArrayList();
 	int selected;
 	List<String> desc;
+	boolean ignoreIntroductionJump;
+	
+	public GuiLeveling() {
+		this(false);
+	}
+	
+	public GuiLeveling(boolean skip) {
+		ignoreIntroductionJump = skip;
+		
+	}
 
 	@Override
 	public void initGui() {
@@ -106,8 +116,10 @@ public class GuiLeveling extends GuiScreen {
 
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-		if(data.getLevel() == 0 && data.getLevelPoints() == 0 || data.getLevel() == 1 && data.getLevelPoints() == 1) {
-			mc.displayGuiScreen(new GuiIntroduction());
+		int level = data.getLevel();
+		int points = data.getLevelPoints();
+		if(!ignoreIntroductionJump && level <= 1 && points <= 1 && level == points) {
+			mc.displayGuiScreen(new GuiIntroduction(level == 1));
 			return;
 		}
 

@@ -32,6 +32,15 @@ public class GuiIntroduction extends GuiScreen {
 
 	int xSize, ySize, left, top;
 	boolean skip = false;
+	boolean returnToLeveling;
+	
+	public GuiIntroduction() {
+		this(false);
+	}
+	
+	public GuiIntroduction(boolean ret) {
+		returnToLeveling = ret;
+	}
 
 	@Override
 	public void initGui() {
@@ -82,6 +91,9 @@ public class GuiIntroduction extends GuiScreen {
 				PlayerDataHandler.get(mc.thePlayer).skipToLevel(PersistencyHandler.persistentLevel);
 				mc.displayGuiScreen(new GuiLeveling());
 			} else {
+				if(returnToLeveling)
+					mc.displayGuiScreen(new GuiLeveling(true));
+				
 				skip = false;
 				buttonList.clear();
 			}
