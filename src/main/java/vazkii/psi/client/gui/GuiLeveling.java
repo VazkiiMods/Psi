@@ -34,6 +34,7 @@ import vazkii.psi.api.spell.SpellPiece;
 import vazkii.psi.client.core.helper.TextHelper;
 import vazkii.psi.client.gui.button.GuiButtonLearn;
 import vazkii.psi.common.Psi;
+import vazkii.psi.common.core.handler.PersistencyHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
 import vazkii.psi.common.lib.LibMisc;
@@ -118,7 +119,7 @@ public class GuiLeveling extends GuiScreen {
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		int level = data.getLevel();
 		int points = data.getLevelPoints();
-		if(!ignoreIntroductionJump && level <= 1 && points <= 1 && level == points) {
+		if(!ignoreIntroductionJump && ((level == 0 && points == 0) || (level == 1 && points == 1 && PersistencyHandler.persistentLevel > 1))) {
 			mc.displayGuiScreen(new GuiIntroduction(level == 1));
 			return;
 		}
