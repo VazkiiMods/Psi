@@ -12,10 +12,16 @@ package vazkii.psi.common.item;
 
 import java.awt.Color;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nullable;
+
+import com.google.common.collect.ImmutableSet;
+
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.color.IItemColor;
@@ -40,6 +46,7 @@ import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -97,11 +104,6 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 
 		GameRegistry.addRecipe(new AssemblyScavengeRecipe());
 		RecipeSorter.register("psi:assemblyScavenge", AssemblyScavengeRecipe.class, Category.SHAPELESS, "");
-	}
-	
-	@Override
-	public int getHarvestLevel(ItemStack stack, String toolClass) {
-		return ConfigHandler.cadHarvestLevel;
 	}
 	
 	@Override
@@ -449,7 +451,29 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 		double z = cmp.getInteger(TAG_Z);
 		return new Vector3(x, y, z);
 	}
+	
+	@Override
+	public int getHarvestLevel(ItemStack stack, String toolClass) {
+		return ConfigHandler.cadHarvestLevel;
+	}
 
+	@Override
+    public int getHarvestLevel(ItemStack stack, String toolClass, @Nullable EntityPlayer player, @Nullable IBlockState blockState) {
+    	return ConfigHandler.cadHarvestLevel;
+    }
+	
+	@Override
+	public Set<String> getToolClasses(ItemStack stack) {
+		return ImmutableSet.of("pickaxe", "axe", "shovel");
+	}
+
+	@Override
+	public boolean canHarvestBlock(IBlockState state, ItemStack stack) {
+		Block block = state.getBlock();
+		int level = block.getHarvestLevel(state);
+		return getHarvestLevel(stack, "") >= level; 
+	}
+	
 	@Override
 	public void getSubItems(Item itemIn, CreativeTabs tab, List<ItemStack> subItems) {
 		// Basic Iron CAD

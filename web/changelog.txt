@@ -1,3 +1,12 @@
+r1.0-41
+*Added a config option to disable the version checker. I have no idea why it wasn't there yet but I'm a dumb and apparently forgot to include it.
+*Fixed not being able to start psi due to it forcing you onto the load data menu without any data to load. 
+r1.0-40
+*CADs now handle block harvest tools and levels properly.
+*Pressing the X button when loading your old world data will no longer prevent you from loading your data for the rest of the session.
+*You can now load your Psi data from an old world after you make your first psidust. 
+r1.0-39
+*Fixed the ARL dependency being in the wrong order, causing items to not load their models in some cases.
 r1.0-38
 *<b>Removed core systems and moved them to AutoRegLib, which is now a dependency.</b>
 *Block interaction tricks now check against world spawn protection to prevent it from being broken.
