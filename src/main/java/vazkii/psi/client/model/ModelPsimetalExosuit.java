@@ -59,15 +59,15 @@ public class ModelPsimetalExosuit extends ModelModArmor {
 		armL = new ModelRenderer(this, 0, 85);
 		armL.mirror = true;
 		armL.setRotationPoint(5.0F, 2.0F, -0.0F);
-		armL.addBox(0.0F, 6.5F, -2.5F, 3, 4, 4, s);
+		armL.addBox(0.0F, 6.5F, -2.0F, 3, 4, 4, s);
 		body2 = new ModelRenderer(this, 30, 51);
 		body2.setRotationPoint(0.0F, 0.0F, 0.0F);
 		body2.addBox(-2.5F, 6.0F, -2.0F, 5, 5, 4, s);
 		armR = new ModelRenderer(this, 0, 85);
 		armR.setRotationPoint(-5.0F, 2.0F, 0.0F);
-		armR.addBox(-3.0F, 6.5F, -2.5F, 3, 4, 4, s);
+		armR.addBox(-3.0F, 6.5F, -2.0F, 3, 4, 4, s);
 		legR = new ModelRenderer(this, 16, 73);
-		legR.setRotationPoint(-2.0F, 12.0F, 0.0F);
+		legR.setRotationPoint(-1.9F, 12.0F, 0.0F);
 		legR.addBox(-2.0F, 0.0F, -2.0F, 4, 7, 4, s);
 		sensor = new ModelRenderer(this, 38, 32);
 		sensor.mirror = true;
@@ -99,7 +99,7 @@ public class ModelPsimetalExosuit extends ModelModArmor {
 		bootR.addBox(-2.0F, 8.0F, -3.0F, 4, 4, 5, s);
 		legL = new ModelRenderer(this, 16, 73);
 		legL.mirror = true;
-		legL.setRotationPoint(2.0F, 12.0F, 0.0F);
+		legL.setRotationPoint(1.9F, 12.0F, 0.0F);
 		legL.addBox(-2.0F, 0.0F, -2.0F, 4, 7, 4, s);
 		bootL = new ModelRenderer(this, 16, 85);
 		bootL.mirror = true;
