@@ -95,7 +95,7 @@ public class ModelPsimetalExosuit extends ModelModArmor {
 		body3.setRotationPoint(0.0F, 0.0F, 0.0F);
 		body3.addBox(-4.0F, 10.0F, -2.5F, 8, 4, 5, s);
 		bootR = new ModelRenderer(this, 16, 85);
-		bootR.setRotationPoint(-2.0F, 12.0F, 0.0F);
+		bootR.setRotationPoint(-1.9F, 12.0F, 0.0F);
 		bootR.addBox(-2.0F, 8.0F, -3.0F, 4, 4, 5, s);
 		legL = new ModelRenderer(this, 16, 73);
 		legL.mirror = true;
@@ -103,7 +103,7 @@ public class ModelPsimetalExosuit extends ModelModArmor {
 		legL.addBox(-2.0F, 0.0F, -2.0F, 4, 7, 4, s);
 		bootL = new ModelRenderer(this, 16, 85);
 		bootL.mirror = true;
-		bootL.setRotationPoint(2.0F, 12.0F, 0.0F);
+		bootL.setRotationPoint(1.9F, 12.0F, 0.0F);
 		bootL.addBox(-2.0F, 8.0F, -3.0F, 4, 4, 5, s);
 
 		sensor.addChild(sensorcolor);
