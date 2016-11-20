@@ -1,3 +1,5 @@
+r1.0-42
+*Complex mod blocks are now harvested properly and will drop their proper drops. 
 r1.0-41
 *Added a config option to disable the version checker. I have no idea why it wasn't there yet but I'm a dumb and apparently forgot to include it.
 *Fixed not being able to start psi due to it forcing you onto the load data menu without any data to load. 
