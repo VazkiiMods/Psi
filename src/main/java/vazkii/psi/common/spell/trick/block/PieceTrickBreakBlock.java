@@ -15,7 +15,7 @@ import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
@@ -32,7 +32,6 @@ import vazkii.psi.api.spell.SpellParam;
 import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.api.spell.param.ParamVector;
 import vazkii.psi.api.spell.piece.PieceTrick;
-import vazkii.psi.common.core.handler.ConfigHandler;
 
 public class PieceTrickBreakBlock extends PieceTrick {
 
@@ -87,9 +86,13 @@ public class PieceTrickBreakBlock extends PieceTrick {
 			MinecraftForge.EVENT_BUS.post(event);
 			if(!event.isCanceled()) {
 				if(!player.capabilities.isCreativeMode) {
+					TileEntity tile = world.getTileEntity(pos);
+					IBlockState localState = world.getBlockState(pos);
+					block.onBlockHarvested(world, pos, localState, player);
+
 					if(block.removedByPlayer(state, world, pos, player, true)) {
 						block.onBlockDestroyedByPlayer(world, pos, state);
-						block.harvestBlock(world, player, pos, state, world.getTileEntity(pos), tool);
+						block.harvestBlock(world, player, pos, state, tile, tool);
 					}
 				} else world.setBlockToAir(pos);
 			}
