@@ -42,7 +42,7 @@ public interface IPsimetalTool extends ISocketable, ISpellSettable, IPsiItem {
 		if(cmp == null)
 			return null;
 
-		return ItemStack.loadItemStackFromNBT(cmp);
+		return new ItemStack(cmp);
 	}
 
 	@Override

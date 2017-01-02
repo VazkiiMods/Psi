@@ -67,8 +67,8 @@ public class TileCADAssembler extends TileSimpleInventory implements ITickable {
 		ignoreChanges = true;
 		for(int i = 1; i < 6; i++)
 			setInventorySlotContents(i, null);
-		if(!worldObj.isRemote)
-			worldObj.playSound(null, getPos().getX() + 0.5, getPos().getY() + 0.5, getPos().getZ() + 0.5, PsiSoundHandler.cadCreate, SoundCategory.BLOCKS, 0.5F, 1F);
+		if(!getWorld().isRemote)
+			getWorld().playSound(null, getPos().getX() + 0.5, getPos().getY() + 0.5, getPos().getZ() + 0.5, PsiSoundHandler.cadCreate, SoundCategory.BLOCKS, 0.5F, 1F);
 		ignoreChanges = false;
 	}
 
@@ -95,6 +95,15 @@ public class TileCADAssembler extends TileSimpleInventory implements ITickable {
 	@Override
 	public boolean isAutomationEnabled() {
 		return false;
+	}
+
+	@Override
+	public boolean isEmpty() {
+        for(ItemStack itemstack : inventorySlots)
+            if(!itemstack.isEmpty())
+                return false;
+
+        return true;
 	}
 
 }

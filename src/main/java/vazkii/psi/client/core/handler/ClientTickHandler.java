@@ -47,9 +47,9 @@ public class ClientTickHandler {
 	public void clientTickEnd(ClientTickEvent event) {
 		if(event.phase == Phase.END) {
 			Minecraft mc = Minecraft.getMinecraft();
-			if(mc.theWorld == null)
+			if(mc.world == null)
 				PlayerDataHandler.cleanup();
-			else if(mc.thePlayer != null) {
+			else if(mc.player != null) {
 				PersistencyHandler.init();
 
 				while(!scheduledActions.isEmpty())

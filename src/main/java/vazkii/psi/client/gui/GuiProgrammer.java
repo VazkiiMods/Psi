@@ -128,7 +128,7 @@ public class GuiProgrammer extends GuiScreen {
 		searchField.setFocused(true);
 		searchField.setEnableBackgroundDrawing(false);
 
-		spectator = programmer.playerLock != null && !programmer.playerLock.isEmpty() && !programmer.playerLock.equals(mc.thePlayer.getName());
+		spectator = programmer.playerLock != null && !programmer.playerLock.isEmpty() && !programmer.playerLock.equals(mc.player.getName());
 
 		spellNameField = new GuiTextField(0, fontRendererObj, left + xSize - 130, top + ySize - 14, 120, 10);
 		spellNameField.setEnableBackgroundDrawing(false);
@@ -154,7 +154,7 @@ public class GuiProgrammer extends GuiScreen {
 
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-		if(programmer == null || programmer.getWorld().getTileEntity(programmer.getPos()) != programmer || !programmer.canPlayerInteract(mc.thePlayer)) {
+		if(programmer == null || programmer.getWorld().getTileEntity(programmer.getPos()) != programmer || !programmer.canPlayerInteract(mc.player)) {
 			mc.displayGuiScreen(null);
 			return;
 		}
@@ -190,7 +190,7 @@ public class GuiProgrammer extends GuiScreen {
 			} else tooltip.add(TextFormatting.GREEN + I18n.format("psimisc.compiled"));
 		}
 
-		ItemStack cad = PsiAPI.getPlayerCAD(mc.thePlayer);
+		ItemStack cad = PsiAPI.getPlayerCAD(mc.player);
 		if(cad != null) {
 			int cadX = left - 42;
 			int cadY = top + 12;
@@ -203,7 +203,7 @@ public class GuiProgrammer extends GuiScreen {
 			GlStateManager.disableRescaleNormal();
 
 			if(mouseX > cadX && mouseY > cadY && mouseX < cadX + 16 && mouseY < cadY + 16) {
-				List<String> itemTooltip = cad.getTooltip(mc.thePlayer, false);
+				List<String> itemTooltip = cad.getTooltip(mc.player, false);
 				for (int i = 0; i < itemTooltip.size(); ++i)
 					if (i == 0)
 						itemTooltip.set(i, cad.getRarity().rarityColor + itemTooltip.get(i));
@@ -776,14 +776,14 @@ public class GuiProgrammer extends GuiScreen {
 					try {
 						NBTTagCompound cmp = JsonToNBT.getTagFromJson(cb);
 						Spell spell = Spell.createFromNBT(cmp);
-						PlayerData data = PlayerDataHandler.get(mc.thePlayer);
+						PlayerData data = PlayerDataHandler.get(mc.player);
 						for(int i = 0; i < SpellGrid.GRID_SIZE; i++)
 							for(int j = 0; j < SpellGrid.GRID_SIZE; j++) {
 								SpellPiece piece = spell.grid.gridData[i][j];
 								if(piece != null) {
 									PieceGroup group = PsiAPI.groupsForPiece.get(piece.getClass());
-									if(!mc.thePlayer.capabilities.isCreativeMode && (group == null || !data.isPieceGroupUnlocked(group.name))) {
-										mc.thePlayer.addChatComponentMessage(new TextComponentTranslation("psimisc.missingPieces").setStyle(new Style().setColor(TextFormatting.RED)));
+									if(!mc.player.capabilities.isCreativeMode && (group == null || !data.isPieceGroupUnlocked(group.name))) {
+										mc.player.sendMessage(new TextComponentTranslation("psimisc.missingPieces").setStyle(new Style().setColor(TextFormatting.RED)));
 										return;
 									}
 								}
@@ -794,7 +794,7 @@ public class GuiProgrammer extends GuiScreen {
 						spellNameField.setText(spell.name);
 						onSpellChanged(false);
 					} catch(Throwable t) {
-						mc.thePlayer.addChatComponentMessage(new TextComponentTranslation("psimisc.malformedJson").setStyle(new Style().setColor(TextFormatting.RED)));
+						mc.player.sendMessage(new TextComponentTranslation("psimisc.malformedJson").setStyle(new Style().setColor(TextFormatting.RED)));
 					}
 				}
 			}
@@ -827,11 +827,11 @@ public class GuiProgrammer extends GuiScreen {
 		panelButtons.clear();
 		visiblePieces.clear();
 
-		PlayerData data = PlayerDataHandler.get(mc.thePlayer);
+		PlayerData data = PlayerDataHandler.get(mc.player);
 		for(String key : PsiAPI.spellPieceRegistry.getKeys()) {
 			Class<? extends SpellPiece> clazz = PsiAPI.spellPieceRegistry.getObject(key);
 			PieceGroup group = PsiAPI.groupsForPiece.get(clazz);
-			if(!mc.thePlayer.capabilities.isCreativeMode && (group == null || !data.isPieceGroupUnlocked(group.name)))
+			if(!mc.player.capabilities.isCreativeMode && (group == null || !data.isPieceGroupUnlocked(group.name)))
 				continue;
 
 			SpellPiece p = SpellPiece.create(clazz, programmer.spell);

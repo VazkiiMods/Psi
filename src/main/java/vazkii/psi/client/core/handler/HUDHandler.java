@@ -98,20 +98,20 @@ public final class HUDHandler {
 	@SideOnly(Side.CLIENT)
 	public void drawPsiBar(ScaledResolution res, float pticks) {
 		Minecraft mc = Minecraft.getMinecraft();
-		ItemStack cadStack = PsiAPI.getPlayerCAD(mc.thePlayer);
+		ItemStack cadStack = PsiAPI.getPlayerCAD(mc.player);
 
 		if(cadStack == null)
 			return;
 		
 		ICAD cad = (ICAD) cadStack.getItem();
-		PlayerData data = PlayerDataHandler.get(mc.thePlayer);
-		if(data.level == 0 && !mc.thePlayer.capabilities.isCreativeMode)
+		PlayerData data = PlayerDataHandler.get(mc.player);
+		if(data.level == 0 && !mc.player.capabilities.isCreativeMode)
 			return;
 		
 		int totalPsi = data.getTotalPsi();
 		int currPsi = data.getAvailablePsi();
 		
-		if(ConfigHandler.contextSensitiveBar && currPsi == totalPsi && (mc.thePlayer.getHeldItemMainhand() == null || !(mc.thePlayer.getHeldItemMainhand().getItem() instanceof ISocketable)) && (mc.thePlayer.getHeldItemOffhand() == null || !(mc.thePlayer.getHeldItemOffhand().getItem() instanceof ISocketable)))
+		if(ConfigHandler.contextSensitiveBar && currPsi == totalPsi && (mc.player.getHeldItemMainhand() == null || !(mc.player.getHeldItemMainhand().getItem() instanceof ISocketable)) && (mc.player.getHeldItemOffhand() == null || !(mc.player.getHeldItemOffhand().getItem() instanceof ISocketable)))
 			return;
 			
 		GlStateManager.pushMatrix();
@@ -245,7 +245,7 @@ public final class HUDHandler {
 	@SideOnly(Side.CLIENT)
 	private void renderSocketableEquippedName(ScaledResolution res, float pticks) {
 		Minecraft mc = Minecraft.getMinecraft();
-		ItemStack stack = mc.thePlayer.getHeldItem(EnumHand.MAIN_HAND);
+		ItemStack stack = mc.player.getHeldItem(EnumHand.MAIN_HAND);
 		String name = ISocketable.getSocketedItemName(stack, "");
 		if(stack == null || name == null || name.trim().isEmpty())
 			return;
@@ -261,7 +261,7 @@ public final class HUDHandler {
 
 			int x = res.getScaledWidth() / 2 - mc.fontRendererObj.getStringWidth(name) / 2;
 			int y = res.getScaledHeight() - 71;
-			if(mc.thePlayer.capabilities.isCreativeMode)
+			if(mc.player.capabilities.isCreativeMode)
 				y += 14;
 
 			GlStateManager.enableBlend();
@@ -413,7 +413,7 @@ public final class HUDHandler {
 	@SideOnly(Side.CLIENT)
 	private void renderHUDItem(ScaledResolution resolution, float partTicks) {
 		Minecraft mc = Minecraft.getMinecraft();
-		ItemStack stack = mc.thePlayer.getActiveItemStack();
+		ItemStack stack = mc.player.getActiveItemStack();
 		if(stack != null && stack.getItem() != null && stack.getItem() instanceof IHUDItem)
 			((IHUDItem) stack.getItem()).drawHUD(resolution, partTicks, stack);
 	}
@@ -429,7 +429,7 @@ public final class HUDHandler {
 		for(int i = 0; i < player.inventory.getSizeInventory(); i++) {
 			ItemStack stack = player.inventory.getStackInSlot(i);
 			if(stack != null && (pattern == null ? ItemStack.areItemsEqual(displayStack, stack) : pattern.matcher(stack.getUnlocalizedName()).find()))
-				count += stack.stackSize;
+				count += stack.getCount();
 		}
 
 		setRemaining(displayStack, count);

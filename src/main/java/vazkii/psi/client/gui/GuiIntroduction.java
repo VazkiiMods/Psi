@@ -88,7 +88,7 @@ public class GuiIntroduction extends GuiScreen {
 				MessageSkipToLevel message = new MessageSkipToLevel(PersistencyHandler.persistentLevel);
 				NetworkHandler.INSTANCE.sendToServer(message);
 
-				PlayerDataHandler.get(mc.thePlayer).skipToLevel(PersistencyHandler.persistentLevel);
+				PlayerDataHandler.get(mc.player).skipToLevel(PersistencyHandler.persistentLevel);
 				mc.displayGuiScreen(new GuiLeveling());
 			} else {
 				if(returnToLeveling)

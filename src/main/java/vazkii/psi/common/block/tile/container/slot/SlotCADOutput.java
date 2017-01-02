@@ -22,11 +22,12 @@ public class SlotCADOutput extends SlotExtractOnly {
 		super(inventoryIn, index, xPosition, yPosition);
 		assmbler = inventoryIn;
 	}
-
+	
 	@Override
-	public void onPickupFromSlot(EntityPlayer playerIn, ItemStack stack) {
-		super.onPickupFromSlot(playerIn, stack);
+	public ItemStack onTake(EntityPlayer playerIn, ItemStack stack) {
+		super.onTake(playerIn, stack);
 		assmbler.onCraftCAD();
+		return stack;
 	}
 
 }

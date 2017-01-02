@@ -44,7 +44,7 @@ public class PieceTrickSmite extends PieceTrick {
 
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
-		if(context.caster.worldObj.isRemote)
+		if(context.caster.getEntityWorld().isRemote)
 			return null;
 
 		Vector3 positionVal = this.<Vector3>getParamValue(context, position);
@@ -54,8 +54,8 @@ public class PieceTrickSmite extends PieceTrick {
 		if(!context.isInRadius(positionVal))
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 
-		EntityLightningBolt lightning = new EntityLightningBolt(context.caster.worldObj, positionVal.x, positionVal.y, positionVal.z, false);
-		context.caster.worldObj.addWeatherEffect(lightning);
+		EntityLightningBolt lightning = new EntityLightningBolt(context.caster.getEntityWorld(), positionVal.x, positionVal.y, positionVal.z, false);
+		context.caster.getEntityWorld().addWeatherEffect(lightning);
 
 		return null;
 	}

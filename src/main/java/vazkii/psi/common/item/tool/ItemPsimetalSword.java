@@ -46,7 +46,7 @@ public class ItemPsimetalSword extends ItemModSword implements IPsimetalTool {
 
 			if(playerCad != null) {
 				ItemStack bullet = getBulletInSocket(itemstack, getSelectedSlot(itemstack));
-				ItemCAD.cast(player.worldObj, player, data, bullet, playerCad, 5, 10, 0.05F, (SpellContext context) -> {
+				ItemCAD.cast(player.getEntityWorld(), player, data, bullet, playerCad, 5, 10, 0.05F, (SpellContext context) -> {
 					context.attackedEntity = target;
 				});
 			}

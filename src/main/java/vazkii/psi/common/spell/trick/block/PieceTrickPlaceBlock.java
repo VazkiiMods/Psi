@@ -63,7 +63,7 @@ public class PieceTrickPlaceBlock extends PieceTrick {
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 
 		BlockPos pos = new BlockPos(positionVal.x, positionVal.y, positionVal.z);
-		placeBlock(context.caster, context.caster.worldObj, pos, context.getTargetSlot(), false);
+		placeBlock(context.caster, context.caster.getEntityWorld(), pos, context.getTargetSlot(), false);
 
 		return null;
 	}
@@ -90,7 +90,7 @@ public class PieceTrickPlaceBlock extends PieceTrick {
 					
 					Block blockToPlace = Block.getBlockFromItem(rem.getItem()); 
 					if(!world.isRemote) {
-						IBlockState newState = blockToPlace.onBlockPlaced(world, pos, EnumFacing.UP, 0, 0, 0, rem.getItemDamage(), player);
+						IBlockState newState = blockToPlace.getStateForPlacement(world, pos, EnumFacing.UP, 0, 0, 0, rem.getItemDamage(), player);
 						iblock.placeBlockAt(stack, player, world, pos, EnumFacing.UP, 0, 0, 0, newState);
 					}
 
@@ -114,8 +114,8 @@ public class PieceTrickPlaceBlock extends PieceTrick {
 			ItemStack invStack = inv.getStackInSlot(i);
 			if(invStack != null && invStack.isItemEqual(stack)) {
 				ItemStack retStack = invStack.copy();
-				invStack.stackSize--;
-				if(invStack.stackSize == 0)
+				invStack.shrink(1);
+				if(invStack.getCount() == 0)
 					inv.setInventorySlotContents(i, null);
 				return retStack;
 			}

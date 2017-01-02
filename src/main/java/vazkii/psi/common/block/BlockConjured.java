@@ -86,10 +86,10 @@ public class BlockConjured extends BlockModContainer implements IPsiBlock {
 		return false;
 	}
 
-	@Override
-	public boolean isVisuallyOpaque() {
-		return false;
-	}
+//	@Override
+//	public boolean isVisuallyOpaque() {
+//		return false;
+//	} TODO ok?
 
 	@Override
 	public int quantityDropped(Random random) {
@@ -131,7 +131,7 @@ public class BlockConjured extends BlockModContainer implements IPsiBlock {
 	}
 
 	@Override
-    public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB aabb, List<AxisAlignedBB> list, Entity entity) {
+    public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB aabb, List<AxisAlignedBB> list, Entity entity, boolean blarg) {
 		if(state.getValue(SOLID))
 			addCollisionBoxToList(pos, aabb, list, new AxisAlignedBB(0, 0, 0, 1, 1, 1));
 	}

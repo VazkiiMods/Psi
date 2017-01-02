@@ -72,7 +72,7 @@ public class GuiLeveling extends GuiScreen {
 	@Override
 	public void initGui() {
 		spellWrapper = new Spell();
-		data = PlayerDataHandler.get(mc.thePlayer);
+		data = PlayerDataHandler.get(mc.player);
 		initGroupList();
 
 		xSize = 256;
@@ -187,7 +187,7 @@ public class GuiLeveling extends GuiScreen {
 		}
 
 		String key = "psimisc.levelInfo";
-		if(mc.thePlayer.capabilities.isCreativeMode)
+		if(mc.player.capabilities.isCreativeMode)
 			key = "psimisc.levelInfoCreative";
 		String s = String.format(I18n.translateToLocal(key), data.getLevel(), data.getLevelPoints());
 		mc.fontRendererObj.drawStringWithShadow(s, left + 4, top + ySize + 2, 0xFFFFFF);

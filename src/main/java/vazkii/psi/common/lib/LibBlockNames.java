@@ -12,9 +12,9 @@ package vazkii.psi.common.lib;
 
 public final class LibBlockNames {
 
-	public static final String CAD_ASSEMBLER = "cadAssembler";
+	public static final String CAD_ASSEMBLER = "cad_assembler";
 	public static final String PROGRAMMER = "programmer";
-	public static final String PSI_DECORATIVE = "psiDecorative";
+	public static final String PSI_DECORATIVE = "psi_decorative";
 	public static final String CONJURED = "conjured";
 
 }

@@ -45,9 +45,9 @@ public class EntitySpellProjectile extends EntityThrowable {
 	private static final String TAG_LAST_MOTION_Y = "lastMotionY";
 	private static final String TAG_LAST_MOTION_Z = "lastMotionZ";
 
-	private static final DataParameter COLORIZER_DATA = EntityDataManager.createKey(EntitySpellProjectile.class, DataSerializers.OPTIONAL_ITEM_STACK);
-	private static final DataParameter BULLET_DATA = EntityDataManager.createKey(EntitySpellProjectile.class, DataSerializers.OPTIONAL_ITEM_STACK);
-	private static final DataParameter CASTER_NAME = EntityDataManager.createKey(EntitySpellProjectile.class, DataSerializers.STRING);
+	private static final DataParameter<ItemStack> COLORIZER_DATA = EntityDataManager.createKey(EntitySpellProjectile.class, DataSerializers.OPTIONAL_ITEM_STACK);
+	private static final DataParameter<ItemStack> BULLET_DATA = EntityDataManager.createKey(EntitySpellProjectile.class, DataSerializers.OPTIONAL_ITEM_STACK);
+	private static final DataParameter<String> CASTER_NAME = EntityDataManager.createKey(EntitySpellProjectile.class, DataSerializers.STRING);
 
 	public SpellContext context;
 	public int timeAlive;
@@ -68,16 +68,16 @@ public class EntitySpellProjectile extends EntityThrowable {
 	}
 
 	public EntitySpellProjectile setInfo(EntityPlayer player, ItemStack colorizer, ItemStack bullet) {
-		dataManager.set(COLORIZER_DATA, Optional.fromNullable(colorizer));
-		dataManager.set(BULLET_DATA, Optional.of(bullet));
+		dataManager.set(COLORIZER_DATA, colorizer);
+		dataManager.set(BULLET_DATA, bullet);
 		dataManager.set(CASTER_NAME, player.getName());
 		return this;
 	}
 
 	@Override
 	protected void entityInit() {
-		dataManager.register(COLORIZER_DATA, Optional.of(new ItemStack(Blocks.STONE)));
-		dataManager.register(BULLET_DATA, Optional.of(new ItemStack(Blocks.STONE)));
+		dataManager.register(COLORIZER_DATA, new ItemStack(Blocks.STONE));
+		dataManager.register(BULLET_DATA, new ItemStack(Blocks.STONE));
 		dataManager.register(CASTER_NAME, "");
 	}
 
@@ -86,13 +86,13 @@ public class EntitySpellProjectile extends EntityThrowable {
 		super.writeEntityToNBT(tagCompound);
 
 		NBTTagCompound colorizerCmp = new NBTTagCompound();
-		ItemStack colorizer = ((Optional<ItemStack>) dataManager.get(COLORIZER_DATA)).orNull();
+		ItemStack colorizer = dataManager.get(COLORIZER_DATA);
 		if(colorizer != null)
 			colorizer.writeToNBT(colorizerCmp);
 		tagCompound.setTag(TAG_COLORIZER, colorizerCmp);
 
 		NBTTagCompound bulletCmp = new NBTTagCompound();
-		ItemStack bullet = ((Optional<ItemStack>) dataManager.get(BULLET_DATA)).orNull();
+		ItemStack bullet = dataManager.get(BULLET_DATA);
 		if(bullet != null)
 			bullet.writeToNBT(bulletCmp);
 		tagCompound.setTag(TAG_BULLET, bulletCmp);
@@ -109,12 +109,12 @@ public class EntitySpellProjectile extends EntityThrowable {
 		super.readEntityFromNBT(tagCompound);
 
 		NBTTagCompound colorizerCmp = tagCompound.getCompoundTag(TAG_COLORIZER);
-		ItemStack colorizer = ItemStack.loadItemStackFromNBT(colorizerCmp);
-		dataManager.set(COLORIZER_DATA, Optional.fromNullable(colorizer));
+		ItemStack colorizer = new ItemStack(colorizerCmp);
+		dataManager.set(COLORIZER_DATA, colorizer);
 
 		NBTTagCompound bulletCmp = tagCompound.getCompoundTag(TAG_BULLET);
-		ItemStack bullet = ItemStack.loadItemStackFromNBT(bulletCmp);
-		dataManager.set(BULLET_DATA, Optional.of(bullet));
+		ItemStack bullet = new ItemStack(bulletCmp);
+		dataManager.set(BULLET_DATA, bullet);
 
 		EntityLivingBase thrower = getThrower();
 		if(thrower != null && thrower instanceof EntityPlayer)
@@ -140,7 +140,7 @@ public class EntitySpellProjectile extends EntityThrowable {
 		timeAlive++;
 		
 		int colorVal = ICADColorizer.DEFAULT_SPELL_COLOR;
-		ItemStack colorizer = ((Optional<ItemStack>) dataManager.get(COLORIZER_DATA)).orNull();
+		ItemStack colorizer = dataManager.get(COLORIZER_DATA);
 		if(colorizer != null && colorizer.getItem() instanceof ICADColorizer)
 			colorVal = Psi.proxy.getColorizerColor(colorizer).getRGB();
 
@@ -169,7 +169,7 @@ public class EntitySpellProjectile extends EntityThrowable {
 
 			look.normalize().multiply(dist);
 
-			Psi.proxy.sparkleFX(worldObj, x, y, z, r, g, b, (float) look.x, (float) look.y, (float) look.z, 1.2F, 12);
+			Psi.proxy.sparkleFX(getEntityWorld(), x, y, z, r, g, b, (float) look.x, (float) look.y, (float) look.z, 1.2F, 12);
 		}
 	}
 
@@ -200,7 +200,7 @@ public class EntitySpellProjectile extends EntityThrowable {
 		boolean canCast = false;
 
 		if(thrower != null && thrower instanceof EntityPlayer) {
-			ItemStack spellContainer = ((Optional<ItemStack>) dataManager.get(BULLET_DATA)).orNull();
+			ItemStack spellContainer = dataManager.get(BULLET_DATA);
 			if(spellContainer != null && spellContainer.getItem() instanceof ISpellContainer) {
 				Spell spell = ((ISpellContainer) spellContainer.getItem()).getSpell(spellContainer);
 				if(spell != null) {
@@ -228,7 +228,7 @@ public class EntitySpellProjectile extends EntityThrowable {
 			return superThrower;
 
 		String name = (String) dataManager.get(CASTER_NAME);
-		EntityPlayer player = worldObj.getPlayerEntityByName(name);
+		EntityPlayer player = getEntityWorld().getPlayerEntityByName(name);
 		return player;
 	}
 

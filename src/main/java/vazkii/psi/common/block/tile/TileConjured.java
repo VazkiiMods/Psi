@@ -33,7 +33,7 @@ public class TileConjured extends TileMod implements ITickable {
 
 	@Override
 	public void update() {
-		if(worldObj.isRemote) {
+		if(getWorld().isRemote) {
 			Color color = new Color(ICADColorizer.DEFAULT_SPELL_COLOR);
 			if(colorizer != null)
 				color = Psi.proxy.getColorizerColor(colorizer);
@@ -42,8 +42,8 @@ public class TileConjured extends TileMod implements ITickable {
 			float g = color.getGreen() / 255F;
 			float b = color.getBlue() / 255F;
 
-			IBlockState state = worldObj.getBlockState(getPos());
-			state = state.getBlock().getActualState(state, worldObj, getPos());
+			IBlockState state = getWorld().getBlockState(getPos());
+			state = state.getBlock().getActualState(state, getWorld(), getPos());
 
 			if(state.getBlock() == ModBlocks.conjured && state.getValue(BlockConjured.SOLID)) {
 				// http://cns-alumni.bu.edu/~lavanya/Graphics/cs580/p5/web-page/cube_edges.gif
@@ -95,7 +95,7 @@ public class TileConjured extends TileMod implements ITickable {
 				float s = 0.2F + (float) Math.random() * 0.1F;
 				float m = 0.01F + (float) Math.random() * 0.015F;
 
-				Psi.proxy.wispFX(worldObj, x, y, z, r, g, b, s, -m);
+				Psi.proxy.wispFX(getWorld(), x, y, z, r, g, b, s, -m);
 			}
 		}
 
@@ -103,7 +103,7 @@ public class TileConjured extends TileMod implements ITickable {
 			return;
 
 		if(time == 0)
-			worldObj.setBlockToAir(getPos());
+			getWorld().setBlockToAir(getPos());
 		else time--;
 	}
 
@@ -117,7 +117,7 @@ public class TileConjured extends TileMod implements ITickable {
 			double x = xp; //+ Math.random() * xv;
 			double y = yp; //+ Math.random() * yv;
 			double z = zp; //+ Math.random() * zv;
-			Psi.proxy.sparkleFX(worldObj, x, y, z, r, g, b, (float) xv, (float) yv, (float) zv, 1.25F, 20);
+			Psi.proxy.sparkleFX(getWorld(), x, y, z, r, g, b, (float) xv, (float) yv, (float) zv, 1.25F, 20);
 		}
 	}
 
@@ -141,7 +141,7 @@ public class TileConjured extends TileMod implements ITickable {
 		time = cmp.getInteger(TAG_TIME);
 
 		NBTTagCompound stackCmp = cmp.getCompoundTag(TAG_COLORIZER);
-		colorizer = ItemStack.loadItemStackFromNBT(stackCmp);
+		colorizer = new ItemStack(stackCmp);
 	}
 
 }

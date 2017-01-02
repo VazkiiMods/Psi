@@ -13,6 +13,7 @@ package vazkii.psi.common.crafting.recipe;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 import vazkii.psi.api.cad.EnumCADComponent;
@@ -78,23 +79,23 @@ public class ColorizerChangeRecipe implements IRecipe {
 	}
 
 	@Override
-	public ItemStack[] getRemainingItems(InventoryCrafting inv) {
-		ItemStack[] ret = new ItemStack[inv.getSizeInventory()];
+	public NonNullList<ItemStack> getRemainingItems(InventoryCrafting inv) {
+		NonNullList<ItemStack> ret = NonNullList.withSize(inv.getSizeInventory(), ItemStack.EMPTY);
 		int dyeIndex = -1;
 		ItemStack cad = null;
-		for (int i = 0; i < ret.length; i++) {
+		for (int i = 0; i < ret.size(); i++) {
 			ItemStack stack = inv.getStackInSlot(i);
 			if (stack != null && stack.getItem() instanceof ICAD) {
 				cad = stack;
 			} else {
 				if (stack != null && stack.getItem() instanceof ICADColorizer)
 					dyeIndex = i;
-				ret[i] = ForgeHooks.getContainerItem(stack);
+				ret.set(i, ForgeHooks.getContainerItem(stack));
 			}
 		}
 		if (cad != null && dyeIndex != -1) {
 			ICAD icad = (ICAD) cad.getItem();
-			ret[dyeIndex] = icad.getComponentInSlot(cad, EnumCADComponent.DYE);
+			ret.set(dyeIndex, icad.getComponentInSlot(cad, EnumCADComponent.DYE));
 		}
 
 		return ret;

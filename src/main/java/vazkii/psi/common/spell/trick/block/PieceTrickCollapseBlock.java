@@ -52,7 +52,7 @@ public class PieceTrickCollapseBlock extends PieceTrick {
 
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
-		if(context.caster.worldObj.isRemote)
+		if(context.caster.getEntityWorld().isRemote)
 			return null;
 
 		Vector3 positionVal = this.<Vector3>getParamValue(context, position);
@@ -62,7 +62,7 @@ public class PieceTrickCollapseBlock extends PieceTrick {
 		if(!context.isInRadius(positionVal))
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 
-		World world = context.caster.worldObj;
+		World world = context.caster.getEntityWorld();
 		BlockPos pos = new BlockPos(positionVal.x, positionVal.y, positionVal.z);
 		BlockPos posDown = pos.down();
 		IBlockState state = world.getBlockState(pos);
@@ -80,7 +80,7 @@ public class PieceTrickCollapseBlock extends PieceTrick {
 			}
 			
 			EntityFallingBlock falling = new EntityFallingBlock(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, state);
-			world.spawnEntityInWorld(falling);
+			world.spawnEntity(falling);
 		}
 		return null;
 	}

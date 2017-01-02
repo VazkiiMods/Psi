@@ -44,7 +44,7 @@ public class PieceTrickDebug extends PieceTrick {
 
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
-		if(context.caster.worldObj.isRemote)
+		if(context.caster.getEntityWorld().isRemote)
 			return null;
 
 		Double numberVal = this.<Double>getParamValue(context, number);
@@ -64,7 +64,7 @@ public class PieceTrickDebug extends PieceTrick {
 			s = TextFormatting.AQUA + "[" + numStr + "] " + TextFormatting.RESET + s;
 		}
 
-		context.caster.addChatMessage(new TextComponentString(s));
+		context.caster.sendMessage(new TextComponentString(s));
 
 		return null;
 	}

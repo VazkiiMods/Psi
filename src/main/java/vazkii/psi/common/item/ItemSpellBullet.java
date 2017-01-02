@@ -20,6 +20,7 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -116,7 +117,7 @@ public class ItemSpellBullet extends ItemMod implements ISpellContainer, IPsiIte
 	}
 
 	@Override
-	public void getSubItems(Item itemIn, CreativeTabs tab, List<ItemStack> subItems) {
+	public void getSubItems(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> subItems) {
 		for(int i = 0; i < getVariants().length; i++)
 			if(i % 2 == 0)
 				subItems.add(new ItemStack(itemIn, 1, i));
@@ -138,13 +139,13 @@ public class ItemSpellBullet extends ItemMod implements ISpellContainer, IPsiIte
 			break;
 
 		case 3: // Projectile
-			if(!context.caster.worldObj.isRemote) {
-				EntitySpellProjectile proj = new EntitySpellProjectile(context.caster.worldObj, context.caster);
+			if(!context.caster.getEntityWorld().isRemote) {
+				EntitySpellProjectile proj = new EntitySpellProjectile(context.caster.getEntityWorld(), context.caster);
 				ItemStack cad = PsiAPI.getPlayerCAD(context.caster);
 				ItemStack colorizer = ((ICAD) cad.getItem()).getComponentInSlot(cad, EnumCADComponent.DYE);
 				proj.setInfo(context.caster, colorizer, stack);
 				proj.context = context;
-				proj.worldObj.spawnEntityInWorld(proj);
+				proj.getEntityWorld().spawnEntity(proj);
 			}
 			break;
 
@@ -157,52 +158,52 @@ public class ItemSpellBullet extends ItemMod implements ISpellContainer, IPsiIte
 			break;
 
 		case 7: // Spell Circle
-			if(!context.caster.worldObj.isRemote) {
+			if(!context.caster.getEntityWorld().isRemote) {
 				try {
 					RayTraceResult pos = PieceOperatorVectorRaycast.raycast(context.caster, 32);
 
 					if(pos != null) {
-						EntitySpellCircle circle = new EntitySpellCircle(context.caster.worldObj);
+						EntitySpellCircle circle = new EntitySpellCircle(context.caster.getEntityWorld());
 						ItemStack cad = PsiAPI.getPlayerCAD(context.caster);
 						ItemStack colorizer = ((ICAD) cad.getItem()).getComponentInSlot(cad, EnumCADComponent.DYE);
 						circle.setInfo(context.caster, colorizer, stack);
 						circle.setPosition(pos.hitVec.xCoord, pos.hitVec.yCoord, pos.hitVec.zCoord);
-						circle.worldObj.spawnEntityInWorld(circle);
+						circle.getEntityWorld().spawnEntity(circle);
 					}
 				} catch(SpellRuntimeException e) { }
 			}
 			break;
 
 		case 9: // Grenade
-			if(!context.caster.worldObj.isRemote) {
-				EntitySpellProjectile proj = new EntitySpellGrenade(context.caster.worldObj, context.caster);
+			if(!context.caster.getEntityWorld().isRemote) {
+				EntitySpellProjectile proj = new EntitySpellGrenade(context.caster.getEntityWorld(), context.caster);
 				ItemStack cad = PsiAPI.getPlayerCAD(context.caster);
 				ItemStack colorizer = ((ICAD) cad.getItem()).getComponentInSlot(cad, EnumCADComponent.DYE);
 				proj.setInfo(context.caster, colorizer, stack);
 				proj.context = context;
-				proj.worldObj.spawnEntityInWorld(proj);
+				proj.getEntityWorld().spawnEntity(proj);
 			}
 			break;
 
 		case 11: // Charge
-			if(!context.caster.worldObj.isRemote) {
-				EntitySpellProjectile proj = new EntitySpellCharge(context.caster.worldObj, context.caster);
+			if(!context.caster.getEntityWorld().isRemote) {
+				EntitySpellProjectile proj = new EntitySpellCharge(context.caster.getEntityWorld(), context.caster);
 				ItemStack cad = PsiAPI.getPlayerCAD(context.caster);
 				ItemStack colorizer = ((ICAD) cad.getItem()).getComponentInSlot(cad, EnumCADComponent.DYE);
 				proj.setInfo(context.caster, colorizer, stack);
 				proj.context = context;
-				proj.worldObj.spawnEntityInWorld(proj);
+				proj.getEntityWorld().spawnEntity(proj);
 			}
 			break;
 
 		case 13: // Mine
-			if(!context.caster.worldObj.isRemote) {
-				EntitySpellProjectile proj = new EntitySpellMine(context.caster.worldObj, context.caster);
+			if(!context.caster.getEntityWorld().isRemote) {
+				EntitySpellProjectile proj = new EntitySpellMine(context.caster.getEntityWorld(), context.caster);
 				ItemStack cad = PsiAPI.getPlayerCAD(context.caster);
 				ItemStack colorizer = ((ICAD) cad.getItem()).getComponentInSlot(cad, EnumCADComponent.DYE);
 				proj.setInfo(context.caster, colorizer, stack);
 				proj.context = context;
-				proj.worldObj.spawnEntityInWorld(proj);
+				proj.getEntityWorld().spawnEntity(proj);
 			}
 			break;
 		}

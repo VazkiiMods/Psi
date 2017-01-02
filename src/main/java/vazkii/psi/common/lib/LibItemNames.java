@@ -14,24 +14,24 @@ public final class LibItemNames {
 
 	public static final String MATERIAL = "material";
 	public static final String CAD = "cad";
-	public static final String CAD_ASSEMBLY = "cadAssembly";
-	public static final String CAD_CORE = "cadCore";
-	public static final String CAD_SOCKET = "cadSocket";
-	public static final String CAD_BATTERY = "cadBattery";
-	public static final String CAD_COLORIZER = "cadColorizer";
-	public static final String SPELL_BULLET = "spellBullet";
-	public static final String SPELL_DRIVE = "spellDrive";
-	public static final String PSIMETAL_SHOVEL = "psimetalShovel";
-	public static final String PSIMETAL_PICKAXE = "psimetalPickaxe";
-	public static final String PSIMETAL_AXE = "psimetalAxe";
-	public static final String PSIMETAL_SWORD = "psimetalSword";
+	public static final String CAD_ASSEMBLY = "cad_assembly";
+	public static final String CAD_CORE = "cad_core";
+	public static final String CAD_SOCKET = "cad_socket";
+	public static final String CAD_BATTERY = "cad_battery";
+	public static final String CAD_COLORIZER = "cad_colorizer";
+	public static final String SPELL_BULLET = "spell_bullet";
+	public static final String SPELL_DRIVE = "spell_drive";
+	public static final String PSIMETAL_SHOVEL = "psimetal_shovel";
+	public static final String PSIMETAL_PICKAXE = "psimetal_pickaxe";
+	public static final String PSIMETAL_AXE = "psimetal_axe";
+	public static final String PSIMETAL_SWORD = "psimetal_sword";
 	public static final String DETONATOR = "detonator";
-	public static final String PSIMETAL_EXOSUIT_HELMET = "psimetalExosuitHelmet";
-	public static final String PSIMETAL_EXOSUIT_CHESTPLATE = "psimetalExosuitChestplate";
-	public static final String PSIMETAL_EXOSUIT_LEGGINGS = "psimetalExosuitLeggings";
-	public static final String PSIMETAL_EXOSUIT_BOOTS = "psimetalExosuitBoots";
-	public static final String EXOSUIT_CONTROLLER = "exosuitController";
-	public static final String EXOSUIT_SENSOR = "exosuitSensor";
-	public static final String VECTOR_RULER = "vectorRuler";
+	public static final String PSIMETAL_EXOSUIT_HELMET = "psimetal_exosuit_helmet";
+	public static final String PSIMETAL_EXOSUIT_CHESTPLATE = "psimetal_exosuit_chestplate";
+	public static final String PSIMETAL_EXOSUIT_LEGGINGS = "psimetal_exosuit_leggings";
+	public static final String PSIMETAL_EXOSUIT_BOOTS = "psimetal_exosuit_boots";
+	public static final String EXOSUIT_CONTROLLER = "exosuit_controller";
+	public static final String EXOSUIT_SENSOR = "exosuit_sensor";
+	public static final String VECTOR_RULER = "vector_ruler";
 
 }

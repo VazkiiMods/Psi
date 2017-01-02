@@ -84,18 +84,18 @@ public class PieceTrickConjureBlockSequence extends PieceTrick {
 				throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 
 			BlockPos pos = new BlockPos(blockVec.x, blockVec.y, blockVec.z);
-			if(!context.caster.worldObj.isBlockModifiable(context.caster, pos))
+			if(!context.caster.getEntityWorld().isBlockModifiable(context.caster, pos))
 				continue;
 			
-			IBlockState state = context.caster.worldObj.getBlockState(pos);
+			IBlockState state = context.caster.getEntityWorld().getBlockState(pos);
 
 			if(state.getBlock() != ModBlocks.conjured) {
-				PieceTrickPlaceBlock.placeBlock(context.caster, context.caster.worldObj, pos, context.getTargetSlot(), false, true);
-				state = context.caster.worldObj.getBlockState(pos);
+				PieceTrickPlaceBlock.placeBlock(context.caster, context.caster.getEntityWorld(), pos, context.getTargetSlot(), false, true);
+				state = context.caster.getEntityWorld().getBlockState(pos);
 				
-				if(!context.caster.worldObj.isRemote && state.getBlock() == ModBlocks.conjured) {
-					context.caster.worldObj.setBlockState(pos, messWithState(state));
-					TileConjured tile = (TileConjured) context.caster.worldObj.getTileEntity(pos);
+				if(!context.caster.getEntityWorld().isRemote && state.getBlock() == ModBlocks.conjured) {
+					context.caster.getEntityWorld().setBlockState(pos, messWithState(state));
+					TileConjured tile = (TileConjured) context.caster.getEntityWorld().getTileEntity(pos);
 
 					if(timeVal != null && timeVal.intValue() > 0) {
 						int val = timeVal.intValue();

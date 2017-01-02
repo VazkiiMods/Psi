@@ -50,7 +50,7 @@ public class PieceTrickSmeltBlock extends PieceTrick {
 
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
-		if(context.caster.worldObj.isRemote)
+		if(context.caster.getEntityWorld().isRemote)
 			return null;
 
 		Vector3 positionVal = this.<Vector3>getParamValue(context, position);
@@ -61,10 +61,10 @@ public class PieceTrickSmeltBlock extends PieceTrick {
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 
 		BlockPos pos = new BlockPos(positionVal.x, positionVal.y, positionVal.z);
-		if(!context.caster.worldObj.isBlockModifiable(context.caster, pos))
+		if(!context.caster.getEntityWorld().isBlockModifiable(context.caster, pos))
 			return null;
 		
-		IBlockState state = context.caster.worldObj.getBlockState(pos);
+		IBlockState state = context.caster.getEntityWorld().getBlockState(pos);
 		Block block = state.getBlock();
 		int meta = block.getMetaFromState(state);
 		ItemStack stack = new ItemStack(block, 1, meta);
@@ -73,9 +73,9 @@ public class PieceTrickSmeltBlock extends PieceTrick {
 			Item item = result.getItem();
 			Block block1 = Block.getBlockFromItem(item);
 			if(block1 != null) {
-				context.caster.worldObj.setBlockState(pos, block1.getStateFromMeta(result.getMetadata()));
-				state = context.caster.worldObj.getBlockState(pos);
-				context.caster.worldObj.playEvent(2001, pos, Block.getStateId(state));
+				context.caster.getEntityWorld().setBlockState(pos, block1.getStateFromMeta(result.getMetadata()));
+				state = context.caster.getEntityWorld().getBlockState(pos);
+				context.caster.getEntityWorld().playEvent(2001, pos, Block.getStateId(state));
 			}
 		}
 

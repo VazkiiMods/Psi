@@ -17,7 +17,7 @@ public interface IPsiBlock extends IModBlock {
 
 	@Override
 	default String getModNamespace() {
-		return LibMisc.RESOURCE_NAMESPACE;
+		return LibMisc.MOD_ID;
 	}
 
 }

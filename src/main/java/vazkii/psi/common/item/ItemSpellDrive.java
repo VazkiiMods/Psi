@@ -74,7 +74,8 @@ public class ItemSpellDrive extends ItemMod implements IPsiItem {
 	}
 
 	@Override
-	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+	public EnumActionResult onItemUse(EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+		ItemStack stack = playerIn.getActiveItemStack();
 		TileEntity tile = worldIn.getTileEntity(pos);
 		if(tile instanceof TileProgrammer) {
 			TileProgrammer programmer = (TileProgrammer) tile;
@@ -89,7 +90,7 @@ public class ItemSpellDrive extends ItemMod implements IPsiItem {
 				if(enabled && !programmer.playerLock.isEmpty()) {
 					if(!programmer.playerLock.equals(playerIn.getName())) {
 						if(!worldIn.isRemote)
-							playerIn.addChatComponentMessage(new TextComponentTranslation("psimisc.notYourProgrammer").setStyle(new Style().setColor(TextFormatting.RED)));
+							playerIn.sendMessage(new TextComponentTranslation("psimisc.notYourProgrammer").setStyle(new Style().setColor(TextFormatting.RED)));
 						return EnumActionResult.SUCCESS;
 					}
 				} else programmer.playerLock = playerIn.getName();
@@ -108,7 +109,8 @@ public class ItemSpellDrive extends ItemMod implements IPsiItem {
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand){
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand hand){
+		ItemStack itemStackIn = playerIn.getActiveItemStack();
 		if(getSpell(itemStackIn) != null && playerIn.isSneaking()) {
 			if(!worldIn.isRemote)
 				worldIn.playSound(null, playerIn.posX, playerIn.posY, playerIn.posZ, PsiSoundHandler.compileError, SoundCategory.PLAYERS, 0.5F, 1F);

@@ -57,18 +57,19 @@ public class BlockProgrammer extends BlockFacing implements IPsiBlock {
 	}
 
 	@Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
 		TileProgrammer programmer = (TileProgrammer) worldIn.getTileEntity(pos);
 
 		if(!playerIn.capabilities.isCreativeMode) {
 			PlayerData data = PlayerDataHandler.get(playerIn);
 			if(data.spellGroupsUnlocked.isEmpty()) {
 				if(!worldIn.isRemote)
-					playerIn.addChatComponentMessage(new TextComponentTranslation("psimisc.cantUseProgrammer").setStyle(new Style().setColor(TextFormatting.RED)));
+					playerIn.sendMessage(new TextComponentTranslation("psimisc.cantUseProgrammer").setStyle(new Style().setColor(TextFormatting.RED)));
 				return true;
 			}
 		}
 		
+		ItemStack heldItem = playerIn.getActiveItemStack();
 		EnumActionResult result = setSpell(worldIn, pos, playerIn, heldItem);
 		if(result == EnumActionResult.SUCCESS)
 			return true;

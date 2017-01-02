@@ -61,7 +61,7 @@ public class ItemPsimetalArmor extends ItemModArmor implements IPsimetalTool, IP
 
 		if(playerCad != null) {
 			ItemStack bullet = getBulletInSocket(stack, getSelectedSlot(stack));
-			ItemCAD.cast(event.getEntityPlayer().worldObj, event.getEntityPlayer(), data, bullet, playerCad, getCastCooldown(stack), 0, getCastVolume(), (SpellContext context) -> {
+			ItemCAD.cast(event.getEntityPlayer().getEntityWorld(), event.getEntityPlayer(), data, bullet, playerCad, getCastCooldown(stack), 0, getCastVolume(), (SpellContext context) -> {
 				context.tool = stack;
 				context.attackingEntity = event.attacker;
 				context.damageTaken = event.damage;

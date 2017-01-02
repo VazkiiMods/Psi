@@ -34,10 +34,10 @@ public class PieceSelectorItemPresence extends PieceSelector {
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		Double slotVal = this.<Double>getParamValue(context, slot);
-		int invSlot = (slotVal == null ? context.getTargetSlot() : Math.abs(slotVal.intValue() - 1)) % context.caster.inventory.mainInventory.length;
+		int invSlot = (slotVal == null ? context.getTargetSlot() : Math.abs(slotVal.intValue() - 1)) % context.caster.inventory.mainInventory.size();
 		ItemStack stack = context.caster.inventory.getStackInSlot(invSlot);
 		
-		return stack == null ? 0.0 : Double.valueOf(stack.stackSize);
+		return stack == null ? 0.0 : Double.valueOf(stack.getCount());
 	}
 
 	@Override

@@ -10,12 +10,11 @@
  */
 package vazkii.psi.common.core;
 
-import java.util.List;
-
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import vazkii.psi.common.block.base.ModBlocks;
 import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.lib.LibMisc;
@@ -24,7 +23,7 @@ import vazkii.psi.common.lib.LibResources;
 public class PsiCreativeTab extends CreativeTabs {
 
 	public static PsiCreativeTab INSTANCE = new PsiCreativeTab();
-	List list;
+	NonNullList list;
 
 	public PsiCreativeTab() {
 		super(LibMisc.MOD_ID);
@@ -38,8 +37,8 @@ public class PsiCreativeTab extends CreativeTabs {
 	}
 
 	@Override
-	public Item getTabIconItem() {
-		return getIconItemStack().getItem();
+	public ItemStack getTabIconItem() {
+		return getIconItemStack();
 	}
 
 	@Override
@@ -48,7 +47,7 @@ public class PsiCreativeTab extends CreativeTabs {
 	}
 
 	@Override
-	public void displayAllRelevantItems(List<ItemStack> p_78018_1_) {
+	public void displayAllRelevantItems(NonNullList<ItemStack> p_78018_1_) {
 		list = p_78018_1_;
 
 		addBlock(ModBlocks.cadAssembler);

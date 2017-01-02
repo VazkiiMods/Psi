@@ -10,6 +10,8 @@
  */
 package vazkii.psi.common.entity;
 
+import net.minecraft.entity.Entity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.lib.LibEntityNames;
@@ -19,10 +21,15 @@ public final class ModEntities {
 	public static void init() {
 		int id = 0;
 
-		EntityRegistry.registerModEntity(EntitySpellProjectile.class, LibEntityNames.SPELL_PROJECTILE, id++, Psi.instance, 256, 10, true);
-		EntityRegistry.registerModEntity(EntitySpellCircle.class, LibEntityNames.SPELL_CIRCLE, id++, Psi.instance, 256, 64, false);
-		EntityRegistry.registerModEntity(EntitySpellGrenade.class, LibEntityNames.SPELL_GRENADE, id++, Psi.instance, 256, 10, true);
-		EntityRegistry.registerModEntity(EntitySpellCharge.class, LibEntityNames.SPELL_CHARGE, id++, Psi.instance, 256, 10, true);
-		EntityRegistry.registerModEntity(EntitySpellMine.class, LibEntityNames.SPELL_MINE, id++, Psi.instance, 256, 10, true);
+		registerModEntity(EntitySpellProjectile.class, LibEntityNames.SPELL_PROJECTILE, id++, Psi.instance, 256, 10, true);
+		registerModEntity(EntitySpellCircle.class, LibEntityNames.SPELL_CIRCLE, id++, Psi.instance, 256, 64, false);
+		registerModEntity(EntitySpellGrenade.class, LibEntityNames.SPELL_GRENADE, id++, Psi.instance, 256, 10, true);
+		registerModEntity(EntitySpellCharge.class, LibEntityNames.SPELL_CHARGE, id++, Psi.instance, 256, 10, true);
+		registerModEntity(EntitySpellMine.class, LibEntityNames.SPELL_MINE, id++, Psi.instance, 256, 10, true);
+	}
+	
+	private static void registerModEntity(Class<? extends Entity> entityClass, String entityName, int id, Object mod, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates) {
+		EntityRegistry.registerModEntity(new ResourceLocation(entityName), entityClass, entityName, id, mod, trackingRange, updateFrequency, sendsVelocityUpdates);
+		
 	}
 }

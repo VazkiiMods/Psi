@@ -53,7 +53,7 @@ public class PieceTrickMoveBlock extends PieceTrick {
 
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
-		if(context.caster.worldObj.isRemote)
+		if(context.caster.getEntityWorld().isRemote)
 			return null;
 
 		Vector3 positionVal = this.<Vector3>getParamValue(context, position);
@@ -64,7 +64,7 @@ public class PieceTrickMoveBlock extends PieceTrick {
 		if(!context.isInRadius(positionVal))
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 
-		World world = context.caster.worldObj;
+		World world = context.caster.getEntityWorld();
 		BlockPos pos = new BlockPos(positionVal.x, positionVal.y, positionVal.z);
 		IBlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();

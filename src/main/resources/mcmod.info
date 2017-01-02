@@ -1,8 +1,8 @@
 [
 {
-  "modid": "Psi",
+  "modid": "psi",
   "name": "Psi",
-  "description": "Psionic SpellCasting Instruments",
+  "description": "Psionic Spellcasting Instruments",
   "version": "${version}",
   "mcversion": "${mcversion}",
   "logoFile": "assets/psi/textures/logo.png",

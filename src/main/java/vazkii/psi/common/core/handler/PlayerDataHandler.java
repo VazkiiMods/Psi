@@ -116,7 +116,7 @@ public class PlayerDataHandler {
 	}
 
 	private static int getKey(EntityPlayer player) {
-		return player.hashCode() << 1 + (player.worldObj.isRemote ? 1 : 0);
+		return player.hashCode() << 1 + (player.getEntityWorld().isRemote ? 1 : 0);
 	}
 
 	public static NBTTagCompound getDataCompoundForPlayer(EntityPlayer player) {
@@ -205,7 +205,7 @@ public class PlayerDataHandler {
 		@SubscribeEvent
 		public void onPsiArmorEvent(PsiArmorEvent event) {
 			for(int i = 0; i < 4; i++) {
-				ItemStack armor = event.getEntityPlayer().inventory.armorInventory[i];
+				ItemStack armor = event.getEntityPlayer().inventory.armorInventory.get(i);
 				if(armor != null && armor.getItem() instanceof IPsiEventArmor) {
 					IPsiEventArmor handler = (IPsiEventArmor) armor.getItem();
 					handler.onEvent(armor, event);
@@ -232,14 +232,14 @@ public class PlayerDataHandler {
 			double viewZ = cameraEntity.lastTickPosZ + (cameraEntity.posZ - cameraEntity.lastTickPosZ) * partialTicks;
 			frustum.setPosition(viewX, viewY, viewZ);
 
-			for(EntityPlayer player : mc.theWorld.playerEntities)
+			for(EntityPlayer player : mc.world.playerEntities)
 				PlayerDataHandler.get(player).render(player, partialTicks);
 		}
 
 		@SubscribeEvent
 		@SideOnly(Side.CLIENT)
 		public void onFOVUpdate(FOVUpdateEvent event) {
-			PlayerData data = get(Minecraft.getMinecraft().thePlayer);
+			PlayerData data = get(Minecraft.getMinecraft().player);
 			if(data.isAnchored) {
 				float fov = event.getNewfov();
 				if(data.eidosAnchorTime > 0)
@@ -301,13 +301,13 @@ public class PlayerDataHandler {
 
 		public PlayerData(EntityPlayer player) {
 			playerWR = new WeakReference(player);
-			client = player.worldObj.isRemote;
+			client = player.getEntityWorld().isRemote;
 
 			load();
 		}
 
 		public void tick() {
-			int dimension = playerWR.get().worldObj.provider.getDimension();
+			int dimension = playerWR.get().getEntityWorld().provider.getDimension();
 			
 			if(deductTick)
 				deductTick = false;
@@ -364,7 +364,7 @@ public class PlayerDataHandler {
 						double y = player.posY - player.getYOffset();
 						double z = player.posZ + (Math.random() - 0.5) * 2.1 * player.width;
 						float grav = -0.15F - (float) Math.random() * 0.03F;
-						Psi.proxy.sparkleFX(player.worldObj, x, y, z, r, g, b, grav, 0.25F, 15);
+						Psi.proxy.sparkleFX(player.getEntityWorld(), x, y, z, r, g, b, grav, 0.25F, 15);
 					}
 
 					if(loopcastTime > 0 && loopcastTime % 5 == 0) {
@@ -385,8 +385,8 @@ public class PlayerDataHandler {
 										if(cost != -1)
 											deductPsi(cost, 3, true);
 
-										if(!player.worldObj.isRemote && loopcastTime % 10 == 0)
-											player.worldObj.playSound(null, player.posX, player.posX, player.posZ, PsiSoundHandler.loopcast, SoundCategory.PLAYERS, 0.5F, (float) (0.35 + Math.random() * 0.85));
+										if(!player.getEntityWorld().isRemote && loopcastTime % 10 == 0)
+											player.getEntityWorld().playSound(null, player.posX, player.posX, player.posZ, PsiSoundHandler.loopcast, SoundCategory.PLAYERS, 0.5F, (float) (0.35 + Math.random() * 0.85));
 									}
 
 									context.cspell.safeExecute(context);
@@ -464,7 +464,7 @@ public class PlayerDataHandler {
 								double y = player.posY + (Math.random() - 0.5) * spread;
 								double z = player.posZ + (Math.random() - 0.5) * spread;
 
-								Psi.proxy.sparkleFX(player.worldObj, x, y, z, r, g, b, (float) x, (float) y, (float) z, 1.2F, 12);
+								Psi.proxy.sparkleFX(player.getEntityWorld(), x, y, z, r, g, b, (float) x, (float) y, (float) z, 1.2F, 12);
 							}
 
 							player.motionX = 0;
@@ -487,8 +487,8 @@ public class PlayerDataHandler {
 			}
 
 			BlockPos pos = player.getPosition();
-			int skylight = (int) (player.worldObj.getLightFor(EnumSkyBlock.SKY, pos) * player.worldObj.provider.getSunBrightnessFactor(1F));
-			int blocklight = player.worldObj.getLightFor(EnumSkyBlock.BLOCK, pos);
+			int skylight = (int) (player.getEntityWorld().getLightFor(EnumSkyBlock.SKY, pos) * player.getEntityWorld().provider.getSunBrightnessFactor(1F));
+			int blocklight = player.getEntityWorld().getLightFor(EnumSkyBlock.BLOCK, pos);
 			int light = Math.max(skylight, blocklight);
 			
 			boolean lowLight = light < 7;
@@ -556,7 +556,7 @@ public class PlayerDataHandler {
 					NetworkHandler.INSTANCE.sendTo(message, (EntityPlayerMP) player);
 					NetworkHandler.INSTANCE.sendTo(message2, (EntityPlayerMP) player);
 					if(level == 25)
-						player.addChatComponentMessage(new TextComponentTranslation("psimisc.softcapIndicator").setStyle(new Style().setColor(TextFormatting.AQUA)));
+						player.sendMessage(new TextComponentTranslation("psimisc.softcapIndicator").setStyle(new Style().setColor(TextFormatting.AQUA)));
 				}
 			}
 		}

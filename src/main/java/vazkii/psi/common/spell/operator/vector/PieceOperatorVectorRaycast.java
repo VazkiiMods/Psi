@@ -57,7 +57,7 @@ public class PieceOperatorVectorRaycast extends PieceOperator {
 			maxLen = numberVal.doubleValue();
 		maxLen = Math.min(SpellContext.MAX_DISTANCE, maxLen);
 
-		RayTraceResult pos = raycast(context.caster.worldObj, originVal, rayVal, maxLen);
+		RayTraceResult pos = raycast(context.caster.getEntityWorld(), originVal, rayVal, maxLen);
 		if(pos == null || pos.getBlockPos() == null)
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
 
@@ -73,7 +73,7 @@ public class PieceOperatorVectorRaycast extends PieceOperator {
 		if(look == null)
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
 
-		return raycast(e.worldObj, vec, new Vector3(look), len);
+		return raycast(e.getEntityWorld(), vec, new Vector3(look), len);
 	}
 
 	public static RayTraceResult raycast(World world, Vector3 origin, Vector3 ray, double len) {

@@ -44,7 +44,7 @@ public class RenderSpellCircle extends Render<EntitySpellCircle> {
 		super.doRender(entity, x, y, z, entityYaw, partialTicks);
 
 		int colorVal = ICADColorizer.DEFAULT_SPELL_COLOR;
-		ItemStack colorizer = ((Optional<ItemStack>) entity.getDataManager().get(EntitySpellCircle.COLORIZER_DATA)).orNull();
+		ItemStack colorizer = entity.getDataManager().get(EntitySpellCircle.COLORIZER_DATA);
 		if(colorizer != null && colorizer.getItem() instanceof ICADColorizer)
 			colorVal = Psi.proxy.getColorizerColor(colorizer).getRGB();
 		float alive = entity.getTimeAlive() + partialTicks;

@@ -48,7 +48,7 @@ public class PieceTrickOvergrow extends PieceTrick {
 
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
-		if(context.caster.worldObj.isRemote)
+		if(context.caster.getEntityWorld().isRemote)
 			return null;
 
 		Vector3 positionVal = this.<Vector3>getParamValue(context, position);
@@ -67,9 +67,9 @@ public class PieceTrickOvergrow extends PieceTrick {
 	}
 
 	public boolean bonemeal(EntityPlayer player, BlockPos pos) {
-		boolean did = ItemDye.applyBonemeal(new ItemStack(Items.DYE, 1, 15), player.worldObj, pos, player);
+		boolean did = ItemDye.applyBonemeal(new ItemStack(Items.DYE, 1, 15), player.getEntityWorld(), pos, player);
 		if(did)
-			player.worldObj.playEvent(2005, pos, 0);
+			player.getEntityWorld().playEvent(2005, pos, 0);
 		return did;
 	}
 

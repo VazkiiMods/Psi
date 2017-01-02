@@ -25,22 +25,22 @@ public class LibResources {
 	public static final String SHADER_SIMPLE_BLOOM = PREFIX_SHADER + "simpleBloom";
 
 	public static final String GUI_CREATIVE = "psi.png";
-	public static final String GUI_CAD_ASSEMBLER = PREFIX_GUI + "cadAssembler.png";
-	public static final String GUI_PSI_BAR = PREFIX_GUI + "psiBar.png";
-	public static final String GUI_PSI_BAR_MASK = PREFIX_GUI + "psiBarMask.png";
-	public static final String GUI_PSI_BAR_SHATTER = PREFIX_GUI + "psiBarShatter.png";
+	public static final String GUI_CAD_ASSEMBLER = PREFIX_GUI + "cad_assembler.png";
+	public static final String GUI_PSI_BAR = PREFIX_GUI + "psi_bar.png";
+	public static final String GUI_PSI_BAR_MASK = PREFIX_GUI + "psi_bar_mask.png";
+	public static final String GUI_PSI_BAR_SHATTER = PREFIX_GUI + "psi_bar_shatter.png";
 	public static final String GUI_SIGN = PREFIX_GUI + "signs/sign%d.png";
 	public static final String GUI_PROGRAMMER = PREFIX_GUI + "programmer.png";
 	public static final String GUI_LEVELING = PREFIX_GUI + "leveling.png";
 	public static final String GUI_INTRODUCTION = PREFIX_GUI + "introduction.png";
 
-	public static final String SPELL_CONNECTOR_LINES = PREFIX_SPELL + "connectorLines.png";
+	public static final String SPELL_CONNECTOR_LINES = PREFIX_SPELL + "connector_lines.png";
 
-	public static final String MODEL_PSIMETAL_EXOSUIT = PREFIX_MODEL + "psimetalExosuit.png";
-	public static final String MODEL_PSIMETAL_EXOSUIT_SENSOR = PREFIX_MODEL + "psimetalExosuitSensor.png";
+	public static final String MODEL_PSIMETAL_EXOSUIT = PREFIX_MODEL + "psimetal_exosuit.png";
+	public static final String MODEL_PSIMETAL_EXOSUIT_SENSOR = PREFIX_MODEL + "psimetal_exosuit_sensor.png";
 
 	public static final String MISC_PARTICLES = PREFIX_MISC + "particles.png";
 	public static final String MISC_WISP_LARGE = PREFIX_MISC + "wispLarge.png";
-	public static final String MISC_SPELL_CIRCLE = PREFIX_MISC + "spellCircle%d.png";
+	public static final String MISC_SPELL_CIRCLE = PREFIX_MISC + "spell_circle%d.png";
 
 }

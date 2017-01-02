@@ -78,7 +78,7 @@ public class GuiSocketSelect extends GuiScreen {
 		else if(stack.getItem() instanceof ISocketableController) {
 			controllerStack = stack;
 			controller = (ISocketableController) stack.getItem();
-			controlledStacks = controller.getControlledStacks(mc.thePlayer, stack);
+			controlledStacks = controller.getControlledStacks(mc.player, stack);
 			controlSlot = controller.getDefaultControlSlot(controllerStack);
 			if(controlSlot >= controlledStacks.length)
 				controlSlot = 0;
@@ -124,7 +124,7 @@ public class GuiSocketSelect extends GuiScreen {
 
 		List<int[]> stringPositions = new ArrayList();
 
-		ItemStack cadStack = PsiAPI.getPlayerCAD(Minecraft.getMinecraft().thePlayer);
+		ItemStack cadStack = PsiAPI.getPlayerCAD(Minecraft.getMinecraft().player);
 		slotSelected = -1;
 
 		for(int seg = 0; seg < segments; seg++) {
@@ -273,7 +273,7 @@ public class GuiSocketSelect extends GuiScreen {
 			mc.displayGuiScreen(null);
 			if(slotSelected != -1) {
 				int slot = slots.get(slotSelected);
-				PlayerDataHandler.get(mc.thePlayer).stopLoopcast();
+				PlayerDataHandler.get(mc.player).stopLoopcast();
 
 				NetworkMessage message = null;
 				if(controllerStack != null)

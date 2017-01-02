@@ -52,11 +52,11 @@ public class EntitySpellGrenade extends EntitySpellProjectile {
 		double m = 0.1;
 		double d3 = 0.0D;
 		for(int j = 0; j < 40; j++) {
-			double d0 = worldObj.rand.nextGaussian() * m;
-			double d1 = worldObj.rand.nextGaussian() * m;
-			double d2 = worldObj.rand.nextGaussian() * m;
+			double d0 = getEntityWorld().rand.nextGaussian() * m;
+			double d1 = getEntityWorld().rand.nextGaussian() * m;
+			double d2 = getEntityWorld().rand.nextGaussian() * m;
 
-			worldObj.spawnParticle(EnumParticleTypes.EXPLOSION_NORMAL, posX + worldObj.rand.nextFloat() * width * 2.0F - width - d0 * d3, posY + worldObj.rand.nextFloat() * height - d1 * d3, posZ + worldObj.rand.nextFloat() * width * 2.0F - width - d2 * d3, d0, d1, d2);
+			getEntityWorld().spawnParticle(EnumParticleTypes.EXPLOSION_NORMAL, posX + getEntityWorld().rand.nextFloat() * width * 2.0F - width - d0 * d3, posY + getEntityWorld().rand.nextFloat() * height - d1 * d3, posZ + getEntityWorld().rand.nextFloat() * width * 2.0F - width - d2 * d3, d0, d1, d2);
 		}
 	}
 
@@ -66,7 +66,7 @@ public class EntitySpellGrenade extends EntitySpellProjectile {
 
 	@Override
 	protected void onImpact(RayTraceResult pos) {
-		if(!worldObj.isRemote && !sound && explodes()) {
+		if(!getEntityWorld().isRemote && !sound && explodes()) {
 			playSound(SoundEvents.ENTITY_CREEPER_PRIMED, 2F, 1F);
 			sound = true;
 		}

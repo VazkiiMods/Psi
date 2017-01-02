@@ -54,7 +54,7 @@ public class PieceTrickBreakInSequence extends PieceTrick {
 
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
-		if(context.caster.worldObj.isRemote)
+		if(context.caster.getEntityWorld().isRemote)
 			return null;
 
 		Vector3 positionVal = this.<Vector3>getParamValue(context, position);
@@ -74,7 +74,7 @@ public class PieceTrickBreakInSequence extends PieceTrick {
 				throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 
 			BlockPos pos = new BlockPos(blockVec.x, blockVec.y, blockVec.z);
-			PieceTrickBreakBlock.removeBlockWithDrops(context, context.caster, context.caster.worldObj, context.tool, pos, true);
+			PieceTrickBreakBlock.removeBlockWithDrops(context, context.caster, context.caster.getEntityWorld(), context.tool, pos, true);
 		}
 
 		return null;

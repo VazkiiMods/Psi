@@ -20,10 +20,10 @@ public class ItemMaterial extends ItemMod implements IPsiItem {
 			"psidust",
 			"psimetal",
 			"psigem",
-			"ebonyPsimetal",
-			"ivoryPsimetal",
-			"ebonySubstance",
-			"ivorySubstance"
+			"ebony_psimetal",
+			"ivory_psimetal",
+			"ebony_substance",
+			"ivory_substance"
 	};
 
 	public ItemMaterial() {

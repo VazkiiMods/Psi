@@ -12,10 +12,10 @@ package vazkii.psi.common.lib;
 
 public final class LibEntityNames {
 
-	public static final String SPELL_PROJECTILE = LibResources.PREFIX_MOD + "spellProjectile";
-	public static final String SPELL_CIRCLE = LibResources.PREFIX_MOD + "spellCircle";
-	public static final String SPELL_GRENADE = LibResources.PREFIX_MOD + "spellGrenade";
-	public static final String SPELL_CHARGE = LibResources.PREFIX_MOD + "spellCharge";
-	public static final String SPELL_MINE = LibResources.PREFIX_MOD + "spellMine";
+	public static final String SPELL_PROJECTILE = LibResources.PREFIX_MOD + "spell_projectile";
+	public static final String SPELL_CIRCLE = LibResources.PREFIX_MOD + "spell_circle";
+	public static final String SPELL_GRENADE = LibResources.PREFIX_MOD + "spell_grenade";
+	public static final String SPELL_CHARGE = LibResources.PREFIX_MOD + "spell_charge";
+	public static final String SPELL_MINE = LibResources.PREFIX_MOD + "spell_mine";
 
 }

@@ -39,7 +39,7 @@ public class PieceOperatorRandom extends PieceOperator {
 		if(i == 0)
 			throw new SpellRuntimeException(SpellRuntimeException.DIVIDE_BY_ZERO);
 
-		int v = context.caster.worldObj.rand.nextInt(i);
+		int v = context.caster.getEntityWorld().rand.nextInt(i);
 		if(neg)
 			v = -v;
 

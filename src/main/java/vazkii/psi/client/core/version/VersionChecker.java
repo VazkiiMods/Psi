@@ -41,17 +41,17 @@ public final class VersionChecker {
 
 	@SubscribeEvent
 	public void onTick(ClientTickEvent event) {
-		if(doneChecking && event.phase == Phase.END && Minecraft.getMinecraft().thePlayer != null && !triedToWarnPlayer) {
+		if(doneChecking && event.phase == Phase.END && Minecraft.getMinecraft().player != null && !triedToWarnPlayer) {
 			if(!onlineVersion.isEmpty()) {
-				EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+				EntityPlayer player = Minecraft.getMinecraft().player;
 				int onlineBuild = Integer.parseInt(onlineVersion.split("-")[1]);
 				int clientBuild = LibMisc.BUILD.contains("GRADLE") ? Integer.MAX_VALUE : Integer.parseInt(LibMisc.BUILD);
 				if(onlineBuild > clientBuild) {
-					player.addChatComponentMessage(new TextComponentTranslation("psi.versioning.flavour" + player.worldObj.rand.nextInt(FLAVOUR_MESSAGES)).setStyle(new Style().setColor(TextFormatting.LIGHT_PURPLE)));
-					player.addChatComponentMessage(new TextComponentTranslation("psi.versioning.outdated", clientBuild, onlineBuild));
+					player.sendMessage(new TextComponentTranslation("psi.versioning.flavour" + player.getEntityWorld().rand.nextInt(FLAVOUR_MESSAGES)).setStyle(new Style().setColor(TextFormatting.LIGHT_PURPLE)));
+					player.sendMessage(new TextComponentTranslation("psi.versioning.outdated", clientBuild, onlineBuild));
 
 					ITextComponent component = ITextComponent.Serializer.jsonToComponent(I18n.translateToLocal("psi.versioning.updateMessage").replaceAll("%version%", onlineVersion));
-					player.addChatComponentMessage(component);
+					player.sendMessage(component);
 				}
 			}
 

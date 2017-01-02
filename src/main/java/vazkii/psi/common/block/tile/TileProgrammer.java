@@ -38,7 +38,7 @@ public class TileProgrammer extends TileMod {
 		boolean wasEnabled = enabled;
 		enabled = isEnabled();
 		if(wasEnabled != enabled)
-			worldObj.markBlockRangeForRenderUpdate(pos, pos);
+			getWorld().markBlockRangeForRenderUpdate(pos, pos);
 	}
 
 	@Override

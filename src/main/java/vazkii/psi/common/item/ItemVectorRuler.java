@@ -47,7 +47,8 @@ public class ItemVectorRuler extends ItemMod implements IHUDItem, IPsiItem {
 	}
 	
 	@Override
-	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+	public EnumActionResult onItemUse(EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+		ItemStack stack = playerIn.getActiveItemStack();
 		int srcY = ItemNBTHelper.getInt(stack, TAG_SRC_Y, -1);
 		
 		if(srcY == -1 || playerIn.isSneaking()) {

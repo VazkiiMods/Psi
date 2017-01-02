@@ -23,25 +23,25 @@ public class CommandDownloadLatest extends CommandBase {
 	private static final boolean ENABLED = true;
 
 	@Override
-	public String getCommandName() {
+	public String getName() {
 		return "psi-download-latest";
 	}
 
 	@Override
-	public String getCommandUsage(ICommandSender var1) {
+	public String getUsage(ICommandSender var1) {
 		return "/psi-download-latest <version>";
 	}
 
 	@Override
 	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
 		if(!ENABLED)
-			sender.addChatMessage(new TextComponentTranslation("psi.versioning.disabled").setStyle(new Style().setColor(TextFormatting.RED)));
+			sender.sendMessage(new TextComponentTranslation("psi.versioning.disabled").setStyle(new Style().setColor(TextFormatting.RED)));
 
 		else if(args.length == 1)
 			if(VersionChecker.downloadedFile)
-				sender.addChatMessage(new TextComponentTranslation("psi.versioning.downloadedAlready").setStyle(new Style().setColor(TextFormatting.RED)));
+				sender.sendMessage(new TextComponentTranslation("psi.versioning.downloadedAlready").setStyle(new Style().setColor(TextFormatting.RED)));
 			else if(VersionChecker.startedDownload)
-				sender.addChatMessage(new TextComponentTranslation("psi.versioning.downloadingAlready").setStyle(new Style().setColor(TextFormatting.RED)));
+				sender.sendMessage(new TextComponentTranslation("psi.versioning.downloadingAlready").setStyle(new Style().setColor(TextFormatting.RED)));
 			else new ThreadDownloadMod("Psi-" + args[0] + ".jar");
 	}
 

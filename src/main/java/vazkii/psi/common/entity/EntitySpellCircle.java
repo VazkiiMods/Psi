@@ -49,16 +49,11 @@ public class EntitySpellCircle extends Entity {
 	private static final String TAG_LOOK_Z = "savedLookZ";
 
 	// Generics are borked :|
-	public static final DataParameter COLORIZER_DATA = EntityDataManager.createKey(EntitySpellCircle.class,
-			DataSerializers.OPTIONAL_ITEM_STACK);
-	private static final DataParameter BULLET_DATA = EntityDataManager.createKey(EntitySpellCircle.class,
-			DataSerializers.OPTIONAL_ITEM_STACK);
-	private static final DataParameter CASTER_NAME = EntityDataManager.createKey(EntitySpellCircle.class,
-			DataSerializers.STRING);
-	private static final DataParameter TIME_ALIVE = EntityDataManager.createKey(EntitySpellCircle.class,
-			DataSerializers.VARINT);
-	private static final DataParameter TIMES_CAST = EntityDataManager.createKey(EntitySpellCircle.class,
-			DataSerializers.VARINT);
+	public static final DataParameter<ItemStack> COLORIZER_DATA = EntityDataManager.createKey(EntitySpellCircle.class, DataSerializers.OPTIONAL_ITEM_STACK);
+	private static final DataParameter<ItemStack> BULLET_DATA = EntityDataManager.createKey(EntitySpellCircle.class, DataSerializers.OPTIONAL_ITEM_STACK);
+	private static final DataParameter<String> CASTER_NAME = EntityDataManager.createKey(EntitySpellCircle.class, DataSerializers.STRING);
+	private static final DataParameter<Integer> TIME_ALIVE = EntityDataManager.createKey(EntitySpellCircle.class, DataSerializers.VARINT);
+	private static final DataParameter<Integer> TIMES_CAST = EntityDataManager.createKey(EntitySpellCircle.class, DataSerializers.VARINT);
 
 	private static final DataParameter LOOK_X = EntityDataManager.createKey(EntitySpellCircle.class,
 			DataSerializers.FLOAT);
@@ -73,8 +68,8 @@ public class EntitySpellCircle extends Entity {
 	}
 
 	public EntitySpellCircle setInfo(EntityPlayer player, ItemStack colorizer, ItemStack bullet) {
-		dataManager.set(COLORIZER_DATA, Optional.fromNullable(colorizer));
-		dataManager.set(BULLET_DATA, Optional.of(bullet));
+		dataManager.set(COLORIZER_DATA,colorizer);
+		dataManager.set(BULLET_DATA, bullet);
 		dataManager.set(CASTER_NAME, player.getName());
 
 		Vec3d lookVec = player.getLook(1F);
@@ -86,8 +81,8 @@ public class EntitySpellCircle extends Entity {
 
 	@Override
 	protected void entityInit() {
-		dataManager.register(COLORIZER_DATA, Optional.of(new ItemStack(Blocks.STONE)));
-		dataManager.register(BULLET_DATA, Optional.of(new ItemStack(Blocks.STONE)));
+		dataManager.register(COLORIZER_DATA, new ItemStack(Blocks.STONE));
+		dataManager.register(BULLET_DATA, new ItemStack(Blocks.STONE));
 		dataManager.register(CASTER_NAME, "");
 		dataManager.register(TIME_ALIVE, 0);
 		dataManager.register(TIMES_CAST, 0);
@@ -99,13 +94,13 @@ public class EntitySpellCircle extends Entity {
 	@Override
 	public void writeEntityToNBT(NBTTagCompound tagCompound) {
 		NBTTagCompound colorizerCmp = new NBTTagCompound();
-		ItemStack colorizer = ((Optional<ItemStack>) dataManager.get(COLORIZER_DATA)).orNull();
+		ItemStack colorizer =  dataManager.get(COLORIZER_DATA);
 		if (colorizer != null)
 			colorizer.writeToNBT(colorizerCmp);
 		tagCompound.setTag(TAG_COLORIZER, colorizerCmp);
 
 		NBTTagCompound bulletCmp = new NBTTagCompound();
-		ItemStack bullet = ((Optional<ItemStack>) dataManager.get(BULLET_DATA)).orNull();
+		ItemStack bullet = dataManager.get(BULLET_DATA);
 		if (bullet != null)
 			bullet.writeToNBT(bulletCmp);
 		tagCompound.setTag(TAG_BULLET, bulletCmp);
@@ -122,12 +117,12 @@ public class EntitySpellCircle extends Entity {
 	@Override
 	public void readEntityFromNBT(NBTTagCompound tagCompound) {
 		NBTTagCompound colorizerCmp = tagCompound.getCompoundTag(TAG_COLORIZER);
-		ItemStack colorizer = ItemStack.loadItemStackFromNBT(colorizerCmp);
-		dataManager.set(COLORIZER_DATA, Optional.fromNullable(colorizer));
+		ItemStack colorizer = new ItemStack(colorizerCmp);
+		dataManager.set(COLORIZER_DATA, colorizer);
 
 		NBTTagCompound bulletCmp = tagCompound.getCompoundTag(TAG_BULLET);
-		ItemStack bullet = ItemStack.loadItemStackFromNBT(bulletCmp);
-		dataManager.set(BULLET_DATA, Optional.of(bullet));
+		ItemStack bullet = new ItemStack(bulletCmp);
+		dataManager.set(BULLET_DATA, bullet);
 
 		dataManager.set(CASTER_NAME, tagCompound.getString(TAG_CASTER));
 		setTimeAlive(tagCompound.getInteger(TAG_TIME_ALIVE));
@@ -153,7 +148,7 @@ public class EntitySpellCircle extends Entity {
 			SpellContext context = null;
 			Entity thrower = getCaster();
 			if (thrower != null && thrower instanceof EntityPlayer) {
-				ItemStack spellContainer = ((Optional<ItemStack>) dataManager.get(BULLET_DATA)).orNull();
+				ItemStack spellContainer = dataManager.get(BULLET_DATA);
 				if (spellContainer != null && spellContainer.getItem() instanceof ISpellContainer) {
 					dataManager.set(TIMES_CAST, times + 1);
 					Spell spell = ((ISpellContainer) spellContainer.getItem()).getSpell(spellContainer);
@@ -168,7 +163,7 @@ public class EntitySpellCircle extends Entity {
 		}
 
 		int colorVal = ICADColorizer.DEFAULT_SPELL_COLOR;
-		ItemStack colorizer = ((Optional<ItemStack>) dataManager.get(COLORIZER_DATA)).orNull();
+		ItemStack colorizer = dataManager.get(COLORIZER_DATA);
 		if (colorizer != null && colorizer.getItem() instanceof ICADColorizer)
 			colorVal = Psi.proxy.getColorizerColor(colorizer).getRGB();
 
@@ -181,7 +176,7 @@ public class EntitySpellCircle extends Entity {
 			double y = posY - getYOffset();
 			double z = posZ + (Math.random() - 0.5) * width;
 			float grav = -0.15F - (float) Math.random() * 0.03F;
-			Psi.proxy.sparkleFX(worldObj, x, y, z, r, g, b, grav, 0.25F, 15);
+			Psi.proxy.sparkleFX(getEntityWorld(), x, y, z, r, g, b, grav, 0.25F, 15);
 		}
 	}
 
@@ -203,7 +198,7 @@ public class EntitySpellCircle extends Entity {
 
 	public EntityLivingBase getCaster() {
 		String name = (String) dataManager.get(CASTER_NAME);
-		EntityPlayer player = worldObj.getPlayerEntityByName(name);
+		EntityPlayer player = getEntityWorld().getPlayerEntityByName(name);
 		return player;
 	}
 }

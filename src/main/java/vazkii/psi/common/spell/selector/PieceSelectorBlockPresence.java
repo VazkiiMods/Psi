@@ -42,12 +42,12 @@ public class PieceSelectorBlockPresence extends PieceSelector {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
 		
 		BlockPos pos = new BlockPos(positionVal.x, positionVal.y, positionVal.z);
-		IBlockState state = context.caster.worldObj.getBlockState(pos);
+		IBlockState state = context.caster.getEntityWorld().getBlockState(pos);
 		Block block = state.getBlock();
 		
-		if(block.isAir(state, context.caster.worldObj, pos) || block.isReplaceable(context.caster.worldObj, pos))
+		if(block.isAir(state, context.caster.getEntityWorld(), pos) || block.isReplaceable(context.caster.getEntityWorld(), pos))
 			return 0.0;
-		else if(state.getBoundingBox(context.caster.worldObj, pos).offset(pos) == null)
+		else if(state.getBoundingBox(context.caster.getEntityWorld(), pos).offset(pos) == null)
 			return 1.0;
 		return 2.0;
 	}

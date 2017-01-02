@@ -54,7 +54,7 @@ public class PieceOperatorVectorRaycastAxis extends PieceOperator {
 
 		Vector3 end = originVal.copy().add(rayVal.copy().normalize().multiply(maxLen));
 
-		RayTraceResult pos = context.caster.worldObj.rayTraceBlocks(originVal.toVec3D(), end.toVec3D());
+		RayTraceResult pos = context.caster.getEntityWorld().rayTraceBlocks(originVal.toVec3D(), end.toVec3D());
 		if(pos == null || pos.getBlockPos() == null)
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
 

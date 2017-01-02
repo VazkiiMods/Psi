@@ -55,15 +55,15 @@ public class PieceTrickSmeltItem extends PieceTrick {
 			ItemStack result = FurnaceRecipes.instance().getSmeltingResult(stack);
 
 			if(result != null) {
-				if(!eitem.worldObj.isRemote) {
-					stack.stackSize--;
-					if(stack.stackSize == 0)
+				if(!eitem.getEntityWorld().isRemote) {
+					stack.shrink(1);
+					if(stack.getCount() == 0)
 						eitem.setDead();
 				}
 
-				EntityItem item = new EntityItem(context.caster.worldObj, eitem.posX, eitem.posY, eitem.posZ, result.copy());
-				if(!context.caster.worldObj.isRemote)
-					context.caster.worldObj.spawnEntityInWorld(item);
+				EntityItem item = new EntityItem(context.caster.getEntityWorld(), eitem.posX, eitem.posY, eitem.posZ, result.copy());
+				if(!context.caster.getEntityWorld().isRemote)
+					context.caster.getEntityWorld().spawnEntity(item);
 			}
 		} else throw new SpellRuntimeException(SpellRuntimeException.NULL_TARGET);
 

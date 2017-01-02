@@ -39,6 +39,7 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -46,7 +47,6 @@ import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -107,18 +107,20 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 	}
 	
 	@Override
-	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public EnumActionResult onItemUse(EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+		ItemStack stack = playerIn.getActiveItemStack();
 		Block block = worldIn.getBlockState(pos).getBlock(); 
 		return block == ModBlocks.programmer ? ((BlockProgrammer) block).setSpell(worldIn, pos, playerIn, stack) : EnumActionResult.PASS;
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand hand) {
+		ItemStack itemStackIn = playerIn.getActiveItemStack();
 		PlayerData data = PlayerDataHandler.get(playerIn);
 		ItemStack playerCad = PsiAPI.getPlayerCAD(playerIn);
 		if(playerCad != itemStackIn) {
 			if(!worldIn.isRemote)
-				playerIn.addChatComponentMessage(new TextComponentTranslation("psimisc.multipleCads").setStyle(new Style().setColor(TextFormatting.RED)));
+				playerIn.sendMessage(new TextComponentTranslation("psimisc.multipleCads").setStyle(new Style().setColor(TextFormatting.RED)));
 			return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
 		}
 
@@ -200,7 +202,7 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 						spellContainer.castSpell(bullet, context);
 						return true;
 					} else if(!world.isRemote)
-						player.addChatComponentMessage(new TextComponentTranslation("psimisc.weakCad").setStyle(new Style().setColor(TextFormatting.RED)));
+						player.sendMessage(new TextComponentTranslation("psimisc.weakCad").setStyle(new Style().setColor(TextFormatting.RED)));
 				}
 			}
 		}
@@ -209,7 +211,7 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 	}
 
 	public static boolean craft(EntityPlayer player, ItemStack in, ItemStack out) {
-		List<EntityItem> items = player.worldObj.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(player.posX - 8, player.posY - 8, player.posZ - 8, player.posX + 8, player.posY + 8, player.posZ + 8));
+		List<EntityItem> items = player.getEntityWorld().getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(player.posX - 8, player.posY - 8, player.posZ - 8, player.posX + 8, player.posY + 8, player.posZ + 8));
 
 		Color color = new Color(ICADColorizer.DEFAULT_SPELL_COLOR);
 		float r = color.getRed() / 255F;
@@ -222,7 +224,7 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 			ItemStack stack = item.getEntityItem();
 			if(stack != null && ItemStack.areItemsEqual(stack, in)) {
 				ItemStack outCopy = out.copy();
-				outCopy.stackSize = stack.stackSize;
+				outCopy.setCount(stack.getCount());
 				item.setEntityItemStack(outCopy);
 				did = true;
 
@@ -231,16 +233,16 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 					double y = item.posY - item.getYOffset();
 					double z = item.posZ + (Math.random() - 0.5) * 2.1 * item.width;
 					float grav = -0.05F - (float) Math.random() * 0.01F;
-					Psi.proxy.sparkleFX(item.worldObj, x, y, z, r, g, b, grav, 3.5F, 15);
+					Psi.proxy.sparkleFX(item.getEntityWorld(), x, y, z, r, g, b, grav, 3.5F, 15);
 
 					double m = 0.01;
 					double d3 = 10.0D;
 					for(int j = 0; j < 3; j++) {
-						double d0 = item.worldObj.rand.nextGaussian() * m;
-						double d1 = item.worldObj.rand.nextGaussian() * m;
-						double d2 = item.worldObj.rand.nextGaussian() * m;
+						double d0 = item.getEntityWorld().rand.nextGaussian() * m;
+						double d1 = item.getEntityWorld().rand.nextGaussian() * m;
+						double d2 = item.getEntityWorld().rand.nextGaussian() * m;
 
-						item.worldObj.spawnParticle(EnumParticleTypes.EXPLOSION_NORMAL, item.posX + item.worldObj.rand.nextFloat() * item.width * 2.0F - item.width - d0 * d3, item.posY + item.worldObj.rand.nextFloat() * item.height - d1 * d3, item.posZ + item.worldObj.rand.nextFloat() * item.width * 2.0F - item.width - d2 * d3, d0, d1, d2);
+						item.getEntityWorld().spawnParticle(EnumParticleTypes.EXPLOSION_NORMAL, item.posX + item.getEntityWorld().rand.nextFloat() * item.width * 2.0F - item.width - d0 * d3, item.posY + item.getEntityWorld().rand.nextFloat() * item.height - d1 * d3, item.posZ + item.getEntityWorld().rand.nextFloat() * item.width * 2.0F - item.width - d2 * d3, d0, d1, d2);
 					}
 				}
 			}
@@ -305,7 +307,7 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 		if(cmp == null)
 			return null;
 
-		return ItemStack.loadItemStackFromNBT(cmp);
+		return new ItemStack(cmp);
 	}
 
 	@Override
@@ -370,7 +372,7 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 		if(cmp == null)
 			return null;
 
-		return ItemStack.loadItemStackFromNBT(cmp);
+		return new ItemStack(cmp);
 	}
 
 	@Override
@@ -453,11 +455,6 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 	}
 	
 	@Override
-	public int getHarvestLevel(ItemStack stack, String toolClass) {
-		return ConfigHandler.cadHarvestLevel;
-	}
-
-	@Override
     public int getHarvestLevel(ItemStack stack, String toolClass, @Nullable EntityPlayer player, @Nullable IBlockState blockState) {
     	return ConfigHandler.cadHarvestLevel;
     }
@@ -471,11 +468,11 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 	public boolean canHarvestBlock(IBlockState state, ItemStack stack) {
 		Block block = state.getBlock();
 		int level = block.getHarvestLevel(state);
-		return getHarvestLevel(stack, "") >= level; 
+		return getHarvestLevel(stack, "", null, null) >= level; 
 	}
 	
 	@Override
-	public void getSubItems(Item itemIn, CreativeTabs tab, List<ItemStack> subItems) {
+	public void getSubItems(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> subItems) {
 		// Basic Iron CAD
 		subItems.add(makeCAD(new ItemStack(ModItems.cadAssembly, 1, 0)));
 

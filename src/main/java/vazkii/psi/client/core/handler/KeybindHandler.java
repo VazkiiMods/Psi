@@ -33,11 +33,11 @@ public class KeybindHandler {
 
 	public static void keyDown() {
 		Minecraft mc = Minecraft.getMinecraft();
-		ItemStack stack = mc.thePlayer.getHeldItem(EnumHand.MAIN_HAND);
+		ItemStack stack = mc.player.getHeldItem(EnumHand.MAIN_HAND);
 		if(stack != null && (stack.getItem() instanceof ISocketable || stack.getItem() instanceof ISocketableController))
 			mc.displayGuiScreen(new GuiSocketSelect(stack));
 		else {
-			stack = mc.thePlayer.getHeldItem(EnumHand.OFF_HAND);
+			stack = mc.player.getHeldItem(EnumHand.OFF_HAND);
 			if(stack != null && (stack.getItem() instanceof ISocketable || stack.getItem() instanceof ISocketableController))
 				mc.displayGuiScreen(new GuiSocketSelect(stack));
 			else mc.displayGuiScreen(new GuiLeveling());

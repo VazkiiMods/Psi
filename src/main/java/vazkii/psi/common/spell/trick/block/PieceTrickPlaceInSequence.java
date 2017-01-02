@@ -71,7 +71,7 @@ public class PieceTrickPlaceInSequence extends PieceTrick {
 				throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 
 			BlockPos pos = new BlockPos(blockVec.x, blockVec.y, blockVec.z);
-			PieceTrickPlaceBlock.placeBlock(context.caster, context.caster.worldObj, pos, context.getTargetSlot(), false);
+			PieceTrickPlaceBlock.placeBlock(context.caster, context.caster.getEntityWorld(), pos, context.getTargetSlot(), false);
 		}
 
 		return null;
