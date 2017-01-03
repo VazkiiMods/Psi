@@ -75,10 +75,10 @@ public final class HUDHandler {
 	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
 	public void onDraw(RenderGameOverlayEvent.Post event) {
-		if(event.getType() == ElementType.ALL) {
+		if (event.getType() == ElementType.ALL) {
 			ScaledResolution resolution = event.getResolution();
 			float partialTicks = event.getPartialTicks();
-			
+
 			drawPsiBar(resolution, partialTicks);
 			renderSocketableEquippedName(resolution, partialTicks);
 			renderLevelUpIndicator(resolution, partialTicks);
@@ -88,10 +88,10 @@ public final class HUDHandler {
 	}
 
 	public static void tick() {
-		if(showLevelUp)
+		if (showLevelUp)
 			levelDisplayTime++;
 
-		if(remainingTime > 0)
+		if (remainingTime > 0)
 			--remainingTime;
 	}
 
@@ -100,26 +100,30 @@ public final class HUDHandler {
 		Minecraft mc = Minecraft.getMinecraft();
 		ItemStack cadStack = PsiAPI.getPlayerCAD(mc.player);
 
-		if(cadStack == null)
+		if (cadStack.isEmpty())
 			return;
-		
+
 		ICAD cad = (ICAD) cadStack.getItem();
 		PlayerData data = PlayerDataHandler.get(mc.player);
-		if(data.level == 0 && !mc.player.capabilities.isCreativeMode)
+		if (data.level == 0 && !mc.player.capabilities.isCreativeMode)
 			return;
-		
+
 		int totalPsi = data.getTotalPsi();
 		int currPsi = data.getAvailablePsi();
-		
-		if(ConfigHandler.contextSensitiveBar && currPsi == totalPsi && (mc.player.getHeldItemMainhand() == null || !(mc.player.getHeldItemMainhand().getItem() instanceof ISocketable)) && (mc.player.getHeldItemOffhand() == null || !(mc.player.getHeldItemOffhand().getItem() instanceof ISocketable)))
+
+		if (ConfigHandler.contextSensitiveBar && currPsi == totalPsi
+				&& (mc.player.getHeldItemMainhand().isEmpty()
+						|| !(mc.player.getHeldItemMainhand().getItem() instanceof ISocketable))
+				&& (mc.player.getHeldItemOffhand().isEmpty()
+						|| !(mc.player.getHeldItemOffhand().getItem() instanceof ISocketable)))
 			return;
-			
+
 		GlStateManager.pushMatrix();
 		int scaleFactor = res.getScaleFactor();
-		
-		if(scaleFactor > ConfigHandler.maxPsiBarScale) {
+
+		if (scaleFactor > ConfigHandler.maxPsiBarScale) {
 			int guiScale = mc.gameSettings.guiScale;
-			
+
 			mc.gameSettings.guiScale = ConfigHandler.maxPsiBarScale;
 			res = new ScaledResolution(mc);
 			mc.gameSettings.guiScale = guiScale;
@@ -135,11 +139,11 @@ public final class HUDHandler {
 		int height = 140;
 
 		int x = -pad;
-		if(right)
+		if (right)
 			x = res.getScaledWidth() + pad - width;
 		int y = res.getScaledHeight() / 2 - height / 2;
 
-		if(!registeredMask) {
+		if (!registeredMask) {
 			mc.renderEngine.bindTexture(psiBarMask);
 			mc.renderEngine.bindTexture(psiBarShatter);
 			registeredMask = true;
@@ -161,11 +165,11 @@ public final class HUDHandler {
 		int origY = y;
 		int v = 0;
 		int max = totalPsi;
-		
+
 		int texture = 0;
 		boolean shaders = ShaderHandler.useShaders();
 
-		if(shaders) {
+		if (shaders) {
 			OpenGlHelper.setActiveTexture(ARBMultitexture.GL_TEXTURE0_ARB + secondaryTextureUnit);
 			texture = GL11.glGetInteger(GL11.GL_TEXTURE_BINDING_2D);
 		}
@@ -173,7 +177,7 @@ public final class HUDHandler {
 		GlStateManager.enableBlend();
 		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
-		for(Deduction d : data.deductions) {
+		for (Deduction d : data.deductions) {
 			float a = d.getPercentile(pticks);
 			GlStateManager.color(r, g, b, a);
 			height = (int) Math.ceil(origHeight * (double) d.deduct / max);
@@ -186,23 +190,26 @@ public final class HUDHandler {
 		}
 
 		float textY = origY;
-		if(max > 0) {
+		if (max > 0) {
 			height = (int) ((double) origHeight * (double) data.availablePsi / max);
 			v = origHeight - height;
 			y = origY + v;
 
-			if(data.availablePsi != data.lastAvailablePsi) {
-				float textHeight = (float) (origHeight * (data.availablePsi * pticks + data.lastAvailablePsi * (1.0 - pticks)) / max);
+			if (data.availablePsi != data.lastAvailablePsi) {
+				float textHeight = (float) (origHeight
+						* (data.availablePsi * pticks + data.lastAvailablePsi * (1.0 - pticks)) / max);
 				textY = origY + (origHeight - textHeight);
-			} else textY = y;
-		} else height = 0;
+			} else
+				textY = y;
+		} else
+			height = 0;
 
 		GlStateManager.color(r, g, b);
 		ShaderHandler.useShader(ShaderHandler.psiBar, generateCallback(1F, false));
 		Gui.drawModalRectWithCustomSizedTexture(x, y, 32, v, width, height, 64, 256);
 		ShaderHandler.releaseShader();
 
-		if(shaders) {
+		if (shaders) {
 			OpenGlHelper.setActiveTexture(ARBMultitexture.GL_TEXTURE0_ARB + secondaryTextureUnit);
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture);
 			OpenGlHelper.setActiveTexture(ARBMultitexture.GL_TEXTURE0_ARB);
@@ -222,7 +229,7 @@ public final class HUDHandler {
 		int offStr1 = 7 + mc.fontRendererObj.getStringWidth(s1);
 		int offStr2 = 7 + mc.fontRendererObj.getStringWidth(s2);
 
-		if(!right) {
+		if (!right) {
 			offBar = 6;
 			offStr1 = -23;
 			offStr2 = -23;
@@ -247,21 +254,23 @@ public final class HUDHandler {
 		Minecraft mc = Minecraft.getMinecraft();
 		ItemStack stack = mc.player.getHeldItem(EnumHand.MAIN_HAND);
 		String name = ISocketable.getSocketedItemName(stack, "");
-		if(stack == null || name == null || name.trim().isEmpty())
+		if (stack.isEmpty() || name == null || name.trim().isEmpty())
 			return;
 
-		int ticks = ReflectionHelper.getPrivateValue(GuiIngame.class, mc.ingameGUI, LibObfuscation.REMAINING_HIGHLIGHT_TICKS);
+		int ticks = ReflectionHelper.getPrivateValue(GuiIngame.class, mc.ingameGUI,
+				LibObfuscation.REMAINING_HIGHLIGHT_TICKS);
 		ticks -= 10;
 
-		if(ticks > 0) {
-			ItemStack socketable = ((ISocketable) stack.getItem()).getBulletInSocket(stack, ((ISocketable) stack.getItem()).getSelectedSlot(stack));
+		if (ticks > 0) {
+			ItemStack socketable = ((ISocketable) stack.getItem()).getBulletInSocket(stack,
+					((ISocketable) stack.getItem()).getSelectedSlot(stack));
 
 			int alpha = Math.min(255, (int) ((ticks - pticks) * 256.0F / 10.0F));
 			int color = ICADColorizer.DEFAULT_SPELL_COLOR + (alpha << 24);
 
 			int x = res.getScaledWidth() / 2 - mc.fontRendererObj.getStringWidth(name) / 2;
 			int y = res.getScaledHeight() - 71;
-			if(mc.player.capabilities.isCreativeMode)
+			if (mc.player.capabilities.isCreativeMode)
 				y += 14;
 
 			GlStateManager.enableBlend();
@@ -288,10 +297,10 @@ public final class HUDHandler {
 	@SideOnly(Side.CLIENT)
 	private void renderLevelUpIndicator(ScaledResolution res, float pticks) {
 		Minecraft mc = Minecraft.getMinecraft();
-		if(mc.currentScreen instanceof GuiLeveling)
+		if (mc.currentScreen instanceof GuiLeveling)
 			showLevelUp = false;
 
-		if(!showLevelUp)
+		if (!showLevelUp)
 			return;
 
 		GlStateManager.enableBlend();
@@ -322,8 +331,8 @@ public final class HUDHandler {
 		x = res.getScaledWidth() / 4;
 		y += 10;
 
-		if(levelDisplayTime > fadeTime) {
-			if(levelDisplayTime - fadeTime == 1) 
+		if (levelDisplayTime > fadeTime) {
+			if (levelDisplayTime - fadeTime == 1)
 				mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(PsiSoundHandler.levelUp, 0.5F));
 
 			float a1 = Math.min(1F, (float) (levelDisplayTime - fadeTime) / fadeTime) * a;
@@ -332,7 +341,7 @@ public final class HUDHandler {
 		}
 		GlStateManager.popMatrix();
 
-		if(levelDisplayTime > fadeTime * 2) {
+		if (levelDisplayTime > fadeTime * 2) {
 			String s = I18n.translateToLocal("psimisc.levelUpInfo1");
 			swidth = mc.fontRendererObj.getStringWidth(s);
 			len = s.length();
@@ -344,9 +353,10 @@ public final class HUDHandler {
 			mc.fontRendererObj.drawStringWithShadow(s, x, y, 0x00FFFFFF + alphaOverlay);
 		}
 
-		if(levelDisplayTime > fadeTime * 3) {
+		if (levelDisplayTime > fadeTime * 3) {
 			String s = I18n.translateToLocal("psimisc.levelUpInfo2");
-			s = String.format(s, TextFormatting.GREEN + I18n.translateToLocal(KeybindHandler.keybind.getDisplayName()) + TextFormatting.RESET);
+			s = String.format(s, TextFormatting.GREEN + I18n.translateToLocal(KeybindHandler.keybind.getDisplayName())
+					+ TextFormatting.RESET);
 			swidth = mc.fontRendererObj.getStringWidth(s);
 			len = s.length();
 			effLen = Math.min(len, len * (levelDisplayTime - fadeTime * 3) / fadeTime);
@@ -358,13 +368,13 @@ public final class HUDHandler {
 		}
 
 		GlStateManager.enableAlpha();
-		if(levelValue > 1 && levelDisplayTime >= time + fadeoutTime)
+		if (levelValue > 1 && levelDisplayTime >= time + fadeoutTime)
 			showLevelUp = false;
 	}
 
 	@SideOnly(Side.CLIENT)
 	private void renderRemainingItems(ScaledResolution resolution, float partTicks) {
-		if(remainingTime > 0 && remainingDisplayStack != null) {
+		if (remainingTime > 0 && !remainingDisplayStack.isEmpty()) {
 			int pos = maxRemainingTicks - remainingTime;
 			Minecraft mc = Minecraft.getMinecraft();
 			int x = resolution.getScaledWidth() / 2 + 10 + Math.max(0, pos - remainingLeaveTicks);
@@ -384,22 +394,25 @@ public final class HUDHandler {
 			GlStateManager.translate(xp, y, 0F);
 			GlStateManager.scale(alpha, 1F, 1F);
 			mc.getRenderItem().renderItemAndEffectIntoGUI(remainingDisplayStack, 0, 0);
-			GlStateManager.scale(1F / alpha,1F, 1F);
+			GlStateManager.scale(1F / alpha, 1F, 1F);
 			GlStateManager.translate(-xp, -y, 0F);
 			RenderHelper.disableStandardItemLighting();
 			GlStateManager.color(1F, 1F, 1F, 1F);
 			GlStateManager.enableBlend();
 
 			String text = TextFormatting.GREEN + remainingDisplayStack.getDisplayName();
-			if(remainingCount >= 0) {
+			if (remainingCount >= 0) {
 				int max = remainingDisplayStack.getMaxStackSize();
 				int stacks = remainingCount / max;
 				int rem = remainingCount % max;
 
-				if(stacks == 0)
+				if (stacks == 0)
 					text = "" + remainingCount;
-				else text = remainingCount + " (" + TextFormatting.AQUA + stacks + TextFormatting.RESET + "*" + TextFormatting.GRAY + max + TextFormatting.RESET + "+" + TextFormatting.YELLOW + rem + TextFormatting.RESET + ")";
-			} else if(remainingCount == -1)
+				else
+					text = remainingCount + " (" + TextFormatting.AQUA + stacks + TextFormatting.RESET + "*"
+							+ TextFormatting.GRAY + max + TextFormatting.RESET + "+" + TextFormatting.YELLOW + rem
+							+ TextFormatting.RESET + ")";
+			} else if (remainingCount == -1)
 				text = "\u221E";
 
 			int color = 0x00FFFFFF | (int) (alpha * 0xFF) << 24;
@@ -413,22 +426,26 @@ public final class HUDHandler {
 	@SideOnly(Side.CLIENT)
 	private void renderHUDItem(ScaledResolution resolution, float partTicks) {
 		Minecraft mc = Minecraft.getMinecraft();
-		ItemStack stack = mc.player.getActiveItemStack();
-		if(stack != null && stack.getItem() != null && stack.getItem() instanceof IHUDItem)
+		ItemStack stack = mc.player.getHeldItemMainhand();
+		if (!stack.isEmpty() && stack.getItem() instanceof IHUDItem)
+			((IHUDItem) stack.getItem()).drawHUD(resolution, partTicks, stack);
+
+		stack = mc.player.getHeldItemOffhand();
+		if (!stack.isEmpty() && stack.getItem() instanceof IHUDItem)
 			((IHUDItem) stack.getItem()).drawHUD(resolution, partTicks, stack);
 	}
-	
+
 	public static void setRemaining(ItemStack stack, int count) {
 		HUDHandler.remainingDisplayStack = stack;
 		HUDHandler.remainingCount = count;
-		remainingTime = stack == null ? 0 : maxRemainingTicks;
+		remainingTime = stack.isEmpty() ? 0 : maxRemainingTicks;
 	}
 
 	public static void setRemaining(EntityPlayer player, ItemStack displayStack, Pattern pattern) {
 		int count = 0;
-		for(int i = 0; i < player.inventory.getSizeInventory(); i++) {
+		for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
 			ItemStack stack = player.inventory.getStackInSlot(i);
-			if(stack != null && (pattern == null ? ItemStack.areItemsEqual(displayStack, stack) : pattern.matcher(stack.getUnlocalizedName()).find()))
+			if (!stack.isEmpty() && (pattern == null ? ItemStack.areItemsEqual(displayStack, stack) : pattern.matcher(stack.getUnlocalizedName()).find()))
 				count += stack.getCount();
 		}
 
@@ -452,7 +469,8 @@ public final class HUDHandler {
 			GlStateManager.enableTexture2D();
 			GL11.glGetInteger(GL11.GL_TEXTURE_BINDING_2D);
 
-			GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture(shatter ? psiBarShatter : psiBarMask).getGlTextureId());
+			GL11.glBindTexture(GL11.GL_TEXTURE_2D,
+					mc.renderEngine.getTexture(shatter ? psiBarShatter : psiBarMask).getGlTextureId());
 			ARBShaderObjects.glUniform1iARB(maskUniform, secondaryTextureUnit);
 
 			ARBShaderObjects.glUniform1fARB(percentileUniform, percentile);

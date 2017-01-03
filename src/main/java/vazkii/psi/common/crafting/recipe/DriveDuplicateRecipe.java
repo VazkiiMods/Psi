@@ -28,7 +28,7 @@ public class DriveDuplicateRecipe implements IRecipe {
 
 		for(int i = 0; i < var1.getSizeInventory(); i++) {
 			ItemStack stack = var1.getStackInSlot(i);
-			if(stack != null) {
+			if(!stack.isEmpty()) {
 				if( stack.getItem() instanceof ItemSpellDrive) {
 					if(ItemSpellDrive.getSpell(stack) == null) {
 						if(foundTarget)
@@ -49,11 +49,11 @@ public class DriveDuplicateRecipe implements IRecipe {
 	@Override
 	public ItemStack getCraftingResult(InventoryCrafting var1) {
 		Spell source = null;
-		ItemStack target = null;
+		ItemStack target = ItemStack.EMPTY;
 
 		for(int i = 0; i < var1.getSizeInventory(); i++) {
 			ItemStack stack = var1.getStackInSlot(i);
-			if(stack != null) {
+			if(!stack.isEmpty()) {
 				Spell spell = ItemSpellDrive.getSpell(stack);
 				if(spell != null)
 					source = spell;

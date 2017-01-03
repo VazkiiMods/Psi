@@ -28,8 +28,8 @@ public class SensorAttachRecipe implements IRecipe {
 
 		for(int i = 0; i < var1.getSizeInventory(); i++) {
 			ItemStack stack = var1.getStackInSlot(i);
-			if(stack != null) {
-				if(stack.getItem() instanceof ISensorHoldable && ((ISensorHoldable) stack.getItem()).getAttachedSensor(stack) == null) {
+			if(!stack.isEmpty()) {
+				if(stack.getItem() instanceof ISensorHoldable && ((ISensorHoldable) stack.getItem()).getAttachedSensor(stack).isEmpty()) {
 					if(foundTarget)
 						return false;
 					foundTarget = true;
@@ -46,12 +46,12 @@ public class SensorAttachRecipe implements IRecipe {
 
 	@Override
 	public ItemStack getCraftingResult(InventoryCrafting var1) {
-		ItemStack sensor = null;
-		ItemStack target = null;
+		ItemStack sensor = ItemStack.EMPTY;
+		ItemStack target = ItemStack.EMPTY;
 
 		for(int i = 0; i < var1.getSizeInventory(); i++) {
 			ItemStack stack = var1.getStackInSlot(i);
-			if(stack != null) {
+			if(!stack.isEmpty()) {
 				if(stack.getItem() instanceof IExosuitSensor)
 					sensor = stack;
 				else target = stack;

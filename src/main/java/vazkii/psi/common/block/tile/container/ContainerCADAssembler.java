@@ -80,7 +80,7 @@ public class ContainerCADAssembler extends Container {
 
 				@Override
 				public boolean isItemValid(ItemStack stack) {
-					return stack != null && stack.getItem().isValidArmor(stack, slot, player);
+					return !stack.isEmpty() && stack.getItem().isValidArmor(stack, slot, player);
 				}
 
 				@SideOnly(Side.CLIENT)
@@ -109,7 +109,7 @@ public class ContainerCADAssembler extends Container {
 
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer playerIn, int index) {
-		ItemStack itemstack = null;
+		ItemStack itemstack = ItemStack.EMPTY;
 		Slot slot = inventorySlots.get(index);
 
 		if(slot != null && slot.getHasStack()) {
@@ -126,19 +126,19 @@ public class ContainerCADAssembler extends Container {
 						ICADComponent component = (ICADComponent) itemstack1.getItem();
 						Slot compSlot = componentToSlotMap.get(component.getComponentType(itemstack1));
 						if(!mergeItemStack(itemstack1, compSlot.slotNumber, compSlot.slotNumber + 1, false))
-							return null;
+							return ItemStack.EMPTY;
 					} else if(itemstack1.getItem() instanceof ISocketable) { // CAD Input slot
 						if(!mergeItemStack(itemstack1, 6, 7, false))
-							return null;
+							return ItemStack.EMPTY;
 					} else if(itemstack1.getItem() == ModItems.spellBullet) {
 						if(!mergeItemStack(itemstack1, 7, 19, false))
-							return null;
+							return ItemStack.EMPTY;
 					} else if(index >= invStart && index < hotbarStart)  { // Inv -> Hotbar
 						if (!mergeItemStack(itemstack1, hotbarStart, invEnd, true))
-							return null;
+							return ItemStack.EMPTY;
 					} else if(index >= hotbarStart && index < invEnd) { // Hotbar -> inv
 						if(!mergeItemStack(itemstack1, invStart, hotbarStart, false))
-							return null;
+							return ItemStack.EMPTY;
 					}
 					break merge;
 				} 
@@ -147,21 +147,21 @@ public class ContainerCADAssembler extends Container {
 					ItemArmor armor = (ItemArmor) itemstack1.getItem();
 					int armorSlot = 3 - armor.armorType.getIndex();
 					if(!mergeItemStack(itemstack1, invEnd + armorSlot, invEnd + armorSlot + 1, true) && !mergeItemStack(itemstack1, invStart, invEnd, true)) // Assembler -> Armor+Inv+Hotbar
-						return null;
+						return ItemStack.EMPTY;
 					
 					break merge;
 				}
 
 				if(!mergeItemStack(itemstack1, invStart, invEnd, true)) // Assembler -> Inv+hotbar
-					return null;
+					return ItemStack.EMPTY;
 			}
 
 			if(itemstack1.getCount() == 0)
-				slot.putStack((ItemStack)null);
+				slot.putStack(ItemStack.EMPTY);
 			else slot.onSlotChanged();
 
 			if(itemstack1.getCount() == itemstack.getCount())
-				return null;
+				return ItemStack.EMPTY;
 
 			slot.onTake(playerIn, itemstack1);
 		}

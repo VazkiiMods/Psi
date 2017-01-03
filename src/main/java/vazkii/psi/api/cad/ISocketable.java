@@ -21,12 +21,12 @@ public interface ISocketable {
 	public static final int MAX_SLOTS = 12;
 
 	public static String getSocketedItemName(ItemStack stack, String fallback) {
-		if(stack == null || !(stack.getItem() instanceof ISocketable))
+		if(stack.isEmpty() || !(stack.getItem() instanceof ISocketable))
 			return fallback;
 
 		ISocketable socketable = (ISocketable) stack.getItem();
 		ItemStack item = socketable.getBulletInSocket(stack, socketable.getSelectedSlot(stack));
-		if(item == null)
+		if(item.isEmpty())
 			return fallback;
 
 		return item.getDisplayName();

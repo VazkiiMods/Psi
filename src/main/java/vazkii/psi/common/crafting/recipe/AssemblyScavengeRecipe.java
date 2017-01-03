@@ -27,7 +27,7 @@ public class AssemblyScavengeRecipe implements IRecipe {
 
 		for(int i = 0; i < var1.getSizeInventory(); i++) {
 			ItemStack stack = var1.getStackInSlot(i);
-			if(stack != null) {
+			if(!stack.isEmpty()) {
 				if(stack.getItem() instanceof ICAD) {
 					if(foundTarget)
 						return false;
@@ -38,7 +38,7 @@ public class AssemblyScavengeRecipe implements IRecipe {
 
 						ItemStack compStack = ((ICAD) stack.getItem()).getComponentInSlot(stack, comp);
 
-						if(compStack != null)
+						if(!compStack.isEmpty())
 							return false;
 					}
 
@@ -52,11 +52,11 @@ public class AssemblyScavengeRecipe implements IRecipe {
 
 	@Override
 	public ItemStack getCraftingResult(InventoryCrafting var1) {
-		ItemStack target = null;
+		ItemStack target = ItemStack.EMPTY;
 
 		for(int i = 0; i < var1.getSizeInventory(); i++) {
 			ItemStack stack = var1.getStackInSlot(i);
-			if(stack != null)
+			if(!stack.isEmpty())
 				target = stack;
 		}
 

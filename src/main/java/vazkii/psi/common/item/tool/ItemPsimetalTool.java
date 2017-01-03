@@ -50,7 +50,7 @@ public class ItemPsimetalTool extends ItemModTool implements IPsimetalTool {
 		PlayerData data = PlayerDataHandler.get(player);
 		ItemStack playerCad = PsiAPI.getPlayerCAD(player);
 
-		if(playerCad != null) {
+		if(!playerCad.isEmpty()) {
 			ItemStack bullet = getBulletInSocket(itemstack, getSelectedSlot(itemstack));
 			ItemCAD.cast(player.getEntityWorld(), player, data, bullet, playerCad, 5, 10, 0.05F, (SpellContext context) -> {
 				context.tool = itemstack;

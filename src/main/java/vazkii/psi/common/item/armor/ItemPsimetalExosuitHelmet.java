@@ -29,7 +29,7 @@ public class ItemPsimetalExosuitHelmet extends ItemPsimetalArmor implements ISen
 	@Override
 	public String getEvent(ItemStack stack) {
 		ItemStack sensor = getAttachedSensor(stack);
-		if(sensor != null && sensor.getItem() instanceof IExosuitSensor)
+		if(!sensor.isEmpty() && sensor.getItem() instanceof IExosuitSensor)
 			return ((IExosuitSensor) sensor.getItem()).getEventType(sensor);
 
 		return super.getEvent(stack);
@@ -43,7 +43,7 @@ public class ItemPsimetalExosuitHelmet extends ItemPsimetalArmor implements ISen
 	@Override
 	public int getColor(ItemStack stack) {
 		ItemStack sensor = getAttachedSensor(stack);
-		if(sensor != null && sensor.getItem() instanceof IExosuitSensor)
+		if(!sensor.isEmpty() && sensor.getItem() instanceof IExosuitSensor)
 			return ((IExosuitSensor) sensor.getItem()).getColor(sensor);
 
 		return super.getColor(stack);
@@ -59,14 +59,14 @@ public class ItemPsimetalExosuitHelmet extends ItemPsimetalArmor implements ISen
 	@Override
 	public void attachSensor(ItemStack stack, ItemStack sensor) {
 		NBTTagCompound cmp = new NBTTagCompound();
-		if(sensor != null)
+		if(!sensor.isEmpty())
 			sensor.writeToNBT(cmp);
 		ItemNBTHelper.setCompound(stack, TAG_SENSOR, cmp);
 	}
 
 	@Override
 	public boolean hasContainerItem(ItemStack stack) {
-		return getContainerItem(stack) != null;
+		return !getContainerItem(stack).isEmpty();
 	}
 
 	@Override

@@ -40,7 +40,7 @@ public interface IPsimetalTool extends ISocketable, ISpellSettable, IPsiItem {
 		NBTTagCompound cmp = ItemNBTHelper.getCompound(stack, name, true);
 
 		if(cmp == null)
-			return null;
+			return ItemStack.EMPTY;
 
 		return new ItemStack(cmp);
 	}
@@ -50,7 +50,7 @@ public interface IPsimetalTool extends ISocketable, ISpellSettable, IPsiItem {
 		String name = TAG_BULLET_PREFIX + slot;
 		NBTTagCompound cmp = new NBTTagCompound();
 
-		if(bullet != null)
+		if(!bullet.isEmpty())
 			bullet.writeToNBT(cmp);
 
 		ItemNBTHelper.setCompound(stack, name, cmp);
@@ -70,7 +70,7 @@ public interface IPsimetalTool extends ISocketable, ISpellSettable, IPsiItem {
 	public default void setSpell(EntityPlayer player, ItemStack stack, Spell spell) {
 		int slot = getSelectedSlot(stack);
 		ItemStack bullet = getBulletInSocket(stack, slot);
-		if(bullet != null && bullet.getItem() instanceof ISpellSettable) {
+		if(!bullet.isEmpty() && bullet.getItem() instanceof ISpellSettable) {
 			((ISpellSettable) bullet.getItem()).setSpell(player, bullet, spell);
 			setBulletInSocket(stack, slot, bullet);
 		}

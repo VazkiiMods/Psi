@@ -29,7 +29,7 @@ public class BulletToDriveRecipe implements IRecipe {
 
 		for(int i = 0; i < var1.getSizeInventory(); i++) {
 			ItemStack stack = var1.getStackInSlot(i);
-			if(stack != null) {
+			if(!stack.isEmpty()) {
 				if(stack.getItem() instanceof ISpellContainer && ((ISpellContainer) stack.getItem()).getSpell(stack) != null) {
 					if(foundTarget)
 						return false;
@@ -48,11 +48,11 @@ public class BulletToDriveRecipe implements IRecipe {
 	@Override
 	public ItemStack getCraftingResult(InventoryCrafting var1) {
 		Spell source = null;
-		ItemStack target = null;
+		ItemStack target = ItemStack.EMPTY;
 
 		for(int i = 0; i < var1.getSizeInventory(); i++) {
 			ItemStack stack = var1.getStackInSlot(i);
-			if(stack != null) {
+			if(!stack.isEmpty()) {
 				if(stack.getItem() instanceof ISpellContainer)
 					source = ((ISpellContainer) stack.getItem()).getSpell(stack);
 				else target = stack;

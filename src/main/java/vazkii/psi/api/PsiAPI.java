@@ -117,14 +117,14 @@ public final class PsiAPI {
 	 */
 	public static ItemStack getPlayerCAD(EntityPlayer player) {
 		if(player == null)
-			return null;
+			return ItemStack.EMPTY;
 
-		ItemStack cad = null;
+		ItemStack cad = ItemStack.EMPTY;
 		for(int i = 0; i < player.inventory.getSizeInventory(); i++) {
 			ItemStack stackAt = player.inventory.getStackInSlot(i);
-			if(stackAt != null && stackAt.getItem() instanceof ICAD) {
-				if(cad != null)
-					return null; // Player can only have one CAD
+			if(!stackAt.isEmpty() && stackAt.getItem() instanceof ICAD) {
+				if(!cad.isEmpty())
+					return ItemStack.EMPTY; // Player can only have one CAD
 
 				cad = stackAt;
 			}
@@ -140,7 +140,7 @@ public final class PsiAPI {
 		int slot = -1;
 		for(int i = 0; i < player.inventory.getSizeInventory(); i++) {
 			ItemStack stackAt = player.inventory.getStackInSlot(i);
-			if(stackAt != null && stackAt.getItem() instanceof ICAD) {
+			if(!stackAt.isEmpty() && stackAt.getItem() instanceof ICAD) {
 				if(slot != -1)
 					return -1; // Player can only have one CAD
 

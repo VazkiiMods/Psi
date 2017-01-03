@@ -49,7 +49,7 @@ public class GuiCADAssembler extends GuiContainer {
 		fontRendererObj.drawString(name, xSize / 2 - fontRendererObj.getStringWidth(name) / 2, 10, color);
 
 		ItemStack cad = assembler.getStackInSlot(0);
-		if(cad != null) {
+		if(!cad.isEmpty()) {
 			color = 0xFFFFFF;
 
 			int i = 0;

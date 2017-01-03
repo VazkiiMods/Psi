@@ -30,7 +30,7 @@ public class ColorizerChangeRecipe implements IRecipe {
 
 		for(int i = 0; i < var1.getSizeInventory(); i++) {
 			ItemStack stack = var1.getStackInSlot(i);
-			if(stack != null) {
+			if(!stack.isEmpty()) {
 				if(stack.getItem() instanceof ICAD) {
 					if(foundCAD)
 						return false;
@@ -48,19 +48,20 @@ public class ColorizerChangeRecipe implements IRecipe {
 
 	@Override
 	public ItemStack getCraftingResult(InventoryCrafting var1) {
-		ItemStack colorizer = null;
-		ItemStack cad = null;
+		ItemStack colorizer = ItemStack.EMPTY;
+		ItemStack cad = ItemStack.EMPTY;
 
 		for(int i = 0; i < var1.getSizeInventory(); i++) {
 			ItemStack stack = var1.getStackInSlot(i);
-			if(stack != null) {
+			if(!stack.isEmpty()) {
 				if(stack.getItem() instanceof ICADColorizer)
 					colorizer = stack;
 				else cad = stack;
 			}
 		}
 
-		if (cad == null || colorizer == null) return null;
+		if(cad.isEmpty() || colorizer.isEmpty()) 
+			return ItemStack.EMPTY;
 
 		ItemStack copy = cad.copy();
 		ItemCAD.setComponent(copy, colorizer);
@@ -82,18 +83,18 @@ public class ColorizerChangeRecipe implements IRecipe {
 	public NonNullList<ItemStack> getRemainingItems(InventoryCrafting inv) {
 		NonNullList<ItemStack> ret = NonNullList.withSize(inv.getSizeInventory(), ItemStack.EMPTY);
 		int dyeIndex = -1;
-		ItemStack cad = null;
+		ItemStack cad = ItemStack.EMPTY;
 		for (int i = 0; i < ret.size(); i++) {
 			ItemStack stack = inv.getStackInSlot(i);
-			if (stack != null && stack.getItem() instanceof ICAD) {
+			if (!stack.isEmpty() && stack.getItem() instanceof ICAD) {
 				cad = stack;
 			} else {
-				if (stack != null && stack.getItem() instanceof ICADColorizer)
+				if (!stack.isEmpty() && stack.getItem() instanceof ICADColorizer)
 					dyeIndex = i;
 				ret.set(i, ForgeHooks.getContainerItem(stack));
 			}
 		}
-		if (cad != null && dyeIndex != -1) {
+		if (!cad.isEmpty() && dyeIndex != -1) {
 			ICAD icad = (ICAD) cad.getItem();
 			ret.set(dyeIndex, icad.getComponentInSlot(cad, EnumCADComponent.DYE));
 		}

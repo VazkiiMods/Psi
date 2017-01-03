@@ -162,7 +162,7 @@ public class PlayerDataHandler {
 				EntityPlayer player = (EntityPlayer) event.getEntityLiving();
 				
 				ItemStack cadStack = PsiAPI.getPlayerCAD(player);
-				if(cadStack != null && cadStack.getItem() instanceof ICAD)
+				if(!cadStack.isEmpty() && cadStack.getItem() instanceof ICAD)
 					((ICAD) cadStack.getItem()).incrementTime(cadStack);
 				
 				PsiArmorEvent.post(new PsiArmorEvent(player, PsiArmorEvent.TICK));
@@ -206,7 +206,7 @@ public class PlayerDataHandler {
 		public void onPsiArmorEvent(PsiArmorEvent event) {
 			for(int i = 0; i < 4; i++) {
 				ItemStack armor = event.getEntityPlayer().inventory.armorInventory.get(i);
-				if(armor != null && armor.getItem() instanceof IPsiEventArmor) {
+				if(!armor.isEmpty() && armor.getItem() instanceof IPsiEventArmor) {
 					IPsiEventArmor handler = (IPsiEventArmor) armor.getItem();
 					handler.onEvent(armor, event);
 				}
@@ -321,7 +321,7 @@ public class PlayerDataHandler {
 			ItemStack cadStack = getCAD();
 			if(regenCooldown == 0) {
 				boolean doRegen = true;
-				if(cadStack != null) {
+				if(!cadStack.isEmpty()) {
 					ICAD cad = (ICAD) cadStack.getItem();
 					int maxPsi = cad.getStatValue(cadStack, EnumCADStat.OVERFLOW);
 					int currPsi = cad.getStoredPsi(cadStack);
@@ -344,7 +344,7 @@ public class PlayerDataHandler {
 			ICAD icad = null;
 			Color color = new Color(ICADColorizer.DEFAULT_SPELL_COLOR);
 
-			if(cadStack != null) {
+			if(!cadStack.isEmpty()) {
 				icad = (ICAD) cadStack.getItem();
 				color = Psi.proxy.getCADColor(cadStack);
 			}
@@ -354,7 +354,7 @@ public class PlayerDataHandler {
 
 			loopcast: {
 				if(loopcasting) {
-					if(player == null || cadStack == null || (player.getHeldItemMainhand() != cadStack && player.getHeldItemOffhand() != cadStack)) {
+					if(player == null || cadStack.isEmpty() || (player.getHeldItemMainhand() != cadStack && player.getHeldItemOffhand() != cadStack)) {
 						stopLoopcast();
 						break loopcast;
 					}
@@ -369,7 +369,7 @@ public class PlayerDataHandler {
 
 					if(loopcastTime > 0 && loopcastTime % 5 == 0) {
 						ItemStack bullet = icad.getBulletInSocket(cadStack, icad.getSelectedSlot(cadStack));
-						if(bullet == null) {
+						if(!bullet.isEmpty()) {
 							stopLoopcast();
 							break loopcast;
 						}
@@ -582,7 +582,7 @@ public class PlayerDataHandler {
 				availablePsi = 0;
 
 				ItemStack cadStack = getCAD();
-				if(cadStack != null) {
+				if(!cadStack.isEmpty()) {
 					ICAD cad = (ICAD) cadStack.getItem();
 					overflow = cad.consumePsi(cadStack, overflow);
 				}
@@ -770,7 +770,7 @@ public class PlayerDataHandler {
 
 			int color = ICADColorizer.DEFAULT_SPELL_COLOR;
 			ItemStack cad = PsiAPI.getPlayerCAD(playerWR.get());
-			if(cad != null && cad.getItem() instanceof ICAD) {
+			if(!cad.isEmpty() && cad.getItem() instanceof ICAD) {
 				ICAD icad = (ICAD) cad.getItem();
 				color = icad.getSpellColor(cad);
 			}

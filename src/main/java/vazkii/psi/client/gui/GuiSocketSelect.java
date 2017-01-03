@@ -29,8 +29,8 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import vazkii.arl.network.NetworkMessage;
 import vazkii.arl.network.NetworkHandler;
+import vazkii.arl.network.NetworkMessage;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.cad.ISocketable;
@@ -73,6 +73,10 @@ public class GuiSocketSelect extends GuiScreen {
 
 	public GuiSocketSelect(ItemStack stack) {
 		mc = Minecraft.getMinecraft();
+		
+		controllerStack = ItemStack.EMPTY;
+		socketableStack = ItemStack.EMPTY;
+		
 		if(stack.getItem() instanceof ISocketable)
 			setSocketable(stack);
 		else if(stack.getItem() instanceof ISocketableController) {
@@ -83,13 +87,13 @@ public class GuiSocketSelect extends GuiScreen {
 			if(controlSlot >= controlledStacks.length)
 				controlSlot = 0;
 
-			setSocketable(controlledStacks.length == 0 ? null : controlledStacks[controlSlot]);
+			setSocketable(controlledStacks.length == 0 ? ItemStack.EMPTY : controlledStacks[controlSlot]);
 		}
 	}
 
 	public void setSocketable(ItemStack stack) {
 		slots = new ArrayList();
-		if(stack == null)
+		if(stack.isEmpty())
 			return;
 
 		socketableStack = stack;
@@ -130,7 +134,7 @@ public class GuiSocketSelect extends GuiScreen {
 		for(int seg = 0; seg < segments; seg++) {
 			boolean mouseInSector = mouseIn && angle > totalDeg && angle < totalDeg + degPer;
 			float radius = Math.max(0F, Math.min((timeIn + partialTicks - seg * 6F / segments) * 40F, maxRadius));
-
+			
 			GL11.glBegin(GL11.GL_TRIANGLE_FAN);
 
 			float gs = 0.25F;
@@ -143,7 +147,7 @@ public class GuiSocketSelect extends GuiScreen {
 			if(mouseInSector) {
 				slotSelected = seg;
 
-				if(cadStack != null) {
+				if(!cadStack.isEmpty()) {
 					ICAD cad = (ICAD) cadStack.getItem();
 					Color color = new Color(cad.getSpellColor(cadStack));
 					r = color.getRed() / 255F;
@@ -182,7 +186,7 @@ public class GuiSocketSelect extends GuiScreen {
 			char c = (char) pos[3];
 
 			ItemStack stack = socketable.getBulletInSocket(socketableStack, slot);
-			if(stack != null) {
+			if(!stack.isEmpty()) {
 				int xsp = xp - 4;
 				int ysp = yp;
 				String name = "\u00a7" + c + stack.getDisplayName();
@@ -234,7 +238,7 @@ public class GuiSocketSelect extends GuiScreen {
 
 		}
 
-		if(socketableStack != null) {
+		if(!socketableStack.isEmpty()) {
 			GlStateManager.scale(s, s, s);
 			GlStateManager.translate(x / s - 8, y / s - 8, 0);
 			mc.getRenderItem().renderItemAndEffectIntoGUI(socketableStack, 0, 0);
@@ -250,7 +254,7 @@ public class GuiSocketSelect extends GuiScreen {
 	protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
 		super.mouseClicked(mouseX, mouseY, mouseButton);
 
-		if(controllerStack != null && controlledStacks.length > 0) {
+		if(!controllerStack.isEmpty() && controlledStacks.length > 0) {
 			if(mouseButton == 0) {
 				controlSlot++;
 				if(controlSlot >= controlledStacks.length)
@@ -276,7 +280,7 @@ public class GuiSocketSelect extends GuiScreen {
 				PlayerDataHandler.get(mc.player).stopLoopcast();
 
 				NetworkMessage message = null;
-				if(controllerStack != null)
+				if(!controllerStack.isEmpty())
 					message = new MessageChangeControllerSlot(controlSlot, slot);
 				else message = new MessageChangeSocketableSlot(slot);
 				NetworkHandler.INSTANCE.sendToServer(message);

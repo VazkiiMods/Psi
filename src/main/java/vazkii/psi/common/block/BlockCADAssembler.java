@@ -64,7 +64,7 @@ public class BlockCADAssembler extends BlockFacing implements IPsiBlock {
 			for(int j1 = 1; j1 < 7; ++j1) {
 				ItemStack itemstack = inv.getStackInSlot(j1);
 
-				if(itemstack != null) {
+				if(!itemstack.isEmpty()) {
 					float f = random.nextFloat() * 0.8F + 0.1F;
 					float f1 = random.nextFloat() * 0.8F + 0.1F;
 					EntityItem entityitem;

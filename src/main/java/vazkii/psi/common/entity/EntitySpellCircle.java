@@ -55,12 +55,9 @@ public class EntitySpellCircle extends Entity {
 	private static final DataParameter<Integer> TIME_ALIVE = EntityDataManager.createKey(EntitySpellCircle.class, DataSerializers.VARINT);
 	private static final DataParameter<Integer> TIMES_CAST = EntityDataManager.createKey(EntitySpellCircle.class, DataSerializers.VARINT);
 
-	private static final DataParameter LOOK_X = EntityDataManager.createKey(EntitySpellCircle.class,
-			DataSerializers.FLOAT);
-	private static final DataParameter LOOK_Y = EntityDataManager.createKey(EntitySpellCircle.class,
-			DataSerializers.FLOAT);
-	private static final DataParameter LOOK_Z = EntityDataManager.createKey(EntitySpellCircle.class,
-			DataSerializers.FLOAT);
+	private static final DataParameter LOOK_X = EntityDataManager.createKey(EntitySpellCircle.class, DataSerializers.FLOAT);
+	private static final DataParameter LOOK_Y = EntityDataManager.createKey(EntitySpellCircle.class, DataSerializers.FLOAT);
+	private static final DataParameter LOOK_Z = EntityDataManager.createKey(EntitySpellCircle.class, DataSerializers.FLOAT);
 
 	public EntitySpellCircle(World worldIn) {
 		super(worldIn);
@@ -95,13 +92,13 @@ public class EntitySpellCircle extends Entity {
 	public void writeEntityToNBT(NBTTagCompound tagCompound) {
 		NBTTagCompound colorizerCmp = new NBTTagCompound();
 		ItemStack colorizer =  dataManager.get(COLORIZER_DATA);
-		if (colorizer != null)
+		if (!colorizer.isEmpty())
 			colorizer.writeToNBT(colorizerCmp);
 		tagCompound.setTag(TAG_COLORIZER, colorizerCmp);
 
 		NBTTagCompound bulletCmp = new NBTTagCompound();
 		ItemStack bullet = dataManager.get(BULLET_DATA);
-		if (bullet != null)
+		if (!bullet.isEmpty())
 			bullet.writeToNBT(bulletCmp);
 		tagCompound.setTag(TAG_BULLET, bulletCmp);
 
@@ -164,7 +161,7 @@ public class EntitySpellCircle extends Entity {
 
 		int colorVal = ICADColorizer.DEFAULT_SPELL_COLOR;
 		ItemStack colorizer = dataManager.get(COLORIZER_DATA);
-		if (colorizer != null && colorizer.getItem() instanceof ICADColorizer)
+		if (!colorizer.isEmpty() && colorizer.getItem() instanceof ICADColorizer)
 			colorVal = Psi.proxy.getColorizerColor(colorizer).getRGB();
 
 		Color color = new Color(colorVal);

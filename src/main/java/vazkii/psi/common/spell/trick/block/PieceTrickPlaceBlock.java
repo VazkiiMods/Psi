@@ -84,7 +84,7 @@ public class PieceTrickPlaceBlock extends PieceTrick {
 					world.setBlockState(pos, ModBlocks.conjured.getDefaultState());
 			} else {
 				ItemStack stack = player.inventory.getStackInSlot(slot);
-				if(stack != null && stack.getItem() instanceof ItemBlock) {
+				if(!stack.isEmpty() && stack.getItem() instanceof ItemBlock) {
 					ItemStack rem = removeFromInventory(player, block, stack);
 					ItemBlock iblock = (ItemBlock) stack.getItem();
 					
@@ -112,7 +112,7 @@ public class PieceTrickPlaceBlock extends PieceTrick {
 		InventoryPlayer inv = player.inventory;
 		for(int i = inv.getSizeInventory() - 1; i >= 0; i--) {
 			ItemStack invStack = inv.getStackInSlot(i);
-			if(invStack != null && invStack.isItemEqual(stack)) {
+			if(!invStack.isEmpty() && invStack.isItemEqual(stack)) {
 				ItemStack retStack = invStack.copy();
 				invStack.shrink(1);
 				if(invStack.getCount() == 0)

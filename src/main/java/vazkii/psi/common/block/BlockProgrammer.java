@@ -58,6 +58,7 @@ public class BlockProgrammer extends BlockFacing implements IPsiBlock {
 
 	@Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+		ItemStack heldItem = playerIn.getHeldItem(hand);
 		TileProgrammer programmer = (TileProgrammer) worldIn.getTileEntity(pos);
 
 		if(!playerIn.capabilities.isCreativeMode) {
@@ -69,7 +70,6 @@ public class BlockProgrammer extends BlockFacing implements IPsiBlock {
 			}
 		}
 		
-		ItemStack heldItem = playerIn.getActiveItemStack();
 		EnumActionResult result = setSpell(worldIn, pos, playerIn, heldItem);
 		if(result == EnumActionResult.SUCCESS)
 			return true;
@@ -89,7 +89,7 @@ public class BlockProgrammer extends BlockFacing implements IPsiBlock {
 
 		boolean enabled = programmer.isEnabled();
 		
-		if(enabled && heldItem != null && heldItem.getItem() instanceof ISpellSettable && programmer.spell != null && playerIn.isSneaking() == ((ISpellSettable) heldItem.getItem()).requiresSneakForSpellSet(heldItem)) {
+		if(enabled && !heldItem.isEmpty() && heldItem.getItem() instanceof ISpellSettable && programmer.spell != null && (playerIn.isSneaking() || !((ISpellSettable) heldItem.getItem()).requiresSneakForSpellSet(heldItem))) {
 			if(programmer.canCompile()) {
 				ISpellSettable settable = (ISpellSettable) heldItem.getItem();
 				if(!worldIn.isRemote)

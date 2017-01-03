@@ -29,22 +29,22 @@ public class TileCADAssembler extends TileSimpleInventory implements ITickable {
 	public void inventoryChanged(int i) {
 		if(!ignoreChanges) {
 			if(i != 0) {
-				ItemStack cad = null;
-				if(getStackInSlot(2) != null)
-					cad = ItemCAD.makeCAD(Arrays.copyOfRange(inventorySlots, 1, 6));
+				ItemStack cad = ItemStack.EMPTY;
+				if(!getStackInSlot(2).isEmpty())
+					cad = ItemCAD.makeCAD(inventorySlots.subList(1, 6));
 
 				setInventorySlotContents(0, cad);
 			}
 
 			ItemStack socketableStack = getStackInSlot(6);
-			if(i == 6 && socketableStack != null && socketableStack.getItem() instanceof ISocketable) {
+			if(i == 6 && !socketableStack.isEmpty() && socketableStack.getItem() instanceof ISocketable) {
 				ISocketable socketable = (ISocketable) socketableStack.getItem();
 
 				for(int j = 0; j < 12; j++)
 					if(socketable.isSocketSlotAvailable(socketableStack, j)) {
 						ItemStack bullet = socketable.getBulletInSocket(socketableStack, j);
 						setInventorySlotContents(j + 7, bullet);
-					} else setInventorySlotContents(j + 7, null);
+					} else setInventorySlotContents(j + 7, ItemStack.EMPTY);
 			}
 		}
 	}
@@ -52,7 +52,7 @@ public class TileCADAssembler extends TileSimpleInventory implements ITickable {
 	@Override
 	public void update() {
 		ItemStack socketableStack = getStackInSlot(6);
-		if(socketableStack != null && socketableStack.getItem() instanceof ISocketable) {
+		if(!socketableStack.isEmpty() && socketableStack.getItem() instanceof ISocketable) {
 			ISocketable socketable = (ISocketable) socketableStack.getItem();
 			for(int j = 0; j < 12; j++)
 				if(socketable.isSocketSlotAvailable(socketableStack, j)) {
@@ -60,13 +60,13 @@ public class TileCADAssembler extends TileSimpleInventory implements ITickable {
 					socketable.setBulletInSocket(socketableStack, j, bullet);
 				}
 		} else for(int j = 0; j < 12; j++)
-			setInventorySlotContents(j + 7, null);
+			setInventorySlotContents(j + 7, ItemStack.EMPTY);
 	}
 
 	public void onCraftCAD() {
 		ignoreChanges = true;
 		for(int i = 1; i < 6; i++)
-			setInventorySlotContents(i, null);
+			setInventorySlotContents(i, ItemStack.EMPTY);
 		if(!getWorld().isRemote)
 			getWorld().playSound(null, getPos().getX() + 0.5, getPos().getY() + 0.5, getPos().getZ() + 0.5, PsiSoundHandler.cadCreate, SoundCategory.BLOCKS, 0.5F, 1F);
 		ignoreChanges = false;
@@ -74,7 +74,7 @@ public class TileCADAssembler extends TileSimpleInventory implements ITickable {
 
 	public boolean isBulletSlotEnabled(int slot) {
 		ItemStack socketableStack = getStackInSlot(6);
-		if(socketableStack != null && socketableStack.getItem() instanceof ISocketable) {
+		if(!socketableStack.isEmpty() && socketableStack.getItem() instanceof ISocketable) {
 			ISocketable socketable = (ISocketable) socketableStack.getItem();
 			return socketable.isSocketSlotAvailable(socketableStack, slot);
 		}

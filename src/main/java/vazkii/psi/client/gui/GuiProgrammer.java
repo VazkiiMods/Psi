@@ -31,6 +31,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.item.ItemBanner;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTTagCompound;
@@ -191,7 +192,7 @@ public class GuiProgrammer extends GuiScreen {
 		}
 
 		ItemStack cad = PsiAPI.getPlayerCAD(mc.player);
-		if(cad != null) {
+		if(!cad.isEmpty()) {
 			int cadX = left - 42;
 			int cadY = top + 12;
 			GlStateManager.enableRescaleNormal();
@@ -228,13 +229,13 @@ public class GuiProgrammer extends GuiScreen {
 				int cadVal = 0;
 				if(cadStat == null)
 					cadVal = -1;
-				else if(cad != null) {
+				else if(!cad.isEmpty()) {
 					ICAD cadItem = (ICAD) cad.getItem();
 					cadVal = cadItem.getStatValue(cad, cadStat);
 				}
 				String s = "" + val;
 				if(stat == EnumSpellStat.COST)
-					s += " (" + Math.max(0, ItemCAD.getRealCost(cad, null, val)) + ")";
+					s += " (" + Math.max(0, ItemCAD.getRealCost(cad, ItemStack.EMPTY, val)) + ")";
 				else s += "/" + (cadVal == -1 ? "\u221E" : cadVal);
 
 				GlStateManager.color(1F, 1F, 1F);

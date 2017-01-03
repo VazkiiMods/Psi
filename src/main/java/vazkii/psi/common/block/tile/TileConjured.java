@@ -29,13 +29,13 @@ public class TileConjured extends TileMod implements ITickable {
 	private static final String TAG_COLORIZER = "colorizer";
 
 	public int time = -1;
-	public ItemStack colorizer = null;
+	public ItemStack colorizer = ItemStack.EMPTY;
 
 	@Override
 	public void update() {
 		if(getWorld().isRemote) {
 			Color color = new Color(ICADColorizer.DEFAULT_SPELL_COLOR);
-			if(colorizer != null)
+			if(!colorizer.isEmpty())
 				color = Psi.proxy.getColorizerColor(colorizer);
 
 			float r = color.getRed() / 255F;
@@ -131,7 +131,7 @@ public class TileConjured extends TileMod implements ITickable {
 		cmp.setInteger(TAG_TIME, time);
 
 		NBTTagCompound stackCmp = new NBTTagCompound();
-		if(colorizer != null)
+		if(!colorizer.isEmpty())
 			colorizer.writeToNBT(stackCmp);
 		cmp.setTag(TAG_COLORIZER, stackCmp);
 	}

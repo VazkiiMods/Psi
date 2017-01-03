@@ -53,6 +53,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.RecipeSorter;
 import net.minecraftforge.oredict.RecipeSorter.Category;
+import scala.actors.threadpool.Arrays;
 import vazkii.arl.interf.IItemColorProvider;
 import vazkii.arl.item.ItemMod;
 import vazkii.arl.util.ItemNBTHelper;
@@ -108,14 +109,14 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 	
 	@Override
 	public EnumActionResult onItemUse(EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		ItemStack stack = playerIn.getActiveItemStack();
+		ItemStack stack = playerIn.getHeldItem(hand);
 		Block block = worldIn.getBlockState(pos).getBlock(); 
 		return block == ModBlocks.programmer ? ((BlockProgrammer) block).setSpell(worldIn, pos, playerIn, stack) : EnumActionResult.PASS;
 	}
 	
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand hand) {
-		ItemStack itemStackIn = playerIn.getActiveItemStack();
+		ItemStack itemStackIn = playerIn.getHeldItem(hand);
 		PlayerData data = PlayerDataHandler.get(playerIn);
 		ItemStack playerCad = PsiAPI.getPlayerCAD(playerIn);
 		if(playerCad != itemStackIn) {
@@ -127,7 +128,7 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 		ItemStack bullet = getBulletInSocket(itemStackIn, getSelectedSlot(itemStackIn));
 		boolean did = cast(worldIn, playerIn, data, bullet, itemStackIn, 40, 25, 0.5F, null);
 
-		if(bullet == null && craft(playerIn, new ItemStack(Items.REDSTONE), new ItemStack(ModItems.material))) {
+		if(bullet.isEmpty() && craft(playerIn, new ItemStack(Items.REDSTONE), new ItemStack(ModItems.material))) {
 			if(!worldIn.isRemote)
 				worldIn.playSound(null, playerIn.posX, playerIn.posY, playerIn.posZ, PsiSoundHandler.cadShoot, SoundCategory.PLAYERS, 0.5F, (float) (0.5 + Math.random() * 0.5));
 			data.deductPsi(100, 60, true);
@@ -144,14 +145,14 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 	public void setSpell(EntityPlayer player, ItemStack stack, Spell spell) {
 		int slot = getSelectedSlot(stack);
 		ItemStack bullet = getBulletInSocket(stack, slot);
-		if(bullet != null && bullet.getItem() instanceof ISpellSettable) {
+		if(!bullet.isEmpty() && bullet.getItem() instanceof ISpellSettable) {
 			((ISpellSettable) bullet.getItem()).setSpell(player, bullet, spell);
 			setBulletInSocket(stack, slot, bullet);
 		}
 	}
 
 	public static boolean cast(World world, EntityPlayer player, PlayerData data, ItemStack bullet, ItemStack cad, int cd, int particles, float sound, Consumer<SpellContext> predicate) {
-		if(data.getAvailablePsi() > 0 && cad != null && bullet != null && bullet.getItem() instanceof ISpellContainer && isTruePlayer(player)) {
+		if(data.getAvailablePsi() > 0 && !cad.isEmpty() && !bullet.isEmpty() && bullet.getItem() instanceof ISpellContainer && isTruePlayer(player)) {
 			ISpellContainer spellContainer = (ISpellContainer) bullet.getItem();
 			if(spellContainer.containsSpell(bullet)) {
 				Spell spell = spellContainer.getSpell(bullet);
@@ -222,7 +223,7 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 		boolean did = false;
 		for(EntityItem item : items) {
 			ItemStack stack = item.getEntityItem();
-			if(stack != null && ItemStack.areItemsEqual(stack, in)) {
+			if(!stack.isEmpty() && ItemStack.areItemsEqual(stack, in)) {
 				ItemStack outCopy = out.copy();
 				outCopy.setCount(stack.getCount());
 				item.setEntityItemStack(outCopy);
@@ -252,7 +253,7 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 	}
 
 	public static int getRealCost(ItemStack stack, ItemStack bullet, int cost) {
-		if(stack != null && stack.getItem() instanceof ICAD) {
+		if(!stack.isEmpty() && stack.getItem() instanceof ICAD) {
 			int eff = ((ICAD) stack.getItem()).getStatValue(stack, EnumCADStat.EFFICIENCY);
 			if(eff == -1)
 				return -1;
@@ -261,7 +262,7 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 
 			double effPercentile = (double) eff / 100;
 			double procCost = cost / effPercentile;
-			if(bullet != null)
+			if(!bullet.isEmpty())
 				procCost *= ((ISpellContainer) bullet.getItem()).getCostModifier(bullet);
 
 			return (int) procCost;
@@ -281,7 +282,7 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 	}
 
 	public static void setComponent(ItemStack stack, ItemStack componentStack) {
-		if(componentStack != null && componentStack.getItem() instanceof ICADComponent) {
+		if(!componentStack.isEmpty() && componentStack.getItem() instanceof ICADComponent) {
 			ICADComponent component = (ICADComponent) componentStack.getItem();
 			EnumCADComponent componentType = component.getComponentType(componentStack);
 			String name = TAG_COMPONENT_PREFIX + componentType.name();
@@ -293,6 +294,10 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 	}
 
 	public static ItemStack makeCAD(ItemStack... components) {
+		return makeCAD(Arrays.asList(components));
+	}
+	
+	public static ItemStack makeCAD(List<ItemStack> components) {
 		ItemStack stack = new ItemStack(ModItems.cad);
 		for(ItemStack component : components)
 			setComponent(stack, component);
@@ -305,7 +310,7 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 		NBTTagCompound cmp = ItemNBTHelper.getCompound(stack, name, true);
 
 		if(cmp == null)
-			return null;
+			return ItemStack.EMPTY;
 
 		return new ItemStack(cmp);
 	}
@@ -313,7 +318,7 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 	@Override
 	public int getStatValue(ItemStack stack, EnumCADStat stat) {
 		ItemStack componentStack = getComponentInSlot(stack, stat.getSourceType());
-		if(componentStack != null && componentStack.getItem() instanceof ICADComponent) {
+		if(!componentStack.isEmpty() && componentStack.getItem() instanceof ICADComponent) {
 			ICADComponent component = (ICADComponent) componentStack.getItem();
 			return component.getCADStatValue(componentStack, stat);
 		}
@@ -352,7 +357,7 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 	@SideOnly(Side.CLIENT)
 	public int getSpellColor(ItemStack stack) {
 		ItemStack dye = getComponentInSlot(stack, EnumCADComponent.DYE);
-		if(dye != null && dye.getItem() instanceof ICADColorizer)
+		if(!dye.isEmpty() && dye.getItem() instanceof ICADColorizer)
 			return ((ICADColorizer) dye.getItem()).getColor(dye);
 
 		return ICADColorizer.DEFAULT_SPELL_COLOR;
@@ -370,7 +375,7 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 		NBTTagCompound cmp = ItemNBTHelper.getCompound(stack, name, true);
 
 		if(cmp == null)
-			return null;
+			return ItemStack.EMPTY;
 
 		return new ItemStack(cmp);
 	}
@@ -380,7 +385,7 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 		String name = TAG_BULLET_PREFIX + slot;
 		NBTTagCompound cmp = new NBTTagCompound();
 
-		if(bullet != null)
+		if(!bullet.isEmpty())
 			bullet.writeToNBT(cmp);
 
 		ItemNBTHelper.setCompound(stack, name, cmp);
@@ -522,7 +527,7 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 			for(EnumCADComponent componentType : EnumCADComponent.class.getEnumConstants()) {
 				ItemStack componentStack = getComponentInSlot(stack, componentType);
 				String name = "psimisc.none";
-				if(componentStack != null)
+				if(!componentStack.isEmpty())
 					name = componentStack.getDisplayName();
 
 				name = local(name);
@@ -563,7 +568,7 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 			public ModelResourceLocation getModelLocation(ItemStack stack) {
 				ICAD cad = (ICAD) stack.getItem();
 				ItemStack assemblyStack = cad.getComponentInSlot(stack, EnumCADComponent.ASSEMBLY);
-				if(assemblyStack == null)
+				if(assemblyStack.isEmpty())
 					return null;
 				ICADAssembly assembly = (ICADAssembly) assemblyStack.getItem();
 				return assembly.getCADModel(assemblyStack, stack);

@@ -26,8 +26,8 @@ public class SensorRemoveRecipe implements IRecipe {
 
 		for(int i = 0; i < var1.getSizeInventory(); i++) {
 			ItemStack stack = var1.getStackInSlot(i);
-			if(stack != null) {
-				if(!foundHoldable && stack.getItem() instanceof ISensorHoldable && ((ISensorHoldable) stack.getItem()).getAttachedSensor(stack) != null)
+			if(!stack.isEmpty()) {
+				if(!foundHoldable && stack.getItem() instanceof ISensorHoldable && !((ISensorHoldable) stack.getItem()).getAttachedSensor(stack).isEmpty())
 					foundHoldable = true;
 				else return false;
 			}
@@ -38,17 +38,17 @@ public class SensorRemoveRecipe implements IRecipe {
 
 	@Override
 	public ItemStack getCraftingResult(InventoryCrafting var1) {
-		ItemStack holdableItem = null;
+		ItemStack holdableItem = ItemStack.EMPTY;
 
 		for(int i = 0; i < var1.getSizeInventory(); i++) {
 			ItemStack stack = var1.getStackInSlot(i);
-			if(stack != null)
+			if(!stack.isEmpty())
 				holdableItem = stack;
 		}
 
 		ItemStack copy = holdableItem.copy();
 		ISensorHoldable holdable = (ISensorHoldable) holdableItem.getItem();
-		holdable.attachSensor(copy, null);
+		holdable.attachSensor(copy, ItemStack.EMPTY);
 
 		return copy;
 	}

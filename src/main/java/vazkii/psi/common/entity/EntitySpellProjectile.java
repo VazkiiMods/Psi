@@ -87,13 +87,13 @@ public class EntitySpellProjectile extends EntityThrowable {
 
 		NBTTagCompound colorizerCmp = new NBTTagCompound();
 		ItemStack colorizer = dataManager.get(COLORIZER_DATA);
-		if(colorizer != null)
+		if(!colorizer.isEmpty())
 			colorizer.writeToNBT(colorizerCmp);
 		tagCompound.setTag(TAG_COLORIZER, colorizerCmp);
 
 		NBTTagCompound bulletCmp = new NBTTagCompound();
 		ItemStack bullet = dataManager.get(BULLET_DATA);
-		if(bullet != null)
+		if(!bullet.isEmpty())
 			bullet.writeToNBT(bulletCmp);
 		tagCompound.setTag(TAG_BULLET, bulletCmp);
 
@@ -141,7 +141,7 @@ public class EntitySpellProjectile extends EntityThrowable {
 		
 		int colorVal = ICADColorizer.DEFAULT_SPELL_COLOR;
 		ItemStack colorizer = dataManager.get(COLORIZER_DATA);
-		if(colorizer != null && colorizer.getItem() instanceof ICADColorizer)
+		if(!colorizer.isEmpty() && colorizer.getItem() instanceof ICADColorizer)
 			colorVal = Psi.proxy.getColorizerColor(colorizer).getRGB();
 
 		Color color = new Color(colorVal);

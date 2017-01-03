@@ -39,7 +39,7 @@ public class ItemExosuitController extends ItemMod implements ISocketableControl
 
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand hand) {
-		ItemStack itemStackIn = playerIn.getActiveItemStack();
+		ItemStack itemStackIn = playerIn.getHeldItem(hand);
 		if(playerIn.isSneaking()) {
 			if(!worldIn.isRemote)
 				worldIn.playSound(null, playerIn.posX, playerIn.posY, playerIn.posZ, PsiSoundHandler.compileError, SoundCategory.PLAYERS, 0.25F, 1F);
@@ -63,7 +63,7 @@ public class ItemExosuitController extends ItemMod implements ISocketableControl
 		List<ItemStack> stacks = new ArrayList();
 		for(int i = 0; i < 4; i++) {
 			ItemStack armor = player.inventory.armorInventory.get(3 - i);
-			if(armor != null && armor.getItem() instanceof ISocketable)
+			if(!armor.isEmpty() && armor.getItem() instanceof ISocketable)
 				stacks.add(armor);
 		}
 
@@ -80,7 +80,7 @@ public class ItemExosuitController extends ItemMod implements ISocketableControl
 		ItemNBTHelper.setInt(stack, TAG_SELECTED_CONTROL_SLOT, controlSlot);
 
 		ItemStack[] stacks = getControlledStacks(player, stack);
-		if(controlSlot < stacks.length && stacks[controlSlot] != null) {
+		if(controlSlot < stacks.length && !stacks[controlSlot].isEmpty()) {
 			ISocketable socketable = (ISocketable) stacks[controlSlot].getItem();
 			socketable.setSelectedSlot(stacks[controlSlot], slot);
 		}

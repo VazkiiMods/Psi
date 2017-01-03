@@ -34,7 +34,7 @@ public class SlotCADComponent extends Slot {
 
 	@Override
 	public boolean isItemValid(ItemStack stack) {
-		if(stack != null && stack.getItem() instanceof ICADComponent) {
+		if(!stack.isEmpty() && stack.getItem() instanceof ICADComponent) {
 			EnumCADComponent type = ((ICADComponent) stack.getItem()).getComponentType(stack);
 			return type == componentType;
 		}
