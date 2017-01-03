@@ -86,11 +86,6 @@ public class BlockConjured extends BlockModContainer implements IPsiBlock {
 		return false;
 	}
 
-//	@Override
-//	public boolean isVisuallyOpaque() {
-//		return false;
-//	} TODO ok?
-
 	@Override
 	public int quantityDropped(Random random) {
 		return 0;

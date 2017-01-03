@@ -1,3 +1,5 @@
+r1.1-43
+*<b>Updated the mod to Minecraft 1.11.2.</b>
 r1.0-42
 *Complex mod blocks are now harvested properly and will drop their proper drops. 
 r1.0-41
