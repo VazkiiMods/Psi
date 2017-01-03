@@ -18,9 +18,9 @@ import vazkii.psi.common.lib.LibItemNames;
 public class ItemCADBattery extends ItemCADComponent {
 
 	public static final String[] VARIANTS = {
-			"cadBatteryBasic",
-			"cadBatteryExtended",
-			"cadBatteryUltradense"
+			"cad_battery_basic",
+			"cad_battery_extended",
+			"cad_battery_ultradense"
 	};
 
 	public ItemCADBattery() {

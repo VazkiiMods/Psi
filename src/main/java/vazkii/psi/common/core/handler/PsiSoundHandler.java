@@ -28,11 +28,11 @@ public final class PsiSoundHandler {
 	public static void init() {
 		size = SoundEvent.REGISTRY.getKeys().size();
 		
-		bulletCreate = register("bulletCreate");
-		cadCreate = register("cadCreate");
-		cadShoot = register("cadShoot");
-		compileError = register("compileError");
-		levelUp = register("levelUp");
+		bulletCreate = register("bullet_create");
+		cadCreate = register("cad_create");
+		cadShoot = register("cad_shoot");
+		compileError = register("compile_error");
+		levelUp = register("level_up");
 		loopcast = register("loopcast");
 	}
 	

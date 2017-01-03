@@ -1,6 +1,0 @@
-{
-	"parent": "psi:item/_standard_colorizer",
-	"textures": { 
-        "layer1": "psi:items/dyeCannisterSpecialPsi"
-    }
-}

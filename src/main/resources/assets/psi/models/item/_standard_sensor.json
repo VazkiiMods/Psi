@@ -1,7 +1,7 @@
 {
     "parent": "psi:item/_standard_item",
     "textures": { 
-        "layer0": "psi:items/exosuitSensor",
-        "layer1": "psi:items/exosuitSensorOverlay"
+        "layer0": "psi:items/exosuit_sensor",
+        "layer1": "psi:items/exosuit_sensor_overlay"
     }
 }

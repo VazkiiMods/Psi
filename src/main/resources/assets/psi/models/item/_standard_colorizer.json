@@ -1,8 +1,8 @@
 {
     "parent": "psi:item/_standard_item",
     "textures": { 
-        "layer0": "psi:items/dyeCannister",
-        "layer1": "psi:items/dyeCannisterInside",
-        "layer2": "psi:items/dyeCannisterOverlay"
+        "layer0": "psi:items/dye_cannister",
+        "layer1": "psi:items/dye_cannister_inside",
+        "layer2": "psi:items/dye_cannister_overlay"
     }
 }

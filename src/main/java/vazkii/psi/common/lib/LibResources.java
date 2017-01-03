@@ -20,9 +20,9 @@ public class LibResources {
 	public static final String PREFIX_MODEL = PREFIX_MOD + "textures/model/";
 	public static final String PREFIX_MISC = PREFIX_MOD + "textures/misc/";
 
-	public static final String SHADER_RAW_COLOR = PREFIX_SHADER + "rawColor";
-	public static final String SHADER_PSI_BAR = PREFIX_SHADER + "psiBar";
-	public static final String SHADER_SIMPLE_BLOOM = PREFIX_SHADER + "simpleBloom";
+	public static final String SHADER_RAW_COLOR = PREFIX_SHADER + "raw_color";
+	public static final String SHADER_PSI_BAR = PREFIX_SHADER + "psi_bar";
+	public static final String SHADER_SIMPLE_BLOOM = PREFIX_SHADER + "simple_bloom";
 
 	public static final String GUI_CREATIVE = "psi.png";
 	public static final String GUI_CAD_ASSEMBLER = PREFIX_GUI + "cad_assembler.png";

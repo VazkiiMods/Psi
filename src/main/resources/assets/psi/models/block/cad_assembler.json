@@ -1,0 +1,38 @@
+{
+    "parent": "block/block",
+    "textures": {
+        "particle": "psi:blocks/cad_assembler_top",
+        "0": "psi:blocks/cad_assembler_side",
+        "1": "psi:blocks/cad_assembler_top",
+        "2": "psi:blocks/cad_assembler_bottom",
+        "3": "psi:blocks/cad_assembler_bottom2"
+    },
+    "elements": [
+        {
+            "name": "_cube1",
+            "from": [ 0.0, 4.0, 0.0 ], 
+            "to": [ 16.0, 16.0, 16.0 ], 
+            "faces": {
+                "north": { "texture": "#0", "uv": [ 0.01, 0.01, 15.99, 11.99 ] },
+                "east": { "texture": "#0", "uv": [ 0.01, 0.01, 15.99, 11.99 ] },
+                "south": { "texture": "#0", "uv": [ 0.01, 0.01, 15.99, 11.99 ] },
+                "west": { "texture": "#0", "uv": [ 0.01, 0.01, 15.99, 11.99 ] },
+                "up": { "texture": "#1", "uv": [ 0.01, 0.01, 15.99, 15.99 ] },
+                "down": { "texture": "#2", "uv": [ 0.01, 0.01, 15.99, 15.99 ] }
+            }
+        },
+        {
+            "name": "_cube2",
+            "from": [ 3.0, 0.0, 3.0 ], 
+            "to": [ 13.0, 4.0, 13.0 ], 
+            "faces": {
+                "north": { "texture": "#0", "uv": [ 3.01, 12.01, 12.99, 15.99 ] },
+                "east": { "texture": "#0", "uv": [ 3.01, 12.01, 12.99, 15.99 ] },
+                "south": { "texture": "#0", "uv": [ 3.01, 12.01, 12.99, 15.99 ] },
+                "west": { "texture": "#0", "uv": [ 3.01, 12.01, 12.99, 15.99 ] },
+                "up": { "texture": "#3", "uv": [ 3.01, 3.01, 12.99, 12.99 ] },
+                "down": { "texture": "#3", "uv": [ 3.01, 3.01, 12.99, 12.99 ] }
+            }
+        }
+    ]
+}

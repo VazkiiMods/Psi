@@ -76,7 +76,9 @@ public final class PsiAPI {
 
 	private static void registerSpellPieceAndTexture(String key, String mod, Class<? extends SpellPiece> clazz) {
 		registerSpellPiece(key, clazz);
-		simpleSpellTextures.put(key, new ResourceLocation(mod, String.format("textures/spell/%s.png", key)));
+		
+		String textureName = key.replaceAll("([a-z0-9])([A-Z])", "$1_$2").toLowerCase();
+		simpleSpellTextures.put(key, new ResourceLocation(mod, String.format("textures/spell/%s.png", textureName)));
 	}
 
 	/**

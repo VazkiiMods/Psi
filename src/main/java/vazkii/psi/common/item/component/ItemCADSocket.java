@@ -18,11 +18,11 @@ import vazkii.psi.common.lib.LibItemNames;
 public class ItemCADSocket extends ItemCADComponent {
 
 	public static final String[] VARIANTS = {
-			"cadSocketBasic",
-			"cadSocketSignaling",
-			"cadSocketLarge",
-			"cadSocketTransmissive",
-			"cadSocketHuge"
+			"cad_socket_basic",
+			"cad_socket_signaling",
+			"cad_socket_large",
+			"cad_socket_transmissive",
+			"cad_socket_huge"
 	};
 
 	public ItemCADSocket() {

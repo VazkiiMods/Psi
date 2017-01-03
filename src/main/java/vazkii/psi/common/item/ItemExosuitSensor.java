@@ -30,10 +30,10 @@ import vazkii.psi.common.lib.LibItemNames;
 public class ItemExosuitSensor extends ItemMod implements IExosuitSensor, IItemColorProvider, IPsiItem {
 
 	public static final String[] VARIANTS = {
-			"exosuitSensorLight",
-			"exosuitSensorWater",
-			"exosuitSensorHeat",
-			"exosuitSensorStress"
+			"exosuit_sensor_light",
+			"exosuit_sensor_water",
+			"exosuit_sensor_heat",
+			"exosuit_sensor_stress"
 	};
 
 	public ItemExosuitSensor() {

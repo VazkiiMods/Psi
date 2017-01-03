@@ -47,8 +47,8 @@ public class ItemCADColorizer extends ItemCADComponent implements ICADColorizer,
 			LibItemNames.CAD_COLORIZER + getProperDyeName(EnumDyeColor.GREEN),
 			LibItemNames.CAD_COLORIZER + getProperDyeName(EnumDyeColor.RED),
 			LibItemNames.CAD_COLORIZER + getProperDyeName(EnumDyeColor.BLACK),
-			LibItemNames.CAD_COLORIZER + "Rainbow",
-			LibItemNames.CAD_COLORIZER + "Psi"
+			LibItemNames.CAD_COLORIZER + "rainbow",
+			LibItemNames.CAD_COLORIZER + "psi"
 	};
 
 	public ItemCADColorizer() {
@@ -93,7 +93,7 @@ public class ItemCADColorizer extends ItemCADComponent implements ICADColorizer,
 	}
 
 	private static String getProperDyeName(EnumDyeColor color) {
-		return WordUtils.capitalize(color.getName(), '_').replaceAll("_", "");
+		return color.getName();
 	}
 
 }

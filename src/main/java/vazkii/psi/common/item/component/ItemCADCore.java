@@ -18,11 +18,11 @@ import vazkii.psi.common.lib.LibItemNames;
 public class ItemCADCore extends ItemCADComponent {
 
 	public static final String[] VARIANTS = {
-			"cadCoreBasic",
-			"cadCoreOverclocked",
-			"cadCoreConductive",
-			"cadCoreHyperclocked",
-			"cadCoreRadiative"
+			"cad_core_basic",
+			"cad_core_overclocked",
+			"cad_core_conductive",
+			"cad_core_hyperclocked",
+			"cad_core_radiative"
 	};
 
 	public ItemCADCore() {

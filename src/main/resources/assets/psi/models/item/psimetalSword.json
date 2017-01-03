@@ -1,6 +1,0 @@
-{
-	"parent": "psi:item/_standard_tool",
-	"textures": { 
-		"layer0": "psi:items/psimetalSword"
-	}
-}

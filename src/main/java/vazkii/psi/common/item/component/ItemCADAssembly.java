@@ -22,21 +22,21 @@ import vazkii.psi.common.lib.LibItemNames;
 public class ItemCADAssembly extends ItemCADComponent implements ICADAssembly, IExtraVariantHolder {
 
 	public static final String[] VARIANTS = {
-			"cadAssemblyIron",
-			"cadAssemblyGold",
-			"cadAssemblyPsimetal",
-			"cadAssemblyEbonyPsimetal",
-			"cadAssemblyIvoryPsimetal",
-			"cadAssemblyCreative"
+			"cad_assembly_iron",
+			"cad_assembly_gold",
+			"cad_assembly_psimetal",
+			"cad_assembly_ebony_psimetal",
+			"cad_assembly_ivory_psimetal",
+			"cad_assembly_creative"
 	};
 
 	public static final String[] CAD_MODELS = {
-			"cadIron",
-			"cadGold",
-			"cadPsimetal",
-			"cadEbonyPsimetal",
-			"cadIvoryPsimetal",
-			"cadCreative"
+			"cad_iron",
+			"cad_gold",
+			"cad_psimetal",
+			"cad_ebony_psimetal",
+			"cad_ivory_psimetal",
+			"cad_creative"
 	};
 
 	public ItemCADAssembly() {

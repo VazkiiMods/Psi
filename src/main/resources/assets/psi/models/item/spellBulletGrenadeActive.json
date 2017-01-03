@@ -1,6 +1,0 @@
-{
-	"parent": "psi:item/_standard_item",
-	"textures": { 
-		"layer0": "psi:items/spellBulletGrenadeActive"
-	}
-}

@@ -48,20 +48,20 @@ public class ItemSpellBullet extends ItemMod implements ISpellContainer, IPsiIte
 	private static final String TAG_SPELL = "spell";
 
 	public static final String[] VARIANTS = {
-			"spellBullet",
-			"spellBulletActive",
-			"spellBulletProjectile",
-			"spellBulletProjectileActive",
-			"spellBulletLoop",
-			"spellBulletLoopActive",
-			"spellBulletCircle",
-			"spellBulletCircleActive",
-			"spellBulletGrenade",
-			"spellBulletGrenadeActive",
-			"spellBulletCharge",
-			"spellBulletChargeActive",
-			"spellBulletMine",
-			"spellBulletMineActive"
+			"spell_bullet",
+			"spell_bullet_active",
+			"spell_bullet_projectile",
+			"spell_bullet_projectile_active",
+			"spell_bullet_loop",
+			"spell_bullet_loop_active",
+			"spell_bullet_circle",
+			"spell_bullet_circle_active",
+			"spell_bullet_grenade",
+			"spell_bullet_grenade_active",
+			"spell_bullet_charge",
+			"spell_bullet_charge_active",
+			"spell_bullet_mine",
+			"spell_bullet_mine_active"
 	};
 
 	public ItemSpellBullet() {

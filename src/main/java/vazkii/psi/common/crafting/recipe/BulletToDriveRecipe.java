@@ -71,7 +71,7 @@ public class BulletToDriveRecipe implements IRecipe {
 
 	@Override
 	public ItemStack getRecipeOutput() {
-		return null;
+		return ItemStack.EMPTY;
 	}
 
 	@Override

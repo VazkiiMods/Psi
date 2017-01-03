@@ -18,7 +18,7 @@ public final class LibItemNames {
 	public static final String CAD_CORE = "cad_core";
 	public static final String CAD_SOCKET = "cad_socket";
 	public static final String CAD_BATTERY = "cad_battery";
-	public static final String CAD_COLORIZER = "cad_colorizer";
+	public static final String CAD_COLORIZER = "cad_colorizer_";
 	public static final String SPELL_BULLET = "spell_bullet";
 	public static final String SPELL_DRIVE = "spell_drive";
 	public static final String PSIMETAL_SHOVEL = "psimetal_shovel";

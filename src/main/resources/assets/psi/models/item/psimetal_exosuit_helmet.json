@@ -1,0 +1,7 @@
+{
+	"parent": "psi:item/_standard_item",
+	"textures": { 
+		"layer0": "psi:items/psimetal_exosuit_helmet",
+		"layer1": "psi:items/psimetal_exosuit_helmet_sensor"
+	}
+}

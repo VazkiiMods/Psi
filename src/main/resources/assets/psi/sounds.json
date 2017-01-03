@@ -1,8 +1,8 @@
 {
-	"bulletCreate": { "category": "block", "sounds": ["psi:bulletCreate"], "subtitle": "psi.subtitle.bulletCreate" },
-	"cadCreate": { "category": "block", "sounds": ["psi:cadCreate"], "subtitle": "psi.subtitle.cadCreate" },
-	"cadShoot": { "category": "player", "sounds": ["psi:cadShoot"], "subtitle": "psi.subtitle.spellCast" },
-	"compileError": { "category": "block", "sounds": ["psi:compileError"] },
-	"levelUp": { "category": "player", "sounds": ["psi:levelUp"] },
+	"bullet_create": { "category": "block", "sounds": ["psi:bullet_create"], "subtitle": "psi.subtitle.bullet_create" },
+	"cad_create": { "category": "block", "sounds": ["psi:cad_create"], "subtitle": "psi.subtitle.cad_create" },
+	"cad_shoot": { "category": "player", "sounds": ["psi:cad_shoot"], "subtitle": "psi.subtitle.spell_cast" },
+	"compile_error": { "category": "block", "sounds": ["psi:compile_error"] },
+	"level_up": { "category": "player", "sounds": ["psi:level_up"] },
 	"loopcast": { "category": "player", "sounds": ["psi:loopcast"], "subtitle": "psi.subtitle.loopcast" }
 }
