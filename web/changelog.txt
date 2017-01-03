@@ -1,3 +1,5 @@
+r1.1-44
+*Fixed a CAD crash because of Scala, for the 10 millionth time.
 r1.1-43
 *<b>Updated the mod to Minecraft 1.11.2.</b>
 r1.0-42
