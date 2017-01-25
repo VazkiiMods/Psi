@@ -369,7 +369,7 @@ public class PlayerDataHandler {
 
 					if(loopcastTime > 0 && loopcastTime % 5 == 0) {
 						ItemStack bullet = icad.getBulletInSocket(cadStack, icad.getSelectedSlot(cadStack));
-						if(!bullet.isEmpty()) {
+						if(bullet.isEmpty()) {
 							stopLoopcast();
 							break loopcast;
 						}
