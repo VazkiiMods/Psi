@@ -60,7 +60,7 @@ public final class SpellContext {
 	public int loopcastIndex = 0;
 
 	// Tool stuff. Only available if the spell is casted from a Psimetal Tool
-	public ItemStack tool;
+	public ItemStack tool = ItemStack.EMPTY;
 	public RayTraceResult positionBroken;
 	// Sword stuff
 	public EntityLivingBase attackedEntity;
