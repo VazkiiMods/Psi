@@ -42,7 +42,7 @@ public class EntitySpellGrenade extends EntitySpellProjectile {
 	public void onUpdate() {
 		super.onUpdate();
 
-		if(timeAlive > 60 && !isDead && explodes())
+		if(ticksExisted > 60 && !isDead && explodes())
 			doExplosion();
 	}
 
