@@ -332,11 +332,15 @@ public class GuiLeveling extends GuiScreen {
 
 			boolean taken = data.isPieceGroupUnlocked(group.name);
 			boolean available = taken || group.isAvailable(data);
+			boolean current = group.name.equals(data.lastSpellGroup);
 			int color = 0x777777;
-			if(available)
-				color = 0xFFFFFF;
-			if(taken)
+			
+			if(current)
+				color = 0xFFFF77;
+			else if(taken)
 				color = 0x77FF77;
+			else if(available)
+				color = 0xFFFFFF;
 
 			mc.fontRendererObj.drawString(I18n.translateToLocal(group.getUnlocalizedName()), left + 3, slotTop + 4, color);
 			mc.fontRendererObj.drawString(String.format(I18n.translateToLocal("psimisc.levelDisplay"), group.levelRequirement), left + 3, slotTop + 14, color);
