@@ -69,7 +69,7 @@ public class PieceTrickSmeltBlock extends PieceTrick {
 		int meta = block.getMetaFromState(state);
 		ItemStack stack = new ItemStack(block, 1, meta);
 		ItemStack result = FurnaceRecipes.instance().getSmeltingResult(stack);
-		if(result != null) {
+		if(!result.isEmpty()) {
 			Item item = result.getItem();
 			Block block1 = Block.getBlockFromItem(item);
 			if(block1 != null) {
