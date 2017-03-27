@@ -453,9 +453,9 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 			throw new SpellRuntimeException(SpellRuntimeException.MEMORY_OUT_OF_BOUNDS);
 		
 		NBTTagCompound cmp = ItemNBTHelper.getCompound(stack, TAG_STORED_VECTOR_PREFIX + memorySlot, false);
-		double x = cmp.getInteger(TAG_X);
-		double y = cmp.getInteger(TAG_Y);
-		double z = cmp.getInteger(TAG_Z);
+		double x = cmp.getDouble(TAG_X);
+		double y = cmp.getDouble(TAG_Y);
+		double z = cmp.getDouble(TAG_Z);
 		return new Vector3(x, y, z);
 	}
 	
