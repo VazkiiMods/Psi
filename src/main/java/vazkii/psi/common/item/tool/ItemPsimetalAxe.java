@@ -17,8 +17,15 @@ import com.google.common.collect.Sets;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import vazkii.psi.api.PsiAPI;
+import vazkii.psi.api.spell.SpellContext;
+import vazkii.psi.common.core.handler.PlayerDataHandler;
+import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
+import vazkii.psi.common.item.ItemCAD;
 import vazkii.psi.common.lib.LibItemNames;
 
 public class ItemPsimetalAxe extends ItemPsimetalTool {
@@ -27,6 +34,27 @@ public class ItemPsimetalAxe extends ItemPsimetalTool {
 
 	public ItemPsimetalAxe() {
 		super(LibItemNames.PSIMETAL_AXE, 6F, -3.1F, EFFECTIVE_ON);
+	}
+	
+	@Override
+	public boolean hitEntity(ItemStack itemstack, EntityLivingBase target, EntityLivingBase attacker) {
+		super.hitEntity(itemstack, target, attacker);
+
+		if(attacker instanceof EntityPlayer) {
+			EntityPlayer player = (EntityPlayer) attacker;
+
+			PlayerData data = PlayerDataHandler.get(player);
+			ItemStack playerCad = PsiAPI.getPlayerCAD(player);
+
+			if(playerCad != null) {
+				ItemStack bullet = getBulletInSocket(itemstack, getSelectedSlot(itemstack));
+				ItemCAD.cast(player.worldObj, player, data, bullet, playerCad, 5, 10, 0.05F, (SpellContext context) -> {
+					context.attackedEntity = target;
+				});
+			}
+		}
+
+		return true;
 	}
 
 	// ItemAxe copypasta:
