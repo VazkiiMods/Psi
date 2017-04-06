@@ -13,6 +13,7 @@ package vazkii.psi.common.spell.trick.block;
 import net.minecraft.block.state.IBlockState;
 import vazkii.psi.api.spell.EnumSpellStat;
 import vazkii.psi.api.spell.Spell;
+import vazkii.psi.api.spell.SpellCompilationException;
 import vazkii.psi.api.spell.SpellMetadata;
 import vazkii.psi.common.block.BlockConjured;
 
@@ -23,7 +24,7 @@ public class PieceTrickConjureLight extends PieceTrickConjureBlock {
 	}
 
 	@Override
-	public void addStats(SpellMetadata meta) {
+	public void addStats(SpellMetadata meta) throws SpellCompilationException {
 		meta.addStat(EnumSpellStat.POTENCY, 50);
 		meta.addStat(EnumSpellStat.COST, 200);
 	}
