@@ -86,7 +86,7 @@ public class PieceTrickPlaceBlock extends PieceTrick {
 				ItemStack stack = player.inventory.getStackInSlot(slot);
 				if(!stack.isEmpty() && stack.getItem() instanceof ItemBlock) {
 					ItemStack rem = removeFromInventory(player, block, stack);
-					ItemBlock iblock = (ItemBlock) stack.getItem();
+					ItemBlock iblock = (ItemBlock) rem.getItem();
 					
 					Block blockToPlace = Block.getBlockFromItem(rem.getItem()); 
 					if(!world.isRemote) {
@@ -116,7 +116,7 @@ public class PieceTrickPlaceBlock extends PieceTrick {
 				ItemStack retStack = invStack.copy();
 				invStack.shrink(1);
 				if(invStack.getCount() == 0)
-					inv.setInventorySlotContents(i, null);
+					inv.setCount(0);
 				return retStack;
 			}
 		}
