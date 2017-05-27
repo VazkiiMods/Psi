@@ -40,7 +40,7 @@ public class PieceOperatorMax extends PieceOperator {
 		Double d2 = this.<Double>getParamValue(context, num2);
 		Double d3 = this.<Double>getParamValue(context, num3);
 		if(d3 == null)
-			d3 = Double.MIN_VALUE;
+			d3 = Double.NEGATIVE_INFINITY;
 
 		return Math.max(d1, Math.max(d2, d3));
 	}
