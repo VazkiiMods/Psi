@@ -15,13 +15,16 @@ import java.util.List;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.World;
 import vazkii.arl.item.ItemMod;
 import vazkii.psi.api.cad.EnumCADComponent;
 import vazkii.psi.api.cad.EnumCADStat;
 import vazkii.psi.api.cad.ICADComponent;
+import vazkii.psi.common.core.PsiCreativeTab;
 import vazkii.psi.common.item.base.IPsiItem;
 
 public abstract class ItemCADComponent extends ItemMod implements ICADComponent, IPsiItem {
@@ -33,6 +36,7 @@ public abstract class ItemCADComponent extends ItemMod implements ICADComponent,
 		setMaxStackSize(1);
 		stats = new HashMap();
 		registerStats();
+		setCreativeTab(PsiCreativeTab.INSTANCE);
 	}
 
 	public void registerStats() {
@@ -40,7 +44,7 @@ public abstract class ItemCADComponent extends ItemMod implements ICADComponent,
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
+	public void addInformation(ItemStack stack, World playerIn, List<String> tooltip, ITooltipFlag advanced) {
 		tooltipIfShift(tooltip, () -> {
 			EnumCADComponent componentType = getComponentType(stack);
 

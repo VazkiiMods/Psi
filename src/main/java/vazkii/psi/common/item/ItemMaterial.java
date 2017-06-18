@@ -11,6 +11,7 @@
 package vazkii.psi.common.item;
 
 import vazkii.arl.item.ItemMod;
+import vazkii.psi.common.core.PsiCreativeTab;
 import vazkii.psi.common.item.base.IPsiItem;
 import vazkii.psi.common.lib.LibItemNames;
 
@@ -28,5 +29,6 @@ public class ItemMaterial extends ItemMod implements IPsiItem {
 
 	public ItemMaterial() {
 		super(LibItemNames.MATERIAL, VARIANTS);
+		setCreativeTab(PsiCreativeTab.INSTANCE);
 	}
 }

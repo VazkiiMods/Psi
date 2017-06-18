@@ -16,10 +16,11 @@ import java.util.List;
 import java.util.Map;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.renderer.vertex.VertexBuffer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
@@ -203,7 +204,7 @@ public abstract class SpellPiece {
 		Minecraft.getMinecraft().renderEngine.bindTexture(res);
 
 		GlStateManager.color(1F, 1F, 1F);
-		VertexBuffer wr = Tessellator.getInstance().getBuffer();
+		BufferBuilder wr = Tessellator.getInstance().getBuffer();
 		wr.begin(7, DefaultVertexFormats.POSITION_TEX);
 		wr.pos(0, 16, 0).tex(0, 1).endVertex();
 		wr.pos(16, 16, 0).tex(1, 1).endVertex();
@@ -238,7 +239,7 @@ public abstract class SpellPiece {
 			float maxV = (184 + wh) / 256F;
 			GlStateManager.color(1F, 1F, 1F, 1F);
 
-			VertexBuffer wr = Tessellator.getInstance().getBuffer();
+			BufferBuilder wr = Tessellator.getInstance().getBuffer();
 			wr.begin(7, DefaultVertexFormats.POSITION_TEX);
 			wr.pos(-2, 4, 0).tex(minU, maxV).endVertex();
 			wr.pos(4, 4, 0).tex(maxU, maxV).endVertex();
@@ -275,7 +276,7 @@ public abstract class SpellPiece {
 				Color color = new Color(param.color);
 				GlStateManager.color(color.getRed() / 255F, color.getGreen() / 255F, color.getBlue() / 255F, 1F);
 
-				VertexBuffer wr = Tessellator.getInstance().getBuffer();
+				BufferBuilder wr = Tessellator.getInstance().getBuffer();
 				wr.begin(7, DefaultVertexFormats.POSITION_TEX);
 				wr.pos(minX, maxY, 0).tex(minU, maxV).endVertex();
 				wr.pos(maxX, maxY, 0).tex(maxU, maxV).endVertex();

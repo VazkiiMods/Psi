@@ -23,9 +23,9 @@ public class GuiButtonBoolean extends GuiButton {
 		super(0, par2, par3, 12, 11, "");
 		this.yes = yes;
 	}
-
+	
 	@Override
-	public void drawButton(Minecraft par1Minecraft, int par2, int par3) {
+	public void func_191745_a(Minecraft par1Minecraft, int par2, int par3, float pticks) {
 		if(enabled) {
 			hovered = par2 >= xPosition && par3 >= yPosition && par2 < xPosition + width && par3 < yPosition + height;
 			int k = getHoverState(hovered);

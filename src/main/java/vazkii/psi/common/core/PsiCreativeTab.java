@@ -83,7 +83,7 @@ public class PsiCreativeTab extends CreativeTabs {
 	}
 
 	private void addItem(Item item) {
-		item.getSubItems(item, this, list);
+		item.getSubItems(this, list);
 	}
 
 	private void addBlock(Block block) {

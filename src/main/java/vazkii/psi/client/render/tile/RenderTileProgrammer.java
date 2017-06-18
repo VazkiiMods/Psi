@@ -14,6 +14,7 @@ import org.lwjgl.opengl.GL11;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.util.EnumFacing;
@@ -28,7 +29,7 @@ import vazkii.psi.common.block.tile.TileProgrammer;
 public class RenderTileProgrammer extends TileEntitySpecialRenderer<TileProgrammer> {
 
 	@Override
-	public void renderTileEntityAt(TileProgrammer te, double x, double y, double z, float partialTicks, int destroyStage) {
+	public void func_192841_a(TileProgrammer te, double x, double y, double z, float partialTicks, int destroyStage, float something) {
 		if(te.isEnabled()) {
 			GlStateManager.pushMatrix();
 			GlStateManager.disableLighting();

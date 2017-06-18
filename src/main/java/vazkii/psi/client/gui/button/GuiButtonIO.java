@@ -29,7 +29,7 @@ public class GuiButtonIO extends GuiButton {
 	}
 
 	@Override
-	public void drawButton(Minecraft par1Minecraft, int par2, int par3) {
+	public void func_191745_a(Minecraft par1Minecraft, int par2, int par3, float pticks) {
 		if(enabled && !gui.takingScreenshot) {
 			hovered = par2 >= xPosition && par3 >= yPosition && par2 < xPosition + width && par3 < yPosition + height;
 			int k = getHoverState(hovered);

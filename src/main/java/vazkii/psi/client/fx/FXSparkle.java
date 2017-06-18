@@ -17,10 +17,11 @@ import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.renderer.vertex.VertexBuffer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
@@ -94,7 +95,7 @@ public class FXSparkle extends Particle {
 		float var15 = (float)(prevPosZ + (posZ - prevPosZ) * f - interpPosZ);
 		float var16 = 1.0F;
 
-		VertexBuffer buff = tessellator.getBuffer();
+		BufferBuilder buff = tessellator.getBuffer();
 		buff.pos(var13 - f1 * var12 - f4 * var12, var14 - f2 * var12, var15 - f3 * var12 - f5 * var12).tex(var9, var11).color(particleRed * var16, particleGreen * var16, particleBlue * var16, 1).endVertex();
 		buff.pos(var13 - f1 * var12 + f4 * var12, var14 + f2 * var12, var15 - f3 * var12 + f5 * var12).tex(var9, var10).color(particleRed * var16, particleGreen * var16, particleBlue * var16, 1).endVertex();
 		buff.pos(var13 + f1 * var12 + f4 * var12, var14 + f2 * var12, var15 + f3 * var12 + f5 * var12).tex(var8, var10).color(particleRed * var16, particleGreen * var16, particleBlue * var16, 1).endVertex();
@@ -102,7 +103,7 @@ public class FXSparkle extends Particle {
 	}
 
 	@Override
-	public void renderParticle(VertexBuffer buffer, Entity p_180434_2_, float f, float f1, float f2, float f3, float f4, float f5) {
+	public void renderParticle(BufferBuilder buffer, Entity p_180434_2_, float f, float f1, float f2, float f3, float f4, float f5) {
 		this.f = f;
 		this.f1 = f1;
 		this.f2 = f2;

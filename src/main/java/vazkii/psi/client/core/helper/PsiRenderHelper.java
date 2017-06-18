@@ -15,9 +15,9 @@ import java.util.Random;
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
 import vazkii.psi.client.core.handler.ClientTickHandler;
@@ -26,7 +26,7 @@ public class PsiRenderHelper {
 
 	public static void renderStar(int color, float xScale, float yScale, float zScale, long seed) {
 		Tessellator tessellator = Tessellator.getInstance();
-		VertexBuffer buff = tessellator.getBuffer();
+		BufferBuilder buff = tessellator.getBuffer();
 
 		int ticks = ClientTickHandler.ticksInGame % 200;
 		if (ticks >= 100)

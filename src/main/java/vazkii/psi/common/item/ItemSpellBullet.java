@@ -14,6 +14,7 @@ import java.util.List;
 
 import com.google.common.collect.ImmutableSet;
 
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
@@ -36,6 +37,7 @@ import vazkii.psi.api.spell.ISpellContainer;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellRuntimeException;
+import vazkii.psi.common.core.PsiCreativeTab;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.entity.EntitySpellCharge;
 import vazkii.psi.common.entity.EntitySpellCircle;
@@ -70,6 +72,7 @@ public class ItemSpellBullet extends ItemMod implements ISpellContainer, IPsiIte
 	public ItemSpellBullet() {
 		super(LibItemNames.SPELL_BULLET, VARIANTS);
 		setMaxStackSize(1);
+		setCreativeTab(PsiCreativeTab.INSTANCE);
 	}
 
 	@Override
@@ -120,14 +123,14 @@ public class ItemSpellBullet extends ItemMod implements ISpellContainer, IPsiIte
 	}
 
 	@Override
-	public void getSubItems(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> subItems) {
+	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subItems) {
 		for(int i = 0; i < getVariants().length; i++)
 			if(i % 2 == 0)
-				subItems.add(new ItemStack(itemIn, 1, i));
+				subItems.add(new ItemStack(this, 1, i));
 	}
-
+	
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
+	public void addInformation(ItemStack stack, World playerIn, List<String> tooltip, ITooltipFlag advanced) {
 		tooltipIfShift(tooltip, () -> {
 			addToTooltip(tooltip, "psimisc.bulletType", local("psi.bulletType" + stack.getItemDamage() / 2));
 			addToTooltip(tooltip, "psimisc.bulletCost", (int) (getCostModifier(stack) * 100));

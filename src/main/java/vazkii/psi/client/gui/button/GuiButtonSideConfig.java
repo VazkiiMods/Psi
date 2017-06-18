@@ -14,9 +14,9 @@ import java.awt.Color;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import vazkii.psi.api.spell.SpellParam;
 import vazkii.psi.api.spell.SpellPiece;
@@ -57,7 +57,7 @@ public class GuiButtonSideConfig extends GuiButton {
 	}
 
 	@Override
-	public void drawButton(Minecraft mc, int mouseX, int mouseY) {
+	public void func_191745_a(Minecraft mc, int par2, int par3, float pticks) {
 		if(enabled && visible && !gui.takingScreenshot) {
 			int minX = xPosition;
 			int minY = yPosition;
@@ -85,7 +85,7 @@ public class GuiButtonSideConfig extends GuiButton {
 			float maxU = (side.u + wh) / 256F;
 			float maxV = (side.v + wh) / 256F;
 
-			VertexBuffer wr = Tessellator.getInstance().getBuffer();
+			BufferBuilder wr = Tessellator.getInstance().getBuffer();
 			wr.begin(7, DefaultVertexFormats.POSITION_TEX);
 			wr.pos(minX, maxY, 0).tex(minU, maxV).endVertex();
 			wr.pos(maxX, maxY, 0).tex(maxU, maxV).endVertex();

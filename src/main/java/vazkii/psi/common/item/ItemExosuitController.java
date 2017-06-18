@@ -24,6 +24,7 @@ import vazkii.arl.item.ItemMod;
 import vazkii.arl.util.ItemNBTHelper;
 import vazkii.psi.api.cad.ISocketable;
 import vazkii.psi.api.cad.ISocketableController;
+import vazkii.psi.common.core.PsiCreativeTab;
 import vazkii.psi.common.core.handler.PsiSoundHandler;
 import vazkii.psi.common.item.base.IPsiItem;
 import vazkii.psi.common.lib.LibItemNames;
@@ -35,6 +36,7 @@ public class ItemExosuitController extends ItemMod implements ISocketableControl
 	public ItemExosuitController() {
 		super(LibItemNames.EXOSUIT_CONTROLLER);
 		setMaxStackSize(1);
+		setCreativeTab(PsiCreativeTab.INSTANCE);
 	}
 
 	@Override

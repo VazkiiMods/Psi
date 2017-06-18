@@ -54,8 +54,7 @@ public class ItemCADColorizer extends ItemCADComponent implements ICADColorizer,
 	public ItemCADColorizer() {
 		super(LibItemNames.CAD_COLORIZER, VARIANTS);
 
-		GameRegistry.addRecipe(new ColorizerChangeRecipe());
-		RecipeSorter.register("psi:colorizerChange", ColorizerChangeRecipe.class, RecipeSorter.Category.SHAPELESS, "");
+		new ColorizerChangeRecipe();
 	}
 	
 	@Override

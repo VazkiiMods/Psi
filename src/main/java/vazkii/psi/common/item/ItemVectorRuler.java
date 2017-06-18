@@ -15,6 +15,7 @@ import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
@@ -27,6 +28,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import vazkii.arl.item.ItemMod;
 import vazkii.arl.util.ItemNBTHelper;
 import vazkii.psi.api.internal.Vector3;
+import vazkii.psi.common.core.PsiCreativeTab;
 import vazkii.psi.common.item.base.IHUDItem;
 import vazkii.psi.common.item.base.IPsiItem;
 import vazkii.psi.common.lib.LibItemNames;
@@ -44,6 +46,7 @@ public class ItemVectorRuler extends ItemMod implements IHUDItem, IPsiItem {
 	public ItemVectorRuler() {
 		super(LibItemNames.VECTOR_RULER);
 		setMaxStackSize(1);
+		setCreativeTab(PsiCreativeTab.INSTANCE);
 	}
 	
 	@Override
@@ -66,7 +69,7 @@ public class ItemVectorRuler extends ItemMod implements IHUDItem, IPsiItem {
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
+	public void addInformation(ItemStack stack, World playerIn, List<String> tooltip, ITooltipFlag advanced) {
 		tooltip.add(getVector(stack).toString());
 	}
 	

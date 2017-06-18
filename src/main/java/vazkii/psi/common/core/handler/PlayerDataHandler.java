@@ -105,14 +105,17 @@ public class PlayerDataHandler {
 	}
 
 	public static void cleanup() {
+		List<Integer> removals = new ArrayList();
 		Iterator<Entry<Integer, PlayerData>> it = playerData.entrySet().iterator();
 		while(it.hasNext()) {
 			Entry<Integer, PlayerData> item = it.next();
 			PlayerData d = item.getValue();
 			if(d != null && d.playerWR.get() == null)
-				it.remove();
+				removals.add(item.getKey());
 		}
 
+		for(int i : removals)
+			playerData.remove(i);
 	}
 
 	private static int getKey(EntityPlayer player) {

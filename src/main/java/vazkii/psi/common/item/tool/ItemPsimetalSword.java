@@ -12,6 +12,7 @@ package vazkii.psi.common.item.tool;
 
 import java.util.List;
 
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -59,9 +60,9 @@ public class ItemPsimetalSword extends ItemModSword implements IPsimetalTool {
 	public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
 		ItemPsimetalTool.regen(stack, entityIn, isSelected);
 	}
-
+	
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
+	public void addInformation(ItemStack stack, World playerIn, List<String> tooltip, ITooltipFlag advanced) {
 		String componentName = ItemMod.local(ISocketable.getSocketedItemName(stack, "psimisc.none"));
 		ItemMod.addToTooltip(tooltip, "psimisc.spellSelected", componentName);
 	}

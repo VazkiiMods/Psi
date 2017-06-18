@@ -16,6 +16,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
+import vazkii.arl.recipe.RecipeHandler;
 import vazkii.psi.common.block.base.ModBlocks;
 import vazkii.psi.common.item.base.ModItems;
 
@@ -296,11 +297,11 @@ public class ModCraftingRecipes {
 	}
 
 	private static void addOreDictRecipe(ItemStack output, Object... recipe) {
-		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(output, recipe));
+		RecipeHandler.addOreDictRecipe(output, recipe);
 	}
 
 	private static void addShapelessOreDictRecipe(ItemStack output, Object... recipe) {
-		CraftingManager.getInstance().getRecipeList().add(new ShapelessOreRecipe(output, recipe));
+		RecipeHandler.addShapelessOreDictRecipe(output, recipe);
 	}
 
 }

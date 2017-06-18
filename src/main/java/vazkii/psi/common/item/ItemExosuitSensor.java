@@ -22,6 +22,7 @@ import vazkii.arl.item.ItemMod;
 import vazkii.psi.api.cad.ICADColorizer;
 import vazkii.psi.api.exosuit.IExosuitSensor;
 import vazkii.psi.api.exosuit.PsiArmorEvent;
+import vazkii.psi.common.core.PsiCreativeTab;
 import vazkii.psi.common.crafting.recipe.SensorAttachRecipe;
 import vazkii.psi.common.crafting.recipe.SensorRemoveRecipe;
 import vazkii.psi.common.item.base.IPsiItem;
@@ -40,10 +41,9 @@ public class ItemExosuitSensor extends ItemMod implements IExosuitSensor, IItemC
 		super(LibItemNames.EXOSUIT_SENSOR, VARIANTS);
 		setMaxStackSize(1);
 
-		GameRegistry.addRecipe(new SensorAttachRecipe());
-		GameRegistry.addRecipe(new SensorRemoveRecipe());
-		RecipeSorter.register("psi:sensorAttach", SensorAttachRecipe.class, Category.SHAPELESS, "");
-		RecipeSorter.register("psi:sensorRemove", SensorRemoveRecipe.class, Category.SHAPELESS, "");
+		new SensorAttachRecipe();
+		new SensorRemoveRecipe();
+		setCreativeTab(PsiCreativeTab.INSTANCE);
 	}
 
 	@Override

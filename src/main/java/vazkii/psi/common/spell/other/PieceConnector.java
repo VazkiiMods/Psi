@@ -13,9 +13,9 @@ package vazkii.psi.common.spell.other;
 import java.util.List;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.translation.I18n;
@@ -98,7 +98,7 @@ public class PieceConnector extends SpellPiece implements IRedirector {
 			double maxV = minV + 0.5;
 
 			GlStateManager.color(1F, 1F, 1F);
-			VertexBuffer wr = Tessellator.getInstance().getBuffer();
+			BufferBuilder wr = Tessellator.getInstance().getBuffer();
 			wr.begin(7, DefaultVertexFormats.POSITION_TEX);
 			wr.pos(0, 16, 0).tex(minU, maxV).endVertex();
 			wr.pos(16, 16, 0).tex(maxU, maxV).endVertex();

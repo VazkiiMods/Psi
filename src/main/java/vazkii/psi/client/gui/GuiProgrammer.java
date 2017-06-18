@@ -204,7 +204,7 @@ public class GuiProgrammer extends GuiScreen {
 			GlStateManager.disableRescaleNormal();
 
 			if(mouseX > cadX && mouseY > cadY && mouseX < cadX + 16 && mouseY < cadY + 16) {
-				List<String> itemTooltip = cad.getTooltip(mc.player, false);
+				List<String> itemTooltip = cad.getTooltip(mc.player, ()->false);
 				for (int i = 0; i < itemTooltip.size(); ++i)
 					if (i == 0)
 						itemTooltip.set(i, cad.getRarity().rarityColor + itemTooltip.get(i));

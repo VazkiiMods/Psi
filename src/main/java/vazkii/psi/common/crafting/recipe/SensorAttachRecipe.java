@@ -12,14 +12,19 @@ package vazkii.psi.common.crafting.recipe;
 
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
+import vazkii.arl.recipe.ModRecipe;
 import vazkii.psi.api.exosuit.IExosuitSensor;
 import vazkii.psi.api.exosuit.ISensorHoldable;
 
-public class SensorAttachRecipe implements IRecipe {
+public class SensorAttachRecipe extends ModRecipe {
+
+	public SensorAttachRecipe() {
+		super(new ResourceLocation("psi", "sensor_attach"));
+	}
 
 	@Override
 	public boolean matches(InventoryCrafting var1, World var2) {
@@ -66,11 +71,6 @@ public class SensorAttachRecipe implements IRecipe {
 	}
 
 	@Override
-	public int getRecipeSize() {
-		return 10;
-	}
-
-	@Override
 	public ItemStack getRecipeOutput() {
 		return ItemStack.EMPTY;
 	}
@@ -78,6 +78,11 @@ public class SensorAttachRecipe implements IRecipe {
 	@Override
 	public NonNullList<ItemStack> getRemainingItems(InventoryCrafting inv) {
 		return ForgeHooks.defaultRecipeGetRemainingItems(inv);
+	}
+
+	@Override
+	public boolean func_194133_a(int p_194133_1_, int p_194133_2_) {
+		return false;
 	}
 
 }

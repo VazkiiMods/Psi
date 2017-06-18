@@ -32,6 +32,7 @@ import vazkii.arl.util.ItemNBTHelper;
 import vazkii.psi.api.internal.VanillaPacketDispatcher;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.common.block.tile.TileProgrammer;
+import vazkii.psi.common.core.PsiCreativeTab;
 import vazkii.psi.common.core.handler.PsiSoundHandler;
 import vazkii.psi.common.crafting.recipe.BulletToDriveRecipe;
 import vazkii.psi.common.crafting.recipe.DriveDuplicateRecipe;
@@ -46,10 +47,9 @@ public class ItemSpellDrive extends ItemMod implements IPsiItem {
 		super(LibItemNames.SPELL_DRIVE);
 		setMaxStackSize(1);
 
-		GameRegistry.addRecipe(new DriveDuplicateRecipe());
-		GameRegistry.addRecipe(new BulletToDriveRecipe());
-		RecipeSorter.register("psi:driveDuplicate", DriveDuplicateRecipe.class, Category.SHAPELESS, "");
-		RecipeSorter.register("psi:bulletToDrive", BulletToDriveRecipe.class, Category.SHAPELESS, "");
+		new DriveDuplicateRecipe();
+		new BulletToDriveRecipe();
+		setCreativeTab(PsiCreativeTab.INSTANCE);
 	}
 
 	@Override

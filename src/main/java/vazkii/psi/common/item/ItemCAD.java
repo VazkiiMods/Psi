@@ -26,6 +26,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.color.IItemColor;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -49,11 +50,8 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.FakePlayer;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.oredict.RecipeSorter;
-import net.minecraftforge.oredict.RecipeSorter.Category;
 import vazkii.arl.interf.IItemColorProvider;
 import vazkii.arl.item.ItemMod;
 import vazkii.arl.util.ItemNBTHelper;
@@ -75,6 +73,7 @@ import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.BlockProgrammer;
 import vazkii.psi.common.block.base.ModBlocks;
+import vazkii.psi.common.core.PsiCreativeTab;
 import vazkii.psi.common.core.handler.ConfigHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
@@ -103,8 +102,8 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 		super(LibItemNames.CAD);
 		setMaxStackSize(1);
 
-		GameRegistry.addRecipe(new AssemblyScavengeRecipe());
-		RecipeSorter.register("psi:assemblyScavenge", AssemblyScavengeRecipe.class, Category.SHAPELESS, "");
+		new AssemblyScavengeRecipe();
+		setCreativeTab(PsiCreativeTab.INSTANCE);
 	}
 	
 	@Override
@@ -477,7 +476,7 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 	}
 	
 	@Override
-	public void getSubItems(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> subItems) {
+	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subItems) {
 		// Basic Iron CAD
 		subItems.add(makeCAD(new ItemStack(ModItems.cadAssembly, 1, 0)));
 
@@ -517,9 +516,9 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 				new ItemStack(ModItems.cadSocket, 1, 3),
 				new ItemStack(ModItems.cadBattery, 1, 2)));
 	}
-
+	
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
+	public void addInformation(ItemStack stack, World playerIn, List<String> tooltip, ITooltipFlag advanced) {
 		tooltipIfShift(tooltip, () -> {
 			String componentName = local(ISocketable.getSocketedItemName(stack, "psimisc.none"));
 			addToTooltip(tooltip, "psimisc.spellSelected", componentName);

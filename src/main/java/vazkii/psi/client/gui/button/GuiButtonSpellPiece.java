@@ -28,9 +28,9 @@ public class GuiButtonSpellPiece extends GuiButton {
 	}
 
 	@Override
-	public void drawButton(Minecraft mc, int mouseX, int mouseY) {
+	public void func_191745_a(Minecraft par1Minecraft, int par2, int par3, float pticks) {
 		if(enabled && visible) {
-			hovered = mouseX >= xPosition && mouseY >= yPosition && mouseX < xPosition + width && mouseY < yPosition + height;
+			hovered = par2 >= xPosition && par3 >= yPosition && par2 < xPosition + width && par3 < yPosition + height;
 			int i = getHoverState(hovered);
 
 			GlStateManager.pushMatrix();
