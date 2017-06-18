@@ -1,3 +1,5 @@
+r1.2-48
+*<b>Updated the mod to Minecraft 1.12.</b>
 r1.1-47
 *Incomplete spell groups are now shown in yellow instead of green. Don't be like old Vazkii, don't design terrible UX kids.
 *Fixed saved vectors not saving decimal points.
