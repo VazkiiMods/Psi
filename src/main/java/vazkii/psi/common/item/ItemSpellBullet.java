@@ -124,9 +124,10 @@ public class ItemSpellBullet extends ItemMod implements ISpellContainer, IPsiIte
 
 	@Override
 	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subItems) {
-		for(int i = 0; i < getVariants().length; i++)
-			if(i % 2 == 0)
-				subItems.add(new ItemStack(this, 1, i));
+		if(tab == getCreativeTab())
+			for(int i = 0; i < getVariants().length; i++)
+				if(i % 2 == 0)
+					subItems.add(new ItemStack(this, 1, i));
 	}
 	
 	@Override
