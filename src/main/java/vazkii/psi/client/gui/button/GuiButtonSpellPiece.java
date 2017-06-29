@@ -28,14 +28,14 @@ public class GuiButtonSpellPiece extends GuiButton {
 	}
 
 	@Override
-	public void func_191745_a(Minecraft par1Minecraft, int par2, int par3, float pticks) {
+	public void drawButton(Minecraft par1Minecraft, int par2, int par3, float pticks) {
 		if(enabled && visible) {
-			hovered = par2 >= xPosition && par3 >= yPosition && par2 < xPosition + width && par3 < yPosition + height;
+			hovered = par2 >= x && par3 >= y && par2 < x + width && par3 < y + height;
 			int i = getHoverState(hovered);
 
 			GlStateManager.pushMatrix();
 			GlStateManager.color(1F, 1F, 1F);
-			GlStateManager.translate(xPosition, yPosition, 0);
+			GlStateManager.translate(x, y, 0);
 			piece.draw();
 			GlStateManager.popMatrix();
 

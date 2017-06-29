@@ -12,6 +12,7 @@ package vazkii.psi.common.core.handler;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import vazkii.arl.util.ProxyRegistry;
 import vazkii.psi.common.lib.LibResources;
 
 public final class PsiSoundHandler {
@@ -23,11 +24,7 @@ public final class PsiSoundHandler {
 	public static SoundEvent levelUp;
 	public static SoundEvent loopcast;
 	
-	private static int size = 0;
-	
 	public static void init() {
-		size = SoundEvent.REGISTRY.getKeys().size();
-		
 		bulletCreate = register("bullet_create");
 		cadCreate = register("cad_create");
 		cadShoot = register("cad_shoot");
@@ -38,10 +35,9 @@ public final class PsiSoundHandler {
 	
 	public static SoundEvent register(String name) {
 		ResourceLocation loc = new ResourceLocation(LibResources.PREFIX_MOD + name);
-		SoundEvent e = new SoundEvent(loc);
+		SoundEvent e = new SoundEvent(loc).setRegistryName(loc);
 		
-		SoundEvent.REGISTRY.register(size, loc, e);
-		size++;
+		ProxyRegistry.register(e);
 		
 		return e;
 	}

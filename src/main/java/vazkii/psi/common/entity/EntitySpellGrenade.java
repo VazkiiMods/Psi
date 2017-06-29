@@ -71,9 +71,9 @@ public class EntitySpellGrenade extends EntitySpellProjectile {
 			sound = true;
 		}
 
-		posX = pos.hitVec.xCoord;
-		posY = pos.hitVec.yCoord;
-		posZ = pos.hitVec.zCoord;
+		posX = pos.hitVec.x;
+		posY = pos.hitVec.y;
+		posZ = pos.hitVec.z;
 		motionX = 0;
 		motionY = 0;
 		motionZ = 0;

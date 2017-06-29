@@ -40,8 +40,8 @@ public class CommonProxy {
 
 		ConfigHandler.init(event.getSuggestedConfigurationFile());
 
-		ModItems.init();
-		ModBlocks.init();
+		ModItems.preInit();
+		ModBlocks.preInit();
 		ModEntities.init();
 		ModSpellPieces.init();
 		ModCraftingRecipes.init();
@@ -54,7 +54,8 @@ public class CommonProxy {
 	}
 	
 	public void init(FMLInitializationEvent event) {
-		// proxy override
+		ModItems.init();
+		ModBlocks.init();
 	}
 
 	public EntityPlayer getClientPlayer() {

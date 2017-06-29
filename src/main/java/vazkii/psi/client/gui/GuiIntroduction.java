@@ -70,13 +70,13 @@ public class GuiIntroduction extends GuiScreen {
 
 		if(LibMisc.BETA_TESTING) {
 			String betaTest = I18n.translateToLocal("psimisc.wip");
-			mc.fontRendererObj.drawStringWithShadow(betaTest, left + xSize / 2 - mc.fontRendererObj.getStringWidth(betaTest) / 2, top - 12, 0xFFFFFF);
+			mc.fontRenderer.drawStringWithShadow(betaTest, left + xSize / 2 - mc.fontRenderer.getStringWidth(betaTest) / 2, top - 12, 0xFFFFFF);
 		}
 
 		TextHelper.renderText(width / 2 - 120, height / 2 - 30, 245, skip ? "psi.levelskip" : "psi.introduction", false, true, PersistencyHandler.persistentLevel);
 		if(skip) {
 			String loadPrompt = I18n.translateToLocal("psimisc.loadPrompt");
-			mc.fontRendererObj.drawStringWithShadow(loadPrompt, left + xSize / 2 - mc.fontRendererObj.getStringWidth(loadPrompt) / 2, top + 133, 0xFFFFFF);
+			mc.fontRenderer.drawStringWithShadow(loadPrompt, left + xSize / 2 - mc.fontRenderer.getStringWidth(loadPrompt) / 2, top + 133, 0xFFFFFF);
 		}
 	}
 

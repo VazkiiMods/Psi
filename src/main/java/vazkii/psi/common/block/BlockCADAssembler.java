@@ -15,6 +15,7 @@ import java.util.Random;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
@@ -30,6 +31,7 @@ import vazkii.arl.block.tile.TileSimpleInventory;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.base.IPsiBlock;
 import vazkii.psi.common.block.tile.TileCADAssembler;
+import vazkii.psi.common.core.PsiCreativeTab;
 import vazkii.psi.common.lib.LibBlockNames;
 import vazkii.psi.common.lib.LibGuiIDs;
 
@@ -42,6 +44,7 @@ public class BlockCADAssembler extends BlockFacing implements IPsiBlock {
 		setHardness(5.0F);
 		setResistance(10.0F);
 		setSoundType(SoundType.METAL);
+		setCreativeTab(PsiCreativeTab.INSTANCE);
 
 		random = new Random();
 	}
@@ -83,7 +86,7 @@ public class BlockCADAssembler extends BlockFacing implements IPsiBlock {
 						entityitem.motionZ = (float)random.nextGaussian() * f3;
 
 						if(itemstack.hasTagCompound())
-							entityitem.getEntityItem().setTagCompound((NBTTagCompound)itemstack.getTagCompound().copy());
+							entityitem.getItem().setTagCompound((NBTTagCompound)itemstack.getTagCompound().copy());
 					}
 				}
 			}

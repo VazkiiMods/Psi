@@ -45,8 +45,8 @@ public class EntitySpellProjectile extends EntityThrowable {
 	private static final String TAG_LAST_MOTION_Y = "lastMotionY";
 	private static final String TAG_LAST_MOTION_Z = "lastMotionZ";
 
-	private static final DataParameter<ItemStack> COLORIZER_DATA = EntityDataManager.createKey(EntitySpellProjectile.class, DataSerializers.OPTIONAL_ITEM_STACK);
-	private static final DataParameter<ItemStack> BULLET_DATA = EntityDataManager.createKey(EntitySpellProjectile.class, DataSerializers.OPTIONAL_ITEM_STACK);
+	private static final DataParameter<ItemStack> COLORIZER_DATA = EntityDataManager.createKey(EntitySpellProjectile.class, DataSerializers.ITEM_STACK);
+	private static final DataParameter<ItemStack> BULLET_DATA = EntityDataManager.createKey(EntitySpellProjectile.class, DataSerializers.ITEM_STACK);
 	private static final DataParameter<String> CASTER_NAME = EntityDataManager.createKey(EntitySpellProjectile.class, DataSerializers.STRING);
 
 	public SpellContext context;

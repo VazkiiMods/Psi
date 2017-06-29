@@ -25,14 +25,14 @@ public class GuiButtonBoolean extends GuiButton {
 	}
 	
 	@Override
-	public void func_191745_a(Minecraft par1Minecraft, int par2, int par3, float pticks) {
+	public void drawButton(Minecraft par1Minecraft, int par2, int par3, float pticks) {
 		if(enabled) {
-			hovered = par2 >= xPosition && par3 >= yPosition && par2 < xPosition + width && par3 < yPosition + height;
+			hovered = par2 >= x && par3 >= y && par2 < x + width && par3 < y + height;
 			int k = getHoverState(hovered);
 
 			par1Minecraft.renderEngine.bindTexture(GuiIntroduction.texture);
 			GlStateManager.color(1F, 1F, 1F, 1F);
-			drawTexturedModalRect(xPosition, yPosition, yes ? 0 : 12, k == 2 ? 184 : 195, width, height);
+			drawTexturedModalRect(x, y, yes ? 0 : 12, k == 2 ? 184 : 195, width, height);
 		}
 	}
 

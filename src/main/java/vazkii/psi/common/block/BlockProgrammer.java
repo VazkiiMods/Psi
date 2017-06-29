@@ -39,6 +39,7 @@ import vazkii.psi.api.spell.ISpellSettable;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.base.IPsiBlock;
 import vazkii.psi.common.block.tile.TileProgrammer;
+import vazkii.psi.common.core.PsiCreativeTab;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
 import vazkii.psi.common.core.handler.PsiSoundHandler;
@@ -54,6 +55,7 @@ public class BlockProgrammer extends BlockFacing implements IPsiBlock {
 		setHardness(5.0F);
 		setResistance(10.0F);
 		setSoundType(SoundType.METAL);
+		setCreativeTab(PsiCreativeTab.INSTANCE);
 	}
 
 	@Override

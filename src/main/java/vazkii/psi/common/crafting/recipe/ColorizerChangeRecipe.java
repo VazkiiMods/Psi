@@ -1,5 +1,5 @@
 /**
- * This class was created by <WireSegal>. It's distributed as
+* This class was created by <WireSegal>. It's distributed as
  * part of the Psi Mod. Get the Source Code in github:
  * https://github.com/Vazkii/Psi
  *
@@ -103,7 +103,7 @@ public class ColorizerChangeRecipe extends ModRecipe {
 	}
 
 	@Override
-	public boolean func_194133_a(int p_194133_1_, int p_194133_2_) {
+	public boolean canFit(int p_194133_1_, int p_194133_2_) {
 		return false;
 	}
 

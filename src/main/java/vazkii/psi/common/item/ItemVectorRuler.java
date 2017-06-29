@@ -103,7 +103,7 @@ public class ItemVectorRuler extends ItemMod implements IHUDItem, IPsiItem {
 	public void drawHUD(ScaledResolution res, float partTicks, ItemStack stack) {
 		String s = getVector(stack).toString();
 		
-		FontRenderer font = Minecraft.getMinecraft().fontRendererObj;
+		FontRenderer font = Minecraft.getMinecraft().fontRenderer;
 		int w = font.getStringWidth(s);
 		font.drawStringWithShadow(s, res.getScaledWidth() / 2 - w / 2, res.getScaledHeight() / 2 + 10, 0xFFFFFFFF);
 	}

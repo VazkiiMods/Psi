@@ -29,7 +29,7 @@ public class MessageSkipToLevel extends NetworkMessage {
 
 	@Override
 	public IMessage handleMessage(MessageContext context) {
-		EntityPlayer player = context.getServerHandler().playerEntity;
+		EntityPlayer player = context.getServerHandler().player;
 		PlayerData data = PlayerDataHandler.get(player);
 		data.skipToLevel(level);
 

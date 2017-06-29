@@ -41,7 +41,7 @@ public class PieceOperatorEntityAxialLook extends PieceOperator {
 		if(e == null)
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_TARGET);
 		Vec3d look = e.getLook(1F);
-		EnumFacing facing = EnumFacing.getFacingFromVector((float) look.xCoord, (float) look.yCoord, (float) look.zCoord);
+		EnumFacing facing = EnumFacing.getFacingFromVector((float) look.x, (float) look.y, (float) look.z);
 
 		return new Vector3(facing.getFrontOffsetX(), facing.getFrontOffsetY(), facing.getFrontOffsetZ());
 	}

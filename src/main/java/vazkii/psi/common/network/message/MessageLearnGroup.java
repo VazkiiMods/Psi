@@ -31,7 +31,7 @@ public class MessageLearnGroup extends NetworkMessage {
 
 	@Override
 	public IMessage handleMessage(MessageContext context) {
-		EntityPlayer player = context.getServerHandler().playerEntity;
+		EntityPlayer player = context.getServerHandler().player;
 		PlayerData data = PlayerDataHandler.get(player);
 		PieceGroup group = PsiAPI.groupsForName.get(this.group);
 		if(data.getLevelPoints() > 0 && group.isAvailable(data))

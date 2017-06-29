@@ -66,10 +66,10 @@ public class PieceOperatorFocusedEntity extends PieceOperator {
 			distance = pos.hitVec.distanceTo(positionVector);
 
 		Vec3d lookVector = e.getLookVec();
-		Vec3d reachVector = positionVector.addVector(lookVector.xCoord * finalDistance, lookVector.yCoord * finalDistance, lookVector.zCoord * finalDistance);
+		Vec3d reachVector = positionVector.addVector(lookVector.x * finalDistance, lookVector.y * finalDistance, lookVector.z * finalDistance);
 
 		Entity lookedEntity = null;
-		List<Entity> entitiesInBoundingBox = e.getEntityWorld().getEntitiesWithinAABBExcludingEntity(e, e.getEntityBoundingBox().addCoord(lookVector.xCoord * finalDistance, lookVector.yCoord * finalDistance, lookVector.zCoord * finalDistance).expand(1F, 1F, 1F));
+		List<Entity> entitiesInBoundingBox = e.getEntityWorld().getEntitiesWithinAABBExcludingEntity(e, e.getEntityBoundingBox().grow(lookVector.x * finalDistance, lookVector.y * finalDistance, lookVector.z * finalDistance).expand(1F, 1F, 1F));
 		double minDistance = distance;
 
 		for(Entity entity : entitiesInBoundingBox) {
@@ -78,7 +78,7 @@ public class PieceOperatorFocusedEntity extends PieceOperator {
 				AxisAlignedBB hitbox = entity.getEntityBoundingBox().expand(collisionBorderSize, collisionBorderSize, collisionBorderSize);
 				RayTraceResult interceptPosition = hitbox.calculateIntercept(positionVector, reachVector);
 
-				if(hitbox.isVecInside(positionVector)) {
+				if(hitbox.contains(positionVector)) {
 					if(0.0D < minDistance || minDistance == 0.0D) {
 						lookedEntity = entity;
 						minDistance = 0.0D;

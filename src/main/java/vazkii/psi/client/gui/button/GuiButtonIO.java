@@ -29,14 +29,14 @@ public class GuiButtonIO extends GuiButton {
 	}
 
 	@Override
-	public void func_191745_a(Minecraft par1Minecraft, int par2, int par3, float pticks) {
+	public void drawButton(Minecraft par1Minecraft, int par2, int par3, float pticks) {
 		if(enabled && !gui.takingScreenshot) {
-			hovered = par2 >= xPosition && par3 >= yPosition && par2 < xPosition + width && par3 < yPosition + height;
+			hovered = par2 >= x && par3 >= y && par2 < x + width && par3 < y + height;
 			int k = getHoverState(hovered);
 
 			par1Minecraft.renderEngine.bindTexture(GuiProgrammer.texture);
 			GlStateManager.color(1F, 1F, 1F, 1F);
-			drawTexturedModalRect(xPosition, yPosition, k == 2 ? 186 : 174, out ? 169 : 181, width, height);
+			drawTexturedModalRect(x, y, k == 2 ? 186 : 174, out ? 169 : 181, width, height);
 
 			if(k == 2) {
 				gui.tooltip.add((out ? TextFormatting.RED : TextFormatting.BLUE) + I18n.translateToLocal(out ? "psimisc.exportToClipboard" : "psimisc.importFromClipboard"));

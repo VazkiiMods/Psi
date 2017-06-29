@@ -80,7 +80,7 @@ public class BulletToDriveRecipe extends ModRecipe {
 	}
 
 	@Override
-	public boolean func_194133_a(int p_194133_1_, int p_194133_2_) {
+	public boolean canFit(int p_194133_1_, int p_194133_2_) {
 		return false;
 	}
 

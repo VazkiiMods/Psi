@@ -190,7 +190,7 @@ public class GuiSocketSelect extends GuiScreen {
 				int xsp = xp - 4;
 				int ysp = yp;
 				String name = "\u00a7" + c + stack.getDisplayName();
-				int width = fontRendererObj.getStringWidth(name);
+				int width = fontRenderer.getStringWidth(name);
 
 				double mod = 0.6;
 				int xdp = (int) ((xp - x) * mod + x);
@@ -203,7 +203,7 @@ public class GuiSocketSelect extends GuiScreen {
 				if(ysp < y)
 					ysp -= 9;
 
-				fontRendererObj.drawStringWithShadow(name, xsp, ysp, 0xFFFFFF);
+				fontRenderer.drawStringWithShadow(name, xsp, ysp, 0xFFFFFF);
 
 				mod = 0.8;
 				xdp = (int) ((xp - x) * mod + x);

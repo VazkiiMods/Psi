@@ -29,7 +29,7 @@ import vazkii.psi.common.block.tile.TileProgrammer;
 public class RenderTileProgrammer extends TileEntitySpecialRenderer<TileProgrammer> {
 
 	@Override
-	public void func_192841_a(TileProgrammer te, double x, double y, double z, float partialTicks, int destroyStage, float something) {
+	public void render(TileProgrammer te, double x, double y, double z, float partialTicks, int destroyStage, float something) {
 		if(te.isEnabled()) {
 			GlStateManager.pushMatrix();
 			GlStateManager.disableLighting();
@@ -79,8 +79,8 @@ public class RenderTileProgrammer extends TileEntitySpecialRenderer<TileProgramm
 			RenderHelper.drawTexturedModalRect(-7, -7, 0, 0, 0, 174, 184, 1F / 256F, 1F / 256F);
 
 			GlStateManager.translate(0F, 0F, 0.01F);
-			mc.fontRendererObj.drawString(I18n.translateToLocal("psimisc.name"), 0, 164, 0xFFFFFF);
-			mc.fontRendererObj.drawString(te.spell.name, 38, 164, 0xFFFFFF);
+			mc.fontRenderer.drawString(I18n.translateToLocal("psimisc.name"), 0, 164, 0xFFFFFF);
+			mc.fontRenderer.drawString(te.spell.name, 38, 164, 0xFFFFFF);
 
 			ShaderHandler.releaseShader();
 			GlStateManager.enableLighting();

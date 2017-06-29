@@ -33,7 +33,7 @@ public class MessageChangeControllerSlot extends NetworkMessage {
 
 	@Override
 	public IMessage handleMessage(MessageContext context) {
-		EntityPlayerMP player = context.getServerHandler().playerEntity;
+		EntityPlayerMP player = context.getServerHandler().player;
 		ItemStack stack = player.getHeldItem(EnumHand.MAIN_HAND);
 		if(!stack.isEmpty() && stack.getItem() instanceof ISocketableController) {
 			((ISocketableController) stack.getItem()).setSelectedSlot(player, stack, controlSlot, slot);

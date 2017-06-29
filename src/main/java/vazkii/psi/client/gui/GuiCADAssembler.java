@@ -42,11 +42,18 @@ public class GuiCADAssembler extends GuiContainer {
 	}
 
 	@Override
+    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+        this.drawDefaultBackground();
+        super.drawScreen(mouseX, mouseY, partialTicks);
+        this.renderHoveredToolTip(mouseX, mouseY);
+    }
+	
+	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 		int color = 4210752;
 
 		String name = new ItemStack(ModBlocks.cadAssembler).getDisplayName();
-		fontRendererObj.drawString(name, xSize / 2 - fontRendererObj.getStringWidth(name) / 2, 10, color);
+		fontRenderer.drawString(name, xSize / 2 - fontRenderer.getStringWidth(name) / 2, 10, color);
 
 		ItemStack cad = assembler.getStackInSlot(0);
 		if(!cad.isEmpty()) {
@@ -56,11 +63,11 @@ public class GuiCADAssembler extends GuiContainer {
 			ICAD cadItem = (ICAD) cad.getItem();
 			String stats = I18n.translateToLocal("psimisc.stats");
 			String s = TextFormatting.BOLD + stats;
-			fontRendererObj.drawStringWithShadow(s, 213 - fontRendererObj.getStringWidth(s) / 2, 34, color);
+			fontRenderer.drawStringWithShadow(s, 213 - fontRenderer.getStringWidth(s) / 2, 34, color);
 
 			for(EnumCADStat stat : EnumCADStat.class.getEnumConstants()) {
 				s = TextFormatting.AQUA + I18n.translateToLocal(stat.getName()) + TextFormatting.RESET + ": " + cadItem.getStatValue(cad, stat);
-				fontRendererObj.drawStringWithShadow(s, 179, 50 + i * 10, color);
+				fontRenderer.drawStringWithShadow(s, 179, 50 + i * 10, color);
 				i++;
 			}
 		}

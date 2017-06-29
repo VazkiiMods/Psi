@@ -57,10 +57,10 @@ public class GuiButtonSideConfig extends GuiButton {
 	}
 
 	@Override
-	public void func_191745_a(Minecraft mc, int par2, int par3, float pticks) {
+	public void drawButton(Minecraft mc, int par2, int par3, float pticks) {
 		if(enabled && visible && !gui.takingScreenshot) {
-			int minX = xPosition;
-			int minY = yPosition;
+			int minX = x;
+			int minY = y;
 			int maxX = minX + 8;
 			int maxY = minY + 8;
 

@@ -32,7 +32,7 @@ public class PieceSelectorNearbySmeltables extends PieceSelectorNearby {
 	public boolean accept(Entity e) {
 		if(e instanceof EntityItem) {
 			EntityItem eitem = (EntityItem) e;
-			ItemStack stack = eitem.getEntityItem();
+			ItemStack stack = eitem.getItem();
 			ItemStack result = FurnaceRecipes.instance().getSmeltingResult(stack);
 		
 			return result != null;

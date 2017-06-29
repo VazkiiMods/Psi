@@ -226,8 +226,8 @@ public final class HUDHandler {
 		String s2 = "" + cad.getStoredPsi(cadStack);
 
 		int offBar = 22;
-		int offStr1 = 7 + mc.fontRendererObj.getStringWidth(s1);
-		int offStr2 = 7 + mc.fontRendererObj.getStringWidth(s2);
+		int offStr1 = 7 + mc.fontRenderer.getStringWidth(s1);
+		int offStr2 = 7 + mc.fontRenderer.getStringWidth(s2);
 
 		if (!right) {
 			offBar = 6;
@@ -239,12 +239,12 @@ public final class HUDHandler {
 		GlStateManager.color(color.getRed() / 255F, color.getGreen() / 255F, color.getBlue() / 255F);
 
 		Gui.drawModalRectWithCustomSizedTexture(x - offBar, -2, 0, 140, width, height, 64, 256);
-		mc.fontRendererObj.drawStringWithShadow(s1, x - offStr1, -11, 0xFFFFFF);
+		mc.fontRenderer.drawStringWithShadow(s1, x - offStr1, -11, 0xFFFFFF);
 		GlStateManager.popMatrix();
 
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(0F, Math.max(textY + 3, origY + 100), 0F);
-		mc.fontRendererObj.drawStringWithShadow(s2, x - offStr2, 0, 0xFFFFFF);
+		mc.fontRenderer.drawStringWithShadow(s2, x - offStr2, 0, 0xFFFFFF);
 		GlStateManager.popMatrix();
 		GlStateManager.popMatrix();
 	}
@@ -268,16 +268,16 @@ public final class HUDHandler {
 			int alpha = Math.min(255, (int) ((ticks - pticks) * 256.0F / 10.0F));
 			int color = ICADColorizer.DEFAULT_SPELL_COLOR + (alpha << 24);
 
-			int x = res.getScaledWidth() / 2 - mc.fontRendererObj.getStringWidth(name) / 2;
+			int x = res.getScaledWidth() / 2 - mc.fontRenderer.getStringWidth(name) / 2;
 			int y = res.getScaledHeight() - 71;
 			if (mc.player.capabilities.isCreativeMode)
 				y += 14;
 
 			GlStateManager.enableBlend();
 			GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-			mc.fontRendererObj.drawStringWithShadow(name, x, y, color);
+			mc.fontRenderer.drawStringWithShadow(name, x, y, color);
 
-			int w = mc.fontRendererObj.getStringWidth(name);
+			int w = mc.fontRenderer.getStringWidth(name);
 			GlStateManager.pushMatrix();
 			GlStateManager.translate(x + w, y - 6, 0);
 			GlStateManager.scale(alpha / 255F, 1F, 1);
@@ -316,7 +316,7 @@ public final class HUDHandler {
 		int effLen = Math.min(len, len * levelDisplayTime / fadeTime);
 		levelUp = levelUp.substring(0, effLen);
 
-		int swidth = mc.fontRendererObj.getStringWidth(levelUp);
+		int swidth = mc.fontRenderer.getStringWidth(levelUp);
 		int x = res.getScaledWidth() / 4 - swidth / 2;
 		int y = 25;
 		float a = 1F - Math.max(0F, Math.min(1F, (float) (levelDisplayTime - time) / fadeoutTime));
@@ -324,10 +324,10 @@ public final class HUDHandler {
 
 		GlStateManager.pushMatrix();
 		GlStateManager.scale(2F, 2F, 2F);
-		mc.fontRendererObj.drawStringWithShadow(levelUp, x, y, 0x0013C5FF + alphaOverlay);
+		mc.fontRenderer.drawStringWithShadow(levelUp, x, y, 0x0013C5FF + alphaOverlay);
 
 		String currLevel = "" + levelValue;
-		swidth = mc.fontRendererObj.getStringWidth(currLevel);
+		swidth = mc.fontRenderer.getStringWidth(currLevel);
 		x = res.getScaledWidth() / 4;
 		y += 10;
 
@@ -337,34 +337,34 @@ public final class HUDHandler {
 
 			float a1 = Math.min(1F, (float) (levelDisplayTime - fadeTime) / fadeTime) * a;
 			int color1 = 0x00FFFFFF + ((int) (a1 * 0xFF) << 24);
-			mc.fontRendererObj.drawStringWithShadow(TextFormatting.GOLD + currLevel, x, y, color1);
+			mc.fontRenderer.drawStringWithShadow(TextFormatting.GOLD + currLevel, x, y, color1);
 		}
 		GlStateManager.popMatrix();
 
 		if (levelDisplayTime > fadeTime * 2) {
 			String s = I18n.translateToLocal("psimisc.levelUpInfo1");
-			swidth = mc.fontRendererObj.getStringWidth(s);
+			swidth = mc.fontRenderer.getStringWidth(s);
 			len = s.length();
 			effLen = Math.min(len, len * (levelDisplayTime - fadeTime * 2) / fadeTime);
 			s = s.substring(0, effLen);
 			x = res.getScaledWidth() / 2 - swidth / 2;
 			y += 65;
 
-			mc.fontRendererObj.drawStringWithShadow(s, x, y, 0x00FFFFFF + alphaOverlay);
+			mc.fontRenderer.drawStringWithShadow(s, x, y, 0x00FFFFFF + alphaOverlay);
 		}
 
 		if (levelDisplayTime > fadeTime * 3) {
 			String s = I18n.translateToLocal("psimisc.levelUpInfo2");
 			s = String.format(s, TextFormatting.GREEN + I18n.translateToLocal(KeybindHandler.keybind.getDisplayName())
 					+ TextFormatting.RESET);
-			swidth = mc.fontRendererObj.getStringWidth(s);
+			swidth = mc.fontRenderer.getStringWidth(s);
 			len = s.length();
 			effLen = Math.min(len, len * (levelDisplayTime - fadeTime * 3) / fadeTime);
 			s = s.substring(0, effLen);
 			x = res.getScaledWidth() / 2 - swidth / 2;
 			y += 10;
 
-			mc.fontRendererObj.drawStringWithShadow(s, x, y, 0x00FFFFFF + alphaOverlay);
+			mc.fontRenderer.drawStringWithShadow(s, x, y, 0x00FFFFFF + alphaOverlay);
 		}
 
 		GlStateManager.enableAlpha();
@@ -416,7 +416,7 @@ public final class HUDHandler {
 				text = "\u221E";
 
 			int color = 0x00FFFFFF | (int) (alpha * 0xFF) << 24;
-			mc.fontRendererObj.drawStringWithShadow(text, x + 20, y + 6, color);
+			mc.fontRenderer.drawStringWithShadow(text, x + 20, y + 6, color);
 
 			GlStateManager.disableBlend();
 			GlStateManager.enableAlpha();

@@ -31,7 +31,7 @@ public class MessageSpellModified extends TileEntityMessage<TileProgrammer> {
 	public Runnable getAction() {
 		return () -> {
 			if(tile != null) {
-				if(tile.playerLock == null || tile.playerLock.isEmpty() || tile.playerLock.equals(context.getServerHandler().playerEntity.getName())) {
+				if(tile.playerLock == null || tile.playerLock.isEmpty() || tile.playerLock.equals(context.getServerHandler().player.getName())) {
 					tile.spell = spell;
 					tile.onSpellChanged();
 					VanillaPacketDispatcher.dispatchTEToNearbyPlayers(tile);

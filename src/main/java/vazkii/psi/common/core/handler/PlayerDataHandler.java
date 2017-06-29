@@ -180,8 +180,8 @@ public class PlayerDataHandler {
 				PlayerDataHandler.get(player).damage(event.getAmount());
 
 				EntityLivingBase attacker = null;
-				if(event.getSource().getEntity() != null && event.getSource().getEntity() instanceof EntityLivingBase)
-					attacker = (EntityLivingBase) event.getSource().getEntity();
+				if(event.getSource().getTrueSource() != null && event.getSource().getTrueSource() instanceof EntityLivingBase)
+					attacker = (EntityLivingBase) event.getSource().getTrueSource();
 
 				PsiArmorEvent.post(new PsiArmorEvent(player, PsiArmorEvent.DAMAGE, event.getAmount(), attacker));
 				if(event.getSource().isFireDamage())

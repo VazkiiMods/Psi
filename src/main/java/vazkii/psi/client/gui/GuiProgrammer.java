@@ -124,19 +124,19 @@ public class GuiProgrammer extends GuiScreen {
 		panelWidth = 100;
 		panelHeight = 125;
 		cursorX = cursorY = -1;
-		searchField = new GuiTextField(0, fontRendererObj, 0, 0, 70, 10);
+		searchField = new GuiTextField(0, fontRenderer, 0, 0, 70, 10);
 		searchField.setCanLoseFocus(false);
 		searchField.setFocused(true);
 		searchField.setEnableBackgroundDrawing(false);
 
 		spectator = programmer.playerLock != null && !programmer.playerLock.isEmpty() && !programmer.playerLock.equals(mc.player.getName());
 
-		spellNameField = new GuiTextField(0, fontRendererObj, left + xSize - 130, top + ySize - 14, 120, 10);
+		spellNameField = new GuiTextField(0, fontRenderer, left + xSize - 130, top + ySize - 14, 120, 10);
 		spellNameField.setEnableBackgroundDrawing(false);
 		spellNameField.setMaxStringLength(20);
 		spellNameField.setEnabled(!spectator);
 		
-		commentField = new GuiTextField(0, fontRendererObj, left, top + ySize / 2 - 10, xSize, 20);
+		commentField = new GuiTextField(0, fontRenderer, left, top + ySize / 2 - 10, xSize, 20);
 		commentField.setEnabled(false);
 		commentField.setVisible(false);
 		commentField.setMaxStringLength(500);
@@ -152,14 +152,14 @@ public class GuiProgrammer extends GuiScreen {
 		if(!spectator)
 			buttonList.add(new GuiButtonIO(this, left + xSize + 2, top + ySize - 16, false));
 	}
-
+	
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		if(programmer == null || programmer.getWorld().getTileEntity(programmer.getPos()) != programmer || !programmer.canPlayerInteract(mc.player)) {
 			mc.displayGuiScreen(null);
 			return;
 		}
-
+		
 		String comment = "";
 		int color = 0xFFFFFF;
 
@@ -240,7 +240,7 @@ public class GuiProgrammer extends GuiScreen {
 
 				GlStateManager.color(1F, 1F, 1F);
 				drawTexturedModalRect(statX, statY, (stat.ordinal() + 1) * 12, ySize + 16, 12, 12);
-				mc.fontRendererObj.drawString(s, statX + 16, statY + 2, cadStat != null && cadVal < val && cadVal != -1 ? 0xFF6666 : 0xFFFFFF);
+				mc.fontRenderer.drawString(s, statX + 16, statY + 2, cadStat != null && cadVal < val && cadVal != -1 ? 0xFF6666 : 0xFFFFFF);
 				mc.getTextureManager().bindTexture(texture);
 
 				if(mouseX > statX && mouseY > statY && mouseX < statX + 12 && mouseY < statY + 12) {
@@ -260,7 +260,7 @@ public class GuiProgrammer extends GuiScreen {
 		if(configEnabled && !takingScreenshot) {
 			drawTexturedModalRect(left - 81, top + 55, xSize, 30, 81, 115);
 			String configStr = I18n.format("psimisc.config");
-			mc.fontRendererObj.drawString(configStr, left - mc.fontRendererObj.getStringWidth(configStr) - 2, top + 45, 0xFFFFFF);
+			mc.fontRenderer.drawString(configStr, left - mc.fontRenderer.getStringWidth(configStr) - 2, top + 45, 0xFFFFFF);
 
 			int i = 0;
 			if(piece != null) {
@@ -281,7 +281,7 @@ public class GuiProgrammer extends GuiScreen {
 					if(i == param)
 						localized = TextFormatting.UNDERLINE + localized;
 
-					mc.fontRendererObj.drawString(localized, x, y, color);
+					mc.fontRenderer.drawString(localized, x, y, color);
 					i++;
 				}
 			}
@@ -305,7 +305,7 @@ public class GuiProgrammer extends GuiScreen {
 			if(errorPos != null && errorPos.getLeft() != -1 && errorPos.getRight() != -1) {
 				int errorX = errorPos.getLeft() * 18 + 12;
 				int errorY = errorPos.getRight() * 18 + 8;
-				mc.fontRendererObj.drawStringWithShadow("!!", errorX, errorY, 0xFF0000);
+				mc.fontRenderer.drawStringWithShadow("!!", errorX, errorY, 0xFF0000);
 			}
 		}
 
@@ -345,26 +345,26 @@ public class GuiProgrammer extends GuiScreen {
 			int topyText = topy;
 			if(spectator) {
 				String betaTest = TextFormatting.RED + I18n.format("psimisc.spectator");
-				mc.fontRendererObj.drawStringWithShadow(betaTest, left + xSize / 2 - mc.fontRendererObj.getStringWidth(betaTest) / 2, topyText, 0xFFFFFF);
+				mc.fontRenderer.drawStringWithShadow(betaTest, left + xSize / 2 - mc.fontRenderer.getStringWidth(betaTest) / 2, topyText, 0xFFFFFF);
 				topyText -= 10;
 			}
 			if(LibMisc.BETA_TESTING) {
 				String betaTest = I18n.format("psimisc.wip");
-				mc.fontRendererObj.drawStringWithShadow(betaTest, left + xSize / 2 - mc.fontRendererObj.getStringWidth(betaTest) / 2, topyText, 0xFFFFFF);
+				mc.fontRenderer.drawStringWithShadow(betaTest, left + xSize / 2 - mc.fontRenderer.getStringWidth(betaTest) / 2, topyText, 0xFFFFFF);
 			}
 			if(piece != null) {
 				String name = I18n.format(piece.getUnlocalizedName());
-				mc.fontRendererObj.drawStringWithShadow(name, left + xSize / 2 - mc.fontRendererObj.getStringWidth(name) / 2, topyText, 0xFFFFFF);
+				mc.fontRenderer.drawStringWithShadow(name, left + xSize / 2 - mc.fontRenderer.getStringWidth(name) / 2, topyText, 0xFFFFFF);
 			}
 			
 			String coords = "";
 			if(SpellGrid.exists(cursorX, cursorY))
 				coords = I18n.format("psimisc.programmerCoords", selectedX + 1, selectedY + 1, cursorX + 1, cursorY + 1);
 			else coords = I18n.format("psimisc.programmerCoordsNoCursor", selectedX + 1, selectedY + 1);
-			mc.fontRendererObj.drawString(coords, left + 4, topy + ySize + 14, 0x44FFFFFF);
+			mc.fontRenderer.drawString(coords, left + 4, topy + ySize + 14, 0x44FFFFFF);
 		}
 
-		mc.fontRendererObj.drawStringWithShadow(I18n.format("psimisc.name"), left + padLeft, spellNameField.yPosition + 1, color);
+		mc.fontRenderer.drawStringWithShadow(I18n.format("psimisc.name"), left + padLeft, spellNameField.y + 1, color);
 		spellNameField.drawTextBox();
 		if(panelEnabled) {
 			tooltip.clear();
@@ -372,19 +372,19 @@ public class GuiProgrammer extends GuiScreen {
 
 			drawRect(panelX, panelY, panelX + panelWidth, panelY + panelHeight, 0x88000000);
 			GlStateManager.color(1F, 1F, 1F);
-			drawTexturedModalRect(searchField.xPosition - 14, searchField.yPosition - 2, 0, ySize + 16, 12, 12);
+			drawTexturedModalRect(searchField.x - 14, searchField.y - 2, 0, ySize + 16, 12, 12);
 			searchField.drawTextBox();
 
 			String s = page + 1 + "/" + getPageCount();
-			fontRendererObj.drawStringWithShadow(s, panelX + panelWidth / 2 - fontRendererObj.getStringWidth(s) / 2, panelY + panelHeight - 12, 0xFFFFFF);
+			fontRenderer.drawStringWithShadow(s, panelX + panelWidth / 2 - fontRenderer.getStringWidth(s) / 2, panelY + panelHeight - 12, 0xFFFFFF);
 		}
 		
 		commentField.drawTextBox();
 		if(commentEnabled) {
 			String s = I18n.format("psimisc.enterCommit");
-			mc.fontRendererObj.drawStringWithShadow(s, left + xSize / 2 - mc.fontRendererObj.getStringWidth(s) / 2, commentField.yPosition + 24, 0xFFFFFF);
+			mc.fontRenderer.drawStringWithShadow(s, left + xSize / 2 - mc.fontRenderer.getStringWidth(s) / 2, commentField.y + 24, 0xFFFFFF);
 			s = I18n.format("psimisc.semicolonLine");
-			mc.fontRendererObj.drawStringWithShadow(s, left + xSize / 2 - mc.fontRendererObj.getStringWidth(s) / 2, commentField.yPosition + 34, 0xFFFFFF);
+			mc.fontRenderer.drawStringWithShadow(s, left + xSize / 2 - mc.fontRenderer.getStringWidth(s) / 2, commentField.y + 34, 0xFFFFFF);
 		}
 		GlStateManager.color(1F, 1F, 1F);
 		
@@ -815,8 +815,8 @@ public class GuiProgrammer extends GuiScreen {
 		panelX = gridLeft + (selectedX + 1) * 18;
 		panelY = gridTop;
 
-		searchField.xPosition = panelX + 18;
-		searchField.yPosition = panelY + 4;
+		searchField.x = panelX + 18;
+		searchField.y = panelY + 4;
 		searchField.setText("");
 		spellNameField.setFocused(false);
 

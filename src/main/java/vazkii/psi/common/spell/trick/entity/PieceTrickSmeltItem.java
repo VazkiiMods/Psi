@@ -51,7 +51,7 @@ public class PieceTrickSmeltItem extends PieceTrick {
 
 		if(targetVal instanceof EntityItem && !targetVal.isDead) {
 			EntityItem eitem = (EntityItem) targetVal;
-			ItemStack stack = eitem.getEntityItem();
+			ItemStack stack = eitem.getItem();
 			ItemStack result = FurnaceRecipes.instance().getSmeltingResult(stack);
 
 			if(result != null) {

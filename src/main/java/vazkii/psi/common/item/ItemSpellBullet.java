@@ -174,7 +174,7 @@ public class ItemSpellBullet extends ItemMod implements ISpellContainer, IPsiIte
 						ItemStack cad = PsiAPI.getPlayerCAD(context.caster);
 						ItemStack colorizer = ((ICAD) cad.getItem()).getComponentInSlot(cad, EnumCADComponent.DYE);
 						circle.setInfo(context.caster, colorizer, stack);
-						circle.setPosition(pos.hitVec.xCoord, pos.hitVec.yCoord, pos.hitVec.zCoord);
+						circle.setPosition(pos.hitVec.x, pos.hitVec.y, pos.hitVec.z);
 						circle.getEntityWorld().spawnEntity(circle);
 					}
 				} catch(SpellRuntimeException e) { }

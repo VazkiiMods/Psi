@@ -49,8 +49,8 @@ public class EntitySpellCircle extends Entity {
 	private static final String TAG_LOOK_Z = "savedLookZ";
 
 	// Generics are borked :|
-	public static final DataParameter<ItemStack> COLORIZER_DATA = EntityDataManager.createKey(EntitySpellCircle.class, DataSerializers.OPTIONAL_ITEM_STACK);
-	private static final DataParameter<ItemStack> BULLET_DATA = EntityDataManager.createKey(EntitySpellCircle.class, DataSerializers.OPTIONAL_ITEM_STACK);
+	public static final DataParameter<ItemStack> COLORIZER_DATA = EntityDataManager.createKey(EntitySpellCircle.class, DataSerializers.ITEM_STACK);
+	private static final DataParameter<ItemStack> BULLET_DATA = EntityDataManager.createKey(EntitySpellCircle.class, DataSerializers.ITEM_STACK);
 	private static final DataParameter<String> CASTER_NAME = EntityDataManager.createKey(EntitySpellCircle.class, DataSerializers.STRING);
 	private static final DataParameter<Integer> TIME_ALIVE = EntityDataManager.createKey(EntitySpellCircle.class, DataSerializers.VARINT);
 	private static final DataParameter<Integer> TIMES_CAST = EntityDataManager.createKey(EntitySpellCircle.class, DataSerializers.VARINT);
@@ -70,9 +70,9 @@ public class EntitySpellCircle extends Entity {
 		dataManager.set(CASTER_NAME, player.getName());
 
 		Vec3d lookVec = player.getLook(1F);
-		dataManager.set(LOOK_X, (float) lookVec.xCoord);
-		dataManager.set(LOOK_Y, (float) lookVec.yCoord);
-		dataManager.set(LOOK_Z, (float) lookVec.zCoord);
+		dataManager.set(LOOK_X, (float) lookVec.x);
+		dataManager.set(LOOK_Y, (float) lookVec.y);
+		dataManager.set(LOOK_Z, (float) lookVec.z);
 		return this;
 	}
 

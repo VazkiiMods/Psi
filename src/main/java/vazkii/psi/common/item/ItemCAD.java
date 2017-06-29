@@ -221,11 +221,11 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 
 		boolean did = false;
 		for(EntityItem item : items) {
-			ItemStack stack = item.getEntityItem();
+			ItemStack stack = item.getItem();
 			if(!stack.isEmpty() && ItemStack.areItemsEqual(stack, in)) {
 				ItemStack outCopy = out.copy();
 				outCopy.setCount(stack.getCount());
-				item.setEntityItemStack(outCopy);
+				item.setItem(outCopy);
 				did = true;
 
 				for(int i = 0; i < 5; i++) {

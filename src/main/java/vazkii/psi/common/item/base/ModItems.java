@@ -66,7 +66,7 @@ public final class ModItems {
 	public static ItemModArmor psimetalExosuitLeggings;
 	public static ItemModArmor psimetalExosuitBoots;
 
-	public static void init() {
+	public static void preInit() {
 		material = new ItemMaterial();
 
 		cadAssembly = new ItemCADAssembly();
@@ -91,7 +91,9 @@ public final class ModItems {
 		psimetalExosuitChestplate = new ItemPsimetalExosuitChestplate();
 		psimetalExosuitLeggings = new ItemPsimetalExosuitLeggings();
 		psimetalExosuitBoots = new ItemPsimetalExosuitBoots();
-
+	}
+	
+	public static void init() {
 		// Missing vanilla oredict mappings
 		OreDictionary.registerOre("shardPrismarine", new ItemStack(Items.PRISMARINE_SHARD));
 		OreDictionary.registerOre("crystalsPrismarine", new ItemStack(Items.PRISMARINE_CRYSTALS));

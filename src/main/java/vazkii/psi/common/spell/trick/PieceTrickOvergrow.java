@@ -67,7 +67,7 @@ public class PieceTrickOvergrow extends PieceTrick {
 	}
 
 	public boolean bonemeal(EntityPlayer player, BlockPos pos) {
-		boolean did = ItemDye.applyBonemeal(new ItemStack(Items.DYE, 1, 15), player.getEntityWorld(), pos, player);
+		boolean did = ItemDye.applyBonemeal(new ItemStack(Items.DYE, 1, 15), player.getEntityWorld(), pos);
 		if(did)
 			player.getEntityWorld().playEvent(2005, pos, 0);
 		return did;

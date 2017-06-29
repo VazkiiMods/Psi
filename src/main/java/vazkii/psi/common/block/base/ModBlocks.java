@@ -32,14 +32,16 @@ public class ModBlocks {
 	public static BlockMod psiDecorative;
 	public static BlockMod conjured;
 
-	public static void init() {
+	public static void preInit() {
 		cadAssembler = new BlockCADAssembler();
 		programmer = new BlockProgrammer();
 		psiDecorative = new BlockPsiDecorative();
 		conjured = new BlockConjured();
 
 		initTileEntities();
-
+	}
+	
+	public static void init() {
 		// Psi oredict mappings
 		OreDictionary.registerOre("blockPsiDust", new ItemStack(psiDecorative, 1, 0));
 		OreDictionary.registerOre("blockPsiMetal", new ItemStack(psiDecorative, 1, 1));
