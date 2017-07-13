@@ -88,7 +88,6 @@ public class PieceTrickBreakBlock extends PieceTrick {
 				if(!player.capabilities.isCreativeMode) {
 					TileEntity tile = world.getTileEntity(pos);
 					IBlockState localState = world.getBlockState(pos);
-					block.onBlockHarvested(world, pos, localState, player);
 
 					if(block.removedByPlayer(state, world, pos, player, true)) {
 						block.onBlockDestroyedByPlayer(world, pos, state);
