@@ -775,6 +775,7 @@ public class GuiProgrammer extends GuiScreen {
 
 					String cb = getClipboardString();
 					try {
+						cb = cb.replaceAll("\\d+\\:", ""); // backwards compatibility with pre 1.12 nbt json
 						NBTTagCompound cmp = JsonToNBT.getTagFromJson(cb);
 						Spell spell = Spell.createFromNBT(cmp);
 						PlayerData data = PlayerDataHandler.get(mc.player);
