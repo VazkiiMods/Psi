@@ -116,7 +116,7 @@ public class PieceTrickPlaceBlock extends PieceTrick {
 				ItemStack retStack = invStack.copy();
 				invStack.shrink(1);
 				if(invStack.getCount() == 0)
-					inv.setCount(0);
+					inv.setInventorySlotContents(i, ItemStack.EMPTY);
 				return retStack;
 			}
 		}
