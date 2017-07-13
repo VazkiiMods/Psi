@@ -1,3 +1,9 @@
+r1.1-51
+*Fixed a crash when using block placing tricks.
+*Fixed a dupe bug with block breaking tricks and blocks whose drops are derived from Tile Entities.
+*Fixed a logic flaw with Operator: Max (Tekner)
+*Fixed backwards compatibility with pre 1.12 spell strings.
+*Fixed Selector: Nearby Smeltables not selecting only smeltables. (anexusarchon)
 r1.1-50
 *Updated to the latest forge and autoreglib.
 *Fixed the CAD assembler not showing the background and tooltips properly.
