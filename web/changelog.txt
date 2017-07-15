@@ -1,3 +1,6 @@
+r1.1-52
+*Fixed importing breaking on some spells.
+*Improved the error message when an import fails by saying where it failed.
 r1.1-51
 *Fixed a crash when using block placing tricks.
 *Fixed a dupe bug with block breaking tricks and blocks whose drops are derived from Tile Entities.
