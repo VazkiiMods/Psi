@@ -775,7 +775,7 @@ public class GuiProgrammer extends GuiScreen {
 
 					String cb = getClipboardString();
 					try {
-						cb = cb.replaceAll("\\d+\\:", ""); // backwards compatibility with pre 1.12 nbt json
+						cb = cb.replaceAll("([^a-z0-9])\\d+\\:", "$1"); // backwards compatibility with pre 1.12 nbt json
 						NBTTagCompound cmp = JsonToNBT.getTagFromJson(cb);
 						Spell spell = Spell.createFromNBT(cmp);
 						PlayerData data = PlayerDataHandler.get(mc.player);
@@ -796,7 +796,7 @@ public class GuiProgrammer extends GuiScreen {
 						spellNameField.setText(spell.name);
 						onSpellChanged(false);
 					} catch(Throwable t) {
-						mc.player.sendMessage(new TextComponentTranslation("psimisc.malformedJson").setStyle(new Style().setColor(TextFormatting.RED)));
+						mc.player.sendMessage(new TextComponentTranslation("psimisc.malformedJson", t.getMessage()).setStyle(new Style().setColor(TextFormatting.RED)));
 					}
 				}
 			}
