@@ -1,9 +1,9 @@
 <div class="featurettes">
 	<img class="featurette-image image-stretch" src="img/header.jpg"></img>
-	<a href="https://www.creeperhost.net/"><img id="sellout" src="http://vazkii.us/sellout.png"></img></a>
+	<a href="https://partners.creeper.host/r/vazkiiu0x"><img id="sellout" src="https://vazkii.us/sellout.png"></img></a>
 
 	<div class="row featurette">
-		<h2 class="featurette-heading">Science, Magic. <span class="text-muted">Coming Soon.</span></h2>
+		<h2 class="featurette-heading">Science, Magic. <span class="text-muted">Program it!</span></h2>
 		<div class="col-md-5 grid-image-container">
 			<img class="featurette-image" src="img/grid.png"></img><br><br>
 			<img class="featurette-image" src="img/grid2.png"></img>
