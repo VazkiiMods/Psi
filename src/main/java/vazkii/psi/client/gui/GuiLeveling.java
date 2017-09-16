@@ -25,6 +25,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.client.GuiScrollingList;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import vazkii.arl.network.NetworkHandler;
 import vazkii.arl.util.RenderHelper;
 import vazkii.psi.api.PsiAPI;
@@ -46,6 +47,8 @@ public class GuiLeveling extends GuiScreen {
 	public static final ResourceLocation texture = new ResourceLocation(LibResources.GUI_LEVELING);
 
 	public List<String> tooltip = new ArrayList();
+	static float scrollDistanceGroup, scrollDistanceText;
+	static int selected;
 
 	GuiScrollingList listGroups;
 	GuiScrollingList listText;
@@ -56,7 +59,6 @@ public class GuiLeveling extends GuiScreen {
 	PlayerData data;
 	List<PieceGroup> groups;
 	List<SpellPiece> drawPieces = new ArrayList();
-	int selected;
 	List<String> desc;
 	boolean ignoreIntroductionJump;
 	
@@ -66,7 +68,6 @@ public class GuiLeveling extends GuiScreen {
 	
 	public GuiLeveling(boolean skip) {
 		ignoreIntroductionJump = skip;
-		
 	}
 
 	@Override
@@ -259,6 +260,7 @@ public class GuiLeveling extends GuiScreen {
 
 		public BigTextList(Minecraft client, int width, int height, int top, int bottom, int left, int entryHeight, int screenWidth, int screenHeight) {
 			super(client, width, height, top, bottom, left, entryHeight, screenWidth, screenHeight);
+			ReflectionHelper.setPrivateValue(GuiScrollingList.class, this, scrollDistanceText, "scrollDistance");
 		}
 
 		@Override
@@ -284,6 +286,7 @@ public class GuiLeveling extends GuiScreen {
 		@Override
 		protected void drawSlot(int slotIdx, int entryRight, int slotTop, int slotBuffer, Tessellator tess) {
 			mc.fontRenderer.drawString(desc.get(slotIdx), left + 4, slotTop, 0xFFFFFF);
+			scrollDistanceText = ReflectionHelper.getPrivateValue(GuiScrollingList.class, this, "scrollDistance");
 		}
 
 		@Override
@@ -294,10 +297,11 @@ public class GuiLeveling extends GuiScreen {
 	}
 
 	private class GroupList extends GuiScrollingList {
-
+		
 		public GroupList(Minecraft client, int width, int height, int top, int bottom, int left, int entryHeight, int screenWidth, int screenHeight) {
 			super(client, width, height, top, bottom, left, entryHeight, screenWidth, screenHeight);
 			func_27258_a(false); // highlightSelected = false
+			ReflectionHelper.setPrivateValue(GuiScrollingList.class, this, scrollDistanceGroup, "scrollDistance");
 		}
 
 		@Override
@@ -308,6 +312,7 @@ public class GuiLeveling extends GuiScreen {
 		@Override
 		protected void elementClicked(int index, boolean doubleClick) {
 			selected = index;
+			scrollDistanceText = 0F;
 			select(index);
 		}
 
@@ -344,6 +349,7 @@ public class GuiLeveling extends GuiScreen {
 
 			mc.fontRenderer.drawString(I18n.translateToLocal(group.getUnlocalizedName()), left + 3, slotTop + 4, color);
 			mc.fontRenderer.drawString(String.format(I18n.translateToLocal("psimisc.levelDisplay"), group.levelRequirement), left + 3, slotTop + 14, color);
+			scrollDistanceGroup = ReflectionHelper.getPrivateValue(GuiScrollingList.class, this, "scrollDistance");
 		}
 
 		@Override
