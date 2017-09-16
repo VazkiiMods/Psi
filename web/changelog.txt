@@ -1,3 +1,7 @@
+r1.1-53
+*Fixed a major item dupe with block placing spells.
+*Fixed the psimetal boots model being a bit offset.
+*The leveling GUI now stores the scroll posiitons of the group list and text field.
 r1.1-52
 *Fixed importing breaking on some spells.
 *Improved the error message when an import fails by saying where it failed.
