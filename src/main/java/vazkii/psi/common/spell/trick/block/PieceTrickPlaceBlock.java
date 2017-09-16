@@ -112,7 +112,7 @@ public class PieceTrickPlaceBlock extends PieceTrick {
 		InventoryPlayer inv = player.inventory;
 		for(int i = inv.getSizeInventory() - 1; i >= 0; i--) {
 			ItemStack invStack = inv.getStackInSlot(i);
-			if(!invStack.isEmpty() && invStack.isItemEqual(stack)) {
+			if(!invStack.isEmpty() && invStack.isItemEqual(stack) && ItemStack.areItemStacksEqual(stack, invStack)) {
 				ItemStack retStack = invStack.copy();
 				invStack.shrink(1);
 				if(invStack.getCount() == 0)
