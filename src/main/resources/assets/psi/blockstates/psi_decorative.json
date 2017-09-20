@@ -18,16 +18,16 @@
 		"variant=psimetal_block": [{ "textures": { "all": "psi:blocks/psimetal_block" } }],
 		"variant=psigem_block": [{ "textures": { "all": "psi:blocks/psigem_block" } }],
 		"variant=psimetal_plate_black": [{ "textures": { "all": "psi:blocks/psimetal_plate_black" } }],
-		"variant=psimetal_plate_cyan": [{ "textures": { "all": "psi:blocks/psimetal_plate_cyan" } }],
+		"variant=psimetal_plate_white": [{ "textures": { "all": "psi:blocks/psimetal_plate_white" } }],
 		"variant=psimetal_plate_black_light": [{ "textures": { 
 			"all": "psi:blocks/psimetal_plate_black_light",
 			"up": "psi:blocks/psimetal_plate_black",
 			"down": "psi:blocks/psimetal_plate_black"
 		} }],
 		"variant=psimetal_plate_cyan_light": [{ "textures": { 
-			"all": "psi:blocks/psimetal_plate_cyan_light",
-			"up": "psi:blocks/psimetal_plate_cyan",
-			"down": "psi:blocks/psimetal_plate_cyan"
+			"all": "psi:blocks/psimetal_plate_white_light",
+			"up": "psi:blocks/psimetal_plate_white",
+			"down": "psi:blocks/psimetal_plate_white"
 		} }],
 		"variant=ebony_psimetal_block": [{ "textures": { "all": "psi:blocks/ebony_psimetal_block" } }],
 		"variant=ivory_psimetal_block": [{ "textures": { "all": "psi:blocks/ivory_psimetal_block" } }]

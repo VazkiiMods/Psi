@@ -31,7 +31,7 @@ public class BlockPsiDecorative extends BlockMetaVariants implements IPsiBlock {
 	@Override
 	public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos) {
 		Variants variant = (Variants) state.getValue(variantProp);
-		return variant == Variants.PSIMETAL_PLATE_BLACK_LIGHT || variant == Variants.PSIMETAL_PLATE_CYAN_LIGHT ? 15 : 0;
+		return variant == Variants.PSIMETAL_PLATE_BLACK_LIGHT || variant == Variants.PSIMETAL_PLATE_WHITE_LIGHT ? 15 : 0;
 	}
 
 	private static enum Variants implements EnumBase {
@@ -40,8 +40,8 @@ public class BlockPsiDecorative extends BlockMetaVariants implements IPsiBlock {
 		PSIGEM_BLOCK,
 		PSIMETAL_PLATE_BLACK,
 		PSIMETAL_PLATE_BLACK_LIGHT,
-		PSIMETAL_PLATE_CYAN,
-		PSIMETAL_PLATE_CYAN_LIGHT,
+		PSIMETAL_PLATE_WHITE,
+		PSIMETAL_PLATE_WHITE_LIGHT,
 		EBONY_PSIMETAL_BLOCK,
 		IVORY_PSIMETAL_BLOCK
 	}
