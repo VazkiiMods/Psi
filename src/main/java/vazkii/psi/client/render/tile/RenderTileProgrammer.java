@@ -33,7 +33,6 @@ public class RenderTileProgrammer extends TileEntitySpecialRenderer<TileProgramm
 
 	@Override
 	public void render(TileProgrammer te, double x, double y, double z, float partialTicks, int destroyStage, float something) {
-		Psi.magical = true;
 		if(te.isEnabled()) {
 			GlStateManager.pushMatrix();
 			GlStateManager.disableLighting();
