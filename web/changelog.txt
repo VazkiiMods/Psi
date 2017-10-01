@@ -1,3 +1,8 @@
+r1.1-54
+*Added support for a thing that will be coming soon so don't worry about it.
+*Disabled the version checker.
+*Fixed the spell detonator's name being lower case.
+*Tweaked a bunch of textures around the place.
 r1.1-53
 *Fixed a major item dupe with block placing spells.
 *Fixed the psimetal boots model being a bit offset.
