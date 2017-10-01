@@ -46,7 +46,7 @@ public class Psi {
 
 	@EventHandler
 	public void serverStartingEvent(FMLServerStartingEvent event) {
-		event.registerServerCommand(new CommandDownloadLatest());
+//		event.registerServerCommand(new CommandDownloadLatest());
 	}
 
 }

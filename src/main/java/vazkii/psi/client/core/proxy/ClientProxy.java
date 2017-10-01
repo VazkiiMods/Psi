@@ -48,8 +48,8 @@ public class ClientProxy extends CommonProxy {
 		ShaderHandler.init();
 		KeybindHandler.init();
 		
-		if(ConfigHandler.versionCheckEnabled)
-			new VersionChecker().init();
+//		if(ConfigHandler.versionCheckEnabled)
+//			new VersionChecker().init();
 
 		MinecraftForge.EVENT_BUS.register(new HUDHandler());
 		MinecraftForge.EVENT_BUS.register(new ClientTickHandler());
