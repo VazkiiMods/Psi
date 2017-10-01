@@ -22,6 +22,7 @@ import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellPiece;
 import vazkii.psi.api.spell.SpellRuntimeException;
+import vazkii.psi.common.Psi;
 
 public class PieceConstantNumber extends SpellPiece {
 
@@ -51,7 +52,7 @@ public class PieceConstantNumber extends SpellPiece {
 			valueStr = "0";
 
 		Minecraft mc = Minecraft.getMinecraft();
-		int color = 0xFFFFFF;
+		int color = Psi.magical ? 0 : 0xFFFFFF;
 		int len = mc.fontRenderer.getStringWidth(valueStr);
 		float efflen = len;
 		float scale = 1;

@@ -60,6 +60,7 @@ import vazkii.psi.client.gui.button.GuiButtonIO;
 import vazkii.psi.client.gui.button.GuiButtonPage;
 import vazkii.psi.client.gui.button.GuiButtonSideConfig;
 import vazkii.psi.client.gui.button.GuiButtonSpellPiece;
+import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.tile.TileProgrammer;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
@@ -135,6 +136,8 @@ public class GuiProgrammer extends GuiScreen {
 		spellNameField.setEnableBackgroundDrawing(false);
 		spellNameField.setMaxStringLength(20);
 		spellNameField.setEnabled(!spectator);
+		if(Psi.magical)
+			spellNameField.setTextColor(0);
 		
 		commentField = new GuiTextField(0, fontRenderer, left, top + ySize / 2 - 10, xSize, 20);
 		commentField.setEnabled(false);
@@ -161,7 +164,7 @@ public class GuiProgrammer extends GuiScreen {
 		}
 		
 		String comment = "";
-		int color = 0xFFFFFF;
+		int color = Psi.magical ? 0 : 0xFFFFFF;
 
 		if(scheduleButtonUpdate) {
 			updatePanelButtons();
@@ -364,7 +367,10 @@ public class GuiProgrammer extends GuiScreen {
 			mc.fontRenderer.drawString(coords, left + 4, topy + ySize + 14, 0x44FFFFFF);
 		}
 
-		mc.fontRenderer.drawStringWithShadow(I18n.format("psimisc.name"), left + padLeft, spellNameField.y + 1, color);
+		if(Psi.magical)
+			mc.fontRenderer.drawString(I18n.format("psimisc.name"), left + padLeft, spellNameField.y + 1, color);
+		else mc.fontRenderer.drawStringWithShadow(I18n.format("psimisc.name"), left + padLeft, spellNameField.y + 1, color);
+		
 		spellNameField.drawTextBox();
 		if(panelEnabled) {
 			tooltip.clear();

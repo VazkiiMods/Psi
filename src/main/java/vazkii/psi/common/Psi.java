@@ -10,6 +10,7 @@
  */
 package vazkii.psi.common;
 
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -26,12 +27,15 @@ public class Psi {
 
 	@Instance(LibMisc.MOD_ID)
 	public static Psi instance;
+	
+	public static boolean magical;
 
 	@SidedProxy(serverSide = LibMisc.PROXY_COMMON, clientSide = LibMisc.PROXY_CLIENT)
 	public static CommonProxy proxy;
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
+		magical = Loader.isModLoaded("magipsi");
 		proxy.preInit(event);
 	}
 	

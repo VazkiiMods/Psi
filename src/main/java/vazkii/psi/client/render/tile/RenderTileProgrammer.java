@@ -19,10 +19,13 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.text.translation.I18n;
+import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
 import vazkii.arl.block.BlockFacing;
 import vazkii.arl.util.RenderHelper;
+import vazkii.psi.client.core.handler.ClientTickHandler;
 import vazkii.psi.client.core.handler.ShaderHandler;
 import vazkii.psi.client.gui.GuiProgrammer;
+import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.base.ModBlocks;
 import vazkii.psi.common.block.tile.TileProgrammer;
 
@@ -30,11 +33,13 @@ public class RenderTileProgrammer extends TileEntitySpecialRenderer<TileProgramm
 
 	@Override
 	public void render(TileProgrammer te, double x, double y, double z, float partialTicks, int destroyStage, float something) {
+		Psi.magical = true;
 		if(te.isEnabled()) {
 			GlStateManager.pushMatrix();
 			GlStateManager.disableLighting();
 			GlStateManager.disableCull();
-			ShaderHandler.useShader(ShaderHandler.rawColor);
+			if(!Psi.magical)
+				ShaderHandler.useShader(ShaderHandler.rawColor);
 			GlStateManager.translate(x, y + 1.62F, z);
 			GlStateManager.rotate(180F, 0F, 0F, 1F);
 			GlStateManager.rotate(-90F, 0F, 1F, 0F);
@@ -65,7 +70,12 @@ public class RenderTileProgrammer extends TileEntitySpecialRenderer<TileProgramm
 
 			float f = 1F / 300F;
 			GlStateManager.scale(f, f, -f);
-			GlStateManager.translate(70F, 0F, -200F);
+			
+			if(Psi.magical) {
+				GlStateManager.rotate(90F, 1F, 0F, 0F);
+				GlStateManager.translate(70F, -220F, -100F + Math.sin(ClientTickHandler.total / 50) * 10);
+				GlStateManager.rotate(-16F + (float) Math.cos(ClientTickHandler.total / 100) * 10F, 1F, 0F, 0F);
+			} else GlStateManager.translate(70F, 0F, -200F);
 
 			te.spell.draw();
 
@@ -74,15 +84,19 @@ public class RenderTileProgrammer extends TileEntitySpecialRenderer<TileProgramm
 
 			GlStateManager.enableBlend();
 			GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-			GlStateManager.color(1F, 1F, 1F, 0.5F);
+			GlStateManager.color(1F, 1F, 1F, (Psi.magical ? 1F : 0.5F));
 			GlStateManager.translate(0F, 0F, -0.01F);
+			
 			RenderHelper.drawTexturedModalRect(-7, -7, 0, 0, 0, 174, 184, 1F / 256F, 1F / 256F);
 
 			GlStateManager.translate(0F, 0F, 0.01F);
-			mc.fontRenderer.drawString(I18n.translateToLocal("psimisc.name"), 0, 164, 0xFFFFFF);
-			mc.fontRenderer.drawString(te.spell.name, 38, 164, 0xFFFFFF);
+			
+			int color = Psi.magical ? 0 : 0xFFFFFF;
+			mc.fontRenderer.drawString(I18n.translateToLocal("psimisc.name"), 0, 164, color);
+			mc.fontRenderer.drawString(te.spell.name, 38, 164, color);
 
-			ShaderHandler.releaseShader();
+			if(!Psi.magical)
+				ShaderHandler.releaseShader();
 			GlStateManager.enableLighting();
 			GlStateManager.enableCull();
 			GlStateManager.popMatrix();
