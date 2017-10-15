@@ -1,3 +1,6 @@
+r1.1-55
+*Changed more textures!
+*Fixed particles being squares because they had a missing texture. (Infinoid)
 r1.1-54
 *Added support for a thing that will be coming soon so don't worry about it.
 *Disabled the version checker.
