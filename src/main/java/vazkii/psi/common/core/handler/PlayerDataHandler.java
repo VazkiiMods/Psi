@@ -141,21 +141,20 @@ public class PlayerDataHandler {
 			if(event.phase == Phase.END) {
 				PlayerDataHandler.cleanup();
 
-				List<SpellContext> remove = new ArrayList();
-				for(SpellContext context : delayedContexts) {
+                Iterator<SpellContext> delayed = delayedContexts.iterator();
+                ArrayList<SpellContext> toExecute = new ArrayList();
+                
+                while(delayed.hasNext()) {
+                    SpellContext context = delayed.next();
 					context.delay--;
-
 					if(context.delay <= 0) {
-						context.delay = 0; // Just in case it goes under 0
-						context.cspell.safeExecute(context);
+                        context.delay = 0;
+                        toExecute.add(context);
+                        delayed.remove();
+                    }
+                }
 
-						if(context.delay == 0)
-							remove.add(context);
-					}
-				}
-
-				if(!remove.isEmpty())
-					delayedContexts.removeAll(remove);
+                toExecute.forEach(context -> context.cspell.safeExecute(context));
 			}
 		}
 
