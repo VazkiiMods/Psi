@@ -93,7 +93,7 @@ public class PlayerDataHandler {
 			playerData.put(key, new PlayerData(player));
 
 		PlayerData data = playerData.get(key);
-		if(data.playerWR.get() != player) {
+		if(data != null && data.playerWR != null && data.playerWR.get() != player) {
 			NBTTagCompound cmp = new NBTTagCompound();
 			data.writeToNBT(cmp);
 			playerData.remove(key);
@@ -141,8 +141,8 @@ public class PlayerDataHandler {
 			if(event.phase == Phase.END) {
 				PlayerDataHandler.cleanup();
 
-				List<SpellContext> remove = new ArrayList();
-				for(SpellContext context : delayedContexts) {
+				List<SpellContext> delayedContextsCopy = new ArrayList(delayedContexts);
+				for(SpellContext context : delayedContextsCopy) {
 					context.delay--;
 
 					if(context.delay <= 0) {
@@ -150,12 +150,9 @@ public class PlayerDataHandler {
 						context.cspell.safeExecute(context);
 
 						if(context.delay == 0)
-							remove.add(context);
+							delayedContexts.remove(context);
 					}
 				}
-
-				if(!remove.isEmpty())
-					delayedContexts.removeAll(remove);
 			}
 		}
 
