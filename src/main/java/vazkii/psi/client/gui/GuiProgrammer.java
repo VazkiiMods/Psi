@@ -136,8 +136,6 @@ public class GuiProgrammer extends GuiScreen {
 		spellNameField.setEnableBackgroundDrawing(false);
 		spellNameField.setMaxStringLength(20);
 		spellNameField.setEnabled(!spectator);
-		if(Psi.magical)
-			spellNameField.setTextColor(0);
 		
 		commentField = new GuiTextField(0, fontRenderer, left, top + ySize / 2 - 10, xSize, 20);
 		commentField.setEnabled(false);
@@ -247,7 +245,7 @@ public class GuiProgrammer extends GuiScreen {
 				mc.getTextureManager().bindTexture(texture);
 
 				if(mouseX > statX && mouseY > statY && mouseX < statX + 12 && mouseY < statY + 12) {
-					tooltip.add(TextFormatting.AQUA + I18n.format(stat.getName()));
+					tooltip.add((Psi.magical ? TextFormatting.LIGHT_PURPLE : TextFormatting.AQUA) + I18n.format(stat.getName()));
 					tooltip.add(TextFormatting.GRAY + I18n.format(stat.getDesc()));
 				}
 
@@ -284,7 +282,7 @@ public class GuiProgrammer extends GuiScreen {
 					if(i == param)
 						localized = TextFormatting.UNDERLINE + localized;
 
-					mc.fontRenderer.drawString(localized, x, y, color);
+					mc.fontRenderer.drawString(localized, x, y, 0xFFFFFF);
 					i++;
 				}
 			}

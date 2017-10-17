@@ -11,6 +11,7 @@
 package vazkii.psi.common.item.armor;
 
 import java.util.List;
+import java.util.function.Function;
 
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.color.IItemColor;
@@ -44,6 +45,7 @@ import vazkii.psi.common.lib.LibResources;
 
 public class ItemPsimetalArmor extends ItemModArmor implements IPsimetalTool, IPsiEventArmor, IItemColorProvider {
 
+	public static Function<Integer, ModelBiped> modelSupplier = ModelPsimetalExosuit::new;
 	protected ModelBiped[] models = null;
 
 	public ItemPsimetalArmor(String name, int type, EntityEquipmentSlot slot) {
@@ -134,7 +136,8 @@ public class ItemPsimetalArmor extends ItemModArmor implements IPsimetalTool, IP
 	public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, EntityEquipmentSlot armorSlot, ModelBiped _default) {
 		int slotIndex = armorSlot.ordinal();
 		ModelBiped model = getArmorModelForSlot(entityLiving, itemStack, slotIndex);
-		if(model == null)
+	
+		if(model == null || entityLiving.isSwingInProgress)
 			model = provideArmorModelForSlot(itemStack, slotIndex);
 
 		return model;
@@ -152,7 +155,7 @@ public class ItemPsimetalArmor extends ItemModArmor implements IPsimetalTool, IP
 	@SideOnly(Side.CLIENT)
 	public ModelBiped provideArmorModelForSlot(ItemStack stack, int slot) {
 		slot -= 2; // JUST PLEASE STOP
-		models[slot] = new ModelPsimetalExosuit(slot);
+		models[slot] = modelSupplier.apply(slot);
 		return models[slot];
 	}
 
