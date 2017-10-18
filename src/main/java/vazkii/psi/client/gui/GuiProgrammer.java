@@ -137,6 +137,9 @@ public class GuiProgrammer extends GuiScreen {
 		spellNameField.setMaxStringLength(20);
 		spellNameField.setEnabled(!spectator);
 		
+		if(Psi.magical)
+			spellNameField.setTextColor(0xFFFFFF);
+		
 		commentField = new GuiTextField(0, fontRenderer, left, top + ySize / 2 - 10, xSize, 20);
 		commentField.setEnabled(false);
 		commentField.setVisible(false);
@@ -162,8 +165,9 @@ public class GuiProgrammer extends GuiScreen {
 		}
 		
 		String comment = "";
-		int color = Psi.magical ? 0 : 0xFFFFFF;
-
+		
+		int color = Psi.magical ? 0x917D3B : 0xFFFFFF;
+		
 		if(scheduleButtonUpdate) {
 			updatePanelButtons();
 			scheduleButtonUpdate = false;
@@ -241,7 +245,7 @@ public class GuiProgrammer extends GuiScreen {
 
 				GlStateManager.color(1F, 1F, 1F);
 				drawTexturedModalRect(statX, statY, (stat.ordinal() + 1) * 12, ySize + 16, 12, 12);
-				mc.fontRenderer.drawString(s, statX + 16, statY + 2, cadStat != null && cadVal < val && cadVal != -1 ? 0xFF6666 : 0xFFFFFF);
+				mc.fontRenderer.drawStringWithShadow(s, statX + 16, statY + 2, cadStat != null && cadVal < val && cadVal != -1 ? 0xFF6666 : 0xFFFFFF);
 				mc.getTextureManager().bindTexture(texture);
 
 				if(mouseX > statX && mouseY > statY && mouseX < statX + 12 && mouseY < statY + 12) {
@@ -261,7 +265,7 @@ public class GuiProgrammer extends GuiScreen {
 		if(configEnabled && !takingScreenshot) {
 			drawTexturedModalRect(left - 81, top + 55, xSize, 30, 81, 115);
 			String configStr = I18n.format("psimisc.config");
-			mc.fontRenderer.drawString(configStr, left - mc.fontRenderer.getStringWidth(configStr) - 2, top + 45, 0xFFFFFF);
+			mc.fontRenderer.drawStringWithShadow(configStr, left - mc.fontRenderer.getStringWidth(configStr) - 2, top + 45, color);
 
 			int i = 0;
 			if(piece != null) {
@@ -282,7 +286,7 @@ public class GuiProgrammer extends GuiScreen {
 					if(i == param)
 						localized = TextFormatting.UNDERLINE + localized;
 
-					mc.fontRenderer.drawString(localized, x, y, 0xFFFFFF);
+					mc.fontRenderer.drawStringWithShadow(localized, x, y, 0xFFFFFF);
 					i++;
 				}
 			}
@@ -365,9 +369,7 @@ public class GuiProgrammer extends GuiScreen {
 			mc.fontRenderer.drawString(coords, left + 4, topy + ySize + 14, 0x44FFFFFF);
 		}
 
-		if(Psi.magical)
-			mc.fontRenderer.drawString(I18n.format("psimisc.name"), left + padLeft, spellNameField.y + 1, color);
-		else mc.fontRenderer.drawStringWithShadow(I18n.format("psimisc.name"), left + padLeft, spellNameField.y + 1, color);
+		mc.fontRenderer.drawStringWithShadow(I18n.format("psimisc.name"), left + padLeft, spellNameField.y + 1, color);
 		
 		spellNameField.drawTextBox();
 		if(panelEnabled) {
@@ -416,7 +418,6 @@ public class GuiProgrammer extends GuiScreen {
 		
 		if(isAltKeyDown())
 			tooltip = legitTooltip;
-
 		if(!takingScreenshot) {
 			if(!tooltip.isEmpty())
 				RenderHelper.renderTooltip(tooltipX, tooltipY, tooltip);

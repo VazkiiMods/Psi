@@ -18,102 +18,145 @@ import vazkii.psi.client.core.handler.ClientTickHandler;
 
 public class ModelPsimetalExosuit extends ModelModArmor {
 
-	public ModelRenderer helm;
-	public ModelRenderer armR;
-	public ModelRenderer armL;
-	public ModelRenderer legR;
-	public ModelRenderer legL;
-	public ModelRenderer bootR;
-	public ModelRenderer bootL;
-	public ModelRenderer body;
-	public ModelRenderer helm_1;
-	public ModelRenderer helm_2;
-	public ModelRenderer sensor;
-	public ModelRenderer sensorcolor;
-	public ModelRenderer armRpauldron;
-	public ModelRenderer armLpauldron;
-	public ModelRenderer body2;
-	public ModelRenderer body3;
+	private final ModelRenderer helmAnchor;
+	private final ModelRenderer helm;
+	private final ModelRenderer helmDetailr;
+	private final ModelRenderer helmDetaill;
+	
+	private final ModelRenderer bodyAnchor;
+	private final ModelRenderer body;
 
-	int slot;
+	private final ModelRenderer armLAnchor;
+	private final ModelRenderer armL;
+	private final ModelRenderer armLpauldron;
+	
+	private final ModelRenderer armRAnchor;
+	private final ModelRenderer armR;
+	private final ModelRenderer armRpauldron;
+	
+	private final ModelRenderer pantsAnchor;
+	private final ModelRenderer belt;
+	private final ModelRenderer legL;
+	private final ModelRenderer legR;
+
+	private final ModelRenderer bootL;
+	private final ModelRenderer bootR;
+	
+	private final ModelRenderer sensor;
+	private final ModelRenderer sensorColor;
+	
+	int slot = 0;
 
 	public ModelPsimetalExosuit(int slot) {
 		this.slot = slot;
 
 		textureWidth = 64;
 		textureHeight = 128;
-		float s = 0.255F;
+		float s = 0.01F;
 
-		sensorcolor = new ModelRenderer(this, 38, 40);
-		sensorcolor.mirror = true;
-		sensorcolor.setRotationPoint(0.0F, 0.0F, 0.0F);
-		sensorcolor.addBox(4.0F, -6.5F, -1.0F, 1, 2, 3, s);
-		setRotateAngle(sensorcolor, 0.0F, 0.0F, 0.08726646259971647F);
-		body = new ModelRenderer(this, 0, 51);
-		body.setRotationPoint(0.0F, 0.0F, 0.0F);
-		body.addBox(-4.5F, 0.0F, -3.0F, 9, 7, 6, s);
-		helm = new ModelRenderer(this, 0, 32);
-		helm.setRotationPoint(0.0F, 0.0F, 0.0F);
-		helm.addBox(-4.5F, -8.5F, -4.5F, 9, 9, 10, s);
-		setRotateAngle(helm, 0.08726646259971647F, 0.0F, 0.0F);
-		armL = new ModelRenderer(this, 0, 85);
-		armL.mirror = true;
-		armL.setRotationPoint(5.0F, 2.0F, -0.0F);
-		armL.addBox(0.0F, 6.5F, -2.0F, 3, 4, 4, s);
-		body2 = new ModelRenderer(this, 30, 51);
-		body2.setRotationPoint(0.0F, 0.0F, 0.0F);
-		body2.addBox(-2.5F, 6.0F, -2.0F, 5, 5, 4, s);
-		armR = new ModelRenderer(this, 0, 85);
-		armR.setRotationPoint(-5.0F, 2.0F, 0.0F);
-		armR.addBox(-3.0F, 6.5F, -2.0F, 3, 4, 4, s);
-		legR = new ModelRenderer(this, 16, 73);
-		legR.setRotationPoint(-1.9F, 12.0F, 0.0F);
-		legR.addBox(-2.0F, 0.0F, -2.0F, 4, 7, 4, s);
-		sensor = new ModelRenderer(this, 38, 32);
-		sensor.mirror = true;
-		sensor.setRotationPoint(0.0F, 0.0F, 0.0F);
-		sensor.addBox(4.0F, -7.0F, -2.0F, 1, 3, 5, s);
-		armRpauldron = new ModelRenderer(this, 0, 73);
-		armRpauldron.setRotationPoint(0.0F, 0.0F, 0.0F);
-		armRpauldron.addBox(-3.5F, -2.0F, -2.0F, 3, 7, 4, s);
-		setRotateAngle(armRpauldron, 0.0F, 0.0F, 0.17453292519943295F);
-		armLpauldron = new ModelRenderer(this, 0, 73);
-		armLpauldron.mirror = true;
-		armLpauldron.setRotationPoint(0.0F, 0.0F, 0.0F);
-		armLpauldron.addBox(0.5F, -2.0F, -2.0F, 3, 7, 4, s);
-		setRotateAngle(armLpauldron, 0.0F, 0.0F, -0.17453292519943295F);
-		helm_1 = new ModelRenderer(this, 0, 32);
-		helm_1.setRotationPoint(0.0F, 0.0F, 0.0F);
-		helm_1.addBox(-5.0F, -4.0F, 0.5F, 1, 3, 3, s);
-		setRotateAngle(helm_1, 0.0F, 0.0F, -0.08726646259971647F);
-		helm_2 = new ModelRenderer(this, 0, 32);
-		helm_2.mirror = true;
-		helm_2.setRotationPoint(0.0F, 0.0F, 0.0F);
-		helm_2.addBox(4.0F, -4.0F, 0.5F, 1, 3, 3, s);
-		setRotateAngle(helm_2, 0.0F, 0.0F, 0.08726646259971647F);
-		body3 = new ModelRenderer(this, 0, 64);
-		body3.setRotationPoint(0.0F, 0.0F, 0.0F);
-		body3.addBox(-4.0F, 10.0F, -2.5F, 8, 4, 5, s);
-		bootR = new ModelRenderer(this, 16, 85);
-		bootR.setRotationPoint(-1.9F, 12.0F, 0.0F);
-		bootR.addBox(-2.0F, 8.0F, -3.0F, 4, 4, 5, s);
-		legL = new ModelRenderer(this, 16, 73);
-		legL.mirror = true;
-		legL.setRotationPoint(1.9F, 12.0F, 0.0F);
-		legL.addBox(-2.0F, 0.0F, -2.0F, 4, 7, 4, s);
-		bootL = new ModelRenderer(this, 16, 85);
-		bootL.mirror = true;
-		bootL.setRotationPoint(1.9F, 12.0F, 0.0F);
-		bootL.addBox(-2.0F, 8.0F, -3.0F, 4, 4, 5, s);
-
-		sensor.addChild(sensorcolor);
-		body.addChild(body2);
-		helm.addChild(sensor);
-		armR.addChild(armRpauldron);
-		armL.addChild(armLpauldron);
-		helm.addChild(helm_1);
-		helm.addChild(helm_2);
-		body.addChild(body3);
+		//helm
+        helmAnchor = new ModelRenderer(this, 0, 0);
+        helmAnchor.setRotationPoint(0.0F, 0.0F, 0.0F);
+        helmAnchor.addBox(-1.0F, -2.0F, 0.0F, 2, 2, 2, s);
+        helm = new ModelRenderer(this, 0, 0);
+        helm.setRotationPoint(0.0F, 0.0F, 0.0F);
+        helm.addBox(-4.5F, -9.0F, -5.0F, 9, 9, 10, s);
+        helmDetaill = new ModelRenderer(this, 0, 0);
+        helmDetaill.mirror = true;
+        helmDetaill.setRotationPoint(0.0F, 0.0F, 0.0F);
+        helmDetaill.addBox(4.5F, -5.0F, 0.0F, 1, 3, 3, s);
+        helmDetailr = new ModelRenderer(this, 0, 0);
+        helmDetailr.setRotationPoint(0.0F, 0.0F, 0.0F);
+        helmDetailr.addBox(-5.5F, -5.0F, 0.0F, 1, 3, 3, s);
+        
+        //sensor
+        sensor = new ModelRenderer(this, 38, 0);
+        sensor.mirror = true;
+        sensor.setRotationPoint(0.0F, 0.0F, 0.0F);
+        sensor.addBox(4.5F, -8.0F, -1.0F, 1, 3, 5, s);
+        sensorColor = new ModelRenderer(this, 38, 8);
+        sensorColor.mirror = true;
+        sensorColor.setRotationPoint(0.0F, 0.0F, 0.0F);
+        sensorColor.addBox(4.51F, -7.0F, 0.0F, 1, 2, 3, s);
+        
+        //body
+        bodyAnchor = new ModelRenderer(this, 0, 0);
+        bodyAnchor.setRotationPoint(0.0F, 0.0F, 0.0F);
+        bodyAnchor.addBox(-1.0F, 0.0F, -1.0F, 2, 2, 2, s);
+        body = new ModelRenderer(this, 0, 19);
+        body.setRotationPoint(0.0F, 0.0F, 0.0F);
+        body.addBox(-4.5F, -0.5F, -3.0F, 9, 7, 6, s);
+        
+     	//armL
+        armLAnchor = new ModelRenderer(this, 0, 0);
+        armLAnchor.mirror = true;
+        armLAnchor.setRotationPoint(4.0F, 2.0F, 0.0F);
+        armLAnchor.addBox(0.0F, -1.0F, -1.0F, 2, 2, 2, s);
+        armL = new ModelRenderer(this, 0, 44);
+        armL.mirror = true;
+        armL.setRotationPoint(0.0F, 0.0F, 0.0F);
+        armL.addBox(0.5F, 6.0F, -2.5F, 3, 4, 5, s);
+        armLpauldron = new ModelRenderer(this, 0, 32);
+        armLpauldron.mirror = true;
+        armLpauldron.setRotationPoint(0.0F, 0.0F, 0.0F);
+        armLpauldron.addBox(1.0F, -2.5F, -2.5F, 3, 7, 5, s);
+        setRotateAngle(armLpauldron, 0.0F, 0.0F, -0.17453292519943295F);
+        
+        //armR
+        armRAnchor = new ModelRenderer(this, 0, 0);
+        armRAnchor.mirror = true;
+        armRAnchor.setRotationPoint(-4.0F, 2.0F, 0.0F);
+        armRAnchor.addBox(-2.0F, -1.0F, -1.0F, 2, 2, 2, s);
+        armR = new ModelRenderer(this, 0, 44);
+        armR.setRotationPoint(0.0F, 0.0F, 0.0F);
+        armR.addBox(-3.5F, 6.0F, -2.51F, 3, 4, 5, s);
+        armRpauldron = new ModelRenderer(this, 0, 32);
+        armRpauldron.setRotationPoint(0.0F, 0.0F, 0.0F);
+        armRpauldron.addBox(-4.0F, -2.5F, -2.5F, 3, 7, 5, s);
+        setRotateAngle(armRpauldron, 0.0F, 0.0F, 0.17453292519943295F);
+        
+        //pants
+        pantsAnchor = new ModelRenderer(this, 0, 0);
+        pantsAnchor.setRotationPoint(0.0F, 0.0F, 0.0F);
+        pantsAnchor.addBox(-1.0F, 0.0F, -1.0F, 2, 2, 2, s);
+        belt = new ModelRenderer(this, 0, 53);
+        belt.setRotationPoint(0.0F, 0.0F, 0.0F);
+        belt.addBox(-4.5F, 9.0F, -3.0F, 9, 5, 6, s);
+        legL = new ModelRenderer(this, 0, 64);
+        legL.mirror = true;
+        legL.setRotationPoint(1.9F, 12.0F, 0.0F);
+        legL.addBox(-1.39F, 1.0F, -2.49F, 4, 5, 5, s);
+        legR = new ModelRenderer(this, 0, 64);
+        legR.setRotationPoint(-1.9F, 12.0F, 0.0F);
+        legR.addBox(-2.61F, 1.0F, -2.51F, 4, 5, 5, s);
+        
+        //boots
+        bootL = new ModelRenderer(this, 0, 74);
+        bootL.mirror = true;
+        bootL.setRotationPoint(1.9F, 12.0F, 0.0F);
+        bootL.addBox(-2.39F, 8.0F, -2.49F, 5, 4, 5, s);
+        bootR = new ModelRenderer(this, 0, 74);
+        bootR.setRotationPoint(-1.9F, 12.0F, 0.0F);
+        bootR.addBox(-2.61F, 8.0F, -2.51F, 5, 4, 5, s);
+        
+        //hierarchy
+        helmAnchor.addChild(helm);
+        helm.addChild(helmDetaill);
+        helm.addChild(helmDetailr);
+        helm.addChild(sensor);
+        sensor.addChild(sensorColor);
+        
+        bodyAnchor.addChild(body);
+        
+        armLAnchor.addChild(armL);
+        armL.addChild(armLpauldron);
+        armRAnchor.addChild(armR);
+        armR.addChild(armRpauldron);
+        
+        pantsAnchor.addChild(belt);
+        belt.addChild(legL);
+        belt.addChild(legR);
+        
 	}
 
 	@Override
@@ -130,8 +173,7 @@ public class ModelPsimetalExosuit extends ModelModArmor {
 		body.showModel = slot == 2;
 		armR.showModel = slot == 2;
 		armL.showModel = slot == 2;
-		legR.showModel = slot == 1;
-		legL.showModel = slot == 1;
+		belt.showModel = slot == 1;
 		bootL.showModel = slot == 0;
 		bootR.showModel = slot == 0;
 		bipedHeadwear.showModel = false;
@@ -143,11 +185,13 @@ public class ModelPsimetalExosuit extends ModelModArmor {
 	
 	@Override
 	public void setModelParts() {
-		bipedHead = helm;
-		bipedBody = body;
-		bipedRightArm = armR;
-		bipedLeftArm = armL;
+		
+		bipedHead = helmAnchor;
+		bipedBody = bodyAnchor;
+		bipedRightArm = armRAnchor;
+		bipedLeftArm = armLAnchor;
 		if(slot == 1) {
+			bipedBody = pantsAnchor;
 			bipedRightLeg = legR;
 			bipedLeftLeg = legL;
 		} else {
@@ -155,5 +199,4 @@ public class ModelPsimetalExosuit extends ModelModArmor {
 			bipedLeftLeg = bootL;
 		}
 	}
-
 }
