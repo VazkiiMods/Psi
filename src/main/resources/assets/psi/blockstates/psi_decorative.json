@@ -24,7 +24,7 @@
 			"up": "psi:blocks/psimetal_plate_black",
 			"down": "psi:blocks/psimetal_plate_black"
 		} }],
-		"variant=psimetal_plate_cyan_light": [{ "textures": { 
+		"variant=psimetal_plate_white_light": [{ "textures": { 
 			"all": "psi:blocks/psimetal_plate_white_light",
 			"up": "psi:blocks/psimetal_plate_white",
 			"down": "psi:blocks/psimetal_plate_white"
