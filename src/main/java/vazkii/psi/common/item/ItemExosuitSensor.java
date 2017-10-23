@@ -36,6 +36,12 @@ public class ItemExosuitSensor extends ItemMod implements IExosuitSensor, IItemC
 			"exosuit_sensor_heat",
 			"exosuit_sensor_stress"
 	};
+	
+	public static int lightColor = 0xFFEC13;
+	public static int underwaterColor = 0x1350FF;
+	public static int fireColor = 0xFF1E13;
+	public static int lowHealthColor = 0xFF8CC5;
+	public static int defaultColor = ICADColorizer.DEFAULT_SPELL_COLOR;
 
 	public ItemExosuitSensor() {
 		super(LibItemNames.EXOSUIT_SENSOR, VARIANTS);
@@ -60,11 +66,11 @@ public class ItemExosuitSensor extends ItemMod implements IExosuitSensor, IItemC
 	@Override
 	public int getColor(ItemStack stack) {
 		switch(stack.getItemDamage()) {
-		case 0: return 0xFFEC13;
-		case 1: return 0x1350FF;
-		case 2: return 0xFF1E13;
-		case 3: return 0xFF8CC5;
-		default: return ICADColorizer.DEFAULT_SPELL_COLOR;
+		case 0: return lightColor;
+		case 1: return underwaterColor;
+		case 2: return fireColor;
+		case 3: return lowHealthColor;
+		default: return defaultColor;
 		}
 	}
 	
