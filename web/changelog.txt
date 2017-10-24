@@ -1,3 +1,5 @@
+r1.1-57
+*Added more stuff for wiiv's Magical Psi to work.
 r1.1-56
 *Fixed some more player data based crashes.
 r1.1-55
