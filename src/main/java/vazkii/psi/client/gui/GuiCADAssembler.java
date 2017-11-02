@@ -19,6 +19,7 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import vazkii.psi.api.cad.EnumCADStat;
 import vazkii.psi.api.cad.ICAD;
+import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.base.ModBlocks;
 import vazkii.psi.common.block.tile.TileCADAssembler;
 import vazkii.psi.common.block.tile.container.ContainerCADAssembler;
@@ -66,7 +67,7 @@ public class GuiCADAssembler extends GuiContainer {
 			fontRenderer.drawStringWithShadow(s, 213 - fontRenderer.getStringWidth(s) / 2, 34, color);
 
 			for(EnumCADStat stat : EnumCADStat.class.getEnumConstants()) {
-				s = TextFormatting.AQUA + I18n.translateToLocal(stat.getName()) + TextFormatting.RESET + ": " + cadItem.getStatValue(cad, stat);
+				s = (Psi.magical ? TextFormatting.LIGHT_PURPLE : TextFormatting.AQUA) + I18n.translateToLocal(stat.getName()) + TextFormatting.RESET + ": " + cadItem.getStatValue(cad, stat);
 				fontRenderer.drawStringWithShadow(s, 179, 50 + i * 10, color);
 				i++;
 			}
