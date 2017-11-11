@@ -16,6 +16,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import vazkii.psi.common.lib.LibMisc;
 
@@ -28,6 +29,7 @@ public class ConfigHandler {
 	public static boolean psiBarOnRight = true;
 	public static boolean contextSensitiveBar = true;
 	public static boolean useVanillaParticleLimiter = true;
+	public static boolean magipsiClientSide = false;
 	public static int maxPsiBarScale = 3;
 
 	public static int spellCacheSize = 100;
@@ -68,6 +70,9 @@ public class ConfigHandler {
 
 		desc = "The harvest level of a CAD for the purposes of block breaking spells. 3 is diamond level. Defaults to 2 (iron level)";
 		cadHarvestLevel = loadPropInt("CAD Harvest Level", desc, cadHarvestLevel);
+		
+		if(Loader.isModLoaded("magipsi"))
+			magipsiClientSide = loadPropBool("Client Side Magical Psi", "Set this to true to disable all server side features from Magical Psi, to allow you to use it purely as a client side mod", false);
 
 		if(config.hasChanged())
 			config.save();
