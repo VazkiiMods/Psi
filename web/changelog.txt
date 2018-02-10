@@ -1,3 +1,6 @@
+r1.1-59
+*Added a config option to make wiiv's Magical Psi be client side only.
+*More texture changes.
 r1.1-58
 *Fixed crashing on servers.
 r1.1-57
