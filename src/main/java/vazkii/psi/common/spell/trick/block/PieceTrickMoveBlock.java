@@ -16,6 +16,8 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.world.BlockEvent;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.EnumSpellStat;
 import vazkii.psi.api.spell.Spell;
@@ -70,7 +72,12 @@ public class PieceTrickMoveBlock extends PieceTrick {
 		Block block = state.getBlock();
 		if(world.getTileEntity(pos) != null || block.getMobilityFlag(state) != EnumPushReaction.NORMAL || !block.canSilkHarvest(world, pos, state, context.caster) || block.getPlayerRelativeBlockHardness(state, context.caster, world, pos) <= 0 || !ForgeHooks.canHarvestBlock(block, context.caster, world, pos))
 			return null;
-
+		
+		BlockEvent.BreakEvent event = new BlockEvent.BreakEvent(world, pos, state, context.caster);
+		MinecraftForge.EVENT_BUS.post(event);
+		if(event.isCaceled())
+			return null;
+		
 		if(!targetVal.isAxial() || targetVal.isZero())
 			return null;
 
