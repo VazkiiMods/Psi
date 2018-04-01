@@ -23,8 +23,7 @@ public final class Spell {
 
 	private static final String TAG_VALID = "validSpell";
 	public static final String TAG_SPELL_NAME = "spellName";
-	public static final String TAG_UUID_MOST = "uuidMost";
-	public static final String TAG_UUID_LEAST = "uuidLeast";
+	public static final String TAG_UUID = "uuid";
 
 	public SpellGrid grid = new SpellGrid(this);
 	public String name = "";
@@ -51,11 +50,8 @@ public final class Spell {
 	public void readFromNBT(NBTTagCompound cmp) {
 		name = cmp.getString(TAG_SPELL_NAME);
 
-		if(cmp.hasKey(TAG_UUID_MOST)) {
-			long uuidMost = cmp.getLong(TAG_UUID_MOST);
-			long uuidLeast = cmp.getLong(TAG_UUID_LEAST);
-			if(uuid.getMostSignificantBits() != uuidMost || uuid.getLeastSignificantBits() != uuidLeast)
-				uuid = new UUID(uuidMost, uuidLeast);
+		if(cmp.hasKey(TAG_UUID)) {
+			uuid = UUID.fromString(cmp.getString(TAG_UUID));
 		}
 
 		grid.readFromNBT(cmp);
@@ -65,8 +61,7 @@ public final class Spell {
 		cmp.setBoolean(TAG_VALID, true);
 		cmp.setString(TAG_SPELL_NAME, name);
 
-		cmp.setLong(TAG_UUID_MOST, uuid.getMostSignificantBits());
-		cmp.setLong(TAG_UUID_LEAST, uuid.getLeastSignificantBits());
+		cmp.setString(TAG_UUID, uuid.toString());
 
 		grid.writeToNBT(cmp);
 	}
