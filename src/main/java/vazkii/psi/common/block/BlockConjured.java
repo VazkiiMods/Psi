@@ -145,6 +145,21 @@ public class BlockConjured extends BlockModContainer implements IPsiBlock {
 
 		return new AxisAlignedBB(pos.getX() + minX, pos.getY() + minY, pos.getZ() + minZ, pos.getX() + maxX, pos.getY() + maxY, pos.getZ() + maxZ);
 	}
+	
+	@Override
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
+		boolean solid = state.getValue(SOLID);
+		float f = solid ? 0F : 0.25F;
+
+		double minX = f;
+		double minY = f;
+		double minZ = f;
+		double maxX = 1F - f;
+		double maxY = 1F - f;
+		double maxZ = 1F - f;
+
+		return new AxisAlignedBB(minX, minY, minZ, maxX, maxY, maxZ);
+	}
 
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState state) {
