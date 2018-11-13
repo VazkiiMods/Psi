@@ -186,7 +186,9 @@ public class EntitySpellProjectile extends EntityThrowable {
 		if(pos.entityHit != null && pos.entityHit instanceof EntityLivingBase) {
 			EntityLivingBase e = (EntityLivingBase) pos.entityHit; // apparently RayTraceResult is mutable \:D/
 			cast((SpellContext context) -> {
-				context.attackedEntity = e;
+				if (context != null) {
+					context.attackedEntity = e;
+				}
 			});
 		} else cast();
 	}
