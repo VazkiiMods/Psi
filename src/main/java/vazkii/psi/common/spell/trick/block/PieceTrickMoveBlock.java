@@ -75,7 +75,7 @@ public class PieceTrickMoveBlock extends PieceTrick {
 		
 		BlockEvent.BreakEvent event = new BlockEvent.BreakEvent(world, pos, state, context.caster);
 		MinecraftForge.EVENT_BUS.post(event);
-		if(event.isCaceled())
+		if(event.isCanceled())
 			return null;
 		
 		if(!targetVal.isAxial() || targetVal.isZero())
