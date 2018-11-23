@@ -73,7 +73,7 @@ public class ItemPsimetalTool extends ItemModTool implements IPsimetalTool {
 			PlayerData data = PlayerDataHandler.get(player);
 			int regenTime = ItemNBTHelper.getInt(stack, TAG_REGEN_TIME, 0);
 
-			if(regenTime % 80 == 0 && (float) data.getAvailablePsi() / (float) data.getTotalPsi() > 0.5F) {
+			if(!data.overflowed && regenTime % 80 == 0 && (float) data.getAvailablePsi() / (float) data.getTotalPsi() > 0.5F) {
 				data.deductPsi(600, 5, true);
 				stack.setItemDamage(stack.getItemDamage() - 1);
 			}

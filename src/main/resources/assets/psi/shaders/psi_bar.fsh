@@ -3,6 +3,7 @@
 uniform int time; // Passed in, see ShaderHandler.java
 
 uniform float percentile; // Passed in via Callback
+uniform int overflowed;
 uniform sampler2D image;
 uniform sampler2D mask;
 
@@ -34,6 +35,11 @@ void main() {
     r = max(0, min(1, r));
     g = max(0, min(1, g));
     b = max(0, min(1, b));
+    
+    if(overflowed == 1) {
+        r = 1.0;
+        b -= 0.0;
+    }
 
     if(maskgs <= percentile)
     	gl_FragColor = vec4(r, g, b, a);

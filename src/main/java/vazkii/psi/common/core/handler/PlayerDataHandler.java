@@ -264,6 +264,7 @@ public class PlayerDataHandler {
 		private static final String TAG_SPELL_GROUPS_UNLOCKED = "spellGroupsUnlocked";
 		private static final String TAG_LAST_SPELL_GROUP = "lastSpellPoint";
 		private static final String TAG_LEVEL_POINTS = "levelPoints";
+		private static final String TAG_OVERFLOWED = "overflowed";
 
 		private static final String TAG_EIDOS_ANCHOR_X = "eidosAnchorX";
 		private static final String TAG_EIDOS_ANCHOR_Y = "eidosAnchorY";
@@ -282,7 +283,8 @@ public class PlayerDataHandler {
 		public int loopcastTime = 1;
 		public int loopcastAmount = 0;
 		public int loopcastFadeTime = 0;
-
+		public boolean overflowed = false;
+		
 		// Eidos stuff
 		public Stack<Vector3> eidosChangelog = new Stack();
 		public Vector3 eidosAnchor = new Vector3(0, 0, 0);
@@ -336,9 +338,17 @@ public class PlayerDataHandler {
 					}
 				}
 
-				if(doRegen && availablePsi < max && regenCooldown == 0) {
-					availablePsi = Math.min(max, availablePsi + getRegenPerTick());
-					save();
+				if(doRegen && regenCooldown == 0) {
+					if(availablePsi < max) {
+						availablePsi = Math.min(max, availablePsi + getRegenPerTick());
+						save();
+					} else {
+						boolean was = overflowed;
+						overflowed = false;
+						if(was)
+							save();
+					}
+					
 				}
 			} else {
 				regenCooldown--;
@@ -358,6 +368,9 @@ public class PlayerDataHandler {
 			float b = color.getBlue() / 255F;
 
 			loopcast: {
+				if(overflowed)
+					stopLoopcast();
+				
 				if(loopcasting) {
 					if(player == null || cadStack.isEmpty() || (player.getHeldItemMainhand() != cadStack && player.getHeldItemOffhand() != cadStack)) {
 						stopLoopcast();
@@ -599,6 +612,7 @@ public class PlayerDataHandler {
 						if(player != null)
 							player.attackEntityFrom(damageSourceOverload, dmg);
 					}
+					overflowed = true;
 				}
 			}
 
@@ -706,7 +720,8 @@ public class PlayerDataHandler {
 			cmp.setInteger(TAG_LEVEL_POINTS, levelPoints);
 			if(lastSpellGroup != null && !lastSpellGroup.isEmpty())
 				cmp.setString(TAG_LAST_SPELL_GROUP, lastSpellGroup);
-
+			cmp.setBoolean(TAG_OVERFLOWED, overflowed);
+			
 			NBTTagList list = new NBTTagList();
 			for(String s : spellGroupsUnlocked) {
 				if(s != null && !s.isEmpty())
@@ -739,7 +754,8 @@ public class PlayerDataHandler {
 			regenCooldown = cmp.getInteger(TAG_REGEN_CD);
 			levelPoints = cmp.getInteger(TAG_LEVEL_POINTS);
 			lastSpellGroup = cmp.getString(TAG_LAST_SPELL_GROUP);
-
+			overflowed = cmp.getBoolean(TAG_OVERFLOWED);
+			
 			if(cmp.hasKey(TAG_SPELL_GROUPS_UNLOCKED)) {
 				spellGroupsUnlocked.clear();
 				NBTTagList list = cmp.getTagList(TAG_SPELL_GROUPS_UNLOCKED, 8); // 8 -> String

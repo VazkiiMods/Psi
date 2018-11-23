@@ -38,6 +38,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import scala.reflect.internal.Trees.ShallowDuplicator;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.cad.ICADColorizer;
@@ -102,7 +103,7 @@ public final class HUDHandler {
 
 		if (cadStack.isEmpty())
 			return;
-
+		
 		ICAD cad = (ICAD) cadStack.getItem();
 		PlayerData data = PlayerDataHandler.get(mc.player);
 		if (data.level == 0 && !mc.player.capabilities.isCreativeMode)
@@ -185,7 +186,7 @@ public final class HUDHandler {
 			v = origHeight - effHeight;
 			y = origY + v;
 
-			ShaderHandler.useShader(ShaderHandler.psiBar, generateCallback(a, d.shatter));
+			ShaderHandler.useShader(ShaderHandler.psiBar, generateCallback(a, d.shatter, data.overflowed));
 			Gui.drawModalRectWithCustomSizedTexture(x, y, 32, v, width, height, 64, 256);
 		}
 
@@ -205,7 +206,7 @@ public final class HUDHandler {
 			height = 0;
 
 		GlStateManager.color(r, g, b);
-		ShaderHandler.useShader(ShaderHandler.psiBar, generateCallback(1F, false));
+		ShaderHandler.useShader(ShaderHandler.psiBar, generateCallback(1F, false, data.overflowed));
 		Gui.drawModalRectWithCustomSizedTexture(x, y, 32, v, width, height, 64, 256);
 		ShaderHandler.releaseShader();
 
@@ -453,10 +454,11 @@ public final class HUDHandler {
 	}
 
 	@SideOnly(Side.CLIENT)
-	private static Consumer<Integer> generateCallback(final float percentile, final boolean shatter) {
+	private static Consumer<Integer> generateCallback(final float percentile, final boolean shatter, final boolean overflowed) {
 		Minecraft mc = Minecraft.getMinecraft();
 		return (Integer shader) -> {
 			int percentileUniform = ARBShaderObjects.glGetUniformLocationARB(shader, "percentile");
+			int overflowedUniform = ARBShaderObjects.glGetUniformLocationARB(shader, "overflowed");
 			int imageUniform = ARBShaderObjects.glGetUniformLocationARB(shader, "image");
 			int maskUniform = ARBShaderObjects.glGetUniformLocationARB(shader, "mask");
 
@@ -474,6 +476,7 @@ public final class HUDHandler {
 			ARBShaderObjects.glUniform1iARB(maskUniform, secondaryTextureUnit);
 
 			ARBShaderObjects.glUniform1fARB(percentileUniform, percentile);
+			ARBShaderObjects.glUniform1iARB(overflowedUniform, overflowed ? 1 : 0);
 		};
 	}
 

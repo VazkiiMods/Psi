@@ -127,7 +127,7 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 		ItemStack bullet = getBulletInSocket(itemStackIn, getSelectedSlot(itemStackIn));
 		boolean did = cast(worldIn, playerIn, data, bullet, itemStackIn, 40, 25, 0.5F, null);
 
-		if(bullet.isEmpty() && craft(playerIn, new ItemStack(Items.REDSTONE), new ItemStack(ModItems.material))) {
+		if(!data.overflowed && bullet.isEmpty() && craft(playerIn, new ItemStack(Items.REDSTONE), new ItemStack(ModItems.material))) {
 			if(!worldIn.isRemote)
 				worldIn.playSound(null, playerIn.posX, playerIn.posY, playerIn.posZ, PsiSoundHandler.cadShoot, SoundCategory.PLAYERS, 0.5F, (float) (0.5 + Math.random() * 0.5));
 			data.deductPsi(100, 60, true);
@@ -152,7 +152,7 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 	}
 
 	public static boolean cast(World world, EntityPlayer player, PlayerData data, ItemStack bullet, ItemStack cad, int cd, int particles, float sound, Consumer<SpellContext> predicate) {
-		if(data.getAvailablePsi() > 0 && !cad.isEmpty() && !bullet.isEmpty() && bullet.getItem() instanceof ISpellContainer && isTruePlayer(player)) {
+		if(!data.overflowed && data.getAvailablePsi() > 0 && !cad.isEmpty() && !bullet.isEmpty() && bullet.getItem() instanceof ISpellContainer && isTruePlayer(player)) {
 			ISpellContainer spellContainer = (ISpellContainer) bullet.getItem();
 			if(spellContainer.containsSpell(bullet)) {
 				Spell spell = spellContainer.getSpell(bullet);
