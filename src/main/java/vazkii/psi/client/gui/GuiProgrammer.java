@@ -91,7 +91,7 @@ public class GuiProgrammer extends GuiScreen {
 	int cursorX, cursorY;
 	static int selectedX, selectedY;
 	boolean panelEnabled, configEnabled, commentEnabled;
-	int panelX, panelY, panelWidth, panelHeight;
+	int panelX, panelY, panelWidth, panelHeight, panelCursor;
 	int page = 0;
 	boolean scheduleButtonUpdate = false;
 	List<SpellPiece> visiblePieces = new ArrayList();
@@ -375,6 +375,15 @@ public class GuiProgrammer extends GuiScreen {
 			mc.getTextureManager().bindTexture(texture);
 
 			drawRect(panelX, panelY, panelX + panelWidth, panelY + panelHeight, 0x88000000);
+
+			int len = panelButtons.size();
+			if(panelButtons.size() > 0) {
+				GuiButton button = panelButtons.get(Math.max(0, Math.min(panelCursor, panelButtons.size() - 1)));
+				int panelPieceX = button.x;
+				int panelPieceY = button.y;
+				drawRect(panelPieceX - 1, panelPieceY - 1, panelPieceX + 17, panelPieceY + 17, 0x559999FF);
+			}
+
 			GlStateManager.color(1F, 1F, 1F);
 			drawTexturedModalRect(searchField.x - 14, searchField.y - 2, 0, ySize + 16, 12, 12);
 			searchField.drawTextBox();
@@ -519,8 +528,14 @@ public class GuiProgrammer extends GuiScreen {
 				updatePanelButtons();
 			}
 
-			if(panelButtons.size() >= 1 && par2 == Keyboard.KEY_RETURN)
-				actionPerformed(panelButtons.get(0));
+			if(panelButtons.size() >= 1) {
+				if(par2 == Keyboard.KEY_RETURN)
+					actionPerformed(panelButtons.get(panelCursor));
+				else if(par2 == Keyboard.KEY_TAB) {
+					int newCursor = panelCursor + (isShiftKeyDown() ? -1 : 1);
+					panelCursor = Math.max(0, Math.min(newCursor, panelButtons.size() - 1));
+				}
+			}
 		} else if(commentEnabled) {
 			if(par2 == Keyboard.KEY_RETURN)
 				closeComment(true);
@@ -829,6 +844,7 @@ public class GuiProgrammer extends GuiScreen {
 	}
 
 	private void updatePanelButtons() {
+		panelCursor = 0;
 		buttonList.removeAll(panelButtons);
 		panelButtons.clear();
 		visiblePieces.clear();
