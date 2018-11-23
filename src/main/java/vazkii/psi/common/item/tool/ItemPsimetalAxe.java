@@ -12,6 +12,7 @@ package vazkii.psi.common.item.tool;
 
 import java.util.Set;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 
 import net.minecraft.block.Block;
@@ -34,6 +35,11 @@ public class ItemPsimetalAxe extends ItemPsimetalTool {
 	@Override
 	public float getDestroySpeed(ItemStack stack, IBlockState state) {
 		return state.getMaterial() != Material.WOOD && state.getMaterial() != Material.PLANTS && state.getMaterial() != Material.VINE ? super.getDestroySpeed(stack, state) : efficiency;
+	}
+
+	@Override
+	public Set<String> getToolClasses(ItemStack stack) {
+		return ImmutableSet.of("axe");
 	}
 
 }

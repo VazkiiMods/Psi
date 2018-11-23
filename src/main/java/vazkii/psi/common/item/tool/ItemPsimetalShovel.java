@@ -12,6 +12,7 @@ package vazkii.psi.common.item.tool;
 
 import java.util.Set;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 
 import net.minecraft.block.Block;
@@ -47,6 +48,11 @@ public class ItemPsimetalShovel extends ItemPsimetalTool {
     public EnumActionResult onItemUse(EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
     	return Items.IRON_SHOVEL.onItemUse(playerIn, worldIn, pos, hand, facing, hitX, hitY, hitZ);
     }
+	
 
+	@Override
+	public Set<String> getToolClasses(ItemStack stack) {
+		return ImmutableSet.of("shovel");
+	}
 
 }
