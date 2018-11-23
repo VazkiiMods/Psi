@@ -1,4 +1,4 @@
-r1.1-50
+r1.1-60
 *Added further reprecautions to overflowing your psi. If you do so, you can only cast spells once you're back to full.
 *Added the ability to pick which spell piece to be placed into the grid with ENTER by using TAB.
 *Fixed a crash that I honestly have no idea what it was caused by but it's fixed.
