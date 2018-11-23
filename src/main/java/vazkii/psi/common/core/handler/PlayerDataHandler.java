@@ -240,7 +240,7 @@ public class PlayerDataHandler {
 		@SideOnly(Side.CLIENT)
 		public void onFOVUpdate(FOVUpdateEvent event) {
 			PlayerData data = get(Minecraft.getMinecraft().player);
-			if(data.isAnchored) {
+			if(data != null && data.isAnchored) {
 				float fov = event.getNewfov();
 				if(data.eidosAnchorTime > 0)
 					fov *= Math.min(5, data.eidosAnchorTime - ClientTickHandler.partialTicks) / 5;
