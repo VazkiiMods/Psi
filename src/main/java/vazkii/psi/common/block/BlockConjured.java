@@ -16,12 +16,14 @@ import java.util.Random;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -42,6 +44,8 @@ public class BlockConjured extends BlockModContainer implements IPsiBlock {
 	public static final PropertyBool BLOCK_WEST = PropertyBool.create("block_west");
 	public static final PropertyBool BLOCK_EAST = PropertyBool.create("block_east");
 
+    protected static final AxisAlignedBB LIGHT_AABB = new AxisAlignedBB(0.25, 0.25, 0.25, 0.75, 0.75, 0.75);
+	
 	public BlockConjured() {
 		super(LibBlockNames.CONJURED, Material.GLASS);
 		setDefaultState(makeDefaultState());
@@ -134,18 +138,14 @@ public class BlockConjured extends BlockModContainer implements IPsiBlock {
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
 		boolean solid = state.getValue(SOLID);
-		float f = solid ? 0F : 0.25F;
-
-		double minX = f;
-		double minY = f;
-		double minZ = f;
-		double maxX = 1F - f;
-		double maxY = 1F - f;
-		double maxZ = 1F - f;
-
-		return new AxisAlignedBB(minX, minY, minZ, maxX, maxY, maxZ);
+		return solid ? FULL_BLOCK_AABB : LIGHT_AABB;
 	}
 
+	@Override
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+        return BlockFaceShape.UNDEFINED;
+    }
+	
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState state) {
 		return new TileConjured();
