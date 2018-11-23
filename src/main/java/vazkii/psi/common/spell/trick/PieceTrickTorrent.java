@@ -58,7 +58,6 @@ public class PieceTrickTorrent extends PieceTrick {
 
 		BlockPos pos = positionVal.toBlockPos();
 
-		pos = pos.down();
 		IBlockState state = context.caster.getEntityWorld().getBlockState(pos);
 		if(state.getBlock().isAir(state, context.caster.getEntityWorld(), pos) || state.getBlock().isReplaceable(context.caster.getEntityWorld(), pos))
 			context.caster.getEntityWorld().setBlockState(pos, Blocks.FLOWING_WATER.getDefaultState());
