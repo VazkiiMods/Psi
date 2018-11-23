@@ -278,6 +278,9 @@ public class PlayerDataHandler {
 
 		private static final String TAG_CUSTOM_DATA = "customData";
 		
+		public int totalPsi = 5000;
+		public int regen = 25;
+		
 		public int level;
 		public int availablePsi;
 		public int lastAvailablePsi;
@@ -668,12 +671,12 @@ public class PlayerDataHandler {
 
 		@Override
 		public int getTotalPsi() {
-			return 5000;
+			return totalPsi;
 		}
 
 		@Override
 		public int getRegenPerTick() {
-			return 25;
+			return regen;
 		}
 
 		@Override
