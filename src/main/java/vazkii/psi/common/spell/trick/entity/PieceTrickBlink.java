@@ -74,8 +74,10 @@ public class PieceTrickBlink extends PieceTrick {
 		double z = e.posZ += look.z * dist;
 
 		if(e instanceof EntityPlayerMP) {
-			EntityPlayerMP mp = (EntityPlayerMP) e;
-			mp.connection.setPlayerLocation(x, y, z, e.rotationYaw, e.rotationPitch);
+			if(e == context.caster) {
+				EntityPlayerMP mp = (EntityPlayerMP) e;
+				mp.connection.setPlayerLocation(x, y, z, e.rotationYaw, e.rotationPitch);
+			}
 		} else e.setPosition(x, y, z);
 	}
 
