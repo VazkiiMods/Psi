@@ -34,13 +34,16 @@ public class KeybindHandler {
 	public static void keyDown() {
 		Minecraft mc = Minecraft.getMinecraft();
 		ItemStack stack = mc.player.getHeldItem(EnumHand.MAIN_HAND);
-		if(!stack.isEmpty() && (stack.getItem() instanceof ISocketable || stack.getItem() instanceof ISocketableController))
-			mc.displayGuiScreen(new GuiSocketSelect(stack));
-		else {
-			stack = mc.player.getHeldItem(EnumHand.OFF_HAND);
+		
+		if(mc.currentScreen == null) {
 			if(!stack.isEmpty() && (stack.getItem() instanceof ISocketable || stack.getItem() instanceof ISocketableController))
 				mc.displayGuiScreen(new GuiSocketSelect(stack));
-			else mc.displayGuiScreen(new GuiLeveling());
+			else {
+				stack = mc.player.getHeldItem(EnumHand.OFF_HAND);
+				if(!stack.isEmpty() && (stack.getItem() instanceof ISocketable || stack.getItem() instanceof ISocketableController))
+					mc.displayGuiScreen(new GuiSocketSelect(stack));
+				else mc.displayGuiScreen(new GuiLeveling());
+			}
 		}
 	}
 
