@@ -28,6 +28,7 @@ public class ItemPsimetalAxe extends ItemPsimetalTool {
 
 	public ItemPsimetalAxe() {
 		super(LibItemNames.PSIMETAL_AXE, 6F, -3.1F, EFFECTIVE_ON);
+		setHarvestLevel("axe", 2);
 	}
 
 	// ItemAxe copypasta:
@@ -35,11 +36,6 @@ public class ItemPsimetalAxe extends ItemPsimetalTool {
 	@Override
 	public float getDestroySpeed(ItemStack stack, IBlockState state) {
 		return state.getMaterial() != Material.WOOD && state.getMaterial() != Material.PLANTS && state.getMaterial() != Material.VINE ? super.getDestroySpeed(stack, state) : efficiency;
-	}
-
-	@Override
-	public Set<String> getToolClasses(ItemStack stack) {
-		return ImmutableSet.of("axe");
 	}
 
 }

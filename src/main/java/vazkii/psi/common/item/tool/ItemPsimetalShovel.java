@@ -34,6 +34,7 @@ public class ItemPsimetalShovel extends ItemPsimetalTool {
 
 	public ItemPsimetalShovel() {
 		super(LibItemNames.PSIMETAL_SHOVEL, 1.5F, -3.0F, EFFECTIVE_ON);
+		setHarvestLevel("shovel", 2);
 	}
 
 	// ItemSpade copypasta:
@@ -49,10 +50,4 @@ public class ItemPsimetalShovel extends ItemPsimetalTool {
     	return Items.IRON_SHOVEL.onItemUse(playerIn, worldIn, pos, hand, facing, hitX, hitY, hitZ);
     }
 	
-
-	@Override
-	public Set<String> getToolClasses(ItemStack stack) {
-		return ImmutableSet.of("shovel");
-	}
-
 }

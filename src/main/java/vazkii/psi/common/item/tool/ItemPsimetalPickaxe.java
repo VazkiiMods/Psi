@@ -28,6 +28,7 @@ public class ItemPsimetalPickaxe extends ItemPsimetalTool {
 
 	public ItemPsimetalPickaxe() {
 		super(LibItemNames.PSIMETAL_PICKAXE, 1.0F, -2.8F, EFFECTIVE_ON);
+		setHarvestLevel("pickaxe", 2);
 	}
 
 	// ItemPickaxe copypasta:
@@ -41,11 +42,6 @@ public class ItemPsimetalPickaxe extends ItemPsimetalTool {
 	@Override
 	public float getDestroySpeed(ItemStack stack, IBlockState state) {
 		return state.getMaterial() != Material.IRON && state.getMaterial() != Material.ANVIL && state.getMaterial() != Material.ROCK ? super.getDestroySpeed(stack, state) : efficiency;
-	}
-
-	@Override
-	public Set<String> getToolClasses(ItemStack stack) {
-		return ImmutableSet.of("pickaxe");
 	}
 
 }
