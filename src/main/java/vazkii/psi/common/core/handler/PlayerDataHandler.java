@@ -279,7 +279,7 @@ public class PlayerDataHandler {
 		public String lastSpellGroup;
 		public int levelPoints;
 		public boolean loopcasting = false;
-		public int loopcastTime = 0;
+		public int loopcastTime = 1;
 		public int loopcastAmount = 0;
 		public int loopcastFadeTime = 0;
 
@@ -526,7 +526,7 @@ public class PlayerDataHandler {
 			if(loopcasting)
 				loopcastFadeTime = 5;
 			loopcasting = false;
-			loopcastTime = 0;
+			loopcastTime = 1;
 			loopcastAmount = 0;
 		}
 
