@@ -28,6 +28,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import vazkii.arl.interf.IItemColorProvider;
 import vazkii.arl.item.ItemMod;
 import vazkii.arl.item.ItemModArmor;
+import vazkii.arl.util.ItemNBTHelper;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ICADColorizer;
 import vazkii.psi.api.cad.ISocketable;
@@ -51,6 +52,8 @@ public class ItemPsimetalArmor extends ItemModArmor implements IPsimetalTool, IP
 	
 	@SideOnly(Side.CLIENT)
 	protected ModelBiped[] models;
+	
+	private static final String TAG_TIMES_CAST = "timesCast";
 
 	public ItemPsimetalArmor(String name, int type, EntityEquipmentSlot slot) {
 		super(name, PsiAPI.PSIMETAL_ARMOR_MATERIAL, type, slot);
@@ -67,12 +70,17 @@ public class ItemPsimetalArmor extends ItemModArmor implements IPsimetalTool, IP
 		ItemStack playerCad = PsiAPI.getPlayerCAD(event.getEntityPlayer());
 
 		if(!playerCad.isEmpty()) {
+			int timesCast = ItemNBTHelper.getInt(stack, TAG_TIMES_CAST, 0);
+			
 			ItemStack bullet = getBulletInSocket(stack, getSelectedSlot(stack));
 			ItemCAD.cast(event.getEntityPlayer().getEntityWorld(), event.getEntityPlayer(), data, bullet, playerCad, getCastCooldown(stack), 0, getCastVolume(), (SpellContext context) -> {
 				context.tool = stack;
 				context.attackingEntity = event.attacker;
 				context.damageTaken = event.damage;
+				context.loopcastIndex = timesCast;
 			});
+			
+			ItemNBTHelper.setInt(stack, TAG_TIMES_CAST, timesCast + 1);
 		}
 	}
 
@@ -80,6 +88,18 @@ public class ItemPsimetalArmor extends ItemModArmor implements IPsimetalTool, IP
 	public void onEvent(ItemStack stack, PsiArmorEvent event) {
 		if(event.type.equals(getEvent(stack)))
 			cast(stack, event);
+	}
+	
+	@Override
+	public void setSelectedSlot(ItemStack stack, int slot) {
+		IPsimetalTool.super.setSelectedSlot(stack, slot);
+		ItemNBTHelper.setInt(stack, TAG_TIMES_CAST, 0);
+	}
+	
+	@Override
+	public void setBulletInSocket(ItemStack stack, int slot, ItemStack bullet) {
+		IPsimetalTool.super.setBulletInSocket(stack, slot, bullet);
+		ItemNBTHelper.setInt(stack, TAG_TIMES_CAST, 0);
 	}
 
 	public String getEvent(ItemStack stack) {
