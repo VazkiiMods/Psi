@@ -49,6 +49,7 @@ import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -68,6 +69,7 @@ import vazkii.psi.api.spell.EnumSpellStat;
 import vazkii.psi.api.spell.ISpellContainer;
 import vazkii.psi.api.spell.ISpellSettable;
 import vazkii.psi.api.spell.Spell;
+import vazkii.psi.api.spell.SpellCastEvent;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.common.Psi;
@@ -201,6 +203,7 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 						}
 
 						spellContainer.castSpell(bullet, context);
+						MinecraftForge.EVENT_BUS.post(new SpellCastEvent(spell, context, player, data, cad, bullet));
 						return true;
 					} else if(!world.isRemote)
 						player.sendMessage(new TextComponentTranslation("psimisc.weakCad").setStyle(new Style().setColor(TextFormatting.RED)));
