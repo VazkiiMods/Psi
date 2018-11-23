@@ -54,7 +54,7 @@ public class PieceTrickSmeltItem extends PieceTrick {
 			ItemStack stack = eitem.getItem();
 			ItemStack result = FurnaceRecipes.instance().getSmeltingResult(stack);
 
-			if(result != null) {
+			if(!result.isEmpty()) {
 				if(!eitem.getEntityWorld().isRemote) {
 					stack.shrink(1);
 					if(stack.getCount() == 0)

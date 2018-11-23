@@ -12,6 +12,7 @@ package vazkii.psi.common.spell.trick.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
@@ -72,7 +73,7 @@ public class PieceTrickSmeltBlock extends PieceTrick {
 		if(!result.isEmpty()) {
 			Item item = result.getItem();
 			Block block1 = Block.getBlockFromItem(item);
-			if(block1 != null) {
+			if(block1 != Blocks.AIR) {
 				context.caster.getEntityWorld().setBlockState(pos, block1.getStateFromMeta(result.getMetadata()));
 				state = context.caster.getEntityWorld().getBlockState(pos);
 				context.caster.getEntityWorld().playEvent(2001, pos, Block.getStateId(state));
