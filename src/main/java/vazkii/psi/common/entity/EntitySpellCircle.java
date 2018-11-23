@@ -27,12 +27,13 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import vazkii.psi.api.cad.ICADColorizer;
 import vazkii.psi.api.spell.ISpellContainer;
+import vazkii.psi.api.spell.ISpellImmune;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.common.Psi;
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
-public class EntitySpellCircle extends Entity {
+public class EntitySpellCircle extends Entity implements ISpellImmune {
 
 	public static final int CAST_TIMES = 20;
 	public static final int CAST_DELAY = 5;
@@ -197,5 +198,10 @@ public class EntitySpellCircle extends Entity {
 		String name = (String) dataManager.get(CASTER_NAME);
 		EntityPlayer player = getEntityWorld().getPlayerEntityByName(name);
 		return player;
+	}
+
+	@Override
+	public boolean isImmune() {
+		return true;
 	}
 }
