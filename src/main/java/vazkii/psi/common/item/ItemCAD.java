@@ -477,7 +477,7 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 	
 	@Override
 	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subItems) {
-		if(tab != getCreativeTab())
+		if(!isInCreativeTab(tab))
 			return;
 		
 		// Basic Iron CAD
