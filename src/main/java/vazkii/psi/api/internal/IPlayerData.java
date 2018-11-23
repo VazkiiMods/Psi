@@ -10,6 +10,7 @@
  */
 package vazkii.psi.api.internal;
 
+import net.minecraft.nbt.NBTTagCompound;
 import vazkii.psi.api.spell.SpellPiece;
 
 public interface IPlayerData {
@@ -70,4 +71,16 @@ public interface IPlayerData {
 	 */
 	public void markPieceExecuted(SpellPiece piece);
 
+	/**
+	 * Gets a tag compound where you can put your own stuff. If you're
+	 * going to write any data here, please ensure it's prefixed with
+	 * your mod ID so stuff doesn't get written over other stuff.
+	 */
+	public NBTTagCompound getCustomData();
+	
+	/**
+	 * Saves the data to the player entity's NBT tags. 
+	 */
+	public void save();
+	
 }

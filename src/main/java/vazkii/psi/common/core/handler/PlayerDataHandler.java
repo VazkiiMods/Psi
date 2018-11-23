@@ -276,6 +276,8 @@ public class PlayerDataHandler {
 		private static final String TAG_EIDOS_ANCHOR_YAW = "eidosAnchorYaw";
 		private static final String TAG_EIDOS_ANCHOR_TIME = "eidosAnchorTime";
 
+		private static final String TAG_CUSTOM_DATA = "customData";
+		
 		public int level;
 		public int availablePsi;
 		public int lastAvailablePsi;
@@ -308,6 +310,9 @@ public class PlayerDataHandler {
 		public final List<Deduction> deductions = new ArrayList();
 		public WeakReference<EntityPlayer> playerWR;
 		private final boolean client;
+		
+		// Custom Data
+		private NBTTagCompound customData;
 
 		public PlayerData(EntityPlayer player) {
 			playerWR = new WeakReference(player);
@@ -704,7 +709,14 @@ public class PlayerDataHandler {
 			if(group != null && group.mainPiece == piece.getClass())
 				levelUp();
 		}
+		
 
+		@Override
+		public NBTTagCompound getCustomData() {
+			return customData;
+		}
+
+		@Override
 		public void save() {
 			if(!client) {
 				EntityPlayer player = playerWR.get();
@@ -738,6 +750,9 @@ public class PlayerDataHandler {
 			cmp.setDouble(TAG_EIDOS_ANCHOR_PITCH, eidosAnchorPitch);
 			cmp.setDouble(TAG_EIDOS_ANCHOR_YAW, eidosAnchorYaw);
 			cmp.setInteger(TAG_EIDOS_ANCHOR_TIME, eidosAnchorTime);
+			
+			if(customData != null)
+				cmp.setTag(TAG_CUSTOM_DATA, customData);
 		}
 
 		public void load() {
@@ -774,6 +789,8 @@ public class PlayerDataHandler {
 			eidosAnchorPitch = cmp.getDouble(TAG_EIDOS_ANCHOR_PITCH);
 			eidosAnchorYaw = cmp.getDouble(TAG_EIDOS_ANCHOR_YAW);
 			eidosAnchorTime = cmp.getInteger(TAG_EIDOS_ANCHOR_TIME);
+			
+			customData = cmp.getCompoundTag(TAG_CUSTOM_DATA);
 		}
 
 		@SideOnly(Side.CLIENT)

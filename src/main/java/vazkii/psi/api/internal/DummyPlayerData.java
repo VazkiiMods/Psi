@@ -10,6 +10,7 @@
  */
 package vazkii.psi.api.internal;
 
+import net.minecraft.nbt.NBTTagCompound;
 import vazkii.psi.api.spell.SpellPiece;
 
 /**
@@ -65,6 +66,16 @@ public class DummyPlayerData implements IPlayerData {
 
 	@Override
 	public void markPieceExecuted(SpellPiece piece) {
+		// NO-OP
+	}
+
+	@Override
+	public NBTTagCompound getCustomData() {
+		return null;
+	}
+
+	@Override
+	public void save() {
 		// NO-OP
 	}
 
