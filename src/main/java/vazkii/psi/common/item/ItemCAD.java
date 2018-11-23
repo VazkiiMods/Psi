@@ -147,6 +147,7 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 		if(!bullet.isEmpty() && bullet.getItem() instanceof ISpellSettable) {
 			((ISpellSettable) bullet.getItem()).setSpell(player, bullet, spell);
 			setBulletInSocket(stack, slot, bullet);
+			player.getCooldownTracker().setCooldown(stack.getItem(), 10);
 		}
 	}
 
