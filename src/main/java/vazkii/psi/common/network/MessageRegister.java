@@ -25,6 +25,7 @@ import vazkii.psi.common.network.message.MessageLearnGroup;
 import vazkii.psi.common.network.message.MessageLevelUp;
 import vazkii.psi.common.network.message.MessageSkipToLevel;
 import vazkii.psi.common.network.message.MessageSpellModified;
+import vazkii.psi.common.network.message.MessageTriggerJumpSpell;
 
 public class MessageRegister {
 
@@ -37,7 +38,8 @@ public class MessageRegister {
 		NetworkHandler.register(MessageSkipToLevel.class, Side.SERVER);
 		NetworkHandler.register(MessageLevelUp.class, Side.CLIENT);
 		NetworkHandler.register(MessageChangeControllerSlot.class, Side.SERVER);
-		
+		NetworkHandler.register(MessageTriggerJumpSpell.class, Side.SERVER);
+
 		NetworkMessage.mapHandler(Spell.class, MessageRegister::readSpell, MessageRegister::writeSpell);
 	}
 

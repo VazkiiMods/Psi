@@ -36,6 +36,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
+import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketPlayerPosLook.EnumFlags;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
@@ -78,6 +79,7 @@ import vazkii.psi.common.item.ItemCAD;
 import vazkii.psi.common.network.message.MessageDataSync;
 import vazkii.psi.common.network.message.MessageDeductPsi;
 import vazkii.psi.common.network.message.MessageLevelUp;
+import vazkii.psi.common.network.message.MessageTriggerJumpSpell;
 
 public class PlayerDataHandler {
 
@@ -201,9 +203,10 @@ public class PlayerDataHandler {
 
 		@SubscribeEvent
 		public void onEntityJump(LivingJumpEvent event) {
-			if(event.getEntityLiving() instanceof EntityPlayer) {
+			if(event.getEntityLiving() instanceof EntityPlayer && event.getEntity().world.isRemote) {
 				EntityPlayer player = (EntityPlayer) event.getEntityLiving();
 				PsiArmorEvent.post(new PsiArmorEvent(player, PsiArmorEvent.JUMP));
+				NetworkHandler.INSTANCE.sendToServer(new MessageTriggerJumpSpell());
 			}
 		}
 
