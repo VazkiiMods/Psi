@@ -28,7 +28,7 @@ public class ItemPsimetalPickaxe extends ItemPsimetalTool {
 
 	public ItemPsimetalPickaxe() {
 		super(LibItemNames.PSIMETAL_PICKAXE, 1.0F, -2.8F, EFFECTIVE_ON);
-		setHarvestLevel("pickaxe", 2);
+		setHarvestLevel("pickaxe", 3);
 	}
 
 	// ItemPickaxe copypasta:

@@ -28,7 +28,7 @@ public class ItemPsimetalAxe extends ItemPsimetalTool {
 
 	public ItemPsimetalAxe() {
 		super(LibItemNames.PSIMETAL_AXE, 6F, -3.1F, EFFECTIVE_ON);
-		setHarvestLevel("axe", 2);
+		setHarvestLevel("axe", 3);
 	}
 
 	// ItemAxe copypasta:
