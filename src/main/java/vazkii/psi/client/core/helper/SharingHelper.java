@@ -65,7 +65,7 @@ public final class SharingHelper {
 			String encodedContents = URLEncoder.encode(contents, "UTF-8");
 			String encodedTitle = URLEncoder.encode(title, "UTF-8");
 
-			String redditUrl = "https://www.reddit.com/r/psispellcompendium/submit?title=" + encodedTitle + "&text=" + encodedContents;
+			String redditUrl = "https://old.reddit.com/r/psispellcompendium/submit?title=" + encodedTitle + "&text=" + encodedContents;
 			
 			if(Desktop.isDesktopSupported())
 				Desktop.getDesktop().browse(new URI(redditUrl));
