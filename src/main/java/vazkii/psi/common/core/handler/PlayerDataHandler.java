@@ -646,12 +646,12 @@ public class PlayerDataHandler {
 
 		@Override
 		public int getTotalPsi() {
-			return Math.min(5000, getLevel() * 200);
+			return 5000;
 		}
 
 		@Override
 		public int getRegenPerTick() {
-			return Math.min(25, getLevel());
+			return 25;
 		}
 
 		@Override
