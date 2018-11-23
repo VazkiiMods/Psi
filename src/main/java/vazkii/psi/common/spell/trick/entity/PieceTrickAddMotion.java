@@ -74,12 +74,14 @@ public class PieceTrickAddMotion extends PieceTrick {
 		dir = dir.copy().normalize().multiply(MULTIPLIER * speed);
 
 		String key = "psi:Entity" + e.getEntityId() + "Motion";
+		boolean added = false;
 		
 		if(Math.abs(dir.x) > 0.0001) {
 			String keyv = key + "X";
 			if(!context.customData.containsKey(keyv)) {
 				e.motionX += dir.x;
 				context.customData.put(keyv, 0);
+				added = true;
 			}
 		}
 
@@ -88,6 +90,7 @@ public class PieceTrickAddMotion extends PieceTrick {
 			if(!context.customData.containsKey(keyv)) {
 				e.motionY += dir.y;
 				context.customData.put(keyv, 0);
+				added = true;
 			}
 			
 			if(e.motionY >= 0)
@@ -99,8 +102,12 @@ public class PieceTrickAddMotion extends PieceTrick {
 			if(!context.customData.containsKey(keyv)) {
 				e.motionZ += dir.z;
 				context.customData.put(keyv, 0);
+				added = true;
 			}
 		}
+		
+		if(added)
+			e.velocityChanged = true;
 	}
 
 }
