@@ -37,7 +37,7 @@ public class ItemDetonator extends ItemMod implements IPsiItem {
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand hand) {
 		ItemStack itemStackIn = playerIn.getHeldItem(hand);
-		List<EntitySpellCharge> charges = worldIn.getEntitiesWithinAABB(EntitySpellCharge.class, playerIn.getEntityBoundingBox().expand(32, 32, 32));
+		List<EntitySpellCharge> charges = worldIn.getEntitiesWithinAABB(EntitySpellCharge.class, playerIn.getEntityBoundingBox().grow(32, 32, 32));
 		if(!charges.isEmpty())
 			for(EntitySpellCharge c : charges)
 				c.doExplosion();
