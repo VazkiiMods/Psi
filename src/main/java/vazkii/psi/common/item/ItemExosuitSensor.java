@@ -79,7 +79,7 @@ public class ItemExosuitSensor extends ItemMod implements IExosuitSensor, IItemC
 	public IItemColor getItemColor() {
 		return new IItemColor() {
 			@Override
-			public int getColorFromItemstack(ItemStack stack, int tintIndex) {
+			public int colorMultiplier(ItemStack stack, int tintIndex) {
 				return tintIndex == 1 ? getColor(stack) : 0xFFFFFF;
 			}
 		};

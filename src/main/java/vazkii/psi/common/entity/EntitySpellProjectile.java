@@ -60,7 +60,7 @@ public class EntitySpellProjectile extends EntityThrowable {
 	public EntitySpellProjectile(World worldIn, EntityLivingBase throwerIn) {
 		super(worldIn, throwerIn);
 		
-		setHeadingFromThrower(throwerIn, throwerIn.rotationPitch, throwerIn.rotationYaw, 0.0F, 1.5F, 1.0F);
+		shoot(throwerIn, throwerIn.rotationPitch, throwerIn.rotationYaw, 0.0F, 1.5F, 1.0F);
 		double speed = 1.5;
 		motionX *= speed;
 		motionY *= speed;

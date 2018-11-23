@@ -65,7 +65,7 @@ public class ItemCADColorizer extends ItemCADComponent implements ICADColorizer,
 	public IItemColor getItemColor() {
 		return new IItemColor() {
 			@Override
-			public int getColorFromItemstack(ItemStack stack, int tintIndex) {
+			public int colorMultiplier(ItemStack stack, int tintIndex) {
 				return tintIndex == 1 && stack.getItemDamage() < 16 ? colorTable[15 - stack.getItemDamage()] : 0xFFFFFF;
 			}
 		};

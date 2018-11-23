@@ -38,8 +38,8 @@ public class ItemPsimetalPickaxe extends ItemPsimetalTool {
 	}
 
 	@Override
-	public float getStrVsBlock(ItemStack stack, IBlockState state) {
-		return state.getMaterial() != Material.IRON && state.getMaterial() != Material.ANVIL && state.getMaterial() != Material.ROCK ? super.getStrVsBlock(stack, state) : efficiencyOnProperMaterial;
+	public float getDestroySpeed(ItemStack stack, IBlockState state) {
+		return state.getMaterial() != Material.IRON && state.getMaterial() != Material.ANVIL && state.getMaterial() != Material.ROCK ? super.getDestroySpeed(stack, state) : efficiency;
 	}
 
 }

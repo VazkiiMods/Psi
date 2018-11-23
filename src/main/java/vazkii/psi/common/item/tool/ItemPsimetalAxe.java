@@ -32,8 +32,8 @@ public class ItemPsimetalAxe extends ItemPsimetalTool {
 	// ItemAxe copypasta:
 
 	@Override
-	public float getStrVsBlock(ItemStack stack, IBlockState state) {
-		return state.getMaterial() != Material.WOOD && state.getMaterial() != Material.PLANTS && state.getMaterial() != Material.VINE ? super.getStrVsBlock(stack, state) : efficiencyOnProperMaterial;
+	public float getDestroySpeed(ItemStack stack, IBlockState state) {
+		return state.getMaterial() != Material.WOOD && state.getMaterial() != Material.PLANTS && state.getMaterial() != Material.VINE ? super.getDestroySpeed(stack, state) : efficiency;
 	}
 
 }
