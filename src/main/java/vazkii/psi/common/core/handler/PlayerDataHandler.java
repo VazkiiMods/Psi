@@ -13,6 +13,7 @@ package vazkii.psi.common.core.handler;
 import java.awt.Color;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -105,17 +106,21 @@ public class PlayerDataHandler {
 	}
 
 	public static void cleanup() {
-		List<Integer> removals = new ArrayList();
-		Iterator<Entry<Integer, PlayerData>> it = playerData.entrySet().iterator();
-		while(it.hasNext()) {
-			Entry<Integer, PlayerData> item = it.next();
-			PlayerData d = item.getValue();
-			if(d != null && d.playerWR.get() == null)
-				removals.add(item.getKey());
-		}
+		try {
+			List<Integer> removals = new ArrayList();
+			Iterator<Entry<Integer, PlayerData>> it = playerData.entrySet().iterator();
+			while(it.hasNext()) {
+				Entry<Integer, PlayerData> item = it.next();
+				PlayerData d = item.getValue();
+				if(d != null && d.playerWR.get() == null)
+					removals.add(item.getKey());
+			}
 
-		for(int i : removals)
-			playerData.remove(i);
+			for(int i : removals)
+				playerData.remove(i);
+		} catch(ConcurrentModificationException e) {
+			// This is the dirtist fucking code ever but I legit have no idea what's going on here so have this fuck it
+		}
 	}
 
 	private static int getKey(EntityPlayer player) {
