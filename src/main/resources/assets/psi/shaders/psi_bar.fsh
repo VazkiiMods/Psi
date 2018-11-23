@@ -31,15 +31,15 @@ void main() {
 
     r += exr;
     g -= exr;
+        
+    if(overflowed == 1) {
+        r = 1.0;
+        b -= 0.2;
+    }
 
     r = max(0, min(1, r));
     g = max(0, min(1, g));
     b = max(0, min(1, b));
-    
-    if(overflowed == 1) {
-        r = 1.0;
-        b -= 0.0;
-    }
 
     if(maskgs <= percentile)
     	gl_FragColor = vec4(r, g, b, a);
