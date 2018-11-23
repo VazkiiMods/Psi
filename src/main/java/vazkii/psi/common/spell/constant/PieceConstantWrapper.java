@@ -25,6 +25,8 @@ public class PieceConstantWrapper extends SpellPiece {
 
 	SpellParam target;
 	SpellParam max;
+	
+	boolean evaluating = false;
 
 	public PieceConstantWrapper(Spell spell) {
 		super(spell);
@@ -55,7 +57,14 @@ public class PieceConstantWrapper extends SpellPiece {
 
 	@Override
 	public Object evaluate() throws SpellCompilationException {
-		return getParamEvaluation(max);
+		if(evaluating)
+			return 0.0;
+		
+		evaluating = true;
+		Object ret = getParamEvaluation(max);
+		evaluating = false;
+		
+		return ret;
 	}
 
 	@Override
