@@ -1,3 +1,34 @@
+r1.1-50
+*Added further reprecautions to overflowing your psi. If you do so, you can only cast spells once you're back to full.
+*Added the ability to pick which spell piece to be placed into the grid with ENTER by using TAB.
+*Fixed a crash that I honestly have no idea what it was caused by but it's fixed.
+*Fixed a crash when a projectile collides with invalid context. (Terrana)
+*Fixed a crash when loading a void world.
+*Fixed a crash when pointing Constant: Wrapper towards itself with a connector.
+*Fixed a crash when using Selector: Eidos Changelog with an input value of 0.
+*Fixed blocks connecting to conjured lights.
+*Fixed both smelt tricks deleting items and blocks.
+*Fixed conjured lights having the wrong bounding box. (juliand665)
+*Fixed loopcasting having incorrect delay on the first to second cast.
+*Fixed psimetal boot spells not having a proper server side component sometimes.
+*Fixed psimetal tools not having proper tool clases.
+*Fixed Selector: Block Presence never returning 1.
+*Fixed some typos. (sjaak31367, mwnDK1402)
+*Fixed spell bullets and CADs not showing up in creative search.
+*Fixed the psi keybind triggering in chat.
+*Fixed the reddit uploader having the new URL that doesn't support text insertion.
+*Fixed the spell detonator and a few other things not working in all directions.
+*Fixed Trick: Add Motion not working on other players.
+*Fixed Trick: Move Block not passing out a break block event (mcenderdragon)
+*Made Spell Circles immune to spells so you can't blink them around you dumb.
+*Removed the ability to Blink other players.
+*Removed the tie between level and psi amount, everyone now has 5000 psi.
+*The CAD will now go on a short cooldown after its spell is changed by right clicking on a programmer to prevent it from triggering the spell.
+*Trick: Torrent no longer places water 1 block under it.
+*Using Selector: Loopcast Index on spells being cast from armor will now return the amount of times the armor piece has cast that spell.
+*[API] Added SpellCastEvent.
+*[API] Added the ability for addons to write custom info to player data.
+*[API] Increased version number to 7.
 r1.1-59
 *Added a config option to make wiiv's Magical Psi be client side only.
 *More texture changes.
