@@ -231,17 +231,21 @@ public class PlayerDataHandler {
 		public void onRenderWorldLast(RenderWorldLastEvent event) {
 			Minecraft mc = Minecraft.getMinecraft();
 			Entity cameraEntity = mc.getRenderViewEntity();
-			cameraEntity.getPosition();
-			Frustum frustum = new Frustum();
+			if (cameraEntity != null) {
+				cameraEntity.getPosition();
+				Frustum frustum = new Frustum();
 
-			float partialTicks = event.getPartialTicks();
-			double viewX = cameraEntity.lastTickPosX + (cameraEntity.posX - cameraEntity.lastTickPosX) * partialTicks;
-			double viewY = cameraEntity.lastTickPosY + (cameraEntity.posY - cameraEntity.lastTickPosY) * partialTicks;
-			double viewZ = cameraEntity.lastTickPosZ + (cameraEntity.posZ - cameraEntity.lastTickPosZ) * partialTicks;
-			frustum.setPosition(viewX, viewY, viewZ);
+				float partialTicks = event.getPartialTicks();
+				double viewX = cameraEntity.lastTickPosX + (cameraEntity.posX - cameraEntity.lastTickPosX) * partialTicks;
+				double viewY = cameraEntity.lastTickPosY + (cameraEntity.posY - cameraEntity.lastTickPosY) * partialTicks;
+				double viewZ = cameraEntity.lastTickPosZ + (cameraEntity.posZ - cameraEntity.lastTickPosZ) * partialTicks;
+				frustum.setPosition(viewX, viewY, viewZ);
 
-			for(EntityPlayer player : mc.world.playerEntities)
-				PlayerDataHandler.get(player).render(player, partialTicks);
+				for(EntityPlayer player : mc.world.playerEntities)
+					PlayerDataHandler.get(player).render(player, partialTicks);
+			}
+
+
 		}
 
 		@SubscribeEvent
