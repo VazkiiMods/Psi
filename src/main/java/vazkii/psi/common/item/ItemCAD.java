@@ -65,13 +65,7 @@ import vazkii.psi.api.cad.ICADColorizer;
 import vazkii.psi.api.cad.ICADComponent;
 import vazkii.psi.api.cad.ISocketable;
 import vazkii.psi.api.internal.Vector3;
-import vazkii.psi.api.spell.EnumSpellStat;
-import vazkii.psi.api.spell.ISpellContainer;
-import vazkii.psi.api.spell.ISpellSettable;
-import vazkii.psi.api.spell.Spell;
-import vazkii.psi.api.spell.SpellCastEvent;
-import vazkii.psi.api.spell.SpellContext;
-import vazkii.psi.api.spell.SpellRuntimeException;
+import vazkii.psi.api.spell.*;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.BlockProgrammer;
 import vazkii.psi.common.block.base.ModBlocks;
@@ -165,14 +159,29 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 				if(context.isValid()) {
 					if(context.cspell.metadata.evaluateAgainst(cad)) {
 						int cost = getRealCost(cad, bullet, context.cspell.metadata.stats.get(EnumSpellStat.COST));
-						if(cost > 0 || cost == -1) {
-							if(cost != -1)
-								data.deductPsi(cost, cd, true);
+						PreSpellCastEvent event = new PreSpellCastEvent(cost, sound, particles, cd, spell, context, player, data, cad, bullet);
+						if(!MinecraftForge.EVENT_BUS.post(event)) {
+							String cancelMessage = event.getCancellationMessage();
+							if(cancelMessage != null && !cancelMessage.isEmpty())
+								player.sendMessage(new TextComponentTranslation(cancelMessage).setStyle(new Style().setColor(TextFormatting.RED)));
+							return false;
+						}
 
+						cd = event.getCooldown();
+						particles = event.getParticles();
+						sound = event.getSound();
+						cost = event.getCost();
+
+						spell = event.getSpell();
+						context = event.getContext();
+
+						if(cost > 0)
+							data.deductPsi(cost, cd, true);
+
+						if(cost != 0 && sound > 0) {
 							if(!world.isRemote)
 								world.playSound(null, player.posX, player.posY, player.posZ, PsiSoundHandler.cadShoot, SoundCategory.PLAYERS, sound, (float) (0.5 + Math.random() * 0.5));
-
-							if(sound > 0) {
+							else {
 								Color color = Psi.proxy.getCADColor(cad);
 								float r = color.getRed() / 255F;
 								float g = color.getGreen() / 255F;
