@@ -160,7 +160,7 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 					if(context.cspell.metadata.evaluateAgainst(cad)) {
 						int cost = getRealCost(cad, bullet, context.cspell.metadata.stats.get(EnumSpellStat.COST));
 						PreSpellCastEvent event = new PreSpellCastEvent(cost, sound, particles, cd, spell, context, player, data, cad, bullet);
-						if(!MinecraftForge.EVENT_BUS.post(event)) {
+						if(MinecraftForge.EVENT_BUS.post(event)) {
 							String cancelMessage = event.getCancellationMessage();
 							if(cancelMessage != null && !cancelMessage.isEmpty())
 								player.sendMessage(new TextComponentTranslation(cancelMessage).setStyle(new Style().setColor(TextFormatting.RED)));
