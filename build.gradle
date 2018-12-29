@@ -25,7 +25,6 @@ targetCompatibility = JavaVersion.VERSION_1_8
 ext.configFile = file('build.properties')
 
 ext.config = parseConfig(configFile)
-ext.priv = parseConfig(file('private.properties'))
 
 version = "${config.version}-${config.build_number}"
 group = "vazkii.psi" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
@@ -124,14 +123,8 @@ task outputDeobf(type: Copy) {
     into file("${config.dir_output}/deobf")
 }
 
-task forgecraft(type: Copy) {
-    dependsOn "outputDeobf"
-    from "${config.dir_output}/wtf"
-    into file(priv.dir_forgecraft)
-}
-
 task sort(type: Delete) {
-    dependsOn "forgecraft"
+    dependsOn "outputDeobf"
     delete "${config.dir_output}/${deobfJar.archiveName}", "${config.dir_output}/wtf"
 }
 
@@ -142,70 +135,5 @@ def parseConfig(File config) {
         return (new ConfigSlurper().parse(prop))
     }
 }
-
-/**
- * This is the upload task from the build.xml
- */
-task upload() << {
-    scp('/files') {
-        fileset(file: jar.archivePath)
-    }
-    
-    scp('/files/deobf') {
-        fileset(file: deobfJar.archivePath)
-    }
-
-    scp('/') {
-        fileset(file: 'web/changelog.txt')
-        fileset(file: 'web/versions.ini')
-    }
-}
-
-/**
- * This is deply_web task
- */
-task deployWeb << {
-    scp('/') {
-        fileset(dir: 'web') //everything from the web directory
-    }
-}
-
-def scp(String dir, Closure antFileset = {}) {
-    ant {
-        taskdef(
-            name: 'scp',
-            classname: 'org.apache.tools.ant.taskdefs.optional.ssh.Scp',
-            classpath: configurations.sshAntTask.asPath)
-
-        String dirstr = priv.scp_dir + dir
-        Map scpArgs = [
-           todir  : dirstr,
-           password  : priv.scp_pass,
-           sftp: true,
-           trust: 'yes'
-        ]
-
-        delegate.scp(scpArgs) {
-            antFileset.delegate = delegate
-            antFileset()
-        }
-    }
-}
-
-
-curseforge {
-    apiKey = priv.cfkey
-    project {
-        id = "241665"
-        changelog = """
-            See http://psi.vazkii.us/changelog.php#${version}
-        """
-        releaseType = "release"
-        relations {
-            requiredLibrary 'autoreglib'
-        }
-    }
-}
-
 
 defaultTasks 'clean', 'build', 'sort', 'incrementBuildNumber'

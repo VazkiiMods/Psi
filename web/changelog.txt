@@ -1,3 +1,6 @@
+r1.1-62
+*Fixed boot spells not working on servers. (WireSegal)
+*[API] Added an event for before a spell is cast so addons can do cool things with it. (WireSegal)
 r1.1-61
 *Fixed a random client crash with the camera not being set properly or something like that. It's fixed. (Kamefrede)
 r1.1-60
