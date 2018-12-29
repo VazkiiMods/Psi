@@ -1,3 +1,5 @@
+r1.1-63
+*Fixed spells not casting because WireSegal did a dumb. (SanAndreasP)
 r1.1-62
 *Fixed boot spells not working on servers. (WireSegal)
 *[API] Added an event for before a spell is cast so addons can do cool things with it. (WireSegal)
