@@ -17,6 +17,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import vazkii.arl.block.BlockMetaVariants;
 import vazkii.psi.common.block.base.IPsiBlock;
+import vazkii.psi.common.core.PsiCreativeTab;
 import vazkii.psi.common.lib.LibBlockNames;
 
 public class BlockPsiDecorative extends BlockMetaVariants implements IPsiBlock {
@@ -26,6 +27,7 @@ public class BlockPsiDecorative extends BlockMetaVariants implements IPsiBlock {
 		setHardness(5.0F);
 		setResistance(10.0F);
 		setSoundType(SoundType.METAL);
+		setCreativeTab(PsiCreativeTab.INSTANCE);
 	}
 
 	@Override

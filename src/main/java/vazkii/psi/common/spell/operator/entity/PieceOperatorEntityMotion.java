@@ -48,7 +48,7 @@ public class PieceOperatorEntityMotion extends PieceOperator {
 			PlayerData data = PlayerDataHandler.get(player);
 			if(data.eidosChangelog.size() >= 2) {
 				Vector3 last = data.eidosChangelog.get(data.eidosChangelog.size() - 2);
-				Vector3 vec = Vector3.fromEntity(e).sub(last);
+				Vector3 vec = Vector3.fromEntity(e).sub(last).multiply(1.0 / PieceTrickAddMotion.MULTIPLIER);
 				if(vec.mag() < 10)
 					return vec;
 			}
