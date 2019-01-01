@@ -10,13 +10,13 @@
  */
 package vazkii.psi.common.block.tile;
 
-import java.util.Arrays;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
+import net.minecraftforge.common.MinecraftForge;
 import vazkii.arl.block.tile.TileSimpleInventory;
 import vazkii.psi.api.cad.ISocketable;
+import vazkii.psi.api.cad.PostCADCraftEvent;
 import vazkii.psi.common.core.handler.PsiSoundHandler;
 import vazkii.psi.common.item.ItemCAD;
 import vazkii.psi.common.lib.LibBlockNames;
@@ -24,14 +24,22 @@ import vazkii.psi.common.lib.LibBlockNames;
 public class TileCADAssembler extends TileSimpleInventory implements ITickable {
 
 	boolean ignoreChanges = false;
+    boolean sentEvent = false;
 
 	@Override
 	public void inventoryChanged(int i) {
 		if(!ignoreChanges) {
 			if(i != 0) {
 				ItemStack cad = ItemStack.EMPTY;
-				if(!getStackInSlot(2).isEmpty())
-					cad = ItemCAD.makeCAD(inventorySlots.subList(1, 6));
+                if (!getStackInSlot(2).isEmpty()) {
+                    cad = ItemCAD.makeCAD(inventorySlots.subList(1, 6));
+                    if (!sentEvent) {
+                        MinecraftForge.EVENT_BUS.post(new PostCADCraftEvent(cad, this));
+                        sentEvent = true;
+                    }
+
+                }
+
 
 				setInventorySlotContents(0, cad);
 			}
@@ -69,6 +77,7 @@ public class TileCADAssembler extends TileSimpleInventory implements ITickable {
 			setInventorySlotContents(i, ItemStack.EMPTY);
 		if(!getWorld().isRemote)
 			getWorld().playSound(null, getPos().getX() + 0.5, getPos().getY() + 0.5, getPos().getZ() + 0.5, PsiSoundHandler.cadCreate, SoundCategory.BLOCKS, 0.5F, 1F);
+        sentEvent = false;
 		ignoreChanges = false;
 	}
 

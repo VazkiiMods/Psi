@@ -11,6 +11,7 @@
 package vazkii.psi.api.cad;
 
 import net.minecraft.item.ItemStack;
+import vazkii.psi.api.spell.ISpellContainer;
 
 /**
  * This interface defines an item that can have Spell Bullets
@@ -63,5 +64,10 @@ public interface ISocketable {
 	 * Sets ths currently selected slot.
 	 */
 	public void setSelectedSlot(ItemStack stack, int slot);
+
+    default boolean isItemValid(ItemStack stack, int slot, ItemStack bullet) {
+        return bullet.getItem() instanceof ISpellContainer &&
+                (stack.getItem() instanceof ICAD || !((ISpellContainer) bullet.getItem()).isCADOnlyContainer(bullet));
+    }
 
 }

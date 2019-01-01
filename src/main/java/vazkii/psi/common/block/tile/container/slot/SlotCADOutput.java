@@ -12,7 +12,15 @@ package vazkii.psi.common.block.tile.container.slot;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.Style;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.common.MinecraftForge;
+import vazkii.psi.api.cad.CADTakeEvent;
 import vazkii.psi.common.block.tile.TileCADAssembler;
+import vazkii.psi.common.core.handler.PsiSoundHandler;
 
 public class SlotCADOutput extends SlotExtractOnly {
 
@@ -30,4 +38,20 @@ public class SlotCADOutput extends SlotExtractOnly {
 		return stack;
 	}
 
+    @Override
+    public boolean canTakeStack(EntityPlayer playerIn) {
+        CADTakeEvent event = new CADTakeEvent(this, playerIn, 0.5f);
+        float sound = event.getSound();
+        if (MinecraftForge.EVENT_BUS.post(event)) {
+            BlockPos assemblerPos = this.assmbler.getPos();
+            String cancelMessage = event.getCancellationMessage();
+            if (!playerIn.world.isRemote) {
+                if (cancelMessage != null && !cancelMessage.isEmpty())
+                    playerIn.sendMessage(new TextComponentTranslation(cancelMessage).setStyle(new Style().setColor(TextFormatting.RED)));
+                playerIn.world.playSound(null, assemblerPos.getX(), assemblerPos.getY(), assemblerPos.getZ(), PsiSoundHandler.compileError, SoundCategory.BLOCKS, sound, 1F);
+            }
+            return false;
+        }
+        return super.canTakeStack(playerIn);
+    }
 }
