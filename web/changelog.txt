@@ -1,3 +1,9 @@
+r1.1-64
+*Fixed Bright Psimetal Plates not being localized. (Kamefrede)
+*Fixed Operator: Entity Motion returning the wrong magnitude for players. (Kamefrede)
+*Fixed some blocks not having creative tabs. (Kamefrede)
+*[API] Added CADTakeEvent and PostCADCraftEvent. (Kamefrede)
+*[API] Changed how ISocketable accepts bullets. (Kamefrede)
 r1.1-63
 *Fixed spells not casting because WireSegal did a dumb. (SanAndreasP)
 r1.1-62
