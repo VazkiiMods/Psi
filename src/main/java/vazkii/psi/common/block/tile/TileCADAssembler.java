@@ -24,22 +24,14 @@ import vazkii.psi.common.lib.LibBlockNames;
 public class TileCADAssembler extends TileSimpleInventory implements ITickable {
 
 	boolean ignoreChanges = false;
-    boolean sentEvent = false;
 
 	@Override
 	public void inventoryChanged(int i) {
 		if(!ignoreChanges) {
 			if(i != 0) {
 				ItemStack cad = ItemStack.EMPTY;
-                if (!getStackInSlot(2).isEmpty()) {
-                    cad = ItemCAD.makeCAD(inventorySlots.subList(1, 6));
-                    if (!sentEvent) {
-                        MinecraftForge.EVENT_BUS.post(new PostCADCraftEvent(cad, this));
-                        sentEvent = true;
-                    }
-
-                }
-
+				if(!getStackInSlot(2).isEmpty())
+					cad = ItemCAD.makeCAD(inventorySlots.subList(1, 6));
 
 				setInventorySlotContents(0, cad);
 			}
@@ -77,7 +69,6 @@ public class TileCADAssembler extends TileSimpleInventory implements ITickable {
 			setInventorySlotContents(i, ItemStack.EMPTY);
 		if(!getWorld().isRemote)
 			getWorld().playSound(null, getPos().getX() + 0.5, getPos().getY() + 0.5, getPos().getZ() + 0.5, PsiSoundHandler.cadCreate, SoundCategory.BLOCKS, 0.5F, 1F);
-        sentEvent = false;
 		ignoreChanges = false;
 	}
 
