@@ -63,8 +63,9 @@ public class TileCADAssembler extends TileSimpleInventory implements ITickable {
 			setInventorySlotContents(j + 7, ItemStack.EMPTY);
 	}
 
-	public void onCraftCAD() {
+	public void onCraftCAD(ItemStack cad) {
 		ignoreChanges = true;
+		MinecraftForge.EVENT_BUS.post(new PostCADCraftEvent(cad, this));
 		for(int i = 1; i < 6; i++)
 			setInventorySlotContents(i, ItemStack.EMPTY);
 		if(!getWorld().isRemote)

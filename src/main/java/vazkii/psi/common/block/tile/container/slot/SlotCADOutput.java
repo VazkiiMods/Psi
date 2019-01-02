@@ -34,7 +34,7 @@ public class SlotCADOutput extends SlotExtractOnly {
 	@Override
 	public ItemStack onTake(EntityPlayer playerIn, ItemStack stack) {
 		super.onTake(playerIn, stack);
-		assmbler.onCraftCAD();
+		assmbler.onCraftCAD(stack);
 		return stack;
 	}
 
