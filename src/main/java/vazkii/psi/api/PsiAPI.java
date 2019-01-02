@@ -151,4 +151,15 @@ public final class PsiAPI {
 		return slot;
 	}
 
+	public static boolean canCADBeUpdated(EntityPlayer player) {
+		if(player == null)
+			return false;
+
+		if(player.openContainer == null)
+			return true;
+
+		int cadSlot = getPlayerCADSlot(player);
+		return cadSlot < 9 || cadSlot == 40;
+	}
+
 }
