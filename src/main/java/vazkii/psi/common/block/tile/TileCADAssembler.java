@@ -10,13 +10,13 @@
  */
 package vazkii.psi.common.block.tile;
 
-import java.util.Arrays;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
+import net.minecraftforge.common.MinecraftForge;
 import vazkii.arl.block.tile.TileSimpleInventory;
 import vazkii.psi.api.cad.ISocketable;
+import vazkii.psi.api.cad.PostCADCraftEvent;
 import vazkii.psi.common.core.handler.PsiSoundHandler;
 import vazkii.psi.common.item.ItemCAD;
 import vazkii.psi.common.lib.LibBlockNames;
@@ -63,8 +63,9 @@ public class TileCADAssembler extends TileSimpleInventory implements ITickable {
 			setInventorySlotContents(j + 7, ItemStack.EMPTY);
 	}
 
-	public void onCraftCAD() {
+	public void onCraftCAD(ItemStack cad) {
 		ignoreChanges = true;
+		MinecraftForge.EVENT_BUS.post(new PostCADCraftEvent(cad, this));
 		for(int i = 1; i < 6; i++)
 			setInventorySlotContents(i, ItemStack.EMPTY);
 		if(!getWorld().isRemote)
