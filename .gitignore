@@ -23,6 +23,7 @@ Thumbs.db
 /*.ipr
 /*.iws
 /*.iml
+/classes
 
 ## Private Stuffs
 /private.properties
@@ -58,6 +59,3 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
-
-# ARL Symlinks
-src/api/
