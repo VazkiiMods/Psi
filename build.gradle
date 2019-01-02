@@ -1,23 +1,17 @@
 buildscript {
     repositories {
-        mavenCentral()
+        jcenter()
         maven {
             name = "forge"
             url = "http://files.minecraftforge.net/maven"
         }
-        maven {
-            name = "sonatype"
-            url = "https://oss.sonatype.org/content/repositories/snapshots/"
-        }
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
-        classpath 'com.matthewprenger:CurseGradle:1.0-SNAPSHOT'
     }
 }
 
 apply plugin: 'net.minecraftforge.gradle.forge'
-apply plugin: 'com.matthewprenger.cursegradle'
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
@@ -29,6 +23,18 @@ ext.config = parseConfig(configFile)
 version = "${config.version}-${config.build_number}"
 group = "vazkii.psi" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = config.mod_name
+
+repositories {
+    maven {
+        // for AutoRegLib
+        name "blamejared"
+        url "http://maven.blamejared.com/"
+    }
+}
+
+dependencies {
+    compile "vazkii.autoreglib:AutoRegLib:${config.arl_version}"
+}
 
 minecraft {
     version = "${config.mc_version}-${config.forge_version}"
