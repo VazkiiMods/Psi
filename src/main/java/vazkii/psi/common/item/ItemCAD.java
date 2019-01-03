@@ -406,12 +406,7 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 	@Override
 	@SideOnly(Side.CLIENT)
 	public IItemColor getItemColor() {
-		return new IItemColor() {
-			@Override
-			public int colorMultiplier(ItemStack stack, int tintIndex) {
-				return tintIndex == 1 ? getSpellColor(stack) : 0xFFFFFF;
-			}
-		};
+		return (stack, tintIndex) -> tintIndex == 1 ? getSpellColor(stack) : 0xFFFFFF;
 	}
 	
 	@Override

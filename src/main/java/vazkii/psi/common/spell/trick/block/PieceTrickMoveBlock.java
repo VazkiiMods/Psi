@@ -13,22 +13,16 @@ package vazkii.psi.common.spell.trick.block;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.EnumPushReaction;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.BlockEvent;
+import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.internal.Vector3;
-import vazkii.psi.api.spell.EnumSpellStat;
-import vazkii.psi.api.spell.Spell;
-import vazkii.psi.api.spell.SpellCompilationException;
-import vazkii.psi.api.spell.SpellContext;
-import vazkii.psi.api.spell.SpellMetadata;
-import vazkii.psi.api.spell.SpellParam;
-import vazkii.psi.api.spell.SpellRuntimeException;
+import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.param.ParamVector;
 import vazkii.psi.api.spell.piece.PieceTrick;
-import vazkii.psi.common.core.handler.ConfigHandler;
 
 public class PieceTrickMoveBlock extends PieceTrick {
 
@@ -58,22 +52,29 @@ public class PieceTrickMoveBlock extends PieceTrick {
 		if(context.caster.getEntityWorld().isRemote)
 			return null;
 
-		Vector3 positionVal = this.<Vector3>getParamValue(context, position);
-		Vector3 targetVal = this.<Vector3>getParamValue(context, target);
+		Vector3 positionVal = this.getParamValue(context, position);
+		Vector3 targetVal = this.getParamValue(context, target);
 
 		if(positionVal == null)
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
 		if(!context.isInRadius(positionVal))
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 
+		ItemStack tool = context.tool;
+		if (tool.isEmpty())
+			tool = PsiAPI.getPlayerCAD(context.caster);
+
 		World world = context.caster.getEntityWorld();
 		BlockPos pos = new BlockPos(positionVal.x, positionVal.y, positionVal.z);
 		IBlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
-		if(world.getTileEntity(pos) != null || block.getMobilityFlag(state) != EnumPushReaction.NORMAL || !block.canSilkHarvest(world, pos, state, context.caster) || block.getPlayerRelativeBlockHardness(state, context.caster, world, pos) <= 0 || !ForgeHooks.canHarvestBlock(block, context.caster, world, pos))
+		if(world.getTileEntity(pos) != null || state.getMobilityFlag() != EnumPushReaction.NORMAL ||
+				!block.canSilkHarvest(world, pos, state, context.caster) ||
+				state.getPlayerRelativeBlockHardness(context.caster, world, pos) <= 0 ||
+				!PieceTrickBreakBlock.canHarvestBlock(block, context.caster, world, pos, tool))
 			return null;
 		
-		BlockEvent.BreakEvent event = new BlockEvent.BreakEvent(world, pos, state, context.caster);
+		BlockEvent.BreakEvent event = PieceTrickBreakBlock.createBreakEvent(state, context.caster, world, pos, tool);
 		MinecraftForge.EVENT_BUS.post(event);
 		if(event.isCanceled())
 			return null;
@@ -94,7 +95,7 @@ public class PieceTrickMoveBlock extends PieceTrick {
 		if(world.isAirBlock(pos1) || state1.getBlock().isReplaceable(world, pos1)) {
 			world.setBlockState(pos1, state, 1 | 2);
 			world.setBlockToAir(pos);
-			world.playEvent(2001, pos, Block.getIdFromBlock(block) + (block.getMetaFromState(state) << 12));
+			world.playEvent(2001, pos, Block.getStateId(state));
 		}
 
 		return null;

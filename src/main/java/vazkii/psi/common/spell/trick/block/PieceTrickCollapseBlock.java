@@ -14,20 +14,16 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityFallingBlock;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.world.BlockEvent;
+import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.internal.Vector3;
-import vazkii.psi.api.spell.EnumSpellStat;
-import vazkii.psi.api.spell.Spell;
-import vazkii.psi.api.spell.SpellCompilationException;
-import vazkii.psi.api.spell.SpellContext;
-import vazkii.psi.api.spell.SpellMetadata;
-import vazkii.psi.api.spell.SpellParam;
-import vazkii.psi.api.spell.SpellRuntimeException;
+import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.param.ParamVector;
 import vazkii.psi.api.spell.piece.PieceTrick;
-import vazkii.psi.common.core.handler.ConfigHandler;
 
 public class PieceTrickCollapseBlock extends PieceTrick {
 
@@ -62,6 +58,10 @@ public class PieceTrickCollapseBlock extends PieceTrick {
 		if(!context.isInRadius(positionVal))
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 
+		ItemStack tool = context.tool;
+		if (tool.isEmpty())
+			tool = PsiAPI.getPlayerCAD(context.caster);
+
 		World world = context.caster.getEntityWorld();
 		BlockPos pos = new BlockPos(positionVal.x, positionVal.y, positionVal.z);
 		BlockPos posDown = pos.down();
@@ -73,7 +73,15 @@ public class PieceTrickCollapseBlock extends PieceTrick {
 		if(!world.isBlockModifiable(context.caster, pos))
 			return null;
 
-		if(blockBelow.isAir(stateDown, world, posDown) && block.getBlockHardness(state, world, pos) != -1 && ForgeHooks.canHarvestBlock(block, context.caster, world, pos) && world.getTileEntity(pos) == null && block.canSilkHarvest(world, pos, state, context.caster)) {
+		if(blockBelow.isAir(stateDown, world, posDown) && block.getBlockHardness(state, world, pos) != -1 &&
+				PieceTrickBreakBlock.canHarvestBlock(block, context.caster, world, pos, tool) &&
+				world.getTileEntity(pos) == null && block.canSilkHarvest(world, pos, state, context.caster)) {
+
+			BlockEvent.BreakEvent event = PieceTrickBreakBlock.createBreakEvent(state, context.caster, world, pos, tool);
+			MinecraftForge.EVENT_BUS.post(event);
+			if(event.isCanceled())
+				return null;
+
 			if(state.getBlock() == Blocks.LIT_REDSTONE_ORE) {
 				state = Blocks.REDSTONE_ORE.getDefaultState();
 				world.setBlockState(pos, state);
