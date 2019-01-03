@@ -12,11 +12,8 @@ package vazkii.psi.common.item;
 
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.oredict.RecipeSorter;
-import net.minecraftforge.oredict.RecipeSorter.Category;
 import vazkii.arl.interf.IItemColorProvider;
 import vazkii.arl.item.ItemMod;
 import vazkii.psi.api.cad.ICADColorizer;
@@ -54,35 +51,41 @@ public class ItemExosuitSensor extends ItemMod implements IExosuitSensor, IItemC
 
 	@Override
 	public String getEventType(ItemStack stack) {
-		switch(stack.getItemDamage()) {
-		case 0: return PsiArmorEvent.LOW_LIGHT;
-		case 1: return PsiArmorEvent.UNDERWATER;
-		case 2: return PsiArmorEvent.ON_FIRE;
-		case 3: return PsiArmorEvent.LOW_HP;
-		default: return PsiArmorEvent.NONE;
+		switch (stack.getItemDamage()) {
+			case 0:
+				return PsiArmorEvent.LOW_LIGHT;
+			case 1:
+				return PsiArmorEvent.UNDERWATER;
+			case 2:
+				return PsiArmorEvent.ON_FIRE;
+			case 3:
+				return PsiArmorEvent.LOW_HP;
+			default:
+				return PsiArmorEvent.NONE;
 		}
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public int getColor(ItemStack stack) {
-		switch(stack.getItemDamage()) {
-		case 0: return lightColor;
-		case 1: return underwaterColor;
-		case 2: return fireColor;
-		case 3: return lowHealthColor;
-		default: return defaultColor;
+		switch (stack.getItemDamage()) {
+			case 0:
+				return lightColor;
+			case 1:
+				return underwaterColor;
+			case 2:
+				return fireColor;
+			case 3:
+				return lowHealthColor;
+			default:
+				return defaultColor;
 		}
 	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public IItemColor getItemColor() {
-		return new IItemColor() {
-			@Override
-			public int colorMultiplier(ItemStack stack, int tintIndex) {
-				return tintIndex == 1 ? getColor(stack) : 0xFFFFFF;
-			}
-		};
+		return (stack, tintIndex) -> tintIndex == 1 ? getColor(stack) : 0xFFFFFF;
 	}
 
 }

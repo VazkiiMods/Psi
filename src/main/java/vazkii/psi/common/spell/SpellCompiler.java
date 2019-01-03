@@ -10,22 +10,13 @@
  */
 package vazkii.psi.common.spell;
 
+import org.apache.commons.lang3.tuple.Pair;
+import vazkii.psi.api.spell.*;
+import vazkii.psi.api.spell.CompiledSpell.Action;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
-
-import org.apache.commons.lang3.tuple.Pair;
-
-import vazkii.psi.api.spell.CompiledSpell;
-import vazkii.psi.api.spell.CompiledSpell.Action;
-import vazkii.psi.api.spell.EnumPieceType;
-import vazkii.psi.api.spell.EnumSpellStat;
-import vazkii.psi.api.spell.ISpellCompiler;
-import vazkii.psi.api.spell.Spell;
-import vazkii.psi.api.spell.SpellCompilationException;
-import vazkii.psi.api.spell.SpellGrid;
-import vazkii.psi.api.spell.SpellParam;
-import vazkii.psi.api.spell.SpellPiece;
 
 public final class SpellCompiler implements ISpellCompiler {
 
@@ -35,7 +26,7 @@ public final class SpellCompiler implements ISpellCompiler {
 	String error = null;
 	Pair<Integer, Integer> errorLocation = null;
 
-	Stack<SpellPiece> tricks = new Stack();
+	Stack<SpellPiece> tricks = new Stack<>();
 
 	public SpellCompiler(Spell spell) {
 		this.spell = spell;
@@ -66,7 +57,7 @@ public final class SpellCompiler implements ISpellCompiler {
 	}
 
 	public void buildPiece(SpellPiece piece) throws SpellCompilationException {
-		buildPiece(piece, new ArrayList());
+		buildPiece(piece, new ArrayList<>());
 	}
 
 	public void buildPiece(SpellPiece piece, List<SpellPiece> visited) throws SpellCompilationException {
@@ -86,7 +77,7 @@ public final class SpellCompiler implements ISpellCompiler {
 
 		visited.add(piece);
 
-		List<SpellParam.Side> usedSides = new ArrayList();
+		List<SpellParam.Side> usedSides = new ArrayList<>();
 
 		for(SpellParam param : piece.paramSides.keySet()) {
 			SpellParam.Side side = piece.paramSides.get(param);

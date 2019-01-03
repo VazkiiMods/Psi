@@ -13,6 +13,8 @@ package vazkii.psi.common.item.armor;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vazkii.arl.util.ItemNBTHelper;
 import vazkii.psi.api.exosuit.IExosuitSensor;
 import vazkii.psi.api.exosuit.ISensorHoldable;
@@ -41,6 +43,7 @@ public class ItemPsimetalExosuitHelmet extends ItemPsimetalArmor implements ISen
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public int getColor(ItemStack stack) {
 		ItemStack sensor = getAttachedSensor(stack);
 		if(!sensor.isEmpty() && sensor.getItem() instanceof IExosuitSensor)

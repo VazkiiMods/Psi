@@ -300,6 +300,7 @@ public class GuiLeveling extends GuiScreen {
 		
 		public GroupList(Minecraft client, int width, int height, int top, int bottom, int left, int entryHeight, int screenWidth, int screenHeight) {
 			super(client, width, height, top, bottom, left, entryHeight, screenWidth, screenHeight);
+			//noinspection deprecation
 			func_27258_a(false); // highlightSelected = false
 			ReflectionHelper.setPrivateValue(GuiScrollingList.class, this, scrollDistanceGroup, "scrollDistance");
 		}

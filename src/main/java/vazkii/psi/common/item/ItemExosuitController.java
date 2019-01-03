@@ -62,7 +62,7 @@ public class ItemExosuitController extends ItemMod implements ISocketableControl
 
 	@Override
 	public ItemStack[] getControlledStacks(EntityPlayer player, ItemStack stack) {
-		List<ItemStack> stacks = new ArrayList();
+		List<ItemStack> stacks = new ArrayList<>();
 		for(int i = 0; i < 4; i++) {
 			ItemStack armor = player.inventory.armorInventory.get(3 - i);
 			if(!armor.isEmpty() && armor.getItem() instanceof ISocketable)

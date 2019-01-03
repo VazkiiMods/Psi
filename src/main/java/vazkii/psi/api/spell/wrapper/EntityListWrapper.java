@@ -10,11 +10,11 @@
  */
 package vazkii.psi.api.spell.wrapper;
 
+import net.minecraft.entity.Entity;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import net.minecraft.entity.Entity;
 
 /**
  * Wrapper class for an Entity list.
@@ -24,7 +24,7 @@ public class EntityListWrapper implements Iterable<Entity> {
 	private final List<Entity> list;
 
 	public EntityListWrapper(List<Entity> list) {
-		List<Entity> copy = new ArrayList();
+		List<Entity> copy = new ArrayList<>();
 		for(Entity e : list)
 			if(e != null)
 				copy.add(e);

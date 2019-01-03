@@ -10,18 +10,11 @@
  */
 package vazkii.psi.client.core.helper;
 
-import java.awt.Desktop;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.net.URI;
-import java.net.URLEncoder;
-import java.nio.IntBuffer;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
-
-import javax.imageio.ImageIO;
-
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.texture.TextureUtil;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -34,12 +27,16 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.renderer.texture.TextureUtil;
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.net.URI;
+import java.net.URLEncoder;
+import java.nio.IntBuffer;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.List;
 
 public final class SharingHelper {
 
@@ -92,7 +89,7 @@ public final class SharingHelper {
 			String url = "https://api.imgur.com/3/image";
 			HttpPost post = new HttpPost(url);
 
-			List<NameValuePair> list = new ArrayList();
+			List<NameValuePair> list = new ArrayList<>();
 			list.add(new BasicNameValuePair("type", "base64"));
 			list.add(new BasicNameValuePair("image", takeScreenshot()));
 			list.add(new BasicNameValuePair("name", title));
@@ -141,11 +138,11 @@ public final class SharingHelper {
 		GL11.glPixelStorei(GL11.GL_UNPACK_ALIGNMENT, 1);
 		pixelBuffer.clear();
 
-		GL11.glReadPixels(left, top, width, height, GL12.GL_BGRA, GL12.GL_UNSIGNED_INT_8_8_8_8_REV, (IntBuffer)pixelBuffer);
+		GL11.glReadPixels(left, top, width, height, GL12.GL_BGRA, GL12.GL_UNSIGNED_INT_8_8_8_8_REV, pixelBuffer);
 
 		pixelBuffer.get(pixelValues);
 		TextureUtil.processPixelValues(pixelValues, width, height);
-		BufferedImage bufferedimage = null;
+		BufferedImage bufferedimage;
 
 		bufferedimage = new BufferedImage(width, height, 1);
 		bufferedimage.setRGB(0, 0, width, height, pixelValues, 0, width);
@@ -153,8 +150,7 @@ public final class SharingHelper {
 		ByteArrayOutputStream stream = new ByteArrayOutputStream();
 		ImageIO.write(bufferedimage, "png", stream);
 		byte[] bArray = stream.toByteArray();
-		String base64 = Base64.getEncoder().encodeToString(bArray);
-		return base64;
+		return Base64.getEncoder().encodeToString(bArray);
 	}
 
 }

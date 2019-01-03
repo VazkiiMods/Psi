@@ -24,7 +24,7 @@ import vazkii.psi.common.core.handler.PlayerDataHandler;
 
 public class ClientTickHandler {
 
-	public static volatile Queue<Runnable> scheduledActions = new ArrayDeque();
+	public static volatile Queue<Runnable> scheduledActions = new ArrayDeque<>();
 
 	public static int ticksInGame = 0;
 	public static float partialTicks = 0;

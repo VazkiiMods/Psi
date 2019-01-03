@@ -10,23 +10,19 @@
  */
 package vazkii.psi.common.item.component;
 
-import java.awt.Color;
-
-import org.apache.commons.lang3.text.WordUtils;
-
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.oredict.RecipeSorter;
 import vazkii.arl.interf.IItemColorProvider;
 import vazkii.psi.api.cad.ICADColorizer;
 import vazkii.psi.client.core.handler.ClientTickHandler;
 import vazkii.psi.common.crafting.recipe.ColorizerChangeRecipe;
 import vazkii.psi.common.lib.LibItemNames;
+
+import java.awt.*;
 
 public class ItemCADColorizer extends ItemCADComponent implements ICADColorizer, IItemColorProvider {
 
@@ -63,15 +59,11 @@ public class ItemCADColorizer extends ItemCADComponent implements ICADColorizer,
 	@Override
 	@SideOnly(Side.CLIENT)
 	public IItemColor getItemColor() {
-		return new IItemColor() {
-			@Override
-			public int colorMultiplier(ItemStack stack, int tintIndex) {
-				return tintIndex == 1 && stack.getItemDamage() < 16 ? colorTable[15 - stack.getItemDamage()] : 0xFFFFFF;
-			}
-		};
+		return (stack, tintIndex) -> tintIndex == 1 && stack.getItemDamage() < 16 ? colorTable[15 - stack.getItemDamage()] : 0xFFFFFF;
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public int getColor(ItemStack stack) {
 		if(stack.getItemDamage() < 16)
 			return colorTable[15 - stack.getItemDamage()];

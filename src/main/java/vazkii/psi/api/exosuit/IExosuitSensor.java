@@ -11,6 +11,8 @@
 package vazkii.psi.api.exosuit;
 
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * An Item that implements this counts as a Sensor, and can be put on an Exosuit helmet.
@@ -19,6 +21,7 @@ public interface IExosuitSensor {
 
 	public String getEventType(ItemStack stack);
 
+	@SideOnly(Side.CLIENT)
 	public int getColor(ItemStack stack);
 
 }

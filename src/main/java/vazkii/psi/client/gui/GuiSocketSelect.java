@@ -92,7 +92,7 @@ public class GuiSocketSelect extends GuiScreen {
 	}
 
 	public void setSocketable(ItemStack stack) {
-		slots = new ArrayList();
+		slots = new ArrayList<>();
 		if(stack.isEmpty())
 			return;
 
@@ -126,7 +126,7 @@ public class GuiSocketSelect extends GuiScreen {
 		float totalDeg = 0;
 		float degPer = 360F / segments;
 
-		List<int[]> stringPositions = new ArrayList();
+		List<int[]> stringPositions = new ArrayList<>();
 
 		ItemStack cadStack = PsiAPI.getPlayerCAD(Minecraft.getMinecraft().player);
 		slotSelected = -1;

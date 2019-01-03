@@ -18,12 +18,15 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
-import vazkii.psi.client.core.version.CommandDownloadLatest;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import vazkii.psi.common.core.proxy.CommonProxy;
 import vazkii.psi.common.lib.LibMisc;
 
 @Mod(modid = LibMisc.MOD_ID, name = LibMisc.MOD_NAME, version = LibMisc.VERSION, guiFactory = LibMisc.GUI_FACTORY, dependencies = LibMisc.DEPENDENCIES)
 public class Psi {
+
+	public static final Logger logger = LogManager.getLogger(LibMisc.MOD_ID);
 
 	@Instance(LibMisc.MOD_ID)
 	public static Psi instance;

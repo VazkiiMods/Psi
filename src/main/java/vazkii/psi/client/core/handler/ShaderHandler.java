@@ -9,21 +9,21 @@
  * File Created @ [Apr 9, 2014, 11:20:26 PM (GMT)]
  */
 package vazkii.psi.client.core.handler;
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.function.Consumer;
 
+import net.minecraft.client.renderer.OpenGlHelper;
 import org.apache.logging.log4j.Level;
 import org.lwjgl.opengl.ARBFragmentShader;
 import org.lwjgl.opengl.ARBShaderObjects;
 import org.lwjgl.opengl.ARBVertexShader;
 import org.lwjgl.opengl.GL11;
-
-import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraftforge.fml.common.FMLLog;
+import vazkii.psi.common.Psi;
 import vazkii.psi.common.core.handler.ConfigHandler;
 import vazkii.psi.common.lib.LibResources;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.function.Consumer;
 
 public final class ShaderHandler {
 
@@ -104,13 +104,13 @@ public final class ShaderHandler {
 
 		ARBShaderObjects.glLinkProgramARB(program);
 		if(ARBShaderObjects.glGetObjectParameteriARB(program, ARBShaderObjects.GL_OBJECT_LINK_STATUS_ARB) == GL11.GL_FALSE) {
-			FMLLog.log(Level.ERROR, getLogInfo(program));
+			Psi.logger.log(Level.ERROR, getLogInfo(program));
 			return 0;
 		}
 
 		ARBShaderObjects.glValidateProgramARB(program);
 		if (ARBShaderObjects.glGetObjectParameteriARB(program, ARBShaderObjects.GL_OBJECT_VALIDATE_STATUS_ARB) == GL11.GL_FALSE) {
-			FMLLog.log(Level.ERROR, getLogInfo(program));
+			Psi.logger.log(Level.ERROR, getLogInfo(program));
 			return 0;
 		}
 

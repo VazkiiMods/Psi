@@ -10,17 +10,7 @@
  */
 package vazkii.psi.common.item;
 
-import java.awt.Color;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
-import java.util.function.Consumer;
-import java.util.regex.Pattern;
-
-import javax.annotation.Nullable;
-
 import com.google.common.collect.ImmutableSet;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.ItemMeshDefinition;
@@ -33,16 +23,9 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumRarity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.Style;
@@ -57,13 +40,7 @@ import vazkii.arl.interf.IItemColorProvider;
 import vazkii.arl.item.ItemMod;
 import vazkii.arl.util.ItemNBTHelper;
 import vazkii.psi.api.PsiAPI;
-import vazkii.psi.api.cad.EnumCADComponent;
-import vazkii.psi.api.cad.EnumCADStat;
-import vazkii.psi.api.cad.ICAD;
-import vazkii.psi.api.cad.ICADAssembly;
-import vazkii.psi.api.cad.ICADColorizer;
-import vazkii.psi.api.cad.ICADComponent;
-import vazkii.psi.api.cad.ISocketable;
+import vazkii.psi.api.cad.*;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.*;
 import vazkii.psi.common.Psi;
@@ -78,6 +55,14 @@ import vazkii.psi.common.crafting.recipe.AssemblyScavengeRecipe;
 import vazkii.psi.common.item.base.IPsiItem;
 import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.lib.LibItemNames;
+
+import javax.annotation.Nullable;
+import java.awt.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
+import java.util.function.Consumer;
+import java.util.regex.Pattern;
 
 public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColorProvider, IPsiItem {
 
@@ -578,16 +563,13 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 	@Override
 	@SideOnly(Side.CLIENT)
 	public ItemMeshDefinition getCustomMeshDefinition() {
-		return new ItemMeshDefinition() { // This isn't a Lambda because of a ForgeGradle bug that messes them up
-			@Override
-			public ModelResourceLocation getModelLocation(ItemStack stack) {
-				ICAD cad = (ICAD) stack.getItem();
-				ItemStack assemblyStack = cad.getComponentInSlot(stack, EnumCADComponent.ASSEMBLY);
-				if(assemblyStack.isEmpty())
-					return null;
-				ICADAssembly assembly = (ICADAssembly) assemblyStack.getItem();
-				return assembly.getCADModel(assemblyStack, stack);
-			}
+		return stack -> {
+			ICAD cad = (ICAD) stack.getItem();
+			ItemStack assemblyStack = cad.getComponentInSlot(stack, EnumCADComponent.ASSEMBLY);
+			if(assemblyStack.isEmpty())
+				return new ModelResourceLocation("missingno");
+			ICADAssembly assembly = (ICADAssembly) assemblyStack.getItem();
+			return assembly.getCADModel(assemblyStack, stack);
 		};
 	}
 

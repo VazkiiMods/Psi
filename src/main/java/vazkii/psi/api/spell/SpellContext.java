@@ -10,10 +10,6 @@
  */
 package vazkii.psi.api.spell;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Stack;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -23,6 +19,10 @@ import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.internal.MathHelper;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.CompiledSpell.Action;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Stack;
 
 /**
  * Context for a spell. Used for casting it.
@@ -77,7 +77,7 @@ public final class SpellContext {
 	 * anything here, prefix it with your mod ID to prevent collision. For example, Trick: Add Motion
 	 * uses psi:Entity1MotionX.
 	 */
-	public Map<String, Object> customData = new HashMap();
+	public Map<String, Object> customData = new HashMap<>();
 
 	// Runtime information, do not mess with =================================================
 	public Object[][] evaluatedObjects = new Object[SpellGrid.GRID_SIZE][SpellGrid.GRID_SIZE];

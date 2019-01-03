@@ -10,16 +10,11 @@
  */
 package vazkii.psi.common.item.component;
 
-import java.util.HashMap;
-import java.util.List;
-
-import org.apache.commons.lang3.tuple.Pair;
-
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+import org.apache.commons.lang3.tuple.Pair;
 import vazkii.arl.item.ItemMod;
 import vazkii.psi.api.cad.EnumCADComponent;
 import vazkii.psi.api.cad.EnumCADStat;
@@ -27,14 +22,16 @@ import vazkii.psi.api.cad.ICADComponent;
 import vazkii.psi.common.core.PsiCreativeTab;
 import vazkii.psi.common.item.base.IPsiItem;
 
+import java.util.HashMap;
+import java.util.List;
+
 public abstract class ItemCADComponent extends ItemMod implements ICADComponent, IPsiItem {
 
-	private final HashMap<Pair<EnumCADStat, Integer>, Integer> stats;
+	private final HashMap<Pair<EnumCADStat, Integer>, Integer> stats = new HashMap<>();
 
 	public ItemCADComponent(String name, String... variants) {
 		super(name, variants);
 		setMaxStackSize(1);
-		stats = new HashMap();
 		registerStats();
 		setCreativeTab(PsiCreativeTab.INSTANCE);
 	}

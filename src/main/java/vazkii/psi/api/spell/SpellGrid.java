@@ -138,7 +138,7 @@ public final class SpellGrid {
 	}
 
 	public SpellPiece getPieceAtSideWithRedirections(int x, int y, SpellParam.Side side) throws SpellCompilationException {
-		return getPieceAtSideWithRedirections(new ArrayList(), x, y, side);
+		return getPieceAtSideWithRedirections(new ArrayList<>(), x, y, side);
 	}
 
 	public SpellPiece getPieceAtSideWithRedirections(List<SpellPiece> traversed, int x, int y, SpellParam.Side side) throws SpellCompilationException {

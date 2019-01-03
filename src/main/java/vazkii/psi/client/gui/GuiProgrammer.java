@@ -10,28 +10,14 @@
  */
 package vazkii.psi.client.gui;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Stack;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.apache.commons.lang3.tuple.Pair;
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
-
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableSet;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.item.ItemBanner;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTTagCompound;
@@ -39,22 +25,17 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
+import org.apache.commons.lang3.tuple.Pair;
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 import vazkii.arl.network.NetworkHandler;
 import vazkii.arl.util.RenderHelper;
 import vazkii.arl.util.TooltipHandler;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.EnumCADStat;
 import vazkii.psi.api.cad.ICAD;
-import vazkii.psi.api.spell.EnumPieceType;
-import vazkii.psi.api.spell.EnumSpellStat;
-import vazkii.psi.api.spell.PieceGroup;
-import vazkii.psi.api.spell.Spell;
-import vazkii.psi.api.spell.SpellCompilationException;
-import vazkii.psi.api.spell.SpellGrid;
-import vazkii.psi.api.spell.SpellMetadata;
-import vazkii.psi.api.spell.SpellParam;
+import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.SpellParam.Side;
-import vazkii.psi.api.spell.SpellPiece;
 import vazkii.psi.client.core.helper.SharingHelper;
 import vazkii.psi.client.gui.button.GuiButtonIO;
 import vazkii.psi.client.gui.button.GuiButtonPage;
@@ -71,6 +52,14 @@ import vazkii.psi.common.network.message.MessageSpellModified;
 import vazkii.psi.common.spell.SpellCompiler;
 import vazkii.psi.common.spell.constant.PieceConstantNumber;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Stack;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class GuiProgrammer extends GuiScreen {
 
 	public static final ResourceLocation texture = new ResourceLocation(LibResources.GUI_PROGRAMMER);
@@ -80,9 +69,9 @@ public class GuiProgrammer extends GuiScreen {
 	private static final Pattern outPattern = Pattern.compile("^out:(\\w+)(?:\\s(.*))?$");
 
 	public TileProgrammer programmer;
-	public List<String> tooltip = new ArrayList();
-	public Stack<Spell> undoSteps = new Stack();
-	public Stack<Spell> redoSteps = new Stack();
+	public List<String> tooltip = new ArrayList<>();
+	public Stack<Spell> undoSteps = new Stack<>();
+	public Stack<Spell> redoSteps = new Stack<>();
 	public static SpellPiece clipboard = null;
 
 	SpellCompiler compiler;
@@ -94,9 +83,9 @@ public class GuiProgrammer extends GuiScreen {
 	int panelX, panelY, panelWidth, panelHeight, panelCursor;
 	int page = 0;
 	boolean scheduleButtonUpdate = false;
-	List<SpellPiece> visiblePieces = new ArrayList();
-	List<GuiButton> panelButtons = new ArrayList();
-	List<GuiButton> configButtons = new ArrayList();
+	List<SpellPiece> visiblePieces = new ArrayList<>();
+	List<GuiButton> panelButtons = new ArrayList<>();
+	List<GuiButton> configButtons = new ArrayList<>();
 	GuiTextField searchField;
 	GuiTextField spellNameField;
 	GuiTextField commentField;

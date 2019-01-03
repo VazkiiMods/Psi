@@ -31,7 +31,7 @@ public class FXSparkle extends Particle {
 
 	public static final ResourceLocation particles = new ResourceLocation(LibResources.MISC_PARTICLES);
 
-	public static Queue<FXSparkle> queuedRenders = new ArrayDeque();
+	public static Queue<FXSparkle> queuedRenders = new ArrayDeque<>();
 
 	// Queue values
 	float f;

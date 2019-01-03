@@ -10,16 +10,16 @@
  */
 package vazkii.psi.api.spell;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Stack;
-
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.internal.IPlayerData;
 import vazkii.psi.api.spell.SpellPiece.Null;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Stack;
 
 /**
  * A spell that has been compiled by a compiler and is ready to be executed.
@@ -29,8 +29,8 @@ public class CompiledSpell {
 	public Spell sourceSpell;
 	public SpellMetadata metadata = new SpellMetadata();
 
-	public Stack<Action> actions = new Stack();
-	public Map<SpellPiece, Action> actionMap = new HashMap();
+	public Stack<Action> actions = new Stack<>();
+	public Map<SpellPiece, Action> actionMap = new HashMap<>();
 
 	public Action currentAction;
 	public boolean[][] spotsEvaluated;

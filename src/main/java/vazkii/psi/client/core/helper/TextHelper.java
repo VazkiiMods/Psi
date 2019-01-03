@@ -32,11 +32,11 @@ public final class TextHelper {
 			text = String.format(text, format);
 
 		String[] textEntries = text.split("<br>");
-		List<List<String>> lines = new ArrayList();
+		List<List<String>> lines = new ArrayList<>();
 
 		String controlCodes = "";
 		for(String s : textEntries) {
-			List<String> words = new ArrayList();
+			List<String> words = new ArrayList<>();
 			String lineStr = "";
 			String[] tokens = s.split(" ");
 			for(String token : tokens) {
@@ -48,7 +48,7 @@ public final class TextHelper {
 				if(font.getStringWidth(lineStr) > width) {
 					lines.add(words);
 					lineStr = controlCodes + spaced;
-					words = new ArrayList();
+					words = new ArrayList<>();
 				}
 
 				words.add(controlCodes + token);
@@ -56,10 +56,10 @@ public final class TextHelper {
 
 			if(!lineStr.isEmpty())
 				lines.add(words);
-			lines.add(new ArrayList());
+			lines.add(new ArrayList<>());
 		}
 
-		List<String> textLines = new ArrayList();
+		List<String> textLines = new ArrayList<>();
 
 		String lastLine = "";
 		for(List<String> words : lines) {

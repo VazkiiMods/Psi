@@ -14,19 +14,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.oredict.RecipeSorter;
-import net.minecraftforge.oredict.RecipeSorter.Category;
 import vazkii.arl.item.ItemMod;
 import vazkii.arl.util.ItemNBTHelper;
 import vazkii.psi.api.internal.VanillaPacketDispatcher;
@@ -67,7 +60,7 @@ public class ItemSpellDrive extends ItemMod implements IPsiItem {
 		String name = super.getItemStackDisplayName(stack);
 		NBTTagCompound cmp = ItemNBTHelper.getCompound(stack, TAG_SPELL, false);
 		String spellName = cmp.getString(Spell.TAG_SPELL_NAME); // We don't need to load the whole spell just for the name
-		if(spellName == null || spellName.isEmpty())
+		if(spellName.isEmpty())
 			return name;
 
 		return name + " (" + TextFormatting.GREEN + spellName + TextFormatting.RESET + ")";

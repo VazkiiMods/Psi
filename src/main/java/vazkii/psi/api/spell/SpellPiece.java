@@ -50,8 +50,8 @@ public abstract class SpellPiece {
 	public int x, y;
 	public String comment;
 	
-	public Map<String, SpellParam> params = new LinkedHashMap();
-	public Map<SpellParam, SpellParam.Side> paramSides = new LinkedHashMap<SpellParam, SpellParam.Side>();
+	public Map<String, SpellParam> params = new LinkedHashMap<>();
+	public Map<SpellParam, SpellParam.Side> paramSides = new LinkedHashMap<>();
 
 	public SpellPiece(Spell spell) {
 		this.spell = spell;
@@ -97,7 +97,7 @@ public abstract class SpellPiece {
 
 	/**
 	 * Gets the string to be displayed describing this piece's evaluation type.
-	 * @see {@link #getEvaluationType()}
+	 * @see #getEvaluationType()
 	 */
 	public String getEvaluationTypeString() {
 		Class<?> evalType = getEvaluationType();
@@ -127,7 +127,8 @@ public abstract class SpellPiece {
 	/**
 	 * Gets the value of one of this piece's params in the given context.
 	 */
-	public <T>T getParamValue(SpellContext context, SpellParam param) {
+	@SuppressWarnings("unchecked")
+	public <T> T getParamValue(SpellContext context, SpellParam param) {
 		SpellParam.Side side = paramSides.get(param);
 		if(!side.isEnabled())
 			return null;
@@ -147,7 +148,8 @@ public abstract class SpellPiece {
 	 * Gets the evaluation of one of this piece's params in the given context. This calls
 	 * {@link #evaluate()} and should only be used for {@link #addToMetadata(SpellMetadata)}
 	 */
-	public <T>T getParamEvaluation(SpellParam param) throws SpellCompilationException {
+	@SuppressWarnings("unchecked")
+	public <T> T getParamEvaluation(SpellParam param) throws SpellCompilationException {
 		SpellParam.Side side = paramSides.get(param);
 		if(!side.isEnabled())
 			return null;
@@ -206,7 +208,7 @@ public abstract class SpellPiece {
 		wr.begin(7, DefaultVertexFormats.POSITION_TEX);
 		wr.pos(0, 16, 0).tex(0, 1).endVertex();
 		wr.pos(16, 16, 0).tex(1, 1).endVertex();
-		wr.pos(16, 0, 0).tex(1, 0).endVertex();;
+		wr.pos(16, 0, 0).tex(1, 0).endVertex();
 		wr.pos(0, 0, 0).tex(0, 0).endVertex();
 		Tessellator.getInstance().draw();
 	}
@@ -241,7 +243,7 @@ public abstract class SpellPiece {
 			wr.begin(7, DefaultVertexFormats.POSITION_TEX);
 			wr.pos(-2, 4, 0).tex(minU, maxV).endVertex();
 			wr.pos(4, 4, 0).tex(maxU, maxV).endVertex();
-			wr.pos(4, -2, 0).tex(maxU, minV).endVertex();;
+			wr.pos(4, -2, 0).tex(maxU, minV).endVertex();
 			wr.pos(-2, -2, 0).tex(minU, minV).endVertex();
 			Tessellator.getInstance().draw();
 		}
@@ -278,7 +280,7 @@ public abstract class SpellPiece {
 				wr.begin(7, DefaultVertexFormats.POSITION_TEX);
 				wr.pos(minX, maxY, 0).tex(minU, maxV).endVertex();
 				wr.pos(maxX, maxY, 0).tex(maxU, maxV).endVertex();
-				wr.pos(maxX, minY, 0).tex(maxU, minV).endVertex();;
+				wr.pos(maxX, minY, 0).tex(maxU, minV).endVertex();
 				wr.pos(minX, minY, 0).tex(minU, minV).endVertex();
 				Tessellator.getInstance().draw();
 			}
@@ -288,9 +290,7 @@ public abstract class SpellPiece {
 	@SideOnly(Side.CLIENT)
 	public void getTooltip(List<String> tooltip) {
 		TooltipHelper.addToTooltip(tooltip, getUnlocalizedName());
-		TooltipHelper.tooltipIfShift(tooltip, () -> {
-			addToTooltipAfterShift(tooltip);
-		});
+		TooltipHelper.tooltipIfShift(tooltip, () -> addToTooltipAfterShift(tooltip));
 
 		String addon = PsiAPI.pieceMods.get(getClass());
 		if(!addon.equals(LibMisc.MOD_NAME))

@@ -10,20 +10,7 @@
  */
 package vazkii.psi.common.core.handler;
 
-import java.awt.Color;
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.Set;
-import java.util.Stack;
-
 import com.google.common.collect.ImmutableSet;
-
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.culling.Frustum;
@@ -36,7 +23,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
-import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketPlayerPosLook.EnumFlags;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
@@ -66,12 +52,7 @@ import vazkii.psi.api.exosuit.IPsiEventArmor;
 import vazkii.psi.api.exosuit.PsiArmorEvent;
 import vazkii.psi.api.internal.IPlayerData;
 import vazkii.psi.api.internal.Vector3;
-import vazkii.psi.api.spell.EnumSpellStat;
-import vazkii.psi.api.spell.ISpellContainer;
-import vazkii.psi.api.spell.PieceGroup;
-import vazkii.psi.api.spell.Spell;
-import vazkii.psi.api.spell.SpellContext;
-import vazkii.psi.api.spell.SpellPiece;
+import vazkii.psi.api.spell.*;
 import vazkii.psi.client.core.handler.ClientTickHandler;
 import vazkii.psi.client.render.entity.RenderSpellCircle;
 import vazkii.psi.common.Psi;
@@ -81,10 +62,15 @@ import vazkii.psi.common.network.message.MessageDeductPsi;
 import vazkii.psi.common.network.message.MessageLevelUp;
 import vazkii.psi.common.network.message.MessageTriggerJumpSpell;
 
+import java.awt.*;
+import java.lang.ref.WeakReference;
+import java.util.*;
+import java.util.List;
+
 public class PlayerDataHandler {
 
-	private static HashMap<Integer, PlayerData> playerData = new HashMap();
-	public static Set<SpellContext> delayedContexts = new HashSet();
+	private static HashMap<Integer, PlayerData> playerData = new HashMap<>();
+	public static Set<SpellContext> delayedContexts = new HashSet<>();
 
 	private static final String DATA_TAG = "PsiData";
 
@@ -108,21 +94,10 @@ public class PlayerDataHandler {
 	}
 
 	public static void cleanup() {
-		try {
-			List<Integer> removals = new ArrayList();
-			Iterator<Entry<Integer, PlayerData>> it = playerData.entrySet().iterator();
-			while(it.hasNext()) {
-				Entry<Integer, PlayerData> item = it.next();
-				PlayerData d = item.getValue();
-				if(d != null && d.playerWR.get() == null)
-					removals.add(item.getKey());
-			}
-
-			for(int i : removals)
-				playerData.remove(i);
-		} catch(ConcurrentModificationException e) {
-			// This is the dirtist fucking code ever but I legit have no idea what's going on here so have this fuck it
-		}
+		playerData.entrySet().removeIf(item -> {
+			PlayerData d = item.getValue();
+			return d != null && d.playerWR.get() == null;
+		});
 	}
 
 	private static int getKey(EntityPlayer player) {
@@ -148,7 +123,7 @@ public class PlayerDataHandler {
 			if(event.phase == Phase.END) {
 				PlayerDataHandler.cleanup();
 
-				List<SpellContext> delayedContextsCopy = new ArrayList(delayedContexts);
+				List<SpellContext> delayedContextsCopy = new ArrayList<>(delayedContexts);
 				for(SpellContext context : delayedContextsCopy) {
 					context.delay--;
 
@@ -298,7 +273,7 @@ public class PlayerDataHandler {
 		public boolean overflowed = false;
 		
 		// Eidos stuff
-		public Stack<Vector3> eidosChangelog = new Stack();
+		public Stack<Vector3> eidosChangelog = new Stack<>();
 		public Vector3 eidosAnchor = new Vector3(0, 0, 0);
 		public double eidosAnchorPitch, eidosAnchorYaw;
 		public boolean isAnchored;
@@ -313,8 +288,8 @@ public class PlayerDataHandler {
 
 		public boolean deductTick;
 
-		public final List<String> spellGroupsUnlocked = new ArrayList();
-		public final List<Deduction> deductions = new ArrayList();
+		public final List<String> spellGroupsUnlocked = new ArrayList<>();
+		public final List<Deduction> deductions = new ArrayList<>();
 		public WeakReference<EntityPlayer> playerWR;
 		private final boolean client;
 		
@@ -322,14 +297,18 @@ public class PlayerDataHandler {
 		private NBTTagCompound customData;
 
 		public PlayerData(EntityPlayer player) {
-			playerWR = new WeakReference(player);
+			playerWR = new WeakReference<>(player);
 			client = player.getEntityWorld().isRemote;
 
 			load();
 		}
 
 		public void tick() {
-			int dimension = playerWR.get().getEntityWorld().provider.getDimension();
+			EntityPlayer player = playerWR.get();
+			if (player == null)
+				return;
+
+			int dimension = player.getEntityWorld().provider.getDimension();
 			
 			if(deductTick)
 				deductTick = false;
@@ -339,7 +318,6 @@ public class PlayerDataHandler {
 			if(availablePsi > max)
 				availablePsi = max;
 
-			EntityPlayer player = playerWR.get();
 			ItemStack cadStack = getCAD();
 			if(regenCooldown == 0) {
 				boolean doRegen = true;
@@ -378,6 +356,7 @@ public class PlayerDataHandler {
 				icad = (ICAD) cadStack.getItem();
 				color = Psi.proxy.getCADColor(cadStack);
 			}
+
 			float r = color.getRed() / 255F;
 			float g = color.getGreen() / 255F;
 			float b = color.getBlue() / 255F;
@@ -387,7 +366,7 @@ public class PlayerDataHandler {
 					stopLoopcast();
 				
 				if(loopcasting) {
-					if(player == null || cadStack.isEmpty() || (player.getHeldItemMainhand() != cadStack && player.getHeldItemOffhand() != cadStack)) {
+					if(icad == null || cadStack.isEmpty() || player.getHeldItemMainhand() != cadStack && player.getHeldItemOffhand() != cadStack) {
 						stopLoopcast();
 						break loopcast;
 					}
@@ -419,7 +398,7 @@ public class PlayerDataHandler {
 											deductPsi(cost, 3, true);
 
 										if(!player.getEntityWorld().isRemote && loopcastTime % 10 == 0)
-											player.getEntityWorld().playSound(null, player.posX, player.posX, player.posZ, PsiSoundHandler.loopcast, SoundCategory.PLAYERS, 0.5F, (float) (0.35 + Math.random() * 0.85));
+											player.getEntityWorld().playSound(null, player.posX, player.posY, player.posZ, PsiSoundHandler.loopcast, SoundCategory.PLAYERS, 0.5F, (float) (0.35 + Math.random() * 0.85));
 									}
 
 									context.cspell.safeExecute(context);
@@ -445,7 +424,7 @@ public class PlayerDataHandler {
 
 			if(eidosAnchorTime > 0) {
 				if(eidosAnchorTime == 1) {
-					if(player != null && player instanceof EntityPlayerMP) {
+					if(player instanceof EntityPlayerMP) {
 						EntityPlayerMP pmp = (EntityPlayerMP) player;
 						pmp.connection.setPlayerLocation(eidosAnchor.x, eidosAnchor.y, eidosAnchor.z, (float) eidosAnchorYaw, (float) eidosAnchorPitch);
 
@@ -474,37 +453,35 @@ public class PlayerDataHandler {
 						isReverting = false;
 					} else {
 						Vector3 vec = eidosChangelog.pop();
-						if(player != null) {
-							if(player instanceof EntityPlayerMP) {
-								EntityPlayerMP pmp = (EntityPlayerMP) player;
-								pmp.connection.setPlayerLocation(vec.x, vec.y, vec.z, 0, 0, ImmutableSet.of(EnumFlags.X_ROT, EnumFlags.Y_ROT));
-							} else {
-								player.posX = vec.x;
-								player.posY = vec.y;
-								player.posZ = vec.z;
-							}
-
-							Entity riding = player.getRidingEntity();
-							while(riding != null) {
-								riding.setPosition(vec.x, vec.y, vec.z);
-								riding = riding.getRidingEntity();
-							}
-
-							for(int i = 0; i < 5; i++) {
-								double spread = 0.6;
-
-								double x = player.posX + (Math.random() - 0.5) * spread;
-								double y = player.posY + (Math.random() - 0.5) * spread;
-								double z = player.posZ + (Math.random() - 0.5) * spread;
-
-								Psi.proxy.sparkleFX(player.getEntityWorld(), x, y, z, r, g, b, (float) x, (float) y, (float) z, 1.2F, 12);
-							}
-
-							player.motionX = 0;
-							player.motionY = 0;
-							player.motionZ = 0;
-							player.fallDistance = 0F;
+						if(player instanceof EntityPlayerMP) {
+							EntityPlayerMP pmp = (EntityPlayerMP) player;
+							pmp.connection.setPlayerLocation(vec.x, vec.y, vec.z, 0, 0, ImmutableSet.of(EnumFlags.X_ROT, EnumFlags.Y_ROT));
+						} else {
+							player.posX = vec.x;
+							player.posY = vec.y;
+							player.posZ = vec.z;
 						}
+
+						Entity riding = player.getRidingEntity();
+						while(riding != null) {
+							riding.setPosition(vec.x, vec.y, vec.z);
+							riding = riding.getRidingEntity();
+						}
+
+						for(int i = 0; i < 5; i++) {
+							double spread = 0.6;
+
+							double x = player.posX + (Math.random() - 0.5) * spread;
+							double y = player.posY + (Math.random() - 0.5) * spread;
+							double z = player.posZ + (Math.random() - 0.5) * spread;
+
+							Psi.proxy.sparkleFX(player.getEntityWorld(), x, y, z, r, g, b, (float) x, (float) y, (float) z, 1.2F, 12);
+						}
+
+						player.motionX = 0;
+						player.motionY = 0;
+						player.motionZ = 0;
+						player.fallDistance = 0F;
 					}
 				}
 
@@ -539,7 +516,7 @@ public class PlayerDataHandler {
 				PsiArmorEvent.post(new PsiArmorEvent(player, PsiArmorEvent.LOW_HP));
 			this.lowHp = lowHp;
 
-			List<Deduction> remove = new ArrayList();
+			List<Deduction> remove = new ArrayList<>();
 			for(Deduction d : deductions) {
 				if(d.invalid)
 					remove.add(d);

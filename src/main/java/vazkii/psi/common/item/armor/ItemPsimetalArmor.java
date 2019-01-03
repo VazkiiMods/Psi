@@ -10,11 +10,7 @@
  */
 package vazkii.psi.common.item.armor;
 
-import java.util.List;
-import java.util.function.Function;
-
 import net.minecraft.client.model.ModelBiped;
-import net.minecraft.client.model.ModelElytra;
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
@@ -44,6 +40,9 @@ import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.item.tool.IPsimetalTool;
 import vazkii.psi.common.item.tool.ItemPsimetalTool;
 import vazkii.psi.common.lib.LibResources;
+
+import java.util.List;
+import java.util.function.Function;
 
 public class ItemPsimetalArmor extends ItemModArmor implements IPsimetalTool, IPsiEventArmor, IItemColorProvider {
 
@@ -125,7 +124,7 @@ public class ItemPsimetalArmor extends ItemModArmor implements IPsimetalTool, IP
 
 	@Override
 	public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack) {
-		return par2ItemStack.getItem() == ModItems.material && par2ItemStack.getItemDamage() == 1 ? true : super.getIsRepairable(par1ItemStack, par2ItemStack);
+		return par2ItemStack.getItem() == ModItems.material && par2ItemStack.getItemDamage() == 1 || super.getIsRepairable(par1ItemStack, par2ItemStack);
 	}
 
 	@Override
@@ -147,12 +146,7 @@ public class ItemPsimetalArmor extends ItemModArmor implements IPsimetalTool, IP
 	@Override
 	@SideOnly(Side.CLIENT)
 	public IItemColor getItemColor() {
-		return new IItemColor() {
-			@Override
-			public int colorMultiplier(ItemStack stack, int tintIndex) {
-				return tintIndex == 1 ? getColor(stack) : 0xFFFFFF;
-			}
-		};
+		return (stack, tintIndex) -> tintIndex == 1 ? getColor(stack) : 0xFFFFFF;
 	}
 
 	@Override
