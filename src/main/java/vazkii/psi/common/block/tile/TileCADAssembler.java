@@ -10,71 +10,84 @@
  */
 package vazkii.psi.common.block.tile;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
 import net.minecraftforge.common.MinecraftForge;
 import vazkii.arl.block.tile.TileSimpleInventory;
-import vazkii.psi.api.cad.ISocketable;
-import vazkii.psi.api.cad.PostCADCraftEvent;
+import vazkii.psi.api.cad.*;
 import vazkii.psi.common.core.handler.PsiSoundHandler;
 import vazkii.psi.common.item.ItemCAD;
 import vazkii.psi.common.lib.LibBlockNames;
 
-public class TileCADAssembler extends TileSimpleInventory implements ITickable {
+import javax.annotation.Nonnull;
 
-	boolean ignoreChanges = false;
+public class TileCADAssembler extends TileSimpleInventory implements ITileCADAssembler {
+
+	private transient ItemStack cachedCAD;
 
 	@Override
 	public void inventoryChanged(int i) {
-		if(!ignoreChanges) {
-			if(i != 0) {
-				ItemStack cad = ItemStack.EMPTY;
-				if(!getStackInSlot(2).isEmpty())
-					cad = ItemCAD.makeCAD(inventorySlots.subList(1, 6));
-
-				setInventorySlotContents(0, cad);
-			}
-
-			ItemStack socketableStack = getStackInSlot(6);
-			if(i == 6 && !socketableStack.isEmpty() && socketableStack.getItem() instanceof ISocketable) {
-				ISocketable socketable = (ISocketable) socketableStack.getItem();
-
-				for(int j = 0; j < 12; j++)
-					if(socketable.isSocketSlotAvailable(socketableStack, j)) {
-						ItemStack bullet = socketable.getBulletInSocket(socketableStack, j);
-						setInventorySlotContents(j + 7, bullet);
-					} else setInventorySlotContents(j + 7, ItemStack.EMPTY);
-			}
-		}
+		if (0 < i && i < 6)
+			clearCachedCAD();
 	}
 
 	@Override
-	public void update() {
-		ItemStack socketableStack = getStackInSlot(6);
-		if(!socketableStack.isEmpty() && socketableStack.getItem() instanceof ISocketable) {
-			ISocketable socketable = (ISocketable) socketableStack.getItem();
-			for(int j = 0; j < 12; j++)
-				if(socketable.isSocketSlotAvailable(socketableStack, j)) {
-					ItemStack bullet = getStackInSlot(j + 7);
-					socketable.setBulletInSocket(socketableStack, j, bullet);
-				}
-		} else for(int j = 0; j < 12; j++)
-			setInventorySlotContents(j + 7, ItemStack.EMPTY);
+	public void clearCachedCAD() {
+		cachedCAD = null;
 	}
 
+	@Override
+	public ItemStack getCachedCAD(EntityPlayer player) {
+		ItemStack cad = cachedCAD;
+		if (cad == null) {
+			if (!getStackForComponent(EnumCADComponent.ASSEMBLY).isEmpty())
+				cad = ItemCAD.makeCAD(inventorySlots.subList(1, 6));
+			else
+				cad = ItemStack.EMPTY;
+
+			AssembleCADEvent assembling = new AssembleCADEvent(cad, this, player);
+
+			MinecraftForge.EVENT_BUS.post(assembling);
+
+			if (assembling.isCanceled())
+				cad = ItemStack.EMPTY;
+			else
+				cad = assembling.getCad();
+
+			cachedCAD = cad;
+		}
+
+		return cad;
+	}
+
+	@Override
+	public int getComponentSlot(EnumCADComponent componentType) {
+		return componentType.ordinal() + 1;
+	}
+
+	@Override
+	public ItemStack getStackForComponent(EnumCADComponent componentType) {
+		return getStackInSlot(getComponentSlot(componentType));
+	}
+
+	@Override
+	public ItemStack getSocketableStack() {
+		return getStackInSlot(0);
+	}
+
+	@Override
 	public void onCraftCAD(ItemStack cad) {
-		ignoreChanges = true;
 		MinecraftForge.EVENT_BUS.post(new PostCADCraftEvent(cad, this));
-		for(int i = 1; i < 6; i++)
+		for (int i = 1; i < 6; i++)
 			setInventorySlotContents(i, ItemStack.EMPTY);
-		if(!getWorld().isRemote)
-			getWorld().playSound(null, getPos().getX() + 0.5, getPos().getY() + 0.5, getPos().getZ() + 0.5, PsiSoundHandler.cadCreate, SoundCategory.BLOCKS, 0.5F, 1F);
-		ignoreChanges = false;
+		if (!world.isRemote)
+			world.playSound(null, getPos().getX() + 0.5, getPos().getY() + 0.5, getPos().getZ() + 0.5, PsiSoundHandler.cadCreate, SoundCategory.BLOCKS, 0.5F, 1F);
 	}
 
+	@Override
 	public boolean isBulletSlotEnabled(int slot) {
-		ItemStack socketableStack = getStackInSlot(6);
+		ItemStack socketableStack = getSocketableStack();
 		if(!socketableStack.isEmpty() && socketableStack.getItem() instanceof ISocketable) {
 			ISocketable socketable = (ISocketable) socketableStack.getItem();
 			return socketable.isSocketSlotAvailable(socketableStack, slot);
@@ -85,9 +98,10 @@ public class TileCADAssembler extends TileSimpleInventory implements ITickable {
 
 	@Override
 	public int getSizeInventory() {
-		return 19;
+		return 6;
 	}
 
+	@Nonnull
 	@Override
 	public String getName() {
 		return LibBlockNames.CAD_ASSEMBLER;
@@ -99,12 +113,16 @@ public class TileCADAssembler extends TileSimpleInventory implements ITickable {
 	}
 
 	@Override
-	public boolean isEmpty() {
-        for(ItemStack itemstack : inventorySlots)
-            if(!itemstack.isEmpty())
-                return false;
+	public boolean isItemValidForSlot(int slot, @Nonnull ItemStack stack) {
+		if (stack.isEmpty())
+			return true;
 
-        return true;
+		if (slot == 0)
+			return stack.getItem() instanceof ISocketable;
+		else if (slot < 6)
+			return stack.getItem() instanceof ICADComponent &&
+				((ICADComponent) stack.getItem()).getComponentType(stack) == EnumCADComponent.values()[slot - 1];
+
+		return false;
 	}
-
 }

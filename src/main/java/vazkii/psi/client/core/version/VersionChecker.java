@@ -16,11 +16,11 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
+import vazkii.psi.api.internal.TooltipHelper;
 import vazkii.psi.common.lib.LibMisc;
 
 public final class VersionChecker {
@@ -50,7 +50,7 @@ public final class VersionChecker {
 					player.sendMessage(new TextComponentTranslation("psi.versioning.flavour" + player.getEntityWorld().rand.nextInt(FLAVOUR_MESSAGES)).setStyle(new Style().setColor(TextFormatting.LIGHT_PURPLE)));
 					player.sendMessage(new TextComponentTranslation("psi.versioning.outdated", clientBuild, onlineBuild));
 
-					ITextComponent component = ITextComponent.Serializer.jsonToComponent(I18n.translateToLocal("psi.versioning.updateMessage").replaceAll("%version%", onlineVersion));
+					ITextComponent component = ITextComponent.Serializer.jsonToComponent(TooltipHelper.local("psi.versioning.updateMessage").replaceAll("%version%", onlineVersion));
 					player.sendMessage(component);
 				}
 			}

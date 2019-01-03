@@ -10,19 +10,19 @@
  */
 package vazkii.psi.client.core.version;
 
-import java.awt.Desktop;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.translation.I18n;
+import vazkii.psi.api.internal.TooltipHelper;
+
+import java.awt.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 
 public class ThreadDownloadMod extends Thread {
 
@@ -46,7 +46,7 @@ public class ThreadDownloadMod extends Thread {
 	@Override
 	public void run() {
 		try {
-			ITextComponent component = ITextComponent.Serializer.jsonToComponent(String.format(I18n.translateToLocal("psi.versioning.startingDownload"), fileName));
+			ITextComponent component = ITextComponent.Serializer.jsonToComponent(String.format(TooltipHelper.local("psi.versioning.startingDownload"), fileName));
 			if(Minecraft.getMinecraft().player != null)
 				Minecraft.getMinecraft().player.sendMessage(component);
 

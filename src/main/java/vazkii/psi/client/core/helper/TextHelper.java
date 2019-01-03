@@ -10,16 +10,15 @@
  */
 package vazkii.psi.client.core.helper;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.google.common.base.Joiner;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import vazkii.psi.api.internal.TooltipHelper;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public final class TextHelper {
 
@@ -28,7 +27,7 @@ public final class TextHelper {
 		FontRenderer font = Minecraft.getMinecraft().fontRenderer;
 		boolean unicode = font.getUnicodeFlag();
 		font.setUnicodeFlag(true);
-		String text = I18n.translateToLocal(unlocalizedText).replaceAll("&", "\u00a7");
+		String text = TooltipHelper.local(unlocalizedText).replaceAll("&", "\u00a7");
 		if(format != null && format.length > 0)
 			text = String.format(text, format);
 

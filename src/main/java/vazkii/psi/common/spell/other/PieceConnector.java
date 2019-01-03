@@ -10,26 +10,20 @@
  */
 package vazkii.psi.common.spell.other;
 
-import java.util.List;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import vazkii.psi.api.spell.EnumPieceType;
-import vazkii.psi.api.spell.IRedirector;
-import vazkii.psi.api.spell.Spell;
-import vazkii.psi.api.spell.SpellContext;
-import vazkii.psi.api.spell.SpellParam;
-import vazkii.psi.api.spell.SpellPiece;
-import vazkii.psi.api.spell.SpellRuntimeException;
+import vazkii.psi.api.internal.TooltipHelper;
+import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.param.ParamAny;
 import vazkii.psi.common.lib.LibResources;
+
+import java.util.List;
 
 public class PieceConnector extends SpellPiece implements IRedirector {
 
@@ -48,7 +42,7 @@ public class PieceConnector extends SpellPiece implements IRedirector {
 
 	@Override
 	public String getEvaluationTypeString() {
-		return I18n.translateToLocal("psi.datatype.Any");
+		return TooltipHelper.local("psi.datatype.Any");
 	}
 
 	@Override

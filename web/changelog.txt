@@ -1,3 +1,8 @@
+r1.1-65
+*Overhaul the internals of the CAD Assembler to not be 1.8 era garbagio. (WireSegal)
+*[API] Added AssembleCADEvent. (WireSegal)
+*[API] Added IShowPsiBar. (WireSegal)
+*[API] Fix Kamefrede's changes referencing non-API code from the API package. (WireSegal)
 r1.1-64
 *Fixed Bright Psimetal Plates not being localized. (Kamefrede)
 *Fixed Operator: Entity Motion returning the wrong magnitude for players. (Kamefrede)

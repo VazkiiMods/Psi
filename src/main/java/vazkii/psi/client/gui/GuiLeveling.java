@@ -10,25 +10,19 @@
  */
 package vazkii.psi.client.gui;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import org.lwjgl.input.Mouse;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.client.GuiScrollingList;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
+import org.lwjgl.input.Mouse;
 import vazkii.arl.network.NetworkHandler;
 import vazkii.arl.util.RenderHelper;
 import vazkii.psi.api.PsiAPI;
+import vazkii.psi.api.internal.TooltipHelper;
 import vazkii.psi.api.spell.PieceGroup;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellPiece;
@@ -42,11 +36,16 @@ import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.lib.LibResources;
 import vazkii.psi.common.network.message.MessageLearnGroup;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 public class GuiLeveling extends GuiScreen {
 
 	public static final ResourceLocation texture = new ResourceLocation(LibResources.GUI_LEVELING);
 
-	public List<String> tooltip = new ArrayList();
+	public List<String> tooltip = new ArrayList<>();
 	static float scrollDistanceGroup, scrollDistanceText;
 	static int selected;
 
@@ -58,7 +57,7 @@ public class GuiLeveling extends GuiScreen {
 	Spell spellWrapper;
 	PlayerData data;
 	List<PieceGroup> groups;
-	List<SpellPiece> drawPieces = new ArrayList();
+	List<SpellPiece> drawPieces = new ArrayList<>();
 	List<String> desc;
 	boolean ignoreIntroductionJump;
 	
@@ -85,16 +84,16 @@ public class GuiLeveling extends GuiScreen {
 	}
 
 	public void initGroupList() {
-		groups = new ArrayList();
+		groups = new ArrayList<>();
 
 		String last = data.lastSpellGroup;
 		PieceGroup lastGroup = PsiAPI.groupsForName.get(last);
 		if(lastGroup != null)
 			groups.add(lastGroup);
 
-		ArrayList available = new ArrayList();
-		ArrayList notAvailable = new ArrayList();
-		ArrayList taken = new ArrayList();
+		ArrayList<PieceGroup> available = new ArrayList<>();
+		ArrayList<PieceGroup> notAvailable = new ArrayList<>();
+		ArrayList<PieceGroup> taken = new ArrayList<>();
 
 		for(PieceGroup group : PsiAPI.groupsForName.values()) {
 			if(group == lastGroup)
@@ -135,10 +134,11 @@ public class GuiLeveling extends GuiScreen {
 		super.drawScreen(mouseX, mouseY, partialTicks);
 
 		PieceGroup group = groups.get(selected);
-		boolean taken = data.isPieceGroupUnlocked(group.name);
-		group.isAvailable(data);
 
 		if(group != null) {
+			boolean taken = data.isPieceGroupUnlocked(group.name);
+			group.isAvailable(data);
+
 			int lines = (drawPieces.size() - 1) / 6 + 1;
 
 			for(int i = 0; i < drawPieces.size(); i++) {
@@ -157,7 +157,7 @@ public class GuiLeveling extends GuiScreen {
 				GlStateManager.translate(-x, -y, 0);
 			}
 
-			mc.fontRenderer.drawStringWithShadow(I18n.translateToLocal(group.getUnlocalizedName()), left + 134, top + 12, 0xFFFFFF);
+			mc.fontRenderer.drawStringWithShadow(TooltipHelper.local(group.getUnlocalizedName()), left + 134, top + 12, 0xFFFFFF);
 
 			if(taken) {
 				if(listText != null) {
@@ -170,12 +170,12 @@ public class GuiLeveling extends GuiScreen {
 				int colorOff = 0x777777;
 				int colorOn = 0x77FF77;
 
-				mc.fontRenderer.drawStringWithShadow(I18n.translateToLocal("psimisc.requirements"), left + 134, top + 32, 0xFFFFFF);
-				mc.fontRenderer.drawString(String.format(I18n.translateToLocal("psimisc.levelDisplay"), group.levelRequirement), left + 138, top + 42, data.getLevel() >= group.levelRequirement ? colorOn : colorOff);
+				mc.fontRenderer.drawStringWithShadow(TooltipHelper.local("psimisc.requirements"), left + 134, top + 32, 0xFFFFFF);
+				mc.fontRenderer.drawString(String.format(TooltipHelper.local("psimisc.levelDisplay"), group.levelRequirement), left + 138, top + 42, data.getLevel() >= group.levelRequirement ? colorOn : colorOff);
 				int i = 0;
 				for(String s : group.requirements) {
 					PieceGroup reqGroup = PsiAPI.groupsForName.get(s);
-					mc.fontRenderer.drawString(I18n.translateToLocal(reqGroup.getUnlocalizedName()), left + 138, top + 52 + i * 10, data.isPieceGroupUnlocked(s) ? colorOn : colorOff);
+					mc.fontRenderer.drawString(TooltipHelper.local(reqGroup.getUnlocalizedName()), left + 138, top + 52 + i * 10, data.isPieceGroupUnlocked(s) ? colorOn : colorOff);
 
 					i++;
 				}
@@ -183,14 +183,14 @@ public class GuiLeveling extends GuiScreen {
 		}
 
 		if(LibMisc.BETA_TESTING) {
-			String betaTest = I18n.translateToLocal("psimisc.wip");
-			mc.fontRenderer.drawStringWithShadow(betaTest, left + xSize / 2 - mc.fontRenderer.getStringWidth(betaTest) / 2, top - 12, 0xFFFFFFFF);
+			String betaTest = TooltipHelper.local("psimisc.wip");
+			mc.fontRenderer.drawStringWithShadow(betaTest, left + xSize / 2f - mc.fontRenderer.getStringWidth(betaTest) / 2f, top - 12, 0xFFFFFFFF);
 		}
 
 		String key = "psimisc.levelInfo";
 		if(mc.player.capabilities.isCreativeMode)
 			key = "psimisc.levelInfoCreative";
-		String s = String.format(I18n.translateToLocal(key), data.getLevel(), data.getLevelPoints());
+		String s = String.format(TooltipHelper.local(key), data.getLevel(), data.getLevelPoints());
 		mc.fontRenderer.drawStringWithShadow(s, left + 4, top + ySize + 2, 0xFFFFFF);
 
 		listGroups.drawScreen(mouseX, mouseY, partialTicks);
@@ -229,23 +229,23 @@ public class GuiLeveling extends GuiScreen {
 		PieceGroup group = groups.get(selected);
 		if(group != null) {
 			addToDrawList(group.mainPiece);
-			for(Class clazz : group.pieces)
+			for(Class<? extends SpellPiece> clazz : group.pieces)
 				if(clazz != group.mainPiece)
 					addToDrawList(clazz);
+
+			boolean taken = data.isPieceGroupUnlocked(group.name);
+			boolean available = taken || group.isAvailable(data);
+
+			buttonList.clear();
+			if(!taken && available && data.getLevelPoints() > 0)
+				buttonList.add(new GuiButtonLearn(this, left + xSize, top + ySize - 30));
+
+			int lines = (drawPieces.size() - 1) / 6 + 1;
+			if(taken) {
+				desc = TextHelper.renderText(left + 2, 0, 110, group.getUnlocalizedDesc(), false, false);
+				listText = new BigTextList(mc, 120, 168, top + 23, top + 174 - lines * 18, left + 130, 10, width, height);
+			} else listText = null;
 		}
-
-		boolean taken = data.isPieceGroupUnlocked(group.name);
-		boolean available = taken || group.isAvailable(data);
-
-		buttonList.clear();
-		if(!taken && available && data.getLevelPoints() > 0)
-			buttonList.add(new GuiButtonLearn(this, left + xSize, top + ySize - 30));
-
-		int lines = (drawPieces.size() - 1) / 6 + 1;
-		if(taken) {
-			desc = TextHelper.renderText(left + 2, 0, 110, group.getUnlocalizedDesc(), false, false);
-			listText = new BigTextList(mc, 120, 168, top + 23, top + 174 - lines * 18, left + 130, 10, width, height);
-		} else listText = null;
 	}
 
 	public void addToDrawList(Class<? extends SpellPiece> clazz) {
@@ -347,8 +347,8 @@ public class GuiLeveling extends GuiScreen {
 			else if(available)
 				color = 0xFFFFFF;
 
-			mc.fontRenderer.drawString(I18n.translateToLocal(group.getUnlocalizedName()), left + 3, slotTop + 4, color);
-			mc.fontRenderer.drawString(String.format(I18n.translateToLocal("psimisc.levelDisplay"), group.levelRequirement), left + 3, slotTop + 14, color);
+			mc.fontRenderer.drawString(TooltipHelper.local(group.getUnlocalizedName()), left + 3, slotTop + 4, color);
+			mc.fontRenderer.drawString(String.format(TooltipHelper.local("psimisc.levelDisplay"), group.levelRequirement), left + 3, slotTop + 14, color);
 			scrollDistanceGroup = ReflectionHelper.getPrivateValue(GuiScrollingList.class, this, "scrollDistance");
 		}
 

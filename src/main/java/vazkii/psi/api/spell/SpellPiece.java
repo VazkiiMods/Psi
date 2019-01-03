@@ -10,26 +10,24 @@
  */
 package vazkii.psi.api.spell;
 
-import java.awt.Color;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.client.renderer.vertex.VertexBuffer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.internal.TooltipHelper;
 import vazkii.psi.common.lib.LibMisc;
+
+import java.awt.*;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * A basic abstract piece of a spell. Instances of this class are created as needed
@@ -104,9 +102,9 @@ public abstract class SpellPiece {
 	public String getEvaluationTypeString() {
 		Class<?> evalType = getEvaluationType();
 		String evalStr = evalType == null ? "Null" : evalType.getSimpleName();
-		String s = I18n.translateToLocal("psi.datatype." + evalStr);
+		String s = TooltipHelper.local("psi.datatype." + evalStr);
 		if(getPieceType() == EnumPieceType.CONSTANT)
-			s += " " + I18n.translateToLocal("psimisc.constant");
+			s += " " + TooltipHelper.local("psimisc.constant");
 
 		return s;
 	}
@@ -167,7 +165,7 @@ public abstract class SpellPiece {
 	}
 
 	public String getSortingName() {
-		return I18n.translateToLocal(getUnlocalizedName());
+		return TooltipHelper.local(getUnlocalizedName());
 	}
 
 	public String getUnlocalizedDesc() {
@@ -308,7 +306,7 @@ public abstract class SpellPiece {
 		TooltipHelper.addToTooltip(tooltip, "<- " + TextFormatting.GOLD + eval);
 
 		for(SpellParam param : paramSides.keySet()) {
-			String pName = I18n.translateToLocal(param.name);
+			String pName = TooltipHelper.local(param.name);
 			String pEval = param.getRequiredTypeString();
 			TooltipHelper.addToTooltip(tooltip, (param.canDisable ? "[->] " : " ->  ") + TextFormatting.YELLOW + pName + " [" + pEval + "]");
 		}

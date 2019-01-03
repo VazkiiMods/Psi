@@ -14,11 +14,15 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import vazkii.psi.api.cad.ISocketable;
+import vazkii.psi.api.inventory.InventorySocketable;
 
 public class SlotSocketable extends Slot {
 
-	public SlotSocketable(IInventory inventoryIn, int index, int xPosition, int yPosition) {
+	private final InventorySocketable bullets;
+
+	public SlotSocketable(IInventory inventoryIn, InventorySocketable bullets, int index, int xPosition, int yPosition) {
 		super(inventoryIn, index, xPosition, yPosition);
+		this.bullets = bullets;
 	}
 
 	@Override
@@ -26,4 +30,8 @@ public class SlotSocketable extends Slot {
 		return stack.getItem() instanceof ISocketable;
 	}
 
+	@Override
+	public void onSlotChanged() {
+		bullets.setStack(getStack());
+	}
 }

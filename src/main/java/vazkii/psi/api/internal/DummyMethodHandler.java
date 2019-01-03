@@ -48,4 +48,8 @@ public final class DummyMethodHandler implements IInternalMethodHandler {
 		// NO-OP
 	}
 
+	@Override
+	public String localize(String key, Object... format) {
+		return key;
+	}
 }

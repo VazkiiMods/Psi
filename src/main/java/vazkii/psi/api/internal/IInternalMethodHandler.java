@@ -45,4 +45,9 @@ public interface IInternalMethodHandler {
 	 * Delays a spell context.
 	 */
 	public void delayContext(SpellContext context);
+
+	/**
+	 * Localizes a string, with correct behavior on both server and client.
+	 */
+	String localize(String key, Object... format);
 }

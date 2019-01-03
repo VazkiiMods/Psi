@@ -10,14 +10,6 @@
  */
 package vazkii.psi.client.core.handler;
 
-import java.awt.Color;
-import java.util.function.Consumer;
-import java.util.regex.Pattern;
-
-import org.lwjgl.opengl.ARBMultitexture;
-import org.lwjgl.opengl.ARBShaderObjects;
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.Gui;
@@ -31,18 +23,21 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import scala.reflect.internal.Trees.ShallowDuplicator;
+import org.lwjgl.opengl.ARBMultitexture;
+import org.lwjgl.opengl.ARBShaderObjects;
+import org.lwjgl.opengl.GL11;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.cad.ICADColorizer;
+import vazkii.psi.api.cad.IShowPsiBar;
 import vazkii.psi.api.cad.ISocketable;
+import vazkii.psi.api.internal.TooltipHelper;
 import vazkii.psi.client.gui.GuiLeveling;
 import vazkii.psi.common.core.handler.ConfigHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
@@ -52,6 +47,10 @@ import vazkii.psi.common.core.handler.PsiSoundHandler;
 import vazkii.psi.common.item.base.IHUDItem;
 import vazkii.psi.common.lib.LibObfuscation;
 import vazkii.psi.common.lib.LibResources;
+
+import java.awt.*;
+import java.util.function.Consumer;
+import java.util.regex.Pattern;
 
 public final class HUDHandler {
 
@@ -96,6 +95,15 @@ public final class HUDHandler {
 			--remainingTime;
 	}
 
+	private boolean showsBar(PlayerData data, ItemStack stack) {
+	    if (stack.isEmpty() || !(stack.getItem() instanceof IShowPsiBar))
+	        return false;
+
+	    IShowPsiBar item = (IShowPsiBar) stack.getItem();
+
+	    return item.shouldShow(stack, data);
+    }
+
 	@SideOnly(Side.CLIENT)
 	public void drawPsiBar(ScaledResolution res, float pticks) {
 		Minecraft mc = Minecraft.getMinecraft();
@@ -112,11 +120,9 @@ public final class HUDHandler {
 		int totalPsi = data.getTotalPsi();
 		int currPsi = data.getAvailablePsi();
 
-		if (ConfigHandler.contextSensitiveBar && currPsi == totalPsi
-				&& (mc.player.getHeldItemMainhand().isEmpty()
-						|| !(mc.player.getHeldItemMainhand().getItem() instanceof ISocketable))
-				&& (mc.player.getHeldItemOffhand().isEmpty()
-						|| !(mc.player.getHeldItemOffhand().getItem() instanceof ISocketable)))
+		if (ConfigHandler.contextSensitiveBar && currPsi == totalPsi &&
+                (showsBar(data, mc.player.getHeldItemMainhand()) ||
+                        showsBar(data, mc.player.getHeldItemOffhand())))
 			return;
 
 		GlStateManager.pushMatrix();
@@ -312,7 +318,7 @@ public final class HUDHandler {
 		int fadeTime = time / 10;
 		int fadeoutTime = fadeTime * 2;
 
-		String levelUp = I18n.translateToLocal("psimisc.levelup");
+		String levelUp = TooltipHelper.local("psimisc.levelup");
 		int len = levelUp.length();
 		int effLen = Math.min(len, len * levelDisplayTime / fadeTime);
 		levelUp = levelUp.substring(0, effLen);
@@ -343,7 +349,7 @@ public final class HUDHandler {
 		GlStateManager.popMatrix();
 
 		if (levelDisplayTime > fadeTime * 2) {
-			String s = I18n.translateToLocal("psimisc.levelUpInfo1");
+			String s = TooltipHelper.local("psimisc.levelUpInfo1");
 			swidth = mc.fontRenderer.getStringWidth(s);
 			len = s.length();
 			effLen = Math.min(len, len * (levelDisplayTime - fadeTime * 2) / fadeTime);
@@ -355,8 +361,8 @@ public final class HUDHandler {
 		}
 
 		if (levelDisplayTime > fadeTime * 3) {
-			String s = I18n.translateToLocal("psimisc.levelUpInfo2");
-			s = String.format(s, TextFormatting.GREEN + I18n.translateToLocal(KeybindHandler.keybind.getDisplayName())
+			String s = TooltipHelper.local("psimisc.levelUpInfo2");
+			s = String.format(s, TextFormatting.GREEN + TooltipHelper.local(KeybindHandler.keybind.getDisplayName())
 					+ TextFormatting.RESET);
 			swidth = mc.fontRenderer.getStringWidth(s);
 			len = s.length();

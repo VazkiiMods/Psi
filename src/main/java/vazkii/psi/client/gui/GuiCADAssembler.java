@@ -16,9 +16,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.translation.I18n;
 import vazkii.psi.api.cad.EnumCADStat;
 import vazkii.psi.api.cad.ICAD;
+import vazkii.psi.api.internal.TooltipHelper;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.base.ModBlocks;
 import vazkii.psi.common.block.tile.TileCADAssembler;
@@ -28,10 +28,12 @@ import vazkii.psi.common.lib.LibResources;
 public class GuiCADAssembler extends GuiContainer {
 
 	private static final ResourceLocation texture = new ResourceLocation(LibResources.GUI_CAD_ASSEMBLER);
-	TileCADAssembler assembler;
+	private final EntityPlayer player;
+	private final TileCADAssembler assembler;
 
 	public GuiCADAssembler(EntityPlayer player, TileCADAssembler assembler) {
 		super(new ContainerCADAssembler(player, assembler));
+		this.player = player;
 		this.assembler = assembler;
 	}
 
@@ -56,18 +58,18 @@ public class GuiCADAssembler extends GuiContainer {
 		String name = new ItemStack(ModBlocks.cadAssembler).getDisplayName();
 		fontRenderer.drawString(name, xSize / 2 - fontRenderer.getStringWidth(name) / 2, 10, color);
 
-		ItemStack cad = assembler.getStackInSlot(0);
+		ItemStack cad = assembler.getCachedCAD(player);
 		if(!cad.isEmpty()) {
 			color = 0xFFFFFF;
 
 			int i = 0;
 			ICAD cadItem = (ICAD) cad.getItem();
-			String stats = I18n.translateToLocal("psimisc.stats");
+			String stats = TooltipHelper.local("psimisc.stats");
 			String s = TextFormatting.BOLD + stats;
-			fontRenderer.drawStringWithShadow(s, 213 - fontRenderer.getStringWidth(s) / 2, 34, color);
+			fontRenderer.drawStringWithShadow(s, 213 - fontRenderer.getStringWidth(s) / 2f, 34, color);
 
 			for(EnumCADStat stat : EnumCADStat.class.getEnumConstants()) {
-				s = (Psi.magical ? TextFormatting.LIGHT_PURPLE : TextFormatting.AQUA) + I18n.translateToLocal(stat.getName()) + TextFormatting.RESET + ": " + cadItem.getStatValue(cad, stat);
+				s = (Psi.magical ? TextFormatting.LIGHT_PURPLE : TextFormatting.AQUA) + TooltipHelper.local(stat.getName()) + TextFormatting.RESET + ": " + cadItem.getStatValue(cad, stat);
 				fontRenderer.drawStringWithShadow(s, 179, 50 + i * 10, color);
 				i++;
 			}

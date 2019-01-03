@@ -10,37 +10,39 @@
  */
 package vazkii.psi.api.internal;
 
-import java.util.List;
-
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import vazkii.psi.api.PsiAPI;
 
-@SideOnly(Side.CLIENT)
+import java.util.List;
+
 public final class TooltipHelper {
 
+	@SideOnly(Side.CLIENT)
 	public static void tooltipIfShift(List<String> tooltip, Runnable r) {
 		if(GuiScreen.isShiftKeyDown())
 			r.run();
 		else addToTooltip(tooltip, "psimisc.shiftForInfo");
 	}
 
+	@SideOnly(Side.CLIENT)
 	public static void addToTooltip(List<String> tooltip, String s, Object... format) {
-		s = local(s).replaceAll("&", "\u00a7");
-
 		Object[] formatVals = new String[format.length];
 		for(int i = 0; i < format.length; i++)
 			formatVals[i] = local(format[i].toString()).replaceAll("&", "\u00a7");
 
-		if(formatVals != null && formatVals.length > 0)
-			s = String.format(s, formatVals);
+		s = local(s, formatVals).replaceAll("&", "\u00a7");
 
 		tooltip.add(s);
 	}
 
+	public static String local(String s, Object... format) {
+		return PsiAPI.internalHandler.localize(s, format);
+	}
+
 	public static String local(String s) {
-		return I18n.translateToLocal(s);
+		return local(s, new Object[0]);
 	}
 
 }

@@ -11,13 +11,14 @@
 package vazkii.psi.api.cad;
 
 import net.minecraft.item.ItemStack;
+import vazkii.psi.api.internal.IPlayerData;
 import vazkii.psi.api.spell.ISpellContainer;
 
 /**
  * This interface defines an item that can have Spell Bullets
  * put into it.
  */
-public interface ISocketable {
+public interface ISocketable extends IShowPsiBar {
 
 	public static final int MAX_SLOTS = 12;
 
@@ -66,8 +67,19 @@ public interface ISocketable {
 	public void setSelectedSlot(ItemStack stack, int slot);
 
     default boolean isItemValid(ItemStack stack, int slot, ItemStack bullet) {
-        return bullet.getItem() instanceof ISpellContainer &&
-                (stack.getItem() instanceof ICAD || !((ISpellContainer) bullet.getItem()).isCADOnlyContainer(bullet));
+    	if (bullet.isEmpty() || !(bullet.getItem() instanceof ISpellContainer))
+    		return false;
+
+    	ISpellContainer container = (ISpellContainer) bullet.getItem();
+
+    	if (!container.containsSpell(bullet))
+    		return false;
+
+        return stack.getItem() instanceof ICAD || !container.isCADOnlyContainer(bullet);
     }
 
+	@Override
+	default boolean shouldShow(ItemStack stack, IPlayerData data) {
+		return true;
+	}
 }

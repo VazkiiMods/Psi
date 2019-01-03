@@ -10,9 +10,8 @@
  */
 package vazkii.psi.client.core.proxy;
 
-import java.awt.Color;
-
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -26,7 +25,6 @@ import vazkii.psi.client.core.handler.ClientTickHandler;
 import vazkii.psi.client.core.handler.HUDHandler;
 import vazkii.psi.client.core.handler.KeybindHandler;
 import vazkii.psi.client.core.handler.ShaderHandler;
-import vazkii.psi.client.core.version.VersionChecker;
 import vazkii.psi.client.fx.FXSparkle;
 import vazkii.psi.client.fx.FXWisp;
 import vazkii.psi.client.fx.ParticleRenderDispatcher;
@@ -38,6 +36,8 @@ import vazkii.psi.common.core.handler.PersistencyHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.proxy.CommonProxy;
 import vazkii.psi.common.entity.EntitySpellCircle;
+
+import java.awt.*;
 
 public class ClientProxy extends CommonProxy {
 
@@ -139,4 +139,8 @@ public class ClientProxy extends CommonProxy {
 		return chance == 1F || Math.random() < chance;
 	}
 
+	@Override
+	public String localize(String key, Object... arguments) {
+		return I18n.format(key, arguments);
+	}
 }

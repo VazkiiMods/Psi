@@ -19,6 +19,7 @@ import vazkii.psi.api.spell.ISpellCompiler;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.client.gui.GuiProgrammer;
+import vazkii.psi.common.Psi;
 import vazkii.psi.common.spell.SpellCache;
 import vazkii.psi.common.spell.SpellCompiler;
 
@@ -47,6 +48,11 @@ public final class InternalMethodHandler implements IInternalMethodHandler {
 	@Override
 	public void delayContext(SpellContext context) {
 		PlayerDataHandler.delayedContexts.add(context);
+	}
+
+	@Override
+	public String localize(String key, Object... format) {
+		return Psi.proxy.localize(key, format);
 	}
 
 }

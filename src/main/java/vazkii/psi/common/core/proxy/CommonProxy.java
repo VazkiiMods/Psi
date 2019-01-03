@@ -10,17 +10,15 @@
  */
 package vazkii.psi.common.core.proxy;
 
-import java.awt.Color;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import vazkii.psi.api.PsiAPI;
-import vazkii.psi.api.spell.SpellParam;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.base.ModBlocks;
 import vazkii.psi.common.core.handler.ConfigHandler;
@@ -33,6 +31,8 @@ import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.network.GuiHandler;
 import vazkii.psi.common.network.MessageRegister;
 import vazkii.psi.common.spell.base.ModSpellPieces;
+
+import java.awt.*;
 
 public class CommonProxy {
 
@@ -117,6 +117,11 @@ public class CommonProxy {
 
 	public void wispFX(World world, double x, double y, double z, float r, float g, float b, float size, float motionx, float motiony, float motionz, float maxAgeMul) {
 		// Proxy override
+	}
+
+	@SuppressWarnings("deprecation")
+	public String localize(String key, Object... arguments) {
+		return I18n.translateToLocalFormatted(key, arguments);
 	}
 
 }

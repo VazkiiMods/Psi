@@ -10,14 +10,12 @@
  */
 package vazkii.psi.client.gui;
 
-import java.io.IOException;
-
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.translation.I18n;
 import vazkii.arl.network.NetworkHandler;
+import vazkii.psi.api.internal.TooltipHelper;
 import vazkii.psi.client.core.helper.TextHelper;
 import vazkii.psi.client.gui.button.GuiButtonBoolean;
 import vazkii.psi.common.core.handler.PersistencyHandler;
@@ -25,6 +23,8 @@ import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.lib.LibResources;
 import vazkii.psi.common.network.message.MessageSkipToLevel;
+
+import java.io.IOException;
 
 public class GuiIntroduction extends GuiScreen {
 
@@ -69,13 +69,13 @@ public class GuiIntroduction extends GuiScreen {
 		super.drawScreen(mouseX, mouseY, partialTicks);
 
 		if(LibMisc.BETA_TESTING) {
-			String betaTest = I18n.translateToLocal("psimisc.wip");
+			String betaTest = TooltipHelper.local("psimisc.wip");
 			mc.fontRenderer.drawStringWithShadow(betaTest, left + xSize / 2 - mc.fontRenderer.getStringWidth(betaTest) / 2, top - 12, 0xFFFFFF);
 		}
 
 		TextHelper.renderText(width / 2 - 120, height / 2 - 30, 245, skip ? "psi.levelskip" : "psi.introduction", false, true, PersistencyHandler.persistentLevel);
 		if(skip) {
-			String loadPrompt = I18n.translateToLocal("psimisc.loadPrompt");
+			String loadPrompt = TooltipHelper.local("psimisc.loadPrompt");
 			mc.fontRenderer.drawStringWithShadow(loadPrompt, left + xSize / 2 - mc.fontRenderer.getStringWidth(loadPrompt) / 2, top + 133, 0xFFFFFF);
 		}
 	}

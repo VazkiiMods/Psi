@@ -10,7 +10,7 @@
  */
 package vazkii.psi.api.spell;
 
-import net.minecraft.util.text.translation.I18n;
+import vazkii.psi.api.internal.TooltipHelper;
 
 /**
  * Base abstract class for a spell parameter. See implementations
@@ -87,9 +87,9 @@ public abstract class SpellParam {
 	public String getRequiredTypeString() {
 		Class<?> evalType = getRequiredType();
 		String evalStr = evalType.getSimpleName();
-		String s = I18n.translateToLocal("psi.datatype." + evalStr);
+		String s = TooltipHelper.local("psi.datatype." + evalStr);
 		if(requiresConstant())
-			s += " " + I18n.translateToLocal("psimisc.constant");
+			s += " " + TooltipHelper.local("psimisc.constant");
 
 		return s;
 	}

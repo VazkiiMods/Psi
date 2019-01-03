@@ -10,23 +10,23 @@
  */
 package vazkii.psi.api;
 
-import java.util.HashMap;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
 import net.minecraft.util.registry.RegistryNamespaced;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.ModContainer;
 import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.internal.DummyMethodHandler;
 import vazkii.psi.api.internal.IInternalMethodHandler;
 import vazkii.psi.api.spell.PieceGroup;
 import vazkii.psi.api.spell.SpellPiece;
+
+import java.util.HashMap;
 
 public final class PsiAPI {
 
@@ -39,26 +39,30 @@ public final class PsiAPI {
 	 */
 	public static IInternalMethodHandler internalHandler = new DummyMethodHandler();
 
-	public static RegistryNamespaced<String, Class<? extends SpellPiece>> spellPieceRegistry = new RegistryNamespaced();
-	public static HashMap<String, ResourceLocation> simpleSpellTextures = new HashMap();
-	public static HashMap<Class<? extends SpellPiece>, PieceGroup> groupsForPiece = new HashMap();
-	public static HashMap<Class<? extends SpellPiece>, String> pieceMods = new HashMap();
-	public static HashMap<String, PieceGroup> groupsForName = new HashMap();
+	public static RegistryNamespaced<String, Class<? extends SpellPiece>> spellPieceRegistry = new RegistryNamespaced<>();
+	public static HashMap<String, ResourceLocation> simpleSpellTextures = new HashMap<>();
+	public static HashMap<Class<? extends SpellPiece>, PieceGroup> groupsForPiece = new HashMap<>();
+	public static HashMap<Class<? extends SpellPiece>, String> pieceMods = new HashMap<>();
+	public static HashMap<String, PieceGroup> groupsForName = new HashMap<>();
 
 	public static ToolMaterial PSIMETAL_TOOL_MATERIAL = EnumHelper.addToolMaterial("PSIMETAL", 3, 900, 7.8F, 2F, 12);
-	
-	// temporary workaround til this is fixed in forge
-	private static final Class<?>[] ARMOR_PARAMETERS = {String.class, int.class, int[].class, int.class, SoundEvent.class, float.class};
-	public static ArmorMaterial PSIMETAL_ARMOR_MATERIAL = EnumHelper.addEnum(ArmorMaterial.class, "PSIMETAL", ARMOR_PARAMETERS, "psimetal", 18, new int[]{2, 6, 5, 2}, 12, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0F);
+	public static ArmorMaterial PSIMETAL_ARMOR_MATERIAL = EnumHelper.addArmorMaterial("PSIMETAL", "psimetal", 18, new int[]{2, 6, 5, 2}, 12, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0F);
 
 	public static int levelCap = 1;
+
+	private static String getCurrentModId() {
+		ModContainer activeModContainer = Loader.instance().activeModContainer();
+		if (activeModContainer != null)
+			return activeModContainer.getModId();
+		return "minecraft";
+	}
 
 	/**
 	 * Registers a Spell Piece given its class, by which, it puts it in the registry.
 	 */
 	public static void registerSpellPiece(String key, Class<? extends SpellPiece> clazz) {
 		spellPieceRegistry.putObject(key, clazz);
-		pieceMods.put(clazz, Loader.instance().activeModContainer().getName());
+		pieceMods.put(clazz, getCurrentModId());
 	}
 
 	/**
@@ -70,8 +74,7 @@ public final class PsiAPI {
 	 * not even need to use this. In that case use {@link #registerSpellPiece(String, Class)}
 	 */
 	public static void registerSpellPieceAndTexture(String key, Class<? extends SpellPiece> clazz) {
-		String currMod = Loader.instance().activeModContainer().getModId().toLowerCase();
-		registerSpellPieceAndTexture(key, currMod, clazz);
+		registerSpellPieceAndTexture(key, getCurrentModId(), clazz);
 	}
 
 	private static void registerSpellPieceAndTexture(String key, String mod, Class<? extends SpellPiece> clazz) {

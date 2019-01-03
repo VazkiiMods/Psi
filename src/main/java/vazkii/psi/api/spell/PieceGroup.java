@@ -10,12 +10,12 @@
  */
 package vazkii.psi.api.spell;
 
+import vazkii.psi.api.internal.IPlayerData;
+import vazkii.psi.api.internal.TooltipHelper;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import net.minecraft.util.text.translation.I18n;
-import vazkii.psi.api.internal.IPlayerData;
 
 /**
  * Base class for a "Piece Group", used for the leveling system.
@@ -64,7 +64,7 @@ public class PieceGroup implements Comparable<PieceGroup> {
 	@Override
 	public int compareTo(PieceGroup o) {
 		if(o.levelRequirement == levelRequirement)
-			return I18n.translateToLocal(getUnlocalizedName()).compareTo(I18n.translateToLocal(o.getUnlocalizedName()));
+			return TooltipHelper.local(getUnlocalizedName()).compareTo(TooltipHelper.local(o.getUnlocalizedName()));
 
 		return levelRequirement - o.levelRequirement;
 	}

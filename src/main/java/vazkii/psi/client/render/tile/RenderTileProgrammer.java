@@ -10,18 +10,15 @@
  */
 package vazkii.psi.client.render.tile;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.text.translation.I18n;
-import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
+import org.lwjgl.opengl.GL11;
 import vazkii.arl.block.BlockFacing;
 import vazkii.arl.util.RenderHelper;
+import vazkii.psi.api.internal.TooltipHelper;
 import vazkii.psi.client.core.handler.ClientTickHandler;
 import vazkii.psi.client.core.handler.ShaderHandler;
 import vazkii.psi.client.gui.GuiProgrammer;
@@ -91,7 +88,7 @@ public class RenderTileProgrammer extends TileEntitySpecialRenderer<TileProgramm
 			GlStateManager.translate(0F, 0F, 0.01F);
 			
 			int color = Psi.magical ? 0 : 0xFFFFFF;
-			mc.fontRenderer.drawString(I18n.translateToLocal("psimisc.name"), 0, 164, color);
+			mc.fontRenderer.drawString(TooltipHelper.local("psimisc.name"), 0, 164, color);
 			mc.fontRenderer.drawString(te.spell.name, 38, 164, color);
 
 			if(!Psi.magical)
