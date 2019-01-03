@@ -133,7 +133,7 @@ public class PlayerDataHandler {
 				EntityPlayer player = (EntityPlayer) event.getEntityLiving();
 				
 				ItemStack cadStack = PsiAPI.getPlayerCAD(player);
-				if(!cadStack.isEmpty() && cadStack.getItem() instanceof ICAD)
+				if(!cadStack.isEmpty() && cadStack.getItem() instanceof ICAD && PsiAPI.canCADBeUpdated(player))
 					((ICAD) cadStack.getItem()).incrementTime(cadStack);
 				
 				PsiArmorEvent.post(new PsiArmorEvent(player, PsiArmorEvent.TICK));
