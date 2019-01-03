@@ -19,7 +19,7 @@ import vazkii.psi.api.spell.PieceGroup;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
 
-public class MessageLearnGroup extends NetworkMessage {
+public class MessageLearnGroup extends NetworkMessage<MessageLearnGroup> {
 
 	public String group;
 

@@ -19,7 +19,7 @@ import vazkii.arl.network.NetworkMessage;
 import vazkii.psi.api.cad.ISocketableController;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 
-public class MessageChangeControllerSlot extends NetworkMessage {
+public class MessageChangeControllerSlot extends NetworkMessage<MessageChangeControllerSlot> {
 
 	public int controlSlot;
 	public int slot;

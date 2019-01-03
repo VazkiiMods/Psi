@@ -18,6 +18,8 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.ModContainer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vazkii.psi.api.PsiAPI;
@@ -293,8 +295,11 @@ public abstract class SpellPiece {
 		TooltipHelper.tooltipIfShift(tooltip, () -> addToTooltipAfterShift(tooltip));
 
 		String addon = PsiAPI.pieceMods.get(getClass());
-		if(!addon.equals(LibMisc.MOD_NAME))
-			TooltipHelper.addToTooltip(tooltip, "psimisc.providerMod", addon);
+		if(!addon.equals(LibMisc.MOD_ID)) {
+			ModContainer container = Loader.instance().getIndexedModList().get(addon);
+			if (container != null)
+				TooltipHelper.addToTooltip(tooltip, "psimisc.providerMod", container.getName());
+		}
 	}
 
 	@SideOnly(Side.CLIENT)

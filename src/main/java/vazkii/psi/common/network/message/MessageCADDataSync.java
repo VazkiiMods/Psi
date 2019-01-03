@@ -10,6 +10,7 @@
  */
 package vazkii.psi.common.network.message;
 
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
@@ -17,29 +18,32 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vazkii.arl.network.NetworkMessage;
 import vazkii.arl.util.ClientTicker;
+import vazkii.psi.api.PsiAPI;
 import vazkii.psi.common.Psi;
-import vazkii.psi.common.core.handler.PlayerDataHandler;
-import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
+import vazkii.psi.common.core.handler.capability.CapabilityCAD;
+import vazkii.psi.common.core.handler.capability.ICADData;
 
-public class MessageDataSync extends NetworkMessage<MessageDataSync> {
+public class MessageCADDataSync extends NetworkMessage<MessageCADDataSync> {
 
 	public NBTTagCompound cmp;
 
-	public MessageDataSync() { }
+	public MessageCADDataSync() { }
 
-	public MessageDataSync(PlayerData data) {
-		cmp = new NBTTagCompound();
-		data.writeToNBT(cmp);
+	public MessageCADDataSync(ICADData data) {
+		cmp = data.serializeNBT();
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public IMessage handleMessage(MessageContext context) {
 		ClientTicker.addAction(() -> {
-			PlayerData data = PlayerDataHandler.get(Psi.proxy.getClientPlayer());
-			data.lastAvailablePsi = data.availablePsi;
-			data.readFromNBT(cmp);
-			Psi.proxy.savePersistency();
+			ItemStack cad = PsiAPI.getPlayerCAD(Psi.proxy.getClientPlayer());
+			if (!cad.isEmpty() && cad.hasCapability(CapabilityCAD.CAPABILITY, null)) {
+				ICADData data = cad.getCapability(CapabilityCAD.CAPABILITY, null);
+
+				if (data != null)
+					data.deserializeNBT(cmp);
+			}
 		});
 
 		return null;

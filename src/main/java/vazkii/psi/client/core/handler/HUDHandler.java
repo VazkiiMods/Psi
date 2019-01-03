@@ -98,13 +98,13 @@ public final class HUDHandler {
 	}
 
 	private static boolean showsBar(PlayerData data, ItemStack stack) {
-	    if (stack.isEmpty() || !(stack.getItem() instanceof IShowPsiBar))
-	        return false;
+		if (stack.isEmpty() || !(stack.getItem() instanceof IShowPsiBar))
+			return false;
 
-	    IShowPsiBar item = (IShowPsiBar) stack.getItem();
+		IShowPsiBar item = (IShowPsiBar) stack.getItem();
 
-	    return item.shouldShow(stack, data);
-    }
+		return item.shouldShow(stack, data);
+	}
 
 	@SideOnly(Side.CLIENT)
 	public static void drawPsiBar(ScaledResolution res, float pticks) {
@@ -123,8 +123,8 @@ public final class HUDHandler {
 		int currPsi = data.getAvailablePsi();
 
 		if (ConfigHandler.contextSensitiveBar && currPsi == totalPsi &&
-                (showsBar(data, mc.player.getHeldItemMainhand()) ||
-                        showsBar(data, mc.player.getHeldItemOffhand())))
+				!showsBar(data, mc.player.getHeldItemMainhand()) &&
+						!showsBar(data, mc.player.getHeldItemOffhand()))
 			return;
 
 		GlStateManager.pushMatrix();

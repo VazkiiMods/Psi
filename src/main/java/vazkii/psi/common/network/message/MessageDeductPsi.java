@@ -20,7 +20,7 @@ import vazkii.psi.common.Psi;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
 
-public class MessageDeductPsi extends NetworkMessage {
+public class MessageDeductPsi extends NetworkMessage<MessageDeductPsi> {
 
 	public int prev;
 	public int current;

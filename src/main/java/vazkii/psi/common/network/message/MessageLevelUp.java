@@ -15,7 +15,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import vazkii.arl.network.NetworkMessage;
 import vazkii.psi.common.Psi;
 
-public class MessageLevelUp extends NetworkMessage {
+public class MessageLevelUp extends NetworkMessage<MessageLevelUp> {
 
 	public int level;
 

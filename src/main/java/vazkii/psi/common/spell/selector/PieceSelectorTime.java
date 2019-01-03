@@ -33,7 +33,7 @@ public class PieceSelectorTime extends PieceSelector {
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		ItemStack cadStack = PsiAPI.getPlayerCAD(context.caster);
 		if(cadStack != null && cadStack.getItem() instanceof ICAD)
-			return Double.valueOf(((ICAD) cadStack.getItem()).getTime(cadStack));
+			return (double) ((ICAD) cadStack.getItem()).getTime(cadStack);
 		else throw new SpellRuntimeException(SpellRuntimeException.NO_CAD);
 	}
 

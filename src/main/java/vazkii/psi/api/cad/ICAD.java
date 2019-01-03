@@ -24,48 +24,48 @@ public interface ICAD extends ISocketable {
 	/**
 	 * Gets the component used for this CAD in the given slot.
 	 */
-	public ItemStack getComponentInSlot(ItemStack stack, EnumCADComponent type);
+	ItemStack getComponentInSlot(ItemStack stack, EnumCADComponent type);
 
 	/**
 	 * Gets the value of a given CAD stat.
 	 */
-	public int getStatValue(ItemStack stack, EnumCADStat stat);
+	int getStatValue(ItemStack stack, EnumCADStat stat);
 
 	/**
 	 * Gets how much Psi is stored in this CAD's battery.
 	 */
-	public int getStoredPsi(ItemStack stack);
+	int getStoredPsi(ItemStack stack);
 
 	/**
 	 * Has the CAD regen psi equal to the amount passed in. Will never go above
 	 * the value of the CAD's OVERFLOW stat.
 	 */
-	public void regenPsi(ItemStack stack, int psi);
+	void regenPsi(ItemStack stack, int psi);
 
 	/**
 	 * Consumes psi from the CAD's battery equal to the amount passed in. Returns
 	 * the remainder that couldn't be consumed. Used to prevent damage.
 	 */
-	public int consumePsi(ItemStack stack, int psi);
+	int consumePsi(ItemStack stack, int psi);
 
 	/**
 	 * Gets how many vectors this CAD can store in memory.
 	 */
-	public int getMemorySize(ItemStack stack);
+	int getMemorySize(ItemStack stack);
 	
-	public void setStoredVector(ItemStack stack, int memorySlot, Vector3 vec) throws SpellRuntimeException;
+	void setStoredVector(ItemStack stack, int memorySlot, Vector3 vec) throws SpellRuntimeException;
 	
-	public Vector3 getStoredVector(ItemStack stack, int memorySlot) throws SpellRuntimeException;
-	
-	public int getTime(ItemStack stack);
-	
-	public void incrementTime(ItemStack stack);
+	Vector3 getStoredVector(ItemStack stack, int memorySlot) throws SpellRuntimeException;
+
+	int getTime(ItemStack stack);
+
+	void incrementTime(ItemStack stack);
 	
 	/**
 	 * Gets the color of the spells projected by this CAD. Usually just goes back
 	 * to ICADColorizer.getColor().
 	 */
 	@SideOnly(Side.CLIENT)
-	public int getSpellColor(ItemStack stack);
+	int getSpellColor(ItemStack stack);
 
 }

@@ -33,6 +33,7 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
@@ -131,7 +132,7 @@ public class PlayerDataHandler {
 		public static void onPlayerTick(LivingUpdateEvent event) {
 			if(event.getEntityLiving() instanceof EntityPlayer) {
 				EntityPlayer player = (EntityPlayer) event.getEntityLiving();
-				
+
 				ItemStack cadStack = PsiAPI.getPlayerCAD(player);
 				if(!cadStack.isEmpty() && cadStack.getItem() instanceof ICAD && PsiAPI.canCADBeUpdated(player))
 					((ICAD) cadStack.getItem()).incrementTime(cadStack);
@@ -273,7 +274,7 @@ public class PlayerDataHandler {
 		public int lastDimension;
 		
 		// Exosuit Event Stuff
-		boolean lowLight, underwater, lowHp;
+		private boolean lowLight, underwater, lowHp;
 
 		public boolean deductTick;
 
@@ -572,6 +573,10 @@ public class PlayerDataHandler {
 		public void deductPsi(int psi, int cd, boolean sync, boolean shatter) {
 			int currentPsi = availablePsi;
 
+			EntityPlayer player = playerWR.get();
+			if (player == null)
+				return;
+
 			availablePsi -= psi;
 			if(regenCooldown < cd)
 				regenCooldown = cd;
@@ -588,18 +593,15 @@ public class PlayerDataHandler {
 
 				if(!shatter && overflow > 0) {
 					float dmg = (float) overflow / (loopcasting ? 50 : 125);
-					if(!client) {
-						EntityPlayer player = playerWR.get();
-						if(player != null)
-							player.attackEntityFrom(damageSourceOverload, dmg);
-					}
+					if(!client)
+						player.attackEntityFrom(damageSourceOverload, dmg);
 					overflowed = true;
 				}
 			}
 
-			if(sync && playerWR.get() instanceof EntityPlayerMP) {
+			if(sync && player instanceof EntityPlayerMP) {
 				MessageDeductPsi message = new MessageDeductPsi(currentPsi, availablePsi, regenCooldown, shatter);
-				NetworkHandler.INSTANCE.sendTo(message, (EntityPlayerMP) playerWR.get());
+				NetworkHandler.INSTANCE.sendTo(message, (EntityPlayerMP) player);
 			}
 
 			save();
@@ -682,7 +684,6 @@ public class PlayerDataHandler {
 			if(group != null && group.mainPiece == piece.getClass())
 				levelUp();
 		}
-		
 
 		@Override
 		public NBTTagCompound getCustomData() {
@@ -747,7 +748,7 @@ public class PlayerDataHandler {
 			lastSpellGroup = cmp.getString(TAG_LAST_SPELL_GROUP);
 			overflowed = cmp.getBoolean(TAG_OVERFLOWED);
 			
-			if(cmp.hasKey(TAG_SPELL_GROUPS_UNLOCKED)) {
+			if(cmp.hasKey(TAG_SPELL_GROUPS_UNLOCKED, Constants.NBT.TAG_STRING)) {
 				spellGroupsUnlocked.clear();
 				NBTTagList list = cmp.getTagList(TAG_SPELL_GROUPS_UNLOCKED, 8); // 8 -> String
 				int count = list.tagCount();

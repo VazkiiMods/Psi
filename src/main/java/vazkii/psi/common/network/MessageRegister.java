@@ -17,20 +17,13 @@ import net.minecraftforge.fml.relauncher.Side;
 import vazkii.arl.network.NetworkMessage;
 import vazkii.arl.network.NetworkHandler;
 import vazkii.psi.api.spell.Spell;
-import vazkii.psi.common.network.message.MessageChangeControllerSlot;
-import vazkii.psi.common.network.message.MessageChangeSocketableSlot;
-import vazkii.psi.common.network.message.MessageDataSync;
-import vazkii.psi.common.network.message.MessageDeductPsi;
-import vazkii.psi.common.network.message.MessageLearnGroup;
-import vazkii.psi.common.network.message.MessageLevelUp;
-import vazkii.psi.common.network.message.MessageSkipToLevel;
-import vazkii.psi.common.network.message.MessageSpellModified;
-import vazkii.psi.common.network.message.MessageTriggerJumpSpell;
+import vazkii.psi.common.network.message.*;
 
 public class MessageRegister {
 
 	public static void init() {
 		NetworkHandler.register(MessageDataSync.class, Side.CLIENT);
+		NetworkHandler.register(MessageCADDataSync.class, Side.CLIENT);
 		NetworkHandler.register(MessageDeductPsi.class, Side.CLIENT);
 		NetworkHandler.register(MessageChangeSocketableSlot.class, Side.SERVER);
 		NetworkHandler.register(MessageSpellModified.class, Side.SERVER);

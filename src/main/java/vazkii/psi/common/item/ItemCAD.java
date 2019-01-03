@@ -21,6 +21,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
@@ -33,11 +34,14 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vazkii.arl.interf.IItemColorProvider;
 import vazkii.arl.item.ItemMod;
+import vazkii.arl.network.NetworkHandler;
 import vazkii.arl.util.ItemNBTHelper;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.*;
@@ -51,11 +55,16 @@ import vazkii.psi.common.core.handler.ConfigHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
 import vazkii.psi.common.core.handler.PsiSoundHandler;
+import vazkii.psi.common.core.handler.capability.CADData;
+import vazkii.psi.common.core.handler.capability.CapabilityCAD;
+import vazkii.psi.common.core.handler.capability.ICADData;
 import vazkii.psi.common.crafting.recipe.AssemblyScavengeRecipe;
 import vazkii.psi.common.item.base.IPsiItem;
 import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.lib.LibItemNames;
+import vazkii.psi.common.network.message.MessageCADDataSync;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.awt.*;
 import java.util.Arrays;
@@ -67,17 +76,19 @@ import java.util.regex.Pattern;
 public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColorProvider, IPsiItem {
 
 	private static final String TAG_COMPONENT_PREFIX = "component";
-	private static final String TAG_STORED_PSI = "storedPsi";
 	private static final String TAG_BULLET_PREFIX = "bullet";
 	private static final String TAG_SELECTED_SLOT = "selectedSlot";
-	private static final String TAG_TIME = "time";
+
+	// Legacy tags
+	private static final String TAG_TIME_LEGACY = "time";
+	private static final String TAG_STORED_PSI_LEGACY = "storedPsi";
 
 	private static final String TAG_STORED_VECTOR_PREFIX = "storedVector";
 	private static final String TAG_X = "x";
 	private static final String TAG_Y = "y";
 	private static final String TAG_Z = "z";
 	
-	private static final Pattern FAKE_PLAYER_PATTERN = Pattern.compile("^(?:\\[.*\\])|(?:ComputerCraft)$");
+	private static final Pattern FAKE_PLAYER_PATTERN = Pattern.compile("^(?:\\[.*])|(?:ComputerCraft)$");
 
 	public ItemCAD() {
 		super(LibItemNames.CAD);
@@ -86,7 +97,51 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 		new AssemblyScavengeRecipe();
 		setCreativeTab(PsiCreativeTab.INSTANCE);
 	}
-	
+
+	private ICADData getCADData(ItemStack stack) {
+		if (stack.hasCapability(CapabilityCAD.CAPABILITY, null)) {
+			ICADData data = stack.getCapability(CapabilityCAD.CAPABILITY, null);
+			if (data != null)
+				return data;
+		}
+
+		return new CADData();
+	}
+
+	@Nullable
+	@Override
+	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt) {
+		return new CADData();
+	}
+
+	@Override
+	public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
+		NBTTagCompound compound = ItemNBTHelper.getNBT(stack);
+
+		if (stack.hasCapability(CapabilityCAD.CAPABILITY, null)) {
+			ICADData data = stack.getCapability(CapabilityCAD.CAPABILITY, null);
+			if (data != null) {
+				if (compound.hasKey(TAG_TIME_LEGACY, Constants.NBT.TAG_ANY_NUMERIC)) {
+					data.setTime(compound.getInteger(TAG_TIME_LEGACY));
+					data.markDirty(true);
+					compound.removeTag(TAG_TIME_LEGACY);
+				}
+
+				if (compound.hasKey(TAG_STORED_PSI_LEGACY, Constants.NBT.TAG_ANY_NUMERIC)) {
+					data.setBattery(compound.getInteger(TAG_STORED_PSI_LEGACY));
+					data.markDirty(true);
+					compound.removeTag(TAG_STORED_PSI_LEGACY);
+				}
+
+				if (entityIn instanceof EntityPlayerMP && data.isDirty()) {
+					NetworkHandler.INSTANCE.sendTo(new MessageCADDataSync(data), (EntityPlayerMP) entityIn);
+					data.markDirty(false);
+				}
+			}
+		}
+	}
+
+	@Nonnull
 	@Override
 	public EnumActionResult onItemUse(EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		ItemStack stack = playerIn.getHeldItem(hand);
@@ -94,15 +149,16 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 		return block == ModBlocks.programmer ? ((BlockProgrammer) block).setSpell(worldIn, pos, playerIn, stack) : EnumActionResult.PASS;
 	}
 	
+	@Nonnull
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand hand) {
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, @Nonnull EnumHand hand) {
 		ItemStack itemStackIn = playerIn.getHeldItem(hand);
 		PlayerData data = PlayerDataHandler.get(playerIn);
 		ItemStack playerCad = PsiAPI.getPlayerCAD(playerIn);
 		if(playerCad != itemStackIn) {
 			if(!worldIn.isRemote)
 				playerIn.sendMessage(new TextComponentTranslation("psimisc.multipleCads").setStyle(new Style().setColor(TextFormatting.RED)));
-			return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
+			return new ActionResult<>(EnumActionResult.SUCCESS, itemStackIn);
 		}
 
 		ItemStack bullet = getBulletInSocket(itemStackIn, getSelectedSlot(itemStackIn));
@@ -118,7 +174,7 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 			did = true;
 		}
 
-		return new ActionResult<ItemStack>(did ? EnumActionResult.SUCCESS : EnumActionResult.PASS, itemStackIn);
+		return new ActionResult<>(did ? EnumActionResult.SUCCESS : EnumActionResult.PASS, itemStackIn);
 	}
 
 	@Override
@@ -324,33 +380,6 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 	}
 
 	@Override
-	public int getStoredPsi(ItemStack stack) {
-		return ItemNBTHelper.getInt(stack, TAG_STORED_PSI, 0);
-	}
-
-	@Override
-	public void regenPsi(ItemStack stack, int psi) {
-		int maxPsi = getStatValue(stack, EnumCADStat.OVERFLOW);
-		int currPsi = getStoredPsi(stack);
-		int endPsi = Math.min(currPsi + psi, maxPsi);
-
-		if(endPsi != currPsi)
-			ItemNBTHelper.setInt(stack, TAG_STORED_PSI, endPsi);
-	}
-
-	@Override
-	public int consumePsi(ItemStack stack, int psi) {
-		int currPsi = getStoredPsi(stack);
-		if(currPsi >= psi) {
-			ItemNBTHelper.setInt(stack, TAG_STORED_PSI, currPsi - psi);
-			return 0;
-		}
-
-		ItemNBTHelper.setInt(stack, TAG_STORED_PSI, 0);
-		return psi - currPsi;
-	}
-
-	@Override
 	@SideOnly(Side.CLIENT)
 	public int getSpellColor(ItemStack stack) {
 		ItemStack dye = getComponentInSlot(stack, EnumCADComponent.DYE);
@@ -399,11 +428,6 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 	}
 
 	@Override
-	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
-		return slotChanged;
-	}
-
-	@Override
 	@SideOnly(Side.CLIENT)
 	public IItemColor getItemColor() {
 		return (stack, tintIndex) -> tintIndex == 1 ? getSpellColor(stack) : 0xFFFFFF;
@@ -411,15 +435,51 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 	
 	@Override
 	public int getTime(ItemStack stack) {
-		return ItemNBTHelper.getInt(stack, TAG_TIME, 0);
+		return getCADData(stack).getTime();
 	}
 	
 	@Override
 	public void incrementTime(ItemStack stack) {
-		int time = getTime(stack);
-		ItemNBTHelper.setInt(stack, TAG_TIME, time + 1);
+		ICADData data = getCADData(stack);
+		data.setTime(data.getTime() + 1);
 	}
-	
+
+	@Override
+	public int getStoredPsi(ItemStack stack) {
+		return getCADData(stack).getBattery();
+	}
+
+	@Override
+	public void regenPsi(ItemStack stack, int psi) {
+		int maxPsi = getStatValue(stack, EnumCADStat.OVERFLOW);
+		int currPsi = getStoredPsi(stack);
+		int endPsi = Math.min(currPsi + psi, maxPsi);
+
+		if(endPsi != currPsi) {
+			ICADData data = getCADData(stack);
+			data.setBattery(endPsi);
+			data.markDirty(true);
+		}
+	}
+
+	@Override
+	public int consumePsi(ItemStack stack, int psi) {
+		if (psi == 0)
+			return 0;
+
+		ICADData data = getCADData(stack);
+		int currPsi = getStoredPsi(stack);
+		if(currPsi >= psi) {
+			data.setBattery(currPsi - psi);
+			data.markDirty(true);
+			return 0;
+		}
+
+		data.setBattery(0);
+		data.markDirty(true);
+		return psi - currPsi;
+	}
+
 	@Override
 	public int getMemorySize(ItemStack stack) {
 		return getStatValue(stack, EnumCADStat.SOCKETS) / 3;
@@ -452,24 +512,25 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 	}
 	
 	@Override
-    public int getHarvestLevel(ItemStack stack, String toolClass, @Nullable EntityPlayer player, @Nullable IBlockState blockState) {
-    	return ConfigHandler.cadHarvestLevel;
-    }
+	public int getHarvestLevel(ItemStack stack, @Nonnull String toolClass, @Nullable EntityPlayer player, @Nullable IBlockState blockState) {
+		return ConfigHandler.cadHarvestLevel;
+	}
 	
+	@Nonnull
 	@Override
 	public Set<String> getToolClasses(ItemStack stack) {
 		return ImmutableSet.of("pickaxe", "axe", "shovel");
 	}
 
 	@Override
-	public boolean canHarvestBlock(IBlockState state, ItemStack stack) {
+	public boolean canHarvestBlock(@Nonnull IBlockState state, ItemStack stack) {
 		Block block = state.getBlock();
 		int level = block.getHarvestLevel(state);
 		return getHarvestLevel(stack, "", null, null) >= level; 
 	}
 	
 	@Override
-	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subItems) {
+	public void getSubItems(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> subItems) {
 		if(!isInCreativeTab(tab))
 			return;
 		
@@ -529,7 +590,6 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 				String line = TextFormatting.GREEN + local(componentType.getName()) + TextFormatting.GRAY + ": " + name;
 				addToTooltip(tooltip, line);
 
-				line = "";
 				for(EnumCADStat stat : EnumCADStat.class.getEnumConstants()) {
 					if(stat.getSourceType() == componentType) {
 						String shrt = stat.getName();
@@ -550,6 +610,7 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 		return true;
 	}
 	
+	@Nonnull
 	@Override
 	public EnumRarity getRarity(ItemStack stack) {
 		return EnumRarity.RARE;

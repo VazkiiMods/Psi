@@ -17,7 +17,7 @@ import vazkii.arl.network.NetworkMessage;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
 
-public class MessageSkipToLevel extends NetworkMessage {
+public class MessageSkipToLevel extends NetworkMessage<MessageSkipToLevel> {
 
 	public int level;
 
