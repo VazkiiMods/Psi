@@ -11,13 +11,12 @@
 package vazkii.psi.api.cad;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 
 /**
  * This interface represents a CAD Assembler tile. You probably shouldn't implement this.
  */
-public interface ITileCADAssembler extends ISidedInventory {
+public interface ITileCADAssembler {
     int getComponentSlot(EnumCADComponent componentType);
 
     ItemStack getCachedCAD(EntityPlayer player);
@@ -26,7 +25,11 @@ public interface ITileCADAssembler extends ISidedInventory {
 
     ItemStack getStackForComponent(EnumCADComponent componentType);
 
+    boolean setStackForComponent(EnumCADComponent componentType, ItemStack component);
+
     ItemStack getSocketableStack();
+
+    boolean setSocketableStack(ItemStack stack);
 
     void onCraftCAD(ItemStack cad);
 

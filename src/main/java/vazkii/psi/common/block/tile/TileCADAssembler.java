@@ -12,6 +12,8 @@ package vazkii.psi.common.block.tile;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.SoundCategory;
 import net.minecraftforge.common.MinecraftForge;
 import vazkii.arl.block.tile.TileSimpleInventory;
@@ -72,8 +74,35 @@ public class TileCADAssembler extends TileSimpleInventory implements ITileCADAss
 	}
 
 	@Override
+	public boolean setStackForComponent(EnumCADComponent componentType, ItemStack component) {
+		int slot = getComponentSlot(componentType);
+		if (component.isEmpty()) {
+			setInventorySlotContents(slot, component);
+			return true;
+		} else if (component.getItem() instanceof ICADComponent) {
+			ICADComponent componentItem = (ICADComponent) component.getItem();
+			if (componentItem.getComponentType(component) == componentType) {
+				setInventorySlotContents(slot, component);
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	@Override
 	public ItemStack getSocketableStack() {
 		return getStackInSlot(0);
+	}
+
+	@Override
+	public boolean setSocketableStack(ItemStack stack) {
+		if (stack.isEmpty() || stack.getItem() instanceof ISocketable) {
+			setInventorySlotContents(0, stack);
+			return true;
+		}
+
+		return false;
 	}
 
 	@Override
@@ -124,5 +153,51 @@ public class TileCADAssembler extends TileSimpleInventory implements ITileCADAss
 				((ICADComponent) stack.getItem()).getComponentType(stack) == EnumCADComponent.values()[slot - 1];
 
 		return false;
+	}
+
+	@Override
+	public void writeSharedNBT(NBTTagCompound tag) {
+		super.writeSharedNBT(tag);
+		tag.setInteger("version", 1);
+	}
+
+	@Override
+	public void readSharedNBT(NBTTagCompound tag) {
+		// Migrate old CAD assemblers to the new format
+		if (needsToSyncInventory() && tag.getInteger("version") < 1) {
+			NBTTagList items = tag.getTagList("Items", 10);
+			this.clear();
+
+			ISocketable socketableItem = null;
+			ItemStack socketable = ItemStack.EMPTY;
+
+			for(int i = 0; i < items.tagCount(); ++i) {
+				if (i == 0) // Skip the fake CAD slot
+					continue;
+
+				ItemStack stack = new ItemStack(items.getCompoundTagAt(i));
+
+				if (i == 6) { // Socketable item
+					setSocketableStack(stack);
+
+					if (!stack.isEmpty() && stack.getItem() instanceof ISocketable) {
+						socketableItem = (ISocketable) stack.getItem();
+						socketable = stack;
+					}
+				} else if (i == 1) // CORE
+					setStackForComponent(EnumCADComponent.CORE, stack);
+				else if (i == 2) // ASSEMBLY
+					setStackForComponent(EnumCADComponent.ASSEMBLY, stack);
+				else if (i == 3) // SOCKET
+					setStackForComponent(EnumCADComponent.SOCKET, stack);
+				else if (i == 4) // BATTERY
+					setStackForComponent(EnumCADComponent.BATTERY, stack);
+				else if (i == 5) // DYE
+					setStackForComponent(EnumCADComponent.DYE, stack);
+				else if (socketableItem != null) // If we've gotten here, the item is a bullet.
+					socketableItem.setBulletInSocket(socketable, i - 7, stack);
+			}
+		} else
+			super.readSharedNBT(tag);
 	}
 }
