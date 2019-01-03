@@ -71,8 +71,8 @@ import java.util.List;
 
 public class PlayerDataHandler {
 
-	private static HashMap<Integer, PlayerData> remotePlayerData = new HashMap<>();
-	private static HashMap<Integer, PlayerData> playerData = new HashMap<>();
+	private static WeakHashMap<EntityPlayer, PlayerData> remotePlayerData = new WeakHashMap<>();
+	private static WeakHashMap<EntityPlayer, PlayerData> playerData = new WeakHashMap<>();
 	public static Set<SpellContext> delayedContexts = new HashSet<>();
 
 	private static final String DATA_TAG = "PsiData";
@@ -80,39 +80,18 @@ public class PlayerDataHandler {
 	public static final DamageSource damageSourceOverload = new DamageSource("psi-overload").setDamageBypassesArmor().setMagicDamage();
 
 	public static PlayerData get(EntityPlayer player) {
-		int key = getKey(player);
-		HashMap<Integer, PlayerData> dataMap = player.world.isRemote ? remotePlayerData : playerData;
-		if(!dataMap.containsKey(key))
-			dataMap.put(key, new PlayerData(player));
+		Map<EntityPlayer, PlayerData> dataMap = player.world.isRemote ? remotePlayerData : playerData;
 
-		PlayerData data = dataMap.get(key);
-		if(data != null && data.playerWR != null && data.playerWR.get() != player) {
+		PlayerData data = dataMap.computeIfAbsent(player, PlayerData::new);
+		if(data.playerWR != null && data.playerWR.get() != player) {
 			NBTTagCompound cmp = new NBTTagCompound();
 			data.writeToNBT(cmp);
-			dataMap.remove(key);
+			dataMap.remove(player);
 			data = get(player);
 			data.readFromNBT(cmp);
 		}
 
 		return data;
-	}
-
-	public static void cleanupRemote() {
-		remotePlayerData.entrySet().removeIf(item -> {
-			PlayerData d = item.getValue();
-			return d != null && d.playerWR.get() == null;
-		});
-	}
-
-	public static void cleanup() {
-		playerData.entrySet().removeIf(item -> {
-			PlayerData d = item.getValue();
-			return d != null && d.playerWR.get() == null;
-		});
-	}
-
-	private static int getKey(EntityPlayer player) {
-		return player.hashCode() << 1 + (player.getEntityWorld().isRemote ? 1 : 0);
 	}
 
 	public static NBTTagCompound getDataCompoundForPlayer(EntityPlayer player) {
@@ -133,10 +112,6 @@ public class PlayerDataHandler {
 		@SubscribeEvent
 		public static void onServerTick(ServerTickEvent event) {
 			if(event.phase == Phase.END) {
-				PlayerDataHandler.cleanup();
-				if (event.side == Side.CLIENT)
-					PlayerDataHandler.cleanupRemote();
-
 				List<SpellContext> delayedContextsCopy = new ArrayList<>(delayedContexts);
 				for(SpellContext context : delayedContextsCopy) {
 					context.delay--;

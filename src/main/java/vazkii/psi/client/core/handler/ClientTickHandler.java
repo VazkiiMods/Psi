@@ -19,7 +19,6 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vazkii.psi.common.core.handler.PersistencyHandler;
-import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.lib.LibMisc;
 
 @SideOnly(Side.CLIENT)
@@ -30,11 +29,8 @@ public class ClientTickHandler {
 	public static void clientTickEnd(ClientTickEvent event) {
 		if(event.phase == Phase.END) {
 			Minecraft mc = Minecraft.getMinecraft();
-			if(mc.world == null)
-				PlayerDataHandler.cleanupRemote();
-			else if(mc.player != null) {
+			if(mc.player != null)
 				PersistencyHandler.init();
-			}
 
 			HUDHandler.tick();
 
