@@ -12,12 +12,8 @@ package vazkii.psi.common.spell.trick.infusion;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import vazkii.psi.api.spell.EnumSpellStat;
-import vazkii.psi.api.spell.Spell;
-import vazkii.psi.api.spell.SpellCompilationException;
-import vazkii.psi.api.spell.SpellContext;
-import vazkii.psi.api.spell.SpellMetadata;
-import vazkii.psi.api.spell.SpellRuntimeException;
+import net.minecraft.world.WorldProviderEnd;
+import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.piece.PieceTrick;
 import vazkii.psi.common.item.ItemCAD;
 import vazkii.psi.common.item.base.ModItems;
@@ -38,7 +34,7 @@ public class PieceTrickEbonyIvory extends PieceTrick {
 
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
-		if(context.caster.getEntityWorld().provider.getDimension() == 1) {
+		if(context.caster.getEntityWorld().provider instanceof WorldProviderEnd) {
 			ItemCAD.craft(context.caster, new ItemStack(Items.COAL), new ItemStack(ModItems.material, 1, 5));
 			ItemCAD.craft(context.caster, new ItemStack(Items.QUARTZ), new ItemStack(ModItems.material, 1, 6));
 		}
