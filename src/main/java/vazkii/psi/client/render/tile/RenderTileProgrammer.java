@@ -17,9 +17,9 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.util.EnumFacing;
 import org.lwjgl.opengl.GL11;
 import vazkii.arl.block.BlockFacing;
+import vazkii.arl.util.ClientTicker;
 import vazkii.arl.util.RenderHelper;
 import vazkii.psi.api.internal.TooltipHelper;
-import vazkii.psi.client.core.handler.ClientTickHandler;
 import vazkii.psi.client.core.handler.ShaderHandler;
 import vazkii.psi.client.gui.GuiProgrammer;
 import vazkii.psi.common.Psi;
@@ -69,8 +69,8 @@ public class RenderTileProgrammer extends TileEntitySpecialRenderer<TileProgramm
 			
 			if(Psi.magical) {
 				GlStateManager.rotate(90F, 1F, 0F, 0F);
-				GlStateManager.translate(70F, -220F, -100F + Math.sin(ClientTickHandler.total / 50) * 10);
-				GlStateManager.rotate(-16F + (float) Math.cos(ClientTickHandler.total / 100) * 10F, 1F, 0F, 0F);
+				GlStateManager.translate(70F, -220F, -100F + Math.sin(ClientTicker.total / 50) * 10);
+				GlStateManager.rotate(-16F + (float) Math.cos(ClientTicker.total / 100) * 10F, 1F, 0F, 0F);
 			} else GlStateManager.translate(70F, 0F, -200F);
 
 			te.spell.draw();

@@ -11,15 +11,20 @@
  */
 package vazkii.psi.client.fx;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.profiler.Profiler;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.opengl.GL11;
+import vazkii.psi.common.lib.LibMisc;
 
+@SideOnly(Side.CLIENT)
+@Mod.EventBusSubscriber(value = Side.CLIENT, modid = LibMisc.MOD_ID)
 public final class ParticleRenderDispatcher {
 
 	public static int wispFxCount = 0;
@@ -27,7 +32,7 @@ public final class ParticleRenderDispatcher {
 	public static int sparkleFxCount = 0;
 
 	@SubscribeEvent
-	public void onRenderWorldLast(RenderWorldLastEvent event) {
+	public static void onRenderWorldLast(RenderWorldLastEvent event) {
 		Tessellator tessellator = Tessellator.getInstance();
 
 		Profiler profiler = Minecraft.getMinecraft().mcProfiler;

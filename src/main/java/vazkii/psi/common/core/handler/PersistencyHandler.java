@@ -10,17 +10,15 @@
  */
 package vazkii.psi.common.core.handler;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vazkii.psi.api.PsiAPI;
 
+import java.io.*;
+
+@SideOnly(Side.CLIENT)
 public final class PersistencyHandler {
 
 	private static boolean doneInit = false;
@@ -46,19 +44,21 @@ public final class PersistencyHandler {
 
 		File dir = new File(userhome);
 		if(!dir.exists())
-			dir.mkdirs();
+			if (!dir.mkdirs())
+				throw new RuntimeException("Couldn't create home directory!");
 
 		File info = new File(userhome, "info.txt");
 		if(!info.exists()) {
 			try(BufferedWriter writer = new BufferedWriter(new FileWriter(info))) {
-				info.createNewFile();
-				writer.write("This is Psi's Persistent Data directory.\n");
-				writer.write("Files stored here are persistent info on what levels each player has gotten to.\n");
-				writer.write("The files in here are the same for every instance and modpack you play, they always end up here.\n");
-				writer.write("This allows you to skip tutorials on new worlds or even new modpacks.\n");
-				writer.write("\n");
-				writer.write("If you wish to disable this feature, you can turn it off in the Psi config file.");
-				writer.flush();
+				if (info.createNewFile()) {
+					writer.write("This is Psi's Persistent Data directory.\n");
+					writer.write("Files stored here are persistent info on what levels each player has gotten to.\n");
+					writer.write("The files in here are the same for every instance and modpack you play, they always end up here.\n");
+					writer.write("This allows you to skip tutorials on new worlds or even new modpacks.\n");
+					writer.write("\n");
+					writer.write("If you wish to disable this feature, you can turn it off in the Psi config file.");
+					writer.flush();
+				}
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -88,10 +88,10 @@ public final class PersistencyHandler {
 			return;
 
 		try(BufferedWriter writer = new BufferedWriter(new FileWriter(persistentFile))) {
-			if(!persistentFile.exists())
-				persistentFile.createNewFile();
-			writer.write("" + level);
-			writer.flush();
+			if(persistentFile.exists() || persistentFile.createNewFile()) {
+				writer.write("" + level);
+				writer.flush();
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

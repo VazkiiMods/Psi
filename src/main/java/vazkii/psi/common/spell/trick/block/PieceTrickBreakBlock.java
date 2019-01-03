@@ -78,7 +78,7 @@ public class PieceTrickBreakBlock extends PieceTrick {
 
 		IBlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
-		if(!world.isRemote && block != null && !block.isAir(state, world, pos) && !(block instanceof BlockLiquid) && !(block instanceof IFluidBlock) && block.getPlayerRelativeBlockHardness(state, player, world, pos) > 0) {
+		if(!world.isRemote && !block.isAir(state, world, pos) && !(block instanceof BlockLiquid) && !(block instanceof IFluidBlock) && block.getPlayerRelativeBlockHardness(state, player, world, pos) > 0) {
 			if(!ForgeHooks.canHarvestBlock(block, player, world, pos))
 				return;
 

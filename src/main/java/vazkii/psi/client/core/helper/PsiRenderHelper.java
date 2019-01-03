@@ -10,17 +10,16 @@
  */
 package vazkii.psi.client.core.helper;
 
-import java.util.Random;
-
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
-import vazkii.psi.client.core.handler.ClientTickHandler;
+import org.lwjgl.opengl.GL11;
+import vazkii.arl.util.ClientTicker;
+
+import java.util.Random;
 
 public class PsiRenderHelper {
 
@@ -28,7 +27,7 @@ public class PsiRenderHelper {
 		Tessellator tessellator = Tessellator.getInstance();
 		BufferBuilder buff = tessellator.getBuffer();
 
-		int ticks = ClientTickHandler.ticksInGame % 200;
+		int ticks = ClientTicker.ticksInGame % 200;
 		if (ticks >= 100)
 			ticks = 200 - ticks - 1;
 
@@ -96,7 +95,7 @@ public class PsiRenderHelper {
 		int centerX = x + 8;
 		int centerY = y + 8;
 		int degs = (int) (360 * progress);
-		float a = 0.5F + 0.2F * ((float) Math.cos((double) (ClientTickHandler.ticksInGame + ClientTickHandler.partialTicks) / 10) * 0.5F + 0.5F);
+		float a = 0.5F + 0.2F * ((float) Math.cos((double) (ClientTicker.ticksInGame + ClientTicker.partialTicks) / 10) * 0.5F + 0.5F);
 
 		GlStateManager.disableLighting();
 		GlStateManager.disableTexture2D();

@@ -17,8 +17,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vazkii.arl.interf.IItemColorProvider;
+import vazkii.arl.util.ClientTicker;
 import vazkii.psi.api.cad.ICADColorizer;
-import vazkii.psi.client.core.handler.ClientTickHandler;
 import vazkii.psi.common.crafting.recipe.ColorizerChangeRecipe;
 import vazkii.psi.common.lib.LibItemNames;
 
@@ -70,11 +70,11 @@ public class ItemCADColorizer extends ItemCADComponent implements ICADColorizer,
 
 		switch(stack.getItemDamage()) {
 		case 16: {
-			float time = ClientTickHandler.total;
+			float time = ClientTicker.total;
 			return Color.HSBtoRGB(time * 0.005F, 1F, 1F);
 		}
 		case 17:
-			float time = ClientTickHandler.total;
+			float time = ClientTicker.total;
 			float w = (float) (Math.sin(time * 0.4) * 0.5 + 0.5) * 0.1F;
 			float r = (float) (Math.sin(time * 0.1) * 0.5 + 0.5) * 0.5F + 0.25F + w;
 			float g = 0.5F + w;

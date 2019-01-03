@@ -25,6 +25,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
@@ -45,6 +46,7 @@ import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData.Deduction;
 import vazkii.psi.common.core.handler.PsiSoundHandler;
 import vazkii.psi.common.item.base.IHUDItem;
+import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.lib.LibObfuscation;
 import vazkii.psi.common.lib.LibResources;
 
@@ -52,6 +54,7 @@ import java.awt.*;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
+@Mod.EventBusSubscriber(value = Side.CLIENT, modid = LibMisc.MOD_ID)
 public final class HUDHandler {
 
 	private static final ResourceLocation psiBar = new ResourceLocation(LibResources.GUI_PSI_BAR);
@@ -62,7 +65,6 @@ public final class HUDHandler {
 
 	private static boolean registeredMask = false;
 	private static int maxRemainingTicks = 30;
-	private static int remainingLeaveTicks = 20;
 
 	public static boolean showLevelUp = false;
 	public static int levelDisplayTime = 0;
@@ -74,7 +76,7 @@ public final class HUDHandler {
 
 	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
-	public void onDraw(RenderGameOverlayEvent.Post event) {
+	public static void onDraw(RenderGameOverlayEvent.Post event) {
 		if (event.getType() == ElementType.ALL) {
 			ScaledResolution resolution = event.getResolution();
 			float partialTicks = event.getPartialTicks();
@@ -95,7 +97,7 @@ public final class HUDHandler {
 			--remainingTime;
 	}
 
-	private boolean showsBar(PlayerData data, ItemStack stack) {
+	private static boolean showsBar(PlayerData data, ItemStack stack) {
 	    if (stack.isEmpty() || !(stack.getItem() instanceof IShowPsiBar))
 	        return false;
 
@@ -105,7 +107,7 @@ public final class HUDHandler {
     }
 
 	@SideOnly(Side.CLIENT)
-	public void drawPsiBar(ScaledResolution res, float pticks) {
+	public static void drawPsiBar(ScaledResolution res, float pticks) {
 		Minecraft mc = Minecraft.getMinecraft();
 		ItemStack cadStack = PsiAPI.getPlayerCAD(mc.player);
 
@@ -257,7 +259,7 @@ public final class HUDHandler {
 	}
 
 	@SideOnly(Side.CLIENT)
-	private void renderSocketableEquippedName(ScaledResolution res, float pticks) {
+	private static void renderSocketableEquippedName(ScaledResolution res, float pticks) {
 		Minecraft mc = Minecraft.getMinecraft();
 		ItemStack stack = mc.player.getHeldItem(EnumHand.MAIN_HAND);
 		String name = ISocketable.getSocketedItemName(stack, "");
@@ -302,7 +304,7 @@ public final class HUDHandler {
 	}
 
 	@SideOnly(Side.CLIENT)
-	private void renderLevelUpIndicator(ScaledResolution res, float pticks) {
+	private static void renderLevelUpIndicator(ScaledResolution res, float pticks) {
 		Minecraft mc = Minecraft.getMinecraft();
 		if (mc.currentScreen instanceof GuiLeveling)
 			showLevelUp = false;
@@ -380,10 +382,11 @@ public final class HUDHandler {
 	}
 
 	@SideOnly(Side.CLIENT)
-	private void renderRemainingItems(ScaledResolution resolution, float partTicks) {
+	private static void renderRemainingItems(ScaledResolution resolution, float partTicks) {
 		if (remainingTime > 0 && !remainingDisplayStack.isEmpty()) {
 			int pos = maxRemainingTicks - remainingTime;
 			Minecraft mc = Minecraft.getMinecraft();
+			int remainingLeaveTicks = 20;
 			int x = resolution.getScaledWidth() / 2 + 10 + Math.max(0, pos - remainingLeaveTicks);
 			int y = resolution.getScaledHeight() / 2;
 
@@ -431,7 +434,7 @@ public final class HUDHandler {
 	}
 
 	@SideOnly(Side.CLIENT)
-	private void renderHUDItem(ScaledResolution resolution, float partTicks) {
+	private static void renderHUDItem(ScaledResolution resolution, float partTicks) {
 		Minecraft mc = Minecraft.getMinecraft();
 		ItemStack stack = mc.player.getHeldItemMainhand();
 		if (!stack.isEmpty() && stack.getItem() instanceof IHUDItem)

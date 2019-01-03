@@ -15,19 +15,18 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.cad.ICADColorizer;
-import vazkii.psi.client.core.handler.ClientTickHandler;
 import vazkii.psi.client.core.handler.HUDHandler;
 import vazkii.psi.client.core.handler.KeybindHandler;
 import vazkii.psi.client.core.handler.ShaderHandler;
 import vazkii.psi.client.fx.FXSparkle;
 import vazkii.psi.client.fx.FXWisp;
-import vazkii.psi.client.fx.ParticleRenderDispatcher;
 import vazkii.psi.client.render.entity.RenderSpellCircle;
 import vazkii.psi.client.render.tile.RenderTileProgrammer;
 import vazkii.psi.common.block.tile.TileProgrammer;
@@ -39,6 +38,7 @@ import vazkii.psi.common.entity.EntitySpellCircle;
 
 import java.awt.*;
 
+@SideOnly(Side.CLIENT)
 public class ClientProxy extends CommonProxy {
 
 	@Override
@@ -51,13 +51,9 @@ public class ClientProxy extends CommonProxy {
 //		if(ConfigHandler.versionCheckEnabled)
 //			new VersionChecker().init();
 
-		MinecraftForge.EVENT_BUS.register(new HUDHandler());
-		MinecraftForge.EVENT_BUS.register(new ClientTickHandler());
-		MinecraftForge.EVENT_BUS.register(new ParticleRenderDispatcher());
-
 		ClientRegistry.bindTileEntitySpecialRenderer(TileProgrammer.class, new RenderTileProgrammer());
 
-		RenderingRegistry.registerEntityRenderingHandler(EntitySpellCircle.class, manager -> new RenderSpellCircle(manager));
+		RenderingRegistry.registerEntityRenderingHandler(EntitySpellCircle.class, RenderSpellCircle::new);
 	}
 
 	@Override
@@ -78,20 +74,18 @@ public class ClientProxy extends CommonProxy {
 	@Override
 	public Color getCADColor(ItemStack cadStack) {
 		ICAD icad = (ICAD) cadStack.getItem();
-		Color color = new Color(icad.getSpellColor(cadStack));
-		return color;
+		return new Color(icad.getSpellColor(cadStack));
 	}
 
 	@Override
 	public Color getColorizerColor(ItemStack colorizer) {
 		ICADColorizer icc = (ICADColorizer) colorizer.getItem();
-		Color color = new Color(icc.getColor(colorizer));
-		return color;
+		return new Color(icc.getColor(colorizer));
 	}
 
 	@Override
 	public void sparkleFX(World world, double x, double y, double z, float r, float g, float b, float motionx, float motiony, float motionz, float size, int m) {
-		if(!doParticle(world))
+		if(noParticles(world))
 			return;
 
 		FXSparkle sparkle = new FXSparkle(world, x, y, z, size, r, g, b, m);
@@ -114,7 +108,7 @@ public class ClientProxy extends CommonProxy {
 
 	@Override
 	public void wispFX(World world, double x, double y, double z, float r, float g, float b, float size, float motionx, float motiony, float motionz, float maxAgeMul) {
-		if(!doParticle(world))
+		if(noParticles(world))
 			return;
 
 		FXWisp wisp = new FXWisp(world, x, y, z, size, r, g, b, distanceLimit, depthTest, maxAgeMul);
@@ -123,12 +117,12 @@ public class ClientProxy extends CommonProxy {
 		Minecraft.getMinecraft().effectRenderer.addEffect(wisp);
 	}
 
-	private boolean doParticle(World world) {
+	private boolean noParticles(World world) {
 		if(!world.isRemote)
-			return false;
+			return true;
 
 		if(!ConfigHandler.useVanillaParticleLimiter)
-			return true;
+			return false;
 
 		float chance = 1F;
 		if(Minecraft.getMinecraft().gameSettings.particleSetting == 1)
@@ -136,7 +130,7 @@ public class ClientProxy extends CommonProxy {
 		else if(Minecraft.getMinecraft().gameSettings.particleSetting == 2)
 			chance = 0.2F;
 
-		return chance == 1F || Math.random() < chance;
+		return !(chance == 1F) && !(Math.random() < chance);
 	}
 
 	@Override

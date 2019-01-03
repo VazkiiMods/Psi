@@ -16,6 +16,7 @@ import org.lwjgl.opengl.ARBFragmentShader;
 import org.lwjgl.opengl.ARBShaderObjects;
 import org.lwjgl.opengl.ARBVertexShader;
 import org.lwjgl.opengl.GL11;
+import vazkii.arl.util.ClientTicker;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.core.handler.ConfigHandler;
 import vazkii.psi.common.lib.LibResources;
@@ -57,7 +58,7 @@ public final class ShaderHandler {
 
 		if(shader != 0) {
 			int time = ARBShaderObjects.glGetUniformLocationARB(shader, "time");
-			ARBShaderObjects.glUniform1iARB(time, ClientTickHandler.ticksInGame);
+			ARBShaderObjects.glUniform1iARB(time, ClientTicker.ticksInGame);
 
 			if(callback != null)
 				callback.accept(shader);

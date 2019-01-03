@@ -10,16 +10,17 @@
  */
 package vazkii.psi.common.core.handler;
 
-import java.io.File;
-
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import vazkii.psi.common.lib.LibMisc;
 
+import java.io.File;
+
+@Mod.EventBusSubscriber(modid = LibMisc.MOD_ID)
 public class ConfigHandler {
 
 	public static Configuration config;
@@ -40,8 +41,6 @@ public class ConfigHandler {
 
 		config.load();
 		load();
-
-		MinecraftForge.EVENT_BUS.register(new ChangeListener());
 	}
 
 	public static void load() {
@@ -108,14 +107,10 @@ public class ConfigHandler {
 		return prop.getBoolean(default_);
 	}
 
-	public static class ChangeListener {
-
-		@SubscribeEvent
-		public void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent eventArgs) {
-			if(eventArgs.getModID().equals(LibMisc.MOD_ID))
-				load();
-		}
-
+	@SubscribeEvent
+	public static void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent eventArgs) {
+		if(eventArgs.getModID().equals(LibMisc.MOD_ID))
+			load();
 	}
 
 }

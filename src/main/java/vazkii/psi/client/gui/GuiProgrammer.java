@@ -53,10 +53,7 @@ import vazkii.psi.common.spell.SpellCompiler;
 import vazkii.psi.common.spell.constant.PieceConstantNumber;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -862,9 +859,7 @@ public class GuiProgrammer extends GuiScreen {
 			} catch(NumberFormatException e) {}
 		}
 
-		visiblePieces.sort((SpellPiece a, SpellPiece b) -> {
-			return a.getSortingName().compareTo(b.getSortingName());
-		});
+		visiblePieces.sort(Comparator.comparing(SpellPiece::getSortingName));
 
 		int start = page * PIECES_PER_PAGE;
 

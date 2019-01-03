@@ -14,7 +14,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
@@ -23,7 +22,6 @@ import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.base.ModBlocks;
 import vazkii.psi.common.core.handler.ConfigHandler;
 import vazkii.psi.common.core.handler.InternalMethodHandler;
-import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.handler.PsiSoundHandler;
 import vazkii.psi.common.crafting.ModCraftingRecipes;
 import vazkii.psi.common.entity.ModEntities;
@@ -50,8 +48,6 @@ public class CommonProxy {
 
 		MessageRegister.init();
 		NetworkRegistry.INSTANCE.registerGuiHandler(Psi.instance, new GuiHandler());
-
-		MinecraftForge.EVENT_BUS.register(new PlayerDataHandler.EventHandler());
 	}
 	
 	public void init(FMLInitializationEvent event) {

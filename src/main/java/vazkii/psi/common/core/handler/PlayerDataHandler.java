@@ -36,6 +36,7 @@ import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerChangedDimensionEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
@@ -44,6 +45,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.ServerTickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vazkii.arl.network.NetworkHandler;
+import vazkii.arl.util.ClientTicker;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.EnumCADStat;
 import vazkii.psi.api.cad.ICAD;
@@ -53,10 +55,10 @@ import vazkii.psi.api.exosuit.PsiArmorEvent;
 import vazkii.psi.api.internal.IPlayerData;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.*;
-import vazkii.psi.client.core.handler.ClientTickHandler;
 import vazkii.psi.client.render.entity.RenderSpellCircle;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.item.ItemCAD;
+import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.network.message.MessageDataSync;
 import vazkii.psi.common.network.message.MessageDeductPsi;
 import vazkii.psi.common.network.message.MessageLevelUp;
@@ -69,6 +71,7 @@ import java.util.List;
 
 public class PlayerDataHandler {
 
+	private static HashMap<Integer, PlayerData> remotePlayerData = new HashMap<>();
 	private static HashMap<Integer, PlayerData> playerData = new HashMap<>();
 	public static Set<SpellContext> delayedContexts = new HashSet<>();
 
@@ -78,19 +81,27 @@ public class PlayerDataHandler {
 
 	public static PlayerData get(EntityPlayer player) {
 		int key = getKey(player);
-		if(!playerData.containsKey(key))
-			playerData.put(key, new PlayerData(player));
+		HashMap<Integer, PlayerData> dataMap = player.world.isRemote ? remotePlayerData : playerData;
+		if(!dataMap.containsKey(key))
+			dataMap.put(key, new PlayerData(player));
 
-		PlayerData data = playerData.get(key);
+		PlayerData data = dataMap.get(key);
 		if(data != null && data.playerWR != null && data.playerWR.get() != player) {
 			NBTTagCompound cmp = new NBTTagCompound();
 			data.writeToNBT(cmp);
-			playerData.remove(key);
+			dataMap.remove(key);
 			data = get(player);
 			data.readFromNBT(cmp);
 		}
 
 		return data;
+	}
+
+	public static void cleanupRemote() {
+		remotePlayerData.entrySet().removeIf(item -> {
+			PlayerData d = item.getValue();
+			return d != null && d.playerWR.get() == null;
+		});
 	}
 
 	public static void cleanup() {
@@ -116,12 +127,15 @@ public class PlayerDataHandler {
 		return persistentData.getCompoundTag(DATA_TAG);
 	}
 
+	@Mod.EventBusSubscriber(modid = LibMisc.MOD_ID)
 	public static class EventHandler {
 
 		@SubscribeEvent
-		public void onServerTick(ServerTickEvent event) {
+		public static void onServerTick(ServerTickEvent event) {
 			if(event.phase == Phase.END) {
 				PlayerDataHandler.cleanup();
+				if (event.side == Side.CLIENT)
+					PlayerDataHandler.cleanupRemote();
 
 				List<SpellContext> delayedContextsCopy = new ArrayList<>(delayedContexts);
 				for(SpellContext context : delayedContextsCopy) {
@@ -139,7 +153,7 @@ public class PlayerDataHandler {
 		}
 
 		@SubscribeEvent
-		public void onPlayerTick(LivingUpdateEvent event) {
+		public static void onPlayerTick(LivingUpdateEvent event) {
 			if(event.getEntityLiving() instanceof EntityPlayer) {
 				EntityPlayer player = (EntityPlayer) event.getEntityLiving();
 				
@@ -153,7 +167,7 @@ public class PlayerDataHandler {
 		}
 
 		@SubscribeEvent
-		public void onEntityDamage(LivingHurtEvent event) {
+		public static void onEntityDamage(LivingHurtEvent event) {
 			if(event.getEntityLiving() instanceof EntityPlayer) {
 				EntityPlayer player = (EntityPlayer) event.getEntityLiving();
 				PlayerDataHandler.get(player).damage(event.getAmount());
@@ -169,7 +183,7 @@ public class PlayerDataHandler {
 		}
 
 		@SubscribeEvent
-		public void onPlayerLogin(PlayerLoggedInEvent event) {
+		public static void onPlayerLogin(PlayerLoggedInEvent event) {
 			if(event.player instanceof EntityPlayerMP) {
 				MessageDataSync message = new MessageDataSync(get(event.player));
 				NetworkHandler.INSTANCE.sendTo(message, (EntityPlayerMP) event.player);
@@ -177,7 +191,7 @@ public class PlayerDataHandler {
 		}
 
 		@SubscribeEvent
-		public void onEntityJump(LivingJumpEvent event) {
+		public static void onEntityJump(LivingJumpEvent event) {
 			if(event.getEntityLiving() instanceof EntityPlayer && event.getEntity().world.isRemote) {
 				EntityPlayer player = (EntityPlayer) event.getEntityLiving();
 				PsiArmorEvent.post(new PsiArmorEvent(player, PsiArmorEvent.JUMP));
@@ -186,7 +200,7 @@ public class PlayerDataHandler {
 		}
 
 		@SubscribeEvent
-		public void onPsiArmorEvent(PsiArmorEvent event) {
+		public static void onPsiArmorEvent(PsiArmorEvent event) {
 			for(int i = 0; i < 4; i++) {
 				ItemStack armor = event.getEntityPlayer().inventory.armorInventory.get(i);
 				if(!armor.isEmpty() && armor.getItem() instanceof IPsiEventArmor) {
@@ -197,13 +211,13 @@ public class PlayerDataHandler {
 		}
 
 		@SubscribeEvent
-		public void onChangeDimension(PlayerChangedDimensionEvent event) {
+		public static void onChangeDimension(PlayerChangedDimensionEvent event) {
 			get(event.player).eidosChangelog.clear();
 		}
 
 		@SubscribeEvent
 		@SideOnly(Side.CLIENT)
-		public void onRenderWorldLast(RenderWorldLastEvent event) {
+		public static void onRenderWorldLast(RenderWorldLastEvent event) {
 			Minecraft mc = Minecraft.getMinecraft();
 			Entity cameraEntity = mc.getRenderViewEntity();
 			if (cameraEntity != null) {
@@ -225,13 +239,13 @@ public class PlayerDataHandler {
 
 		@SubscribeEvent
 		@SideOnly(Side.CLIENT)
-		public void onFOVUpdate(FOVUpdateEvent event) {
+		public static void onFOVUpdate(FOVUpdateEvent event) {
 			PlayerData data = get(Minecraft.getMinecraft().player);
 			if(data != null && data.isAnchored) {
 				float fov = event.getNewfov();
 				if(data.eidosAnchorTime > 0)
-					fov *= Math.min(5, data.eidosAnchorTime - ClientTickHandler.partialTicks) / 5;
-				else fov *= (10 - Math.min(10, data.postAnchorRecallTime + ClientTickHandler.partialTicks)) / 10;
+					fov *= Math.min(5, data.eidosAnchorTime - ClientTicker.partialTicks) / 5;
+				else fov *= (10 - Math.min(10, data.postAnchorRecallTime + ClientTicker.partialTicks)) / 10;
 				event.setNewfov(fov);
 			}
 		}
@@ -800,7 +814,7 @@ public class PlayerDataHandler {
 				color = icad.getSpellColor(cad);
 			}
 
-			RenderSpellCircle.renderSpellCircle(ClientTickHandler.ticksInGame + partTicks, scale, x, y, z, color);
+			RenderSpellCircle.renderSpellCircle(ClientTicker.ticksInGame + partTicks, scale, x, y, z, color);
 		}
 
 		public static class Deduction {
