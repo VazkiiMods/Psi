@@ -73,7 +73,7 @@ public class PieceTrickCollapseBlock extends PieceTrick {
 		if(!world.isBlockModifiable(context.caster, pos))
 			return null;
 
-		if(blockBelow.isAir(stateDown, world, posDown) && block.getBlockHardness(state, world, pos) != -1 &&
+		if(blockBelow.isAir(stateDown, world, posDown) && state.getBlockHardness(world, pos) != -1 &&
 				PieceTrickBreakBlock.canHarvestBlock(block, context.caster, world, pos, tool) &&
 				world.getTileEntity(pos) == null && block.canSilkHarvest(world, pos, state, context.caster)) {
 
