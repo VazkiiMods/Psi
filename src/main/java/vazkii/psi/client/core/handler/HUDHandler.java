@@ -363,8 +363,7 @@ public final class HUDHandler {
 		}
 
 		if (levelDisplayTime > fadeTime * 3) {
-			String s = TooltipHelper.local("psimisc.levelUpInfo2");
-			s = String.format(s, TextFormatting.GREEN + TooltipHelper.local(KeybindHandler.keybind.getDisplayName())
+			String s = TooltipHelper.local("psimisc.levelUpInfo2", TextFormatting.GREEN + TooltipHelper.local(KeybindHandler.keybind.getDisplayName())
 					+ TextFormatting.RESET);
 			swidth = mc.fontRenderer.getStringWidth(s);
 			len = s.length();

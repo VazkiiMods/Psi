@@ -171,7 +171,7 @@ public class GuiLeveling extends GuiScreen {
 				int colorOn = 0x77FF77;
 
 				mc.fontRenderer.drawStringWithShadow(TooltipHelper.local("psimisc.requirements"), left + 134, top + 32, 0xFFFFFF);
-				mc.fontRenderer.drawString(String.format(TooltipHelper.local("psimisc.levelDisplay"), group.levelRequirement), left + 138, top + 42, data.getLevel() >= group.levelRequirement ? colorOn : colorOff);
+				mc.fontRenderer.drawString(TooltipHelper.local("psimisc.levelDisplay", group.levelRequirement), left + 138, top + 42, data.getLevel() >= group.levelRequirement ? colorOn : colorOff);
 				int i = 0;
 				for(String s : group.requirements) {
 					PieceGroup reqGroup = PsiAPI.groupsForName.get(s);
@@ -190,7 +190,7 @@ public class GuiLeveling extends GuiScreen {
 		String key = "psimisc.levelInfo";
 		if(mc.player.capabilities.isCreativeMode)
 			key = "psimisc.levelInfoCreative";
-		String s = String.format(TooltipHelper.local(key), data.getLevel(), data.getLevelPoints());
+		String s = TooltipHelper.local(key, data.getLevel(), data.getLevelPoints());
 		mc.fontRenderer.drawStringWithShadow(s, left + 4, top + ySize + 2, 0xFFFFFF);
 
 		listGroups.drawScreen(mouseX, mouseY, partialTicks);
@@ -349,7 +349,7 @@ public class GuiLeveling extends GuiScreen {
 				color = 0xFFFFFF;
 
 			mc.fontRenderer.drawString(TooltipHelper.local(group.getUnlocalizedName()), left + 3, slotTop + 4, color);
-			mc.fontRenderer.drawString(String.format(TooltipHelper.local("psimisc.levelDisplay"), group.levelRequirement), left + 3, slotTop + 14, color);
+			mc.fontRenderer.drawString(TooltipHelper.local("psimisc.levelDisplay", group.levelRequirement), left + 3, slotTop + 14, color);
 			scrollDistanceGroup = ReflectionHelper.getPrivateValue(GuiScrollingList.class, this, "scrollDistance");
 		}
 

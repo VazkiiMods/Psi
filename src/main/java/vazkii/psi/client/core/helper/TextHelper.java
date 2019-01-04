@@ -27,9 +27,7 @@ public final class TextHelper {
 		FontRenderer font = Minecraft.getMinecraft().fontRenderer;
 		boolean unicode = font.getUnicodeFlag();
 		font.setUnicodeFlag(true);
-		String text = TooltipHelper.local(unlocalizedText).replaceAll("&", "\u00a7");
-		if(format != null && format.length > 0)
-			text = String.format(text, format);
+		String text = TooltipHelper.local(unlocalizedText, format).replaceAll("&", "\u00a7");
 
 		String[] textEntries = text.split("<br>");
 		List<List<String>> lines = new ArrayList<>();

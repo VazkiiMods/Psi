@@ -15,7 +15,6 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
-import vazkii.psi.api.internal.TooltipHelper;
 
 import java.awt.*;
 import java.io.File;
@@ -46,7 +45,7 @@ public class ThreadDownloadMod extends Thread {
 	@Override
 	public void run() {
 		try {
-			ITextComponent component = ITextComponent.Serializer.jsonToComponent(String.format(TooltipHelper.local("psi.versioning.startingDownload"), fileName));
+			ITextComponent component = new TextComponentTranslation("psi.versioning.startingDownload", fileName);
 			if(Minecraft.getMinecraft().player != null)
 				Minecraft.getMinecraft().player.sendMessage(component);
 
