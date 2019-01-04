@@ -370,13 +370,16 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 
 	@Override
 	public int getStatValue(ItemStack stack, EnumCADStat stat) {
+		int statValue = 0;
 		ItemStack componentStack = getComponentInSlot(stack, stat.getSourceType());
 		if(!componentStack.isEmpty() && componentStack.getItem() instanceof ICADComponent) {
 			ICADComponent component = (ICADComponent) componentStack.getItem();
-			return component.getCADStatValue(componentStack, stat);
+			statValue = component.getCADStatValue(componentStack, stat);
 		}
 
-		return 0;
+		CADStatEvent event = new CADStatEvent(stat, stack, componentStack, statValue);
+		MinecraftForge.EVENT_BUS.post(event);
+		return event.getStatValue();
 	}
 
 	@Override

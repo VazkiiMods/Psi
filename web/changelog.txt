@@ -1,8 +1,13 @@
 r1.1-65
 *Overhaul the internals of the CAD Assembler to not be 1.8 era garbagio. (WireSegal)
+*Fix CAD items desynchronizing. (WireSegal)
+*Fix the wrong break stats being used when you're not holding the item casting the spell. (WireSegal)
+*Fix *the* CME, an issue which has been affecting addon developers since the beginning of Psi. (WireSegal)
+*Allow any End dimension to craft ebony and ivory. (WireSegal)
 *[API] Added AssembleCADEvent. (WireSegal)
 *[API] Added IShowPsiBar. (WireSegal)
 *[API] Fix Kamefrede's changes referencing non-API code from the API package. (WireSegal)
+*[API] Added CADStatEvent. (WireSegal)
 r1.1-64
 *Fixed Bright Psimetal Plates not being localized. (Kamefrede)
 *Fixed Operator: Entity Motion returning the wrong magnitude for players. (Kamefrede)
