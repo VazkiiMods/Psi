@@ -20,9 +20,9 @@ import vazkii.psi.api.spell.ISpellContainer;
  */
 public interface ISocketable extends IShowPsiBar {
 
-	public static final int MAX_SLOTS = 12;
+	int MAX_SLOTS = 12;
 
-	public static String getSocketedItemName(ItemStack stack, String fallback) {
+	static String getSocketedItemName(ItemStack stack, String fallback) {
 		if(stack.isEmpty() || !(stack.getItem() instanceof ISocketable))
 			return fallback;
 
@@ -37,36 +37,39 @@ public interface ISocketable extends IShowPsiBar {
 	/**
 	 * Gets if the passed in slot is available for inserting bullets given the ItemStack passed in.
 	 */
-	public boolean isSocketSlotAvailable(ItemStack stack, int slot);
+	boolean isSocketSlotAvailable(ItemStack stack, int slot);
 
 	/**
 	 * Gets whether the passed in slot should be shown in the radial menu.
 	 */
-	public default boolean showSlotInRadialMenu(ItemStack stack, int slot) {
+	default boolean showSlotInRadialMenu(ItemStack stack, int slot) {
 		return isSocketSlotAvailable(stack, slot);
 	}
 
 	/**
 	 * Gets the bullet in the slot passed in. Can be null.
 	 */
-	public ItemStack getBulletInSocket(ItemStack stack, int slot);
+	ItemStack getBulletInSocket(ItemStack stack, int slot);
 
 	/**
 	 * Sets the bullet in the slot passed in.
 	 */
-	public void setBulletInSocket(ItemStack stack, int slot, ItemStack bullet);
+	void setBulletInSocket(ItemStack stack, int slot, ItemStack bullet);
 
 	/**
 	 * Gets the slot that is currently selected.
 	 */
-	public int getSelectedSlot(ItemStack stack);
+	int getSelectedSlot(ItemStack stack);
 
 	/**
 	 * Sets ths currently selected slot.
 	 */
-	public void setSelectedSlot(ItemStack stack, int slot);
+	void setSelectedSlot(ItemStack stack, int slot);
 
     default boolean isItemValid(ItemStack stack, int slot, ItemStack bullet) {
+    	if (!isSocketSlotAvailable(stack, slot))
+    		return false;
+
     	if (bullet.isEmpty() || !(bullet.getItem() instanceof ISpellContainer))
     		return false;
 
