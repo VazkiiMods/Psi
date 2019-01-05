@@ -64,7 +64,7 @@ public class BlockCADAssembler extends BlockFacing implements IPsiBlock {
 		TileSimpleInventory inv = (TileSimpleInventory) par1World.getTileEntity(pos);
 
 		if(inv != null) {
-			for(int j1 = 1; j1 < 7; ++j1) {
+			for(int j1 = 0; j1 < 6; ++j1) {
 				ItemStack itemstack = inv.getStackInSlot(j1);
 
 				if(!itemstack.isEmpty()) {
