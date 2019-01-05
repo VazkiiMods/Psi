@@ -12,7 +12,6 @@ package vazkii.psi.common.spell.selector;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.Spell;
@@ -42,7 +41,7 @@ public class PieceSelectorBlockPresence extends PieceSelector {
 		if(positionVal == null)
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
 		
-		BlockPos pos = new BlockPos(positionVal.x, positionVal.y, positionVal.z);
+		BlockPos pos = positionVal.toBlockPos();
 		IBlockState state = context.caster.getEntityWorld().getBlockState(pos);
 		Block block = state.getBlock();
 		

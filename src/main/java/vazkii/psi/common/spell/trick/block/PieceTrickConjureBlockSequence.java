@@ -11,25 +11,15 @@
 package vazkii.psi.common.spell.trick.block;
 
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
-import vazkii.psi.api.PsiAPI;
-import vazkii.psi.api.cad.EnumCADComponent;
-import vazkii.psi.api.cad.ICAD;
+import net.minecraft.world.World;
 import vazkii.psi.api.internal.Vector3;
-import vazkii.psi.api.spell.EnumSpellStat;
-import vazkii.psi.api.spell.Spell;
-import vazkii.psi.api.spell.SpellCompilationException;
-import vazkii.psi.api.spell.SpellContext;
-import vazkii.psi.api.spell.SpellMetadata;
-import vazkii.psi.api.spell.SpellParam;
-import vazkii.psi.api.spell.SpellRuntimeException;
+import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.param.ParamVector;
 import vazkii.psi.api.spell.piece.PieceTrick;
 import vazkii.psi.common.block.BlockConjured;
 import vazkii.psi.common.block.base.ModBlocks;
-import vazkii.psi.common.block.tile.TileConjured;
 
 public class PieceTrickConjureBlockSequence extends PieceTrick {
 
@@ -75,7 +65,7 @@ public class PieceTrickConjureBlockSequence extends PieceTrick {
 
 		int len = (int) targetVal.mag();
 		Vector3 targetNorm = targetVal.copy().normalize();
-		ItemStack cad = PsiAPI.getPlayerCAD(context.caster);
+		World world = context.caster.getEntityWorld();
 
 		for(int i = 0; i < Math.min(len, maxBlocksInt); i++) {
 			Vector3 blockVec = positionVal.copy().add(targetNorm.copy().multiply(i));
@@ -83,29 +73,11 @@ public class PieceTrickConjureBlockSequence extends PieceTrick {
 			if(!context.isInRadius(blockVec))
 				throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 
-			BlockPos pos = new BlockPos(blockVec.x, blockVec.y, blockVec.z);
-			if(!context.caster.getEntityWorld().isBlockModifiable(context.caster, pos))
+			BlockPos pos = blockVec.toBlockPos();
+			if(!world.isBlockModifiable(context.caster, pos))
 				continue;
-			
-			IBlockState state = context.caster.getEntityWorld().getBlockState(pos);
 
-			if(state.getBlock() != ModBlocks.conjured) {
-				PieceTrickPlaceBlock.placeBlock(context.caster, context.caster.getEntityWorld(), pos, context.getTargetSlot(), false, true);
-				state = context.caster.getEntityWorld().getBlockState(pos);
-				
-				if(!context.caster.getEntityWorld().isRemote && state.getBlock() == ModBlocks.conjured) {
-					context.caster.getEntityWorld().setBlockState(pos, messWithState(state));
-					TileConjured tile = (TileConjured) context.caster.getEntityWorld().getTileEntity(pos);
-
-					if(timeVal != null && timeVal.intValue() > 0) {
-						int val = timeVal.intValue();
-						tile.time = val;
-					}
-
-					if(cad != null)
-						tile.colorizer = ((ICAD) cad.getItem()).getComponentInSlot(cad, EnumCADComponent.DYE);
-				}
-			}
+			PieceTrickConjureBlock.conjure(context, timeVal, pos, world, messWithState(ModBlocks.conjured.getDefaultState()));
 		}
 
 		return null;

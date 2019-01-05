@@ -17,6 +17,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import vazkii.psi.api.internal.Vector3;
@@ -62,7 +63,7 @@ public class PieceTrickPlaceBlock extends PieceTrick {
 		if(!context.isInRadius(positionVal))
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 
-		BlockPos pos = new BlockPos(positionVal.x, positionVal.y, positionVal.z);
+		BlockPos pos = positionVal.toBlockPos();
 		placeBlock(context.caster, context.caster.getEntityWorld(), pos, context.getTargetSlot(), false);
 
 		return null;
@@ -78,19 +79,19 @@ public class PieceTrickPlaceBlock extends PieceTrick {
 		
 		IBlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
-		if(block == null || block.isAir(state, world, pos) || block.isReplaceable(world, pos)) {
+		if(block.isAir(state, world, pos) || block.isReplaceable(world, pos)) {
 			if(conjure) {
 				if(!world.isRemote)
 					world.setBlockState(pos, ModBlocks.conjured.getDefaultState());
 			} else {
 				ItemStack stack = player.inventory.getStackInSlot(slot);
 				if(!stack.isEmpty() && stack.getItem() instanceof ItemBlock) {
-					ItemStack rem = removeFromInventory(player, block, stack);
+					ItemStack rem = removeFromInventory(player, stack);
 					ItemBlock iblock = (ItemBlock) rem.getItem();
-					
-					Block blockToPlace = Block.getBlockFromItem(rem.getItem()); 
+
+					Block blockToPlace = Block.getBlockFromItem(rem.getItem());
 					if(!world.isRemote) {
-						IBlockState newState = blockToPlace.getStateForPlacement(world, pos, EnumFacing.UP, 0, 0, 0, rem.getItemDamage(), player);
+						IBlockState newState = blockToPlace.getStateForPlacement(world, pos, EnumFacing.UP, 0, 0, 0, rem.getItemDamage(), player, EnumHand.MAIN_HAND);
 						iblock.placeBlockAt(stack, player, world, pos, EnumFacing.UP, 0, 0, 0, newState);
 					}
 
@@ -105,7 +106,7 @@ public class PieceTrickPlaceBlock extends PieceTrick {
 		}
 	}
 
-	public static ItemStack removeFromInventory(EntityPlayer player, Block block, ItemStack stack) {
+	public static ItemStack removeFromInventory(EntityPlayer player, ItemStack stack) {
 		if(player.capabilities.isCreativeMode)
 			return stack.copy();
 
@@ -121,7 +122,7 @@ public class PieceTrickPlaceBlock extends PieceTrick {
 			}
 		}
 
-		return null;
+		return ItemStack.EMPTY;
 	}
 
 }

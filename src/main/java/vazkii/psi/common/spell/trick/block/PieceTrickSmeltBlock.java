@@ -61,7 +61,7 @@ public class PieceTrickSmeltBlock extends PieceTrick {
 		if(!context.isInRadius(positionVal))
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 
-		BlockPos pos = new BlockPos(positionVal.x, positionVal.y, positionVal.z);
+		BlockPos pos = positionVal.toBlockPos();
 		if(!context.caster.getEntityWorld().isBlockModifiable(context.caster, pos))
 			return null;
 		

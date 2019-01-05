@@ -65,7 +65,7 @@ public class PieceTrickMoveBlock extends PieceTrick {
 			tool = PsiAPI.getPlayerCAD(context.caster);
 
 		World world = context.caster.getEntityWorld();
-		BlockPos pos = new BlockPos(positionVal.x, positionVal.y, positionVal.z);
+		BlockPos pos = positionVal.toBlockPos();
 		IBlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
 		if(world.getTileEntity(pos) != null || state.getMobilityFlag() != EnumPushReaction.NORMAL ||

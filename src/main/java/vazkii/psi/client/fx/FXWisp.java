@@ -57,6 +57,11 @@ public class FXWisp extends FXQueued {
 	}
 
 	@Override
+	protected double slowdownFactor() {
+		return 0.98;
+	}
+
+	@Override
 	protected boolean hasFriction() {
 		return false;
 	}

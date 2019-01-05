@@ -71,6 +71,14 @@ public abstract class FXQueued extends Particle {
 	}
 
 
+	protected double slowdownFactor() {
+		return 0.9f;
+	}
+
+	protected double frictionFactor() {
+		return 0.7f;
+	}
+
 	protected abstract boolean hasSlowdown();
 	protected abstract boolean hasFriction();
 	protected abstract void addToQueue();
@@ -144,13 +152,15 @@ public abstract class FXQueued extends Particle {
 		posZ += motionZ;
 
 		if (hasSlowdown()) {
-			motionX *= 0.9;
-			motionY *= 0.9;
-			motionZ *= 0.9;
+			double slowdown = slowdownFactor();
+			motionX *= slowdown;
+			motionY *= slowdown;
+			motionZ *= slowdown;
 
 			if (hasFriction() && onGround) {
-				motionX *= 0.7;
-				motionZ *= 0.7;
+				double friction = frictionFactor();
+				motionX *= friction;
+				motionZ *= friction;
 			}
 		}
 	}

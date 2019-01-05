@@ -10,20 +10,17 @@
  */
 package vazkii.psi.common.spell.trick.block;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.EnumCADComponent;
 import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.internal.Vector3;
-import vazkii.psi.api.spell.EnumSpellStat;
-import vazkii.psi.api.spell.Spell;
-import vazkii.psi.api.spell.SpellCompilationException;
-import vazkii.psi.api.spell.SpellContext;
-import vazkii.psi.api.spell.SpellMetadata;
-import vazkii.psi.api.spell.SpellParam;
-import vazkii.psi.api.spell.SpellRuntimeException;
+import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.param.ParamVector;
 import vazkii.psi.api.spell.piece.PieceTrick;
@@ -67,33 +64,42 @@ public class PieceTrickConjureBlock extends PieceTrick {
 		if(!context.isInRadius(positionVal))
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 		
-		BlockPos pos = new BlockPos(positionVal.x, positionVal.y, positionVal.z);
-		
-		if(!context.caster.getEntityWorld().isBlockModifiable(context.caster, pos))
+		BlockPos pos = positionVal.toBlockPos();
+
+		World world = context.caster.getEntityWorld();
+
+		if(!world.isBlockModifiable(context.caster, pos))
 			return null;
-		
-		IBlockState state = context.caster.getEntityWorld().getBlockState(pos);
-		if(state.getBlock() != ModBlocks.conjured) {
-			PieceTrickPlaceBlock.placeBlock(context.caster, context.caster.getEntityWorld(), pos, context.getTargetSlot(), false, true);
-			
-			state = context.caster.getEntityWorld().getBlockState(pos);
 
-			if(!context.caster.getEntityWorld().isRemote && state.getBlock() == ModBlocks.conjured) {
-				context.caster.getEntityWorld().setBlockState(pos, messWithState(state));
-				TileConjured tile = (TileConjured) context.caster.getEntityWorld().getTileEntity(pos);
-
-				if(timeVal != null && timeVal.intValue() > 0) {
-					int val = timeVal.intValue();
-					tile.time = val;
-				}
-
-				ItemStack cad = PsiAPI.getPlayerCAD(context.caster);
-				if(cad != null)
-					tile.colorizer = ((ICAD) cad.getItem()).getComponentInSlot(cad, EnumCADComponent.DYE);
-			}
-		}
+		conjure(context, timeVal, pos, world, messWithState(ModBlocks.conjured.getDefaultState()));
 
 		return null;
+	}
+
+	public static void conjure(SpellContext context, Double timeVal, BlockPos pos, World world, IBlockState state) {
+		if(world.getBlockState(pos).getBlock() != state.getBlock()) {
+			conjure(world, pos, context.caster, state);
+
+			if(timeVal != null && timeVal.intValue() > 0) {
+				int val = timeVal.intValue();
+				world.scheduleUpdate(pos, state.getBlock(), val);
+			}
+
+			TileConjured tile = (TileConjured) world.getTileEntity(pos);
+			ItemStack cad = PsiAPI.getPlayerCAD(context.caster);
+			if(tile != null && cad != null)
+				tile.colorizer = ((ICAD) cad.getItem()).getComponentInSlot(cad, EnumCADComponent.DYE);
+		}
+	}
+
+	public static void conjure(World world, BlockPos pos, EntityPlayer player, IBlockState state) {
+		if(world.isRemote || !world.isBlockLoaded(pos) || !world.isBlockModifiable(player, pos))
+			return;
+
+		IBlockState inWorld = world.getBlockState(pos);
+		Block block = inWorld.getBlock();
+		if(block.isAir(inWorld, world, pos) || block.isReplaceable(world, pos))
+			world.setBlockState(pos, state);
 	}
 
 	public IBlockState messWithState(IBlockState state) {

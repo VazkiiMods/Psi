@@ -62,7 +62,7 @@ public class PieceTrickBreakBlock extends PieceTrick {
 		if(!context.isInRadius(positionVal))
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 
-		BlockPos pos = new BlockPos(positionVal.x, positionVal.y, positionVal.z);
+		BlockPos pos = positionVal.toBlockPos();
 		removeBlockWithDrops(context, context.caster, context.caster.getEntityWorld(), context.tool, pos, true);
 
 		return null;

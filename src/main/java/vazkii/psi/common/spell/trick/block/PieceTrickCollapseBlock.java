@@ -63,7 +63,7 @@ public class PieceTrickCollapseBlock extends PieceTrick {
 			tool = PsiAPI.getPlayerCAD(context.caster);
 
 		World world = context.caster.getEntityWorld();
-		BlockPos pos = new BlockPos(positionVal.x, positionVal.y, positionVal.z);
+		BlockPos pos = positionVal.toBlockPos();
 		BlockPos posDown = pos.down();
 		IBlockState state = world.getBlockState(pos);
 		IBlockState stateDown = world.getBlockState(posDown);
