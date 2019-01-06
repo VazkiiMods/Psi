@@ -83,6 +83,9 @@ public final class PersistencyHandler {
 	}
 
 	public static void save(int level) {
+		if (!doneInit)
+			init();
+
 		Minecraft mc = Minecraft.getMinecraft();
 		if(!ConfigHandler.usePersistentData || level <= persistentLevel || mc.player == null || mc.player.capabilities.isCreativeMode)
 			return;
