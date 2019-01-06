@@ -142,7 +142,7 @@ public abstract class FXQueued extends Particle {
 		if (particleAge++ >= particleMaxAge)
 			setExpired();
 
-		motionX -= 0.04 * particleGravity;
+		motionY -= 0.04 * particleGravity;
 
 //		if (!noClip)
 //			pushOutOfBlocks(posX, (getEntityBoundingBox().minY + getEntityBoundingBox().maxY) / 2.0D, posZ);
