@@ -34,7 +34,7 @@ public class FXWisp extends FXQueued {
 
 	public FXWisp(World world, double d, double d1, double d2,  float size, float red, float green, float blue, boolean distanceLimit, boolean depthTest, float maxAgeMul) {
 		super(world, d, d1, d2, size, red, green, blue, (int) (28 / (Math.random() * 0.3D + 0.7D) * maxAgeMul));
-		moteParticleScale = particleScale / size;
+		moteParticleScale = particleScale;
 		this.depthTest = depthTest;
 
 		moteHalfLife = particleMaxAge / 2;
