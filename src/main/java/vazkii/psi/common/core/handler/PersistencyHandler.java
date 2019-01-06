@@ -88,7 +88,7 @@ public final class PersistencyHandler {
 			return;
 
 		try {
-			if (persistentFile.exists() || persistentFile.createNewFile()) {
+			if (persistentFile != null && (persistentFile.exists() || persistentFile.createNewFile())) {
 				try (BufferedWriter writer = new BufferedWriter(new FileWriter(persistentFile))) {
 					writer.write("" + level);
 					writer.flush();
