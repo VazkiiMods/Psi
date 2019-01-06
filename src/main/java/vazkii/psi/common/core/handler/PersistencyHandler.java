@@ -87,10 +87,12 @@ public final class PersistencyHandler {
 		if(!ConfigHandler.usePersistentData || level <= persistentLevel || mc.player == null || mc.player.capabilities.isCreativeMode)
 			return;
 
-		try(BufferedWriter writer = new BufferedWriter(new FileWriter(persistentFile))) {
-			if(persistentFile.exists() || persistentFile.createNewFile()) {
-				writer.write("" + level);
-				writer.flush();
+		try {
+			if (persistentFile.exists() || persistentFile.createNewFile()) {
+				try (BufferedWriter writer = new BufferedWriter(new FileWriter(persistentFile))) {
+					writer.write("" + level);
+					writer.flush();
+				}
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
