@@ -81,6 +81,10 @@ public interface ISocketable extends IShowPsiBar {
         return stack.getItem() instanceof ICAD || !container.isCADOnlyContainer(bullet);
     }
 
+    default boolean canLoopcast(ItemStack stack) {
+    	return stack.getItem() instanceof ICAD;
+	}
+
 	@Override
 	default boolean shouldShow(ItemStack stack, IPlayerData data) {
 		return true;

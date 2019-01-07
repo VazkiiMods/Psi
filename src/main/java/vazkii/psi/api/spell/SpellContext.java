@@ -14,6 +14,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.RayTraceResult;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.internal.MathHelper;
@@ -33,7 +34,7 @@ public final class SpellContext {
 	 * The maximum distance from the spell's {@link #focalPoint} a piece of the spell can interact with.<br>
 	 * This should be checked against in any tricks that affect parts of the world given a position
 	 * or entity.
-	 * @see {@link #isInRadius(Entity)}, {@link #isInRadius(Vector3)}, {@link #isInRadius(double, double, double)}
+	 * @see #isInRadius(Entity), {@link #isInRadius(Vector3)}, {@link #isInRadius(double, double, double)}
 	 */
 	public static final double MAX_DISTANCE = 32;
 
@@ -58,6 +59,14 @@ public final class SpellContext {
 	 * loopcast. Increments every time for each loopcast iteration.
 	 */
 	public int loopcastIndex = 0;
+
+	/**
+	 * Which hand the object containing this spell was cast from.
+	 *
+	 * This is only used for loopcasting. If the context doesn't support loopcasting,
+	 * there is no need to set this field.
+	 */
+	public EnumHand castFrom;
 
 	// Tool stuff. Only available if the spell is casted from a Psimetal Tool
 	public ItemStack tool = ItemStack.EMPTY;

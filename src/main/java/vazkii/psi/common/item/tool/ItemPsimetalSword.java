@@ -10,8 +10,6 @@
  */
 package vazkii.psi.common.item.tool;
 
-import java.util.List;
-
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -29,6 +27,9 @@ import vazkii.psi.common.item.ItemCAD;
 import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.lib.LibItemNames;
 
+import javax.annotation.Nonnull;
+import java.util.List;
+
 public class ItemPsimetalSword extends ItemModSword implements IPsimetalTool {
 
 	public ItemPsimetalSword() {
@@ -36,7 +37,7 @@ public class ItemPsimetalSword extends ItemModSword implements IPsimetalTool {
 	}
 
 	@Override
-	public boolean hitEntity(ItemStack itemstack, EntityLivingBase target, EntityLivingBase attacker) {
+	public boolean hitEntity(ItemStack itemstack, EntityLivingBase target, @Nonnull EntityLivingBase attacker) {
 		super.hitEntity(itemstack, target, attacker);
 
 		if(attacker instanceof EntityPlayer) {
@@ -47,9 +48,8 @@ public class ItemPsimetalSword extends ItemModSword implements IPsimetalTool {
 
 			if(!playerCad.isEmpty()) {
 				ItemStack bullet = getBulletInSocket(itemstack, getSelectedSlot(itemstack));
-				ItemCAD.cast(player.getEntityWorld(), player, data, bullet, playerCad, 5, 10, 0.05F, (SpellContext context) -> {
-					context.attackedEntity = target;
-				});
+				ItemCAD.cast(player.getEntityWorld(), player, data, bullet, playerCad, 5, 10, 0.05F,
+						(SpellContext context) -> context.attackedEntity = target);
 			}
 		}
 
@@ -68,8 +68,8 @@ public class ItemPsimetalSword extends ItemModSword implements IPsimetalTool {
 	}
 
 	@Override
-	public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack) {
-		return par2ItemStack.getItem() == ModItems.material && par2ItemStack.getItemDamage() == 1 ? true : super.getIsRepairable(par1ItemStack, par2ItemStack);
+	public boolean getIsRepairable(ItemStack par1ItemStack, @Nonnull ItemStack par2ItemStack) {
+		return par2ItemStack.getItem() == ModItems.material && par2ItemStack.getItemDamage() == 1 || super.getIsRepairable(par1ItemStack, par2ItemStack);
 	}
 	
 	@Override

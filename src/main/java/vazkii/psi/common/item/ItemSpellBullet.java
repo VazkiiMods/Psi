@@ -10,19 +10,13 @@
  */
 package vazkii.psi.common.item;
 
-import java.util.List;
-
 import com.google.common.collect.ImmutableSet;
-
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
@@ -39,14 +33,12 @@ import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.common.core.PsiCreativeTab;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
-import vazkii.psi.common.entity.EntitySpellCharge;
-import vazkii.psi.common.entity.EntitySpellCircle;
-import vazkii.psi.common.entity.EntitySpellGrenade;
-import vazkii.psi.common.entity.EntitySpellMine;
-import vazkii.psi.common.entity.EntitySpellProjectile;
+import vazkii.psi.common.entity.*;
 import vazkii.psi.common.item.base.IPsiItem;
 import vazkii.psi.common.lib.LibItemNames;
 import vazkii.psi.common.spell.operator.vector.PieceOperatorVectorRaycast;
+
+import java.util.List;
 
 public class ItemSpellBullet extends ItemMod implements ISpellContainer, IPsiItem {
 
@@ -159,7 +151,10 @@ public class ItemSpellBullet extends ItemMod implements ISpellContainer, IPsiIte
 		case 5: // Loopcast
 			if(!PlayerDataHandler.get(context.caster).loopcasting) {
 				context.cspell.safeExecute(context);
-				PlayerDataHandler.get(context.caster).loopcasting = true;
+				PlayerDataHandler.PlayerData data = PlayerDataHandler.get(context.caster);
+				data.loopcasting = true;
+				data.loopcastHand = context.castFrom;
+				data.lastTickLoopcastStack = null;
 			}
 
 			break;

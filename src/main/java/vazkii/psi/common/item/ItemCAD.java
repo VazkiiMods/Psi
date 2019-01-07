@@ -162,7 +162,7 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 		}
 
 		ItemStack bullet = getBulletInSocket(itemStackIn, getSelectedSlot(itemStackIn));
-		boolean did = cast(worldIn, playerIn, data, bullet, itemStackIn, 40, 25, 0.5F, null);
+		boolean did = cast(worldIn, playerIn, data, bullet, itemStackIn, 40, 25, 0.5F, ctx -> ctx.castFrom = hand);
 
 		if(!data.overflowed && bullet.isEmpty() && craft(playerIn, new ItemStack(Items.REDSTONE), new ItemStack(ModItems.material))) {
 			if(!worldIn.isRemote)

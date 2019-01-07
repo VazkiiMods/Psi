@@ -25,6 +25,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.network.play.server.SPacketPlayerPosLook.EnumFlags;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.Style;
@@ -51,6 +52,7 @@ import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.EnumCADStat;
 import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.cad.ICADColorizer;
+import vazkii.psi.api.cad.ISocketable;
 import vazkii.psi.api.exosuit.IPsiEventArmor;
 import vazkii.psi.api.exosuit.PsiArmorEvent;
 import vazkii.psi.api.internal.IPlayerData;
@@ -257,6 +259,9 @@ public class PlayerDataHandler {
 		public String lastSpellGroup;
 		public int levelPoints;
 		public boolean loopcasting = false;
+		public EnumHand loopcastHand = EnumHand.MAIN_HAND;
+		public ItemStack lastTickLoopcastStack;
+
 		public int loopcastTime = 1;
 		public int loopcastAmount = 0;
 		public int loopcastFadeTime = 0;
@@ -339,13 +344,9 @@ public class PlayerDataHandler {
 			}
 
 			cadStack = getCAD();
-			ICAD icad = null;
 			Color color = new Color(ICADColorizer.DEFAULT_SPELL_COLOR);
 
-			if(!cadStack.isEmpty()) {
-				icad = (ICAD) cadStack.getItem();
-				color = Psi.proxy.getCADColor(cadStack);
-			}
+			if(!cadStack.isEmpty()) color = Psi.proxy.getCADColor(cadStack);
 
 			float r = color.getRed() / 255F;
 			float g = color.getGreen() / 255F;
@@ -355,11 +356,25 @@ public class PlayerDataHandler {
 				if(overflowed)
 					stopLoopcast();
 				
-				if(loopcasting) {
-					if(icad == null || cadStack.isEmpty() || player.getHeldItemMainhand() != cadStack && player.getHeldItemOffhand() != cadStack) {
+				if(loopcasting && loopcastHand != null) {
+					ItemStack stackInHand = player.getHeldItem(loopcastHand);
+
+					if (lastTickLoopcastStack != null && (!ItemStack.areItemsEqual(lastTickLoopcastStack, stackInHand) ||
+								!Objects.equals(lastTickLoopcastStack.getTagCompound(), stackInHand.getTagCompound()))) {
 						stopLoopcast();
 						break loopcast;
 					}
+
+					lastTickLoopcastStack = stackInHand.copy();
+
+					if (stackInHand.isEmpty() ||
+							!(stackInHand.getItem() instanceof ISocketable) ||
+							!((ISocketable) stackInHand.getItem()).canLoopcast(stackInHand)) {
+						stopLoopcast();
+						break loopcast;
+					}
+
+					ISocketable castingItem = (ISocketable) stackInHand.getItem();
 
 					for(int i = 0; i < 5; i++) {
 						double x = player.posX + (Math.random() - 0.5) * 2.1 * player.width;
@@ -370,7 +385,7 @@ public class PlayerDataHandler {
 					}
 
 					if(loopcastTime > 0 && loopcastTime % 5 == 0) {
-						ItemStack bullet = icad.getBulletInSocket(cadStack, icad.getSelectedSlot(cadStack));
+						ItemStack bullet = castingItem.getBulletInSocket(stackInHand, castingItem.getSelectedSlot(stackInHand));
 						if(bullet.isEmpty()) {
 							stopLoopcast();
 							break loopcast;
@@ -521,6 +536,10 @@ public class PlayerDataHandler {
 			if(loopcasting)
 				loopcastFadeTime = 5;
 			loopcasting = false;
+
+			lastTickLoopcastStack = null;
+			loopcastHand = null;
+
 			loopcastTime = 1;
 			loopcastAmount = 0;
 		}
