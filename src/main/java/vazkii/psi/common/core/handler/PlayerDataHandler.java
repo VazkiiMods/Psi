@@ -532,6 +532,14 @@ public class PlayerDataHandler {
 			lastDimension = dimension;
 		}
 
+		public void validate() {
+			int expectedPoints = getLevel() - spellGroupsUnlocked.size();
+			if (!spellGroupsUnlocked.contains(lastSpellGroup))
+				expectedPoints -= 1;
+
+			levelPoints = Math.max(levelPoints, expectedPoints);
+		}
+
 		public void stopLoopcast() {
 			if(loopcasting)
 				loopcastFadeTime = 5;
@@ -715,6 +723,7 @@ public class PlayerDataHandler {
 				EntityPlayer player = playerWR.get();
 
 				if(player != null) {
+					validate();
 					NBTTagCompound cmp = getDataCompoundForPlayer(player);
 					writeToNBT(cmp);
 				}
@@ -755,6 +764,7 @@ public class PlayerDataHandler {
 				if(player != null) {
 					NBTTagCompound cmp = getDataCompoundForPlayer(player);
 					readFromNBT(cmp);
+					validate();
 				}
 			}
 		}
@@ -767,9 +777,9 @@ public class PlayerDataHandler {
 			lastSpellGroup = cmp.getString(TAG_LAST_SPELL_GROUP);
 			overflowed = cmp.getBoolean(TAG_OVERFLOWED);
 			
-			if(cmp.hasKey(TAG_SPELL_GROUPS_UNLOCKED, Constants.NBT.TAG_STRING)) {
+			if(cmp.hasKey(TAG_SPELL_GROUPS_UNLOCKED, Constants.NBT.TAG_LIST)) {
 				spellGroupsUnlocked.clear();
-				NBTTagList list = cmp.getTagList(TAG_SPELL_GROUPS_UNLOCKED, 8); // 8 -> String
+				NBTTagList list = cmp.getTagList(TAG_SPELL_GROUPS_UNLOCKED, Constants.NBT.TAG_STRING); // 8 -> String
 				int count = list.tagCount();
 				for(int i = 0; i < count; i++)
 					spellGroupsUnlocked.add(list.getStringTagAt(i));
