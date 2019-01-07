@@ -32,6 +32,8 @@ import vazkii.psi.common.crafting.recipe.DriveDuplicateRecipe;
 import vazkii.psi.common.item.base.IPsiItem;
 import vazkii.psi.common.lib.LibItemNames;
 
+import javax.annotation.Nonnull;
+
 public class ItemSpellDrive extends ItemMod implements IPsiItem {
 
 	private static final String TAG_SPELL = "spell";
@@ -50,13 +52,15 @@ public class ItemSpellDrive extends ItemMod implements IPsiItem {
 		return getSpell(stack) != null;
 	}
 
+	@Nonnull
 	@Override
-	public ItemStack getContainerItem(ItemStack itemStack) {
+	public ItemStack getContainerItem(@Nonnull ItemStack itemStack) {
 		return itemStack.copy();
 	}
 
+	@Nonnull
 	@Override
-	public String getItemStackDisplayName(ItemStack stack) {
+	public String getItemStackDisplayName(@Nonnull ItemStack stack) {
 		String name = super.getItemStackDisplayName(stack);
 		NBTTagCompound cmp = ItemNBTHelper.getCompound(stack, TAG_SPELL, false);
 		String spellName = cmp.getString(Spell.TAG_SPELL_NAME); // We don't need to load the whole spell just for the name
@@ -66,6 +70,7 @@ public class ItemSpellDrive extends ItemMod implements IPsiItem {
 		return name + " (" + TextFormatting.GREEN + spellName + TextFormatting.RESET + ")";
 	}
 
+	@Nonnull
 	@Override
 	public EnumActionResult onItemUse(EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
 		ItemStack stack = playerIn.getHeldItem(hand);
@@ -101,8 +106,9 @@ public class ItemSpellDrive extends ItemMod implements IPsiItem {
 		return EnumActionResult.PASS;
 	}
 
+	@Nonnull
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand hand){
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, @Nonnull EnumHand hand){
 		ItemStack itemStackIn = playerIn.getHeldItem(hand);
 		if(getSpell(itemStackIn) != null && playerIn.isSneaking()) {
 			if(!worldIn.isRemote)

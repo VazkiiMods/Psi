@@ -10,12 +10,12 @@
  */
 package vazkii.psi.api.spell;
 
-import java.util.EnumMap;
-import java.util.Map;
-
 import net.minecraft.item.ItemStack;
 import vazkii.psi.api.cad.EnumCADStat;
 import vazkii.psi.api.cad.ICAD;
+
+import java.util.EnumMap;
+import java.util.Map;
 
 /**
  * Metadata for a given spell. Basically just a fancy holder for a map of the spell's
@@ -23,7 +23,7 @@ import vazkii.psi.api.cad.ICAD;
  */
 public final class SpellMetadata {
 
-	public Map<EnumSpellStat, Integer> stats = new EnumMap(EnumSpellStat.class);
+	public Map<EnumSpellStat, Integer> stats = new EnumMap<>(EnumSpellStat.class);
 
 	/**
 	 * Should errors from this spell not be sent to the player's chat?

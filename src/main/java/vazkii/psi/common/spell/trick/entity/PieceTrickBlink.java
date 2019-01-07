@@ -52,7 +52,7 @@ public class PieceTrickBlink extends PieceTrick {
 
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
-		Entity targetVal = this.<Entity>getParamValue(context, target);
+		Entity targetVal = this.getParamValue(context, target);
 		Double distanceVal = this.<Double>getParamValue(context, distance);
 
 		blink(context, targetVal, distanceVal);

@@ -56,7 +56,7 @@ public class PieceTrickConjureBlock extends PieceTrick {
 
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
-		Vector3 positionVal = this.<Vector3>getParamValue(context, position);
+		Vector3 positionVal = this.getParamValue(context, position);
 		Double timeVal = this.<Double>getParamValue(context, time);
 
 		if(positionVal == null)

@@ -40,8 +40,8 @@ public class PieceOperatorListRemove extends PieceOperator {
 
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
-		Entity targetVal = this.<Entity>getParamValue(context, target);
-		EntityListWrapper listVal = this.<EntityListWrapper>getParamValue(context, list);
+		Entity targetVal = this.getParamValue(context, target);
+		EntityListWrapper listVal = this.getParamValue(context, list);
 
 		if(targetVal == null)
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_TARGET);

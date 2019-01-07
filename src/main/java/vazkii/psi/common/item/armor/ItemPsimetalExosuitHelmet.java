@@ -20,6 +20,8 @@ import vazkii.psi.api.exosuit.IExosuitSensor;
 import vazkii.psi.api.exosuit.ISensorHoldable;
 import vazkii.psi.common.lib.LibItemNames;
 
+import javax.annotation.Nonnull;
+
 public class ItemPsimetalExosuitHelmet extends ItemPsimetalArmor implements ISensorHoldable {
 
 	private static final String TAG_SENSOR = "sensor";
@@ -72,8 +74,9 @@ public class ItemPsimetalExosuitHelmet extends ItemPsimetalArmor implements ISen
 		return !getContainerItem(stack).isEmpty();
 	}
 
+	@Nonnull
 	@Override
-	public ItemStack getContainerItem(ItemStack itemStack) {
+	public ItemStack getContainerItem(@Nonnull ItemStack itemStack) {
 		return getAttachedSensor(itemStack);
 	}
 

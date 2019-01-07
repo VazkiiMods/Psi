@@ -16,6 +16,8 @@ import net.minecraft.client.renderer.GlStateManager;
 import vazkii.psi.api.spell.SpellPiece;
 import vazkii.psi.client.gui.GuiProgrammer;
 
+import javax.annotation.Nonnull;
+
 public class GuiButtonSpellPiece extends GuiButton {
 
 	public SpellPiece piece;
@@ -28,7 +30,7 @@ public class GuiButtonSpellPiece extends GuiButton {
 	}
 
 	@Override
-	public void drawButton(Minecraft par1Minecraft, int par2, int par3, float pticks) {
+	public void drawButton(@Nonnull Minecraft par1Minecraft, int par2, int par3, float pticks) {
 		if(enabled && visible) {
 			hovered = par2 >= x && par3 >= y && par2 < x + width && par3 < y + height;
 			int i = getHoverState(hovered);

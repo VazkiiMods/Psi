@@ -16,6 +16,8 @@ import net.minecraft.entity.item.EntityArmorStand;
 import vazkii.arl.item.ModelModArmor;
 import vazkii.arl.util.ClientTicker;
 
+import javax.annotation.Nonnull;
+
 public class ModelPsimetalExosuit extends ModelModArmor {
 
 	public ModelRenderer helm;
@@ -117,7 +119,7 @@ public class ModelPsimetalExosuit extends ModelModArmor {
 	}
 
 	@Override
-	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
+	public void render(@Nonnull Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
 		if(entity instanceof EntityArmorStand) {
 			f = 0;
 			f1 = 0;

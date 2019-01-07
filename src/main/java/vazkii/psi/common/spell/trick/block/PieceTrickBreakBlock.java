@@ -55,7 +55,7 @@ public class PieceTrickBreakBlock extends PieceTrick {
 		if(context.caster.getEntityWorld().isRemote)
 			return null;
 
-		Vector3 positionVal = this.<Vector3>getParamValue(context, position);
+		Vector3 positionVal = this.getParamValue(context, position);
 
 		if(positionVal == null)
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
@@ -77,7 +77,7 @@ public class PieceTrickBreakBlock extends PieceTrick {
 
 		IBlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
-		if(!world.isRemote && !block.isAir(state, world, pos) && !(block instanceof BlockLiquid) && !(block instanceof IFluidBlock) && block.getPlayerRelativeBlockHardness(state, player, world, pos) > 0) {
+		if(!world.isRemote && !block.isAir(state, world, pos) && !(block instanceof BlockLiquid) && !(block instanceof IFluidBlock) && state.getPlayerRelativeBlockHardness(player, world, pos) > 0) {
 			if(!canHarvestBlock(block, player, world, pos, tool))
 				return;
 

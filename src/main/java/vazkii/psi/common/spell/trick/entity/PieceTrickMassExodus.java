@@ -55,8 +55,8 @@ public class PieceTrickMassExodus extends PieceTrick {
 
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
-		EntityListWrapper targetVal = this.<EntityListWrapper>getParamValue(context, target);
-		Vector3 positionVal = this.<Vector3>getParamValue(context, position);
+		EntityListWrapper targetVal = this.getParamValue(context, target);
+		Vector3 positionVal = this.getParamValue(context, position);
 		Double speedVal = this.<Double>getParamValue(context, speed);
 
 		for(Entity e : targetVal) {

@@ -34,6 +34,8 @@ import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.common.Psi;
 
+import javax.annotation.Nonnull;
+
 @SuppressWarnings({"rawtypes", "unchecked"})
 public class EntitySpellProjectile extends EntityThrowable {
 
@@ -182,7 +184,7 @@ public class EntitySpellProjectile extends EntityThrowable {
 	}
 
 	@Override
-	protected void onImpact(RayTraceResult pos) {
+	protected void onImpact(@Nonnull RayTraceResult pos) {
 		if(pos.entityHit != null && pos.entityHit instanceof EntityLivingBase) {
 			EntityLivingBase e = (EntityLivingBase) pos.entityHit; // apparently RayTraceResult is mutable \:D/
 			cast((SpellContext context) -> {

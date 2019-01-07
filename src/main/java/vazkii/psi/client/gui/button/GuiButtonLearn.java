@@ -17,6 +17,8 @@ import net.minecraft.util.text.TextFormatting;
 import vazkii.psi.api.internal.TooltipHelper;
 import vazkii.psi.client.gui.GuiLeveling;
 
+import javax.annotation.Nonnull;
+
 public class GuiButtonLearn extends GuiButton {
 
 	GuiLeveling gui;
@@ -27,7 +29,7 @@ public class GuiButtonLearn extends GuiButton {
 	}
 
 	@Override
-	public void drawButton(Minecraft par1Minecraft, int par2, int par3, float pticks) {
+	public void drawButton(@Nonnull Minecraft par1Minecraft, int par2, int par3, float pticks) {
 		if(enabled) {
 			hovered = par2 >= x && par3 >= y && par2 < x + width && par3 < y + height;
 			int k = getHoverState(hovered);

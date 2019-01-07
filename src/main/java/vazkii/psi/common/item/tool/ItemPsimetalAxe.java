@@ -22,6 +22,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import vazkii.psi.common.lib.LibItemNames;
 
+import javax.annotation.Nonnull;
+
 public class ItemPsimetalAxe extends ItemPsimetalTool {
 
 	private static final Set<Block> EFFECTIVE_ON = Sets.newHashSet(new Block[] {Blocks.PLANKS, Blocks.BOOKSHELF, Blocks.LOG, Blocks.LOG2, Blocks.CHEST, Blocks.PUMPKIN, Blocks.LIT_PUMPKIN, Blocks.MELON_BLOCK, Blocks.LADDER});
@@ -34,7 +36,7 @@ public class ItemPsimetalAxe extends ItemPsimetalTool {
 	// ItemAxe copypasta:
 
 	@Override
-	public float getDestroySpeed(ItemStack stack, IBlockState state) {
+	public float getDestroySpeed(@Nonnull ItemStack stack, IBlockState state) {
 		return state.getMaterial() != Material.WOOD && state.getMaterial() != Material.PLANTS && state.getMaterial() != Material.VINE ? super.getDestroySpeed(stack, state) : efficiency;
 	}
 

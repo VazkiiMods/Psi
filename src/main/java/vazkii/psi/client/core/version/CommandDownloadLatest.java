@@ -18,22 +18,26 @@ import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 
+import javax.annotation.Nonnull;
+
 public class CommandDownloadLatest extends CommandBase {
 
 	private static final boolean ENABLED = true;
 
+	@Nonnull
 	@Override
 	public String getName() {
 		return "psi-download-latest";
 	}
 
+	@Nonnull
 	@Override
-	public String getUsage(ICommandSender var1) {
+	public String getUsage(@Nonnull ICommandSender var1) {
 		return "/psi-download-latest <version>";
 	}
 
 	@Override
-	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
+	public void execute(@Nonnull MinecraftServer server, @Nonnull ICommandSender sender, @Nonnull String[] args) throws CommandException {
 		if(!ENABLED)
 			sender.sendMessage(new TextComponentTranslation("psi.versioning.disabled").setStyle(new Style().setColor(TextFormatting.RED)));
 

@@ -35,7 +35,7 @@ public class PieceOperatorEntityPosition extends PieceOperator {
 
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
-		Entity e = this.<Entity>getParamValue(context, target);
+		Entity e = this.getParamValue(context, target);
 
 		if(e == null)
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_TARGET);

@@ -39,8 +39,8 @@ public class PieceOperatorClosestToPoint extends PieceOperator {
 
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
-		EntityListWrapper listVal = this.<EntityListWrapper>getParamValue(context, list);
-		Vector3 positionVal = this.<Vector3>getParamValue(context, position);
+		EntityListWrapper listVal = this.getParamValue(context, list);
+		Vector3 positionVal = this.getParamValue(context, position);
 
 		double closest = Double.MAX_VALUE;
 		Entity closestEntity = null;

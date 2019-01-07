@@ -29,6 +29,8 @@ import vazkii.psi.common.core.handler.PsiSoundHandler;
 import vazkii.psi.common.item.base.IPsiItem;
 import vazkii.psi.common.lib.LibItemNames;
 
+import javax.annotation.Nonnull;
+
 public class ItemExosuitController extends ItemMod implements ISocketableController, IPsiItem {
 
 	private static final String TAG_SELECTED_CONTROL_SLOT = "selectedControlSlot";
@@ -39,8 +41,9 @@ public class ItemExosuitController extends ItemMod implements ISocketableControl
 		setCreativeTab(PsiCreativeTab.INSTANCE);
 	}
 
+	@Nonnull
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand hand) {
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, @Nonnull EnumHand hand) {
 		ItemStack itemStackIn = playerIn.getHeldItem(hand);
 		if(playerIn.isSneaking()) {
 			if(!worldIn.isRemote)

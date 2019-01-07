@@ -49,7 +49,7 @@ public class PieceTrickTorrent extends PieceTrick {
 		if(context.caster.getEntityWorld().isRemote || context.caster.getEntityWorld().provider.doesWaterVaporize())
 			return null;
 
-		Vector3 positionVal = this.<Vector3>getParamValue(context, position);
+		Vector3 positionVal = this.getParamValue(context, position);
 
 		if(positionVal == null)
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);

@@ -22,6 +22,8 @@ import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.cad.ICADColorizer;
 import vazkii.psi.common.item.ItemCAD;
 
+import javax.annotation.Nonnull;
+
 public class ColorizerChangeRecipe extends ModRecipe {
 
 	public ColorizerChangeRecipe() {
@@ -29,7 +31,7 @@ public class ColorizerChangeRecipe extends ModRecipe {
 	}
 
 	@Override
-	public boolean matches(InventoryCrafting var1, World var2) {
+	public boolean matches(@Nonnull InventoryCrafting var1, @Nonnull World var2) {
 		boolean foundColorizer = false;
 		boolean foundCAD = false;
 
@@ -51,8 +53,9 @@ public class ColorizerChangeRecipe extends ModRecipe {
 		return foundColorizer && foundCAD;
 	}
 
+	@Nonnull
 	@Override
-	public ItemStack getCraftingResult(InventoryCrafting var1) {
+	public ItemStack getCraftingResult(@Nonnull InventoryCrafting var1) {
 		ItemStack colorizer = ItemStack.EMPTY;
 		ItemStack cad = ItemStack.EMPTY;
 
@@ -74,11 +77,13 @@ public class ColorizerChangeRecipe extends ModRecipe {
 		return copy;
 	}
 
+	@Nonnull
 	@Override
 	public ItemStack getRecipeOutput() {
 		return ItemStack.EMPTY;
 	}
 
+	@Nonnull
 	@Override
 	public NonNullList<ItemStack> getRemainingItems(InventoryCrafting inv) {
 		NonNullList<ItemStack> ret = NonNullList.withSize(inv.getSizeInventory(), ItemStack.EMPTY);

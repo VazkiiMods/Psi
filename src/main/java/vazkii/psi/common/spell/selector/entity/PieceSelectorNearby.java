@@ -54,7 +54,7 @@ public abstract class PieceSelectorNearby extends PieceSelector {
 
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
-		Vector3 positionVal = this.<Vector3>getParamValue(context, position);
+		Vector3 positionVal = this.getParamValue(context, position);
 		Double radiusVal = this.<Double>getParamValue(context, radius);
 
 		if(!context.isInRadius(positionVal))

@@ -60,7 +60,7 @@ public abstract class PieceTrickPotionBase extends PieceTrick {
 
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
-		Entity targetVal = this.<Entity>getParamValue(context, target);
+		Entity targetVal = this.getParamValue(context, target);
 
 		context.verifyEntity(targetVal);
 		if(!(targetVal instanceof EntityLivingBase))

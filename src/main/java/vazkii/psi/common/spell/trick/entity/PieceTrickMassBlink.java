@@ -51,7 +51,7 @@ public class PieceTrickMassBlink extends PieceTrick {
 
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
-		EntityListWrapper targetVal = this.<EntityListWrapper>getParamValue(context, target);
+		EntityListWrapper targetVal = this.getParamValue(context, target);
 		Double distanceVal = this.<Double>getParamValue(context, distance);
 
 		for(Entity e : targetVal)

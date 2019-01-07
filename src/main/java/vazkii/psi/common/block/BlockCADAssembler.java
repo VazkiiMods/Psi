@@ -10,17 +10,13 @@
  */
 package vazkii.psi.common.block;
 
-import java.util.Random;
-
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -34,6 +30,9 @@ import vazkii.psi.common.block.tile.TileCADAssembler;
 import vazkii.psi.common.core.PsiCreativeTab;
 import vazkii.psi.common.lib.LibBlockNames;
 import vazkii.psi.common.lib.LibGuiIDs;
+
+import javax.annotation.Nonnull;
+import java.util.Random;
 
 public class BlockCADAssembler extends BlockFacing implements IPsiBlock {
 
@@ -60,7 +59,7 @@ public class BlockCADAssembler extends BlockFacing implements IPsiBlock {
 	}
 
 	@Override
-	public void breakBlock(World par1World, BlockPos pos, IBlockState state) {
+	public void breakBlock(@Nonnull World par1World, @Nonnull BlockPos pos, @Nonnull IBlockState state) {
 		TileSimpleInventory inv = (TileSimpleInventory) par1World.getTileEntity(pos);
 
 		if(inv != null) {
@@ -86,7 +85,7 @@ public class BlockCADAssembler extends BlockFacing implements IPsiBlock {
 						entityitem.motionZ = (float)random.nextGaussian() * f3;
 
 						if(itemstack.hasTagCompound())
-							entityitem.getItem().setTagCompound((NBTTagCompound)itemstack.getTagCompound().copy());
+							entityitem.getItem().setTagCompound(itemstack.getTagCompound().copy());
 					}
 				}
 			}
@@ -107,7 +106,7 @@ public class BlockCADAssembler extends BlockFacing implements IPsiBlock {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(@Nonnull World worldIn, int meta) {
 		return new TileCADAssembler();
 	}
 

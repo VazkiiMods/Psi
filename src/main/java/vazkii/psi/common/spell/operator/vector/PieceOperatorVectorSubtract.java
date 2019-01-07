@@ -37,9 +37,9 @@ public class PieceOperatorVectorSubtract extends PieceOperator {
 
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
-		Vector3 v1 = this.<Vector3>getParamValue(context, vec1);
-		Vector3 v2 = this.<Vector3>getParamValue(context, vec2);
-		Vector3 v3 = this.<Vector3>getParamValue(context, vec3);
+		Vector3 v1 = this.getParamValue(context, vec1);
+		Vector3 v2 = this.getParamValue(context, vec2);
+		Vector3 v3 = this.getParamValue(context, vec3);
 
 		Vector3 r = v1.copy().sub(v2);
 		if(v3 != null)

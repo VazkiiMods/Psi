@@ -55,8 +55,8 @@ public class PieceTrickMassAddMotion extends PieceTrick {
 
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
-		EntityListWrapper targetVal = this.<EntityListWrapper>getParamValue(context, target);
-		Vector3 directionVal = this.<Vector3>getParamValue(context, direction);
+		EntityListWrapper targetVal = this.getParamValue(context, target);
+		Vector3 directionVal = this.getParamValue(context, direction);
 		Double speedVal = this.<Double>getParamValue(context, speed);
 
 		for(Entity e : targetVal)

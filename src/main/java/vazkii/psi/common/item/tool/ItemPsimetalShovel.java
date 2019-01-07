@@ -28,6 +28,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import vazkii.psi.common.lib.LibItemNames;
 
+import javax.annotation.Nonnull;
+
 public class ItemPsimetalShovel extends ItemPsimetalTool {
 
 	private static final Set<Block> EFFECTIVE_ON = Sets.newHashSet(new Block[] {Blocks.CLAY, Blocks.DIRT, Blocks.FARMLAND, Blocks.GRASS, Blocks.GRAVEL, Blocks.MYCELIUM, Blocks.SAND, Blocks.SNOW, Blocks.SNOW_LAYER, Blocks.SOUL_SAND});
@@ -45,6 +47,7 @@ public class ItemPsimetalShovel extends ItemPsimetalTool {
 		return blockIn == Blocks.SNOW_LAYER ? true : blockIn == Blocks.SNOW;
 	}
 	
+	@Nonnull
 	@Override
     public EnumActionResult onItemUse(EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
     	return Items.IRON_SHOVEL.onItemUse(playerIn, worldIn, pos, hand, facing, hitX, hitY, hitZ);

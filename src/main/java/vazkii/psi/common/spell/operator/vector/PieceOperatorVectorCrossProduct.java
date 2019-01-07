@@ -35,8 +35,8 @@ public class PieceOperatorVectorCrossProduct extends PieceOperator {
 
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
-		Vector3 v1 = this.<Vector3>getParamValue(context, vec1);
-		Vector3 v2 = this.<Vector3>getParamValue(context, vec2);
+		Vector3 v1 = this.getParamValue(context, vec1);
+		Vector3 v2 = this.getParamValue(context, vec2);
 
 		return v1.copy().crossProduct(v2);
 	}

@@ -33,6 +33,8 @@ import vazkii.psi.common.item.base.IHUDItem;
 import vazkii.psi.common.item.base.IPsiItem;
 import vazkii.psi.common.lib.LibItemNames;
 
+import javax.annotation.Nonnull;
+
 public class ItemVectorRuler extends ItemMod implements IHUDItem, IPsiItem {
 
 	private static final String TAG_SRC_X = "srcX";
@@ -49,6 +51,7 @@ public class ItemVectorRuler extends ItemMod implements IHUDItem, IPsiItem {
 		setCreativeTab(PsiCreativeTab.INSTANCE);
 	}
 	
+	@Nonnull
 	@Override
 	public EnumActionResult onItemUse(EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
 		ItemStack stack = playerIn.getHeldItem(hand);

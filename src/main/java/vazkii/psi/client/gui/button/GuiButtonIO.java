@@ -17,6 +17,8 @@ import net.minecraft.util.text.TextFormatting;
 import vazkii.psi.api.internal.TooltipHelper;
 import vazkii.psi.client.gui.GuiProgrammer;
 
+import javax.annotation.Nonnull;
+
 public class GuiButtonIO extends GuiButton {
 
 	public boolean out;
@@ -29,7 +31,7 @@ public class GuiButtonIO extends GuiButton {
 	}
 
 	@Override
-	public void drawButton(Minecraft par1Minecraft, int par2, int par3, float pticks) {
+	public void drawButton(@Nonnull Minecraft par1Minecraft, int par2, int par3, float pticks) {
 		if(enabled && !gui.takingScreenshot) {
 			hovered = par2 >= x && par3 >= y && par2 < x + width && par3 < y + height;
 			int k = getHoverState(hovered);

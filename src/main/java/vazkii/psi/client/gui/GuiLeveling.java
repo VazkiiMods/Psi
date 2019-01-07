@@ -300,8 +300,6 @@ public class GuiLeveling extends GuiScreen {
 		
 		public GroupList(Minecraft client, int width, int height, int top, int bottom, int left, int entryHeight, int screenWidth, int screenHeight) {
 			super(client, width, height, top, bottom, left, entryHeight, screenWidth, screenHeight);
-			//noinspection deprecation
-			func_27258_a(false); // highlightSelected = false
 			ReflectionHelper.setPrivateValue(GuiScrollingList.class, this, scrollDistanceGroup, "scrollDistance");
 		}
 
@@ -319,7 +317,7 @@ public class GuiLeveling extends GuiScreen {
 
 		@Override
 		protected boolean isSelected(int index) {
-			return selected == index;
+			return false;
 		}
 
 		@Override
@@ -333,7 +331,7 @@ public class GuiLeveling extends GuiScreen {
 
 			if(slotId % 2 == 0)
 				drawRect(left, slotTop, left + width, slotTop + slotHeight, 0x1A000000);
-			if(isSelected(slotId))
+			if(slotId == selectedIndex)
 				drawRect(left, slotTop, left + width, slotTop + slotHeight, 0x44005555);
 
 			boolean taken = data.isPieceGroupUnlocked(group.name);

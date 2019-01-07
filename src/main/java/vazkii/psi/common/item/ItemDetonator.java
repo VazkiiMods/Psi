@@ -26,6 +26,8 @@ import vazkii.psi.common.entity.EntitySpellCharge;
 import vazkii.psi.common.item.base.IPsiItem;
 import vazkii.psi.common.lib.LibItemNames;
 
+import javax.annotation.Nonnull;
+
 public class ItemDetonator extends ItemMod implements IPsiItem {
 
 	public ItemDetonator() {
@@ -34,8 +36,9 @@ public class ItemDetonator extends ItemMod implements IPsiItem {
 		setCreativeTab(PsiCreativeTab.INSTANCE);
 	}
 
+	@Nonnull
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand hand) {
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, @Nonnull EnumHand hand) {
 		ItemStack itemStackIn = playerIn.getHeldItem(hand);
 		List<EntitySpellCharge> charges = worldIn.getEntitiesWithinAABB(EntitySpellCharge.class, playerIn.getEntityBoundingBox().grow(32, 32, 32));
 		if(!charges.isEmpty())

@@ -27,6 +27,8 @@ import vazkii.psi.common.Psi;
 import vazkii.psi.common.entity.EntitySpellCircle;
 import vazkii.psi.common.lib.LibResources;
 
+import javax.annotation.Nonnull;
+
 public class RenderSpellCircle extends Render<EntitySpellCircle> {
 
 	private static final ResourceLocation[] layers = new ResourceLocation[] {
@@ -40,7 +42,7 @@ public class RenderSpellCircle extends Render<EntitySpellCircle> {
 	}
 
 	@Override
-	public void doRender(EntitySpellCircle entity, double x, double y, double z, float entityYaw, float partialTicks) {
+	public void doRender(@Nonnull EntitySpellCircle entity, double x, double y, double z, float entityYaw, float partialTicks) {
 		super.doRender(entity, x, y, z, entityYaw, partialTicks);
 
 		int colorVal = ICADColorizer.DEFAULT_SPELL_COLOR;
@@ -100,7 +102,7 @@ public class RenderSpellCircle extends Render<EntitySpellCircle> {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntitySpellCircle entity) {
+	protected ResourceLocation getEntityTexture(@Nonnull EntitySpellCircle entity) {
 		return null;
 	}
 

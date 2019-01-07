@@ -20,6 +20,8 @@ import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.lib.LibResources;
 
+import javax.annotation.Nonnull;
+
 public class PsiCreativeTab extends CreativeTabs {
 
 	public static PsiCreativeTab INSTANCE = new PsiCreativeTab();
@@ -31,11 +33,13 @@ public class PsiCreativeTab extends CreativeTabs {
 		setBackgroundImageName(LibResources.GUI_CREATIVE);
 	}
 
+	@Nonnull
 	@Override
 	public ItemStack getIconItemStack() {
 		return new ItemStack(ModItems.cadAssembly);
 	}
 
+	@Nonnull
 	@Override
 	public ItemStack getTabIconItem() {
 		return getIconItemStack();
@@ -47,7 +51,7 @@ public class PsiCreativeTab extends CreativeTabs {
 	}
 
 	@Override
-	public void displayAllRelevantItems(NonNullList<ItemStack> p_78018_1_) {
+	public void displayAllRelevantItems(@Nonnull NonNullList<ItemStack> p_78018_1_) {
 		list = p_78018_1_;
 
 		addBlock(ModBlocks.cadAssembler);

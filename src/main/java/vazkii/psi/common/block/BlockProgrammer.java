@@ -10,11 +10,8 @@
  */
 package vazkii.psi.common.block;
 
-import java.util.UUID;
-
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -45,6 +42,9 @@ import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
 import vazkii.psi.common.core.handler.PsiSoundHandler;
 import vazkii.psi.common.lib.LibBlockNames;
 import vazkii.psi.common.lib.LibGuiIDs;
+
+import javax.annotation.Nonnull;
+import java.util.UUID;
 
 public class BlockProgrammer extends BlockFacing implements IPsiBlock {
 
@@ -117,15 +117,17 @@ public class BlockProgrammer extends BlockFacing implements IPsiBlock {
 		return super.makeDefaultState().withProperty(ENABLED, false);
 	}
 
+	@Nonnull
 	@Override
-	public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+	public IBlockState getActualState(@Nonnull IBlockState state, IBlockAccess worldIn, BlockPos pos) {
 		TileEntity tile = worldIn.getTileEntity(pos);
-		return super.getActualState(state, worldIn, pos).withProperty(ENABLED, tile != null && tile instanceof TileProgrammer && ((TileProgrammer) tile).isEnabled());
+		return state.withProperty(ENABLED, tile instanceof TileProgrammer && ((TileProgrammer) tile).isEnabled());
 	}
 
+	@Nonnull
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, new IProperty[] { FACING, ENABLED });
+		return new BlockStateContainer(this, FACING, ENABLED);
 	}
 
 	@Override
@@ -144,7 +146,7 @@ public class BlockProgrammer extends BlockFacing implements IPsiBlock {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(@Nonnull World worldIn, int meta) {
 		return new TileProgrammer();
 	}
 

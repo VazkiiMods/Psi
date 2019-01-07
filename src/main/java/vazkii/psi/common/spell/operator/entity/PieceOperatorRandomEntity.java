@@ -36,7 +36,7 @@ public class PieceOperatorRandomEntity extends PieceOperator {
 
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
-		EntityListWrapper listVal = this.<EntityListWrapper>getParamValue(context, list);
+		EntityListWrapper listVal = this.getParamValue(context, list);
 		List<Entity> entities = listVal.unwrap();
 		if(entities.size() == 0)
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_TARGET);

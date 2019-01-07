@@ -22,6 +22,8 @@ import vazkii.psi.api.spell.SpellParam;
 import vazkii.psi.api.spell.SpellPiece;
 import vazkii.psi.client.gui.GuiProgrammer;
 
+import javax.annotation.Nonnull;
+
 public class GuiButtonSideConfig extends GuiButton {
 
 	GuiProgrammer gui;
@@ -57,7 +59,7 @@ public class GuiButtonSideConfig extends GuiButton {
 	}
 
 	@Override
-	public void drawButton(Minecraft mc, int par2, int par3, float pticks) {
+	public void drawButton(@Nonnull Minecraft mc, int par2, int par3, float pticks) {
 		if(enabled && visible && !gui.takingScreenshot) {
 			int minX = x;
 			int minY = y;

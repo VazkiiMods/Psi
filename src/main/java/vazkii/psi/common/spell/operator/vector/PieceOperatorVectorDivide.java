@@ -36,7 +36,7 @@ public class PieceOperatorVectorDivide extends PieceOperator {
 
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
-		Vector3 v1 = this.<Vector3>getParamValue(context, vec1);
+		Vector3 v1 = this.getParamValue(context, vec1);
 		Double d = this.<Double>getParamValue(context, num2);
 
 		if(d == 0)

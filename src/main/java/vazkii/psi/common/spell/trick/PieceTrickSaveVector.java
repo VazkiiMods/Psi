@@ -56,7 +56,7 @@ public class PieceTrickSaveVector extends PieceTrick {
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		Double numberVal = this.<Double>getParamValue(context, number);
-		Vector3 targetVal = this.<Vector3>getParamValue(context, target);
+		Vector3 targetVal = this.getParamValue(context, target);
 
 		int n = numberVal.intValue() - 1;
 

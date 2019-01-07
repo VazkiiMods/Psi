@@ -45,8 +45,8 @@ public class PieceOperatorVectorRaycast extends PieceOperator {
 
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
-		Vector3 originVal = this.<Vector3>getParamValue(context, origin);
-		Vector3 rayVal = this.<Vector3>getParamValue(context, ray);
+		Vector3 originVal = this.getParamValue(context, origin);
+		Vector3 rayVal = this.getParamValue(context, ray);
 
 		if(originVal == null || rayVal == null)
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);

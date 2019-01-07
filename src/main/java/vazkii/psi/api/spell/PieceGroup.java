@@ -13,6 +13,7 @@ package vazkii.psi.api.spell;
 import vazkii.psi.api.internal.IPlayerData;
 import vazkii.psi.api.internal.TooltipHelper;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -62,7 +63,7 @@ public class PieceGroup implements Comparable<PieceGroup> {
 	}
 
 	@Override
-	public int compareTo(PieceGroup o) {
+	public int compareTo(@Nonnull PieceGroup o) {
 		if(o.levelRequirement == levelRequirement)
 			return TooltipHelper.local(getUnlocalizedName()).compareTo(TooltipHelper.local(o.getUnlocalizedName()));
 

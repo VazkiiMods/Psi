@@ -35,6 +35,8 @@ import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
 import vazkii.psi.common.item.ItemCAD;
 import vazkii.psi.common.item.base.ModItems;
 
+import javax.annotation.Nonnull;
+
 public class ItemPsimetalTool extends ItemModTool implements IPsimetalTool {
 
 	private static final String TAG_REGEN_TIME = "regenTime";
@@ -82,7 +84,7 @@ public class ItemPsimetalTool extends ItemModTool implements IPsimetalTool {
 	}
 
 	@Override
-	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+	public boolean shouldCauseReequipAnimation(ItemStack oldStack, @Nonnull ItemStack newStack, boolean slotChanged) {
 		return slotChanged;
 	}
 
@@ -93,7 +95,7 @@ public class ItemPsimetalTool extends ItemModTool implements IPsimetalTool {
 	}
 
 	@Override
-	public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack) {
+	public boolean getIsRepairable(ItemStack par1ItemStack, @Nonnull ItemStack par2ItemStack) {
 		return par2ItemStack.getItem() == ModItems.material && par2ItemStack.getItemDamage() == 1 ? true : super.getIsRepairable(par1ItemStack, par2ItemStack);
 	}
 

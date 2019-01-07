@@ -38,6 +38,7 @@ import vazkii.psi.common.item.base.IPsiItem;
 import vazkii.psi.common.lib.LibItemNames;
 import vazkii.psi.common.spell.operator.vector.PieceOperatorVectorRaycast;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 public class ItemSpellBullet extends ItemMod implements ISpellContainer, IPsiItem {
@@ -72,13 +73,15 @@ public class ItemSpellBullet extends ItemMod implements ISpellContainer, IPsiIte
 		return getSpell(stack) != null;
 	}
 
+	@Nonnull
 	@Override
-	public ItemStack getContainerItem(ItemStack itemStack) {
+	public ItemStack getContainerItem(@Nonnull ItemStack itemStack) {
 		return itemStack.copy();
 	}
 
+	@Nonnull
 	@Override
-	public String getItemStackDisplayName(ItemStack stack) {
+	public String getItemStackDisplayName(@Nonnull ItemStack stack) {
 		if(!containsSpell(stack))
 			return super.getItemStackDisplayName(stack);
 
@@ -108,6 +111,7 @@ public class ItemSpellBullet extends ItemMod implements ISpellContainer, IPsiIte
 		return stack.getItemDamage() % 2 == 1;
 	}
 
+	@Nonnull
 	@Override
 	@SideOnly(Side.CLIENT)
 	public EnumRarity getRarity(ItemStack stack) {
@@ -115,7 +119,7 @@ public class ItemSpellBullet extends ItemMod implements ISpellContainer, IPsiIte
 	}
 
 	@Override
-	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subItems) {
+	public void getSubItems(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> subItems) {
 		if(isInCreativeTab(tab))
 			for(int i = 0; i < getVariants().length; i++)
 				if(i % 2 == 0)

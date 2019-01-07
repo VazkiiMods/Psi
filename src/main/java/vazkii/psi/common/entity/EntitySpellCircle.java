@@ -32,6 +32,8 @@ import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.common.Psi;
 
+import javax.annotation.Nonnull;
+
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class EntitySpellCircle extends Entity implements ISpellImmune {
 
@@ -90,7 +92,7 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 	}
 
 	@Override
-	public void writeEntityToNBT(NBTTagCompound tagCompound) {
+	public void writeEntityToNBT(@Nonnull NBTTagCompound tagCompound) {
 		NBTTagCompound colorizerCmp = new NBTTagCompound();
 		ItemStack colorizer =  dataManager.get(COLORIZER_DATA);
 		if (!colorizer.isEmpty())
@@ -113,7 +115,7 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 	}
 
 	@Override
-	public void readEntityFromNBT(NBTTagCompound tagCompound) {
+	public void readEntityFromNBT(@Nonnull NBTTagCompound tagCompound) {
 		NBTTagCompound colorizerCmp = tagCompound.getCompoundTag(TAG_COLORIZER);
 		ItemStack colorizer = new ItemStack(colorizerCmp);
 		dataManager.set(COLORIZER_DATA, colorizer);
@@ -178,6 +180,7 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 		}
 	}
 
+	@Nonnull
 	@Override
 	public Vec3d getLook(float f) {
 		float x = (float) dataManager.get(LOOK_X);

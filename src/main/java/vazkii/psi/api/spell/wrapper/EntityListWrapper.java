@@ -12,6 +12,7 @@ package vazkii.psi.api.spell.wrapper;
 
 import net.minecraft.entity.Entity;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -40,6 +41,7 @@ public class EntityListWrapper implements Iterable<Entity> {
 		return list.toString();
 	}
 
+	@Nonnull
 	@Override
 	public Iterator<Entity> iterator() {
 		return list.iterator();

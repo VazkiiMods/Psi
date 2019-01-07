@@ -41,6 +41,7 @@ import vazkii.psi.common.item.tool.IPsimetalTool;
 import vazkii.psi.common.item.tool.ItemPsimetalTool;
 import vazkii.psi.common.lib.LibResources;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.function.Function;
 
@@ -123,7 +124,7 @@ public class ItemPsimetalArmor extends ItemModArmor implements IPsimetalTool, IP
 	}
 
 	@Override
-	public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack) {
+	public boolean getIsRepairable(ItemStack par1ItemStack, @Nonnull ItemStack par2ItemStack) {
 		return par2ItemStack.getItem() == ModItems.material && par2ItemStack.getItemDamage() == 1 || super.getIsRepairable(par1ItemStack, par2ItemStack);
 	}
 
@@ -134,12 +135,12 @@ public class ItemPsimetalArmor extends ItemModArmor implements IPsimetalTool, IP
 	}
 
 	@Override
-	public boolean hasColor(ItemStack stack) {
+	public boolean hasColor(@Nonnull ItemStack stack) {
 		return true;
 	}
 
 	@Override
-	public int getColor(ItemStack stack) {
+	public int getColor(@Nonnull ItemStack stack) {
 		return ICADColorizer.DEFAULT_SPELL_COLOR;
 	}
 	

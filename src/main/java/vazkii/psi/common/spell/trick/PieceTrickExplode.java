@@ -58,7 +58,7 @@ public class PieceTrickExplode extends PieceTrick {
 		if(context.caster.getEntityWorld().isRemote)
 			return null;
 
-		Vector3 positionVal = this.<Vector3>getParamValue(context, position);
+		Vector3 positionVal = this.getParamValue(context, position);
 		Double powerVal = this.<Double>getParamValue(context, power);
 
 		if(positionVal == null)
@@ -69,10 +69,9 @@ public class PieceTrickExplode extends PieceTrick {
 		BlockPos pos = positionVal.toBlockPos();
 		IBlockState state = context.caster.getEntityWorld().getBlockState(pos);
 		
-		context.caster.getEntityWorld().createExplosion(context.focalPoint, positionVal.x, positionVal.y, positionVal.z, powerVal.floatValue(), !state.getBlock().getMaterial(state).isLiquid());
+		context.caster.getEntityWorld().createExplosion(context.focalPoint, positionVal.x, positionVal.y, positionVal.z, powerVal.floatValue(), !state.getMaterial().isLiquid());
 		return null;
 	}
 	
 
 }
-	
