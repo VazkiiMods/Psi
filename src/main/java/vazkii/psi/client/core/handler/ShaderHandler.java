@@ -24,6 +24,7 @@ import vazkii.psi.common.lib.LibResources;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.function.Consumer;
 
 public final class ShaderHandler {
@@ -88,7 +89,7 @@ public final class ShaderHandler {
 	// http://lwjgl.org/wiki/index.php?title=GLSL_Shaders_with_LWJGL
 
 	private static int createProgram(String vert, String frag) {
-		int vertId = 0, fragId = 0, program = 0;
+		int vertId = 0, fragId = 0, program;
 		if(vert != null)
 			vertId = createShader(vert, VERT_ST);
 		if(frag != null)
@@ -155,7 +156,7 @@ public final class ShaderHandler {
 			return "";
 
 		try {
-			reader = new BufferedReader(new InputStreamReader(in, "UTF-8"));
+			reader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
 
 			Exception innerExc= null;
 			try {
@@ -168,9 +169,7 @@ public final class ShaderHandler {
 				try {
 					reader.close();
 				} catch(Exception exc) {
-					if(innerExc == null)
-						innerExc = exc;
-					else exc.printStackTrace();
+					innerExc = exc;
 				}
 			}
 

@@ -13,6 +13,7 @@ package vazkii.psi.client.render.tile;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.util.EnumFacing;
 import org.lwjgl.opengl.GL11;
@@ -20,7 +21,6 @@ import vazkii.arl.block.BlockFacing;
 import vazkii.arl.util.ClientTicker;
 import vazkii.arl.util.RenderHelper;
 import vazkii.psi.api.internal.TooltipHelper;
-import vazkii.psi.client.core.handler.ShaderHandler;
 import vazkii.psi.client.gui.GuiProgrammer;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.base.ModBlocks;
@@ -34,8 +34,12 @@ public class RenderTileProgrammer extends TileEntitySpecialRenderer<TileProgramm
 			GlStateManager.pushMatrix();
 			GlStateManager.disableLighting();
 			GlStateManager.disableCull();
+
+			float brightnessX = OpenGlHelper.lastBrightnessX;
+			float brightnessY = OpenGlHelper.lastBrightnessY;
 			if (!Psi.magical)
-				ShaderHandler.useShader(ShaderHandler.rawColor);
+				OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 0xf0, 0xf0);
+
 			GlStateManager.translate(x, y + 1.62F, z);
 			GlStateManager.rotate(180F, 0F, 0F, 1F);
 			GlStateManager.rotate(-90F, 0F, 1F, 0F);
@@ -93,7 +97,7 @@ public class RenderTileProgrammer extends TileEntitySpecialRenderer<TileProgramm
 			mc.fontRenderer.drawString(te.spell.name, 38, 164, color);
 
 			if (!Psi.magical)
-				ShaderHandler.releaseShader();
+				OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, brightnessX, brightnessY);
 			GlStateManager.enableLighting();
 			GlStateManager.enableCull();
 			GlStateManager.popMatrix();

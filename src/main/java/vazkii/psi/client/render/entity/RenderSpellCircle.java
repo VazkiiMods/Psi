@@ -10,19 +10,15 @@
  */
 package vazkii.psi.client.render.entity;
 
-import java.awt.Color;
-
-import com.google.common.base.Optional;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import vazkii.psi.api.cad.ICADColorizer;
-import vazkii.psi.client.core.handler.ShaderHandler;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.entity.EntitySpellCircle;
 import vazkii.psi.common.lib.LibResources;
@@ -36,6 +32,8 @@ public class RenderSpellCircle extends Render<EntitySpellCircle> {
 			new ResourceLocation(String.format(LibResources.MISC_SPELL_CIRCLE, 1)),
 			new ResourceLocation(String.format(LibResources.MISC_SPELL_CIRCLE, 2)),
 	};
+
+	private static final float BRIGHTNESS_FACTOR = 0.7F;
 
 	public RenderSpellCircle(RenderManager renderManager) {
 		super(renderManager);
@@ -57,47 +55,76 @@ public class RenderSpellCircle extends Render<EntitySpellCircle> {
 		renderSpellCircle(alive, s1, x, y, z, colorVal);
 	}
 
-	public static void renderSpellCircle(float time, float s1, double x, double y, double z, int colorVal) {
-		float s = 1F / 16F;
+
+	public static void renderSpellCircle(float alive, float scale, double x, double y, double z, int color) {
+		renderSpellCircle(alive, scale, 1, x, y, z, 0, 1, 0, color);
+	}
+
+	public static void renderSpellCircle(float alive, float scale, float horizontalScale, double x, double y, double z, float xDir, float yDir, float zDir, int color) {
+
 		GlStateManager.pushMatrix();
-		GlStateManager.translate(x - s1 * 2, y + 0.01, z - s1 * 2);
-		GlStateManager.scale(s, s, s);
-		GlStateManager.scale(s1, 1F, s1);
-		GlStateManager.rotate(90F, 1F, 0F, 0F);
+		double ratio = 0.0625 * horizontalScale;
+		GlStateManager.translate(x, y, z);
+
+		float mag = xDir * xDir + yDir * yDir + zDir * zDir;
+		zDir /= mag;
+
+		if (zDir == -1)
+			GlStateManager.rotate(180, 1, 0, 0);
+		else if (zDir != 1) {
+			GlStateManager.rotate((float) (Math.acos(zDir) * 180 / Math.PI),
+					-yDir / mag, xDir / mag, 0);
+		}
+		GlStateManager.translate(0, 0, 0.1);
+		GlStateManager.scale(ratio * scale, ratio * scale, ratio);
+
 		GlStateManager.disableCull();
 		GlStateManager.disableLighting();
-		ShaderHandler.useShader(ShaderHandler.rawColor);
+		float lastBrightnessX = OpenGlHelper.lastBrightnessX;
+		float lastBrightnessY = OpenGlHelper.lastBrightnessY;
 
-		for(int i = 0; i < layers.length; i++) {
-			Color color = new Color(colorVal);
-			if(i == 2)
-				color = color.brighter();
+		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 0xf0, 0xf0);
 
-			float r = color.getRed() / 255F;
-			float g = color.getGreen() / 255F;
-			float b = color.getBlue() / 255F;
 
-			float d = 2F / s;
+		int r = (color >> 16) & 0xFF;
+		int g = (color >> 8) & 0xFF;
+		int b = color & 0xFF;
+
+		for (int i = 0; i < layers.length; i++) {
+			int rValue = r;
+			int gValue = g;
+			int bValue = b;
+
+			if (i == 1)
+				rValue = gValue = bValue = 0xFF;
+			else if (i == 2) {
+				int minBrightness = (int) (1 / (1 - BRIGHTNESS_FACTOR));
+				if (rValue == 0 && gValue == 0 && bValue == 0)
+					rValue = gValue = bValue = minBrightness;
+				if (rValue > 0 && rValue < minBrightness) rValue = minBrightness;
+				if (gValue > 0 && gValue < minBrightness) gValue = minBrightness;
+				if (bValue > 0 && bValue < minBrightness) bValue = minBrightness;
+
+				rValue = (int) Math.min(rValue / BRIGHTNESS_FACTOR, 0xFF);
+				gValue = (int) Math.min(gValue / BRIGHTNESS_FACTOR, 0xFF);
+				bValue = (int) Math.min(bValue / BRIGHTNESS_FACTOR, 0xFF);
+			}
+
 			GlStateManager.pushMatrix();
-			GlStateManager.translate(d, d, 0F);
-			float rot = time;
-			if(i == 0)
-				rot = -rot;
-			GlStateManager.rotate(rot, 0F, 0F, 1F);
-			GlStateManager.translate(-d, -d, 0F);
+			GlStateManager.rotate(i == 0 ? -alive : alive, 0, 0, 1);
 
-			if(i == 1)
-				GlStateManager.color(1F, 1F, 1F);
-			else GlStateManager.color(r, g, b);
+			GlStateManager.color(rValue / 255f, gValue / 255f, bValue / 255f);
 
 			Minecraft.getMinecraft().renderEngine.bindTexture(layers[i]);
-			Gui.drawModalRectWithCustomSizedTexture(0, 0, 0, 0, 64, 64, 64, 64);
+			Gui.drawModalRectWithCustomSizedTexture(-32, -32, 0, 0, 64, 64, 64, 64);
 			GlStateManager.popMatrix();
-			GlStateManager.translate(0F, 0F, -0.5F);
+
+			GlStateManager.translate(0, 0, -0.5);
 		}
 
-		ShaderHandler.releaseShader();
+		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lastBrightnessX, lastBrightnessY);
 		GlStateManager.enableCull();
+		GlStateManager.enableLighting();
 		GlStateManager.popMatrix();
 	}
 
