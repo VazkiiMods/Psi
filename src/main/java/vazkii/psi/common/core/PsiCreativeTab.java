@@ -25,7 +25,7 @@ import javax.annotation.Nonnull;
 public class PsiCreativeTab extends CreativeTabs {
 
 	public static PsiCreativeTab INSTANCE = new PsiCreativeTab();
-	NonNullList list;
+	private NonNullList<ItemStack> list;
 
 	public PsiCreativeTab() {
 		super(LibMisc.MOD_ID);

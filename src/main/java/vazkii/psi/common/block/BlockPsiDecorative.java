@@ -13,6 +13,7 @@ package vazkii.psi.common.block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import vazkii.arl.block.BlockMetaVariants;
@@ -20,7 +21,9 @@ import vazkii.psi.common.block.base.IPsiBlock;
 import vazkii.psi.common.core.PsiCreativeTab;
 import vazkii.psi.common.lib.LibBlockNames;
 
-public class BlockPsiDecorative extends BlockMetaVariants implements IPsiBlock {
+import java.util.Locale;
+
+public class BlockPsiDecorative extends BlockMetaVariants<BlockPsiDecorative.Variants> implements IPsiBlock {
 
 	public BlockPsiDecorative() {
 		super(LibBlockNames.PSI_DECORATIVE, Material.IRON, Variants.class);
@@ -32,11 +35,11 @@ public class BlockPsiDecorative extends BlockMetaVariants implements IPsiBlock {
 
 	@Override
 	public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos) {
-		Variants variant = (Variants) state.getValue(variantProp);
+		Variants variant = state.getValue(variantProp);
 		return variant == Variants.PSIMETAL_PLATE_BLACK_LIGHT || variant == Variants.PSIMETAL_PLATE_WHITE_LIGHT ? 15 : 0;
 	}
 
-	private static enum Variants implements EnumBase {
+	public enum Variants implements IStringSerializable {
 		PSIDUST_BLOCK,
 		PSIMETAL_BLOCK,
 		PSIGEM_BLOCK,
@@ -45,7 +48,13 @@ public class BlockPsiDecorative extends BlockMetaVariants implements IPsiBlock {
 		PSIMETAL_PLATE_WHITE,
 		PSIMETAL_PLATE_WHITE_LIGHT,
 		EBONY_PSIMETAL_BLOCK,
-		IVORY_PSIMETAL_BLOCK
+		IVORY_PSIMETAL_BLOCK;
+
+
+		@Override
+		public String getName() {
+			return this.name().toLowerCase(Locale.ENGLISH);
+		}
 	}
 
 }

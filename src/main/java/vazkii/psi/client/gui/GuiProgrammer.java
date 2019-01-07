@@ -405,7 +405,7 @@ public class GuiProgrammer extends GuiScreen {
 		}
 		List<String> legitTooltip = null;
 		if(isAltKeyDown())
-			legitTooltip = new ArrayList(tooltip);
+			legitTooltip = new ArrayList<>(tooltip);
 		
 		super.drawScreen(mouseX, mouseY, partialTicks);
 		
@@ -413,11 +413,11 @@ public class GuiProgrammer extends GuiScreen {
 			tooltip = legitTooltip;
 
 		if(!takingScreenshot) {
-			if(!tooltip.isEmpty())
+			if(tooltip != null && !tooltip.isEmpty())
 				RenderHelper.renderTooltip(tooltipX, tooltipY, tooltip);
 			
 			if(comment != null && !comment.isEmpty()) {
-				List l = Arrays.asList(comment.split(";"));
+				List<String> l = Arrays.asList(comment.split(";"));
 				RenderHelper.renderTooltipGreen(tooltipX, tooltipY - 9 - l.size() * 10, l);
 			}
 		}

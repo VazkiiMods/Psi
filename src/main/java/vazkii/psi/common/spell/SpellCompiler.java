@@ -98,7 +98,7 @@ public final class SpellCompiler implements ISpellCompiler {
 			if(!param.canAccept(pieceAt))
 				throw new SpellCompilationException(SpellCompilationException.INVALID_PARAM, piece.x, piece.y);
 
-			buildPiece(pieceAt, new ArrayList(visited));
+			buildPiece(pieceAt, new ArrayList<>(visited));
 		}
 	}
 

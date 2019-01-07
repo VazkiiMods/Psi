@@ -67,6 +67,7 @@ public class CompiledSpell {
 	/**
 	 * @see #execute
 	 */
+	@SuppressWarnings("unchecked")
 	public void safeExecute(SpellContext context) {
 		try {
 			if(context.actions == null)
