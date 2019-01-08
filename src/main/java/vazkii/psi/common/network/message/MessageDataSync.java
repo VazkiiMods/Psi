@@ -10,6 +10,7 @@
  */
 package vazkii.psi.common.network.message;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
@@ -36,10 +37,13 @@ public class MessageDataSync extends NetworkMessage<MessageDataSync> {
 	@SideOnly(Side.CLIENT)
 	public IMessage handleMessage(MessageContext context) {
 		ClientTicker.addAction(() -> {
-			PlayerData data = PlayerDataHandler.get(Psi.proxy.getClientPlayer());
-			data.lastAvailablePsi = data.availablePsi;
-			data.readFromNBT(cmp);
-			Psi.proxy.savePersistency();
+			EntityPlayer player = Psi.proxy.getClientPlayer();
+			if (player != null) {
+				PlayerData data = PlayerDataHandler.get(player);
+				data.lastAvailablePsi = data.availablePsi;
+				data.readFromNBT(cmp);
+				Psi.proxy.savePersistency();
+			}
 		});
 
 		return null;
