@@ -534,8 +534,10 @@ public class PlayerDataHandler {
 
 		public void validate() {
 			int expectedPoints = getLevel() - spellGroupsUnlocked.size();
-			if (!spellGroupsUnlocked.contains(lastSpellGroup))
-				expectedPoints -= 1;
+			if (lastSpellGroup != null && !spellGroupsUnlocked.contains(lastSpellGroup) && expectedPoints == 0) {
+				expectedPoints += 1;
+				lastSpellGroup = null;
+			}
 
 			levelPoints = Math.max(levelPoints, expectedPoints);
 		}
