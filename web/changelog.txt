@@ -1,3 +1,9 @@
+r1.1-68
+*Fixed a crash on world load. (WireSegal)
+*Fixed a crash with Terraqueous. (WireSegal)
+*Fixed tutorial data not loading prperly. Players who were missing points will get them back. (WireSegal)
+*Optimized the spell circle render. (WireSegal)
+*[API] Allow items other than CADs to loopcast. (WireSegal)
 r1.1-67
 *Fixed a crash with lack of presistent data files. (WireSegal)
 *Fixed particles being larger than intended. (WireSegal)
