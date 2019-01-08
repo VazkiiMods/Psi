@@ -14,6 +14,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import vazkii.psi.api.PsiAPI;
@@ -80,15 +81,18 @@ public class PieceTrickConjureBlock extends PieceTrick {
 		if(world.getBlockState(pos).getBlock() != state.getBlock()) {
 			conjure(world, pos, context.caster, state);
 
-			if(timeVal != null && timeVal.intValue() > 0) {
-				int val = timeVal.intValue();
-				world.scheduleUpdate(pos, state.getBlock(), val);
-			}
+			if (world.getBlockState(pos) == state) {
+				if (timeVal != null && timeVal.intValue() > 0) {
+					int val = timeVal.intValue();
+					world.scheduleUpdate(pos, state.getBlock(), val);
+				}
 
-			TileConjured tile = (TileConjured) world.getTileEntity(pos);
-			ItemStack cad = PsiAPI.getPlayerCAD(context.caster);
-			if(tile != null && cad != null)
-				tile.colorizer = ((ICAD) cad.getItem()).getComponentInSlot(cad, EnumCADComponent.DYE);
+				TileEntity tile = world.getTileEntity(pos);
+
+				ItemStack cad = PsiAPI.getPlayerCAD(context.caster);
+				if (tile instanceof TileConjured && !cad.isEmpty())
+					((TileConjured) tile).colorizer = ((ICAD) cad.getItem()).getComponentInSlot(cad, EnumCADComponent.DYE);
+			}
 		}
 	}
 
