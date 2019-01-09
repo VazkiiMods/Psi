@@ -462,7 +462,9 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 
 	@Override
 	public int getStoredPsi(ItemStack stack) {
-		return getCADData(stack).getBattery();
+		int maxPsi = getStatValue(stack, EnumCADStat.OVERFLOW);
+
+		return Math.min(getCADData(stack).getBattery(), maxPsi);
 	}
 
 	@Override
@@ -483,9 +485,14 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 		if (psi == 0)
 			return 0;
 
-		ICADData data = getCADData(stack);
 		int currPsi = getStoredPsi(stack);
-		if(currPsi >= psi) {
+
+		if (currPsi == -1)
+			return 0;
+
+		ICADData data = getCADData(stack);
+
+		if (currPsi >= psi) {
 			data.setBattery(currPsi - psi);
 			data.markDirty(true);
 			return 0;
