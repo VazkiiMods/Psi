@@ -10,19 +10,22 @@
  */
 package vazkii.psi.common.spell.trick.infusion;
 
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import vazkii.psi.api.spell.EnumSpellStat;
-import vazkii.psi.api.spell.Spell;
-import vazkii.psi.api.spell.SpellCompilationException;
-import vazkii.psi.api.spell.SpellContext;
-import vazkii.psi.api.spell.SpellMetadata;
-import vazkii.psi.api.spell.SpellRuntimeException;
+import vazkii.psi.api.PsiAPI;
+import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.piece.PieceTrick;
 import vazkii.psi.common.item.ItemCAD;
 import vazkii.psi.common.item.base.ModItems;
+import vazkii.psi.common.lib.LibPieceNames;
 
 public class PieceTrickInfusion extends PieceTrick {
+
+	static {
+		PsiAPI.registerTrickRecipe(LibPieceNames.TRICK_INFUSION,
+				"ingotGold",
+				new ItemStack(ModItems.material, 1, 1),
+				new ItemStack(ModItems.cadAssembly));
+	}
 
 	public PieceTrickInfusion(Spell spell) {
 		super(spell);
@@ -38,7 +41,7 @@ public class PieceTrickInfusion extends PieceTrick {
 
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
-		ItemCAD.craft(context.caster, new ItemStack(Items.GOLD_INGOT), new ItemStack(ModItems.material, 1, 1));
+		ItemCAD.craft(context.caster, "ingotGold", new ItemStack(ModItems.material, 1, 1));
 		return null;
 	}
 

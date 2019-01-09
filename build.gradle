@@ -30,10 +30,13 @@ repositories {
         name "blamejared"
         url "http://maven.blamejared.com/"
     }
+    maven { url = "http://dvs1.progwml6.com/files/maven" }
 }
 
 dependencies {
     compile "vazkii.autoreglib:AutoRegLib:${config.arl_version}"
+    compile "mezz.jei:jei_${config.mc_version}:${config.jei_version}:api"
+    runtime "mezz.jei:jei_${config.mc_version}:${config.jei_version}"
 }
 
 minecraft {

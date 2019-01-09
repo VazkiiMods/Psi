@@ -20,6 +20,8 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import vazkii.psi.common.command.CommandPsiLearn;
+import vazkii.psi.common.command.CommandPsiUnlearn;
 import vazkii.psi.common.core.proxy.CommonProxy;
 import vazkii.psi.common.lib.LibMisc;
 
@@ -49,6 +51,8 @@ public class Psi {
 
 	@EventHandler
 	public void serverStartingEvent(FMLServerStartingEvent event) {
+		event.registerServerCommand(new CommandPsiLearn());
+		event.registerServerCommand(new CommandPsiUnlearn());
 //		event.registerServerCommand(new CommandDownloadLatest());
 	}
 

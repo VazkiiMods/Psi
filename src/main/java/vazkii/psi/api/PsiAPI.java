@@ -17,16 +17,20 @@ import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.RegistryNamespaced;
+import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModContainer;
 import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.internal.DummyMethodHandler;
 import vazkii.psi.api.internal.IInternalMethodHandler;
+import vazkii.psi.api.recipe.TrickRecipe;
 import vazkii.psi.api.spell.PieceGroup;
 import vazkii.psi.api.spell.SpellPiece;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public final class PsiAPI {
 
@@ -44,6 +48,8 @@ public final class PsiAPI {
 	public static HashMap<Class<? extends SpellPiece>, PieceGroup> groupsForPiece = new HashMap<>();
 	public static HashMap<Class<? extends SpellPiece>, String> pieceMods = new HashMap<>();
 	public static HashMap<String, PieceGroup> groupsForName = new HashMap<>();
+
+	public static List<TrickRecipe> trickRecipes = new ArrayList<>();
 
 	public static ToolMaterial PSIMETAL_TOOL_MATERIAL = EnumHelper.addToolMaterial("PSIMETAL", 3, 900, 7.8F, 2F, 12);
 	public static ArmorMaterial PSIMETAL_ARMOR_MATERIAL = EnumHelper.addArmorMaterial("PSIMETAL", "psimetal", 18, new int[]{2, 6, 5, 2}, 12, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0F);
@@ -163,6 +169,10 @@ public final class PsiAPI {
 
 		int cadSlot = getPlayerCADSlot(player);
 		return cadSlot < 9 || cadSlot == 40;
+	}
+
+	public static void registerTrickRecipe(String trick, Object input, ItemStack output, ItemStack minAssembly) {
+		trickRecipes.add(new TrickRecipe(trick, CraftingHelper.getIngredient(input), output, minAssembly));
 	}
 
 }

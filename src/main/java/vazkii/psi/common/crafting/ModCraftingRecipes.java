@@ -15,6 +15,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import vazkii.arl.recipe.RecipeHandler;
 import vazkii.arl.util.ProxyRegistry;
+import vazkii.psi.api.PsiAPI;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.base.ModBlocks;
 import vazkii.psi.common.core.handler.ConfigHandler;
@@ -23,6 +24,8 @@ import vazkii.psi.common.item.base.ModItems;
 public class ModCraftingRecipes {
 
 	public static void init() {
+		PsiAPI.registerTrickRecipe("", Items.REDSTONE, new ItemStack(ModItems.material), new ItemStack(ModItems.cadAssembly));
+
 		if(Psi.magical && !ConfigHandler.magipsiClientSide)
 			return;
 		

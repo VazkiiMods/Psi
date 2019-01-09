@@ -52,6 +52,7 @@ public abstract class SpellParam {
 	public static final String GENERIC_NAME_DISTANCE = PSI_PREFIX + "distance";
 	public static final String GENERIC_NAME_TIME = PSI_PREFIX + "time";
 	public static final String GENERIC_NAME_BASE = PSI_PREFIX + "base";
+	public static final String GENERIC_NAME_RAY = PSI_PREFIX + "ray";
 
 	public final String name;
 	public final int color;

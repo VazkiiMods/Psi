@@ -25,6 +25,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -35,6 +36,7 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.fml.relauncher.Side;
@@ -265,6 +267,14 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 	}
 
 	public static boolean craft(EntityPlayer player, ItemStack in, ItemStack out) {
+		return craft(player, CraftingHelper.getIngredient(in), out);
+	}
+
+	public static boolean craft(EntityPlayer player, String in, ItemStack out) {
+		return craft(player, CraftingHelper.getIngredient(in), out);
+	}
+
+	public static boolean craft(EntityPlayer player, Ingredient in, ItemStack out) {
 		List<EntityItem> items = player.getEntityWorld().getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(player.posX - 8, player.posY - 8, player.posZ - 8, player.posX + 8, player.posY + 8, player.posZ + 8));
 
 		Color color = new Color(ICADColorizer.DEFAULT_SPELL_COLOR);
@@ -276,7 +286,7 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 		boolean did = false;
 		for(EntityItem item : items) {
 			ItemStack stack = item.getItem();
-			if(!stack.isEmpty() && ItemStack.areItemsEqual(stack, in)) {
+			if(in.test(stack)) {
 				ItemStack outCopy = out.copy();
 				outCopy.setCount(stack.getCount());
 				item.setItem(outCopy);
