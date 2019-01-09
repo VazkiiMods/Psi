@@ -63,6 +63,7 @@ import vazkii.psi.common.core.handler.capability.ICADData;
 import vazkii.psi.common.crafting.recipe.AssemblyScavengeRecipe;
 import vazkii.psi.common.item.base.IPsiItem;
 import vazkii.psi.common.item.base.ModItems;
+import vazkii.psi.common.item.component.ItemCADSocket;
 import vazkii.psi.common.lib.LibItemNames;
 import vazkii.psi.common.network.message.MessageCADDataSync;
 
@@ -405,6 +406,8 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 	@Override
 	public boolean isSocketSlotAvailable(ItemStack stack, int slot) {
 		int sockets = getStatValue(stack, EnumCADStat.SOCKETS);
+		if (sockets == -1 || sockets > ItemCADSocket.MAX_SOCKETS)
+			sockets = ItemCADSocket.MAX_SOCKETS;
 		return slot < sockets;
 	}
 
@@ -495,7 +498,10 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 
 	@Override
 	public int getMemorySize(ItemStack stack) {
-		return getStatValue(stack, EnumCADStat.SOCKETS) / 3;
+		int sockets = getStatValue(stack, EnumCADStat.SOCKETS);
+		if (sockets == -1)
+			return 0xFF;
+		return sockets / 3;
 	}
 	
 	@Override

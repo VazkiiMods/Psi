@@ -17,6 +17,8 @@ import vazkii.psi.common.lib.LibItemNames;
 
 public class ItemCADSocket extends ItemCADComponent {
 
+	public static final int MAX_SOCKETS = 12;
+
 	public static final String[] VARIANTS = {
 			"cad_socket_basic",
 			"cad_socket_signaling",
