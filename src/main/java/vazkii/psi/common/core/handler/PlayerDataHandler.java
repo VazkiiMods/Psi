@@ -238,6 +238,7 @@ public class PlayerDataHandler {
 		private static final String TAG_SPELL_GROUPS_UNLOCKED = "spellGroupsUnlocked";
 		private static final String TAG_LAST_SPELL_GROUP = "lastSpellPoint";
 		private static final String TAG_LEVEL_POINTS = "levelPoints";
+		private static final String TAG_LEARNING_GROUP = "learning";
 		private static final String TAG_OVERFLOWED = "overflowed";
 
 		private static final String TAG_EIDOS_ANCHOR_X = "eidosAnchorX";
@@ -256,8 +257,11 @@ public class PlayerDataHandler {
 		public int availablePsi;
 		public int lastAvailablePsi;
 		public int regenCooldown;
+
 		public String lastSpellGroup;
 		public int levelPoints;
+		public boolean learning;
+
 		public boolean loopcasting = false;
 		public EnumHand loopcastHand = EnumHand.MAIN_HAND;
 		public ItemStack lastTickLoopcastStack;
@@ -533,13 +537,18 @@ public class PlayerDataHandler {
 		}
 
 		public void validate() {
-			int expectedPoints = getLevel() - spellGroupsUnlocked.size();
-			if (lastSpellGroup != null && !spellGroupsUnlocked.contains(lastSpellGroup) && expectedPoints == 0) {
-				expectedPoints += 1;
-				lastSpellGroup = null;
-			}
+			EntityPlayer player = playerWR.get();
+			if(player != null && !player.capabilities.isCreativeMode) {
+				int expectedPoints = getLevel() - spellGroupsUnlocked.size();
 
-			levelPoints = Math.max(levelPoints, expectedPoints);
+				if (lastSpellGroup != null && !spellGroupsUnlocked.contains(lastSpellGroup) && learning) {
+					expectedPoints += 1;
+					lastSpellGroup = null;
+					learning = false;
+				}
+
+				levelPoints = Math.max(levelPoints, expectedPoints);
+			}
 		}
 
 		public void stopLoopcast() {
@@ -574,6 +583,7 @@ public class PlayerDataHandler {
 		public void levelUp() {
 			EntityPlayer player = playerWR.get();
 			if(player != null) {
+				learning = false;
 				level++;
 				levelPoints++;
 				lastSpellGroup = "";
@@ -696,17 +706,18 @@ public class PlayerDataHandler {
 
 		@Override
 		public void unlockPieceGroup(String group) {
-			if(!isPieceGroupUnlocked(group)) {
+			if(!learning && levelPoints > 0 && !isPieceGroupUnlocked(group)) {
 				spellGroupsUnlocked.add(group);
 				lastSpellGroup = group;
 				levelPoints--;
+				learning = true;
 				save();
 			}
 		}
 
 		@Override
 		public void markPieceExecuted(SpellPiece piece) {
-			if(lastSpellGroup == null || lastSpellGroup.isEmpty() || levelPoints != 0)
+			if(lastSpellGroup == null || lastSpellGroup.isEmpty() || !learning)
 				return;
 
 			PieceGroup group = PsiAPI.groupsForName.get(lastSpellGroup);
@@ -737,6 +748,7 @@ public class PlayerDataHandler {
 			cmp.setInteger(TAG_AVAILABLE_PSI, availablePsi);
 			cmp.setInteger(TAG_REGEN_CD, regenCooldown);
 			cmp.setInteger(TAG_LEVEL_POINTS, levelPoints);
+			cmp.setBoolean(TAG_LEARNING_GROUP, learning);
 			if(lastSpellGroup != null && !lastSpellGroup.isEmpty())
 				cmp.setString(TAG_LAST_SPELL_GROUP, lastSpellGroup);
 			cmp.setBoolean(TAG_OVERFLOWED, overflowed);
@@ -778,7 +790,9 @@ public class PlayerDataHandler {
 			levelPoints = cmp.getInteger(TAG_LEVEL_POINTS);
 			lastSpellGroup = cmp.getString(TAG_LAST_SPELL_GROUP);
 			overflowed = cmp.getBoolean(TAG_OVERFLOWED);
-			
+			learning = cmp.getBoolean(TAG_LEARNING_GROUP);
+
+
 			if(cmp.hasKey(TAG_SPELL_GROUPS_UNLOCKED, Constants.NBT.TAG_LIST)) {
 				spellGroupsUnlocked.clear();
 				NBTTagList list = cmp.getTagList(TAG_SPELL_GROUPS_UNLOCKED, Constants.NBT.TAG_STRING); // 8 -> String
