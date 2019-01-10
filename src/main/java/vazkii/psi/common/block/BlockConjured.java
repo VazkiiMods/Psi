@@ -20,6 +20,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
@@ -29,6 +30,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -45,7 +47,7 @@ import javax.annotation.Nullable;
 import java.util.Random;
 import java.util.Set;
 
-@Mod.EventBusSubscriber(value = Side.CLIENT, modid = LibMisc.MOD_ID)
+@Mod.EventBusSubscriber(modid = LibMisc.MOD_ID)
 public class BlockConjured extends BlockModContainer implements IPsiBlock {
 
 	public static final PropertyBool SOLID = PropertyBool.create("solid");
@@ -101,6 +103,13 @@ public class BlockConjured extends BlockModContainer implements IPsiBlock {
 				return true;
 			});
 		}
+	}
+
+	@SubscribeEvent
+	public static void ignoreMissingItem(RegistryEvent.MissingMappings<Item> event) {
+		for (RegistryEvent.MissingMappings.Mapping<Item> mapping : event.getMappings())
+			if (mapping.key.getResourcePath().equals(LibBlockNames.CONJURED))
+				mapping.ignore();
 	}
 
 	@Override
