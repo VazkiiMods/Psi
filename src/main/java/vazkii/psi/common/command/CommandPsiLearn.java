@@ -221,8 +221,10 @@ public class CommandPsiLearn extends CommandBase {
 			else
 				target = sender.getCommandSenderEntity();
 
-			if (!(target instanceof EntityPlayer))
-				error("players", target == null ? null : target.getDisplayName());
+			if (target == null)
+				error("console");
+			else if (!(target instanceof EntityPlayer))
+				error("players", target.getDisplayName());
 			else {
 				EntityPlayer player = (EntityPlayer) target;
 				PlayerDataHandler.PlayerData data = PlayerDataHandler.get(player);
@@ -244,6 +246,11 @@ public class CommandPsiLearn extends CommandBase {
 					error("unknown");
 			}
 		}
+	}
+
+	@Override
+	public boolean isUsernameIndex(String[] args, int index) {
+		return index == 1;
 	}
 
 	@Nonnull

@@ -633,6 +633,7 @@ command.psi.learn.success=Successfully taught %s %s
 command.psi.learn.success.all=Successfully taught %s all of Psi
 command.psi.learn.should_not=%s already knows %s
 command.psi.learn.players=%s isn't a player, only players can have Psi knowledge
+command.psi.learn.console=The console can't learn Psi. Try specifying a player! /psi-learn <group> [player]
 command.psi.learn.not_a_group='%s' is not a valid Psi piece group
 command.psi.learn.unknown=This player has no Psi data. Report this to the mod author.
 
@@ -641,6 +642,7 @@ command.psi.unlearn.success=Successfully made %s forget %s
 command.psi.unlearn.success.all=Successfully made %s forget all of Psi
 command.psi.unlearn.should_not=%s doesn't know %s
 command.psi.unlearn.players=%s isn't a player, only players can have Psi knowledge
+command.psi.unlearn.console=The console can't learn Psi. Try specifying a player! /psi-unlearn <group> [player]
 command.psi.unlearn.not_a_group='%s' is not a valid Psi piece group
 command.psi.unlearn.unknown=This player has no Psi data. Report this to the mod author.
 psimisc.fakeLevel.psidust=Psidust Infusion

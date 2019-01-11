@@ -537,18 +537,10 @@ public class PlayerDataHandler {
 		}
 
 		public void validate() {
-			EntityPlayer player = playerWR.get();
-			if(player != null && !player.capabilities.isCreativeMode) {
-				int expectedPoints = getLevel() - spellGroupsUnlocked.size();
-
-				if (lastSpellGroup != null && !spellGroupsUnlocked.contains(lastSpellGroup) && learning) {
-					expectedPoints += 1;
-					lastSpellGroup = null;
-					learning = false;
-				}
-
-				levelPoints = Math.max(levelPoints, expectedPoints);
-			}
+			if (!learning && levelPoints == 0) {
+				levelPoints++;
+			} else if (learning && levelPoints != 0)
+				levelPoints = 0;
 		}
 
 		public void stopLoopcast() {
