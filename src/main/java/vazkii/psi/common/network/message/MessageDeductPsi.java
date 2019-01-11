@@ -10,6 +10,7 @@
  */
 package vazkii.psi.common.network.message;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
@@ -40,12 +41,15 @@ public class MessageDeductPsi extends NetworkMessage<MessageDeductPsi> {
 	@SideOnly(Side.CLIENT)
 	public IMessage handleMessage(MessageContext context) {
 		ClientTicker.addAction(() -> {
-			PlayerData data = PlayerDataHandler.get(Psi.proxy.getClientPlayer());
-			data.lastAvailablePsi = data.availablePsi;
-			data.availablePsi = current;
-			data.regenCooldown = cd;
-			data.deductTick = true;
-			data.addDeduction(prev, prev - current, shatter);
+			EntityPlayer player = Psi.proxy.getClientPlayer();
+			if (player != null) {
+				PlayerData data = PlayerDataHandler.get(player);
+				data.lastAvailablePsi = data.availablePsi;
+				data.availablePsi = current;
+				data.regenCooldown = cd;
+				data.deductTick = true;
+				data.addDeduction(prev, prev - current, shatter);
+			}
 		});
 
 		return null;

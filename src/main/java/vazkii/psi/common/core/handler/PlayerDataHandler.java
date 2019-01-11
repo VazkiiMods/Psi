@@ -83,6 +83,9 @@ public class PlayerDataHandler {
 	public static final DamageSource damageSourceOverload = new DamageSource("psi-overload").setDamageBypassesArmor().setMagicDamage();
 
 	public static PlayerData get(EntityPlayer player) {
+		if (player == null)
+			return new PlayerData();
+
 		Map<EntityPlayer, PlayerData> dataMap = player.world.isRemote ? remotePlayerData : playerData;
 
 		PlayerData data = dataMap.computeIfAbsent(player, PlayerData::new);
@@ -294,6 +297,11 @@ public class PlayerDataHandler {
 		
 		// Custom Data
 		private NBTTagCompound customData;
+
+		private PlayerData() {
+			playerWR = new WeakReference<>(null);
+			client = true;
+		}
 
 		public PlayerData(EntityPlayer player) {
 			playerWR = new WeakReference<>(player);
