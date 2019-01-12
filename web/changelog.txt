@@ -1,3 +1,10 @@
+r1.1-69
+*Nice.
+*Added new commands: /psi-learn and /psi-unlearn (WireSegal)
+*Changed CAD logic a bit to allow addon components to have negative values. (WireSegal)
+*Fixed a generic crash. (WireSegal)
+*Fixed the tutorial not giving you level points properly. (WireSegal)
+*Made the mapping for the missing conjured block be ignored. (WireSegal)
 r1.1-68
 *Fixed a crash on world load. (WireSegal)
 *Fixed a crash with Terraqueous. (WireSegal)
