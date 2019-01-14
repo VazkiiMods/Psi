@@ -47,7 +47,8 @@ public final class InternalMethodHandler implements IInternalMethodHandler {
 
 	@Override
 	public void delayContext(SpellContext context) {
-		PlayerDataHandler.delayedContexts.add(context);
+		if (!context.caster.world.isRemote)
+			PlayerDataHandler.delayedContexts.add(context);
 	}
 
 	@Override
