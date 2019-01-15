@@ -67,6 +67,7 @@ import vazkii.psi.common.network.message.MessageDeductPsi;
 import vazkii.psi.common.network.message.MessageLevelUp;
 import vazkii.psi.common.network.message.MessageTriggerJumpSpell;
 
+import javax.annotation.Nonnull;
 import java.awt.*;
 import java.lang.ref.WeakReference;
 import java.util.*;
@@ -82,6 +83,7 @@ public class PlayerDataHandler {
 
 	public static final DamageSource damageSourceOverload = new DamageSource("psi-overload").setDamageBypassesArmor().setMagicDamage();
 
+	@Nonnull
 	public static PlayerData get(EntityPlayer player) {
 		if (player == null)
 			return new PlayerData();
@@ -96,6 +98,8 @@ public class PlayerDataHandler {
 			data = get(player);
 			data.readFromNBT(cmp);
 		}
+
+		data.validate();
 
 		return data;
 	}
@@ -222,7 +226,7 @@ public class PlayerDataHandler {
 		@SideOnly(Side.CLIENT)
 		public static void onFOVUpdate(FOVUpdateEvent event) {
 			PlayerData data = get(Minecraft.getMinecraft().player);
-			if(data != null && data.isAnchored) {
+			if(data.isAnchored) {
 				float fov = event.getNewfov();
 				if(data.eidosAnchorTime > 0)
 					fov *= Math.min(5, data.eidosAnchorTime - ClientTicker.partialTicks) / 5;
@@ -545,10 +549,24 @@ public class PlayerDataHandler {
 		}
 
 		public void validate() {
-			if (!learning && levelPoints == 0) {
-				levelPoints++;
+			if (!spellGroupsUnlocked.contains(lastSpellGroup)) {
+				learning = false;
+				lastSpellGroup = "";
+			}
+
+			int trueLevel = spellGroupsUnlocked.size();
+			if (!learning)
+				trueLevel++;
+
+			if (0 > level || level > 1)
+				level = trueLevel;
+
+			if (level == 0) {
+				levelPoints = 0;
 			} else if (learning && levelPoints != 0)
 				levelPoints = 0;
+			else if (!learning && levelPoints == 0)
+				levelPoints = 1;
 		}
 
 		public void stopLoopcast() {

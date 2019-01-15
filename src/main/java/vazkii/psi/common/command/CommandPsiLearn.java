@@ -41,26 +41,22 @@ public class CommandPsiLearn extends CommandBase {
 
 	public static final String level0 = "psidust";
 
+	private static List<String> groups;
+
 	public static List<String> getGroups() {
-		List<String> groups = Lists.newArrayList(level0);
-		groups.addAll(PsiAPI.groupsForName.keySet());
+		if (groups == null) {
+			groups = Lists.newArrayList(level0);
+			groups.addAll(PsiAPI.groupsForName.keySet());
+		}
 		return groups;
 	}
-
 
 	public static void lockPieceGroup(PlayerDataHandler.PlayerData data, String group) {
 		if (hasGroup(data, group)) {
 			if (group.equals(level0)) {
 				data.level = 0;
-				data.lastSpellGroup = "";
-				data.learning = false;
-				data.levelPoints = Math.min(0, data.levelPoints - 1);
 			} else {
 				data.spellGroupsUnlocked.remove(group);
-				if (data.lastSpellGroup.equals(group)) {
-					data.lastSpellGroup = "";
-					data.learning = false;
-				}
 				data.level--;
 
 			}
@@ -104,8 +100,6 @@ public class CommandPsiLearn extends CommandBase {
 			lockPieceGroup(data, group);
 		data.level = 0;
 		data.levelPoints = 0;
-		data.lastSpellGroup = "";
-		data.learning = false;
 		data.save();
 	}
 
@@ -228,22 +222,19 @@ public class CommandPsiLearn extends CommandBase {
 			else {
 				EntityPlayer player = (EntityPlayer) target;
 				PlayerDataHandler.PlayerData data = PlayerDataHandler.get(player);
-				if (data != null) {
-					if (args[0].equals("*")) {
-						applyAll(data, player, sender);
-						if (player instanceof EntityPlayerMP)
-							NetworkHandler.INSTANCE.sendTo(new MessageDataSync(data), (EntityPlayerMP) player);
-					} else if (!getGroups().contains(args[0]))
-						error("not_a_group", args[0]);
-					else if (shouldNotApply(player, args[0]))
-						error("should_not", player.getDisplayName(), args[0]);
-					else {
-						applyPlayerData(player, data, args[0], sender);
-						if (player instanceof EntityPlayerMP)
-							NetworkHandler.INSTANCE.sendTo(new MessageDataSync(data), (EntityPlayerMP) player);
-					}
-				} else
-					error("unknown");
+				if (args[0].equals("*")) {
+					applyAll(data, player, sender);
+					if (player instanceof EntityPlayerMP)
+						NetworkHandler.INSTANCE.sendTo(new MessageDataSync(data), (EntityPlayerMP) player);
+				} else if (!getGroups().contains(args[0]))
+					error("not_a_group", args[0]);
+				else if (shouldNotApply(player, args[0]))
+					error("should_not", player.getDisplayName(), args[0]);
+				else {
+					applyPlayerData(player, data, args[0], sender);
+					if (player instanceof EntityPlayerMP)
+						NetworkHandler.INSTANCE.sendTo(new MessageDataSync(data), (EntityPlayerMP) player);
+				}
 			}
 		}
 	}
