@@ -745,6 +745,8 @@ public class PlayerDataHandler {
 
 		@Override
 		public NBTTagCompound getCustomData() {
+			if (customData == null)
+				return customData = new NBTTagCompound();
 			return customData;
 		}
 
