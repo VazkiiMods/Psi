@@ -1,3 +1,6 @@
+r1.1-70
+*Fixed a crash that would happen sometimes when a player would delay a spell. (WireSegal) 
+*Fixed the tutorial not working prperly again, hopefully. (WireSegal)
 r1.1-69
 *Nice.
 *Added new commands: /psi-learn and /psi-unlearn (WireSegal)
