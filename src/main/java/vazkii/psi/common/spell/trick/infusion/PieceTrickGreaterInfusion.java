@@ -16,17 +16,8 @@ import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.piece.PieceTrick;
 import vazkii.psi.common.item.ItemCAD;
 import vazkii.psi.common.item.base.ModItems;
-import vazkii.psi.common.lib.LibPieceNames;
 
 public class PieceTrickGreaterInfusion extends PieceTrick {
-
-	static {
-		PsiAPI.registerTrickRecipe(LibPieceNames.TRICK_GREATER_INFUSION,
-				"gemDiamond",
-				new ItemStack(ModItems.material, 1, 2),
-				new ItemStack(ModItems.cadAssembly, 1, 2));
-	}
-
 	public PieceTrickGreaterInfusion(Spell spell) {
 		super(spell);
 	}

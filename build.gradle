@@ -89,52 +89,57 @@ task deobfJar(type: Jar) {
     from(sourceSets.main.output)
     archiveName = "${baseName}-${version}-deobf.${extension}"
 }
+task srcJar(type: Jar) {
+    from(sourceSets.main.java)
+    classifier = 'sources'
+    archiveName = "${baseName}-${version}-sources.${extension}"
+}
+task apiJar(type: Jar) {
+    // Remove sources from the api jar when MinecraftForge/ForgeGradle#369 is fixed
+    from(sourceSets.main.allJava)
+    from(sourceSets.main.output)
+    include 'vazkii/psi/api/**'
+
+    classifier = 'api'
+    archiveName = "${baseName}-${version}-api.${extension}"
+}
 
 artifacts {
-    archives deobfJar
+    archives srcJar, apiJar
 }
 /**
  * Increments the buildnumber in your config file, and saves it
  */
 task incrementBuildNumber {
-    config.build_number = (config.build_number.toString().toInteger()) + 1
-    configFile.withWriter {
-        config.toProperties().store(it, "")
+    doLast {
+        config.build_number = (config.build_number.toString().toInteger()) + 1
+        configFile.withWriter {
+            config.toProperties().store(it, "")
+        }
+
+        file('web/versions.ini').append("\n${version}=${minecraft.version}")
+        file("${config.dir_repo}/version/${minecraft.version}.txt").write("${version}")
     }
-
-    file('web/versions.ini').append("\n${version}=${minecraft.version}")
-    file("${config.dir_repo}/version/${minecraft.version}.txt").write("${version}")
 }
 
-// I have no idea what I'm doing
-task wtfGradle2(type: Copy) {
-    from(jar.destinationDir)
-    into file("${config.dir_output}/wtf")
-}
+import java.util.regex.Pattern
 
-// Seriously, I'm desperate to make this work
-task wtfGradle1(type: Delete) {
-    dependsOn "wtfGradle2"
-    delete "${config.dir_output}/wtf/${deobfJar.archiveName}"
-}
-
-task output(type: Copy) {
-    dependsOn "wtfGradle1"
-    from(jar.destinationDir)
-    into file(config.dir_output)
-}
-
-task outputDeobf(type: Copy) {
-    dependsOn "output"
-    from(config.dir_output) {
-        include deobfJar.archiveName
+task sortArtifacts(type: Copy) {
+    from jar.destinationDir
+    into config.dir_output
+    //Put each jar with a classifier in a subfolder with the classifier as its name
+    eachFile {
+        //This matcher is used to get the classifier of the jar
+        def matcher = Pattern.compile(Pattern.quote("$config.mod_name-$version") + "-(?<classifier>\\w+).jar").matcher(it.name)
+        //Only change the destination for full matches, i.e jars with classifiers
+        if (matcher.matches())
+        {
+            def classifier = matcher.group('classifier')
+            /* Set the relative path to change the destination, since 
+             * Gradle doesn't seem to like the absolute path being set*/
+            it.relativePath = it.relativePath.parent.append(false, classifier, it.name)
+        }
     }
-    into file("${config.dir_output}/deobf")
-}
-
-task sort(type: Delete) {
-    dependsOn "outputDeobf"
-    delete "${config.dir_output}/${deobfJar.archiveName}", "${config.dir_output}/wtf"
 }
 
 def parseConfig(File config) {
@@ -145,4 +150,4 @@ def parseConfig(File config) {
     }
 }
 
-defaultTasks 'clean', 'build', 'sort', 'incrementBuildNumber'
+defaultTasks 'clean', 'build', 'sortArtifacts', 'incrementBuildNumber'
