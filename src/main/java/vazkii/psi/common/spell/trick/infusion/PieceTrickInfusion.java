@@ -16,17 +16,8 @@ import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.piece.PieceTrick;
 import vazkii.psi.common.item.ItemCAD;
 import vazkii.psi.common.item.base.ModItems;
-import vazkii.psi.common.lib.LibPieceNames;
 
 public class PieceTrickInfusion extends PieceTrick {
-
-	static {
-		PsiAPI.registerTrickRecipe(LibPieceNames.TRICK_INFUSION,
-				"ingotGold",
-				new ItemStack(ModItems.material, 1, 1),
-				new ItemStack(ModItems.cadAssembly));
-	}
-
 	public PieceTrickInfusion(Spell spell) {
 		super(spell);
 	}

@@ -20,11 +20,25 @@ import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.base.ModBlocks;
 import vazkii.psi.common.core.handler.ConfigHandler;
 import vazkii.psi.common.item.base.ModItems;
+import vazkii.psi.common.lib.LibPieceNames;
 
 public class ModCraftingRecipes {
 
 	public static void init() {
 		PsiAPI.registerTrickRecipe("", Items.REDSTONE, new ItemStack(ModItems.material), new ItemStack(ModItems.cadAssembly));
+
+		PsiAPI.registerTrickRecipe(LibPieceNames.TRICK_INFUSION, "ingotGold",
+				new ItemStack(ModItems.material, 1, 1), 
+				new ItemStack(ModItems.cadAssembly));
+		PsiAPI.registerTrickRecipe(LibPieceNames.TRICK_GREATER_INFUSION, "gemDiamond",
+				new ItemStack(ModItems.material, 1, 2), 
+				new ItemStack(ModItems.cadAssembly, 1, 2));
+		PsiAPI.registerTrickRecipe(LibPieceNames.TRICK_EBONY_IVORY, new ItemStack(Items.COAL),
+				new ItemStack(ModItems.material, 1, 5), 
+				new ItemStack(ModItems.cadAssembly, 1, 2));
+		PsiAPI.registerTrickRecipe(LibPieceNames.TRICK_EBONY_IVORY, "gemQuartz",
+				new ItemStack(ModItems.material, 1, 6), 
+				new ItemStack(ModItems.cadAssembly, 1, 2));
 
 		if(Psi.magical && !ConfigHandler.magipsiClientSide)
 			return;
