@@ -57,6 +57,12 @@ public final class SpellGrid {
 	}
 
 	private void recalculateBoundaries() {
+		empty = true;
+		leftmost = GRID_SIZE;
+		rightmost = -1;
+		topmost = GRID_SIZE;
+		bottommost = -1;
+
 		for (int i = 0; i < GRID_SIZE; i++) {
 			for (int j = 0; j < GRID_SIZE; j++) {
 				SpellPiece p = gridData[i][j];
