@@ -14,6 +14,7 @@ import com.google.common.collect.ImmutableSet;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -32,6 +33,7 @@ import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.common.core.PsiCreativeTab;
+import vazkii.psi.common.core.handler.LoopcastTrackingHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.entity.*;
 import vazkii.psi.common.item.base.IPsiItem;
@@ -159,6 +161,8 @@ public class ItemSpellBullet extends ItemMod implements ISpellContainer, IPsiIte
 				data.loopcasting = true;
 				data.loopcastHand = context.castFrom;
 				data.lastTickLoopcastStack = null;
+				if (context.caster instanceof EntityPlayerMP)
+					LoopcastTrackingHandler.syncForTrackers((EntityPlayerMP) context.caster);
 			}
 
 			break;

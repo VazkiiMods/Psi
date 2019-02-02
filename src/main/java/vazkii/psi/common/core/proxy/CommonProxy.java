@@ -97,6 +97,18 @@ public class CommonProxy {
 		// Proxy override
 	}
 
+	public void sparkleFX(double x, double y, double z, float r, float g, float b, float size, int m) {
+		sparkleFX(x, y, z, r, g, b, 0, 0, 0, size, m);
+	}
+
+	public void sparkleFX(double x, double y, double z, float r, float g, float b, float gravity, float size, int m) {
+		sparkleFX(x, y, z, r, g, b, 0, -gravity, 0, size, m);
+	}
+
+	public void sparkleFX(double x, double y, double z, float r, float g, float b, float motionx, float motiony, float motionz, float size, int m) {
+		// Proxy override
+	}
+
 	public void wispFX(World world, double x, double y, double z, float r, float g, float b, float size) {
 		wispFX(world, x, y, z, r, g, b, size, 0F);
 	}
@@ -114,6 +126,27 @@ public class CommonProxy {
 	}
 
 	public void wispFX(World world, double x, double y, double z, float r, float g, float b, float size, float motionx, float motiony, float motionz, float maxAgeMul) {
+		// Proxy override
+	}
+
+
+	public void wispFX(double x, double y, double z, float r, float g, float b, float size) {
+		wispFX(x, y, z, r, g, b, size, 0F);
+	}
+
+	public void wispFX(double x, double y, double z, float r, float g, float b, float size, float gravity) {
+		wispFX(x, y, z, r, g, b, size, gravity, 1F);
+	}
+
+	public void wispFX(double x, double y, double z, float r, float g, float b, float size, float gravity, float maxAgeMul) {
+		wispFX(x, y, z, r, g, b, size, 0, -gravity, 0, maxAgeMul);
+	}
+
+	public void wispFX(double x, double y, double z, float r, float g, float b, float size, float motionx, float motiony, float motionz) {
+		wispFX(x, y, z, r, g, b, size, motionx, motiony, motionz, 1F);
+	}
+
+	public void wispFX(double x, double y, double z, float r, float g, float b, float size, float motionx, float motiony, float motionz, float maxAgeMul) {
 		// Proxy override
 	}
 

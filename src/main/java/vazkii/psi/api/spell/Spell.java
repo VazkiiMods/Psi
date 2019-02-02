@@ -10,11 +10,11 @@
  */
 package vazkii.psi.api.spell;
 
-import java.util.UUID;
-
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.UUID;
 
 /**
  * Basic class for a spell. Not much to see here.
@@ -40,7 +40,7 @@ public final class Spell {
 	}
 
 	public static Spell createFromNBT(NBTTagCompound cmp) {
-		if(!cmp.getBoolean(TAG_VALID))
+		if(cmp == null || !cmp.getBoolean(TAG_VALID))
 			return null;
 
 		Spell spell = new Spell();

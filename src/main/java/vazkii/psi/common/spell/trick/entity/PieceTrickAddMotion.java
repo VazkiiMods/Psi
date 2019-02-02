@@ -106,7 +106,7 @@ public class PieceTrickAddMotion extends PieceTrick {
 			}
 		}
 		
-		if(added && e != context.caster)
+		if(added)
 			e.velocityChanged = true;
 	}
 

@@ -22,6 +22,7 @@ import vazkii.psi.common.network.message.*;
 public class MessageRegister {
 
 	public static void init() {
+		NetworkHandler.register(MessageLoopcastSync.class, Side.CLIENT);
 		NetworkHandler.register(MessageDataSync.class, Side.CLIENT);
 		NetworkHandler.register(MessageCADDataSync.class, Side.CLIENT);
 		NetworkHandler.register(MessageDeductPsi.class, Side.CLIENT);
@@ -32,6 +33,7 @@ public class MessageRegister {
 		NetworkHandler.register(MessageLevelUp.class, Side.CLIENT);
 		NetworkHandler.register(MessageChangeControllerSlot.class, Side.SERVER);
 		NetworkHandler.register(MessageTriggerJumpSpell.class, Side.SERVER);
+		NetworkHandler.register(MessageVisualEffect.class, Side.CLIENT);
 
 		NetworkMessage.mapHandler(Spell.class, MessageRegister::readSpell, MessageRegister::writeSpell);
 	}

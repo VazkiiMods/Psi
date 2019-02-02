@@ -93,6 +93,11 @@ public class ClientProxy extends CommonProxy {
 		Minecraft.getMinecraft().effectRenderer.addEffect(sparkle);
 	}
 
+	@Override
+	public void sparkleFX(double x, double y, double z, float r, float g, float b, float size, int m) {
+		sparkleFX(Minecraft.getMinecraft().world, x, y, z, r, g, b, size, m);
+	}
+
 	private static boolean distanceLimit = true;
 	private static boolean depthTest = true;
 
@@ -117,7 +122,15 @@ public class ClientProxy extends CommonProxy {
 		Minecraft.getMinecraft().effectRenderer.addEffect(wisp);
 	}
 
+	@Override
+	public void wispFX(double x, double y, double z, float r, float g, float b, float size) {
+		wispFX(Minecraft.getMinecraft().world, x, y, z, r, g, b, size);
+	}
+
 	private boolean noParticles(World world) {
+		if (world == null)
+			return true;
+
 		if(!world.isRemote)
 			return true;
 

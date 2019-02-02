@@ -39,6 +39,7 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vazkii.arl.interf.IItemColorProvider;
@@ -66,6 +67,7 @@ import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.item.component.ItemCADSocket;
 import vazkii.psi.common.lib.LibItemNames;
 import vazkii.psi.common.network.message.MessageCADDataSync;
+import vazkii.psi.common.network.message.MessageVisualEffect;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -168,8 +170,7 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 		boolean did = cast(worldIn, playerIn, data, bullet, itemStackIn, 40, 25, 0.5F, ctx -> ctx.castFrom = hand);
 
 		if(!data.overflowed && bullet.isEmpty() && craft(playerIn, new ItemStack(Items.REDSTONE), new ItemStack(ModItems.material))) {
-			if(!worldIn.isRemote)
-				worldIn.playSound(null, playerIn.posX, playerIn.posY, playerIn.posZ, PsiSoundHandler.cadShoot, SoundCategory.PLAYERS, 0.5F, (float) (0.5 + Math.random() * 0.5));
+			worldIn.playSound(null, playerIn.posX, playerIn.posY, playerIn.posZ, PsiSoundHandler.cadShoot, SoundCategory.PLAYERS, 0.5F, (float) (0.5 + Math.random() * 0.5));
 			data.deductPsi(100, 60, true);
 
 			if(data.level == 0)
@@ -277,13 +278,10 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 	}
 
 	public static boolean craft(EntityPlayer player, Ingredient in, ItemStack out) {
+		if (player.world.isRemote)
+			return false;
+
 		List<EntityItem> items = player.getEntityWorld().getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(player.posX - 8, player.posY - 8, player.posZ - 8, player.posX + 8, player.posY + 8, player.posZ + 8));
-
-		Color color = new Color(ICADColorizer.DEFAULT_SPELL_COLOR);
-		float r = color.getRed() / 255F;
-		float g = color.getGreen() / 255F;
-		float b = color.getBlue() / 255F;
-
 
 		boolean did = false;
 		for(EntityItem item : items) {
@@ -294,23 +292,13 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 				item.setItem(outCopy);
 				did = true;
 
-				for(int i = 0; i < 5; i++) {
-					double x = item.posX + (Math.random() - 0.5) * 2.1 * item.width;
-					double y = item.posY - item.getYOffset();
-					double z = item.posZ + (Math.random() - 0.5) * 2.1 * item.width;
-					float grav = -0.05F - (float) Math.random() * 0.01F;
-					Psi.proxy.sparkleFX(item.getEntityWorld(), x, y, z, r, g, b, grav, 3.5F, 15);
-
-					double m = 0.01;
-					double d3 = 10.0D;
-					for(int j = 0; j < 3; j++) {
-						double d0 = item.getEntityWorld().rand.nextGaussian() * m;
-						double d1 = item.getEntityWorld().rand.nextGaussian() * m;
-						double d2 = item.getEntityWorld().rand.nextGaussian() * m;
-
-						item.getEntityWorld().spawnParticle(EnumParticleTypes.EXPLOSION_NORMAL, item.posX + item.getEntityWorld().rand.nextFloat() * item.width * 2.0F - item.width - d0 * d3, item.posY + item.getEntityWorld().rand.nextFloat() * item.height - d1 * d3, item.posZ + item.getEntityWorld().rand.nextFloat() * item.width * 2.0F - item.width - d2 * d3, d0, d1, d2);
-					}
-				}
+				NetworkHandler.INSTANCE.sendToAllAround(
+						new MessageVisualEffect(ICADColorizer.DEFAULT_SPELL_COLOR,
+								item.posX, item.posY, item.posZ, item.width, item.height, item.getYOffset(),
+								MessageVisualEffect.TYPE_CRAFT),
+						new NetworkRegistry.TargetPoint(item.world.provider.getDimension(),
+								item.posX, item.posY, item.posZ,
+								32));
 			}
 		}
 

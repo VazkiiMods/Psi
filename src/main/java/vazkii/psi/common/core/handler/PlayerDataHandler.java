@@ -13,6 +13,7 @@ package vazkii.psi.common.core.handler;
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
@@ -270,7 +271,7 @@ public class PlayerDataHandler {
 		public boolean learning;
 
 		public boolean loopcasting = false;
-		public EnumHand loopcastHand = EnumHand.MAIN_HAND;
+		public EnumHand loopcastHand = null;
 		public ItemStack lastTickLoopcastStack;
 
 		public int loopcastTime = 1;
@@ -422,7 +423,8 @@ public class PlayerDataHandler {
 											player.getEntityWorld().playSound(null, player.posX, player.posY, player.posZ, PsiSoundHandler.loopcast, SoundCategory.PLAYERS, 0.5F, (float) (0.35 + Math.random() * 0.85));
 									}
 
-									context.cspell.safeExecute(context);
+									if (!player.getEntityWorld().isRemote)
+										context.cspell.safeExecute(context);
 									loopcastAmount++;
 								}
 							}
@@ -579,6 +581,10 @@ public class PlayerDataHandler {
 
 			loopcastTime = 1;
 			loopcastAmount = 0;
+
+			EntityPlayer player = playerWR.get();
+			if (player instanceof EntityPlayerMP)
+				LoopcastTrackingHandler.syncForTrackers((EntityPlayerMP) player);
 		}
 
 		public void damage(float amount) {
@@ -772,7 +778,7 @@ public class PlayerDataHandler {
 			if(lastSpellGroup != null && !lastSpellGroup.isEmpty())
 				cmp.setString(TAG_LAST_SPELL_GROUP, lastSpellGroup);
 			cmp.setBoolean(TAG_OVERFLOWED, overflowed);
-			
+
 			NBTTagList list = new NBTTagList();
 			for(String s : spellGroupsUnlocked) {
 				if(s != null && !s.isEmpty())
@@ -811,7 +817,6 @@ public class PlayerDataHandler {
 			lastSpellGroup = cmp.getString(TAG_LAST_SPELL_GROUP);
 			overflowed = cmp.getBoolean(TAG_OVERFLOWED);
 			learning = cmp.getBoolean(TAG_LEARNING_GROUP);
-
 
 			if(cmp.hasKey(TAG_SPELL_GROUPS_UNLOCKED, Constants.NBT.TAG_LIST)) {
 				spellGroupsUnlocked.clear();
@@ -856,6 +861,7 @@ public class PlayerDataHandler {
 			}
 
 			RenderSpellCircle.renderSpellCircle(ClientTicker.ticksInGame + partTicks, scale, x, y, z, color);
+			GlStateManager.disableLighting();
 		}
 
 		public static class Deduction {
