@@ -255,7 +255,8 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 							}
 						}
 
-						spellContainer.castSpell(bullet, context);
+						if(!world.isRemote)
+							spellContainer.castSpell(bullet, context);
 						MinecraftForge.EVENT_BUS.post(new SpellCastEvent(spell, context, player, data, cad, bullet));
 						return true;
 					} else if(!world.isRemote)
