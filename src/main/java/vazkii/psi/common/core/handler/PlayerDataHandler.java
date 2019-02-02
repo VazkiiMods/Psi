@@ -24,6 +24,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
+import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.network.play.server.SPacketPlayerPosLook.EnumFlags;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
@@ -63,6 +64,7 @@ import vazkii.psi.client.render.entity.RenderSpellCircle;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.item.ItemCAD;
 import vazkii.psi.common.lib.LibMisc;
+import vazkii.psi.common.lib.LibObfuscation;
 import vazkii.psi.common.network.message.MessageDataSync;
 import vazkii.psi.common.network.message.MessageDeductPsi;
 import vazkii.psi.common.network.message.MessageLevelUp;
@@ -479,6 +481,8 @@ public class PlayerDataHandler {
 						if(player instanceof EntityPlayerMP) {
 							EntityPlayerMP pmp = (EntityPlayerMP) player;
 							pmp.connection.setPlayerLocation(vec.x, vec.y, vec.z, 0, 0, ImmutableSet.of(EnumFlags.X_ROT, EnumFlags.Y_ROT));
+							LibObfuscation.callMethod(NetHandlerPlayServer.class, pmp.connection,
+									LibObfuscation.CAPTURE_CURRENT_POSITION, new Class[0], Void.TYPE);
 						} else {
 							player.posX = vec.x;
 							player.posY = vec.y;
@@ -488,17 +492,20 @@ public class PlayerDataHandler {
 						Entity riding = player.getRidingEntity();
 						while(riding != null) {
 							riding.setPosition(vec.x, vec.y, vec.z);
+
 							riding = riding.getRidingEntity();
 						}
 
-						for(int i = 0; i < 5; i++) {
-							double spread = 0.6;
+						if (player.world.isRemote) {
+							for (int i = 0; i < 5; i++) {
+								double spread = 0.6;
 
-							double x = player.posX + (Math.random() - 0.5) * spread;
-							double y = player.posY + (Math.random() - 0.5) * spread;
-							double z = player.posZ + (Math.random() - 0.5) * spread;
+								double x = player.posX + (Math.random() - 0.5) * spread;
+								double y = player.posY + (Math.random() - 0.5) * spread;
+								double z = player.posZ + (Math.random() - 0.5) * spread;
 
-							Psi.proxy.sparkleFX(player.getEntityWorld(), x, y, z, r, g, b, (float) x, (float) y, (float) z, 1.2F, 12);
+								Psi.proxy.sparkleFX(player.getEntityWorld(), x, y, z, r, g, b, 0, 0, 0, 1.2F, 12);
+							}
 						}
 
 						player.motionX = 0;

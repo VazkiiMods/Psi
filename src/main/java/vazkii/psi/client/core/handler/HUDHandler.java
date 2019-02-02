@@ -26,8 +26,8 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.ARBMultitexture;
@@ -266,7 +266,7 @@ public final class HUDHandler {
 		if (stack.isEmpty() || name == null || name.trim().isEmpty())
 			return;
 
-		int ticks = ReflectionHelper.getPrivateValue(GuiIngame.class, mc.ingameGUI,
+		int ticks = ObfuscationReflectionHelper.getPrivateValue(GuiIngame.class, mc.ingameGUI,
 				LibObfuscation.REMAINING_HIGHLIGHT_TICKS);
 		ticks -= 10;
 
