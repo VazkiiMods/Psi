@@ -94,8 +94,8 @@ public class ClientProxy extends CommonProxy {
 	}
 
 	@Override
-	public void sparkleFX(double x, double y, double z, float r, float g, float b, float size, int m) {
-		sparkleFX(x, y, z, r, g, b, size, m);
+	public void sparkleFX(double x, double y, double z, float r, float g, float b, float motionx, float motiony, float motionz, float size, int m) {
+		sparkleFX(Minecraft.getMinecraft().world, x, y, z, r, g, b, motionx, motiony, motionz, size, m);
 	}
 
 	private static boolean distanceLimit = true;
@@ -123,8 +123,8 @@ public class ClientProxy extends CommonProxy {
 	}
 
 	@Override
-	public void wispFX(double x, double y, double z, float r, float g, float b, float size) {
-		wispFX(x, y, z, r, g, b, size);
+	public void wispFX(double x, double y, double z, float r, float g, float b, float size, float motionx, float motiony, float motionz, float maxAgeMul) {
+		wispFX(Minecraft.getMinecraft().world, x, y, z, r, g, b, size, motionx, motiony, motionz, maxAgeMul);
 	}
 
 	private boolean noParticles(World world) {
