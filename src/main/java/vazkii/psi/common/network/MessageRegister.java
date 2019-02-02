@@ -24,6 +24,7 @@ public class MessageRegister {
 	public static void init() {
 		NetworkHandler.register(MessageLoopcastSync.class, Side.CLIENT);
 		NetworkHandler.register(MessageDataSync.class, Side.CLIENT);
+		NetworkHandler.register(MessageEidosSync.class, Side.CLIENT);
 		NetworkHandler.register(MessageCADDataSync.class, Side.CLIENT);
 		NetworkHandler.register(MessageDeductPsi.class, Side.CLIENT);
 		NetworkHandler.register(MessageChangeSocketableSlot.class, Side.SERVER);

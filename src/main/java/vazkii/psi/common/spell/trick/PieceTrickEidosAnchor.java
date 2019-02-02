@@ -41,7 +41,7 @@ public class PieceTrickEidosAnchor extends PieceTrick {
 		super.addToMetadata(meta);
 		Double timeVal = this.<Double>getParamEvaluation(time);
 
-		if(timeVal == null ||  timeVal <= 0 || timeVal.doubleValue() != timeVal.intValue())
+		if(timeVal == null ||  timeVal <= 0 || timeVal != timeVal.intValue())
 			throw new SpellCompilationException(SpellCompilationException.NON_POSITIVE_INTEGER, x, y);
 
 		meta.addStat(EnumSpellStat.POTENCY, (int) (timeVal * 5.5 + 20));
