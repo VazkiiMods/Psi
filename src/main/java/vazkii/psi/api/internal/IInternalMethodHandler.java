@@ -23,28 +23,28 @@ public interface IInternalMethodHandler {
 	 * Gets the player data for a given player. Player Data contains info such as the
 	 * player's Psi value or level.
 	 */
-	public IPlayerData getDataForPlayer(EntityPlayer player);
+	IPlayerData getDataForPlayer(EntityPlayer player);
 
 	/**
 	 * Gets the texture for the programmer. Used for drawing the arrows in a SpellPiece's
 	 * params.
 	 */
-	public ResourceLocation getProgrammerTexture();
+	ResourceLocation getProgrammerTexture();
 
 	/**
 	 * Gets an instance of a spell compiler. In most cases, you should use {@link #getSpellCache()} instead.
 	 */
-	public ISpellCompiler getCompiler(Spell spell);
+	ISpellCompiler getCompiler(Spell spell);
 
 	/**
 	 * Gets the singleton instance of the spell cache.
 	 */
-	public ISpellCache getSpellCache();
+	ISpellCache getSpellCache();
 
 	/**
 	 * Delays a spell context.
 	 */
-	public void delayContext(SpellContext context);
+	void delayContext(SpellContext context);
 
 	/**
 	 * Localizes a string, with correct behavior on both server and client.

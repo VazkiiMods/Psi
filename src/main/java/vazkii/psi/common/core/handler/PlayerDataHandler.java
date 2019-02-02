@@ -78,9 +78,9 @@ import java.util.List;
 
 public class PlayerDataHandler {
 
-	private static WeakHashMap<EntityPlayer, PlayerData> remotePlayerData = new WeakHashMap<>();
-	private static WeakHashMap<EntityPlayer, PlayerData> playerData = new WeakHashMap<>();
-	public static Set<SpellContext> delayedContexts = new HashSet<>();
+	private static final WeakHashMap<EntityPlayer, PlayerData> remotePlayerData = new WeakHashMap<>();
+	private static final WeakHashMap<EntityPlayer, PlayerData> playerData = new WeakHashMap<>();
+	public static final Set<SpellContext> delayedContexts = new HashSet<>();
 
 	private static final String DATA_TAG = "PsiData";
 
@@ -260,8 +260,8 @@ public class PlayerDataHandler {
 
 		private static final String TAG_CUSTOM_DATA = "customData";
 		
-		public int totalPsi = 5000;
-		public int regen = 25;
+		public final int totalPsi = 5000;
+		public final int regen = 25;
 		
 		public int level;
 		public int availablePsi;
@@ -282,7 +282,7 @@ public class PlayerDataHandler {
 		public boolean overflowed = false;
 		
 		// Eidos stuff
-		public Stack<Vector3> eidosChangelog = new Stack<>();
+		public final Stack<Vector3> eidosChangelog = new Stack<>();
 		public Vector3 eidosAnchor = new Vector3(0, 0, 0);
 		public double eidosAnchorPitch, eidosAnchorYaw;
 		public boolean isAnchored;
@@ -299,7 +299,7 @@ public class PlayerDataHandler {
 
 		public final List<String> spellGroupsUnlocked = new ArrayList<>();
 		public final List<Deduction> deductions = new ArrayList<>();
-		public WeakReference<EntityPlayer> playerWR;
+		public final WeakReference<EntityPlayer> playerWR;
 		private final boolean client;
 		
 		// Custom Data
@@ -400,7 +400,7 @@ public class PlayerDataHandler {
 						double y = player.posY - player.getYOffset();
 						double z = player.posZ + (Math.random() - 0.5) * 2.1 * player.width;
 						float grav = -0.15F - (float) Math.random() * 0.03F;
-						Psi.proxy.sparkleFX(player.getEntityWorld(), x, y, z, r, g, b, grav, 0.25F, 15);
+						Psi.proxy.sparkleFX(x, y, z, r, g, b, grav, 0.25F, 15);
 					}
 
 					if(loopcastTime > 0 && loopcastTime % 5 == 0) {
@@ -504,7 +504,7 @@ public class PlayerDataHandler {
 								double y = player.posY + (Math.random() - 0.5) * spread;
 								double z = player.posZ + (Math.random() - 0.5) * spread;
 
-								Psi.proxy.sparkleFX(player.getEntityWorld(), x, y, z, r, g, b, 0, 0, 0, 1.2F, 12);
+								Psi.proxy.sparkleFX(x, y, z, r, g, b, 0, 0, 0, 1.2F, 12);
 							}
 						}
 

@@ -116,10 +116,10 @@ public class ItemSpellDrive extends ItemMod implements IPsiItem {
 			else playerIn.swingArm(hand);
 			setSpell(itemStackIn, null);
 			
-			return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
+			return new ActionResult<>(EnumActionResult.SUCCESS, itemStackIn);
 		}
 
-		return new ActionResult<ItemStack>(EnumActionResult.PASS, itemStackIn);
+		return new ActionResult<>(EnumActionResult.PASS, itemStackIn);
 	}
 
 	public static void setSpell(ItemStack stack, Spell spell) {

@@ -18,18 +18,19 @@ import vazkii.psi.common.lib.LibEntityNames;
 
 public final class ModEntities {
 
-	public static void init() {
-		int id = 0;
+	private static int id = 0;
 
-		registerModEntity(EntitySpellProjectile.class, LibEntityNames.SPELL_PROJECTILE, id++, Psi.instance, 256, 10, true);
-		registerModEntity(EntitySpellCircle.class, LibEntityNames.SPELL_CIRCLE, id++, Psi.instance, 256, 64, false);
-		registerModEntity(EntitySpellGrenade.class, LibEntityNames.SPELL_GRENADE, id++, Psi.instance, 256, 10, true);
-		registerModEntity(EntitySpellCharge.class, LibEntityNames.SPELL_CHARGE, id++, Psi.instance, 256, 10, true);
-		registerModEntity(EntitySpellMine.class, LibEntityNames.SPELL_MINE, id++, Psi.instance, 256, 10, true);
+	public static void init() {
+
+		registerModEntity(EntitySpellProjectile.class, LibEntityNames.SPELL_PROJECTILE, Psi.instance, 256, 10, true);
+		registerModEntity(EntitySpellCircle.class, LibEntityNames.SPELL_CIRCLE, Psi.instance, 256, 64, false);
+		registerModEntity(EntitySpellGrenade.class, LibEntityNames.SPELL_GRENADE, Psi.instance, 256, 10, true);
+		registerModEntity(EntitySpellCharge.class, LibEntityNames.SPELL_CHARGE, Psi.instance, 256, 10, true);
+		registerModEntity(EntitySpellMine.class, LibEntityNames.SPELL_MINE, Psi.instance, 256, 10, true);
 	}
 	
-	private static void registerModEntity(Class<? extends Entity> entityClass, String entityName, int id, Object mod, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates) {
-		EntityRegistry.registerModEntity(new ResourceLocation(entityName), entityClass, entityName, id, mod, trackingRange, updateFrequency, sendsVelocityUpdates);
+	private static void registerModEntity(Class<? extends Entity> entityClass, String entityName, Object mod, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates) {
+		EntityRegistry.registerModEntity(new ResourceLocation(entityName), entityClass, entityName, id++, mod, trackingRange, updateFrequency, sendsVelocityUpdates);
 		
 	}
 }

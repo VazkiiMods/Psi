@@ -34,12 +34,12 @@ public class PieceTrickDie extends PieceTrick {
 	}
 
 	@Override
-	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
+	public void addToMetadata(SpellMetadata meta) {
 		meta.addStat(EnumSpellStat.COMPLEXITY, 1);
 	}
 
 	@Override
-	public Object execute(SpellContext context) throws SpellRuntimeException {
+	public Object execute(SpellContext context) {
 		Double timeVal = this.<Double>getParamValue(context, target);
 		if(Math.abs(timeVal) < 1)
 			context.stopped = true;

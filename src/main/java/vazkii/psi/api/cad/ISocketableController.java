@@ -23,10 +23,10 @@ public interface ISocketableController {
 	 * Returns an array of stacks this item can control. Can't be null.
 	 * Elements can be null. The item of every non-null stack must implement ISocketable.
 	 */
-	public ItemStack[] getControlledStacks(EntityPlayer player, ItemStack stack);
+	ItemStack[] getControlledStacks(EntityPlayer player, ItemStack stack);
 
-	public int getDefaultControlSlot(ItemStack stack);
+	int getDefaultControlSlot(ItemStack stack);
 
-	public void setSelectedSlot(EntityPlayer player, ItemStack stack, int controlSlot, int slot);
+	void setSelectedSlot(EntityPlayer player, ItemStack stack, int controlSlot, int slot);
 
 }

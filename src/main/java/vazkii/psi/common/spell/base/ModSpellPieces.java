@@ -425,11 +425,11 @@ public final class ModSpellPieces {
 	public static PieceContainer register(Class<? extends SpellPiece> clazz, String name, String group, boolean main) {
 		PsiAPI.registerSpellPieceAndTexture(name, clazz);
 		PsiAPI.addPieceToGroup(clazz, group, main);
-		return (Spell s) -> { return SpellPiece.create(clazz, s); };
+		return (Spell s) -> SpellPiece.create(clazz, s);
 	}
 
-	public static interface PieceContainer {
-		public SpellPiece get(Spell s);
+	public interface PieceContainer {
+		SpellPiece get(Spell s);
 	}
 
 }

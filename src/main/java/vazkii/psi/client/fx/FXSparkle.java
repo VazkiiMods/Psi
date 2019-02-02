@@ -22,11 +22,11 @@ public class FXSparkle extends FXQueued {
 
 	public static final ResourceLocation particles = new ResourceLocation(LibResources.MISC_PARTICLES);
 
-	public static Queue<FXSparkle> queuedRenders = new ArrayDeque<>();
+	public static final Queue<FXSparkle> queuedRenders = new ArrayDeque<>();
 
-	public boolean shrink = true;
-	public int particle = 16;
-	public int multiplier;
+	public final boolean shrink = true;
+	public final int particle = 16;
+	public final int multiplier;
 
 	public FXSparkle(World world, double x, double y, double z, float size, float red, float green, float blue, int m) {
 		super(world, x, y, z, size, red, green, blue, m * 3);

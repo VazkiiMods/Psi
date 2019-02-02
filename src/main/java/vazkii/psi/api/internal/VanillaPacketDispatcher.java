@@ -10,12 +10,13 @@
  */
 package vazkii.psi.api.internal;
 
-import java.util.List;
-
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+
+import java.util.List;
 
 public final class VanillaPacketDispatcher {
 
@@ -37,7 +38,9 @@ public final class VanillaPacketDispatcher {
 	}
 
 	public static void dispatchTEToPlayer(TileEntity tile, EntityPlayerMP p) {
-		p.connection.sendPacket(tile.getUpdatePacket());
+		SPacketUpdateTileEntity packet = tile.getUpdatePacket();
+		if (packet != null)
+		p.connection.sendPacket(packet);
 	}
 
 }

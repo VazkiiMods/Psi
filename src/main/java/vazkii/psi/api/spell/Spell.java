@@ -26,7 +26,7 @@ public final class Spell {
 	public static final String TAG_UUID_MOST = "uuidMost";
 	public static final String TAG_UUID_LEAST = "uuidLeast";
 
-	public SpellGrid grid = new SpellGrid(this);
+	public final SpellGrid grid = new SpellGrid(this);
 	public String name = "";
 	public UUID uuid;
 

@@ -43,7 +43,7 @@ public class PieceOperatorRandom extends PieceOperator {
 		if(neg)
 			v = -v;
 
-		return Double.valueOf(v);
+		return (double) v;
 	}
 
 	@Override

@@ -33,7 +33,7 @@ public class EntitySpellMine extends EntitySpellGrenade {
 
 		List<EntityLivingBase> entities = getEntityWorld().getEntitiesWithinAABB(EntityLivingBase.class, getEntityBoundingBox().grow(1, 1, 1));
 		EntityLivingBase thrower = getThrower();
-		if(thrower != null && entities.contains(thrower))
+		if(thrower != null)
 			entities.remove(thrower);
 
 		if(!entities.isEmpty())

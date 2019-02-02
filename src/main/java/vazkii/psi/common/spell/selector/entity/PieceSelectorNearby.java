@@ -10,23 +10,17 @@
  */
 package vazkii.psi.common.spell.selector.entity;
 
-import java.util.List;
-
 import com.google.common.base.Predicate;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.AxisAlignedBB;
 import vazkii.psi.api.internal.Vector3;
-import vazkii.psi.api.spell.Spell;
-import vazkii.psi.api.spell.SpellCompilationException;
-import vazkii.psi.api.spell.SpellContext;
-import vazkii.psi.api.spell.SpellMetadata;
-import vazkii.psi.api.spell.SpellParam;
-import vazkii.psi.api.spell.SpellRuntimeException;
+import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.param.ParamVector;
 import vazkii.psi.api.spell.piece.PieceSelector;
 import vazkii.psi.api.spell.wrapper.EntityListWrapper;
+
+import java.util.List;
 
 public abstract class PieceSelectorNearby extends PieceSelector {
 
@@ -64,9 +58,7 @@ public abstract class PieceSelectorNearby extends PieceSelector {
 
 		Predicate<Entity> pred = getTargetPredicate();
 
-		List<Entity> list = context.caster.getEntityWorld().getEntitiesWithinAABB(Entity.class, axis, (Entity e) -> {
-			return e != null && pred.apply(e) && e != context.caster && e != context.focalPoint && context.isInRadius(e);
-		});
+		List<Entity> list = context.caster.getEntityWorld().getEntitiesWithinAABB(Entity.class, axis, (Entity e) -> e != null && pred.apply(e) && e != context.caster && e != context.focalPoint && context.isInRadius(e));
 
 		return new EntityListWrapper(list);
 	}

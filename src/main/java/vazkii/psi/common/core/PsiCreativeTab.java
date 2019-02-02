@@ -24,7 +24,7 @@ import javax.annotation.Nonnull;
 
 public class PsiCreativeTab extends CreativeTabs {
 
-	public static PsiCreativeTab INSTANCE = new PsiCreativeTab();
+	public static final PsiCreativeTab INSTANCE = new PsiCreativeTab();
 	private NonNullList<ItemStack> list;
 
 	public PsiCreativeTab() {

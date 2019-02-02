@@ -18,9 +18,9 @@ import net.minecraft.entity.Entity;
  */
 public interface ISpellImmune {
 
-	public boolean isImmune();
+	boolean isImmune();
 	
-	public static boolean isImmune(Entity e) {
+	static boolean isImmune(Entity e) {
 		return !e.isNonBoss() || (e instanceof ISpellImmune && ((ISpellImmune) e).isImmune());
 	}
 	

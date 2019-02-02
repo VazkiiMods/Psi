@@ -51,7 +51,7 @@ public class PieceTrickEidosReversal extends PieceTrick {
 	}
 
 	@Override
-	public Object execute(SpellContext context) throws SpellRuntimeException {
+	public Object execute(SpellContext context) {
 		Double timeVal = this.<Double>getParamValue(context, time);
 		PlayerData data = PlayerDataHandler.get(context.caster);
 		if(!data.isReverting) {

@@ -34,7 +34,7 @@ public class PieceOperatorVectorDotProduct extends PieceOperator {
 	}
 
 	@Override
-	public Object execute(SpellContext context) throws SpellRuntimeException {
+	public Object execute(SpellContext context) {
 		Vector3 v1 = this.getParamValue(context, vec1);
 		Vector3 v2 = this.getParamValue(context, vec2);
 

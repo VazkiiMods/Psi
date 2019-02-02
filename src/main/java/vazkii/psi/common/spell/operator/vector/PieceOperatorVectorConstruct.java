@@ -36,7 +36,7 @@ public class PieceOperatorVectorConstruct extends PieceOperator {
 	}
 
 	@Override
-	public Object execute(SpellContext context) throws SpellRuntimeException {
+	public Object execute(SpellContext context) {
 		Double d1 = this.<Double>getParamValue(context, num1);
 		Double d2 = this.<Double>getParamValue(context, num2);
 		Double d3 = this.<Double>getParamValue(context, num3);

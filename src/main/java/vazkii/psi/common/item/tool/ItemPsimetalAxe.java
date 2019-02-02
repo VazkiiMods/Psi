@@ -10,11 +10,7 @@
  */
 package vazkii.psi.common.item.tool;
 
-import java.util.Set;
-
-import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -23,10 +19,11 @@ import net.minecraft.item.ItemStack;
 import vazkii.psi.common.lib.LibItemNames;
 
 import javax.annotation.Nonnull;
+import java.util.Set;
 
 public class ItemPsimetalAxe extends ItemPsimetalTool {
 
-	private static final Set<Block> EFFECTIVE_ON = Sets.newHashSet(new Block[] {Blocks.PLANKS, Blocks.BOOKSHELF, Blocks.LOG, Blocks.LOG2, Blocks.CHEST, Blocks.PUMPKIN, Blocks.LIT_PUMPKIN, Blocks.MELON_BLOCK, Blocks.LADDER});
+	private static final Set<Block> EFFECTIVE_ON = Sets.newHashSet(Blocks.PLANKS, Blocks.BOOKSHELF, Blocks.LOG, Blocks.LOG2, Blocks.CHEST, Blocks.PUMPKIN, Blocks.LIT_PUMPKIN, Blocks.MELON_BLOCK, Blocks.LADDER);
 
 	public ItemPsimetalAxe() {
 		super(LibItemNames.PSIMETAL_AXE, 6F, -3.1F, EFFECTIVE_ON);

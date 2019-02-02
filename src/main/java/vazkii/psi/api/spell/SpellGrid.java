@@ -39,6 +39,9 @@ public final class SpellGrid {
 	public final Spell spell;
 	public SpellPiece[][] gridData;
 
+	private boolean empty;
+	private int leftmost, rightmost, topmost, bottommost;
+
 	@SideOnly(Side.CLIENT)
 	public void draw() {
 		for(int i = 0; i < GRID_SIZE; i++)
@@ -53,28 +56,27 @@ public final class SpellGrid {
 			}
 	}
 
-	public int getSize() {
-		boolean empty = false;
-		int leftmost = GRID_SIZE;
-		int rightmost = -1;
-		int topmost = GRID_SIZE;
-		int bottommost = -1;
-
-		for(int i = 0; i < GRID_SIZE; i++)
-			for(int j = 0; j < GRID_SIZE; j++) {
+	private void recalculateBoundaries() {
+		for (int i = 0; i < GRID_SIZE; i++) {
+			for (int j = 0; j < GRID_SIZE; j++) {
 				SpellPiece p = gridData[i][j];
-				if(p != null) {
+				if (p != null) {
 					empty = false;
-					if(i < leftmost)
+					if (i < leftmost)
 						leftmost = i;
-					if(i > rightmost)
+					if (i > rightmost)
 						rightmost = i;
-					if(j < topmost)
+					if (j < topmost)
 						topmost = j;
-					if(j > bottommost)
+					if (j > bottommost)
 						bottommost = j;
 				}
 			}
+		}
+	}
+
+	public int getSize() {
+		recalculateBoundaries();
 
 		if(empty)
 			return 0;
@@ -83,27 +85,7 @@ public final class SpellGrid {
 	}
 
 	public boolean shift(SpellParam.Side side, boolean doit) {
-		boolean empty = false;
-		int leftmost = GRID_SIZE;
-		int rightmost = -1;
-		int topmost = GRID_SIZE;
-		int bottommost = -1;
-
-		for(int i = 0; i < GRID_SIZE; i++)
-			for(int j = 0; j < GRID_SIZE; j++) {
-				SpellPiece p = gridData[i][j];
-				if(p != null) {
-					empty = false;
-					if(i < leftmost)
-						leftmost = i;
-					if(i > rightmost)
-						rightmost = i;
-					if(j < topmost)
-						topmost = j;
-					if(j > bottommost)
-						bottommost = j;
-				}
-			}
+		recalculateBoundaries();
 
 		if(empty)
 			return false;

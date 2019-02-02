@@ -18,6 +18,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public interface IHUDItem {
 	
 	@SideOnly(Side.CLIENT)
-	public void drawHUD(ScaledResolution res, float partTicks, ItemStack stack);
+	void drawHUD(ScaledResolution res, float partTicks, ItemStack stack);
 
 }

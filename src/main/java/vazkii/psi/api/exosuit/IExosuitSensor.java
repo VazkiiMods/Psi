@@ -19,9 +19,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  */
 public interface IExosuitSensor {
 
-	public String getEventType(ItemStack stack);
+	String getEventType(ItemStack stack);
 
 	@SideOnly(Side.CLIENT)
-	public int getColor(ItemStack stack);
+	int getColor(ItemStack stack);
 
 }

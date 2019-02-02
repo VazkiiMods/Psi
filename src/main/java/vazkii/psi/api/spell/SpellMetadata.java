@@ -23,7 +23,7 @@ import java.util.Map;
  */
 public final class SpellMetadata {
 
-	public Map<EnumSpellStat, Integer> stats = new EnumMap<>(EnumSpellStat.class);
+	public final Map<EnumSpellStat, Integer> stats = new EnumMap<>(EnumSpellStat.class);
 
 	/**
 	 * Should errors from this spell not be sent to the player's chat?

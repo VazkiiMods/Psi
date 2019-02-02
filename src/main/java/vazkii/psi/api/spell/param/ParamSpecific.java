@@ -14,7 +14,7 @@ import vazkii.psi.api.spell.SpellParam;
 
 public abstract class ParamSpecific extends SpellParam {
 
-	boolean constant;
+	final boolean constant;
 
 	public ParamSpecific(String name, int color, boolean canDisable, boolean constant) {
 		super(name, color, canDisable);

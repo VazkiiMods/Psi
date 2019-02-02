@@ -26,14 +26,14 @@ import java.util.Stack;
  */
 public class CompiledSpell {
 
-	public Spell sourceSpell;
-	public SpellMetadata metadata = new SpellMetadata();
+	public final Spell sourceSpell;
+	public final SpellMetadata metadata = new SpellMetadata();
 
-	public Stack<Action> actions = new Stack<>();
-	public Map<SpellPiece, Action> actionMap = new HashMap<>();
+	public final Stack<Action> actions = new Stack<>();
+	public final Map<SpellPiece, Action> actionMap = new HashMap<>();
 
 	public Action currentAction;
-	public boolean[][] spotsEvaluated;
+	public final boolean[][] spotsEvaluated;
 
 	public CompiledSpell(Spell source) {
 		sourceSpell = source;

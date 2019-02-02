@@ -45,7 +45,7 @@ public class GuiLeveling extends GuiScreen {
 
 	public static final ResourceLocation texture = new ResourceLocation(LibResources.GUI_LEVELING);
 
-	public List<String> tooltip = new ArrayList<>();
+	public final List<String> tooltip = new ArrayList<>();
 	static float scrollDistanceGroup, scrollDistanceText;
 	static int selected;
 
@@ -57,9 +57,9 @@ public class GuiLeveling extends GuiScreen {
 	Spell spellWrapper;
 	PlayerData data;
 	List<PieceGroup> groups;
-	List<SpellPiece> drawPieces = new ArrayList<>();
+	final List<SpellPiece> drawPieces = new ArrayList<>();
 	List<String> desc;
-	boolean ignoreIntroductionJump;
+	final boolean ignoreIntroductionJump;
 	
 	public GuiLeveling() {
 		this(false);

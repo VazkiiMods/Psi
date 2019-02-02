@@ -31,7 +31,7 @@ public class PieceOperatorCos extends PieceOperator {
 	}
 
 	@Override
-	public Object execute(SpellContext context) throws SpellRuntimeException {
+	public Object execute(SpellContext context) {
 		Double d = this.<Double>getParamValue(context, num);
 
 		return Math.cos(d);

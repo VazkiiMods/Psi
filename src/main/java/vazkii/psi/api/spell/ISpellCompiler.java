@@ -19,12 +19,12 @@ import org.apache.commons.lang3.tuple.Pair;
  */
 public interface ISpellCompiler {
 
-	public CompiledSpell getCompiledSpell();
+	CompiledSpell getCompiledSpell();
 
-	public String getError();
+	String getError();
 
-	public Pair<Integer, Integer> getErrorLocation();
+	Pair<Integer, Integer> getErrorLocation();
 
-	public boolean isErrored();
+	boolean isErrored();
 
 }

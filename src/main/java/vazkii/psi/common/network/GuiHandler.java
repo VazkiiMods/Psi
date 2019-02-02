@@ -11,6 +11,7 @@
 package vazkii.psi.common.network;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
@@ -27,7 +28,10 @@ public class GuiHandler implements IGuiHandler {
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
 		switch(ID) {
 		case LibGuiIDs.CAD_ASSEMBLER:
-			return new ContainerCADAssembler(player, (TileCADAssembler) world.getTileEntity(new BlockPos(x, y, z)));
+			TileEntity assembler = world.getTileEntity(new BlockPos(x, y, z));
+			if (!(assembler instanceof TileCADAssembler))
+				return null;
+			return new ContainerCADAssembler(player, (TileCADAssembler) assembler);
 		}
 
 		return null;
@@ -37,9 +41,15 @@ public class GuiHandler implements IGuiHandler {
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
 		switch(ID) {
 		case LibGuiIDs.CAD_ASSEMBLER:
-			return new GuiCADAssembler(player, (TileCADAssembler) world.getTileEntity(new BlockPos(x, y, z)));
+			TileEntity assembler = world.getTileEntity(new BlockPos(x, y, z));
+			if (!(assembler instanceof TileCADAssembler))
+				return null;
+			return new GuiCADAssembler(player, (TileCADAssembler) assembler);
 		case LibGuiIDs.PROGRAMMER:
-			return new GuiProgrammer((TileProgrammer) world.getTileEntity(new BlockPos(x, y, z)));
+			TileEntity programmer = world.getTileEntity(new BlockPos(x, y, z));
+			if (!(programmer instanceof TileProgrammer))
+				return null;
+			return new GuiProgrammer((TileProgrammer) programmer);
 		}
 
 		return null;

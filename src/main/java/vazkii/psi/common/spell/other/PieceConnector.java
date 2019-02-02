@@ -96,7 +96,7 @@ public class PieceConnector extends SpellPiece implements IRedirector {
 			wr.begin(7, DefaultVertexFormats.POSITION_TEX);
 			wr.pos(0, 16, 0).tex(minU, maxV).endVertex();
 			wr.pos(16, 16, 0).tex(maxU, maxV).endVertex();
-			wr.pos(16, 0, 0).tex(maxU, minV).endVertex();;
+			wr.pos(16, 0, 0).tex(maxU, minV).endVertex();
 			wr.pos(0, 0, 0).tex(minU, minV).endVertex();
 			Tessellator.getInstance().draw();
 		}
@@ -139,7 +139,7 @@ public class PieceConnector extends SpellPiece implements IRedirector {
 	}
 
 	@Override
-	public Object execute(SpellContext context) throws SpellRuntimeException {
+	public Object execute(SpellContext context) {
 		return null;
 	}
 

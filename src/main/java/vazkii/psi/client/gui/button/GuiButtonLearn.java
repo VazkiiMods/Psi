@@ -21,7 +21,7 @@ import javax.annotation.Nonnull;
 
 public class GuiButtonLearn extends GuiButton {
 
-	GuiLeveling gui;
+	final GuiLeveling gui;
 
 	public GuiButtonLearn(GuiLeveling gui, int par2, int par3) {
 		super(0, par2, par3, 26, 22, "");

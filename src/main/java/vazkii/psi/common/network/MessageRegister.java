@@ -21,6 +21,7 @@ import vazkii.psi.common.network.message.*;
 
 public class MessageRegister {
 
+	@SuppressWarnings("unchecked")
 	public static void init() {
 		NetworkHandler.register(MessageLoopcastSync.class, Side.CLIENT);
 		NetworkHandler.register(MessageDataSync.class, Side.CLIENT);

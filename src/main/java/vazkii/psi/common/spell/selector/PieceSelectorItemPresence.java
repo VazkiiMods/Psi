@@ -37,7 +37,7 @@ public class PieceSelectorItemPresence extends PieceSelector {
 		int invSlot = (slotVal == null ? context.getTargetSlot() : Math.abs(slotVal.intValue() - 1)) % context.caster.inventory.mainInventory.size();
 		ItemStack stack = context.caster.inventory.getStackInSlot(invSlot);
 		
-		return stack == null ? 0.0 : Double.valueOf(stack.getCount());
+		return (double) stack.getCount();
 	}
 
 	@Override

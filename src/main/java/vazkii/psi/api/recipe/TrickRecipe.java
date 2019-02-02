@@ -14,10 +14,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 
 public class TrickRecipe {
-    private String piece;
-    private Ingredient input;
-    private ItemStack output;
-    private ItemStack cad;
+    private final String piece;
+    private final Ingredient input;
+    private final ItemStack output;
+    private final ItemStack cad;
 
     public TrickRecipe(String trick, Ingredient input, ItemStack output, ItemStack CAD) {
         this.piece = trick;

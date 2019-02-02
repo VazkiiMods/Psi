@@ -86,10 +86,10 @@ public final class SpellContext {
 	 * anything here, prefix it with your mod ID to prevent collision. For example, Trick: Add Motion
 	 * uses psi:Entity1MotionX.
 	 */
-	public Map<String, Object> customData = new HashMap<>();
+	public final Map<String, Object> customData = new HashMap<>();
 
 	// Runtime information, do not mess with =================================================
-	public Object[][] evaluatedObjects = new Object[SpellGrid.GRID_SIZE][SpellGrid.GRID_SIZE];
+	public final Object[][] evaluatedObjects = new Object[SpellGrid.GRID_SIZE][SpellGrid.GRID_SIZE];
 	public Stack<Action> actions = null;
 
 	public boolean stopped = false;
@@ -182,7 +182,7 @@ public final class SpellContext {
 	}
 	
 	public int getTargetSlot() throws SpellRuntimeException {
-		int slot = 0;
+		int slot;
 		if(shiftTargetSlot) {
 			int cadSlot = PsiAPI.getPlayerCADSlot(caster);
 			if(cadSlot == -1)

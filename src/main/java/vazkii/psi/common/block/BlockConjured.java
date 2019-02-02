@@ -60,7 +60,7 @@ public class BlockConjured extends BlockModContainer implements IPsiBlock {
 	public static final PropertyBool BLOCK_EAST = PropertyBool.create("block_east");
 
 	@SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
-	private static Set<BlockPos> needsParticleUpdate = Sets.newHashSet();
+	private static final Set<BlockPos> needsParticleUpdate = Sets.newHashSet();
 
     protected static final AxisAlignedBB LIGHT_AABB = new AxisAlignedBB(0.25, 0.25, 0.25, 0.75, 0.75, 0.75);
 	
@@ -148,16 +148,19 @@ public class BlockConjured extends BlockModContainer implements IPsiBlock {
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public boolean isFullCube(IBlockState state) {
 		return false;
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public boolean isFullBlock(IBlockState state) {
 		return false;
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
@@ -174,6 +177,7 @@ public class BlockConjured extends BlockModContainer implements IPsiBlock {
 
 	@Nonnull
 	@Override
+	@SuppressWarnings("deprecation")
 	public IBlockState getStateFromMeta(int meta) {
 		IBlockState state = getDefaultState();
 		return state.withProperty(SOLID, (meta & 0b01) != 0).withProperty(LIGHT, (meta & 0b10) != 0);
@@ -186,6 +190,7 @@ public class BlockConjured extends BlockModContainer implements IPsiBlock {
 
 	@Nonnull
 	@Override
+	@SuppressWarnings("deprecation")
 	public IBlockState getActualState(@Nonnull IBlockState state, IBlockAccess worldIn, BlockPos pos) {
 		IBlockState origState = state;
 		state = state.withProperty(BLOCK_UP, worldIn.getBlockState(pos.up()).equals(origState));
@@ -205,18 +210,21 @@ public class BlockConjured extends BlockModContainer implements IPsiBlock {
 
 	@Nullable
 	@Override
+	@SuppressWarnings("deprecation")
 	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, @Nonnull IBlockAccess worldIn, @Nonnull BlockPos pos) {
 		return blockState.getValue(SOLID) ? FULL_BLOCK_AABB : NULL_AABB;
 	}
 
 	@Nonnull
 	@Override
+	@SuppressWarnings("deprecation")
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
 		return state.getValue(SOLID) ? FULL_BLOCK_AABB : LIGHT_AABB;
 	}
 
 	@Nonnull
 	@Override
+	@SuppressWarnings("deprecation")
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
         return BlockFaceShape.UNDEFINED;
     }

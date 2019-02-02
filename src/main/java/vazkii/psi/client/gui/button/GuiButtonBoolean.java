@@ -19,7 +19,7 @@ import javax.annotation.Nonnull;
 
 public class GuiButtonBoolean extends GuiButton {
 
-	public boolean yes;
+	public final boolean yes;
 
 	public GuiButtonBoolean(int par2, int par3, boolean yes) {
 		super(0, par2, par3, 12, 11, "");

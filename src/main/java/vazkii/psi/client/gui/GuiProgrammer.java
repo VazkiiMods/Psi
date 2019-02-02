@@ -10,7 +10,6 @@
  */
 package vazkii.psi.client.gui;
 
-import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
@@ -54,6 +53,7 @@ import vazkii.psi.common.spell.constant.PieceConstantNumber;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -65,10 +65,10 @@ public class GuiProgrammer extends GuiScreen {
 	private static final Pattern inPattern = Pattern.compile("^in:(\\w+)(?:\\s?(.*))?$");
 	private static final Pattern outPattern = Pattern.compile("^out:(\\w+)(?:\\s(.*))?$");
 
-	public TileProgrammer programmer;
+	public final TileProgrammer programmer;
 	public List<String> tooltip = new ArrayList<>();
-	public Stack<Spell> undoSteps = new Stack<>();
-	public Stack<Spell> redoSteps = new Stack<>();
+	public final Stack<Spell> undoSteps = new Stack<>();
+	public final Stack<Spell> redoSteps = new Stack<>();
 	public static SpellPiece clipboard = null;
 
 	SpellCompiler compiler;
@@ -80,9 +80,9 @@ public class GuiProgrammer extends GuiScreen {
 	int panelX, panelY, panelWidth, panelHeight, panelCursor;
 	int page = 0;
 	boolean scheduleButtonUpdate = false;
-	List<SpellPiece> visiblePieces = new ArrayList<>();
-	List<GuiButton> panelButtons = new ArrayList<>();
-	List<GuiButton> configButtons = new ArrayList<>();
+	final List<SpellPiece> visiblePieces = new ArrayList<>();
+	final List<GuiButton> panelButtons = new ArrayList<>();
+	final List<GuiButton> configButtons = new ArrayList<>();
 	GuiTextField searchField;
 	GuiTextField spellNameField;
 	GuiTextField commentField;
@@ -241,7 +241,7 @@ public class GuiProgrammer extends GuiScreen {
 		GlStateManager.color(1F, 1F, 1F);
 
 		SpellPiece piece = null;
-		if(programmer.spell.grid.exists(selectedX, selectedY))
+		if(SpellGrid.exists(selectedX, selectedY))
 			piece = programmer.spell.grid.gridData[selectedX][selectedY];
 		
 		if(configEnabled && !takingScreenshot) {
@@ -332,19 +332,19 @@ public class GuiProgrammer extends GuiScreen {
 			int topyText = topy;
 			if(spectator) {
 				String betaTest = TextFormatting.RED + I18n.format("psimisc.spectator");
-				mc.fontRenderer.drawStringWithShadow(betaTest, left + xSize / 2 - mc.fontRenderer.getStringWidth(betaTest) / 2, topyText, 0xFFFFFF);
+				mc.fontRenderer.drawStringWithShadow(betaTest, left + xSize / 2f - mc.fontRenderer.getStringWidth(betaTest) / 2f, topyText, 0xFFFFFF);
 				topyText -= 10;
 			}
 			if(LibMisc.BETA_TESTING) {
 				String betaTest = I18n.format("psimisc.wip");
-				mc.fontRenderer.drawStringWithShadow(betaTest, left + xSize / 2 - mc.fontRenderer.getStringWidth(betaTest) / 2, topyText, 0xFFFFFF);
+				mc.fontRenderer.drawStringWithShadow(betaTest, left + xSize / 2f - mc.fontRenderer.getStringWidth(betaTest) / 2f, topyText, 0xFFFFFF);
 			}
 			if(piece != null) {
 				String name = I18n.format(piece.getUnlocalizedName());
-				mc.fontRenderer.drawStringWithShadow(name, left + xSize / 2 - mc.fontRenderer.getStringWidth(name) / 2, topyText, 0xFFFFFF);
+				mc.fontRenderer.drawStringWithShadow(name, left + xSize / 2f - mc.fontRenderer.getStringWidth(name) / 2f, topyText, 0xFFFFFF);
 			}
 			
-			String coords = "";
+			String coords;
 			if(SpellGrid.exists(cursorX, cursorY))
 				coords = I18n.format("psimisc.programmerCoords", selectedX + 1, selectedY + 1, cursorX + 1, cursorY + 1);
 			else coords = I18n.format("psimisc.programmerCoordsNoCursor", selectedX + 1, selectedY + 1);
@@ -375,15 +375,15 @@ public class GuiProgrammer extends GuiScreen {
 			searchField.drawTextBox();
 
 			String s = page + 1 + "/" + getPageCount();
-			fontRenderer.drawStringWithShadow(s, panelX + panelWidth / 2 - fontRenderer.getStringWidth(s) / 2, panelY + panelHeight - 12, 0xFFFFFF);
+			fontRenderer.drawStringWithShadow(s, panelX + panelWidth / 2f - fontRenderer.getStringWidth(s) / 2f, panelY + panelHeight - 12, 0xFFFFFF);
 		}
 		
 		commentField.drawTextBox();
 		if(commentEnabled) {
 			String s = I18n.format("psimisc.enterCommit");
-			mc.fontRenderer.drawStringWithShadow(s, left + xSize / 2 - mc.fontRenderer.getStringWidth(s) / 2, commentField.y + 24, 0xFFFFFF);
+			mc.fontRenderer.drawStringWithShadow(s, left + xSize / 2f - mc.fontRenderer.getStringWidth(s) / 2f, commentField.y + 24, 0xFFFFFF);
 			s = I18n.format("psimisc.semicolonLine");
-			mc.fontRenderer.drawStringWithShadow(s, left + xSize / 2 - mc.fontRenderer.getStringWidth(s) / 2, commentField.y + 34, 0xFFFFFF);
+			mc.fontRenderer.drawStringWithShadow(s, left + xSize / 2f - mc.fontRenderer.getStringWidth(s) / 2f, commentField.y + 34, 0xFFFFFF);
 		}
 		GlStateManager.color(1F, 1F, 1F);
 		
@@ -703,7 +703,7 @@ public class GuiProgrammer extends GuiScreen {
 		}
 	}
 
-	public boolean onSideButtonKeybind(SpellPiece piece, int param, SpellParam.Side side) {
+	public boolean onSideButtonKeybind(SpellPiece piece, int param, Side side) {
 		if(param > -1 && piece != null && piece.params.size() >= param) {
 			for(GuiButton b : configButtons) {
 				GuiButtonSideConfig config = (GuiButtonSideConfig) b;
@@ -780,7 +780,7 @@ public class GuiProgrammer extends GuiScreen {
 
 					String cb = getClipboardString();
 					try {
-						cb = cb.replaceAll("([^a-z0-9])\\d+\\:", "$1"); // backwards compatibility with pre 1.12 nbt json
+						cb = cb.replaceAll("([^a-z0-9])\\d+:", "$1"); // backwards compatibility with pre 1.12 nbt json
 						NBTTagCompound cmp = JsonToNBT.getTagFromJson(cb);
 						Spell spell = Spell.createFromNBT(cmp);
 						PlayerData data = PlayerDataHandler.get(mc.player);
@@ -850,13 +850,13 @@ public class GuiProgrammer extends GuiScreen {
 		if(visiblePieces.isEmpty()) {
 			try {
 				String text = searchField.getText();
-				if(!text.isEmpty() && text.length() < 5 && !text.matches(".*(?:F|D|f|d).*")) {
+				if(!text.isEmpty() && text.length() < 5 && !text.matches(".*[FDfd].*")) {
 					Double.parseDouble(text);
 					SpellPiece p = SpellPiece.create(PieceConstantNumber.class, programmer.spell);
 					((PieceConstantNumber) p).valueStr = text;
 					visiblePieces.add(p);
 				}
-			} catch(NumberFormatException e) {}
+			} catch(NumberFormatException ignored) {}
 		}
 
 		visiblePieces.sort(Comparator.comparing(SpellPiece::getSortingName));
@@ -925,7 +925,7 @@ public class GuiProgrammer extends GuiScreen {
 			pred = haystack::startsWith;
 		}
 
-		return pred.apply(nameToken);
+		return pred.test(nameToken);
 	}
 
 	private int getPageCount() {
@@ -998,7 +998,7 @@ public class GuiProgrammer extends GuiScreen {
 						SpellParam param = piece.params.get(paramName);
 						int x = left - 17;
 						int y = top + 70 + i * 26;
-						for(SpellParam.Side side : ImmutableSet.of(Side.TOP, Side.BOTTOM, Side.LEFT, Side.RIGHT, Side.OFF)) {
+						for(Side side : ImmutableSet.of(Side.TOP, Side.BOTTOM, Side.LEFT, Side.RIGHT, Side.OFF)) {
 							if(!side.isEnabled() && !param.canDisable)
 								continue;
 

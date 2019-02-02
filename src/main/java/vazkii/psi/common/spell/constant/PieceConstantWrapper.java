@@ -39,12 +39,12 @@ public class PieceConstantWrapper extends SpellPiece {
 	}
 
 	@Override
-	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
+	public void addToMetadata(SpellMetadata meta) {
 		meta.addStat(EnumSpellStat.COMPLEXITY, 1);
 	}
 
 	@Override
-	public Object execute(SpellContext context) throws SpellRuntimeException {
+	public Object execute(SpellContext context) {
 		Double targetVal = this.<Double>getParamValue(context, target);
 		Double maxVal = this.<Double>getParamValue(context, max);
 

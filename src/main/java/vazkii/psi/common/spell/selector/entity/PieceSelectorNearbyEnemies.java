@@ -24,7 +24,7 @@ public class PieceSelectorNearbyEnemies extends PieceSelectorNearby {
 
 	@Override
 	public Predicate<Entity> getTargetPredicate() {
-		return (Entity e) -> { return e instanceof IMob; };
+		return (Entity e) -> e instanceof IMob;
 	}
 
 }

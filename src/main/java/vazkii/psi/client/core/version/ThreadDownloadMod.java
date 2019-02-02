@@ -25,7 +25,7 @@ import java.net.URL;
 
 public class ThreadDownloadMod extends Thread {
 
-	String fileName;
+	final String fileName;
 
 	byte[] buffer = new byte[10240];
 
@@ -56,44 +56,41 @@ public class ThreadDownloadMod extends Thread {
 
 			try {
 				url.openStream().close(); // Add to DL Counter
-			} catch(IOException e) { }
+			} catch(IOException ignored) { }
 
 			url = new URL(base + "files/" + fileName);
 			webReader = url.openStream();
 
 			File dir = new File(".", "mods");
 			File f = new File(dir, fileName + ".dl");
-			f.createNewFile();
+			if (f.exists() || f.createNewFile()) {
 
-			FileOutputStream outputStream = new FileOutputStream(f.getAbsolutePath());
+				FileOutputStream outputStream = new FileOutputStream(f.getAbsolutePath());
 
-			while((bytesJustDownloaded = webReader.read(buffer)) > 0) {
-				outputStream.write(buffer, 0, bytesJustDownloaded);
-				buffer = new byte[10240];
-				totalBytesDownloaded += bytesJustDownloaded;
+				while ((bytesJustDownloaded = webReader.read(buffer)) > 0) {
+					outputStream.write(buffer, 0, bytesJustDownloaded);
+					buffer = new byte[10240];
+					totalBytesDownloaded += bytesJustDownloaded;
+				}
+				outputStream.close();
+				webReader.close();
+
+				File f1 = new File(dir, fileName);
+				if (!f1.exists() && !f.renameTo(f1)) {
+					sendError();
+					return;
+				}
+
+				if (Minecraft.getMinecraft().player != null)
+					Minecraft.getMinecraft().player.sendMessage(new TextComponentTranslation("psi.versioning.doneDownloading", fileName).setStyle(new Style().setColor(TextFormatting.GREEN)));
+
+				Desktop.getDesktop().open(dir);
+				VersionChecker.downloadedFile = true;
 			}
-			outputStream.close();
-			webReader.close();
 
-			File f1 = new File(dir, fileName);
-			if(!f1.exists())
-				f.renameTo(f1);
-
-			if(Minecraft.getMinecraft().player != null)
-				Minecraft.getMinecraft().player.sendMessage(new TextComponentTranslation("psi.versioning.doneDownloading", fileName).setStyle(new Style().setColor(TextFormatting.GREEN)));
-
-			Desktop.getDesktop().open(dir);
-			VersionChecker.downloadedFile = true;
-
-			finalize();
 		} catch(Throwable e) {
 			e.printStackTrace();
 			sendError();
-			try {
-				finalize();
-			} catch(Throwable e1) {
-				e1.printStackTrace();
-			}
 		}
 	}
 

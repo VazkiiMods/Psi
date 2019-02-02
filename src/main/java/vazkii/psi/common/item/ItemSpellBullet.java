@@ -88,7 +88,7 @@ public class ItemSpellBullet extends ItemMod implements ISpellContainer, IPsiIte
 
 		NBTTagCompound cmp = ItemNBTHelper.getCompound(stack, TAG_SPELL, false);
 		String name = cmp.getString(Spell.TAG_SPELL_NAME); // We don't need to load the whole spell just for the name
-		if(name == null || name.isEmpty())
+		if(name.isEmpty())
 			return super.getItemStackDisplayName(stack);
 
 		return name;

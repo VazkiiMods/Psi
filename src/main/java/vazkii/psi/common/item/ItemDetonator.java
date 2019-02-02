@@ -49,7 +49,7 @@ public class ItemDetonator extends ItemMod implements IPsiItem {
 			worldIn.playSound(playerIn, playerIn.posX, playerIn.posY, playerIn.posZ, SoundEvents.UI_BUTTON_CLICK, SoundCategory.PLAYERS, 1F, 1F);
 		else playerIn.swingArm(hand);
 
-		return new ActionResult<ItemStack>(charges.isEmpty() ? EnumActionResult.PASS : EnumActionResult.SUCCESS, itemStackIn);
+		return new ActionResult<>(charges.isEmpty() ? EnumActionResult.PASS : EnumActionResult.SUCCESS, itemStackIn);
 	}
 
 }

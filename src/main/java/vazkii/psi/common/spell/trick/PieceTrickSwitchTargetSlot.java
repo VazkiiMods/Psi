@@ -44,7 +44,7 @@ public class PieceTrickSwitchTargetSlot extends PieceTrick {
 	}
 
 	@Override
-	public Object execute(SpellContext context) throws SpellRuntimeException {
+	public Object execute(SpellContext context) {
 		Double posVal = this.<Double>getParamValue(context, pos);
 		Double shiftVal = this.<Double>getParamValue(context, shift);
 		

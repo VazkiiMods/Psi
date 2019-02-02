@@ -23,11 +23,11 @@ public enum EnumCADStat {
 	SOCKETS(EnumCADComponent.SOCKET),
 	OVERFLOW(EnumCADComponent.BATTERY);
 
-	private EnumCADStat(EnumCADComponent source) {
+	EnumCADStat(EnumCADComponent source) {
 		this.source = source;
 	}
 
-	private EnumCADComponent source;
+	private final EnumCADComponent source;
 
 	public EnumCADComponent getSourceType() {
 		return source;

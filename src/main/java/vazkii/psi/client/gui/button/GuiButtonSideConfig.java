@@ -26,11 +26,12 @@ import javax.annotation.Nonnull;
 
 public class GuiButtonSideConfig extends GuiButton {
 
-	GuiProgrammer gui;
-	int gridX, gridY;
-	public String paramName;
-	int paramIndex;
-	SpellParam.Side side;
+	final GuiProgrammer gui;
+	final int gridX;
+	final int gridY;
+	public final String paramName;
+	final int paramIndex;
+	final SpellParam.Side side;
 
 	public GuiButtonSideConfig(GuiProgrammer gui, int gridX, int gridY, int paramIndex, String paramName, SpellParam.Side side, int x, int y) {
 		super(0, x, y, 8, 8, "");
@@ -91,7 +92,7 @@ public class GuiButtonSideConfig extends GuiButton {
 			wr.begin(7, DefaultVertexFormats.POSITION_TEX);
 			wr.pos(minX, maxY, 0).tex(minU, maxV).endVertex();
 			wr.pos(maxX, maxY, 0).tex(maxU, maxV).endVertex();
-			wr.pos(maxX, minY, 0).tex(maxU, minV).endVertex();;
+			wr.pos(maxX, minY, 0).tex(maxU, minV).endVertex();
 			wr.pos(minX, minY, 0).tex(minU, minV).endVertex();
 			Tessellator.getInstance().draw();
 		}

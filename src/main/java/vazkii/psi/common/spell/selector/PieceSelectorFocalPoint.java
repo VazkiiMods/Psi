@@ -28,7 +28,7 @@ public class PieceSelectorFocalPoint extends PieceSelector {
 	}
 
 	@Override
-	public Object execute(SpellContext context) throws SpellRuntimeException {
+	public Object execute(SpellContext context) {
 		return context.focalPoint;
 	}
 

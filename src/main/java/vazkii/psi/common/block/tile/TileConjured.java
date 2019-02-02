@@ -94,7 +94,7 @@ public class TileConjured extends TileMod {
 			float s = 0.2F + (float) Math.random() * 0.1F;
 			float m = 0.01F + (float) Math.random() * 0.015F;
 
-			Psi.proxy.wispFX(getWorld(), x, y, z, r, g, b, s, -m);
+			Psi.proxy.wispFX(x, y, z, r, g, b, s, -m);
 		}
 	}
 
@@ -105,7 +105,7 @@ public class TileConjured extends TileMod {
 			yv *= m;
 			zv *= m;
 
-			Psi.proxy.sparkleFX(getWorld(), xp, yp, zp, r, g, b, (float) xv, (float) yv, (float) zv, 1.25F, 20);
+			Psi.proxy.sparkleFX(xp, yp, zp, r, g, b, (float) xv, (float) yv, (float) zv, 1.25F, 20);
 		}
 	}
 

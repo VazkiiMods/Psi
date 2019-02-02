@@ -27,8 +27,8 @@ public class PieceSelectorLoopcastIndex extends PieceSelector {
 	}
 
 	@Override
-	public Object execute(SpellContext context) throws SpellRuntimeException {
-		return Double.valueOf(context.loopcastIndex);
+	public Object execute(SpellContext context) {
+		return (double) context.loopcastIndex;
 	}
 
 }

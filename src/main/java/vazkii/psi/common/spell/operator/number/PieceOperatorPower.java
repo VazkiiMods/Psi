@@ -11,9 +11,7 @@
 package vazkii.psi.common.spell.operator.number;
 
 import vazkii.psi.api.spell.Spell;
-import vazkii.psi.api.spell.SpellCompilationException;
 import vazkii.psi.api.spell.SpellContext;
-import vazkii.psi.api.spell.SpellMetadata;
 import vazkii.psi.api.spell.SpellParam;
 import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.api.spell.param.ParamNumber;
@@ -34,11 +32,6 @@ public class PieceOperatorPower extends PieceOperator {
 		addParam(power = new ParamNumber(SpellParam.GENERIC_NAME_POWER, SpellParam.RED, false, false));
 	}
 
-	@Override
-	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
-		super.addToMetadata(meta);
-	}
-	
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		Double d = this.<Double>getParamValue(context, num);

@@ -40,6 +40,7 @@ public final class VersionChecker {
 	}
 
 	@SubscribeEvent
+	@SuppressWarnings("ConstantConditions")
 	public void onTick(ClientTickEvent event) {
 		if(doneChecking && event.phase == Phase.END && Minecraft.getMinecraft().player != null && !triedToWarnPlayer) {
 			if(!onlineVersion.isEmpty()) {

@@ -20,24 +20,24 @@ import javax.annotation.Nonnull;
 
 public class ModelPsimetalExosuit extends ModelModArmor {
 
-	public ModelRenderer helm;
-	public ModelRenderer armR;
-	public ModelRenderer armL;
-	public ModelRenderer legR;
-	public ModelRenderer legL;
-	public ModelRenderer bootR;
-	public ModelRenderer bootL;
-	public ModelRenderer body;
-	public ModelRenderer helm_1;
-	public ModelRenderer helm_2;
-	public ModelRenderer sensor;
-	public ModelRenderer sensorcolor;
-	public ModelRenderer armRpauldron;
-	public ModelRenderer armLpauldron;
-	public ModelRenderer body2;
-	public ModelRenderer body3;
+	public final ModelRenderer helm;
+	public final ModelRenderer armR;
+	public final ModelRenderer armL;
+	public final ModelRenderer legR;
+	public final ModelRenderer legL;
+	public final ModelRenderer bootR;
+	public final ModelRenderer bootL;
+	public final ModelRenderer body;
+	public final ModelRenderer helm_1;
+	public final ModelRenderer helm_2;
+	public final ModelRenderer sensor;
+	public final ModelRenderer sensorcolor;
+	public final ModelRenderer armRpauldron;
+	public final ModelRenderer armLpauldron;
+	public final ModelRenderer body2;
+	public final ModelRenderer body3;
 
-	int slot;
+	final int slot;
 
 	public ModelPsimetalExosuit(int slot) {
 		this.slot = slot;

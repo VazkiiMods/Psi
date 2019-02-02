@@ -53,11 +53,9 @@ public abstract class PieceTrick extends SpellPiece {
 	
 	public double multiplySafe(double v1, double... arr) throws SpellCompilationException {
 		double a = v1;
-		for(int i = 0; i < arr.length; i++) {
-			double b = arr[i];
-			
+		for (double b : arr) {
 			a = a * b;
-			if((int) a < 0 || (int) a == Integer.MAX_VALUE)
+			if ((int) a < 0 || (int) a == Integer.MAX_VALUE)
 				throw new SpellCompilationException(SpellCompilationException.STAT_OVERFLOW);
 		}
 		

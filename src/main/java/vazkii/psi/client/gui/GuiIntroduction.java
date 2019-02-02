@@ -24,15 +24,13 @@ import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.lib.LibResources;
 import vazkii.psi.common.network.message.MessageSkipToLevel;
 
-import java.io.IOException;
-
 public class GuiIntroduction extends GuiScreen {
 
 	public static final ResourceLocation texture = new ResourceLocation(LibResources.GUI_INTRODUCTION);
 
 	int xSize, ySize, left, top;
 	boolean skip = false;
-	boolean returnToLeveling;
+	final boolean returnToLeveling;
 	
 	public GuiIntroduction() {
 		this(false);
@@ -70,18 +68,18 @@ public class GuiIntroduction extends GuiScreen {
 
 		if(LibMisc.BETA_TESTING) {
 			String betaTest = TooltipHelper.local("psimisc.wip");
-			mc.fontRenderer.drawStringWithShadow(betaTest, left + xSize / 2 - mc.fontRenderer.getStringWidth(betaTest) / 2, top - 12, 0xFFFFFF);
+			mc.fontRenderer.drawStringWithShadow(betaTest, left + xSize / 2f - mc.fontRenderer.getStringWidth(betaTest) / 2f, top - 12, 0xFFFFFF);
 		}
 
 		TextHelper.renderText(width / 2 - 120, height / 2 - 30, 245, skip ? "psi.levelskip" : "psi.introduction", false, true, PersistencyHandler.persistentLevel);
 		if(skip) {
 			String loadPrompt = TooltipHelper.local("psimisc.loadPrompt");
-			mc.fontRenderer.drawStringWithShadow(loadPrompt, left + xSize / 2 - mc.fontRenderer.getStringWidth(loadPrompt) / 2, top + 133, 0xFFFFFF);
+			mc.fontRenderer.drawStringWithShadow(loadPrompt, left + xSize / 2f - mc.fontRenderer.getStringWidth(loadPrompt) / 2f, top + 133, 0xFFFFFF);
 		}
 	}
 
 	@Override
-	protected void actionPerformed(GuiButton button) throws IOException {
+	protected void actionPerformed(GuiButton button) {
 		if(button instanceof GuiButtonBoolean) {
 			GuiButtonBoolean bool = (GuiButtonBoolean) button;
 			if(bool.yes) {

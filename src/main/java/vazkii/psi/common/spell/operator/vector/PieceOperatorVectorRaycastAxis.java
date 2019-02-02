@@ -49,13 +49,13 @@ public class PieceOperatorVectorRaycastAxis extends PieceOperator {
 		double maxLen = SpellContext.MAX_DISTANCE;
 		Double numberVal = this.<Double>getParamValue(context, max);
 		if(numberVal != null)
-			maxLen = numberVal.doubleValue();
+			maxLen = numberVal;
 		maxLen = Math.min(SpellContext.MAX_DISTANCE, maxLen);
 
 		Vector3 end = originVal.copy().add(rayVal.copy().normalize().multiply(maxLen));
 
 		RayTraceResult pos = context.caster.getEntityWorld().rayTraceBlocks(originVal.toVec3D(), end.toVec3D());
-		if(pos == null || pos.getBlockPos() == null)
+		if(pos == null)
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
 
 		EnumFacing facing = pos.sideHit;

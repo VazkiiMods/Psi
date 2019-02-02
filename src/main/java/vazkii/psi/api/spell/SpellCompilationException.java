@@ -38,6 +38,7 @@ public class SpellCompilationException extends Exception {
 		this(s, -1, -1);
 	}
 
+	@SuppressWarnings("SuspiciousNameCombination")
 	public SpellCompilationException(String s, int x, int y) {
 		super(s);
 		location = Pair.of(x, y);

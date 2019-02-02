@@ -31,10 +31,10 @@ public class PieceOperatorRound extends PieceOperator {
 	}
 
 	@Override
-	public Object execute(SpellContext context) throws SpellRuntimeException {
+	public Object execute(SpellContext context) {
 		Double d = this.<Double>getParamValue(context, num);
 
-		return Double.valueOf(Math.round(d));
+		return (double) Math.round(d);
 	}
 
 	@Override

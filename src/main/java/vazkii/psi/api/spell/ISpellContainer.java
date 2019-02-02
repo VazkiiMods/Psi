@@ -18,9 +18,9 @@ import net.minecraft.item.ItemStack;
  */
 public interface ISpellContainer extends ISpellSettable {
 
-	public Spell getSpell(ItemStack stack);
+	Spell getSpell(ItemStack stack);
 
-	public boolean containsSpell(ItemStack stack);
+	boolean containsSpell(ItemStack stack);
 
 	/**
 	 * Casts this spell given the passed in context. The spell should be casted
@@ -28,10 +28,10 @@ public interface ISpellContainer extends ISpellSettable {
 	 * must be handled and not leaked. Ideal implementation of exception catching is to
 	 * alarm the player through a chat message.
 	 */
-	public void castSpell(ItemStack stack, SpellContext context);
+	void castSpell(ItemStack stack, SpellContext context);
 
-	public double getCostModifier(ItemStack stack);
+	double getCostModifier(ItemStack stack);
 
-	public boolean isCADOnlyContainer(ItemStack stack);
+	boolean isCADOnlyContainer(ItemStack stack);
 
 }

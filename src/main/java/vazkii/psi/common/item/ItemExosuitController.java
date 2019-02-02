@@ -10,9 +10,6 @@
  */
 package vazkii.psi.common.item;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
@@ -30,6 +27,8 @@ import vazkii.psi.common.item.base.IPsiItem;
 import vazkii.psi.common.lib.LibItemNames;
 
 import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ItemExosuitController extends ItemMod implements ISocketableController, IPsiItem {
 
@@ -57,10 +56,10 @@ public class ItemExosuitController extends ItemMod implements ISocketableControl
 				socketable.setSelectedSlot(stack, 3);
 			}
 			
-			return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
+			return new ActionResult<>(EnumActionResult.SUCCESS, itemStackIn);
 		}
 
-		return new ActionResult<ItemStack>(EnumActionResult.PASS, itemStackIn);
+		return new ActionResult<>(EnumActionResult.PASS, itemStackIn);
 	}
 
 	@Override
@@ -72,7 +71,7 @@ public class ItemExosuitController extends ItemMod implements ISocketableControl
 				stacks.add(armor);
 		}
 
-		return stacks.toArray(new ItemStack[stacks.size()]);
+		return stacks.toArray(new ItemStack[0]);
 	}
 
 	@Override

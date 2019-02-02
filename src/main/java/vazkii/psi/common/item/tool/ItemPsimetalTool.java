@@ -96,7 +96,7 @@ public class ItemPsimetalTool extends ItemModTool implements IPsimetalTool {
 
 	@Override
 	public boolean getIsRepairable(ItemStack par1ItemStack, @Nonnull ItemStack par2ItemStack) {
-		return par2ItemStack.getItem() == ModItems.material && par2ItemStack.getItemDamage() == 1 ? true : super.getIsRepairable(par1ItemStack, par2ItemStack);
+		return par2ItemStack.getItem() == ModItems.material && par2ItemStack.getItemDamage() == 1 || super.getIsRepairable(par1ItemStack, par2ItemStack);
 	}
 
 	public static RayTraceResult raytraceFromEntity(World world, Entity player, boolean par3, double range) {
@@ -115,8 +115,7 @@ public class ItemPsimetalTool extends ItemModTool implements IPsimetalTool {
 		float f6 = MathHelper.sin(-f1 * 0.017453292F);
 		float f7 = f4 * f5;
 		float f8 = f3 * f5;
-		double d3 = range;
-		Vec3d vec31 = vec3.addVector(f7 * d3, f6 * d3, f8 * d3);
+		Vec3d vec31 = vec3.addVector(f7 * range, f6 * range, f8 * range);
 		return world.rayTraceBlocks(vec3, vec31, par3);
 	}
 	

@@ -95,7 +95,7 @@ public class ClientProxy extends CommonProxy {
 
 	@Override
 	public void sparkleFX(double x, double y, double z, float r, float g, float b, float size, int m) {
-		sparkleFX(Minecraft.getMinecraft().world, x, y, z, r, g, b, size, m);
+		sparkleFX(x, y, z, r, g, b, size, m);
 	}
 
 	private static boolean distanceLimit = true;
@@ -124,7 +124,7 @@ public class ClientProxy extends CommonProxy {
 
 	@Override
 	public void wispFX(double x, double y, double z, float r, float g, float b, float size) {
-		wispFX(Minecraft.getMinecraft().world, x, y, z, r, g, b, size);
+		wispFX(x, y, z, r, g, b, size);
 	}
 
 	private boolean noParticles(World world) {

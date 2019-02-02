@@ -20,8 +20,8 @@ import javax.annotation.Nonnull;
 
 public class GuiButtonPage extends GuiButton {
 
-	public boolean right;
-	GuiProgrammer gui;
+	public final boolean right;
+	final GuiProgrammer gui;
 
 	public GuiButtonPage(GuiProgrammer gui, int par2, int par3, boolean right) {
 		super(0, par2, par3, 18, 10, "");

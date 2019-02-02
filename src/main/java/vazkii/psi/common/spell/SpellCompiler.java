@@ -20,13 +20,13 @@ import java.util.Stack;
 
 public final class SpellCompiler implements ISpellCompiler {
 
-	Spell spell;
+	final Spell spell;
 	CompiledSpell compiled = null;
 
 	String error = null;
 	Pair<Integer, Integer> errorLocation = null;
 
-	Stack<SpellPiece> tricks = new Stack<>();
+	final Stack<SpellPiece> tricks = new Stack<>();
 
 	public SpellCompiler(Spell spell) {
 		this.spell = spell;

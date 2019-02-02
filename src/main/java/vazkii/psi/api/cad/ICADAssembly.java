@@ -18,6 +18,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public interface ICADAssembly {
 
 	@SideOnly(Side.CLIENT)
-	public ModelResourceLocation getCADModel(ItemStack stack, ItemStack cad);
+	ModelResourceLocation getCADModel(ItemStack stack, ItemStack cad);
 
 }

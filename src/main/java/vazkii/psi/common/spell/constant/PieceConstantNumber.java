@@ -10,18 +10,11 @@
  */
 package vazkii.psi.common.spell.constant;
 
-import java.util.List;
-
-import org.lwjgl.input.Keyboard;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.nbt.NBTTagCompound;
-import vazkii.psi.api.spell.EnumPieceType;
-import vazkii.psi.api.spell.Spell;
-import vazkii.psi.api.spell.SpellContext;
-import vazkii.psi.api.spell.SpellPiece;
-import vazkii.psi.api.spell.SpellRuntimeException;
+import org.lwjgl.input.Keyboard;
+import vazkii.psi.api.spell.*;
 import vazkii.psi.common.Psi;
 
 public class PieceConstantNumber extends SpellPiece {
@@ -42,19 +35,13 @@ public class PieceConstantNumber extends SpellPiece {
 	}
 
 	@Override
-	public void getShownPieces(List<SpellPiece> pieces) {
-		super.getShownPieces(pieces);
-	}
-
-	@Override
 	public void drawAdditional() {
 		if(valueStr == null || valueStr.isEmpty() || valueStr.length() > 5)
 			valueStr = "0";
 
 		Minecraft mc = Minecraft.getMinecraft();
 		int color = Psi.magical ? 0 : 0xFFFFFF;
-		int len = mc.fontRenderer.getStringWidth(valueStr);
-		float efflen = len;
+		float efflen = mc.fontRenderer.getStringWidth(valueStr);
 		float scale = 1;
 
 		while(efflen > 16) {
@@ -105,7 +92,7 @@ public class PieceConstantNumber extends SpellPiece {
 		if(newStr.length() > 5)
 			return false;
 
-		String newValueStr = null;
+		String newValueStr;
 		try {
 			Double.parseDouble(newStr);
 			newValueStr = newStr;
@@ -113,7 +100,7 @@ public class PieceConstantNumber extends SpellPiece {
 			return false;
 		}
 
-		if(newValueStr != null && doit)
+		if(doit)
 			valueStr = newValueStr;
 
 		return !newValueStr.equals(oldStr);
@@ -154,7 +141,7 @@ public class PieceConstantNumber extends SpellPiece {
 	}
 
 	@Override
-	public Object execute(SpellContext context) throws SpellRuntimeException {
+	public Object execute(SpellContext context) {
 		return evaluate();
 	}
 

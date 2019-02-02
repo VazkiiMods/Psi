@@ -76,8 +76,7 @@ public class PieceOperatorVectorRaycast extends PieceOperator {
 
 	public static RayTraceResult raycast(World world, Vector3 origin, Vector3 ray, double len) {
 		Vector3 end = origin.copy().add(ray.copy().normalize().multiply(len));
-		RayTraceResult pos = world.rayTraceBlocks(origin.toVec3D(), end.toVec3D());
-		return pos;
+		return world.rayTraceBlocks(origin.toVec3D(), end.toVec3D());
 	}
 
 	@Override

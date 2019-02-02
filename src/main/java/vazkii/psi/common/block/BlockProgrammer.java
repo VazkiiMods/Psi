@@ -123,6 +123,7 @@ public class BlockProgrammer extends BlockFacing implements IPsiBlock {
 
 	@Nonnull
 	@Override
+	@SuppressWarnings("deprecation")
 	public IBlockState getActualState(@Nonnull IBlockState state, IBlockAccess worldIn, BlockPos pos) {
 		TileEntity tile = worldIn.getTileEntity(pos);
 		return state.withProperty(ENABLED, tile instanceof TileProgrammer && ((TileProgrammer) tile).isEnabled());
@@ -135,11 +136,13 @@ public class BlockProgrammer extends BlockFacing implements IPsiBlock {
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public boolean isFullBlock(IBlockState state) {
 		return false;
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}

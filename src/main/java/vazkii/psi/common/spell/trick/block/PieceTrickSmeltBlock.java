@@ -50,6 +50,7 @@ public class PieceTrickSmeltBlock extends PieceTrick {
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		Vector3 positionVal = this.getParamValue(context, position);
 

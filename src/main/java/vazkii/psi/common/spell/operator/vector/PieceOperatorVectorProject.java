@@ -34,7 +34,7 @@ public class PieceOperatorVectorProject extends PieceOperator {
 	}
 
 	@Override
-	public Object execute(SpellContext context) throws SpellRuntimeException {
+	public Object execute(SpellContext context) {
 		Vector3 targetVal = this.getParamValue(context, target);
 		Vector3 axisVal = this.getParamValue(context, axis);
 

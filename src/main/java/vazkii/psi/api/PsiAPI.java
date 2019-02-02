@@ -43,16 +43,16 @@ public final class PsiAPI {
 	 */
 	public static IInternalMethodHandler internalHandler = new DummyMethodHandler();
 
-	public static RegistryNamespaced<String, Class<? extends SpellPiece>> spellPieceRegistry = new RegistryNamespaced<>();
-	public static HashMap<String, ResourceLocation> simpleSpellTextures = new HashMap<>();
-	public static HashMap<Class<? extends SpellPiece>, PieceGroup> groupsForPiece = new HashMap<>();
-	public static HashMap<Class<? extends SpellPiece>, String> pieceMods = new HashMap<>();
-	public static HashMap<String, PieceGroup> groupsForName = new HashMap<>();
+	public static final RegistryNamespaced<String, Class<? extends SpellPiece>> spellPieceRegistry = new RegistryNamespaced<>();
+	public static final HashMap<String, ResourceLocation> simpleSpellTextures = new HashMap<>();
+	public static final HashMap<Class<? extends SpellPiece>, PieceGroup> groupsForPiece = new HashMap<>();
+	public static final HashMap<Class<? extends SpellPiece>, String> pieceMods = new HashMap<>();
+	public static final HashMap<String, PieceGroup> groupsForName = new HashMap<>();
 
-	public static List<TrickRecipe> trickRecipes = new ArrayList<>();
+	public static final List<TrickRecipe> trickRecipes = new ArrayList<>();
 
-	public static ToolMaterial PSIMETAL_TOOL_MATERIAL = EnumHelper.addToolMaterial("PSIMETAL", 3, 900, 7.8F, 2F, 12);
-	public static ArmorMaterial PSIMETAL_ARMOR_MATERIAL = EnumHelper.addArmorMaterial("PSIMETAL", "psimetal", 18, new int[]{2, 6, 5, 2}, 12, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0F);
+	public static final ToolMaterial PSIMETAL_TOOL_MATERIAL = EnumHelper.addToolMaterial("PSIMETAL", 3, 900, 7.8F, 2F, 12);
+	public static final ArmorMaterial PSIMETAL_ARMOR_MATERIAL = EnumHelper.addArmorMaterial("PSIMETAL", "psimetal", 18, new int[]{2, 6, 5, 2}, 12, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0F);
 
 	public static int levelCap = 1;
 

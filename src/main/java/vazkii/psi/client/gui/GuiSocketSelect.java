@@ -10,18 +10,7 @@
  */
 package vazkii.psi.client.gui;
 
-import java.awt.Color;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.util.vector.Vector2f;
-
 import com.google.common.collect.ImmutableSet;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
@@ -29,6 +18,10 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.util.vector.Vector2f;
 import vazkii.arl.network.NetworkHandler;
 import vazkii.arl.network.NetworkMessage;
 import vazkii.psi.api.PsiAPI;
@@ -40,6 +33,11 @@ import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.lib.LibResources;
 import vazkii.psi.common.network.message.MessageChangeControllerSlot;
 import vazkii.psi.common.network.message.MessageChangeSocketableSlot;
+
+import java.awt.*;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GuiSocketSelect extends GuiScreen {
 
@@ -115,10 +113,7 @@ public class GuiSocketSelect extends GuiScreen {
 		int y = height / 2;
 		int maxRadius = 80;
 
-		boolean mouseIn = true;
 		float angle = mouseAngle(x, y, mx, my);
-
-		int highlight = 5;
 
 		GlStateManager.enableBlend();
 		GlStateManager.shadeModel(GL11.GL_SMOOTH);
@@ -132,7 +127,7 @@ public class GuiSocketSelect extends GuiScreen {
 		slotSelected = -1;
 
 		for(int seg = 0; seg < segments; seg++) {
-			boolean mouseInSector = mouseIn && angle > totalDeg && angle < totalDeg + degPer;
+			boolean mouseInSector = angle > totalDeg && angle < totalDeg + degPer;
 			float radius = Math.max(0F, Math.min((timeIn + partialTicks - seg * 6F / segments) * 40F, maxRadius));
 			
 			GL11.glBegin(GL11.GL_TRIANGLE_FAN);
@@ -172,9 +167,6 @@ public class GuiSocketSelect extends GuiScreen {
 
 			GL11.glVertex2i(x, y);
 			GL11.glEnd();
-
-			if(mouseInSector)
-				radius -= highlight;
 		}
 		GlStateManager.shadeModel(GL11.GL_FLAT);
 		GlStateManager.enableTexture2D();
@@ -279,7 +271,7 @@ public class GuiSocketSelect extends GuiScreen {
 				int slot = slots.get(slotSelected);
 				PlayerDataHandler.get(mc.player).stopLoopcast();
 
-				NetworkMessage message = null;
+				NetworkMessage message;
 				if(!controllerStack.isEmpty())
 					message = new MessageChangeControllerSlot(controlSlot, slot);
 				else message = new MessageChangeSocketableSlot(slot);

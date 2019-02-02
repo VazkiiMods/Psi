@@ -48,7 +48,7 @@ public class ItemCADColorizer extends ItemCADComponent implements ICADColorizer,
 	};
 
 	// must be length 16
-	public static int[] colorTable = ItemDye.DYE_COLORS;
+	public static final int[] colorTable = ItemDye.DYE_COLORS;
 	
 	public ItemCADColorizer() {
 		super(LibItemNames.CAD_COLORIZER, VARIANTS);

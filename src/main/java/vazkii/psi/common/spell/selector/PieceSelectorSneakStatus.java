@@ -27,7 +27,7 @@ public class PieceSelectorSneakStatus extends PieceSelector {
 	}
 
 	@Override
-	public Object execute(SpellContext context) throws SpellRuntimeException {
+	public Object execute(SpellContext context) {
 		return context.caster.isSneaking() ? 0D : 1D;
 	}
 

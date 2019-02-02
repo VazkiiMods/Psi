@@ -18,8 +18,8 @@ import net.minecraft.item.ItemStack;
  */
 public interface ISensorHoldable {
 
-	public ItemStack getAttachedSensor(ItemStack stack);
+	ItemStack getAttachedSensor(ItemStack stack);
 
-	public void attachSensor(ItemStack stack, ItemStack sensor);
+	void attachSensor(ItemStack stack, ItemStack sensor);
 
 }

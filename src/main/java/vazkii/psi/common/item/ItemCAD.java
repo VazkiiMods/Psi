@@ -236,7 +236,7 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 									double y = player.posY - player.getYOffset();
 									double z = player.posZ + (Math.random() - 0.5) * 2.1 * player.width;
 									float grav = -0.15F - (float) Math.random() * 0.03F;
-									Psi.proxy.sparkleFX(world, x, y, z, r, g, b, grav, 0.25F, 15);
+									Psi.proxy.sparkleFX(x, y, z, r, g, b, grav, 0.25F, 15);
 								}
 
 								double x = player.posX;
@@ -251,7 +251,7 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 									look.z += (Math.random() - 0.5) * spread;
 									look.normalize().multiply(0.15);
 
-									Psi.proxy.sparkleFX(world, x, y, z, r, g, b, (float) look.x, (float) look.y, (float) look.z, 0.3F, 5);
+									Psi.proxy.sparkleFX(x, y, z, r, g, b, (float) look.x, (float) look.y, (float) look.z, 0.3F, 5);
 								}
 							}
 						}

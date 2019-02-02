@@ -52,8 +52,8 @@ public abstract class SpellPiece {
 	public int x, y;
 	public String comment;
 	
-	public Map<String, SpellParam> params = new LinkedHashMap<>();
-	public Map<SpellParam, SpellParam.Side> paramSides = new LinkedHashMap<>();
+	public final Map<String, SpellParam> params = new LinkedHashMap<>();
+	public final Map<SpellParam, SpellParam.Side> paramSides = new LinkedHashMap<>();
 
 	public SpellPiece(Spell spell) {
 		this.spell = spell;

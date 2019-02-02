@@ -23,11 +23,11 @@ public enum EnumSpellStat {
 	PROJECTION(EnumCADStat.PROJECTION),
 	BANDWIDTH(EnumCADStat.BANDWIDTH);
 
-	private EnumSpellStat(EnumCADStat target) {
+	EnumSpellStat(EnumCADStat target) {
 		this.target = target;
 	}
 
-	private EnumCADStat target;
+	private final EnumCADStat target;
 
 	public EnumCADStat getTarget() {
 		return target;

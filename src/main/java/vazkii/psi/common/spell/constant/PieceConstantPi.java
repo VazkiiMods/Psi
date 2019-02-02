@@ -38,7 +38,7 @@ public class PieceConstantPi extends SpellPiece {
 	}
 
 	@Override
-	public Object execute(SpellContext context) throws SpellRuntimeException {
+	public Object execute(SpellContext context) {
 		return evaluate();
 	}
 

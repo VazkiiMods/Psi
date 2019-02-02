@@ -10,8 +10,6 @@
  */
 package vazkii.psi.common.item;
 
-import java.util.List;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.ScaledResolution;
@@ -34,6 +32,7 @@ import vazkii.psi.common.item.base.IPsiItem;
 import vazkii.psi.common.lib.LibItemNames;
 
 import javax.annotation.Nonnull;
+import java.util.List;
 
 public class ItemVectorRuler extends ItemMod implements IHUDItem, IPsiItem {
 
@@ -108,6 +107,6 @@ public class ItemVectorRuler extends ItemMod implements IHUDItem, IPsiItem {
 		
 		FontRenderer font = Minecraft.getMinecraft().fontRenderer;
 		int w = font.getStringWidth(s);
-		font.drawStringWithShadow(s, res.getScaledWidth() / 2 - w / 2, res.getScaledHeight() / 2 + 10, 0xFFFFFFFF);
+		font.drawStringWithShadow(s, res.getScaledWidth() / 2f - w / 2f, res.getScaledHeight() / 2f + 10, 0xFFFFFFFF);
 	}
 }

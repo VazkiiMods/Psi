@@ -21,21 +21,21 @@ import vazkii.psi.common.item.base.IPsiItem;
 
 public interface IPsimetalTool extends ISocketable, ISpellSettable, IPsiItem {
 
-	public static final String TAG_BULLET_PREFIX = "bullet";
-	public static final String TAG_SELECTED_SLOT = "selectedSlot";
+	String TAG_BULLET_PREFIX = "bullet";
+	String TAG_SELECTED_SLOT = "selectedSlot";
 
 	@Override
-	public default boolean isSocketSlotAvailable(ItemStack stack, int slot) {
+	default boolean isSocketSlotAvailable(ItemStack stack, int slot) {
 		return slot < 3;
 	}
 
 	@Override
-	public default boolean showSlotInRadialMenu(ItemStack stack, int slot) {
+	default boolean showSlotInRadialMenu(ItemStack stack, int slot) {
 		return isSocketSlotAvailable(stack, slot - 1);
 	}
 
 	@Override
-	public default ItemStack getBulletInSocket(ItemStack stack, int slot) {
+	default ItemStack getBulletInSocket(ItemStack stack, int slot) {
 		String name = TAG_BULLET_PREFIX + slot;
 		NBTTagCompound cmp = ItemNBTHelper.getCompound(stack, name, true);
 
@@ -46,7 +46,7 @@ public interface IPsimetalTool extends ISocketable, ISpellSettable, IPsiItem {
 	}
 
 	@Override
-	public default void setBulletInSocket(ItemStack stack, int slot, ItemStack bullet) {
+	default void setBulletInSocket(ItemStack stack, int slot, ItemStack bullet) {
 		String name = TAG_BULLET_PREFIX + slot;
 		NBTTagCompound cmp = new NBTTagCompound();
 
@@ -57,17 +57,17 @@ public interface IPsimetalTool extends ISocketable, ISpellSettable, IPsiItem {
 	}
 
 	@Override
-	public default int getSelectedSlot(ItemStack stack) {
+	default int getSelectedSlot(ItemStack stack) {
 		return ItemNBTHelper.getInt(stack, TAG_SELECTED_SLOT, 0);
 	}
 
 	@Override
-	public default void setSelectedSlot(ItemStack stack, int slot) {
+	default void setSelectedSlot(ItemStack stack, int slot) {
 		ItemNBTHelper.setInt(stack, TAG_SELECTED_SLOT, slot);
 	}
 
 	@Override
-	public default void setSpell(EntityPlayer player, ItemStack stack, Spell spell) {
+	default void setSpell(EntityPlayer player, ItemStack stack, Spell spell) {
 		int slot = getSelectedSlot(stack);
 		ItemStack bullet = getBulletInSocket(stack, slot);
 		if(!bullet.isEmpty() && bullet.getItem() instanceof ISpellSettable) {

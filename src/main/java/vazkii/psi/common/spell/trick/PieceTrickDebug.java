@@ -38,12 +38,12 @@ public class PieceTrickDebug extends PieceTrick {
 	}
 
 	@Override
-	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
+	public void addToMetadata(SpellMetadata meta) {
 		// NO-OP
 	}
 
 	@Override
-	public Object execute(SpellContext context) throws SpellRuntimeException {
+	public Object execute(SpellContext context) {
 		Double numberVal = this.<Double>getParamValue(context, number);
 		Object targetVal = getParamValue(context, target);
 

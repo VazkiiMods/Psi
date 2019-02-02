@@ -36,7 +36,7 @@ public class PieceOperatorVectorSum extends PieceOperator {
 	}
 
 	@Override
-	public Object execute(SpellContext context) throws SpellRuntimeException {
+	public Object execute(SpellContext context) {
 		Vector3 v1 = this.getParamValue(context, vec1);
 		Vector3 v2 = this.getParamValue(context, vec2);
 		Vector3 v3 = this.getParamValue(context, vec3);

@@ -24,6 +24,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import vazkii.arl.block.BlockFacing;
 import vazkii.arl.block.tile.TileSimpleInventory;
+import vazkii.arl.util.ItemNBTHelper;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.base.IPsiBlock;
 import vazkii.psi.common.block.tile.TileCADAssembler;
@@ -36,7 +37,7 @@ import java.util.Random;
 
 public class BlockCADAssembler extends BlockFacing implements IPsiBlock {
 
-	Random random;
+	final Random random;
 
 	public BlockCADAssembler() {
 		super(LibBlockNames.CAD_ASSEMBLER, Material.IRON);
@@ -49,11 +50,13 @@ public class BlockCADAssembler extends BlockFacing implements IPsiBlock {
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public boolean isFullBlock(IBlockState state) {
 		return false;
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
@@ -85,7 +88,7 @@ public class BlockCADAssembler extends BlockFacing implements IPsiBlock {
 						entityitem.motionZ = (float)random.nextGaussian() * f3;
 
 						if(itemstack.hasTagCompound())
-							entityitem.getItem().setTagCompound(itemstack.getTagCompound().copy());
+							entityitem.getItem().setTagCompound(ItemNBTHelper.getNBT(itemstack));
 					}
 				}
 			}

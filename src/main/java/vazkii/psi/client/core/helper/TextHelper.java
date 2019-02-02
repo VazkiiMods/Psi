@@ -10,7 +10,6 @@
  */
 package vazkii.psi.client.core.helper;
 
-import com.google.common.base.Joiner;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraftforge.fml.relauncher.Side;
@@ -32,7 +31,7 @@ public final class TextHelper {
 		String[] textEntries = text.split("<br>");
 		List<List<String>> lines = new ArrayList<>();
 
-		String controlCodes = "";
+		String controlCodes;
 		for(String s : textEntries) {
 			List<String> words = new ArrayList<>();
 			String lineStr = "";
@@ -64,26 +63,10 @@ public final class TextHelper {
 			words.size();
 			int xi = x;
 			int spacing = 4;
-			int wcount = words.size();
-			int compensationSpaces = 0;
-			boolean justify = false;
 
-			if(justify) {
-				String s = Joiner.on("").join(words);
-				int swidth = font.getStringWidth(s);
-				int space = width - swidth;
-
-				spacing = wcount == 1 ? 0 : space / (wcount - 1);
-				compensationSpaces = wcount == 1 ? 0 : space % (wcount - 1);
-			}
-
-			String lineStr = "";
+			StringBuilder lineStr = new StringBuilder();
 			for(String s : words) {
 				int extra = 0;
-				if(compensationSpaces > 0) {
-					compensationSpaces--;
-					extra++;
-				}
 
 				int swidth = font.getStringWidth(s);
 				if(doit) {
@@ -92,14 +75,14 @@ public final class TextHelper {
 					else font.drawString(s, xi, y, 0xFFFFFF);
 				}
 				xi += swidth + spacing + extra;
-				lineStr += s + " ";
+				lineStr.append(s).append(" ");
 			}
 
-			if(!lineStr.isEmpty() || lastLine.isEmpty()) {
+			if((lineStr.length() > 0) || lastLine.isEmpty()) {
 				y += 10;
-				textLines.add(lineStr);
+				textLines.add(lineStr.toString());
 			}
-			lastLine = lineStr;
+			lastLine = lineStr.toString();
 		}
 
 		font.setUnicodeFlag(unicode);
@@ -108,12 +91,11 @@ public final class TextHelper {
 
 	public static String getControlCodes(String s) {
 		String controls = s.replaceAll("(?<!\u00a7)(.)", "");
-		String wiped = controls.replaceAll(".*r", "r");
-		return wiped;
+		return controls.replaceAll(".*r", "r");
 	}
 
 	public static String toControlCodes(String s) {
-		return s.replaceAll(".", "\u00a7$0");
+		return s.replaceAll("(?i)[\\dA-FK-OR]", "\u00a7$0");
 	}
 
 }

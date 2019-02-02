@@ -27,7 +27,7 @@ public class CapabilityCAD {
 
 	private static class CapabilityFactory implements Capability.IStorage<ICADData> {
 
-		private static CapabilityFactory INSTANCE = new CapabilityFactory();
+		private static final CapabilityFactory INSTANCE = new CapabilityFactory();
 
 		@Override
 		public NBTBase writeNBT(Capability<ICADData> capability, ICADData instance, EnumFacing side) {

@@ -27,8 +27,8 @@ public class PieceSelectorDamageTaken extends PieceSelector {
 	}
 
 	@Override
-	public Object execute(SpellContext context) throws SpellRuntimeException {
-		return Double.valueOf(context.damageTaken);
+	public Object execute(SpellContext context) {
+		return context.damageTaken;
 	}
 
 }

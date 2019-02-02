@@ -25,12 +25,12 @@ public class FXWisp extends FXQueued {
 
 	public static final ResourceLocation particles = new ResourceLocation(LibResources.MISC_WISP_LARGE);
 
-	public static Queue<FXWisp> queuedRenders = new ArrayDeque<>();
-	public static Queue<FXWisp> queuedDepthIgnoringRenders = new ArrayDeque<>();
+	public static final Queue<FXWisp> queuedRenders = new ArrayDeque<>();
+	public static final Queue<FXWisp> queuedDepthIgnoringRenders = new ArrayDeque<>();
 
-	private boolean depthTest;
-	private float moteParticleScale;
-	private int moteHalfLife;
+	private final boolean depthTest;
+	private final float moteParticleScale;
+	private final int moteHalfLife;
 
 	public FXWisp(World world, double d, double d1, double d2,  float size, float red, float green, float blue, boolean distanceLimit, boolean depthTest, float maxAgeMul) {
 		super(world, d, d1, d2, size, red, green, blue, (int) (28 / (Math.random() * 0.3D + 0.7D) * maxAgeMul));

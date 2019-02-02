@@ -24,7 +24,7 @@ import java.util.List;
 public class PieceGroup implements Comparable<PieceGroup> {
 
 	public final String name;
-	public List<Class<? extends SpellPiece>> pieces = new ArrayList<>();
+	public final List<Class<? extends SpellPiece>> pieces = new ArrayList<>();
 	public Class<? extends SpellPiece> mainPiece = null;
 	public List<String> requirements = new ArrayList<>();
 	public int levelRequirement = 0;

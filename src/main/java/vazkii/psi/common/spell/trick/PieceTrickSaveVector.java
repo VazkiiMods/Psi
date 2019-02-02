@@ -47,7 +47,7 @@ public class PieceTrickSaveVector extends PieceTrick {
 		meta.addStat(EnumSpellStat.COMPLEXITY, 1);
 
 		Double numberVal = this.<Double>getParamEvaluation(number);
-		if(numberVal == null || numberVal <= 0 || numberVal.doubleValue() != numberVal.intValue())
+		if(numberVal == null || numberVal <= 0 || numberVal != numberVal.intValue())
 			throw new SpellCompilationException(SpellCompilationException.NON_POSITIVE_INTEGER, x, y);
 
 		meta.addStat(EnumSpellStat.POTENCY, numberVal.intValue() * 8);

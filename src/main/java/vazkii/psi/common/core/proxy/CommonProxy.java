@@ -33,6 +33,7 @@ import vazkii.psi.common.spell.base.ModSpellPieces;
 
 import java.awt.*;
 
+@SuppressWarnings("EmptyMethod")
 public class CommonProxy {
 
 	public void preInit(FMLPreInitializationEvent event) {

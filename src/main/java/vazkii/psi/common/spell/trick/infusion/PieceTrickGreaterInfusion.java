@@ -11,7 +11,6 @@
 package vazkii.psi.common.spell.trick.infusion;
 
 import net.minecraft.item.ItemStack;
-import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.piece.PieceTrick;
 import vazkii.psi.common.item.ItemCAD;
@@ -31,7 +30,7 @@ public class PieceTrickGreaterInfusion extends PieceTrick {
 	}
 
 	@Override
-	public Object execute(SpellContext context) throws SpellRuntimeException {
+	public Object execute(SpellContext context) {
 		ItemCAD.craft(context.caster, "gemDiamond", new ItemStack(ModItems.material, 1, 2));
 		return null;
 	}

@@ -32,7 +32,7 @@ public class PieceOperatorVectorNegate extends PieceOperator {
 	}
 
 	@Override
-	public Object execute(SpellContext context) throws SpellRuntimeException {
+	public Object execute(SpellContext context) {
 		Vector3 v1 = this.getParamValue(context, vec1);
 
 		return v1.copy().negate();

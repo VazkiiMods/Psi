@@ -40,7 +40,7 @@ public class PieceOperatorIntegerDivide extends PieceOperator {
 		if(d2 == 0 || d2.intValue() == 0)
 			throw new SpellRuntimeException(SpellRuntimeException.DIVIDE_BY_ZERO);
 
-		return Double.valueOf(d1.intValue() / d2.intValue());
+		return (double) (int) (d1 / d2);
 	}
 
 	@Override

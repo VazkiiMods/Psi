@@ -51,7 +51,7 @@ public abstract class PieceTrickPotionBase extends PieceTrick {
 			powerVal = this.<Double>getParamEvaluation(power);
 		Double timeVal = this.<Double>getParamEvaluation(time);
 
-		if(powerVal == null || timeVal == null || powerVal <= 0 || powerVal.doubleValue() != powerVal.intValue() || timeVal <= 0 || timeVal.doubleValue() != timeVal.intValue())
+		if(powerVal == null || timeVal == null || powerVal <= 0 || powerVal != powerVal.intValue() || timeVal <= 0 || timeVal != timeVal.intValue())
 			throw new SpellCompilationException(SpellCompilationException.NON_POSITIVE_INTEGER, x, y);
 
 		meta.addStat(EnumSpellStat.POTENCY, 20 + getPotency(powerVal.intValue(), timeVal.intValue()));
@@ -68,7 +68,7 @@ public abstract class PieceTrickPotionBase extends PieceTrick {
 		if(!context.isInRadius(targetVal))
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 
-		Double powerVal = null;
+		Double powerVal = 1.0;
 		if(hasPower())
 			powerVal = this.<Double>getParamValue(context, power);
 		Double timeVal = this.<Double>getParamValue(context, time);

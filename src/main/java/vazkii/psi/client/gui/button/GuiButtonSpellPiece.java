@@ -20,8 +20,8 @@ import javax.annotation.Nonnull;
 
 public class GuiButtonSpellPiece extends GuiButton {
 
-	public SpellPiece piece;
-	GuiProgrammer gui;
+	public final SpellPiece piece;
+	final GuiProgrammer gui;
 
 	public GuiButtonSpellPiece(GuiProgrammer gui, SpellPiece piece, int x, int y) {
 		super(0, x, y, 16, 16, "");

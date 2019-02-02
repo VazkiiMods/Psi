@@ -64,7 +64,7 @@ public final class HUDHandler {
 	private static final int secondaryTextureUnit = 7;
 
 	private static boolean registeredMask = false;
-	private static int maxRemainingTicks = 30;
+	private static final int maxRemainingTicks = 30;
 
 	public static boolean showLevelUp = false;
 	public static int levelDisplayTime = 0;
@@ -173,7 +173,6 @@ public final class HUDHandler {
 		int origHeight = height;
 		int origY = y;
 		int v = 0;
-		int max = totalPsi;
 
 		int texture = 0;
 		boolean shaders = ShaderHandler.useShaders();
@@ -189,8 +188,8 @@ public final class HUDHandler {
 		for (Deduction d : data.deductions) {
 			float a = d.getPercentile(pticks);
 			GlStateManager.color(r, g, b, a);
-			height = (int) Math.ceil(origHeight * (double) d.deduct / max);
-			int effHeight = (int) (origHeight * (double) d.current / max);
+			height = (int) Math.ceil(origHeight * (double) d.deduct / totalPsi);
+			int effHeight = (int) (origHeight * (double) d.current / totalPsi);
 			v = origHeight - effHeight;
 			y = origY + v;
 
@@ -199,14 +198,14 @@ public final class HUDHandler {
 		}
 
 		float textY = origY;
-		if (max > 0) {
-			height = (int) ((double) origHeight * (double) data.availablePsi / max);
+		if (totalPsi > 0) {
+			height = (int) ((double) origHeight * (double) data.availablePsi / totalPsi);
 			v = origHeight - height;
 			y = origY + v;
 
 			if (data.availablePsi != data.lastAvailablePsi) {
 				float textHeight = (float) (origHeight
-						* (data.availablePsi * pticks + data.lastAvailablePsi * (1.0 - pticks)) / max);
+						* (data.availablePsi * pticks + data.lastAvailablePsi * (1.0 - pticks)) / totalPsi);
 				textY = origY + (origHeight - textHeight);
 			} else
 				textY = y;
@@ -336,7 +335,6 @@ public final class HUDHandler {
 		mc.fontRenderer.drawStringWithShadow(levelUp, x, y, 0x0013C5FF + alphaOverlay);
 
 		String currLevel = "" + levelValue;
-		swidth = mc.fontRenderer.getStringWidth(currLevel);
 		x = res.getScaledWidth() / 4;
 		y += 10;
 

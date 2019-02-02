@@ -102,9 +102,9 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 			bullet.writeToNBT(bulletCmp);
 		tagCompound.setTag(TAG_BULLET, bulletCmp);
 
-		tagCompound.setString(TAG_CASTER, (String) dataManager.get(CASTER_NAME));
+		tagCompound.setString(TAG_CASTER, dataManager.get(CASTER_NAME));
 		tagCompound.setInteger(TAG_TIME_ALIVE, getTimeAlive());
-		tagCompound.setInteger(TAG_TIMES_CAST, (int) dataManager.get(TIMES_CAST));
+		tagCompound.setInteger(TAG_TIMES_CAST, dataManager.get(TIMES_CAST));
 
 		tagCompound.setFloat(TAG_LOOK_X, (float) dataManager.get(LOOK_X));
 		tagCompound.setFloat(TAG_LOOK_Y, (float) dataManager.get(LOOK_Y));
@@ -173,7 +173,7 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 			double y = posY - getYOffset();
 			double z = posZ + (Math.random() - 0.5) * width;
 			float grav = -0.15F - (float) Math.random() * 0.03F;
-			Psi.proxy.sparkleFX(getEntityWorld(), x, y, z, r, g, b, grav, 0.25F, 15);
+			Psi.proxy.sparkleFX(x, y, z, r, g, b, grav, 0.25F, 15);
 		}
 	}
 
@@ -187,7 +187,7 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 	}
 
 	public int getTimeAlive() {
-		return (int) dataManager.get(TIME_ALIVE);
+		return dataManager.get(TIME_ALIVE);
 	}
 
 	public void setTimeAlive(int i) {
@@ -195,9 +195,8 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 	}
 
 	public EntityLivingBase getCaster() {
-		String name = (String) dataManager.get(CASTER_NAME);
-		EntityPlayer player = getEntityWorld().getPlayerEntityByName(name);
-		return player;
+		String name = dataManager.get(CASTER_NAME);
+		return getEntityWorld().getPlayerEntityByName(name);
 	}
 
 	@Override

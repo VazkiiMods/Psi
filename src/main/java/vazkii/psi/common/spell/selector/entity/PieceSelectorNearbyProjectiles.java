@@ -26,7 +26,7 @@ public class PieceSelectorNearbyProjectiles  extends PieceSelectorNearby {
 
 	@Override
 	public Predicate<Entity> getTargetPredicate() {
-		return (Entity e) -> { return (e instanceof IProjectile || e instanceof EntityFireball) && !(e instanceof EntitySpellProjectile); };
+		return (Entity e) -> (e instanceof IProjectile || e instanceof EntityFireball) && !(e instanceof EntitySpellProjectile);
 	}
 
 }

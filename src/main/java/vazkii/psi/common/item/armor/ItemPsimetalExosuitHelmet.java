@@ -46,7 +46,7 @@ public class ItemPsimetalExosuitHelmet extends ItemPsimetalArmor implements ISen
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public int getColor(ItemStack stack) {
+	public int getColor(@Nonnull ItemStack stack) {
 		ItemStack sensor = getAttachedSensor(stack);
 		if(!sensor.isEmpty() && sensor.getItem() instanceof IExosuitSensor)
 			return ((IExosuitSensor) sensor.getItem()).getColor(sensor);
@@ -57,8 +57,7 @@ public class ItemPsimetalExosuitHelmet extends ItemPsimetalArmor implements ISen
 	@Override
 	public ItemStack getAttachedSensor(ItemStack stack) {
 		NBTTagCompound cmp = ItemNBTHelper.getCompound(stack, TAG_SENSOR, false);
-		ItemStack sensor = new ItemStack(cmp);
-		return sensor;
+		return new ItemStack(cmp);
 	}
 
 	@Override

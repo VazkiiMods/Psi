@@ -21,8 +21,8 @@ import javax.annotation.Nonnull;
 
 public class GuiButtonIO extends GuiButton {
 
-	public boolean out;
-	GuiProgrammer gui;
+	public final boolean out;
+	final GuiProgrammer gui;
 
 	public GuiButtonIO(GuiProgrammer gui, int par2, int par3, boolean out) {
 		super(0, par2, par3, 12, 12, "");

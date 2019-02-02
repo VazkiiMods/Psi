@@ -30,7 +30,7 @@ public class PieceErrorSuppressor extends SpellPiece {
 	}
 
 	@Override
-	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
+	public void addToMetadata(SpellMetadata meta) {
 		meta.errorsSuppressed = true;
 	}
 
@@ -50,7 +50,7 @@ public class PieceErrorSuppressor extends SpellPiece {
 	}
 
 	@Override
-	public Object execute(SpellContext context) throws SpellRuntimeException {
+	public Object execute(SpellContext context) {
 		return null;
 	}
 
