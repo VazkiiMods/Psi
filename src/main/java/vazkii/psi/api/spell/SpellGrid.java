@@ -10,14 +10,14 @@
  */
 package vazkii.psi.api.spell;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Holder class for a spell's piece grid. Pretty much all internal, nothing to see here.
@@ -147,11 +147,11 @@ public final class SpellGrid {
 			throw new SpellCompilationException(SpellCompilationException.INFINITE_LOOP);
 
 		traversed.add(atSide);
-		if(atSide == null || !(atSide instanceof IRedirector))
+		if(!(atSide instanceof IGenericRedirector))
 			return atSide;
 
-		IRedirector redirector = (IRedirector) atSide;
-		SpellParam.Side rside = redirector.getRedirectionSide();
+		IGenericRedirector redirector = (IGenericRedirector) atSide;
+		SpellParam.Side rside = redirector.remapSide(side);
 		if(!rside.isEnabled())
 			return null;
 

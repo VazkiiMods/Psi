@@ -13,8 +13,12 @@ package vazkii.psi.api.spell;
 /**
  * Interface for a SpellPiece that redirects parameters. Used for Connectors.
  */
-public interface IRedirector {
+public interface IRedirector extends IGenericRedirector {
 
-	public SpellParam.Side getRedirectionSide();
+	SpellParam.Side getRedirectionSide();
 
+	@Override
+	default SpellParam.Side remapSide(SpellParam.Side inputSide) {
+		return getRedirectionSide();
+	}
 }
