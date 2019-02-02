@@ -116,8 +116,8 @@ public class EntitySpellProjectile extends EntityThrowable {
 		dataManager.set(BULLET_DATA, bullet);
 
 		EntityLivingBase thrower = getThrower();
-		if(thrower != null && thrower instanceof EntityPlayer)
-			dataManager.set(CASTER_NAME, ((EntityPlayer) thrower).getName());
+		if(thrower instanceof EntityPlayer)
+			dataManager.set(CASTER_NAME, thrower.getName());
 
 		timeAlive = tagCompound.getInteger(TAG_TIME_ALIVE);
 
@@ -136,7 +136,6 @@ public class EntitySpellProjectile extends EntityThrowable {
 		int timeAlive = ticksExisted;
 		if(timeAlive > getLiveTime())
 			setDead();
-		timeAlive++;
 		
 		int colorVal = ICADColorizer.DEFAULT_SPELL_COLOR;
 		ItemStack colorizer = dataManager.get(COLORIZER_DATA);
@@ -228,9 +227,8 @@ public class EntitySpellProjectile extends EntityThrowable {
 		if(superThrower != null)
 			return superThrower;
 
-		String name = (String) dataManager.get(CASTER_NAME);
-		EntityPlayer player = getEntityWorld().getPlayerEntityByName(name);
-		return player;
+		String name = dataManager.get(CASTER_NAME);
+		return getEntityWorld().getPlayerEntityByName(name);
 	}
 
 	@Override

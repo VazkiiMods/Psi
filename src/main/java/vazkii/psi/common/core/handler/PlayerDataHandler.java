@@ -569,6 +569,9 @@ public class PlayerDataHandler {
 				levelPoints = 0;
 			else if (!learning && levelPoints == 0)
 				levelPoints = 1;
+
+			if (!learning)
+				lastSpellGroup = "";
 		}
 
 		public void stopLoopcast() {
@@ -611,6 +614,7 @@ public class PlayerDataHandler {
 				level++;
 				levelPoints++;
 				lastSpellGroup = "";
+				save();
 
 				if(player instanceof EntityPlayerMP) {
 					MessageLevelUp message = new MessageLevelUp(level);

@@ -16,6 +16,8 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
+import javax.annotation.Nonnull;
+
 public class EntitySpellGrenade extends EntitySpellProjectile {
 
 	boolean sound = false;
@@ -65,7 +67,7 @@ public class EntitySpellGrenade extends EntitySpellProjectile {
 	}
 
 	@Override
-	protected void onImpact(RayTraceResult pos) {
+	protected void onImpact(@Nonnull RayTraceResult pos) {
 		if(!getEntityWorld().isRemote && !sound && explodes()) {
 			playSound(SoundEvents.ENTITY_CREEPER_PRIMED, 2F, 1F);
 			sound = true;
