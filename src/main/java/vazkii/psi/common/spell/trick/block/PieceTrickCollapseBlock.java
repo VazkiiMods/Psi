@@ -48,9 +48,6 @@ public class PieceTrickCollapseBlock extends PieceTrick {
 
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
-		if(context.caster.getEntityWorld().isRemote)
-			return null;
-
 		Vector3 positionVal = this.getParamValue(context, position);
 
 		if(positionVal == null)

@@ -31,7 +31,6 @@ import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.spell.ISpellContainer;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
-import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.common.core.PsiCreativeTab;
 import vazkii.psi.common.core.handler.LoopcastTrackingHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
@@ -138,84 +137,62 @@ public class ItemSpellBullet extends ItemMod implements ISpellContainer, IPsiIte
 
 	@Override
 	public void castSpell(ItemStack stack, SpellContext context) {
-		switch(stack.getItemDamage()) {
-		case 1: // Basic
-			context.cspell.safeExecute(context);
-			break;
+		ItemStack cad = PsiAPI.getPlayerCAD(context.caster);
+		ItemStack colorizer = ((ICAD) cad.getItem()).getComponentInSlot(cad, EnumCADComponent.DYE);
 
-		case 3: // Projectile
-			if(!context.caster.getEntityWorld().isRemote) {
-				EntitySpellProjectile proj = new EntitySpellProjectile(context.caster.getEntityWorld(), context.caster);
-				ItemStack cad = PsiAPI.getPlayerCAD(context.caster);
-				ItemStack colorizer = ((ICAD) cad.getItem()).getComponentInSlot(cad, EnumCADComponent.DYE);
-				proj.setInfo(context.caster, colorizer, stack);
-				proj.context = context;
-				proj.getEntityWorld().spawnEntity(proj);
-			}
-			break;
+		EntitySpellProjectile projectile = null;
 
-		case 5: // Loopcast
-			if(!PlayerDataHandler.get(context.caster).loopcasting) {
+		switch (stack.getItemDamage()) {
+			case 1: // Basic
 				context.cspell.safeExecute(context);
-				PlayerDataHandler.PlayerData data = PlayerDataHandler.get(context.caster);
-				data.loopcasting = true;
-				data.loopcastHand = context.castFrom;
-				data.lastTickLoopcastStack = null;
-				if (context.caster instanceof EntityPlayerMP)
-					LoopcastTrackingHandler.syncForTrackers((EntityPlayerMP) context.caster);
-			}
+				break;
 
-			break;
+			case 3: // Projectile
+				projectile = new EntitySpellProjectile(context.caster.getEntityWorld(), context.caster);
+				break;
 
-		case 7: // Spell Circle
-			if(!context.caster.getEntityWorld().isRemote) {
-				try {
-					RayTraceResult pos = PieceOperatorVectorRaycast.raycast(context.caster, 32);
+			case 5: // Loopcast
+				if (!PlayerDataHandler.get(context.caster).loopcasting) {
+					context.cspell.safeExecute(context);
+					PlayerDataHandler.PlayerData data = PlayerDataHandler.get(context.caster);
+					data.loopcasting = true;
+					data.loopcastHand = context.castFrom;
+					data.lastTickLoopcastStack = null;
+					if (context.caster instanceof EntityPlayerMP)
+						LoopcastTrackingHandler.syncForTrackers((EntityPlayerMP) context.caster);
+				}
 
-					if(pos != null) {
-						EntitySpellCircle circle = new EntitySpellCircle(context.caster.getEntityWorld());
-						ItemStack cad = PsiAPI.getPlayerCAD(context.caster);
-						ItemStack colorizer = ((ICAD) cad.getItem()).getComponentInSlot(cad, EnumCADComponent.DYE);
-						circle.setInfo(context.caster, colorizer, stack);
-						circle.setPosition(pos.hitVec.x, pos.hitVec.y, pos.hitVec.z);
-						circle.getEntityWorld().spawnEntity(circle);
-					}
-				} catch(SpellRuntimeException e) { }
-			}
-			break;
+				break;
 
-		case 9: // Grenade
-			if(!context.caster.getEntityWorld().isRemote) {
-				EntitySpellProjectile proj = new EntitySpellGrenade(context.caster.getEntityWorld(), context.caster);
-				ItemStack cad = PsiAPI.getPlayerCAD(context.caster);
-				ItemStack colorizer = ((ICAD) cad.getItem()).getComponentInSlot(cad, EnumCADComponent.DYE);
-				proj.setInfo(context.caster, colorizer, stack);
-				proj.context = context;
-				proj.getEntityWorld().spawnEntity(proj);
-			}
-			break;
+			case 7: // Spell Circle
+				RayTraceResult pos = PieceOperatorVectorRaycast.raycast(context.caster, 32);
 
-		case 11: // Charge
-			if(!context.caster.getEntityWorld().isRemote) {
-				EntitySpellProjectile proj = new EntitySpellCharge(context.caster.getEntityWorld(), context.caster);
-				ItemStack cad = PsiAPI.getPlayerCAD(context.caster);
-				ItemStack colorizer = ((ICAD) cad.getItem()).getComponentInSlot(cad, EnumCADComponent.DYE);
-				proj.setInfo(context.caster, colorizer, stack);
-				proj.context = context;
-				proj.getEntityWorld().spawnEntity(proj);
-			}
-			break;
+				if (pos != null) {
+					EntitySpellCircle circle = new EntitySpellCircle(context.caster.getEntityWorld());
+					circle.setInfo(context.caster, colorizer, stack);
+					circle.setPosition(pos.hitVec.x, pos.hitVec.y, pos.hitVec.z);
+					circle.getEntityWorld().spawnEntity(circle);
+				}
 
-		case 13: // Mine
-			if(!context.caster.getEntityWorld().isRemote) {
-				EntitySpellProjectile proj = new EntitySpellMine(context.caster.getEntityWorld(), context.caster);
-				ItemStack cad = PsiAPI.getPlayerCAD(context.caster);
-				ItemStack colorizer = ((ICAD) cad.getItem()).getComponentInSlot(cad, EnumCADComponent.DYE);
-				proj.setInfo(context.caster, colorizer, stack);
-				proj.context = context;
-				proj.getEntityWorld().spawnEntity(proj);
-			}
-			break;
+				break;
+
+			case 9: // Grenade
+				projectile = new EntitySpellGrenade(context.caster.getEntityWorld(), context.caster);
+				break;
+
+			case 11: // Charge
+				projectile = new EntitySpellCharge(context.caster.getEntityWorld(), context.caster);
+				break;
+
+			case 13: // Mine
+				projectile = new EntitySpellMine(context.caster.getEntityWorld(), context.caster);
+				break;
+		}
+
+		if (projectile != null) {
+			projectile.setInfo(context.caster, colorizer, stack);
+			projectile.context = context;
+			projectile.getEntityWorld().spawnEntity(projectile);
 		}
 	}
 

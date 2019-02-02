@@ -81,8 +81,7 @@ public class PieceTrickPlaceBlock extends PieceTrick {
 		Block block = state.getBlock();
 		if(block.isAir(state, world, pos) || block.isReplaceable(world, pos)) {
 			if(conjure) {
-				if(!world.isRemote)
-					world.setBlockState(pos, ModBlocks.conjured.getDefaultState());
+				world.setBlockState(pos, ModBlocks.conjured.getDefaultState());
 			} else {
 				ItemStack stack = player.inventory.getStackInSlot(slot);
 				if(!stack.isEmpty() && stack.getItem() instanceof ItemBlock) {
@@ -90,10 +89,8 @@ public class PieceTrickPlaceBlock extends PieceTrick {
 					ItemBlock iblock = (ItemBlock) rem.getItem();
 
 					Block blockToPlace = Block.getBlockFromItem(rem.getItem());
-					if(!world.isRemote) {
-						IBlockState newState = blockToPlace.getStateForPlacement(world, pos, EnumFacing.UP, 0, 0, 0, rem.getItemDamage(), player, EnumHand.MAIN_HAND);
-						iblock.placeBlockAt(stack, player, world, pos, EnumFacing.UP, 0, 0, 0, newState);
-					}
+					IBlockState newState = blockToPlace.getStateForPlacement(world, pos, EnumFacing.UP, 0, 0, 0, rem.getItemDamage(), player, EnumHand.MAIN_HAND);
+					iblock.placeBlockAt(stack, player, world, pos, EnumFacing.UP, 0, 0, 0, newState);
 
 					if(player.capabilities.isCreativeMode)
 						HUDHandler.setRemaining(rem, -1);
@@ -101,7 +98,7 @@ public class PieceTrickPlaceBlock extends PieceTrick {
 				}
 			}
 
-			if(particles && !world.isRemote)
+			if(particles)
 				world.playEvent(2001, pos, Block.getStateId(world.getBlockState(pos)));
 		}
 	}

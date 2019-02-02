@@ -69,6 +69,9 @@ public class CompiledSpell {
 	 */
 	@SuppressWarnings("unchecked")
 	public void safeExecute(SpellContext context) {
+		if (context.caster.getEntityWorld().isRemote)
+			return;
+
 		try {
 			if(context.actions == null)
 				context.actions = (Stack<Action>) actions.clone();
@@ -76,7 +79,7 @@ public class CompiledSpell {
 			if(context.cspell.execute(context))
 				PsiAPI.internalHandler.delayContext(context);
 		} catch(SpellRuntimeException e) {
-			if(!context.caster.getEntityWorld().isRemote && !context.shouldSuppressErrors()) {
+			if(!context.shouldSuppressErrors()) {
 				context.caster.sendMessage(new TextComponentTranslation(e.getMessage()).setStyle(new Style().setColor(TextFormatting.RED)));
 				
 				int x = context.cspell.currentAction.piece.x + 1;

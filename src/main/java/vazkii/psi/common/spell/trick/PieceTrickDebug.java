@@ -44,9 +44,6 @@ public class PieceTrickDebug extends PieceTrick {
 
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
-		if(context.caster.getEntityWorld().isRemote)
-			return null;
-
 		Double numberVal = this.<Double>getParamValue(context, number);
 		Object targetVal = getParamValue(context, target);
 

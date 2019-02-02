@@ -97,7 +97,7 @@ public class PieceTrickConjureBlock extends PieceTrick {
 	}
 
 	public static void conjure(World world, BlockPos pos, EntityPlayer player, IBlockState state) {
-		if(world.isRemote || !world.isBlockLoaded(pos) || !world.isBlockModifiable(player, pos))
+		if(!world.isBlockLoaded(pos) || !world.isBlockModifiable(player, pos))
 			return;
 
 		IBlockState inWorld = world.getBlockState(pos);

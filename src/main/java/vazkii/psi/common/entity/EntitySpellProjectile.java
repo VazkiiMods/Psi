@@ -10,11 +10,6 @@
  */
 package vazkii.psi.common.entity;
 
-import java.awt.Color;
-import java.util.function.Consumer;
-
-import com.google.common.base.Optional;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -35,6 +30,8 @@ import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.common.Psi;
 
 import javax.annotation.Nonnull;
+import java.awt.*;
+import java.util.function.Consumer;
 
 @SuppressWarnings({"rawtypes", "unchecked"})
 public class EntitySpellProjectile extends EntityThrowable {
@@ -185,7 +182,7 @@ public class EntitySpellProjectile extends EntityThrowable {
 
 	@Override
 	protected void onImpact(@Nonnull RayTraceResult pos) {
-		if(pos.entityHit != null && pos.entityHit instanceof EntityLivingBase) {
+		if(pos.entityHit instanceof EntityLivingBase) {
 			EntityLivingBase e = (EntityLivingBase) pos.entityHit; // apparently RayTraceResult is mutable \:D/
 			cast((SpellContext context) -> {
 				if (context != null) {
@@ -203,9 +200,9 @@ public class EntitySpellProjectile extends EntityThrowable {
 		Entity thrower = getThrower();
 		boolean canCast = false;
 
-		if(thrower != null && thrower instanceof EntityPlayer) {
+		if(thrower instanceof EntityPlayer) {
 			ItemStack spellContainer = dataManager.get(BULLET_DATA);
-			if(spellContainer != null && spellContainer.getItem() instanceof ISpellContainer) {
+			if(!spellContainer.isEmpty() && spellContainer.getItem() instanceof ISpellContainer) {
 				Spell spell = ((ISpellContainer) spellContainer.getItem()).getSpell(spellContainer);
 				if(spell != null) {
 					canCast = true;

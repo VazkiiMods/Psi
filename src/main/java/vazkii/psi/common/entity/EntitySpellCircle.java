@@ -10,10 +10,6 @@
  */
 package vazkii.psi.common.entity;
 
-import java.awt.Color;
-
-import com.google.common.base.Optional;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -33,6 +29,7 @@ import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.common.Psi;
 
 import javax.annotation.Nonnull;
+import java.awt.*;
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class EntitySpellCircle extends Entity implements ISpellImmune {
@@ -142,14 +139,14 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 			setDead();
 
 		setTimeAlive(timeAlive + 1);
-		int times = (int) dataManager.get(TIMES_CAST);
+		int times = dataManager.get(TIMES_CAST);
 
 		if (timeAlive > CAST_DELAY && timeAlive % CAST_DELAY == 0 && times < 20) {
 			SpellContext context = null;
 			Entity thrower = getCaster();
-			if (thrower != null && thrower instanceof EntityPlayer) {
+			if (thrower instanceof EntityPlayer) {
 				ItemStack spellContainer = dataManager.get(BULLET_DATA);
-				if (spellContainer != null && spellContainer.getItem() instanceof ISpellContainer) {
+				if (!spellContainer.isEmpty() && spellContainer.getItem() instanceof ISpellContainer) {
 					dataManager.set(TIMES_CAST, times + 1);
 					Spell spell = ((ISpellContainer) spellContainer.getItem()).getSpell(spellContainer);
 					if (spell != null)

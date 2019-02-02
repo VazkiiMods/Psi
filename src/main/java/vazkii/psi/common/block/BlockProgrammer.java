@@ -62,6 +62,8 @@ public class BlockProgrammer extends BlockFacing implements IPsiBlock {
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
 		ItemStack heldItem = playerIn.getHeldItem(hand);
 		TileProgrammer programmer = (TileProgrammer) worldIn.getTileEntity(pos);
+		if (programmer == null)
+			return true;
 
 		if(!playerIn.capabilities.isCreativeMode) {
 			PlayerData data = PlayerDataHandler.get(playerIn);
@@ -88,6 +90,8 @@ public class BlockProgrammer extends BlockFacing implements IPsiBlock {
 
 	public EnumActionResult setSpell(World worldIn, BlockPos pos, EntityPlayer playerIn, ItemStack heldItem) {
 		TileProgrammer programmer = (TileProgrammer) worldIn.getTileEntity(pos);
+		if (programmer == null)
+			return EnumActionResult.FAIL;
 
 		boolean enabled = programmer.isEnabled();
 		

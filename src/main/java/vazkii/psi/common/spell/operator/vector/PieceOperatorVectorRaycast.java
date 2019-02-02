@@ -54,24 +54,22 @@ public class PieceOperatorVectorRaycast extends PieceOperator {
 		double maxLen = SpellContext.MAX_DISTANCE;
 		Double numberVal = this.<Double>getParamValue(context, max);
 		if(numberVal != null)
-			maxLen = numberVal.doubleValue();
+			maxLen = numberVal;
 		maxLen = Math.min(SpellContext.MAX_DISTANCE, maxLen);
 
 		RayTraceResult pos = raycast(context.caster.getEntityWorld(), originVal, rayVal, maxLen);
-		if(pos == null || pos.getBlockPos() == null)
+		if(pos == null)
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
 
 		return new Vector3(pos.getBlockPos().getX(), pos.getBlockPos().getY(), pos.getBlockPos().getZ());
 	}
 
-	public static RayTraceResult raycast(Entity e, double len) throws SpellRuntimeException {
+	public static RayTraceResult raycast(Entity e, double len) {
 		Vector3 vec = Vector3.fromEntity(e);
 		if(e instanceof EntityPlayer)
 			vec.add(0, e.getEyeHeight(), 0);
 		
 		Vec3d look = e.getLookVec();
-		if(look == null)
-			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
 
 		return raycast(e.getEntityWorld(), vec, new Vector3(look), len);
 	}
