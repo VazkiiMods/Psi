@@ -80,6 +80,7 @@ public final class SpellContext {
 	// Target slot stuff, for building tricks
 	public int targetSlot = 1;
 	public boolean shiftTargetSlot = true;
+	public boolean customTargetSlot = false;
 	
 	/**
 	 * A map for custom data where addon authors can put stuff. If you're going to put
@@ -183,6 +184,8 @@ public final class SpellContext {
 	
 	public int getTargetSlot() throws SpellRuntimeException {
 		int slot;
+		if(customTargetSlot)
+			return targetSlot;
 		if(shiftTargetSlot) {
 			int cadSlot = PsiAPI.getPlayerCADSlot(caster);
 			if(cadSlot == -1)

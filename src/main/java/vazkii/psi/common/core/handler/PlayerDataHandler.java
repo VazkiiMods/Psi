@@ -260,8 +260,8 @@ public class PlayerDataHandler {
 
 		private static final String TAG_CUSTOM_DATA = "customData";
 		
-		public final int totalPsi = 5000;
-		public final int regen = 25;
+		public int totalPsi = 5000;
+		public int regen = 25;
 		
 		public int level;
 		public int availablePsi;
