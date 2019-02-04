@@ -152,9 +152,9 @@ public class ItemSpellBullet extends ItemMod implements ISpellContainer, IPsiIte
 				break;
 
 			case 5: // Loopcast
-				if (!PlayerDataHandler.get(context.caster).loopcasting) {
+				PlayerDataHandler.PlayerData data = PlayerDataHandler.get(context.caster);
+				if (!data.loopcasting || context.castFrom != data.loopcastHand) {
 					context.cspell.safeExecute(context);
-					PlayerDataHandler.PlayerData data = PlayerDataHandler.get(context.caster);
 					data.loopcasting = true;
 					data.loopcastHand = context.castFrom;
 					data.lastTickLoopcastStack = null;
