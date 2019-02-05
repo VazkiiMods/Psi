@@ -16,11 +16,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.Constants;
 import vazkii.arl.block.tile.TileMod;
 import vazkii.psi.api.cad.ICADColorizer;
+import vazkii.psi.client.core.helper.PsiRenderHelper;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.BlockConjured;
 import vazkii.psi.common.block.base.ModBlocks;
 
-import java.awt.*;
 import java.util.Arrays;
 
 public class TileConjured extends TileMod {
@@ -33,13 +33,13 @@ public class TileConjured extends TileMod {
 	public ItemStack colorizer = ItemStack.EMPTY;
 
 	public void doParticles() {
-		Color color = new Color(ICADColorizer.DEFAULT_SPELL_COLOR);
+		int color = ICADColorizer.DEFAULT_SPELL_COLOR;
 		if(!colorizer.isEmpty())
-			color = Psi.proxy.getColorizerColor(colorizer);
+			color = Psi.proxy.getColorForColorizer(colorizer);
 
-		float r = color.getRed() / 255F;
-		float g = color.getGreen() / 255F;
-		float b = color.getBlue() / 255F;
+		float r = PsiRenderHelper.r(color) / 255F;
+		float g = PsiRenderHelper.g(color) / 255F;
+		float b = PsiRenderHelper.b(color) / 255F;
 
 		IBlockState state = getWorld().getBlockState(getPos());
 		state = state.getActualState(getWorld(), getPos());

@@ -60,6 +60,7 @@ import vazkii.psi.api.exosuit.PsiArmorEvent;
 import vazkii.psi.api.internal.IPlayerData;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.*;
+import vazkii.psi.client.core.helper.PsiRenderHelper;
 import vazkii.psi.client.render.entity.RenderSpellCircle;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.item.ItemCAD;
@@ -71,10 +72,8 @@ import vazkii.psi.common.network.message.MessageLevelUp;
 import vazkii.psi.common.network.message.MessageTriggerJumpSpell;
 
 import javax.annotation.Nonnull;
-import java.awt.*;
 import java.lang.ref.WeakReference;
 import java.util.*;
-import java.util.List;
 
 public class PlayerDataHandler {
 
@@ -363,13 +362,14 @@ public class PlayerDataHandler {
 			}
 
 			cadStack = getCAD();
-			Color color = new Color(ICADColorizer.DEFAULT_SPELL_COLOR);
+			int color = ICADColorizer.DEFAULT_SPELL_COLOR;
 
-			if(!cadStack.isEmpty()) color = Psi.proxy.getCADColor(cadStack);
+			if(!cadStack.isEmpty())
+				color = Psi.proxy.getColorForCAD(cadStack);
 
-			float r = color.getRed() / 255F;
-			float g = color.getGreen() / 255F;
-			float b = color.getBlue() / 255F;
+			float r = PsiRenderHelper.r(color) / 255F;
+			float g = PsiRenderHelper.g(color) / 255F;
+			float b = PsiRenderHelper.b(color) / 255F;
 
 			loopcast: {
 				if(overflowed)

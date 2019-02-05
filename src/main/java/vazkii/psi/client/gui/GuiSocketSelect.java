@@ -25,16 +25,16 @@ import org.lwjgl.util.vector.Vector2f;
 import vazkii.arl.network.NetworkHandler;
 import vazkii.arl.network.NetworkMessage;
 import vazkii.psi.api.PsiAPI;
-import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.cad.ISocketable;
 import vazkii.psi.api.cad.ISocketableController;
 import vazkii.psi.client.core.handler.KeybindHandler;
+import vazkii.psi.client.core.helper.PsiRenderHelper;
+import vazkii.psi.common.Psi;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.lib.LibResources;
 import vazkii.psi.common.network.message.MessageChangeControllerSlot;
 import vazkii.psi.common.network.message.MessageChangeSocketableSlot;
 
-import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -143,11 +143,10 @@ public class GuiSocketSelect extends GuiScreen {
 				slotSelected = seg;
 
 				if(!cadStack.isEmpty()) {
-					ICAD cad = (ICAD) cadStack.getItem();
-					Color color = new Color(cad.getSpellColor(cadStack));
-					r = color.getRed() / 255F;
-					g = color.getGreen() / 255F;
-					b = color.getBlue() / 255F;
+					int color = Psi.proxy.getColorForCAD(cadStack);
+					r = PsiRenderHelper.r(color) / 255F;
+					g = PsiRenderHelper.g(color) / 255F;
+					b = PsiRenderHelper.b(color) / 255F;
 				}
 			}
 

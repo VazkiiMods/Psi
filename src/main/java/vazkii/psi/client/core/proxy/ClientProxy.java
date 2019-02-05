@@ -36,8 +36,6 @@ import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.proxy.CommonProxy;
 import vazkii.psi.common.entity.EntitySpellCircle;
 
-import java.awt.*;
-
 @SideOnly(Side.CLIENT)
 public class ClientProxy extends CommonProxy {
 
@@ -72,15 +70,15 @@ public class ClientProxy extends CommonProxy {
 	}
 
 	@Override
-	public Color getCADColor(ItemStack cadStack) {
+	public int getColorForCAD(ItemStack cadStack) {
 		ICAD icad = (ICAD) cadStack.getItem();
-		return new Color(icad.getSpellColor(cadStack));
+		return icad.getSpellColor(cadStack);
 	}
 
 	@Override
-	public Color getColorizerColor(ItemStack colorizer) {
+	public int getColorForColorizer(ItemStack colorizer) {
 		ICADColorizer icc = (ICADColorizer) colorizer.getItem();
-		return new Color(icc.getColor(colorizer));
+		return icc.getColor(colorizer);
 	}
 
 	@Override

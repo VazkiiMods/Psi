@@ -39,6 +39,7 @@ import vazkii.psi.api.cad.ICADColorizer;
 import vazkii.psi.api.cad.IShowPsiBar;
 import vazkii.psi.api.cad.ISocketable;
 import vazkii.psi.api.internal.TooltipHelper;
+import vazkii.psi.client.core.helper.PsiRenderHelper;
 import vazkii.psi.client.gui.GuiLeveling;
 import vazkii.psi.common.core.handler.ConfigHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
@@ -50,7 +51,6 @@ import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.lib.LibObfuscation;
 import vazkii.psi.common.lib.LibResources;
 
-import java.awt.*;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
@@ -83,7 +83,7 @@ public final class HUDHandler {
 
 			drawPsiBar(resolution, partialTicks);
 			renderSocketableEquippedName(resolution, partialTicks);
-			renderLevelUpIndicator(resolution, partialTicks);
+			renderLevelUpIndicator(resolution);
 			renderRemainingItems(resolution, partialTicks);
 			renderHUDItem(resolution, partialTicks);
 		}
@@ -243,8 +243,10 @@ public final class HUDHandler {
 			offStr2 = -23;
 		}
 
-		Color color = new Color(cad.getSpellColor(cadStack));
-		GlStateManager.color(color.getRed() / 255F, color.getGreen() / 255F, color.getBlue() / 255F);
+		int color = cad.getSpellColor(cadStack);
+		GlStateManager.color(PsiRenderHelper.r(color) / 255F,
+				PsiRenderHelper.g(color) / 255F,
+				PsiRenderHelper.b(color) / 255F, 1F);
 
 		Gui.drawModalRectWithCustomSizedTexture(x - offBar, -2, 0, 140, width, height, 64, 256);
 		mc.fontRenderer.drawStringWithShadow(s1, x - offStr1, -11, 0xFFFFFF);
@@ -303,7 +305,7 @@ public final class HUDHandler {
 	}
 
 	@SideOnly(Side.CLIENT)
-	private static void renderLevelUpIndicator(ScaledResolution res, float pticks) {
+	private static void renderLevelUpIndicator(ScaledResolution res) {
 		Minecraft mc = Minecraft.getMinecraft();
 		if (mc.currentScreen instanceof GuiLeveling)
 			showLevelUp = false;

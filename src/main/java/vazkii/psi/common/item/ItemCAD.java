@@ -50,6 +50,7 @@ import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.*;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.*;
+import vazkii.psi.client.core.helper.PsiRenderHelper;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.BlockProgrammer;
 import vazkii.psi.common.block.base.ModBlocks;
@@ -71,7 +72,6 @@ import vazkii.psi.common.network.message.MessageVisualEffect;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -227,10 +227,10 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 							if(!world.isRemote)
 								world.playSound(null, player.posX, player.posY, player.posZ, PsiSoundHandler.cadShoot, SoundCategory.PLAYERS, sound, (float) (0.5 + Math.random() * 0.5));
 							else {
-								Color color = Psi.proxy.getCADColor(cad);
-								float r = color.getRed() / 255F;
-								float g = color.getGreen() / 255F;
-								float b = color.getBlue() / 255F;
+								int color = Psi.proxy.getColorForCAD(cad);
+								float r = PsiRenderHelper.r(color) / 255F;
+								float g = PsiRenderHelper.g(color) / 255F;
+								float b = PsiRenderHelper.b(color) / 255F;
 								for(int i = 0; i < particles; i++) {
 									double x = player.posX + (Math.random() - 0.5) * 2.1 * player.width;
 									double y = player.posY - player.getYOffset();

@@ -24,9 +24,9 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.internal.TooltipHelper;
+import vazkii.psi.client.core.helper.PsiRenderHelper;
 import vazkii.psi.common.lib.LibMisc;
 
-import java.awt.*;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -275,8 +275,9 @@ public abstract class SpellPiece {
 				float minV = side.v / 256F;
 				float maxU = (side.u + wh) / 256F;
 				float maxV = (side.v + wh) / 256F;
-				Color color = new Color(param.color);
-				GlStateManager.color(color.getRed() / 255F, color.getGreen() / 255F, color.getBlue() / 255F, 1F);
+				GlStateManager.color(PsiRenderHelper.r(param.color) / 255F,
+						PsiRenderHelper.g(param.color) / 255F,
+						PsiRenderHelper.b(param.color) / 255F, 1F);
 
 				BufferBuilder wr = Tessellator.getInstance().getBuffer();
 				wr.begin(7, DefaultVertexFormats.POSITION_TEX);

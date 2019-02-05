@@ -19,6 +19,7 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import vazkii.psi.api.cad.ICADColorizer;
+import vazkii.psi.client.core.helper.PsiRenderHelper;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.entity.EntitySpellCircle;
 import vazkii.psi.common.lib.LibResources;
@@ -46,7 +47,7 @@ public class RenderSpellCircle extends Render<EntitySpellCircle> {
 		int colorVal = ICADColorizer.DEFAULT_SPELL_COLOR;
 		ItemStack colorizer = entity.getDataManager().get(EntitySpellCircle.COLORIZER_DATA);
 		if(!colorizer.isEmpty() && colorizer.getItem() instanceof ICADColorizer)
-			colorVal = Psi.proxy.getColorizerColor(colorizer).getRGB();
+			colorVal = Psi.proxy.getColorForColorizer(colorizer);
 		float alive = entity.getTimeAlive() + partialTicks;
 		float s1 = Math.min(1F, alive / EntitySpellCircle.CAST_DELAY);
 		if(alive > EntitySpellCircle.LIVE_TIME - EntitySpellCircle.CAST_DELAY)
@@ -86,9 +87,9 @@ public class RenderSpellCircle extends Render<EntitySpellCircle> {
 		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 0xf0, 0xf0);
 
 
-		int r = (color >> 16) & 0xFF;
-		int g = (color >> 8) & 0xFF;
-		int b = color & 0xFF;
+		int r = PsiRenderHelper.r(color);
+		int g = PsiRenderHelper.g(color);
+		int b = PsiRenderHelper.b(color);
 
 		for (int i = 0; i < layers.length; i++) {
 			int rValue = r;

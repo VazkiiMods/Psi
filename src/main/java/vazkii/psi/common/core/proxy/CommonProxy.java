@@ -70,12 +70,22 @@ public class CommonProxy {
 		// proxy override
 	}
 
-	public Color getCADColor(ItemStack cadStack) {
-		return new Color(1F, 1F, 1F);
+	public int getColorForCAD(ItemStack cadStack) {
+		return -1;
 	}
 
+	public int getColorForColorizer(ItemStack colorizer) {
+		return -1;
+	}
+
+	@Deprecated
+	public Color getCADColor(ItemStack cadStack) {
+		return new Color(getColorForCAD(cadStack));
+	}
+
+	@Deprecated
 	public Color getColorizerColor(ItemStack colorizer) {
-		return new Color(1F, 1F, 1F);
+		return new Color(getColorForColorizer(colorizer));
 	}
 
 	public void setWispFXDistanceLimit(boolean limit) {

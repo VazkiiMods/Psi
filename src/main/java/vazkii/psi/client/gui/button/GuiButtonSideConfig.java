@@ -10,8 +10,6 @@
  */
 package vazkii.psi.client.gui.button;
 
-import java.awt.Color;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -20,6 +18,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import vazkii.psi.api.spell.SpellParam;
 import vazkii.psi.api.spell.SpellPiece;
+import vazkii.psi.client.core.helper.PsiRenderHelper;
 import vazkii.psi.client.gui.GuiProgrammer;
 
 import javax.annotation.Nonnull;
@@ -78,8 +77,9 @@ public class GuiButtonSideConfig extends GuiButton {
 
 			SpellParam.Side currSide = piece.paramSides.get(param);
 			if(currSide == side) {
-				Color color = new Color(param.color);
-				GlStateManager.color(color.getRed() / 255F, color.getGreen() / 255F, color.getBlue() / 255F);
+				GlStateManager.color(PsiRenderHelper.r(param.color) / 255F,
+						PsiRenderHelper.g(param.color) / 255F,
+						PsiRenderHelper.b(param.color) / 255F, 1F);
 			} else GlStateManager.color(1F, 1F, 1F);
 
 			float wh = 8F;

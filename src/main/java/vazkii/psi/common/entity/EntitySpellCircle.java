@@ -26,10 +26,10 @@ import vazkii.psi.api.spell.ISpellContainer;
 import vazkii.psi.api.spell.ISpellImmune;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
+import vazkii.psi.client.core.helper.PsiRenderHelper;
 import vazkii.psi.common.Psi;
 
 import javax.annotation.Nonnull;
-import java.awt.*;
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class EntitySpellCircle extends Entity implements ISpellImmune {
@@ -162,12 +162,11 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 		int colorVal = ICADColorizer.DEFAULT_SPELL_COLOR;
 		ItemStack colorizer = dataManager.get(COLORIZER_DATA);
 		if (!colorizer.isEmpty() && colorizer.getItem() instanceof ICADColorizer)
-			colorVal = Psi.proxy.getColorizerColor(colorizer).getRGB();
+			colorVal = Psi.proxy.getColorForColorizer(colorizer);
 
-		Color color = new Color(colorVal);
-		float r = color.getRed() / 255F;
-		float g = color.getGreen() / 255F;
-		float b = color.getBlue() / 255F;
+		float r = PsiRenderHelper.r(colorVal) / 255F;
+		float g = PsiRenderHelper.g(colorVal) / 255F;
+		float b = PsiRenderHelper.b(colorVal) / 255F;
 		for (int i = 0; i < 5; i++) {
 			double x = posX + (Math.random() - 0.5) * width;
 			double y = posY - getYOffset();
