@@ -651,6 +651,15 @@ public class PlayerDataHandler {
 			if (player == null)
 				return;
 
+			ItemStack cadStack = getCAD();
+
+			if (!cadStack.isEmpty()) {
+				ICAD cad = (ICAD) cadStack.getItem();
+				int storedPsi = cad.getStoredPsi(cadStack);
+				if (storedPsi == -1)
+					return;
+			}
+
 			availablePsi -= psi;
 			if(regenCooldown < cd)
 				regenCooldown = cd;
@@ -659,7 +668,6 @@ public class PlayerDataHandler {
 				int overflow = -availablePsi;
 				availablePsi = 0;
 
-				ItemStack cadStack = getCAD();
 				if(!cadStack.isEmpty()) {
 					ICAD cad = (ICAD) cadStack.getItem();
 					overflow = cad.consumePsi(cadStack, overflow);

@@ -230,8 +230,10 @@ public final class HUDHandler {
 		width = 44;
 		height = 3;
 
-		String s1 = "" + data.availablePsi;
-		String s2 = "" + cad.getStoredPsi(cadStack);
+		int storedPsi = cad.getStoredPsi(cadStack);
+
+		String s1 = storedPsi == -1 ? "\u221E" : "" + data.availablePsi;
+		String s2 = "" + storedPsi;
 
 		int offBar = 22;
 		int offStr1 = 7 + mc.fontRenderer.getStringWidth(s1);
@@ -252,10 +254,12 @@ public final class HUDHandler {
 		mc.fontRenderer.drawStringWithShadow(s1, x - offStr1, -11, 0xFFFFFF);
 		GlStateManager.popMatrix();
 
-		GlStateManager.pushMatrix();
-		GlStateManager.translate(0F, Math.max(textY + 3, origY + 100), 0F);
-		mc.fontRenderer.drawStringWithShadow(s2, x - offStr2, 0, 0xFFFFFF);
-		GlStateManager.popMatrix();
+		if (storedPsi != -1) {
+			GlStateManager.pushMatrix();
+			GlStateManager.translate(0F, Math.max(textY + 3, origY + 100), 0F);
+			mc.fontRenderer.drawStringWithShadow(s2, x - offStr2, 0, 0xFFFFFF);
+			GlStateManager.popMatrix();
+		}
 		GlStateManager.popMatrix();
 	}
 

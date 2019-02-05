@@ -161,7 +161,7 @@ public class GuiSocketSelect extends GuiScreen {
 				}
 			}
 
-			for(float i = 0; i <= degPer + step; i += step) {
+			for(float i = 0; i < degPer + step; i += step) {
 				float rad = i + seg * degPer;
 				float xp = x + MathHelper.cos(rad) * radius;
 				float yp = y + MathHelper.sin(rad) * radius;
