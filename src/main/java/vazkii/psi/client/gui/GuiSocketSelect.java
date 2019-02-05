@@ -13,15 +13,19 @@ package vazkii.psi.client.gui;
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.TextFormatting;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.util.vector.Vector2f;
 import vazkii.arl.network.NetworkHandler;
 import vazkii.arl.network.NetworkMessage;
 import vazkii.psi.api.PsiAPI;
@@ -106,81 +110,84 @@ public class GuiSocketSelect extends GuiScreen {
 	public void drawScreen(int mx, int my, float partialTicks) {
 		super.drawScreen(mx, my, partialTicks);
 
-		GlStateManager.pushMatrix();
-		GlStateManager.disableTexture2D();
 
 		int x = width / 2;
 		int y = height / 2;
 		int maxRadius = 80;
 
-		float angle = mouseAngle(x, y, mx, my);
+		double angle = mouseAngle(x, y, mx, my);
 
-		GlStateManager.enableBlend();
-		GlStateManager.shadeModel(GL11.GL_SMOOTH);
 		int segments = slots.size();
-		float totalDeg = 0;
-		float degPer = 360F / segments;
-
-		List<int[]> stringPositions = new ArrayList<>();
+		float step = (float) Math.PI / 180;
+		float degPer = (float) Math.PI * 2 / segments;
 
 		ItemStack cadStack = PsiAPI.getPlayerCAD(Minecraft.getMinecraft().player);
 		slotSelected = -1;
 
-		for(int seg = 0; seg < segments; seg++) {
-			boolean mouseInSector = angle > totalDeg && angle < totalDeg + degPer;
-			float radius = Math.max(0F, Math.min((timeIn + partialTicks - seg * 6F / segments) * 40F, maxRadius));
-			
-			GL11.glBegin(GL11.GL_TRIANGLE_FAN);
+		Tessellator tess = Tessellator.getInstance();
+		BufferBuilder buf = tess.getBuffer();
 
-			float gs = 0.25F;
+
+		GlStateManager.disableCull();
+		GlStateManager.disableTexture2D();
+		GlStateManager.enableBlend();
+		GlStateManager.shadeModel(GL11.GL_SMOOTH);
+		buf.begin(GL11.GL_TRIANGLE_FAN, DefaultVertexFormats.POSITION_COLOR);
+
+		for(int seg = 0; seg < segments; seg++) {
+			boolean mouseInSector = degPer * seg < angle && angle < degPer * (seg + 1);
+			float radius = Math.max(0F, Math.min((timeIn + partialTicks - seg * 6F / segments) * 40F, maxRadius));
+
+			int gs = 0x40;
 			if(seg % 2 == 0)
-				gs += 0.1F;
-			float r = gs;
-			float g = gs;
-			float b = gs;
-			float a = 0.4F;
+				gs += 0x19;
+			int r = gs;
+			int g = gs;
+			int b = gs;
+			int a = 0x66;
+
+
+			if (seg == 0)
+				buf.pos(x, y, 0).color(r, g, b, a).endVertex();
+
 			if(mouseInSector) {
 				slotSelected = seg;
 
 				if(!cadStack.isEmpty()) {
 					int color = Psi.proxy.getColorForCAD(cadStack);
-					r = PsiRenderHelper.r(color) / 255F;
-					g = PsiRenderHelper.g(color) / 255F;
-					b = PsiRenderHelper.b(color) / 255F;
+					r = PsiRenderHelper.r(color);
+					g = PsiRenderHelper.g(color);
+					b = PsiRenderHelper.b(color);
 				}
 			}
 
-			GlStateManager.color(r, g, b, a);
-			GL11.glVertex2i(x, y);
+			for(float i = 0; i <= degPer + step; i += step) {
+				float rad = i + seg * degPer;
+				float xp = x + MathHelper.cos(rad) * radius;
+				float yp = y + MathHelper.sin(rad) * radius;
 
-			for(float i = degPer; i >= 0; i--) {
-				float rad = (float) ((i + totalDeg) / 180F * Math.PI);
-				double xp = x + Math.cos(rad) * radius;
-				double yp = y + Math.sin(rad) * radius;
-				if(i == (int) (degPer / 2))
-					stringPositions.add(new int[] { seg, (int) xp, (int) yp, mouseInSector ? 'n' : 'r' });
-
-				GL11.glVertex2d(xp, yp);
+				if (i == 0)
+					buf.pos(xp, yp, 0).color(r, g, b, a).endVertex();
+				buf.pos(xp, yp, 0).color(r, g, b, a).endVertex();
 			}
-			totalDeg += degPer;
-
-			GL11.glVertex2i(x, y);
-			GL11.glEnd();
 		}
+		tess.draw();
+
 		GlStateManager.shadeModel(GL11.GL_FLAT);
 		GlStateManager.enableTexture2D();
 
-		for(int[] pos : stringPositions) {
-			int slot = slots.get(pos[0]);
-			int xp = pos[1];
-			int yp = pos[2];
-			char c = (char) pos[3];
+		for(int seg = 0; seg < segments; seg++) {
+			boolean mouseInSector = degPer * seg < angle && angle < degPer * (seg + 1);
+			float radius = Math.max(0F, Math.min((timeIn + partialTicks - seg * 6F / segments) * 40F, maxRadius));
+			float rad = (seg + 0.5f) * degPer;
+			float xp = x + MathHelper.cos(rad) * radius;
+			float yp = y + MathHelper.sin(rad) * radius;
 
-			ItemStack stack = socketable.getBulletInSocket(socketableStack, slot);
+			ItemStack stack = socketable.getBulletInSocket(socketableStack, seg);
 			if(!stack.isEmpty()) {
-				int xsp = xp - 4;
-				int ysp = yp;
-				String name = "\u00a7" + c + stack.getDisplayName();
+				float xsp = xp - 4;
+				float ysp = yp;
+				String name = (mouseInSector ? TextFormatting.UNDERLINE : TextFormatting.RESET) + stack.getDisplayName();
 				int width = fontRenderer.getStringWidth(name);
 
 				double mod = 0.6;
@@ -200,17 +207,16 @@ public class GuiSocketSelect extends GuiScreen {
 				xdp = (int) ((xp - x) * mod + x);
 				ydp = (int) ((yp - y) * mod + y);
 
-				mc.renderEngine.bindTexture(signs[slot]);
+				mc.renderEngine.bindTexture(signs[seg]);
 				drawModalRectWithCustomSizedTexture(xdp - 8, ydp - 8, 0, 0, 16, 16, 16, 16);
 			}
 		}
 
-		float stime = 5F;
-		float fract = Math.min(stime, timeIn + partialTicks) / stime;
-		float s = 3F * fract;
+		float shift = Math.min(5, timeIn + partialTicks) / 5;
+		float scale = 3 * shift;
 		GlStateManager.enableRescaleNormal();
 		GlStateManager.enableBlend();
-		GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
+		GlStateManager.tryBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, 1, 0);
 		RenderHelper.enableGUIStandardItemLighting();
 
 		if(controlledStacks != null && controlledStacks.length > 0) {
@@ -222,23 +228,25 @@ public class GuiSocketSelect extends GuiScreen {
 				if(i == controlSlot)
 					yoff += 5F;
 
-				GlStateManager.translate(0, -yoff * fract, 0F);
+				GlStateManager.pushMatrix();
+				GlStateManager.translate(0, -yoff * shift, 0F);
 				mc.getRenderItem().renderItemAndEffectIntoGUI(controlledStacks[i], xs + i * 18, ys);
-				GlStateManager.translate(0, yoff * fract, 0F);
+				GlStateManager.popMatrix();
 			}
 
 		}
 
 		if(!socketableStack.isEmpty()) {
-			GlStateManager.scale(s, s, s);
-			GlStateManager.translate(x / s - 8, y / s - 8, 0);
-			mc.getRenderItem().renderItemAndEffectIntoGUI(socketableStack, 0, 0);
+			GlStateManager.pushMatrix();
+			GlStateManager.scale(scale, scale, scale);
+			mc.getRenderItem().renderItemAndEffectIntoGUI(socketableStack,
+					(int) (x / scale) - 8, (int) (y / scale) - 8);
+			GlStateManager.popMatrix();
 		}
 		RenderHelper.disableStandardItemLighting();
 		GlStateManager.disableBlend();
 		GlStateManager.disableRescaleNormal();
 
-		GlStateManager.popMatrix();
 	}
 
 	@Override
@@ -299,12 +307,8 @@ public class GuiSocketSelect extends GuiScreen {
 		return false;
 	}
 
-	private static float mouseAngle(int x, int y, int mx, int my) {
-		Vector2f baseVec = new Vector2f(1F, 0F);
-		Vector2f mouseVec = new Vector2f(mx - x, my - y);
-
-		float ang = (float) (Math.acos(Vector2f.dot(baseVec, mouseVec) / (baseVec.length() * mouseVec.length())) * (180F / Math.PI));
-		return my < y ? 360F - ang : ang;
+	private static double mouseAngle(int x, int y, int mx, int my) {
+		return (MathHelper.atan2(my - y, mx - x) + Math.PI * 2) % (Math.PI * 2);
 	}
 
 }

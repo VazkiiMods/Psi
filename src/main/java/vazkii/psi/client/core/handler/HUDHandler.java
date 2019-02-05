@@ -471,16 +471,14 @@ public final class HUDHandler {
 			int maskUniform = ARBShaderObjects.glGetUniformLocationARB(shader, "mask");
 
 			OpenGlHelper.setActiveTexture(ARBMultitexture.GL_TEXTURE0_ARB);
-			GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture(psiBar).getGlTextureId());
+			mc.renderEngine.bindTexture(psiBar);
 			ARBShaderObjects.glUniform1iARB(imageUniform, 0);
 
 			OpenGlHelper.setActiveTexture(ARBMultitexture.GL_TEXTURE0_ARB + secondaryTextureUnit);
 
 			GlStateManager.enableTexture2D();
-			GL11.glGetInteger(GL11.GL_TEXTURE_BINDING_2D);
 
-			GL11.glBindTexture(GL11.GL_TEXTURE_2D,
-					mc.renderEngine.getTexture(shatter ? psiBarShatter : psiBarMask).getGlTextureId());
+			mc.renderEngine.bindTexture(shatter ? psiBarShatter : psiBarMask);
 			ARBShaderObjects.glUniform1iARB(maskUniform, secondaryTextureUnit);
 
 			ARBShaderObjects.glUniform1fARB(percentileUniform, percentile);
