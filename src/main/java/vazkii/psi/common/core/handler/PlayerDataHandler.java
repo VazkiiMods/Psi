@@ -378,20 +378,34 @@ public class PlayerDataHandler {
 				if(loopcasting && loopcastHand != null) {
 					ItemStack stackInHand = player.getHeldItem(loopcastHand);
 
-					if (lastTickLoopcastStack != null && (!ItemStack.areItemsEqual(lastTickLoopcastStack, stackInHand) ||
-								!Objects.equals(lastTickLoopcastStack.getTagCompound(), stackInHand.getTagCompound()))) {
-						stopLoopcast();
-						break loopcast;
-					}
-
-					lastTickLoopcastStack = stackInHand.copy();
-
 					if (stackInHand.isEmpty() ||
 							!(stackInHand.getItem() instanceof ISocketable) ||
 							!((ISocketable) stackInHand.getItem()).canLoopcast(stackInHand)) {
 						stopLoopcast();
 						break loopcast;
 					}
+
+					if (lastTickLoopcastStack != null) {
+						if (!ItemStack.areItemsEqual(lastTickLoopcastStack, stackInHand) ||
+								!(lastTickLoopcastStack.getItem() instanceof ISocketable)) {
+							stopLoopcast();
+							break loopcast;
+						} else {
+							ISocketable lastTickItem = (ISocketable) lastTickLoopcastStack.getItem();
+							ISocketable thisTickItem = (ISocketable) stackInHand.getItem();
+							ItemStack lastTick = lastTickItem.getBulletInSocket(lastTickLoopcastStack,
+									lastTickItem.getSelectedSlot(lastTickLoopcastStack));
+							ItemStack thisTick = thisTickItem.getBulletInSocket(stackInHand,
+									thisTickItem.getSelectedSlot(stackInHand));
+							if (!ItemStack.areItemStacksEqual(lastTick, thisTick)) {
+								stopLoopcast();
+								break loopcast;
+							}
+						}
+					}
+
+					lastTickLoopcastStack = stackInHand.copy();
+
 
 					ISocketable castingItem = (ISocketable) stackInHand.getItem();
 
