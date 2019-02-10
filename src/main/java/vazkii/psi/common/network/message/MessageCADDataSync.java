@@ -30,7 +30,7 @@ public class MessageCADDataSync extends NetworkMessage<MessageCADDataSync> {
 	public MessageCADDataSync() { }
 
 	public MessageCADDataSync(ICADData data) {
-		cmp = data.serializeNBT();
+		cmp = data.serializeForSynchronization();
 	}
 
 	@Override

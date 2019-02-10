@@ -76,6 +76,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColorProvider, IPsiItem {
@@ -88,10 +89,10 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 	private static final String TAG_TIME_LEGACY = "time";
 	private static final String TAG_STORED_PSI_LEGACY = "storedPsi";
 
-	private static final String TAG_STORED_VECTOR_PREFIX = "storedVector";
-	private static final String TAG_X = "x";
-	private static final String TAG_Y = "y";
-	private static final String TAG_Z = "z";
+	private static final String TAG_X_LEGACY = "x";
+	private static final String TAG_Y_LEGACY = "y";
+	private static final String TAG_Z_LEGACY = "z";
+	private static final Pattern VECTOR_PREFIX_PATTERN = Pattern.compile("^storedVector(\\d+)$");
 	
 	private static final Pattern FAKE_PLAYER_PATTERN = Pattern.compile("^(?:\\[.*])|(?:ComputerCraft)$");
 
@@ -136,6 +137,18 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 					data.setBattery(compound.getInteger(TAG_STORED_PSI_LEGACY));
 					data.markDirty(true);
 					compound.removeTag(TAG_STORED_PSI_LEGACY);
+				}
+
+				for (String key : compound.getKeySet()) {
+					Matcher matcher = VECTOR_PREFIX_PATTERN.matcher(key);
+					if (matcher.find()) {
+						NBTTagCompound vec = compound.getCompoundTag(key);
+						int memory = Integer.parseInt(matcher.group(1));
+						Vector3 vector = new Vector3(vec.getDouble(TAG_X_LEGACY),
+								vec.getDouble(TAG_Y_LEGACY),
+								vec.getDouble(TAG_Z_LEGACY));
+						data.setSavedVector(memory, vector);
+					}
 				}
 
 				if (entityIn instanceof EntityPlayerMP && data.isDirty()) {
@@ -505,12 +518,7 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 		int size = getMemorySize(stack);
 		if(memorySlot < 0 || memorySlot >= size)
 			throw new SpellRuntimeException(SpellRuntimeException.MEMORY_OUT_OF_BOUNDS);
-		
-		NBTTagCompound cmp = new NBTTagCompound();
-		cmp.setDouble(TAG_X, vec.x);
-		cmp.setDouble(TAG_Y, vec.y);
-		cmp.setDouble(TAG_Z, vec.z);
-		ItemNBTHelper.setCompound(stack, TAG_STORED_VECTOR_PREFIX + memorySlot, cmp);
+		getCADData(stack).setSavedVector(memorySlot, vec);
 	}
 
 	@Override
@@ -518,12 +526,7 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 		int size = getMemorySize(stack);
 		if(memorySlot < 0 || memorySlot >= size)
 			throw new SpellRuntimeException(SpellRuntimeException.MEMORY_OUT_OF_BOUNDS);
-		
-		NBTTagCompound cmp = ItemNBTHelper.getCompound(stack, TAG_STORED_VECTOR_PREFIX + memorySlot, false);
-		double x = cmp.getDouble(TAG_X);
-		double y = cmp.getDouble(TAG_Y);
-		double z = cmp.getDouble(TAG_Z);
-		return new Vector3(x, y, z);
+		return getCADData(stack).getSavedVector(memorySlot);
 	}
 	
 	@Override

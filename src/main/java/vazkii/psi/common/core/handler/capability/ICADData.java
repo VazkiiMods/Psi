@@ -12,6 +12,7 @@ package vazkii.psi.common.core.handler.capability;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.INBTSerializable;
+import vazkii.psi.api.internal.Vector3;
 
 public interface ICADData extends INBTSerializable<NBTTagCompound> {
 	int getTime();
@@ -22,7 +23,13 @@ public interface ICADData extends INBTSerializable<NBTTagCompound> {
 
 	void setBattery(int battery);
 
+	Vector3 getSavedVector(int memorySlot);
+
+	void setSavedVector(int memorySlot, Vector3 value);
+
 	boolean isDirty();
 
 	void markDirty(boolean isDirty);
+
+	NBTTagCompound serializeForSynchronization();
 }

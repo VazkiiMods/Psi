@@ -10,18 +10,25 @@
  */
 package vazkii.psi.common.core.handler.capability;
 
+import com.google.common.collect.Lists;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagDouble;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.common.util.Constants;
+import vazkii.psi.api.internal.Vector3;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.List;
 
 public class CADData implements ICapabilityProvider, ICADData {
 
 	private int time;
 	private int battery;
+	private List<Vector3> vectors = Lists.newArrayList();
 
 	private boolean dirty;
 
@@ -60,6 +67,23 @@ public class CADData implements ICapabilityProvider, ICADData {
 	}
 
 	@Override
+	public Vector3 getSavedVector(int memorySlot) {
+		if (vectors.size() <= memorySlot)
+			return Vector3.zero.copy();
+
+		Vector3 vec = vectors.get(memorySlot);
+		return vec == null ? null : vec.copy();
+	}
+
+	@Override
+	public void setSavedVector(int memorySlot, Vector3 value) {
+		while (vectors.size() <= memorySlot)
+			vectors.add(null);
+
+		vectors.set(memorySlot, value);
+	}
+
+	@Override
 	public boolean isDirty() {
 		return dirty;
 	}
@@ -70,10 +94,32 @@ public class CADData implements ICapabilityProvider, ICADData {
 	}
 
 	@Override
-	public NBTTagCompound serializeNBT() {
+	public NBTTagCompound serializeForSynchronization() {
 		NBTTagCompound compound = new NBTTagCompound();
 		compound.setInteger("Time", time);
 		compound.setInteger("Battery", battery);
+
+		return compound;
+	}
+
+	@Override
+	public NBTTagCompound serializeNBT() {
+		NBTTagCompound compound = serializeForSynchronization();
+
+		NBTTagList memory = new NBTTagList();
+		for (Vector3 vector : vectors) {
+			if (vector == null)
+				memory.appendTag(new NBTTagList());
+			else {
+				NBTTagList vec = new NBTTagList();
+				vec.appendTag(new NBTTagDouble(vector.x));
+				vec.appendTag(new NBTTagDouble(vector.y));
+				vec.appendTag(new NBTTagDouble(vector.z));
+				memory.appendTag(vec);
+			}
+		}
+		compound.setTag("Memory", memory);
+
 		return compound;
 	}
 
@@ -81,5 +127,16 @@ public class CADData implements ICapabilityProvider, ICADData {
 	public void deserializeNBT(NBTTagCompound nbt) {
 		time = nbt.getInteger("Time");
 		battery = nbt.getInteger("Battery");
+
+		NBTTagList memory = nbt.getTagList("Memory", Constants.NBT.TAG_LIST);
+		List<Vector3> newVectors = Lists.newArrayList();
+		for (int i = 0; i < memory.tagCount(); i++) {
+			NBTTagList vec = (NBTTagList) memory.get(i);
+			if (vec.getTagType() == Constants.NBT.TAG_DOUBLE && vec.tagCount() >= 3)
+				newVectors.add(new Vector3(vec.getDoubleAt(0), vec.getDoubleAt(1), vec.getDoubleAt(2)));
+			else
+				newVectors.add(null);
+		}
+		vectors = newVectors;
 	}
 }
