@@ -393,10 +393,16 @@ public class PlayerDataHandler {
 						} else {
 							ISocketable lastTickItem = (ISocketable) lastTickLoopcastStack.getItem();
 							ISocketable thisTickItem = (ISocketable) stackInHand.getItem();
-							ItemStack lastTick = lastTickItem.getBulletInSocket(lastTickLoopcastStack,
-									lastTickItem.getSelectedSlot(lastTickLoopcastStack));
-							ItemStack thisTick = thisTickItem.getBulletInSocket(stackInHand,
-									thisTickItem.getSelectedSlot(stackInHand));
+
+							int lastSlot = lastTickItem.getSelectedSlot(lastTickLoopcastStack);
+							int thisSlot = thisTickItem.getSelectedSlot(stackInHand);
+							if (lastSlot != thisSlot) {
+								stopLoopcast();
+								break loopcast;
+							}
+
+							ItemStack lastTick = lastTickItem.getBulletInSocket(lastTickLoopcastStack, lastSlot);
+							ItemStack thisTick = thisTickItem.getBulletInSocket(stackInHand, thisSlot);
 							if (!ItemStack.areItemStacksEqual(lastTick, thisTick)) {
 								stopLoopcast();
 								break loopcast;
