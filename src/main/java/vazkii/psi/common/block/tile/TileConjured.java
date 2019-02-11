@@ -117,7 +117,7 @@ public class TileConjured extends TileMod {
 	@Override
 	public void onLoad() {
 		if (time > 0) {
-			world.scheduleUpdate(pos, blockType, time);
+			world.scheduleUpdate(pos, world.getBlockState(pos).getBlock(), time);
 			time = -1;
 		}
 	}
