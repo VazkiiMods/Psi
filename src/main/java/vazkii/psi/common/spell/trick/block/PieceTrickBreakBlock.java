@@ -28,6 +28,7 @@ import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.param.ParamVector;
 import vazkii.psi.api.spell.piece.PieceTrick;
+import vazkii.psi.common.core.handler.ConfigHandler;
 
 public class PieceTrickBreakBlock extends PieceTrick {
 
@@ -118,14 +119,10 @@ public class PieceTrickBreakBlock extends PieceTrick {
 		if (state.getMaterial().isToolNotRequired())
 			return true;
 
-		String toolType = block.getHarvestTool(state);
-		if (tool.isEmpty() || toolType == null)
-			return player.canHarvestBlock(state);
+		if (tool.isEmpty()) return player.canHarvestBlock(state);
 
-		int toolLevel = tool.getItem().getHarvestLevel(tool, toolType, player, state);
-		if (toolLevel < 0)
-			return player.canHarvestBlock(state);
-
-		return toolLevel >= block.getHarvestLevel(state);
+		//The line below matches ItemCAD#getHarvestLevel().  Putting it in directly to prevent players from *literally* mining stuff with their exosuit (by hitting stuff with it in hand).
+		int toolLevel = ConfigHandler.cadHarvestLevel;
+		return net.minecraftforge.event.ForgeEventFactory.doPlayerHarvestCheck(player, state, toolLevel >= block.getHarvestLevel(state));
 }
 }
