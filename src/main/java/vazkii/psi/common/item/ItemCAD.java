@@ -538,24 +538,6 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 	}
 	
 	@Override
-	public int getHarvestLevel(ItemStack stack, @Nonnull String toolClass, @Nullable EntityPlayer player, @Nullable IBlockState blockState) {
-		return ConfigHandler.cadHarvestLevel;
-	}
-	
-	@Nonnull
-	@Override
-	public Set<String> getToolClasses(ItemStack stack) {
-		return ImmutableSet.of("pickaxe", "axe", "shovel");
-	}
-
-	@Override
-	public boolean canHarvestBlock(@Nonnull IBlockState state, ItemStack stack) {
-		Block block = state.getBlock();
-		int level = block.getHarvestLevel(state);
-		return getHarvestLevel(stack, "", null, null) >= level; 
-	}
-	
-	@Override
 	public void getSubItems(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> subItems) {
 		if(!isInCreativeTab(tab))
 			return;
