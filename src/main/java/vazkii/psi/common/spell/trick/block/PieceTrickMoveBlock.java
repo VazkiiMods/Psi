@@ -71,7 +71,7 @@ public class PieceTrickMoveBlock extends PieceTrick {
 		if(world.getTileEntity(pos) != null || state.getMobilityFlag() != EnumPushReaction.NORMAL ||
 				!block.canSilkHarvest(world, pos, state, context.caster) ||
 				state.getPlayerRelativeBlockHardness(context.caster, world, pos) <= 0 ||
-				!PieceTrickBreakBlock.canHarvestBlock(block, context.caster, world, pos, tool))
+				!PieceTrickBreakBlock.canHarvestBlock(block, context.caster, world, pos))
 			return null;
 		
 		BlockEvent.BreakEvent event = PieceTrickBreakBlock.createBreakEvent(state, context.caster, world, pos, tool);
