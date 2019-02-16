@@ -79,7 +79,7 @@ public class PieceTrickBreakBlock extends PieceTrick {
 		IBlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
 		if(!world.isRemote && !block.isAir(state, world, pos) && !(block instanceof BlockLiquid) && !(block instanceof IFluidBlock) && state.getPlayerRelativeBlockHardness(player, world, pos) > 0) {
-			if(!canHarvestBlock(block, player, world, pos))
+			if(!canHarvestBlock(block, player, world, pos, tool))
 				return;
 
 			BreakEvent event = createBreakEvent(state, player, world, pos, tool);
@@ -103,7 +103,7 @@ public class PieceTrickBreakBlock extends PieceTrick {
 	// Based on BreakEvent::new
 	public static BreakEvent createBreakEvent(IBlockState state, EntityPlayer player, World world, BlockPos pos, ItemStack tool) {
 		BreakEvent event = new BreakEvent(world, pos, state, player);
-		if (state == null || !canHarvestBlock(state.getBlock(), player, world, pos) ||
+		if (state == null || !canHarvestBlock(state.getBlock(), player, world, pos, tool) ||
 				(state.getBlock().canSilkHarvest(world, pos, world.getBlockState(pos), player) && EnchantmentHelper.getEnchantmentLevel(Enchantments.SILK_TOUCH, tool) > 0))
 			event.setExpToDrop(0);
 		else
@@ -114,9 +114,15 @@ public class PieceTrickBreakBlock extends PieceTrick {
 	}
 
 	// Based on ForgeHooks::canHarvestBlock
-	public static boolean canHarvestBlock(Block block, EntityPlayer player, World world, BlockPos pos) {
+	public static boolean canHarvestBlock(Block block, EntityPlayer player, World world, BlockPos pos, ItemStack tool) {
 		IBlockState state = world.getBlockState(pos).getActualState(world, pos);
+		if (state.getMaterial().isToolNotRequired())
+			return true;
 
-		return net.minecraftforge.event.ForgeEventFactory.doPlayerHarvestCheck(player, state, ConfigHandler.cadHarvestLevel >= block.getHarvestLevel(state));
+		if (tool.isEmpty()) return player.canHarvestBlock(state);
+
+		//The line below matches ItemCAD#getHarvestLevel().  Putting it in directly to prevent players from *literally* mining stuff with their exosuit (by hitting stuff with it in hand).
+		int toolLevel = ConfigHandler.cadHarvestLevel;
+		return net.minecraftforge.event.ForgeEventFactory.doPlayerHarvestCheck(player, state, toolLevel >= block.getHarvestLevel(state));
 }
 }
