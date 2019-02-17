@@ -12,6 +12,7 @@ buildscript {
 }
 
 apply plugin: 'net.minecraftforge.gradle.forge'
+apply plugin: 'maven-publish'
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
@@ -24,6 +25,10 @@ version = "${config.version}-${config.build_number}"
 group = "vazkii.psi" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = config.mod_name
 
+if (System.getenv().BUILD_NUMBER != null) {
+    version += ".${System.getenv().BUILD_NUMBER}"
+}
+
 repositories {
     maven {
         // for AutoRegLib
@@ -34,8 +39,8 @@ repositories {
 }
 
 dependencies {
-    compile "vazkii.autoreglib:AutoRegLib:${config.arl_version}"
-    compile "mezz.jei:jei_${config.mc_version}:${config.jei_version}:api"
+    deobfCompile "vazkii.autoreglib:AutoRegLib:${config.arl_version}"
+    compileOnly "mezz.jei:jei_${config.mc_version}:${config.jei_version}:api"
     runtime "mezz.jei:jei_${config.mc_version}:${config.jei_version}"
 }
 
@@ -130,7 +135,7 @@ task sortArtifacts(type: Copy) {
     //Put each jar with a classifier in a subfolder with the classifier as its name
     eachFile {
         //This matcher is used to get the classifier of the jar
-        def matcher = Pattern.compile(Pattern.quote("$config.mod_name-$version") + "-(?<classifier>\\w+).jar").matcher(it.name)
+        def matcher = Pattern.compile(Pattern.quote("$config.mod_name-$version") + "-(?<classifier>\\w+)\\.jar").matcher(it.name)
         //Only change the destination for full matches, i.e jars with classifiers
         if (matcher.matches())
         {
@@ -147,6 +152,32 @@ def parseConfig(File config) {
         def prop = new Properties()
         prop.load(it)
         return (new ConfigSlurper().parse(prop))
+    }
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId project.group
+            artifactId project.archivesBaseName
+            version project.version
+            from components.java
+
+            artifact apiJar
+            artifact srcJar
+            
+            pom.withXml {
+                if (asNode().get("dependencies").size() > 0) { 
+                    // Deobf deps are a bit broken on gradle 4.8+ with maven-publish, let's not put them there
+                    asNode().remove(asNode().get("dependencies"))
+                }
+            }
+        }
+    }
+    repositories {
+        maven {
+            url "file://" + System.getenv("local_maven")
+        }
     }
 }
 

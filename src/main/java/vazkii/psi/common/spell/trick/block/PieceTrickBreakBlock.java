@@ -16,11 +16,14 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Enchantments;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.world.BlockEvent.BreakEvent;
 import net.minecraftforge.fluids.IFluidBlock;
 import vazkii.psi.api.PsiAPI;
@@ -28,6 +31,7 @@ import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.param.ParamVector;
 import vazkii.psi.api.spell.piece.PieceTrick;
+import vazkii.psi.common.core.handler.ConfigHandler;
 
 public class PieceTrickBreakBlock extends PieceTrick {
 
@@ -109,20 +113,20 @@ public class PieceTrickBreakBlock extends PieceTrick {
 		return event;
 	}
 
-	// Based on ForgeHooks::canHarvestBlock
 	public static boolean canHarvestBlock(Block block, EntityPlayer player, World world, BlockPos pos, ItemStack tool) {
+		//General positive checks
 		IBlockState state = world.getBlockState(pos).getActualState(world, pos);
-		if (state.getMaterial().isToolNotRequired())
-			return true;
+		int reqLevel = block.getHarvestLevel(state);
+		Item toolItem = tool.getItem();
+		if (tool.canHarvestBlock(state) || state.getMaterial().isToolNotRequired() || ConfigHandler.cadHarvestLevel >= reqLevel) return ForgeEventFactory.doPlayerHarvestCheck(player, state, true);
 
-		String toolType = block.getHarvestTool(state);
-		if (tool.isEmpty() || toolType == null)
-			return player.canHarvestBlock(state);
+		//General negative checks
+		String reqTool = block.getHarvestTool(state);
+		if (toolItem == Items.AIR || reqTool == null) return false;
 
-		int toolLevel = tool.getItem().getHarvestLevel(tool, toolType, player, state);
-		if (toolLevel < 0)
-			return player.canHarvestBlock(state);
+		//Targeted tool check
+		if (toolItem.getHarvestLevel(tool, reqTool, player, state) >= reqLevel) return ForgeEventFactory.doPlayerHarvestCheck(player, state, true);
 
-		return toolLevel >= block.getHarvestLevel(state);
-}
+		return false;
+	}
 }
