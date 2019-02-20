@@ -22,6 +22,7 @@ import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModContainer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import vazkii.arl.util.RenderHelper;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.internal.TooltipHelper;
 import vazkii.psi.client.core.helper.PsiRenderHelper;
@@ -288,6 +289,22 @@ public abstract class SpellPiece {
 				Tessellator.getInstance().draw();
 			}
 		}
+	}
+
+	/**
+	 * Draws this piece's tooltip.
+	 */
+	@SideOnly(Side.CLIENT)
+	public void drawTooltip(int tooltipX, int tooltipY, List<String> tooltip) {
+		RenderHelper.renderTooltip(tooltipX, tooltipY, tooltip);
+	}
+
+	/**
+	 * Draws this piece's comment tooltip.
+	 */
+	@SideOnly(Side.CLIENT)
+	public void drawCommentText(int tooltipX, int tooltipY, List<String> commentText) {
+		RenderHelper.renderTooltipGreen(tooltipX, tooltipY - 9 - commentText.size() * 10, commentText);
 	}
 
 	@SideOnly(Side.CLIENT)
