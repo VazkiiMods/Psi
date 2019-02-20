@@ -25,7 +25,7 @@ import vazkii.psi.common.lib.LibPieceNames;
 public class ModCraftingRecipes {
 
 	public static void init() {
-		PsiAPI.registerTrickRecipe("", Items.REDSTONE, new ItemStack(ModItems.material), new ItemStack(ModItems.cadAssembly));
+		PsiAPI.registerTrickRecipe("", "dustRedstone", new ItemStack(ModItems.material), new ItemStack(ModItems.cadAssembly));
 
 		PsiAPI.registerTrickRecipe(LibPieceNames.TRICK_INFUSION, "ingotGold",
 				new ItemStack(ModItems.material, 1, 1), 
