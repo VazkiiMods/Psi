@@ -20,13 +20,13 @@ public abstract class SpellParam {
 
 	// Colors
 	// These are modifiable for a reason, but you still shouldn't do it
-	public static final int RED = 0xD22A2A;
-	public static final int GREEN = 0x3ED22A;
-	public static final int BLUE = 0x2A55D2;
-	public static final int PURPLE = 0x752AD2;
+	public static int RED = 0xD22A2A;
+	public static int GREEN = 0x3ED22A;
+	public static int BLUE = 0x2A55D2;
+	public static int PURPLE = 0x752AD2;
 	public static int CYAN = 0x2AD0D2;
-	public static final int YELLOW = 0xD2CC2A; // For entities
-	public static final int GRAY = 0x767676; // For connectors
+	public static int YELLOW = 0xD2CC2A; // For entities
+	public static int GRAY = 0x767676; // For connectors
 
 	public static final String PSI_PREFIX = "psi.spellparam.";
 
