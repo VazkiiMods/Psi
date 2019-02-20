@@ -33,12 +33,13 @@ public class ItemExosuitSensor extends ItemMod implements IExosuitSensor, IItemC
 			"exosuit_sensor_heat",
 			"exosuit_sensor_stress"
 	};
-	
-	public static final int lightColor = 0xFFEC13;
-	public static final int underwaterColor = 0x1350FF;
-	public static final int fireColor = 0xFF1E13;
-	public static final int lowHealthColor = 0xFF8CC5;
-	public static final int defaultColor = ICADColorizer.DEFAULT_SPELL_COLOR;
+
+	// This should be modifiable, for the purposes of cosmetic addons like Magical Psi.
+	public static int lightColor = 0xFFEC13;
+	public static int underwaterColor = 0x1350FF;
+	public static int fireColor = 0xFF1E13;
+	public static int lowHealthColor = 0xFF8CC5;
+	public static int defaultColor = ICADColorizer.DEFAULT_SPELL_COLOR;
 
 	public ItemExosuitSensor() {
 		super(LibItemNames.EXOSUIT_SENSOR, VARIANTS);

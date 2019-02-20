@@ -18,6 +18,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import vazkii.arl.util.ClientTicker;
 import vazkii.psi.common.core.handler.PersistencyHandler;
 import vazkii.psi.common.lib.LibMisc;
 
@@ -25,9 +26,22 @@ import vazkii.psi.common.lib.LibMisc;
 @Mod.EventBusSubscriber(value = Side.CLIENT, modid = LibMisc.MOD_ID)
 public class ClientTickHandler {
 
+	/**
+	 * @deprecated Use {@link vazkii.arl.util.ClientTicker#partialTicks}
+	 */
+	@Deprecated
+	public static float partialTicks;
+
+	@SuppressWarnings("deprecation")
+	private static void updatePartialTicks() {
+		partialTicks = ClientTicker.partialTicks;
+	}
+
 	@SubscribeEvent
 	public static void clientTickEnd(ClientTickEvent event) {
 		if(event.phase == Phase.END) {
+			updatePartialTicks();
+
 			Minecraft mc = Minecraft.getMinecraft();
 			if(mc.player != null)
 				PersistencyHandler.init();
