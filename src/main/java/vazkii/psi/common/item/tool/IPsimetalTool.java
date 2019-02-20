@@ -18,6 +18,8 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.oredict.OreDictionary;
+import org.apache.commons.lang3.ArrayUtils;
 import vazkii.arl.util.ItemNBTHelper;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ISocketable;
@@ -96,6 +98,10 @@ public interface IPsimetalTool extends ISocketable, ISpellSettable {
 				context.positionBroken = raytraceFromEntity(player.getEntityWorld(), player, false, player.getAttributeMap().getAttributeInstance(EntityPlayer.REACH_DISTANCE).getAttributeValue());
 			});
 		}
+	}
+
+	static boolean isRepairableBy(ItemStack stack) {
+		return ArrayUtils.contains(OreDictionary.getOreIDs(stack), OreDictionary.getOreID("ingotPsi"));
 	}
 
 	static RayTraceResult raytraceFromEntity(World world, Entity player, boolean stopOnLiquid, double range) {

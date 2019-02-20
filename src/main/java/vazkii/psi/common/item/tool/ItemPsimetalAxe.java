@@ -16,8 +16,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.oredict.OreDictionary;
-import org.apache.commons.lang3.ArrayUtils;
 import vazkii.arl.item.ItemMod;
 import vazkii.arl.item.ItemModAxe;
 import vazkii.psi.api.PsiAPI;
@@ -61,9 +59,8 @@ public class ItemPsimetalAxe extends ItemModAxe implements IPsimetalTool, IPsiIt
 	}
 
 	@Override
-	public boolean getIsRepairable(ItemStack par1ItemStack, @Nonnull ItemStack par2ItemStack) {
-		return ArrayUtils.contains(OreDictionary.getOreIDs(par1ItemStack), OreDictionary.getOreID("ingotPsi"))
-				|| super.getIsRepairable(par1ItemStack, par2ItemStack);
+	public boolean getIsRepairable(ItemStack thisStack, @Nonnull ItemStack material) {
+		return IPsimetalTool.isRepairableBy(material) || super.getIsRepairable(thisStack, material);
 	}
 	
 	@Override
