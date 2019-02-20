@@ -6,35 +6,69 @@
  * Psi is Open Source and distributed under the
  * Psi License: http://psi.vazkii.us/license.php
  *
- * File Created @ [06/02/2016, 20:16:28 (GMT)]
+ * File Created @ [06/02/2016, 20:09:22 (GMT)]
  */
 package vazkii.psi.common.item.tool;
 
-import com.google.common.collect.Sets;
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
+import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import vazkii.psi.common.lib.LibItemNames;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import net.minecraftforge.oredict.OreDictionary;
+import org.apache.commons.lang3.ArrayUtils;
+import vazkii.arl.item.ItemMod;
+import vazkii.arl.item.ItemModAxe;
+import vazkii.psi.api.PsiAPI;
+import vazkii.psi.api.cad.ISocketable;
+import vazkii.psi.common.core.PsiCreativeTab;
+import vazkii.psi.common.item.base.IPsiItem;
 
 import javax.annotation.Nonnull;
-import java.util.Set;
+import java.util.List;
 
-public class ItemPsimetalAxe extends ItemPsimetalTool {
+public class ItemPsimetalAxe extends ItemModAxe implements IPsimetalTool, IPsiItem {
 
-	private static final Set<Block> EFFECTIVE_ON = Sets.newHashSet(Blocks.PLANKS, Blocks.BOOKSHELF, Blocks.LOG, Blocks.LOG2, Blocks.CHEST, Blocks.PUMPKIN, Blocks.LIT_PUMPKIN, Blocks.MELON_BLOCK, Blocks.LADDER);
-
-	public ItemPsimetalAxe() {
-		super(LibItemNames.PSIMETAL_AXE, 6F, -3.1F, EFFECTIVE_ON);
-		setHarvestLevel("axe", 3);
+	public ItemPsimetalAxe(String name) {
+		super(name, PsiAPI.PSIMETAL_TOOL_MATERIAL, 8, -3);
+		setCreativeTab(PsiCreativeTab.INSTANCE);
 	}
 
-	// ItemAxe copypasta:
+	@Override
+	public boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, EntityPlayer player) {
+		super.onBlockStartBreak(itemstack, pos, player);
+
+		castOnBlockBreak(itemstack, player);
+
+		return false;
+	}
 
 	@Override
-	public float getDestroySpeed(@Nonnull ItemStack stack, IBlockState state) {
-		return state.getMaterial() != Material.WOOD && state.getMaterial() != Material.PLANTS && state.getMaterial() != Material.VINE ? super.getDestroySpeed(stack, state) : efficiency;
+	public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
+		IPsimetalTool.regen(stack, entityIn, isSelected);
+	}
+
+	@Override
+	public boolean shouldCauseReequipAnimation(ItemStack oldStack, @Nonnull ItemStack newStack, boolean slotChanged) {
+		return slotChanged;
+	}
+
+	@Override
+	public void addInformation(ItemStack stack, World playerIn, List<String> tooltip, ITooltipFlag advanced) {
+		String componentName = ItemMod.local(ISocketable.getSocketedItemName(stack, "psimisc.none"));
+		ItemMod.addToTooltip(tooltip, "psimisc.spellSelected", componentName);
+	}
+
+	@Override
+	public boolean getIsRepairable(ItemStack par1ItemStack, @Nonnull ItemStack par2ItemStack) {
+		return ArrayUtils.contains(OreDictionary.getOreIDs(par1ItemStack), OreDictionary.getOreID("ingotPsi"))
+				|| super.getIsRepairable(par1ItemStack, par2ItemStack);
+	}
+	
+	@Override
+	public boolean requiresSneakForSpellSet(ItemStack stack) {
+		return false;
 	}
 
 }
