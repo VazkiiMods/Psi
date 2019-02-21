@@ -6,41 +6,66 @@
  * Psi is Open Source and distributed under the
  * Psi License: http://psi.vazkii.us/license.php
  *
- * File Created @ [06/02/2016, 20:09:14 (GMT)]
+ * File Created @ [06/02/2016, 20:09:22 (GMT)]
  */
 package vazkii.psi.common.item.tool;
 
-import com.google.common.collect.Sets;
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
+import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import vazkii.psi.common.lib.LibItemNames;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import vazkii.arl.item.ItemMod;
+import vazkii.arl.item.ItemModPickaxe;
+import vazkii.psi.api.PsiAPI;
+import vazkii.psi.api.cad.ISocketable;
+import vazkii.psi.common.core.PsiCreativeTab;
+import vazkii.psi.common.item.base.IPsiItem;
 
 import javax.annotation.Nonnull;
-import java.util.Set;
+import java.util.List;
 
-public class ItemPsimetalPickaxe extends ItemPsimetalTool {
+public class ItemPsimetalPickaxe extends ItemModPickaxe implements IPsimetalTool, IPsiItem {
 
-	private static final Set<Block> EFFECTIVE_ON = Sets.newHashSet(Blocks.ACTIVATOR_RAIL, Blocks.COAL_ORE, Blocks.COBBLESTONE, Blocks.DETECTOR_RAIL, Blocks.DIAMOND_BLOCK, Blocks.DIAMOND_ORE, Blocks.DOUBLE_STONE_SLAB, Blocks.GOLDEN_RAIL, Blocks.GOLD_BLOCK, Blocks.GOLD_ORE, Blocks.ICE, Blocks.IRON_BLOCK, Blocks.IRON_ORE, Blocks.LAPIS_BLOCK, Blocks.LAPIS_ORE, Blocks.LIT_REDSTONE_ORE, Blocks.MOSSY_COBBLESTONE, Blocks.NETHERRACK, Blocks.PACKED_ICE, Blocks.RAIL, Blocks.REDSTONE_ORE, Blocks.SANDSTONE, Blocks.RED_SANDSTONE, Blocks.STONE, Blocks.STONE_SLAB);
-
-	public ItemPsimetalPickaxe() {
-		super(LibItemNames.PSIMETAL_PICKAXE, 1.0F, -2.8F, EFFECTIVE_ON);
-		setHarvestLevel("pickaxe", 3);
-	}
-
-	// ItemPickaxe copypasta:
-
-	@Override
-	public boolean canHarvestBlock(IBlockState state) {
-		Block blockIn = state.getBlock();
-		return blockIn == Blocks.OBSIDIAN ? toolMaterial.getHarvestLevel() == 3 : blockIn != Blocks.DIAMOND_BLOCK && blockIn != Blocks.DIAMOND_ORE ? blockIn != Blocks.EMERALD_ORE && blockIn != Blocks.EMERALD_BLOCK ? blockIn != Blocks.GOLD_BLOCK && blockIn != Blocks.GOLD_ORE ? blockIn != Blocks.IRON_BLOCK && blockIn != Blocks.IRON_ORE ? blockIn != Blocks.LAPIS_BLOCK && blockIn != Blocks.LAPIS_ORE ? blockIn != Blocks.REDSTONE_ORE && blockIn != Blocks.LIT_REDSTONE_ORE ? state.getMaterial() == Material.ROCK || (state.getMaterial() == Material.IRON || state.getMaterial() == Material.ANVIL) : toolMaterial.getHarvestLevel() >= 2 : toolMaterial.getHarvestLevel() >= 1 : toolMaterial.getHarvestLevel() >= 1 : toolMaterial.getHarvestLevel() >= 2 : toolMaterial.getHarvestLevel() >= 2 : toolMaterial.getHarvestLevel() >= 2;
+	public ItemPsimetalPickaxe(String name) {
+		super(name, PsiAPI.PSIMETAL_TOOL_MATERIAL);
+		setCreativeTab(PsiCreativeTab.INSTANCE);
 	}
 
 	@Override
-	public float getDestroySpeed(@Nonnull ItemStack stack, IBlockState state) {
-		return state.getMaterial() != Material.IRON && state.getMaterial() != Material.ANVIL && state.getMaterial() != Material.ROCK ? super.getDestroySpeed(stack, state) : efficiency;
+	public boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, EntityPlayer player) {
+		super.onBlockStartBreak(itemstack, pos, player);
+
+		castOnBlockBreak(itemstack, player);
+
+		return false;
+	}
+
+	@Override
+	public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
+		IPsimetalTool.regen(stack, entityIn, isSelected);
+	}
+
+	@Override
+	public boolean shouldCauseReequipAnimation(ItemStack oldStack, @Nonnull ItemStack newStack, boolean slotChanged) {
+		return slotChanged;
+	}
+
+	@Override
+	public void addInformation(ItemStack stack, World playerIn, List<String> tooltip, ITooltipFlag advanced) {
+		String componentName = ItemMod.local(ISocketable.getSocketedItemName(stack, "psimisc.none"));
+		ItemMod.addToTooltip(tooltip, "psimisc.spellSelected", componentName);
+	}
+
+	@Override
+	public boolean getIsRepairable(ItemStack thisStack, @Nonnull ItemStack material) {
+		return IPsimetalTool.isRepairableBy(material) || super.getIsRepairable(thisStack, material);
+	}
+	
+	@Override
+	public boolean requiresSneakForSpellSet(ItemStack stack) {
+		return false;
 	}
 
 }

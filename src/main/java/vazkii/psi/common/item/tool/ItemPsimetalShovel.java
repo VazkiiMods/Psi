@@ -6,49 +6,66 @@
  * Psi is Open Source and distributed under the
  * Psi License: http://psi.vazkii.us/license.php
  *
- * File Created @ [06/02/2016, 20:15:11 (GMT)]
+ * File Created @ [06/02/2016, 20:09:22 (GMT)]
  */
 package vazkii.psi.common.item.tool;
 
-import java.util.Set;
-
-import com.google.common.collect.Sets;
-
-import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import vazkii.psi.common.lib.LibItemNames;
+import vazkii.arl.item.ItemMod;
+import vazkii.arl.item.ItemModShovel;
+import vazkii.psi.api.PsiAPI;
+import vazkii.psi.api.cad.ISocketable;
+import vazkii.psi.common.core.PsiCreativeTab;
+import vazkii.psi.common.item.base.IPsiItem;
 
 import javax.annotation.Nonnull;
+import java.util.List;
 
-public class ItemPsimetalShovel extends ItemPsimetalTool {
+public class ItemPsimetalShovel extends ItemModShovel implements IPsimetalTool, IPsiItem {
 
-	private static final Set<Block> EFFECTIVE_ON = Sets.newHashSet(Blocks.CLAY, Blocks.DIRT, Blocks.FARMLAND, Blocks.GRASS, Blocks.GRAVEL, Blocks.MYCELIUM, Blocks.SAND, Blocks.SNOW, Blocks.SNOW_LAYER, Blocks.SOUL_SAND);
-
-	public ItemPsimetalShovel() {
-		super(LibItemNames.PSIMETAL_SHOVEL, 1.5F, -3.0F, EFFECTIVE_ON);
-		setHarvestLevel("shovel", 3);
+	public ItemPsimetalShovel(String name) {
+		super(name, PsiAPI.PSIMETAL_TOOL_MATERIAL);
+		setCreativeTab(PsiCreativeTab.INSTANCE);
 	}
 
-	// ItemSpade copypasta:
+	@Override
+	public boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, EntityPlayer player) {
+		super.onBlockStartBreak(itemstack, pos, player);
+
+		castOnBlockBreak(itemstack, player);
+
+		return false;
+	}
 
 	@Override
-	public boolean canHarvestBlock(IBlockState state) {
-		Block blockIn = state.getBlock();
-		return blockIn == Blocks.SNOW_LAYER || blockIn == Blocks.SNOW;
+	public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
+		IPsimetalTool.regen(stack, entityIn, isSelected);
+	}
+
+	@Override
+	public boolean shouldCauseReequipAnimation(ItemStack oldStack, @Nonnull ItemStack newStack, boolean slotChanged) {
+		return slotChanged;
+	}
+
+	@Override
+	public void addInformation(ItemStack stack, World playerIn, List<String> tooltip, ITooltipFlag advanced) {
+		String componentName = ItemMod.local(ISocketable.getSocketedItemName(stack, "psimisc.none"));
+		ItemMod.addToTooltip(tooltip, "psimisc.spellSelected", componentName);
+	}
+
+	@Override
+	public boolean getIsRepairable(ItemStack thisStack, @Nonnull ItemStack material) {
+		return IPsimetalTool.isRepairableBy(material) || super.getIsRepairable(thisStack, material);
 	}
 	
-	@Nonnull
 	@Override
-    public EnumActionResult onItemUse(EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-    	return Items.IRON_SHOVEL.onItemUse(playerIn, worldIn, pos, hand, facing, hitX, hitY, hitZ);
-    }
-	
+	public boolean requiresSneakForSpellSet(ItemStack stack) {
+		return false;
+	}
+
 }

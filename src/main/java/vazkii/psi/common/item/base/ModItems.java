@@ -13,10 +13,7 @@ package vazkii.psi.common.item.base;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
-import vazkii.arl.item.ItemMod;
-import vazkii.arl.item.ItemModArmor;
-import vazkii.arl.item.ItemModSword;
-import vazkii.arl.item.ItemModTool;
+import vazkii.arl.item.*;
 import vazkii.psi.common.item.ItemCAD;
 import vazkii.psi.common.item.ItemDetonator;
 import vazkii.psi.common.item.ItemExosuitController;
@@ -38,6 +35,7 @@ import vazkii.psi.common.item.tool.ItemPsimetalAxe;
 import vazkii.psi.common.item.tool.ItemPsimetalPickaxe;
 import vazkii.psi.common.item.tool.ItemPsimetalShovel;
 import vazkii.psi.common.item.tool.ItemPsimetalSword;
+import vazkii.psi.common.lib.LibItemNames;
 
 public final class ModItems {
 
@@ -57,9 +55,9 @@ public final class ModItems {
 
 	public static ItemMod cad;
 
-	public static ItemModTool psimetalShovel;
-	public static ItemModTool psimetalPickaxe;
-	public static ItemModTool psimetalAxe;
+	public static ItemModShovel psimetalShovel;
+	public static ItemModPickaxe psimetalPickaxe;
+	public static ItemModAxe psimetalAxe;
 	public static ItemModSword psimetalSword;
 	public static ItemModArmor psimetalExosuitHelmet;
 	public static ItemModArmor psimetalExosuitChestplate;
@@ -83,9 +81,9 @@ public final class ModItems {
 		
 		cad = new ItemCAD();
 
-		psimetalShovel = new ItemPsimetalShovel();
-		psimetalPickaxe = new ItemPsimetalPickaxe();
-		psimetalAxe = new ItemPsimetalAxe();
+		psimetalShovel = new ItemPsimetalShovel(LibItemNames.PSIMETAL_SHOVEL);
+		psimetalPickaxe = new ItemPsimetalPickaxe(LibItemNames.PSIMETAL_PICKAXE);
+		psimetalAxe = new ItemPsimetalAxe(LibItemNames.PSIMETAL_AXE);
 		psimetalSword = new ItemPsimetalSword();
 		psimetalExosuitHelmet = new ItemPsimetalExosuitHelmet();
 		psimetalExosuitChestplate = new ItemPsimetalExosuitChestplate();

@@ -28,7 +28,6 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import vazkii.arl.network.NetworkHandler;
-import vazkii.arl.util.RenderHelper;
 import vazkii.arl.util.TooltipHandler;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.EnumCADStat;
@@ -202,10 +201,9 @@ public class GuiProgrammer extends GuiScreen {
 		}
 		mc.getTextureManager().bindTexture(texture);
 
-		SpellMetadata meta = null;
 		if(!compiler.isErrored()) {
 			int i = 0;
-			meta = compiler.getCompiledSpell().metadata;
+			SpellMetadata meta = compiler.getCompiledSpell().metadata;
 
 			for(EnumSpellStat stat : meta.stats.keySet()) {
 				int statX = left + xSize + 3;
@@ -312,12 +310,11 @@ public class GuiProgrammer extends GuiScreen {
 			tooltipX = gridLeft + cursorX * 18 + 10;
 			tooltipY = gridTop + cursorY * 18 + 8;
 		}
-		
+
 		if(cursorX != -1 && cursorY != -1) {
-			SpellPiece pieceAt = programmer.spell.grid.gridData[cursorX][cursorY];
-			if(pieceAt != null) {
-				pieceAt.getTooltip(tooltip);
-				comment = pieceAt.comment;
+			if(piece != null) {
+				piece.getTooltip(tooltip);
+				comment = piece.comment;
 			}
 
 			if(!takingScreenshot) {
@@ -362,7 +359,6 @@ public class GuiProgrammer extends GuiScreen {
 
 			drawRect(panelX, panelY, panelX + panelWidth, panelY + panelHeight, 0x88000000);
 
-			int len = panelButtons.size();
 			if(panelButtons.size() > 0) {
 				GuiButton button = panelButtons.get(Math.max(0, Math.min(panelCursor, panelButtons.size() - 1)));
 				int panelPieceX = button.x;
@@ -412,13 +408,14 @@ public class GuiProgrammer extends GuiScreen {
 		if(isAltKeyDown())
 			tooltip = legitTooltip;
 
-		if(!takingScreenshot) {
-			if(tooltip != null && !tooltip.isEmpty())
-				RenderHelper.renderTooltip(tooltipX, tooltipY, tooltip);
-			
-			if(comment != null && !comment.isEmpty()) {
+		if(!takingScreenshot && piece != null) {
+			if (tooltip != null && !tooltip.isEmpty())
+				piece.drawTooltip(tooltipX, tooltipY, tooltip);
+
+
+			if (comment != null && !comment.isEmpty()) {
 				List<String> l = Arrays.asList(comment.split(";"));
-				RenderHelper.renderTooltipGreen(tooltipX, tooltipY - 9 - l.size() * 10, l);
+				piece.drawCommentText(tooltipX, tooltipY, l);
 			}
 		}
 

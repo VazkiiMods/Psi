@@ -24,13 +24,13 @@ import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
 import vazkii.psi.common.item.ItemCAD;
-import vazkii.psi.common.item.base.ModItems;
+import vazkii.psi.common.item.base.IPsiItem;
 import vazkii.psi.common.lib.LibItemNames;
 
 import javax.annotation.Nonnull;
 import java.util.List;
 
-public class ItemPsimetalSword extends ItemModSword implements IPsimetalTool {
+public class ItemPsimetalSword extends ItemModSword implements IPsimetalTool, IPsiItem {
 
 	public ItemPsimetalSword() {
 		super(LibItemNames.PSIMETAL_SWORD, PsiAPI.PSIMETAL_TOOL_MATERIAL);
@@ -61,7 +61,7 @@ public class ItemPsimetalSword extends ItemModSword implements IPsimetalTool {
 
 	@Override
 	public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
-		ItemPsimetalTool.regen(stack, entityIn, isSelected);
+		IPsimetalTool.regen(stack, entityIn, isSelected);
 	}
 	
 	@Override
@@ -71,8 +71,8 @@ public class ItemPsimetalSword extends ItemModSword implements IPsimetalTool {
 	}
 
 	@Override
-	public boolean getIsRepairable(ItemStack par1ItemStack, @Nonnull ItemStack par2ItemStack) {
-		return par2ItemStack.getItem() == ModItems.material && par2ItemStack.getItemDamage() == 1 || super.getIsRepairable(par1ItemStack, par2ItemStack);
+	public boolean getIsRepairable(ItemStack thisStack, @Nonnull ItemStack material) {
+		return IPsimetalTool.isRepairableBy(material) || super.getIsRepairable(thisStack, material);
 	}
 	
 	@Override
