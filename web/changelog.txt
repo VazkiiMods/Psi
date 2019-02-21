@@ -1,3 +1,16 @@
+r1.1-71
+*Added a special case regarding batteries that have -1 overflow (WireSegal)
+*CADs can no longer be used as literal pickaxes (Laike-Endaril)
+*Cleaned up unnecessary remote checks (WireSegal)
+*Fixed a bug regarding loopcasting visuals (WireSegal)
+*Fixed a bug regarding the loopcast sync packet only working on the client's side (WireSegal)
+*Fixed eidos being "jittery" and causing "wrong movement issues" (WireSegal)
+*Loopcasts now end even when switching between identical bullets (WireSegal)
+*Removed unnecessary colour allocations (WireSegal)
+*Restricted spell casting to serverside only. (WireSegal)
+*Trick: Break Block now accounts for many more edge cases regarding the mining level (Laike-Endaril)
+*[API] Added generic redirection
+*[API] Move saved vectors to CAD data instead of Player data (WireSegal)
 r1.1-70
 *Fixed a crash that would happen sometimes when a player would delay a spell. (WireSegal) 
 *Fixed the tutorial not working prperly again, hopefully. (WireSegal)
