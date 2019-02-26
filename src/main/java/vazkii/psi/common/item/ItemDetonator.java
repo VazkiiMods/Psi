@@ -10,8 +10,6 @@
  */
 package vazkii.psi.common.item;
 
-import java.util.List;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
@@ -27,6 +25,9 @@ import vazkii.psi.common.item.base.IPsiItem;
 import vazkii.psi.common.lib.LibItemNames;
 
 import javax.annotation.Nonnull;
+import java.util.List;
+
+import static vazkii.psi.api.spell.SpellContext.MAX_DISTANCE;
 
 public class ItemDetonator extends ItemMod implements IPsiItem {
 
@@ -40,7 +41,9 @@ public class ItemDetonator extends ItemMod implements IPsiItem {
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, @Nonnull EnumHand hand) {
 		ItemStack itemStackIn = playerIn.getHeldItem(hand);
-		List<EntitySpellCharge> charges = worldIn.getEntitiesWithinAABB(EntitySpellCharge.class, playerIn.getEntityBoundingBox().grow(32, 32, 32));
+		List<EntitySpellCharge> charges = worldIn.getEntitiesWithinAABB(EntitySpellCharge.class,
+				playerIn.getEntityBoundingBox().grow(MAX_DISTANCE),
+				entity -> entity != null && entity.getDistanceSq(playerIn) <= MAX_DISTANCE * MAX_DISTANCE);
 		if(!charges.isEmpty())
 			for(EntitySpellCharge c : charges)
 				c.doExplosion();
