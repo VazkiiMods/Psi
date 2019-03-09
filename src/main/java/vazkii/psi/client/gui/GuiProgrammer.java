@@ -312,9 +312,10 @@ public class GuiProgrammer extends GuiScreen {
 		}
 
 		if(cursorX != -1 && cursorY != -1) {
-			if(piece != null) {
-				piece.getTooltip(tooltip);
-				comment = piece.comment;
+            SpellPiece pieceAt = programmer.spell.grid.gridData[cursorX][cursorY];
+            if (pieceAt != null) {
+                pieceAt.getTooltip(tooltip);
+                comment = pieceAt.comment;
 			}
 
 			if(!takingScreenshot) {
@@ -408,16 +409,48 @@ public class GuiProgrammer extends GuiScreen {
 		if(isAltKeyDown())
 			tooltip = legitTooltip;
 
-		if(!takingScreenshot && piece != null) {
-			if (tooltip != null && !tooltip.isEmpty())
-				piece.drawTooltip(tooltipX, tooltipY, tooltip);
+        if (!takingScreenshot) {
+            if (piece != null) {
+                if (tooltip != null && !tooltip.isEmpty())
+                    piece.drawTooltip(tooltipX, tooltipY, tooltip);
 
 
-			if (comment != null && !comment.isEmpty()) {
-				List<String> l = Arrays.asList(comment.split(";"));
-				piece.drawCommentText(tooltipX, tooltipY, l);
-			}
-		}
+                if (comment != null && !comment.isEmpty()) {
+                    List<String> l = Arrays.asList(comment.split(";"));
+                    piece.drawCommentText(tooltipX, tooltipY, l);
+                }
+            } else {
+
+                if (panelEnabled && panelButtons.size() > 0) {
+                    for (GuiButton butn : panelButtons) {
+                        if (butn.isMouseOver() && butn instanceof GuiButtonSpellPiece) {
+                            SpellPiece hoverpiece = ((GuiButtonSpellPiece) butn).piece.copy();
+                            if (tooltip != null && !tooltip.isEmpty())
+                                hoverpiece.drawTooltip(tooltipX, tooltipY, tooltip);
+
+
+                            if (comment != null && !comment.isEmpty()) {
+                                List<String> l = Arrays.asList(comment.split(";"));
+                                hoverpiece.drawCommentText(tooltipX, tooltipY, l);
+                            }
+                        }
+                    }
+                } else if (cursorX != -1 && cursorY != -1) {
+                    SpellPiece pieceAt = programmer.spell.grid.gridData[cursorX][cursorY];
+                    if (pieceAt != null) {
+                        if (tooltip != null && !tooltip.isEmpty())
+                            pieceAt.drawTooltip(tooltipX, tooltipY, tooltip);
+
+                        if (comment != null && !comment.isEmpty()) {
+                            List<String> l = Arrays.asList(comment.split(";"));
+                            pieceAt.drawCommentText(tooltipX, tooltipY, l);
+                        }
+                    }
+                }
+
+            }
+        }
+
 
 		GlStateManager.popMatrix();
 		
@@ -437,7 +470,8 @@ public class GuiProgrammer extends GuiScreen {
 		}
 	}
 
-	@Override
+
+    @Override
 	public void handleMouseInput() throws IOException {
 		super.handleMouseInput();
 
