@@ -889,22 +889,17 @@ public class GuiProgrammer extends GuiScreen {
 			}
 		}
 
-		if(visiblePieces.isEmpty()) {
-			try {
-				String text = searchField.getText();
-				if(!text.isEmpty() && text.length() < 5 && !text.matches(".*[FDfd].*")) {
-					Double.parseDouble(text);
-					SpellPiece p = SpellPiece.create(PieceConstantNumber.class, spell);
-					((PieceConstantNumber) p).valueStr = text;
-					visiblePieces.add(p);
-				}
-			} catch(NumberFormatException ignored) {}
-		}
-
 		Comparator<SpellPiece> comparator = Comparator.comparingInt((p) -> rankings.get(p.getClass()));
 		comparator = comparator.thenComparing(SpellPiece::getSortingName);
 
 		visiblePieces.sort(comparator);
+
+		String text = searchField.getText();
+		if(!text.isEmpty() && text.length() < 5 && (text.matches("\\d+(?:.\\d*)") || text.matches("\\d*(?:.\\d+)"))) {
+			SpellPiece p = SpellPiece.create(PieceConstantNumber.class, spell);
+			((PieceConstantNumber) p).valueStr = text;
+			visiblePieces.add(0, p);
+		}
 
 		int start = page * PIECES_PER_PAGE;
 
