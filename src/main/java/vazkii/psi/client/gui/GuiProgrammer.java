@@ -875,6 +875,10 @@ public class GuiProgrammer extends GuiScreen {
 
 		TObjectIntMap<Class<? extends SpellPiece>> rankings = new TObjectIntHashMap<>();
 
+
+		String text = searchField.getText().toLowerCase().trim();
+		boolean noSearchTerms = text.isEmpty();
+
 		for(String key : PsiAPI.spellPieceRegistry.getKeys()) {
 			Class<? extends SpellPiece> clazz = PsiAPI.spellPieceRegistry.getObject(key);
 			PieceGroup group = PsiAPI.groupsForPiece.get(clazz);
@@ -882,19 +886,23 @@ public class GuiProgrammer extends GuiScreen {
 				continue;
 
 			SpellPiece p = SpellPiece.create(clazz, spell);
-			int rank = ranking(p);
-			if (rank > 0) {
-				rankings.put(clazz, rank);
+
+			if (noSearchTerms)
 				p.getShownPieces(visiblePieces);
+			else {
+				int rank = ranking(text, p);
+				if (rank > 0) {
+					rankings.put(clazz, rank);
+					p.getShownPieces(visiblePieces);
+				}
 			}
 		}
 
 		Comparator<SpellPiece> comparator = Comparator.comparingInt((p) -> rankings.get(p.getClass()));
-		comparator = comparator.thenComparing(SpellPiece::getSortingName);
+		if (!noSearchTerms)
+			comparator = comparator.thenComparing(SpellPiece::getSortingName);
 
 		visiblePieces.sort(comparator);
-
-		String text = searchField.getText();
 		if(!text.isEmpty() && text.length() < 5 && (text.matches("\\d+(?:.\\d*)") || text.matches("\\d*(?:.\\d+)"))) {
 			SpellPiece p = SpellPiece.create(PieceConstantNumber.class, spell);
 			((PieceConstantNumber) p).valueStr = text;
@@ -924,14 +932,15 @@ public class GuiProgrammer extends GuiScreen {
 	/**
 	 * If a piece has a ranking of <= 0, it's excluded from the search.
 	 */
-	private int ranking(SpellPiece p) {
-		String searchToken = searchField.getText().toLowerCase();
-
+	private int ranking(String token, SpellPiece p) {
 		int rank = 0;
 		String name = I18n.format(p.getUnlocalizedName()).toLowerCase();
 		String desc = I18n.format(p.getUnlocalizedDesc()).toLowerCase();
 
-		for (String nameToken : searchToken.split("\\s+")) {
+		for (String nameToken : token.split("\\s+")) {
+			if (nameToken.isEmpty())
+				continue;
+
 			if (nameToken.startsWith("in:")) {
 				String clippedToken = nameToken.substring(3);
 				if (clippedToken.isEmpty())
