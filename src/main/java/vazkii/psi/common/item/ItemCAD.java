@@ -25,7 +25,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.*;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -289,7 +288,9 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 		if (player.world.isRemote)
 			return false;
 
-		List<EntityItem> items = player.getEntityWorld().getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(player.posX - 8, player.posY - 8, player.posZ - 8, player.posX + 8, player.posY + 8, player.posZ + 8));
+		List<EntityItem> items = player.getEntityWorld().getEntitiesWithinAABB(EntityItem.class,
+				player.getEntityBoundingBox().grow(8),
+				entity -> entity != null && entity.getDistance(player) <= 8 * 8);
 
 		boolean did = false;
 		for(EntityItem item : items) {
