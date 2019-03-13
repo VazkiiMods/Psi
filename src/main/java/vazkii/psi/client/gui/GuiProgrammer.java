@@ -11,6 +11,8 @@
 package vazkii.psi.client.gui;
 
 import com.google.common.collect.ImmutableSet;
+import gnu.trove.map.TObjectIntMap;
+import gnu.trove.map.hash.TObjectIntHashMap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -53,7 +55,6 @@ import vazkii.psi.common.spell.constant.PieceConstantNumber;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -874,6 +875,9 @@ public class GuiProgrammer extends GuiScreen {
 		visiblePieces.clear();
 
 		PlayerData data = PlayerDataHandler.get(mc.player);
+
+		TObjectIntMap<Class<? extends SpellPiece>> rankings = new TObjectIntHashMap<>();
+
 		for(String key : PsiAPI.spellPieceRegistry.getKeys()) {
 			Class<? extends SpellPiece> clazz = PsiAPI.spellPieceRegistry.getObject(key);
 			PieceGroup group = PsiAPI.groupsForPiece.get(clazz);
@@ -881,8 +885,11 @@ public class GuiProgrammer extends GuiScreen {
 				continue;
 
 			SpellPiece p = SpellPiece.create(clazz, spell);
-			if(shouldShow(p))
+			int rank = ranking(p);
+			if (rank > 0) {
+				rankings.put(clazz, rank);
 				p.getShownPieces(visiblePieces);
+			}
 		}
 
 		if(visiblePieces.isEmpty()) {
@@ -897,7 +904,10 @@ public class GuiProgrammer extends GuiScreen {
 			} catch(NumberFormatException ignored) {}
 		}
 
-		visiblePieces.sort(Comparator.comparing(SpellPiece::getSortingName));
+		Comparator<SpellPiece> comparator = Comparator.comparingInt((p) -> rankings.get(p.getClass()));
+		comparator = comparator.thenComparing(SpellPiece::getSortingName);
+
+		visiblePieces.sort(comparator);
 
 		int start = page * PIECES_PER_PAGE;
 
@@ -919,51 +929,78 @@ public class GuiProgrammer extends GuiScreen {
 		buttonList.addAll(panelButtons);
 	}
 
-	private boolean shouldShow(SpellPiece p) {
+	/**
+	 * If a piece has a ranking of <= 0, it's excluded from the search.
+	 */
+	private int ranking(SpellPiece p) {
 		String searchToken = searchField.getText().toLowerCase();
-		String nameToken = searchToken;
 
-		Matcher inMatcher = inPattern.matcher(searchToken);
-		Matcher outMatcher = outPattern.matcher(searchToken);
+		int rank = 0;
+		String name = I18n.format(p.getUnlocalizedName()).toLowerCase();
+		String desc = I18n.format(p.getUnlocalizedDesc()).toLowerCase();
 
-		if(inMatcher.matches()) {
-			String in = inMatcher.group(1);
-			boolean hasIn = false;
-			for(SpellParam param : p.params.values()) {
-				String type = param.getRequiredTypeString().toLowerCase();
-				if(type.contains(in))
-					hasIn = true;
+		for (String nameToken : searchToken.split("\\s+")) {
+			if (nameToken.startsWith("in:")) {
+				String clippedToken = nameToken.substring(3);
+				int maxRank = 0;
+				for(SpellParam param : p.params.values()) {
+					String type = param.getRequiredTypeString().toLowerCase();
+					maxRank = Math.max(maxRank, rankTextToken(type, clippedToken));
+				}
+
+				rank += maxRank;
+			} else if (nameToken.startsWith("out:")) {
+				String clippedToken = nameToken.substring(4);
+				String type = p.getEvaluationTypeString().toLowerCase();
+
+				rank += rankTextToken(type, clippedToken);
+			} else if (nameToken.startsWith("@")) {
+				String clippedToken = nameToken.substring(1);
+				String mod = PsiAPI.pieceMods.get(p.getClass());
+				if (mod != null) {
+					int modRank = rankTextToken(mod, clippedToken);
+					if (modRank <= 0)
+						return 0;
+					rank += modRank;
+				} else
+					return 0;
+			} else
+				rank += rankTextToken(name, nameToken) + rankTextToken(desc, nameToken) / 2;
+		}
+
+		return rank;
+	}
+
+	private int rankTextToken(String haystack, String token) {
+		if(token.startsWith("_")) {
+			String clippedToken = token.substring(1);
+			if (haystack.endsWith(clippedToken)) {
+				if (!Character.isLetterOrDigit(haystack.charAt(haystack.length() - clippedToken.length() - 1)))
+					return clippedToken.length() * 2;
+				return clippedToken.length();
 			}
+		} else if (token.endsWith("_")) {
+			String clippedToken = token.substring(0, token.length() - 1);
+			if (haystack.startsWith(clippedToken)) {
+				if (!Character.isLetterOrDigit(haystack.charAt(clippedToken.length() + 1)))
+					return clippedToken.length() * 2;
+				return clippedToken.length();
+			}
+		} else {
+			int idx = haystack.indexOf(token);
+			if (idx >= 0) {
+				int multiplier = 2;
+				if (idx == 0 || !Character.isLetterOrDigit(haystack.charAt(idx - 1)))
+					multiplier++;
+				if (idx + token.length() >= haystack.length() ||
+						!Character.isLetterOrDigit(haystack.charAt(idx + haystack.length() + 1)))
+					multiplier++;
 
-			if(!hasIn)
-				return false;
-
-			nameToken = inMatcher.group(2);
-		} else if(outMatcher.matches()) {
-			String out = outMatcher.group(1);
-
-			String type = p.getEvaluationTypeString().toLowerCase();
-			if(!type.contains(out))
-				return false;
-
-			nameToken = outMatcher.group(2);
-		}
-		
-		String haystack = I18n.format(p.getUnlocalizedName()).toLowerCase(); 
-		Predicate<String> pred = haystack::contains;
-		
-		if(nameToken == null)
-			nameToken = "";
-		
-		if(nameToken.startsWith("_")) {
-			nameToken = nameToken.substring(1);
-			pred = haystack::endsWith;
-		} else if(nameToken.endsWith("_")) {
-			nameToken = nameToken.substring(0, nameToken.length() - 1);
-			pred = haystack::startsWith;
+				return token.length() * multiplier / 2;
+			}
 		}
 
-		return pred.test(nameToken);
+		return 0;
 	}
 
 	private int getPageCount() {

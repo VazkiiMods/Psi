@@ -248,6 +248,7 @@ psi.programmerReference18=  Accepting Type: &bin:(type)
 psi.programmerReference19=  Outputting Type: &bout:(type)
 psi.programmerReference20=  Name Begins With: &b(name)_
 psi.programmerReference21=  Name Ends With: &b_(name)
+psi.programmerReference22=  From Mod: &b@(name)
 
 # SPELl PIECE NAMES
 # -- SELECTORS
