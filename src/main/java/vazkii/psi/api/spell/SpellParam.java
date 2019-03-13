@@ -122,16 +122,6 @@ public abstract class SpellParam {
 			this.v = v;
 		}
 
-		public Side getOpposite() {
-			switch(this) {
-			case TOP: return BOTTOM;
-			case BOTTOM: return TOP;
-			case LEFT: return RIGHT;
-			case RIGHT: return LEFT;
-			default: return OFF;
-			}
-		}
-
 		public boolean isEnabled() {
 			return this != OFF;
 		}
@@ -142,6 +132,37 @@ public abstract class SpellParam {
 
 		public static Side fromInt(int i) {
 			return Side.class.getEnumConstants()[i];
+		}
+
+		public Side getOpposite() {
+			return mapSides(BOTTOM, TOP, RIGHT, LEFT);
+		}
+
+		public Side mirrorVertical() {
+			return mapSides(BOTTOM, TOP, LEFT, RIGHT);
+		}
+
+		public Side rotateCW() {
+			return mapSides(LEFT, RIGHT, BOTTOM, TOP);
+		}
+
+		public Side rotateCCW() {
+			return mapSides(RIGHT, LEFT, TOP, BOTTOM);
+		}
+
+		private Side mapSides(Side whenUp, Side whenDown, Side whenL, Side whenR) {
+			switch (this) {
+				case TOP:
+					return whenUp;
+				case BOTTOM:
+					return whenDown;
+				case LEFT:
+					return whenL;
+				case RIGHT:
+					return whenR;
+				default:
+					return OFF;
+			}
 		}
 	}
 

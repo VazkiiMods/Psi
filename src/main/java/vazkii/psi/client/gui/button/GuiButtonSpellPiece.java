@@ -30,9 +30,9 @@ public class GuiButtonSpellPiece extends GuiButton {
 	}
 
 	@Override
-	public void drawButton(@Nonnull Minecraft par1Minecraft, int par2, int par3, float pticks) {
+	public void drawButton(@Nonnull Minecraft minecraft, int mouseX, int mouseY, float partialTicks) {
 		if(enabled && visible) {
-			hovered = par2 >= x && par3 >= y && par2 < x + width && par3 < y + height;
+			hovered = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
 			int i = getHoverState(hovered);
 
 			GlStateManager.pushMatrix();
@@ -40,6 +40,11 @@ public class GuiButtonSpellPiece extends GuiButton {
 			GlStateManager.translate(x, y, 0);
 			piece.draw();
 			GlStateManager.popMatrix();
+
+			minecraft.getTextureManager().bindTexture(GuiProgrammer.texture);
+
+			if (i == 2)
+				drawTexturedModalRect(x, y, 16, gui.ySize, 16, 16);
 
 			if(i == 2)
 				piece.getTooltip(gui.tooltip);

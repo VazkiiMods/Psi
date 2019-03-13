@@ -35,6 +35,7 @@ public final class SpellGrid {
 	private static final String TAG_SPELL_DATA = "data";
 
 	public static final int GRID_SIZE = 9;
+	public static final int GRID_CENTER = (GRID_SIZE - 1) / 2;
 
 	public final Spell spell;
 	public SpellPiece[][] gridData;
@@ -90,6 +91,65 @@ public final class SpellGrid {
 		return Math.max(rightmost - leftmost + 1, bottommost - topmost + 1);
 	}
 
+	public void mirrorVertical() {
+		recalculateBoundaries();
+		if (empty)
+			return;
+
+		SpellPiece[][] newGrid = new SpellPiece[GRID_SIZE][GRID_SIZE];
+
+		for(int i = 0; i < GRID_SIZE; i++) {
+			for (int j = 0; j < GRID_SIZE; j++) {
+				SpellPiece p = gridData[i][j];
+
+				if (p != null) {
+					int newY = GRID_SIZE - j - 1;
+
+					newGrid[i][newY] = p;
+					p.y = newY;
+
+					for (SpellParam param : p.paramSides.keySet())
+						p.paramSides.put(param, p.paramSides.get(param).mirrorVertical());
+				}
+			}
+		}
+
+		gridData = newGrid;
+	}
+
+	public void rotate(boolean ccw) {
+		recalculateBoundaries();
+		if (empty)
+			return;
+
+		int xMod = ccw ? -1 : 1;
+		int yMod = ccw ? 1 : -1;
+
+		SpellPiece[][] newGrid = new SpellPiece[GRID_SIZE][GRID_SIZE];
+
+		for(int i = 0; i < GRID_SIZE; i++) {
+			for (int j = 0; j < GRID_SIZE; j++) {
+				SpellPiece p = gridData[i][j];
+
+				if (p != null) {
+					int newX = xMod * (j - GRID_CENTER) + GRID_CENTER;
+					int newY = yMod * (i - GRID_CENTER) + GRID_CENTER;
+
+					newGrid[newX][newY] = p;
+					p.x = newX;
+					p.y = newY;
+
+					for (SpellParam param : p.paramSides.keySet()) {
+						SpellParam.Side side = p.paramSides.get(param);
+						p.paramSides.put(param, ccw ? side.rotateCCW() : side.rotateCW());
+					}
+				}
+			}
+		}
+
+		gridData = newGrid;
+	}
+
 	public boolean shift(SpellParam.Side side, boolean doit) {
 		recalculateBoundaries();
 
@@ -102,18 +162,19 @@ public final class SpellGrid {
 
 			SpellPiece[][] newGrid = new SpellPiece[GRID_SIZE][GRID_SIZE];
 
-			for(int i = 0; i < GRID_SIZE; i++)
-				for(int j = 0; j < GRID_SIZE; j++) {
+			for(int i = 0; i < GRID_SIZE; i++) {
+				for (int j = 0; j < GRID_SIZE; j++) {
 					SpellPiece p = gridData[i][j];
 
-					if(p != null) {
-						int newx = i + side.offx;
-						int newy = j + side.offy;
-						newGrid[newx][newy] = p;
-						p.x = newx;
-						p.y = newy;
+					if (p != null) {
+						int newX = i + side.offx;
+						int newY = j + side.offy;
+						newGrid[newX][newY] = p;
+						p.x = newX;
+						p.y = newY;
 					}
 				}
+			}
 
 			gridData = newGrid;
 			return true;
