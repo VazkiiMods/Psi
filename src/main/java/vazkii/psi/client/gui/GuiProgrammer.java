@@ -63,9 +63,6 @@ public class GuiProgrammer extends GuiScreen {
 	public static final ResourceLocation texture = new ResourceLocation(LibResources.GUI_PROGRAMMER);
 	private static final int PIECES_PER_PAGE = 25;
 
-	private static final Pattern inPattern = Pattern.compile("^in:(\\w+)(?:\\s?(.*))?$");
-	private static final Pattern outPattern = Pattern.compile("^out:(\\w+)(?:\\s(.*))?$");
-
 	public final TileProgrammer programmer;
 	public Spell spell;
 	public List<String> tooltip = new ArrayList<>();
@@ -942,6 +939,9 @@ public class GuiProgrammer extends GuiScreen {
 		for (String nameToken : searchToken.split("\\s+")) {
 			if (nameToken.startsWith("in:")) {
 				String clippedToken = nameToken.substring(3);
+				if (clippedToken.isEmpty())
+					continue;
+
 				int maxRank = 0;
 				for(SpellParam param : p.params.values()) {
 					String type = param.getRequiredTypeString().toLowerCase();
@@ -951,11 +951,17 @@ public class GuiProgrammer extends GuiScreen {
 				rank += maxRank;
 			} else if (nameToken.startsWith("out:")) {
 				String clippedToken = nameToken.substring(4);
+				if (clippedToken.isEmpty())
+					continue;
+
 				String type = p.getEvaluationTypeString().toLowerCase();
 
 				rank += rankTextToken(type, clippedToken);
 			} else if (nameToken.startsWith("@")) {
 				String clippedToken = nameToken.substring(1);
+				if (clippedToken.isEmpty())
+					continue;
+
 				String mod = PsiAPI.pieceMods.get(p.getClass());
 				if (mod != null) {
 					int modRank = rankTextToken(mod, clippedToken);
@@ -972,8 +978,13 @@ public class GuiProgrammer extends GuiScreen {
 	}
 
 	private int rankTextToken(String haystack, String token) {
+		if (token.isEmpty())
+			return 0;
+
 		if(token.startsWith("_")) {
 			String clippedToken = token.substring(1);
+			if (clippedToken.isEmpty())
+				return 0;
 			if (haystack.endsWith(clippedToken)) {
 				if (!Character.isLetterOrDigit(haystack.charAt(haystack.length() - clippedToken.length() - 1)))
 					return clippedToken.length() * 2;
@@ -981,6 +992,8 @@ public class GuiProgrammer extends GuiScreen {
 			}
 		} else if (token.endsWith("_")) {
 			String clippedToken = token.substring(0, token.length() - 1);
+			if (clippedToken.isEmpty())
+				return 0;
 			if (haystack.startsWith(clippedToken)) {
 				if (!Character.isLetterOrDigit(haystack.charAt(clippedToken.length() + 1)))
 					return clippedToken.length() * 2;
