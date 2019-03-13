@@ -1000,6 +1000,9 @@ public class GuiProgrammer extends GuiScreen {
 				return clippedToken.length();
 			}
 		} else {
+			if (token.startsWith("has:"))
+				token = token.substring(4);
+
 			int idx = haystack.indexOf(token);
 			if (idx >= 0) {
 				int multiplier = 2;
