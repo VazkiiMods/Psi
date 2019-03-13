@@ -24,13 +24,17 @@ public class PieceTrickInfusion extends PieceTrick {
 	@Override
 	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
 		super.addToMetadata(meta);
+		addPotencyAndCost(meta);
+	}
 
+	protected void addPotencyAndCost(SpellMetadata meta) {
 		meta.addStat(EnumSpellStat.POTENCY, 100);
 		meta.addStat(EnumSpellStat.COST, 1200);
 	}
 
 	@Override
 	public Object execute(SpellContext context) {
+		ItemCAD.craft(context.caster, "dustRedstone", new ItemStack(ModItems.material));
 		ItemCAD.craft(context.caster, "ingotGold", new ItemStack(ModItems.material, 1, 1));
 		return null;
 	}

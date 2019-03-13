@@ -12,25 +12,23 @@ package vazkii.psi.common.spell.trick.infusion;
 
 import net.minecraft.item.ItemStack;
 import vazkii.psi.api.spell.*;
-import vazkii.psi.api.spell.piece.PieceTrick;
 import vazkii.psi.common.item.ItemCAD;
 import vazkii.psi.common.item.base.ModItems;
 
-public class PieceTrickGreaterInfusion extends PieceTrick {
+public class PieceTrickGreaterInfusion extends PieceTrickInfusion {
 	public PieceTrickGreaterInfusion(Spell spell) {
 		super(spell);
 	}
 
 	@Override
-	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
-		super.addToMetadata(meta);
-
+	protected void addPotencyAndCost(SpellMetadata meta) {
 		meta.addStat(EnumSpellStat.POTENCY, 250);
 		meta.addStat(EnumSpellStat.COST, 2600);
 	}
 
 	@Override
 	public Object execute(SpellContext context) {
+		super.execute(context);
 		ItemCAD.craft(context.caster, "gemDiamond", new ItemStack(ModItems.material, 1, 2));
 		return null;
 	}

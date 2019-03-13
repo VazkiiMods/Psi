@@ -14,25 +14,23 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.WorldProviderEnd;
 import vazkii.psi.api.spell.*;
-import vazkii.psi.api.spell.piece.PieceTrick;
 import vazkii.psi.common.item.ItemCAD;
 import vazkii.psi.common.item.base.ModItems;
 
-public class PieceTrickEbonyIvory extends PieceTrick {
+public class PieceTrickEbonyIvory extends PieceTrickGreaterInfusion {
 	public PieceTrickEbonyIvory(Spell spell) {
 		super(spell);
 	}
 
 	@Override
-	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
-		super.addToMetadata(meta);
-
+	protected void addPotencyAndCost(SpellMetadata meta) {
 		meta.addStat(EnumSpellStat.POTENCY, 250);
-		meta.addStat(EnumSpellStat.COST, 2600);
+		meta.addStat(EnumSpellStat.COST, 3000);
 	}
 
 	@Override
 	public Object execute(SpellContext context) {
+		super.execute(context);
 		if(context.caster.getEntityWorld().provider instanceof WorldProviderEnd) {
 			ItemCAD.craft(context.caster, new ItemStack(Items.COAL), new ItemStack(ModItems.material, 1, 5));
 			ItemCAD.craft(context.caster, "gemQuartz", new ItemStack(ModItems.material, 1, 6));
