@@ -50,6 +50,11 @@ public class DummyPlayerData implements IPlayerData {
 	}
 
 	@Override
+	public boolean isOverflowed() {
+		return false;
+	}
+
+	@Override
 	public void deductPsi(int psi, int cd, boolean sync, boolean shatter) {
 		// NO-OP
 	}

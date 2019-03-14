@@ -50,6 +50,12 @@ public interface IPlayerData {
 	int getRegenPerTick();
 
 	/**
+	 * Gets whether or not the player is currently unable to cast spells
+	 * due to overdrawing Psi energy.
+	 */
+	boolean isOverflowed();
+
+	/**
 	 * Deducts the amount of psi given from the player's psi energy.
 	 * This will not check against the available amount. Any extra will be either
 	 * deducted from the player's CAD battery, or deducted as damage.

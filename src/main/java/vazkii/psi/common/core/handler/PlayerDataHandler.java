@@ -36,6 +36,7 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
@@ -51,10 +52,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import vazkii.arl.network.NetworkHandler;
 import vazkii.arl.util.ClientTicker;
 import vazkii.psi.api.PsiAPI;
-import vazkii.psi.api.cad.EnumCADStat;
-import vazkii.psi.api.cad.ICAD;
-import vazkii.psi.api.cad.ICADColorizer;
-import vazkii.psi.api.cad.ISocketable;
+import vazkii.psi.api.cad.*;
 import vazkii.psi.api.exosuit.IPsiEventArmor;
 import vazkii.psi.api.exosuit.PsiArmorEvent;
 import vazkii.psi.api.internal.IPlayerData;
@@ -332,33 +330,34 @@ public class PlayerDataHandler {
 				availablePsi = max;
 
 			ItemStack cadStack = getCAD();
-			if(regenCooldown == 0) {
-				boolean doRegen = true;
-				if(!cadStack.isEmpty()) {
+
+			RegenPsiEvent event = new RegenPsiEvent(player, this, cadStack);
+			if (regenCooldown == 0)
+				event.applyNaturalRegen();
+
+			if (!MinecraftForge.EVENT_BUS.post(event)) {
+				if (!cadStack.isEmpty()) {
 					ICAD cad = (ICAD) cadStack.getItem();
-					int maxPsi = cad.getStatValue(cadStack, EnumCADStat.OVERFLOW);
-					int currPsi = cad.getStoredPsi(cadStack);
-					if(currPsi < maxPsi) {
-						cad.regenPsi(cadStack, Math.max(1, getRegenPerTick() / 2));
-						doRegen = false;
-					}
+					cad.regenPsi(cadStack, event.getCadPsi());
 				}
 
-				if(doRegen && regenCooldown == 0) {
-					if(availablePsi < max) {
-						availablePsi = Math.min(max, availablePsi + getRegenPerTick());
-						save();
-					} else {
-						boolean was = overflowed;
-						overflowed = false;
-						if(was)
-							save();
-					}
-					
+				boolean anyChange = false;
+
+				if (availablePsi != max && event.getPlayerRegen() > 0)
+					anyChange = true;
+				availablePsi = Math.min(max, availablePsi + event.getPlayerRegen());
+
+				if (overflowed && event.willHealOverflow()) {
+					anyChange = true;
+					overflowed = false;
 				}
-			} else {
-				regenCooldown--;
-				save();
+
+				if (regenCooldown != event.getRegenCooldown())
+					anyChange = true;
+				regenCooldown = event.getRegenCooldown();
+
+				if (anyChange)
+					save();
 			}
 
 			cadStack = getCAD();
@@ -751,6 +750,11 @@ public class PlayerDataHandler {
 		@Override
 		public int getRegenPerTick() {
 			return regen;
+		}
+
+		@Override
+		public boolean isOverflowed() {
+			return overflowed;
 		}
 
 		@Override
