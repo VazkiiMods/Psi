@@ -1001,7 +1001,7 @@ public class GuiProgrammer extends GuiScreen {
 				return 0;
 			if (haystack.endsWith(clippedToken)) {
 				if (!Character.isLetterOrDigit(haystack.charAt(haystack.length() - clippedToken.length() - 1)))
-					return clippedToken.length() * 2;
+					return clippedToken.length() * 3 / 2;
 				return clippedToken.length();
 			}
 		} else if (token.endsWith("_")) {
@@ -1021,7 +1021,7 @@ public class GuiProgrammer extends GuiScreen {
 			if (idx >= 0) {
 				int multiplier = 2;
 				if (idx == 0 || !Character.isLetterOrDigit(haystack.charAt(idx - 1)))
-					multiplier++;
+					multiplier += 2;
 				if (idx + token.length() + 1 >= haystack.length() ||
 						!Character.isLetterOrDigit(haystack.charAt(idx + token.length() + 1)))
 					multiplier++;
