@@ -4,6 +4,7 @@ r1.1-73
 *Infusion tricks now can infuse all of the materials up to their tier. Ebony and Ivory is slightly more expensive to accommodate this.
 *Search is now sorted by relevance, instead of just by what order things are registered in.
 *Infusion tricks now act in a sphere, instead of a cube.
+*Fix odd motion behavior when adding motion to a player or an entity a player is controlling.
 *[API] Added PsiRegenEvent
 r1.1-72
 *Added some hooks for addons to do stuff. (WireSegal)
