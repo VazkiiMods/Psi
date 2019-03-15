@@ -819,7 +819,7 @@ public class GuiProgrammer extends GuiScreen {
 					try {
 						cb = cb.replaceAll("([^a-z0-9])\\d+:", "$1"); // backwards compatibility with pre 1.12 nbt json
 						NBTTagCompound cmp = JsonToNBT.getTagFromJson(cb);
-						Spell spell = Spell.createFromNBT(cmp);
+						spell = Spell.createFromNBT(cmp);
 						PlayerData data = PlayerDataHandler.get(mc.player);
 						for(int i = 0; i < SpellGrid.GRID_SIZE; i++)
 							for(int j = 0; j < SpellGrid.GRID_SIZE; j++) {
@@ -898,12 +898,18 @@ public class GuiProgrammer extends GuiScreen {
 			}
 		}
 
-		Comparator<SpellPiece> comparator = Comparator.comparingInt((p) -> rankings.get(p.getClass()));
-		if (!noSearchTerms)
+		Comparator<SpellPiece> comparator;
+
+		if (noSearchTerms)
+			comparator = Comparator.comparing(SpellPiece::getSortingName);
+		else {
+			comparator = Comparator.comparingInt((p) -> -rankings.get(p.getClass()));
 			comparator = comparator.thenComparing(SpellPiece::getSortingName);
+		}
+
 
 		visiblePieces.sort(comparator);
-		if(!text.isEmpty() && text.length() < 5 && (text.matches("\\d+(?:.\\d*)") || text.matches("\\d*(?:.\\d+)"))) {
+		if(!text.isEmpty() && text.length() <= 5 && (text.matches("\\d+(?:\\.\\d*)?") || text.matches("\\d*(?:\\.\\d+)?"))) {
 			SpellPiece p = SpellPiece.create(PieceConstantNumber.class, spell);
 			((PieceConstantNumber) p).valueStr = text;
 			visiblePieces.add(0, p);
@@ -974,8 +980,12 @@ public class GuiProgrammer extends GuiScreen {
 					rank += modRank;
 				} else
 					return 0;
-			} else
-				rank += rankTextToken(name, nameToken) + rankTextToken(desc, nameToken) / 2;
+			} else {
+				int nameRank = rankTextToken(name, nameToken);
+				rank += nameRank;
+				if (nameRank == 0)
+					rank += rankTextToken(desc, nameToken) / 2;
+			}
 		}
 
 		return rank;
@@ -1012,8 +1022,8 @@ public class GuiProgrammer extends GuiScreen {
 				int multiplier = 2;
 				if (idx == 0 || !Character.isLetterOrDigit(haystack.charAt(idx - 1)))
 					multiplier++;
-				if (idx + token.length() >= haystack.length() ||
-						!Character.isLetterOrDigit(haystack.charAt(idx + haystack.length() + 1)))
+				if (idx + token.length() + 1 >= haystack.length() ||
+						!Character.isLetterOrDigit(haystack.charAt(idx + token.length() + 1)))
 					multiplier++;
 
 				return token.length() * multiplier / 2;

@@ -23,6 +23,7 @@ import vazkii.psi.api.spell.param.ParamEntity;
 import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.param.ParamVector;
 import vazkii.psi.api.spell.piece.PieceTrick;
+import vazkii.psi.common.core.handler.AdditiveMotionHandler;
 
 public class PieceTrickAddMotion extends PieceTrick {
 
@@ -74,23 +75,24 @@ public class PieceTrickAddMotion extends PieceTrick {
 		dir = dir.copy().normalize().multiply(MULTIPLIER * speed);
 
 		String key = "psi:Entity" + e.getEntityId() + "Motion";
-		boolean added = false;
+
+		double x = 0;
+		double y = 0;
+		double z = 0;
 		
 		if(Math.abs(dir.x) > 0.0001) {
 			String keyv = key + "X";
 			if(!context.customData.containsKey(keyv)) {
-				e.motionX += dir.x;
+				x += dir.x;
 				context.customData.put(keyv, 0);
-				added = true;
 			}
 		}
 
 		if(Math.abs(dir.y) > 0.0001) {
 			String keyv = key + "Y";
 			if(!context.customData.containsKey(keyv)) {
-				e.motionY += dir.y;
+				y += dir.y;
 				context.customData.put(keyv, 0);
-				added = true;
 			}
 			
 			if(e.motionY >= 0)
@@ -100,14 +102,12 @@ public class PieceTrickAddMotion extends PieceTrick {
 		if(Math.abs(dir.z) > 0.0001) {
 			String keyv = key + "Z";
 			if(!context.customData.containsKey(keyv)) {
-				e.motionZ += dir.z;
+				z += dir.z;
 				context.customData.put(keyv, 0);
-				added = true;
 			}
 		}
-		
-		if(added)
-			e.velocityChanged = true;
+
+		AdditiveMotionHandler.addMotion(e, x, y, z);
 	}
 
 }
