@@ -1,3 +1,15 @@
+r1.1-73
+*Detonators now detonate in a sphere.
+*Entire spells can now be rotated and mirrored with a single keybind. Glorious!
+*Infusion tricks now can infuse all of the materials up to their tier. Ebony and Ivory is slightly more expensive to accommodate this.
+*Search is now sorted by relevance, instead of just by what order things are registered in.
+*Infusion tricks now act in a sphere, instead of a cube.
+*[API] Added PsiRegenEvent
+r1.1-72
+*Added some hooks for addons to do stuff. (WireSegal)
+*Added some more checks to prevent desync. (WireSegal)
+*Allow crafting Psidust with any oredicted redstone dust. (WireSegal)
+*Fixed crashing with Magical Psi. You'll need an updated Magical Psi version too. (WireSegal)
 r1.1-71
 *Added a special case regarding batteries that have -1 overflow (WireSegal)
 *CADs can no longer be used as literal pickaxes (Laike-Endaril)
