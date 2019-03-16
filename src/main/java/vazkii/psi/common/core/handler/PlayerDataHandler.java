@@ -331,36 +331,16 @@ public class PlayerDataHandler {
 
 			ItemStack cadStack = getCAD();
 
-			RegenPsiEvent event = new RegenPsiEvent(player, this, cadStack);
-			if (regenCooldown == 0)
-				event.applyNaturalRegen();
+			if (!cadStack.isEmpty()) {
+				ICAD cad = (ICAD) cadStack.getItem();
+				int overflow = cad.getStatValue(cadStack, EnumCADStat.OVERFLOW);
+				if (overflow == -1)
+					availablePsi = max;
+				else
+					applyRegen(player, max, cadStack);
+			} else
+				applyRegen(player, max, cadStack);
 
-			if (!MinecraftForge.EVENT_BUS.post(event)) {
-				if (!cadStack.isEmpty()) {
-					ICAD cad = (ICAD) cadStack.getItem();
-					cad.regenPsi(cadStack, event.getCadPsi());
-				}
-
-				boolean anyChange = false;
-
-				if (availablePsi != max && event.getPlayerRegen() > 0)
-					anyChange = true;
-				availablePsi = Math.min(max, availablePsi + event.getPlayerRegen());
-
-				if (overflowed && event.willHealOverflow()) {
-					anyChange = true;
-					overflowed = false;
-				}
-
-				if (regenCooldown != event.getRegenCooldown())
-					anyChange = true;
-				regenCooldown = event.getRegenCooldown();
-
-				if (anyChange)
-					save();
-			}
-
-			cadStack = getCAD();
 			int color = ICADColorizer.DEFAULT_SPELL_COLOR;
 
 			if(!cadStack.isEmpty())
@@ -574,6 +554,35 @@ public class PlayerDataHandler {
 			deductions.removeAll(remove);
 			
 			lastDimension = dimension;
+		}
+
+		private void applyRegen(EntityPlayer player, int max, ItemStack cadStack) {
+			RegenPsiEvent event = new RegenPsiEvent(player, this, cadStack);
+
+			if (!MinecraftForge.EVENT_BUS.post(event)) {
+				if (!cadStack.isEmpty()) {
+					ICAD cad = (ICAD) cadStack.getItem();
+					cad.regenPsi(cadStack, event.getCadPsi());
+				}
+
+				boolean anyChange = false;
+
+				if (availablePsi != max && event.getPlayerRegen() > 0)
+					anyChange = true;
+				availablePsi = Math.min(max, availablePsi + event.getPlayerRegen());
+
+				if (overflowed && event.willHealOverflow()) {
+					anyChange = true;
+					overflowed = false;
+				}
+
+				if (regenCooldown != event.getRegenCooldown())
+					anyChange = true;
+				regenCooldown = event.getRegenCooldown();
+
+				if (anyChange)
+					save();
+			}
 		}
 
 		public void validate() {

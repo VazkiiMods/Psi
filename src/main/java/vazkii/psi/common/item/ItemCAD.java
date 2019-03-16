@@ -468,6 +468,9 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 	@Override
 	public void regenPsi(ItemStack stack, int psi) {
 		int maxPsi = getStatValue(stack, EnumCADStat.OVERFLOW);
+		if (maxPsi == -1)
+			return;
+
 		int currPsi = getStoredPsi(stack);
 		int endPsi = Math.min(currPsi + psi, maxPsi);
 

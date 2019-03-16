@@ -23,15 +23,20 @@ public class RegenPsiEvent extends Event {
     private final int playerPsi;
     private final int cadPsiCapacity;
     private final int cadPsi;
-    private final int regenRate;
     private final boolean wasOverflowed;
     private final EntityPlayer player;
     private final IPlayerData playerData;
     private final ItemStack cad;
     private final int previousRegenCooldown;
+    private final int baseRegenRate;
 
     // Cannot be set externally.
+    private int regenRate;
     private int cadRegenCost = 0;
+
+    private boolean regenCadFirst = true;
+    private int maxPlayerRegen = -1;
+    private int maxCadRegen = -1;
 
     private int playerRegen = 0;
     private int cadRegen = 0;
@@ -42,7 +47,7 @@ public class RegenPsiEvent extends Event {
     public RegenPsiEvent(EntityPlayer player, IPlayerData playerData, ItemStack cad) {
         this.playerPsiCapacity = playerData.getTotalPsi();
         this.playerPsi = playerData.getAvailablePsi();
-        this.regenRate = playerData.getRegenPerTick();
+        this.regenRate = this.baseRegenRate = playerData.getRegenPerTick();
         this.wasOverflowed = playerData.isOverflowed();
         this.previousRegenCooldown = playerData.getRegenCooldown();
         this.regenCooldown = Math.max(0, this.previousRegenCooldown - 1);
@@ -57,6 +62,8 @@ public class RegenPsiEvent extends Event {
         this.player = player;
         this.playerData = playerData;
         this.cad = cad;
+
+        applyRegen();
     }
 
     public EntityPlayer getPlayer() {
@@ -103,10 +110,17 @@ public class RegenPsiEvent extends Event {
     }
 
     /**
-     * Gets the current base Psi regen rate the player has.
+     * Gets the current Psi regen rate the player has, modified by events.
      */
     public int getRegenRate() {
         return regenRate;
+    }
+
+    /**
+     * Gets the current base Psi regen rate the player has.
+     */
+    public int getBaseRegenRate() {
+        return baseRegenRate;
     }
 
     /**
@@ -118,7 +132,6 @@ public class RegenPsiEvent extends Event {
 
     /**
      * Gets whether the player was overflowed before regen started.
-     * @see #healOverflow(boolean)
      */
     public boolean wasOverflowed() {
         return wasOverflowed;
@@ -133,26 +146,11 @@ public class RegenPsiEvent extends Event {
     }
 
     /**
-     * Sets the amount of Psi the player's reserves will regenerate this tick.
-     */
-    public void setPlayerRegen(int playerRegen) {
-        this.playerRegen = playerRegen;
-    }
-
-    /**
      * Gets the amount of Psi the CAD's reserves will regenerate this tick.
      * If the CAD has no battery, this value has no effect.
      */
     public int getCadRegen() {
         return cadRegen;
-    }
-
-    /**
-     * Sets the amount of Psi the CAD's reserves will regenerate this tick.
-     * If the CAD has no battery, this value has no effect.
-     */
-    public void setCadRegen(int cadRegen) {
-        this.cadRegen = cadRegen;
     }
 
     /**
@@ -174,13 +172,6 @@ public class RegenPsiEvent extends Event {
     }
 
     /**
-     * Sets whether the player will heal from overflow this tick.
-     */
-    public void healOverflow(boolean healOverflow) {
-        this.healOverflow = healOverflow;
-    }
-
-    /**
      * Gets the player's current regen cooldown.
      */
     public int getRegenCooldown() {
@@ -189,37 +180,118 @@ public class RegenPsiEvent extends Event {
 
     /**
      * Sets the player's current regen cooldown.
-     * Note that setting this value to 0 will not automatically regenerate Psi this tick.
-     * @see #applyNaturalRegen()
+     * Setting this value to 0 will calculate Psi regeneration this tick.
      */
     public void setRegenCooldown(int regenCooldown) {
         this.regenCooldown = regenCooldown;
+        applyRegen();
     }
 
     /**
-     * Applies the default logic for regeneration.
-     * If regen is not on cooldown, this method is called before the event is fired.
-     * <p>
-     * The logic is as follows:
-     * If the CAD has missing Psi, attempt to fill that.
-     * If the player has missing Psi, attempt to fill that.
-     * If there is any regeneration remaining, heal from overflow.
+     * Adds extra regen, applying the default logic for regeneration.
+     * Call this for simple regen modifiers.
      */
-    public void applyNaturalRegen() {
-        int regenLeft = regenRate;
-
-        cadRegenCost = Math.min(regenLeft, (cadPsiCapacity - cadPsi) * 2);
-        if (cadRegenCost > 0) {
-            cadRegen += Math.min(Math.max(1, cadRegenCost / 2), cadPsiCapacity - cadPsi);
-            regenLeft -= cadRegenCost;
-        }
-
-        if (regenLeft > 0 && playerPsi < playerPsiCapacity) {
-            playerRegen += Math.max(playerPsiCapacity - playerPsi, regenLeft);
-            regenLeft -= playerRegen;
-        }
-
-        if (regenLeft > 0)
-            healOverflow = true;
+    public void addRegen(int amount) {
+        regenRate += amount;
+        applyRegen();
     }
+
+    /**
+     * Subtracts regen, applying the default logic for regeneration in reverse order.
+     * Call this for simple regen modifiers.
+     *
+     * If the new regen rate is below zero, it will not change the Psi values.
+     */
+    public void removeRegen(int amount) {
+        regenRate -= amount;
+        applyRegen();
+    }
+
+    /**
+     * The maximum amount the player is allowed to regenerate Psi this tick.
+     * Defaults to -1, which implies no limit.
+     */
+    public int getMaxPlayerRegen() {
+        return maxPlayerRegen;
+    }
+
+    /**
+     * Sets the maximum amount the player is allowed to regenerate Psi this tick.
+     */
+    public void setMaxPlayerRegen(int maxPlayerRegen) {
+        this.maxPlayerRegen = maxPlayerRegen;
+        applyRegen();
+    }
+
+    /**
+     * The maximum amount the CAD battery is allowed to regenerate Psi this tick.
+     * Defaults to -1, which implies infinity.
+     */
+    public int getMaxCadRegen() {
+        return maxCadRegen;
+    }
+
+    /**
+     * Sets the maximum amount the CAD battery is allowed to regenerate Psi this tick.
+     */
+    public void setMaxCadRegen(int maxCadRegen) {
+        this.maxCadRegen = maxCadRegen;
+        applyRegen();
+    }
+
+	/**
+	 * Whether CAD or player regeneration is calculated first.
+	 */
+    public boolean willRegenCadFirst() {
+        return regenCadFirst;
+    }
+
+	/**
+	 * Sets whether CAD or player regeneration is calculated first.
+	 */
+    public void regenCadFirst(boolean regenCadFirst) {
+        this.regenCadFirst = regenCadFirst;
+        applyRegen();
+    }
+
+	private void applyRegen() {
+		if (regenCooldown != 0)
+			return;
+
+		int regenLeft = regenRate;
+
+		if (regenCadFirst) regenLeft = applyCadRegen(regenLeft);
+		regenLeft = applyPlayerRegen(regenLeft);
+		if (!regenCadFirst) applyCadRegen(regenLeft);
+	}
+
+	private int applyPlayerRegen(int regenLeft) {
+		if (regenLeft > 0 && playerPsi < playerPsiCapacity) {
+			int playerRegenTotal = Math.max(playerPsiCapacity - playerPsi, regenLeft);
+			if (maxPlayerRegen >= 0)
+				playerRegenTotal = Math.min(maxPlayerRegen, playerRegenTotal);
+			playerRegen = playerRegenTotal;
+			regenLeft -= playerRegenTotal;
+		} else
+			playerRegen = 0;
+
+		healOverflow = regenLeft > 0;
+		if (healOverflow && wasOverflowed)
+			regenLeft--;
+
+		return regenLeft;
+	}
+
+	private int applyCadRegen(int regenLeft) {
+		int cadRegenTotal = Math.min(maxCadRegen, cadPsiCapacity - cadPsi);
+		if (maxCadRegen >= 0)
+			cadRegenTotal = Math.min(maxCadRegen, cadRegenTotal);
+		cadRegenCost = Math.min(regenLeft, cadRegenTotal * 2);
+		if (cadRegenCost > 0) {
+			cadRegen = Math.min(Math.max(1, cadRegenCost / 2), cadPsiCapacity - cadPsi);
+			regenLeft -= cadRegenCost;
+		} else
+			cadRegen = 0;
+		return regenLeft;
+	}
 }
