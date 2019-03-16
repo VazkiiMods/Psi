@@ -137,6 +137,8 @@ public class GuiSocketSelect extends GuiScreen {
 		for(int seg = 0; seg < segments; seg++) {
 			boolean mouseInSector = degPer * seg < angle && angle < degPer * (seg + 1);
 			float radius = Math.max(0F, Math.min((timeIn + partialTicks - seg * 6F / segments) * 40F, maxRadius));
+			if (mouseInSector)
+				radius *= 1.025f;
 
 			int gs = 0x40;
 			if(seg % 2 == 0)
@@ -158,10 +160,11 @@ public class GuiSocketSelect extends GuiScreen {
 					r = PsiRenderHelper.r(color);
 					g = PsiRenderHelper.g(color);
 					b = PsiRenderHelper.b(color);
-				}
+				} else
+					r = g = b = 0xFF;
 			}
 
-			for(float i = 0; i < degPer + step; i += step) {
+			for(float i = 0; i < degPer + step / 2; i += step) {
 				float rad = i + seg * degPer;
 				float xp = x + MathHelper.cos(rad) * radius;
 				float yp = y + MathHelper.sin(rad) * radius;
@@ -179,6 +182,9 @@ public class GuiSocketSelect extends GuiScreen {
 		for(int seg = 0; seg < segments; seg++) {
 			boolean mouseInSector = degPer * seg < angle && angle < degPer * (seg + 1);
 			float radius = Math.max(0F, Math.min((timeIn + partialTicks - seg * 6F / segments) * 40F, maxRadius));
+			if (mouseInSector)
+				radius *= 1.025f;
+
 			float rad = (seg + 0.5f) * degPer;
 			float xp = x + MathHelper.cos(rad) * radius;
 			float yp = y + MathHelper.sin(rad) * radius;
