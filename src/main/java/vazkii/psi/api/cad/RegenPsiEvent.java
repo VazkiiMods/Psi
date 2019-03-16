@@ -258,6 +258,10 @@ public class RegenPsiEvent extends Event {
 		if (regenCooldown != 0)
 			return;
 
+		cadRegenCost = 0;
+		cadRegen = 0;
+		playerRegen = 0;
+
 		int regenLeft = regenRate;
 
 		if (regenCadFirst) regenLeft = applyCadRegen(regenLeft);
@@ -266,10 +270,11 @@ public class RegenPsiEvent extends Event {
 	}
 
 	private int applyPlayerRegen(int regenLeft) {
-		if (regenLeft > 0 && playerPsi < playerPsiCapacity) {
-			int playerRegenTotal = Math.max(playerPsiCapacity - playerPsi, regenLeft);
-			if (maxPlayerRegen >= 0)
-				playerRegenTotal = Math.min(maxPlayerRegen, playerRegenTotal);
+		int playerRegenTotal = Math.min(playerPsiCapacity - playerPsi, regenLeft);
+		if (maxPlayerRegen >= 0)
+			playerRegenTotal = Math.min(maxPlayerRegen, playerRegenTotal);
+
+		if (regenLeft > 0 && playerRegenTotal > 0) {
 			playerRegen = playerRegenTotal;
 			regenLeft -= playerRegenTotal;
 		} else
@@ -283,12 +288,14 @@ public class RegenPsiEvent extends Event {
 	}
 
 	private int applyCadRegen(int regenLeft) {
-		int cadRegenTotal = Math.min(maxCadRegen, cadPsiCapacity - cadPsi);
+		int cadRegenTotal = cadPsiCapacity - cadPsi;
 		if (maxCadRegen >= 0)
 			cadRegenTotal = Math.min(maxCadRegen, cadRegenTotal);
+
 		cadRegenCost = Math.min(regenLeft, cadRegenTotal * 2);
+
 		if (cadRegenCost > 0) {
-			cadRegen = Math.min(Math.max(1, cadRegenCost / 2), cadPsiCapacity - cadPsi);
+			cadRegen = Math.min(Math.max(1, cadRegenCost / 2), cadRegenTotal);
 			regenLeft -= cadRegenCost;
 		} else
 			cadRegen = 0;

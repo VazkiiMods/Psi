@@ -562,7 +562,7 @@ public class PlayerDataHandler {
 			if (!MinecraftForge.EVENT_BUS.post(event)) {
 				if (!cadStack.isEmpty()) {
 					ICAD cad = (ICAD) cadStack.getItem();
-					cad.regenPsi(cadStack, event.getCadPsi());
+					cad.regenPsi(cadStack, event.getCadRegen());
 				}
 
 				boolean anyChange = false;
