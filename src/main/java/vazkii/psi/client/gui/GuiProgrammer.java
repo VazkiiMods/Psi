@@ -322,8 +322,9 @@ public class GuiProgrammer extends GuiScreen {
 			tooltipY = gridTop + cursorY * 18 + 8;
 		}
 
+		SpellPiece pieceAt = null;
 		if(cursorX != -1 && cursorY != -1) {
-            SpellPiece pieceAt = spell.grid.gridData[cursorX][cursorY];
+			pieceAt = spell.grid.gridData[cursorX][cursorY];
             if (pieceAt != null) {
                 pieceAt.getTooltip(tooltip);
                 comment = pieceAt.comment;
@@ -421,14 +422,14 @@ public class GuiProgrammer extends GuiScreen {
 		if(isAltKeyDown())
 			tooltip = legitTooltip;
 
-		if(!takingScreenshot && piece != null) {
+		if(!takingScreenshot && pieceAt != null) {
 			if (tooltip != null && !tooltip.isEmpty())
-				piece.drawTooltip(tooltipX, tooltipY, tooltip);
+				pieceAt.drawTooltip(tooltipX, tooltipY, tooltip);
 
 
 			if (comment != null && !comment.isEmpty()) {
 				List<String> l = Arrays.asList(comment.split(";"));
-				piece.drawCommentText(tooltipX, tooltipY, l);
+				pieceAt.drawCommentText(tooltipX, tooltipY, l);
 			}
 		} else if (!takingScreenshot && tooltip != null && !tooltip.isEmpty())
 			RenderHelper.renderTooltip(tooltipX, tooltipY, tooltip);
