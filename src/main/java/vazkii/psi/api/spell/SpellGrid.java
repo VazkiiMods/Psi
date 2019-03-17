@@ -10,13 +10,15 @@
  */
 package vazkii.psi.api.spell;
 
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import vazkii.psi.common.spell.SpellCompiler;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -186,16 +188,27 @@ public final class SpellGrid {
 		return x >= 0 && y >= 0 && x < GRID_SIZE && y < GRID_SIZE;
 	}
 
-	public SpellPiece getPieceAtSideWithRedirections(int x, int y, SpellParam.Side side) throws SpellCompilationException {
-		return getPieceAtSideWithRedirections(new ArrayList<>(), x, y, side);
-	}
-
-	public SpellPiece getPieceAtSideWithRedirections(List<SpellPiece> traversed, int x, int y, SpellParam.Side side) throws SpellCompilationException {
+	private SpellPiece getPieceAtSide(Multimap<SpellPiece, SpellParam.Side> traversed, int x, int y, SpellParam.Side side) throws SpellCompilationException {
 		SpellPiece atSide = getPieceAtSideSafely(x, y, side);
-		if(traversed.contains(atSide))
+		if(traversed.containsEntry(atSide, side))
 			throw new SpellCompilationException(SpellCompilationException.INFINITE_LOOP);
 
-		traversed.add(atSide);
+		traversed.put(atSide, side);
+		return atSide;
+	}
+
+	@Deprecated
+	@SuppressWarnings("unused")
+	public SpellPiece getPieceAtSideWithRedirections(List<SpellPiece> unused, int x, int y, SpellParam.Side side) throws SpellCompilationException {
+		return getPieceAtSideWithRedirections(x, y, side);
+	}
+
+	public SpellPiece getPieceAtSideWithRedirections(int x, int y, SpellParam.Side side) throws SpellCompilationException {
+		return getPieceAtSideWithRedirections(HashMultimap.create(), x, y, side);
+	}
+
+	public SpellPiece getPieceAtSideWithRedirections(Multimap<SpellPiece, SpellParam.Side> traversed, int x, int y, SpellParam.Side side) throws SpellCompilationException {
+		SpellPiece atSide = getPieceAtSide(traversed, x, y, side);
 		if(!(atSide instanceof IGenericRedirector))
 			return atSide;
 
@@ -205,6 +218,24 @@ public final class SpellGrid {
 			return null;
 
 		return getPieceAtSideWithRedirections(traversed, atSide.x, atSide.y, rside);
+	}
+
+	public SpellPiece getPieceAtSideWithRedirections(int x, int y, SpellParam.Side side, SpellCompiler compiler) throws SpellCompilationException {
+		return getPieceAtSideWithRedirections(HashMultimap.create(), x, y, side, compiler);
+	}
+
+	public SpellPiece getPieceAtSideWithRedirections(Multimap<SpellPiece, SpellParam.Side> traversed, int x, int y, SpellParam.Side side, SpellCompiler compiler) throws SpellCompilationException {
+		SpellPiece atSide = getPieceAtSide(traversed, x, y, side);
+		if(!(atSide instanceof IGenericRedirector))
+			return atSide;
+
+		IGenericRedirector redirector = (IGenericRedirector) atSide;
+		compiler.buildRedirect(atSide);
+		SpellParam.Side rside = redirector.remapSide(side);
+		if(!rside.isEnabled())
+			return null;
+
+		return getPieceAtSideWithRedirections(traversed, atSide.x, atSide.y, rside, compiler);
 	}
 
 	public SpellPiece getPieceAtSideSafely(int x, int y, SpellParam.Side side) {

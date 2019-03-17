@@ -113,6 +113,8 @@ public abstract class SpellParam {
 		LEFT(-1, 0, 230, 0),
 		RIGHT(1, 0, 222, 0);
 
+		public static final Side[] DIRECTIONS = new Side[] { TOP, BOTTOM, LEFT, RIGHT };
+
 		public final int offx, offy, u, v;
 
 		Side(int offx, int offy, int u, int v) {

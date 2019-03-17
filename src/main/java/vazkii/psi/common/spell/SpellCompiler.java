@@ -14,9 +14,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.CompiledSpell.Action;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 
 public final class SpellCompiler implements ISpellCompiler {
 
@@ -27,6 +25,10 @@ public final class SpellCompiler implements ISpellCompiler {
 	Pair<Integer, Integer> errorLocation = null;
 
 	final Stack<SpellPiece> tricks = new Stack<>();
+	final Stack<SpellPiece> errorHandlers = new Stack<>();
+	final Set<SpellPiece> processedHandlers = new HashSet<>();
+
+	final Set<SpellPiece> redirectionPieces = new HashSet<>();
 
 	public SpellCompiler(Spell spell) {
 		this.spell = spell;
@@ -48,6 +50,12 @@ public final class SpellCompiler implements ISpellCompiler {
 
 		while(!tricks.isEmpty())
 			buildPiece(tricks.pop());
+
+		while(!errorHandlers.isEmpty()) {
+			SpellPiece piece = errorHandlers.pop();
+			if (!processedHandlers.contains(piece))
+				buildHandler(piece);
+		}
 
 		if(compiled.metadata.stats.get(EnumSpellStat.COST) < 0 || compiled.metadata.stats.get(EnumSpellStat.POTENCY) < 0)
 			throw new SpellCompilationException(SpellCompilationException.STAT_OVERFLOW);
@@ -75,6 +83,12 @@ public final class SpellCompiler implements ISpellCompiler {
 			piece.addToMetadata(compiled.metadata);
 		}
 
+		CompiledSpell.CatchHandler errorHandler = null;
+		if (piece instanceof IErrorCatcher) {
+			errorHandler = compiled.new CatchHandler(piece);
+			processedHandlers.add(piece);
+		}
+
 		visited.add(piece);
 
 		List<SpellParam.Side> usedSides = new ArrayList<>();
@@ -92,13 +106,74 @@ public final class SpellCompiler implements ISpellCompiler {
 				throw new SpellCompilationException(SpellCompilationException.SAME_SIDE_PARAMS, piece.x, piece.y);
 			usedSides.add(side);
 
-			SpellPiece pieceAt = spell.grid.getPieceAtSideWithRedirections(piece.x, piece.y, side);
+
+			SpellPiece pieceAt = spell.grid.getPieceAtSideWithRedirections(piece.x, piece.y, side, this);
 			if(pieceAt == null)
 				throw new SpellCompilationException(SpellCompilationException.NULL_PARAM, piece.x, piece.y);
 			if(!param.canAccept(pieceAt))
 				throw new SpellCompilationException(SpellCompilationException.INVALID_PARAM, piece.x, piece.y);
 
+			if (errorHandler != null)
+				compiled.errorHandlers.putIfAbsent(pieceAt, errorHandler);
+
 			buildPiece(pieceAt, new ArrayList<>(visited));
+		}
+	}
+
+	public void buildHandler(SpellPiece piece) throws SpellCompilationException {
+		if (!(piece instanceof IErrorCatcher))
+			return;
+
+		CompiledSpell.CatchHandler errorHandler = compiled.new CatchHandler(piece);
+
+		piece.addToMetadata(compiled.metadata);
+
+		List<SpellParam.Side> usedSides = new ArrayList<>();
+
+		for (SpellParam param : piece.paramSides.keySet()) {
+			SpellParam.Side side = piece.paramSides.get(param);
+			if(!side.isEnabled()) {
+				if(!param.canDisable)
+					throw new SpellCompilationException(SpellCompilationException.UNSET_PARAM, piece.x, piece.y);
+
+				continue;
+			}
+
+			if(usedSides.contains(side))
+				throw new SpellCompilationException(SpellCompilationException.SAME_SIDE_PARAMS, piece.x, piece.y);
+			usedSides.add(side);
+
+			SpellPiece pieceAt = spell.grid.getPieceAtSideWithRedirections(piece.x, piece.y, side, this);
+			if(pieceAt == null)
+				throw new SpellCompilationException(SpellCompilationException.NULL_PARAM, piece.x, piece.y);
+			if(!param.canAccept(pieceAt))
+				throw new SpellCompilationException(SpellCompilationException.INVALID_PARAM, piece.x, piece.y);
+
+			compiled.errorHandlers.putIfAbsent(pieceAt, errorHandler);
+		}
+	}
+
+	public void buildRedirect(SpellPiece piece) throws SpellCompilationException {
+		if (!redirectionPieces.contains(piece)) {
+			piece.addToMetadata(compiled.metadata);
+
+			redirectionPieces.add(piece);
+
+			List<SpellParam.Side> usedSides = new ArrayList<>();
+
+			for (SpellParam param : piece.paramSides.keySet()) {
+				SpellParam.Side side = piece.paramSides.get(param);
+				if (!side.isEnabled()) {
+					if (!param.canDisable)
+						throw new SpellCompilationException(SpellCompilationException.UNSET_PARAM, piece.x, piece.y);
+
+					continue;
+				}
+
+				if (usedSides.contains(side))
+					throw new SpellCompilationException(SpellCompilationException.SAME_SIDE_PARAMS, piece.x, piece.y);
+				usedSides.add(side);
+			}
 		}
 	}
 
@@ -111,6 +186,8 @@ public final class SpellCompiler implements ISpellCompiler {
 						tricks.add(piece);
 					else if(piece.getPieceType() == EnumPieceType.MODIFIER)
 						piece.addToMetadata(compiled.metadata);
+					else if(piece instanceof IErrorCatcher)
+						errorHandlers.add(piece);
 				}
 
 			}
