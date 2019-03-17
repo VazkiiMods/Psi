@@ -27,6 +27,7 @@ public abstract class SpellParam {
 	public static int CYAN = 0x2AD0D2;
 	public static int YELLOW = 0xD2CC2A; // For entities
 	public static int GRAY = 0x767676; // For connectors
+	public static int BROWN = 0x402800; // For suppressors
 
 	public static final String PSI_PREFIX = "psi.spellparam.";
 

@@ -186,7 +186,7 @@ public final class SpellCompiler implements ISpellCompiler {
 						tricks.add(piece);
 					else if(piece.getPieceType() == EnumPieceType.MODIFIER)
 						piece.addToMetadata(compiled.metadata);
-					else if(piece instanceof IErrorCatcher)
+					else if(piece.getPieceType() == EnumPieceType.ERROR_HANDLER)
 						errorHandlers.add(piece);
 				}
 
