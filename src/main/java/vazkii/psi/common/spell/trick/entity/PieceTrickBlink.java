@@ -13,6 +13,7 @@ package vazkii.psi.common.spell.trick.entity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.math.Vec3d;
+import vazkii.arl.network.NetworkHandler;
 import vazkii.psi.api.spell.EnumSpellStat;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellCompilationException;
@@ -23,6 +24,7 @@ import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.api.spell.param.ParamEntity;
 import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.piece.PieceTrick;
+import vazkii.psi.common.network.message.MessageBlink;
 
 public class PieceTrickBlink extends PieceTrick {
 
@@ -67,16 +69,13 @@ public class PieceTrickBlink extends PieceTrick {
 
 		Vec3d look = e.getLookVec();
 
-		double x = e.posX += look.x * dist;
-		double y = e.posY += Math.max(0, look.y * dist);
-		double z = e.posZ += look.z * dist;
+		double offX = look.x * dist;
+		double offY = Math.max(0, look.y * dist);
+		double offZ = look.z * dist;
 
-		if(e instanceof EntityPlayerMP) {
-			if(e == context.caster) {
-				EntityPlayerMP mp = (EntityPlayerMP) e;
-				mp.connection.setPlayerLocation(x, y, z, e.rotationYaw, e.rotationPitch);
-			}
-		} else e.setPosition(x, y, z);
+		e.setPosition(e.posX + offX, e.posY + offY, e.posZ + offZ);
+		if (e instanceof EntityPlayerMP)
+			NetworkHandler.INSTANCE.sendTo(new MessageBlink(offX, offY, offZ), (EntityPlayerMP) e);
 	}
 
 }

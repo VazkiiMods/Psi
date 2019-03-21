@@ -37,6 +37,7 @@ public class MessageRegister {
 		NetworkHandler.register(MessageTriggerJumpSpell.class, Side.SERVER);
 		NetworkHandler.register(MessageVisualEffect.class, Side.CLIENT);
 		NetworkHandler.register(MessageAdditiveMotion.class, Side.CLIENT);
+		NetworkHandler.register(MessageBlink.class, Side.CLIENT);
 
 		NetworkMessage.mapHandler(Spell.class, MessageRegister::readSpell, MessageRegister::writeSpell);
 	}
