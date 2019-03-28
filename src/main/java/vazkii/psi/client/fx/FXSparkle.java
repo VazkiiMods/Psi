@@ -44,6 +44,10 @@ public class FXSparkle extends FXQueued {
 		FXQueued.dispatchQueuedRenders(tessellator, particles, queuedRenders);
 	}
 
+	public int getMultiplier() {
+		return multiplier;
+	}
+
 	@Override
 	protected float getScale() {
 		float rotation = 0.1F * particleScale;

@@ -74,6 +74,10 @@ public class FXWisp extends FXQueued {
 			queuedDepthIgnoringRenders.add(this);
 	}
 
+	public int getMoteHalfLife() {
+		return moteHalfLife;
+	}
+
 	@Override
 	protected void incrementQueueCount() {
 		if (depthTest)

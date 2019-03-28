@@ -83,12 +83,13 @@ public class ClientProxy extends CommonProxy {
 
 	@Override
 	public void sparkleFX(World world, double x, double y, double z, float r, float g, float b, float motionx, float motiony, float motionz, float size, int m) {
-		if(noParticles(world))
+		if(noParticles(world) || m == 0)
 			return;
 
 		FXSparkle sparkle = new FXSparkle(world, x, y, z, size, r, g, b, m);
 		sparkle.setSpeed(motionx, motiony, motionz);
-		Minecraft.getMinecraft().effectRenderer.addEffect(sparkle);
+		if (sparkle.getMultiplier() > 0)
+			Minecraft.getMinecraft().effectRenderer.addEffect(sparkle);
 	}
 
 	@Override
@@ -111,13 +112,14 @@ public class ClientProxy extends CommonProxy {
 
 	@Override
 	public void wispFX(World world, double x, double y, double z, float r, float g, float b, float size, float motionx, float motiony, float motionz, float maxAgeMul) {
-		if(noParticles(world))
+		if(noParticles(world) || maxAgeMul == 0)
 			return;
 
 		FXWisp wisp = new FXWisp(world, x, y, z, size, r, g, b, distanceLimit, depthTest, maxAgeMul);
 		wisp.setSpeed(motionx, motiony, motionz);
 
-		Minecraft.getMinecraft().effectRenderer.addEffect(wisp);
+		if (wisp.getMoteHalfLife() > 0)
+			Minecraft.getMinecraft().effectRenderer.addEffect(wisp);
 	}
 
 	@Override
