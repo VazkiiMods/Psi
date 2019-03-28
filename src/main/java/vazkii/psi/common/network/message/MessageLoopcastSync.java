@@ -46,10 +46,13 @@ public class MessageLoopcastSync extends NetworkMessage<MessageLoopcastSync> {
 		ClientTicker.addAction(() -> {
 			World world = Minecraft.getMinecraft().world;
 			EntityPlayer mcPlayer = Minecraft.getMinecraft().player;
+			if (mcPlayer == null)
+				return;
+
 			Entity player = null;
 			if (world != null)
 				player = world.getEntityByID(entityId);
-			else if (mcPlayer != null && mcPlayer.getEntityId() == entityId)
+			else if (mcPlayer.getEntityId() == entityId)
 				player = mcPlayer;
 
 			if (player instanceof EntityPlayer) {
