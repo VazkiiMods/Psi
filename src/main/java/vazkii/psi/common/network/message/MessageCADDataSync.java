@@ -20,8 +20,7 @@ import vazkii.arl.network.NetworkMessage;
 import vazkii.arl.util.ClientTicker;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.common.Psi;
-import vazkii.psi.common.core.handler.capability.CapabilityCAD;
-import vazkii.psi.common.core.handler.capability.ICADData;
+import vazkii.psi.api.cad.ICADData;
 
 public class MessageCADDataSync extends NetworkMessage<MessageCADDataSync> {
 
@@ -38,8 +37,8 @@ public class MessageCADDataSync extends NetworkMessage<MessageCADDataSync> {
 	public IMessage handleMessage(MessageContext context) {
 		ClientTicker.addAction(() -> {
 			ItemStack cad = PsiAPI.getPlayerCAD(Psi.proxy.getClientPlayer());
-			if (!cad.isEmpty() && cad.hasCapability(CapabilityCAD.CAPABILITY, null)) {
-				ICADData data = cad.getCapability(CapabilityCAD.CAPABILITY, null);
+			if (!cad.isEmpty() && cad.hasCapability(ICADData.CAPABILITY, null)) {
+				ICADData data = cad.getCapability(ICADData.CAPABILITY, null);
 
 				if (data != null)
 					data.deserializeNBT(cmp);

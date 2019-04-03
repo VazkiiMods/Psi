@@ -10,14 +10,13 @@
  */
 package vazkii.psi.client.core.handler;
 
-import org.lwjgl.input.Keyboard;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
-import vazkii.psi.api.cad.ISocketable;
+import org.lwjgl.input.Keyboard;
+import vazkii.psi.api.cad.ISocketableCapability;
 import vazkii.psi.api.cad.ISocketableController;
 import vazkii.psi.client.gui.GuiLeveling;
 import vazkii.psi.client.gui.GuiSocketSelect;
@@ -36,11 +35,11 @@ public class KeybindHandler {
 		ItemStack stack = mc.player.getHeldItem(EnumHand.MAIN_HAND);
 		
 		if(mc.currentScreen == null) {
-			if(!stack.isEmpty() && (stack.getItem() instanceof ISocketable || stack.getItem() instanceof ISocketableController))
+			if(!stack.isEmpty() && (ISocketableCapability.isSocketable(stack) || stack.getItem() instanceof ISocketableController))
 				mc.displayGuiScreen(new GuiSocketSelect(stack));
 			else {
 				stack = mc.player.getHeldItem(EnumHand.OFF_HAND);
-				if(!stack.isEmpty() && (stack.getItem() instanceof ISocketable || stack.getItem() instanceof ISocketableController))
+				if(!stack.isEmpty() && (ISocketableCapability.isSocketable(stack) || stack.getItem() instanceof ISocketableController))
 					mc.displayGuiScreen(new GuiSocketSelect(stack));
 				else mc.displayGuiScreen(new GuiLeveling());
 			}

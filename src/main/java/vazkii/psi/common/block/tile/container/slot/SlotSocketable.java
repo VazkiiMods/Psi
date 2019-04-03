@@ -13,7 +13,7 @@ package vazkii.psi.common.block.tile.container.slot;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import vazkii.psi.api.cad.ISocketable;
+import vazkii.psi.api.cad.ISocketableCapability;
 import vazkii.psi.api.inventory.InventorySocketable;
 
 public class SlotSocketable extends Slot {
@@ -27,7 +27,7 @@ public class SlotSocketable extends Slot {
 
 	@Override
 	public boolean isItemValid(ItemStack stack) {
-		return stack.getItem() instanceof ISocketable;
+		return ISocketableCapability.isSocketable(stack);
 	}
 
 	@Override

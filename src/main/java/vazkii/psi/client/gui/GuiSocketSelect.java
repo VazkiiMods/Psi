@@ -30,6 +30,7 @@ import vazkii.arl.network.NetworkHandler;
 import vazkii.arl.network.NetworkMessage;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ISocketable;
+import vazkii.psi.api.cad.ISocketableCapability;
 import vazkii.psi.api.cad.ISocketableController;
 import vazkii.psi.client.core.handler.KeybindHandler;
 import vazkii.psi.client.core.helper.PsiRenderHelper;
@@ -70,7 +71,7 @@ public class GuiSocketSelect extends GuiScreen {
 	int controlSlot;
 
 	ItemStack socketableStack;
-	ISocketable socketable;
+	ISocketableCapability socketable;
 	List<Integer> slots;
 
 	public GuiSocketSelect(ItemStack stack) {
@@ -79,7 +80,7 @@ public class GuiSocketSelect extends GuiScreen {
 		controllerStack = ItemStack.EMPTY;
 		socketableStack = ItemStack.EMPTY;
 		
-		if(stack.getItem() instanceof ISocketable)
+		if(ISocketableCapability.isSocketable(stack))
 			setSocketable(stack);
 		else if(stack.getItem() instanceof ISocketableController) {
 			controllerStack = stack;
@@ -99,10 +100,10 @@ public class GuiSocketSelect extends GuiScreen {
 			return;
 
 		socketableStack = stack;
-		socketable = (ISocketable) stack.getItem();
+		socketable = ISocketableCapability.socketable(stack);
 
 		for(int i = 0; i < ISocketable.MAX_SLOTS; i++)
-			if(socketable.showSlotInRadialMenu(stack, i))
+			if(socketable.showSlotInRadialMenu(i))
 				slots.add(i);
 	}
 
@@ -189,7 +190,7 @@ public class GuiSocketSelect extends GuiScreen {
 			float xp = x + MathHelper.cos(rad) * radius;
 			float yp = y + MathHelper.sin(rad) * radius;
 
-			ItemStack stack = socketable.getBulletInSocket(socketableStack, seg);
+			ItemStack stack = socketable.getBulletInSocket(seg);
 			if(!stack.isEmpty()) {
 				float xsp = xp - 4;
 				float ysp = yp;

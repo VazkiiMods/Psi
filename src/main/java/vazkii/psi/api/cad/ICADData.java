@@ -8,13 +8,18 @@
  *
  * File Created @ [28/02/2016, 20:28:03 (GMT)]
  */
-package vazkii.psi.common.core.handler.capability;
+package vazkii.psi.api.cad;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.util.INBTSerializable;
 import vazkii.psi.api.internal.Vector3;
 
 public interface ICADData extends INBTSerializable<NBTTagCompound> {
+	@CapabilityInject(ICADData.class)
+	Capability<ICADData> CAPABILITY = null;
+
 	int getTime();
 
 	void setTime(int time);

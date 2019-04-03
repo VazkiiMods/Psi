@@ -18,6 +18,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.Constants;
+import vazkii.psi.api.cad.ICADData;
 import vazkii.psi.api.internal.Vector3;
 
 import javax.annotation.Nonnull;
@@ -35,14 +36,14 @@ public class CADData implements ICapabilityProvider, ICADData {
 	@Override
 	@SuppressWarnings("ConstantConditions")
 	public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
-		return capability == CapabilityCAD.CAPABILITY;
+		return capability == ICADData.CAPABILITY;
 	}
 
 	@Nullable
 	@Override
 	@SuppressWarnings("ConstantConditions")
 	public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
-		return capability == CapabilityCAD.CAPABILITY ? CapabilityCAD.CAPABILITY.cast(this) : null;
+		return capability == ICADData.CAPABILITY ? ICADData.CAPABILITY.cast(this) : null;
 	}
 
 	@Override

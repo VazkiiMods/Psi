@@ -24,6 +24,7 @@ import vazkii.psi.common.core.handler.ConfigHandler;
 import vazkii.psi.common.core.handler.InternalMethodHandler;
 import vazkii.psi.common.core.handler.PsiSoundHandler;
 import vazkii.psi.common.core.handler.capability.CapabilityCAD;
+import vazkii.psi.common.core.handler.capability.CapabilitySocketable;
 import vazkii.psi.common.crafting.ModCraftingRecipes;
 import vazkii.psi.common.entity.ModEntities;
 import vazkii.psi.common.item.base.ModItems;
@@ -49,6 +50,7 @@ public class CommonProxy {
 		PsiSoundHandler.init();
 
 		CapabilityCAD.register();
+		CapabilitySocketable.register();
 		MessageRegister.init();
 		NetworkRegistry.INSTANCE.registerGuiHandler(Psi.instance, new GuiHandler());
 	}

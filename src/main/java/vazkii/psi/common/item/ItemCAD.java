@@ -55,8 +55,7 @@ import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
 import vazkii.psi.common.core.handler.PsiSoundHandler;
 import vazkii.psi.common.core.handler.capability.CADData;
-import vazkii.psi.common.core.handler.capability.CapabilityCAD;
-import vazkii.psi.common.core.handler.capability.ICADData;
+import vazkii.psi.api.cad.ICADData;
 import vazkii.psi.common.crafting.recipe.AssemblyScavengeRecipe;
 import vazkii.psi.common.item.base.IPsiItem;
 import vazkii.psi.common.item.base.ModItems;
@@ -99,8 +98,8 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 	}
 
 	private ICADData getCADData(ItemStack stack) {
-		if (stack.hasCapability(CapabilityCAD.CAPABILITY, null)) {
-			ICADData data = stack.getCapability(CapabilityCAD.CAPABILITY, null);
+		if (stack.hasCapability(ICADData.CAPABILITY, null)) {
+			ICADData data = stack.getCapability(ICADData.CAPABILITY, null);
 			if (data != null)
 				return data;
 		}
@@ -118,8 +117,8 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 	public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
 		NBTTagCompound compound = ItemNBTHelper.getNBT(stack);
 
-		if (stack.hasCapability(CapabilityCAD.CAPABILITY, null)) {
-			ICADData data = stack.getCapability(CapabilityCAD.CAPABILITY, null);
+		if (stack.hasCapability(ICADData.CAPABILITY, null)) {
+			ICADData data = stack.getCapability(ICADData.CAPABILITY, null);
 			if (data != null) {
 				if (compound.hasKey(TAG_TIME_LEGACY, Constants.NBT.TAG_ANY_NUMERIC)) {
 					data.setTime(compound.getInteger(TAG_TIME_LEGACY));

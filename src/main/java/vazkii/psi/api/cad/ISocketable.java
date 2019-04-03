@@ -17,17 +17,20 @@ import vazkii.psi.api.spell.ISpellContainer;
 /**
  * This interface defines an item that can have Spell Bullets
  * put into it.
+ *
+ * As of version 73, this interface should not be used directly,
+ * instead interacting with the item via its {@link ISocketableCapability}.
  */
 public interface ISocketable extends IShowPsiBar {
 
 	int MAX_SLOTS = 12;
 
 	static String getSocketedItemName(ItemStack stack, String fallback) {
-		if(stack.isEmpty() || !(stack.getItem() instanceof ISocketable))
+		if(stack.isEmpty() || ISocketableCapability.isSocketable(stack))
 			return fallback;
 
-		ISocketable socketable = (ISocketable) stack.getItem();
-		ItemStack item = socketable.getBulletInSocket(stack, socketable.getSelectedSlot(stack));
+		ISocketableCapability socketable = ISocketableCapability.socketable(stack);
+		ItemStack item = socketable.getBulletInSocket(socketable.getSelectedSlot());
 		if(item.isEmpty())
 			return fallback;
 

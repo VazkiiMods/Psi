@@ -16,7 +16,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
-import vazkii.psi.api.cad.ISocketable;
+import vazkii.psi.api.cad.ISocketableCapability;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -25,34 +25,27 @@ import java.util.Iterator;
 
 public class InventorySocketable implements IInventory {
 
-    @Nonnull
-    private ItemStack stack;
-
     @Nullable
-    private ISocketable socketable;
+    private ISocketableCapability socketable;
 
     public InventorySocketable(ItemStack stack) {
-        this.stack = stack;
-
         if (stack.isEmpty())
             socketable = null;
         else
-            socketable = (ISocketable) stack.getItem();
+            socketable = ISocketableCapability.socketable(stack);
     }
 
     public void setStack(ItemStack stack) {
-        this.stack = stack;
-
         if (stack.isEmpty())
             socketable = null;
         else
-            socketable = (ISocketable) stack.getItem();
+            socketable = ISocketableCapability.socketable(stack);
     }
 
     private Iterator<ItemStack> getSockerator() {
         if (socketable == null)
             return Collections.emptyIterator();
-        return new IteratorSocketable(stack);
+        return new IteratorSocketable(socketable);
     }
 
     @Override
@@ -75,7 +68,7 @@ public class InventorySocketable implements IInventory {
     public ItemStack getStackInSlot(int index) {
         if (socketable == null)
             return ItemStack.EMPTY;
-        return socketable.getBulletInSocket(stack, index);
+        return socketable.getBulletInSocket(index);
     }
 
     @Nonnull
@@ -84,8 +77,8 @@ public class InventorySocketable implements IInventory {
         if (socketable == null)
             return ItemStack.EMPTY;
 
-        ItemStack bullet = socketable.getBulletInSocket(stack, index);
-        if (!bullet.isEmpty()) socketable.setBulletInSocket(stack, index, ItemStack.EMPTY);
+        ItemStack bullet = socketable.getBulletInSocket(index);
+        if (!bullet.isEmpty()) socketable.setBulletInSocket(index, ItemStack.EMPTY);
         return bullet;
     }
 
@@ -100,7 +93,7 @@ public class InventorySocketable implements IInventory {
         if (socketable == null)
             return;
 
-        socketable.setBulletInSocket(stack, index, bullet);
+        socketable.setBulletInSocket(index, bullet);
     }
 
     @Override
@@ -130,7 +123,7 @@ public class InventorySocketable implements IInventory {
 
     @Override
     public boolean isItemValidForSlot(int index, @Nonnull ItemStack stack) {
-        return socketable != null && socketable.isItemValid(this.stack, index, stack);
+        return socketable != null && socketable.isItemValid(index, stack);
     }
 
     @Override

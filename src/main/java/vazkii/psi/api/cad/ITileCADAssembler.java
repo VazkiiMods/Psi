@@ -29,6 +29,8 @@ public interface ITileCADAssembler {
 
     ItemStack getSocketableStack();
 
+    ISocketableCapability getSocketable();
+
     boolean setSocketableStack(ItemStack stack);
 
     void onCraftCAD(ItemStack cad);

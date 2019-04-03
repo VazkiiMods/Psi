@@ -16,7 +16,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import vazkii.arl.network.NetworkMessage;
-import vazkii.psi.api.cad.ISocketable;
+import vazkii.psi.api.cad.ISocketableCapability;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 
 public class MessageChangeSocketableSlot extends NetworkMessage<MessageChangeSocketableSlot> {
@@ -34,12 +34,12 @@ public class MessageChangeSocketableSlot extends NetworkMessage<MessageChangeSoc
 		EntityPlayerMP player = context.getServerHandler().player;
 		ItemStack stack = player.getHeldItem(EnumHand.MAIN_HAND);
 
-		if(!stack.isEmpty() && stack.getItem() instanceof ISocketable)
-			((ISocketable) stack.getItem()).setSelectedSlot(stack, slot);
+		if(!stack.isEmpty() && ISocketableCapability.isSocketable(stack))
+			ISocketableCapability.socketable(stack).setSelectedSlot(slot);
 		else {
 			stack = player.getHeldItem(EnumHand.OFF_HAND);
-			if(!stack.isEmpty() && stack.getItem() instanceof ISocketable)
-				((ISocketable) stack.getItem()).setSelectedSlot(stack, slot);
+			if(!stack.isEmpty() && ISocketableCapability.isSocketable(stack))
+				ISocketableCapability.socketable(stack).setSelectedSlot(slot);
 		}
 		PlayerDataHandler.get(player).stopLoopcast();
 

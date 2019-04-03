@@ -358,30 +358,30 @@ public class PlayerDataHandler {
 					ItemStack stackInHand = player.getHeldItem(loopcastHand);
 
 					if (stackInHand.isEmpty() ||
-							!(stackInHand.getItem() instanceof ISocketable) ||
-							!((ISocketable) stackInHand.getItem()).canLoopcast(stackInHand)) {
+							!ISocketableCapability.isSocketable(stackInHand) ||
+							!ISocketableCapability.socketable(stackInHand).canLoopcast(stackInHand)) {
 						stopLoopcast();
 						break loopcast;
 					}
 
 					if (lastTickLoopcastStack != null) {
 						if (!ItemStack.areItemsEqual(lastTickLoopcastStack, stackInHand) ||
-								!(lastTickLoopcastStack.getItem() instanceof ISocketable)) {
+								!ISocketableCapability.isSocketable(lastTickLoopcastStack)) {
 							stopLoopcast();
 							break loopcast;
 						} else {
-							ISocketable lastTickItem = (ISocketable) lastTickLoopcastStack.getItem();
-							ISocketable thisTickItem = (ISocketable) stackInHand.getItem();
+							ISocketableCapability lastTickItem = ISocketableCapability.socketable(lastTickLoopcastStack);
+							ISocketableCapability thisTickItem = ISocketableCapability.socketable(stackInHand);
 
-							int lastSlot = lastTickItem.getSelectedSlot(lastTickLoopcastStack);
-							int thisSlot = thisTickItem.getSelectedSlot(stackInHand);
+							int lastSlot = lastTickItem.getSelectedSlot();
+							int thisSlot = thisTickItem.getSelectedSlot();
 							if (lastSlot != thisSlot) {
 								stopLoopcast();
 								break loopcast;
 							}
 
-							ItemStack lastTick = lastTickItem.getBulletInSocket(lastTickLoopcastStack, lastSlot);
-							ItemStack thisTick = thisTickItem.getBulletInSocket(stackInHand, thisSlot);
+							ItemStack lastTick = lastTickItem.getBulletInSocket(lastSlot);
+							ItemStack thisTick = thisTickItem.getBulletInSocket(thisSlot);
 							if (!ItemStack.areItemStacksEqual(lastTick, thisTick)) {
 								stopLoopcast();
 								break loopcast;
@@ -392,7 +392,7 @@ public class PlayerDataHandler {
 					lastTickLoopcastStack = stackInHand.copy();
 
 
-					ISocketable castingItem = (ISocketable) stackInHand.getItem();
+					ISocketableCapability castingItem = ISocketableCapability.socketable(stackInHand);
 
 					for(int i = 0; i < 5; i++) {
 						double x = player.posX + (Math.random() - 0.5) * 2.1 * player.width;
@@ -403,7 +403,7 @@ public class PlayerDataHandler {
 					}
 
 					if(loopcastTime > 0 && loopcastTime % 5 == 0) {
-						ItemStack bullet = castingItem.getBulletInSocket(stackInHand, castingItem.getSelectedSlot(stackInHand));
+						ItemStack bullet = castingItem.getBulletInSocket(castingItem.getSelectedSlot());
 						if(bullet.isEmpty()) {
 							stopLoopcast();
 							break loopcast;

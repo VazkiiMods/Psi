@@ -21,7 +21,7 @@ public interface ISocketableController {
 
 	/**
 	 * Returns an array of stacks this item can control. Can't be null.
-	 * Elements can be null. The item of every non-null stack must implement ISocketable.
+	 * Elements can be empty. The item of every non-empty stack must provide an ISocketableCapability.
 	 */
 	ItemStack[] getControlledStacks(EntityPlayer player, ItemStack stack);
 

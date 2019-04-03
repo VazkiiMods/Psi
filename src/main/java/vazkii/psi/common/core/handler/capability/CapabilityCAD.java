@@ -14,13 +14,10 @@ import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
+import vazkii.psi.api.cad.ICADData;
 
 public class CapabilityCAD {
-	@CapabilityInject(ICADData.class)
-	public static final Capability<ICADData> CAPABILITY = null;
-
 	public static void register() {
 		CapabilityManager.INSTANCE.register(ICADData.class, CapabilityFactory.INSTANCE, CADData::new);
 	}
@@ -41,4 +38,6 @@ public class CapabilityCAD {
 		}
 
 	}
+
+
 }
