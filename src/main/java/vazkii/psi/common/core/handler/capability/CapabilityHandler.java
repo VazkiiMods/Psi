@@ -75,7 +75,6 @@ public class CapabilityHandler {
 	private static final ResourceLocation ACCEPTOR = new ResourceLocation(LibMisc.MOD_ID, "spell");
 	private static final ResourceLocation PSI_BAR = new ResourceLocation(LibMisc.MOD_ID, "bar");
 	private static final ResourceLocation SPELL_IMMUNE = new ResourceLocation(LibMisc.MOD_ID, "immune");
-	private static final ResourceLocation ARMOR_EVENT = new ResourceLocation(LibMisc.MOD_ID, "armor");
 
 	@SubscribeEvent
 	public static void attachItemCapabilities(AttachCapabilitiesEvent<ItemStack> event) {
