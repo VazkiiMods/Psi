@@ -26,7 +26,7 @@ public interface ISocketable extends IShowPsiBar {
 	int MAX_SLOTS = 12;
 
 	static String getSocketedItemName(ItemStack stack, String fallback) {
-		if(stack.isEmpty() || ISocketableCapability.isSocketable(stack))
+		if(stack.isEmpty() || !ISocketableCapability.isSocketable(stack))
 			return fallback;
 
 		ISocketableCapability socketable = ISocketableCapability.socketable(stack);
