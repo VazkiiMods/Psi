@@ -11,13 +11,10 @@
 package vazkii.psi.api.cad;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
-import net.minecraftforge.common.util.INBTSerializable;
-import vazkii.psi.api.internal.IPlayerData;
 
-public interface ISocketableCapability extends INBTSerializable<NBTTagCompound> {
+public interface ISocketableCapability {
 	@CapabilityInject(ISocketableCapability.class)
 	Capability<ISocketableCapability> CAPABILITY = null;
 
@@ -28,6 +25,7 @@ public interface ISocketableCapability extends INBTSerializable<NBTTagCompound> 
 	static ISocketableCapability socketable(ItemStack stack) {
 		return stack.getCapability(CAPABILITY, null);
 	}
+
 
 	boolean isSocketSlotAvailable(int slot);
 
@@ -46,8 +44,4 @@ public interface ISocketableCapability extends INBTSerializable<NBTTagCompound> 
 	boolean isItemValid(int slot, ItemStack bullet);
 
 	boolean canLoopcast(ItemStack stack);
-
-	default boolean showPsiBar(IPlayerData data) {
-		return true;
-	}
 }

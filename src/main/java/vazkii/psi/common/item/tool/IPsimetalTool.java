@@ -23,6 +23,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import vazkii.arl.util.ItemNBTHelper;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ISocketable;
+import vazkii.psi.api.spell.ISpellAcceptor;
 import vazkii.psi.api.spell.ISpellSettable;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
@@ -81,8 +82,8 @@ public interface IPsimetalTool extends ISocketable, ISpellSettable {
 	default void setSpell(EntityPlayer player, ItemStack stack, Spell spell) {
 		int slot = getSelectedSlot(stack);
 		ItemStack bullet = getBulletInSocket(stack, slot);
-		if (!bullet.isEmpty() && bullet.getItem() instanceof ISpellSettable) {
-			((ISpellSettable) bullet.getItem()).setSpell(player, bullet, spell);
+		if (!bullet.isEmpty() && ISpellAcceptor.isAcceptor(bullet)) {
+			ISpellAcceptor.acceptor(bullet).setSpell(player, spell);
 			setBulletInSocket(stack, slot, bullet);
 		}
 	}

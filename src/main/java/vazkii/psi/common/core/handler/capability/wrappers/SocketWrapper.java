@@ -8,10 +8,9 @@
  * <p>
  * File Created @ [Apr 03, 2019, 15:19 AM (EST)]
  */
-package vazkii.psi.common.core.handler.capability;
+package vazkii.psi.common.core.handler.capability.wrappers;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -35,19 +34,24 @@ public class SocketWrapper implements ISocketableCapability, ICapabilityProvider
 	@Override
 	@SuppressWarnings("ConstantConditions")
 	public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
-		return capability == ISocketableCapability.CAPABILITY;
+		return capability == CAPABILITY;
 	}
 
 	@Nullable
 	@Override
 	@SuppressWarnings("ConstantConditions")
 	public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
-		return capability == ISocketableCapability.CAPABILITY ? ISocketableCapability.CAPABILITY.cast(this) : null;
+		return capability == CAPABILITY ? CAPABILITY.cast(this) : null;
 	}
 
 	@Override
 	public boolean isSocketSlotAvailable(int slot) {
 		return item.isSocketSlotAvailable(stack, slot);
+	}
+
+	@Override
+	public boolean showSlotInRadialMenu(int slot) {
+		return item.showSlotInRadialMenu(stack, slot);
 	}
 
 	@Override
@@ -78,15 +82,5 @@ public class SocketWrapper implements ISocketableCapability, ICapabilityProvider
 	@Override
 	public boolean canLoopcast(ItemStack stack) {
 		return item.canLoopcast(stack);
-	}
-
-	@Override
-	public NBTTagCompound serializeNBT() {
-		return new NBTTagCompound();
-	}
-
-	@Override
-	public void deserializeNBT(NBTTagCompound nbt) {
-		// NO-OP
 	}
 }

@@ -191,87 +191,85 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 	public void setSpell(EntityPlayer player, ItemStack stack, Spell spell) {
 		int slot = getSelectedSlot(stack);
 		ItemStack bullet = getBulletInSocket(stack, slot);
-		if(!bullet.isEmpty() && bullet.getItem() instanceof ISpellSettable) {
-			((ISpellSettable) bullet.getItem()).setSpell(player, bullet, spell);
+		if (!bullet.isEmpty() && ISpellAcceptor.isAcceptor(bullet)) {
+			ISpellAcceptor.acceptor(bullet).setSpell(player, spell);
 			setBulletInSocket(stack, slot, bullet);
 			player.getCooldownTracker().setCooldown(stack.getItem(), 10);
 		}
 	}
 
 	public static boolean cast(World world, EntityPlayer player, PlayerData data, ItemStack bullet, ItemStack cad, int cd, int particles, float sound, Consumer<SpellContext> predicate) {
-		if(!data.overflowed && data.getAvailablePsi() > 0 && !cad.isEmpty() && !bullet.isEmpty() && bullet.getItem() instanceof ISpellContainer && isTruePlayer(player)) {
-			ISpellContainer spellContainer = (ISpellContainer) bullet.getItem();
-			if(spellContainer.containsSpell(bullet)) {
-				Spell spell = spellContainer.getSpell(bullet);
-				SpellContext context = new SpellContext().setPlayer(player).setSpell(spell);
-				if(predicate != null)
-					predicate.accept(context);
+		if (!data.overflowed && data.getAvailablePsi() > 0 && !cad.isEmpty() && !bullet.isEmpty() && ISpellAcceptor.hasSpell(bullet) && isTruePlayer(player)) {
+			ISpellAcceptor spellContainer = ISpellAcceptor.acceptor(bullet);
+			Spell spell = spellContainer.getSpell();
+			SpellContext context = new SpellContext().setPlayer(player).setSpell(spell);
+			if (predicate != null)
+				predicate.accept(context);
 
-				if(context.isValid()) {
-					if(context.cspell.metadata.evaluateAgainst(cad)) {
-						int cost = getRealCost(cad, bullet, context.cspell.metadata.stats.get(EnumSpellStat.COST));
-						PreSpellCastEvent event = new PreSpellCastEvent(cost, sound, particles, cd, spell, context, player, data, cad, bullet);
-						if(MinecraftForge.EVENT_BUS.post(event)) {
-							String cancelMessage = event.getCancellationMessage();
-							if(cancelMessage != null && !cancelMessage.isEmpty())
-								player.sendMessage(new TextComponentTranslation(cancelMessage).setStyle(new Style().setColor(TextFormatting.RED)));
-							return false;
-						}
+			if (context.isValid()) {
+				if (context.cspell.metadata.evaluateAgainst(cad)) {
+					int cost = getRealCost(cad, bullet, context.cspell.metadata.stats.get(EnumSpellStat.COST));
+					PreSpellCastEvent event = new PreSpellCastEvent(cost, sound, particles, cd, spell, context, player, data, cad, bullet);
+					if (MinecraftForge.EVENT_BUS.post(event)) {
+						String cancelMessage = event.getCancellationMessage();
+						if (cancelMessage != null && !cancelMessage.isEmpty())
+							player.sendMessage(new TextComponentTranslation(cancelMessage).setStyle(new Style().setColor(TextFormatting.RED)));
+						return false;
+					}
 
-						cd = event.getCooldown();
-						particles = event.getParticles();
-						sound = event.getSound();
-						cost = event.getCost();
+					cd = event.getCooldown();
+					particles = event.getParticles();
+					sound = event.getSound();
+					cost = event.getCost();
 
-						spell = event.getSpell();
-						context = event.getContext();
+					spell = event.getSpell();
+					context = event.getContext();
 
-						if(cost > 0)
-							data.deductPsi(cost, cd, true);
+					if (cost > 0)
+						data.deductPsi(cost, cd, true);
 
-						if(cost != 0 && sound > 0) {
-							if(!world.isRemote)
-								world.playSound(null, player.posX, player.posY, player.posZ, PsiSoundHandler.cadShoot, SoundCategory.PLAYERS, sound, (float) (0.5 + Math.random() * 0.5));
-							else {
-								int color = Psi.proxy.getColorForCAD(cad);
-								float r = PsiRenderHelper.r(color) / 255F;
-								float g = PsiRenderHelper.g(color) / 255F;
-								float b = PsiRenderHelper.b(color) / 255F;
-								for(int i = 0; i < particles; i++) {
-									double x = player.posX + (Math.random() - 0.5) * 2.1 * player.width;
-									double y = player.posY - player.getYOffset();
-									double z = player.posZ + (Math.random() - 0.5) * 2.1 * player.width;
-									float grav = -0.15F - (float) Math.random() * 0.03F;
-									Psi.proxy.sparkleFX(x, y, z, r, g, b, grav, 0.25F, 15);
-								}
+					if (cost != 0 && sound > 0) {
+						if (!world.isRemote)
+							world.playSound(null, player.posX, player.posY, player.posZ, PsiSoundHandler.cadShoot, SoundCategory.PLAYERS, sound, (float) (0.5 + Math.random() * 0.5));
+						else {
+							int color = Psi.proxy.getColorForCAD(cad);
+							float r = PsiRenderHelper.r(color) / 255F;
+							float g = PsiRenderHelper.g(color) / 255F;
+							float b = PsiRenderHelper.b(color) / 255F;
+							for (int i = 0; i < particles; i++) {
+								double x = player.posX + (Math.random() - 0.5) * 2.1 * player.width;
+								double y = player.posY - player.getYOffset();
+								double z = player.posZ + (Math.random() - 0.5) * 2.1 * player.width;
+								float grav = -0.15F - (float) Math.random() * 0.03F;
+								Psi.proxy.sparkleFX(x, y, z, r, g, b, grav, 0.25F, 15);
+							}
 
-								double x = player.posX;
-								double y = player.posY + player.getEyeHeight() - 0.1;
-								double z = player.posZ;
-								Vector3 lookOrig = new Vector3(player.getLookVec());
-								for(int i = 0; i < 25; i++) {
-									Vector3 look = lookOrig.copy();
-									double spread = 0.25;
-									look.x += (Math.random() - 0.5) * spread;
-									look.y += (Math.random() - 0.5) * spread;
-									look.z += (Math.random() - 0.5) * spread;
-									look.normalize().multiply(0.15);
+							double x = player.posX;
+							double y = player.posY + player.getEyeHeight() - 0.1;
+							double z = player.posZ;
+							Vector3 lookOrig = new Vector3(player.getLookVec());
+							for (int i = 0; i < 25; i++) {
+								Vector3 look = lookOrig.copy();
+								double spread = 0.25;
+								look.x += (Math.random() - 0.5) * spread;
+								look.y += (Math.random() - 0.5) * spread;
+								look.z += (Math.random() - 0.5) * spread;
+								look.normalize().multiply(0.15);
 
-									Psi.proxy.sparkleFX(x, y, z, r, g, b, (float) look.x, (float) look.y, (float) look.z, 0.3F, 5);
-								}
+								Psi.proxy.sparkleFX(x, y, z, r, g, b, (float) look.x, (float) look.y, (float) look.z, 0.3F, 5);
 							}
 						}
+					}
 
-						if(!world.isRemote)
-							spellContainer.castSpell(bullet, context);
-						MinecraftForge.EVENT_BUS.post(new SpellCastEvent(spell, context, player, data, cad, bullet));
-						return true;
-					} else if(!world.isRemote)
-						player.sendMessage(new TextComponentTranslation("psimisc.weakCad").setStyle(new Style().setColor(TextFormatting.RED)));
-				}
+					if (!world.isRemote)
+						spellContainer.castSpell(context);
+					MinecraftForge.EVENT_BUS.post(new SpellCastEvent(spell, context, player, data, cad, bullet));
+					return true;
+				} else if (!world.isRemote)
+					player.sendMessage(new TextComponentTranslation("psimisc.weakCad").setStyle(new Style().setColor(TextFormatting.RED)));
 			}
 		}
-		
+
 		return false;
 	}
 
@@ -323,8 +321,8 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 
 			double effPercentile = (double) eff / 100;
 			double procCost = cost / effPercentile;
-			if(!bullet.isEmpty())
-				procCost *= ((ISpellContainer) bullet.getItem()).getCostModifier(bullet);
+			if(!bullet.isEmpty() && ISpellAcceptor.isContainer(bullet))
+				procCost *= ISpellAcceptor.acceptor(bullet).getCostModifier();
 
 			return (int) procCost;
 		}

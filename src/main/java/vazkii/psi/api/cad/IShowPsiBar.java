@@ -15,6 +15,9 @@ import vazkii.psi.api.internal.IPlayerData;
 
 /**
  * This interface defines an item that shows the PSI bar when held, such as a Psimetal tool or a CAD.
+ *
+ * As of version 73, this interface should not be used directly,
+ * instead interacting with the item via its {@link IPsiBarDisplay}.
  */
 public interface IShowPsiBar {
 	/**

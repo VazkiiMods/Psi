@@ -17,7 +17,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 import vazkii.arl.recipe.ModRecipe;
-import vazkii.psi.api.spell.ISpellContainer;
+import vazkii.psi.api.spell.ISpellAcceptor;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.common.item.ItemSpellDrive;
 
@@ -37,7 +37,7 @@ public class BulletToDriveRecipe extends ModRecipe {
 		for(int i = 0; i < var1.getSizeInventory(); i++) {
 			ItemStack stack = var1.getStackInSlot(i);
 			if(!stack.isEmpty()) {
-				if(stack.getItem() instanceof ISpellContainer && ((ISpellContainer) stack.getItem()).getSpell(stack) != null) {
+				if(ISpellAcceptor.hasSpell(stack)) {
 					if(foundTarget)
 						return false;
 					foundTarget = true;
@@ -61,8 +61,8 @@ public class BulletToDriveRecipe extends ModRecipe {
 		for(int i = 0; i < var1.getSizeInventory(); i++) {
 			ItemStack stack = var1.getStackInSlot(i);
 			if(!stack.isEmpty()) {
-				if(stack.getItem() instanceof ISpellContainer)
-					source = ((ISpellContainer) stack.getItem()).getSpell(stack);
+				if(ISpellAcceptor.hasSpell(stack))
+					source = ISpellAcceptor.acceptor(stack).getSpell();
 				else target = stack;
 			}
 		}
@@ -85,8 +85,8 @@ public class BulletToDriveRecipe extends ModRecipe {
 	}
 
 	@Override
-	public boolean canFit(int p_194133_1_, int p_194133_2_) {
-		return false;
+	public boolean canFit(int width, int height) {
+		return true;
 	}
 
 }

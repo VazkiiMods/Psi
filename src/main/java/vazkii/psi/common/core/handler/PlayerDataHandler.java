@@ -404,30 +404,28 @@ public class PlayerDataHandler {
 
 					if(loopcastTime > 0 && loopcastTime % 5 == 0) {
 						ItemStack bullet = castingItem.getBulletInSocket(castingItem.getSelectedSlot());
-						if(bullet.isEmpty()) {
+						if(bullet.isEmpty() || !ISpellAcceptor.hasSpell(bullet)) {
 							stopLoopcast();
 							break loopcast;
 						}
 
-						ISpellContainer spellContainer = (ISpellContainer) bullet.getItem();
-						if(spellContainer.containsSpell(bullet)) {
-							Spell spell = spellContainer.getSpell(bullet);
-							SpellContext context = new SpellContext().setPlayer(player).setSpell(spell).setLoopcastIndex(loopcastAmount + 1);
-							if(context.isValid()) {
-								if(context.cspell.metadata.evaluateAgainst(cadStack)) {
-									int cost = ItemCAD.getRealCost(cadStack, bullet, context.cspell.metadata.stats.get(EnumSpellStat.COST));
-									if(cost > 0 || cost == -1) {
-										if(cost != -1)
-											deductPsi(cost, 3, true);
+						ISpellAcceptor spellContainer = ISpellAcceptor.acceptor(bullet);
+						Spell spell = spellContainer.getSpell();
+						SpellContext context = new SpellContext().setPlayer(player).setSpell(spell).setLoopcastIndex(loopcastAmount + 1);
+						if(context.isValid()) {
+							if(context.cspell.metadata.evaluateAgainst(cadStack)) {
+								int cost = ItemCAD.getRealCost(cadStack, bullet, context.cspell.metadata.stats.get(EnumSpellStat.COST));
+								if(cost > 0 || cost == -1) {
+									if(cost != -1)
+										deductPsi(cost, 3, true);
 
-										if(!player.getEntityWorld().isRemote && loopcastTime % 10 == 0)
-											player.getEntityWorld().playSound(null, player.posX, player.posY, player.posZ, PsiSoundHandler.loopcast, SoundCategory.PLAYERS, 0.5F, (float) (0.35 + Math.random() * 0.85));
-									}
-
-									if (!player.getEntityWorld().isRemote)
-										context.cspell.safeExecute(context);
-									loopcastAmount++;
+									if(!player.getEntityWorld().isRemote && loopcastTime % 10 == 0)
+										player.getEntityWorld().playSound(null, player.posX, player.posY, player.posZ, PsiSoundHandler.loopcast, SoundCategory.PLAYERS, 0.5F, (float) (0.35 + Math.random() * 0.85));
 								}
+
+								if (!player.getEntityWorld().isRemote)
+									context.cspell.safeExecute(context);
+								loopcastAmount++;
 							}
 						}
 					}

@@ -32,7 +32,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import vazkii.arl.block.BlockFacing;
 import vazkii.psi.api.internal.VanillaPacketDispatcher;
-import vazkii.psi.api.spell.ISpellSettable;
+import vazkii.psi.api.spell.ISpellAcceptor;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.base.IPsiBlock;
 import vazkii.psi.common.block.tile.TileProgrammer;
@@ -95,14 +95,14 @@ public class BlockProgrammer extends BlockFacing implements IPsiBlock {
 
 		boolean enabled = programmer.isEnabled();
 		
-		if(enabled && !heldItem.isEmpty() && heldItem.getItem() instanceof ISpellSettable && programmer.spell != null && (playerIn.isSneaking() || !((ISpellSettable) heldItem.getItem()).requiresSneakForSpellSet(heldItem))) {
+		if(enabled && !heldItem.isEmpty() && ISpellAcceptor.isAcceptor(heldItem) && programmer.spell != null && (playerIn.isSneaking() || !ISpellAcceptor.acceptor(heldItem).requiresSneakForSpellSet())) {
 			if(programmer.canCompile()) {
-				ISpellSettable settable = (ISpellSettable) heldItem.getItem();
+				ISpellAcceptor settable = ISpellAcceptor.acceptor(heldItem);
 				if(!worldIn.isRemote)
 					worldIn.playSound(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, PsiSoundHandler.bulletCreate, SoundCategory.BLOCKS, 0.5F, 1F);
 
 				programmer.spell.uuid = UUID.randomUUID();
-				settable.setSpell(playerIn, heldItem, programmer.spell);
+				settable.setSpell(playerIn, programmer.spell);
 				if(playerIn instanceof EntityPlayerMP)
 					VanillaPacketDispatcher.dispatchTEToPlayer(programmer, (EntityPlayerMP) playerIn);
 				return EnumActionResult.SUCCESS;

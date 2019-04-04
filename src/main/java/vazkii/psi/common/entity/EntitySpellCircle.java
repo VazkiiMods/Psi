@@ -22,10 +22,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import vazkii.psi.api.cad.ICADColorizer;
-import vazkii.psi.api.spell.ISpellContainer;
-import vazkii.psi.api.spell.ISpellImmune;
-import vazkii.psi.api.spell.Spell;
-import vazkii.psi.api.spell.SpellContext;
+import vazkii.psi.api.spell.*;
 import vazkii.psi.client.core.helper.PsiRenderHelper;
 import vazkii.psi.common.Psi;
 
@@ -146,9 +143,9 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 			Entity thrower = getCaster();
 			if (thrower instanceof EntityPlayer) {
 				ItemStack spellContainer = dataManager.get(BULLET_DATA);
-				if (!spellContainer.isEmpty() && spellContainer.getItem() instanceof ISpellContainer) {
+				if (!spellContainer.isEmpty() && ISpellAcceptor.isContainer(spellContainer)) {
 					dataManager.set(TIMES_CAST, times + 1);
-					Spell spell = ((ISpellContainer) spellContainer.getItem()).getSpell(spellContainer);
+					Spell spell = ISpellAcceptor.acceptor(spellContainer).getSpell();
 					if (spell != null)
 						context = new SpellContext().setPlayer((EntityPlayer) thrower).setFocalPoint(this)
 								.setSpell(spell).setLoopcastIndex(times);

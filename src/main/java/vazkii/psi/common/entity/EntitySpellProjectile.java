@@ -24,7 +24,7 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import vazkii.psi.api.cad.ICADColorizer;
 import vazkii.psi.api.internal.Vector3;
-import vazkii.psi.api.spell.ISpellContainer;
+import vazkii.psi.api.spell.ISpellAcceptor;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.client.core.helper.PsiRenderHelper;
@@ -200,8 +200,8 @@ public class EntitySpellProjectile extends EntityThrowable {
 
 		if(thrower instanceof EntityPlayer) {
 			ItemStack spellContainer = dataManager.get(BULLET_DATA);
-			if(!spellContainer.isEmpty() && spellContainer.getItem() instanceof ISpellContainer) {
-				Spell spell = ((ISpellContainer) spellContainer.getItem()).getSpell(spellContainer);
+			if (!spellContainer.isEmpty() && ISpellAcceptor.isContainer(spellContainer)) {
+				Spell spell = ISpellAcceptor.acceptor(spellContainer).getSpell();
 				if(spell != null) {
 					canCast = true;
 					if(context == null)

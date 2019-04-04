@@ -16,6 +16,9 @@ import net.minecraft.item.ItemStack;
 /**
  * An Item that implements this can have a spell set through right clicking the
  * Spell Programmer.
+ *
+ * As of version 73, this interface should not be used directly,
+ * instead interacting with the item via its {@link ISpellAcceptor}.
  */
 public interface ISpellSettable {
 

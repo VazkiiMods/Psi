@@ -95,16 +95,10 @@ public final class HUDHandler {
 	}
 
 	private static boolean showsBar(PlayerData data, ItemStack stack) {
-		if (stack.isEmpty())
+		if (stack.isEmpty() || !IPsiBarDisplay.isDisplay(stack))
 			return false;
-		else if (ISocketableCapability.isSocketable(stack))
-			return ISocketableCapability.socketable(stack).showPsiBar(data);
-		else if (!(stack.getItem() instanceof IShowPsiBar))
-			return false;
-
-		IShowPsiBar item = (IShowPsiBar) stack.getItem();
-
-		return item.shouldShow(stack, data);
+		else
+			return IPsiBarDisplay.display(stack).shouldShow(data);
 	}
 
 	@SideOnly(Side.CLIENT)

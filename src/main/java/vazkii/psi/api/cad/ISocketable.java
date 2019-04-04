@@ -12,7 +12,7 @@ package vazkii.psi.api.cad;
 
 import net.minecraft.item.ItemStack;
 import vazkii.psi.api.internal.IPlayerData;
-import vazkii.psi.api.spell.ISpellContainer;
+import vazkii.psi.api.spell.ISpellAcceptor;
 
 /**
  * This interface defines an item that can have Spell Bullets
@@ -73,15 +73,12 @@ public interface ISocketable extends IShowPsiBar {
     	if (!isSocketSlotAvailable(stack, slot))
     		return false;
 
-    	if (bullet.isEmpty() || !(bullet.getItem() instanceof ISpellContainer))
+    	if (bullet.isEmpty() || !ISpellAcceptor.hasSpell(bullet))
     		return false;
 
-    	ISpellContainer container = (ISpellContainer) bullet.getItem();
+    	ISpellAcceptor container = ISpellAcceptor.acceptor(bullet);
 
-    	if (!container.containsSpell(bullet))
-    		return false;
-
-        return stack.getItem() instanceof ICAD || !container.isCADOnlyContainer(bullet);
+        return stack.getItem() instanceof ICAD || !container.isCADOnlyContainer();
     }
 
     default boolean canLoopcast(ItemStack stack) {

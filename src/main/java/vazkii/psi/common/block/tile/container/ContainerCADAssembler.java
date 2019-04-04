@@ -23,7 +23,7 @@ import vazkii.psi.api.cad.EnumCADComponent;
 import vazkii.psi.api.cad.ICADComponent;
 import vazkii.psi.api.cad.ISocketableCapability;
 import vazkii.psi.api.inventory.InventorySocketable;
-import vazkii.psi.api.spell.ISpellSettable;
+import vazkii.psi.api.spell.ISpellAcceptor;
 import vazkii.psi.common.block.tile.TileCADAssembler;
 import vazkii.psi.common.block.tile.container.slot.InventoryAssemblerOutput;
 import vazkii.psi.common.block.tile.container.slot.SlotCADOutput;
@@ -150,7 +150,7 @@ public class ContainerCADAssembler extends Container {
 				} else if (ISocketableCapability.isSocketable(stackInSlot)) {
 					if (!mergeItemStack(stackInSlot, socketableStart, socketableEnd, false))
 						return ItemStack.EMPTY;
-				} else if (stackInSlot.getItem() instanceof ISpellSettable) {
+				} else if (ISpellAcceptor.isAcceptor(stackInSlot)) {
 					if (!mergeItemStack(stackInSlot, bulletStart, bulletEnd, false))
 						return ItemStack.EMPTY;
 				} else if (from < hotbarStart) {

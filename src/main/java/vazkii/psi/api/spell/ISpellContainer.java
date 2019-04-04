@@ -14,7 +14,10 @@ import net.minecraft.item.ItemStack;
 
 /**
  * An ItemStack that implements this counts as a Spell Container, by which
- * a {@link Spell} can be derived and casted sfrom it. This is used by Spell Bullets.
+ * a {@link Spell} can be derived and cast from it. This is used by Spell Bullets.
+ *
+ * As of version 73, this interface should not be used directly,
+ * instead interacting with the item via its {@link ISpellAcceptor}.
  */
 public interface ISpellContainer extends ISpellSettable {
 
