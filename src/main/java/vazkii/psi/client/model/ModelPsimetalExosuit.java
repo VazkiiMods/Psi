@@ -16,8 +16,6 @@ import net.minecraft.entity.item.EntityArmorStand;
 import vazkii.arl.item.ModelModArmor;
 import vazkii.arl.util.ClientTicker;
 
-import javax.annotation.Nonnull;
-
 public class ModelPsimetalExosuit extends ModelModArmor {
 
 	private final ModelRenderer helmAnchor;
@@ -35,7 +33,8 @@ public class ModelPsimetalExosuit extends ModelModArmor {
 	private final ModelRenderer armRAnchor;
 	private final ModelRenderer armR;
 	private final ModelRenderer armRpauldron;
-	
+
+	private final ModelRenderer beltAnchor;
 	private final ModelRenderer pantsAnchor;
 	private final ModelRenderer belt;
 	private final ModelRenderer legL;
@@ -59,7 +58,6 @@ public class ModelPsimetalExosuit extends ModelModArmor {
 		//helm
         helmAnchor = new ModelRenderer(this, 0, 0);
         helmAnchor.setRotationPoint(0.0F, 0.0F, 0.0F);
-        helmAnchor.addBox(-1.0F, -2.0F, 0.0F, 2, 2, 2, s);
         helm = new ModelRenderer(this, 0, 0);
         helm.setRotationPoint(0.0F, 0.0F, 0.0F);
         helm.addBox(-4.5F, -9.0F, -5.0F, 9, 9, 10, 0.0F);
@@ -84,7 +82,6 @@ public class ModelPsimetalExosuit extends ModelModArmor {
         //body
         bodyAnchor = new ModelRenderer(this, 0, 0);
         bodyAnchor.setRotationPoint(0.0F, 0.0F, 0.0F);
-        bodyAnchor.addBox(-1.0F, 0.0F, -1.0F, 2, 2, 2, s);
         body = new ModelRenderer(this, 0, 19);
         body.setRotationPoint(0.0F, 0.0F, 0.0F);
         body.addBox(-4.5F, -0.5F, -3.0F, 9, 7, 6, s);
@@ -93,7 +90,6 @@ public class ModelPsimetalExosuit extends ModelModArmor {
         armLAnchor = new ModelRenderer(this, 0, 0);
         armLAnchor.mirror = true;
         armLAnchor.setRotationPoint(4.0F, 2.0F, 0.0F);
-        armLAnchor.addBox(0.0F, -1.0F, -1.0F, 2, 2, 2, s);
         armL = new ModelRenderer(this, 0, 44);
         armL.mirror = true;
         armL.setRotationPoint(0.0F, 0.0F, 0.0F);
@@ -108,7 +104,6 @@ public class ModelPsimetalExosuit extends ModelModArmor {
         armRAnchor = new ModelRenderer(this, 0, 0);
         armRAnchor.mirror = true;
         armRAnchor.setRotationPoint(-4.0F, 2.0F, 0.0F);
-        armRAnchor.addBox(-2.0F, -1.0F, -1.0F, 2, 2, 2, s);
         armR = new ModelRenderer(this, 0, 44);
         armR.setRotationPoint(0.0F, 0.0F, 0.0F);
         armR.addBox(-3.5F, 6.0F, -2.51F, 3, 4, 5, s);
@@ -118,12 +113,13 @@ public class ModelPsimetalExosuit extends ModelModArmor {
         setRotateAngle(armRpauldron, 0.0F, 0.0F, 0.17453292519943295F);
         
         //pants
+		beltAnchor = new ModelRenderer(this, 0, 0);
+		beltAnchor.setRotationPoint(0.0F, 0.0F, 0.0F);
         pantsAnchor = new ModelRenderer(this, 0, 0);
         pantsAnchor.setRotationPoint(0.0F, 0.0F, 0.0F);
-        pantsAnchor.addBox(-1.0F, 0.0F, -1.0F, 2, 2, 2, s);
         belt = new ModelRenderer(this, 0, 53);
         belt.setRotationPoint(0.0F, 0.0F, 0.0F);
-        belt.addBox(-4.5F, 10.0F, -3.0F, 9, 5, 6, 0.0F);
+        belt.addBox(-4.5F, 8.0F, -3.0F, 9, 5, 6, 0.0F);
         legL = new ModelRenderer(this, 0, 64);
         legL.mirror = true;
         legL.setRotationPoint(1.9F, 12.0F, 0.0F);
@@ -154,10 +150,10 @@ public class ModelPsimetalExosuit extends ModelModArmor {
         armL.addChild(armLpauldron);
         armRAnchor.addChild(armR);
         armR.addChild(armRpauldron);
-        
-        pantsAnchor.addChild(belt);
-        belt.addChild(legL);
-        belt.addChild(legR);
+
+        beltAnchor.addChild(belt);
+        pantsAnchor.addChild(legL);
+        pantsAnchor.addChild(legR);
         
 	}
 
@@ -192,7 +188,7 @@ public class ModelPsimetalExosuit extends ModelModArmor {
 		bipedRightArm = armRAnchor;
 		bipedLeftArm = armLAnchor;
 		if(slot == 1) {
-			bipedBody = pantsAnchor;
+			bipedBody = beltAnchor;
 			bipedRightLeg = legR;
 			bipedLeftLeg = legL;
 		} else {
