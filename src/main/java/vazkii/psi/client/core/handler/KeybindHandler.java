@@ -12,6 +12,7 @@ package vazkii.psi.client.core.handler;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -30,16 +31,30 @@ public class KeybindHandler {
 		ClientRegistry.registerKeyBinding(keybind);
 	}
 
+	private static boolean isSocketableController(EntityPlayer player, ItemStack stack) {
+		if (!(stack.getItem() instanceof ISocketableController))
+			return false;
+
+		ItemStack[] stacks = ((ISocketableController) stack.getItem()).getControlledStacks(player, stack);
+
+		for (ItemStack controlled : stacks) {
+			if (!controlled.isEmpty() && ISocketableCapability.isSocketable(controlled))
+				return true;
+		}
+
+		return false;
+	}
+
 	public static void keyDown() {
 		Minecraft mc = Minecraft.getMinecraft();
 		ItemStack stack = mc.player.getHeldItem(EnumHand.MAIN_HAND);
 		
 		if(mc.currentScreen == null) {
-			if(!stack.isEmpty() && (ISocketableCapability.isSocketable(stack) || stack.getItem() instanceof ISocketableController))
+			if(!stack.isEmpty() && (ISocketableCapability.isSocketable(stack) || isSocketableController(mc.player, stack)))
 				mc.displayGuiScreen(new GuiSocketSelect(stack));
 			else {
 				stack = mc.player.getHeldItem(EnumHand.OFF_HAND);
-				if(!stack.isEmpty() && (ISocketableCapability.isSocketable(stack) || stack.getItem() instanceof ISocketableController))
+				if(!stack.isEmpty() && (ISocketableCapability.isSocketable(stack) || isSocketableController(mc.player, stack)))
 					mc.displayGuiScreen(new GuiSocketSelect(stack));
 				else mc.displayGuiScreen(new GuiLeveling());
 			}

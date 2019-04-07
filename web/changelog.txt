@@ -5,6 +5,9 @@ r1.1-73
 *Search is now sorted by relevance, instead of just by what order things are registered in.
 *Infusion tricks now act in a sphere, instead of a cube.
 *Fix odd motion behavior when adding motion to a player or an entity a player is controlling.
+*Blink tricks now preserve momentum.
+*Fix a crash when particles were size zero.
+*[API] Capabilities are now the method by which ISocketable, IShowPsiBar, ISpellSettable, ISpellContainer, and ISpellImmune are handled.
 *[API] Added PsiRegenEvent
 r1.1-72
 *Added some hooks for addons to do stuff. (WireSegal)
