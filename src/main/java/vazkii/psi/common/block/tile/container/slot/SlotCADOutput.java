@@ -36,32 +36,32 @@ public class SlotCADOutput extends Slot {
 	}
 	
 	@Nonnull
-    @Override
+	@Override
 	public ItemStack onTake(EntityPlayer playerIn, @Nonnull ItemStack stack) {
 		super.onTake(playerIn, stack);
 		assembler.onCraftCAD(stack);
 		return stack;
 	}
 
-    @Override
-    public boolean canTakeStack(EntityPlayer playerIn) {
-        CADTakeEvent event = new CADTakeEvent(getStack(), assembler, playerIn);
-        float sound = event.getSound();
-        if (MinecraftForge.EVENT_BUS.post(event)) {
-            BlockPos assemblerPos = this.assembler.getPos();
-            String cancelMessage = event.getCancellationMessage();
-            if (!playerIn.world.isRemote) {
-                if (cancelMessage != null && !cancelMessage.isEmpty())
-                    playerIn.sendMessage(new TextComponentTranslation(cancelMessage).setStyle(new Style().setColor(TextFormatting.RED)));
-                playerIn.world.playSound(null, assemblerPos.getX(), assemblerPos.getY(), assemblerPos.getZ(), PsiSoundHandler.compileError, SoundCategory.BLOCKS, sound, 1F);
-            }
-            return false;
-        }
-        return super.canTakeStack(playerIn);
-    }
+	@Override
+	public boolean canTakeStack(EntityPlayer playerIn) {
+		CADTakeEvent event = new CADTakeEvent(getStack(), assembler, playerIn);
+		float sound = event.getSound();
+		if (MinecraftForge.EVENT_BUS.post(event)) {
+			BlockPos assemblerPos = this.assembler.getPos();
+			String cancelMessage = event.getCancellationMessage();
+			if (!playerIn.world.isRemote) {
+				if (cancelMessage != null && !cancelMessage.isEmpty())
+					playerIn.sendMessage(new TextComponentTranslation(cancelMessage).setStyle(new Style().setColor(TextFormatting.RED)));
+				playerIn.world.playSound(null, assemblerPos.getX(), assemblerPos.getY(), assemblerPos.getZ(), PsiSoundHandler.compileError, SoundCategory.BLOCKS, sound, 1F);
+			}
+			return false;
+		}
+		return super.canTakeStack(playerIn);
+	}
 
-    @Override
-    public boolean isItemValid(ItemStack stack) {
-        return false;
-    }
+	@Override
+	public boolean isItemValid(ItemStack stack) {
+		return false;
+	}
 }

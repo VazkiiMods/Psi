@@ -17,23 +17,23 @@ import net.minecraft.item.ItemStack;
  * This interface represents a CAD Assembler tile. You probably shouldn't implement this.
  */
 public interface ITileCADAssembler {
-    int getComponentSlot(EnumCADComponent componentType);
+	int getComponentSlot(EnumCADComponent componentType);
 
-    ItemStack getCachedCAD(EntityPlayer player);
+	ItemStack getCachedCAD(EntityPlayer player);
 
-    void clearCachedCAD();
+	void clearCachedCAD();
 
-    ItemStack getStackForComponent(EnumCADComponent componentType);
+	ItemStack getStackForComponent(EnumCADComponent componentType);
 
-    boolean setStackForComponent(EnumCADComponent componentType, ItemStack component);
+	boolean setStackForComponent(EnumCADComponent componentType, ItemStack component);
 
-    ItemStack getSocketableStack();
+	ItemStack getSocketableStack();
 
-    ISocketableCapability getSocketable();
+	ISocketableCapability getSocketable();
 
-    boolean setSocketableStack(ItemStack stack);
+	boolean setSocketableStack(ItemStack stack);
 
-    void onCraftCAD(ItemStack cad);
+	void onCraftCAD(ItemStack cad);
 
-    boolean isBulletSlotEnabled(int slot);
+	boolean isBulletSlotEnabled(int slot);
 }

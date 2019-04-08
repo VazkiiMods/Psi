@@ -22,43 +22,43 @@ import vazkii.psi.common.lib.LibMisc;
 import javax.annotation.Nonnull;
 
 public class TrickCraftingCategory implements IRecipeCategory<TrickCraftingRecipeJEI> {
-    public static final TrickCraftingCategory INSTANCE = new TrickCraftingCategory();
-    private static final IDrawable background = JEICompat.helpers.getGuiHelper().createDrawable(
-            new ResourceLocation(LibMisc.MOD_ID, "textures/gui/jei/trick.png"), 0, 0, 96, 41);
-    private static final int INPUT_SLOT = 0;
-    private static final int CAD_SLOT = 1;
-    private static final int OUTPUT_SLOT = 2;
+	public static final TrickCraftingCategory INSTANCE = new TrickCraftingCategory();
+	private static final IDrawable background = JEICompat.helpers.getGuiHelper().createDrawable(
+			new ResourceLocation(LibMisc.MOD_ID, "textures/gui/jei/trick.png"), 0, 0, 96, 41);
+	private static final int INPUT_SLOT = 0;
+	private static final int CAD_SLOT = 1;
+	private static final int OUTPUT_SLOT = 2;
 
-    @Nonnull
-    @Override
-    public String getUid() {
-        return LibMisc.MOD_ID + ".trick";
-    }
+	@Nonnull
+	@Override
+	public String getUid() {
+		return LibMisc.MOD_ID + ".trick";
+	}
 
-    @Nonnull
-    @Override
-    public String getTitle() {
-        return I18n.format("jei." + LibMisc.MOD_ID + ".category.trick");
-    }
+	@Nonnull
+	@Override
+	public String getTitle() {
+		return I18n.format("jei." + LibMisc.MOD_ID + ".category.trick");
+	}
 
-    @Nonnull
-    @Override
-    public String getModName() {
-        return LibMisc.MOD_ID;
-    }
+	@Nonnull
+	@Override
+	public String getModName() {
+		return LibMisc.MOD_ID;
+	}
 
-    @Nonnull
-    @Override
-    public IDrawable getBackground() {
-        return background;
-    }
+	@Nonnull
+	@Override
+	public IDrawable getBackground() {
+		return background;
+	}
 
-    @Override
-    public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull TrickCraftingRecipeJEI recipeWrapper, @Nonnull IIngredients ingredients) {
-        recipeLayout.getItemStacks().init(INPUT_SLOT, true, 0, 5);
-        recipeLayout.getItemStacks().init(CAD_SLOT, true, 21, 23);
-        recipeLayout.getItemStacks().init(OUTPUT_SLOT, false, 73, 5);
+	@Override
+	public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull TrickCraftingRecipeJEI recipeWrapper, @Nonnull IIngredients ingredients) {
+		recipeLayout.getItemStacks().init(INPUT_SLOT, true, 0, 5);
+		recipeLayout.getItemStacks().init(CAD_SLOT, true, 21, 23);
+		recipeLayout.getItemStacks().init(OUTPUT_SLOT, false, 73, 5);
 
-        recipeLayout.getItemStacks().set(ingredients);
-    }
+		recipeLayout.getItemStacks().set(ingredients);
+	}
 }

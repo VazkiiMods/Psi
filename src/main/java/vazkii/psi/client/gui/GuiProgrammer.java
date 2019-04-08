@@ -325,9 +325,9 @@ public class GuiProgrammer extends GuiScreen {
 		SpellPiece pieceAt = null;
 		if(cursorX != -1 && cursorY != -1) {
 			pieceAt = spell.grid.gridData[cursorX][cursorY];
-            if (pieceAt != null) {
-                pieceAt.getTooltip(tooltip);
-                comment = pieceAt.comment;
+			if (pieceAt != null) {
+				pieceAt.getTooltip(tooltip);
+				comment = pieceAt.comment;
 			}
 
 			if(!takingScreenshot) {
@@ -453,7 +453,7 @@ public class GuiProgrammer extends GuiScreen {
 	}
 
 
-    @Override
+	@Override
 	public void handleMouseInput() throws IOException {
 		super.handleMouseInput();
 

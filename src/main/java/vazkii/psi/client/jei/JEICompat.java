@@ -27,24 +27,24 @@ import vazkii.psi.common.item.base.ModItems;
 @JEIPlugin
 public class JEICompat implements IModPlugin {
 
-    public static IJeiHelpers helpers;
+	public static IJeiHelpers helpers;
 
-    @Override
-    public void registerCategories(IRecipeCategoryRegistration registry) {
-        helpers = registry.getJeiHelpers();
-        registry.addRecipeCategories(TrickCraftingCategory.INSTANCE);
-    }
+	@Override
+	public void registerCategories(IRecipeCategoryRegistration registry) {
+		helpers = registry.getJeiHelpers();
+		registry.addRecipeCategories(TrickCraftingCategory.INSTANCE);
+	}
 
-    @Override
-    public void register(IModRegistry registry) {
-        helpers = registry.getJeiHelpers();
+	@Override
+	public void register(IModRegistry registry) {
+		helpers = registry.getJeiHelpers();
 
-        registry.handleRecipes(TrickRecipe.class, TrickCraftingRecipeJEI::new, TrickCraftingCategory.INSTANCE.getUid());
-        registry.addRecipes(PsiAPI.trickRecipes, TrickCraftingCategory.INSTANCE.getUid());
+		registry.handleRecipes(TrickRecipe.class, TrickCraftingRecipeJEI::new, TrickCraftingCategory.INSTANCE.getUid());
+		registry.addRecipes(PsiAPI.trickRecipes, TrickCraftingCategory.INSTANCE.getUid());
 
-        NonNullList<ItemStack> stacks = NonNullList.create();
-        ModItems.cad.getSubItems(CreativeTabs.SEARCH, stacks);
-        for (ItemStack stack : stacks)
-            registry.addRecipeCatalyst(stack, TrickCraftingCategory.INSTANCE.getUid());
-    }
+		NonNullList<ItemStack> stacks = NonNullList.create();
+		ModItems.cad.getSubItems(CreativeTabs.SEARCH, stacks);
+		for (ItemStack stack : stacks)
+			registry.addRecipeCatalyst(stack, TrickCraftingCategory.INSTANCE.getUid());
+	}
 }

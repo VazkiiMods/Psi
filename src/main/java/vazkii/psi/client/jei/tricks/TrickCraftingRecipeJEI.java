@@ -29,64 +29,64 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 public class TrickCraftingRecipeJEI implements IRecipeWrapper {
-    private static final IDrawable programmerHover = JEICompat.helpers.getGuiHelper().createDrawable(
-            new ResourceLocation("psi", "textures/gui/programmer.png"), 16, 184, 16, 16);
+	private static final IDrawable programmerHover = JEICompat.helpers.getGuiHelper().createDrawable(
+			new ResourceLocation("psi", "textures/gui/programmer.png"), 16, 184, 16, 16);
 
-    private static final int trickX = 43;
-    private static final int trickY = 24;
+	private static final int trickX = 43;
+	private static final int trickY = 24;
 
 
-    @Nullable
-    private final IDrawable icon;
-    private final SpellPiece piece;
-    private final TrickRecipe recipe;
+	@Nullable
+	private final IDrawable icon;
+	private final SpellPiece piece;
+	private final TrickRecipe recipe;
 
-    public TrickCraftingRecipeJEI(TrickRecipe recipe) {
-        this.recipe = recipe;
-        ResourceLocation location = PsiAPI.simpleSpellTextures.get(recipe.getPiece());
-        Class<? extends SpellPiece> pieceType = PsiAPI.spellPieceRegistry.getObject(recipe.getPiece());
+	public TrickCraftingRecipeJEI(TrickRecipe recipe) {
+		this.recipe = recipe;
+		ResourceLocation location = PsiAPI.simpleSpellTextures.get(recipe.getPiece());
+		Class<? extends SpellPiece> pieceType = PsiAPI.spellPieceRegistry.getObject(recipe.getPiece());
 
-        icon = location != null ? JEICompat.helpers.getGuiHelper().createDrawable(location, 0, 0, 256, 256) : null;
-        piece = pieceType != null ? SpellPiece.create(pieceType, new Spell()) : null;
-    }
+		icon = location != null ? JEICompat.helpers.getGuiHelper().createDrawable(location, 0, 0, 256, 256) : null;
+		piece = pieceType != null ? SpellPiece.create(pieceType, new Spell()) : null;
+	}
 
-    @Override
-    public void getIngredients(@Nonnull IIngredients ingredients) {
-        ingredients.setInputLists(ItemStack.class,
-                Lists.newArrayList(
-                        Lists.newArrayList(recipe.getInput().getMatchingStacks()),
-                        Lists.newArrayList(recipe.getCAD())));
-        ingredients.setOutput(ItemStack.class, recipe.getOutput());
-    }
+	@Override
+	public void getIngredients(@Nonnull IIngredients ingredients) {
+		ingredients.setInputLists(ItemStack.class,
+				Lists.newArrayList(
+						Lists.newArrayList(recipe.getInput().getMatchingStacks()),
+						Lists.newArrayList(recipe.getCAD())));
+		ingredients.setOutput(ItemStack.class, recipe.getOutput());
+	}
 
-    @Override
-    public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
-        if (icon != null) {
-            GlStateManager.pushMatrix();
-            GlStateManager.scale(0.0625f, 0.0625f, 0.0625f);
-            icon.draw(minecraft, trickX * 16, trickY * 16);
-            GlStateManager.color(1f, 1f, 1f);
-            GlStateManager.popMatrix();
+	@Override
+	public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
+		if (icon != null) {
+			GlStateManager.pushMatrix();
+			GlStateManager.scale(0.0625f, 0.0625f, 0.0625f);
+			icon.draw(minecraft, trickX * 16, trickY * 16);
+			GlStateManager.color(1f, 1f, 1f);
+			GlStateManager.popMatrix();
 
-            if (onTrick(mouseX, mouseY))
-                programmerHover.draw(minecraft, trickX, trickY);
-        }
+			if (onTrick(mouseX, mouseY))
+				programmerHover.draw(minecraft, trickX, trickY);
+		}
 
-    }
+	}
 
-    @Nonnull
-    @Override
-    public List<String> getTooltipStrings(int mouseX, int mouseY) {
-        List<String> tooltip = Lists.newArrayList();
-        if (onTrick(mouseX, mouseY) && piece != null) {
-            piece.getTooltip(tooltip);
-            return tooltip;
-        }
-        return tooltip;
-    }
+	@Nonnull
+	@Override
+	public List<String> getTooltipStrings(int mouseX, int mouseY) {
+		List<String> tooltip = Lists.newArrayList();
+		if (onTrick(mouseX, mouseY) && piece != null) {
+			piece.getTooltip(tooltip);
+			return tooltip;
+		}
+		return tooltip;
+	}
 
-    public boolean onTrick(int mouseX, int mouseY) {
-        return (mouseX >= trickX && mouseX <= trickX + 16 && mouseY >= trickY && mouseY <= trickY + 16);
-    }
+	public boolean onTrick(int mouseX, int mouseY) {
+		return (mouseX >= trickX && mouseX <= trickX + 16 && mouseY >= trickY && mouseY <= trickY + 16);
+	}
 
 }

@@ -62,7 +62,7 @@ public class BlockConjured extends BlockModContainer implements IPsiBlock {
 	@SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
 	private static final Set<BlockPos> needsParticleUpdate = Sets.newHashSet();
 
-    protected static final AxisAlignedBB LIGHT_AABB = new AxisAlignedBB(0.25, 0.25, 0.25, 0.75, 0.75, 0.75);
+	protected static final AxisAlignedBB LIGHT_AABB = new AxisAlignedBB(0.25, 0.25, 0.25, 0.75, 0.75, 0.75);
 	
 	public BlockConjured() {
 		super(LibBlockNames.CONJURED, Material.GLASS);
@@ -225,9 +225,9 @@ public class BlockConjured extends BlockModContainer implements IPsiBlock {
 	@Nonnull
 	@Override
 	@SuppressWarnings("deprecation")
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
-        return BlockFaceShape.UNDEFINED;
-    }
+	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+		return BlockFaceShape.UNDEFINED;
+	}
 	
 	@Override
 	public TileEntity createTileEntity(@Nonnull World world, @Nonnull IBlockState state) {

@@ -59,7 +59,7 @@ public class BlockProgrammer extends BlockFacing implements IPsiBlock {
 	}
 
 	@Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
 		ItemStack heldItem = playerIn.getHeldItem(hand);
 		TileProgrammer programmer = (TileProgrammer) worldIn.getTileEntity(pos);
 		if (programmer == null)

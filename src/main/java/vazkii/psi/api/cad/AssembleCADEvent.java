@@ -32,31 +32,31 @@ import net.minecraftforge.fml.common.eventhandler.Event;
 @Cancelable
 public class AssembleCADEvent extends Event {
 
-    private ItemStack cad;
-    private final ITileCADAssembler assembler;
-    private final EntityPlayer player;
+	private ItemStack cad;
+	private final ITileCADAssembler assembler;
+	private final EntityPlayer player;
 
-    public AssembleCADEvent(ItemStack cad, ITileCADAssembler assembler, EntityPlayer player) {
-        this.cad = cad;
-        this.assembler = assembler;
-        this.player = player;
-    }
+	public AssembleCADEvent(ItemStack cad, ITileCADAssembler assembler, EntityPlayer player) {
+		this.cad = cad;
+		this.assembler = assembler;
+		this.player = player;
+	}
 
-    public ITileCADAssembler getAssembler() {
-        return assembler;
-    }
+	public ITileCADAssembler getAssembler() {
+		return assembler;
+	}
 
-    public ItemStack getCad() {
-        return cad;
-    }
+	public ItemStack getCad() {
+		return cad;
+	}
 
-    public void setCad(ItemStack cad) {
-        if (!cad.isEmpty() && !(cad.getItem() instanceof ICAD))
-            throw new IllegalStateException("Only a CAD can be crafted by the CAD Assembler!");
-        this.cad = cad;
-    }
+	public void setCad(ItemStack cad) {
+		if (!cad.isEmpty() && !(cad.getItem() instanceof ICAD))
+			throw new IllegalStateException("Only a CAD can be crafted by the CAD Assembler!");
+		this.cad = cad;
+	}
 
-    public EntityPlayer getPlayer() {
-        return player;
-    }
+	public EntityPlayer getPlayer() {
+		return player;
+	}
 }

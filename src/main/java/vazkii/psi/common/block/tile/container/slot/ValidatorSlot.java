@@ -16,12 +16,12 @@ import net.minecraft.item.ItemStack;
 
 public class ValidatorSlot extends Slot {
 
-    public ValidatorSlot(IInventory inventoryIn, int index, int xPosition, int yPosition) {
-        super(inventoryIn, index, xPosition, yPosition);
-    }
+	public ValidatorSlot(IInventory inventoryIn, int index, int xPosition, int yPosition) {
+		super(inventoryIn, index, xPosition, yPosition);
+	}
 
-    @Override
-    public boolean isItemValid(ItemStack stack) {
-        return inventory.isItemValidForSlot(getSlotIndex(), stack);
-    }
+	@Override
+	public boolean isItemValid(ItemStack stack) {
+		return inventory.isItemValidForSlot(getSlotIndex(), stack);
+	}
 }

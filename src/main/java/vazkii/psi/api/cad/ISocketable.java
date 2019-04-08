@@ -69,20 +69,20 @@ public interface ISocketable extends IShowPsiBar {
 	 */
 	void setSelectedSlot(ItemStack stack, int slot);
 
-    default boolean isItemValid(ItemStack stack, int slot, ItemStack bullet) {
-    	if (!isSocketSlotAvailable(stack, slot))
-    		return false;
+	default boolean isItemValid(ItemStack stack, int slot, ItemStack bullet) {
+		if (!isSocketSlotAvailable(stack, slot))
+			return false;
 
-    	if (bullet.isEmpty() || !ISpellAcceptor.hasSpell(bullet))
-    		return false;
+		if (bullet.isEmpty() || !ISpellAcceptor.hasSpell(bullet))
+			return false;
 
-    	ISpellAcceptor container = ISpellAcceptor.acceptor(bullet);
+		ISpellAcceptor container = ISpellAcceptor.acceptor(bullet);
 
-        return stack.getItem() instanceof ICAD || !container.isCADOnlyContainer();
-    }
+		return stack.getItem() instanceof ICAD || !container.isCADOnlyContainer();
+	}
 
-    default boolean canLoopcast(ItemStack stack) {
-    	return stack.getItem() instanceof ICAD;
+	default boolean canLoopcast(ItemStack stack) {
+		return stack.getItem() instanceof ICAD;
 	}
 
 	@Override

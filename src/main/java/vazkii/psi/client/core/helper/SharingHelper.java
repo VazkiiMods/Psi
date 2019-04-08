@@ -73,7 +73,7 @@ public final class SharingHelper {
 
 	public static void uploadAndOpen(String title, String export) {
 		String url = uploadImage(title, export);
-		try {    	
+		try {
 			if(Desktop.isDesktopSupported())
 				Desktop.getDesktop().browse(new URI(url));
 		} catch(Exception e) {

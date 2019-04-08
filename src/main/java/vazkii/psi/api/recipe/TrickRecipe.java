@@ -14,31 +14,31 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 
 public class TrickRecipe {
-    private final String piece;
-    private final Ingredient input;
-    private final ItemStack output;
-    private final ItemStack cad;
+	private final String piece;
+	private final Ingredient input;
+	private final ItemStack output;
+	private final ItemStack cad;
 
-    public TrickRecipe(String trick, Ingredient input, ItemStack output, ItemStack CAD) {
-        this.piece = trick;
-        this.input = input;
-        this.output = output;
-        this.cad = CAD;
-    }
+	public TrickRecipe(String trick, Ingredient input, ItemStack output, ItemStack CAD) {
+		this.piece = trick;
+		this.input = input;
+		this.output = output;
+		this.cad = CAD;
+	}
 
-    public String getPiece() {
-        return piece;
-    }
+	public String getPiece() {
+		return piece;
+	}
 
-    public Ingredient getInput() {
-        return input;
-    }
+	public Ingredient getInput() {
+		return input;
+	}
 
-    public ItemStack getOutput() {
-        return output;
-    }
+	public ItemStack getOutput() {
+		return output;
+	}
 
-    public ItemStack getCAD() {
-        return cad;
-    }
+	public ItemStack getCAD() {
+		return cad;
+	}
 }

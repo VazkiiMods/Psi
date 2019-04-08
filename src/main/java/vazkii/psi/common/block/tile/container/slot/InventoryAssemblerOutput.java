@@ -26,115 +26,115 @@ import javax.annotation.Nonnull;
  */
 public class InventoryAssemblerOutput implements IInventory {
 
-    private final EntityPlayer player;
-    private final TileCADAssembler assembler;
+	private final EntityPlayer player;
+	private final TileCADAssembler assembler;
 
-    public InventoryAssemblerOutput(EntityPlayer player, TileCADAssembler assembler) {
-        this.player = player;
-        this.assembler = assembler;
-    }
+	public InventoryAssemblerOutput(EntityPlayer player, TileCADAssembler assembler) {
+		this.player = player;
+		this.assembler = assembler;
+	}
 
-    private ItemStack getStack() {
-        return assembler.getCachedCAD(player);
-    }
+	private ItemStack getStack() {
+		return assembler.getCachedCAD(player);
+	}
 
-    @Override
-    public int getSizeInventory() {
-        return 1;
-    }
+	@Override
+	public int getSizeInventory() {
+		return 1;
+	}
 
-    @Override
-    public boolean isEmpty() {
-        return getStack().isEmpty();
-    }
+	@Override
+	public boolean isEmpty() {
+		return getStack().isEmpty();
+	}
 
-    @Nonnull
-    @Override
-    public ItemStack getStackInSlot(int index) {
-        return getStack();
-    }
+	@Nonnull
+	@Override
+	public ItemStack getStackInSlot(int index) {
+		return getStack();
+	}
 
-    @Nonnull
-    @Override
-    public String getName() {
-        return "Result";
-    }
+	@Nonnull
+	@Override
+	public String getName() {
+		return "Result";
+	}
 
-    @Override
-    public boolean hasCustomName() {
-        return false;
-    }
+	@Override
+	public boolean hasCustomName() {
+		return false;
+	}
 
-    @Nonnull
-    @Override
-    public ITextComponent getDisplayName() {
-        return hasCustomName() ? new TextComponentString(getName()) : new TextComponentTranslation(getName());
-    }
+	@Nonnull
+	@Override
+	public ITextComponent getDisplayName() {
+		return hasCustomName() ? new TextComponentString(getName()) : new TextComponentTranslation(getName());
+	}
 
-    @Nonnull
-    @Override
-    public ItemStack decrStackSize(int index, int count) {
-        return getStack();
-    }
+	@Nonnull
+	@Override
+	public ItemStack decrStackSize(int index, int count) {
+		return getStack();
+	}
 
-    @Nonnull
-    @Override
-    public ItemStack removeStackFromSlot(int index) {
-        return getStack();
-    }
+	@Nonnull
+	@Override
+	public ItemStack removeStackFromSlot(int index) {
+		return getStack();
+	}
 
-    @Override
-    public void setInventorySlotContents(int index, @Nonnull ItemStack stack) {
-        // NO-OP
-    }
+	@Override
+	public void setInventorySlotContents(int index, @Nonnull ItemStack stack) {
+		// NO-OP
+	}
 
-    @Override
-    public int getInventoryStackLimit() {
-        return 1;
-    }
+	@Override
+	public int getInventoryStackLimit() {
+		return 1;
+	}
 
-    @Override
-    public void markDirty() {
-        // NO-OP
-    }
+	@Override
+	public void markDirty() {
+		// NO-OP
+	}
 
-    @Override
-    public boolean isUsableByPlayer(@Nonnull EntityPlayer player) {
-        return true;
-    }
+	@Override
+	public boolean isUsableByPlayer(@Nonnull EntityPlayer player) {
+		return true;
+	}
 
-    @Override
-    public void openInventory(@Nonnull EntityPlayer player) {
-        // NO-OP
-    }
+	@Override
+	public void openInventory(@Nonnull EntityPlayer player) {
+		// NO-OP
+	}
 
-    @Override
-    public void closeInventory(@Nonnull EntityPlayer player) {
-        // NO-OP
-    }
+	@Override
+	public void closeInventory(@Nonnull EntityPlayer player) {
+		// NO-OP
+	}
 
-    @Override
-    public boolean isItemValidForSlot(int index, @Nonnull ItemStack stack) {
-        return false;
-    }
+	@Override
+	public boolean isItemValidForSlot(int index, @Nonnull ItemStack stack) {
+		return false;
+	}
 
-    @Override
-    public int getField(int id) {
-        return 0;
-    }
+	@Override
+	public int getField(int id) {
+		return 0;
+	}
 
-    @Override
-    public void setField(int id, int value) {
-        // NO-OP
-    }
+	@Override
+	public void setField(int id, int value) {
+		// NO-OP
+	}
 
-    @Override
-    public int getFieldCount() {
-        return 0;
-    }
+	@Override
+	public int getFieldCount() {
+		return 0;
+	}
 
-    @Override
-    public void clear() {
-        // NO-OP
-    }
+	@Override
+	public void clear() {
+		// NO-OP
+	}
 }
