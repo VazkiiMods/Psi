@@ -593,15 +593,10 @@ public class PlayerDataHandler {
 			if (!learning)
 				trueLevel++;
 
-			if (0 > level || level > 1)
+			if (level != 0)
 				level = trueLevel;
 
-			if (level == 0) {
-				levelPoints = 0;
-			} else if (learning && levelPoints != 0)
-				levelPoints = 0;
-			else if (!learning && levelPoints == 0)
-				levelPoints = 1;
+			levelPoints = Math.max(0, Math.min(levelPoints, PsiAPI.levelCap - trueLevel));
 
 			if (!learning)
 				lastSpellGroup = "";
@@ -785,7 +780,11 @@ public class PlayerDataHandler {
 				lastSpellGroup = group;
 				levelPoints--;
 				learning = true;
-				save();
+
+				if (levelPoints > 0) // Skip to next level
+					levelUp();
+				else
+					save();
 			}
 		}
 
