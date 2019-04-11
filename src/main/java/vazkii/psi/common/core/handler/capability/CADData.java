@@ -36,14 +36,14 @@ public class CADData implements ICapabilityProvider, ICADData {
 	@Override
 	@SuppressWarnings("ConstantConditions")
 	public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
-		return capability == ICADData.CAPABILITY;
+		return capability == CAPABILITY;
 	}
 
 	@Nullable
 	@Override
 	@SuppressWarnings("ConstantConditions")
 	public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
-		return capability == ICADData.CAPABILITY ? ICADData.CAPABILITY.cast(this) : null;
+		return capability == CAPABILITY ? CAPABILITY.cast(this) : null;
 	}
 
 	@Override
@@ -126,18 +126,22 @@ public class CADData implements ICapabilityProvider, ICADData {
 
 	@Override
 	public void deserializeNBT(NBTTagCompound nbt) {
-		time = nbt.getInteger("Time");
-		battery = nbt.getInteger("Battery");
+		if (nbt.hasKey("Time", Constants.NBT.TAG_ANY_NUMERIC))
+			time = nbt.getInteger("Time");
+		if (nbt.hasKey("Battery", Constants.NBT.TAG_ANY_NUMERIC))
+			battery = nbt.getInteger("Battery");
 
-		NBTTagList memory = nbt.getTagList("Memory", Constants.NBT.TAG_LIST);
-		List<Vector3> newVectors = Lists.newArrayList();
-		for (int i = 0; i < memory.tagCount(); i++) {
-			NBTTagList vec = (NBTTagList) memory.get(i);
-			if (vec.getTagType() == Constants.NBT.TAG_DOUBLE && vec.tagCount() >= 3)
-				newVectors.add(new Vector3(vec.getDoubleAt(0), vec.getDoubleAt(1), vec.getDoubleAt(2)));
-			else
-				newVectors.add(null);
+		if (nbt.hasKey("Memory", Constants.NBT.TAG_LIST)) {
+			NBTTagList memory = nbt.getTagList("Memory", Constants.NBT.TAG_LIST);
+			List<Vector3> newVectors = Lists.newArrayList();
+			for (int i = 0; i < memory.tagCount(); i++) {
+				NBTTagList vec = (NBTTagList) memory.get(i);
+				if (vec.getTagType() == Constants.NBT.TAG_DOUBLE && vec.tagCount() >= 3)
+					newVectors.add(new Vector3(vec.getDoubleAt(0), vec.getDoubleAt(1), vec.getDoubleAt(2)));
+				else
+					newVectors.add(null);
+			}
+			vectors = newVectors;
 		}
-		vectors = newVectors;
 	}
 }

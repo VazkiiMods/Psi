@@ -22,6 +22,8 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemHandlerHelper;
 import vazkii.arl.block.BlockFacing;
 import vazkii.arl.block.tile.TileSimpleInventory;
 import vazkii.arl.util.ItemNBTHelper;
@@ -34,6 +36,8 @@ import vazkii.psi.common.lib.LibGuiIDs;
 
 import javax.annotation.Nonnull;
 import java.util.Random;
+
+import static net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY;
 
 public class BlockCADAssembler extends BlockFacing implements IPsiBlock {
 
@@ -95,6 +99,22 @@ public class BlockCADAssembler extends BlockFacing implements IPsiBlock {
 		}
 
 		super.breakBlock(par1World, pos, state);
+	}
+
+	@Override
+	public boolean hasComparatorInputOverride(IBlockState state) {
+		return true;
+	}
+
+	@Override
+	public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos) {
+		TileEntity tile = worldIn.getTileEntity(pos);
+		if (tile != null && tile.hasCapability(ITEM_HANDLER_CAPABILITY, null)) {
+			IItemHandler capability = tile.getCapability(ITEM_HANDLER_CAPABILITY, null);
+			return ItemHandlerHelper.calcRedstoneFromInventory(capability);
+		}
+
+		return 0;
 	}
 
 	@Override

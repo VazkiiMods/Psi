@@ -55,7 +55,6 @@ import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
 import vazkii.psi.common.core.handler.PsiSoundHandler;
 import vazkii.psi.common.core.handler.capability.CADData;
-import vazkii.psi.api.cad.ICADData;
 import vazkii.psi.common.crafting.recipe.AssemblyScavengeRecipe;
 import vazkii.psi.common.item.base.IPsiItem;
 import vazkii.psi.common.item.base.ModItems;
@@ -67,7 +66,9 @@ import vazkii.psi.common.network.message.MessageVisualEffect;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -98,11 +99,7 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 	}
 
 	private ICADData getCADData(ItemStack stack) {
-		if (stack.hasCapability(ICADData.CAPABILITY, null)) {
-			ICADData data = stack.getCapability(ICADData.CAPABILITY, null);
-			if (data != null)
-				return data;
-		}
+		if (ICADData.hasData(stack)) return ICADData.data(stack);
 
 		return new CADData();
 	}
@@ -110,44 +107,49 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 	@Nullable
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt) {
-		return new CADData();
+		CADData data = new CADData();
+		if (nbt != null && nbt.hasKey("Parent", Constants.NBT.TAG_COMPOUND))
+			data.deserializeNBT(nbt.getCompoundTag("Parent"));
+		return data;
 	}
 
 	@Override
 	public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
 		NBTTagCompound compound = ItemNBTHelper.getNBT(stack);
 
-		if (stack.hasCapability(ICADData.CAPABILITY, null)) {
-			ICADData data = stack.getCapability(ICADData.CAPABILITY, null);
-			if (data != null) {
-				if (compound.hasKey(TAG_TIME_LEGACY, Constants.NBT.TAG_ANY_NUMERIC)) {
-					data.setTime(compound.getInteger(TAG_TIME_LEGACY));
-					data.markDirty(true);
-					compound.removeTag(TAG_TIME_LEGACY);
-				}
+		if (ICADData.hasData(stack)) {
+			ICADData data = ICADData.data(stack);
 
-				if (compound.hasKey(TAG_STORED_PSI_LEGACY, Constants.NBT.TAG_ANY_NUMERIC)) {
-					data.setBattery(compound.getInteger(TAG_STORED_PSI_LEGACY));
-					data.markDirty(true);
-					compound.removeTag(TAG_STORED_PSI_LEGACY);
-				}
+			if (compound.hasKey(TAG_TIME_LEGACY, Constants.NBT.TAG_ANY_NUMERIC)) {
+				data.setTime(compound.getInteger(TAG_TIME_LEGACY));
+				data.markDirty(true);
+				compound.removeTag(TAG_TIME_LEGACY);
+			}
 
-				for (String key : compound.getKeySet()) {
-					Matcher matcher = VECTOR_PREFIX_PATTERN.matcher(key);
-					if (matcher.find()) {
-						NBTTagCompound vec = compound.getCompoundTag(key);
-						int memory = Integer.parseInt(matcher.group(1));
-						Vector3 vector = new Vector3(vec.getDouble(TAG_X_LEGACY),
-								vec.getDouble(TAG_Y_LEGACY),
-								vec.getDouble(TAG_Z_LEGACY));
-						data.setSavedVector(memory, vector);
-					}
-				}
+			if (compound.hasKey(TAG_STORED_PSI_LEGACY, Constants.NBT.TAG_ANY_NUMERIC)) {
+				data.setBattery(compound.getInteger(TAG_STORED_PSI_LEGACY));
+				data.markDirty(true);
+				compound.removeTag(TAG_STORED_PSI_LEGACY);
+			}
 
-				if (entityIn instanceof EntityPlayerMP && data.isDirty()) {
-					NetworkHandler.INSTANCE.sendTo(new MessageCADDataSync(data), (EntityPlayerMP) entityIn);
-					data.markDirty(false);
+			Set<String> keys = new HashSet<>(compound.getKeySet());
+
+			for (String key : keys) {
+				Matcher matcher = VECTOR_PREFIX_PATTERN.matcher(key);
+				if (matcher.find()) {
+					NBTTagCompound vec = compound.getCompoundTag(key);
+					compound.removeTag(key);
+					int memory = Integer.parseInt(matcher.group(1));
+					Vector3 vector = new Vector3(vec.getDouble(TAG_X_LEGACY),
+							vec.getDouble(TAG_Y_LEGACY),
+							vec.getDouble(TAG_Z_LEGACY));
+					data.setSavedVector(memory, vector);
 				}
+			}
+
+			if (entityIn instanceof EntityPlayerMP && data.isDirty()) {
+				NetworkHandler.INSTANCE.sendTo(new MessageCADDataSync(data), (EntityPlayerMP) entityIn);
+				data.markDirty(false);
 			}
 		}
 	}

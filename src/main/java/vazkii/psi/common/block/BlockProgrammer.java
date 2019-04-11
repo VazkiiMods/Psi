@@ -157,4 +157,21 @@ public class BlockProgrammer extends BlockFacing implements IPsiBlock {
 		return new TileProgrammer();
 	}
 
+	@Override
+	public boolean hasComparatorInputOverride(IBlockState state) {
+		return true;
+	}
+
+	@Override
+	public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos) {
+		TileEntity tile = worldIn.getTileEntity(pos);
+		if (tile instanceof TileProgrammer) {
+			TileProgrammer programmer = (TileProgrammer) tile;
+
+			if (programmer.canCompile())
+				return 15;
+		}
+
+		return 0;
+	}
 }
