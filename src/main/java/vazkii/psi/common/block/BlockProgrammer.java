@@ -169,7 +169,11 @@ public class BlockProgrammer extends BlockFacing implements IPsiBlock {
 			TileProgrammer programmer = (TileProgrammer) tile;
 
 			if (programmer.canCompile())
-				return 15;
+				return 2;
+			else if (programmer.isEnabled())
+				return 1;
+			else
+				return 0;
 		}
 
 		return 0;
