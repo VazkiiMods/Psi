@@ -289,7 +289,7 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 
 		List<EntityItem> items = player.getEntityWorld().getEntitiesWithinAABB(EntityItem.class,
 				player.getEntityBoundingBox().grow(8),
-				entity -> entity != null && entity.getDistance(player) <= 8 * 8);
+				entity -> entity != null && entity.getDistanceSq(player) <= 8 * 8);
 
 		boolean did = false;
 		for(EntityItem item : items) {
