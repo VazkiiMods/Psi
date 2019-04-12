@@ -98,7 +98,7 @@ public class ItemPsimetalArmor extends ItemModArmor implements IPsimetalTool, IP
 		PlayerData data = PlayerDataHandler.get(event.getEntityPlayer());
 		ItemStack playerCad = PsiAPI.getPlayerCAD(event.getEntityPlayer());
 
-		if(!playerCad.isEmpty()) {
+		if(isEnabled(stack) && !playerCad.isEmpty()) {
 			int timesCast = ItemNBTHelper.getInt(stack, TAG_TIMES_CAST, 0);
 			
 			ItemStack bullet = getBulletInSocket(stack, getSelectedSlot(stack));
