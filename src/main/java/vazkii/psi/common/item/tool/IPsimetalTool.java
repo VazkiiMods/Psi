@@ -134,8 +134,8 @@ public interface IPsimetalTool extends ISocketable, ISpellSettable {
 			PlayerDataHandler.PlayerData data = PlayerDataHandler.get(player);
 			int regenTime = ItemNBTHelper.getInt(stack, TAG_REGEN_TIME, 0);
 
-			if(!data.overflowed && regenTime % 80 == 0 && (float) data.getAvailablePsi() / (float) data.getTotalPsi() > 0.5F) {
-				data.deductPsi(600, 5, true);
+			if(!data.overflowed && regenTime % 16 == 0 && (float) data.getAvailablePsi() / (float) data.getTotalPsi() > 0.5F) {
+				data.deductPsi(150, 0, true);
 				stack.setItemDamage(stack.getItemDamage() - 1);
 			}
 			ItemNBTHelper.setInt(stack, TAG_REGEN_TIME, regenTime + 1);
