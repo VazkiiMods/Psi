@@ -89,6 +89,9 @@ public interface IPsimetalTool extends ISocketable, ISpellSettable {
 	}
 
 	default void castOnBlockBreak(ItemStack itemstack, EntityPlayer player) {
+		if (!isEnabled(itemstack))
+			return;
+
 		PlayerDataHandler.PlayerData data = PlayerDataHandler.get(player);
 		ItemStack playerCad = PsiAPI.getPlayerCAD(player);
 
@@ -137,5 +140,9 @@ public interface IPsimetalTool extends ISocketable, ISpellSettable {
 			}
 			ItemNBTHelper.setInt(stack, TAG_REGEN_TIME, regenTime + 1);
 		}
+	}
+
+	default boolean isEnabled(ItemStack stack) {
+		return stack.getItemDamage() < stack.getMaxDamage();
 	}
 }

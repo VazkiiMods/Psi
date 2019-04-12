@@ -10,11 +10,14 @@
  */
 package vazkii.psi.common.item.armor;
 
+import com.google.common.collect.Multimap;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
@@ -60,6 +63,33 @@ public class ItemPsimetalArmor extends ItemModArmor implements IPsimetalTool, IP
 	}
 
 	@Override
+	public void setDamage(ItemStack stack, int damage) {
+		if (damage > stack.getMaxDamage())
+			damage = stack.getItemDamage();
+		super.setDamage(stack, damage);
+	}
+
+	@Override
+	public Multimap<String, AttributeModifier> getAttributeModifiers(EntityEquipmentSlot slot, ItemStack stack) {
+		Multimap<String, AttributeModifier> modifiers = super.getAttributeModifiers(slot, stack);
+		if (!isEnabled(stack)) {
+			modifiers.removeAll(SharedMonsterAttributes.ARMOR.getName());
+			modifiers.removeAll(SharedMonsterAttributes.ARMOR_TOUGHNESS.getName());
+		}
+
+		return modifiers;
+	}
+
+	@Nonnull
+	@Override
+	public String getUnlocalizedName(ItemStack stack) {
+		String name = super.getUnlocalizedName(stack);
+		if (!isEnabled(stack))
+			name += ".broken";
+		return name;
+	}
+
+	@Override
 	public void onArmorTick(World world, EntityPlayer player, ItemStack itemStack) {
 		IPsimetalTool.regen(itemStack, player, false);
 	}
@@ -83,9 +113,10 @@ public class ItemPsimetalArmor extends ItemModArmor implements IPsimetalTool, IP
 		}
 	}
 
+
 	@Override
 	public void onEvent(ItemStack stack, PsiArmorEvent event) {
-		if(event.type.equals(getEvent(stack)))
+		if(event.type.equals(getTrueEvent(stack)))
 			cast(stack, event);
 	}
 	
@@ -105,6 +136,10 @@ public class ItemPsimetalArmor extends ItemModArmor implements IPsimetalTool, IP
 		return PsiArmorEvent.NONE;
 	}
 
+	public String getTrueEvent(ItemStack stack) {
+		return ItemNBTHelper.getString(stack, "PsiEvent", getEvent(stack));
+	}
+
 	public int getCastCooldown(ItemStack stack) {
 		return 5;
 	}
@@ -118,7 +153,7 @@ public class ItemPsimetalArmor extends ItemModArmor implements IPsimetalTool, IP
 		ItemMod.tooltipIfShift(tooltip, () -> {
 			String componentName = ItemMod.local(ISocketable.getSocketedItemName(stack, "psimisc.none"));
 			ItemMod.addToTooltip(tooltip, "psimisc.spellSelected", componentName);
-			ItemMod.addToTooltip(tooltip, getEvent(stack));
+			ItemMod.addToTooltip(tooltip, getTrueEvent(stack));
 		});
 	}
 

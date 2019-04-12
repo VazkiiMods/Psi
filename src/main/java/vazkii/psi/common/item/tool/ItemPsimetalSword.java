@@ -10,10 +10,15 @@
  */
 package vazkii.psi.common.item.tool;
 
+import com.google.common.collect.Multimap;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import vazkii.arl.item.ItemMod;
@@ -40,7 +45,7 @@ public class ItemPsimetalSword extends ItemModSword implements IPsimetalTool, IP
 	public boolean hitEntity(ItemStack itemstack, EntityLivingBase target, @Nonnull EntityLivingBase attacker) {
 		super.hitEntity(itemstack, target, attacker);
 
-		if(attacker instanceof EntityPlayer) {
+		if(isEnabled(itemstack) && attacker instanceof EntityPlayer) {
 			EntityPlayer player = (EntityPlayer) attacker;
 
 			PlayerData data = PlayerDataHandler.get(player);
@@ -57,6 +62,37 @@ public class ItemPsimetalSword extends ItemModSword implements IPsimetalTool, IP
 		}
 
 		return true;
+	}
+
+	@Override
+	public Multimap<String, AttributeModifier> getAttributeModifiers(EntityEquipmentSlot slot, ItemStack stack) {
+		Multimap<String, AttributeModifier> modifiers = super.getAttributeModifiers(slot, stack);
+		if (!isEnabled(stack))
+			modifiers.removeAll(SharedMonsterAttributes.ATTACK_DAMAGE.getName());
+		return modifiers;
+	}
+
+	@Override
+	public void setDamage(ItemStack stack, int damage) {
+		if (damage > stack.getMaxDamage())
+			damage = stack.getItemDamage();
+		super.setDamage(stack, damage);
+	}
+
+	@Override
+	public float getDestroySpeed(ItemStack stack, IBlockState state) {
+		if (!isEnabled(stack))
+			return 1;
+		return super.getDestroySpeed(stack, state);
+	}
+
+	@Nonnull
+	@Override
+	public String getUnlocalizedName(ItemStack stack) {
+		String name = super.getUnlocalizedName(stack);
+		if (!isEnabled(stack))
+			name += ".broken";
+		return name;
 	}
 
 	@Override

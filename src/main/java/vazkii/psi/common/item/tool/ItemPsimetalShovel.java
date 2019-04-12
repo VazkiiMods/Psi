@@ -10,9 +10,14 @@
  */
 package vazkii.psi.common.item.tool;
 
+import com.google.common.collect.Multimap;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -40,6 +45,37 @@ public class ItemPsimetalShovel extends ItemModShovel implements IPsimetalTool, 
 		castOnBlockBreak(itemstack, player);
 
 		return false;
+	}
+
+	@Override
+	public void setDamage(ItemStack stack, int damage) {
+		if (damage > stack.getMaxDamage())
+			damage = stack.getItemDamage();
+		super.setDamage(stack, damage);
+	}
+
+	@Override
+	public Multimap<String, AttributeModifier> getAttributeModifiers(EntityEquipmentSlot slot, ItemStack stack) {
+		Multimap<String, AttributeModifier> modifiers = super.getAttributeModifiers(slot, stack);
+		if (!isEnabled(stack))
+			modifiers.removeAll(SharedMonsterAttributes.ATTACK_DAMAGE.getName());
+		return modifiers;
+	}
+
+	@Nonnull
+	@Override
+	public String getUnlocalizedName(ItemStack stack) {
+		String name = super.getUnlocalizedName(stack);
+		if (!isEnabled(stack))
+			name += ".broken";
+		return name;
+	}
+
+	@Override
+	public float getDestroySpeed(ItemStack stack, IBlockState state) {
+		if (!isEnabled(stack))
+			return 1;
+		return super.getDestroySpeed(stack, state);
 	}
 
 	@Override
