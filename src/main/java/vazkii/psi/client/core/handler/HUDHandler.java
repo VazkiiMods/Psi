@@ -108,7 +108,7 @@ public final class HUDHandler {
 
 		if (cadStack.isEmpty())
 			return;
-		
+
 		ICAD cad = (ICAD) cadStack.getItem();
 		PlayerData data = PlayerDataHandler.get(mc.player);
 		if (data.level == 0 && !mc.player.capabilities.isCreativeMode)
@@ -152,6 +152,8 @@ public final class HUDHandler {
 			mc.renderEngine.bindTexture(psiBarShatter);
 			registeredMask = true;
 		}
+
+		GlStateManager.enableBlend();
 		mc.renderEngine.bindTexture(psiBar);
 		Gui.drawModalRectWithCustomSizedTexture(x, y, 0, 0, width, height, 64, 256);
 

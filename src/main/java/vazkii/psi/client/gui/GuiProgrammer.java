@@ -19,6 +19,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTTagCompound;
@@ -156,6 +157,8 @@ public class GuiProgrammer extends GuiScreen {
 			mc.displayGuiScreen(null);
 			return;
 		}
+
+		ITooltipFlag tooltipFlag = mc.gameSettings.advancedItemTooltips ? ITooltipFlag.TooltipFlags.ADVANCED : ITooltipFlag.TooltipFlags.NORMAL;
 		
 		String comment = "";
 		int color = Psi.magical ? 0 : 0xFFFFFF;
@@ -201,7 +204,7 @@ public class GuiProgrammer extends GuiScreen {
 			GlStateManager.disableRescaleNormal();
 
 			if(mouseX > cadX && mouseY > cadY && mouseX < cadX + 16 && mouseY < cadY + 16) {
-				List<String> itemTooltip = cad.getTooltip(mc.player, ()->false);
+				List<String> itemTooltip = cad.getTooltip(mc.player, tooltipFlag);
 				for (int i = 0; i < itemTooltip.size(); ++i)
 					if (i == 0)
 						itemTooltip.set(i, cad.getRarity().rarityColor + itemTooltip.get(i));

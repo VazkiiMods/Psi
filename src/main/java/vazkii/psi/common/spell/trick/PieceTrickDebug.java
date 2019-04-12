@@ -10,14 +10,14 @@
  */
 package vazkii.psi.common.spell.trick;
 
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import vazkii.psi.api.spell.Spell;
-import vazkii.psi.api.spell.SpellCompilationException;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellMetadata;
 import vazkii.psi.api.spell.SpellParam;
-import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.api.spell.param.ParamAny;
 import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.piece.PieceTrick;
@@ -47,9 +47,7 @@ public class PieceTrickDebug extends PieceTrick {
 		Double numberVal = this.<Double>getParamValue(context, number);
 		Object targetVal = getParamValue(context, target);
 
-		String s = "null";
-		if(targetVal != null)
-			s = targetVal.toString();
+		ITextComponent component = new TextComponentString(String.valueOf(targetVal));
 
 		if(numberVal != null) {
 			String numStr = "" + numberVal;
@@ -58,10 +56,14 @@ public class PieceTrickDebug extends PieceTrick {
 				numStr = "" + numInt;
 			}
 
-			s = TextFormatting.AQUA + "[" + numStr + "] " + TextFormatting.RESET + s;
+			component = new TextComponentString("[" + numStr + "]")
+					.setStyle(new Style().setColor(TextFormatting.AQUA))
+					.appendSibling(new TextComponentString(" ")
+							.setStyle(new Style().setColor(TextFormatting.RESET)))
+					.appendSibling(component);
 		}
 
-		context.caster.sendMessage(new TextComponentString(s));
+		context.caster.sendMessage(component);
 
 		return null;
 	}
