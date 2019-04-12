@@ -235,4 +235,9 @@ public class EntitySpellProjectile extends EntityThrowable {
 		return 0F;
 	}
 
+	@Override
+	public boolean doesEntityNotTriggerPressurePlate() {
+		return true;
+	}
+
 }

@@ -199,4 +199,9 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 	public boolean isImmune() {
 		return true;
 	}
+
+	@Override
+	public boolean doesEntityNotTriggerPressurePlate() {
+		return true;
+	}
 }
