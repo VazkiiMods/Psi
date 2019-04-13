@@ -1,3 +1,9 @@
+r1.1-74
+*Fix spell entities triggering pressure plates.
+*Detonators now actually detonate in a sphere.
+*Psimetal tools and armor no longer break. Instead, they just stop working at 0 durability.
+*Psi tool regen is a lot faster, but is more exploitable in battle.
+*Fix volatile CAD data (time, vector memory, battery) disappearing occasionally.
 r1.1-73
 *Detonators now detonate in a sphere.
 *Entire spells can now be rotated and mirrored with a single keybind. Glorious!
