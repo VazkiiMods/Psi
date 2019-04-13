@@ -39,11 +39,8 @@ public class MessageBlink extends NetworkMessage<MessageBlink> {
 	public IMessage handleMessage(MessageContext context) {
 		ClientTicker.addAction(() -> {
 			Entity entity = Minecraft.getMinecraft().player;
-			if (entity != null) {
-				entity.posX += offX;
-				entity.posY += offY;
-				entity.posZ += offZ;
-			}
+			if (entity != null)
+				entity.setPosition(entity.posX + offX, entity.posY + offY, entity.posZ + offZ);
 		});
 		return null;
 	}
