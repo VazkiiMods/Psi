@@ -17,6 +17,8 @@ import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.piece.PieceOperator;
 
+import java.math.BigDecimal;
+
 public class PieceOperatorModulus extends PieceOperator {
 
 	SpellParam num1;
@@ -37,10 +39,13 @@ public class PieceOperatorModulus extends PieceOperator {
 		Double d1 = this.<Double>getParamValue(context, num1);
 		Double d2 = this.<Double>getParamValue(context, num2);
 
-		if(d2 == 0 || d2.intValue() == 0)
+		if (d2 == 0)
 			throw new SpellRuntimeException(SpellRuntimeException.DIVIDE_BY_ZERO);
 
-		return (double) (d1.intValue() % d2.intValue());
+		BigDecimal precise1 = new BigDecimal(d1);
+		BigDecimal precise2 = new BigDecimal(d1);
+
+		return precise1.subtract(precise1.remainder(precise2)).doubleValue();
 	}
 
 	@Override
