@@ -12,7 +12,6 @@ package vazkii.psi.common.core.proxy;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -163,7 +162,7 @@ public class CommonProxy {
 
 	@SuppressWarnings("deprecation")
 	public String localize(String key, Object... arguments) {
-		return I18n.translateToLocalFormatted(key, arguments);
+		return net.minecraft.util.text.translation.I18n.translateToLocalFormatted(key, arguments);
 	}
 
 }

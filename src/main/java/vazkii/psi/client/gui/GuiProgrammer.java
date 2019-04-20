@@ -207,7 +207,7 @@ public class GuiProgrammer extends GuiScreen {
 				List<String> itemTooltip = cad.getTooltip(mc.player, tooltipFlag);
 				for (int i = 0; i < itemTooltip.size(); ++i)
 					if (i == 0)
-						itemTooltip.set(i, cad.getRarity().rarityColor + itemTooltip.get(i));
+						itemTooltip.set(i, cad.getRarity().color + itemTooltip.get(i));
 					else itemTooltip.set(i, TextFormatting.GRAY + itemTooltip.get(i));
 
 				tooltip.addAll(itemTooltip);

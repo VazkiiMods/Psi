@@ -12,10 +12,8 @@ package vazkii.psi.common.crafting.recipe;
 
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeHooks;
 import vazkii.arl.recipe.ModRecipe;
 import vazkii.psi.api.spell.ISpellAcceptor;
 import vazkii.psi.api.spell.Spell;
@@ -78,10 +76,9 @@ public class BulletToDriveRecipe extends ModRecipe {
 		return ItemStack.EMPTY;
 	}
 
-	@Nonnull
 	@Override
-	public NonNullList<ItemStack> getRemainingItems(InventoryCrafting inv) {
-		return ForgeHooks.defaultRecipeGetRemainingItems(inv);
+	public boolean isDynamic() {
+		return true;
 	}
 
 	@Override

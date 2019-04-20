@@ -40,7 +40,7 @@ public class AdditiveMotionHandler {
 		if (!entity.world.isRemote) {
 			Vec3d base = toUpdate.getOrDefault(entity, Vec3d.ZERO);
 
-			toUpdate.put(entity, base.addVector(x, y, z));
+			toUpdate.put(entity, base.add(x, y, z));
 		}
 	}
 

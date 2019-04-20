@@ -108,7 +108,7 @@ public class BlockConjured extends BlockModContainer implements IPsiBlock {
 	@SubscribeEvent
 	public static void ignoreMissingItem(RegistryEvent.MissingMappings<Item> event) {
 		for (RegistryEvent.MissingMappings.Mapping<Item> mapping : event.getMappings())
-			if (mapping.key.getResourcePath().equals(LibBlockNames.CONJURED))
+			if (mapping.key.getPath().equals(LibBlockNames.CONJURED))
 				mapping.ignore();
 	}
 
@@ -143,7 +143,7 @@ public class BlockConjured extends BlockModContainer implements IPsiBlock {
 
 	@Nonnull
 	@Override
-	public BlockRenderLayer getBlockLayer() {
+	public BlockRenderLayer getRenderLayer() {
 		return BlockRenderLayer.TRANSLUCENT;
 	}
 

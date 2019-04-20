@@ -102,11 +102,13 @@ public class BlockCADAssembler extends BlockFacing implements IPsiBlock {
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public boolean hasComparatorInputOverride(IBlockState state) {
 		return true;
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos) {
 		TileEntity tile = worldIn.getTileEntity(pos);
 		if (tile != null && tile.hasCapability(ITEM_HANDLER_CAPABILITY, null)) {

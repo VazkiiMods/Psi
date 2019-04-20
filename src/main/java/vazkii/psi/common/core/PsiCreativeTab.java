@@ -35,14 +35,8 @@ public class PsiCreativeTab extends CreativeTabs {
 
 	@Nonnull
 	@Override
-	public ItemStack getIconItemStack() {
+	public ItemStack createIcon() {
 		return new ItemStack(ModItems.cadAssembly);
-	}
-
-	@Nonnull
-	@Override
-	public ItemStack getTabIconItem() {
-		return getIconItemStack();
 	}
 
 	@Override
@@ -51,8 +45,8 @@ public class PsiCreativeTab extends CreativeTabs {
 	}
 
 	@Override
-	public void displayAllRelevantItems(@Nonnull NonNullList<ItemStack> p_78018_1_) {
-		list = p_78018_1_;
+	public void displayAllRelevantItems(@Nonnull NonNullList<ItemStack> stacks) {
+		list = stacks;
 
 		addBlock(ModBlocks.cadAssembler);
 		addBlock(ModBlocks.programmer);

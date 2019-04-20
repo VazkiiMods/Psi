@@ -10,8 +10,6 @@
  */
 package vazkii.psi.common.spell.operator.entity;
 
-import java.util.List;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -24,6 +22,8 @@ import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.api.spell.param.ParamEntity;
 import vazkii.psi.api.spell.piece.PieceOperator;
 import vazkii.psi.common.spell.operator.vector.PieceOperatorVectorRaycast;
+
+import java.util.List;
 
 public class PieceOperatorFocusedEntity extends PieceOperator {
 
@@ -60,13 +60,13 @@ public class PieceOperatorFocusedEntity extends PieceOperator {
 		RayTraceResult pos = PieceOperatorVectorRaycast.raycast(e, finalDistance);
 		Vec3d positionVector = e.getPositionVector();
 		if(e instanceof EntityPlayer)
-			positionVector = positionVector.addVector(0, e.getEyeHeight(), 0);
+			positionVector = positionVector.add(0, e.getEyeHeight(), 0);
 
 		if(pos != null)
 			distance = pos.hitVec.distanceTo(positionVector);
 
 		Vec3d lookVector = e.getLookVec();
-		Vec3d reachVector = positionVector.addVector(lookVector.x * finalDistance, lookVector.y * finalDistance, lookVector.z * finalDistance);
+		Vec3d reachVector = positionVector.add(lookVector.x * finalDistance, lookVector.y * finalDistance, lookVector.z * finalDistance);
 
 		Entity lookedEntity = null;
 		List<Entity> entitiesInBoundingBox = e.getEntityWorld().getEntitiesWithinAABBExcludingEntity(e, e.getEntityBoundingBox().grow(lookVector.x * finalDistance, lookVector.y * finalDistance, lookVector.z * finalDistance).grow(1F, 1F, 1F));

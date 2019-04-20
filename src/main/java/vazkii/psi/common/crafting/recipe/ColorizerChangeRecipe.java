@@ -108,8 +108,13 @@ public class ColorizerChangeRecipe extends ModRecipe {
 	}
 
 	@Override
-	public boolean canFit(int p_194133_1_, int p_194133_2_) {
-		return false;
+	public boolean isDynamic() {
+		return true;
+	}
+
+	@Override
+	public boolean canFit(int width, int height) {
+		return true;
 	}
 
 }

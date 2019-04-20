@@ -124,7 +124,7 @@ public interface IPsimetalTool extends ISocketable, ISpellSettable {
 		float azimuth = -MathHelper.sin(pitch * (float) Math.PI / 180);
 		float xLen = xYaw * pitchMod;
 		float yLen = zYaw * pitchMod;
-		Vec3d end = rayPos.addVector(xLen * range, azimuth * range, yLen * range);
+		Vec3d end = rayPos.add(xLen * range, azimuth * range, yLen * range);
 		return world.rayTraceBlocks(rayPos, end, stopOnLiquid);
 	}
 

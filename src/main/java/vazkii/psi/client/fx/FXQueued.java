@@ -122,7 +122,7 @@ public abstract class FXQueued extends Particle {
 	}
 
 	@Override
-	public void renderParticle(BufferBuilder buffer, Entity p_180434_2_, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
+	public void renderParticle(BufferBuilder buffer, Entity viewEntity, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
 		this.partialTicks = partialTicks;
 		this.rotationX = rotationX;
 		this.rotationZ = rotationZ;

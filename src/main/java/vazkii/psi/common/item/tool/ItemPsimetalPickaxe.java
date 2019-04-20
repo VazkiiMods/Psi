@@ -64,8 +64,8 @@ public class ItemPsimetalPickaxe extends ItemModPickaxe implements IPsimetalTool
 
 	@Nonnull
 	@Override
-	public String getUnlocalizedName(ItemStack stack) {
-		String name = super.getUnlocalizedName(stack);
+	public String getTranslationKey(ItemStack stack) {
+		String name = super.getTranslationKey(stack);
 		if (!isEnabled(stack))
 			name += ".broken";
 		return name;

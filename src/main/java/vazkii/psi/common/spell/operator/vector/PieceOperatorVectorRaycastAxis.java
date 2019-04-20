@@ -59,7 +59,7 @@ public class PieceOperatorVectorRaycastAxis extends PieceOperator {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
 
 		EnumFacing facing = pos.sideHit;
-		return new Vector3(facing.getFrontOffsetX(), facing.getFrontOffsetY(), facing.getFrontOffsetZ());
+		return new Vector3(facing.getXOffset(), facing.getYOffset(), facing.getZOffset());
 	}
 
 	@Override

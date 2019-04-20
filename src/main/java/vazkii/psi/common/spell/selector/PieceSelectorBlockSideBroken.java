@@ -34,7 +34,7 @@ public class PieceSelectorBlockSideBroken extends PieceSelector {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
 
 		EnumFacing facing = context.positionBroken.sideHit;
-		return new Vector3(facing.getFrontOffsetX(), facing.getFrontOffsetY(), facing.getFrontOffsetZ());
+		return new Vector3(facing.getXOffset(), facing.getYOffset(), facing.getZOffset());
 	}
 
 }

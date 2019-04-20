@@ -455,7 +455,7 @@ public final class HUDHandler {
 		int count = 0;
 		for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
 			ItemStack stack = player.inventory.getStackInSlot(i);
-			if (!stack.isEmpty() && (pattern == null ? ItemStack.areItemsEqual(displayStack, stack) : pattern.matcher(stack.getUnlocalizedName()).find()))
+			if (!stack.isEmpty() && (pattern == null ? ItemStack.areItemsEqual(displayStack, stack) : pattern.matcher(stack.getTranslationKey()).find()))
 				count += stack.getCount();
 		}
 
