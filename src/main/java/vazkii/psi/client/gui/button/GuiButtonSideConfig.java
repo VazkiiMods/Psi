@@ -47,7 +47,7 @@ public class GuiButtonSideConfig extends GuiButton {
 	}
 
 	public void onClick() {
-		SpellPiece piece = gui.programmer.spell.grid.gridData[gridX][gridY];
+		SpellPiece piece = gui.spell.grid.gridData[gridX][gridY];
 		if(piece == null)
 			return;
 
@@ -67,7 +67,7 @@ public class GuiButtonSideConfig extends GuiButton {
 			int maxY = minY + 8;
 
 			mc.renderEngine.bindTexture(GuiProgrammer.texture);
-			SpellPiece piece = gui.programmer.spell.grid.gridData[gridX][gridY];
+			SpellPiece piece = gui.spell.grid.gridData[gridX][gridY];
 			if(piece == null)
 				return;
 
