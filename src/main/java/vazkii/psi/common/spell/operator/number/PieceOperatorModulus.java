@@ -45,7 +45,7 @@ public class PieceOperatorModulus extends PieceOperator {
 		BigDecimal precise1 = new BigDecimal(d1);
 		BigDecimal precise2 = new BigDecimal(d2);
 
-		return precise1.subtract(precise1.remainder(precise2)).doubleValue();
+		return precise1.remainder(precise2).doubleValue();
 	}
 
 	@Override
