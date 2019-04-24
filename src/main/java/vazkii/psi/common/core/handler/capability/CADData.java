@@ -73,7 +73,7 @@ public class CADData implements ICapabilityProvider, ICADData {
 			return Vector3.zero.copy();
 
 		Vector3 vec = vectors.get(memorySlot);
-		return vec == null ? null : vec.copy();
+		return (vec == null ? Vector3.zero : vec).copy();
 	}
 
 	@Override
