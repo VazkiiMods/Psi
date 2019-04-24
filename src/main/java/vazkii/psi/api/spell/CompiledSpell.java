@@ -16,9 +16,10 @@ import net.minecraft.util.text.TextFormatting;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.internal.IPlayerData;
 import vazkii.psi.api.spell.SpellPiece.Null;
-import vazkii.psi.common.core.handler.CrashReportHandler;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Stack;
 
 /**
  * A spell that has been compiled by a compiler and is ready to be executed.
@@ -52,9 +53,9 @@ public class CompiledSpell {
 			Action a = context.actions.pop();
 			currentAction = a;
 
-			CrashReportHandler.setSpell(this);
+			PsiAPI.internalHandler.setCrashData(this, a.piece);
 			a.execute(data, context);
-			CrashReportHandler.setSpell(null);
+			PsiAPI.internalHandler.setCrashData(null, null);
 
 			currentAction = null;
 

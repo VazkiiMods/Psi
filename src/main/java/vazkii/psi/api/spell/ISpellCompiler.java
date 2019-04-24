@@ -25,6 +25,8 @@ public interface ISpellCompiler {
 
 	Pair<Integer, Integer> getErrorLocation();
 
+	void buildRedirect(SpellPiece piece) throws SpellCompilationException;
+
 	boolean isErrored();
 
 }

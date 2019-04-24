@@ -22,11 +22,9 @@ import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModContainer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import vazkii.arl.util.RenderHelper;
 import vazkii.psi.api.PsiAPI;
+import vazkii.psi.api.internal.PsiRenderHelper;
 import vazkii.psi.api.internal.TooltipHelper;
-import vazkii.psi.client.core.helper.PsiRenderHelper;
-import vazkii.psi.common.lib.LibMisc;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -296,7 +294,7 @@ public abstract class SpellPiece {
 	 */
 	@SideOnly(Side.CLIENT)
 	public void drawTooltip(int tooltipX, int tooltipY, List<String> tooltip) {
-		RenderHelper.renderTooltip(tooltipX, tooltipY, tooltip);
+		PsiAPI.internalHandler.renderTooltip(tooltipX, tooltipY, tooltip, 0x505000ff, 0xf0100010);
 	}
 
 	/**
@@ -304,7 +302,7 @@ public abstract class SpellPiece {
 	 */
 	@SideOnly(Side.CLIENT)
 	public void drawCommentText(int tooltipX, int tooltipY, List<String> commentText) {
-		RenderHelper.renderTooltipGreen(tooltipX, tooltipY - 9 - commentText.size() * 10, commentText);
+		PsiAPI.internalHandler.renderTooltip(tooltipX, tooltipY - 9 - commentText.size() * 10, commentText, 0x5000a000, 0xf0001e00);
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -313,7 +311,7 @@ public abstract class SpellPiece {
 		TooltipHelper.tooltipIfShift(tooltip, () -> addToTooltipAfterShift(tooltip));
 
 		String addon = PsiAPI.pieceMods.get(getClass());
-		if(!addon.equals(LibMisc.MOD_ID)) {
+		if(!addon.equals("psi")) {
 			ModContainer container = Loader.instance().getIndexedModList().get(addon);
 			if (container != null)
 				TooltipHelper.addToTooltip(tooltip, "psimisc.providerMod", container.getName());

@@ -12,10 +12,11 @@ package vazkii.psi.api.internal;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
-import vazkii.psi.api.spell.ISpellCache;
-import vazkii.psi.api.spell.ISpellCompiler;
-import vazkii.psi.api.spell.Spell;
-import vazkii.psi.api.spell.SpellContext;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import vazkii.psi.api.spell.*;
+
+import java.util.List;
 
 /**
  * This is a dummy class. You'll never interact with it, it's just here so
@@ -45,6 +46,17 @@ public final class DummyMethodHandler implements IInternalMethodHandler {
 
 	@Override
 	public void delayContext(SpellContext context) {
+		// NO-OP
+	}
+
+	@Override
+	public void setCrashData(CompiledSpell spell, SpellPiece piece) {
+		// NO-OP
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void renderTooltip(int x, int y, List<String> tooltipData, int color, int color2) {
 		// NO-OP
 	}
 

@@ -153,6 +153,7 @@ public final class SpellCompiler implements ISpellCompiler {
 		}
 	}
 
+	@Override
 	public void buildRedirect(SpellPiece piece) throws SpellCompilationException {
 		if (!redirectionPieces.contains(piece)) {
 			piece.addToMetadata(compiled.metadata);

@@ -17,7 +17,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import vazkii.psi.common.spell.SpellCompiler;
 
 import java.util.List;
 
@@ -220,11 +219,11 @@ public final class SpellGrid {
 		return getPieceAtSideWithRedirections(traversed, atSide.x, atSide.y, rside);
 	}
 
-	public SpellPiece getPieceAtSideWithRedirections(int x, int y, SpellParam.Side side, SpellCompiler compiler) throws SpellCompilationException {
+	public SpellPiece getPieceAtSideWithRedirections(int x, int y, SpellParam.Side side, ISpellCompiler compiler) throws SpellCompilationException {
 		return getPieceAtSideWithRedirections(HashMultimap.create(), x, y, side, compiler);
 	}
 
-	public SpellPiece getPieceAtSideWithRedirections(Multimap<SpellPiece, SpellParam.Side> traversed, int x, int y, SpellParam.Side side, SpellCompiler compiler) throws SpellCompilationException {
+	public SpellPiece getPieceAtSideWithRedirections(Multimap<SpellPiece, SpellParam.Side> traversed, int x, int y, SpellParam.Side side, ISpellCompiler compiler) throws SpellCompilationException {
 		SpellPiece atSide = getPieceAtSide(traversed, x, y, side);
 		if(!(atSide instanceof IGenericRedirector))
 			return atSide;

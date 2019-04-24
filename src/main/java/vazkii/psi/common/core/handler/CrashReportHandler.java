@@ -13,12 +13,15 @@ package vazkii.psi.common.core.handler;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.common.ICrashCallable;
 import vazkii.psi.api.spell.CompiledSpell;
+import vazkii.psi.api.spell.SpellPiece;
 
 public class CrashReportHandler implements ICrashCallable {
 	private static ThreadLocal<CompiledSpell> activeSpell = new ThreadLocal<>();
+	private static ThreadLocal<SpellPiece> activePiece = new ThreadLocal<>();
 
-	public static void setSpell(CompiledSpell spell) {
+	public static void setSpell(CompiledSpell spell, SpellPiece piece) {
 		activeSpell.set(spell);
+		activePiece.set(piece);
 	}
 
 	@Override
@@ -29,11 +32,16 @@ public class CrashReportHandler implements ICrashCallable {
 	@Override
 	public String call() {
 		CompiledSpell spell = activeSpell.get();
+		SpellPiece piece = activePiece.get();
 		if (spell == null)
 			return "None";
 
+		String prefix = "";
+		if (piece != null)
+			prefix =  "[" + piece.x + ", " + piece.y + "] in ";
+
 		NBTTagCompound result = new NBTTagCompound();
 		spell.sourceSpell.writeToNBT(result);
-		return result.toString();
+		return prefix + result;
 	}
 }
