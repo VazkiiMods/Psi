@@ -13,6 +13,7 @@ package vazkii.psi.common.core.proxy;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
@@ -20,6 +21,7 @@ import vazkii.psi.api.PsiAPI;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.base.ModBlocks;
 import vazkii.psi.common.core.handler.ConfigHandler;
+import vazkii.psi.common.core.handler.CrashReportHandler;
 import vazkii.psi.common.core.handler.InternalMethodHandler;
 import vazkii.psi.common.core.handler.PsiSoundHandler;
 import vazkii.psi.common.core.handler.capability.CapabilityHandler;
@@ -37,6 +39,8 @@ public class CommonProxy {
 
 	public void preInit(FMLPreInitializationEvent event) {
 		PsiAPI.internalHandler = new InternalMethodHandler();
+
+		FMLCommonHandler.instance().registerCrashCallable(new CrashReportHandler());
 
 		ConfigHandler.init(event.getSuggestedConfigurationFile());
 

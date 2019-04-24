@@ -16,6 +16,7 @@ import net.minecraft.util.text.TextFormatting;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.internal.IPlayerData;
 import vazkii.psi.api.spell.SpellPiece.Null;
+import vazkii.psi.common.core.handler.CrashReportHandler;
 
 import java.util.*;
 
@@ -50,7 +51,11 @@ public class CompiledSpell {
 		while(!context.actions.isEmpty()) {
 			Action a = context.actions.pop();
 			currentAction = a;
+
+			CrashReportHandler.setSpell(this);
 			a.execute(data, context);
+			CrashReportHandler.setSpell(null);
+
 			currentAction = null;
 
 			if(context.stopped)
