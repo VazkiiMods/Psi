@@ -1,3 +1,9 @@
+r1.1-75
+*Added a section including spell data to crash reports in case the mod crashes in the future.
+*Fixed a crash with Random PSIdeas' Flash Ring.
+*Fixed memory returning null vetors.
+*Fixed the Modulus operator returning the first number.
+*[API] Fixed external references.
 r1.1-74
 *Fix spell entities triggering pressure plates.
 *Detonators now actually detonate in a sphere.
