@@ -121,7 +121,9 @@ public class CompiledSpell {
 				if (errorHandlers.containsKey(piece)) {
 					if (!errorHandlers.get(piece).suppress(piece, context, exception))
 						throw exception;
+					return;
 				}
+				throw exception;
 			}
 		}
 
