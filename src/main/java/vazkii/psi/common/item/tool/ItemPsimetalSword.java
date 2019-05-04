@@ -21,10 +21,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vazkii.arl.item.ItemMod;
 import vazkii.arl.item.ItemModSword;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ISocketable;
+import vazkii.psi.api.internal.TooltipHelper;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
@@ -99,11 +102,12 @@ public class ItemPsimetalSword extends ItemModSword implements IPsimetalTool, IP
 	public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
 		IPsimetalTool.regen(stack, entityIn, isSelected);
 	}
-	
+
+    @SideOnly(Side.CLIENT)
 	@Override
 	public void addInformation(ItemStack stack, World playerIn, List<String> tooltip, ITooltipFlag advanced) {
 		String componentName = ItemMod.local(ISocketable.getSocketedItemName(stack, "psimisc.none"));
-		ItemMod.addToTooltip(tooltip, "psimisc.spellSelected", componentName);
+        TooltipHelper.addToTooltip(tooltip, "psimisc.spellSelected", componentName);
 	}
 
 	@Override

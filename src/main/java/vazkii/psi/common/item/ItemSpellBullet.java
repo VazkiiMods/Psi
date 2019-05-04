@@ -28,6 +28,7 @@ import vazkii.arl.util.ItemNBTHelper;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.EnumCADComponent;
 import vazkii.psi.api.cad.ICAD;
+import vazkii.psi.api.internal.TooltipHelper;
 import vazkii.psi.api.spell.ISpellContainer;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
@@ -126,12 +127,13 @@ public class ItemSpellBullet extends ItemMod implements ISpellContainer, IPsiIte
 				if(i % 2 == 0)
 					subItems.add(new ItemStack(this, 1, i));
 	}
-	
+
+    @SideOnly(Side.CLIENT)
 	@Override
 	public void addInformation(ItemStack stack, World playerIn, List<String> tooltip, ITooltipFlag advanced) {
-		tooltipIfShift(tooltip, () -> {
-			addToTooltip(tooltip, "psimisc.bulletType", local("psi.bulletType" + stack.getItemDamage() / 2));
-			addToTooltip(tooltip, "psimisc.bulletCost", (int) (getCostModifier(stack) * 100));
+        TooltipHelper.tooltipIfShift(tooltip, () -> {
+            TooltipHelper.addToTooltip(tooltip, "psimisc.bulletType", local("psi.bulletType" + stack.getItemDamage() / 2));
+            TooltipHelper.addToTooltip(tooltip, "psimisc.bulletCost", (int) (getCostModifier(stack) * 100));
 		});
 	}
 

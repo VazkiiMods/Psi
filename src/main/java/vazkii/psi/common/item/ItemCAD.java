@@ -44,9 +44,10 @@ import vazkii.arl.network.NetworkHandler;
 import vazkii.arl.util.ItemNBTHelper;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.*;
+import vazkii.psi.api.internal.PsiRenderHelper;
+import vazkii.psi.api.internal.TooltipHelper;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.*;
-import vazkii.psi.api.internal.PsiRenderHelper;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.BlockProgrammer;
 import vazkii.psi.common.block.base.ModBlocks;
@@ -571,12 +572,13 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 				new ItemStack(ModItems.cadSocket, 1, 3),
 				new ItemStack(ModItems.cadBattery, 1, 2)));
 	}
-	
+
+    @SideOnly(Side.CLIENT)
 	@Override
 	public void addInformation(ItemStack stack, World playerIn, List<String> tooltip, ITooltipFlag advanced) {
-		tooltipIfShift(tooltip, () -> {
+        TooltipHelper.tooltipIfShift(tooltip, () -> {
 			String componentName = local(ISocketable.getSocketedItemName(stack, "psimisc.none"));
-			addToTooltip(tooltip, "psimisc.spellSelected", componentName);
+            TooltipHelper.addToTooltip(tooltip, "psimisc.spellSelected", componentName);
 
 			for(EnumCADComponent componentType : EnumCADComponent.class.getEnumConstants()) {
 				ItemStack componentStack = getComponentInSlot(stack, componentType);
@@ -586,7 +588,7 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 
 				name = local(name);
 				String line = TextFormatting.GREEN + local(componentType.getName()) + TextFormatting.GRAY + ": " + name;
-				addToTooltip(tooltip, line);
+                TooltipHelper.addToTooltip(tooltip, line);
 
 				for(EnumCADStat stat : EnumCADStat.class.getEnumConstants()) {
 					if(stat.getSourceType() == componentType) {
@@ -596,7 +598,7 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 
 						line = " " + TextFormatting.AQUA + local(shrt) + TextFormatting.GRAY + ": " + statValStr;
 						if(!line.isEmpty())
-							addToTooltip(tooltip, line);
+                            TooltipHelper.addToTooltip(tooltip, line);
 					}
 				}
 			}

@@ -21,10 +21,13 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vazkii.arl.item.ItemMod;
 import vazkii.arl.item.ItemModAxe;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ISocketable;
+import vazkii.psi.api.internal.TooltipHelper;
 import vazkii.psi.common.core.PsiCreativeTab;
 import vazkii.psi.common.item.base.IPsiItem;
 
@@ -88,11 +91,12 @@ public class ItemPsimetalAxe extends ItemModAxe implements IPsimetalTool, IPsiIt
 		return slotChanged;
 	}
 
-	@Override
-	public void addInformation(ItemStack stack, World playerIn, List<String> tooltip, ITooltipFlag advanced) {
-		String componentName = ItemMod.local(ISocketable.getSocketedItemName(stack, "psimisc.none"));
-		ItemMod.addToTooltip(tooltip, "psimisc.spellSelected", componentName);
-	}
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void addInformation(ItemStack stack, World playerIn, List<String> tooltip, ITooltipFlag advanced) {
+        String componentName = ItemMod.local(ISocketable.getSocketedItemName(stack, "psimisc.none"));
+        TooltipHelper.addToTooltip(tooltip, "psimisc.spellSelected", componentName);
+    }
 
 	@Override
 	public boolean getIsRepairable(ItemStack thisStack, @Nonnull ItemStack material) {

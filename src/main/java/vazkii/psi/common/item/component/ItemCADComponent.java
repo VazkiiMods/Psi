@@ -14,11 +14,14 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.tuple.Pair;
 import vazkii.arl.item.ItemMod;
 import vazkii.psi.api.cad.EnumCADComponent;
 import vazkii.psi.api.cad.EnumCADStat;
 import vazkii.psi.api.cad.ICADComponent;
+import vazkii.psi.api.internal.TooltipHelper;
 import vazkii.psi.common.core.PsiCreativeTab;
 import vazkii.psi.common.item.base.IPsiItem;
 
@@ -40,20 +43,21 @@ public abstract class ItemCADComponent extends ItemMod implements ICADComponent,
 		// NO-OP
 	}
 
+	@SideOnly(Side.CLIENT)
 	@Override
 	public void addInformation(ItemStack stack, World playerIn, List<String> tooltip, ITooltipFlag advanced) {
-		tooltipIfShift(tooltip, () -> {
+		TooltipHelper.tooltipIfShift(tooltip, () -> {
 			EnumCADComponent componentType = getComponentType(stack);
 
 			String componentName = local(componentType.getName());
-			addToTooltip(tooltip, "psimisc.componentType", componentName);
+			TooltipHelper.addToTooltip(tooltip, "psimisc.componentType", componentName);
 			for(EnumCADStat stat : EnumCADStat.class.getEnumConstants()) {
 				if(stat.getSourceType() == componentType) {
 					int statVal = getCADStatValue(stack, stat);
 					String statValStr = statVal == -1 ?	"\u221E" : ""+statVal;
 
 					String name = local(stat.getName());
-					addToTooltip(tooltip, " " + TextFormatting.AQUA + name + TextFormatting.GRAY + ": " + statValStr);
+					tooltip.add(" " + TextFormatting.AQUA + name + TextFormatting.GRAY + ": " + statValStr);
 				}
 			}
 		});

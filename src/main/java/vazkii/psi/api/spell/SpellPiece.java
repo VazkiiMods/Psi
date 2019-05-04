@@ -320,16 +320,16 @@ public abstract class SpellPiece {
 
 	@SideOnly(Side.CLIENT)
 	public void addToTooltipAfterShift(List<String> tooltip) {
-		TooltipHelper.addToTooltip(tooltip, TextFormatting.GRAY + "%s", getUnlocalizedDesc());
+		tooltip.add(TextFormatting.GRAY + TooltipHelper.local(getUnlocalizedDesc()).replaceAll("&", "\u00a7"));
 
-		TooltipHelper.addToTooltip(tooltip, "");
+		tooltip.add("");
 		String eval = getEvaluationTypeString();
-		TooltipHelper.addToTooltip(tooltip, "<- " + TextFormatting.GOLD + eval);
+		tooltip.add("<- " + TextFormatting.GOLD + eval);
 
 		for(SpellParam param : paramSides.keySet()) {
 			String pName = TooltipHelper.local(param.name);
 			String pEval = param.getRequiredTypeString();
-			TooltipHelper.addToTooltip(tooltip, (param.canDisable ? "[->] " : " ->  ") + TextFormatting.YELLOW + pName + " [" + pEval + "]");
+			tooltip.add((param.canDisable ? "[->] " : " ->  ") + TextFormatting.YELLOW + pName + " [" + pEval + "]");
 		}
 	}
 

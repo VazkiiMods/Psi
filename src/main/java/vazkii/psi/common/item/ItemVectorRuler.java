@@ -69,7 +69,8 @@ public class ItemVectorRuler extends ItemMod implements IHUDItem, IPsiItem {
 		
 		return EnumActionResult.SUCCESS;
 	}
-	
+
+    @SideOnly(Side.CLIENT)
 	@Override
 	public void addInformation(ItemStack stack, World playerIn, List<String> tooltip, ITooltipFlag advanced) {
 		tooltip.add(getVector(stack).toString());

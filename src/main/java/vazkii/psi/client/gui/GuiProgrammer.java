@@ -412,7 +412,7 @@ public class GuiProgrammer extends GuiScreen {
 				TooltipHandler.tooltipIfShift(tooltip, () -> {
 					int i = 0;
 					while (I18n.hasKey("psi.programmerReference" + i))
-						TooltipHandler.addToTooltip(tooltip, "psi.programmerReference" + i++, ctrl);
+						tooltip.add(I18n.format("psi.programmerReference" + i++, ctrl).replaceAll("&", "\u00a7"));
 				});
 			}
 		}

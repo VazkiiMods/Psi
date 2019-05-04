@@ -33,6 +33,7 @@ import vazkii.psi.api.cad.ICADColorizer;
 import vazkii.psi.api.cad.ISocketable;
 import vazkii.psi.api.exosuit.IPsiEventArmor;
 import vazkii.psi.api.exosuit.PsiArmorEvent;
+import vazkii.psi.api.internal.TooltipHelper;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.client.model.ModelPsimetalExosuit;
 import vazkii.psi.common.core.PsiCreativeTab;
@@ -148,14 +149,15 @@ public class ItemPsimetalArmor extends ItemModArmor implements IPsimetalTool, IP
 		return 0.025F;
 	}
 
-	@Override
-	public void addInformation(ItemStack stack, World playerIn, List<String> tooltip, ITooltipFlag advanced) {
-		ItemMod.tooltipIfShift(tooltip, () -> {
-			String componentName = ItemMod.local(ISocketable.getSocketedItemName(stack, "psimisc.none"));
-			ItemMod.addToTooltip(tooltip, "psimisc.spellSelected", componentName);
-			ItemMod.addToTooltip(tooltip, getTrueEvent(stack));
-		});
-	}
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void addInformation(ItemStack stack, World playerIn, List<String> tooltip, ITooltipFlag advanced) {
+        TooltipHelper.tooltipIfShift(tooltip, () -> {
+            String componentName = ItemMod.local(ISocketable.getSocketedItemName(stack, "psimisc.none"));
+            TooltipHelper.addToTooltip(tooltip, "psimisc.spellSelected", componentName);
+            TooltipHelper.addToTooltip(tooltip, getTrueEvent(stack));
+        });
+    }
 
 	@Override
 	public boolean getIsRepairable(ItemStack thisStack, @Nonnull ItemStack material) {
