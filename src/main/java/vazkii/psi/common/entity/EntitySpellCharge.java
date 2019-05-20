@@ -11,6 +11,7 @@
 package vazkii.psi.common.entity;
 
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import vazkii.psi.api.spell.detonator.IDetonationHandler;
 
@@ -37,6 +38,11 @@ public class EntitySpellCharge extends EntitySpellGrenade implements IDetonation
 	@Override
 	public boolean explodes() {
 		return false;
+	}
+
+	@Override
+	public Vec3d objectLocus() {
+		return getPositionVector();
 	}
 
 	@Override

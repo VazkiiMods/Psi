@@ -12,12 +12,14 @@ package vazkii.psi.api.spell.detonator;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static vazkii.psi.api.spell.SpellContext.MAX_DISTANCE;
@@ -41,21 +43,49 @@ public interface IDetonationHandler {
 	}
 
 	static void performDetonation(World world, EntityPlayer player) {
+		performDetonation(world, player, MAX_DISTANCE, (e) -> true);
+	}
+
+	static void performDetonation(World world, EntityPlayer player, double range) {
+		performDetonation(world, player, range, (e) -> true);
+	}
+
+	static void performDetonation(World world, EntityPlayer player, Predicate<Entity> filter) {
+		performDetonation(world, player, MAX_DISTANCE, filter);
+	}
+
+	static void performDetonation(World world, EntityPlayer player, double range, Predicate<Entity> filter) {
 		List<Entity> charges = world.getEntitiesWithinAABB(Entity.class,
-				player.getEntityBoundingBox().grow(MAX_DISTANCE),
-				entity -> entity != null && canBeDetonated(entity) &&
-						entity.getDistanceSq(player) <= MAX_DISTANCE * MAX_DISTANCE);
+				player.getEntityBoundingBox().grow(range),
+				entity -> {
+					if (entity == null || !canBeDetonated(entity))
+						return false;
+					IDetonationHandler detonator = detonator(entity);
+					Vec3d locus = detonator.objectLocus();
+					if (locus == null || locus.squareDistanceTo(player.posX, player.posY, player.posZ) > range * range)
+						return false;
+					return filter == null || filter.test(entity);
+				});
 
 		List<IDetonationHandler> handlers = charges.stream()
 				.map(IDetonationHandler::detonator)
 				.collect(Collectors.toList());
 
-		if(!MinecraftForge.EVENT_BUS.post(new DetonationEvent(player, MAX_DISTANCE, handlers))) {
+		if (!MinecraftForge.EVENT_BUS.post(new DetonationEvent(player, range, handlers))) {
 			if (!handlers.isEmpty()) {
 				for (IDetonationHandler handler : handlers)
 					handler.detonate();
 			}
 		}
+	}
+
+	/**
+	 * The locus of the object. Centered around the entity's lowest y and middle x and z positions.
+	 *
+	 * Null implies this detonator does not exist in the world.
+	 */
+	default Vec3d objectLocus() {
+		return null;
 	}
 
 	void detonate();
