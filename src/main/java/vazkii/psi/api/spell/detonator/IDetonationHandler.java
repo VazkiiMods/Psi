@@ -11,8 +11,16 @@
 package vazkii.psi.api.spell.detonator;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static vazkii.psi.api.spell.SpellContext.MAX_DISTANCE;
 
 /**
  * The handler for an object's detonation behavior.
@@ -30,6 +38,24 @@ public interface IDetonationHandler {
 
 	static IDetonationHandler detonator(Entity entity) {
 		return entity.getCapability(CAPABILITY, null);
+	}
+
+	static void performDetonation(World world, EntityPlayer player) {
+		List<Entity> charges = world.getEntitiesWithinAABB(Entity.class,
+				player.getEntityBoundingBox().grow(MAX_DISTANCE),
+				entity -> entity != null && canBeDetonated(entity) &&
+						entity.getDistanceSq(player) <= MAX_DISTANCE * MAX_DISTANCE);
+
+		List<IDetonationHandler> handlers = charges.stream()
+				.map(IDetonationHandler::detonator)
+				.collect(Collectors.toList());
+
+		if(!MinecraftForge.EVENT_BUS.post(new DetonationEvent(player, MAX_DISTANCE, handlers))) {
+			if (!handlers.isEmpty()) {
+				for (IDetonationHandler handler : handlers)
+					handler.detonate();
+			}
+		}
 	}
 
 	void detonate();
