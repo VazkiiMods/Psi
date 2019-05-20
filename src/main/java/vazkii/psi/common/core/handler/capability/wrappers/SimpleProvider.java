@@ -13,34 +13,30 @@ package vazkii.psi.common.core.handler.capability.wrappers;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import vazkii.psi.api.spell.ISpellImmune;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class ImmunityWrapper implements ISpellImmune, ICapabilityProvider {
+public class SimpleProvider<CAP> implements ICapabilityProvider {
 
-	private final ISpellImmune entity;
+	private final Capability<CAP> capability;
+	private final CAP value;
 
-	public ImmunityWrapper(ISpellImmune entity) {
-		this.entity = entity;
+	public SimpleProvider(Capability<CAP> capability, CAP value) {
+		this.capability = capability;
+		this.value = value;
 	}
 
 	@Override
 	@SuppressWarnings("ConstantConditions")
 	public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
-		return capability == CAPABILITY;
+		return capability == this.capability;
 	}
 
 	@Nullable
 	@Override
 	@SuppressWarnings("ConstantConditions")
 	public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
-		return capability == CAPABILITY ? CAPABILITY.cast(this) : null;
-	}
-
-	@Override
-	public boolean isImmune() {
-		return entity.isImmune();
+		return capability == this.capability ? this.capability.cast(value) : null;
 	}
 }

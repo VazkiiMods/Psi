@@ -27,9 +27,10 @@ import vazkii.psi.api.cad.*;
 import vazkii.psi.api.spell.ISpellAcceptor;
 import vazkii.psi.api.spell.ISpellImmune;
 import vazkii.psi.api.spell.ISpellSettable;
+import vazkii.psi.api.spell.detonator.IDetonationHandler;
 import vazkii.psi.common.core.handler.capability.wrappers.AcceptorWrapper;
-import vazkii.psi.common.core.handler.capability.wrappers.ImmunityWrapper;
 import vazkii.psi.common.core.handler.capability.wrappers.PsiBarWrapper;
+import vazkii.psi.common.core.handler.capability.wrappers.SimpleProvider;
 import vazkii.psi.common.core.handler.capability.wrappers.SocketWrapper;
 import vazkii.psi.common.lib.LibMisc;
 
@@ -42,6 +43,7 @@ public class CapabilityHandler {
 		register(ISocketableCapability.class, SocketWheel::new);
 		register(ISpellAcceptor.class, SpellHolder::new);
 
+		registerSingleDefault(IDetonationHandler.class, () -> {});
 		registerSingleDefault(IPsiBarDisplay.class, data -> false);
 		registerSingleDefault(ISpellImmune.class, () -> false);
 	}
@@ -75,6 +77,7 @@ public class CapabilityHandler {
 	private static final ResourceLocation ACCEPTOR = new ResourceLocation(LibMisc.MOD_ID, "spell");
 	private static final ResourceLocation PSI_BAR = new ResourceLocation(LibMisc.MOD_ID, "bar");
 	private static final ResourceLocation SPELL_IMMUNE = new ResourceLocation(LibMisc.MOD_ID, "immune");
+	private static final ResourceLocation DETONATOR = new ResourceLocation(LibMisc.MOD_ID, "detonator");
 
 	@SubscribeEvent
 	public static void attachItemCapabilities(AttachCapabilitiesEvent<ItemStack> event) {
@@ -91,7 +94,12 @@ public class CapabilityHandler {
 	@SubscribeEvent
 	public static void attachEntityCapabilities(AttachCapabilitiesEvent<Entity> event) {
 		if (event.getObject() instanceof ISpellImmune)
-			event.addCapability(SPELL_IMMUNE, new ImmunityWrapper((ISpellImmune) event.getObject()));
+			event.addCapability(SPELL_IMMUNE, new SimpleProvider<>(ISpellImmune.CAPABILITY,
+					(ISpellImmune) event.getObject()));
+
+		if (event.getObject() instanceof IDetonationHandler)
+			event.addCapability(DETONATOR, new SimpleProvider<>(IDetonationHandler.CAPABILITY,
+					(IDetonationHandler) event.getObject()));
 	}
 
 }

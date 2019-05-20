@@ -12,8 +12,9 @@ package vazkii.psi.common.entity;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.world.World;
+import vazkii.psi.api.spell.detonator.IDetonationHandler;
 
-public class EntitySpellCharge extends EntitySpellGrenade {
+public class EntitySpellCharge extends EntitySpellGrenade implements IDetonationHandler {
 
 	public EntitySpellCharge(World worldIn) {
 		super(worldIn);
@@ -38,4 +39,8 @@ public class EntitySpellCharge extends EntitySpellGrenade {
 		return false;
 	}
 
+	@Override
+	public void detonate() {
+		doExplosion();
+	}
 }
