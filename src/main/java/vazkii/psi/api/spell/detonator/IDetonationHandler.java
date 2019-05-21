@@ -43,26 +43,42 @@ public interface IDetonationHandler {
 	}
 
 	static void performDetonation(World world, EntityPlayer player) {
-		performDetonation(world, player, MAX_DISTANCE, (e) -> true);
+		performDetonation(world, player, player, MAX_DISTANCE, (e) -> true);
 	}
 
 	static void performDetonation(World world, EntityPlayer player, double range) {
-		performDetonation(world, player, range, (e) -> true);
+		performDetonation(world, player, player, range, (e) -> true);
 	}
 
 	static void performDetonation(World world, EntityPlayer player, Predicate<Entity> filter) {
-		performDetonation(world, player, MAX_DISTANCE, filter);
+		performDetonation(world, player, player, MAX_DISTANCE, filter);
 	}
 
 	static void performDetonation(World world, EntityPlayer player, double range, Predicate<Entity> filter) {
+		performDetonation(world, player, player, range, filter);
+	}
+
+	static void performDetonation(World world, EntityPlayer player, Entity center) {
+		performDetonation(world, player, center, MAX_DISTANCE, (e) -> true);
+	}
+
+	static void performDetonation(World world, EntityPlayer player, Entity center, double range) {
+		performDetonation(world, player, center, range, (e) -> true);
+	}
+
+	static void performDetonation(World world, EntityPlayer player, Entity center, Predicate<Entity> filter) {
+		performDetonation(world, player, center, MAX_DISTANCE, filter);
+	}
+
+	static void performDetonation(World world, EntityPlayer player, Entity center, double range, Predicate<Entity> filter) {
 		List<Entity> charges = world.getEntitiesWithinAABB(Entity.class,
-				player.getEntityBoundingBox().grow(range),
+				center.getEntityBoundingBox().grow(range),
 				entity -> {
 					if (entity == null || !canBeDetonated(entity))
 						return false;
 					IDetonationHandler detonator = detonator(entity);
 					Vec3d locus = detonator.objectLocus();
-					if (locus == null || locus.squareDistanceTo(player.posX, player.posY, player.posZ) > range * range)
+					if (locus == null || locus.squareDistanceTo(center.posX, center.posY, center.posZ) > range * range)
 						return false;
 					return filter == null || filter.test(entity);
 				});
@@ -71,7 +87,7 @@ public interface IDetonationHandler {
 				.map(IDetonationHandler::detonator)
 				.collect(Collectors.toList());
 
-		if (!MinecraftForge.EVENT_BUS.post(new DetonationEvent(player, range, handlers))) {
+		if (!MinecraftForge.EVENT_BUS.post(new DetonationEvent(player, center, range, handlers))) {
 			if (!handlers.isEmpty()) {
 				for (IDetonationHandler handler : handlers)
 					handler.detonate();
