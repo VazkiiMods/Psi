@@ -48,7 +48,6 @@ psimisc.enterCommit=Enterを押してコミット
 psimisc.semicolonLine= ; キーで行を変更
 psimisc.programmerCoords=選択中: [%d, %d] | カーソル: [%d, %d]
 psimisc.programmerCoordsNoCursor=選択中: [%d, %d]
-psimisc.softcapIndicator=Level25に到達。レベルを上げれば更にピースがアンロックされますが、Psiエネルギーの上昇はこれが最後です。今後はレベルを上げてもPsiエネルギーの最大値は5000のままとなります。
 
 psi.container.socketable=socketable
 

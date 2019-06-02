@@ -47,7 +47,6 @@ psimisc.enterCommit=Drücke Enter zum Auswählen
 psimisc.semicolonLine=Drücke ; um die Zeile zu wechseln
 psimisc.programmerCoords=Ausgewählt: [%d, %d] | Cursor: [%d, %d]
 psimisc.programmerCoordsNoCursor=Ausgewählt: [%d, %d]
-psimisc.softcapIndicator=Du hast Level 25 erreicht. Obwohl es noch weitere Level und Zauberstücke gibt, ist dies das letzte Level, für das du mer Psi Energie bekommst, also bleibt deine Psi Energie jetzt auf 5000, statt weiter zu wachsen.
 
 # SUBTITLES
 psi.subtitle.bulletCreate=Spruch gespeichert

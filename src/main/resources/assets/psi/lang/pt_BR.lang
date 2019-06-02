@@ -47,7 +47,6 @@ psimisc.enterCommit=Aperte enter para salvar
 psimisc.semicolonLine=Use ; para pular uma linha
 psimisc.programmerCoords=Selecionado: [%d, %d] | Cursor: [%d, %d]
 psimisc.programmerCoordsNoCursor=Selecionado: [%d, %d]
-psimisc.softcapIndicator=Você alcançou o nível 25. Mesmo tendo mais níveis a conquistar e mais peças de magia a se abrir, sua energia ficará em um máximo de 5000 daqui em diante, ao invés de aumentar.
 
 # VERSIONING
 psi.versioning.flavour0=Parece que Psi está desatualizado. Que vergonha.
