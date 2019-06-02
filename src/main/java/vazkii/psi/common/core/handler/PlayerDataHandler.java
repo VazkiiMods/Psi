@@ -650,8 +650,6 @@ public class PlayerDataHandler {
 
 					NetworkHandler.INSTANCE.sendTo(message, (EntityPlayerMP) player);
 					NetworkHandler.INSTANCE.sendTo(message2, (EntityPlayerMP) player);
-					if(level == 25)
-						player.sendMessage(new TextComponentTranslation("psimisc.softcapIndicator").setStyle(new Style().setColor(TextFormatting.AQUA)));
 				}
 			}
 		}

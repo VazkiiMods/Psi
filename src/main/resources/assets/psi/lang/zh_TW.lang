@@ -47,7 +47,6 @@ psimisc.enterCommit=按下 Enter 以記錄
 psimisc.semicolonLine=用 ; 以換行
 psimisc.programmerCoords=選擇: [%d, %d] | 游標: [%d, %d]
 psimisc.programmerCoordsNoCursor=選擇: [%d, %d]
-psimisc.softcapIndicator=你已經達到25等了！儘管還有許多功能等待解鎖、等級等待提升，但你的想子上限會停留在5000，不會再增加了。
 
 # SUBTITLES
 psi.subtitle.bulletCreate=啟動式已儲存
