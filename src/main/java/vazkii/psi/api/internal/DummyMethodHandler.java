@@ -67,12 +67,12 @@ public final class DummyMethodHandler implements IInternalMethodHandler {
 	}
 
 	@Override
-	public ItemStack createDefaultCAD(ItemStack... components) {
+	public ItemStack createDefaultCAD(List<ItemStack> components) {
 		return ItemStack.EMPTY;
 	}
 
 	@Override
-	public ItemStack createCAD(ItemStack base, ItemStack... components) {
+	public ItemStack createCAD(ItemStack base, List<ItemStack> components) {
 		return ItemStack.EMPTY;
 	}
 }

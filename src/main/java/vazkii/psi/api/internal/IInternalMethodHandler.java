@@ -61,7 +61,7 @@ public interface IInternalMethodHandler {
 	 */
 	String localize(String key, Object... format);
 
-	ItemStack createDefaultCAD(ItemStack... components);
+	ItemStack createDefaultCAD(List<ItemStack> components);
 
-	ItemStack createCAD(ItemStack base, ItemStack... components);
+	ItemStack createCAD(ItemStack base, List<ItemStack> components);
 }

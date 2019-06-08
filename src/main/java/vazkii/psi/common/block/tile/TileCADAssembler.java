@@ -43,8 +43,9 @@ public class TileCADAssembler extends TileSimpleInventory implements ITileCADAss
 	public ItemStack getCachedCAD(EntityPlayer player) {
 		ItemStack cad = cachedCAD;
 		if (cad == null) {
-			if (!getStackForComponent(EnumCADComponent.ASSEMBLY).isEmpty())
-				cad = ItemCAD.makeCAD(inventorySlots.subList(1, 6));
+			ItemStack assembly = getStackForComponent(EnumCADComponent.ASSEMBLY);
+			if (!assembly.isEmpty())
+				cad = ItemCAD.makeCADWithAssembly(assembly, inventorySlots.subList(1, 6));
 			else
 				cad = ItemStack.EMPTY;
 

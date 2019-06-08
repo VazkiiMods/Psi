@@ -351,6 +351,14 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 		return makeCAD(Arrays.asList(components));
 	}
 
+	public static ItemStack makeCADWithAssembly(ItemStack assembly, List<ItemStack> components) {
+		ItemStack cad = assembly.getItem() instanceof ICADAssembly ?
+				((ICADAssembly) assembly.getItem()).createCADStack(assembly, components) :
+				new ItemStack(ModItems.cad);
+
+		return makeCAD(cad, components);
+	}
+
 	public static ItemStack makeCAD(List<ItemStack> components) {
 		return makeCAD(new ItemStack(ModItems.cad), components);
 	}

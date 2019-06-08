@@ -10,7 +10,6 @@
  */
 package vazkii.psi.common.core.handler;
 
-import com.google.common.collect.Lists;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -73,12 +72,12 @@ public final class InternalMethodHandler implements IInternalMethodHandler {
 	}
 
 	@Override
-	public ItemStack createDefaultCAD(ItemStack... components) {
+	public ItemStack createDefaultCAD(List<ItemStack> components) {
 		return ItemCAD.makeCAD(components);
 	}
 
 	@Override
-	public ItemStack createCAD(ItemStack base, ItemStack... components) {
-		return ItemCAD.makeCAD(base, Lists.newArrayList(components));
+	public ItemStack createCAD(ItemStack base, List<ItemStack> components) {
+		return ItemCAD.makeCAD(base, components);
 	}
 }

@@ -16,10 +16,12 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vazkii.psi.api.PsiAPI;
 
+import java.util.List;
+
 public interface ICADAssembly {
 
-	default ItemStack createCADStack(ItemStack... components) {
-		return PsiAPI.internalHandler.createDefaultCAD(components);
+	default ItemStack createCADStack(ItemStack stack, List<ItemStack> allComponents) {
+		return PsiAPI.internalHandler.createDefaultCAD(allComponents);
 	}
 
 	@SideOnly(Side.CLIENT)
