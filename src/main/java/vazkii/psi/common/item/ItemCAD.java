@@ -76,7 +76,6 @@ import java.util.regex.Pattern;
 
 public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColorProvider, IPsiItem {
 
-	private static final String TAG_COMPONENT_PREFIX = "component";
 	private static final String TAG_BULLET_PREFIX = "bullet";
 	private static final String TAG_SELECTED_SLOT = "selectedSlot";
 
@@ -344,23 +343,20 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 	}
 
 	public static void setComponent(ItemStack stack, ItemStack componentStack) {
-		if(!componentStack.isEmpty() && componentStack.getItem() instanceof ICADComponent) {
-			ICADComponent component = (ICADComponent) componentStack.getItem();
-			EnumCADComponent componentType = component.getComponentType(componentStack);
-			String name = TAG_COMPONENT_PREFIX + componentType.name();
-
-			NBTTagCompound cmp = new NBTTagCompound();
-			componentStack.writeToNBT(cmp);
-			ItemNBTHelper.setCompound(stack, name, cmp);
-		}
+		if (stack.getItem() instanceof ICAD)
+			((ICAD) stack.getItem()).setCADComponent(stack, componentStack);
 	}
 
 	public static ItemStack makeCAD(ItemStack... components) {
 		return makeCAD(Arrays.asList(components));
 	}
-	
+
 	public static ItemStack makeCAD(List<ItemStack> components) {
-		ItemStack stack = new ItemStack(ModItems.cad);
+		return makeCAD(new ItemStack(ModItems.cad), components);
+	}
+
+	public static ItemStack makeCAD(ItemStack base, List<ItemStack> components) {
+		ItemStack stack = base.copy();
 		for(ItemStack component : components)
 			setComponent(stack, component);
 		return stack;

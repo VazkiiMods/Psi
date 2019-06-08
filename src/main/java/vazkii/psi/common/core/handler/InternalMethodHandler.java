@@ -10,7 +10,9 @@
  */
 package vazkii.psi.common.core.handler;
 
+import com.google.common.collect.Lists;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -20,6 +22,7 @@ import vazkii.psi.api.internal.IPlayerData;
 import vazkii.psi.api.spell.*;
 import vazkii.psi.client.gui.GuiProgrammer;
 import vazkii.psi.common.Psi;
+import vazkii.psi.common.item.ItemCAD;
 import vazkii.psi.common.spell.SpellCache;
 import vazkii.psi.common.spell.SpellCompiler;
 
@@ -69,4 +72,13 @@ public final class InternalMethodHandler implements IInternalMethodHandler {
 		return Psi.proxy.localize(key, format);
 	}
 
+	@Override
+	public ItemStack createDefaultCAD(ItemStack... components) {
+		return ItemCAD.makeCAD(components);
+	}
+
+	@Override
+	public ItemStack createCAD(ItemStack base, ItemStack... components) {
+		return ItemCAD.makeCAD(base, Lists.newArrayList(components));
+	}
 }

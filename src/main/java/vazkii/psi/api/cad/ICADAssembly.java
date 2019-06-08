@@ -14,8 +14,13 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import vazkii.psi.api.PsiAPI;
 
 public interface ICADAssembly {
+
+	default ItemStack createCADStack(ItemStack... components) {
+		return PsiAPI.internalHandler.createDefaultCAD(components);
+	}
 
 	@SideOnly(Side.CLIENT)
 	ModelResourceLocation getCADModel(ItemStack stack, ItemStack cad);

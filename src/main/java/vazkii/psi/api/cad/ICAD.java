@@ -11,15 +11,39 @@
 package vazkii.psi.api.cad;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import vazkii.arl.util.ItemNBTHelper;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.SpellRuntimeException;
 
 /**
- * Base interface for a CAD. You probably shouldn't implement this.
+ * Base interface for a CAD. You probably shouldn't implement this,
+ * unless you absolutely know what you are doing.
  */
 public interface ICAD extends ISocketable {
+
+	String TAG_COMPONENT_PREFIX = "component";
+
+	static void setComponent(ItemStack stack, ItemStack componentStack) {
+		if(!componentStack.isEmpty() && componentStack.getItem() instanceof ICADComponent) {
+			ICADComponent component = (ICADComponent) componentStack.getItem();
+			EnumCADComponent componentType = component.getComponentType(componentStack);
+			String name = TAG_COMPONENT_PREFIX + componentType.name();
+
+			NBTTagCompound cmp = new NBTTagCompound();
+			componentStack.writeToNBT(cmp);
+			ItemNBTHelper.setCompound(stack, name, cmp);
+		}
+	}
+
+	/**
+	 * Sets the component in this slot for the CAD.
+	 */
+	default void setCADComponent(ItemStack stack, ItemStack component) {
+		setComponent(stack, component);
+	}
 
 	/**
 	 * Gets the component used for this CAD in the given slot.

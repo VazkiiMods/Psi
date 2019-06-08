@@ -11,6 +11,7 @@
 package vazkii.psi.api.internal;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -63,5 +64,15 @@ public final class DummyMethodHandler implements IInternalMethodHandler {
 	@Override
 	public String localize(String key, Object... format) {
 		return key;
+	}
+
+	@Override
+	public ItemStack createDefaultCAD(ItemStack... components) {
+		return ItemStack.EMPTY;
+	}
+
+	@Override
+	public ItemStack createCAD(ItemStack base, ItemStack... components) {
+		return ItemStack.EMPTY;
 	}
 }

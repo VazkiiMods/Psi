@@ -11,6 +11,7 @@
 package vazkii.psi.api.internal;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -59,4 +60,8 @@ public interface IInternalMethodHandler {
 	 * Localizes a string, with correct behavior on both server and client.
 	 */
 	String localize(String key, Object... format);
+
+	ItemStack createDefaultCAD(ItemStack... components);
+
+	ItemStack createCAD(ItemStack base, ItemStack... components);
 }
