@@ -1,3 +1,12 @@
+r1.1-77
+*Removed the now irrelevant energy cap message.
+*[API] Added a helper method for detonating.
+*[API] Added DetonationEvent.
+*[API] CADs can now be provided by other items.
+*[API] Increased version number to 15.
+r1.1-76
+*Fixed invalid spells crashing the server.
+*Fixed some tooltips having format errors.
 r1.1-75
 *Added a section including spell data to crash reports in case the mod crashes in the future.
 *Fixed a crash with Random PSIdeas' Flash Ring.
