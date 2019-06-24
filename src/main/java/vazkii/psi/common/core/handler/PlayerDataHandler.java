@@ -30,9 +30,6 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.Style;
-import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
@@ -56,9 +53,9 @@ import vazkii.psi.api.cad.*;
 import vazkii.psi.api.exosuit.IPsiEventArmor;
 import vazkii.psi.api.exosuit.PsiArmorEvent;
 import vazkii.psi.api.internal.IPlayerData;
+import vazkii.psi.api.internal.PsiRenderHelper;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.*;
-import vazkii.psi.api.internal.PsiRenderHelper;
 import vazkii.psi.client.render.entity.RenderSpellCircle;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.item.ItemCAD;
@@ -70,6 +67,7 @@ import vazkii.psi.common.network.message.MessageLevelUp;
 import vazkii.psi.common.network.message.MessageTriggerJumpSpell;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.lang.ref.WeakReference;
 import java.util.*;
 
@@ -763,12 +761,27 @@ public class PlayerDataHandler {
 		}
 
 		@Override
-		public boolean isPieceGroupUnlocked(String group) {
+		public boolean isPieceGroupUnlocked(String group, @Nullable String name) {
 			EntityPlayer player = playerWR.get();
-			if(player != null && player.capabilities.isCreativeMode)
+			if(player == null)
+				return false;
+
+			if(player.capabilities.isCreativeMode)
 				return true;
 
-			return spellGroupsUnlocked.contains(group);
+			boolean defaultBehavior = spellGroupsUnlocked.contains(group);
+
+			PieceKnowledgeEvent event = new PieceKnowledgeEvent(group, name, player, this, defaultBehavior);
+			MinecraftForge.EVENT_BUS.post(event);
+
+			switch (event.getResult()) {
+				case DENY:
+					return false;
+				case ALLOW:
+					return true;
+				default:
+					return defaultBehavior;
+			}
 		}
 
 		@Override

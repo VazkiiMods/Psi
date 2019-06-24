@@ -13,6 +13,8 @@ package vazkii.psi.api.internal;
 import net.minecraft.nbt.NBTTagCompound;
 import vazkii.psi.api.spell.SpellPiece;
 
+import javax.annotation.Nullable;
+
 public interface IPlayerData {
 
 	/**
@@ -63,9 +65,16 @@ public interface IPlayerData {
 	void deductPsi(int psi, int cd, boolean sync, boolean shatter);
 
 	/**
-	 * Gets it the piece group name is unlocked.
+	 * Gets if the piece group name is unlocked.
 	 */
-	boolean isPieceGroupUnlocked(String group);
+	default boolean isPieceGroupUnlocked(String group) {
+		return isPieceGroupUnlocked(group, null);
+	}
+
+	/**
+	 * Gets if the piece and group name are unlocked.
+	 */
+	boolean isPieceGroupUnlocked(String group, @Nullable String piece);
 
 	/**
 	 * Unlocks the given piece group.

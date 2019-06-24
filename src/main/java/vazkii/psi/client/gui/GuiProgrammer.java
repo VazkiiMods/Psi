@@ -830,7 +830,7 @@ public class GuiProgrammer extends GuiScreen {
 								SpellPiece piece = spell.grid.gridData[i][j];
 								if(piece != null) {
 									PieceGroup group = PsiAPI.groupsForPiece.get(piece.getClass());
-									if(!mc.player.capabilities.isCreativeMode && (group == null || !data.isPieceGroupUnlocked(group.name))) {
+									if(!mc.player.capabilities.isCreativeMode && (group == null || !data.isPieceGroupUnlocked(group.name, piece.registryKey))) {
 										mc.player.sendMessage(new TextComponentTranslation("psimisc.missingPieces").setStyle(new Style().setColor(TextFormatting.RED)));
 										return;
 									}
@@ -886,7 +886,7 @@ public class GuiProgrammer extends GuiScreen {
 		for(String key : PsiAPI.spellPieceRegistry.getKeys()) {
 			Class<? extends SpellPiece> clazz = PsiAPI.spellPieceRegistry.getObject(key);
 			PieceGroup group = PsiAPI.groupsForPiece.get(clazz);
-			if(!mc.player.capabilities.isCreativeMode && (group == null || !data.isPieceGroupUnlocked(group.name)))
+			if(!mc.player.capabilities.isCreativeMode && (group == null || !data.isPieceGroupUnlocked(group.name, key)))
 				continue;
 
 			SpellPiece p = SpellPiece.create(clazz, spell);
