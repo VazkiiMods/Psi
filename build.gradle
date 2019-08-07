@@ -89,7 +89,8 @@ repositories {
 
 dependencies {
     minecraft "net.minecraftforge:forge:${config.mc_version}-${config.forge_version}"
-    deobfCompile "vazkii.arl:AutoRegLib:${config.arl_version}"
+
+    runtime "vazkii.arl:AutoRegLib:${config.arl_version}"
     compileOnly "mezz.jei:${config.jei_version}:api"
     runtime "mezz.jei:${config.jei_version}"
 }
