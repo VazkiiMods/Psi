@@ -1,0 +1,12 @@
+modLoader="javafml"
+loaderVersion="[25,)"
+issueTrackerURL="https://github.com/Vazkii/Psi"
+
+[[mods]]
+modId="psi"
+displayName="Psi"
+version="${version}"
+authors="Vazkii, Wiiv, WireSegal, Kamefrede"
+description='''
+Psionic Spellcasting Instruments
+'''

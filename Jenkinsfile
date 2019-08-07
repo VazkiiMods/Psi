@@ -10,19 +10,13 @@ pipeline {
                 sh './gradlew clean'
             }
         }
-        stage('Setup') {
-            steps {
-                echo 'Setting up Workspace'
-                sh './gradlew setupCIWorkspace'
-            }
-        }
         stage('Build and Deploy') {
             steps {
                 echo 'Building and Deploying to Maven'
-                sh './gradlew build sortArtifacts publish'
+					sh './gradlew build sort uploadArchives'
+                }
             }
         }
-    }
     post {
         always {
             archive 'build/libs/**.jar'

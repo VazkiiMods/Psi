@@ -1,32 +1,77 @@
 buildscript {
     repositories {
+        maven { url = 'https://files.minecraftforge.net/maven' }
         jcenter()
-        maven {
-            name = "forge"
-            url = "http://files.minecraftforge.net/maven"
-        }
+        mavenCentral()
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
     }
 }
-
-apply plugin: 'net.minecraftforge.gradle.forge'
-apply plugin: 'maven-publish'
-
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
+apply plugin: 'net.minecraftforge.gradle'
+apply plugin: 'eclipse'
+apply plugin: 'maven'
 
 ext.configFile = file('build.properties')
-
 ext.config = parseConfig(configFile)
 
 version = "${config.version}-${config.build_number}"
-group = "vazkii.psi" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+group = "vazkii.${config.mod_id}" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = config.mod_name
 
-if (System.getenv().BUILD_NUMBER != null) {
-    version += ".${System.getenv().BUILD_NUMBER}"
+sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
+
+if (System.getenv('BUILD_NUMBER') != null) {
+    version += "." + System.getenv('BUILD_NUMBER')
+}
+
+minecraft {
+    // The mappings can be changed at any time, and must be in the following format.
+    // snapshot_YYYYMMDD   Snapshot are built nightly.
+    // stable_#            Stables are built at the discretion of the MCP team.
+    // Use non-default mappings at your own risk. they may not always work.
+    // Simply re-run your setup task after changing the mappings to update your workspace.
+
+    mappings channel: "${config.mapping_channel}", version: "${config.mapping_version}"
+    // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
+    
+    // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+
+    // Default run configurations.
+    // These can be tweaked, removed, or duplicated as needed.
+    runs {
+        client {
+            workingDirectory project.file('run')
+
+            // Recommended logging data for a userdev environment
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+
+            // Recommended logging level for the console
+            property 'forge.logging.console.level', 'debug'
+
+            mods {
+                examplemod {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        server {
+            workingDirectory project.file('run')
+
+            // Recommended logging data for a userdev environment
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+
+            // Recommended logging level for the console
+            property 'forge.logging.console.level', 'debug'
+
+            mods {
+                examplemod {
+                    source sourceSets.main
+                }
+            }
+        }
+    }
 }
 
 repositories {
@@ -35,107 +80,55 @@ repositories {
         name "blamejared"
         url "http://maven.blamejared.com/"
     }
-    maven { url = "http://dvs1.progwml6.com/files/maven" }
+    maven {
+        // for JEI
+        name = "promwml16"
+        url "http://dvs1.progwml6.com/files/maven"
+    }
 }
 
 dependencies {
-    deobfCompile "vazkii.autoreglib:AutoRegLib:${config.arl_version}"
-    compileOnly "mezz.jei:jei_${config.mc_version}:${config.jei_version}:api"
-    runtime "mezz.jei:jei_${config.mc_version}:${config.jei_version}"
-}
-
-minecraft {
-    version = "${config.mc_version}-${config.forge_version}"
-    runDir = "eclipse/assets"
-
-    mappings = config.mc_mappings
-    replace 'GRADLE:BUILD', config.build_number
-    replace 'GRADLE:VERSION', config.version
-
-    replaceIn 'LibMisc.java' //I may have missed another file, though I can only find it in here.
-    makeObfSourceJar = false
-}
-
-//This here is for SCP
-repositories {
-    mavenCentral()
-}
-configurations {
-    sshAntTask
-}
-
-//End of the SCP config
-
-dependencies {
-    sshAntTask "org.apache.ant:ant-jsch:1.7.1", "jsch:jsch:0.1.29"
-}
-
-jar {
-    exclude "**/*.bat"
-    exclude "**/*.psd"
+    minecraft "net.minecraftforge:forge:${config.mc_version}-${config.forge_version}"
+    deobfCompile "vazkii.arl:AutoRegLib:${config.arl_version}"
+    compileOnly "mezz.jei:${config.jei_version}:api"
+    runtime "mezz.jei:${config.jei_version}"
 }
 
 processResources {
     // replace stuff in mcmod.info, nothing else
     from(sourceSets.main.resources.srcDirs) {
-        include 'mcmod.info'
+        include 'META-INF/mods.toml'
 
         // replace version and mcversion
-        expand 'version': project.version, 'mcversion': config.mc_version
+        expand 'version': project.version
     }
 
-    // copy everything else, thats not the mcmod.info
+    // copy everything else, thats not the mods.toml
     from(sourceSets.main.resources.srcDirs) {
-        exclude 'mcmod.info', '**/psd/**'
+        exclude 'META-INF/mods.toml', '**/psd/**'
     }
 }
 
-task deobfJar(type: Jar) {
-    from(sourceSets.main.output)
-    archiveName = "${baseName}-${version}-deobf.${extension}"
-}
-task srcJar(type: Jar) {
-    from(sourceSets.main.java)
-    classifier = 'sources'
-    archiveName = "${baseName}-${version}-sources.${extension}"
-}
-task apiJar(type: Jar) {
-    // Remove sources from the api jar when MinecraftForge/ForgeGradle#369 is fixed
-    from(sourceSets.main.allJava)
-    from(sourceSets.main.output)
-    include 'vazkii/psi/api/**'
-
-    classifier = 'api'
-    archiveName = "${baseName}-${version}-api.${extension}"
-}
-
-artifacts {
-    archives srcJar, apiJar
-}
-/**
- * Increments the buildnumber in your config file, and saves it
- */
 task incrementBuildNumber {
-    doLast {
+    doFirst {
         config.build_number = (config.build_number.toString().toInteger()) + 1
         configFile.withWriter {
             config.toProperties().store(it, "")
         }
-
-        file('web/versions.ini').append("\n${version}=${minecraft.version}")
-        file("${config.dir_repo}/version/${minecraft.version}.txt").write("${version}")
     }
+
+    //file('web/versions.ini').append("\n${version}=${minecraft.version}")
+    //file("${config.dir_repo}/version/${minecraft.version}.txt").write("${version}")
 }
 
 import java.util.regex.Pattern
-
 task sortArtifacts(type: Copy) {
     from jar.destinationDir
     into config.dir_output
     //Put each jar with a classifier in a subfolder with the classifier as its name
     eachFile {
         //This matcher is used to get the classifier of the jar
-        def matcher = Pattern.compile(Pattern.quote("$config.mod_name-$version") + "-(?<classifier>\\w+)\\.jar").matcher(it.name)
+        def matcher = Pattern.compile(Pattern.quote("$config.mod_name-$version") + "-(?<classifier>\\w+).jar").matcher(it.name)
         //Only change the destination for full matches, i.e jars with classifiers
         if (matcher.matches())
         {
@@ -155,28 +148,36 @@ def parseConfig(File config) {
     }
 }
 
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            groupId project.group
-            artifactId project.archivesBaseName
-            version project.version
-            from components.java
+jar {
+    //rename the default output, for some better... sanity with scipts
+    archiveName = "${baseName} ${version}.${extension}"
 
-            artifact apiJar
-            artifact srcJar
-            
-            pom.withXml {
-                if (asNode().get("dependencies").size() > 0) { 
-                    // Deobf deps are a bit broken on gradle 4.8+ with maven-publish, let's not put them there
-                    asNode().remove(asNode().get("dependencies"))
-                }
-            }
-        }
+     manifest {
+        attributes([
+            "Specification-Title": "${config.mod_id}",
+            "Specification-Vendor": "vazkii",
+            "Specification-Version": "1", // We are version 1 of ourselves
+            "Implementation-Title": "${config.mod_id}",
+            "Implementation-Version": "${version}",
+            "Implementation-Vendor" :"vazkii",
+            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+        ])
     }
+
+    exclude "**/*.bat"
+    exclude "**/*.psd"
+    exclude "**/*.exe"
+    exclude "**/unused"
+}
+
+//artifacts {
+//    archives deobfJar
+//}
+
+uploadArchives {
     repositories {
-        maven {
-            url "file://" + System.getenv("local_maven")
+        mavenDeployer {
+            repository(url: "file://" + (System.getenv("local_maven") != null ? System.getenv("local_maven") : System.getenv("bamboo_local_maven")))
         }
     }
 }
