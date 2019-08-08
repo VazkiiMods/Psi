@@ -12,16 +12,16 @@ package vazkii.psi.api.spell;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.GlStateManager;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModContainer;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.internal.PsiRenderHelper;
 import vazkii.psi.api.internal.TooltipHelper;
@@ -52,7 +52,7 @@ public abstract class SpellPiece {
 	public String comment;
 	
 	public final Map<String, SpellParam> params = new LinkedHashMap<>();
-	public final Map<SpellParam, SpellParam.Side> paramSides = new LinkedHashMap<>();
+	public final Map<SpellParam, SpellParam.Dist> paramSides = new LinkedHashMap<>();
 
 	public SpellPiece(Spell spell) {
 		this.spell = spell;
@@ -122,7 +122,7 @@ public abstract class SpellPiece {
 	 */
 	public void addParam(SpellParam param) {
 		params.put(param.name, param);
-		paramSides.put(param, SpellParam.Side.OFF);
+		paramSides.put(param, SpellParam.Dist.OFF);
 	}
 
 	/**
@@ -130,7 +130,7 @@ public abstract class SpellPiece {
 	 */
 	@SuppressWarnings("unchecked")
 	public <T> T getParamValue(SpellContext context, SpellParam param) {
-		SpellParam.Side side = paramSides.get(param);
+		SpellParam.Dist side = paramSides.get(param);
 		if(!side.isEnabled())
 			return null;
 
@@ -151,7 +151,7 @@ public abstract class SpellPiece {
 	 */
 	@SuppressWarnings("unchecked")
 	public <T> T getParamEvaluation(SpellParam param) throws SpellCompilationException {
-		SpellParam.Side side = paramSides.get(param);
+		SpellParam.Dist side = paramSides.get(param);
 		if(!side.isEnabled())
 			return null;
 
@@ -180,7 +180,7 @@ public abstract class SpellPiece {
 	 * All appropriate transformations are already done. Canvas is 16x16 starting from (0, 0, 0).<br>
 	 * To avoid z-fighting in the TE projection, translations are applied every step.
 	 */
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public void draw() {
 		drawBackground();
 		GlStateManager.translate(0F, 0F, 0.1F);
@@ -199,7 +199,7 @@ public abstract class SpellPiece {
 	 * Draws this piece's background.
 	 * @see #draw()
 	 */
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public void drawBackground() {
 		ResourceLocation res = PsiAPI.simpleSpellTextures.get(registryKey);
 		Minecraft.getMinecraft().renderEngine.bindTexture(res);
@@ -219,7 +219,7 @@ public abstract class SpellPiece {
 	 * to draw the lines.
 	 * @see #draw()
 	 */
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public void drawAdditional() {
 		// NO-OP
 	}
@@ -228,7 +228,7 @@ public abstract class SpellPiece {
 	 * Draws the little comment indicator in this piece, if one exists.
 	 * @see #draw()
 	 */
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public void drawComment() {
 		if(comment != null && !comment.isEmpty()) {
 			Minecraft.getMinecraft().renderEngine.bindTexture(PsiAPI.internalHandler.getProgrammerTexture());
@@ -254,12 +254,12 @@ public abstract class SpellPiece {
 	 * Draws the parameters coming into this piece.
 	 * @see #draw()
 	 */
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public void drawParams() {
 		Minecraft.getMinecraft().renderEngine.bindTexture(PsiAPI.internalHandler.getProgrammerTexture());
 		GlStateManager.enableAlpha();
 		for(SpellParam param : paramSides.keySet()) {
-			SpellParam.Side side = paramSides.get(param);
+			SpellParam.Dist side = paramSides.get(param);
 			if(side.isEnabled()) {
 				int minX = 4;
 				int minY = 4;
@@ -292,7 +292,7 @@ public abstract class SpellPiece {
 	/**
 	 * Draws this piece's tooltip.
 	 */
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public void drawTooltip(int tooltipX, int tooltipY, List<String> tooltip) {
 		PsiAPI.internalHandler.renderTooltip(tooltipX, tooltipY, tooltip, 0x505000ff, 0xf0100010);
 	}
@@ -300,12 +300,12 @@ public abstract class SpellPiece {
 	/**
 	 * Draws this piece's comment tooltip.
 	 */
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public void drawCommentText(int tooltipX, int tooltipY, List<String> commentText) {
 		PsiAPI.internalHandler.renderTooltip(tooltipX, tooltipY - 9 - commentText.size() * 10, commentText, 0x5000a000, 0xf0001e00);
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public void getTooltip(List<String> tooltip) {
 		TooltipHelper.addToTooltip(tooltip, getUnlocalizedName());
 		TooltipHelper.tooltipIfShift(tooltip, () -> addToTooltipAfterShift(tooltip));
@@ -318,7 +318,7 @@ public abstract class SpellPiece {
 		}
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public void addToTooltipAfterShift(List<String> tooltip) {
 		tooltip.add(TextFormatting.GRAY + TooltipHelper.local(getUnlocalizedDesc()).replaceAll("&", "\u00a7"));
 
@@ -337,27 +337,27 @@ public abstract class SpellPiece {
 	 * Checks whether this piece should intercept keystrokes in the programmer interface.
 	 * This is used for the number constant piece to change its value.
 	 */
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public boolean interceptKeystrokes() {
 		return false;
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public boolean onKeyPressed(char c, int i, boolean doit) {
 		return false;
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public boolean hasConfig() {
 		return !params.isEmpty();
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public void getShownPieces(List<SpellPiece> pieces) {
 		pieces.add(this);
 	}
 
-	public static SpellPiece createFromNBT(Spell spell, NBTTagCompound cmp) {
+	public static SpellPiece createFromNBT(Spell spell, CompoundNBT cmp) {
 		String key;
 		if(cmp.hasKey(TAG_KEY_LEGACY))
 			key = cmp.getString(TAG_KEY_LEGACY);
@@ -385,40 +385,40 @@ public abstract class SpellPiece {
 	}
 
 	public SpellPiece copy() {
-		NBTTagCompound cmp = new NBTTagCompound();
+		CompoundNBT cmp = new CompoundNBT();
 		writeToNBT(cmp);
 		return createFromNBT(spell, cmp);
 	}
 
-	public void readFromNBT(NBTTagCompound cmp) {
-		NBTTagCompound paramCmp = cmp.getCompoundTag(TAG_PARAMS);
+	public void readFromNBT(CompoundNBT cmp) {
+		CompoundNBT paramCmp = cmp.getCompoundTag(TAG_PARAMS);
 		for(String s : params.keySet()) {
 			SpellParam param = params.get(s);
 
 			String key = s;
 			if(paramCmp.hasKey(key))
-				paramSides.put(param, SpellParam.Side.fromInt(paramCmp.getInteger(key)));
+				paramSides.put(param, SpellParam.Dist.fromInt(paramCmp.getInteger(key)));
 			else {
 				if(key.startsWith(SpellParam.PSI_PREFIX))
 					key = "_" + key.substring(SpellParam.PSI_PREFIX.length());
-				paramSides.put(param, SpellParam.Side.fromInt(paramCmp.getInteger(key)));
+				paramSides.put(param, SpellParam.Dist.fromInt(paramCmp.getInteger(key)));
 			}
 		}
 		
 		comment = cmp.getString(TAG_COMMENT);
 	}
 
-	public void writeToNBT(NBTTagCompound cmp) {
+	public void writeToNBT(CompoundNBT cmp) {
 		if(comment == null)
 			comment = "";
 		
 		cmp.setString(TAG_KEY, registryKey.replaceAll("^" + PSI_PREFIX, "_"));
 		
 		int paramCount = 0;
-		NBTTagCompound paramCmp = new NBTTagCompound();
+		CompoundNBT paramCmp = new CompoundNBT();
 		for(String s : params.keySet()) {
 			SpellParam param = params.get(s);
-			SpellParam.Side side = paramSides.get(param);
+			SpellParam.Dist side = paramSides.get(param);
 			paramCmp.setInteger(s.replaceAll("^" + SpellParam.PSI_PREFIX, "_"), side.asInt());
 			paramCount++;
 		}

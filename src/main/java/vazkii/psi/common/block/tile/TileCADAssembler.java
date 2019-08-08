@@ -10,10 +10,10 @@
  */
 package vazkii.psi.common.block.tile;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.SoundCategory;
 import net.minecraftforge.common.MinecraftForge;
 import vazkii.arl.block.tile.TileSimpleInventory;
@@ -40,7 +40,7 @@ public class TileCADAssembler extends TileSimpleInventory implements ITileCADAss
 	}
 
 	@Override
-	public ItemStack getCachedCAD(EntityPlayer player) {
+	public ItemStack getCachedCAD(PlayerEntity player) {
 		ItemStack cad = cachedCAD;
 		if (cad == null) {
 			ItemStack assembly = getStackForComponent(EnumCADComponent.ASSEMBLY);
@@ -157,16 +157,16 @@ public class TileCADAssembler extends TileSimpleInventory implements ITileCADAss
 	}
 
 	@Override
-	public void writeSharedNBT(NBTTagCompound tag) {
+	public void writeSharedNBT(CompoundNBT tag) {
 		super.writeSharedNBT(tag);
 		tag.setInteger("version", 1);
 	}
 
 	@Override
-	public void readSharedNBT(NBTTagCompound tag) {
+	public void readSharedNBT(CompoundNBT tag) {
 		// Migrate old CAD assemblers to the new format
 		if (needsToSyncInventory() && tag.getInteger("version") < 1) {
-			NBTTagList items = tag.getTagList("Items", 10);
+			ListNBT items = tag.getTagList("Items", 10);
 			this.clear();
 
 			ISocketableCapability socketable = null;

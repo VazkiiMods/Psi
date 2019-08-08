@@ -12,7 +12,7 @@ package vazkii.psi.common.entity;
 
 import java.util.List;
 
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.world.World;
 
 public class EntitySpellMine extends EntitySpellGrenade {
@@ -23,7 +23,7 @@ public class EntitySpellMine extends EntitySpellGrenade {
 		super(worldIn);
 	}
 
-	public EntitySpellMine(World worldIn, EntityLivingBase throwerIn) {
+	public EntitySpellMine(World worldIn, LivingEntity throwerIn) {
 		super(worldIn, throwerIn);
 	}
 
@@ -31,8 +31,8 @@ public class EntitySpellMine extends EntitySpellGrenade {
 	public void onUpdate() {
 		super.onUpdate();
 
-		List<EntityLivingBase> entities = getEntityWorld().getEntitiesWithinAABB(EntityLivingBase.class, getEntityBoundingBox().grow(1, 1, 1));
-		EntityLivingBase thrower = getThrower();
+		List<LivingEntity> entities = getEntityWorld().getEntitiesWithinAABB(LivingEntity.class, getEntityBoundingBox().grow(1, 1, 1));
+		LivingEntity thrower = getThrower();
 		if(thrower != null)
 			entities.remove(thrower);
 

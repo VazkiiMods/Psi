@@ -10,12 +10,12 @@
  */
 package vazkii.psi.common.item;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 import vazkii.arl.item.ItemMod;
@@ -36,7 +36,7 @@ public class ItemDetonator extends ItemMod implements IPsiItem {
 
 	@Nonnull
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, @Nonnull EnumHand hand) {
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, @Nonnull Hand hand) {
 		ItemStack itemStackIn = playerIn.getHeldItem(hand);
 		IDetonationHandler.performDetonation(worldIn, playerIn);
 
@@ -44,7 +44,7 @@ public class ItemDetonator extends ItemMod implements IPsiItem {
 			worldIn.playSound(null, playerIn.posX, playerIn.posY, playerIn.posZ, SoundEvents.UI_BUTTON_CLICK, SoundCategory.PLAYERS, 1F, 1F);
 		else playerIn.swingArm(hand);
 
-		return new ActionResult<>(EnumActionResult.SUCCESS, itemStackIn);
+		return new ActionResult<>(ActionResultType.SUCCESS, itemStackIn);
 	}
 
 }

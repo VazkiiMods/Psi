@@ -11,7 +11,7 @@
 package vazkii.psi.common.core;
 
 import net.minecraft.block.Block;
-import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
@@ -22,7 +22,7 @@ import vazkii.psi.common.lib.LibResources;
 
 import javax.annotation.Nonnull;
 
-public class PsiCreativeTab extends CreativeTabs {
+public class PsiCreativeTab extends ItemGroup {
 
 	public static final PsiCreativeTab INSTANCE = new PsiCreativeTab();
 	private NonNullList<ItemStack> list;

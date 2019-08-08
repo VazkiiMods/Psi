@@ -12,14 +12,14 @@ package vazkii.psi.common.block;
 
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.EnumRarity;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Rarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.items.IItemHandler;
@@ -55,18 +55,18 @@ public class BlockCADAssembler extends BlockFacing implements IPsiBlock {
 
 	@Override
 	@SuppressWarnings("deprecation")
-	public boolean isFullBlock(IBlockState state) {
+	public boolean isFullBlock(BlockState state) {
 		return false;
 	}
 
 	@Override
 	@SuppressWarnings("deprecation")
-	public boolean isOpaqueCube(IBlockState state) {
+	public boolean isOpaqueCube(BlockState state) {
 		return false;
 	}
 
 	@Override
-	public void breakBlock(@Nonnull World par1World, @Nonnull BlockPos pos, @Nonnull IBlockState state) {
+	public void breakBlock(@Nonnull World par1World, @Nonnull BlockPos pos, @Nonnull BlockState state) {
 		TileSimpleInventory inv = (TileSimpleInventory) par1World.getTileEntity(pos);
 
 		if(inv != null) {
@@ -76,7 +76,7 @@ public class BlockCADAssembler extends BlockFacing implements IPsiBlock {
 				if(!itemstack.isEmpty()) {
 					float f = random.nextFloat() * 0.8F + 0.1F;
 					float f1 = random.nextFloat() * 0.8F + 0.1F;
-					EntityItem entityitem;
+					ItemEntity entityitem;
 
 					for (float f2 = random.nextFloat() * 0.8F + 0.1F; itemstack.getCount() > 0; par1World.spawnEntity(entityitem)) {
 						int k1 = random.nextInt(21) + 10;
@@ -85,7 +85,7 @@ public class BlockCADAssembler extends BlockFacing implements IPsiBlock {
 							k1 = itemstack.getCount();
 
 						itemstack.shrink(k1);
-						entityitem = new EntityItem(par1World, pos.getX() + f, pos.getY() + f1, pos.getZ() + f2, new ItemStack(itemstack.getItem(), k1, itemstack.getItemDamage()));
+						entityitem = new ItemEntity(par1World, pos.getX() + f, pos.getY() + f1, pos.getZ() + f2, new ItemStack(itemstack.getItem(), k1, itemstack.getItemDamage()));
 						float f3 = 0.05F;
 						entityitem.motionX = (float)random.nextGaussian() * f3;
 						entityitem.motionY = (float)random.nextGaussian() * f3 + 0.2F;
@@ -103,13 +103,13 @@ public class BlockCADAssembler extends BlockFacing implements IPsiBlock {
 
 	@Override
 	@SuppressWarnings("deprecation")
-	public boolean hasComparatorInputOverride(IBlockState state) {
+	public boolean hasComparatorInputOverride(BlockState state) {
 		return true;
 	}
 
 	@Override
 	@SuppressWarnings("deprecation")
-	public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos) {
+	public int getComparatorInputOverride(BlockState blockState, World worldIn, BlockPos pos) {
 		TileEntity tile = worldIn.getTileEntity(pos);
 		if (tile != null && tile.hasCapability(ITEM_HANDLER_CAPABILITY, null)) {
 			IItemHandler capability = tile.getCapability(ITEM_HANDLER_CAPABILITY, null);
@@ -120,14 +120,14 @@ public class BlockCADAssembler extends BlockFacing implements IPsiBlock {
 	}
 
 	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn, Hand hand, Direction side, float hitX, float hitY, float hitZ) {
 		playerIn.openGui(Psi.instance, LibGuiIDs.CAD_ASSEMBLER, worldIn, pos.getX(), pos.getY(), pos.getZ());
 		return true;
 	}
 
 	@Override
-	public EnumRarity getBlockRarity(ItemStack stack) {
-		return EnumRarity.UNCOMMON;
+	public Rarity getBlockRarity(ItemStack stack) {
+		return Rarity.UNCOMMON;
 	}
 
 	@Override

@@ -10,7 +10,7 @@
  */
 package vazkii.psi.common.network;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -25,7 +25,7 @@ import vazkii.psi.common.lib.LibGuiIDs;
 public class GuiHandler implements IGuiHandler {
 	
 	@Override
-	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+	public Object getServerGuiElement(int ID, PlayerEntity player, World world, int x, int y, int z) {
 		switch(ID) {
 		case LibGuiIDs.CAD_ASSEMBLER:
 			TileEntity assembler = world.getTileEntity(new BlockPos(x, y, z));
@@ -38,7 +38,7 @@ public class GuiHandler implements IGuiHandler {
 	}
 
 	@Override
-	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+	public Object getClientGuiElement(int ID, PlayerEntity player, World world, int x, int y, int z) {
 		switch(ID) {
 		case LibGuiIDs.CAD_ASSEMBLER:
 			TileEntity assembler = world.getTileEntity(new BlockPos(x, y, z));

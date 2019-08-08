@@ -11,9 +11,9 @@
 package vazkii.psi.api.cad;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.arl.util.ItemNBTHelper;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.SpellRuntimeException;
@@ -32,7 +32,7 @@ public interface ICAD extends ISocketable {
 			EnumCADComponent componentType = component.getComponentType(componentStack);
 			String name = TAG_COMPONENT_PREFIX + componentType.name();
 
-			NBTTagCompound cmp = new NBTTagCompound();
+			CompoundNBT cmp = new CompoundNBT();
 			componentStack.writeToNBT(cmp);
 			ItemNBTHelper.setCompound(stack, name, cmp);
 		}
@@ -89,7 +89,7 @@ public interface ICAD extends ISocketable {
 	 * Gets the color of the spells projected by this CAD. Usually just goes back
 	 * to ICADColorizer.getColor().
 	 */
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	int getSpellColor(ItemStack stack);
 
 }

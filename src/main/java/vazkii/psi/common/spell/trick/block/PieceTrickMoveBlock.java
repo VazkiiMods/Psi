@@ -11,8 +11,8 @@
 package vazkii.psi.common.spell.trick.block;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.material.EnumPushReaction;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.material.PushReaction;
+import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -63,9 +63,9 @@ public class PieceTrickMoveBlock extends PieceTrick {
 
 		World world = context.caster.getEntityWorld();
 		BlockPos pos = positionVal.toBlockPos();
-		IBlockState state = world.getBlockState(pos);
+		BlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
-		if(world.getTileEntity(pos) != null || state.getPushReaction() != EnumPushReaction.NORMAL ||
+		if(world.getTileEntity(pos) != null || state.getPushReaction() != PushReaction.NORMAL ||
 				!block.canSilkHarvest(world, pos, state, context.caster) ||
 				state.getPlayerRelativeBlockHardness(context.caster, world, pos) <= 0 ||
 				!PieceTrickBreakBlock.canHarvestBlock(block, context.caster, world, pos, tool))
@@ -84,7 +84,7 @@ public class PieceTrickMoveBlock extends PieceTrick {
 		int y = pos.getY() + (int) axis.y;
 		int z = pos.getZ() + (int) axis.z;
 		BlockPos pos1 = new BlockPos(x, y, z);
-		IBlockState state1 = world.getBlockState(pos1);
+		BlockState state1 = world.getBlockState(pos1);
 
 		if(!world.isBlockModifiable(context.caster, pos) || !world.isBlockModifiable(context.caster, pos1))
 			return null;

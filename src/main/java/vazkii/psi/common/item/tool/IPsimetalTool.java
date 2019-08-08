@@ -11,9 +11,9 @@
 package vazkii.psi.common.item.tool;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
@@ -49,7 +49,7 @@ public interface IPsimetalTool extends ISocketable, ISpellSettable {
 	@Override
 	default ItemStack getBulletInSocket(ItemStack stack, int slot) {
 		String name = TAG_BULLET_PREFIX + slot;
-		NBTTagCompound cmp = ItemNBTHelper.getCompound(stack, name, true);
+		CompoundNBT cmp = ItemNBTHelper.getCompound(stack, name, true);
 
 		if (cmp == null)
 			return ItemStack.EMPTY;
@@ -60,7 +60,7 @@ public interface IPsimetalTool extends ISocketable, ISpellSettable {
 	@Override
 	default void setBulletInSocket(ItemStack stack, int slot, ItemStack bullet) {
 		String name = TAG_BULLET_PREFIX + slot;
-		NBTTagCompound cmp = new NBTTagCompound();
+		CompoundNBT cmp = new CompoundNBT();
 
 		if (!bullet.isEmpty())
 			bullet.writeToNBT(cmp);
@@ -79,7 +79,7 @@ public interface IPsimetalTool extends ISocketable, ISpellSettable {
 	}
 
 	@Override
-	default void setSpell(EntityPlayer player, ItemStack stack, Spell spell) {
+	default void setSpell(PlayerEntity player, ItemStack stack, Spell spell) {
 		int slot = getSelectedSlot(stack);
 		ItemStack bullet = getBulletInSocket(stack, slot);
 		if (!bullet.isEmpty() && ISpellAcceptor.isAcceptor(bullet)) {
@@ -88,7 +88,7 @@ public interface IPsimetalTool extends ISocketable, ISpellSettable {
 		}
 	}
 
-	default void castOnBlockBreak(ItemStack itemstack, EntityPlayer player) {
+	default void castOnBlockBreak(ItemStack itemstack, PlayerEntity player) {
 		if (!isEnabled(itemstack))
 			return;
 
@@ -99,7 +99,7 @@ public interface IPsimetalTool extends ISocketable, ISpellSettable {
 			ItemStack bullet = getBulletInSocket(itemstack, getSelectedSlot(itemstack));
 			ItemCAD.cast(player.getEntityWorld(), player, data, bullet, playerCad, 5, 10, 0.05F, (SpellContext context) -> {
 				context.tool = itemstack;
-				context.positionBroken = raytraceFromEntity(player.getEntityWorld(), player, false, player.getAttributeMap().getAttributeInstance(EntityPlayer.REACH_DISTANCE).getAttributeValue());
+				context.positionBroken = raytraceFromEntity(player.getEntityWorld(), player, false, player.getAttributeMap().getAttributeInstance(PlayerEntity.REACH_DISTANCE).getAttributeValue());
 			});
 		}
 	}
@@ -114,8 +114,8 @@ public interface IPsimetalTool extends ISocketable, ISpellSettable {
 		float yaw = player.prevRotationYaw + (player.rotationYaw - player.prevRotationYaw) * scale;
 		double posX = player.prevPosX + (player.posX - player.prevPosX) * scale;
 		double posY = player.prevPosY + (player.posY - player.prevPosY) * scale;
-		if (player instanceof EntityPlayer)
-			posY += ((EntityPlayer) player).eyeHeight;
+		if (player instanceof PlayerEntity)
+			posY += ((PlayerEntity) player).eyeHeight;
 		double posZ = player.prevPosZ + (player.posZ - player.prevPosZ) * scale;
 		Vec3d rayPos = new Vec3d(posX, posY, posZ);
 		float zYaw = -MathHelper.cos(yaw * (float) Math.PI / 180);
@@ -129,8 +129,8 @@ public interface IPsimetalTool extends ISocketable, ISpellSettable {
 	}
 
 	static void regen(ItemStack stack, Entity entityIn, boolean isSelected) {
-		if(entityIn instanceof EntityPlayer && stack.getItemDamage() > 0 && !isSelected) {
-			EntityPlayer player = (EntityPlayer) entityIn;
+		if(entityIn instanceof PlayerEntity && stack.getItemDamage() > 0 && !isSelected) {
+			PlayerEntity player = (PlayerEntity) entityIn;
 			PlayerDataHandler.PlayerData data = PlayerDataHandler.get(player);
 			int regenTime = ItemNBTHelper.getInt(stack, TAG_REGEN_TIME, 0);
 

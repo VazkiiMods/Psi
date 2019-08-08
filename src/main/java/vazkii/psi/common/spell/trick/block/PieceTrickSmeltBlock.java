@@ -11,8 +11,8 @@
 package vazkii.psi.common.spell.trick.block;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
@@ -63,7 +63,7 @@ public class PieceTrickSmeltBlock extends PieceTrick {
 		if(!context.caster.getEntityWorld().isBlockModifiable(context.caster, pos))
 			return null;
 		
-		IBlockState state = context.caster.getEntityWorld().getBlockState(pos);
+		BlockState state = context.caster.getEntityWorld().getBlockState(pos);
 		Block block = state.getBlock();
 		int meta = block.getMetaFromState(state);
 		ItemStack stack = new ItemStack(block, 1, meta);

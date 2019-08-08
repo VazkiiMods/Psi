@@ -12,7 +12,7 @@ package vazkii.psi.client.model;
 
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityArmorStand;
+import net.minecraft.entity.item.ArmorStandEntity;
 import vazkii.arl.item.ModelModArmor;
 import vazkii.arl.util.ClientTicker;
 
@@ -159,7 +159,7 @@ public class ModelPsimetalExosuit extends ModelModArmor {
 
 	@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-		if(entity instanceof EntityArmorStand) {
+		if(entity instanceof ArmorStandEntity) {
 			f = 0;
 			f1 = 0;
 			f2 = 0;

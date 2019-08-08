@@ -10,13 +10,13 @@
  */
 package vazkii.psi.api;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.registry.RegistryNamespaced;
+import net.minecraft.util.registry.SimpleRegistry;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.Loader;
@@ -43,7 +43,7 @@ public final class PsiAPI {
 	 */
 	public static IInternalMethodHandler internalHandler = new DummyMethodHandler();
 
-	public static final RegistryNamespaced<String, Class<? extends SpellPiece>> spellPieceRegistry = new RegistryNamespaced<>();
+	public static final SimpleRegistry<String, Class<? extends SpellPiece>> spellPieceRegistry = new SimpleRegistry<>();
 	public static final HashMap<String, ResourceLocation> simpleSpellTextures = new HashMap<>();
 	public static final HashMap<Class<? extends SpellPiece>, PieceGroup> groupsForPiece = new HashMap<>();
 	public static final HashMap<Class<? extends SpellPiece>, String> pieceMods = new HashMap<>();
@@ -121,10 +121,10 @@ public final class PsiAPI {
 	}
 
 	/**
-	 * Gets the CAD the passed EntityPlayer is using. As a player can only have one CAD, if there's
+	 * Gets the CAD the passed PlayerEntity is using. As a player can only have one CAD, if there's
 	 * more than one, this will return null.
 	 */
-	public static ItemStack getPlayerCAD(EntityPlayer player) {
+	public static ItemStack getPlayerCAD(PlayerEntity player) {
 		if(player == null)
 			return ItemStack.EMPTY;
 
@@ -142,7 +142,7 @@ public final class PsiAPI {
 		return cad;
 	}
 	
-	public static int getPlayerCADSlot(EntityPlayer player) {
+	public static int getPlayerCADSlot(PlayerEntity player) {
 		if(player == null)
 			return -1;
 
@@ -160,7 +160,7 @@ public final class PsiAPI {
 		return slot;
 	}
 
-	public static boolean canCADBeUpdated(EntityPlayer player) {
+	public static boolean canCADBeUpdated(PlayerEntity player) {
 		if(player == null)
 			return false;
 

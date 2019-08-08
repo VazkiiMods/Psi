@@ -16,13 +16,13 @@ import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.event.HoverEvent;
 import vazkii.arl.network.NetworkHandler;
@@ -112,32 +112,32 @@ public class CommandPsiLearn extends CommandBase {
 		return data.isPieceGroupUnlocked(group);
 	}
 
-	public static boolean hasGroup(EntityPlayer player, String group) {
+	public static boolean hasGroup(PlayerEntity player, String group) {
 		return hasGroup(PlayerDataHandler.get(player), group);
 	}
 
 	public static ITextComponent getGroupComponent(String group) {
 		if (group.equals(level0)) {
-			ITextComponent nameComponent = new TextComponentString("[")
-					.appendSibling(new TextComponentTranslation("psimisc.fakeLevel.psidust"))
+			ITextComponent nameComponent = new StringTextComponent("[")
+					.appendSibling(new TranslationTextComponent("psimisc.fakeLevel.psidust"))
 					.appendText("]");
 			nameComponent.getStyle().setColor(TextFormatting.AQUA);
-			nameComponent.getStyle().setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TextComponentTranslation("psimisc.levelDisplay", 0)));
+			nameComponent.getStyle().setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TranslationTextComponent("psimisc.levelDisplay", 0)));
 			return nameComponent;
 		}
 
 		PieceGroup pieceGroup = PsiAPI.groupsForName.get(group);
 		if (pieceGroup == null) {
-			ITextComponent errorComponent = new TextComponentString("ERROR");
+			ITextComponent errorComponent = new StringTextComponent("ERROR");
 			errorComponent.getStyle().setColor(TextFormatting.RED);
 			return errorComponent;
 		}
-		ITextComponent nameComponent = new TextComponentString("[")
-				.appendSibling(new TextComponentTranslation(pieceGroup.getUnlocalizedName()))
+		ITextComponent nameComponent = new StringTextComponent("[")
+				.appendSibling(new TranslationTextComponent(pieceGroup.getUnlocalizedName()))
 				.appendText("]");
 
 		nameComponent.getStyle().setColor(TextFormatting.AQUA);
-		nameComponent.getStyle().setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TextComponentTranslation("psimisc.levelDisplay", pieceGroup.levelRequirement)));
+		nameComponent.getStyle().setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TranslationTextComponent("psimisc.levelDisplay", pieceGroup.levelRequirement)));
 		return nameComponent;
 	}
 
@@ -174,7 +174,7 @@ public class CommandPsiLearn extends CommandBase {
 		throw new CommandException(localizationKey() + "." + result, format);
 	}
 
-	public void applyPlayerData(EntityPlayer player, PlayerDataHandler.PlayerData data, String group, ICommandSender sender) {
+	public void applyPlayerData(PlayerEntity player, PlayerDataHandler.PlayerData data, String group, ICommandSender sender) {
 		unlockPieceGroupFree(data, level0);
 
 		if (group.equals(level0))
@@ -194,12 +194,12 @@ public class CommandPsiLearn extends CommandBase {
 		}
 	}
 
-	public void applyAll(PlayerDataHandler.PlayerData data, EntityPlayer player, ICommandSender sender) {
+	public void applyAll(PlayerDataHandler.PlayerData data, PlayerEntity player, ICommandSender sender) {
 		unlockAll(data);
 		notify(sender, "success.all", player.getDisplayName());
 	}
 
-	public boolean shouldNotApply(EntityPlayer player, String group) {
+	public boolean shouldNotApply(PlayerEntity player, String group) {
 		return hasGroup(player, group);
 	}
 
@@ -217,23 +217,23 @@ public class CommandPsiLearn extends CommandBase {
 
 			if (target == null)
 				error("console");
-			else if (!(target instanceof EntityPlayer))
+			else if (!(target instanceof PlayerEntity))
 				error("players", target.getDisplayName());
 			else {
-				EntityPlayer player = (EntityPlayer) target;
+				PlayerEntity player = (PlayerEntity) target;
 				PlayerDataHandler.PlayerData data = PlayerDataHandler.get(player);
 				if (args[0].equals("*")) {
 					applyAll(data, player, sender);
-					if (player instanceof EntityPlayerMP)
-						NetworkHandler.INSTANCE.sendTo(new MessageDataSync(data), (EntityPlayerMP) player);
+					if (player instanceof ServerPlayerEntity)
+						NetworkHandler.INSTANCE.sendTo(new MessageDataSync(data), (ServerPlayerEntity) player);
 				} else if (!getGroups().contains(args[0]))
 					error("not_a_group", args[0]);
 				else if (shouldNotApply(player, args[0]))
 					error("should_not", player.getDisplayName(), args[0]);
 				else {
 					applyPlayerData(player, data, args[0], sender);
-					if (player instanceof EntityPlayerMP)
-						NetworkHandler.INSTANCE.sendTo(new MessageDataSync(data), (EntityPlayerMP) player);
+					if (player instanceof ServerPlayerEntity)
+						NetworkHandler.INSTANCE.sendTo(new MessageDataSync(data), (ServerPlayerEntity) player);
 				}
 			}
 		}

@@ -10,9 +10,9 @@
  */
 package vazkii.psi.common.block.tile;
 
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.common.util.Constants;
 import vazkii.arl.block.tile.TileMod;
 import vazkii.psi.api.cad.ICADColorizer;
@@ -41,7 +41,7 @@ public class TileConjured extends TileMod {
 		float g = PsiRenderHelper.g(color) / 255F;
 		float b = PsiRenderHelper.b(color) / 255F;
 
-		IBlockState state = getWorld().getBlockState(getPos());
+		BlockState state = getWorld().getBlockState(getPos());
 		state = state.getActualState(getWorld(), getPos());
 
 		if(state.getBlock() == ModBlocks.conjured && state.getValue(BlockConjured.SOLID)) {
@@ -123,19 +123,19 @@ public class TileConjured extends TileMod {
 	}
 
 	@Override
-	public void writeSharedNBT(NBTTagCompound cmp) {
-		NBTTagCompound stackCmp = new NBTTagCompound();
+	public void writeSharedNBT(CompoundNBT cmp) {
+		CompoundNBT stackCmp = new CompoundNBT();
 		if(!colorizer.isEmpty())
 			colorizer.writeToNBT(stackCmp);
 		cmp.setTag(TAG_COLORIZER, stackCmp);
 	}
 
 	@Override
-	public void readSharedNBT(NBTTagCompound cmp) {
+	public void readSharedNBT(CompoundNBT cmp) {
 		if (cmp.hasKey(TAG_TIME_LEGACY, Constants.NBT.TAG_ANY_NUMERIC))
 			time = cmp.getInteger(TAG_TIME_LEGACY);
 
-		NBTTagCompound stackCmp = cmp.getCompoundTag(TAG_COLORIZER);
+		CompoundNBT stackCmp = cmp.getCompoundTag(TAG_COLORIZER);
 		colorizer = new ItemStack(stackCmp);
 	}
 

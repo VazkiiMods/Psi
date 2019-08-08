@@ -10,7 +10,7 @@
  */
 package vazkii.psi.api.spell;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 
 /**
@@ -22,7 +22,7 @@ import net.minecraft.item.ItemStack;
  */
 public interface ISpellSettable {
 
-	void setSpell(EntityPlayer player, ItemStack stack, Spell spell);
+	void setSpell(PlayerEntity player, ItemStack stack, Spell spell);
 	
 	boolean requiresSneakForSpellSet(ItemStack stack);
 

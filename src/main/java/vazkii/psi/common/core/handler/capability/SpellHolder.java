@@ -10,7 +10,7 @@
  */
 package vazkii.psi.common.core.handler.capability;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import vazkii.psi.api.spell.ISpellAcceptor;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
@@ -21,7 +21,7 @@ public class SpellHolder implements ISpellAcceptor {
 	private Spell spell;
 
 	@Override
-	public void setSpell(EntityPlayer player, Spell spell) {
+	public void setSpell(PlayerEntity player, Spell spell) {
 		this.spell = spell;
 	}
 

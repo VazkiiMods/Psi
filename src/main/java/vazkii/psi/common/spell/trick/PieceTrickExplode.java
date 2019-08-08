@@ -10,7 +10,7 @@
  */
 package vazkii.psi.common.spell.trick;
 
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.EnumSpellStat;
@@ -64,7 +64,7 @@ public class PieceTrickExplode extends PieceTrick {
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 		
 		BlockPos pos = positionVal.toBlockPos();
-		IBlockState state = context.caster.getEntityWorld().getBlockState(pos);
+		BlockState state = context.caster.getEntityWorld().getBlockState(pos);
 		
 		context.caster.getEntityWorld().createExplosion(context.focalPoint, positionVal.x, positionVal.y, positionVal.z, powerVal.floatValue(), !state.getMaterial().isLiquid());
 		return null;

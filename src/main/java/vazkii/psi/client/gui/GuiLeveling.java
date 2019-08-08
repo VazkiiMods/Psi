@@ -11,9 +11,9 @@
 package vazkii.psi.client.gui;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.client.gui.screen.Screen;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.GuiScrollingList;
@@ -41,7 +41,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class GuiLeveling extends GuiScreen {
+public class GuiLeveling extends Screen {
 
 	public static final ResourceLocation texture = new ResourceLocation(LibResources.GUI_LEVELING);
 
@@ -200,7 +200,7 @@ public class GuiLeveling extends GuiScreen {
 	}
 
 	@Override
-	protected void actionPerformed(GuiButton button) throws IOException {
+	protected void actionPerformed(Button button) throws IOException {
 		super.actionPerformed(button);
 
 		PieceGroup group = groups.get(selected);

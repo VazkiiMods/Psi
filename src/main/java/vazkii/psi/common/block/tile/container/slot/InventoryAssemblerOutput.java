@@ -10,12 +10,12 @@
  */
 package vazkii.psi.common.block.tile.container.slot;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import vazkii.psi.common.block.tile.TileCADAssembler;
 
 import javax.annotation.Nonnull;
@@ -26,10 +26,10 @@ import javax.annotation.Nonnull;
  */
 public class InventoryAssemblerOutput implements IInventory {
 
-	private final EntityPlayer player;
+	private final PlayerEntity player;
 	private final TileCADAssembler assembler;
 
-	public InventoryAssemblerOutput(EntityPlayer player, TileCADAssembler assembler) {
+	public InventoryAssemblerOutput(PlayerEntity player, TileCADAssembler assembler) {
 		this.player = player;
 		this.assembler = assembler;
 	}
@@ -68,7 +68,7 @@ public class InventoryAssemblerOutput implements IInventory {
 	@Nonnull
 	@Override
 	public ITextComponent getDisplayName() {
-		return hasCustomName() ? new TextComponentString(getName()) : new TextComponentTranslation(getName());
+		return hasCustomName() ? new StringTextComponent(getName()) : new TranslationTextComponent(getName());
 	}
 
 	@Nonnull
@@ -99,17 +99,17 @@ public class InventoryAssemblerOutput implements IInventory {
 	}
 
 	@Override
-	public boolean isUsableByPlayer(@Nonnull EntityPlayer player) {
+	public boolean isUsableByPlayer(@Nonnull PlayerEntity player) {
 		return true;
 	}
 
 	@Override
-	public void openInventory(@Nonnull EntityPlayer player) {
+	public void openInventory(@Nonnull PlayerEntity player) {
 		// NO-OP
 	}
 
 	@Override
-	public void closeInventory(@Nonnull EntityPlayer player) {
+	public void closeInventory(@Nonnull PlayerEntity player) {
 		// NO-OP
 	}
 

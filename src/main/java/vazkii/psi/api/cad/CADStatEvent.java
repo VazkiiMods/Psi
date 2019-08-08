@@ -12,7 +12,7 @@ package vazkii.psi.api.cad;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.eventhandler.Cancelable;
-import net.minecraftforge.fml.common.eventhandler.Event;
+import net.minecraftforge.eventbus.api.Event;
 
 /**
  * This event is posted when a CAD's stats are queried.

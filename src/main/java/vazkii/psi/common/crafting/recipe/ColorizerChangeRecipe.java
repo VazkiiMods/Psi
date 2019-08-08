@@ -10,7 +10,7 @@
  */
 package vazkii.psi.common.crafting.recipe;
 
-import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
@@ -31,7 +31,7 @@ public class ColorizerChangeRecipe extends ModRecipe {
 	}
 
 	@Override
-	public boolean matches(@Nonnull InventoryCrafting var1, @Nonnull World var2) {
+	public boolean matches(@Nonnull CraftingInventory var1, @Nonnull World var2) {
 		boolean foundColorizer = false;
 		boolean foundCAD = false;
 
@@ -55,7 +55,7 @@ public class ColorizerChangeRecipe extends ModRecipe {
 
 	@Nonnull
 	@Override
-	public ItemStack getCraftingResult(@Nonnull InventoryCrafting var1) {
+	public ItemStack getCraftingResult(@Nonnull CraftingInventory var1) {
 		ItemStack colorizer = ItemStack.EMPTY;
 		ItemStack cad = ItemStack.EMPTY;
 
@@ -85,7 +85,7 @@ public class ColorizerChangeRecipe extends ModRecipe {
 
 	@Nonnull
 	@Override
-	public NonNullList<ItemStack> getRemainingItems(InventoryCrafting inv) {
+	public NonNullList<ItemStack> getRemainingItems(CraftingInventory inv) {
 		NonNullList<ItemStack> ret = NonNullList.withSize(inv.getSizeInventory(), ItemStack.EMPTY);
 		int dyeIndex = -1;
 		ItemStack cad = ItemStack.EMPTY;

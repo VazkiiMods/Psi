@@ -10,8 +10,8 @@
  */
 package vazkii.psi.common.spell.trick.potion;
 
-import net.minecraft.init.MobEffects;
-import net.minecraft.potion.Potion;
+import net.minecraft.potion.Effects;
+import net.minecraft.potion.Effect;
 import vazkii.psi.api.spell.Spell;
 
 public class PieceTrickWeakness extends PieceTrickPotionBase {
@@ -21,8 +21,8 @@ public class PieceTrickWeakness extends PieceTrickPotionBase {
 	}
 
 	@Override
-	public Potion getPotion() {
-		return MobEffects.WEAKNESS;
+	public Effect getPotion() {
+		return Effects.WEAKNESS;
 	}
 
 }

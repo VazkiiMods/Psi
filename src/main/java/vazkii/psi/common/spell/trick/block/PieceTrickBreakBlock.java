@@ -12,11 +12,11 @@ package vazkii.psi.common.spell.trick.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Enchantments;
-import net.minecraft.init.Items;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.enchantment.Enchantments;
+import net.minecraft.item.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -69,14 +69,14 @@ public class PieceTrickBreakBlock extends PieceTrick {
 		return null;
 	}
 
-	public static void removeBlockWithDrops(SpellContext context, EntityPlayer player, World world, ItemStack tool, BlockPos pos, boolean particles) {
+	public static void removeBlockWithDrops(SpellContext context, PlayerEntity player, World world, ItemStack tool, BlockPos pos, boolean particles) {
 		if(!world.isBlockLoaded(pos) || (context.positionBroken != null && pos.equals(context.positionBroken.getBlockPos())) || !world.isBlockModifiable(player, pos))
 			return;
 
 		if (tool.isEmpty())
 			tool = PsiAPI.getPlayerCAD(player);
 
-		IBlockState state = world.getBlockState(pos);
+		BlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
 		if(!block.isAir(state, world, pos) && !(block instanceof BlockLiquid) && !(block instanceof IFluidBlock) && state.getPlayerRelativeBlockHardness(player, world, pos) > 0) {
 			if(!canHarvestBlock(block, player, world, pos, tool))
@@ -101,7 +101,7 @@ public class PieceTrickBreakBlock extends PieceTrick {
 	}
 
 	// Based on BreakEvent::new
-	public static BreakEvent createBreakEvent(IBlockState state, EntityPlayer player, World world, BlockPos pos, ItemStack tool) {
+	public static BreakEvent createBreakEvent(BlockState state, PlayerEntity player, World world, BlockPos pos, ItemStack tool) {
 		BreakEvent event = new BreakEvent(world, pos, state, player);
 		if (state == null || !canHarvestBlock(state.getBlock(), player, world, pos, tool) ||
 				(state.getBlock().canSilkHarvest(world, pos, world.getBlockState(pos), player) && EnchantmentHelper.getEnchantmentLevel(Enchantments.SILK_TOUCH, tool) > 0))
@@ -113,9 +113,9 @@ public class PieceTrickBreakBlock extends PieceTrick {
 		return event;
 	}
 
-	public static boolean canHarvestBlock(Block block, EntityPlayer player, World world, BlockPos pos, ItemStack tool) {
+	public static boolean canHarvestBlock(Block block, PlayerEntity player, World world, BlockPos pos, ItemStack tool) {
 		//General positive checks
-		IBlockState state = world.getBlockState(pos).getActualState(world, pos);
+		BlockState state = world.getBlockState(pos).getActualState(world, pos);
 		int reqLevel = block.getHarvestLevel(state);
 		Item toolItem = tool.getItem();
 		if (tool.canHarvestBlock(state) || state.getMaterial().isToolNotRequired() || ConfigHandler.cadHarvestLevel >= reqLevel) return ForgeEventFactory.doPlayerHarvestCheck(player, state, true);

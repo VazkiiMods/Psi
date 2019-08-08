@@ -11,12 +11,12 @@
 package vazkii.psi.common.entity;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.projectile.EntityThrowable;
-import net.minecraft.init.Blocks;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.ThrowableEntity;
+import net.minecraft.block.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -34,7 +34,7 @@ import javax.annotation.Nonnull;
 import java.util.function.Consumer;
 
 @SuppressWarnings({"rawtypes", "unchecked"})
-public class EntitySpellProjectile extends EntityThrowable {
+public class EntitySpellProjectile extends ThrowableEntity {
 
 	private static final String TAG_COLORIZER = "colorizer";
 	private static final String TAG_BULLET = "bullet";
@@ -56,7 +56,7 @@ public class EntitySpellProjectile extends EntityThrowable {
 		setSize(0F, 0F);
 	}
 
-	public EntitySpellProjectile(World worldIn, EntityLivingBase throwerIn) {
+	public EntitySpellProjectile(World worldIn, LivingEntity throwerIn) {
 		super(worldIn, throwerIn);
 		
 		shoot(throwerIn, throwerIn.rotationPitch, throwerIn.rotationYaw, 0.0F, 1.5F, 1.0F);
@@ -66,7 +66,7 @@ public class EntitySpellProjectile extends EntityThrowable {
 		motionZ *= speed;
 	}
 
-	public EntitySpellProjectile setInfo(EntityPlayer player, ItemStack colorizer, ItemStack bullet) {
+	public EntitySpellProjectile setInfo(PlayerEntity player, ItemStack colorizer, ItemStack bullet) {
 		dataManager.set(COLORIZER_DATA, colorizer);
 		dataManager.set(BULLET_DATA, bullet);
 		dataManager.set(CASTER_NAME, player.getName());
@@ -81,16 +81,16 @@ public class EntitySpellProjectile extends EntityThrowable {
 	}
 
 	@Override
-	public void writeEntityToNBT(NBTTagCompound tagCompound) {
+	public void writeEntityToNBT(CompoundNBT tagCompound) {
 		super.writeEntityToNBT(tagCompound);
 
-		NBTTagCompound colorizerCmp = new NBTTagCompound();
+		CompoundNBT colorizerCmp = new CompoundNBT();
 		ItemStack colorizer = dataManager.get(COLORIZER_DATA);
 		if(!colorizer.isEmpty())
 			colorizer.writeToNBT(colorizerCmp);
 		tagCompound.setTag(TAG_COLORIZER, colorizerCmp);
 
-		NBTTagCompound bulletCmp = new NBTTagCompound();
+		CompoundNBT bulletCmp = new CompoundNBT();
 		ItemStack bullet = dataManager.get(BULLET_DATA);
 		if(!bullet.isEmpty())
 			bullet.writeToNBT(bulletCmp);
@@ -104,19 +104,19 @@ public class EntitySpellProjectile extends EntityThrowable {
 	}
 
 	@Override
-	public void readEntityFromNBT(NBTTagCompound tagCompound) {
+	public void readEntityFromNBT(CompoundNBT tagCompound) {
 		super.readEntityFromNBT(tagCompound);
 
-		NBTTagCompound colorizerCmp = tagCompound.getCompoundTag(TAG_COLORIZER);
+		CompoundNBT colorizerCmp = tagCompound.getCompoundTag(TAG_COLORIZER);
 		ItemStack colorizer = new ItemStack(colorizerCmp);
 		dataManager.set(COLORIZER_DATA, colorizer);
 
-		NBTTagCompound bulletCmp = tagCompound.getCompoundTag(TAG_BULLET);
+		CompoundNBT bulletCmp = tagCompound.getCompoundTag(TAG_BULLET);
 		ItemStack bullet = new ItemStack(bulletCmp);
 		dataManager.set(BULLET_DATA, bullet);
 
-		EntityLivingBase thrower = getThrower();
-		if(thrower instanceof EntityPlayer)
+		LivingEntity thrower = getThrower();
+		if(thrower instanceof PlayerEntity)
 			dataManager.set(CASTER_NAME, thrower.getName());
 
 		timeAlive = tagCompound.getInteger(TAG_TIME_ALIVE);
@@ -180,8 +180,8 @@ public class EntitySpellProjectile extends EntityThrowable {
 
 	@Override
 	protected void onImpact(@Nonnull RayTraceResult pos) {
-		if(pos.entityHit instanceof EntityLivingBase) {
-			EntityLivingBase e = (EntityLivingBase) pos.entityHit; // apparently RayTraceResult is mutable \:D/
+		if(pos.entityHit instanceof LivingEntity) {
+			LivingEntity e = (LivingEntity) pos.entityHit; // apparently RayTraceResult is mutable \:D/
 			cast((SpellContext context) -> {
 				if (context != null) {
 					context.attackedEntity = e;
@@ -198,14 +198,14 @@ public class EntitySpellProjectile extends EntityThrowable {
 		Entity thrower = getThrower();
 		boolean canCast = false;
 
-		if(thrower instanceof EntityPlayer) {
+		if(thrower instanceof PlayerEntity) {
 			ItemStack spellContainer = dataManager.get(BULLET_DATA);
 			if (!spellContainer.isEmpty() && ISpellAcceptor.isContainer(spellContainer)) {
 				Spell spell = ISpellAcceptor.acceptor(spellContainer).getSpell();
 				if(spell != null) {
 					canCast = true;
 					if(context == null)
-						context = new SpellContext().setPlayer((EntityPlayer) thrower).setFocalPoint(this).setSpell(spell);
+						context = new SpellContext().setPlayer((PlayerEntity) thrower).setFocalPoint(this).setSpell(spell);
 					context.setFocalPoint(this);
 				}
 			}
@@ -221,8 +221,8 @@ public class EntitySpellProjectile extends EntityThrowable {
 	}
 
 	@Override
-	public EntityLivingBase getThrower() {
-		EntityLivingBase superThrower = super.getThrower();
+	public LivingEntity getThrower() {
+		LivingEntity superThrower = super.getThrower();
 		if(superThrower != null)
 			return superThrower;
 

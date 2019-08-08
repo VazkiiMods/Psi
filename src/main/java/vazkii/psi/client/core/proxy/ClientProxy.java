@@ -12,14 +12,14 @@ package vazkii.psi.client.core.proxy;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.cad.ICADColorizer;
 import vazkii.psi.client.core.handler.HUDHandler;
@@ -36,7 +36,7 @@ import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.proxy.CommonProxy;
 import vazkii.psi.common.entity.EntitySpellCircle;
 
-@SideOnly(Side.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class ClientProxy extends CommonProxy {
 
 	@Override
@@ -55,7 +55,7 @@ public class ClientProxy extends CommonProxy {
 	}
 
 	@Override
-	public EntityPlayer getClientPlayer() {
+	public PlayerEntity getClientPlayer() {
 		return Minecraft.getMinecraft().player;
 	}
 

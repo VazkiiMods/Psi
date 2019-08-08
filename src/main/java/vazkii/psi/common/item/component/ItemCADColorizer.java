@@ -11,11 +11,11 @@
 package vazkii.psi.common.item.component;
 
 import net.minecraft.client.renderer.color.IItemColor;
-import net.minecraft.item.EnumDyeColor;
-import net.minecraft.item.ItemDye;
+import net.minecraft.item.DyeColor;
+import net.minecraft.item.DyeItem;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.arl.interf.IItemColorProvider;
 import vazkii.arl.util.ClientTicker;
 import vazkii.psi.api.cad.ICADColorizer;
@@ -27,28 +27,28 @@ import java.awt.*;
 public class ItemCADColorizer extends ItemCADComponent implements ICADColorizer, IItemColorProvider {
 
 	public static final String[] VARIANTS = {
-			LibItemNames.CAD_COLORIZER + getProperDyeName(EnumDyeColor.WHITE),
-			LibItemNames.CAD_COLORIZER + getProperDyeName(EnumDyeColor.ORANGE),
-			LibItemNames.CAD_COLORIZER + getProperDyeName(EnumDyeColor.MAGENTA),
-			LibItemNames.CAD_COLORIZER + getProperDyeName(EnumDyeColor.LIGHT_BLUE),
-			LibItemNames.CAD_COLORIZER + getProperDyeName(EnumDyeColor.YELLOW),
-			LibItemNames.CAD_COLORIZER + getProperDyeName(EnumDyeColor.LIME),
-			LibItemNames.CAD_COLORIZER + getProperDyeName(EnumDyeColor.PINK),
-			LibItemNames.CAD_COLORIZER + getProperDyeName(EnumDyeColor.GRAY),
-			LibItemNames.CAD_COLORIZER + getProperDyeName(EnumDyeColor.SILVER),
-			LibItemNames.CAD_COLORIZER + getProperDyeName(EnumDyeColor.CYAN),
-			LibItemNames.CAD_COLORIZER + getProperDyeName(EnumDyeColor.PURPLE),
-			LibItemNames.CAD_COLORIZER + getProperDyeName(EnumDyeColor.BLUE),
-			LibItemNames.CAD_COLORIZER + getProperDyeName(EnumDyeColor.BROWN),
-			LibItemNames.CAD_COLORIZER + getProperDyeName(EnumDyeColor.GREEN),
-			LibItemNames.CAD_COLORIZER + getProperDyeName(EnumDyeColor.RED),
-			LibItemNames.CAD_COLORIZER + getProperDyeName(EnumDyeColor.BLACK),
+			LibItemNames.CAD_COLORIZER + getProperDyeName(DyeColor.WHITE),
+			LibItemNames.CAD_COLORIZER + getProperDyeName(DyeColor.ORANGE),
+			LibItemNames.CAD_COLORIZER + getProperDyeName(DyeColor.MAGENTA),
+			LibItemNames.CAD_COLORIZER + getProperDyeName(DyeColor.LIGHT_BLUE),
+			LibItemNames.CAD_COLORIZER + getProperDyeName(DyeColor.YELLOW),
+			LibItemNames.CAD_COLORIZER + getProperDyeName(DyeColor.LIME),
+			LibItemNames.CAD_COLORIZER + getProperDyeName(DyeColor.PINK),
+			LibItemNames.CAD_COLORIZER + getProperDyeName(DyeColor.GRAY),
+			LibItemNames.CAD_COLORIZER + getProperDyeName(DyeColor.SILVER),
+			LibItemNames.CAD_COLORIZER + getProperDyeName(DyeColor.CYAN),
+			LibItemNames.CAD_COLORIZER + getProperDyeName(DyeColor.PURPLE),
+			LibItemNames.CAD_COLORIZER + getProperDyeName(DyeColor.BLUE),
+			LibItemNames.CAD_COLORIZER + getProperDyeName(DyeColor.BROWN),
+			LibItemNames.CAD_COLORIZER + getProperDyeName(DyeColor.GREEN),
+			LibItemNames.CAD_COLORIZER + getProperDyeName(DyeColor.RED),
+			LibItemNames.CAD_COLORIZER + getProperDyeName(DyeColor.BLACK),
 			LibItemNames.CAD_COLORIZER + "rainbow",
 			LibItemNames.CAD_COLORIZER + "psi"
 	};
 
 	// must be length 16
-	public static final int[] colorTable = ItemDye.DYE_COLORS;
+	public static final int[] colorTable = DyeItem.DYE_COLORS;
 	
 	public ItemCADColorizer() {
 		super(LibItemNames.CAD_COLORIZER, VARIANTS);
@@ -57,13 +57,13 @@ public class ItemCADColorizer extends ItemCADComponent implements ICADColorizer,
 	}
 	
 	@Override
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public IItemColor getItemColor() {
 		return (stack, tintIndex) -> tintIndex == 1 && stack.getItemDamage() < 16 ? colorTable[15 - stack.getItemDamage()] : 0xFFFFFF;
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public int getColor(ItemStack stack) {
 		if(stack.getItemDamage() < 16)
 			return colorTable[15 - stack.getItemDamage()];
@@ -86,7 +86,7 @@ public class ItemCADColorizer extends ItemCADComponent implements ICADColorizer,
 		return 0xFFFFFF;
 	}
 
-	private static String getProperDyeName(EnumDyeColor color) {
+	private static String getProperDyeName(DyeColor color) {
 		return color.getName();
 	}
 

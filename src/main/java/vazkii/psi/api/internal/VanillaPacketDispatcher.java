@@ -10,8 +10,8 @@
  */
 package vazkii.psi.api.internal;
 
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -24,8 +24,8 @@ public final class VanillaPacketDispatcher {
 		World world = tile.getWorld();
 		List players = world.playerEntities;
 		for(Object player : players)
-			if(player instanceof EntityPlayerMP) {
-				EntityPlayerMP mp = (EntityPlayerMP) player;
+			if(player instanceof ServerPlayerEntity) {
+				ServerPlayerEntity mp = (ServerPlayerEntity) player;
 				if(MathHelper.pointDistancePlane(mp.posX, mp.posZ, tile.getPos().getX() + 0.5, tile.getPos().getZ() + 0.5) < 64)
 					dispatchTEToPlayer(tile, mp);
 			}
@@ -37,8 +37,8 @@ public final class VanillaPacketDispatcher {
 			dispatchTEToNearbyPlayers(tile);
 	}
 
-	public static void dispatchTEToPlayer(TileEntity tile, EntityPlayerMP p) {
-		SPacketUpdateTileEntity packet = tile.getUpdatePacket();
+	public static void dispatchTEToPlayer(TileEntity tile, ServerPlayerEntity p) {
+		SUpdateTileEntityPacket packet = tile.getUpdatePacket();
 		if (packet != null)
 		p.connection.sendPacket(packet);
 	}

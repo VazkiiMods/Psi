@@ -10,10 +10,10 @@
  */
 package vazkii.psi.api.cad;
 
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.model.ModelResourceLocation;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.psi.api.PsiAPI;
 
 import java.util.List;
@@ -24,7 +24,7 @@ public interface ICADAssembly {
 		return PsiAPI.internalHandler.createDefaultCAD(allComponents);
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	ModelResourceLocation getCADModel(ItemStack stack, ItemStack cad);
 
 }

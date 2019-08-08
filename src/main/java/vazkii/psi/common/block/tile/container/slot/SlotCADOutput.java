@@ -10,14 +10,14 @@
  */
 package vazkii.psi.common.block.tile.container.slot;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Slot;
+import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.Style;
-import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.MinecraftForge;
 import vazkii.psi.api.cad.CADTakeEvent;
@@ -37,14 +37,14 @@ public class SlotCADOutput extends Slot {
 	
 	@Nonnull
 	@Override
-	public ItemStack onTake(EntityPlayer playerIn, @Nonnull ItemStack stack) {
+	public ItemStack onTake(PlayerEntity playerIn, @Nonnull ItemStack stack) {
 		super.onTake(playerIn, stack);
 		assembler.onCraftCAD(stack);
 		return stack;
 	}
 
 	@Override
-	public boolean canTakeStack(EntityPlayer playerIn) {
+	public boolean canTakeStack(PlayerEntity playerIn) {
 		CADTakeEvent event = new CADTakeEvent(getStack(), assembler, playerIn);
 		float sound = event.getSound();
 		if (MinecraftForge.EVENT_BUS.post(event)) {
@@ -52,7 +52,7 @@ public class SlotCADOutput extends Slot {
 			String cancelMessage = event.getCancellationMessage();
 			if (!playerIn.world.isRemote) {
 				if (cancelMessage != null && !cancelMessage.isEmpty())
-					playerIn.sendMessage(new TextComponentTranslation(cancelMessage).setStyle(new Style().setColor(TextFormatting.RED)));
+					playerIn.sendMessage(new TranslationTextComponent(cancelMessage).setStyle(new Style().setColor(TextFormatting.RED)));
 				playerIn.world.playSound(null, assemblerPos.getX(), assemblerPos.getY(), assemblerPos.getZ(), PsiSoundHandler.compileError, SoundCategory.BLOCKS, sound, 1F);
 			}
 			return false;

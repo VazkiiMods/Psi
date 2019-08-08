@@ -1,8 +1,8 @@
 package vazkii.psi.api.spell;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.eventhandler.Event;
+import net.minecraftforge.eventbus.api.Event;
 import vazkii.psi.api.internal.IPlayerData;
 
 /**
@@ -13,12 +13,12 @@ public class SpellCastEvent extends Event {
 
 	public final Spell spell;
 	public final SpellContext context;
-	public final EntityPlayer player;
+	public final PlayerEntity player;
 	public final IPlayerData playerData;
 	public final ItemStack cad;
 	public final ItemStack bullet;
 	
-	public SpellCastEvent(Spell spell, SpellContext context, EntityPlayer player, IPlayerData playerData, ItemStack cad, ItemStack bullet) {
+	public SpellCastEvent(Spell spell, SpellContext context, PlayerEntity player, IPlayerData playerData, ItemStack cad, ItemStack bullet) {
 		this.spell = spell;
 		this.context = context;
 		this.player = player;

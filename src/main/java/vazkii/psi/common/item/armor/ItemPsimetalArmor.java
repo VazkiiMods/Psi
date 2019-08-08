@@ -15,15 +15,15 @@ import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.arl.interf.IItemColorProvider;
 import vazkii.arl.item.ItemMod;
 import vazkii.arl.item.ItemModArmor;
@@ -50,15 +50,15 @@ import java.util.function.Function;
 
 public class ItemPsimetalArmor extends ItemModArmor implements IPsimetalTool, IPsiEventArmor, IItemColorProvider, IPsiItem {
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public static Function<Integer, ModelBiped> modelSupplier;
 	
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	protected ModelBiped[] models;
 	
 	private static final String TAG_TIMES_CAST = "timesCast";
 
-	public ItemPsimetalArmor(String name, int type, EntityEquipmentSlot slot) {
+	public ItemPsimetalArmor(String name, int type, EquipmentSlotType slot) {
 		super(name, PsiAPI.PSIMETAL_ARMOR_MATERIAL, type, slot);
 		setCreativeTab(PsiCreativeTab.INSTANCE);
 	}
@@ -71,7 +71,7 @@ public class ItemPsimetalArmor extends ItemModArmor implements IPsimetalTool, IP
 	}
 
 	@Override
-	public Multimap<String, AttributeModifier> getAttributeModifiers(EntityEquipmentSlot slot, ItemStack stack) {
+	public Multimap<String, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
 		Multimap<String, AttributeModifier> modifiers = super.getAttributeModifiers(slot, stack);
 		if (!isEnabled(stack)) {
 			modifiers.removeAll(SharedMonsterAttributes.ARMOR.getName());
@@ -91,7 +91,7 @@ public class ItemPsimetalArmor extends ItemModArmor implements IPsimetalTool, IP
 	}
 
 	@Override
-	public void onArmorTick(World world, EntityPlayer player, ItemStack itemStack) {
+	public void onArmorTick(World world, PlayerEntity player, ItemStack itemStack) {
 		IPsimetalTool.regen(itemStack, player, false);
 	}
 
@@ -149,7 +149,7 @@ public class ItemPsimetalArmor extends ItemModArmor implements IPsimetalTool, IP
 		return 0.025F;
 	}
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     @Override
     public void addInformation(ItemStack stack, World playerIn, List<String> tooltip, ITooltipFlag advanced) {
         TooltipHelper.tooltipIfShift(tooltip, () -> {
@@ -165,7 +165,7 @@ public class ItemPsimetalArmor extends ItemModArmor implements IPsimetalTool, IP
 	}
 
 	@Override
-	public String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type) {
+	public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlotType slot, String type) {
 		boolean overlay = type != null && type.equals("overlay");
 		return overlay ? LibResources.MODEL_PSIMETAL_EXOSUIT : LibResources.MODEL_PSIMETAL_EXOSUIT_SENSOR;
 	}
@@ -181,14 +181,14 @@ public class ItemPsimetalArmor extends ItemModArmor implements IPsimetalTool, IP
 	}
 	
 	@Override
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public IItemColor getItemColor() {
 		return (stack, tintIndex) -> tintIndex == 1 ? getColor(stack) : 0xFFFFFF;
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
-	public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, EntityEquipmentSlot armorSlot, ModelBiped _default) {
+	@OnlyIn(Dist.CLIENT)
+	public ModelBiped getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlotType armorSlot, ModelBiped _default) {
 		int slotIndex = armorSlot.ordinal();
 		ModelBiped model = getArmorModelForSlot(entityLiving, itemStack, slotIndex);
 	
@@ -198,8 +198,8 @@ public class ItemPsimetalArmor extends ItemModArmor implements IPsimetalTool, IP
 		return model;
 	}
 
-	@SideOnly(Side.CLIENT)
-	public ModelBiped getArmorModelForSlot(EntityLivingBase entity, ItemStack stack, int slot) {
+	@OnlyIn(Dist.CLIENT)
+	public ModelBiped getArmorModelForSlot(LivingEntity entity, ItemStack stack, int slot) {
 		if(models == null)
 			models = new ModelBiped[4];
 
@@ -207,7 +207,7 @@ public class ItemPsimetalArmor extends ItemModArmor implements IPsimetalTool, IP
 		return models[slot];
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public ModelBiped provideArmorModelForSlot(ItemStack stack, int slot) {
 		if(modelSupplier == null)
 			modelSupplier = ModelPsimetalExosuit::new;

@@ -11,18 +11,18 @@
 package vazkii.psi.common.item.tool;
 
 import com.google.common.collect.Multimap;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.arl.item.ItemMod;
 import vazkii.arl.item.ItemModAxe;
 import vazkii.psi.api.PsiAPI;
@@ -42,7 +42,7 @@ public class ItemPsimetalAxe extends ItemModAxe implements IPsimetalTool, IPsiIt
 	}
 
 	@Override
-	public boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, EntityPlayer player) {
+	public boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, PlayerEntity player) {
 		super.onBlockStartBreak(itemstack, pos, player);
 
 		castOnBlockBreak(itemstack, player);
@@ -58,7 +58,7 @@ public class ItemPsimetalAxe extends ItemModAxe implements IPsimetalTool, IPsiIt
 	}
 
 	@Override
-	public Multimap<String, AttributeModifier> getAttributeModifiers(EntityEquipmentSlot slot, ItemStack stack) {
+	public Multimap<String, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
 		Multimap<String, AttributeModifier> modifiers = super.getAttributeModifiers(slot, stack);
 		if (!isEnabled(stack))
 			modifiers.removeAll(SharedMonsterAttributes.ATTACK_DAMAGE.getName());
@@ -75,7 +75,7 @@ public class ItemPsimetalAxe extends ItemModAxe implements IPsimetalTool, IPsiIt
 	}
 
 	@Override
-	public float getDestroySpeed(ItemStack stack, IBlockState state) {
+	public float getDestroySpeed(ItemStack stack, BlockState state) {
 		if (!isEnabled(stack))
 			return 1;
 		return super.getDestroySpeed(stack, state);
@@ -91,7 +91,7 @@ public class ItemPsimetalAxe extends ItemModAxe implements IPsimetalTool, IPsiIt
 		return slotChanged;
 	}
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     @Override
     public void addInformation(ItemStack stack, World playerIn, List<String> tooltip, ITooltipFlag advanced) {
         String componentName = ItemMod.local(ISocketable.getSocketedItemName(stack, "psimisc.none"));

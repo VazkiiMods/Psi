@@ -11,9 +11,9 @@
 package vazkii.psi.common.spell.trick.block;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.item.EntityFallingBlock;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.item.FallingBlockEntity;
+import net.minecraft.block.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -62,8 +62,8 @@ public class PieceTrickCollapseBlock extends PieceTrick {
 		World world = context.caster.getEntityWorld();
 		BlockPos pos = positionVal.toBlockPos();
 		BlockPos posDown = pos.down();
-		IBlockState state = world.getBlockState(pos);
-		IBlockState stateDown = world.getBlockState(posDown);
+		BlockState state = world.getBlockState(pos);
+		BlockState stateDown = world.getBlockState(posDown);
 		Block block = state.getBlock();
 		Block blockBelow = stateDown.getBlock();
 		
@@ -84,7 +84,7 @@ public class PieceTrickCollapseBlock extends PieceTrick {
 				world.setBlockState(pos, state);
 			}
 			
-			EntityFallingBlock falling = new EntityFallingBlock(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, state);
+			FallingBlockEntity falling = new FallingBlockEntity(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, state);
 			world.spawnEntity(falling);
 		}
 		return null;

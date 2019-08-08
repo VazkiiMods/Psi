@@ -14,19 +14,19 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.EnumRarity;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.item.Rarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.Style;
-import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -59,7 +59,7 @@ public class BlockProgrammer extends BlockFacing implements IPsiBlock {
 	}
 
 	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn, Hand hand, Direction side, float hitX, float hitY, float hitZ) {
 		ItemStack heldItem = playerIn.getHeldItem(hand);
 		TileProgrammer programmer = (TileProgrammer) worldIn.getTileEntity(pos);
 		if (programmer == null)
@@ -69,29 +69,29 @@ public class BlockProgrammer extends BlockFacing implements IPsiBlock {
 			PlayerData data = PlayerDataHandler.get(playerIn);
 			if(data.spellGroupsUnlocked.isEmpty()) {
 				if(!worldIn.isRemote)
-					playerIn.sendMessage(new TextComponentTranslation("psimisc.cantUseProgrammer").setStyle(new Style().setColor(TextFormatting.RED)));
+					playerIn.sendMessage(new TranslationTextComponent("psimisc.cantUseProgrammer").setStyle(new Style().setColor(TextFormatting.RED)));
 				return true;
 			}
 		}
 		
-		EnumActionResult result = setSpell(worldIn, pos, playerIn, heldItem);
-		if(result == EnumActionResult.SUCCESS)
+		ActionResultType result = setSpell(worldIn, pos, playerIn, heldItem);
+		if(result == ActionResultType.SUCCESS)
 			return true;
 
 		boolean enabled = programmer.isEnabled();
 		if(!enabled || programmer.playerLock.isEmpty())
 			programmer.playerLock = playerIn.getName();
 
-		if(playerIn instanceof EntityPlayerMP)
-			VanillaPacketDispatcher.dispatchTEToPlayer(programmer, (EntityPlayerMP) playerIn);
+		if(playerIn instanceof ServerPlayerEntity)
+			VanillaPacketDispatcher.dispatchTEToPlayer(programmer, (ServerPlayerEntity) playerIn);
 		playerIn.openGui(Psi.instance, LibGuiIDs.PROGRAMMER, worldIn, pos.getX(), pos.getY(), pos.getZ());
 		return true;
 	}
 
-	public EnumActionResult setSpell(World worldIn, BlockPos pos, EntityPlayer playerIn, ItemStack heldItem) {
+	public ActionResultType setSpell(World worldIn, BlockPos pos, PlayerEntity playerIn, ItemStack heldItem) {
 		TileProgrammer programmer = (TileProgrammer) worldIn.getTileEntity(pos);
 		if (programmer == null)
-			return EnumActionResult.FAIL;
+			return ActionResultType.FAIL;
 
 		boolean enabled = programmer.isEnabled();
 		
@@ -103,28 +103,28 @@ public class BlockProgrammer extends BlockFacing implements IPsiBlock {
 
 				programmer.spell.uuid = UUID.randomUUID();
 				settable.setSpell(playerIn, programmer.spell);
-				if(playerIn instanceof EntityPlayerMP)
-					VanillaPacketDispatcher.dispatchTEToPlayer(programmer, (EntityPlayerMP) playerIn);
-				return EnumActionResult.SUCCESS;
+				if(playerIn instanceof ServerPlayerEntity)
+					VanillaPacketDispatcher.dispatchTEToPlayer(programmer, (ServerPlayerEntity) playerIn);
+				return ActionResultType.SUCCESS;
 			} else {
 				if(!worldIn.isRemote)
 					worldIn.playSound(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, PsiSoundHandler.compileError, SoundCategory.BLOCKS, 0.5F, 1F);
-				return EnumActionResult.FAIL;
+				return ActionResultType.FAIL;
 			}
 		}
 		
-		return EnumActionResult.PASS;
+		return ActionResultType.PASS;
 	}
 	
 	@Override
-	public IBlockState makeDefaultState() {
+	public BlockState makeDefaultState() {
 		return super.makeDefaultState().withProperty(ENABLED, false);
 	}
 
 	@Nonnull
 	@Override
 	@SuppressWarnings("deprecation")
-	public IBlockState getActualState(@Nonnull IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+	public BlockState getActualState(@Nonnull BlockState state, IBlockAccess worldIn, BlockPos pos) {
 		TileEntity tile = worldIn.getTileEntity(pos);
 		return state.withProperty(ENABLED, tile instanceof TileProgrammer && ((TileProgrammer) tile).isEnabled());
 	}
@@ -137,19 +137,19 @@ public class BlockProgrammer extends BlockFacing implements IPsiBlock {
 
 	@Override
 	@SuppressWarnings("deprecation")
-	public boolean isFullBlock(IBlockState state) {
+	public boolean isFullBlock(BlockState state) {
 		return false;
 	}
 
 	@Override
 	@SuppressWarnings("deprecation")
-	public boolean isOpaqueCube(IBlockState state) {
+	public boolean isOpaqueCube(BlockState state) {
 		return false;
 	}
 
 	@Override
-	public EnumRarity getBlockRarity(ItemStack stack) {
-		return EnumRarity.UNCOMMON;
+	public Rarity getBlockRarity(ItemStack stack) {
+		return Rarity.UNCOMMON;
 	}
 
 	@Override
@@ -159,13 +159,13 @@ public class BlockProgrammer extends BlockFacing implements IPsiBlock {
 
 	@Override
 	@SuppressWarnings("deprecation")
-	public boolean hasComparatorInputOverride(IBlockState state) {
+	public boolean hasComparatorInputOverride(BlockState state) {
 		return true;
 	}
 
 	@Override
 	@SuppressWarnings("deprecation")
-	public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos) {
+	public int getComparatorInputOverride(BlockState blockState, World worldIn, BlockPos pos) {
 		TileEntity tile = worldIn.getTileEntity(pos);
 		if (tile instanceof TileProgrammer) {
 			TileProgrammer programmer = (TileProgrammer) tile;

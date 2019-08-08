@@ -14,8 +14,8 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.apache.commons.lang3.tuple.Pair;
 import vazkii.arl.item.ItemMod;
 import vazkii.psi.api.cad.EnumCADComponent;
@@ -43,7 +43,7 @@ public abstract class ItemCADComponent extends ItemMod implements ICADComponent,
 		// NO-OP
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void addInformation(ItemStack stack, World playerIn, List<String> tooltip, ITooltipFlag advanced) {
 		TooltipHelper.tooltipIfShift(tooltip, () -> {

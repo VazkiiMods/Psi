@@ -11,11 +11,11 @@
 package vazkii.psi.client.render.entity;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
-import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.gui.AbstractGui;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import vazkii.psi.api.cad.ICADColorizer;
@@ -26,7 +26,7 @@ import vazkii.psi.common.lib.LibResources;
 
 import javax.annotation.Nonnull;
 
-public class RenderSpellCircle extends Render<EntitySpellCircle> {
+public class RenderSpellCircle extends EntityRenderer<EntitySpellCircle> {
 
 	private static final ResourceLocation[] layers = new ResourceLocation[] {
 			new ResourceLocation(String.format(LibResources.MISC_SPELL_CIRCLE, 0)),
@@ -36,7 +36,7 @@ public class RenderSpellCircle extends Render<EntitySpellCircle> {
 
 	private static final float BRIGHTNESS_FACTOR = 0.7F;
 
-	public RenderSpellCircle(RenderManager renderManager) {
+	public RenderSpellCircle(EntityRendererManager renderManager) {
 		super(renderManager);
 	}
 
@@ -117,7 +117,7 @@ public class RenderSpellCircle extends Render<EntitySpellCircle> {
 			GlStateManager.color(rValue / 255f, gValue / 255f, bValue / 255f);
 
 			Minecraft.getMinecraft().renderEngine.bindTexture(layers[i]);
-			Gui.drawModalRectWithCustomSizedTexture(-32, -32, 0, 0, 64, 64, 64, 64);
+			AbstractGui.drawModalRectWithCustomSizedTexture(-32, -32, 0, 0, 64, 64, 64, 64);
 			GlStateManager.popMatrix();
 
 			GlStateManager.translate(0, 0, -0.5);

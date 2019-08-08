@@ -11,10 +11,10 @@
 package vazkii.psi.api.cad;
 
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.eventhandler.Cancelable;
-import net.minecraftforge.fml.common.eventhandler.Event;
+import net.minecraftforge.eventbus.api.Event;
 
 /**
  * Posted when a CAD ItemStack is constructed within the assembler,
@@ -34,9 +34,9 @@ public class AssembleCADEvent extends Event {
 
 	private ItemStack cad;
 	private final ITileCADAssembler assembler;
-	private final EntityPlayer player;
+	private final PlayerEntity player;
 
-	public AssembleCADEvent(ItemStack cad, ITileCADAssembler assembler, EntityPlayer player) {
+	public AssembleCADEvent(ItemStack cad, ITileCADAssembler assembler, PlayerEntity player) {
 		this.cad = cad;
 		this.assembler = assembler;
 		this.player = player;
@@ -56,7 +56,7 @@ public class AssembleCADEvent extends Event {
 		this.cad = cad;
 	}
 
-	public EntityPlayer getPlayer() {
+	public PlayerEntity getPlayer() {
 		return player;
 	}
 }

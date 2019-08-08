@@ -10,14 +10,14 @@
  */
 package vazkii.psi.common.item;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.Style;
-import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import vazkii.arl.item.ItemMod;
@@ -62,7 +62,7 @@ public class ItemSpellDrive extends ItemMod implements IPsiItem {
 	@Override
 	public String getItemStackDisplayName(@Nonnull ItemStack stack) {
 		String name = super.getItemStackDisplayName(stack);
-		NBTTagCompound cmp = ItemNBTHelper.getCompound(stack, TAG_SPELL, false);
+		CompoundNBT cmp = ItemNBTHelper.getCompound(stack, TAG_SPELL, false);
 		String spellName = cmp.getString(Spell.TAG_SPELL_NAME); // We don't need to load the whole spell just for the name
 		if(spellName.isEmpty())
 			return name;
@@ -72,7 +72,7 @@ public class ItemSpellDrive extends ItemMod implements IPsiItem {
 
 	@Nonnull
 	@Override
-	public EnumActionResult onItemUse(EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+	public EnumActionResult onItemUse(PlayerEntity playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
 		ItemStack stack = playerIn.getHeldItem(hand);
 		TileEntity tile = worldIn.getTileEntity(pos);
 		if(tile instanceof TileProgrammer) {
@@ -88,7 +88,7 @@ public class ItemSpellDrive extends ItemMod implements IPsiItem {
 				if(enabled && !programmer.playerLock.isEmpty()) {
 					if(!programmer.playerLock.equals(playerIn.getName())) {
 						if(!worldIn.isRemote)
-							playerIn.sendMessage(new TextComponentTranslation("psimisc.notYourProgrammer").setStyle(new Style().setColor(TextFormatting.RED)));
+							playerIn.sendMessage(new TranslationTextComponent("psimisc.notYourProgrammer").setStyle(new Style().setColor(TextFormatting.RED)));
 						return EnumActionResult.SUCCESS;
 					}
 				} else programmer.playerLock = playerIn.getName();
@@ -108,7 +108,7 @@ public class ItemSpellDrive extends ItemMod implements IPsiItem {
 
 	@Nonnull
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, @Nonnull EnumHand hand){
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, @Nonnull EnumHand hand){
 		ItemStack itemStackIn = playerIn.getHeldItem(hand);
 		if(getSpell(itemStackIn) != null && playerIn.isSneaking()) {
 			if(!worldIn.isRemote)
@@ -123,14 +123,14 @@ public class ItemSpellDrive extends ItemMod implements IPsiItem {
 	}
 
 	public static void setSpell(ItemStack stack, Spell spell) {
-		NBTTagCompound cmp = new NBTTagCompound();
+		CompoundNBT cmp = new CompoundNBT();
 		if(spell != null)
 			spell.writeToNBT(cmp);
 		ItemNBTHelper.setCompound(stack, TAG_SPELL, cmp);
 	}
 
 	public static Spell getSpell(ItemStack stack) {
-		NBTTagCompound cmp = ItemNBTHelper.getCompound(stack, TAG_SPELL, false);
+		CompoundNBT cmp = ItemNBTHelper.getCompound(stack, TAG_SPELL, false);
 		return Spell.createFromNBT(cmp);
 	}
 

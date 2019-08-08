@@ -10,9 +10,9 @@
  */
 package vazkii.psi.common.network.message;
 
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Hand;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import vazkii.arl.network.NetworkMessage;
@@ -31,13 +31,13 @@ public class MessageChangeSocketableSlot extends NetworkMessage<MessageChangeSoc
 
 	@Override
 	public IMessage handleMessage(MessageContext context) {
-		EntityPlayerMP player = context.getServerHandler().player;
-		ItemStack stack = player.getHeldItem(EnumHand.MAIN_HAND);
+		ServerPlayerEntity player = context.getServerHandler().player;
+		ItemStack stack = player.getHeldItem(Hand.MAIN_HAND);
 
 		if(!stack.isEmpty() && ISocketableCapability.isSocketable(stack))
 			ISocketableCapability.socketable(stack).setSelectedSlot(slot);
 		else {
-			stack = player.getHeldItem(EnumHand.OFF_HAND);
+			stack = player.getHeldItem(Hand.OFF_HAND);
 			if(!stack.isEmpty() && ISocketableCapability.isSocketable(stack))
 				ISocketableCapability.socketable(stack).setSelectedSlot(slot);
 		}

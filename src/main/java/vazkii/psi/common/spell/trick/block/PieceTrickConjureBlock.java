@@ -11,8 +11,8 @@
 package vazkii.psi.common.spell.trick.block;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -77,7 +77,7 @@ public class PieceTrickConjureBlock extends PieceTrick {
 		return null;
 	}
 
-	public static void conjure(SpellContext context, Double timeVal, BlockPos pos, World world, IBlockState state) {
+	public static void conjure(SpellContext context, Double timeVal, BlockPos pos, World world, BlockState state) {
 		if(world.getBlockState(pos).getBlock() != state.getBlock()) {
 			conjure(world, pos, context.caster, state);
 
@@ -96,17 +96,17 @@ public class PieceTrickConjureBlock extends PieceTrick {
 		}
 	}
 
-	public static void conjure(World world, BlockPos pos, EntityPlayer player, IBlockState state) {
+	public static void conjure(World world, BlockPos pos, PlayerEntity player, BlockState state) {
 		if(!world.isBlockLoaded(pos) || !world.isBlockModifiable(player, pos))
 			return;
 
-		IBlockState inWorld = world.getBlockState(pos);
+		BlockState inWorld = world.getBlockState(pos);
 		Block block = inWorld.getBlock();
 		if(block.isAir(inWorld, world, pos) || block.isReplaceable(world, pos))
 			world.setBlockState(pos, state);
 	}
 
-	public IBlockState messWithState(IBlockState state) {
+	public BlockState messWithState(BlockState state) {
 		return state.withProperty(BlockConjured.SOLID, true);
 	}
 

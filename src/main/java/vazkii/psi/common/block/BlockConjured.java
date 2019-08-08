@@ -16,15 +16,15 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
+import net.minecraft.item.BlockItem;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -32,10 +32,10 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.arl.block.BlockModContainer;
 import vazkii.psi.common.block.base.IPsiBlock;
 import vazkii.psi.common.block.tile.TileConjured;
@@ -71,15 +71,15 @@ public class BlockConjured extends BlockModContainer implements IPsiBlock {
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
-	public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand) {
+	@OnlyIn(Dist.CLIENT)
+	public void randomDisplayTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand) {
 		TileEntity inWorld = worldIn.getTileEntity(pos);
 		if (inWorld instanceof TileConjured)
 			needsParticleUpdate.add(pos.toImmutable());
 	}
 
 	@SubscribeEvent
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public static void fireParticles(TickEvent.ClientTickEvent event) {
 		if (event.side.isClient() && event.phase == TickEvent.Phase.END) {
 			World world = Minecraft.getMinecraft().world;
@@ -113,16 +113,16 @@ public class BlockConjured extends BlockModContainer implements IPsiBlock {
 	}
 
 	@Override
-	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
+	public void updateTick(World worldIn, BlockPos pos, BlockState state, Random rand) {
 		worldIn.setBlockToAir(pos);
 	}
 
 	@Override
-	public ItemBlock createItemBlock(ResourceLocation res) {
+	public BlockItem createItemBlock(ResourceLocation res) {
 		return null;
 	}
 
-	public IBlockState makeDefaultState() {
+	public BlockState makeDefaultState() {
 		return getStateFromMeta(0);
 	}
 
@@ -149,19 +149,19 @@ public class BlockConjured extends BlockModContainer implements IPsiBlock {
 
 	@Override
 	@SuppressWarnings("deprecation")
-	public boolean isFullCube(IBlockState state) {
+	public boolean isFullCube(BlockState state) {
 		return false;
 	}
 
 	@Override
 	@SuppressWarnings("deprecation")
-	public boolean isFullBlock(IBlockState state) {
+	public boolean isFullBlock(BlockState state) {
 		return false;
 	}
 
 	@Override
 	@SuppressWarnings("deprecation")
-	public boolean isOpaqueCube(IBlockState state) {
+	public boolean isOpaqueCube(BlockState state) {
 		return false;
 	}
 
@@ -171,28 +171,28 @@ public class BlockConjured extends BlockModContainer implements IPsiBlock {
 	}
 
 	@Override
-	public boolean canSilkHarvest(World world, BlockPos pos, @Nonnull IBlockState state, EntityPlayer player) {
+	public boolean canSilkHarvest(World world, BlockPos pos, @Nonnull BlockState state, PlayerEntity player) {
 		return false;
 	}
 
 	@Nonnull
 	@Override
 	@SuppressWarnings("deprecation")
-	public IBlockState getStateFromMeta(int meta) {
-		IBlockState state = getDefaultState();
+	public BlockState getStateFromMeta(int meta) {
+		BlockState state = getDefaultState();
 		return state.withProperty(SOLID, (meta & 0b01) != 0).withProperty(LIGHT, (meta & 0b10) != 0);
 	}
 
 	@Override
-	public int getMetaFromState(IBlockState state) {
+	public int getMetaFromState(BlockState state) {
 		return (state.getValue(SOLID) ? 0b01 : 0) | (state.getValue(LIGHT) ? 0b10 : 0);
 	}
 
 	@Nonnull
 	@Override
 	@SuppressWarnings("deprecation")
-	public IBlockState getActualState(@Nonnull IBlockState state, IBlockAccess worldIn, BlockPos pos) {
-		IBlockState origState = state;
+	public BlockState getActualState(@Nonnull BlockState state, IBlockAccess worldIn, BlockPos pos) {
+		BlockState origState = state;
 		state = state.withProperty(BLOCK_UP, worldIn.getBlockState(pos.up()).equals(origState));
 		state = state.withProperty(BLOCK_DOWN, worldIn.getBlockState(pos.down()).equals(origState));
 		state = state.withProperty(BLOCK_NORTH, worldIn.getBlockState(pos.north()).equals(origState));
@@ -204,33 +204,33 @@ public class BlockConjured extends BlockModContainer implements IPsiBlock {
 	}
 
 	@Override
-	public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos) {
+	public int getLightValue(BlockState state, IBlockAccess world, BlockPos pos) {
 		return state.getValue(LIGHT) ? 15 : 0;
 	}
 
 	@Nullable
 	@Override
 	@SuppressWarnings("deprecation")
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, @Nonnull IBlockAccess worldIn, @Nonnull BlockPos pos) {
+	public AxisAlignedBB getCollisionBoundingBox(BlockState blockState, @Nonnull IBlockAccess worldIn, @Nonnull BlockPos pos) {
 		return blockState.getValue(SOLID) ? FULL_BLOCK_AABB : NULL_AABB;
 	}
 
 	@Nonnull
 	@Override
 	@SuppressWarnings("deprecation")
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
+	public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess world, BlockPos pos) {
 		return state.getValue(SOLID) ? FULL_BLOCK_AABB : LIGHT_AABB;
 	}
 
 	@Nonnull
 	@Override
 	@SuppressWarnings("deprecation")
-	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face) {
 		return BlockFaceShape.UNDEFINED;
 	}
 	
 	@Override
-	public TileEntity createTileEntity(@Nonnull World world, @Nonnull IBlockState state) {
+	public TileEntity createTileEntity(@Nonnull World world, @Nonnull BlockState state) {
 		return new TileConjured();
 	}
 

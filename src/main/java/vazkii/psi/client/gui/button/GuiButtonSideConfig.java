@@ -11,9 +11,9 @@
 package vazkii.psi.client.gui.button;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.GlStateManager;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import vazkii.psi.api.spell.SpellParam;
@@ -23,7 +23,7 @@ import vazkii.psi.client.gui.GuiProgrammer;
 
 import javax.annotation.Nonnull;
 
-public class GuiButtonSideConfig extends GuiButton {
+public class GuiButtonSideConfig extends Button {
 
 	final GuiProgrammer gui;
 	final int gridX;

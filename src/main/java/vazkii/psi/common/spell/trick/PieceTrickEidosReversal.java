@@ -10,7 +10,7 @@
  */
 package vazkii.psi.common.spell.trick;
 
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import vazkii.arl.network.NetworkHandler;
 import vazkii.psi.api.spell.EnumSpellStat;
 import vazkii.psi.api.spell.Spell;
@@ -57,8 +57,8 @@ public class PieceTrickEidosReversal extends PieceTrick {
 		if(!data.isReverting) {
 			data.eidosReversionTime = timeVal.intValue() * 10;
 			data.isReverting = true;
-			if (context.caster instanceof EntityPlayerMP)
-				NetworkHandler.INSTANCE.sendTo(new MessageEidosSync(data.eidosReversionTime), (EntityPlayerMP) context.caster);
+			if (context.caster instanceof ServerPlayerEntity)
+				NetworkHandler.INSTANCE.sendTo(new MessageEidosSync(data.eidosReversionTime), (ServerPlayerEntity) context.caster);
 		}
 
 		return null;

@@ -10,7 +10,7 @@
  */
 package vazkii.psi.common.crafting.recipe;
 
-import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
@@ -28,7 +28,7 @@ public class BulletToDriveRecipe extends ModRecipe {
 	}
 
 	@Override
-	public boolean matches(@Nonnull InventoryCrafting var1, @Nonnull World var2) {
+	public boolean matches(@Nonnull CraftingInventory var1, @Nonnull World var2) {
 		boolean foundSource = false;
 		boolean foundTarget = false;
 
@@ -52,7 +52,7 @@ public class BulletToDriveRecipe extends ModRecipe {
 
 	@Nonnull
 	@Override
-	public ItemStack getCraftingResult(@Nonnull InventoryCrafting var1) {
+	public ItemStack getCraftingResult(@Nonnull CraftingInventory var1) {
 		Spell source = null;
 		ItemStack target = ItemStack.EMPTY;
 

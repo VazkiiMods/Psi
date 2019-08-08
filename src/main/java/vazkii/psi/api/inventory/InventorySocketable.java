@@ -11,11 +11,11 @@
 package vazkii.psi.api.inventory;
 
 import com.google.common.collect.Iterators;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TranslationTextComponent;
 import vazkii.psi.api.cad.ISocketableCapability;
 
 import javax.annotation.Nonnull;
@@ -107,17 +107,17 @@ public class InventorySocketable implements IInventory {
 	}
 
 	@Override
-	public boolean isUsableByPlayer(@Nonnull EntityPlayer player) {
+	public boolean isUsableByPlayer(@Nonnull PlayerEntity player) {
 		return true;
 	}
 
 	@Override
-	public void openInventory(@Nonnull EntityPlayer player) {
+	public void openInventory(@Nonnull PlayerEntity player) {
 		// NO-OP
 	}
 
 	@Override
-	public void closeInventory(@Nonnull EntityPlayer player) {
+	public void closeInventory(@Nonnull PlayerEntity player) {
 		// NO-OP
 	}
 
@@ -164,6 +164,6 @@ public class InventorySocketable implements IInventory {
 	@Nonnull
 	@Override
 	public ITextComponent getDisplayName() {
-		return new TextComponentTranslation(getName());
+		return new TranslationTextComponent(getName());
 	}
 }

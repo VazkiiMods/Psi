@@ -11,7 +11,7 @@
 package vazkii.psi.common.core.handler.capability.wrappers;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import vazkii.psi.api.cad.IPsiBarDisplay;
@@ -33,14 +33,14 @@ public class PsiBarWrapper implements IPsiBarDisplay, ICapabilityProvider {
 
 	@Override
 	@SuppressWarnings("ConstantConditions")
-	public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
+	public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable Direction facing) {
 		return capability == CAPABILITY;
 	}
 
 	@Nullable
 	@Override
 	@SuppressWarnings("ConstantConditions")
-	public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
+	public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable Direction facing) {
 		return capability == CAPABILITY ? CAPABILITY.cast(this) : null;
 	}
 

@@ -10,8 +10,8 @@
  */
 package vazkii.psi.common.block.tile;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
 import vazkii.arl.block.tile.TileMod;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.common.spell.SpellCompiler;
@@ -42,10 +42,10 @@ public class TileProgrammer extends TileMod {
 	}
 
 	@Override
-	public void writeSharedNBT(NBTTagCompound cmp) {
+	public void writeSharedNBT(CompoundNBT cmp) {
 		super.writeSharedNBT(cmp);
 
-		NBTTagCompound spellCmp = new NBTTagCompound();
+		CompoundNBT spellCmp = new CompoundNBT();
 		if(spell != null)
 			spell.writeToNBT(spellCmp);
 		cmp.setTag(TAG_SPELL, spellCmp);
@@ -53,17 +53,17 @@ public class TileProgrammer extends TileMod {
 	}
 
 	@Override
-	public void readSharedNBT(NBTTagCompound cmp) {
+	public void readSharedNBT(CompoundNBT cmp) {
 		super.readSharedNBT(cmp);
 
-		NBTTagCompound spellCmp = cmp.getCompoundTag(TAG_SPELL);
+		CompoundNBT spellCmp = cmp.getCompoundTag(TAG_SPELL);
 		if(spell == null)
 			spell = Spell.createFromNBT(spellCmp);
 		else spell.readFromNBT(spellCmp);
 		playerLock = cmp.getString(TAG_PLAYER_LOCK);
 	}
 	
-	public boolean canPlayerInteract(EntityPlayer player) {
+	public boolean canPlayerInteract(PlayerEntity player) {
 		return !player.isDead && player.getDistanceSq((double)this.pos.getX() + 0.5D, (double)this.pos.getY() + 0.5D, (double)this.pos.getZ() + 0.5D) <= 64.0D;
 	}
 

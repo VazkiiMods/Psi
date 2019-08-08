@@ -12,9 +12,9 @@ package vazkii.psi.client.gui;
 
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.GlStateManager;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -44,7 +44,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GuiSocketSelect extends GuiScreen {
+public class GuiSocketSelect extends Screen {
 
 	private static final ResourceLocation[] signs = new ResourceLocation[] {
 			new ResourceLocation(String.format(LibResources.GUI_SIGN, 0)),

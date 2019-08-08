@@ -11,13 +11,13 @@
 package vazkii.psi.client.gui.button;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.gui.widget.button.Button;
+import com.mojang.blaze3d.platform.GlStateManager;
 import vazkii.psi.client.gui.GuiIntroduction;
 
 import javax.annotation.Nonnull;
 
-public class GuiButtonBoolean extends GuiButton {
+public class GuiButtonBoolean extends Button {
 
 	public final boolean yes;
 

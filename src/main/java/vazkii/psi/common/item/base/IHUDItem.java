@@ -12,12 +12,12 @@ package vazkii.psi.common.item.base;
 
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public interface IHUDItem {
 	
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	void drawHUD(ScaledResolution res, float partTicks, ItemStack stack);
 
 }

@@ -10,7 +10,7 @@
  */
 package vazkii.psi.common.spell.operator.vector;
 
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.RayTraceResult;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.Spell;
@@ -58,7 +58,7 @@ public class PieceOperatorVectorRaycastAxis extends PieceOperator {
 		if(pos == null)
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
 
-		EnumFacing facing = pos.sideHit;
+		Direction facing = pos.sideHit;
 		return new Vector3(facing.getXOffset(), facing.getYOffset(), facing.getZOffset());
 	}
 

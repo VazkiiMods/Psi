@@ -11,7 +11,7 @@
 package vazkii.psi.common.spell.operator.entity;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
@@ -43,8 +43,8 @@ public class PieceOperatorEntityMotion extends PieceOperator {
 		if(e == null)
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_TARGET);
 
-		if(e instanceof EntityPlayer) {
-			EntityPlayer player = (EntityPlayer) e;
+		if(e instanceof PlayerEntity) {
+			PlayerEntity player = (PlayerEntity) e;
 			PlayerData data = PlayerDataHandler.get(player);
 			if(data.eidosChangelog.size() >= 2) {
 				Vector3 last = data.eidosChangelog.get(data.eidosChangelog.size() - 2);

@@ -1,10 +1,10 @@
 package vazkii.psi.api.cad;
 
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.eventhandler.Cancelable;
-import net.minecraftforge.fml.common.eventhandler.Event;
+import net.minecraftforge.eventbus.api.Event;
 import vazkii.psi.api.internal.IPlayerData;
 
 /**
@@ -24,7 +24,7 @@ public class RegenPsiEvent extends Event {
 	private final int cadPsiCapacity;
 	private final int cadPsi;
 	private final boolean wasOverflowed;
-	private final EntityPlayer player;
+	private final PlayerEntity player;
 	private final IPlayerData playerData;
 	private final ItemStack cad;
 	private final int previousRegenCooldown;
@@ -44,7 +44,7 @@ public class RegenPsiEvent extends Event {
 
 	private int regenCooldown;
 
-	public RegenPsiEvent(EntityPlayer player, IPlayerData playerData, ItemStack cad) {
+	public RegenPsiEvent(PlayerEntity player, IPlayerData playerData, ItemStack cad) {
 		this.playerPsiCapacity = playerData.getTotalPsi();
 		this.playerPsi = playerData.getAvailablePsi();
 		this.regenRate = this.baseRegenRate = playerData.getRegenPerTick();
@@ -66,7 +66,7 @@ public class RegenPsiEvent extends Event {
 		applyRegen();
 	}
 
-	public EntityPlayer getPlayer() {
+	public PlayerEntity getPlayer() {
 		return player;
 	}
 

@@ -10,12 +10,12 @@
  */
 package vazkii.psi.common.network.message;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.arl.network.NetworkMessage;
 import vazkii.arl.util.ClientTicker;
 import vazkii.psi.common.Psi;
@@ -24,20 +24,20 @@ import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
 
 public class MessageDataSync extends NetworkMessage<MessageDataSync> {
 
-	public NBTTagCompound cmp;
+	public CompoundNBT cmp;
 
 	public MessageDataSync() { }
 
 	public MessageDataSync(PlayerData data) {
-		cmp = new NBTTagCompound();
+		cmp = new CompoundNBT();
 		data.writeToNBT(cmp);
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public IMessage handleMessage(MessageContext context) {
 		ClientTicker.addAction(() -> {
-			EntityPlayer player = Psi.proxy.getClientPlayer();
+			PlayerEntity player = Psi.proxy.getClientPlayer();
 			if (player != null) {
 				PlayerData data = PlayerDataHandler.get(player);
 				data.lastAvailablePsi = data.availablePsi;

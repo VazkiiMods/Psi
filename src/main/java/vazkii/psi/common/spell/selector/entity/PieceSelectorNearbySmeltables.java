@@ -13,7 +13,7 @@ package vazkii.psi.common.spell.selector.entity;
 import com.google.common.base.Predicate;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import vazkii.psi.api.spell.Spell;
@@ -30,8 +30,8 @@ public class PieceSelectorNearbySmeltables extends PieceSelectorNearby {
 	}
 	
 	public boolean accept(Entity e) {
-		if(e instanceof EntityItem) {
-			EntityItem eitem = (EntityItem) e;
+		if(e instanceof ItemEntity) {
+			ItemEntity eitem = (ItemEntity) e;
 			ItemStack stack = eitem.getItem();
 			ItemStack result = FurnaceRecipes.instance().getSmeltingResult(stack);
 		

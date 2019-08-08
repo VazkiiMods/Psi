@@ -14,8 +14,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.arl.network.NetworkMessage;
 import vazkii.arl.util.ClientTicker;
 
@@ -35,7 +35,7 @@ public class MessageBlink extends NetworkMessage<MessageBlink> {
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public IMessage handleMessage(MessageContext context) {
 		ClientTicker.addAction(() -> {
 			Entity entity = Minecraft.getMinecraft().player;

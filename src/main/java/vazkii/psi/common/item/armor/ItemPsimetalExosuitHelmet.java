@@ -10,11 +10,11 @@
  */
 package vazkii.psi.common.item.armor;
 
-import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.arl.util.ItemNBTHelper;
 import vazkii.psi.api.exosuit.IExosuitSensor;
 import vazkii.psi.api.exosuit.ISensorHoldable;
@@ -27,7 +27,7 @@ public class ItemPsimetalExosuitHelmet extends ItemPsimetalArmor implements ISen
 	private static final String TAG_SENSOR = "sensor";
 
 	public ItemPsimetalExosuitHelmet() {
-		super(LibItemNames.PSIMETAL_EXOSUIT_HELMET, 0, EntityEquipmentSlot.HEAD);
+		super(LibItemNames.PSIMETAL_EXOSUIT_HELMET, 0, EquipmentSlotType.HEAD);
 	}
 
 	@Override
@@ -45,7 +45,7 @@ public class ItemPsimetalExosuitHelmet extends ItemPsimetalArmor implements ISen
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public int getColor(@Nonnull ItemStack stack) {
 		ItemStack sensor = getAttachedSensor(stack);
 		if(!sensor.isEmpty() && sensor.getItem() instanceof IExosuitSensor)
@@ -56,13 +56,13 @@ public class ItemPsimetalExosuitHelmet extends ItemPsimetalArmor implements ISen
 
 	@Override
 	public ItemStack getAttachedSensor(ItemStack stack) {
-		NBTTagCompound cmp = ItemNBTHelper.getCompound(stack, TAG_SENSOR, false);
+		CompoundNBT cmp = ItemNBTHelper.getCompound(stack, TAG_SENSOR, false);
 		return new ItemStack(cmp);
 	}
 
 	@Override
 	public void attachSensor(ItemStack stack, ItemStack sensor) {
-		NBTTagCompound cmp = new NBTTagCompound();
+		CompoundNBT cmp = new CompoundNBT();
 		if(!sensor.isEmpty())
 			sensor.writeToNBT(cmp);
 		ItemNBTHelper.setCompound(stack, TAG_SENSOR, cmp);

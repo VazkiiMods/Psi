@@ -14,15 +14,15 @@ import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.psi.api.cad.*;
 import vazkii.psi.api.spell.ISpellAcceptor;
 import vazkii.psi.api.spell.ISpellImmune;
@@ -59,7 +59,7 @@ public class CapabilityHandler {
 	private static class CapabilityFactory<T> implements Capability.IStorage<T> {
 
 		@Override
-		public NBTBase writeNBT(Capability<T> capability, T instance, EnumFacing side) {
+		public NBTBase writeNBT(Capability<T> capability, T instance, Direction side) {
 			if (instance instanceof INBTSerializable)
 				return ((INBTSerializable) instance).serializeNBT();
 			return null;
@@ -67,8 +67,8 @@ public class CapabilityHandler {
 
 		@Override
 		@SuppressWarnings("unchecked")
-		public void readNBT(Capability<T> capability, T instance, EnumFacing side, NBTBase nbt) {
-			if (nbt instanceof NBTTagCompound)
+		public void readNBT(Capability<T> capability, T instance, Direction side, NBTBase nbt) {
+			if (nbt instanceof CompoundNBT)
 				((INBTSerializable) instance).deserializeNBT(nbt);
 		}
 	}

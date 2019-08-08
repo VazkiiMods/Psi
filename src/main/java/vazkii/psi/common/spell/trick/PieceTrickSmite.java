@@ -10,7 +10,7 @@
  */
 package vazkii.psi.common.spell.trick;
 
-import net.minecraft.entity.effect.EntityLightningBolt;
+import net.minecraft.entity.effect.LightningBoltEntity;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.EnumSpellStat;
 import vazkii.psi.api.spell.Spell;
@@ -51,7 +51,7 @@ public class PieceTrickSmite extends PieceTrick {
 		if(!context.isInRadius(positionVal))
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 
-		EntityLightningBolt lightning = new EntityLightningBolt(context.caster.getEntityWorld(), positionVal.x, positionVal.y, positionVal.z, false);
+		LightningBoltEntity lightning = new LightningBoltEntity(context.caster.getEntityWorld(), positionVal.x, positionVal.y, positionVal.z, false);
 		context.caster.getEntityWorld().addWeatherEffect(lightning);
 
 		return null;

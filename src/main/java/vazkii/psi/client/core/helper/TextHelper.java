@@ -12,8 +12,8 @@ package vazkii.psi.client.core.helper;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.psi.api.internal.TooltipHelper;
 
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ import java.util.List;
 
 public final class TextHelper {
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public static List<String> renderText(int x, int y, int width, String unlocalizedText, boolean centered, boolean doit, Object... format) {
 		FontRenderer font = Minecraft.getMinecraft().fontRenderer;
 		boolean unicode = font.getUnicodeFlag();

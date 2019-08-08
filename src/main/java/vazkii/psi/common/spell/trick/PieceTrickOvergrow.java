@@ -10,9 +10,9 @@
  */
 package vazkii.psi.common.spell.trick;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemDye;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Items;
+import net.minecraft.item.DyeItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import vazkii.psi.api.internal.Vector3;
@@ -63,8 +63,8 @@ public class PieceTrickOvergrow extends PieceTrick {
 		return null;
 	}
 
-	public boolean bonemeal(EntityPlayer player, BlockPos pos) {
-		boolean did = ItemDye.applyBonemeal(new ItemStack(Items.DYE, 1, 15), player.getEntityWorld(), pos);
+	public boolean bonemeal(PlayerEntity player, BlockPos pos) {
+		boolean did = DyeItem.applyBonemeal(new ItemStack(Items.DYE, 1, 15), player.getEntityWorld(), pos);
 		if(did)
 			player.getEntityWorld().playEvent(2005, pos, 0);
 		return did;

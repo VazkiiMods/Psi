@@ -13,7 +13,7 @@ package vazkii.psi.client.core.version;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.Style;
-import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.util.text.TextFormatting;
 
 import java.awt.*;
@@ -45,7 +45,7 @@ public class ThreadDownloadMod extends Thread {
 	@Override
 	public void run() {
 		try {
-			ITextComponent component = new TextComponentTranslation("psi.versioning.startingDownload", fileName);
+			ITextComponent component = new TranslationTextComponent("psi.versioning.startingDownload", fileName);
 			if(Minecraft.getMinecraft().player != null)
 				Minecraft.getMinecraft().player.sendMessage(component);
 
@@ -82,7 +82,7 @@ public class ThreadDownloadMod extends Thread {
 				}
 
 				if (Minecraft.getMinecraft().player != null)
-					Minecraft.getMinecraft().player.sendMessage(new TextComponentTranslation("psi.versioning.doneDownloading", fileName).setStyle(new Style().setColor(TextFormatting.GREEN)));
+					Minecraft.getMinecraft().player.sendMessage(new TranslationTextComponent("psi.versioning.doneDownloading", fileName).setStyle(new Style().setColor(TextFormatting.GREEN)));
 
 				Desktop.getDesktop().open(dir);
 				VersionChecker.downloadedFile = true;
@@ -96,6 +96,6 @@ public class ThreadDownloadMod extends Thread {
 
 	private void sendError() {
 		if(Minecraft.getMinecraft().player != null)
-			Minecraft.getMinecraft().player.sendMessage(new TextComponentTranslation("psi.versioning.error").setStyle(new Style().setColor(TextFormatting.RED)));
+			Minecraft.getMinecraft().player.sendMessage(new TranslationTextComponent("psi.versioning.error").setStyle(new Style().setColor(TextFormatting.RED)));
 	}
 }

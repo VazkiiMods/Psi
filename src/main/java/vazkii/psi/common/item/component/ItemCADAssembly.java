@@ -10,7 +10,7 @@
  */
 package vazkii.psi.common.item.component;
 
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.model.ModelResourceLocation;
 import net.minecraft.item.ItemStack;
 import vazkii.arl.interf.IExtraVariantHolder;
 import vazkii.arl.util.ModelHandler;

@@ -14,7 +14,7 @@ import com.google.common.base.Predicate;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.IMob;
-import net.minecraft.entity.passive.IAnimals;
+import net.minecraft.entity.passive.IAnimal;
 import vazkii.psi.api.spell.Spell;
 
 public class PieceSelectorNearbyAnimals extends PieceSelectorNearby {
@@ -25,7 +25,7 @@ public class PieceSelectorNearbyAnimals extends PieceSelectorNearby {
 
 	@Override
 	public Predicate<Entity> getTargetPredicate() {
-		return (Entity e) -> e instanceof IAnimals && !(e instanceof IMob);
+		return (Entity e) -> e instanceof IAnimal && !(e instanceof IMob);
 	}
 
 }

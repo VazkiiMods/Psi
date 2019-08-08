@@ -10,7 +10,7 @@
  */
 package vazkii.psi.common.core.proxy;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -61,7 +61,7 @@ public class CommonProxy {
 		ModBlocks.init();
 	}
 
-	public EntityPlayer getClientPlayer() {
+	public PlayerEntity getClientPlayer() {
 		return null;
 	}
 

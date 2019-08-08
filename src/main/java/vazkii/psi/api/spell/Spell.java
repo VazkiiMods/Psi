@@ -10,9 +10,9 @@
  */
 package vazkii.psi.api.spell;
 
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.UUID;
 
@@ -34,12 +34,12 @@ public final class Spell {
 		uuid = UUID.randomUUID();
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public void draw() {
 		grid.draw();
 	}
 
-	public static Spell createFromNBT(NBTTagCompound cmp) {
+	public static Spell createFromNBT(CompoundNBT cmp) {
 		if(cmp == null || !cmp.getBoolean(TAG_VALID))
 			return null;
 
@@ -48,7 +48,7 @@ public final class Spell {
 		return spell;
 	}
 
-	public void readFromNBT(NBTTagCompound cmp) {
+	public void readFromNBT(CompoundNBT cmp) {
 		name = cmp.getString(TAG_SPELL_NAME);
 
 		if(cmp.hasKey(TAG_UUID_MOST)) {
@@ -61,7 +61,7 @@ public final class Spell {
 		grid.readFromNBT(cmp);
 	}
 
-	public void writeToNBT(NBTTagCompound cmp) {
+	public void writeToNBT(CompoundNBT cmp) {
 		cmp.setBoolean(TAG_VALID, true);
 		cmp.setString(TAG_SPELL_NAME, name);
 
@@ -72,7 +72,7 @@ public final class Spell {
 	}
 
 	public Spell copy() {
-		NBTTagCompound cmp = new NBTTagCompound();
+		CompoundNBT cmp = new CompoundNBT();
 		writeToNBT(cmp);
 		return createFromNBT(cmp);
 	}

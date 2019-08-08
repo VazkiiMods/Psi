@@ -12,12 +12,12 @@ package vazkii.psi.common.spell.other;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.GlStateManager;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.psi.api.internal.TooltipHelper;
 import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.param.ParamAny;
@@ -46,17 +46,17 @@ public class PieceConnector extends SpellPiece implements IRedirector {
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public void drawAdditional() {
 		drawSide(paramSides.get(target));
 
 		if(isInGrid)
-			for(SpellParam.Side side : SpellParam.Side.class.getEnumConstants())
+			for(SpellParam.Dist side : SpellParam.Dist.class.getEnumConstants())
 				if(side.isEnabled()) {
 					SpellPiece piece = spell.grid.getPieceAtSideSafely(x, y, side);
 					if(piece != null)
 						for(SpellParam param : piece.paramSides.keySet()) {
-							SpellParam.Side paramSide = piece.paramSides.get(param);
+							SpellParam.Dist paramSide = piece.paramSides.get(param);
 							if(paramSide.getOpposite() == side) {
 								drawSide(side);
 								break;
@@ -65,8 +65,8 @@ public class PieceConnector extends SpellPiece implements IRedirector {
 				}
 	}
 
-	@SideOnly(Side.CLIENT)
-	public void drawSide(SpellParam.Side side) {
+	@OnlyIn(Dist.CLIENT)
+	public void drawSide(SpellParam.Dist side) {
 		if(side.isEnabled()) {
 			Minecraft mc = Minecraft.getMinecraft();
 			mc.renderEngine.bindTexture(lines);
@@ -104,7 +104,7 @@ public class PieceConnector extends SpellPiece implements IRedirector {
 
 	@Override
 	public void getShownPieces(List<SpellPiece> pieces) {
-		for(SpellParam.Side side : SpellParam.Side.class.getEnumConstants())
+		for(SpellParam.Dist side : SpellParam.Dist.class.getEnumConstants())
 			if(side.isEnabled()) {
 				PieceConnector piece = (PieceConnector) copy();
 				piece.paramSides.put(piece.target, side);
@@ -123,11 +123,11 @@ public class PieceConnector extends SpellPiece implements IRedirector {
 	}
 
 	@Override
-	public SpellParam.Side getRedirectionSide() {
+	public SpellParam.Dist getRedirectionSide() {
 		return paramSides.get(target);
 	}
 
-	// Side this class implements IRedirector we don't need this
+	// Dist this class implements IRedirector we don't need this
 	@Override
 	public Class<?> getEvaluationType() {
 		return null;

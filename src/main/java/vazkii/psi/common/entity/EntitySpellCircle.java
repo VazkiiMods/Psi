@@ -11,11 +11,11 @@
 package vazkii.psi.common.entity;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.block.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -61,7 +61,7 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 		setSize(3F, 0F);
 	}
 
-	public EntitySpellCircle setInfo(EntityPlayer player, ItemStack colorizer, ItemStack bullet) {
+	public EntitySpellCircle setInfo(PlayerEntity player, ItemStack colorizer, ItemStack bullet) {
 		dataManager.set(COLORIZER_DATA,colorizer);
 		dataManager.set(BULLET_DATA, bullet);
 		dataManager.set(CASTER_NAME, player.getName());
@@ -86,14 +86,14 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 	}
 
 	@Override
-	public void writeEntityToNBT(@Nonnull NBTTagCompound tagCompound) {
-		NBTTagCompound colorizerCmp = new NBTTagCompound();
+	public void writeEntityToNBT(@Nonnull CompoundNBT tagCompound) {
+		CompoundNBT colorizerCmp = new CompoundNBT();
 		ItemStack colorizer =  dataManager.get(COLORIZER_DATA);
 		if (!colorizer.isEmpty())
 			colorizer.writeToNBT(colorizerCmp);
 		tagCompound.setTag(TAG_COLORIZER, colorizerCmp);
 
-		NBTTagCompound bulletCmp = new NBTTagCompound();
+		CompoundNBT bulletCmp = new CompoundNBT();
 		ItemStack bullet = dataManager.get(BULLET_DATA);
 		if (!bullet.isEmpty())
 			bullet.writeToNBT(bulletCmp);
@@ -109,12 +109,12 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 	}
 
 	@Override
-	public void readEntityFromNBT(@Nonnull NBTTagCompound tagCompound) {
-		NBTTagCompound colorizerCmp = tagCompound.getCompoundTag(TAG_COLORIZER);
+	public void readEntityFromNBT(@Nonnull CompoundNBT tagCompound) {
+		CompoundNBT colorizerCmp = tagCompound.getCompoundTag(TAG_COLORIZER);
 		ItemStack colorizer = new ItemStack(colorizerCmp);
 		dataManager.set(COLORIZER_DATA, colorizer);
 
-		NBTTagCompound bulletCmp = tagCompound.getCompoundTag(TAG_BULLET);
+		CompoundNBT bulletCmp = tagCompound.getCompoundTag(TAG_BULLET);
 		ItemStack bullet = new ItemStack(bulletCmp);
 		dataManager.set(BULLET_DATA, bullet);
 
@@ -141,13 +141,13 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 		if (timeAlive > CAST_DELAY && timeAlive % CAST_DELAY == 0 && times < 20) {
 			SpellContext context = null;
 			Entity thrower = getCaster();
-			if (thrower instanceof EntityPlayer) {
+			if (thrower instanceof PlayerEntity) {
 				ItemStack spellContainer = dataManager.get(BULLET_DATA);
 				if (!spellContainer.isEmpty() && ISpellAcceptor.isContainer(spellContainer)) {
 					dataManager.set(TIMES_CAST, times + 1);
 					Spell spell = ISpellAcceptor.acceptor(spellContainer).getSpell();
 					if (spell != null)
-						context = new SpellContext().setPlayer((EntityPlayer) thrower).setFocalPoint(this)
+						context = new SpellContext().setPlayer((PlayerEntity) thrower).setFocalPoint(this)
 								.setSpell(spell).setLoopcastIndex(times);
 				}
 			}
@@ -190,7 +190,7 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 		dataManager.set(TIME_ALIVE, i);
 	}
 
-	public EntityLivingBase getCaster() {
+	public LivingEntity getCaster() {
 		String name = dataManager.get(CASTER_NAME);
 		return getEntityWorld().getPlayerEntityByName(name);
 	}

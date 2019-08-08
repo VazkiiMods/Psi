@@ -10,7 +10,7 @@
  */
 package vazkii.psi.common.spell.selector;
 
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellRuntimeException;
@@ -24,7 +24,7 @@ public class PieceSelectorAttackTarget extends PieceSelector {
 
 	@Override
 	public Class<?> getEvaluationType() {
-		return EntityLivingBase.class;
+		return LivingEntity.class;
 	}
 
 	@Override

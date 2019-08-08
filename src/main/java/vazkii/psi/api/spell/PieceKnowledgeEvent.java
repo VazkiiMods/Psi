@@ -10,8 +10,8 @@
  */
 package vazkii.psi.api.spell;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraftforge.fml.common.eventhandler.Event;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.fml.common.eventhandler.Event.HasResult;
 import vazkii.psi.api.internal.IPlayerData;
 
@@ -38,14 +38,14 @@ public class PieceKnowledgeEvent extends Event {
 	private final String pieceName;
 
 	@Nonnull
-	private final EntityPlayer player;
+	private final PlayerEntity player;
 
 	@Nonnull
 	private final IPlayerData data;
 
 	private final boolean isUnlocked;
 
-	public PieceKnowledgeEvent(@Nonnull String pieceGroup, @Nullable String pieceName, @Nonnull EntityPlayer player, @Nonnull IPlayerData data, boolean isUnlocked) {
+	public PieceKnowledgeEvent(@Nonnull String pieceGroup, @Nullable String pieceName, @Nonnull PlayerEntity player, @Nonnull IPlayerData data, boolean isUnlocked) {
 		this.pieceGroup = pieceGroup;
 		this.pieceName = pieceName;
 		this.player = player;
@@ -74,7 +74,7 @@ public class PieceKnowledgeEvent extends Event {
 	 * The player who is being checked.
 	 */
 	@Nonnull
-	public EntityPlayer getPlayer() {
+	public PlayerEntity getPlayer() {
 		return player;
 	}
 

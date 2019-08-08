@@ -15,7 +15,7 @@ import mezz.jei.api.IModPlugin;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.JEIPlugin;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
-import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import vazkii.psi.api.PsiAPI;
@@ -43,7 +43,7 @@ public class JEICompat implements IModPlugin {
 		registry.addRecipes(PsiAPI.trickRecipes, TrickCraftingCategory.INSTANCE.getUid());
 
 		NonNullList<ItemStack> stacks = NonNullList.create();
-		ModItems.cad.getSubItems(CreativeTabs.SEARCH, stacks);
+		ModItems.cad.getSubItems(ItemGroup.SEARCH, stacks);
 		for (ItemStack stack : stacks)
 			registry.addRecipeCatalyst(stack, TrickCraftingCategory.INSTANCE.getUid());
 	}

@@ -11,13 +11,13 @@
 package vazkii.psi.client.core.version;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.Style;
-import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import vazkii.psi.api.internal.TooltipHelper;
@@ -44,12 +44,12 @@ public final class VersionChecker {
 	public void onTick(ClientTickEvent event) {
 		if(doneChecking && event.phase == Phase.END && Minecraft.getMinecraft().player != null && !triedToWarnPlayer) {
 			if(!onlineVersion.isEmpty()) {
-				EntityPlayer player = Minecraft.getMinecraft().player;
+				PlayerEntity player = Minecraft.getMinecraft().player;
 				int onlineBuild = Integer.parseInt(onlineVersion.split("-")[1]);
 				int clientBuild = LibMisc.BUILD.contains("GRADLE") ? Integer.MAX_VALUE : Integer.parseInt(LibMisc.BUILD);
 				if(onlineBuild > clientBuild) {
-					player.sendMessage(new TextComponentTranslation("psi.versioning.flavour" + player.getEntityWorld().rand.nextInt(FLAVOUR_MESSAGES)).setStyle(new Style().setColor(TextFormatting.LIGHT_PURPLE)));
-					player.sendMessage(new TextComponentTranslation("psi.versioning.outdated", clientBuild, onlineBuild));
+					player.sendMessage(new TranslationTextComponent("psi.versioning.flavour" + player.getEntityWorld().rand.nextInt(FLAVOUR_MESSAGES)).setStyle(new Style().setColor(TextFormatting.LIGHT_PURPLE)));
+					player.sendMessage(new TranslationTextComponent("psi.versioning.outdated", clientBuild, onlineBuild));
 
 					ITextComponent component = ITextComponent.Serializer.jsonToComponent(TooltipHelper.local("psi.versioning.updateMessage").replaceAll("%version%", onlineVersion));
 					player.sendMessage(component);

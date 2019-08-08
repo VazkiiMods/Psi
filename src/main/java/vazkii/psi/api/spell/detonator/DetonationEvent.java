@@ -11,9 +11,9 @@
 package vazkii.psi.api.spell.detonator;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraftforge.fml.common.eventhandler.Cancelable;
-import net.minecraftforge.fml.common.eventhandler.Event;
+import net.minecraftforge.eventbus.api.Event;
 
 import java.util.List;
 
@@ -26,19 +26,19 @@ import java.util.List;
 @Cancelable
 public class DetonationEvent extends Event {
 
-	private final EntityPlayer player;
+	private final PlayerEntity player;
 	private final Entity focalPoint;
 	private final double range;
 	private final List<IDetonationHandler> charges;
 
-	public DetonationEvent(EntityPlayer player, Entity focalPoint, double range, List<IDetonationHandler> charges) {
+	public DetonationEvent(PlayerEntity player, Entity focalPoint, double range, List<IDetonationHandler> charges) {
 		this.player = player;
 		this.focalPoint = focalPoint;
 		this.range = range;
 		this.charges = charges;
 	}
 
-	public EntityPlayer getPlayer() {
+	public PlayerEntity getPlayer() {
 		return player;
 	}
 

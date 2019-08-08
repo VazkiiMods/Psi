@@ -12,17 +12,17 @@ package vazkii.psi.common.item;
 
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.EnumRarity;
+import net.minecraft.item.ItemGroup;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.item.Rarity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.arl.item.ItemMod;
 import vazkii.arl.util.ItemNBTHelper;
 import vazkii.psi.api.PsiAPI;
@@ -87,7 +87,7 @@ public class ItemSpellBullet extends ItemMod implements ISpellContainer, IPsiIte
 		if(!containsSpell(stack))
 			return super.getItemStackDisplayName(stack);
 
-		NBTTagCompound cmp = ItemNBTHelper.getCompound(stack, TAG_SPELL, false);
+		CompoundNBT cmp = ItemNBTHelper.getCompound(stack, TAG_SPELL, false);
 		String name = cmp.getString(Spell.TAG_SPELL_NAME); // We don't need to load the whole spell just for the name
 		if(name.isEmpty())
 			return super.getItemStackDisplayName(stack);
@@ -96,7 +96,7 @@ public class ItemSpellBullet extends ItemMod implements ISpellContainer, IPsiIte
 	}
 
 	@Override
-	public void setSpell(EntityPlayer player, ItemStack stack, Spell spell) {
+	public void setSpell(PlayerEntity player, ItemStack stack, Spell spell) {
 		ItemSpellDrive.setSpell(stack, spell);
 
 		if(!containsSpell(stack))
@@ -115,20 +115,20 @@ public class ItemSpellBullet extends ItemMod implements ISpellContainer, IPsiIte
 
 	@Nonnull
 	@Override
-	@SideOnly(Side.CLIENT)
-	public EnumRarity getRarity(ItemStack stack) {
-		return containsSpell(stack) ? EnumRarity.RARE : EnumRarity.COMMON;
+	@OnlyIn(Dist.CLIENT)
+	public Rarity getRarity(ItemStack stack) {
+		return containsSpell(stack) ? Rarity.RARE : Rarity.COMMON;
 	}
 
 	@Override
-	public void getSubItems(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> subItems) {
+	public void getSubItems(@Nonnull ItemGroup tab, @Nonnull NonNullList<ItemStack> subItems) {
 		if(isInCreativeTab(tab))
 			for(int i = 0; i < getVariants().length; i++)
 				if(i % 2 == 0)
 					subItems.add(new ItemStack(this, 1, i));
 	}
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
 	@Override
 	public void addInformation(ItemStack stack, World playerIn, List<String> tooltip, ITooltipFlag advanced) {
         TooltipHelper.tooltipIfShift(tooltip, () -> {
@@ -160,8 +160,8 @@ public class ItemSpellBullet extends ItemMod implements ISpellContainer, IPsiIte
 					data.loopcasting = true;
 					data.loopcastHand = context.castFrom;
 					data.lastTickLoopcastStack = null;
-					if (context.caster instanceof EntityPlayerMP)
-						LoopcastTrackingHandler.syncForTrackers((EntityPlayerMP) context.caster);
+					if (context.caster instanceof ServerPlayerEntity)
+						LoopcastTrackingHandler.syncForTrackers((ServerPlayerEntity) context.caster);
 				}
 
 				break;

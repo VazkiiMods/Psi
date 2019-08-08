@@ -12,7 +12,7 @@ package vazkii.psi.common.command;
 
 import com.google.common.collect.Lists;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.spell.PieceGroup;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
@@ -34,12 +34,12 @@ public class CommandPsiUnlearn extends CommandPsiLearn {
 	}
 
 	@Override
-	public boolean shouldNotApply(EntityPlayer player, String group) {
+	public boolean shouldNotApply(PlayerEntity player, String group) {
 		return !super.shouldNotApply(player, group);
 	}
 
 	@Override
-	public void applyPlayerData(EntityPlayer player, PlayerDataHandler.PlayerData data, String group, ICommandSender sender) {
+	public void applyPlayerData(PlayerEntity player, PlayerDataHandler.PlayerData data, String group, ICommandSender sender) {
 		if (group.equals(level0)) {
 			lockPieceGroup(data, group);
 			notify(sender, "success", player.getDisplayName(), getGroupComponent(group));
@@ -62,7 +62,7 @@ public class CommandPsiUnlearn extends CommandPsiLearn {
 	}
 
 	@Override
-	public void applyAll(PlayerDataHandler.PlayerData data, EntityPlayer player, ICommandSender sender) {
+	public void applyAll(PlayerDataHandler.PlayerData data, PlayerEntity player, ICommandSender sender) {
 		lockAll(data);
 		notify(sender, "success.all", player.getDisplayName());
 	}

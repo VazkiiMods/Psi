@@ -11,7 +11,7 @@
 package vazkii.psi.common.spell.trick.entity;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.math.Vec3d;
 import vazkii.arl.network.NetworkHandler;
 import vazkii.psi.api.spell.EnumSpellStat;
@@ -74,8 +74,8 @@ public class PieceTrickBlink extends PieceTrick {
 		double offZ = look.z * dist;
 
 		e.setPosition(e.posX + offX, e.posY + offY, e.posZ + offZ);
-		if (e instanceof EntityPlayerMP)
-			NetworkHandler.INSTANCE.sendTo(new MessageBlink(offX, offY, offZ), (EntityPlayerMP) e);
+		if (e instanceof ServerPlayerEntity)
+			NetworkHandler.INSTANCE.sendTo(new MessageBlink(offX, offY, offZ), (ServerPlayerEntity) e);
 	}
 
 }

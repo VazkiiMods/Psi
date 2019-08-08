@@ -12,8 +12,8 @@ package vazkii.psi.common.item;
 
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.arl.interf.IItemColorProvider;
 import vazkii.arl.item.ItemMod;
 import vazkii.psi.api.cad.ICADColorizer;
@@ -67,7 +67,7 @@ public class ItemExosuitSensor extends ItemMod implements IExosuitSensor, IItemC
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public int getColor(ItemStack stack) {
 		switch (stack.getItemDamage()) {
 			case 0:
@@ -84,7 +84,7 @@ public class ItemExosuitSensor extends ItemMod implements IExosuitSensor, IItemC
 	}
 	
 	@Override
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public IItemColor getItemColor() {
 		return (stack, tintIndex) -> tintIndex == 1 ? getColor(stack) : 0xFFFFFF;
 	}

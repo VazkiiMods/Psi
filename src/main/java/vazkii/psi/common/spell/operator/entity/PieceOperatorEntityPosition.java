@@ -11,7 +11,7 @@
 package vazkii.psi.common.spell.operator.entity;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
@@ -41,7 +41,7 @@ public class PieceOperatorEntityPosition extends PieceOperator {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_TARGET);
 
 		Vector3 vec = Vector3.fromEntity(e);
-		if(e instanceof EntityPlayer)
+		if(e instanceof PlayerEntity)
 			vec.add(0, e.getEyeHeight(), 0);
 
 		return vec;

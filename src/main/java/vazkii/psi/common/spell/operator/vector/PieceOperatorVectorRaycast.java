@@ -13,7 +13,7 @@ package vazkii.psi.common.spell.operator.vector;
 
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -66,7 +66,7 @@ public class PieceOperatorVectorRaycast extends PieceOperator {
 
 	public static RayTraceResult raycast(Entity e, double len) {
 		Vector3 vec = Vector3.fromEntity(e);
-		if(e instanceof EntityPlayer)
+		if(e instanceof PlayerEntity)
 			vec.add(0, e.getEyeHeight(), 0);
 		
 		Vec3d look = e.getLookVec();

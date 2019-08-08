@@ -10,7 +10,7 @@
  */
 package vazkii.psi.api.cad;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 
 /**
@@ -19,7 +19,7 @@ import net.minecraft.item.ItemStack;
 public interface ITileCADAssembler {
 	int getComponentSlot(EnumCADComponent componentType);
 
-	ItemStack getCachedCAD(EntityPlayer player);
+	ItemStack getCachedCAD(PlayerEntity player);
 
 	void clearCachedCAD();
 

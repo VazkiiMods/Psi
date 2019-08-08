@@ -11,14 +11,14 @@
 package vazkii.psi.common.core.handler;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.psi.api.PsiAPI;
 
 import java.io.*;
 
-@SideOnly(Side.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public final class PersistencyHandler {
 
 	private static boolean doneInit = false;
@@ -65,7 +65,7 @@ public final class PersistencyHandler {
 		}
 
 		Minecraft mc = Minecraft.getMinecraft();
-		String uuid = EntityPlayer.getUUID(mc.player.getGameProfile()).toString();
+		String uuid = PlayerEntity.getUUID(mc.player.getGameProfile()).toString();
 		persistentFile = new File(userhome, uuid);
 
 		if(persistentFile.exists()) {

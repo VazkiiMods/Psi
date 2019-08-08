@@ -11,13 +11,13 @@
 package vazkii.psi.api.cad;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.util.INBTSerializable;
 import vazkii.psi.api.internal.Vector3;
 
-public interface ICADData extends INBTSerializable<NBTTagCompound> {
+public interface ICADData extends INBTSerializable<CompoundNBT> {
 	@CapabilityInject(ICADData.class)
 	Capability<ICADData> CAPABILITY = null;
 
@@ -45,5 +45,5 @@ public interface ICADData extends INBTSerializable<NBTTagCompound> {
 
 	void markDirty(boolean isDirty);
 
-	NBTTagCompound serializeForSynchronization();
+	CompoundNBT serializeForSynchronization();
 }

@@ -10,7 +10,7 @@
  */
 package vazkii.psi.api.internal;
 
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import vazkii.psi.api.spell.SpellPiece;
 
 import javax.annotation.Nullable;
@@ -91,7 +91,7 @@ public interface IPlayerData {
 	 * going to write any data here, please ensure it's prefixed with
 	 * your mod ID so stuff doesn't get written over other stuff.
 	 */
-	NBTTagCompound getCustomData();
+	CompoundNBT getCustomData();
 	
 	/**
 	 * Saves the data to the player entity's NBT tags. 

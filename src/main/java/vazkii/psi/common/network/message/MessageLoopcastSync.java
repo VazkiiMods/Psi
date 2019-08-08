@@ -12,13 +12,13 @@ package vazkii.psi.common.network.message;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.EnumHand;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.arl.network.NetworkMessage;
 import vazkii.arl.util.ClientTicker;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
@@ -30,22 +30,22 @@ public class MessageLoopcastSync extends NetworkMessage<MessageLoopcastSync> {
 
 	public MessageLoopcastSync() { }
 
-	public MessageLoopcastSync(int entityId, boolean isLoopcasting, EnumHand hand) {
+	public MessageLoopcastSync(int entityId, boolean isLoopcasting, Hand hand) {
 		this.entityId = entityId;
 		loopcastState = (byte) ((isLoopcasting ? 1 : 0) | (hand == null ? 0 : hand.ordinal() << 1));
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public IMessage handleMessage(MessageContext context) {
 		boolean isLoopcasting = (loopcastState & 0b1) != 0;
 
-		EnumHand loopcastHand = isLoopcasting ?
-				((loopcastState & 0b10) != 0 ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND) : null;
+		Hand loopcastHand = isLoopcasting ?
+				((loopcastState & 0b10) != 0 ? Hand.OFF_HAND : Hand.MAIN_HAND) : null;
 
 		ClientTicker.addAction(() -> {
 			World world = Minecraft.getMinecraft().world;
-			EntityPlayer mcPlayer = Minecraft.getMinecraft().player;
+			PlayerEntity mcPlayer = Minecraft.getMinecraft().player;
 			if (mcPlayer == null)
 				return;
 
@@ -55,8 +55,8 @@ public class MessageLoopcastSync extends NetworkMessage<MessageLoopcastSync> {
 			else if (mcPlayer.getEntityId() == entityId)
 				player = mcPlayer;
 
-			if (player instanceof EntityPlayer) {
-				PlayerDataHandler.PlayerData data = PlayerDataHandler.get((EntityPlayer) player);
+			if (player instanceof PlayerEntity) {
+				PlayerDataHandler.PlayerData data = PlayerDataHandler.get((PlayerEntity) player);
 				data.loopcasting = isLoopcasting;
 				data.loopcastHand = loopcastHand;
 			}

@@ -10,8 +10,8 @@
  */
 package vazkii.psi.common.entity;
 
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
@@ -26,7 +26,7 @@ public class EntitySpellGrenade extends EntitySpellProjectile {
 		super(worldIn);
 	}
 
-	public EntitySpellGrenade(World worldIn, EntityLivingBase throwerIn) {
+	public EntitySpellGrenade(World worldIn, LivingEntity throwerIn) {
 		super(worldIn, throwerIn);
 
 		double speed = 0.65;

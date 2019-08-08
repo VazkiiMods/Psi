@@ -10,7 +10,7 @@
  */
 package vazkii.psi.common.spell.selector;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellRuntimeException;
@@ -24,7 +24,7 @@ public class PieceSelectorCaster extends PieceSelector {
 
 	@Override
 	public Class<?> getEvaluationType() {
-		return EntityPlayer.class;
+		return PlayerEntity.class;
 	}
 
 	@Override

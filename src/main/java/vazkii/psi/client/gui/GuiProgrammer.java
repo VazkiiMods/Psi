@@ -14,18 +14,18 @@ import com.google.common.collect.ImmutableSet;
 import gnu.trove.map.TObjectIntMap;
 import gnu.trove.map.hash.TObjectIntHashMap;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.GuiTextField;
-import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.widget.TextFieldWidget;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.JsonToNBT;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.Style;
-import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.input.Keyboard;
@@ -59,7 +59,7 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class GuiProgrammer extends GuiScreen {
+public class GuiProgrammer extends Screen {
 
 	public static final ResourceLocation texture = new ResourceLocation(LibResources.GUI_PROGRAMMER);
 	private static final int PIECES_PER_PAGE = 25;
@@ -81,11 +81,11 @@ public class GuiProgrammer extends GuiScreen {
 	public int page = 0;
 	public boolean scheduleButtonUpdate = false;
 	public final List<SpellPiece> visiblePieces = new ArrayList<>();
-	public final List<GuiButton> panelButtons = new ArrayList<>();
-	public final List<GuiButton> configButtons = new ArrayList<>();
-	public GuiTextField searchField;
-	public GuiTextField spellNameField;
-	public GuiTextField commentField;
+	public final List<Button> panelButtons = new ArrayList<>();
+	public final List<Button> configButtons = new ArrayList<>();
+	public TextFieldWidget searchField;
+	public TextFieldWidget spellNameField;
+	public TextFieldWidget commentField;
 	
 	public boolean takingScreenshot = false;
 	public boolean shareToReddit = false;
@@ -116,7 +116,7 @@ public class GuiProgrammer extends GuiScreen {
 		panelWidth = 100;
 		panelHeight = 125;
 		cursorX = cursorY = -1;
-		searchField = new GuiTextField(0, fontRenderer, 0, 0, 70, 10);
+		searchField = new TextFieldWidget(0, fontRenderer, 0, 0, 70, 10);
 		searchField.setCanLoseFocus(false);
 		searchField.setFocused(true);
 		searchField.setEnableBackgroundDrawing(false);
@@ -126,12 +126,12 @@ public class GuiProgrammer extends GuiScreen {
 		else
 			spectator = programmer.playerLock != null && !programmer.playerLock.isEmpty() && !programmer.playerLock.equals(mc.player.getName());
 
-		spellNameField = new GuiTextField(0, fontRenderer, left + xSize - 130, top + ySize - 14, 120, 10);
+		spellNameField = new TextFieldWidget(0, fontRenderer, left + xSize - 130, top + ySize - 14, 120, 10);
 		spellNameField.setEnableBackgroundDrawing(false);
 		spellNameField.setMaxStringLength(20);
 		spellNameField.setEnabled(!spectator);
 		
-		commentField = new GuiTextField(0, fontRenderer, left, top + ySize / 2 - 10, xSize, 20);
+		commentField = new TextFieldWidget(0, fontRenderer, left, top + ySize / 2 - 10, xSize, 20);
 		commentField.setEnabled(false);
 		commentField.setVisible(false);
 		commentField.setMaxStringLength(500);
@@ -376,7 +376,7 @@ public class GuiProgrammer extends GuiScreen {
 			drawRect(panelX, panelY, panelX + panelWidth, panelY + panelHeight, 0x88000000);
 
 			if(panelButtons.size() > 0) {
-				GuiButton button = panelButtons.get(Math.max(0, Math.min(panelCursor, panelButtons.size() - 1)));
+				Button button = panelButtons.get(Math.max(0, Math.min(panelCursor, panelButtons.size() - 1)));
 				int panelPieceX = button.x;
 				int panelPieceY = button.y;
 				drawRect(panelPieceX - 1, panelPieceY - 1, panelPieceX + 17, panelPieceY + 17, 0x559999FF);
@@ -441,7 +441,7 @@ public class GuiProgrammer extends GuiScreen {
 		
 		if(takingScreenshot) {
 			String name = spellNameField.getText();
-			NBTTagCompound cmp = new NBTTagCompound();
+			CompoundNBT cmp = new CompoundNBT();
 			if(spell != null)
 				spell.writeToNBT(cmp);
 			String export = cmp.toString();
@@ -743,7 +743,7 @@ public class GuiProgrammer extends GuiScreen {
 
 	public boolean onSideButtonKeybind(SpellPiece piece, int param, Side side) {
 		if(param > -1 && piece != null && piece.params.size() >= param) {
-			for(GuiButton b : configButtons) {
+			for(Button b : configButtons) {
 				GuiButtonSideConfig config = (GuiButtonSideConfig) b;
 				if(config.matches(param, side)) {
 					if(side != Side.OFF && piece.paramSides.get(piece.params.get(config.paramName)) == side) {
@@ -765,7 +765,7 @@ public class GuiProgrammer extends GuiScreen {
 	}
 
 	@Override
-	protected void actionPerformed(GuiButton button) throws IOException {
+	protected void actionPerformed(Button button) throws IOException {
 		if (programmer != null)
 			spell = programmer.spell;
 
@@ -811,7 +811,7 @@ public class GuiProgrammer extends GuiScreen {
 		} else if(button instanceof GuiButtonIO) {
 			if(isShiftKeyDown()) {
 				if(((GuiButtonIO) button).out) {
-					NBTTagCompound cmp = new NBTTagCompound();
+					CompoundNBT cmp = new CompoundNBT();
 					if(spell != null)
 						spell.writeToNBT(cmp);
 					setClipboardString(cmp.toString());
@@ -822,7 +822,7 @@ public class GuiProgrammer extends GuiScreen {
 					String cb = getClipboardString();
 					try {
 						cb = cb.replaceAll("([^a-z0-9])\\d+:", "$1"); // backwards compatibility with pre 1.12 nbt json
-						NBTTagCompound cmp = JsonToNBT.getTagFromJson(cb);
+						CompoundNBT cmp = JsonToNBT.getTagFromJson(cb);
 						spell = Spell.createFromNBT(cmp);
 						PlayerData data = PlayerDataHandler.get(mc.player);
 						for(int i = 0; i < SpellGrid.GRID_SIZE; i++)
@@ -831,7 +831,7 @@ public class GuiProgrammer extends GuiScreen {
 								if(piece != null) {
 									PieceGroup group = PsiAPI.groupsForPiece.get(piece.getClass());
 									if(!mc.player.capabilities.isCreativeMode && (group == null || !data.isPieceGroupUnlocked(group.name, piece.registryKey))) {
-										mc.player.sendMessage(new TextComponentTranslation("psimisc.missingPieces").setStyle(new Style().setColor(TextFormatting.RED)));
+										mc.player.sendMessage(new TranslationTextComponent("psimisc.missingPieces").setStyle(new Style().setColor(TextFormatting.RED)));
 										return;
 									}
 								}
@@ -841,7 +841,7 @@ public class GuiProgrammer extends GuiScreen {
 						spellNameField.setText(spell.name);
 						onSpellChanged(false);
 					} catch(Throwable t) {
-						mc.player.sendMessage(new TextComponentTranslation("psimisc.malformedJson", t.getMessage()).setStyle(new Style().setColor(TextFormatting.RED)));
+						mc.player.sendMessage(new TranslationTextComponent("psimisc.malformedJson", t.getMessage()).setStyle(new Style().setColor(TextFormatting.RED)));
 					}
 				}
 			}

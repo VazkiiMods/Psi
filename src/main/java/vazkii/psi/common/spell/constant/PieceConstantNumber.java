@@ -11,8 +11,8 @@
 package vazkii.psi.common.spell.constant;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.nbt.NBTTagCompound;
+import com.mojang.blaze3d.platform.GlStateManager;
+import net.minecraft.nbt.CompoundNBT;
 import org.lwjgl.input.Keyboard;
 import vazkii.psi.api.spell.*;
 import vazkii.psi.common.Psi;
@@ -112,13 +112,13 @@ public class PieceConstantNumber extends SpellPiece {
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound cmp) {
+	public void writeToNBT(CompoundNBT cmp) {
 		super.writeToNBT(cmp);
 		cmp.setString(TAG_CONSTANT_VALUE, valueStr);
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound cmp) {
+	public void readFromNBT(CompoundNBT cmp) {
 		super.readFromNBT(cmp);
 		valueStr = cmp.getString(TAG_CONSTANT_VALUE);
 	}

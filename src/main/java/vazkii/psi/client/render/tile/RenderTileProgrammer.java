@@ -10,12 +10,12 @@
  */
 package vazkii.psi.client.render.tile;
 
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
+import net.minecraft.util.Direction;
 import org.lwjgl.opengl.GL11;
 import vazkii.arl.block.BlockFacing;
 import vazkii.arl.util.ClientTicker;
@@ -26,7 +26,7 @@ import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.base.ModBlocks;
 import vazkii.psi.common.block.tile.TileProgrammer;
 
-public class RenderTileProgrammer extends TileEntitySpecialRenderer<TileProgrammer> {
+public class RenderTileProgrammer extends TileEntityRenderer<TileProgrammer> {
 
 	@Override
 	public void render(TileProgrammer te, double x, double y, double z, float partialTicks, int destroyStage, float something) {
@@ -45,12 +45,12 @@ public class RenderTileProgrammer extends TileEntitySpecialRenderer<TileProgramm
 			GlStateManager.rotate(-90F, 0F, 1F, 0F);
 
 			float rot = 90F;
-			IBlockState state = te.getWorld().getBlockState(te.getPos());
+			BlockState state = te.getWorld().getBlockState(te.getPos());
 			if (state.getBlock() != ModBlocks.programmer)
 				return;
 
-			IBlockState actualState = state.getActualState(te.getWorld(), te.getPos());
-			EnumFacing facing = actualState.getValue(BlockFacing.FACING);
+			BlockState actualState = state.getActualState(te.getWorld(), te.getPos());
+			Direction facing = actualState.getValue(BlockFacing.FACING);
 			switch (facing) {
 				case SOUTH:
 					rot = -90F;

@@ -15,7 +15,7 @@ import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.Style;
-import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.util.text.TextFormatting;
 
 import javax.annotation.Nonnull;
@@ -39,13 +39,13 @@ public class CommandDownloadLatest extends CommandBase {
 	@Override
 	public void execute(@Nonnull MinecraftServer server, @Nonnull ICommandSender sender, @Nonnull String[] args) {
 		if(!ENABLED)
-			sender.sendMessage(new TextComponentTranslation("psi.versioning.disabled").setStyle(new Style().setColor(TextFormatting.RED)));
+			sender.sendMessage(new TranslationTextComponent("psi.versioning.disabled").setStyle(new Style().setColor(TextFormatting.RED)));
 
 		else if(args.length == 1)
 			if(VersionChecker.downloadedFile)
-				sender.sendMessage(new TextComponentTranslation("psi.versioning.downloadedAlready").setStyle(new Style().setColor(TextFormatting.RED)));
+				sender.sendMessage(new TranslationTextComponent("psi.versioning.downloadedAlready").setStyle(new Style().setColor(TextFormatting.RED)));
 			else if(VersionChecker.startedDownload)
-				sender.sendMessage(new TextComponentTranslation("psi.versioning.downloadingAlready").setStyle(new Style().setColor(TextFormatting.RED)));
+				sender.sendMessage(new TranslationTextComponent("psi.versioning.downloadingAlready").setStyle(new Style().setColor(TextFormatting.RED)));
 			else new ThreadDownloadMod("Psi-" + args[0] + ".jar");
 	}
 

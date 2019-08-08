@@ -11,13 +11,13 @@
 package vazkii.psi.common.spell.trick.block;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemBlock;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import vazkii.psi.api.internal.Vector3;
@@ -69,28 +69,28 @@ public class PieceTrickPlaceBlock extends PieceTrick {
 		return null;
 	}
 
-	public static void placeBlock(EntityPlayer player, World world, BlockPos pos, int slot, boolean particles) {
+	public static void placeBlock(PlayerEntity player, World world, BlockPos pos, int slot, boolean particles) {
 		placeBlock(player, world, pos, slot, particles, false);
 	}
 
-	public static void placeBlock(EntityPlayer player, World world, BlockPos pos, int slot, boolean particles, boolean conjure) {
+	public static void placeBlock(PlayerEntity player, World world, BlockPos pos, int slot, boolean particles, boolean conjure) {
 		if(!world.isBlockLoaded(pos) || !world.isBlockModifiable(player, pos))
 			return;
 		
-		IBlockState state = world.getBlockState(pos);
+		BlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
 		if(block.isAir(state, world, pos) || block.isReplaceable(world, pos)) {
 			if(conjure) {
 				world.setBlockState(pos, ModBlocks.conjured.getDefaultState());
 			} else {
 				ItemStack stack = player.inventory.getStackInSlot(slot);
-				if(!stack.isEmpty() && stack.getItem() instanceof ItemBlock) {
+				if(!stack.isEmpty() && stack.getItem() instanceof BlockItem) {
 					ItemStack rem = removeFromInventory(player, stack);
-					ItemBlock iblock = (ItemBlock) rem.getItem();
+					BlockItem iblock = (BlockItem) rem.getItem();
 
 					Block blockToPlace = Block.getBlockFromItem(rem.getItem());
-					IBlockState newState = blockToPlace.getStateForPlacement(world, pos, EnumFacing.UP, 0, 0, 0, rem.getItemDamage(), player, EnumHand.MAIN_HAND);
-					iblock.placeBlockAt(stack, player, world, pos, EnumFacing.UP, 0, 0, 0, newState);
+					BlockState newState = blockToPlace.getStateForPlacement(world, pos, Direction.UP, 0, 0, 0, rem.getItemDamage(), player, Hand.MAIN_HAND);
+					iblock.placeBlockAt(stack, player, world, pos, Direction.UP, 0, 0, 0, newState);
 
 					if(player.capabilities.isCreativeMode)
 						HUDHandler.setRemaining(rem, -1);
@@ -103,11 +103,11 @@ public class PieceTrickPlaceBlock extends PieceTrick {
 		}
 	}
 
-	public static ItemStack removeFromInventory(EntityPlayer player, ItemStack stack) {
+	public static ItemStack removeFromInventory(PlayerEntity player, ItemStack stack) {
 		if(player.capabilities.isCreativeMode)
 			return stack.copy();
 
-		InventoryPlayer inv = player.inventory;
+		PlayerInventory inv = player.inventory;
 		for(int i = inv.getSizeInventory() - 1; i >= 0; i--) {
 			ItemStack invStack = inv.getStackInSlot(i);
 			if(!invStack.isEmpty() && invStack.isItemEqual(stack) && ItemStack.areItemStacksEqual(stack, invStack)) {

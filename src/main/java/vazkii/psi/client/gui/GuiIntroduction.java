@@ -10,9 +10,9 @@
  */
 package vazkii.psi.client.gui;
 
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.client.gui.screen.Screen;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 import vazkii.arl.network.NetworkHandler;
 import vazkii.psi.api.internal.TooltipHelper;
@@ -24,7 +24,7 @@ import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.lib.LibResources;
 import vazkii.psi.common.network.message.MessageSkipToLevel;
 
-public class GuiIntroduction extends GuiScreen {
+public class GuiIntroduction extends Screen {
 
 	public static final ResourceLocation texture = new ResourceLocation(LibResources.GUI_INTRODUCTION);
 
@@ -79,7 +79,7 @@ public class GuiIntroduction extends GuiScreen {
 	}
 
 	@Override
-	protected void actionPerformed(GuiButton button) {
+	protected void actionPerformed(Button button) {
 		if(button instanceof GuiButtonBoolean) {
 			GuiButtonBoolean bool = (GuiButtonBoolean) button;
 			if(bool.yes) {

@@ -11,7 +11,7 @@
 package vazkii.psi.api.spell.detonator;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
@@ -42,35 +42,35 @@ public interface IDetonationHandler {
 		return entity.getCapability(CAPABILITY, null);
 	}
 
-	static void performDetonation(World world, EntityPlayer player) {
+	static void performDetonation(World world, PlayerEntity player) {
 		performDetonation(world, player, player, MAX_DISTANCE, (e) -> true);
 	}
 
-	static void performDetonation(World world, EntityPlayer player, double range) {
+	static void performDetonation(World world, PlayerEntity player, double range) {
 		performDetonation(world, player, player, range, (e) -> true);
 	}
 
-	static void performDetonation(World world, EntityPlayer player, Predicate<Entity> filter) {
+	static void performDetonation(World world, PlayerEntity player, Predicate<Entity> filter) {
 		performDetonation(world, player, player, MAX_DISTANCE, filter);
 	}
 
-	static void performDetonation(World world, EntityPlayer player, double range, Predicate<Entity> filter) {
+	static void performDetonation(World world, PlayerEntity player, double range, Predicate<Entity> filter) {
 		performDetonation(world, player, player, range, filter);
 	}
 
-	static void performDetonation(World world, EntityPlayer player, Entity center) {
+	static void performDetonation(World world, PlayerEntity player, Entity center) {
 		performDetonation(world, player, center, MAX_DISTANCE, (e) -> true);
 	}
 
-	static void performDetonation(World world, EntityPlayer player, Entity center, double range) {
+	static void performDetonation(World world, PlayerEntity player, Entity center, double range) {
 		performDetonation(world, player, center, range, (e) -> true);
 	}
 
-	static void performDetonation(World world, EntityPlayer player, Entity center, Predicate<Entity> filter) {
+	static void performDetonation(World world, PlayerEntity player, Entity center, Predicate<Entity> filter) {
 		performDetonation(world, player, center, MAX_DISTANCE, filter);
 	}
 
-	static void performDetonation(World world, EntityPlayer player, Entity center, double range, Predicate<Entity> filter) {
+	static void performDetonation(World world, PlayerEntity player, Entity center, double range, Predicate<Entity> filter) {
 		List<Entity> charges = world.getEntitiesWithinAABB(Entity.class,
 				center.getEntityBoundingBox().grow(range),
 				entity -> {

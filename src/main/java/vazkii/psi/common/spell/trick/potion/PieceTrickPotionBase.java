@@ -11,9 +11,9 @@
 package vazkii.psi.common.spell.trick.potion;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.potion.Effect;
+import net.minecraft.potion.EffectInstance;
 import vazkii.psi.api.spell.EnumSpellStat;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellCompilationException;
@@ -63,7 +63,7 @@ public abstract class PieceTrickPotionBase extends PieceTrick {
 		Entity targetVal = this.getParamValue(context, target);
 
 		context.verifyEntity(targetVal);
-		if(!(targetVal instanceof EntityLivingBase))
+		if(!(targetVal instanceof LivingEntity))
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_TARGET);
 		if(!context.isInRadius(targetVal))
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
@@ -73,12 +73,12 @@ public abstract class PieceTrickPotionBase extends PieceTrick {
 			powerVal = this.<Double>getParamValue(context, power);
 		Double timeVal = this.<Double>getParamValue(context, time);
 
-		((EntityLivingBase) targetVal).addPotionEffect(new PotionEffect(getPotion(), Math.max(1, timeVal.intValue()) * 20, hasPower() ? Math.max(0, powerVal.intValue() - 1) : 0));
+		((LivingEntity) targetVal).addPotionEffect(new EffectInstance(getPotion(), Math.max(1, timeVal.intValue()) * 20, hasPower() ? Math.max(0, powerVal.intValue() - 1) : 0));
 
 		return null;
 	}
 
-	public abstract Potion getPotion();
+	public abstract Effect getPotion();
 
 	public int getCost(int power, int time) throws SpellCompilationException {
 		return (int) multiplySafe(getPotency(power, time) * 5);

@@ -10,11 +10,11 @@
  */
 package vazkii.psi.common.core.handler;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.arl.util.RenderHelper;
 import vazkii.psi.api.internal.IInternalMethodHandler;
 import vazkii.psi.api.internal.IPlayerData;
@@ -30,7 +30,7 @@ import java.util.List;
 public final class InternalMethodHandler implements IInternalMethodHandler {
 
 	@Override
-	public IPlayerData getDataForPlayer(EntityPlayer player) {
+	public IPlayerData getDataForPlayer(PlayerEntity player) {
 		return PlayerDataHandler.get(player);
 	}
 
@@ -61,7 +61,7 @@ public final class InternalMethodHandler implements IInternalMethodHandler {
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public void renderTooltip(int x, int y, List<String> tooltipData, int color, int color2) {
 		RenderHelper.renderTooltip(x, y, tooltipData, color, color2);
 	}

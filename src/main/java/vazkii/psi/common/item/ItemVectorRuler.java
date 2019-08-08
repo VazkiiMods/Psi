@@ -14,15 +14,15 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.arl.item.ItemMod;
 import vazkii.arl.util.ItemNBTHelper;
 import vazkii.psi.api.internal.Vector3;
@@ -52,7 +52,7 @@ public class ItemVectorRuler extends ItemMod implements IHUDItem, IPsiItem {
 	
 	@Nonnull
 	@Override
-	public EnumActionResult onItemUse(EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+	public ActionResultType onItemUse(PlayerEntity playerIn, World worldIn, BlockPos pos, Hand hand, Direction side, float hitX, float hitY, float hitZ) {
 		ItemStack stack = playerIn.getHeldItem(hand);
 		int srcY = ItemNBTHelper.getInt(stack, TAG_SRC_Y, -1);
 		
@@ -67,10 +67,10 @@ public class ItemVectorRuler extends ItemMod implements IHUDItem, IPsiItem {
 			ItemNBTHelper.setInt(stack, TAG_DST_Z, pos.getZ());
 		}
 		
-		return EnumActionResult.SUCCESS;
+		return ActionResultType.SUCCESS;
 	}
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
 	@Override
 	public void addInformation(ItemStack stack, World playerIn, List<String> tooltip, ITooltipFlag advanced) {
 		tooltip.add(getVector(stack).toString());
@@ -91,7 +91,7 @@ public class ItemVectorRuler extends ItemMod implements IHUDItem, IPsiItem {
 		return new Vector3(dstX - srcX, dstY - srcY, dstZ - srcZ);
 	}
 	
-	public static Vector3 getRulerVector(EntityPlayer player) {
+	public static Vector3 getRulerVector(PlayerEntity player) {
 		for(int i = 0; i < player.inventory.getSizeInventory(); i++) {
 			ItemStack stack = player.inventory.getStackInSlot(i);
 			if(!stack.isEmpty() && stack.getItem() instanceof ItemVectorRuler)
@@ -102,7 +102,7 @@ public class ItemVectorRuler extends ItemMod implements IHUDItem, IPsiItem {
 	}
 	
 	@Override
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public void drawHUD(ScaledResolution res, float partTicks, ItemStack stack) {
 		String s = getVector(stack).toString();
 		

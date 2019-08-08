@@ -2,7 +2,7 @@ package vazkii.psi.api.cad;
 
 
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.eventhandler.Event;
+import net.minecraftforge.eventbus.api.Event;
 
 /**
  * Posted after a CAD is crafted in the assembler.

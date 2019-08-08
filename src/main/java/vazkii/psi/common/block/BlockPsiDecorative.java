@@ -12,7 +12,7 @@ package vazkii.psi.common.block;
 
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -34,7 +34,7 @@ public class BlockPsiDecorative extends BlockMetaVariants<BlockPsiDecorative.Var
 	}
 
 	@Override
-	public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos) {
+	public int getLightValue(BlockState state, IBlockAccess world, BlockPos pos) {
 		Variants variant = state.getValue(variantProp);
 		return variant == Variants.PSIMETAL_PLATE_BLACK_LIGHT || variant == Variants.PSIMETAL_PLATE_WHITE_LIGHT ? 15 : 0;
 	}

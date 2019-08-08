@@ -10,7 +10,7 @@
  */
 package vazkii.psi.common.spell.selector;
 
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
@@ -33,7 +33,7 @@ public class PieceSelectorBlockSideBroken extends PieceSelector {
 		if(context.positionBroken == null || context.positionBroken.sideHit == null)
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
 
-		EnumFacing facing = context.positionBroken.sideHit;
+		Direction facing = context.positionBroken.sideHit;
 		return new Vector3(facing.getXOffset(), facing.getYOffset(), facing.getZOffset());
 	}
 

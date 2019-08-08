@@ -10,8 +10,8 @@
  */
 package vazkii.psi.common.spell.trick;
 
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.EnumSpellStat;
@@ -58,7 +58,7 @@ public class PieceTrickTorrent extends PieceTrick {
 
 		BlockPos pos = positionVal.toBlockPos();
 
-		IBlockState state = context.caster.getEntityWorld().getBlockState(pos);
+		BlockState state = context.caster.getEntityWorld().getBlockState(pos);
 		if(state.getBlock().isAir(state, context.caster.getEntityWorld(), pos) || state.getBlock().isReplaceable(context.caster.getEntityWorld(), pos))
 			context.caster.getEntityWorld().setBlockState(pos, Blocks.FLOWING_WATER.getDefaultState());
 		else {

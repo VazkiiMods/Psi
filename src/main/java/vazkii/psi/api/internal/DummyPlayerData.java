@@ -10,7 +10,7 @@
  */
 package vazkii.psi.api.internal;
 
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import vazkii.psi.api.spell.SpellPiece;
 
 import javax.annotation.Nullable;
@@ -77,7 +77,7 @@ public class DummyPlayerData implements IPlayerData {
 	}
 
 	@Override
-	public NBTTagCompound getCustomData() {
+	public CompoundNBT getCustomData() {
 		return null;
 	}
 

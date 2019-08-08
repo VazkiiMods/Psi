@@ -10,7 +10,7 @@
  */
 package vazkii.psi.common.core.handler.capability.wrappers;
 
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
@@ -29,14 +29,14 @@ public class SimpleProvider<CAP> implements ICapabilityProvider {
 
 	@Override
 	@SuppressWarnings("ConstantConditions")
-	public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
+	public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable Direction facing) {
 		return capability == this.capability;
 	}
 
 	@Nullable
 	@Override
 	@SuppressWarnings("ConstantConditions")
-	public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
+	public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable Direction facing) {
 		return capability == this.capability ? this.capability.cast(value) : null;
 	}
 }

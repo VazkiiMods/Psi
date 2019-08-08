@@ -11,10 +11,10 @@
 package vazkii.psi.api.spell;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.RayTraceResult;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.internal.MathHelper;
@@ -41,7 +41,7 @@ public final class SpellContext {
 	/**
 	 * The player casting this spell.
 	 */
-	public EntityPlayer caster;
+	public PlayerEntity caster;
 
 	/**
 	 * The focal point of this spell. This can be the same as {@link #caster}, but will often be different,
@@ -66,15 +66,15 @@ public final class SpellContext {
 	 * This is only used for loopcasting. If the context doesn't support loopcasting,
 	 * there is no need to set this field.
 	 */
-	public EnumHand castFrom;
+	public Hand castFrom;
 
 	// Tool stuff. Only available if the spell is casted from a Psimetal Tool
 	public ItemStack tool = ItemStack.EMPTY;
 	public RayTraceResult positionBroken;
 	// Sword stuff
-	public EntityLivingBase attackedEntity;
+	public LivingEntity attackedEntity;
 	// Armor Stuff
-	public EntityLivingBase attackingEntity;
+	public LivingEntity attackingEntity;
 	public double damageTaken;
 
 	// Target slot stuff, for building tricks
@@ -100,7 +100,7 @@ public final class SpellContext {
 	/**
 	 * Sets the {@link #caster} and returns itself. This also calls {@link #setFocalPoint(Entity)}.
 	 */
-	public SpellContext setPlayer(EntityPlayer player) {
+	public SpellContext setPlayer(PlayerEntity player) {
 		caster = player;
 		return setFocalPoint(player);
 	}

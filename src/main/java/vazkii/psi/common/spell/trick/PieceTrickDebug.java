@@ -12,7 +12,7 @@ package vazkii.psi.common.spell.trick;
 
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.Style;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
@@ -47,7 +47,7 @@ public class PieceTrickDebug extends PieceTrick {
 		Double numberVal = this.<Double>getParamValue(context, number);
 		Object targetVal = getParamValue(context, target);
 
-		ITextComponent component = new TextComponentString(String.valueOf(targetVal));
+		ITextComponent component = new StringTextComponent(String.valueOf(targetVal));
 
 		if(numberVal != null) {
 			String numStr = "" + numberVal;
@@ -56,9 +56,9 @@ public class PieceTrickDebug extends PieceTrick {
 				numStr = "" + numInt;
 			}
 
-			component = new TextComponentString("[" + numStr + "]")
+			component = new StringTextComponent("[" + numStr + "]")
 					.setStyle(new Style().setColor(TextFormatting.AQUA))
-					.appendSibling(new TextComponentString(" ")
+					.appendSibling(new StringTextComponent(" ")
 							.setStyle(new Style().setColor(TextFormatting.RESET)))
 					.appendSibling(component);
 		}

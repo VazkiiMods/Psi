@@ -11,11 +11,11 @@
 package vazkii.psi.common.network.message;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.arl.network.NetworkMessage;
 import vazkii.arl.util.ClientTicker;
 import vazkii.psi.api.PsiAPI;
@@ -24,7 +24,7 @@ import vazkii.psi.api.cad.ICADData;
 
 public class MessageCADDataSync extends NetworkMessage<MessageCADDataSync> {
 
-	public NBTTagCompound cmp;
+	public CompoundNBT cmp;
 
 	public MessageCADDataSync() { }
 
@@ -33,7 +33,7 @@ public class MessageCADDataSync extends NetworkMessage<MessageCADDataSync> {
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public IMessage handleMessage(MessageContext context) {
 		ClientTicker.addAction(() -> {
 			ItemStack cad = PsiAPI.getPlayerCAD(Psi.proxy.getClientPlayer());

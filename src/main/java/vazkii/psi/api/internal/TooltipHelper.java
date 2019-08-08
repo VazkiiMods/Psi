@@ -10,23 +10,23 @@
  */
 package vazkii.psi.api.internal;
 
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.psi.api.PsiAPI;
 
 import java.util.List;
 
 public final class TooltipHelper {
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public static void tooltipIfShift(List<String> tooltip, Runnable r) {
-		if(GuiScreen.isShiftKeyDown())
+		if(Screen.isShiftKeyDown())
 			r.run();
 		else addToTooltip(tooltip, "psimisc.shiftForInfo");
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public static void addToTooltip(List<String> tooltip, String s, Object... format) {
 		tooltip.add(local(s, format).replaceAll("&", "\u00a7"));
 	}

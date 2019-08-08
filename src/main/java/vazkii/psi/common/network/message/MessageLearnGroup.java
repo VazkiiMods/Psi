@@ -10,7 +10,7 @@
  */
 package vazkii.psi.common.network.message;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import vazkii.arl.network.NetworkMessage;
@@ -31,7 +31,7 @@ public class MessageLearnGroup extends NetworkMessage<MessageLearnGroup> {
 
 	@Override
 	public IMessage handleMessage(MessageContext context) {
-		EntityPlayer player = context.getServerHandler().player;
+		PlayerEntity player = context.getServerHandler().player;
 		PlayerData data = PlayerDataHandler.get(player);
 		PieceGroup group = PsiAPI.groupsForName.get(this.group);
 		if(data.getLevelPoints() > 0 && group.isAvailable(data))

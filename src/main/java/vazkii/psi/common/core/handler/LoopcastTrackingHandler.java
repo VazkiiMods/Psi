@@ -10,11 +10,11 @@
  */
 package vazkii.psi.common.core.handler;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.*;
 import vazkii.arl.network.NetworkHandler;
 import vazkii.psi.common.lib.LibMisc;
@@ -24,35 +24,35 @@ import vazkii.psi.common.network.message.MessageLoopcastSync;
 public class LoopcastTrackingHandler {
 	@SubscribeEvent
 	public static void onPlayerStartTracking(PlayerEvent.StartTracking event) {
-		if (event.getTarget() instanceof EntityPlayer)
-			syncDataFor((EntityPlayer) event.getTarget(), (EntityPlayerMP) event.getEntityPlayer());
+		if (event.getTarget() instanceof PlayerEntity)
+			syncDataFor((PlayerEntity) event.getTarget(), (ServerPlayerEntity) event.getEntityPlayer());
 	}
 
 	@SubscribeEvent
 	public static void onPlayerChangeDimension(PlayerChangedDimensionEvent event) {
-		syncDataFor(event.player, (EntityPlayerMP) event.player);
+		syncDataFor(event.player, (ServerPlayerEntity) event.player);
 	}
 
 	@SubscribeEvent
 	public static void onPlayerLogIn(PlayerLoggedInEvent event) {
-		syncDataFor(event.player, (EntityPlayerMP) event.player);
+		syncDataFor(event.player, (ServerPlayerEntity) event.player);
 	}
 
 	@SubscribeEvent
 	public static void onPlayerRespawn(PlayerRespawnEvent event) {
-		syncDataFor(event.player, (EntityPlayerMP) event.player);
+		syncDataFor(event.player, (ServerPlayerEntity) event.player);
 	}
 
-	public static void syncDataFor(EntityPlayer player, EntityPlayerMP receiver) {
+	public static void syncDataFor(PlayerEntity player, ServerPlayerEntity receiver) {
 		PlayerDataHandler.PlayerData data = PlayerDataHandler.get(player);
 		NetworkHandler.INSTANCE.sendTo(new MessageLoopcastSync(player.getEntityId(), data.loopcasting, data.loopcastHand), receiver);
 	}
 
-	public static void syncForTrackers(EntityPlayerMP player) {
+	public static void syncForTrackers(ServerPlayerEntity player) {
 		syncDataFor(player, player);
 
-		for (EntityPlayer tracker : player.getServerWorld().getEntityTracker().getTrackingPlayers(player))
-			if (tracker instanceof EntityPlayerMP)
-				syncDataFor(player, (EntityPlayerMP) tracker);
+		for (PlayerEntity tracker : player.getServerWorld().getEntityTracker().getTrackingPlayers(player))
+			if (tracker instanceof ServerPlayerEntity)
+				syncDataFor(player, (ServerPlayerEntity) tracker);
 	}
 }

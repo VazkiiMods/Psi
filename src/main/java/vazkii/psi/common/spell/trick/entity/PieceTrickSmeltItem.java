@@ -11,7 +11,7 @@
 package vazkii.psi.common.spell.trick.entity;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import vazkii.psi.api.spell.EnumSpellStat;
@@ -49,8 +49,8 @@ public class PieceTrickSmeltItem extends PieceTrick {
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		Entity targetVal = this.getParamValue(context, target);
 
-		if(targetVal instanceof EntityItem && !targetVal.isDead) {
-			EntityItem eitem = (EntityItem) targetVal;
+		if(targetVal instanceof ItemEntity && !targetVal.isDead) {
+			ItemEntity eitem = (ItemEntity) targetVal;
 			ItemStack stack = eitem.getItem();
 			ItemStack result = FurnaceRecipes.instance().getSmeltingResult(stack);
 
@@ -60,7 +60,7 @@ public class PieceTrickSmeltItem extends PieceTrick {
 				if(stack.getCount() == 0)
 					eitem.setDead();
 
-				EntityItem item = new EntityItem(context.caster.getEntityWorld(), eitem.posX, eitem.posY, eitem.posZ, result.copy());
+				ItemEntity item = new ItemEntity(context.caster.getEntityWorld(), eitem.posX, eitem.posY, eitem.posZ, result.copy());
 				context.caster.getEntityWorld().spawnEntity(item);
 			}
 		} else throw new SpellRuntimeException(SpellRuntimeException.NULL_TARGET);

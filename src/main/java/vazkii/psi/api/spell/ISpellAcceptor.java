@@ -10,7 +10,7 @@
  */
 package vazkii.psi.api.spell;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
@@ -42,7 +42,7 @@ public interface ISpellAcceptor {
 		return stack.getCapability(CAPABILITY, null);
 	}
 
-	void setSpell(EntityPlayer player, Spell spell);
+	void setSpell(PlayerEntity player, Spell spell);
 
 	boolean castableFromSocket();
 

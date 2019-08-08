@@ -11,7 +11,7 @@
 package vazkii.psi.common.spell.operator.entity;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
@@ -59,7 +59,7 @@ public class PieceOperatorFocusedEntity extends PieceOperator {
 		double distance = finalDistance;
 		RayTraceResult pos = PieceOperatorVectorRaycast.raycast(e, finalDistance);
 		Vec3d positionVector = e.getPositionVector();
-		if(e instanceof EntityPlayer)
+		if(e instanceof PlayerEntity)
 			positionVector = positionVector.add(0, e.getEyeHeight(), 0);
 
 		if(pos != null)

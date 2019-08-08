@@ -11,10 +11,10 @@
 package vazkii.psi.common.core.handler.capability;
 
 import com.google.common.collect.Lists;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagDouble;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.DoubleNBT;
+import net.minecraft.nbt.ListNBT;
+import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.Constants;
@@ -35,14 +35,14 @@ public class CADData implements ICapabilityProvider, ICADData {
 
 	@Override
 	@SuppressWarnings("ConstantConditions")
-	public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
+	public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable Direction facing) {
 		return capability == CAPABILITY;
 	}
 
 	@Nullable
 	@Override
 	@SuppressWarnings("ConstantConditions")
-	public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
+	public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable Direction facing) {
 		return capability == CAPABILITY ? CAPABILITY.cast(this) : null;
 	}
 
@@ -95,8 +95,8 @@ public class CADData implements ICapabilityProvider, ICADData {
 	}
 
 	@Override
-	public NBTTagCompound serializeForSynchronization() {
-		NBTTagCompound compound = new NBTTagCompound();
+	public CompoundNBT serializeForSynchronization() {
+		CompoundNBT compound = new CompoundNBT();
 		compound.setInteger("Time", time);
 		compound.setInteger("Battery", battery);
 
@@ -104,18 +104,18 @@ public class CADData implements ICapabilityProvider, ICADData {
 	}
 
 	@Override
-	public NBTTagCompound serializeNBT() {
-		NBTTagCompound compound = serializeForSynchronization();
+	public CompoundNBT serializeNBT() {
+		CompoundNBT compound = serializeForSynchronization();
 
-		NBTTagList memory = new NBTTagList();
+		ListNBT memory = new ListNBT();
 		for (Vector3 vector : vectors) {
 			if (vector == null)
-				memory.appendTag(new NBTTagList());
+				memory.appendTag(new ListNBT());
 			else {
-				NBTTagList vec = new NBTTagList();
-				vec.appendTag(new NBTTagDouble(vector.x));
-				vec.appendTag(new NBTTagDouble(vector.y));
-				vec.appendTag(new NBTTagDouble(vector.z));
+				ListNBT vec = new ListNBT();
+				vec.appendTag(new DoubleNBT(vector.x));
+				vec.appendTag(new DoubleNBT(vector.y));
+				vec.appendTag(new DoubleNBT(vector.z));
 				memory.appendTag(vec);
 			}
 		}
@@ -125,17 +125,17 @@ public class CADData implements ICapabilityProvider, ICADData {
 	}
 
 	@Override
-	public void deserializeNBT(NBTTagCompound nbt) {
+	public void deserializeNBT(CompoundNBT nbt) {
 		if (nbt.hasKey("Time", Constants.NBT.TAG_ANY_NUMERIC))
 			time = nbt.getInteger("Time");
 		if (nbt.hasKey("Battery", Constants.NBT.TAG_ANY_NUMERIC))
 			battery = nbt.getInteger("Battery");
 
 		if (nbt.hasKey("Memory", Constants.NBT.TAG_LIST)) {
-			NBTTagList memory = nbt.getTagList("Memory", Constants.NBT.TAG_LIST);
+			ListNBT memory = nbt.getTagList("Memory", Constants.NBT.TAG_LIST);
 			List<Vector3> newVectors = Lists.newArrayList();
 			for (int i = 0; i < memory.tagCount(); i++) {
-				NBTTagList vec = (NBTTagList) memory.get(i);
+				ListNBT vec = (ListNBT) memory.get(i);
 				if (vec.getTagType() == Constants.NBT.TAG_DOUBLE && vec.tagCount() >= 3)
 					newVectors.add(new Vector3(vec.getDoubleAt(0), vec.getDoubleAt(1), vec.getDoubleAt(2)));
 				else

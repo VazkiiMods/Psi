@@ -10,7 +10,7 @@
  */
 package vazkii.psi.common.spell.trick.block;
 
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import vazkii.psi.api.internal.Vector3;
@@ -83,7 +83,7 @@ public class PieceTrickConjureBlockSequence extends PieceTrick {
 		return null;
 	}
 
-	public IBlockState messWithState(IBlockState state) {
+	public BlockState messWithState(BlockState state) {
 		return state.withProperty(BlockConjured.SOLID, true);
 	}
 

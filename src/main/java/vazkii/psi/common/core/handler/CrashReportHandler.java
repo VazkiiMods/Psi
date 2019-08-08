@@ -10,7 +10,7 @@
  */
 package vazkii.psi.common.core.handler;
 
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.fml.common.ICrashCallable;
 import vazkii.psi.api.spell.CompiledSpell;
 import vazkii.psi.api.spell.SpellPiece;
@@ -40,7 +40,7 @@ public class CrashReportHandler implements ICrashCallable {
 		if (piece != null)
 			prefix =  "[" + piece.x + ", " + piece.y + "] in ";
 
-		NBTTagCompound result = new NBTTagCompound();
+		CompoundNBT result = new CompoundNBT();
 		spell.sourceSpell.writeToNBT(result);
 		return prefix + result;
 	}

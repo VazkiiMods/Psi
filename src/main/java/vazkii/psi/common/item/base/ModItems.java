@@ -10,7 +10,7 @@
  */
 package vazkii.psi.common.item.base;
 
-import net.minecraft.init.Items;
+import net.minecraft.item.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import vazkii.arl.item.*;

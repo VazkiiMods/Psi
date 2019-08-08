@@ -11,19 +11,19 @@
 package vazkii.psi.client.core.handler;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.arl.util.ClientTicker;
 import vazkii.psi.common.core.handler.PersistencyHandler;
 import vazkii.psi.common.lib.LibMisc;
 
-@SideOnly(Side.CLIENT)
-@Mod.EventBusSubscriber(value = Side.CLIENT, modid = LibMisc.MOD_ID)
+@OnlyIn(Dist.CLIENT)
+@Mod.EventBusSubscriber(value = Dist.CLIENT, modid = LibMisc.MOD_ID)
 public class ClientTickHandler {
 
 	/**
@@ -48,7 +48,7 @@ public class ClientTickHandler {
 
 			HUDHandler.tick();
 
-			GuiScreen gui = mc.currentScreen;
+			Screen gui = mc.currentScreen;
 			if(gui == null || !gui.doesGuiPauseGame()) {
 				if(gui == null && KeybindHandler.keybind.isKeyDown())
 					KeybindHandler.keyDown();

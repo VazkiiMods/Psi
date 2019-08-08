@@ -11,25 +11,25 @@
 package vazkii.psi.client.core.handler;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.PositionedSoundRecord;
-import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiIngame;
+import net.minecraft.client.audio.SimpleSound;
+import net.minecraft.client.gui.AbstractGui;
+import net.minecraft.client.gui.IngameGui;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.renderer.GlStateManager;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.opengl.ARBMultitexture;
 import org.lwjgl.opengl.ARBShaderObjects;
 import org.lwjgl.opengl.GL11;
@@ -51,7 +51,7 @@ import vazkii.psi.common.lib.LibResources;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
-@Mod.EventBusSubscriber(value = Side.CLIENT, modid = LibMisc.MOD_ID)
+@Mod.EventBusSubscriber(value = Dist.CLIENT, modid = LibMisc.MOD_ID)
 public final class HUDHandler {
 
 	private static final ResourceLocation psiBar = new ResourceLocation(LibResources.GUI_PSI_BAR);
@@ -72,7 +72,7 @@ public final class HUDHandler {
 	private static int remainingCount;
 
 	@SubscribeEvent
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public static void onDraw(RenderGameOverlayEvent.Post event) {
 		if (event.getType() == ElementType.ALL) {
 			ScaledResolution resolution = event.getResolution();
@@ -101,7 +101,7 @@ public final class HUDHandler {
 			return IPsiBarDisplay.display(stack).shouldShow(data);
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public static void drawPsiBar(ScaledResolution res, float pticks) {
 		Minecraft mc = Minecraft.getMinecraft();
 		ItemStack cadStack = PsiAPI.getPlayerCAD(mc.player);
@@ -155,7 +155,7 @@ public final class HUDHandler {
 
 		GlStateManager.enableBlend();
 		mc.renderEngine.bindTexture(psiBar);
-		Gui.drawModalRectWithCustomSizedTexture(x, y, 0, 0, width, height, 64, 256);
+		AbstractGui.drawModalRectWithCustomSizedTexture(x, y, 0, 0, width, height, 64, 256);
 
 		x += 8;
 		y += 26;
@@ -191,7 +191,7 @@ public final class HUDHandler {
 			y = origY + v;
 
 			ShaderHandler.useShader(ShaderHandler.psiBar, generateCallback(a, d.shatter, data.overflowed));
-			Gui.drawModalRectWithCustomSizedTexture(x, y, 32, v, width, height, 64, 256);
+			AbstractGui.drawModalRectWithCustomSizedTexture(x, y, 32, v, width, height, 64, 256);
 		}
 
 		float textY = origY;
@@ -211,7 +211,7 @@ public final class HUDHandler {
 
 		GlStateManager.color(r, g, b);
 		ShaderHandler.useShader(ShaderHandler.psiBar, generateCallback(1F, false, data.overflowed));
-		Gui.drawModalRectWithCustomSizedTexture(x, y, 32, v, width, height, 64, 256);
+		AbstractGui.drawModalRectWithCustomSizedTexture(x, y, 32, v, width, height, 64, 256);
 		ShaderHandler.releaseShader();
 
 		if (shaders) {
@@ -247,7 +247,7 @@ public final class HUDHandler {
 				PsiRenderHelper.g(color) / 255F,
 				PsiRenderHelper.b(color) / 255F, 1F);
 
-		Gui.drawModalRectWithCustomSizedTexture(x - offBar, -2, 0, 140, width, height, 64, 256);
+		AbstractGui.drawModalRectWithCustomSizedTexture(x - offBar, -2, 0, 140, width, height, 64, 256);
 		mc.fontRenderer.drawStringWithShadow(s1, x - offStr1, -11, 0xFFFFFF);
 		GlStateManager.popMatrix();
 
@@ -260,15 +260,15 @@ public final class HUDHandler {
 		GlStateManager.popMatrix();
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	private static void renderSocketableEquippedName(ScaledResolution res, float pticks) {
 		Minecraft mc = Minecraft.getMinecraft();
-		ItemStack stack = mc.player.getHeldItem(EnumHand.MAIN_HAND);
+		ItemStack stack = mc.player.getHeldItem(Hand.MAIN_HAND);
 		String name = ISocketable.getSocketedItemName(stack, "");
 		if (stack.isEmpty() || name == null || name.trim().isEmpty())
 			return;
 
-		int ticks = ObfuscationReflectionHelper.getPrivateValue(GuiIngame.class, mc.ingameGUI,
+		int ticks = ObfuscationReflectionHelper.getPrivateValue(IngameGui.class, mc.ingameGUI,
 				LibObfuscation.REMAINING_HIGHLIGHT_TICKS);
 		ticks -= 10;
 
@@ -305,7 +305,7 @@ public final class HUDHandler {
 		showLevelUp = true;
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	private static void renderLevelUpIndicator(ScaledResolution res) {
 		Minecraft mc = Minecraft.getMinecraft();
 		if (mc.currentScreen instanceof GuiLeveling)
@@ -343,7 +343,7 @@ public final class HUDHandler {
 
 		if (levelDisplayTime > fadeTime) {
 			if (levelDisplayTime - fadeTime == 1)
-				mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(PsiSoundHandler.levelUp, 0.5F));
+				mc.getSoundHandler().playSound(SimpleSound.getMasterRecord(PsiSoundHandler.levelUp, 0.5F));
 
 			float a1 = Math.min(1F, (float) (levelDisplayTime - fadeTime) / fadeTime) * a;
 			int color1 = 0x00FFFFFF + ((int) (a1 * 0xFF) << 24);
@@ -381,7 +381,7 @@ public final class HUDHandler {
 			showLevelUp = false;
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	private static void renderRemainingItems(ScaledResolution resolution, float partTicks) {
 		if (remainingTime > 0 && !remainingDisplayStack.isEmpty()) {
 			int pos = maxRemainingTicks - remainingTime;
@@ -433,7 +433,7 @@ public final class HUDHandler {
 		}
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	private static void renderHUDItem(ScaledResolution resolution, float partTicks) {
 		Minecraft mc = Minecraft.getMinecraft();
 		ItemStack stack = mc.player.getHeldItemMainhand();
@@ -451,7 +451,7 @@ public final class HUDHandler {
 		remainingTime = stack.isEmpty() ? 0 : maxRemainingTicks;
 	}
 
-	public static void setRemaining(EntityPlayer player, ItemStack displayStack, Pattern pattern) {
+	public static void setRemaining(PlayerEntity player, ItemStack displayStack, Pattern pattern) {
 		int count = 0;
 		for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
 			ItemStack stack = player.inventory.getStackInSlot(i);
@@ -462,7 +462,7 @@ public final class HUDHandler {
 		setRemaining(displayStack, count);
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	private static Consumer<Integer> generateCallback(final float percentile, final boolean shatter, final boolean overflowed) {
 		Minecraft mc = Minecraft.getMinecraft();
 		return (Integer shader) -> {

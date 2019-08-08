@@ -11,8 +11,8 @@
 package vazkii.psi.api.cad;
 
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 /**
  * An item that implements this works as CAD colorizer, by which it can change
@@ -26,7 +26,7 @@ public interface ICADColorizer extends ICADComponent {
 	 * Gets the color of the spells projected by the CAD that has
 	 * this colorizer.
 	 */
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	int getColor(ItemStack stack);
 
 	@Override
