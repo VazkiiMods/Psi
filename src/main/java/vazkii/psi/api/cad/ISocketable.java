@@ -34,7 +34,7 @@ public interface ISocketable extends IShowPsiBar {
 		if(item.isEmpty())
 			return fallback;
 
-		return item.getDisplayName();
+        return item.getDisplayName().getString();
 	}
 
 	/**

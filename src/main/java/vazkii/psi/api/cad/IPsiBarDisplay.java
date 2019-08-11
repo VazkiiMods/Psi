@@ -24,11 +24,11 @@ public interface IPsiBarDisplay {
 	Capability<IPsiBarDisplay> CAPABILITY = null;
 
 	static boolean isDisplay(ItemStack stack) {
-		return stack.hasCapability(CAPABILITY, null);
+        return stack.getCapability(CAPABILITY, null) != null;
 	}
 
 	static IPsiBarDisplay display(ItemStack stack) {
-		return stack.getCapability(CAPABILITY, null);
+        return (IPsiBarDisplay) stack.getCapability(CAPABILITY, null);
 	}
 
 	/**

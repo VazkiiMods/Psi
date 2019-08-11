@@ -27,7 +27,7 @@ public interface ISpellAcceptor {
 	Capability<ISpellAcceptor> CAPABILITY = null;
 
 	static boolean isAcceptor(ItemStack stack) {
-		return stack.hasCapability(CAPABILITY, null);
+		return stack.getCapability(CAPABILITY, null) != null;
 	}
 
 	static boolean isContainer(ItemStack stack) {
@@ -39,7 +39,7 @@ public interface ISpellAcceptor {
 	}
 
 	static ISpellAcceptor acceptor(ItemStack stack) {
-		return stack.getCapability(CAPABILITY, null);
+		return (ISpellAcceptor) stack.getCapability(CAPABILITY, null);
 	}
 
 	void setSpell(PlayerEntity player, Spell spell);

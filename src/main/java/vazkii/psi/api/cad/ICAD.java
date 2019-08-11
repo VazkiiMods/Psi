@@ -33,7 +33,7 @@ public interface ICAD extends ISocketable {
 			String name = TAG_COMPONENT_PREFIX + componentType.name();
 
 			CompoundNBT cmp = new CompoundNBT();
-			componentStack.writeToNBT(cmp);
+            componentStack.write(cmp);
 			ItemNBTHelper.setCompound(stack, name, cmp);
 		}
 	}

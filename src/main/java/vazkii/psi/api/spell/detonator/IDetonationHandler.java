@@ -35,11 +35,11 @@ public interface IDetonationHandler {
 	Capability<IDetonationHandler> CAPABILITY = null;
 
 	static boolean canBeDetonated(Entity entity) {
-		return entity.hasCapability(CAPABILITY, null);
+		return entity.getCapability(CAPABILITY, null) != null;
 	}
 
 	static IDetonationHandler detonator(Entity entity) {
-		return entity.getCapability(CAPABILITY, null);
+		return (IDetonationHandler) entity.getCapability(CAPABILITY, null);
 	}
 
 	static void performDetonation(World world, PlayerEntity player) {
@@ -72,7 +72,7 @@ public interface IDetonationHandler {
 
 	static void performDetonation(World world, PlayerEntity player, Entity center, double range, Predicate<Entity> filter) {
 		List<Entity> charges = world.getEntitiesWithinAABB(Entity.class,
-				center.getEntityBoundingBox().grow(range),
+				center.getBoundingBox().grow(range),
 				entity -> {
 					if (entity == null || !canBeDetonated(entity))
 						return false;

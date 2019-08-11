@@ -11,16 +11,11 @@
 package vazkii.psi.api;
 
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.item.Item.ToolMaterial;
-import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.SimpleRegistry;
-import net.minecraftforge.common.crafting.CraftingHelper;
-import net.minecraftforge.common.util.EnumHelper;
-import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.ModContainer;
 import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.internal.DummyMethodHandler;
 import vazkii.psi.api.internal.IInternalMethodHandler;
@@ -43,7 +38,8 @@ public final class PsiAPI {
 	 */
 	public static IInternalMethodHandler internalHandler = new DummyMethodHandler();
 
-	public static final SimpleRegistry<String, Class<? extends SpellPiece>> spellPieceRegistry = new SimpleRegistry<>();
+
+	public static final SimpleRegistry<Class<? extends SpellPiece>> spellPieceRegistry = new SimpleRegistry<>();
 	public static final HashMap<String, ResourceLocation> simpleSpellTextures = new HashMap<>();
 	public static final HashMap<Class<? extends SpellPiece>, PieceGroup> groupsForPiece = new HashMap<>();
 	public static final HashMap<Class<? extends SpellPiece>, String> pieceMods = new HashMap<>();
@@ -51,15 +47,17 @@ public final class PsiAPI {
 
 	public static final List<TrickRecipe> trickRecipes = new ArrayList<>();
 
-	public static final ToolMaterial PSIMETAL_TOOL_MATERIAL = EnumHelper.addToolMaterial("PSIMETAL", 3, 900, 7.8F, 2F, 12);
-	public static final ArmorMaterial PSIMETAL_ARMOR_MATERIAL = EnumHelper.addArmorMaterial("PSIMETAL", "psimetal", 18, new int[]{2, 6, 5, 2}, 12, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0F);
+	// TODO: Reimplement the armor material
+	// NOTE: Forge should have this as an extensible enum, and since EnumHelper is gone, I have no idea what to do!
+	//public static final ArmorMaterial PSIMETAL_ARMOR_MATERIAL = EnumHelper.addArmorMaterial("PSIMETAL", "psimetal", 18, new int[]{2, 6, 5, 2}, 12, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0F);
 
 	public static int levelCap = 1;
 
 	private static String getCurrentModId() {
-		ModContainer activeModContainer = Loader.instance().activeModContainer();
+		//TODO: Need someone to help me out with this one
+		/*ModContainer activeModContainer =
 		if (activeModContainer != null)
-			return activeModContainer.getModId();
+			return activeModContainer.getModId();*/
 		return "minecraft";
 	}
 
@@ -67,7 +65,7 @@ public final class PsiAPI {
 	 * Registers a Spell Piece given its class, by which, it puts it in the registry.
 	 */
 	public static void registerSpellPiece(String key, Class<? extends SpellPiece> clazz) {
-		spellPieceRegistry.putObject(key, clazz);
+		spellPieceRegistry.register(new ResourceLocation(key), clazz);
 		pieceMods.put(clazz, getCurrentModId());
 	}
 
@@ -172,7 +170,8 @@ public final class PsiAPI {
 	}
 
 	public static void registerTrickRecipe(String trick, Object input, ItemStack output, ItemStack minAssembly) {
-		trickRecipes.add(new TrickRecipe(trick, CraftingHelper.getIngredient(input), output, minAssembly));
+		//TODO: Someone check if this is correct
+		trickRecipes.add(new TrickRecipe(trick, Ingredient.fromItems((IItemProvider) input), output, minAssembly));
 	}
 
 }

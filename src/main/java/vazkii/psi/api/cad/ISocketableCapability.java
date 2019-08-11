@@ -19,11 +19,11 @@ public interface ISocketableCapability {
 	Capability<ISocketableCapability> CAPABILITY = null;
 
 	static boolean isSocketable(ItemStack stack) {
-		return stack.hasCapability(CAPABILITY, null);
+        return stack.getCapability(CAPABILITY, null) != null;
 	}
 
 	static ISocketableCapability socketable(ItemStack stack) {
-		return stack.getCapability(CAPABILITY, null);
+        return (ISocketableCapability) stack.getCapability(CAPABILITY, null);
 	}
 
 

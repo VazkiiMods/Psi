@@ -3,7 +3,7 @@ package vazkii.psi.api.cad;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.eventhandler.Cancelable;
+import net.minecraftforge.eventbus.api.Cancelable;
 import net.minecraftforge.eventbus.api.Event;
 import vazkii.psi.api.internal.IPlayerData;
 

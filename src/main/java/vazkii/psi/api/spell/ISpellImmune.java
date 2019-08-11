@@ -27,11 +27,11 @@ public interface ISpellImmune {
 	Capability<ISpellImmune> CAPABILITY = null;
 
 	static boolean hasImmunity(Entity entity) {
-		return entity.hasCapability(CAPABILITY, null);
+        return entity.getCapability(CAPABILITY, null) != null;
 	}
 
 	static ISpellImmune immunity(Entity entity) {
-		return entity.getCapability(CAPABILITY, null);
+        return (ISpellImmune) entity.getCapability(CAPABILITY, null);
 	}
 
 	boolean isImmune();

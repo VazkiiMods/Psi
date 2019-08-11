@@ -14,7 +14,10 @@ import com.google.common.collect.Iterators;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIntArray;
+import net.minecraft.util.INameable;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import vazkii.psi.api.cad.ISocketableCapability;
 
@@ -23,7 +26,7 @@ import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.Iterator;
 
-public class InventorySocketable implements IInventory {
+public class InventorySocketable implements IInventory, INameable, IIntArray {
 
 	@Nullable
 	private ISocketableCapability socketable;
@@ -127,17 +130,17 @@ public class InventorySocketable implements IInventory {
 	}
 
 	@Override
-	public int getField(int id) {
+    public int get(int id) {
 		return 0;
 	}
 
 	@Override
-	public void setField(int id, int value) {
+    public void set(int id, int value) {
 		// NO-OP
 	}
 
 	@Override
-	public int getFieldCount() {
+    public int size() {
 		return 0;
 	}
 
@@ -150,10 +153,11 @@ public class InventorySocketable implements IInventory {
 		}
 	}
 
-	@Nonnull
+
+    @Nonnull
 	@Override
-	public String getName() {
-		return "psi.container.socketable";
+    public ITextComponent getName() {
+        return new StringTextComponent("psi.container.socketable");
 	}
 
 	@Override
@@ -164,6 +168,6 @@ public class InventorySocketable implements IInventory {
 	@Nonnull
 	@Override
 	public ITextComponent getDisplayName() {
-		return new TranslationTextComponent(getName());
+        return new TranslationTextComponent(getName().getString());
 	}
 }
