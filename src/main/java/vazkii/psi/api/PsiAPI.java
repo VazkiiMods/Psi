@@ -15,10 +15,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.registry.SimpleRegistry;
 import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.internal.DummyMethodHandler;
 import vazkii.psi.api.internal.IInternalMethodHandler;
+import vazkii.psi.api.material.PsimetalArmorMaterial;
 import vazkii.psi.api.recipe.TrickRecipe;
 import vazkii.psi.api.spell.PieceGroup;
 import vazkii.psi.api.spell.SpellPiece;
@@ -47,9 +49,8 @@ public final class PsiAPI {
 
 	public static final List<TrickRecipe> trickRecipes = new ArrayList<>();
 
-	// TODO: Reimplement the armor material
-	// NOTE: Forge should have this as an extensible enum, and since EnumHelper is gone, I have no idea what to do!
-	//public static final ArmorMaterial PSIMETAL_ARMOR_MATERIAL = EnumHelper.addArmorMaterial("PSIMETAL", "psimetal", 18, new int[]{2, 6, 5, 2}, 12, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0F);
+
+	public static final PsimetalArmorMaterial PSIMETAL_ARMOR_MATERIAL = new PsimetalArmorMaterial("psimetal", 18, new int[]{2, 6, 5, 2}, 12, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0F, null);
 
 	public static int levelCap = 1;
 
