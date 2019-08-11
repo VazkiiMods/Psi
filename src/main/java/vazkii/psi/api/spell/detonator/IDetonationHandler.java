@@ -34,8 +34,10 @@ public interface IDetonationHandler {
 	@CapabilityInject(IDetonationHandler.class)
 	Capability<IDetonationHandler> CAPABILITY = null;
 
+
+	//TODO: Check this
 	static boolean canBeDetonated(Entity entity) {
-		return entity.getCapability(CAPABILITY, null) != null;
+		return entity.getCapability(CAPABILITY, null) instanceof IDetonationHandler;
 	}
 
 	static IDetonationHandler detonator(Entity entity) {

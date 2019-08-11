@@ -18,8 +18,9 @@ public interface ISocketableCapability {
 	@CapabilityInject(ISocketableCapability.class)
 	Capability<ISocketableCapability> CAPABILITY = null;
 
+	//TODO: Check this
 	static boolean isSocketable(ItemStack stack) {
-        return stack.getCapability(CAPABILITY, null) != null;
+		return stack.getCapability(CAPABILITY, null) instanceof ISocketableCapability;
 	}
 
 	static ISocketableCapability socketable(ItemStack stack) {

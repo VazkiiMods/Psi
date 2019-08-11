@@ -17,6 +17,8 @@ import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.registry.SimpleRegistry;
+import net.minecraftforge.fml.ModContainer;
+import net.minecraftforge.fml.ModLoadingContext;
 import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.internal.DummyMethodHandler;
 import vazkii.psi.api.internal.IInternalMethodHandler;
@@ -55,10 +57,9 @@ public final class PsiAPI {
 	public static int levelCap = 1;
 
 	private static String getCurrentModId() {
-		//TODO: Need someone to help me out with this one
-		/*ModContainer activeModContainer =
+        ModContainer activeModContainer = ModLoadingContext.get().getActiveContainer();
 		if (activeModContainer != null)
-			return activeModContainer.getModId();*/
+            return activeModContainer.getModId();
 		return "minecraft";
 	}
 

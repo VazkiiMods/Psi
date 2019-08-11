@@ -26,8 +26,9 @@ public interface ISpellAcceptor {
 	@CapabilityInject(ISpellAcceptor.class)
 	Capability<ISpellAcceptor> CAPABILITY = null;
 
+	//TODO: Check this
 	static boolean isAcceptor(ItemStack stack) {
-		return stack.getCapability(CAPABILITY, null) != null;
+		return stack.getCapability(CAPABILITY, null) instanceof ISpellAcceptor;
 	}
 
 	static boolean isContainer(ItemStack stack) {

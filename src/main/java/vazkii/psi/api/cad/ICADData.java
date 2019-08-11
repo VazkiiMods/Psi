@@ -21,12 +21,13 @@ public interface ICADData extends INBTSerializable<CompoundNBT> {
 	@CapabilityInject(ICADData.class)
 	Capability<ICADData> CAPABILITY = null;
 
+	//TODO: Check this
 	static boolean hasData(ItemStack stack) {
-		return stack.hasCapability(CAPABILITY, null);
+		return stack.getCapability(CAPABILITY, null) instanceof ICADData;
 	}
 
 	static ICADData data(ItemStack stack) {
-		return stack.getCapability(CAPABILITY, null);
+		return (ICADData) stack.getCapability(CAPABILITY, null);
 	}
 
 	int getTime();

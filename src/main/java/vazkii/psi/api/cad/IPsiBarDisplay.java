@@ -23,8 +23,9 @@ public interface IPsiBarDisplay {
 	@CapabilityInject(IPsiBarDisplay.class)
 	Capability<IPsiBarDisplay> CAPABILITY = null;
 
+	//TODO: Check this
 	static boolean isDisplay(ItemStack stack) {
-        return stack.getCapability(CAPABILITY, null) != null;
+		return stack.getCapability(CAPABILITY, null) instanceof IPsiBarDisplay;
 	}
 
 	static IPsiBarDisplay display(ItemStack stack) {
