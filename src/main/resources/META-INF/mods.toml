@@ -1,5 +1,5 @@
 modLoader="javafml"
-loaderVersion="[25,)"
+loaderVersion="[28,)"
 issueTrackerURL="https://github.com/Vazkii/Psi"
 
 [[mods]]
@@ -10,3 +10,16 @@ authors="Vazkii, Wiiv, WireSegal, Kamefrede"
 description='''
 Psionic Spellcasting Instruments
 '''
+[[dependencies.psi]]
+    modId="arl"
+    mandatory=true
+    versionRange="[1.4-36,)"
+    ordering="AFTER"
+    side="BOTH"
+
+[[dependencies.psi]]
+    modId="forge"
+    mandatory=true
+    versionRange="[28.1.87,)"
+    ordering="AFTER"
+    side="BOTH"

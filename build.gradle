@@ -71,6 +71,18 @@ minecraft {
                 }
             }
         }
+        data {
+            properties 'forge.logging.markers': 'REGISTRIES,REGISTRYDUMP'
+            properties 'forge.logging.console.level': 'debug'
+            properties 'fml.earlyprogresswindow': 'false'
+            workingDirectory project.file('run')
+            mods {
+                roic {
+                    source sourceSets.main
+                }
+            }
+            args '--mod', 'psi', '--all', '--output', file('src/generated/resources/')
+        }
     }
 }
 
@@ -94,6 +106,11 @@ dependencies {
     compileOnly "mezz.jei:${config.jei_version}:api"
     runtime "mezz.jei:${config.jei_version}"
 }
+
+sourceSets.main.resources {
+    srcDir 'src/generated/resources'
+}
+
 
 processResources {
     // replace stuff in mcmod.info, nothing else
@@ -183,4 +200,4 @@ uploadArchives {
     }
 }
 
-defaultTasks 'clean', 'build', 'sortArtifacts', 'incrementBuildNumber'
+defaultTasks 'clean', 'runData', 'build', 'sortArtifacts', 'incrementBuildNumber'
