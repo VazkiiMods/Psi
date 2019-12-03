@@ -30,6 +30,10 @@ import java.util.Stack;
  */
 public final class SpellContext {
 
+	public SpellContext(ItemStack cad) {
+		this.cad = cad;
+	}
+
 	/**
 	 * The maximum distance from the spell's {@link #focalPoint} a piece of the spell can interact with.<br>
 	 * This should be checked against in any tricks that affect parts of the world given a position
@@ -37,7 +41,10 @@ public final class SpellContext {
 	 * @see #isInRadius(Entity), {@link #isInRadius(Vector3)}, {@link #isInRadius(double, double, double)}
 	 */
 	public static final double MAX_DISTANCE = 32;
-
+	/**
+	 * The CAD used to cast this spell.
+	 */
+	public ItemStack cad;
 	/**
 	 * The player casting this spell.
 	 */

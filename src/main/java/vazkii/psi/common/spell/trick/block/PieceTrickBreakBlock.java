@@ -63,8 +63,18 @@ public class PieceTrickBreakBlock extends PieceTrick {
 		if(!context.isInRadius(positionVal))
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 
+		ItemStack tool = context.tool;
+		if(tool.isEmpty()) {
+			tool = PsiAPI.getPlayerCAD(context.caster);
+			if(tool.isEmpty()) {
+				tool = context.cad;
+				if(tool.isEmpty())
+					throw new SpellRuntimeException(SpellRuntimeException.NO_CAD);
+			}
+		}
+
 		BlockPos pos = positionVal.toBlockPos();
-		removeBlockWithDrops(context, context.caster, context.caster.getEntityWorld(), context.tool, pos, true);
+		removeBlockWithDrops(context, context.caster, context.caster.getEntityWorld(), tool, pos, true);
 
 		return null;
 	}
@@ -72,9 +82,6 @@ public class PieceTrickBreakBlock extends PieceTrick {
 	public static void removeBlockWithDrops(SpellContext context, EntityPlayer player, World world, ItemStack tool, BlockPos pos, boolean particles) {
 		if(!world.isBlockLoaded(pos) || (context.positionBroken != null && pos.equals(context.positionBroken.getBlockPos())) || !world.isBlockModifiable(player, pos))
 			return;
-
-		if (tool.isEmpty())
-			tool = PsiAPI.getPlayerCAD(player);
 
 		IBlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
