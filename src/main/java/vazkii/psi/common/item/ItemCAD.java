@@ -10,7 +10,9 @@
  */
 package vazkii.psi.common.item;
 
+import com.google.common.collect.ImmutableSet;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.color.IItemColor;
@@ -52,6 +54,7 @@ import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.BlockProgrammer;
 import vazkii.psi.common.block.base.ModBlocks;
 import vazkii.psi.common.core.PsiCreativeTab;
+import vazkii.psi.common.core.handler.ConfigHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
 import vazkii.psi.common.core.handler.PsiSoundHandler;
@@ -161,7 +164,14 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 		Block block = worldIn.getBlockState(pos).getBlock(); 
 		return block == ModBlocks.programmer ? ((BlockProgrammer) block).setSpell(worldIn, pos, playerIn, stack) : EnumActionResult.PASS;
 	}
-	
+
+	@Override
+	public float getDestroySpeed(ItemStack stack, IBlockState state) {
+		if(state.getMaterial().isToolNotRequired())
+			return 1.0f;
+		return 0.0f;
+	}
+
 	@Nonnull
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, @Nonnull EnumHand hand) {
@@ -531,7 +541,31 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 			throw new SpellRuntimeException(SpellRuntimeException.MEMORY_OUT_OF_BOUNDS);
 		return getCADData(stack).getSavedVector(memorySlot);
 	}
-	
+
+	// Based on ItemTool::getHarvestLevel
+	@Override
+	public int getHarvestLevel(ItemStack stack, @Nonnull String toolClass, @Nullable EntityPlayer player, @Nullable IBlockState blockState) {
+		int level = super.getHarvestLevel(stack, toolClass, player, blockState);
+		if(level == -1 && getToolClasses(stack).contains(toolClass))
+			return ConfigHandler.cadHarvestLevel;
+		else
+			return level;
+	}
+
+	@Nonnull
+	@Override
+	public Set<String> getToolClasses(ItemStack stack) {
+		return ImmutableSet.of("pickaxe", "axe", "shovel");
+	}
+
+	@Override
+	public boolean canHarvestBlock(@Nonnull IBlockState state, ItemStack stack) {
+		Block block = state.getBlock();
+		String tool = block.getHarvestTool(state);
+		int level = block.getHarvestLevel(state);
+		return getHarvestLevel(stack, tool, null, state) >= level;
+	}
+
 	@Override
 	public void getSubItems(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> subItems) {
 		if(!isInCreativeTab(tab))

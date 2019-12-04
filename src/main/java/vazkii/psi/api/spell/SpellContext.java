@@ -41,10 +41,12 @@ public final class SpellContext {
 	 * @see #isInRadius(Entity), {@link #isInRadius(Vector3)}, {@link #isInRadius(double, double, double)}
 	 */
 	public static final double MAX_DISTANCE = 32;
+
 	/**
 	 * The CAD used to cast this spell.
 	 */
 	public ItemStack cad;
+
 	/**
 	 * The player casting this spell.
 	 */
