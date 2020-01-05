@@ -26,19 +26,10 @@ public interface ISpellImmune {
 	@CapabilityInject(ISpellImmune.class)
 	Capability<ISpellImmune> CAPABILITY = null;
 
-	static boolean hasImmunity(Entity entity) {
-        return entity.getCapability(CAPABILITY, null) != null;
-	}
-
-	static ISpellImmune immunity(Entity entity) {
-        return (ISpellImmune) entity.getCapability(CAPABILITY, null);
-	}
-
 	boolean isImmune();
 	
 	static boolean isImmune(Entity e) {
-		return !e.isNonBoss() || (hasImmunity(e) &&
-				immunity(e).isImmune());
+		return !e.isNonBoss() || e.getCapability(CAPABILITY).map(ISpellImmune::isImmune).orElse(false);
 	}
 	
 }

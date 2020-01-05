@@ -34,12 +34,6 @@ public interface IDetonationHandler {
 	@CapabilityInject(IDetonationHandler.class)
 	Capability<IDetonationHandler> CAPABILITY = null;
 
-
-	//TODO: Check this
-	static boolean canBeDetonated(Entity entity) {
-		return entity.getCapability(CAPABILITY, null) instanceof IDetonationHandler;
-	}
-
 	static IDetonationHandler detonator(Entity entity) {
 		return (IDetonationHandler) entity.getCapability(CAPABILITY, null);
 	}
@@ -76,17 +70,18 @@ public interface IDetonationHandler {
 		List<Entity> charges = world.getEntitiesWithinAABB(Entity.class,
 				center.getBoundingBox().grow(range),
 				entity -> {
-					if (entity == null || !canBeDetonated(entity))
+					if (entity == null)
 						return false;
-					IDetonationHandler detonator = detonator(entity);
-					Vec3d locus = detonator.objectLocus();
-					if (locus == null || locus.squareDistanceTo(center.posX, center.posY, center.posZ) > range * range)
-						return false;
-					return filter == null || filter.test(entity);
+					return entity.getCapability(CAPABILITY).map(detonator -> {
+						Vec3d locus = detonator.objectLocus();
+						if (locus == null || locus.squareDistanceTo(center.posX, center.posY, center.posZ) > range * range)
+							return false;
+						return filter == null || filter.test(entity);
+					}).orElse(false);
 				});
 
 		List<IDetonationHandler> handlers = charges.stream()
-				.map(IDetonationHandler::detonator)
+				.map(e -> e.getCapability(CAPABILITY).orElseThrow(NullPointerException::new))
 				.collect(Collectors.toList());
 
 		if (!MinecraftForge.EVENT_BUS.post(new DetonationEvent(player, center, range, handlers))) {

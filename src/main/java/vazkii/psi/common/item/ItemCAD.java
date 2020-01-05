@@ -99,9 +99,7 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 	}
 
 	private ICADData getCADData(ItemStack stack) {
-		if (ICADData.hasData(stack)) return ICADData.data(stack);
-
-		return new CADData();
+		return stack.getCapability(ICADData.CAPABILITY).orElseGet(CADData::new);
 	}
 
 	@Nullable
@@ -117,9 +115,8 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 	public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
 		CompoundNBT compound = ItemNBTHelper.getNBT(stack);
 
-		if (ICADData.hasData(stack)) {
-			ICADData data = ICADData.data(stack);
 
+		stack.getCapability(ICADData.CAPABILITY).ifPresent(data -> {
 			if (compound.hasKey(TAG_TIME_LEGACY, Constants.NBT.TAG_ANY_NUMERIC)) {
 				data.setTime(compound.getInteger(TAG_TIME_LEGACY));
 				data.markDirty(true);
@@ -151,7 +148,7 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 				NetworkHandler.INSTANCE.sendTo(new MessageCADDataSync(data), (ServerPlayerEntity) entityIn);
 				data.markDirty(false);
 			}
-		}
+		});
 	}
 
 	@Nonnull

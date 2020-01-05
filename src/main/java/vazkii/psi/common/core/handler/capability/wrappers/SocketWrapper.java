@@ -14,6 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.common.util.LazyOptional;
 import vazkii.psi.api.cad.ISocketable;
 import vazkii.psi.api.cad.ISocketableCapability;
 
@@ -33,15 +34,8 @@ public class SocketWrapper implements ISocketableCapability, ICapabilityProvider
 
 	@Override
 	@SuppressWarnings("ConstantConditions")
-	public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable Direction facing) {
-		return capability == CAPABILITY;
-	}
-
-	@Nullable
-	@Override
-	@SuppressWarnings("ConstantConditions")
-	public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable Direction facing) {
-		return capability == CAPABILITY ? CAPABILITY.cast(this) : null;
+	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability, @Nullable Direction facing) {
+		return CAPABILITY.orEmpty(capability, LazyOptional.of(() -> this));
 	}
 
 	@Override

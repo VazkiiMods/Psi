@@ -18,13 +18,13 @@ public interface ISocketableCapability {
 	@CapabilityInject(ISocketableCapability.class)
 	Capability<ISocketableCapability> CAPABILITY = null;
 
-	//TODO: Check this
 	static boolean isSocketable(ItemStack stack) {
-		return stack.getCapability(CAPABILITY, null) instanceof ISocketableCapability;
+		return stack.getCapability(CAPABILITY).isPresent();
 	}
 
+	// todo 1.14 fix this
 	static ISocketableCapability socketable(ItemStack stack) {
-        return (ISocketableCapability) stack.getCapability(CAPABILITY, null);
+        return stack.getCapability(CAPABILITY).orElseThrow(NullPointerException::new);
 	}
 
 

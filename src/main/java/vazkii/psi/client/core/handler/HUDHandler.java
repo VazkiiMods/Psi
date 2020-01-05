@@ -96,10 +96,10 @@ public final class HUDHandler {
 	}
 
 	private static boolean showsBar(PlayerData data, ItemStack stack) {
-		if (stack.isEmpty() || !IPsiBarDisplay.isDisplay(stack))
+		if (stack.isEmpty())
 			return false;
 		else
-			return IPsiBarDisplay.display(stack).shouldShow(data);
+			return stack.getCapability(IPsiBarDisplay.CAPABILITY).map(c -> c.shouldShow(data)).orElse(false);
 	}
 
 	@OnlyIn(Dist.CLIENT)

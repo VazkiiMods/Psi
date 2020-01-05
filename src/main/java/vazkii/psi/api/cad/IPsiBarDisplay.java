@@ -23,15 +23,6 @@ public interface IPsiBarDisplay {
 	@CapabilityInject(IPsiBarDisplay.class)
 	Capability<IPsiBarDisplay> CAPABILITY = null;
 
-	//TODO: Check this
-	static boolean isDisplay(ItemStack stack) {
-		return stack.getCapability(CAPABILITY, null) instanceof IPsiBarDisplay;
-	}
-
-	static IPsiBarDisplay display(ItemStack stack) {
-        return (IPsiBarDisplay) stack.getCapability(CAPABILITY, null);
-	}
-
 	/**
 	 * Whether the PSI bar should be shown while holding this stack.
 	 */
