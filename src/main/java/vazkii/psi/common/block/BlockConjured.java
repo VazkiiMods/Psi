@@ -82,10 +82,10 @@ public class BlockConjured extends BlockModContainer implements IPsiBlock {
 	@OnlyIn(Dist.CLIENT)
 	public static void fireParticles(TickEvent.ClientTickEvent event) {
 		if (event.side.isClient() && event.phase == TickEvent.Phase.END) {
-			World world = Minecraft.getMinecraft().world;
-			Entity viewPoint = Minecraft.getMinecraft().getRenderViewEntity();
+			World world = Minecraft.getInstance().world;
+			Entity viewPoint = Minecraft.getInstance().getRenderViewEntity();
 			if (viewPoint == null)
-				viewPoint = Minecraft.getMinecraft().player;
+				viewPoint = Minecraft.getInstance().player;
 			final Entity view = viewPoint;
 
 			needsParticleUpdate.removeIf((pos) -> {

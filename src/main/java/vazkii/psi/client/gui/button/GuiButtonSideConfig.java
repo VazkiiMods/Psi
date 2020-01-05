@@ -66,7 +66,7 @@ public class GuiButtonSideConfig extends Button {
 			int maxX = minX + 8;
 			int maxY = minY + 8;
 
-			mc.renderEngine.bindTexture(GuiProgrammer.texture);
+			mc.textureManager.bindTexture(GuiProgrammer.texture);
 			SpellPiece piece = gui.spell.grid.gridData[gridX][gridY];
 			if(piece == null)
 				return;

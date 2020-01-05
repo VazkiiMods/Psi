@@ -64,7 +64,7 @@ public final class PersistencyHandler {
 			}
 		}
 
-		Minecraft mc = Minecraft.getMinecraft();
+		Minecraft mc = Minecraft.getInstance();
 		String uuid = PlayerEntity.getUUID(mc.player.getGameProfile()).toString();
 		persistentFile = new File(userhome, uuid);
 
@@ -86,7 +86,7 @@ public final class PersistencyHandler {
 		if (!doneInit)
 			init();
 
-		Minecraft mc = Minecraft.getMinecraft();
+		Minecraft mc = Minecraft.getInstance();
 		if(!ConfigHandler.usePersistentData || level <= persistentLevel || mc.player == null || mc.player.capabilities.isCreativeMode)
 			return;
 

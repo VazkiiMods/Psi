@@ -116,7 +116,7 @@ public class RenderSpellCircle extends EntityRenderer<EntitySpellCircle> {
 
 			GlStateManager.color3f(rValue / 255f, gValue / 255f, bValue / 255f);
 
-			Minecraft.getMinecraft().renderEngine.bindTexture(layers[i]);
+			Minecraft.getInstance().textureManager.bindTexture(layers[i]);
 			AbstractGui.drawModalRectWithCustomSizedTexture(-32, -32, 0, 0, 64, 64, 64, 64);
 			GlStateManager.popMatrix();
 

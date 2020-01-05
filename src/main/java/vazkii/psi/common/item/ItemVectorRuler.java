@@ -10,6 +10,7 @@
  */
 package vazkii.psi.common.item;
 
+import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.ScaledResolution;
@@ -103,10 +104,10 @@ public class ItemVectorRuler extends ItemMod implements IHUDItem, IPsiItem {
 	
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void drawHUD(ScaledResolution res, float partTicks, ItemStack stack) {
+	public void drawHUD(MainWindow res, float partTicks, ItemStack stack) {
 		String s = getVector(stack).toString();
 		
-		FontRenderer font = Minecraft.getMinecraft().fontRenderer;
+		FontRenderer font = Minecraft.getInstance().fontRenderer;
 		int w = font.getStringWidth(s);
 		font.drawStringWithShadow(s, res.getScaledWidth() / 2f - w / 2f, res.getScaledHeight() / 2f + 10, 0xFFFFFFFF);
 	}

@@ -32,7 +32,7 @@ public class GuiButtonBoolean extends Button {
 			hovered = par2 >= x && par3 >= y && par2 < x + width && par3 < y + height;
 			int k = getHoverState(hovered);
 
-			par1Minecraft.renderEngine.bindTexture(GuiIntroduction.texture);
+			par1Minecraft.textureManager.bindTexture(GuiIntroduction.texture);
 			GlStateManager.color(1F, 1F, 1F, 1F);
 			blit(x, y, yes ? 0 : 12, k == 2 ? 184 : 195, width, height);
 		}

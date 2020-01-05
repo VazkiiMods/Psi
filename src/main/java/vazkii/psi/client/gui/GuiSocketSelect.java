@@ -75,7 +75,7 @@ public class GuiSocketSelect extends Screen {
 	List<Integer> slots;
 
 	public GuiSocketSelect(ItemStack stack) {
-		mc = Minecraft.getMinecraft();
+		mc = Minecraft.getInstance();
 		
 		controllerStack = ItemStack.EMPTY;
 		socketableStack = ItemStack.EMPTY;
@@ -122,7 +122,7 @@ public class GuiSocketSelect extends Screen {
 		float step = (float) Math.PI / 180;
 		float degPer = (float) Math.PI * 2 / segments;
 
-		ItemStack cadStack = PsiAPI.getPlayerCAD(Minecraft.getMinecraft().player);
+		ItemStack cadStack = PsiAPI.getPlayerCAD(Minecraft.getInstance().player);
 		slotSelected = -1;
 
 		Tessellator tess = Tessellator.getInstance();
@@ -214,7 +214,7 @@ public class GuiSocketSelect extends Screen {
 				xdp = (int) ((xp - x) * mod + x);
 				ydp = (int) ((yp - y) * mod + y);
 
-				mc.renderEngine.bindTexture(signs[seg]);
+				mc.textureManager.bindTexture(signs[seg]);
 				drawModalRectWithCustomSizedTexture(xdp - 8, ydp - 8, 0, 0, 16, 16, 16, 16);
 			}
 		}

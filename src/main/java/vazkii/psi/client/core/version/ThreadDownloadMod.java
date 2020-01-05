@@ -46,8 +46,8 @@ public class ThreadDownloadMod extends Thread {
 	public void run() {
 		try {
 			ITextComponent component = new TranslationTextComponent("psi.versioning.startingDownload", fileName);
-			if(Minecraft.getMinecraft().player != null)
-				Minecraft.getMinecraft().player.sendMessage(component);
+			if(Minecraft.getInstance().player != null)
+				Minecraft.getInstance().player.sendMessage(component);
 
 			VersionChecker.startedDownload = true;
 
@@ -81,8 +81,8 @@ public class ThreadDownloadMod extends Thread {
 					return;
 				}
 
-				if (Minecraft.getMinecraft().player != null)
-					Minecraft.getMinecraft().player.sendMessage(new TranslationTextComponent("psi.versioning.doneDownloading", fileName).setStyle(new Style().setColor(TextFormatting.GREEN)));
+				if (Minecraft.getInstance().player != null)
+					Minecraft.getInstance().player.sendMessage(new TranslationTextComponent("psi.versioning.doneDownloading", fileName).setStyle(new Style().setColor(TextFormatting.GREEN)));
 
 				Desktop.getDesktop().open(dir);
 				VersionChecker.downloadedFile = true;
@@ -95,7 +95,7 @@ public class ThreadDownloadMod extends Thread {
 	}
 
 	private void sendError() {
-		if(Minecraft.getMinecraft().player != null)
-			Minecraft.getMinecraft().player.sendMessage(new TranslationTextComponent("psi.versioning.error").setStyle(new Style().setColor(TextFormatting.RED)));
+		if(Minecraft.getInstance().player != null)
+			Minecraft.getInstance().player.sendMessage(new TranslationTextComponent("psi.versioning.error").setStyle(new Style().setColor(TextFormatting.RED)));
 	}
 }

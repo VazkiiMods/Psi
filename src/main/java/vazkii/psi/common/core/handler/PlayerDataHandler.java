@@ -201,7 +201,7 @@ public class PlayerDataHandler {
 		@SubscribeEvent
 		@OnlyIn(Dist.CLIENT)
 		public static void onRenderWorldLast(RenderWorldLastEvent event) {
-			Minecraft mc = Minecraft.getMinecraft();
+			Minecraft mc = Minecraft.getInstance();
 			Entity cameraEntity = mc.getRenderViewEntity();
 			if (cameraEntity != null) {
 				cameraEntity.getPosition();
@@ -223,7 +223,7 @@ public class PlayerDataHandler {
 		@SubscribeEvent
 		@OnlyIn(Dist.CLIENT)
 		public static void onFOVUpdate(FOVUpdateEvent event) {
-			PlayerData data = get(Minecraft.getMinecraft().player);
+			PlayerData data = get(Minecraft.getInstance().player);
 			if(data.isAnchored) {
 				float fov = event.getNewfov();
 				if(data.eidosAnchorTime > 0)
@@ -899,7 +899,7 @@ public class PlayerDataHandler {
 
 		@OnlyIn(Dist.CLIENT)
 		public void render(PlayerEntity player, float partTicks) {
-			EntityRendererManager renderManager = Minecraft.getMinecraft().getRenderManager();
+			EntityRendererManager renderManager = Minecraft.getInstance().getRenderManager();
 			double x = player.lastTickPosX + (player.posX - player.lastTickPosX) * partTicks - renderManager.viewerPosX;
 			double y = player.lastTickPosY + (player.posY - player.lastTickPosY) * partTicks - renderManager.viewerPosY;
 			double z = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * partTicks - renderManager.viewerPosZ;

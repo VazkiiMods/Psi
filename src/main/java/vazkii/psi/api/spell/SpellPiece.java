@@ -181,12 +181,12 @@ public abstract class SpellPiece {
 	@OnlyIn(Dist.CLIENT)
 	public void draw() {
 		drawBackground();
-		GlStateManager.translatef((0F, 0F, 0.1F);
+		GlStateManager.translatef(0F, 0F, 0.1F);
 		drawAdditional();
 		if(isInGrid) {
-			GlStateManager.translatef((0F, 0F, 0.1F);
+			GlStateManager.translatef(0F, 0F, 0.1F);
 			drawParams();
-			GlStateManager.translatef((0F, 0F, 0.1F);
+			GlStateManager.translatef(0F, 0F, 0.1F);
 			drawComment();
 		}
 
@@ -229,7 +229,7 @@ public abstract class SpellPiece {
 	@OnlyIn(Dist.CLIENT)
 	public void drawComment() {
 		if(comment != null && !comment.isEmpty()) {
-			Minecraft.getMinecraft().renderEngine.bindTexture(PsiAPI.internalHandler.getProgrammerTexture());
+			Minecraft.getInstance().textureManager.bindTexture(PsiAPI.internalHandler.getProgrammerTexture());
 			
 			float wh = 6F;
 			float minU = 150 / 256F;
@@ -254,7 +254,7 @@ public abstract class SpellPiece {
 	 */
 	@OnlyIn(Dist.CLIENT)
 	public void drawParams() {
-		Minecraft.getMinecraft().renderEngine.bindTexture(PsiAPI.internalHandler.getProgrammerTexture());
+		Minecraft.getInstance().textureManager.bindTexture(PsiAPI.internalHandler.getProgrammerTexture());
 		GlStateManager.enableAlphaTest();
 		for(SpellParam param : paramSides.keySet()) {
 			SpellParam.Side side = paramSides.get(param);

@@ -56,7 +56,7 @@ public class ClientProxy extends CommonProxy {
 
 	@Override
 	public PlayerEntity getClientPlayer() {
-		return Minecraft.getMinecraft().player;
+		return Minecraft.getInstance().player;
 	}
 
 	@Override
@@ -89,12 +89,12 @@ public class ClientProxy extends CommonProxy {
 		FXSparkle sparkle = new FXSparkle(world, x, y, z, size, r, g, b, m);
 		sparkle.setSpeed(motionx, motiony, motionz);
 		if (sparkle.getMultiplier() > 0)
-			Minecraft.getMinecraft().effectRenderer.addEffect(sparkle);
+			Minecraft.getInstance().effectRenderer.addEffect(sparkle);
 	}
 
 	@Override
 	public void sparkleFX(double x, double y, double z, float r, float g, float b, float motionx, float motiony, float motionz, float size, int m) {
-		sparkleFX(Minecraft.getMinecraft().world, x, y, z, r, g, b, motionx, motiony, motionz, size, m);
+		sparkleFX(Minecraft.getInstance().world, x, y, z, r, g, b, motionx, motiony, motionz, size, m);
 	}
 
 	private static boolean distanceLimit = true;
@@ -119,12 +119,12 @@ public class ClientProxy extends CommonProxy {
 		wisp.setSpeed(motionx, motiony, motionz);
 
 		if (wisp.getMoteHalfLife() > 0)
-			Minecraft.getMinecraft().effectRenderer.addEffect(wisp);
+			Minecraft.getInstance().effectRenderer.addEffect(wisp);
 	}
 
 	@Override
 	public void wispFX(double x, double y, double z, float r, float g, float b, float size, float motionx, float motiony, float motionz, float maxAgeMul) {
-		wispFX(Minecraft.getMinecraft().world, x, y, z, r, g, b, size, motionx, motiony, motionz, maxAgeMul);
+		wispFX(Minecraft.getInstance().world, x, y, z, r, g, b, size, motionx, motiony, motionz, maxAgeMul);
 	}
 
 	private boolean noParticles(World world) {
@@ -138,9 +138,9 @@ public class ClientProxy extends CommonProxy {
 			return false;
 
 		float chance = 1F;
-		if(Minecraft.getMinecraft().gameSettings.particleSetting == 1)
+		if(Minecraft.getInstance().gameSettings.particleSetting == 1)
 			chance = 0.6F;
-		else if(Minecraft.getMinecraft().gameSettings.particleSetting == 2)
+		else if(Minecraft.getInstance().gameSettings.particleSetting == 2)
 			chance = 0.2F;
 
 		return !(chance == 1F) && !(Math.random() < chance);

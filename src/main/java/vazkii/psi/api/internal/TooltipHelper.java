@@ -31,6 +31,7 @@ public final class TooltipHelper {
 		tooltip.add(local(s, format).replaceAll("&", "\u00a7"));
 	}
 
+	// todo 1.14 replace these with textcomponentranslation or direct calls to i18n.format
 	public static String local(String s, Object... format) {
 		return PsiAPI.internalHandler.localize(s, format);
 	}

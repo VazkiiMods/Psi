@@ -80,8 +80,8 @@ public class RenderTileProgrammer extends TileEntityRenderer<TileProgrammer> {
 
 			te.spell.draw();
 
-			Minecraft mc = Minecraft.getMinecraft();
-			mc.renderEngine.bindTexture(GuiProgrammer.texture);
+			Minecraft mc = Minecraft.getInstance();
+			mc.textureManager.bindTexture(GuiProgrammer.texture);
 
 			GlStateManager.enableBlend();
 			GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);

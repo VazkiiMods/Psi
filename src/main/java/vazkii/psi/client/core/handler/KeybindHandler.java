@@ -46,7 +46,7 @@ public class KeybindHandler {
 	}
 
 	public static void keyDown() {
-		Minecraft mc = Minecraft.getMinecraft();
+		Minecraft mc = Minecraft.getInstance();
 		ItemStack stack = mc.player.getHeldItem(Hand.MAIN_HAND);
 		
 		if(mc.currentScreen == null) {

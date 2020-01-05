@@ -114,7 +114,7 @@ public final class SharingHelper {
 	}
 
 	public static String takeScreenshot() throws Exception {
-		Minecraft mc = Minecraft.getMinecraft();
+		Minecraft mc = Minecraft.getInstance();
 
 		ScaledResolution res = new ScaledResolution(mc);
 		int screenWidth = mc.displayWidth;

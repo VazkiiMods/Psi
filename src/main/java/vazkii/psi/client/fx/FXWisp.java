@@ -39,11 +39,11 @@ public class FXWisp extends FXQueued {
 
 		moteHalfLife = particleMaxAge / 2;
 
-		Entity viewEntity = Minecraft.getMinecraft().getRenderViewEntity();
+		Entity viewEntity = Minecraft.getInstance().getRenderViewEntity();
 
 		if (distanceLimit) {
 			int visibleDistance = 50;
-			if (!Minecraft.getMinecraft().gameSettings.fancyGraphics)
+			if (!Minecraft.getInstance().gameSettings.fancyGraphics)
 				visibleDistance = 25;
 
 			if (viewEntity == null || viewEntity.getDistance(posX, posY, posZ) > visibleDistance)

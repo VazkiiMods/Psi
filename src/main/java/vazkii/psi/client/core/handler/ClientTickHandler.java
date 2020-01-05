@@ -42,7 +42,7 @@ public class ClientTickHandler {
 		if(event.phase == Phase.END) {
 			updatePartialTicks();
 
-			Minecraft mc = Minecraft.getMinecraft();
+			Minecraft mc = Minecraft.getInstance();
 			if(mc.player != null)
 				PersistencyHandler.init();
 

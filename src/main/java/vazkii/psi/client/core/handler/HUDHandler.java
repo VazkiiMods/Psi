@@ -11,6 +11,7 @@
 package vazkii.psi.client.core.handler;
 
 import com.mojang.blaze3d.platform.GLX;
+import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.client.gui.AbstractGui;
@@ -76,7 +77,7 @@ public final class HUDHandler {
 	@OnlyIn(Dist.CLIENT)
 	public static void onDraw(RenderGameOverlayEvent.Post event) {
 		if (event.getType() == ElementType.ALL) {
-			ScaledResolution resolution = event.getResolution();
+			MainWindow resolution = event.getWindow();
 			float partialTicks = event.getPartialTicks();
 
 			drawPsiBar(resolution, partialTicks);
@@ -103,8 +104,8 @@ public final class HUDHandler {
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	public static void drawPsiBar(ScaledResolution res, float pticks) {
-		Minecraft mc = Minecraft.getMinecraft();
+	public static void drawPsiBar(MainWindow res, float pticks) {
+		Minecraft mc = Minecraft.getInstance();
 		ItemStack cadStack = PsiAPI.getPlayerCAD(mc.player);
 
 		if (cadStack.isEmpty())
@@ -112,7 +113,7 @@ public final class HUDHandler {
 
 		ICAD cad = (ICAD) cadStack.getItem();
 		PlayerData data = PlayerDataHandler.get(mc.player);
-		if (data.level == 0 && !mc.player.capabilities.isCreativeMode)
+		if (data.level == 0 && !mc.player.abilities.isCreativeMode)
 			return;
 
 		int totalPsi = data.getTotalPsi();
@@ -149,14 +150,14 @@ public final class HUDHandler {
 		int y = res.getScaledHeight() / 2 - height / 2;
 
 		if (!registeredMask) {
-			mc.renderEngine.bindTexture(psiBarMask);
-			mc.renderEngine.bindTexture(psiBarShatter);
+			mc.textureManager.bindTexture(psiBarMask);
+			mc.textureManager.bindTexture(psiBarShatter);
 			registeredMask = true;
 		}
 
 		GlStateManager.enableBlend();
-		mc.renderEngine.bindTexture(psiBar);
-		AbstractGui.drawModalRectWithCustomSizedTexture(x, y, 0, 0, width, height, 64, 256);
+		mc.textureManager.bindTexture(psiBar);
+		AbstractGui.blit(x, y, 0, 0, width, height, 64, 256);
 
 		x += 8;
 		y += 26;
@@ -176,7 +177,7 @@ public final class HUDHandler {
 		boolean shaders = ShaderHandler.useShaders();
 
 		if (shaders) {
-			OpenGlHelper.setActiveTexture(ARBMultitexture.GL_TEXTURE0_ARB + secondaryTextureUnit);
+			GlStateManager.activeTexture(ARBMultitexture.GL_TEXTURE0_ARB + secondaryTextureUnit);
 			texture = GL11.glGetInteger(GL11.GL_TEXTURE_BINDING_2D);
 		}
 
@@ -216,9 +217,9 @@ public final class HUDHandler {
 		ShaderHandler.releaseShader();
 
 		if (shaders) {
-			GLX.glActiveTexture(ARBMultitexture.GL_TEXTURE0_ARB + secondaryTextureUnit);
-			GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture);
-			GLX.glActiveTexture(ARBMultitexture.GL_TEXTURE0_ARB);
+			GlStateManager.activeTexture(ARBMultitexture.GL_TEXTURE0_ARB + secondaryTextureUnit);
+			GlStateManager.bindTexture(texture);
+			GlStateManager.activeTexture(ARBMultitexture.GL_TEXTURE0_ARB);
 		}
 
 		GlStateManager.color3f(1F, 1F, 1F);
@@ -262,8 +263,8 @@ public final class HUDHandler {
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	private static void renderSocketableEquippedName(ScaledResolution res, float pticks) {
-		Minecraft mc = Minecraft.getMinecraft();
+	private static void renderSocketableEquippedName(MainWindow res, float pticks) {
+		Minecraft mc = Minecraft.getInstance();
 		ItemStack stack = mc.player.getHeldItem(Hand.MAIN_HAND);
 		String name = ISocketable.getSocketedItemName(stack, "");
 		if (stack.isEmpty() || name == null || name.trim().isEmpty())
@@ -282,7 +283,7 @@ public final class HUDHandler {
 
 			int x = res.getScaledWidth() / 2 - mc.fontRenderer.getStringWidth(name) / 2;
 			int y = res.getScaledHeight() - 71;
-			if (mc.player.capabilities.isCreativeMode)
+			if (mc.player.abilities.isCreativeMode)
 				y += 14;
 
 			GlStateManager.enableBlend();
@@ -294,7 +295,7 @@ public final class HUDHandler {
 			GlStateManager.translatef(x + w, y - 6, 0);
 			GlStateManager.scalef(alpha / 255F, 1F, 1);
 			GlStateManager.color3f(1F, 1F, 1F);
-			mc.getRenderItem().renderItemIntoGUI(bullet, 0, 0);
+			mc.getItemRenderer().renderItemIntoGUI(bullet, 0, 0);
 			GlStateManager.popMatrix();
 			GlStateManager.disableBlend();
 		}
@@ -307,8 +308,8 @@ public final class HUDHandler {
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	private static void renderLevelUpIndicator(ScaledResolution res) {
-		Minecraft mc = Minecraft.getMinecraft();
+	private static void renderLevelUpIndicator(MainWindow res) {
+		Minecraft mc = Minecraft.getInstance();
 		if (mc.currentScreen instanceof GuiLeveling)
 			showLevelUp = false;
 
@@ -316,7 +317,7 @@ public final class HUDHandler {
 			return;
 
 		GlStateManager.enableBlend();
-		GlStateManager.disableAlpha();
+		GlStateManager.disableAlphaTest();
 		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
 		int time = 100;
@@ -344,7 +345,7 @@ public final class HUDHandler {
 
 		if (levelDisplayTime > fadeTime) {
 			if (levelDisplayTime - fadeTime == 1)
-				mc.getSoundHandler().playSound(SimpleSound.getMasterRecord(PsiSoundHandler.levelUp, 0.5F));
+				mc.getSoundHandler().play(SimpleSound.master(PsiSoundHandler.levelUp, 0.5F));
 
 			float a1 = Math.min(1F, (float) (levelDisplayTime - fadeTime) / fadeTime) * a;
 			int color1 = 0x00FFFFFF + ((int) (a1 * 0xFF) << 24);
@@ -365,7 +366,7 @@ public final class HUDHandler {
 		}
 
 		if (levelDisplayTime > fadeTime * 3) {
-			String s = TooltipHelper.local("psimisc.levelUpInfo2", TextFormatting.GREEN + TooltipHelper.local(KeybindHandler.keybind.getDisplayName())
+			String s = TooltipHelper.local("psimisc.levelUpInfo2", TextFormatting.GREEN + TooltipHelper.local(KeybindHandler.keybind.getTranslationKey())
 					+ TextFormatting.RESET);
 			swidth = mc.fontRenderer.getStringWidth(s);
 			len = s.length();
@@ -377,16 +378,16 @@ public final class HUDHandler {
 			mc.fontRenderer.drawStringWithShadow(s, x, y, 0x00FFFFFF + alphaOverlay);
 		}
 
-		GlStateManager.enableAlpha();
+		GlStateManager.enableAlphaTest();
 		if (levelValue > 1 && levelDisplayTime >= time + fadeoutTime)
 			showLevelUp = false;
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	private static void renderRemainingItems(ScaledResolution resolution, float partTicks) {
+	private static void renderRemainingItems(MainWindow resolution, float partTicks) {
 		if (remainingTime > 0 && !remainingDisplayStack.isEmpty()) {
 			int pos = maxRemainingTicks - remainingTime;
-			Minecraft mc = Minecraft.getMinecraft();
+			Minecraft mc = Minecraft.getInstance();
 			int remainingLeaveTicks = 20;
 			int x = resolution.getScaledWidth() / 2 + 10 + Math.max(0, pos - remainingLeaveTicks);
 			int y = resolution.getScaledHeight() / 2;
@@ -394,7 +395,7 @@ public final class HUDHandler {
 			int start = maxRemainingTicks - remainingLeaveTicks;
 			float alpha = remainingTime + partTicks > start ? 1F : (remainingTime + partTicks) / start;
 
-			GlStateManager.disableAlpha();
+			GlStateManager.disableAlphaTest();
 			GlStateManager.disableBlend();
 			GlStateManager.disableRescaleNormal();
 			GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -404,14 +405,14 @@ public final class HUDHandler {
 			int xp = x + (int) (16F * (1F - alpha));
 			GlStateManager.translatef(xp, y, 0F);
 			GlStateManager.scalef(alpha, 1F, 1F);
-			mc.getRenderItem().renderItemAndEffectIntoGUI(remainingDisplayStack, 0, 0);
+			mc.getItemRenderer().renderItemAndEffectIntoGUI(remainingDisplayStack, 0, 0);
 			GlStateManager.scalef(1F / alpha, 1F, 1F);
 			GlStateManager.translatef(-xp, -y, 0F);
 			RenderHelper.disableStandardItemLighting();
 			GlStateManager.color4f(1F, 1F, 1F, 1F);
 			GlStateManager.enableBlend();
 
-			String text = TextFormatting.GREEN + remainingDisplayStack.getDisplayName();
+			String text = remainingDisplayStack.getDisplayName().applyTextStyle(TextFormatting.GREEN).getFormattedText();
 			if (remainingCount >= 0) {
 				int max = remainingDisplayStack.getMaxStackSize();
 				int stacks = remainingCount / max;
@@ -430,13 +431,13 @@ public final class HUDHandler {
 			mc.fontRenderer.drawStringWithShadow(text, x + 20, y + 6, color);
 
 			GlStateManager.disableBlend();
-			GlStateManager.enableAlpha();
+			GlStateManager.enableAlphaTest();
 		}
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	private static void renderHUDItem(ScaledResolution resolution, float partTicks) {
-		Minecraft mc = Minecraft.getMinecraft();
+	private static void renderHUDItem(MainWindow resolution, float partTicks) {
+		Minecraft mc = Minecraft.getInstance();
 		ItemStack stack = mc.player.getHeldItemMainhand();
 		if (!stack.isEmpty() && stack.getItem() instanceof IHUDItem)
 			((IHUDItem) stack.getItem()).drawHUD(resolution, partTicks, stack);
@@ -465,22 +466,22 @@ public final class HUDHandler {
 
 	@OnlyIn(Dist.CLIENT)
 	private static Consumer<Integer> generateCallback(final float percentile, final boolean shatter, final boolean overflowed) {
-		Minecraft mc = Minecraft.getMinecraft();
+		Minecraft mc = Minecraft.getInstance();
 		return (Integer shader) -> {
 			int percentileUniform = ARBShaderObjects.glGetUniformLocationARB(shader, "percentile");
 			int overflowedUniform = ARBShaderObjects.glGetUniformLocationARB(shader, "overflowed");
 			int imageUniform = ARBShaderObjects.glGetUniformLocationARB(shader, "image");
 			int maskUniform = ARBShaderObjects.glGetUniformLocationARB(shader, "mask");
 
-			OpenGlHelper.setActiveTexture(ARBMultitexture.GL_TEXTURE0_ARB);
-			mc.renderEngine.bindTexture(psiBar);
+			GlStateManager.activeTexture(ARBMultitexture.GL_TEXTURE0_ARB);
+			mc.textureManager.bindTexture(psiBar);
 			ARBShaderObjects.glUniform1iARB(imageUniform, 0);
 
-			OpenGlHelper.setActiveTexture(ARBMultitexture.GL_TEXTURE0_ARB + secondaryTextureUnit);
+			GlStateManager.activeTexture(ARBMultitexture.GL_TEXTURE0_ARB + secondaryTextureUnit);
 
-			GlStateManager.enableTexture2D();
+			GlStateManager.enableTexture();
 
-			mc.renderEngine.bindTexture(shatter ? psiBarShatter : psiBarMask);
+			mc.textureManager.bindTexture(shatter ? psiBarShatter : psiBarMask);
 			ARBShaderObjects.glUniform1iARB(maskUniform, secondaryTextureUnit);
 
 			ARBShaderObjects.glUniform1fARB(percentileUniform, percentile);

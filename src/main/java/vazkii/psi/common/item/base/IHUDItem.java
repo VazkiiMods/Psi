@@ -10,7 +10,7 @@
  */
 package vazkii.psi.common.item.base;
 
-import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.MainWindow;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -18,6 +18,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public interface IHUDItem {
 	
 	@OnlyIn(Dist.CLIENT)
-	void drawHUD(ScaledResolution res, float partTicks, ItemStack stack);
+	void drawHUD(MainWindow res, float partTicks, ItemStack stack);
 
 }
