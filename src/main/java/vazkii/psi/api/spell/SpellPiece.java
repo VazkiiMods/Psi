@@ -181,16 +181,16 @@ public abstract class SpellPiece {
 	@OnlyIn(Dist.CLIENT)
 	public void draw() {
 		drawBackground();
-		GlStateManager.translate(0F, 0F, 0.1F);
+		GlStateManager.translatef((0F, 0F, 0.1F);
 		drawAdditional();
 		if(isInGrid) {
-			GlStateManager.translate(0F, 0F, 0.1F);
+			GlStateManager.translatef((0F, 0F, 0.1F);
 			drawParams();
-			GlStateManager.translate(0F, 0F, 0.1F);
+			GlStateManager.translatef((0F, 0F, 0.1F);
 			drawComment();
 		}
 
-		GlStateManager.color(1F, 1F, 1F);
+		GlStateManager.color3f(1F, 1F, 1F);
 	}
 
 	/**
@@ -200,9 +200,9 @@ public abstract class SpellPiece {
 	@OnlyIn(Dist.CLIENT)
 	public void drawBackground() {
 		ResourceLocation res = PsiAPI.simpleSpellTextures.get(registryKey);
-		Minecraft.getMinecraft().renderEngine.bindTexture(res);
+		Minecraft.getInstance().textureManager.bindTexture(res);
 
-		GlStateManager.color(1F, 1F, 1F);
+		GlStateManager.color3f(1F, 1F, 1F);
 		BufferBuilder wr = Tessellator.getInstance().getBuffer();
 		wr.begin(7, DefaultVertexFormats.POSITION_TEX);
 		wr.pos(0, 16, 0).tex(0, 1).endVertex();
@@ -236,7 +236,7 @@ public abstract class SpellPiece {
 			float minV = 184 / 256F;
 			float maxU = (150 + wh) / 256F;
 			float maxV = (184 + wh) / 256F;
-			GlStateManager.color(1F, 1F, 1F, 1F);
+			GlStateManager.color4f(1F, 1F, 1F, 1F);
 
 			BufferBuilder wr = Tessellator.getInstance().getBuffer();
 			wr.begin(7, DefaultVertexFormats.POSITION_TEX);
@@ -255,7 +255,7 @@ public abstract class SpellPiece {
 	@OnlyIn(Dist.CLIENT)
 	public void drawParams() {
 		Minecraft.getMinecraft().renderEngine.bindTexture(PsiAPI.internalHandler.getProgrammerTexture());
-		GlStateManager.enableAlpha();
+		GlStateManager.enableAlphaTest();
 		for(SpellParam param : paramSides.keySet()) {
 			SpellParam.Side side = paramSides.get(param);
 			if(side.isEnabled()) {
@@ -272,7 +272,7 @@ public abstract class SpellPiece {
 				float minV = side.v / 256F;
 				float maxU = (side.u + wh) / 256F;
 				float maxV = (side.v + wh) / 256F;
-				GlStateManager.color(PsiRenderHelper.r(param.color) / 255F,
+				GlStateManager.color4f(PsiRenderHelper.r(param.color) / 255F,
 						PsiRenderHelper.g(param.color) / 255F,
 						PsiRenderHelper.b(param.color) / 255F, 1F);
 

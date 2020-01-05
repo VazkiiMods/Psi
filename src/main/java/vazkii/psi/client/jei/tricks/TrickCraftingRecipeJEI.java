@@ -63,9 +63,9 @@ public class TrickCraftingRecipeJEI implements IRecipeWrapper {
 	public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
 		if (icon != null) {
 			GlStateManager.pushMatrix();
-			GlStateManager.scale(0.0625f, 0.0625f, 0.0625f);
+			GlStateManager.scalef(0.0625f, 0.0625f, 0.0625f);
 			icon.draw(minecraft, trickX * 16, trickY * 16);
-			GlStateManager.color(1f, 1f, 1f);
+			GlStateManager.color3f(1f, 1f, 1f);
 			GlStateManager.popMatrix();
 
 			if (onTrick(mouseX, mouseY))

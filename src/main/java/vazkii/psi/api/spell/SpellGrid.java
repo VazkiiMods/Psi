@@ -51,7 +51,7 @@ public final class SpellGrid {
 				SpellPiece p = gridData[i][j];
 				if(p != null) {
 					GlStateManager.pushMatrix();
-					GlStateManager.translate(i * 18, j * 18, 0);
+					GlStateManager.translatef(i * 18, j * 18, 0);
 					p.draw();
 					GlStateManager.popMatrix();
 				}

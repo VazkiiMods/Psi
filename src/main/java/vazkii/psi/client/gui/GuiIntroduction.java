@@ -41,7 +41,7 @@ public class GuiIntroduction extends Screen {
 	}
 
 	@Override
-	public void initGui() {
+	public void init() {
 		xSize = 256;
 		ySize = 184;
 		left = (width - xSize) / 2;
@@ -49,26 +49,25 @@ public class GuiIntroduction extends Screen {
 
 		skip = PersistencyHandler.persistentLevel > 0;
 
-		buttonList.clear();
 		if(skip) {
-			buttonList.add(new GuiButtonBoolean(width / 2 - 32, top + 145, true));
-			buttonList.add(new GuiButtonBoolean(width / 2 + 20, top + 145, false));
+			addButton(new GuiButtonBoolean(width / 2 - 32, top + 145, true));
+			addButton(new GuiButtonBoolean(width / 2 + 20, top + 145, false));
 		}
 	}
 
 	@Override
-	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+	public void render(int mouseX, int mouseY, float partialTicks) {
 		drawDefaultBackground();
 
-		GlStateManager.color(1F, 1F, 1F);
+		GlStateManager.color3f(1F, 1F, 1F);
 		mc.getTextureManager().bindTexture(texture);
-		drawTexturedModalRect(left, top, 0, 0, xSize, ySize);
+		blit(left, top, 0, 0, xSize, ySize);
 
-		super.drawScreen(mouseX, mouseY, partialTicks);
+		super.render(mouseX, mouseY, partialTicks);
 
 		if(LibMisc.BETA_TESTING) {
 			String betaTest = TooltipHelper.local("psimisc.wip");
-			mc.fontRenderer.drawStringWithShadow(betaTest, left + xSize / 2f - mc.fontRenderer.getStringWidth(betaTest) / 2f, top - 12, 0xFFFFFF);
+			minecraft.fontRenderer.drawStringWithShadow(betaTest, left + xSize / 2f - mc.fontRenderer.getStringWidth(betaTest) / 2f, top - 12, 0xFFFFFF);
 		}
 
 		TextHelper.renderText(width / 2 - 120, height / 2 - 30, 245, skip ? "psi.levelskip" : "psi.introduction", false, true, PersistencyHandler.persistentLevel);

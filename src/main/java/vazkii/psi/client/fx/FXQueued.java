@@ -35,7 +35,7 @@ public abstract class FXQueued extends Particle {
 
 	protected static void dispatchQueuedRenders(Tessellator tessellator, ResourceLocation particles, Queue<? extends FXQueued> queuedRenders) {
 		if (!queuedRenders.isEmpty()) {
-			GlStateManager.color(1, 1, 1, 0.75f);
+			GlStateManager.color4f(1, 1, 1, 0.75f);
 			Minecraft.getMinecraft().renderEngine.bindTexture(particles);
 
 			tessellator.getBuffer().begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);

@@ -21,7 +21,7 @@ public final class TooltipHelper {
 
 	@OnlyIn(Dist.CLIENT)
 	public static void tooltipIfShift(List<String> tooltip, Runnable r) {
-		if(Screen.isShiftKeyDown())
+		if(Screen.hasShiftDown())
 			r.run();
 		else addToTooltip(tooltip, "psimisc.shiftForInfo");
 	}

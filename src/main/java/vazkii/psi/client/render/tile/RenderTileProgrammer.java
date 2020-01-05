@@ -40,7 +40,7 @@ public class RenderTileProgrammer extends TileEntityRenderer<TileProgrammer> {
 			if (!Psi.magical)
 				OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 0xf0, 0xf0);
 
-			GlStateManager.translate(x, y + 1.62F, z);
+			GlStateManager.translatef(x, y + 1.62F, z);
 			GlStateManager.rotate(180F, 0F, 0F, 1F);
 			GlStateManager.rotate(-90F, 0F, 1F, 0F);
 
@@ -65,18 +65,18 @@ public class RenderTileProgrammer extends TileEntityRenderer<TileProgrammer> {
 					break;
 			}
 
-			GlStateManager.translate(0.5F, 0F, 0.5F);
+			GlStateManager.translatef(0.5F, 0F, 0.5F);
 			GlStateManager.rotate(rot, 0F, 1F, 0F);
-			GlStateManager.translate(-0.5F, 0F, -0.5F);
+			GlStateManager.translatef(-0.5F, 0F, -0.5F);
 
 			float f = 1F / 300F;
-			GlStateManager.scale(f, f, -f);
+			GlStateManager.scalef(f, f, -f);
 
 			if (Psi.magical) {
 				GlStateManager.rotate(90F, 1F, 0F, 0F);
-				GlStateManager.translate(70F, -220F, -100F + Math.sin(ClientTicker.total / 50) * 10);
+				GlStateManager.translatef(70F, -220F, -100F + Math.sin(ClientTicker.total / 50) * 10);
 				GlStateManager.rotate(-16F + (float) Math.cos(ClientTicker.total / 100) * 10F, 1F, 0F, 0F);
-			} else GlStateManager.translate(70F, 0F, -200F);
+			} else GlStateManager.translatef(70F, 0F, -200F);
 
 			te.spell.draw();
 
@@ -85,12 +85,12 @@ public class RenderTileProgrammer extends TileEntityRenderer<TileProgrammer> {
 
 			GlStateManager.enableBlend();
 			GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-			GlStateManager.color(1F, 1F, 1F, (Psi.magical ? 1F : 0.5F));
-			GlStateManager.translate(0F, 0F, -0.01F);
+			GlStateManager.color4f(1F, 1F, 1F, (Psi.magical ? 1F : 0.5F));
+			GlStateManager.translatef(0F, 0F, -0.01F);
 
 			RenderHelper.drawTexturedModalRect(-7, -7, 0, 0, 0, 174, 184, 1F / 256F, 1F / 256F);
 
-			GlStateManager.translate(0F, 0F, 0.01F);
+			GlStateManager.translatef(0F, 0F, 0.01F);
 
 			int color = Psi.magical ? 0 : 0xFFFFFF;
 			mc.fontRenderer.drawString(TooltipHelper.local("psimisc.name"), 0, 164, color);

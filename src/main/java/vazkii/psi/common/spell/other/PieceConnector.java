@@ -91,7 +91,7 @@ public class PieceConnector extends SpellPiece implements IRedirector {
 			double maxU = minU + 0.5;
 			double maxV = minV + 0.5;
 
-			GlStateManager.color(1F, 1F, 1F);
+			GlStateManager.color3f(1F, 1F, 1F);
 			BufferBuilder wr = Tessellator.getInstance().getBuffer();
 			wr.begin(7, DefaultVertexFormats.POSITION_TEX);
 			wr.pos(0, 16, 0).tex(minU, maxV).endVertex();

@@ -172,15 +172,15 @@ public class GuiProgrammer extends Screen {
 		tooltip.clear();
 		drawDefaultBackground();
 
-		GlStateManager.color(1F, 1F, 1F);
+		GlStateManager.color3f(1F, 1F, 1F);
 		mc.getTextureManager().bindTexture(texture);
 
-		drawTexturedModalRect(left, top, 0, 0, xSize, ySize);
-		drawTexturedModalRect(left - 48, top + 5, xSize, 0, 48, 30);
+		blit(left, top, 0, 0, xSize, ySize);
+		blit(left - 48, top + 5, xSize, 0, 48, 30);
 
 		int statusX = left - 16;
 		int statusY = top + 13;
-		drawTexturedModalRect(statusX, statusY, compiler.isErrored() ? 12 : 0, ySize + 28, 12, 12);
+		blit(statusX, statusY, compiler.isErrored() ? 12 : 0, ySize + 28, 12, 12);
 		if(mouseX > statusX - 1 && mouseY > statusY - 1 && mouseX < statusX + 13 && mouseY < statusY + 13) {
 			if(compiler.isErrored()) {
 				tooltip.add(TextFormatting.RED + I18n.format("psimisc.errored"));
@@ -237,8 +237,8 @@ public class GuiProgrammer extends Screen {
 					s += " (" + Math.max(0, ItemCAD.getRealCost(cad, ItemStack.EMPTY, val)) + ")";
 				else s += "/" + (cadVal == -1 ? "\u221E" : cadVal);
 
-				GlStateManager.color(1F, 1F, 1F);
-				drawTexturedModalRect(statX, statY, (stat.ordinal() + 1) * 12, ySize + 16, 12, 12);
+				GlStateManager.color3f(1F, 1F, 1F);
+				blit(statX, statY, (stat.ordinal() + 1) * 12, ySize + 16, 12, 12);
 				mc.fontRenderer.drawString(s, statX + 16, statY + 2, cadStat != null && cadVal < val && cadVal != -1 ? 0xFF6666 : 0xFFFFFF);
 				mc.getTextureManager().bindTexture(texture);
 
@@ -250,14 +250,14 @@ public class GuiProgrammer extends Screen {
 				i++;
 			}
 		}
-		GlStateManager.color(1F, 1F, 1F);
+		GlStateManager.color3f(1F, 1F, 1F);
 
 		SpellPiece piece = null;
 		if(SpellGrid.exists(selectedX, selectedY))
 			piece = spell.grid.gridData[selectedX][selectedY];
 		
 		if(configEnabled && !takingScreenshot) {
-			drawTexturedModalRect(left - 81, top + 55, xSize, 30, 81, 115);
+			blit(left - 81, top + 55, xSize, 30, 81, 115);
 			String configStr = I18n.format("psimisc.config");
 			mc.fontRenderer.drawString(configStr, left - mc.fontRenderer.getStringWidth(configStr) - 2, top + 45, 0xFFFFFF);
 
@@ -272,9 +272,9 @@ public class GuiProgrammer extends Screen {
 					int x = left - 75;
 					int y = top + 70 + i * 26;
 
-					GlStateManager.color(1F, 1F, 1F);
+					GlStateManager.color3f(1F, 1F, 1F);
 					mc.getTextureManager().bindTexture(texture);
-					drawTexturedModalRect(x + 50, y - 8, xSize, 145, 24, 24);
+					blit(x + 50, y - 8, xSize, 145, 24, 24);
 
 					String localized = I18n.format(s);
 					if(i == param)
@@ -296,7 +296,7 @@ public class GuiProgrammer extends Screen {
 		int tooltipY = mouseY;
 		
 		GlStateManager.pushMatrix();
-		GlStateManager.translate(gridLeft, gridTop, 0);
+		GlStateManager.translatef(gridLeft, gridTop, 0);
 		spell.draw();
 
 		if(compiler.isErrored()) {
@@ -309,13 +309,13 @@ public class GuiProgrammer extends Screen {
 		}
 
 		GlStateManager.popMatrix();
-		GlStateManager.color(1F, 1F, 1F);
-		GlStateManager.translate(0, 0, 1);
+		GlStateManager.color3f(1F, 1F, 1F);
+		GlStateManager.translatef(0, 0, 1);
 
 		mc.getTextureManager().bindTexture(texture);
 
 		if(selectedX != -1 && selectedY != -1 && !takingScreenshot)
-			drawTexturedModalRect(gridLeft + selectedX * 18, gridTop + selectedY * 18, 32, ySize, 16, 16);
+			blit(gridLeft + selectedX * 18, gridTop + selectedY * 18, 32, ySize, 16, 16);
 		
 		if(isAltKeyDown()) {
 			tooltip.clear();
@@ -335,8 +335,8 @@ public class GuiProgrammer extends Screen {
 
 			if(!takingScreenshot) {
 				if(cursorX == selectedX && cursorY == selectedY)
-					drawTexturedModalRect(gridLeft + cursorX * 18, gridTop + cursorY * 18, 16, ySize, 8, 16);
-				else drawTexturedModalRect(gridLeft + cursorX * 18, gridTop + cursorY * 18, 16, ySize, 16, 16);
+					blit(gridLeft + cursorX * 18, gridTop + cursorY * 18, 16, ySize, 8, 16);
+				else blit(gridLeft + cursorX * 18, gridTop + cursorY * 18, 16, ySize, 16, 16);
 			}
 		}
 
@@ -382,8 +382,8 @@ public class GuiProgrammer extends Screen {
 				drawRect(panelPieceX - 1, panelPieceY - 1, panelPieceX + 17, panelPieceY + 17, 0x559999FF);
 			}
 
-			GlStateManager.color(1F, 1F, 1F);
-			drawTexturedModalRect(searchField.x - 14, searchField.y - 2, 0, ySize + 16, 12, 12);
+			GlStateManager.color3f(1F, 1F, 1F);
+			blit(searchField.x - 14, searchField.y - 2, 0, ySize + 16, 12, 12);
 			searchField.drawTextBox();
 
 			String s = page + 1 + "/" + getPageCount();
@@ -397,14 +397,14 @@ public class GuiProgrammer extends Screen {
 			s = I18n.format("psimisc.semicolonLine");
 			mc.fontRenderer.drawStringWithShadow(s, left + xSize / 2f - mc.fontRenderer.getStringWidth(s) / 2f, commentField.y + 34, 0xFFFFFF);
 		}
-		GlStateManager.color(1F, 1F, 1F);
+		GlStateManager.color3f(1F, 1F, 1F);
 		
 		if(!takingScreenshot) {
 			mc.getTextureManager().bindTexture(texture);
 			int helpX = left + xSize + 2;
 			int helpY = top + ySize - (spectator ? 32 : 48);
 			boolean overHelp = mouseX > helpX && mouseY > helpY && mouseX < helpX + 12 && mouseY < helpY + 12;
-			drawTexturedModalRect(helpX, helpY, xSize + (overHelp ? 12 : 0), ySize + 9, 12, 12);
+			blit(helpX, helpY, xSize + (overHelp ? 12 : 0), ySize + 9, 12, 12);
 			
 			if(overHelp && !isAltKeyDown()) {
 				TooltipHandler.addToTooltip(tooltip, "psimisc.programmerHelp");

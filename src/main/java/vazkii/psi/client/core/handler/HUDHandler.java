@@ -10,6 +10,7 @@
  */
 package vazkii.psi.client.core.handler;
 
+import com.mojang.blaze3d.platform.GLX;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.client.gui.AbstractGui;
@@ -133,7 +134,7 @@ public final class HUDHandler {
 			mc.gameSettings.guiScale = guiScale;
 
 			float s = (float) ConfigHandler.maxPsiBarScale / (float) scaleFactor;
-			GlStateManager.scale(s, s, s);
+			GlStateManager.scalef(s, s, s);
 		}
 
 		boolean right = ConfigHandler.psiBarOnRight;
@@ -184,14 +185,14 @@ public final class HUDHandler {
 
 		for (Deduction d : data.deductions) {
 			float a = d.getPercentile(pticks);
-			GlStateManager.color(r, g, b, a);
+			GlStateManager.color4f(r, g, b, a);
 			height = (int) Math.ceil(origHeight * (double) d.deduct / totalPsi);
 			int effHeight = (int) (origHeight * (double) d.current / totalPsi);
 			v = origHeight - effHeight;
 			y = origY + v;
 
 			ShaderHandler.useShader(ShaderHandler.psiBar, generateCallback(a, d.shatter, data.overflowed));
-			AbstractGui.drawModalRectWithCustomSizedTexture(x, y, 32, v, width, height, 64, 256);
+			AbstractGui.blit(x, y, 32, v, width, height, 64, 256);
 		}
 
 		float textY = origY;
@@ -209,21 +210,21 @@ public final class HUDHandler {
 		} else
 			height = 0;
 
-		GlStateManager.color(r, g, b);
+		GlStateManager.color3f(r, g, b);
 		ShaderHandler.useShader(ShaderHandler.psiBar, generateCallback(1F, false, data.overflowed));
-		AbstractGui.drawModalRectWithCustomSizedTexture(x, y, 32, v, width, height, 64, 256);
+		AbstractGui.blit(x, y, 32, v, width, height, 64, 256);
 		ShaderHandler.releaseShader();
 
 		if (shaders) {
-			OpenGlHelper.setActiveTexture(ARBMultitexture.GL_TEXTURE0_ARB + secondaryTextureUnit);
+			GLX.glActiveTexture(ARBMultitexture.GL_TEXTURE0_ARB + secondaryTextureUnit);
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture);
-			OpenGlHelper.setActiveTexture(ARBMultitexture.GL_TEXTURE0_ARB);
+			GLX.glActiveTexture(ARBMultitexture.GL_TEXTURE0_ARB);
 		}
 
-		GlStateManager.color(1F, 1F, 1F);
+		GlStateManager.color3f(1F, 1F, 1F);
 
 		GlStateManager.pushMatrix();
-		GlStateManager.translate(0F, textY, 0F);
+		GlStateManager.translatef(0F, textY, 0F);
 		width = 44;
 		height = 3;
 
@@ -243,17 +244,17 @@ public final class HUDHandler {
 		}
 
 		int color = cad.getSpellColor(cadStack);
-		GlStateManager.color(PsiRenderHelper.r(color) / 255F,
+		GlStateManager.color4f(PsiRenderHelper.r(color) / 255F,
 				PsiRenderHelper.g(color) / 255F,
 				PsiRenderHelper.b(color) / 255F, 1F);
 
-		AbstractGui.drawModalRectWithCustomSizedTexture(x - offBar, -2, 0, 140, width, height, 64, 256);
+		AbstractGui.blit(x - offBar, -2, 0, 140, width, height, 64, 256);
 		mc.fontRenderer.drawStringWithShadow(s1, x - offStr1, -11, 0xFFFFFF);
 		GlStateManager.popMatrix();
 
 		if (storedPsi != -1) {
 			GlStateManager.pushMatrix();
-			GlStateManager.translate(0F, Math.max(textY + 3, origY + 100), 0F);
+			GlStateManager.translatef(0F, Math.max(textY + 3, origY + 100), 0F);
 			mc.fontRenderer.drawStringWithShadow(s2, x - offStr2, 0, 0xFFFFFF);
 			GlStateManager.popMatrix();
 		}
@@ -290,9 +291,9 @@ public final class HUDHandler {
 
 			int w = mc.fontRenderer.getStringWidth(name);
 			GlStateManager.pushMatrix();
-			GlStateManager.translate(x + w, y - 6, 0);
-			GlStateManager.scale(alpha / 255F, 1F, 1);
-			GlStateManager.color(1F, 1F, 1F);
+			GlStateManager.translatef(x + w, y - 6, 0);
+			GlStateManager.scalef(alpha / 255F, 1F, 1);
+			GlStateManager.color3f(1F, 1F, 1F);
 			mc.getRenderItem().renderItemIntoGUI(bullet, 0, 0);
 			GlStateManager.popMatrix();
 			GlStateManager.disableBlend();
@@ -334,7 +335,7 @@ public final class HUDHandler {
 		int alphaOverlay = (int) (a * 0xFF) << 24;
 
 		GlStateManager.pushMatrix();
-		GlStateManager.scale(2F, 2F, 2F);
+		GlStateManager.scalef(2F, 2F, 2F);
 		mc.fontRenderer.drawStringWithShadow(levelUp, x, y, 0x0013C5FF + alphaOverlay);
 
 		String currLevel = "" + levelValue;
@@ -398,16 +399,16 @@ public final class HUDHandler {
 			GlStateManager.disableRescaleNormal();
 			GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
-			GlStateManager.color(1F, 1F, 1F, alpha);
+			GlStateManager.color4f(1F, 1F, 1F, alpha);
 			RenderHelper.enableGUIStandardItemLighting();
 			int xp = x + (int) (16F * (1F - alpha));
-			GlStateManager.translate(xp, y, 0F);
-			GlStateManager.scale(alpha, 1F, 1F);
+			GlStateManager.translatef(xp, y, 0F);
+			GlStateManager.scalef(alpha, 1F, 1F);
 			mc.getRenderItem().renderItemAndEffectIntoGUI(remainingDisplayStack, 0, 0);
-			GlStateManager.scale(1F / alpha, 1F, 1F);
-			GlStateManager.translate(-xp, -y, 0F);
+			GlStateManager.scalef(1F / alpha, 1F, 1F);
+			GlStateManager.translatef(-xp, -y, 0F);
 			RenderHelper.disableStandardItemLighting();
-			GlStateManager.color(1F, 1F, 1F, 1F);
+			GlStateManager.color4f(1F, 1F, 1F, 1F);
 			GlStateManager.enableBlend();
 
 			String text = TextFormatting.GREEN + remainingDisplayStack.getDisplayName();

@@ -34,9 +34,9 @@ public class GuiButtonLearn extends Button {
 			hovered = par2 >= x && par3 >= y && par2 < x + width && par3 < y + height;
 			int k = getHoverState(hovered);
 
-			par1Minecraft.renderEngine.bindTexture(GuiLeveling.texture);
-			GlStateManager.color(1F, 1F, 1F, 1F);
-			drawTexturedModalRect(x, y, k == 2 ? 44 : 18, 184, width, height);
+			par1Minecraft.textureManager.bindTexture(GuiLeveling.texture);
+			GlStateManager.color4f(1F, 1F, 1F, 1F);
+			blit(x, y, k == 2 ? 44 : 18, 184, width, height);
 
 			if(k == 2)
 				gui.tooltip.add(TextFormatting.GREEN + TooltipHelper.local("psimisc.learn"));

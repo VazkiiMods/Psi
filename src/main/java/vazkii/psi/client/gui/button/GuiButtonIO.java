@@ -36,9 +36,9 @@ public class GuiButtonIO extends Button {
 			hovered = par2 >= x && par3 >= y && par2 < x + width && par3 < y + height;
 			int k = getHoverState(hovered);
 
-			par1Minecraft.renderEngine.bindTexture(GuiProgrammer.texture);
-			GlStateManager.color(1F, 1F, 1F, 1F);
-			drawTexturedModalRect(x, y, k == 2 ? 186 : 174, out ? 169 : 181, width, height);
+			par1Minecraft.textureManager.bindTexture(GuiProgrammer.texture);
+			GlStateManager.color4f(1F, 1F, 1F, 1F);
+			blit(x, y, k == 2 ? 186 : 174, out ? 169 : 181, width, height);
 
 			if(k == 2) {
 				gui.tooltip.add((out ? TextFormatting.RED : TextFormatting.BLUE) + TooltipHelper.local(out ? "psimisc.exportToClipboard" : "psimisc.importFromClipboard"));

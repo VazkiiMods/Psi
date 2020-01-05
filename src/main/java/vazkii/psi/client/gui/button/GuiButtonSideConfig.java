@@ -77,10 +77,10 @@ public class GuiButtonSideConfig extends Button {
 
 			SpellParam.Side currSide = piece.paramSides.get(param);
 			if(currSide == side) {
-				GlStateManager.color(PsiRenderHelper.r(param.color) / 255F,
+				GlStateManager.color4f(PsiRenderHelper.r(param.color) / 255F,
 						PsiRenderHelper.g(param.color) / 255F,
 						PsiRenderHelper.b(param.color) / 255F, 1F);
-			} else GlStateManager.color(1F, 1F, 1F);
+			} else GlStateManager.color3f(1F, 1F, 1F);
 
 			float wh = 8F;
 			float minU = side.u / 256F;

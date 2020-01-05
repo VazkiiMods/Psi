@@ -36,15 +36,15 @@ public class GuiButtonSpellPiece extends Button {
 			int i = getHoverState(hovered);
 
 			GlStateManager.pushMatrix();
-			GlStateManager.color(1F, 1F, 1F);
-			GlStateManager.translate(x, y, 0);
+			GlStateManager.color3f(1F, 1F, 1F);
+			GlStateManager.translatef(x, y, 0);
 			piece.draw();
 			GlStateManager.popMatrix();
 
 			minecraft.getTextureManager().bindTexture(GuiProgrammer.texture);
 
 			if (i == 2)
-				drawTexturedModalRect(x, y, 16, gui.ySize, 16, 16);
+				blit(x, y, 16, gui.ySize, 16, 16);
 
 			if(i == 2)
 				piece.getTooltip(gui.tooltip);

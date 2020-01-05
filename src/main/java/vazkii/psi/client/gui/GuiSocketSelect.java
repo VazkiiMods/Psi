@@ -236,7 +236,7 @@ public class GuiSocketSelect extends Screen {
 					yoff += 5F;
 
 				GlStateManager.pushMatrix();
-				GlStateManager.translate(0, -yoff * shift, 0F);
+				GlStateManager.translatef(0, -yoff * shift, 0F);
 				mc.getRenderItem().renderItemAndEffectIntoGUI(controlledStacks[i], xs + i * 18, ys);
 				GlStateManager.popMatrix();
 			}
@@ -245,7 +245,7 @@ public class GuiSocketSelect extends Screen {
 
 		if(!socketableStack.isEmpty()) {
 			GlStateManager.pushMatrix();
-			GlStateManager.scale(scale, scale, scale);
+			GlStateManager.scalef(scale, scale, scale);
 			mc.getRenderItem().renderItemAndEffectIntoGUI(socketableStack,
 					(int) (x / scale) - 8, (int) (y / scale) - 8);
 			GlStateManager.popMatrix();

@@ -35,9 +35,9 @@ public class GuiButtonPage extends Button {
 			hovered = par2 >= x && par3 >= y && par2 < x + width && par3 < y + height;
 			int k = getHoverState(hovered);
 
-			par1Minecraft.renderEngine.bindTexture(GuiProgrammer.texture);
-			GlStateManager.color(1F, 1F, 1F, 1F);
-			drawTexturedModalRect(x, y, k == 2 ? 216 : 198, right ? 145 : 155, width, height);
+			par1Minecraft.textureManager.bindTexture(GuiProgrammer.texture);
+			GlStateManager.color4f(1F, 1F, 1F, 1F);
+			blit(x, y, k == 2 ? 216 : 198, right ? 145 : 155, width, height);
 
 			if(k == 2)
 				gui.tooltip.add(TooltipHelper.local(right ? "psimisc.nextPage" : "psimisc.prevPage"));

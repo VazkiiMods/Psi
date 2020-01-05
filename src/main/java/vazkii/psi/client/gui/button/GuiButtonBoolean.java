@@ -34,7 +34,7 @@ public class GuiButtonBoolean extends Button {
 
 			par1Minecraft.renderEngine.bindTexture(GuiIntroduction.texture);
 			GlStateManager.color(1F, 1F, 1F, 1F);
-			drawTexturedModalRect(x, y, yes ? 0 : 12, k == 2 ? 184 : 195, width, height);
+			blit(x, y, yes ? 0 : 12, k == 2 ? 184 : 195, width, height);
 		}
 	}
 

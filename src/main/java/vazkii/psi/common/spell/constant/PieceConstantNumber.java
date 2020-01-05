@@ -50,8 +50,8 @@ public class PieceConstantNumber extends SpellPiece {
 		}
 
 		GlStateManager.pushMatrix();
-		GlStateManager.scale(1F / scale, 1F / scale, 1F);
-		GlStateManager.translate((9 - efflen / 2) * scale, 4 * scale, 0);
+		GlStateManager.scalef(1F / scale, 1F / scale, 1F);
+		GlStateManager.translatef((9 - efflen / 2) * scale, 4 * scale, 0);
 		mc.fontRenderer.drawString(valueStr, 0, 0, color);
 		GlStateManager.popMatrix();
 	}

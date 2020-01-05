@@ -65,7 +65,7 @@ public class RenderSpellCircle extends EntityRenderer<EntitySpellCircle> {
 
 		GlStateManager.pushMatrix();
 		double ratio = 0.0625 * horizontalScale;
-		GlStateManager.translate(x, y, z);
+		GlStateManager.translatef(x, y, z);
 
 		float mag = xDir * xDir + yDir * yDir + zDir * zDir;
 		zDir /= mag;
@@ -76,8 +76,8 @@ public class RenderSpellCircle extends EntityRenderer<EntitySpellCircle> {
 			GlStateManager.rotate((float) (Math.acos(zDir) * 180 / Math.PI),
 					-yDir / mag, xDir / mag, 0);
 		}
-		GlStateManager.translate(0, 0, 0.1);
-		GlStateManager.scale(ratio * scale, ratio * scale, ratio);
+		GlStateManager.translatef(0, 0, 0.1);
+		GlStateManager.scalef(ratio * scale, ratio * scale, ratio);
 
 		GlStateManager.disableCull();
 		GlStateManager.disableLighting();
@@ -112,15 +112,15 @@ public class RenderSpellCircle extends EntityRenderer<EntitySpellCircle> {
 			}
 
 			GlStateManager.pushMatrix();
-			GlStateManager.rotate(i == 0 ? -alive : alive, 0, 0, 1);
+			GlStateManager.rotatef(i == 0 ? -alive : alive, 0, 0, 1);
 
-			GlStateManager.color(rValue / 255f, gValue / 255f, bValue / 255f);
+			GlStateManager.color3f(rValue / 255f, gValue / 255f, bValue / 255f);
 
 			Minecraft.getMinecraft().renderEngine.bindTexture(layers[i]);
 			AbstractGui.drawModalRectWithCustomSizedTexture(-32, -32, 0, 0, 64, 64, 64, 64);
 			GlStateManager.popMatrix();
 
-			GlStateManager.translate(0, 0, -0.5);
+			GlStateManager.translatef(0, 0, -0.5);
 		}
 
 		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lastBrightnessX, lastBrightnessY);
