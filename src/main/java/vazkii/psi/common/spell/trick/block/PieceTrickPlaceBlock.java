@@ -78,8 +78,7 @@ public class PieceTrickPlaceBlock extends PieceTrick {
 			return;
 		
 		BlockState state = world.getBlockState(pos);
-		Block block = state.getBlock();
-		if(block.isAir(state, world, pos) || block.isReplaceable(world, pos)) {
+		if(state.isAir(world, pos) || state.getMaterial().isReplaceable()) {
 			if(conjure) {
 				world.setBlockState(pos, ModBlocks.conjured.getDefaultState());
 			} else {
@@ -92,7 +91,7 @@ public class PieceTrickPlaceBlock extends PieceTrick {
 					BlockState newState = blockToPlace.getStateForPlacement(world, pos, Direction.UP, 0, 0, 0, rem.getItemDamage(), player, Hand.MAIN_HAND);
 					iblock.placeBlockAt(stack, player, world, pos, Direction.UP, 0, 0, 0, newState);
 
-					if(player.capabilities.isCreativeMode)
+					if(player.abilities.isCreativeMode)
 						HUDHandler.setRemaining(rem, -1);
 					else HUDHandler.setRemaining(player, rem, null);
 				}
@@ -104,7 +103,7 @@ public class PieceTrickPlaceBlock extends PieceTrick {
 	}
 
 	public static ItemStack removeFromInventory(PlayerEntity player, ItemStack stack) {
-		if(player.capabilities.isCreativeMode)
+		if(player.abilities.isCreativeMode)
 			return stack.copy();
 
 		PlayerInventory inv = player.inventory;

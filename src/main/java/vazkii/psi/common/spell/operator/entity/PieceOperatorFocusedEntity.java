@@ -24,6 +24,7 @@ import vazkii.psi.api.spell.piece.PieceOperator;
 import vazkii.psi.common.spell.operator.vector.PieceOperatorVectorRaycast;
 
 import java.util.List;
+import java.util.Optional;
 
 public class PieceOperatorFocusedEntity extends PieceOperator {
 
@@ -63,28 +64,28 @@ public class PieceOperatorFocusedEntity extends PieceOperator {
 			positionVector = positionVector.add(0, e.getEyeHeight(), 0);
 
 		if(pos != null)
-			distance = pos.hitVec.distanceTo(positionVector);
+			distance = pos.getHitVec().distanceTo(positionVector);
 
 		Vec3d lookVector = e.getLookVec();
 		Vec3d reachVector = positionVector.add(lookVector.x * finalDistance, lookVector.y * finalDistance, lookVector.z * finalDistance);
 
 		Entity lookedEntity = null;
-		List<Entity> entitiesInBoundingBox = e.getEntityWorld().getEntitiesWithinAABBExcludingEntity(e, e.getEntityBoundingBox().grow(lookVector.x * finalDistance, lookVector.y * finalDistance, lookVector.z * finalDistance).grow(1F, 1F, 1F));
+		List<Entity> entitiesInBoundingBox = e.getEntityWorld().getEntitiesWithinAABBExcludingEntity(e, e.getBoundingBox().grow(lookVector.x * finalDistance, lookVector.y * finalDistance, lookVector.z * finalDistance).grow(1F, 1F, 1F));
 		double minDistance = distance;
 
 		for(Entity entity : entitiesInBoundingBox) {
 			if(entity.canBeCollidedWith()) {
 				float collisionBorderSize = entity.getCollisionBorderSize();
-				AxisAlignedBB hitbox = entity.getEntityBoundingBox().grow(collisionBorderSize, collisionBorderSize, collisionBorderSize);
-				RayTraceResult interceptPosition = hitbox.calculateIntercept(positionVector, reachVector);
+				AxisAlignedBB hitbox = entity.getBoundingBox().grow(collisionBorderSize, collisionBorderSize, collisionBorderSize);
+				Optional<Vec3d> interceptPosition = hitbox.rayTrace(positionVector, reachVector);
 
 				if(hitbox.contains(positionVector)) {
 					if(0.0D < minDistance || minDistance == 0.0D) {
 						lookedEntity = entity;
 						minDistance = 0.0D;
 					}
-				} else if(interceptPosition != null) {
-					double distanceToEntity = positionVector.distanceTo(interceptPosition.hitVec);
+				} else if(interceptPosition.isPresent()) {
+					double distanceToEntity = positionVector.distanceTo(interceptPosition.get());
 
 					if(distanceToEntity < minDistance || minDistance == 0.0D) {
 						lookedEntity = entity;

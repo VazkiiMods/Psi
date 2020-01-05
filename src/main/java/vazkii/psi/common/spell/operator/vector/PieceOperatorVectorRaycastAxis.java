@@ -11,6 +11,8 @@
 package vazkii.psi.common.spell.operator.vector;
 
 import net.minecraft.util.Direction;
+import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.RayTraceResult;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.Spell;
@@ -54,11 +56,11 @@ public class PieceOperatorVectorRaycastAxis extends PieceOperator {
 
 		Vector3 end = originVal.copy().add(rayVal.copy().normalize().multiply(maxLen));
 
-		RayTraceResult pos = context.caster.getEntityWorld().rayTraceBlocks(originVal.toVec3D(), end.toVec3D());
-		if(pos == null)
+		BlockRayTraceResult pos = context.caster.getEntityWorld().rayTraceBlocks(new RayTraceContext(originVal.toVec3D(), end.toVec3D(), RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, context.caster));
+		if(pos == null) // todo 1.14 check for miss?
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
 
-		Direction facing = pos.sideHit;
+		Direction facing = pos.getFace();
 		return new Vector3(facing.getXOffset(), facing.getYOffset(), facing.getZOffset());
 	}
 

@@ -57,12 +57,12 @@ public class PieceTrickBlaze extends PieceTrick {
 
 		pos = pos.down();
 		BlockState state = context.caster.getEntityWorld().getBlockState(pos);
-		if(state.getBlock().isAir(state, context.caster.getEntityWorld(), pos) || state.getBlock().isReplaceable(context.caster.getEntityWorld(), pos))
+		if(state.isAir(context.caster.getEntityWorld(), pos) || state.getMaterial().isReplaceable())
 			context.caster.getEntityWorld().setBlockState(pos, Blocks.FIRE.getDefaultState());
 		else {
 			pos = pos.up();
 			state = context.caster.getEntityWorld().getBlockState(pos);
-			if(state.getBlock().isAir(state, context.caster.getEntityWorld(), pos) || state.getBlock().isReplaceable(context.caster.getEntityWorld(), pos))
+			if(state.isAir(context.caster.getEntityWorld(), pos) || state.getMaterial().isReplaceable())
 				context.caster.getEntityWorld().setBlockState(pos, Blocks.FIRE.getDefaultState());
 		}
 

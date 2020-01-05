@@ -46,7 +46,7 @@ public class PieceTrickTorrent extends PieceTrick {
 
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
-		if(context.caster.getEntityWorld().provider.doesWaterVaporize())
+		if(context.caster.getEntityWorld().getDimension().doesWaterVaporize())
 			return null;
 
 		Vector3 positionVal = this.getParamValue(context, position);
@@ -59,13 +59,13 @@ public class PieceTrickTorrent extends PieceTrick {
 		BlockPos pos = positionVal.toBlockPos();
 
 		BlockState state = context.caster.getEntityWorld().getBlockState(pos);
-		if(state.getBlock().isAir(state, context.caster.getEntityWorld(), pos) || state.getBlock().isReplaceable(context.caster.getEntityWorld(), pos))
-			context.caster.getEntityWorld().setBlockState(pos, Blocks.FLOWING_WATER.getDefaultState());
+		if(state.isAir(context.caster.getEntityWorld(), pos) || state.getMaterial().isReplaceable())
+			context.caster.getEntityWorld().setBlockState(pos, Blocks.WATER.getDefaultState());
 		else {
 			pos = pos.up();
 			state = context.caster.getEntityWorld().getBlockState(pos);
-			if(state.getBlock().isAir(state, context.caster.getEntityWorld(), pos) || state.getBlock().isReplaceable(context.caster.getEntityWorld(), pos))
-				context.caster.getEntityWorld().setBlockState(pos, Blocks.FLOWING_WATER.getDefaultState());
+			if(state.isAir(context.caster.getEntityWorld(), pos) || state.getMaterial().isReplaceable())
+				context.caster.getEntityWorld().setBlockState(pos, Blocks.WATER.getDefaultState());
 		}
 
 		return null;

@@ -12,7 +12,6 @@ package vazkii.psi.common.entity;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.registry.EntityRegistry;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.lib.LibEntityNames;
 

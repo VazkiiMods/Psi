@@ -95,7 +95,7 @@ public class PieceTrickAddMotion extends PieceTrick {
 				context.customData.put(keyv, 0);
 			}
 			
-			if(e.motionY >= 0)
+			if(e.getMotion().getY() >= 0)
 				e.fallDistance = 0;
 		}
 		

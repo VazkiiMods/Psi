@@ -66,7 +66,6 @@ public class PieceTrickMoveBlock extends PieceTrick {
 		BlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
 		if(world.getTileEntity(pos) != null || state.getPushReaction() != PushReaction.NORMAL ||
-				!block.canSilkHarvest(world, pos, state, context.caster) ||
 				state.getPlayerRelativeBlockHardness(context.caster, world, pos) <= 0 ||
 				!PieceTrickBreakBlock.canHarvestBlock(block, context.caster, world, pos, tool))
 			return null;
@@ -89,9 +88,9 @@ public class PieceTrickMoveBlock extends PieceTrick {
 		if(!world.isBlockModifiable(context.caster, pos) || !world.isBlockModifiable(context.caster, pos1))
 			return null;
 		
-		if(world.isAirBlock(pos1) || state1.getBlock().isReplaceable(world, pos1)) {
+		if(state1.isAir(world, pos1) || state1.getMaterial().isReplaceable()) {
 			world.setBlockState(pos1, state, 1 | 2);
-			world.setBlockToAir(pos);
+			world.removeBlock(pos, false);
 			world.playEvent(2001, pos, Block.getStateId(state));
 		}
 

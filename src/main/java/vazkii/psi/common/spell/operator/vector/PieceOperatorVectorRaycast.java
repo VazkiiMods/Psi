@@ -14,6 +14,8 @@ package vazkii.psi.common.spell.operator.vector;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -57,26 +59,25 @@ public class PieceOperatorVectorRaycast extends PieceOperator {
 			maxLen = numberVal;
 		maxLen = Math.min(SpellContext.MAX_DISTANCE, maxLen);
 
-		RayTraceResult pos = raycast(context.caster.getEntityWorld(), originVal, rayVal, maxLen);
-		if(pos == null)
+		BlockRayTraceResult pos = raycast(context.caster, originVal, rayVal, maxLen);
+		if(pos == null) // todo 1.14 should check for miss?
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
 
-		return new Vector3(pos.getBlockPos().getX(), pos.getBlockPos().getY(), pos.getBlockPos().getZ());
+		return new Vector3(pos.getPos().getX(), pos.getPos().getY(), pos.getPos().getZ());
 	}
 
-	public static RayTraceResult raycast(Entity e, double len) {
+	public static BlockRayTraceResult raycast(Entity e, double len) {
 		Vector3 vec = Vector3.fromEntity(e);
-		if(e instanceof PlayerEntity)
-			vec.add(0, e.getEyeHeight(), 0);
+		vec.add(0, e.getEyeHeight(), 0);
 		
 		Vec3d look = e.getLookVec();
 
-		return raycast(e.getEntityWorld(), vec, new Vector3(look), len);
+		return raycast(e, vec, new Vector3(look), len);
 	}
 
-	public static RayTraceResult raycast(World world, Vector3 origin, Vector3 ray, double len) {
+	private static BlockRayTraceResult raycast(Entity entity, Vector3 origin, Vector3 ray, double len) {
 		Vector3 end = origin.copy().add(ray.copy().normalize().multiply(len));
-		return world.rayTraceBlocks(origin.toVec3D(), end.toVec3D());
+		return entity.world.rayTraceBlocks(new RayTraceContext(origin.toVec3D(), end.toVec3D(), RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, entity));
 	}
 
 	@Override

@@ -54,7 +54,7 @@ public interface IPsimetalTool extends ISocketable, ISpellSettable {
 		if (cmp == null)
 			return ItemStack.EMPTY;
 
-		return new ItemStack(cmp);
+		return ItemStack.read(cmp);
 	}
 
 	@Override
@@ -63,7 +63,7 @@ public interface IPsimetalTool extends ISocketable, ISpellSettable {
 		CompoundNBT cmp = new CompoundNBT();
 
 		if (!bullet.isEmpty())
-			bullet.writeToNBT(cmp);
+			cmp = bullet.write(cmp);
 
 		ItemNBTHelper.setCompound(stack, name, cmp);
 	}
@@ -115,7 +115,7 @@ public interface IPsimetalTool extends ISocketable, ISpellSettable {
 		double posX = player.prevPosX + (player.posX - player.prevPosX) * scale;
 		double posY = player.prevPosY + (player.posY - player.prevPosY) * scale;
 		if (player instanceof PlayerEntity)
-			posY += ((PlayerEntity) player).eyeHeight;
+			posY += ((PlayerEntity) player).getEyeHeight();
 		double posZ = player.prevPosZ + (player.posZ - player.prevPosZ) * scale;
 		Vec3d rayPos = new Vec3d(posX, posY, posZ);
 		float zYaw = -MathHelper.cos(yaw * (float) Math.PI / 180);

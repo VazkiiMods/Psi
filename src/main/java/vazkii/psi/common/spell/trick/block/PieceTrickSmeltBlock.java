@@ -15,7 +15,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.util.math.BlockPos;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.EnumSpellStat;
@@ -27,6 +26,7 @@ import vazkii.psi.api.spell.SpellParam;
 import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.api.spell.param.ParamVector;
 import vazkii.psi.api.spell.piece.PieceTrick;
+import vazkii.psi.common.spell.selector.entity.PieceSelectorNearbySmeltables;
 
 public class PieceTrickSmeltBlock extends PieceTrick {
 
@@ -65,16 +65,14 @@ public class PieceTrickSmeltBlock extends PieceTrick {
 		
 		BlockState state = context.caster.getEntityWorld().getBlockState(pos);
 		Block block = state.getBlock();
-		int meta = block.getMetaFromState(state);
-		ItemStack stack = new ItemStack(block, 1, meta);
-		ItemStack result = FurnaceRecipes.instance().getSmeltingResult(stack);
+		ItemStack stack = new ItemStack(block);
+		ItemStack result = PieceSelectorNearbySmeltables.simulateSmelt(context.caster.getEntityWorld(), stack);
 		if(!result.isEmpty()) {
 			Item item = result.getItem();
 			Block block1 = Block.getBlockFromItem(item);
 			if(block1 != Blocks.AIR) {
-				context.caster.getEntityWorld().setBlockState(pos, block1.getStateFromMeta(result.getMetadata()));
-				state = context.caster.getEntityWorld().getBlockState(pos);
-				context.caster.getEntityWorld().playEvent(2001, pos, Block.getStateId(state));
+				context.caster.getEntityWorld().setBlockState(pos, block1.getDefaultState());
+				context.caster.getEntityWorld().playEvent(2001, pos, Block.getStateId(block1.getDefaultState()));
 			}
 		}
 

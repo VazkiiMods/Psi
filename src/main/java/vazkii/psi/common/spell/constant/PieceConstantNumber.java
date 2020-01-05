@@ -13,7 +13,7 @@ package vazkii.psi.common.spell.constant;
 import net.minecraft.client.Minecraft;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.nbt.CompoundNBT;
-import org.lwjgl.input.Keyboard;
+import org.lwjgl.glfw.GLFW;
 import vazkii.psi.api.spell.*;
 import vazkii.psi.common.Psi;
 
@@ -39,7 +39,7 @@ public class PieceConstantNumber extends SpellPiece {
 		if(valueStr == null || valueStr.isEmpty() || valueStr.length() > 5)
 			valueStr = "0";
 
-		Minecraft mc = Minecraft.getMinecraft();
+		Minecraft mc = Minecraft.getInstance();
 		int color = Psi.magical ? 0 : 0xFFFFFF;
 		float efflen = mc.fontRenderer.getStringWidth(valueStr);
 		float scale = 1;
@@ -75,7 +75,7 @@ public class PieceConstantNumber extends SpellPiece {
 				newStr = newStr.replace("0", "");
 		}
 
-		if(i == Keyboard.KEY_BACK) {
+		if(i == GLFW.GLFW_KEY_BACKSPACE) {
 			if(newStr.length() == 2 && newStr.startsWith("-"))
 				newStr = "-0";
 			else if(newStr.equals("-"))
@@ -114,7 +114,7 @@ public class PieceConstantNumber extends SpellPiece {
 	@Override
 	public void writeToNBT(CompoundNBT cmp) {
 		super.writeToNBT(cmp);
-		cmp.setString(TAG_CONSTANT_VALUE, valueStr);
+		cmp.putString(TAG_CONSTANT_VALUE, valueStr);
 	}
 
 	@Override

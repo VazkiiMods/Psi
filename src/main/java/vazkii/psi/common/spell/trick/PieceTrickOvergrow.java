@@ -11,6 +11,7 @@
 package vazkii.psi.common.spell.trick;
 
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.BoneMealItem;
 import net.minecraft.item.Items;
 import net.minecraft.item.DyeItem;
 import net.minecraft.item.ItemStack;
@@ -64,7 +65,7 @@ public class PieceTrickOvergrow extends PieceTrick {
 	}
 
 	public boolean bonemeal(PlayerEntity player, BlockPos pos) {
-		boolean did = DyeItem.applyBonemeal(new ItemStack(Items.DYE, 1, 15), player.getEntityWorld(), pos);
+		boolean did = BoneMealItem.applyBonemeal(new ItemStack(Items.BONE_MEAL), player.getEntityWorld(), pos, player);
 		if(did)
 			player.getEntityWorld().playEvent(2005, pos, 0);
 		return did;

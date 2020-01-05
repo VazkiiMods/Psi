@@ -84,7 +84,7 @@ public class PieceTrickConjureBlockSequence extends PieceTrick {
 	}
 
 	public BlockState messWithState(BlockState state) {
-		return state.withProperty(BlockConjured.SOLID, true);
+		return state.with(BlockConjured.SOLID, true);
 	}
 
 }

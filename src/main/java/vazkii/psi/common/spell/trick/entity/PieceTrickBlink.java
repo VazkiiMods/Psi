@@ -24,6 +24,7 @@ import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.api.spell.param.ParamEntity;
 import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.piece.PieceTrick;
+import vazkii.psi.common.network.MessageRegister;
 import vazkii.psi.common.network.message.MessageBlink;
 
 public class PieceTrickBlink extends PieceTrick {
@@ -75,7 +76,7 @@ public class PieceTrickBlink extends PieceTrick {
 
 		e.setPosition(e.posX + offX, e.posY + offY, e.posZ + offZ);
 		if (e instanceof ServerPlayerEntity)
-			NetworkHandler.INSTANCE.sendTo(new MessageBlink(offX, offY, offZ), (ServerPlayerEntity) e);
+			MessageRegister.HANDLER.sendToPlayer(new MessageBlink(offX, offY, offZ), (ServerPlayerEntity) e);
 	}
 
 }

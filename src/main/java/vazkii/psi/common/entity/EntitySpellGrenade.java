@@ -11,9 +11,10 @@
 package vazkii.psi.common.entity;
 
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.SoundEvents;
-import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
@@ -30,9 +31,7 @@ public class EntitySpellGrenade extends EntitySpellProjectile {
 		super(worldIn, throwerIn);
 
 		double speed = 0.65;
-		motionX *= speed;
-		motionY *= speed;
-		motionZ *= speed;
+		setMotion(getMotion().mul(speed, speed, speed));
 	}
 
 	@Override
@@ -41,10 +40,10 @@ public class EntitySpellGrenade extends EntitySpellProjectile {
 	}
 
 	@Override
-	public void onUpdate() {
-		super.onUpdate();
+	public void tick() {
+		super.tick();
 
-		if(ticksExisted > 60 && !isDead && explodes())
+		if(ticksExisted > 60 && isAlive() && explodes())
 			doExplosion();
 	}
 
@@ -58,7 +57,7 @@ public class EntitySpellGrenade extends EntitySpellProjectile {
 			double d1 = getEntityWorld().rand.nextGaussian() * m;
 			double d2 = getEntityWorld().rand.nextGaussian() * m;
 
-			getEntityWorld().spawnParticle(EnumParticleTypes.EXPLOSION_NORMAL, posX + getEntityWorld().rand.nextFloat() * width * 2.0F - width - d0 * d3, posY + getEntityWorld().rand.nextFloat() * height - d1 * d3, posZ + getEntityWorld().rand.nextFloat() * width * 2.0F - width - d2 * d3, d0, d1, d2);
+			getEntityWorld().addParticle(ParticleTypes.EXPLOSION, posX + getEntityWorld().rand.nextFloat() * getWidth() * 2.0F - getWidth() - d0 * d3, posY + getEntityWorld().rand.nextFloat() * getHeight() - d1 * d3, posZ + getEntityWorld().rand.nextFloat() * getWidth() * 2.0F - getWidth() - d2 * d3, d0, d1, d2);
 		}
 	}
 
@@ -73,12 +72,10 @@ public class EntitySpellGrenade extends EntitySpellProjectile {
 			sound = true;
 		}
 
-		posX = pos.hitVec.x;
-		posY = pos.hitVec.y;
-		posZ = pos.hitVec.z;
-		motionX = 0;
-		motionY = 0;
-		motionZ = 0;
+		posX = pos.getHitVec().x;
+		posY = pos.getHitVec().y;
+		posZ = pos.getHitVec().z;
+		setMotion(Vec3d.ZERO);
 	}
 
 }

@@ -28,7 +28,6 @@ import vazkii.psi.common.Psi;
 
 import javax.annotation.Nonnull;
 
-@SuppressWarnings({ "rawtypes", "unchecked" })
 public class EntitySpellCircle extends Entity implements ISpellImmune {
 
 	public static final int CAST_TIMES = 20;
@@ -45,16 +44,15 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 	private static final String TAG_LOOK_Y = "savedLookY";
 	private static final String TAG_LOOK_Z = "savedLookZ";
 
-	// Generics are borked :|
-	public static final DataParameter<ItemStack> COLORIZER_DATA = EntityDataManager.createKey(EntitySpellCircle.class, DataSerializers.ITEM_STACK);
-	private static final DataParameter<ItemStack> BULLET_DATA = EntityDataManager.createKey(EntitySpellCircle.class, DataSerializers.ITEM_STACK);
+	public static final DataParameter<ItemStack> COLORIZER_DATA = EntityDataManager.createKey(EntitySpellCircle.class, DataSerializers.ITEMSTACK);
+	private static final DataParameter<ItemStack> BULLET_DATA = EntityDataManager.createKey(EntitySpellCircle.class, DataSerializers.ITEMSTACK);
 	private static final DataParameter<String> CASTER_NAME = EntityDataManager.createKey(EntitySpellCircle.class, DataSerializers.STRING);
 	private static final DataParameter<Integer> TIME_ALIVE = EntityDataManager.createKey(EntitySpellCircle.class, DataSerializers.VARINT);
 	private static final DataParameter<Integer> TIMES_CAST = EntityDataManager.createKey(EntitySpellCircle.class, DataSerializers.VARINT);
 
-	private static final DataParameter LOOK_X = EntityDataManager.createKey(EntitySpellCircle.class, DataSerializers.FLOAT);
-	private static final DataParameter LOOK_Y = EntityDataManager.createKey(EntitySpellCircle.class, DataSerializers.FLOAT);
-	private static final DataParameter LOOK_Z = EntityDataManager.createKey(EntitySpellCircle.class, DataSerializers.FLOAT);
+	private static final DataParameter<Float> LOOK_X = EntityDataManager.createKey(EntitySpellCircle.class, DataSerializers.FLOAT);
+	private static final DataParameter<Float> LOOK_Y = EntityDataManager.createKey(EntitySpellCircle.class, DataSerializers.FLOAT);
+	private static final DataParameter<Float> LOOK_Z = EntityDataManager.createKey(EntitySpellCircle.class, DataSerializers.FLOAT);
 
 	public EntitySpellCircle(World worldIn) {
 		super(worldIn);
@@ -74,7 +72,7 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 	}
 
 	@Override
-	protected void entityInit() {
+	protected void registerData() {
 		dataManager.register(COLORIZER_DATA, new ItemStack(Blocks.STONE));
 		dataManager.register(BULLET_DATA, new ItemStack(Blocks.STONE));
 		dataManager.register(CASTER_NAME, "");
@@ -86,41 +84,41 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 	}
 
 	@Override
-	public void writeEntityToNBT(@Nonnull CompoundNBT tagCompound) {
+	public void writeAdditional(@Nonnull CompoundNBT tagCompound) {
 		CompoundNBT colorizerCmp = new CompoundNBT();
 		ItemStack colorizer =  dataManager.get(COLORIZER_DATA);
 		if (!colorizer.isEmpty())
-			colorizer.writeToNBT(colorizerCmp);
-		tagCompound.setTag(TAG_COLORIZER, colorizerCmp);
+			colorizerCmp = colorizer.write(colorizerCmp);
+		tagCompound.put(TAG_COLORIZER, colorizerCmp);
 
 		CompoundNBT bulletCmp = new CompoundNBT();
 		ItemStack bullet = dataManager.get(BULLET_DATA);
 		if (!bullet.isEmpty())
-			bullet.writeToNBT(bulletCmp);
-		tagCompound.setTag(TAG_BULLET, bulletCmp);
+			bulletCmp = bullet.write(bulletCmp);
+		tagCompound.put(TAG_BULLET, bulletCmp);
 
-		tagCompound.setString(TAG_CASTER, dataManager.get(CASTER_NAME));
-		tagCompound.setInteger(TAG_TIME_ALIVE, getTimeAlive());
-		tagCompound.setInteger(TAG_TIMES_CAST, dataManager.get(TIMES_CAST));
+		tagCompound.putString(TAG_CASTER, dataManager.get(CASTER_NAME));
+		tagCompound.putInt(TAG_TIME_ALIVE, getTimeAlive());
+		tagCompound.putInt(TAG_TIMES_CAST, dataManager.get(TIMES_CAST));
 
-		tagCompound.setFloat(TAG_LOOK_X, (float) dataManager.get(LOOK_X));
-		tagCompound.setFloat(TAG_LOOK_Y, (float) dataManager.get(LOOK_Y));
-		tagCompound.setFloat(TAG_LOOK_Z, (float) dataManager.get(LOOK_Z));
+		tagCompound.putFloat(TAG_LOOK_X, dataManager.get(LOOK_X));
+		tagCompound.putFloat(TAG_LOOK_Y, dataManager.get(LOOK_Y));
+		tagCompound.putFloat(TAG_LOOK_Z, dataManager.get(LOOK_Z));
 	}
 
 	@Override
-	public void readEntityFromNBT(@Nonnull CompoundNBT tagCompound) {
-		CompoundNBT colorizerCmp = tagCompound.getCompoundTag(TAG_COLORIZER);
-		ItemStack colorizer = new ItemStack(colorizerCmp);
+	public void readAdditional(@Nonnull CompoundNBT tagCompound) {
+		CompoundNBT colorizerCmp = tagCompound.getCompound(TAG_COLORIZER);
+		ItemStack colorizer = ItemStack.read(colorizerCmp);
 		dataManager.set(COLORIZER_DATA, colorizer);
 
-		CompoundNBT bulletCmp = tagCompound.getCompoundTag(TAG_BULLET);
-		ItemStack bullet = new ItemStack(bulletCmp);
+		CompoundNBT bulletCmp = tagCompound.getCompound(TAG_BULLET);
+		ItemStack bullet = ItemStack.read(bulletCmp);
 		dataManager.set(BULLET_DATA, bullet);
 
 		dataManager.set(CASTER_NAME, tagCompound.getString(TAG_CASTER));
-		setTimeAlive(tagCompound.getInteger(TAG_TIME_ALIVE));
-		dataManager.set(TIMES_CAST, tagCompound.getInteger(TAG_TIMES_CAST));
+		setTimeAlive(tagCompound.getInt(TAG_TIME_ALIVE));
+		dataManager.set(TIMES_CAST, tagCompound.getInt(TAG_TIMES_CAST));
 
 		dataManager.set(LOOK_X, tagCompound.getFloat(TAG_LOOK_X));
 		dataManager.set(LOOK_Y, tagCompound.getFloat(TAG_LOOK_Y));
@@ -128,12 +126,12 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 	}
 
 	@Override
-	public void onUpdate() {
-		super.onUpdate();
+	public void tick() {
+		super.tick();
 
 		int timeAlive = getTimeAlive();
 		if (timeAlive > LIVE_TIME)
-			setDead();
+			remove();
 
 		setTimeAlive(timeAlive + 1);
 		int times = dataManager.get(TIMES_CAST);
@@ -165,9 +163,9 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 		float g = PsiRenderHelper.g(colorVal) / 255F;
 		float b = PsiRenderHelper.b(colorVal) / 255F;
 		for (int i = 0; i < 5; i++) {
-			double x = posX + (Math.random() - 0.5) * width;
+			double x = posX + (Math.random() - 0.5) * getWidth();
 			double y = posY - getYOffset();
-			double z = posZ + (Math.random() - 0.5) * width;
+			double z = posZ + (Math.random() - 0.5) * getWidth();
 			float grav = -0.15F - (float) Math.random() * 0.03F;
 			Psi.proxy.sparkleFX(x, y, z, r, g, b, grav, 0.25F, 15);
 		}

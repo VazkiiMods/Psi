@@ -31,7 +31,7 @@ public class EntitySpellMine extends EntitySpellGrenade {
 	public void onUpdate() {
 		super.onUpdate();
 
-		List<LivingEntity> entities = getEntityWorld().getEntitiesWithinAABB(LivingEntity.class, getEntityBoundingBox().grow(1, 1, 1));
+		List<LivingEntity> entities = getEntityWorld().getEntitiesWithinAABB(LivingEntity.class, getBoundingBox().grow(1, 1, 1));
 		LivingEntity thrower = getThrower();
 		if(thrower != null)
 			entities.remove(thrower);

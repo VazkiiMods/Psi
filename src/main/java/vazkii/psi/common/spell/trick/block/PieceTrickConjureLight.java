@@ -30,7 +30,7 @@ public class PieceTrickConjureLight extends PieceTrickConjureBlock {
 
 	@Override
 	public BlockState messWithState(BlockState state) {
-		return state.withProperty(BlockConjured.LIGHT, true);
+		return state.with(BlockConjured.LIGHT, true);
 	}
 
 }

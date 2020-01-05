@@ -31,7 +31,7 @@ public class PieceTrickEbonyIvory extends PieceTrickGreaterInfusion {
 	@Override
 	public Object execute(SpellContext context) {
 		super.execute(context);
-		if(context.caster.getEntityWorld().provider instanceof EndDimension) {
+		if(context.caster.getEntityWorld().getDimension() instanceof EndDimension) {
 			ItemCAD.craft(context.caster, new ItemStack(Items.COAL), new ItemStack(ModItems.material, 1, 5));
 			ItemCAD.craft(context.caster, "gemQuartz", new ItemStack(ModItems.material, 1, 6));
 		}

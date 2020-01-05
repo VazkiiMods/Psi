@@ -70,22 +70,17 @@ public class PieceTrickCollapseBlock extends PieceTrick {
 		if(!world.isBlockModifiable(context.caster, pos))
 			return null;
 
-		if(blockBelow.isAir(stateDown, world, posDown) && state.getBlockHardness(world, pos) != -1 &&
+		if(stateDown.isAir(world, posDown) && state.getBlockHardness(world, pos) != -1 &&
 				PieceTrickBreakBlock.canHarvestBlock(block, context.caster, world, pos, tool) &&
-				world.getTileEntity(pos) == null && block.canSilkHarvest(world, pos, state, context.caster)) {
+				world.getTileEntity(pos) == null) {
 
 			BlockEvent.BreakEvent event = PieceTrickBreakBlock.createBreakEvent(state, context.caster, world, pos, tool);
 			MinecraftForge.EVENT_BUS.post(event);
 			if(event.isCanceled())
 				return null;
 
-			if(state.getBlock() == Blocks.LIT_REDSTONE_ORE) {
-				state = Blocks.REDSTONE_ORE.getDefaultState();
-				world.setBlockState(pos, state);
-			}
-			
 			FallingBlockEntity falling = new FallingBlockEntity(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, state);
-			world.spawnEntity(falling);
+			world.addEntity(falling);
 		}
 		return null;
 	}

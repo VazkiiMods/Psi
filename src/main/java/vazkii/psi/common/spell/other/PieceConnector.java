@@ -68,8 +68,8 @@ public class PieceConnector extends SpellPiece implements IRedirector {
 	@OnlyIn(Dist.CLIENT)
 	public void drawSide(SpellParam.Side side) {
 		if(side.isEnabled()) {
-			Minecraft mc = Minecraft.getMinecraft();
-			mc.renderEngine.bindTexture(lines);
+			Minecraft mc = Minecraft.getInstance();
+			mc.textureManager.bindTexture(lines);
 
 			double minU = 0;
 			double minV = 0;

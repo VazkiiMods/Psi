@@ -23,6 +23,7 @@ import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.piece.PieceTrick;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
+import vazkii.psi.common.network.MessageRegister;
 import vazkii.psi.common.network.message.MessageEidosSync;
 
 public class PieceTrickEidosReversal extends PieceTrick {
@@ -58,7 +59,7 @@ public class PieceTrickEidosReversal extends PieceTrick {
 			data.eidosReversionTime = timeVal.intValue() * 10;
 			data.isReverting = true;
 			if (context.caster instanceof ServerPlayerEntity)
-				NetworkHandler.INSTANCE.sendTo(new MessageEidosSync(data.eidosReversionTime), (ServerPlayerEntity) context.caster);
+				MessageRegister.HANDLER.sendToPlayer(new MessageEidosSync(data.eidosReversionTime), (ServerPlayerEntity) context.caster);
 		}
 
 		return null;

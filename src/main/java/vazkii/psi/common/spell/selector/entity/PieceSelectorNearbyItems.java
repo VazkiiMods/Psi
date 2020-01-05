@@ -10,11 +10,11 @@
  */
 package vazkii.psi.common.spell.selector.entity;
 
-import com.google.common.base.Predicate;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.ItemEntity;
 import vazkii.psi.api.spell.Spell;
+
+import java.util.function.Predicate;
 
 public class PieceSelectorNearbyItems extends PieceSelectorNearby {
 

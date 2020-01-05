@@ -22,7 +22,7 @@ import vazkii.psi.common.network.message.*;
 import java.lang.reflect.Field;
 
 public class MessageRegister {
-	private static final NetworkHandler HANDLER = new NetworkHandler(LibMisc.MOD_ID, 1);
+	public static final NetworkHandler HANDLER = new NetworkHandler(LibMisc.MOD_ID, 1);
 
 	@SuppressWarnings("unchecked")
 	public static void init() {

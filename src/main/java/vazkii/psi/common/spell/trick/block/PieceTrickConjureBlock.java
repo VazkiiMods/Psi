@@ -84,7 +84,7 @@ public class PieceTrickConjureBlock extends PieceTrick {
 			if (world.getBlockState(pos) == state) {
 				if (timeVal != null && timeVal.intValue() > 0) {
 					int val = timeVal.intValue();
-					world.scheduleUpdate(pos, state.getBlock(), val);
+					world.getPendingBlockTicks().scheduleTick(pos, state.getBlock(), val);
 				}
 
 				TileEntity tile = world.getTileEntity(pos);
@@ -101,13 +101,12 @@ public class PieceTrickConjureBlock extends PieceTrick {
 			return;
 
 		BlockState inWorld = world.getBlockState(pos);
-		Block block = inWorld.getBlock();
-		if(block.isAir(inWorld, world, pos) || block.isReplaceable(world, pos))
+		if(inWorld.isAir(world, pos) || inWorld.getMaterial().isReplaceable())
 			world.setBlockState(pos, state);
 	}
 
 	public BlockState messWithState(BlockState state) {
-		return state.withProperty(BlockConjured.SOLID, true);
+		return state.with(BlockConjured.SOLID, true);
 	}
 
 }

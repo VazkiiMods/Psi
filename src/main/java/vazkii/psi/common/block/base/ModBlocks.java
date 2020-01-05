@@ -13,8 +13,6 @@ package vazkii.psi.common.block.base;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.oredict.OreDictionary;
-import vazkii.arl.block.BlockMod;
 import vazkii.psi.common.block.BlockCADAssembler;
 import vazkii.psi.common.block.BlockConjured;
 import vazkii.psi.common.block.BlockProgrammer;

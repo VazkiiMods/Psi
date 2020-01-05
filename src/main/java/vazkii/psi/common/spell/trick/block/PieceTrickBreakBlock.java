@@ -85,14 +85,14 @@ public class PieceTrickBreakBlock extends PieceTrick {
 			BreakEvent event = createBreakEvent(state, player, world, pos, tool);
 			MinecraftForge.EVENT_BUS.post(event);
 			if(!event.isCanceled()) {
-				if(!player.capabilities.isCreativeMode) {
+				if(!player.abilities.isCreativeMode) {
 					TileEntity tile = world.getTileEntity(pos);
 
-					if(block.removedByPlayer(state, world, pos, player, true)) {
+					if(block.removedByPlayer(state, world, pos, player, true, world.getFluidState(pos))) {
 						block.onPlayerDestroy(world, pos, state);
 						block.harvestBlock(world, player, pos, state, tile, tool);
 					}
-				} else world.setBlockToAir(pos);
+				} else world.removeBlock(pos, false);
 			}
 
 			if(particles)
@@ -113,6 +113,7 @@ public class PieceTrickBreakBlock extends PieceTrick {
 		return event;
 	}
 
+	// todo 1.14 get rid of all this and just return cad harvest level from cad item code (possibly with a threadlocal hack to indicate this trick is in progress)
 	public static boolean canHarvestBlock(Block block, PlayerEntity player, World world, BlockPos pos, ItemStack tool) {
 		//General positive checks
 		BlockState state = world.getBlockState(pos).getActualState(world, pos);

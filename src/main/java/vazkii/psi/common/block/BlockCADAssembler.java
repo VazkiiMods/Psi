@@ -22,6 +22,8 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 import vazkii.arl.block.BlockFacing;
@@ -35,6 +37,7 @@ import vazkii.psi.common.lib.LibBlockNames;
 import vazkii.psi.common.lib.LibGuiIDs;
 
 import javax.annotation.Nonnull;
+import java.util.Optional;
 import java.util.Random;
 
 import static net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY;
@@ -111,9 +114,10 @@ public class BlockCADAssembler extends BlockFacing implements IPsiBlock {
 	@SuppressWarnings("deprecation")
 	public int getComparatorInputOverride(BlockState blockState, World worldIn, BlockPos pos) {
 		TileEntity tile = worldIn.getTileEntity(pos);
-		if (tile != null && tile.hasCapability(ITEM_HANDLER_CAPABILITY, null)) {
-			IItemHandler capability = tile.getCapability(ITEM_HANDLER_CAPABILITY, null);
-			return ItemHandlerHelper.calcRedstoneFromInventory(capability);
+		if (tile != null) {
+			return tile.getCapability(ITEM_HANDLER_CAPABILITY)
+					.map(ItemHandlerHelper::calcRedstoneFromInventory)
+					.orElse(0);
 		}
 
 		return 0;
