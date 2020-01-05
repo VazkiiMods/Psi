@@ -14,19 +14,30 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.registries.ObjectHolder;
 import vazkii.arl.block.tile.TileSimpleInventory;
 import vazkii.psi.api.cad.*;
 import vazkii.psi.common.core.handler.PsiSoundHandler;
 import vazkii.psi.common.item.ItemCAD;
 import vazkii.psi.common.lib.LibBlockNames;
+import vazkii.psi.common.lib.LibMisc;
 
 import javax.annotation.Nonnull;
 
 public class TileCADAssembler extends TileSimpleInventory implements ITileCADAssembler {
+	@ObjectHolder(LibMisc.PREFIX_MOD + LibBlockNames.CAD_ASSEMBLER)
+	public static TileEntityType<TileCADAssembler> TYPE;
 
 	private transient ItemStack cachedCAD;
+
+	public TileCADAssembler() {
+		super(TYPE);
+	}
 
 	@Override
 	public void inventoryChanged(int i) {
@@ -131,12 +142,6 @@ public class TileCADAssembler extends TileSimpleInventory implements ITileCADAss
 		return 6;
 	}
 
-	@Nonnull
-	@Override
-	public String getName() {
-		return LibBlockNames.CAD_ASSEMBLER;
-	}
-
 	@Override
 	public boolean isAutomationEnabled() {
 		return false;
@@ -159,23 +164,23 @@ public class TileCADAssembler extends TileSimpleInventory implements ITileCADAss
 	@Override
 	public void writeSharedNBT(CompoundNBT tag) {
 		super.writeSharedNBT(tag);
-		tag.setInteger("version", 1);
+		tag.putInt("version", 1);
 	}
 
 	@Override
 	public void readSharedNBT(CompoundNBT tag) {
 		// Migrate old CAD assemblers to the new format
-		if (needsToSyncInventory() && tag.getInteger("version") < 1) {
-			ListNBT items = tag.getTagList("Items", 10);
+		if (needsToSyncInventory() && tag.getInt("version") < 1) {
+			ListNBT items = tag.getList("Items", 10);
 			this.clear();
 
 			ISocketableCapability socketable = null;
 
-			for(int i = 0; i < items.tagCount(); ++i) {
+			for(int i = 0; i < items.size(); ++i) {
 				if (i == 0) // Skip the fake CAD slot
 					continue;
 
-				ItemStack stack = new ItemStack(items.getCompoundTagAt(i));
+				ItemStack stack = ItemStack.read(items.getCompound(i));
 
 				if (i == 6) { // Socketable item
 					setSocketableStack(stack);

@@ -56,23 +56,6 @@ public class InventoryAssemblerOutput implements IInventory {
 
 	@Nonnull
 	@Override
-	public String getName() {
-		return "Result";
-	}
-
-	@Override
-	public boolean hasCustomName() {
-		return false;
-	}
-
-	@Nonnull
-	@Override
-	public ITextComponent getDisplayName() {
-		return hasCustomName() ? new StringTextComponent(getName()) : new TranslationTextComponent(getName());
-	}
-
-	@Nonnull
-	@Override
 	public ItemStack decrStackSize(int index, int count) {
 		return getStack();
 	}
@@ -116,21 +99,6 @@ public class InventoryAssemblerOutput implements IInventory {
 	@Override
 	public boolean isItemValidForSlot(int index, @Nonnull ItemStack stack) {
 		return false;
-	}
-
-	@Override
-	public int getField(int id) {
-		return 0;
-	}
-
-	@Override
-	public void setField(int id, int value) {
-		// NO-OP
-	}
-
-	@Override
-	public int getFieldCount() {
-		return 0;
 	}
 
 	@Override

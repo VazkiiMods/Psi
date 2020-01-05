@@ -27,6 +27,7 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.util.text.TextFormatting;
@@ -57,32 +58,32 @@ public class BlockProgrammer extends HorizontalBlock {
 	}
 
 	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn, Hand hand, Direction side, float hitX, float hitY, float hitZ) {
-		ItemStack heldItem = playerIn.getHeldItem(hand);
+	public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
+		ItemStack heldItem = player.getHeldItem(hand);
 		TileProgrammer programmer = (TileProgrammer) worldIn.getTileEntity(pos);
 		if (programmer == null)
 			return true;
 
-		if(!playerIn.abilities.isCreativeMode) {
-			PlayerData data = PlayerDataHandler.get(playerIn);
+		if(!player.abilities.isCreativeMode) {
+			PlayerData data = PlayerDataHandler.get(player);
 			if(data.spellGroupsUnlocked.isEmpty()) {
 				if(!worldIn.isRemote)
-					playerIn.sendMessage(new TranslationTextComponent("psimisc.cantUseProgrammer").setStyle(new Style().setColor(TextFormatting.RED)));
+					player.sendMessage(new TranslationTextComponent("psimisc.cantUseProgrammer").applyTextStyle(TextFormatting.RED));
 				return true;
 			}
 		}
 		
-		ActionResultType result = setSpell(worldIn, pos, playerIn, heldItem);
+		ActionResultType result = setSpell(worldIn, pos, player, heldItem);
 		if(result == ActionResultType.SUCCESS)
 			return true;
 
 		boolean enabled = programmer.isEnabled();
 		if(!enabled || programmer.playerLock.isEmpty())
-			programmer.playerLock = playerIn.getName();
+			programmer.playerLock = player.getName().getString();
 
-		if(playerIn instanceof ServerPlayerEntity)
-			VanillaPacketDispatcher.dispatchTEToPlayer(programmer, (ServerPlayerEntity) playerIn);
-		playerIn.openGui(Psi.instance, LibGuiIDs.PROGRAMMER, worldIn, pos.getX(), pos.getY(), pos.getZ());
+		if(player instanceof ServerPlayerEntity)
+			VanillaPacketDispatcher.dispatchTEToPlayer(programmer, (ServerPlayerEntity) player);
+		player.openGui(Psi.instance, LibGuiIDs.PROGRAMMER, worldIn, pos.getX(), pos.getY(), pos.getZ());
 		return true;
 	}
 
@@ -120,20 +121,8 @@ public class BlockProgrammer extends HorizontalBlock {
 	}
 
 	@Override
-	@SuppressWarnings("deprecation")
-	public boolean isFullBlock(BlockState state) {
-		return false;
-	}
-
-	@Override
-	@SuppressWarnings("deprecation")
-	public boolean isOpaqueCube(BlockState state) {
-		return false;
-	}
-
-	@Override
-	public Rarity getBlockRarity(ItemStack stack) {
-		return Rarity.UNCOMMON;
+	public boolean func_220074_n(BlockState state) {
+		return true;
 	}
 
 	@Nullable

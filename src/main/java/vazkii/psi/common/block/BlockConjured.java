@@ -116,21 +116,8 @@ public class BlockConjured extends Block {
 	}
 
 	@Override
-	@SuppressWarnings("deprecation")
-	public boolean isFullCube(BlockState state) {
-		return false;
-	}
-
-	@Override
-	@SuppressWarnings("deprecation")
-	public boolean isFullBlock(BlockState state) {
-		return false;
-	}
-
-	@Override
-	@SuppressWarnings("deprecation")
-	public boolean isOpaqueCube(BlockState state) {
-		return false;
+	public boolean func_220074_n(BlockState state) {
+		return true;
 	}
 
 	@Nonnull

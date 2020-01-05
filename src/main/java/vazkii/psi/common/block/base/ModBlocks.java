@@ -13,12 +13,15 @@ package vazkii.psi.common.block.base;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
+import net.minecraft.item.Rarity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.network.IContainerFactory;
 import net.minecraftforge.registries.IForgeRegistry;
 import vazkii.psi.common.block.BlockCADAssembler;
 import vazkii.psi.common.block.BlockConjured;
@@ -27,6 +30,7 @@ import vazkii.psi.common.block.BlockPsiDecorative;
 import vazkii.psi.common.block.tile.TileCADAssembler;
 import vazkii.psi.common.block.tile.TileConjured;
 import vazkii.psi.common.block.tile.TileProgrammer;
+import vazkii.psi.common.block.tile.container.ContainerCADAssembler;
 import vazkii.psi.common.lib.LibBlockNames;
 import vazkii.psi.common.lib.LibMisc;
 
@@ -66,8 +70,8 @@ public class ModBlocks {
 	@SubscribeEvent
 	public static void registerItemBlocks(RegistryEvent.Register<Item> evt) {
 		IForgeRegistry<Item> r = evt.getRegistry();
-		r.register(new BlockItem(cadAssembler, defaultBuilder()).setRegistryName(cadAssembler.getRegistryName()));
-		r.register(new BlockItem(programmer, defaultBuilder()).setRegistryName(programmer.getRegistryName()));
+		r.register(new BlockItem(cadAssembler, defaultBuilder().rarity(Rarity.UNCOMMON)).setRegistryName(cadAssembler.getRegistryName()));
+		r.register(new BlockItem(programmer, defaultBuilder().rarity(Rarity.UNCOMMON)).setRegistryName(programmer.getRegistryName()));
 		r.register(new BlockItem(psidustBlock, defaultBuilder()).setRegistryName(psidustBlock.getRegistryName()));
 		r.register(new BlockItem(psimetalBlock, defaultBuilder()).setRegistryName(psigemBlock.getRegistryName()));
 		r.register(new BlockItem(psigemBlock, defaultBuilder()).setRegistryName(psigemBlock.getRegistryName()));
@@ -85,6 +89,11 @@ public class ModBlocks {
 		r.register(TileEntityType.Builder.create(TileCADAssembler::new, cadAssembler).build(null).setRegistryName(cadAssembler.getRegistryName()));
 		r.register(TileEntityType.Builder.create(TileProgrammer::new, programmer).build(null).setRegistryName(programmer.getRegistryName()));
 		r.register(TileEntityType.Builder.create(TileConjured::new, conjured).build(null).setRegistryName(conjured.getRegistryName()));
+	}
+
+	@SubscribeEvent
+	public static void registerContainers(RegistryEvent.Register<ContainerType<?>> evt) {
+		evt.getRegistry().register(new ContainerType<>((IContainerFactory<ContainerCADAssembler>) ContainerCADAssembler::fromNetwork).setRegistryName(LibMisc.MOD_ID, LibBlockNames.CAD_ASSEMBLER));
 	}
 
 }

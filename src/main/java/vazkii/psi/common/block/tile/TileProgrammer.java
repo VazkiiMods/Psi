@@ -12,12 +12,18 @@ package vazkii.psi.common.block.tile;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.TileEntityType;
+import net.minecraftforge.registries.ObjectHolder;
 import vazkii.arl.block.tile.TileMod;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.common.block.BlockProgrammer;
+import vazkii.psi.common.lib.LibBlockNames;
+import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.spell.SpellCompiler;
 
 public class TileProgrammer extends TileMod {
+	@ObjectHolder(LibMisc.PREFIX_MOD + LibBlockNames.PROGRAMMER)
+	public static TileEntityType<TileProgrammer> TYPE;
 
 	private static final String TAG_SPELL = "spell";
 	private static final String TAG_PLAYER_LOCK = "playerLock";
@@ -26,6 +32,10 @@ public class TileProgrammer extends TileMod {
 	public boolean enabled;
 
 	public String playerLock = "";
+
+	public TileProgrammer() {
+		super(TYPE);
+	}
 
 	public boolean isEnabled() {
 		return spell != null && !spell.grid.isEmpty();

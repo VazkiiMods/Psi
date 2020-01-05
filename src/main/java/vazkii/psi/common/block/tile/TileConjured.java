@@ -13,20 +13,31 @@ package vazkii.psi.common.block.tile;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.registries.ObjectHolder;
 import vazkii.arl.block.tile.TileMod;
 import vazkii.psi.api.cad.ICADColorizer;
 import vazkii.psi.api.internal.PsiRenderHelper;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.BlockConjured;
 import vazkii.psi.common.block.base.ModBlocks;
+import vazkii.psi.common.lib.LibBlockNames;
+import vazkii.psi.common.lib.LibMisc;
 
 import java.util.Arrays;
 
 public class TileConjured extends TileMod {
+	@ObjectHolder(LibMisc.PREFIX_MOD + LibBlockNames.CONJURED)
+	public static TileEntityType<TileConjured> TYPE;
+
 	private static final String TAG_COLORIZER = "colorizer";
 
 	public ItemStack colorizer = ItemStack.EMPTY;
+
+	public TileConjured() {
+		super(TYPE);
+	}
 
 	public void doParticles() {
 		int color = ICADColorizer.DEFAULT_SPELL_COLOR;

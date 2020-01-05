@@ -14,11 +14,16 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.inventory.container.ContainerType;
+import net.minecraft.inventory.container.PlayerContainer;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.registries.ObjectHolder;
 import vazkii.psi.api.cad.EnumCADComponent;
 import vazkii.psi.api.cad.ICADComponent;
 import vazkii.psi.api.cad.ISocketableCapability;
@@ -29,10 +34,14 @@ import vazkii.psi.common.block.tile.container.slot.InventoryAssemblerOutput;
 import vazkii.psi.common.block.tile.container.slot.SlotCADOutput;
 import vazkii.psi.common.block.tile.container.slot.SlotSocketable;
 import vazkii.psi.common.block.tile.container.slot.ValidatorSlot;
+import vazkii.psi.common.lib.LibBlockNames;
+import vazkii.psi.common.lib.LibMisc;
 
 import javax.annotation.Nonnull;
 
 public class ContainerCADAssembler extends Container {
+	@ObjectHolder(LibMisc.PREFIX_MOD + LibBlockNames.CAD_ASSEMBLER)
+	public static ContainerType<ContainerCADAssembler> TYPE;
 
 	private static final EquipmentSlotType[] equipmentSlots = new EquipmentSlotType[]{EquipmentSlotType.HEAD, EquipmentSlotType.CHEST, EquipmentSlotType.LEGS, EquipmentSlotType.FEET};
 
@@ -49,8 +58,14 @@ public class ContainerCADAssembler extends Container {
 	private final int hotbarEnd;
 	private final int armorStart;
 
-	public ContainerCADAssembler(PlayerEntity player, TileCADAssembler assembler) {
-		PlayerInventory playerInventory = player.inventory;
+	public static ContainerCADAssembler fromNetwork(int windowId, PlayerInventory playerInventory, PacketBuffer buf) {
+		BlockPos pos = buf.readBlockPos();
+		return new ContainerCADAssembler(windowId, playerInventory, (TileCADAssembler) playerInventory.player.world.getTileEntity(pos));
+	}
+
+	public ContainerCADAssembler(int windowId, PlayerInventory playerInventory, TileCADAssembler assembler) {
+		super(TYPE, windowId);
+		PlayerEntity player = playerInventory.player;
 		int playerSize = playerInventory.getSizeInventory();
 
 		this.assembler = assembler;
@@ -59,24 +74,24 @@ public class ContainerCADAssembler extends Container {
 		InventoryAssemblerOutput output = new InventoryAssemblerOutput(player, assembler);
 		InventorySocketable bullets = new InventorySocketable(assembler.getSocketableStack());
 
-		addSlotToContainer(new SlotCADOutput(output, assembler, 120, 35));
+		addSlot(new SlotCADOutput(output, assembler, 120, 35));
 
 		cadComponentStart = inventorySlots.size();
-		addSlotToContainer(new ValidatorSlot(assembler, assembler.getComponentSlot(EnumCADComponent.ASSEMBLY), 120, 91));
-		addSlotToContainer(new ValidatorSlot(assembler, assembler.getComponentSlot(EnumCADComponent.CORE), 100, 91));
-		addSlotToContainer(new ValidatorSlot(assembler, assembler.getComponentSlot(EnumCADComponent.SOCKET), 140, 91));
-		addSlotToContainer(new ValidatorSlot(assembler, assembler.getComponentSlot(EnumCADComponent.BATTERY), 110, 111));
-		addSlotToContainer(new ValidatorSlot(assembler, assembler.getComponentSlot(EnumCADComponent.DYE), 130, 111));
+		addSlot(new ValidatorSlot(assembler, assembler.getComponentSlot(EnumCADComponent.ASSEMBLY), 120, 91));
+		addSlot(new ValidatorSlot(assembler, assembler.getComponentSlot(EnumCADComponent.CORE), 100, 91));
+		addSlot(new ValidatorSlot(assembler, assembler.getComponentSlot(EnumCADComponent.SOCKET), 140, 91));
+		addSlot(new ValidatorSlot(assembler, assembler.getComponentSlot(EnumCADComponent.BATTERY), 110, 111));
+		addSlot(new ValidatorSlot(assembler, assembler.getComponentSlot(EnumCADComponent.DYE), 130, 111));
 
 		socketableStart = inventorySlots.size();
-		addSlotToContainer(new SlotSocketable(assembler, bullets, 0, 35, 21));
+		addSlot(new SlotSocketable(assembler, bullets, 0, 35, 21));
 		socketableEnd = inventorySlots.size();
 
 
 		bulletStart = inventorySlots.size();
 		for (int row = 0; row < 4; row++)
 			for (int col = 0; col < 3; col++)
-				addSlotToContainer(new ValidatorSlot(bullets, col + row * 3, 17 + col * 18, 57 + row * 18));
+				addSlot(new ValidatorSlot(bullets, col + row * 3, 17 + col * 18, 57 + row * 18));
 		bulletEnd = inventorySlots.size();
 
 		int xs = 48;
@@ -85,19 +100,19 @@ public class ContainerCADAssembler extends Container {
 		playerStart = inventorySlots.size();
 		for (int row = 0; row < 3; row++)
 			for (int col = 0; col < 9; col++)
-				addSlotToContainer(new Slot(playerInventory, col + row * 9 + 9, xs + col * 18, ys + row * 18));
+				addSlot(new Slot(playerInventory, col + row * 9 + 9, xs + col * 18, ys + row * 18));
 		playerEnd = inventorySlots.size();
 
 		hotbarStart = inventorySlots.size();
 		for (int col = 0; col < 9; col++)
-			addSlotToContainer(new Slot(playerInventory, col, xs + col * 18, ys + 58));
+			addSlot(new Slot(playerInventory, col, xs + col * 18, ys + 58));
 		hotbarEnd = inventorySlots.size();
 
 		armorStart = inventorySlots.size();
 		for (int armorSlot = 0; armorSlot < 4; armorSlot++) {
 			final EquipmentSlotType slot = equipmentSlots[armorSlot];
 
-			addSlotToContainer(new Slot(playerInventory, playerSize - 2 - armorSlot,
+			addSlot(new Slot(playerInventory, playerSize - 2 - armorSlot,
 					xs - 27, ys + 18 * armorSlot) {
 				@Override
 				public int getSlotStackLimit() {
@@ -106,18 +121,18 @@ public class ContainerCADAssembler extends Container {
 
 				@Override
 				public boolean isItemValid(ItemStack stack) {
-					return !stack.isEmpty() && stack.getItem().isValidArmor(stack, slot, player);
+					return !stack.isEmpty() && stack.getItem().canEquip(stack, slot, player);
 				}
 
 				@OnlyIn(Dist.CLIENT)
 				@Override
 				public String getSlotTexture() {
-					return ArmorItem.EMPTY_SLOT_NAMES[slot.getIndex()];
+					return PlayerContainer.ARMOR_SLOT_TEXTURES[slot.getIndex()];
 				}
 			});
 		}
 
-		addSlotToContainer(new Slot(playerInventory, playerSize - 1, 219, 143) {
+		addSlot(new Slot(playerInventory, playerSize - 1, 219, 143) {
 			@OnlyIn(Dist.CLIENT)
 			@Override
 			public String getSlotTexture() {
@@ -160,7 +175,7 @@ public class ContainerCADAssembler extends Container {
 					return ItemStack.EMPTY;
 			} else if (stackInSlot.getItem() instanceof ArmorItem) {
 				ArmorItem armor = (ArmorItem) stackInSlot.getItem();
-				int armorSlot = armorStart + armor.armorType.getSlotIndex() - 1;
+				int armorSlot = armorStart + armor.getEquipmentSlot().getSlotIndex() - 1;
 				if (!mergeItemStack(stackInSlot, armorSlot, armorSlot + 1, true) &&
 						!mergeItemStack(stackInSlot, playerStart, hotbarEnd, true))
 					return ItemStack.EMPTY;
