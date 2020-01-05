@@ -45,7 +45,6 @@ public class CommonProxy {
 		ConfigHandler.init(event.getSuggestedConfigurationFile());
 
 		ModItems.preInit();
-		ModEntities.init();
 		ModSpellPieces.init();
 		ModCraftingRecipes.init();
 		PsiSoundHandler.init();

@@ -11,12 +11,14 @@
 package vazkii.psi.common.entity;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ThrowableEntity;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.IPacket;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -25,6 +27,8 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraftforge.registries.ObjectHolder;
 import vazkii.psi.api.cad.ICADColorizer;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.ISpellAcceptor;
@@ -32,6 +36,8 @@ import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.internal.PsiRenderHelper;
 import vazkii.psi.common.Psi;
+import vazkii.psi.common.lib.LibEntityNames;
+import vazkii.psi.common.lib.LibMisc;
 
 import javax.annotation.Nonnull;
 import java.util.Optional;
@@ -39,6 +45,8 @@ import java.util.UUID;
 import java.util.function.Consumer;
 
 public class EntitySpellProjectile extends ThrowableEntity {
+	@ObjectHolder(LibMisc.PREFIX_MOD + LibEntityNames.SPELL_PROJECTILE)
+	public static EntityType<EntitySpellProjectile> TYPE;
 
 	private static final String TAG_COLORIZER = "colorizer";
 	private static final String TAG_BULLET = "bullet";
@@ -55,17 +63,20 @@ public class EntitySpellProjectile extends ThrowableEntity {
 	public SpellContext context;
 	public int timeAlive;
 
-	public EntitySpellProjectile(World worldIn) {
-		super(worldIn);
-		setSize(0F, 0F);
+	public EntitySpellProjectile(EntityType<?> type, World worldIn) {
+		super((EntityType<? extends ThrowableEntity>) type, worldIn);
 	}
 
-	public EntitySpellProjectile(World worldIn, LivingEntity throwerIn) {
-		super(worldIn, throwerIn);
+	protected EntitySpellProjectile(EntityType<?> type, World world, LivingEntity thrower) {
+		super((EntityType<? extends ThrowableEntity>) type, thrower, world);
 		
-		shoot(throwerIn, throwerIn.rotationPitch, throwerIn.rotationYaw, 0.0F, 1.5F, 1.0F);
+		shoot(thrower, thrower.rotationPitch, thrower.rotationYaw, 0.0F, 1.5F, 1.0F);
 		double speed = 1.5;
 		setMotion(getMotion().mul(speed, speed, speed));
+	}
+
+	public EntitySpellProjectile(World world, LivingEntity thrower) {
+		this(TYPE, world, thrower);
 	}
 
 	public EntitySpellProjectile setInfo(PlayerEntity player, ItemStack colorizer, ItemStack bullet) {
@@ -240,4 +251,9 @@ public class EntitySpellProjectile extends ThrowableEntity {
 		return true;
 	}
 
+	@Nonnull
+	@Override
+	public IPacket<?> createSpawnPacket() {
+		return NetworkHooks.getEntitySpawningPacket(this);
+	}
 }

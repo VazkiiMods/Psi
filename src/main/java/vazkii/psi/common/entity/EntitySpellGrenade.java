@@ -10,28 +10,39 @@
  */
 package vazkii.psi.common.entity;
 
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.projectile.ThrowableEntity;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.registries.ObjectHolder;
+import vazkii.psi.common.lib.LibEntityNames;
+import vazkii.psi.common.lib.LibMisc;
 
 import javax.annotation.Nonnull;
 
 public class EntitySpellGrenade extends EntitySpellProjectile {
+	@ObjectHolder(LibMisc.PREFIX_MOD + LibEntityNames.SPELL_GRENADE)
+	public static EntityType<EntitySpellGrenade> TYPE;
 
 	boolean sound = false;
 
-	public EntitySpellGrenade(World worldIn) {
-		super(worldIn);
+	public EntitySpellGrenade(EntityType<?> type, World worldIn) {
+		super(type, worldIn);
 	}
 
-	public EntitySpellGrenade(World worldIn, LivingEntity throwerIn) {
-		super(worldIn, throwerIn);
+	protected EntitySpellGrenade(EntityType<?> type, World worldIn, LivingEntity throwerIn) {
+		super(type, worldIn, throwerIn);
 
 		double speed = 0.65;
 		setMotion(getMotion().mul(speed, speed, speed));
+	}
+
+	public EntitySpellGrenade(World world, LivingEntity thrower) {
+		this(TYPE, world, thrower);
 	}
 
 	@Override

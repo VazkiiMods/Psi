@@ -11,22 +11,28 @@
 package vazkii.psi.common.entity;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.IPacket;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.network.NetworkHooks;
 import vazkii.psi.api.cad.ICADColorizer;
 import vazkii.psi.api.spell.*;
 import vazkii.psi.api.internal.PsiRenderHelper;
 import vazkii.psi.common.Psi;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.Optional;
+import java.util.UUID;
 
 public class EntitySpellCircle extends Entity implements ISpellImmune {
 
@@ -46,7 +52,7 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 
 	public static final DataParameter<ItemStack> COLORIZER_DATA = EntityDataManager.createKey(EntitySpellCircle.class, DataSerializers.ITEMSTACK);
 	private static final DataParameter<ItemStack> BULLET_DATA = EntityDataManager.createKey(EntitySpellCircle.class, DataSerializers.ITEMSTACK);
-	private static final DataParameter<String> CASTER_NAME = EntityDataManager.createKey(EntitySpellCircle.class, DataSerializers.STRING);
+	private static final DataParameter<Optional<UUID>> CASTER_UUID = EntityDataManager.createKey(EntitySpellCircle.class, DataSerializers.OPTIONAL_UNIQUE_ID);
 	private static final DataParameter<Integer> TIME_ALIVE = EntityDataManager.createKey(EntitySpellCircle.class, DataSerializers.VARINT);
 	private static final DataParameter<Integer> TIMES_CAST = EntityDataManager.createKey(EntitySpellCircle.class, DataSerializers.VARINT);
 
@@ -54,15 +60,14 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 	private static final DataParameter<Float> LOOK_Y = EntityDataManager.createKey(EntitySpellCircle.class, DataSerializers.FLOAT);
 	private static final DataParameter<Float> LOOK_Z = EntityDataManager.createKey(EntitySpellCircle.class, DataSerializers.FLOAT);
 
-	public EntitySpellCircle(World worldIn) {
-		super(worldIn);
-		setSize(3F, 0F);
+	public EntitySpellCircle(EntityType<?> type, World worldIn) {
+		super(type, worldIn);
 	}
 
 	public EntitySpellCircle setInfo(PlayerEntity player, ItemStack colorizer, ItemStack bullet) {
 		dataManager.set(COLORIZER_DATA,colorizer);
 		dataManager.set(BULLET_DATA, bullet);
-		dataManager.set(CASTER_NAME, player.getName());
+		dataManager.set(CASTER_UUID, Optional.of(player.getUniqueID()));
 
 		Vec3d lookVec = player.getLook(1F);
 		dataManager.set(LOOK_X, (float) lookVec.x);
@@ -75,7 +80,7 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 	protected void registerData() {
 		dataManager.register(COLORIZER_DATA, new ItemStack(Blocks.STONE));
 		dataManager.register(BULLET_DATA, new ItemStack(Blocks.STONE));
-		dataManager.register(CASTER_NAME, "");
+		dataManager.register(CASTER_UUID, Optional.empty());
 		dataManager.register(TIME_ALIVE, 0);
 		dataManager.register(TIMES_CAST, 0);
 		dataManager.register(LOOK_X, 0F);
@@ -97,7 +102,7 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 			bulletCmp = bullet.write(bulletCmp);
 		tagCompound.put(TAG_BULLET, bulletCmp);
 
-		tagCompound.putString(TAG_CASTER, dataManager.get(CASTER_NAME));
+		dataManager.get(CASTER_UUID).ifPresent(u -> tagCompound.putString(TAG_CASTER, u.toString()));
 		tagCompound.putInt(TAG_TIME_ALIVE, getTimeAlive());
 		tagCompound.putInt(TAG_TIMES_CAST, dataManager.get(TIMES_CAST));
 
@@ -116,7 +121,9 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 		ItemStack bullet = ItemStack.read(bulletCmp);
 		dataManager.set(BULLET_DATA, bullet);
 
-		dataManager.set(CASTER_NAME, tagCompound.getString(TAG_CASTER));
+		if (tagCompound.contains(TAG_CASTER)) {
+			dataManager.set(CASTER_UUID, Optional.of(UUID.fromString(tagCompound.getString(TAG_CASTER))));
+		}
 		setTimeAlive(tagCompound.getInt(TAG_TIME_ALIVE));
 		dataManager.set(TIMES_CAST, tagCompound.getInt(TAG_TIMES_CAST));
 
@@ -188,9 +195,9 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 		dataManager.set(TIME_ALIVE, i);
 	}
 
+	@Nullable
 	public LivingEntity getCaster() {
-		String name = dataManager.get(CASTER_NAME);
-		return getEntityWorld().getPlayerEntityByName(name);
+		return dataManager.get(CASTER_UUID).map(getEntityWorld()::getPlayerByUuid).orElse(null);
 	}
 
 	@Override
@@ -201,5 +208,11 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 	@Override
 	public boolean doesEntityNotTriggerPressurePlate() {
 		return true;
+	}
+
+	@Nonnull
+	@Override
+	public IPacket<?> createSpawnPacket() {
+		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 }

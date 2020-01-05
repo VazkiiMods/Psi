@@ -12,24 +12,30 @@ package vazkii.psi.common.entity;
 
 import java.util.List;
 
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.world.World;
+import net.minecraftforge.registries.ObjectHolder;
+import vazkii.psi.common.lib.LibEntityNames;
+import vazkii.psi.common.lib.LibMisc;
 
 public class EntitySpellMine extends EntitySpellGrenade {
+	@ObjectHolder(LibMisc.PREFIX_MOD + LibEntityNames.SPELL_MINE)
+	public static EntityType<EntitySpellMine> TYPE;
 
 	boolean triggered = false;
 
-	public EntitySpellMine(World worldIn) {
-		super(worldIn);
+	public EntitySpellMine(EntityType<?> type, World worldIn) {
+		super(type, worldIn);
 	}
 
 	public EntitySpellMine(World worldIn, LivingEntity throwerIn) {
-		super(worldIn, throwerIn);
+		super(TYPE, worldIn, throwerIn);
 	}
 
 	@Override
-	public void onUpdate() {
-		super.onUpdate();
+	public void tick() {
+		super.tick();
 
 		List<LivingEntity> entities = getEntityWorld().getEntitiesWithinAABB(LivingEntity.class, getBoundingBox().grow(1, 1, 1));
 		LivingEntity thrower = getThrower();
