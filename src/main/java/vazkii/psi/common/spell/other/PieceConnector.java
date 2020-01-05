@@ -51,12 +51,12 @@ public class PieceConnector extends SpellPiece implements IRedirector {
 		drawSide(paramSides.get(target));
 
 		if(isInGrid)
-			for(SpellParam.Dist side : SpellParam.Dist.class.getEnumConstants())
+			for(SpellParam.Side side : SpellParam.Side.class.getEnumConstants())
 				if(side.isEnabled()) {
 					SpellPiece piece = spell.grid.getPieceAtSideSafely(x, y, side);
 					if(piece != null)
 						for(SpellParam param : piece.paramSides.keySet()) {
-							SpellParam.Dist paramSide = piece.paramSides.get(param);
+							SpellParam.Side paramSide = piece.paramSides.get(param);
 							if(paramSide.getOpposite() == side) {
 								drawSide(side);
 								break;
@@ -66,7 +66,7 @@ public class PieceConnector extends SpellPiece implements IRedirector {
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	public void drawSide(SpellParam.Dist side) {
+	public void drawSide(SpellParam.Side side) {
 		if(side.isEnabled()) {
 			Minecraft mc = Minecraft.getMinecraft();
 			mc.renderEngine.bindTexture(lines);
@@ -104,7 +104,7 @@ public class PieceConnector extends SpellPiece implements IRedirector {
 
 	@Override
 	public void getShownPieces(List<SpellPiece> pieces) {
-		for(SpellParam.Dist side : SpellParam.Dist.class.getEnumConstants())
+		for(SpellParam.Side side : SpellParam.Side.class.getEnumConstants())
 			if(side.isEnabled()) {
 				PieceConnector piece = (PieceConnector) copy();
 				piece.paramSides.put(piece.target, side);
@@ -123,7 +123,7 @@ public class PieceConnector extends SpellPiece implements IRedirector {
 	}
 
 	@Override
-	public SpellParam.Dist getRedirectionSide() {
+	public SpellParam.Side getRedirectionSide() {
 		return paramSides.get(target);
 	}
 

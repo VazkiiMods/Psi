@@ -18,8 +18,6 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.util.vector.Vector3f;
-import org.lwjgl.util.vector.Vector4f;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
@@ -72,7 +70,7 @@ public class Vector3
 	}
 
 	public static Vector3 fromEntityCenter(Entity e) {
-		return new Vector3(e.posX, e.posY - e.getYOffset() + e.height / 2, e.posZ);
+		return new Vector3(e.posX, e.posY - e.getYOffset() + e.getHeight() / 2, e.posZ);
 	}
 
 	public static Vector3 fromTileEntity(TileEntity e) {
@@ -260,16 +258,6 @@ public class Vector3
 
 	public boolean isAxial() {
 		return x == 0 ? y == 0 || z == 0 : y == 0 && z == 0;
-	}
-
-	@OnlyIn(Dist.CLIENT)
-	public Vector3f vector3f() {
-		return new Vector3f((float)x, (float)y, (float)z);
-	}
-
-	@OnlyIn(Dist.CLIENT)
-	public Vector4f vector4f() {
-		return new Vector4f((float)x, (float)y, (float)z, 1);
 	}
 
 	@OnlyIn(Dist.CLIENT)

@@ -141,7 +141,7 @@ public final class SpellGrid {
 					p.y = newY;
 
 					for (SpellParam param : p.paramSides.keySet()) {
-						SpellParam.Dist side = p.paramSides.get(param);
+						SpellParam.Side side = p.paramSides.get(param);
 						p.paramSides.put(param, ccw ? side.rotateCCW() : side.rotateCW());
 					}
 				}
@@ -151,7 +151,7 @@ public final class SpellGrid {
 		gridData = newGrid;
 	}
 
-	public boolean shift(SpellParam.Dist side, boolean doit) {
+	public boolean shift(SpellParam.Side side, boolean doit) {
 		recalculateBoundaries();
 
 		if(empty)
@@ -187,7 +187,7 @@ public final class SpellGrid {
 		return x >= 0 && y >= 0 && x < GRID_SIZE && y < GRID_SIZE;
 	}
 
-	private SpellPiece getPieceAtSide(Multimap<SpellPiece, SpellParam.Dist> traversed, int x, int y, SpellParam.Dist side) throws SpellCompilationException {
+	private SpellPiece getPieceAtSide(Multimap<SpellPiece, SpellParam.Side> traversed, int x, int y, SpellParam.Side side) throws SpellCompilationException {
 		SpellPiece atSide = getPieceAtSideSafely(x, y, side);
 		if(traversed.containsEntry(atSide, side))
 			throw new SpellCompilationException(SpellCompilationException.INFINITE_LOOP);
@@ -198,46 +198,46 @@ public final class SpellGrid {
 
 	@Deprecated
 	@SuppressWarnings("unused")
-	public SpellPiece getPieceAtSideWithRedirections(List<SpellPiece> unused, int x, int y, SpellParam.Dist side) throws SpellCompilationException {
+	public SpellPiece getPieceAtSideWithRedirections(List<SpellPiece> unused, int x, int y, SpellParam.Side side) throws SpellCompilationException {
 		return getPieceAtSideWithRedirections(x, y, side);
 	}
 
-	public SpellPiece getPieceAtSideWithRedirections(int x, int y, SpellParam.Dist side) throws SpellCompilationException {
+	public SpellPiece getPieceAtSideWithRedirections(int x, int y, SpellParam.Side side) throws SpellCompilationException {
 		return getPieceAtSideWithRedirections(HashMultimap.create(), x, y, side);
 	}
 
-	public SpellPiece getPieceAtSideWithRedirections(Multimap<SpellPiece, SpellParam.Dist> traversed, int x, int y, SpellParam.Dist side) throws SpellCompilationException {
+	public SpellPiece getPieceAtSideWithRedirections(Multimap<SpellPiece, SpellParam.Side> traversed, int x, int y, SpellParam.Side side) throws SpellCompilationException {
 		SpellPiece atSide = getPieceAtSide(traversed, x, y, side);
 		if(!(atSide instanceof IGenericRedirector))
 			return atSide;
 
 		IGenericRedirector redirector = (IGenericRedirector) atSide;
-		SpellParam.Dist rside = redirector.remapSide(side);
+		SpellParam.Side rside = redirector.remapSide(side);
 		if(!rside.isEnabled())
 			return null;
 
 		return getPieceAtSideWithRedirections(traversed, atSide.x, atSide.y, rside);
 	}
 
-	public SpellPiece getPieceAtSideWithRedirections(int x, int y, SpellParam.Dist side, ISpellCompiler compiler) throws SpellCompilationException {
+	public SpellPiece getPieceAtSideWithRedirections(int x, int y, SpellParam.Side side, ISpellCompiler compiler) throws SpellCompilationException {
 		return getPieceAtSideWithRedirections(HashMultimap.create(), x, y, side, compiler);
 	}
 
-	public SpellPiece getPieceAtSideWithRedirections(Multimap<SpellPiece, SpellParam.Dist> traversed, int x, int y, SpellParam.Dist side, ISpellCompiler compiler) throws SpellCompilationException {
+	public SpellPiece getPieceAtSideWithRedirections(Multimap<SpellPiece, SpellParam.Side> traversed, int x, int y, SpellParam.Side side, ISpellCompiler compiler) throws SpellCompilationException {
 		SpellPiece atSide = getPieceAtSide(traversed, x, y, side);
 		if(!(atSide instanceof IGenericRedirector))
 			return atSide;
 
 		IGenericRedirector redirector = (IGenericRedirector) atSide;
 		compiler.buildRedirect(atSide);
-		SpellParam.Dist rside = redirector.remapSide(side);
+		SpellParam.Side rside = redirector.remapSide(side);
 		if(!rside.isEnabled())
 			return null;
 
 		return getPieceAtSideWithRedirections(traversed, atSide.x, atSide.y, rside, compiler);
 	}
 
-	public SpellPiece getPieceAtSideSafely(int x, int y, SpellParam.Dist side) {
+	public SpellPiece getPieceAtSideSafely(int x, int y, SpellParam.Side side) {
 		int xp = x + side.offx;
 		int yp = y + side.offy;
 		if(!exists(xp, yp))

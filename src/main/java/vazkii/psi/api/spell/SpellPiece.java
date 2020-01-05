@@ -18,8 +18,6 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.ModContainer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.psi.api.PsiAPI;
@@ -52,11 +50,11 @@ public abstract class SpellPiece {
 	public String comment;
 	
 	public final Map<String, SpellParam> params = new LinkedHashMap<>();
-	public final Map<SpellParam, SpellParam.Dist> paramSides = new LinkedHashMap<>();
+	public final Map<SpellParam, SpellParam.Side> paramSides = new LinkedHashMap<>();
 
 	public SpellPiece(Spell spell) {
 		this.spell = spell;
-		registryKey = PsiAPI.spellPieceRegistry.getNameForObject(getClass());
+		registryKey = PsiAPI.spellPieceRegistry.getKey(getClass()).toString();
 		initParams();
 	}
 
@@ -122,7 +120,7 @@ public abstract class SpellPiece {
 	 */
 	public void addParam(SpellParam param) {
 		params.put(param.name, param);
-		paramSides.put(param, SpellParam.Dist.OFF);
+		paramSides.put(param, SpellParam.Side.OFF);
 	}
 
 	/**
@@ -130,7 +128,7 @@ public abstract class SpellPiece {
 	 */
 	@SuppressWarnings("unchecked")
 	public <T> T getParamValue(SpellContext context, SpellParam param) {
-		SpellParam.Dist side = paramSides.get(param);
+		SpellParam.Side side = paramSides.get(param);
 		if(!side.isEnabled())
 			return null;
 
@@ -151,7 +149,7 @@ public abstract class SpellPiece {
 	 */
 	@SuppressWarnings("unchecked")
 	public <T> T getParamEvaluation(SpellParam param) throws SpellCompilationException {
-		SpellParam.Dist side = paramSides.get(param);
+		SpellParam.Side side = paramSides.get(param);
 		if(!side.isEnabled())
 			return null;
 
@@ -259,7 +257,7 @@ public abstract class SpellPiece {
 		Minecraft.getMinecraft().renderEngine.bindTexture(PsiAPI.internalHandler.getProgrammerTexture());
 		GlStateManager.enableAlpha();
 		for(SpellParam param : paramSides.keySet()) {
-			SpellParam.Dist side = paramSides.get(param);
+			SpellParam.Side side = paramSides.get(param);
 			if(side.isEnabled()) {
 				int minX = 4;
 				int minY = 4;
@@ -397,11 +395,11 @@ public abstract class SpellPiece {
 
 			String key = s;
 			if(paramCmp.hasKey(key))
-				paramSides.put(param, SpellParam.Dist.fromInt(paramCmp.getInteger(key)));
+				paramSides.put(param, SpellParam.Side.fromInt(paramCmp.getInteger(key)));
 			else {
 				if(key.startsWith(SpellParam.PSI_PREFIX))
 					key = "_" + key.substring(SpellParam.PSI_PREFIX.length());
-				paramSides.put(param, SpellParam.Dist.fromInt(paramCmp.getInteger(key)));
+				paramSides.put(param, SpellParam.Side.fromInt(paramCmp.getInteger(key)));
 			}
 		}
 		
@@ -418,7 +416,7 @@ public abstract class SpellPiece {
 		CompoundNBT paramCmp = new CompoundNBT();
 		for(String s : params.keySet()) {
 			SpellParam param = params.get(s);
-			SpellParam.Dist side = paramSides.get(param);
+			SpellParam.Side side = paramSides.get(param);
 			paramCmp.setInteger(s.replaceAll("^" + SpellParam.PSI_PREFIX, "_"), side.asInt());
 			paramCount++;
 		}
