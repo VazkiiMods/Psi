@@ -10,15 +10,17 @@
  */
 package vazkii.psi.common.block;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.HorizontalBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Rarity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.state.BooleanProperty;
+import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
@@ -28,9 +30,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import vazkii.arl.block.BlockFacing;
 import vazkii.psi.api.internal.VanillaPacketDispatcher;
 import vazkii.psi.api.spell.ISpellAcceptor;
 import vazkii.psi.common.Psi;
@@ -42,20 +43,19 @@ import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
 import vazkii.psi.common.core.handler.PsiSoundHandler;
 import vazkii.psi.common.lib.LibBlockNames;
 import vazkii.psi.common.lib.LibGuiIDs;
+import vazkii.psi.common.lib.LibMisc;
 
-import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.UUID;
 
-public class BlockProgrammer extends BlockFacing implements IPsiBlock {
+public class BlockProgrammer extends HorizontalBlock implements IPsiBlock {
 
-	public static final PropertyBool ENABLED = PropertyBool.create("enabled");
+	public static final BooleanProperty ENABLED = BooleanProperty.create("enabled");
 
 	public BlockProgrammer() {
-		super(LibBlockNames.PROGRAMMER, Material.IRON);
-		setHardness(5.0F);
-		setResistance(10.0F);
-		setSoundType(SoundType.METAL);
-		setCreativeTab(PsiCreativeTab.INSTANCE);
+		super(Block.Properties.create(Material.IRON).hardnessAndResistance(5, 10).sound(SoundType.METAL));
+		setRegistryName(LibMisc.MOD_ID, LibBlockNames.PROGRAMMER);
+		setDefaultState(getStateContainer().getBaseState().with(HORIZONTAL_FACING, Direction.NORTH).with(ENABLED, false));
 	}
 
 	@Override
@@ -65,7 +65,7 @@ public class BlockProgrammer extends BlockFacing implements IPsiBlock {
 		if (programmer == null)
 			return true;
 
-		if(!playerIn.capabilities.isCreativeMode) {
+		if(!playerIn.abilities.isCreativeMode) {
 			PlayerData data = PlayerDataHandler.get(playerIn);
 			if(data.spellGroupsUnlocked.isEmpty()) {
 				if(!worldIn.isRemote)
@@ -115,24 +115,10 @@ public class BlockProgrammer extends BlockFacing implements IPsiBlock {
 		
 		return ActionResultType.PASS;
 	}
-	
-	@Override
-	public BlockState makeDefaultState() {
-		return super.makeDefaultState().withProperty(ENABLED, false);
-	}
 
-	@Nonnull
 	@Override
-	@SuppressWarnings("deprecation")
-	public BlockState getActualState(@Nonnull BlockState state, IBlockAccess worldIn, BlockPos pos) {
-		TileEntity tile = worldIn.getTileEntity(pos);
-		return state.withProperty(ENABLED, tile instanceof TileProgrammer && ((TileProgrammer) tile).isEnabled());
-	}
-
-	@Nonnull
-	@Override
-	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, FACING, ENABLED);
+	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+		builder.add(HORIZONTAL_FACING, ENABLED);
 	}
 
 	@Override
@@ -152,8 +138,9 @@ public class BlockProgrammer extends BlockFacing implements IPsiBlock {
 		return Rarity.UNCOMMON;
 	}
 
+	@Nullable
 	@Override
-	public TileEntity createNewTileEntity(@Nonnull World worldIn, int meta) {
+	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
 		return new TileProgrammer();
 	}
 

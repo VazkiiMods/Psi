@@ -24,11 +24,7 @@ import vazkii.psi.common.block.base.ModBlocks;
 import java.util.Arrays;
 
 public class TileConjured extends TileMod {
-
-	private static final String TAG_TIME_LEGACY = "time";
 	private static final String TAG_COLORIZER = "colorizer";
-
-	private int time = -1; // Legacy only
 
 	public ItemStack colorizer = ItemStack.EMPTY;
 
@@ -42,24 +38,23 @@ public class TileConjured extends TileMod {
 		float b = PsiRenderHelper.b(color) / 255F;
 
 		BlockState state = getWorld().getBlockState(getPos());
-		state = state.getActualState(getWorld(), getPos());
 
-		if(state.getBlock() == ModBlocks.conjured && state.getValue(BlockConjured.SOLID)) {
+		if(state.getBlock() == ModBlocks.conjured && state.get(BlockConjured.SOLID)) {
 			// http://cns-alumni.bu.edu/~lavanya/Graphics/cs580/p5/web-page/cube_edges.gif
 			boolean[] edges = new boolean[12];
 			Arrays.fill(edges, true);
 
-			if(state.getValue(BlockConjured.BLOCK_DOWN))
+			if(state.get(BlockConjured.BLOCK_DOWN))
 				removeEdges(edges, 0, 1, 2, 3);
-			if(state.getValue(BlockConjured.BLOCK_UP))
+			if(state.get(BlockConjured.BLOCK_UP))
 				removeEdges(edges, 4, 5, 6, 7);
-			if(state.getValue(BlockConjured.BLOCK_NORTH))
+			if(state.get(BlockConjured.BLOCK_NORTH))
 				removeEdges(edges, 3, 7, 8, 11);
-			if(state.getValue(BlockConjured.BLOCK_SOUTH))
+			if(state.get(BlockConjured.BLOCK_SOUTH))
 				removeEdges(edges, 1, 5, 9, 10);
-			if(state.getValue(BlockConjured.BLOCK_EAST))
+			if(state.get(BlockConjured.BLOCK_EAST))
 				removeEdges(edges, 2, 6, 10, 11);
-			if(state.getValue(BlockConjured.BLOCK_WEST))
+			if(state.get(BlockConjured.BLOCK_WEST))
 				removeEdges(edges, 0, 4, 8, 9);
 
 			double x = getPos().getX();
@@ -115,28 +110,17 @@ public class TileConjured extends TileMod {
 	}
 
 	@Override
-	public void onLoad() {
-		if (time > 0) {
-			world.scheduleUpdate(pos, world.getBlockState(pos).getBlock(), time);
-			time = -1;
-		}
-	}
-
-	@Override
 	public void writeSharedNBT(CompoundNBT cmp) {
 		CompoundNBT stackCmp = new CompoundNBT();
 		if(!colorizer.isEmpty())
-			colorizer.writeToNBT(stackCmp);
-		cmp.setTag(TAG_COLORIZER, stackCmp);
+			stackCmp = colorizer.write(stackCmp);
+		cmp.put(TAG_COLORIZER, stackCmp);
 	}
 
 	@Override
 	public void readSharedNBT(CompoundNBT cmp) {
-		if (cmp.hasKey(TAG_TIME_LEGACY, Constants.NBT.TAG_ANY_NUMERIC))
-			time = cmp.getInteger(TAG_TIME_LEGACY);
-
-		CompoundNBT stackCmp = cmp.getCompoundTag(TAG_COLORIZER);
-		colorizer = new ItemStack(stackCmp);
+		CompoundNBT stackCmp = cmp.getCompound(TAG_COLORIZER);
+		colorizer = ItemStack.read(stackCmp);
 	}
 
 }

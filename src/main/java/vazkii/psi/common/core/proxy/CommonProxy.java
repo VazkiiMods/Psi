@@ -45,7 +45,6 @@ public class CommonProxy {
 		ConfigHandler.init(event.getSuggestedConfigurationFile());
 
 		ModItems.preInit();
-		ModBlocks.preInit();
 		ModEntities.init();
 		ModSpellPieces.init();
 		ModCraftingRecipes.init();
@@ -56,11 +55,6 @@ public class CommonProxy {
 		NetworkRegistry.INSTANCE.registerGuiHandler(Psi.instance, new GuiHandler());
 	}
 	
-	public void init(FMLInitializationEvent event) {
-		ModItems.init();
-		ModBlocks.init();
-	}
-
 	public PlayerEntity getClientPlayer() {
 		return null;
 	}

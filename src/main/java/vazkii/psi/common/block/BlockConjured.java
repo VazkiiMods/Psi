@@ -11,32 +11,34 @@
 package vazkii.psi.common.block;
 
 import com.google.common.collect.Sets;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.state.BlockFaceShape;
-import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.BlockItem;
+import net.minecraft.state.BooleanProperty;
+import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import vazkii.arl.block.BlockModContainer;
 import vazkii.psi.common.block.base.IPsiBlock;
 import vazkii.psi.common.block.tile.TileConjured;
 import vazkii.psi.common.lib.LibBlockNames;
@@ -48,31 +50,31 @@ import java.util.Random;
 import java.util.Set;
 
 @Mod.EventBusSubscriber(modid = LibMisc.MOD_ID)
-public class BlockConjured extends BlockModContainer implements IPsiBlock {
+public class BlockConjured extends Block implements IPsiBlock {
 
-	public static final PropertyBool SOLID = PropertyBool.create("solid");
-	public static final PropertyBool LIGHT = PropertyBool.create("light");
-	public static final PropertyBool BLOCK_UP = PropertyBool.create("block_up");
-	public static final PropertyBool BLOCK_DOWN = PropertyBool.create("block_down");
-	public static final PropertyBool BLOCK_NORTH = PropertyBool.create("block_north");
-	public static final PropertyBool BLOCK_SOUTH = PropertyBool.create("block_south");
-	public static final PropertyBool BLOCK_WEST = PropertyBool.create("block_west");
-	public static final PropertyBool BLOCK_EAST = PropertyBool.create("block_east");
+	public static final BooleanProperty SOLID = BooleanProperty.create("solid");
+	public static final BooleanProperty LIGHT = BooleanProperty.create("light");
+	public static final BooleanProperty BLOCK_UP = BooleanProperty.create("block_up");
+	public static final BooleanProperty BLOCK_DOWN = BooleanProperty.create("block_down");
+	public static final BooleanProperty BLOCK_NORTH = BooleanProperty.create("block_north");
+	public static final BooleanProperty BLOCK_SOUTH = BooleanProperty.create("block_south");
+	public static final BooleanProperty BLOCK_WEST = BooleanProperty.create("block_west");
+	public static final BooleanProperty BLOCK_EAST = BooleanProperty.create("block_east");
 
 	@SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
 	private static final Set<BlockPos> needsParticleUpdate = Sets.newHashSet();
 
-	protected static final AxisAlignedBB LIGHT_AABB = new AxisAlignedBB(0.25, 0.25, 0.25, 0.75, 0.75, 0.75);
+	protected static final VoxelShape LIGHT_SHAPE = Block.makeCuboidShape(4, 4, 4, 12, 12, 12);
 	
 	public BlockConjured() {
-		super(LibBlockNames.CONJURED, Material.GLASS);
-		setDefaultState(makeDefaultState());
-		setLightOpacity(0);
+		super(Block.Properties.create(Material.GLASS).variableOpacity().noDrops());
+		setRegistryName(LibMisc.MOD_ID, LibBlockNames.CONJURED);
+		setDefaultState(getStateContainer().getBaseState().with(LIGHT, false).with(SOLID, false));
 	}
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void randomDisplayTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand) {
+	public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand) {
 		TileEntity inWorld = worldIn.getTileEntity(pos);
 		if (inWorld instanceof TileConjured)
 			needsParticleUpdate.add(pos.toImmutable());
@@ -81,7 +83,7 @@ public class BlockConjured extends BlockModContainer implements IPsiBlock {
 	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
 	public static void fireParticles(TickEvent.ClientTickEvent event) {
-		if (event.side.isClient() && event.phase == TickEvent.Phase.END) {
+		if (event.phase == TickEvent.Phase.END) {
 			World world = Minecraft.getInstance().world;
 			Entity viewPoint = Minecraft.getInstance().getRenderViewEntity();
 			if (viewPoint == null)
@@ -92,7 +94,7 @@ public class BlockConjured extends BlockModContainer implements IPsiBlock {
 				if (view == null || world == null)
 					return true;
 
-				if (world.isBlockLoaded(pos) && view.getDistanceSq(pos) <= 64 * 64) {
+				if (world.isBlockLoaded(pos) && view.getDistanceSq(pos.getX(), pos.getY(), pos.getZ()) <= 64 * 64) {
 					TileEntity inWorld = world.getTileEntity(pos);
 					if (inWorld instanceof TileConjured) {
 						((TileConjured) inWorld).doParticles();
@@ -105,40 +107,14 @@ public class BlockConjured extends BlockModContainer implements IPsiBlock {
 		}
 	}
 
-	@SubscribeEvent
-	public static void ignoreMissingItem(RegistryEvent.MissingMappings<Item> event) {
-		for (RegistryEvent.MissingMappings.Mapping<Item> mapping : event.getMappings())
-			if (mapping.key.getPath().equals(LibBlockNames.CONJURED))
-				mapping.ignore();
+	@Override
+	public void tick(BlockState state, World world, BlockPos pos, Random rand) {
+		world.removeBlock(pos, false);
 	}
 
 	@Override
-	public void updateTick(World worldIn, BlockPos pos, BlockState state, Random rand) {
-		worldIn.setBlockToAir(pos);
-	}
-
-	@Override
-	public BlockItem createItemBlock(ResourceLocation res) {
-		return null;
-	}
-
-	public BlockState makeDefaultState() {
-		return getStateFromMeta(0);
-	}
-
-	@Nonnull
-	@Override
-	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, getAllProperties());
-	}
-
-	@Override
-	public IProperty[] getIgnoredProperties() {
-		return getAllProperties();
-	}
-
-	public IProperty[] getAllProperties() {
-		return new IProperty[] { SOLID, LIGHT, BLOCK_UP, BLOCK_DOWN, BLOCK_NORTH, BLOCK_SOUTH, BLOCK_WEST, BLOCK_EAST };
+	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+		builder.add(SOLID, LIGHT, BLOCK_UP, BLOCK_DOWN, BLOCK_NORTH, BLOCK_SOUTH, BLOCK_WEST, BLOCK_EAST);
 	}
 
 	@Nonnull
@@ -165,72 +141,50 @@ public class BlockConjured extends BlockModContainer implements IPsiBlock {
 		return false;
 	}
 
+	@Nonnull
 	@Override
-	public int quantityDropped(Random random) {
-		return 0;
+	public BlockState updatePostPlacement(@Nonnull BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos) {
+		BooleanProperty prop;
+		switch (facing) {
+			default:
+			case DOWN: prop = BLOCK_DOWN; break;
+			case UP: prop = BLOCK_UP; break;
+			case NORTH: prop = BLOCK_NORTH; break;
+			case SOUTH: prop = BLOCK_SOUTH; break;
+			case WEST: prop = BLOCK_WEST; break;
+			case EAST: prop = BLOCK_EAST; break;
+		}
+
+		if (state.getBlock() == facingState.getBlock() && state.get(LIGHT) == facingState.get(LIGHT) && state.get(SOLID) == facingState.get(SOLID)) {
+			return state.with(prop, true);
+		} else {
+			return state.with(prop, false);
+		}
 	}
 
 	@Override
-	public boolean canSilkHarvest(World world, BlockPos pos, @Nonnull BlockState state, PlayerEntity player) {
-		return false;
+	public int getLightValue(BlockState state) {
+		return state.get(LIGHT) ? 15 : 0;
 	}
 
 	@Nonnull
 	@Override
-	@SuppressWarnings("deprecation")
-	public BlockState getStateFromMeta(int meta) {
-		BlockState state = getDefaultState();
-		return state.withProperty(SOLID, (meta & 0b01) != 0).withProperty(LIGHT, (meta & 0b10) != 0);
+	public VoxelShape getCollisionShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context) {
+		return state.get(SOLID) ? VoxelShapes.fullCube() : VoxelShapes.empty();
 	}
 
 	@Override
-	public int getMetaFromState(BlockState state) {
-		return (state.getValue(SOLID) ? 0b01 : 0) | (state.getValue(LIGHT) ? 0b10 : 0);
-	}
-
-	@Nonnull
-	@Override
-	@SuppressWarnings("deprecation")
-	public BlockState getActualState(@Nonnull BlockState state, IBlockAccess worldIn, BlockPos pos) {
-		BlockState origState = state;
-		state = state.withProperty(BLOCK_UP, worldIn.getBlockState(pos.up()).equals(origState));
-		state = state.withProperty(BLOCK_DOWN, worldIn.getBlockState(pos.down()).equals(origState));
-		state = state.withProperty(BLOCK_NORTH, worldIn.getBlockState(pos.north()).equals(origState));
-		state = state.withProperty(BLOCK_SOUTH, worldIn.getBlockState(pos.south()).equals(origState));
-		state = state.withProperty(BLOCK_WEST, worldIn.getBlockState(pos.west()).equals(origState));
-		state = state.withProperty(BLOCK_EAST, worldIn.getBlockState(pos.east()).equals(origState));
-
-		return state;
+	public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context) {
+	    return state.get(SOLID) ? VoxelShapes.fullCube() : LIGHT_SHAPE;
 	}
 
 	@Override
-	public int getLightValue(BlockState state, IBlockAccess world, BlockPos pos) {
-		return state.getValue(LIGHT) ? 15 : 0;
+	public boolean hasTileEntity(BlockState state) {
+		return true;
 	}
 
-	@Nullable
 	@Override
-	@SuppressWarnings("deprecation")
-	public AxisAlignedBB getCollisionBoundingBox(BlockState blockState, @Nonnull IBlockAccess worldIn, @Nonnull BlockPos pos) {
-		return blockState.getValue(SOLID) ? FULL_BLOCK_AABB : NULL_AABB;
-	}
-
-	@Nonnull
-	@Override
-	@SuppressWarnings("deprecation")
-	public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess world, BlockPos pos) {
-		return state.getValue(SOLID) ? FULL_BLOCK_AABB : LIGHT_AABB;
-	}
-
-	@Nonnull
-	@Override
-	@SuppressWarnings("deprecation")
-	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face) {
-		return BlockFaceShape.UNDEFINED;
-	}
-	
-	@Override
-	public TileEntity createTileEntity(@Nonnull World world, @Nonnull BlockState state) {
+	public TileEntity createTileEntity(@Nonnull BlockState state, IBlockReader world) {
 		return new TileConjured();
 	}
 

@@ -10,6 +10,7 @@
  */
 package vazkii.psi.common.block;
 
+import net.minecraft.block.HorizontalBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.BlockState;
@@ -42,7 +43,7 @@ import java.util.Random;
 
 import static net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY;
 
-public class BlockCADAssembler extends BlockFacing implements IPsiBlock {
+public class BlockCADAssembler extends HorizontalBlock implements IPsiBlock {
 
 	final Random random;
 

@@ -10,9 +10,16 @@
  */
 package vazkii.psi.common.block.base;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.Item;
+import net.minecraft.tileentity.TileEntityType;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.IForgeRegistry;
 import vazkii.psi.common.block.BlockCADAssembler;
 import vazkii.psi.common.block.BlockConjured;
 import vazkii.psi.common.block.BlockProgrammer;
@@ -21,39 +28,63 @@ import vazkii.psi.common.block.tile.TileCADAssembler;
 import vazkii.psi.common.block.tile.TileConjured;
 import vazkii.psi.common.block.tile.TileProgrammer;
 import vazkii.psi.common.lib.LibBlockNames;
-import vazkii.psi.common.lib.LibResources;
+import vazkii.psi.common.lib.LibMisc;
 
+import static vazkii.psi.common.item.base.ModItems.defaultBuilder;
+
+@Mod.EventBusSubscriber(modid = LibMisc.MOD_ID)
 public class ModBlocks {
 
-	public static BlockMod cadAssembler;
-	public static BlockMod programmer;
-	public static BlockMod psiDecorative;
-	public static BlockMod conjured;
+	public static final Block cadAssembler = new BlockCADAssembler();
+	public static final Block programmer = new BlockProgrammer();
+	public static final Block conjured = new BlockConjured();
+	public static final Block psidustBlock = new BlockPsiDecorative(Block.Properties.create(Material.IRON).hardnessAndResistance(5, 10).sound(SoundType.METAL));
+	public static final Block psimetalBlock = new BlockPsiDecorative(Block.Properties.create(Material.IRON).hardnessAndResistance(5, 10).sound(SoundType.METAL));
+	public static final Block psigemBlock = new BlockPsiDecorative(Block.Properties.create(Material.IRON).hardnessAndResistance(5, 10).sound(SoundType.METAL));
+	public static final Block psimetalPlateBlack = new BlockPsiDecorative(Block.Properties.create(Material.IRON).hardnessAndResistance(5, 10).sound(SoundType.METAL));
+	public static final Block psimetalPlateBlackLight = new BlockPsiDecorative(Block.Properties.create(Material.IRON).hardnessAndResistance(5, 10).sound(SoundType.METAL).lightValue(15));
+	public static final Block psimetalPlateWhite = new BlockPsiDecorative(Block.Properties.create(Material.IRON).hardnessAndResistance(5, 10).sound(SoundType.METAL));
+	public static final Block psimetalPlateWhiteLight = new BlockPsiDecorative(Block.Properties.create(Material.IRON).hardnessAndResistance(5, 10).sound(SoundType.METAL).lightValue(15));
+	public static final Block psimetalEbony = new BlockPsiDecorative(Block.Properties.create(Material.IRON).hardnessAndResistance(5, 10).sound(SoundType.METAL));
+	public static final Block psimetalIvory = new BlockPsiDecorative(Block.Properties.create(Material.IRON).hardnessAndResistance(5, 10).sound(SoundType.METAL));
 
-	public static void preInit() {
-		cadAssembler = new BlockCADAssembler();
-		programmer = new BlockProgrammer();
-		psiDecorative = new BlockPsiDecorative();
-		conjured = new BlockConjured();
+	@SubscribeEvent
+	public static void registerBlocks(RegistryEvent.Register<Block> evt) {
+		IForgeRegistry<Block> r = evt.getRegistry();
+		r.registerAll(cadAssembler, programmer, conjured);
+		r.register(psidustBlock.setRegistryName(LibMisc.MOD_ID, LibBlockNames.PSIDUST_BLOCK));
+		r.register(psimetalBlock.setRegistryName(LibMisc.MOD_ID, LibBlockNames.PSIMETAL_BLOCK));
+		r.register(psigemBlock.setRegistryName(LibMisc.MOD_ID, LibBlockNames.PSIGEM_BLOCK));
+		r.register(psimetalPlateBlack.setRegistryName(LibMisc.MOD_ID, LibBlockNames.PSIMETAL_PLATE_BLACK));
+		r.register(psimetalPlateBlackLight.setRegistryName(LibMisc.MOD_ID, LibBlockNames.PSIMETAL_PLATE_BLACK_LIGHT));
+		r.register(psimetalPlateWhite.setRegistryName(LibMisc.MOD_ID, LibBlockNames.PSIMETAL_PLATE_WHITE));
+		r.register(psimetalPlateWhiteLight.setRegistryName(LibMisc.MOD_ID, LibBlockNames.PSIMETAL_PLATE_WHITE_LIGHT));
+		r.register(psimetalEbony.setRegistryName(LibMisc.MOD_ID, LibBlockNames.EBONY_PSIMETAL_BLOCK));
+		r.register(psimetalIvory.setRegistryName(LibMisc.MOD_ID, LibBlockNames.IVORY_PSIMETAL_BLOCK));
+	}
 
-		initTileEntities();
+	@SubscribeEvent
+	public static void registerItemBlocks(RegistryEvent.Register<Item> evt) {
+		IForgeRegistry<Item> r = evt.getRegistry();
+		r.register(new BlockItem(cadAssembler, defaultBuilder()).setRegistryName(cadAssembler.getRegistryName()));
+		r.register(new BlockItem(programmer, defaultBuilder()).setRegistryName(programmer.getRegistryName()));
+		r.register(new BlockItem(psidustBlock, defaultBuilder()).setRegistryName(psidustBlock.getRegistryName()));
+		r.register(new BlockItem(psimetalBlock, defaultBuilder()).setRegistryName(psigemBlock.getRegistryName()));
+		r.register(new BlockItem(psigemBlock, defaultBuilder()).setRegistryName(psigemBlock.getRegistryName()));
+		r.register(new BlockItem(psimetalPlateBlack, defaultBuilder()).setRegistryName(psimetalPlateBlack.getRegistryName()));
+		r.register(new BlockItem(psimetalPlateBlackLight, defaultBuilder()).setRegistryName(psimetalPlateBlackLight.getRegistryName()));
+		r.register(new BlockItem(psimetalPlateWhite, defaultBuilder()).setRegistryName(psimetalPlateWhite.getRegistryName()));
+		r.register(new BlockItem(psimetalPlateWhiteLight, defaultBuilder()).setRegistryName(psimetalPlateWhiteLight.getRegistryName()));
+		r.register(new BlockItem(psimetalEbony, defaultBuilder()).setRegistryName(psimetalEbony.getRegistryName()));
+		r.register(new BlockItem(psimetalIvory, defaultBuilder()).setRegistryName(psimetalIvory.getRegistryName()));
 	}
 	
-	public static void init() {
-		// Psi oredict mappings
-		OreDictionary.registerOre("blockPsiDust", new ItemStack(psiDecorative, 1, 0));
-		OreDictionary.registerOre("blockPsiMetal", new ItemStack(psiDecorative, 1, 1));
-		OreDictionary.registerOre("blockPsiGem", new ItemStack(psiDecorative, 1, 2));
-	}
-
-	private static void initTileEntities() {
-		registerTile(TileCADAssembler.class, LibBlockNames.CAD_ASSEMBLER);
-		registerTile(TileProgrammer.class, LibBlockNames.PROGRAMMER);
-		registerTile(TileConjured.class, LibBlockNames.CONJURED);
-	}
-
-	private static void registerTile(Class<? extends TileEntity> clazz, String key) {
-		GameRegistry.registerTileEntity(clazz, LibResources.PREFIX_MOD + key);
+	@SubscribeEvent
+	public static void initTileEntities(RegistryEvent.Register<TileEntityType<?>> evt) {
+		IForgeRegistry<TileEntityType<?>> r = evt.getRegistry();
+		r.register(TileEntityType.Builder.create(TileCADAssembler::new, cadAssembler).build(null).setRegistryName(cadAssembler.getRegistryName()));
+		r.register(TileEntityType.Builder.create(TileProgrammer::new, programmer).build(null).setRegistryName(programmer.getRegistryName()));
+		r.register(TileEntityType.Builder.create(TileConjured::new, conjured).build(null).setRegistryName(conjured.getRegistryName()));
 	}
 
 }

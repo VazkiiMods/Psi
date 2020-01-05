@@ -14,6 +14,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import vazkii.arl.block.tile.TileMod;
 import vazkii.psi.api.spell.Spell;
+import vazkii.psi.common.block.BlockProgrammer;
 import vazkii.psi.common.spell.SpellCompiler;
 
 public class TileProgrammer extends TileMod {
@@ -37,8 +38,9 @@ public class TileProgrammer extends TileMod {
 	public void onSpellChanged() {
 		boolean wasEnabled = enabled;
 		enabled = isEnabled();
-		if(wasEnabled != enabled)
-			getWorld().markBlockRangeForRenderUpdate(pos, pos);
+		if(wasEnabled != enabled) {
+			getWorld().setBlockState(pos, getBlockState().with(BlockProgrammer.ENABLED, enabled));
+		}
 	}
 
 	@Override
@@ -48,15 +50,15 @@ public class TileProgrammer extends TileMod {
 		CompoundNBT spellCmp = new CompoundNBT();
 		if(spell != null)
 			spell.writeToNBT(spellCmp);
-		cmp.setTag(TAG_SPELL, spellCmp);
-		cmp.setString(TAG_PLAYER_LOCK, playerLock);
+		cmp.put(TAG_SPELL, spellCmp);
+		cmp.putString(TAG_PLAYER_LOCK, playerLock);
 	}
 
 	@Override
 	public void readSharedNBT(CompoundNBT cmp) {
 		super.readSharedNBT(cmp);
 
-		CompoundNBT spellCmp = cmp.getCompoundTag(TAG_SPELL);
+		CompoundNBT spellCmp = cmp.getCompound(TAG_SPELL);
 		if(spell == null)
 			spell = Spell.createFromNBT(spellCmp);
 		else spell.readFromNBT(spellCmp);
@@ -64,7 +66,7 @@ public class TileProgrammer extends TileMod {
 	}
 	
 	public boolean canPlayerInteract(PlayerEntity player) {
-		return !player.isDead && player.getDistanceSq((double)this.pos.getX() + 0.5D, (double)this.pos.getY() + 0.5D, (double)this.pos.getZ() + 0.5D) <= 64.0D;
+		return player.isAlive() && player.getDistanceSq((double)this.pos.getX() + 0.5D, (double)this.pos.getY() + 0.5D, (double)this.pos.getZ() + 0.5D) <= 64.0D;
 	}
 
 }

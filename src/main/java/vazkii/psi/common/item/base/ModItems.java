@@ -10,10 +10,12 @@
  */
 package vazkii.psi.common.item.base;
 
+import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import vazkii.arl.item.*;
+import vazkii.psi.common.core.PsiCreativeTab;
 import vazkii.psi.common.item.ItemCAD;
 import vazkii.psi.common.item.ItemDetonator;
 import vazkii.psi.common.item.ItemExosuitController;
@@ -63,6 +65,10 @@ public final class ModItems {
 	public static ItemModArmor psimetalExosuitChestplate;
 	public static ItemModArmor psimetalExosuitLeggings;
 	public static ItemModArmor psimetalExosuitBoots;
+
+	public static Item.Properties defaultBuilder() {
+		return new Item.Properties().group(PsiCreativeTab.INSTANCE);
+	}
 
 	public static void preInit() {
 		material = new ItemMaterial();

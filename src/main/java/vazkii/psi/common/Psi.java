@@ -45,11 +45,6 @@ public class Psi {
 	}
 	
 	@EventHandler
-	public void init(FMLInitializationEvent event) {
-		proxy.init(event);
-	}
-
-	@EventHandler
 	public void serverStartingEvent(FMLServerStartingEvent event) {
 		event.registerServerCommand(new CommandPsiLearn());
 		event.registerServerCommand(new CommandPsiUnlearn());
