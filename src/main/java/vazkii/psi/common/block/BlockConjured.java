@@ -16,16 +16,11 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.BlockItem;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
@@ -33,24 +28,21 @@ import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import vazkii.psi.common.block.base.IPsiBlock;
 import vazkii.psi.common.block.tile.TileConjured;
 import vazkii.psi.common.lib.LibBlockNames;
 import vazkii.psi.common.lib.LibMisc;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.Random;
 import java.util.Set;
 
 @Mod.EventBusSubscriber(modid = LibMisc.MOD_ID)
-public class BlockConjured extends Block implements IPsiBlock {
+public class BlockConjured extends Block {
 
 	public static final BooleanProperty SOLID = BooleanProperty.create("solid");
 	public static final BooleanProperty LIGHT = BooleanProperty.create("light");

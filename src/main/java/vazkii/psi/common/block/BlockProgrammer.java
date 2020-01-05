@@ -35,9 +35,7 @@ import net.minecraft.world.World;
 import vazkii.psi.api.internal.VanillaPacketDispatcher;
 import vazkii.psi.api.spell.ISpellAcceptor;
 import vazkii.psi.common.Psi;
-import vazkii.psi.common.block.base.IPsiBlock;
 import vazkii.psi.common.block.tile.TileProgrammer;
-import vazkii.psi.common.core.PsiCreativeTab;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
 import vazkii.psi.common.core.handler.PsiSoundHandler;
@@ -48,7 +46,7 @@ import vazkii.psi.common.lib.LibMisc;
 import javax.annotation.Nullable;
 import java.util.UUID;
 
-public class BlockProgrammer extends HorizontalBlock implements IPsiBlock {
+public class BlockProgrammer extends HorizontalBlock {
 
 	public static final BooleanProperty ENABLED = BooleanProperty.create("enabled");
 

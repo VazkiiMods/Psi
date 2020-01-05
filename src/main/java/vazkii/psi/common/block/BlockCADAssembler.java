@@ -23,27 +23,22 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 import vazkii.arl.block.BlockFacing;
 import vazkii.arl.block.tile.TileSimpleInventory;
 import vazkii.arl.util.ItemNBTHelper;
 import vazkii.psi.common.Psi;
-import vazkii.psi.common.block.base.IPsiBlock;
 import vazkii.psi.common.block.tile.TileCADAssembler;
 import vazkii.psi.common.core.PsiCreativeTab;
 import vazkii.psi.common.lib.LibBlockNames;
 import vazkii.psi.common.lib.LibGuiIDs;
 
 import javax.annotation.Nonnull;
-import java.util.Optional;
 import java.util.Random;
 
 import static net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY;
 
-public class BlockCADAssembler extends HorizontalBlock implements IPsiBlock {
+public class BlockCADAssembler extends HorizontalBlock {
 
 	final Random random;
 

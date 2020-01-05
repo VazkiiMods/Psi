@@ -11,10 +11,9 @@
 package vazkii.psi.common.block;
 
 import net.minecraft.block.Block;
-import vazkii.psi.common.block.base.IPsiBlock;
 
 // todo 1.14 delete?
-public class BlockPsiDecorative extends Block implements IPsiBlock {
+public class BlockPsiDecorative extends Block {
 
 	public BlockPsiDecorative(Block.Properties props) {
 		super(props);
