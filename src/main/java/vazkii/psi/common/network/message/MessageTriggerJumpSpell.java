@@ -1,19 +1,15 @@
 package vazkii.psi.common.network.message;
 
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import vazkii.arl.network.NetworkMessage;
+import net.minecraftforge.fml.network.NetworkEvent;
+import vazkii.arl.network.IMessage;
 import vazkii.psi.api.exosuit.PsiArmorEvent;
 
-public class MessageTriggerJumpSpell extends NetworkMessage<MessageTriggerJumpSpell> {
+public class MessageTriggerJumpSpell implements IMessage {
 
 	@Override
-	public IMessage handleMessage(MessageContext context) {
-		ServerPlayerEntity player = context.getServerHandler().player;
-		player.getServerWorld().addScheduledTask(() -> PsiArmorEvent.post(new PsiArmorEvent(player, PsiArmorEvent.JUMP)));
-		
-		return null;
+	public boolean receive(NetworkEvent.Context context) {
+		context.enqueueWork(() -> PsiArmorEvent.post(new PsiArmorEvent(context.getSender(), PsiArmorEvent.JUMP)));
+		return true;
 	}
 	
 }

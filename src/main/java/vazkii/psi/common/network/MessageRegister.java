@@ -10,49 +10,52 @@
  */
 package vazkii.psi.common.network;
 
-import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraftforge.fml.common.network.ByteBufUtils;
-import net.minecraftforge.api.distmarker.Dist;
-import vazkii.arl.network.NetworkMessage;
+import net.minecraft.network.PacketBuffer;
+import net.minecraftforge.fml.network.NetworkDirection;
+import vazkii.arl.network.MessageSerializer;
 import vazkii.arl.network.NetworkHandler;
 import vazkii.psi.api.spell.Spell;
+import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.network.message.*;
 
+import java.lang.reflect.Field;
+
 public class MessageRegister {
+	private static final NetworkHandler HANDLER = new NetworkHandler(LibMisc.MOD_ID, 1);
 
 	@SuppressWarnings("unchecked")
 	public static void init() {
-		NetworkHandler.register(MessageLoopcastSync.class, Dist.CLIENT);
-		NetworkHandler.register(MessageDataSync.class, Dist.CLIENT);
-		NetworkHandler.register(MessageEidosSync.class, Dist.CLIENT);
-		NetworkHandler.register(MessageCADDataSync.class, Dist.CLIENT);
-		NetworkHandler.register(MessageDeductPsi.class, Dist.CLIENT);
-		NetworkHandler.register(MessageChangeSocketableSlot.class, Dist.SERVER);
-		NetworkHandler.register(MessageSpellModified.class, Dist.SERVER);
-		NetworkHandler.register(MessageLearnGroup.class, Dist.SERVER);
-		NetworkHandler.register(MessageSkipToLevel.class, Dist.SERVER);
-		NetworkHandler.register(MessageLevelUp.class, Dist.CLIENT);
-		NetworkHandler.register(MessageChangeControllerSlot.class, Dist.SERVER);
-		NetworkHandler.register(MessageTriggerJumpSpell.class, Dist.SERVER);
-		NetworkHandler.register(MessageVisualEffect.class, Dist.CLIENT);
-		NetworkHandler.register(MessageAdditiveMotion.class, Dist.CLIENT);
-		NetworkHandler.register(MessageBlink.class, Dist.CLIENT);
+		HANDLER.register(MessageLoopcastSync.class, NetworkDirection.PLAY_TO_CLIENT);
+		HANDLER.register(MessageDataSync.class, NetworkDirection.PLAY_TO_CLIENT);
+		HANDLER.register(MessageEidosSync.class, NetworkDirection.PLAY_TO_CLIENT);
+		HANDLER.register(MessageCADDataSync.class, NetworkDirection.PLAY_TO_CLIENT);
+		HANDLER.register(MessageDeductPsi.class, NetworkDirection.PLAY_TO_CLIENT);
+		HANDLER.register(MessageChangeSocketableSlot.class, NetworkDirection.PLAY_TO_SERVER);
+		HANDLER.register(MessageSpellModified.class, NetworkDirection.PLAY_TO_SERVER);
+		HANDLER.register(MessageLearnGroup.class, NetworkDirection.PLAY_TO_SERVER);
+		HANDLER.register(MessageSkipToLevel.class, NetworkDirection.PLAY_TO_SERVER);
+		HANDLER.register(MessageLevelUp.class, NetworkDirection.PLAY_TO_CLIENT);
+		HANDLER.register(MessageChangeControllerSlot.class, NetworkDirection.PLAY_TO_SERVER);
+		HANDLER.register(MessageTriggerJumpSpell.class, NetworkDirection.PLAY_TO_SERVER);
+		HANDLER.register(MessageVisualEffect.class, NetworkDirection.PLAY_TO_CLIENT);
+		HANDLER.register(MessageAdditiveMotion.class, NetworkDirection.PLAY_TO_CLIENT);
+		HANDLER.register(MessageBlink.class, NetworkDirection.PLAY_TO_CLIENT);
 
-		NetworkMessage.mapHandler(Spell.class, MessageRegister::readSpell, MessageRegister::writeSpell);
+		MessageSerializer.mapHandler(Spell.class, MessageRegister::readSpell, MessageRegister::writeSpell);
 	}
 
-	private static Spell readSpell(ByteBuf buf) {
-		CompoundNBT cmp = ByteBufUtils.readTag(buf);
+	private static Spell readSpell(PacketBuffer buf, Field f) {
+		CompoundNBT cmp = buf.readCompoundTag();
 		return Spell.createFromNBT(cmp);
 	}
 
-	private static void writeSpell(Spell spell, ByteBuf buf) {
+	private static void writeSpell(PacketBuffer buf, Field f, Spell spell) {
 		CompoundNBT cmp = new CompoundNBT();
 		if(spell != null)
 			spell.writeToNBT(cmp);
 
-		ByteBufUtils.writeTag(buf, cmp);
+		buf.writeCompoundTag(cmp);
 	}
 	
 }

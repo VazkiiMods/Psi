@@ -15,15 +15,13 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import vazkii.arl.network.NetworkMessage;
-import vazkii.arl.util.ClientTicker;
+import net.minecraftforge.fml.network.NetworkEvent;
+import vazkii.arl.network.IMessage;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 
-public class MessageLoopcastSync extends NetworkMessage<MessageLoopcastSync> {
+public class MessageLoopcastSync implements IMessage {
 
 	public int entityId;
 	public byte loopcastState;
@@ -37,15 +35,15 @@ public class MessageLoopcastSync extends NetworkMessage<MessageLoopcastSync> {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public IMessage handleMessage(MessageContext context) {
+	public boolean receive(NetworkEvent.Context context) {
 		boolean isLoopcasting = (loopcastState & 0b1) != 0;
 
 		Hand loopcastHand = isLoopcasting ?
 				((loopcastState & 0b10) != 0 ? Hand.OFF_HAND : Hand.MAIN_HAND) : null;
 
-		ClientTicker.addAction(() -> {
-			World world = Minecraft.getMinecraft().world;
-			PlayerEntity mcPlayer = Minecraft.getMinecraft().player;
+		context.enqueueWork(() -> {
+			World world = Minecraft.getInstance().world;
+			PlayerEntity mcPlayer = Minecraft.getInstance().player;
 			if (mcPlayer == null)
 				return;
 
@@ -62,7 +60,7 @@ public class MessageLoopcastSync extends NetworkMessage<MessageLoopcastSync> {
 			}
 		});
 
-		return null;
+		return true;
 	}
 
 }

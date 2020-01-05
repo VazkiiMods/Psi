@@ -11,12 +11,13 @@
 package vazkii.psi.common.network.message;
 
 import net.minecraft.util.math.BlockPos;
-import vazkii.arl.network.TileEntityMessage;
+import net.minecraftforge.fml.network.NetworkEvent;
+import vazkii.arl.network.message.AbstractTEMessage;
 import vazkii.psi.api.internal.VanillaPacketDispatcher;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.common.block.tile.TileProgrammer;
 
-public class MessageSpellModified extends TileEntityMessage<TileProgrammer> {
+public class MessageSpellModified extends AbstractTEMessage<TileProgrammer> {
 
 	public Spell spell;
 
@@ -28,16 +29,16 @@ public class MessageSpellModified extends TileEntityMessage<TileProgrammer> {
 	}
 
 	@Override
-	public Runnable getAction() {
-		return () -> {
+	public void receive(TileProgrammer tile, NetworkEvent.Context context) {
+		context.enqueueWork(() -> {
 			if(tile != null) {
-				if(tile.playerLock == null || tile.playerLock.isEmpty() || tile.playerLock.equals(context.getServerHandler().player.getName())) {
+				if(tile.playerLock == null || tile.playerLock.isEmpty() || tile.playerLock.equals(context.getSender().getName().getString())) {
 					tile.spell = spell;
 					tile.onSpellChanged();
 					VanillaPacketDispatcher.dispatchTEToNearbyPlayers(tile);
 				}
 			}
-		};
+		});
 	}
 
 }

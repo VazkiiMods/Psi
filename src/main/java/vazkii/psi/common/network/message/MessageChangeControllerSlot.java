@@ -13,13 +13,12 @@ package vazkii.psi.common.network.message;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
-import vazkii.arl.network.NetworkMessage;
+import net.minecraftforge.fml.network.NetworkEvent;
+import vazkii.arl.network.IMessage;
 import vazkii.psi.api.cad.ISocketableController;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 
-public class MessageChangeControllerSlot extends NetworkMessage<MessageChangeControllerSlot> {
+public class MessageChangeControllerSlot implements IMessage {
 
 	public int controlSlot;
 	public int slot;
@@ -32,19 +31,21 @@ public class MessageChangeControllerSlot extends NetworkMessage<MessageChangeCon
 	}
 
 	@Override
-	public IMessage handleMessage(MessageContext context) {
-		ServerPlayerEntity player = context.getServerHandler().player;
-		ItemStack stack = player.getHeldItem(Hand.MAIN_HAND);
-		if(!stack.isEmpty() && stack.getItem() instanceof ISocketableController) {
-			((ISocketableController) stack.getItem()).setSelectedSlot(player, stack, controlSlot, slot);
-		} else {
-			stack = player.getHeldItem(Hand.MAIN_HAND);
-			if(!stack.isEmpty() && stack.getItem() instanceof ISocketableController)
+	public boolean receive(NetworkEvent.Context context) {
+		context.enqueueWork(() -> {
+			ServerPlayerEntity player = context.getSender();
+			ItemStack stack = player.getHeldItem(Hand.MAIN_HAND);
+			if(!stack.isEmpty() && stack.getItem() instanceof ISocketableController) {
 				((ISocketableController) stack.getItem()).setSelectedSlot(player, stack, controlSlot, slot);
-		}
-		PlayerDataHandler.get(player).stopLoopcast();
+			} else {
+				stack = player.getHeldItem(Hand.MAIN_HAND);
+				if(!stack.isEmpty() && stack.getItem() instanceof ISocketableController)
+					((ISocketableController) stack.getItem()).setSelectedSlot(player, stack, controlSlot, slot);
+			}
+			PlayerDataHandler.get(player).stopLoopcast();
+		});
 
-		return null;
+		return true;
 	}
 
 }

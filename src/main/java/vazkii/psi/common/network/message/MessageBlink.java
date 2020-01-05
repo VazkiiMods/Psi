@@ -12,14 +12,12 @@ package vazkii.psi.common.network.message;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import vazkii.arl.network.NetworkMessage;
-import vazkii.arl.util.ClientTicker;
+import net.minecraftforge.fml.network.NetworkEvent;
+import vazkii.arl.network.IMessage;
 
-public class MessageBlink extends NetworkMessage<MessageBlink> {
+public class MessageBlink implements IMessage {
 	public double offX;
 	public double offY;
 	public double offZ;
@@ -36,12 +34,12 @@ public class MessageBlink extends NetworkMessage<MessageBlink> {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public IMessage handleMessage(MessageContext context) {
-		ClientTicker.addAction(() -> {
-			Entity entity = Minecraft.getMinecraft().player;
+	public boolean receive(NetworkEvent.Context context) {
+		context.enqueueWork(() -> {
+			Entity entity = Minecraft.getInstance().player;
 			if (entity != null)
 				entity.setPosition(entity.posX + offX, entity.posY + offY, entity.posZ + offZ);
 		});
-		return null;
+		return true;
 	}
 }

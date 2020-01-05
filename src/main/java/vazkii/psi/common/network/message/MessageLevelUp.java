@@ -10,12 +10,11 @@
  */
 package vazkii.psi.common.network.message;
 
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
-import vazkii.arl.network.NetworkMessage;
+import net.minecraftforge.fml.network.NetworkEvent;
+import vazkii.arl.network.IMessage;
 import vazkii.psi.common.Psi;
 
-public class MessageLevelUp extends NetworkMessage<MessageLevelUp> {
+public class MessageLevelUp implements IMessage {
 
 	public int level;
 
@@ -26,9 +25,9 @@ public class MessageLevelUp extends NetworkMessage<MessageLevelUp> {
 	}
 
 	@Override
-	public IMessage handleMessage(MessageContext context) {
-		Psi.proxy.onLevelUp(level);
-		return null;
+	public boolean receive(NetworkEvent.Context context) {
+		context.enqueueWork(() -> Psi.proxy.onLevelUp(level));
+		return true;
 	}
 
 }

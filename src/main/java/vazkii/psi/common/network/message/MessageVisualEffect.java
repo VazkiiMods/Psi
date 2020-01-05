@@ -11,17 +11,15 @@
 package vazkii.psi.common.network.message;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import vazkii.arl.network.NetworkMessage;
-import vazkii.arl.util.ClientTicker;
+import net.minecraftforge.fml.network.NetworkEvent;
+import vazkii.arl.network.IMessage;
 import vazkii.psi.common.Psi;
 
-public class MessageVisualEffect extends NetworkMessage<MessageVisualEffect> {
+public class MessageVisualEffect implements IMessage {
 
 	public static final int TYPE_CRAFT = 0;
 
@@ -48,13 +46,13 @@ public class MessageVisualEffect extends NetworkMessage<MessageVisualEffect> {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public IMessage handleMessage(MessageContext context) {
+	public boolean receive(NetworkEvent.Context context) {
 		float r = ((color >> 16) & 0xFF) / 255f;
 		float g = ((color >> 8) & 0xFF) / 255f;
 		float b = (color & 0xFF) / 255f;
-		World world = Minecraft.getMinecraft().world;
 
-		ClientTicker.addAction(() -> {
+		context.enqueueWork(() -> {
+			World world = Minecraft.getInstance().world;
 			switch (effectType) {
 				case TYPE_CRAFT:
 					for(int i = 0; i < 5; i++) {
@@ -71,7 +69,7 @@ public class MessageVisualEffect extends NetworkMessage<MessageVisualEffect> {
 							double d1 = world.rand.nextGaussian() * m;
 							double d2 = world.rand.nextGaussian() * m;
 
-							world.spawnParticle(EnumParticleTypes.EXPLOSION_NORMAL,
+							world.addParticle(ParticleTypes.EXPLOSION,
 									x + world.rand.nextFloat() * width * 2.0F - width - d0 * d3,
 									y + world.rand.nextFloat() * height - d1 * d3,
 									z + world.rand.nextFloat() * width * 2.0F - width - d2 * d3, d0, d1, d2);
@@ -81,7 +79,7 @@ public class MessageVisualEffect extends NetworkMessage<MessageVisualEffect> {
 			}
 		});
 
-		return null;
+		return true;
 	}
 
 }

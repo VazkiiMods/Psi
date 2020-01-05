@@ -14,14 +14,12 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import vazkii.arl.network.NetworkMessage;
-import vazkii.arl.util.ClientTicker;
+import net.minecraftforge.fml.network.NetworkEvent;
+import vazkii.arl.network.IMessage;
 
-public class MessageAdditiveMotion extends NetworkMessage<MessageAdditiveMotion> {
+public class MessageAdditiveMotion implements IMessage {
 
 	public int entityID;
 	public int motionX;
@@ -42,19 +40,17 @@ public class MessageAdditiveMotion extends NetworkMessage<MessageAdditiveMotion>
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public IMessage handleMessage(MessageContext context) {
-		ClientTicker.addAction(() -> {
-			World world = Minecraft.getMinecraft().world;
+	public boolean receive(NetworkEvent.Context context) {
+		context.enqueueWork(() -> {
+			World world = Minecraft.getInstance().world;
 			if (world != null) {
 				Entity entity = world.getEntityByID(entityID);
 				if (entity != null) {
-					entity.motionX += motionX / 8000.0;
-					entity.motionY += motionY / 8000.0;
-					entity.motionZ += motionZ / 8000.0;
+					entity.setMotion(entity.getMotion().add(motionX / 8000.0, motionY / 8000.0, motionZ / 8000.0));
 				}
 			}
 		});
 
-		return null;
+		return true;
 	}
 }

@@ -11,16 +11,14 @@
 package vazkii.psi.common.network.message;
 
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import vazkii.arl.network.NetworkMessage;
-import vazkii.arl.util.ClientTicker;
+import net.minecraftforge.fml.network.NetworkEvent;
+import vazkii.arl.network.IMessage;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 
-public class MessageEidosSync extends NetworkMessage<MessageEidosSync> {
+public class MessageEidosSync implements IMessage {
 
 	public int reversionTime;
 
@@ -32,8 +30,8 @@ public class MessageEidosSync extends NetworkMessage<MessageEidosSync> {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public IMessage handleMessage(MessageContext context) {
-		ClientTicker.addAction(() -> {
+	public boolean receive(NetworkEvent.Context context) {
+		context.enqueueWork(() -> {
 			PlayerEntity player = Psi.proxy.getClientPlayer();
 			if (player != null) {
 				PlayerDataHandler.PlayerData data = PlayerDataHandler.get(player);
@@ -42,7 +40,7 @@ public class MessageEidosSync extends NetworkMessage<MessageEidosSync> {
 			}
 		});
 
-		return null;
+		return true;
 	}
 
 }

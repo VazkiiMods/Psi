@@ -11,15 +11,14 @@
 package vazkii.psi.common.network.message;
 
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
-import vazkii.arl.network.NetworkMessage;
+import net.minecraftforge.fml.network.NetworkEvent;
+import vazkii.arl.network.IMessage;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.spell.PieceGroup;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
 
-public class MessageLearnGroup extends NetworkMessage<MessageLearnGroup> {
+public class MessageLearnGroup implements IMessage {
 
 	public String group;
 
@@ -30,14 +29,16 @@ public class MessageLearnGroup extends NetworkMessage<MessageLearnGroup> {
 	}
 
 	@Override
-	public IMessage handleMessage(MessageContext context) {
-		PlayerEntity player = context.getServerHandler().player;
-		PlayerData data = PlayerDataHandler.get(player);
-		PieceGroup group = PsiAPI.groupsForName.get(this.group);
-		if(data.getLevelPoints() > 0 && group.isAvailable(data))
-			data.unlockPieceGroup(group.name);
+	public boolean receive(NetworkEvent.Context context) {
+		context.enqueueWork(() -> {
+			PlayerEntity player = context.getSender();
+			PlayerData data = PlayerDataHandler.get(player);
+			PieceGroup group = PsiAPI.groupsForName.get(this.group);
+			if(data.getLevelPoints() > 0 && group.isAvailable(data))
+				data.unlockPieceGroup(group.name);
+		});
 
-		return null;
+		return true;
 	}
 
 }	

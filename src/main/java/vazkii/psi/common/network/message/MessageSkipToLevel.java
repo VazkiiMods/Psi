@@ -11,13 +11,12 @@
 package vazkii.psi.common.network.message;
 
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
-import vazkii.arl.network.NetworkMessage;
+import net.minecraftforge.fml.network.NetworkEvent;
+import vazkii.arl.network.IMessage;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
 
-public class MessageSkipToLevel extends NetworkMessage<MessageSkipToLevel> {
+public class MessageSkipToLevel implements IMessage {
 
 	public int level;
 
@@ -28,12 +27,14 @@ public class MessageSkipToLevel extends NetworkMessage<MessageSkipToLevel> {
 	}
 
 	@Override
-	public IMessage handleMessage(MessageContext context) {
-		PlayerEntity player = context.getServerHandler().player;
-		PlayerData data = PlayerDataHandler.get(player);
-		data.skipToLevel(level);
+	public boolean receive(NetworkEvent.Context context) {
+		context.enqueueWork(() -> {
+			PlayerEntity player = context.getSender();
+			PlayerData data = PlayerDataHandler.get(player);
+			data.skipToLevel(level);
+		});
 
-		return null;
+		return true;
 	}
 
 }
