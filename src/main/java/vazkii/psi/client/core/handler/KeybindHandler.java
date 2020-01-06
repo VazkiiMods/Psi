@@ -16,18 +16,19 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
-import org.lwjgl.input.Keyboard;
 import vazkii.psi.api.cad.ISocketableCapability;
 import vazkii.psi.api.cad.ISocketableController;
 import vazkii.psi.client.gui.GuiLeveling;
 import vazkii.psi.client.gui.GuiSocketSelect;
+
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_C;
 
 public class KeybindHandler {
 
 	public static KeyBinding keybind;
 
 	public static void init() {
-		keybind = new KeyBinding("psimisc.keybind", Keyboard.KEY_C, "key.categories.inventory");
+		keybind = new KeyBinding("psimisc.keybind", GLFW_KEY_C, "key.categories.inventory");
 		ClientRegistry.registerKeyBinding(keybind);
 	}
 

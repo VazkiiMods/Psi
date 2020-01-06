@@ -12,10 +12,9 @@ package vazkii.psi.client.core.handler;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.arl.util.ClientTicker;
@@ -38,8 +37,8 @@ public class ClientTickHandler {
 	}
 
 	@SubscribeEvent
-	public static void clientTickEnd(ClientTickEvent event) {
-		if(event.phase == Phase.END) {
+	public static void clientTickEnd(TickEvent.ClientTickEvent event) {
+		if(event.phase == TickEvent.Phase.END) {
 			updatePartialTicks();
 
 			Minecraft mc = Minecraft.getInstance();
@@ -49,7 +48,8 @@ public class ClientTickHandler {
 			HUDHandler.tick();
 
 			Screen gui = mc.currentScreen;
-			if(gui == null || !gui.doesGuiPauseGame()) {
+			//TODO WILLIE CHECK THIS
+			if(gui == null || !gui.isPauseScreen() ) {
 				if(gui == null && KeybindHandler.keybind.isKeyDown())
 					KeybindHandler.keyDown();
 			}

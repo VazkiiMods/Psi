@@ -16,9 +16,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.IngameGui;
-import net.minecraft.client.gui.ScaledResolution;
 import com.mojang.blaze3d.platform.GlStateManager;
-import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -125,13 +123,16 @@ public final class HUDHandler {
 			return;
 
 		GlStateManager.pushMatrix();
-		int scaleFactor = res.getScaleFactor();
+		//TODO CHECK: Is this an alternative to .getScaleFactor()?
+		double scaleFactor = res.getGuiScaleFactor();
+
 
 		if (scaleFactor > ConfigHandler.maxPsiBarScale) {
 			int guiScale = mc.gameSettings.guiScale;
 
 			mc.gameSettings.guiScale = ConfigHandler.maxPsiBarScale;
-			res = new ScaledResolution(mc);
+			// TODO Check: I don't think this is needed
+			//res = new ScaledResolution(mc);
 			mc.gameSettings.guiScale = guiScale;
 
 			float s = (float) ConfigHandler.maxPsiBarScale / (float) scaleFactor;

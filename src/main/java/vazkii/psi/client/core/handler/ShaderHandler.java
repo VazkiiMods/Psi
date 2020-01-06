@@ -10,12 +10,9 @@
  */
 package vazkii.psi.client.core.handler;
 
-import net.minecraft.client.renderer.OpenGlHelper;
+import com.mojang.blaze3d.platform.GLX;
 import org.apache.logging.log4j.Level;
-import org.lwjgl.opengl.ARBFragmentShader;
-import org.lwjgl.opengl.ARBShaderObjects;
-import org.lwjgl.opengl.ARBVertexShader;
-import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.*;
 import vazkii.arl.util.ClientTicker;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.core.handler.ConfigHandler;
@@ -75,7 +72,7 @@ public final class ShaderHandler {
 	}
 
 	public static boolean useShaders() {
-		return ConfigHandler.useShaders && OpenGlHelper.shadersSupported;
+		return ConfigHandler.useShaders && GLX.isNextGen();
 	}
 
 	private static int createProgram(String s, int sides) {
