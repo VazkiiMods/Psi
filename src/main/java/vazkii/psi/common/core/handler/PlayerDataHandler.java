@@ -31,22 +31,20 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.LightType;
+import net.minecraft.world.dimension.Dimension;
 import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerChangedDimensionEvent;
-import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
-import net.minecraftforge.fml.common.gameevent.TickEvent.ServerTickEvent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import vazkii.arl.network.NetworkHandler;
 import vazkii.arl.util.ClientTicker;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.*;
@@ -61,6 +59,7 @@ import vazkii.psi.common.Psi;
 import vazkii.psi.common.item.ItemCAD;
 import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.lib.LibObfuscation;
+import vazkii.psi.common.network.MessageRegister;
 import vazkii.psi.common.network.message.MessageDataSync;
 import vazkii.psi.common.network.message.MessageDeductPsi;
 import vazkii.psi.common.network.message.MessageLevelUp;
@@ -103,23 +102,23 @@ public class PlayerDataHandler {
 	}
 
 	public static CompoundNBT getDataCompoundForPlayer(PlayerEntity player) {
-		CompoundNBT forgeData = player.getEntityData();
-		if(!forgeData.hasKey(PlayerEntity.PERSISTED_NBT_TAG))
-			forgeData.setTag(PlayerEntity.PERSISTED_NBT_TAG, new CompoundNBT());
+		CompoundNBT forgeData = player.getPersistentData();
+		if(!forgeData.contains(PlayerEntity.PERSISTED_NBT_TAG))
+			forgeData.put(PlayerEntity.PERSISTED_NBT_TAG, new CompoundNBT());
 
-		CompoundNBT persistentData = forgeData.getCompoundTag(PlayerEntity.PERSISTED_NBT_TAG);
-		if(!persistentData.hasKey(DATA_TAG))
-			persistentData.setTag(DATA_TAG, new CompoundNBT());
+		CompoundNBT persistentData = forgeData.getCompound(PlayerEntity.PERSISTED_NBT_TAG);
+		if(!persistentData.contains(DATA_TAG))
+			persistentData.put(DATA_TAG, new CompoundNBT());
 
-		return persistentData.getCompoundTag(DATA_TAG);
+		return persistentData.getCompound(DATA_TAG);
 	}
 
 	@Mod.EventBusSubscriber(modid = LibMisc.MOD_ID)
 	public static class EventHandler {
 
 		@SubscribeEvent
-		public static void onServerTick(ServerTickEvent event) {
-			if(event.phase == Phase.END) {
+		public static void onServerTick(TickEvent.ServerTickEvent event) {
+			if(event.phase == TickEvent.Phase.END) {
 				List<SpellContext> delayedContextsCopy = new ArrayList<>(delayedContexts);
 				for(SpellContext context : delayedContextsCopy) {
 					context.delay--;
@@ -166,10 +165,10 @@ public class PlayerDataHandler {
 		}
 
 		@SubscribeEvent
-		public static void onPlayerLogin(PlayerLoggedInEvent event) {
-			if(event.player instanceof ServerPlayerEntity) {
-				MessageDataSync message = new MessageDataSync(get(event.player));
-				NetworkHandler.INSTANCE.sendTo(message, (ServerPlayerEntity) event.player);
+		public static void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
+			if(event.getPlayer() instanceof ServerPlayerEntity) {
+				MessageDataSync message = new MessageDataSync(get(event.getPlayer()));
+				MessageRegister.HANDLER.sendToPlayer(message,  (ServerPlayerEntity) event.getPlayer());
 			}
 		}
 
@@ -178,7 +177,7 @@ public class PlayerDataHandler {
 			if(event.getEntityLiving() instanceof PlayerEntity && event.getEntity().world.isRemote) {
 				PlayerEntity player = (PlayerEntity) event.getEntityLiving();
 				PsiArmorEvent.post(new PsiArmorEvent(player, PsiArmorEvent.JUMP));
-				NetworkHandler.INSTANCE.sendToServer(new MessageTriggerJumpSpell());
+				MessageRegister.HANDLER.sendToServer(new MessageTriggerJumpSpell());
 			}
 		}
 
@@ -194,8 +193,8 @@ public class PlayerDataHandler {
 		}
 
 		@SubscribeEvent
-		public static void onChangeDimension(PlayerChangedDimensionEvent event) {
-			get(event.player).eidosChangelog.clear();
+		public static void onChangeDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
+			get(event.getPlayer()).eidosChangelog.clear();
 		}
 
 		@SubscribeEvent
@@ -213,7 +212,7 @@ public class PlayerDataHandler {
 				double viewZ = cameraEntity.lastTickPosZ + (cameraEntity.posZ - cameraEntity.lastTickPosZ) * partialTicks;
 				frustum.setPosition(viewX, viewY, viewZ);
 
-				for(PlayerEntity player : mc.world.playerEntities)
+				for(PlayerEntity player : mc.world.getPlayers())
 					PlayerDataHandler.get(player).render(player, partialTicks);
 			}
 
@@ -285,7 +284,7 @@ public class PlayerDataHandler {
 		public int eidosAnchorTime;
 		public int postAnchorRecallTime;
 		public int eidosReversionTime;
-		public int lastDimension;
+		public Dimension lastDimension;
 		
 		// Exosuit Event Stuff
 		private boolean lowLight, underwater, lowHp;
@@ -317,7 +316,7 @@ public class PlayerDataHandler {
 			if (player == null)
 				return;
 
-			int dimension = player.getEntityWorld().provider.getDimension();
+			Dimension dimension = player.getEntityWorld().getDimension();
 			
 			if(deductTick)
 				deductTick = false;
@@ -393,9 +392,9 @@ public class PlayerDataHandler {
 					ISocketableCapability castingItem = ISocketableCapability.socketable(stackInHand);
 
 					for(int i = 0; i < 5; i++) {
-						double x = player.posX + (Math.random() - 0.5) * 2.1 * player.width;
+						double x = player.posX + (Math.random() - 0.5) * 2.1 * player.getWidth();
 						double y = player.posY - player.getYOffset();
-						double z = player.posZ + (Math.random() - 0.5) * 2.1 * player.width;
+						double z = player.posZ + (Math.random() - 0.5) * 2.1 * player.getWidth();
 						float grav = -0.15F - (float) Math.random() * 0.03F;
 						Psi.proxy.sparkleFX(x, y, z, r, g, b, grav, 0.25F, 15);
 					}
@@ -434,7 +433,7 @@ public class PlayerDataHandler {
 			}
 
 
-			if(player.isDead || dimension != lastDimension) {
+			if(!player.isAlive() || dimension != lastDimension) {
 				eidosAnchorTime = 0;
 				eidosReversionTime = 0;
 				eidosChangelog.clear();
@@ -503,9 +502,7 @@ public class PlayerDataHandler {
 							}
 						}
 
-						player.motionX = 0;
-						player.motionY = 0;
-						player.motionZ = 0;
+						player.setMotion(0, 0, 0);
 						player.fallDistance = 0F;
 					}
 				}
@@ -522,7 +519,7 @@ public class PlayerDataHandler {
 			}
 
 			BlockPos pos = player.getPosition();
-			int skylight = (int) (player.getEntityWorld().getLightFor(LightType.SKY, pos) * player.getEntityWorld().provider.getSunBrightnessFactor(1F));
+			int skylight = (int) (player.getEntityWorld().getLightFor(LightType.SKY, pos) * player.getEntityWorld().dimension.getSunBrightness(1F));
 			int blocklight = player.getEntityWorld().getLightFor(LightType.BLOCK, pos);
 			int light = Math.max(skylight, blocklight);
 			
@@ -531,7 +528,7 @@ public class PlayerDataHandler {
 				PsiArmorEvent.post(new PsiArmorEvent(player, PsiArmorEvent.LOW_LIGHT));
 			this.lowLight = lowLight;
 
-			boolean underwater = player.isInsideOfMaterial(Material.WATER);
+			boolean underwater = player.isInWater();
 			if(!this.underwater && underwater)
 				PsiArmorEvent.post(new PsiArmorEvent(player, PsiArmorEvent.UNDERWATER));
 			this.underwater = underwater;
@@ -646,8 +643,8 @@ public class PlayerDataHandler {
 					MessageLevelUp message = new MessageLevelUp(level);
 					MessageDataSync message2 = new MessageDataSync(this);
 
-					NetworkHandler.INSTANCE.sendTo(message, (ServerPlayerEntity) player);
-					NetworkHandler.INSTANCE.sendTo(message2, (ServerPlayerEntity) player);
+					MessageRegister.HANDLER.sendToPlayer(message, (ServerPlayerEntity) player);
+					MessageRegister.HANDLER.sendToPlayer(message2, (ServerPlayerEntity) player);
 				}
 			}
 		}
@@ -700,7 +697,7 @@ public class PlayerDataHandler {
 
 			if(sync && player instanceof ServerPlayerEntity) {
 				MessageDeductPsi message = new MessageDeductPsi(currentPsi, availablePsi, regenCooldown, shatter);
-				NetworkHandler.INSTANCE.sendTo(message, (ServerPlayerEntity) player);
+				MessageRegister.HANDLER.sendToPlayer(message, (ServerPlayerEntity) player);
 			}
 
 			save();
@@ -721,7 +718,7 @@ public class PlayerDataHandler {
 		@Override
 		public int getLevel() {
 			PlayerEntity player = playerWR.get();
-			if(player != null && player.capabilities.isCreativeMode)
+			if(player != null && player.isCreative())
 				return PsiAPI.levelCap;
 			return level;
 		}
@@ -766,7 +763,7 @@ public class PlayerDataHandler {
 			if(player == null)
 				return false;
 
-			if(player.capabilities.isCreativeMode)
+			if(player.isCreative())
 				return true;
 
 			boolean defaultBehavior = spellGroupsUnlocked.contains(group);
@@ -830,31 +827,31 @@ public class PlayerDataHandler {
 		}
 
 		public void writeToNBT(CompoundNBT cmp) {
-			cmp.setInteger(TAG_LEVEL, level);
-			cmp.setInteger(TAG_AVAILABLE_PSI, availablePsi);
-			cmp.setInteger(TAG_REGEN_CD, regenCooldown);
-			cmp.setInteger(TAG_LEVEL_POINTS, levelPoints);
-			cmp.setBoolean(TAG_LEARNING_GROUP, learning);
+			cmp.putInt(TAG_LEVEL, level);
+			cmp.putInt(TAG_AVAILABLE_PSI, availablePsi);
+			cmp.putInt(TAG_REGEN_CD, regenCooldown);
+			cmp.putInt(TAG_LEVEL_POINTS, levelPoints);
+			cmp.putBoolean(TAG_LEARNING_GROUP, learning);
 			if(lastSpellGroup != null && !lastSpellGroup.isEmpty())
-				cmp.setString(TAG_LAST_SPELL_GROUP, lastSpellGroup);
-			cmp.setBoolean(TAG_OVERFLOWED, overflowed);
+				cmp.putString(TAG_LAST_SPELL_GROUP, lastSpellGroup);
+			cmp.putBoolean(TAG_OVERFLOWED, overflowed);
 
 			ListNBT list = new ListNBT();
 			for(String s : spellGroupsUnlocked) {
 				if(s != null && !s.isEmpty())
-					list.appendTag(new StringNBT(s));
+					list.add(new StringNBT(s));
 			}
-			cmp.setTag(TAG_SPELL_GROUPS_UNLOCKED, list);
+			cmp.put(TAG_SPELL_GROUPS_UNLOCKED, list);
 
-			cmp.setDouble(TAG_EIDOS_ANCHOR_X, eidosAnchor.x);
-			cmp.setDouble(TAG_EIDOS_ANCHOR_Y, eidosAnchor.y);
-			cmp.setDouble(TAG_EIDOS_ANCHOR_Z, eidosAnchor.z);
-			cmp.setDouble(TAG_EIDOS_ANCHOR_PITCH, eidosAnchorPitch);
-			cmp.setDouble(TAG_EIDOS_ANCHOR_YAW, eidosAnchorYaw);
-			cmp.setInteger(TAG_EIDOS_ANCHOR_TIME, eidosAnchorTime);
+			cmp.putDouble(TAG_EIDOS_ANCHOR_X, eidosAnchor.x);
+			cmp.putDouble(TAG_EIDOS_ANCHOR_Y, eidosAnchor.y);
+			cmp.putDouble(TAG_EIDOS_ANCHOR_Z, eidosAnchor.z);
+			cmp.putDouble(TAG_EIDOS_ANCHOR_PITCH, eidosAnchorPitch);
+			cmp.putDouble(TAG_EIDOS_ANCHOR_YAW, eidosAnchorYaw);
+			cmp.putInt(TAG_EIDOS_ANCHOR_TIME, eidosAnchorTime);
 			
 			if(customData != null)
-				cmp.setTag(TAG_CUSTOM_DATA, customData);
+				cmp.put(TAG_CUSTOM_DATA, customData);
 		}
 
 		public void load() {
@@ -870,20 +867,20 @@ public class PlayerDataHandler {
 		}
 
 		public void readFromNBT(CompoundNBT cmp) {
-			level = cmp.getInteger(TAG_LEVEL);
-			availablePsi = cmp.getInteger(TAG_AVAILABLE_PSI);
-			regenCooldown = cmp.getInteger(TAG_REGEN_CD);
-			levelPoints = cmp.getInteger(TAG_LEVEL_POINTS);
+			level = cmp.getInt(TAG_LEVEL);
+			availablePsi = cmp.getInt(TAG_AVAILABLE_PSI);
+			regenCooldown = cmp.getInt(TAG_REGEN_CD);
+			levelPoints = cmp.getInt(TAG_LEVEL_POINTS);
 			lastSpellGroup = cmp.getString(TAG_LAST_SPELL_GROUP);
 			overflowed = cmp.getBoolean(TAG_OVERFLOWED);
 			learning = cmp.getBoolean(TAG_LEARNING_GROUP);
 
-			if(cmp.hasKey(TAG_SPELL_GROUPS_UNLOCKED, Constants.NBT.TAG_LIST)) {
+			if(cmp.contains(TAG_SPELL_GROUPS_UNLOCKED, Constants.NBT.TAG_LIST)) {
 				spellGroupsUnlocked.clear();
-				ListNBT list = cmp.getTagList(TAG_SPELL_GROUPS_UNLOCKED, Constants.NBT.TAG_STRING); // 8 -> String
-				int count = list.tagCount();
+				ListNBT list = cmp.getList(TAG_SPELL_GROUPS_UNLOCKED, Constants.NBT.TAG_STRING); // 8 -> String
+				int count = list.size();
 				for(int i = 0; i < count; i++)
-					spellGroupsUnlocked.add(list.getStringTagAt(i));
+					spellGroupsUnlocked.add(list.getString(i));
 			}
 
 			double x = cmp.getDouble(TAG_EIDOS_ANCHOR_X);
@@ -892,17 +889,17 @@ public class PlayerDataHandler {
 			eidosAnchor.set(x, y, z);
 			eidosAnchorPitch = cmp.getDouble(TAG_EIDOS_ANCHOR_PITCH);
 			eidosAnchorYaw = cmp.getDouble(TAG_EIDOS_ANCHOR_YAW);
-			eidosAnchorTime = cmp.getInteger(TAG_EIDOS_ANCHOR_TIME);
+			eidosAnchorTime = cmp.getInt(TAG_EIDOS_ANCHOR_TIME);
 			
-			customData = cmp.getCompoundTag(TAG_CUSTOM_DATA);
+			customData = cmp.getCompound(TAG_CUSTOM_DATA);
 		}
 
 		@OnlyIn(Dist.CLIENT)
 		public void render(PlayerEntity player, float partTicks) {
 			EntityRendererManager renderManager = Minecraft.getInstance().getRenderManager();
-			double x = player.lastTickPosX + (player.posX - player.lastTickPosX) * partTicks - renderManager.viewerPosX;
-			double y = player.lastTickPosY + (player.posY - player.lastTickPosY) * partTicks - renderManager.viewerPosY;
-			double z = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * partTicks - renderManager.viewerPosZ;
+			double x = player.lastTickPosX + (player.posX - player.lastTickPosX) * partTicks - renderManager.renderPosX;
+			double y = player.lastTickPosY + (player.posY - player.lastTickPosY) * partTicks - renderManager.renderPosY;
+			double z = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * partTicks - renderManager.renderPosZ;
 
 			float scale = 0.75F;
 			if(loopcasting) {

@@ -12,7 +12,6 @@ package vazkii.psi.api.spell;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraftforge.eventbus.api.Event;
-import net.minecraftforge.fml.common.eventhandler.Event.HasResult;
 import vazkii.psi.api.internal.IPlayerData;
 
 import javax.annotation.Nonnull;
@@ -29,7 +28,7 @@ import javax.annotation.Nullable;
  * {@link Result#DEFAULT} will defer to default behavior.
  * {@link Result#ALLOW} will force the piece to be unlocked, whether or not the player would know it.
  */
-@HasResult
+@Event.HasResult
 public class PieceKnowledgeEvent extends Event {
 	@Nonnull
 	private final String pieceGroup;

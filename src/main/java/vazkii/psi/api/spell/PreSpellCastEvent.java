@@ -3,8 +3,8 @@ package vazkii.psi.api.spell;
 import javax.annotation.Nullable;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.eventbus.api.Cancelable;
 import net.minecraftforge.eventbus.api.Event;
-import net.minecraftforge.fml.common.eventhandler.Cancelable;
 import vazkii.psi.api.internal.IPlayerData;
 
 /**
