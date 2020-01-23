@@ -1,8 +1,12 @@
 buildscript {
     repositories {
         maven { url = 'https://files.minecraftforge.net/maven' }
+        maven {
+            url "https://maven.tterrag.com/"
+        }
         jcenter()
         mavenCentral()
+        mavenLocal()
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
@@ -35,7 +39,7 @@ minecraft {
     mappings channel: "${config.mapping_channel}", version: "${config.mapping_version}"
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
     // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
-    
+
     // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
     // Default run configurations.
@@ -65,7 +69,7 @@ minecraft {
 
             // Recommended logging level for the console
             property 'forge.logging.console.level', 'debug'
-
+            singleInstance(true)
             mods {
                 psi {
                     source sourceSets.main
@@ -95,17 +99,22 @@ repositories {
     }
     maven {
         // for JEI
-        name = "promwml16"
+        name "promwml16"
         url "http://dvs1.progwml6.com/files/maven"
+    }
+    maven {
+        //yarn2mcp
+        name "yarn2mcp"
+        url "https://maven.tterrag.com"
     }
 }
 
 dependencies {
-    minecraft "net.minecraftforge:forge:${config.mc_version}-${config.forge_version}"
+    minecraft group: 'net.minecraftforge', name: 'forge', version: '${config.mc_version}-${config.forge_version}'
 
-    compile fg.deobf("vazkii.arl:AutoRegLib:${config.arl_version}")
-    compileOnly fg.deobf("mezz.jei:${config.jei_version}:api")
-    runtime fg.deobf("mezz.jei:${config.jei_version}")
+    compile fg.deobf("vazkii.autoreglib:AutoRegLib:${config.arl_version}")
+    compileOnly fg.deobf("mezz.jei:jei-${config.mc_version}:${config.jei_version}:api")
+    runtimeOnly fg.deobf("mezz.jei:jei-${config.mc_version}:${config.jei_version}")
 }
 
 sourceSets.main.resources {
@@ -135,9 +144,6 @@ task incrementBuildNumber {
             config.toProperties().store(it, "")
         }
     }
-
-    //file('web/versions.ini').append("\n${version}=${minecraft.version}")
-    //file("${config.dir_repo}/version/${minecraft.version}.txt").write("${version}")
 }
 
 import java.util.regex.Pattern
@@ -152,7 +158,7 @@ task sortArtifacts(type: Copy) {
         if (matcher.matches())
         {
             def classifier = matcher.group('classifier')
-            /* Set the relative path to change the destination, since 
+            /* Set the relative path to change the destination, since
              * Gradle doesn't seem to like the absolute path being set*/
             it.relativePath = it.relativePath.parent.append(false, classifier, it.name)
         }
@@ -171,15 +177,15 @@ jar {
     //rename the default output, for some better... sanity with scipts
     archiveName = "${baseName} ${version}.${extension}"
 
-     manifest {
+    manifest {
         attributes([
-            "Specification-Title": "${config.mod_id}",
-            "Specification-Vendor": "vazkii",
-            "Specification-Version": "1", // We are version 1 of ourselves
-            "Implementation-Title": "${config.mod_id}",
-            "Implementation-Version": "${version}",
-            "Implementation-Vendor" :"vazkii",
-            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+                "Specification-Title": "${config.mod_id}",
+                "Specification-Vendor": "vazkii",
+                "Specification-Version": "1", // We are version 1 of ourselves
+                "Implementation-Title": "${config.mod_id}",
+                "Implementation-Version": "${version}",
+                "Implementation-Vendor" :"vazkii",
+                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])
     }
 
@@ -189,9 +195,6 @@ jar {
     exclude "**/unused"
 }
 
-//artifacts {
-//    archives deobfJar
-//}
 
 uploadArchives {
     repositories {
