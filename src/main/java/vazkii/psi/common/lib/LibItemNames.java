@@ -19,7 +19,6 @@ public final class LibItemNames {
     public static final String CAD_SOCKET = "cad_socket";
     public static final String CAD_BATTERY = "cad_battery";
     public static final String CAD_COLORIZER = "cad_colorizer_";
-    public static final String SPELL_BULLET = "spell_bullet";
     public static final String SPELL_DRIVE = "spell_drive";
     public static final String PSIMETAL_SHOVEL = "psimetal_shovel";
     public static final String PSIMETAL_PICKAXE = "psimetal_pickaxe";
@@ -58,5 +57,42 @@ public final class LibItemNames {
     public static final String CAD_BATTERY_BASIC = "cad_battery_basic";
     public static final String CAD_BATTERY_EXTENDED = "cad_battery_extended";
     public static final String CAD_BATTERY_ULTRADENSE = "cad_battery_ultradense";
+    public static final String CAD_COLORIZER_WHITE = "cad_colorizer_white";
+    public static final String CAD_COLORIZER_ORANGE = "cad_colorizer_orange";
+    public static final String CAD_COLORIZER_MAGENTA = "cad_colorizer_magenta";
+    public static final String CAD_COLORIZER_LIGHT_BLUE = "cad_colorizer_light_blue";
+    public static final String CAD_COLORIZER_YELLOW = "cad_colorizer_yellow";
+    public static final String CAD_COLORIZER_LIME = "cad_colorizer_lime";
+    public static final String CAD_COLORIZER_PINK = "cad_colorizer_pink";
+    public static final String CAD_COLORIZER_GRAY = "cad_colorizer_gray";
+    public static final String CAD_COLORIZER_LIGHT_GRAY = "cad_colorizer_light_gray";
+    public static final String CAD_COLORIZER_CYAN = "cad_colorizer_cyan";
+    public static final String CAD_COLORIZER_PURPLE = "cad_colorizer_purple";
+    public static final String CAD_COLORIZER_BLUE = "cad_colorizer_blue";
+    public static final String CAD_COLORIZER_BROWN = "cad_colorizer_brown";
+    public static final String CAD_COLORIZER_GREEN = "cad_colorizer_green";
+    public static final String CAD_COLORIZER_RED = "cad_colorizer_red";
+    public static final String CAD_COLORIZER_BLACK = "cad_colorizer_black";
+    public static final String CAD_COLORIZER_RAINBOW = "cad_colorizer_rainbow";
+    public static final String CAD_COLORIZER_PSI = "cad_colorizer_psi";
+    public static final String SPELL_BULLET = "spell_bullet";
+    public static final String SPELL_BULLET_ACTIVE = "spell_bullet_active";
+    public static final String SPELL_BULLET_PROJECTILE = "spell_bullet_projectile";
+    public static final String SPELL_BULLET_PROJECTILE_ACTIVE = "spell_bullet_projectile_active";
+    public static final String SPELL_BULLET_LOOP = "spell_bullet_loop";
+    public static final String SPELL_BULLET_LOOP_ACTIVE = "spell_bullet_loop_active";
+    public static final String SPELL_BULLET_CIRCLE = "spell_bullet_circle";
+    public static final String SPELL_BULLET_CIRCLE_ACTIVE = "spell_bullet_circle_active";
+    public static final String SPELL_BULLET_GRENADE = "spell_bullet_grenade";
+    public static final String SPELL_BULLET_GRENADE_ACTIVE = "spell_bullet_grenade_active";
+    public static final String SPELL_BULLET_CHARGE = "spell_bullet_charge";
+    public static final String SPELL_BULLET_CHARGE_ACTIVE = "spell_bullet_charge_active";
+    public static final String SPELL_BULLET_MINE = "spell_bullet_mine";
+    public static final String SPELL_BULLET_MINE_ACTIVE = "spell_bullet_mine_active";
+    public static final String EXOSUIT_SENSOR_LIGHT = "exosuit_sensor_light";
+    public static final String EXOSUIT_SENSOR_WATER = "exosuit_sensor_water";
+    public static final String EXOSUIT_SENSOR_HEAT = "exosuit_sensor_heat";
+    public static final String EXOSUIT_SENSOR_STRESS = "exosuit_sensor_stress";
+
 
 }

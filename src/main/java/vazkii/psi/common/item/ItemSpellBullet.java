@@ -10,64 +10,36 @@
  */
 package vazkii.psi.common.item;
 
-import com.google.common.collect.ImmutableSet;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.item.ItemGroup;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.Rarity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Rarity;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import vazkii.arl.item.ItemMod;
+import vazkii.arl.item.BasicItem;
 import vazkii.arl.util.ItemNBTHelper;
-import vazkii.psi.api.PsiAPI;
-import vazkii.psi.api.cad.EnumCADComponent;
-import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.internal.TooltipHelper;
 import vazkii.psi.api.spell.ISpellContainer;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
-import vazkii.psi.common.core.PsiCreativeTab;
-import vazkii.psi.common.core.handler.LoopcastTrackingHandler;
-import vazkii.psi.common.core.handler.PlayerDataHandler;
-import vazkii.psi.common.entity.*;
-import vazkii.psi.common.item.base.IPsiItem;
-import vazkii.psi.common.lib.LibItemNames;
-import vazkii.psi.common.spell.operator.vector.PieceOperatorVectorRaycast;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.List;
 
-public class ItemSpellBullet extends ItemMod implements ISpellContainer, IPsiItem {
+import static vazkii.psi.api.internal.TooltipHelper.local;
+
+public class ItemSpellBullet extends BasicItem implements ISpellContainer {
 
 	private static final String TAG_SPELL = "spell";
 
-	public static final String[] VARIANTS = {
-			"spell_bullet",
-			"spell_bullet_active",
-			"spell_bullet_projectile",
-			"spell_bullet_projectile_active",
-			"spell_bullet_loop",
-			"spell_bullet_loop_active",
-			"spell_bullet_circle",
-			"spell_bullet_circle_active",
-			"spell_bullet_grenade",
-			"spell_bullet_grenade_active",
-			"spell_bullet_charge",
-			"spell_bullet_charge_active",
-			"spell_bullet_mine",
-			"spell_bullet_mine_active"
-	};
-
-	public ItemSpellBullet() {
-		super(LibItemNames.SPELL_BULLET, VARIANTS);
-		setMaxStackSize(1);
-		setCreativeTab(PsiCreativeTab.INSTANCE);
+	public ItemSpellBullet(String name, Item.Properties properties) {
+		super(name, properties.maxStackSize(1));
 	}
 
 	@Override
@@ -83,24 +55,20 @@ public class ItemSpellBullet extends ItemMod implements ISpellContainer, IPsiIte
 
 	@Nonnull
 	@Override
-	public String getItemStackDisplayName(@Nonnull ItemStack stack) {
-		if(!containsSpell(stack))
-			return super.getItemStackDisplayName(stack);
-
-		CompoundNBT cmp = ItemNBTHelper.getCompound(stack, TAG_SPELL, false);
-		String name = cmp.getString(Spell.TAG_SPELL_NAME); // We don't need to load the whole spell just for the name
-		if(name.isEmpty())
-			return super.getItemStackDisplayName(stack);
-
-		return name;
+	public ITextComponent getDisplayName(@Nonnull ItemStack stack) {
+		if (containsSpell(stack)) {
+			CompoundNBT cmp = ItemNBTHelper.getCompound(stack, TAG_SPELL, false);
+			String name = cmp.getString(Spell.TAG_SPELL_NAME); // We don't need to load the whole spell just for the name
+			if (name.isEmpty())
+				return super.getDisplayName(stack);
+			return new StringTextComponent(name);
+		}
+		return super.getDisplayName(stack);
 	}
 
 	@Override
 	public void setSpell(PlayerEntity player, ItemStack stack, Spell spell) {
 		ItemSpellDrive.setSpell(stack, spell);
-
-		if(!containsSpell(stack))
-			stack.setItemDamage(stack.getItemDamage() + 1);
 	}
 
 	@Override
@@ -110,7 +78,7 @@ public class ItemSpellBullet extends ItemMod implements ISpellContainer, IPsiIte
 
 	@Override
 	public boolean containsSpell(ItemStack stack) {
-		return stack.getItemDamage() % 2 == 1;
+		return ItemNBTHelper.getBoolean(stack, ItemSpellDrive.HAS_SPELL, false);
 	}
 
 	@Nonnull
@@ -121,107 +89,30 @@ public class ItemSpellBullet extends ItemMod implements ISpellContainer, IPsiIte
 	}
 
 	@Override
-	public void getSubItems(@Nonnull ItemGroup tab, @Nonnull NonNullList<ItemStack> subItems) {
-		if(isInCreativeTab(tab))
-			for(int i = 0; i < getVariants().length; i++)
-				if(i % 2 == 0)
-					subItems.add(new ItemStack(this, 1, i));
+	public void addInformation(ItemStack stack, @Nullable World playerIn, List<ITextComponent> tooltip, ITooltipFlag advanced) {
+		TooltipHelper.tooltipIfShift(tooltip, () -> {
+			TooltipHelper.addToTooltip(tooltip, "psimisc.bulletType", local("psi.bulletType" + getBulletType()));
+			TooltipHelper.addToTooltip(tooltip, "psimisc.bulletCost", (int) (getCostModifier(stack) * 100));
+		});
 	}
 
-    @OnlyIn(Dist.CLIENT)
-	@Override
-	public void addInformation(ItemStack stack, World playerIn, List<String> tooltip, ITooltipFlag advanced) {
-        TooltipHelper.tooltipIfShift(tooltip, () -> {
-            TooltipHelper.addToTooltip(tooltip, "psimisc.bulletType", local("psi.bulletType" + stack.getItemDamage() / 2));
-            TooltipHelper.addToTooltip(tooltip, "psimisc.bulletCost", (int) (getCostModifier(stack) * 100));
-		});
+	public String getBulletType() {
+		return "basic";
 	}
 
 	@Override
 	public void castSpell(ItemStack stack, SpellContext context) {
-		ItemStack cad = PsiAPI.getPlayerCAD(context.caster);
-		ItemStack colorizer = ((ICAD) cad.getItem()).getComponentInSlot(cad, EnumCADComponent.DYE);
-
-		EntitySpellProjectile projectile = null;
-
-		switch (stack.getItemDamage()) {
-			case 1: // Basic
-				context.cspell.safeExecute(context);
-				break;
-
-			case 3: // Projectile
-				projectile = new EntitySpellProjectile(context.caster.getEntityWorld(), context.caster);
-				break;
-
-			case 5: // Loopcast
-				PlayerDataHandler.PlayerData data = PlayerDataHandler.get(context.caster);
-				if (!data.loopcasting || context.castFrom != data.loopcastHand) {
-					context.cspell.safeExecute(context);
-					data.loopcasting = true;
-					data.loopcastHand = context.castFrom;
-					data.lastTickLoopcastStack = null;
-					if (context.caster instanceof ServerPlayerEntity)
-						LoopcastTrackingHandler.syncForTrackers((ServerPlayerEntity) context.caster);
-				}
-
-				break;
-
-			case 7: // Spell Circle
-				RayTraceResult pos = PieceOperatorVectorRaycast.raycast(context.caster, 32);
-
-				if (pos != null) {
-					EntitySpellCircle circle = new EntitySpellCircle(context.caster.getEntityWorld());
-					circle.setInfo(context.caster, colorizer, stack);
-					circle.setPosition(pos.hitVec.x, pos.hitVec.y, pos.hitVec.z);
-					circle.getEntityWorld().spawnEntity(circle);
-				}
-
-				break;
-
-			case 9: // Grenade
-				projectile = new EntitySpellGrenade(context.caster.getEntityWorld(), context.caster);
-				break;
-
-			case 11: // Charge
-				projectile = new EntitySpellCharge(context.caster.getEntityWorld(), context.caster);
-				break;
-
-			case 13: // Mine
-				projectile = new EntitySpellMine(context.caster.getEntityWorld(), context.caster);
-				break;
-		}
-
-		if (projectile != null) {
-			projectile.setInfo(context.caster, colorizer, stack);
-			projectile.context = context;
-			projectile.getEntityWorld().spawnEntity(projectile);
-		}
+		context.cspell.safeExecute(context);
 	}
 
 	@Override
 	public double getCostModifier(ItemStack stack) {
-		switch(stack.getItemDamage()) {
-		case 0: case 1: // Normal
-			return 1.0;
-		case 2: case 3: // Projectile
-			return 1.02;
-		case 4: case 5: // Loopcast
-			return 1.0;
-		case 6: case 7: // Spell Circle
-			return EntitySpellCircle.CAST_TIMES * 0.75;
-		case 8: case 9: // Grenade
-			return 1.05;
-		case 10: case 11: // Charge
-			return 1.151;
-		case 12: case 13: // Mine
-			return 1.151;
-		}
-		return 0;
+		return 1.0;
 	}
 
 	@Override
 	public boolean isCADOnlyContainer(ItemStack stack) {
-		return ImmutableSet.of(4, 5, 6, 7).contains(stack.getItemDamage());
+		return false;
 	}
 	
 	@Override

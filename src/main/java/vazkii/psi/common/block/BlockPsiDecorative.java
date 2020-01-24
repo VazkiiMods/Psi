@@ -8,7 +8,7 @@ import vazkii.arl.interf.IBlockItemProvider;
 
 public class BlockPsiDecorative extends BasicBlock implements IBlockItemProvider {
 
-    Item.Properties itemProps;
+    private final Item.Properties itemProps;
 
     public BlockPsiDecorative(String regname, Properties properties, Item.Properties itemProps) {
         super(regname, properties);

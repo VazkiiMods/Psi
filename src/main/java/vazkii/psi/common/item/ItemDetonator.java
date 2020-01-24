@@ -11,38 +11,30 @@
 package vazkii.psi.common.item;
 
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.util.*;
 import net.minecraft.world.World;
-import vazkii.arl.item.ItemMod;
+import vazkii.arl.item.BasicItem;
 import vazkii.psi.api.spell.detonator.IDetonationHandler;
-import vazkii.psi.common.core.PsiCreativeTab;
-import vazkii.psi.common.item.base.IPsiItem;
-import vazkii.psi.common.lib.LibItemNames;
 
 import javax.annotation.Nonnull;
 
-public class ItemDetonator extends ItemMod implements IPsiItem {
+public class ItemDetonator extends BasicItem {
 
-	public ItemDetonator() {
-		super(LibItemNames.DETONATOR);
-		setMaxStackSize(1);
-		setCreativeTab(PsiCreativeTab.INSTANCE);
-	}
+    public ItemDetonator(String name, Item.Properties properties) {
+        super(name, properties.maxStackSize(1));
+    }
 
-	@Nonnull
-	@Override
-	public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, @Nonnull Hand hand) {
-		ItemStack itemStackIn = playerIn.getHeldItem(hand);
-		IDetonationHandler.performDetonation(worldIn, playerIn);
+    @Nonnull
+    @Override
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, @Nonnull Hand hand) {
+        ItemStack itemStackIn = playerIn.getHeldItem(hand);
+        IDetonationHandler.performDetonation(worldIn, playerIn);
 
-		if(!worldIn.isRemote)
-			worldIn.playSound(null, playerIn.posX, playerIn.posY, playerIn.posZ, SoundEvents.UI_BUTTON_CLICK, SoundCategory.PLAYERS, 1F, 1F);
-		else playerIn.swingArm(hand);
+        if (!worldIn.isRemote)
+            worldIn.playSound(null, playerIn.getX(), playerIn.getY(), playerIn.getZ(), SoundEvents.UI_BUTTON_CLICK, SoundCategory.PLAYERS, 1F, 1F);
+        else playerIn.swingArm(hand);
 
 		return new ActionResult<>(ActionResultType.SUCCESS, itemStackIn);
 	}

@@ -10,10 +10,10 @@
  */
 package vazkii.psi.common.item.base;
 
+import net.minecraft.item.DyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraftforge.oredict.OreDictionary;
 import vazkii.arl.item.BasicItem;
 import vazkii.psi.common.core.PsiCreativeTab;
 import vazkii.psi.common.item.*;
@@ -61,17 +61,45 @@ public final class ModItems {
 	public static final BasicItem cadBatteryExtended = new ItemCADBattery(LibItemNames.CAD_BATTERY_EXTENDED, defaultBuilder());
 	public static final BasicItem cadBatteryUltradense = new ItemCADBattery(LibItemNames.CAD_BATTERY_ULTRADENSE, defaultBuilder());
 
+	public static final BasicItem cadColorizerWhite = new ItemCADColorizer(LibItemNames.CAD_COLORIZER_WHITE, defaultBuilder(), DyeColor.WHITE);
+	public static final BasicItem cadColorizerOrange = new ItemCADColorizer(LibItemNames.CAD_COLORIZER_ORANGE, defaultBuilder(), DyeColor.ORANGE);
+	public static final BasicItem cadColorizerMagenta = new ItemCADColorizer(LibItemNames.CAD_COLORIZER_MAGENTA, defaultBuilder(), DyeColor.MAGENTA);
+	public static final BasicItem cadColorizerLightBlue = new ItemCADColorizer(LibItemNames.CAD_COLORIZER_LIGHT_BLUE, defaultBuilder(), DyeColor.LIGHT_BLUE);
+	public static final BasicItem cadColorizerYellow = new ItemCADColorizer(LibItemNames.CAD_COLORIZER_YELLOW, defaultBuilder(), DyeColor.YELLOW);
+	public static final BasicItem cadColorizerLime = new ItemCADColorizer(LibItemNames.CAD_COLORIZER_LIME, defaultBuilder(), DyeColor.LIME);
+	public static final BasicItem cadColorizerPink = new ItemCADColorizer(LibItemNames.CAD_COLORIZER_PINK, defaultBuilder(), DyeColor.PINK);
+	public static final BasicItem cadColorizerGray = new ItemCADColorizer(LibItemNames.CAD_COLORIZER_GRAY, defaultBuilder(), DyeColor.GRAY);
+	public static final BasicItem cadColorizerLightGray = new ItemCADColorizer(LibItemNames.CAD_COLORIZER_LIGHT_GRAY, defaultBuilder(), DyeColor.LIGHT_GRAY);
+	public static final BasicItem cadColorizerCyan = new ItemCADColorizer(LibItemNames.CAD_COLORIZER_CYAN, defaultBuilder(), DyeColor.CYAN);
+	public static final BasicItem cadColorizerPurple = new ItemCADColorizer(LibItemNames.CAD_COLORIZER_PURPLE, defaultBuilder(), DyeColor.PURPLE);
+	public static final BasicItem cadColorizerBlue = new ItemCADColorizer(LibItemNames.CAD_COLORIZER_BLUE, defaultBuilder(), DyeColor.BLUE);
+	public static final BasicItem cadColorizerBrown = new ItemCADColorizer(LibItemNames.CAD_COLORIZER_BROWN, defaultBuilder(), DyeColor.BROWN);
+	public static final BasicItem cadColorizerGreen = new ItemCADColorizer(LibItemNames.CAD_COLORIZER_GREEN, defaultBuilder(), DyeColor.GREEN);
+	public static final BasicItem cadColorizerRed = new ItemCADColorizer(LibItemNames.CAD_COLORIZER_RED, defaultBuilder(), DyeColor.RED);
+	public static final BasicItem cadColorizerBlack = new ItemCADColorizer(LibItemNames.CAD_COLORIZER_BLACK, defaultBuilder(), DyeColor.BLACK);
+	public static final BasicItem cadColorizerRainbow = new ItemCADColorizerRainbow(LibItemNames.CAD_COLORIZER_RAINBOW, defaultBuilder());
+	public static final BasicItem cadColorizerPsi = new ItemCADColorizerPsi(LibItemNames.CAD_COLORIZER_PSI, defaultBuilder());
 
-	public static ItemMod cadColorizer;
-	public static ItemMod spellBullet;
-	public static ItemMod spellDrive;
-	public static ItemMod detonator;
-	public static ItemMod exosuitController;
-	public static ItemMod exosuitSensor;
-	public static ItemMod vectorRuler;
+	public static final BasicItem spellBullet = new ItemSpellBullet(LibItemNames.SPELL_BULLET, defaultBuilder());
+	public static final BasicItem projectileSpellBullet = new ItemProjectileSpellBullet(LibItemNames.SPELL_BULLET_PROJECTILE, defaultBuilder());
+	public static final BasicItem loopSpellBullet = new ItemLoopcastSpellBullet(LibItemNames.SPELL_BULLET_LOOP, defaultBuilder());
+	public static final BasicItem circleSpellBullet = new ItemCircleSpellBullet(LibItemNames.SPELL_BULLET_CIRCLE, defaultBuilder());
+	public static final BasicItem grenadeSpellBullet = new ItemGrenadeSpellBullet(LibItemNames.SPELL_BULLET_GRENADE, defaultBuilder());
+	public static final BasicItem chargeSpellBullet = new ItemGrenadeSpellBullet(LibItemNames.SPELL_BULLET_CHARGE, defaultBuilder());
+	public static final BasicItem mineSpellBullet = new ItemMineSpellBullet(LibItemNames.SPELL_BULLET_MINE, defaultBuilder());
+
+	public static final BasicItem spellDrive = new ItemSpellDrive(LibItemNames.SPELL_DRIVE, defaultBuilder());
+	public static final BasicItem detonator = new ItemDetonator(LibItemNames.DETONATOR, defaultBuilder());
+	public static final BasicItem exosuitController = new ItemExosuitController(LibItemNames.EXOSUIT_CONTROLLER, defaultBuilder());
+
+	public static final BasicItem exosuitSensorLight = new ItemLightExosuitSensor(LibItemNames.EXOSUIT_SENSOR_LIGHT, defaultBuilder());
+	public static final BasicItem exosuitSensorHeat = new ItemHeatExosuitSensor(LibItemNames.EXOSUIT_SENSOR_HEAT, defaultBuilder());
+	public static final BasicItem exosuitSensorStress = new ItemStressExosuitSensor(LibItemNames.EXOSUIT_SENSOR_STRESS, defaultBuilder());
+	public static final BasicItem exosuitSensorWater = new ItemWaterExosuitSensor(LibItemNames.EXOSUIT_SENSOR_WATER, defaultBuilder());
+
+	public static BasicItem vectorRuler = new ItemVectorRuler(LibItemNames.VECTOR_RULER, defaultBuilder());
 
 	public static ItemMod cad;
-
 	public static ItemModShovel psimetalShovel;
 	public static ItemModPickaxe psimetalPickaxe;
 	public static ItemModAxe psimetalAxe;
@@ -86,15 +114,6 @@ public final class ModItems {
 	}
 
 	public static void preInit() {
-
-		cadColorizer = new ItemCADColorizer();
-		spellBullet = new ItemSpellBullet();
-		spellDrive = new ItemSpellDrive();
-		detonator = new ItemDetonator();
-		exosuitController = new ItemExosuitController();
-		exosuitSensor = new ItemExosuitSensor();
-		vectorRuler = new ItemVectorRuler();
-		
 		cad = new ItemCAD();
 
 		psimetalShovel = new ItemPsimetalShovel(LibItemNames.PSIMETAL_SHOVEL);

@@ -11,43 +11,39 @@
 package vazkii.psi.common.item;
 
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
-import vazkii.arl.item.ItemMod;
+import vazkii.arl.item.BasicItem;
 import vazkii.arl.util.ItemNBTHelper;
 import vazkii.psi.api.cad.ISocketableCapability;
 import vazkii.psi.api.cad.ISocketableController;
-import vazkii.psi.common.core.PsiCreativeTab;
 import vazkii.psi.common.core.handler.PsiSoundHandler;
-import vazkii.psi.common.item.base.IPsiItem;
-import vazkii.psi.common.lib.LibItemNames;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItemExosuitController extends ItemMod implements ISocketableController, IPsiItem {
+public class ItemExosuitController extends BasicItem implements ISocketableController {
 
-	private static final String TAG_SELECTED_CONTROL_SLOT = "selectedControlSlot";
+    private static final String TAG_SELECTED_CONTROL_SLOT = "selectedControlSlot";
 
-	public ItemExosuitController() {
-		super(LibItemNames.EXOSUIT_CONTROLLER);
-		setMaxStackSize(1);
-		setCreativeTab(PsiCreativeTab.INSTANCE);
-	}
+    public ItemExosuitController(String name, Item.Properties properties) {
+        super(name, properties.maxStackSize(1));
+    }
 
-	@Nonnull
-	@Override
-	public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, @Nonnull Hand hand) {
-		ItemStack itemStackIn = playerIn.getHeldItem(hand);
-		if(playerIn.isSneaking()) {
-			if(!worldIn.isRemote)
-				worldIn.playSound(null, playerIn.posX, playerIn.posY, playerIn.posZ, PsiSoundHandler.compileError, SoundCategory.PLAYERS, 0.25F, 1F);
-			else playerIn.swingArm(hand);
+    @Nonnull
+    @Override
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, @Nonnull Hand hand) {
+        ItemStack itemStackIn = playerIn.getHeldItem(hand);
+        if (playerIn.isSneaking()) {
+            if (!worldIn.isRemote)
+                worldIn.playSound(null, playerIn.getX(), playerIn.getY(), playerIn.getZ(), PsiSoundHandler.compileError, SoundCategory.PLAYERS, 0.25F, 1F);
+            else playerIn.swingArm(hand);
 
 			ItemStack[] stacks = getControlledStacks(playerIn, itemStackIn);
 
