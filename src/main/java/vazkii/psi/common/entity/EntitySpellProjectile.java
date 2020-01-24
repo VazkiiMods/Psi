@@ -10,12 +10,12 @@
  */
 package vazkii.psi.common.entity;
 
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ThrowableEntity;
-import net.minecraft.block.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
@@ -24,17 +24,15 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.registries.ObjectHolder;
 import vazkii.psi.api.cad.ICADColorizer;
+import vazkii.psi.api.internal.PsiRenderHelper;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.ISpellAcceptor;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
-import vazkii.psi.api.internal.PsiRenderHelper;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.lib.LibEntityNames;
 import vazkii.psi.common.lib.LibMisc;
@@ -148,28 +146,28 @@ public class EntitySpellProjectile extends ThrowableEntity {
 		if(timeAlive > getLiveTime())
 			remove();
 
-		int colorVal = ICADColorizer.DEFAULT_SPELL_COLOR;
-		ItemStack colorizer = dataManager.get(COLORIZER_DATA);
-		if(!colorizer.isEmpty() && colorizer.getItem() instanceof ICADColorizer)
-			colorVal = Psi.proxy.getColorForColorizer(colorizer);
+        int colorVal = ICADColorizer.DEFAULT_SPELL_COLOR;
+        ItemStack colorizer = dataManager.get(COLORIZER_DATA);
+        if (!colorizer.isEmpty() && colorizer.getItem() instanceof ICADColorizer)
+            colorVal = Psi.proxy.getColorForColorizer(colorizer);
 
-		float r = PsiRenderHelper.r(colorVal) / 255F;
-		float g = PsiRenderHelper.g(colorVal) / 255F;
-		float b = PsiRenderHelper.b(colorVal) / 255F;
+        float r = PsiRenderHelper.r(colorVal) / 255F;
+        float g = PsiRenderHelper.g(colorVal) / 255F;
+        float b = PsiRenderHelper.b(colorVal) / 255F;
 
-		double x = posX;
-		double y = posY;
-		double z = posZ;
-		
-		Vector3 lookOrig = new Vector3(getMotion()).normalize();
-		for(int i = 0; i < getParticleCount(); i++) {
-			Vector3 look = lookOrig.copy();
-			double spread = 0.6;
-			double dist = 0.15;
-			if(this instanceof EntitySpellGrenade) {
-				look.y += 1;
-				dist = 0.05;
-			}
+        double x = getX();
+        double y = getY();
+        double z = getZ();
+
+        Vector3 lookOrig = new Vector3(getMotion()).normalize();
+        for (int i = 0; i < getParticleCount(); i++) {
+            Vector3 look = lookOrig.copy();
+            double spread = 0.6;
+            double dist = 0.15;
+            if (this instanceof EntitySpellGrenade) {
+                look.y += 1;
+                dist = 0.05;
+            }
 
 			look.x += (Math.random() - 0.5) * spread;
 			look.y += (Math.random() - 0.5) * spread;

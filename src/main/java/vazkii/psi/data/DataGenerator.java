@@ -14,6 +14,7 @@ public class DataGenerator {
     @SubscribeEvent
     public static void gatherData(GatherDataEvent event) {
         event.getGenerator().addProvider(new RecipeGenerator(event.getGenerator()));
+        event.getGenerator().addProvider(new ItemTagProvider(event.getGenerator()));
     }
 
     @SubscribeEvent

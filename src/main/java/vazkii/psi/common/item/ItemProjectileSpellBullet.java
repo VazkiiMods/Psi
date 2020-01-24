@@ -9,6 +9,7 @@ import vazkii.psi.common.entity.EntitySpellProjectile;
 
 public class ItemProjectileSpellBullet extends ItemSpellBullet {
 
+
     public ItemProjectileSpellBullet(String name, Properties properties) {
         super(name, properties);
     }

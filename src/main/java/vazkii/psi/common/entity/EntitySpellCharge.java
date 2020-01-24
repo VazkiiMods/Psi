@@ -12,22 +12,26 @@ package vazkii.psi.common.entity;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.projectile.ThrowableEntity;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.registries.ObjectHolder;
 import vazkii.psi.api.spell.detonator.IDetonationHandler;
+import vazkii.psi.common.lib.LibEntityNames;
+import vazkii.psi.common.lib.LibMisc;
 
 public class EntitySpellCharge extends EntitySpellGrenade implements IDetonationHandler {
+    @ObjectHolder(LibMisc.PREFIX_MOD + LibEntityNames.SPELL_CHARGE)
+    public static EntityType<EntitySpellCharge> TYPE;
 
-	public EntitySpellCharge(EntityType<?> type, World worldIn) {
-		super(type, worldIn);
-	}
+    public EntitySpellCharge(EntityType<?> type, World worldIn) {
+        super(type, worldIn);
+    }
 
-	public EntitySpellCharge(World worldIn, LivingEntity throwerIn) {
-		super(worldIn, throwerIn);
-	}
+    public EntitySpellCharge(World worldIn, LivingEntity throwerIn) {
+        super(worldIn, throwerIn);
+    }
 
-	@Override
+    @Override
 	public int getParticleCount() {
 		return 2;
 	}

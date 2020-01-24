@@ -3,12 +3,18 @@ package vazkii.psi.data;
 import net.minecraft.block.Blocks;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.IFinishedRecipe;
+import net.minecraft.data.ShapedRecipeBuilder;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.Tags;
+import net.minecraftforge.common.crafting.ConditionalRecipe;
 import net.minecraftforge.common.crafting.conditions.IConditionBuilder;
 import net.minecraftforge.common.data.ForgeRecipeProvider;
 import vazkii.psi.common.block.base.ModBlocks;
 import vazkii.psi.common.item.base.ModItems;
+import vazkii.psi.common.lib.LibMisc;
+import vazkii.psi.common.lib.ModTags;
 
 import java.util.function.Consumer;
 
@@ -20,64 +26,140 @@ public class RecipeGenerator extends ForgeRecipeProvider implements IConditionBu
 
     @Override
     protected void registerRecipes(Consumer<IFinishedRecipe> consumer) {
-        super.registerRecipes(consumer);
-        addOreDictRecipe(ProxyRegistry.newStack(ModBlocks.cadAssembler),
-                "IPI", "I I", " I ",
-                'I', "ingotIron",
-                'P', ProxyRegistry.newStack(Blocks.PISTON));
 
-        addOreDictRecipe(ProxyRegistry.newStack(ModBlocks.programmer),
-                "IDI", "I I", "I I",
-                'I', "ingotIron",
-                'D', "dustPsi");
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapedRecipeBuilder.shapedRecipe(ModBlocks.cadAssembler)
+                        .key('I', Tags.Items.INGOTS_IRON)
+                        .key('P', Items.PISTON)
+                        .patternLine("IPI")
+                        .patternLine("I I")
+                        .patternLine(" I ")
+                        ::build).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "assembler"));
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapedRecipeBuilder.shapedRecipe(ModBlocks.programmer)
+                        .key('I', Tags.Items.INGOTS_IRON)
+                        .key('D', ModTags.DUST_PSI)
+                        .patternLine("IDI")
+                        .patternLine("I I")
+                        .patternLine(" I ")
+                        ::build).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "programmer"));
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapedRecipeBuilder.shapedRecipe(ModItems.ebonyPsimetal)
+                        .key('S', ModTags.SUBSTANCE_EBONY)
+                        .key('I', ModTags.INGOT_PSI)
+                        .patternLine("SSS")
+                        .patternLine("SIS")
+                        .patternLine("SSS")
+                        ::build).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "ebony_psimetal"));
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapedRecipeBuilder.shapedRecipe(ModItems.ivoryPsimetal)
+                        .key('S', ModTags.SUBSTANCE_IVORY)
+                        .key('I', ModTags.INGOT_PSI)
+                        .patternLine("SSS")
+                        .patternLine("SIS")
+                        .patternLine("SSS")
+                        ::build).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "ivory_psimetal"));
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapedRecipeBuilder.shapedRecipe(ModItems.cadAssemblyIron)
+                        .key('I', Tags.Items.INGOTS_IRON)
+                        .patternLine("III")
+                        .patternLine("I  ")
+                        ::build).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "cad_assembly_iron"));
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapedRecipeBuilder.shapedRecipe(ModItems.cadAssemblyGold)
+                        .key('I', Tags.Items.INGOTS_GOLD)
+                        .patternLine("III")
+                        .patternLine("I  ")
+                        ::build).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "cad_assembly_gold"));
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapedRecipeBuilder.shapedRecipe(ModItems.cadAssemblyPsimetal)
+                        .key('I', ModTags.INGOT_PSI)
+                        .patternLine("III")
+                        .patternLine("I  ")
+                        ::build).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "cad_assembly_psimetal"));
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapedRecipeBuilder.shapedRecipe(ModItems.cadAssemblyEbony)
+                        .key('I', ModTags.INGOT_EBONY_PSI)
+                        .patternLine("III")
+                        .patternLine("I  ")
+                        ::build).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "cad_assembly_ebony"));
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapedRecipeBuilder.shapedRecipe(ModItems.cadAssemblyIvory)
+                        .key('I', ModTags.INGOT_IVORY_PSI)
+                        .patternLine("III")
+                        .patternLine("I  ")
+                        ::build).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "cad_assembly_ivory"));
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapedRecipeBuilder.shapedRecipe(ModItems.cadCoreBasic)
+                        .key('I', Tags.Items.INGOTS_IRON)
+                        .key('D', ModTags.DUST_PSI)
+                        .patternLine(" I ")
+                        .patternLine("IDI")
+                        .patternLine(" I ")
+                        ::build).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "cad_core_basic"));
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapedRecipeBuilder.shapedRecipe(ModItems.cadCoreOverclocked)
+                        .key('I', ModTags.INGOT_PSI)
+                        .key('D', Tags.Items.DUSTS_REDSTONE)
+                        .patternLine(" I ")
+                        .patternLine("IDI")
+                        .patternLine(" I ")
+                        ::build).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "cad_core_overclocked"));
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapedRecipeBuilder.shapedRecipe(ModItems.cadCoreConductive)
+                        .key('I', ModTags.INGOT_PSI)
+                        .key('D', Tags.Items.DUSTS_GLOWSTONE)
+                        .patternLine(" I ")
+                        .patternLine("IDI")
+                        .patternLine(" I ")
+                        ::build).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "cad_core_conductive"));
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapedRecipeBuilder.shapedRecipe(ModItems.cadCoreHyperClocked)
+                        .key('I', ModTags.INGOT_PSI)
+                        .key('D', Tags.Items.DUSTS_REDSTONE)
+                        .key('G', ModTags.GEM_PSI)
+                        .patternLine(" G ")
+                        .patternLine("IDI")
+                        .patternLine(" G ")
+                        ::build).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "cad_core_hyperclocked"));
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapedRecipeBuilder.shapedRecipe(ModItems.cadCoreRadiative)
+                        .key('I', ModTags.INGOT_PSI)
+                        .key('D', Tags.Items.DUSTS_GLOWSTONE)
+                        .key('G', ModTags.GEM_PSI)
+                        .patternLine(" G ")
+                        .patternLine("IDI")
+                        .patternLine(" G ")
+                        ::build).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "cad_core_radiative"));
 
-        addOreDictRecipe(ProxyRegistry.newStack(ModItems.material, 1, 3),
-                "SSS", "SIS", "SSS",
-                'S', "substanceEbony",
-                'I', "ingotPsi");
-        addOreDictRecipe(ProxyRegistry.newStack(ModItems.material, 1, 4),
-                "SSS", "SIS", "SSS",
-                'S', "substanceIvory",
-                'I', "ingotPsi");
-
-        addOreDictRecipe(ProxyRegistry.newStack(ModItems.cadAssembly, 1, 0),
-                "III", "I  ",
-                'I', "ingotIron");
-        addOreDictRecipe(ProxyRegistry.newStack(ModItems.cadAssembly, 1, 1),
-                "III", "I  ",
-                'I', "ingotGold");
-        addOreDictRecipe(ProxyRegistry.newStack(ModItems.cadAssembly, 1, 2),
-                "III", "I  ",
-                'I', "ingotPsi");
-        addOreDictRecipe(ProxyRegistry.newStack(ModItems.cadAssembly, 1, 3),
-                "III", "I  ",
-                'I', "ingotEbonyPsi");
-        addOreDictRecipe(ProxyRegistry.newStack(ModItems.cadAssembly, 1, 4),
-                "III", "I  ",
-                'I', "ingotIvoryPsi");
-
-        addOreDictRecipe(ProxyRegistry.newStack(ModItems.cadCore, 1, 0),
-                " I ", "IDI", " I ",
-                'I', "ingotIron",
-                'D', "dustPsi");
-        addOreDictRecipe(ProxyRegistry.newStack(ModItems.cadCore, 1, 1),
-                " I ", "IDI", " I ",
-                'I', "ingotPsi",
-                'D', "dustRedstone");
-        addOreDictRecipe(ProxyRegistry.newStack(ModItems.cadCore, 1, 2),
-                " I ", "IDI", " I ",
-                'I', "ingotPsi",
-                'D', "dustGlowstone");
-        addOreDictRecipe(ProxyRegistry.newStack(ModItems.cadCore, 1, 3),
-                " G ", "IDI", " G ",
-                'I', "ingotPsi",
-                'G', "gemPsi",
-                'D', "dustRedstone");
-        addOreDictRecipe(ProxyRegistry.newStack(ModItems.cadCore, 1, 4),
-                " G ", "IDI", " G ",
-                'I', "ingotPsi",
-                'G', "gemPsi",
-                'D', "dustGlowstone");
 
         addOreDictRecipe(ProxyRegistry.newStack(ModItems.cadSocket, 1, 0),
                 "DI", "I ",

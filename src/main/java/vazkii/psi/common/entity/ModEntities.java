@@ -18,11 +18,12 @@ import net.minecraftforge.registries.IForgeRegistry;
 import vazkii.psi.common.lib.LibEntityNames;
 import vazkii.psi.common.lib.LibMisc;
 
-import static net.minecraft.entity.EntityClassification.*;
+import static net.minecraft.entity.EntityClassification.MISC;
 
 @Mod.EventBusSubscriber(modid = LibMisc.MOD_ID)
 public final class ModEntities {
-	@SubscribeEvent
+
+    @SubscribeEvent
 	public static void init(RegistryEvent.Register<EntityType<?>> evt) {
 		IForgeRegistry<EntityType<?>> r = evt.getRegistry();
 		r.register(EntityType.Builder.create(EntitySpellProjectile::new, MISC)

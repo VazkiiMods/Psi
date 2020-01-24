@@ -12,6 +12,7 @@ package vazkii.psi.common.crafting;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraftforge.common.Tags;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.lib.LibPieceNames;
@@ -19,20 +20,20 @@ import vazkii.psi.common.lib.LibPieceNames;
 public class ModCraftingRecipes {
 
 	public static void init() {
-		PsiAPI.registerTrickRecipe("", "dustRedstone", new ItemStack(ModItems.material), new ItemStack(ModItems.cadAssembly));
+        PsiAPI.registerTrickRecipe("", Tags.Items.DUSTS_REDSTONE, new ItemStack(ModItems.psidust), new ItemStack(ModItems.cadAssemblyIron));
 
-		PsiAPI.registerTrickRecipe(LibPieceNames.TRICK_INFUSION, "ingotGold",
-				new ItemStack(ModItems.material, 1, 1), 
-				new ItemStack(ModItems.cadAssembly));
-		PsiAPI.registerTrickRecipe(LibPieceNames.TRICK_GREATER_INFUSION, "gemDiamond",
-				new ItemStack(ModItems.material, 1, 2), 
-				new ItemStack(ModItems.cadAssembly, 1, 2));
-		PsiAPI.registerTrickRecipe(LibPieceNames.TRICK_EBONY_IVORY, new ItemStack(Items.COAL),
-				new ItemStack(ModItems.material, 1, 5), 
-				new ItemStack(ModItems.cadAssembly, 1, 2));
-		PsiAPI.registerTrickRecipe(LibPieceNames.TRICK_EBONY_IVORY, "gemQuartz",
-				new ItemStack(ModItems.material, 1, 6), 
-				new ItemStack(ModItems.cadAssembly, 1, 2));
+        PsiAPI.registerTrickRecipe(LibPieceNames.TRICK_INFUSION, "ingotGold",
+                new ItemStack(ModItems.psimetal),
+                new ItemStack(ModItems.cadAssemblyIron));
+        PsiAPI.registerTrickRecipe(LibPieceNames.TRICK_GREATER_INFUSION, "gemDiamond",
+                new ItemStack(ModItems.psimetal),
+                new ItemStack(ModItems.cadAssemblyPsimetal));
+        PsiAPI.registerTrickRecipe(LibPieceNames.TRICK_EBONY_IVORY, new ItemStack(Items.COAL),
+                new ItemStack(ModItems.ebonySubstance),
+                new ItemStack(ModItems.cadAssemblyPsimetal));
+        PsiAPI.registerTrickRecipe(LibPieceNames.TRICK_EBONY_IVORY, "gemQuartz",
+                new ItemStack(ModItems.ivoryPsimetal),
+                new ItemStack(ModItems.cadAssemblyPsimetal));
 
 	}
 

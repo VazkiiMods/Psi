@@ -10,11 +10,11 @@
  */
 package vazkii.psi.common.entity;
 
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.block.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
@@ -24,10 +24,16 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraftforge.registries.ObjectHolder;
 import vazkii.psi.api.cad.ICADColorizer;
-import vazkii.psi.api.spell.*;
 import vazkii.psi.api.internal.PsiRenderHelper;
+import vazkii.psi.api.spell.ISpellAcceptor;
+import vazkii.psi.api.spell.ISpellImmune;
+import vazkii.psi.api.spell.Spell;
+import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.common.Psi;
+import vazkii.psi.common.lib.LibEntityNames;
+import vazkii.psi.common.lib.LibMisc;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -35,16 +41,18 @@ import java.util.Optional;
 import java.util.UUID;
 
 public class EntitySpellCircle extends Entity implements ISpellImmune {
+    @ObjectHolder(LibMisc.PREFIX_MOD + LibEntityNames.SPELL_CIRCLE)
+    public static EntityType<EntitySpellCircle> TYPE;
 
-	public static final int CAST_TIMES = 20;
-	public static final int CAST_DELAY = 5;
-	public static final int LIVE_TIME = (CAST_TIMES + 2) * CAST_DELAY;
+    public static final int CAST_TIMES = 20;
+    public static final int CAST_DELAY = 5;
+    public static final int LIVE_TIME = (CAST_TIMES + 2) * CAST_DELAY;
 
-	private static final String TAG_COLORIZER = "colorizer";
-	private static final String TAG_BULLET = "bullet";
-	private static final String TAG_CASTER = "caster";
-	private static final String TAG_TIME_ALIVE = "timeAlive";
-	private static final String TAG_TIMES_CAST = "timesCast";
+    private static final String TAG_COLORIZER = "colorizer";
+    private static final String TAG_BULLET = "bullet";
+    private static final String TAG_CASTER = "caster";
+    private static final String TAG_TIME_ALIVE = "timeAlive";
+    private static final String TAG_TIMES_CAST = "timesCast";
 
 	private static final String TAG_LOOK_X = "savedLookX";
 	private static final String TAG_LOOK_Y = "savedLookY";
@@ -170,22 +178,21 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 		float g = PsiRenderHelper.g(colorVal) / 255F;
 		float b = PsiRenderHelper.b(colorVal) / 255F;
 		for (int i = 0; i < 5; i++) {
-			double x = posX + (Math.random() - 0.5) * getWidth();
-			double y = posY - getYOffset();
-			double z = posZ + (Math.random() - 0.5) * getWidth();
-			float grav = -0.15F - (float) Math.random() * 0.03F;
-			Psi.proxy.sparkleFX(x, y, z, r, g, b, grav, 0.25F, 15);
-		}
+            double x = getX() + (Math.random() - 0.5) * getWidth();
+            double y = getY() - getYOffset();
+            double z = getZ() + (Math.random() - 0.5) * getWidth();
+            float grav = -0.15F - (float) Math.random() * 0.03F;
+            Psi.proxy.sparkleFX(x, y, z, r, g, b, grav, 0.25F, 15);
+        }
 	}
 
-	@Nonnull
-	@Override
-	public Vec3d getLook(float f) {
-		float x = (float) dataManager.get(LOOK_X);
-		float y = (float) dataManager.get(LOOK_Y);
-		float z = (float) dataManager.get(LOOK_Z);
-		return new Vec3d(x, y, z);
-	}
+    @Override
+    public Vec3d getLookVec() {
+        float x = (float) dataManager.get(LOOK_X);
+        float y = (float) dataManager.get(LOOK_Y);
+        float z = (float) dataManager.get(LOOK_Z);
+        return new Vec3d(x, y, z);
+    }
 
 	public int getTimeAlive() {
 		return dataManager.get(TIME_ALIVE);

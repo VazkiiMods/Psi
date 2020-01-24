@@ -12,7 +12,6 @@ package vazkii.psi.common.entity;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.projectile.ThrowableEntity;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.RayTraceResult;
@@ -64,12 +63,12 @@ public class EntitySpellGrenade extends EntitySpellProjectile {
 		double m = 0.1;
 		double d3 = 0.0D;
 		for(int j = 0; j < 40; j++) {
-			double d0 = getEntityWorld().rand.nextGaussian() * m;
-			double d1 = getEntityWorld().rand.nextGaussian() * m;
-			double d2 = getEntityWorld().rand.nextGaussian() * m;
+            double d0 = getEntityWorld().rand.nextGaussian() * m;
+            double d1 = getEntityWorld().rand.nextGaussian() * m;
+            double d2 = getEntityWorld().rand.nextGaussian() * m;
 
-			getEntityWorld().addParticle(ParticleTypes.EXPLOSION, posX + getEntityWorld().rand.nextFloat() * getWidth() * 2.0F - getWidth() - d0 * d3, posY + getEntityWorld().rand.nextFloat() * getHeight() - d1 * d3, posZ + getEntityWorld().rand.nextFloat() * getWidth() * 2.0F - getWidth() - d2 * d3, d0, d1, d2);
-		}
+            getEntityWorld().addParticle(ParticleTypes.EXPLOSION, getX() + getEntityWorld().rand.nextFloat() * getWidth() * 2.0F - getWidth() - d0 * d3, getY() + getEntityWorld().rand.nextFloat() * getHeight() - d1 * d3, getZ() + getEntityWorld().rand.nextFloat() * getWidth() * 2.0F - getWidth() - d2 * d3, d0, d1, d2);
+        }
 	}
 
 	public boolean explodes() {
@@ -78,15 +77,12 @@ public class EntitySpellGrenade extends EntitySpellProjectile {
 
 	@Override
 	protected void onImpact(@Nonnull RayTraceResult pos) {
-		if(!getEntityWorld().isRemote && !sound && explodes()) {
-			playSound(SoundEvents.ENTITY_CREEPER_PRIMED, 2F, 1F);
-			sound = true;
-		}
-
-		posX = pos.getHitVec().x;
-		posY = pos.getHitVec().y;
-		posZ = pos.getHitVec().z;
-		setMotion(Vec3d.ZERO);
-	}
+        if (!getEntityWorld().isRemote && !sound && explodes()) {
+            playSound(SoundEvents.ENTITY_CREEPER_PRIMED, 2F, 1F);
+            sound = true;
+        }
+        setPos(pos.getHitVec().x, pos.getHitVec().y, pos.getHitVec().z);
+        setMotion(Vec3d.ZERO);
+    }
 
 }
