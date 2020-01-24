@@ -37,7 +37,7 @@ public final class ParticleRenderDispatcher {
 
 		Profiler profiler = Minecraft.getInstance().profiler;
 
-		GL11.glPushAttrib(GL11.GL_LIGHTING);
+		boolean lighting = GL11.glIsEnabled(GL11.GL_LIGHTING);
 		GlStateManager.depthMask(false);
 		GlStateManager.enableBlend();
 		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
@@ -56,7 +56,8 @@ public final class ParticleRenderDispatcher {
 		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		GlStateManager.disableBlend();
 		GlStateManager.depthMask(true);
-		GL11.glPopAttrib();
+		if (lighting)
+			GlStateManager.enableLighting();
 	}
 
 }
