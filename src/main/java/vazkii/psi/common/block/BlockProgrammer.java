@@ -11,13 +11,13 @@
 package vazkii.psi.common.block;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.Rarity;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
@@ -28,9 +28,8 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.text.Style;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import vazkii.psi.api.internal.VanillaPacketDispatcher;
@@ -58,33 +57,34 @@ public class BlockProgrammer extends HorizontalBlock {
 	}
 
 	@Override
-	public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
+	public ActionResultType onUse(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult rayTraceResult) {
 		ItemStack heldItem = player.getHeldItem(hand);
 		TileProgrammer programmer = (TileProgrammer) worldIn.getTileEntity(pos);
 		if (programmer == null)
-			return true;
+			return ActionResultType.PASS;
 
-		if(!player.abilities.isCreativeMode) {
+		if (!player.abilities.isCreativeMode) {
 			PlayerData data = PlayerDataHandler.get(player);
-			if(data.spellGroupsUnlocked.isEmpty()) {
-				if(!worldIn.isRemote)
+			if (data.spellGroupsUnlocked.isEmpty()) {
+				if (!worldIn.isRemote)
 					player.sendMessage(new TranslationTextComponent("psimisc.cantUseProgrammer").applyTextStyle(TextFormatting.RED));
-				return true;
+				return ActionResultType.PASS;
 			}
 		}
-		
+
 		ActionResultType result = setSpell(worldIn, pos, player, heldItem);
-		if(result == ActionResultType.SUCCESS)
-			return true;
+		if (result == ActionResultType.SUCCESS)
+			return ActionResultType.SUCCESS;
 
 		boolean enabled = programmer.isEnabled();
-		if(!enabled || programmer.playerLock.isEmpty())
+		if (!enabled || programmer.playerLock.isEmpty())
 			programmer.playerLock = player.getName().getString();
 
-		if(player instanceof ServerPlayerEntity)
+		if (player instanceof ServerPlayerEntity)
 			VanillaPacketDispatcher.dispatchTEToPlayer(programmer, (ServerPlayerEntity) player);
+		//TODO Proxify
 		player.openGui(Psi.instance, LibGuiIDs.PROGRAMMER, worldIn, pos.getX(), pos.getY(), pos.getZ());
-		return true;
+		return ActionResultType.SUCCESS;
 	}
 
 	public ActionResultType setSpell(World worldIn, BlockPos pos, PlayerEntity playerIn, ItemStack heldItem) {
@@ -154,4 +154,12 @@ public class BlockProgrammer extends HorizontalBlock {
 
 		return 0;
 	}
+
+	@Nullable
+	@Override
+	public INamedContainerProvider getContainer(BlockState p_220052_1_, World p_220052_2_, BlockPos p_220052_3_) {
+		return super.getContainer(p_220052_1_, p_220052_2_, p_220052_3_);
+	}
+
+
 }

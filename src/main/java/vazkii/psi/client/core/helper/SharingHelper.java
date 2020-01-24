@@ -12,9 +12,8 @@ package vazkii.psi.client.core.helper;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.mojang.blaze3d.platform.TextureUtil;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.renderer.texture.TextureUtil;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -116,11 +115,11 @@ public final class SharingHelper {
 	public static String takeScreenshot() throws Exception {
 		Minecraft mc = Minecraft.getInstance();
 
-		ScaledResolution res = new ScaledResolution(mc);
-		int screenWidth = mc.displayWidth;
-		int screenHeight = mc.displayHeight;
+		int screenWidth = mc.mainWindow.getWidth();
+		int screenHeight = mc.mainWindow.getHeight();
 
-		int scale = res.getScaleFactor();
+		int scale = (int) mc.mainWindow.getGuiScaleFactor();
+
 		int width = 380 * scale;
 		int height = 200 * scale;
 
@@ -129,7 +128,7 @@ public final class SharingHelper {
 
 		int i = width * height;
 
-		if(pixelBuffer == null || pixelBuffer.capacity() < i) {
+		if (pixelBuffer == null || pixelBuffer.capacity() < i) {
 			pixelBuffer = BufferUtils.createIntBuffer(i);
 			pixelValues = new int[i];
 		}
@@ -141,7 +140,8 @@ public final class SharingHelper {
 		GL11.glReadPixels(left, top, width, height, GL12.GL_BGRA, GL12.GL_UNSIGNED_INT_8_8_8_8_REV, pixelBuffer);
 
 		pixelBuffer.get(pixelValues);
-		TextureUtil.processPixelValues(pixelValues, width, height);
+		//TODO unsure
+		TextureUtil.initTexture(pixelBuffer, width, height);
 		BufferedImage bufferedimage;
 
 		bufferedimage = new BufferedImage(width, height, 1);

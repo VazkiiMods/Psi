@@ -11,28 +11,17 @@
 package vazkii.psi.common.item.base;
 
 import net.minecraft.item.Item;
-import net.minecraft.item.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraftforge.oredict.OreDictionary;
-import vazkii.arl.item.*;
+import vazkii.arl.item.BasicItem;
 import vazkii.psi.common.core.PsiCreativeTab;
-import vazkii.psi.common.item.ItemCAD;
-import vazkii.psi.common.item.ItemDetonator;
-import vazkii.psi.common.item.ItemExosuitController;
-import vazkii.psi.common.item.ItemExosuitSensor;
-import vazkii.psi.common.item.ItemMaterial;
-import vazkii.psi.common.item.ItemSpellBullet;
-import vazkii.psi.common.item.ItemSpellDrive;
-import vazkii.psi.common.item.ItemVectorRuler;
+import vazkii.psi.common.item.*;
 import vazkii.psi.common.item.armor.ItemPsimetalExosuitBoots;
 import vazkii.psi.common.item.armor.ItemPsimetalExosuitChestplate;
 import vazkii.psi.common.item.armor.ItemPsimetalExosuitHelmet;
 import vazkii.psi.common.item.armor.ItemPsimetalExosuitLeggings;
-import vazkii.psi.common.item.component.ItemCADAssembly;
-import vazkii.psi.common.item.component.ItemCADBattery;
-import vazkii.psi.common.item.component.ItemCADColorizer;
-import vazkii.psi.common.item.component.ItemCADCore;
-import vazkii.psi.common.item.component.ItemCADSocket;
+import vazkii.psi.common.item.component.*;
 import vazkii.psi.common.item.tool.ItemPsimetalAxe;
 import vazkii.psi.common.item.tool.ItemPsimetalPickaxe;
 import vazkii.psi.common.item.tool.ItemPsimetalShovel;
@@ -41,12 +30,38 @@ import vazkii.psi.common.lib.LibItemNames;
 
 public final class ModItems {
 
-	public static ItemMod material;
+	public static final BasicItem psidust = new BasicItem("psidust", defaultBuilder());
+	public static final BasicItem psimetal = new BasicItem("psimetal", defaultBuilder());
+	public static final BasicItem psigem = new BasicItem("psigem", defaultBuilder());
+	public static final BasicItem ebonyPsimetal = new BasicItem("ebony_psimetal", defaultBuilder());
+	public static final BasicItem ivoryPsimetal = new BasicItem("ivory_psimetal", defaultBuilder());
+	public static final BasicItem ebonySubstance = new BasicItem("ebony_substance", defaultBuilder());
+	public static final BasicItem ivorySubstance = new BasicItem("ivory_substance", defaultBuilder());
 
-	public static ItemMod cadAssembly;
-	public static ItemMod cadCore;
-	public static ItemMod cadSocket;
-	public static ItemMod cadBattery;
+	public static final BasicItem cadAssemblyIron = new ItemCADAssembly(LibItemNames.CAD_ASSEMBLY_IRON, defaultBuilder(), LibItemNames.CAD_IRON);
+	public static final BasicItem cadAssemblyGold = new ItemCADAssembly(LibItemNames.CAD_ASSEMBLY_GOLD, defaultBuilder(), LibItemNames.CAD_GOLD);
+	public static final BasicItem cadAssemblyPsimetal = new ItemCADAssembly(LibItemNames.CAD_ASSEMBLY_PSIMETAL, defaultBuilder(), LibItemNames.CAD_PSIMETAL);
+	public static final BasicItem cadAssemblyIvory = new ItemCADAssembly(LibItemNames.CAD_IVORY_PSIMETAL, defaultBuilder(), LibItemNames.CAD_IVORY_PSIMETAL);
+	public static final BasicItem cadAssemblyEbony = new ItemCADAssembly(LibItemNames.CAD_ASSEMBLY_EBONY_PSIMETAL, defaultBuilder(), LibItemNames.CAD_EBONY_PSIMETAL);
+	public static final BasicItem cadAssemblyCreative = new ItemCADAssembly(LibItemNames.CAD_ASSEMBLY_CREATIVE, defaultBuilder(), LibItemNames.CAD_CREATIVE);
+
+	public static final BasicItem cadCoreBasic = new ItemCADCore(LibItemNames.CAD_CORE_BASIC, defaultBuilder());
+	public static final BasicItem cadCoreOverclocked = new ItemCADCore(LibItemNames.CAD_CORE_OVERCLOCKED, defaultBuilder());
+	public static final BasicItem cadCoreConductive = new ItemCADCore(LibItemNames.CAD_CORE_CONDUCTIVE, defaultBuilder());
+	public static final BasicItem cadCoreHyperClocked = new ItemCADCore(LibItemNames.CAD_CORE_HYPERCLOCKED, defaultBuilder());
+	public static final BasicItem cadCoreRadiative = new ItemCADCore(LibItemNames.CAD_CORE_RADIATIVE, defaultBuilder());
+
+	public static final BasicItem cadSocketBasic = new ItemCADSocket(LibItemNames.CAD_SOCKET_BASIC, defaultBuilder());
+	public static final BasicItem cadSocketSignaling = new ItemCADSocket(LibItemNames.CAD_SOCKET_SIGNALING, defaultBuilder());
+	public static final BasicItem cadSocketLarge = new ItemCADSocket(LibItemNames.CAD_SOCKET_LARGE, defaultBuilder());
+	public static final BasicItem cadSocketTransmissive = new ItemCADSocket(LibItemNames.CAD_SOCKET_TRANSMISSIVE, defaultBuilder());
+	public static final BasicItem cadSocketHuge = new ItemCADSocket(LibItemNames.CAD_SOCKET_HUGE, defaultBuilder());
+
+	public static final BasicItem cadBatteryBasic = new ItemCADBattery(LibItemNames.CAD_BATTERY_BASIC, defaultBuilder());
+	public static final BasicItem cadBatteryExtended = new ItemCADBattery(LibItemNames.CAD_BATTERY_EXTENDED, defaultBuilder());
+	public static final BasicItem cadBatteryUltradense = new ItemCADBattery(LibItemNames.CAD_BATTERY_ULTRADENSE, defaultBuilder());
+
+
 	public static ItemMod cadColorizer;
 	public static ItemMod spellBullet;
 	public static ItemMod spellDrive;
@@ -71,12 +86,7 @@ public final class ModItems {
 	}
 
 	public static void preInit() {
-		material = new ItemMaterial();
 
-		cadAssembly = new ItemCADAssembly();
-		cadCore = new ItemCADCore();
-		cadSocket = new ItemCADSocket();
-		cadBattery = new ItemCADBattery();
 		cadColorizer = new ItemCADColorizer();
 		spellBullet = new ItemSpellBullet();
 		spellDrive = new ItemSpellDrive();

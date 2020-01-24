@@ -13,16 +13,16 @@ package vazkii.psi.common.core.handler.capability;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.INBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 import vazkii.psi.api.cad.*;
 import vazkii.psi.api.spell.ISpellAcceptor;
 import vazkii.psi.api.spell.ISpellImmune;
@@ -59,18 +59,18 @@ public class CapabilityHandler {
 	private static class CapabilityFactory<T> implements Capability.IStorage<T> {
 
 		@Override
-		public NBTBase writeNBT(Capability<T> capability, T instance, Direction side) {
+		public INBT writeNBT(Capability<T> capability, T instance, Direction side) {
 			if (instance instanceof INBTSerializable)
 				return ((INBTSerializable) instance).serializeNBT();
 			return null;
 		}
 
 		@Override
-		@SuppressWarnings("unchecked")
-		public void readNBT(Capability<T> capability, T instance, Direction side, NBTBase nbt) {
+		public void readNBT(Capability<T> capability, T instance, Direction side, INBT nbt) {
 			if (nbt instanceof CompoundNBT)
 				((INBTSerializable) instance).deserializeNBT(nbt);
 		}
+
 	}
 
 	private static final ResourceLocation SOCKET = new ResourceLocation(LibMisc.MOD_ID, "socketable");

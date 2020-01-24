@@ -40,7 +40,6 @@ import vazkii.psi.common.core.PsiCreativeTab;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
 import vazkii.psi.common.item.ItemCAD;
-import vazkii.psi.common.item.base.IPsiItem;
 import vazkii.psi.common.item.tool.IPsimetalTool;
 import vazkii.psi.common.lib.LibResources;
 
@@ -48,14 +47,14 @@ import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.function.Function;
 
-public class ItemPsimetalArmor extends ItemModArmor implements IPsimetalTool, IPsiEventArmor, IItemColorProvider, IPsiItem {
+public class ItemPsimetalArmor extends ItemModArmor implements IPsimetalTool, IPsiEventArmor, IItemColorProvider {
 
 	@OnlyIn(Dist.CLIENT)
 	public static Function<Integer, ModelBiped> modelSupplier;
-	
+
 	@OnlyIn(Dist.CLIENT)
 	protected ModelBiped[] models;
-	
+
 	private static final String TAG_TIMES_CAST = "timesCast";
 
 	public ItemPsimetalArmor(String name, int type, EquipmentSlotType slot) {

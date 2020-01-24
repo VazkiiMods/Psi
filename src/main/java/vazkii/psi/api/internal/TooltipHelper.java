@@ -11,33 +11,35 @@
 package vazkii.psi.api.internal;
 
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import vazkii.psi.api.PsiAPI;
 
 import java.util.List;
 
 public final class TooltipHelper {
 
-	@OnlyIn(Dist.CLIENT)
-	public static void tooltipIfShift(List<String> tooltip, Runnable r) {
-		if(Screen.hasShiftDown())
-			r.run();
-		else addToTooltip(tooltip, "psimisc.shiftForInfo");
-	}
+    @OnlyIn(Dist.CLIENT)
+    public static void tooltipIfShift(List<ITextComponent> tooltip, Runnable r) {
+        if (Screen.hasShiftDown())
+            r.run();
+        else addToTooltip(tooltip, "psimisc.shiftForInfo");
+    }
 
-	@OnlyIn(Dist.CLIENT)
-	public static void addToTooltip(List<String> tooltip, String s, Object... format) {
-		tooltip.add(local(s, format).replaceAll("&", "\u00a7"));
-	}
+    @OnlyIn(Dist.CLIENT)
+    public static void addToTooltip(List<ITextComponent> tooltip, String s, Object... format) {
+        tooltip.add(local(s, format));
+        //TODO check if the lack of .replaceAll("&", "\u00a7")) is okay
+    }
 
-	// todo 1.14 replace these with textcomponentranslation or direct calls to i18n.format
-	public static String local(String s, Object... format) {
-		return PsiAPI.internalHandler.localize(s, format);
-	}
+    // todo check if okay
+    public static TranslationTextComponent local(String s, Object... format) {
+        return new TranslationTextComponent(s, format);
+    }
 
-	public static String local(String s) {
-		return local(s, new Object[0]);
-	}
+    public static TranslationTextComponent local(String s) {
+        return local(s, new Object[0]);
+    }
 
 }

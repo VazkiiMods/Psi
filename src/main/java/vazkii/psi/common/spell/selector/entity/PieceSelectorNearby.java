@@ -13,12 +13,7 @@ package vazkii.psi.common.spell.selector.entity;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.AxisAlignedBB;
 import vazkii.psi.api.internal.Vector3;
-import vazkii.psi.api.spell.Spell;
-import vazkii.psi.api.spell.SpellCompilationException;
-import vazkii.psi.api.spell.SpellContext;
-import vazkii.psi.api.spell.SpellMetadata;
-import vazkii.psi.api.spell.SpellParam;
-import vazkii.psi.api.spell.SpellRuntimeException;
+import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.param.ParamVector;
 import vazkii.psi.api.spell.piece.PieceSelector;
@@ -31,6 +26,8 @@ public abstract class PieceSelectorNearby extends PieceSelector {
 
 	SpellParam position;
 	SpellParam radius;
+
+	//TODO add this in the next version
 
 	public PieceSelectorNearby(Spell spell) {
 		super(spell);
@@ -47,7 +44,7 @@ public abstract class PieceSelectorNearby extends PieceSelector {
 		super.addToMetadata(meta);
 
 		Double radiusVal = this.<Double>getParamEvaluation(radius);
-		if(radiusVal == null || radiusVal <= 0)
+		if (radiusVal == null || radiusVal <= 0)
 			throw new SpellCompilationException(SpellCompilationException.NON_POSITIVE_VALUE, x, y);
 	}
 

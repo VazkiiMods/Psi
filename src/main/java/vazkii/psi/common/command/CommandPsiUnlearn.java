@@ -11,59 +11,82 @@
 package vazkii.psi.common.command;
 
 import com.google.common.collect.Lists;
-import net.minecraft.command.ICommandSender;
+import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.arguments.StringArgumentType;
+import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import net.minecraft.command.CommandSource;
+import net.minecraft.command.Commands;
+import net.minecraft.command.ISuggestionProvider;
+import net.minecraft.command.arguments.EntityArgument;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.spell.PieceGroup;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
-import vazkii.psi.common.lib.LibMisc;
+import vazkii.psi.common.network.MessageRegister;
+import vazkii.psi.common.network.message.MessageDataSync;
 
-import javax.annotation.Nonnull;
 import java.util.List;
 
 public class CommandPsiUnlearn extends CommandPsiLearn {
-	@Nonnull
-	@Override
-	public String getName() {
-		return "psi-unlearn";
-	}
 
-	@Override
-	public String localizationKey() {
-		return "command." + LibMisc.MOD_ID + ".unlearn";
-	}
 
-	@Override
-	public boolean shouldNotApply(PlayerEntity player, String group) {
-		return !super.shouldNotApply(player, group);
-	}
+    public static void register(CommandDispatcher<CommandSource> dispatcher) {
+        dispatcher.register(
+                Commands.literal("psi-unlearn")
+                        .requires(s -> s.hasPermissionLevel(2))
+                        .then(Commands.argument("group", StringArgumentType.string())
+                                .suggests((ctx, sb) -> ISuggestionProvider.suggest(getGroups().stream(), sb)))
+                        .executes(ctx -> run(ctx, true))
+                        .then(Commands.argument("player", EntityArgument.player()))
+                        .executes(ctx -> run(ctx, false))
+        );
+    }
 
-	@Override
-	public void applyPlayerData(PlayerEntity player, PlayerDataHandler.PlayerData data, String group, ICommandSender sender) {
-		if (group.equals(level0)) {
-			lockPieceGroup(data, group);
-			notify(sender, "success", player.getDisplayName(), getGroupComponent(group));
-		} else if (getGroups().contains(group)) {
-			List<String> superGroups = Lists.newArrayList(data.spellGroupsUnlocked);
-			for (String superGroup : superGroups) {
-				if (data.isPieceGroupUnlocked(superGroup)) {
-					PieceGroup superPieceGroup = PsiAPI.groupsForName.get(group);
-					if (superPieceGroup != null && superPieceGroup.requirements.contains(group))
-						applyPlayerData(player, data, superGroup, sender);
-				}
+    public static int run(CommandContext<CommandSource> ctx, boolean onSelf) throws CommandSyntaxException {
+        PlayerEntity player = onSelf ? ctx.getSource().asPlayer() : EntityArgument.getPlayer(ctx, "player");
+        PlayerDataHandler.PlayerData data = PlayerDataHandler.get(player);
+        String group = StringArgumentType.getString(ctx, "group");
+        CommandSource sender = ctx.getSource();
+        if (group.equals("*")) {
+            applyAll(data, player, sender);
+            MessageRegister.HANDLER.sendToPlayer(new MessageDataSync(data), (ServerPlayerEntity) player);
+        } else if (!getGroups().contains(group))
+            error("not_a_group", group);
+        else if (shouldNotApply(player, group))
+            error("should_not", player.getDisplayName(), group);
+        else {
+            applyPlayerData(player, data, group, sender);
+            MessageRegister.HANDLER.sendToPlayer(new MessageDataSync(data), (ServerPlayerEntity) player);
+        }
+        return 1;
+    }
 
-			}
+    public static void applyPlayerData(PlayerEntity player, PlayerDataHandler.PlayerData data, String group, CommandSource sender) {
+        if (group.equals(level0)) {
+            lockPieceGroup(data, group);
+            notify(sender, "success", player.getDisplayName(), getGroupComponent(group));
+        } else if (getGroups().contains(group)) {
+            List<String> superGroups = Lists.newArrayList(data.spellGroupsUnlocked);
+            for (String superGroup : superGroups) {
+                if (data.isPieceGroupUnlocked(superGroup)) {
+                    PieceGroup superPieceGroup = PsiAPI.groupsForName.get(group);
+                    if (superPieceGroup != null && superPieceGroup.requirements.contains(group))
+                        applyPlayerData(player, data, superGroup, sender);
+                }
 
-			if (data.isPieceGroupUnlocked(group)) {
-				lockPieceGroup(data, group);
-				notify(sender, "success", player.getDisplayName(), getGroupComponent(group));
-			}
-		}
-	}
+            }
 
-	@Override
-	public void applyAll(PlayerDataHandler.PlayerData data, PlayerEntity player, ICommandSender sender) {
-		lockAll(data);
-		notify(sender, "success.all", player.getDisplayName());
-	}
+            if (data.isPieceGroupUnlocked(group)) {
+                lockPieceGroup(data, group);
+                notify(sender, "success", player.getDisplayName(), getGroupComponent(group));
+            }
+        }
+    }
+
+    public static void applyAll(PlayerDataHandler.PlayerData data, PlayerEntity player, CommandSource sender) {
+        lockAll(data);
+        notify(sender, "success.all", player.getDisplayName());
+    }
 }

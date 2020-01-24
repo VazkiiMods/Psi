@@ -11,53 +11,67 @@
 package vazkii.psi.common.command;
 
 import com.google.common.collect.Lists;
-import net.minecraft.command.CommandBase;
+import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.Message;
+import com.mojang.brigadier.arguments.StringArgumentType;
+import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import net.minecraft.command.CommandException;
-import net.minecraft.command.ICommandSender;
-import net.minecraft.command.WrongUsageException;
-import net.minecraft.entity.Entity;
+import net.minecraft.command.CommandSource;
+import net.minecraft.command.Commands;
+import net.minecraft.command.ISuggestionProvider;
+import net.minecraft.command.arguments.EntityArgument;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.util.text.event.HoverEvent;
-import vazkii.arl.network.NetworkHandler;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.spell.PieceGroup;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.lib.LibMisc;
+import vazkii.psi.common.network.MessageRegister;
 import vazkii.psi.common.network.message.MessageDataSync;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.Collections;
 import java.util.List;
 
-public class CommandPsiLearn extends CommandBase {
+public class CommandPsiLearn {
 
-	public static final String level0 = "psidust";
+    public static void register(CommandDispatcher<CommandSource> dispatcher) {
+        dispatcher.register(
+                Commands.literal("psi-learn")
+                        .requires(s -> s.hasPermissionLevel(2))
+                        .then(Commands.argument("group", StringArgumentType.string())
+                                .suggests((ctx, sb) -> ISuggestionProvider.suggest(getGroups().stream(), sb)))
+                        .executes(ctx -> run(ctx, true))
+                        .then(Commands.argument("player", EntityArgument.player()))
+                        .executes(ctx -> run(ctx, false))
+        );
+    }
 
-	private static List<String> groups;
+    public static final String level0 = "psidust";
 
-	public static List<String> getGroups() {
-		if (groups == null) {
-			groups = Lists.newArrayList(level0);
-			groups.addAll(PsiAPI.groupsForName.keySet());
-		}
-		return groups;
-	}
+    private static List<String> groups;
 
-	public static void lockPieceGroup(PlayerDataHandler.PlayerData data, String group) {
-		if (hasGroup(data, group)) {
-			if (group.equals(level0)) {
-				data.level = 0;
-			} else {
-				data.spellGroupsUnlocked.remove(group);
-				data.level--;
+    public static List<String> getGroups() {
+        if (groups == null) {
+            groups = Lists.newArrayList(level0);
+            groups.addAll(PsiAPI.groupsForName.keySet());
+        }
+        return groups;
+    }
+
+    public static void lockPieceGroup(PlayerDataHandler.PlayerData data, String group) {
+        if (hasGroup(data, group)) {
+            if (group.equals(level0)) {
+                data.level = 0;
+            } else {
+                data.spellGroupsUnlocked.remove(group);
+                data.level--;
 
 			}
 			data.save();
@@ -121,139 +135,96 @@ public class CommandPsiLearn extends CommandBase {
 			ITextComponent nameComponent = new StringTextComponent("[")
 					.appendSibling(new TranslationTextComponent("psimisc.fakeLevel.psidust"))
 					.appendText("]");
-			nameComponent.getStyle().setColor(TextFormatting.AQUA);
-			nameComponent.getStyle().setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TranslationTextComponent("psimisc.levelDisplay", 0)));
-			return nameComponent;
-		}
+            nameComponent.getStyle().setColor(TextFormatting.AQUA);
+            nameComponent.getStyle().setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TranslationTextComponent("psimisc.levelDisplay", 0)));
+            return nameComponent;
+        }
 
-		PieceGroup pieceGroup = PsiAPI.groupsForName.get(group);
-		if (pieceGroup == null) {
-			ITextComponent errorComponent = new StringTextComponent("ERROR");
-			errorComponent.getStyle().setColor(TextFormatting.RED);
-			return errorComponent;
-		}
-		ITextComponent nameComponent = new StringTextComponent("[")
-				.appendSibling(new TranslationTextComponent(pieceGroup.getUnlocalizedName()))
-				.appendText("]");
+        PieceGroup pieceGroup = PsiAPI.groupsForName.get(group);
+        if (pieceGroup == null) {
+            ITextComponent errorComponent = new StringTextComponent("ERROR");
+            errorComponent.getStyle().setColor(TextFormatting.RED);
+            return errorComponent;
+        }
+        ITextComponent nameComponent = new StringTextComponent("[")
+                .appendSibling(new TranslationTextComponent(pieceGroup.getUnlocalizedName()))
+                .appendText("]");
 
-		nameComponent.getStyle().setColor(TextFormatting.AQUA);
-		nameComponent.getStyle().setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TranslationTextComponent("psimisc.levelDisplay", pieceGroup.levelRequirement)));
-		return nameComponent;
-	}
+        nameComponent.getStyle().setColor(TextFormatting.AQUA);
+        nameComponent.getStyle().setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TranslationTextComponent("psimisc.levelDisplay", pieceGroup.levelRequirement)));
+        return nameComponent;
+    }
 
-	public String localizationKey() {
-		return "command." + LibMisc.MOD_ID + ".learn";
-	}
+    public static String localizationKey() {
+        return "command." + LibMisc.MOD_ID + ".learn";
+    }
 
-	@Nonnull
-	@Override
-	public String getName() {
-		return "psi-learn";
-	}
 
-	@Nonnull
-	@Override
-	public String getUsage(@Nonnull ICommandSender sender) {
-		return localizationKey() + ".usage";
-	}
+    @Nonnull
+    public String getUsage(@Nonnull CommandSource sender) {
+        return localizationKey() + ".usage";
+    }
 
-	@Override
-	public int getRequiredPermissionLevel() {
-		return 2;
-	}
+    protected static void notify(CommandSource sender, String result, Object... format) {
+        sender.sendFeedback(new TranslationTextComponent(localizationKey() + "." + result, format), false);
+    }
 
-	protected void notify(ICommandSender sender, String result, Object... format) {
-		CommandBase.notifyCommandListener(sender, this, localizationKey() + "." + result, format);
-	}
+    protected void wrongUsage(CommandSource sender) throws CommandSyntaxException {
+        Message message = new TranslationTextComponent(getUsage(sender));
+        throw new CommandSyntaxException(new SimpleCommandExceptionType(message), message);
+    }
 
-	protected void wrongUsage(ICommandSender sender) throws WrongUsageException {
-		throw new WrongUsageException(getUsage(sender));
-	}
+    protected static void error(String result, Object... format) throws CommandException {
+        throw new CommandException(new TranslationTextComponent(localizationKey() + "." + result, format));
+    }
 
-	protected void error(String result, Object... format) throws CommandException {
-		throw new CommandException(localizationKey() + "." + result, format);
-	}
+    public static void applyPlayerData(PlayerEntity player, PlayerDataHandler.PlayerData data, String group, CommandSource sender) {
+        unlockPieceGroupFree(data, level0);
 
-	public void applyPlayerData(PlayerEntity player, PlayerDataHandler.PlayerData data, String group, ICommandSender sender) {
-		unlockPieceGroupFree(data, level0);
+        if (group.equals(level0))
+            notify(sender, "success", player.getDisplayName(), getGroupComponent(group));
+        else if (getGroups().contains(group)) {
+            PieceGroup pieceGroup = PsiAPI.groupsForName.get(group);
+            if (pieceGroup != null && !data.isPieceGroupUnlocked(group)) {
+                for (String subGroup : pieceGroup.requirements) {
+                    if (!data.isPieceGroupUnlocked(subGroup))
+                        applyPlayerData(player, data, subGroup, sender);
+                }
 
-		if (group.equals(level0))
-			notify(sender, "success", player.getDisplayName(), getGroupComponent(group));
-		else if (getGroups().contains(group)) {
-			PieceGroup pieceGroup = PsiAPI.groupsForName.get(group);
-			if (pieceGroup != null && !data.isPieceGroupUnlocked(group)) {
-				for (String subGroup : pieceGroup.requirements) {
-					if (!data.isPieceGroupUnlocked(subGroup))
-						applyPlayerData(player, data, subGroup, sender);
-				}
+                unlockPieceGroupFree(data, group);
 
-				unlockPieceGroupFree(data, group);
+                notify(sender, "success", player.getDisplayName(), getGroupComponent(group));
+            }
+        }
+    }
 
-				notify(sender, "success", player.getDisplayName(), getGroupComponent(group));
-			}
-		}
-	}
+    public static void applyAll(PlayerDataHandler.PlayerData data, PlayerEntity player, CommandSource sender) {
+        unlockAll(data);
+        notify(sender, "success.all", player.getDisplayName());
+    }
 
-	public void applyAll(PlayerDataHandler.PlayerData data, PlayerEntity player, ICommandSender sender) {
-		unlockAll(data);
-		notify(sender, "success.all", player.getDisplayName());
-	}
+    public static boolean shouldNotApply(PlayerEntity player, String group) {
+        return hasGroup(player, group);
+    }
 
-	public boolean shouldNotApply(PlayerEntity player, String group) {
-		return hasGroup(player, group);
-	}
+    public static int run(CommandContext<CommandSource> ctx, boolean onSelf) throws CommandSyntaxException {
+        PlayerEntity player = onSelf ? ctx.getSource().asPlayer() : EntityArgument.getPlayer(ctx, "player");
+        PlayerDataHandler.PlayerData data = PlayerDataHandler.get(player);
+        String group = StringArgumentType.getString(ctx, "group");
+        CommandSource sender = ctx.getSource();
+        if (group.equals("*")) {
+            applyAll(data, player, sender);
+            MessageRegister.HANDLER.sendToPlayer(new MessageDataSync(data), (ServerPlayerEntity) player);
+        } else if (!getGroups().contains(group))
+            error("not_a_group", group);
+        else if (shouldNotApply(player, group))
+            error("should_not", player.getDisplayName(), group);
+        else {
+            applyPlayerData(player, data, group, sender);
+            MessageRegister.HANDLER.sendToPlayer(new MessageDataSync(data), (ServerPlayerEntity) player);
+        }
+        return 1;
+    }
 
-	@Override
-	public void execute(@Nonnull MinecraftServer server, @Nonnull ICommandSender sender, @Nonnull String[] args) throws CommandException {
-		if (args.length == 0 || args.length > 3)
-			wrongUsage(sender);
-		else {
 
-			Entity target;
-			if (args.length == 2)
-				target = CommandBase.getEntity(server, sender, args[1]);
-			else
-				target = sender.getCommandSenderEntity();
-
-			if (target == null)
-				error("console");
-			else if (!(target instanceof PlayerEntity))
-				error("players", target.getDisplayName());
-			else {
-				PlayerEntity player = (PlayerEntity) target;
-				PlayerDataHandler.PlayerData data = PlayerDataHandler.get(player);
-				if (args[0].equals("*")) {
-					applyAll(data, player, sender);
-					if (player instanceof ServerPlayerEntity)
-						NetworkHandler.INSTANCE.sendTo(new MessageDataSync(data), (ServerPlayerEntity) player);
-				} else if (!getGroups().contains(args[0]))
-					error("not_a_group", args[0]);
-				else if (shouldNotApply(player, args[0]))
-					error("should_not", player.getDisplayName(), args[0]);
-				else {
-					applyPlayerData(player, data, args[0], sender);
-					if (player instanceof ServerPlayerEntity)
-						NetworkHandler.INSTANCE.sendTo(new MessageDataSync(data), (ServerPlayerEntity) player);
-				}
-			}
-		}
-	}
-
-	@Override
-	public boolean isUsernameIndex(String[] args, int index) {
-		return index == 1;
-	}
-
-	@Nonnull
-	@Override
-	public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
-		switch (args.length) {
-			case 1:
-				return CommandBase.getListOfStringsMatchingLastWord(args, getGroups());
-			case 2:
-				return CommandBase.getListOfStringsMatchingLastWord(args, server.getOnlinePlayerNames());
-			default:
-				return Collections.emptyList();
-		}
-	}
 }

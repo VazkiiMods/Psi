@@ -12,14 +12,16 @@ package vazkii.psi.client.core.proxy;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.client.settings.ParticleStatus;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import vazkii.arl.util.ClientTicker;
 import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.cad.ICADColorizer;
 import vazkii.psi.client.core.handler.HUDHandler;
@@ -33,51 +35,66 @@ import vazkii.psi.common.block.tile.TileProgrammer;
 import vazkii.psi.common.core.handler.ConfigHandler;
 import vazkii.psi.common.core.handler.PersistencyHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
-import vazkii.psi.common.core.proxy.CommonProxy;
+import vazkii.psi.common.core.proxy.IProxy;
 import vazkii.psi.common.entity.EntitySpellCircle;
 
 @OnlyIn(Dist.CLIENT)
-public class ClientProxy extends CommonProxy {
+public class ClientProxy implements IProxy {
 
-	@Override
-	public void preInit(FMLPreInitializationEvent event) {
-		super.preInit(event);
+    @Override
+    public void preInit(FMLPreInitializationEvent event) {
+        super.preInit(event);
 
-		ShaderHandler.init();
-		KeybindHandler.init();
-		
+        ShaderHandler.init();
+        KeybindHandler.init();
+
 //		if(ConfigHandler.versionCheckEnabled)
 //			new VersionChecker().init();
 
-		ClientRegistry.bindTileEntitySpecialRenderer(TileProgrammer.class, new RenderTileProgrammer());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileProgrammer.class, new RenderTileProgrammer());
 
-		RenderingRegistry.registerEntityRenderingHandler(EntitySpellCircle.class, RenderSpellCircle::new);
-	}
+        RenderingRegistry.registerEntityRenderingHandler(EntitySpellCircle.class, RenderSpellCircle::new);
+    }
 
-	@Override
-	public PlayerEntity getClientPlayer() {
-		return Minecraft.getInstance().player;
-	}
+    @Override
+    public boolean isTheClientPlayer(LivingEntity entity) {
+        return entity == Minecraft.getInstance().player;
+    }
 
-	@Override
-	public void onLevelUp(int level) {
-		HUDHandler.levelUp(level);
-	}
+    @Override
+    public PlayerEntity getClientPlayer() {
+        return Minecraft.getInstance().player;
+    }
 
-	@Override
-	public void savePersistency() {
-		PersistencyHandler.save(PlayerDataHandler.get(getClientPlayer()).level);
-	}
+    @Override
+    public long getWorldElapsedTicks() {
+        return ClientTicker.ticksInGame;
+    }
 
-	@Override
-	public int getColorForCAD(ItemStack cadStack) {
-		ICAD icad = (ICAD) cadStack.getItem();
-		return icad.getSpellColor(cadStack);
-	}
+    @Override
+    public int getClientRenderDistance() {
+        return Minecraft.getInstance().gameSettings.renderDistanceChunks;
+    }
 
-	@Override
-	public int getColorForColorizer(ItemStack colorizer) {
-		ICADColorizer icc = (ICADColorizer) colorizer.getItem();
+    @Override
+    public void onLevelUp(int level) {
+        HUDHandler.levelUp(level);
+    }
+
+    @Override
+    public void savePersistency() {
+        PersistencyHandler.save(PlayerDataHandler.get(getClientPlayer()).level);
+    }
+
+    @Override
+    public int getColorForCAD(ItemStack cadStack) {
+        ICAD icad = (ICAD) cadStack.getItem();
+        return icad.getSpellColor(cadStack);
+    }
+
+    @Override
+    public int getColorForColorizer(ItemStack colorizer) {
+        ICADColorizer icc = (ICADColorizer) colorizer.getItem();
 		return icc.getColor(colorizer);
 	}
 
@@ -112,15 +129,16 @@ public class ClientProxy extends CommonProxy {
 
 	@Override
 	public void wispFX(World world, double x, double y, double z, float r, float g, float b, float size, float motionx, float motiony, float motionz, float maxAgeMul) {
-		if(noParticles(world) || maxAgeMul == 0)
-			return;
+        if (noParticles(world) || maxAgeMul == 0)
+            return;
 
-		FXWisp wisp = new FXWisp(world, x, y, z, size, r, g, b, distanceLimit, depthTest, maxAgeMul);
-		wisp.setSpeed(motionx, motiony, motionz);
+        FXWisp wisp = new FXWisp(world, x, y, z, size, r, g, b, distanceLimit, depthTest, maxAgeMul);
+        wisp.setSpeed(motionx, motiony, motionz);
 
-		if (wisp.getMoteHalfLife() > 0)
-			Minecraft.getInstance().effectRenderer.addEffect(wisp);
-	}
+        if (wisp.getMoteHalfLife() > 0)
+            Minecraft.getInstance().effectRenderer.addEffect(wisp);
+        Minecraft.getInstance().worldRenderer.addParticle();
+    }
 
 	@Override
 	public void wispFX(double x, double y, double z, float r, float g, float b, float size, float motionx, float motiony, float motionz, float maxAgeMul) {
@@ -128,23 +146,23 @@ public class ClientProxy extends CommonProxy {
 	}
 
 	private boolean noParticles(World world) {
-		if (world == null)
-			return true;
+        if (world == null)
+            return true;
 
-		if(!world.isRemote)
-			return true;
+        if (!world.isRemote)
+            return true;
 
-		if(!ConfigHandler.useVanillaParticleLimiter)
-			return false;
+        if (!ConfigHandler.useVanillaParticleLimiter)
+            return false;
 
-		float chance = 1F;
-		if(Minecraft.getInstance().gameSettings.particleSetting == 1)
-			chance = 0.6F;
-		else if(Minecraft.getInstance().gameSettings.particleSetting == 2)
-			chance = 0.2F;
+        float chance = 1F;
+        if (Minecraft.getInstance().gameSettings.particles == ParticleStatus.DECREASED)
+            chance = 0.6F;
+        else if (Minecraft.getInstance().gameSettings.particles == ParticleStatus.MINIMAL)
+            chance = 0.2F;
 
-		return !(chance == 1F) && !(Math.random() < chance);
-	}
+        return !(chance == 1F) && !(Math.random() < chance);
+    }
 
 	@Override
 	public String localize(String key, Object... arguments) {

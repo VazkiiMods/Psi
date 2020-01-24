@@ -11,25 +11,31 @@
 package vazkii.psi.common.block.tile;
 
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.registries.ObjectHolder;
 import vazkii.arl.block.tile.TileSimpleInventory;
 import vazkii.psi.api.cad.*;
+import vazkii.psi.common.block.base.ModBlocks;
+import vazkii.psi.common.block.tile.container.ContainerCADAssembler;
 import vazkii.psi.common.core.handler.PsiSoundHandler;
 import vazkii.psi.common.item.ItemCAD;
 import vazkii.psi.common.lib.LibBlockNames;
 import vazkii.psi.common.lib.LibMisc;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
-public class TileCADAssembler extends TileSimpleInventory implements ITileCADAssembler {
+public class TileCADAssembler extends TileSimpleInventory implements ITileCADAssembler, INamedContainerProvider {
 	@ObjectHolder(LibMisc.PREFIX_MOD + LibBlockNames.CAD_ASSEMBLER)
 	public static TileEntityType<TileCADAssembler> TYPE;
 
@@ -202,5 +208,16 @@ public class TileCADAssembler extends TileSimpleInventory implements ITileCADAss
 			}
 		} else
 			super.readSharedNBT(tag);
+	}
+
+	@Override
+	public ITextComponent getDisplayName() {
+		return new TranslationTextComponent(ModBlocks.cadAssembler.getTranslationKey());
+	}
+
+	@Nullable
+	@Override
+	public Container createMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
+		return new ContainerCADAssembler(i, playerInventory, this);
 	}
 }

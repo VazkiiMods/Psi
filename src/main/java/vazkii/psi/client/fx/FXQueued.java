@@ -10,13 +10,13 @@
  */
 package vazkii.psi.client.fx;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
+import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.BufferBuilder;
-import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
@@ -56,8 +56,9 @@ public abstract class FXQueued extends Particle {
 		particleAlpha = 0.5F; // So MC renders us on the alpha layer, value not actually used
 		particleGravity = 0;
 		motionX = motionY = motionZ = 0;
-		particleScale *= size;
-		particleMaxAge = maxAge;
+		setSize(size, size);
+		maxAge = maxAge;
+
 		setSize(0.01F, 0.01F);
 		prevPosX = posX;
 		prevPosY = posY;
@@ -122,7 +123,7 @@ public abstract class FXQueued extends Particle {
 	}
 
 	@Override
-	public void renderParticle(BufferBuilder buffer, Entity viewEntity, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
+	public void renderParticle(BufferBuilder bufferBuilder, ActiveRenderInfo activeRenderInfo, float v, float v1, float v2, float v3, float v4, float v5) {
 		this.partialTicks = partialTicks;
 		this.rotationX = rotationX;
 		this.rotationZ = rotationZ;
@@ -133,13 +134,15 @@ public abstract class FXQueued extends Particle {
 		addToQueue();
 	}
 
+
 	@Override
-	public void onUpdate() {
+	public void tick() {
+		super.tick();
 		prevPosX = posX;
 		prevPosY = posY;
 		prevPosZ = posZ;
 
-		if (particleAge++ >= particleMaxAge)
+		if (age++ >= maxAge)
 			setExpired();
 
 		motionY -= 0.04 * particleGravity;
@@ -164,6 +167,7 @@ public abstract class FXQueued extends Particle {
 			}
 		}
 	}
+
 
 	public void setGravity(float value) {
 		particleGravity = value;

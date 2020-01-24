@@ -10,11 +10,13 @@
  */
 package vazkii.psi.client.fx;
 
-import net.minecraft.client.Minecraft;
 import com.mojang.blaze3d.platform.GlStateManager;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.particle.IParticleRenderType;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import vazkii.psi.common.lib.LibResources;
 
@@ -34,10 +36,12 @@ public class FXWisp extends FXQueued {
 
 	public FXWisp(World world, double d, double d1, double d2,  float size, float red, float green, float blue, boolean distanceLimit, boolean depthTest, float maxAgeMul) {
 		super(world, d, d1, d2, size, red, green, blue, (int) (28 / (Math.random() * 0.3D + 0.7D) * maxAgeMul));
-		moteParticleScale = particleScale;
+
 		this.depthTest = depthTest;
 
-		moteHalfLife = particleMaxAge / 2;
+		moteHalfLife = maxAge / 2;
+		//I am very unsure of this
+		moteParticleScale = getScale();
 
 		Entity viewEntity = Minecraft.getInstance().getRenderViewEntity();
 
@@ -46,8 +50,8 @@ public class FXWisp extends FXQueued {
 			if (!Minecraft.getInstance().gameSettings.fancyGraphics)
 				visibleDistance = 25;
 
-			if (viewEntity == null || viewEntity.getDistance(posX, posY, posZ) > visibleDistance)
-				particleMaxAge = 0;
+			if (viewEntity == null || MathHelper.sqrt(posX * posX + posY * posY + posZ * posZ) > visibleDistance)
+				maxAge = 0;
 		}
 	}
 
@@ -88,13 +92,13 @@ public class FXWisp extends FXQueued {
 
 	@Override
 	protected float getScale() {
-		float agescale = particleAge / (float) moteHalfLife;
+		float agescale = age / (float) moteHalfLife;
 		if (agescale > 1F)
 			agescale = 2 - agescale;
 
-		particleScale = moteParticleScale * agescale;
+		setSize(moteParticleScale * agescale, moteParticleScale * agescale);
 
-		return 0.5F * particleScale;
+		return 0.5F * moteParticleScale * agescale;
 	}
 
 	@Override
@@ -123,8 +127,13 @@ public class FXWisp extends FXQueued {
 
 		FXQueued.dispatchQueuedRenders(tessellator, particles, queuedRenders);
 
-		GlStateManager.disableDepth();
+		GlStateManager.disableDepthTest();
 		FXQueued.dispatchQueuedRenders(tessellator, particles, queuedDepthIgnoringRenders);
-		GlStateManager.enableDepth();
+		GlStateManager.enableDepthTest();
+	}
+
+	@Override
+	public IParticleRenderType getRenderType() {
+		return IParticleRenderType.CUSTOM;
 	}
 }

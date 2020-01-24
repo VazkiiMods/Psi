@@ -12,14 +12,13 @@ package vazkii.psi.common.block;
 
 import com.google.common.collect.Sets;
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
+import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
@@ -28,13 +27,14 @@ import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
+import vazkii.arl.block.BasicBlock;
 import vazkii.psi.common.block.tile.TileConjured;
-import vazkii.psi.common.lib.LibBlockNames;
 import vazkii.psi.common.lib.LibMisc;
 
 import javax.annotation.Nonnull;
@@ -42,7 +42,7 @@ import java.util.Random;
 import java.util.Set;
 
 @Mod.EventBusSubscriber(modid = LibMisc.MOD_ID)
-public class BlockConjured extends Block {
+public class BlockConjured extends BasicBlock {
 
 	public static final BooleanProperty SOLID = BooleanProperty.create("solid");
 	public static final BooleanProperty LIGHT = BooleanProperty.create("light");
@@ -57,10 +57,9 @@ public class BlockConjured extends Block {
 	private static final Set<BlockPos> needsParticleUpdate = Sets.newHashSet();
 
 	protected static final VoxelShape LIGHT_SHAPE = Block.makeCuboidShape(4, 4, 4, 12, 12, 12);
-	
-	public BlockConjured() {
-		super(Block.Properties.create(Material.GLASS).variableOpacity().noDrops());
-		setRegistryName(LibMisc.MOD_ID, LibBlockNames.CONJURED);
+
+	public BlockConjured(String regname, Properties properties) {
+		super(regname, properties);
 		setDefaultState(getStateContainer().getBaseState().with(LIGHT, false).with(SOLID, false));
 	}
 
@@ -100,7 +99,7 @@ public class BlockConjured extends Block {
 	}
 
 	@Override
-	public void tick(BlockState state, World world, BlockPos pos, Random rand) {
+	public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
 		world.removeBlock(pos, false);
 	}
 
@@ -109,10 +108,16 @@ public class BlockConjured extends Block {
 		builder.add(SOLID, LIGHT, BLOCK_UP, BLOCK_DOWN, BLOCK_NORTH, BLOCK_SOUTH, BLOCK_WEST, BLOCK_EAST);
 	}
 
-	@Nonnull
+	/*@Nonnull
 	@Override
 	public BlockRenderLayer getRenderLayer() {
 		return BlockRenderLayer.TRANSLUCENT;
+	}
+	TODO Check if this is Okay*/
+
+	@Override
+	public BlockRenderType getRenderType(BlockState p_149645_1_) {
+		return BlockRenderType.INVISIBLE;
 	}
 
 	@Override
@@ -126,12 +131,24 @@ public class BlockConjured extends Block {
 		BooleanProperty prop;
 		switch (facing) {
 			default:
-			case DOWN: prop = BLOCK_DOWN; break;
-			case UP: prop = BLOCK_UP; break;
-			case NORTH: prop = BLOCK_NORTH; break;
-			case SOUTH: prop = BLOCK_SOUTH; break;
-			case WEST: prop = BLOCK_WEST; break;
-			case EAST: prop = BLOCK_EAST; break;
+			case DOWN:
+				prop = BLOCK_DOWN;
+				break;
+			case UP:
+				prop = BLOCK_UP;
+				break;
+			case NORTH:
+				prop = BLOCK_NORTH;
+				break;
+			case SOUTH:
+				prop = BLOCK_SOUTH;
+				break;
+			case WEST:
+				prop = BLOCK_WEST;
+				break;
+			case EAST:
+				prop = BLOCK_EAST;
+				break;
 		}
 
 		if (state.getBlock() == facingState.getBlock() && state.get(LIGHT) == facingState.get(LIGHT) && state.get(SOLID) == facingState.get(SOLID)) {

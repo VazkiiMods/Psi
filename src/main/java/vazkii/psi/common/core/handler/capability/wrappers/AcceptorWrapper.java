@@ -15,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.common.util.LazyOptional;
 import vazkii.psi.api.spell.*;
 
 import javax.annotation.Nonnull;
@@ -39,11 +40,18 @@ public class AcceptorWrapper implements ISpellAcceptor, ICapabilityProvider {
 		return capability == CAPABILITY;
 	}
 
+
 	@Nullable
 	@Override
 	@SuppressWarnings("ConstantConditions")
 	public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable Direction facing) {
 		return capability == CAPABILITY ? CAPABILITY.cast(this) : null;
+	}
+
+	@Nonnull
+	@Override
+	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap) {
+		return null;
 	}
 
 	@Override

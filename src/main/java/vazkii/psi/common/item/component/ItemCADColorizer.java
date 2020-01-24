@@ -13,6 +13,7 @@ package vazkii.psi.common.item.component;
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.item.DyeColor;
 import net.minecraft.item.DyeItem;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -49,13 +50,13 @@ public class ItemCADColorizer extends ItemCADComponent implements ICADColorizer,
 
 	// must be length 16
 	public static final int[] colorTable = DyeItem.DYE_COLORS;
-	
-	public ItemCADColorizer() {
-		super(LibItemNames.CAD_COLORIZER, VARIANTS);
+
+	public ItemCADColorizer(String name, Item.Properties properties) {
+		super(name, properties);
 
 		new ColorizerChangeRecipe();
 	}
-	
+
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public IItemColor getItemColor() {
@@ -65,12 +66,12 @@ public class ItemCADColorizer extends ItemCADComponent implements ICADColorizer,
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public int getColor(ItemStack stack) {
-		if(stack.getItemDamage() < 16)
+		if (stack.getItemDamage() < 16)
 			return colorTable[15 - stack.getItemDamage()];
 
-		switch(stack.getItemDamage()) {
-		case 16: {
-			float time = ClientTicker.total;
+		switch (stack.getItemDamage()) {
+			case 16: {
+				float time = ClientTicker.total;
 			return Color.HSBtoRGB(time * 0.005F, 1F, 1F);
 		}
 		case 17:
