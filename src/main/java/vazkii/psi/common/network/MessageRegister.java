@@ -10,9 +10,15 @@
  */
 package vazkii.psi.common.network;
 
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkDirection;
+import vazkii.arl.network.IMessage;
 import vazkii.arl.network.MessageSerializer;
 import vazkii.arl.network.NetworkHandler;
 import vazkii.psi.api.spell.Spell;
@@ -20,6 +26,7 @@ import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.network.message.*;
 
 import java.lang.reflect.Field;
+import java.util.List;
 
 public class MessageRegister {
 	public static final NetworkHandler HANDLER = new NetworkHandler(LibMisc.MOD_ID, 1);
@@ -47,15 +54,21 @@ public class MessageRegister {
 
 	private static Spell readSpell(PacketBuffer buf, Field f) {
 		CompoundNBT cmp = buf.readCompoundTag();
-		return Spell.createFromNBT(cmp);
-	}
+        return Spell.createFromNBT(cmp);
+    }
 
-	private static void writeSpell(PacketBuffer buf, Field f, Spell spell) {
-		CompoundNBT cmp = new CompoundNBT();
-		if(spell != null)
-			spell.writeToNBT(cmp);
+    private static void writeSpell(PacketBuffer buf, Field f, Spell spell) {
+        CompoundNBT cmp = new CompoundNBT();
+        if (spell != null)
+            spell.writeToNBT(cmp);
 
-		buf.writeCompoundTag(cmp);
-	}
-	
+        buf.writeCompoundTag(cmp);
+    }
+
+    public static void sendToAllAround(IMessage message, BlockPos origin, World world, int radius) {
+        List<PlayerEntity> players = world.getEntitiesWithinAABB(PlayerEntity.class, new AxisAlignedBB(origin.getX() - radius, origin.getY() - radius, origin.getZ() - radius, origin.getX() + radius, origin.getY() + 32, origin.getZ() + 32),
+                entity -> entity != null && entity.getDistanceSq(origin.getX(), origin.getY(), origin.getZ()) <= radius * radius);
+        players.forEach(pl -> HANDLER.sendToPlayer(message, (ServerPlayerEntity) pl));
+    }
+
 }

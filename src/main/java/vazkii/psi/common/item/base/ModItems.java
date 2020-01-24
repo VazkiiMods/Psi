@@ -10,10 +10,9 @@
  */
 package vazkii.psi.common.item.base;
 
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.DyeColor;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import vazkii.arl.item.BasicItem;
 import vazkii.psi.common.core.PsiCreativeTab;
 import vazkii.psi.common.item.*;
@@ -96,50 +95,23 @@ public final class ModItems {
 	public static final BasicItem exosuitSensorHeat = new ItemHeatExosuitSensor(LibItemNames.EXOSUIT_SENSOR_HEAT, defaultBuilder());
 	public static final BasicItem exosuitSensorStress = new ItemStressExosuitSensor(LibItemNames.EXOSUIT_SENSOR_STRESS, defaultBuilder());
 	public static final BasicItem exosuitSensorWater = new ItemWaterExosuitSensor(LibItemNames.EXOSUIT_SENSOR_WATER, defaultBuilder());
+	public static final BasicItem cad = new ItemCAD(LibItemNames.CAD, defaultBuilder());
 
-	public static BasicItem vectorRuler = new ItemVectorRuler(LibItemNames.VECTOR_RULER, defaultBuilder());
+	public static final BasicItem vectorRuler = new ItemVectorRuler(LibItemNames.VECTOR_RULER, defaultBuilder());
+	public static final Item psimetalShovel = new ItemPsimetalShovel(LibItemNames.PSIMETAL_SHOVEL, defaultBuilder());
+	public static final Item psimetalPickaxe = new ItemPsimetalPickaxe(LibItemNames.PSIMETAL_PICKAXE, defaultBuilder());
+	public static final Item psimetalAxe = new ItemPsimetalAxe(LibItemNames.PSIMETAL_AXE, defaultBuilder());
+	public static final Item psimetalSword = new ItemPsimetalSword(LibItemNames.PSIMETAL_SWORD, defaultBuilder());
+	public static final Item psimetalExosuitHelmet = new ItemPsimetalExosuitHelmet(LibItemNames.PSIMETAL_EXOSUIT_HELMET, EquipmentSlotType.HEAD, defaultBuilder());
+	public static final Item psimetalExosuitChestplate = new ItemPsimetalExosuitChestplate(LibItemNames.PSIMETAL_EXOSUIT_CHESTPLATE, EquipmentSlotType.CHEST, defaultBuilder());
+	public static final Item psimetalExosuitLeggings = new ItemPsimetalExosuitLeggings(LibItemNames.PSIMETAL_EXOSUIT_LEGGINGS, EquipmentSlotType.LEGS, defaultBuilder());
+	public static final Item psimetalExosuitBoots = new ItemPsimetalExosuitBoots(LibItemNames.PSIMETAL_EXOSUIT_BOOTS, EquipmentSlotType.FEET, defaultBuilder());
 
-	public static ItemMod cad;
-	public static ItemModShovel psimetalShovel;
-	public static ItemModPickaxe psimetalPickaxe;
-	public static ItemModAxe psimetalAxe;
-	public static ItemModSword psimetalSword;
-	public static ItemModArmor psimetalExosuitHelmet;
-	public static ItemModArmor psimetalExosuitChestplate;
-	public static ItemModArmor psimetalExosuitLeggings;
-	public static ItemModArmor psimetalExosuitBoots;
 
 	public static Item.Properties defaultBuilder() {
 		return new Item.Properties().group(PsiCreativeTab.INSTANCE);
 	}
 
-	public static void preInit() {
-		cad = new ItemCAD();
 
-		psimetalShovel = new ItemPsimetalShovel(LibItemNames.PSIMETAL_SHOVEL);
-		psimetalPickaxe = new ItemPsimetalPickaxe(LibItemNames.PSIMETAL_PICKAXE);
-		psimetalAxe = new ItemPsimetalAxe(LibItemNames.PSIMETAL_AXE);
-		psimetalSword = new ItemPsimetalSword();
-		psimetalExosuitHelmet = new ItemPsimetalExosuitHelmet();
-		psimetalExosuitChestplate = new ItemPsimetalExosuitChestplate();
-		psimetalExosuitLeggings = new ItemPsimetalExosuitLeggings();
-		psimetalExosuitBoots = new ItemPsimetalExosuitBoots();
-	}
-	
-	public static void init() {
-		// Missing vanilla oredict mappings
-		OreDictionary.registerOre("shardPrismarine", new ItemStack(Items.PRISMARINE_SHARD));
-		OreDictionary.registerOre("crystalsPrismarine", new ItemStack(Items.PRISMARINE_CRYSTALS));
-		OreDictionary.registerOre("coal", new ItemStack(Items.COAL));
-
-		// Psi oredict mappings
-		OreDictionary.registerOre("dustPsi", new ItemStack(material, 1, 0));
-		OreDictionary.registerOre("ingotPsi", new ItemStack(material, 1, 1));
-		OreDictionary.registerOre("gemPsi", new ItemStack(material, 1, 2));
-		OreDictionary.registerOre("ingotEbonyPsi", new ItemStack(material, 1, 3));
-		OreDictionary.registerOre("ingotIvoryPsi", new ItemStack(material, 1, 4));
-		OreDictionary.registerOre("substanceEbony", new ItemStack(material, 1, 5));
-		OreDictionary.registerOre("substanceIvory", new ItemStack(material, 1, 6));
-	}
 
 }

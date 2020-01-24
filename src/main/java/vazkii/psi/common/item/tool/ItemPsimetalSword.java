@@ -19,12 +19,14 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.SwordItem;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import vazkii.arl.item.ItemMod;
-import vazkii.arl.item.ItemModSword;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ISocketable;
 import vazkii.psi.api.internal.TooltipHelper;
@@ -32,26 +34,27 @@ import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
 import vazkii.psi.common.item.ItemCAD;
-import vazkii.psi.common.item.base.IPsiItem;
-import vazkii.psi.common.lib.LibItemNames;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.List;
 
-public class ItemPsimetalSword extends ItemModSword implements IPsimetalTool, IPsiItem {
+import static vazkii.psi.api.internal.TooltipHelper.local;
 
-	public ItemPsimetalSword() {
-		super(LibItemNames.PSIMETAL_SWORD, PsiAPI.PSIMETAL_TOOL_MATERIAL);
-	}
+public class ItemPsimetalSword extends SwordItem implements IPsimetalTool {
 
-	@Override
-	public boolean hitEntity(ItemStack itemstack, LivingEntity target, @Nonnull LivingEntity attacker) {
-		super.hitEntity(itemstack, target, attacker);
+    public ItemPsimetalSword(String name, Item.Properties properties) {
+        super(PsiAPI.PSIMETAL_TOOL_MATERIAL, 3, -2.4F, properties);
+    }
 
-		if(isEnabled(itemstack) && attacker instanceof PlayerEntity) {
-			PlayerEntity player = (PlayerEntity) attacker;
+    @Override
+    public boolean hitEntity(ItemStack itemstack, LivingEntity target, @Nonnull LivingEntity attacker) {
+        super.hitEntity(itemstack, target, attacker);
 
-			PlayerData data = PlayerDataHandler.get(player);
+        if (isEnabled(itemstack) && attacker instanceof PlayerEntity) {
+            PlayerEntity player = (PlayerEntity) attacker;
+
+            PlayerData data = PlayerDataHandler.get(player);
 			ItemStack playerCad = PsiAPI.getPlayerCAD(player);
 
 			if(!playerCad.isEmpty()) {
@@ -77,8 +80,8 @@ public class ItemPsimetalSword extends ItemModSword implements IPsimetalTool, IP
 
 	@Override
 	public void setDamage(ItemStack stack, int damage) {
-		if (damage > stack.getMaxDamage())
-			damage = stack.getItemDamage();
+        if (damage > stack.getMaxDamage())
+            damage = stack.getDamage();
 		super.setDamage(stack, damage);
 	}
 
@@ -93,27 +96,28 @@ public class ItemPsimetalSword extends ItemModSword implements IPsimetalTool, IP
 	@Override
 	public String getTranslationKey(ItemStack stack) {
 		String name = super.getTranslationKey(stack);
-		if (!isEnabled(stack))
-			name += ".broken";
-		return name;
-	}
+        if (!isEnabled(stack))
+            name += ".broken";
+        return name;
+    }
 
-	@Override
-	public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
-		IPsimetalTool.regen(stack, entityIn, isSelected);
-	}
+    @Override
+    public void inventoryTick(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
+        IPsimetalTool.regen(stack, entityIn, isSelected);
+    }
+
 
     @OnlyIn(Dist.CLIENT)
-	@Override
-	public void addInformation(ItemStack stack, World playerIn, List<String> tooltip, ITooltipFlag advanced) {
-		String componentName = ItemMod.local(ISocketable.getSocketedItemName(stack, "psimisc.none"));
+    @Override
+    public void addInformation(ItemStack stack, @Nullable World playerIn, List<ITextComponent> tooltip, ITooltipFlag advanced) {
+        TranslationTextComponent componentName = local(ISocketable.getSocketedItemName(stack, "psimisc.none"));
         TooltipHelper.addToTooltip(tooltip, "psimisc.spellSelected", componentName);
-	}
+    }
 
-	@Override
-	public boolean getIsRepairable(ItemStack thisStack, @Nonnull ItemStack material) {
-		return IPsimetalTool.isRepairableBy(material) || super.getIsRepairable(thisStack, material);
-	}
+    @Override
+    public boolean getIsRepairable(ItemStack thisStack, @Nonnull ItemStack material) {
+        return IPsimetalTool.isRepairableBy(material) || super.getIsRepairable(thisStack, material);
+    }
 	
 	@Override
 	public boolean requiresSneakForSpellSet(ItemStack stack) {

@@ -14,12 +14,13 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.minecraftforge.oredict.OreDictionary;
-import org.apache.commons.lang3.ArrayUtils;
 import vazkii.arl.util.ItemNBTHelper;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ISocketable;
@@ -29,6 +30,7 @@ import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.item.ItemCAD;
+import vazkii.psi.common.lib.LibMisc;
 
 public interface IPsimetalTool extends ISocketable, ISpellSettable {
 
@@ -99,50 +101,45 @@ public interface IPsimetalTool extends ISocketable, ISpellSettable {
 			ItemStack bullet = getBulletInSocket(itemstack, getSelectedSlot(itemstack));
 			ItemCAD.cast(player.getEntityWorld(), player, data, bullet, playerCad, 5, 10, 0.05F, (SpellContext context) -> {
 				context.tool = itemstack;
-				context.positionBroken = raytraceFromEntity(player.getEntityWorld(), player, false, player.getAttributeMap().getAttributeInstance(PlayerEntity.REACH_DISTANCE).getAttributeValue());
+				context.positionBroken = raytraceFromEntity(player.getEntityWorld(), player, RayTraceContext.FluidMode.NONE, player.getAttributes().getAttributeInstance(PlayerEntity.REACH_DISTANCE).getValue());
 			});
 		}
 	}
 
 	static boolean isRepairableBy(ItemStack stack) {
-		return ArrayUtils.contains(OreDictionary.getOreIDs(stack), OreDictionary.getOreID("ingotPsi"));
+		return ItemTags.getCollection().getOrCreate(new ResourceLocation(LibMisc.MOD_ID, "ingotPsi")).contains(stack.getItem());
 	}
 
-	static RayTraceResult raytraceFromEntity(World world, Entity player, boolean stopOnLiquid, double range) {
-		float scale = 1.0F;
-		float pitch = player.prevRotationPitch + (player.rotationPitch - player.prevRotationPitch) * scale;
-		float yaw = player.prevRotationYaw + (player.rotationYaw - player.prevRotationYaw) * scale;
-		double posX = player.prevPosX + (player.posX - player.prevPosX) * scale;
-		double posY = player.prevPosY + (player.posY - player.prevPosY) * scale;
-		if (player instanceof PlayerEntity)
-			posY += ((PlayerEntity) player).getEyeHeight();
-		double posZ = player.prevPosZ + (player.posZ - player.prevPosZ) * scale;
-		Vec3d rayPos = new Vec3d(posX, posY, posZ);
-		float zYaw = -MathHelper.cos(yaw * (float) Math.PI / 180);
-		float xYaw = MathHelper.sin(yaw * (float) Math.PI / 180);
-		float pitchMod = -MathHelper.cos(pitch * (float) Math.PI / 180);
-		float azimuth = -MathHelper.sin(pitch * (float) Math.PI / 180);
-		float xLen = xYaw * pitchMod;
-		float yLen = zYaw * pitchMod;
-		Vec3d end = rayPos.add(xLen * range, azimuth * range, yLen * range);
-		return world.rayTraceBlocks(rayPos, end, stopOnLiquid);
+	static BlockRayTraceResult raytraceFromEntity(World worldIn, PlayerEntity player, RayTraceContext.FluidMode fluidMode, double range) {
+		float f = player.rotationPitch;
+		float f1 = player.rotationYaw;
+		Vec3d vec3d = player.getEyePosition(1.0F);
+		float f2 = MathHelper.cos(-f1 * ((float) Math.PI / 180F) - (float) Math.PI);
+		float f3 = MathHelper.sin(-f1 * ((float) Math.PI / 180F) - (float) Math.PI);
+		float f4 = -MathHelper.cos(-f * ((float) Math.PI / 180F));
+		float f5 = MathHelper.sin(-f * ((float) Math.PI / 180F));
+		float f6 = f3 * f4;
+		float f7 = f2 * f4;
+		double d0 = range; // Botania - use custom range
+		Vec3d vec3d1 = vec3d.add((double) f6 * d0, (double) f5 * d0, (double) f7 * d0);
+		return worldIn.rayTraceBlocks(new RayTraceContext(vec3d, vec3d1, RayTraceContext.BlockMode.OUTLINE, fluidMode, player));
 	}
 
 	static void regen(ItemStack stack, Entity entityIn, boolean isSelected) {
-		if(entityIn instanceof PlayerEntity && stack.getItemDamage() > 0 && !isSelected) {
+		if (entityIn instanceof PlayerEntity && stack.getDamage() > 0 && !isSelected) {
 			PlayerEntity player = (PlayerEntity) entityIn;
 			PlayerDataHandler.PlayerData data = PlayerDataHandler.get(player);
 			int regenTime = ItemNBTHelper.getInt(stack, TAG_REGEN_TIME, 0);
 
-			if(!data.overflowed && regenTime % 16 == 0 && (float) data.getAvailablePsi() / (float) data.getTotalPsi() > 0.5F) {
+			if (!data.overflowed && regenTime % 16 == 0 && (float) data.getAvailablePsi() / (float) data.getTotalPsi() > 0.5F) {
 				data.deductPsi(150, 0, true);
-				stack.setItemDamage(stack.getItemDamage() - 1);
+				stack.setDamage(stack.getDamage() - 1);
 			}
 			ItemNBTHelper.setInt(stack, TAG_REGEN_TIME, regenTime + 1);
 		}
 	}
 
 	default boolean isEnabled(ItemStack stack) {
-		return stack.getItemDamage() < stack.getMaxDamage();
+		return stack.getDamage() < stack.getMaxDamage();
 	}
 }

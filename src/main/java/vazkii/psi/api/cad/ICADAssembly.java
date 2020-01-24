@@ -12,6 +12,7 @@ package vazkii.psi.api.cad;
 
 import net.minecraft.client.renderer.model.ModelResourceLocation;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.psi.api.PsiAPI;
@@ -20,11 +21,14 @@ import java.util.List;
 
 public interface ICADAssembly {
 
-	default ItemStack createCADStack(ItemStack stack, List<ItemStack> allComponents) {
-		return PsiAPI.internalHandler.createDefaultCAD(allComponents);
-	}
+    default ItemStack createCADStack(ItemStack stack, List<ItemStack> allComponents) {
+        return PsiAPI.internalHandler.createDefaultCAD(allComponents);
+    }
 
-	@OnlyIn(Dist.CLIENT)
-	ModelResourceLocation getCADModel(ItemStack stack, ItemStack cad);
+    @OnlyIn(Dist.CLIENT)
+    ModelResourceLocation getCADModel(ItemStack stack, ItemStack cad);
+
+    @OnlyIn(Dist.CLIENT)
+    ResourceLocation getCadTexture(ItemStack stack, ItemStack cad);
 
 }

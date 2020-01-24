@@ -32,6 +32,7 @@ import vazkii.psi.common.core.proxy.IProxy;
 import vazkii.psi.common.core.proxy.ServerProxy;
 import vazkii.psi.common.crafting.ModCraftingRecipes;
 import vazkii.psi.common.item.base.ModItems;
+import vazkii.psi.common.item.component.DefaultStats;
 import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.network.MessageRegister;
 import vazkii.psi.common.spell.base.ModSpellPieces;
@@ -63,6 +64,7 @@ public class Psi {
 
 		new ModItems();
 		new ModBlocks();
+		DefaultStats.registerStats();
 		ModSpellPieces.init();
 		ModCraftingRecipes.init();
 

@@ -18,42 +18,45 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.AxeItem;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import vazkii.arl.item.ItemMod;
-import vazkii.arl.item.ItemModAxe;
+import net.minecraftforge.common.ToolType;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ISocketable;
 import vazkii.psi.api.internal.TooltipHelper;
-import vazkii.psi.common.core.PsiCreativeTab;
-import vazkii.psi.common.item.base.IPsiItem;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.List;
 
-public class ItemPsimetalAxe extends ItemModAxe implements IPsimetalTool, IPsiItem {
+import static vazkii.psi.api.internal.TooltipHelper.local;
 
-	public ItemPsimetalAxe(String name) {
-		super(name, PsiAPI.PSIMETAL_TOOL_MATERIAL, 8, -3);
-		setCreativeTab(PsiCreativeTab.INSTANCE);
-	}
+public class ItemPsimetalAxe extends AxeItem implements IPsimetalTool {
 
-	@Override
-	public boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, PlayerEntity player) {
-		super.onBlockStartBreak(itemstack, pos, player);
+    public ItemPsimetalAxe(String name, Item.Properties properties) {
+        super(PsiAPI.PSIMETAL_TOOL_MATERIAL, 5.0F, -3.0F, properties.addToolType(ToolType.AXE, PsiAPI.PSIMETAL_TOOL_MATERIAL.getHarvestLevel()));
+    }
 
-		castOnBlockBreak(itemstack, player);
+    @Override
+    public boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, PlayerEntity player) {
+        super.onBlockStartBreak(itemstack, pos, player);
 
-		return false;
-	}
+        castOnBlockBreak(itemstack, player);
+
+        return false;
+    }
 
 	@Override
 	public void setDamage(ItemStack stack, int damage) {
-		if (damage > stack.getMaxDamage())
-			damage = stack.getItemDamage();
+        if (damage > stack.getMaxDamage())
+            damage = stack.getDamage();
 		super.setDamage(stack, damage);
 	}
 
@@ -81,31 +84,32 @@ public class ItemPsimetalAxe extends ItemModAxe implements IPsimetalTool, IPsiIt
 		return super.getDestroySpeed(stack, state);
 	}
 
-	@Override
-	public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
-		IPsimetalTool.regen(stack, entityIn, isSelected);
-	}
+    @Override
+    public void inventoryTick(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
+        IPsimetalTool.regen(stack, entityIn, isSelected);
+    }
 
-	@Override
-	public boolean shouldCauseReequipAnimation(ItemStack oldStack, @Nonnull ItemStack newStack, boolean slotChanged) {
-		return slotChanged;
-	}
+
+    @Override
+    public boolean shouldCauseReequipAnimation(ItemStack oldStack, @Nonnull ItemStack newStack, boolean slotChanged) {
+        return slotChanged;
+    }
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void addInformation(ItemStack stack, World playerIn, List<String> tooltip, ITooltipFlag advanced) {
-        String componentName = ItemMod.local(ISocketable.getSocketedItemName(stack, "psimisc.none"));
+    public void addInformation(ItemStack stack, @Nullable World playerIn, List<ITextComponent> tooltip, ITooltipFlag advanced) {
+        TranslationTextComponent componentName = local(ISocketable.getSocketedItemName(stack, "psimisc.none"));
         TooltipHelper.addToTooltip(tooltip, "psimisc.spellSelected", componentName);
     }
 
-	@Override
-	public boolean getIsRepairable(ItemStack thisStack, @Nonnull ItemStack material) {
-		return IPsimetalTool.isRepairableBy(material) || super.getIsRepairable(thisStack, material);
-	}
-	
-	@Override
-	public boolean requiresSneakForSpellSet(ItemStack stack) {
-		return false;
-	}
+    @Override
+    public boolean getIsRepairable(ItemStack thisStack, @Nonnull ItemStack material) {
+        return IPsimetalTool.isRepairableBy(material) || super.getIsRepairable(thisStack, material);
+    }
+
+    @Override
+    public boolean requiresSneakForSpellSet(ItemStack stack) {
+        return false;
+    }
 
 }

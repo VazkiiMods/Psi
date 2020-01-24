@@ -23,6 +23,7 @@ import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.internal.DummyMethodHandler;
 import vazkii.psi.api.internal.IInternalMethodHandler;
 import vazkii.psi.api.material.PsimetalArmorMaterial;
+import vazkii.psi.api.material.PsimetalToolMaterial;
 import vazkii.psi.api.recipe.TrickRecipe;
 import vazkii.psi.api.spell.PieceGroup;
 import vazkii.psi.api.spell.SpellPiece;
@@ -53,13 +54,14 @@ public final class PsiAPI {
 
 
 	public static final PsimetalArmorMaterial PSIMETAL_ARMOR_MATERIAL = new PsimetalArmorMaterial("psimetal", 18, new int[]{2, 6, 5, 2}, 12, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0F, null);
+	public static final PsimetalToolMaterial PSIMETAL_TOOL_MATERIAL = new PsimetalToolMaterial();
 
 	public static int levelCap = 1;
 
 	private static String getCurrentModId() {
-        ModContainer activeModContainer = ModLoadingContext.get().getActiveContainer();
+		ModContainer activeModContainer = ModLoadingContext.get().getActiveContainer();
 		if (activeModContainer != null)
-            return activeModContainer.getModId();
+			return activeModContainer.getModId();
 		return "minecraft";
 	}
 

@@ -110,7 +110,7 @@ repositories {
 }
 
 dependencies {
-    minecraft group: 'net.minecraftforge', name: 'forge', version: '${config.mc_version}-${config.forge_version}'
+    minecraft group: 'net.minecraftforge', name: 'forge', version: "${config.mc_version}-${config.forge_version}"
 
     compile fg.deobf("vazkii.autoreglib:AutoRegLib:${config.arl_version}")
     compileOnly fg.deobf("mezz.jei:jei-${config.mc_version}:${config.jei_version}:api")
