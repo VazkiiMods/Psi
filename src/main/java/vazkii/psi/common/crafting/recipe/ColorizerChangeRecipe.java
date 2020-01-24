@@ -1,5 +1,5 @@
 /**
-* This class was created by <WireSegal>. It's distributed as
+ * This class was created by <WireSegal>. It's distributed as
  * part of the Psi Mod. Get the Source Code in github:
  * https://github.com/Vazkii/Psi
  *
@@ -12,11 +12,13 @@ package vazkii.psi.common.crafting.recipe;
 
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipeSerializer;
+import net.minecraft.item.crafting.SpecialRecipe;
+import net.minecraft.item.crafting.SpecialRecipeSerializer;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
-import vazkii.arl.recipe.ModRecipe;
 import vazkii.psi.api.cad.EnumCADComponent;
 import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.cad.ICADColorizer;
@@ -24,26 +26,27 @@ import vazkii.psi.common.item.ItemCAD;
 
 import javax.annotation.Nonnull;
 
-public class ColorizerChangeRecipe extends ModRecipe {
+public class ColorizerChangeRecipe extends SpecialRecipe {
+	public static final SpecialRecipeSerializer<ColorizerChangeRecipe> SERIALIZER = new SpecialRecipeSerializer<>(ColorizerChangeRecipe::new);
 
-	public ColorizerChangeRecipe() {
-		super(new ResourceLocation("psi", "colorizer_change"));
+	public ColorizerChangeRecipe(ResourceLocation id) {
+		super(id);
 	}
 
 	@Override
-	public boolean matches(@Nonnull CraftingInventory var1, @Nonnull World var2) {
+	public boolean matches(@Nonnull CraftingInventory inv, @Nonnull World world) {
 		boolean foundColorizer = false;
 		boolean foundCAD = false;
 
-		for(int i = 0; i < var1.getSizeInventory(); i++) {
-			ItemStack stack = var1.getStackInSlot(i);
-			if(!stack.isEmpty()) {
-				if(stack.getItem() instanceof ICAD) {
-					if(foundCAD)
+		for (int i = 0; i < inv.getSizeInventory(); i++) {
+			ItemStack stack = inv.getStackInSlot(i);
+			if (!stack.isEmpty()) {
+				if (stack.getItem() instanceof ICAD) {
+					if (foundCAD)
 						return false;
 					foundCAD = true;
-				} else if(stack.getItem() instanceof ICADColorizer) {
-					if(foundColorizer)
+				} else if (stack.getItem() instanceof ICADColorizer) {
+					if (foundColorizer)
 						return false;
 					foundColorizer = true;
 				} else return false;
@@ -55,32 +58,26 @@ public class ColorizerChangeRecipe extends ModRecipe {
 
 	@Nonnull
 	@Override
-	public ItemStack getCraftingResult(@Nonnull CraftingInventory var1) {
+	public ItemStack getCraftingResult(@Nonnull CraftingInventory inv) {
 		ItemStack colorizer = ItemStack.EMPTY;
 		ItemStack cad = ItemStack.EMPTY;
 
-		for(int i = 0; i < var1.getSizeInventory(); i++) {
-			ItemStack stack = var1.getStackInSlot(i);
-			if(!stack.isEmpty()) {
-				if(stack.getItem() instanceof ICADColorizer)
+		for (int i = 0; i < inv.getSizeInventory(); i++) {
+			ItemStack stack = inv.getStackInSlot(i);
+			if (!stack.isEmpty()) {
+				if (stack.getItem() instanceof ICADColorizer)
 					colorizer = stack;
 				else cad = stack;
 			}
 		}
 
-		if(cad.isEmpty() || colorizer.isEmpty()) 
+		if (cad.isEmpty() || colorizer.isEmpty())
 			return ItemStack.EMPTY;
 
 		ItemStack copy = cad.copy();
 		ItemCAD.setComponent(copy, colorizer);
 
 		return copy;
-	}
-
-	@Nonnull
-	@Override
-	public ItemStack getRecipeOutput() {
-		return ItemStack.EMPTY;
 	}
 
 	@Nonnull
@@ -107,9 +104,10 @@ public class ColorizerChangeRecipe extends ModRecipe {
 		return ret;
 	}
 
+	@Nonnull
 	@Override
-	public boolean isDynamic() {
-		return true;
+	public IRecipeSerializer<?> getSerializer() {
+		return SERIALIZER;
 	}
 
 	@Override

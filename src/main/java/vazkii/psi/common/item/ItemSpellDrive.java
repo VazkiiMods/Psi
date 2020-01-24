@@ -41,9 +41,6 @@ public class ItemSpellDrive extends BasicItem {
 
 	public ItemSpellDrive(String name, Item.Properties properties) {
 		super(name, properties.maxStackSize(1));
-
-		new DriveDuplicateRecipe();
-		new BulletToDriveRecipe();
 	}
 
 	@Override

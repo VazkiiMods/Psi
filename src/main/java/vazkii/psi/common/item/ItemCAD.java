@@ -88,8 +88,6 @@ public class ItemCAD extends BasicItem implements ICAD, ISpellSettable, IItemCol
 
 	public ItemCAD(String name, Item.Properties properties) {
 		super(name, properties.maxStackSize(1));
-
-		new AssemblyScavengeRecipe();
 	}
 
 	private ICADData getCADData(ItemStack stack) {

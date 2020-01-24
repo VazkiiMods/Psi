@@ -34,9 +34,6 @@ public abstract class ItemExosuitSensor extends BasicItem implements IExosuitSen
 
     public ItemExosuitSensor(String name, Item.Properties properties) {
         super(name, properties.maxStackSize(1));
-
-        new SensorAttachRecipe();
-        new SensorRemoveRecipe();
     }
 
     @Override

@@ -1,17 +1,25 @@
 package vazkii.psi.data;
 
 import net.minecraft.block.Blocks;
+import net.minecraft.data.CustomRecipeBuilder;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.IFinishedRecipe;
 import net.minecraft.data.ShapedRecipeBuilder;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.item.crafting.SpecialRecipeSerializer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.crafting.ConditionalRecipe;
 import net.minecraftforge.common.crafting.conditions.IConditionBuilder;
 import net.minecraftforge.common.data.ForgeRecipeProvider;
 import vazkii.psi.common.block.base.ModBlocks;
+import vazkii.psi.common.crafting.recipe.AssemblyScavengeRecipe;
+import vazkii.psi.common.crafting.recipe.BulletToDriveRecipe;
+import vazkii.psi.common.crafting.recipe.ColorizerChangeRecipe;
+import vazkii.psi.common.crafting.recipe.DriveDuplicateRecipe;
+import vazkii.psi.common.crafting.recipe.SensorAttachRecipe;
+import vazkii.psi.common.crafting.recipe.SensorRemoveRecipe;
 import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.lib.ModTags;
@@ -26,6 +34,12 @@ public class RecipeGenerator extends ForgeRecipeProvider implements IConditionBu
 
     @Override
     protected void registerRecipes(Consumer<IFinishedRecipe> consumer) {
+        specialRecipe(AssemblyScavengeRecipe.SERIALIZER, consumer);
+        specialRecipe(BulletToDriveRecipe.SERIALIZER, consumer);
+        specialRecipe(ColorizerChangeRecipe.SERIALIZER, consumer);
+        specialRecipe(DriveDuplicateRecipe.SERIALIZER, consumer);
+        specialRecipe(SensorAttachRecipe.SERIALIZER, consumer);
+        specialRecipe(SensorRemoveRecipe.SERIALIZER, consumer);
 
         ConditionalRecipe.builder()
                 .addCondition(
@@ -373,6 +387,10 @@ public class RecipeGenerator extends ForgeRecipeProvider implements IConditionBu
         addShapelessOreDictRecipe(ProxyRegistry.newStack(ModBlocks.psiDecorative, 1, 4), ProxyRegistry.newStack(ModBlocks.psiDecorative, 1, 3), "dustGlowstone");
         addShapelessOreDictRecipe(ProxyRegistry.newStack(ModBlocks.psiDecorative, 1, 6), ProxyRegistry.newStack(ModBlocks.psiDecorative, 1, 5), "dustGlowstone");
 
+    }
+
+    private static void specialRecipe(SpecialRecipeSerializer<?> serializer, Consumer<IFinishedRecipe> consumer) {
+        CustomRecipeBuilder.func_218656_a(serializer).build(consumer, serializer.getRegistryName().toString());
     }
 
     private static void addOreDictRecipe(ItemStack output, Object... recipe) {
