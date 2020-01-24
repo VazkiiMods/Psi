@@ -21,6 +21,8 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import vazkii.psi.api.cad.EnumCADComponent;
+import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.cad.ICADColorizer;
 import vazkii.psi.api.spell.*;
 import vazkii.psi.api.internal.PsiRenderHelper;
@@ -35,7 +37,7 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 	public static final int CAST_DELAY = 5;
 	public static final int LIVE_TIME = (CAST_TIMES + 2) * CAST_DELAY;
 
-	private static final String TAG_COLORIZER = "colorizer";
+	private static final String TAG_CAD = "cad";
 	private static final String TAG_BULLET = "bullet";
 	private static final String TAG_CASTER = "caster";
 	private static final String TAG_TIME_ALIVE = "timeAlive";
@@ -46,7 +48,7 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 	private static final String TAG_LOOK_Z = "savedLookZ";
 
 	// Generics are borked :|
-	public static final DataParameter<ItemStack> COLORIZER_DATA = EntityDataManager.createKey(EntitySpellCircle.class, DataSerializers.ITEM_STACK);
+	public static final DataParameter<ItemStack> CAD_DATA = EntityDataManager.createKey(EntitySpellCircle.class, DataSerializers.ITEM_STACK);
 	private static final DataParameter<ItemStack> BULLET_DATA = EntityDataManager.createKey(EntitySpellCircle.class, DataSerializers.ITEM_STACK);
 	private static final DataParameter<String> CASTER_NAME = EntityDataManager.createKey(EntitySpellCircle.class, DataSerializers.STRING);
 	private static final DataParameter<Integer> TIME_ALIVE = EntityDataManager.createKey(EntitySpellCircle.class, DataSerializers.VARINT);
@@ -61,8 +63,8 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 		setSize(3F, 0F);
 	}
 
-	public EntitySpellCircle setInfo(EntityPlayer player, ItemStack colorizer, ItemStack bullet) {
-		dataManager.set(COLORIZER_DATA,colorizer);
+	public EntitySpellCircle setInfo(EntityPlayer player, ItemStack cad, ItemStack bullet) {
+		dataManager.set(CAD_DATA, cad);
 		dataManager.set(BULLET_DATA, bullet);
 		dataManager.set(CASTER_NAME, player.getName());
 
@@ -75,7 +77,7 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 
 	@Override
 	protected void entityInit() {
-		dataManager.register(COLORIZER_DATA, new ItemStack(Blocks.STONE));
+		dataManager.register(CAD_DATA, new ItemStack(Blocks.STONE));
 		dataManager.register(BULLET_DATA, new ItemStack(Blocks.STONE));
 		dataManager.register(CASTER_NAME, "");
 		dataManager.register(TIME_ALIVE, 0);
@@ -87,11 +89,11 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 
 	@Override
 	public void writeEntityToNBT(@Nonnull NBTTagCompound tagCompound) {
-		NBTTagCompound colorizerCmp = new NBTTagCompound();
-		ItemStack colorizer =  dataManager.get(COLORIZER_DATA);
-		if (!colorizer.isEmpty())
-			colorizer.writeToNBT(colorizerCmp);
-		tagCompound.setTag(TAG_COLORIZER, colorizerCmp);
+		NBTTagCompound cadCmp = new NBTTagCompound();
+		ItemStack cad = dataManager.get(CAD_DATA);
+		if(!cad.isEmpty())
+			cad.writeToNBT(cadCmp);
+		tagCompound.setTag(TAG_CAD, cadCmp);
 
 		NBTTagCompound bulletCmp = new NBTTagCompound();
 		ItemStack bullet = dataManager.get(BULLET_DATA);
@@ -110,9 +112,9 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 
 	@Override
 	public void readEntityFromNBT(@Nonnull NBTTagCompound tagCompound) {
-		NBTTagCompound colorizerCmp = tagCompound.getCompoundTag(TAG_COLORIZER);
-		ItemStack colorizer = new ItemStack(colorizerCmp);
-		dataManager.set(COLORIZER_DATA, colorizer);
+		NBTTagCompound cadCmp = tagCompound.getCompoundTag(TAG_CAD);
+		ItemStack cad = new ItemStack(cadCmp);
+		dataManager.set(CAD_DATA, cad);
 
 		NBTTagCompound bulletCmp = tagCompound.getCompoundTag(TAG_BULLET);
 		ItemStack bullet = new ItemStack(bulletCmp);
@@ -137,6 +139,7 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 
 		setTimeAlive(timeAlive + 1);
 		int times = dataManager.get(TIMES_CAST);
+		ItemStack cad = dataManager.get(CAD_DATA);
 
 		if (timeAlive > CAST_DELAY && timeAlive % CAST_DELAY == 0 && times < 20) {
 			SpellContext context = null;
@@ -147,7 +150,7 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 					dataManager.set(TIMES_CAST, times + 1);
 					Spell spell = ISpellAcceptor.acceptor(spellContainer).getSpell();
 					if (spell != null)
-						context = new SpellContext().setPlayer((EntityPlayer) thrower).setFocalPoint(this)
+						context = new SpellContext(cad).setPlayer((EntityPlayer) thrower).setFocalPoint(this)
 								.setSpell(spell).setLoopcastIndex(times);
 				}
 			}
@@ -157,9 +160,12 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 		}
 
 		int colorVal = ICADColorizer.DEFAULT_SPELL_COLOR;
-		ItemStack colorizer = dataManager.get(COLORIZER_DATA);
-		if (!colorizer.isEmpty() && colorizer.getItem() instanceof ICADColorizer)
-			colorVal = Psi.proxy.getColorForColorizer(colorizer);
+		if(!cad.isEmpty() && cad.getItem() instanceof ICAD) {
+			ItemStack colorizer = ((ICAD) cad.getItem()).getComponentInSlot(cad, EnumCADComponent.DYE);
+			if(!colorizer.isEmpty() && colorizer.getItem() instanceof ICADColorizer)
+				colorVal = Psi.proxy.getColorForColorizer(colorizer);
+		}
+
 
 		float r = PsiRenderHelper.r(colorVal) / 255F;
 		float g = PsiRenderHelper.g(colorVal) / 255F;

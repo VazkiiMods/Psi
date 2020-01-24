@@ -16,8 +16,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Enchantments;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -31,7 +29,6 @@ import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.param.ParamVector;
 import vazkii.psi.api.spell.piece.PieceTrick;
-import vazkii.psi.common.core.handler.ConfigHandler;
 
 public class PieceTrickBreakBlock extends PieceTrick {
 
@@ -63,8 +60,18 @@ public class PieceTrickBreakBlock extends PieceTrick {
 		if(!context.isInRadius(positionVal))
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 
+		ItemStack tool = context.tool;
+		if(tool.isEmpty()) {
+			tool = PsiAPI.getPlayerCAD(context.caster);
+			if(tool.isEmpty()) {
+				tool = context.cad;
+				if(tool.isEmpty())
+					throw new SpellRuntimeException(SpellRuntimeException.NO_CAD);
+			}
+		}
+
 		BlockPos pos = positionVal.toBlockPos();
-		removeBlockWithDrops(context, context.caster, context.caster.getEntityWorld(), context.tool, pos, true);
+		removeBlockWithDrops(context, context.caster, context.caster.getEntityWorld(), tool, pos, true);
 
 		return null;
 	}
@@ -73,12 +80,9 @@ public class PieceTrickBreakBlock extends PieceTrick {
 		if(!world.isBlockLoaded(pos) || (context.positionBroken != null && pos.equals(context.positionBroken.getBlockPos())) || !world.isBlockModifiable(player, pos))
 			return;
 
-		if (tool.isEmpty())
-			tool = PsiAPI.getPlayerCAD(player);
-
 		IBlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
-		if(!block.isAir(state, world, pos) && !(block instanceof BlockLiquid) && !(block instanceof IFluidBlock) && state.getPlayerRelativeBlockHardness(player, world, pos) > 0) {
+		if(!block.isAir(state, world, pos) && !(block instanceof BlockLiquid) && !(block instanceof IFluidBlock) && state.getBlockHardness(world, pos) > 0) {
 			if(!canHarvestBlock(block, player, world, pos, tool))
 				return;
 
@@ -113,20 +117,32 @@ public class PieceTrickBreakBlock extends PieceTrick {
 		return event;
 	}
 
-	public static boolean canHarvestBlock(Block block, EntityPlayer player, World world, BlockPos pos, ItemStack tool) {
-		//General positive checks
-		IBlockState state = world.getBlockState(pos).getActualState(world, pos);
-		int reqLevel = block.getHarvestLevel(state);
-		Item toolItem = tool.getItem();
-		if (tool.canHarvestBlock(state) || state.getMaterial().isToolNotRequired() || ConfigHandler.cadHarvestLevel >= reqLevel) return ForgeEventFactory.doPlayerHarvestCheck(player, state, true);
+	// Based on InventoryPlayer::canHarvestBlock
+	public static boolean canHarvestBlock(IBlockState state, ItemStack itemstack) {
+		if(state.getMaterial().isToolNotRequired())
+			return true;
+		else
+			return !itemstack.isEmpty() && itemstack.canHarvestBlock(state);
+	}
 
-		//General negative checks
-		String reqTool = block.getHarvestTool(state);
-		if (toolItem == Items.AIR || reqTool == null) return false;
+	// Based on ForgeHooks::canHarvestBlock and EntityPlayer::canHarvestBlock
+	public static boolean canHarvestBlock(Block block, EntityPlayer player, World world, BlockPos pos, ItemStack stack) {
+		IBlockState state = world.getBlockState(pos);
+		state = state.getActualState(world, pos);
+		if(state.getMaterial().isToolNotRequired())
+			return true;
 
-		//Targeted tool check
-		if (toolItem.getHarvestLevel(tool, reqTool, player, state) >= reqLevel) return ForgeEventFactory.doPlayerHarvestCheck(player, state, true);
+		// ItemStack stack = player.getHeldItemMainhand();
+		String tool = block.getHarvestTool(state);
+		if(stack.isEmpty() || tool == null)
+			// return player.canHarvestBlock(state);
+			return ForgeEventFactory.doPlayerHarvestCheck(player, state, canHarvestBlock(state, stack));
 
-		return false;
+		int toolLevel = stack.getItem().getHarvestLevel(stack, tool, player, state);
+		if(toolLevel < 0)
+			// return player.canHarvestBlock(state);
+			return ForgeEventFactory.doPlayerHarvestCheck(player, state, canHarvestBlock(state, stack));
+
+		return toolLevel >= block.getHarvestLevel(state);
 	}
 }
