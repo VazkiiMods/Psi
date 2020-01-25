@@ -1,25 +1,17 @@
 package vazkii.psi.data;
 
-import net.minecraft.block.Blocks;
-import net.minecraft.data.CustomRecipeBuilder;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.IFinishedRecipe;
-import net.minecraft.data.ShapedRecipeBuilder;
-import net.minecraft.item.ItemStack;
+import net.minecraft.data.*;
 import net.minecraft.item.Items;
 import net.minecraft.item.crafting.SpecialRecipeSerializer;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.crafting.ConditionalRecipe;
 import net.minecraftforge.common.crafting.conditions.IConditionBuilder;
 import net.minecraftforge.common.data.ForgeRecipeProvider;
 import vazkii.psi.common.block.base.ModBlocks;
-import vazkii.psi.common.crafting.recipe.AssemblyScavengeRecipe;
-import vazkii.psi.common.crafting.recipe.BulletToDriveRecipe;
-import vazkii.psi.common.crafting.recipe.ColorizerChangeRecipe;
-import vazkii.psi.common.crafting.recipe.DriveDuplicateRecipe;
-import vazkii.psi.common.crafting.recipe.SensorAttachRecipe;
-import vazkii.psi.common.crafting.recipe.SensorRemoveRecipe;
+import vazkii.psi.common.crafting.recipe.*;
 import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.lib.ModTags;
@@ -173,219 +165,659 @@ public class RecipeGenerator extends ForgeRecipeProvider implements IConditionBu
                         .patternLine("IDI")
                         .patternLine(" G ")
                         ::build).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "cad_core_radiative"));
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapedRecipeBuilder.shapedRecipe(ModItems.cadSocketBasic)
+                        .key('I', Tags.Items.INGOTS_IRON)
+                        .key('D', ModTags.DUST_PSI)
+                        .patternLine("DI ")
+                        .patternLine("I  ")
+                        ::build).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "cad_socket_basic"));
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapedRecipeBuilder.shapedRecipe(ModItems.cadSocketSignaling)
+                        .key('I', ModTags.INGOT_PSI)
+                        .key('D', Tags.Items.DUSTS_REDSTONE)
+                        .patternLine("DI ")
+                        .patternLine("I  ")
+                        ::build).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "cad_socket_signaling"));
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapedRecipeBuilder.shapedRecipe(ModItems.cadSocketLarge)
+                        .key('I', ModTags.INGOT_PSI)
+                        .key('D', Tags.Items.DUSTS_GLOWSTONE)
+                        .patternLine("DI ")
+                        .patternLine("I  ")
+                        ::build).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "cad_socket_large"));
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapedRecipeBuilder.shapedRecipe(ModItems.cadSocketTransmissive)
+                        .key('I', ModTags.INGOT_PSI)
+                        .key('D', Tags.Items.DUSTS_REDSTONE)
+                        .key('G', ModTags.GEM_PSI)
+                        .patternLine("DI ")
+                        .patternLine("IG ")
+                        ::build).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "cad_socket_transmissive"));
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapedRecipeBuilder.shapedRecipe(ModItems.cadSocketHuge)
+                        .key('I', ModTags.INGOT_PSI)
+                        .key('D', Tags.Items.DUSTS_GLOWSTONE)
+                        .key('G', ModTags.GEM_PSI)
+                        .patternLine("DI ")
+                        .patternLine("IG ")
+                        ::build).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "cad_socket_huge"));
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapedRecipeBuilder.shapedRecipe(ModItems.cadBatteryBasic)
+                        .key('I', Tags.Items.INGOTS_IRON)
+                        .key('D', ModTags.DUST_PSI)
+                        .key('G', Tags.Items.INGOTS_GOLD)
+                        .patternLine("I")
+                        .patternLine("D")
+                        .patternLine("G")
+                        ::build).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "cad_battery_basic"));
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapedRecipeBuilder.shapedRecipe(ModItems.cadBatteryExtended)
+                        .key('I', Tags.Items.INGOTS_IRON)
+                        .key('D', ModTags.INGOT_PSI)
+                        .key('G', Tags.Items.INGOTS_GOLD)
+                        .patternLine("I")
+                        .patternLine("D")
+                        .patternLine("G")
+                        ::build).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "cad_battery_extended"));
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapedRecipeBuilder.shapedRecipe(ModItems.cadBatteryUltradense)
+                        .key('I', Tags.Items.INGOTS_IRON)
+                        .key('D', ModTags.GEM_PSI)
+                        .key('G', Tags.Items.INGOTS_GOLD)
+                        .patternLine("I")
+                        .patternLine("D")
+                        .patternLine("G")
+                        ::build).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "cad_battery_ultradense"));
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapedRecipeBuilder.shapedRecipe(ModItems.cadColorizerWhite)
+                        .key('I', Tags.Items.INGOTS_IRON)
+                        .key('G', Tags.Items.GLASS)
+                        .key('C', Tags.Items.DYES_WHITE)
+                        .patternLine(" D ")
+                        .patternLine("GCG")
+                        .patternLine(" I ")
+                        ::build).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "cad_colorizer_white"));
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapedRecipeBuilder.shapedRecipe(ModItems.cadColorizerOrange)
+                        .key('I', Tags.Items.INGOTS_IRON)
+                        .key('G', Tags.Items.GLASS)
+                        .key('C', Tags.Items.DYES_ORANGE)
+                        .patternLine(" D ")
+                        .patternLine("GCG")
+                        .patternLine(" I ")
+                        ::build).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "cad_colorizer_orange"));
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapedRecipeBuilder.shapedRecipe(ModItems.cadColorizerMagenta)
+                        .key('I', Tags.Items.INGOTS_IRON)
+                        .key('G', Tags.Items.GLASS)
+                        .key('C', Tags.Items.DYES_MAGENTA)
+                        .patternLine(" D ")
+                        .patternLine("GCG")
+                        .patternLine(" I ")
+                        ::build).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "cad_colorizer_magenta"));
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapedRecipeBuilder.shapedRecipe(ModItems.cadColorizerLightBlue)
+                        .key('I', Tags.Items.INGOTS_IRON)
+                        .key('G', Tags.Items.GLASS)
+                        .key('C', Tags.Items.DYES_LIGHT_BLUE)
+                        .patternLine(" D ")
+                        .patternLine("GCG")
+                        .patternLine(" I ")
+                        ::build).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "cad_colorizer_light_blue"));
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapedRecipeBuilder.shapedRecipe(ModItems.cadColorizerYellow)
+                        .key('I', Tags.Items.INGOTS_IRON)
+                        .key('G', Tags.Items.GLASS)
+                        .key('C', Tags.Items.DYES_YELLOW)
+                        .patternLine(" D ")
+                        .patternLine("GCG")
+                        .patternLine(" I ")
+                        ::build).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "cad_colorizer_yellow"));
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapedRecipeBuilder.shapedRecipe(ModItems.cadColorizerLime)
+                        .key('I', Tags.Items.INGOTS_IRON)
+                        .key('G', Tags.Items.GLASS)
+                        .key('C', Tags.Items.DYES_LIME)
+                        .patternLine(" D ")
+                        .patternLine("GCG")
+                        .patternLine(" I ")
+                        ::build).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "cad_colorizer_lime"));
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapedRecipeBuilder.shapedRecipe(ModItems.cadColorizerPink)
+                        .key('I', Tags.Items.INGOTS_IRON)
+                        .key('G', Tags.Items.GLASS)
+                        .key('C', Tags.Items.DYES_PINK)
+                        .patternLine(" D ")
+                        .patternLine("GCG")
+                        .patternLine(" I ")
+                        ::build).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "cad_colorizer_pink"));
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapedRecipeBuilder.shapedRecipe(ModItems.cadColorizerGray)
+                        .key('I', Tags.Items.INGOTS_IRON)
+                        .key('G', Tags.Items.GLASS)
+                        .key('C', Tags.Items.DYES_GRAY)
+                        .patternLine(" D ")
+                        .patternLine("GCG")
+                        .patternLine(" I ")
+                        ::build).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "cad_colorizer_gray"));
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapedRecipeBuilder.shapedRecipe(ModItems.cadColorizerLightGray)
+                        .key('I', Tags.Items.INGOTS_IRON)
+                        .key('G', Tags.Items.GLASS)
+                        .key('C', Tags.Items.DYES_LIGHT_GRAY)
+                        .patternLine(" D ")
+                        .patternLine("GCG")
+                        .patternLine(" I ")
+                        ::build).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "cad_colorizer_light_gray"));
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapedRecipeBuilder.shapedRecipe(ModItems.cadColorizerCyan)
+                        .key('I', Tags.Items.INGOTS_IRON)
+                        .key('G', Tags.Items.GLASS)
+                        .key('C', Tags.Items.DYES_CYAN)
+                        .patternLine(" D ")
+                        .patternLine("GCG")
+                        .patternLine(" I ")
+                        ::build).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "cad_colorizer_cyan"));
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapedRecipeBuilder.shapedRecipe(ModItems.cadColorizerPurple)
+                        .key('I', Tags.Items.INGOTS_IRON)
+                        .key('G', Tags.Items.GLASS)
+                        .key('C', Tags.Items.DYES_PURPLE)
+                        .patternLine(" D ")
+                        .patternLine("GCG")
+                        .patternLine(" I ")
+                        ::build).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "cad_colorizer_purple"));
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapedRecipeBuilder.shapedRecipe(ModItems.cadColorizerBlue)
+                        .key('I', Tags.Items.INGOTS_IRON)
+                        .key('G', Tags.Items.GLASS)
+                        .key('C', Tags.Items.DYES_BLUE)
+                        .patternLine(" D ")
+                        .patternLine("GCG")
+                        .patternLine(" I ")
+                        ::build).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "cad_colorizer_blue"));
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapedRecipeBuilder.shapedRecipe(ModItems.cadColorizerBrown)
+                        .key('I', Tags.Items.INGOTS_IRON)
+                        .key('G', Tags.Items.GLASS)
+                        .key('C', Tags.Items.DYES_BROWN)
+                        .patternLine(" D ")
+                        .patternLine("GCG")
+                        .patternLine(" I ")
+                        ::build).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "cad_colorizer_brown"));
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapedRecipeBuilder.shapedRecipe(ModItems.cadColorizerGreen)
+                        .key('I', Tags.Items.INGOTS_IRON)
+                        .key('G', Tags.Items.GLASS)
+                        .key('C', Tags.Items.DYES_GREEN)
+                        .patternLine(" D ")
+                        .patternLine("GCG")
+                        .patternLine(" I ")
+                        ::build).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "cad_colorizer_green"));
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapedRecipeBuilder.shapedRecipe(ModItems.cadColorizerRed)
+                        .key('I', Tags.Items.INGOTS_IRON)
+                        .key('G', Tags.Items.GLASS)
+                        .key('C', Tags.Items.DYES_RED)
+                        .patternLine(" D ")
+                        .patternLine("GCG")
+                        .patternLine(" I ")
+                        ::build).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "cad_colorizer_red"));
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapedRecipeBuilder.shapedRecipe(ModItems.cadColorizerBlack)
+                        .key('I', Tags.Items.INGOTS_IRON)
+                        .key('G', Tags.Items.GLASS)
+                        .key('C', Tags.Items.DYES_BLACK)
+                        .patternLine(" D ")
+                        .patternLine("GCG")
+                        .patternLine(" I ")
+                        ::build).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "cad_colorizer_black"));
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapedRecipeBuilder.shapedRecipe(ModItems.cadColorizerRainbow)
+                        .key('I', Tags.Items.INGOTS_IRON)
+                        .key('G', Tags.Items.GLASS)
+                        .key('C', Tags.Items.GEMS_PRISMARINE)
+                        .patternLine(" D ")
+                        .patternLine("GCG")
+                        .patternLine(" I ")
+                        ::build).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "cad_colorizer_rainbow"));
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapedRecipeBuilder.shapedRecipe(ModItems.cadColorizerPsi)
+                        .key('I', Tags.Items.INGOTS_IRON)
+                        .key('G', Tags.Items.GLASS)
+                        .key('C', ModTags.DUST_PSI)
+                        .patternLine(" D ")
+                        .patternLine("GCG")
+                        .patternLine(" I ")
+                        ::build).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "cad_colorizer_psi"));
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapedRecipeBuilder.shapedRecipe(ModItems.spellBullet)
+                        .key('I', Tags.Items.INGOTS_IRON)
+                        .key('D', Tags.Items.GLASS)
+                        .patternLine("ID")
+                        ::build).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "spell_bullet_basic"));
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapedRecipeBuilder.shapedRecipe(ModItems.projectileSpellBullet)
+                        .key('I', Tags.Items.INGOTS_IRON)
+                        .key('D', Tags.Items.GLASS)
+                        .key('A', Tags.Items.ARROWS)
+                        .patternLine("AID")
+                        ::build).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "spell_bullet_projectile"));
 
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapedRecipeBuilder.shapedRecipe(ModItems.loopSpellBullet)
+                        .key('I', Tags.Items.INGOTS_IRON)
+                        .key('D', Tags.Items.GLASS)
+                        .key('A', Tags.Items.STRING)
+                        .patternLine("AID")
+                        ::build).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "spell_bullet_loopcast"));
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapedRecipeBuilder.shapedRecipe(ModItems.circleSpellBullet)
+                        .key('I', Tags.Items.INGOTS_IRON)
+                        .key('D', Tags.Items.GLASS)
+                        .key('A', Tags.Items.SLIMEBALLS)
+                        .patternLine("AID")
+                        ::build).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "spell_bullet_circle"));
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapedRecipeBuilder.shapedRecipe(ModItems.projectileSpellBullet)
+                        .key('I', Tags.Items.INGOTS_IRON)
+                        .key('D', Tags.Items.GLASS)
+                        .key('A', Tags.Items.ARROWS)
+                        .patternLine("AID")
+                        ::build).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "spell_bullet_projectile"));
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapedRecipeBuilder.shapedRecipe(ModItems.circleSpellBullet)
+                        .key('I', Tags.Items.INGOTS_IRON)
+                        .key('D', Tags.Items.GLASS)
+                        .key('A', Items.SNOWBALL)
+                        .patternLine("AID")
+                        ::build).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "spell_bullet_circle"));
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapedRecipeBuilder.shapedRecipe(ModItems.grenadeSpellBullet)
+                        .key('I', Tags.Items.INGOTS_IRON)
+                        .key('D', Tags.Items.GLASS)
+                        .key('A', Tags.Items.GUNPOWDER)
+                        .patternLine("AID")
+                        ::build).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "spell_bullet_grenade"));
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapedRecipeBuilder.shapedRecipe(ModItems.chargeSpellBullet)
+                        .key('I', Tags.Items.INGOTS_IRON)
+                        .key('D', Tags.Items.GLASS)
+                        .key('A', Tags.Items.DUSTS_REDSTONE)
+                        .patternLine("AID")
+                        ::build).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "spell_bullet_charge"));
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapedRecipeBuilder.shapedRecipe(ModItems.mineSpellBullet)
+                        .key('I', Tags.Items.INGOTS_IRON)
+                        .key('D', Tags.Items.GLASS)
+                        .key('A', ItemTags.BUTTONS)
+                        .patternLine("AID")
+                        ::build).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "spell_bullet_mine"));
 
-        addOreDictRecipe(ProxyRegistry.newStack(ModItems.cadSocket, 1, 0),
-                "DI", "I ",
-                'I', "ingotIron",
-                'D', "dustPsi");
-        addOreDictRecipe(ProxyRegistry.newStack(ModItems.cadSocket, 1, 1),
-                "DI", "I ",
-                'I', "ingotPsi",
-                'D', "dustRedstone");
-        addOreDictRecipe(ProxyRegistry.newStack(ModItems.cadSocket, 1, 2),
-                "DI", "I ",
-                'I', "ingotPsi",
-                'D', "dustGlowstone");
-        addOreDictRecipe(ProxyRegistry.newStack(ModItems.cadSocket, 1, 3),
-                "DI", "IG",
-                'I', "ingotPsi",
-                'G', "gemPsi",
-                'D', "dustRedstone");
-        addOreDictRecipe(ProxyRegistry.newStack(ModItems.cadSocket, 1, 4),
-                "DI", "IG",
-                'I', "ingotPsi",
-                'G', "gemPsi",
-                'D', "dustGlowstone");
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapedRecipeBuilder.shapedRecipe(ModItems.chargeSpellBullet)
+                        .key('I', Tags.Items.INGOTS_IRON)
+                        .key('D', Tags.Items.GLASS)
+                        .key('A', Tags.Items.DUSTS_REDSTONE)
+                        .patternLine("AID")
+                        ::build).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "spell_bullet_charge"));
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapedRecipeBuilder.shapedRecipe(ModItems.spellDrive)
+                        .key('I', ModTags.INGOT_PSI)
+                        .key('R', Tags.Items.DUSTS_REDSTONE)
+                        .patternLine("I")
+                        .patternLine("R")
+                        .patternLine("I")
+                        ::build).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "spell_drive"));
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapedRecipeBuilder.shapedRecipe(ModItems.psimetalShovel)
+                        .key('P', ModTags.INGOT_PSI)
+                        .key('G', ModTags.GEM_PSI)
+                        .key('I', Tags.Items.INGOTS_IRON)
+                        .patternLine("GP")
+                        .patternLine(" I")
+                        .patternLine(" I")
+                        ::build).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "psimetal_shovel"));
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapedRecipeBuilder.shapedRecipe(ModItems.psimetalPickaxe)
+                        .key('P', ModTags.INGOT_PSI)
+                        .key('G', ModTags.GEM_PSI)
+                        .key('I', Tags.Items.INGOTS_IRON)
+                        .patternLine("PGP")
+                        .patternLine(" I ")
+                        .patternLine(" I ")
+                        ::build).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "psimetal_pickaxe"));
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapedRecipeBuilder.shapedRecipe(ModItems.psimetalAxe)
+                        .key('P', ModTags.INGOT_PSI)
+                        .key('G', ModTags.GEM_PSI)
+                        .key('I', Tags.Items.INGOTS_IRON)
+                        .patternLine("GP")
+                        .patternLine("PI")
+                        .patternLine(" I")
+                        ::build).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "psimetal_axe"));
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapedRecipeBuilder.shapedRecipe(ModItems.psimetalSword)
+                        .key('P', ModTags.INGOT_PSI)
+                        .key('G', ModTags.GEM_PSI)
+                        .key('I', Tags.Items.INGOTS_IRON)
+                        .patternLine("P")
+                        .patternLine("G")
+                        .patternLine("I")
+                        ::build).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "psimetal_sword"));
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapedRecipeBuilder.shapedRecipe(ModItems.psimetalExosuitHelmet)
+                        .key('P', ModTags.INGOT_PSI)
+                        .key('G', ModTags.GEM_PSI)
+                        .patternLine("GPG")
+                        .patternLine("P P")
+                        ::build).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "psimetal_exosuit_helmet"));
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapedRecipeBuilder.shapedRecipe(ModItems.psimetalExosuitChestplate)
+                        .key('P', ModTags.INGOT_PSI)
+                        .key('G', ModTags.GEM_PSI)
+                        .patternLine("P P")
+                        .patternLine("GPG")
+                        .patternLine("PPP")
+                        ::build).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "psimetal_exosuit_chestplate"));
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapedRecipeBuilder.shapedRecipe(ModItems.psimetalExosuitLeggings)
+                        .key('P', ModTags.INGOT_PSI)
+                        .key('G', ModTags.GEM_PSI)
+                        .patternLine("GPG")
+                        .patternLine("P P")
+                        .patternLine("P P")
+                        ::build).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "psimetal_exosuit_leggings"));
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapedRecipeBuilder.shapedRecipe(ModItems.psimetalExosuitBoots)
+                        .key('P', ModTags.INGOT_PSI)
+                        .key('G', ModTags.GEM_PSI)
+                        .patternLine("G G")
+                        .patternLine("P P")
+                        ::build).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "psimetal_exosuit_boots"));
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapedRecipeBuilder.shapedRecipe(ModItems.detonator)
+                        .key('P', ModTags.DUST_PSI)
+                        .key('B', ItemTags.BUTTONS)
+                        .key('I', Tags.Items.INGOTS_IRON)
+                        .patternLine(" B ")
+                        .patternLine("IPI")
+                        ::build).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "detonator"));
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapedRecipeBuilder.shapedRecipe(ModItems.exosuitController)
+                        .key('R', Tags.Items.DUSTS_REDSTONE)
+                        .key('G', Tags.Items.GLASS)
+                        .key('I', ModTags.INGOT_PSI)
+                        .patternLine("R")
+                        .patternLine("G")
+                        .patternLine("I")
+                        ::build).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "exosuit_controller"));
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapedRecipeBuilder.shapedRecipe(ModItems.vectorRuler)
+                        .key('D', ModTags.DUST_PSI)
+                        .key('I', Tags.Items.INGOTS_IRON)
+                        .patternLine("D")
+                        .patternLine("I")
+                        .patternLine("I")
+                        ::build).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "vector_ruler"));
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapedRecipeBuilder.shapedRecipe(ModItems.exosuitSensorLight)
+                        .key('M', Tags.Items.DUSTS_GLOWSTONE)
+                        .key('R', Tags.Items.INGOTS_IRON)
+                        .key('I', ModTags.INGOT_PSI)
+                        .patternLine(" I ")
+                        .patternLine("IMR")
+                        .patternLine(" R ")
+                        ::build).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "exosuit_sensor_light"));
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapedRecipeBuilder.shapedRecipe(ModItems.exosuitSensorWater)
+                        .key('M', Tags.Items.GEMS_PRISMARINE)
+                        .key('R', Tags.Items.INGOTS_IRON)
+                        .key('I', ModTags.INGOT_PSI)
+                        .patternLine(" I ")
+                        .patternLine("IMR")
+                        .patternLine(" R ")
+                        ::build).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "exosuit_sensor_water"));
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapedRecipeBuilder.shapedRecipe(ModItems.exosuitSensorHeat)
+                        .key('M', Items.FIRE_CHARGE)
+                        .key('R', Tags.Items.INGOTS_IRON)
+                        .key('I', ModTags.INGOT_PSI)
+                        .patternLine(" I ")
+                        .patternLine("IMR")
+                        .patternLine(" R ")
+                        ::build).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "exosuit_sensor_heat"));
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapedRecipeBuilder.shapedRecipe(ModItems.exosuitSensorStress)
+                        .key('M', Items.GLISTERING_MELON_SLICE)
+                        .key('R', Tags.Items.INGOTS_IRON)
+                        .key('I', ModTags.INGOT_PSI)
+                        .patternLine(" I ")
+                        .patternLine("IMR")
+                        .patternLine(" R ")
+                        ::build).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "exosuit_sensor_stress"));
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapedRecipeBuilder.shapedRecipe(ModBlocks.psidustBlock.asItem())
+                        .key('O', ModItems.psidust)
+                        .patternLine("OOO")
+                        .patternLine("OOO")
+                        .patternLine("OOO")
+                        ::build).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "psidust_block"));
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapedRecipeBuilder.shapedRecipe(ModBlocks.psimetalBlock.asItem())
+                        .key('O', ModItems.psimetal)
+                        .patternLine("OOO")
+                        .patternLine("OOO")
+                        .patternLine("OOO")
+                        ::build).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "psimetal_block"));
 
-        addOreDictRecipe(ProxyRegistry.newStack(ModItems.cadBattery, 1, 0),
-                "I", "D", "G",
-                'I', "ingotIron",
-                'G', "ingotGold",
-                'D', "dustPsi");
-        addOreDictRecipe(ProxyRegistry.newStack(ModItems.cadBattery, 1, 1),
-                "I", "D", "G",
-                'I', "ingotIron",
-                'G', "ingotGold",
-                'D', "ingotPsi");
-        addOreDictRecipe(ProxyRegistry.newStack(ModItems.cadBattery, 1, 2),
-                "I", "D", "G",
-                'I', "ingotIron",
-                'G', "ingotGold",
-                'D', "gemPsi");
-
-        String[] dyes = {
-                "White", "Orange", "Magenta", "LightBlue", "Yellow", "Lime", "Pink", "Gray", "LightGray", "Cyan", "Purple", "Blue", "Brown", "Green", "Red", "Black"
-        };
-        for (int i = 0; i < 16; i++)
-            addOreDictRecipe(ProxyRegistry.newStack(ModItems.cadColorizer, 1, i),
-                    " D ", "GCG", " I ",
-                    'I', "ingotIron",
-                    'G', "blockGlass",
-                    'C', "dye" + dyes[i],
-                    'D', "dustPsi");
-        addOreDictRecipe(ProxyRegistry.newStack(ModItems.cadColorizer, 1, 16),
-                " D ", "GCG", " I ",
-                'I', "ingotIron",
-                'G', "blockGlass",
-                'C', "crystalsPrismarine",
-                'D', "dustPsi");
-        addOreDictRecipe(ProxyRegistry.newStack(ModItems.cadColorizer, 1, 17),
-                " D ", "GDG", " I ",
-                'I', "ingotIron",
-                'G', "blockGlass",
-                'D', "dustPsi");
-
-        addOreDictRecipe(ProxyRegistry.newStack(ModItems.spellBullet, 1, 0),
-                "ID",
-                'I', "ingotIron",
-                'D', "dustPsi");
-        addOreDictRecipe(ProxyRegistry.newStack(ModItems.spellBullet, 1, 2),
-                "AID",
-                'A', ProxyRegistry.newStack(Items.ARROW),
-                'I', "ingotIron",
-                'D', "dustPsi");
-        addOreDictRecipe(ProxyRegistry.newStack(ModItems.spellBullet, 1, 4),
-                "AID",
-                'A', ProxyRegistry.newStack(Items.STRING),
-                'I', "ingotIron",
-                'D', "dustPsi");
-        addOreDictRecipe(ProxyRegistry.newStack(ModItems.spellBullet, 1, 6),
-                "AID",
-                'A', "slimeball",
-                'I', "ingotIron",
-                'D', "dustPsi");
-        addOreDictRecipe(ProxyRegistry.newStack(ModItems.spellBullet, 1, 6),
-                "AID",
-                'A', ProxyRegistry.newStack(Items.SNOWBALL),
-                'I', "ingotIron",
-                'D', "dustPsi");
-        addOreDictRecipe(ProxyRegistry.newStack(ModItems.spellBullet, 1, 8),
-                "AID",
-                'A', ProxyRegistry.newStack(Items.GUNPOWDER),
-                'I', "ingotIron",
-                'D', "dustPsi");
-        addOreDictRecipe(ProxyRegistry.newStack(ModItems.spellBullet, 1, 10),
-                "AID",
-                'A', "dustRedstone",
-                'I', "ingotIron",
-                'D', "dustPsi");
-        addOreDictRecipe(ProxyRegistry.newStack(ModItems.spellBullet, 1, 12),
-                "AID",
-                'A', ProxyRegistry.newStack(Blocks.STONE_BUTTON),
-                'I', "ingotIron",
-                'D', "dustPsi");
-
-        addOreDictRecipe(ProxyRegistry.newStack(ModItems.spellDrive),
-                "I", "R", "I",
-                'I', "ingotPsi",
-                'R', "dustRedstone");
-
-        addOreDictRecipe(ProxyRegistry.newStack(ModItems.psimetalShovel),
-                "GP", " I", " I",
-                'P', "ingotPsi",
-                'G', "gemPsi",
-                'I', "ingotIron");
-        addOreDictRecipe(ProxyRegistry.newStack(ModItems.psimetalPickaxe),
-                "PGP", " I ", " I ",
-                'P', "ingotPsi",
-                'G', "gemPsi",
-                'I', "ingotIron");
-        addOreDictRecipe(ProxyRegistry.newStack(ModItems.psimetalAxe),
-                "GP", "PI", " I",
-                'P', "ingotPsi",
-                'G', "gemPsi",
-                'I', "ingotIron");
-        addOreDictRecipe(ProxyRegistry.newStack(ModItems.psimetalSword),
-                "P", "G", "I",
-                'P', "ingotPsi",
-                'G', "gemPsi",
-                'I', "ingotIron");
-
-        addOreDictRecipe(ProxyRegistry.newStack(ModItems.psimetalExosuitHelmet),
-                "GPG", "P P",
-                'P', "ingotPsi",
-                'G', "gemPsi");
-        addOreDictRecipe(ProxyRegistry.newStack(ModItems.psimetalExosuitChestplate),
-                "P P", "GPG", "PPP",
-                'P', "ingotPsi",
-                'G', "gemPsi");
-        addOreDictRecipe(ProxyRegistry.newStack(ModItems.psimetalExosuitLeggings),
-                "GPG", "P P", "P P",
-                'P', "ingotPsi",
-                'G', "gemPsi");
-        addOreDictRecipe(ProxyRegistry.newStack(ModItems.psimetalExosuitBoots),
-                "G G", "P P",
-                'P', "ingotPsi",
-                'G', "gemPsi");
-
-        addOreDictRecipe(ProxyRegistry.newStack(ModItems.detonator),
-                " B ", "IPI",
-                'P', "dustPsi",
-                'B', ProxyRegistry.newStack(Blocks.STONE_BUTTON),
-                'I', "ingotIron");
-        addOreDictRecipe(ProxyRegistry.newStack(ModItems.exosuitController),
-                "R", "G", "I",
-                'R', "dustRedstone",
-                'G', "blockGlassColorless",
-                'I', "ingotPsi");
-        addOreDictRecipe(ProxyRegistry.newStack(ModItems.vectorRuler),
-                "D", "I", "I",
-                'D', "dustPsi",
-                'I', "ingotIron");
-
-        addOreDictRecipe(ProxyRegistry.newStack(ModItems.exosuitSensor, 1, 0),
-                " I ", "IMR", " R ",
-                'M', "dustGlowstone",
-                'I', "ingotPsi",
-                'R', "ingotIron");
-        addOreDictRecipe(ProxyRegistry.newStack(ModItems.exosuitSensor, 1, 1),
-                " I ", "IMR", " R ",
-                'M', "shardPrismarine",
-                'I', "ingotPsi",
-                'R', "ingotIron");
-        addOreDictRecipe(ProxyRegistry.newStack(ModItems.exosuitSensor, 1, 2),
-                " I ", "IMR", " R ",
-                'M', ProxyRegistry.newStack(Items.FIRE_CHARGE),
-                'I', "ingotPsi",
-                'R', "ingotIron");
-        addOreDictRecipe(ProxyRegistry.newStack(ModItems.exosuitSensor, 1, 3),
-                " I ", "IMR", " R ",
-                'M', ProxyRegistry.newStack(Items.SPECKLED_MELON),
-                'I', "ingotPsi",
-                'R', "ingotIron");
-
-        addOreDictRecipe(ProxyRegistry.newStack(ModBlocks.psiDecorative, 1, 0),
-                "OOO", "OOO", "OOO",
-                'O', "dustPsi");
-        addOreDictRecipe(ProxyRegistry.newStack(ModBlocks.psiDecorative, 1, 1),
-                "OOO", "OOO", "OOO",
-                'O', "ingotPsi");
-        addOreDictRecipe(ProxyRegistry.newStack(ModBlocks.psiDecorative, 1, 2),
-                "OOO", "OOO", "OOO",
-                'O', "gemPsi");
-        addOreDictRecipe(ProxyRegistry.newStack(ModBlocks.psiDecorative, 1, 7),
-                "OOO", "OOO", "OOO",
-                'O', "ingotEbonyPsi");
-        addOreDictRecipe(ProxyRegistry.newStack(ModBlocks.psiDecorative, 1, 8),
-                "OOO", "OOO", "OOO",
-                'O', "ingotIvoryPsi");
-        addShapelessOreDictRecipe(ProxyRegistry.newStack(ModItems.material, 9, 0), ProxyRegistry.newStack(ModBlocks.psiDecorative, 1, 0));
-        addShapelessOreDictRecipe(ProxyRegistry.newStack(ModItems.material, 9, 1), ProxyRegistry.newStack(ModBlocks.psiDecorative, 1, 1));
-        addShapelessOreDictRecipe(ProxyRegistry.newStack(ModItems.material, 9, 2), ProxyRegistry.newStack(ModBlocks.psiDecorative, 1, 2));
-        addShapelessOreDictRecipe(ProxyRegistry.newStack(ModItems.material, 9, 3), ProxyRegistry.newStack(ModBlocks.psiDecorative, 1, 7));
-        addShapelessOreDictRecipe(ProxyRegistry.newStack(ModItems.material, 9, 4), ProxyRegistry.newStack(ModBlocks.psiDecorative, 1, 8));
-
-        addOreDictRecipe(ProxyRegistry.newStack(ModBlocks.psiDecorative, 6, 3),
-                " C ", "CIC", " C ",
-                'C', "coal",
-                'I', "ingotPsi");
-        addOreDictRecipe(ProxyRegistry.newStack(ModBlocks.psiDecorative, 6, 5),
-                " C ", "CIC", " C ",
-                'C', "gemQuartz",
-                'I', "ingotPsi");
-        addShapelessOreDictRecipe(ProxyRegistry.newStack(ModBlocks.psiDecorative, 1, 4), ProxyRegistry.newStack(ModBlocks.psiDecorative, 1, 3), "dustGlowstone");
-        addShapelessOreDictRecipe(ProxyRegistry.newStack(ModBlocks.psiDecorative, 1, 6), ProxyRegistry.newStack(ModBlocks.psiDecorative, 1, 5), "dustGlowstone");
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapedRecipeBuilder.shapedRecipe(ModBlocks.psigemBlock.asItem())
+                        .key('O', ModItems.psigem)
+                        .patternLine("OOO")
+                        .patternLine("OOO")
+                        .patternLine("OOO")
+                        ::build).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "psigem_block"));
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapedRecipeBuilder.shapedRecipe(ModBlocks.psimetalEbony.asItem())
+                        .key('O', ModItems.ebonyPsimetal)
+                        .patternLine("OOO")
+                        .patternLine("OOO")
+                        .patternLine("OOO")
+                        ::build).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "ebony_block"));
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapedRecipeBuilder.shapedRecipe(ModBlocks.psimetalIvory.asItem())
+                        .key('O', ModItems.ivoryPsimetal)
+                        .patternLine("OOO")
+                        .patternLine("OOO")
+                        .patternLine("OOO")
+                        ::build).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "ivory_block"));
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapelessRecipeBuilder.shapelessRecipe(ModBlocks.psidustBlock.asItem())
+                        .addIngredient(ModItems.psidust, 9)
+                        ::build
+                ).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "psidust_block_shapeless"));
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapelessRecipeBuilder.shapelessRecipe(ModBlocks.psimetalBlock.asItem())
+                        .addIngredient(ModItems.psimetal, 9)
+                        ::build
+                ).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "psimetal_block_shapeless"));
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapelessRecipeBuilder.shapelessRecipe(ModBlocks.psigemBlock.asItem())
+                        .addIngredient(ModItems.psigem, 9)
+                        ::build
+                ).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "psigem_block_shapeless"));
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapelessRecipeBuilder.shapelessRecipe(ModBlocks.psimetalEbony.asItem())
+                        .addIngredient(ModItems.ebonyPsimetal, 9)
+                        ::build
+                ).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "ebony_block_shapeless"));
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapelessRecipeBuilder.shapelessRecipe(ModBlocks.psimetalIvory.asItem())
+                        .addIngredient(ModItems.ivoryPsimetal, 9)
+                        ::build
+                ).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "ivory_block_shapeless"));
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapedRecipeBuilder.shapedRecipe(ModBlocks.psimetalPlateBlack.asItem())
+                        .key('O', Tags.Items.ORES_COAL)
+                        .key('I', ModTags.INGOT_PSI)
+                        .patternLine(" C ")
+                        .patternLine("CIC")
+                        .patternLine(" C ")
+                        ::build).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "psimetal_plate_black"));
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapedRecipeBuilder.shapedRecipe(ModBlocks.psimetalPlateWhite.asItem())
+                        .key('O', Tags.Items.GEMS_QUARTZ)
+                        .key('I', ModTags.INGOT_PSI)
+                        .patternLine(" C ")
+                        .patternLine("CIC")
+                        .patternLine(" C ")
+                        ::build).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "psimetal_plate_white"));
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapelessRecipeBuilder.shapelessRecipe(ModBlocks.psimetalPlateBlackLight.asItem())
+                        .addIngredient(Tags.Items.DUSTS_GLOWSTONE)
+                        .addIngredient(ModBlocks.psimetalPlateBlack.asItem())
+                        ::build
+                ).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "psimetal_plate_black_light"));
+        ConditionalRecipe.builder()
+                .addCondition(
+                        MagicalPsiCondition.INSTANCE)
+                .addRecipe(ShapelessRecipeBuilder.shapelessRecipe(ModBlocks.psimetalPlateWhiteLight.asItem())
+                        .addIngredient(Tags.Items.DUSTS_GLOWSTONE)
+                        .addIngredient(ModBlocks.psimetalPlateWhite.asItem())
+                        ::build
+                ).build(consumer, new ResourceLocation(LibMisc.MOD_ID, "psimetal_plate_white_light"));
 
     }
 
@@ -393,11 +825,4 @@ public class RecipeGenerator extends ForgeRecipeProvider implements IConditionBu
         CustomRecipeBuilder.func_218656_a(serializer).build(consumer, serializer.getRegistryName().toString());
     }
 
-    private static void addOreDictRecipe(ItemStack output, Object... recipe) {
-        RecipeHandler.addOreDictRecipe(output, recipe);
-    }
-
-    private static void addShapelessOreDictRecipe(ItemStack output, Object... recipe) {
-        RecipeHandler.addShapelessOreDictRecipe(output, recipe);
-    }
 }
