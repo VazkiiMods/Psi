@@ -13,7 +13,6 @@ package vazkii.psi.api;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.registry.SimpleRegistry;
@@ -26,7 +25,10 @@ import vazkii.psi.api.material.PsimetalArmorMaterial;
 import vazkii.psi.api.material.PsimetalToolMaterial;
 import vazkii.psi.api.recipe.TrickRecipe;
 import vazkii.psi.api.spell.PieceGroup;
+import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellPiece;
+import vazkii.psi.api.spell.piece.PieceTrick;
+import vazkii.psi.common.lib.LibMisc;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -173,9 +175,16 @@ public final class PsiAPI {
 		return cadSlot < 9 || cadSlot == 40;
 	}
 
-	public static void registerTrickRecipe(String trick, Object input, ItemStack output, ItemStack minAssembly) {
-		//TODO: Someone check if this is correct
-		trickRecipes.add(new TrickRecipe(trick, Ingredient.fromItems((IItemProvider) input), output, minAssembly));
+	public static void registerTrickRecipe(ResourceLocation trick, Ingredient input, ItemStack output, ItemStack minAssembly) {
+		Class<? extends SpellPiece> pieceClass = spellPieceRegistry.getValue(trick).orElse(null);
+		SpellPiece piece = null;
+		if (pieceClass != null && PieceTrick.class.isAssignableFrom(pieceClass))
+			piece = SpellPiece.create(pieceClass, new Spell());
+		trickRecipes.add(new TrickRecipe((PieceTrick) piece, input, output, minAssembly));
+	}
+	
+	public static void registerTrickRecipe(String trick, Ingredient input, ItemStack output, ItemStack minAssembly) {
+		registerTrickRecipe(new ResourceLocation(LibMisc.MOD_ID, trick), input, output, minAssembly);
 	}
 
 }
