@@ -11,10 +11,8 @@
 package vazkii.psi.common.core.handler;
 
 import com.google.common.collect.ImmutableSet;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.Minecraft;
 import com.mojang.blaze3d.platform.GlStateManager;
-import net.minecraft.client.renderer.culling.Frustum;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -32,6 +30,8 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.LightType;
 import net.minecraft.world.dimension.Dimension;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -41,10 +41,8 @@ import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.common.Mod;
 import vazkii.arl.util.ClientTicker;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.*;
@@ -184,12 +182,12 @@ public class PlayerDataHandler {
 		@SubscribeEvent
 		public static void onPsiArmorEvent(PsiArmorEvent event) {
 			for(int i = 0; i < 4; i++) {
-				ItemStack armor = event.getEntityPlayer().inventory.armorInventory.get(i);
-				if(!armor.isEmpty() && armor.getItem() instanceof IPsiEventArmor) {
-					IPsiEventArmor handler = (IPsiEventArmor) armor.getItem();
-					handler.onEvent(armor, event);
-				}
-			}
+                ItemStack armor = ((PlayerEntity) event.getEntityLiving()).inventory.armorInventory.get(i);
+                if (!armor.isEmpty() && armor.getItem() instanceof IPsiEventArmor) {
+                    IPsiEventArmor handler = (IPsiEventArmor) armor.getItem();
+                    handler.onEvent(armor, event);
+                }
+            }
 		}
 
 		@SubscribeEvent
@@ -203,15 +201,7 @@ public class PlayerDataHandler {
 			Minecraft mc = Minecraft.getInstance();
 			Entity cameraEntity = mc.getRenderViewEntity();
 			if (cameraEntity != null) {
-				cameraEntity.getPosition();
-				Frustum frustum = new Frustum();
-
 				float partialTicks = event.getPartialTicks();
-				double viewX = cameraEntity.lastTickPosX + (cameraEntity.posX - cameraEntity.lastTickPosX) * partialTicks;
-				double viewY = cameraEntity.lastTickPosY + (cameraEntity.posY - cameraEntity.lastTickPosY) * partialTicks;
-				double viewZ = cameraEntity.lastTickPosZ + (cameraEntity.posZ - cameraEntity.lastTickPosZ) * partialTicks;
-				frustum.setPosition(viewX, viewY, viewZ);
-
 				for(PlayerEntity player : mc.world.getPlayers())
 					PlayerDataHandler.get(player).render(player, partialTicks);
 			}
@@ -392,12 +382,12 @@ public class PlayerDataHandler {
 					ISocketableCapability castingItem = ISocketableCapability.socketable(stackInHand);
 
 					for(int i = 0; i < 5; i++) {
-						double x = player.posX + (Math.random() - 0.5) * 2.1 * player.getWidth();
-						double y = player.posY - player.getYOffset();
-						double z = player.posZ + (Math.random() - 0.5) * 2.1 * player.getWidth();
-						float grav = -0.15F - (float) Math.random() * 0.03F;
-						Psi.proxy.sparkleFX(x, y, z, r, g, b, grav, 0.25F, 15);
-					}
+                        double x = player.getX() + (Math.random() - 0.5) * 2.1 * player.getWidth();
+                        double y = player.getY() - player.getYOffset();
+                        double z = player.getZ() + (Math.random() - 0.5) * 2.1 * player.getWidth();
+                        float grav = -0.15F - (float) Math.random() * 0.03F;
+                        Psi.proxy.sparkleFX(x, y, z, r, g, b, grav, 0.25F, 15);
+                    }
 
 					if(loopcastTime > 0 && loopcastTime % 5 == 0) {
 						ItemStack bullet = castingItem.getBulletInSocket(castingItem.getSelectedSlot());
@@ -416,8 +406,8 @@ public class PlayerDataHandler {
 									if(cost != -1)
 										deductPsi(cost, 3, true);
 
-									if(!player.getEntityWorld().isRemote && loopcastTime % 10 == 0)
-										player.getEntityWorld().playSound(null, player.posX, player.posY, player.posZ, PsiSoundHandler.loopcast, SoundCategory.PLAYERS, 0.5F, (float) (0.35 + Math.random() * 0.85));
+                                    if (!player.getEntityWorld().isRemote && loopcastTime % 10 == 0)
+                                        player.getEntityWorld().playSound(null, player.getX(), player.getY(), player.getZ(), PsiSoundHandler.loopcast, SoundCategory.PLAYERS, 0.5F, (float) (0.35 + Math.random() * 0.85));
 								}
 
 								if (!player.getEntityWorld().isRemote)
@@ -478,10 +468,8 @@ public class PlayerDataHandler {
 							LibObfuscation.callMethod(ServerPlayNetHandler.class, pmp.connection,
 									LibObfuscation.CAPTURE_CURRENT_POSITION, new Class[0], Void.TYPE);
 						} else {
-							player.posX = vec.x;
-							player.posY = vec.y;
-							player.posZ = vec.z;
-						}
+                            player.setPosition(vec.x, vec.y, vec.z);
+                        }
 
 						Entity riding = player.getRidingEntity();
 						while(riding != null) {
@@ -492,14 +480,14 @@ public class PlayerDataHandler {
 
 						if (player.world.isRemote) {
 							for (int i = 0; i < 5; i++) {
-								double spread = 0.6;
+                                double spread = 0.6;
 
-								double x = player.posX + (Math.random() - 0.5) * spread;
-								double y = player.posY + (Math.random() - 0.5) * spread;
-								double z = player.posZ + (Math.random() - 0.5) * spread;
+                                double x = player.getX() + (Math.random() - 0.5) * spread;
+                                double y = player.getY() + (Math.random() - 0.5) * spread;
+                                double z = player.getZ() + (Math.random() - 0.5) * spread;
 
-								Psi.proxy.sparkleFX(x, y, z, r, g, b, 0, 0, 0, 1.2F, 12);
-							}
+                                Psi.proxy.sparkleFX(x, y, z, r, g, b, 0, 0, 0, 1.2F, 12);
+                            }
 						}
 
 						player.setMotion(0, 0, 0);
@@ -509,28 +497,28 @@ public class PlayerDataHandler {
 
 				eidosReversionTime--;
 				if(eidosReversionTime == 0 || player.isSneaking()) {
-					eidosChangelog.clear();
-					isReverting = false;
-				}
-			} else {
-				if(eidosChangelog.size() >= 600)
-					eidosChangelog.remove(0);
-				eidosChangelog.push(Vector3.fromEntity(player));
-			}
+                    eidosChangelog.clear();
+                    isReverting = false;
+                }
+            } else {
+                if (eidosChangelog.size() >= 600)
+                    eidosChangelog.remove(0);
+                eidosChangelog.push(Vector3.fromEntity(player));
+            }
 
-			BlockPos pos = player.getPosition();
-			int skylight = (int) (player.getEntityWorld().getLightFor(LightType.SKY, pos) * player.getEntityWorld().dimension.getSunBrightness(1F));
-			int blocklight = player.getEntityWorld().getLightFor(LightType.BLOCK, pos);
-			int light = Math.max(skylight, blocklight);
-			
-			boolean lowLight = light < 7;
-			if(!this.lowLight && lowLight)
-				PsiArmorEvent.post(new PsiArmorEvent(player, PsiArmorEvent.LOW_LIGHT));
-			this.lowLight = lowLight;
+            BlockPos pos = player.getPosition();
+            int skylight = (int) (player.getEntityWorld().getLightLevel(LightType.SKY, pos) * player.getEntityWorld().dimension.getBrightness(1));
+            int blocklight = player.getEntityWorld().getLightLevel(LightType.BLOCK, pos);
+            int light = Math.max(skylight, blocklight);
 
-			boolean underwater = player.isInWater();
-			if(!this.underwater && underwater)
-				PsiArmorEvent.post(new PsiArmorEvent(player, PsiArmorEvent.UNDERWATER));
+            boolean lowLight = light < 7;
+            if (!this.lowLight && lowLight)
+                PsiArmorEvent.post(new PsiArmorEvent(player, PsiArmorEvent.LOW_LIGHT));
+            this.lowLight = lowLight;
+
+            boolean underwater = player.isInWater();
+            if (!this.underwater && underwater)
+                PsiArmorEvent.post(new PsiArmorEvent(player, PsiArmorEvent.UNDERWATER));
 			this.underwater = underwater;
 
 			boolean lowHp = player.getHealth() <= 6;
@@ -838,8 +826,8 @@ public class PlayerDataHandler {
 
 			ListNBT list = new ListNBT();
 			for(String s : spellGroupsUnlocked) {
-				if(s != null && !s.isEmpty())
-					list.add(new StringNBT(s));
+                if (s != null && !s.isEmpty())
+                    list.add(StringNBT.of(s));
 			}
 			cmp.put(TAG_SPELL_GROUPS_UNLOCKED, list);
 
@@ -896,19 +884,19 @@ public class PlayerDataHandler {
 
 		@OnlyIn(Dist.CLIENT)
 		public void render(PlayerEntity player, float partTicks) {
-			EntityRendererManager renderManager = Minecraft.getInstance().getRenderManager();
-			double x = player.lastTickPosX + (player.posX - player.lastTickPosX) * partTicks - renderManager.renderPosX;
-			double y = player.lastTickPosY + (player.posY - player.lastTickPosY) * partTicks - renderManager.renderPosY;
-			double z = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * partTicks - renderManager.renderPosZ;
+            EntityRendererManager renderManager = Minecraft.getInstance().getRenderManager();
+            double x = player.lastTickPosX + (player.getX() - player.lastTickPosX) * partTicks - renderManager.info.getProjectedView().x;
+            double y = player.lastTickPosY + (player.getY() - player.lastTickPosY) * partTicks - renderManager.info.getProjectedView().y;
+            double z = player.lastTickPosZ + (player.getZ() - player.lastTickPosZ) * partTicks - renderManager.info.getProjectedView().z;
 
-			float scale = 0.75F;
-			if(loopcasting) {
-				float mul = Math.min(5F, loopcastTime + partTicks) / 5F;
-				scale *= mul;
-			} else if(loopcastFadeTime > 0) {
-				float mul = Math.min(5F, loopcastFadeTime - partTicks) / 5F;
-				scale *= mul;
-			} else return;
+            float scale = 0.75F;
+            if (loopcasting) {
+                float mul = Math.min(5F, loopcastTime + partTicks) / 5F;
+                scale *= mul;
+            } else if (loopcastFadeTime > 0) {
+                float mul = Math.min(5F, loopcastFadeTime - partTicks) / 5F;
+                scale *= mul;
+            } else return;
 
 			int color = ICADColorizer.DEFAULT_SPELL_COLOR;
 			ItemStack cad = PsiAPI.getPlayerCAD(playerWR.get());

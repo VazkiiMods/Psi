@@ -10,16 +10,19 @@
  */
 package vazkii.psi.api.spell;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
-import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.ModList;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.internal.PsiRenderHelper;
 import vazkii.psi.api.internal.TooltipHelper;
@@ -99,14 +102,14 @@ public abstract class SpellPiece {
 	 * @see #getEvaluationType()
 	 */
 	public String getEvaluationTypeString() {
-		Class<?> evalType = getEvaluationType();
-		String evalStr = evalType == null ? "Null" : evalType.getSimpleName();
-		String s = TooltipHelper.local("psi.datatype." + evalStr);
-		if(getPieceType() == EnumPieceType.CONSTANT)
-			s += " " + TooltipHelper.local("psimisc.constant");
+        Class<?> evalType = getEvaluationType();
+        String evalStr = evalType == null ? "Null" : evalType.getSimpleName();
+        String s = TooltipHelper.local("psi.datatype." + evalStr).toString();
+        if (getPieceType() == EnumPieceType.CONSTANT)
+            s += " " + TooltipHelper.local("psimisc.constant").toString();
 
-		return s;
-	}
+        return s;
+    }
 
 	/**
 	 * Adds this piece's stats to the Spell's metadata.
@@ -166,8 +169,8 @@ public abstract class SpellPiece {
 	}
 
 	public String getSortingName() {
-		return TooltipHelper.local(getUnlocalizedName());
-	}
+        return TooltipHelper.local(getUnlocalizedName()).toString();
+    }
 
 	public String getUnlocalizedDesc() {
 		return "psi.spellpiece." + registryKey + ".desc";
@@ -180,18 +183,18 @@ public abstract class SpellPiece {
 	 */
 	@OnlyIn(Dist.CLIENT)
 	public void draw() {
-		drawBackground();
-		GlStateManager.translatef(0F, 0F, 0.1F);
-		drawAdditional();
-		if(isInGrid) {
-			GlStateManager.translatef(0F, 0F, 0.1F);
-			drawParams();
-			GlStateManager.translatef(0F, 0F, 0.1F);
-			drawComment();
-		}
+        drawBackground();
+        RenderSystem.translatef(0F, 0F, 0.1F);
+        drawAdditional();
+        if (isInGrid) {
+            RenderSystem.translatef(0F, 0F, 0.1F);
+            drawParams();
+            RenderSystem.translatef(0F, 0F, 0.1F);
+            drawComment();
+        }
 
-		GlStateManager.color3f(1F, 1F, 1F);
-	}
+        RenderSystem.color3f(1F, 1F, 1F);
+    }
 
 	/**
 	 * Draws this piece's background.
@@ -199,18 +202,18 @@ public abstract class SpellPiece {
 	 */
 	@OnlyIn(Dist.CLIENT)
 	public void drawBackground() {
-		ResourceLocation res = PsiAPI.simpleSpellTextures.get(registryKey);
-		Minecraft.getInstance().textureManager.bindTexture(res);
+        ResourceLocation res = PsiAPI.simpleSpellTextures.get(registryKey);
+        Minecraft.getInstance().textureManager.bindTexture(res);
 
-		GlStateManager.color3f(1F, 1F, 1F);
-		BufferBuilder wr = Tessellator.getInstance().getBuffer();
-		wr.begin(7, DefaultVertexFormats.POSITION_TEX);
-		wr.pos(0, 16, 0).tex(0, 1).endVertex();
-		wr.pos(16, 16, 0).tex(1, 1).endVertex();
-		wr.pos(16, 0, 0).tex(1, 0).endVertex();
-		wr.pos(0, 0, 0).tex(0, 0).endVertex();
-		Tessellator.getInstance().draw();
-	}
+        RenderSystem.color3f(1F, 1F, 1F);
+        BufferBuilder wr = Tessellator.getInstance().getBuffer();
+        wr.begin(7, DefaultVertexFormats.POSITION_TEX);
+        wr.vertex(0, 16, 0).texture(0, 1).endVertex();
+        wr.vertex(16, 16, 0).texture(1, 1).endVertex();
+        wr.vertex(16, 0, 0).texture(1, 0).endVertex();
+        wr.vertex(0, 0, 0).texture(0, 0).endVertex();
+        Tessellator.getInstance().draw();
+    }
 	
 	/**
 	 * Draws any additional stuff for this piece. Used in connectors
@@ -229,23 +232,23 @@ public abstract class SpellPiece {
 	@OnlyIn(Dist.CLIENT)
 	public void drawComment() {
 		if(comment != null && !comment.isEmpty()) {
-			Minecraft.getInstance().textureManager.bindTexture(PsiAPI.internalHandler.getProgrammerTexture());
-			
-			float wh = 6F;
-			float minU = 150 / 256F;
-			float minV = 184 / 256F;
-			float maxU = (150 + wh) / 256F;
-			float maxV = (184 + wh) / 256F;
-			GlStateManager.color4f(1F, 1F, 1F, 1F);
+            Minecraft.getInstance().textureManager.bindTexture(PsiAPI.internalHandler.getProgrammerTexture());
 
-			BufferBuilder wr = Tessellator.getInstance().getBuffer();
-			wr.begin(7, DefaultVertexFormats.POSITION_TEX);
-			wr.pos(-2, 4, 0).tex(minU, maxV).endVertex();
-			wr.pos(4, 4, 0).tex(maxU, maxV).endVertex();
-			wr.pos(4, -2, 0).tex(maxU, minV).endVertex();
-			wr.pos(-2, -2, 0).tex(minU, minV).endVertex();
-			Tessellator.getInstance().draw();
-		}
+            float wh = 6F;
+            float minU = 150 / 256F;
+            float minV = 184 / 256F;
+            float maxU = (150 + wh) / 256F;
+            float maxV = (184 + wh) / 256F;
+            RenderSystem.color4f(1F, 1F, 1F, 1F);
+
+            BufferBuilder wr = Tessellator.getInstance().getBuffer();
+            wr.begin(7, DefaultVertexFormats.POSITION_TEX);
+            wr.vertex(-2, 4, 0).texture(minU, maxV).endVertex();
+            wr.vertex(4, 4, 0).texture(maxU, maxV).endVertex();
+            wr.vertex(4, -2, 0).texture(maxU, minV).endVertex();
+            wr.vertex(-2, -2, 0).texture(minU, minV).endVertex();
+            Tessellator.getInstance().draw();
+        }
 	}
 	
 	/**
@@ -254,36 +257,36 @@ public abstract class SpellPiece {
 	 */
 	@OnlyIn(Dist.CLIENT)
 	public void drawParams() {
-		Minecraft.getInstance().textureManager.bindTexture(PsiAPI.internalHandler.getProgrammerTexture());
-		GlStateManager.enableAlphaTest();
-		for(SpellParam param : paramSides.keySet()) {
-			SpellParam.Side side = paramSides.get(param);
-			if(side.isEnabled()) {
-				int minX = 4;
-				int minY = 4;
-				minX += side.offx * 9;
-				minY += side.offy * 9;
+        Minecraft.getInstance().textureManager.bindTexture(PsiAPI.internalHandler.getProgrammerTexture());
+        RenderSystem.enableAlphaTest();
+        for (SpellParam param : paramSides.keySet()) {
+            SpellParam.Side side = paramSides.get(param);
+            if (side.isEnabled()) {
+                int minX = 4;
+                int minY = 4;
+                minX += side.offx * 9;
+                minY += side.offy * 9;
 
-				int maxX = minX + 8;
-				int maxY = minY + 8;
+                int maxX = minX + 8;
+                int maxY = minY + 8;
 
-				float wh = 8F;
-				float minU = side.u / 256F;
-				float minV = side.v / 256F;
-				float maxU = (side.u + wh) / 256F;
-				float maxV = (side.v + wh) / 256F;
-				GlStateManager.color4f(PsiRenderHelper.r(param.color) / 255F,
-						PsiRenderHelper.g(param.color) / 255F,
-						PsiRenderHelper.b(param.color) / 255F, 1F);
+                float wh = 8F;
+                float minU = side.u / 256F;
+                float minV = side.v / 256F;
+                float maxU = (side.u + wh) / 256F;
+                float maxV = (side.v + wh) / 256F;
+                RenderSystem.color4f(PsiRenderHelper.r(param.color) / 255F,
+                        PsiRenderHelper.g(param.color) / 255F,
+                        PsiRenderHelper.b(param.color) / 255F, 1F);
 
-				BufferBuilder wr = Tessellator.getInstance().getBuffer();
-				wr.begin(7, DefaultVertexFormats.POSITION_TEX);
-				wr.pos(minX, maxY, 0).tex(minU, maxV).endVertex();
-				wr.pos(maxX, maxY, 0).tex(maxU, maxV).endVertex();
-				wr.pos(maxX, minY, 0).tex(maxU, minV).endVertex();
-				wr.pos(minX, minY, 0).tex(minU, minV).endVertex();
-				Tessellator.getInstance().draw();
-			}
+                BufferBuilder wr = Tessellator.getInstance().getBuffer();
+                wr.begin(7, DefaultVertexFormats.POSITION_TEX);
+                wr.vertex(minX, maxY, 0).texture(minU, maxV).endVertex();
+                wr.vertex(maxX, maxY, 0).texture(maxU, maxV).endVertex();
+                wr.vertex(maxX, minY, 0).texture(maxU, minV).endVertex();
+                wr.vertex(minX, minY, 0).texture(minU, minV).endVertex();
+                Tessellator.getInstance().draw();
+            }
 		}
 	}
 
@@ -303,33 +306,33 @@ public abstract class SpellPiece {
 		PsiAPI.internalHandler.renderTooltip(tooltipX, tooltipY - 9 - commentText.size() * 10, commentText, 0x5000a000, 0xf0001e00);
 	}
 
-	@OnlyIn(Dist.CLIENT)
-	public void getTooltip(List<String> tooltip) {
-		TooltipHelper.addToTooltip(tooltip, getUnlocalizedName());
-		TooltipHelper.tooltipIfShift(tooltip, () -> addToTooltipAfterShift(tooltip));
+    @OnlyIn(Dist.CLIENT)
+    public void getTooltip(List<ITextComponent> tooltip) {
+        TooltipHelper.addToTooltip(tooltip, getUnlocalizedName());
+        TooltipHelper.tooltipIfShift(tooltip, () -> addToTooltipAfterShift(tooltip));
 
-		String addon = PsiAPI.pieceMods.get(getClass());
-		if(!addon.equals("psi")) {
-			ModContainer container = Loader.instance().getIndexedModList().get(addon);
-			if (container != null)
-				TooltipHelper.addToTooltip(tooltip, "psimisc.providerMod", container.getName());
-		}
-	}
+        String addon = PsiAPI.pieceMods.get(getClass());
+        if (!addon.equals("psi")) {
 
-	@OnlyIn(Dist.CLIENT)
-	public void addToTooltipAfterShift(List<String> tooltip) {
-		tooltip.add(TextFormatting.GRAY + TooltipHelper.local(getUnlocalizedDesc()).replaceAll("&", "\u00a7"));
+            if (ModList.get().getModContainerById(addon).isPresent())
+                TooltipHelper.addToTooltip(tooltip, "psimisc.providerMod", ModList.get().getModContainerById(addon).get().getNamespace());
+        }
+    }
 
-		tooltip.add("");
-		String eval = getEvaluationTypeString();
-		tooltip.add("<- " + TextFormatting.GOLD + eval);
+    @OnlyIn(Dist.CLIENT)
+    public void addToTooltipAfterShift(List<ITextComponent> tooltip) {
+        tooltip.add(new StringTextComponent(TextFormatting.GRAY + TooltipHelper.local(getUnlocalizedDesc()).toString().replaceAll("&", "\u00a7")));
 
-		for(SpellParam param : paramSides.keySet()) {
-			String pName = TooltipHelper.local(param.name);
-			String pEval = param.getRequiredTypeString();
-			tooltip.add((param.canDisable ? "[->] " : " ->  ") + TextFormatting.YELLOW + pName + " [" + pEval + "]");
-		}
-	}
+        tooltip.add(new StringTextComponent(""));
+        String eval = getEvaluationTypeString();
+        tooltip.add(new StringTextComponent("<- " + TextFormatting.GOLD + eval));
+
+        for (SpellParam param : paramSides.keySet()) {
+            String pName = TooltipHelper.local(param.name).toString();
+            String pEval = param.getRequiredTypeString();
+            tooltip.add(new StringTextComponent((param.canDisable ? "[->] " : " ->  ") + TextFormatting.YELLOW + pName + " [" + pEval + "]"));
+        }
+    }
 
 	/**
 	 * Checks whether this piece should intercept keystrokes in the programmer interface.
@@ -356,23 +359,23 @@ public abstract class SpellPiece {
 	}
 
 	public static SpellPiece createFromNBT(Spell spell, CompoundNBT cmp) {
-		String key;
-		if(cmp.hasKey(TAG_KEY_LEGACY))
-			key = cmp.getString(TAG_KEY_LEGACY);
-		else key = cmp.getString(TAG_KEY);
-		
-		if(key.startsWith("_"))
-			key = PSI_PREFIX + key.substring(1);
-		
-		Class<? extends SpellPiece> clazz = PsiAPI.spellPieceRegistry.getObject(key);
-		if(clazz != null) {
-			SpellPiece p = create(clazz, spell);
-			p.readFromNBT(cmp);
-			return p;
-		}
+        String key;
+        if (cmp.contains(TAG_KEY_LEGACY))
+            key = cmp.getString(TAG_KEY_LEGACY);
+        else key = cmp.getString(TAG_KEY);
 
-		return null;
-	}
+        if (key.startsWith("_"))
+            key = PSI_PREFIX + key.substring(1);
+
+        ;
+        if (PsiAPI.spellPieceRegistry.getValue(new ResourceLocation(key)).isPresent()) {
+            Class<? extends SpellPiece> clazz = PsiAPI.spellPieceRegistry.getValue(new ResourceLocation(key)).get();
+            SpellPiece p = create(clazz, spell);
+            p.readFromNBT(cmp);
+            return p;
+        }
+        return null;
+    }
 
 	public static SpellPiece create(Class<? extends SpellPiece> clazz, Spell spell) {
 		try {
@@ -389,42 +392,42 @@ public abstract class SpellPiece {
 	}
 
 	public void readFromNBT(CompoundNBT cmp) {
-		CompoundNBT paramCmp = cmp.getCompoundTag(TAG_PARAMS);
-		for(String s : params.keySet()) {
-			SpellParam param = params.get(s);
+        CompoundNBT paramCmp = cmp.getCompound(TAG_PARAMS);
+        for (String s : params.keySet()) {
+            SpellParam param = params.get(s);
 
-			String key = s;
-			if(paramCmp.hasKey(key))
-				paramSides.put(param, SpellParam.Side.fromInt(paramCmp.getInteger(key)));
-			else {
-				if(key.startsWith(SpellParam.PSI_PREFIX))
-					key = "_" + key.substring(SpellParam.PSI_PREFIX.length());
-				paramSides.put(param, SpellParam.Side.fromInt(paramCmp.getInteger(key)));
-			}
-		}
+            String key = s;
+            if (paramCmp.contains(key))
+                paramSides.put(param, SpellParam.Side.fromInt(paramCmp.getInt(key)));
+            else {
+                if (key.startsWith(SpellParam.PSI_PREFIX))
+                    key = "_" + key.substring(SpellParam.PSI_PREFIX.length());
+                paramSides.put(param, SpellParam.Side.fromInt(paramCmp.getInt(key)));
+            }
+        }
 		
 		comment = cmp.getString(TAG_COMMENT);
 	}
 
 	public void writeToNBT(CompoundNBT cmp) {
-		if(comment == null)
-			comment = "";
-		
-		cmp.setString(TAG_KEY, registryKey.replaceAll("^" + PSI_PREFIX, "_"));
-		
-		int paramCount = 0;
-		CompoundNBT paramCmp = new CompoundNBT();
-		for(String s : params.keySet()) {
-			SpellParam param = params.get(s);
-			SpellParam.Side side = paramSides.get(param);
-			paramCmp.setInteger(s.replaceAll("^" + SpellParam.PSI_PREFIX, "_"), side.asInt());
-			paramCount++;
-		}
-		
-		if(paramCount > 0)
-			cmp.setTag(TAG_PARAMS, paramCmp);
-		if(!comment.isEmpty())
-			cmp.setString(TAG_COMMENT, comment);
+        if (comment == null)
+            comment = "";
+
+        cmp.putString(TAG_KEY, registryKey.replaceAll("^" + PSI_PREFIX, "_"));
+
+        int paramCount = 0;
+        CompoundNBT paramCmp = new CompoundNBT();
+        for (String s : params.keySet()) {
+            SpellParam param = params.get(s);
+            SpellParam.Side side = paramSides.get(param);
+            paramCmp.putInt(s.replaceAll("^" + SpellParam.PSI_PREFIX, "_"), side.asInt());
+            paramCount++;
+        }
+
+        if (paramCount > 0)
+            cmp.put(TAG_PARAMS, paramCmp);
+        if (!comment.isEmpty())
+            cmp.putString(TAG_COMMENT, comment);
 	}
 
 	/**

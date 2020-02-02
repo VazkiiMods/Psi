@@ -27,20 +27,20 @@ public final class PersistencyHandler {
 	public static boolean ignore = false;
 
 	public static void init() {
-		if(doneInit)
-			return;
-		doneInit = true;
+        if (doneInit)
+            return;
+        doneInit = true;
 
-		if(!ConfigHandler.usePersistentData)
-			return;
+        if (!ConfigHandler.COMMON.usePersistantData.get())
+            return;
 
-		String userhome = System.getProperty("user.home");
-		String os = System.getProperty("os.name");
-		if(os.startsWith("Windows"))
-			userhome += "\\AppData\\Roaming\\.minecraft\\psi_persistent";
-		else if(os.startsWith("Mac"))
-			userhome += "/Library/Application Support/minecraft/psi_persistent";
-		else userhome += "/.minecraft/psi_persistent";
+        String userhome = System.getProperty("user.home");
+        String os = System.getProperty("os.name");
+        if (os.startsWith("Windows"))
+            userhome += "\\AppData\\Roaming\\.minecraft\\psi_persistent";
+        else if (os.startsWith("Mac"))
+            userhome += "/Library/Application Support/minecraft/psi_persistent";
+        else userhome += "/.minecraft/psi_persistent";
 
 		File dir = new File(userhome);
 		if(!dir.exists())
@@ -83,21 +83,21 @@ public final class PersistencyHandler {
 	}
 
 	public static void save(int level) {
-		if (!doneInit)
-			init();
+        if (!doneInit)
+            init();
 
-		Minecraft mc = Minecraft.getInstance();
-		if(!ConfigHandler.usePersistentData || level <= persistentLevel || mc.player == null || mc.player.capabilities.isCreativeMode)
-			return;
+        Minecraft mc = Minecraft.getInstance();
+        if (!ConfigHandler.COMMON.usePersistantData.get() || level <= persistentLevel || mc.player == null || mc.player.isCreative())
+            return;
 
-		try {
-			if (persistentFile != null && (persistentFile.exists() || persistentFile.createNewFile())) {
-				try (BufferedWriter writer = new BufferedWriter(new FileWriter(persistentFile))) {
-					writer.write("" + level);
-					writer.flush();
-				}
-			}
-		} catch (IOException e) {
+        try {
+            if (persistentFile != null && (persistentFile.exists() || persistentFile.createNewFile())) {
+                try (BufferedWriter writer = new BufferedWriter(new FileWriter(persistentFile))) {
+                    writer.write("" + level);
+                    writer.flush();
+                }
+            }
+        } catch (IOException e) {
 			e.printStackTrace();
 		}
 	}

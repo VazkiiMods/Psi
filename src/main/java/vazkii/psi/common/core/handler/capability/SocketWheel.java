@@ -71,14 +71,14 @@ public class SocketWheel implements ISocketableCapability, INBTSerializable<Comp
 
 	@Override
 	public CompoundNBT serializeNBT() {
-		CompoundNBT compound = handler.serializeNBT();
-		compound.removeTag("Size");
-		return compound;
-	}
+        CompoundNBT compound = handler.serializeNBT();
+        compound.remove("Size");
+        return compound;
+    }
 
 	@Override
 	public void deserializeNBT(CompoundNBT nbt) {
-		nbt.setInteger("Size", size);
-		handler.deserializeNBT(nbt);
-	}
+        nbt.putInt("Size", size);
+        handler.deserializeNBT(nbt);
+    }
 }

@@ -69,6 +69,8 @@ public class MessageRegister {
         List<PlayerEntity> players = world.getEntitiesWithinAABB(PlayerEntity.class, new AxisAlignedBB(origin.getX() - radius, origin.getY() - radius, origin.getZ() - radius, origin.getX() + radius, origin.getY() + 32, origin.getZ() + 32),
                 entity -> entity != null && entity.getDistanceSq(origin.getX(), origin.getY(), origin.getZ()) <= radius * radius);
         players.forEach(pl -> HANDLER.sendToPlayer(message, (ServerPlayerEntity) pl));
+
     }
+
 
 }

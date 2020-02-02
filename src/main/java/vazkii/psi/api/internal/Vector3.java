@@ -12,6 +12,7 @@ package vazkii.psi.api.internal;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -66,34 +67,42 @@ public class Vector3
 	}
 
 	public static Vector3 fromEntity(Entity e) {
-		return new Vector3(e.posX, e.posY, e.posZ);
-	}
+        return new Vector3(e.getX(), e.getY(), e.getZ());
+    }
 
 	public static Vector3 fromEntityCenter(Entity e) {
-		return new Vector3(e.posX, e.posY - e.getYOffset() + e.getHeight() / 2, e.posZ);
-	}
+        return new Vector3(e.getX(), e.getY() - e.getYOffset() + e.getHeight() / 2, e.getZ());
+    }
 
 	public static Vector3 fromTileEntity(TileEntity e) {
 		return fromBlockPos(e.getPos());
-	}
+    }
 
-	public static Vector3 fromTileEntityCenter(TileEntity e) {
-		return fromTileEntity(e).add(0.5, 0.5, 0.5);
-	}
+    public static Vector3 fromTileEntityCenter(TileEntity e) {
+        return fromTileEntity(e).add(0.5, 0.5, 0.5);
+    }
 
-	public static Vector3 fromBlockPos(BlockPos pos) {
-		return new Vector3(pos.getX(), pos.getY(), pos.getZ());
-	}
+    public static Vector3 fromBlockPos(BlockPos pos) {
+        return new Vector3(pos.getX(), pos.getY(), pos.getZ());
+    }
 
-	public Vector3 set(double d, double d1, double d2) {
-		x = d;
-		y = d1;
-		z = d2;
-		return this;
-	}
+    public static Vector3 fromVec3d(Vec3d vec3d) {
+        return new Vector3(vec3d.getX(), vec3d.getY(), vec3d.getZ());
+    }
 
-	public Vector3 set(Vector3 vec) {
-		x = vec.x;
+    public static Vector3 fromDirection(Direction direction) {
+        return new Vector3(direction.getXOffset(), direction.getYOffset(), direction.getZOffset());
+    }
+
+    public Vector3 set(double d, double d1, double d2) {
+        x = d;
+        y = d1;
+        z = d2;
+        return this;
+    }
+
+    public Vector3 set(Vector3 vec) {
+        x = vec.x;
 		y = vec.y;
 		z = vec.z;
 		return this;

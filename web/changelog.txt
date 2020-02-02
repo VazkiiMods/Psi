@@ -169,7 +169,7 @@ r1.1-47
 r1.1-46
 *Bunch of text fixes and language updates. (Various)
 *Fixed Break Block not working in survivalm and maybe even crashing your game sometimes.
-*Fixed Grenades not tracking their time correctly. (Ninetailed)
+*Fixed Grenades not RenderSystem their time correctly. (Ninetailed)
 r1.1-45
 *Fixed loopcast not working.
 r1.1-44

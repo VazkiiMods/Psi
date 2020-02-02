@@ -29,10 +29,9 @@ public class PieceSelectorBlockBroken extends PieceSelector {
 
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
-		if(context.positionBroken == null)
-			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
-
-		return Vector3.fromBlockPos(context.positionBroken.getBlockPos());
-	}
+        if (context.positionBroken == null)
+            throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
+        return Vector3.fromVec3d(context.positionBroken.getHitVec());
+    }
 
 }

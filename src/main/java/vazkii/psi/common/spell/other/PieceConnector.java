@@ -10,9 +10,9 @@
  */
 package vazkii.psi.common.spell.other;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
-import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
@@ -42,8 +42,8 @@ public class PieceConnector extends SpellPiece implements IRedirector {
 
 	@Override
 	public String getEvaluationTypeString() {
-		return TooltipHelper.local("psi.datatype.Any");
-	}
+        return TooltipHelper.local("psi.datatype.Any").toString();
+    }
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
@@ -68,38 +68,40 @@ public class PieceConnector extends SpellPiece implements IRedirector {
 	@OnlyIn(Dist.CLIENT)
 	public void drawSide(SpellParam.Side side) {
 		if(side.isEnabled()) {
-			Minecraft mc = Minecraft.getInstance();
-			mc.textureManager.bindTexture(lines);
+            Minecraft mc = Minecraft.getInstance();
+            mc.textureManager.bindTexture(lines);
 
-			double minU = 0;
-			double minV = 0;
-			switch(side) {
-			case LEFT:
-				minU = 0.5;
-				break;
-			case RIGHT: break;
-			case TOP:
-				minV = 0.5;
-				break;
-			case BOTTOM:
-				minU = 0.5;
-				minV = 0.5;
-				break;
-			default: break;
-			}
+            float minU = 0;
+            float minV = 0;
+            switch (side) {
+                case LEFT:
+                    minU = 0.5f;
+                    break;
+                case RIGHT:
+                    break;
+                case TOP:
+                    minV = 0.5f;
+                    break;
+                case BOTTOM:
+                    minU = 0.5f;
+                    minV = 0.5f;
+                    break;
+                default:
+                    break;
+            }
 
-			double maxU = minU + 0.5;
-			double maxV = minV + 0.5;
+            float maxU = minU + 0.5f;
+            float maxV = minV + 0.5f;
 
-			GlStateManager.color3f(1F, 1F, 1F);
-			BufferBuilder wr = Tessellator.getInstance().getBuffer();
-			wr.begin(7, DefaultVertexFormats.POSITION_TEX);
-			wr.pos(0, 16, 0).tex(minU, maxV).endVertex();
-			wr.pos(16, 16, 0).tex(maxU, maxV).endVertex();
-			wr.pos(16, 0, 0).tex(maxU, minV).endVertex();
-			wr.pos(0, 0, 0).tex(minU, minV).endVertex();
-			Tessellator.getInstance().draw();
-		}
+            RenderSystem.color3f(1F, 1F, 1F);
+            BufferBuilder wr = Tessellator.getInstance().getBuffer();
+            wr.begin(7, DefaultVertexFormats.POSITION_TEX);
+            wr.vertex(0, 16, 0).texture(minU, maxV).endVertex();
+            wr.vertex(16, 16, 0).texture(maxU, maxV).endVertex();
+            wr.vertex(16, 0, 0).texture(maxU, minV).endVertex();
+            wr.vertex(0, 0, 0).texture(minU, minV).endVertex();
+            Tessellator.getInstance().draw();
+        }
 	}
 
 	@Override

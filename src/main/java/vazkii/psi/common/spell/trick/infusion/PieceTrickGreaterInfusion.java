@@ -11,7 +11,11 @@
 package vazkii.psi.common.spell.trick.infusion;
 
 import net.minecraft.item.ItemStack;
-import vazkii.psi.api.spell.*;
+import net.minecraftforge.common.Tags;
+import vazkii.psi.api.spell.EnumSpellStat;
+import vazkii.psi.api.spell.Spell;
+import vazkii.psi.api.spell.SpellContext;
+import vazkii.psi.api.spell.SpellMetadata;
 import vazkii.psi.common.item.ItemCAD;
 import vazkii.psi.common.item.base.ModItems;
 
@@ -28,9 +32,9 @@ public class PieceTrickGreaterInfusion extends PieceTrickInfusion {
 
 	@Override
 	public Object execute(SpellContext context) {
-		super.execute(context);
-		ItemCAD.craft(context.caster, "gemDiamond", new ItemStack(ModItems.material, 1, 2));
-		return null;
-	}
+        super.execute(context);
+        ItemCAD.craft(context.caster, Tags.Items.GEMS_DIAMOND, new ItemStack(ModItems.psigem));
+        return null;
+    }
 
 }

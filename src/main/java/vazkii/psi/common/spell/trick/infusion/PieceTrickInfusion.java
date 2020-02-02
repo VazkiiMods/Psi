@@ -11,6 +11,7 @@
 package vazkii.psi.common.spell.trick.infusion;
 
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.Tags;
 import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.piece.PieceTrick;
 import vazkii.psi.common.item.ItemCAD;
@@ -34,9 +35,9 @@ public class PieceTrickInfusion extends PieceTrick {
 
 	@Override
 	public Object execute(SpellContext context) {
-		ItemCAD.craft(context.caster, "dustRedstone", new ItemStack(ModItems.material));
-		ItemCAD.craft(context.caster, "ingotGold", new ItemStack(ModItems.material, 1, 1));
-		return null;
-	}
+        ItemCAD.craft(context.caster, Tags.Items.DUSTS_REDSTONE, new ItemStack(ModItems.psidust));
+        ItemCAD.craft(context.caster, Tags.Items.INGOTS_GOLD, new ItemStack(ModItems.psimetal));
+        return null;
+    }
 
 }

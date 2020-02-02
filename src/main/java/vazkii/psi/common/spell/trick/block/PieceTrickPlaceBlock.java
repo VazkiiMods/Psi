@@ -15,19 +15,17 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.BlockItem;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUseContext;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import vazkii.psi.api.internal.Vector3;
-import vazkii.psi.api.spell.EnumSpellStat;
-import vazkii.psi.api.spell.Spell;
-import vazkii.psi.api.spell.SpellCompilationException;
-import vazkii.psi.api.spell.SpellContext;
-import vazkii.psi.api.spell.SpellMetadata;
-import vazkii.psi.api.spell.SpellParam;
-import vazkii.psi.api.spell.SpellRuntimeException;
+import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.param.ParamVector;
 import vazkii.psi.api.spell.piece.PieceTrick;
 import vazkii.psi.client.core.handler.HUDHandler;
@@ -84,17 +82,25 @@ public class PieceTrickPlaceBlock extends PieceTrick {
 			} else {
 				ItemStack stack = player.inventory.getStackInSlot(slot);
 				if(!stack.isEmpty() && stack.getItem() instanceof BlockItem) {
-					ItemStack rem = removeFromInventory(player, stack);
-					BlockItem iblock = (BlockItem) rem.getItem();
+                    ItemStack rem = removeFromInventory(player, stack);
+                    BlockItem iblock = (BlockItem) rem.getItem();
 
-					Block blockToPlace = Block.getBlockFromItem(rem.getItem());
-					BlockState newState = blockToPlace.getStateForPlacement(world, pos, Direction.UP, 0, 0, 0, rem.getItemDamage(), player, Hand.MAIN_HAND);
-					iblock.placeBlockAt(stack, player, world, pos, Direction.UP, 0, 0, 0, newState);
+                    ItemStack save = ItemStack.EMPTY;
+                    BlockRayTraceResult hit = new BlockRayTraceResult(Vec3d.ZERO, Direction.UP, pos, false);
+                    ItemUseContext ctx = new ItemUseContext(player, Hand.MAIN_HAND, hit);
 
-					if(player.abilities.isCreativeMode)
-						HUDHandler.setRemaining(rem, -1);
-					else HUDHandler.setRemaining(player, rem, null);
-				}
+                    save = player.getHeldItem(ctx.getHand());
+                    player.setHeldItem(ctx.getHand(), rem);
+                    ItemUseContext newCtx;
+                    newCtx = new ItemUseContext(ctx.getPlayer(), ctx.getHand(), hit);
+                    player.setHeldItem(newCtx.getHand(), save);
+
+                    iblock.tryPlace(new BlockItemUseContext(newCtx));
+
+                    if (player.abilities.isCreativeMode)
+                        HUDHandler.setRemaining(rem, -1);
+                    else HUDHandler.setRemaining(player, rem, null);
+                }
 			}
 
 			if(particles)

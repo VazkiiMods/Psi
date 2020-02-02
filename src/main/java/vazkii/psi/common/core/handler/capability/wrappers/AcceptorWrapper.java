@@ -34,18 +34,11 @@ public class AcceptorWrapper implements ISpellAcceptor, ICapabilityProvider {
 	}
 
 
+	@Nonnull
 	@Override
 	@SuppressWarnings("ConstantConditions")
-	public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable Direction facing) {
-		return capability == CAPABILITY;
-	}
-
-
-	@Nullable
-	@Override
-	@SuppressWarnings("ConstantConditions")
-	public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable Direction facing) {
-		return capability == CAPABILITY ? CAPABILITY.cast(this) : null;
+	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability, @Nullable Direction facing) {
+		return CAPABILITY.orEmpty(capability, LazyOptional.of(() -> this));
 	}
 
 	@Nonnull

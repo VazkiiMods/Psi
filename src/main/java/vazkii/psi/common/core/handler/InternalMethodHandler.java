@@ -18,9 +18,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.arl.util.RenderHelper;
 import vazkii.psi.api.internal.IInternalMethodHandler;
 import vazkii.psi.api.internal.IPlayerData;
+import vazkii.psi.api.internal.TooltipHelper;
 import vazkii.psi.api.spell.*;
 import vazkii.psi.client.gui.GuiProgrammer;
-import vazkii.psi.common.Psi;
 import vazkii.psi.common.item.ItemCAD;
 import vazkii.psi.common.spell.SpellCache;
 import vazkii.psi.common.spell.SpellCompiler;
@@ -68,8 +68,8 @@ public final class InternalMethodHandler implements IInternalMethodHandler {
 
 	@Override
 	public String localize(String key, Object... format) {
-		return Psi.proxy.localize(key, format);
-	}
+        return TooltipHelper.local(key, format).toString();
+    }
 
 	@Override
 	public ItemStack createDefaultCAD(List<ItemStack> components) {

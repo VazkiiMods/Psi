@@ -10,25 +10,25 @@
  */
 package vazkii.psi.common.spell;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.UUID;
-
 import vazkii.psi.api.spell.CompiledSpell;
 import vazkii.psi.api.spell.ISpellCache;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.common.core.handler.ConfigHandler;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.UUID;
+
 public final class SpellCache implements ISpellCache {
 
-	public static final SpellCache instance = new SpellCache();
+    public static final SpellCache instance = new SpellCache();
 
-	public static final Map<UUID, CompiledSpell> map = new LinkedHashMap<UUID, CompiledSpell>() {
+    public static final Map<UUID, CompiledSpell> map = new LinkedHashMap<UUID, CompiledSpell>() {
 
-		@Override
-		protected boolean removeEldestEntry(Map.Entry eldest) {
-			return size() > ConfigHandler.spellCacheSize;
-		}
+        @Override
+        protected boolean removeEldestEntry(Map.Entry eldest) {
+            return size() > ConfigHandler.COMMON.spellCacheSize.get();
+        }
 
 	};
 

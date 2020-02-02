@@ -158,21 +158,21 @@ public final class SpellContext {
 	 * @see #MAX_DISTANCE
 	 */
 	public boolean isInRadius(Entity e) {
-		if(e == null)
-			return false;
-		if(e == focalPoint || e == caster)
-			return true;
+        if (e == null)
+            return false;
+        if (e == focalPoint || e == caster)
+            return true;
 
-		return isInRadius(e.posX, e.posY, e.posZ);
-	}
+        return isInRadius(e.getX(), e.getY(), e.getZ());
+    }
 
 	/**
 	 * Used to check if an (x,y,z) position is within this context's radius.
 	 * @see #MAX_DISTANCE
 	 */
 	public boolean isInRadius(double x, double y, double z) {
-		return MathHelper.pointDistanceSpace(x, y, z, focalPoint.posX, focalPoint.posY, focalPoint.posZ) <= MAX_DISTANCE;
-	}
+        return MathHelper.pointDistanceSpace(x, y, z, focalPoint.getX(), focalPoint.getY(), focalPoint.getZ()) <= MAX_DISTANCE;
+    }
 	
 	public void verifyEntity(Entity e) throws SpellRuntimeException {
 		if(e == null)

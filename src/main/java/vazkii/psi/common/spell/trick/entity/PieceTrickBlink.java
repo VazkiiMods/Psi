@@ -13,14 +13,7 @@ package vazkii.psi.common.spell.trick.entity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.math.Vec3d;
-import vazkii.arl.network.NetworkHandler;
-import vazkii.psi.api.spell.EnumSpellStat;
-import vazkii.psi.api.spell.Spell;
-import vazkii.psi.api.spell.SpellCompilationException;
-import vazkii.psi.api.spell.SpellContext;
-import vazkii.psi.api.spell.SpellMetadata;
-import vazkii.psi.api.spell.SpellParam;
-import vazkii.psi.api.spell.SpellRuntimeException;
+import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.param.ParamEntity;
 import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.piece.PieceTrick;
@@ -64,19 +57,19 @@ public class PieceTrickBlink extends PieceTrick {
 	}
 
 	public static void blink(SpellContext context, Entity e, double dist) throws SpellRuntimeException {
-		context.verifyEntity(e);
-		if(!context.isInRadius(e))
-			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
+        context.verifyEntity(e);
+        if (!context.isInRadius(e))
+            throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 
-		Vec3d look = e.getLookVec();
+        Vec3d look = e.getLookVec();
 
-		double offX = look.x * dist;
-		double offY = Math.max(0, look.y * dist);
-		double offZ = look.z * dist;
+        double offX = look.x * dist;
+        double offY = Math.max(0, look.y * dist);
+        double offZ = look.z * dist;
 
-		e.setPosition(e.posX + offX, e.posY + offY, e.posZ + offZ);
-		if (e instanceof ServerPlayerEntity)
-			MessageRegister.HANDLER.sendToPlayer(new MessageBlink(offX, offY, offZ), (ServerPlayerEntity) e);
-	}
+        e.setPosition(e.getX() + offX, e.getY() + offY, e.getZ() + offZ);
+        if (e instanceof ServerPlayerEntity)
+            MessageRegister.HANDLER.sendToPlayer(new MessageBlink(offX, offY, offZ), (ServerPlayerEntity) e);
+    }
 
 }
