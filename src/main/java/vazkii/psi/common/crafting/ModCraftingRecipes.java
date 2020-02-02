@@ -12,6 +12,7 @@ package vazkii.psi.common.crafting;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipeSerializer;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.event.RegistryEvent;
@@ -49,18 +50,18 @@ public class ModCraftingRecipes {
 	}
 
 	public static void init() {
-		PsiAPI.registerTrickRecipe("", Tags.Items.DUSTS_REDSTONE, new ItemStack(ModItems.psidust), new ItemStack(ModItems.cadAssemblyIron));
+		PsiAPI.registerTrickRecipe("", Ingredient.fromTag(Tags.Items.DUSTS_REDSTONE), new ItemStack(ModItems.psidust), new ItemStack(ModItems.cadAssemblyIron));
 
-		PsiAPI.registerTrickRecipe(LibPieceNames.TRICK_INFUSION, Tags.Items.INGOTS_GOLD,
+		PsiAPI.registerTrickRecipe(LibPieceNames.TRICK_INFUSION, Ingredient.fromTag(Tags.Items.INGOTS_GOLD),
 				new ItemStack(ModItems.psimetal),
 				new ItemStack(ModItems.cadAssemblyIron));
-		PsiAPI.registerTrickRecipe(LibPieceNames.TRICK_GREATER_INFUSION, Tags.Items.GEMS_DIAMOND,
+		PsiAPI.registerTrickRecipe(LibPieceNames.TRICK_GREATER_INFUSION, Ingredient.fromTag(Tags.Items.GEMS_DIAMOND),
 				new ItemStack(ModItems.psimetal),
 				new ItemStack(ModItems.cadAssemblyPsimetal));
-		PsiAPI.registerTrickRecipe(LibPieceNames.TRICK_EBONY_IVORY, Tags.Items.ORES_COAL,
+		PsiAPI.registerTrickRecipe(LibPieceNames.TRICK_EBONY_IVORY, Ingredient.fromTag(Tags.Items.ORES_COAL),
 				new ItemStack(ModItems.ebonySubstance),
 				new ItemStack(ModItems.cadAssemblyPsimetal));
-		PsiAPI.registerTrickRecipe(LibPieceNames.TRICK_EBONY_IVORY, Tags.Items.GEMS_QUARTZ,
+		PsiAPI.registerTrickRecipe(LibPieceNames.TRICK_EBONY_IVORY, Ingredient.fromTag(Tags.Items.GEMS_QUARTZ),
 				new ItemStack(ModItems.ivoryPsimetal),
 				new ItemStack(ModItems.cadAssemblyPsimetal));
 

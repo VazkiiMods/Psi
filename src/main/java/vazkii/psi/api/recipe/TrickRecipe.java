@@ -12,21 +12,22 @@ package vazkii.psi.api.recipe;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
+import vazkii.psi.api.spell.piece.PieceTrick;
 
 public class TrickRecipe {
-	private final String piece;
+	private final PieceTrick piece;
 	private final Ingredient input;
 	private final ItemStack output;
 	private final ItemStack cad;
 
-	public TrickRecipe(String trick, Ingredient input, ItemStack output, ItemStack CAD) {
+	public TrickRecipe(PieceTrick trick, Ingredient input, ItemStack output, ItemStack CAD) {
 		this.piece = trick;
 		this.input = input;
 		this.output = output;
 		this.cad = CAD;
 	}
 
-	public String getPiece() {
+	public PieceTrick getPiece() {
 		return piece;
 	}
 
