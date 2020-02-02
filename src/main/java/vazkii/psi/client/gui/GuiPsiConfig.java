@@ -17,10 +17,10 @@ import net.minecraftforge.fml.client.config.GuiConfig;
 import vazkii.psi.common.core.handler.ConfigHandler;
 import vazkii.psi.common.lib.LibMisc;
 
-public class GuiPsiConfig extends GuiConfig {
+public class GuiPsiConfig extends Screen {
 
-	public GuiPsiConfig(Screen parentScreen) {
-		super(parentScreen, new ConfigElement(ConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)).getChildElements(), LibMisc.MOD_ID, false, false, GuiConfig.getAbridgedConfigPath(ConfigHandler.config.toString()));
-	}
+    public GuiPsiConfig(Screen parentScreen) {
+        super(parentScreen, new ConfigElement(ConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)).getChildElements(), LibMisc.MOD_ID, false, false, GuiConfig.getAbridgedConfigPath(ConfigHandler.config.toString()));
+    }
 
 }

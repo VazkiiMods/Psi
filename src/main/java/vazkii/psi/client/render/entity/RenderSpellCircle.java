@@ -10,9 +10,11 @@
  */
 package vazkii.psi.client.render.entity;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
-import com.mojang.blaze3d.platform.GlStateManager;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
@@ -23,8 +25,6 @@ import vazkii.psi.api.internal.PsiRenderHelper;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.entity.EntitySpellCircle;
 import vazkii.psi.common.lib.LibResources;
-
-import javax.annotation.Nonnull;
 
 public class RenderSpellCircle extends EntityRenderer<EntitySpellCircle> {
 
@@ -40,47 +40,47 @@ public class RenderSpellCircle extends EntityRenderer<EntitySpellCircle> {
 		super(renderManager);
 	}
 
-	@Override
-	public void doRender(@Nonnull EntitySpellCircle entity, double x, double y, double z, float entityYaw, float partialTicks) {
-		super.doRender(entity, x, y, z, entityYaw, partialTicks);
 
+	//TODO Willie take a look at this!
+	@Override
+	public void render(EntitySpellCircle entity, float entityYaw, float partialTicks, MatrixStack ms, IRenderTypeBuffer buffers, int light) {
+		ms.push();
 		int colorVal = ICADColorizer.DEFAULT_SPELL_COLOR;
 		ItemStack colorizer = entity.getDataManager().get(EntitySpellCircle.COLORIZER_DATA);
-		if(!colorizer.isEmpty() && colorizer.getItem() instanceof ICADColorizer)
+		if (!colorizer.isEmpty() && colorizer.getItem() instanceof ICADColorizer)
 			colorVal = Psi.proxy.getColorForColorizer(colorizer);
 		float alive = entity.getTimeAlive() + partialTicks;
 		float s1 = Math.min(1F, alive / EntitySpellCircle.CAST_DELAY);
-		if(alive > EntitySpellCircle.LIVE_TIME - EntitySpellCircle.CAST_DELAY)
+		if (alive > EntitySpellCircle.LIVE_TIME - EntitySpellCircle.CAST_DELAY)
 			s1 = 1F - Math.min(1F, Math.max(0, alive - (EntitySpellCircle.LIVE_TIME - EntitySpellCircle.CAST_DELAY)) / EntitySpellCircle.CAST_DELAY);
-
-		renderSpellCircle(alive, s1, x, y, z, colorVal);
+		renderSpellCircle(alive, s1, entity.getX(), entity.getY(), entity.getZ(), colorVal, ms);
+		ms.pop();
 	}
 
-
-	public static void renderSpellCircle(float alive, float scale, double x, double y, double z, int color) {
-		renderSpellCircle(alive, scale, 1, x, y, z, 0, 1, 0, color);
+	public static void renderSpellCircle(float alive, float scale, double x, double y, double z, int color, MatrixStack ms) {
+		renderSpellCircle(alive, scale, 1, x, y, z, 0, 1, 0, color, ms);
 	}
 
-	public static void renderSpellCircle(float alive, float scale, float horizontalScale, double x, double y, double z, float xDir, float yDir, float zDir, int color) {
+	public static void renderSpellCircle(float alive, float scale, float horizontalScale, double x, double y, double z, float xDir, float yDir, float zDir, int color, MatrixStack ms) {
 
-		GlStateManager.pushMatrix();
+		RenderSystem.pushMatrix();
 		double ratio = 0.0625 * horizontalScale;
-		GlStateManager.translatef(x, y, z);
+		ms.translate(x, y, z);
 
 		float mag = xDir * xDir + yDir * yDir + zDir * zDir;
 		zDir /= mag;
 
 		if (zDir == -1)
-			GlStateManager.rotate(180, 1, 0, 0);
+			RenderSystem.rotatef(180, 1, 0, 0);
 		else if (zDir != 1) {
-			GlStateManager.rotate((float) (Math.acos(zDir) * 180 / Math.PI),
+			RenderSystem.rotatef((float) (Math.acos(zDir) * 180 / Math.PI),
 					-yDir / mag, xDir / mag, 0);
 		}
-		GlStateManager.translatef(0, 0, 0.1);
-		GlStateManager.scalef(ratio * scale, ratio * scale, ratio);
+		ms.translate(0, 0, 0.1);
+		ms.scale((float) ratio * scale, (float) ratio * scale, (float) ratio);
 
-		GlStateManager.disableCull();
-		GlStateManager.disableLighting();
+		RenderSystem.disableCull();
+		RenderSystem.disableLighting();
 		float lastBrightnessX = OpenGlHelper.lastBrightnessX;
 		float lastBrightnessY = OpenGlHelper.lastBrightnessY;
 
@@ -111,27 +111,26 @@ public class RenderSpellCircle extends EntityRenderer<EntitySpellCircle> {
 				bValue = (int) Math.min(bValue / BRIGHTNESS_FACTOR, 0xFF);
 			}
 
-			GlStateManager.pushMatrix();
-			GlStateManager.rotatef(i == 0 ? -alive : alive, 0, 0, 1);
+			RenderSystem.pushMatrix();
+			RenderSystem.rotatef(i == 0 ? -alive : alive, 0, 0, 1);
 
-			GlStateManager.color3f(rValue / 255f, gValue / 255f, bValue / 255f);
+			RenderSystem.color3f(rValue / 255f, gValue / 255f, bValue / 255f);
 
 			Minecraft.getInstance().textureManager.bindTexture(layers[i]);
-			AbstractGui.drawModalRectWithCustomSizedTexture(-32, -32, 0, 0, 64, 64, 64, 64);
-			GlStateManager.popMatrix();
+			AbstractGui.blit(-32, -32, 0, 0, 64, 64, 64, 64);
+			RenderSystem.popMatrix();
 
-			GlStateManager.translatef(0, 0, -0.5);
+			ms.translate(0, 0, -0.5);
 		}
 
 		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lastBrightnessX, lastBrightnessY);
-		GlStateManager.enableCull();
-		GlStateManager.enableLighting();
-		GlStateManager.popMatrix();
+		RenderSystem.enableCull();
+		RenderSystem.enableLighting();
+		RenderSystem.popMatrix();
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(@Nonnull EntitySpellCircle entity) {
+	public ResourceLocation getEntityTexture(EntitySpellCircle entitySpellCircle) {
 		return null;
 	}
-
 }

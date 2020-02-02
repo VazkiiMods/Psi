@@ -23,20 +23,20 @@ public final class TextHelper {
 
 	@OnlyIn(Dist.CLIENT)
 	public static List<String> renderText(int x, int y, int width, String unlocalizedText, boolean centered, boolean doit, Object... format) {
-		FontRenderer font = Minecraft.getInstance().fontRenderer;
-		boolean unicode = font.getUnicodeFlag();
-		font.setUnicodeFlag(true);
-		String text = TooltipHelper.local(unlocalizedText, format).replaceAll("&", "\u00a7");
+        FontRenderer font = Minecraft.getInstance().fontRenderer;
+        boolean unicode = font.getBidiFlag();
+        font.setBidiFlag(true);
+        String text = TooltipHelper.local(unlocalizedText, format).toString().replaceAll("&", "\u00a7");
 
-		String[] textEntries = text.split("<br>");
-		List<List<String>> lines = new ArrayList<>();
+        String[] textEntries = text.split("<br>");
+        List<List<String>> lines = new ArrayList<>();
 
-		String controlCodes;
-		for(String s : textEntries) {
-			List<String> words = new ArrayList<>();
-			String lineStr = "";
-			String[] tokens = s.split(" ");
-			for(String token : tokens) {
+        String controlCodes;
+        for (String s : textEntries) {
+            List<String> words = new ArrayList<>();
+            String lineStr = "";
+            String[] tokens = s.split(" ");
+            for (String token : tokens) {
 				String prev = lineStr;
 				String spaced = token + " ";
 				lineStr += spaced;
@@ -75,19 +75,19 @@ public final class TextHelper {
 					else font.drawString(s, xi, y, 0xFFFFFF);
 				}
 				xi += swidth + spacing + extra;
-				lineStr.append(s).append(" ");
-			}
+                lineStr.append(s).append(" ");
+            }
 
-			if((lineStr.length() > 0) || lastLine.isEmpty()) {
-				y += 10;
-				textLines.add(lineStr.toString());
-			}
-			lastLine = lineStr.toString();
-		}
+            if ((lineStr.length() > 0) || lastLine.isEmpty()) {
+                y += 10;
+                textLines.add(lineStr.toString());
+            }
+            lastLine = lineStr.toString();
+        }
 
-		font.setUnicodeFlag(unicode);
-		return textLines;
-	}
+        font.setBidiFlag(unicode);
+        return textLines;
+    }
 
 	public static String getControlCodes(String s) {
 		String controls = s.replaceAll("(?<!\u00a7)(.)", "");

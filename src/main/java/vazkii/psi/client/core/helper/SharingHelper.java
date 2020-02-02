@@ -12,8 +12,8 @@ package vazkii.psi.client.core.helper;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.mojang.blaze3d.platform.TextureUtil;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.texture.TextureUtil;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -113,44 +113,44 @@ public final class SharingHelper {
 	}
 
 	public static String takeScreenshot() throws Exception {
-		Minecraft mc = Minecraft.getInstance();
+        Minecraft mc = Minecraft.getInstance();
 
-		int screenWidth = mc.mainWindow.getWidth();
-		int screenHeight = mc.mainWindow.getHeight();
+        int screenWidth = mc.getWindow().getWidth();
+        int screenHeight = mc.getWindow().getHeight();
 
-		int scale = (int) mc.mainWindow.getGuiScaleFactor();
+        int scale = (int) mc.getWindow().getGuiScaleFactor();
 
-		int width = 380 * scale;
-		int height = 200 * scale;
+        int width = 380 * scale;
+        int height = 200 * scale;
 
-		int left = screenWidth / 2 - width / 2;
-		int top = screenHeight / 2 - height / 2;
+        int left = screenWidth / 2 - width / 2;
+        int top = screenHeight / 2 - height / 2;
 
-		int i = width * height;
+        int i = width * height;
 
-		if (pixelBuffer == null || pixelBuffer.capacity() < i) {
+        if (pixelBuffer == null || pixelBuffer.capacity() < i) {
 			pixelBuffer = BufferUtils.createIntBuffer(i);
 			pixelValues = new int[i];
-		}
+        }
 
-		GL11.glPixelStorei(GL11.GL_PACK_ALIGNMENT, 1);
-		GL11.glPixelStorei(GL11.GL_UNPACK_ALIGNMENT, 1);
-		pixelBuffer.clear();
+        GL11.glPixelStorei(GL11.GL_PACK_ALIGNMENT, 1);
+        GL11.glPixelStorei(GL11.GL_UNPACK_ALIGNMENT, 1);
+        pixelBuffer.clear();
 
-		GL11.glReadPixels(left, top, width, height, GL12.GL_BGRA, GL12.GL_UNSIGNED_INT_8_8_8_8_REV, pixelBuffer);
+        GL11.glReadPixels(left, top, width, height, GL12.GL_BGRA, GL12.GL_UNSIGNED_INT_8_8_8_8_REV, pixelBuffer);
 
-		pixelBuffer.get(pixelValues);
-		//TODO unsure
-		TextureUtil.initTexture(pixelBuffer, width, height);
-		BufferedImage bufferedimage;
+        pixelBuffer.get(pixelValues);
+        //TODO unsure
+        TextureUtil.func_225685_a_(pixelBuffer, width, height);
+        BufferedImage bufferedimage;
 
-		bufferedimage = new BufferedImage(width, height, 1);
-		bufferedimage.setRGB(0, 0, width, height, pixelValues, 0, width);
+        bufferedimage = new BufferedImage(width, height, 1);
+        bufferedimage.setRGB(0, 0, width, height, pixelValues, 0, width);
 
-		ByteArrayOutputStream stream = new ByteArrayOutputStream();
-		ImageIO.write(bufferedimage, "png", stream);
-		byte[] bArray = stream.toByteArray();
-		return Base64.getEncoder().encodeToString(bArray);
-	}
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        ImageIO.write(bufferedimage, "png", stream);
+        byte[] bArray = stream.toByteArray();
+        return Base64.getEncoder().encodeToString(bArray);
+    }
 
 }

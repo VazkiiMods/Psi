@@ -29,7 +29,7 @@ public class SparkleParticleData implements IParticleData {
         return new SparkleParticleData(size, r, g, b, m, false, false);
     }
 
-    private SparkleParticleData(float size, float r, float g, float b, int m, boolean noClip, boolean fake) {
+    public SparkleParticleData(float size, float r, float g, float b, int m, boolean noClip, boolean fake) {
         this.size = size;
         this.r = r;
         this.g = g;

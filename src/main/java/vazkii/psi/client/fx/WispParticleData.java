@@ -33,7 +33,7 @@ public class WispParticleData implements IParticleData {
         return new WispParticleData(size, r, g, b, maxAgeMul, depthTest, false);
     }
 
-    private WispParticleData(float size, float r, float g, float b, float maxAgeMul, boolean depthTest, boolean noClip) {
+    public WispParticleData(float size, float r, float g, float b, float maxAgeMul, boolean depthTest, boolean noClip) {
         this.size = size;
         this.r = r;
         this.g = g;

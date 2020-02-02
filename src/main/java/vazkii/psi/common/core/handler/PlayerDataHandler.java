@@ -11,6 +11,7 @@
 package vazkii.psi.common.core.handler;
 
 import com.google.common.collect.ImmutableSet;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
@@ -895,16 +896,16 @@ public class PlayerDataHandler {
                 scale *= mul;
             } else return;
 
-			int color = ICADColorizer.DEFAULT_SPELL_COLOR;
-			ItemStack cad = PsiAPI.getPlayerCAD(playerWR.get());
-			if(!cad.isEmpty() && cad.getItem() instanceof ICAD) {
-				ICAD icad = (ICAD) cad.getItem();
-				color = icad.getSpellColor(cad);
-			}
+            int color = ICADColorizer.DEFAULT_SPELL_COLOR;
+            ItemStack cad = PsiAPI.getPlayerCAD(playerWR.get());
+            if (!cad.isEmpty() && cad.getItem() instanceof ICAD) {
+                ICAD icad = (ICAD) cad.getItem();
+                color = icad.getSpellColor(cad);
+            }
 
-			RenderSpellCircle.renderSpellCircle(ClientTicker.ticksInGame + partTicks, scale, x, y, z, color);
-			GlStateManager.disableLighting();
-		}
+            RenderSpellCircle.renderSpellCircle(ClientTicker.ticksInGame + partTicks, scale, x, y, z, color, new MatrixStack());
+            GlStateManager.disableLighting();
+        }
 
 		public static class Deduction {
 

@@ -10,9 +10,11 @@
  */
 package vazkii.psi.client.core.handler;
 
-import com.mojang.blaze3d.platform.GLX;
 import org.apache.logging.log4j.Level;
-import org.lwjgl.opengl.*;
+import org.lwjgl.opengl.ARBFragmentShader;
+import org.lwjgl.opengl.ARBShaderObjects;
+import org.lwjgl.opengl.ARBVertexShader;
+import org.lwjgl.opengl.GL11;
 import vazkii.arl.util.ClientTicker;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.core.handler.ConfigHandler;
@@ -71,8 +73,9 @@ public final class ShaderHandler {
 		useShader(0);
 	}
 
+	//TODO Need alternative to GLX.isNextGen();
 	public static boolean useShaders() {
-		return ConfigHandler.useShaders && GLX.isNextGen();
+		return ConfigHandler.CLIENT.useShaders.get();
 	}
 
 	private static int createProgram(String s, int sides) {

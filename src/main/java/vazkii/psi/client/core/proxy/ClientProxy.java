@@ -11,24 +11,26 @@
 package vazkii.psi.client.core.proxy;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.ParticleStatus;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.particles.IParticleData;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import vazkii.arl.util.ClientTicker;
 import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.cad.ICADColorizer;
 import vazkii.psi.client.core.handler.HUDHandler;
 import vazkii.psi.client.core.handler.KeybindHandler;
 import vazkii.psi.client.core.handler.ShaderHandler;
-import vazkii.psi.client.fx.FXSparkle;
-import vazkii.psi.client.fx.FXWisp;
+import vazkii.psi.client.fx.SparkleParticleData;
+import vazkii.psi.client.fx.WispParticleData;
 import vazkii.psi.client.render.entity.RenderSpellCircle;
 import vazkii.psi.client.render.tile.RenderTileProgrammer;
 import vazkii.psi.common.block.tile.TileProgrammer;
@@ -41,19 +43,24 @@ import vazkii.psi.common.entity.EntitySpellCircle;
 @OnlyIn(Dist.CLIENT)
 public class ClientProxy implements IProxy {
 
-    @Override
-    public void preInit(FMLPreInitializationEvent event) {
-        super.preInit(event);
 
+    @Override
+    public void registerHandlers() {
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetup);
+    }
+
+    private void clientSetup(FMLClientSetupEvent event) {
         ShaderHandler.init();
         KeybindHandler.init();
 
-//		if(ConfigHandler.versionCheckEnabled)
-//			new VersionChecker().init();
+        ClientRegistry.bindTileEntityRenderer(TileProgrammer.TYPE, RenderTileProgrammer::new);
 
-        ClientRegistry.bindTileEntitySpecialRenderer(TileProgrammer.class, new RenderTileProgrammer());
+        RenderingRegistry.registerEntityRenderingHandler(EntitySpellCircle.TYPE, RenderSpellCircle::new);
+    }
 
-        RenderingRegistry.registerEntityRenderingHandler(EntitySpellCircle.class, RenderSpellCircle::new);
+    @Override
+    public void addParticleForce(World world, IParticleData particleData, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+        world.addParticle(particleData, true, x, y, z, xSpeed, ySpeed, zSpeed);
     }
 
     @Override
@@ -100,14 +107,12 @@ public class ClientProxy implements IProxy {
 
 	@Override
 	public void sparkleFX(World world, double x, double y, double z, float r, float g, float b, float motionx, float motiony, float motionz, float size, int m) {
-		if(noParticles(world) || m == 0)
-			return;
+        if (noParticles(world) || m == 0)
+            return;
+        SparkleParticleData data = new SparkleParticleData(size, r, g, b, m, false, false);
+        addParticleForce(world, data, x, y, z, motionx, motiony, motionz);
 
-		FXSparkle sparkle = new FXSparkle(world, x, y, z, size, r, g, b, m);
-		sparkle.setSpeed(motionx, motiony, motionz);
-		if (sparkle.getMultiplier() > 0)
-			Minecraft.getInstance().effectRenderer.addEffect(sparkle);
-	}
+    }
 
 	@Override
 	public void sparkleFX(double x, double y, double z, float r, float g, float b, float motionx, float motiony, float motionz, float size, int m) {
@@ -131,13 +136,8 @@ public class ClientProxy implements IProxy {
 	public void wispFX(World world, double x, double y, double z, float r, float g, float b, float size, float motionx, float motiony, float motionz, float maxAgeMul) {
         if (noParticles(world) || maxAgeMul == 0)
             return;
-
-        FXWisp wisp = new FXWisp(world, x, y, z, size, r, g, b, distanceLimit, depthTest, maxAgeMul);
-        wisp.setSpeed(motionx, motiony, motionz);
-
-        if (wisp.getMoteHalfLife() > 0)
-            Minecraft.getInstance().effectRenderer.addEffect(wisp);
-        Minecraft.getInstance().worldRenderer.addParticle();
+        WispParticleData data = new WispParticleData(size, r, g, b, maxAgeMul, depthTest, false);
+        addParticleForce(world, data, x, y, z, motionx, motiony, motionz);
     }
 
 	@Override
@@ -152,7 +152,7 @@ public class ClientProxy implements IProxy {
         if (!world.isRemote)
             return true;
 
-        if (!ConfigHandler.useVanillaParticleLimiter)
+        if (!ConfigHandler.CLIENT.useVanillaParticleLimiter.get())
             return false;
 
         float chance = 1F;
@@ -164,8 +164,5 @@ public class ClientProxy implements IProxy {
         return !(chance == 1F) && !(Math.random() < chance);
     }
 
-	@Override
-	public String localize(String key, Object... arguments) {
-		return I18n.format(key, arguments);
-	}
+
 }
