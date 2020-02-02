@@ -22,7 +22,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.nbt.StringNBT;
-import net.minecraft.network.play.ServerPlayNetHandler;
 import net.minecraft.network.play.server.SPlayerPositionLookPacket.Flags;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
@@ -56,7 +55,6 @@ import vazkii.psi.client.render.entity.RenderSpellCircle;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.item.ItemCAD;
 import vazkii.psi.common.lib.LibMisc;
-import vazkii.psi.common.lib.LibObfuscation;
 import vazkii.psi.common.network.MessageRegister;
 import vazkii.psi.common.network.message.MessageDataSync;
 import vazkii.psi.common.network.message.MessageDeductPsi;
@@ -465,8 +463,7 @@ public class PlayerDataHandler {
 						if(player instanceof ServerPlayerEntity) {
 							ServerPlayerEntity pmp = (ServerPlayerEntity) player;
 							pmp.connection.setPlayerLocation(vec.x, vec.y, vec.z, 0, 0, ImmutableSet.of(Flags.X_ROT, Flags.Y_ROT));
-							LibObfuscation.callMethod(ServerPlayNetHandler.class, pmp.connection,
-									LibObfuscation.CAPTURE_CURRENT_POSITION, new Class[0], Void.TYPE);
+							pmp.connection.captureCurrentPosition();
 						} else {
                             player.setPosition(vec.x, vec.y, vec.z);
                         }

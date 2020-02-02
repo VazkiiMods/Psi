@@ -10,33 +10,30 @@
  */
 package vazkii.psi.client.core.handler;
 
-import com.mojang.blaze3d.platform.GLX;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.client.gui.AbstractGui;
-import net.minecraft.client.gui.IngameGui;
-import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 import org.lwjgl.opengl.ARBMultitexture;
 import org.lwjgl.opengl.ARBShaderObjects;
 import org.lwjgl.opengl.GL11;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.*;
-import vazkii.psi.api.internal.TooltipHelper;
 import vazkii.psi.api.internal.PsiRenderHelper;
+import vazkii.psi.api.internal.TooltipHelper;
 import vazkii.psi.client.gui.GuiLeveling;
 import vazkii.psi.common.core.handler.ConfigHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
@@ -45,7 +42,6 @@ import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData.Deduction;
 import vazkii.psi.common.core.handler.PsiSoundHandler;
 import vazkii.psi.common.item.base.IHUDItem;
 import vazkii.psi.common.lib.LibMisc;
-import vazkii.psi.common.lib.LibObfuscation;
 import vazkii.psi.common.lib.LibResources;
 
 import java.util.function.Consumer;
@@ -271,8 +267,7 @@ public final class HUDHandler {
 		if (stack.isEmpty() || name == null || name.trim().isEmpty())
 			return;
 
-		int ticks = ObfuscationReflectionHelper.getPrivateValue(IngameGui.class, mc.ingameGUI,
-				LibObfuscation.REMAINING_HIGHLIGHT_TICKS);
+		int ticks = mc.ingameGUI.remainingHighlightTicks;
 		ticks -= 10;
 
 		if (ticks > 0) {
