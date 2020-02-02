@@ -10,7 +10,8 @@
  */
 package vazkii.psi.client.core.handler;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SimpleSound;
@@ -113,29 +114,29 @@ public final class HUDHandler {
 		int totalPsi = data.getTotalPsi();
 		int currPsi = data.getAvailablePsi();
 
-		if (ConfigHandler.contextSensitiveBar && currPsi == totalPsi &&
+		if (ConfigHandler.CLIENT.contextSensitiveBar.get() && currPsi == totalPsi &&
 				!showsBar(data, mc.player.getHeldItemMainhand()) &&
-						!showsBar(data, mc.player.getHeldItemOffhand()))
+				!showsBar(data, mc.player.getHeldItemOffhand()))
 			return;
 
-		GlStateManager.pushMatrix();
+		RenderSystem.pushMatrix();
 		//TODO CHECK: Is this an alternative to .getScaleFactor()?
 		double scaleFactor = res.getGuiScaleFactor();
 
 
-		if (scaleFactor > ConfigHandler.maxPsiBarScale) {
+		if (scaleFactor > ConfigHandler.CLIENT.maxPsiBarScale.get()) {
 			int guiScale = mc.gameSettings.guiScale;
 
-			mc.gameSettings.guiScale = ConfigHandler.maxPsiBarScale;
+			mc.gameSettings.guiScale = ConfigHandler.CLIENT.maxPsiBarScale.get();
 			// TODO Check: I don't think this is needed
 			//res = new ScaledResolution(mc);
 			mc.gameSettings.guiScale = guiScale;
 
-			float s = (float) ConfigHandler.maxPsiBarScale / (float) scaleFactor;
-			GlStateManager.scalef(s, s, s);
+			float s = (float) ConfigHandler.CLIENT.maxPsiBarScale.get() / (float) scaleFactor;
+			RenderSystem.scalef(s, s, s);
 		}
 
-		boolean right = ConfigHandler.psiBarOnRight;
+		boolean right = ConfigHandler.CLIENT.psiBarOnRight.get();
 
 		int pad = 3;
 		int width = 32;
@@ -152,7 +153,7 @@ public final class HUDHandler {
 			registeredMask = true;
 		}
 
-		GlStateManager.enableBlend();
+		RenderSystem.enableBlend();
 		mc.textureManager.bindTexture(psiBar);
 		AbstractGui.blit(x, y, 0, 0, width, height, 64, 256);
 
@@ -174,16 +175,16 @@ public final class HUDHandler {
 		boolean shaders = ShaderHandler.useShaders();
 
 		if (shaders) {
-			GlStateManager.activeTexture(ARBMultitexture.GL_TEXTURE0_ARB + secondaryTextureUnit);
+			RenderSystem.activeTexture(ARBMultitexture.GL_TEXTURE0_ARB + secondaryTextureUnit);
 			texture = GL11.glGetInteger(GL11.GL_TEXTURE_BINDING_2D);
 		}
 
-		GlStateManager.enableBlend();
-		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		RenderSystem.enableBlend();
+		RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
 		for (Deduction d : data.deductions) {
 			float a = d.getPercentile(pticks);
-			GlStateManager.color4f(r, g, b, a);
+			RenderSystem.color4f(r, g, b, a);
 			height = (int) Math.ceil(origHeight * (double) d.deduct / totalPsi);
 			int effHeight = (int) (origHeight * (double) d.current / totalPsi);
 			v = origHeight - effHeight;
@@ -208,21 +209,21 @@ public final class HUDHandler {
 		} else
 			height = 0;
 
-		GlStateManager.color3f(r, g, b);
+		RenderSystem.color3f(r, g, b);
 		ShaderHandler.useShader(ShaderHandler.psiBar, generateCallback(1F, false, data.overflowed));
 		AbstractGui.blit(x, y, 32, v, width, height, 64, 256);
 		ShaderHandler.releaseShader();
 
 		if (shaders) {
-			GlStateManager.activeTexture(ARBMultitexture.GL_TEXTURE0_ARB + secondaryTextureUnit);
-			GlStateManager.bindTexture(texture);
-			GlStateManager.activeTexture(ARBMultitexture.GL_TEXTURE0_ARB);
+			RenderSystem.activeTexture(ARBMultitexture.GL_TEXTURE0_ARB + secondaryTextureUnit);
+			RenderSystem.bindTexture(texture);
+			RenderSystem.activeTexture(ARBMultitexture.GL_TEXTURE0_ARB);
 		}
 
-		GlStateManager.color3f(1F, 1F, 1F);
+		RenderSystem.color3f(1F, 1F, 1F);
 
-		GlStateManager.pushMatrix();
-		GlStateManager.translatef(0F, textY, 0F);
+		RenderSystem.pushMatrix();
+		RenderSystem.translatef(0F, textY, 0F);
 		width = 44;
 		height = 3;
 
@@ -242,21 +243,21 @@ public final class HUDHandler {
 		}
 
 		int color = cad.getSpellColor(cadStack);
-		GlStateManager.color4f(PsiRenderHelper.r(color) / 255F,
+		RenderSystem.color4f(PsiRenderHelper.r(color) / 255F,
 				PsiRenderHelper.g(color) / 255F,
 				PsiRenderHelper.b(color) / 255F, 1F);
 
 		AbstractGui.blit(x - offBar, -2, 0, 140, width, height, 64, 256);
 		mc.fontRenderer.drawStringWithShadow(s1, x - offStr1, -11, 0xFFFFFF);
-		GlStateManager.popMatrix();
+		RenderSystem.popMatrix();
 
 		if (storedPsi != -1) {
-			GlStateManager.pushMatrix();
-			GlStateManager.translatef(0F, Math.max(textY + 3, origY + 100), 0F);
+			RenderSystem.pushMatrix();
+			RenderSystem.translatef(0F, Math.max(textY + 3, origY + 100), 0F);
 			mc.fontRenderer.drawStringWithShadow(s2, x - offStr2, 0, 0xFFFFFF);
-			GlStateManager.popMatrix();
+			RenderSystem.popMatrix();
 		}
-		GlStateManager.popMatrix();
+		RenderSystem.popMatrix();
 	}
 
 	@OnlyIn(Dist.CLIENT)
@@ -282,18 +283,18 @@ public final class HUDHandler {
 			if (mc.player.abilities.isCreativeMode)
 				y += 14;
 
-			GlStateManager.enableBlend();
-			GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+			RenderSystem.enableBlend();
+			RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 			mc.fontRenderer.drawStringWithShadow(name, x, y, color);
 
 			int w = mc.fontRenderer.getStringWidth(name);
-			GlStateManager.pushMatrix();
-			GlStateManager.translatef(x + w, y - 6, 0);
-			GlStateManager.scalef(alpha / 255F, 1F, 1);
-			GlStateManager.color3f(1F, 1F, 1F);
+			RenderSystem.pushMatrix();
+			RenderSystem.translatef(x + w, y - 6, 0);
+			RenderSystem.scalef(alpha / 255F, 1F, 1);
+			RenderSystem.color3f(1F, 1F, 1F);
 			mc.getItemRenderer().renderItemIntoGUI(bullet, 0, 0);
-			GlStateManager.popMatrix();
-			GlStateManager.disableBlend();
+			RenderSystem.popMatrix();
+			RenderSystem.disableBlend();
 		}
 	}
 
@@ -312,15 +313,15 @@ public final class HUDHandler {
 		if (!showLevelUp)
 			return;
 
-		GlStateManager.enableBlend();
-		GlStateManager.disableAlphaTest();
-		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		RenderSystem.enableBlend();
+		RenderSystem.disableAlphaTest();
+		RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
 		int time = 100;
 		int fadeTime = time / 10;
 		int fadeoutTime = fadeTime * 2;
 
-		String levelUp = TooltipHelper.local("psimisc.levelup");
+		String levelUp = TooltipHelper.local("psimisc.levelup").toString();
 		int len = levelUp.length();
 		int effLen = Math.min(len, len * levelDisplayTime / fadeTime);
 		levelUp = levelUp.substring(0, effLen);
@@ -331,8 +332,8 @@ public final class HUDHandler {
 		float a = 1F - Math.max(0F, Math.min(1F, (float) (levelDisplayTime - time) / fadeoutTime));
 		int alphaOverlay = (int) (a * 0xFF) << 24;
 
-		GlStateManager.pushMatrix();
-		GlStateManager.scalef(2F, 2F, 2F);
+		RenderSystem.pushMatrix();
+		RenderSystem.scalef(2F, 2F, 2F);
 		mc.fontRenderer.drawStringWithShadow(levelUp, x, y, 0x0013C5FF + alphaOverlay);
 
 		String currLevel = "" + levelValue;
@@ -347,10 +348,10 @@ public final class HUDHandler {
 			int color1 = 0x00FFFFFF + ((int) (a1 * 0xFF) << 24);
 			mc.fontRenderer.drawStringWithShadow(TextFormatting.GOLD + currLevel, x, y, color1);
 		}
-		GlStateManager.popMatrix();
+		RenderSystem.popMatrix();
 
 		if (levelDisplayTime > fadeTime * 2) {
-			String s = TooltipHelper.local("psimisc.levelUpInfo1");
+			String s = TooltipHelper.local("psimisc.levelUpInfo1").toString();
 			swidth = mc.fontRenderer.getStringWidth(s);
 			len = s.length();
 			effLen = Math.min(len, len * (levelDisplayTime - fadeTime * 2) / fadeTime);
@@ -362,8 +363,8 @@ public final class HUDHandler {
 		}
 
 		if (levelDisplayTime > fadeTime * 3) {
-			String s = TooltipHelper.local("psimisc.levelUpInfo2", TextFormatting.GREEN + TooltipHelper.local(KeybindHandler.keybind.getTranslationKey())
-					+ TextFormatting.RESET);
+			String s = TooltipHelper.local("psimisc.levelUpInfo2", TextFormatting.GREEN + TooltipHelper.local(KeybindHandler.keybind.getTranslationKey()).toString()
+					+ TextFormatting.RESET).toString();
 			swidth = mc.fontRenderer.getStringWidth(s);
 			len = s.length();
 			effLen = Math.min(len, len * (levelDisplayTime - fadeTime * 3) / fadeTime);
@@ -374,7 +375,7 @@ public final class HUDHandler {
 			mc.fontRenderer.drawStringWithShadow(s, x, y, 0x00FFFFFF + alphaOverlay);
 		}
 
-		GlStateManager.enableAlphaTest();
+		RenderSystem.enableAlphaTest();
 		if (levelValue > 1 && levelDisplayTime >= time + fadeoutTime)
 			showLevelUp = false;
 	}
@@ -391,22 +392,23 @@ public final class HUDHandler {
 			int start = maxRemainingTicks - remainingLeaveTicks;
 			float alpha = remainingTime + partTicks > start ? 1F : (remainingTime + partTicks) / start;
 
-			GlStateManager.disableAlphaTest();
-			GlStateManager.disableBlend();
-			GlStateManager.disableRescaleNormal();
-			GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+			RenderSystem.disableAlphaTest();
+			RenderSystem.disableBlend();
+			RenderSystem.disableRescaleNormal();
+			RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
-			GlStateManager.color4f(1F, 1F, 1F, alpha);
-			RenderHelper.enableGUIStandardItemLighting();
+			RenderSystem.color4f(1F, 1F, 1F, alpha);
+			RenderSystem.enableLighting();
+			RenderSystem.enableColorMaterial();
 			int xp = x + (int) (16F * (1F - alpha));
-			GlStateManager.translatef(xp, y, 0F);
-			GlStateManager.scalef(alpha, 1F, 1F);
+			RenderSystem.translatef(xp, y, 0F);
+			RenderSystem.scalef(alpha, 1F, 1F);
 			mc.getItemRenderer().renderItemAndEffectIntoGUI(remainingDisplayStack, 0, 0);
-			GlStateManager.scalef(1F / alpha, 1F, 1F);
-			GlStateManager.translatef(-xp, -y, 0F);
+			RenderSystem.scalef(1F / alpha, 1F, 1F);
+			RenderSystem.translatef(-xp, -y, 0F);
 			RenderHelper.disableStandardItemLighting();
-			GlStateManager.color4f(1F, 1F, 1F, 1F);
-			GlStateManager.enableBlend();
+			RenderSystem.color4f(1F, 1F, 1F, 1F);
+			RenderSystem.enableBlend();
 
 			String text = remainingDisplayStack.getDisplayName().applyTextStyle(TextFormatting.GREEN).getFormattedText();
 			if (remainingCount >= 0) {
@@ -426,8 +428,8 @@ public final class HUDHandler {
 			int color = 0x00FFFFFF | (int) (alpha * 0xFF) << 24;
 			mc.fontRenderer.drawStringWithShadow(text, x + 20, y + 6, color);
 
-			GlStateManager.disableBlend();
-			GlStateManager.enableAlphaTest();
+			RenderSystem.disableBlend();
+			RenderSystem.enableAlphaTest();
 		}
 	}
 
@@ -469,13 +471,13 @@ public final class HUDHandler {
 			int imageUniform = ARBShaderObjects.glGetUniformLocationARB(shader, "image");
 			int maskUniform = ARBShaderObjects.glGetUniformLocationARB(shader, "mask");
 
-			GlStateManager.activeTexture(ARBMultitexture.GL_TEXTURE0_ARB);
+			RenderSystem.activeTexture(ARBMultitexture.GL_TEXTURE0_ARB);
 			mc.textureManager.bindTexture(psiBar);
 			ARBShaderObjects.glUniform1iARB(imageUniform, 0);
 
-			GlStateManager.activeTexture(ARBMultitexture.GL_TEXTURE0_ARB + secondaryTextureUnit);
+			RenderSystem.activeTexture(ARBMultitexture.GL_TEXTURE0_ARB + secondaryTextureUnit);
 
-			GlStateManager.enableTexture();
+			RenderSystem.enableTexture();
 
 			mc.textureManager.bindTexture(shatter ? psiBarShatter : psiBarMask);
 			ARBShaderObjects.glUniform1iARB(maskUniform, secondaryTextureUnit);
