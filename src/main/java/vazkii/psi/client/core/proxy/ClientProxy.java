@@ -11,14 +11,20 @@
 package vazkii.psi.client.core.proxy;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.model.IBakedModel;
+import net.minecraft.client.renderer.model.ModelResourceLocation;
 import net.minecraft.client.settings.ParticleStatus;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particles.IParticleData;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.ModelBakeEvent;
+import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -31,6 +37,7 @@ import vazkii.psi.client.core.handler.KeybindHandler;
 import vazkii.psi.client.core.handler.ShaderHandler;
 import vazkii.psi.client.fx.SparkleParticleData;
 import vazkii.psi.client.fx.WispParticleData;
+import vazkii.psi.client.model.ModelCAD;
 import vazkii.psi.client.render.entity.RenderSpellCircle;
 import vazkii.psi.client.render.tile.RenderTileProgrammer;
 import vazkii.psi.common.block.tile.TileProgrammer;
@@ -39,6 +46,8 @@ import vazkii.psi.common.core.handler.PersistencyHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.proxy.IProxy;
 import vazkii.psi.common.entity.EntitySpellCircle;
+import vazkii.psi.common.lib.LibItemNames;
+import vazkii.psi.common.lib.LibMisc;
 
 @OnlyIn(Dist.CLIENT)
 public class ClientProxy implements IProxy {
@@ -46,27 +55,47 @@ public class ClientProxy implements IProxy {
 
     @Override
     public void registerHandlers() {
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetup);
-    }
+		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetup);
+		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::modelBake);
+		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::addCADModels);
+	}
 
-    private void clientSetup(FMLClientSetupEvent event) {
-        ShaderHandler.init();
-        KeybindHandler.init();
+	private void clientSetup(FMLClientSetupEvent event) {
+		ShaderHandler.init();
+		KeybindHandler.init();
 
-        ClientRegistry.bindTileEntityRenderer(TileProgrammer.TYPE, RenderTileProgrammer::new);
+		ClientRegistry.bindTileEntityRenderer(TileProgrammer.TYPE, RenderTileProgrammer::new);
 
-        RenderingRegistry.registerEntityRenderingHandler(EntitySpellCircle.TYPE, RenderSpellCircle::new);
-    }
+		RenderingRegistry.registerEntityRenderingHandler(EntitySpellCircle.TYPE, RenderSpellCircle::new);
+	}
 
-    @Override
-    public void addParticleForce(World world, IParticleData particleData, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-        world.addParticle(particleData, true, x, y, z, xSpeed, ySpeed, zSpeed);
-    }
+	private void modelBake(ModelBakeEvent event) {
+		ModelResourceLocation key = new ModelResourceLocation("psi:cad", "inventory");
+		IBakedModel originalModel = event.getModelRegistry().get(key);
+		event.getModelRegistry().put(key, new ModelCAD(event.getModelLoader(), originalModel));
 
-    @Override
-    public boolean isTheClientPlayer(LivingEntity entity) {
-        return entity == Minecraft.getInstance().player;
-    }
+	}
+
+	private void addCADModels(ModelRegistryEvent event) {
+		ModelLoader.addSpecialModel(new ResourceLocation(LibMisc.MOD_ID, "item/" + LibItemNames.CAD_IRON));
+		ModelLoader.addSpecialModel(new ResourceLocation(LibMisc.MOD_ID, "item/" + LibItemNames.CAD_GOLD));
+		ModelLoader.addSpecialModel(new ResourceLocation(LibMisc.MOD_ID, "item/" + LibItemNames.CAD_PSIMETAL));
+		ModelLoader.addSpecialModel(new ResourceLocation(LibMisc.MOD_ID, "item/" + LibItemNames.CAD_EBONY_PSIMETAL));
+		ModelLoader.addSpecialModel(new ResourceLocation(LibMisc.MOD_ID, "item/" + LibItemNames.CAD_IVORY_PSIMETAL));
+		ModelLoader.addSpecialModel(new ResourceLocation(LibMisc.MOD_ID, "item/" + LibItemNames.CAD_CREATIVE));
+
+	}
+
+
+	@Override
+	public void addParticleForce(World world, IParticleData particleData, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+		world.addParticle(particleData, true, x, y, z, xSpeed, ySpeed, zSpeed);
+	}
+
+	@Override
+	public boolean isTheClientPlayer(LivingEntity entity) {
+		return entity == Minecraft.getInstance().player;
+	}
 
     @Override
     public PlayerEntity getClientPlayer() {
