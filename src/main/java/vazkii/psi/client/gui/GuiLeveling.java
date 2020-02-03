@@ -10,51 +10,72 @@
  */
 package vazkii.psi.client.gui;
 
+import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.widget.list.ExtendedList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
+import vazkii.arl.util.RenderHelper;
+import vazkii.psi.api.PsiAPI;
+import vazkii.psi.api.internal.TooltipHelper;
+import vazkii.psi.api.spell.PieceGroup;
+import vazkii.psi.api.spell.Spell;
+import vazkii.psi.api.spell.SpellPiece;
+import vazkii.psi.client.core.helper.TextHelper;
+import vazkii.psi.client.gui.button.GuiButtonLearn;
+import vazkii.psi.common.Psi;
+import vazkii.psi.common.core.handler.PersistencyHandler;
+import vazkii.psi.common.core.handler.PlayerDataHandler;
+import vazkii.psi.common.lib.LibMisc;
+import vazkii.psi.common.lib.LibResources;
+import vazkii.psi.common.network.MessageRegister;
+import vazkii.psi.common.network.message.MessageLearnGroup;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class GuiLeveling extends Screen {
-    protected GuiLeveling(ITextComponent p_i51108_1_) {
-        super(p_i51108_1_);
-    }
-	/*
 	public static final ResourceLocation texture = new ResourceLocation(LibResources.GUI_LEVELING);
 
-	public final List<String> tooltip = new ArrayList<>();
+	public final List<ITextComponent> tooltip = new ArrayList<>();
 	static float scrollDistanceGroup, scrollDistanceText;
 	static int selected;
 
-	GuiScrollingList listGroups;
-	GuiScrollingList listText;
+	ExtendedList listGroups;
+	ExtendedList listText;
 
 	int xSize, ySize, left, top;
 
 	Spell spellWrapper;
-	PlayerData data;
+	PlayerDataHandler.PlayerData data;
 	List<PieceGroup> groups;
 	final List<SpellPiece> drawPieces = new ArrayList<>();
 	List<String> desc;
 	final boolean ignoreIntroductionJump;
-	
+
 	public GuiLeveling() {
 		this(false);
 	}
-	
+
 	public GuiLeveling(boolean skip) {
+		super(new StringTextComponent(""));
 		ignoreIntroductionJump = skip;
 	}
 
 	@Override
-	public void initGui() {
+	public void init() {
 		spellWrapper = new Spell();
-		data = PlayerDataHandler.get(mc.player);
+		data = PlayerDataHandler.get(minecraft.player);
 		initGroupList();
 
 		xSize = 256;
 		ySize = 184;
 		left = (width - xSize) / 2;
 		top = (height - ySize) / 2;
-		listGroups = new GroupList(mc, 120, 168, top + 8, top + 176, left + 8, 26, width, height);
+		listGroups = new GroupListWidget(Minecraft.getInstance(), 120, 168, top + 8, top + 176, left + 8, 26);
 		select(selected);
 	}
 
@@ -63,15 +84,15 @@ public class GuiLeveling extends Screen {
 
 		String last = data.lastSpellGroup;
 		PieceGroup lastGroup = PsiAPI.groupsForName.get(last);
-		if(lastGroup != null)
+		if (lastGroup != null)
 			groups.add(lastGroup);
 
 		ArrayList<PieceGroup> available = new ArrayList<>();
 		ArrayList<PieceGroup> notAvailable = new ArrayList<>();
 		ArrayList<PieceGroup> taken = new ArrayList<>();
 
-		for(PieceGroup group : PsiAPI.groupsForName.values()) {
-			if(group == lastGroup)
+		for (PieceGroup group : PsiAPI.groupsForName.values()) {
+			if (group == lastGroup)
 				continue;
 
 			if(data.isPieceGroupUnlocked(group.name))
@@ -91,18 +112,18 @@ public class GuiLeveling extends Screen {
 	}
 
 	@Override
-	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+	public void render(int mouseX, int mouseY, float partialTicks) {
 		int level = data.getLevel();
 		int points = data.getLevelPoints();
-		if(!ignoreIntroductionJump && ((level == 0 && points == 0) || (level == 1 && points == 1 && PersistencyHandler.persistentLevel > 1))) {
-			mc.displayGuiScreen(new GuiIntroduction(level == 1));
+		if (!ignoreIntroductionJump && ((level == 0 && points == 0) || (level == 1 && points == 1 && PersistencyHandler.persistentLevel > 1))) {
+			minecraft.displayGuiScreen(new GuiIntroduction(level == 1));
 			return;
 		}
 
 		tooltip.clear();
-		drawDefaultBackground();
+		renderBackground();
 
-		GlStateManager.color3f(1F, 1F, 1F);
+		RenderSystem.color3f(1F, 1F, 1F);
 		minecraft.getTextureManager().bindTexture(texture);
 		blit(left, top, 0, 0, xSize, ySize);
 
@@ -110,7 +131,7 @@ public class GuiLeveling extends Screen {
 
 		PieceGroup group = groups.get(selected);
 
-		if(group != null) {
+		if (group != null) {
 			boolean taken = data.isPieceGroupUnlocked(group.name);
 			group.isAvailable(data);
 
@@ -120,83 +141,63 @@ public class GuiLeveling extends Screen {
 				int x = left + 134 + i % 6 * 18;
 				int y = top + 160 + i / 6 * 18 - (lines - 1) * 18;
 
-				if(i == 0)
+				if (i == 0)
 					blit(x - 1, y - 1, 0, ySize, 18, 18);
 
 				SpellPiece piece = drawPieces.get(i);
-				if(mouseX > x && mouseY > y && mouseX < x + 16 && mouseY < y + 16)
+				if (mouseX > x && mouseY > y && mouseX < x + 16 && mouseY < y + 16)
 					piece.getTooltip(tooltip);
 
-				GlStateManager.translatef(x, y, 0);
+				RenderSystem.translatef(x, y, 0);
 				piece.draw();
-				GlStateManager.translatef(-x, -y, 0);
+				RenderSystem.translatef(-x, -y, 0);
 			}
 
-			minecraft.fontRenderer.drawStringWithShadow(TooltipHelper.local(group.getUnlocalizedName()), left + 134, top + 12, 0xFFFFFF);
+			minecraft.fontRenderer.drawStringWithShadow(TooltipHelper.local(group.getUnlocalizedName()).getString(), left + 134, top + 12, 0xFFFFFF);
 
-			if(taken) {
-				if(listText != null) {
-					boolean unicode = fontRenderer.getUnicodeFlag();
-					fontRenderer.setUnicodeFlag(true);
-					listText.drawScreen(mouseX, mouseY, partialTicks);
-					fontRenderer.setUnicodeFlag(unicode);
+			if (taken) {
+				if (listText != null) {
+					boolean unicode = font.getBidiFlag();
+					font.setBidiFlag(true);
+					listText.render(mouseX, mouseY, partialTicks);
+					font.setBidiFlag(unicode);
 				}
 			} else {
 				int colorOff = 0x777777;
 				int colorOn = 0x77FF77;
 
-				minecraft.fontRenderer.drawStringWithShadow(TooltipHelper.local("psimisc.requirements"), left + 134, top + 32, 0xFFFFFF);
-				minecraft.fontRenderer.drawString(TooltipHelper.local("psimisc.levelDisplay", group.levelRequirement), left + 138, top + 42, data.getLevel() >= group.levelRequirement ? colorOn : colorOff);
+				minecraft.fontRenderer.drawStringWithShadow(TooltipHelper.local("psimisc.requirements").getString(), left + 134, top + 32, 0xFFFFFF);
+				minecraft.fontRenderer.drawString(TooltipHelper.local("psimisc.levelDisplay", group.levelRequirement).getString(), left + 138, top + 42, data.getLevel() >= group.levelRequirement ? colorOn : colorOff);
 				int i = 0;
-				for(String s : group.requirements) {
+				for (String s : group.requirements) {
 					PieceGroup reqGroup = PsiAPI.groupsForName.get(s);
-					minecraft.fontRenderer.drawString(TooltipHelper.local(reqGroup.getUnlocalizedName()), left + 138, top + 52 + i * 10, data.isPieceGroupUnlocked(s) ? colorOn : colorOff);
+					minecraft.fontRenderer.drawString(TooltipHelper.local(reqGroup.getUnlocalizedName()).getString(), left + 138, top + 52 + i * 10, data.isPieceGroupUnlocked(s) ? colorOn : colorOff);
 
 					i++;
 				}
 			}
 		}
 
-		if(LibMisc.BETA_TESTING) {
-			String betaTest = TooltipHelper.local("psimisc.wip");
-			minecraft.fontRenderer.drawStringWithShadow(betaTest, left + xSize / 2f - mc.fontRenderer.getStringWidth(betaTest) / 2f, top - 12, 0xFFFFFFFF);
+		if (LibMisc.BETA_TESTING) {
+			String betaTest = TooltipHelper.local("psimisc.wip").getString();
+			minecraft.fontRenderer.drawStringWithShadow(betaTest, left + xSize / 2f - font.getStringWidth(betaTest) / 2f, top - 12, 0xFFFFFFFF);
 		}
 
 		String key = "psimisc.levelInfo";
-		if(minecraft.player.capabilities.isCreativeMode)
+		if (minecraft.player.isCreative())
 			key = "psimisc.levelInfoCreative";
-		String s = TooltipHelper.local(key, data.getLevel(), data.getLevelPoints());
-		mc.fontRenderer.drawStringWithShadow(s, left + 4, top + ySize + 2, 0xFFFFFF);
+		String s = TooltipHelper.local(key, data.getLevel(), data.getLevelPoints()).getString();
+		font.drawStringWithShadow(s, left + 4, top + ySize + 2, 0xFFFFFF);
 
-		listGroups.drawScreen(mouseX, mouseY, partialTicks);
+		listGroups.render(mouseX, mouseY, partialTicks);
 
-		if(!tooltip.isEmpty())
-			RenderHelper.renderTooltip(mouseX, mouseY, tooltip);
-	}
-
-	@Override
-	protected void actionPerformed(Button button) throws IOException {
-		super.actionPerformed(button);
-
-		PieceGroup group = groups.get(selected);
-		if(group != null) {
-			NetworkHandler.INSTANCE.sendToServer(new MessageLearnGroup(group.name));
-			data.unlockPieceGroup(group.name);
-			Psi.proxy.savePersistency();
-			initGroupList();
-			select(0);
+		if (!tooltip.isEmpty()) {
+			List<String> vazkiiWhy = new ArrayList<>();
+			for (ITextComponent component : tooltip)
+				vazkiiWhy.add(component.getString());
+			RenderHelper.renderTooltip(mouseX, mouseY, vazkiiWhy);
 		}
-	}
-	
-	@Override
-	public void handleMouseInput() throws IOException {
-		int mouseX = Mouse.getEventX() * width / mc.displayWidth;
-		int mouseY = height - Mouse.getEventY() * height / mc.displayHeight - 1;
 
-		super.handleMouseInput();
-		if(listText != null)
-			listText.handleMouseInput(mouseX, mouseY);
-		listGroups.handleMouseInput(mouseX, mouseY);
 	}
 
 	public void select(int i) {
@@ -204,134 +205,120 @@ public class GuiLeveling extends Screen {
 		PieceGroup group = groups.get(selected);
 		if(group != null) {
 			addToDrawList(group.mainPiece);
-			for(Class<? extends SpellPiece> clazz : group.pieces)
-				if(clazz != group.mainPiece)
+			for (Class<? extends SpellPiece> clazz : group.pieces)
+				if (clazz != group.mainPiece)
 					addToDrawList(clazz);
 
 			boolean taken = data.isPieceGroupUnlocked(group.name);
 			boolean available = taken || group.isAvailable(data);
 
-			buttonList.clear();
-			if(!taken && available && data.getLevelPoints() > 0)
-				buttonList.add(new GuiButtonLearn(this, left + xSize, top + ySize - 30));
+			buttons.clear();
+			if (!taken && available && data.getLevelPoints() > 0)
+				buttons.add(new GuiButtonLearn(left + xSize, top + ySize - 30, this, button -> {
+					PieceGroup group1 = groups.get(selected);
+					if (group1 != null) {
+						MessageRegister.HANDLER.sendToServer(new MessageLearnGroup(group1.name));
+						data.unlockPieceGroup(group1.name);
+						Psi.proxy.savePersistency();
+						initGroupList();
+						select(0);
+					}
+				}));
 
 			int lines = (drawPieces.size() - 1) / 6 + 1;
 			if(taken) {
 				desc = TextHelper.renderText(left + 2, 0, 110, group.getUnlocalizedDesc(), false, false);
-				listText = new BigTextList(mc, 120, 168, top + 23, top + 174 - lines * 18, left + 130, 10, width, height);
+				listText = new BigTextListWidget(minecraft, 120, 168, top + 23, top + 174 - lines * 18, left + 130, 10);
 			} else listText = null;
 		}
 	}
 
 	public void addToDrawList(Class<? extends SpellPiece> clazz) {
-		if(clazz == null)
+		if (clazz == null)
 			return;
 
 		SpellPiece piece = SpellPiece.create(clazz, spellWrapper);
 		drawPieces.add(piece);
 	}
 
-	private class BigTextList extends GuiScrollingList {
+	class BigTextListWidget extends ExtendedList<BigTextListWidget.BigTextEntry> {
 
-		public BigTextList(Minecraft client, int width, int height, int top, int bottom, int left, int entryHeight, int screenWidth, int screenHeight) {
-			super(client, width, height, top, bottom, left, entryHeight, screenWidth, screenHeight);
-			ReflectionHelper.setPrivateValue(GuiScrollingList.class, this, scrollDistanceText, "scrollDistance");
+		public BigTextListWidget(Minecraft client, int width, int height, int top, int bottom, int left, int entryHeight) {
+			super(client, width, height, top, bottom, entryHeight);
+			setLeftPos(left);
+			setScrollAmount(scrollDistanceText);
 		}
 
-		@Override
-		protected int getSize() {
-			return desc.size();
+		class BigTextEntry extends ExtendedList.AbstractListEntry<BigTextEntry> {
+			@Override
+			public void render(int entryIdx, int top, int left, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean p_194999_5_, float partialTicks) {
+				font.drawString(desc.get(entryIdx), left + 4, top, 0xFFFFFF);
+			}
 		}
-
-		@Override
-		protected void elementClicked(int index, boolean doubleClick) {
-			// NO-OP
-		}
-
-		@Override
-		protected boolean isSelected(int index) {
-			return false;
-		}
-
-		@Override
-		protected void drawBackground() {
-			// NO-OP
-		}
-
-		@Override
-		protected void drawSlot(int slotIdx, int entryRight, int slotTop, int slotBuffer, Tessellator tess) {
-			mc.fontRenderer.drawString(desc.get(slotIdx), left + 4, slotTop, 0xFFFFFF);
-			scrollDistanceText = ReflectionHelper.getPrivateValue(GuiScrollingList.class, this, "scrollDistance");
-		}
-
-		@Override
-		protected void drawGradientRect(int left, int top, int right, int bottom, int color1, int color2) {
-			// NO-OP
-		}
-
 	}
 
-	private class GroupList extends GuiScrollingList {
-		
-		public GroupList(Minecraft client, int width, int height, int top, int bottom, int left, int entryHeight, int screenWidth, int screenHeight) {
-			super(client, width, height, top, bottom, left, entryHeight, screenWidth, screenHeight);
-			ReflectionHelper.setPrivateValue(GuiScrollingList.class, this, scrollDistanceGroup, "scrollDistance");
+
+	class GroupListWidget extends ExtendedList<GroupListWidget.ListEntry> {
+
+
+		public GroupListWidget(Minecraft client, int width, int height, int top, int bottom, int left, int entryHeight) {
+			super(client, width, height, top, bottom, entryHeight);
+			setScrollAmount(scrollDistanceGroup);
+			setLeftPos(left);
 		}
 
 		@Override
-		protected int getSize() {
-			return groups.size();
+		public boolean mouseClicked(double par1, double par2, int par3) {
+			for (int i = 0; i < children.size(); i++) {
+				if (children.get(i) == getEntryAtPosition(par1, par2)) {
+					selected = i;
+					scrollDistanceText = 0F;
+					select(i);
+				}
+			}
+			return super.mouseClicked(par1, par2, par3);
 		}
 
 		@Override
-		protected void elementClicked(int index, boolean doubleClick) {
-			selected = index;
-			scrollDistanceText = 0F;
-			select(index);
-		}
-
-		@Override
-		protected boolean isSelected(int index) {
+		protected boolean isSelectedItem(int p_isSelectedItem_1_) {
 			return false;
 		}
 
-		@Override
-		protected void drawBackground() {
-			// NO-OP
+		class ListEntry extends ExtendedList.AbstractListEntry<ListEntry> {
+
+			private final GuiLeveling parent;
+
+			public ListEntry(GuiLeveling gui) {
+				this.parent = gui;
+			}
+
+			@Override
+			public void render(int entryIdx, int top, int left, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean p_194999_5_, float partialTicks) {
+				PieceGroup group = parent.groups.get(entryIdx);
+
+				if (entryIdx % 2 == 0)
+					fill(left, top, left + width, top + entryHeight, 0x1A000000);
+				if (entryIdx == selected)
+					fill(left, top, left + width, top + entryHeight, 0x44005555);
+
+				boolean taken = data.isPieceGroupUnlocked(group.name);
+				boolean available = taken || group.isAvailable(data);
+				boolean current = group.name.equals(data.lastSpellGroup);
+				int color = 0x777777;
+
+				if (current)
+					color = 0xFFFF77;
+				else if (taken)
+					color = 0x77FF77;
+				else if (available)
+					color = 0xFFFFFF;
+
+				font.drawString(TooltipHelper.local(group.getUnlocalizedName()).getString(), left + 3, top + 4, color);
+				font.drawString(TooltipHelper.local("psimisc.levelDisplay", group.levelRequirement).getString(), left + 3, top + 14, color);
+			}
 		}
 
-		@Override
-		protected void drawSlot(int slotId, int slotRight, int slotTop, int slotBuffer, Tessellator tess) {
-			PieceGroup group = groups.get(slotId);
 
-			if(slotId % 2 == 0)
-				drawRect(left, slotTop, left + width, slotTop + slotHeight, 0x1A000000);
-			if(slotId == selectedIndex)
-				drawRect(left, slotTop, left + width, slotTop + slotHeight, 0x44005555);
-
-			boolean taken = data.isPieceGroupUnlocked(group.name);
-			boolean available = taken || group.isAvailable(data);
-			boolean current = group.name.equals(data.lastSpellGroup);
-			int color = 0x777777;
-			
-			if(current)
-				color = 0xFFFF77;
-			else if(taken)
-				color = 0x77FF77;
-			else if(available)
-				color = 0xFFFFFF;
-
-			mc.fontRenderer.drawString(TooltipHelper.local(group.getUnlocalizedName()), left + 3, slotTop + 4, color);
-			mc.fontRenderer.drawString(TooltipHelper.local("psimisc.levelDisplay", group.levelRequirement), left + 3, slotTop + 14, color);
-			scrollDistanceGroup = ReflectionHelper.getPrivateValue(GuiScrollingList.class, this, "scrollDistance");
-		}
-
-		@Override
-		protected void drawGradientRect(int left, int top, int right, int bottom, int color1, int color2) {
-			// NO-OP
-		}
-
-	}*/
-
+	}
 
 }

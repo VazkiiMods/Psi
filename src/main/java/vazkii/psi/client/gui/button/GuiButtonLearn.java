@@ -27,6 +27,11 @@ public class GuiButtonLearn extends Button {
         this.gui = gui;
     }
 
+    public GuiButtonLearn(int x, int y, GuiLeveling gui, IPressable pressable) {
+        super(x, y, 26, 22, "", pressable);
+        this.gui = gui;
+    }
+
     @Override
     public void renderButton(int par2, int par3, float pTicks) {
         if (active) {
