@@ -23,6 +23,7 @@ import org.lwjgl.opengl.GL11;
 import vazkii.arl.util.ClientTicker;
 import vazkii.arl.util.RenderHelper;
 import vazkii.psi.api.internal.TooltipHelper;
+import vazkii.psi.client.gui.GuiProgrammer;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.base.ModBlocks;
 import vazkii.psi.common.block.tile.TileProgrammer;
@@ -91,7 +92,7 @@ public class RenderTileProgrammer extends TileEntityRenderer<TileProgrammer> {
             te.spell.draw();
 
             Minecraft mc = Minecraft.getInstance();
-            //mc.textureManager.bindTexture(GuiProgrammer.texture);
+            mc.textureManager.bindTexture(GuiProgrammer.texture);
 
             RenderSystem.enableBlend();
             RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);

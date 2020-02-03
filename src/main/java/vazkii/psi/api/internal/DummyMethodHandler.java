@@ -13,6 +13,7 @@ package vazkii.psi.api.internal;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.psi.api.spell.*;
@@ -57,7 +58,7 @@ public final class DummyMethodHandler implements IInternalMethodHandler {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void renderTooltip(int x, int y, List<String> tooltipData, int color, int color2) {
+	public void renderTooltip(int x, int y, List<ITextComponent> tooltipData, int color, int color2) {
 		// NO-OP
 	}
 

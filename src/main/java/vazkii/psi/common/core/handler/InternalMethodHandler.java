@@ -13,6 +13,7 @@ package vazkii.psi.common.core.handler;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.arl.util.RenderHelper;
@@ -24,6 +25,7 @@ import vazkii.psi.common.item.ItemCAD;
 import vazkii.psi.common.spell.SpellCache;
 import vazkii.psi.common.spell.SpellCompiler;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public final class InternalMethodHandler implements IInternalMethodHandler {
@@ -62,8 +64,11 @@ public final class InternalMethodHandler implements IInternalMethodHandler {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void renderTooltip(int x, int y, List<String> tooltipData, int color, int color2) {
-		RenderHelper.renderTooltip(x, y, tooltipData, color, color2);
+	public void renderTooltip(int x, int y, List<ITextComponent> tooltipData, int color, int color2) {
+		List<String> badVazkii = new ArrayList<>();
+		for (ITextComponent component : tooltipData)
+			badVazkii.add(component.toString());
+		RenderHelper.renderTooltip(x, y, badVazkii, color, color2);
 	}
 
 	@Override
