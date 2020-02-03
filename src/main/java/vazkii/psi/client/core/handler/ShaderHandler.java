@@ -17,7 +17,6 @@ import org.lwjgl.opengl.ARBVertexShader;
 import org.lwjgl.opengl.GL11;
 import vazkii.arl.util.ClientTicker;
 import vazkii.psi.common.Psi;
-import vazkii.psi.common.core.handler.ConfigHandler;
 import vazkii.psi.common.lib.LibResources;
 
 import java.io.BufferedReader;
@@ -75,7 +74,7 @@ public final class ShaderHandler {
 
 	//TODO Need alternative to GLX.isNextGen();
 	public static boolean useShaders() {
-		return ConfigHandler.CLIENT.useShaders.get();
+		return false;
 	}
 
 	private static int createProgram(String s, int sides) {

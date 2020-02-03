@@ -11,20 +11,18 @@
 package vazkii.psi.api.cad;
 
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityInject;
+import vazkii.psi.api.PsiAPI;
 
 public interface ISocketableCapability {
-	@CapabilityInject(ISocketableCapability.class)
-	Capability<ISocketableCapability> CAPABILITY = null;
+
 
 	static boolean isSocketable(ItemStack stack) {
-		return stack.getCapability(CAPABILITY).isPresent();
+		return stack.getCapability(PsiAPI.SOCKETABLE_CAPABILITY).isPresent();
 	}
 
 	// todo 1.14 fix this
 	static ISocketableCapability socketable(ItemStack stack) {
-        return stack.getCapability(CAPABILITY).orElseThrow(NullPointerException::new);
+		return stack.getCapability(PsiAPI.SOCKETABLE_CAPABILITY).orElseThrow(NullPointerException::new);
 	}
 
 

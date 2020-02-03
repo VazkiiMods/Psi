@@ -10,57 +10,14 @@
  */
 package vazkii.psi.client.gui;
 
-import com.google.common.collect.ImmutableSet;
-import gnu.trove.map.TObjectIntMap;
-import gnu.trove.map.hash.TObjectIntHashMap;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.TextFieldWidget;
-import com.mojang.blaze3d.platform.GlStateManager;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.JsonToNBT;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.Style;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import org.apache.commons.lang3.tuple.Pair;
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
-import vazkii.arl.network.NetworkHandler;
-import vazkii.arl.util.RenderHelper;
-import vazkii.arl.util.TooltipHandler;
-import vazkii.psi.api.PsiAPI;
-import vazkii.psi.api.cad.EnumCADStat;
-import vazkii.psi.api.cad.ICAD;
-import vazkii.psi.api.spell.*;
-import vazkii.psi.api.spell.SpellParam.Side;
-import vazkii.psi.client.core.helper.SharingHelper;
-import vazkii.psi.client.gui.button.GuiButtonIO;
-import vazkii.psi.client.gui.button.GuiButtonPage;
-import vazkii.psi.client.gui.button.GuiButtonSideConfig;
-import vazkii.psi.client.gui.button.GuiButtonSpellPiece;
-import vazkii.psi.common.Psi;
-import vazkii.psi.common.block.tile.TileProgrammer;
-import vazkii.psi.common.core.handler.PlayerDataHandler;
-import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
-import vazkii.psi.common.item.ItemCAD;
-import vazkii.psi.common.lib.LibMisc;
-import vazkii.psi.common.lib.LibResources;
-import vazkii.psi.common.network.message.MessageSpellModified;
-import vazkii.psi.common.spell.SpellCompiler;
-import vazkii.psi.common.spell.constant.PieceConstantNumber;
-
-import java.io.IOException;
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import net.minecraft.util.text.ITextComponent;
 
 public class GuiProgrammer extends Screen {
-
+    protected GuiProgrammer(ITextComponent p_i51108_1_) {
+        super(p_i51108_1_);
+    }
+	/*
 	public static final ResourceLocation texture = new ResourceLocation(LibResources.GUI_PROGRAMMER);
 	private static final int PIECES_PER_PAGE = 25;
 
@@ -94,6 +51,9 @@ public class GuiProgrammer extends Screen {
 	public GuiProgrammer(TileProgrammer programmer) {
 		this(programmer, programmer.spell);
 	}
+
+
+
 
 	public GuiProgrammer(TileProgrammer tile, Spell spell) {
 		programmer = tile;
@@ -937,11 +897,12 @@ public class GuiProgrammer extends Screen {
 			panelButtons.add(new GuiButtonPage(this, panelX + panelWidth - 22, panelY + panelHeight - 15, true));
 
 		buttonList.addAll(panelButtons);
-	}
+	}*/
 
-	/**
-	 * If a piece has a ranking of <= 0, it's excluded from the search.
-	 */
+    /**
+     * If a piece has a ranking of <= 0, it's excluded from the search.
+     */
+	/*
 	private int ranking(String token, SpellPiece p) {
 		int rank = 0;
 		String name = I18n.format(p.getUnlocalizedName()).toLowerCase();
@@ -1132,5 +1093,5 @@ public class GuiProgrammer extends Screen {
 
 		configEnabled = false;
 	}
-
+	*/
 }

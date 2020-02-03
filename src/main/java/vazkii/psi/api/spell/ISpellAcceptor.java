@@ -12,8 +12,7 @@ package vazkii.psi.api.spell;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityInject;
+import vazkii.psi.api.PsiAPI;
 
 import javax.annotation.Nullable;
 
@@ -23,12 +22,11 @@ import javax.annotation.Nullable;
  * returns true from {@link #castableFromSocket()}).
  */
 public interface ISpellAcceptor {
-	@CapabilityInject(ISpellAcceptor.class)
-	Capability<ISpellAcceptor> CAPABILITY = null;
+
 
 	//TODO: Check this
 	static boolean isAcceptor(ItemStack stack) {
-		return stack.getCapability(CAPABILITY, null) instanceof ISpellAcceptor;
+		return stack.getCapability(PsiAPI.SPELL_ACCEPTOR_CAPABILITY, null) instanceof ISpellAcceptor;
 	}
 
 	static boolean isContainer(ItemStack stack) {
@@ -40,7 +38,7 @@ public interface ISpellAcceptor {
 	}
 
 	static ISpellAcceptor acceptor(ItemStack stack) {
-		return (ISpellAcceptor) stack.getCapability(CAPABILITY, null);
+		return (ISpellAcceptor) stack.getCapability(PsiAPI.SPELL_ACCEPTOR_CAPABILITY, null);
 	}
 
 	void setSpell(PlayerEntity player, Spell spell);

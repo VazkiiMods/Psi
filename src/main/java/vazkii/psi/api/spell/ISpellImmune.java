@@ -11,8 +11,7 @@
 package vazkii.psi.api.spell;
 
 import net.minecraft.entity.Entity;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityInject;
+import vazkii.psi.api.PsiAPI;
 
 /**
  * This interface defines an entity that's immune to spells. Any bosses (IBossDisplayData)
@@ -23,13 +22,12 @@ import net.minecraftforge.common.capabilities.CapabilityInject;
  */
 public interface ISpellImmune {
 
-	@CapabilityInject(ISpellImmune.class)
-	Capability<ISpellImmune> CAPABILITY = null;
+
 
 	boolean isImmune();
 	
 	static boolean isImmune(Entity e) {
-		return !e.isNonBoss() || e.getCapability(CAPABILITY).map(ISpellImmune::isImmune).orElse(false);
-	}
+        return !e.isNonBoss() || e.getCapability(PsiAPI.SPELL_IMMUNE_CAPABILITY).map(ISpellImmune::isImmune).orElse(false);
+    }
 	
 }

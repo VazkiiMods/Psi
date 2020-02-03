@@ -10,17 +10,17 @@
  */
 package vazkii.psi.common.entity;
 
-import java.util.List;
-
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.registries.ObjectHolder;
 import vazkii.psi.common.lib.LibEntityNames;
-import vazkii.psi.common.lib.LibMisc;
+import vazkii.psi.common.lib.LibResources;
+
+import java.util.List;
 
 public class EntitySpellMine extends EntitySpellGrenade {
-	@ObjectHolder(LibMisc.PREFIX_MOD + LibEntityNames.SPELL_MINE)
+	@ObjectHolder(LibResources.PREFIX_MOD + LibEntityNames.SPELL_MINE)
 	public static EntityType<EntitySpellMine> TYPE;
 
 	boolean triggered = false;
@@ -39,7 +39,7 @@ public class EntitySpellMine extends EntitySpellGrenade {
 
 		List<LivingEntity> entities = getEntityWorld().getEntitiesWithinAABB(LivingEntity.class, getBoundingBox().grow(1, 1, 1));
 		LivingEntity thrower = getThrower();
-		if(thrower != null)
+		if (thrower != null)
 			entities.remove(thrower);
 
 		if(!entities.isEmpty())

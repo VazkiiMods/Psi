@@ -51,7 +51,6 @@ import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
 import vazkii.psi.common.core.handler.PsiSoundHandler;
 import vazkii.psi.common.core.handler.capability.CADData;
-import vazkii.psi.common.crafting.recipe.AssemblyScavengeRecipe;
 import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.item.component.ItemCADSocket;
 import vazkii.psi.common.network.MessageRegister;
@@ -91,7 +90,7 @@ public class ItemCAD extends BasicItem implements ICAD, ISpellSettable, IItemCol
 	}
 
 	private ICADData getCADData(ItemStack stack) {
-		return stack.getCapability(ICADData.CAPABILITY).orElseGet(CADData::new);
+		return stack.getCapability(PsiAPI.CAD_DATA_CAPABILITY).orElseGet(CADData::new);
 	}
 
 	@Nullable
@@ -109,7 +108,7 @@ public class ItemCAD extends BasicItem implements ICAD, ISpellSettable, IItemCol
 		CompoundNBT compound = ItemNBTHelper.getNBT(stack);
 
 
-		stack.getCapability(ICADData.CAPABILITY).ifPresent(data -> {
+		stack.getCapability(PsiAPI.CAD_DATA_CAPABILITY).ifPresent(data -> {
 			if (compound.contains(TAG_TIME_LEGACY, Constants.NBT.TAG_ANY_NUMERIC)) {
 				data.setTime(compound.getInt(TAG_TIME_LEGACY));
 				data.markDirty(true);

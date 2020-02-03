@@ -89,8 +89,8 @@ public abstract class SpellParam {
 	public String getRequiredTypeString() {
 		Class<?> evalType = getRequiredType();
 		String evalStr = evalType.getSimpleName();
-		String s = TooltipHelper.local("psi.datatype." + evalStr);
-		if(requiresConstant())
+		String s = TooltipHelper.local("psi.datatype." + evalStr).toString();
+		if (requiresConstant())
 			s += " " + TooltipHelper.local("psimisc.constant");
 
 		return s;

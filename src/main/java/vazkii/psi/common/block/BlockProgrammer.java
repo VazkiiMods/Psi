@@ -34,13 +34,11 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import vazkii.psi.api.internal.VanillaPacketDispatcher;
 import vazkii.psi.api.spell.ISpellAcceptor;
-import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.tile.TileProgrammer;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
 import vazkii.psi.common.core.handler.PsiSoundHandler;
 import vazkii.psi.common.lib.LibBlockNames;
-import vazkii.psi.common.lib.LibGuiIDs;
 import vazkii.psi.common.lib.LibMisc;
 
 import javax.annotation.Nullable;
@@ -83,7 +81,7 @@ public class BlockProgrammer extends HorizontalBlock {
 		if (player instanceof ServerPlayerEntity)
 			VanillaPacketDispatcher.dispatchTEToPlayer(programmer, (ServerPlayerEntity) player);
 		//TODO Proxify
-		player.openGui(Psi.instance, LibGuiIDs.PROGRAMMER, worldIn, pos.getX(), pos.getY(), pos.getZ());
+		//player.openGui(Psi.instance, LibGuiIDs.PROGRAMMER, worldIn, pos.getX(), pos.getY(), pos.getZ());
 		return ActionResultType.SUCCESS;
 	}
 

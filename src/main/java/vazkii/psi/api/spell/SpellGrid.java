@@ -265,27 +265,27 @@ public final class SpellGrid {
 	public void readFromNBT(CompoundNBT cmp) {
 		gridData = new SpellPiece[GRID_SIZE][GRID_SIZE];
 
-		ListNBT list = cmp.getTagList(TAG_SPELL_LIST, 10);
-		int len = list.tagCount();
-		for(int i = 0; i < len; i++) {
-			CompoundNBT lcmp = list.getCompoundTagAt(i);
+		ListNBT list = cmp.getList(TAG_SPELL_LIST, 10);
+		int len = list.size();
+		for (int i = 0; i < len; i++) {
+			CompoundNBT lcmp = list.getCompound(i);
 			int posX, posY;
-			
-			if(lcmp.hasKey(TAG_SPELL_POS_X_LEGACY)) {
-				posX = lcmp.getInteger(TAG_SPELL_POS_X_LEGACY);
-				posY = lcmp.getInteger(TAG_SPELL_POS_Y_LEGACY);
+
+			if (lcmp.contains(TAG_SPELL_POS_X_LEGACY)) {
+				posX = lcmp.getInt(TAG_SPELL_POS_X_LEGACY);
+				posY = lcmp.getInt(TAG_SPELL_POS_Y_LEGACY);
 			} else {
-				posX = lcmp.getInteger(TAG_SPELL_POS_X);
-				posY = lcmp.getInteger(TAG_SPELL_POS_Y);
+				posX = lcmp.getInt(TAG_SPELL_POS_X);
+				posY = lcmp.getInt(TAG_SPELL_POS_Y);
 			}
-			
+
 			CompoundNBT data;
-			if(lcmp.hasKey(TAG_SPELL_DATA_LEGACY))
-				data = lcmp.getCompoundTag(TAG_SPELL_DATA_LEGACY);
-			else data = lcmp.getCompoundTag(TAG_SPELL_DATA);
-			
+			if (lcmp.contains(TAG_SPELL_DATA_LEGACY))
+				data = lcmp.getCompound(TAG_SPELL_DATA_LEGACY);
+			else data = lcmp.getCompound(TAG_SPELL_DATA);
+
 			SpellPiece piece = SpellPiece.createFromNBT(spell, data);
-			if(piece != null) {
+			if (piece != null) {
 				gridData[posX][posY] = piece;
 				piece.isInGrid = true;
 				piece.x = posX;
@@ -299,20 +299,20 @@ public final class SpellGrid {
 		for(int i = 0; i < GRID_SIZE; i++)
 			for(int j = 0; j < GRID_SIZE; j++) {
 				SpellPiece piece = gridData[i][j];
-				if(piece != null) {
+				if (piece != null) {
 					CompoundNBT lcmp = new CompoundNBT();
-					lcmp.setInteger(TAG_SPELL_POS_X, i);
-					lcmp.setInteger(TAG_SPELL_POS_Y, j);
+					lcmp.putInt(TAG_SPELL_POS_X, i);
+					lcmp.putInt(TAG_SPELL_POS_Y, j);
 
 					CompoundNBT data = new CompoundNBT();
 					piece.writeToNBT(data);
-					lcmp.setTag(TAG_SPELL_DATA, data);
+					lcmp.put(TAG_SPELL_DATA, data);
 
-					list.appendTag(lcmp);
+					list.add(lcmp);
 				}
 			}
 
-		cmp.setTag(TAG_SPELL_LIST, list);
+		cmp.put(TAG_SPELL_LIST, list);
 	}
 
 }

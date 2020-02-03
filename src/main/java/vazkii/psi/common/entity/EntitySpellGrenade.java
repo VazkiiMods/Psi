@@ -19,12 +19,12 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.registries.ObjectHolder;
 import vazkii.psi.common.lib.LibEntityNames;
-import vazkii.psi.common.lib.LibMisc;
+import vazkii.psi.common.lib.LibResources;
 
 import javax.annotation.Nonnull;
 
 public class EntitySpellGrenade extends EntitySpellProjectile {
-	@ObjectHolder(LibMisc.PREFIX_MOD + LibEntityNames.SPELL_GRENADE)
+	@ObjectHolder(LibResources.PREFIX_MOD + LibEntityNames.SPELL_GRENADE)
 	public static EntityType<EntitySpellGrenade> TYPE;
 
 	boolean sound = false;

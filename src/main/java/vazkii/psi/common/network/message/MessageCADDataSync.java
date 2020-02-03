@@ -17,8 +17,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.NetworkEvent;
 import vazkii.arl.network.IMessage;
 import vazkii.psi.api.PsiAPI;
-import vazkii.psi.common.Psi;
 import vazkii.psi.api.cad.ICADData;
+import vazkii.psi.common.Psi;
 
 public class MessageCADDataSync implements IMessage {
 
@@ -36,7 +36,7 @@ public class MessageCADDataSync implements IMessage {
 		context.enqueueWork(() -> {
 			ItemStack cad = PsiAPI.getPlayerCAD(Psi.proxy.getClientPlayer());
 			if (!cad.isEmpty()) {
-				cad.getCapability(ICADData.CAPABILITY).ifPresent(d -> d.deserializeNBT(cmp));
+				cad.getCapability(PsiAPI.CAD_DATA_CAPABILITY).ifPresent(d -> d.deserializeNBT(cmp));
 			}
 		});
 

@@ -10,9 +10,6 @@
  */
 package vazkii.psi.api.cad;
 
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityInject;
 import vazkii.psi.api.internal.IPlayerData;
 
 /**
@@ -20,8 +17,6 @@ import vazkii.psi.api.internal.IPlayerData;
  */
 public interface IPsiBarDisplay {
 
-	@CapabilityInject(IPsiBarDisplay.class)
-	Capability<IPsiBarDisplay> CAPABILITY = null;
 
 	/**
 	 * Whether the PSI bar should be shown while holding this stack.

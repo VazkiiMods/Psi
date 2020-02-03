@@ -24,7 +24,7 @@ public class MessageSpellModified extends AbstractTEMessage<TileProgrammer> {
 	public MessageSpellModified() { }
 
 	public MessageSpellModified(BlockPos pos, Spell spell) {
-		super(pos);
+		super(pos, TileProgrammer.TYPE);
 		this.spell = spell;
 	}
 

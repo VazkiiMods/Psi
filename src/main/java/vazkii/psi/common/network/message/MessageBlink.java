@@ -38,7 +38,7 @@ public class MessageBlink implements IMessage {
 		context.enqueueWork(() -> {
 			Entity entity = Minecraft.getInstance().player;
 			if (entity != null)
-				entity.setPosition(entity.posX + offX, entity.posY + offY, entity.posZ + offZ);
+                entity.setPosition(entity.getX() + offX, entity.getY() + offY, entity.getZ() + offZ);
 		});
 		return true;
 	}

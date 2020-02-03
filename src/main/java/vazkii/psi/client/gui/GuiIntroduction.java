@@ -10,22 +10,14 @@
  */
 package vazkii.psi.client.gui;
 
-import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.gui.screen.Screen;
-import com.mojang.blaze3d.platform.GlStateManager;
-import net.minecraft.util.ResourceLocation;
-import vazkii.arl.network.NetworkHandler;
-import vazkii.psi.api.internal.TooltipHelper;
-import vazkii.psi.client.core.helper.TextHelper;
-import vazkii.psi.client.gui.button.GuiButtonBoolean;
-import vazkii.psi.common.core.handler.PersistencyHandler;
-import vazkii.psi.common.core.handler.PlayerDataHandler;
-import vazkii.psi.common.lib.LibMisc;
-import vazkii.psi.common.lib.LibResources;
-import vazkii.psi.common.network.message.MessageSkipToLevel;
+import net.minecraft.util.text.ITextComponent;
 
 public class GuiIntroduction extends Screen {
-
+    protected GuiIntroduction(ITextComponent p_i51108_1_) {
+        super(p_i51108_1_);
+    }
+	/*
 	public static final ResourceLocation texture = new ResourceLocation(LibResources.GUI_INTRODUCTION);
 
 	int xSize, ySize, left, top;
@@ -95,6 +87,6 @@ public class GuiIntroduction extends Screen {
 				buttonList.clear();
 			}
 		}
-	}
+	}*/
 
 }

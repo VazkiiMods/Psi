@@ -15,8 +15,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityInject;
+import vazkii.psi.api.PsiAPI;
 
 import java.util.List;
 import java.util.function.Predicate;
@@ -31,11 +30,10 @@ import static vazkii.psi.api.spell.SpellContext.MAX_DISTANCE;
  */
 public interface IDetonationHandler {
 
-	@CapabilityInject(IDetonationHandler.class)
-	Capability<IDetonationHandler> CAPABILITY = null;
+
 
 	static IDetonationHandler detonator(Entity entity) {
-		return (IDetonationHandler) entity.getCapability(CAPABILITY, null);
+		return (IDetonationHandler) entity.getCapability(PsiAPI.DETONATION_HANDLER_CAPABILITY, null);
 	}
 
 	static void performDetonation(World world, PlayerEntity player) {
@@ -72,16 +70,16 @@ public interface IDetonationHandler {
 				entity -> {
 					if (entity == null)
 						return false;
-					return entity.getCapability(CAPABILITY).map(detonator -> {
+					return entity.getCapability(PsiAPI.DETONATION_HANDLER_CAPABILITY).map(detonator -> {
 						Vec3d locus = detonator.objectLocus();
-						if (locus == null || locus.squareDistanceTo(center.posX, center.posY, center.posZ) > range * range)
+						if (locus == null || locus.squareDistanceTo(center.getX(), center.getY(), center.getZ()) > range * range)
 							return false;
 						return filter == null || filter.test(entity);
 					}).orElse(false);
 				});
 
 		List<IDetonationHandler> handlers = charges.stream()
-				.map(e -> e.getCapability(CAPABILITY).orElseThrow(NullPointerException::new))
+				.map(e -> e.getCapability(PsiAPI.DETONATION_HANDLER_CAPABILITY).orElseThrow(NullPointerException::new))
 				.collect(Collectors.toList());
 
 		if (!MinecraftForge.EVENT_BUS.post(new DetonationEvent(player, center, range, handlers))) {

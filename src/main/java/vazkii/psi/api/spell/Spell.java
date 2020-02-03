@@ -51,10 +51,10 @@ public final class Spell {
 	public void readFromNBT(CompoundNBT cmp) {
 		name = cmp.getString(TAG_SPELL_NAME);
 
-		if(cmp.hasKey(TAG_UUID_MOST)) {
+		if (cmp.contains(TAG_UUID_MOST)) {
 			long uuidMost = cmp.getLong(TAG_UUID_MOST);
 			long uuidLeast = cmp.getLong(TAG_UUID_LEAST);
-			if(uuid.getMostSignificantBits() != uuidMost || uuid.getLeastSignificantBits() != uuidLeast)
+			if (uuid.getMostSignificantBits() != uuidMost || uuid.getLeastSignificantBits() != uuidLeast)
 				uuid = new UUID(uuidMost, uuidLeast);
 		}
 
@@ -62,11 +62,11 @@ public final class Spell {
 	}
 
 	public void writeToNBT(CompoundNBT cmp) {
-		cmp.setBoolean(TAG_VALID, true);
-		cmp.setString(TAG_SPELL_NAME, name);
+		cmp.putBoolean(TAG_VALID, true);
+		cmp.putString(TAG_SPELL_NAME, name);
 
-		cmp.setLong(TAG_UUID_MOST, uuid.getMostSignificantBits());
-		cmp.setLong(TAG_UUID_LEAST, uuid.getLeastSignificantBits());
+		cmp.putLong(TAG_UUID_MOST, uuid.getMostSignificantBits());
+		cmp.putLong(TAG_UUID_LEAST, uuid.getLeastSignificantBits());
 
 		grid.writeToNBT(cmp);
 	}

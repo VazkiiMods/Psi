@@ -36,14 +36,19 @@ import vazkii.psi.common.lib.LibMisc;
 
 import java.util.concurrent.Callable;
 
-@Mod.EventBusSubscriber(modid = LibMisc.MOD_ID)
+import static vazkii.psi.api.PsiAPI.DETONATION_HANDLER_CAPABILITY;
+import static vazkii.psi.api.PsiAPI.SPELL_IMMUNE_CAPABILITY;
+
+@Mod.EventBusSubscriber(modid = LibMisc.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class CapabilityHandler {
+
 	public static void register() {
 		register(ICADData.class, CADData::new);
 		register(ISocketableCapability.class, SocketWheel::new);
 		register(ISpellAcceptor.class, SpellHolder::new);
 
-		registerSingleDefault(IDetonationHandler.class, () -> {});
+		registerSingleDefault(IDetonationHandler.class, () -> {
+		});
 		registerSingleDefault(IPsiBarDisplay.class, data -> false);
 		registerSingleDefault(ISpellImmune.class, () -> false);
 	}
@@ -94,11 +99,11 @@ public class CapabilityHandler {
 	@SubscribeEvent
 	public static void attachEntityCapabilities(AttachCapabilitiesEvent<Entity> event) {
 		if (event.getObject() instanceof ISpellImmune)
-			event.addCapability(SPELL_IMMUNE, new SimpleProvider<>(ISpellImmune.CAPABILITY,
+			event.addCapability(SPELL_IMMUNE, new SimpleProvider<>(SPELL_IMMUNE_CAPABILITY,
 					(ISpellImmune) event.getObject()));
 
 		if (event.getObject() instanceof IDetonationHandler)
-			event.addCapability(DETONATOR, new SimpleProvider<>(IDetonationHandler.CAPABILITY,
+			event.addCapability(DETONATOR, new SimpleProvider<>(DETONATION_HANDLER_CAPABILITY,
 					(IDetonationHandler) event.getObject()));
 	}
 

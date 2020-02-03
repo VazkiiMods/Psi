@@ -33,7 +33,7 @@ import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.lib.LibEntityNames;
-import vazkii.psi.common.lib.LibMisc;
+import vazkii.psi.common.lib.LibResources;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -41,7 +41,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 public class EntitySpellCircle extends Entity implements ISpellImmune {
-    @ObjectHolder(LibMisc.PREFIX_MOD + LibEntityNames.SPELL_CIRCLE)
+	@ObjectHolder(LibResources.PREFIX_MOD + LibEntityNames.SPELL_CIRCLE)
     public static EntityType<EntitySpellCircle> TYPE;
 
     public static final int CAST_TIMES = 20;

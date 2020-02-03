@@ -10,17 +10,13 @@
  */
 package vazkii.psi.client.gui.button;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.widget.button.Button;
-import com.mojang.blaze3d.platform.GlStateManager;
-import net.minecraft.util.text.TextFormatting;
-import vazkii.psi.api.internal.TooltipHelper;
-import vazkii.psi.client.gui.GuiLeveling;
-
-import javax.annotation.Nonnull;
 
 public class GuiButtonLearn extends Button {
-
+    public GuiButtonLearn(int p_i51141_1_, int p_i51141_2_, int p_i51141_3_, int p_i51141_4_, String p_i51141_5_, IPressable p_i51141_6_) {
+        super(p_i51141_1_, p_i51141_2_, p_i51141_3_, p_i51141_4_, p_i51141_5_, p_i51141_6_);
+    }
+	/*
 	final GuiLeveling gui;
 
 	public GuiButtonLearn(GuiLeveling gui, int par2, int par3) {
@@ -41,6 +37,6 @@ public class GuiButtonLearn extends Button {
 			if(k == 2)
 				gui.tooltip.add(TextFormatting.GREEN + TooltipHelper.local("psimisc.learn"));
 		}
-	}
+	}*/
 
 }

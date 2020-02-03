@@ -11,22 +11,20 @@
 package vazkii.psi.client.gui;
 
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
-import com.mojang.blaze3d.platform.GlStateManager;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.TextFormatting;
-import vazkii.psi.api.cad.EnumCADStat;
-import vazkii.psi.api.cad.ICAD;
-import vazkii.psi.api.internal.TooltipHelper;
-import vazkii.psi.common.Psi;
-import vazkii.psi.common.block.base.ModBlocks;
-import vazkii.psi.common.block.tile.TileCADAssembler;
-import vazkii.psi.common.block.tile.container.ContainerCADAssembler;
-import vazkii.psi.common.lib.LibResources;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.util.text.ITextComponent;
 
 public class GuiCADAssembler extends ContainerScreen {
+    public GuiCADAssembler(Container p_i51105_1_, PlayerInventory p_i51105_2_, ITextComponent p_i51105_3_) {
+        super(p_i51105_1_, p_i51105_2_, p_i51105_3_);
+    }
 
+    @Override
+    protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
+
+    }
+	/*
 	private static final ResourceLocation texture = new ResourceLocation(LibResources.GUI_CAD_ASSEMBLER);
 	private final PlayerEntity player;
 	private final TileCADAssembler assembler;
@@ -87,6 +85,6 @@ public class GuiCADAssembler extends ContainerScreen {
 		for(int i = 0; i < 12; i++)
 			if(!assembler.isBulletSlotEnabled(i))
 				blit(x + 17 + i % 3 * 18, y + 57 + i / 3 * 18, 16, ySize, 16, 16);
-	}
+	}*/
 
 }

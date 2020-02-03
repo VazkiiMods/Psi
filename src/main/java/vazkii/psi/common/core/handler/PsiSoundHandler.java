@@ -19,7 +19,7 @@ import net.minecraftforge.registries.IForgeRegistry;
 import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.lib.LibResources;
 
-@Mod.EventBusSubscriber(modid = LibMisc.MOD_ID)
+@Mod.EventBusSubscriber(modid = LibMisc.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public final class PsiSoundHandler {
 
     public static SoundEvent bulletCreate;

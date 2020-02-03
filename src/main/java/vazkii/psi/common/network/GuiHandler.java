@@ -11,19 +11,25 @@
 package vazkii.psi.common.network;
 
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
-import vazkii.psi.client.gui.GuiCADAssembler;
-import vazkii.psi.client.gui.GuiProgrammer;
-import vazkii.psi.common.block.tile.TileCADAssembler;
-import vazkii.psi.common.block.tile.TileProgrammer;
-import vazkii.psi.common.block.tile.container.ContainerCADAssembler;
-import vazkii.psi.common.lib.LibGuiIDs;
+
+import javax.annotation.Nullable;
 
 public class GuiHandler implements IGuiHandler {
-	
+    @Nullable
+    @Override
+    public Object getServerGuiElement(int ID, PlayerEntity player, World world, int x, int y, int z) {
+        return null;
+    }
+
+    @Nullable
+    @Override
+    public Object getClientGuiElement(int ID, PlayerEntity player, World world, int x, int y, int z) {
+        return null;
+    }
+
+	/*
 	@Override
 	public Object getServerGuiElement(int ID, PlayerEntity player, World world, int x, int y, int z) {
 		switch(ID) {
@@ -36,6 +42,7 @@ public class GuiHandler implements IGuiHandler {
 
 		return null;
 	}
+
 
 	@Override
 	public Object getClientGuiElement(int ID, PlayerEntity player, World world, int x, int y, int z) {
@@ -53,7 +60,7 @@ public class GuiHandler implements IGuiHandler {
 		}
 
 		return null;
-	}
+	}*/
 
 
 }

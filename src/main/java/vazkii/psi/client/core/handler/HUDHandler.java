@@ -32,7 +32,10 @@ import org.lwjgl.opengl.ARBMultitexture;
 import org.lwjgl.opengl.ARBShaderObjects;
 import org.lwjgl.opengl.GL11;
 import vazkii.psi.api.PsiAPI;
-import vazkii.psi.api.cad.*;
+import vazkii.psi.api.cad.ICAD;
+import vazkii.psi.api.cad.ICADColorizer;
+import vazkii.psi.api.cad.ISocketable;
+import vazkii.psi.api.cad.ISocketableCapability;
 import vazkii.psi.api.internal.PsiRenderHelper;
 import vazkii.psi.api.internal.TooltipHelper;
 import vazkii.psi.client.gui.GuiLeveling;
@@ -95,7 +98,7 @@ public final class HUDHandler {
 		if (stack.isEmpty())
 			return false;
 		else
-			return stack.getCapability(IPsiBarDisplay.CAPABILITY).map(c -> c.shouldShow(data)).orElse(false);
+			return stack.getCapability(PsiAPI.PSI_BAR_DISPLAY_CAPABILITY).map(c -> c.shouldShow(data)).orElse(false);
 	}
 
 	@OnlyIn(Dist.CLIENT)

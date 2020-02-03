@@ -10,42 +10,14 @@
  */
 package vazkii.psi.client.gui;
 
-import com.google.common.collect.ImmutableSet;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.renderer.BufferBuilder;
-import com.mojang.blaze3d.platform.GlStateManager;
-import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.TextFormatting;
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.GL11;
-import vazkii.arl.network.NetworkHandler;
-import vazkii.arl.network.NetworkMessage;
-import vazkii.psi.api.PsiAPI;
-import vazkii.psi.api.cad.ISocketable;
-import vazkii.psi.api.cad.ISocketableCapability;
-import vazkii.psi.api.cad.ISocketableController;
-import vazkii.psi.client.core.handler.KeybindHandler;
-import vazkii.psi.api.internal.PsiRenderHelper;
-import vazkii.psi.common.Psi;
-import vazkii.psi.common.core.handler.PlayerDataHandler;
-import vazkii.psi.common.lib.LibResources;
-import vazkii.psi.common.network.message.MessageChangeControllerSlot;
-import vazkii.psi.common.network.message.MessageChangeSocketableSlot;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import net.minecraft.util.text.ITextComponent;
 
 public class GuiSocketSelect extends Screen {
-
+    protected GuiSocketSelect(ITextComponent p_i51108_1_) {
+        super(p_i51108_1_);
+    }
+	/*
 	private static final ResourceLocation[] signs = new ResourceLocation[] {
 			new ResourceLocation(String.format(LibResources.GUI_SIGN, 0)),
 			new ResourceLocation(String.format(LibResources.GUI_SIGN, 1)),
@@ -316,6 +288,6 @@ public class GuiSocketSelect extends Screen {
 
 	private static double mouseAngle(int x, int y, int mx, int my) {
 		return (MathHelper.atan2(my - y, mx - x) + Math.PI * 2) % (Math.PI * 2);
-	}
+	}*/
 
 }

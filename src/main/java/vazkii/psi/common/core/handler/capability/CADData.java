@@ -19,6 +19,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
+import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ICADData;
 import vazkii.psi.api.internal.Vector3;
 
@@ -39,7 +40,7 @@ public class CADData implements ICapabilityProvider, ICADData {
     @Override
     @SuppressWarnings("ConstantConditions")
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability, @Nullable Direction facing) {
-        return CAPABILITY.orEmpty(capability, LazyOptional.of(() -> this));
+        return PsiAPI.CAD_DATA_CAPABILITY.orEmpty(capability, LazyOptional.of(() -> this));
     }
 
     @Override

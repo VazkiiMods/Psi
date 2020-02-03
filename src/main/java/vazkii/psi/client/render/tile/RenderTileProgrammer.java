@@ -16,7 +16,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFaceBlock;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.util.Direction;
@@ -24,7 +23,6 @@ import org.lwjgl.opengl.GL11;
 import vazkii.arl.util.ClientTicker;
 import vazkii.arl.util.RenderHelper;
 import vazkii.psi.api.internal.TooltipHelper;
-import vazkii.psi.client.gui.GuiProgrammer;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.base.ModBlocks;
 import vazkii.psi.common.block.tile.TileProgrammer;
@@ -47,10 +45,10 @@ public class RenderTileProgrammer extends TileEntityRenderer<TileProgrammer> {
             RenderSystem.disableLighting();
             RenderSystem.disableCull();
 
-            float brightnessX = OpenGlHelper.lastBrightnessX;
+           /* float brightnessX = OpenGlHelper.lastBrightnessX;
             float brightnessY = OpenGlHelper.lastBrightnessY;
             if (!Psi.magical)
-                OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 0xf0, 0xf0);
+                OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 0xf0, 0xf0);*/
 
 
             ms.translate(x, y + 1.62F, z);
@@ -93,7 +91,7 @@ public class RenderTileProgrammer extends TileEntityRenderer<TileProgrammer> {
             te.spell.draw();
 
             Minecraft mc = Minecraft.getInstance();
-            mc.textureManager.bindTexture(GuiProgrammer.texture);
+            //mc.textureManager.bindTexture(GuiProgrammer.texture);
 
             RenderSystem.enableBlend();
             RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -108,8 +106,8 @@ public class RenderTileProgrammer extends TileEntityRenderer<TileProgrammer> {
             mc.fontRenderer.drawString(TooltipHelper.local("psimisc.name").toString(), 0, 164, color);
             mc.fontRenderer.drawString(te.spell.name, 38, 164, color);
 
-            if (!Psi.magical)
-                OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, brightnessX, brightnessY);
+            /*if (!Psi.magical)
+                OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, brightnessX, brightnessY);*/
             RenderSystem.enableLighting();
             RenderSystem.enableCull();
 

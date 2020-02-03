@@ -15,6 +15,7 @@ import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
+import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.IPsiBarDisplay;
 import vazkii.psi.api.cad.IShowPsiBar;
 import vazkii.psi.api.internal.IPlayerData;
@@ -35,7 +36,7 @@ public class PsiBarWrapper implements IPsiBarDisplay, ICapabilityProvider {
 	@Override
 	@SuppressWarnings("ConstantConditions")
 	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability, @Nullable Direction facing) {
-		return CAPABILITY.orEmpty(capability, LazyOptional.of(() -> this));
+		return PsiAPI.PSI_BAR_DISPLAY_CAPABILITY.orEmpty(capability, LazyOptional.of(() -> this));
 	}
 
 	@Override

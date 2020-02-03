@@ -35,7 +35,7 @@ import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.lib.LibEntityNames;
-import vazkii.psi.common.lib.LibMisc;
+import vazkii.psi.common.lib.LibResources;
 
 import javax.annotation.Nonnull;
 import java.util.Optional;
@@ -43,7 +43,7 @@ import java.util.UUID;
 import java.util.function.Consumer;
 
 public class EntitySpellProjectile extends ThrowableEntity {
-	@ObjectHolder(LibMisc.PREFIX_MOD + LibEntityNames.SPELL_PROJECTILE)
+	@ObjectHolder(LibResources.PREFIX_MOD + LibEntityNames.SPELL_PROJECTILE)
 	public static EntityType<EntitySpellProjectile> TYPE;
 
 	private static final String TAG_COLORIZER = "colorizer";

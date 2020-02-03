@@ -16,17 +16,21 @@ import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.registry.SimpleRegistry;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.fml.ModContainer;
 import net.minecraftforge.fml.ModLoadingContext;
 import vazkii.psi.api.cad.ICAD;
+import vazkii.psi.api.cad.ICADData;
+import vazkii.psi.api.cad.IPsiBarDisplay;
+import vazkii.psi.api.cad.ISocketableCapability;
 import vazkii.psi.api.internal.DummyMethodHandler;
 import vazkii.psi.api.internal.IInternalMethodHandler;
 import vazkii.psi.api.material.PsimetalArmorMaterial;
 import vazkii.psi.api.material.PsimetalToolMaterial;
 import vazkii.psi.api.recipe.TrickRecipe;
-import vazkii.psi.api.spell.PieceGroup;
-import vazkii.psi.api.spell.Spell;
-import vazkii.psi.api.spell.SpellPiece;
+import vazkii.psi.api.spell.*;
+import vazkii.psi.api.spell.detonator.IDetonationHandler;
 import vazkii.psi.api.spell.piece.PieceTrick;
 import vazkii.psi.common.lib.LibMisc;
 
@@ -44,6 +48,24 @@ public final class PsiAPI {
 	 * <b>DO NOT EVER, EVER, OVERWRITE THIS VALUE</b>
 	 */
 	public static IInternalMethodHandler internalHandler = new DummyMethodHandler();
+
+	@CapabilityInject(ISpellImmune.class)
+	public static Capability<ISpellImmune> SPELL_IMMUNE_CAPABILITY = null;
+
+	@CapabilityInject(IDetonationHandler.class)
+	public static Capability<IDetonationHandler> DETONATION_HANDLER_CAPABILITY = null;
+
+	@CapabilityInject(IPsiBarDisplay.class)
+	public static Capability<IPsiBarDisplay> PSI_BAR_DISPLAY_CAPABILITY = null;
+
+	@CapabilityInject(ISpellAcceptor.class)
+	public static Capability<ISpellAcceptor> SPELL_ACCEPTOR_CAPABILITY = null;
+
+	@CapabilityInject(ICADData.class)
+	public static Capability<ICADData> CAD_DATA_CAPABILITY = null;
+
+	@CapabilityInject(ISocketableCapability.class)
+	public static Capability<ISocketableCapability> SOCKETABLE_CAPABILITY = null;
 
 
 	public static final SimpleRegistry<Class<? extends SpellPiece>> spellPieceRegistry = new SimpleRegistry<>();
@@ -64,14 +86,14 @@ public final class PsiAPI {
 		ModContainer activeModContainer = ModLoadingContext.get().getActiveContainer();
 		if (activeModContainer != null)
 			return activeModContainer.getModId();
-		return "minecraft";
+		return "psi";
 	}
 
 	/**
 	 * Registers a Spell Piece given its class, by which, it puts it in the registry.
 	 */
 	public static void registerSpellPiece(String key, Class<? extends SpellPiece> clazz) {
-		spellPieceRegistry.register(new ResourceLocation(key), clazz);
+		spellPieceRegistry.register(new ResourceLocation(key.toLowerCase()), clazz);
 		pieceMods.put(clazz, getCurrentModId());
 	}
 
@@ -184,7 +206,7 @@ public final class PsiAPI {
 	}
 	
 	public static void registerTrickRecipe(String trick, Ingredient input, ItemStack output, ItemStack minAssembly) {
-		registerTrickRecipe(new ResourceLocation(LibMisc.MOD_ID, trick), input, output, minAssembly);
+		registerTrickRecipe(new ResourceLocation(LibMisc.MOD_ID, trick.toLowerCase()), input, output, minAssembly);
 	}
 
 }

@@ -17,10 +17,10 @@ import net.minecraft.world.World;
 import net.minecraftforge.registries.ObjectHolder;
 import vazkii.psi.api.spell.detonator.IDetonationHandler;
 import vazkii.psi.common.lib.LibEntityNames;
-import vazkii.psi.common.lib.LibMisc;
+import vazkii.psi.common.lib.LibResources;
 
 public class EntitySpellCharge extends EntitySpellGrenade implements IDetonationHandler {
-    @ObjectHolder(LibMisc.PREFIX_MOD + LibEntityNames.SPELL_CHARGE)
+	@ObjectHolder(LibResources.PREFIX_MOD + LibEntityNames.SPELL_CHARGE)
     public static EntityType<EntitySpellCharge> TYPE;
 
     public EntitySpellCharge(EntityType<?> type, World worldIn) {

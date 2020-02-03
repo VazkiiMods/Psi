@@ -20,7 +20,6 @@ import vazkii.psi.api.internal.IInternalMethodHandler;
 import vazkii.psi.api.internal.IPlayerData;
 import vazkii.psi.api.internal.TooltipHelper;
 import vazkii.psi.api.spell.*;
-import vazkii.psi.client.gui.GuiProgrammer;
 import vazkii.psi.common.item.ItemCAD;
 import vazkii.psi.common.spell.SpellCache;
 import vazkii.psi.common.spell.SpellCompiler;
@@ -36,7 +35,8 @@ public final class InternalMethodHandler implements IInternalMethodHandler {
 
 	@Override
 	public ResourceLocation getProgrammerTexture() {
-		return GuiProgrammer.texture;
+		//return GuiProgrammer.texture;
+		return new ResourceLocation("missingno");
 	}
 
 	@Override

@@ -26,7 +26,7 @@ public final class VanillaPacketDispatcher {
 		for(Object player : players)
 			if(player instanceof ServerPlayerEntity) {
 				ServerPlayerEntity mp = (ServerPlayerEntity) player;
-				if(MathHelper.pointDistancePlane(mp.posX, mp.posZ, tile.getPos().getX() + 0.5, tile.getPos().getZ() + 0.5) < 64)
+				if (MathHelper.pointDistancePlane(mp.getX(), mp.getZ(), tile.getPos().getX() + 0.5, tile.getPos().getZ() + 0.5) < 64)
 					dispatchTEToPlayer(tile, mp);
 			}
 	}

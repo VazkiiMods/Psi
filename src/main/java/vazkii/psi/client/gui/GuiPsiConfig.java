@@ -11,16 +11,15 @@
 package vazkii.psi.client.gui;
 
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraftforge.common.config.ConfigElement;
-import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.fml.client.config.GuiConfig;
-import vazkii.psi.common.core.handler.ConfigHandler;
-import vazkii.psi.common.lib.LibMisc;
+import net.minecraft.util.text.ITextComponent;
 
 public class GuiPsiConfig extends Screen {
-
-    public GuiPsiConfig(Screen parentScreen) {
-        super(parentScreen, new ConfigElement(ConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)).getChildElements(), LibMisc.MOD_ID, false, false, GuiConfig.getAbridgedConfigPath(ConfigHandler.config.toString()));
+    protected GuiPsiConfig(ITextComponent p_i51108_1_) {
+        super(p_i51108_1_);
     }
+
+  /*  public GuiPsiConfig(Screen parentScreen) {
+        super(parentScreen, new ConfigElement(ConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)).getChildElements(), LibMisc.MOD_ID, false, false, GuiConfig.getAbridgedConfigPath(ConfigHandler.config.toString()));
+    }*/
 
 }

@@ -10,21 +10,13 @@
  */
 package vazkii.psi.client.gui.button;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.client.renderer.BufferBuilder;
-import com.mojang.blaze3d.platform.GlStateManager;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import vazkii.psi.api.spell.SpellParam;
-import vazkii.psi.api.spell.SpellPiece;
-import vazkii.psi.api.internal.PsiRenderHelper;
-import vazkii.psi.client.gui.GuiProgrammer;
-
-import javax.annotation.Nonnull;
 
 public class GuiButtonSideConfig extends Button {
-
+    public GuiButtonSideConfig(int p_i51141_1_, int p_i51141_2_, int p_i51141_3_, int p_i51141_4_, String p_i51141_5_, IPressable p_i51141_6_) {
+        super(p_i51141_1_, p_i51141_2_, p_i51141_3_, p_i51141_4_, p_i51141_5_, p_i51141_6_);
+    }
+	/*
 	final GuiProgrammer gui;
 	final int gridX;
 	final int gridY;
@@ -96,6 +88,6 @@ public class GuiButtonSideConfig extends Button {
 			wr.pos(minX, minY, 0).tex(minU, minV).endVertex();
 			Tessellator.getInstance().draw();
 		}
-	}
+	}*/
 
 }

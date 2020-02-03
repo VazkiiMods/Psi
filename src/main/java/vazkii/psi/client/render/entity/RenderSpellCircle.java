@@ -15,7 +15,6 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.item.ItemStack;
@@ -81,10 +80,10 @@ public class RenderSpellCircle extends EntityRenderer<EntitySpellCircle> {
 
 		RenderSystem.disableCull();
 		RenderSystem.disableLighting();
-		float lastBrightnessX = OpenGlHelper.lastBrightnessX;
+		/*float lastBrightnessX = OpenGlHelper.lastBrightnessX;
 		float lastBrightnessY = OpenGlHelper.lastBrightnessY;
 
-		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 0xf0, 0xf0);
+		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 0xf0, 0xf0);*/
 
 
 		int r = PsiRenderHelper.r(color);
@@ -123,7 +122,7 @@ public class RenderSpellCircle extends EntityRenderer<EntitySpellCircle> {
 			ms.translate(0, 0, -0.5);
 		}
 
-		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lastBrightnessX, lastBrightnessY);
+		//OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lastBrightnessX, lastBrightnessY);
 		RenderSystem.enableCull();
 		RenderSystem.enableLighting();
 		RenderSystem.popMatrix();

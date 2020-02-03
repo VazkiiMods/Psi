@@ -64,8 +64,8 @@ public class PieceGroup implements Comparable<PieceGroup> {
 
 	@Override
 	public int compareTo(@Nonnull PieceGroup o) {
-		if(o.levelRequirement == levelRequirement)
-			return TooltipHelper.local(getUnlocalizedName()).compareTo(TooltipHelper.local(o.getUnlocalizedName()));
+		if (o.levelRequirement == levelRequirement)
+			return TooltipHelper.local(getUnlocalizedName()).toString().compareTo(TooltipHelper.local(o.getUnlocalizedName()).toString());
 
 		return levelRequirement - o.levelRequirement;
 	}

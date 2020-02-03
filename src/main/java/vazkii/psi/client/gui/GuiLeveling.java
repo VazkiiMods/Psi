@@ -10,39 +10,14 @@
  */
 package vazkii.psi.client.gui;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.gui.screen.Screen;
-import com.mojang.blaze3d.platform.GlStateManager;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.client.GuiScrollingList;
-import net.minecraftforge.fml.relauncher.ReflectionHelper;
-import org.lwjgl.input.Mouse;
-import vazkii.arl.network.NetworkHandler;
-import vazkii.arl.util.RenderHelper;
-import vazkii.psi.api.PsiAPI;
-import vazkii.psi.api.internal.TooltipHelper;
-import vazkii.psi.api.spell.PieceGroup;
-import vazkii.psi.api.spell.Spell;
-import vazkii.psi.api.spell.SpellPiece;
-import vazkii.psi.client.core.helper.TextHelper;
-import vazkii.psi.client.gui.button.GuiButtonLearn;
-import vazkii.psi.common.Psi;
-import vazkii.psi.common.core.handler.PersistencyHandler;
-import vazkii.psi.common.core.handler.PlayerDataHandler;
-import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
-import vazkii.psi.common.lib.LibMisc;
-import vazkii.psi.common.lib.LibResources;
-import vazkii.psi.common.network.message.MessageLearnGroup;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import net.minecraft.util.text.ITextComponent;
 
 public class GuiLeveling extends Screen {
-
+    protected GuiLeveling(ITextComponent p_i51108_1_) {
+        super(p_i51108_1_);
+    }
+	/*
 	public static final ResourceLocation texture = new ResourceLocation(LibResources.GUI_LEVELING);
 
 	public final List<String> tooltip = new ArrayList<>();
@@ -356,7 +331,7 @@ public class GuiLeveling extends Screen {
 			// NO-OP
 		}
 
-	}
+	}*/
 
 
 }

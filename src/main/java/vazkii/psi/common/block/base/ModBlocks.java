@@ -36,7 +36,7 @@ import vazkii.psi.common.lib.LibMisc;
 
 import static vazkii.psi.common.item.base.ModItems.defaultBuilder;
 
-@Mod.EventBusSubscriber(modid = LibMisc.MOD_ID)
+@Mod.EventBusSubscriber(modid = LibMisc.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ModBlocks {
 
     public static final Block cadAssembler = new BlockCADAssembler();
