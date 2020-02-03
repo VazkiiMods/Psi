@@ -10,65 +10,70 @@
  */
 package vazkii.psi.client.gui;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextFormatting;
+import vazkii.psi.api.cad.EnumCADStat;
+import vazkii.psi.api.cad.ICAD;
+import vazkii.psi.api.internal.TooltipHelper;
+import vazkii.psi.common.Psi;
+import vazkii.psi.common.block.base.ModBlocks;
+import vazkii.psi.common.block.tile.TileCADAssembler;
+import vazkii.psi.common.block.tile.container.ContainerCADAssembler;
+import vazkii.psi.common.lib.LibResources;
 
 public class GuiCADAssembler extends ContainerScreen {
-    public GuiCADAssembler(Container p_i51105_1_, PlayerInventory p_i51105_2_, ITextComponent p_i51105_3_) {
-        super(p_i51105_1_, p_i51105_2_, p_i51105_3_);
-    }
 
-    @Override
-    protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 
-    }
-	/*
 	private static final ResourceLocation texture = new ResourceLocation(LibResources.GUI_CAD_ASSEMBLER);
 	private final PlayerEntity player;
 	private final TileCADAssembler assembler;
 
-	public GuiCADAssembler(PlayerEntity player, TileCADAssembler assembler) {
-		super(new ContainerCADAssembler(player, assembler));
+	public GuiCADAssembler(ContainerCADAssembler containerCADAssembler, PlayerEntity player, TileCADAssembler assembler) {
+		super(containerCADAssembler, new PlayerInventory(player), new StringTextComponent(""));
 		this.player = player;
 		this.assembler = assembler;
 	}
 
 	@Override
-	public void initGui() {
+	protected void init() {
+		super.init();
 		xSize = 256;
 		ySize = 225;
-		super.initGui();
 	}
 
 	@Override
-	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-		this.drawDefaultBackground();
-		super.drawScreen(mouseX, mouseY, partialTicks);
-		this.renderHoveredToolTip(mouseX, mouseY);
+	public void render(int x, int y, float pTicks) {
+		this.renderBackground();
+		super.render(x, y, pTicks);
+		this.renderHoveredToolTip(x, y);
 	}
-	
+
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 		int color = 4210752;
 
-		String name = new ItemStack(ModBlocks.cadAssembler).getDisplayName();
-		fontRenderer.drawString(name, xSize / 2 - fontRenderer.getStringWidth(name) / 2, 10, color);
+		String name = new ItemStack(ModBlocks.cadAssembler).getDisplayName().toString();
+		font.drawString(name, xSize / 2 - font.getStringWidth(name) / 2, 10, color);
 
 		ItemStack cad = assembler.getCachedCAD(player);
-		if(!cad.isEmpty()) {
+		if (!cad.isEmpty()) {
 			color = 0xFFFFFF;
 
 			int i = 0;
 			ICAD cadItem = (ICAD) cad.getItem();
-			String stats = TooltipHelper.local("psimisc.stats");
+			String stats = TooltipHelper.local("psimisc.stats").toString();
 			String s = TextFormatting.BOLD + stats;
-			fontRenderer.drawStringWithShadow(s, 213 - fontRenderer.getStringWidth(s) / 2f, 34, color);
+			font.drawStringWithShadow(s, 213 - font.getStringWidth(s) / 2f, 34, color);
 
-			for(EnumCADStat stat : EnumCADStat.class.getEnumConstants()) {
-				s = (Psi.magical ? TextFormatting.LIGHT_PURPLE : TextFormatting.AQUA) + TooltipHelper.local(stat.getName()) + TextFormatting.RESET + ": " + cadItem.getStatValue(cad, stat);
-				fontRenderer.drawStringWithShadow(s, 179, 50 + i * 10, color);
+			for (EnumCADStat stat : EnumCADStat.class.getEnumConstants()) {
+				s = (Psi.magical ? TextFormatting.LIGHT_PURPLE : TextFormatting.AQUA) + TooltipHelper.local(stat.getName()).toString() + TextFormatting.RESET + ": " + cadItem.getStatValue(cad, stat);
+				font.drawStringWithShadow(s, 179, 50 + i * 10, color);
 				i++;
 			}
 		}
@@ -76,15 +81,15 @@ public class GuiCADAssembler extends ContainerScreen {
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-		GlStateManager.color3f(1F, 1F, 1F);
+		RenderSystem.color3f(1F, 1F, 1F);
 		minecraft.getTextureManager().bindTexture(texture);
 		int x = (width - xSize) / 2;
 		int y = (height - ySize) / 2;
 		blit(x, y, 0, 0, xSize, ySize);
 
-		for(int i = 0; i < 12; i++)
-			if(!assembler.isBulletSlotEnabled(i))
+		for (int i = 0; i < 12; i++)
+			if (!assembler.isBulletSlotEnabled(i))
 				blit(x + 17 + i % 3 * 18, y + 57 + i / 3 * 18, 16, ySize, 16, 16);
-	}*/
+	}
 
 }
