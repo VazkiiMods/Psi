@@ -30,6 +30,12 @@ public class GuiButtonIO extends Button {
         this.gui = gui;
     }
 
+    public GuiButtonIO(int x, int y, boolean out, GuiProgrammer gui, IPressable pressable) {
+        super(x, y, 12, 12, "", pressable);
+        this.out = out;
+        this.gui = gui;
+    }
+
 
     @Override
     public void renderButton(int par2, int par3, float pticks) {

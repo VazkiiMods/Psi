@@ -27,6 +27,12 @@ public class GuiButtonSpellPiece extends Button {
         this.piece = piece;
     }
 
+    public GuiButtonSpellPiece(GuiProgrammer gui, SpellPiece piece, int x, int y, Button.IPressable pressable) {
+        super(x, y, 16, 16, "", pressable);
+        this.gui = gui;
+        this.piece = piece;
+    }
+
     @Override
     public void renderButton(int mouseX, int mouseY, float pTicks) {
         if (active && visible) {

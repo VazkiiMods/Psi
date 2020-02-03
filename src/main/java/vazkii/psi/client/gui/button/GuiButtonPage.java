@@ -28,6 +28,12 @@ public class GuiButtonPage extends Button {
         this.right = right;
     }
 
+    public GuiButtonPage(int x, int y, boolean right, GuiProgrammer gui, Button.IPressable pressable) {
+        super(x, y, 18, 10, "", pressable);
+        this.gui = gui;
+        this.right = right;
+    }
+
 
     @Override
     public void renderButton(int par2, int par3, float pTicks) {

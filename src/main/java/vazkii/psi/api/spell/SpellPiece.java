@@ -291,19 +291,19 @@ public abstract class SpellPiece {
 	}
 
 	/**
-	 * Draws this piece's tooltip.
-	 */
-	@OnlyIn(Dist.CLIENT)
-	public void drawTooltip(int tooltipX, int tooltipY, List<String> tooltip) {
-		PsiAPI.internalHandler.renderTooltip(tooltipX, tooltipY, tooltip, 0x505000ff, 0xf0100010);
-	}
+     * Draws this piece's tooltip.
+     */
+    @OnlyIn(Dist.CLIENT)
+    public void drawTooltip(int tooltipX, int tooltipY, List<ITextComponent> tooltip) {
+        PsiAPI.internalHandler.renderTooltip(tooltipX, tooltipY, tooltip, 0x505000ff, 0xf0100010);
+    }
 
-	/**
-	 * Draws this piece's comment tooltip.
-	 */
-	@OnlyIn(Dist.CLIENT)
-	public void drawCommentText(int tooltipX, int tooltipY, List<String> commentText) {
-		PsiAPI.internalHandler.renderTooltip(tooltipX, tooltipY - 9 - commentText.size() * 10, commentText, 0x5000a000, 0xf0001e00);
+    /**
+     * Draws this piece's comment tooltip.
+     */
+    @OnlyIn(Dist.CLIENT)
+    public void drawCommentText(int tooltipX, int tooltipY, List<ITextComponent> commentText) {
+        PsiAPI.internalHandler.renderTooltip(tooltipX, tooltipY - 9 - commentText.size() * 10, commentText, 0x5000a000, 0xf0001e00);
 	}
 
     @OnlyIn(Dist.CLIENT)

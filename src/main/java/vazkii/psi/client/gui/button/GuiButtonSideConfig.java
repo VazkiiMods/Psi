@@ -42,10 +42,16 @@ public class GuiButtonSideConfig extends Button {
         this.side = side;
     }
 
-    @Override
-    public void onPress() {
-        this.onClick();
+    public GuiButtonSideConfig(GuiProgrammer gui, int gridX, int gridY, int paramIndex, String paramName, SpellParam.Side side, int x, int y, IPressable pressable) {
+        super(x, y, 8, 8, "", pressable);
+        this.gui = gui;
+        this.gridX = gridX;
+        this.gridY = gridY;
+        this.paramIndex = paramIndex;
+        this.paramName = paramName;
+        this.side = side;
     }
+
 
     @Override
     public void renderButton(int par2, int par3, float pTicks) {

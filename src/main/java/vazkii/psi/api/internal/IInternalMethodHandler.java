@@ -13,6 +13,7 @@ package vazkii.psi.api.internal;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.psi.api.spell.*;
@@ -54,7 +55,7 @@ public interface IInternalMethodHandler {
 	void setCrashData(CompiledSpell spell, SpellPiece piece);
 
 	@OnlyIn(Dist.CLIENT)
-	void renderTooltip(int x, int y, List<String> tooltipData, int color, int color2);
+	void renderTooltip(int x, int y, List<ITextComponent> tooltipData, int color, int color2);
 
 	/**
 	 * Localizes a string, with correct behavior on both server and client.
