@@ -1,0 +1,33 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "value": {
+            "type": "psi:magipsi_enabled"
+          },
+          "type": "forge:not"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "pattern": [
+          "GPG",
+          "P P"
+        ],
+        "key": {
+          "P": {
+            "tag": "forge:ingots/psimetal"
+          },
+          "G": {
+            "tag": "forge:gems/psigem"
+          }
+        },
+        "result": {
+          "item": "psi:psimetal_exosuit_helmet"
+        }
+      }
+    }
+  ]
+}

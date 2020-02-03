@@ -1,0 +1,36 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "value": {
+            "type": "psi:magipsi_enabled"
+          },
+          "type": "forge:not"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "pattern": [
+          " B ",
+          "IPI"
+        ],
+        "key": {
+          "P": {
+            "tag": "psi:psidust"
+          },
+          "B": {
+            "tag": "minecraft:buttons"
+          },
+          "I": {
+            "tag": "forge:ingots/iron"
+          }
+        },
+        "result": {
+          "item": "psi:detonator"
+        }
+      }
+    }
+  ]
+}

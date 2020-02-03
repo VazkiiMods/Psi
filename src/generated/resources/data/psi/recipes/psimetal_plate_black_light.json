@@ -1,0 +1,29 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "value": {
+            "type": "psi:magipsi_enabled"
+          },
+          "type": "forge:not"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shapeless",
+        "ingredients": [
+          {
+            "tag": "forge:dusts/glowstone"
+          },
+          {
+            "item": "psi:black_psimetal_plate"
+          }
+        ],
+        "result": {
+          "item": "psi:lit_black_psimetal_plate"
+        }
+      }
+    }
+  ]
+}

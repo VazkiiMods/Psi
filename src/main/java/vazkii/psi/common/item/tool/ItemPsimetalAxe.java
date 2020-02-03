@@ -28,6 +28,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ToolType;
+import vazkii.arl.util.RegistryHelper;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ISocketable;
 import vazkii.psi.api.internal.TooltipHelper;
@@ -42,6 +43,7 @@ public class ItemPsimetalAxe extends AxeItem implements IPsimetalTool {
 
     public ItemPsimetalAxe(String name, Item.Properties properties) {
         super(PsiAPI.PSIMETAL_TOOL_MATERIAL, 5.0F, -3.0F, properties.addToolType(ToolType.AXE, PsiAPI.PSIMETAL_TOOL_MATERIAL.getHarvestLevel()));
+		RegistryHelper.registerItem(this, name);
     }
 
     @Override

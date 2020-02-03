@@ -10,6 +10,7 @@
  */
 package vazkii.psi.common;
 
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.CrashReportExtender;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModList;
@@ -80,4 +81,8 @@ public class Psi {
 		CommandPsiUnlearn.register(event.getCommandDispatcher());
 	}
 
+	public static ResourceLocation location(String path) {
+		return new ResourceLocation(LibMisc.MOD_ID, path);
+	}
+	
 }

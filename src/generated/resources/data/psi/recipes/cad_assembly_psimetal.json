@@ -1,0 +1,30 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "value": {
+            "type": "psi:magipsi_enabled"
+          },
+          "type": "forge:not"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "pattern": [
+          "III",
+          "I  "
+        ],
+        "key": {
+          "I": {
+            "tag": "forge:ingots/psimetal"
+          }
+        },
+        "result": {
+          "item": "psi:cad_assembly_psimetal"
+        }
+      }
+    }
+  ]
+}

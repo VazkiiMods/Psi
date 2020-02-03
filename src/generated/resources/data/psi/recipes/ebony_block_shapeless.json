@@ -1,0 +1,50 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "value": {
+            "type": "psi:magipsi_enabled"
+          },
+          "type": "forge:not"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shapeless",
+        "ingredients": [
+          {
+            "item": "psi:ebony_psimetal"
+          },
+          {
+            "item": "psi:ebony_psimetal"
+          },
+          {
+            "item": "psi:ebony_psimetal"
+          },
+          {
+            "item": "psi:ebony_psimetal"
+          },
+          {
+            "item": "psi:ebony_psimetal"
+          },
+          {
+            "item": "psi:ebony_psimetal"
+          },
+          {
+            "item": "psi:ebony_psimetal"
+          },
+          {
+            "item": "psi:ebony_psimetal"
+          },
+          {
+            "item": "psi:ebony_psimetal"
+          }
+        ],
+        "result": {
+          "item": "psi:ebony_psimetal_block"
+        }
+      }
+    }
+  ]
+}
