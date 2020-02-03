@@ -10,42 +10,41 @@
  */
 package vazkii.psi.client.gui.button;
 
+import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.widget.button.Button;
+import vazkii.psi.api.spell.SpellPiece;
+import vazkii.psi.client.gui.GuiProgrammer;
 
 public class GuiButtonSpellPiece extends Button {
-    public GuiButtonSpellPiece(int p_i51141_1_, int p_i51141_2_, int p_i51141_3_, int p_i51141_4_, String p_i51141_5_, IPressable p_i51141_6_) {
-        super(p_i51141_1_, p_i51141_2_, p_i51141_3_, p_i51141_4_, p_i51141_5_, p_i51141_6_);
+    public final SpellPiece piece;
+    final GuiProgrammer gui;
+
+    public GuiButtonSpellPiece(GuiProgrammer gui, SpellPiece piece, int x, int y) {
+        super(x, y, 16, 16, "", button -> {
+        });
+        this.gui = gui;
+        this.piece = piece;
     }
-	/*
-	public final SpellPiece piece;
-	final GuiProgrammer gui;
 
-	public GuiButtonSpellPiece(GuiProgrammer gui, SpellPiece piece, int x, int y) {
-		super(0, x, y, 16, 16, "");
-		this.gui = gui;
-		this.piece = piece;
-	}
+    @Override
+    public void renderButton(int mouseX, int mouseY, float pTicks) {
+        if (active && visible) {
+            isHovered = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
 
-	@Override
-	public void drawButton(@Nonnull Minecraft minecraft, int mouseX, int mouseY, float partialTicks) {
-		if(enabled && visible) {
-			hovered = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
-			int i = getHoverState(hovered);
+            RenderSystem.pushMatrix();
+            RenderSystem.color3f(1F, 1F, 1F);
+            RenderSystem.translatef(x, y, 0);
+            piece.draw();
+            RenderSystem.popMatrix();
 
-			GlStateManager.pushMatrix();
-			GlStateManager.color3f(1F, 1F, 1F);
-			GlStateManager.translatef(x, y, 0);
-			piece.draw();
-			GlStateManager.popMatrix();
+            Minecraft.getInstance().getTextureManager().bindTexture(GuiProgrammer.texture);
 
-			minecraft.getTextureManager().bindTexture(GuiProgrammer.texture);
+            if (isHovered()) {
+                piece.getTooltip(gui.tooltip);
+                blit(x, y, 16, gui.ySize, 16, 16);
+            }
 
-			if (i == 2)
-				blit(x, y, 16, gui.ySize, 16, 16);
-
-			if(i == 2)
-				piece.getTooltip(gui.tooltip);
-		}
-	}*/
-
+        }
+    }
 }
