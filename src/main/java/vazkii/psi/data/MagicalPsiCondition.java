@@ -9,7 +9,7 @@ import vazkii.psi.common.lib.LibMisc;
 
 public class MagicalPsiCondition implements ICondition {
     public static final MagicalPsiCondition INSTANCE = new MagicalPsiCondition();
-    public static final ResourceLocation NAME = new ResourceLocation(LibMisc.MOD_ID, "magipsi_loaded");
+    public static final ResourceLocation NAME = new ResourceLocation(LibMisc.MOD_ID, "magipsi_enabled");
 
     @Override
     public ResourceLocation getID() {
@@ -27,7 +27,7 @@ public class MagicalPsiCondition implements ICondition {
 
     @Override
     public String toString() {
-        return "magipsi_loaded";
+        return "magipsi_enabled";
     }
 
     public static class Serializer implements IConditionSerializer<MagicalPsiCondition> {
