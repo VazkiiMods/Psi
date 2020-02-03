@@ -1,0 +1,34 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "value": {
+            "type": "psi:magipsi_enabled"
+          },
+          "type": "forge:not"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "pattern": [
+          " C ",
+          "CIC",
+          " C "
+        ],
+        "key": {
+          "C": {
+            "tag": "forge:gems/quartz"
+          },
+          "I": {
+            "tag": "forge:ingots/psimetal"
+          }
+        },
+        "result": {
+          "item": "psi:white_psimetal_plate"
+        }
+      }
+    }
+  ]
+}

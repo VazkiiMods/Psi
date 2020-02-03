@@ -1,0 +1,37 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "value": {
+            "type": "psi:magipsi_enabled"
+          },
+          "type": "forge:not"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "pattern": [
+          "PGP",
+          " I ",
+          " I "
+        ],
+        "key": {
+          "P": {
+            "tag": "forge:ingots/psimetal"
+          },
+          "G": {
+            "tag": "forge:gems/psigem"
+          },
+          "I": {
+            "tag": "forge:ingots/iron"
+          }
+        },
+        "result": {
+          "item": "psi:psimetal_pickaxe"
+        }
+      }
+    }
+  ]
+}

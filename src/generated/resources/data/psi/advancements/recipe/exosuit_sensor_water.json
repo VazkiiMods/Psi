@@ -1,0 +1,46 @@
+{
+  "advancements": [
+    {
+      "conditions": [
+        {
+          "value": {
+            "type": "psi:magipsi_enabled"
+          },
+          "type": "forge:not"
+        }
+      ],
+      "advancement": {
+        "parent": "minecraft:recipes/root",
+        "rewards": {
+          "recipes": [
+            "psi:exosuit_sensor_water"
+          ]
+        },
+        "criteria": {
+          "has_psimetal": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+              "items": [
+                {
+                  "tag": "forge:ingots/psimetal"
+                }
+              ]
+            }
+          },
+          "has_the_recipe": {
+            "trigger": "minecraft:recipe_unlocked",
+            "conditions": {
+              "recipe": "psi:exosuit_sensor_water"
+            }
+          }
+        },
+        "requirements": [
+          [
+            "has_psimetal",
+            "has_the_recipe"
+          ]
+        ]
+      }
+    }
+  ]
+}

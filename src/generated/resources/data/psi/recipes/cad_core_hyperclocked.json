@@ -1,0 +1,37 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "value": {
+            "type": "psi:magipsi_enabled"
+          },
+          "type": "forge:not"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "pattern": [
+          " G ",
+          "IDI",
+          " G "
+        ],
+        "key": {
+          "I": {
+            "tag": "forge:ingots/psimetal"
+          },
+          "D": {
+            "tag": "forge:dusts/redstone"
+          },
+          "G": {
+            "tag": "forge:gems/psigem"
+          }
+        },
+        "result": {
+          "item": "psi:cad_core_hyperclocked"
+        }
+      }
+    }
+  ]
+}

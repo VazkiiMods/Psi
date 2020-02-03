@@ -1,0 +1,46 @@
+{
+  "advancements": [
+    {
+      "conditions": [
+        {
+          "value": {
+            "type": "psi:magipsi_enabled"
+          },
+          "type": "forge:not"
+        }
+      ],
+      "advancement": {
+        "parent": "minecraft:recipes/root",
+        "rewards": {
+          "recipes": [
+            "psi:cad_colorizer_rainbow"
+          ]
+        },
+        "criteria": {
+          "has_psidust": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+              "items": [
+                {
+                  "tag": "psi:psidust"
+                }
+              ]
+            }
+          },
+          "has_the_recipe": {
+            "trigger": "minecraft:recipe_unlocked",
+            "conditions": {
+              "recipe": "psi:cad_colorizer_rainbow"
+            }
+          }
+        },
+        "requirements": [
+          [
+            "has_psidust",
+            "has_the_recipe"
+          ]
+        ]
+      }
+    }
+  ]
+}

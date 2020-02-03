@@ -1,0 +1,37 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "value": {
+            "type": "psi:magipsi_enabled"
+          },
+          "type": "forge:not"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "pattern": [
+          "I",
+          "D",
+          "G"
+        ],
+        "key": {
+          "I": {
+            "tag": "forge:ingots/iron"
+          },
+          "D": {
+            "tag": "forge:gems/psigem"
+          },
+          "G": {
+            "tag": "forge:ingots/gold"
+          }
+        },
+        "result": {
+          "item": "psi:cad_battery_ultradense"
+        }
+      }
+    }
+  ]
+}

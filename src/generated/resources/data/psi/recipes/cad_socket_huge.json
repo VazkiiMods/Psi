@@ -1,0 +1,36 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "value": {
+            "type": "psi:magipsi_enabled"
+          },
+          "type": "forge:not"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "pattern": [
+          "DI ",
+          "IG "
+        ],
+        "key": {
+          "I": {
+            "tag": "forge:ingots/psimetal"
+          },
+          "D": {
+            "tag": "forge:dusts/glowstone"
+          },
+          "G": {
+            "tag": "forge:gems/psigem"
+          }
+        },
+        "result": {
+          "item": "psi:cad_socket_huge"
+        }
+      }
+    }
+  ]
+}

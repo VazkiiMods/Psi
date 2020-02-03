@@ -1,0 +1,46 @@
+{
+  "advancements": [
+    {
+      "conditions": [
+        {
+          "value": {
+            "type": "psi:magipsi_enabled"
+          },
+          "type": "forge:not"
+        }
+      ],
+      "advancement": {
+        "parent": "minecraft:recipes/root",
+        "rewards": {
+          "recipes": [
+            "psi:cad_assembly_iron"
+          ]
+        },
+        "criteria": {
+          "has_iron": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+              "items": [
+                {
+                  "tag": "forge:ingots/iron"
+                }
+              ]
+            }
+          },
+          "has_the_recipe": {
+            "trigger": "minecraft:recipe_unlocked",
+            "conditions": {
+              "recipe": "psi:cad_assembly_iron"
+            }
+          }
+        },
+        "requirements": [
+          [
+            "has_iron",
+            "has_the_recipe"
+          ]
+        ]
+      }
+    }
+  ]
+}

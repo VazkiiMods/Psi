@@ -1,0 +1,50 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "value": {
+            "type": "psi:magipsi_enabled"
+          },
+          "type": "forge:not"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shapeless",
+        "ingredients": [
+          {
+            "item": "psi:psimetal"
+          },
+          {
+            "item": "psi:psimetal"
+          },
+          {
+            "item": "psi:psimetal"
+          },
+          {
+            "item": "psi:psimetal"
+          },
+          {
+            "item": "psi:psimetal"
+          },
+          {
+            "item": "psi:psimetal"
+          },
+          {
+            "item": "psi:psimetal"
+          },
+          {
+            "item": "psi:psimetal"
+          },
+          {
+            "item": "psi:psimetal"
+          }
+        ],
+        "result": {
+          "item": "psi:psimetal_block"
+        }
+      }
+    }
+  ]
+}
