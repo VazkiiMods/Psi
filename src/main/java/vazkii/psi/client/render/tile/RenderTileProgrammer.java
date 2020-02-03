@@ -46,10 +46,13 @@ public class RenderTileProgrammer extends TileEntityRenderer<TileProgrammer> {
             RenderSystem.disableLighting();
             RenderSystem.disableCull();
 
+
            /* float brightnessX = OpenGlHelper.lastBrightnessX;
             float brightnessY = OpenGlHelper.lastBrightnessY;
             if (!Psi.magical)
                 OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 0xf0, 0xf0);*/
+            if (!Psi.magical)
+                Minecraft.getInstance().gameRenderer.getLightmapTextureManager().enableLightmap();
 
 
             ms.translate(x, y + 1.62F, z);
@@ -109,6 +112,8 @@ public class RenderTileProgrammer extends TileEntityRenderer<TileProgrammer> {
 
             /*if (!Psi.magical)
                 OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, brightnessX, brightnessY);*/
+            if (!Psi.magical)
+                Minecraft.getInstance().gameRenderer.getLightmapTextureManager().disableLightmap();
             RenderSystem.enableLighting();
             RenderSystem.enableCull();
 

@@ -84,6 +84,7 @@ public class RenderSpellCircle extends EntityRenderer<EntitySpellCircle> {
 		float lastBrightnessY = OpenGlHelper.lastBrightnessY;
 
 		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 0xf0, 0xf0);*/
+		Minecraft.getInstance().gameRenderer.getLightmapTextureManager().enableLightmap();
 
 
 		int r = PsiRenderHelper.r(color);
@@ -121,6 +122,8 @@ public class RenderSpellCircle extends EntityRenderer<EntitySpellCircle> {
 
 			ms.translate(0, 0, -0.5);
 		}
+
+		Minecraft.getInstance().gameRenderer.getLightmapTextureManager().disableLightmap();
 
 		//OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lastBrightnessX, lastBrightnessY);
 		RenderSystem.enableCull();
