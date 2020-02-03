@@ -6,20 +6,26 @@ import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.lib.ModTags;
 
 public class ItemTagProvider extends ItemTagsProvider {
-    public ItemTagProvider(DataGenerator p_i48255_1_) {
-        super(p_i48255_1_);
+    public ItemTagProvider(DataGenerator generator) {
+        super(generator);
     }
 
     @Override
     protected void registerTags() {
-        getBuilder(ModTags.DUST_PSI).add(ModItems.psidust);
-        getBuilder(ModTags.INGOT_PSI).add(ModItems.psimetal);
-        getBuilder(ModTags.GEM_PSI).add(ModItems.psigem);
-        getBuilder(ModTags.INGOT_EBONY_PSI).add(ModItems.ebonyPsimetal);
-        getBuilder(ModTags.INGOT_IVORY_PSI).add(ModItems.ivoryPsimetal);
-        getBuilder(ModTags.SUBSTANCE_EBONY).add(ModItems.ebonySubstance);
-        getBuilder(ModTags.SUBSTANCE_IVORY).add(ModItems.ivorySubstance);
-
+        getBuilder(ModTags.PSIDUST).add(ModItems.psidust);
+        getBuilder(ModTags.EBONY_SUBSTANCE).add(ModItems.ebonySubstance);
+        getBuilder(ModTags.IVORY_SUBSTANCE).add(ModItems.ivorySubstance);
+        
+        getBuilder(ModTags.INGOT_PSIMETAL).add(ModItems.psimetal);
+        copy(ModTags.Blocks.BLOCK_PSIMETAL, ModTags.BLOCK_PSIMETAL);
+        
+        getBuilder(ModTags.GEM_PSIGEM).add(ModItems.psigem);
+        copy(ModTags.Blocks.BLOCK_PSIGEM, ModTags.BLOCK_PSIGEM);
+        
+        getBuilder(ModTags.INGOT_EBONY_PSIMETAL).add(ModItems.ebonyPsimetal);
+        copy(ModTags.Blocks.BLOCK_EBONY_PSIMETAL, ModTags.BLOCK_EBONY_PSIMETAL);
+        getBuilder(ModTags.INGOT_IVORY_PSIMETAL).add(ModItems.ivoryPsimetal);
+        copy(ModTags.Blocks.BLOCK_IVORY_PSIMETAL, ModTags.BLOCK_IVORY_PSIMETAL);
     }
 
     @Override

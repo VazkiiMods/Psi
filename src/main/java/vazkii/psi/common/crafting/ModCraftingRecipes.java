@@ -13,8 +13,10 @@ package vazkii.psi.common.crafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.Tags;
+import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -29,6 +31,7 @@ import vazkii.psi.common.crafting.recipe.SensorRemoveRecipe;
 import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.lib.LibPieceNames;
+import vazkii.psi.data.MagicalPsiCondition;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, modid = LibMisc.MOD_ID)
 public class ModCraftingRecipes {
@@ -43,6 +46,8 @@ public class ModCraftingRecipes {
 			name(SensorAttachRecipe.SERIALIZER, "sensor_attach"),
 			name(SensorRemoveRecipe.SERIALIZER, "sensor_remove")
 		);
+
+		CraftingHelper.register(MagicalPsiCondition.Serializer.INSTANCE);
 	}
 
 	private static <T extends IForgeRegistryEntry<? extends T>> T name(T entry, String name) {
@@ -56,9 +61,9 @@ public class ModCraftingRecipes {
 				new ItemStack(ModItems.psimetal),
 				new ItemStack(ModItems.cadAssemblyIron));
 		PsiAPI.registerTrickRecipe(LibPieceNames.TRICK_GREATER_INFUSION, Ingredient.fromTag(Tags.Items.GEMS_DIAMOND),
-				new ItemStack(ModItems.psimetal),
+				new ItemStack(ModItems.psigem),
 				new ItemStack(ModItems.cadAssemblyPsimetal));
-		PsiAPI.registerTrickRecipe(LibPieceNames.TRICK_EBONY_IVORY, Ingredient.fromTag(Tags.Items.ORES_COAL),
+		PsiAPI.registerTrickRecipe(LibPieceNames.TRICK_EBONY_IVORY, Ingredient.fromTag(ItemTags.COALS),
 				new ItemStack(ModItems.ebonySubstance),
 				new ItemStack(ModItems.cadAssemblyPsimetal));
 		PsiAPI.registerTrickRecipe(LibPieceNames.TRICK_EBONY_IVORY, Ingredient.fromTag(Tags.Items.GEMS_QUARTZ),
