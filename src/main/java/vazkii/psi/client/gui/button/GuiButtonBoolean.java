@@ -24,6 +24,11 @@ public class GuiButtonBoolean extends Button {
 		this.yes = yes;
 	}
 
+	public GuiButtonBoolean(int par2, int par3, boolean yes, Button.IPressable pressable) {
+		super(par2, par3, 12, 11, "", pressable);
+		this.yes = yes;
+	}
+
 	@Override
 	public void renderButton(int par2, int par3, float pTicks) {
 		super.renderButton(par2, par2, pTicks);

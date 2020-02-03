@@ -10,14 +10,22 @@
  */
 package vazkii.psi.client.gui;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.StringTextComponent;
+import vazkii.psi.api.internal.TooltipHelper;
+import vazkii.psi.client.core.helper.TextHelper;
+import vazkii.psi.client.gui.button.GuiButtonBoolean;
+import vazkii.psi.common.core.handler.PersistencyHandler;
+import vazkii.psi.common.core.handler.PlayerDataHandler;
+import vazkii.psi.common.lib.LibMisc;
+import vazkii.psi.common.lib.LibResources;
+import vazkii.psi.common.network.MessageRegister;
+import vazkii.psi.common.network.message.MessageSkipToLevel;
 
 public class GuiIntroduction extends Screen {
-    protected GuiIntroduction(ITextComponent p_i51108_1_) {
-        super(p_i51108_1_);
-    }
-	/*
+
 	public static final ResourceLocation texture = new ResourceLocation(LibResources.GUI_INTRODUCTION);
 
 	int xSize, ySize, left, top;
@@ -29,7 +37,8 @@ public class GuiIntroduction extends Screen {
 	}
 	
 	public GuiIntroduction(boolean ret) {
-		returnToLeveling = ret;
+        super(new StringTextComponent(""));
+        returnToLeveling = ret;
 	}
 
 	@Override
@@ -42,51 +51,44 @@ public class GuiIntroduction extends Screen {
 		skip = PersistencyHandler.persistentLevel > 0;
 
 		if(skip) {
-			addButton(new GuiButtonBoolean(width / 2 - 32, top + 145, true));
-			addButton(new GuiButtonBoolean(width / 2 + 20, top + 145, false));
-		}
+            addButton(new GuiButtonBoolean(width / 2 - 32, top + 145, true, button -> {
+                MessageSkipToLevel message = new MessageSkipToLevel(PersistencyHandler.persistentLevel);
+                MessageRegister.HANDLER.sendToServer(message);
+
+                PlayerDataHandler.get(minecraft.player).skipToLevel(PersistencyHandler.persistentLevel);
+                minecraft.displayGuiScreen(new GuiLeveling());
+            }));
+            addButton(new GuiButtonBoolean(width / 2 + 20, top + 145, false, button -> {
+                if (returnToLeveling)
+                    minecraft.displayGuiScreen(new GuiLeveling(true));
+
+                skip = false;
+                buttons.clear();
+            }));
+        }
 	}
 
 	@Override
 	public void render(int mouseX, int mouseY, float partialTicks) {
-		drawDefaultBackground();
+        renderBackground();
 
-		GlStateManager.color3f(1F, 1F, 1F);
-		mc.getTextureManager().bindTexture(texture);
-		blit(left, top, 0, 0, xSize, ySize);
+        RenderSystem.color3f(1F, 1F, 1F);
+        minecraft.getTextureManager().bindTexture(texture);
+        blit(left, top, 0, 0, xSize, ySize);
 
-		super.render(mouseX, mouseY, partialTicks);
+        super.render(mouseX, mouseY, partialTicks);
 
-		if(LibMisc.BETA_TESTING) {
-			String betaTest = TooltipHelper.local("psimisc.wip");
-			minecraft.fontRenderer.drawStringWithShadow(betaTest, left + xSize / 2f - mc.fontRenderer.getStringWidth(betaTest) / 2f, top - 12, 0xFFFFFF);
-		}
+        if (LibMisc.BETA_TESTING) {
+            String betaTest = TooltipHelper.local("psimisc.wip").toString();
+            minecraft.fontRenderer.drawStringWithShadow(betaTest, left + xSize / 2f - minecraft.fontRenderer.getStringWidth(betaTest) / 2f, top - 12, 0xFFFFFF);
+        }
 
-		TextHelper.renderText(width / 2 - 120, height / 2 - 30, 245, skip ? "psi.levelskip" : "psi.introduction", false, true, PersistencyHandler.persistentLevel);
+        TextHelper.renderText(width / 2 - 120, height / 2 - 30, 245, skip ? "psi.levelskip" : "psi.introduction", false, true, PersistencyHandler.persistentLevel);
 		if(skip) {
-			String loadPrompt = TooltipHelper.local("psimisc.loadPrompt");
-			mc.fontRenderer.drawStringWithShadow(loadPrompt, left + xSize / 2f - mc.fontRenderer.getStringWidth(loadPrompt) / 2f, top + 133, 0xFFFFFF);
-		}
+            String loadPrompt = TooltipHelper.local("psimisc.loadPrompt").toString();
+            minecraft.fontRenderer.drawStringWithShadow(loadPrompt, left + xSize / 2f - minecraft.fontRenderer.getStringWidth(loadPrompt) / 2f, top + 133, 0xFFFFFF);
+        }
 	}
 
-	@Override
-	protected void actionPerformed(Button button) {
-		if(button instanceof GuiButtonBoolean) {
-			GuiButtonBoolean bool = (GuiButtonBoolean) button;
-			if(bool.yes) {
-				MessageSkipToLevel message = new MessageSkipToLevel(PersistencyHandler.persistentLevel);
-				NetworkHandler.INSTANCE.sendToServer(message);
-
-				PlayerDataHandler.get(mc.player).skipToLevel(PersistencyHandler.persistentLevel);
-				mc.displayGuiScreen(new GuiLeveling());
-			} else {
-				if(returnToLeveling)
-					mc.displayGuiScreen(new GuiLeveling(true));
-				
-				skip = false;
-				buttonList.clear();
-			}
-		}
-	}*/
 
 }
