@@ -39,8 +39,6 @@ public class LibResources {
 	public static final String MODEL_PSIMETAL_EXOSUIT = PREFIX_MODEL + "psimetal_exosuit.png";
 	public static final String MODEL_PSIMETAL_EXOSUIT_SENSOR = PREFIX_MODEL + "psimetal_exosuit_sensor.png";
 
-	public static final String MISC_PARTICLES = PREFIX_MISC + "particles.png";
-	public static final String MISC_WISP_LARGE = PREFIX_MISC + "wisp_large.png";
 	public static final String MISC_SPELL_CIRCLE = PREFIX_MISC + "spell_circle%d.png";
 
 }

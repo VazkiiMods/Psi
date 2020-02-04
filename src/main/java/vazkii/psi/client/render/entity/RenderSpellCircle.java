@@ -12,26 +12,40 @@ package vazkii.psi.client.render.entity;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.Matrix4f;
+import net.minecraft.client.renderer.RenderState;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.opengl.GL11;
 import vazkii.psi.api.cad.ICADColorizer;
 import vazkii.psi.api.internal.PsiRenderHelper;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.entity.EntitySpellCircle;
+import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.lib.LibResources;
 
 public class RenderSpellCircle extends EntityRenderer<EntitySpellCircle> {
 
-	private static final ResourceLocation[] layers = new ResourceLocation[] {
-			new ResourceLocation(String.format(LibResources.MISC_SPELL_CIRCLE, 0)),
-			new ResourceLocation(String.format(LibResources.MISC_SPELL_CIRCLE, 1)),
-			new ResourceLocation(String.format(LibResources.MISC_SPELL_CIRCLE, 2)),
-	};
+	private static final RenderType[] LAYERS = new RenderType[3];
+	static {
+		for (int i = 0; i < LAYERS.length; i++) {
+			ResourceLocation texture = new ResourceLocation(String.format(LibResources.MISC_SPELL_CIRCLE, i));
+			RenderType.State glState = RenderType.State.builder().texture(new RenderState.TextureState(texture, false, false))
+					.cull(new RenderState.CullState(false))
+					.lightmap(new RenderState.LightmapState(true))
+					.build(true);
+			LAYERS[i] = RenderType.of(LibMisc.MOD_ID + ":spell_circle_" + i, DefaultVertexFormats.POSITION_COLOR_TEXTURE_LIGHT, GL11.GL_QUADS, 64, false, false, glState);
+		}
+	}
 
 	private static final float BRIGHTNESS_FACTOR = 0.7F;
 
@@ -52,17 +66,13 @@ public class RenderSpellCircle extends EntityRenderer<EntitySpellCircle> {
 		float s1 = Math.min(1F, alive / EntitySpellCircle.CAST_DELAY);
 		if (alive > EntitySpellCircle.LIVE_TIME - EntitySpellCircle.CAST_DELAY)
 			s1 = 1F - Math.min(1F, Math.max(0, alive - (EntitySpellCircle.LIVE_TIME - EntitySpellCircle.CAST_DELAY)) / EntitySpellCircle.CAST_DELAY);
-		renderSpellCircle(alive, s1, entity.getX(), entity.getY(), entity.getZ(), colorVal, ms);
+		renderSpellCircle(alive, s1, 1, entity.getX(), entity.getY(), entity.getZ(), 0, 1, 0, colorVal, ms, buffers);
 		ms.pop();
 	}
 
-	public static void renderSpellCircle(float alive, float scale, double x, double y, double z, int color, MatrixStack ms) {
-		renderSpellCircle(alive, scale, 1, x, y, z, 0, 1, 0, color, ms);
-	}
+	public static void renderSpellCircle(float alive, float scale, float horizontalScale, double x, double y, double z, float xDir, float yDir, float zDir, int color, MatrixStack ms, IRenderTypeBuffer buffers) {
 
-	public static void renderSpellCircle(float alive, float scale, float horizontalScale, double x, double y, double z, float xDir, float yDir, float zDir, int color, MatrixStack ms) {
-
-		RenderSystem.pushMatrix();
+		ms.push();
 		double ratio = 0.0625 * horizontalScale;
 		ms.translate(x, y, z);
 
@@ -70,28 +80,18 @@ public class RenderSpellCircle extends EntityRenderer<EntitySpellCircle> {
 		zDir /= mag;
 
 		if (zDir == -1)
-			RenderSystem.rotatef(180, 1, 0, 0);
+			ms.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(180));
 		else if (zDir != 1) {
-			RenderSystem.rotatef((float) (Math.acos(zDir) * 180 / Math.PI),
-					-yDir / mag, xDir / mag, 0);
+			ms.multiply(new Vector3f(-yDir / mag, xDir / mag, 0).getDegreesQuaternion((float) (Math.acos(zDir) * 180 / Math.PI)));
 		}
 		ms.translate(0, 0, 0.1);
 		ms.scale((float) ratio * scale, (float) ratio * scale, (float) ratio);
-
-		RenderSystem.disableCull();
-		RenderSystem.disableLighting();
-		/*float lastBrightnessX = OpenGlHelper.lastBrightnessX;
-		float lastBrightnessY = OpenGlHelper.lastBrightnessY;
-
-		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 0xf0, 0xf0);*/
-		Minecraft.getInstance().gameRenderer.getLightmapTextureManager().enableLightmap();
-
 
 		int r = PsiRenderHelper.r(color);
 		int g = PsiRenderHelper.g(color);
 		int b = PsiRenderHelper.b(color);
 
-		for (int i = 0; i < layers.length; i++) {
+		for (int i = 0; i < LAYERS.length; i++) {
 			int rValue = r;
 			int gValue = g;
 			int bValue = b;
@@ -111,24 +111,22 @@ public class RenderSpellCircle extends EntityRenderer<EntitySpellCircle> {
 				bValue = (int) Math.min(bValue / BRIGHTNESS_FACTOR, 0xFF);
 			}
 
-			RenderSystem.pushMatrix();
-			RenderSystem.rotatef(i == 0 ? -alive : alive, 0, 0, 1);
+			ms.push();
+			ms.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(i == 0 ? -alive : alive));
 
-			RenderSystem.color3f(rValue / 255f, gValue / 255f, bValue / 255f);
-
-			Minecraft.getInstance().textureManager.bindTexture(layers[i]);
-			AbstractGui.blit(-32, -32, 0, 0, 64, 64, 64, 64);
-			RenderSystem.popMatrix();
+			IVertexBuilder buffer = buffers.getBuffer(LAYERS[i]);
+			Matrix4f mat = ms.peek().getModel();
+			int fullbright = 0xF000F0;
+			buffer.vertex(mat, -32, 32, 0).color(rValue, gValue, bValue, 255).texture(0, 1).light(fullbright).endVertex();
+			buffer.vertex(mat, 32, 32, 0).color(rValue, gValue, bValue, 255).texture(1, 1).light(fullbright).endVertex();
+			buffer.vertex(mat, 32, -32, 0).color(rValue, gValue, bValue, 255).texture(1, 0).light(fullbright).endVertex();
+			buffer.vertex(mat, -32, -32, 0).color(rValue, gValue, bValue, 255).texture(0, 0).light(fullbright).endVertex();
+			ms.pop();
 
 			ms.translate(0, 0, -0.5);
 		}
 
-		Minecraft.getInstance().gameRenderer.getLightmapTextureManager().disableLightmap();
-
-		//OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lastBrightnessX, lastBrightnessY);
-		RenderSystem.enableCull();
-		RenderSystem.enableLighting();
-		RenderSystem.popMatrix();
+		ms.pop();
 	}
 
 	@Override
