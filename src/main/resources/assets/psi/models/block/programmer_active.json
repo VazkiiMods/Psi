@@ -1,0 +1,7 @@
+{
+  "parent": "psi:block/programmer_shape",
+  "textures": {
+    "0": "psi:blocks/programmer_side",
+    "1": "psi:blocks/programmer_top"
+  }
+}

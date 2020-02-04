@@ -18,6 +18,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.INamedContainerProvider;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
@@ -51,7 +52,7 @@ public class BlockProgrammer extends HorizontalBlock {
 	public static final BooleanProperty ENABLED = BooleanProperty.create("enabled");
 
 	public BlockProgrammer() {
-		super(Block.Properties.create(Material.IRON).hardnessAndResistance(5, 10).sound(SoundType.METAL));
+		super(Block.Properties.create(Material.IRON).hardnessAndResistance(5, 10).sound(SoundType.METAL).nonOpaque());
 		setRegistryName(LibMisc.MOD_ID, LibBlockNames.PROGRAMMER);
 		setDefaultState(getStateContainer().getBaseState().with(HORIZONTAL_FACING, Direction.NORTH).with(ENABLED, false));
 	}
@@ -118,6 +119,12 @@ public class BlockProgrammer extends HorizontalBlock {
 	@Override
 	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
 		builder.add(HORIZONTAL_FACING, ENABLED);
+	}
+
+	@Nullable
+	@Override
+	public BlockState getStateForPlacement(BlockItemUseContext ctx) {
+		return getDefaultState().with(HORIZONTAL_FACING, ctx.getNearestLookingDirection().getOpposite());
 	}
 
 	@Override
