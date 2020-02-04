@@ -39,7 +39,7 @@ public class ModelCAD implements IBakedModel {
             ICAD cad = (ICAD) stack.getItem();
             ItemStack assemblyStack = cad.getComponentInSlot(stack, EnumCADComponent.ASSEMBLY);
             if (assemblyStack.isEmpty()) {
-                return original;
+                return Minecraft.getInstance().getModelManager().getMissingModel();
             }
             ResourceLocation cadModel = ((ICADAssembly) assemblyStack.getItem()).getCADModel(assemblyStack, stack);
             return Minecraft.getInstance().getModelManager().getModel(cadModel);
