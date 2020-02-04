@@ -46,10 +46,10 @@ public class CommandPsiLearn {
                 Commands.literal("psi-learn")
                         .requires(s -> s.hasPermissionLevel(2))
                         .then(Commands.argument("group", StringArgumentType.string())
-                                .suggests((ctx, sb) -> ISuggestionProvider.suggest(getGroups().stream(), sb)))
-                        .executes(ctx -> run(ctx, true))
-                        .then(Commands.argument("player", EntityArgument.player()))
-                        .executes(ctx -> run(ctx, false))
+                                .suggests((ctx, sb) -> ISuggestionProvider.suggest(getGroups().stream(), sb))
+                                .executes(ctx -> run(ctx, true))
+                                .then(Commands.argument("player", EntityArgument.player())
+                                     .executes(ctx -> run (ctx, false))))
         );
     }
 
@@ -159,19 +159,8 @@ public class CommandPsiLearn {
         return "command." + LibMisc.MOD_ID + ".learn";
     }
 
-
-    @Nonnull
-    public String getUsage(@Nonnull CommandSource sender) {
-        return localizationKey() + ".usage";
-    }
-
     protected static void notify(CommandSource sender, String result, Object... format) {
         sender.sendFeedback(new TranslationTextComponent(localizationKey() + "." + result, format), false);
-    }
-
-    protected void wrongUsage(CommandSource sender) throws CommandSyntaxException {
-        Message message = new TranslationTextComponent(getUsage(sender));
-        throw new CommandSyntaxException(new SimpleCommandExceptionType(message), message);
     }
 
     protected static void error(String result, Object... format) throws CommandException {
