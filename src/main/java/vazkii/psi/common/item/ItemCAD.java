@@ -545,19 +545,19 @@ public class ItemCAD extends BasicItem implements ICAD, ISpellSettable, IItemCol
 
 
 		// Psimetal CAD
-		subItems.add(makeCAD(new ItemStack(ModItems.psimetal),
+		subItems.add(makeCAD(new ItemStack(ModItems.cadAssemblyPsimetal),
 				new ItemStack(ModItems.cadCoreOverclocked),
 				new ItemStack(ModItems.cadSocketSignaling),
 				new ItemStack(ModItems.cadBatteryExtended)));
 
 		// Ebony Psimetal CAD
-		subItems.add(makeCAD(new ItemStack(ModItems.ebonyPsimetal),
+		subItems.add(makeCAD(new ItemStack(ModItems.cadAssemblyEbony),
 				new ItemStack(ModItems.cadCoreHyperClocked),
 				new ItemStack(ModItems.cadSocketTransmissive),
 				new ItemStack(ModItems.cadBatteryUltradense)));
 
 		// Ivory Psimetal CAD
-		subItems.add(makeCAD(new ItemStack(ModItems.ivoryPsimetal),
+		subItems.add(makeCAD(new ItemStack(ModItems.cadAssemblyIvory),
 				new ItemStack(ModItems.cadCoreHyperClocked),
 				new ItemStack(ModItems.cadSocketTransmissive),
 				new ItemStack(ModItems.cadBatteryUltradense)));
