@@ -41,7 +41,7 @@ public class PieceErrorSuppressor extends SpellPiece {
 
 	@Override
 	public Class<?> getEvaluationType() {
-		return Null.class;
+		return Void.class;
 	}
 
 	@Override

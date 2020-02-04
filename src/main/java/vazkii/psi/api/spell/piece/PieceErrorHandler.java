@@ -48,7 +48,7 @@ public abstract class PieceErrorHandler extends SpellPiece implements IErrorCatc
 
 	@Override
 	public Class<?> getEvaluationType() {
-		return Null.class;
+		return Void.class;
 	}
 
 	protected abstract String paramName();

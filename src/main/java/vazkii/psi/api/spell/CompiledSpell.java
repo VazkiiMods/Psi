@@ -15,7 +15,6 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.internal.IPlayerData;
-import vazkii.psi.api.spell.SpellPiece.Null;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -115,7 +114,7 @@ public class CompiledSpell {
 				Object o = piece.execute(context);
 
 				Class<?> eval = piece.getEvaluationType();
-				if (eval != null && eval != Null.class)
+				if (eval != null && eval != Void.class)
 					context.evaluatedObjects[piece.x][piece.y] = o;
 			} catch (SpellRuntimeException exception) {
 				if (errorHandlers.containsKey(piece)) {
@@ -143,7 +142,7 @@ public class CompiledSpell {
 			boolean handled = handler.catchException(piece, context, exception);
 			if (handled) {
 				Class<?> eval = piece.getEvaluationType();
-				if (eval != null && eval != Null.class)
+				if (eval != null && eval != Void.class)
 					context.evaluatedObjects[piece.x][piece.y] =
 							handler.supplyReplacementValue(piece, context, exception);
 			}

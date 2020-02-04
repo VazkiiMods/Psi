@@ -38,7 +38,7 @@ public abstract class PieceTrick extends SpellPiece {
 
 	@Override
 	public Class<?> getEvaluationType() {
-		return Null.class;
+		return Void.class;
 	}
 
 	@Override

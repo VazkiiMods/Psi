@@ -81,7 +81,7 @@ public abstract class SpellPiece {
 	 * linked to it will read. For example, a number sum operator will return
 	 * Double.class, whereas a vector sum operator will return Vector3.class.<br>
 	 * If you want this piece to not evaluate to anything (for Tricks, for example),
-	 * return {@link Null}.class.
+	 * return {@link Void}.class.
 	 */
 	public abstract Class<?> getEvaluationType();
 
@@ -430,10 +430,5 @@ public abstract class SpellPiece {
         if (!comment.isEmpty())
             cmp.putString(TAG_COMMENT, comment);
 	}
-
-	/**
-	 * Empty helper class for use with evaluation types when none is present.
-	 */
-	public static class Null { }
 
 }
