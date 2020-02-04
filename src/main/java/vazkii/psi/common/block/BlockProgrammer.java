@@ -124,7 +124,7 @@ public class BlockProgrammer extends HorizontalBlock {
 	@Nullable
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext ctx) {
-		return getDefaultState().with(HORIZONTAL_FACING, ctx.getNearestLookingDirection().getOpposite());
+		return getDefaultState().with(HORIZONTAL_FACING, ctx.getPlacementHorizontalFacing().getOpposite());
 	}
 
 	@Override

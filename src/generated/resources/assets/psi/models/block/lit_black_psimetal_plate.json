@@ -1,0 +1,8 @@
+{
+  "parent": "block/cube_bottom_top",
+  "textures": {
+    "side": "psi:blocks/psimetal_plate_black_light",
+    "bottom": "psi:blocks/psimetal_plate_black",
+    "top": "psi:blocks/psimetal_plate_black"
+  }
+}

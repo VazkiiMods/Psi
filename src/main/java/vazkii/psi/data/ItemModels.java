@@ -1,0 +1,42 @@
+package vazkii.psi.data;
+
+import net.minecraft.data.DataGenerator;
+import net.minecraft.item.Item;
+import net.minecraftforge.client.model.generators.ExistingFileHelper;
+import net.minecraftforge.client.model.generators.ItemModelProvider;
+import net.minecraftforge.client.model.generators.ModelFile;
+import vazkii.psi.common.Psi;
+import vazkii.psi.common.block.base.ModBlocks;
+import vazkii.psi.common.lib.LibMisc;
+
+import javax.annotation.Nonnull;
+
+public class ItemModels extends ItemModelProvider {
+	public ItemModels(DataGenerator generator, ExistingFileHelper existingFileHelper) {
+		super(generator, LibMisc.MOD_ID, existingFileHelper);
+	}
+
+	private void pointToBlock(Item item) {
+		String name = item.getRegistryName().getPath();
+		getBuilder(name).parent(new ModelFile.UncheckedModelFile(Psi.location("block/" + name)));
+	}
+
+	@Override
+	protected void registerModels() {
+		pointToBlock(ModBlocks.psidustBlock.asItem());
+		pointToBlock(ModBlocks.psimetalBlock.asItem());
+		pointToBlock(ModBlocks.psigemBlock.asItem());
+		pointToBlock(ModBlocks.psimetalPlateBlack.asItem());
+		pointToBlock(ModBlocks.psimetalPlateWhite.asItem());
+		pointToBlock(ModBlocks.psimetalPlateBlackLight.asItem());
+		pointToBlock(ModBlocks.psimetalPlateWhiteLight.asItem());
+		pointToBlock(ModBlocks.psimetalEbony.asItem());
+		pointToBlock(ModBlocks.psimetalIvory.asItem());
+	}
+
+	@Nonnull
+	@Override
+	public String getName() {
+		return "Psi item models";
+	}
+}

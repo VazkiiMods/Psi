@@ -1,5 +1,5 @@
 {
-	"parent": "psi:item/_standard_tool",
+	"parent": "minecraft:item/handheld",
 	"textures": { 
 		"layer0": "psi:items/psimetal_shovel"
 	}

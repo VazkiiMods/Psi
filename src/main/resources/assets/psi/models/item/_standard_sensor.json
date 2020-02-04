@@ -1,5 +1,5 @@
 {
-    "parent": "psi:item/_standard_item",
+    "parent": "minecraft:item/generated",
     "textures": { 
         "layer0": "psi:items/exosuit_sensor",
         "layer1": "psi:items/exosuit_sensor_overlay"

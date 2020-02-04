@@ -1,5 +1,5 @@
 {
-	"parent": "psi:item/_standard_item",
+	"parent": "minecraft:item/generated",
 	"textures": { 
 		"layer0": "psi:items/spell_bullet_charge_active"
 	}
