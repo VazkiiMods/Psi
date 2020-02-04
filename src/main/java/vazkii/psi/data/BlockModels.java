@@ -28,6 +28,7 @@ public class BlockModels extends BlockStateProvider {
 				location("blocks/psimetal_plate_white_light"), location("blocks/psimetal_plate_white"), location("blocks/psimetal_plate_white")));
 		simpleBlock(ModBlocks.psimetalEbony, models().cubeAll(ModBlocks.psimetalEbony.getRegistryName().getPath(), location("blocks/ebony_psimetal_block")));
 		simpleBlock(ModBlocks.psimetalIvory, models().cubeAll(ModBlocks.psimetalIvory.getRegistryName().getPath(), location("blocks/ivory_psimetal_block")));
+		simpleBlock(ModBlocks.conjured, models().withExistingParent(ModBlocks.conjured.getRegistryName().getPath(), "block/block").texture("particle", location("blocks/empty")));
 	}
 
 	@Nonnull

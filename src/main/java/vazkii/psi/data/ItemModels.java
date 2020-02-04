@@ -32,6 +32,7 @@ public class ItemModels extends ItemModelProvider {
 		pointToBlock(ModBlocks.psimetalPlateWhiteLight.asItem());
 		pointToBlock(ModBlocks.psimetalEbony.asItem());
 		pointToBlock(ModBlocks.psimetalIvory.asItem());
+		pointToBlock(ModBlocks.conjured.asItem());
 	}
 
 	@Nonnull
