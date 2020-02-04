@@ -19,6 +19,7 @@ apply plugin: 'maven'
 ext.configFile = file('build.properties')
 ext.config = parseConfig(configFile)
 
+def mc_version = "1.15.1"
 version = "${config.version}-${config.build_number}"
 group = "vazkii.${config.mod_id}" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = config.mod_name
@@ -36,7 +37,7 @@ minecraft {
     // Use non-default mappings at your own risk. they may not always work.
     // Simply re-run your setup task after changing the mappings to update your workspace.
 
-    mappings channel: "${config.mapping_channel}", version: "${config.mapping_version}"
+    mappings channel: "snapshot", version: "20200120-mixed-1.15.1"
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
     // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
 
@@ -111,11 +112,11 @@ repositories {
 }
 
 dependencies {
-    minecraft group: 'net.minecraftforge', name: 'forge', version: "${config.mc_version}-${config.forge_version}"
+    minecraft group: 'net.minecraftforge', name: 'forge', version: "${mc_version}-30.0.42"
 
-    compile fg.deobf("vazkii.autoreglib:AutoRegLib:${config.arl_version}")
-    compileOnly fg.deobf("mezz.jei:jei-${config.mc_version}:${config.jei_version}:api")
-    runtimeOnly fg.deobf("mezz.jei:jei-${config.mc_version}:${config.jei_version}")
+    compile fg.deobf("vazkii.autoreglib:AutoRegLib:1.5-36.72")
+    compileOnly fg.deobf("mezz.jei:jei-${mc_version}:6.0.0.1:api")
+    runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}:6.0.0.1")
 }
 
 sourceSets.main.resources {
