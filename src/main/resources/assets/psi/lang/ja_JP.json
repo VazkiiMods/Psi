@@ -1,5 +1,4 @@
 {
-  "_comment": "MISC",
 
   "psimisc.shiftForInfo": "&7詳細情報 &bSHIFT&7押し続け",
   "psimisc.componentType": "&a部品種別&7: %s",
@@ -52,14 +51,12 @@
 
   "psi.container.socketable": "socketable",
 
-  "_comment": "SUBTITLES",
   "psi.subtitle.bulletCreate": "スペルが保存されました",
   "psi.subtitle.cadCreate": "CADが組み上がりました",
   "psi.subtitle.spellCast": "CAD実行",
   "psi.subtitle.loopcast": "CAD繰り返し実行",
 
 
-  "_comment": "VERSIONING",
   "psi.versioning.flavour0": "お使いのPsiは最新版ではありません。悲しいね。",
   "psi.versioning.flavour1": "Psiをアップデートしようよ。",
   "psi.versioning.flavour2": "Psiは旧版です。おもしろメッセージを期待した？ざんねん、普通に更新が必要なのなの。ごめんね＞＜;",
@@ -79,7 +76,6 @@
   "psi.versioning.error": "ぐげ！Psiアップデートのダウンロードを試みましたが、問題が発生したようです。psi.vazkii.usがダウンしていますか？",
   "psi.versioning.disabled": "申し訳ありません。 この機能はサーバホストの問題により現在無効になっています。近いうちに復旧するはずです。",
 
-  "_comment": "BLOCK NAMES",
   "block.psi:cad_assembler": "CAD組立機",
   "block.psi:programmer": "魔法構築機",
   "block.psi:psidust_block": "サイダスト ブロック",
@@ -95,7 +91,6 @@
   "block.psi:psimetal_plate_white": "輝く サイメタル プレート",
   "block.psi:psimetal_plate_white_light": "輝く サイメタル 流動板",
 
-  "_comment": "ITEM NAMES",
   "item.psi:psidust": "サイダスト",
   "item.psi:psimetal": "サイメタルの インゴット",
   "item.psi:psigem": "サイジェム",
@@ -180,17 +175,14 @@
   "item.psi:exosuit_sensor_stress": "外装用 ストレスセンサー",
   "item.psi:vector_ruler": "ベクトル定規",
 
-  "_comment": "DEATH MESSAGES",
   "death.attack.psi-overload": "Psiエネルギーを %s 超過した。",
 
-  "_comment": "COMPONENT NAMES",
   "psi.component.assembly": "素体",
   "psi.component.core": "コア",
   "psi.component.socket": "弾倉",
   "psi.component.battery": "バッテリー",
   "psi.component.dye": "着色器",
 
-  "_comment": "CAD STAT NAMES",
   "psi.cadstat.efficiency": "効率",
   "psi.cadstat.potency": "規模",
   "psi.cadstat.complexity": "複雑性",
@@ -199,7 +191,6 @@
   "psi.cadstat.sockets": "装弾数",
   "psi.cadstat.overflow": "容量",
 
-  "_comment": "SPELL STAT NAMES",
   "psi.spellstat.complexity": "複雑性",
   "psi.spellstat.complexity.desc": "ステップ数",
   "psi.spellstat.potency": "規模",
@@ -211,7 +202,6 @@
   "psi.spellstat.bandwidth": "帯域幅",
   "psi.spellstat.bandwidth.desc": "魔法式の幅か高さ(の最大値)",
 
-  "_comment": "BULLET TYPES",
   "psi.bulletType0": "通常",
   "psi.bulletType1": "発射",
   "psi.bulletType2": "ループ",
@@ -220,7 +210,6 @@
   "psi.bulletType5": "チャージ",
   "psi.bulletType6": "地雷",
 
-  "_comment": "EXOSUIT EVENTS",
   "psi.event.none": "(No Event Handler)",
   "psi.event.damage": "&イベント&7: ダメージ",
   "psi.event.tick": "&bイベント&7: tick",
@@ -230,9 +219,6 @@
   "psi.event.onFire": "&bイベント&7: 炎上",
   "psi.event.lowHp": "&bイベント&7: 瀕死",
 
-  "_comment": "PROGRAMMER REFERENCE",
-  "_comment": "%1$s is Ctrl or Cmd, depending on whether you're on windows or mac",
-  "_comment": "spaces are important",
   "psi.programmerReference0": "&bキー設定",
   "psi.programmerReference1": "ピース削除: &bDelete",
   "psi.programmerReference2": "グリッド全削除: &b%1$s-Shift-Delete",
@@ -257,8 +243,6 @@
   "psi.programmerReference21": "後方一致: &b_(名称)",
   "psi.programmerReference22": "Mod名: &b@(名称)",
 
-  "_comment": "SPELl PIECE NAMES",
-  "_comment": "-- SELECTORS",
   "psi.spellpiece.selectorCaster": "取得子: 術者",
   "psi.spellpiece.selectorCaster.desc": "魔法を実行している人を取得します。",
   "psi.spellpiece.selectorFocalPoint": "取得子: 焦点",
@@ -302,7 +286,6 @@
   "psi.spellpiece.selectorEidosChangelog": "取得子: エイドス変更履歴",
   "psi.spellpiece.selectorEidosChangelog.desc": "エイドス変更履歴から位置を取得します。",
 
-  "_comment": "-- OPERATORS",
   "psi.spellpiece.operatorSum": "演算子: 加算",
   "psi.spellpiece.operatorSum.desc": "A + B (+ C)",
   "psi.spellpiece.operatorSubtract": "演算子: 減算",
@@ -400,7 +383,6 @@
   "psi.spellpiece.operatorListRemove": "演算子: リストから削除",
   "psi.spellpiece.operatorListRemove.desc": "リストから対象となるエンティティを削除します。",
 
-  "_comment": "-- CONSTANTS",
   "psi.spellpiece.constantNumber": "定数子: 数値",
   "psi.spellpiece.constantNumber.desc": "このピースを選択した後、値をタイピングしてください。",
   "psi.spellpiece.constantPi": "定数子: Pi",
@@ -410,13 +392,11 @@
   "psi.spellpiece.constantWrapper": "定数子: ラッパー",
   "psi.spellpiece.constantWrapper.desc": "変数の値を、定数としてラップします。",
 
-  "_comment": "-- OTHERS",
   "psi.spellpiece.connector": "コネクタ",
   "psi.spellpiece.connector.desc": "フローを接続します。",
   "psi.spellpiece.errorSuppressor": "エラー抑止",
   "psi.spellpiece.errorSuppressor.desc": "魔法式によって提示されるエラーを非表示にします。",
 
-  "_comment": "-- TRICKS",
   "psi.spellpiece.trickDebug": "作動式: デバッグ",
   "psi.spellpiece.trickDebug.desc": "テスト用。対象を出力します。",
   "psi.spellpiece.trickDelay": "作動式: 休眠",
@@ -508,7 +488,6 @@
   "psi.spellpiece.trickSaveVector": "作動式: ベクトル保存",
   "psi.spellpiece.trickSaveVector.desc": "Vector情報をCADメモリーへ保存します。",
 
-  "_comment": "SPELL PARAMETER NAMES",
   "psi.spellparam.target": "対象",
   "psi.spellparam.number": "数値",
   "psi.spellparam.number1": "数値 A",
@@ -538,7 +517,6 @@
   "psi.spellparam.slot": "スロット",
   "psi.spellparam.base": "底",
 
-  "_comment": "DATA TYPE NAMES(検索の利便性を目的に、このセクションは翻訳しない)",
   "psi.datatype.Null": "None",
   "psi.datatype.Any": "Any",
   "psi.datatype.Double": "Number",
@@ -551,7 +529,6 @@
   "psi.datatype.EntityPlayer": "Entity (Player, Living)",
   "psi.datatype.EntityListWrapper": "Entity List",
 
-  "_comment": "COMPILER ERRORS",
   "psi.spellerror.nospell": "コンパイルする魔法式がありません。",
   "psi.spellerror.noname": "魔法に前がありません。",
   "psi.spellerror.notricks": "作動式ピースが含まれていません。",
@@ -566,7 +543,6 @@
   "psi.spellerror.statoverflow": "魔法の性能値が最大値を超えています。",
   "psi.spellerror.exclusiveparams": "排他的なパラメータが組み合わさっています。",
 
-  "_comment": "RUNTIME ERRORS",
   "psi.spellerror.position": "エラー 場所 [%d, %d].",
   "psi.spellerror.dividebyzero": "エラー: 0で割ることはできません。",
   "psi.spellerror.nulltarget": "エラー: 魔法の対象となるエンティティは存在しません。",
@@ -581,7 +557,6 @@
   "psi.spellerror.negativenumber": "エラー ピースの対応していない場所で負の値の数値が指定されています。",
 
 
-  "_comment": "PIECE GROUPS",
   "psi.introduction": "この 次元宇宙に おける 最高の 術式演算mod Psiです。 この ガイドには レシピが 含まれて いないため、 Psiで 遊ぶには レシピ表示modが 必要です。 レシピ表示mod として 代表的な ものに、 Just Enough Items (JEI)が あります。 サイダストを 入手するために、 まず CAD組立機と 鉄のCAD素体を 作製する 必要が あります。 CAD組立機を 設置し、 その中に 鉄のCAD素体を 置きます。 これによって 最低限の 術式補助演算機 (CAD)を 構築することが できます。 そして レッド ストーンを ワールドに 捨ててください。 CADを 装備し、 捨てた アイテムを 狙って 右クリック することで サイダストを 作ります。",
   "psi.levelskip": "Psiは 前の ワールドの セーブデータを 発見 しました。 <br>ロードしますか？ <br><br>ロード すると、 即座に Lv%dに なります。 ロード しない 場合、 この メッセージは この セッションでは 再び 表示 される ことは ありません。",
   "psi.piecegroup.tutorial1": "チュートリアル 1",

@@ -220,8 +220,6 @@
   "psi.event.onFire": "&bEvent&7: On Fire",
   "psi.event.lowHp": "&bEvent&7: Low Health",
 
-  "_comment1": "%1$s is Ctrl or Cmd, depending on whether you're on windows or mac",
-  "_comment2": "spaces are important",
   "psi.programmerReference0": "&bKeybinds",
   "psi.programmerReference1": "Delete Piece: &bDelete",
   "psi.programmerReference2": "Clear Grid: &b%1$s-Shift-Delete",

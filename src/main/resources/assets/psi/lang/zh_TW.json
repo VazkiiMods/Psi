@@ -1,5 +1,4 @@
 {
-  "_comment": "MISC",
   "itemGroup.Psi": "Psi",
 
   "psimisc.componentType": "&a元件類型&7: %s",
@@ -49,13 +48,11 @@
   "psimisc.programmerCoords": "選擇: [%d, %d] | 游標: [%d, %d]",
   "psimisc.programmerCoordsNoCursor": "選擇: [%d, %d]",
 
-  "_comment": "SUBTITLES",
   "psi.subtitle.bulletCreate": "啟動式已儲存",
   "psi.subtitle.cadCreate": "CAD配裝成功",
   "psi.subtitle.spellCast": "魔法式發動",
   "psi.subtitle.loopcast": "循環演算",
 
-  "_comment": "VERSIONING",
   "psi.versioning.flavour0": "看來你的Psi還沒有更新，嘖嘖。",
   "psi.versioning.flavour1": "你準備好要更新Psi了嗎？",
   "psi.versioning.flavour2": "Psi過期啦！或許你期待一個有趣的訊息，但他確實版本過舊了。抱歉 :(",
@@ -75,7 +72,6 @@
   "psi.versioning.error": "不！看來下載過程出了點問題，魔法科高中的伺服器正在維修嗎？",
   "psi.versioning.disabled": "抱歉，因為伺服器的問題，這個功能暫時停用，很快就會再開放的。",
 
-  "_comment": "BLOCK NAMES",
   "block.psi:cadAssembler": "CAD配裝台",
   "block.psi:programmer": "術式編輯台",
   "block.psi:psidust_block": "Psi粉磚",
@@ -89,7 +85,6 @@
   "block.psi:ivory_psimetal_block": "乳白Psi金屬磚",
   "block.psi:conjured": "建構方塊",
 
-  "_comment": "ITEM NAMES",
   "item.psi:psidust": "Psi粉",
   "item.psi:psimetal": "Psi金屬錠",
   "item.psi:psigem": "Psi寶石",
@@ -166,17 +161,14 @@
   "item.psi:exosuitSensorStress": "壓力感測器",
   "item.psi:vectorRuler": "向量尺",
 
-  "_comment": "DEATH MESSAGES",
   "death.attack.psi-overload": "%s 耗盡了他的想子。",
 
-  "_comment": "COMPONENT NAMES",
   "psi.component.assembly": "機體",
   "psi.component.core": "核心",
   "psi.component.socket": "彈匣",
   "psi.component.battery": "電池",
   "psi.component.dye": "著色器",
 
-  "_comment": "CAD STAT NAMES",
   "psi.cadstat.efficiency": "效率",
   "psi.cadstat.potency": "威力",
   "psi.cadstat.complexity": "工序",
@@ -185,7 +177,6 @@
   "psi.cadstat.sockets": "彈匣",
   "psi.cadstat.overflow": "溢出量",
 
-  "_comment": "SPELL STAT NAMES",
   "psi.spellstat.complexity": "工序",
   "psi.spellstat.complexity.desc": "動作的數量",
   "psi.spellstat.potency": "威力",
@@ -197,7 +188,6 @@
   "psi.spellstat.bandwidth": "頻寬",
   "psi.spellstat.bandwidth.desc": "魔法式最大長度或寬度",
 
-  "_comment": "BULLET TYPES",
   "psi.bulletType0": "普通",
   "psi.bulletType1": "拋射",
   "psi.bulletType2": "循環演算",
@@ -206,7 +196,6 @@
   "psi.bulletType5": "充能",
   "psi.bulletType6": "挖掘",
 
-  "_comment": "EXOSUIT EVENTS",
   "psi.event.none": "(沒有指定事件)",
   "psi.event.damage": "&b事件&7: 傷害",
   "psi.event.tick": "&b事件&7: 記號",
@@ -216,9 +205,6 @@
   "psi.event.onFire": "&b事件&7: 著火",
   "psi.event.lowHp": "&b事件&7: 瀕死",
 
-  "_comment": "PROGRAMMER REFERENCE",
-  "_comment": "%1$s is Ctrl or Cmd, depending on whether you're on windows or mac",
-  "_comment": "spaces are important",
   "psi.programmerReference0": "&b快速鍵",
   "psi.programmerReference1": "刪除符文: &bDelete",
   "psi.programmerReference2": "清除網格: &b%1$s-Shift-Delete",
@@ -240,8 +226,6 @@
   "psi.programmerReference18": "名字開頭: &b(name)_",
   "psi.programmerReference19": "名字結尾: &b_(name)",
 
-  "_comment": "SPELL PIECE NAMES",
-  "_comment": "-- SELECTORS",
   "psi.spellpiece.selectorCaster": "選擇符：施術者",
   "psi.spellpiece.selectorCaster.desc": "選擇施展這個魔法式的玩家。",
   "psi.spellpiece.selectorFocalPoint": "選擇符：焦點",
@@ -285,7 +269,6 @@
   "psi.spellpiece.selectorEidosChangelog": "選擇符：個別情報體變更紀錄",
   "psi.spellpiece.selectorEidosChangelog.desc": "從個別情報體變更紀錄選擇一個位置。",
 
-  "_comment": "-- OPERATORS",
   "psi.spellpiece.operatorSum": "運算符：加總",
   "psi.spellpiece.operatorSum.desc": "A + B (+ C)",
   "psi.spellpiece.operatorSubtract": "運算符：相減",
@@ -383,7 +366,6 @@
   "psi.spellpiece.operatorListRemove": "運算符：從列表移除",
   "psi.spellpiece.operatorListRemove.desc": "將目標實體從列表中移除。",
 
-  "_comment": "-- CONSTANTS",
   "psi.spellpiece.constantNumber": "常數符：數字",
   "psi.spellpiece.constantNumber.desc": "選擇並輸入一個數字。",
   "psi.spellpiece.constantPi": "常數符：Pi",
@@ -393,13 +375,11 @@
   "psi.spellpiece.constantWrapper": "常數符：封裝",
   "psi.spellpiece.constantWrapper.desc": "將計算式常數包裝成一個封裝。",
 
-  "_comment": "-- OTHERS",
   "psi.spellpiece.connector": "連接符",
   "psi.spellpiece.connector.desc": "連接各項程序",
   "psi.spellpiece.errorSuppressor": "錯誤消除符",
   "psi.spellpiece.errorSuppressor.desc": "消除魔法式產生的錯誤。",
 
-  "_comment": "-- TRICKS",
   "psi.spellpiece.trickDebug": "行為符：除錯",
   "psi.spellpiece.trickDebug.desc": "顯示目標（測試用）。",
   "psi.spellpiece.trickDelay": "行為符：暫停",
@@ -491,7 +471,6 @@
   "psi.spellpiece.trickSaveVector": "行為符：儲存向量",
   "psi.spellpiece.trickSaveVector.desc": "儲存一個向量到CAD的記憶體。",
 
-  "_comment": "SPELL PARAMETER NAMES",
   "psi.spellparam.target": "目標",
   "psi.spellparam.number": "數字",
   "psi.spellparam.number1": "數字A",
@@ -521,8 +500,6 @@
   "psi.spellparam.slot": "插槽",
   "psi.spellparam.base": "基底",
 
-  "_comment": "DATA TYPE NAMES",
-  "_comment": "基於方便使用者搜尋，此段落不進行翻譯。",
   "psi.datatype.Null": "Null",
   "psi.datatype.Any": "Any",
   "psi.datatype.Double": "Number",
@@ -535,7 +512,6 @@
   "psi.datatype.EntityPlayer": "Entity (Player, Living)",
   "psi.datatype.EntityListWrapper": "Entity List",
 
-  "_comment": "COMPILER ERRORS",
   "psi.spellerror.nospell": "沒有魔法式可以編譯。",
   "psi.spellerror.noname": "魔法式沒有名稱。",
   "psi.spellerror.notricks": "魔法式中沒有任何啓動式。",
@@ -550,7 +526,6 @@
   "psi.spellerror.statoverflow": "魔法式的屬性超過整數最大範圍。",
   "psi.spellerror.exclusiveparams": "設定了兩個互相排斥的參數。",
 
-  "_comment": "RUNTIME ERRORS",
   "psi.spellerror.position": "位置錯誤：[%d, %d]。",
   "psi.spellerror.dividebyzero": "錯誤：除數為零。",
   "psi.spellerror.nulltarget": "錯誤：術式指定的實體目標不存在。",
@@ -564,7 +539,6 @@
   "psi.spellerror.immunetarget": "錯誤：目標實體免疫或為Boss。",
   "psi.spellerror.negativenumber": "錯誤：符文中的目標數字為負數。",
 
-  "_comment": "PIECE GROUPS",
   "psi.introduction": "歡迎各位遊玩Psi。Psi是這個宇宙的這一端最好的魔法式開發 魔法科技模組。<br>本教學不會附上合成表，因此請確定你有安裝<br>Just Enough Items (JEI)或其他可以查看合成表的模組。<br>要開始研發魔法式，你需要一些Psi粉末。想要獲得Psi粉末， 你可以先合成一個CAD配裝台和一個鐵製CAD機體，<br>將鐵製CAD機體放到CAD配裝台中，可以獲得一台最基礎的 術式輔助演算機。<br>接著，把一些紅石粉末丟在地上，使用CAD瞄準那些紅石 並點擊右鍵，這樣就能獲得Psi粉末了！",
   "psi.levelskip": "Psi發現了你在前一個世界的紀錄！<br>你想要載入他嗎？<br><br>如果你選擇載入，你的等級會提升到 %d；如果你選擇不載入，你將不會再次看到這則訊息。",
   "psi.piecegroup.tutorial1": "教學 1",

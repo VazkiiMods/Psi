@@ -1,5 +1,4 @@
 {
-  "_comment": "MISC",
   "itemGroup.Psi": "Psi",
 
   "psimisc.componentType": "&a구성 요소 종류&7: %s",
@@ -50,14 +49,12 @@
   "psimisc.programmerCoordsNoCursor": "선택됨: [%d, %d]",
   "psimisc.softcapIndicator": "당신은 레벨 25에 도달했습니다. 아직 더 레벨 업할 수 있고, 획득할 요소가 남아 있지만, 이것이 당신이 추가적인 Psi 에너지를 얻을 수 있는 마지막 레벨입니다. 그러므로 당신의 Psi 에너지는 최대 5000에서 머무를 것입니다.",
 
-  "_comment": "SUBTITLES",
   "psi.subtitle.bulletCreate": "주문 저장됨",
   "psi.subtitle.cadCreate": "CAD 조립됨",
   "psi.subtitle.spellCast": "주문 시전됨",
   "psi.subtitle.loopcast": "반복 주문 시전됨",
 
 
-  "_comment": "VERSIONING",
   "psi.versioning.flavour0": "Seems like Psi is outdated. What a shame.",
   "psi.versioning.flavour1": "Are you Psiched to update Psi?",
   "psi.versioning.flavour2": "Psi is outdated. You expected a funny message but it's just outdated, sorry :(",
@@ -77,7 +74,6 @@
   "psi.versioning.error": "헐! 업데이트를 다운로드하는 과정에서 문제가 발생했습니다. 혹시 psi.vazkii.us가 접근 불가 상태인가요?",
   "psi.versioning.disabled": "죄송합니다. 이 기능은 현재 서버 호스트 문제로 인해 비활성화되어 있습니다.",
 
-  "_comment": "BLOCK NAMES",
   "block.psi:cadAssembler": "CAD 조립기",
   "block.psi:programmer": "주문 프로그래머",
   "block.psi:psidust_block": "Psi 가루 블럭",
@@ -91,7 +87,6 @@
   "block.psi:ivory_psimetal_block": "Ivory Psi 철 블럭",
   "block.psi:conjured": "소환된 블럭",
 
-  "_comment": "ITEM NAMES",
   "item.psi:psidust": "Psi 가루",
   "item.psi:psimetal": "Psi 철괴",
   "item.psi:psigem": "Psi 젬",
@@ -168,17 +163,14 @@
   "item.psi:exosuitSensorStress": "엑소수트 체력 센서",
   "item.psi:vectorRuler": "벡터 자",
 
-  "_comment": "DEATH MESSAGES",
   "death.attack.psi-overload": "%s(이)가 넘쳐 흐른 Psi 에너지에 감전되었습니다.",
 
-  "_comment": "COMPONENT NAMES",
   "psi.component.assembly": "틀",
   "psi.component.core": "코어",
   "psi.component.socket": "소켓",
   "psi.component.battery": "배터리",
   "psi.component.dye": "염색제",
 
-  "_comment": "CAD STAT NAMES",
   "psi.cadstat.efficiency": "효율",
   "psi.cadstat.potency": "위력",
   "psi.cadstat.complexity": "복잡성",
@@ -187,7 +179,6 @@
   "psi.cadstat.sockets": "소켓",
   "psi.cadstat.overflow": "과부하",
 
-  "_comment": "SPELL STAT NAMES",
   "psi.spellstat.complexity": "복잡도",
   "psi.spellstat.complexity.desc": "요소의 개수",
   "psi.spellstat.potency": "위력",
@@ -199,7 +190,6 @@
   "psi.spellstat.bandwidth": "대역폭",
   "psi.spellstat.bandwidth.desc": "주문의 가로/세로 길이 (최대 값)",
 
-  "_comment": "BULLET TYPES",
   "psi.bulletType0": "일반",
   "psi.bulletType1": "발사체",
   "psi.bulletType2": "지속 시전",
@@ -208,7 +198,6 @@
   "psi.bulletType5": "설치",
   "psi.bulletType6": "지뢰형",
 
-  "_comment": "EXOSUIT EVENTS",
   "psi.event.none": "(이벤트 없음)",
   "psi.event.damage": "&b이벤트&7: 대미지",
   "psi.event.tick": "&b이벤트&7: 매 틱",
@@ -218,9 +207,6 @@
   "psi.event.onFire": "&b이벤트&7: 불 속",
   "psi.event.lowHp": "&b이벤트&7: 낮은 체력",
 
-  "_comment": "PROGRAMMER REFERENCE",
-  "_comment": "%1$s is Ctrl or Cmd, depending on whether you're on windows or mac",
-  "_comment": "spaces are important",
   "psi.programmerReference0": "&b조작키",
   "psi.programmerReference1": "요소 제거: &bDelete",
   "psi.programmerReference2": "창 초기화: &b%1$s-Shift-Delete",
@@ -242,8 +228,6 @@
   "psi.programmerReference18": "~로 시작하는 이름: &b(이름)_",
   "psi.programmerReference19": "~로 끝나는 이름: &b_(이름)",
 
-  "_comment": "SPELl PIECE NAMES",
-  "_comment": "-- SELECTORS",
   "psi.spellpiece.selectorCaster": "선택: 시전자",
   "psi.spellpiece.selectorCaster.desc": "주문을 시전하는 사람을 선택합니다.",
   "psi.spellpiece.selectorFocalPoint": "선택: 발동 위치",
@@ -287,7 +271,6 @@
   "psi.spellpiece.selectorEidosChangelog": "선택: 과거 기록",
   "psi.spellpiece.selectorEidosChangelog.desc": "지정된 틱 전의 과거의 위치를 선택합니다.",
 
-  "_comment": "-- OPERATORS",
   "psi.spellpiece.operatorSum": "연산자: 덧셈",
   "psi.spellpiece.operatorSum.desc": "A + B (+ C)",
   "psi.spellpiece.operatorSubtract": "연산자: 뺄셈",
@@ -385,7 +368,6 @@
   "psi.spellpiece.operatorListRemove": "연산자: 목록에서 제거",
   "psi.spellpiece.operatorListRemove.desc": "엔티티를 목록에서 제거합니다.",
 
-  "_comment": "-- CONSTANTS",
   "psi.spellpiece.constantNumber": "상수: 숫자",
   "psi.spellpiece.constantNumber.desc": "값을 설정하려면 선택 후 값을 입력하세요",
   "psi.spellpiece.constantPi": "상수: 원주율",
@@ -395,13 +377,11 @@
   "psi.spellpiece.constantWrapper": "상수: 변환기",
   "psi.spellpiece.constantWrapper.desc": "일반 형식의 숫자를 상수 형식으로 변환합니다.",
 
-  "_comment": "-- OTHERS",
   "psi.spellpiece.connector": "커넥터",
   "psi.spellpiece.connector.desc": "요소들을 잇습니다.",
   "psi.spellpiece.errorSuppressor": "에러 진압기",
   "psi.spellpiece.errorSuppressor.desc": "주문에 의해 발생한 에러를 진압합니다.",
 
-  "_comment": "-- TRICKS",
   "psi.spellpiece.trickDebug": "동작: 디버그",
   "psi.spellpiece.trickDebug.desc": "테스트 목적. 대상을 출력합니다.",
   "psi.spellpiece.trickDelay": "동작: 잠자기",
@@ -493,7 +473,6 @@
   "psi.spellpiece.trickSaveVector": "동작: 벡터 저장",
   "psi.spellpiece.trickSaveVector.desc": "CAD 메모리에 벡터를 저장합니다.",
 
-  "_comment": "SPELL PARAMETER NAMES",
   "psi.spellparam.target": "대상",
   "psi.spellparam.number": "숫자",
   "psi.spellparam.number1": "숫자 A",
@@ -523,7 +502,6 @@
   "psi.spellparam.slot": "슬롯",
   "psi.spellparam.base": "기반",
 
-  "_comment": "DATA TYPE NAMES",
   "psi.datatype.Null": "없음",
   "psi.datatype.Any": "모든 타입",
   "psi.datatype.Double": "숫자",
@@ -536,7 +514,6 @@
   "psi.datatype.EntityPlayer": "엔티티 (플레이어, 생명체)",
   "psi.datatype.EntityListWrapper": "엔티티 목록",
 
-  "_comment": "COMPILER ERRORS",
   "psi.spellerror.nospell": "컴파일할 주문이 없습니다.",
   "psi.spellerror.noname": "주문의 이름이 없습니다.",
   "psi.spellerror.notricks": "주문이 동작을 포함하지 않습니다.",
@@ -551,7 +528,6 @@
   "psi.spellerror.statoverflow": "주문의 요구 능력치가 너무 높습니다.",
   "psi.spellerror.exclusiveparams": "두 양립할 수 없는 매개 변수가 설정되었습니다.",
 
-  "_comment": "RUNTIME ERRORS",
   "psi.spellerror.position": "위치 에러: [%d, %d].",
   "psi.spellerror.dividebyzero": "에러: 0으로 나누어짐.",
   "psi.spellerror.nulltarget": "에러: 주문의 대상이 존재하지 않습니다.",
@@ -565,7 +541,6 @@
   "psi.spellerror.immunetarget": "에러: 대상 엔티티가 면역된 엔티티이거나 보스입니다.",
   "psi.spellerror.negativenumber": "에러: 음수이면 안 될 대상 숫자가 음수입니다.",
 
-  "_comment": "PIECE GROUPS",
   "psi.introduction": "이 세상에서 가장 뛰어난 주문 프로그래밍 기술 마법 모드인 Psi에 오신 것을 환영합니다. 시작하기에 앞서, 이 도움말에는 아이템들의 조합법이 나와 있지 않기 때문에, 당신은 Just Enough Items(JEI)와 같은 조합법을 확인할 수 있는 모드가 필수적으로 필요할 것입니다. 주문 제작을 시작하기 위해서는 Psi 가루가 필요합니다. Psi 가루를 얻기 위해, 당신은 CAD 조립기와 철 CAD 틀을 만들어야 합니다. 적당한 곳에 CAD 조립기를 놓고, 철 CAD 틀을 넣어서 아주 기본적인 시전 도우미 장치(CAD)를 만들 수 있습니다. 그리고, 약간의 레드스톤을 뿌리고, CAD를 손에 들고, 레드스톤을 향해 우클릭을 해서 Psi 가루를 만들 수 있습니다.",
   "psi.levelskip": "Psi가 이전 세계에서 몇 개의 데이터를 찾았습니다.<br>그 데이터를 불러오길 원하시나요?<br><br>당신이 원하신다면, 당신은 즉시 레벨 %d가 될 수 있습니다. 아니라면, 이 메시지는 다시 나타나지 않을 것입니다.",
   "psi.piecegroup.tutorial1": "튜토리얼 1",

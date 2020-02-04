@@ -1,5 +1,4 @@
 {
-  "_comment": "MISC",
   "itemGroup.Psi": "Psi",
 
   "psimisc.componentType": "&aTipo de Componente&7: %s",
@@ -49,7 +48,6 @@
   "psimisc.programmerCoords": "Selecionado: [%d, %d] | Cursor: [%d, %d]",
   "psimisc.programmerCoordsNoCursor": "Selecionado: [%d, %d]",
 
-  "_comment": "VERSIONING",
   "psi.versioning.flavour0": "Parece que Psi está desatualizado. Que vergonha.",
   "psi.versioning.flavour1": "Are you Psiched to update Psi?",
   "psi.versioning.flavour2": "Psi está desatualizado. Você esperava uma mensagem engraçada, mas só está desatualizado, desculpa :(",
@@ -69,7 +67,6 @@
   "psi.versioning.error": "Algo de errado não está certo com o download de Psi. Talvez psi.vazkii.us tenha caído.",
   "psi.versioning.disabled": "Desculpe, mas essa função está desativada por problemas no host, deve estar de volta em breve.",
 
-  "_comment": "BLOCK NAMES",
   "block.psi:cadAssembler": "Montador de MAI",
   "block.psi:programmer": "Programador de Magias",
   "block.psi:psidust_block": "Bloco de Psidust",
@@ -83,7 +80,6 @@
   "block.psi:ivory_psimetal_block": "Bloco de Psimetal de Marfim",
   "block.psi:conjured": "Bloco Conjurado",
 
-  "_comment": "ITEM NAMES",
   "item.psi:psidust": "Psidust",
   "item.psi:psimetal": "Barra de Psimetal",
   "item.psi:psigem": "Psigema",
@@ -160,17 +156,14 @@
   "item.psi:exosuitSensorStress": "Sensor de Estresse da Exoarmadura",
   "item.psi:vectorRuler": "Régua de Vetor",
 
-  "_comment": "DEATH MESSAGES",
   "death.attack.psi-overload": "%s sofreu sobrecarga de Energia Psionica",
 
-  "_comment": "COMPONENT NAMES",
   "psi.component.assembly": "Base",
   "psi.component.core": "Núcleo",
   "psi.component.socket": "Soquete",
   "psi.component.battery": "Bateria",
   "psi.component.dye": "Colorizador",
 
-  "_comment": "CAD STAT NAMES",
   "psi.cadstat.efficiency": "Eficiência",
   "psi.cadstat.potency": "Potência",
   "psi.cadstat.complexity": "Complexidade",
@@ -179,7 +172,6 @@
   "psi.cadstat.sockets": "Soquetes",
   "psi.cadstat.overflow": "Sobrecarga",
 
-  "_comment": "SPELL STAT NAMES",
   "psi.spellstat.complexity": "Complexidade",
   "psi.spellstat.complexity.desc": "Quantidade de ações",
   "psi.spellstat.potency": "Potência",
@@ -191,7 +183,6 @@
   "psi.spellstat.bandwidth": "Banda",
   "psi.spellstat.bandwidth.desc": "Altura/Largura da magia (qual for maior)",
 
-  "_comment": "BULLET TYPES",
   "psi.bulletType0": "Normal",
   "psi.bulletType1": "Projétil",
   "psi.bulletType2": "Loopcast",
@@ -200,7 +191,6 @@
   "psi.bulletType5": "Carga",
   "psi.bulletType6": "Mina",
 
-  "_comment": "EXOSUIT EVENTS",
   "psi.event.none": "(Nenhum evento)",
   "psi.event.damage": "&bEvento&7: Dano",
   "psi.event.tick": "&bEvento&7: Tick",
@@ -210,9 +200,6 @@
   "psi.event.onFire": "&bEvento&7: Em chamas",
   "psi.event.lowHp": "&bEvenot&7: Pouca vida",
 
-  "_comment": "PROGRAMMER REFERENCE",
-  "_comment": "%1$s is Ctrl or Cmd, depending on whether you're on windows or mac",
-  "_comment": "spaces are important",
   "psi.programmerReference0": "&bTeclas",
   "psi.programmerReference1": "Deletar peça: &bDelete",
   "psi.programmerReference2": "Limpar Grid: &b%1$s-Shift-Delete",
@@ -234,8 +221,6 @@
   "psi.programmerReference18": "Nome começa com: &b(nome)_",
   "psi.programmerReference19": "Nome termina com: &b_(nome)",
 
-  "_comment": "SPELl PIECE NAMES",
-  "_comment": "-- SELECTORS",
   "psi.spellpiece.selectorCaster": "Seletor: Conjurador",
   "psi.spellpiece.selectorCaster.desc": "Escolhe a pessoa que conjurou a magia",
   "psi.spellpiece.selectorFocalPoint": "Seletor: Ponto Focal",
@@ -279,7 +264,6 @@
   "psi.spellpiece.selectorEidosChangelog": "Seletor: Eidos Changelog",
   "psi.spellpiece.selectorEidosChangelog.desc": "Seleciona uma posição da lista de Eidos",
 
-  "_comment": "-- OPERATORS",
   "psi.spellpiece.operatorSum": "Operador: Soma",
   "psi.spellpiece.operatorSum.desc": "A + B (+ C)",
   "psi.spellpiece.operatorSubtract": "Operador: Subtração",
@@ -377,7 +361,6 @@
   "psi.spellpiece.operatorListRemove": "Operador: Remover da Lista",
   "psi.spellpiece.operatorListRemove.desc": "Remove a entidade da lista",
 
-  "_comment": "-- CONSTANTS",
   "psi.spellpiece.constantNumber": "Constante: Número",
   "psi.spellpiece.constantNumber.desc": "Selecione um valor fixo",
   "psi.spellpiece.constantPi": "Constante: Pi",
@@ -387,13 +370,11 @@
   "psi.spellpiece.constantWrapper": "Constant: Wrapper",
   "psi.spellpiece.constantWrapper.desc": "A wrapper for a constant for stat calculation",
 
-  "_comment": "-- OTHERS",
   "psi.spellpiece.connector": "Conector",
   "psi.spellpiece.connector.desc": "Conecta coisas",
   "psi.spellpiece.errorSuppressor": "Silenciador de Erros",
   "psi.spellpiece.errorSuppressor.desc": "Silencia erros notados na magia",
 
-  "_comment": "-- TRICKS",
   "psi.spellpiece.trickDebug": "Truque: Debug",
   "psi.spellpiece.trickDebug.desc": "Para teste. Imprime o alvo.",
   "psi.spellpiece.trickDelay": "Truque: Adiar",
@@ -485,7 +466,6 @@
   "psi.spellpiece.trickSaveVector": "Truque: Salvar Vetor",
   "psi.spellpiece.trickSaveVector.desc": "Salva um vetor na memória do MAI",
 
-  "_comment": "SPELL PARAMETER NAMES",
   "psi.spellparam.target": "Alvo",
   "psi.spellparam.number": "Número",
   "psi.spellparam.number1": "Número A",
@@ -515,7 +495,6 @@
   "psi.spellparam.slot": "Slot",
   "psi.spellparam.base": "Base",
 
-  "_comment": "DATA TYPE NAMES",
   "psi.datatype.Null": "Nenhum",
   "psi.datatype.Any": "Qualquer",
   "psi.datatype.Double": "Número",
@@ -528,7 +507,6 @@
   "psi.datatype.EntityPlayer": "Entidade(Jogadores, Vivas)",
   "psi.datatype.EntityListWrapper": "Lista de Entidade",
 
-  "_comment": "COMPILER ERRORS",
   "psi.spellerror.nospell": "Nenhuma magia para compilar",
   "psi.spellerror.noname": "Magia não tem nome",
   "psi.spellerror.notricks": "Magia não tem Truques",
@@ -543,7 +521,6 @@
   "psi.spellerror.statoverflow": "Valores da magia ultrapassam valores inteiros possíveis",
   "psi.spellerror.exclusiveparams": "Dois parâmetros mutualmente exclusivos existem",
 
-  "_comment": "RUNTIME ERRORS",
   "psi.spellerror.position": "Erro de posição: [%d, %d].",
   "psi.spellerror.dividebyzero": "ERRO: Divisão por zero.",
   "psi.spellerror.nulltarget": "ERRO: Alvo não existente.",
@@ -557,7 +534,6 @@
   "psi.spellerror.immunetarget": "ERRO: Alvo é imune ou chefe.",
   "psi.spellerror.negativenumber": "ERRO: Valor alvo é negativo onde não deve.",
 
-  "_comment": "PIECE GROUPS",
   "psi.introduction": "Seja bem-vindo ao Psi, o melhor mod de programação mágica desse lado do universo. Lembre-se de que possuir Just Enough Items (JEI) ou outro modo de ver receitas de itens é essencial para jogar, já que as receitas não são incluídas no guia. Para começar a conjurar, você precisará de Psidust. Para conseguir Psidust, você precisará fazer uma Base de MAI de Ferro e um Montador de MAI. Coloque o Montador de MAI, e a Base de MAI para conseguir criar um Mecanismo Auxiliar de Conjuração (MAI). Depois, jogue um pouco de Redstone no mundo e ative seu MAI para conseguir Psidust.",
   "psi.levelskip": "Psi encontrou dados anteriores nessa instância.<br>Deseja carregá-los?<br><br>Se optar por carregar, você irá para o Nível %d. Se optar por não, essa mensagem não aparecerá novamente nessa sessão."
 }

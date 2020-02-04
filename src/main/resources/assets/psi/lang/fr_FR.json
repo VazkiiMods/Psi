@@ -1,5 +1,4 @@
 {
-  "_comment": "MISC",
   "itemGroup.Psi": "Psi",
 
   "psimisc.componentType": "&aType de composants&7: %s",
@@ -49,14 +48,12 @@
   "psimisc.programmerCoords": "Selected: [%d, %d] | Cursor: [%d, %d]",
   "psimisc.programmerCoordsNoCursor": "Selected: [%d, %d]",
 
-  "_comment": "SUBTITLES",
   "psi.subtitle.bulletCreate": "Spell stored",
   "psi.subtitle.cadCreate": "CAD assembled",
   "psi.subtitle.spellCast": "CAD casts",
   "psi.subtitle.loopcast": "CAD loopcasts",
 
 
-  "_comment": "VERSIONING",
   "psi.versioning.flavour0": "Seems like Psi is outdated. What a shame.",
   "psi.versioning.flavour1": "Are you Psiched to update Psi?",
   "psi.versioning.flavour2": "Psi is outdated. You expected a funny message but it's just outdated, sorry :(",
@@ -76,7 +73,6 @@
   "psi.versioning.error": "Woah! It seems like something went wrong while trying to download the Psi update. Is psi.vazkii.us down?",
   "psi.versioning.disabled": "Sorry. This feature is currently disabled due to server host problems, it should be back soon.",
 
-  "_comment": "BLOCK NAMES",
   "block.psi:cadAssembler": "CAD Assembler",
   "block.psi:programmer": "Spell Programmer",
   "block.psi:psidust_block": "Psidust Block",
@@ -90,7 +86,6 @@
   "block.psi:ivory_psimetal_block": "Ivory Psimetal Block",
   "block.psi:conjured": "Conjured Block",
 
-  "_comment": "ITEM NAMES",
   "item.psi:psidust": "Psidust",
   "item.psi:psimetal": "Psimetal Ingot",
   "item.psi:psigem": "Psigem",
@@ -167,17 +162,14 @@
   "item.psi:exosuitSensorStress": "Exosuit Stress Sensor",
   "item.psi:vectorRuler": "Vector Ruler",
 
-  "_comment": "DEATH MESSAGES",
   "death.attack.psi-overload": "%s overflowed their Psionic Energy",
 
-  "_comment": "COMPONENT NAMES",
   "psi.component.assembly": "Assembly",
   "psi.component.core": "Core",
   "psi.component.socket": "Socket",
   "psi.component.battery": "Battery",
   "psi.component.dye": "Colorizer",
 
-  "_comment": "CAD STAT NAMES",
   "psi.cadstat.efficiency": "Efficiency",
   "psi.cadstat.potency": "Potency",
   "psi.cadstat.complexity": "Complexity",
@@ -186,7 +178,6 @@
   "psi.cadstat.sockets": "Sockets",
   "psi.cadstat.overflow": "Overflow",
 
-  "_comment": "SPELL STAT NAMES",
   "psi.spellstat.complexity": "Complexity",
   "psi.spellstat.complexity.desc": "Amount of actions",
   "psi.spellstat.potency": "Potency",
@@ -198,7 +189,6 @@
   "psi.spellstat.bandwidth": "Bandwidth",
   "psi.spellstat.bandwidth.desc": "Spell width or height (largest)",
 
-  "_comment": "BULLET TYPES",
   "psi.bulletType0": "Normal",
   "psi.bulletType1": "Projectile",
   "psi.bulletType2": "Loopcast",
@@ -207,7 +197,6 @@
   "psi.bulletType5": "Charge",
   "psi.bulletType6": "Mine",
 
-  "_comment": "EXOSUIT EVENTS",
   "psi.event.none": "(No Event Handler)",
   "psi.event.damage": "&bEvent&7: Damage",
   "psi.event.tick": "&bEvent&7: Tick",
@@ -217,9 +206,6 @@
   "psi.event.onFire": "&bEvent&7: On Fire",
   "psi.event.lowHp": "&bEvent&7: Low Health",
 
-  "_comment": "PROGRAMMER REFERENCE",
-  "_comment": "%1$s is Ctrl or Cmd, depending on whether you're on windows or mac",
-  "_comment": "spaces are important",
   "psi.programmerReference0": "&bKeybinds",
   "psi.programmerReference1": "Delete Piece: &bDelete",
   "psi.programmerReference2": "Clear Grid: &b%1$s-Shift-Delete",
@@ -241,8 +227,6 @@
   "psi.programmerReference18": "Name Begins With: &b(name)_",
   "psi.programmerReference19": "Name Ends With: &b_(name)",
 
-  "_comment": "SPELl PIECE NAMES",
-  "_comment": "-- SELECTORS",
   "psi.spellpiece.selectorCaster": "Selector: Caster",
   "psi.spellpiece.selectorCaster.desc": "Selects the person casting the spell",
   "psi.spellpiece.selectorFocalPoint": "Selector: Focal Point",
@@ -286,7 +270,6 @@
   "psi.spellpiece.selectorEidosChangelog": "Selector: Eidos Changelog",
   "psi.spellpiece.selectorEidosChangelog.desc": "Selects a position from the Eidos Changelog",
 
-  "_comment": "-- OPERATORS",
   "psi.spellpiece.operatorSum": "Operator: Sum",
   "psi.spellpiece.operatorSum.desc": "A + B (+ C)",
   "psi.spellpiece.operatorSubtract": "Operator: Subtract",
@@ -384,7 +367,6 @@
   "psi.spellpiece.operatorListRemove": "Operator: Remove From List",
   "psi.spellpiece.operatorListRemove.desc": "Removes target entity from a list",
 
-  "_comment": "-- CONSTANTS",
   "psi.spellpiece.constantNumber": "Constant: Number",
   "psi.spellpiece.constantNumber.desc": "Select and type to set value",
   "psi.spellpiece.constantPi": "Constant: Pi",
@@ -394,13 +376,11 @@
   "psi.spellpiece.constantWrapper": "Constant: Wrapper",
   "psi.spellpiece.constantWrapper.desc": "A wrapper for a constant for stat calculation",
 
-  "_comment": "-- OTHERS",
   "psi.spellpiece.connector": "Connector",
   "psi.spellpiece.connector.desc": "Connects stuff and things",
   "psi.spellpiece.errorSuppressor": "Error Suppressor",
   "psi.spellpiece.errorSuppressor.desc": "Suppresses errors thrown by the spell",
 
-  "_comment": "-- TRICKS",
   "psi.spellpiece.trickDebug": "Trick: Debug",
   "psi.spellpiece.trickDebug.desc": "For testing. Prints out the target",
   "psi.spellpiece.trickDelay": "Trick: Sleep",
@@ -492,7 +472,6 @@
   "psi.spellpiece.trickSaveVector": "Trick: Save Vector",
   "psi.spellpiece.trickSaveVector.desc": "Saves a vector to CAD Memory",
 
-  "_comment": "SPELL PARAMETER NAMES",
   "psi.spellparam.target": "Target",
   "psi.spellparam.number": "Number",
   "psi.spellparam.number1": "Number A",
@@ -522,7 +501,6 @@
   "psi.spellparam.slot": "Slot",
   "psi.spellparam.base": "Base",
 
-  "_comment": "DATA TYPE NAMES",
   "psi.datatype.Null": "None",
   "psi.datatype.Any": "Any",
   "psi.datatype.Double": "Number",
@@ -535,7 +513,6 @@
   "psi.datatype.EntityPlayer": "Entity (Player, Living)",
   "psi.datatype.EntityListWrapper": "Entity List",
 
-  "_comment": "COMPILER ERRORS",
   "psi.spellerror.nospell": "No Spell to compile",
   "psi.spellerror.noname": "Spell is Unnamed",
   "psi.spellerror.notricks": "Spell has no Tricks",
@@ -550,7 +527,6 @@
   "psi.spellerror.statoverflow": "Spell Stats overflow past maximum possible integer",
   "psi.spellerror.exclusiveparams": "Two mutually exclusive parameters are set",
 
-  "_comment": "RUNTIME ERRORS",
   "psi.spellerror.position": "Error Position: [%d, %d].",
   "psi.spellerror.dividebyzero": "ERROR: Divide by zero.",
   "psi.spellerror.nulltarget": "ERROR: Spell Entity target is non existent.",
@@ -564,7 +540,6 @@
   "psi.spellerror.immunetarget": "ERROR: Target entity is immune or a boss.",
   "psi.spellerror.negativenumber": "ERROR: Target number is negative in a piece where it can't be.",
 
-  "_comment": "PIECE GROUPS",
   "psi.introduction": "Welcome to Psi, the best spell programming magic tech mod in this side of the universe. Please keep in mind that having Just Enough Items (JEI) or some other method of looking up recipes is essential for playing with Psi, as recipes are not included in this guide. In order to get started spellslinging, you'll need some Psidust. To get Psidust, you need to start by crafting a CAD Assembler and an Iron CAD Assembly. Place down the CAD Assembler and put the Iron CAD Assembly in it to construct a very barebones Casting Assistance Device (CAD). From there, drop some Redstone Dust in the world. Equip your CAD, point at the dropped items and right click to make your Psidust.",
   "psi.levelskip": "Psi has found save data from a previous world.<br>Would you like to load it?<br><br>If you choose to load it, you'll be taken instantly to Level %d. Otherwise, this message won't show up again this session.",
   "psi.piecegroup.tutorial1": "Tutorial 1",
