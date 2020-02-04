@@ -15,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 import net.minecraftforge.fml.network.NetworkEvent;
 import vazkii.arl.network.IMessage;
+import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ISocketableCapability;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 
@@ -34,12 +35,13 @@ public class MessageChangeSocketableSlot implements IMessage {
 			ServerPlayerEntity player = context.getSender();
 			ItemStack stack = player.getHeldItem(Hand.MAIN_HAND);
 
-			if(!stack.isEmpty() && ISocketableCapability.isSocketable(stack))
-				ISocketableCapability.socketable(stack).setSelectedSlot(slot);
+			if(!stack.isEmpty())
+				stack.getCapability(PsiAPI.SOCKETABLE_CAPABILITY).ifPresent(cap -> cap.setSelectedSlot(slot));
 			else {
 				stack = player.getHeldItem(Hand.OFF_HAND);
-				if(!stack.isEmpty() && ISocketableCapability.isSocketable(stack))
-					ISocketableCapability.socketable(stack).setSelectedSlot(slot);
+				if(!stack.isEmpty()) {
+					stack.getCapability(PsiAPI.SOCKETABLE_CAPABILITY).ifPresent(cap -> cap.setSelectedSlot(slot));
+				}
 			}
 			PlayerDataHandler.get(player).stopLoopcast();
 		});

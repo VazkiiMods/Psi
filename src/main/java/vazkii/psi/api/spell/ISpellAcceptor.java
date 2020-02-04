@@ -24,21 +24,22 @@ import javax.annotation.Nullable;
 public interface ISpellAcceptor {
 
 
-	//TODO: Check this
 	static boolean isAcceptor(ItemStack stack) {
-		return stack.getCapability(PsiAPI.SPELL_ACCEPTOR_CAPABILITY, null) instanceof ISpellAcceptor;
+		return stack.getCapability(PsiAPI.SPELL_ACCEPTOR_CAPABILITY).isPresent();
 	}
 
 	static boolean isContainer(ItemStack stack) {
-		return isAcceptor(stack) && acceptor(stack).castableFromSocket();
+		return stack.getCapability(PsiAPI.SPELL_ACCEPTOR_CAPABILITY).map(ISpellAcceptor::castableFromSocket).orElse(false);
 	}
 
 	static boolean hasSpell(ItemStack stack) {
-		return isContainer(stack) && acceptor(stack).containsSpell();
+		return isContainer(stack) && stack.getCapability(PsiAPI.SPELL_ACCEPTOR_CAPABILITY)
+				.map(ISpellAcceptor::containsSpell)
+				.orElse(false);
 	}
 
 	static ISpellAcceptor acceptor(ItemStack stack) {
-		return (ISpellAcceptor) stack.getCapability(PsiAPI.SPELL_ACCEPTOR_CAPABILITY, null);
+		return stack.getCapability(PsiAPI.SPELL_ACCEPTOR_CAPABILITY).orElseThrow(NullPointerException::new);
 	}
 
 	void setSpell(PlayerEntity player, Spell spell);

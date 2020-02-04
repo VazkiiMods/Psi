@@ -20,6 +20,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 import vazkii.arl.item.BasicItem;
 import vazkii.arl.util.ItemNBTHelper;
+import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ISocketableCapability;
 import vazkii.psi.api.cad.ISocketableController;
 import vazkii.psi.common.core.handler.PsiSoundHandler;
@@ -48,8 +49,7 @@ public class ItemExosuitController extends BasicItem implements ISocketableContr
 			ItemStack[] stacks = getControlledStacks(playerIn, itemStackIn);
 
 			for(ItemStack stack : stacks) {
-				ISocketableCapability socketable = ISocketableCapability.socketable(stack);
-				socketable.setSelectedSlot(3);
+				stack.getCapability(PsiAPI.SOCKETABLE_CAPABILITY).ifPresent(c -> c.setSelectedSlot(3));
 			}
 			
 			return new ActionResult<>(ActionResultType.SUCCESS, itemStackIn);
@@ -81,8 +81,7 @@ public class ItemExosuitController extends BasicItem implements ISocketableContr
 
 		ItemStack[] stacks = getControlledStacks(player, stack);
 		if(controlSlot < stacks.length && !stacks[controlSlot].isEmpty()) {
-			ISocketableCapability socketable = ISocketableCapability.socketable(stacks[controlSlot]);
-			socketable.setSelectedSlot(slot);
+			stacks[controlSlot].getCapability(PsiAPI.SOCKETABLE_CAPABILITY).ifPresent(cap -> cap.setSelectedSlot(slot));
 		}
 	}
 

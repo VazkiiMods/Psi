@@ -33,7 +33,7 @@ public interface IDetonationHandler {
 
 
 	static IDetonationHandler detonator(Entity entity) {
-		return (IDetonationHandler) entity.getCapability(PsiAPI.DETONATION_HANDLER_CAPABILITY, null);
+		return entity.getCapability(PsiAPI.DETONATION_HANDLER_CAPABILITY).orElseThrow(NullPointerException::new);
 	}
 
 	static void performDetonation(World world, PlayerEntity player) {

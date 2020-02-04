@@ -19,6 +19,7 @@ import net.minecraft.util.INameable;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
+import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ISocketableCapability;
 
 import javax.annotation.Nonnull;

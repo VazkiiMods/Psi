@@ -22,8 +22,10 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.registries.ObjectHolder;
 import vazkii.arl.block.tile.TileSimpleInventory;
+import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.*;
 import vazkii.psi.common.block.base.ModBlocks;
 import vazkii.psi.common.block.tile.container.ContainerCADAssembler;
@@ -180,7 +182,7 @@ public class TileCADAssembler extends TileSimpleInventory implements ITileCADAss
 			ListNBT items = tag.getList("Items", 10);
 			this.clear();
 
-			ISocketableCapability socketable = null;
+			LazyOptional<ISocketableCapability> socketable = LazyOptional.empty();
 
 			for(int i = 0; i < items.size(); ++i) {
 				if (i == 0) // Skip the fake CAD slot
@@ -191,8 +193,8 @@ public class TileCADAssembler extends TileSimpleInventory implements ITileCADAss
 				if (i == 6) { // Socketable item
 					setSocketableStack(stack);
 
-					if (!stack.isEmpty() && ISocketableCapability.isSocketable(stack))
-						socketable = ISocketableCapability.socketable(stack);
+					if (!stack.isEmpty())
+						socketable = stack.getCapability(PsiAPI.SOCKETABLE_CAPABILITY);
 				} else if (i == 1) // CORE
 					setStackForComponent(EnumCADComponent.CORE, stack);
 				else if (i == 2) // ASSEMBLY
@@ -203,8 +205,10 @@ public class TileCADAssembler extends TileSimpleInventory implements ITileCADAss
 					setStackForComponent(EnumCADComponent.BATTERY, stack);
 				else if (i == 5) // DYE
 					setStackForComponent(EnumCADComponent.DYE, stack);
-				else if (socketable != null) // If we've gotten here, the item is a bullet.
-					socketable.setBulletInSocket(i - 7, stack);
+				else { // If we've gotten here, the item is a bullet.
+					int idx = i - 7;
+					socketable.ifPresent(s -> s.setBulletInSocket(idx, stack));
+				}
 			}
 		} else
 			super.readSharedNBT(tag);

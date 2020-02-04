@@ -32,6 +32,8 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.LazyOptional;
+import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.internal.VanillaPacketDispatcher;
 import vazkii.psi.api.spell.ISpellAcceptor;
 import vazkii.psi.common.block.tile.TileProgrammer;
@@ -91,15 +93,15 @@ public class BlockProgrammer extends HorizontalBlock {
 			return ActionResultType.FAIL;
 
 		boolean enabled = programmer.isEnabled();
-		
-		if(enabled && !heldItem.isEmpty() && ISpellAcceptor.isAcceptor(heldItem) && programmer.spell != null && (playerIn.isSneaking() || !ISpellAcceptor.acceptor(heldItem).requiresSneakForSpellSet())) {
+
+		LazyOptional<ISpellAcceptor> settable = heldItem.getCapability(PsiAPI.SPELL_ACCEPTOR_CAPABILITY);
+		if(enabled && !heldItem.isEmpty() && settable.isPresent() && programmer.spell != null && (playerIn.isSneaking() || !settable.orElse(null).requiresSneakForSpellSet())) {
 			if(programmer.canCompile()) {
-				ISpellAcceptor settable = ISpellAcceptor.acceptor(heldItem);
 				if(!worldIn.isRemote)
 					worldIn.playSound(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, PsiSoundHandler.bulletCreate, SoundCategory.BLOCKS, 0.5F, 1F);
 
 				programmer.spell.uuid = UUID.randomUUID();
-				settable.setSpell(playerIn, programmer.spell);
+				settable.ifPresent(c -> c.setSpell(playerIn, programmer.spell));
 				if(playerIn instanceof ServerPlayerEntity)
 					VanillaPacketDispatcher.dispatchTEToPlayer(programmer, (ServerPlayerEntity) playerIn);
 				return ActionResultType.SUCCESS;
