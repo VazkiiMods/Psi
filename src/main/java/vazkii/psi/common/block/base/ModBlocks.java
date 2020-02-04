@@ -13,16 +13,20 @@ package vazkii.psi.common.block.base;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.Rarity;
 import net.minecraft.tileentity.TileEntityType;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.common.extensions.IForgeContainerType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.network.IContainerFactory;
 import net.minecraftforge.registries.IForgeRegistry;
+import vazkii.psi.client.gui.GuiCADAssembler;
 import vazkii.psi.common.block.BlockCADAssembler;
 import vazkii.psi.common.block.BlockConjured;
 import vazkii.psi.common.block.BlockProgrammer;
@@ -51,6 +55,7 @@ public class ModBlocks {
     public static final Block psimetalPlateWhiteLight = new BlockPsiDecorative(LibBlockNames.PSIMETAL_PLATE_WHITE_LIGHT, Block.Properties.create(Material.IRON).hardnessAndResistance(5, 10).sound(SoundType.METAL).lightValue(15), defaultBuilder());
     public static final Block psimetalEbony = new BlockPsiDecorative(LibBlockNames.EBONY_PSIMETAL_BLOCK, Block.Properties.create(Material.IRON).hardnessAndResistance(5, 10).sound(SoundType.METAL), defaultBuilder());
     public static final Block psimetalIvory = new BlockPsiDecorative(LibBlockNames.IVORY_PSIMETAL_BLOCK, Block.Properties.create(Material.IRON).hardnessAndResistance(5, 10).sound(SoundType.METAL), defaultBuilder());
+    public static final ContainerType<ContainerCADAssembler> containerCADAssembler = IForgeContainerType.create(ContainerCADAssembler::fromNetwork);
 
     @SubscribeEvent
     public static void registerBlocks(RegistryEvent.Register<Block> evt) {
@@ -75,8 +80,10 @@ public class ModBlocks {
 
 	@SubscribeEvent
 	public static void registerContainers(RegistryEvent.Register<ContainerType<?>> evt) {
-		evt.getRegistry().register(new ContainerType<>((IContainerFactory<ContainerCADAssembler>) ContainerCADAssembler::fromNetwork).setRegistryName(LibMisc.MOD_ID, LibBlockNames.CAD_ASSEMBLER));
-	}
-
+        evt.getRegistry().register(containerCADAssembler.setRegistryName(LibMisc.MOD_ID, LibBlockNames.CAD_ASSEMBLER));
+        DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
+            ScreenManager.registerFactory(containerCADAssembler, GuiCADAssembler::new);
+        });
+    }
 
 }

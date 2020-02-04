@@ -18,6 +18,8 @@ import net.minecraft.util.Hand;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import vazkii.psi.api.cad.ISocketableCapability;
 import vazkii.psi.api.cad.ISocketableController;
+import vazkii.psi.client.gui.GuiLeveling;
+import vazkii.psi.client.gui.GuiSocketSelect;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_C;
 
@@ -50,15 +52,14 @@ public class KeybindHandler {
 		
 		if(mc.currentScreen == null) {
 			if (!stack.isEmpty() && (ISocketableCapability.isSocketable(stack) || isSocketableController(mc.player, stack)))
-				//mc.displayGuiScreen(new GuiSocketSelect(stack));
-				return;
+				mc.displayGuiScreen(new GuiSocketSelect(stack));
 			else {
 				stack = mc.player.getHeldItem(Hand.OFF_HAND);
 				if (!stack.isEmpty() && (ISocketableCapability.isSocketable(stack) || isSocketableController(mc.player, stack)))
-					//mc.displayGuiScreen(new GuiSocketSelect(stack));
-					return;
-				else //mc.displayGuiScreen(new GuiLeveling());
-					return;
+					mc.displayGuiScreen(new GuiSocketSelect(stack));
+
+				else mc.displayGuiScreen(new GuiLeveling());
+
 			}
 		}
 	}

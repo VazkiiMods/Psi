@@ -17,7 +17,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import vazkii.psi.api.cad.EnumCADStat;
 import vazkii.psi.api.cad.ICAD;
@@ -27,17 +27,17 @@ import vazkii.psi.common.block.tile.TileCADAssembler;
 import vazkii.psi.common.block.tile.container.ContainerCADAssembler;
 import vazkii.psi.common.lib.LibResources;
 
-public class GuiCADAssembler extends ContainerScreen {
+public class GuiCADAssembler extends ContainerScreen<ContainerCADAssembler> {
 
 
 	private static final ResourceLocation texture = new ResourceLocation(LibResources.GUI_CAD_ASSEMBLER);
 	private final PlayerEntity player;
 	private final TileCADAssembler assembler;
 
-	public GuiCADAssembler(ContainerCADAssembler containerCADAssembler, PlayerEntity player, TileCADAssembler assembler) {
-		super(containerCADAssembler, new PlayerInventory(player), new StringTextComponent(""));
-		this.player = player;
-		this.assembler = assembler;
+	public GuiCADAssembler(ContainerCADAssembler containerCADAssembler, PlayerInventory inventory, ITextComponent component) {
+		super(containerCADAssembler, inventory, component);
+		this.player = inventory.player;
+		this.assembler = containerCADAssembler.assembler;
 	}
 
 	@Override

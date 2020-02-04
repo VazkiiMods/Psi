@@ -37,6 +37,7 @@ import net.minecraftforge.common.util.LazyOptional;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.internal.VanillaPacketDispatcher;
 import vazkii.psi.api.spell.ISpellAcceptor;
+import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.tile.TileProgrammer;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
@@ -83,8 +84,7 @@ public class BlockProgrammer extends HorizontalBlock {
 
 		if (player instanceof ServerPlayerEntity)
 			VanillaPacketDispatcher.dispatchTEToPlayer(programmer, (ServerPlayerEntity) player);
-		//TODO Proxify
-		//player.openGui(Psi.instance, LibGuiIDs.PROGRAMMER, worldIn, pos.getX(), pos.getY(), pos.getZ());
+		Psi.proxy.openProgrammerGUI(programmer);
 		return ActionResultType.SUCCESS;
 	}
 

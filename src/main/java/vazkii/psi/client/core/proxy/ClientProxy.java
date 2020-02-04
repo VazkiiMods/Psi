@@ -11,7 +11,6 @@
 package vazkii.psi.client.core.proxy;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.model.ModelResourceLocation;
 import net.minecraft.client.settings.ParticleStatus;
 import net.minecraft.entity.LivingEntity;
@@ -37,6 +36,7 @@ import vazkii.psi.client.core.handler.KeybindHandler;
 import vazkii.psi.client.core.handler.ShaderHandler;
 import vazkii.psi.client.fx.SparkleParticleData;
 import vazkii.psi.client.fx.WispParticleData;
+import vazkii.psi.client.gui.GuiProgrammer;
 import vazkii.psi.client.model.ModelCAD;
 import vazkii.psi.client.render.entity.RenderSpellCircle;
 import vazkii.psi.client.render.tile.RenderTileProgrammer;
@@ -164,25 +164,30 @@ public class ClientProxy implements IProxy {
 	@Override
 	public void wispFX(World world, double x, double y, double z, float r, float g, float b, float size, float motionx, float motiony, float motionz, float maxAgeMul) {
         if (noParticles(world) || maxAgeMul == 0)
-            return;
-        WispParticleData data = new WispParticleData(size, r, g, b, maxAgeMul, depthTest, false);
-        addParticleForce(world, data, x, y, z, motionx, motiony, motionz);
-    }
+			return;
+		WispParticleData data = new WispParticleData(size, r, g, b, maxAgeMul, depthTest, false);
+		addParticleForce(world, data, x, y, z, motionx, motiony, motionz);
+	}
 
 	@Override
 	public void wispFX(double x, double y, double z, float r, float g, float b, float size, float motionx, float motiony, float motionz, float maxAgeMul) {
 		wispFX(Minecraft.getInstance().world, x, y, z, r, g, b, size, motionx, motiony, motionz, maxAgeMul);
 	}
 
+	@Override
+	public void openProgrammerGUI(TileProgrammer programmer) {
+		Minecraft.getInstance().displayGuiScreen(new GuiProgrammer(programmer));
+	}
+
 	private boolean noParticles(World world) {
-        if (world == null)
-            return true;
+		if (world == null)
+			return true;
 
-        if (!world.isRemote)
-            return true;
+		if (!world.isRemote)
+			return true;
 
-        if (!ConfigHandler.CLIENT.useVanillaParticleLimiter.get())
-            return false;
+		if (!ConfigHandler.CLIENT.useVanillaParticleLimiter.get())
+			return false;
 
         float chance = 1F;
         if (Minecraft.getInstance().gameSettings.particles == ParticleStatus.DECREASED)

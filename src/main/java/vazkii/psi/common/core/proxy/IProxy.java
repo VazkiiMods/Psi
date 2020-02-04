@@ -5,6 +5,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particles.IParticleData;
 import net.minecraft.world.World;
+import vazkii.psi.common.block.tile.TileProgrammer;
 
 import java.awt.*;
 
@@ -97,15 +98,17 @@ public interface IProxy {
         wispFX(x, y, z, r, g, b, size, gravity, 1F);
     }
 
-    default void wispFX(double x, double y, double z, float r, float g, float b, float size, float gravity, float maxAgeMul) {
-        wispFX(x, y, z, r, g, b, size, 0, -gravity, 0, maxAgeMul);
-    }
+	default void wispFX(double x, double y, double z, float r, float g, float b, float size, float gravity, float maxAgeMul) {
+		wispFX(x, y, z, r, g, b, size, 0, -gravity, 0, maxAgeMul);
+	}
 
-    default void wispFX(double x, double y, double z, float r, float g, float b, float size, float motionx, float motiony, float motionz) {
-        wispFX(x, y, z, r, g, b, size, motionx, motiony, motionz, 1F);
-    }
+	default void wispFX(double x, double y, double z, float r, float g, float b, float size, float motionx, float motiony, float motionz) {
+		wispFX(x, y, z, r, g, b, size, motionx, motiony, motionz, 1F);
+	}
 
-    void wispFX(double x, double y, double z, float r, float g, float b, float size, float motionx, float motiony, float motionz, float maxAgeMul);
+	void wispFX(double x, double y, double z, float r, float g, float b, float size, float motionx, float motiony, float motionz, float maxAgeMul);
+
+	void openProgrammerGUI(TileProgrammer programmer);
 
 
 }

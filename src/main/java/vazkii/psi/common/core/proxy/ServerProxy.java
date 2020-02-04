@@ -5,6 +5,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraftforge.fml.server.ServerLifecycleHooks;
+import vazkii.psi.common.block.tile.TileProgrammer;
 
 public class ServerProxy implements IProxy {
     @Override
@@ -57,13 +58,18 @@ public class ServerProxy implements IProxy {
         //NOOP
     }
 
-    @Override
-    public void wispFX(World world, double x, double y, double z, float r, float g, float b, float size, float motionx, float motiony, float motionz, float maxAgeMul) {
-        //NOOP
-    }
+	@Override
+	public void wispFX(World world, double x, double y, double z, float r, float g, float b, float size, float motionx, float motiony, float motionz, float maxAgeMul) {
+		//NOOP
+	}
 
-    @Override
-    public void wispFX(double x, double y, double z, float r, float g, float b, float size, float motionx, float motiony, float motionz, float maxAgeMul) {
-        //NOOP
-    }
+	@Override
+	public void wispFX(double x, double y, double z, float r, float g, float b, float size, float motionx, float motiony, float motionz, float maxAgeMul) {
+		//NOOP
+	}
+
+	@Override
+	public void openProgrammerGUI(TileProgrammer programmer) {
+		//NOOP
+	}
 }
