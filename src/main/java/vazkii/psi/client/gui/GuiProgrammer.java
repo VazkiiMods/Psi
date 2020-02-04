@@ -31,7 +31,6 @@ import vazkii.arl.util.TooltipHandler;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.EnumCADStat;
 import vazkii.psi.api.cad.ICAD;
-import vazkii.psi.api.internal.TooltipHelper;
 import vazkii.psi.api.spell.*;
 import vazkii.psi.client.core.helper.SharingHelper;
 import vazkii.psi.client.gui.button.GuiButtonIO;
@@ -283,9 +282,9 @@ public class GuiProgrammer extends Screen {
                 List<ITextComponent> itemTooltip = cad.getTooltip(minecraft.player, tooltipFlag);
                 for (int i = 0; i < itemTooltip.size(); ++i)
                     if (i == 0)
-                        itemTooltip.set(i, new StringTextComponent(cad.getRarity().color + itemTooltip.get(i).toString()));
+                        itemTooltip.set(i, itemTooltip.get(i).applyTextStyles(cad.getRarity().color));
                     else
-                        itemTooltip.set(i, new StringTextComponent(TextFormatting.GRAY + itemTooltip.get(i).toString()));
+                        itemTooltip.set(i, itemTooltip.get(i).applyTextStyles(TextFormatting.GRAY));
 
                 tooltip.addAll(itemTooltip);
             }
@@ -489,7 +488,7 @@ public class GuiProgrammer extends Screen {
             blit(helpX, helpY, xSize + (overHelp ? 12 : 0), ySize + 9, 12, 12);
             List<String> vazkiiWhyDoYouDoThisToMe = new ArrayList<>();
             for (ITextComponent component : tooltip) {
-                vazkiiWhyDoYouDoThisToMe.add(component.toString());
+                vazkiiWhyDoYouDoThisToMe.add(component.getString());
             }
 
             if (overHelp && !hasAltDown()) {
@@ -511,7 +510,7 @@ public class GuiProgrammer extends Screen {
         if (hasAltDown()) {
             legitTooltip = new ArrayList<>(tooltip);
             for (ITextComponent component : tooltip) {
-                legitVazkiiWhyDoYouDoThisToMe.add(component.toString());
+                legitVazkiiWhyDoYouDoThisToMe.add(component.getString());
             }
         }
 
@@ -540,7 +539,7 @@ public class GuiProgrammer extends Screen {
         } else if (!takingScreenshot && tooltip != null && !tooltip.isEmpty()) {
             legitVazkiiWhyDoYouDoThisToMe.clear();
             for (ITextComponent component : tooltip) {
-                legitVazkiiWhyDoYouDoThisToMe.add(component.toString());
+                legitVazkiiWhyDoYouDoThisToMe.add(component.getString());
             }
             RenderHelper.renderTooltip(tooltipX, tooltipY, legitVazkiiWhyDoYouDoThisToMe);
         }

@@ -196,7 +196,7 @@ public class GuiSocketSelect extends Screen {
             if (!stack.isEmpty()) {
                 float xsp = xp - 4;
                 float ysp = yp;
-                String name = (mouseInSector ? TextFormatting.UNDERLINE : TextFormatting.RESET) + stack.getDisplayName().toString();
+                String name = (mouseInSector ? TextFormatting.UNDERLINE : TextFormatting.RESET) + stack.getDisplayName().getString();
                 int width = mc.fontRenderer.getStringWidth(name);
 
                 double mod = 0.6;

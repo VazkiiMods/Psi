@@ -21,7 +21,6 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import vazkii.psi.api.cad.EnumCADStat;
 import vazkii.psi.api.cad.ICAD;
-import vazkii.psi.api.internal.TooltipHelper;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.base.ModBlocks;
 import vazkii.psi.common.block.tile.TileCADAssembler;
@@ -59,7 +58,7 @@ public class GuiCADAssembler extends ContainerScreen {
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 		int color = 4210752;
 
-		String name = new ItemStack(ModBlocks.cadAssembler).getDisplayName().toString();
+		String name = new ItemStack(ModBlocks.cadAssembler).getDisplayName().getString();
 		font.drawString(name, xSize / 2 - font.getStringWidth(name) / 2, 10, color);
 
 		ItemStack cad = assembler.getCachedCAD(player);

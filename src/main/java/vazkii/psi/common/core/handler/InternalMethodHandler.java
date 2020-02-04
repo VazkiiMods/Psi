@@ -19,7 +19,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.arl.util.RenderHelper;
 import vazkii.psi.api.internal.IInternalMethodHandler;
 import vazkii.psi.api.internal.IPlayerData;
-import vazkii.psi.api.internal.TooltipHelper;
 import vazkii.psi.api.spell.*;
 import vazkii.psi.common.item.ItemCAD;
 import vazkii.psi.common.spell.SpellCache;
@@ -67,7 +66,7 @@ public final class InternalMethodHandler implements IInternalMethodHandler {
 	public void renderTooltip(int x, int y, List<ITextComponent> tooltipData, int color, int color2) {
 		List<String> badVazkii = new ArrayList<>();
 		for (ITextComponent component : tooltipData)
-			badVazkii.add(component.toString());
+			badVazkii.add(component.getString());
 		RenderHelper.renderTooltip(x, y, badVazkii, color, color2);
 	}
 
