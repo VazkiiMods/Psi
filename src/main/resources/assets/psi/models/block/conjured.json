@@ -1,5 +1,5 @@
 {
-	"elements": 
-	[
-	]
+  "textures": {
+    "particle": "psi:blocks/empty"
+  }
 }
