@@ -46,6 +46,7 @@ import vazkii.psi.common.core.handler.PersistencyHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.proxy.IProxy;
 import vazkii.psi.common.entity.EntitySpellCircle;
+import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.lib.LibItemNames;
 import vazkii.psi.common.lib.LibMisc;
 
@@ -70,9 +71,8 @@ public class ClientProxy implements IProxy {
 	}
 
 	private void modelBake(ModelBakeEvent event) {
-		ModelResourceLocation key = new ModelResourceLocation("psi:cad", "inventory");
-		IBakedModel originalModel = event.getModelRegistry().get(key);
-		event.getModelRegistry().put(key, new ModelCAD(event.getModelLoader(), originalModel));
+		ModelResourceLocation key = new ModelResourceLocation(ModItems.cad.getRegistryName(), "inventory");
+		event.getModelRegistry().put(key, new ModelCAD(event.getModelRegistry().get(key)));
 
 	}
 

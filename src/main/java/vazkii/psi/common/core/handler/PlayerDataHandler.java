@@ -14,6 +14,8 @@ import com.google.common.collect.ImmutableSet;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -202,7 +204,7 @@ public class PlayerDataHandler {
 			if (cameraEntity != null) {
 				float partialTicks = event.getPartialTicks();
 				for(PlayerEntity player : mc.world.getPlayers())
-					PlayerDataHandler.get(player).render(player, partialTicks);
+					PlayerDataHandler.get(player).render(player, partialTicks, event.getMatrixStack());
 			}
 
 
@@ -881,7 +883,7 @@ public class PlayerDataHandler {
 		}
 
 		@OnlyIn(Dist.CLIENT)
-		public void render(PlayerEntity player, float partTicks) {
+		public void render(PlayerEntity player, float partTicks, MatrixStack ms) {
             EntityRendererManager renderManager = Minecraft.getInstance().getRenderManager();
             double x = player.lastTickPosX + (player.getX() - player.lastTickPosX) * partTicks - renderManager.info.getProjectedView().x;
             double y = player.lastTickPosY + (player.getY() - player.lastTickPosY) * partTicks - renderManager.info.getProjectedView().y;
@@ -903,7 +905,7 @@ public class PlayerDataHandler {
                 color = icad.getSpellColor(cad);
             }
 
-            RenderSpellCircle.renderSpellCircle(ClientTicker.ticksInGame + partTicks, scale, x, y, z, color, new MatrixStack());
+            RenderSpellCircle.renderSpellCircle(ClientTicker.ticksInGame + partTicks, scale, 1, x, y, z, 0, 1, 0, color, ms, IRenderTypeBuffer.immediate(Tessellator.getInstance().getBuffer()));
             GlStateManager.disableLighting();
         }
 

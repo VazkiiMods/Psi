@@ -25,8 +25,11 @@ public interface ICADAssembly {
         return PsiAPI.internalHandler.createDefaultCAD(allComponents);
     }
 
+    /**
+     * @return Path to a model json file, e.g. <code>psi:item/cad_iron</code>
+     */
     @OnlyIn(Dist.CLIENT)
-    ModelResourceLocation getCADModel(ItemStack stack, ItemStack cad);
+    ResourceLocation getCADModel(ItemStack stack, ItemStack cad);
 
     @OnlyIn(Dist.CLIENT)
     ResourceLocation getCadTexture(ItemStack stack, ItemStack cad);
