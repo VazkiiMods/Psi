@@ -1,660 +1,662 @@
-# MISC
+{
+  "_comment": "MISC",
 
-psimisc.shiftForInfo=&7詳細情報 &bSHIFT&7押し続け
-psimisc.componentType=&a部品種別&7: %s
-psimisc.none=(無し)
-psimisc.stats=性能値
-psimisc.socketing=Socketing
-psimisc.keybind=Psi Master Keybind
-psimisc.spellSelected=&d魔法選択&7: %s
-psimisc.name=名称:
-psimisc.compiled=コンパイル 完了
-psimisc.errored=コンパイル エラー
-psimisc.weakCad=CADの性能値不足により、このスペルは使用できません。
-psimisc.canceledSpell=何かしらによって魔法の実行を妨げられた。
-psimisc.cancelledCADTake=何かしらによってCADの作製を妨げられた。
-psimisc.constant=定数
-psimisc.nextPage=次ページ
-psimisc.prevPage=前ページ
-psimisc.config=コンフィグ
-psimisc.notYourProgrammer=他の人が使用しているようだ。邪魔しないほうが良いだろう。
-psimisc.cantUseProgrammer=使い方がわからない。
-psimisc.levelDisplay=Level %d
-psimisc.levelInfo=Level %d - Level Points: %d
-psimisc.levelInfoCreative=Level %d (Creative) - Level Points: %d
-psimisc.locked=ロック中
-psimisc.requirements=必要条件
-psimisc.learn=習得
-psimisc.levelup=Level Up
-psimisc.wip=Psi Beta | Not final!
-psimisc.bulletType=&bType&7: %s
-psimisc.bulletCost=&bコスト倍率&7: %s%%
-psimisc.levelUpInfo1=You got 1 Level Point
-psimisc.levelUpInfo2=CADを装備解除して [%s] を押してください。
-psimisc.importFromClipboard=クリップボードからインポート
-psimisc.exportToClipboard=クリップボードへエクスポート
-psimisc.mustHoldShift=(SHIFTを押し続ける必要がある)
-psimisc.malformedJson=インポートエラー: 不正な文字列: %s
-psimisc.missingPieces=インポートエラー: 使用されているピースを習得していない。
-psimisc.loadPrompt=Load?
-psimisc.spectator=[Spectator Mode]
-psimisc.multipleCads=インベントリにある他のCADが干渉している。CADは1つしか持ち歩けない。
-psimisc.providerMod=&7アドオン: &9%s
-psimisc.trickPattern=^作動式: (.+)$
-psimisc.programmerHelp=&aプログラマーヘルプ
-psimisc.ctrlWindows=Ctrl
-psimisc.ctrlMac=Cmd
-psimisc.enterCommit=Enterを押してコミット
-psimisc.semicolonLine= ; キーで行を変更
-psimisc.programmerCoords=選択中: [%d, %d] | カーソル: [%d, %d]
-psimisc.programmerCoordsNoCursor=選択中: [%d, %d]
+  "psimisc.shiftForInfo": "&7詳細情報 &bSHIFT&7押し続け",
+  "psimisc.componentType": "&a部品種別&7: %s",
+  "psimisc.none": "(無し)",
+  "psimisc.stats": "性能値",
+  "psimisc.socketing": "Socketing",
+  "psimisc.keybind": "Psi Master Keybind",
+  "psimisc.spellSelected": "&d魔法選択&7: %s",
+  "psimisc": "名称:",
+  "psimisc.compiled": "コンパイル 完了",
+  "psimisc.errored": "コンパイル エラー",
+  "psimisc.weakCad": "CADの性能値不足により、このスペルは使用できません。",
+  "psimisc.canceledSpell": "何かしらによって魔法の実行を妨げられた。",
+  "psimisc.cancelledCADTake": "何かしらによってCADの作製を妨げられた。",
+  "psimisc.constant": "定数",
+  "psimisc.nextPage": "次ページ",
+  "psimisc.prevPage": "前ページ",
+  "psimisc.config": "コンフィグ",
+  "psimisc.notYourProgrammer": "他の人が使用しているようだ。邪魔しないほうが良いだろう。",
+  "psimisc.cantUseProgrammer": "使い方がわからない。",
+  "psimisc.levelDisplay": "Level %d",
+  "psimisc.levelInfo": "Level %d - Level Points: %d",
+  "psimisc.levelInfoCreative": "Level %d (Creative) - Level Points: %d",
+  "psimisc.locked": "ロック中",
+  "psimisc.requirements": "必要条件",
+  "psimisc.learn": "習得",
+  "psimisc.levelup": "Level Up",
+  "psimisc.wip": "Psi Beta | Not final!",
+  "psimisc.bulletType": "&bType&7: %s",
+  "psimisc.bulletCost": "&bコスト倍率&7: %s%%",
+  "psimisc.levelUpInfo1": "You got 1 Level Point",
+  "psimisc.levelUpInfo2": "CADを装備解除して [%s] を押してください。",
+  "psimisc.importFromClipboard": "クリップボードからインポート",
+  "psimisc.exportToClipboard": "クリップボードへエクスポート",
+  "psimisc.mustHoldShift": "(SHIFTを押し続ける必要がある)",
+  "psimisc.malformedJson": "インポートエラー: 不正な文字列: %s",
+  "psimisc.missingPieces": "インポートエラー: 使用されているピースを習得していない。",
+  "psimisc.loadPrompt": "Load?",
+  "psimisc.spectator": "[Spectator Mode]",
+  "psimisc.multipleCads": "インベントリにある他のCADが干渉している。CADは1つしか持ち歩けない。",
+  "psimisc.providerMod": "&7アドオン: &9%s",
+  "psimisc.trickPattern": "^作動式: (.+)$",
+  "psimisc.programmerHelp": "&aプログラマーヘルプ",
+  "psimisc.ctrlWindows": "Ctrl",
+  "psimisc.ctrlMac": "Cmd",
+  "psimisc.enterCommit": "Enterを押してコミット",
+  "psimisc.semicolonLine": "; キーで行を変更",
+  "psimisc.programmerCoords": "選択中: [%d, %d] | カーソル: [%d, %d]",
+  "psimisc.programmerCoordsNoCursor": "選択中: [%d, %d]",
 
-psi.container.socketable=socketable
+  "psi.container.socketable": "socketable",
 
-# SUBTITLES
-psi.subtitle.bulletCreate=スペルが保存されました
-psi.subtitle.cadCreate=CADが組み上がりました
-psi.subtitle.spellCast=CAD実行
-psi.subtitle.loopcast=CAD繰り返し実行
-
-
-# VERSIONING
-psi.versioning.flavour0=お使いのPsiは最新版ではありません。悲しいね。
-psi.versioning.flavour1=Psiをアップデートしようよ。
-psi.versioning.flavour2=Psiは旧版です。おもしろメッセージを期待した？ざんねん、普通に更新が必要なのなの。ごめんね＞＜;
-psi.versioning.flavour3=魔法科高校から最新のPsiをダウンロードできます。
-psi.versioning.flavour4=ご利用のPsiは旧版。逆に言えば、Psiのアップデートがあります。
-psi.versioning.flavour5=Psiを旧版のまま使っているのは雑魚。
-psi.versioning.flavour6=Psiをアップデートしよ。サイコ野郎じゃないんだからさ。
-psi.versioning.flavour7=お使いのPsiは最新版です。嘘です。
-psi.versioning.flavour8=Psiのアップデートをおすすめします。WebPsiteから入手できます。
-psi.versioning.flavour9=サイケこうせんを受けた人のうちの1割が、Psiをアップデートしないらしい。
-psi.versioning.outdated=お使いのPsiのバージョンは build %sです。なお最新版は build %sなもよう。
-psi.versioning.updateMessage=["クリックして [",{"text":"ダウンロード","color":"aqua","hoverEvent":{"action":"show_text","value":{"text":"最新版を自動ダウンロードするにはここをクリック","color":"aqua"}},"clickEvent":{"action":"run_command","value":"/psi-download-latest %%version%%"}},"] [",{"text":"Website","color":"aqua","hoverEvent":{"action":"show_text","value":{"text":"クリックでmodのウェブサイトへ","color":"aqua"}},"clickEvent":{"action":"open_url","value":"http://psi.vazkii.us/downloads.php"}},"] [",{"text":"Changelog","color":"aqua","hoverEvent":{"action":"show_text","value":{"text":"クリックで変更履歴を表示","color":"aqua"}},"clickEvent":{"action":"open_url","value":"http://psi.vazkii.us/changelog.php#%version%"}},"]"]
-psi.versioning.startingDownload=[{"text":"Starting download of %s. Please do not remove your hard disk. Enjoying ","color":"yellow"},{"text":"Psi","color":"aqua"},{"text":"? Consider supporting ","color":"yellow"},{"text":"Vazkii","color":"light_purple"},{"text":" on ","color":"yellow"},{"text":"[Patreon]","color":"gold","hoverEvent":{"action":"show_text","value":{"text":"Click this to go to Vazkii's Patreon","color":"light_purple"}},"clickEvent":{"action":"open_url","value":"http://www.patreon.com/Vazkii"}},{"text":"!","color":"yellow"}]
-psi.versioning.doneDownloading=ダウンロード完了 %s. アップデートするには、あなたの旧版PSi.jarを削除してゲームを再読込してください。
-psi.versioning.downloadedAlready=最新版をダウンロード済みです。アップデートするにはゲームを終了してmodsフォルダから旧版を削除し、再びゲームを開始してください。
-psi.versioning.downloadingAlready=アップデートのダウンロードは完了しています。アップデートのために時間を割いてくれませんか？
-psi.versioning.error=ぐげ！Psiアップデートのダウンロードを試みましたが、問題が発生したようです。psi.vazkii.usがダウンしていますか？
-psi.versioning.disabled=申し訳ありません。 この機能はサーバホストの問題により現在無効になっています。近いうちに復旧するはずです。
-
-# BLOCK NAMES
-tile.psi:cad_assembler.name=CAD組立機
-tile.psi:programmer.name=魔法構築機
-tile.psi:psidust_block.name=サイダスト ブロック
-tile.psi:psimetal_block.name=サイメタル ブロック
-tile.psi:psigem_block.name=サイジェム ブロック
-tile.psi:psimetal_plate_black.name=ダーク サイメタル プレート
-tile.psi:psimetal_plate_black_light.name=ダーク サイメタル 流路板
-tile.psi:psimetal_plate_cyan.name=輝く サイメタル プレート
-tile.psi:psimetal_plate_cyan_light.name=輝くサイメタル 流路板 
-tile.psi:ebony_psimetal_block.name=エボニーサイメタル ブロック
-tile.psi:ivory_psimetal_block.name=アイボリーサイメタル ブロック
-tile.psi:conjured.name=魔法ブロック
-tile.psi:psimetal_plate_white.name=輝く サイメタル プレート
-tile.psi:psimetal_plate_white_light.name=輝く サイメタル 流動板
-
-# ITEM NAMES
-item.psi:psidust.name=サイダスト
-item.psi:psimetal.name=サイメタルの インゴット
-item.psi:psigem.name=サイジェム
-item.psi:ebony_psimetal.name=エボニーサイメタルの インゴット
-item.psi:ivory_psimetal.name=アイボリーサイメタルの インゴット
-item.psi:ebony_substance.name=エボニー実体
-item.psi:ivory_substance.name=アイボリー実体
-item.psi:cad.name=CAD-術式補助演算機-
-item.psi:cad_assembly_iron.name=鉄のCAD素体
-item.psi:cad_assembly_gold.name=金のCAD素体
-item.psi:cad_assembly_psimetal.name=サイメタルのCAD素体
-item.psi:cad_assembly_ebony_psimetal.name=エボニーサイメタルの CAD素体
-item.psi:cad_assembly_ivory_psimetal.name=アイボリーサイメタルの CAD素体
-item.psi:cad_assembly_creative.name=クリエイティブCAD組立機
-item.psi:cad_core_basic.name=基本CADコア
-item.psi:cad_core_overclocked.name=クロックアップCADコア
-item.psi:cad_core_conductive.name=伝導性CADコア
-item.psi:cad_core_hyperclocked.name=ハイパークロックCADコア
-item.psi:cad_core_radiative.name=放射性CADコア
-item.psi:cad_socket_basic.name=基本CAD弾倉
-item.psi:cad_socket_signaling.name=信号式CAD弾倉
-item.psi:cad_socket_large.name=大型CAD弾倉
-item.psi:cad_socket_transmissive.name=伝達式CAD弾倉
-item.psi:cad_socket_huge.name=巨大CAD弾倉
-item.psi:cad_battery_basic.name=基本CADバッテリー
-item.psi:cad_battery_extended.name=拡張CADバッテリー
-item.psi:cad_battery_ultradense.name=過密CADバッテリー
-item.psi:cad_colorizer_white.name=CAD着色器(白)
-item.psi:cad_colorizer_orange.name=CAD着色器(橙)
-item.psi:cad_colorizer_magenta.name=CAD着色器(赤紫)
-item.psi:cad_colorizer_light_blue.name=CAD着色器(空)
-item.psi:cad_colorizer_yellow.name=CAD着色器(黄)
-item.psi:cad_colorizer_lime.name=CAD着色器(黄緑)
-item.psi:cad_colorizer_pink.name=CAD着色器(桃)
-item.psi:cad_colorizer_gray.name=CAD着色器(灰)
-item.psi:cad_colorizer_silver.name=CAD着色器(銀)
-item.psi:cad_colorizer_cyan.name=CAD着色器(水)
-item.psi:cad_colorizer_purple.name=CAD着色器(紫)
-item.psi:cad_colorizer_blue.name=CAD着色器(青)
-item.psi:cad_colorizer_brown.name=CAD着色器(茶)
-item.psi:cad_colorizer_green.name=CAD着色器(緑)
-item.psi:cad_colorizer_red.name=CAD着色器(赤)
-item.psi:cad_colorizer_black.name=CAD着色器(黒)
-item.psi:cad_colorizer_rainbow.name=CAD着色器(虹)
-item.psi:cad_colorizer_psi.name=Psi CAD 着色器
-item.psi:spell_bullet.name=術式弾
-item.psi:spell_bullet_active.name=術式弾(プログラム済み)
-item.psi:spell_bullet_projectile.name=発射型術式弾
-item.psi:spell_bullet_projectile_active.name=発射型術式弾(プログラム済み)
-item.psi:spell_bullet_loop.name=ループ型術式弾
-item.psi:spell_bullet_loop_active.name=ループ型術式弾(プログラム済み)
-item.psi:spell_bullet_circle.name=円形術式弾
-item.psi:spell_bullet_circle_active.name=術者中心型術式弾(プログラム済み)
-item.psi:spell_bullet_grenade.name=榴弾型術式弾
-item.psi:spell_bullet_grenade_active.name=榴弾型術式弾(プログラム済み)
-item.psi:spell_bullet_charge.name=チャージ型術式弾
-item.psi:spell_bullet_charge_active.name=チャージ型術式弾(プログラム済み)
-item.psi:spell_bullet_mine.name=地雷型術式弾
-item.psi:spell_bullet_mine_active.name=地雷型術式弾(プログラム済み)
-item.psi:spell_drive.name=術式ドライブ
-item.psi:psimetal_shovel.name=サイメタルのシャベル
-item.psi:psimetal_pickaxe.name=サイメタルのつるはし
-item.psi:psimetal_axe.name=サイメタルの斧
-item.psi:psimetal_sword.name=サイメタルの剣
-item.psi:psimetal_shovel.broken.name=サイメタルのシャベル(損傷)
-item.psi:psimetal_pickaxe.broken.name=サイメタルのつるはし(損傷)
-item.psi:psimetal_axe.broken.name=サイメタルの斧(損傷)
-item.psi:psimetal_sword.broken.name=サイメタルの剣(損傷)
-item.psi:detonator.name=術式起爆装置
-item.psi:psimetal_exosuit_helmet.name=サイメタル外装 ヘルメット
-item.psi:psimetal_exosuit_chestplate.name=サイメタル外装 チェストプレート
-item.psi:psimetal_exosuit_leggings.name=サイメタル外装 レギンス
-item.psi:psimetal_exosuit_boots.name=サイメタル外装 ブーツ
-item.psi:psimetal_exosuit_helmet.broken.name=サイメタル外装 ヘルメット(損傷)
-item.psi:psimetal_exosuit_chestplate.broken.name=サイメタル外装 チェストプレート(損傷)
-item.psi:psimetal_exosuit_leggings.broken.name=サイメタル外装 レギンス(損傷)
-item.psi:psimetal_exosuit_boots.broken.name=サイメタル外装 ブーツ(損傷)
-item.psi:exosuit_controller.name=外装コントローラー
-item.psi:exosuit_sensor_light.name=外装用 光センサー
-item.psi:exosuit_sensor_water.name=外装用 水センサー
-item.psi:exosuit_sensor_heat.name=外装用 熱センサー
-item.psi:exosuit_sensor_stress.name=外装用 ストレスセンサー
-item.psi:vector_ruler.name=ベクトル定規
-
-# DEATH MESSAGES
-death.attack.psi-overload=Psiエネルギーを %s 超過した。
-
-# COMPONENT NAMES
-psi.component.assembly=素体
-psi.component.core=コア
-psi.component.socket=弾倉
-psi.component.battery=バッテリー
-psi.component.dye=着色器
-
-# CAD STAT NAMES
-psi.cadstat.efficiency=効率
-psi.cadstat.potency=規模
-psi.cadstat.complexity=複雑性
-psi.cadstat.projection=作動量
-psi.cadstat.bandwidth=帯域幅
-psi.cadstat.sockets=装弾数
-psi.cadstat.overflow=容量
-
-# SPELL STAT NAMES
-psi.spellstat.complexity=複雑性
-psi.spellstat.complexity.desc=ステップ数
-psi.spellstat.potency=規模
-psi.spellstat.potency.desc=魔法の力量
-psi.spellstat.cost=コスト
-psi.spellstat.cost.desc=実行時のPsiエネルギー消費量
-psi.spellstat.projection=投影
-psi.spellstat.projection.desc=作動式ピースの数
-psi.spellstat.bandwidth=帯域幅
-psi.spellstat.bandwidth.desc=魔法式の幅か高さ(の最大値)
-
-# BULLET TYPES
-psi.bulletType0=通常
-psi.bulletType1=発射
-psi.bulletType2=ループ
-psi.bulletType3=円形
-psi.bulletType4=榴弾
-psi.bulletType5=チャージ
-psi.bulletType6=地雷
-
-# EXOSUIT EVENTS
-psi.event.none=(No Event Handler)
-psi.event.damage=&イベント&7: ダメージ
-psi.event.tick=&bイベント&7: tick
-psi.event.jump=&bイベント&7: ジャンプ
-psi.event.lowLight=&bイベント&7: 暗所
-psi.event.underwater=&bイベント&7: 水中
-psi.event.onFire=&bイベント&7: 炎上
-psi.event.lowHp=&bイベント&7: 瀕死
-
-# PROGRAMMER REFERENCE
-# %1$s is Ctrl or Cmd, depending on whether you're on windows or mac
-# spaces are important
-psi.programmerReference0= &bキー設定
-psi.programmerReference1=  ピース削除: &bDelete
-psi.programmerReference2=  グリッド全削除: &b%1$s-Shift-Delete
-psi.programmerReference3=  グリッド移動: &b%1$s + 矢印キー
-psi.programmerReference4=  グリッド回転: &b%1$s-Shift-Left/Right
-psi.programmerReference5=  グリッド垂直反転: &b%1$s-Shift-Down
-psi.programmerReference6=  コピー/切り取り/貼り付け: &b%1$s-C/%1$s-X/%1$s-V
-psi.programmerReference7=  元に戻す/やり直し: &b%1$s-Z/%1$s-Y
-psi.programmerReference8=  パネルを開く/ピースを選択: &bEnter
-psi.programmerReference9=  パラメータを設定: &bテンキー + 矢印キー
-psi.programmerReference10=  コメントを設定: &b%1$s-D
-psi.programmerReference11=  フォーカス切替: &bTab
-psi.programmerReference13=  カーソル移動: &b矢印キー
-psi.programmerReference12=  ツールチップ表示: &bAlt
-psi.programmerReference14=  Imgurへアップロード: &b%1$s-Shift-Alt-G
-psi.programmerReference15=  Redditで共有: &b%1$s-Shift-Alt-R
-psi.programmerReference16=
-psi.programmerReference17= &b検索
-psi.programmerReference18=  入力可能な型: &bin:(型)
-psi.programmerReference19=  出力する型: &bout:(型)
-psi.programmerReference20=  前方一致: &b(名称)_
-psi.programmerReference21=  後方一致: &b_(名称)
-psi.programmerReference22=  Mod名: &b@(名称)
-
-# SPELl PIECE NAMES
-# -- SELECTORS
-psi.spellpiece.selectorCaster=取得子: 術者
-psi.spellpiece.selectorCaster.desc=魔法を実行している人を取得します。
-psi.spellpiece.selectorFocalPoint=取得子: 焦点
-psi.spellpiece.selectorFocalPoint.desc=魔法の焦点となっているエンティティを取得します。
-psi.spellpiece.selectorNearbyItems=取得子: 近くのアイテム
-psi.spellpiece.selectorNearbyItems.desc=与えられた位置の近くのアイテムを取得します。
-psi.spellpiece.selectorNearbyLiving=取得子: 近くの生物
-psi.spellpiece.selectorNearbyLiving.desc=与えられた位置の近くの生物を取得します。
-psi.spellpiece.selectorNearbyEnemies=取得子: 近くの敵
-psi.spellpiece.selectorNearbyEnemies.desc=与えられた位置の近くの敵を取得します。
-psi.spellpiece.selectorNearbyAnimals=取得子: 近くの動物
-psi.spellpiece.selectorNearbyAnimals.desc=与えられた位置の近くの動物を取得します。
-psi.spellpiece.selectorNearbyProjectiles=取得子: 近く投射物
-psi.spellpiece.selectorNearbyProjectiles.desc=与えられた位置の近くの投射物を取得します。
-psi.spellpiece.selectorNearbySmeltables=取得子: 近くの錬成可能アイテム
-psi.spellpiece.selectorNearbySmeltables.desc=与えられた位置の近くの錬成可能アイテムを取得します。
-psi.spellpiece.selectorLoopcastIndex=取得子: ループ回数
-psi.spellpiece.selectorLoopcastIndex.desc=繰り返し実行が完了した回数を取得します。
-psi.spellpiece.selectorBlockBroken=取得子: 破壊したブロック位置
-psi.spellpiece.selectorBlockBroken.desc=ツールで破壊されたブロックの位置をベクトルで取得します。(ツール用)
-psi.spellpiece.selectorBlockSideBroken=取得子: 破壊したブロック面
-psi.spellpiece.selectorBlockSideBroken.desc=ツールで破壊されたブロックの面をベクトルで取得します(ツール用)
-psi.spellpiece.selectorAttackTarget=取得子: 攻撃対象
-psi.spellpiece.selectorAttackTarget.desc=術者が攻撃したエンティティを取得します。
-psi.spellpiece.selectorSneakStatus=取得子: スニーク状態
-psi.spellpiece.selectorSneakStatus.desc=術者がスニークしているかどうかを取得します。(通常時=1, スニーク時=0)
-psi.spellpiece.selectorTime=取得子: 時間
-psi.spellpiece.selectorTime.desc=CADの内部時間を(tickで)取得します。
-psi.spellpiece.selectorAttacker=取得子: 攻撃者
-psi.spellpiece.selectorAttacker.desc=術者を攻撃したエンティティを取得します。
-psi.spellpiece.selectorDamageTaken=取得子: 被ダメージ量
-psi.spellpiece.selectorDamageTaken.desc=術者が受けたダメージ量を取得します。
-psi.spellpiece.selectorRulerVector=取得子: 定規ベクトル
-psi.spellpiece.selectorRulerVector.desc=ベクトル定規で測定したベクトルを取得します。
-psi.spellpiece.selectorItemPresence=取得子: 所持アイテム数
-psi.spellpiece.selectorItemPresence.desc=インベントリにある1つのアイテムのスタック数を取得します。
-psi.spellpiece.selectorBlockPresence=取得子: ブロック検出
-psi.spellpiece.selectorBlockPresence.desc=ワールドにブロックが設置されているか否かおよび、それが固体ブロックか否かを検出します。
-psi.spellpiece.selectorSavedVector=取得子: 保存されたベクトル
-psi.spellpiece.selectorSavedVector.desc=CADメモリーに保存されているベクトルを取得します。
-psi.spellpiece.selectorEidosChangelog=取得子: エイドス変更履歴
-psi.spellpiece.selectorEidosChangelog.desc=エイドス変更履歴から位置を取得します。
-
-# -- OPERATORS
-psi.spellpiece.operatorSum=演算子: 加算
-psi.spellpiece.operatorSum.desc=A + B (+ C)
-psi.spellpiece.operatorSubtract=演算子: 減算
-psi.spellpiece.operatorSubtract.desc=A - B (- C)
-psi.spellpiece.operatorMultiply=演算子: 乗算
-psi.spellpiece.operatorMultiply.desc=A * B (* C)
-psi.spellpiece.operatorDivide=演算子: 除算
-psi.spellpiece.operatorDivide.desc=A / B
-psi.spellpiece.operatorAbsolute=演算子: 絶対値
-psi.spellpiece.operatorAbsolute.desc=数値の絶対値を算出します。
-psi.spellpiece.operatorInverse=演算子: 逆数
-psi.spellpiece.operatorInverse.desc=数値の逆数を算出します。
-psi.spellpiece.operatorModulus=演算子: 剰余算
-psi.spellpiece.operatorModulus.desc=A %% B (Integer)
-psi.spellpiece.operatorIntegerDivide=演算子: 整数除算
-psi.spellpiece.operatorIntegerDivide.desc=A / B (Integer)
-psi.spellpiece.operatorRandom=演算子: 乱数
-psi.spellpiece.operatorRandom.desc=0～与えられた数値の範囲のうち、ランダムな1つの値。
-psi.spellpiece.operatorSin=演算子: サイン
-psi.spellpiece.operatorSin.desc=sin(A)
-psi.spellpiece.operatorCos=演算子: コサイン
-psi.spellpiece.operatorCos.desc=cos(A)
-psi.spellpiece.operatorAsin=演算子: アークサイン
-psi.spellpiece.operatorAsin.desc=asin(A)
-psi.spellpiece.operatorAcos=演算子: アークコサイン
-psi.spellpiece.operatorAcos.desc=acos(A)
-psi.spellpiece.operatorMax=演算子: 最大値
-psi.spellpiece.operatorMax.desc=渡された値の内、最大のものを出力します。
-psi.spellpiece.operatorMin=演算子: 最小値
-psi.spellpiece.operatorMin.desc=渡された値の内、最小のものを出力します。
-psi.spellpiece.operatorSquare=演算子: 平方
-psi.spellpiece.operatorSquare.desc=A^2
-psi.spellpiece.operatorCube=演算子: 立方
-psi.spellpiece.operatorCube.desc=A^3
-psi.spellpiece.operatorPower=演算子: べき乗
-psi.spellpiece.operatorPower.desc=A^B
-psi.spellpiece.operatorSquareRoot=演算子: 平方根
-psi.spellpiece.operatorSquareRoot.desc=sqrt(A)
-psi.spellpiece.operatorLog=演算子: 対数
-psi.spellpiece.operatorLog.desc=log(A) or logB(A)
-psi.spellpiece.operatorCeiling=演算子: 切り上げ
-psi.spellpiece.operatorCeiling.desc=小数点以下を切り上げて出力します。
-psi.spellpiece.operatorFloor=演算子: 切り下げ
-psi.spellpiece.operatorFloor.desc=小数点以下を切り下げて出力します。
-psi.spellpiece.operatorRound=演算子: 四捨五入
-psi.spellpiece.operatorRound.desc=小数点以下を四捨五入して出力します。
-psi.spellpiece.operatorEntityPosition=演算子: エンティティ位置
-psi.spellpiece.operatorEntityPosition.desc=エンティティの位置を1つ取得します。
-psi.spellpiece.operatorEntityLook=演算子: エンティティ視線方向
-psi.spellpiece.operatorEntityLook.desc=エンティティ1つの視線方向を方向ベクトルで取得します。
-psi.spellpiece.operatorEntityMotion=演算子: エンティティ移動ベクトル
-psi.spellpiece.operatorEntityMotion.desc=エンティティ1つの動いている方向をベクトルで取得します。
-psi.spellpiece.operatorEntityAxialLook=演算子: エンティティ視線方角
-psi.spellpiece.operatorEntityAxialLook.desc=エンティティ1つの視線方向を、方角に丸めた上で、方向ベクトルで取得します。
-psi.spellpiece.operatorFocusedEntity=演算子: エンティティ注目
-psi.spellpiece.operatorFocusedEntity.desc=対象のエンティティが見ているエンティティを取得します。
-psi.spellpiece.operatorVectorRaycast=演算子: ベクトルレイキャスト
-psi.spellpiece.operatorVectorRaycast.desc=対象のエンティティの位置からRay方向にある最初のブロックの座標を、ベクトルで取得します。(最大距離32)
-psi.spellpiece.operatorVectorRaycastAxis=演算子: ベクトルレイキャスト方向
-psi.spellpiece.operatorVectorRaycastAxis.desc=レイキャスト先のブロックの面を、そのブロック基準の方向ベクトルで取得します。(最大距離32)
-psi.spellpiece.operatorVectorSum=演算子: ベクトル加算
-psi.spellpiece.operatorVectorSum.desc=A + B (+ C)
-psi.spellpiece.operatorVectorSubtract=演算子: ベクトル減算
-psi.spellpiece.operatorVectorSubtract.desc=A - B (- C)
-psi.spellpiece.operatorVectorMultiply=演算子: ベクトル乗算
-psi.spellpiece.operatorVectorMultiply.desc=A * B
-psi.spellpiece.operatorVectorDivide=演算子: ベクトル除算
-psi.spellpiece.operatorVectorDivide.desc=A / B
-psi.spellpiece.operatorVectorCrossProduct=演算子: ベクトルクロス積
-psi.spellpiece.operatorVectorCrossProduct.desc=A x B
-psi.spellpiece.operatorVectorNormalize=演算子: ベクトル正規化
-psi.spellpiece.operatorVectorNormalize.desc=ベクトルを単位ベクトルにして出力。大きさを1とします。
-psi.spellpiece.operatorVectorNegate=演算子: ベクトル反転
-psi.spellpiece.operatorVectorNegate.desc=ベクトルの正負を反転させます。
-psi.spellpiece.operatorVectorMagnitude=演算子: ベクトル強さ
-psi.spellpiece.operatorVectorMagnitude.desc=ベクトルの大きさを出力 します。
-psi.spellpiece.operatorVectorConstruct=演算子: ベクトル定数
-psi.spellpiece.operatorVectorConstruct.desc=XYZパラメータからベクトルを構築します。
-psi.spellpiece.operatorVectorExtractX=演算子: ベクトル抽出X
-psi.spellpiece.operatorVectorExtractX.desc=ベクトルからX座標を抽出します。
-psi.spellpiece.operatorVectorExtractY=演算子: ベクトル抽出Y
-psi.spellpiece.operatorVectorExtractY.desc=ベクトルからY座標を抽出します。
-psi.spellpiece.operatorVectorExtractZ=演算子: ベクトル抽出Z
-psi.spellpiece.operatorVectorExtractZ.desc=ベクトルからZ座標を抽出します。
-psi.spellpiece.operatorVectorProject=演算子: ベクトル射影
-psi.spellpiece.operatorVectorProject.desc=ベクトル Aを、ベクトル Bへ射影します。
-psi.spellpiece.operatorVectorDotProduct=演算子:ベクトルドット積
-psi.spellpiece.operatorVectorDotProduct.desc=A . B
-psi.spellpiece.operatorClosestToPoint=演算子: 最も近いエンティティ
-psi.spellpiece.operatorClosestToPoint.desc=リスト内で特定位置から最も近いエンティティ1つを出力します。
-psi.spellpiece.operatorRandomEntity=演算子: ランダムエンティティ
-psi.spellpiece.operatorRandomEntity.desc=リスト内からランダムなエンティティ1つを出力します。
-psi.spellpiece.operatorListAdd=演算子: リストへ追加
-psi.spellpiece.operatorListAdd.desc=対象となるエンティティをリストへ追加します。
-psi.spellpiece.operatorListRemove=演算子: リストから削除
-psi.spellpiece.operatorListRemove.desc=リストから対象となるエンティティを削除します。
-
-# -- CONSTANTS
-psi.spellpiece.constantNumber=定数子: 数値
-psi.spellpiece.constantNumber.desc=このピースを選択した後、値をタイピングしてください。
-psi.spellpiece.constantPi=定数子: Pi
-psi.spellpiece.constantPi.desc=Piの値を出力します。
-psi.spellpiece.constantE=定数子: e
-psi.spellpiece.constantE.desc=eの値を出力します。
-psi.spellpiece.constantWrapper=定数子: ラッパー
-psi.spellpiece.constantWrapper.desc=変数の値を、定数としてラップします。
-
-# -- OTHERS
-psi.spellpiece.connector=コネクタ
-psi.spellpiece.connector.desc=フローを接続します。
-psi.spellpiece.errorSuppressor=エラー抑止
-psi.spellpiece.errorSuppressor.desc=魔法式によって提示されるエラーを非表示にします。
-
-# -- TRICKS
-psi.spellpiece.trickDebug=作動式: デバッグ
-psi.spellpiece.trickDebug.desc=テスト用。対象を出力します。
-psi.spellpiece.trickDelay=作動式: 休眠
-psi.spellpiece.trickDelay.desc=術式を、渡された数のtick分だけ遅らせます。
-psi.spellpiece.trickDie=作動式: 終了
-psi.spellpiece.trickDie.desc=対象が]-1, 1[の範囲であれば、術式を終了します。
-psi.spellpiece.trickEvaluate=作動式: 評価
-psi.spellpiece.trickEvaluate.desc=値を評価します。何もしません。
-psi.spellpiece.trickAddMotion=作動式: 運動追加(単)
-psi.spellpiece.trickAddMotion.desc=ターゲットのエンティティに運動を追加します。
-psi.spellpiece.trickExplode=作動式: 爆発
-psi.spellpiece.trickExplode.desc=どっかん！
-psi.spellpiece.trickBreakBlock=作動式: ブロック破壊(単)
-psi.spellpiece.trickBreakBlock.desc=ブロックを破壊します。
-psi.spellpiece.trickBreakInSequence=作動式: ブロック破壊(列)
-psi.spellpiece.trickBreakInSequence.desc=与えられたVector方向のブロックをそれぞれ破壊します。
-psi.spellpiece.trickPlaceBlock=作動式: ブロック設置(単)
-psi.spellpiece.trickPlaceBlock.desc=ブロックを設置します。(CADの右側にあるブロック)
-psi.spellpiece.trickPlaceInSequence=作動式: ブロック設置(列)
-psi.spellpiece.trickPlaceInSequence.desc=与えられたVector方向へブロックをそれぞれ設置します。
-psi.spellpiece.trickInfusion=作動式: 注入
-psi.spellpiece.trickInfusion.desc=金をサイメタルにします。レッド ストーンをサイダストにするのと同様の動作です。
-psi.spellpiece.trickBlink=作動式: 瞬間移動(単)
-psi.spellpiece.trickBlink.desc=前方へ瞬間移動します。
-psi.spellpiece.trickMassBlink=作動式: 瞬間移動(全)
-psi.spellpiece.trickMassBlink.desc=全てを前方へ瞬間移動させます。
-psi.spellpiece.trickMassAddMotion=作動式: 運動追加(複)
-psi.spellpiece.trickMassAddMotion.desc=対象のエンティティリストのエンティティ全てに、運動を追加します。
-psi.spellpiece.trickMassExodus=作動式: 大移動
-psi.spellpiece.trickMassExodus.desc=対象のエンティティリストのエンティティ全てを、対象の位置地点の 方向へ移動させます。
-psi.spellpiece.trickMoveBlock=作動式: ブロック移動
-psi.spellpiece.trickMoveBlock.desc=ブロック1つを、対象の(標準化された)ベクトル方向へ移動させます。
-psi.spellpiece.trickCollapseBlock=作動式: ブロック崩落
-psi.spellpiece.trickCollapseBlock.desc=ブロック1つを砂や砂利のように落下させます。
-psi.spellpiece.trickSmite=作動式: 雷
-psi.spellpiece.trickSmite.desc=与えられた場所へ雷を落とします。
-psi.spellpiece.trickBlaze=作動式: 火
-psi.spellpiece.trickBlaze.desc=与えられた場所へ炎を発生させます。
-psi.spellpiece.trickTorrent=作動式: 水
-psi.spellpiece.trickTorrent.desc=与えられた場所へ水源を生成します。
-psi.spellpiece.trickOvergrow=作動式: 促成
-psi.spellpiece.trickOvergrow.desc=与えられた場所のブロックへ養分を与えます。
-psi.spellpiece.trickGreaterInfusion=作動式: 上位注入
-psi.spellpiece.trickGreaterInfusion.desc=ダイヤモンドをサイジェムにします。レッド ストーンや金と同様の動作です。
-psi.spellpiece.trickEbonyIvory=作動式: エボニーとアイボリー
-psi.spellpiece.trickEbonyIvory.desc=the Endにおいて、石炭とクォーツに注入を行います。他の注入作動式と同様の動作です。
-psi.spellpiece.trickSpeed=作動式: 俊敏
-psi.spellpiece.trickSpeed.desc=移動速度上昇効果を付与します。
-psi.spellpiece.trickHaste=作動式: 加速
-psi.spellpiece.trickHaste.desc=採掘速度上昇効果を付与します。
-psi.spellpiece.trickStrength=作動式: 力
-psi.spellpiece.trickStrength.desc=攻撃力上昇効果を付与します。
-psi.spellpiece.trickJumpBoost=作動式: 跳躍
-psi.spellpiece.trickJumpBoost.desc=跳躍力上昇効果を付与します。
-psi.spellpiece.trickWaterBreathing=作動式: 水中呼吸
-psi.spellpiece.trickWaterBreathing.desc=水中呼吸効果を付与します。
-psi.spellpiece.trickFireResistance=作動式: 耐火
-psi.spellpiece.trickFireResistance.desc=火炎耐性効果を付与します。
-psi.spellpiece.trickInvisibility=作動式: 透明化
-psi.spellpiece.trickInvisibility.desc=透明化効果を付与します。
-psi.spellpiece.trickRegeneration=作動式: 再生
-psi.spellpiece.trickRegeneration.desc=再生能力効果を付与します。
-psi.spellpiece.trickResistance=作動式: 防御
-psi.spellpiece.trickResistance.desc=耐性効果を付与します。
-psi.spellpiece.trickSlowness=作動式: 鈍化
-psi.spellpiece.trickSlowness.desc=移動速度低下効果を付与します。
-psi.spellpiece.trickWeakness=作動式: 弱化
-psi.spellpiece.trickWeakness.desc=弱体化効果を付与します。
-psi.spellpiece.trickWither=作動式: 衰退
-psi.spellpiece.trickWither.desc=ウィザー効果を付与します。
-psi.spellpiece.trickIgnite=作動式: 発火
-psi.spellpiece.trickIgnite.desc=エンティティ1つを炎上させます。
-psi.spellpiece.trickEidosAnchor=作動式: エイドスアンカー
-psi.spellpiece.trickEidosAnchor.desc=対象時間後、術者を現在の位置へ戻します。
-psi.spellpiece.trickEidosReversal=作動式: エイドスリバーサル
-psi.spellpiece.trickEidosReversal.desc=術者を過去に戻します。
-psi.spellpiece.trickSmeltItem=作動式: アイテム精錬
-psi.spellpiece.trickSmeltItem.desc=アイテムエンティティ1つを精錬します。
-psi.spellpiece.trickSmeltBlock=作動式: ブロック精錬
-psi.spellpiece.trickSmeltBlock.desc=ブロック1つを精錬します。
-psi.spellpiece.trickConjureBlock=作動式: 魔法ブロック生成(単)
-psi.spellpiece.trickConjureBlock.desc=与えられた位置へ魔法ブロック1つを生成します。
-psi.spellpiece.trickConjureLight=作動式: 魔法光源生成
-psi.spellpiece.trickConjureLight.desc=与えられた位置へ魔法光源1つを生成します。
-psi.spellpiece.trickConjureBlockSequence=作動式: 魔法ブロック生成(列)
-psi.spellpiece.trickConjureBlockSequence.desc=魔法ブロックを 1列 生成します。
-psi.spellpiece.trickSwitchTargetSlot=作動式: 指定スロット切替
-psi.spellpiece.trickSwitchTargetSlot.desc=この魔法で指定しているスロットを切り替えます。
-psi.spellpiece.trickSaveVector=作動式: ベクトル保存
-psi.spellpiece.trickSaveVector.desc=Vector情報をCADメモリーへ保存します。
-
-# SPELL PARAMETER NAMES
-psi.spellparam.target=対象
-psi.spellparam.number=数値
-psi.spellparam.number1=数値 A
-psi.spellparam.number2=数値 B
-psi.spellparam.number3=数値 C
-psi.spellparam.number4=数値 D
-psi.spellparam.vector1=ベクトル A
-psi.spellparam.vector2=ベクトル B
-psi.spellparam.vector3=ベクトル C
-psi.spellparam.vector4=ベクトル D
-psi.spellparam.position=位置
-psi.spellparam.ray=Ray
-psi.spellparam.max=最大
-psi.spellparam.min=最小
-psi.spellparam.power=威力
-psi.spellparam.direction=方向
-psi.spellparam.speed=速度
-psi.spellparam.x=X
-psi.spellparam.y=Y
-psi.spellparam.z=Z
-psi.spellparam.radius=半径
-psi.spellparam.distance=距離
-psi.spellparam.time=時間
-psi.spellparam.list=リスト
-psi.spellparam.constant=定数
-psi.spellparam.shift=Shift
-psi.spellparam.slot=スロット
-psi.spellparam.base=底
-
-# DATA TYPE NAMES(検索の利便性を目的に、このセクションは翻訳しない)
-psi.datatype.Null=None
-psi.datatype.Any=Any
-psi.datatype.Double=Number
-psi.datatype.Integer=Number
-psi.datatype.Number=Number
-psi.datatype.Vector3=Vector
-psi.datatype.Entity=Entity
-psi.datatype.EntityLiving=Entity (Living)
-psi.datatype.EntityLivingBase=Entity (Living)
-psi.datatype.EntityPlayer=Entity (Player, Living)
-psi.datatype.EntityListWrapper=Entity List
-
-# COMPILER ERRORS
-psi.spellerror.nospell=コンパイルする魔法式がありません。
-psi.spellerror.noname=魔法に前がありません。
-psi.spellerror.notricks=作動式ピースが含まれていません。
-psi.spellerror.unsetparam=必要なパラメータが設定されていません。
-psi.spellerror.nullparam=パラメータが何もないマスを向いています。
-psi.spellerror.invalidparam=パラメータが無効なピースへ向いています。
-psi.spellerror.samesideparams=複数のパラメータが1つの面を共有しています。
-psi.spellerror.loop=無限ループが発生しています。
-psi.spellerror.nonpositivevalue=数値パラメータは正の数である必要があります。
-psi.spellerror.noninteger=数値パラメータは整数である必要があります。
-psi.spellerror.nonpositiveinteger=整数でない、かつ負の数である数値パラメータが含まれています。
-psi.spellerror.statoverflow=魔法の性能値が最大値を超えています。
-psi.spellerror.exclusiveparams=排他的なパラメータが組み合わさっています。
-
-# RUNTIME ERRORS
-psi.spellerror.position=エラー 場所 [%d, %d].
-psi.spellerror.dividebyzero=エラー: 0で割ることはできません。
-psi.spellerror.nulltarget=エラー: 魔法の対象となるエンティティは存在しません。
-psi.spellerror.nullvector=エラー: 魔法の指定するベクトルが存在しないか、nullです。
-psi.spellerror.outsideradius=エラー: 魔法の対象が最大射程32ブロックの範囲外です。
-psi.spellerror.outsidetrigdomain=エラー: 数値が逆三角関数の定義範囲外です。
-psi.spellerror.bossimmune=エラー: 耐性持ちエンティティかボスへ魔法を起動しようとしました。
-psi.spellerror.nocad=エラー: 術者がCADを持っていません。
-psi.spellerror.memoryoutofbounds=エラー: 範囲外のメモリーアクセス。
-psi.spellerror.lockedmemory=エラー: メモリースロットがロックされています。
-psi.spellerror.immunetarget=エラー 対象のエンティティは耐性持ちかボスです。
-psi.spellerror.negativenumber=エラー ピースの対応していない場所で負の値の数値が指定されています。
+  "_comment": "SUBTITLES",
+  "psi.subtitle.bulletCreate": "スペルが保存されました",
+  "psi.subtitle.cadCreate": "CADが組み上がりました",
+  "psi.subtitle.spellCast": "CAD実行",
+  "psi.subtitle.loopcast": "CAD繰り返し実行",
 
 
-# PIECE GROUPS
-psi.introduction=この 次元宇宙に おける 最高の 術式演算mod Psiです。 この ガイドには レシピが 含まれて いないため、 Psiで 遊ぶには レシピ表示modが 必要です。 レシピ表示mod として 代表的な ものに、 Just Enough Items (JEI)が あります。 サイダストを 入手するために、 まず CAD組立機と 鉄のCAD素体を 作製する 必要が あります。 CAD組立機を 設置し、 その中に 鉄のCAD素体を 置きます。 これによって 最低限の 術式補助演算機 (CAD)を 構築することが できます。 そして レッド ストーンを ワールドに 捨ててください。 CADを 装備し、 捨てた アイテムを 狙って 右クリック することで サイダストを 作ります。
-psi.levelskip=Psiは 前の ワールドの セーブデータを 発見 しました。 <br>ロードしますか？ <br><br>ロード すると、 即座に Lv%dに なります。 ロード しない 場合、 この メッセージは この セッションでは 再び 表示 される ことは ありません。
-psi.piecegroup.tutorial1=チュートリアル 1
-psi.piecegroup.tutorial1.desc=レベル上げ メニューへ ようこそ。 新品の CADを 入手した ようですね。 この メニューは、 この modに おける 学校 としての 役割を 持ちます。 そして 今 あなたが 読んで いるのは 最初の チュートリアル です。 文章が 長く なりますが、 これ以降 これより 長い チュートリアルは 出てきません ので 安心して ください。 魔法式の プログラミングを 始めるには、 魔法構築機が 必要です。 魔法式を 実行 するには、 現状の CAD ではなく、 各種 部品を 備えた CADが 必要です。 すべての CAD部品 (素体, コア 弾倉, バッテリー, および オプションの 着色器)の レシピを 調べて、 作製して ください。 新しく CAD素体を 作製 しなおす 必要は ありません。 現在 持っている CAD (事実上 素体のみ)を クラフト材料 として 作製を 行うと、 CAD素体に 戻すことが できます。 <br><br>すべての 部品を 作製 したら、 最後に 魔法式を 術式弾に 封入する 必要が あります。 それでは 全て ご自分の 手で 作製していって ください。 <br><br>必要なものが 揃ったら、 魔法構築機を 右クリック して 開きます。 大きな グリッドが 見える でしょう。 これが 魔法式を プログラミングする エリアです。 プログラミング システムは 旧来の 複雑な ものでは なく、 単純で わかりやすい 作りです。 グリッドに ピースを 追加するには、 グリッドの上で 右クリックし、 表示 されている ピースを 選択 します。 <br><br>下記を 見ての 通り、 あなたは 現在 2種類の ピースを 利用可能な 状態です。 ピースの 種類が 増えれば、 様々な 方法で 魔法式を 組み立てる ことが できるように なります。 しかし 今回は この2つに 焦点を 絞って いきましょう。 今現在 利用可能な ピースは "取得子: 術者"と "作動式: デバッグ"です。 "作動式"は 術式に おいて 最も 重要な パーツで、 術式が ワールドに 影響を 及ぼす 手段と なって います。 今回の "作動式: デバッグ"は プレイヤーの チャット欄に 値を 出力する だけの 例外的な ものです。 <br><br>それでは グリッドに 2種類の ピースが 隣接 するように 配置して ください。 "取得子: 術者"を 左クリック しても、 特に 何も 起きない ことが わかる でしょう。 しかし "作動式: デバッグ"を 左クリック した 場合には 入力を 設定できる 場所の 左側に ピースの "パラメータ" パネルが 表示 されます。 パラメータは ピースが 実行される ために 必要な 情報です。 作動式: デバッグは チャットに 何かしらを 送ります。 ですので、 その 何かしらが 何であるかを 教えてやる 必要が あります。 "対象" パラメータの 矢印を 1つ クリックして "取得子: 術者"が "作動式: デバッグ"へ 矢印を 伸ばしているように します。 ピースの ツールチップが 表示されて いるときに SHIFTを 押し続けると、 そのピースに 必要な パラメータの 種類や、 その ピースから 何の パラメータが 出力 されるのかが わかります。 ピースと パラメータの 正しい 組み合わせを 行うために、 この機能を 活用して ください。 数値 パラメータに ついては 後ほど 説明します。 今は 無視してください。 <br><br>正しく 設定できた ならば、 上部の X印が チェックマークへ 変わり、 右側に いくつかの 値が 表示 される はずです。 しかし 今の所は これらを 気にしないで ください。 まだ 赤い X印が 表示 されて いる 場合は、 その 上に カーソルを 合わせて エラー内容を 確認し、 修正して ください。 <br><br>それでは 作成した プログラムを CADへ 取り込み ましょう。 術式弾を 手に持ち 魔法構築機を 右クリック して ください。 ビープ音が 鳴り、 弾を 装填する 準備が 整った ことを 知らせます。 新しい CADを 組立機の 左上に ある 大きな スロットに 配置すると、 その 下の スロットが 開きます。 そこに 術式弾を 置いてから、 CADを 取り出して ください。 魔法を 選ぶには、 CADを 手に 持って、 Psi メニューを 開く 際と 同じ キー(デフォルト: Cキー)を 押して ください。 (注意: インベントリで 持ち運べる CADは 1つ のみ です。 複数の CADを 持っている 場合、 魔法は 機能 しません。)<br><br>レベルアップ するには、 最新の チュートリアルで 学んだ 赤ハイライトの ピースを 使用した魔法を 作成し 実行する 必要が あります。 今回の 場合は、 "作動式: デバッグ"を 含んだ 魔法を 実行する ことで レベルアップ できます。 術式弾を 装填した CADを 持って 右クリック すると、 先へ 進みます。 サイダストを 作製したい 場合は、 CADで 弾のない スロットを 選択して 使用して ください。
-psi.piecegroup.tutorial2=チュートリアル 2
-psi.piecegroup.tutorial2.desc=前回 登場した "数値" パラメータに ついて 説明 します。 パラメータの 中央部に 使用するか どうかを 切り替える ドットが あります。 つまり、 "数値" パラメータの 使用は 任意であると いうこと です。 中心部を 選択すると、 この オプションを 無効化 できます。 <br><br>この 場合、 "数値" パラメータは、 単に ラベル として 使用されます。 チャットに 複数の 情報が 送信される ような、 複雑な 魔法を 作成する 際に 役立つ でしょう。 "数値" パラメータには 数値が 必要です。 これには "定数子: 数値"の ピースを 使います。 それでは 実際に "数値" パラメータに 数値を 与えて みましょう。 デバッグ ピースに "数値" パラメータを 追加し、 グリッドに "定数子: 数値" ピースを 追加して、 それを デバッグ ピースへ 接続 します。 数字を クリックして、 キーボードで 数字を 入力 すれば 数値を 設定 できます。 <br><br>複数の パラメータを 使用すると、 より 複雑な プログラム では 全ての ピースが 隣接 している わけでは ない という 状態が でてきます。 そういった 状態を 解決 するのが 今から 紹介する "コネクタ" です。 コネクタは その名の通り、 ピースを 別の ピースと 接続する ことが できる ワイヤーの ような ものです。 コネクタを ピースに 隣接 させれば、 ピースの 内容は 何で あっても、 コネクタの 反対側に 何が あっても 送信する ことが できます。 接続先が 遠くに あるならば コネクタを 連続して 置く ことで 接続する ことが できます。 単一の コネクタは コネクタを 指し示している オブジェクトを、 コネクタに 面している 任意の ピースに 送信する ことが できます。 <br><br>レベルアップ するには、 赤で ハイライト された ピースを 使用して 魔法を 作る 必要が あります。 ですので、 できれば チュートリアル1の  "作動式: デバッグ"と 併用して "定数子: 数値"を 使用する 必要が ある ことを 忘れないで ください。 さらに コネクタも 試してみて ください。 後々 重要な 要素と なってきます。<br>これは 2番目の チュートリアル ですので、 以前の チュートリアルを もう一度 読みたい場合は、 左にある リストを スクロールして 探して ください。
-psi.piecegroup.tutorial3=チュートリアル 3
-psi.piecegroup.tutorial3.desc=あなたが 今 何を 考えて いるかは 大体 わかります。 「説明長すぎ。 いつ それっぽい 魔法 組ませて くれるの？」 でしょう。 よろしい、 それでは 教えましょう。 <br><br>実際に ワールドへ 影響を 及ぼす 作動式を 紹介 します。 "作動式: 運動追加(単)" を 見て ください。 この トリックは エンティティに 動きを 付与します。 この 作動式は エンティティ、 ベクトル、 および 定数を 受け取ります。 先に 学んだ 通り "取得子: 術者"は エンティティ (プレイヤー)を 出力します。 これを、 今回 学ぶ "作動式: 運動追加(単)"と 併用 すれば プレイヤー キャラクターに 動きを 与える ことが できます。 ベクトルは 与える 動きの 方向 として、 定数は 速度として 受け取り ます。 この 数値は "定数子: 数値"を 使う ことで、 取得 できます。 <br><br>ベクトルを 得る 手段の 1つに "演算子: エンティティ視線方向"が あります。 これは、 プレイヤーが 見ている 方向を ベクトル として 取得 します。 これを "作動式: 運動追加(単数)"に 渡すと、 プレイヤー キャラクターは 見ている 方向へ 動きます。 数値は とりあえず 3 として 入力 します。 もちろん 変更する ことも できますが、 とりあえず 3 が ちょうどよい でしょう。 定数の 値を 変更すると 右側の 数値が 変わるのが わかるかと 思います。 これらは 現在の 魔法の 性能値 です。 あなたが 作る 魔法の 性能値は それぞれ CADの 性能値と 同じ 要素を 指します。 魔法の 性能値の いずれかが CADの 性能値を 超えている 場合、 魔法を 実行する ことが できません。<br><br>性能値の 内容は 上から順に 以下の通り です。<br>&n複雑性&r: 魔法に含まれる、 ピースの数。 定数、 コネクタ、 および "作動式: デバッグ"は カウント されない。<br>&n規模&r: 魔法の 力量。 作動式の 威力を 増やすに つれ、 この 数値も 上昇する。<br>&nコスト&r: 魔法が 消費 しようと する Psi (画面右側の エネルギーバー)の 量。 CADは 性能値 として 持って いないが、 CADの 効率値に よって 影響を 受ける。 実際に 消費される 値は カッコ内の 数値。 CADの 効率値 が 高いほど、 消費量は 減る。<br>&n作動量&r: 魔法に 含まれる 作動式の 数。 "作動式: デバッグ"は カウント されない。<br>&n帯域幅&r: 魔法式 グリッドのの 幅 と 高さ のうち 大きい方の 値。 この制限を 克服するぶは、 魔法式を コンパクトに すると 良い。
-psi.piecegroup.tutorial4=チュートリアル 4
-psi.piecegroup.tutorial4.desc=好きですよね、 爆発。 今回は、 プレイヤーが 見ている ブロックを 爆発 させる 魔法を 作って いきます。<br><br>必要な ピースは "作動式: 爆発"です。 これは ベクトル と 定数が 必要です。 "作動式: 運動追加(単)"と 同様、 定数は 動作の 威力を 表します。 ベクトルは 爆発を 起こす 場所 です。 以前に、  "演算子: エンティティ視線方向"を 使用 しましたが、 それで 得られる ベクトルは とても 短い ものでした。 もし それを そのまま 使ったら 爆発は あなたの 顔で 起きてしまう でしょう。 代わりに、 "演算子: ベクトルレイキャスト"を 使いましょう。<br><br>この 演算子は 位置と 視線の 両方を ベクトルで 取得 します。 この 演算子は、 "演算子: エンティティ位置"から 得られる プレイヤーの 現在位置を 基準として ワールドの ブロックと 衝突するまで 長さ パラメータを 拡張して ベクトルを 取得します。 (注意: "演算子: エンティティ位置"は、 プレイヤーで 使用した場合、 Y値が 通常よりも 1.6高いベクトルを 出力 します。)<br>したがって、 この演算子を "演算子: エンティティ視線方向"と 一緒に 使用すると、 プレイヤーが どこを 見ているのかが わかり、 そこで 爆発を 発生 させる ことが できます。 注意点として、 魔法の 射程範囲は 32ブロック まで だと いうことを 覚えておく必要が あります。 今回の 場合は、 魔法を 実行する プレイヤーが 基準となり、 爆発点が 32ブロック以内と なります。<br><br>"エラー抑止"ピースは その名の通り 動作します。 魔法を 実行した 際に、 何かしらに 失敗したとき、 チャット欄には エラー文が 表示される でしょう。 魔法に エラーが 出ることを 予め 知っていた 場合、 そのエラー文は 邪魔になることが あります。 そういった 場合、 魔法式の グリッドの 何処かに "エラー抑制"を 配置しておけば、 全ての エラーは 表示 されなく なります。<br><br>これが 最後の 基礎チュートリアルです。 この先は、 レベルアップの ために、 様々な 課程を 選択することが できます。 それでは お楽しみください。
-psi.piecegroup.numbersIntro=Numbers 数値 基礎
-psi.piecegroup.numbersIntro.desc=Number -数値-は 魔法の プログラミングに 不可欠な 要素です。 これらは 基本的な 算術演算子です。 魔法式に おける 計算に 使うことが できます。<br><br>まだ この要素を 使用した 魔法を 作って いない 場合は、 デバッグ作動用に、 2つの 定数を 足し算 してみて ください。<br><br>"数値"と "定数"の 違いについて、 いずれかの ピース上で Shiftを 押し続けて 確認して ください。 "定数"を 必要とする パラメータは "数値"を 受け取ることは できませんが、 "数値"を 必要とする パラメータは "数値"も "定数"も 受け取ることが できます。
-psi.piecegroup.vectorsIntro=Vectors  ベクトル 基礎
-psi.piecegroup.vectorsIntro.desc=Vector -ベクトル-は 魔法の プログラミングに 不可欠な 要素です。 ベクトル用の 演算子の 多くは、 加算や 減算など、 ごく 基本的な ものです。 今回の ピースの うち 赤く ハイライト された "演算子: ベクトル定数"は、 X座標, Y座標, Z座標を 指定して ベクトルを 生成します。 "作動式: 運動追加(単)"と 組み合わせて、 ジャンプする 魔法を 作ってみて ください。<br><br>ベクトルに 関する 複雑な 部分に ついて: 2つの ベクトルの クロス積は、 両方に 垂直な ベクトルが 得られます。 プレイヤー視線の ベクトルと、 "演算子: ベクトル定数"で 生成した (0, 1, 0)のベクトルの クロス積を 算出すれば、 プレイヤー側へ 向かう ベクトルを 得ることができます。
-psi.piecegroup.entitiesIntro=Entities エンティティ 基礎
-psi.piecegroup.entitiesIntro.desc=Entity -エンティティ-は 魔法の プログラミングに 不可欠な 要素です。 今回学ぶ ピースを 利用すると ワールドに 存在する 他の エンティティを 対象として 魔法を 実行することが できるように なります。<br><br>他の エンティティに 影響を 与える 魔法を 作成するために、  ここにある ピースを 使用することが できます。 "作動式: 運動追加(単)"を、 自身以外に 使ってみて ください。 
-psi.piecegroup.projectiles=代替実行
-psi.piecegroup.projectiles.desc=術式弾は 標準の ものだけ ではなく、 代替的な 魔法実行の 方式を 持った 術式弾も 作製することが できます。 使い分ける 事に よって 用途に 合わせた 魔法の 形態を 選ぶことが できる でしょう。<br>発射型術式弾は、 魔法を 直接 実行する 代わりに、 弾を 発射し、 それが 何かに 衝突 したときに 魔法を 実行します。<br>榴弾型術式弾は 発射型術式弾と 同じように 発射しますが、 重力の 影響を 受けます。 また、 魔法を 実行してから 3秒後に 発動する "榴弾"型の 弾を 生成します。<br>チャージ型術式弾は 榴弾型術式弾と 同じように 発射されますが、 術式起爆装置 (アイテム) によって 起動されたとき のみ 魔法を 発動 させます。<br>地雷型術式弾は 榴弾型術式弾と 同じように 発射 されます。 エンティティが 術式弾の 中を 通過 すると 魔法が 実行されます。<br>円形術式弾は 術者が 見ている 場所に 魔法陣を 形成します。 魔法は 5秒間かけて 20回 発動します。<br><br>このような 代替的な 術式弾を 使用する には 魔法の 焦点を 取得する "取得子: 焦点"を 使用する 必要が あります。 通常の 術式弾の 場合、 焦点は プレイヤー自身 ですが、 発射型 もしくは その 派生術式弾では、 焦点は 発射体です。 円形術式弾の 場合は、 焦点は 魔法陣です。 "取得子: 術者"の 対象は 常に プレイヤーで、 これが 変更される ことは ありません。<br><br>魔法の射程 32ブロック制限は 焦点を 基準と するため、 これらの 代替的な 術式弾は 魔法の 効果を より遠くに 発生させる ことが 可能と なります。 さらに 魔法は 術者が 焦点の 32ブロック範囲外に いても、 常に 術者に 影響を 与えることが できます。 術式起爆装置は 32ブロック 範囲内で のみ、 起爆 させる ことが できます。<br><br>グループの もう一方の ピース "取得子: 定規ベクトル"は、 ベクトル定規 (アイテム) と あわせて 使用します。 この アイテムは、 ワールドで ベクトルを 算出することが できます。 Shiftキーを 押しながら ブロックを 右クリック すると 基準点が 設定され 別の ブロックを 右クリック すると 計測先が 設定されます。 "取得子: 定規ベクトル"を 使用すると、 定規により 算出された ベクトルが 取得 されます。 複数の ベクトル定規が ある場合は、 ホットバーに あるものが 優先 されます。
-psi.piecegroup.blockWorks=ブロック操作
-psi.piecegroup.blockWorks.desc=ブロックの 操作は 不可欠な 技術です。 ブロックは ワールドの グリッドに 合わせて 配置されて いるので、 ベクトルを 使用して ブロックの 位置を 参照 することが できます。 そのため、 ベクトルの 概念に 関する 知識は ブロック操作の 内容を 理解 するために とても 重要です。 <br><br>この グループに おける 基本的な 要素 として、 "作動式: ブロック設置(単)" と "作動式: ブロック破壊(単)"が あります。 これらは ベクトルを 受け取り、 指定された 位置に ブロックを 設置、 もしくは 破壊 します。 "作動式: ブロック設置(単)"の 場合、 設置される ブロックは ホットバー上で プレイヤーの CADの 右側に あるもの です。 もちろん、 設置する ブロックは プレイヤーの インベントリから 消費 されます。 "演算子: ベクトルレイキャスト"を 使用 すれば ブロックの 設置/破壊 先を 簡単に 指定する ことが できます。<br><br>ただし、 注意が 必要な 点が あります。 "演算子: ベクトルレイキャスト"は プレイヤーが 見ている ブロックを 取得 します。 つまり そこには 既に ブロックが 存在 するため、 新たに ブロックを 設置する ことは できません。 これを 解決する ために、 "演算子: ベクトルレイキャスト"と 新たに "演算子: ベクトル レイキャスト方向"の ピースを 組み合わせる 必要が あります。 これは、 見ている ブロックの 面が、 ブロックを 基準として どの 方向で あるかを 得ることが できます。 ブロックの 上部を 見ていると方向ベクトル (0, 1, 0)が 得られます。 次に、 "演算子: ベクトル加算"を 使用して レイキャストの 結果に ブロックを 配置する 場所を 算出する ことが できます。<br><br>同様の 方法で、 "演算子: エンティティ視線方角"は 方向ベクトル 取得します。 F3メニューの "Facing value"の 値を 考えて ください。 "演算子: エンティティ視線方角"も 同じような ものです。 "Facing"が "east"で あるならば "演算子: エンティティ視線方角"で 得られる ベクトルは (1, 0, 0)と なります。 これは "Facing"とは 異なり あなたが 上下を 見ている 場合にも 検出されます。<br><br>その他 2つの 作動式は "作動式: ブロック設置(列)"と "作動式: ブロック破壊(列)"で、 後者が このグループの 赤い ハイライトに なっている ピースです。 これらの 作動式は、 ブロックを 破壊 もしくは 設置 します。 それぞれ (単)版の ピースと 同様に 位置情報を 必要と しますが、 さらに もう1つ "対象"に ベクトルを 必要と します。 これは、 位置情報と ベクトルに よって 作動式が 影響を 与える 範囲を 確定させる ためです。 例えば "対象"が (0, 4, 0)の 場合 "位置"の 値から 始めて 4ブロックが 設置 もしくは 破壊 されます。 最後に 作動式の "最大" 要素に ついて 説明 します。 これは 定数で、 作動式が 設置 もしくは 破壊できる ブロックの 最大数です。 ベクトルは 定数で ある 必要が ないので、 この 最大要素に 基づいて 魔法の 性能値 "規模"と "コスト"が 求められます。 "最大"を 大きく するほど コストは 上昇します。<br><br>このグループの 最後の ピース "演算子: ベクトル射影"に ついて 説明 します。 ベクトル射影は やや 難しい 内容と なって います。 ですので、 ここでは 用法の うちの 1つ ベクトルを 方向に 射影する ということ のみに 絞って 説明 します。 ワールドに おける あなたの 現在位置から 見ている 場所まで ブロックを 設置する 魔法を 作りたい という 状況を イメージして ください。 ただし あなたが 見ている ブロックの 面から 一直線に 並ぶ 設置であると します ("演算子: ベクトル レイキャスト方向"を 使用)。 まず "作動式: ブロック配置(列)"の ために ブロックを 配置したい ベクトルを 取得する ことから はじめます。 しかし、 あなたが 見ている ブロックに 対して 斜めに 立っている 場合 得られる ベクトルは (3, 2, 4)の ように なります。 これでは ワールドの グリッド的には 直線で ありません。 こういう 場合は "演算子: ベクトル射影"を 使用する ことで あなたが 見ている 面の 方向 例えば (0, 0, 1) に 射影する ことが できます。 つまり  "ベクトルA"は (3, 2, 4)で、 "ベクトルB" は (0, 0, 1)です。 射影を 適用すると (0, 0, 4)が 残ります。 仮に "ベクタトルB"が (1, 0, 0)だった 場合 得られるのは (3, 0, 0)です。 Bに 方向ベクトルが 使われている 場合、 ベクトル投影は、 Aから、 Bの 0である部分を 除去 します。 これに よって ワールド的にも 直線な ベクトルを 生成することが できます。 <br><br>この グループの 赤ピースは "作動式: ブロック破壊(列)" なので、 ほとんどの 場合では 頭を 悩ませる 必要は ありません。 それでは、 高さ 8ブロック分の ブロックを 破壊する 魔法を 作ってみて ください。 作ったものは "伐採魔法" として 活用 できます。
-psi.piecegroup.infusion=サイメタル 注入
-psi.piecegroup.infusion.desc=サイメタルは 上位の CADを 作製 するための 重要な 構成要素 です。 "作動式: 注入" ピースは 無装填の CADと 同じように Psiエネルギーの 放出を 実行しますが より 精度が 高いものと なります。<br><br>この ピースは パラメータを 受け取りません。 また、 レッドストーンから サイダストを 作成するのと 全く 同じ 方法で 機能 します。 サイメタルを 作成する には、 ワールドに 金のインゴットを 捨て、 "作動式: 注入"を 発動して ください。<br><br>サイメタルは、 上位の CAD部品を 作製 するため だけでは なく、 術式ドライブを 作成 するため にも 利用 されます。 術式ドライブは 魔法を 保存したり、 他の 魔法構築機へ 受け渡す 手段 として 利用 できます。 魔法を 術式ドライブに 保存する には 魔法構築機上で Shiftキーを 押しながら 右クリック します。 ドライブに 魔法が 保存 されている 状態で 同じ 操作を すれば 魔法構築機へ 魔法が 読み込まれます。 ドライブから 魔法を 削除する には 空中に 向かって Shiftキーを 押しながら 右クリック してください。<br><br>術式ドライブは 書き込み済みの ものと 空の ものを 一緒に クラフト すると 魔法を コピー することが できます。
-psi.piecegroup.movement=移動 発展
-psi.piecegroup.movement.desc=移動と 輸送に 関しては すでに "作動式: 運動追加(単)"で 扱われている 内容です。 この グループ には その 上級概念の ピースが 含まれて います。<br><br>"作動式: 瞬間移動(単)"は この グループの 赤ピースです。 これは 単純に、 対象の エンティティを 見ている 方向へ 設定された "最大" パラメータの 距離分 テレポートさせる だけの 作動式 です。 負の 値が 設定 されて いれば 後方へ テレポート させます。 "作動式: 瞬間移動(全)"は、 基本は (単)版と 同じ ですが、 エンティティリスト内 全ての エンティティへ 影響を 与えます。 <br><br>"作動式: 大移動"は エンティティリスト内 全ての エンティティを 指定された 位置方向へ 指定された 速度で 移動 させます。 負の 値の 場合は、 遠ざける ように 移動 させます。
-psi.piecegroup.loopcasting=繰り返し実行
-psi.piecegroup.loopcasting.desc=繰り返し実行は ループ型術式弾に よって 使用 できる 魔法の 形式です。 ループ型術式弾から 魔法が 実行 されると、 通常の 魔法の ように 実行されますが、 プレイヤーが "繰り返し実行" 状態に なります。 この 状態では、 毎秒4回、 その 魔法が 実行 されます。 繰り返し実行の 利点は、 Psi自然回復への 通常の クールダウン 時間が 適用 される のは 、 最初の 1回を 実行した 時点から のみと いうこと です。 それ以降の 実行では クールダウンが 通常よりも 短く なるので、 術者が 魔法の コストを 賄うのに 十分な レベルで あれば 無限に 繰り返し実行できる 可能性が あります。 <br><br>この グループの 赤ピースは "取得子: ループ回数" です。 この ピースは 魔法が 繰り返された 回数を 取得します。 初回の 実行では これは 0となり、 以降の 繰り返し ごとに 1ずつ 増えて いきます。 これは "演算子: 剰余算"と "演算子: 整数除算"と 共に 使う ことで、 唱える たびに 呪文の 機能を 変える ことが できます。<br><br>"演算子: 整数除算"は その名の 通り、 2つの 数値を 除算した 結果の 整数部分を 出力 します。 "演算子: 剰余算"は、 2つの 数値を 除算した 結果の 余りを 出力 します。 これらの ピースを 利用 することで、 任意の サイズの 地下倉庫を 掘削する などと いったことが 可能と なります。<br><br>"取得子: ループ回数"は 円形術式弾でも 動作し、 魔法が 魔法陣に よって 実行された 回数を 最大20まで 出力 します。
-psi.piecegroup.blockMovement=ブロックの移動
-psi.piecegroup.blockMovement.desc=ブロックを 移動 させる 機能は、 ブロックの 配置/破壊ほど 重要では ありませんが、 それでも 役に立つ 場面は あります。<br><br>この グループの 赤ピースは "作動式: ブロック移動"です。 この 作動式は ワールド上の ブロックの "位置"と、 それを 動かす 方向の ベクトルを "対象" として 必要と します。 "対象"と なる ベクトルは 方向ベクトルで なければ なりません。 そうで なければ 作動式は 失敗 します。<br><br>"作動式: ブロック崩落"は、 ブロック 1つを、 砂や 砂利の ように 落下 させます。<br><br>これらの 作動式は どちらも、 複雑な ブロック (通称: タイルブロック)や、 シルクタッチで 回収できない ブロックへは 失敗に 終わります。
-psi.piecegroup.elementalArts=元素魔法
-psi.piecegroup.elementalArts.desc=昔ながらの 元素魔法を 使いたい場合 どうすれば 良いか。<br><br>この グループでは、 4つの 元素に まつわる 作動式を 紹介します。 この グループの 赤ピースは "作動式: 雷"です。 この 作動式は、 与えられた 位置に、 雷を 発生 させます。 他の作動式も、 同様の 動作を 行います。 <br><br>この グループには "演算子: 乱数" という、 0以上、 与えられた 値 未満の 乱数を 生成する ピースも 含まれて います。 これは、 繰り返し実行や 円形術式の 魔法と 一緒に 様々な 方法で 利用 できます。 例えば、 大型農場を 肥育する 際に、 "作動式: 促成"を 使用した 魔法を 作る ことが できます。
-psi.piecegroup.greaterInfusion=上位注入
-psi.piecegroup.greaterInfusion.desc=ダイヤモンドを サイジェムへ 変換する 方法は 重要な 知識です。 サイジェムを 使用すれば、 より 強力な CAD部品を 作製 できます。 "作動式: 上位注入"は "作動式: 注入"と 同じように、 ダイヤモンドを サイジェムへと 変換 させます。<br><br>さらに "作動式: エボニーとアイボリー"は 石炭を エボニーへ、 ネザークォーツを アイボリーへ 変換 します。 どちらも、 サイメタルの インゴットと 組み合わせて それぞれの 合金を 作製できます。 これらの 合金は 後に より強力な CAD部品を 作製する ために 必要と なります。 "作動式: エボニーとアイボリー"は the ENDでしか 使用することが できません。 
-psi.piecegroup.toolCasting=ツール魔法
-psi.piecegroup.toolCasting.desc=サイメタルや サイジェムは ツール(シャベル, ツルハシ, 斧, 剣)へ 加工することが できます。<br><br>これらの ツールは 最大 3つの 術式弾を 装填することが できます。 ツールで 対象の ブロックを 破壊したり、 剣で 敵を 攻撃したり すると、 選択された 魔法が 発動します。 サイメタル ツールの 魔法は CADと 同じ 方法で 選択 できます。 ツールの 円形メニューには、 4番目に 魔法を 無効化する 項目も 表示 されます。 サイメタルツールは、 プレイヤーが 手に持って いない限り プレイヤーの Psiエネルギーを 消費して ゆっくりと 消耗度を 回復して いきます。<br><br>ツールに セット された 魔法は、 ツールに よって ではなく、 CADに よって 実行 されます。 したがって、 CADの 性能値に よって 課せられる 制限が 適用 されます。<br><br>この グループでは、 ツールと 組み合わせて 利用 できる いくつかの 要素を 紹介します。 この グループの 赤ピース "取得子: ブロック破壊位置"は、 ツールで 利用する ために 用意されて います。 あなたが ツールで 破壊した ワールドの ブロック位置を ベクトルで 取得します。 "取得子: 破壊されたブロック面"は 破壊した ブロックの 面を ベクトルで 取得します。<br><br>"取得子: 攻撃対象"は 魔法が 実行された とき、 あなたが 剣で 攻撃した エンティティを 取得 します。 発射型術式弾と 合わせて 利用することも でき、 その場合、 投射物が 衝突した エンティティが あれば、 その エンティティを 取得します。
-psi.piecegroup.positiveEffects=良性エフェクト
-psi.piecegroup.positiveEffects.desc=エンティティに 状態異常を 付与する 能力は 魔導書に おいて、 重要な 位置に あります。 幸い あなたは 魔導書を 使用して 魔法を 作っている わけでは ありませんが、 それでも 状態異常の 付与を 行うことが できます。<br><br>この グループの ピースは 全て 対象の エンティティへ 対象の 時間(秒)の ポーション効果を 付与 します。 ピースに 威力パラメータも ある 場合は、 付与する 効果の レベルを 定めます。<br><br>例えば、 "作動式: 俊敏"で、 時間=20, 威力2の 魔法の 場合、 対象の エンティティへ 20秒間の 俊敏II 効果を 与えます。
-psi.piecegroup.negativeEffects=悪性エフェクト
-psi.piecegroup.negativeEffects.desc=良性エフェクトが あると いうことは、 もちろん、 悪性エフェクトも あります。<br><br>この項で 説明するべき ことは 特に ありません。 この グループの ピースは 全て、 期待通りの 機能を 発揮します。
-psi.piecegroup.exosuitCasting=外装魔法
-psi.piecegroup.exosuitCasting.desc=ツール魔法が あるように、 外装魔法も あります。 あなたは、 サイメタル外装を 作製し、 利用する ことが できます。 ご想像どおり、 サイメタルや サイジェムが 素材として 必要です。 サイメタルツールと 同様、 外装は 部位ごとに 術式弾を 装填することが できます。 それぞれの 部位は、 ダメージを 受ける、 ジャンプする など、 特定の "イベント"を 受けて 処理を 行います。 イベントが 起こるたび、 選択された 術式弾の 魔法が 実行される ように なります。<br><br>イベント一覧:<br>&nヘルメット&r: センサー準拠 (読み取り)。<br>&nチェストプレート&r: プレイヤーが ダメージを 受ける。<br>&nレギンス&r: 毎tick。<br>&nブーツ&r: プレイヤーが ジャンプ。<br><br>ヘルメットには、 外装用センサーを 取り付ける ことが できます。 取り付けは、 クラフトで ヘルメットと、 センサーを 組み合わせる ことで 行えます。 一度に 接続できる センサーは 1つだけ です。 センサーの 取り外しは、 ヘルメットを 単体で クラフト することで 行えます。 プレイヤーが 暗闇に 入ったことを 検知する 光センサーや、 プレイヤーが 瀕死に なったこと 検知する ストレスセンサー など、 何種類かの センサーが あります。 時間が 有るときに、 チェックして みてください。<br><br>外装を 制御するには 外装コントローラーを 作製する 必要が あります。 この アイテムを 使用すると、 各部位で 選択されている 術式弾を 直接 調整 することが できます。 これを 手に 持って 普段どおりに 術式弾を 選択する ホットキーを 押せば 複数の スロットを 変更する 機能を 持つ メニューが 開きます。 マウスボタン 左右を 使用して 変更する 項目を 選択 します。 その後は 普段どおりに 機能 します。 Shiftキーを 押しながら、 外装コントローラーを 右クリック すれば、 即座に 全ての 外装の 効果を 無効に できます。<br><br>ピースの 説明へ 移ります。 この グループには、 外装魔法に 役立つ 様々な 取得子が あります。 この グループの 赤ピースは "取得子: 時間" です。 これは CADの 時間を tickで 出力 します。 これは、 "システムクロック"の ような ものです。 これは 常に 増加し続けて います。 時間 に応じて 動作が 異なる 魔法を 作りたい 場合に 便利です。 これを 使用するために 外装は 必要 ありません。<br><br>この グループの 他の ピース "取得子: 攻撃者"と "取得子: 被ダメージ量"は、 外装 チェストプレートと あわせて 使用されます。
-psi.piecegroup.trignometry=三角法
-psi.piecegroup.trignometry.desc=この グループには、 三角関数に 関する 演算子が 含まれて います。 この グループの 赤ハイライト "定数子:Pi"は 正確には tinの 値です。<br><br>この グループには サイン、 コサイン、 タンジェント 及び アークコサインと いった、 初歩的な 三角関数が 含まれて います。 タンジェント と アークコサインは サインと コサインの 逆演算子で、 "sin^-1"や "cos^-1"とも 表現 されて います。<br><br>"演算子: ベクトルドット積"は 2つの ベクトルの 大きさと それらの 間の 角度の 余弦の積、 つまり ドット積を 出力 します。 その結果に "演算子: アークコサイン"を 使用すると 2つの ベクトル間の 角度を 取得 できます。
-psi.piecegroup.smeltery=精錬
-psi.piecegroup.smeltery.desc=この グループに 含まれる ピースは、 どちらも 対象を かまどへ 入れたときの ように 精錬する という、 シンプルな 機能と 使用法です。<br>"作動式: アイテム精錬"は ワールドに ドロップされている アイテム(エンティティ) 1つを その 精錬後の アイテムへ 変化 させます。<br><br>"作動式: ブロック精錬"は、 ワールドに 設置 されている ブロック 1つを その 精錬後の ブロックへ 変化させます。 設置 されている 丸石ブロックは 石ブロックへ 変化しますが、 設置 されている 原木ブロックが 木炭に なることは ありません。 
-psi.piecegroup.flowControl=フロー制御
-psi.piecegroup.flowControl.desc=フロー制御は やや複雑な 題材です。 この グループの ピースを 利用 すれば あなたが 過去に 作成した 魔法に 大きく 異なった 振る舞いを させる ことが できる ように なります。 ただし これらを 正しく 使用する 方法を 理解 するには 魔法システムを 詳しく 理解する 必要が あります。 これらを 理解する ための 基本的な 規則を 説明 します。<br>1. 魔法は 魔法構築機で 描かれる 矢印に 沿って 順に 実行 されます。<br>2.与えられた ピースの 値は 一度だけ 評価 されます。 それ以降の ピースが その ピースの 値を 取得した 場合、  最初に 評価 された 値を 得ます。 <br>例えば、 1つの "演算子: 乱数"を 指し示す 3つの "作動式: デバッグ"は、 全て 同じ 値を 表示 します。 これは、 乱数は 一度だけ 評価 される ために よるもの です。 4.作動式は 常に 左から 右へ、 上から 下へ 実行 されます。 したがって、 2行目の 作動式は 常に 1行目の 作動式の 後に 実行 されます。<br><br>以上を 念頭に 置いて、 この グループの 赤ピース "作動式: 休眠"から 始めて みましょう。 この ピースは 渡された 数値分の tickだけ 魔法の それ以降の 動作を 遅らせる ことが できます。 規則の 4番を 知って いれば、 作動式が 実行 される 順序を 理解できる ので、 この ピースを 適切な 場所へ 配置する ことは 難しく ないでしょう。 1tickは 1/20秒 です。 魔法の 動作を 途中で 0.5秒 送らせたい 場合は、 "時間" パラメータに 10を 与えると 良い でしょう。 "作動式: 休眠"は 魔法の 作動量を 増加させる ことは ありませんが、 規模は 増加されます。<br><br>"作動式: 評価"は 全く 何も しない 作動式です。 魔法の 性能値を 増加させる ことも ありません。 唯一の 用途は 規則の 2番を 利用し、 休眠が 実行される 前に 値を 評価すること です。 例えば、 休眠の前に "取得子: エンティティ位置"で エンティティの 位置を 取得し、 休眠の 後に その 値を 使用 すれば、 休眠を 実行 している 間に、 その エンティティが 消えて いたり、 位置が 変わって いても 休眠前に 取得した 値を 使用する ことが できます。<br><br>"作動式: 終了"は まさしく フロー制御 らしい 機能を 持って います。 単純に 数値パラメータを 取得し、 それが -1より大 かつ 1より小の 場合、 魔法の 実行を 即座に 終了します。 それ以外の 値で あったなら 通常通り 魔法の 実行を 継続 します。 この ピースは 作動量を 増加 させません。 簡単な 使用方法として、 "取得子: スニーク状態"と 併用する 方法が あります。 この ピースは、 術者が スニーク状態 なら 0を、 そうでない 場合は 1を 出力 します。 "定数子: ラッパー"は 出力する 値が 変動する タイプの ピースを 作動式の 引数として 使用できるように できます。 これを 使わない 場合は、 "定数子: 数値"が 必要と なります。 作動式に 与えられた 定数値は、 魔法の 各性能値を 魔法の 実行前に 算出可能と します。 逆に、 作動式に 変数が 与えられていると 魔法の 性能値を 予め 算出できなく なるので、 作動式に 変数を 与える ことは 禁止されて います。 ラッパーには 通常の 数値と 定数の 2つの 数字が 必要です。 定数は 魔法の 性能値の 算出に 利用されますが、 作動式が 実行される 際には 数値の 値が 使用されます。 魔法式を 実行するとき 数値は 予期しない 結果を 避けるために 定数値によって 制限 されます。 2つの 数値の 符号が 一致するように、  通常の 数値は 定数の 符号に あわせて、 正 もしくは 負の 値へ 変換されます。 定数の 値が 0の場合、 通常の 数値の 値に 関係なく 評価は 常に 0と なります。
-psi.piecegroup.blockConjuration=魔法ブロック
-psi.piecegroup.blockConjuration.desc=この グループで 紹介する ピースは その名の 通りに 動作 します。<br><br>この グループの 赤ピース "作動式: 魔法ブロック生成(単)"は 与えられた 位置に 魔法の ブロックを 1つ 生成します。 魔法の ブロックは 半透明の 物理的な ブロックで、 "時間" パラメータが 設定されている 場合は、 少し後に ワールドから 消滅します。 "時間" パラメータの 単位は、 tickです。 tickは 1/20秒 ですので、 0.5秒後に 消える 魔法ブロックを 生成したい 場合は、 "時間"に 10を 設定 すると うまく いきます。<br><br>"作動式: 魔法光源生成"は ブロック ではなく、 光源を 1つ 生成します。 この 光源には 当たり判定は ありません。 "作動式: 魔法ブロック生成(列)"は "作動式: ブロック設置(列)"と 似た 動作を しますが、 設置 される のは、 魔法ブロック です。 これら 2つの ピースにも、 魔法ブロック生成(単)と 同様の "時間" パラメータが 存在します。<br><br>生成される 魔法ブロックは CADの 着色器と 同じ色です (着色器が ない場合は デフォルトの 水色)。 CAD着色器(虹)の ような 色が 変わる 着色器の 場合も 魔法ブロックの 見た目に 反映 されます。
-psi.piecegroup.eidosReversal=エイドス操作
-psi.piecegroup.eidosReversal.desc=エイドス魔法は 術者に 時空連続体を 都合よく 操る力を 与えます。<br><br>この グループの 赤ピース "作動式: エイドスリバーサル"は、 指定された 時間 (秒単位)の 間、 2倍速で 術者の 動きを 逆再生 します。 一度に アクティブに できる リバーサルは 1つだけです。 リバーサル アクティブ中に 次の リバーサルが 実行された場合、 それ以前の リバーサルは 無効となり、 最後の リバーサルのみ 効果が 発動 します。<br><br>"作動式: エイドスアンカー"は 術者に "アンカー"効果を 作成します。 対象の 時間 (秒)が 経過 すると、 術者は アンカーを 設置した 場所へ 戻ります。<br><br>"取得子: エイドス変更履歴"は 単一の 数値パラメータ (仮に nとします)を 受け取り、 エイドス変更履歴の 最後から n番目の 位置を 示します。 簡単に 言うと、 術者が n tick 前に いた 位置を 指示する 現在地からの  ベクトルを 取得 します。 以下のことは 覚えておいて ください。 "作動式: エイドスリバーサル"は 変更履歴に 術者を 戻し、 それ以降の 履歴を 削除します。 "作動式: エイドスアンカー"は 変更履歴を 修正する ことは ありません。
-psi.piecegroup.detectionDynamics=検出とスロット指定
-psi.piecegroup.detectionDynamics.desc=この グループでは タイトル通り、 検出と スロット指定の 2種類の ピースを 紹介します。 この グループの 赤ピースは スロット指定に 関わる ピースです。 しかし これを 理解する ためには スロット指定の 概念を 覚える 必要が あります。<br><br>指定スロットの 概念は 既に 利用した ことが ある はずです。 ブロック配置系統の 作動式が それに あたります。 こういった 作動式では CADの 右側にある ブロックを 直接 使用しました。 指定スロットは こういった 作動式が 使用する スロットです。 スロットは ホットバーが 利用され、 その指定は ホットバー1～9の 絶対位置 として 指定することも、 CADからの 相対位置として 指定する ことも できます。 デフォルトでは 魔法が 実行 される たびに、 指定スロットの 値は "相対:1"とされ、 これは CADの 1つ右側の スロットを 意味します。 "相対:-1"であれば、 CADの 1つ左側の スロットを 意味します。 "絶対:3"は ホットバーの 左から 3番目の スロットを 意味します。 また、 スロットの 指定は ループするので CADが ホットバーの 一番 右に ある 状態で スロットの 指定が "相対:1" ならば、 実際に 指定される スロットは ホットバーの 一番 左の スロットと なります。<br><br>スロット指定を 設定するには このグループの 赤ピース "作動式: 指定スロット切替"を 使用 します。 この 作動式は、 2つの パラメータを 受け取る ことが できます。 どちらの パラメータも 使用は 任意で、 また どちらか 一方の パラメータしか 使用 できません。 どちらの パラメータも ない 場合は、 スロットの 指定は デフォルトの "相対:1"と なります。 "位置" パラメータを 設定 すると スロット指定は 絶対値と なります。 "Shift" パラメータの 場合は、 相対値と なります。 これにより 例えば 状況に 応じて 使用する ブロックを 変える というような 使い方も できます。 この 作動式は 現在の 魔法の 実行にのみ 有効で、 次に 魔法が 実行される 際には スロットの 指定は リセットされます (たとえ、 同じ 魔法を 実行した 場合でも リセットは 行われます)。 <br><br>この グループの 残った ピース 2つは "検出"に 関わる ピースです。 "取得子: 所持アイテム数"は 任意で 指定スロット番号を 受け取り (指定が ない場合は デフォルトの 指定スロットに なります)、 その スロットの アイテムの 数量を 出力 します。 指定スロットに アイテムが ない 場合は 0を 出力 します。 "取得子: ブロック検出"は、 ベクトルを 受け取ります。 この ベクトルは ワールドの 座標を 確定 するために 利用され、 その 座標の ブロックを 検出します。 そこに ブロックが ない 場合 または 置き換え可能な ブロック (背の高い草など)が ない 場合、 0を 出力 します。 固体ブロックで ない ブロックが ある 場合は 1を 出力 します。 固体ブロックが ある 場合は 2を 出力 します。
-psi.piecegroup.memoryManagement=メモリ管理
-psi.piecegroup.memoryManagement.desc=この グループでは、 魔法が CAD内で 永続メモリを 利用する 方法を 紹介 します。 CADは ベクトル型の 値を 後に 実行する 魔法の ために 保存しておくことが できます。 保存できる ベクトルの 数は CADの 性能値 "装弾数"の 数値を 3で 割って 小数点以下を 切り捨てた ものです。 これは CADに 存在する メモリスロットの 量に 関係して います。<br><br>この グループには メモリに ベクトルを 読み書きする、 シンプルな IOスタイルの 2つの ピースが 含まれて います。 赤ピースは "作動式: ベクトル保存"です。 これは、 対象の メモリスロットに ベクトルを 保存します。 "取得子: 保存されたベクトル"は 反対に パラメータで 指定された メモリスロットに 保存されている ベクトルを 取得します。 これらの ピースの メモリスロットは 1から 始まります。 ですので、 3つの メモリスロットを 持つ CADは 値として 1, 2, 3を 受け取ることが できます。 どちらの ピースも 魔法の 性能値 規模を 使用された メモリスロットの 数に 等しい 数値分 上昇させます。<br><br>これらの ピースの 要注意点が 1つ あります。 "作動式: ベクトル保存"が 使用されたとき、 対象の メモリスロットを "ロック"します。 他の ピースが 対象の メモリスロットへ 読み書き することを 防いで データの 干渉を 防いで いる のです。 したがって、 ベクトルを 保存する前に 読み込みを 行う 必要が ある 場合は、 必ず フロー制御の 基本的な 規則を 念頭に 置いて、 読み取りが 書き込み よりも 先に 行われる ように して ください。
-psi.piecegroup.secondaryOperators=副次演算子
-psi.piecegroup.secondaryOperators.desc=タイトル通り、 このグループには "加算"や "減算"など、 "基本"演算 ほどは 重要でない 数学演算子が 含まれて います。 この グループは 実際には 魔法の 作成に 役立つ 数学 および 論理に 関する ピースを 詰め込んだ ものと なります。 説明 しやすい ように、 2つの セットに 分けます。<br><br> まず 説明する セットは べき算に 関連 する ものです。 "演算子: 平方"、 "演算子: べき乗"、 "演算子: 平方根"、 さらには "演算子: 対数"と いった ものを 含みます。 これらの ほとんどは "演算子: 対数"を 除いて ほとんど 標準的な 方法で 動作 します。 "演算子: 対数"は その名の 通り、 渡された 数値の 対数を 実行します。 この ピースは 任意の 底パラメータを 受け取り、 その底の 対数を 算出します。 底に 値が が 渡されて いない 場合は 底を 10として 実行します。 底として "定数子: e" (ネイピア数)も  使用する ことが できます。<br><br>次に 説明する セットは 論理に 関連 する ものです。 値を 整数と するための "演算子: 切り上げ"、 "演算子: 切り下げ"、 "演算子: 四捨五入"が あります。 これらは 小数点以下を ピースごとに、 切り上げ 、 切り下げ、 四捨五入します。 また、 "演算子: 最小値" および "演算子: 最大値"も あります。 これらは ごく単純で、 渡された 複数の 数値の 中から 最小 もしくは 最大の 数値を 取得します。
+  "_comment": "VERSIONING",
+  "psi.versioning.flavour0": "お使いのPsiは最新版ではありません。悲しいね。",
+  "psi.versioning.flavour1": "Psiをアップデートしようよ。",
+  "psi.versioning.flavour2": "Psiは旧版です。おもしろメッセージを期待した？ざんねん、普通に更新が必要なのなの。ごめんね＞＜;",
+  "psi.versioning.flavour3": "魔法科高校から最新のPsiをダウンロードできます。",
+  "psi.versioning.flavour4": "ご利用のPsiは旧版。逆に言えば、Psiのアップデートがあります。",
+  "psi.versioning.flavour5": "Psiを旧版のまま使っているのは雑魚。",
+  "psi.versioning.flavour6": "Psiをアップデートしよ。サイコ野郎じゃないんだからさ。",
+  "psi.versioning.flavour7": "お使いのPsiは最新版です。嘘です。",
+  "psi.versioning.flavour8": "Psiのアップデートをおすすめします。WebPsiteから入手できます。",
+  "psi.versioning.flavour9": "サイケこうせんを受けた人のうちの1割が、Psiをアップデートしないらしい。",
+  "psi.versioning.outdated": "お使いのPsiのバージョンは build %sです。なお最新版は build %sなもよう。",
+  "psi.versioning.updateMessage": "[\"クリックして [\",{\"text\":\"ダウンロード\",\"color\":\"aqua\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"最新版を自動ダウンロードするにはここをクリック\",\"color\":\"aqua\"}},\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/psi-download-latest %%version%%\"}},\"] [\",{\"text\":\"Website\",\"color\":\"aqua\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"クリックでmodのウェブサイトへ\",\"color\":\"aqua\"}},\"clickEvent\":{\"action\":\"open_url\",\"value\":\"http://psi.vazkii.us/downloads.php\"}},\"] [\",{\"text\":\"Changelog\",\"color\":\"aqua\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"クリックで変更履歴を表示\",\"color\":\"aqua\"}},\"clickEvent\":{\"action\":\"open_url\",\"value\":\"http://psi.vazkii.us/changelog.php#%version%\"}},\"]\"]",
+  "psi.versioning.startingDownload": "[{\"text\":\"Starting download of %s. Please do not remove your hard disk. Enjoying \",\"color\":\"yellow\"},{\"text\":\"Psi\",\"color\":\"aqua\"},{\"text\":\"? Consider supporting \",\"color\":\"yellow\"},{\"text\":\"Vazkii\",\"color\":\"light_purple\"},{\"text\":\" on \",\"color\":\"yellow\"},{\"text\":\"[Patreon]\",\"color\":\"gold\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Click this to go to Vazkii's Patreon\",\"color\":\"light_purple\"}},\"clickEvent\":{\"action\":\"open_url\",\"value\":\"http://www.patreon.com/Vazkii\"}},{\"text\":\"!\",\"color\":\"yellow\"}]",
+  "psi.versioning.doneDownloading": "ダウンロード完了 %s. アップデートするには、あなたの旧版PSi.jarを削除してゲームを再読込してください。",
+  "psi.versioning.downloadedAlready": "最新版をダウンロード済みです。アップデートするにはゲームを終了してmodsフォルダから旧版を削除し、再びゲームを開始してください。",
+  "psi.versioning.downloadingAlready": "アップデートのダウンロードは完了しています。アップデートのために時間を割いてくれませんか？",
+  "psi.versioning.error": "ぐげ！Psiアップデートのダウンロードを試みましたが、問題が発生したようです。psi.vazkii.usがダウンしていますか？",
+  "psi.versioning.disabled": "申し訳ありません。 この機能はサーバホストの問題により現在無効になっています。近いうちに復旧するはずです。",
 
-command.psi.learn.usage=/psi-learn <group> [player]
-command.psi.learn.success= %s は %s を習得した・
-command.psi.learn.success.all= %s は Psiを全て習得した。
-command.psi.learn.should_not=%s は すでに %s を知っている。
-command.psi.learn.players=%s はプレイヤーではありません。 Psiを学べるのはプレイヤーだけです。
-command.psi.learn.console=コンソールは Psiを 習得できません。特定の プレイヤーで 試してください。 /psi-unlearn <group> [player]
-command.psi.learn.not_a_group='%s' は 有効な Psi のピースでは ありません。
-command.psi.learn.unknown=このプレイヤーには Psiデータがありません。 mod製作者へ報告してください。
+  "_comment": "BLOCK NAMES",
+  "block.psi:cad_assembler": "CAD組立機",
+  "block.psi:programmer": "魔法構築機",
+  "block.psi:psidust_block": "サイダスト ブロック",
+  "block.psi:psimetal_block": "サイメタル ブロック",
+  "block.psi:psigem_block": "サイジェム ブロック",
+  "block.psi:psimetal_plate_black": "ダーク サイメタル プレート",
+  "block.psi:psimetal_plate_black_light": "ダーク サイメタル 流路板",
+  "block.psi:psimetal_plate_cyan": "輝く サイメタル プレート",
+  "block.psi:psimetal_plate_cyan_light": "輝くサイメタル 流路板",
+  "block.psi:ebony_psimetal_block": "エボニーサイメタル ブロック",
+  "block.psi:ivory_psimetal_block": "アイボリーサイメタル ブロック",
+  "block.psi:conjured": "魔法ブロック",
+  "block.psi:psimetal_plate_white": "輝く サイメタル プレート",
+  "block.psi:psimetal_plate_white_light": "輝く サイメタル 流動板",
 
-command.psi.unlearn.usage=/psi-unlearn <group> [player]
-command.psi.unlearn.success= %s は %s を 忘却した。
-command.psi.unlearn.success.all= %s はPsiについて 全て忘却した。
-command.psi.unlearn.should_not=%s は %sについて知らない。
-command.psi.unlearn.players=%s はプレイヤーではありません。 Psiを学べるのはプレイヤーだけです。
-command.psi.unlearn.console=コンソールは Psiを 習得できません。特定の プレイヤーで 試してください。 /psi-unlearn <group> [player]
-command.psi.unlearn.not_a_group='%s' は 有効な Psi のピースでは ありません。
-command.psi.unlearn.unknown=このプレイヤーには Psiデータがありません。 mod製作者へ報告してください。
-psimisc.fakeLevel.psidust=サイダスト 注入
+  "_comment": "ITEM NAMES",
+  "item.psi:psidust": "サイダスト",
+  "item.psi:psimetal": "サイメタルの インゴット",
+  "item.psi:psigem": "サイジェム",
+  "item.psi:ebony_psimetal": "エボニーサイメタルの インゴット",
+  "item.psi:ivory_psimetal": "アイボリーサイメタルの インゴット",
+  "item.psi:ebony_substance": "エボニー実体",
+  "item.psi:ivory_substance": "アイボリー実体",
+  "item.psi:cad": "CAD-術式補助演算機-",
+  "item.psi:cad_assembly_iron": "鉄のCAD素体",
+  "item.psi:cad_assembly_gold": "金のCAD素体",
+  "item.psi:cad_assembly_psimetal": "サイメタルのCAD素体",
+  "item.psi:cad_assembly_ebony_psimetal": "エボニーサイメタルの CAD素体",
+  "item.psi:cad_assembly_ivory_psimetal": "アイボリーサイメタルの CAD素体",
+  "item.psi:cad_assembly_creative": "クリエイティブCAD組立機",
+  "item.psi:cad_core_basic": "基本CADコア",
+  "item.psi:cad_core_overclocked": "クロックアップCADコア",
+  "item.psi:cad_core_conductive": "伝導性CADコア",
+  "item.psi:cad_core_hyperclocked": "ハイパークロックCADコア",
+  "item.psi:cad_core_radiative": "放射性CADコア",
+  "item.psi:cad_socket_basic": "基本CAD弾倉",
+  "item.psi:cad_socket_signaling": "信号式CAD弾倉",
+  "item.psi:cad_socket_large": "大型CAD弾倉",
+  "item.psi:cad_socket_transmissive": "伝達式CAD弾倉",
+  "item.psi:cad_socket_huge": "巨大CAD弾倉",
+  "item.psi:cad_battery_basic": "基本CADバッテリー",
+  "item.psi:cad_battery_extended": "拡張CADバッテリー",
+  "item.psi:cad_battery_ultradense": "過密CADバッテリー",
+  "item.psi:cad_colorizer_white": "CAD着色器(白)",
+  "item.psi:cad_colorizer_orange": "CAD着色器(橙)",
+  "item.psi:cad_colorizer_magenta": "CAD着色器(赤紫)",
+  "item.psi:cad_colorizer_light_blue": "CAD着色器(空)",
+  "item.psi:cad_colorizer_yellow": "CAD着色器(黄)",
+  "item.psi:cad_colorizer_lime": "CAD着色器(黄緑)",
+  "item.psi:cad_colorizer_pink": "CAD着色器(桃)",
+  "item.psi:cad_colorizer_gray": "CAD着色器(灰)",
+  "item.psi:cad_colorizer_silver": "CAD着色器(銀)",
+  "item.psi:cad_colorizer_cyan": "CAD着色器(水)",
+  "item.psi:cad_colorizer_purple": "CAD着色器(紫)",
+  "item.psi:cad_colorizer_blue": "CAD着色器(青)",
+  "item.psi:cad_colorizer_brown": "CAD着色器(茶)",
+  "item.psi:cad_colorizer_green": "CAD着色器(緑)",
+  "item.psi:cad_colorizer_red": "CAD着色器(赤)",
+  "item.psi:cad_colorizer_black": "CAD着色器(黒)",
+  "item.psi:cad_colorizer_rainbow": "CAD着色器(虹)",
+  "item.psi:cad_colorizer_psi": "Psi CAD 着色器",
+  "item.psi:spell_bullet": "術式弾",
+  "item.psi:spell_bullet_active": "術式弾(プログラム済み)",
+  "item.psi:spell_bullet_projectile": "発射型術式弾",
+  "item.psi:spell_bullet_projectile_active": "発射型術式弾(プログラム済み)",
+  "item.psi:spell_bullet_loop": "ループ型術式弾",
+  "item.psi:spell_bullet_loop_active": "ループ型術式弾(プログラム済み)",
+  "item.psi:spell_bullet_circle": "円形術式弾",
+  "item.psi:spell_bullet_circle_active": "術者中心型術式弾(プログラム済み)",
+  "item.psi:spell_bullet_grenade": "榴弾型術式弾",
+  "item.psi:spell_bullet_grenade_active": "榴弾型術式弾(プログラム済み)",
+  "item.psi:spell_bullet_charge": "チャージ型術式弾",
+  "item.psi:spell_bullet_charge_active": "チャージ型術式弾(プログラム済み)",
+  "item.psi:spell_bullet_mine": "地雷型術式弾",
+  "item.psi:spell_bullet_mine_active": "地雷型術式弾(プログラム済み)",
+  "item.psi:spell_drive": "術式ドライブ",
+  "item.psi:psimetal_shovel": "サイメタルのシャベル",
+  "item.psi:psimetal_pickaxe": "サイメタルのつるはし",
+  "item.psi:psimetal_axe": "サイメタルの斧",
+  "item.psi:psimetal_sword": "サイメタルの剣",
+  "item.psi:psimetal_shovel.broken": "サイメタルのシャベル(損傷)",
+  "item.psi:psimetal_pickaxe.broken": "サイメタルのつるはし(損傷)",
+  "item.psi:psimetal_axe.broken": "サイメタルの斧(損傷)",
+  "item.psi:psimetal_sword.broken": "サイメタルの剣(損傷)",
+  "item.psi:detonator": "術式起爆装置",
+  "item.psi:psimetal_exosuit_helmet": "サイメタル外装 ヘルメット",
+  "item.psi:psimetal_exosuit_chestplate": "サイメタル外装 チェストプレート",
+  "item.psi:psimetal_exosuit_leggings": "サイメタル外装 レギンス",
+  "item.psi:psimetal_exosuit_boots": "サイメタル外装 ブーツ",
+  "item.psi:psimetal_exosuit_helmet.broken": "サイメタル外装 ヘルメット(損傷)",
+  "item.psi:psimetal_exosuit_chestplate.broken": "サイメタル外装 チェストプレート(損傷)",
+  "item.psi:psimetal_exosuit_leggings.broken": "サイメタル外装 レギンス(損傷)",
+  "item.psi:psimetal_exosuit_boots.broken": "サイメタル外装 ブーツ(損傷)",
+  "item.psi:exosuit_controller": "外装コントローラー",
+  "item.psi:exosuit_sensor_light": "外装用 光センサー",
+  "item.psi:exosuit_sensor_water": "外装用 水センサー",
+  "item.psi:exosuit_sensor_heat": "外装用 熱センサー",
+  "item.psi:exosuit_sensor_stress": "外装用 ストレスセンサー",
+  "item.psi:vector_ruler": "ベクトル定規",
 
-jei.psi.category.trick=注入魔法
+  "_comment": "DEATH MESSAGES",
+  "death.attack.psi-overload": "Psiエネルギーを %s 超過した。",
+
+  "_comment": "COMPONENT NAMES",
+  "psi.component.assembly": "素体",
+  "psi.component.core": "コア",
+  "psi.component.socket": "弾倉",
+  "psi.component.battery": "バッテリー",
+  "psi.component.dye": "着色器",
+
+  "_comment": "CAD STAT NAMES",
+  "psi.cadstat.efficiency": "効率",
+  "psi.cadstat.potency": "規模",
+  "psi.cadstat.complexity": "複雑性",
+  "psi.cadstat.projection": "作動量",
+  "psi.cadstat.bandwidth": "帯域幅",
+  "psi.cadstat.sockets": "装弾数",
+  "psi.cadstat.overflow": "容量",
+
+  "_comment": "SPELL STAT NAMES",
+  "psi.spellstat.complexity": "複雑性",
+  "psi.spellstat.complexity.desc": "ステップ数",
+  "psi.spellstat.potency": "規模",
+  "psi.spellstat.potency.desc": "魔法の力量",
+  "psi.spellstat.cost": "コスト",
+  "psi.spellstat.cost.desc": "実行時のPsiエネルギー消費量",
+  "psi.spellstat.projection": "投影",
+  "psi.spellstat.projection.desc": "作動式ピースの数",
+  "psi.spellstat.bandwidth": "帯域幅",
+  "psi.spellstat.bandwidth.desc": "魔法式の幅か高さ(の最大値)",
+
+  "_comment": "BULLET TYPES",
+  "psi.bulletType0": "通常",
+  "psi.bulletType1": "発射",
+  "psi.bulletType2": "ループ",
+  "psi.bulletType3": "円形",
+  "psi.bulletType4": "榴弾",
+  "psi.bulletType5": "チャージ",
+  "psi.bulletType6": "地雷",
+
+  "_comment": "EXOSUIT EVENTS",
+  "psi.event.none": "(No Event Handler)",
+  "psi.event.damage": "&イベント&7: ダメージ",
+  "psi.event.tick": "&bイベント&7: tick",
+  "psi.event.jump": "&bイベント&7: ジャンプ",
+  "psi.event.lowLight": "&bイベント&7: 暗所",
+  "psi.event.underwater": "&bイベント&7: 水中",
+  "psi.event.onFire": "&bイベント&7: 炎上",
+  "psi.event.lowHp": "&bイベント&7: 瀕死",
+
+  "_comment": "PROGRAMMER REFERENCE",
+  "_comment": "%1$s is Ctrl or Cmd, depending on whether you're on windows or mac",
+  "_comment": "spaces are important",
+  "psi.programmerReference0": "&bキー設定",
+  "psi.programmerReference1": "ピース削除: &bDelete",
+  "psi.programmerReference2": "グリッド全削除: &b%1$s-Shift-Delete",
+  "psi.programmerReference3": "グリッド移動: &b%1$s + 矢印キー",
+  "psi.programmerReference4": "グリッド回転: &b%1$s-Shift-Left/Right",
+  "psi.programmerReference5": "グリッド垂直反転: &b%1$s-Shift-Down",
+  "psi.programmerReference6": "コピー/切り取り/貼り付け: &b%1$s-C/%1$s-X/%1$s-V",
+  "psi.programmerReference7": "元に戻す/やり直し: &b%1$s-Z/%1$s-Y",
+  "psi.programmerReference8": "パネルを開く/ピースを選択: &bEnter",
+  "psi.programmerReference9": "パラメータを設定: &bテンキー + 矢印キー",
+  "psi.programmerReference10": "コメントを設定: &b%1$s-D",
+  "psi.programmerReference11": "フォーカス切替: &bTab",
+  "psi.programmerReference13": "カーソル移動: &b矢印キー",
+  "psi.programmerReference12": "ツールチップ表示: &bAlt",
+  "psi.programmerReference14": "Imgurへアップロード: &b%1$s-Shift-Alt-G",
+  "psi.programmerReference15": "Redditで共有: &b%1$s-Shift-Alt-R",
+  "psi.programmerReference16": "",
+  "psi.programmerReference17": "&b検索",
+  "psi.programmerReference18": "入力可能な型: &bin:(型)",
+  "psi.programmerReference19": "出力する型: &bout:(型)",
+  "psi.programmerReference20": "前方一致: &b(名称)_",
+  "psi.programmerReference21": "後方一致: &b_(名称)",
+  "psi.programmerReference22": "Mod名: &b@(名称)",
+
+  "_comment": "SPELl PIECE NAMES",
+  "_comment": "-- SELECTORS",
+  "psi.spellpiece.selectorCaster": "取得子: 術者",
+  "psi.spellpiece.selectorCaster.desc": "魔法を実行している人を取得します。",
+  "psi.spellpiece.selectorFocalPoint": "取得子: 焦点",
+  "psi.spellpiece.selectorFocalPoint.desc": "魔法の焦点となっているエンティティを取得します。",
+  "psi.spellpiece.selectorNearbyItems": "取得子: 近くのアイテム",
+  "psi.spellpiece.selectorNearbyItems.desc": "与えられた位置の近くのアイテムを取得します。",
+  "psi.spellpiece.selectorNearbyLiving": "取得子: 近くの生物",
+  "psi.spellpiece.selectorNearbyLiving.desc": "与えられた位置の近くの生物を取得します。",
+  "psi.spellpiece.selectorNearbyEnemies": "取得子: 近くの敵",
+  "psi.spellpiece.selectorNearbyEnemies.desc": "与えられた位置の近くの敵を取得します。",
+  "psi.spellpiece.selectorNearbyAnimals": "取得子: 近くの動物",
+  "psi.spellpiece.selectorNearbyAnimals.desc": "与えられた位置の近くの動物を取得します。",
+  "psi.spellpiece.selectorNearbyProjectiles": "取得子: 近く投射物",
+  "psi.spellpiece.selectorNearbyProjectiles.desc": "与えられた位置の近くの投射物を取得します。",
+  "psi.spellpiece.selectorNearbySmeltables": "取得子: 近くの錬成可能アイテム",
+  "psi.spellpiece.selectorNearbySmeltables.desc": "与えられた位置の近くの錬成可能アイテムを取得します。",
+  "psi.spellpiece.selectorLoopcastIndex": "取得子: ループ回数",
+  "psi.spellpiece.selectorLoopcastIndex.desc": "繰り返し実行が完了した回数を取得します。",
+  "psi.spellpiece.selectorBlockBroken": "取得子: 破壊したブロック位置",
+  "psi.spellpiece.selectorBlockBroken.desc": "ツールで破壊されたブロックの位置をベクトルで取得します。(ツール用)",
+  "psi.spellpiece.selectorBlockSideBroken": "取得子: 破壊したブロック面",
+  "psi.spellpiece.selectorBlockSideBroken.desc": "ツールで破壊されたブロックの面をベクトルで取得します(ツール用)",
+  "psi.spellpiece.selectorAttackTarget": "取得子: 攻撃対象",
+  "psi.spellpiece.selectorAttackTarget.desc": "術者が攻撃したエンティティを取得します。",
+  "psi.spellpiece.selectorSneakStatus": "取得子: スニーク状態",
+  "psi.spellpiece.selectorSneakStatus.desc": "術者がスニークしているかどうかを取得します。(通常時=1, スニーク時=0)",
+  "psi.spellpiece.selectorTime": "取得子: 時間",
+  "psi.spellpiece.selectorTime.desc": "CADの内部時間を(tickで)取得します。",
+  "psi.spellpiece.selectorAttacker": "取得子: 攻撃者",
+  "psi.spellpiece.selectorAttacker.desc": "術者を攻撃したエンティティを取得します。",
+  "psi.spellpiece.selectorDamageTaken": "取得子: 被ダメージ量",
+  "psi.spellpiece.selectorDamageTaken.desc": "術者が受けたダメージ量を取得します。",
+  "psi.spellpiece.selectorRulerVector": "取得子: 定規ベクトル",
+  "psi.spellpiece.selectorRulerVector.desc": "ベクトル定規で測定したベクトルを取得します。",
+  "psi.spellpiece.selectorItemPresence": "取得子: 所持アイテム数",
+  "psi.spellpiece.selectorItemPresence.desc": "インベントリにある1つのアイテムのスタック数を取得します。",
+  "psi.spellpiece.selectorBlockPresence": "取得子: ブロック検出",
+  "psi.spellpiece.selectorBlockPresence.desc": "ワールドにブロックが設置されているか否かおよび、それが固体ブロックか否かを検出します。",
+  "psi.spellpiece.selectorSavedVector": "取得子: 保存されたベクトル",
+  "psi.spellpiece.selectorSavedVector.desc": "CADメモリーに保存されているベクトルを取得します。",
+  "psi.spellpiece.selectorEidosChangelog": "取得子: エイドス変更履歴",
+  "psi.spellpiece.selectorEidosChangelog.desc": "エイドス変更履歴から位置を取得します。",
+
+  "_comment": "-- OPERATORS",
+  "psi.spellpiece.operatorSum": "演算子: 加算",
+  "psi.spellpiece.operatorSum.desc": "A + B (+ C)",
+  "psi.spellpiece.operatorSubtract": "演算子: 減算",
+  "psi.spellpiece.operatorSubtract.desc": "A - B (- C)",
+  "psi.spellpiece.operatorMultiply": "演算子: 乗算",
+  "psi.spellpiece.operatorMultiply.desc": "A * B (* C)",
+  "psi.spellpiece.operatorDivide": "演算子: 除算",
+  "psi.spellpiece.operatorDivide.desc": "A / B",
+  "psi.spellpiece.operatorAbsolute": "演算子: 絶対値",
+  "psi.spellpiece.operatorAbsolute.desc": "数値の絶対値を算出します。",
+  "psi.spellpiece.operatorInverse": "演算子: 逆数",
+  "psi.spellpiece.operatorInverse.desc": "数値の逆数を算出します。",
+  "psi.spellpiece.operatorModulus": "演算子: 剰余算",
+  "psi.spellpiece.operatorModulus.desc": "A %% B (Integer)",
+  "psi.spellpiece.operatorIntegerDivide": "演算子: 整数除算",
+  "psi.spellpiece.operatorIntegerDivide.desc": "A / B (Integer)",
+  "psi.spellpiece.operatorRandom": "演算子: 乱数",
+  "psi.spellpiece.operatorRandom.desc": "0～与えられた数値の範囲のうち、ランダムな1つの値。",
+  "psi.spellpiece.operatorSin": "演算子: サイン",
+  "psi.spellpiece.operatorSin.desc": "sin(A)",
+  "psi.spellpiece.operatorCos": "演算子: コサイン",
+  "psi.spellpiece.operatorCos.desc": "cos(A)",
+  "psi.spellpiece.operatorAsin": "演算子: アークサイン",
+  "psi.spellpiece.operatorAsin.desc": "asin(A)",
+  "psi.spellpiece.operatorAcos": "演算子: アークコサイン",
+  "psi.spellpiece.operatorAcos.desc": "acos(A)",
+  "psi.spellpiece.operatorMax": "演算子: 最大値",
+  "psi.spellpiece.operatorMax.desc": "渡された値の内、最大のものを出力します。",
+  "psi.spellpiece.operatorMin": "演算子: 最小値",
+  "psi.spellpiece.operatorMin.desc": "渡された値の内、最小のものを出力します。",
+  "psi.spellpiece.operatorSquare": "演算子: 平方",
+  "psi.spellpiece.operatorSquare.desc": "A^2",
+  "psi.spellpiece.operatorCube": "演算子: 立方",
+  "psi.spellpiece.operatorCube.desc": "A^3",
+  "psi.spellpiece.operatorPower": "演算子: べき乗",
+  "psi.spellpiece.operatorPower.desc": "A^B",
+  "psi.spellpiece.operatorSquareRoot": "演算子: 平方根",
+  "psi.spellpiece.operatorSquareRoot.desc": "sqrt(A)",
+  "psi.spellpiece.operatorLog": "演算子: 対数",
+  "psi.spellpiece.operatorLog.desc": "log(A) or logB(A)",
+  "psi.spellpiece.operatorCeiling": "演算子: 切り上げ",
+  "psi.spellpiece.operatorCeiling.desc": "小数点以下を切り上げて出力します。",
+  "psi.spellpiece.operatorFloor": "演算子: 切り下げ",
+  "psi.spellpiece.operatorFloor.desc": "小数点以下を切り下げて出力します。",
+  "psi.spellpiece.operatorRound": "演算子: 四捨五入",
+  "psi.spellpiece.operatorRound.desc": "小数点以下を四捨五入して出力します。",
+  "psi.spellpiece.operatorEntityPosition": "演算子: エンティティ位置",
+  "psi.spellpiece.operatorEntityPosition.desc": "エンティティの位置を1つ取得します。",
+  "psi.spellpiece.operatorEntityLook": "演算子: エンティティ視線方向",
+  "psi.spellpiece.operatorEntityLook.desc": "エンティティ1つの視線方向を方向ベクトルで取得します。",
+  "psi.spellpiece.operatorEntityMotion": "演算子: エンティティ移動ベクトル",
+  "psi.spellpiece.operatorEntityMotion.desc": "エンティティ1つの動いている方向をベクトルで取得します。",
+  "psi.spellpiece.operatorEntityAxialLook": "演算子: エンティティ視線方角",
+  "psi.spellpiece.operatorEntityAxialLook.desc": "エンティティ1つの視線方向を、方角に丸めた上で、方向ベクトルで取得します。",
+  "psi.spellpiece.operatorFocusedEntity": "演算子: エンティティ注目",
+  "psi.spellpiece.operatorFocusedEntity.desc": "対象のエンティティが見ているエンティティを取得します。",
+  "psi.spellpiece.operatorVectorRaycast": "演算子: ベクトルレイキャスト",
+  "psi.spellpiece.operatorVectorRaycast.desc": "対象のエンティティの位置からRay方向にある最初のブロックの座標を、ベクトルで取得します。(最大距離32)",
+  "psi.spellpiece.operatorVectorRaycastAxis": "演算子: ベクトルレイキャスト方向",
+  "psi.spellpiece.operatorVectorRaycastAxis.desc": "レイキャスト先のブロックの面を、そのブロック基準の方向ベクトルで取得します。(最大距離32)",
+  "psi.spellpiece.operatorVectorSum": "演算子: ベクトル加算",
+  "psi.spellpiece.operatorVectorSum.desc": "A + B (+ C)",
+  "psi.spellpiece.operatorVectorSubtract": "演算子: ベクトル減算",
+  "psi.spellpiece.operatorVectorSubtract.desc": "A - B (- C)",
+  "psi.spellpiece.operatorVectorMultiply": "演算子: ベクトル乗算",
+  "psi.spellpiece.operatorVectorMultiply.desc": "A * B",
+  "psi.spellpiece.operatorVectorDivide": "演算子: ベクトル除算",
+  "psi.spellpiece.operatorVectorDivide.desc": "A / B",
+  "psi.spellpiece.operatorVectorCrossProduct": "演算子: ベクトルクロス積",
+  "psi.spellpiece.operatorVectorCrossProduct.desc": "A x B",
+  "psi.spellpiece.operatorVectorNormalize": "演算子: ベクトル正規化",
+  "psi.spellpiece.operatorVectorNormalize.desc": "ベクトルを単位ベクトルにして出力。大きさを1とします。",
+  "psi.spellpiece.operatorVectorNegate": "演算子: ベクトル反転",
+  "psi.spellpiece.operatorVectorNegate.desc": "ベクトルの正負を反転させます。",
+  "psi.spellpiece.operatorVectorMagnitude": "演算子: ベクトル強さ",
+  "psi.spellpiece.operatorVectorMagnitude.desc": "ベクトルの大きさを出力 します。",
+  "psi.spellpiece.operatorVectorConstruct": "演算子: ベクトル定数",
+  "psi.spellpiece.operatorVectorConstruct.desc": "XYZパラメータからベクトルを構築します。",
+  "psi.spellpiece.operatorVectorExtractX": "演算子: ベクトル抽出X",
+  "psi.spellpiece.operatorVectorExtractX.desc": "ベクトルからX座標を抽出します。",
+  "psi.spellpiece.operatorVectorExtractY": "演算子: ベクトル抽出Y",
+  "psi.spellpiece.operatorVectorExtractY.desc": "ベクトルからY座標を抽出します。",
+  "psi.spellpiece.operatorVectorExtractZ": "演算子: ベクトル抽出Z",
+  "psi.spellpiece.operatorVectorExtractZ.desc": "ベクトルからZ座標を抽出します。",
+  "psi.spellpiece.operatorVectorProject": "演算子: ベクトル射影",
+  "psi.spellpiece.operatorVectorProject.desc": "ベクトル Aを、ベクトル Bへ射影します。",
+  "psi.spellpiece.operatorVectorDotProduct": "演算子:ベクトルドット積",
+  "psi.spellpiece.operatorVectorDotProduct.desc": "A . B",
+  "psi.spellpiece.operatorClosestToPoint": "演算子: 最も近いエンティティ",
+  "psi.spellpiece.operatorClosestToPoint.desc": "リスト内で特定位置から最も近いエンティティ1つを出力します。",
+  "psi.spellpiece.operatorRandomEntity": "演算子: ランダムエンティティ",
+  "psi.spellpiece.operatorRandomEntity.desc": "リスト内からランダムなエンティティ1つを出力します。",
+  "psi.spellpiece.operatorListAdd": "演算子: リストへ追加",
+  "psi.spellpiece.operatorListAdd.desc": "対象となるエンティティをリストへ追加します。",
+  "psi.spellpiece.operatorListRemove": "演算子: リストから削除",
+  "psi.spellpiece.operatorListRemove.desc": "リストから対象となるエンティティを削除します。",
+
+  "_comment": "-- CONSTANTS",
+  "psi.spellpiece.constantNumber": "定数子: 数値",
+  "psi.spellpiece.constantNumber.desc": "このピースを選択した後、値をタイピングしてください。",
+  "psi.spellpiece.constantPi": "定数子: Pi",
+  "psi.spellpiece.constantPi.desc": "Piの値を出力します。",
+  "psi.spellpiece.constantE": "定数子: e",
+  "psi.spellpiece.constantE.desc": "eの値を出力します。",
+  "psi.spellpiece.constantWrapper": "定数子: ラッパー",
+  "psi.spellpiece.constantWrapper.desc": "変数の値を、定数としてラップします。",
+
+  "_comment": "-- OTHERS",
+  "psi.spellpiece.connector": "コネクタ",
+  "psi.spellpiece.connector.desc": "フローを接続します。",
+  "psi.spellpiece.errorSuppressor": "エラー抑止",
+  "psi.spellpiece.errorSuppressor.desc": "魔法式によって提示されるエラーを非表示にします。",
+
+  "_comment": "-- TRICKS",
+  "psi.spellpiece.trickDebug": "作動式: デバッグ",
+  "psi.spellpiece.trickDebug.desc": "テスト用。対象を出力します。",
+  "psi.spellpiece.trickDelay": "作動式: 休眠",
+  "psi.spellpiece.trickDelay.desc": "術式を、渡された数のtick分だけ遅らせます。",
+  "psi.spellpiece.trickDie": "作動式: 終了",
+  "psi.spellpiece.trickDie.desc": "対象が]-1, 1[の範囲であれば、術式を終了します。",
+  "psi.spellpiece.trickEvaluate": "作動式: 評価",
+  "psi.spellpiece.trickEvaluate.desc": "値を評価します。何もしません。",
+  "psi.spellpiece.trickAddMotion": "作動式: 運動追加(単)",
+  "psi.spellpiece.trickAddMotion.desc": "ターゲットのエンティティに運動を追加します。",
+  "psi.spellpiece.trickExplode": "作動式: 爆発",
+  "psi.spellpiece.trickExplode.desc": "どっかん！",
+  "psi.spellpiece.trickBreakBlock": "作動式: ブロック破壊(単)",
+  "psi.spellpiece.trickBreakBlock.desc": "ブロックを破壊します。",
+  "psi.spellpiece.trickBreakInSequence": "作動式: ブロック破壊(列)",
+  "psi.spellpiece.trickBreakInSequence.desc": "与えられたVector方向のブロックをそれぞれ破壊します。",
+  "psi.spellpiece.trickPlaceBlock": "作動式: ブロック設置(単)",
+  "psi.spellpiece.trickPlaceBlock.desc": "ブロックを設置します。(CADの右側にあるブロック)",
+  "psi.spellpiece.trickPlaceInSequence": "作動式: ブロック設置(列)",
+  "psi.spellpiece.trickPlaceInSequence.desc": "与えられたVector方向へブロックをそれぞれ設置します。",
+  "psi.spellpiece.trickInfusion": "作動式: 注入",
+  "psi.spellpiece.trickInfusion.desc": "金をサイメタルにします。レッド ストーンをサイダストにするのと同様の動作です。",
+  "psi.spellpiece.trickBlink": "作動式: 瞬間移動(単)",
+  "psi.spellpiece.trickBlink.desc": "前方へ瞬間移動します。",
+  "psi.spellpiece.trickMassBlink": "作動式: 瞬間移動(全)",
+  "psi.spellpiece.trickMassBlink.desc": "全てを前方へ瞬間移動させます。",
+  "psi.spellpiece.trickMassAddMotion": "作動式: 運動追加(複)",
+  "psi.spellpiece.trickMassAddMotion.desc": "対象のエンティティリストのエンティティ全てに、運動を追加します。",
+  "psi.spellpiece.trickMassExodus": "作動式: 大移動",
+  "psi.spellpiece.trickMassExodus.desc": "対象のエンティティリストのエンティティ全てを、対象の位置地点の 方向へ移動させます。",
+  "psi.spellpiece.trickMoveBlock": "作動式: ブロック移動",
+  "psi.spellpiece.trickMoveBlock.desc": "ブロック1つを、対象の(標準化された)ベクトル方向へ移動させます。",
+  "psi.spellpiece.trickCollapseBlock": "作動式: ブロック崩落",
+  "psi.spellpiece.trickCollapseBlock.desc": "ブロック1つを砂や砂利のように落下させます。",
+  "psi.spellpiece.trickSmite": "作動式: 雷",
+  "psi.spellpiece.trickSmite.desc": "与えられた場所へ雷を落とします。",
+  "psi.spellpiece.trickBlaze": "作動式: 火",
+  "psi.spellpiece.trickBlaze.desc": "与えられた場所へ炎を発生させます。",
+  "psi.spellpiece.trickTorrent": "作動式: 水",
+  "psi.spellpiece.trickTorrent.desc": "与えられた場所へ水源を生成します。",
+  "psi.spellpiece.trickOvergrow": "作動式: 促成",
+  "psi.spellpiece.trickOvergrow.desc": "与えられた場所のブロックへ養分を与えます。",
+  "psi.spellpiece.trickGreaterInfusion": "作動式: 上位注入",
+  "psi.spellpiece.trickGreaterInfusion.desc": "ダイヤモンドをサイジェムにします。レッド ストーンや金と同様の動作です。",
+  "psi.spellpiece.trickEbonyIvory": "作動式: エボニーとアイボリー",
+  "psi.spellpiece.trickEbonyIvory.desc": "the Endにおいて、石炭とクォーツに注入を行います。他の注入作動式と同様の動作です。",
+  "psi.spellpiece.trickSpeed": "作動式: 俊敏",
+  "psi.spellpiece.trickSpeed.desc": "移動速度上昇効果を付与します。",
+  "psi.spellpiece.trickHaste": "作動式: 加速",
+  "psi.spellpiece.trickHaste.desc": "採掘速度上昇効果を付与します。",
+  "psi.spellpiece.trickStrength": "作動式: 力",
+  "psi.spellpiece.trickStrength.desc": "攻撃力上昇効果を付与します。",
+  "psi.spellpiece.trickJumpBoost": "作動式: 跳躍",
+  "psi.spellpiece.trickJumpBoost.desc": "跳躍力上昇効果を付与します。",
+  "psi.spellpiece.trickWaterBreathing": "作動式: 水中呼吸",
+  "psi.spellpiece.trickWaterBreathing.desc": "水中呼吸効果を付与します。",
+  "psi.spellpiece.trickFireResistance": "作動式: 耐火",
+  "psi.spellpiece.trickFireResistance.desc": "火炎耐性効果を付与します。",
+  "psi.spellpiece.trickInvisibility": "作動式: 透明化",
+  "psi.spellpiece.trickInvisibility.desc": "透明化効果を付与します。",
+  "psi.spellpiece.trickRegeneration": "作動式: 再生",
+  "psi.spellpiece.trickRegeneration.desc": "再生能力効果を付与します。",
+  "psi.spellpiece.trickResistance": "作動式: 防御",
+  "psi.spellpiece.trickResistance.desc": "耐性効果を付与します。",
+  "psi.spellpiece.trickSlowness": "作動式: 鈍化",
+  "psi.spellpiece.trickSlowness.desc": "移動速度低下効果を付与します。",
+  "psi.spellpiece.trickWeakness": "作動式: 弱化",
+  "psi.spellpiece.trickWeakness.desc": "弱体化効果を付与します。",
+  "psi.spellpiece.trickWither": "作動式: 衰退",
+  "psi.spellpiece.trickWither.desc": "ウィザー効果を付与します。",
+  "psi.spellpiece.trickIgnite": "作動式: 発火",
+  "psi.spellpiece.trickIgnite.desc": "エンティティ1つを炎上させます。",
+  "psi.spellpiece.trickEidosAnchor": "作動式: エイドスアンカー",
+  "psi.spellpiece.trickEidosAnchor.desc": "対象時間後、術者を現在の位置へ戻します。",
+  "psi.spellpiece.trickEidosReversal": "作動式: エイドスリバーサル",
+  "psi.spellpiece.trickEidosReversal.desc": "術者を過去に戻します。",
+  "psi.spellpiece.trickSmeltItem": "作動式: アイテム精錬",
+  "psi.spellpiece.trickSmeltItem.desc": "アイテムエンティティ1つを精錬します。",
+  "psi.spellpiece.trickSmeltBlock": "作動式: ブロック精錬",
+  "psi.spellpiece.trickSmeltBlock.desc": "ブロック1つを精錬します。",
+  "psi.spellpiece.trickConjureBlock": "作動式: 魔法ブロック生成(単)",
+  "psi.spellpiece.trickConjureBlock.desc": "与えられた位置へ魔法ブロック1つを生成します。",
+  "psi.spellpiece.trickConjureLight": "作動式: 魔法光源生成",
+  "psi.spellpiece.trickConjureLight.desc": "与えられた位置へ魔法光源1つを生成します。",
+  "psi.spellpiece.trickConjureBlockSequence": "作動式: 魔法ブロック生成(列)",
+  "psi.spellpiece.trickConjureBlockSequence.desc": "魔法ブロックを 1列 生成します。",
+  "psi.spellpiece.trickSwitchTargetSlot": "作動式: 指定スロット切替",
+  "psi.spellpiece.trickSwitchTargetSlot.desc": "この魔法で指定しているスロットを切り替えます。",
+  "psi.spellpiece.trickSaveVector": "作動式: ベクトル保存",
+  "psi.spellpiece.trickSaveVector.desc": "Vector情報をCADメモリーへ保存します。",
+
+  "_comment": "SPELL PARAMETER NAMES",
+  "psi.spellparam.target": "対象",
+  "psi.spellparam.number": "数値",
+  "psi.spellparam.number1": "数値 A",
+  "psi.spellparam.number2": "数値 B",
+  "psi.spellparam.number3": "数値 C",
+  "psi.spellparam.number4": "数値 D",
+  "psi.spellparam.vector1": "ベクトル A",
+  "psi.spellparam.vector2": "ベクトル B",
+  "psi.spellparam.vector3": "ベクトル C",
+  "psi.spellparam.vector4": "ベクトル D",
+  "psi.spellparam.position": "位置",
+  "psi.spellparam.ray": "Ray",
+  "psi.spellparam.max": "最大",
+  "psi.spellparam.min": "最小",
+  "psi.spellparam.power": "威力",
+  "psi.spellparam.direction": "方向",
+  "psi.spellparam.speed": "速度",
+  "psi.spellparam.x": "X",
+  "psi.spellparam.y": "Y",
+  "psi.spellparam.z": "Z",
+  "psi.spellparam.radius": "半径",
+  "psi.spellparam.distance": "距離",
+  "psi.spellparam.time": "時間",
+  "psi.spellparam.list": "リスト",
+  "psi.spellparam.constant": "定数",
+  "psi.spellparam.shift": "Shift",
+  "psi.spellparam.slot": "スロット",
+  "psi.spellparam.base": "底",
+
+  "_comment": "DATA TYPE NAMES(検索の利便性を目的に、このセクションは翻訳しない)",
+  "psi.datatype.Null": "None",
+  "psi.datatype.Any": "Any",
+  "psi.datatype.Double": "Number",
+  "psi.datatype.Integer": "Number",
+  "psi.datatype.Number": "Number",
+  "psi.datatype.Vector3": "Vector",
+  "psi.datatype.Entity": "Entity",
+  "psi.datatype.EntityLiving": "Entity (Living)",
+  "psi.datatype.EntityLivingBase": "Entity (Living)",
+  "psi.datatype.EntityPlayer": "Entity (Player, Living)",
+  "psi.datatype.EntityListWrapper": "Entity List",
+
+  "_comment": "COMPILER ERRORS",
+  "psi.spellerror.nospell": "コンパイルする魔法式がありません。",
+  "psi.spellerror.noname": "魔法に前がありません。",
+  "psi.spellerror.notricks": "作動式ピースが含まれていません。",
+  "psi.spellerror.unsetparam": "必要なパラメータが設定されていません。",
+  "psi.spellerror.nullparam": "パラメータが何もないマスを向いています。",
+  "psi.spellerror.invalidparam": "パラメータが無効なピースへ向いています。",
+  "psi.spellerror.samesideparams": "複数のパラメータが1つの面を共有しています。",
+  "psi.spellerror.loop": "無限ループが発生しています。",
+  "psi.spellerror.nonpositivevalue": "数値パラメータは正の数である必要があります。",
+  "psi.spellerror.noninteger": "数値パラメータは整数である必要があります。",
+  "psi.spellerror.nonpositiveinteger": "整数でない、かつ負の数である数値パラメータが含まれています。",
+  "psi.spellerror.statoverflow": "魔法の性能値が最大値を超えています。",
+  "psi.spellerror.exclusiveparams": "排他的なパラメータが組み合わさっています。",
+
+  "_comment": "RUNTIME ERRORS",
+  "psi.spellerror.position": "エラー 場所 [%d, %d].",
+  "psi.spellerror.dividebyzero": "エラー: 0で割ることはできません。",
+  "psi.spellerror.nulltarget": "エラー: 魔法の対象となるエンティティは存在しません。",
+  "psi.spellerror.nullvector": "エラー: 魔法の指定するベクトルが存在しないか、nullです。",
+  "psi.spellerror.outsideradius": "エラー: 魔法の対象が最大射程32ブロックの範囲外です。",
+  "psi.spellerror.outsidetrigdomain": "エラー: 数値が逆三角関数の定義範囲外です。",
+  "psi.spellerror.bossimmune": "エラー: 耐性持ちエンティティかボスへ魔法を起動しようとしました。",
+  "psi.spellerror.nocad": "エラー: 術者がCADを持っていません。",
+  "psi.spellerror.memoryoutofbounds": "エラー: 範囲外のメモリーアクセス。",
+  "psi.spellerror.lockedmemory": "エラー: メモリースロットがロックされています。",
+  "psi.spellerror.immunetarget": "エラー 対象のエンティティは耐性持ちかボスです。",
+  "psi.spellerror.negativenumber": "エラー ピースの対応していない場所で負の値の数値が指定されています。",
+
+
+  "_comment": "PIECE GROUPS",
+  "psi.introduction": "この 次元宇宙に おける 最高の 術式演算mod Psiです。 この ガイドには レシピが 含まれて いないため、 Psiで 遊ぶには レシピ表示modが 必要です。 レシピ表示mod として 代表的な ものに、 Just Enough Items (JEI)が あります。 サイダストを 入手するために、 まず CAD組立機と 鉄のCAD素体を 作製する 必要が あります。 CAD組立機を 設置し、 その中に 鉄のCAD素体を 置きます。 これによって 最低限の 術式補助演算機 (CAD)を 構築することが できます。 そして レッド ストーンを ワールドに 捨ててください。 CADを 装備し、 捨てた アイテムを 狙って 右クリック することで サイダストを 作ります。",
+  "psi.levelskip": "Psiは 前の ワールドの セーブデータを 発見 しました。 <br>ロードしますか？ <br><br>ロード すると、 即座に Lv%dに なります。 ロード しない 場合、 この メッセージは この セッションでは 再び 表示 される ことは ありません。",
+  "psi.piecegroup.tutorial1": "チュートリアル 1",
+  "psi.piecegroup.tutorial1.desc": "レベル上げ メニューへ ようこそ。 新品の CADを 入手した ようですね。 この メニューは、 この modに おける 学校 としての 役割を 持ちます。 そして 今 あなたが 読んで いるのは 最初の チュートリアル です。 文章が 長く なりますが、 これ以降 これより 長い チュートリアルは 出てきません ので 安心して ください。 魔法式の プログラミングを 始めるには、 魔法構築機が 必要です。 魔法式を 実行 するには、 現状の CAD ではなく、 各種 部品を 備えた CADが 必要です。 すべての CAD部品 (素体, コア 弾倉, バッテリー, および オプションの 着色器)の レシピを 調べて、 作製して ください。 新しく CAD素体を 作製 しなおす 必要は ありません。 現在 持っている CAD (事実上 素体のみ)を クラフト材料 として 作製を 行うと、 CAD素体に 戻すことが できます。 <br><br>すべての 部品を 作製 したら、 最後に 魔法式を 術式弾に 封入する 必要が あります。 それでは 全て ご自分の 手で 作製していって ください。 <br><br>必要なものが 揃ったら、 魔法構築機を 右クリック して 開きます。 大きな グリッドが 見える でしょう。 これが 魔法式を プログラミングする エリアです。 プログラミング システムは 旧来の 複雑な ものでは なく、 単純で わかりやすい 作りです。 グリッドに ピースを 追加するには、 グリッドの上で 右クリックし、 表示 されている ピースを 選択 します。 <br><br>下記を 見ての 通り、 あなたは 現在 2種類の ピースを 利用可能な 状態です。 ピースの 種類が 増えれば、 様々な 方法で 魔法式を 組み立てる ことが できるように なります。 しかし 今回は この2つに 焦点を 絞って いきましょう。 今現在 利用可能な ピースは \"取得子: 術者\"と \"作動式: デバッグ\"です。 \"作動式\"は 術式に おいて 最も 重要な パーツで、 術式が ワールドに 影響を 及ぼす 手段と なって います。 今回の \"作動式: デバッグ\"は プレイヤーの チャット欄に 値を 出力する だけの 例外的な ものです。 <br><br>それでは グリッドに 2種類の ピースが 隣接 するように 配置して ください。 \"取得子: 術者\"を 左クリック しても、 特に 何も 起きない ことが わかる でしょう。 しかし \"作動式: デバッグ\"を 左クリック した 場合には 入力を 設定できる 場所の 左側に ピースの \"パラメータ\" パネルが 表示 されます。 パラメータは ピースが 実行される ために 必要な 情報です。 作動式: デバッグは チャットに 何かしらを 送ります。 ですので、 その 何かしらが 何であるかを 教えてやる 必要が あります。 \"対象\" パラメータの 矢印を 1つ クリックして \"取得子: 術者\"が \"作動式: デバッグ\"へ 矢印を 伸ばしているように します。 ピースの ツールチップが 表示されて いるときに SHIFTを 押し続けると、 そのピースに 必要な パラメータの 種類や、 その ピースから 何の パラメータが 出力 されるのかが わかります。 ピースと パラメータの 正しい 組み合わせを 行うために、 この機能を 活用して ください。 数値 パラメータに ついては 後ほど 説明します。 今は 無視してください。 <br><br>正しく 設定できた ならば、 上部の X印が チェックマークへ 変わり、 右側に いくつかの 値が 表示 される はずです。 しかし 今の所は これらを 気にしないで ください。 まだ 赤い X印が 表示 されて いる 場合は、 その 上に カーソルを 合わせて エラー内容を 確認し、 修正して ください。 <br><br>それでは 作成した プログラムを CADへ 取り込み ましょう。 術式弾を 手に持ち 魔法構築機を 右クリック して ください。 ビープ音が 鳴り、 弾を 装填する 準備が 整った ことを 知らせます。 新しい CADを 組立機の 左上に ある 大きな スロットに 配置すると、 その 下の スロットが 開きます。 そこに 術式弾を 置いてから、 CADを 取り出して ください。 魔法を 選ぶには、 CADを 手に 持って、 Psi メニューを 開く 際と 同じ キー(デフォルト: Cキー)を 押して ください。 (注意: インベントリで 持ち運べる CADは 1つ のみ です。 複数の CADを 持っている 場合、 魔法は 機能 しません。)<br><br>レベルアップ するには、 最新の チュートリアルで 学んだ 赤ハイライトの ピースを 使用した魔法を 作成し 実行する 必要が あります。 今回の 場合は、 \"作動式: デバッグ\"を 含んだ 魔法を 実行する ことで レベルアップ できます。 術式弾を 装填した CADを 持って 右クリック すると、 先へ 進みます。 サイダストを 作製したい 場合は、 CADで 弾のない スロットを 選択して 使用して ください。",
+  "psi.piecegroup.tutorial2": "チュートリアル 2",
+  "psi.piecegroup.tutorial2.desc": "前回 登場した \"数値\" パラメータに ついて 説明 します。 パラメータの 中央部に 使用するか どうかを 切り替える ドットが あります。 つまり、 \"数値\" パラメータの 使用は 任意であると いうこと です。 中心部を 選択すると、 この オプションを 無効化 できます。 <br><br>この 場合、 \"数値\" パラメータは、 単に ラベル として 使用されます。 チャットに 複数の 情報が 送信される ような、 複雑な 魔法を 作成する 際に 役立つ でしょう。 \"数値\" パラメータには 数値が 必要です。 これには \"定数子: 数値\"の ピースを 使います。 それでは 実際に \"数値\" パラメータに 数値を 与えて みましょう。 デバッグ ピースに \"数値\" パラメータを 追加し、 グリッドに \"定数子: 数値\" ピースを 追加して、 それを デバッグ ピースへ 接続 します。 数字を クリックして、 キーボードで 数字を 入力 すれば 数値を 設定 できます。 <br><br>複数の パラメータを 使用すると、 より 複雑な プログラム では 全ての ピースが 隣接 している わけでは ない という 状態が でてきます。 そういった 状態を 解決 するのが 今から 紹介する \"コネクタ\" です。 コネクタは その名の通り、 ピースを 別の ピースと 接続する ことが できる ワイヤーの ような ものです。 コネクタを ピースに 隣接 させれば、 ピースの 内容は 何で あっても、 コネクタの 反対側に 何が あっても 送信する ことが できます。 接続先が 遠くに あるならば コネクタを 連続して 置く ことで 接続する ことが できます。 単一の コネクタは コネクタを 指し示している オブジェクトを、 コネクタに 面している 任意の ピースに 送信する ことが できます。 <br><br>レベルアップ するには、 赤で ハイライト された ピースを 使用して 魔法を 作る 必要が あります。 ですので、 できれば チュートリアル1の  \"作動式: デバッグ\"と 併用して \"定数子: 数値\"を 使用する 必要が ある ことを 忘れないで ください。 さらに コネクタも 試してみて ください。 後々 重要な 要素と なってきます。<br>これは 2番目の チュートリアル ですので、 以前の チュートリアルを もう一度 読みたい場合は、 左にある リストを スクロールして 探して ください。",
+  "psi.piecegroup.tutorial3": "チュートリアル 3",
+  "psi.piecegroup.tutorial3.desc": "あなたが 今 何を 考えて いるかは 大体 わかります。 「説明長すぎ。 いつ それっぽい 魔法 組ませて くれるの？」 でしょう。 よろしい、 それでは 教えましょう。 <br><br>実際に ワールドへ 影響を 及ぼす 作動式を 紹介 します。 \"作動式: 運動追加(単)\" を 見て ください。 この トリックは エンティティに 動きを 付与します。 この 作動式は エンティティ、 ベクトル、 および 定数を 受け取ります。 先に 学んだ 通り \"取得子: 術者\"は エンティティ (プレイヤー)を 出力します。 これを、 今回 学ぶ \"作動式: 運動追加(単)\"と 併用 すれば プレイヤー キャラクターに 動きを 与える ことが できます。 ベクトルは 与える 動きの 方向 として、 定数は 速度として 受け取り ます。 この 数値は \"定数子: 数値\"を 使う ことで、 取得 できます。 <br><br>ベクトルを 得る 手段の 1つに \"演算子: エンティティ視線方向\"が あります。 これは、 プレイヤーが 見ている 方向を ベクトル として 取得 します。 これを \"作動式: 運動追加(単数)\"に 渡すと、 プレイヤー キャラクターは 見ている 方向へ 動きます。 数値は とりあえず 3 として 入力 します。 もちろん 変更する ことも できますが、 とりあえず 3 が ちょうどよい でしょう。 定数の 値を 変更すると 右側の 数値が 変わるのが わかるかと 思います。 これらは 現在の 魔法の 性能値 です。 あなたが 作る 魔法の 性能値は それぞれ CADの 性能値と 同じ 要素を 指します。 魔法の 性能値の いずれかが CADの 性能値を 超えている 場合、 魔法を 実行する ことが できません。<br><br>性能値の 内容は 上から順に 以下の通り です。<br>&n複雑性&r: 魔法に含まれる、 ピースの数。 定数、 コネクタ、 および \"作動式: デバッグ\"は カウント されない。<br>&n規模&r: 魔法の 力量。 作動式の 威力を 増やすに つれ、 この 数値も 上昇する。<br>&nコスト&r: 魔法が 消費 しようと する Psi (画面右側の エネルギーバー)の 量。 CADは 性能値 として 持って いないが、 CADの 効率値に よって 影響を 受ける。 実際に 消費される 値は カッコ内の 数値。 CADの 効率値 が 高いほど、 消費量は 減る。<br>&n作動量&r: 魔法に 含まれる 作動式の 数。 \"作動式: デバッグ\"は カウント されない。<br>&n帯域幅&r: 魔法式 グリッドのの 幅 と 高さ のうち 大きい方の 値。 この制限を 克服するぶは、 魔法式を コンパクトに すると 良い。",
+  "psi.piecegroup.tutorial4": "チュートリアル 4",
+  "psi.piecegroup.tutorial4.desc": "好きですよね、 爆発。 今回は、 プレイヤーが 見ている ブロックを 爆発 させる 魔法を 作って いきます。<br><br>必要な ピースは \"作動式: 爆発\"です。 これは ベクトル と 定数が 必要です。 \"作動式: 運動追加(単)\"と 同様、 定数は 動作の 威力を 表します。 ベクトルは 爆発を 起こす 場所 です。 以前に、  \"演算子: エンティティ視線方向\"を 使用 しましたが、 それで 得られる ベクトルは とても 短い ものでした。 もし それを そのまま 使ったら 爆発は あなたの 顔で 起きてしまう でしょう。 代わりに、 \"演算子: ベクトルレイキャスト\"を 使いましょう。<br><br>この 演算子は 位置と 視線の 両方を ベクトルで 取得 します。 この 演算子は、 \"演算子: エンティティ位置\"から 得られる プレイヤーの 現在位置を 基準として ワールドの ブロックと 衝突するまで 長さ パラメータを 拡張して ベクトルを 取得します。 (注意: \"演算子: エンティティ位置\"は、 プレイヤーで 使用した場合、 Y値が 通常よりも 1.6高いベクトルを 出力 します。)<br>したがって、 この演算子を \"演算子: エンティティ視線方向\"と 一緒に 使用すると、 プレイヤーが どこを 見ているのかが わかり、 そこで 爆発を 発生 させる ことが できます。 注意点として、 魔法の 射程範囲は 32ブロック まで だと いうことを 覚えておく必要が あります。 今回の 場合は、 魔法を 実行する プレイヤーが 基準となり、 爆発点が 32ブロック以内と なります。<br><br>\"エラー抑止\"ピースは その名の通り 動作します。 魔法を 実行した 際に、 何かしらに 失敗したとき、 チャット欄には エラー文が 表示される でしょう。 魔法に エラーが 出ることを 予め 知っていた 場合、 そのエラー文は 邪魔になることが あります。 そういった 場合、 魔法式の グリッドの 何処かに \"エラー抑制\"を 配置しておけば、 全ての エラーは 表示 されなく なります。<br><br>これが 最後の 基礎チュートリアルです。 この先は、 レベルアップの ために、 様々な 課程を 選択することが できます。 それでは お楽しみください。",
+  "psi.piecegroup.numbersIntro": "Numbers 数値 基礎",
+  "psi.piecegroup.numbersIntro.desc": "Number -数値-は 魔法の プログラミングに 不可欠な 要素です。 これらは 基本的な 算術演算子です。 魔法式に おける 計算に 使うことが できます。<br><br>まだ この要素を 使用した 魔法を 作って いない 場合は、 デバッグ作動用に、 2つの 定数を 足し算 してみて ください。<br><br>\"数値\"と \"定数\"の 違いについて、 いずれかの ピース上で Shiftを 押し続けて 確認して ください。 \"定数\"を 必要とする パラメータは \"数値\"を 受け取ることは できませんが、 \"数値\"を 必要とする パラメータは \"数値\"も \"定数\"も 受け取ることが できます。",
+  "psi.piecegroup.vectorsIntro": "Vectors  ベクトル 基礎",
+  "psi.piecegroup.vectorsIntro.desc": "Vector -ベクトル-は 魔法の プログラミングに 不可欠な 要素です。 ベクトル用の 演算子の 多くは、 加算や 減算など、 ごく 基本的な ものです。 今回の ピースの うち 赤く ハイライト された \"演算子: ベクトル定数\"は、 X座標, Y座標, Z座標を 指定して ベクトルを 生成します。 \"作動式: 運動追加(単)\"と 組み合わせて、 ジャンプする 魔法を 作ってみて ください。<br><br>ベクトルに 関する 複雑な 部分に ついて: 2つの ベクトルの クロス積は、 両方に 垂直な ベクトルが 得られます。 プレイヤー視線の ベクトルと、 \"演算子: ベクトル定数\"で 生成した (0, 1, 0)のベクトルの クロス積を 算出すれば、 プレイヤー側へ 向かう ベクトルを 得ることができます。",
+  "psi.piecegroup.entitiesIntro": "Entities エンティティ 基礎",
+  "psi.piecegroup.entitiesIntro.desc": "Entity -エンティティ-は 魔法の プログラミングに 不可欠な 要素です。 今回学ぶ ピースを 利用すると ワールドに 存在する 他の エンティティを 対象として 魔法を 実行することが できるように なります。<br><br>他の エンティティに 影響を 与える 魔法を 作成するために、  ここにある ピースを 使用することが できます。 \"作動式: 運動追加(単)\"を、 自身以外に 使ってみて ください。",
+  "psi.piecegroup.projectiles": "代替実行",
+  "psi.piecegroup.projectiles.desc": "術式弾は 標準の ものだけ ではなく、 代替的な 魔法実行の 方式を 持った 術式弾も 作製することが できます。 使い分ける 事に よって 用途に 合わせた 魔法の 形態を 選ぶことが できる でしょう。<br>発射型術式弾は、 魔法を 直接 実行する 代わりに、 弾を 発射し、 それが 何かに 衝突 したときに 魔法を 実行します。<br>榴弾型術式弾は 発射型術式弾と 同じように 発射しますが、 重力の 影響を 受けます。 また、 魔法を 実行してから 3秒後に 発動する \"榴弾\"型の 弾を 生成します。<br>チャージ型術式弾は 榴弾型術式弾と 同じように 発射されますが、 術式起爆装置 (アイテム) によって 起動されたとき のみ 魔法を 発動 させます。<br>地雷型術式弾は 榴弾型術式弾と 同じように 発射 されます。 エンティティが 術式弾の 中を 通過 すると 魔法が 実行されます。<br>円形術式弾は 術者が 見ている 場所に 魔法陣を 形成します。 魔法は 5秒間かけて 20回 発動します。<br><br>このような 代替的な 術式弾を 使用する には 魔法の 焦点を 取得する \"取得子: 焦点\"を 使用する 必要が あります。 通常の 術式弾の 場合、 焦点は プレイヤー自身 ですが、 発射型 もしくは その 派生術式弾では、 焦点は 発射体です。 円形術式弾の 場合は、 焦点は 魔法陣です。 \"取得子: 術者\"の 対象は 常に プレイヤーで、 これが 変更される ことは ありません。<br><br>魔法の射程 32ブロック制限は 焦点を 基準と するため、 これらの 代替的な 術式弾は 魔法の 効果を より遠くに 発生させる ことが 可能と なります。 さらに 魔法は 術者が 焦点の 32ブロック範囲外に いても、 常に 術者に 影響を 与えることが できます。 術式起爆装置は 32ブロック 範囲内で のみ、 起爆 させる ことが できます。<br><br>グループの もう一方の ピース \"取得子: 定規ベクトル\"は、 ベクトル定規 (アイテム) と あわせて 使用します。 この アイテムは、 ワールドで ベクトルを 算出することが できます。 Shiftキーを 押しながら ブロックを 右クリック すると 基準点が 設定され 別の ブロックを 右クリック すると 計測先が 設定されます。 \"取得子: 定規ベクトル\"を 使用すると、 定規により 算出された ベクトルが 取得 されます。 複数の ベクトル定規が ある場合は、 ホットバーに あるものが 優先 されます。",
+  "psi.piecegroup.blockWorks": "ブロック操作",
+  "psi.piecegroup.blockWorks.desc": "ブロックの 操作は 不可欠な 技術です。 ブロックは ワールドの グリッドに 合わせて 配置されて いるので、 ベクトルを 使用して ブロックの 位置を 参照 することが できます。 そのため、 ベクトルの 概念に 関する 知識は ブロック操作の 内容を 理解 するために とても 重要です。 <br><br>この グループに おける 基本的な 要素 として、 \"作動式: ブロック設置(単)\" と \"作動式: ブロック破壊(単)\"が あります。 これらは ベクトルを 受け取り、 指定された 位置に ブロックを 設置、 もしくは 破壊 します。 \"作動式: ブロック設置(単)\"の 場合、 設置される ブロックは ホットバー上で プレイヤーの CADの 右側に あるもの です。 もちろん、 設置する ブロックは プレイヤーの インベントリから 消費 されます。 \"演算子: ベクトルレイキャスト\"を 使用 すれば ブロックの 設置/破壊 先を 簡単に 指定する ことが できます。<br><br>ただし、 注意が 必要な 点が あります。 \"演算子: ベクトルレイキャスト\"は プレイヤーが 見ている ブロックを 取得 します。 つまり そこには 既に ブロックが 存在 するため、 新たに ブロックを 設置する ことは できません。 これを 解決する ために、 \"演算子: ベクトルレイキャスト\"と 新たに \"演算子: ベクトル レイキャスト方向\"の ピースを 組み合わせる 必要が あります。 これは、 見ている ブロックの 面が、 ブロックを 基準として どの 方向で あるかを 得ることが できます。 ブロックの 上部を 見ていると方向ベクトル (0, 1, 0)が 得られます。 次に、 \"演算子: ベクトル加算\"を 使用して レイキャストの 結果に ブロックを 配置する 場所を 算出する ことが できます。<br><br>同様の 方法で、 \"演算子: エンティティ視線方角\"は 方向ベクトル 取得します。 F3メニューの \"Facing value\"の 値を 考えて ください。 \"演算子: エンティティ視線方角\"も 同じような ものです。 \"Facing\"が \"east\"で あるならば \"演算子: エンティティ視線方角\"で 得られる ベクトルは (1, 0, 0)と なります。 これは \"Facing\"とは 異なり あなたが 上下を 見ている 場合にも 検出されます。<br><br>その他 2つの 作動式は \"作動式: ブロック設置(列)\"と \"作動式: ブロック破壊(列)\"で、 後者が このグループの 赤い ハイライトに なっている ピースです。 これらの 作動式は、 ブロックを 破壊 もしくは 設置 します。 それぞれ (単)版の ピースと 同様に 位置情報を 必要と しますが、 さらに もう1つ \"対象\"に ベクトルを 必要と します。 これは、 位置情報と ベクトルに よって 作動式が 影響を 与える 範囲を 確定させる ためです。 例えば \"対象\"が (0, 4, 0)の 場合 \"位置\"の 値から 始めて 4ブロックが 設置 もしくは 破壊 されます。 最後に 作動式の \"最大\" 要素に ついて 説明 します。 これは 定数で、 作動式が 設置 もしくは 破壊できる ブロックの 最大数です。 ベクトルは 定数で ある 必要が ないので、 この 最大要素に 基づいて 魔法の 性能値 \"規模\"と \"コスト\"が 求められます。 \"最大\"を 大きく するほど コストは 上昇します。<br><br>このグループの 最後の ピース \"演算子: ベクトル射影\"に ついて 説明 します。 ベクトル射影は やや 難しい 内容と なって います。 ですので、 ここでは 用法の うちの 1つ ベクトルを 方向に 射影する ということ のみに 絞って 説明 します。 ワールドに おける あなたの 現在位置から 見ている 場所まで ブロックを 設置する 魔法を 作りたい という 状況を イメージして ください。 ただし あなたが 見ている ブロックの 面から 一直線に 並ぶ 設置であると します (\"演算子: ベクトル レイキャスト方向\"を 使用)。 まず \"作動式: ブロック配置(列)\"の ために ブロックを 配置したい ベクトルを 取得する ことから はじめます。 しかし、 あなたが 見ている ブロックに 対して 斜めに 立っている 場合 得られる ベクトルは (3, 2, 4)の ように なります。 これでは ワールドの グリッド的には 直線で ありません。 こういう 場合は \"演算子: ベクトル射影\"を 使用する ことで あなたが 見ている 面の 方向 例えば (0, 0, 1) に 射影する ことが できます。 つまり  \"ベクトルA\"は (3, 2, 4)で、 \"ベクトルB\" は (0, 0, 1)です。 射影を 適用すると (0, 0, 4)が 残ります。 仮に \"ベクタトルB\"が (1, 0, 0)だった 場合 得られるのは (3, 0, 0)です。 Bに 方向ベクトルが 使われている 場合、 ベクトル投影は、 Aから、 Bの 0である部分を 除去 します。 これに よって ワールド的にも 直線な ベクトルを 生成することが できます。 <br><br>この グループの 赤ピースは \"作動式: ブロック破壊(列)\" なので、 ほとんどの 場合では 頭を 悩ませる 必要は ありません。 それでは、 高さ 8ブロック分の ブロックを 破壊する 魔法を 作ってみて ください。 作ったものは \"伐採魔法\" として 活用 できます。",
+  "psi.piecegroup.infusion": "サイメタル 注入",
+  "psi.piecegroup.infusion.desc": "サイメタルは 上位の CADを 作製 するための 重要な 構成要素 です。 \"作動式: 注入\" ピースは 無装填の CADと 同じように Psiエネルギーの 放出を 実行しますが より 精度が 高いものと なります。<br><br>この ピースは パラメータを 受け取りません。 また、 レッドストーンから サイダストを 作成するのと 全く 同じ 方法で 機能 します。 サイメタルを 作成する には、 ワールドに 金のインゴットを 捨て、 \"作動式: 注入\"を 発動して ください。<br><br>サイメタルは、 上位の CAD部品を 作製 するため だけでは なく、 術式ドライブを 作成 するため にも 利用 されます。 術式ドライブは 魔法を 保存したり、 他の 魔法構築機へ 受け渡す 手段 として 利用 できます。 魔法を 術式ドライブに 保存する には 魔法構築機上で Shiftキーを 押しながら 右クリック します。 ドライブに 魔法が 保存 されている 状態で 同じ 操作を すれば 魔法構築機へ 魔法が 読み込まれます。 ドライブから 魔法を 削除する には 空中に 向かって Shiftキーを 押しながら 右クリック してください。<br><br>術式ドライブは 書き込み済みの ものと 空の ものを 一緒に クラフト すると 魔法を コピー することが できます。",
+  "psi.piecegroup.movement": "移動 発展",
+  "psi.piecegroup.movement.desc": "移動と 輸送に 関しては すでに \"作動式: 運動追加(単)\"で 扱われている 内容です。 この グループ には その 上級概念の ピースが 含まれて います。<br><br>\"作動式: 瞬間移動(単)\"は この グループの 赤ピースです。 これは 単純に、 対象の エンティティを 見ている 方向へ 設定された \"最大\" パラメータの 距離分 テレポートさせる だけの 作動式 です。 負の 値が 設定 されて いれば 後方へ テレポート させます。 \"作動式: 瞬間移動(全)\"は、 基本は (単)版と 同じ ですが、 エンティティリスト内 全ての エンティティへ 影響を 与えます。 <br><br>\"作動式: 大移動\"は エンティティリスト内 全ての エンティティを 指定された 位置方向へ 指定された 速度で 移動 させます。 負の 値の 場合は、 遠ざける ように 移動 させます。",
+  "psi.piecegroup.loopcasting": "繰り返し実行",
+  "psi.piecegroup.loopcasting.desc": "繰り返し実行は ループ型術式弾に よって 使用 できる 魔法の 形式です。 ループ型術式弾から 魔法が 実行 されると、 通常の 魔法の ように 実行されますが、 プレイヤーが \"繰り返し実行\" 状態に なります。 この 状態では、 毎秒4回、 その 魔法が 実行 されます。 繰り返し実行の 利点は、 Psi自然回復への 通常の クールダウン 時間が 適用 される のは 、 最初の 1回を 実行した 時点から のみと いうこと です。 それ以降の 実行では クールダウンが 通常よりも 短く なるので、 術者が 魔法の コストを 賄うのに 十分な レベルで あれば 無限に 繰り返し実行できる 可能性が あります。 <br><br>この グループの 赤ピースは \"取得子: ループ回数\" です。 この ピースは 魔法が 繰り返された 回数を 取得します。 初回の 実行では これは 0となり、 以降の 繰り返し ごとに 1ずつ 増えて いきます。 これは \"演算子: 剰余算\"と \"演算子: 整数除算\"と 共に 使う ことで、 唱える たびに 呪文の 機能を 変える ことが できます。<br><br>\"演算子: 整数除算\"は その名の 通り、 2つの 数値を 除算した 結果の 整数部分を 出力 します。 \"演算子: 剰余算\"は、 2つの 数値を 除算した 結果の 余りを 出力 します。 これらの ピースを 利用 することで、 任意の サイズの 地下倉庫を 掘削する などと いったことが 可能と なります。<br><br>\"取得子: ループ回数\"は 円形術式弾でも 動作し、 魔法が 魔法陣に よって 実行された 回数を 最大20まで 出力 します。",
+  "psi.piecegroup.blockMovement": "ブロックの移動",
+  "psi.piecegroup.blockMovement.desc": "ブロックを 移動 させる 機能は、 ブロックの 配置/破壊ほど 重要では ありませんが、 それでも 役に立つ 場面は あります。<br><br>この グループの 赤ピースは \"作動式: ブロック移動\"です。 この 作動式は ワールド上の ブロックの \"位置\"と、 それを 動かす 方向の ベクトルを \"対象\" として 必要と します。 \"対象\"と なる ベクトルは 方向ベクトルで なければ なりません。 そうで なければ 作動式は 失敗 します。<br><br>\"作動式: ブロック崩落\"は、 ブロック 1つを、 砂や 砂利の ように 落下 させます。<br><br>これらの 作動式は どちらも、 複雑な ブロック (通称: タイルブロック)や、 シルクタッチで 回収できない ブロックへは 失敗に 終わります。",
+  "psi.piecegroup.elementalArts": "元素魔法",
+  "psi.piecegroup.elementalArts.desc": "昔ながらの 元素魔法を 使いたい場合 どうすれば 良いか。<br><br>この グループでは、 4つの 元素に まつわる 作動式を 紹介します。 この グループの 赤ピースは \"作動式: 雷\"です。 この 作動式は、 与えられた 位置に、 雷を 発生 させます。 他の作動式も、 同様の 動作を 行います。 <br><br>この グループには \"演算子: 乱数\" という、 0以上、 与えられた 値 未満の 乱数を 生成する ピースも 含まれて います。 これは、 繰り返し実行や 円形術式の 魔法と 一緒に 様々な 方法で 利用 できます。 例えば、 大型農場を 肥育する 際に、 \"作動式: 促成\"を 使用した 魔法を 作る ことが できます。",
+  "psi.piecegroup.greaterInfusion": "上位注入",
+  "psi.piecegroup.greaterInfusion.desc": "ダイヤモンドを サイジェムへ 変換する 方法は 重要な 知識です。 サイジェムを 使用すれば、 より 強力な CAD部品を 作製 できます。 \"作動式: 上位注入\"は \"作動式: 注入\"と 同じように、 ダイヤモンドを サイジェムへと 変換 させます。<br><br>さらに \"作動式: エボニーとアイボリー\"は 石炭を エボニーへ、 ネザークォーツを アイボリーへ 変換 します。 どちらも、 サイメタルの インゴットと 組み合わせて それぞれの 合金を 作製できます。 これらの 合金は 後に より強力な CAD部品を 作製する ために 必要と なります。 \"作動式: エボニーとアイボリー\"は the ENDでしか 使用することが できません。",
+  "psi.piecegroup.toolCasting": "ツール魔法",
+  "psi.piecegroup.toolCasting.desc": "サイメタルや サイジェムは ツール(シャベル, ツルハシ, 斧, 剣)へ 加工することが できます。<br><br>これらの ツールは 最大 3つの 術式弾を 装填することが できます。 ツールで 対象の ブロックを 破壊したり、 剣で 敵を 攻撃したり すると、 選択された 魔法が 発動します。 サイメタル ツールの 魔法は CADと 同じ 方法で 選択 できます。 ツールの 円形メニューには、 4番目に 魔法を 無効化する 項目も 表示 されます。 サイメタルツールは、 プレイヤーが 手に持って いない限り プレイヤーの Psiエネルギーを 消費して ゆっくりと 消耗度を 回復して いきます。<br><br>ツールに セット された 魔法は、 ツールに よって ではなく、 CADに よって 実行 されます。 したがって、 CADの 性能値に よって 課せられる 制限が 適用 されます。<br><br>この グループでは、 ツールと 組み合わせて 利用 できる いくつかの 要素を 紹介します。 この グループの 赤ピース \"取得子: ブロック破壊位置\"は、 ツールで 利用する ために 用意されて います。 あなたが ツールで 破壊した ワールドの ブロック位置を ベクトルで 取得します。 \"取得子: 破壊されたブロック面\"は 破壊した ブロックの 面を ベクトルで 取得します。<br><br>\"取得子: 攻撃対象\"は 魔法が 実行された とき、 あなたが 剣で 攻撃した エンティティを 取得 します。 発射型術式弾と 合わせて 利用することも でき、 その場合、 投射物が 衝突した エンティティが あれば、 その エンティティを 取得します。",
+  "psi.piecegroup.positiveEffects": "良性エフェクト",
+  "psi.piecegroup.positiveEffects.desc": "エンティティに 状態異常を 付与する 能力は 魔導書に おいて、 重要な 位置に あります。 幸い あなたは 魔導書を 使用して 魔法を 作っている わけでは ありませんが、 それでも 状態異常の 付与を 行うことが できます。<br><br>この グループの ピースは 全て 対象の エンティティへ 対象の 時間(秒)の ポーション効果を 付与 します。 ピースに 威力パラメータも ある 場合は、 付与する 効果の レベルを 定めます。<br><br>例えば、 \"作動式: 俊敏\"で、 時間=20, 威力2の 魔法の 場合、 対象の エンティティへ 20秒間の 俊敏II 効果を 与えます。",
+  "psi.piecegroup.negativeEffects": "悪性エフェクト",
+  "psi.piecegroup.negativeEffects.desc": "良性エフェクトが あると いうことは、 もちろん、 悪性エフェクトも あります。<br><br>この項で 説明するべき ことは 特に ありません。 この グループの ピースは 全て、 期待通りの 機能を 発揮します。",
+  "psi.piecegroup.exosuitCasting": "外装魔法",
+  "psi.piecegroup.exosuitCasting.desc": "ツール魔法が あるように、 外装魔法も あります。 あなたは、 サイメタル外装を 作製し、 利用する ことが できます。 ご想像どおり、 サイメタルや サイジェムが 素材として 必要です。 サイメタルツールと 同様、 外装は 部位ごとに 術式弾を 装填することが できます。 それぞれの 部位は、 ダメージを 受ける、 ジャンプする など、 特定の \"イベント\"を 受けて 処理を 行います。 イベントが 起こるたび、 選択された 術式弾の 魔法が 実行される ように なります。<br><br>イベント一覧:<br>&nヘルメット&r: センサー準拠 (読み取り)。<br>&nチェストプレート&r: プレイヤーが ダメージを 受ける。<br>&nレギンス&r: 毎tick。<br>&nブーツ&r: プレイヤーが ジャンプ。<br><br>ヘルメットには、 外装用センサーを 取り付ける ことが できます。 取り付けは、 クラフトで ヘルメットと、 センサーを 組み合わせる ことで 行えます。 一度に 接続できる センサーは 1つだけ です。 センサーの 取り外しは、 ヘルメットを 単体で クラフト することで 行えます。 プレイヤーが 暗闇に 入ったことを 検知する 光センサーや、 プレイヤーが 瀕死に なったこと 検知する ストレスセンサー など、 何種類かの センサーが あります。 時間が 有るときに、 チェックして みてください。<br><br>外装を 制御するには 外装コントローラーを 作製する 必要が あります。 この アイテムを 使用すると、 各部位で 選択されている 術式弾を 直接 調整 することが できます。 これを 手に 持って 普段どおりに 術式弾を 選択する ホットキーを 押せば 複数の スロットを 変更する 機能を 持つ メニューが 開きます。 マウスボタン 左右を 使用して 変更する 項目を 選択 します。 その後は 普段どおりに 機能 します。 Shiftキーを 押しながら、 外装コントローラーを 右クリック すれば、 即座に 全ての 外装の 効果を 無効に できます。<br><br>ピースの 説明へ 移ります。 この グループには、 外装魔法に 役立つ 様々な 取得子が あります。 この グループの 赤ピースは \"取得子: 時間\" です。 これは CADの 時間を tickで 出力 します。 これは、 \"システムクロック\"の ような ものです。 これは 常に 増加し続けて います。 時間 に応じて 動作が 異なる 魔法を 作りたい 場合に 便利です。 これを 使用するために 外装は 必要 ありません。<br><br>この グループの 他の ピース \"取得子: 攻撃者\"と \"取得子: 被ダメージ量\"は、 外装 チェストプレートと あわせて 使用されます。",
+  "psi.piecegroup.trignometry": "三角法",
+  "psi.piecegroup.trignometry.desc": "この グループには、 三角関数に 関する 演算子が 含まれて います。 この グループの 赤ハイライト \"定数子:Pi\"は 正確には tinの 値です。<br><br>この グループには サイン、 コサイン、 タンジェント 及び アークコサインと いった、 初歩的な 三角関数が 含まれて います。 タンジェント と アークコサインは サインと コサインの 逆演算子で、 \"sin^-1\"や \"cos^-1\"とも 表現 されて います。<br><br>\"演算子: ベクトルドット積\"は 2つの ベクトルの 大きさと それらの 間の 角度の 余弦の積、 つまり ドット積を 出力 します。 その結果に \"演算子: アークコサイン\"を 使用すると 2つの ベクトル間の 角度を 取得 できます。",
+  "psi.piecegroup.smeltery": "精錬",
+  "psi.piecegroup.smeltery.desc": "この グループに 含まれる ピースは、 どちらも 対象を かまどへ 入れたときの ように 精錬する という、 シンプルな 機能と 使用法です。<br>\"作動式: アイテム精錬\"は ワールドに ドロップされている アイテム(エンティティ) 1つを その 精錬後の アイテムへ 変化 させます。<br><br>\"作動式: ブロック精錬\"は、 ワールドに 設置 されている ブロック 1つを その 精錬後の ブロックへ 変化させます。 設置 されている 丸石ブロックは 石ブロックへ 変化しますが、 設置 されている 原木ブロックが 木炭に なることは ありません。",
+  "psi.piecegroup.flowControl": "フロー制御",
+  "psi.piecegroup.flowControl.desc": "フロー制御は やや複雑な 題材です。 この グループの ピースを 利用 すれば あなたが 過去に 作成した 魔法に 大きく 異なった 振る舞いを させる ことが できる ように なります。 ただし これらを 正しく 使用する 方法を 理解 するには 魔法システムを 詳しく 理解する 必要が あります。 これらを 理解する ための 基本的な 規則を 説明 します。<br>1. 魔法は 魔法構築機で 描かれる 矢印に 沿って 順に 実行 されます。<br>2.与えられた ピースの 値は 一度だけ 評価 されます。 それ以降の ピースが その ピースの 値を 取得した 場合、  最初に 評価 された 値を 得ます。 <br>例えば、 1つの \"演算子: 乱数\"を 指し示す 3つの \"作動式: デバッグ\"は、 全て 同じ 値を 表示 します。 これは、 乱数は 一度だけ 評価 される ために よるもの です。 4.作動式は 常に 左から 右へ、 上から 下へ 実行 されます。 したがって、 2行目の 作動式は 常に 1行目の 作動式の 後に 実行 されます。<br><br>以上を 念頭に 置いて、 この グループの 赤ピース \"作動式: 休眠\"から 始めて みましょう。 この ピースは 渡された 数値分の tickだけ 魔法の それ以降の 動作を 遅らせる ことが できます。 規則の 4番を 知って いれば、 作動式が 実行 される 順序を 理解できる ので、 この ピースを 適切な 場所へ 配置する ことは 難しく ないでしょう。 1tickは 1/20秒 です。 魔法の 動作を 途中で 0.5秒 送らせたい 場合は、 \"時間\" パラメータに 10を 与えると 良い でしょう。 \"作動式: 休眠\"は 魔法の 作動量を 増加させる ことは ありませんが、 規模は 増加されます。<br><br>\"作動式: 評価\"は 全く 何も しない 作動式です。 魔法の 性能値を 増加させる ことも ありません。 唯一の 用途は 規則の 2番を 利用し、 休眠が 実行される 前に 値を 評価すること です。 例えば、 休眠の前に \"取得子: エンティティ位置\"で エンティティの 位置を 取得し、 休眠の 後に その 値を 使用 すれば、 休眠を 実行 している 間に、 その エンティティが 消えて いたり、 位置が 変わって いても 休眠前に 取得した 値を 使用する ことが できます。<br><br>\"作動式: 終了\"は まさしく フロー制御 らしい 機能を 持って います。 単純に 数値パラメータを 取得し、 それが -1より大 かつ 1より小の 場合、 魔法の 実行を 即座に 終了します。 それ以外の 値で あったなら 通常通り 魔法の 実行を 継続 します。 この ピースは 作動量を 増加 させません。 簡単な 使用方法として、 \"取得子: スニーク状態\"と 併用する 方法が あります。 この ピースは、 術者が スニーク状態 なら 0を、 そうでない 場合は 1を 出力 します。 \"定数子: ラッパー\"は 出力する 値が 変動する タイプの ピースを 作動式の 引数として 使用できるように できます。 これを 使わない 場合は、 \"定数子: 数値\"が 必要と なります。 作動式に 与えられた 定数値は、 魔法の 各性能値を 魔法の 実行前に 算出可能と します。 逆に、 作動式に 変数が 与えられていると 魔法の 性能値を 予め 算出できなく なるので、 作動式に 変数を 与える ことは 禁止されて います。 ラッパーには 通常の 数値と 定数の 2つの 数字が 必要です。 定数は 魔法の 性能値の 算出に 利用されますが、 作動式が 実行される 際には 数値の 値が 使用されます。 魔法式を 実行するとき 数値は 予期しない 結果を 避けるために 定数値によって 制限 されます。 2つの 数値の 符号が 一致するように、  通常の 数値は 定数の 符号に あわせて、 正 もしくは 負の 値へ 変換されます。 定数の 値が 0の場合、 通常の 数値の 値に 関係なく 評価は 常に 0と なります。",
+  "psi.piecegroup.blockConjuration": "魔法ブロック",
+  "psi.piecegroup.blockConjuration.desc": "この グループで 紹介する ピースは その名の 通りに 動作 します。<br><br>この グループの 赤ピース \"作動式: 魔法ブロック生成(単)\"は 与えられた 位置に 魔法の ブロックを 1つ 生成します。 魔法の ブロックは 半透明の 物理的な ブロックで、 \"時間\" パラメータが 設定されている 場合は、 少し後に ワールドから 消滅します。 \"時間\" パラメータの 単位は、 tickです。 tickは 1/20秒 ですので、 0.5秒後に 消える 魔法ブロックを 生成したい 場合は、 \"時間\"に 10を 設定 すると うまく いきます。<br><br>\"作動式: 魔法光源生成\"は ブロック ではなく、 光源を 1つ 生成します。 この 光源には 当たり判定は ありません。 \"作動式: 魔法ブロック生成(列)\"は \"作動式: ブロック設置(列)\"と 似た 動作を しますが、 設置 される のは、 魔法ブロック です。 これら 2つの ピースにも、 魔法ブロック生成(単)と 同様の \"時間\" パラメータが 存在します。<br><br>生成される 魔法ブロックは CADの 着色器と 同じ色です (着色器が ない場合は デフォルトの 水色)。 CAD着色器(虹)の ような 色が 変わる 着色器の 場合も 魔法ブロックの 見た目に 反映 されます。",
+  "psi.piecegroup.eidosReversal": "エイドス操作",
+  "psi.piecegroup.eidosReversal.desc": "エイドス魔法は 術者に 時空連続体を 都合よく 操る力を 与えます。<br><br>この グループの 赤ピース \"作動式: エイドスリバーサル\"は、 指定された 時間 (秒単位)の 間、 2倍速で 術者の 動きを 逆再生 します。 一度に アクティブに できる リバーサルは 1つだけです。 リバーサル アクティブ中に 次の リバーサルが 実行された場合、 それ以前の リバーサルは 無効となり、 最後の リバーサルのみ 効果が 発動 します。<br><br>\"作動式: エイドスアンカー\"は 術者に \"アンカー\"効果を 作成します。 対象の 時間 (秒)が 経過 すると、 術者は アンカーを 設置した 場所へ 戻ります。<br><br>\"取得子: エイドス変更履歴\"は 単一の 数値パラメータ (仮に nとします)を 受け取り、 エイドス変更履歴の 最後から n番目の 位置を 示します。 簡単に 言うと、 術者が n tick 前に いた 位置を 指示する 現在地からの  ベクトルを 取得 します。 以下のことは 覚えておいて ください。 \"作動式: エイドスリバーサル\"は 変更履歴に 術者を 戻し、 それ以降の 履歴を 削除します。 \"作動式: エイドスアンカー\"は 変更履歴を 修正する ことは ありません。",
+  "psi.piecegroup.detectionDynamics": "検出とスロット指定",
+  "psi.piecegroup.detectionDynamics.desc": "この グループでは タイトル通り、 検出と スロット指定の 2種類の ピースを 紹介します。 この グループの 赤ピースは スロット指定に 関わる ピースです。 しかし これを 理解する ためには スロット指定の 概念を 覚える 必要が あります。<br><br>指定スロットの 概念は 既に 利用した ことが ある はずです。 ブロック配置系統の 作動式が それに あたります。 こういった 作動式では CADの 右側にある ブロックを 直接 使用しました。 指定スロットは こういった 作動式が 使用する スロットです。 スロットは ホットバーが 利用され、 その指定は ホットバー1～9の 絶対位置 として 指定することも、 CADからの 相対位置として 指定する ことも できます。 デフォルトでは 魔法が 実行 される たびに、 指定スロットの 値は \"相対:1\"とされ、 これは CADの 1つ右側の スロットを 意味します。 \"相対:-1\"であれば、 CADの 1つ左側の スロットを 意味します。 \"絶対:3\"は ホットバーの 左から 3番目の スロットを 意味します。 また、 スロットの 指定は ループするので CADが ホットバーの 一番 右に ある 状態で スロットの 指定が \"相対:1\" ならば、 実際に 指定される スロットは ホットバーの 一番 左の スロットと なります。<br><br>スロット指定を 設定するには このグループの 赤ピース \"作動式: 指定スロット切替\"を 使用 します。 この 作動式は、 2つの パラメータを 受け取る ことが できます。 どちらの パラメータも 使用は 任意で、 また どちらか 一方の パラメータしか 使用 できません。 どちらの パラメータも ない 場合は、 スロットの 指定は デフォルトの \"相対:1\"と なります。 \"位置\" パラメータを 設定 すると スロット指定は 絶対値と なります。 \"Shift\" パラメータの 場合は、 相対値と なります。 これにより 例えば 状況に 応じて 使用する ブロックを 変える というような 使い方も できます。 この 作動式は 現在の 魔法の 実行にのみ 有効で、 次に 魔法が 実行される 際には スロットの 指定は リセットされます (たとえ、 同じ 魔法を 実行した 場合でも リセットは 行われます)。 <br><br>この グループの 残った ピース 2つは \"検出\"に 関わる ピースです。 \"取得子: 所持アイテム数\"は 任意で 指定スロット番号を 受け取り (指定が ない場合は デフォルトの 指定スロットに なります)、 その スロットの アイテムの 数量を 出力 します。 指定スロットに アイテムが ない 場合は 0を 出力 します。 \"取得子: ブロック検出\"は、 ベクトルを 受け取ります。 この ベクトルは ワールドの 座標を 確定 するために 利用され、 その 座標の ブロックを 検出します。 そこに ブロックが ない 場合 または 置き換え可能な ブロック (背の高い草など)が ない 場合、 0を 出力 します。 固体ブロックで ない ブロックが ある 場合は 1を 出力 します。 固体ブロックが ある 場合は 2を 出力 します。",
+  "psi.piecegroup.memoryManagement": "メモリ管理",
+  "psi.piecegroup.memoryManagement.desc": "この グループでは、 魔法が CAD内で 永続メモリを 利用する 方法を 紹介 します。 CADは ベクトル型の 値を 後に 実行する 魔法の ために 保存しておくことが できます。 保存できる ベクトルの 数は CADの 性能値 \"装弾数\"の 数値を 3で 割って 小数点以下を 切り捨てた ものです。 これは CADに 存在する メモリスロットの 量に 関係して います。<br><br>この グループには メモリに ベクトルを 読み書きする、 シンプルな IOスタイルの 2つの ピースが 含まれて います。 赤ピースは \"作動式: ベクトル保存\"です。 これは、 対象の メモリスロットに ベクトルを 保存します。 \"取得子: 保存されたベクトル\"は 反対に パラメータで 指定された メモリスロットに 保存されている ベクトルを 取得します。 これらの ピースの メモリスロットは 1から 始まります。 ですので、 3つの メモリスロットを 持つ CADは 値として 1, 2, 3を 受け取ることが できます。 どちらの ピースも 魔法の 性能値 規模を 使用された メモリスロットの 数に 等しい 数値分 上昇させます。<br><br>これらの ピースの 要注意点が 1つ あります。 \"作動式: ベクトル保存\"が 使用されたとき、 対象の メモリスロットを \"ロック\"します。 他の ピースが 対象の メモリスロットへ 読み書き することを 防いで データの 干渉を 防いで いる のです。 したがって、 ベクトルを 保存する前に 読み込みを 行う 必要が ある 場合は、 必ず フロー制御の 基本的な 規則を 念頭に 置いて、 読み取りが 書き込み よりも 先に 行われる ように して ください。",
+  "psi.piecegroup.secondaryOperators": "副次演算子",
+  "psi.piecegroup.secondaryOperators.desc": "タイトル通り、 このグループには \"加算\"や \"減算\"など、 \"基本\"演算 ほどは 重要でない 数学演算子が 含まれて います。 この グループは 実際には 魔法の 作成に 役立つ 数学 および 論理に 関する ピースを 詰め込んだ ものと なります。 説明 しやすい ように、 2つの セットに 分けます。<br><br> まず 説明する セットは べき算に 関連 する ものです。 \"演算子: 平方\"、 \"演算子: べき乗\"、 \"演算子: 平方根\"、 さらには \"演算子: 対数\"と いった ものを 含みます。 これらの ほとんどは \"演算子: 対数\"を 除いて ほとんど 標準的な 方法で 動作 します。 \"演算子: 対数\"は その名の 通り、 渡された 数値の 対数を 実行します。 この ピースは 任意の 底パラメータを 受け取り、 その底の 対数を 算出します。 底に 値が が 渡されて いない 場合は 底を 10として 実行します。 底として \"定数子: e\" (ネイピア数)も  使用する ことが できます。<br><br>次に 説明する セットは 論理に 関連 する ものです。 値を 整数と するための \"演算子: 切り上げ\"、 \"演算子: 切り下げ\"、 \"演算子: 四捨五入\"が あります。 これらは 小数点以下を ピースごとに、 切り上げ 、 切り下げ、 四捨五入します。 また、 \"演算子: 最小値\" および \"演算子: 最大値\"も あります。 これらは ごく単純で、 渡された 複数の 数値の 中から 最小 もしくは 最大の 数値を 取得します。",
+
+  "command.psi.learn.usage": "/psi-learn <group> [player]",
+  "command.psi.learn.success": "%s は %s を習得した・",
+  "command.psi.learn.success.all": "%s は Psiを全て習得した。",
+  "command.psi.learn.should_not": "%s は すでに %s を知っている。",
+  "command.psi.learn.players": "%s はプレイヤーではありません。 Psiを学べるのはプレイヤーだけです。",
+  "command.psi.learn.console": "コンソールは Psiを 習得できません。特定の プレイヤーで 試してください。 /psi-unlearn <group> [player]",
+  "command.psi.learn.not_a_group": "'%s' は 有効な Psi のピースでは ありません。",
+  "command.psi.learn.unknown": "このプレイヤーには Psiデータがありません。 mod製作者へ報告してください。",
+
+  "command.psi.unlearn.usage": "/psi-unlearn <group> [player]",
+  "command.psi.unlearn.success": "%s は %s を 忘却した。",
+  "command.psi.unlearn.success.all": "%s はPsiについて 全て忘却した。",
+  "command.psi.unlearn.should_not": "%s は %sについて知らない。",
+  "command.psi.unlearn.players": "%s はプレイヤーではありません。 Psiを学べるのはプレイヤーだけです。",
+  "command.psi.unlearn.console": "コンソールは Psiを 習得できません。特定の プレイヤーで 試してください。 /psi-unlearn <group> [player]",
+  "command.psi.unlearn.not_a_group": "'%s' は 有効な Psi のピースでは ありません。",
+  "command.psi.unlearn.unknown": "このプレイヤーには Psiデータがありません。 mod製作者へ報告してください。",
+  "psimisc.fakeLevel.psidust": "サイダスト 注入",
+
+  "jei.psi.category.trick": "注入魔法"
+}

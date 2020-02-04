@@ -1,561 +1,563 @@
-# MISC
-itemGroup.Psi=Psi
+{
+  "_comment": "MISC",
+  "itemGroup.Psi": "Psi",
 
-psimisc.componentType=&aTipo de Componente&7: %s
-psimisc.shiftForInfo=&7Segure &bSHIFT&7 para informações
-psimisc.none=(nenhum)
-psimisc.stats=Especificações
-psimisc.socketing=Soquetes
-psimisc.keybind=Tecla mestra de Psi
-psimisc.spellSelected=&dMagia selecionada&7: %s
-psimisc.name=Nome:
-psimisc.compiled=Sucesso na compilação
-psimisc.errored=Erro na compilação
-psimisc.weakCad=As especificações de seu MAI são fracas para essa conjuração.
-psimisc.constant=Constante
-psimisc.nextPage=Próxima
-psimisc.prevPage=Anterior
-psimisc.config=Configurações
-psimisc.notYourProgrammer=Parece que há outra pessoa usando isso. Melhor não mexer.
-psimisc.cantUseProgrammer=Você não tem ideia de como se usa isso.
-psimisc.levelDisplay=Nível %d
-psimisc.levelInfo=Nível %d - Pontos de nível: %d
-psimisc.levelInfoCreative=Nível %d (Criativo) - Pontos de nível: %d
-psimisc.locked=Travado
-psimisc.requirements=Requerimentos
-psimisc.learn=Aprender
-psimisc.levelup=Subiu de nível
-psimisc.wip=Psi Beta | Não concluído!
-psimisc.bulletType=&bTipo&7: %s
-psimisc.bulletCost=&bMultiplicador de custo&7: %s%%
-psimisc.levelUpInfo1=Você recebeu 1 ponto de nível
-psimisc.levelUpInfo2=Solte seu MAI e aperte [%s] para usá-lo!
-psimisc.importFromClipboard=Importar da área de transferência
-psimisc.exportToClipboard=Exportar para a área de transferência
-psimisc.mustHoldShift=(segure SHIFT)
-psimisc.malformedJson=Erro de importação: String mal-formada.
-psimisc.missingPieces=Erro de importação: peças de magia faltando.
-psimisc.loadPrompt=Carregar?
-psimisc.spectator=[Modo Espectador]
-psimisc.multipleCads=Um outro MAI no seu inventário está interferindo. Você só deve ter um único MAI.
-psimisc.providerMod=&7Addon: &9%s
-psimisc.trickPattern=^Truque: (.+)$
-psimisc.programmerHelp=&aAjuda do Programador
-psimisc.ctrlWindows=Ctrl
-psimisc.ctrlMac=Cmd
-psimisc.enterCommit=Aperte enter para salvar
-psimisc.semicolonLine=Use ; para pular uma linha
-psimisc.programmerCoords=Selecionado: [%d, %d] | Cursor: [%d, %d]
-psimisc.programmerCoordsNoCursor=Selecionado: [%d, %d]
+  "psimisc.componentType": "&aTipo de Componente&7: %s",
+  "psimisc.shiftForInfo": "&7Segure &bSHIFT&7 para informações",
+  "psimisc.none": "(nenhum)",
+  "psimisc.stats": "Especificações",
+  "psimisc.socketing": "Soquetes",
+  "psimisc.keybind": "Tecla mestra de Psi",
+  "psimisc.spellSelected": "&dMagia selecionada&7: %s",
+  "psimisc": "Nome:",
+  "psimisc.compiled": "Sucesso na compilação",
+  "psimisc.errored": "Erro na compilação",
+  "psimisc.weakCad": "As especificações de seu MAI são fracas para essa conjuração.",
+  "psimisc.constant": "Constante",
+  "psimisc.nextPage": "Próxima",
+  "psimisc.prevPage": "Anterior",
+  "psimisc.config": "Configurações",
+  "psimisc.notYourProgrammer": "Parece que há outra pessoa usando isso. Melhor não mexer.",
+  "psimisc.cantUseProgrammer": "Você não tem ideia de como se usa isso.",
+  "psimisc.levelDisplay": "Nível %d",
+  "psimisc.levelInfo": "Nível %d - Pontos de nível: %d",
+  "psimisc.levelInfoCreative": "Nível %d (Criativo) - Pontos de nível: %d",
+  "psimisc.locked": "Travado",
+  "psimisc.requirements": "Requerimentos",
+  "psimisc.learn": "Aprender",
+  "psimisc.levelup": "Subiu de nível",
+  "psimisc.wip": "Psi Beta | Não concluído!",
+  "psimisc.bulletType": "&bTipo&7: %s",
+  "psimisc.bulletCost": "&bMultiplicador de custo&7: %s%%",
+  "psimisc.levelUpInfo1": "Você recebeu 1 ponto de nível",
+  "psimisc.levelUpInfo2": "Solte seu MAI e aperte [%s] para usá-lo!",
+  "psimisc.importFromClipboard": "Importar da área de transferência",
+  "psimisc.exportToClipboard": "Exportar para a área de transferência",
+  "psimisc.mustHoldShift": "(segure SHIFT)",
+  "psimisc.malformedJson": "Erro de importação: String mal-formada.",
+  "psimisc.missingPieces": "Erro de importação: peças de magia faltando.",
+  "psimisc.loadPrompt": "Carregar?",
+  "psimisc.spectator": "[Modo Espectador]",
+  "psimisc.multipleCads": "Um outro MAI no seu inventário está interferindo. Você só deve ter um único MAI.",
+  "psimisc.providerMod": "&7Addon: &9%s",
+  "psimisc.trickPattern": "^Truque: (.+)$",
+  "psimisc.programmerHelp": "&aAjuda do Programador",
+  "psimisc.ctrlWindows": "Ctrl",
+  "psimisc.ctrlMac": "Cmd",
+  "psimisc.enterCommit": "Aperte enter para salvar",
+  "psimisc.semicolonLine": "Use ; para pular uma linha",
+  "psimisc.programmerCoords": "Selecionado: [%d, %d] | Cursor: [%d, %d]",
+  "psimisc.programmerCoordsNoCursor": "Selecionado: [%d, %d]",
 
-# VERSIONING
-psi.versioning.flavour0=Parece que Psi está desatualizado. Que vergonha.
-psi.versioning.flavour1=Are you Psiched to update Psi?
-psi.versioning.flavour2=Psi está desatualizado. Você esperava uma mensagem engraçada, mas só está desatualizado, desculpa :(
-psi.versioning.flavour3=Você pode baixar uma versão nova do Psi dos servidores da Escola Avançada de Magia.
-psi.versioning.flavour4=Psi está desatualizado. Pelo lado bom, você pode atualizá-lo.
-psi.versioning.flavour5=Apenas ervas deixam o Psi desatualizado.
-psi.versioning.flavour6=Não seja psicótio, atualize Psi.
-psi.versioning.flavour7=Psi está atualizado. Psiche! Te enganei.
-psi.versioning.flavour8=Você deve atualizar Psi, procure no webpsite.
-psi.versioning.flavour9=Não se confunda igual um Psiduck, atualize Psi.
-psi.versioning.outdated=You are running Psi build %s, the latest is build %s.
-psi.versioning.updateMessage=["Clique em... [",{"text":"Download","color":"aqua","hoverEvent":{"action":"show_text","value":{"text":"Clicar aqui baixará a versão mais recente","color":"aqua"}},"clickEvent":{"action":"run_command","value":"/psi-download-latest %version%"}},"] [",{"text":"Website","color":"aqua","hoverEvent":{"action":"show_text","value":{"text":"Clicar aqui te levará para o site do mod","color":"aqua"}},"clickEvent":{"action":"open_url","value":"http://psi.vazkii.us/downloads.php"}},"] [",{"text":"Changelog","color":"aqua","hoverEvent":{"action":"show_text","value":{"text":"Clicar aqui mostrará a lista de mudanças","color":"aqua"}},"clickEvent":{"action":"open_url","value":"http://psi.vazkii.us/changelog.php#%version%"}},"]"]
-psi.versioning.startingDownload=[{"text":"Baixando versão %s. Não remova seu disco rígido. Gostou de ","color":"yellow"},{"text":"Psi","color":"aqua"},{"text":"? Considere ajudar ","color":"yellow"},{"text":"Vazkii","color":"light_purple"},{"text":" no ","color":"yellow"},{"text":"[Patreon]","color":"gold","hoverEvent":{"action":"show_text","value":{"text":"Clicar aqui te levará para o Patreon de Vazkii","color":"light_purple"}},"clickEvent":{"action":"open_url","value":"http://www.patreon.com/Vazkii"}},{"text":"!","color":"yellow"}]
-psi.versioning.doneDownloading=Download de %s terminado. Apague o .jar anterior de Psi e reinicie o jogo.
-psi.versioning.downloadedAlready=Você já baixou a versão anterior. Feche o jogo, apague a versão anterior da sua pasta mods e reabra o jogo!
-psi.versioning.downloadingAlready=A atualização já está baixando, aguarde.
-psi.versioning.error=Algo de errado não está certo com o download de Psi. Talvez psi.vazkii.us tenha caído.
-psi.versioning.disabled=Desculpe, mas essa função está desativada por problemas no host, deve estar de volta em breve.
+  "_comment": "VERSIONING",
+  "psi.versioning.flavour0": "Parece que Psi está desatualizado. Que vergonha.",
+  "psi.versioning.flavour1": "Are you Psiched to update Psi?",
+  "psi.versioning.flavour2": "Psi está desatualizado. Você esperava uma mensagem engraçada, mas só está desatualizado, desculpa :(",
+  "psi.versioning.flavour3": "Você pode baixar uma versão nova do Psi dos servidores da Escola Avançada de Magia.",
+  "psi.versioning.flavour4": "Psi está desatualizado. Pelo lado bom, você pode atualizá-lo.",
+  "psi.versioning.flavour5": "Apenas ervas deixam o Psi desatualizado.",
+  "psi.versioning.flavour6": "Não seja psicótio, atualize Psi.",
+  "psi.versioning.flavour7": "Psi está atualizado. Psiche! Te enganei.",
+  "psi.versioning.flavour8": "Você deve atualizar Psi, procure no webpsite.",
+  "psi.versioning.flavour9": "Não se confunda igual um Psiduck, atualize Psi.",
+  "psi.versioning.outdated": "You are running Psi build %s, the latest is build %s.",
+  "psi.versioning.updateMessage": "[\"Clique em... [\",{\"text\":\"Download\",\"color\":\"aqua\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Clicar aqui baixará a versão mais recente\",\"color\":\"aqua\"}},\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/psi-download-latest %version%\"}},\"] [\",{\"text\":\"Website\",\"color\":\"aqua\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Clicar aqui te levará para o site do mod\",\"color\":\"aqua\"}},\"clickEvent\":{\"action\":\"open_url\",\"value\":\"http://psi.vazkii.us/downloads.php\"}},\"] [\",{\"text\":\"Changelog\",\"color\":\"aqua\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Clicar aqui mostrará a lista de mudanças\",\"color\":\"aqua\"}},\"clickEvent\":{\"action\":\"open_url\",\"value\":\"http://psi.vazkii.us/changelog.php#%version%\"}},\"]\"]",
+  "psi.versioning.startingDownload": "[{\"text\":\"Baixando versão %s. Não remova seu disco rígido. Gostou de \",\"color\":\"yellow\"},{\"text\":\"Psi\",\"color\":\"aqua\"},{\"text\":\"? Considere ajudar \",\"color\":\"yellow\"},{\"text\":\"Vazkii\",\"color\":\"light_purple\"},{\"text\":\" no \",\"color\":\"yellow\"},{\"text\":\"[Patreon]\",\"color\":\"gold\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Clicar aqui te levará para o Patreon de Vazkii\",\"color\":\"light_purple\"}},\"clickEvent\":{\"action\":\"open_url\",\"value\":\"http://www.patreon.com/Vazkii\"}},{\"text\":\"!\",\"color\":\"yellow\"}]",
+  "psi.versioning.doneDownloading": "Download de %s terminado. Apague o .jar anterior de Psi e reinicie o jogo.",
+  "psi.versioning.downloadedAlready": "Você já baixou a versão anterior. Feche o jogo, apague a versão anterior da sua pasta mods e reabra o jogo!",
+  "psi.versioning.downloadingAlready": "A atualização já está baixando, aguarde.",
+  "psi.versioning.error": "Algo de errado não está certo com o download de Psi. Talvez psi.vazkii.us tenha caído.",
+  "psi.versioning.disabled": "Desculpe, mas essa função está desativada por problemas no host, deve estar de volta em breve.",
 
-# BLOCK NAMES
-tile.psi:cadAssembler.name=Montador de MAI
-tile.psi:programmer.name=Programador de Magias
-tile.psi:psidust_block.name=Bloco de Psidust
-tile.psi:psimetal_block.name=Bloco de Psimetal
-tile.psi:psigem_block.name=Bloco de Psigema
-tile.psi:psimetal_plate_black.name=Chapa de Psimetal Escura
-tile.psi:psimetal_plate_black_light.name=Chapa de Psimetal Escura Fluida
-tile.psi:psimetal_plate_cyan.name=Chapa de Psimetal Clara
-tile.psi:psimetal_plate_cyan_light.name=Chapa de Psimetal Clara Fluida
-tile.psi:ebony_psimetal_block.name=Bloco de Psimetal de Ébono
-tile.psi:ivory_psimetal_block.name=Bloco de Psimetal de Marfim
-tile.psi:conjured.name=Bloco Conjurado
+  "_comment": "BLOCK NAMES",
+  "block.psi:cadAssembler": "Montador de MAI",
+  "block.psi:programmer": "Programador de Magias",
+  "block.psi:psidust_block": "Bloco de Psidust",
+  "block.psi:psimetal_block": "Bloco de Psimetal",
+  "block.psi:psigem_block": "Bloco de Psigema",
+  "block.psi:psimetal_plate_black": "Chapa de Psimetal Escura",
+  "block.psi:psimetal_plate_black_light": "Chapa de Psimetal Escura Fluida",
+  "block.psi:psimetal_plate_cyan": "Chapa de Psimetal Clara",
+  "block.psi:psimetal_plate_cyan_light": "Chapa de Psimetal Clara Fluida",
+  "block.psi:ebony_psimetal_block": "Bloco de Psimetal de Ébono",
+  "block.psi:ivory_psimetal_block": "Bloco de Psimetal de Marfim",
+  "block.psi:conjured": "Bloco Conjurado",
 
-# ITEM NAMES
-item.psi:psidust.name=Psidust
-item.psi:psimetal.name=Barra de Psimetal
-item.psi:psigem.name=Psigema
-item.psi:ebonyPsimetal.name=Barra de Psimetal de Ébono
-item.psi:ivoryPsimetal.name=Barra de Psimetal de Marfim
-item.psi:ebonySubstance.name=Substância de ébono
-item.psi:ivorySubstance.name=Substância de marfim
-item.psi:cad.name=Dispositivo Auxiliar de Conjuração
-item.psi:cadAssemblyIron.name=Base de MAI de Ferro
-item.psi:cadAssemblyGold.name=Base de MAI de Ouro
-item.psi:cadAssemblyPsimetal.name=Base de MAI de Psimetal
-item.psi:cadAssemblyEbonyPsimetal.name=Base de MAI de Ébono
-item.psi:cadAssemblyIvoryPsimetal.name=Base de MAI de Marfim
-item.psi:cadAssemblyCreative.name=Base de MAI (Criativo)
-item.psi:cadCoreBasic.name=Núcleo Básico de MAI
-item.psi:cadCoreOverclocked.name=Núcleo Acelerado de MAI
-item.psi:cadCoreConductive.name=Núcleo Condutivo de MAI
-item.psi:cadCoreHyperclocked.name=Núcleo Super-acelerado de MAI
-item.psi:cadCoreRadiative.name=Núcleo Radiativo de MAI
-item.psi:cadSocketBasic.name=Soquete Básico de MAI
-item.psi:cadSocketSignaling.name=Soquete Sinalizador de MAI
-item.psi:cadSocketLarge.name=Soquete Grande de MAI
-item.psi:cadSocketTransmissive.name=Soquete Transmissivo de MAI
-item.psi:cadSocketHuge.name=Soquete Gigante de MAI
-item.psi:cadBatteryBasic.name=Bateria Básica de MAI
-item.psi:cadBatteryExtended.name=Bateria Extendida de MAI
-item.psi:cadBatteryUltradense.name=Bateria Ultra Densa de MAI
-item.psi:cadColorizerWhite.name=Colorizador Branco de MAI
-item.psi:cadColorizerOrange.name=Colorizador Laranja de MAI
-item.psi:cadColorizerMagenta.name=Colorizador Magenta de MAI
-item.psi:cadColorizerLightBlue.name=Colorizador Azul Claro de MAI
-item.psi:cadColorizerYellow.name=Colorizador Amarelo de MAI
-item.psi:cadColorizerLime.name=Colorizador Lima de MAI
-item.psi:cadColorizerPink.name=Colorizador Rosa de MAI
-item.psi:cadColorizerGray.name=Colorizador Cinza de MAI
-item.psi:cadColorizerSilver.name=Colorizador Cinza Claro de MAI
-item.psi:cadColorizerCyan.name=Colorizador Ciano de MAI
-item.psi:cadColorizerPurple.name=Colorizador Roxo de MAI
-item.psi:cadColorizerBlue.name=Colorizador Azul de MAI
-item.psi:cadColorizerBrown.name=Colorizador Marrom de MAI
-item.psi:cadColorizerGreen.name=Colorizador Verde de MAI
-item.psi:cadColorizerRed.name=Colorizador Vermelho de MAI
-item.psi:cadColorizerBlack.name=Colorizador Preto de MAI
-item.psi:cadColorizerRainbow.name=Colorizador Espectro Completo de MAI
-item.psi:cadColorizerPsi.name=Colorizador Psi de MAI
-item.psi:spellBullet.name=Bala de Magia
-item.psi:spellBulletActive.name=Bala Programada
-item.psi:spellBulletProjectile.name=Bala de Magia (Projétil)
-item.psi:spellBulletProjectileActive.name=Bala de Projétil Programada
-item.psi:spellBulletLoop.name=Bala de Magia (Loopcast)
-item.psi:spellBulletLoopActive.name=Bala de Loopcast Programada
-item.psi:spellBulletCircle.name=Bala de Magia (Círculo)
-item.psi:spellBulletCircleActive.name=Bala de Círculo Programada
-item.psi:spellBulletGrenade.name=Bala de Magia (Granada)
-item.psi:spellBulletGrenadeActive.name=Bala de Granada Programada
-item.psi:spellBulletCharge.name=Bala de Magia (Carga)
-item.psi:spellBulletChargeActive.name=Bala de Mina Programada
-item.psi:spellBulletMine.name=Bala de Magia (Mina)
-item.psi:spellBulletMineActive.name=Bala de Mina Programada
-item.psi:spellDrive.name=Drive de Magia
-item.psi:psimetalShovel.name=Pá de Psimetal
-item.psi:psimetalPickaxe.name=Picareta de Psimetal
-item.psi:psimetalAxe.name=Machado de Psimetal
-item.psi:psimetalSword.name=Espada de Psimetal
-item.psi:detonator.name=Detonador
-item.psi:psimetalExosuitHelmet.name=Elmo de Exoarmadura de Psimetal
-item.psi:psimetalExosuitChestplate.name=Peitoral de Exoarmadura de Psimetal
-item.psi:psimetalExosuitLeggings.name=Calças de Exoarmadura de Psimetal
-item.psi:psimetalExosuitBoots.name=Botas de Exoarmadura de Psimetal
-item.psi:exosuitController.name=Controlador de Exoarmadura
-item.psi:exosuitSensorLight.name=Sensor de Luz da Exoarmadura
-item.psi:exosuitSensorWater.name=Sensor de Água da Exoarmadura
-item.psi:exosuitSensorHeat.name=Sensor de Calor da Exoarmadura
-item.psi:exosuitSensorStress.name=Sensor de Estresse da Exoarmadura
-item.psi:vectorRuler.name=Régua de Vetor
+  "_comment": "ITEM NAMES",
+  "item.psi:psidust": "Psidust",
+  "item.psi:psimetal": "Barra de Psimetal",
+  "item.psi:psigem": "Psigema",
+  "item.psi:ebonyPsimetal": "Barra de Psimetal de Ébono",
+  "item.psi:ivoryPsimetal": "Barra de Psimetal de Marfim",
+  "item.psi:ebonySubstance": "Substância de ébono",
+  "item.psi:ivorySubstance": "Substância de marfim",
+  "item.psi:cad": "Dispositivo Auxiliar de Conjuração",
+  "item.psi:cadAssemblyIron": "Base de MAI de Ferro",
+  "item.psi:cadAssemblyGold": "Base de MAI de Ouro",
+  "item.psi:cadAssemblyPsimetal": "Base de MAI de Psimetal",
+  "item.psi:cadAssemblyEbonyPsimetal": "Base de MAI de Ébono",
+  "item.psi:cadAssemblyIvoryPsimetal": "Base de MAI de Marfim",
+  "item.psi:cadAssemblyCreative": "Base de MAI (Criativo)",
+  "item.psi:cadCoreBasic": "Núcleo Básico de MAI",
+  "item.psi:cadCoreOverclocked": "Núcleo Acelerado de MAI",
+  "item.psi:cadCoreConductive": "Núcleo Condutivo de MAI",
+  "item.psi:cadCoreHyperclocked": "Núcleo Super-acelerado de MAI",
+  "item.psi:cadCoreRadiative": "Núcleo Radiativo de MAI",
+  "item.psi:cadSocketBasic": "Soquete Básico de MAI",
+  "item.psi:cadSocketSignaling": "Soquete Sinalizador de MAI",
+  "item.psi:cadSocketLarge": "Soquete Grande de MAI",
+  "item.psi:cadSocketTransmissive": "Soquete Transmissivo de MAI",
+  "item.psi:cadSocketHuge": "Soquete Gigante de MAI",
+  "item.psi:cadBatteryBasic": "Bateria Básica de MAI",
+  "item.psi:cadBatteryExtended": "Bateria Extendida de MAI",
+  "item.psi:cadBatteryUltradense": "Bateria Ultra Densa de MAI",
+  "item.psi:cadColorizerWhite": "Colorizador Branco de MAI",
+  "item.psi:cadColorizerOrange": "Colorizador Laranja de MAI",
+  "item.psi:cadColorizerMagenta": "Colorizador Magenta de MAI",
+  "item.psi:cadColorizerLightBlue": "Colorizador Azul Claro de MAI",
+  "item.psi:cadColorizerYellow": "Colorizador Amarelo de MAI",
+  "item.psi:cadColorizerLime": "Colorizador Lima de MAI",
+  "item.psi:cadColorizerPink": "Colorizador Rosa de MAI",
+  "item.psi:cadColorizerGray": "Colorizador Cinza de MAI",
+  "item.psi:cadColorizerSilver": "Colorizador Cinza Claro de MAI",
+  "item.psi:cadColorizerCyan": "Colorizador Ciano de MAI",
+  "item.psi:cadColorizerPurple": "Colorizador Roxo de MAI",
+  "item.psi:cadColorizerBlue": "Colorizador Azul de MAI",
+  "item.psi:cadColorizerBrown": "Colorizador Marrom de MAI",
+  "item.psi:cadColorizerGreen": "Colorizador Verde de MAI",
+  "item.psi:cadColorizerRed": "Colorizador Vermelho de MAI",
+  "item.psi:cadColorizerBlack": "Colorizador Preto de MAI",
+  "item.psi:cadColorizerRainbow": "Colorizador Espectro Completo de MAI",
+  "item.psi:cadColorizerPsi": "Colorizador Psi de MAI",
+  "item.psi:spellBullet": "Bala de Magia",
+  "item.psi:spellBulletActive": "Bala Programada",
+  "item.psi:spellBulletProjectile": "Bala de Magia (Projétil)",
+  "item.psi:spellBulletProjectileActive": "Bala de Projétil Programada",
+  "item.psi:spellBulletLoop": "Bala de Magia (Loopcast)",
+  "item.psi:spellBulletLoopActive": "Bala de Loopcast Programada",
+  "item.psi:spellBulletCircle": "Bala de Magia (Círculo)",
+  "item.psi:spellBulletCircleActive": "Bala de Círculo Programada",
+  "item.psi:spellBulletGrenade": "Bala de Magia (Granada)",
+  "item.psi:spellBulletGrenadeActive": "Bala de Granada Programada",
+  "item.psi:spellBulletCharge": "Bala de Magia (Carga)",
+  "item.psi:spellBulletChargeActive": "Bala de Mina Programada",
+  "item.psi:spellBulletMine": "Bala de Magia (Mina)",
+  "item.psi:spellBulletMineActive": "Bala de Mina Programada",
+  "item.psi:spellDrive": "Drive de Magia",
+  "item.psi:psimetalShovel": "Pá de Psimetal",
+  "item.psi:psimetalPickaxe": "Picareta de Psimetal",
+  "item.psi:psimetalAxe": "Machado de Psimetal",
+  "item.psi:psimetalSword": "Espada de Psimetal",
+  "item.psi:detonator": "Detonador",
+  "item.psi:psimetalExosuitHelmet": "Elmo de Exoarmadura de Psimetal",
+  "item.psi:psimetalExosuitChestplate": "Peitoral de Exoarmadura de Psimetal",
+  "item.psi:psimetalExosuitLeggings": "Calças de Exoarmadura de Psimetal",
+  "item.psi:psimetalExosuitBoots": "Botas de Exoarmadura de Psimetal",
+  "item.psi:exosuitController": "Controlador de Exoarmadura",
+  "item.psi:exosuitSensorLight": "Sensor de Luz da Exoarmadura",
+  "item.psi:exosuitSensorWater": "Sensor de Água da Exoarmadura",
+  "item.psi:exosuitSensorHeat": "Sensor de Calor da Exoarmadura",
+  "item.psi:exosuitSensorStress": "Sensor de Estresse da Exoarmadura",
+  "item.psi:vectorRuler": "Régua de Vetor",
 
-# DEATH MESSAGES
-death.attack.psi-overload=%s sofreu sobrecarga de Energia Psionica
+  "_comment": "DEATH MESSAGES",
+  "death.attack.psi-overload": "%s sofreu sobrecarga de Energia Psionica",
 
-# COMPONENT NAMES
-psi.component.assembly=Base
-psi.component.core=Núcleo
-psi.component.socket=Soquete
-psi.component.battery=Bateria
-psi.component.dye=Colorizador
+  "_comment": "COMPONENT NAMES",
+  "psi.component.assembly": "Base",
+  "psi.component.core": "Núcleo",
+  "psi.component.socket": "Soquete",
+  "psi.component.battery": "Bateria",
+  "psi.component.dye": "Colorizador",
 
-# CAD STAT NAMES
-psi.cadstat.efficiency=Eficiência
-psi.cadstat.potency=Potência
-psi.cadstat.complexity=Complexidade
-psi.cadstat.projection=Projeção
-psi.cadstat.bandwidth=Banda
-psi.cadstat.sockets=Soquetes
-psi.cadstat.overflow=Sobrecarga
+  "_comment": "CAD STAT NAMES",
+  "psi.cadstat.efficiency": "Eficiência",
+  "psi.cadstat.potency": "Potência",
+  "psi.cadstat.complexity": "Complexidade",
+  "psi.cadstat.projection": "Projeção",
+  "psi.cadstat.bandwidth": "Banda",
+  "psi.cadstat.sockets": "Soquetes",
+  "psi.cadstat.overflow": "Sobrecarga",
 
-# SPELL STAT NAMES
-psi.spellstat.complexity=Complexidade
-psi.spellstat.complexity.desc=Quantidade de ações
-psi.spellstat.potency=Potência
-psi.spellstat.potency.desc=Força da magia
-psi.spellstat.cost=Custo
-psi.spellstat.cost.desc=Custo de Psi na conjuração
-psi.spellstat.projection=Projeção
-psi.spellstat.projection.desc=Quantidade de truques
-psi.spellstat.bandwidth=Banda
-psi.spellstat.bandwidth.desc=Altura/Largura da magia (qual for maior)
+  "_comment": "SPELL STAT NAMES",
+  "psi.spellstat.complexity": "Complexidade",
+  "psi.spellstat.complexity.desc": "Quantidade de ações",
+  "psi.spellstat.potency": "Potência",
+  "psi.spellstat.potency.desc": "Força da magia",
+  "psi.spellstat.cost": "Custo",
+  "psi.spellstat.cost.desc": "Custo de Psi na conjuração",
+  "psi.spellstat.projection": "Projeção",
+  "psi.spellstat.projection.desc": "Quantidade de truques",
+  "psi.spellstat.bandwidth": "Banda",
+  "psi.spellstat.bandwidth.desc": "Altura/Largura da magia (qual for maior)",
 
-# BULLET TYPES
-psi.bulletType0=Normal
-psi.bulletType1=Projétil
-psi.bulletType2=Loopcast
-psi.bulletType3=Círculo Mágico
-psi.bulletType4=Granada
-psi.bulletType5=Carga
-psi.bulletType6=Mina
+  "_comment": "BULLET TYPES",
+  "psi.bulletType0": "Normal",
+  "psi.bulletType1": "Projétil",
+  "psi.bulletType2": "Loopcast",
+  "psi.bulletType3": "Círculo Mágico",
+  "psi.bulletType4": "Granada",
+  "psi.bulletType5": "Carga",
+  "psi.bulletType6": "Mina",
 
-# EXOSUIT EVENTS
-psi.event.none=(Nenhum evento)
-psi.event.damage=&bEvento&7: Dano
-psi.event.tick=&bEvento&7: Tick
-psi.event.jump=&bEvento&7: Pulo
-psi.event.lowLight=&bEvento&7: Luz Baixa
-psi.event.underwater=&bEvento&7: Submersão
-psi.event.onFire=&bEvento&7: Em chamas
-psi.event.lowHp=&bEvenot&7: Pouca vida
+  "_comment": "EXOSUIT EVENTS",
+  "psi.event.none": "(Nenhum evento)",
+  "psi.event.damage": "&bEvento&7: Dano",
+  "psi.event.tick": "&bEvento&7: Tick",
+  "psi.event.jump": "&bEvento&7: Pulo",
+  "psi.event.lowLight": "&bEvento&7: Luz Baixa",
+  "psi.event.underwater": "&bEvento&7: Submersão",
+  "psi.event.onFire": "&bEvento&7: Em chamas",
+  "psi.event.lowHp": "&bEvenot&7: Pouca vida",
 
-# PROGRAMMER REFERENCE
-# %1$s is Ctrl or Cmd, depending on whether you're on windows or mac
-# spaces are important
-psi.programmerReference0= &bTeclas
-psi.programmerReference1=  Deletar peça: &bDelete
-psi.programmerReference2=  Limpar Grid: &b%1$s-Shift-Delete
-psi.programmerReference3=  Mover Grid: &b%1$s + Setas
-psi.programmerReference4=  Copiar/Cortar/Colar: &b%1$s-C/%1$s-X/%1$s-V
-psi.programmerReference5=  Desfazer/Refazer: &b%1$s-Z/%1$s-Y
-psi.programmerReference6=  Abrir painel/Selecionar peça: &bEnter
-psi.programmerReference7=  Definir parâmetro: &bNúmero + Setas
-psi.programmerReference8=  Comentar: &b%1$s-D
-psi.programmerReference9=  Mudar foco: &bTab
-psi.programmerReference10=  Mostrar legenda: &bAlt
-psi.programmerReference11=  Mover o cursor: &bSetas
-psi.programmerReference12=  Enviar para o Imgur: &b%1$s-Shift-Alt-G
-psi.programmerReference13=  Compartilhar no Reddit: &b%1$s-Shift-Alt-R
-psi.programmerReference14=
-psi.programmerReference15= &bTermos de busca
-psi.programmerReference16=  Aceitando tipo: &bin:(tipo)
-psi.programmerReference17=  Tipo de saída: &bout:(tipo)
-psi.programmerReference18=  Nome começa com: &b(nome)_
-psi.programmerReference19=  Nome termina com: &b_(nome)
+  "_comment": "PROGRAMMER REFERENCE",
+  "_comment": "%1$s is Ctrl or Cmd, depending on whether you're on windows or mac",
+  "_comment": "spaces are important",
+  "psi.programmerReference0": "&bTeclas",
+  "psi.programmerReference1": "Deletar peça: &bDelete",
+  "psi.programmerReference2": "Limpar Grid: &b%1$s-Shift-Delete",
+  "psi.programmerReference3": "Mover Grid: &b%1$s + Setas",
+  "psi.programmerReference4": "Copiar/Cortar/Colar: &b%1$s-C/%1$s-X/%1$s-V",
+  "psi.programmerReference5": "Desfazer/Refazer: &b%1$s-Z/%1$s-Y",
+  "psi.programmerReference6": "Abrir painel/Selecionar peça: &bEnter",
+  "psi.programmerReference7": "Definir parâmetro: &bNúmero + Setas",
+  "psi.programmerReference8": "Comentar: &b%1$s-D",
+  "psi.programmerReference9": "Mudar foco: &bTab",
+  "psi.programmerReference10": "Mostrar legenda: &bAlt",
+  "psi.programmerReference11": "Mover o cursor: &bSetas",
+  "psi.programmerReference12": "Enviar para o Imgur: &b%1$s-Shift-Alt-G",
+  "psi.programmerReference13": "Compartilhar no Reddit: &b%1$s-Shift-Alt-R",
+  "psi.programmerReference14": "",
+  "psi.programmerReference15": "&bTermos de busca",
+  "psi.programmerReference16": "Aceitando tipo: &bin:(tipo)",
+  "psi.programmerReference17": "Tipo de saída: &bout:(tipo)",
+  "psi.programmerReference18": "Nome começa com: &b(nome)_",
+  "psi.programmerReference19": "Nome termina com: &b_(nome)",
 
-# SPELl PIECE NAMES
-# -- SELECTORS
-psi.spellpiece.selectorCaster=Seletor: Conjurador
-psi.spellpiece.selectorCaster.desc=Escolhe a pessoa que conjurou a magia
-psi.spellpiece.selectorFocalPoint=Seletor: Ponto Focal
-psi.spellpiece.selectorFocalPoint.desc=Escolhe um foco em uma entidade
-psi.spellpiece.selectorNearbyItems=Seletor: Itens Próximos
-psi.spellpiece.selectorNearbyItems.desc=Escolhe itens próximos da posição dada
-psi.spellpiece.selectorNearbyLiving=Seletor: Criaturas Próximas
-psi.spellpiece.selectorNearbyLiving.desc=Escolhe criaturas próximas da posição dada
-psi.spellpiece.selectorNearbyEnemies=Seletor: Monstros Próximos
-psi.spellpiece.selectorNearbyEnemies.desc=Escolhe monstros próximos da posição dada
-psi.spellpiece.selectorNearbyAnimals=Seletor: Animais Próximos
-psi.spellpiece.selectorNearbyAnimals.desc=Escolhe animais próximos da posição dada
-psi.spellpiece.selectorNearbyProjectiles=Seletor: Projéteis Próximos
-psi.spellpiece.selectorNearbyProjectiles.desc=Escolhe projéteis próximos da posição dada
-psi.spellpiece.selectorNearbySmeltables=Seletor: Itens Processáveis
-psi.spellpiece.selectorNearbySmeltables.desc=Seleciona um item próximo da posição dada que pode ser processado na fornalha
-psi.spellpiece.selectorLoopcastIndex=Seletor: Índice de Loopcast
-psi.spellpiece.selectorLoopcastIndex.desc=Retorna o número de execuções de loop realizadas
-psi.spellpiece.selectorBlockBroken=Seletor: Bloco Quebrado
-psi.spellpiece.selectorBlockBroken.desc=Escolhe o bloco quebrado (para Ferramentas)
-psi.spellpiece.selectorBlockSideBroken=Seletor: Lado do Bloco Quebrado
-psi.spellpiece.selectorBlockSideBroken.desc=Escolhe o lado do bloco quebrado (para Ferramentas)
-psi.spellpiece.selectorAttackTarget=Seletor: Alvo do Ataque
-psi.spellpiece.selectorAttackTarget.desc=Escolhe a entidade que foi atacada (para Espadas)
-psi.spellpiece.selectorSneakStatus=Seletor: Furtividade
-psi.spellpiece.selectorSneakStatus.desc=Verifica se o conjurador está agachado (1 se sim, 0 se não)
-psi.spellpiece.selectorTime=Seletor: Tempo
-psi.spellpiece.selectorTime.desc=Seleciona o tempo do mundo (em ticks)
-psi.spellpiece.selectorAttacker=Seletor: Atacante
-psi.spellpiece.selectorAttacker.desc=Seleciona a entidade que atacou o conjurador
-psi.spellpiece.selectorDamageTaken=Seletor: Dano recebido
-psi.spellpiece.selectorDamageTaken.desc=Seleciona a quantidade de dano que o conjurador recebeu
-psi.spellpiece.selectorRulerVector=Seletor: Régua de Vetor
-psi.spellpiece.selectorRulerVector.desc=Seleciona um vetor definido pela Régua
-psi.spellpiece.selectorItemPresence=Seletor: Presença de Item
-psi.spellpiece.selectorItemPresence.desc=Seleciona o tamanho de uma stack
-psi.spellpiece.selectorBlockPresence=Seletor: Presença de Bloco
-psi.spellpiece.selectorBlockPresence.desc=Seleciona a presença e solidez do bloco
-psi.spellpiece.selectorSavedVector=Seletor: Vetor Salvo
-psi.spellpiece.selectorSavedVector.desc=Seleciona um vetor na memória do MAI
-psi.spellpiece.selectorEidosChangelog=Seletor: Eidos Changelog
-psi.spellpiece.selectorEidosChangelog.desc=Seleciona uma posição da lista de Eidos
+  "_comment": "SPELl PIECE NAMES",
+  "_comment": "-- SELECTORS",
+  "psi.spellpiece.selectorCaster": "Seletor: Conjurador",
+  "psi.spellpiece.selectorCaster.desc": "Escolhe a pessoa que conjurou a magia",
+  "psi.spellpiece.selectorFocalPoint": "Seletor: Ponto Focal",
+  "psi.spellpiece.selectorFocalPoint.desc": "Escolhe um foco em uma entidade",
+  "psi.spellpiece.selectorNearbyItems": "Seletor: Itens Próximos",
+  "psi.spellpiece.selectorNearbyItems.desc": "Escolhe itens próximos da posição dada",
+  "psi.spellpiece.selectorNearbyLiving": "Seletor: Criaturas Próximas",
+  "psi.spellpiece.selectorNearbyLiving.desc": "Escolhe criaturas próximas da posição dada",
+  "psi.spellpiece.selectorNearbyEnemies": "Seletor: Monstros Próximos",
+  "psi.spellpiece.selectorNearbyEnemies.desc": "Escolhe monstros próximos da posição dada",
+  "psi.spellpiece.selectorNearbyAnimals": "Seletor: Animais Próximos",
+  "psi.spellpiece.selectorNearbyAnimals.desc": "Escolhe animais próximos da posição dada",
+  "psi.spellpiece.selectorNearbyProjectiles": "Seletor: Projéteis Próximos",
+  "psi.spellpiece.selectorNearbyProjectiles.desc": "Escolhe projéteis próximos da posição dada",
+  "psi.spellpiece.selectorNearbySmeltables": "Seletor: Itens Processáveis",
+  "psi.spellpiece.selectorNearbySmeltables.desc": "Seleciona um item próximo da posição dada que pode ser processado na fornalha",
+  "psi.spellpiece.selectorLoopcastIndex": "Seletor: Índice de Loopcast",
+  "psi.spellpiece.selectorLoopcastIndex.desc": "Retorna o número de execuções de loop realizadas",
+  "psi.spellpiece.selectorBlockBroken": "Seletor: Bloco Quebrado",
+  "psi.spellpiece.selectorBlockBroken.desc": "Escolhe o bloco quebrado (para Ferramentas)",
+  "psi.spellpiece.selectorBlockSideBroken": "Seletor: Lado do Bloco Quebrado",
+  "psi.spellpiece.selectorBlockSideBroken.desc": "Escolhe o lado do bloco quebrado (para Ferramentas)",
+  "psi.spellpiece.selectorAttackTarget": "Seletor: Alvo do Ataque",
+  "psi.spellpiece.selectorAttackTarget.desc": "Escolhe a entidade que foi atacada (para Espadas)",
+  "psi.spellpiece.selectorSneakStatus": "Seletor: Furtividade",
+  "psi.spellpiece.selectorSneakStatus.desc": "Verifica se o conjurador está agachado (1 se sim, 0 se não)",
+  "psi.spellpiece.selectorTime": "Seletor: Tempo",
+  "psi.spellpiece.selectorTime.desc": "Seleciona o tempo do mundo (em ticks)",
+  "psi.spellpiece.selectorAttacker": "Seletor: Atacante",
+  "psi.spellpiece.selectorAttacker.desc": "Seleciona a entidade que atacou o conjurador",
+  "psi.spellpiece.selectorDamageTaken": "Seletor: Dano recebido",
+  "psi.spellpiece.selectorDamageTaken.desc": "Seleciona a quantidade de dano que o conjurador recebeu",
+  "psi.spellpiece.selectorRulerVector": "Seletor: Régua de Vetor",
+  "psi.spellpiece.selectorRulerVector.desc": "Seleciona um vetor definido pela Régua",
+  "psi.spellpiece.selectorItemPresence": "Seletor: Presença de Item",
+  "psi.spellpiece.selectorItemPresence.desc": "Seleciona o tamanho de uma stack",
+  "psi.spellpiece.selectorBlockPresence": "Seletor: Presença de Bloco",
+  "psi.spellpiece.selectorBlockPresence.desc": "Seleciona a presença e solidez do bloco",
+  "psi.spellpiece.selectorSavedVector": "Seletor: Vetor Salvo",
+  "psi.spellpiece.selectorSavedVector.desc": "Seleciona um vetor na memória do MAI",
+  "psi.spellpiece.selectorEidosChangelog": "Seletor: Eidos Changelog",
+  "psi.spellpiece.selectorEidosChangelog.desc": "Seleciona uma posição da lista de Eidos",
 
-# -- OPERATORS
-psi.spellpiece.operatorSum=Operador: Soma
-psi.spellpiece.operatorSum.desc=A + B (+ C)
-psi.spellpiece.operatorSubtract=Operador: Subtração
-psi.spellpiece.operatorSubtract.desc=A - B (- C)
-psi.spellpiece.operatorMultiply=Operador: Multiplicação
-psi.spellpiece.operatorMultiply.desc=A * B (* C)
-psi.spellpiece.operatorDivide=Operador: Divisão
-psi.spellpiece.operatorDivide.desc=A / B
-psi.spellpiece.operatorAbsolute=Operador: Absoluto
-psi.spellpiece.operatorAbsolute.desc=Calcula o absoluto de um valor numérico
-psi.spellpiece.operatorInverse=Operador: Inverso
-psi.spellpiece.operatorInverse.desc=Calcula o inverso de um valor numérico
-psi.spellpiece.operatorModulus=Operador: Modulus
-psi.spellpiece.operatorModulus.desc=A % B (Inteiro)
-psi.spellpiece.operatorIntegerDivide=Operador: Divisão de Inteiro
-psi.spellpiece.operatorIntegerDivide.desc=A / B (Inteiro)
-psi.spellpiece.operatorRandom=Operador: Aleatório
-psi.spellpiece.operatorRandom.desc=Aleatoriamente escolhe entre 0 e um número (exclusivo)
-psi.spellpiece.operatorSin=Operador: Seno
-psi.spellpiece.operatorSin.desc=sen(A)
-psi.spellpiece.operatorCos=Operador: Cosseno
-psi.spellpiece.operatorCos.desc=cos(A)
-psi.spellpiece.operatorAsin=Operador: Arco Seno
-psi.spellpiece.operatorAsin.desc=arc sen(A)
-psi.spellpiece.operatorAcos=Operador: Arco Cosseno
-psi.spellpiece.operatorAcos.desc=arc cos(A)
-psi.spellpiece.operatorMax=Operador: Máx
-psi.spellpiece.operatorMax.desc=Escolhe o maior valor da lista
-psi.spellpiece.operatorMin=Operador: Mín
-psi.spellpiece.operatorMin.desc=Escolhe o menor valor da lista
-psi.spellpiece.operatorSquare=Operador: Quadrado
-psi.spellpiece.operatorSquare.desc=A^2
-psi.spellpiece.operatorCube=Operador: Cube
-psi.spellpiece.operatorCube.desc=A^3
-psi.spellpiece.operatorPower=Operador: Potência
-psi.spellpiece.operatorPower.desc=A^B
-psi.spellpiece.operatorSquareRoot=Operador: Raíz Quadrada
-psi.spellpiece.operatorSquareRoot.desc=sqrt(A)
-psi.spellpiece.operatorLog=Operador: Logarítimo
-psi.spellpiece.operatorLog.desc=log(A) ou logB(A)
-psi.spellpiece.operatorCeiling=Operador: Teto
-psi.spellpiece.operatorCeiling.desc=Arredonda um número para um inteiro
-psi.spellpiece.operatorFloor=Operador: Piso
-psi.spellpiece.operatorFloor.desc=Arredonda um número para um inteiro
-psi.spellpiece.operatorRound=Operador: Arredondar
-psi.spellpiece.operatorRound.desc=Arredonda um número para um inteiro
-psi.spellpiece.operatorEntityPosition=Operador: Posição de Entidade
-psi.spellpiece.operatorEntityPosition.desc=Consegue a posição de uma entidade
-psi.spellpiece.operatorEntityLook=Operador: Visão da Entidade
-psi.spellpiece.operatorEntityLook.desc=Consegue o vetor da visão de entidade
-psi.spellpiece.operatorEntityMotion=Operador: Movimento da Entidade
-psi.spellpiece.operatorEntityMotion.desc=Consegue o vetor de movimento da entidade
-psi.spellpiece.operatorEntityAxialLook=Operador: Visão Axial da Entidade
-psi.spellpiece.operatorEntityAxialLook.desc=Consegue o vetor de visão da entidade, alinhado a um eixo
-psi.spellpiece.operatorFocusedEntity=Operador: Entidade em Foco
-psi.spellpiece.operatorFocusedEntity.desc=Consegue o alvo que a entidade está olhando
-psi.spellpiece.operatorVectorRaycast=Operador: Raycast de Vetor
-psi.spellpiece.operatorVectorRaycast.desc=Consegue o resultado de um raycast (max 32)
-psi.spellpiece.operatorVectorRaycastAxis=Operador: Eixo de Raycast de Vetor
-psi.spellpiece.operatorVectorRaycastAxis.desc=Consegue o eixo localizado do raycast (max 32)
-psi.spellpiece.operatorVectorSum=Operador: Soma de Vetor
-psi.spellpiece.operatorVectorSum.desc=A + B (+ C)
-psi.spellpiece.operatorVectorSubtract=Operador: Subtração de Vetor
-psi.spellpiece.operatorVectorSubtract.desc=A - B (- C)
-psi.spellpiece.operatorVectorMultiply=Operador: Multiplicação de Vetor
-psi.spellpiece.operatorVectorMultiply.desc=A * B
-psi.spellpiece.operatorVectorDivide=Operador: Divisão de Vetor
-psi.spellpiece.operatorVectorDivide.desc=A / B
-psi.spellpiece.operatorVectorCrossProduct=Operador: Produto Cruzado de Vetor
-psi.spellpiece.operatorVectorCrossProduct.desc=A x B
-psi.spellpiece.operatorVectorNormalize=Operador: Normalizar Vector
-psi.spellpiece.operatorVectorNormalize.desc=Normaliza um vetor para que sua magnitude seja 1
-psi.spellpiece.operatorVectorNegate=Operador: Negar Vetor
-psi.spellpiece.operatorVectorNegate.desc=Nega um vetor
-psi.spellpiece.operatorVectorMagnitude=Operador: Vetor Magnitude
-psi.spellpiece.operatorVectorMagnitude.desc=Consegue a magnitude do vetor
-psi.spellpiece.operatorVectorConstruct=Operador: Construir Vetor
-psi.spellpiece.operatorVectorConstruct.desc=Constructs a Vector from XYZ parameters
-psi.spellpiece.operatorVectorExtractX=Operador: Extrair X do Vetor
-psi.spellpiece.operatorVectorExtractX.desc=Extrai a coordenada X do vetor
-psi.spellpiece.operatorVectorExtractY=Operador: Extrair Y do Vetor
-psi.spellpiece.operatorVectorExtractY.desc=Extrai a coordenada Y do vetor
-psi.spellpiece.operatorVectorExtractZ=Operador: Extrair Z do Vetor
-psi.spellpiece.operatorVectorExtractZ.desc=Extrai a coordenada Z do vetor
-psi.spellpiece.operatorVectorProject=Operador: Projeção do Vetor
-psi.spellpiece.operatorVectorProject.desc=Projeta o vetor A no vetor B
-psi.spellpiece.operatorVectorDotProduct=Operador: Produto Escalar do Vetor
-psi.spellpiece.operatorVectorDotProduct.desc=A . B
-psi.spellpiece.operatorClosestToPoint=Operador: Próximo ao Ponto
-psi.spellpiece.operatorClosestToPoint.desc=Consegue a entidade na lista mais próxima ao ponto
-psi.spellpiece.operatorRandomEntity=Operador: Entidade Aleatória
-psi.spellpiece.operatorRandomEntity.desc=Consegue uma entidade aleatória da lista
-psi.spellpiece.operatorListAdd=Operador: Adicionar à Lista
-psi.spellpiece.operatorListAdd.desc=Adiciona a entidade na lista
-psi.spellpiece.operatorListRemove=Operador: Remover da Lista
-psi.spellpiece.operatorListRemove.desc=Remove a entidade da lista
+  "_comment": "-- OPERATORS",
+  "psi.spellpiece.operatorSum": "Operador: Soma",
+  "psi.spellpiece.operatorSum.desc": "A + B (+ C)",
+  "psi.spellpiece.operatorSubtract": "Operador: Subtração",
+  "psi.spellpiece.operatorSubtract.desc": "A - B (- C)",
+  "psi.spellpiece.operatorMultiply": "Operador: Multiplicação",
+  "psi.spellpiece.operatorMultiply.desc": "A * B (* C)",
+  "psi.spellpiece.operatorDivide": "Operador: Divisão",
+  "psi.spellpiece.operatorDivide.desc": "A / B",
+  "psi.spellpiece.operatorAbsolute": "Operador: Absoluto",
+  "psi.spellpiece.operatorAbsolute.desc": "Calcula o absoluto de um valor numérico",
+  "psi.spellpiece.operatorInverse": "Operador: Inverso",
+  "psi.spellpiece.operatorInverse.desc": "Calcula o inverso de um valor numérico",
+  "psi.spellpiece.operatorModulus": "Operador: Modulus",
+  "psi.spellpiece.operatorModulus.desc": "A % B (Inteiro)",
+  "psi.spellpiece.operatorIntegerDivide": "Operador: Divisão de Inteiro",
+  "psi.spellpiece.operatorIntegerDivide.desc": "A / B (Inteiro)",
+  "psi.spellpiece.operatorRandom": "Operador: Aleatório",
+  "psi.spellpiece.operatorRandom.desc": "Aleatoriamente escolhe entre 0 e um número (exclusivo)",
+  "psi.spellpiece.operatorSin": "Operador: Seno",
+  "psi.spellpiece.operatorSin.desc": "sen(A)",
+  "psi.spellpiece.operatorCos": "Operador: Cosseno",
+  "psi.spellpiece.operatorCos.desc": "cos(A)",
+  "psi.spellpiece.operatorAsin": "Operador: Arco Seno",
+  "psi.spellpiece.operatorAsin.desc": "arc sen(A)",
+  "psi.spellpiece.operatorAcos": "Operador: Arco Cosseno",
+  "psi.spellpiece.operatorAcos.desc": "arc cos(A)",
+  "psi.spellpiece.operatorMax": "Operador: Máx",
+  "psi.spellpiece.operatorMax.desc": "Escolhe o maior valor da lista",
+  "psi.spellpiece.operatorMin": "Operador: Mín",
+  "psi.spellpiece.operatorMin.desc": "Escolhe o menor valor da lista",
+  "psi.spellpiece.operatorSquare": "Operador: Quadrado",
+  "psi.spellpiece.operatorSquare.desc": "A^2",
+  "psi.spellpiece.operatorCube": "Operador: Cube",
+  "psi.spellpiece.operatorCube.desc": "A^3",
+  "psi.spellpiece.operatorPower": "Operador: Potência",
+  "psi.spellpiece.operatorPower.desc": "A^B",
+  "psi.spellpiece.operatorSquareRoot": "Operador: Raíz Quadrada",
+  "psi.spellpiece.operatorSquareRoot.desc": "sqrt(A)",
+  "psi.spellpiece.operatorLog": "Operador: Logarítimo",
+  "psi.spellpiece.operatorLog.desc": "log(A) ou logB(A)",
+  "psi.spellpiece.operatorCeiling": "Operador: Teto",
+  "psi.spellpiece.operatorCeiling.desc": "Arredonda um número para um inteiro",
+  "psi.spellpiece.operatorFloor": "Operador: Piso",
+  "psi.spellpiece.operatorFloor.desc": "Arredonda um número para um inteiro",
+  "psi.spellpiece.operatorRound": "Operador: Arredondar",
+  "psi.spellpiece.operatorRound.desc": "Arredonda um número para um inteiro",
+  "psi.spellpiece.operatorEntityPosition": "Operador: Posição de Entidade",
+  "psi.spellpiece.operatorEntityPosition.desc": "Consegue a posição de uma entidade",
+  "psi.spellpiece.operatorEntityLook": "Operador: Visão da Entidade",
+  "psi.spellpiece.operatorEntityLook.desc": "Consegue o vetor da visão de entidade",
+  "psi.spellpiece.operatorEntityMotion": "Operador: Movimento da Entidade",
+  "psi.spellpiece.operatorEntityMotion.desc": "Consegue o vetor de movimento da entidade",
+  "psi.spellpiece.operatorEntityAxialLook": "Operador: Visão Axial da Entidade",
+  "psi.spellpiece.operatorEntityAxialLook.desc": "Consegue o vetor de visão da entidade, alinhado a um eixo",
+  "psi.spellpiece.operatorFocusedEntity": "Operador: Entidade em Foco",
+  "psi.spellpiece.operatorFocusedEntity.desc": "Consegue o alvo que a entidade está olhando",
+  "psi.spellpiece.operatorVectorRaycast": "Operador: Raycast de Vetor",
+  "psi.spellpiece.operatorVectorRaycast.desc": "Consegue o resultado de um raycast (max 32)",
+  "psi.spellpiece.operatorVectorRaycastAxis": "Operador: Eixo de Raycast de Vetor",
+  "psi.spellpiece.operatorVectorRaycastAxis.desc": "Consegue o eixo localizado do raycast (max 32)",
+  "psi.spellpiece.operatorVectorSum": "Operador: Soma de Vetor",
+  "psi.spellpiece.operatorVectorSum.desc": "A + B (+ C)",
+  "psi.spellpiece.operatorVectorSubtract": "Operador: Subtração de Vetor",
+  "psi.spellpiece.operatorVectorSubtract.desc": "A - B (- C)",
+  "psi.spellpiece.operatorVectorMultiply": "Operador: Multiplicação de Vetor",
+  "psi.spellpiece.operatorVectorMultiply.desc": "A * B",
+  "psi.spellpiece.operatorVectorDivide": "Operador: Divisão de Vetor",
+  "psi.spellpiece.operatorVectorDivide.desc": "A / B",
+  "psi.spellpiece.operatorVectorCrossProduct": "Operador: Produto Cruzado de Vetor",
+  "psi.spellpiece.operatorVectorCrossProduct.desc": "A x B",
+  "psi.spellpiece.operatorVectorNormalize": "Operador: Normalizar Vector",
+  "psi.spellpiece.operatorVectorNormalize.desc": "Normaliza um vetor para que sua magnitude seja 1",
+  "psi.spellpiece.operatorVectorNegate": "Operador: Negar Vetor",
+  "psi.spellpiece.operatorVectorNegate.desc": "Nega um vetor",
+  "psi.spellpiece.operatorVectorMagnitude": "Operador: Vetor Magnitude",
+  "psi.spellpiece.operatorVectorMagnitude.desc": "Consegue a magnitude do vetor",
+  "psi.spellpiece.operatorVectorConstruct": "Operador: Construir Vetor",
+  "psi.spellpiece.operatorVectorConstruct.desc": "Constructs a Vector from XYZ parameters",
+  "psi.spellpiece.operatorVectorExtractX": "Operador: Extrair X do Vetor",
+  "psi.spellpiece.operatorVectorExtractX.desc": "Extrai a coordenada X do vetor",
+  "psi.spellpiece.operatorVectorExtractY": "Operador: Extrair Y do Vetor",
+  "psi.spellpiece.operatorVectorExtractY.desc": "Extrai a coordenada Y do vetor",
+  "psi.spellpiece.operatorVectorExtractZ": "Operador: Extrair Z do Vetor",
+  "psi.spellpiece.operatorVectorExtractZ.desc": "Extrai a coordenada Z do vetor",
+  "psi.spellpiece.operatorVectorProject": "Operador: Projeção do Vetor",
+  "psi.spellpiece.operatorVectorProject.desc": "Projeta o vetor A no vetor B",
+  "psi.spellpiece.operatorVectorDotProduct": "Operador: Produto Escalar do Vetor",
+  "psi.spellpiece.operatorVectorDotProduct.desc": "A . B",
+  "psi.spellpiece.operatorClosestToPoint": "Operador: Próximo ao Ponto",
+  "psi.spellpiece.operatorClosestToPoint.desc": "Consegue a entidade na lista mais próxima ao ponto",
+  "psi.spellpiece.operatorRandomEntity": "Operador: Entidade Aleatória",
+  "psi.spellpiece.operatorRandomEntity.desc": "Consegue uma entidade aleatória da lista",
+  "psi.spellpiece.operatorListAdd": "Operador: Adicionar à Lista",
+  "psi.spellpiece.operatorListAdd.desc": "Adiciona a entidade na lista",
+  "psi.spellpiece.operatorListRemove": "Operador: Remover da Lista",
+  "psi.spellpiece.operatorListRemove.desc": "Remove a entidade da lista",
 
-# -- CONSTANTS
-psi.spellpiece.constantNumber=Constante: Número
-psi.spellpiece.constantNumber.desc=Selecione um valor fixo
-psi.spellpiece.constantPi=Constante: Pi
-psi.spellpiece.constantPi.desc=Retorna o valor de Pi
-psi.spellpiece.constantE=Constante: e
-psi.spellpiece.constantE.desc=Returna o valor de e
-psi.spellpiece.constantWrapper=Constant: Wrapper
-psi.spellpiece.constantWrapper.desc=A wrapper for a constant for stat calculation
+  "_comment": "-- CONSTANTS",
+  "psi.spellpiece.constantNumber": "Constante: Número",
+  "psi.spellpiece.constantNumber.desc": "Selecione um valor fixo",
+  "psi.spellpiece.constantPi": "Constante: Pi",
+  "psi.spellpiece.constantPi.desc": "Retorna o valor de Pi",
+  "psi.spellpiece.constantE": "Constante: e",
+  "psi.spellpiece.constantE.desc": "Returna o valor de e",
+  "psi.spellpiece.constantWrapper": "Constant: Wrapper",
+  "psi.spellpiece.constantWrapper.desc": "A wrapper for a constant for stat calculation",
 
-# -- OTHERS
-psi.spellpiece.connector=Conector
-psi.spellpiece.connector.desc=Conecta coisas
-psi.spellpiece.errorSuppressor=Silenciador de Erros
-psi.spellpiece.errorSuppressor.desc=Silencia erros notados na magia
+  "_comment": "-- OTHERS",
+  "psi.spellpiece.connector": "Conector",
+  "psi.spellpiece.connector.desc": "Conecta coisas",
+  "psi.spellpiece.errorSuppressor": "Silenciador de Erros",
+  "psi.spellpiece.errorSuppressor.desc": "Silencia erros notados na magia",
 
-# -- TRICKS
-psi.spellpiece.trickDebug=Truque: Debug
-psi.spellpiece.trickDebug.desc=Para teste. Imprime o alvo.
-psi.spellpiece.trickDelay=Truque: Adiar
-psi.spellpiece.trickDelay.desc=Adia a execução da magia pelos ticks definidos
-psi.spellpiece.trickDie=Truque: Parar
-psi.spellpiece.trickDie.desc=Cancela a execução se o valor alvo está em ]-1, 1[
-psi.spellpiece.trickEvaluate=Truque: Avaliar
-psi.spellpiece.trickEvaluate.desc=Avalia um valor. Faz nada com ele
-psi.spellpiece.trickAddMotion=Truque: Adicionar Movimento
-psi.spellpiece.trickAddMotion.desc=Adiciona movimento ao alvo
-psi.spellpiece.trickExplode=Truque: Explodir
-psi.spellpiece.trickExplode.desc=Boom
-psi.spellpiece.trickBreakBlock=Truque: Quebrar Bloco
-psi.spellpiece.trickBreakBlock.desc=Quebra um bloco
-psi.spellpiece.trickBreakInSequence=Truque: Quebrar Sequência de Blocos
-psi.spellpiece.trickBreakInSequence.desc=Quebra uma sequência de blocos definida por um vetor
-psi.spellpiece.trickPlaceBlock=Truque: Colocar Bloco
-psi.spellpiece.trickPlaceBlock.desc=Coloca um bloco no mundo (o que estiver na direita do MAI)
-psi.spellpiece.trickPlaceInSequence=Truque: Colocar Sequência de Blocos
-psi.spellpiece.trickPlaceInSequence.desc=Coloca uma sequência de blocos definida por um vetor
-psi.spellpiece.trickInfusion=Truque: Infusão
-psi.spellpiece.trickInfusion.desc=Infunde Ouro em Psimetal
-psi.spellpiece.trickBlink=Truque: Teleporte
-psi.spellpiece.trickBlink.desc=Teleporta para frente
-psi.spellpiece.trickMassBlink=Truque: Teleporte em Massa
-psi.spellpiece.trickMassBlink.desc=Teleporta todos para frente
-psi.spellpiece.trickMassAddMotion=Truque: Adicionar Movimento em Massa
-psi.spellpiece.trickMassAddMotion.desc=Adiciona movimento em todas as entidades da lista
-psi.spellpiece.trickMassExodus=Truque: Êxodo de Massa
-psi.spellpiece.trickMassExodus.desc=Move todas entidades da lista para o alvo
-psi.spellpiece.trickMoveBlock=Truque: Mover Bloco
-psi.spellpiece.trickMoveBlock.desc=Move um bloco (normalizado) num eixo
-psi.spellpiece.trickCollapseBlock=Truque: Derrubar Bloco
-psi.spellpiece.trickCollapseBlock.desc=Derruba um bloco como se fosse areia
-psi.spellpiece.trickSmite=Truque: Julgamento
-psi.spellpiece.trickSmite.desc=Conjura um raio no ponto indicado
-psi.spellpiece.trickBlaze=Truque: Labaredas
-psi.spellpiece.trickBlaze.desc=Cria fogo no ponto indicado
-psi.spellpiece.trickTorrent=Truque: Torrente
-psi.spellpiece.trickTorrent.desc=Cria água no ponto indicado
-psi.spellpiece.trickOvergrow=Truque: Super-crescimento
-psi.spellpiece.trickOvergrow.desc=Fertiliza o bloco na posição indicada
-psi.spellpiece.trickGreaterInfusion=Truque: Infusão Maior
-psi.spellpiece.trickGreaterInfusion.desc=Infunde Diamantes em Psigemas
-psi.spellpiece.trickEbonyIvory=Truque: Ébono e Marfim
-psi.spellpiece.trickEbonyIvory.desc=Infunde Carvão e Quartzo. Precisa ser usado no Fim
-psi.spellpiece.trickSpeed=Truque: Velocidade
-psi.spellpiece.trickSpeed.desc=Aplica efeito de Velocidade
-psi.spellpiece.trickHaste=Truque: Pressa
-psi.spellpiece.trickHaste.desc=Aplica efeito de Pressa
-psi.spellpiece.trickStrength=Truque: Força
-psi.spellpiece.trickStrength.desc=Aplica efeito de Força
-psi.spellpiece.trickJumpBoost=Truque: Super Pulo
-psi.spellpiece.trickJumpBoost.desc=Aplica efeito de Super Pulo
-psi.spellpiece.trickWaterBreathing=Truque: Respiração Aquática
-psi.spellpiece.trickWaterBreathing.desc=Aplica efeito de Respiração Aquática
-psi.spellpiece.trickFireResistance=Truque: Resistência ao Fogo
-psi.spellpiece.trickFireResistance.desc=Aplica efeito de Resistência ao Fogo
-psi.spellpiece.trickInvisibility=Truque: Invisibilidade
-psi.spellpiece.trickInvisibility.desc=Aplica efeito de Invisibilidade
-psi.spellpiece.trickRegeneration=Truque: Regeneração
-psi.spellpiece.trickRegeneration.desc=Aplica efeito de Regeneração
-psi.spellpiece.trickResistance=Truque: Resistência
-psi.spellpiece.trickResistance.desc=Aplica efeito de Resistência
-psi.spellpiece.trickSlowness=Truque: Lentidão
-psi.spellpiece.trickSlowness.desc=Aplica efeito de Lentidão
-psi.spellpiece.trickWeakness=Truque: Fraqueza
-psi.spellpiece.trickWeakness.desc=Aplica efeito de Fraqueza
-psi.spellpiece.trickWither=Truque: Apodrecimento
-psi.spellpiece.trickWither.desc=Aplica efeito de Apodrecimento
-psi.spellpiece.trickIgnite=Truque: Ignição
-psi.spellpiece.trickIgnite.desc=Coloca fogo na entidade
-psi.spellpiece.trickEidosAnchor=Truque: Âncora de Eidos
-psi.spellpiece.trickEidosAnchor.desc=Retorna o conjurador para uma posição depois do tempo definido
-psi.spellpiece.trickEidosReversal=Truque: Reversão de Eidos
-psi.spellpiece.trickEidosReversal.desc=O conjurador volta no tempo
-psi.spellpiece.trickSmeltItem=Truque: Queimar Item
-psi.spellpiece.trickSmeltItem.desc=Aplica processo de Fornalha no item
-psi.spellpiece.trickSmeltBlock=Truque: Queimar Bloco
-psi.spellpiece.trickSmeltBlock.desc=Aplica processo de Fornalha no bloco
-psi.spellpiece.trickConjureBlock=Truque: Conjurar Bloco
-psi.spellpiece.trickConjureBlock.desc=Conjura um bloco na posição dada
-psi.spellpiece.trickConjureLight=Truque: Conjurar Luz
-psi.spellpiece.trickConjureLight.desc=Conjura uma luz na posição dada
-psi.spellpiece.trickConjureBlockSequence=Truque: Conjurar Sequência de Blocos
-psi.spellpiece.trickConjureBlockSequence.desc=Conjura uma sequência de blocos
-psi.spellpiece.trickSwitchTargetSlot=Truque: Mudar Slot do Foco
-psi.spellpiece.trickSwitchTargetSlot.desc=Muda o slot do foco da magia
-psi.spellpiece.trickSaveVector=Truque: Salvar Vetor
-psi.spellpiece.trickSaveVector.desc=Salva um vetor na memória do MAI
+  "_comment": "-- TRICKS",
+  "psi.spellpiece.trickDebug": "Truque: Debug",
+  "psi.spellpiece.trickDebug.desc": "Para teste. Imprime o alvo.",
+  "psi.spellpiece.trickDelay": "Truque: Adiar",
+  "psi.spellpiece.trickDelay.desc": "Adia a execução da magia pelos ticks definidos",
+  "psi.spellpiece.trickDie": "Truque: Parar",
+  "psi.spellpiece.trickDie.desc": "Cancela a execução se o valor alvo está em ]-1, 1[",
+  "psi.spellpiece.trickEvaluate": "Truque: Avaliar",
+  "psi.spellpiece.trickEvaluate.desc": "Avalia um valor. Faz nada com ele",
+  "psi.spellpiece.trickAddMotion": "Truque: Adicionar Movimento",
+  "psi.spellpiece.trickAddMotion.desc": "Adiciona movimento ao alvo",
+  "psi.spellpiece.trickExplode": "Truque: Explodir",
+  "psi.spellpiece.trickExplode.desc": "Boom",
+  "psi.spellpiece.trickBreakBlock": "Truque: Quebrar Bloco",
+  "psi.spellpiece.trickBreakBlock.desc": "Quebra um bloco",
+  "psi.spellpiece.trickBreakInSequence": "Truque: Quebrar Sequência de Blocos",
+  "psi.spellpiece.trickBreakInSequence.desc": "Quebra uma sequência de blocos definida por um vetor",
+  "psi.spellpiece.trickPlaceBlock": "Truque: Colocar Bloco",
+  "psi.spellpiece.trickPlaceBlock.desc": "Coloca um bloco no mundo (o que estiver na direita do MAI)",
+  "psi.spellpiece.trickPlaceInSequence": "Truque: Colocar Sequência de Blocos",
+  "psi.spellpiece.trickPlaceInSequence.desc": "Coloca uma sequência de blocos definida por um vetor",
+  "psi.spellpiece.trickInfusion": "Truque: Infusão",
+  "psi.spellpiece.trickInfusion.desc": "Infunde Ouro em Psimetal",
+  "psi.spellpiece.trickBlink": "Truque: Teleporte",
+  "psi.spellpiece.trickBlink.desc": "Teleporta para frente",
+  "psi.spellpiece.trickMassBlink": "Truque: Teleporte em Massa",
+  "psi.spellpiece.trickMassBlink.desc": "Teleporta todos para frente",
+  "psi.spellpiece.trickMassAddMotion": "Truque: Adicionar Movimento em Massa",
+  "psi.spellpiece.trickMassAddMotion.desc": "Adiciona movimento em todas as entidades da lista",
+  "psi.spellpiece.trickMassExodus": "Truque: Êxodo de Massa",
+  "psi.spellpiece.trickMassExodus.desc": "Move todas entidades da lista para o alvo",
+  "psi.spellpiece.trickMoveBlock": "Truque: Mover Bloco",
+  "psi.spellpiece.trickMoveBlock.desc": "Move um bloco (normalizado) num eixo",
+  "psi.spellpiece.trickCollapseBlock": "Truque: Derrubar Bloco",
+  "psi.spellpiece.trickCollapseBlock.desc": "Derruba um bloco como se fosse areia",
+  "psi.spellpiece.trickSmite": "Truque: Julgamento",
+  "psi.spellpiece.trickSmite.desc": "Conjura um raio no ponto indicado",
+  "psi.spellpiece.trickBlaze": "Truque: Labaredas",
+  "psi.spellpiece.trickBlaze.desc": "Cria fogo no ponto indicado",
+  "psi.spellpiece.trickTorrent": "Truque: Torrente",
+  "psi.spellpiece.trickTorrent.desc": "Cria água no ponto indicado",
+  "psi.spellpiece.trickOvergrow": "Truque: Super-crescimento",
+  "psi.spellpiece.trickOvergrow.desc": "Fertiliza o bloco na posição indicada",
+  "psi.spellpiece.trickGreaterInfusion": "Truque: Infusão Maior",
+  "psi.spellpiece.trickGreaterInfusion.desc": "Infunde Diamantes em Psigemas",
+  "psi.spellpiece.trickEbonyIvory": "Truque: Ébono e Marfim",
+  "psi.spellpiece.trickEbonyIvory.desc": "Infunde Carvão e Quartzo. Precisa ser usado no Fim",
+  "psi.spellpiece.trickSpeed": "Truque: Velocidade",
+  "psi.spellpiece.trickSpeed.desc": "Aplica efeito de Velocidade",
+  "psi.spellpiece.trickHaste": "Truque: Pressa",
+  "psi.spellpiece.trickHaste.desc": "Aplica efeito de Pressa",
+  "psi.spellpiece.trickStrength": "Truque: Força",
+  "psi.spellpiece.trickStrength.desc": "Aplica efeito de Força",
+  "psi.spellpiece.trickJumpBoost": "Truque: Super Pulo",
+  "psi.spellpiece.trickJumpBoost.desc": "Aplica efeito de Super Pulo",
+  "psi.spellpiece.trickWaterBreathing": "Truque: Respiração Aquática",
+  "psi.spellpiece.trickWaterBreathing.desc": "Aplica efeito de Respiração Aquática",
+  "psi.spellpiece.trickFireResistance": "Truque: Resistência ao Fogo",
+  "psi.spellpiece.trickFireResistance.desc": "Aplica efeito de Resistência ao Fogo",
+  "psi.spellpiece.trickInvisibility": "Truque: Invisibilidade",
+  "psi.spellpiece.trickInvisibility.desc": "Aplica efeito de Invisibilidade",
+  "psi.spellpiece.trickRegeneration": "Truque: Regeneração",
+  "psi.spellpiece.trickRegeneration.desc": "Aplica efeito de Regeneração",
+  "psi.spellpiece.trickResistance": "Truque: Resistência",
+  "psi.spellpiece.trickResistance.desc": "Aplica efeito de Resistência",
+  "psi.spellpiece.trickSlowness": "Truque: Lentidão",
+  "psi.spellpiece.trickSlowness.desc": "Aplica efeito de Lentidão",
+  "psi.spellpiece.trickWeakness": "Truque: Fraqueza",
+  "psi.spellpiece.trickWeakness.desc": "Aplica efeito de Fraqueza",
+  "psi.spellpiece.trickWither": "Truque: Apodrecimento",
+  "psi.spellpiece.trickWither.desc": "Aplica efeito de Apodrecimento",
+  "psi.spellpiece.trickIgnite": "Truque: Ignição",
+  "psi.spellpiece.trickIgnite.desc": "Coloca fogo na entidade",
+  "psi.spellpiece.trickEidosAnchor": "Truque: Âncora de Eidos",
+  "psi.spellpiece.trickEidosAnchor.desc": "Retorna o conjurador para uma posição depois do tempo definido",
+  "psi.spellpiece.trickEidosReversal": "Truque: Reversão de Eidos",
+  "psi.spellpiece.trickEidosReversal.desc": "O conjurador volta no tempo",
+  "psi.spellpiece.trickSmeltItem": "Truque: Queimar Item",
+  "psi.spellpiece.trickSmeltItem.desc": "Aplica processo de Fornalha no item",
+  "psi.spellpiece.trickSmeltBlock": "Truque: Queimar Bloco",
+  "psi.spellpiece.trickSmeltBlock.desc": "Aplica processo de Fornalha no bloco",
+  "psi.spellpiece.trickConjureBlock": "Truque: Conjurar Bloco",
+  "psi.spellpiece.trickConjureBlock.desc": "Conjura um bloco na posição dada",
+  "psi.spellpiece.trickConjureLight": "Truque: Conjurar Luz",
+  "psi.spellpiece.trickConjureLight.desc": "Conjura uma luz na posição dada",
+  "psi.spellpiece.trickConjureBlockSequence": "Truque: Conjurar Sequência de Blocos",
+  "psi.spellpiece.trickConjureBlockSequence.desc": "Conjura uma sequência de blocos",
+  "psi.spellpiece.trickSwitchTargetSlot": "Truque: Mudar Slot do Foco",
+  "psi.spellpiece.trickSwitchTargetSlot.desc": "Muda o slot do foco da magia",
+  "psi.spellpiece.trickSaveVector": "Truque: Salvar Vetor",
+  "psi.spellpiece.trickSaveVector.desc": "Salva um vetor na memória do MAI",
 
-# SPELL PARAMETER NAMES
-psi.spellparam.target=Alvo
-psi.spellparam.number=Número
-psi.spellparam.number1=Número A
-psi.spellparam.number2=Número B
-psi.spellparam.number3=Número C
-psi.spellparam.number4=Número D
-psi.spellparam.vector1=Vetor A
-psi.spellparam.vector2=Vetor B
-psi.spellparam.vector3=Vetor C
-psi.spellparam.vector4=Vetor D
-psi.spellparam.position=Posição
-psi.spellparam.ray=Ray
-psi.spellparam.max=Máx
-psi.spellparam.min=Mín
-psi.spellparam.power=Poder
-psi.spellparam.direction=Direção
-psi.spellparam.speed=Velocidade
-psi.spellparam.x=X
-psi.spellparam.y=Y
-psi.spellparam.z=Z
-psi.spellparam.radius=Raio
-psi.spellparam.distance=Distância
-psi.spellparam.time=Tempo
-psi.spellparam.list=Lista
-psi.spellparam.constant=Constante
-psi.spellparam.shift=Mudar
-psi.spellparam.slot=Slot
-psi.spellparam.base=Base
+  "_comment": "SPELL PARAMETER NAMES",
+  "psi.spellparam.target": "Alvo",
+  "psi.spellparam.number": "Número",
+  "psi.spellparam.number1": "Número A",
+  "psi.spellparam.number2": "Número B",
+  "psi.spellparam.number3": "Número C",
+  "psi.spellparam.number4": "Número D",
+  "psi.spellparam.vector1": "Vetor A",
+  "psi.spellparam.vector2": "Vetor B",
+  "psi.spellparam.vector3": "Vetor C",
+  "psi.spellparam.vector4": "Vetor D",
+  "psi.spellparam.position": "Posição",
+  "psi.spellparam.ray": "Ray",
+  "psi.spellparam.max": "Máx",
+  "psi.spellparam.min": "Mín",
+  "psi.spellparam.power": "Poder",
+  "psi.spellparam.direction": "Direção",
+  "psi.spellparam.speed": "Velocidade",
+  "psi.spellparam.x": "X",
+  "psi.spellparam.y": "Y",
+  "psi.spellparam.z": "Z",
+  "psi.spellparam.radius": "Raio",
+  "psi.spellparam.distance": "Distância",
+  "psi.spellparam.time": "Tempo",
+  "psi.spellparam.list": "Lista",
+  "psi.spellparam.constant": "Constante",
+  "psi.spellparam.shift": "Mudar",
+  "psi.spellparam.slot": "Slot",
+  "psi.spellparam.base": "Base",
 
-# DATA TYPE NAMES
-psi.datatype.Null=Nenhum
-psi.datatype.Any=Qualquer
-psi.datatype.Double=Número
-psi.datatype.Integer=Número
-psi.datatype.Number=Número
-psi.datatype.Vector3=Vetor
-psi.datatype.Entity=Entidade
-psi.datatype.EntityLiving=Entidade (Vivas)
-psi.datatype.EntityLivingBase=Entidade(Vivas)
-psi.datatype.EntityPlayer=Entidade(Jogadores, Vivas)
-psi.datatype.EntityListWrapper=Lista de Entidade
+  "_comment": "DATA TYPE NAMES",
+  "psi.datatype.Null": "Nenhum",
+  "psi.datatype.Any": "Qualquer",
+  "psi.datatype.Double": "Número",
+  "psi.datatype.Integer": "Número",
+  "psi.datatype.Number": "Número",
+  "psi.datatype.Vector3": "Vetor",
+  "psi.datatype.Entity": "Entidade",
+  "psi.datatype.EntityLiving": "Entidade (Vivas)",
+  "psi.datatype.EntityLivingBase": "Entidade(Vivas)",
+  "psi.datatype.EntityPlayer": "Entidade(Jogadores, Vivas)",
+  "psi.datatype.EntityListWrapper": "Lista de Entidade",
 
-# COMPILER ERRORS
-psi.spellerror.nospell=Nenhuma magia para compilar
-psi.spellerror.noname=Magia não tem nome
-psi.spellerror.notricks=Magia não tem Truques
-psi.spellerror.unsetparam=Um parâmetro obrigatório não foi definido
-psi.spellerror.nullparam=Um parâmetro está apontando para uma célula vazia
-psi.spellerror.invalidparam=Um parâmetro está apontando para uma peça inválida
-psi.spellerror.samesideparams=Dois ou mais parâmetros estão compartilhando um lado
-psi.spellerror.loop=Não é possível resolver, loop infinito
-psi.spellerror.nonpositivevalue=Um Parâmetro Numérico que devia ser positivo não é
-psi.spellerror.noninteger=Um Parâmetro Numérico que devia ser um inteiro não é
-psi.spellerror.nonpositiveinteger=Um Parâmetro Numérico que devia ser um inteiro positivo não é
-psi.spellerror.statoverflow=Valores da magia ultrapassam valores inteiros possíveis
-psi.spellerror.exclusiveparams=Dois parâmetros mutualmente exclusivos existem
+  "_comment": "COMPILER ERRORS",
+  "psi.spellerror.nospell": "Nenhuma magia para compilar",
+  "psi.spellerror.noname": "Magia não tem nome",
+  "psi.spellerror.notricks": "Magia não tem Truques",
+  "psi.spellerror.unsetparam": "Um parâmetro obrigatório não foi definido",
+  "psi.spellerror.nullparam": "Um parâmetro está apontando para uma célula vazia",
+  "psi.spellerror.invalidparam": "Um parâmetro está apontando para uma peça inválida",
+  "psi.spellerror.samesideparams": "Dois ou mais parâmetros estão compartilhando um lado",
+  "psi.spellerror.loop": "Não é possível resolver, loop infinito",
+  "psi.spellerror.nonpositivevalue": "Um Parâmetro Numérico que devia ser positivo não é",
+  "psi.spellerror.noninteger": "Um Parâmetro Numérico que devia ser um inteiro não é",
+  "psi.spellerror.nonpositiveinteger": "Um Parâmetro Numérico que devia ser um inteiro positivo não é",
+  "psi.spellerror.statoverflow": "Valores da magia ultrapassam valores inteiros possíveis",
+  "psi.spellerror.exclusiveparams": "Dois parâmetros mutualmente exclusivos existem",
 
-# RUNTIME ERRORS
-psi.spellerror.position=Erro de posição: [%d, %d].
-psi.spellerror.dividebyzero=ERRO: Divisão por zero.
-psi.spellerror.nulltarget=ERRO: Alvo não existente.
-psi.spellerror.nullvector=ERRO: Vetor de operação inexistente ou null.
-psi.spellerror.outsideradius=ERRO: Alvo está fora do alcance máximo de 32 blocos.
-psi.spellerror.outsidetrigdomain=ERRO: Valor está fora do domínio trigonométrico.
-psi.spellerror.bossimmune=ERRO: Tentativa de conjuração contra entidade imune ou chefe.
-psi.spellerror.nocad=ERRO: Conjurador não possui um MAI.
-psi.spellerror.memoryoutofbounds=ERRO: Acesso de memória inalcançável.
-psi.spellerror.lockedmemory=ERRO: Slot de memória travado.
-psi.spellerror.immunetarget=ERRO: Alvo é imune ou chefe.
-psi.spellerror.negativenumber=ERRO: Valor alvo é negativo onde não deve.
+  "_comment": "RUNTIME ERRORS",
+  "psi.spellerror.position": "Erro de posição: [%d, %d].",
+  "psi.spellerror.dividebyzero": "ERRO: Divisão por zero.",
+  "psi.spellerror.nulltarget": "ERRO: Alvo não existente.",
+  "psi.spellerror.nullvector": "ERRO: Vetor de operação inexistente ou null.",
+  "psi.spellerror.outsideradius": "ERRO: Alvo está fora do alcance máximo de 32 blocos.",
+  "psi.spellerror.outsidetrigdomain": "ERRO: Valor está fora do domínio trigonométrico.",
+  "psi.spellerror.bossimmune": "ERRO: Tentativa de conjuração contra entidade imune ou chefe.",
+  "psi.spellerror.nocad": "ERRO: Conjurador não possui um MAI.",
+  "psi.spellerror.memoryoutofbounds": "ERRO: Acesso de memória inalcançável.",
+  "psi.spellerror.lockedmemory": "ERRO: Slot de memória travado.",
+  "psi.spellerror.immunetarget": "ERRO: Alvo é imune ou chefe.",
+  "psi.spellerror.negativenumber": "ERRO: Valor alvo é negativo onde não deve.",
 
-# PIECE GROUPS
-psi.introduction=Seja bem-vindo ao Psi, o melhor mod de programação mágica desse lado do universo. Lembre-se de que possuir Just Enough Items (JEI) ou outro modo de ver receitas de itens é essencial para jogar, já que as receitas não são incluídas no guia. Para começar a conjurar, você precisará de Psidust. Para conseguir Psidust, você precisará fazer uma Base de MAI de Ferro e um Montador de MAI. Coloque o Montador de MAI, e a Base de MAI para conseguir criar um Mecanismo Auxiliar de Conjuração (MAI). Depois, jogue um pouco de Redstone no mundo e ative seu MAI para conseguir Psidust.
-psi.levelskip=Psi encontrou dados anteriores nessa instância.<br>Deseja carregá-los?<br><br>Se optar por carregar, você irá para o Nível %d. Se optar por não, essa mensagem não aparecerá novamente nessa sessão.
+  "_comment": "PIECE GROUPS",
+  "psi.introduction": "Seja bem-vindo ao Psi, o melhor mod de programação mágica desse lado do universo. Lembre-se de que possuir Just Enough Items (JEI) ou outro modo de ver receitas de itens é essencial para jogar, já que as receitas não são incluídas no guia. Para começar a conjurar, você precisará de Psidust. Para conseguir Psidust, você precisará fazer uma Base de MAI de Ferro e um Montador de MAI. Coloque o Montador de MAI, e a Base de MAI para conseguir criar um Mecanismo Auxiliar de Conjuração (MAI). Depois, jogue um pouco de Redstone no mundo e ative seu MAI para conseguir Psidust.",
+  "psi.levelskip": "Psi encontrou dados anteriores nessa instância.<br>Deseja carregá-los?<br><br>Se optar por carregar, você irá para o Nível %d. Se optar por não, essa mensagem não aparecerá novamente nessa sessão."
+}
