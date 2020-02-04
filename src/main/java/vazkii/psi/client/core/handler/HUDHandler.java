@@ -17,11 +17,14 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -267,8 +270,8 @@ public final class HUDHandler {
 	private static void renderSocketableEquippedName(MainWindow res, float pticks) {
 		Minecraft mc = Minecraft.getInstance();
 		ItemStack stack = mc.player.getHeldItem(Hand.MAIN_HAND);
-		String name = ISocketable.getSocketedItemName(stack, "");
-		if (stack.isEmpty() || name == null || name.trim().isEmpty())
+		String name = ISocketable.getSocketedItemName(stack, "").getFormattedText();
+		if (stack.isEmpty() || name.trim().isEmpty())
 			return;
 
 		int ticks = mc.ingameGUI.remainingHighlightTicks;
@@ -324,7 +327,7 @@ public final class HUDHandler {
 		int fadeTime = time / 10;
 		int fadeoutTime = fadeTime * 2;
 
-		String levelUp = TooltipHelper.local("psimisc.levelup").toString();
+		String levelUp = I18n.format("psimisc.levelup");
 		int len = levelUp.length();
 		int effLen = Math.min(len, len * levelDisplayTime / fadeTime);
 		levelUp = levelUp.substring(0, effLen);
@@ -354,7 +357,7 @@ public final class HUDHandler {
 		RenderSystem.popMatrix();
 
 		if (levelDisplayTime > fadeTime * 2) {
-			String s = TooltipHelper.local("psimisc.levelUpInfo1").toString();
+			String s = I18n.format("psimisc.levelUpInfo1");
 			swidth = mc.fontRenderer.getStringWidth(s);
 			len = s.length();
 			effLen = Math.min(len, len * (levelDisplayTime - fadeTime * 2) / fadeTime);
@@ -366,8 +369,7 @@ public final class HUDHandler {
 		}
 
 		if (levelDisplayTime > fadeTime * 3) {
-			String s = TooltipHelper.local("psimisc.levelUpInfo2", TextFormatting.GREEN + TooltipHelper.local(KeybindHandler.keybind.getTranslationKey()).toString()
-					+ TextFormatting.RESET).toString();
+			String s = I18n.format("psimisc.levelUpInfo2", new TranslationTextComponent(KeybindHandler.keybind.getTranslationKey()).applyTextStyle(TextFormatting.GREEN));
 			swidth = mc.fontRenderer.getStringWidth(s);
 			len = s.length();
 			effLen = Math.min(len, len * (levelDisplayTime - fadeTime * 3) / fadeTime);

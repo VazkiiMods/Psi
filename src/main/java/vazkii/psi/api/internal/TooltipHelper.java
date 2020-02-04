@@ -24,22 +24,7 @@ public final class TooltipHelper {
     public static void tooltipIfShift(List<ITextComponent> tooltip, Runnable r) {
         if (Screen.hasShiftDown())
             r.run();
-        else addToTooltip(tooltip, "psimisc.shiftForInfo");
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public static void addToTooltip(List<ITextComponent> tooltip, String s, Object... format) {
-        tooltip.add(local(s, format));
-        //TODO check if the lack of .replaceAll("&", "\u00a7")) is okay
-    }
-
-    // todo check if okay
-    public static TranslationTextComponent local(String s, Object... format) {
-        return new TranslationTextComponent(s, format);
-    }
-
-    public static TranslationTextComponent local(String s) {
-        return local(s, new Object[0]);
+        else tooltip.add(new TranslationTextComponent("psimisc.shiftForInfo"));
     }
 
 }

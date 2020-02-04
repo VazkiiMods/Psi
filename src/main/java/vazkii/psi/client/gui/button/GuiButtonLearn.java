@@ -15,6 +15,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import vazkii.psi.api.internal.TooltipHelper;
 import vazkii.psi.client.gui.GuiLeveling;
 
@@ -42,7 +43,7 @@ public class GuiButtonLearn extends Button {
             blit(x, y, isHovered() ? 44 : 18, 184, width, height);
 
             if (isHovered())
-                gui.tooltip.add(new StringTextComponent(TextFormatting.GREEN + TooltipHelper.local("psimisc.learn").toString()));
+                gui.tooltip.add(new TranslationTextComponent("psimisc.learn").applyTextStyle(TextFormatting.GREEN));
         }
     }
 }

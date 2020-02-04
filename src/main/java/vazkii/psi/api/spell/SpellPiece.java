@@ -20,6 +20,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.ModList;
@@ -101,12 +102,12 @@ public abstract class SpellPiece {
 	 * Gets the string to be displayed describing this piece's evaluation type.
 	 * @see #getEvaluationType()
 	 */
-	public String getEvaluationTypeString() {
+	public ITextComponent getEvaluationTypeString() {
         Class<?> evalType = getEvaluationType();
         String evalStr = evalType == null ? "Null" : evalType.getSimpleName();
-        String s = TooltipHelper.local("psi.datatype." + evalStr).toString();
+        ITextComponent s = new TranslationTextComponent("psi.datatype." + evalStr);
         if (getPieceType() == EnumPieceType.CONSTANT)
-            s += " " + TooltipHelper.local("psimisc.constant").toString();
+            s.appendSibling(new TranslationTextComponent("psimisc.const"));
 
         return s;
     }
@@ -169,7 +170,7 @@ public abstract class SpellPiece {
 	}
 
 	public String getSortingName() {
-        return TooltipHelper.local(getUnlocalizedName()).toString();
+        return new TranslationTextComponent(getUnlocalizedName()).getString();
     }
 
 	public String getUnlocalizedDesc() {
@@ -308,29 +309,29 @@ public abstract class SpellPiece {
 
     @OnlyIn(Dist.CLIENT)
     public void getTooltip(List<ITextComponent> tooltip) {
-        TooltipHelper.addToTooltip(tooltip, getUnlocalizedName());
-        TooltipHelper.tooltipIfShift(tooltip, () -> addToTooltipAfterShift(tooltip));
+	    tooltip.add(new TranslationTextComponent(getUnlocalizedName()));
+	    TooltipHelper.tooltipIfShift(tooltip, () -> addToTooltipAfterShift(tooltip));
 
         String addon = PsiAPI.pieceMods.get(getClass());
         if (!addon.equals("psi")) {
 
             if (ModList.get().getModContainerById(addon).isPresent())
-                TooltipHelper.addToTooltip(tooltip, "psimisc.providerMod", ModList.get().getModContainerById(addon).get().getNamespace());
+	            tooltip.add(new TranslationTextComponent("psimisc.providerMod", ModList.get().getModContainerById(addon).get().getNamespace()));
         }
     }
 
     @OnlyIn(Dist.CLIENT)
     public void addToTooltipAfterShift(List<ITextComponent> tooltip) {
-        tooltip.add(new StringTextComponent(TextFormatting.GRAY + TooltipHelper.local(getUnlocalizedDesc()).toString().replaceAll("&", "\u00a7")));
+        tooltip.add(new TranslationTextComponent(getUnlocalizedDesc()).applyTextStyle(TextFormatting.GRAY));
 
         tooltip.add(new StringTextComponent(""));
-        String eval = getEvaluationTypeString();
-        tooltip.add(new StringTextComponent("<- " + TextFormatting.GOLD + eval));
+        ITextComponent eval = getEvaluationTypeString().applyTextStyle(TextFormatting.GOLD);
+        tooltip.add(new StringTextComponent("<- ").appendSibling(eval));
 
         for (SpellParam param : paramSides.keySet()) {
-            String pName = TooltipHelper.local(param.name).toString();
-            String pEval = param.getRequiredTypeString();
-            tooltip.add(new StringTextComponent((param.canDisable ? "[->] " : " ->  ") + TextFormatting.YELLOW + pName + " [" + pEval + "]"));
+            ITextComponent pName = new TranslationTextComponent(param.name).applyTextStyle(TextFormatting.YELLOW);
+            ITextComponent pEval = new StringTextComponent(" [").appendSibling(param.getRequiredTypeString()).appendText("]").applyTextStyle(TextFormatting.YELLOW);
+            tooltip.add(new StringTextComponent(param.canDisable ? "[->] " : " ->  ").appendSibling(pName).appendSibling(pEval));
         }
     }
 

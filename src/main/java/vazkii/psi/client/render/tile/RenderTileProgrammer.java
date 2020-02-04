@@ -18,6 +18,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.util.Direction;
 import org.lwjgl.opengl.GL11;
 import vazkii.arl.util.ClientTicker;
@@ -107,7 +108,7 @@ public class RenderTileProgrammer extends TileEntityRenderer<TileProgrammer> {
             ms.translate(0F, 0F, 0.01F);
 
             int color = Psi.magical ? 0 : 0xFFFFFF;
-            mc.fontRenderer.drawString(TooltipHelper.local("psimisc.name").toString(), 0, 164, color);
+            mc.fontRenderer.drawString(I18n.format("psimisc.name"), 0, 164, color);
             mc.fontRenderer.drawString(te.spell.name, 38, 164, color);
 
             /*if (!Psi.magical)

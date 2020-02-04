@@ -16,6 +16,8 @@ import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.psi.api.internal.TooltipHelper;
@@ -41,8 +43,8 @@ public class PieceConnector extends SpellPiece implements IRedirector {
 	}
 
 	@Override
-	public String getEvaluationTypeString() {
-        return TooltipHelper.local("psi.datatype.Any").toString();
+	public ITextComponent getEvaluationTypeString() {
+        return new TranslationTextComponent("psi.datatype.Any");
     }
 
 	@Override

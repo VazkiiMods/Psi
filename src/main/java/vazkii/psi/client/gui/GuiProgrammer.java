@@ -257,13 +257,13 @@ public class GuiProgrammer extends Screen {
         blit(statusX, statusY, compiler.isErrored() ? 12 : 0, ySize + 28, 12, 12);
         if (mouseX > statusX - 1 && mouseY > statusY - 1 && mouseX < statusX + 13 && mouseY < statusY + 13) {
             if (compiler.isErrored()) {
-                tooltip.add(new StringTextComponent(TextFormatting.RED + TooltipHelper.local("psimisc.errored").toString()));
-                tooltip.add(new StringTextComponent((TextFormatting.GRAY + TooltipHelper.local(compiler.getError()).toString())));
+                tooltip.add(new TranslationTextComponent("psimisc.errored").applyTextStyle(TextFormatting.RED));
+                tooltip.add(new TranslationTextComponent(compiler.getError()).applyTextStyle(TextFormatting.GRAY));
                 Pair<Integer, Integer> errorPos = compiler.getErrorLocation();
                 if (errorPos != null && errorPos.getLeft() != -1 && errorPos.getRight() != -1)
-                    tooltip.add(new StringTextComponent(TextFormatting.GRAY + "[" + (errorPos.getLeft() + 1) + ", " + (errorPos.getRight() + 1) + "]"));
+                    tooltip.add(new StringTextComponent("[" + (errorPos.getLeft() + 1) + ", " + (errorPos.getRight() + 1) + "]").applyTextStyle(TextFormatting.GRAY));
             } else
-                tooltip.add(new StringTextComponent(TextFormatting.GREEN + TooltipHelper.local("psimisc.compiled").toString()));
+                tooltip.add(new TranslationTextComponent("psimisc.compiled").applyTextStyle(TextFormatting.GREEN));
         }
 
         ItemStack cad = PsiAPI.getPlayerCAD(minecraft.player);
@@ -320,8 +320,8 @@ public class GuiProgrammer extends Screen {
                 minecraft.getTextureManager().bindTexture(texture);
 
                 if (mouseX > statX && mouseY > statY && mouseX < statX + 12 && mouseY < statY + 12) {
-                    tooltip.add(new StringTextComponent((Psi.magical ? TextFormatting.LIGHT_PURPLE : TextFormatting.AQUA) + TooltipHelper.local(stat.getName()).toString()));
-                    tooltip.add(new StringTextComponent(TextFormatting.GRAY + TooltipHelper.local(stat.getDesc()).toString()));
+                    tooltip.add(new TranslationTextComponent(stat.getName()).applyTextStyle(Psi.magical ? TextFormatting.LIGHT_PURPLE : TextFormatting.AQUA));
+                    tooltip.add(new TranslationTextComponent(stat.getDesc()).applyTextStyle(TextFormatting.GRAY));
                 }
 
                 i++;
@@ -335,7 +335,7 @@ public class GuiProgrammer extends Screen {
 
         if (configEnabled && !takingScreenshot) {
             blit(left - 81, top + 55, xSize, 30, 81, 115);
-            String configStr = TooltipHelper.local("psimisc.config").toString();
+            String configStr = I18n.format("psimisc.config");
             font.drawString(configStr, left - font.getStringWidth(configStr) - 2, top + 45, 0xFFFFFF);
 
             int i = 0;
@@ -353,7 +353,7 @@ public class GuiProgrammer extends Screen {
                     minecraft.getTextureManager().bindTexture(texture);
                     blit(x + 50, y - 8, xSize, 145, 24, 24);
 
-                    String localized = TooltipHelper.local(s).toString();
+                    String localized = I18n.format(s);
                     if (i == param)
                         localized = TextFormatting.UNDERLINE + localized;
 
@@ -421,31 +421,31 @@ public class GuiProgrammer extends Screen {
         if (!takingScreenshot) {
             int topyText = topy;
             if (spectator) {
-                String betaTest = TextFormatting.RED + TooltipHelper.local("psimisc.spectator").toString();
+                String betaTest = TextFormatting.RED + I18n.format("psimisc.spectator");
                 font.drawStringWithShadow(betaTest, left + xSize / 2f - font.getStringWidth(betaTest) / 2f, topyText, 0xFFFFFF);
                 topyText -= 10;
             }
             if (LibMisc.BETA_TESTING) {
-                String betaTest = TooltipHelper.local("psimisc.wip").toString();
+                String betaTest = I18n.format("psimisc.wip");
                 font.drawStringWithShadow(betaTest, left + xSize / 2f - font.getStringWidth(betaTest) / 2f, topyText, 0xFFFFFF);
             }
             if (piece != null) {
-                String name = TooltipHelper.local(piece.getUnlocalizedName()).toString();
+                String name = I18n.format(piece.getUnlocalizedName());
                 font.drawStringWithShadow(name, left + xSize / 2f - font.getStringWidth(name) / 2f, topyText, 0xFFFFFF);
             }
 
             String coords;
             if (SpellGrid.exists(cursorX, cursorY))
-                coords = TooltipHelper.local("psimisc.programmerCoords", selectedX + 1, selectedY + 1, cursorX + 1, cursorY + 1).toString();
+                coords = I18n.format("psimisc.programmerCoords", selectedX + 1, selectedY + 1, cursorX + 1, cursorY + 1);
             else
-                coords = TooltipHelper.local("psimisc.programmerCoordsNoCursor", selectedX + 1, selectedY + 1).toString();
+                coords = I18n.format("psimisc.programmerCoordsNoCursor", selectedX + 1, selectedY + 1);
             font.drawString(coords, left + 4, topy + ySize + 14, 0x44FFFFFF);
         }
 
         if (Psi.magical)
-            font.drawString(TooltipHelper.local("psimisc.name").toString(), left + padLeft, spellNameField.y + 1, color);
+            font.drawString(I18n.format("psimisc.name"), left + padLeft, spellNameField.y + 1, color);
         else
-            font.drawStringWithShadow(TooltipHelper.local("psimisc.name").toString(), left + padLeft, spellNameField.y + 1, color);
+            font.drawStringWithShadow(I18n.format("psimisc.name"), left + padLeft, spellNameField.y + 1, color);
 
         spellNameField.setVisible(true);
         spellNameField.active = true;
@@ -474,9 +474,9 @@ public class GuiProgrammer extends Screen {
         commentField.setVisible(true);
         commentField.active = true;
         if (commentEnabled) {
-            String s = TooltipHelper.local("psimisc.enterCommit").toString();
+            String s = I18n.format("psimisc.enterCommit");
             font.drawStringWithShadow(s, left + xSize / 2f - font.getStringWidth(s) / 2f, commentField.y + 24, 0xFFFFFF);
-            s = TooltipHelper.local("psimisc.semicolonLine").toString();
+            s = I18n.format("psimisc.semicolonLine");
             font.drawStringWithShadow(s, left + xSize / 2f - font.getStringWidth(s) / 2f, commentField.y + 34, 0xFFFFFF);
         }
         RenderSystem.color3f(1F, 1F, 1F);
@@ -493,14 +493,14 @@ public class GuiProgrammer extends Screen {
             }
 
             if (overHelp && !hasAltDown()) {
-                TooltipHandler.addToTooltip(vazkiiWhyDoYouDoThisToMe, TooltipHelper.local("psimisc.programmerHelp").toString());
-                tooltip.add(TooltipHelper.local("psimisc.programmerHelp"));
-                String ctrl = TooltipHelper.local(Minecraft.IS_RUNNING_ON_MAC ? "psimisc.ctrlMac" : "psimisc.ctrlWindows").toString();
+                TooltipHandler.addToTooltip(vazkiiWhyDoYouDoThisToMe, I18n.format("psimisc.programmerHelp"));
+                tooltip.add(new TranslationTextComponent("psimisc.programmerHelp"));
+                String ctrl = I18n.format(Minecraft.IS_RUNNING_ON_MAC ? "psimisc.ctrlMac" : "psimisc.ctrlWindows");
                 TooltipHandler.tooltipIfShift(vazkiiWhyDoYouDoThisToMe, () -> {
                     int i = 0;
                     while (I18n.hasKey("psi.programmerReference" + i)) {
-                        vazkiiWhyDoYouDoThisToMe.add(TooltipHelper.local("psi.programmerReference" + i++, ctrl).toString().replaceAll("&", "\u00a7"));
-                        tooltip.add(new StringTextComponent(TooltipHelper.local("psi.programmerReference" + i++, ctrl).toString().replaceAll("&", "\u00a7")));
+                        vazkiiWhyDoYouDoThisToMe.add(I18n.format("psi.programmerReference" + i++, ctrl));
+                        tooltip.add(new TranslationTextComponent("psi.programmerReference" + i++, ctrl));
                     }
 
                 });
@@ -960,8 +960,8 @@ public class GuiProgrammer extends Screen {
                 pushState(true);
                 SpellPiece piece1 = ((GuiButtonSpellPiece) button).piece.copy();
                 if (piece1.getPieceType() == EnumPieceType.TRICK && spellNameField.getText().isEmpty()) {
-                    String pieceName = TooltipHelper.local(piece1.getUnlocalizedName()).toString();
-                    String patternStr = TooltipHelper.local("psimisc.trickPattern").toString();
+                    String pieceName = I18n.format(piece1.getUnlocalizedName());
+                    String patternStr = I18n.format("psimisc.trickPattern");
                     Pattern pattern = Pattern.compile(patternStr);
                     Matcher matcher = pattern.matcher(pieceName);
                     if (matcher.matches()) {
@@ -1010,8 +1010,8 @@ public class GuiProgrammer extends Screen {
 
 	private int ranking(String token, SpellPiece p) {
         int rank = 0;
-        String name = TooltipHelper.local(p.getUnlocalizedName()).toString().toLowerCase();
-        String desc = TooltipHelper.local(p.getUnlocalizedDesc()).toString().toLowerCase();
+        String name = I18n.format(p.getUnlocalizedName()).toLowerCase();
+        String desc = I18n.format(p.getUnlocalizedDesc()).toLowerCase();
 
         for (String nameToken : token.split("\\s+")) {
             if (nameToken.isEmpty())
@@ -1024,7 +1024,7 @@ public class GuiProgrammer extends Screen {
 
 				int maxRank = 0;
 				for(SpellParam param : p.params.values()) {
-					String type = param.getRequiredTypeString().toLowerCase();
+					String type = param.getRequiredTypeString().getString().toLowerCase();
 					maxRank = Math.max(maxRank, rankTextToken(type, clippedToken));
 				}
 
@@ -1034,7 +1034,7 @@ public class GuiProgrammer extends Screen {
 				if (clippedToken.isEmpty())
 					continue;
 
-				String type = p.getEvaluationTypeString().toLowerCase();
+				String type = p.getEvaluationTypeString().getString();
 
 				rank += rankTextToken(type, clippedToken);
 			} else if (nameToken.startsWith("@")) {

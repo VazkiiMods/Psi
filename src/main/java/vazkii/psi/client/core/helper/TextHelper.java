@@ -12,6 +12,7 @@ package vazkii.psi.client.core.helper;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.resources.I18n;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.psi.api.internal.TooltipHelper;
@@ -26,7 +27,7 @@ public final class TextHelper {
         FontRenderer font = Minecraft.getInstance().fontRenderer;
         boolean unicode = font.getBidiFlag();
         font.setBidiFlag(true);
-        String text = TooltipHelper.local(unlocalizedText, format).toString().replaceAll("&", "\u00a7");
+        String text = I18n.format(unlocalizedText, format);
 
         String[] textEntries = text.split("<br>");
         List<List<String>> lines = new ArrayList<>();

@@ -57,11 +57,6 @@ public interface IInternalMethodHandler {
 	@OnlyIn(Dist.CLIENT)
 	void renderTooltip(int x, int y, List<ITextComponent> tooltipData, int color, int color2);
 
-	/**
-	 * Localizes a string, with correct behavior on both server and client.
-	 */
-	String localize(String key, Object... format);
-
 	ItemStack createDefaultCAD(List<ItemStack> components);
 
 	ItemStack createCAD(ItemStack base, List<ItemStack> components);

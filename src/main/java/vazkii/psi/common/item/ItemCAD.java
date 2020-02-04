@@ -67,8 +67,6 @@ import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static vazkii.psi.api.internal.TooltipHelper.local;
-
 public class ItemCAD extends BasicItem implements ICAD, ISpellSettable, IItemColorProvider {
 
 	private static final String TAG_BULLET_PREFIX = "bullet";
@@ -575,18 +573,17 @@ public class ItemCAD extends BasicItem implements ICAD, ISpellSettable, IItemCol
 	@Override
 	public void addInformation(ItemStack stack, @Nullable World playerin, List<ITextComponent> tooltip, ITooltipFlag advanced) {
 		TooltipHelper.tooltipIfShift(tooltip, () -> {
-			TranslationTextComponent componentName = local(ISocketable.getSocketedItemName(stack, "psimisc.none"));
-			TooltipHelper.addToTooltip(tooltip, "psimisc.spellSelected", componentName);
+			ITextComponent componentName = ISocketable.getSocketedItemName(stack, "psimisc.none");
+			tooltip.add(new TranslationTextComponent("psimisc.spellSelected", componentName));
 
 			for (EnumCADComponent componentType : EnumCADComponent.class.getEnumConstants()) {
 				ItemStack componentStack = getComponentInSlot(stack, componentType);
-				TranslationTextComponent name = new TranslationTextComponent("psimisc.none");
+				ITextComponent name = new TranslationTextComponent("psimisc.none");
 				if (!componentStack.isEmpty())
-					name = (TranslationTextComponent) componentStack.getDisplayName();
+					name = componentStack.getDisplayName();
 
-				name = local(name.toString());
-				String line = TextFormatting.GREEN + local(componentType.getName()).toString() + TextFormatting.GRAY + ": " + name;
-				TooltipHelper.addToTooltip(tooltip, line);
+				ITextComponent componentTypeName = new TranslationTextComponent(componentType.getName()).applyTextStyle(TextFormatting.GREEN);
+				tooltip.add(componentTypeName.appendText(": ").appendSibling(name));
 
 				for (EnumCADStat stat : EnumCADStat.class.getEnumConstants()) {
 					if (stat.getSourceType() == componentType) {
@@ -594,9 +591,7 @@ public class ItemCAD extends BasicItem implements ICAD, ISpellSettable, IItemCol
 						int statVal = getStatValue(stack, stat);
 						String statValStr = statVal == -1 ? "\u221E" : "" + statVal;
 
-						line = " " + TextFormatting.AQUA + local(shrt) + TextFormatting.GRAY + ": " + statValStr;
-						if (!line.isEmpty())
-							TooltipHelper.addToTooltip(tooltip, line);
+						tooltip.add(new TranslationTextComponent(shrt).applyTextStyle(TextFormatting.AQUA).appendText(": " + statValStr));
 					}
 				}
 			}

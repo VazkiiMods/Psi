@@ -10,6 +10,8 @@
  */
 package vazkii.psi.api.spell;
 
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import vazkii.psi.api.internal.TooltipHelper;
 
 /**
@@ -86,12 +88,12 @@ public abstract class SpellParam {
 	/**
 	 * Gets the string for display for the required type.
 	 */
-	public String getRequiredTypeString() {
+	public ITextComponent getRequiredTypeString() {
 		Class<?> evalType = getRequiredType();
 		String evalStr = evalType.getSimpleName();
-		String s = TooltipHelper.local("psi.datatype." + evalStr).toString();
+		ITextComponent s = new TranslationTextComponent("psi.datatype." + evalStr);
 		if (requiresConstant())
-			s += " " + TooltipHelper.local("psimisc.constant");
+			s.appendText(" ").appendSibling(new TranslationTextComponent("psimisc.constant"));
 
 		return s;
 	}

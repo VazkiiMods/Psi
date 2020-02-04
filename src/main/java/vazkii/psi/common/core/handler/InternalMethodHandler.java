@@ -72,11 +72,6 @@ public final class InternalMethodHandler implements IInternalMethodHandler {
 	}
 
 	@Override
-	public String localize(String key, Object... format) {
-        return TooltipHelper.local(key, format).toString();
-    }
-
-	@Override
 	public ItemStack createDefaultCAD(List<ItemStack> components) {
 		return ItemCAD.makeCAD(components);
 	}

@@ -13,8 +13,10 @@ package vazkii.psi.client.gui.button;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import vazkii.psi.api.internal.TooltipHelper;
 import vazkii.psi.client.gui.GuiProgrammer;
 
@@ -47,8 +49,11 @@ public class GuiButtonIO extends Button {
             blit(x, y, isHovered() ? 186 : 174, out ? 169 : 181, width, height);
 
             if (isHovered()) {
-                gui.tooltip.add(new StringTextComponent((out ? TextFormatting.RED : TextFormatting.BLUE) + TooltipHelper.local(out ? "psimisc.exportToClipboard" : "psimisc.importFromClipboard").toString()));
-                gui.tooltip.add(new StringTextComponent(TextFormatting.GRAY + TooltipHelper.local("psimisc.mustHoldShift").toString()));
+                String key = out ? "psimisc.exportToClipboard" : "psimisc.importFromClipboard";
+                TextFormatting color = out ? TextFormatting.RED : TextFormatting.BLUE;
+                ITextComponent tip = new TranslationTextComponent(key).applyTextStyle(color);
+                gui.tooltip.add(tip);
+                gui.tooltip.add(new TranslationTextComponent("psimisc.mustHoldShift").applyTextStyle(TextFormatting.GRAY));
             }
         }
     }

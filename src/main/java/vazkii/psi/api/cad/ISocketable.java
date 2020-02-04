@@ -11,6 +11,8 @@
 package vazkii.psi.api.cad;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import vazkii.psi.api.internal.IPlayerData;
 import vazkii.psi.api.spell.ISpellAcceptor;
 
@@ -25,16 +27,16 @@ public interface ISocketable extends IShowPsiBar {
 
 	int MAX_SLOTS = 12;
 
-	static String getSocketedItemName(ItemStack stack, String fallback) {
+	static ITextComponent getSocketedItemName(ItemStack stack, String fallbackKey) {
 		if(stack.isEmpty() || !ISocketableCapability.isSocketable(stack))
-			return fallback;
+			return new TranslationTextComponent(fallbackKey);
 
 		ISocketableCapability socketable = ISocketableCapability.socketable(stack);
 		ItemStack item = socketable.getBulletInSocket(socketable.getSelectedSlot());
 		if(item.isEmpty())
-			return fallback;
+			return new TranslationTextComponent(fallbackKey);
 
-        return item.getDisplayName().getString();
+        return item.getDisplayName();
 	}
 
 	/**

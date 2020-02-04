@@ -10,6 +10,7 @@
  */
 package vazkii.psi.api.spell;
 
+import net.minecraft.util.text.TranslationTextComponent;
 import vazkii.psi.api.internal.IPlayerData;
 import vazkii.psi.api.internal.TooltipHelper;
 
@@ -64,8 +65,11 @@ public class PieceGroup implements Comparable<PieceGroup> {
 
 	@Override
 	public int compareTo(@Nonnull PieceGroup o) {
-		if (o.levelRequirement == levelRequirement)
-			return TooltipHelper.local(getUnlocalizedName()).toString().compareTo(TooltipHelper.local(o.getUnlocalizedName()).toString());
+		if (o.levelRequirement == levelRequirement) {
+			String thisLocalized = new TranslationTextComponent(getUnlocalizedName()).getString();
+			String otherLocalized = new TranslationTextComponent(o.getUnlocalizedName()).getString();
+			return thisLocalized.compareTo(otherLocalized);
+		}
 
 		return levelRequirement - o.levelRequirement;
 	}

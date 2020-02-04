@@ -51,8 +51,6 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.function.Function;
 
-import static vazkii.psi.api.internal.TooltipHelper.local;
-
 public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiEventArmor, IItemColorProvider {
 
     @OnlyIn(Dist.CLIENT)
@@ -169,9 +167,9 @@ public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiE
     @Override
     public void addInformation(ItemStack stack, @Nullable World playerIn, List<ITextComponent> tooltip, ITooltipFlag advanced) {
         TooltipHelper.tooltipIfShift(tooltip, () -> {
-            TranslationTextComponent componentName = local(ISocketable.getSocketedItemName(stack, "psimisc.none"));
-            TooltipHelper.addToTooltip(tooltip, "psimisc.spellSelected", componentName);
-            TooltipHelper.addToTooltip(tooltip, getTrueEvent(stack));
+            ITextComponent componentName = ISocketable.getSocketedItemName(stack, "psimisc.none");
+	        tooltip.add(new TranslationTextComponent("psimisc.spellSelected", componentName));
+	        tooltip.add(new TranslationTextComponent(getTrueEvent(stack)));
         });
     }
 

@@ -12,6 +12,7 @@ package vazkii.psi.client.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.StringTextComponent;
 import vazkii.psi.api.internal.TooltipHelper;
@@ -79,13 +80,13 @@ public class GuiIntroduction extends Screen {
         super.render(mouseX, mouseY, partialTicks);
 
         if (LibMisc.BETA_TESTING) {
-            String betaTest = TooltipHelper.local("psimisc.wip").toString();
+            String betaTest = I18n.format("psimisc.wip");
             minecraft.fontRenderer.drawStringWithShadow(betaTest, left + xSize / 2f - minecraft.fontRenderer.getStringWidth(betaTest) / 2f, top - 12, 0xFFFFFF);
         }
 
         TextHelper.renderText(width / 2 - 120, height / 2 - 30, 245, skip ? "psi.levelskip" : "psi.introduction", false, true, PersistencyHandler.persistentLevel);
 		if(skip) {
-            String loadPrompt = TooltipHelper.local("psimisc.loadPrompt").toString();
+            String loadPrompt = I18n.format("psimisc.loadPrompt");
             minecraft.fontRenderer.drawStringWithShadow(loadPrompt, left + xSize / 2f - minecraft.fontRenderer.getStringWidth(loadPrompt) / 2f, top + 133, 0xFFFFFF);
         }
 	}

@@ -63,11 +63,6 @@ public final class DummyMethodHandler implements IInternalMethodHandler {
 	}
 
 	@Override
-	public String localize(String key, Object... format) {
-		return key;
-	}
-
-	@Override
 	public ItemStack createDefaultCAD(List<ItemStack> components) {
 		return ItemStack.EMPTY;
 	}

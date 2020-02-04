@@ -18,6 +18,7 @@ import net.minecraft.item.Rarity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -31,8 +32,6 @@ import vazkii.psi.api.spell.SpellContext;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
-
-import static vazkii.psi.api.internal.TooltipHelper.local;
 
 public class ItemSpellBullet extends BasicItem implements ISpellContainer {
 
@@ -91,8 +90,8 @@ public class ItemSpellBullet extends BasicItem implements ISpellContainer {
 	@Override
 	public void addInformation(ItemStack stack, @Nullable World playerIn, List<ITextComponent> tooltip, ITooltipFlag advanced) {
 		TooltipHelper.tooltipIfShift(tooltip, () -> {
-			TooltipHelper.addToTooltip(tooltip, "psimisc.bulletType", local("psi.bulletType" + getBulletType()));
-			TooltipHelper.addToTooltip(tooltip, "psimisc.bulletCost", (int) (getCostModifier(stack) * 100));
+			tooltip.add(new TranslationTextComponent("psimisc.bulletType", new TranslationTextComponent("psi.bulletType" + getBulletType())));
+			tooltip.add(new TranslationTextComponent("psimisc.bulletCost", (int) (getCostModifier(stack) * 100)));
 		});
 	}
 

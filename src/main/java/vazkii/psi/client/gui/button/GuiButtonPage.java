@@ -13,6 +13,7 @@ package vazkii.psi.client.gui.button;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.util.text.TranslationTextComponent;
 import vazkii.psi.api.internal.TooltipHelper;
 import vazkii.psi.client.gui.GuiProgrammer;
 
@@ -45,7 +46,7 @@ public class GuiButtonPage extends Button {
             blit(x, y, isHovered() ? 216 : 198, right ? 145 : 155, width, height);
 
             if (isHovered)
-                gui.tooltip.add(TooltipHelper.local(right ? "psimisc.nextPage" : "psimisc.prevPage"));
+                gui.tooltip.add(new TranslationTextComponent(right ? "psimisc.nextPage" : "psimisc.prevPage"));
         }
     }
 

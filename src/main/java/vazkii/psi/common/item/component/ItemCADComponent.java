@@ -29,8 +29,6 @@ import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.List;
 
-import static vazkii.psi.api.internal.TooltipHelper.local;
-
 public abstract class ItemCADComponent extends BasicItem implements ICADComponent {
 
     private final HashMap<EnumCADStat, Integer> stats = new HashMap<>();
@@ -49,15 +47,15 @@ public abstract class ItemCADComponent extends BasicItem implements ICADComponen
         TooltipHelper.tooltipIfShift(tooltip, () -> {
             EnumCADComponent componentType = getComponentType(stack);
 
-            TranslationTextComponent componentName = local(componentType.getName());
-            TooltipHelper.addToTooltip(tooltip, "psimisc.componentType", componentName);
+            TranslationTextComponent componentName = new TranslationTextComponent(componentType.getName());
+            tooltip.add(new TranslationTextComponent("psimisc.componentType", componentName));
             for (EnumCADStat stat : EnumCADStat.class.getEnumConstants()) {
                 if (stat.getSourceType() == componentType) {
                     int statVal = getCADStatValue(stack, stat);
                     String statValStr = statVal == -1 ? "\u221E" : "" + statVal;
 
-                    TranslationTextComponent name = local(stat.getName());
-                    tooltip.add(new StringTextComponent(" " + TextFormatting.AQUA + name + TextFormatting.GRAY + ": " + statValStr));
+                    ITextComponent name = new TranslationTextComponent(stat.getName()).applyTextStyle(TextFormatting.AQUA);
+                    tooltip.add(new StringTextComponent(" ").appendSibling(name).appendText(": " + statValStr));
                 }
             }
         });

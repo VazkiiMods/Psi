@@ -12,6 +12,7 @@ package vazkii.psi.client.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
@@ -67,12 +68,12 @@ public class GuiCADAssembler extends ContainerScreen {
 
 			int i = 0;
 			ICAD cadItem = (ICAD) cad.getItem();
-			String stats = TooltipHelper.local("psimisc.stats").toString();
+			String stats = I18n.format("psimisc.stats");
 			String s = TextFormatting.BOLD + stats;
 			font.drawStringWithShadow(s, 213 - font.getStringWidth(s) / 2f, 34, color);
 
 			for (EnumCADStat stat : EnumCADStat.class.getEnumConstants()) {
-				s = (Psi.magical ? TextFormatting.LIGHT_PURPLE : TextFormatting.AQUA) + TooltipHelper.local(stat.getName()).toString() + TextFormatting.RESET + ": " + cadItem.getStatValue(cad, stat);
+				s = (Psi.magical ? TextFormatting.LIGHT_PURPLE : TextFormatting.AQUA) + I18n.format(stat.getName()) + TextFormatting.RESET + ": " + cadItem.getStatValue(cad, stat);
 				font.drawStringWithShadow(s, 179, 50 + i * 10, color);
 				i++;
 			}

@@ -14,6 +14,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.list.ExtendedList;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
@@ -153,7 +154,7 @@ public class GuiLeveling extends Screen {
 				RenderSystem.translatef(-x, -y, 0);
 			}
 
-			minecraft.fontRenderer.drawStringWithShadow(TooltipHelper.local(group.getUnlocalizedName()).getString(), left + 134, top + 12, 0xFFFFFF);
+			minecraft.fontRenderer.drawStringWithShadow(I18n.format(group.getUnlocalizedName()), left + 134, top + 12, 0xFFFFFF);
 
 			if (taken) {
 				if (listText != null) {
@@ -166,12 +167,12 @@ public class GuiLeveling extends Screen {
 				int colorOff = 0x777777;
 				int colorOn = 0x77FF77;
 
-				minecraft.fontRenderer.drawStringWithShadow(TooltipHelper.local("psimisc.requirements").getString(), left + 134, top + 32, 0xFFFFFF);
-				minecraft.fontRenderer.drawString(TooltipHelper.local("psimisc.levelDisplay", group.levelRequirement).getString(), left + 138, top + 42, data.getLevel() >= group.levelRequirement ? colorOn : colorOff);
+				minecraft.fontRenderer.drawStringWithShadow(I18n.format("psimisc.requirements"), left + 134, top + 32, 0xFFFFFF);
+				minecraft.fontRenderer.drawString(I18n.format("psimisc.levelDisplay", group.levelRequirement), left + 138, top + 42, data.getLevel() >= group.levelRequirement ? colorOn : colorOff);
 				int i = 0;
 				for (String s : group.requirements) {
 					PieceGroup reqGroup = PsiAPI.groupsForName.get(s);
-					minecraft.fontRenderer.drawString(TooltipHelper.local(reqGroup.getUnlocalizedName()).getString(), left + 138, top + 52 + i * 10, data.isPieceGroupUnlocked(s) ? colorOn : colorOff);
+					minecraft.fontRenderer.drawString(I18n.format(reqGroup.getUnlocalizedName()), left + 138, top + 52 + i * 10, data.isPieceGroupUnlocked(s) ? colorOn : colorOff);
 
 					i++;
 				}
@@ -179,14 +180,14 @@ public class GuiLeveling extends Screen {
 		}
 
 		if (LibMisc.BETA_TESTING) {
-			String betaTest = TooltipHelper.local("psimisc.wip").getString();
+			String betaTest = I18n.format("psimisc.wip");
 			minecraft.fontRenderer.drawStringWithShadow(betaTest, left + xSize / 2f - font.getStringWidth(betaTest) / 2f, top - 12, 0xFFFFFFFF);
 		}
 
 		String key = "psimisc.levelInfo";
 		if (minecraft.player.isCreative())
 			key = "psimisc.levelInfoCreative";
-		String s = TooltipHelper.local(key, data.getLevel(), data.getLevelPoints()).getString();
+		String s = I18n.format(key, data.getLevel(), data.getLevelPoints());
 		font.drawStringWithShadow(s, left + 4, top + ySize + 2, 0xFFFFFF);
 
 		listGroups.render(mouseX, mouseY, partialTicks);
@@ -313,8 +314,8 @@ public class GuiLeveling extends Screen {
 				else if (available)
 					color = 0xFFFFFF;
 
-				font.drawString(TooltipHelper.local(group.getUnlocalizedName()).getString(), left + 3, top + 4, color);
-				font.drawString(TooltipHelper.local("psimisc.levelDisplay", group.levelRequirement).getString(), left + 3, top + 14, color);
+				font.drawString(I18n.format(group.getUnlocalizedName()), left + 3, top + 4, color);
+				font.drawString(I18n.format("psimisc.levelDisplay", group.levelRequirement), left + 3, top + 14, color);
 			}
 		}
 

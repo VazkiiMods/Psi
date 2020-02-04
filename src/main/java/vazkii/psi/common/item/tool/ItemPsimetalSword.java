@@ -30,7 +30,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.arl.util.RegistryHelper;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ISocketable;
-import vazkii.psi.api.internal.TooltipHelper;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
@@ -39,8 +38,6 @@ import vazkii.psi.common.item.ItemCAD;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
-
-import static vazkii.psi.api.internal.TooltipHelper.local;
 
 public class ItemPsimetalSword extends SwordItem implements IPsimetalTool {
 
@@ -112,8 +109,8 @@ public class ItemPsimetalSword extends SwordItem implements IPsimetalTool {
     @OnlyIn(Dist.CLIENT)
     @Override
     public void addInformation(ItemStack stack, @Nullable World playerIn, List<ITextComponent> tooltip, ITooltipFlag advanced) {
-        TranslationTextComponent componentName = local(ISocketable.getSocketedItemName(stack, "psimisc.none"));
-        TooltipHelper.addToTooltip(tooltip, "psimisc.spellSelected", componentName);
+        ITextComponent componentName = ISocketable.getSocketedItemName(stack, "psimisc.none");
+	    tooltip.add(new TranslationTextComponent("psimisc.spellSelected", componentName));
     }
 
     @Override
