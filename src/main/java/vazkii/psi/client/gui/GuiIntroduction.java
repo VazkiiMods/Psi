@@ -64,6 +64,7 @@ public class GuiIntroduction extends Screen {
                     minecraft.displayGuiScreen(new GuiLeveling(true));
 
                 skip = false;
+                children.removeAll(buttons);
                 buttons.clear();
             }));
         }

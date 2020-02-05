@@ -213,9 +213,10 @@ public class GuiLeveling extends Screen {
 			boolean taken = data.isPieceGroupUnlocked(group.name);
 			boolean available = taken || group.isAvailable(data);
 
+			children.removeAll(buttons);
 			buttons.clear();
 			if (!taken && available && data.getLevelPoints() > 0)
-				buttons.add(new GuiButtonLearn(left + xSize, top + ySize - 30, this, button -> {
+				addButton(new GuiButtonLearn(left + xSize, top + ySize - 30, this, button -> {
 					PieceGroup group1 = groups.get(selected);
 					if (group1 != null) {
 						MessageRegister.HANDLER.sendToServer(new MessageLearnGroup(group1.name));

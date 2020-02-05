@@ -140,9 +140,10 @@ public class GuiProgrammer extends Screen {
 
         spellNameField.setText(spell.name);
 
+        children.removeAll(buttons);
         buttons.clear();
         onSelectedChanged();
-        buttons.add(new GuiButtonIO(left + xSize + 2, top + ySize - (spectator ? 16 : 32), true, this, button -> {
+        addButton(new GuiButtonIO(left + xSize + 2, top + ySize - (spectator ? 16 : 32), true, this, button -> {
             if (hasShiftDown()) {
                 if (((GuiButtonIO) button).out) {
                     CompoundNBT cmp = new CompoundNBT();
@@ -182,7 +183,7 @@ public class GuiProgrammer extends Screen {
             }
         }));
         if (!spectator)
-            buttons.add(new GuiButtonIO(left + xSize + 2, top + ySize - 16, false, this, button -> {
+            addButton(new GuiButtonIO(left + xSize + 2, top + ySize - 16, false, this, button -> {
                 if (hasShiftDown()) {
                     if (((GuiButtonIO) button).out) {
                         CompoundNBT cmp = new CompoundNBT();
@@ -899,6 +900,7 @@ public class GuiProgrammer extends Screen {
 	private void updatePanelButtons() {
         panelCursor = 0;
         buttons.removeAll(panelButtons);
+        children.removeAll(panelButtons);
         panelButtons.clear();
         visiblePieces.clear();
 
@@ -1000,7 +1002,7 @@ public class GuiProgrammer extends Screen {
                 }
             }));
 
-        buttons.addAll(panelButtons);
+        panelButtons.forEach(this::addButton);
     }
 
     /**
@@ -1109,6 +1111,7 @@ public class GuiProgrammer extends Screen {
 	private void closePanel() {
         panelEnabled = false;
         buttons.removeAll(panelButtons);
+        children.removeAll(panelButtons);
         panelButtons.clear();
     }
 
@@ -1160,6 +1163,7 @@ public class GuiProgrammer extends Screen {
 
 	public void onSelectedChanged() {
         buttons.removeAll(configButtons);
+        children.removeAll(configButtons);
         configButtons.clear();
         spellNameField.setEnabled(!spectator);
         spellNameField.setFocused2(false);
@@ -1194,7 +1198,7 @@ public class GuiProgrammer extends Screen {
                         i++;
                     }
 
-                    buttons.addAll(configButtons);
+                    configButtons.forEach(this::addButton);
                     configEnabled = true;
                     return;
                 }
