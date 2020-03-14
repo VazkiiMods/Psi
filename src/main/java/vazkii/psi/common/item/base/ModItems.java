@@ -40,7 +40,7 @@ public final class ModItems {
 	public static final BasicItem cadAssemblyIron = new ItemCADAssembly(LibItemNames.CAD_ASSEMBLY_IRON, defaultBuilder(), LibItemNames.CAD_IRON);
 	public static final BasicItem cadAssemblyGold = new ItemCADAssembly(LibItemNames.CAD_ASSEMBLY_GOLD, defaultBuilder(), LibItemNames.CAD_GOLD);
 	public static final BasicItem cadAssemblyPsimetal = new ItemCADAssembly(LibItemNames.CAD_ASSEMBLY_PSIMETAL, defaultBuilder(), LibItemNames.CAD_PSIMETAL);
-	public static final BasicItem cadAssemblyIvory = new ItemCADAssembly(LibItemNames.CAD_IVORY_PSIMETAL, defaultBuilder(), LibItemNames.CAD_IVORY_PSIMETAL);
+	public static final BasicItem cadAssemblyIvory = new ItemCADAssembly(LibItemNames.CAD_ASSEMBLY_IVORY_PSIMETAL, defaultBuilder(), LibItemNames.CAD_IVORY_PSIMETAL);
 	public static final BasicItem cadAssemblyEbony = new ItemCADAssembly(LibItemNames.CAD_ASSEMBLY_EBONY_PSIMETAL, defaultBuilder(), LibItemNames.CAD_EBONY_PSIMETAL);
 	public static final BasicItem cadAssemblyCreative = new ItemCADAssembly(LibItemNames.CAD_ASSEMBLY_CREATIVE, defaultBuilder(), LibItemNames.CAD_CREATIVE);
 
