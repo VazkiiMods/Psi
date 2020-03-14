@@ -38,11 +38,6 @@ public class GuiCADAssembler extends ContainerScreen<ContainerCADAssembler> {
 		super(containerCADAssembler, inventory, component);
 		this.player = inventory.player;
 		this.assembler = containerCADAssembler.assembler;
-	}
-
-	@Override
-	protected void init() {
-		super.init();
 		xSize = 256;
 		ySize = 225;
 	}

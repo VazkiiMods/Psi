@@ -96,20 +96,25 @@ public class BlockCADAssembler extends HorizontalBlock {
                 NetworkHooks.openGui((ServerPlayerEntity) playerIn, (INamedContainerProvider) te, pos);
                 return ActionResultType.SUCCESS;
             }
-        }
-        return ActionResultType.PASS;
-    }
+		}
+		return ActionResultType.PASS;
+	}
 
-    @Nullable
-    @Override
-    public INamedContainerProvider getContainer(BlockState p_220052_1_, World p_220052_2_, BlockPos p_220052_3_) {
-        return super.getContainer(p_220052_1_, p_220052_2_, p_220052_3_);
-    }
+	@Nullable
+	@Override
+	public INamedContainerProvider getContainer(BlockState p_220052_1_, World p_220052_2_, BlockPos p_220052_3_) {
+		return super.getContainer(p_220052_1_, p_220052_2_, p_220052_3_);
+	}
 
-    @Nullable
-    @Override
-    public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-        return new TileCADAssembler();
-    }
+	@Override
+	public boolean hasTileEntity(BlockState state) {
+		return true;
+	}
+
+	@Nullable
+	@Override
+	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+		return new TileCADAssembler();
+	}
 
 }

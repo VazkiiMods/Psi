@@ -141,6 +141,8 @@ public class TileCADAssembler extends TileSimpleInventory implements ITileCADAss
 
 	@Override
 	public boolean isBulletSlotEnabled(int slot) {
+		if (getSocketableStack().isEmpty())
+			return false;
 		ISocketableCapability socketable = getSocketable();
 		return socketable != null && socketable.isSocketSlotAvailable(slot);
 	}
