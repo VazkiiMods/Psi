@@ -19,7 +19,7 @@ apply plugin: 'maven'
 ext.configFile = file('build.properties')
 ext.config = parseConfig(configFile)
 
-def mc_version = "1.15.1"
+def mc_version = "1.15.2"
 version = "${config.version}-${config.build_number}"
 group = "vazkii.${config.mod_id}" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = config.mod_name
@@ -31,20 +31,9 @@ if (System.getenv('BUILD_NUMBER') != null) {
 }
 
 minecraft {
-    // The mappings can be changed at any time, and must be in the following format.
-    // snapshot_YYYYMMDD   Snapshot are built nightly.
-    // stable_#            Stables are built at the discretion of the MCP team.
-    // Use non-default mappings at your own risk. they may not always work.
-    // Simply re-run your setup task after changing the mappings to update your workspace.
-
-    mappings channel: "snapshot", version: "20200120-mixed-1.15.1"
+    mappings channel: "snapshot", version: "20200123-mixed-1.15.2"
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
-    // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
 
-    // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
-
-    // Default run configurations.
-    // These can be tweaked, removed, or duplicated as needed.
     runs {
         client {
             workingDirectory project.file('run')
@@ -114,11 +103,13 @@ repositories {
 }
 
 dependencies {
-    minecraft group: 'net.minecraftforge', name: 'forge', version: "${mc_version}-30.0.42"
+    minecraft group: 'net.minecraftforge', name: 'forge', version: "${mc_version}-31.1.12"
+
+    compile fg.deobf("vazkii.patchouli:Patchouli:1.15.2-1.2-28.142") { transitive = false }
 
     compile fg.deobf("vazkii.autoreglib:AutoRegLib:1.5-36.72")
-    compileOnly fg.deobf("mezz.jei:jei-${mc_version}:6.0.0.1:api")
-    runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}:6.0.0.1")
+    compileOnly fg.deobf("mezz.jei:jei-1.15.2:6.0.0.2:api")
+    runtimeOnly fg.deobf("mezz.jei:jei-1.15.2:6.0.0.2")
 }
 
 sourceSets.main.resources {

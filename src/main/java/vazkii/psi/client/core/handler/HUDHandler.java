@@ -22,7 +22,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
@@ -40,7 +39,6 @@ import vazkii.psi.api.cad.ICADColorizer;
 import vazkii.psi.api.cad.ISocketable;
 import vazkii.psi.api.cad.ISocketableCapability;
 import vazkii.psi.api.internal.PsiRenderHelper;
-import vazkii.psi.api.internal.TooltipHelper;
 import vazkii.psi.client.gui.GuiLeveling;
 import vazkii.psi.common.core.handler.ConfigHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
@@ -127,20 +125,7 @@ public final class HUDHandler {
 
 		RenderSystem.pushMatrix();
 		//TODO CHECK: Is this an alternative to .getScaleFactor()?
-		double scaleFactor = res.getGuiScaleFactor();
-
-
-		if (scaleFactor > ConfigHandler.CLIENT.maxPsiBarScale.get()) {
-			int guiScale = mc.gameSettings.guiScale;
-
-			mc.gameSettings.guiScale = ConfigHandler.CLIENT.maxPsiBarScale.get();
-			// TODO Check: I don't think this is needed
-			//res = new ScaledResolution(mc);
-			mc.gameSettings.guiScale = guiScale;
-
-			float s = (float) ConfigHandler.CLIENT.maxPsiBarScale.get() / (float) scaleFactor;
-			RenderSystem.scalef(s, s, s);
-		}
+		double scaleFactor = Math.max(res.getGuiScaleFactor(), ConfigHandler.CLIENT.maxPsiBarScale.get());
 
 		boolean right = ConfigHandler.CLIENT.psiBarOnRight.get();
 
