@@ -28,6 +28,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.lwjgl.opengl.ARBMultitexture;
@@ -38,6 +39,8 @@ import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.cad.ICADColorizer;
 import vazkii.psi.api.cad.ISocketable;
 import vazkii.psi.api.cad.ISocketableCapability;
+import vazkii.psi.api.gui.PsiHudElementType;
+import vazkii.psi.api.gui.RenderPsiHudEvent;
 import vazkii.psi.api.internal.PsiRenderHelper;
 import vazkii.psi.client.gui.GuiLeveling;
 import vazkii.psi.common.core.handler.ConfigHandler;
@@ -79,11 +82,17 @@ public final class HUDHandler {
 			MainWindow resolution = event.getWindow();
 			float partialTicks = event.getPartialTicks();
 
-			drawPsiBar(resolution, partialTicks);
-			renderSocketableEquippedName(resolution, partialTicks);
-			renderLevelUpIndicator(resolution);
-			renderRemainingItems(resolution, partialTicks);
-			renderHUDItem(resolution, partialTicks);
+
+			if (MinecraftForge.EVENT_BUS.post(new RenderPsiHudEvent(PsiHudElementType.PSI_BAR)))
+				drawPsiBar(resolution, partialTicks);
+			if (MinecraftForge.EVENT_BUS.post(new RenderPsiHudEvent(PsiHudElementType.SOCKETABLE_EQUIPPED_NAME)))
+				renderSocketableEquippedName(resolution, partialTicks);
+			if (MinecraftForge.EVENT_BUS.post(new RenderPsiHudEvent(PsiHudElementType.LEVEL_UP_INDICATOR)))
+				renderLevelUpIndicator(resolution);
+			if (MinecraftForge.EVENT_BUS.post(new RenderPsiHudEvent(PsiHudElementType.REMAINING_ITEMS)))
+				renderRemainingItems(resolution, partialTicks);
+			if (MinecraftForge.EVENT_BUS.post(new RenderPsiHudEvent(PsiHudElementType.HUD_ITEM)))
+				renderHUDItem(resolution, partialTicks);
 		}
 	}
 
