@@ -10,7 +10,7 @@
  */
 package vazkii.psi.common.spell.constant;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundNBT;
 import org.lwjgl.glfw.GLFW;
@@ -47,16 +47,16 @@ public class PieceConstantNumber extends SpellPiece {
 		float efflen = mc.fontRenderer.getStringWidth(valueStr);
 		float scale = 1;
 
-		while(efflen > 16) {
+		while (efflen > 16) {
 			scale++;
 			efflen = mc.fontRenderer.getStringWidth(valueStr) / scale;
 		}
 
-		GlStateManager.pushMatrix();
-		GlStateManager.scalef(1F / scale, 1F / scale, 1F);
-		GlStateManager.translatef((9 - efflen / 2) * scale, 4 * scale, 0);
+		RenderSystem.pushMatrix();
+		RenderSystem.scalef(1F / scale, 1F / scale, 1F);
+		RenderSystem.translatef((9 - efflen / 2) * scale, 4 * scale, 0);
 		mc.fontRenderer.drawString(valueStr, 0, 0, color);
-		GlStateManager.popMatrix();
+		RenderSystem.popMatrix();
 	}
 
 	@Override

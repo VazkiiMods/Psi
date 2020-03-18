@@ -6,7 +6,6 @@ import vazkii.psi.api.cad.EnumCADComponent;
 import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.common.entity.EntitySpellCharge;
-import vazkii.psi.common.entity.EntitySpellProjectile;
 
 public class ItemChargeSpellBullet extends ItemSpellBullet {
 
@@ -19,7 +18,7 @@ public class ItemChargeSpellBullet extends ItemSpellBullet {
         ItemStack cad = PsiAPI.getPlayerCAD(context.caster);
         ItemStack colorizer = ((ICAD) cad.getItem()).getComponentInSlot(cad, EnumCADComponent.DYE);
 
-        EntitySpellProjectile projectile = new EntitySpellCharge(context.caster.getEntityWorld(), context.caster);
+        EntitySpellCharge projectile = new EntitySpellCharge(context.caster.getEntityWorld(), context.caster);
         projectile.setInfo(context.caster, colorizer, stack);
         projectile.context = context;
         projectile.getEntityWorld().addEntity(projectile);

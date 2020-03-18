@@ -39,4 +39,5 @@ public class ItemGrenadeSpellBullet extends ItemSpellBullet {
     public String getBulletType() {
         return "grenade";
     }
+
 }

@@ -369,6 +369,7 @@ public final class HUDHandler {
 		}
 
 		RenderSystem.enableAlphaTest();
+		RenderSystem.disableBlend();
 		if (levelValue >= 1 && levelDisplayTime >= time + fadeoutTime)
 			showLevelUp = false;
 	}

@@ -39,13 +39,14 @@ import vazkii.psi.client.fx.WispParticleData;
 import vazkii.psi.client.gui.GuiProgrammer;
 import vazkii.psi.client.model.ModelCAD;
 import vazkii.psi.client.render.entity.RenderSpellCircle;
+import vazkii.psi.client.render.entity.RenderSpellProjectile;
 import vazkii.psi.client.render.tile.RenderTileProgrammer;
 import vazkii.psi.common.block.tile.TileProgrammer;
 import vazkii.psi.common.core.handler.ConfigHandler;
 import vazkii.psi.common.core.handler.PersistencyHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.proxy.IProxy;
-import vazkii.psi.common.entity.EntitySpellCircle;
+import vazkii.psi.common.entity.*;
 import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.lib.LibItemNames;
 import vazkii.psi.common.lib.LibMisc;
@@ -68,6 +69,10 @@ public class ClientProxy implements IProxy {
 		ClientRegistry.bindTileEntityRenderer(TileProgrammer.TYPE, RenderTileProgrammer::new);
 
 		RenderingRegistry.registerEntityRenderingHandler(EntitySpellCircle.TYPE, RenderSpellCircle::new);
+		RenderingRegistry.registerEntityRenderingHandler(EntitySpellCharge.TYPE, RenderSpellProjectile::new);
+		RenderingRegistry.registerEntityRenderingHandler(EntitySpellGrenade.TYPE, RenderSpellProjectile::new);
+		RenderingRegistry.registerEntityRenderingHandler(EntitySpellProjectile.TYPE, RenderSpellProjectile::new);
+		RenderingRegistry.registerEntityRenderingHandler(EntitySpellMine.TYPE, RenderSpellProjectile::new);
 	}
 
 	private void modelBake(ModelBakeEvent event) {

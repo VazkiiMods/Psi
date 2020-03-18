@@ -72,17 +72,17 @@ public class GuiButtonSideConfig extends Button {
 
             SpellParam.Side currSide = piece.paramSides.get(param);
             if (currSide == side) {
-                RenderSystem.color4f(PsiRenderHelper.r(param.color) / 255F,
-                        PsiRenderHelper.g(param.color) / 255F,
-                        PsiRenderHelper.b(param.color) / 255F, 1F);
-            } else RenderSystem.color3f(1F, 1F, 1F);
+				RenderSystem.color4f(PsiRenderHelper.r(param.color) / 255F,
+						PsiRenderHelper.g(param.color) / 255F,
+						PsiRenderHelper.b(param.color) / 255F, 1F);
+			} else RenderSystem.color3f(1F, 1F, 1F);
 
 			float wh = 8F;
 			float minU = side.u / 256F;
 			float minV = side.v / 256F;
 			float maxU = (side.u + wh) / 256F;
 			float maxV = (side.v + wh) / 256F;
-
+			RenderSystem.enableAlphaTest();
 			BufferBuilder wr = Tessellator.getInstance().getBuffer();
 			wr.begin(7, DefaultVertexFormats.POSITION_TEX);
 			wr.vertex(minX, maxY, 0).texture(minU, maxV).endVertex();
@@ -90,6 +90,7 @@ public class GuiButtonSideConfig extends Button {
 			wr.vertex(maxX, minY, 0).texture(maxU, minV).endVertex();
 			wr.vertex(minX, minY, 0).texture(minU, minV).endVertex();
 			Tessellator.getInstance().draw();
+			RenderSystem.disableAlphaTest();
 		}
 	}
 

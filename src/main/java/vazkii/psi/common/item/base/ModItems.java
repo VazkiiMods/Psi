@@ -84,7 +84,7 @@ public final class ModItems {
 	public static final BasicItem loopSpellBullet = new ItemLoopcastSpellBullet(LibItemNames.SPELL_BULLET_LOOP, defaultBuilder());
 	public static final BasicItem circleSpellBullet = new ItemCircleSpellBullet(LibItemNames.SPELL_BULLET_CIRCLE, defaultBuilder());
 	public static final BasicItem grenadeSpellBullet = new ItemGrenadeSpellBullet(LibItemNames.SPELL_BULLET_GRENADE, defaultBuilder());
-	public static final BasicItem chargeSpellBullet = new ItemGrenadeSpellBullet(LibItemNames.SPELL_BULLET_CHARGE, defaultBuilder());
+	public static final BasicItem chargeSpellBullet = new ItemChargeSpellBullet(LibItemNames.SPELL_BULLET_CHARGE, defaultBuilder());
 	public static final BasicItem mineSpellBullet = new ItemMineSpellBullet(LibItemNames.SPELL_BULLET_MINE, defaultBuilder());
 
 	public static final BasicItem spellDrive = new ItemSpellDrive(LibItemNames.SPELL_DRIVE, defaultBuilder());

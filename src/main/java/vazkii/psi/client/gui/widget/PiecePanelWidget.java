@@ -83,6 +83,15 @@ public class PiecePanelWidget extends Widget implements IRenderable, IGuiEventLi
 	}
 
 	@Override
+	public boolean charTyped(char p_charTyped_1_, int p_charTyped_2_) {
+		if (panelEnabled) {
+			if (searchField.charTyped(p_charTyped_1_, p_charTyped_2_))
+				return true;
+		}
+		return false;
+	}
+
+	@Override
 	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
 		if (panelEnabled) {
 			switch (keyCode) {
@@ -105,6 +114,7 @@ public class PiecePanelWidget extends Widget implements IRenderable, IGuiEventLi
 						return true;
 					}
 			}
+			searchField.keyPressed(keyCode, scanCode, modifiers);
 		}
 		return false;
 	}
@@ -134,13 +144,15 @@ public class PiecePanelWidget extends Widget implements IRenderable, IGuiEventLi
 					SpellPiece piece1 = ((GuiButtonSpellPiece) button).piece.copy();
 					if (piece1.getPieceType() == EnumPieceType.TRICK && parent.spellNameField.getText().isEmpty()) {
 						String pieceName = I18n.format(piece1.getUnlocalizedName());
-						String patternStr = I18n.format("psimisc.trickPattern");
+						String patternStr = I18n.format("psimisc.trick_pattern");
 						Pattern pattern = Pattern.compile(patternStr);
 						Matcher matcher = pattern.matcher(pieceName);
 						if (matcher.matches()) {
 							String spellName = matcher.group(1);
-							parent.spell.name = spellName;
 							parent.spellNameField.setText(spellName);
+							parent.spell.name = spellName;
+							parent.onSpellChanged(true);
+
 						}
 					}
 					parent.spell.grid.gridData[parent.selectedX][parent.selectedY] = piece1;
@@ -394,6 +406,7 @@ public class PiecePanelWidget extends Widget implements IRenderable, IGuiEventLi
 		});
 		searchField.visible = false;
 		searchField.setEnabled(false);
+		searchField.setFocused2(false);
 		parent.setFocused(parent.statusWidget);
 		parent.changeFocus(true);
 	}
@@ -401,8 +414,6 @@ public class PiecePanelWidget extends Widget implements IRenderable, IGuiEventLi
 	public void openPanel() {
 		closePanel();
 		panelEnabled = true;
-		parent.setFocused(parent.panelWidget);
-		parent.changeFocus(true);
 		page = Math.min(page, Math.max(0, getPageCount() - 1));
 		x = parent.gridLeft + (parent.selectedX + 1) * 18;
 		y = parent.gridTop;
@@ -413,7 +424,7 @@ public class PiecePanelWidget extends Widget implements IRenderable, IGuiEventLi
 		searchField.setVisible(true);
 		searchField.active = true;
 		searchField.setEnabled(true);
-		parent.spellNameField.setFocused2(false);
+		searchField.setFocused2(true);
 		updatePanelButtons();
 	}
 }

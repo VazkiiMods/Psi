@@ -378,7 +378,6 @@ public class GuiProgrammer extends Screen {
 		}
 
 		onSelectedChanged();
-		spellNameField.setFocused2(nameOnly);
 
 		if (!nameOnly || compiler != null && compiler.getError() != null && compiler.getError().equals(SpellCompilationException.NO_NAME) || spell.name.isEmpty())
 			compiler = new SpellCompiler(spell);
@@ -390,7 +389,6 @@ public class GuiProgrammer extends Screen {
 		configWidget.configButtons.clear();
 
 		spellNameField.setEnabled(!spectator);
-		spellNameField.setFocused2(true);
 		if (selectedX != -1 && selectedY != -1) {
 			SpellPiece piece = spell.grid.gridData[selectedX][selectedY];
 			if (piece != null) {
@@ -477,12 +475,12 @@ public class GuiProgrammer extends Screen {
 				if (piece.onKeyPressed(keyCode, scanCode, false)) {
 					pushState(true);
 					piece.onKeyPressed(keyCode, scanCode, true);
-					onSpellChanged(true);
+					onSpellChanged(false);
 					return true;
 				}
 			}
 		}
-		if (!spellNameField.isFocused() && !panelWidget.panelEnabled) {
+		if (!spellNameField.isFocused() && !panelWidget.panelEnabled && !commentEnabled) {
 			int param = -1;
 			for (int i = 0; i < 4; i++)
 				if (InputMappings.isKeyDown(minecraft.getWindow().getHandle(), GLFW.GLFW_KEY_1 + i))
@@ -508,6 +506,7 @@ public class GuiProgrammer extends Screen {
 					break;
 				case GLFW.GLFW_KEY_TAB:
 					spellNameField.setFocused2(!spellNameField.isFocused());
+					setFocusedDefault(spellNameField);
 					return true;
 				case GLFW.GLFW_KEY_UP:
 					if (hasControlDown()) {
@@ -666,14 +665,18 @@ public class GuiProgrammer extends Screen {
 				case GLFW.GLFW_KEY_ENTER:
 					panelWidget.openPanel();
 					return true;
-				case GLFW.GLFW_KEY_ESCAPE:
-					if (shouldCloseOnEsc())
-						this.onClose();
-					return true;
 			}
 		}
 		if (panelWidget.panelEnabled)
 			panelWidget.keyPressed(keyCode, scanCode, modifiers);
+		else if (keyCode == GLFW.GLFW_KEY_ESCAPE && !commentEnabled) {
+			this.onClose();
+			return true;
+		}
+		if (commentField.isFocused())
+			commentField.keyPressed(keyCode, scanCode, modifiers);
+		if (spellNameField.isFocused())
+			spellNameField.keyPressed(keyCode, scanCode, modifiers);
 		return false;
 	}
 

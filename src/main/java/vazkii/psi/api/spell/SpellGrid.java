@@ -12,7 +12,7 @@ package vazkii.psi.api.spell;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraftforge.api.distmarker.Dist;
@@ -50,10 +50,10 @@ public final class SpellGrid {
 			for(int j = 0; j < GRID_SIZE; j++) {
 				SpellPiece p = gridData[i][j];
 				if(p != null) {
-					GlStateManager.pushMatrix();
-					GlStateManager.translatef(i * 18, j * 18, 0);
+					RenderSystem.pushMatrix();
+					RenderSystem.translatef(i * 18, j * 18, 0);
 					p.draw();
-					GlStateManager.popMatrix();
+					RenderSystem.popMatrix();
 				}
 			}
 	}
