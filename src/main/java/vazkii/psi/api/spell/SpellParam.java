@@ -12,7 +12,6 @@ package vazkii.psi.api.spell;
 
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
-import vazkii.psi.api.internal.TooltipHelper;
 
 /**
  * Base abstract class for a spell parameter. See implementations
@@ -90,7 +89,7 @@ public abstract class SpellParam {
 	 */
 	public ITextComponent getRequiredTypeString() {
 		Class<?> evalType = getRequiredType();
-		String evalStr = evalType.getSimpleName();
+		String evalStr = evalType.getSimpleName().toLowerCase();
 		ITextComponent s = new TranslationTextComponent("psi.datatype." + evalStr);
 		if (requiresConstant())
 			s.appendText(" ").appendSibling(new TranslationTextComponent("psimisc.constant"));

@@ -22,13 +22,11 @@ import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.IArmorMaterial;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.LazyValue;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.DistExecutor;
 import vazkii.arl.interf.IItemColorProvider;
 import vazkii.arl.util.ItemNBTHelper;
 import vazkii.arl.util.RegistryHelper;
@@ -56,8 +54,6 @@ public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiE
     @OnlyIn(Dist.CLIENT)
     public static Function<EquipmentSlotType, BipedModel> modelSupplier;
 
-    @OnlyIn(Dist.CLIENT)
-    private final LazyValue<BipedModel> model;
     public final EquipmentSlotType type;
 
     private static final String TAG_TIMES_CAST = "timesCast";
@@ -70,8 +66,6 @@ public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiE
     public ItemPsimetalArmor(String name, EquipmentSlotType type, IArmorMaterial mat, Properties props) {
         super(mat, type, props);
         this.type = type;
-        this.model = DistExecutor.runForDist(() -> () -> new LazyValue<>(() -> this.provideArmorModelForSlot(type)),
-                () -> () -> null);
         RegistryHelper.register(this, name);
     }
 
@@ -167,10 +161,10 @@ public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiE
     @Override
     public void addInformation(ItemStack stack, @Nullable World playerIn, List<ITextComponent> tooltip, ITooltipFlag advanced) {
         TooltipHelper.tooltipIfShift(tooltip, () -> {
-            ITextComponent componentName = ISocketable.getSocketedItemName(stack, "psimisc.none");
-	        tooltip.add(new TranslationTextComponent("psimisc.spellSelected", componentName));
-	        tooltip.add(new TranslationTextComponent(getTrueEvent(stack)));
-        });
+			ITextComponent componentName = ISocketable.getSocketedItemName(stack, "psimisc.none");
+			tooltip.add(new TranslationTextComponent("psimisc.spell_selected", componentName));
+			tooltip.add(new TranslationTextComponent(getTrueEvent(stack)));
+		});
     }
 
     @Override
@@ -191,26 +185,27 @@ public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiE
 
     public int getColor(@Nonnull ItemStack stack) {
 		return ICADColorizer.DEFAULT_SPELL_COLOR;
-    }
+	}
 
 
-    @Override
-    @OnlyIn(Dist.CLIENT)
-    public IItemColor getItemColor() {
-        return (stack, tintIndex) -> tintIndex == 1 ? getColor(stack) : 0xFFFFFF;
-    }
+	@Override
+	@OnlyIn(Dist.CLIENT)
+	public IItemColor getItemColor() {
+		return (stack, tintIndex) -> tintIndex == 1 ? getColor(stack) : 0xFFFFFF;
+	}
 
 
-    @Nullable
-    @Override
-    public BipedModel getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlotType armorSlot, BipedModel _default) {
-        return model.getValue();
-    }
+	@Nullable
+	@Override
+	@OnlyIn(Dist.CLIENT)
+	public BipedModel getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlotType armorSlot, BipedModel _default) {
+		return provideArmorModelForSlot(slot);
+	}
 
-    @OnlyIn(Dist.CLIENT)
-    public BipedModel provideArmorModelForSlot(EquipmentSlotType slot) {
-        return new ModelPsimetalExosuit(slot);
-    }
+	@OnlyIn(Dist.CLIENT)
+	public BipedModel provideArmorModelForSlot(EquipmentSlotType slot) {
+		return new ModelPsimetalExosuit(slot);
+	}
 
 	@Override
 	public boolean requiresSneakForSpellSet(ItemStack stack) {

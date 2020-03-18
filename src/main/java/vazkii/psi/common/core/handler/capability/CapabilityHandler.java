@@ -39,7 +39,7 @@ import java.util.concurrent.Callable;
 import static vazkii.psi.api.PsiAPI.DETONATION_HANDLER_CAPABILITY;
 import static vazkii.psi.api.PsiAPI.SPELL_IMMUNE_CAPABILITY;
 
-@Mod.EventBusSubscriber(modid = LibMisc.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
+@Mod.EventBusSubscriber(modid = LibMisc.MOD_ID)
 public class CapabilityHandler {
 
 	public static void register() {

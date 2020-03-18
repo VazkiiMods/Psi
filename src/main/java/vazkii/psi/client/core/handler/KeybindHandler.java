@@ -18,7 +18,6 @@ import net.minecraft.util.Hand;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import vazkii.psi.api.cad.ISocketableCapability;
 import vazkii.psi.api.cad.ISocketableController;
-import vazkii.psi.client.gui.GuiLeveling;
 import vazkii.psi.client.gui.GuiSocketSelect;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_C;
@@ -58,7 +57,7 @@ public class KeybindHandler {
 				if (!stack.isEmpty() && (ISocketableCapability.isSocketable(stack) || isSocketableController(mc.player, stack)))
 					mc.displayGuiScreen(new GuiSocketSelect(stack));
 
-				else mc.displayGuiScreen(new GuiLeveling());
+				//TODO make it open patchoie
 
 			}
 		}

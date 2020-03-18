@@ -17,17 +17,18 @@ import vazkii.psi.api.spell.SpellPiece;
 import vazkii.psi.client.gui.GuiProgrammer;
 
 public class GuiButtonSpellPiece extends Button {
-    public final SpellPiece piece;
-    final GuiProgrammer gui;
+	public SpellPiece piece;
+	final GuiProgrammer gui;
 
-    public GuiButtonSpellPiece(GuiProgrammer gui, SpellPiece piece, int x, int y) {
-        super(x, y, 16, 16, "", button -> {
-        });
-        this.gui = gui;
-        this.piece = piece;
-    }
 
-    public GuiButtonSpellPiece(GuiProgrammer gui, SpellPiece piece, int x, int y, Button.IPressable pressable) {
+	public GuiButtonSpellPiece(GuiProgrammer gui, SpellPiece piece, int x, int y) {
+		super(x, y, 16, 16, "", button -> {
+		});
+		this.gui = gui;
+		this.piece = piece;
+	}
+
+	public GuiButtonSpellPiece(GuiProgrammer gui, SpellPiece piece, int x, int y, Button.IPressable pressable) {
         super(x, y, 16, 16, "", pressable);
         this.gui = gui;
         this.piece = piece;
@@ -36,21 +37,33 @@ public class GuiButtonSpellPiece extends Button {
     @Override
     public void renderButton(int mouseX, int mouseY, float pTicks) {
         if (active && visible) {
-            isHovered = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
+			isHovered = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
 
-            RenderSystem.pushMatrix();
-            RenderSystem.color3f(1F, 1F, 1F);
-            RenderSystem.translatef(x, y, 0);
-            piece.draw();
-            RenderSystem.popMatrix();
+			RenderSystem.pushMatrix();
+			RenderSystem.color3f(1f, 1f, 1f);
+			RenderSystem.translatef(x, y, 0);
+			piece.draw();
+			RenderSystem.popMatrix();
 
-            Minecraft.getInstance().getTextureManager().bindTexture(GuiProgrammer.texture);
 
-            if (isHovered()) {
-                piece.getTooltip(gui.tooltip);
-                blit(x, y, 16, gui.ySize, 16, 16);
-            }
+			Minecraft.getInstance().getTextureManager().bindTexture(GuiProgrammer.texture);
+			if (isHovered()) {
+				piece.getTooltip(gui.tooltip);
+				blit(x, y, 16, gui.ySize, 16, 16);
+			}
 
-        }
-    }
+		}
+	}
+
+	public SpellPiece getPiece() {
+		return piece;
+	}
+
+	public String getPieceSortingName() {
+		return piece.getSortingName();
+	}
+
+	public void setPiece(SpellPiece piece) {
+		this.piece = piece;
+	}
 }

@@ -23,7 +23,6 @@ import net.minecraft.util.Direction;
 import org.lwjgl.opengl.GL11;
 import vazkii.arl.util.ClientTicker;
 import vazkii.arl.util.RenderHelper;
-import vazkii.psi.api.internal.TooltipHelper;
 import vazkii.psi.client.gui.GuiProgrammer;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.base.ModBlocks;

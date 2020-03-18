@@ -58,6 +58,7 @@ public class BlockProgrammer extends HorizontalBlock {
 		setDefaultState(getStateContainer().getBaseState().with(HORIZONTAL_FACING, Direction.NORTH).with(ENABLED, false));
 	}
 
+
 	@Override
 	public ActionResultType onUse(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult rayTraceResult) {
 		ItemStack heldItem = player.getHeldItem(hand);
@@ -69,7 +70,7 @@ public class BlockProgrammer extends HorizontalBlock {
 			PlayerData data = PlayerDataHandler.get(player);
 			if (data.spellGroupsUnlocked.isEmpty()) {
 				if (!worldIn.isRemote)
-					player.sendMessage(new TranslationTextComponent("psimisc.cantUseProgrammer").applyTextStyle(TextFormatting.RED));
+					player.sendMessage(new TranslationTextComponent("psimisc.cant_use_programmer").applyTextStyle(TextFormatting.RED));
 				return ActionResultType.PASS;
 			}
 		}
@@ -84,7 +85,9 @@ public class BlockProgrammer extends HorizontalBlock {
 
 		if (player instanceof ServerPlayerEntity)
 			VanillaPacketDispatcher.dispatchTEToPlayer(programmer, (ServerPlayerEntity) player);
-		Psi.proxy.openProgrammerGUI(programmer);
+		if (worldIn.isRemote) {
+			Psi.proxy.openProgrammerGUI(programmer);
+		}
 		return ActionResultType.SUCCESS;
 	}
 
@@ -112,7 +115,7 @@ public class BlockProgrammer extends HorizontalBlock {
 				return ActionResultType.FAIL;
 			}
 		}
-		
+
 		return ActionResultType.PASS;
 	}
 
@@ -136,6 +139,11 @@ public class BlockProgrammer extends HorizontalBlock {
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
 		return new TileProgrammer();
+	}
+
+	@Override
+	public boolean hasTileEntity(BlockState state) {
+		return true;
 	}
 
 	@Override

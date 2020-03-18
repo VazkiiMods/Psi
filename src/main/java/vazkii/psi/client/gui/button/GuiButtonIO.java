@@ -14,10 +14,8 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
-import vazkii.psi.api.internal.TooltipHelper;
 import vazkii.psi.client.gui.GuiProgrammer;
 
 public class GuiButtonIO extends Button {
@@ -38,7 +36,6 @@ public class GuiButtonIO extends Button {
         this.gui = gui;
     }
 
-
     @Override
     public void renderButton(int par2, int par3, float pticks) {
         if (active && !gui.takingScreenshot) {
@@ -49,12 +46,12 @@ public class GuiButtonIO extends Button {
             blit(x, y, isHovered() ? 186 : 174, out ? 169 : 181, width, height);
 
             if (isHovered()) {
-                String key = out ? "psimisc.exportToClipboard" : "psimisc.importFromClipboard";
-                TextFormatting color = out ? TextFormatting.RED : TextFormatting.BLUE;
-                ITextComponent tip = new TranslationTextComponent(key).applyTextStyle(color);
-                gui.tooltip.add(tip);
-                gui.tooltip.add(new TranslationTextComponent("psimisc.mustHoldShift").applyTextStyle(TextFormatting.GRAY));
-            }
+				String key = out ? "psimisc.export_to_clipboard" : "psimisc.import_from_clipboard";
+				TextFormatting color = out ? TextFormatting.RED : TextFormatting.BLUE;
+				ITextComponent tip = new TranslationTextComponent(key).applyTextStyle(color);
+				gui.tooltip.add(tip);
+				gui.tooltip.add(new TranslationTextComponent("psimisc.must_hold_shift").applyTextStyle(TextFormatting.GRAY));
+			}
         }
     }
 

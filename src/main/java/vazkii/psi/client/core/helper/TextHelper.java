@@ -15,7 +15,6 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.resources.I18n;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import vazkii.psi.api.internal.TooltipHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -98,5 +97,6 @@ public final class TextHelper {
 	public static String toControlCodes(String s) {
 		return s.replaceAll("(?i)[\\dA-FK-OR]", "\u00a7$0");
 	}
+
 
 }

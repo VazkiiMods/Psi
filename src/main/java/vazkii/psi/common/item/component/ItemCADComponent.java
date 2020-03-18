@@ -48,7 +48,7 @@ public abstract class ItemCADComponent extends BasicItem implements ICADComponen
             EnumCADComponent componentType = getComponentType(stack);
 
             TranslationTextComponent componentName = new TranslationTextComponent(componentType.getName());
-            tooltip.add(new TranslationTextComponent("psimisc.componentType", componentName));
+            tooltip.add(new TranslationTextComponent("psimisc.component_type", componentName));
             for (EnumCADStat stat : EnumCADStat.class.getEnumConstants()) {
                 if (stat.getSourceType() == componentType) {
                     int statVal = getCADStatValue(stack, stat);

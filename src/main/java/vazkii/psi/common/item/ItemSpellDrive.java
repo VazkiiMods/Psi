@@ -29,8 +29,6 @@ import vazkii.psi.api.internal.VanillaPacketDispatcher;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.common.block.tile.TileProgrammer;
 import vazkii.psi.common.core.handler.PsiSoundHandler;
-import vazkii.psi.common.crafting.recipe.BulletToDriveRecipe;
-import vazkii.psi.common.crafting.recipe.DriveDuplicateRecipe;
 
 import javax.annotation.Nonnull;
 
@@ -90,7 +88,7 @@ public class ItemSpellDrive extends BasicItem {
 				if (enabled && !programmer.playerLock.isEmpty()) {
 					if (!programmer.playerLock.equals(playerIn.getName())) {
 						if (!worldIn.isRemote)
-							playerIn.sendMessage(new TranslationTextComponent("psimisc.notYourProgrammer").setStyle(new Style().setColor(TextFormatting.RED)));
+							playerIn.sendMessage(new TranslationTextComponent("psimisc.not_your_programmer").setStyle(new Style().setColor(TextFormatting.RED)));
 						return ActionResultType.SUCCESS;
 					}
 				} else programmer.playerLock = playerIn.getName().getString();

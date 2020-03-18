@@ -10,6 +10,7 @@
  */
 package vazkii.psi.api.spell;
 
+import com.google.common.base.CaseFormat;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -58,7 +59,7 @@ public abstract class SpellPiece {
 
 	public SpellPiece(Spell spell) {
 		this.spell = spell;
-		registryKey = PsiAPI.spellPieceRegistry.getKey(getClass()).toString();
+		registryKey = PsiAPI.spellPieceRegistry.getKey(getClass()).getPath();
 		initParams();
 	}
 
@@ -103,14 +104,14 @@ public abstract class SpellPiece {
 	 * @see #getEvaluationType()
 	 */
 	public ITextComponent getEvaluationTypeString() {
-        Class<?> evalType = getEvaluationType();
-        String evalStr = evalType == null ? "Null" : evalType.getSimpleName();
-        ITextComponent s = new TranslationTextComponent("psi.datatype." + evalStr);
-        if (getPieceType() == EnumPieceType.CONSTANT)
-            s.appendSibling(new TranslationTextComponent("psimisc.const"));
+		Class<?> evalType = getEvaluationType();
+		String evalStr = evalType == null ? "null" : evalType.getSimpleName().toLowerCase();
+		ITextComponent s = new TranslationTextComponent("psi.datatype." + evalStr);
+		if (getPieceType() == EnumPieceType.CONSTANT)
+			s.appendSibling(new TranslationTextComponent("psimisc.const"));
 
-        return s;
-    }
+		return s;
+	}
 
 	/**
 	 * Adds this piece's stats to the Spell's metadata.
@@ -184,18 +185,20 @@ public abstract class SpellPiece {
 	 */
 	@OnlyIn(Dist.CLIENT)
 	public void draw() {
-        drawBackground();
-        RenderSystem.translatef(0F, 0F, 0.1F);
-        drawAdditional();
-        if (isInGrid) {
-            RenderSystem.translatef(0F, 0F, 0.1F);
-            drawParams();
-            RenderSystem.translatef(0F, 0F, 0.1F);
-            drawComment();
-        }
+		RenderSystem.pushMatrix();
+		drawBackground();
+		RenderSystem.translatef(0F, 0F, 0.1F);
+		drawAdditional();
+		if (isInGrid) {
+			RenderSystem.translatef(0F, 0F, 0.1F);
+			drawParams();
+			RenderSystem.translatef(0F, 0F, 0.1F);
+			drawComment();
+		}
 
-        RenderSystem.color3f(1F, 1F, 1F);
-    }
+		RenderSystem.color3f(1F, 1F, 1F);
+		RenderSystem.popMatrix();
+	}
 
 	/**
 	 * Draws this piece's background.
@@ -280,15 +283,16 @@ public abstract class SpellPiece {
                         PsiRenderHelper.g(param.color) / 255F,
                         PsiRenderHelper.b(param.color) / 255F, 1F);
 
-                BufferBuilder wr = Tessellator.getInstance().getBuffer();
-                wr.begin(7, DefaultVertexFormats.POSITION_TEX);
-                wr.vertex(minX, maxY, 0).texture(minU, maxV).endVertex();
-                wr.vertex(maxX, maxY, 0).texture(maxU, maxV).endVertex();
-                wr.vertex(maxX, minY, 0).texture(maxU, minV).endVertex();
-                wr.vertex(minX, minY, 0).texture(minU, minV).endVertex();
-                Tessellator.getInstance().draw();
-            }
+				BufferBuilder wr = Tessellator.getInstance().getBuffer();
+				wr.begin(7, DefaultVertexFormats.POSITION_TEX);
+				wr.vertex(minX, maxY, 0).texture(minU, maxV).endVertex();
+				wr.vertex(maxX, maxY, 0).texture(maxU, maxV).endVertex();
+				wr.vertex(maxX, minY, 0).texture(maxU, minV).endVertex();
+				wr.vertex(minX, minY, 0).texture(minU, minV).endVertex();
+				Tessellator.getInstance().draw();
+			}
 		}
+		RenderSystem.disableAlphaTest();
 	}
 
 	/**
@@ -309,31 +313,31 @@ public abstract class SpellPiece {
 
     @OnlyIn(Dist.CLIENT)
     public void getTooltip(List<ITextComponent> tooltip) {
-	    tooltip.add(new TranslationTextComponent(getUnlocalizedName()));
-	    TooltipHelper.tooltipIfShift(tooltip, () -> addToTooltipAfterShift(tooltip));
+		tooltip.add(new TranslationTextComponent(getUnlocalizedName()));
+		TooltipHelper.tooltipIfShift(tooltip, () -> addToTooltipAfterShift(tooltip));
 
-        String addon = PsiAPI.pieceMods.get(getClass());
-        if (!addon.equals("psi")) {
+		String addon = PsiAPI.spellPieceRegistry.getKey(getClass()).getNamespace();
+		if (!addon.equals("psi")) {
 
-            if (ModList.get().getModContainerById(addon).isPresent())
-	            tooltip.add(new TranslationTextComponent("psimisc.providerMod", ModList.get().getModContainerById(addon).get().getNamespace()));
-        }
-    }
+			if (ModList.get().getModContainerById(addon).isPresent())
+				tooltip.add(new TranslationTextComponent("psimisc.provider_mod", ModList.get().getModContainerById(addon).get().getNamespace()));
+		}
+	}
 
     @OnlyIn(Dist.CLIENT)
     public void addToTooltipAfterShift(List<ITextComponent> tooltip) {
         tooltip.add(new TranslationTextComponent(getUnlocalizedDesc()).applyTextStyle(TextFormatting.GRAY));
 
-        tooltip.add(new StringTextComponent(""));
-        ITextComponent eval = getEvaluationTypeString().applyTextStyle(TextFormatting.GOLD);
-        tooltip.add(new StringTextComponent("<- ").appendSibling(eval));
+		tooltip.add(new StringTextComponent(""));
+		ITextComponent eval = getEvaluationTypeString().applyTextStyle(TextFormatting.GOLD);
+		tooltip.add(new StringTextComponent("<- ").appendSibling(eval));
 
-        for (SpellParam param : paramSides.keySet()) {
-            ITextComponent pName = new TranslationTextComponent(param.name).applyTextStyle(TextFormatting.YELLOW);
-            ITextComponent pEval = new StringTextComponent(" [").appendSibling(param.getRequiredTypeString()).appendText("]").applyTextStyle(TextFormatting.YELLOW);
-            tooltip.add(new StringTextComponent(param.canDisable ? "[->] " : " ->  ").appendSibling(pName).appendSibling(pEval));
-        }
-    }
+		for (SpellParam param : paramSides.keySet()) {
+			ITextComponent pName = new TranslationTextComponent(param.name).applyTextStyle(TextFormatting.YELLOW);
+			ITextComponent pEval = new StringTextComponent(" [").appendSibling(param.getRequiredTypeString()).appendText("]").applyTextStyle(TextFormatting.YELLOW);
+			tooltip.add(new StringTextComponent(param.canDisable ? "[->] " : " ->  ").appendSibling(pName).appendSibling(pEval));
+		}
+	}
 
 	/**
 	 * Checks whether this piece should intercept keystrokes in the programmer interface.
@@ -344,8 +348,18 @@ public abstract class SpellPiece {
 		return false;
 	}
 
+	/**
+	 * Due to changes on LWJGL, it is no longer easily possible to get a key from a keycode.
+	 * It is technically possible but it is unadvisable.
+	 */
+
 	@OnlyIn(Dist.CLIENT)
-	public boolean onKeyPressed(char c, int i, boolean doit) {
+	public boolean onCharTyped(char character, int keyCode, boolean doit) {
+		return false;
+	}
+
+	@OnlyIn(Dist.CLIENT)
+	public boolean onKeyPressed(int keyCode, int scanCode, boolean doit) {
 		return false;
 	}
 
@@ -360,22 +374,28 @@ public abstract class SpellPiece {
 	}
 
 	public static SpellPiece createFromNBT(Spell spell, CompoundNBT cmp) {
-        String key;
-        if (cmp.contains(TAG_KEY_LEGACY))
-            key = cmp.getString(TAG_KEY_LEGACY);
-        else key = cmp.getString(TAG_KEY);
+		String key;
+		if (cmp.contains(TAG_KEY_LEGACY))
+			key = cmp.getString(TAG_KEY_LEGACY);
+		else key = cmp.getString(TAG_KEY);
 
-        if (key.startsWith("_"))
-            key = PSI_PREFIX + key.substring(1);
+		if (key.startsWith("_"))
+			key = PSI_PREFIX + key.substring(1);
+		try {
+			key = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, key);
+		} catch (Exception e) {
+			//Haha yes
+		}
+		ResourceLocation rl = new ResourceLocation("psi", key);
+		boolean exists = PsiAPI.spellPieceRegistry.getValue(rl).isPresent();
 
-        ;
-        if (PsiAPI.spellPieceRegistry.getValue(new ResourceLocation(key)).isPresent()) {
-            Class<? extends SpellPiece> clazz = PsiAPI.spellPieceRegistry.getValue(new ResourceLocation(key)).get();
-            SpellPiece p = create(clazz, spell);
-            p.readFromNBT(cmp);
-            return p;
-        }
-        return null;
+		if (exists) {
+			Class<? extends SpellPiece> clazz = PsiAPI.spellPieceRegistry.getValue(new ResourceLocation("psi", key)).get();
+			SpellPiece p = create(clazz, spell);
+			p.readFromNBT(cmp);
+			return p;
+		}
+		return null;
     }
 
 	public static SpellPiece create(Class<? extends SpellPiece> clazz, Spell spell) {

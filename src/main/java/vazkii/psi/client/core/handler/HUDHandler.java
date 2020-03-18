@@ -23,7 +23,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -42,7 +41,6 @@ import vazkii.psi.api.cad.ISocketableCapability;
 import vazkii.psi.api.gui.PsiHudElementType;
 import vazkii.psi.api.gui.RenderPsiHudEvent;
 import vazkii.psi.api.internal.PsiRenderHelper;
-import vazkii.psi.client.gui.GuiLeveling;
 import vazkii.psi.common.core.handler.ConfigHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
@@ -83,15 +81,15 @@ public final class HUDHandler {
 			float partialTicks = event.getPartialTicks();
 
 
-			if (MinecraftForge.EVENT_BUS.post(new RenderPsiHudEvent(PsiHudElementType.PSI_BAR)))
+			if (!MinecraftForge.EVENT_BUS.post(new RenderPsiHudEvent(PsiHudElementType.PSI_BAR)))
 				drawPsiBar(resolution, partialTicks);
-			if (MinecraftForge.EVENT_BUS.post(new RenderPsiHudEvent(PsiHudElementType.SOCKETABLE_EQUIPPED_NAME)))
+			if (!MinecraftForge.EVENT_BUS.post(new RenderPsiHudEvent(PsiHudElementType.SOCKETABLE_EQUIPPED_NAME)))
 				renderSocketableEquippedName(resolution, partialTicks);
-			if (MinecraftForge.EVENT_BUS.post(new RenderPsiHudEvent(PsiHudElementType.LEVEL_UP_INDICATOR)))
+			if (!MinecraftForge.EVENT_BUS.post(new RenderPsiHudEvent(PsiHudElementType.LEVEL_UP_INDICATOR)))
 				renderLevelUpIndicator(resolution);
-			if (MinecraftForge.EVENT_BUS.post(new RenderPsiHudEvent(PsiHudElementType.REMAINING_ITEMS)))
+			if (!MinecraftForge.EVENT_BUS.post(new RenderPsiHudEvent(PsiHudElementType.REMAINING_ITEMS)))
 				renderRemainingItems(resolution, partialTicks);
-			if (MinecraftForge.EVENT_BUS.post(new RenderPsiHudEvent(PsiHudElementType.HUD_ITEM)))
+			if (!MinecraftForge.EVENT_BUS.post(new RenderPsiHudEvent(PsiHudElementType.HUD_ITEM)))
 				renderHUDItem(resolution, partialTicks);
 		}
 	}
@@ -133,8 +131,6 @@ public final class HUDHandler {
 			return;
 
 		RenderSystem.pushMatrix();
-		//TODO CHECK: Is this an alternative to .getScaleFactor()?
-		double scaleFactor = Math.max(res.getGuiScaleFactor(), ConfigHandler.CLIENT.maxPsiBarScale.get());
 
 		boolean right = ConfigHandler.CLIENT.psiBarOnRight.get();
 
@@ -257,6 +253,7 @@ public final class HUDHandler {
 			mc.fontRenderer.drawStringWithShadow(s2, x - offStr2, 0, 0xFFFFFF);
 			RenderSystem.popMatrix();
 		}
+		RenderSystem.disableBlend();
 		RenderSystem.popMatrix();
 	}
 
@@ -307,9 +304,6 @@ public final class HUDHandler {
 	@OnlyIn(Dist.CLIENT)
 	private static void renderLevelUpIndicator(MainWindow res) {
 		Minecraft mc = Minecraft.getInstance();
-		if (mc.currentScreen instanceof GuiLeveling)
-			showLevelUp = false;
-
 		if (!showLevelUp)
 			return;
 
@@ -351,7 +345,7 @@ public final class HUDHandler {
 		RenderSystem.popMatrix();
 
 		if (levelDisplayTime > fadeTime * 2) {
-			String s = I18n.format("psimisc.levelUpInfo1");
+			String s = I18n.format("psimisc.level_up_info1");
 			swidth = mc.fontRenderer.getStringWidth(s);
 			len = s.length();
 			effLen = Math.min(len, len * (levelDisplayTime - fadeTime * 2) / fadeTime);
@@ -363,7 +357,7 @@ public final class HUDHandler {
 		}
 
 		if (levelDisplayTime > fadeTime * 3) {
-			String s = I18n.format("psimisc.levelUpInfo2", new TranslationTextComponent(KeybindHandler.keybind.getTranslationKey()).applyTextStyle(TextFormatting.GREEN));
+			String s = I18n.format("psimisc.level_up_info2", TextFormatting.GREEN + KeybindHandler.keybind.getLocalizedName().toUpperCase() + TextFormatting.WHITE);
 			swidth = mc.fontRenderer.getStringWidth(s);
 			len = s.length();
 			effLen = Math.min(len, len * (levelDisplayTime - fadeTime * 3) / fadeTime);
@@ -375,7 +369,7 @@ public final class HUDHandler {
 		}
 
 		RenderSystem.enableAlphaTest();
-		if (levelValue > 1 && levelDisplayTime >= time + fadeoutTime)
+		if (levelValue >= 1 && levelDisplayTime >= time + fadeoutTime)
 			showLevelUp = false;
 	}
 

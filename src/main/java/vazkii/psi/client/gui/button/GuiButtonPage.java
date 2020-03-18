@@ -14,7 +14,6 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.util.text.TranslationTextComponent;
-import vazkii.psi.api.internal.TooltipHelper;
 import vazkii.psi.client.gui.GuiProgrammer;
 
 public class GuiButtonPage extends Button {
@@ -35,20 +34,21 @@ public class GuiButtonPage extends Button {
         this.right = right;
     }
 
-
     @Override
     public void renderButton(int par2, int par3, float pTicks) {
-        if (active) {
-            isHovered = par2 >= x && par3 >= y && par2 < x + width && par3 < y + height;
+		if (active) {
+			isHovered = par2 >= x && par3 >= y && par2 < x + width && par3 < y + height;
 
-            Minecraft.getInstance().textureManager.bindTexture(GuiProgrammer.texture);
-            RenderSystem.color4f(1F, 1F, 1F, 1F);
-            blit(x, y, isHovered() ? 216 : 198, right ? 145 : 155, width, height);
+			Minecraft.getInstance().textureManager.bindTexture(GuiProgrammer.texture);
+			RenderSystem.color4f(1F, 1F, 1F, 1F);
+			blit(x, y, isHovered() ? 216 : 198, right ? 145 : 155, width, height);
 
-            if (isHovered)
-                gui.tooltip.add(new TranslationTextComponent(right ? "psimisc.nextPage" : "psimisc.prevPage"));
-        }
-    }
+			if (isHovered)
+				gui.tooltip.add(new TranslationTextComponent(right ? "psimisc.nextPage" : "psimisc.prevPage"));
+		}
+	}
 
-
+	public boolean isRight() {
+		return right;
+	}
 }

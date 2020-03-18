@@ -20,7 +20,6 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import vazkii.psi.api.internal.TooltipHelper;
 import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.param.ParamAny;
 import vazkii.psi.common.lib.LibResources;
@@ -44,7 +43,7 @@ public class PieceConnector extends SpellPiece implements IRedirector {
 
 	@Override
 	public ITextComponent getEvaluationTypeString() {
-        return new TranslationTextComponent("psi.datatype.Any");
+        return new TranslationTextComponent("psi.datatype.any");
     }
 
 	@Override
@@ -70,47 +69,50 @@ public class PieceConnector extends SpellPiece implements IRedirector {
 	@OnlyIn(Dist.CLIENT)
 	public void drawSide(SpellParam.Side side) {
 		if(side.isEnabled()) {
-            Minecraft mc = Minecraft.getInstance();
-            mc.textureManager.bindTexture(lines);
+			Minecraft mc = Minecraft.getInstance();
+			mc.textureManager.bindTexture(lines);
 
-            float minU = 0;
-            float minV = 0;
-            switch (side) {
-                case LEFT:
-                    minU = 0.5f;
-                    break;
-                case RIGHT:
-                    break;
-                case TOP:
-                    minV = 0.5f;
-                    break;
-                case BOTTOM:
-                    minU = 0.5f;
-                    minV = 0.5f;
-                    break;
-                default:
-                    break;
-            }
+			float minU = 0;
+			float minV = 0;
+			switch (side) {
+				case LEFT:
+					minU = 0.5f;
+					break;
+				case RIGHT:
+					break;
+				case TOP:
+					minV = 0.5f;
+					break;
+				case BOTTOM:
+					minU = 0.5f;
+					minV = 0.5f;
+					break;
+				default:
+					break;
+			}
 
-            float maxU = minU + 0.5f;
-            float maxV = minV + 0.5f;
+			float maxU = minU + 0.5f;
+			float maxV = minV + 0.5f;
 
-            RenderSystem.color3f(1F, 1F, 1F);
-            BufferBuilder wr = Tessellator.getInstance().getBuffer();
-            wr.begin(7, DefaultVertexFormats.POSITION_TEX);
-            wr.vertex(0, 16, 0).texture(minU, maxV).endVertex();
-            wr.vertex(16, 16, 0).texture(maxU, maxV).endVertex();
-            wr.vertex(16, 0, 0).texture(maxU, minV).endVertex();
-            wr.vertex(0, 0, 0).texture(minU, minV).endVertex();
-            Tessellator.getInstance().draw();
-        }
+
+			RenderSystem.enableAlphaTest();
+			RenderSystem.color3f(1F, 1F, 1F);
+			BufferBuilder wr = Tessellator.getInstance().getBuffer();
+			wr.begin(7, DefaultVertexFormats.POSITION_TEX);
+			wr.vertex(0, 16, 0).texture(minU, maxV).endVertex();
+			wr.vertex(16, 16, 0).texture(maxU, maxV).endVertex();
+			wr.vertex(16, 0, 0).texture(maxU, minV).endVertex();
+			wr.vertex(0, 0, 0).texture(minU, minV).endVertex();
+			Tessellator.getInstance().draw();
+			RenderSystem.disableAlphaTest();
+		}
 	}
 
 	@Override
 	public void getShownPieces(List<SpellPiece> pieces) {
 		for(SpellParam.Side side : SpellParam.Side.class.getEnumConstants())
 			if(side.isEnabled()) {
-				PieceConnector piece = (PieceConnector) copy();
+				PieceConnector piece = (PieceConnector) SpellPiece.create(PieceConnector.class, new Spell());
 				piece.paramSides.put(piece.target, side);
 				pieces.add(piece);
 			}

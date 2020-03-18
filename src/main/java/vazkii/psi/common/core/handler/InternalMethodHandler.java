@@ -20,12 +20,13 @@ import vazkii.arl.util.RenderHelper;
 import vazkii.psi.api.internal.IInternalMethodHandler;
 import vazkii.psi.api.internal.IPlayerData;
 import vazkii.psi.api.spell.*;
+import vazkii.psi.client.gui.GuiProgrammer;
 import vazkii.psi.common.item.ItemCAD;
 import vazkii.psi.common.spell.SpellCache;
 import vazkii.psi.common.spell.SpellCompiler;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public final class InternalMethodHandler implements IInternalMethodHandler {
 
@@ -36,8 +37,7 @@ public final class InternalMethodHandler implements IInternalMethodHandler {
 
 	@Override
 	public ResourceLocation getProgrammerTexture() {
-		//return GuiProgrammer.texture;
-		return new ResourceLocation("missingno");
+		return GuiProgrammer.texture;
 	}
 
 	@Override
@@ -64,10 +64,7 @@ public final class InternalMethodHandler implements IInternalMethodHandler {
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public void renderTooltip(int x, int y, List<ITextComponent> tooltipData, int color, int color2) {
-		List<String> badVazkii = new ArrayList<>();
-		for (ITextComponent component : tooltipData)
-			badVazkii.add(component.getString());
-		RenderHelper.renderTooltip(x, y, badVazkii, color, color2);
+		RenderHelper.renderTooltip(x, y, tooltipData.stream().map(ITextComponent::getString).collect(Collectors.toList()), color, color2);
 	}
 
 	@Override

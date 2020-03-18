@@ -18,8 +18,6 @@ import net.minecraft.util.SoundEvents;
 import net.minecraft.util.registry.SimpleRegistry;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
-import net.minecraftforge.fml.ModContainer;
-import net.minecraftforge.fml.ModLoadingContext;
 import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.cad.ICADData;
 import vazkii.psi.api.cad.IPsiBarDisplay;
@@ -71,7 +69,6 @@ public final class PsiAPI {
 	public static final SimpleRegistry<Class<? extends SpellPiece>> spellPieceRegistry = new SimpleRegistry<>();
 	public static final HashMap<String, ResourceLocation> simpleSpellTextures = new HashMap<>();
 	public static final HashMap<Class<? extends SpellPiece>, PieceGroup> groupsForPiece = new HashMap<>();
-	public static final HashMap<Class<? extends SpellPiece>, String> pieceMods = new HashMap<>();
 	public static final HashMap<String, PieceGroup> groupsForName = new HashMap<>();
 
 	public static final List<TrickRecipe> trickRecipes = new ArrayList<>();
@@ -82,19 +79,11 @@ public final class PsiAPI {
 
 	public static int levelCap = 1;
 
-	private static String getCurrentModId() {
-		ModContainer activeModContainer = ModLoadingContext.get().getActiveContainer();
-		if (activeModContainer != null)
-			return activeModContainer.getModId();
-		return "psi";
-	}
-
 	/**
 	 * Registers a Spell Piece given its class, by which, it puts it in the registry.
 	 */
-	public static void registerSpellPiece(String key, Class<? extends SpellPiece> clazz) {
-		spellPieceRegistry.register(new ResourceLocation(key.toLowerCase()), clazz);
-		pieceMods.put(clazz, getCurrentModId());
+	public static void registerSpellPiece(ResourceLocation resourceLocation, Class<? extends SpellPiece> clazz) {
+		PsiAPI.spellPieceRegistry.register(resourceLocation, clazz);
 	}
 
 	/**
@@ -103,18 +92,13 @@ public final class PsiAPI {
 	 * If you want to put the spell piece elsewhere or use some other type of resource location, feel free to map
 	 * the texture directly through {@link #simpleSpellTextures}.<br>
 	 * As SpellPiece objects can have custom renders, depending on how you wish to handle yours, you might
-	 * not even need to use this. In that case use {@link #registerSpellPiece(String, Class)}
+	 * not even need to use this. In that case use {@link #registerSpellPiece(ResourceLocation, Class)}
 	 */
-	public static void registerSpellPieceAndTexture(String key, Class<? extends SpellPiece> clazz) {
-		registerSpellPieceAndTexture(key, getCurrentModId(), clazz);
+	public static void registerSpellPieceAndTexture(ResourceLocation resourceLocation, Class<? extends SpellPiece> clazz) {
+		registerSpellPiece(resourceLocation, clazz);
+		PsiAPI.simpleSpellTextures.put(resourceLocation.getPath(), new ResourceLocation(resourceLocation.getNamespace(), String.format("textures/spell/%s.png", resourceLocation.getPath())));
 	}
 
-	private static void registerSpellPieceAndTexture(String key, String mod, Class<? extends SpellPiece> clazz) {
-		registerSpellPiece(key, clazz);
-		
-		String textureName = key.replaceAll("([a-z0-9])([A-Z])", "$1_$2").toLowerCase();
-		simpleSpellTextures.put(key, new ResourceLocation(mod, String.format("textures/spell/%s.png", textureName)));
-	}
 
 	/**
 	 * Adds a piece to a group. This must be done for every piece, or it'll not be selectable in the programmer

@@ -161,7 +161,7 @@ public class ItemCAD extends BasicItem implements ICAD, ISpellSettable, IItemCol
 		ItemStack playerCad = PsiAPI.getPlayerCAD(playerIn);
 		if (playerCad != itemStackIn) {
 			if (!worldIn.isRemote)
-				playerIn.sendMessage(new TranslationTextComponent("psimisc.multipleCads").setStyle(new Style().setColor(TextFormatting.RED)));
+				playerIn.sendMessage(new TranslationTextComponent("psimisc.multiple_cads").setStyle(new Style().setColor(TextFormatting.RED)));
 			return new ActionResult<>(ActionResultType.SUCCESS, itemStackIn);
 		}
 
@@ -259,7 +259,7 @@ public class ItemCAD extends BasicItem implements ICAD, ISpellSettable, IItemCol
 					MinecraftForge.EVENT_BUS.post(new SpellCastEvent(spell, context, player, data, cad, bullet));
 					return true;
 				} else if (!world.isRemote)
-					player.sendMessage(new TranslationTextComponent("psimisc.weakCad").setStyle(new Style().setColor(TextFormatting.RED)));
+					player.sendMessage(new TranslationTextComponent("psimisc.weak_cad").setStyle(new Style().setColor(TextFormatting.RED)));
 			}
 		}
 
@@ -574,7 +574,7 @@ public class ItemCAD extends BasicItem implements ICAD, ISpellSettable, IItemCol
 	public void addInformation(ItemStack stack, @Nullable World playerin, List<ITextComponent> tooltip, ITooltipFlag advanced) {
 		TooltipHelper.tooltipIfShift(tooltip, () -> {
 			ITextComponent componentName = ISocketable.getSocketedItemName(stack, "psimisc.none");
-			tooltip.add(new TranslationTextComponent("psimisc.spellSelected", componentName));
+			tooltip.add(new TranslationTextComponent("psimisc.spell_selected", componentName));
 
 			for (EnumCADComponent componentType : EnumCADComponent.class.getEnumConstants()) {
 				ItemStack componentStack = getComponentInSlot(stack, componentType);

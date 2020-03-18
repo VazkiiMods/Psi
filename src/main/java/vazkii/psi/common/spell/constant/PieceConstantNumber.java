@@ -10,11 +10,14 @@
  */
 package vazkii.psi.common.spell.constant;
 
-import net.minecraft.client.Minecraft;
 import com.mojang.blaze3d.platform.GlStateManager;
+import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundNBT;
 import org.lwjgl.glfw.GLFW;
-import vazkii.psi.api.spell.*;
+import vazkii.psi.api.spell.EnumPieceType;
+import vazkii.psi.api.spell.Spell;
+import vazkii.psi.api.spell.SpellContext;
+import vazkii.psi.api.spell.SpellPiece;
 import vazkii.psi.common.Psi;
 
 public class PieceConstantNumber extends SpellPiece {
@@ -62,34 +65,61 @@ public class PieceConstantNumber extends SpellPiece {
 	}
 
 	@Override
-	public boolean onKeyPressed(char c, int i, boolean doit) {
-		if("FDfd".indexOf(c) >= 0)
+	public boolean onCharTyped(char character, int keyCode, boolean doit) {
+		if ("FDfd".indexOf(character) >= 0)
 			return false;
 
 		String oldStr = valueStr;
 		String newStr = valueStr;
-		if(newStr.equals("0") || newStr.equals("-0")) {
-			if(c == '-')
+		if (newStr.equals("0") || newStr.equals("-0")) {
+			if (character == '-')
 				newStr = "-0";
-			else if(c != '.')
+			else if (character != '.')
 				newStr = newStr.replace("0", "");
 		}
 
-		if(i == GLFW.GLFW_KEY_BACKSPACE) {
-			if(newStr.length() == 2 && newStr.startsWith("-"))
-				newStr = "-0";
-			else if(newStr.equals("-"))
-				newStr = "0";
-			else if(!newStr.isEmpty())
-				newStr = newStr.substring(0, newStr.length() - 1);
-		} else if(c != '-')
-			newStr += c;
+		if (character != '-')
+			newStr += character;
 
-		if(newStr.isEmpty())
+		if (newStr.isEmpty())
 			newStr = "0";
 		newStr = newStr.trim();
 
-		if(newStr.length() > 5)
+		if (newStr.length() > 5)
+			return false;
+
+		String newValueStr;
+		try {
+			Double.parseDouble(newStr);
+			newValueStr = newStr;
+		} catch (NumberFormatException e) {
+			return false;
+		}
+
+		if (doit)
+			valueStr = newValueStr;
+
+		return !newValueStr.equals(oldStr);
+	}
+
+	@Override
+	public boolean onKeyPressed(int keyCode, int scanCode, boolean doit) {
+		String oldStr = valueStr;
+		String newStr = valueStr;
+		if (keyCode == GLFW.GLFW_KEY_BACKSPACE) {
+			if (newStr.length() == 2 && newStr.startsWith("-"))
+				newStr = "-0";
+			else if (newStr.equals("-"))
+				newStr = "0";
+			else if (!newStr.isEmpty())
+				newStr = newStr.substring(0, newStr.length() - 1);
+		}
+
+		if (newStr.isEmpty())
+			newStr = "0";
+		newStr = newStr.trim();
+
+		if (newStr.length() > 5)
 			return false;
 
 		String newValueStr;

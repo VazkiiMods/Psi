@@ -31,16 +31,16 @@ public class GuiButtonSideConfig extends Button {
     final int paramIndex;
     final SpellParam.Side side;
 
+
     public GuiButtonSideConfig(GuiProgrammer gui, int gridX, int gridY, int paramIndex, String paramName, SpellParam.Side side, int x, int y) {
-        super(x, y, 8, 8, "", button -> {
-        });
-        this.gui = gui;
-        this.gridX = gridX;
-        this.gridY = gridY;
-        this.paramIndex = paramIndex;
-        this.paramName = paramName;
-        this.side = side;
-    }
+		super(x, y, 8, 8, "", Button::onPress);
+		this.gui = gui;
+		this.gridX = gridX;
+		this.gridY = gridY;
+		this.paramIndex = paramIndex;
+		this.paramName = paramName;
+		this.side = side;
+	}
 
     public GuiButtonSideConfig(GuiProgrammer gui, int gridX, int gridY, int paramIndex, String paramName, SpellParam.Side side, int x, int y, IPressable pressable) {
         super(x, y, 8, 8, "", pressable);
@@ -77,40 +77,40 @@ public class GuiButtonSideConfig extends Button {
                         PsiRenderHelper.b(param.color) / 255F, 1F);
             } else RenderSystem.color3f(1F, 1F, 1F);
 
-            float wh = 8F;
-            float minU = side.u / 256F;
-            float minV = side.v / 256F;
-            float maxU = (side.u + wh) / 256F;
-            float maxV = (side.v + wh) / 256F;
+			float wh = 8F;
+			float minU = side.u / 256F;
+			float minV = side.v / 256F;
+			float maxU = (side.u + wh) / 256F;
+			float maxV = (side.v + wh) / 256F;
 
-            BufferBuilder wr = Tessellator.getInstance().getBuffer();
-            wr.begin(7, DefaultVertexFormats.POSITION_TEX);
-            wr.vertex(minX, maxY, 0).texture(minU, maxV).endVertex();
-            wr.vertex(maxX, maxY, 0).texture(maxU, maxV).endVertex();
-            wr.vertex(maxX, minY, 0).texture(maxU, minV).endVertex();
-            wr.vertex(minX, minY, 0).texture(minU, minV).endVertex();
-            Tessellator.getInstance().draw();
-        }
-    }
+			BufferBuilder wr = Tessellator.getInstance().getBuffer();
+			wr.begin(7, DefaultVertexFormats.POSITION_TEX);
+			wr.vertex(minX, maxY, 0).texture(minU, maxV).endVertex();
+			wr.vertex(maxX, maxY, 0).texture(maxU, maxV).endVertex();
+			wr.vertex(maxX, minY, 0).texture(maxU, minV).endVertex();
+			wr.vertex(minX, minY, 0).texture(minU, minV).endVertex();
+			Tessellator.getInstance().draw();
+		}
+	}
 
-    public boolean matches(int index, SpellParam.Side side) {
-        return paramIndex == index && this.side == side;
-    }
+	public boolean matches(int index, SpellParam.Side side) {
+		return paramIndex == index && this.side == side;
+	}
 
-	public void onClick() {
+	public static void performAction(GuiProgrammer gui, int gridX, int gridY, String paramName, SpellParam.Side side) {
 		SpellPiece piece = gui.spell.grid.gridData[gridX][gridY];
-		if(piece == null)
+		if (piece == null)
 			return;
 
 		SpellParam param = piece.params.get(paramName);
-		if(param == null)
+		if (param == null)
 			return;
 
 		piece.paramSides.put(param, side);
 	}
 
-
-
-
-
+	@Override
+	public void onPress() {
+		super.onPress();
+	}
 }

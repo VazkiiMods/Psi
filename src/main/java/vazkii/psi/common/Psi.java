@@ -11,6 +11,7 @@
 package vazkii.psi.common;
 
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.CrashReportExtender;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModList;
@@ -52,7 +53,7 @@ public class Psi {
 	public Psi() {
 		instance = this;
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::commonSetup);
-		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::serverStartingEvent);
+		MinecraftForge.EVENT_BUS.addListener(this::serverStartingEvent);
 		proxy = DistExecutor.runForDist(() -> ClientProxy::new, () -> ServerProxy::new);
 		proxy.registerHandlers();
 	}

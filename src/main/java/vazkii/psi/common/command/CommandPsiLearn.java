@@ -12,11 +12,9 @@ package vazkii.psi.common.command;
 
 import com.google.common.collect.Lists;
 import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.Message;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
@@ -36,7 +34,6 @@ import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.network.MessageRegister;
 import vazkii.psi.common.network.message.MessageDataSync;
 
-import javax.annotation.Nonnull;
 import java.util.List;
 
 public class CommandPsiLearn {
@@ -62,6 +59,7 @@ public class CommandPsiLearn {
             groups = Lists.newArrayList(level0);
             groups.addAll(PsiAPI.groupsForName.keySet());
         }
+        groups.add("*");
         return groups;
     }
 
@@ -133,7 +131,7 @@ public class CommandPsiLearn {
 	public static ITextComponent getGroupComponent(String group) {
 		if (group.equals(level0)) {
 			ITextComponent nameComponent = new StringTextComponent("[")
-					.appendSibling(new TranslationTextComponent("psimisc.fakeLevel.psidust"))
+					.appendSibling(new TranslationTextComponent("psimisc.fake_level.psidust"))
 					.appendText("]");
             nameComponent.getStyle().setColor(TextFormatting.AQUA);
             nameComponent.getStyle().setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TranslationTextComponent("psimisc.levelDisplay", 0)));

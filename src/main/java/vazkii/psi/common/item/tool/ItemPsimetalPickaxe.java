@@ -98,7 +98,7 @@ public class ItemPsimetalPickaxe extends PickaxeItem implements IPsimetalTool {
 	@Override
 	public void addInformation(ItemStack stack, @Nullable World playerIn, List<ITextComponent> tooltip, ITooltipFlag advanced) {
 		ITextComponent componentName = ISocketable.getSocketedItemName(stack, "psimisc.none");
-		tooltip.add(new TranslationTextComponent("psimisc.spellSelected", componentName));
+		tooltip.add(new TranslationTextComponent("psimisc.spell_selected", componentName));
 	}
 
 	@Override

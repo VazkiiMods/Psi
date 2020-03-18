@@ -90,8 +90,8 @@ public class ItemSpellBullet extends BasicItem implements ISpellContainer {
 	@Override
 	public void addInformation(ItemStack stack, @Nullable World playerIn, List<ITextComponent> tooltip, ITooltipFlag advanced) {
 		TooltipHelper.tooltipIfShift(tooltip, () -> {
-			tooltip.add(new TranslationTextComponent("psimisc.bulletType", new TranslationTextComponent("psi.bulletType" + getBulletType())));
-			tooltip.add(new TranslationTextComponent("psimisc.bulletCost", (int) (getCostModifier(stack) * 100)));
+			tooltip.add(new TranslationTextComponent("psimisc.bullet_type", new TranslationTextComponent("psi.bulletType" + getBulletType())));
+			tooltip.add(new TranslationTextComponent("psimisc.bullet_cost", (int) (getCostModifier(stack) * 100)));
 		});
 	}
 

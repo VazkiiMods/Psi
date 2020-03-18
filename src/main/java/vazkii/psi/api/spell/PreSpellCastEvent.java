@@ -1,15 +1,16 @@
 package vazkii.psi.api.spell;
 
-import javax.annotation.Nullable;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.eventbus.api.Cancelable;
 import net.minecraftforge.eventbus.api.Event;
 import vazkii.psi.api.internal.IPlayerData;
 
+import javax.annotation.Nullable;
+
 /**
  * Posted before a spell executes.
- *
+ * <p>
  * This event is {@link Cancelable}.
  */
 @Cancelable
@@ -29,7 +30,7 @@ public class PreSpellCastEvent extends Event {
 	private final ItemStack bullet;
 
 	@Nullable
-	private String cancellationMessage = "psimisc.canceledSpell";
+	private String cancellationMessage = "psimisc.canceled_spell";
 
 	public PreSpellCastEvent(int cost, float sound, int particles, int cooldown, Spell spell, SpellContext context, PlayerEntity player, IPlayerData playerData, ItemStack cad, ItemStack bullet) {
 		this.cost = cost;

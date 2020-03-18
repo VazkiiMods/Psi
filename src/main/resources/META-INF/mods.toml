@@ -11,7 +11,7 @@ description='''
 Psionic Spellcasting Instruments
 '''
 [[dependencies.psi]]
-    modId="arl"
+    modId="autoreglib"
     mandatory=true
     versionRange="[1.5-36,)"
     ordering="AFTER"
