@@ -12,11 +12,10 @@ package vazkii.psi.client.model;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
-import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.inventory.EquipmentSlotType;
 
-public class ModelPsimetalExosuit extends BipedModel {
+public class ModelPsimetalExosuit extends ModelArmor {
 
     private final ModelRenderer helmAnchor;
     private final ModelRenderer helm;
@@ -46,11 +45,9 @@ public class ModelPsimetalExosuit extends BipedModel {
     private final ModelRenderer sensor;
     private final ModelRenderer sensorColor;
 
-    EquipmentSlotType slot;
 
     public ModelPsimetalExosuit(EquipmentSlotType slot) {
-        super(1);
-        this.slot = slot;
+        super(slot);
 
         textureWidth = 64;
         textureHeight = 128;
@@ -186,9 +183,4 @@ public class ModelPsimetalExosuit extends BipedModel {
     }
 
 
-    public void setRotateAngle(ModelRenderer render, float x, float y, float z) {
-        render.rotateAngleX = x;
-        render.rotateAngleY = y;
-        render.rotateAngleZ = z;
-    }
 }
