@@ -44,6 +44,7 @@ public class JEICompat implements IModPlugin {
 		registry.addRecipeCategories(new TrickCraftingCategory(helpers.getGuiHelper()));
 	}
 
+
 	@Override
 	public void registerRecipes(IRecipeRegistration registration) {
 		registration.addRecipes(PsiAPI.trickRecipes, TrickCraftingCategory.UID);

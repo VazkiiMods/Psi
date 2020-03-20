@@ -258,6 +258,14 @@ public class GuiProgrammer extends Screen {
 		if (selectedX != -1 && selectedY != -1 && !takingScreenshot)
 			blit(gridLeft + selectedX * 18, gridTop + selectedY * 18, 32, ySize, 16, 16);
 
+		if (hasAltDown()) {
+			tooltip.clear();
+			cursorX = selectedX;
+			cursorY = selectedY;
+			mouseX = gridLeft + cursorX * 18 + 10;
+			mouseY = gridTop + cursorY * 18 + 8;
+		}
+
 		SpellPiece pieceAtCursor = null;
 		if (cursorX != -1 && cursorY != -1) {
 			pieceAtCursor = spell.grid.gridData[cursorX][cursorY];
@@ -316,8 +324,13 @@ public class GuiProgrammer extends Screen {
 		}
 
 
+		List<ITextComponent> legitTooltip = null;
 		if (hasAltDown())
-			tooltip = new ArrayList<>();
+			legitTooltip = new ArrayList<>(tooltip);
+
+
+		if (hasAltDown())
+			tooltip = legitTooltip;
 
 
 		if (!takingScreenshot && pieceAtCursor != null) {
