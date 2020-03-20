@@ -888,6 +888,8 @@ public class PlayerDataHandler {
             double x = player.lastTickPosX + (player.getX() - player.lastTickPosX) * partTicks - renderManager.info.getProjectedView().x;
             double y = player.lastTickPosY + (player.getY() - player.lastTickPosY) * partTicks - renderManager.info.getProjectedView().y;
             double z = player.lastTickPosZ + (player.getZ() - player.lastTickPosZ) * partTicks - renderManager.info.getProjectedView().z;
+            ms.push();
+            ms.translate(x, y, z); // todo 1.15 recheck this
 
             float scale = 0.75F;
             if (loopcasting) {
@@ -905,8 +907,10 @@ public class PlayerDataHandler {
                 color = icad.getSpellColor(cad);
             }
 
-            RenderSpellCircle.renderSpellCircle(ClientTicker.ticksInGame + partTicks, scale, 1, x, y, z, 0, 1, 0, color, ms, IRenderTypeBuffer.immediate(Tessellator.getInstance().getBuffer()));
-            GlStateManager.disableLighting();
+            IRenderTypeBuffer.Impl buffers = IRenderTypeBuffer.immediate(Tessellator.getInstance().getBuffer());
+            RenderSpellCircle.renderSpellCircle(ClientTicker.ticksInGame + partTicks, scale, 1, 0, 1, 0, color, ms, buffers);
+            buffers.draw();
+            ms.pop();
         }
 
 		public static class Deduction {

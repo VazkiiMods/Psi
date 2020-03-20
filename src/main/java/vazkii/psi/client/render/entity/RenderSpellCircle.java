@@ -47,27 +47,25 @@ public class RenderSpellCircle extends EntityRenderer<EntitySpellCircle> {
 	}
 
 
-	//TODO Willie take a look at this!
 	@Override
 	public void render(EntitySpellCircle entity, float entityYaw, float partialTicks, MatrixStack ms, IRenderTypeBuffer buffers, int light) {
 		ms.push();
-		int colorVal = ICADColorizer.DEFAULT_SPELL_COLOR;
+		int color = ICADColorizer.DEFAULT_SPELL_COLOR;
 		ItemStack colorizer = entity.getDataManager().get(EntitySpellCircle.COLORIZER_DATA);
 		if (!colorizer.isEmpty() && colorizer.getItem() instanceof ICADColorizer)
-			colorVal = Psi.proxy.getColorForColorizer(colorizer);
+			color = Psi.proxy.getColorForColorizer(colorizer);
 		float alive = entity.getTimeAlive() + partialTicks;
-		float s1 = Math.min(1F, alive / EntitySpellCircle.CAST_DELAY);
+		float scale = Math.min(1F, alive / EntitySpellCircle.CAST_DELAY);
 		if (alive > EntitySpellCircle.LIVE_TIME - EntitySpellCircle.CAST_DELAY)
-			s1 = 1F - Math.min(1F, Math.max(0, alive - (EntitySpellCircle.LIVE_TIME - EntitySpellCircle.CAST_DELAY)) / EntitySpellCircle.CAST_DELAY);
-		renderSpellCircle(alive, s1, 1, entity.getX(), entity.getY(), entity.getZ(), 0, 1, 0, colorVal, ms, buffers);
+			scale = 1F - Math.min(1F, Math.max(0, alive - (EntitySpellCircle.LIVE_TIME - EntitySpellCircle.CAST_DELAY)) / EntitySpellCircle.CAST_DELAY);
+		renderSpellCircle(alive, scale, 1, 0, 1, 0, color, ms, buffers);
 		ms.pop();
 	}
 
-	public static void renderSpellCircle(float alive, float scale, float horizontalScale, double x, double y, double z, float xDir, float yDir, float zDir, int color, MatrixStack ms, IRenderTypeBuffer buffers) {
+	public static void renderSpellCircle(float alive, float scale, float horizontalScale, float xDir, float yDir, float zDir, int color, MatrixStack ms, IRenderTypeBuffer buffers) {
 
 		ms.push();
 		double ratio = 0.0625 * horizontalScale;
-		ms.translate(x, y, z);
 
 		float mag = xDir * xDir + yDir * yDir + zDir * zDir;
 		zDir /= mag;
