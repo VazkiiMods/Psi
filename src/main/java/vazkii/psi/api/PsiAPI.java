@@ -74,7 +74,7 @@ public final class PsiAPI {
 
 
 	public static final SimpleRegistry<Class<? extends SpellPiece>> spellPieceRegistry = new SimpleRegistry<>();
-	public static final HashMap<String, ResourceLocation> simpleSpellTextures = new HashMap<>();
+	public static final HashMap<ResourceLocation, ResourceLocation> simpleSpellTextures = new HashMap<>();
 	public static final Multimap<ResourceLocation, Class<? extends SpellPiece>> advancementGroups = HashMultimap.create();
 	public static final HashMap<Class<? extends SpellPiece>, ResourceLocation> advancementGroupsInverse = new HashMap<>();
 	public static final HashMap<ResourceLocation, Class<? extends SpellPiece>> mainPieceForGroup = new HashMap<>();
@@ -103,7 +103,7 @@ public final class PsiAPI {
 	 */
 	public static void registerSpellPieceAndTexture(ResourceLocation resourceLocation, Class<? extends SpellPiece> clazz) {
 		registerSpellPiece(resourceLocation, clazz);
-		PsiAPI.simpleSpellTextures.put(resourceLocation.getPath(), new ResourceLocation(resourceLocation.getNamespace(), String.format("textures/spell/%s.png", resourceLocation.getPath())));
+		PsiAPI.simpleSpellTextures.put(resourceLocation, new ResourceLocation(resourceLocation.getNamespace(), String.format("textures/spell/%s.png", resourceLocation.getPath())));
 	}
 
 

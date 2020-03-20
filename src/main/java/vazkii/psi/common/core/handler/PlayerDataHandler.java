@@ -12,7 +12,6 @@ package vazkii.psi.common.core.handler;
 
 import com.google.common.collect.ImmutableSet;
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
@@ -690,7 +689,7 @@ public class PlayerDataHandler {
 		}
 
 		@Override
-		public boolean isPieceGroupUnlocked(ResourceLocation group, @Nullable String name) {
+		public boolean isPieceGroupUnlocked(ResourceLocation group, @Nullable ResourceLocation name) {
 			PlayerEntity player = playerWR.get();
 			if (player == null)
 				return false;

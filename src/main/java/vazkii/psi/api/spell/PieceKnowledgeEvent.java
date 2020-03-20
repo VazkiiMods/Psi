@@ -35,7 +35,7 @@ public class PieceKnowledgeEvent extends Event {
 	private final ResourceLocation pieceGroup;
 
 	@Nullable
-	private final String pieceName;
+	private final ResourceLocation pieceName;
 
 	@Nonnull
 	private final PlayerEntity player;
@@ -45,7 +45,7 @@ public class PieceKnowledgeEvent extends Event {
 
 	private final boolean isUnlocked;
 
-	public PieceKnowledgeEvent(@Nonnull ResourceLocation pieceGroup, @Nullable String pieceName, @Nonnull PlayerEntity player, @Nonnull IPlayerData data, boolean isUnlocked) {
+	public PieceKnowledgeEvent(@Nonnull ResourceLocation pieceGroup, @Nullable ResourceLocation pieceName, @Nonnull PlayerEntity player, @Nonnull IPlayerData data, boolean isUnlocked) {
 		this.pieceGroup = pieceGroup;
 		this.pieceName = pieceName;
 		this.player = player;
@@ -66,7 +66,7 @@ public class PieceKnowledgeEvent extends Event {
 	 * May be null if called from legacy code or in a situation where only the group's presence matters.
 	 */
 	@Nullable
-	public String getPieceName() {
+	public ResourceLocation getPieceName() {
 		return pieceName;
 	}
 

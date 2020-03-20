@@ -131,7 +131,7 @@ public class PiecePanelWidget extends Widget implements IRenderable, IGuiEventLi
 			Class<? extends SpellPiece> clazz = event.getSpellPieceRegistry().getValue(key).get();
 			ResourceLocation group = PsiAPI.advancementGroupsInverse.get(clazz);
 
-			if (!parent.getMinecraft().player.isCreative() && (group == null || !playerData.isPieceGroupUnlocked(group, key.getPath())))
+			if (!parent.getMinecraft().player.isCreative() && (group == null || !playerData.isPieceGroupUnlocked(group, key)))
 				continue;
 
 			SpellPiece piece = SpellPiece.create(clazz, parent.spell);

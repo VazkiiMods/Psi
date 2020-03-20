@@ -12,10 +12,11 @@ package vazkii.psi.api.spell;
 
 import com.google.common.base.CaseFormat;
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.Matrix4f;
+import net.minecraft.client.renderer.RenderState;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
@@ -42,26 +43,26 @@ import java.util.Map;
 public abstract class SpellPiece {
 
 	private static final String TAG_KEY_LEGACY = "spellKey";
-	
+
 	private static final String TAG_KEY = "key";
 	private static final String TAG_PARAMS = "params";
 	private static final String TAG_COMMENT = "comment";
 
 	private static final String PSI_PREFIX = "psi.spellparam.";
-	
-	public final String registryKey;
+
+	public final ResourceLocation registryKey;
 	public final Spell spell;
 
 	public boolean isInGrid = false;
 	public int x, y;
 	public String comment;
-	
+
 	public final Map<String, SpellParam> params = new LinkedHashMap<>();
 	public final Map<SpellParam, SpellParam.Side> paramSides = new LinkedHashMap<>();
 
 	public SpellPiece(Spell spell) {
 		this.spell = spell;
-		registryKey = PsiAPI.spellPieceRegistry.getKey(getClass()).getPath();
+		registryKey = PsiAPI.spellPieceRegistry.getKey(getClass());
 		initParams();
 	}
 
@@ -382,17 +383,24 @@ public abstract class SpellPiece {
 		} catch (Exception e) {
 			//Haha yes
 		}
-		ResourceLocation rl = new ResourceLocation("psi", key);
-		boolean exists = PsiAPI.spellPieceRegistry.getValue(rl).isPresent();
+		boolean exists = false;
+		ResourceLocation rl = new ResourceLocation(key);
+		if (PsiAPI.spellPieceRegistry.getValue(rl).isPresent()) {
+			exists = true;
+		} else {
+			rl = new ResourceLocation("psi", key);
+			if (PsiAPI.spellPieceRegistry.getValue(rl).isPresent())
+				exists = true;
+		}
 
 		if (exists) {
-			Class<? extends SpellPiece> clazz = PsiAPI.spellPieceRegistry.getValue(new ResourceLocation("psi", key)).get();
+			Class<? extends SpellPiece> clazz = PsiAPI.spellPieceRegistry.getValue(rl).get();
 			SpellPiece p = create(clazz, spell);
 			p.readFromNBT(cmp);
 			return p;
 		}
 		return null;
-    }
+	}
 
 	public static SpellPiece create(Class<? extends SpellPiece> clazz, Spell spell) {
 		try {
@@ -430,7 +438,7 @@ public abstract class SpellPiece {
         if (comment == null)
             comment = "";
 
-        cmp.putString(TAG_KEY, registryKey.replaceAll("^" + PSI_PREFIX, "_"));
+		cmp.putString(TAG_KEY, registryKey.toString().replaceAll("^" + PSI_PREFIX, "_"));
 
         int paramCount = 0;
         CompoundNBT paramCmp = new CompoundNBT();

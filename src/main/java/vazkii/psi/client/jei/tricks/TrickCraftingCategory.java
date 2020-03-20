@@ -28,29 +28,25 @@ import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.lib.LibMisc;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class TrickCraftingCategory implements IRecipeCategory<TrickRecipe> {
 	public static final ResourceLocation UID = new ResourceLocation(LibMisc.MOD_ID, "trick");
-	
+
 	private static final int INPUT_SLOT = 0;
 	private static final int CAD_SLOT = 1;
 	private static final int OUTPUT_SLOT = 2;
-	
+
 	private static final int trickX = 43;
 	private static final int trickY = 24;
 
-	private final Map<String, IDrawable> trickIcons = new HashMap<>(); //TODO Switch to ResLoc keys once that gets fixed up
+	private final Map<ResourceLocation, IDrawable> trickIcons = new HashMap<>(); //TODO Switch to ResLoc keys once that gets fixed up
 
 	private final IDrawable background;
 	private final IDrawable icon;
 	private final IDrawable programmerHover;
-	
+
 	private final IGuiHelper helper;
 
 	public TrickCraftingCategory(IGuiHelper helper) {

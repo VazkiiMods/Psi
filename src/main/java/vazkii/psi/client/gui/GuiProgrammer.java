@@ -497,6 +497,11 @@ public class GuiProgrammer extends Screen {
 				}
 			}
 		}
+		if (spellNameField.isFocused() && keyCode == GLFW.GLFW_KEY_TAB) {
+			spellNameField.setFocused2(false);
+			setFocusedDefault(null);
+			return true;
+		}
 		if (!spellNameField.isFocused() && !panelWidget.panelEnabled && !commentEnabled) {
 			int param = -1;
 			for (int i = 0; i < 4; i++)
@@ -659,6 +664,8 @@ public class GuiProgrammer extends Screen {
 						commentField.setEnabled(true);
 						spellNameField.setEnabled(false);
 						commentField.setText(piece.comment);
+						commentField.setFocused2(true);
+						setFocusedDefault(commentField);
 						commentEnabled = true;
 						return true;
 					}
@@ -764,6 +771,7 @@ public class GuiProgrammer extends Screen {
 		commentField.setFocused2(false);
 		commentField.setVisible(false);
 		commentField.setEnabled(false);
+		setFocusedDefault(null);
 		commentField.setText("");
 		commentEnabled = false;
 	}

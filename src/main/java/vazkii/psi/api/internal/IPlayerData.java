@@ -71,7 +71,7 @@ public interface IPlayerData {
 	/**
 	 * Gets if the piece and group name are unlocked.
 	 */
-	boolean isPieceGroupUnlocked(ResourceLocation group, @Nullable String piece);
+	boolean isPieceGroupUnlocked(ResourceLocation group, @Nullable ResourceLocation piece);
 
 	/**
 	 * Unlocks the given piece group.

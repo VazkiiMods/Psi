@@ -44,7 +44,7 @@ public class GuiButtonPage extends Button {
 			blit(x, y, hover ? 216 : 198, right ? 145 : 155, width, height);
 
 			if (hover)
-				gui.tooltip.add(new TranslationTextComponent(right ? "psimisc.nextPage" : "psimisc.prevPage"));
+				gui.tooltip.add(new TranslationTextComponent(right ? "psimisc.next_page" : "psimisc.prev_page"));
 		}
 	}
 
