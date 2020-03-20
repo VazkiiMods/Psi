@@ -355,7 +355,7 @@ public class GuiProgrammer extends Screen {
 
 
 		if (takingScreenshot) {
-			String name = spellNameField.getText();
+			String name = spell.name;
 			CompoundNBT cmp = new CompoundNBT();
 			if (spell != null)
 				spell.writeToNBT(cmp);

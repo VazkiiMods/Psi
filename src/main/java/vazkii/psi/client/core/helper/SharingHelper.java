@@ -13,7 +13,9 @@ package vazkii.psi.client.core.helper;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.texture.TextureUtil;
+import net.minecraft.client.renderer.texture.NativeImage;
+import net.minecraft.util.ScreenShotHelper;
+import net.minecraft.util.Util;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -22,14 +24,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
-import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.nio.IntBuffer;
@@ -53,7 +48,7 @@ public final class SharingHelper {
 					"(to get the code click the link, RES won't show it)\n" +
 					"\n" +
 					"---" +
-					"\n" + 
+					"\n" +
 					"*REPLACE THIS WITH A DESCRIPTION OF YOUR SPELL  \n" +
 					"Make sure you read the rules before posting. Look on the sidebar: https://www.reddit.com/r/psispellcompendium/  \n" +
 					"Delete this part before you submit.*";
@@ -62,9 +57,7 @@ public final class SharingHelper {
 			String encodedTitle = URLEncoder.encode(title, "UTF-8");
 
 			String redditUrl = "https://old.reddit.com/r/psispellcompendium/submit?title=" + encodedTitle + "&text=" + encodedContents;
-			
-			if(Desktop.isDesktopSupported())
-				Desktop.getDesktop().browse(new URI(redditUrl));
+			Util.getOSType().openURI(new URI(redditUrl));
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -73,8 +66,7 @@ public final class SharingHelper {
 	public static void uploadAndOpen(String title, String export) {
 		String url = uploadImage(title, export);
 		try {
-			if(Desktop.isDesktopSupported())
-				Desktop.getDesktop().browse(new URI(url));
+			Util.getOSType().openURI(new URI(url));
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -113,44 +105,14 @@ public final class SharingHelper {
 	}
 
 	public static String takeScreenshot() throws Exception {
-        Minecraft mc = Minecraft.getInstance();
+		Minecraft mc = Minecraft.getInstance();
 
-        int screenWidth = mc.getWindow().getWidth();
-        int screenHeight = mc.getWindow().getHeight();
+		int screenWidth = mc.getWindow().getWidth();
+		int screenHeight = mc.getWindow().getHeight();
 
-        int scale = (int) mc.getWindow().getGuiScaleFactor();
-
-        int width = 380 * scale;
-        int height = 200 * scale;
-
-        int left = screenWidth / 2 - width / 2;
-        int top = screenHeight / 2 - height / 2;
-
-        int i = width * height;
-
-        if (pixelBuffer == null || pixelBuffer.capacity() < i) {
-			pixelBuffer = BufferUtils.createIntBuffer(i);
-			pixelValues = new int[i];
-        }
-
-        GL11.glPixelStorei(GL11.GL_PACK_ALIGNMENT, 1);
-        GL11.glPixelStorei(GL11.GL_UNPACK_ALIGNMENT, 1);
-        pixelBuffer.clear();
-
-        GL11.glReadPixels(left, top, width, height, GL12.GL_BGRA, GL12.GL_UNSIGNED_INT_8_8_8_8_REV, pixelBuffer);
-
-        pixelBuffer.get(pixelValues);
-        //TODO unsure
-        TextureUtil.func_225685_a_(pixelBuffer, width, height);
-        BufferedImage bufferedimage;
-
-        bufferedimage = new BufferedImage(width, height, 1);
-        bufferedimage.setRGB(0, 0, width, height, pixelValues, 0, width);
-
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        ImageIO.write(bufferedimage, "png", stream);
-        byte[] bArray = stream.toByteArray();
-        return Base64.getEncoder().encodeToString(bArray);
-    }
+		NativeImage image = ScreenShotHelper.createScreenshot(screenWidth, screenHeight, mc.getFramebuffer());
+		byte[] bArray = image.getBytes();
+		return Base64.getEncoder().encodeToString(bArray);
+	}
 
 }
