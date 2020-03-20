@@ -16,6 +16,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+import javax.annotation.Nullable;
 import java.util.UUID;
 
 /**
@@ -41,6 +42,7 @@ public final class Spell {
 		grid.draw(ms, buffers, light);
 	}
 
+	@Nullable
 	public static Spell createFromNBT(CompoundNBT cmp) {
 		if(cmp == null || !cmp.getBoolean(TAG_VALID))
 			return null;

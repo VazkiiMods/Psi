@@ -13,10 +13,10 @@ package vazkii.psi.common.block.tile;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.play.server.SUpdateTileEntityPacket;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.registries.ObjectHolder;
-import vazkii.arl.block.tile.TileMod;
 import vazkii.psi.api.cad.ICADColorizer;
 import vazkii.psi.api.internal.PsiRenderHelper;
 import vazkii.psi.common.Psi;
@@ -27,7 +27,7 @@ import vazkii.psi.common.lib.LibMisc;
 
 import java.util.Arrays;
 
-public class TileConjured extends TileMod {
+public class TileConjured extends TileEntity {
 	@ObjectHolder(LibMisc.PREFIX_MOD + LibBlockNames.CONJURED)
 	public static TileEntityType<TileConjured> TYPE;
 
@@ -121,17 +121,32 @@ public class TileConjured extends TileMod {
 	}
 
 	@Override
-	public void writeSharedNBT(CompoundNBT cmp) {
-		CompoundNBT stackCmp = new CompoundNBT();
-		if(!colorizer.isEmpty())
-			stackCmp = colorizer.write(stackCmp);
-		cmp.put(TAG_COLORIZER, stackCmp);
+	public CompoundNBT write(CompoundNBT cmp) {
+		cmp = super.write(cmp);
+		if(!colorizer.isEmpty()) {
+			cmp.put(TAG_COLORIZER, colorizer.write(new CompoundNBT()));
+		}
+		return cmp;
 	}
 
 	@Override
-	public void readSharedNBT(CompoundNBT cmp) {
-		CompoundNBT stackCmp = cmp.getCompound(TAG_COLORIZER);
-		colorizer = ItemStack.read(stackCmp);
+	public void read(CompoundNBT cmp) {
+		super.read(cmp);
+		if (cmp.contains(TAG_COLORIZER)) {
+			colorizer = ItemStack.read(cmp.getCompound(TAG_COLORIZER));
+		} else {
+			colorizer = ItemStack.EMPTY;
+		}
+	}
+
+	@Override
+	public SUpdateTileEntityPacket getUpdatePacket() {
+		return new SUpdateTileEntityPacket(getPos(), 0, write(new CompoundNBT()));
+	}
+
+	@Override
+	public CompoundNBT getUpdateTag() {
+		return write(new CompoundNBT());
 	}
 
 }
