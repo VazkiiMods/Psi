@@ -48,9 +48,8 @@ public class BlockProgrammer extends HorizontalBlock {
 
 	public static final BooleanProperty ENABLED = BooleanProperty.create("enabled");
 
-	public BlockProgrammer() {
-		super(Block.Properties.create(Material.IRON).hardnessAndResistance(5, 10).sound(SoundType.METAL).nonOpaque());
-		setRegistryName(LibMisc.MOD_ID, LibBlockNames.PROGRAMMER);
+	public BlockProgrammer(Properties props) {
+		super(props);
 		setDefaultState(getStateContainer().getBaseState().with(HORIZONTAL_FACING, Direction.NORTH).with(ENABLED, false));
 	}
 

@@ -28,6 +28,9 @@ import vazkii.psi.common.item.tool.ItemPsimetalSword;
 import vazkii.psi.common.lib.LibItemNames;
 
 public final class ModItems {
+	public static void init() {
+		// TODO 1.15 move away from ARL and remove this
+	}
 
 	public static final BasicItem psidust = new BasicItem("psidust", defaultBuilder());
 	public static final BasicItem psimetal = new BasicItem("psimetal", defaultBuilder());

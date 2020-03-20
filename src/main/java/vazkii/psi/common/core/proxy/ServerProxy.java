@@ -8,7 +8,6 @@ import net.minecraftforge.fml.server.ServerLifecycleHooks;
 import vazkii.psi.common.block.tile.TileProgrammer;
 
 public class ServerProxy implements IProxy {
-
     @Override
     public PlayerEntity getClientPlayer() {
         return null;
@@ -28,7 +27,6 @@ public class ServerProxy implements IProxy {
 	public void onLevelUp(ResourceLocation level) {
 		//NOOP
 	}
-
 
     @Override
     public void sparkleFX(World world, double x, double y, double z, float r, float g, float b, float motionx, float motiony, float motionz, float size, int m) {

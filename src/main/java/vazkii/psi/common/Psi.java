@@ -51,6 +51,7 @@ public class Psi {
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::commonSetup);
 		proxy = DistExecutor.runForDist(() -> ClientProxy::new, () -> ServerProxy::new);
 		proxy.registerHandlers();
+		ModItems.init();
 	}
 
 	private void commonSetup(FMLCommonSetupEvent event) {

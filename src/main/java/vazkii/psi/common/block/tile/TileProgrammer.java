@@ -15,11 +15,12 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.play.server.SUpdateTileEntityPacket;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.registries.ObjectHolder;
-import vazkii.arl.block.tile.TileMod;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.common.block.BlockProgrammer;
 import vazkii.psi.common.block.base.ModBlocks;
@@ -27,9 +28,10 @@ import vazkii.psi.common.lib.LibBlockNames;
 import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.spell.SpellCompiler;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class TileProgrammer extends TileMod implements INamedContainerProvider {
+public class TileProgrammer extends TileEntity {
 	@ObjectHolder(LibMisc.PREFIX_MOD + LibBlockNames.PROGRAMMER)
 	public static TileEntityType<TileProgrammer> TYPE;
 
@@ -61,20 +63,22 @@ public class TileProgrammer extends TileMod implements INamedContainerProvider {
 		}
 	}
 
+	@Nonnull
 	@Override
-	public void writeSharedNBT(CompoundNBT cmp) {
-		super.writeSharedNBT(cmp);
+	public CompoundNBT write(CompoundNBT cmp) {
+		cmp = super.write(cmp);
 
 		CompoundNBT spellCmp = new CompoundNBT();
 		if(spell != null)
 			spell.writeToNBT(spellCmp);
 		cmp.put(TAG_SPELL, spellCmp);
 		cmp.putString(TAG_PLAYER_LOCK, playerLock);
+		return cmp;
 	}
 
 	@Override
-	public void readSharedNBT(CompoundNBT cmp) {
-		super.readSharedNBT(cmp);
+	public void read(CompoundNBT cmp) {
+		super.read(cmp);
 
 		CompoundNBT spellCmp = cmp.getCompound(TAG_SPELL);
 		if (spell == null)
@@ -83,20 +87,17 @@ public class TileProgrammer extends TileMod implements INamedContainerProvider {
 		playerLock = cmp.getString(TAG_PLAYER_LOCK);
 	}
 
+	@Override
+	public SUpdateTileEntityPacket getUpdatePacket() {
+		return new SUpdateTileEntityPacket(getPos(), 0, write(new CompoundNBT()));
+	}
+
+	@Override
+	public CompoundNBT getUpdateTag() {
+		return write(new CompoundNBT());
+	}
+
 	public boolean canPlayerInteract(PlayerEntity player) {
 		return player.isAlive() && player.getDistanceSq((double) this.pos.getX() + 0.5D, (double) this.pos.getY() + 0.5D, (double) this.pos.getZ() + 0.5D) <= 64.0D;
-	}
-
-
-	@Override
-	public ITextComponent getDisplayName() {
-		return new TranslationTextComponent(ModBlocks.programmer.getTranslationKey());
-	}
-
-	@Nullable
-	@Override
-	public Container createMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
-		//TODO Take a look at this
-		return null;
 	}
 }

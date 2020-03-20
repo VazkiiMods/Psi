@@ -41,9 +41,8 @@ import static net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABI
 
 public class BlockCADAssembler extends HorizontalBlock {
 
-	public BlockCADAssembler() {
-		super(Block.Properties.create(Material.IRON).hardnessAndResistance(5, 10).sound(SoundType.METAL).nonOpaque());
-		setRegistryName(LibMisc.MOD_ID, LibBlockNames.CAD_ASSEMBLER);
+	public BlockCADAssembler(Properties props) {
+		super(props);
 	}
 
 	@Override

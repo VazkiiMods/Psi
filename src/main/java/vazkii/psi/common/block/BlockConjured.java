@@ -33,7 +33,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import vazkii.arl.block.BasicBlock;
 import vazkii.psi.common.block.tile.TileConjured;
 import vazkii.psi.common.lib.LibMisc;
 
@@ -42,7 +41,7 @@ import java.util.Random;
 import java.util.Set;
 
 @Mod.EventBusSubscriber(modid = LibMisc.MOD_ID)
-public class BlockConjured extends BasicBlock {
+public class BlockConjured extends Block {
 
 	public static final BooleanProperty SOLID = BooleanProperty.create("solid");
 	public static final BooleanProperty LIGHT = BooleanProperty.create("light");
@@ -58,8 +57,8 @@ public class BlockConjured extends BasicBlock {
 
 	protected static final VoxelShape LIGHT_SHAPE = Block.makeCuboidShape(4, 4, 4, 12, 12, 12);
 
-	public BlockConjured(String regname, Properties properties) {
-		super(regname, properties);
+	public BlockConjured(Properties properties) {
+		super(properties);
 		setDefaultState(getStateContainer().getBaseState().with(LIGHT, false).with(SOLID, false));
 	}
 
