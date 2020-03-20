@@ -1,0 +1,24 @@
+{
+  "name": "psi.book.entry.projectileBullet",
+  "category": "items",
+  "icon": "psi:spell_bullet_projectile",
+  "pages": [
+    {
+      "type": "text",
+      "text": "psi.book.page.projectileBullet.0"
+    },
+    {
+      "type": "crafting",
+      "text": "psi.book.page.projectileBullet.1",
+      "recipe": "psi:spell_bullet_projectile"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.projectileBullet.2"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.projectileBullet.3"
+    }
+  ]
+}

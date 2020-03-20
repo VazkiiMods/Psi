@@ -1,0 +1,75 @@
+{
+  "name": "psi.book.entry.exosuitSensor",
+  "category": "items",
+  "icon": "psi:exosuit_sensor_light",
+  "pages": [
+    {
+      "type": "text",
+      "text": "psi.book.page.exosuitSensor.0"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.exosuitSensor.1"
+    },
+    {
+      "type": "spotlight",
+      "text": "psi.book.page.exosuitSensor.2",
+      "item": "psi:exosuit_sensor_light",
+      "link_recipe": false,
+      "anchor": "light"
+    },
+    {
+      "type": "crafting",
+      "text": "psi.book.page.exosuitSensor.3",
+      "recipe": "psi:exosuit_sensor_light"
+    },
+    {
+      "type": "spotlight",
+      "text": "psi.book.page.exosuitSensor.4",
+      "item": "psi:exosuit_sensor_heat",
+      "link_recipe": false,
+      "anchor": "heat"
+    },
+    {
+      "type": "crafting",
+      "text": "psi.book.page.exosuitSensor.5",
+      "recipe": "psi:exosuit_sensor_heat"
+    },
+    {
+      "type": "spotlight",
+      "text": "psi.book.page.exosuitSensor.6",
+      "item": "psi:exosuit_sensor_stress",
+      "link_recipe": false,
+      "anchor": "stress"
+    },
+    {
+      "type": "crafting",
+      "text": "psi.book.page.exosuitSensor.7",
+      "recipe": "psi:exosuit_sensor_stress"
+    },
+    {
+      "type": "spotlight",
+      "text": "psi.book.page.exosuitSensor.8",
+      "item": "psi:exosuit_sensor_water",
+      "link_recipe": false,
+      "anchor": "water"
+    },
+    {
+      "type": "crafting",
+      "text": "psi.book.page.exosuitSensor.9",
+      "recipe": "psi:exosuit_sensor_water"
+    },
+    {
+      "type": "spotlight",
+      "text": "psi.book.page.exosuitSensor.10",
+      "item": "psi:exosuit_sensor_trigger",
+      "link_recipe": false,
+      "anchor": "trigger"
+    },
+    {
+      "type": "crafting",
+      "text": "psi.book.page.exosuitSensor.11",
+      "recipe": "psi:exosuit_sensor_trigger"
+    }
+  ]
+}
