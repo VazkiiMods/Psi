@@ -1,0 +1,18 @@
+{
+  "name": "psi.book.entry.psimetal",
+  "category": "components",
+  "icon": "psi:psimetal",
+  "priority": true,
+  "pages": [
+    {
+      "type": "text",
+      "text": "psi.book.page.psimetal.0"
+    },
+    {
+      "type": "spotlight",
+      "text": "psi.book.page.psimetal.1",
+      "item": "psi:psimetal",
+      "link_recipe": true
+    }
+  ]
+}
