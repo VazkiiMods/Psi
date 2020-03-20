@@ -95,11 +95,6 @@ public class ClientProxy implements IProxy {
 		world.addParticle(particleData, true, x, y, z, xSpeed, ySpeed, zSpeed);
 	}
 
-	@Override
-	public boolean isTheClientPlayer(LivingEntity entity) {
-		return entity == Minecraft.getInstance().player;
-	}
-
     @Override
     public PlayerEntity getClientPlayer() {
         return Minecraft.getInstance().player;
@@ -135,7 +130,7 @@ public class ClientProxy implements IProxy {
 
 	@Override
 	public void sparkleFX(World world, double x, double y, double z, float r, float g, float b, float motionx, float motiony, float motionz, float size, int m) {
-        if (noParticles(world) || m == 0)
+        if (m == 0)
             return;
         SparkleParticleData data = new SparkleParticleData(size, r, g, b, m, false, false);
         addParticleForce(world, data, x, y, z, motionx, motiony, motionz);
@@ -147,24 +142,11 @@ public class ClientProxy implements IProxy {
 		sparkleFX(Minecraft.getInstance().world, x, y, z, r, g, b, motionx, motiony, motionz, size, m);
 	}
 
-	private static boolean distanceLimit = true;
-	private static boolean depthTest = true;
-
-	@Override
-	public void setWispFXDistanceLimit(boolean limit) {
-		distanceLimit = limit;
-	}
-
-	@Override
-	public void setWispFXDepthTest(boolean test) {
-		depthTest = test;
-	}
-
 	@Override
 	public void wispFX(World world, double x, double y, double z, float r, float g, float b, float size, float motionx, float motiony, float motionz, float maxAgeMul) {
-        if (noParticles(world) || maxAgeMul == 0)
+        if (maxAgeMul == 0)
 			return;
-		WispParticleData data = new WispParticleData(size, r, g, b, maxAgeMul, depthTest, false);
+		WispParticleData data = new WispParticleData(size, r, g, b, maxAgeMul, true, false);
 		addParticleForce(world, data, x, y, z, motionx, motiony, motionz);
 	}
 
@@ -177,25 +159,5 @@ public class ClientProxy implements IProxy {
 	public void openProgrammerGUI(TileProgrammer programmer) {
 		Minecraft.getInstance().displayGuiScreen(new GuiProgrammer(programmer));
 	}
-
-	private boolean noParticles(World world) {
-		if (world == null)
-			return true;
-
-		if (!world.isRemote)
-			return true;
-
-		if (!ConfigHandler.CLIENT.useVanillaParticleLimiter.get())
-			return false;
-
-        float chance = 1F;
-        if (Minecraft.getInstance().gameSettings.particles == ParticleStatus.DECREASED)
-            chance = 0.6F;
-        else if (Minecraft.getInstance().gameSettings.particles == ParticleStatus.MINIMAL)
-            chance = 0.2F;
-
-        return !(chance == 1F) && !(Math.random() < chance);
-    }
-
 
 }

@@ -19,10 +19,10 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.*;
+import net.minecraftforge.fml.client.gui.GuiUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
-import vazkii.arl.util.RenderHelper;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.spell.*;
 import vazkii.psi.client.core.helper.SharingHelper;
@@ -237,9 +237,6 @@ public class GuiProgrammer extends Screen {
 			cursorY = -1;
 		}
 
-
-		int tooltipX = mouseX;
-		int tooltipY = mouseY;
 		RenderSystem.pushMatrix();
 		tooltip.clear();
 		RenderSystem.translatef(gridLeft, gridTop, 0);
@@ -338,19 +335,19 @@ public class GuiProgrammer extends Screen {
 
 		if (!takingScreenshot && pieceAtCursor != null) {
 			if (tooltip != null && !tooltip.isEmpty()) {
-				pieceAtCursor.drawTooltip(tooltipX, tooltipY, tooltip);
+				pieceAtCursor.drawTooltip(mouseX, mouseY, tooltip);
 			}
 
 			if (comment != null && !comment.isEmpty()) {
-				List<ITextComponent> commentList = Arrays.stream(comment.split(";")).map(StringTextComponent::new).collect(Collectors.toCollection(ArrayList::new));
-				pieceAtCursor.drawCommentText(tooltipX, tooltipY, commentList);
+				List<ITextComponent> commentList = Arrays.stream(comment.split(";")).map(StringTextComponent::new).collect(Collectors.toList());
+				pieceAtCursor.drawCommentText(mouseX, mouseY, commentList);
 			}
 		}
 		super.render(mouseX, mouseY, partialTicks);
 		if (!takingScreenshot && tooltip != null && !tooltip.isEmpty()) {
 			List<String> textComptoString = new ArrayList<>();
 			tooltip.forEach(el -> textComptoString.add(el.getString()));
-			RenderHelper.renderTooltip(tooltipX, tooltipY, textComptoString);
+			GuiUtils.drawHoveringText(textComptoString, mouseX, mouseY, width, height, -1, font);
 
 		}
 
