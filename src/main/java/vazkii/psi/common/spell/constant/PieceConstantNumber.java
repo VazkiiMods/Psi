@@ -10,8 +10,10 @@
  */
 package vazkii.psi.common.spell.constant;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.nbt.CompoundNBT;
 import org.lwjgl.glfw.GLFW;
 import vazkii.psi.api.spell.EnumPieceType;
@@ -38,7 +40,7 @@ public class PieceConstantNumber extends SpellPiece {
 	}
 
 	@Override
-	public void drawAdditional() {
+	public void drawAdditional(MatrixStack ms, IRenderTypeBuffer buffers, int light) {
 		if(valueStr == null || valueStr.isEmpty() || valueStr.length() > 5)
 			valueStr = "0";
 
@@ -52,11 +54,11 @@ public class PieceConstantNumber extends SpellPiece {
 			efflen = mc.fontRenderer.getStringWidth(valueStr) / scale;
 		}
 
-		RenderSystem.pushMatrix();
-		RenderSystem.scalef(1F / scale, 1F / scale, 1F);
-		RenderSystem.translatef((9 - efflen / 2) * scale, 4 * scale, 0);
-		mc.fontRenderer.drawString(valueStr, 0, 0, color);
-		RenderSystem.popMatrix();
+		ms.push();
+		ms.scale(1F / scale, 1F / scale, 1F);
+		ms.translate((9 - efflen / 2) * scale, 4 * scale, 0);
+		mc.fontRenderer.draw(valueStr, 0, 0, color, false, ms.peek().getModel(), buffers, false, 0, light);
+		ms.pop();
 	}
 
 	@Override

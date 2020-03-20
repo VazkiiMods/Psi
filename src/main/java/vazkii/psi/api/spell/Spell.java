@@ -10,6 +10,8 @@
  */
 package vazkii.psi.api.spell;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -35,8 +37,8 @@ public final class Spell {
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	public void draw() {
-		grid.draw();
+	public void draw(MatrixStack ms, IRenderTypeBuffer buffers, int light) {
+		grid.draw(ms, buffers, light);
 	}
 
 	public static Spell createFromNBT(CompoundNBT cmp) {

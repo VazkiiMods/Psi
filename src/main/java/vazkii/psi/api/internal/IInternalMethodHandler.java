@@ -10,6 +10,7 @@
  */
 package vazkii.psi.api.internal;
 
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -33,6 +34,12 @@ public interface IInternalMethodHandler {
 	 * params.
 	 */
 	ResourceLocation getProgrammerTexture();
+
+	/**
+	 * Gets the render layer for the programmer background.
+	 */
+	@OnlyIn(Dist.CLIENT)
+	RenderType getProgrammerLayer();
 
 	/**
 	 * Gets an instance of a spell compiler. In most cases, you should use {@link #getSpellCache()} instead.
