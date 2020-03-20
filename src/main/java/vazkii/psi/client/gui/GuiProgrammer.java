@@ -262,8 +262,8 @@ public class GuiProgrammer extends Screen {
 			tooltip.clear();
 			cursorX = selectedX;
 			cursorY = selectedY;
-			tooltipX = gridLeft + cursorX * 18 + 10;
-			tooltipY = gridTop + cursorY * 18 + 8;
+			mouseX = gridLeft + cursorX * 18 + 10;
+			mouseY = gridTop + cursorY * 18 + 8;
 		}
 
 		SpellPiece pieceAtCursor = null;
