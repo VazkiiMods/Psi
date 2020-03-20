@@ -31,7 +31,7 @@ import vazkii.psi.common.spell.SpellCompiler;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class TileProgrammer extends TileEntity implements INamedContainerProvider {
+public class TileProgrammer extends TileEntity {
 	@ObjectHolder(LibMisc.PREFIX_MOD + LibBlockNames.PROGRAMMER)
 	public static TileEntityType<TileProgrammer> TYPE;
 
@@ -99,18 +99,5 @@ public class TileProgrammer extends TileEntity implements INamedContainerProvide
 
 	public boolean canPlayerInteract(PlayerEntity player) {
 		return player.isAlive() && player.getDistanceSq((double) this.pos.getX() + 0.5D, (double) this.pos.getY() + 0.5D, (double) this.pos.getZ() + 0.5D) <= 64.0D;
-	}
-
-
-	@Override
-	public ITextComponent getDisplayName() {
-		return new TranslationTextComponent(ModBlocks.programmer.getTranslationKey());
-	}
-
-	@Nullable
-	@Override
-	public Container createMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
-		//TODO Take a look at this
-		return null;
 	}
 }
