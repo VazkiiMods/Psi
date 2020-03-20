@@ -170,7 +170,7 @@ public abstract class SpellPiece {
 	}
 
 	public String getUnlocalizedName() {
-		return "psi.spellpiece." + registryKey;
+		return registryKey.getNamespace() + ".spellpiece." + registryKey.getPath();
 	}
 
 	public String getSortingName() {
@@ -178,7 +178,7 @@ public abstract class SpellPiece {
     }
 
 	public String getUnlocalizedDesc() {
-		return "psi.spellpiece." + registryKey + ".desc";
+		return registryKey.getNamespace() + ".spellpiece." + registryKey.getPath() + ".desc";
 	}
 
 	/**
