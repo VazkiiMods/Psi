@@ -10,16 +10,21 @@
  */
 package vazkii.psi.common.block.tile.container;
 
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
+import net.minecraft.inventory.container.PlayerContainer;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.registries.ObjectHolder;
 import vazkii.psi.api.cad.EnumCADComponent;
 import vazkii.psi.api.cad.ICADComponent;
@@ -121,21 +126,20 @@ public class ContainerCADAssembler extends Container {
 					return !stack.isEmpty() && stack.getItem().canEquip(stack, slot, player);
 				}
 
-				/*@OnlyIn(Dist.CLIENT)
+				@OnlyIn(Dist.CLIENT)
 				@Override
-				public String getSlotTexture() {
-					return PlayerContainer.ARMOR_SLOT_TEXTURES[slot.getIndex()];
-				}*/
-
+				public Pair<ResourceLocation, ResourceLocation> getBackgroundSprite() {
+					return Pair.of(PlayerContainer.BLOCK_ATLAS_TEXTURE, PlayerContainer.ARMOR_SLOT_TEXTURES[slot.getIndex()]);
+				}
 			});
 		}
 
 		addSlot(new Slot(playerInventory, playerSize - 1, 219, 143) {
-			/*@OnlyIn(Dist.CLIENT)
+			@OnlyIn(Dist.CLIENT)
 			@Override
-			public String getSlotTexture() {
-				return "minecraft:items/empty_armor_slot_shield";
-			}*/
+			public Pair<ResourceLocation, ResourceLocation> getBackgroundSprite() {
+				return Pair.of(PlayerContainer.BLOCK_ATLAS_TEXTURE, PlayerContainer.EMPTY_OFFHAND_ARMOR_SLOT);
+			}
 		});
 	}
 
