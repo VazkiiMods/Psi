@@ -585,7 +585,7 @@ public class GuiProgrammer extends Screen {
 							return true;
 						}
 					} else {
-						if (!onSideButtonKeybind(piece, param, SpellParam.Side.TOP) && selectedY < SpellGrid.GRID_SIZE - 1) {
+						if (!onSideButtonKeybind(piece, param, SpellParam.Side.BOTTOM) && selectedY < SpellGrid.GRID_SIZE - 1) {
 							selectedY++;
 							onSelectedChanged();
 							return true;

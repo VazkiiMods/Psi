@@ -39,20 +39,20 @@ public class GuiButtonIO extends Button {
     @Override
     public void renderButton(int par2, int par3, float pticks) {
         if (active && !gui.takingScreenshot) {
-            isHovered = par2 >= x && par3 >= y && par2 < x + width && par3 < y + height;
+			boolean hover = par2 >= x && par3 >= y && par2 < x + width && par3 < y + height;
 
-            Minecraft.getInstance().textureManager.bindTexture(GuiProgrammer.texture);
-            RenderSystem.color4f(1F, 1F, 1F, 1F);
-            blit(x, y, isHovered() ? 186 : 174, out ? 169 : 181, width, height);
+			Minecraft.getInstance().textureManager.bindTexture(GuiProgrammer.texture);
+			RenderSystem.color4f(1F, 1F, 1F, 1F);
+			blit(x, y, hover ? 186 : 174, out ? 169 : 181, width, height);
 
-            if (isHovered()) {
+			if (hover) {
 				String key = out ? "psimisc.export_to_clipboard" : "psimisc.import_from_clipboard";
 				TextFormatting color = out ? TextFormatting.RED : TextFormatting.BLUE;
 				ITextComponent tip = new TranslationTextComponent(key).applyTextStyle(color);
 				gui.tooltip.add(tip);
 				gui.tooltip.add(new TranslationTextComponent("psimisc.must_hold_shift").applyTextStyle(TextFormatting.GRAY));
 			}
-        }
+		}
     }
 
 
