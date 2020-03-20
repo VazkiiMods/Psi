@@ -480,7 +480,7 @@
   "psi.spellparam.shift": "Shift",
   "psi.spellparam.slot": "Slot",
   "psi.spellparam.base": "Base",
-  "psi.datatype.null": "None",
+  "psi.datatype.void": "None",
   "psi.datatype.any": "Any",
   "psi.datatype.double": "Number",
   "psi.datatype.integer": "Number",

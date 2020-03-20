@@ -47,25 +47,25 @@ public class RenderSpellCircle extends EntityRenderer<EntitySpellCircle> {
 	}
 
 
-	//TODO Willie take a look at this!
 	@Override
 	public void render(EntitySpellCircle entity, float entityYaw, float partialTicks, MatrixStack ms, IRenderTypeBuffer buffers, int light) {
-		int colorVal = ICADColorizer.DEFAULT_SPELL_COLOR;
+		ms.push();
+		int color = ICADColorizer.DEFAULT_SPELL_COLOR;
 		ItemStack colorizer = entity.getDataManager().get(EntitySpellCircle.COLORIZER_DATA);
 		if (!colorizer.isEmpty() && colorizer.getItem() instanceof ICADColorizer)
-			colorVal = Psi.proxy.getColorForColorizer(colorizer);
+			color = Psi.proxy.getColorForColorizer(colorizer);
 		float alive = entity.getTimeAlive() + partialTicks;
-		float s1 = Math.min(1F, alive / EntitySpellCircle.CAST_DELAY);
+		float scale = Math.min(1F, alive / EntitySpellCircle.CAST_DELAY);
 		if (alive > EntitySpellCircle.LIVE_TIME - EntitySpellCircle.CAST_DELAY)
-			s1 = 1F - Math.min(1F, Math.max(0, alive - (EntitySpellCircle.LIVE_TIME - EntitySpellCircle.CAST_DELAY)) / EntitySpellCircle.CAST_DELAY);
-		renderSpellCircle(alive, s1, 1, entity.getX(), entity.getY(), entity.getZ(), 0, 1, 0, colorVal, ms, buffers);
+			scale = 1F - Math.min(1F, Math.max(0, alive - (EntitySpellCircle.LIVE_TIME - EntitySpellCircle.CAST_DELAY)) / EntitySpellCircle.CAST_DELAY);
+		renderSpellCircle(alive, scale, 1, 0, 1, 0, color, ms, buffers);
+		ms.pop();
 	}
 
-	public static void renderSpellCircle(float alive, float scale, float horizontalScale, double x, double y, double z, float xDir, float yDir, float zDir, int color, MatrixStack ms, IRenderTypeBuffer buffers) {
+	public static void renderSpellCircle(float alive, float scale, float horizontalScale, float xDir, float yDir, float zDir, int color, MatrixStack ms, IRenderTypeBuffer buffers) {
 
 		ms.push();
 		double ratio = 0.0625 * horizontalScale;
-		ms.translate(x, y, z);
 
 		float mag = xDir * xDir + yDir * yDir + zDir * zDir;
 		zDir /= mag;
@@ -73,11 +73,10 @@ public class RenderSpellCircle extends EntityRenderer<EntitySpellCircle> {
 		if (zDir == -1)
 			ms.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(180));
 		else if (zDir != 1) {
-			ms.multiply(new Vector3f(-yDir / mag, xDir / mag, 0).getRadialQuaternion((float) (Math.acos(zDir) * 180 / Math.PI)));
+			ms.multiply(new Vector3f(-yDir / mag, xDir / mag, 0).getDegreesQuaternion((float) (Math.acos(zDir) * 180 / Math.PI)));
 		}
-
 		ms.translate(0, 0, 0.1);
-		ms.scale((float) ratio * scale, (float) ratio * scale, (float) ratio * scale);
+		ms.scale((float) ratio * scale, (float) ratio * scale, (float) ratio);
 
 		int r = PsiRenderHelper.r(color);
 		int g = PsiRenderHelper.g(color);

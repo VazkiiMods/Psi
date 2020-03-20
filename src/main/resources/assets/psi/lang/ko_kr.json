@@ -481,7 +481,7 @@
   "psi.spellparam.shift": "이동",
   "psi.spellparam.slot": "슬롯",
   "psi.spellparam.base": "기반",
-  "psi.datatype._null": "없음",
+  "psi.datatype.void": "없음",
   "psi.datatype._any": "모든 타입",
   "psi.datatype._double": "숫자",
   "psi.datatype._integer": "숫자",
