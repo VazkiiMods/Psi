@@ -291,34 +291,6 @@ public final class ModSpellPieces {
 		trickConjureBlockSequence = register(PieceTrickConjureBlockSequence.class, LibPieceNames.TRICK_CONJURE_BLOCK_SEQUENCE, LibPieceGroups.BLOCK_CONJURATION);
 		trickSwitchTargetSlot = register(PieceTrickSwitchTargetSlot.class, LibPieceNames.TRICK_SWITCH_TARGET_SLOT, LibPieceGroups.DETECTION_DYNAMICS, true);
 		trickSaveVector = register(PieceTrickSaveVector.class, LibPieceNames.TRICK_SAVE_VECTOR, LibPieceGroups.MEMORY_MANAGEMENT, true);
-		
-		PsiAPI.setGroupRequirements(LibPieceGroups.TUTORIAL_1, 1);
-		PsiAPI.setGroupRequirements(LibPieceGroups.TUTORIAL_2, 2, LibPieceGroups.TUTORIAL_1);
-		PsiAPI.setGroupRequirements(LibPieceGroups.TUTORIAL_3, 3, LibPieceGroups.TUTORIAL_2);
-		PsiAPI.setGroupRequirements(LibPieceGroups.TUTORIAL_4, 4, LibPieceGroups.TUTORIAL_3);
-		PsiAPI.setGroupRequirements(LibPieceGroups.NUMBERS_INTRO, 5, LibPieceGroups.TUTORIAL_4);
-		PsiAPI.setGroupRequirements(LibPieceGroups.VECTORS_INTRO, 5, LibPieceGroups.TUTORIAL_4);
-		PsiAPI.setGroupRequirements(LibPieceGroups.ENTITIES_INTRO, 5, LibPieceGroups.TUTORIAL_4);
-		PsiAPI.setGroupRequirements(LibPieceGroups.PROJECTILES, 6, LibPieceGroups.ENTITIES_INTRO);
-		PsiAPI.setGroupRequirements(LibPieceGroups.BLOCK_WORKS, 6, LibPieceGroups.VECTORS_INTRO);
-		PsiAPI.setGroupRequirements(LibPieceGroups.INFUSION, 10, LibPieceGroups.VECTORS_INTRO, LibPieceGroups.ENTITIES_INTRO, LibPieceGroups.NUMBERS_INTRO);
-		PsiAPI.setGroupRequirements(LibPieceGroups.MOVEMENT, 11, LibPieceGroups.ENTITIES_INTRO);
-		PsiAPI.setGroupRequirements(LibPieceGroups.BLOCK_MOVEMENT, 11, LibPieceGroups.BLOCK_WORKS);
-		PsiAPI.setGroupRequirements(LibPieceGroups.ELEMENTAL_ARTS, 11, LibPieceGroups.VECTORS_INTRO);
-		PsiAPI.setGroupRequirements(LibPieceGroups.LOOPCASTING, 12, LibPieceGroups.INFUSION);
-		PsiAPI.setGroupRequirements(LibPieceGroups.GREATER_INFUSION, 15, LibPieceGroups.INFUSION);
-		PsiAPI.setGroupRequirements(LibPieceGroups.TOOL_CASTING, 16, LibPieceGroups.GREATER_INFUSION);
-		PsiAPI.setGroupRequirements(LibPieceGroups.POSITIVE_EFFECTS, 16, LibPieceGroups.GREATER_INFUSION);
-		PsiAPI.setGroupRequirements(LibPieceGroups.NEGATIVE_EFFECTS, 17, LibPieceGroups.POSITIVE_EFFECTS);
-		PsiAPI.setGroupRequirements(LibPieceGroups.EXOSUIT_CASTING, 19, LibPieceGroups.GREATER_INFUSION);
-		PsiAPI.setGroupRequirements(LibPieceGroups.TRIGNOMETRY, 20, LibPieceGroups.GREATER_INFUSION);
-		PsiAPI.setGroupRequirements(LibPieceGroups.SMELTERY, 20, LibPieceGroups.GREATER_INFUSION);
-		PsiAPI.setGroupRequirements(LibPieceGroups.FLOW_CONTROL, 20, LibPieceGroups.GREATER_INFUSION);
-		PsiAPI.setGroupRequirements(LibPieceGroups.BLOCK_CONJURATION, 20, LibPieceGroups.GREATER_INFUSION);
-		PsiAPI.setGroupRequirements(LibPieceGroups.DETECTION_DYNAMICS, 21, LibPieceGroups.FLOW_CONTROL);
-		PsiAPI.setGroupRequirements(LibPieceGroups.MEMORY_MANAGEMENT, 21, LibPieceGroups.FLOW_CONTROL);
-		PsiAPI.setGroupRequirements(LibPieceGroups.SECONDARY_OPERATORS, 21, LibPieceGroups.TRIGNOMETRY);
-		PsiAPI.setGroupRequirements(LibPieceGroups.EIDOS_REVERSAL, 24, LibPieceGroups.DETECTION_DYNAMICS, LibPieceGroups.MEMORY_MANAGEMENT, LibPieceGroups.EXOSUIT_CASTING);
 	}
 
 	public static PieceContainer register(Class<? extends SpellPiece> clazz, String name, String group) {
@@ -327,7 +299,7 @@ public final class ModSpellPieces {
 
 	public static PieceContainer register(Class<? extends SpellPiece> clazz, String name, String group, boolean main) {
 		PsiAPI.registerSpellPieceAndTexture(new ResourceLocation("psi", name), clazz);
-		PsiAPI.addPieceToGroup(clazz, group, main);
+		PsiAPI.addPieceToGroup(clazz, new ResourceLocation("psi", group), main);
 		return (Spell s) -> SpellPiece.create(clazz, s);
 	}
 

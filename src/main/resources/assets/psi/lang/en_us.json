@@ -588,6 +588,6 @@
   "command.psi.unlearn.console": "The console can't learn Psi. Try specifying a player! /psi-unlearn <group> [player]",
   "command.psi.unlearn.not_a_group": "'%s' is not a valid Psi piece group",
   "command.psi.unlearn.unknown": "This player has no Psi data. Report this to the mod author.",
-  "psimisc.fake_level.psidust": "Psidust Infusion",
+  "psi:fake_level_psidust": "Psidust Infusion",
   "jei.psi.category.trick": "Spell Infusion"
 }

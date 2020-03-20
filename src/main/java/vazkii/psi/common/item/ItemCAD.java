@@ -53,6 +53,7 @@ import vazkii.psi.common.core.handler.PsiSoundHandler;
 import vazkii.psi.common.core.handler.capability.CADData;
 import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.item.component.ItemCADSocket;
+import vazkii.psi.common.lib.LibPieceGroups;
 import vazkii.psi.common.network.MessageRegister;
 import vazkii.psi.common.network.message.MessageCADDataSync;
 import vazkii.psi.common.network.message.MessageVisualEffect;
@@ -172,8 +173,8 @@ public class ItemCAD extends BasicItem implements ICAD, ISpellSettable, IItemCol
 			worldIn.playSound(null, playerIn.getX(), playerIn.getY(), playerIn.getZ(), PsiSoundHandler.cadShoot, SoundCategory.PLAYERS, 0.5F, (float) (0.5 + Math.random() * 0.5));
 			data.deductPsi(100, 60, true);
 
-			if (data.level == 0)
-				data.levelUp();
+			if (!data.hasAdvancement(LibPieceGroups.FAKE_LEVEL_PSIDUST))
+				data.tutorialComplete(LibPieceGroups.FAKE_LEVEL_PSIDUST);
 			did = true;
 		}
 

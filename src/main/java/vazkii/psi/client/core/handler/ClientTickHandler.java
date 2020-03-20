@@ -12,13 +12,12 @@ package vazkii.psi.client.core.handler;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 import vazkii.arl.util.ClientTicker;
-import vazkii.psi.common.core.handler.PersistencyHandler;
 import vazkii.psi.common.lib.LibMisc;
 
 @OnlyIn(Dist.CLIENT)
@@ -42,13 +41,10 @@ public class ClientTickHandler {
 			updatePartialTicks();
 
 			Minecraft mc = Minecraft.getInstance();
-			if(mc.player != null)
-				PersistencyHandler.init();
 
 			HUDHandler.tick();
 
 			Screen gui = mc.currentScreen;
-			//TODO WILLIE CHECK THIS
 			if(gui == null || !gui.isPauseScreen() ) {
 				if(gui == null && KeybindHandler.keybind.isKeyDown())
 					KeybindHandler.keyDown();

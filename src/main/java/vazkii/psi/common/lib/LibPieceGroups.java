@@ -10,8 +10,11 @@
  */
 package vazkii.psi.common.lib;
 
+import net.minecraft.util.ResourceLocation;
+
 public final class LibPieceGroups {
 
+	public static final ResourceLocation FAKE_LEVEL_PSIDUST = new ResourceLocation(LibMisc.MOD_ID, "fake_level_psidust");
 	public static final String TUTORIAL_1 = "tutorial1";
 	public static final String TUTORIAL_2 = "tutorial2";
 	public static final String TUTORIAL_3 = "tutorial3";

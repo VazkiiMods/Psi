@@ -4,6 +4,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particles.IParticleData;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import vazkii.psi.common.block.tile.TileProgrammer;
 
@@ -25,9 +26,7 @@ public interface IProxy {
     default void addParticleForce(World world, IParticleData particleData, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
     }
 
-    void onLevelUp(int level);
-
-    void savePersistency();
+	void onLevelUp(ResourceLocation level);
 
     default int getColorForCAD(ItemStack cadStack) {
         return -1;

@@ -67,7 +67,7 @@ public final class HUDHandler {
 
 	public static boolean showLevelUp = false;
 	public static int levelDisplayTime = 0;
-	public static int levelValue = 0;
+	public static ResourceLocation levelValue = null;
 
 	private static ItemStack remainingDisplayStack;
 	private static int remainingTime;
@@ -119,7 +119,7 @@ public final class HUDHandler {
 
 		ICAD cad = (ICAD) cadStack.getItem();
 		PlayerData data = PlayerDataHandler.get(mc.player);
-		if (data.level == 0 && !mc.player.abilities.isCreativeMode)
+		if (!mc.player.abilities.isCreativeMode)
 			return;
 
 		int totalPsi = data.getTotalPsi();
@@ -295,7 +295,7 @@ public final class HUDHandler {
 		}
 	}
 
-	public static void levelUp(int level) {
+	public static void levelUp(ResourceLocation level) {
 		levelValue = level;
 		levelDisplayTime = 0;
 		showLevelUp = true;
@@ -330,7 +330,7 @@ public final class HUDHandler {
 		RenderSystem.scalef(2F, 2F, 2F);
 		mc.fontRenderer.drawStringWithShadow(levelUp, x, y, 0x0013C5FF + alphaOverlay);
 
-		String currLevel = "" + levelValue;
+		String currLevel = "" + I18n.format(levelValue.toString());
 		x = res.getScaledWidth() / 4;
 		y += 10;
 
@@ -370,7 +370,7 @@ public final class HUDHandler {
 
 		RenderSystem.enableAlphaTest();
 		RenderSystem.disableBlend();
-		if (levelValue >= 1 && levelDisplayTime >= time + fadeoutTime)
+		if (levelDisplayTime >= time + fadeoutTime)
 			showLevelUp = false;
 	}
 

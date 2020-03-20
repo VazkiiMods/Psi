@@ -13,7 +13,6 @@ import net.minecraftforge.common.MinecraftForge;
 import org.lwjgl.glfw.GLFW;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.spell.EnumPieceType;
-import vazkii.psi.api.spell.PieceGroup;
 import vazkii.psi.api.spell.SpellParam;
 import vazkii.psi.api.spell.SpellPiece;
 import vazkii.psi.api.spell.programmer.ProgrammerPopulateEvent;
@@ -130,9 +129,9 @@ public class PiecePanelWidget extends Widget implements IRenderable, IGuiEventLi
 		MinecraftForge.EVENT_BUS.post(event);
 		for (ResourceLocation key : event.getSpellPieceRegistry().keySet()) {
 			Class<? extends SpellPiece> clazz = event.getSpellPieceRegistry().getValue(key).get();
-			PieceGroup group = PsiAPI.groupsForPiece.get(clazz);
+			ResourceLocation group = PsiAPI.advancementGroupsInverse.get(clazz);
 
-			if (!parent.getMinecraft().player.isCreative() && (group == null || !playerData.isPieceGroupUnlocked(group.name, key.getPath())))
+			if (!parent.getMinecraft().player.isCreative() && (group == null || !playerData.isPieceGroupUnlocked(group, key.getPath())))
 				continue;
 
 			SpellPiece piece = SpellPiece.create(clazz, parent.spell);

@@ -54,14 +54,11 @@ public class ConfigHandler {
 
 	public static class Common {
 
-		public final ForgeConfigSpec.BooleanValue usePersistantData;
 		public final ForgeConfigSpec.BooleanValue magiPsiClientSide;
 		public final ForgeConfigSpec.IntValue spellCacheSize;
 		public final ForgeConfigSpec.IntValue cadHarvestLevel;
 
 		public Common(ForgeConfigSpec.Builder builder) {
-			usePersistantData = builder.comment("Controls whether Psi is allowed to save and load Persistent Data outside your instance. This data is stored where .minecraft would be by default and is independent of instance, world or modpack, and allows you to instantly get back to the highest level you were at previously in your last world.")
-					.define("common.usePersistantData", true);
 
 			magiPsiClientSide = builder.comment("Set this to true to disable all server side features from Magical Psi, to allow you to use it purely as a client side mod")
 					.define("common.magiPsiClientSide", false);

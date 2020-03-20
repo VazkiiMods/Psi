@@ -43,8 +43,6 @@ import vazkii.psi.client.render.entity.RenderSpellProjectile;
 import vazkii.psi.client.render.tile.RenderTileProgrammer;
 import vazkii.psi.common.block.tile.TileProgrammer;
 import vazkii.psi.common.core.handler.ConfigHandler;
-import vazkii.psi.common.core.handler.PersistencyHandler;
-import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.proxy.IProxy;
 import vazkii.psi.common.entity.*;
 import vazkii.psi.common.item.base.ModItems;
@@ -118,14 +116,10 @@ public class ClientProxy implements IProxy {
     }
 
     @Override
-    public void onLevelUp(int level) {
-        HUDHandler.levelUp(level);
-    }
+	public void onLevelUp(ResourceLocation level) {
+		HUDHandler.levelUp(level);
+	}
 
-    @Override
-    public void savePersistency() {
-        PersistencyHandler.save(PlayerDataHandler.get(getClientPlayer()).level);
-    }
 
     @Override
     public int getColorForCAD(ItemStack cadStack) {

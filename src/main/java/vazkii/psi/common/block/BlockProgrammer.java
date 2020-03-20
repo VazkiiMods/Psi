@@ -29,8 +29,6 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.LazyOptional;
@@ -39,8 +37,6 @@ import vazkii.psi.api.internal.VanillaPacketDispatcher;
 import vazkii.psi.api.spell.ISpellAcceptor;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.tile.TileProgrammer;
-import vazkii.psi.common.core.handler.PlayerDataHandler;
-import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
 import vazkii.psi.common.core.handler.PsiSoundHandler;
 import vazkii.psi.common.lib.LibBlockNames;
 import vazkii.psi.common.lib.LibMisc;
@@ -65,15 +61,6 @@ public class BlockProgrammer extends HorizontalBlock {
 		TileProgrammer programmer = (TileProgrammer) worldIn.getTileEntity(pos);
 		if (programmer == null)
 			return ActionResultType.PASS;
-
-		if (!player.abilities.isCreativeMode) {
-			PlayerData data = PlayerDataHandler.get(player);
-			if (data.spellGroupsUnlocked.isEmpty()) {
-				if (!worldIn.isRemote)
-					player.sendMessage(new TranslationTextComponent("psimisc.cant_use_programmer").applyTextStyle(TextFormatting.RED));
-				return ActionResultType.PASS;
-			}
-		}
 
 		ActionResultType result = setSpell(worldIn, pos, player, heldItem);
 		if (result == ActionResultType.SUCCESS)

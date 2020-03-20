@@ -11,6 +11,7 @@
 package vazkii.psi.api.spell;
 
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.eventbus.api.Event;
 import vazkii.psi.api.internal.IPlayerData;
 
@@ -31,7 +32,7 @@ import javax.annotation.Nullable;
 @Event.HasResult
 public class PieceKnowledgeEvent extends Event {
 	@Nonnull
-	private final String pieceGroup;
+	private final ResourceLocation pieceGroup;
 
 	@Nullable
 	private final String pieceName;
@@ -44,7 +45,7 @@ public class PieceKnowledgeEvent extends Event {
 
 	private final boolean isUnlocked;
 
-	public PieceKnowledgeEvent(@Nonnull String pieceGroup, @Nullable String pieceName, @Nonnull PlayerEntity player, @Nonnull IPlayerData data, boolean isUnlocked) {
+	public PieceKnowledgeEvent(@Nonnull ResourceLocation pieceGroup, @Nullable String pieceName, @Nonnull PlayerEntity player, @Nonnull IPlayerData data, boolean isUnlocked) {
 		this.pieceGroup = pieceGroup;
 		this.pieceName = pieceName;
 		this.player = player;
@@ -56,7 +57,7 @@ public class PieceKnowledgeEvent extends Event {
 	 * The group which is being checked for.
 	 */
 	@Nonnull
-	public String getPieceGroup() {
+	public ResourceLocation getPieceGroup() {
 		return pieceGroup;
 	}
 

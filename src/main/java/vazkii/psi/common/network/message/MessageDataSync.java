@@ -40,7 +40,6 @@ public class MessageDataSync implements IMessage {
 				PlayerData data = PlayerDataHandler.get(player);
 				data.lastAvailablePsi = data.availablePsi;
 				data.readFromNBT(cmp);
-				Psi.proxy.savePersistency();
 			}
 		});
 

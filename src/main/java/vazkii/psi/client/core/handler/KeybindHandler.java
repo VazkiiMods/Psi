@@ -56,7 +56,6 @@ public class KeybindHandler {
 				stack = mc.player.getHeldItem(Hand.OFF_HAND);
 				if (!stack.isEmpty() && (ISocketableCapability.isSocketable(stack) || isSocketableController(mc.player, stack)))
 					mc.displayGuiScreen(new GuiSocketSelect(stack));
-
 				//TODO make it open patchoie
 
 			}

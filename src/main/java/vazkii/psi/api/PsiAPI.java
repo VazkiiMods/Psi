@@ -10,6 +10,8 @@
  */
 package vazkii.psi.api;
 
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
@@ -18,6 +20,7 @@ import net.minecraft.util.SoundEvents;
 import net.minecraft.util.registry.SimpleRegistry;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
+import org.apache.logging.log4j.Level;
 import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.cad.ICADData;
 import vazkii.psi.api.cad.IPsiBarDisplay;
@@ -27,9 +30,13 @@ import vazkii.psi.api.internal.IInternalMethodHandler;
 import vazkii.psi.api.material.PsimetalArmorMaterial;
 import vazkii.psi.api.material.PsimetalToolMaterial;
 import vazkii.psi.api.recipe.TrickRecipe;
-import vazkii.psi.api.spell.*;
+import vazkii.psi.api.spell.ISpellAcceptor;
+import vazkii.psi.api.spell.ISpellImmune;
+import vazkii.psi.api.spell.Spell;
+import vazkii.psi.api.spell.SpellPiece;
 import vazkii.psi.api.spell.detonator.IDetonationHandler;
 import vazkii.psi.api.spell.piece.PieceTrick;
+import vazkii.psi.common.Psi;
 import vazkii.psi.common.lib.LibMisc;
 
 import java.util.ArrayList;
@@ -68,8 +75,9 @@ public final class PsiAPI {
 
 	public static final SimpleRegistry<Class<? extends SpellPiece>> spellPieceRegistry = new SimpleRegistry<>();
 	public static final HashMap<String, ResourceLocation> simpleSpellTextures = new HashMap<>();
-	public static final HashMap<Class<? extends SpellPiece>, PieceGroup> groupsForPiece = new HashMap<>();
-	public static final HashMap<String, PieceGroup> groupsForName = new HashMap<>();
+	public static final Multimap<ResourceLocation, Class<? extends SpellPiece>> advancementGroups = HashMultimap.create();
+	public static final HashMap<Class<? extends SpellPiece>, ResourceLocation> advancementGroupsInverse = new HashMap<>();
+	public static final HashMap<ResourceLocation, Class<? extends SpellPiece>> mainPieceForGroup = new HashMap<>();
 
 	public static final List<TrickRecipe> trickRecipes = new ArrayList<>();
 
@@ -77,7 +85,6 @@ public final class PsiAPI {
 	public static final PsimetalArmorMaterial PSIMETAL_ARMOR_MATERIAL = new PsimetalArmorMaterial("psimetal", 18, new int[]{2, 6, 5, 2}, 12, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0F, null);
 	public static final PsimetalToolMaterial PSIMETAL_TOOL_MATERIAL = new PsimetalToolMaterial();
 
-	public static int levelCap = 1;
 
 	/**
 	 * Registers a Spell Piece given its class, by which, it puts it in the registry.
@@ -105,29 +112,15 @@ public final class PsiAPI {
 	 * interface. The "main" parameter defines whether this piece is to be set as the main piece of the respective
 	 * group. The main piece is the one that has to be used for level-up to be registered.
 	 */
-	public static void addPieceToGroup(Class<? extends SpellPiece> clazz, String groupName, boolean main) {
-		if(!groupsForName.containsKey(groupName))
-			addGroup(groupName);
+	public static void addPieceToGroup(Class<? extends SpellPiece> clazz, ResourceLocation resLoc, boolean main) {
+		advancementGroups.put(resLoc, clazz);
+		advancementGroupsInverse.put(clazz, resLoc);
 
-		PieceGroup group = groupsForName.get(groupName);
-		group.addPiece(clazz, main);
-		groupsForPiece.put(clazz, group);
-	}
-
-	/**
-	 * Sets the required groups for a group to be unlocked.
-	 */
-	public static void setGroupRequirements(String groupName, int level, String... reqs) {
-		if(!groupsForName.containsKey(groupName))
-			addGroup(groupName);
-
-		PieceGroup group = groupsForName.get(groupName);
-		group.setRequirements(level, reqs);
-	}
-
-	private static void addGroup(String groupName) {
-		groupsForName.put(groupName, new PieceGroup(groupName));
-		levelCap++;
+		if (main) {
+			if (mainPieceForGroup.containsKey(resLoc))
+				Psi.logger.log(Level.INFO, "Group " + resLoc + " already has a main piece!");
+			mainPieceForGroup.put(resLoc, clazz);
+		}
 	}
 
 	/**
