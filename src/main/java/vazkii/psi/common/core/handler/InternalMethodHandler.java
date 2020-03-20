@@ -10,6 +10,7 @@
  */
 package vazkii.psi.common.core.handler;
 
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -38,6 +39,13 @@ public final class InternalMethodHandler implements IInternalMethodHandler {
 	@Override
 	public ResourceLocation getProgrammerTexture() {
 		return GuiProgrammer.texture;
+	}
+
+	@OnlyIn(Dist.CLIENT)
+	@Override
+	public RenderType getProgrammerLayer() {
+		return GuiProgrammer.LAYER;
+
 	}
 
 	@Override

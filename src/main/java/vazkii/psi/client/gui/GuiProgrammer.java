@@ -1,11 +1,17 @@
 package vazkii.psi.client.gui;
 
 import com.google.common.collect.ImmutableSet;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.RenderState;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.client.util.InputMappings;
@@ -15,6 +21,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.*;
 import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.glfw.GLFW;
+import org.lwjgl.opengl.GL11;
 import vazkii.arl.util.RenderHelper;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.spell.*;
@@ -41,6 +48,14 @@ import java.util.stream.Collectors;
 public class GuiProgrammer extends Screen {
 
 	public static final ResourceLocation texture = new ResourceLocation(LibResources.GUI_PROGRAMMER);
+	public static final RenderType LAYER;
+	static {
+		RenderType.State glState = RenderType.State.builder()
+						.texture(new RenderState.TextureState(texture, false, false))
+						.lightmap(new RenderState.LightmapState(true))
+						.alpha(new RenderState.AlphaState(0.004F)).build(false);
+		LAYER = RenderType.of(LibMisc.PREFIX_MOD + "programmer", DefaultVertexFormats.POSITION_COLOR_TEXTURE_LIGHT, GL11.GL_QUADS, 64, glState);
+	}
 
 	public final TileProgrammer programmer;
 	public Spell spell;
@@ -228,7 +243,9 @@ public class GuiProgrammer extends Screen {
 		RenderSystem.pushMatrix();
 		tooltip.clear();
 		RenderSystem.translatef(gridLeft, gridTop, 0);
-		spell.draw();
+		IRenderTypeBuffer.Impl buffers = IRenderTypeBuffer.immediate(Tessellator.getInstance().getBuffer());
+		spell.draw(new MatrixStack(), buffers, 0xF000F0);
+		buffers.draw();
 
 		if (compiler.isErrored()) {
 			Pair<Integer, Integer> errorPos = compiler.getErrorLocation();

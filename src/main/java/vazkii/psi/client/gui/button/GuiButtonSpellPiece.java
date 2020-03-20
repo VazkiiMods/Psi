@@ -10,9 +10,12 @@
  */
 package vazkii.psi.client.gui.button;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.Tessellator;
 import vazkii.psi.api.spell.SpellPiece;
 import vazkii.psi.client.gui.GuiProgrammer;
 
@@ -39,12 +42,11 @@ public class GuiButtonSpellPiece extends Button {
         if (active && visible) {
 			boolean hover = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
 
-			RenderSystem.pushMatrix();
-			RenderSystem.color3f(1f, 1f, 1f);
-			RenderSystem.translatef(x, y, 0);
-			piece.draw();
-			RenderSystem.popMatrix();
-
+			IRenderTypeBuffer.Impl buffers = IRenderTypeBuffer.immediate(Tessellator.getInstance().getBuffer());
+			MatrixStack ms = new MatrixStack();
+			ms.translate(x, y, 0);
+			piece.draw(ms, buffers, 0xF000F0);
+			buffers.draw();
 
 			Minecraft.getInstance().getTextureManager().bindTexture(GuiProgrammer.texture);
 			if (hover) {

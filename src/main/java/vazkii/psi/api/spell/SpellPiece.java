@@ -11,10 +11,11 @@
 package vazkii.psi.api.spell;
 
 import com.google.common.base.CaseFormat;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
@@ -25,6 +26,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.ModList;
+import org.lwjgl.opengl.GL11;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.internal.PsiRenderHelper;
 import vazkii.psi.api.internal.TooltipHelper;
@@ -184,85 +186,81 @@ public abstract class SpellPiece {
 	 * To avoid z-fighting in the TE projection, translations are applied every step.
 	 */
 	@OnlyIn(Dist.CLIENT)
-	public void draw() {
-		RenderSystem.pushMatrix();
-		drawBackground();
-		RenderSystem.translatef(0F, 0F, 0.1F);
-		drawAdditional();
+	public void draw(MatrixStack ms, IRenderTypeBuffer buffers, int light) {
+		ms.push();
+		drawBackground(ms, buffers, light);
+		ms.translate(0F, 0F, 0.1F);
+		drawAdditional(ms, buffers, light);
 		if (isInGrid) {
-			RenderSystem.translatef(0F, 0F, 0.1F);
-			drawParams();
-			RenderSystem.translatef(0F, 0F, 0.1F);
-			drawComment();
+			ms.translate(0F, 0F, 0.1F);
+			drawParams(ms, buffers, light);
+			ms.translate(0F, 0F, 0.1F);
+			drawComment(ms, buffers, light);
 		}
 
-		RenderSystem.color3f(1F, 1F, 1F);
-		RenderSystem.popMatrix();
+		ms.pop();
+	}
+
+	// TODO 1.15 stitch all the pieces into an atlas?
+	@OnlyIn(Dist.CLIENT)
+	private RenderType getRenderLayer() {
+		ResourceLocation res = PsiAPI.simpleSpellTextures.get(registryKey);
+		RenderType.State glState = RenderType.State.builder().texture(new RenderState.TextureState(res, false, false))
+						.build(false);
+		return RenderType.of("psi_spell_piece_" + registryKey, DefaultVertexFormats.POSITION_COLOR_TEXTURE_LIGHT, GL11.GL_QUADS, 64, glState);
+
 	}
 
 	/**
 	 * Draws this piece's background.
-	 * @see #draw()
 	 */
 	@OnlyIn(Dist.CLIENT)
-	public void drawBackground() {
-        ResourceLocation res = PsiAPI.simpleSpellTextures.get(registryKey);
-        Minecraft.getInstance().textureManager.bindTexture(res);
-
-        RenderSystem.color3f(1F, 1F, 1F);
-        BufferBuilder wr = Tessellator.getInstance().getBuffer();
-        wr.begin(7, DefaultVertexFormats.POSITION_TEX);
-        wr.vertex(0, 16, 0).texture(0, 1).endVertex();
-        wr.vertex(16, 16, 0).texture(1, 1).endVertex();
-        wr.vertex(16, 0, 0).texture(1, 0).endVertex();
-        wr.vertex(0, 0, 0).texture(0, 0).endVertex();
-        Tessellator.getInstance().draw();
+	public void drawBackground(MatrixStack ms, IRenderTypeBuffer buffers, int light) {
+        IVertexBuilder buffer = buffers.getBuffer(getRenderLayer());
+        Matrix4f mat = ms.peek().getModel();
+        buffer.vertex(mat, 0, 16, 0).color(1F, 1F, 1F, 1F).texture(0, 1).light(light).endVertex();
+        buffer.vertex(mat, 16, 16, 0).color(1F, 1F, 1F, 1F).texture(1, 1).light(light).endVertex();
+        buffer.vertex(mat, 16, 0, 0).color(1F, 1F, 1F, 1F).texture(1, 0).light(light).endVertex();
+        buffer.vertex(mat, 0, 0, 0).color(1F, 1F, 1F, 1F).texture(0, 0).light(light).endVertex();
     }
 	
 	/**
 	 * Draws any additional stuff for this piece. Used in connectors
 	 * to draw the lines.
-	 * @see #draw()
 	 */
 	@OnlyIn(Dist.CLIENT)
-	public void drawAdditional() {
+	public void drawAdditional(MatrixStack ms, IRenderTypeBuffer buffers, int light) {
 		// NO-OP
 	}
 	
 	/**
 	 * Draws the little comment indicator in this piece, if one exists.
-	 * @see #draw()
 	 */
 	@OnlyIn(Dist.CLIENT)
-	public void drawComment() {
+	public void drawComment(MatrixStack ms, IRenderTypeBuffer buffers, int light) {
 		if(comment != null && !comment.isEmpty()) {
-            Minecraft.getInstance().textureManager.bindTexture(PsiAPI.internalHandler.getProgrammerTexture());
+            IVertexBuilder buffer = buffers.getBuffer(PsiAPI.internalHandler.getProgrammerLayer());
 
             float wh = 6F;
             float minU = 150 / 256F;
             float minV = 184 / 256F;
             float maxU = (150 + wh) / 256F;
             float maxV = (184 + wh) / 256F;
-            RenderSystem.color4f(1F, 1F, 1F, 1F);
+            Matrix4f mat = ms.peek().getModel();
 
-            BufferBuilder wr = Tessellator.getInstance().getBuffer();
-            wr.begin(7, DefaultVertexFormats.POSITION_TEX);
-            wr.vertex(-2, 4, 0).texture(minU, maxV).endVertex();
-            wr.vertex(4, 4, 0).texture(maxU, maxV).endVertex();
-            wr.vertex(4, -2, 0).texture(maxU, minV).endVertex();
-            wr.vertex(-2, -2, 0).texture(minU, minV).endVertex();
-            Tessellator.getInstance().draw();
+            buffer.vertex(mat, -2, 4, 0).color(1F, 1F, 1F, 1F).texture(minU, maxV).light(light).endVertex();
+            buffer.vertex(mat, 4, 4, 0).color(1F, 1F, 1F, 1F).texture(maxU, maxV).light(light).endVertex();
+            buffer.vertex(mat, 4, -2, 0).color(1F, 1F, 1F, 1F).texture(maxU, minV).light(light).endVertex();
+            buffer.vertex(mat, -2, -2, 0).color(1F, 1F, 1F, 1F).texture(minU, minV).light(light).endVertex();
         }
 	}
 	
 	/**
 	 * Draws the parameters coming into this piece.
-	 * @see #draw()
 	 */
 	@OnlyIn(Dist.CLIENT)
-	public void drawParams() {
-        Minecraft.getInstance().textureManager.bindTexture(PsiAPI.internalHandler.getProgrammerTexture());
-        RenderSystem.enableAlphaTest();
+	public void drawParams(MatrixStack ms, IRenderTypeBuffer buffers, int light) {
+        IVertexBuilder buffer = buffers.getBuffer(PsiAPI.internalHandler.getProgrammerLayer());
         for (SpellParam param : paramSides.keySet()) {
             SpellParam.Side side = paramSides.get(param);
             if (side.isEnabled()) {
@@ -279,21 +277,19 @@ public abstract class SpellPiece {
                 float minV = side.v / 256F;
                 float maxU = (side.u + wh) / 256F;
                 float maxV = (side.v + wh) / 256F;
-                RenderSystem.color4f(PsiRenderHelper.r(param.color) / 255F,
-                        PsiRenderHelper.g(param.color) / 255F,
-                        PsiRenderHelper.b(param.color) / 255F, 1F);
+                int r = PsiRenderHelper.r(param.color);
+                int g = PsiRenderHelper.g(param.color);
+                int b = PsiRenderHelper.b(param.color);
+                int a = 255;
+                Matrix4f mat = ms.peek().getModel();
 
-				BufferBuilder wr = Tessellator.getInstance().getBuffer();
-				wr.begin(7, DefaultVertexFormats.POSITION_TEX);
-				wr.vertex(minX, maxY, 0).texture(minU, maxV).endVertex();
-				wr.vertex(maxX, maxY, 0).texture(maxU, maxV).endVertex();
-				wr.vertex(maxX, minY, 0).texture(maxU, minV).endVertex();
-				wr.vertex(minX, minY, 0).texture(minU, minV).endVertex();
-				Tessellator.getInstance().draw();
-			}
-		}
-		RenderSystem.disableAlphaTest();
-	}
+                buffer.vertex(mat, minX, maxY, 0).color(r, g, b, a).texture(minU, maxV).light(light).endVertex();
+                buffer.vertex(mat, maxX, maxY, 0).color(r, g, b, a).texture(maxU, maxV).light(light).endVertex();
+                buffer.vertex(mat, maxX, minY, 0).color(r, g, b, a).texture(maxU, minV).light(light).endVertex();
+                buffer.vertex(mat, minX, minY, 0).color(r, g, b, a).texture(minU, minV).light(light).endVertex();
+      }
+    }
+  }
 
 	/**
      * Draws this piece's tooltip.
