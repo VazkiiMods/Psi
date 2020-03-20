@@ -37,13 +37,13 @@ public class GuiButtonPage extends Button {
     @Override
     public void renderButton(int par2, int par3, float pTicks) {
 		if (active) {
-			isHovered = par2 >= x && par3 >= y && par2 < x + width && par3 < y + height;
+			boolean hover = par2 >= x && par3 >= y && par2 < x + width && par3 < y + height;
 
 			Minecraft.getInstance().textureManager.bindTexture(GuiProgrammer.texture);
 			RenderSystem.color4f(1F, 1F, 1F, 1F);
-			blit(x, y, isHovered() ? 216 : 198, right ? 145 : 155, width, height);
+			blit(x, y, hover ? 216 : 198, right ? 145 : 155, width, height);
 
-			if (isHovered)
+			if (hover)
 				gui.tooltip.add(new TranslationTextComponent(right ? "psimisc.nextPage" : "psimisc.prevPage"));
 		}
 	}

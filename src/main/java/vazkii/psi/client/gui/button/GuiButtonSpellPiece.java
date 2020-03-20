@@ -37,7 +37,7 @@ public class GuiButtonSpellPiece extends Button {
     @Override
     public void renderButton(int mouseX, int mouseY, float pTicks) {
         if (active && visible) {
-			isHovered = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
+			boolean hover = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
 
 			RenderSystem.pushMatrix();
 			RenderSystem.color3f(1f, 1f, 1f);
@@ -47,7 +47,7 @@ public class GuiButtonSpellPiece extends Button {
 
 
 			Minecraft.getInstance().getTextureManager().bindTexture(GuiProgrammer.texture);
-			if (isHovered()) {
+			if (hover) {
 				piece.getTooltip(gui.tooltip);
 				blit(x, y, 16, gui.ySize, 16, 16);
 			}
