@@ -21,7 +21,6 @@ public class ConfigHandler {
 		public final ForgeConfigSpec.BooleanValue useShaders;
 		public final ForgeConfigSpec.BooleanValue psiBarOnRight;
 		public final ForgeConfigSpec.BooleanValue contextSensitiveBar;
-		public final ForgeConfigSpec.BooleanValue useVanillaParticleLimiter;
 		public final ForgeConfigSpec.IntValue maxPsiBarScale;
 
 		public Client(ForgeConfigSpec.Builder builder) {
@@ -33,9 +32,6 @@ public class ConfigHandler {
 
 			contextSensitiveBar = builder.comment("Controls whether the Psi Bar should be hidden if it's full and the player is holding an item that uses Psi.")
 					.define("client.contextSensitiveBar", true);
-
-			useVanillaParticleLimiter = builder.comment("Controls whether the \\\"Particles\\\" setting in the Vanilla options menu is accounted for when creating particles. Set to false to always have particles even if you change the Vanilla setting.")
-					.define("client.useVanillaParticleLimiter", true);
 
 			maxPsiBarScale = builder.comment("The maximum scale your Psi bar can be. This prevents it from being too large on a bigger GUI scale. This is maximum amount of \\\"on screen pixels\\\" each actual pixel can take.")
 					.defineInRange("client.maxPsiBarScale", 3, 1, 5);
