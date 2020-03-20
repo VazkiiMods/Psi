@@ -481,7 +481,7 @@
   "psi.spellparam.shift": "Mudar",
   "psi.spellparam.slot": "Slot",
   "psi.spellparam.base": "Base",
-  "psi.datatype._null": "Nenhum",
+  "psi.datatype.void": "Nenhum",
   "psi.datatype._any": "Qualquer",
   "psi.datatype._double": "Número",
   "psi.datatype._integer": "Número",

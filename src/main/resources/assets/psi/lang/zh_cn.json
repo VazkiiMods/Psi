@@ -481,7 +481,7 @@
   "psi.spellparam.shift": "移位",
   "psi.spellparam.slot": "槽位",
   "psi.spellparam.base": "底",
-  "psi.datatype._null": "None",
+  "psi.datatype.void": "None",
   "psi.datatype._any": "Any",
   "psi.datatype._double": "Number",
   "psi.datatype._integer": "Number",
