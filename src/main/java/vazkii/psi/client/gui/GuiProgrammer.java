@@ -20,6 +20,7 @@ import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.*;
 import net.minecraftforge.fml.client.gui.GuiUtils;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
@@ -48,13 +49,24 @@ import java.util.stream.Collectors;
 public class GuiProgrammer extends Screen {
 
 	public static final ResourceLocation texture = new ResourceLocation(LibResources.GUI_PROGRAMMER);
-	public static final RenderType LAYER;
+	public static final RenderType ICONS_LAYER;
+	public static final RenderType BACKGROUND_LAYER;
 	static {
 		RenderType.State glState = RenderType.State.builder()
 						.texture(new RenderState.TextureState(texture, false, false))
 						.lightmap(new RenderState.LightmapState(true))
+						.cull(new RenderState.CullState(false))
 						.alpha(new RenderState.AlphaState(0.004F)).build(false);
-		LAYER = RenderType.of(LibMisc.PREFIX_MOD + "programmer", DefaultVertexFormats.POSITION_COLOR_TEXTURE_LIGHT, GL11.GL_QUADS, 64, glState);
+		ICONS_LAYER = RenderType.of(LibMisc.PREFIX_MOD + "programmer_icons", DefaultVertexFormats.POSITION_COLOR_TEXTURE_LIGHT, GL11.GL_QUADS, 64, glState);
+
+		RenderState.TransparencyState translucent = ObfuscationReflectionHelper.getPrivateValue(RenderState.class, null, "field_228515_g_");
+		glState = RenderType.State.builder()
+						.texture(new RenderState.TextureState(texture, false, false))
+						.lightmap(new RenderState.LightmapState(true))
+						.cull(new RenderState.CullState(false))
+						.transparency(translucent)
+						.build(false);
+		BACKGROUND_LAYER = RenderType.of(LibMisc.PREFIX_MOD + "programmer_background", DefaultVertexFormats.POSITION_COLOR_TEXTURE_LIGHT, GL11.GL_QUADS, 64, glState);
 	}
 
 	public final TileProgrammer programmer;
