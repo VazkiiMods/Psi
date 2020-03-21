@@ -59,10 +59,10 @@
   "block.psi.psidust_block": "Psidust Block",
   "block.psi.psimetal_block": "Psimetal Block",
   "block.psi.psigem_block": "Psigem Block",
-  "block.psi.psimetal_plate_black": "Dark Psimetal Plate",
-  "block.psi.psimetal_plate_black_light": "Dark Psimetal Flow Plate",
-  "block.psi.psimetal_plate_cyan": "Bright Psimetal Plate",
-  "block.psi.psimetal_plate_cyan_light": "Bright Psimetal Flow Plate",
+  "block.psi.black_psimetal_plate": "Dark Psimetal Plate",
+  "block.psi.lit_black_psimetal_plate": "Dark Psimetal Flow Plate",
+  "block.psi.white_psimetal_plate": "Bright Psimetal Plate",
+  "block.psi.lit_white_psimetal_plate": "Bright Psimetal Flow Plate",
   "block.psi.ebony_psimetal_block": "Ebony Psimetal Block",
   "block.psi.ivory_psimetal_block": "Ivory Psimetal Block",
   "block.psi.conjured": "Conjured Block",
@@ -589,5 +589,8 @@
   "command.psi.unlearn.not_a_group": "'%s' is not a valid Psi piece group",
   "command.psi.unlearn.unknown": "This player has no Psi data. Report this to the mod author.",
   "psi:fake_level_psidust": "Psidust Infusion",
-  "jei.psi.category.trick": "Spell Infusion"
+  "jei.psi.category.trick": "Spell Infusion",
+  "psi.book.name": "Taurus Silvers' Codex",
+  "psi.book.landing_text": "Lorem Ipsum",
+  "psi.fake_level_psidust.desc": "Craft your first Psidust!"
 }
