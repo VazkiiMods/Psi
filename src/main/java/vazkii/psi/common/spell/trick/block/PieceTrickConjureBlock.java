@@ -79,9 +79,7 @@ public class PieceTrickConjureBlock extends PieceTrick {
 
 	public static void conjure(SpellContext context, Double timeVal, BlockPos pos, World world, BlockState state) {
 		if(world.getBlockState(pos).getBlock() != state.getBlock()) {
-			conjure(world, pos, context.caster, state);
-
-			if (world.getBlockState(pos) == state) {
+			if (conjure(world, pos, context.caster, state)) {
 				if (timeVal != null && timeVal.intValue() > 0) {
 					int val = timeVal.intValue();
 					world.getPendingBlockTicks().scheduleTick(pos, state.getBlock(), val);
@@ -96,13 +94,14 @@ public class PieceTrickConjureBlock extends PieceTrick {
 		}
 	}
 
-	public static void conjure(World world, BlockPos pos, PlayerEntity player, BlockState state) {
+	public static boolean conjure(World world, BlockPos pos, PlayerEntity player, BlockState state) {
 		if(!world.isBlockLoaded(pos) || !world.isBlockModifiable(player, pos))
-			return;
+			return false;
 
 		BlockState inWorld = world.getBlockState(pos);
 		if(inWorld.isAir(world, pos) || inWorld.getMaterial().isReplaceable())
-			world.setBlockState(pos, state);
+			return world.setBlockState(pos, state);
+		return false;
 	}
 
 	public BlockState messWithState(BlockState state) {
