@@ -30,8 +30,8 @@ import vazkii.psi.common.block.tile.TileConjured;
 
 public class PieceTrickConjureBlock extends PieceTrick {
 
-	SpellParam position;
-	SpellParam time;
+	SpellParam<Vector3> position;
+	SpellParam<Number> time;
 
 	public PieceTrickConjureBlock(Spell spell) {
 		super(spell);
@@ -57,7 +57,7 @@ public class PieceTrickConjureBlock extends PieceTrick {
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		Vector3 positionVal = this.getParamValue(context, position);
-		Double timeVal = this.<Double>getParamValue(context, time);
+		double timeVal = this.getParamValue(context, time).doubleValue();
 
 		if(positionVal == null)
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);

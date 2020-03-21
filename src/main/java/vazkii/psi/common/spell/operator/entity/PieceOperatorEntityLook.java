@@ -21,7 +21,7 @@ import vazkii.psi.api.spell.piece.PieceOperator;
 
 public class PieceOperatorEntityLook extends PieceOperator {
 
-	SpellParam target;
+	SpellParam<Entity> target;
 
     public PieceOperatorEntityLook(Spell spell) {
         super(spell);

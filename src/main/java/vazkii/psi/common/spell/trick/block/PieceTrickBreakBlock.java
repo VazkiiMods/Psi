@@ -36,7 +36,7 @@ import vazkii.psi.common.core.handler.ConfigHandler;
 
 public class PieceTrickBreakBlock extends PieceTrick {
 
-	SpellParam position;
+	SpellParam<Vector3> position;
 
 	public PieceTrickBreakBlock(Spell spell) {
 		super(spell);

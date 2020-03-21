@@ -25,8 +25,8 @@ import vazkii.psi.api.spell.wrapper.EntityListWrapper;
 
 public class PieceTrickMassBlink extends PieceTrick {
 
-	SpellParam target;
-	SpellParam distance;
+	SpellParam<EntityListWrapper> target;
+	SpellParam<Number> distance;
 
 	public PieceTrickMassBlink(Spell spell) {
 		super(spell);
@@ -52,7 +52,7 @@ public class PieceTrickMassBlink extends PieceTrick {
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		EntityListWrapper targetVal = this.getParamValue(context, target);
-		Double distanceVal = this.<Double>getParamValue(context, distance);
+		double distanceVal = this.getParamValue(context, distance).doubleValue();
 
 		for(Entity e : targetVal)
 			PieceTrickBlink.blink(context, e, distanceVal);

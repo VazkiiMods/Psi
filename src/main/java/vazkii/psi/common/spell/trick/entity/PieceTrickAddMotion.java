@@ -25,9 +25,9 @@ public class PieceTrickAddMotion extends PieceTrick {
 
 	public static final double MULTIPLIER = 0.3;
 
-	SpellParam target;
-	SpellParam direction;
-	SpellParam speed;
+	SpellParam<Entity> target;
+	SpellParam<Vector3> direction;
+	SpellParam<Number> speed;
 
 	public PieceTrickAddMotion(Spell spell) {
 		super(spell);
@@ -56,7 +56,7 @@ public class PieceTrickAddMotion extends PieceTrick {
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		Entity targetVal = this.getParamValue(context, target);
 		Vector3 directionVal = this.getParamValue(context, direction);
-		Double speedVal = this.<Double>getParamValue(context, speed);
+		double speedVal = this.getParamValue(context, speed).doubleValue();
 
 		addMotion(context, targetVal, directionVal, speedVal);
 

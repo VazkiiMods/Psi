@@ -42,7 +42,7 @@ public class PieceConnector extends SpellPiece implements IRedirector {
 		LINES_LAYER = RenderType.of(LibMisc.PREFIX_MOD + "piece_connector_lines", DefaultVertexFormats.POSITION_COLOR_TEXTURE_LIGHT, GL11.GL_QUADS, 64, glState);
 	}
 
-	public SpellParam target;
+	public SpellParam<SpellParam.Any> target;
 
 	public PieceConnector(Spell spell) {
 		super(spell);

@@ -12,7 +12,7 @@ package vazkii.psi.api.spell.param;
 
 import vazkii.psi.api.spell.SpellParam;
 
-public abstract class ParamSpecific extends SpellParam {
+public abstract class ParamSpecific<T> extends SpellParam<T> {
 
 	final boolean constant;
 

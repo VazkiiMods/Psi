@@ -20,7 +20,7 @@ import vazkii.psi.api.spell.piece.PieceOperator;
 
 public class PieceOperatorVectorExtractZ extends PieceOperator {
 
-	SpellParam vec1;
+	SpellParam<Vector3> vec1;
 
 	public PieceOperatorVectorExtractZ(Spell spell) {
 		super(spell);

@@ -26,7 +26,7 @@ import vazkii.psi.api.spell.piece.PieceTrick;
 
 public class PieceTrickTorrent extends PieceTrick {
 
-	SpellParam position;
+	SpellParam<Vector3> position;
 
 	public PieceTrickTorrent(Spell spell) {
 		super(spell);

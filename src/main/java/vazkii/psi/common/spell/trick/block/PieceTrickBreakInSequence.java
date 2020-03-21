@@ -25,9 +25,9 @@ import vazkii.psi.api.spell.piece.PieceTrick;
 
 public class PieceTrickBreakInSequence extends PieceTrick {
 
-	SpellParam position;
-	SpellParam target;
-	SpellParam maxBlocks;
+	SpellParam<Vector3> position;
+	SpellParam<Vector3> target;
+	SpellParam<Number> maxBlocks;
 
 	public PieceTrickBreakInSequence(Spell spell) {
 		super(spell);
@@ -56,8 +56,7 @@ public class PieceTrickBreakInSequence extends PieceTrick {
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		Vector3 positionVal = this.getParamValue(context, position);
 		Vector3 targetVal = this.getParamValue(context, target);
-		Double maxBlocksVal = this.<Double>getParamValue(context, maxBlocks);
-		int maxBlocksInt = maxBlocksVal.intValue();
+		int maxBlocksInt = this.getParamValue(context, maxBlocks).intValue();
 
 		if(positionVal == null)
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);

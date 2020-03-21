@@ -23,10 +23,10 @@ import vazkii.psi.common.block.base.ModBlocks;
 
 public class PieceTrickConjureBlockSequence extends PieceTrick {
 
-	SpellParam position;
-	SpellParam target;
-	SpellParam maxBlocks;
-	SpellParam time;
+	SpellParam<Vector3> position;
+	SpellParam<Vector3> target;
+	SpellParam<Number> maxBlocks;
+	SpellParam<Number> time;
 
 	public PieceTrickConjureBlockSequence(Spell spell) {
 		super(spell);
@@ -56,9 +56,8 @@ public class PieceTrickConjureBlockSequence extends PieceTrick {
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		Vector3 positionVal = this.getParamValue(context, position);
 		Vector3 targetVal = this.getParamValue(context, target);
-		Double maxBlocksVal = this.<Double>getParamValue(context, maxBlocks);
-		Double timeVal = this.<Double>getParamValue(context, time);
-		int maxBlocksInt = maxBlocksVal.intValue();
+		int maxBlocksInt = this.getParamValue(context, maxBlocks).intValue();
+		double timeVal = this.getParamValue(context, time).doubleValue();
 
 		if(positionVal == null)
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);

@@ -24,7 +24,7 @@ import vazkii.psi.api.spell.piece.PieceSelector;
 
 public class PieceSelectorBlockPresence extends PieceSelector {
 
-	SpellParam position;
+	SpellParam<Vector3> position;
 
 	public PieceSelectorBlockPresence(Spell spell) {
 		super(spell);

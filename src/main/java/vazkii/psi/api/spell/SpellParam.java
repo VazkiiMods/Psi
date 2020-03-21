@@ -18,7 +18,7 @@ import net.minecraft.util.text.TranslationTextComponent;
  * Base abstract class for a spell parameter. See implementations
  * in vazkii.psi.api.spell.param.
  */
-public abstract class SpellParam {
+public abstract class SpellParam<T> {
 
 	// Colors
 	// These are modifiable for a reason, but you still shouldn't do it
@@ -75,7 +75,7 @@ public abstract class SpellParam {
 	 * implemented fully. For better control, use {@link #canAccept(SpellPiece)} and
 	 * override {@link #getRequiredTypeString()} for display.
 	 */
-	protected abstract Class<?> getRequiredType();
+	protected abstract Class<T> getRequiredType();
 
 	/**
 	 * Gets if this parameter requires a constant ({@link EnumPieceType#CONSTANT}). Similarly to {@link #getRequiredType()} this
@@ -89,7 +89,7 @@ public abstract class SpellParam {
 	 * Gets the string for display for the required type.
 	 */
 	public ITextComponent getRequiredTypeString() {
-		Class<?> evalType = getRequiredType();
+		Class<T> evalType = getRequiredType();
 		String evalStr = evalType == null ? "null" : CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, evalType.getSimpleName());
 		ITextComponent s = new TranslationTextComponent("psi.datatype." + evalStr);
 		if (requiresConstant())

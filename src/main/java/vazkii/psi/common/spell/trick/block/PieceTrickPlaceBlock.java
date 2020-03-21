@@ -33,7 +33,7 @@ import vazkii.psi.common.block.base.ModBlocks;
 
 public class PieceTrickPlaceBlock extends PieceTrick {
 
-	SpellParam position;
+	SpellParam<Vector3> position;
 
 	public PieceTrickPlaceBlock(Spell spell) {
 		super(spell);

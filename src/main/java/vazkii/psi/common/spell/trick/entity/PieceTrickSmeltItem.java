@@ -20,7 +20,7 @@ import vazkii.psi.common.spell.selector.entity.PieceSelectorNearbySmeltables;
 
 public class PieceTrickSmeltItem extends PieceTrick {
 
-	SpellParam target;
+	SpellParam<Entity> target;
 
 	public PieceTrickSmeltItem(Spell spell) {
 		super(spell);

@@ -20,9 +20,9 @@ import vazkii.psi.api.spell.piece.PieceOperator;
 
 public class PieceOperatorVectorSum extends PieceOperator {
 
-	SpellParam vec1;
-	SpellParam vec2;
-	SpellParam vec3;
+	SpellParam<Vector3> vec1;
+	SpellParam<Vector3> vec2;
+	SpellParam<Vector3> vec3;
 
 	public PieceOperatorVectorSum(Spell spell) {
 		super(spell);
