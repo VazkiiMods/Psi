@@ -17,9 +17,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIntArray;
 import net.minecraft.util.INameable;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
-import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ISocketableCapability;
 
 import javax.annotation.Nonnull;
@@ -158,7 +156,7 @@ public class InventorySocketable implements IInventory, INameable, IIntArray {
     @Nonnull
 	@Override
     public ITextComponent getName() {
-        return new StringTextComponent("psi.container.socketable");
+        return new TranslationTextComponent("psi.container.socketable");
 	}
 
 	@Override
@@ -169,6 +167,6 @@ public class InventorySocketable implements IInventory, INameable, IIntArray {
 	@Nonnull
 	@Override
 	public ITextComponent getDisplayName() {
-        return new TranslationTextComponent(getName().getString());
+		return new TranslationTextComponent(getName().getFormattedText());
 	}
 }

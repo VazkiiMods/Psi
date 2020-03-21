@@ -111,7 +111,7 @@ public abstract class SpellPiece {
 		String evalStr = evalType == null ? "null" : CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, evalType.getSimpleName());
 		ITextComponent s = new TranslationTextComponent("psi.datatype." + evalStr);
 		if (getPieceType() == EnumPieceType.CONSTANT)
-			s.appendSibling(new TranslationTextComponent("psimisc.constant"));
+			s.appendSibling(new StringTextComponent(" ")).appendSibling(new TranslationTextComponent("psimisc.constant"));
 
 		return s;
 	}
@@ -174,7 +174,7 @@ public abstract class SpellPiece {
 	}
 
 	public String getSortingName() {
-        return new TranslationTextComponent(getUnlocalizedName()).getString();
+		return new TranslationTextComponent(getUnlocalizedName()).getFormattedText();
     }
 
 	public String getUnlocalizedDesc() {

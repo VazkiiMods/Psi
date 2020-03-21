@@ -10,7 +10,6 @@
  */
 package vazkii.psi.common.spell.trick.block;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -90,8 +89,10 @@ public class PieceTrickConjureBlock extends PieceTrick {
 				TileEntity tile = world.getTileEntity(pos);
 
 				ItemStack cad = PsiAPI.getPlayerCAD(context.caster);
-				if (tile instanceof TileConjured && !cad.isEmpty())
+				if (tile instanceof TileConjured && !cad.isEmpty()) {
 					((TileConjured) tile).colorizer = ((ICAD) cad.getItem()).getComponentInSlot(cad, EnumCADComponent.DYE);
+				}
+
 			}
 		}
 	}

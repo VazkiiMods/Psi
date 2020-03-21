@@ -53,7 +53,7 @@ public class GuiCADAssembler extends ContainerScreen<ContainerCADAssembler> {
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 		int color = 4210752;
 
-		String name = new ItemStack(ModBlocks.cadAssembler).getDisplayName().getString();
+		String name = new ItemStack(ModBlocks.cadAssembler).getDisplayName().getFormattedText();
 		font.drawString(name, xSize / 2 - font.getStringWidth(name) / 2, 10, color);
 
 		ItemStack cad = assembler.getCachedCAD(player);

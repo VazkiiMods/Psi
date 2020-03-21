@@ -10,6 +10,7 @@
  */
 package vazkii.psi.api.spell;
 
+import com.google.common.base.CaseFormat;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
@@ -89,7 +90,7 @@ public abstract class SpellParam {
 	 */
 	public ITextComponent getRequiredTypeString() {
 		Class<?> evalType = getRequiredType();
-		String evalStr = evalType.getSimpleName().toLowerCase();
+		String evalStr = evalType == null ? "null" : CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, evalType.getSimpleName());
 		ITextComponent s = new TranslationTextComponent("psi.datatype." + evalStr);
 		if (requiresConstant())
 			s.appendText(" ").appendSibling(new TranslationTextComponent("psimisc.constant"));

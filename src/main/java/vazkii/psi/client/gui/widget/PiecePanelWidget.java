@@ -315,7 +315,7 @@ public class PiecePanelWidget extends Widget implements IRenderable, IGuiEventLi
 
 				int maxRank = 0;
 				for (SpellParam param : p.params.values()) {
-					String type = param.getRequiredTypeString().getString().toLowerCase();
+					String type = param.getRequiredTypeString().getFormattedText().toLowerCase();
 					maxRank = Math.max(maxRank, rankTextToken(type, clippedToken));
 				}
 
@@ -325,7 +325,7 @@ public class PiecePanelWidget extends Widget implements IRenderable, IGuiEventLi
 				if (clippedToken.isEmpty())
 					continue;
 
-				String type = p.getEvaluationTypeString().getString();
+				String type = p.getEvaluationTypeString().getFormattedText().toLowerCase();
 
 				rank += rankTextToken(type, clippedToken);
 			} else if (nameToken.startsWith("@")) {
@@ -423,6 +423,7 @@ public class PiecePanelWidget extends Widget implements IRenderable, IGuiEventLi
 		searchField.active = true;
 		searchField.setEnabled(true);
 		searchField.setFocused2(true);
+		parent.setFocused(searchField);
 		updatePanelButtons();
 	}
 }

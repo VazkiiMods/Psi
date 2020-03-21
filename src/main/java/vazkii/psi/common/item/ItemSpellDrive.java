@@ -56,7 +56,7 @@ public class ItemSpellDrive extends BasicItem {
 	@Nonnull
 	@Override
 	public ITextComponent getDisplayName(ItemStack stack) {
-		String name = super.getDisplayName(stack).getString();
+		String name = super.getDisplayName(stack).getFormattedText();
 		CompoundNBT cmp = ItemNBTHelper.getCompound(stack, TAG_SPELL, false);
 		String spellName = cmp.getString(Spell.TAG_SPELL_NAME); // We don't need to load the whole spell just for the name
 		if (spellName.isEmpty())

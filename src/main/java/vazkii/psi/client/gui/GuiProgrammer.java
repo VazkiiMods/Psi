@@ -347,9 +347,9 @@ public class GuiProgrammer extends Screen {
 
 		super.render(mouseX, mouseY, partialTicks);
 
-		if (!takingScreenshot && tooltip != null && !tooltip.isEmpty()) {
+		if (!takingScreenshot && tooltip != null && !tooltip.isEmpty() && pieceAtCursor == null) {
 			List<String> textComptoString = new ArrayList<>();
-			tooltip.forEach(el -> textComptoString.add(el.getString()));
+			tooltip.forEach(el -> textComptoString.add(el.getFormattedText()));
 			GuiUtils.drawHoveringText(textComptoString, mouseX, mouseY, width, height, -1, font);
 
 		}
@@ -494,6 +494,7 @@ public class GuiProgrammer extends Screen {
 
 	@Override
 	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+		minecraft.keyboardListener.enableRepeatEvents(true);
 		if (programmer != null)
 			spell = programmer.spell;
 		if (spectator)

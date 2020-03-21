@@ -72,7 +72,7 @@ public final class InternalMethodHandler implements IInternalMethodHandler {
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public void renderTooltip(int x, int y, List<ITextComponent> tooltipData, int color, int color2) {
-		RenderHelper.renderTooltip(x, y, tooltipData.stream().map(ITextComponent::getString).collect(Collectors.toList()), color, color2);
+		RenderHelper.renderTooltip(x, y, tooltipData.stream().map(ITextComponent::getFormattedText).collect(Collectors.toList()), color, color2);
 	}
 
 	@Override
