@@ -12,10 +12,12 @@ package vazkii.psi.client.render.tile;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFaceBlock;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.Matrix4f;
 import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
@@ -79,19 +81,24 @@ public class RenderTileProgrammer extends TileEntityRenderer<TileProgrammer> {
 
             te.spell.draw(ms, buffers, light);
 
-            Minecraft mc = Minecraft.getInstance();
-            mc.textureManager.bindTexture(GuiProgrammer.texture);
-
-            RenderSystem.enableBlend();
-            RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-            RenderSystem.color4f(1F, 1F, 1F, (Psi.magical ? 1F : 0.5F));
+            ms.push();
             ms.translate(0F, 0F, -0.01F);
-
-            RenderHelper.drawTexturedModalRect(-7, -7, 0, 0, 0, 174, 184, 1F / 256F, 1F / 256F);
-
-            ms.translate(0F, 0F, 0.01F);
+            IVertexBuilder buffer = buffers.getBuffer(GuiProgrammer.BACKGROUND_LAYER);
+            float x = -7, y = -7;
+            float width = 174;
+            float height = 184;
+            float u = 0, v = 0;
+            float rescale = 1 / 256F;
+            float a = Psi.magical ? 1F : 0.5F;
+            Matrix4f mat = ms.peek().getModel();
+            buffer.vertex(mat, x, y + height, 0).color(1, 1, 1, a).texture(u * rescale, (v + height) * rescale).light(light).endVertex();
+            buffer.vertex(mat, x + width, y + height, 0).color(1, 1, 1, a).texture((u + width) * rescale, (v + height) * rescale).light(light).endVertex();
+            buffer.vertex(mat, x + width, y, 0).color(1, 1, 1, a).texture((u + width) * rescale, v * rescale).light(light).endVertex();
+            buffer.vertex(mat, x, y, 0).color(1, 1, 1, a).texture(u * rescale, v * rescale).light(light).endVertex();
+            ms.pop();
 
             int color = Psi.magical ? 0 : 0xFFFFFF;
+            Minecraft mc = Minecraft.getInstance();
             mc.fontRenderer.draw(I18n.format("psimisc.name"), 0, 164, color, false, ms.peek().getModel(), buffers, false, 0, 0xF000F0);
             mc.fontRenderer.draw(te.spell.name, 38, 164, color, false, ms.peek().getModel(), buffers, false, 0, 0xF000F0);
 

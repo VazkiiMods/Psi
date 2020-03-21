@@ -206,7 +206,10 @@ public abstract class SpellPiece {
 	@OnlyIn(Dist.CLIENT)
 	private RenderType getRenderLayer() {
 		ResourceLocation res = PsiAPI.simpleSpellTextures.get(registryKey);
-		RenderType.State glState = RenderType.State.builder().texture(new RenderState.TextureState(res, false, false))
+		RenderType.State glState = RenderType.State.builder()
+						.texture(new RenderState.TextureState(res, false, false))
+						.lightmap(new RenderState.LightmapState(true))
+						.cull(new RenderState.CullState(false))
 						.build(false);
 		return RenderType.of("psi_spell_piece_" + registryKey, DefaultVertexFormats.POSITION_COLOR_TEXTURE_LIGHT, GL11.GL_QUADS, 64, glState);
 
