@@ -59,7 +59,7 @@ public class BlockConjured extends Block {
 
 	public BlockConjured(Properties properties) {
 		super(properties);
-		setDefaultState(getStateContainer().getBaseState().with(LIGHT, false).with(SOLID, false));
+		setDefaultState(getStateContainer().getBaseState().with(LIGHT, false).with(SOLID, false).with(BLOCK_DOWN, false).with(BLOCK_UP, false).with(BLOCK_EAST, false).with(BLOCK_WEST, false).with(BLOCK_NORTH, false).with(BLOCK_SOUTH, false));
 	}
 
 	@Override
@@ -69,6 +69,7 @@ public class BlockConjured extends Block {
 		if (inWorld instanceof TileConjured)
 			needsParticleUpdate.add(pos.toImmutable());
 	}
+
 
 	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
@@ -123,6 +124,7 @@ public class BlockConjured extends Block {
 	public boolean func_220074_n(BlockState state) {
 		return true;
 	}
+
 
 	@Nonnull
 	@Override

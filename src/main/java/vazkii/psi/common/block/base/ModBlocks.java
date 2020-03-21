@@ -44,7 +44,7 @@ public class ModBlocks {
 
     public static final Block cadAssembler = new BlockCADAssembler(Block.Properties.create(Material.IRON).hardnessAndResistance(5, 10).sound(SoundType.METAL).nonOpaque());
     public static final Block programmer = new BlockProgrammer(Block.Properties.create(Material.IRON).hardnessAndResistance(5, 10).sound(SoundType.METAL).nonOpaque());
-    public static final Block conjured = new BlockConjured(Block.Properties.create(Material.GLASS).variableOpacity().noDrops());
+    public static final Block conjured = new BlockConjured(Block.Properties.create(Material.GLASS).noDrops().nonOpaque());
     public static final Block psidustBlock = new Block(Block.Properties.create(Material.IRON).hardnessAndResistance(5, 10).sound(SoundType.METAL));
     public static final Block psimetalBlock = new Block(Block.Properties.create(Material.IRON).hardnessAndResistance(5, 10).sound(SoundType.METAL));
     public static final Block psigemBlock = new Block(Block.Properties.create(Material.IRON).hardnessAndResistance(5, 10).sound(SoundType.METAL));

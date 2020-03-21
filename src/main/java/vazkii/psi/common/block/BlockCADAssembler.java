@@ -13,8 +13,6 @@ package vazkii.psi.common.block;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalBlock;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.InventoryHelper;
@@ -32,8 +30,6 @@ import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.items.ItemHandlerHelper;
 import vazkii.arl.block.tile.TileSimpleInventory;
 import vazkii.psi.common.block.tile.TileCADAssembler;
-import vazkii.psi.common.lib.LibBlockNames;
-import vazkii.psi.common.lib.LibMisc;
 
 import javax.annotation.Nullable;
 
@@ -89,14 +85,14 @@ public class BlockCADAssembler extends HorizontalBlock {
 
     @Override
     public ActionResultType onUse(BlockState state, World world, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult rayTraceResult) {
-        if (!world.isRemote) {
-            TileEntity te = world.getTileEntity(pos);
-            if (te instanceof TileCADAssembler) {
-                NetworkHooks.openGui((ServerPlayerEntity) playerIn, (INamedContainerProvider) te, pos);
-                return ActionResultType.SUCCESS;
-            }
+		if (!world.isRemote) {
+			TileEntity te = world.getTileEntity(pos);
+			if (te instanceof TileCADAssembler) {
+				NetworkHooks.openGui((ServerPlayerEntity) playerIn, (INamedContainerProvider) te, pos);
+				return ActionResultType.SUCCESS;
+			}
 		}
-		return ActionResultType.PASS;
+		return ActionResultType.SUCCESS;
 	}
 
 	@Nullable

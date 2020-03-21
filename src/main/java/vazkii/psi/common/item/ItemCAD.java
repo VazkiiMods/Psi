@@ -178,7 +178,7 @@ public class ItemCAD extends BasicItem implements ICAD, ISpellSettable, IItemCol
 			did = true;
 		}
 
-		return new ActionResult<>(did ? ActionResultType.SUCCESS : ActionResultType.PASS, itemStackIn);
+		return new ActionResult<>(did ? ActionResultType.PASS : ActionResultType.PASS, itemStackIn);
 	}
 
 	@Override
