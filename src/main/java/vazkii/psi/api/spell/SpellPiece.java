@@ -209,6 +209,7 @@ public abstract class SpellPiece {
 		RenderType.State glState = RenderType.State.builder()
 						.texture(new RenderState.TextureState(res, false, false))
 						.lightmap(new RenderState.LightmapState(true))
+						.alpha(new RenderState.AlphaState(0.004F))
 						.cull(new RenderState.CullState(false))
 						.build(false);
 		return RenderType.of("psi_spell_piece_" + registryKey, DefaultVertexFormats.POSITION_COLOR_TEXTURE_LIGHT, GL11.GL_QUADS, 64, glState);
