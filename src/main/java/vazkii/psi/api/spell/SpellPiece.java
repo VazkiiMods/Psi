@@ -409,7 +409,7 @@ public abstract class SpellPiece {
 	public static SpellPiece create(Class<? extends SpellPiece> clazz, Spell spell) {
 		try {
 			return clazz.getConstructor(Spell.class).newInstance(spell);
-		} catch(Exception e) {
+		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -420,15 +420,22 @@ public abstract class SpellPiece {
 		return createFromNBT(spell, cmp);
 	}
 
-	public void readFromNBT(CompoundNBT cmp) {
-        CompoundNBT paramCmp = cmp.getCompound(TAG_PARAMS);
-        for (String s : params.keySet()) {
-            SpellParam param = params.get(s);
 
-            String key = s;
-            if (paramCmp.contains(key))
-                paramSides.put(param, SpellParam.Side.fromInt(paramCmp.getInt(key)));
-            else {
+	public SpellPiece copyFromSpell(Spell spell) {
+		CompoundNBT cmp = new CompoundNBT();
+		writeToNBT(cmp);
+		return createFromNBT(spell, cmp);
+	}
+
+	public void readFromNBT(CompoundNBT cmp) {
+		CompoundNBT paramCmp = cmp.getCompound(TAG_PARAMS);
+		for (String s : params.keySet()) {
+			SpellParam param = params.get(s);
+
+			String key = s;
+			if (paramCmp.contains(key))
+				paramSides.put(param, SpellParam.Side.fromInt(paramCmp.getInt(key)));
+			else {
                 if (key.startsWith(SpellParam.PSI_PREFIX))
                     key = "_" + key.substring(SpellParam.PSI_PREFIX.length());
                 paramSides.put(param, SpellParam.Side.fromInt(paramCmp.getInt(key)));

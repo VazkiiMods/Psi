@@ -673,11 +673,12 @@ public class GuiProgrammer extends Screen {
 					break;
 				case GLFW.GLFW_KEY_V:
 					if (SpellGrid.exists(selectedX, selectedY) && clipboard != null && hasControlDown()) {
-						pushState(true);
 						SpellPiece copy = clipboard.copy();
 						copy.x = selectedX;
 						copy.y = selectedY;
+						pushState(true);
 						spell.grid.gridData[selectedX][selectedY] = copy;
+						spell.grid.gridData[selectedX][selectedY].isInGrid = true;
 						onSpellChanged(false);
 						return true;
 					}

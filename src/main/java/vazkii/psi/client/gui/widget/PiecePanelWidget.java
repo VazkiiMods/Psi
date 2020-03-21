@@ -139,7 +139,7 @@ public class PiecePanelWidget extends Widget implements IRenderable, IGuiEventLi
 			for (SpellPiece shownPiece : shownPieces) {
 				GuiButtonSpellPiece spellPieceButton = new GuiButtonSpellPiece(parent, shownPiece, 0, 0, button -> {
 					parent.pushState(true);
-					SpellPiece piece1 = ((GuiButtonSpellPiece) button).piece.copy();
+					SpellPiece piece1 = ((GuiButtonSpellPiece) button).piece.copyFromSpell(parent.spell);
 					if (piece1.getPieceType() == EnumPieceType.TRICK && parent.spellNameField.getText().isEmpty()) {
 						String pieceName = I18n.format(piece1.getUnlocalizedName());
 						String patternStr = I18n.format("psimisc.trick_pattern");
@@ -154,9 +154,9 @@ public class PiecePanelWidget extends Widget implements IRenderable, IGuiEventLi
 						}
 					}
 					parent.spell.grid.gridData[parent.selectedX][parent.selectedY] = piece1;
-					piece1.isInGrid = true;
-					piece1.x = parent.selectedX;
-					piece1.y = parent.selectedY;
+					parent.spell.grid.gridData[parent.selectedX][parent.selectedY].isInGrid = true;
+					parent.spell.grid.gridData[parent.selectedX][parent.selectedY].x = parent.selectedX;
+					parent.spell.grid.gridData[parent.selectedX][parent.selectedY].y = parent.selectedY;
 					parent.onSpellChanged(false);
 					closePanel();
 				});
