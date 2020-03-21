@@ -119,8 +119,6 @@ public final class HUDHandler {
 
 		ICAD cad = (ICAD) cadStack.getItem();
 		PlayerData data = PlayerDataHandler.get(mc.player);
-		if (!mc.player.abilities.isCreativeMode)
-			return;
 
 		int totalPsi = data.getTotalPsi();
 		int currPsi = data.getAvailablePsi();
