@@ -28,7 +28,7 @@ import java.util.Optional;
 
 public class PieceOperatorFocusedEntity extends PieceOperator {
 
-	SpellParam target;
+	SpellParam<Entity> target;
 
 	public PieceOperatorFocusedEntity(Spell spell) {
 		super(spell);

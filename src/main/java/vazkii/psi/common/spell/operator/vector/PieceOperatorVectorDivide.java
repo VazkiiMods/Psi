@@ -21,8 +21,8 @@ import vazkii.psi.api.spell.piece.PieceOperator;
 
 public class PieceOperatorVectorDivide extends PieceOperator {
 
-	SpellParam vec1;
-	SpellParam num2;
+	SpellParam<Vector3> vec1;
+	SpellParam<Number> num2;
 
 	public PieceOperatorVectorDivide(Spell spell) {
 		super(spell);
@@ -37,7 +37,7 @@ public class PieceOperatorVectorDivide extends PieceOperator {
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		Vector3 v1 = this.getParamValue(context, vec1);
-		Double d = this.<Double>getParamValue(context, num2);
+		double d = this.getParamValue(context, num2).doubleValue();
 
 		if(d == 0)
 			throw new SpellRuntimeException(SpellRuntimeException.DIVIDE_BY_ZERO);

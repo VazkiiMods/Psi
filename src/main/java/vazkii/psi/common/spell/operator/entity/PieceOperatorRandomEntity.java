@@ -23,7 +23,7 @@ import vazkii.psi.api.spell.wrapper.EntityListWrapper;
 
 public class PieceOperatorRandomEntity extends PieceOperator {
 
-	SpellParam list;
+	SpellParam<EntityListWrapper> list;
 
 	public PieceOperatorRandomEntity(Spell spell) {
 		super(spell);

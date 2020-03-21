@@ -25,7 +25,7 @@ import vazkii.psi.api.spell.piece.PieceTrick;
 
 public class PieceTrickSmite extends PieceTrick {
 
-	SpellParam position;
+	SpellParam<Vector3> position;
 
 	public PieceTrickSmite(Spell spell) {
 		super(spell);

@@ -22,7 +22,7 @@ import vazkii.psi.api.spell.piece.PieceOperator;
 
 public class PieceOperatorEntityPosition extends PieceOperator {
 
-	SpellParam target;
+	SpellParam<Entity> target;
 
 	public PieceOperatorEntityPosition(Spell spell) {
 		super(spell);

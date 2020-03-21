@@ -25,9 +25,9 @@ import vazkii.psi.api.spell.piece.PieceOperator;
 
 public class PieceOperatorVectorRaycastAxis extends PieceOperator {
 
-	SpellParam origin;
-	SpellParam ray;
-	SpellParam max;
+	SpellParam<Vector3> origin;
+	SpellParam<Vector3> ray;
+	SpellParam<Number> max;
 
 	public PieceOperatorVectorRaycastAxis(Spell spell) {
 		super(spell);
@@ -49,9 +49,9 @@ public class PieceOperatorVectorRaycastAxis extends PieceOperator {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
 
 		double maxLen = SpellContext.MAX_DISTANCE;
-		Double numberVal = this.<Double>getParamValue(context, max);
+		Number numberVal = this.getParamValue(context, max);
 		if(numberVal != null)
-			maxLen = numberVal;
+			maxLen = numberVal.doubleValue();
 		maxLen = Math.min(SpellContext.MAX_DISTANCE, maxLen);
 
 		Vector3 end = originVal.copy().add(rayVal.copy().normalize().multiply(maxLen));

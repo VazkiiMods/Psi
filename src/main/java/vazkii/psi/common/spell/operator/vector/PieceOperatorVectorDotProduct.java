@@ -20,8 +20,8 @@ import vazkii.psi.api.spell.piece.PieceOperator;
 
 public class PieceOperatorVectorDotProduct extends PieceOperator {
 
-	SpellParam vec1;
-	SpellParam vec2;
+	SpellParam<Vector3> vec1;
+	SpellParam<Vector3> vec2;
 
 	public PieceOperatorVectorDotProduct(Spell spell) {
 		super(spell);

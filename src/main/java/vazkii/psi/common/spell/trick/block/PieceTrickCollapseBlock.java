@@ -27,7 +27,7 @@ import vazkii.psi.api.spell.piece.PieceTrick;
 
 public class PieceTrickCollapseBlock extends PieceTrick {
 
-	SpellParam position;
+	SpellParam<Vector3> position;
 
 	public PieceTrickCollapseBlock(Spell spell) {
 		super(spell);

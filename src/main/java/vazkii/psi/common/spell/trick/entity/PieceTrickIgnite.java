@@ -24,8 +24,8 @@ import vazkii.psi.api.spell.piece.PieceTrick;
 
 public class PieceTrickIgnite extends PieceTrick {
 
-	SpellParam target;
-	SpellParam time;
+	SpellParam<Entity> target;
+	SpellParam<Number> time;
 
 	public PieceTrickIgnite(Spell spell) {
 		super(spell);
@@ -52,10 +52,10 @@ public class PieceTrickIgnite extends PieceTrick {
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		Entity targetVal = this.getParamValue(context, target);
-		Double timeVal = this.<Double>getParamValue(context, time);
+		int timeVal = this.getParamValue(context, time).intValue();
 		
 		context.verifyEntity(targetVal);
-		targetVal.setFire(timeVal.intValue());
+		targetVal.setFire(timeVal);
 
 		return null;
 	}

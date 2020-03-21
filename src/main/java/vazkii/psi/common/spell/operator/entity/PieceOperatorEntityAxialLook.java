@@ -23,7 +23,7 @@ import vazkii.psi.api.spell.piece.PieceOperator;
 
 public class PieceOperatorEntityAxialLook extends PieceOperator {
 
-	SpellParam target;
+	SpellParam<Entity> target;
 
 	public PieceOperatorEntityAxialLook(Spell spell) {
 		super(spell);

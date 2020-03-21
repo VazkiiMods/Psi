@@ -30,7 +30,7 @@ import vazkii.psi.common.spell.selector.entity.PieceSelectorNearbySmeltables;
 
 public class PieceTrickSmeltBlock extends PieceTrick {
 
-	SpellParam position;
+	SpellParam<Vector3> position;
 
 	public PieceTrickSmeltBlock(Spell spell) {
 		super(spell);
