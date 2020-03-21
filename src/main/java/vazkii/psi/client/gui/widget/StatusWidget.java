@@ -27,7 +27,6 @@ public class StatusWidget extends Widget {
 
 	@Override
 	public void renderButton(int mouseX, int mouseY, float pTicks) {
-		parent.tooltip.clear();
 		RenderSystem.color3f(1f, 1f, 1f);
 		parent.getMinecraft().getTextureManager().bindTexture(GuiProgrammer.texture);
 		blit(parent.left - 48, parent.top + 5, parent.xSize, 0, 48, 30);
@@ -45,9 +44,6 @@ public class StatusWidget extends Widget {
 		}
 
 
-		/*
-			CAD Render
-		 */
 		ItemStack cad = PsiAPI.getPlayerCAD(parent.getMinecraft().player);
 		if (!cad.isEmpty()) {
 			int cadX = parent.left - 42;

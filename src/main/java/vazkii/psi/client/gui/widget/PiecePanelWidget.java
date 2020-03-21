@@ -48,8 +48,7 @@ public class PiecePanelWidget extends Widget implements IRenderable, IGuiEventLi
 
 	@Override
 	public void renderButton(int mouseX, int mouseY, float pTicks) {
-		if (panelEnabled) {
-			parent.tooltip.clear();
+        if (panelEnabled) {
 			parent.getMinecraft().getTextureManager().bindTexture(GuiProgrammer.texture);
 
 			fill(x, y, x + width, y + height, 0x88000000);

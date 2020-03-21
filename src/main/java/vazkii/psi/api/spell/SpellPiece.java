@@ -108,10 +108,10 @@ public abstract class SpellPiece {
 	 */
 	public ITextComponent getEvaluationTypeString() {
 		Class<?> evalType = getEvaluationType();
-		String evalStr = evalType == null ? "null" : evalType.getSimpleName().toLowerCase();
+		String evalStr = evalType == null ? "null" : CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, evalType.getSimpleName());
 		ITextComponent s = new TranslationTextComponent("psi.datatype." + evalStr);
 		if (getPieceType() == EnumPieceType.CONSTANT)
-			s.appendSibling(new TranslationTextComponent("psimisc.const"));
+			s.appendSibling(new TranslationTextComponent("psimisc.constant"));
 
 		return s;
 	}

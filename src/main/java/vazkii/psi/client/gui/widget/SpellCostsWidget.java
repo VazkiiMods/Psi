@@ -59,7 +59,7 @@ public class SpellCostsWidget extends Widget {
 				blit(statX, statY, (stat.ordinal() + 1) * 12, parent.ySize + 16, 12, 12);
 				parent.getMinecraft().fontRenderer.drawString(s, statX + 16, statY + 2, cadStat != null && cadVal < val && cadVal != -1 ? 0xFF6666 : 0xFFFFFF);
 
-				if (mouseX > statX && mouseY > statY && mouseX < statX + 12 && mouseY < statY + 12) {
+				if (mouseX > statX && mouseY > statY && mouseX < statX + 12 && mouseY < statY + 12 && !parent.panelWidget.panelEnabled) {
 					parent.tooltip.add(new TranslationTextComponent(stat.getName()).applyTextStyle(Psi.magical ? TextFormatting.LIGHT_PURPLE : TextFormatting.AQUA));
 					parent.tooltip.add(new TranslationTextComponent(stat.getDesc()).applyTextStyle(TextFormatting.GRAY));
 				}

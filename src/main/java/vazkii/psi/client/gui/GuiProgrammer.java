@@ -333,6 +333,14 @@ public class GuiProgrammer extends Screen {
 			tooltip = legitTooltip;
 
 
+		super.render(mouseX, mouseY, partialTicks);
+
+		if (!takingScreenshot && tooltip != null && !tooltip.isEmpty()) {
+			List<String> textComptoString = new ArrayList<>();
+			tooltip.forEach(el -> textComptoString.add(el.getString()));
+			GuiUtils.drawHoveringText(textComptoString, mouseX, mouseY, width, height, -1, font);
+
+		}
 		if (!takingScreenshot && pieceAtCursor != null) {
 			if (tooltip != null && !tooltip.isEmpty()) {
 				pieceAtCursor.drawTooltip(mouseX, mouseY, tooltip);
@@ -343,13 +351,7 @@ public class GuiProgrammer extends Screen {
 				pieceAtCursor.drawCommentText(mouseX, mouseY, commentList);
 			}
 		}
-		super.render(mouseX, mouseY, partialTicks);
-		if (!takingScreenshot && tooltip != null && !tooltip.isEmpty()) {
-			List<String> textComptoString = new ArrayList<>();
-			tooltip.forEach(el -> textComptoString.add(el.getString()));
-			GuiUtils.drawHoveringText(textComptoString, mouseX, mouseY, width, height, -1, font);
 
-		}
 
 		RenderSystem.popMatrix();
 
