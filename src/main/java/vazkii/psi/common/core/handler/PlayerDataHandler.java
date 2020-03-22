@@ -44,7 +44,6 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import vazkii.arl.util.ClientTicker;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.*;
 import vazkii.psi.api.exosuit.IPsiEventArmor;
@@ -53,6 +52,7 @@ import vazkii.psi.api.internal.IPlayerData;
 import vazkii.psi.api.internal.PsiRenderHelper;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.*;
+import vazkii.psi.client.core.handler.ClientTickHandler;
 import vazkii.psi.client.render.entity.RenderSpellCircle;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.item.ItemCAD;
@@ -214,9 +214,9 @@ public class PlayerDataHandler {
 			PlayerData data = get(Minecraft.getInstance().player);
 			if(data.isAnchored) {
 				float fov = event.getNewfov();
-				if(data.eidosAnchorTime > 0)
-					fov *= Math.min(5, data.eidosAnchorTime - ClientTicker.partialTicks) / 5;
-				else fov *= (10 - Math.min(10, data.postAnchorRecallTime + ClientTicker.partialTicks)) / 10;
+				if (data.eidosAnchorTime > 0)
+					fov *= Math.min(5, data.eidosAnchorTime - ClientTickHandler.partialTicks) / 5;
+				else fov *= (10 - Math.min(10, data.postAnchorRecallTime + ClientTickHandler.partialTicks)) / 10;
 				event.setNewfov(fov);
 			}
 		}
@@ -836,8 +836,8 @@ public class PlayerDataHandler {
             }
 
             IRenderTypeBuffer.Impl buffers = IRenderTypeBuffer.immediate(Tessellator.getInstance().getBuffer());
-            RenderSpellCircle.renderSpellCircle(ClientTicker.ticksInGame + partTicks, scale, 1, 0, 1, 0, color, ms, buffers);
-            buffers.draw();
+			RenderSpellCircle.renderSpellCircle(ClientTickHandler.ticksInGame + partTicks, scale, 1, 0, 1, 0, color, ms, buffers);
+			buffers.draw();
             ms.pop();
         }
 

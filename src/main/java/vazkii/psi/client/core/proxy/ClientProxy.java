@@ -12,8 +12,6 @@ package vazkii.psi.client.core.proxy;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.model.ModelResourceLocation;
-import net.minecraft.client.settings.ParticleStatus;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particles.IParticleData;
@@ -28,9 +26,9 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import vazkii.arl.util.ClientTicker;
 import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.cad.ICADColorizer;
+import vazkii.psi.client.core.handler.ClientTickHandler;
 import vazkii.psi.client.core.handler.HUDHandler;
 import vazkii.psi.client.core.handler.KeybindHandler;
 import vazkii.psi.client.core.handler.ShaderHandler;
@@ -42,7 +40,6 @@ import vazkii.psi.client.render.entity.RenderSpellCircle;
 import vazkii.psi.client.render.entity.RenderSpellProjectile;
 import vazkii.psi.client.render.tile.RenderTileProgrammer;
 import vazkii.psi.common.block.tile.TileProgrammer;
-import vazkii.psi.common.core.handler.ConfigHandler;
 import vazkii.psi.common.core.proxy.IProxy;
 import vazkii.psi.common.entity.*;
 import vazkii.psi.common.item.base.ModItems;
@@ -102,7 +99,7 @@ public class ClientProxy implements IProxy {
 
     @Override
     public long getWorldElapsedTicks() {
-        return ClientTicker.ticksInGame;
+		return ClientTickHandler.ticksInGame;
     }
 
     @Override

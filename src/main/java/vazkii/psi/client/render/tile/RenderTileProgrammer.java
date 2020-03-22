@@ -11,7 +11,6 @@
 package vazkii.psi.client.render.tile;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFaceBlock;
@@ -23,12 +22,9 @@ import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.Direction;
-import org.lwjgl.opengl.GL11;
-import vazkii.arl.util.ClientTicker;
-import vazkii.arl.util.RenderHelper;
+import vazkii.psi.client.core.handler.ClientTickHandler;
 import vazkii.psi.client.gui.GuiProgrammer;
 import vazkii.psi.common.Psi;
-import vazkii.psi.common.block.base.ModBlocks;
 import vazkii.psi.common.block.tile.TileProgrammer;
 
 public class RenderTileProgrammer extends TileEntityRenderer<TileProgrammer> {
@@ -74,10 +70,10 @@ public class RenderTileProgrammer extends TileEntityRenderer<TileProgrammer> {
             ms.scale(f, f, -f);
 
             if (Psi.magical) {
-                ms.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(90F));
-                ms.translate(70F, -220F, -100F + Math.sin(ClientTicker.total / 50) * 10);
-                ms.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(-16F + (float) Math.cos(ClientTicker.total / 100) * 10F));
-            } else ms.translate(70F, 0F, -200F);
+				ms.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(90F));
+				ms.translate(70F, -220F, -100F + Math.sin(ClientTickHandler.total / 50) * 10);
+				ms.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(-16F + (float) Math.cos(ClientTickHandler.total / 100) * 10F));
+			} else ms.translate(70F, 0F, -200F);
 
             te.spell.draw(ms, buffers, light);
 
