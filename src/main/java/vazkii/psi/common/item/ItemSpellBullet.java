@@ -23,7 +23,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.arl.item.BasicItem;
-import vazkii.arl.util.ItemNBTHelper;
 import vazkii.psi.api.internal.TooltipHelper;
 import vazkii.psi.api.spell.ISpellContainer;
 import vazkii.psi.api.spell.Spell;
@@ -56,7 +55,7 @@ public class ItemSpellBullet extends BasicItem implements ISpellContainer {
 	@Override
 	public ITextComponent getDisplayName(@Nonnull ItemStack stack) {
 		if (containsSpell(stack)) {
-			CompoundNBT cmp = ItemNBTHelper.getCompound(stack, TAG_SPELL, false);
+			CompoundNBT cmp = stack.getOrCreateTag().getCompound(TAG_SPELL);
 			String name = cmp.getString(Spell.TAG_SPELL_NAME); // We don't need to load the whole spell just for the name
 			if (name.isEmpty())
 				return super.getDisplayName(stack);
@@ -77,7 +76,7 @@ public class ItemSpellBullet extends BasicItem implements ISpellContainer {
 
 	@Override
 	public boolean containsSpell(ItemStack stack) {
-		return ItemNBTHelper.getBoolean(stack, ItemSpellDrive.HAS_SPELL, false);
+		return stack.getOrCreateTag().getBoolean(ItemSpellDrive.HAS_SPELL);
 	}
 
 	@Nonnull

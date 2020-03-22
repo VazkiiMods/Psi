@@ -14,7 +14,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import vazkii.arl.util.ItemNBTHelper;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.SpellRuntimeException;
 
@@ -33,8 +32,9 @@ public interface ICAD extends ISocketable {
 			String name = TAG_COMPONENT_PREFIX + componentType.name();
 
 			CompoundNBT cmp = new CompoundNBT();
-            componentStack.write(cmp);
-			ItemNBTHelper.setCompound(stack, name, cmp);
+			componentStack.write(cmp);
+
+			stack.getOrCreateTag().put(name, cmp);
 		}
 	}
 

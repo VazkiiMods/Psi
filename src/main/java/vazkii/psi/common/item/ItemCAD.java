@@ -37,7 +37,6 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.FakePlayer;
 import vazkii.arl.interf.IItemColorProvider;
 import vazkii.arl.item.BasicItem;
-import vazkii.arl.util.ItemNBTHelper;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.*;
 import vazkii.psi.api.internal.PsiRenderHelper;
@@ -104,7 +103,7 @@ public class ItemCAD extends BasicItem implements ICAD, ISpellSettable, IItemCol
 
 	@Override
 	public void inventoryTick(ItemStack stack, World world, Entity entityIn, int itemSlot, boolean isSelected) {
-		CompoundNBT compound = ItemNBTHelper.getNBT(stack);
+		CompoundNBT compound = stack.getOrCreateTag();
 
 
 		stack.getCapability(PsiAPI.CAD_DATA_CAPABILITY).ifPresent(data -> {
@@ -361,9 +360,9 @@ public class ItemCAD extends BasicItem implements ICAD, ISpellSettable, IItemCol
 	@Override
 	public ItemStack getComponentInSlot(ItemStack stack, EnumCADComponent type) {
 		String name = TAG_COMPONENT_PREFIX + type.name();
-		CompoundNBT cmp = ItemNBTHelper.getCompound(stack, name, true);
+		CompoundNBT cmp = stack.getOrCreateTag().getCompound(name);
 
-		if (cmp == null)
+		if (cmp.isEmpty())
 			return ItemStack.EMPTY;
 
 		return ItemStack.read(cmp);
@@ -404,9 +403,9 @@ public class ItemCAD extends BasicItem implements ICAD, ISpellSettable, IItemCol
 	@Override
 	public ItemStack getBulletInSocket(ItemStack stack, int slot) {
 		String name = TAG_BULLET_PREFIX + slot;
-		CompoundNBT cmp = ItemNBTHelper.getCompound(stack, name, true);
+		CompoundNBT cmp = stack.getOrCreateTag().getCompound(name);
 
-		if (cmp == null)
+		if (cmp.isEmpty())
 			return ItemStack.EMPTY;
 
 		return ItemStack.read(cmp);
@@ -420,17 +419,17 @@ public class ItemCAD extends BasicItem implements ICAD, ISpellSettable, IItemCol
 		if (!bullet.isEmpty())
 			bullet.write(cmp);
 
-		ItemNBTHelper.setCompound(stack, name, cmp);
+		stack.getOrCreateTag().put(name, cmp);
 	}
 
 	@Override
 	public int getSelectedSlot(ItemStack stack) {
-		return ItemNBTHelper.getInt(stack, TAG_SELECTED_SLOT, 0);
+		return stack.getOrCreateTag().getInt(TAG_SELECTED_SLOT);
 	}
 
 	@Override
 	public void setSelectedSlot(ItemStack stack, int slot) {
-		ItemNBTHelper.setInt(stack, TAG_SELECTED_SLOT, slot);
+		stack.getOrCreateTag().putInt(TAG_SELECTED_SLOT, slot);
 	}
 
 	@Override

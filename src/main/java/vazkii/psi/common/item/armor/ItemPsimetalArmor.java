@@ -28,7 +28,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.arl.interf.IItemColorProvider;
-import vazkii.arl.util.ItemNBTHelper;
 import vazkii.arl.util.RegistryHelper;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ICADColorizer;
@@ -107,7 +106,7 @@ public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiE
         ItemStack playerCad = PsiAPI.getPlayerCAD(event.getPlayer());
 
         if (isEnabled(stack) && !playerCad.isEmpty()) {
-            int timesCast = ItemNBTHelper.getInt(stack, TAG_TIMES_CAST, 0);
+            int timesCast = stack.getOrCreateTag().getInt(TAG_TIMES_CAST);
 
             ItemStack bullet = getBulletInSocket(stack, getSelectedSlot(stack));
             ItemCAD.cast(event.getPlayer().getEntityWorld(), event.getPlayer(), data, bullet, playerCad, getCastCooldown(stack), 0, getCastVolume(), (SpellContext context) -> {
@@ -117,7 +116,7 @@ public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiE
                 context.loopcastIndex = timesCast;
             });
 
-            ItemNBTHelper.setInt(stack, TAG_TIMES_CAST, timesCast + 1);
+			stack.getOrCreateTag().putInt(TAG_TIMES_CAST, timesCast + 1);
         }
 	}
 
@@ -131,13 +130,13 @@ public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiE
 	@Override
 	public void setSelectedSlot(ItemStack stack, int slot) {
 		IPsimetalTool.super.setSelectedSlot(stack, slot);
-		ItemNBTHelper.setInt(stack, TAG_TIMES_CAST, 0);
+		stack.getOrCreateTag().putInt(TAG_TIMES_CAST, 0);
 	}
 	
 	@Override
 	public void setBulletInSocket(ItemStack stack, int slot, ItemStack bullet) {
 		IPsimetalTool.super.setBulletInSocket(stack, slot, bullet);
-		ItemNBTHelper.setInt(stack, TAG_TIMES_CAST, 0);
+		stack.getOrCreateTag().putInt(TAG_TIMES_CAST, 0);
 	}
 
 	public String getEvent(ItemStack stack) {
@@ -145,8 +144,8 @@ public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiE
 	}
 
 	public String getTrueEvent(ItemStack stack) {
-		return ItemNBTHelper.getString(stack, "PsiEvent", getEvent(stack));
-    }
+		return stack.getOrCreateTag().getString("PsiEvent").isEmpty() ? getEvent(stack) : stack.getOrCreateTag().getString("PsiEvent");
+	}
 
     public int getCastCooldown(ItemStack stack) {
         return 5;

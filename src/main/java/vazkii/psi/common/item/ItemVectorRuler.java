@@ -26,7 +26,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.arl.item.BasicItem;
-import vazkii.arl.util.ItemNBTHelper;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.common.item.base.IHUDItem;
 
@@ -53,17 +52,17 @@ public class ItemVectorRuler extends BasicItem implements IHUDItem {
 		BlockPos pos = ctx.getPos();
 
 		ItemStack stack = ctx.getPlayer().getHeldItem(ctx.getHand());
-		int srcY = ItemNBTHelper.getInt(stack, TAG_SRC_Y, -1);
+		int srcY = stack.getOrCreateTag().contains(TAG_SRC_Y) ? stack.getOrCreateTag().getInt(TAG_SRC_Y) : -1;
 
 		if (srcY == -1 || ctx.getPlayer().isSneaking()) {
-			ItemNBTHelper.setInt(stack, TAG_SRC_X, pos.getX());
-			ItemNBTHelper.setInt(stack, TAG_SRC_Y, pos.getY());
-			ItemNBTHelper.setInt(stack, TAG_SRC_Z, pos.getZ());
-			ItemNBTHelper.setInt(stack, TAG_DST_Y, -1);
+			stack.getOrCreateTag().putInt(TAG_SRC_X, pos.getX());
+			stack.getOrCreateTag().putInt(TAG_SRC_Y, pos.getY());
+			stack.getOrCreateTag().putInt(TAG_SRC_Z, pos.getZ());
+			stack.getOrCreateTag().putInt(TAG_DST_Y, -1);
 		} else {
-			ItemNBTHelper.setInt(stack, TAG_DST_X, pos.getX());
-			ItemNBTHelper.setInt(stack, TAG_DST_Y, pos.getY());
-			ItemNBTHelper.setInt(stack, TAG_DST_Z, pos.getZ());
+			stack.getOrCreateTag().putInt(TAG_DST_X, pos.getX());
+			stack.getOrCreateTag().putInt(TAG_DST_Y, pos.getY());
+			stack.getOrCreateTag().putInt(TAG_DST_Z, pos.getZ());
 		}
 
 		return ActionResultType.SUCCESS;
@@ -76,17 +75,17 @@ public class ItemVectorRuler extends BasicItem implements IHUDItem {
 	}
 
 	public Vector3 getVector(ItemStack stack) {
-		int srcX = ItemNBTHelper.getInt(stack, TAG_SRC_X, 0);
-		int srcY = ItemNBTHelper.getInt(stack, TAG_SRC_Y, 0);
-		int srcZ = ItemNBTHelper.getInt(stack, TAG_SRC_Z, 0);
-		
-		int dstY = ItemNBTHelper.getInt(stack, TAG_DST_Y, -1);
-		if(dstY == -1)
+		int srcX = stack.getOrCreateTag().getInt(TAG_SRC_X);
+		int srcY = stack.getOrCreateTag().getInt(TAG_SRC_Y);
+		int srcZ = stack.getOrCreateTag().getInt(TAG_SRC_Z);
+
+		int dstY = stack.getOrCreateTag().contains(TAG_DST_Y) ? stack.getOrCreateTag().getInt(TAG_DST_Y) : -1;
+		if (dstY == -1)
 			return new Vector3(srcX, srcY, srcZ);
 
-		int dstX = ItemNBTHelper.getInt(stack, TAG_DST_X, 0);
-		int dstZ = ItemNBTHelper.getInt(stack, TAG_DST_Z, 0);
-		
+		int dstX = stack.getOrCreateTag().getInt(TAG_DST_X);
+		int dstZ = stack.getOrCreateTag().getInt(TAG_DST_Z);
+
 		return new Vector3(dstX - srcX, dstY - srcY, dstZ - srcZ);
 	}
 	

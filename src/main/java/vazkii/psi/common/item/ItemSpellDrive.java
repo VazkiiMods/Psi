@@ -24,7 +24,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.*;
 import net.minecraft.world.World;
 import vazkii.arl.item.BasicItem;
-import vazkii.arl.util.ItemNBTHelper;
 import vazkii.psi.api.internal.VanillaPacketDispatcher;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.common.block.tile.TileProgrammer;
@@ -57,7 +56,7 @@ public class ItemSpellDrive extends BasicItem {
 	@Override
 	public ITextComponent getDisplayName(ItemStack stack) {
 		String name = super.getDisplayName(stack).getFormattedText();
-		CompoundNBT cmp = ItemNBTHelper.getCompound(stack, TAG_SPELL, false);
+		CompoundNBT cmp = stack.getOrCreateTag().getCompound(TAG_SPELL);
 		String spellName = cmp.getString(Spell.TAG_SPELL_NAME); // We don't need to load the whole spell just for the name
 		if (spellName.isEmpty())
 			return new StringTextComponent(name);
@@ -127,12 +126,13 @@ public class ItemSpellDrive extends BasicItem {
 		CompoundNBT cmp = new CompoundNBT();
 		if (spell != null)
 			spell.writeToNBT(cmp);
-		ItemNBTHelper.setCompound(stack, TAG_SPELL, cmp);
-		ItemNBTHelper.setBoolean(stack, HAS_SPELL, true);
+
+		stack.getOrCreateTag().put(TAG_SPELL, cmp);
+		stack.getOrCreateTag().putBoolean(HAS_SPELL, true);
 	}
 
 	public static Spell getSpell(ItemStack stack) {
-		CompoundNBT cmp = ItemNBTHelper.getCompound(stack, TAG_SPELL, false);
+		CompoundNBT cmp = stack.getOrCreateTag().getCompound(TAG_SPELL);
 		return Spell.createFromNBT(cmp);
 	}
 

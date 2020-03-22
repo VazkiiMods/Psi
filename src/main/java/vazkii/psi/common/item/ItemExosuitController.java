@@ -19,7 +19,6 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 import vazkii.arl.item.BasicItem;
-import vazkii.arl.util.ItemNBTHelper;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ISocketableCapability;
 import vazkii.psi.api.cad.ISocketableController;
@@ -72,15 +71,15 @@ public class ItemExosuitController extends BasicItem implements ISocketableContr
 
 	@Override
 	public int getDefaultControlSlot(ItemStack stack) {
-		return ItemNBTHelper.getInt(stack, TAG_SELECTED_CONTROL_SLOT, 0);
+		return stack.getOrCreateTag().getInt(TAG_SELECTED_CONTROL_SLOT);
 	}
 
 	@Override
 	public void setSelectedSlot(PlayerEntity player, ItemStack stack, int controlSlot, int slot) {
-		ItemNBTHelper.setInt(stack, TAG_SELECTED_CONTROL_SLOT, controlSlot);
+		stack.getOrCreateTag().putInt(TAG_SELECTED_CONTROL_SLOT, controlSlot);
 
 		ItemStack[] stacks = getControlledStacks(player, stack);
-		if(controlSlot < stacks.length && !stacks[controlSlot].isEmpty()) {
+		if (controlSlot < stacks.length && !stacks[controlSlot].isEmpty()) {
 			stacks[controlSlot].getCapability(PsiAPI.SOCKETABLE_CAPABILITY).ifPresent(cap -> cap.setSelectedSlot(slot));
 		}
 	}

@@ -16,7 +16,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import vazkii.arl.util.ItemNBTHelper;
 import vazkii.psi.api.exosuit.IExosuitSensor;
 import vazkii.psi.api.exosuit.ISensorHoldable;
 
@@ -56,7 +55,7 @@ public class ItemPsimetalExosuitHelmet extends ItemPsimetalArmor implements ISen
 
 	@Override
 	public ItemStack getAttachedSensor(ItemStack stack) {
-        CompoundNBT cmp = ItemNBTHelper.getCompound(stack, TAG_SENSOR, false);
+        CompoundNBT cmp = stack.getOrCreateTag().getCompound(TAG_SENSOR);
         return ItemStack.read(cmp);
     }
 
@@ -65,7 +64,7 @@ public class ItemPsimetalExosuitHelmet extends ItemPsimetalArmor implements ISen
 		CompoundNBT cmp = new CompoundNBT();
         if (!sensor.isEmpty())
             sensor.write(cmp);
-		ItemNBTHelper.setCompound(stack, TAG_SENSOR, cmp);
+		stack.getOrCreateTag().put(TAG_SENSOR, cmp);
 	}
 
 	@Override
