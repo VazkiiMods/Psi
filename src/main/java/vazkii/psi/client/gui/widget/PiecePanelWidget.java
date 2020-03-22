@@ -118,7 +118,7 @@ public class PiecePanelWidget extends Widget implements IRenderable, IGuiEventLi
 	}
 
 	public int getPageCount() {
-		return Math.max(visibleButtons.size() / PIECES_PER_PAGE, 0);
+		return (visibleButtons.size() / PIECES_PER_PAGE) + 1;
 	}
 
 	public void populatePanelButtons() {
