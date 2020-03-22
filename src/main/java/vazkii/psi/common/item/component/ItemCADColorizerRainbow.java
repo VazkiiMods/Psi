@@ -1,6 +1,5 @@
 package vazkii.psi.common.item.component;
 
-import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -11,12 +10,6 @@ import java.awt.*;
 public class ItemCADColorizerRainbow extends ItemCADColorizer {
     public ItemCADColorizerRainbow(String name, Properties properties) {
         super(name, properties);
-    }
-
-    @Override
-    @OnlyIn(Dist.CLIENT)
-    public IItemColor getItemColor() {
-        return (stack, tintIndex) -> 0xFFFFF;
     }
 
     @Override

@@ -10,20 +10,16 @@
  */
 package vazkii.psi.common.item;
 
-import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import vazkii.arl.interf.IItemColorProvider;
 import vazkii.arl.item.BasicItem;
 import vazkii.psi.api.cad.ICADColorizer;
 import vazkii.psi.api.exosuit.IExosuitSensor;
 import vazkii.psi.api.exosuit.PsiArmorEvent;
-import vazkii.psi.common.crafting.recipe.SensorAttachRecipe;
-import vazkii.psi.common.crafting.recipe.SensorRemoveRecipe;
 
-public abstract class ItemExosuitSensor extends BasicItem implements IExosuitSensor, IItemColorProvider {
+public abstract class ItemExosuitSensor extends BasicItem implements IExosuitSensor {
 
     // This should be modifiable, for the purposes of cosmetic addons like Magical Psi.
     public static int defaultColor = ICADColorizer.DEFAULT_SPELL_COLOR;
@@ -46,11 +42,5 @@ public abstract class ItemExosuitSensor extends BasicItem implements IExosuitSen
 	public int getColor(ItemStack stack) {
         return defaultColor;
     }
-	
-	@Override
-	@OnlyIn(Dist.CLIENT)
-	public IItemColor getItemColor() {
-		return (stack, tintIndex) -> tintIndex == 1 ? getColor(stack) : 0xFFFFFF;
-	}
 
 }

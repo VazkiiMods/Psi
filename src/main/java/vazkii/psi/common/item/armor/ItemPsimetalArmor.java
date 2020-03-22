@@ -11,7 +11,6 @@
 package vazkii.psi.common.item.armor;
 
 import com.google.common.collect.Multimap;
-import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
@@ -27,7 +26,6 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import vazkii.arl.interf.IItemColorProvider;
 import vazkii.arl.util.RegistryHelper;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ICADColorizer;
@@ -48,17 +46,17 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.function.Function;
 
-public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiEventArmor, IItemColorProvider {
+public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiEventArmor {
 
-    @OnlyIn(Dist.CLIENT)
-    public static Function<EquipmentSlotType, BipedModel> modelSupplier;
+	@OnlyIn(Dist.CLIENT)
+	public static Function<EquipmentSlotType, BipedModel> modelSupplier;
 
-    public final EquipmentSlotType type;
+	public final EquipmentSlotType type;
 
-    private static final String TAG_TIMES_CAST = "timesCast";
+	private static final String TAG_TIMES_CAST = "timesCast";
 
-    public ItemPsimetalArmor(String name, EquipmentSlotType type, Properties props) {
-        this(name, type, PsiAPI.PSIMETAL_ARMOR_MATERIAL, props);
+	public ItemPsimetalArmor(String name, EquipmentSlotType type, Properties props) {
+		this(name, type, PsiAPI.PSIMETAL_ARMOR_MATERIAL, props);
     }
 
 
@@ -189,13 +187,6 @@ public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiE
 
     public int getColor(@Nonnull ItemStack stack) {
 		return ICADColorizer.DEFAULT_SPELL_COLOR;
-	}
-
-
-	@Override
-	@OnlyIn(Dist.CLIENT)
-	public IItemColor getItemColor() {
-		return (stack, tintIndex) -> tintIndex == 1 ? getColor(stack) : 0xFFFFFF;
 	}
 
 

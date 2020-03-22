@@ -11,7 +11,6 @@
 package vazkii.psi.common.item;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.ItemEntity;
@@ -35,7 +34,6 @@ import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.FakePlayer;
-import vazkii.arl.interf.IItemColorProvider;
 import vazkii.arl.item.BasicItem;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.*;
@@ -67,7 +65,7 @@ import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ItemCAD extends BasicItem implements ICAD, ISpellSettable, IItemColorProvider {
+public class ItemCAD extends BasicItem implements ICAD, ISpellSettable {
 
 	private static final String TAG_BULLET_PREFIX = "bullet";
 	private static final String TAG_SELECTED_SLOT = "selectedSlot";
@@ -432,12 +430,6 @@ public class ItemCAD extends BasicItem implements ICAD, ISpellSettable, IItemCol
 		stack.getOrCreateTag().putInt(TAG_SELECTED_SLOT, slot);
 	}
 
-	@Override
-	@OnlyIn(Dist.CLIENT)
-	public IItemColor getItemColor() {
-		return (stack, tintIndex) -> tintIndex == 1 ? getSpellColor(stack) : 0xFFFFFF;
-	}
-	
 	@Override
 	public int getTime(ItemStack stack) {
 		return getCADData(stack).getTime();

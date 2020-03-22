@@ -10,17 +10,14 @@
  */
 package vazkii.psi.common.item.component;
 
-import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.item.DyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import vazkii.arl.interf.IItemColorProvider;
 import vazkii.psi.api.cad.ICADColorizer;
-import vazkii.psi.common.crafting.recipe.ColorizerChangeRecipe;
 
-public class ItemCADColorizer extends ItemCADComponent implements ICADColorizer, IItemColorProvider {
+public class ItemCADColorizer extends ItemCADComponent implements ICADColorizer {
 
 
 	private final DyeColor color;
@@ -33,12 +30,6 @@ public class ItemCADColorizer extends ItemCADComponent implements ICADColorizer,
 	public ItemCADColorizer(String name, Properties properties) {
 		super(name, properties);
 		color = DyeColor.BLACK;
-	}
-
-	@Override
-	@OnlyIn(Dist.CLIENT)
-	public IItemColor getItemColor() {
-		return (stack, tintIndex) -> tintIndex == 1 ? color.getColorValue() : 0xFFFFF;
 	}
 
 	@Override
