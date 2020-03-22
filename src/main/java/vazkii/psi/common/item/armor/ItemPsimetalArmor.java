@@ -165,17 +165,22 @@ public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiE
 			tooltip.add(new TranslationTextComponent("psimisc.spell_selected", componentName));
 			tooltip.add(new TranslationTextComponent(getTrueEvent(stack)));
 		});
-    }
+	}
 
-    @Override
-    public boolean getIsRepairable(ItemStack thisStack, @Nonnull ItemStack material) {
-        return IPsimetalTool.isRepairableBy(material) || super.getIsRepairable(thisStack, material);
-    }
+	@Override
+	public boolean getIsRepairable(ItemStack thisStack, @Nonnull ItemStack material) {
+		return IPsimetalTool.isRepairableBy(material) || super.getIsRepairable(thisStack, material);
+	}
 
-    @Override
-    public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlotType slot, String type) {
-        boolean overlay = type != null && type.equals("overlay");
-        return overlay ? LibResources.MODEL_PSIMETAL_EXOSUIT_SENSOR : LibResources.MODEL_PSIMETAL_EXOSUIT;
+	@Override
+	public boolean isRepairable(ItemStack stack) {
+		return super.isRepairable(stack);
+	}
+
+	@Override
+	public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlotType slot, String type) {
+		boolean overlay = type != null && type.equals("overlay");
+		return overlay ? LibResources.MODEL_PSIMETAL_EXOSUIT_SENSOR : LibResources.MODEL_PSIMETAL_EXOSUIT;
 	}
 
 	public boolean hasColor(@Nonnull ItemStack stack) {

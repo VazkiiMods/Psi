@@ -2,7 +2,8 @@ package vazkii.psi.api.material;
 
 import net.minecraft.item.IItemTier;
 import net.minecraft.item.crafting.Ingredient;
-import vazkii.psi.common.item.base.ModItems;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class PsimetalToolMaterial implements IItemTier {
     @Override
@@ -32,6 +33,6 @@ public class PsimetalToolMaterial implements IItemTier {
 
     @Override
     public Ingredient getRepairMaterial() {
-        return Ingredient.fromItems(ModItems.psimetal);
+        return Ingredient.fromItems(ForgeRegistries.ITEMS.getValue(new ResourceLocation("psi", "psimetal")));
     }
 }
