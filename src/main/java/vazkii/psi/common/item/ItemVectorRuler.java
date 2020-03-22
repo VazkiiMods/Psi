@@ -25,14 +25,13 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import vazkii.arl.item.BasicItem;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.common.item.base.IHUDItem;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ItemVectorRuler extends BasicItem implements IHUDItem {
+public class ItemVectorRuler extends Item implements IHUDItem {
 
 	private static final String TAG_SRC_X = "srcX";
 	private static final String TAG_SRC_Y = "srcY";
@@ -42,8 +41,8 @@ public class ItemVectorRuler extends BasicItem implements IHUDItem {
 	private static final String TAG_DST_Y = "dstY";
 	private static final String TAG_DST_Z = "dstZ";
 
-	public ItemVectorRuler(String name, Item.Properties properties) {
-		super(name, properties.maxStackSize(1));
+	public ItemVectorRuler(Item.Properties properties) {
+		super(properties.maxStackSize(1));
 	}
 
 

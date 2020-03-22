@@ -23,7 +23,6 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.*;
 import net.minecraft.world.World;
-import vazkii.arl.item.BasicItem;
 import vazkii.psi.api.internal.VanillaPacketDispatcher;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.common.block.tile.TileProgrammer;
@@ -31,13 +30,13 @@ import vazkii.psi.common.core.handler.PsiSoundHandler;
 
 import javax.annotation.Nonnull;
 
-public class ItemSpellDrive extends BasicItem {
+public class ItemSpellDrive extends Item {
 
 	private static final String TAG_SPELL = "spell";
 	public static final String HAS_SPELL = "has_spell";
 
-	public ItemSpellDrive(String name, Item.Properties properties) {
-		super(name, properties.maxStackSize(1));
+	public ItemSpellDrive(Item.Properties properties) {
+		super(properties.maxStackSize(1));
 	}
 
 	@Override

@@ -28,7 +28,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ToolType;
-import vazkii.arl.util.RegistryHelper;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ISocketable;
 
@@ -38,9 +37,8 @@ import java.util.List;
 
 public class ItemPsimetalPickaxe extends PickaxeItem implements IPsimetalTool {
 
-	public ItemPsimetalPickaxe(String name, Item.Properties properties) {
+	public ItemPsimetalPickaxe(Item.Properties properties) {
 		super(PsiAPI.PSIMETAL_TOOL_MATERIAL, 1, -2.8F, properties.addToolType(ToolType.PICKAXE, PsiAPI.PSIMETAL_TOOL_MATERIAL.getHarvestLevel()));
-		RegistryHelper.registerItem(this, name);
 	}
 
 	@Override

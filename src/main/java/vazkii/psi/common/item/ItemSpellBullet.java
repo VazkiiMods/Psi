@@ -22,7 +22,6 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import vazkii.arl.item.BasicItem;
 import vazkii.psi.api.internal.TooltipHelper;
 import vazkii.psi.api.spell.ISpellContainer;
 import vazkii.psi.api.spell.Spell;
@@ -32,12 +31,12 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ItemSpellBullet extends BasicItem implements ISpellContainer {
+public class ItemSpellBullet extends Item implements ISpellContainer {
 
 	private static final String TAG_SPELL = "spell";
 
-	public ItemSpellBullet(String name, Item.Properties properties) {
-		super(name, properties.maxStackSize(1));
+	public ItemSpellBullet(Item.Properties properties) {
+		super(properties.maxStackSize(1));
 	}
 
 	@Override

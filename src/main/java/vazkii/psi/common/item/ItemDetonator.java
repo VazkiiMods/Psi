@@ -15,25 +15,24 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
-import vazkii.arl.item.BasicItem;
 import vazkii.psi.api.spell.detonator.IDetonationHandler;
 
 import javax.annotation.Nonnull;
 
-public class ItemDetonator extends BasicItem {
+public class ItemDetonator extends Item {
 
-    public ItemDetonator(String name, Item.Properties properties) {
-        super(name, properties.maxStackSize(1));
-    }
+	public ItemDetonator(Item.Properties properties) {
+		super(properties.maxStackSize(1));
+	}
 
-    @Nonnull
-    @Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, @Nonnull Hand hand) {
-        ItemStack itemStackIn = playerIn.getHeldItem(hand);
-        IDetonationHandler.performDetonation(worldIn, playerIn);
+	@Nonnull
+	@Override
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, @Nonnull Hand hand) {
+		ItemStack itemStackIn = playerIn.getHeldItem(hand);
+		IDetonationHandler.performDetonation(worldIn, playerIn);
 
-        if (!worldIn.isRemote)
-            worldIn.playSound(null, playerIn.getX(), playerIn.getY(), playerIn.getZ(), SoundEvents.UI_BUTTON_CLICK, SoundCategory.PLAYERS, 1F, 1F);
+		if (!worldIn.isRemote)
+			worldIn.playSound(null, playerIn.getX(), playerIn.getY(), playerIn.getZ(), SoundEvents.UI_BUTTON_CLICK, SoundCategory.PLAYERS, 1F, 1F);
         else playerIn.swingArm(hand);
 
 		return new ActionResult<>(ActionResultType.SUCCESS, itemStackIn);

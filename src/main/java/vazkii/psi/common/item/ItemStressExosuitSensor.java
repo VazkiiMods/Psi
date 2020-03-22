@@ -5,17 +5,17 @@ import vazkii.psi.api.exosuit.PsiArmorEvent;
 
 public class ItemStressExosuitSensor extends ItemExosuitSensor {
 
-    public ItemStressExosuitSensor(String name, Properties properties) {
-        super(name, properties);
-    }
+	public ItemStressExosuitSensor(Properties properties) {
+		super(properties);
+	}
 
-    @Override
-    public int getColor(ItemStack stack) {
-        return ItemExosuitSensor.lowHealthColor;
-    }
+	@Override
+	public int getColor(ItemStack stack) {
+		return ItemExosuitSensor.lowHealthColor;
+	}
 
-    @Override
-    public String getEventType(ItemStack stack) {
-        return PsiArmorEvent.LOW_HP;
+	@Override
+	public String getEventType(ItemStack stack) {
+		return PsiArmorEvent.LOW_HP;
     }
 }

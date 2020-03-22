@@ -9,14 +9,14 @@ import java.awt.*;
 
 public class ItemCADColorizerPsi extends ItemCADColorizer {
 
-    public ItemCADColorizerPsi(String name, Properties properties) {
-        super(name, properties);
-    }
+	public ItemCADColorizerPsi(Properties properties) {
+		super(properties);
+	}
 
-    @Override
-    @OnlyIn(Dist.CLIENT)
-    public int getColor(ItemStack stack) {
+	@Override
+	@OnlyIn(Dist.CLIENT)
+	public int getColor(ItemStack stack) {
 		float time = ClientTickHandler.total;
-        return Color.HSBtoRGB(time * 0.005F, 1F, 1F);
-    }
+		return Color.HSBtoRGB(time * 0.005F, 1F, 1F);
+	}
 }

@@ -27,7 +27,6 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import vazkii.arl.util.RegistryHelper;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ISocketable;
 import vazkii.psi.api.spell.SpellContext;
@@ -41,10 +40,9 @@ import java.util.List;
 
 public class ItemPsimetalSword extends SwordItem implements IPsimetalTool {
 
-    public ItemPsimetalSword(String name, Item.Properties properties) {
-        super(PsiAPI.PSIMETAL_TOOL_MATERIAL, 3, -2.4F, properties);
-		RegistryHelper.registerItem(this, name);
-    }
+    public ItemPsimetalSword(Item.Properties properties) {
+		super(PsiAPI.PSIMETAL_TOOL_MATERIAL, 3, -2.4F, properties);
+	}
 
     @Override
     public boolean hitEntity(ItemStack itemstack, LivingEntity target, @Nonnull LivingEntity attacker) {

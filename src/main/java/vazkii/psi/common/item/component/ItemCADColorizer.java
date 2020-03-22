@@ -22,13 +22,13 @@ public class ItemCADColorizer extends ItemCADComponent implements ICADColorizer 
 
 	private final DyeColor color;
 
-	public ItemCADColorizer(String name, Item.Properties properties, DyeColor color) {
-		super(name, properties);
+	public ItemCADColorizer(Item.Properties properties, DyeColor color) {
+		super(properties);
 		this.color = color;
 	}
 
-	public ItemCADColorizer(String name, Properties properties) {
-		super(name, properties);
+	public ItemCADColorizer(Properties properties) {
+		super(properties);
 		color = DyeColor.BLACK;
 	}
 

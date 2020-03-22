@@ -11,18 +11,18 @@ import vazkii.psi.common.core.handler.PlayerDataHandler;
 
 public class ItemLoopcastSpellBullet extends ItemSpellBullet {
 
-    public ItemLoopcastSpellBullet(String name, Properties properties) {
-        super(name, properties);
-    }
+	public ItemLoopcastSpellBullet(Properties properties) {
+		super(properties);
+	}
 
-    @Override
-    public void castSpell(ItemStack stack, SpellContext context) {
-        ItemStack cad = PsiAPI.getPlayerCAD(context.caster);
-        ItemStack colorizer = ((ICAD) cad.getItem()).getComponentInSlot(cad, EnumCADComponent.DYE);
-        PlayerDataHandler.PlayerData data = PlayerDataHandler.get(context.caster);
-        if (!data.loopcasting || context.castFrom != data.loopcastHand) {
-            context.cspell.safeExecute(context);
-            data.loopcasting = true;
+	@Override
+	public void castSpell(ItemStack stack, SpellContext context) {
+		ItemStack cad = PsiAPI.getPlayerCAD(context.caster);
+		ItemStack colorizer = ((ICAD) cad.getItem()).getComponentInSlot(cad, EnumCADComponent.DYE);
+		PlayerDataHandler.PlayerData data = PlayerDataHandler.get(context.caster);
+		if (!data.loopcasting || context.castFrom != data.loopcastHand) {
+			context.cspell.safeExecute(context);
+			data.loopcasting = true;
             data.loopcastHand = context.castFrom;
             data.lastTickLoopcastStack = null;
             if (context.caster instanceof ServerPlayerEntity)

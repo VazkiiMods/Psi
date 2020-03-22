@@ -17,14 +17,14 @@ import vazkii.psi.api.cad.EnumCADComponent;
 public class ItemCADBattery extends ItemCADComponent {
 
 
-    public ItemCADBattery(String name, Item.Properties properties) {
-        super(name, properties);
-    }
+	public ItemCADBattery(Item.Properties properties) {
+		super(properties);
+	}
 
 
-    @Override
-    public EnumCADComponent getComponentType(ItemStack stack) {
-        return EnumCADComponent.BATTERY;
-    }
+	@Override
+	public EnumCADComponent getComponentType(ItemStack stack) {
+		return EnumCADComponent.BATTERY;
+	}
 
 }

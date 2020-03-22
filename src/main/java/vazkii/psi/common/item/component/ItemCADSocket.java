@@ -16,16 +16,16 @@ import vazkii.psi.api.cad.EnumCADComponent;
 
 public class ItemCADSocket extends ItemCADComponent {
 
-    public static final int MAX_SOCKETS = 12;
+	public static final int MAX_SOCKETS = 12;
 
 
-    public ItemCADSocket(String name, Item.Properties properties) {
-        super(name, properties);
-    }
+	public ItemCADSocket(Item.Properties properties) {
+		super(properties);
+	}
 
-    @Override
-    public EnumCADComponent getComponentType(ItemStack stack) {
-        return EnumCADComponent.SOCKET;
-    }
+	@Override
+	public EnumCADComponent getComponentType(ItemStack stack) {
+		return EnumCADComponent.SOCKET;
+	}
 
 }

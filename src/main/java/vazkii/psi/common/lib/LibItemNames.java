@@ -12,9 +12,16 @@ package vazkii.psi.common.lib;
 
 public final class LibItemNames {
 
+	public static final String PSIDUST = "psidust";
+	public static final String PSIMETAL = "psimetal";
+	public static final String PSIGEM = "psigem";
+	public static final String EBONY_PSIMETAL = "ebony_psimetal";
+	public static final String IVORY_PSIMETAL = "ivory_psimetal";
+	public static final String EBONY_SUBSTANCE = "ebony_sustance";
+	public static final String IVORY_SUBSTANCE = "ivory_substance";
 	public static final String MATERIAL = "material";
-    public static final String CAD = "cad";
-    public static final String CAD_ASSEMBLY = "cad_assembly";
+	public static final String CAD = "cad";
+	public static final String CAD_ASSEMBLY = "cad_assembly";
 	public static final String CAD_CORE = "cad_core";
 	public static final String CAD_SOCKET = "cad_socket";
 	public static final String CAD_BATTERY = "cad_battery";

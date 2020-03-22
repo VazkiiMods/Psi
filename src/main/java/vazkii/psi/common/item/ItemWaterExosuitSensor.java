@@ -5,17 +5,17 @@ import vazkii.psi.api.exosuit.PsiArmorEvent;
 
 public class ItemWaterExosuitSensor extends ItemExosuitSensor {
 
-    public ItemWaterExosuitSensor(String name, Properties properties) {
-        super(name, properties);
-    }
+	public ItemWaterExosuitSensor(Properties properties) {
+		super(properties);
+	}
 
-    @Override
-    public int getColor(ItemStack stack) {
-        return ItemExosuitSensor.underwaterColor;
-    }
+	@Override
+	public int getColor(ItemStack stack) {
+		return ItemExosuitSensor.underwaterColor;
+	}
 
-    @Override
-    public String getEventType(ItemStack stack) {
-        return PsiArmorEvent.UNDERWATER;
+	@Override
+	public String getEventType(ItemStack stack) {
+		return PsiArmorEvent.UNDERWATER;
     }
 }

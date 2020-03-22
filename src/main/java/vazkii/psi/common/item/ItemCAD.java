@@ -34,7 +34,6 @@ import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.FakePlayer;
-import vazkii.arl.item.BasicItem;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.*;
 import vazkii.psi.api.internal.PsiRenderHelper;
@@ -65,7 +64,7 @@ import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ItemCAD extends BasicItem implements ICAD, ISpellSettable {
+public class ItemCAD extends Item implements ICAD, ISpellSettable {
 
 	private static final String TAG_BULLET_PREFIX = "bullet";
 	private static final String TAG_SELECTED_SLOT = "selectedSlot";
@@ -81,8 +80,8 @@ public class ItemCAD extends BasicItem implements ICAD, ISpellSettable {
 
 	private static final Pattern FAKE_PLAYER_PATTERN = Pattern.compile("^(?:\\[.*])|(?:ComputerCraft)$");
 
-	public ItemCAD(String name, Item.Properties properties) {
-		super(name, properties.maxStackSize(1));
+	public ItemCAD(Item.Properties properties) {
+		super(properties.maxStackSize(1));
 	}
 
 	private ICADData getCADData(ItemStack stack) {

@@ -11,14 +11,7 @@
 package vazkii.psi.common.spell.trick;
 
 import net.minecraft.entity.player.ServerPlayerEntity;
-import vazkii.arl.network.NetworkHandler;
-import vazkii.psi.api.spell.EnumSpellStat;
-import vazkii.psi.api.spell.Spell;
-import vazkii.psi.api.spell.SpellCompilationException;
-import vazkii.psi.api.spell.SpellContext;
-import vazkii.psi.api.spell.SpellMetadata;
-import vazkii.psi.api.spell.SpellParam;
-import vazkii.psi.api.spell.SpellRuntimeException;
+import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.piece.PieceTrick;
 import vazkii.psi.common.core.handler.PlayerDataHandler;

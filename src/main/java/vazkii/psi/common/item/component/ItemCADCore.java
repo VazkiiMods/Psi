@@ -16,13 +16,13 @@ import vazkii.psi.api.cad.EnumCADComponent;
 
 public class ItemCADCore extends ItemCADComponent {
 
-    public ItemCADCore(String name, Item.Properties properties) {
-        super(name, properties);
-    }
+	public ItemCADCore(Item.Properties properties) {
+		super(properties);
+	}
 
-    @Override
-    public EnumCADComponent getComponentType(ItemStack stack) {
-        return EnumCADComponent.CORE;
-    }
+	@Override
+	public EnumCADComponent getComponentType(ItemStack stack) {
+		return EnumCADComponent.CORE;
+	}
 
 }

@@ -17,13 +17,13 @@ import vazkii.psi.api.exosuit.PsiArmorEvent;
 
 public class ItemPsimetalExosuitBoots extends ItemPsimetalArmor {
 
-    public ItemPsimetalExosuitBoots(String name, EquipmentSlotType slotType, Item.Properties properties) {
-        super(name, slotType, properties);
-    }
+	public ItemPsimetalExosuitBoots(EquipmentSlotType slotType, Item.Properties properties) {
+		super(slotType, properties);
+	}
 
-    @Override
-    public String getEvent(ItemStack stack) {
-        return PsiArmorEvent.JUMP;
-    }
+	@Override
+	public String getEvent(ItemStack stack) {
+		return PsiArmorEvent.JUMP;
+	}
 
 }

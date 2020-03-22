@@ -23,20 +23,20 @@ import javax.annotation.Nonnull;
 
 public class ItemPsimetalExosuitHelmet extends ItemPsimetalArmor implements ISensorHoldable {
 
-    private static final String TAG_SENSOR = "sensor";
+	private static final String TAG_SENSOR = "sensor";
 
-    public ItemPsimetalExosuitHelmet(String name, EquipmentSlotType slotType, Item.Properties properties) {
-        super(name, slotType, properties);
-    }
+	public ItemPsimetalExosuitHelmet(EquipmentSlotType slotType, Item.Properties properties) {
+		super(slotType, properties);
+	}
 
-    @Override
-    public String getEvent(ItemStack stack) {
-        ItemStack sensor = getAttachedSensor(stack);
-        if (!sensor.isEmpty() && sensor.getItem() instanceof IExosuitSensor)
-            return ((IExosuitSensor) sensor.getItem()).getEventType(sensor);
+	@Override
+	public String getEvent(ItemStack stack) {
+		ItemStack sensor = getAttachedSensor(stack);
+		if (!sensor.isEmpty() && sensor.getItem() instanceof IExosuitSensor)
+			return ((IExosuitSensor) sensor.getItem()).getEventType(sensor);
 
-        return super.getEvent(stack);
-    }
+		return super.getEvent(stack);
+	}
 
 	@Override
 	public int getCastCooldown(ItemStack stack) {

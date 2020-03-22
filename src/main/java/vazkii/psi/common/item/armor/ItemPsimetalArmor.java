@@ -26,7 +26,6 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import vazkii.arl.util.RegistryHelper;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ICADColorizer;
 import vazkii.psi.api.cad.ISocketable;
@@ -55,19 +54,18 @@ public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiE
 
 	private static final String TAG_TIMES_CAST = "timesCast";
 
-	public ItemPsimetalArmor(String name, EquipmentSlotType type, Properties props) {
-		this(name, type, PsiAPI.PSIMETAL_ARMOR_MATERIAL, props);
-    }
+	public ItemPsimetalArmor(EquipmentSlotType type, Properties props) {
+		this(type, PsiAPI.PSIMETAL_ARMOR_MATERIAL, props);
+	}
 
 
-    public ItemPsimetalArmor(String name, EquipmentSlotType type, IArmorMaterial mat, Properties props) {
-        super(mat, type, props);
-        this.type = type;
-        RegistryHelper.register(this, name);
-    }
+	public ItemPsimetalArmor(EquipmentSlotType type, IArmorMaterial mat, Properties props) {
+		super(mat, type, props);
+		this.type = type;
+	}
 
-    @Override
-    public void setDamage(ItemStack stack, int damage) {
+	@Override
+	public void setDamage(ItemStack stack, int damage) {
         if (damage > stack.getMaxDamage())
             damage = stack.getDamage();
         super.setDamage(stack, damage);

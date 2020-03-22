@@ -10,18 +10,18 @@ import vazkii.psi.common.entity.EntitySpellProjectile;
 public class ItemProjectileSpellBullet extends ItemSpellBullet {
 
 
-    public ItemProjectileSpellBullet(String name, Properties properties) {
-        super(name, properties);
-    }
+	public ItemProjectileSpellBullet(Properties properties) {
+		super(properties);
+	}
 
-    @Override
-    public void castSpell(ItemStack stack, SpellContext context) {
-        ItemStack cad = PsiAPI.getPlayerCAD(context.caster);
-        ItemStack colorizer = ((ICAD) cad.getItem()).getComponentInSlot(cad, EnumCADComponent.DYE);
-        EntitySpellProjectile projectile = new EntitySpellProjectile(context.caster.getEntityWorld(), context.caster);
-        projectile.setInfo(context.caster, colorizer, stack);
-        projectile.context = context;
-        projectile.getEntityWorld().addEntity(projectile);
+	@Override
+	public void castSpell(ItemStack stack, SpellContext context) {
+		ItemStack cad = PsiAPI.getPlayerCAD(context.caster);
+		ItemStack colorizer = ((ICAD) cad.getItem()).getComponentInSlot(cad, EnumCADComponent.DYE);
+		EntitySpellProjectile projectile = new EntitySpellProjectile(context.caster.getEntityWorld(), context.caster);
+		projectile.setInfo(context.caster, colorizer, stack);
+		projectile.context = context;
+		projectile.getEntityWorld().addEntity(projectile);
     }
 
     @Override
