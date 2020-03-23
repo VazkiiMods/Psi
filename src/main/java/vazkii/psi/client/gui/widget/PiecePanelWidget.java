@@ -138,6 +138,8 @@ public class PiecePanelWidget extends Widget implements IRenderable, IGuiEventLi
 			piece.getShownPieces(shownPieces);
 			for (SpellPiece shownPiece : shownPieces) {
 				GuiButtonSpellPiece spellPieceButton = new GuiButtonSpellPiece(parent, shownPiece, 0, 0, button -> {
+					if (parent.isSpectator())
+						return;
 					parent.pushState(true);
 					SpellPiece piece1 = ((GuiButtonSpellPiece) button).piece.copyFromSpell(parent.spell);
 					if (piece1.getPieceType() == EnumPieceType.TRICK && parent.spellNameField.getText().isEmpty()) {
@@ -288,7 +290,7 @@ public class PiecePanelWidget extends Widget implements IRenderable, IGuiEventLi
 			return true;
 		}
 
-		if (panelEnabled && (mouseX < x || mouseY < y || mouseX > x + width || mouseY > y + height)) {
+		if (panelEnabled && (mouseX < x || mouseY < y || mouseX > x + width || mouseY > y + height) && !parent.isSpectator()) {
 			closePanel();
 			return true;
 		}

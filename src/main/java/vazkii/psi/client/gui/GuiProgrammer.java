@@ -497,6 +497,10 @@ public class GuiProgrammer extends Screen {
 		minecraft.keyboardListener.enableRepeatEvents(true);
 		if (programmer != null)
 			spell = programmer.spell;
+		if (keyCode == GLFW.GLFW_KEY_ESCAPE && shouldCloseOnEsc()) {
+			this.onClose();
+			return true;
+		}
 		if (spectator)
 			return true;
 
@@ -719,10 +723,6 @@ public class GuiProgrammer extends Screen {
 		}
 		if (panelWidget.panelEnabled)
 			panelWidget.keyPressed(keyCode, scanCode, modifiers);
-		else if (keyCode == GLFW.GLFW_KEY_ESCAPE && !commentEnabled) {
-			this.onClose();
-			return true;
-		}
 		if (commentField.isFocused())
 			commentField.keyPressed(keyCode, scanCode, modifiers);
 		if (spellNameField.isFocused())
@@ -805,7 +805,7 @@ public class GuiProgrammer extends Screen {
 
 	@Override
 	public boolean shouldCloseOnEsc() {
-		return !panelWidget.panelEnabled;
+		return !panelWidget.panelEnabled && !commentEnabled;
 	}
 
 	public List<Widget> getButtons() {
