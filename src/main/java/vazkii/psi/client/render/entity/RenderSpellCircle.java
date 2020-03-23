@@ -34,6 +34,7 @@ public class RenderSpellCircle extends EntityRenderer<EntitySpellCircle> {
 			ResourceLocation texture = new ResourceLocation(String.format(LibResources.MISC_SPELL_CIRCLE, i));
 			RenderType.State glState = RenderType.State.builder().texture(new RenderState.TextureState(texture, false, false))
 					.cull(new RenderState.CullState(false))
+					.alpha(new RenderState.AlphaState(0.004F))
 					.lightmap(new RenderState.LightmapState(true))
 					.build(true);
 			LAYERS[i] = RenderType.of(LibMisc.MOD_ID + ":spell_circle_" + i, DefaultVertexFormats.POSITION_COLOR_TEXTURE_LIGHT, GL11.GL_QUADS, 64, false, false, glState);
