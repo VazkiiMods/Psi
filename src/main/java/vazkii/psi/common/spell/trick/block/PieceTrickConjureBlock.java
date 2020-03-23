@@ -28,6 +28,8 @@ import vazkii.psi.common.block.BlockConjured;
 import vazkii.psi.common.block.base.ModBlocks;
 import vazkii.psi.common.block.tile.TileConjured;
 
+import javax.annotation.Nullable;
+
 public class PieceTrickConjureBlock extends PieceTrick {
 
 	SpellParam<Vector3> position;
@@ -57,7 +59,7 @@ public class PieceTrickConjureBlock extends PieceTrick {
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		Vector3 positionVal = this.getParamValue(context, position);
-		double timeVal = this.getParamValue(context, time).doubleValue();
+		Number timeVal = this.getParamValue(context, time);
 
 		if(positionVal == null)
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
@@ -76,7 +78,7 @@ public class PieceTrickConjureBlock extends PieceTrick {
 		return null;
 	}
 
-	public static void conjure(SpellContext context, Double timeVal, BlockPos pos, World world, BlockState state) {
+	public static void conjure(SpellContext context, @Nullable Number timeVal, BlockPos pos, World world, BlockState state) {
 		if(world.getBlockState(pos).getBlock() != state.getBlock()) {
 			if (conjure(world, pos, context.caster, state)) {
 				if (timeVal != null && timeVal.intValue() > 0) {

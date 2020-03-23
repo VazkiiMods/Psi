@@ -57,7 +57,7 @@ public class PieceTrickConjureBlockSequence extends PieceTrick {
 		Vector3 positionVal = this.getParamValue(context, position);
 		Vector3 targetVal = this.getParamValue(context, target);
 		int maxBlocksInt = this.getParamValue(context, maxBlocks).intValue();
-		double timeVal = this.getParamValue(context, time).doubleValue();
+		Number timeVal = this.getParamValue(context, time);
 
 		if(positionVal == null)
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
