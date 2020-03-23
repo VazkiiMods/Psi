@@ -16,11 +16,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.psi.api.cad.ICADColorizer;
+import vazkii.psi.client.core.handler.ColorHandler;
+import vazkii.psi.client.core.handler.ContributorSpellCircleHandler;
 
 public class ItemCADColorizer extends ItemCADComponent implements ICADColorizer {
 
 
 	private final DyeColor color;
+	private String contributorName = "";
 
 	public ItemCADColorizer(Item.Properties properties, DyeColor color) {
 		super(properties);
@@ -35,11 +38,23 @@ public class ItemCADColorizer extends ItemCADComponent implements ICADColorizer 
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public int getColor(ItemStack stack) {
+		if (!contributorName.isEmpty() && ContributorSpellCircleHandler.isContributor(contributorName)) {
+			return ColorHandler.slideColor(ContributorSpellCircleHandler.getColors(contributorName), 0.01f / ContributorSpellCircleHandler.getColors(contributorName).length);
+		}
 		return color.getColorValue();
+	}
+
+	@Override
+	public String getContributorName(ItemStack stack) {
+		return contributorName;
 	}
 
 	private static String getProperDyeName(DyeColor color) {
 		return color.getName();
 	}
 
+	@Override
+	public void setContributorName(ItemStack stack, String name) {
+		contributorName = name;
+	}
 }

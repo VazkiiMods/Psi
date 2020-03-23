@@ -40,6 +40,7 @@ import vazkii.psi.api.internal.PsiRenderHelper;
 import vazkii.psi.api.internal.TooltipHelper;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.*;
+import vazkii.psi.client.core.handler.ContributorSpellCircleHandler;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.BlockProgrammer;
 import vazkii.psi.common.block.base.ModBlocks;
@@ -163,6 +164,12 @@ public class ItemCAD extends Item implements ICAD, ISpellSettable {
 		}
 
 		ItemStack bullet = getBulletInSocket(itemStackIn, getSelectedSlot(itemStackIn));
+		if (!getComponentInSlot(playerCad, EnumCADComponent.DYE).isEmpty() && ContributorSpellCircleHandler.isContributor(playerIn.getName().toString())) {
+			ItemStack dyeStack = getComponentInSlot(playerCad, EnumCADComponent.DYE);
+			if (((ICADColorizer) dyeStack.getItem()).getContributorName(dyeStack) != playerIn.getName().toString()) {
+				((ICADColorizer) dyeStack.getItem()).setContributorName(dyeStack, playerIn.getName().toString());
+			}
+		}
 		boolean did = cast(worldIn, playerIn, data, bullet, itemStackIn, 40, 25, 0.5F, ctx -> ctx.castFrom = hand);
 
 		if (!data.overflowed && bullet.isEmpty() && craft(playerIn, Tags.Items.DUSTS_REDSTONE, new ItemStack(ModItems.psidust))) {
@@ -383,9 +390,9 @@ public class ItemCAD extends Item implements ICAD, ISpellSettable {
 	@OnlyIn(Dist.CLIENT)
 	public int getSpellColor(ItemStack stack) {
 		ItemStack dye = getComponentInSlot(stack, EnumCADComponent.DYE);
-		if(!dye.isEmpty() && dye.getItem() instanceof ICADColorizer)
+		if (!dye.isEmpty() && dye.getItem() instanceof ICADColorizer) {
 			return ((ICADColorizer) dye.getItem()).getColor(dye);
-
+		}
 		return ICADColorizer.DEFAULT_SPELL_COLOR;
 	}
 

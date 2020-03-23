@@ -18,7 +18,6 @@ import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.registries.ObjectHolder;
-import vazkii.psi.api.cad.ICADColorizer;
 import vazkii.psi.api.internal.PsiRenderHelper;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.BlockConjured;
@@ -41,9 +40,7 @@ public class TileConjured extends TileEntity {
 	}
 
 	public void doParticles() {
-		int color = ICADColorizer.DEFAULT_SPELL_COLOR;
-		if(!colorizer.isEmpty())
-			color = Psi.proxy.getColorForColorizer(colorizer);
+		int color = Psi.proxy.getColorForColorizer(colorizer);
 
 		float r = PsiRenderHelper.r(color) / 255F;
 		float g = PsiRenderHelper.g(color) / 255F;
@@ -51,7 +48,7 @@ public class TileConjured extends TileEntity {
 
 		BlockState state = getWorld().getBlockState(getPos());
 
-		if(state.getBlock() == ModBlocks.conjured && state.get(BlockConjured.SOLID)) {
+		if (state.getBlock() == ModBlocks.conjured && state.get(BlockConjured.SOLID)) {
 			// http://cns-alumni.bu.edu/~lavanya/Graphics/cs580/p5/web-page/cube_edges.gif
 			boolean[] edges = new boolean[12];
 			Arrays.fill(edges, true);

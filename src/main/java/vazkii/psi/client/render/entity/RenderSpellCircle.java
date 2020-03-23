@@ -19,7 +19,6 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
-import vazkii.psi.api.cad.ICADColorizer;
 import vazkii.psi.api.internal.PsiRenderHelper;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.entity.EntitySpellCircle;
@@ -51,10 +50,8 @@ public class RenderSpellCircle extends EntityRenderer<EntitySpellCircle> {
 	@Override
 	public void render(EntitySpellCircle entity, float entityYaw, float partialTicks, MatrixStack ms, IRenderTypeBuffer buffers, int light) {
 		ms.push();
-		int color = ICADColorizer.DEFAULT_SPELL_COLOR;
 		ItemStack colorizer = entity.getDataManager().get(EntitySpellCircle.COLORIZER_DATA);
-		if (!colorizer.isEmpty() && colorizer.getItem() instanceof ICADColorizer)
-			color = Psi.proxy.getColorForColorizer(colorizer);
+		int color = Psi.proxy.getColorForColorizer(colorizer);
 		float alive = entity.getTimeAlive() + partialTicks;
 		float scale = Math.min(1F, alive / EntitySpellCircle.CAST_DELAY);
 		if (alive > EntitySpellCircle.LIVE_TIME - EntitySpellCircle.CAST_DELAY)

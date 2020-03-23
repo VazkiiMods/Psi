@@ -33,4 +33,8 @@ public interface ICADColorizer extends ICADComponent {
 	default EnumCADComponent getComponentType(ItemStack stack) {
 		return EnumCADComponent.DYE;
 	}
+
+	String getContributorName(ItemStack stack);
+
+	void setContributorName(ItemStack stack, String name);
 }
