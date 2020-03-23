@@ -17,7 +17,7 @@ public final class LibItemNames {
 	public static final String PSIGEM = "psigem";
 	public static final String EBONY_PSIMETAL = "ebony_psimetal";
 	public static final String IVORY_PSIMETAL = "ivory_psimetal";
-	public static final String EBONY_SUBSTANCE = "ebony_sustance";
+	public static final String EBONY_SUBSTANCE = "ebony_substance";
 	public static final String IVORY_SUBSTANCE = "ivory_substance";
 	public static final String MATERIAL = "material";
 	public static final String CAD = "cad";

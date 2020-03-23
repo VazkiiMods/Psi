@@ -130,6 +130,7 @@ public final class ModItems {
 		r.register(ivoryPsimetal.setRegistryName(LibMisc.MOD_ID, LibItemNames.IVORY_PSIMETAL));
 		r.register(ebonySubstance.setRegistryName(LibMisc.MOD_ID, LibItemNames.EBONY_SUBSTANCE));
 		r.register(ivorySubstance.setRegistryName(LibMisc.MOD_ID, LibItemNames.IVORY_SUBSTANCE));
+		r.register(cadAssemblyCreative.setRegistryName(LibMisc.MOD_ID, LibItemNames.CAD_ASSEMBLY_CREATIVE));
 
 		r.register(cadAssemblyIron.setRegistryName(LibMisc.MOD_ID, LibItemNames.CAD_ASSEMBLY_IRON));
 		r.register(cadAssemblyGold.setRegistryName(LibMisc.MOD_ID, LibItemNames.CAD_ASSEMBLY_GOLD));
