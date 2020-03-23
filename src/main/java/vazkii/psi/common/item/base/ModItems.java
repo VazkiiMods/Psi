@@ -84,6 +84,7 @@ public final class ModItems {
 	public static final Item cadColorizerBlack = new ItemCADColorizer(defaultBuilder(), DyeColor.BLACK);
 	public static final Item cadColorizerRainbow = new ItemCADColorizerRainbow(defaultBuilder());
 	public static final Item cadColorizerPsi = new ItemCADColorizerPsi(defaultBuilder());
+	public static final Item cadColorizerEmpty = new ItemCADColorizerEmpty(defaultBuilder());
 
 	public static final Item spellBullet = new ItemSpellBullet(defaultBuilder());
 	public static final Item projectileSpellBullet = new ItemProjectileSpellBullet(defaultBuilder());
@@ -172,6 +173,7 @@ public final class ModItems {
 		r.register(cadColorizerBlack.setRegistryName(LibMisc.MOD_ID, LibItemNames.CAD_COLORIZER_BLACK));
 		r.register(cadColorizerRainbow.setRegistryName(LibMisc.MOD_ID, LibItemNames.CAD_COLORIZER_RAINBOW));
 		r.register(cadColorizerPsi.setRegistryName(LibMisc.MOD_ID, LibItemNames.CAD_COLORIZER_PSI));
+		r.register(cadColorizerEmpty.setRegistryName(LibMisc.MOD_ID, LibItemNames.CAD_COLORIZER_EMPTY));
 
 		r.register(spellBullet.setRegistryName(LibMisc.MOD_ID, LibItemNames.SPELL_BULLET));
 		r.register(projectileSpellBullet.setRegistryName(LibMisc.MOD_ID, LibItemNames.SPELL_BULLET_PROJECTILE));

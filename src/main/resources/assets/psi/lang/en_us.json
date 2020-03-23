@@ -113,6 +113,7 @@
   "item.psi.cad_colorizer_black": "Black CAD Colorizer",
   "item.psi.cad_colorizer_rainbow": "Full-Spectrum CAD Colorizer",
   "item.psi.cad_colorizer_psi": "Psi CAD Colorizer",
+  "item.psi.cad_colorizer_empty": "Drained CAD Colorizer",
   "item.psi.spell_bullet": "Spell Bullet",
   "item.psi.spell_bullet_active": "Programmed Spell Bullet",
   "item.psi.spell_bullet_projectile": "Projectile Spell Bullet",

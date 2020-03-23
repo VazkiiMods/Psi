@@ -100,6 +100,7 @@ public final class LibItemNames {
     public static final String EXOSUIT_SENSOR_WATER = "exosuit_sensor_water";
     public static final String EXOSUIT_SENSOR_HEAT = "exosuit_sensor_heat";
     public static final String EXOSUIT_SENSOR_STRESS = "exosuit_sensor_stress";
+	public static final String CAD_COLORIZER_EMPTY = "cad_colorizer_empty";
 
 
 }

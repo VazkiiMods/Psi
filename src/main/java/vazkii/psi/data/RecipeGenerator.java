@@ -604,6 +604,15 @@ public class RecipeGenerator extends RecipeProvider implements IConditionBuilder
 						.patternLine("IMR")
 						.patternLine(" R ")
 		);
+		buildMagicalWrapper(Psi.location("cad_colorizer_empty"), consumer,
+				hasPsidust, "has_psidust", ShapedRecipeBuilder.shapedRecipe(ModItems.cadColorizerEmpty)
+						.key('D', ModTags.PSIDUST)
+						.key('G', Tags.Items.GLASS)
+						.key('I', Tags.Items.INGOTS_IRON)
+						.patternLine(" D ")
+						.patternLine("G G")
+						.patternLine(" I ")
+		);
 		buildMagicalWrapper(Psi.location("psidust_block_shapeless"), consumer,
 				hasPsidust, "has_psidust",
 				ShapelessRecipeBuilder.shapelessRecipe(ModBlocks.psidustBlock.asItem())
