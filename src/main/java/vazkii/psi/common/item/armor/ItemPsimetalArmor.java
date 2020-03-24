@@ -21,11 +21,13 @@ import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.IArmorMaterial;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.LazyValue;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.DistExecutor;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ICADColorizer;
 import vazkii.psi.api.cad.ISocketable;
@@ -43,14 +45,12 @@ import vazkii.psi.common.lib.LibResources;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.function.Function;
 
 public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiEventArmor {
 
-	@OnlyIn(Dist.CLIENT)
-	public static Function<EquipmentSlotType, BipedModel> modelSupplier;
 
 	public final EquipmentSlotType type;
+	private final LazyValue<BipedModel> model;
 
 	private static final String TAG_TIMES_CAST = "timesCast";
 
@@ -62,6 +62,8 @@ public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiE
 	public ItemPsimetalArmor(EquipmentSlotType type, IArmorMaterial mat, Properties props) {
 		super(mat, type, props);
 		this.type = type;
+		this.model = DistExecutor.runForDist(() -> () -> new LazyValue<>(() -> this.provideArmorModelForSlot(type)),
+				() -> () -> null);
 	}
 
 	@Override
@@ -192,7 +194,7 @@ public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiE
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public BipedModel getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlotType armorSlot, BipedModel _default) {
-		return provideArmorModelForSlot(slot);
+		return model.getValue();
 	}
 
 	@OnlyIn(Dist.CLIENT)
