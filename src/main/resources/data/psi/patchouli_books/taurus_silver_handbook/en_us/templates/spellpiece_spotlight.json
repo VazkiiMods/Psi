@@ -1,0 +1,34 @@
+{
+  "components": [
+    {
+      "type": "header",
+      "text": "#title",
+      "x": -1,
+      "y": -1
+    },
+    {
+      "type": "image",
+      "image": "patchouli:textures/gui/crafting.png",
+      "x": 25,
+      "y": 10,
+      "u": 0,
+      "v": 102,
+      "width": 66,
+      "height": 26,
+      "texture_width": 128,
+      "texture_height": 128
+    },
+    {
+      "type": "custom",
+      "class": "vazkii.psi.client.patchouli.SpellPieceComponent",
+      "x": 50,
+      "y": 15,
+      "name": "#spellpiece"
+    },
+    {
+      "type": "text",
+      "text": "#text",
+      "y": 40
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "name": "Spell Piece Spotlight Test",
+  "category": "basics",
+  "icon": "psi:psidust",
+  "flag": "debug",
+  "pages": [
+    {
+      "type": "text",
+      "text": "This is an entry used purely for testing the spell piece component. You shouldn't be able to see it outside of a dev environment."
+    },
+    {
+      "type": "spellpiece_spotlight",
+      "title": "Trick: Greater Infusion",
+      "spellpiece": "psi:trick_greater_infusion",
+      "text": "PsiDust is now completely uncraftable, player is stuck at level 0 permanently No bypass commands work."
+    },
+    {
+      "type": "spotlight",
+      "title": "Trick: Greater Infusion",
+      "item": "psi:psidust",
+      "text": "Item spotlight page for comparison purposes."
+    },
+    {
+      "type": "spellpiece_spotlight",
+      "title": "Trick: Greater Infusion",
+      "spellpiece": "psi:trick_greater_infusion",
+      "text": "Spell piece spotlight, again."
+    }
+  ]
+}
