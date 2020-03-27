@@ -50,6 +50,7 @@ minecraft {
                     source sourceSets.main
                 }
             }
+            args '--username', 'Kamefrede'
         }
 
         server {

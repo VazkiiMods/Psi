@@ -15,7 +15,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
-import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.BlockRayTraceResult;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.internal.MathHelper;
 import vazkii.psi.api.internal.Vector3;
@@ -62,7 +62,7 @@ public final class SpellContext {
 
 	/**
 	 * Which hand the object containing this spell was cast from.
-	 *
+	 * <p>
 	 * This is only used for loopcasting. If the context doesn't support loopcasting,
 	 * there is no need to set this field.
 	 */
@@ -70,7 +70,7 @@ public final class SpellContext {
 
 	// Tool stuff. Only available if the spell is casted from a Psimetal Tool
 	public ItemStack tool = ItemStack.EMPTY;
-	public RayTraceResult positionBroken;
+	public BlockRayTraceResult positionBroken;
 	// Sword stuff
 	public LivingEntity attackedEntity;
 	// Armor Stuff

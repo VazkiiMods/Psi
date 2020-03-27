@@ -97,8 +97,11 @@ public class PiecePanelWidget extends Widget implements IRenderable, IGuiEventLi
 					closePanel();
 					return true;
 				case GLFW.GLFW_KEY_ENTER:
-					visibleButtons.get(panelCursor).onPress();
-					return true;
+					if (visibleButtons.size() >= 1) {
+						visibleButtons.get(panelCursor).onPress();
+						return true;
+					}
+					return false;
 				case GLFW.GLFW_KEY_TAB:
 					if (visibleButtons.size() >= 1) {
 						int newCursor = panelCursor + (Screen.hasAltDown() ? -1 : 1);

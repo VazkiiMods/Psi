@@ -31,13 +31,12 @@ public class PieceSelectorBlockSideBroken extends PieceSelector {
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 
-        if (!(context.positionBroken instanceof BlockRayTraceResult))
-            throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
-        if (((BlockRayTraceResult) context.positionBroken).isInside()) {
-            throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
-        }
-        BlockRayTraceResult blockRayTraceResult = (BlockRayTraceResult) context.positionBroken;
-        return Vector3.fromDirection(blockRayTraceResult.getFace());
+        if (context.positionBroken == null)
+			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
+		if (((BlockRayTraceResult) context.positionBroken).isInside()) {
+			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
+		}
+		return Vector3.fromDirection(context.positionBroken.getFace());
     }
 
 }
