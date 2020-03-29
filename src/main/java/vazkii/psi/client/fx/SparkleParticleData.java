@@ -54,9 +54,9 @@ public class SparkleParticleData implements IParticleData {
     @Nonnull
     @Override
     public String getParameters() {
-		return String.format(Locale.ROOT, "%s %.2f %.2f %.2f %.2f %d %s %s %s",
+		return String.format(Locale.ROOT, "%s %.2f %.2f %.2f %.2f %d %.2f %.2f %.2f",
 				this.getType().getRegistryName(), this.size, this.r, this.g, this.b, this.m, this.mx, this.my, this.mz);
-    }
+	}
 
     public static final IDeserializer<SparkleParticleData> DESERIALIZER = new IDeserializer<SparkleParticleData>() {
         @Nonnull

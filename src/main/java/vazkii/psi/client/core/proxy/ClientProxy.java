@@ -153,9 +153,9 @@ public class ClientProxy implements IProxy {
 
 	@Override
 	public void wispFX(World world, double x, double y, double z, float r, float g, float b, float size, float motionx, float motiony, float motionz, float maxAgeMul) {
-        if (maxAgeMul == 0)
+		if (maxAgeMul == 0)
 			return;
-		WispParticleData data = new WispParticleData(size, r, g, b, maxAgeMul, true, false);
+		WispParticleData data = new WispParticleData(size, r, g, b, maxAgeMul);
 		addParticleForce(world, data, x, y, z, motionx, motiony, motionz);
 	}
 

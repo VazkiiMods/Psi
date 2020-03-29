@@ -10,12 +10,8 @@
  */
 package vazkii.psi.common.block;
 
-import com.google.common.collect.Sets;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.Entity;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
@@ -30,17 +26,11 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 import vazkii.psi.common.block.tile.TileConjured;
-import vazkii.psi.common.lib.LibMisc;
 
 import javax.annotation.Nonnull;
 import java.util.Random;
-import java.util.Set;
 
-@Mod.EventBusSubscriber(modid = LibMisc.MOD_ID)
 public class BlockConjured extends Block {
 
 	public static final BooleanProperty SOLID = BooleanProperty.create("solid");
@@ -51,9 +41,6 @@ public class BlockConjured extends Block {
 	public static final BooleanProperty BLOCK_SOUTH = BooleanProperty.create("block_south");
 	public static final BooleanProperty BLOCK_WEST = BooleanProperty.create("block_west");
 	public static final BooleanProperty BLOCK_EAST = BooleanProperty.create("block_east");
-
-	@SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
-	private static final Set<BlockPos> needsParticleUpdate = Sets.newHashSet();
 
 	protected static final VoxelShape LIGHT_SHAPE = Block.makeCuboidShape(4, 4, 4, 12, 12, 12);
 
@@ -67,36 +54,9 @@ public class BlockConjured extends Block {
 	public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand) {
 		TileEntity inWorld = worldIn.getTileEntity(pos);
 		if (inWorld instanceof TileConjured)
-			needsParticleUpdate.add(pos.toImmutable());
+			((TileConjured) inWorld).doParticles();
 	}
 
-
-	@SubscribeEvent
-	@OnlyIn(Dist.CLIENT)
-	public static void fireParticles(TickEvent.ClientTickEvent event) {
-		if (event.phase == TickEvent.Phase.END) {
-			World world = Minecraft.getInstance().world;
-			Entity viewPoint = Minecraft.getInstance().getRenderViewEntity();
-			if (viewPoint == null)
-				viewPoint = Minecraft.getInstance().player;
-			final Entity view = viewPoint;
-
-			needsParticleUpdate.removeIf((pos) -> {
-				if (view == null || world == null)
-					return true;
-
-				if (world.isBlockLoaded(pos) && view.getDistanceSq(pos.getX(), pos.getY(), pos.getZ()) <= 64 * 64) {
-					TileEntity inWorld = world.getTileEntity(pos);
-					if (inWorld instanceof TileConjured) {
-						((TileConjured) inWorld).doParticles();
-						return false;
-					}
-				}
-
-				return true;
-			});
-		}
-	}
 
 	@Override
 	public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
@@ -108,23 +68,10 @@ public class BlockConjured extends Block {
 		builder.add(SOLID, LIGHT, BLOCK_UP, BLOCK_DOWN, BLOCK_NORTH, BLOCK_SOUTH, BLOCK_WEST, BLOCK_EAST);
 	}
 
-	/*@Nonnull
-	@Override
-	public BlockRenderLayer getRenderLayer() {
-		return BlockRenderLayer.TRANSLUCENT;
-	}
-	TODO Check if this is Okay*/
-
-	@Override
-	public BlockRenderType getRenderType(BlockState p_149645_1_) {
-		return BlockRenderType.INVISIBLE;
-	}
-
 	@Override
 	public boolean func_220074_n(BlockState state) {
 		return true;
 	}
-
 
 	@Nonnull
 	@Override
@@ -172,7 +119,18 @@ public class BlockConjured extends Block {
 
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context) {
-	    return state.get(SOLID) ? VoxelShapes.fullCube() : LIGHT_SHAPE;
+		return state.get(SOLID) ? VoxelShapes.fullCube() : LIGHT_SHAPE;
+	}
+
+	@Override
+	public boolean propagatesSkylightDown(BlockState p_200123_1_, IBlockReader p_200123_2_, BlockPos p_200123_3_) {
+		return true;
+	}
+
+	@OnlyIn(Dist.CLIENT)
+	@Override
+	public float getAmbientOcclusionLightValue(BlockState p_220080_1_, IBlockReader p_220080_2_, BlockPos p_220080_3_) {
+		return 1.0F;
 	}
 
 	@Override

@@ -21,7 +21,7 @@ public class WispParticleType extends ParticleType<WispParticleData> {
 
         @Override
         public Particle makeParticle(WispParticleData data, World world, double x, double y, double z, double mx, double my, double mz) {
-            FXWisp ret = new FXWisp(world, x, y, z, mx, my, mz, data.size, data.r, data.g, data.b, data.depthTest, data.maxAgeMul, data.noClip);
+            FXWisp ret = new FXWisp(world, x, y, z, mx, my, mz, data.size, data.r, data.g, data.b, data.maxAgeMul);
             ret.selectSpriteRandomly(sprite);
             return ret;
         }
