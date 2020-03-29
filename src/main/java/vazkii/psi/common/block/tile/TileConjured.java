@@ -70,7 +70,6 @@ public class TileConjured extends TileEntity {
 			double y = getPos().getY();
 			double z = getPos().getZ();
 
-			// Bottom
 			makeParticle(edges[0],  r, g, b, x + 0, y + 0, z + 0, 0, 0, 1);
 			makeParticle(edges[1],  r, g, b, x + 0, y + 0, z + 1, 1, 0, 0);
 			makeParticle(edges[2],  r, g, b, x + 1, y + 0, z + 0, 0, 0, 1);
@@ -103,13 +102,13 @@ public class TileConjured extends TileEntity {
 	}
 
 	public void makeParticle(boolean doit, float r, float g, float b, double xp, double yp, double zp, double xv, double yv, double zv) {
-		if(doit && Math.random() < 0.3) {
+		if (doit) {
 			float m = 0.1F;
 			xv *= m;
 			yv *= m;
 			zv *= m;
 
-			Psi.proxy.sparkleFX(xp, yp, zp, r, g, b, (float) xv, (float) yv, (float) zv, 1.25F, 20);
+			Psi.proxy.sparkleFX(xp, yp, zp, r, g, b, (float) xv, (float) yv, (float) zv, 2.75f, 15);
 		}
 	}
 
