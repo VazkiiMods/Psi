@@ -16,8 +16,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.psi.api.cad.ICADColorizer;
-import vazkii.psi.client.core.handler.ColorHandler;
-import vazkii.psi.client.core.handler.ContributorSpellCircleHandler;
 
 public class ItemCADColorizer extends ItemCADComponent implements ICADColorizer {
 
@@ -38,9 +36,6 @@ public class ItemCADColorizer extends ItemCADComponent implements ICADColorizer 
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public int getColor(ItemStack stack) {
-		if (!contributorName.isEmpty() && ContributorSpellCircleHandler.isContributor(contributorName)) {
-			return ColorHandler.slideColor(ContributorSpellCircleHandler.getColors(contributorName), 0.01f / ContributorSpellCircleHandler.getColors(contributorName).length);
-		}
 		return color.getColorValue();
 	}
 
