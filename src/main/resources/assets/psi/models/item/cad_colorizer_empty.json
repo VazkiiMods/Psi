@@ -1,7 +1,7 @@
 {
-    "parent": "minecraft:item/generated",
-    "textures": {
-        "layer0": "psi:items/dye_cannister",
-        "layer2": "psi:items/dye_cannister_overlay"
-    }
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "psi:items/dye_cannister",
+    "layer1": "psi:items/dye_cannister_overlay"
+  }
 }

@@ -11,6 +11,8 @@
 package vazkii.psi.client.core.proxy;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.client.renderer.model.ModelResourceLocation;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -38,6 +40,7 @@ import vazkii.psi.client.model.ModelCAD;
 import vazkii.psi.client.render.entity.RenderSpellCircle;
 import vazkii.psi.client.render.entity.RenderSpellProjectile;
 import vazkii.psi.client.render.tile.RenderTileProgrammer;
+import vazkii.psi.common.block.base.ModBlocks;
 import vazkii.psi.common.block.tile.TileProgrammer;
 import vazkii.psi.common.core.proxy.IProxy;
 import vazkii.psi.common.entity.*;
@@ -68,6 +71,8 @@ public class ClientProxy implements IProxy {
 		RenderingRegistry.registerEntityRenderingHandler(EntitySpellGrenade.TYPE, RenderSpellProjectile::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntitySpellProjectile.TYPE, RenderSpellProjectile::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntitySpellMine.TYPE, RenderSpellProjectile::new);
+		RenderTypeLookup.setRenderLayer(ModBlocks.conjured, RenderType.getTranslucent());
+		ContributorSpellCircleHandler.firstStart();
 	}
 
 	private void loadComplete(FMLLoadCompleteEvent event) {
@@ -89,6 +94,7 @@ public class ClientProxy implements IProxy {
 		ModelLoader.addSpecialModel(new ResourceLocation(LibMisc.MOD_ID, "item/" + LibItemNames.CAD_CREATIVE));
 
 	}
+
 
 
 	@Override
@@ -135,7 +141,7 @@ public class ClientProxy implements IProxy {
 	public void sparkleFX(World world, double x, double y, double z, float r, float g, float b, float motionx, float motiony, float motionz, float size, int m) {
         if (m == 0)
             return;
-        SparkleParticleData data = new SparkleParticleData(size, r, g, b, m, false, false);
+		SparkleParticleData data = new SparkleParticleData(size, r, g, b, m, motionx, motiony, motionz);
         addParticleForce(world, data, x, y, z, motionx, motiony, motionz);
 
     }
