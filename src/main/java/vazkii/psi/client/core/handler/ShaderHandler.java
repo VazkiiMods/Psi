@@ -10,12 +10,11 @@
  */
 package vazkii.psi.client.core.handler;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import org.apache.logging.log4j.Level;
-import org.lwjgl.opengl.ARBFragmentShader;
-import org.lwjgl.opengl.ARBShaderObjects;
-import org.lwjgl.opengl.ARBVertexShader;
-import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.*;
 import vazkii.psi.common.Psi;
+import vazkii.psi.common.core.handler.ConfigHandler;
 import vazkii.psi.common.lib.LibResources;
 
 import java.io.BufferedReader;
@@ -28,6 +27,8 @@ public final class ShaderHandler {
 
 	private static final int VERT_ST = ARBVertexShader.GL_VERTEX_SHADER_ARB;
 	private static final int FRAG_ST = ARBFragmentShader.GL_FRAGMENT_SHADER_ARB;
+	public static boolean useShaders = false;
+	public static boolean initialized = false;
 
 	private static final int VERT = 1;
 	private static final int FRAG = 2;
@@ -40,8 +41,13 @@ public final class ShaderHandler {
 	public static int simpleBloom;
 
 	public static void init() {
-		if(!useShaders())
+		if (initialized)
 			return;
+		useShaders = canUseShaders();
+		initialized = true;
+		if (!useShaders)
+			return;
+		Psi.logger.info("Initializing Psi shaders!");
 
 		rawColor = createProgram(LibResources.SHADER_RAW_COLOR, FRAG);
 		psiBar = createProgram(LibResources.SHADER_PSI_BAR, FRAG);
@@ -49,12 +55,12 @@ public final class ShaderHandler {
 	}
 
 	public static void useShader(int shader, Consumer<Integer> callback) {
-		if(!useShaders())
+		if (!useShaders)
 			return;
 
 		ARBShaderObjects.glUseProgramObjectARB(shader);
 
-		if(shader != 0) {
+		if (shader != 0) {
 			int time = ARBShaderObjects.glGetUniformLocationARB(shader, "time");
 			ARBShaderObjects.glUniform1iARB(time, ClientTickHandler.ticksInGame);
 
@@ -72,8 +78,10 @@ public final class ShaderHandler {
 	}
 
 	//TODO Need alternative to GLX.isNextGen();
-	public static boolean useShaders() {
-		return false;
+	public static boolean canUseShaders() {
+		RenderSystem.assertThread(RenderSystem::isOnRenderThread);
+		return ConfigHandler.CLIENT.useShaders.get() && ((GL.getCapabilities().OpenGL14 && (GL.getCapabilities().GL_ARB_framebuffer_object || GL.getCapabilities().GL_EXT_framebuffer_object || GL.getCapabilities().OpenGL30))
+				&& (GL.getCapabilities().OpenGL21 || GL.getCapabilities().GL_ARB_fragment_shader && GL.getCapabilities().GL_ARB_fragment_shader && GL.getCapabilities().GL_ARB_shader_objects));
 	}
 
 	private static int createProgram(String s, int sides) {
