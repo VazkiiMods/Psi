@@ -18,8 +18,15 @@ import net.minecraft.item.ItemStack;
  */
 public interface ICADComponent {
 
+	/**
+	 * Gets the component type of the given stack
+	 */
 	EnumCADComponent getComponentType(ItemStack stack);
 
+
+	/**
+	 * Gets the stat value for the respective stat of the stack
+	 */
 	int getCADStatValue(ItemStack stack, EnumCADStat stat);
 
 }

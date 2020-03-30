@@ -7,9 +7,15 @@ import net.minecraftforge.eventbus.api.Event;
 
 import javax.annotation.Nonnull;
 
+
+/**
+ * Posted when a part of the HUD is about to be rendered
+ * <p>
+ * This event is {@link Cancelable}.
+ * Canceling it will result in that HUD part not being rendered
+ */
 @OnlyIn(Dist.CLIENT)
 @Cancelable
-@Event.HasResult
 public class RenderPsiHudEvent extends Event {
 
 	@Nonnull

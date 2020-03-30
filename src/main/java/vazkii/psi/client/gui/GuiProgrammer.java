@@ -199,7 +199,7 @@ public class GuiProgrammer extends Screen {
 							for (int j = 0; j < SpellGrid.GRID_SIZE; j++) {
 								SpellPiece piece = spell.grid.gridData[i][j];
 								if (piece != null) {
-									ResourceLocation group = PsiAPI.advancementGroupsInverse.get(piece.getClass());
+									ResourceLocation group = PsiAPI.getGroupForPiece(piece.getClass());
 									if (!minecraft.player.isCreative() && (group == null || !data.isPieceGroupUnlocked(group, piece.registryKey))) {
 										minecraft.player.sendMessage(new TranslationTextComponent("psimisc.missing_pieces").setStyle(new Style().setColor(TextFormatting.RED)));
 										return;

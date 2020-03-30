@@ -63,7 +63,7 @@ public abstract class SpellPiece {
 
 	public SpellPiece(Spell spell) {
 		this.spell = spell;
-		registryKey = PsiAPI.spellPieceRegistry.getKey(getClass());
+		registryKey = PsiAPI.getSpellPieceKey(getClass());
 		initParams();
 	}
 
@@ -219,7 +219,7 @@ public abstract class SpellPiece {
 	 */
 	@OnlyIn(Dist.CLIENT)
 	public void drawBackground(MatrixStack ms, IRenderTypeBuffer buffers, int light) {
-		Material material = PsiAPI.simpleSpellTextures.get(registryKey);
+		Material material = PsiAPI.getSpellPieceMaterial(registryKey);
 		IVertexBuilder buffer = material.getVertexConsumer(buffers, SpellPiece::getRenderLayer);
 		Matrix4f mat = ms.peek().getModel();
 		// Cannot call .texture() on the chained object because SpriteAwareVertexBuilder is buggy
@@ -328,7 +328,7 @@ public abstract class SpellPiece {
 		tooltip.add(new TranslationTextComponent(getUnlocalizedName()));
 		TooltipHelper.tooltipIfShift(tooltip, () -> addToTooltipAfterShift(tooltip));
 
-		String addon = PsiAPI.spellPieceRegistry.getKey(getClass()).getNamespace();
+		String addon = registryKey.getNamespace();
 		if (!addon.equals("psi")) {
 
 			if (ModList.get().getModContainerById(addon).isPresent())
@@ -400,16 +400,16 @@ public abstract class SpellPiece {
 		}
 		boolean exists = false;
 		ResourceLocation rl = new ResourceLocation(key);
-		if (PsiAPI.spellPieceRegistry.getValue(rl).isPresent()) {
+		if (PsiAPI.isPieceRegistered(rl)) {
 			exists = true;
 		} else {
 			rl = new ResourceLocation("psi", key);
-			if (PsiAPI.spellPieceRegistry.getValue(rl).isPresent())
+			if (PsiAPI.isPieceRegistered(rl))
 				exists = true;
 		}
 
 		if (exists) {
-			Class<? extends SpellPiece> clazz = PsiAPI.spellPieceRegistry.getValue(rl).get();
+			Class<? extends SpellPiece> clazz = PsiAPI.getSpellPiece(rl);
 			SpellPiece p = create(clazz, spell);
 			p.readFromNBT(cmp);
 			return p;

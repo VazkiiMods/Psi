@@ -19,7 +19,6 @@ import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.renderer.model.Material;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -102,7 +101,7 @@ public class TrickCraftingCategory implements IRecipeCategory<TrickRecipe> {
 		if (recipe.getPiece() != null) {
 			IDrawable trickIcon = trickIcons.computeIfAbsent(recipe.getPiece().registryKey,
 					key -> {
-						Material mat = PsiAPI.simpleSpellTextures.get(key);
+						Material mat = PsiAPI.getSpellPieceMaterial(key);
 						if (mat == null) {
 							Psi.logger.warn("Not rendering complex (or missing) render for {}", key);
 							return helper.createBlankDrawable(16, 16);

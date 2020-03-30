@@ -727,8 +727,8 @@ public class PlayerDataHandler {
 
 		@Override
 		public void markPieceExecuted(SpellPiece piece) {
-			ResourceLocation advancement = PsiAPI.advancementGroupsInverse.get(piece);
-			if (advancement != null && PsiAPI.mainPieceForGroup.get(advancement) == piece.getClass())
+			ResourceLocation advancement = PsiAPI.getGroupForPiece(piece.getClass());
+			if (advancement != null && PsiAPI.getMainPieceForGroup(advancement) == piece.getClass())
 				tutorialComplete(advancement);
 		}
 

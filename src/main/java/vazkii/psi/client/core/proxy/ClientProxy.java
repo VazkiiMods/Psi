@@ -75,7 +75,7 @@ public class ClientProxy implements IProxy {
 		RenderingRegistry.registerEntityRenderingHandler(EntitySpellMine.TYPE, RenderSpellProjectile::new);
 		RenderTypeLookup.setRenderLayer(ModBlocks.conjured, RenderType.getTranslucent());
 		ContributorSpellCircleHandler.firstStart();
-		ModelBakery.LOCATIONS_BUILTIN_TEXTURES.addAll(PsiAPI.simpleSpellTextures.values());
+		ModelBakery.LOCATIONS_BUILTIN_TEXTURES.addAll(PsiAPI.getAllSpellPieceMaterial());
 	}
 
 	private void loadComplete(FMLLoadCompleteEvent event) {
