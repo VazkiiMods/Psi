@@ -1,0 +1,6 @@
+{
+    "parent": "minecraft:item/generated",
+    "textures": { 
+        "layer0": "psi:items/taurus_silver_codex"
+    }
+}
