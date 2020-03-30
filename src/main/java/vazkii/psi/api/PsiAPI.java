@@ -12,6 +12,8 @@ package vazkii.psi.api;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.model.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -48,6 +50,7 @@ import vazkii.psi.common.lib.LibResources;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public final class PsiAPI {
 
@@ -80,11 +83,10 @@ public final class PsiAPI {
 
 
 	public static final SimpleRegistry<Class<? extends SpellPiece>> spellPieceRegistry = new SimpleRegistry<>();
-	@OnlyIn(Dist.CLIENT)
-	public static final HashMap<ResourceLocation, Material> simpleSpellTextures = new HashMap<>();
+	public static final Map<ResourceLocation, Material> simpleSpellTextures = new HashMap<>();
 	public static final Multimap<ResourceLocation, Class<? extends SpellPiece>> advancementGroups = HashMultimap.create();
-	public static final HashMap<Class<? extends SpellPiece>, ResourceLocation> advancementGroupsInverse = new HashMap<>();
-	public static final HashMap<ResourceLocation, Class<? extends SpellPiece>> mainPieceForGroup = new HashMap<>();
+	public static final Map<Class<? extends SpellPiece>, ResourceLocation> advancementGroupsInverse = new HashMap<>();
+	public static final Map<ResourceLocation, Class<? extends SpellPiece>> mainPieceForGroup = new HashMap<>();
 
 	public static final List<TrickRecipe> trickRecipes = new ArrayList<>();
 
@@ -94,30 +96,33 @@ public final class PsiAPI {
 
 
 	/**
-	 * Registers a Spell Piece given its class, by which, it puts it in the registry.
+	 * Registers a Spell Piece.
 	 */
 	public static void registerSpellPiece(ResourceLocation resourceLocation, Class<? extends SpellPiece> clazz) {
 		PsiAPI.spellPieceRegistry.register(resourceLocation, clazz);
 	}
 
 	/**
-	 * Registers a spell piece and tries to create its relative texture given the current loading mod.
-	 * The spell texture should be in /assets/(yourmod)/textures/spell/(key).png.<br>
-	 * If you want to put the spell piece elsewhere or use some other type of resource location, feel free to map
-	 * the texture directly through {@link #simpleSpellTextures}.<br>
-	 * As SpellPiece objects can have custom renders, depending on how you wish to handle yours, you might
-	 * not even need to use this. In that case use {@link #registerSpellPiece(ResourceLocation, Class)}
-	 * Beware that if you do not use this, Psi will not stitch your texture into the piece atlas and will
-	 * probably crash when trying to render it.
+	 * Registers a spell piece and its texture.
+	 * The spell texture will be set to <code>/assets/(namespace)/textures/spell/(path).png</code>,
+	 * and will be stitched to an atlas for render.<br />
+	 * To use a different path, see {@link #registerPieceTexture}.<br />
+	 * To use custom rendering entirely, call {@link #registerSpellPiece} and override {@link SpellPiece#drawBackground} to do your own rendering.
 	 */
-	public static void registerSpellPieceAndTexture(ResourceLocation resourceLocation, Class<? extends SpellPiece> clazz) {
-		registerSpellPiece(resourceLocation, clazz);
-		DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> registerPieceTexture(resourceLocation, clazz));
+	public static void registerSpellPieceAndTexture(ResourceLocation id, Class<? extends SpellPiece> clazz) {
+		registerSpellPiece(id, clazz);
+		DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> registerPieceTexture(id, new ResourceLocation(id.getNamespace(), "spell/" + id.getPath())));
 	}
 
+	/**
+	 * Register the texture of a piece
+	 * @param pieceId ID of the piece whose texture to register
+	 * @param texture Path to the piece's texture, where <code>domain:foo/bar</code> translates to <code>/assets/domain/textures/foo/bar.png</code>.
+	 *                In other words, do <b>not</b> prefix with textures/ nor suffix with .png.
+	 */
 	@OnlyIn(Dist.CLIENT)
-	public static void registerPieceTexture(ResourceLocation resourceLocation, Class<? extends SpellPiece> clazz) {
-		PsiAPI.simpleSpellTextures.put(resourceLocation, new Material(LibResources.PSI_PIECE_TEXTURE_ATLAS, new ResourceLocation(resourceLocation.getNamespace(), String.format("spell/%s", resourceLocation.getPath()))));
+	public static void registerPieceTexture(ResourceLocation pieceId, ResourceLocation texture) {
+		PsiAPI.simpleSpellTextures.put(pieceId, new Material(LibResources.PSI_PIECE_TEXTURE_ATLAS, texture));
 	}
 
 
