@@ -259,7 +259,7 @@ public class PiecePanelWidget extends Widget implements IRenderable, IGuiEventLi
 
 
 		visibleButtons.sort(comparator);
-		if ((!text.isEmpty() && text.length() <= 5 && (text.matches("\\d+(?:\\.\\d*)?") || text.matches("\\d*(?:\\.\\d+)?")))) {
+		if ((!text.isEmpty() && text.length() <= 5 && (text.matches("^-?\\d+(?:\\.\\d*)?") || text.matches("^-?\\d*(?:\\.\\d+)?")))) {
 			GuiButtonSpellPiece constantPiece = (GuiButtonSpellPiece) parent.getButtons().stream().filter(el -> {
 				if (el instanceof GuiButtonSpellPiece) {
 					return ((GuiButtonSpellPiece) el).getPiece() instanceof PieceConstantNumber;
