@@ -28,6 +28,8 @@ public final class PsiSoundHandler {
     public static SoundEvent compileError;
     public static SoundEvent levelUp;
     public static SoundEvent loopcast;
+    //Thanks LeetSweepUp!
+    public static SoundEvent book;
 
 
     public static SoundEvent register(String name) {
@@ -46,6 +48,8 @@ public final class PsiSoundHandler {
         compileError = register("compile_error");
         levelUp = register("level_up");
         loopcast = register("loopcast");
+        book = register("book");
+        r.register(book);
         r.register(bulletCreate);
         r.register(cadCreate);
         r.register(cadShoot);

@@ -84,7 +84,7 @@ public class ItemSpellDrive extends Item {
 			} else if(spell != null) {
 				boolean enabled = programmer.isEnabled();
 				if (enabled && !programmer.playerLock.isEmpty()) {
-					if (!programmer.playerLock.equals(playerIn.getName())) {
+					if (!programmer.playerLock.equals(playerIn.getName().getString())) {
 						if (!worldIn.isRemote)
 							playerIn.sendMessage(new TranslationTextComponent("psimisc.not_your_programmer").setStyle(new Style().setColor(TextFormatting.RED)));
 						return ActionResultType.SUCCESS;
