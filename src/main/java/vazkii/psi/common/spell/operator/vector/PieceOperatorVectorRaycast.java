@@ -57,7 +57,7 @@ public class PieceOperatorVectorRaycast extends PieceOperator {
 		maxLen = Math.min(SpellContext.MAX_DISTANCE, maxLen);
 
 		BlockRayTraceResult pos = raycast(context.caster, originVal, rayVal, maxLen);
-		if (pos.getType() == RayTraceResult.Type.MISS) // todo 1.14 should check for miss?
+		if (pos.getType() == RayTraceResult.Type.MISS)
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
 
 		return Vector3.fromBlockPos(pos.getPos());

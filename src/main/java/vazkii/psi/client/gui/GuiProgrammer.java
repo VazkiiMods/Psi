@@ -237,7 +237,6 @@ public class GuiProgrammer extends Screen {
 		blit(left, top, 0, 0, xSize, ySize);
 
 		//Currently selected piece
-		//TODO, refactor name to be more clear
 		SpellPiece piece = null;
 		if (SpellGrid.exists(selectedX, selectedY))
 			piece = spell.grid.gridData[selectedX][selectedY];

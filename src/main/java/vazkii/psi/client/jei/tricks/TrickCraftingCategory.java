@@ -41,7 +41,7 @@ public class TrickCraftingCategory implements IRecipeCategory<TrickRecipe> {
 	private static final int trickX = 43;
 	private static final int trickY = 24;
 
-	private final Map<ResourceLocation, IDrawable> trickIcons = new HashMap<>(); //TODO Switch to ResLoc keys once that gets fixed up
+	private final Map<ResourceLocation, IDrawable> trickIcons = new HashMap<>();
 
 	private final IDrawable background;
 	private final IDrawable icon;

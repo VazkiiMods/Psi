@@ -81,7 +81,6 @@ public class BlockCADAssembler extends HorizontalBlock {
     }
 
 
-    //TODO Check if works in game
 
     @Override
     public ActionResultType onUse(BlockState state, World world, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult rayTraceResult) {
