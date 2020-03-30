@@ -238,7 +238,7 @@
   "psi.spellpiece.selector_attack_target": "選擇符：攻擊目標",
   "psi.spellpiece.selector_attack_target.desc": "選擇被攻擊的實體。",
   "psi.spellpiece.selector_sneak_status": "選擇符：潛行狀態",
-  "psi.spellpiece.selector_sneak_status.desc": "選擇施法者是否潛行(潛行為1, 其餘為0)。",
+  "psi.spellpiece.selector_sneak_status.desc": "選擇施法者是否潛行(潛行為0, 其餘為1)。",
   "psi.spellpiece.selector_time": "選擇符：時間",
   "psi.spellpiece.selector_time.desc": "選擇CAD內部的時間(以tick為單位)。",
   "psi.spellpiece.selector_attacker": "選擇符：攻擊者",
