@@ -28,7 +28,6 @@ public final class PsiSoundHandler {
     public static SoundEvent compileError;
     public static SoundEvent levelUp;
     public static SoundEvent loopcast;
-    //Thanks LeetSweepUp!
     public static SoundEvent book;
 
 
