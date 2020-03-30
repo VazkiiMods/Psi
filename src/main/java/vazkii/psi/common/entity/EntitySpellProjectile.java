@@ -162,9 +162,9 @@ public class EntitySpellProjectile extends ThrowableEntity {
             double spread = 0.6;
             double dist = 0.15;
             if (this instanceof EntitySpellGrenade) {
-                look.y += 1;
-                dist = 0.05;
-            }
+				look.y += 1;
+				dist = 0.05;
+			}
 
 			look.x += (Math.random() - 0.5) * spread;
 			look.y += (Math.random() - 0.5) * spread;
@@ -172,7 +172,9 @@ public class EntitySpellProjectile extends ThrowableEntity {
 
 			look.normalize().multiply(dist);
 
-			Psi.proxy.sparkleFX(x, y, z, r, g, b, (float) look.x, (float) look.y, (float) look.z, 1.2F, 12);
+			if (world.isRemote())
+				Psi.proxy.sparkleFX(x, y, z, r, g, b, (float) look.x, (float) look.y, (float) look.z, 1.2F, 12);
+
 		}
 	}
 
