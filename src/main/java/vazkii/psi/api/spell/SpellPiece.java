@@ -222,10 +222,22 @@ public abstract class SpellPiece {
 		Material material = PsiAPI.simpleSpellTextures.get(registryKey);
 		IVertexBuilder buffer = material.getVertexConsumer(buffers, SpellPiece::getRenderLayer);
 		Matrix4f mat = ms.peek().getModel();
-		buffer.vertex(mat, 0, 16, 0).color(1F, 1F, 1F, 1F).texture(0, 1).light(light).endVertex();
-		buffer.vertex(mat, 16, 16, 0).color(1F, 1F, 1F, 1F).texture(1, 1).light(light).endVertex();
-		buffer.vertex(mat, 16, 0, 0).color(1F, 1F, 1F, 1F).texture(1, 0).light(light).endVertex();
-		buffer.vertex(mat, 0, 0, 0).color(1F, 1F, 1F, 1F).texture(0, 0).light(light).endVertex();
+		// Cannot call .texture() on the chained object because SpriteAwareVertexBuilder is buggy
+		// and does not return itself, it returns the inner buffer
+		// This leads to .texture() using the implementation of the inner buffer,
+		// not of the SpriteAwareVertexBuilder, which is not what we want.
+		// Split the chain apart so that .texture() is called on the original buffer
+		buffer.vertex(mat, 0, 16, 0).color(1F, 1F, 1F, 1F);
+		buffer.texture(0, 1).light(light).endVertex();
+
+		buffer.vertex(mat, 16, 16, 0).color(1F, 1F, 1F, 1F);
+		buffer.texture(1, 1).light(light).endVertex();
+
+		buffer.vertex(mat, 16, 0, 0).color(1F, 1F, 1F, 1F);
+		buffer.texture(1, 0).light(light).endVertex();
+
+		buffer.vertex(mat, 0, 0, 0).color(1F, 1F, 1F, 1F);
+		buffer.texture(0, 0).light(light).endVertex();
 	}
 	
 	/**
