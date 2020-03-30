@@ -21,6 +21,7 @@ public class PieceOperatorIntegerDivide extends PieceOperator {
 
 	SpellParam num1;
 	SpellParam num2;
+	SpellParam num3;
 
 	public PieceOperatorIntegerDivide(Spell spell) {
 		super(spell);
@@ -30,17 +31,19 @@ public class PieceOperatorIntegerDivide extends PieceOperator {
 	public void initParams() {
 		addParam(num1 = new ParamNumber(SpellParam.GENERIC_NAME_NUMBER1, SpellParam.RED, false, false));
 		addParam(num2 = new ParamNumber(SpellParam.GENERIC_NAME_NUMBER2, SpellParam.GREEN, false, false));
+		addParam(num3 = new ParamNumber(SpellParam.GENERIC_NAME_NUMBER3, SpellParam.YELLOW, true, false));
 	}
 
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		Double d1 = this.<Double>getParamValue(context, num1);
 		Double d2 = this.<Double>getParamValue(context, num2);
+		Double d3 = this.<Double>getParamValue(context, num3);
 
-		if(d2 == 0 || d2.intValue() == 0)
+		if ((d2 == 0 || d2.intValue() == 0) || (d3 != null && (d3 == 0 || d3.intValue() == 0)))
 			throw new SpellRuntimeException(SpellRuntimeException.DIVIDE_BY_ZERO);
 
-		return (double) (int) (d1 / d2);
+		return d3 != null ? (int) (d1 / (d2 * 3)) : (int) (d1 / d2);
 	}
 
 	@Override
