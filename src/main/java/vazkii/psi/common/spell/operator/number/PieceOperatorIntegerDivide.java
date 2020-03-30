@@ -43,7 +43,7 @@ public class PieceOperatorIntegerDivide extends PieceOperator {
 		if ((d2 == 0 || d2.intValue() == 0) || (d3 != null && (d3 == 0 || d3.intValue() == 0)))
 			throw new SpellRuntimeException(SpellRuntimeException.DIVIDE_BY_ZERO);
 
-		return d3 != null ? (int) (d1 / (d2 * 3)) : (int) (d1 / d2);
+		return d3 != null ? (int) (d1 / (d2 * d3)) : (int) (d1 / d2);
 	}
 
 	@Override

@@ -44,7 +44,7 @@ public class PieceOperatorDivide extends PieceOperator {
 		if (d2 == 0 || (d3 != null && d3 == 0))
 			throw new SpellRuntimeException(SpellRuntimeException.DIVIDE_BY_ZERO);
 
-		return d3 != null ? d1 / (d2 * 3) : d1 / d2;
+		return d3 != null ? d1 / (d2 * d3) : d1 / d2;
 	}
 
 	@Override
