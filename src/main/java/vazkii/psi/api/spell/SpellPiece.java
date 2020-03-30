@@ -17,6 +17,7 @@ import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.Matrix4f;
 import net.minecraft.client.renderer.RenderState;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.model.Material;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
@@ -201,17 +202,15 @@ public abstract class SpellPiece {
 		ms.pop();
 	}
 
-	// TODO 1.15 stitch all the pieces into an atlas?
 	@OnlyIn(Dist.CLIENT)
-	private RenderType getRenderLayer() {
-		ResourceLocation res = PsiAPI.simpleSpellTextures.get(registryKey);
+	private static RenderType getRenderLayer(ResourceLocation resourceLocation) {
 		RenderType.State glState = RenderType.State.builder()
-						.texture(new RenderState.TextureState(res, false, false))
-						.lightmap(new RenderState.LightmapState(true))
-						.alpha(new RenderState.AlphaState(0.004F))
-						.cull(new RenderState.CullState(false))
-						.build(false);
-		return RenderType.of("psi_spell_piece_" + registryKey, DefaultVertexFormats.POSITION_COLOR_TEXTURE_LIGHT, GL11.GL_QUADS, 64, glState);
+				.texture(new RenderState.TextureState(resourceLocation, false, false))
+				.lightmap(new RenderState.LightmapState(true))
+				.alpha(new RenderState.AlphaState(0.004F))
+				.cull(new RenderState.CullState(false))
+				.build(false);
+		return RenderType.of(resourceLocation.toString(), DefaultVertexFormats.POSITION_COLOR_TEXTURE_LIGHT, GL11.GL_QUADS, 64, glState);
 
 	}
 
@@ -220,13 +219,14 @@ public abstract class SpellPiece {
 	 */
 	@OnlyIn(Dist.CLIENT)
 	public void drawBackground(MatrixStack ms, IRenderTypeBuffer buffers, int light) {
-        IVertexBuilder buffer = buffers.getBuffer(getRenderLayer());
-        Matrix4f mat = ms.peek().getModel();
-        buffer.vertex(mat, 0, 16, 0).color(1F, 1F, 1F, 1F).texture(0, 1).light(light).endVertex();
-        buffer.vertex(mat, 16, 16, 0).color(1F, 1F, 1F, 1F).texture(1, 1).light(light).endVertex();
-        buffer.vertex(mat, 16, 0, 0).color(1F, 1F, 1F, 1F).texture(1, 0).light(light).endVertex();
-        buffer.vertex(mat, 0, 0, 0).color(1F, 1F, 1F, 1F).texture(0, 0).light(light).endVertex();
-    }
+		Material material = PsiAPI.simpleSpellTextures.get(registryKey);
+		IVertexBuilder buffer = material.getVertexConsumer(buffers, SpellPiece::getRenderLayer);
+		Matrix4f mat = ms.peek().getModel();
+		buffer.vertex(mat, 0, 16, 0).color(1F, 1F, 1F, 1F).texture(0, 1).light(light).endVertex();
+		buffer.vertex(mat, 16, 16, 0).color(1F, 1F, 1F, 1F).texture(1, 1).light(light).endVertex();
+		buffer.vertex(mat, 16, 0, 0).color(1F, 1F, 1F, 1F).texture(1, 0).light(light).endVertex();
+		buffer.vertex(mat, 0, 0, 0).color(1F, 1F, 1F, 1F).texture(0, 0).light(light).endVertex();
+	}
 	
 	/**
 	 * Draws any additional stuff for this piece. Used in connectors

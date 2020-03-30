@@ -97,8 +97,8 @@ public class TrickCraftingCategory implements IRecipeCategory<TrickRecipe> {
 	@Override
 	public void draw(TrickRecipe recipe, double mouseX, double mouseY) {
 		if (recipe.getPiece() != null) {
-			IDrawable trickIcon = trickIcons.computeIfAbsent(recipe.getPiece().registryKey, 
-				key -> helper.createDrawable(PsiAPI.simpleSpellTextures.get(key), 0, 0, 256, 256));
+			IDrawable trickIcon = trickIcons.computeIfAbsent(recipe.getPiece().registryKey,
+					key -> helper.createDrawable(PsiAPI.simpleSpellTextures.get(key).getTextureId(), 0, 0, 256, 256));
 			
 			RenderSystem.pushMatrix();
 			RenderSystem.scalef(0.0625f, 0.0625f, 0.0625f);

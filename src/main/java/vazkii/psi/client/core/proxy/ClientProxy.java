@@ -13,6 +13,7 @@ package vazkii.psi.client.core.proxy;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
+import net.minecraft.client.renderer.model.ModelBakery;
 import net.minecraft.client.renderer.model.ModelResourceLocation;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -30,6 +31,7 @@ import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.cad.ICADColorizer;
 import vazkii.psi.client.core.handler.*;
@@ -73,6 +75,7 @@ public class ClientProxy implements IProxy {
 		RenderingRegistry.registerEntityRenderingHandler(EntitySpellMine.TYPE, RenderSpellProjectile::new);
 		RenderTypeLookup.setRenderLayer(ModBlocks.conjured, RenderType.getTranslucent());
 		ContributorSpellCircleHandler.firstStart();
+		ModelBakery.LOCATIONS_BUILTIN_TEXTURES.addAll(PsiAPI.simpleSpellTextures.values());
 	}
 
 	private void loadComplete(FMLLoadCompleteEvent event) {

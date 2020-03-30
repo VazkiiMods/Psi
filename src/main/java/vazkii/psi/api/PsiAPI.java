@@ -12,6 +12,7 @@ package vazkii.psi.api;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+import net.minecraft.client.renderer.model.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
@@ -19,8 +20,11 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.registry.SimpleRegistry;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
+import net.minecraftforge.fml.DistExecutor;
 import org.apache.logging.log4j.Level;
 import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.cad.ICADData;
@@ -39,6 +43,7 @@ import vazkii.psi.api.spell.detonator.IDetonationHandler;
 import vazkii.psi.api.spell.piece.PieceTrick;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.lib.LibMisc;
+import vazkii.psi.common.lib.LibResources;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -75,7 +80,8 @@ public final class PsiAPI {
 
 
 	public static final SimpleRegistry<Class<? extends SpellPiece>> spellPieceRegistry = new SimpleRegistry<>();
-	public static final HashMap<ResourceLocation, ResourceLocation> simpleSpellTextures = new HashMap<>();
+	@OnlyIn(Dist.CLIENT)
+	public static final HashMap<ResourceLocation, Material> simpleSpellTextures = new HashMap<>();
 	public static final Multimap<ResourceLocation, Class<? extends SpellPiece>> advancementGroups = HashMultimap.create();
 	public static final HashMap<Class<? extends SpellPiece>, ResourceLocation> advancementGroupsInverse = new HashMap<>();
 	public static final HashMap<ResourceLocation, Class<? extends SpellPiece>> mainPieceForGroup = new HashMap<>();
@@ -101,10 +107,17 @@ public final class PsiAPI {
 	 * the texture directly through {@link #simpleSpellTextures}.<br>
 	 * As SpellPiece objects can have custom renders, depending on how you wish to handle yours, you might
 	 * not even need to use this. In that case use {@link #registerSpellPiece(ResourceLocation, Class)}
+	 * Beware that if you do not use this, Psi will not stitch your texture into the piece atlas and will
+	 * probably crash when trying to render it.
 	 */
 	public static void registerSpellPieceAndTexture(ResourceLocation resourceLocation, Class<? extends SpellPiece> clazz) {
 		registerSpellPiece(resourceLocation, clazz);
-		PsiAPI.simpleSpellTextures.put(resourceLocation, new ResourceLocation(resourceLocation.getNamespace(), String.format("textures/spell/%s.png", resourceLocation.getPath())));
+		DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> registerPieceTexture(resourceLocation, clazz));
+	}
+
+	@OnlyIn(Dist.CLIENT)
+	public static void registerPieceTexture(ResourceLocation resourceLocation, Class<? extends SpellPiece> clazz) {
+		PsiAPI.simpleSpellTextures.put(resourceLocation, new Material(LibResources.PSI_PIECE_TEXTURE_ATLAS, new ResourceLocation(resourceLocation.getNamespace(), String.format("spell/%s", resourceLocation.getPath()))));
 	}
 
 
