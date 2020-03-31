@@ -14,10 +14,12 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.SoundEvents;
+import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.registries.ObjectHolder;
+import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.common.lib.LibEntityNames;
 import vazkii.psi.common.lib.LibResources;
 
@@ -28,6 +30,7 @@ public class EntitySpellGrenade extends EntitySpellProjectile {
 	public static EntityType<EntitySpellGrenade> TYPE;
 
 	boolean sound = false;
+	LivingEntity targetEntity = null;
 
 	public EntitySpellGrenade(EntityType<?> type, World worldIn) {
 		super(type, worldIn);
@@ -58,7 +61,13 @@ public class EntitySpellGrenade extends EntitySpellProjectile {
 	}
 
 	public void doExplosion() {
-		cast();
+		if(targetEntity !=null) {
+			cast((SpellContext context) -> {
+				if (context != null) {
+					context.attackedEntity = targetEntity;
+				}
+			});
+		} else cast();
 		playSound(SoundEvents.ENTITY_GENERIC_EXPLODE, 0.5F, 1F);
 		double m = 0.1;
 		double d3 = 0.0D;
@@ -77,6 +86,9 @@ public class EntitySpellGrenade extends EntitySpellProjectile {
 
 	@Override
 	protected void onImpact(@Nonnull RayTraceResult pos) {
+		if(pos instanceof EntityRayTraceResult && ((EntityRayTraceResult) pos).getEntity() instanceof LivingEntity) {
+			targetEntity = (LivingEntity) ((EntityRayTraceResult) pos).getEntity();
+		}
         if (!getEntityWorld().isRemote && !sound && explodes()) {
             playSound(SoundEvents.ENTITY_CREEPER_PRIMED, 2F, 1F);
             sound = true;

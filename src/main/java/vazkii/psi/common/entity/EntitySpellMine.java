@@ -12,8 +12,11 @@ package vazkii.psi.common.entity;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.particles.ParticleTypes;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.world.World;
 import net.minecraftforge.registries.ObjectHolder;
+import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.common.lib.LibEntityNames;
 import vazkii.psi.common.lib.LibResources;
 
@@ -39,11 +42,15 @@ public class EntitySpellMine extends EntitySpellGrenade {
 
 		List<LivingEntity> entities = getEntityWorld().getEntitiesWithinAABB(LivingEntity.class, getBoundingBox().grow(1, 1, 1));
 		LivingEntity thrower = getThrower();
-		if (thrower != null)
+		if (thrower != null && ticksExisted < 30)
 			entities.remove(thrower);
 
-		if(!entities.isEmpty())
+		if(!entities.isEmpty()) {
+			if (!triggered)
+				playSound(SoundEvents.BLOCK_STONE_PRESSURE_PLATE_CLICK_ON, 0.5F, 0.6F);
 			triggered = true;
+			targetEntity = entities.get(0);
+		}
 		else if(triggered)
 			doExplosion();
 	}
