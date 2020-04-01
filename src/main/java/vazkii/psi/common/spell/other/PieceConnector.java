@@ -34,6 +34,7 @@ import java.util.List;
 public class PieceConnector extends SpellPiece implements IRedirector {
 
 
+	@OnlyIn(Dist.CLIENT)
 	public static RenderType getRenderLayer(ResourceLocation resourceLocation) {
 		RenderType.State glState = RenderType.State.builder()
 				.texture(new RenderState.TextureState(PsiAPI.PSI_PIECE_TEXTURE_ATLAS, false, false))
