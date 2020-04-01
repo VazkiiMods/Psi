@@ -10,7 +10,7 @@
  */
 package vazkii.psi.api.internal;
 
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.model.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -37,9 +37,9 @@ public final class DummyMethodHandler implements IInternalMethodHandler {
 		return new ResourceLocation("");
 	}
 
-	@Override
 	@OnlyIn(Dist.CLIENT)
-	public RenderType getProgrammerLayer() {
+	@Override
+	public Material getProgrammerMaterial() {
 		return null;
 	}
 

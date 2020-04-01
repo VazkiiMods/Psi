@@ -2,6 +2,7 @@ package vazkii.psi.client.gui.widget;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.widget.Widget;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -13,6 +14,7 @@ import vazkii.psi.api.spell.SpellMetadata;
 import vazkii.psi.client.gui.GuiProgrammer;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.item.ItemCAD;
+import vazkii.psi.common.lib.LibResources;
 
 public class SpellCostsWidget extends Widget {
 
@@ -55,8 +57,9 @@ public class SpellCostsWidget extends Widget {
 				else s += "/" + (cadVal == -1 ? "\u221E" : cadVal);
 
 				RenderSystem.color3f(1f, 1f, 1f);
-				parent.getMinecraft().getTextureManager().bindTexture(GuiProgrammer.texture);
-				blit(statX, statY, (stat.ordinal() + 1) * 12, parent.ySize + 16, 12, 12);
+				TextureAtlasSprite texture = PsiAPI.getMiscMaterialFromAtlas(LibResources.GUI_PROGRAMMER).getSprite();
+				parent.getMinecraft().getTextureManager().bindTexture(texture.getAtlas().getId());
+				blit(statX, statY, getBlitOffset(), (stat.ordinal() + 1) * 12, parent.ySize + 16, texture);
 				parent.getMinecraft().fontRenderer.drawString(s, statX + 16, statY + 2, cadStat != null && cadVal < val && cadVal != -1 ? 0xFF6666 : 0xFFFFFF);
 
 				if (mouseX > statX && mouseY > statY && mouseX < statX + 12 && mouseY < statY + 12 && !parent.panelWidget.panelEnabled) {

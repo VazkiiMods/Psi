@@ -51,6 +51,7 @@ import vazkii.psi.common.entity.*;
 import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.lib.LibItemNames;
 import vazkii.psi.common.lib.LibMisc;
+import vazkii.psi.common.lib.LibResources;
 
 @OnlyIn(Dist.CLIENT)
 public class ClientProxy implements IProxy {
@@ -78,7 +79,8 @@ public class ClientProxy implements IProxy {
 		RenderingRegistry.registerEntityRenderingHandler(EntitySpellMine.TYPE, RenderSpellProjectile::new);
 		RenderTypeLookup.setRenderLayer(ModBlocks.conjured, RenderType.getTranslucent());
 		ContributorSpellCircleHandler.firstStart();
-		ModelBakery.LOCATIONS_BUILTIN_TEXTURES.addAll(PsiAPI.getAllSpellPieceMaterial());
+		addTexturesToAtlas();
+
 	}
 
 	private void loadComplete(FMLLoadCompleteEvent event) {
@@ -89,6 +91,13 @@ public class ClientProxy implements IProxy {
 		ModelResourceLocation key = new ModelResourceLocation(ModItems.cad.getRegistryName(), "inventory");
 		event.getModelRegistry().put(key, new ModelCAD(event.getModelRegistry().get(key)));
 
+	}
+
+	private void addTexturesToAtlas() {
+		ModelBakery.LOCATIONS_BUILTIN_TEXTURES.addAll(PsiAPI.getAllSpellPieceMaterial());
+		PsiAPI.registerAtlasTexture(LibResources.SPELL_CONNECTOR_LINES, PsiAPI.PSI_PIECE_TEXTURE_ATLAS);
+		PsiAPI.registerAtlasTexture(LibResources.GUI_PROGRAMMER, PsiAPI.PSI_PROGRAMMER_TEXTURE_ATLAS);
+		ModelBakery.LOCATIONS_BUILTIN_TEXTURES.addAll(PsiAPI.getMiscAtlasMaterial());
 	}
 
 	private void initializeShaders(RenderWorldLastEvent event) {

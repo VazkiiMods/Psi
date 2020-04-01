@@ -13,8 +13,11 @@ package vazkii.psi.client.gui.button;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.text.TranslationTextComponent;
+import vazkii.psi.api.PsiAPI;
 import vazkii.psi.client.gui.GuiProgrammer;
+import vazkii.psi.common.lib.LibResources;
 
 public class GuiButtonPage extends Button {
 
@@ -39,9 +42,11 @@ public class GuiButtonPage extends Button {
 		if (active) {
 			boolean hover = par2 >= x && par3 >= y && par2 < x + width && par3 < y + height;
 
-			Minecraft.getInstance().textureManager.bindTexture(GuiProgrammer.texture);
+
+			TextureAtlasSprite texture = PsiAPI.getMiscMaterialFromAtlas(LibResources.GUI_PROGRAMMER).getSprite();
+			Minecraft.getInstance().textureManager.bindTexture(texture.getAtlas().getId());
 			RenderSystem.color4f(1F, 1F, 1F, 1F);
-			blit(x, y, hover ? 216 : 198, right ? 145 : 155, width, height);
+			blit(x, y, getBlitOffset(), hover ? 216 : 198, right ? 145 : 155, texture);
 
 			if (hover)
 				gui.tooltip.add(new TranslationTextComponent(right ? "psimisc.next_page" : "psimisc.prev_page"));

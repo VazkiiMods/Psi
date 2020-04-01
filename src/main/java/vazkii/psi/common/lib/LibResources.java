@@ -16,7 +16,8 @@ public class LibResources {
 
 	public static final String PREFIX_MOD = "psi:";
 	public static final ResourceLocation PATCHOULI_BOOK = new ResourceLocation(LibMisc.MOD_ID, "taurus_silver_handbook");
-
+	public static final ResourceLocation SPELL_CONNECTOR_LINES = new ResourceLocation(LibMisc.MOD_ID, "spell/connector_lines");
+	public static final ResourceLocation GUI_PROGRAMMER = new ResourceLocation(LibMisc.MOD_ID, "gui/programmer");
 
 	public static final String PREFIX_SHADER = "/assets/psi/shaders/";
 	public static final String PREFIX_GUI = PREFIX_MOD + "textures/gui/";
@@ -34,9 +35,7 @@ public class LibResources {
 	public static final String GUI_PSI_BAR_MASK = PREFIX_GUI + "psi_bar_mask.png";
 	public static final String GUI_PSI_BAR_SHATTER = PREFIX_GUI + "psi_bar_shatter.png";
 	public static final String GUI_SIGN = PREFIX_GUI + "signs/sign%d.png";
-	public static final String GUI_PROGRAMMER = PREFIX_GUI + "programmer.png";
 
-	public static final String SPELL_CONNECTOR_LINES = PREFIX_SPELL + "connector_lines.png";
 
 	public static final String MODEL_PSIMETAL_EXOSUIT = PREFIX_MODEL + "psimetal_exosuit.png";
 	public static final String MODEL_PSIMETAL_EXOSUIT_SENSOR = PREFIX_MODEL + "psimetal_exosuit_sensor.png";

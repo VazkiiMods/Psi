@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderState;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
@@ -48,25 +49,25 @@ import java.util.stream.Collectors;
 
 public class GuiProgrammer extends Screen {
 
-	public static final ResourceLocation texture = new ResourceLocation(LibResources.GUI_PROGRAMMER);
-	public static final RenderType ICONS_LAYER;
-	public static final RenderType BACKGROUND_LAYER;
-	static {
-		RenderType.State glState = RenderType.State.builder()
-						.texture(new RenderState.TextureState(texture, false, false))
-						.lightmap(new RenderState.LightmapState(true))
-						.cull(new RenderState.CullState(false))
-						.alpha(new RenderState.AlphaState(0.004F)).build(false);
-		ICONS_LAYER = RenderType.of(LibMisc.PREFIX_MOD + "programmer_icons", DefaultVertexFormats.POSITION_COLOR_TEXTURE_LIGHT, GL11.GL_QUADS, 64, glState);
 
+	public static RenderType getBackgroundLayer(ResourceLocation resourceLocation) {
 		RenderState.TransparencyState translucent = ObfuscationReflectionHelper.getPrivateValue(RenderState.class, null, "field_228515_g_");
-		glState = RenderType.State.builder()
-						.texture(new RenderState.TextureState(texture, false, false))
-						.lightmap(new RenderState.LightmapState(true))
-						.cull(new RenderState.CullState(false))
-						.transparency(translucent)
-						.build(false);
-		BACKGROUND_LAYER = RenderType.of(LibMisc.PREFIX_MOD + "programmer_background", DefaultVertexFormats.POSITION_COLOR_TEXTURE_LIGHT, GL11.GL_QUADS, 64, glState);
+		RenderType.State glState = RenderType.State.builder()
+				.texture(new RenderState.TextureState(resourceLocation, false, false))
+				.lightmap(new RenderState.LightmapState(true))
+				.cull(new RenderState.CullState(false))
+				.transparency(translucent)
+				.build(false);
+		return RenderType.of(resourceLocation.toString(), DefaultVertexFormats.POSITION_COLOR_TEXTURE_LIGHT, GL11.GL_QUADS, 64, glState);
+	}
+
+	public static RenderType getIconsLayer(ResourceLocation resourceLocation) {
+		RenderType.State glState = RenderType.State.builder()
+				.texture(new RenderState.TextureState(resourceLocation, false, false))
+				.lightmap(new RenderState.LightmapState(true))
+				.cull(new RenderState.CullState(false))
+				.alpha(new RenderState.AlphaState(0.004F)).build(false);
+		return RenderType.of(resourceLocation.toString(), DefaultVertexFormats.POSITION_COLOR_TEXTURE_LIGHT, GL11.GL_QUADS, 64, glState);
 	}
 
 	public final TileProgrammer programmer;
@@ -232,9 +233,9 @@ public class GuiProgrammer extends Screen {
 		renderBackground();
 
 		RenderSystem.color3f(1F, 1F, 1F);
-		minecraft.getTextureManager().bindTexture(texture);
-
-		blit(left, top, 0, 0, xSize, ySize);
+		TextureAtlasSprite sprite = PsiAPI.getMiscMaterialFromAtlas(LibResources.GUI_PROGRAMMER).getSprite();
+		minecraft.getTextureManager().bindTexture(sprite.getAtlas().getId());
+		blit(left, top, getBlitOffset(), xSize, ySize, sprite);
 
 		//Currently selected piece
 		SpellPiece piece = null;
@@ -264,10 +265,10 @@ public class GuiProgrammer extends Screen {
 		RenderSystem.popMatrix();
 		RenderSystem.color3f(1f, 1f, 1f);
 		RenderSystem.translatef(0, 0, 1);
-		minecraft.getTextureManager().bindTexture(texture);
+		minecraft.getTextureManager().bindTexture(sprite.getAtlas().getId());
 
 		if (selectedX != -1 && selectedY != -1 && !takingScreenshot)
-			blit(gridLeft + selectedX * 18, gridTop + selectedY * 18, 32, ySize, 16, 16);
+			blit(gridLeft + selectedX * 18, gridTop + selectedY * 18, getBlitOffset(), 32, ySize, sprite);
 
 		if (hasAltDown()) {
 			tooltip.clear();
@@ -287,8 +288,8 @@ public class GuiProgrammer extends Screen {
 
 			if (!takingScreenshot) {
 				if (cursorX == selectedX && cursorY == selectedY)
-					blit(gridLeft + cursorX * 18, gridTop + cursorY * 18, 16, ySize, 8, 16);
-				else blit(gridLeft + cursorX * 18, gridTop + cursorY * 18, 16, ySize, 16, 16);
+					blit(gridLeft + cursorX * 18, gridTop + cursorY * 18, getBlitOffset(), 16, ySize, sprite);
+				else blit(gridLeft + cursorX * 18, gridTop + cursorY * 18, getBlitOffset(), 16, ySize, sprite);
 			}
 		}
 

@@ -10,7 +10,7 @@
  */
 package vazkii.psi.common.core.handler;
 
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.model.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -18,11 +18,12 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.arl.util.RenderHelper;
+import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.internal.IInternalMethodHandler;
 import vazkii.psi.api.internal.IPlayerData;
 import vazkii.psi.api.spell.*;
-import vazkii.psi.client.gui.GuiProgrammer;
 import vazkii.psi.common.item.ItemCAD;
+import vazkii.psi.common.lib.LibResources;
 import vazkii.psi.common.spell.SpellCache;
 import vazkii.psi.common.spell.SpellCompiler;
 
@@ -36,17 +37,19 @@ public final class InternalMethodHandler implements IInternalMethodHandler {
 		return PlayerDataHandler.get(player);
 	}
 
+
 	@Override
 	public ResourceLocation getProgrammerTexture() {
-		return GuiProgrammer.texture;
+		return LibResources.GUI_PROGRAMMER;
 	}
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public RenderType getProgrammerLayer() {
-		return GuiProgrammer.ICONS_LAYER;
+	public Material getProgrammerMaterial() {
+		return PsiAPI.getMiscMaterialFromAtlas(LibResources.GUI_PROGRAMMER);
 
 	}
+
 
 	@Override
 	public ISpellCompiler getCompiler(Spell spell) {

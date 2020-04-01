@@ -13,10 +13,13 @@ package vazkii.psi.client.gui.button;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
+import vazkii.psi.api.PsiAPI;
 import vazkii.psi.client.gui.GuiProgrammer;
+import vazkii.psi.common.lib.LibResources;
 
 public class GuiButtonIO extends Button {
 
@@ -41,9 +44,10 @@ public class GuiButtonIO extends Button {
         if (active && !gui.takingScreenshot) {
 			boolean hover = par2 >= x && par3 >= y && par2 < x + width && par3 < y + height;
 
-			Minecraft.getInstance().textureManager.bindTexture(GuiProgrammer.texture);
+			TextureAtlasSprite texture = PsiAPI.getMiscMaterialFromAtlas(LibResources.GUI_PROGRAMMER).getSprite();
+			Minecraft.getInstance().textureManager.bindTexture(texture.getAtlas().getId());
 			RenderSystem.color4f(1F, 1F, 1F, 1F);
-			blit(x, y, hover ? 186 : 174, out ? 169 : 181, width, height);
+			blit(x, y, getBlitOffset(), hover ? 186 : 174, out ? 169 : 181, texture);
 
 			if (hover) {
 				String key = out ? "psimisc.export_to_clipboard" : "psimisc.import_from_clipboard";

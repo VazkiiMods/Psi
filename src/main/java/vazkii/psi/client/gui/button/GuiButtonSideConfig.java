@@ -15,11 +15,14 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.internal.PsiRenderHelper;
 import vazkii.psi.api.spell.SpellParam;
 import vazkii.psi.api.spell.SpellPiece;
 import vazkii.psi.client.gui.GuiProgrammer;
+import vazkii.psi.common.lib.LibResources;
 
 public class GuiButtonSideConfig extends Button {
 
@@ -56,22 +59,22 @@ public class GuiButtonSideConfig extends Button {
     @Override
     public void renderButton(int par2, int par3, float pTicks) {
         if (active && visible && !gui.takingScreenshot) {
-            int minX = x;
-            int minY = y;
-            int maxX = minX + 8;
-            int maxY = minY + 8;
+			int minX = x;
+			int minY = y;
+			int maxX = minX + 8;
+			int maxY = minY + 8;
+			TextureAtlasSprite texture = PsiAPI.getMiscMaterialFromAtlas(LibResources.GUI_PROGRAMMER).getSprite();
+			Minecraft.getInstance().textureManager.bindTexture(texture.getAtlas().getId());
+			SpellPiece piece = gui.spell.grid.gridData[gridX][gridY];
+			if (piece == null)
+				return;
 
-            Minecraft.getInstance().textureManager.bindTexture(GuiProgrammer.texture);
-            SpellPiece piece = gui.spell.grid.gridData[gridX][gridY];
-            if (piece == null)
-                return;
+			SpellParam param = piece.params.get(paramName);
+			if (param == null)
+				return;
 
-            SpellParam param = piece.params.get(paramName);
-            if (param == null)
-                return;
-
-            SpellParam.Side currSide = piece.paramSides.get(param);
-            if (currSide == side) {
+			SpellParam.Side currSide = piece.paramSides.get(param);
+			if (currSide == side) {
 				RenderSystem.color4f(PsiRenderHelper.r(param.color) / 255F,
 						PsiRenderHelper.g(param.color) / 255F,
 						PsiRenderHelper.b(param.color) / 255F, 1F);
@@ -85,10 +88,14 @@ public class GuiButtonSideConfig extends Button {
 			RenderSystem.enableAlphaTest();
 			BufferBuilder wr = Tessellator.getInstance().getBuffer();
 			wr.begin(7, DefaultVertexFormats.POSITION_TEX);
-			wr.vertex(minX, maxY, 0).texture(minU, maxV).endVertex();
-			wr.vertex(maxX, maxY, 0).texture(maxU, maxV).endVertex();
-			wr.vertex(maxX, minY, 0).texture(maxU, minV).endVertex();
-			wr.vertex(minX, minY, 0).texture(minU, minV).endVertex();
+			wr.vertex(minX, maxY, 0);
+			wr.texture(minU, maxV).endVertex();
+			wr.vertex(maxX, maxY, 0);
+			wr.texture(maxU, maxV).endVertex();
+			wr.vertex(maxX, minY, 0);
+			wr.texture(maxU, minV).endVertex();
+			wr.vertex(minX, minY, 0);
+			wr.texture(minU, minV).endVertex();
 			Tessellator.getInstance().draw();
 			RenderSystem.disableAlphaTest();
 		}
