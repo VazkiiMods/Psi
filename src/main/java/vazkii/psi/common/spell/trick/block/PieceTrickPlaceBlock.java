@@ -24,6 +24,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.BlockSnapshot;
+import net.minecraftforge.event.world.BlockEvent;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.param.ParamVector;
@@ -33,7 +36,7 @@ import vazkii.psi.common.block.base.ModBlocks;
 
 public class PieceTrickPlaceBlock extends PieceTrick {
 
-	SpellParam position;
+	SpellParam<Vector3> position;
 
 	public PieceTrickPlaceBlock(Spell spell) {
 		super(spell);
@@ -72,20 +75,24 @@ public class PieceTrickPlaceBlock extends PieceTrick {
 	}
 
 	public static void placeBlock(PlayerEntity player, World world, BlockPos pos, int slot, boolean particles, boolean conjure) {
-		if(!world.isBlockLoaded(pos) || !world.isBlockModifiable(player, pos))
+		if (!world.isBlockLoaded(pos) || !world.isBlockModifiable(player, pos))
 			return;
-		
+
 		BlockState state = world.getBlockState(pos);
-		if(state.isAir(world, pos) || state.getMaterial().isReplaceable()) {
-			if(conjure) {
+		BlockEvent.EntityPlaceEvent placeEvent = new BlockEvent.EntityPlaceEvent(BlockSnapshot.getBlockSnapshot(world, pos), world.getBlockState(pos.offset(Direction.UP)), player);
+		MinecraftForge.EVENT_BUS.post(placeEvent);
+		if (state.isAir(world, pos) || state.getMaterial().isReplaceable() && !placeEvent.isCanceled()) {
+
+			if (conjure) {
+
 				world.setBlockState(pos, ModBlocks.conjured.getDefaultState());
 			} else {
 				ItemStack stack = player.inventory.getStackInSlot(slot);
-				if(!stack.isEmpty() && stack.getItem() instanceof BlockItem) {
-                    ItemStack rem = removeFromInventory(player, stack);
-                    BlockItem iblock = (BlockItem) rem.getItem();
+				if (!stack.isEmpty() && stack.getItem() instanceof BlockItem) {
+					ItemStack rem = removeFromInventory(player, stack);
+					BlockItem iblock = (BlockItem) rem.getItem();
 
-                    ItemStack save = ItemStack.EMPTY;
+                    ItemStack save;
                     BlockRayTraceResult hit = new BlockRayTraceResult(Vec3d.ZERO, Direction.UP, pos, false);
                     ItemUseContext ctx = new ItemUseContext(player, Hand.MAIN_HAND, hit);
 

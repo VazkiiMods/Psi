@@ -22,7 +22,7 @@ import vazkii.psi.api.spell.piece.PieceTrick;
 
 public class PieceTrickDelay extends PieceTrick {
 
-	SpellParam time;
+	SpellParam<Number> time;
 
 	public PieceTrickDelay(Spell spell) {
 		super(spell);
@@ -46,8 +46,7 @@ public class PieceTrickDelay extends PieceTrick {
 
 	@Override
 	public Object execute(SpellContext context) {
-		Double timeVal = this.<Double>getParamValue(context, time);
-		context.delay = timeVal.intValue();
+		context.delay = this.getParamValue(context, time).intValue();
 
 		return null;
 	}

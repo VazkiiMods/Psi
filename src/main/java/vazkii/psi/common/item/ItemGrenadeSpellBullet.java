@@ -10,18 +10,18 @@ import vazkii.psi.common.entity.EntitySpellProjectile;
 
 public class ItemGrenadeSpellBullet extends ItemSpellBullet {
 
-    public ItemGrenadeSpellBullet(String name, Properties properties) {
-        super(name, properties);
-    }
+	public ItemGrenadeSpellBullet(Properties properties) {
+		super(properties);
+	}
 
-    @Override
-    public void castSpell(ItemStack stack, SpellContext context) {
-        ItemStack cad = PsiAPI.getPlayerCAD(context.caster);
-        ItemStack colorizer = ((ICAD) cad.getItem()).getComponentInSlot(cad, EnumCADComponent.DYE);
+	@Override
+	public void castSpell(ItemStack stack, SpellContext context) {
+		ItemStack cad = PsiAPI.getPlayerCAD(context.caster);
+		ItemStack colorizer = ((ICAD) cad.getItem()).getComponentInSlot(cad, EnumCADComponent.DYE);
 
-        EntitySpellProjectile projectile = new EntitySpellGrenade(context.caster.getEntityWorld(), context.caster);
-        projectile.setInfo(context.caster, colorizer, stack);
-        projectile.context = context;
+		EntitySpellProjectile projectile = new EntitySpellGrenade(context.caster.getEntityWorld(), context.caster);
+		projectile.setInfo(context.caster, colorizer, stack);
+		projectile.context = context;
         projectile.getEntityWorld().addEntity(projectile);
     }
 
@@ -39,4 +39,5 @@ public class ItemGrenadeSpellBullet extends ItemSpellBullet {
     public String getBulletType() {
         return "grenade";
     }
+
 }

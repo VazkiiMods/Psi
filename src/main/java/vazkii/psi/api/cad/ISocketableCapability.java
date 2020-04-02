@@ -20,7 +20,6 @@ public interface ISocketableCapability {
 		return stack.getCapability(PsiAPI.SOCKETABLE_CAPABILITY).isPresent();
 	}
 
-	// todo 1.14 fix this
 	static ISocketableCapability socketable(ItemStack stack) {
 		return stack.getCapability(PsiAPI.SOCKETABLE_CAPABILITY).orElseThrow(NullPointerException::new);
 	}

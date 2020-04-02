@@ -21,9 +21,6 @@ import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.Texture;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
 
@@ -32,29 +29,28 @@ import javax.annotation.Nonnull;
 //https://github.com/Vazkii/Botania/blob/1.15/src/main/java/vazkii/botania/client/fx/FXSparkle.java
 public class FXSparkle extends SpriteTexturedParticle {
 
-    public final boolean fake;
+    public int multipler;
     public final int particle = 16;
-    private final boolean slowdown = true;
     private final IAnimatedSprite sprite;
 
     public FXSparkle(World world, double x, double y, double z, float size,
-                     float red, float green, float blue, int m,
-                     boolean fake, boolean noClip, IAnimatedSprite sprite) {
+                     float red, float green, float blue, int m, double mx, double my, double mz, IAnimatedSprite sprite) {
         super(world, x, y, z, 0.0D, 0.0D, 0.0D);
         particleRed = red;
         particleGreen = green;
         particleBlue = blue;
-        particleAlpha = 0.75F;
+        particleAlpha = 0.5F;
         particleGravity = 0;
-        motionX = motionY = motionZ = 0;
-        particleScale = (this.rand.nextFloat() * 0.5F + 0.5F) * 0.2F * size;
+        motionX = mx;
+        motionY = my;
+        motionZ = mz;
+        particleScale *= size;
         maxAge = 3 * m;
+        multipler = m;
         setSize(0.01F, 0.01F);
         prevPosX = posX;
         prevPosY = posY;
         prevPosZ = posZ;
-        this.fake = fake;
-        this.canCollide = !fake && !noClip;
         this.sprite = sprite;
         selectSpriteWithAge(sprite);
     }
@@ -64,87 +60,38 @@ public class FXSparkle extends SpriteTexturedParticle {
         return particleScale * (maxAge - age + 1) / (float) maxAge;
     }
 
+
     @Override
     public void tick() {
-        selectSpriteWithAge(sprite);
         prevPosX = posX;
         prevPosY = posY;
         prevPosZ = posZ;
 
         if (age++ >= maxAge)
             setExpired();
+//		if (!noClip)
+//			pushOutOfBlocks(posX, (getEntityBoundingBox().minY + getEntityBoundingBox().maxY) / 2.0D, posZ);
 
-        motionY -= 0.04D * particleGravity;
+        posX += motionX;
+        posY += motionY;
+        posZ += motionZ;
 
-        if (canCollide && !fake)
-            wiggleAround(posX, (getBoundingBox().minY + getBoundingBox().maxY) / 2.0D, posZ);
+        motionX *= 0.9f;
+        motionY *= 0.9f;
+        motionZ *= 0.9f;
 
-        this.move(motionX, motionY, motionZ);
 
-        if (slowdown) {
-            motionX *= 0.908000001907348633D;
-            motionY *= 0.908000001907348633D;
-            motionZ *= 0.908000001907348633D;
-
-            if (onGround) {
-                motionX *= 0.69999998807907104D;
-                motionZ *= 0.69999998807907104D;
-            }
+        if (onGround) {
+            motionX *= 0.7f;
+            motionZ *= 0.7f;
         }
-
-        if (fake && age > 1)
-            setExpired();
     }
+
 
     @Nonnull
     @Override
     public IParticleRenderType getRenderType() {
         return NORMAL_RENDER;
-    }
-
-    public void setGravity(float value) {
-        particleGravity = value;
-    }
-
-    // [VanillaCopy] Entity.pushOutOfBlocks with tweaks
-    private void wiggleAround(double x, double y, double z) {
-        BlockPos blockpos = new BlockPos(x, y, z);
-        Vec3d vec3d = new Vec3d(x - (double) blockpos.getX(), y - (double) blockpos.getY(), z - (double) blockpos.getZ());
-        BlockPos.Mutable blockpos$mutable = new BlockPos.Mutable();
-        Direction direction = Direction.UP;
-        double d0 = Double.MAX_VALUE;
-
-        for (Direction direction1 : new Direction[]{Direction.NORTH, Direction.SOUTH, Direction.WEST, Direction.EAST, Direction.UP}) {
-            blockpos$mutable.setPos(blockpos).move(direction1);
-            if (!this.world.getBlockState(blockpos$mutable).isFullCube(this.world, blockpos$mutable)) {
-                double d1 = vec3d.getCoordinate(direction1.getAxis());
-                double d2 = direction1.getAxisDirection() == Direction.AxisDirection.POSITIVE ? 1.0D - d1 : d1;
-                if (d2 < d0) {
-                    d0 = d2;
-                    direction = direction1;
-                }
-            }
-        }
-
-        // Botania - made multiplier and add both smaller
-        float f = this.rand.nextFloat() * 0.05F + 0.025F;
-        float f1 = (float) direction.getAxisDirection().getOffset();
-        // Botania - Randomness in other axes as well
-        float secondary = (rand.nextFloat() - rand.nextFloat()) * 0.1F;
-        float secondary2 = (rand.nextFloat() - rand.nextFloat()) * 0.1F;
-        if (direction.getAxis() == Direction.Axis.X) {
-            motionX = (double) (f1 * f);
-            motionY = secondary;
-            motionZ = secondary2;
-        } else if (direction.getAxis() == Direction.Axis.Y) {
-            motionX = secondary;
-            motionY = (double) (f1 * f);
-            motionZ = secondary2;
-        } else if (direction.getAxis() == Direction.Axis.Z) {
-            motionX = secondary;
-            motionY = secondary2;
-            motionZ = (double) (f1 * f);
-        }
     }
 
     private static void beginRenderCommon(BufferBuilder buffer, TextureManager textureManager) {

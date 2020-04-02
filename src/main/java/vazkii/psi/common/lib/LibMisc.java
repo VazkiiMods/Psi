@@ -19,7 +19,7 @@ public final class LibMisc {
 	public static final String VERSION = "GRADLE:VERSION-" + BUILD;
 	public static final String DEPENDENCIES = "required-after:autoreglib";
 	public static final String PREFIX_MOD = MOD_ID + ":";
-	public static final boolean BETA_TESTING = false;
+	public static final boolean BETA_TESTING = true;
 
 	// Network Contants
 	public static final String NETWORK_CHANNEL = MOD_ID;

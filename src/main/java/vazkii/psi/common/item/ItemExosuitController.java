@@ -18,8 +18,6 @@ import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
-import vazkii.arl.item.BasicItem;
-import vazkii.arl.util.ItemNBTHelper;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ISocketableCapability;
 import vazkii.psi.api.cad.ISocketableController;
@@ -29,22 +27,22 @@ import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItemExosuitController extends BasicItem implements ISocketableController {
+public class ItemExosuitController extends Item implements ISocketableController {
 
-    private static final String TAG_SELECTED_CONTROL_SLOT = "selectedControlSlot";
+	private static final String TAG_SELECTED_CONTROL_SLOT = "selectedControlSlot";
 
-    public ItemExosuitController(String name, Item.Properties properties) {
-        super(name, properties.maxStackSize(1));
-    }
+	public ItemExosuitController(Item.Properties properties) {
+		super(properties.maxStackSize(1));
+	}
 
-    @Nonnull
-    @Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, @Nonnull Hand hand) {
-        ItemStack itemStackIn = playerIn.getHeldItem(hand);
-        if (playerIn.isSneaking()) {
-            if (!worldIn.isRemote)
-                worldIn.playSound(null, playerIn.getX(), playerIn.getY(), playerIn.getZ(), PsiSoundHandler.compileError, SoundCategory.PLAYERS, 0.25F, 1F);
-            else playerIn.swingArm(hand);
+	@Nonnull
+	@Override
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, @Nonnull Hand hand) {
+		ItemStack itemStackIn = playerIn.getHeldItem(hand);
+		if (playerIn.isSneaking()) {
+			if (!worldIn.isRemote)
+				worldIn.playSound(null, playerIn.getX(), playerIn.getY(), playerIn.getZ(), PsiSoundHandler.compileError, SoundCategory.PLAYERS, 0.25F, 1F);
+			else playerIn.swingArm(hand);
 
 			ItemStack[] stacks = getControlledStacks(playerIn, itemStackIn);
 
@@ -72,15 +70,15 @@ public class ItemExosuitController extends BasicItem implements ISocketableContr
 
 	@Override
 	public int getDefaultControlSlot(ItemStack stack) {
-		return ItemNBTHelper.getInt(stack, TAG_SELECTED_CONTROL_SLOT, 0);
+		return stack.getOrCreateTag().getInt(TAG_SELECTED_CONTROL_SLOT);
 	}
 
 	@Override
 	public void setSelectedSlot(PlayerEntity player, ItemStack stack, int controlSlot, int slot) {
-		ItemNBTHelper.setInt(stack, TAG_SELECTED_CONTROL_SLOT, controlSlot);
+		stack.getOrCreateTag().putInt(TAG_SELECTED_CONTROL_SLOT, controlSlot);
 
 		ItemStack[] stacks = getControlledStacks(player, stack);
-		if(controlSlot < stacks.length && !stacks[controlSlot].isEmpty()) {
+		if (controlSlot < stacks.length && !stacks[controlSlot].isEmpty()) {
 			stacks[controlSlot].getCapability(PsiAPI.SOCKETABLE_CAPABILITY).ifPresent(cap -> cap.setSelectedSlot(slot));
 		}
 	}

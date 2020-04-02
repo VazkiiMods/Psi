@@ -22,8 +22,6 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import vazkii.arl.item.BasicItem;
-import vazkii.arl.util.ItemNBTHelper;
 import vazkii.psi.api.internal.TooltipHelper;
 import vazkii.psi.api.spell.ISpellContainer;
 import vazkii.psi.api.spell.Spell;
@@ -33,12 +31,12 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ItemSpellBullet extends BasicItem implements ISpellContainer {
+public class ItemSpellBullet extends Item implements ISpellContainer {
 
 	private static final String TAG_SPELL = "spell";
 
-	public ItemSpellBullet(String name, Item.Properties properties) {
-		super(name, properties.maxStackSize(1));
+	public ItemSpellBullet(Item.Properties properties) {
+		super(properties.maxStackSize(1));
 	}
 
 	@Override
@@ -56,7 +54,7 @@ public class ItemSpellBullet extends BasicItem implements ISpellContainer {
 	@Override
 	public ITextComponent getDisplayName(@Nonnull ItemStack stack) {
 		if (containsSpell(stack)) {
-			CompoundNBT cmp = ItemNBTHelper.getCompound(stack, TAG_SPELL, false);
+			CompoundNBT cmp = stack.getOrCreateTag().getCompound(TAG_SPELL);
 			String name = cmp.getString(Spell.TAG_SPELL_NAME); // We don't need to load the whole spell just for the name
 			if (name.isEmpty())
 				return super.getDisplayName(stack);
@@ -77,7 +75,7 @@ public class ItemSpellBullet extends BasicItem implements ISpellContainer {
 
 	@Override
 	public boolean containsSpell(ItemStack stack) {
-		return ItemNBTHelper.getBoolean(stack, ItemSpellDrive.HAS_SPELL, false);
+		return stack.getOrCreateTag().getBoolean(ItemSpellDrive.HAS_SPELL);
 	}
 
 	@Nonnull
@@ -90,8 +88,8 @@ public class ItemSpellBullet extends BasicItem implements ISpellContainer {
 	@Override
 	public void addInformation(ItemStack stack, @Nullable World playerIn, List<ITextComponent> tooltip, ITooltipFlag advanced) {
 		TooltipHelper.tooltipIfShift(tooltip, () -> {
-			tooltip.add(new TranslationTextComponent("psimisc.bulletType", new TranslationTextComponent("psi.bulletType" + getBulletType())));
-			tooltip.add(new TranslationTextComponent("psimisc.bulletCost", (int) (getCostModifier(stack) * 100)));
+			tooltip.add(new TranslationTextComponent("psimisc.bullet_type", new TranslationTextComponent("psi.bullet_type_" + getBulletType())));
+			tooltip.add(new TranslationTextComponent("psimisc.bullet_cost", (int) (getCostModifier(stack) * 100)));
 		});
 	}
 

@@ -12,6 +12,7 @@ package vazkii.psi.common.entity;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.projectile.ThrowableEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.registries.ObjectHolder;
 import vazkii.psi.common.lib.LibEntityNames;
@@ -25,7 +26,7 @@ public class EntitySpellMine extends EntitySpellGrenade {
 
 	boolean triggered = false;
 
-	public EntitySpellMine(EntityType<?> type, World worldIn) {
+	public EntitySpellMine(EntityType<? extends ThrowableEntity> type, World worldIn) {
 		super(type, worldIn);
 	}
 

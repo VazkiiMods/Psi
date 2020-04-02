@@ -10,17 +10,19 @@
  */
 package vazkii.psi.common.network.message;
 
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.network.NetworkEvent;
 import vazkii.arl.network.IMessage;
 import vazkii.psi.common.Psi;
 
 public class MessageLevelUp implements IMessage {
 
-	public int level;
+	public ResourceLocation level;
 
-	public MessageLevelUp() { }
+	public MessageLevelUp() {
+	}
 
-	public MessageLevelUp(int level) {
+	public MessageLevelUp(ResourceLocation level) {
 		this.level = level;
 	}
 

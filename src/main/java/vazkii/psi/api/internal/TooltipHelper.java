@@ -23,8 +23,8 @@ public final class TooltipHelper {
     @OnlyIn(Dist.CLIENT)
     public static void tooltipIfShift(List<ITextComponent> tooltip, Runnable r) {
         if (Screen.hasShiftDown())
-            r.run();
-        else tooltip.add(new TranslationTextComponent("psimisc.shiftForInfo"));
+			r.run();
+		else tooltip.add(new TranslationTextComponent("psimisc.shift_for_info"));
     }
 
 }

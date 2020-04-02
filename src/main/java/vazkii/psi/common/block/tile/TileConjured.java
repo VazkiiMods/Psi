@@ -13,11 +13,11 @@ package vazkii.psi.common.block.tile;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.SUpdateTileEntityPacket;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.registries.ObjectHolder;
-import vazkii.arl.block.tile.TileMod;
-import vazkii.psi.api.cad.ICADColorizer;
 import vazkii.psi.api.internal.PsiRenderHelper;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.BlockConjured;
@@ -27,7 +27,7 @@ import vazkii.psi.common.lib.LibMisc;
 
 import java.util.Arrays;
 
-public class TileConjured extends TileMod {
+public class TileConjured extends TileEntity {
 	@ObjectHolder(LibMisc.PREFIX_MOD + LibBlockNames.CONJURED)
 	public static TileEntityType<TileConjured> TYPE;
 
@@ -40,9 +40,7 @@ public class TileConjured extends TileMod {
 	}
 
 	public void doParticles() {
-		int color = ICADColorizer.DEFAULT_SPELL_COLOR;
-		if(!colorizer.isEmpty())
-			color = Psi.proxy.getColorForColorizer(colorizer);
+		int color = Psi.proxy.getColorForColorizer(colorizer);
 
 		float r = PsiRenderHelper.r(color) / 255F;
 		float g = PsiRenderHelper.g(color) / 255F;
@@ -50,7 +48,7 @@ public class TileConjured extends TileMod {
 
 		BlockState state = getWorld().getBlockState(getPos());
 
-		if(state.getBlock() == ModBlocks.conjured && state.get(BlockConjured.SOLID)) {
+		if (state.getBlock() == ModBlocks.conjured && state.get(BlockConjured.SOLID)) {
 			// http://cns-alumni.bu.edu/~lavanya/Graphics/cs580/p5/web-page/cube_edges.gif
 			boolean[] edges = new boolean[12];
 			Arrays.fill(edges, true);
@@ -72,7 +70,6 @@ public class TileConjured extends TileMod {
 			double y = getPos().getY();
 			double z = getPos().getZ();
 
-			// Bottom
 			makeParticle(edges[0],  r, g, b, x + 0, y + 0, z + 0, 0, 0, 1);
 			makeParticle(edges[1],  r, g, b, x + 0, y + 0, z + 1, 1, 0, 0);
 			makeParticle(edges[2],  r, g, b, x + 1, y + 0, z + 0, 0, 0, 1);
@@ -105,13 +102,13 @@ public class TileConjured extends TileMod {
 	}
 
 	public void makeParticle(boolean doit, float r, float g, float b, double xp, double yp, double zp, double xv, double yv, double zv) {
-		if(doit && Math.random() < 0.3) {
+		if (doit) {
 			float m = 0.1F;
 			xv *= m;
 			yv *= m;
 			zv *= m;
 
-			Psi.proxy.sparkleFX(xp, yp, zp, r, g, b, (float) xv, (float) yv, (float) zv, 1.25F, 20);
+			Psi.proxy.sparkleFX(xp, yp, zp, r, g, b, (float) xv, (float) yv, (float) zv, 2.75f, 15);
 		}
 	}
 
@@ -121,17 +118,37 @@ public class TileConjured extends TileMod {
 	}
 
 	@Override
-	public void writeSharedNBT(CompoundNBT cmp) {
-		CompoundNBT stackCmp = new CompoundNBT();
-		if(!colorizer.isEmpty())
-			stackCmp = colorizer.write(stackCmp);
-		cmp.put(TAG_COLORIZER, stackCmp);
+	public CompoundNBT write(CompoundNBT cmp) {
+		cmp = super.write(cmp);
+		if(!colorizer.isEmpty()) {
+			cmp.put(TAG_COLORIZER, colorizer.write(new CompoundNBT()));
+		}
+		return cmp;
 	}
 
 	@Override
-	public void readSharedNBT(CompoundNBT cmp) {
-		CompoundNBT stackCmp = cmp.getCompound(TAG_COLORIZER);
-		colorizer = ItemStack.read(stackCmp);
+	public void read(CompoundNBT cmp) {
+		super.read(cmp);
+		if (cmp.contains(TAG_COLORIZER)) {
+			colorizer = ItemStack.read(cmp.getCompound(TAG_COLORIZER));
+		} else {
+			colorizer = ItemStack.EMPTY;
+		}
+	}
+
+	@Override
+	public SUpdateTileEntityPacket getUpdatePacket() {
+		return new SUpdateTileEntityPacket(getPos(), 0, write(new CompoundNBT()));
+	}
+
+	@Override
+	public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
+		read(pkt.getNbtCompound());
+	}
+
+	@Override
+	public CompoundNBT getUpdateTag() {
+		return write(new CompoundNBT());
 	}
 
 }

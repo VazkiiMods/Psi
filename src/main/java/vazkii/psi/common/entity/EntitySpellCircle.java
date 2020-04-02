@@ -25,7 +25,6 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.registries.ObjectHolder;
-import vazkii.psi.api.cad.ICADColorizer;
 import vazkii.psi.api.internal.PsiRenderHelper;
 import vazkii.psi.api.spell.ISpellAcceptor;
 import vazkii.psi.api.spell.ISpellImmune;
@@ -169,30 +168,29 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 				context.cspell.safeExecute(context);
 		}
 
-		int colorVal = ICADColorizer.DEFAULT_SPELL_COLOR;
 		ItemStack colorizer = dataManager.get(COLORIZER_DATA);
-		if (!colorizer.isEmpty() && colorizer.getItem() instanceof ICADColorizer)
-			colorVal = Psi.proxy.getColorForColorizer(colorizer);
+		int colorVal = Psi.proxy.getColorForColorizer(colorizer);
+
 
 		float r = PsiRenderHelper.r(colorVal) / 255F;
 		float g = PsiRenderHelper.g(colorVal) / 255F;
 		float b = PsiRenderHelper.b(colorVal) / 255F;
 		for (int i = 0; i < 5; i++) {
-            double x = getX() + (Math.random() - 0.5) * getWidth();
-            double y = getY() - getYOffset();
-            double z = getZ() + (Math.random() - 0.5) * getWidth();
-            float grav = -0.15F - (float) Math.random() * 0.03F;
+			double x = getX() + (Math.random() - 0.5) * getWidth();
+			double y = getY() - getYOffset();
+			double z = getZ() + (Math.random() - 0.5) * getWidth();
+			float grav = -0.15F - (float) Math.random() * 0.03F;
             Psi.proxy.sparkleFX(x, y, z, r, g, b, grav, 0.25F, 15);
         }
 	}
 
     @Override
     public Vec3d getLookVec() {
-        float x = (float) dataManager.get(LOOK_X);
-        float y = (float) dataManager.get(LOOK_Y);
-        float z = (float) dataManager.get(LOOK_Z);
-        return new Vec3d(x, y, z);
-    }
+		float x = dataManager.get(LOOK_X);
+		float y = dataManager.get(LOOK_Y);
+		float z = dataManager.get(LOOK_Z);
+		return new Vec3d(x, y, z);
+	}
 
 	public int getTimeAlive() {
 		return dataManager.get(TIME_ALIVE);

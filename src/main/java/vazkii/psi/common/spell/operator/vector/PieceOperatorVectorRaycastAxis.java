@@ -25,9 +25,9 @@ import vazkii.psi.api.spell.piece.PieceOperator;
 
 public class PieceOperatorVectorRaycastAxis extends PieceOperator {
 
-	SpellParam origin;
-	SpellParam ray;
-	SpellParam max;
+	SpellParam<Vector3> origin;
+	SpellParam<Vector3> ray;
+	SpellParam<Number> max;
 
 	public PieceOperatorVectorRaycastAxis(Spell spell) {
 		super(spell);
@@ -49,15 +49,15 @@ public class PieceOperatorVectorRaycastAxis extends PieceOperator {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
 
 		double maxLen = SpellContext.MAX_DISTANCE;
-		Double numberVal = this.<Double>getParamValue(context, max);
-		if(numberVal != null)
-			maxLen = numberVal;
+		Number numberVal = this.getParamValue(context, max);
+		if (numberVal != null)
+			maxLen = numberVal.doubleValue();
 		maxLen = Math.min(SpellContext.MAX_DISTANCE, maxLen);
 
 		Vector3 end = originVal.copy().add(rayVal.copy().normalize().multiply(maxLen));
 
-		BlockRayTraceResult pos = context.caster.getEntityWorld().rayTraceBlocks(new RayTraceContext(originVal.toVec3D(), end.toVec3D(), RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, context.caster));
-		if(pos == null) // todo 1.14 check for miss?
+		BlockRayTraceResult pos = context.caster.getEntityWorld().rayTraceBlocks(new RayTraceContext(originVal.toVec3D(), end.toVec3D(), RayTraceContext.BlockMode.OUTLINE, RayTraceContext.FluidMode.NONE, context.caster));
+		if (pos.getType() == RayTraceResult.Type.MISS)
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
 
 		Direction facing = pos.getFace();

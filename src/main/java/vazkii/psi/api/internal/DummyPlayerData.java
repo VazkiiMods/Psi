@@ -11,6 +11,7 @@
 package vazkii.psi.api.internal;
 
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.ResourceLocation;
 import vazkii.psi.api.spell.SpellPiece;
 
 import javax.annotation.Nullable;
@@ -20,11 +21,6 @@ import javax.annotation.Nullable;
  * in case something goes really wrong the field isn't null.
  */
 public class DummyPlayerData implements IPlayerData {
-
-	@Override
-	public int getLevel() {
-		return 0;
-	}
 
 	@Override
 	public int getTotalPsi() {
@@ -62,12 +58,12 @@ public class DummyPlayerData implements IPlayerData {
 	}
 
 	@Override
-	public boolean isPieceGroupUnlocked(String group, @Nullable String piece) {
+	public boolean isPieceGroupUnlocked(ResourceLocation group, @Nullable ResourceLocation piece) {
 		return false;
 	}
 
 	@Override
-	public void unlockPieceGroup(String group) {
+	public void unlockPieceGroup(ResourceLocation group) {
 		// NO-OP
 	}
 

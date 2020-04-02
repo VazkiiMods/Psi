@@ -14,7 +14,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import vazkii.arl.util.ItemNBTHelper;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.SpellRuntimeException;
 
@@ -26,15 +25,20 @@ public interface ICAD extends ISocketable {
 
 	String TAG_COMPONENT_PREFIX = "component";
 
+	/**
+	 * Sets the component stack inside the CAD's respective component slot
+	 */
+
 	static void setComponent(ItemStack stack, ItemStack componentStack) {
-		if(!componentStack.isEmpty() && componentStack.getItem() instanceof ICADComponent) {
+		if (!componentStack.isEmpty() && componentStack.getItem() instanceof ICADComponent) {
 			ICADComponent component = (ICADComponent) componentStack.getItem();
 			EnumCADComponent componentType = component.getComponentType(componentStack);
 			String name = TAG_COMPONENT_PREFIX + componentType.name();
 
 			CompoundNBT cmp = new CompoundNBT();
-            componentStack.write(cmp);
-			ItemNBTHelper.setCompound(stack, name, cmp);
+			componentStack.write(cmp);
+
+			stack.getOrCreateTag().put(name, cmp);
 		}
 	}
 

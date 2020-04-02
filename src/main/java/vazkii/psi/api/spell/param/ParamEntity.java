@@ -12,14 +12,14 @@ package vazkii.psi.api.spell.param;
 
 import net.minecraft.entity.Entity;
 
-public class ParamEntity extends ParamSpecific {
+public class ParamEntity extends ParamSpecific<Entity> {
 
 	public ParamEntity(String name, int color, boolean canDisable, boolean constant) {
 		super(name, color, canDisable, constant);
 	}
 
 	@Override
-	public Class<?> getRequiredType() {
+	public Class<Entity> getRequiredType() {
 		return Entity.class;
 	}
 

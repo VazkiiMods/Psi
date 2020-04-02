@@ -11,14 +11,11 @@
 package vazkii.psi.common.spell.operator.vector;
 
 
-
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
@@ -30,9 +27,9 @@ import vazkii.psi.api.spell.piece.PieceOperator;
 
 public class PieceOperatorVectorRaycast extends PieceOperator {
 
-	SpellParam origin;
-	SpellParam ray;
-	SpellParam max;
+	SpellParam<Vector3> origin;
+	SpellParam<Vector3> ray;
+	SpellParam<Number> max;
 
 	public PieceOperatorVectorRaycast(Spell spell) {
 		super(spell);
@@ -50,20 +47,20 @@ public class PieceOperatorVectorRaycast extends PieceOperator {
 		Vector3 originVal = this.getParamValue(context, origin);
 		Vector3 rayVal = this.getParamValue(context, ray);
 
-		if(originVal == null || rayVal == null)
+		if (originVal == null || rayVal == null)
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
 
 		double maxLen = SpellContext.MAX_DISTANCE;
-		Double numberVal = this.<Double>getParamValue(context, max);
-		if(numberVal != null)
-			maxLen = numberVal;
+		Number numberVal = this.getParamValue(context, max);
+		if (numberVal != null)
+			maxLen = numberVal.doubleValue();
 		maxLen = Math.min(SpellContext.MAX_DISTANCE, maxLen);
 
 		BlockRayTraceResult pos = raycast(context.caster, originVal, rayVal, maxLen);
-		if(pos == null) // todo 1.14 should check for miss?
+		if (pos.getType() == RayTraceResult.Type.MISS)
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
 
-		return new Vector3(pos.getPos().getX(), pos.getPos().getY(), pos.getPos().getZ());
+		return Vector3.fromBlockPos(pos.getPos());
 	}
 
 	public static BlockRayTraceResult raycast(Entity e, double len) {
@@ -77,7 +74,7 @@ public class PieceOperatorVectorRaycast extends PieceOperator {
 
 	private static BlockRayTraceResult raycast(Entity entity, Vector3 origin, Vector3 ray, double len) {
 		Vector3 end = origin.copy().add(ray.copy().normalize().multiply(len));
-		return entity.world.rayTraceBlocks(new RayTraceContext(origin.toVec3D(), end.toVec3D(), RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, entity));
+		return entity.world.rayTraceBlocks(new RayTraceContext(origin.toVec3D(), end.toVec3D(), RayTraceContext.BlockMode.OUTLINE, RayTraceContext.FluidMode.NONE, entity));
 	}
 
 	@Override

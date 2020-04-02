@@ -26,8 +26,8 @@ import vazkii.psi.api.spell.piece.PieceTrick;
 
 public class PieceTrickMoveBlock extends PieceTrick {
 
-	SpellParam position;
-	SpellParam target;
+	SpellParam<Vector3> position;
+	SpellParam<Vector3> target;
 
 	public PieceTrickMoveBlock(Spell spell) {
 		super(spell);

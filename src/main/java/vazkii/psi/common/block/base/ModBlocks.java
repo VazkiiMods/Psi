@@ -30,7 +30,6 @@ import vazkii.psi.client.gui.GuiCADAssembler;
 import vazkii.psi.common.block.BlockCADAssembler;
 import vazkii.psi.common.block.BlockConjured;
 import vazkii.psi.common.block.BlockProgrammer;
-import vazkii.psi.common.block.BlockPsiDecorative;
 import vazkii.psi.common.block.tile.TileCADAssembler;
 import vazkii.psi.common.block.tile.TileConjured;
 import vazkii.psi.common.block.tile.TileProgrammer;
@@ -43,24 +42,35 @@ import static vazkii.psi.common.item.base.ModItems.defaultBuilder;
 @Mod.EventBusSubscriber(modid = LibMisc.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ModBlocks {
 
-    public static final Block cadAssembler = new BlockCADAssembler();
-    public static final Block programmer = new BlockProgrammer();
-    public static final Block conjured = new BlockConjured(LibBlockNames.CONJURED, Block.Properties.create(Material.GLASS).variableOpacity().noDrops());
-    public static final Block psidustBlock = new BlockPsiDecorative(LibBlockNames.PSIDUST_BLOCK, Block.Properties.create(Material.IRON).hardnessAndResistance(5, 10).sound(SoundType.METAL), defaultBuilder());
-    public static final Block psimetalBlock = new BlockPsiDecorative(LibBlockNames.PSIMETAL_BLOCK, Block.Properties.create(Material.IRON).hardnessAndResistance(5, 10).sound(SoundType.METAL), defaultBuilder());
-    public static final Block psigemBlock = new BlockPsiDecorative(LibBlockNames.PSIGEM_BLOCK, Block.Properties.create(Material.IRON).hardnessAndResistance(5, 10).sound(SoundType.METAL), defaultBuilder());
-    public static final Block psimetalPlateBlack = new BlockPsiDecorative(LibBlockNames.PSIMETAL_PLATE_BLACK, Block.Properties.create(Material.IRON).hardnessAndResistance(5, 10).sound(SoundType.METAL), defaultBuilder());
-    public static final Block psimetalPlateBlackLight = new BlockPsiDecorative(LibBlockNames.PSIMETAL_PLATE_BLACK_LIGHT, Block.Properties.create(Material.IRON).hardnessAndResistance(5, 10).sound(SoundType.METAL).lightValue(15), defaultBuilder());
-    public static final Block psimetalPlateWhite = new BlockPsiDecorative(LibBlockNames.PSIMETAL_PLATE_WHITE, Block.Properties.create(Material.IRON).hardnessAndResistance(5, 10).sound(SoundType.METAL), defaultBuilder());
-    public static final Block psimetalPlateWhiteLight = new BlockPsiDecorative(LibBlockNames.PSIMETAL_PLATE_WHITE_LIGHT, Block.Properties.create(Material.IRON).hardnessAndResistance(5, 10).sound(SoundType.METAL).lightValue(15), defaultBuilder());
-    public static final Block psimetalEbony = new BlockPsiDecorative(LibBlockNames.EBONY_PSIMETAL_BLOCK, Block.Properties.create(Material.IRON).hardnessAndResistance(5, 10).sound(SoundType.METAL), defaultBuilder());
-    public static final Block psimetalIvory = new BlockPsiDecorative(LibBlockNames.IVORY_PSIMETAL_BLOCK, Block.Properties.create(Material.IRON).hardnessAndResistance(5, 10).sound(SoundType.METAL), defaultBuilder());
+    public static final Block cadAssembler = new BlockCADAssembler(Block.Properties.create(Material.IRON).hardnessAndResistance(5, 10).sound(SoundType.METAL).nonOpaque());
+    public static final Block programmer = new BlockProgrammer(Block.Properties.create(Material.IRON).hardnessAndResistance(5, 10).sound(SoundType.METAL).nonOpaque());
+    public static final Block conjured = new BlockConjured(Block.Properties.create(Material.GLASS).noDrops().nonOpaque());
+    public static final Block psidustBlock = new Block(Block.Properties.create(Material.IRON).hardnessAndResistance(5, 10).sound(SoundType.METAL));
+    public static final Block psimetalBlock = new Block(Block.Properties.create(Material.IRON).hardnessAndResistance(5, 10).sound(SoundType.METAL));
+    public static final Block psigemBlock = new Block(Block.Properties.create(Material.IRON).hardnessAndResistance(5, 10).sound(SoundType.METAL));
+    public static final Block psimetalPlateBlack = new Block(Block.Properties.create(Material.IRON).hardnessAndResistance(5, 10).sound(SoundType.METAL));
+    public static final Block psimetalPlateBlackLight = new Block(Block.Properties.create(Material.IRON).hardnessAndResistance(5, 10).sound(SoundType.METAL).lightValue(15));
+    public static final Block psimetalPlateWhite = new Block(Block.Properties.create(Material.IRON).hardnessAndResistance(5, 10).sound(SoundType.METAL));
+    public static final Block psimetalPlateWhiteLight = new Block(Block.Properties.create(Material.IRON).hardnessAndResistance(5, 10).sound(SoundType.METAL).lightValue(15));
+    public static final Block psimetalEbony = new Block(Block.Properties.create(Material.IRON).hardnessAndResistance(5, 10).sound(SoundType.METAL));
+    public static final Block psimetalIvory = new Block(Block.Properties.create(Material.IRON).hardnessAndResistance(5, 10).sound(SoundType.METAL));
     public static final ContainerType<ContainerCADAssembler> containerCADAssembler = IForgeContainerType.create(ContainerCADAssembler::fromNetwork);
 
     @SubscribeEvent
     public static void registerBlocks(RegistryEvent.Register<Block> evt) {
         IForgeRegistry<Block> r = evt.getRegistry();
-        r.registerAll(cadAssembler, programmer);
+        r.register(cadAssembler.setRegistryName(LibMisc.MOD_ID, LibBlockNames.CAD_ASSEMBLER));
+        r.register(programmer.setRegistryName(LibMisc.MOD_ID, LibBlockNames.PROGRAMMER));
+        r.register(conjured.setRegistryName(LibMisc.MOD_ID, LibBlockNames.CONJURED));
+        r.register(psidustBlock.setRegistryName(LibMisc.MOD_ID, LibBlockNames.PSIDUST_BLOCK));
+        r.register(psimetalBlock.setRegistryName(LibMisc.MOD_ID, LibBlockNames.PSIMETAL_BLOCK));
+        r.register(psigemBlock.setRegistryName(LibMisc.MOD_ID, LibBlockNames.PSIGEM_BLOCK));
+        r.register(psimetalPlateBlack.setRegistryName(LibMisc.MOD_ID, LibBlockNames.PSIMETAL_PLATE_BLACK));
+        r.register(psimetalPlateBlackLight.setRegistryName(LibMisc.MOD_ID, LibBlockNames.PSIMETAL_PLATE_BLACK_LIGHT));
+        r.register(psimetalPlateWhite.setRegistryName(LibMisc.MOD_ID, LibBlockNames.PSIMETAL_PLATE_WHITE));
+        r.register(psimetalPlateWhiteLight.setRegistryName(LibMisc.MOD_ID, LibBlockNames.PSIMETAL_PLATE_WHITE_LIGHT));
+        r.register(psimetalEbony.setRegistryName(LibMisc.MOD_ID, LibBlockNames.EBONY_PSIMETAL_BLOCK));
+        r.register(psimetalIvory.setRegistryName(LibMisc.MOD_ID, LibBlockNames.IVORY_PSIMETAL_BLOCK));
     }
 
     @SubscribeEvent
@@ -68,6 +78,15 @@ public class ModBlocks {
         IForgeRegistry<Item> r = evt.getRegistry();
         r.register(new BlockItem(cadAssembler, defaultBuilder().rarity(Rarity.UNCOMMON)).setRegistryName(cadAssembler.getRegistryName()));
         r.register(new BlockItem(programmer, defaultBuilder().rarity(Rarity.UNCOMMON)).setRegistryName(programmer.getRegistryName()));
+        r.register(new BlockItem(psidustBlock, defaultBuilder()).setRegistryName(psidustBlock.getRegistryName()));
+        r.register(new BlockItem(psimetalBlock, defaultBuilder()).setRegistryName(psimetalBlock.getRegistryName()));
+        r.register(new BlockItem(psigemBlock, defaultBuilder()).setRegistryName(psigemBlock.getRegistryName()));
+        r.register(new BlockItem(psimetalPlateBlack, defaultBuilder()).setRegistryName(psimetalPlateBlack.getRegistryName()));
+        r.register(new BlockItem(psimetalPlateBlackLight, defaultBuilder()).setRegistryName(psimetalPlateBlackLight.getRegistryName()));
+        r.register(new BlockItem(psimetalPlateWhite, defaultBuilder()).setRegistryName(psimetalPlateWhite.getRegistryName()));
+        r.register(new BlockItem(psimetalPlateWhiteLight, defaultBuilder()).setRegistryName(psimetalPlateWhiteLight.getRegistryName()));
+        r.register(new BlockItem(psimetalEbony, defaultBuilder()).setRegistryName(psimetalEbony.getRegistryName()));
+        r.register(new BlockItem(psimetalIvory, defaultBuilder()).setRegistryName(psimetalIvory.getRegistryName()));
     }
 
     @SubscribeEvent

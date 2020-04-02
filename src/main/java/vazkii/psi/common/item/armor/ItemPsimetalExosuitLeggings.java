@@ -17,18 +17,18 @@ import vazkii.psi.api.exosuit.PsiArmorEvent;
 
 public class ItemPsimetalExosuitLeggings extends ItemPsimetalArmor {
 
-    public ItemPsimetalExosuitLeggings(String name, EquipmentSlotType slotType, Item.Properties properties) {
-        super(name, slotType, properties);
-    }
+	public ItemPsimetalExosuitLeggings(EquipmentSlotType slotType, Item.Properties properties) {
+		super(slotType, properties);
+	}
 
-    @Override
-    public String getEvent(ItemStack stack) {
-        return PsiArmorEvent.TICK;
-    }
+	@Override
+	public String getEvent(ItemStack stack) {
+		return PsiArmorEvent.TICK;
+	}
 
-    @Override
-    public int getCastCooldown(ItemStack stack) {
-        return 0;
+	@Override
+	public int getCastCooldown(ItemStack stack) {
+		return 0;
 	}
 
 	@Override

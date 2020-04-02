@@ -22,12 +22,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import vazkii.psi.api.PsiAPI;
-import vazkii.psi.common.crafting.recipe.AssemblyScavengeRecipe;
-import vazkii.psi.common.crafting.recipe.BulletToDriveRecipe;
-import vazkii.psi.common.crafting.recipe.ColorizerChangeRecipe;
-import vazkii.psi.common.crafting.recipe.DriveDuplicateRecipe;
-import vazkii.psi.common.crafting.recipe.SensorAttachRecipe;
-import vazkii.psi.common.crafting.recipe.SensorRemoveRecipe;
+import vazkii.psi.common.crafting.recipe.*;
 import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.lib.LibPieceNames;
@@ -67,7 +62,7 @@ public class ModCraftingRecipes {
 				new ItemStack(ModItems.ebonySubstance),
 				new ItemStack(ModItems.cadAssemblyPsimetal));
 		PsiAPI.registerTrickRecipe(LibPieceNames.TRICK_EBONY_IVORY, Ingredient.fromTag(Tags.Items.GEMS_QUARTZ),
-				new ItemStack(ModItems.ivoryPsimetal),
+				new ItemStack(ModItems.ivorySubstance),
 				new ItemStack(ModItems.cadAssemblyPsimetal));
 
 	}

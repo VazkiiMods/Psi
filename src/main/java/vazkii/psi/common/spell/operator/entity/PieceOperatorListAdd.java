@@ -25,8 +25,8 @@ import java.util.List;
 
 public class PieceOperatorListAdd extends PieceOperator {
 
-	SpellParam target;
-	SpellParam list;
+	SpellParam<Entity> target;
+	SpellParam<EntityListWrapper> list;
 
 	public PieceOperatorListAdd(Spell spell) {
 		super(spell);

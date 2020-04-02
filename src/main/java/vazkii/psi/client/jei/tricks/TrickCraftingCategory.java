@@ -18,45 +18,43 @@ import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.category.IRecipeCategory;
+import net.minecraft.client.renderer.model.Material;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.recipe.TrickRecipe;
+import vazkii.psi.common.Psi;
 import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.lib.LibMisc;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class TrickCraftingCategory implements IRecipeCategory<TrickRecipe> {
 	public static final ResourceLocation UID = new ResourceLocation(LibMisc.MOD_ID, "trick");
-	
+
 	private static final int INPUT_SLOT = 0;
 	private static final int CAD_SLOT = 1;
 	private static final int OUTPUT_SLOT = 2;
-	
+
 	private static final int trickX = 43;
 	private static final int trickY = 24;
 
-	private final Map<String, IDrawable> trickIcons = new HashMap<>(); //TODO Switch to ResLoc keys once that gets fixed up
+	private final Map<ResourceLocation, IDrawable> trickIcons = new HashMap<>();
 
 	private final IDrawable background;
 	private final IDrawable icon;
 	private final IDrawable programmerHover;
-	
+
 	private final IGuiHelper helper;
 
 	public TrickCraftingCategory(IGuiHelper helper) {
 		this.helper = helper;
 		background = helper.createDrawable(new ResourceLocation(LibMisc.MOD_ID, "textures/gui/jei/trick.png"), 0, 0, 96, 41);
-		icon = helper.createDrawableIngredient(new ItemStack(ModItems.cad));
+		icon = helper.createDrawableIngredient(new ItemStack(ModItems.psidust));
 		programmerHover = helper.createDrawable(new ResourceLocation("psi", "textures/gui/programmer.png"), 16, 184, 16, 16);
 	}
 
@@ -101,13 +99,18 @@ public class TrickCraftingCategory implements IRecipeCategory<TrickRecipe> {
 	@Override
 	public void draw(TrickRecipe recipe, double mouseX, double mouseY) {
 		if (recipe.getPiece() != null) {
-			IDrawable trickIcon = trickIcons.computeIfAbsent(recipe.getPiece().registryKey, 
-				key -> helper.createDrawable(PsiAPI.simpleSpellTextures.get(key), 0, 0, 256, 256));
+			IDrawable trickIcon = trickIcons.computeIfAbsent(recipe.getPiece().registryKey,
+					key -> {
+						Material mat = PsiAPI.getSpellPieceMaterial(key);
+						if (mat == null) {
+							Psi.logger.warn("Not rendering complex (or missing) render for {}", key);
+							return helper.createBlankDrawable(16, 16);
+						}
+						return new DrawableTAS(mat.getSprite());
+					});
 			
 			RenderSystem.pushMatrix();
-			RenderSystem.scalef(0.0625f, 0.0625f, 0.0625f);
-			trickIcon.draw(trickX * 16, trickY * 16);
-			RenderSystem.color3f(1f, 1f, 1f);
+			trickIcon.draw(trickX, trickY);
 			RenderSystem.popMatrix();
 
 			if (onTrick(mouseX, mouseY))

@@ -24,8 +24,8 @@ import vazkii.psi.api.spell.wrapper.EntityListWrapper;
 
 public class PieceOperatorClosestToPoint extends PieceOperator {
 
-	SpellParam position;
-	SpellParam list;
+	SpellParam<Vector3> position;
+	SpellParam<EntityListWrapper> list;
 
 	public PieceOperatorClosestToPoint(Spell spell) {
 		super(spell);

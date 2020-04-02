@@ -10,20 +10,18 @@
  */
 package vazkii.psi.api.internal;
 
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import java.util.List;
-
 public final class VanillaPacketDispatcher {
 
 	public static void dispatchTEToNearbyPlayers(TileEntity tile) {
 		World world = tile.getWorld();
-        List players = world.getPlayers();
-		for(Object player : players)
+		for(PlayerEntity player : world.getPlayers())
 			if(player instanceof ServerPlayerEntity) {
 				ServerPlayerEntity mp = (ServerPlayerEntity) player;
 				if (MathHelper.pointDistancePlane(mp.getX(), mp.getZ(), tile.getPos().getX() + 0.5, tile.getPos().getZ() + 0.5) < 64)

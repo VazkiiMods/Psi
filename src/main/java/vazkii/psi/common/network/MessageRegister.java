@@ -40,8 +40,6 @@ public class MessageRegister {
 		HANDLER.register(MessageDeductPsi.class, NetworkDirection.PLAY_TO_CLIENT);
 		HANDLER.register(MessageChangeSocketableSlot.class, NetworkDirection.PLAY_TO_SERVER);
 		HANDLER.register(MessageSpellModified.class, NetworkDirection.PLAY_TO_SERVER);
-		HANDLER.register(MessageLearnGroup.class, NetworkDirection.PLAY_TO_SERVER);
-		HANDLER.register(MessageSkipToLevel.class, NetworkDirection.PLAY_TO_SERVER);
 		HANDLER.register(MessageLevelUp.class, NetworkDirection.PLAY_TO_CLIENT);
 		HANDLER.register(MessageChangeControllerSlot.class, NetworkDirection.PLAY_TO_SERVER);
 		HANDLER.register(MessageTriggerJumpSpell.class, NetworkDirection.PLAY_TO_SERVER);

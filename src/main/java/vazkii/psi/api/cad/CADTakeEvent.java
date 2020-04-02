@@ -21,7 +21,7 @@ public class CADTakeEvent extends Event {
 	private final PlayerEntity player;
 
 	@Nullable
-	private String cancellationMessage = "psimisc.cancelledCADTake";
+	private String cancellationMessage = "psimisc.cancelled_cad_take";
 
 	private float sound = 0.5f;
 

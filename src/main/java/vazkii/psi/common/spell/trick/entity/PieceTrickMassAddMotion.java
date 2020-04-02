@@ -27,9 +27,9 @@ import vazkii.psi.api.spell.wrapper.EntityListWrapper;
 
 public class PieceTrickMassAddMotion extends PieceTrick {
 
-	SpellParam target;
-	SpellParam direction;
-	SpellParam speed;
+	SpellParam<EntityListWrapper> target;
+	SpellParam<Vector3> direction;
+	SpellParam<Number> speed;
 
 	public PieceTrickMassAddMotion(Spell spell) {
 		super(spell);
@@ -57,7 +57,7 @@ public class PieceTrickMassAddMotion extends PieceTrick {
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		EntityListWrapper targetVal = this.getParamValue(context, target);
 		Vector3 directionVal = this.getParamValue(context, direction);
-		Double speedVal = this.<Double>getParamValue(context, speed);
+		double speedVal = this.getParamValue(context, speed).doubleValue();
 
 		for(Entity e : targetVal)
 			PieceTrickAddMotion.addMotion(context, e, directionVal, speedVal);

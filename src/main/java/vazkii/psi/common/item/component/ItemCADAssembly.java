@@ -19,18 +19,18 @@ import vazkii.psi.common.lib.LibMisc;
 
 public class ItemCADAssembly extends ItemCADComponent implements ICADAssembly {
 
-    private final String model;
+	private final String model;
 
-    public ItemCADAssembly(String regname, Item.Properties props, String model) {
-        super(regname, props);
-        this.model = model;
-    }
+	public ItemCADAssembly(Item.Properties props, String model) {
+		super(props);
+		this.model = model;
+	}
 
 
-    @Override
-    public EnumCADComponent getComponentType(ItemStack stack) {
-        return EnumCADComponent.ASSEMBLY;
-    }
+	@Override
+	public EnumCADComponent getComponentType(ItemStack stack) {
+		return EnumCADComponent.ASSEMBLY;
+	}
 
 
     @Override

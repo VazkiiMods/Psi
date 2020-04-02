@@ -27,9 +27,9 @@ import vazkii.psi.api.spell.piece.PieceTrick;
 
 public abstract class PieceTrickPotionBase extends PieceTrick {
 
-	SpellParam target;
-	SpellParam power;
-	SpellParam time;
+	SpellParam<Entity> target;
+	SpellParam<Number> power;
+	SpellParam<Number> time;
 
 	public PieceTrickPotionBase(Spell spell) {
 		super(spell);
@@ -68,12 +68,12 @@ public abstract class PieceTrickPotionBase extends PieceTrick {
 		if(!context.isInRadius(targetVal))
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 
-		Double powerVal = 1.0;
+		double powerVal = 1.0;
 		if(hasPower())
-			powerVal = this.<Double>getParamValue(context, power);
-		Double timeVal = this.<Double>getParamValue(context, time);
+			powerVal = this.getParamValue(context, power).doubleValue();
+		double timeVal = this.getParamValue(context, time).doubleValue();
 
-		((LivingEntity) targetVal).addPotionEffect(new EffectInstance(getPotion(), Math.max(1, timeVal.intValue()) * 20, hasPower() ? Math.max(0, powerVal.intValue() - 1) : 0));
+		((LivingEntity) targetVal).addPotionEffect(new EffectInstance(getPotion(), Math.max(1, (int) timeVal) * 20, hasPower() ? Math.max(0, (int) powerVal - 1) : 0));
 
 		return null;
 	}

@@ -27,7 +27,6 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.registries.ObjectHolder;
-import vazkii.psi.api.cad.ICADColorizer;
 import vazkii.psi.api.internal.PsiRenderHelper;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.ISpellAcceptor;
@@ -61,12 +60,12 @@ public class EntitySpellProjectile extends ThrowableEntity {
 	public SpellContext context;
 	public int timeAlive;
 
-	public EntitySpellProjectile(EntityType<?> type, World worldIn) {
-		super((EntityType<? extends ThrowableEntity>) type, worldIn);
+	public EntitySpellProjectile(EntityType<? extends ThrowableEntity> type, World worldIn) {
+		super(type, worldIn);
 	}
 
-	protected EntitySpellProjectile(EntityType<?> type, World world, LivingEntity thrower) {
-		super((EntityType<? extends ThrowableEntity>) type, thrower, world);
+	protected EntitySpellProjectile(EntityType<? extends ThrowableEntity> type, World world, LivingEntity thrower) {
+		super(type, thrower, world);
 		
 		shoot(thrower, thrower.rotationPitch, thrower.rotationYaw, 0.0F, 1.5F, 1.0F);
 		double speed = 1.5;
@@ -146,10 +145,8 @@ public class EntitySpellProjectile extends ThrowableEntity {
 		if(timeAlive > getLiveTime())
 			remove();
 
-        int colorVal = ICADColorizer.DEFAULT_SPELL_COLOR;
         ItemStack colorizer = dataManager.get(COLORIZER_DATA);
-        if (!colorizer.isEmpty() && colorizer.getItem() instanceof ICADColorizer)
-            colorVal = Psi.proxy.getColorForColorizer(colorizer);
+		int colorVal = Psi.proxy.getColorForColorizer(colorizer);
 
         float r = PsiRenderHelper.r(colorVal) / 255F;
         float g = PsiRenderHelper.g(colorVal) / 255F;
@@ -165,9 +162,9 @@ public class EntitySpellProjectile extends ThrowableEntity {
             double spread = 0.6;
             double dist = 0.15;
             if (this instanceof EntitySpellGrenade) {
-                look.y += 1;
-                dist = 0.05;
-            }
+				look.y += 1;
+				dist = 0.05;
+			}
 
 			look.x += (Math.random() - 0.5) * spread;
 			look.y += (Math.random() - 0.5) * spread;
@@ -175,7 +172,9 @@ public class EntitySpellProjectile extends ThrowableEntity {
 
 			look.normalize().multiply(dist);
 
-			Psi.proxy.sparkleFX(x, y, z, r, g, b, (float) look.x, (float) look.y, (float) look.z, 1.2F, 12);
+			if (world.isRemote())
+				Psi.proxy.sparkleFX(x, y, z, r, g, b, (float) look.x, (float) look.y, (float) look.z, 1.2F, 12);
+
 		}
 	}
 

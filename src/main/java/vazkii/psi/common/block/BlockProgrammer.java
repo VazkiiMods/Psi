@@ -29,8 +29,6 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.LazyOptional;
@@ -39,8 +37,6 @@ import vazkii.psi.api.internal.VanillaPacketDispatcher;
 import vazkii.psi.api.spell.ISpellAcceptor;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.tile.TileProgrammer;
-import vazkii.psi.common.core.handler.PlayerDataHandler;
-import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
 import vazkii.psi.common.core.handler.PsiSoundHandler;
 import vazkii.psi.common.lib.LibBlockNames;
 import vazkii.psi.common.lib.LibMisc;
@@ -52,11 +48,11 @@ public class BlockProgrammer extends HorizontalBlock {
 
 	public static final BooleanProperty ENABLED = BooleanProperty.create("enabled");
 
-	public BlockProgrammer() {
-		super(Block.Properties.create(Material.IRON).hardnessAndResistance(5, 10).sound(SoundType.METAL).nonOpaque());
-		setRegistryName(LibMisc.MOD_ID, LibBlockNames.PROGRAMMER);
+	public BlockProgrammer(Properties props) {
+		super(props);
 		setDefaultState(getStateContainer().getBaseState().with(HORIZONTAL_FACING, Direction.NORTH).with(ENABLED, false));
 	}
+
 
 	@Override
 	public ActionResultType onUse(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult rayTraceResult) {
@@ -64,15 +60,6 @@ public class BlockProgrammer extends HorizontalBlock {
 		TileProgrammer programmer = (TileProgrammer) worldIn.getTileEntity(pos);
 		if (programmer == null)
 			return ActionResultType.PASS;
-
-		if (!player.abilities.isCreativeMode) {
-			PlayerData data = PlayerDataHandler.get(player);
-			if (data.spellGroupsUnlocked.isEmpty()) {
-				if (!worldIn.isRemote)
-					player.sendMessage(new TranslationTextComponent("psimisc.cantUseProgrammer").applyTextStyle(TextFormatting.RED));
-				return ActionResultType.PASS;
-			}
-		}
 
 		ActionResultType result = setSpell(worldIn, pos, player, heldItem);
 		if (result == ActionResultType.SUCCESS)
@@ -84,7 +71,9 @@ public class BlockProgrammer extends HorizontalBlock {
 
 		if (player instanceof ServerPlayerEntity)
 			VanillaPacketDispatcher.dispatchTEToPlayer(programmer, (ServerPlayerEntity) player);
-		Psi.proxy.openProgrammerGUI(programmer);
+		if (worldIn.isRemote) {
+			Psi.proxy.openProgrammerGUI(programmer);
+		}
 		return ActionResultType.SUCCESS;
 	}
 
@@ -112,7 +101,7 @@ public class BlockProgrammer extends HorizontalBlock {
 				return ActionResultType.FAIL;
 			}
 		}
-		
+
 		return ActionResultType.PASS;
 	}
 
@@ -136,6 +125,11 @@ public class BlockProgrammer extends HorizontalBlock {
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
 		return new TileProgrammer();
+	}
+
+	@Override
+	public boolean hasTileEntity(BlockState state) {
+		return true;
 	}
 
 	@Override

@@ -22,8 +22,8 @@ import vazkii.psi.common.network.message.MessageBlink;
 
 public class PieceTrickBlink extends PieceTrick {
 
-	SpellParam target;
-	SpellParam distance;
+	SpellParam<Entity> target;
+	SpellParam<Number> distance;
 
 	public PieceTrickBlink(Spell spell) {
 		super(spell);
@@ -49,7 +49,7 @@ public class PieceTrickBlink extends PieceTrick {
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		Entity targetVal = this.getParamValue(context, target);
-		Double distanceVal = this.<Double>getParamValue(context, distance);
+		double distanceVal = this.getParamValue(context, distance).doubleValue();
 
 		blink(context, targetVal, distanceVal);
 

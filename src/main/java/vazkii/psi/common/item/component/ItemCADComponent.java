@@ -18,7 +18,6 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
-import vazkii.arl.item.BasicItem;
 import vazkii.psi.api.cad.EnumCADComponent;
 import vazkii.psi.api.cad.EnumCADStat;
 import vazkii.psi.api.cad.ICADComponent;
@@ -29,12 +28,12 @@ import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.List;
 
-public abstract class ItemCADComponent extends BasicItem implements ICADComponent {
+public abstract class ItemCADComponent extends Item implements ICADComponent {
 
     private final HashMap<EnumCADStat, Integer> stats = new HashMap<>();
 
-    public ItemCADComponent(String name, Item.Properties properties) {
-        super(name, properties.maxStackSize(1));
+    public ItemCADComponent(Item.Properties properties) {
+        super(properties.maxStackSize(1));
         registerStats();
     }
 
@@ -48,7 +47,7 @@ public abstract class ItemCADComponent extends BasicItem implements ICADComponen
             EnumCADComponent componentType = getComponentType(stack);
 
             TranslationTextComponent componentName = new TranslationTextComponent(componentType.getName());
-            tooltip.add(new TranslationTextComponent("psimisc.componentType", componentName));
+            tooltip.add(new TranslationTextComponent("psimisc.component_type", componentName));
             for (EnumCADStat stat : EnumCADStat.class.getEnumConstants()) {
                 if (stat.getSourceType() == componentType) {
                     int statVal = getCADStatValue(stack, stat);

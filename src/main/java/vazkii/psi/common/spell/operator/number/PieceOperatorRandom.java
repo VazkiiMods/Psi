@@ -19,7 +19,7 @@ import vazkii.psi.api.spell.piece.PieceOperator;
 
 public class PieceOperatorRandom extends PieceOperator {
 
-	SpellParam num;
+	SpellParam<Number> num;
 
 	public PieceOperatorRandom(Spell spell) {
 		super(spell);
@@ -32,10 +32,10 @@ public class PieceOperatorRandom extends PieceOperator {
 
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
-		Double d = this.<Double>getParamValue(context, num);
+		int d = this.getParamValue(context, num).intValue();
 
 		boolean neg = d < 0;
-		int i = Math.abs(d.intValue());
+		int i = Math.abs(d);
 		if(i == 0)
 			throw new SpellRuntimeException(SpellRuntimeException.DIVIDE_BY_ZERO);
 

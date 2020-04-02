@@ -12,47 +12,60 @@ package vazkii.psi.client.core.handler;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import vazkii.arl.util.ClientTicker;
-import vazkii.psi.common.core.handler.PersistencyHandler;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 import vazkii.psi.common.lib.LibMisc;
 
 @OnlyIn(Dist.CLIENT)
 @Mod.EventBusSubscriber(value = Dist.CLIENT, modid = LibMisc.MOD_ID)
 public class ClientTickHandler {
 
-	/**
-	 * @deprecated Use {@link vazkii.arl.util.ClientTicker#partialTicks}
-	 */
-	@Deprecated
-	public static float partialTicks;
+	public static int ticksInGame = 0;
+	public static float partialTicks = 0.0F;
+	public static float delta = 0.0F;
+	public static float total = 0.0F;
 
-	@SuppressWarnings("deprecation")
-	private static void updatePartialTicks() {
-		partialTicks = ClientTicker.partialTicks;
+	public ClientTickHandler() {
+	}
+
+	@OnlyIn(Dist.CLIENT)
+	private static void calcDelta() {
+		float oldTotal = total;
+		total = (float) ticksInGame + partialTicks;
+		delta = total - oldTotal;
 	}
 
 	@SubscribeEvent
+	@OnlyIn(Dist.CLIENT)
+	public static void renderTick(TickEvent.RenderTickEvent event) {
+		if (event.phase == TickEvent.Phase.START) {
+			partialTicks = event.renderTickTime;
+		} else {
+			calcDelta();
+		}
+	}
+
+
+	@SubscribeEvent
 	public static void clientTickEnd(TickEvent.ClientTickEvent event) {
-		if(event.phase == TickEvent.Phase.END) {
-			updatePartialTicks();
+		if (event.phase == TickEvent.Phase.END) {
 
 			Minecraft mc = Minecraft.getInstance();
-			if(mc.player != null)
-				PersistencyHandler.init();
 
 			HUDHandler.tick();
 
 			Screen gui = mc.currentScreen;
-			//TODO WILLIE CHECK THIS
-			if(gui == null || !gui.isPauseScreen() ) {
-				if(gui == null && KeybindHandler.keybind.isKeyDown())
+			if (gui == null || !gui.isPauseScreen()) {
+				++ticksInGame;
+				partialTicks = 0.0F;
+				if (gui == null && KeybindHandler.keybind.isKeyDown())
 					KeybindHandler.keyDown();
 			}
+
+			calcDelta();
 		}
 	}
 

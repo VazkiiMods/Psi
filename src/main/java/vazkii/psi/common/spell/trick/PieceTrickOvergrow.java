@@ -29,7 +29,7 @@ import vazkii.psi.api.spell.piece.PieceTrick;
 
 public class PieceTrickOvergrow extends PieceTrick {
 
-	SpellParam position;
+	SpellParam<Vector3> position;
 
 	public PieceTrickOvergrow(Spell spell) {
 		super(spell);

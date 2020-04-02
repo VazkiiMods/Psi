@@ -11,16 +11,13 @@
 package vazkii.psi.api.internal;
 
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.ResourceLocation;
 import vazkii.psi.api.spell.SpellPiece;
 
 import javax.annotation.Nullable;
 
 public interface IPlayerData {
 
-	/**
-	 * Gets the player's level. May be 0.
-	 */
-	int getLevel();
 
 	/**
 	 * Gets the total amount of psi energy the player has.
@@ -67,19 +64,19 @@ public interface IPlayerData {
 	/**
 	 * Gets if the piece group name is unlocked.
 	 */
-	default boolean isPieceGroupUnlocked(String group) {
+	default boolean isPieceGroupUnlocked(ResourceLocation group) {
 		return isPieceGroupUnlocked(group, null);
 	}
 
 	/**
 	 * Gets if the piece and group name are unlocked.
 	 */
-	boolean isPieceGroupUnlocked(String group, @Nullable String piece);
+	boolean isPieceGroupUnlocked(ResourceLocation group, @Nullable ResourceLocation piece);
 
 	/**
 	 * Unlocks the given piece group.
 	 */
-	void unlockPieceGroup(String group);
+	void unlockPieceGroup(ResourceLocation group);
 
 	/**
 	 * Marks a spell piece as executed. Used for leveling.

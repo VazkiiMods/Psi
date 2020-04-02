@@ -18,15 +18,12 @@ import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.client.core.proxy.ClientProxy;
 import vazkii.psi.common.block.base.ModBlocks;
-import vazkii.psi.common.command.CommandPsiLearn;
-import vazkii.psi.common.command.CommandPsiUnlearn;
 import vazkii.psi.common.core.handler.ConfigHandler;
 import vazkii.psi.common.core.handler.CrashReportHandler;
 import vazkii.psi.common.core.handler.InternalMethodHandler;
@@ -52,7 +49,6 @@ public class Psi {
 	public Psi() {
 		instance = this;
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::commonSetup);
-		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::serverStartingEvent);
 		proxy = DistExecutor.runForDist(() -> ClientProxy::new, () -> ServerProxy::new);
 		proxy.registerHandlers();
 	}
@@ -76,10 +72,6 @@ public class Psi {
 		MessageRegister.init();
 	}
 
-	public void serverStartingEvent(FMLServerStartingEvent event) {
-		CommandPsiLearn.register(event.getCommandDispatcher());
-		CommandPsiUnlearn.register(event.getCommandDispatcher());
-	}
 
 	public static ResourceLocation location(String path) {
 		return new ResourceLocation(LibMisc.MOD_ID, path);

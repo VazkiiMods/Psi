@@ -19,8 +19,8 @@ import vazkii.psi.api.spell.piece.PieceOperator;
 
 public class PieceOperatorPower extends PieceOperator {
 
-	SpellParam num;
-	SpellParam power;
+	SpellParam<Number> num;
+	SpellParam<Number> power;
 
 	public PieceOperatorPower(Spell spell) {
 		super(spell);
@@ -34,10 +34,9 @@ public class PieceOperatorPower extends PieceOperator {
 
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
-		Double d = this.<Double>getParamValue(context, num);
-		Double p = this.<Double>getParamValue(context, power);
+		double d = this.getParamValue(context, num).doubleValue();
 
-		int steps = p.intValue();
+		int steps = this.getParamValue(context, power).intValue();
 		if(steps < 0)
 			throw new SpellRuntimeException(SpellRuntimeException.NEGATIVE_NUMBER);
 		

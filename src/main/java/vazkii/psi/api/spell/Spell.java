@@ -10,10 +10,13 @@
  */
 package vazkii.psi.api.spell;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+import javax.annotation.Nullable;
 import java.util.UUID;
 
 /**
@@ -35,10 +38,11 @@ public final class Spell {
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	public void draw() {
-		grid.draw();
+	public void draw(MatrixStack ms, IRenderTypeBuffer buffers, int light) {
+		grid.draw(ms, buffers, light);
 	}
 
+	@Nullable
 	public static Spell createFromNBT(CompoundNBT cmp) {
 		if(cmp == null || !cmp.getBoolean(TAG_VALID))
 			return null;

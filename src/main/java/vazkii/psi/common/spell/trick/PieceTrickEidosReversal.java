@@ -11,14 +11,7 @@
 package vazkii.psi.common.spell.trick;
 
 import net.minecraft.entity.player.ServerPlayerEntity;
-import vazkii.arl.network.NetworkHandler;
-import vazkii.psi.api.spell.EnumSpellStat;
-import vazkii.psi.api.spell.Spell;
-import vazkii.psi.api.spell.SpellCompilationException;
-import vazkii.psi.api.spell.SpellContext;
-import vazkii.psi.api.spell.SpellMetadata;
-import vazkii.psi.api.spell.SpellParam;
-import vazkii.psi.api.spell.SpellRuntimeException;
+import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.piece.PieceTrick;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
@@ -28,7 +21,7 @@ import vazkii.psi.common.network.message.MessageEidosSync;
 
 public class PieceTrickEidosReversal extends PieceTrick {
 
-	SpellParam time;
+	SpellParam<Number> time;
 
 	public PieceTrickEidosReversal(Spell spell) {
 		super(spell);
@@ -53,10 +46,10 @@ public class PieceTrickEidosReversal extends PieceTrick {
 
 	@Override
 	public Object execute(SpellContext context) {
-		Double timeVal = this.<Double>getParamValue(context, time);
+		int timeVal = this.getParamValue(context, time).intValue();
 		PlayerData data = PlayerDataHandler.get(context.caster);
 		if(!data.isReverting) {
-			data.eidosReversionTime = timeVal.intValue() * 10;
+			data.eidosReversionTime = timeVal * 10;
 			data.isReverting = true;
 			if (context.caster instanceof ServerPlayerEntity)
 				MessageRegister.HANDLER.sendToPlayer(new MessageEidosSync(data.eidosReversionTime), (ServerPlayerEntity) context.caster);

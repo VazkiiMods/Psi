@@ -12,8 +12,9 @@ package vazkii.psi.common.core.handler;
 
 import com.google.common.collect.ImmutableSet;
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.platform.GlStateManager;
+import net.minecraft.advancements.Advancement;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
@@ -23,11 +24,10 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
-import net.minecraft.nbt.StringNBT;
 import net.minecraft.network.play.server.SPlayerPositionLookPacket.Flags;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.LightType;
@@ -37,7 +37,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
@@ -45,7 +44,6 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import vazkii.arl.util.ClientTicker;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.*;
 import vazkii.psi.api.exosuit.IPsiEventArmor;
@@ -54,6 +52,7 @@ import vazkii.psi.api.internal.IPlayerData;
 import vazkii.psi.api.internal.PsiRenderHelper;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.*;
+import vazkii.psi.client.core.handler.ClientTickHandler;
 import vazkii.psi.client.render.entity.RenderSpellCircle;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.item.ItemCAD;
@@ -95,7 +94,6 @@ public class PlayerDataHandler {
 			data.readFromNBT(cmp);
 		}
 
-		data.validate();
 
 		return data;
 	}
@@ -216,9 +214,9 @@ public class PlayerDataHandler {
 			PlayerData data = get(Minecraft.getInstance().player);
 			if(data.isAnchored) {
 				float fov = event.getNewfov();
-				if(data.eidosAnchorTime > 0)
-					fov *= Math.min(5, data.eidosAnchorTime - ClientTicker.partialTicks) / 5;
-				else fov *= (10 - Math.min(10, data.postAnchorRecallTime + ClientTicker.partialTicks)) / 10;
+				if (data.eidosAnchorTime > 0)
+					fov *= Math.min(5, data.eidosAnchorTime - ClientTickHandler.partialTicks) / 5;
+				else fov *= (10 - Math.min(10, data.postAnchorRecallTime + ClientTickHandler.partialTicks)) / 10;
 				event.setNewfov(fov);
 			}
 		}
@@ -227,13 +225,8 @@ public class PlayerDataHandler {
 
 	public static class PlayerData implements IPlayerData {
 
-		private static final String TAG_LEVEL = "level";
 		private static final String TAG_AVAILABLE_PSI = "availablePsi";
 		private static final String TAG_REGEN_CD = "regenCd";
-		private static final String TAG_SPELL_GROUPS_UNLOCKED = "spellGroupsUnlocked";
-		private static final String TAG_LAST_SPELL_GROUP = "lastSpellPoint";
-		private static final String TAG_LEVEL_POINTS = "levelPoints";
-		private static final String TAG_LEARNING_GROUP = "learning";
 		private static final String TAG_OVERFLOWED = "overflowed";
 
 		private static final String TAG_EIDOS_ANCHOR_X = "eidosAnchorX";
@@ -247,15 +240,11 @@ public class PlayerDataHandler {
 		
 		public int totalPsi = 5000;
 		public int regen = 25;
-		
-		public int level;
+
 		public int availablePsi;
 		public int lastAvailablePsi;
 		public int regenCooldown;
 
-		public String lastSpellGroup;
-		public int levelPoints;
-		public boolean learning;
 
 		public boolean loopcasting = false;
 		public Hand loopcastHand = null;
@@ -282,7 +271,6 @@ public class PlayerDataHandler {
 
 		public boolean deductTick;
 
-		public final List<String> spellGroupsUnlocked = new ArrayList<>();
 		public final List<Deduction> deductions = new ArrayList<>();
 		public final WeakReference<PlayerEntity> playerWR;
 		private final boolean client;
@@ -566,25 +554,6 @@ public class PlayerDataHandler {
 			}
 		}
 
-		public void validate() {
-			if (!spellGroupsUnlocked.contains(lastSpellGroup)) {
-				learning = false;
-				lastSpellGroup = "";
-			}
-
-			int trueLevel = spellGroupsUnlocked.size();
-			if (!learning)
-				trueLevel++;
-
-			if (level != 0)
-				level = trueLevel;
-
-			levelPoints = Math.max(0, Math.min(levelPoints, PsiAPI.levelCap - trueLevel));
-
-			if (!learning)
-				lastSpellGroup = "";
-		}
-
 		public void stopLoopcast() {
 			if(loopcasting)
 				loopcastFadeTime = 5;
@@ -609,33 +578,6 @@ public class PlayerDataHandler {
 			}
 		}
 
-		public void skipToLevel(int level) {
-			int currLevel = this.level;
-			int points = level - currLevel;
-
-			this.level = Math.max(currLevel, Math.min(PsiAPI.levelCap, level));
-			levelPoints = Math.max(0, Math.max(points, levelPoints));
-			save();
-		}
-
-		public void levelUp() {
-			PlayerEntity player = playerWR.get();
-			if(player != null) {
-				learning = false;
-				level++;
-				levelPoints++;
-				lastSpellGroup = "";
-				save();
-
-				if(player instanceof ServerPlayerEntity) {
-					MessageLevelUp message = new MessageLevelUp(level);
-					MessageDataSync message2 = new MessageDataSync(this);
-
-					MessageRegister.HANDLER.sendToPlayer(message, (ServerPlayerEntity) player);
-					MessageRegister.HANDLER.sendToPlayer(message2, (ServerPlayerEntity) player);
-				}
-			}
-		}
 
 		public ItemStack getCAD() {
 			return PsiAPI.getPlayerCAD(playerWR.get());
@@ -704,18 +646,6 @@ public class PlayerDataHandler {
 		}
 
 		@Override
-		public int getLevel() {
-			PlayerEntity player = playerWR.get();
-			if(player != null && player.isCreative())
-				return PsiAPI.levelCap;
-			return level;
-		}
-
-		public int getLevelPoints() {
-			return levelPoints;
-		}
-
-		@Override
 		public int getAvailablePsi() {
 			return availablePsi;
 		}
@@ -745,53 +675,78 @@ public class PlayerDataHandler {
 			return regenCooldown;
 		}
 
-		@Override
-		public boolean isPieceGroupUnlocked(String group, @Nullable String name) {
+		public boolean hasAdvancement(ResourceLocation group) {
 			PlayerEntity player = playerWR.get();
-			if(player == null)
+			boolean hasAdvancement = false;
+			if (player instanceof ClientPlayerEntity) {
+				ClientPlayerEntity clientPlayerEntity = (ClientPlayerEntity) player;
+				hasAdvancement = clientPlayerEntity.connection.getAdvancementManager().getAdvancementList().getAdvancement(group) != null;
+			} else if (player instanceof ServerPlayerEntity) {
+				ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity) player;
+				hasAdvancement = serverPlayerEntity.getServer().getAdvancementManager().getAdvancement(group) != null && serverPlayerEntity.getAdvancements().getProgress(serverPlayerEntity.getServer().getAdvancementManager().getAdvancement(group)).isDone();
+			}
+			return hasAdvancement;
+		}
+
+		@Override
+		public boolean isPieceGroupUnlocked(ResourceLocation group, @Nullable ResourceLocation name) {
+			PlayerEntity player = playerWR.get();
+			if (player == null)
 				return false;
 
-			if(player.isCreative())
+			if (player.isCreative())
 				return true;
 
-			boolean defaultBehavior = spellGroupsUnlocked.contains(group);
-
-			PieceKnowledgeEvent event = new PieceKnowledgeEvent(group, name, player, this, defaultBehavior);
+			boolean hasAdvancement = hasAdvancement(group);
+			PieceKnowledgeEvent event = new PieceKnowledgeEvent(group, name, player, this, hasAdvancement);
 			MinecraftForge.EVENT_BUS.post(event);
+
 
 			switch (event.getResult()) {
 				case DENY:
 					return false;
-				case ALLOW:
-					return true;
 				default:
-					return defaultBehavior;
+					return true;
 			}
 		}
 
 		@Override
-		public void unlockPieceGroup(String group) {
-			if(!learning && levelPoints > 0 && !isPieceGroupUnlocked(group)) {
-				spellGroupsUnlocked.add(group);
-				lastSpellGroup = group;
-				levelPoints--;
-				learning = true;
-
-				if (levelPoints > 0) // Skip to next level
-					levelUp();
-				else
-					save();
+		public void unlockPieceGroup(ResourceLocation resourceLocation) {
+			PlayerEntity player = playerWR.get();
+			if (player instanceof ServerPlayerEntity) {
+				ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
+				Advancement advancement = serverPlayer.getServer().getAdvancementManager().getAdvancement(resourceLocation);
+				if (advancement != null && !serverPlayer.getAdvancements().getProgress(advancement).isDone()) {
+					for (String s : serverPlayer.getAdvancements().getProgress(advancement).getRemaningCriteria()) {
+						serverPlayer.getAdvancements().getProgress(advancement).grantCriterion(s);
+					}
+				}
 			}
 		}
+
 
 		@Override
 		public void markPieceExecuted(SpellPiece piece) {
-			if(lastSpellGroup == null || lastSpellGroup.isEmpty() || !learning)
-				return;
+			PieceExecutedEvent event = new PieceExecutedEvent(piece, playerWR.get());
+			MinecraftForge.EVENT_BUS.post(event);
+			ResourceLocation advancement = PsiAPI.getGroupForPiece(piece.getClass());
+			if (advancement != null && PsiAPI.getMainPieceForGroup(advancement) == piece.getClass() && !hasAdvancement(advancement))
+				tutorialComplete(advancement);
+		}
 
-			PieceGroup group = PsiAPI.groupsForName.get(lastSpellGroup);
-			if(group != null && group.mainPiece == piece.getClass())
-				levelUp();
+		public void tutorialComplete(ResourceLocation resourceLocation) {
+			PlayerEntity player = playerWR.get();
+			if (player != null) {
+				save();
+				if (player instanceof ServerPlayerEntity) {
+					MessageLevelUp message = new MessageLevelUp(resourceLocation);
+					MessageDataSync message2 = new MessageDataSync(this);
+
+					MessageRegister.HANDLER.sendToPlayer(message, (ServerPlayerEntity) player);
+					MessageRegister.HANDLER.sendToPlayer(message2, (ServerPlayerEntity) player);
+					unlockPieceGroup(resourceLocation);
+				}
+			}
 		}
 
 		@Override
@@ -807,7 +762,6 @@ public class PlayerDataHandler {
 				PlayerEntity player = playerWR.get();
 
 				if(player != null) {
-					validate();
 					CompoundNBT cmp = getDataCompoundForPlayer(player);
 					writeToNBT(cmp);
 				}
@@ -815,21 +769,10 @@ public class PlayerDataHandler {
 		}
 
 		public void writeToNBT(CompoundNBT cmp) {
-			cmp.putInt(TAG_LEVEL, level);
 			cmp.putInt(TAG_AVAILABLE_PSI, availablePsi);
 			cmp.putInt(TAG_REGEN_CD, regenCooldown);
-			cmp.putInt(TAG_LEVEL_POINTS, levelPoints);
-			cmp.putBoolean(TAG_LEARNING_GROUP, learning);
-			if(lastSpellGroup != null && !lastSpellGroup.isEmpty())
-				cmp.putString(TAG_LAST_SPELL_GROUP, lastSpellGroup);
 			cmp.putBoolean(TAG_OVERFLOWED, overflowed);
 
-			ListNBT list = new ListNBT();
-			for(String s : spellGroupsUnlocked) {
-                if (s != null && !s.isEmpty())
-                    list.add(StringNBT.of(s));
-			}
-			cmp.put(TAG_SPELL_GROUPS_UNLOCKED, list);
 
 			cmp.putDouble(TAG_EIDOS_ANCHOR_X, eidosAnchor.x);
 			cmp.putDouble(TAG_EIDOS_ANCHOR_Y, eidosAnchor.y);
@@ -849,27 +792,14 @@ public class PlayerDataHandler {
 				if(player != null) {
 					CompoundNBT cmp = getDataCompoundForPlayer(player);
 					readFromNBT(cmp);
-					validate();
 				}
 			}
 		}
 
 		public void readFromNBT(CompoundNBT cmp) {
-			level = cmp.getInt(TAG_LEVEL);
 			availablePsi = cmp.getInt(TAG_AVAILABLE_PSI);
 			regenCooldown = cmp.getInt(TAG_REGEN_CD);
-			levelPoints = cmp.getInt(TAG_LEVEL_POINTS);
-			lastSpellGroup = cmp.getString(TAG_LAST_SPELL_GROUP);
 			overflowed = cmp.getBoolean(TAG_OVERFLOWED);
-			learning = cmp.getBoolean(TAG_LEARNING_GROUP);
-
-			if(cmp.contains(TAG_SPELL_GROUPS_UNLOCKED, Constants.NBT.TAG_LIST)) {
-				spellGroupsUnlocked.clear();
-				ListNBT list = cmp.getList(TAG_SPELL_GROUPS_UNLOCKED, Constants.NBT.TAG_STRING); // 8 -> String
-				int count = list.size();
-				for(int i = 0; i < count; i++)
-					spellGroupsUnlocked.add(list.getString(i));
-			}
 
 			double x = cmp.getDouble(TAG_EIDOS_ANCHOR_X);
 			double y = cmp.getDouble(TAG_EIDOS_ANCHOR_X);
@@ -888,6 +818,8 @@ public class PlayerDataHandler {
             double x = player.lastTickPosX + (player.getX() - player.lastTickPosX) * partTicks - renderManager.info.getProjectedView().x;
             double y = player.lastTickPosY + (player.getY() - player.lastTickPosY) * partTicks - renderManager.info.getProjectedView().y;
             double z = player.lastTickPosZ + (player.getZ() - player.lastTickPosZ) * partTicks - renderManager.info.getProjectedView().z;
+            ms.push();
+            ms.translate(x, y, z); // todo 1.15 recheck this
 
             float scale = 0.75F;
             if (loopcasting) {
@@ -905,8 +837,10 @@ public class PlayerDataHandler {
                 color = icad.getSpellColor(cad);
             }
 
-            RenderSpellCircle.renderSpellCircle(ClientTicker.ticksInGame + partTicks, scale, 1, x, y, z, 0, 1, 0, color, ms, IRenderTypeBuffer.immediate(Tessellator.getInstance().getBuffer()));
-            GlStateManager.disableLighting();
+            IRenderTypeBuffer.Impl buffers = IRenderTypeBuffer.immediate(Tessellator.getInstance().getBuffer());
+			RenderSpellCircle.renderSpellCircle(ClientTickHandler.ticksInGame + partTicks, scale, 1, 0, 1, 0, color, ms, buffers);
+			buffers.draw();
+            ms.pop();
         }
 
 		public static class Deduction {

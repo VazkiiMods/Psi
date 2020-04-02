@@ -12,6 +12,7 @@ package vazkii.psi.common.entity;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.projectile.ThrowableEntity;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.RayTraceResult;
@@ -29,11 +30,11 @@ public class EntitySpellGrenade extends EntitySpellProjectile {
 
 	boolean sound = false;
 
-	public EntitySpellGrenade(EntityType<?> type, World worldIn) {
+	public EntitySpellGrenade(EntityType<? extends ThrowableEntity> type, World worldIn) {
 		super(type, worldIn);
 	}
 
-	protected EntitySpellGrenade(EntityType<?> type, World worldIn, LivingEntity throwerIn) {
+	protected EntitySpellGrenade(EntityType<? extends ThrowableEntity> type, World worldIn, LivingEntity throwerIn) {
 		super(type, worldIn, throwerIn);
 
 		double speed = 0.65;

@@ -19,7 +19,7 @@ import vazkii.psi.api.spell.piece.PieceOperator;
 
 public class PieceOperatorSquareRoot extends PieceOperator {
 
-	SpellParam num;
+	SpellParam<Number> num;
 
 	public PieceOperatorSquareRoot(Spell spell) {
 		super(spell);
@@ -32,7 +32,7 @@ public class PieceOperatorSquareRoot extends PieceOperator {
 
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
-		Double d = this.<Double>getParamValue(context, num);
+		double d = this.getParamValue(context, num).doubleValue();
 
 		if(d < 0)
 			throw new SpellRuntimeException(SpellRuntimeException.NEGATIVE_NUMBER);

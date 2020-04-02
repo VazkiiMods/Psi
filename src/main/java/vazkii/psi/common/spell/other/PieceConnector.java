@@ -10,28 +10,33 @@
  */
 package vazkii.psi.common.spell.other;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.Tessellator;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.Matrix4f;
+import net.minecraft.client.renderer.RenderState;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.model.Material;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import vazkii.psi.api.internal.TooltipHelper;
+import org.lwjgl.opengl.GL11;
+import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.param.ParamAny;
+import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.lib.LibResources;
 
 import java.util.List;
 
 public class PieceConnector extends SpellPiece implements IRedirector {
 
-	private static final ResourceLocation lines = new ResourceLocation(LibResources.SPELL_CONNECTOR_LINES);
+	public static final ResourceLocation LINES_TEXTURE = new ResourceLocation(LibResources.SPELL_CONNECTOR_LINES);
 
-	public SpellParam target;
+	public SpellParam<SpellParam.Any> target;
 
 	public PieceConnector(Spell spell) {
 		super(spell);
@@ -44,23 +49,23 @@ public class PieceConnector extends SpellPiece implements IRedirector {
 
 	@Override
 	public ITextComponent getEvaluationTypeString() {
-        return new TranslationTextComponent("psi.datatype.Any");
+        return new TranslationTextComponent("psi.datatype.any");
     }
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void drawAdditional() {
-		drawSide(paramSides.get(target));
+	public void drawAdditional(MatrixStack ms, IRenderTypeBuffer buffers, int light) {
+		drawSide(ms, buffers, light, paramSides.get(target));
 
 		if(isInGrid)
 			for(SpellParam.Side side : SpellParam.Side.class.getEnumConstants())
 				if(side.isEnabled()) {
 					SpellPiece piece = spell.grid.getPieceAtSideSafely(x, y, side);
 					if(piece != null)
-						for(SpellParam param : piece.paramSides.keySet()) {
+						for(SpellParam<?> param : piece.paramSides.keySet()) {
 							SpellParam.Side paramSide = piece.paramSides.get(param);
 							if(paramSide.getOpposite() == side) {
-								drawSide(side);
+								drawSide(ms, buffers, light, side);
 								break;
 							}
 						}
@@ -68,49 +73,52 @@ public class PieceConnector extends SpellPiece implements IRedirector {
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	public void drawSide(SpellParam.Side side) {
+	private void drawSide(MatrixStack ms, IRenderTypeBuffer buffers, int light, SpellParam.Side side) {
 		if(side.isEnabled()) {
-            Minecraft mc = Minecraft.getInstance();
-            mc.textureManager.bindTexture(lines);
+			Material material = new Material(PsiAPI.PSI_PIECE_TEXTURE_ATLAS, LINES_TEXTURE);
+			IVertexBuilder buffer = material.getVertexConsumer(buffers, ignored -> SpellPiece.getLayer());
 
-            float minU = 0;
-            float minV = 0;
-            switch (side) {
-                case LEFT:
-                    minU = 0.5f;
-                    break;
-                case RIGHT:
-                    break;
-                case TOP:
-                    minV = 0.5f;
-                    break;
-                case BOTTOM:
-                    minU = 0.5f;
-                    minV = 0.5f;
-                    break;
-                default:
-                    break;
-            }
+			float minU = 0;
+			float minV = 0;
+			switch (side) {
+				case LEFT:
+					minU = 0.5f;
+					break;
+				default:
+				case RIGHT:
+					break;
+				case TOP:
+					minV = 0.5f;
+					break;
+				case BOTTOM:
+					minU = 0.5f;
+					minV = 0.5f;
+					break;
+			}
 
-            float maxU = minU + 0.5f;
-            float maxV = minV + 0.5f;
+			float maxU = minU + 0.5f;
+			float maxV = minV + 0.5f;
 
-            RenderSystem.color3f(1F, 1F, 1F);
-            BufferBuilder wr = Tessellator.getInstance().getBuffer();
-            wr.begin(7, DefaultVertexFormats.POSITION_TEX);
-            wr.vertex(0, 16, 0).texture(minU, maxV).endVertex();
-            wr.vertex(16, 16, 0).texture(maxU, maxV).endVertex();
-            wr.vertex(16, 0, 0).texture(maxU, minV).endVertex();
-            wr.vertex(0, 0, 0).texture(minU, minV).endVertex();
-            Tessellator.getInstance().draw();
-        }
+			/*
+			  See note in SpellPiece#drawBackground for why this chain needs to be split
+ 			 */
+			Matrix4f mat = ms.peek().getModel();
+			buffer.vertex(mat, 0, 16, 0).color(1F, 1F, 1F, 1F);
+			buffer.texture(minU, maxV).light(light).endVertex();
+			buffer.vertex(mat, 16, 16, 0).color(1F, 1F, 1F, 1F);
+			buffer.texture(maxU, maxV).light(light).endVertex();
+			buffer.vertex(mat, 16, 0, 0).color(1F, 1F, 1F, 1F);
+			buffer.texture(maxU, minV).light(light).endVertex();
+			buffer.vertex(mat, 0, 0, 0).color(1F, 1F, 1F, 1F);
+			buffer.texture(minU, minV).light(light).endVertex();
+		}
 	}
 
 	@Override
 	public void getShownPieces(List<SpellPiece> pieces) {
 		for(SpellParam.Side side : SpellParam.Side.class.getEnumConstants())
 			if(side.isEnabled()) {
-				PieceConnector piece = (PieceConnector) copy();
+				PieceConnector piece = (PieceConnector) SpellPiece.create(PieceConnector.class, new Spell());
 				piece.paramSides.put(piece.target, side);
 				pieces.add(piece);
 			}

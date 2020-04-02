@@ -1,0 +1,57 @@
+{
+  "name": "psi.book.entry.tutorial5",
+  "category": "basics",
+  "icon": "minecraft:air",
+  "priority": true,
+  "pages": [
+    {
+      "type": "text",
+      "text": "psi.book.page.tutorial5.0"
+    },
+    {
+      "type": "image",
+      "text": "psi.book.page.tutorial5.1",
+      "images": [
+        "psi:textures/gui/entries/tutorial_5_stats.png"
+      ],
+      "border": true
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.tutorial5.2",
+      "anchor": "complexity"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.tutorial5.3",
+      "anchor": "potency"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.tutorial5.4",
+      "anchor": "cost"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.tutorial5.5"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.tutorial5.6",
+      "anchor": "projection"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.tutorial5.7",
+      "anchor": "bandwidth"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.tutorial5.8"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.tutorial5.9"
+    }
+  ]
+}

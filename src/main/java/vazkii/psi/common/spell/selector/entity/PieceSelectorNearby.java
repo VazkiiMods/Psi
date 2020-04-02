@@ -24,8 +24,8 @@ import java.util.function.Predicate;
 
 public abstract class PieceSelectorNearby extends PieceSelector {
 
-	SpellParam position;
-	SpellParam radius;
+	SpellParam<Vector3> position;
+	SpellParam<Number> radius;
 
 	//TODO add this in the next version
 
@@ -51,7 +51,7 @@ public abstract class PieceSelectorNearby extends PieceSelector {
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		Vector3 positionVal = this.getParamValue(context, position);
-		Double radiusVal = this.<Double>getParamValue(context, radius);
+		double radiusVal = this.getParamValue(context, radius).doubleValue();
 
 		if(!context.isInRadius(positionVal))
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);

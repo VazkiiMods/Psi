@@ -1,0 +1,75 @@
+{
+  "name": "psi.book.entry.assembly",
+  "category": "components",
+  "icon": "psi:cad_assembly_iron",
+  "pages": [
+    {
+      "type": "text",
+      "text": "psi.book.page.assembly.0"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.assembly.1"
+    },
+    {
+      "type": "spotlight",
+      "text": "psi.book.page.assembly.2",
+      "item": "psi:cad_assembly_iron",
+      "link_recipe": false,
+      "anchor": "iron"
+    },
+    {
+      "type": "crafting",
+      "text": "psi.book.page.assembly.3",
+      "recipe": "psi:cad_assembly_iron"
+    },
+    {
+      "type": "spotlight",
+      "text": "psi.book.page.assembly.4",
+      "item": "psi:cad_assembly_gold",
+      "link_recipe": false,
+      "anchor": "gold"
+    },
+    {
+      "type": "crafting",
+      "text": "psi.book.page.assembly.5",
+      "recipe": "psi:cad_assembly_gold"
+    },
+    {
+      "type": "spotlight",
+      "text": "psi.book.page.assembly.6",
+      "item": "psi:cad_assembly_psimetal",
+      "link_recipe": false,
+      "anchor": "psimetal"
+    },
+    {
+      "type": "crafting",
+      "text": "psi.book.page.assembly.7",
+      "recipe": "psi:cad_assembly_psimetal"
+    },
+    {
+      "type": "spotlight",
+      "text": "psi.book.page.assembly.8",
+      "item": "psi:cad_assembly_ebony_psimetal",
+      "link_recipe": false,
+      "anchor": "ebony"
+    },
+    {
+      "type": "crafting",
+      "text": "psi.book.page.assembly.9",
+      "recipe": "psi:cad_assembly_ebony"
+    },
+    {
+      "type": "spotlight",
+      "text": "psi.book.page.assembly.10",
+      "item": "psi:cad_assembly_ivory_psimetal",
+      "link_recipe": false,
+      "anchor": "ivory"
+    },
+    {
+      "type": "crafting",
+      "text": "psi.book.page.assembly.11",
+      "recipe": "psi:cad_assembly_ivory"
+    }
+  ]
+}

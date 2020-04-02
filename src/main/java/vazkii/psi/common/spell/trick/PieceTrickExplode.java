@@ -27,8 +27,8 @@ import vazkii.psi.api.spell.piece.PieceTrick;
 
 public class PieceTrickExplode extends PieceTrick {
 
-	SpellParam position;
-	SpellParam power;
+	SpellParam<Vector3> position;
+	SpellParam<Number> power;
 
 	public PieceTrickExplode(Spell spell) {
 		super(spell);
@@ -57,7 +57,7 @@ public class PieceTrickExplode extends PieceTrick {
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		Vector3 positionVal = this.getParamValue(context, position);
-		Double powerVal = this.<Double>getParamValue(context, power);
+		double powerVal = this.getParamValue(context, power).doubleValue();
 
 		if(positionVal == null)
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
@@ -67,7 +67,7 @@ public class PieceTrickExplode extends PieceTrick {
 		BlockPos pos = positionVal.toBlockPos();
 		BlockState state = context.caster.getEntityWorld().getBlockState(pos);
 		
-		context.caster.getEntityWorld().createExplosion(context.focalPoint, positionVal.x, positionVal.y, positionVal.z, powerVal.floatValue(), state.getMaterial().isLiquid() ? Explosion.Mode.NONE : Explosion.Mode.DESTROY);
+		context.caster.getEntityWorld().createExplosion(context.focalPoint, positionVal.x, positionVal.y, positionVal.z, (float) powerVal, state.getMaterial().isLiquid() ? Explosion.Mode.NONE : Explosion.Mode.DESTROY);
 		return null;
 	}
 	

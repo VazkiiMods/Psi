@@ -12,14 +12,14 @@ package vazkii.psi.api.spell.param;
 
 import vazkii.psi.api.spell.SpellParam;
 
-public class ParamAny extends SpellParam {
+public class ParamAny extends SpellParam<SpellParam.Any> {
 
 	public ParamAny(String name, int color, boolean canDisable) {
 		super(name, color, canDisable);
 	}
 
 	@Override
-	public Class<?> getRequiredType() {
+	public Class<Any> getRequiredType() {
 		return Any.class;
 	}
 

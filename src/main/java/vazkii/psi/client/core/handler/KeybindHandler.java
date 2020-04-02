@@ -16,10 +16,11 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
+import vazkii.patchouli.client.book.ClientBookRegistry;
 import vazkii.psi.api.cad.ISocketableCapability;
 import vazkii.psi.api.cad.ISocketableController;
-import vazkii.psi.client.gui.GuiLeveling;
 import vazkii.psi.client.gui.GuiSocketSelect;
+import vazkii.psi.common.lib.LibResources;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_C;
 
@@ -57,8 +58,9 @@ public class KeybindHandler {
 				stack = mc.player.getHeldItem(Hand.OFF_HAND);
 				if (!stack.isEmpty() && (ISocketableCapability.isSocketable(stack) || isSocketableController(mc.player, stack)))
 					mc.displayGuiScreen(new GuiSocketSelect(stack));
-
-				else mc.displayGuiScreen(new GuiLeveling());
+				else {
+					ClientBookRegistry.INSTANCE.displayBookGui(LibResources.PATCHOULI_BOOK);
+				}
 
 			}
 		}

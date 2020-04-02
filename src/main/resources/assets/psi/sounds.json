@@ -1,8 +1,63 @@
 {
-	"bullet_create": { "category": "block", "sounds": ["psi:bullet_create"], "subtitle": "psi.subtitle.bullet_create" },
-	"cad_create": { "category": "block", "sounds": ["psi:cad_create"], "subtitle": "psi.subtitle.cad_create" },
-	"cad_shoot": { "category": "player", "sounds": ["psi:cad_shoot"], "subtitle": "psi.subtitle.spell_cast" },
-	"compile_error": { "category": "block", "sounds": ["psi:compile_error"] },
-	"level_up": { "category": "player", "sounds": ["psi:level_up"] },
-	"loopcast": { "category": "player", "sounds": ["psi:loopcast"], "subtitle": "psi.subtitle.loopcast" }
+  "bullet_create": {
+    "category": "block",
+    "sounds": [
+      "psi:bullet_create"
+    ],
+    "subtitle": "psi.subtitle.bullet_create"
+  },
+  "cad_create": {
+    "category": "block",
+    "sounds": [
+      "psi:cad_create"
+    ],
+    "subtitle": "psi.subtitle.cad_create"
+  },
+  "cad_shoot": {
+    "category": "player",
+    "sounds": [
+      "psi:cad_shoot"
+    ],
+    "subtitle": "psi.subtitle.spell_cast"
+  },
+  "compile_error": {
+    "category": "block",
+    "sounds": [
+      "psi:compile_error"
+    ]
+  },
+  "level_up": {
+    "category": "player",
+    "sounds": [
+      "psi:level_up"
+    ]
+  },
+  "loopcast": {
+    "category": "player",
+    "sounds": [
+      "psi:loopcast"
+    ],
+    "subtitle": "psi.subtitle.loopcast"
+  },
+  "book": {
+    "category": "player",
+    "sounds": [
+      "psi:book"
+    ],
+    "subtitle": "psi.subtitle.book"
+  },
+  "book_flip": {
+    "category": "player",
+    "sounds": [
+      "psi:book_flip"
+    ],
+    "subtitle": "patchouli.subtitle.book_flip"
+  },
+  "book_open": {
+    "category": "player",
+    "sounds": [
+      "psi:book_open"
+    ],
+    "subtitle": "patchouli.subtitle.book_open"
+  }
 }

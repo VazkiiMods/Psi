@@ -5,17 +5,17 @@ import vazkii.psi.api.exosuit.PsiArmorEvent;
 
 public class ItemLightExosuitSensor extends ItemExosuitSensor {
 
-    public ItemLightExosuitSensor(String name, Properties properties) {
-        super(name, properties);
-    }
+	public ItemLightExosuitSensor(Properties properties) {
+		super(properties);
+	}
 
-    @Override
-    public String getEventType(ItemStack stack) {
-        return PsiArmorEvent.LOW_LIGHT;
-    }
+	@Override
+	public String getEventType(ItemStack stack) {
+		return PsiArmorEvent.LOW_LIGHT;
+	}
 
-    @Override
-    public int getColor(ItemStack stack) {
-        return ItemExosuitSensor.lightColor;
+	@Override
+	public int getColor(ItemStack stack) {
+		return ItemExosuitSensor.lightColor;
     }
 }

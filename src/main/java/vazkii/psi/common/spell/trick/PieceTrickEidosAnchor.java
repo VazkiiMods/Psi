@@ -25,7 +25,7 @@ import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
 
 public class PieceTrickEidosAnchor extends PieceTrick {
 
-	SpellParam time;
+	SpellParam<Number> time;
 
 	public PieceTrickEidosAnchor(Spell spell) {
 		super(spell);
@@ -50,12 +50,12 @@ public class PieceTrickEidosAnchor extends PieceTrick {
 
 	@Override
 	public Object execute(SpellContext context) {
-		Double timeVal = this.<Double>getParamValue(context, time);
+		int timeVal = this.getParamValue(context, time).intValue();
 		PlayerData data = PlayerDataHandler.get(context.caster);
 		data.eidosAnchor = Vector3.fromEntity(context.caster);
 		data.eidosAnchorPitch = context.caster.rotationPitch;
 		data.eidosAnchorYaw = context.caster.rotationYaw;
-		data.eidosAnchorTime = timeVal.intValue() * 20;
+		data.eidosAnchorTime = timeVal * 20;
 		data.postAnchorRecallTime = 0;
 		data.isAnchored = true;
 

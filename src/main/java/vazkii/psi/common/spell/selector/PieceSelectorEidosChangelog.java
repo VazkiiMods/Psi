@@ -22,7 +22,7 @@ import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
 
 public class PieceSelectorEidosChangelog extends PieceSelector {
 
-	SpellParam number;
+	SpellParam<Number> number;
 
 	public PieceSelectorEidosChangelog(Spell spell) {
 		super(spell);
@@ -35,10 +35,9 @@ public class PieceSelectorEidosChangelog extends PieceSelector {
 
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
-		Double numberVal = this.<Double>getParamValue(context, number);
+		int i = this.getParamValue(context, number).intValue();
 		PlayerData data = PlayerDataHandler.get(context.caster);
 		
-		int i = numberVal.intValue();
 		if(i <= 0 || i >= data.eidosChangelog.size())
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
 		

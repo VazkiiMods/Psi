@@ -25,7 +25,7 @@ import vazkii.psi.common.spell.trick.entity.PieceTrickAddMotion;
 
 public class PieceOperatorEntityMotion extends PieceOperator {
 
-	SpellParam target;
+	SpellParam<Entity> target;
 
 	public PieceOperatorEntityMotion(Spell spell) {
 		super(spell);

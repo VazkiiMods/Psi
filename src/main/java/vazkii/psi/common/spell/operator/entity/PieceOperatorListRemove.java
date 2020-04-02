@@ -25,8 +25,8 @@ import java.util.List;
 
 public class PieceOperatorListRemove extends PieceOperator {
 
-	SpellParam target;
-	SpellParam list;
+	SpellParam<Entity> target;
+	SpellParam<EntityListWrapper> list;
 
 	public PieceOperatorListRemove(Spell spell) {
 		super(spell);

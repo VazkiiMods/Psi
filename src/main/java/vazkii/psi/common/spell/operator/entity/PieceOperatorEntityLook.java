@@ -11,6 +11,9 @@
 package vazkii.psi.common.spell.operator.entity;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.IProjectile;
+import net.minecraft.entity.item.FallingBlockEntity;
+import net.minecraft.entity.projectile.DamagingProjectileEntity;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
@@ -21,7 +24,7 @@ import vazkii.psi.api.spell.piece.PieceOperator;
 
 public class PieceOperatorEntityLook extends PieceOperator {
 
-	SpellParam target;
+	SpellParam<Entity> target;
 
     public PieceOperatorEntityLook(Spell spell) {
         super(spell);
@@ -32,16 +35,17 @@ public class PieceOperatorEntityLook extends PieceOperator {
         addParam(target = new ParamEntity(SpellParam.GENERIC_NAME_TARGET, SpellParam.YELLOW, false, false));
     }
 
-    //Projectiles and falling blocks and items should have their look be the motion TODO
     @Override
     public Object execute(SpellContext context) throws SpellRuntimeException {
-        Entity e = this.getParamValue(context, target);
+		Entity e = this.getParamValue(context, target);
 
-        if (e == null)
-            throw new SpellRuntimeException(SpellRuntimeException.NULL_TARGET);
+		if (e == null)
+			throw new SpellRuntimeException(SpellRuntimeException.NULL_TARGET);
+		if (e instanceof IProjectile || e instanceof DamagingProjectileEntity || e instanceof FallingBlockEntity)
+			return new Vector3(e.getMotion());
 
-        return new Vector3(e.getLook(1F));
-    }
+		return new Vector3(e.getLook(1F));
+	}
 
 	@Override
 	public Class<?> getEvaluationType() {

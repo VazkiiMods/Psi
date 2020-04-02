@@ -12,7 +12,8 @@ package vazkii.psi.api.spell;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraftforge.api.distmarker.Dist;
@@ -45,15 +46,15 @@ public final class SpellGrid {
 	private int leftmost, rightmost, topmost, bottommost;
 
 	@OnlyIn(Dist.CLIENT)
-	public void draw() {
+	public void draw(MatrixStack ms, IRenderTypeBuffer buffers, int light) {
 		for(int i = 0; i < GRID_SIZE; i++)
 			for(int j = 0; j < GRID_SIZE; j++) {
 				SpellPiece p = gridData[i][j];
 				if(p != null) {
-					GlStateManager.pushMatrix();
-					GlStateManager.translatef(i * 18, j * 18, 0);
-					p.draw();
-					GlStateManager.popMatrix();
+					ms.push();
+					ms.translate(i * 18, j * 18, 0);
+					p.draw(ms, buffers, light);
+					ms.pop();
 				}
 			}
 	}
@@ -109,8 +110,7 @@ public final class SpellGrid {
 					newGrid[i][newY] = p;
 					p.y = newY;
 
-					for (SpellParam param : p.paramSides.keySet())
-						p.paramSides.put(param, p.paramSides.get(param).mirrorVertical());
+					p.paramSides.replaceAll((k, v) -> p.paramSides.get(k).mirrorVertical());
 				}
 			}
 		}
@@ -140,7 +140,7 @@ public final class SpellGrid {
 					p.x = newX;
 					p.y = newY;
 
-					for (SpellParam param : p.paramSides.keySet()) {
+					for (SpellParam<?> param : p.paramSides.keySet()) {
 						SpellParam.Side side = p.paramSides.get(param);
 						p.paramSides.put(param, ccw ? side.rotateCCW() : side.rotateCW());
 					}

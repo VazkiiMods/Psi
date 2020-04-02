@@ -29,8 +29,8 @@ public class PieceTrickSaveVector extends PieceTrick {
 	
 	public static final String KEY_SLOT_LOCKED = "psi:SlotLocked";
 	
-	SpellParam number;
-	SpellParam target;
+	SpellParam<Number> number;
+	SpellParam<Vector3> target;
 
 	public PieceTrickSaveVector(Spell spell) {
 		super(spell);
@@ -55,7 +55,7 @@ public class PieceTrickSaveVector extends PieceTrick {
 
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
-		Double numberVal = this.<Double>getParamValue(context, number);
+		Number numberVal = this.getParamValue(context, number).doubleValue();
 		Vector3 targetVal = this.getParamValue(context, target);
 
 		int n = numberVal.intValue() - 1;

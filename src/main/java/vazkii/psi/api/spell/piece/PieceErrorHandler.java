@@ -15,7 +15,7 @@ import vazkii.psi.api.spell.param.ParamAny;
 
 public abstract class PieceErrorHandler extends SpellPiece implements IErrorCatcher {
 
-	protected SpellParam piece;
+	protected SpellParam<SpellParam.Any> piece;
 
 	public PieceErrorHandler(Spell spell) {
 		super(spell);
@@ -32,7 +32,7 @@ public abstract class PieceErrorHandler extends SpellPiece implements IErrorCatc
 	}
 
 	@Override
-	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
+	public void addToMetadata(SpellMetadata meta) {
 		meta.addStat(EnumSpellStat.COMPLEXITY, 1);
 	}
 
@@ -42,7 +42,7 @@ public abstract class PieceErrorHandler extends SpellPiece implements IErrorCatc
 	}
 
 	@Override
-	public Object execute(SpellContext context) throws SpellRuntimeException {
+	public Object execute(SpellContext context) {
 		return null;
 	}
 

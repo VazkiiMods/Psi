@@ -27,7 +27,7 @@ import java.util.WeakHashMap;
 
 @Mod.EventBusSubscriber(modid = LibMisc.MOD_ID)
 public class AdditiveMotionHandler {
-	private static Map<Entity, Vec3d> toUpdate = new WeakHashMap<>();
+	private static final Map<Entity, Vec3d> toUpdate = new WeakHashMap<>();
 
 	public static void addMotion(Entity entity, double x, double y, double z) {
         if (x == 0 && y == 0 && z == 0) return;

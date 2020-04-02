@@ -24,8 +24,8 @@ import vazkii.psi.api.spell.piece.PieceTrick;
 
 public class PieceTrickDebug extends PieceTrick {
 
-	SpellParam target;
-	SpellParam number;
+	SpellParam<SpellParam.Any> target;
+	SpellParam<Number> number;
 
 	public PieceTrickDebug(Spell spell) {
 		super(spell);
@@ -44,14 +44,14 @@ public class PieceTrickDebug extends PieceTrick {
 
 	@Override
 	public Object execute(SpellContext context) {
-		Double numberVal = this.<Double>getParamValue(context, number);
+		Number numberVal = this.getParamValue(context, number);
 		Object targetVal = getParamValue(context, target);
 
 		ITextComponent component = new StringTextComponent(String.valueOf(targetVal));
 
 		if(numberVal != null) {
 			String numStr = "" + numberVal;
-			if(numberVal - numberVal.intValue() == 0) {
+			if(numberVal.doubleValue() - numberVal.intValue() == 0) {
 				int numInt = numberVal.intValue();
 				numStr = "" + numInt;
 			}

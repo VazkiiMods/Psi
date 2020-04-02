@@ -1,0 +1,75 @@
+{
+  "name": "psi.book.entry.socket",
+  "category": "components",
+  "icon": "psi:cad_socket_basic",
+  "pages": [
+    {
+      "type": "text",
+      "text": "psi.book.page.socket.0"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.socket.1"
+    },
+    {
+      "type": "spotlight",
+      "text": "psi.book.page.socket.2",
+      "item": "psi:cad_socket_basic",
+      "link_recipe": false,
+      "anchor": "basic"
+    },
+    {
+      "type": "crafting",
+      "text": "psi.book.page.socket.3",
+      "recipe": "psi:cad_socket_basic"
+    },
+    {
+      "type": "spotlight",
+      "text": "psi.book.page.socket.4",
+      "item": "psi:cad_socket_signaling",
+      "link_recipe": false,
+      "anchor": "signaling"
+    },
+    {
+      "type": "crafting",
+      "text": "psi.book.page.socket.5",
+      "recipe": "psi:cad_socket_signaling"
+    },
+    {
+      "type": "spotlight",
+      "text": "psi.book.page.socket.6",
+      "item": "psi:cad_socket_large",
+      "link_recipe": false,
+      "anchor": "large"
+    },
+    {
+      "type": "crafting",
+      "text": "psi.book.page.socket.7",
+      "recipe": "psi:cad_socket_large"
+    },
+    {
+      "type": "spotlight",
+      "text": "psi.book.page.socket.8",
+      "item": "psi:cad_socket_transmissive",
+      "link_recipe": false,
+      "anchor": "transmissive"
+    },
+    {
+      "type": "crafting",
+      "text": "psi.book.page.socket.9",
+      "recipe": "psi:cad_socket_transmissive"
+    },
+    {
+      "type": "spotlight",
+      "text": "psi.book.page.socket.10",
+      "item": "psi:cad_socket_huge",
+      "link_recipe": false,
+      "anchor": "huge"
+    },
+    {
+      "type": "crafting",
+      "text": "psi.book.page.socket.11",
+      "recipe": "psi:cad_socket_huge"
+    }
+  ]
+}

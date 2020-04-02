@@ -27,12 +27,11 @@ import javax.annotation.Nonnull;
 //https://github.com/Vazkii/Botania/blob/1.15/src/main/java/vazkii/botania/client/fx/FXWisp.java
 public class FXWisp extends SpriteTexturedParticle {
 
-	private final boolean depthTest;
 	private final float moteParticleScale;
 	private final int moteHalfLife;
 
 	public FXWisp(World world, double d, double d1, double d2, double xSpeed, double ySpeed, double zSpeed,
-				  float size, float red, float green, float blue, boolean depthTest, float maxAgeMul, boolean noClip) {
+				  float size, float red, float green, float blue, float maxAgeMul) {
 		super(world, d, d1, d2, 0, 0, 0);
 		// super applies wiggle to motion so set it here instead
 		motionX = xSpeed;
@@ -46,7 +45,6 @@ public class FXWisp extends SpriteTexturedParticle {
 		particleScale = (this.rand.nextFloat() * 0.5F + 0.5F) * 2.0F * size;
 		moteParticleScale = particleScale;
 		maxAge = (int) (28D / (Math.random() * 0.3D + 0.7D) * maxAgeMul);
-		this.depthTest = depthTest;
 
 		moteHalfLife = maxAge / 2;
 		setSize(0.01F, 0.01F);
@@ -54,7 +52,7 @@ public class FXWisp extends SpriteTexturedParticle {
 		prevPosX = posX;
 		prevPosY = posY;
 		prevPosZ = posZ;
-		this.canCollide = !noClip;
+		this.canCollide = true;
 	}
 
 	@Override
@@ -75,7 +73,7 @@ public class FXWisp extends SpriteTexturedParticle {
 	@Nonnull
 	@Override
 	public IParticleRenderType getRenderType() {
-		return depthTest ? NORMAL_RENDER : DIW_RENDER;
+		return NORMAL_RENDER;
 	}
 
 	// [VanillaCopy] of super, without drag when onGround is true
@@ -137,23 +135,4 @@ public class FXWisp extends SpriteTexturedParticle {
 		}
 	};
 
-	private static final IParticleRenderType DIW_RENDER = new IParticleRenderType() {
-		@Override
-		public void beginRender(BufferBuilder bufferBuilder, TextureManager textureManager) {
-			beginRenderCommon(bufferBuilder, textureManager);
-			RenderSystem.disableDepthTest();
-		}
-
-		@Override
-		public void finishRender(Tessellator tessellator) {
-			tessellator.draw();
-			RenderSystem.enableDepthTest();
-			endRenderCommon();
-		}
-
-		@Override
-		public String toString() {
-			return "psi:depth_ignoring_wisp";
-		}
-	};
 }

@@ -11,9 +11,13 @@
 package vazkii.psi.client.core.proxy;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderTypeLookup;
+import net.minecraft.client.renderer.model.Material;
+import net.minecraft.client.renderer.model.ModelBakery;
 import net.minecraft.client.renderer.model.ModelResourceLocation;
-import net.minecraft.client.settings.ParticleStatus;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particles.IParticleData;
@@ -24,31 +28,36 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.DeferredWorkQueue;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import vazkii.arl.util.ClientTicker;
+import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.cad.ICADColorizer;
-import vazkii.psi.client.core.handler.HUDHandler;
-import vazkii.psi.client.core.handler.KeybindHandler;
-import vazkii.psi.client.core.handler.ShaderHandler;
+import vazkii.psi.api.spell.SpellPiece;
+import vazkii.psi.client.core.handler.*;
 import vazkii.psi.client.fx.SparkleParticleData;
 import vazkii.psi.client.fx.WispParticleData;
 import vazkii.psi.client.gui.GuiProgrammer;
 import vazkii.psi.client.model.ModelCAD;
 import vazkii.psi.client.render.entity.RenderSpellCircle;
+import vazkii.psi.client.render.entity.RenderSpellProjectile;
 import vazkii.psi.client.render.tile.RenderTileProgrammer;
+import vazkii.psi.common.block.base.ModBlocks;
 import vazkii.psi.common.block.tile.TileProgrammer;
-import vazkii.psi.common.core.handler.ConfigHandler;
-import vazkii.psi.common.core.handler.PersistencyHandler;
-import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.proxy.IProxy;
-import vazkii.psi.common.entity.EntitySpellCircle;
+import vazkii.psi.common.entity.*;
 import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.lib.LibItemNames;
 import vazkii.psi.common.lib.LibMisc;
+import vazkii.psi.common.lib.LibResources;
+import vazkii.psi.common.spell.other.PieceConnector;
+
+import java.util.Map;
 
 @OnlyIn(Dist.CLIENT)
 public class ClientProxy implements IProxy {
@@ -59,20 +68,40 @@ public class ClientProxy implements IProxy {
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetup);
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::modelBake);
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::addCADModels);
+		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::loadComplete);
 	}
 
 	private void clientSetup(FMLClientSetupEvent event) {
-		ShaderHandler.init();
+
 		KeybindHandler.init();
 
 		ClientRegistry.bindTileEntityRenderer(TileProgrammer.TYPE, RenderTileProgrammer::new);
 
 		RenderingRegistry.registerEntityRenderingHandler(EntitySpellCircle.TYPE, RenderSpellCircle::new);
+		RenderingRegistry.registerEntityRenderingHandler(EntitySpellCharge.TYPE, RenderSpellProjectile::new);
+		RenderingRegistry.registerEntityRenderingHandler(EntitySpellGrenade.TYPE, RenderSpellProjectile::new);
+		RenderingRegistry.registerEntityRenderingHandler(EntitySpellProjectile.TYPE, RenderSpellProjectile::new);
+		RenderingRegistry.registerEntityRenderingHandler(EntitySpellMine.TYPE, RenderSpellProjectile::new);
+		RenderTypeLookup.setRenderLayer(ModBlocks.conjured, RenderType.getTranslucent());
+		ContributorSpellCircleHandler.firstStart();
+		ModelBakery.LOCATIONS_BUILTIN_TEXTURES.addAll(PsiAPI.getAllSpellPieceMaterial());
+		ModelBakery.LOCATIONS_BUILTIN_TEXTURES.add(new Material(PsiAPI.PSI_PIECE_TEXTURE_ATLAS, PieceConnector.LINES_TEXTURE));
+	}
+
+	private void loadComplete(FMLLoadCompleteEvent event) {
+		DeferredWorkQueue.runLater(() -> {
+			Map<RenderType, BufferBuilder> map = ObfuscationReflectionHelper.getPrivateValue(IRenderTypeBuffer.Impl.class, Minecraft.getInstance().getBufferBuilders().getEntityVertexConsumers(), "field_228458_b_");
+			RenderType layer = SpellPiece.getLayer();
+			map.put(layer, new BufferBuilder(layer.getExpectedBufferSize()));
+			map.put(GuiProgrammer.LAYER, new BufferBuilder(GuiProgrammer.LAYER.getExpectedBufferSize()));
+			ColorHandler.init();
+			ShaderHandler.init();
+		});
 	}
 
 	private void modelBake(ModelBakeEvent event) {
 		ModelResourceLocation key = new ModelResourceLocation(ModItems.cad.getRegistryName(), "inventory");
-		event.getModelRegistry().put(key, new ModelCAD(event.getModelRegistry().get(key)));
+		event.getModelRegistry().put(key, new ModelCAD());
 
 	}
 
@@ -87,14 +116,10 @@ public class ClientProxy implements IProxy {
 	}
 
 
+
 	@Override
 	public void addParticleForce(World world, IParticleData particleData, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
 		world.addParticle(particleData, true, x, y, z, xSpeed, ySpeed, zSpeed);
-	}
-
-	@Override
-	public boolean isTheClientPlayer(LivingEntity entity) {
-		return entity == Minecraft.getInstance().player;
 	}
 
     @Override
@@ -104,7 +129,7 @@ public class ClientProxy implements IProxy {
 
     @Override
     public long getWorldElapsedTicks() {
-        return ClientTicker.ticksInGame;
+		return ClientTickHandler.ticksInGame;
     }
 
     @Override
@@ -113,14 +138,10 @@ public class ClientProxy implements IProxy {
     }
 
     @Override
-    public void onLevelUp(int level) {
-        HUDHandler.levelUp(level);
-    }
+	public void onLevelUp(ResourceLocation level) {
+		HUDHandler.levelUp(level);
+	}
 
-    @Override
-    public void savePersistency() {
-        PersistencyHandler.save(PlayerDataHandler.get(getClientPlayer()).level);
-    }
 
     @Override
     public int getColorForCAD(ItemStack cadStack) {
@@ -130,15 +151,17 @@ public class ClientProxy implements IProxy {
 
     @Override
     public int getColorForColorizer(ItemStack colorizer) {
-        ICADColorizer icc = (ICADColorizer) colorizer.getItem();
+		if (colorizer.isEmpty())
+			return ICADColorizer.DEFAULT_SPELL_COLOR;
+		ICADColorizer icc = (ICADColorizer) colorizer.getItem();
 		return icc.getColor(colorizer);
 	}
 
 	@Override
 	public void sparkleFX(World world, double x, double y, double z, float r, float g, float b, float motionx, float motiony, float motionz, float size, int m) {
-        if (noParticles(world) || m == 0)
+        if (m == 0)
             return;
-        SparkleParticleData data = new SparkleParticleData(size, r, g, b, m, false, false);
+		SparkleParticleData data = new SparkleParticleData(size, r, g, b, m, motionx, motiony, motionz);
         addParticleForce(world, data, x, y, z, motionx, motiony, motionz);
 
     }
@@ -148,24 +171,11 @@ public class ClientProxy implements IProxy {
 		sparkleFX(Minecraft.getInstance().world, x, y, z, r, g, b, motionx, motiony, motionz, size, m);
 	}
 
-	private static boolean distanceLimit = true;
-	private static boolean depthTest = true;
-
-	@Override
-	public void setWispFXDistanceLimit(boolean limit) {
-		distanceLimit = limit;
-	}
-
-	@Override
-	public void setWispFXDepthTest(boolean test) {
-		depthTest = test;
-	}
-
 	@Override
 	public void wispFX(World world, double x, double y, double z, float r, float g, float b, float size, float motionx, float motiony, float motionz, float maxAgeMul) {
-        if (noParticles(world) || maxAgeMul == 0)
+		if (maxAgeMul == 0)
 			return;
-		WispParticleData data = new WispParticleData(size, r, g, b, maxAgeMul, depthTest, false);
+		WispParticleData data = new WispParticleData(size, r, g, b, maxAgeMul);
 		addParticleForce(world, data, x, y, z, motionx, motiony, motionz);
 	}
 
@@ -178,25 +188,5 @@ public class ClientProxy implements IProxy {
 	public void openProgrammerGUI(TileProgrammer programmer) {
 		Minecraft.getInstance().displayGuiScreen(new GuiProgrammer(programmer));
 	}
-
-	private boolean noParticles(World world) {
-		if (world == null)
-			return true;
-
-		if (!world.isRemote)
-			return true;
-
-		if (!ConfigHandler.CLIENT.useVanillaParticleLimiter.get())
-			return false;
-
-        float chance = 1F;
-        if (Minecraft.getInstance().gameSettings.particles == ParticleStatus.DECREASED)
-            chance = 0.6F;
-        else if (Minecraft.getInstance().gameSettings.particles == ParticleStatus.MINIMAL)
-            chance = 0.2F;
-
-        return !(chance == 1F) && !(Math.random() < chance);
-    }
-
 
 }

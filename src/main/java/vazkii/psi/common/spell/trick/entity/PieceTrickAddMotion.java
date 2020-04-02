@@ -11,14 +11,10 @@
 package vazkii.psi.common.spell.trick.entity;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.network.play.server.SEntityVelocityPacket;
 import vazkii.psi.api.internal.Vector3;
-import vazkii.psi.api.spell.EnumSpellStat;
-import vazkii.psi.api.spell.Spell;
-import vazkii.psi.api.spell.SpellCompilationException;
-import vazkii.psi.api.spell.SpellContext;
-import vazkii.psi.api.spell.SpellMetadata;
-import vazkii.psi.api.spell.SpellParam;
-import vazkii.psi.api.spell.SpellRuntimeException;
+import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.param.ParamEntity;
 import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.param.ParamVector;
@@ -29,9 +25,9 @@ public class PieceTrickAddMotion extends PieceTrick {
 
 	public static final double MULTIPLIER = 0.3;
 
-	SpellParam target;
-	SpellParam direction;
-	SpellParam speed;
+	SpellParam<Entity> target;
+	SpellParam<Vector3> direction;
+	SpellParam<Number> speed;
 
 	public PieceTrickAddMotion(Spell spell) {
 		super(spell);
@@ -60,7 +56,7 @@ public class PieceTrickAddMotion extends PieceTrick {
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		Entity targetVal = this.getParamValue(context, target);
 		Vector3 directionVal = this.getParamValue(context, direction);
-		Double speedVal = this.<Double>getParamValue(context, speed);
+		double speedVal = this.getParamValue(context, speed).doubleValue();
 
 		addMotion(context, targetVal, directionVal, speedVal);
 
@@ -98,16 +94,25 @@ public class PieceTrickAddMotion extends PieceTrick {
 			if(e.getMotion().getY() >= 0)
 				e.fallDistance = 0;
 		}
-		
-		if(Math.abs(dir.z) > 0.0001) {
+
+		if (Math.abs(dir.z) > 0.0001) {
 			String keyv = key + "Z";
-			if(!context.customData.containsKey(keyv)) {
+			if (!context.customData.containsKey(keyv)) {
 				z += dir.z;
 				context.customData.put(keyv, 0);
 			}
 		}
 
-		AdditiveMotionHandler.addMotion(e, x, y, z);
+		//Bandaid for now
+
+		if (e instanceof ServerPlayerEntity) {
+			e.addVelocity(x, y, z);
+			((ServerPlayerEntity) e).connection.sendPacket(new SEntityVelocityPacket(e));
+		} else {
+			AdditiveMotionHandler.addMotion(e, x, y, z);
+		}
+
+
 	}
 
 }

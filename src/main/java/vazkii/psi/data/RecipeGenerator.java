@@ -5,12 +5,8 @@ import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.ICriterionInstance;
 import net.minecraft.advancements.IRequirementsStrategy;
 import net.minecraft.advancements.criterion.RecipeUnlockedTrigger;
-import net.minecraft.data.CustomRecipeBuilder;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.IFinishedRecipe;
-import net.minecraft.data.RecipeProvider;
-import net.minecraft.data.ShapedRecipeBuilder;
-import net.minecraft.data.ShapelessRecipeBuilder;
+import net.minecraft.data.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.crafting.Ingredient;
@@ -24,12 +20,7 @@ import net.minecraftforge.common.crafting.conditions.IConditionBuilder;
 import net.minecraftforge.common.crafting.conditions.NotCondition;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.base.ModBlocks;
-import vazkii.psi.common.crafting.recipe.AssemblyScavengeRecipe;
-import vazkii.psi.common.crafting.recipe.BulletToDriveRecipe;
-import vazkii.psi.common.crafting.recipe.ColorizerChangeRecipe;
-import vazkii.psi.common.crafting.recipe.DriveDuplicateRecipe;
-import vazkii.psi.common.crafting.recipe.SensorAttachRecipe;
-import vazkii.psi.common.crafting.recipe.SensorRemoveRecipe;
+import vazkii.psi.common.crafting.recipe.*;
 import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.lib.ModTags;
 
@@ -613,40 +604,14 @@ public class RecipeGenerator extends RecipeProvider implements IConditionBuilder
 						.patternLine("IMR")
 						.patternLine(" R ")
 		);
-		buildMagicalWrapper(Psi.location("psidust_block"), consumer,
-				hasPsidust, "has_psidust", ShapedRecipeBuilder.shapedRecipe(ModBlocks.psidustBlock.asItem())
-						.key('O', ModItems.psidust)
-						.patternLine("OOO")
-						.patternLine("OOO")
-						.patternLine("OOO")
-		);
-		buildMagicalWrapper(Psi.location("psimetal_block"), consumer,
-				hasPsimetal, "has_psimetal", ShapedRecipeBuilder.shapedRecipe(ModBlocks.psimetalBlock.asItem())
-						.key('O', ModItems.psimetal)
-						.patternLine("OOO")
-						.patternLine("OOO")
-						.patternLine("OOO")
-		);
-		buildMagicalWrapper(Psi.location("psigem_block"), consumer,
-				hasPsimetal, "has_psimetal", ShapedRecipeBuilder.shapedRecipe(ModBlocks.psigemBlock.asItem())
-						.key('O', ModItems.psigem)
-						.patternLine("OOO")
-						.patternLine("OOO")
-						.patternLine("OOO")
-		);
-		buildMagicalWrapper(Psi.location("ebony_block"), consumer,
-				hasEbonyPsimetal, "has_ebony_psimetal", ShapedRecipeBuilder.shapedRecipe(ModBlocks.psimetalEbony.asItem())
-						.key('O', ModItems.ebonyPsimetal)
-						.patternLine("OOO")
-						.patternLine("OOO")
-						.patternLine("OOO")
-		);
-		buildMagicalWrapper(Psi.location("ivory_block"), consumer,
-				hasIvoryPsimetal, "has_ivory_psimetal", ShapedRecipeBuilder.shapedRecipe(ModBlocks.psimetalIvory.asItem())
-						.key('O', ModItems.ivoryPsimetal)
-						.patternLine("OOO")
-						.patternLine("OOO")
-						.patternLine("OOO")
+		buildMagicalWrapper(Psi.location("cad_colorizer_empty"), consumer,
+				hasPsidust, "has_psidust", ShapedRecipeBuilder.shapedRecipe(ModItems.cadColorizerEmpty)
+						.key('D', ModTags.PSIDUST)
+						.key('G', Tags.Items.GLASS)
+						.key('I', Tags.Items.INGOTS_IRON)
+						.patternLine(" D ")
+						.patternLine("G G")
+						.patternLine(" I ")
 		);
 		buildMagicalWrapper(Psi.location("psidust_block_shapeless"), consumer,
 				hasPsidust, "has_psidust",

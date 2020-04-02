@@ -21,7 +21,6 @@ public class ConfigHandler {
 		public final ForgeConfigSpec.BooleanValue useShaders;
 		public final ForgeConfigSpec.BooleanValue psiBarOnRight;
 		public final ForgeConfigSpec.BooleanValue contextSensitiveBar;
-		public final ForgeConfigSpec.BooleanValue useVanillaParticleLimiter;
 		public final ForgeConfigSpec.IntValue maxPsiBarScale;
 
 		public Client(ForgeConfigSpec.Builder builder) {
@@ -33,9 +32,6 @@ public class ConfigHandler {
 
 			contextSensitiveBar = builder.comment("Controls whether the Psi Bar should be hidden if it's full and the player is holding an item that uses Psi.")
 					.define("client.contextSensitiveBar", true);
-
-			useVanillaParticleLimiter = builder.comment("Controls whether the \\\"Particles\\\" setting in the Vanilla options menu is accounted for when creating particles. Set to false to always have particles even if you change the Vanilla setting.")
-					.define("client.useVanillaParticleLimiter", true);
 
 			maxPsiBarScale = builder.comment("The maximum scale your Psi bar can be. This prevents it from being too large on a bigger GUI scale. This is maximum amount of \\\"on screen pixels\\\" each actual pixel can take.")
 					.defineInRange("client.maxPsiBarScale", 3, 1, 5);
@@ -54,14 +50,11 @@ public class ConfigHandler {
 
 	public static class Common {
 
-		public final ForgeConfigSpec.BooleanValue usePersistantData;
 		public final ForgeConfigSpec.BooleanValue magiPsiClientSide;
 		public final ForgeConfigSpec.IntValue spellCacheSize;
 		public final ForgeConfigSpec.IntValue cadHarvestLevel;
 
 		public Common(ForgeConfigSpec.Builder builder) {
-			usePersistantData = builder.comment("Controls whether Psi is allowed to save and load Persistent Data outside your instance. This data is stored where .minecraft would be by default and is independent of instance, world or modpack, and allows you to instantly get back to the highest level you were at previously in your last world.")
-					.define("common.usePersistantData", true);
 
 			magiPsiClientSide = builder.comment("Set this to true to disable all server side features from Magical Psi, to allow you to use it purely as a client side mod")
 					.define("common.magiPsiClientSide", false);

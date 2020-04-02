@@ -27,7 +27,7 @@ import vazkii.psi.common.spell.trick.PieceTrickSaveVector;
 
 public class PieceSelectorSavedVector extends PieceSelector {
 
-	SpellParam number;
+	SpellParam<Number> number;
 
 	public PieceSelectorSavedVector(Spell spell) {
 		super(spell);
@@ -51,9 +51,9 @@ public class PieceSelectorSavedVector extends PieceSelector {
 
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
-		Double numberVal = this.<Double>getParamValue(context, number);
+		int numberVal = this.getParamValue(context, number).intValue();
 		
-		int n = numberVal.intValue() - 1;
+		int n = numberVal - 1;
 		if(context.customData.containsKey(PieceTrickSaveVector.KEY_SLOT_LOCKED + n))
 			throw new SpellRuntimeException(SpellRuntimeException.LOCKED_MEMORY);
 		

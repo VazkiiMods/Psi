@@ -22,13 +22,12 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.lwjgl.opengl.ARBMultitexture;
@@ -39,9 +38,9 @@ import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.cad.ICADColorizer;
 import vazkii.psi.api.cad.ISocketable;
 import vazkii.psi.api.cad.ISocketableCapability;
+import vazkii.psi.api.gui.PsiHudElementType;
+import vazkii.psi.api.gui.RenderPsiHudEvent;
 import vazkii.psi.api.internal.PsiRenderHelper;
-import vazkii.psi.api.internal.TooltipHelper;
-import vazkii.psi.client.gui.GuiLeveling;
 import vazkii.psi.common.core.handler.ConfigHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
@@ -68,7 +67,7 @@ public final class HUDHandler {
 
 	public static boolean showLevelUp = false;
 	public static int levelDisplayTime = 0;
-	public static int levelValue = 0;
+	public static ResourceLocation levelValue = null;
 
 	private static ItemStack remainingDisplayStack;
 	private static int remainingTime;
@@ -81,11 +80,17 @@ public final class HUDHandler {
 			MainWindow resolution = event.getWindow();
 			float partialTicks = event.getPartialTicks();
 
-			drawPsiBar(resolution, partialTicks);
-			renderSocketableEquippedName(resolution, partialTicks);
-			renderLevelUpIndicator(resolution);
-			renderRemainingItems(resolution, partialTicks);
-			renderHUDItem(resolution, partialTicks);
+
+			if (!MinecraftForge.EVENT_BUS.post(new RenderPsiHudEvent(PsiHudElementType.PSI_BAR)))
+				drawPsiBar(resolution, partialTicks);
+			if (!MinecraftForge.EVENT_BUS.post(new RenderPsiHudEvent(PsiHudElementType.SOCKETABLE_EQUIPPED_NAME)))
+				renderSocketableEquippedName(resolution, partialTicks);
+			if (!MinecraftForge.EVENT_BUS.post(new RenderPsiHudEvent(PsiHudElementType.LEVEL_UP_INDICATOR)))
+				renderLevelUpIndicator(resolution);
+			if (!MinecraftForge.EVENT_BUS.post(new RenderPsiHudEvent(PsiHudElementType.REMAINING_ITEMS)))
+				renderRemainingItems(resolution, partialTicks);
+			if (!MinecraftForge.EVENT_BUS.post(new RenderPsiHudEvent(PsiHudElementType.HUD_ITEM)))
+				renderHUDItem(resolution, partialTicks);
 		}
 	}
 
@@ -114,8 +119,6 @@ public final class HUDHandler {
 
 		ICAD cad = (ICAD) cadStack.getItem();
 		PlayerData data = PlayerDataHandler.get(mc.player);
-		if (data.level == 0 && !mc.player.abilities.isCreativeMode)
-			return;
 
 		int totalPsi = data.getTotalPsi();
 		int currPsi = data.getAvailablePsi();
@@ -126,21 +129,6 @@ public final class HUDHandler {
 			return;
 
 		RenderSystem.pushMatrix();
-		//TODO CHECK: Is this an alternative to .getScaleFactor()?
-		double scaleFactor = res.getGuiScaleFactor();
-
-
-		if (scaleFactor > ConfigHandler.CLIENT.maxPsiBarScale.get()) {
-			int guiScale = mc.gameSettings.guiScale;
-
-			mc.gameSettings.guiScale = ConfigHandler.CLIENT.maxPsiBarScale.get();
-			// TODO Check: I don't think this is needed
-			//res = new ScaledResolution(mc);
-			mc.gameSettings.guiScale = guiScale;
-
-			float s = (float) ConfigHandler.CLIENT.maxPsiBarScale.get() / (float) scaleFactor;
-			RenderSystem.scalef(s, s, s);
-		}
 
 		boolean right = ConfigHandler.CLIENT.psiBarOnRight.get();
 
@@ -178,7 +166,7 @@ public final class HUDHandler {
 		int v = 0;
 
 		int texture = 0;
-		boolean shaders = ShaderHandler.useShaders();
+		boolean shaders = ShaderHandler.useShaders;
 
 		if (shaders) {
 			RenderSystem.activeTexture(ARBMultitexture.GL_TEXTURE0_ARB + secondaryTextureUnit);
@@ -263,6 +251,7 @@ public final class HUDHandler {
 			mc.fontRenderer.drawStringWithShadow(s2, x - offStr2, 0, 0xFFFFFF);
 			RenderSystem.popMatrix();
 		}
+		RenderSystem.disableBlend();
 		RenderSystem.popMatrix();
 	}
 
@@ -304,7 +293,7 @@ public final class HUDHandler {
 		}
 	}
 
-	public static void levelUp(int level) {
+	public static void levelUp(ResourceLocation level) {
 		levelValue = level;
 		levelDisplayTime = 0;
 		showLevelUp = true;
@@ -313,9 +302,6 @@ public final class HUDHandler {
 	@OnlyIn(Dist.CLIENT)
 	private static void renderLevelUpIndicator(MainWindow res) {
 		Minecraft mc = Minecraft.getInstance();
-		if (mc.currentScreen instanceof GuiLeveling)
-			showLevelUp = false;
-
 		if (!showLevelUp)
 			return;
 
@@ -342,8 +328,8 @@ public final class HUDHandler {
 		RenderSystem.scalef(2F, 2F, 2F);
 		mc.fontRenderer.drawStringWithShadow(levelUp, x, y, 0x0013C5FF + alphaOverlay);
 
-		String currLevel = "" + levelValue;
-		x = res.getScaledWidth() / 4;
+		String currLevel = "" + I18n.format(levelValue.toString().replace(":", "."));
+		x = res.getScaledWidth() / 4 - mc.fontRenderer.getStringWidth(currLevel) / 2;
 		y += 10;
 
 		if (levelDisplayTime > fadeTime) {
@@ -357,7 +343,7 @@ public final class HUDHandler {
 		RenderSystem.popMatrix();
 
 		if (levelDisplayTime > fadeTime * 2) {
-			String s = I18n.format("psimisc.levelUpInfo1");
+			String s = I18n.format("psimisc.level_up_info1");
 			swidth = mc.fontRenderer.getStringWidth(s);
 			len = s.length();
 			effLen = Math.min(len, len * (levelDisplayTime - fadeTime * 2) / fadeTime);
@@ -369,7 +355,7 @@ public final class HUDHandler {
 		}
 
 		if (levelDisplayTime > fadeTime * 3) {
-			String s = I18n.format("psimisc.levelUpInfo2", new TranslationTextComponent(KeybindHandler.keybind.getTranslationKey()).applyTextStyle(TextFormatting.GREEN));
+			String s = I18n.format("psimisc.level_up_info2", TextFormatting.GREEN + KeybindHandler.keybind.getLocalizedName().toUpperCase() + TextFormatting.WHITE);
 			swidth = mc.fontRenderer.getStringWidth(s);
 			len = s.length();
 			effLen = Math.min(len, len * (levelDisplayTime - fadeTime * 3) / fadeTime);
@@ -381,7 +367,8 @@ public final class HUDHandler {
 		}
 
 		RenderSystem.enableAlphaTest();
-		if (levelValue > 1 && levelDisplayTime >= time + fadeoutTime)
+		RenderSystem.disableBlend();
+		if (levelDisplayTime >= time + fadeoutTime)
 			showLevelUp = false;
 	}
 

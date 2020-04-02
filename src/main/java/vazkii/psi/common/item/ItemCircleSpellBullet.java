@@ -11,18 +11,18 @@ import vazkii.psi.common.spell.operator.vector.PieceOperatorVectorRaycast;
 
 public class ItemCircleSpellBullet extends ItemSpellBullet {
 
-    public ItemCircleSpellBullet(String name, Properties properties) {
-        super(name, properties);
-    }
+	public ItemCircleSpellBullet(Properties properties) {
+		super(properties);
+	}
 
-    @Override
-    public void castSpell(ItemStack stack, SpellContext context) {
-        ItemStack cad = PsiAPI.getPlayerCAD(context.caster);
-        ItemStack colorizer = ((ICAD) cad.getItem()).getComponentInSlot(cad, EnumCADComponent.DYE);
-        RayTraceResult pos = PieceOperatorVectorRaycast.raycast(context.caster, 32);
-        if (pos != null) {
-            EntitySpellCircle circle = new EntitySpellCircle(EntitySpellCircle.TYPE, context.caster.getEntityWorld());
-            circle.setInfo(context.caster, colorizer, stack);
+	@Override
+	public void castSpell(ItemStack stack, SpellContext context) {
+		ItemStack cad = PsiAPI.getPlayerCAD(context.caster);
+		ItemStack colorizer = ((ICAD) cad.getItem()).getComponentInSlot(cad, EnumCADComponent.DYE);
+		RayTraceResult pos = PieceOperatorVectorRaycast.raycast(context.caster, 32);
+		if (pos != null) {
+			EntitySpellCircle circle = new EntitySpellCircle(EntitySpellCircle.TYPE, context.caster.getEntityWorld());
+			circle.setInfo(context.caster, colorizer, stack);
             circle.setPosition(pos.getHitVec().x, pos.getHitVec().y, pos.getHitVec().z);
             circle.getEntityWorld().addEntity(circle);
         }

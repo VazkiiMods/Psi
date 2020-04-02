@@ -21,7 +21,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import vazkii.arl.util.ItemNBTHelper;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ISocketable;
 import vazkii.psi.api.spell.ISpellAcceptor;
@@ -30,7 +29,6 @@ import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.item.ItemCAD;
-import vazkii.psi.common.lib.LibMisc;
 
 public interface IPsimetalTool extends ISocketable, ISpellSettable {
 
@@ -51,9 +49,9 @@ public interface IPsimetalTool extends ISocketable, ISpellSettable {
 	@Override
 	default ItemStack getBulletInSocket(ItemStack stack, int slot) {
 		String name = TAG_BULLET_PREFIX + slot;
-		CompoundNBT cmp = ItemNBTHelper.getCompound(stack, name, true);
+		CompoundNBT cmp = stack.getOrCreateTag().getCompound(name);
 
-		if (cmp == null)
+		if (cmp.isEmpty())
 			return ItemStack.EMPTY;
 
 		return ItemStack.read(cmp);
@@ -67,17 +65,17 @@ public interface IPsimetalTool extends ISocketable, ISpellSettable {
 		if (!bullet.isEmpty())
 			cmp = bullet.write(cmp);
 
-		ItemNBTHelper.setCompound(stack, name, cmp);
+		stack.getOrCreateTag().put(name, cmp);
 	}
 
 	@Override
 	default int getSelectedSlot(ItemStack stack) {
-		return ItemNBTHelper.getInt(stack, TAG_SELECTED_SLOT, 0);
+		return stack.getOrCreateTag().getInt(TAG_SELECTED_SLOT);
 	}
 
 	@Override
 	default void setSelectedSlot(ItemStack stack, int slot) {
-		ItemNBTHelper.setInt(stack, TAG_SELECTED_SLOT, slot);
+		stack.getOrCreateTag().putInt(TAG_SELECTED_SLOT, slot);
 	}
 
 	@Override
@@ -107,7 +105,7 @@ public interface IPsimetalTool extends ISocketable, ISpellSettable {
 	}
 
 	static boolean isRepairableBy(ItemStack stack) {
-		return ItemTags.getCollection().getOrCreate(new ResourceLocation(LibMisc.MOD_ID, "ingotPsi")).contains(stack.getItem());
+		return ItemTags.getCollection().getOrCreate(new ResourceLocation("forge", "ingots/psimetal")).contains(stack.getItem());
 	}
 
 	static BlockRayTraceResult raytraceFromEntity(World worldIn, PlayerEntity player, RayTraceContext.FluidMode fluidMode, double range) {
@@ -129,13 +127,13 @@ public interface IPsimetalTool extends ISocketable, ISpellSettable {
 		if (entityIn instanceof PlayerEntity && stack.getDamage() > 0 && !isSelected) {
 			PlayerEntity player = (PlayerEntity) entityIn;
 			PlayerDataHandler.PlayerData data = PlayerDataHandler.get(player);
-			int regenTime = ItemNBTHelper.getInt(stack, TAG_REGEN_TIME, 0);
+			int regenTime = stack.getOrCreateTag().getInt(TAG_REGEN_TIME);
 
 			if (!data.overflowed && regenTime % 16 == 0 && (float) data.getAvailablePsi() / (float) data.getTotalPsi() > 0.5F) {
 				data.deductPsi(150, 0, true);
 				stack.setDamage(stack.getDamage() - 1);
 			}
-			ItemNBTHelper.setInt(stack, TAG_REGEN_TIME, regenTime + 1);
+			stack.getOrCreateTag().putInt(TAG_REGEN_TIME, regenTime + 1);
 		}
 	}
 

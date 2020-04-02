@@ -13,8 +13,6 @@ package vazkii.psi.common.block;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalBlock;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.InventoryHelper;
@@ -32,8 +30,6 @@ import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.items.ItemHandlerHelper;
 import vazkii.arl.block.tile.TileSimpleInventory;
 import vazkii.psi.common.block.tile.TileCADAssembler;
-import vazkii.psi.common.lib.LibBlockNames;
-import vazkii.psi.common.lib.LibMisc;
 
 import javax.annotation.Nullable;
 
@@ -41,9 +37,8 @@ import static net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABI
 
 public class BlockCADAssembler extends HorizontalBlock {
 
-	public BlockCADAssembler() {
-		super(Block.Properties.create(Material.IRON).hardnessAndResistance(5, 10).sound(SoundType.METAL).nonOpaque());
-		setRegistryName(LibMisc.MOD_ID, LibBlockNames.CAD_ASSEMBLER);
+	public BlockCADAssembler(Properties props) {
+		super(props);
 	}
 
 	@Override
@@ -86,30 +81,34 @@ public class BlockCADAssembler extends HorizontalBlock {
     }
 
 
-    //TODO Check if works in game
 
     @Override
     public ActionResultType onUse(BlockState state, World world, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult rayTraceResult) {
-        if (!world.isRemote) {
-            TileEntity te = world.getTileEntity(pos);
-            if (te instanceof TileCADAssembler) {
-                NetworkHooks.openGui((ServerPlayerEntity) playerIn, (INamedContainerProvider) te, pos);
-                return ActionResultType.SUCCESS;
-            }
-        }
-        return ActionResultType.PASS;
-    }
+		if (!world.isRemote) {
+			TileEntity te = world.getTileEntity(pos);
+			if (te instanceof TileCADAssembler) {
+				NetworkHooks.openGui((ServerPlayerEntity) playerIn, (INamedContainerProvider) te, pos);
+				return ActionResultType.SUCCESS;
+			}
+		}
+		return ActionResultType.SUCCESS;
+	}
 
-    @Nullable
-    @Override
-    public INamedContainerProvider getContainer(BlockState p_220052_1_, World p_220052_2_, BlockPos p_220052_3_) {
-        return super.getContainer(p_220052_1_, p_220052_2_, p_220052_3_);
-    }
+	@Nullable
+	@Override
+	public INamedContainerProvider getContainer(BlockState p_220052_1_, World p_220052_2_, BlockPos p_220052_3_) {
+		return super.getContainer(p_220052_1_, p_220052_2_, p_220052_3_);
+	}
 
-    @Nullable
-    @Override
-    public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-        return new TileCADAssembler();
-    }
+	@Override
+	public boolean hasTileEntity(BlockState state) {
+		return true;
+	}
+
+	@Nullable
+	@Override
+	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+		return new TileCADAssembler();
+	}
 
 }

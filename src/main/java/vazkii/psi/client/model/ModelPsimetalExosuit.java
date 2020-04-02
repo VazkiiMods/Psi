@@ -10,15 +10,12 @@
  */
 package vazkii.psi.client.model;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
-import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 
-public class ModelPsimetalExosuit extends BipedModel {
+public class ModelPsimetalExosuit extends ModelArmor {
 
-    private final ModelRenderer helmAnchor;
     private final ModelRenderer helm;
     private final ModelRenderer helmDetailR;
     private final ModelRenderer helmDetailL;
@@ -26,11 +23,9 @@ public class ModelPsimetalExosuit extends BipedModel {
     private final ModelRenderer bodyAnchor;
     private final ModelRenderer body;
 
-    private final ModelRenderer armLAnchor;
 	private final ModelRenderer armL;
 	private final ModelRenderer armLpauldron;
 	
-	private final ModelRenderer armRAnchor;
 	private final ModelRenderer armR;
 	private final ModelRenderer armRpauldron;
 
@@ -46,19 +41,17 @@ public class ModelPsimetalExosuit extends BipedModel {
     private final ModelRenderer sensor;
     private final ModelRenderer sensorColor;
 
-    EquipmentSlotType slot;
 
     public ModelPsimetalExosuit(EquipmentSlotType slot) {
-        super(1);
-        this.slot = slot;
+        super(slot);
 
         textureWidth = 64;
         textureHeight = 128;
         float s = 0.01F;
 
         //helm
-        helmAnchor = new ModelRenderer(this, 0, 0);
-        helmAnchor.setRotationPoint(0.0F, 0.0F, 0.0F);
+        bipedHead = new ModelRenderer(this, 0, 0);
+        bipedHead.setRotationPoint(0.0F, 0.0F, 0.0F);
         helm = new ModelRenderer(this, 0, 0);
         helm.setRotationPoint(0.0F, 0.0F, 0.0F);
         helm.addCuboid(-4.5F, -9.0F, -5.0F, 9, 9, 10, 0.0F);
@@ -88,9 +81,9 @@ public class ModelPsimetalExosuit extends BipedModel {
         body.addCuboid(-4.5F, -0.5F, -3.0F, 9, 7, 6, s);
 
         //armL
-        armLAnchor = new ModelRenderer(this, 0, 0);
-        armLAnchor.mirror = true;
-        armLAnchor.setRotationPoint(4.0F, 2.0F, 0.0F);
+        bipedLeftArm = new ModelRenderer(this, 0, 0);
+        bipedLeftArm.mirror = true;
+        bipedLeftArm.setRotationPoint(4.0F, 2.0F, 0.0F);
         armL = new ModelRenderer(this, 0, 44);
         armL.mirror = true;
         armL.setRotationPoint(0.0F, 0.0F, 0.0F);
@@ -102,9 +95,9 @@ public class ModelPsimetalExosuit extends BipedModel {
         setRotateAngle(armLpauldron, 0.0F, 0.0F, -0.17453292519943295F);
 
         //armR
-        armRAnchor = new ModelRenderer(this, 0, 0);
-        armRAnchor.mirror = true;
-        armRAnchor.setRotationPoint(-4.0F, 2.0F, 0.0F);
+        bipedRightArm = new ModelRenderer(this, 0, 0);
+        bipedRightArm.mirror = true;
+        bipedRightArm.setRotationPoint(-4.0F, 2.0F, 0.0F);
         armR = new ModelRenderer(this, 0, 44);
         armR.setRotationPoint(0.0F, 0.0F, 0.0F);
         armR.addCuboid(-3.5F, 6.0F, -2.51F, 3, 4, 5, s);
@@ -139,7 +132,7 @@ public class ModelPsimetalExosuit extends BipedModel {
         bootR.addCuboid(-2.61F, 8.0F, -2.51F, 5, 4, 5, 0.0F);
 
         //hierarchy
-        helmAnchor.addChild(helm);
+        bipedHead.addChild(helm);
         helm.addChild(sensor);
         helm.addChild(helmDetailL);
         helm.addChild(helmDetailR);
@@ -147,9 +140,9 @@ public class ModelPsimetalExosuit extends BipedModel {
 
         bodyAnchor.addChild(body);
 
-		armLAnchor.addChild(armL);
+		bipedLeftArm.addChild(armL);
 		armL.addChild(armLpauldron);
-		armRAnchor.addChild(armR);
+		bipedRightArm.addChild(armR);
 		armR.addChild(armRpauldron);
 
 		beltAnchor.addChild(belt);
@@ -158,9 +151,8 @@ public class ModelPsimetalExosuit extends BipedModel {
 
 	}
 
-
     @Override
-    public void render(MatrixStack ms, IVertexBuilder buffer, int light, int overlay, float r, float g, float b, float a) {
+    public void setAngles(LivingEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         helm.showModel = slot == EquipmentSlotType.HEAD;
         body.showModel = slot == EquipmentSlotType.CHEST;
         armR.showModel = slot == EquipmentSlotType.CHEST;
@@ -169,10 +161,7 @@ public class ModelPsimetalExosuit extends BipedModel {
         bootL.showModel = slot == EquipmentSlotType.FEET;
         bootR.showModel = slot == EquipmentSlotType.FEET;
         bipedHeadwear.showModel = false;
-        bipedHead = helmAnchor;
         bipedBody = bodyAnchor;
-        bipedRightArm = armRAnchor;
-        bipedLeftArm = armLAnchor;
         if (slot == EquipmentSlotType.LEGS) {
             bipedBody = beltAnchor;
             bipedRightLeg = legR;
@@ -181,14 +170,7 @@ public class ModelPsimetalExosuit extends BipedModel {
             bipedRightLeg = bootR;
             bipedLeftLeg = bootL;
         }
-
-        super.render(ms, buffer, light, overlay, r, g, b, a);
+        super.setAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
 
-
-    public void setRotateAngle(ModelRenderer render, float x, float y, float z) {
-        render.rotateAngleX = x;
-        render.rotateAngleY = y;
-        render.rotateAngleZ = z;
-    }
 }
