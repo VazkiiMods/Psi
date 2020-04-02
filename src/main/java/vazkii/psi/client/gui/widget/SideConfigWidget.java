@@ -3,16 +3,13 @@ package vazkii.psi.client.gui.widget;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.InputMappings;
 import net.minecraft.util.text.TextFormatting;
 import org.lwjgl.glfw.GLFW;
-import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.spell.SpellGrid;
 import vazkii.psi.api.spell.SpellPiece;
 import vazkii.psi.client.gui.GuiProgrammer;
-import vazkii.psi.common.lib.LibResources;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,9 +54,8 @@ public class SideConfigWidget extends Widget {
 					int y = parent.top + 70 + i * 26;
 
 					RenderSystem.color3f(1F, 1F, 1F);
-					TextureAtlasSprite texture = PsiAPI.getMiscMaterialFromAtlas(LibResources.GUI_PROGRAMMER).getSprite();
-					parent.getMinecraft().getTextureManager().bindTexture(texture.getAtlas().getId());
-					blit(x + 50, y - 8, getBlitOffset(), parent.xSize, 145, texture);
+					parent.getMinecraft().getTextureManager().bindTexture(GuiProgrammer.texture);
+					blit(x + 50, y - 8, parent.xSize, 145, 24, 24);
 
 					String localized = I18n.format(s);
 					if (i == param)

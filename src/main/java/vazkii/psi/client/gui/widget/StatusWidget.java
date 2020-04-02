@@ -3,7 +3,6 @@ package vazkii.psi.client.gui.widget;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
@@ -11,7 +10,6 @@ import net.minecraft.util.text.TranslationTextComponent;
 import org.apache.commons.lang3.tuple.Pair;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.client.gui.GuiProgrammer;
-import vazkii.psi.common.lib.LibResources;
 
 public class StatusWidget extends Widget {
 
@@ -30,10 +28,9 @@ public class StatusWidget extends Widget {
 	@Override
 	public void renderButton(int mouseX, int mouseY, float pTicks) {
 		RenderSystem.color3f(1f, 1f, 1f);
-		TextureAtlasSprite texture = PsiAPI.getMiscMaterialFromAtlas(LibResources.GUI_PROGRAMMER).getSprite();
-		parent.getMinecraft().getTextureManager().bindTexture(texture.getAtlas().getId());
-		blit(parent.left - 48, parent.top + 5, getBlitOffset(), parent.xSize, 0, texture);
-		blit(parent.left - 16, parent.top + 13, getBlitOffset(), parent.compiler.isErrored() ? 12 : 0, parent.ySize + 28, texture);
+		parent.getMinecraft().getTextureManager().bindTexture(GuiProgrammer.texture);
+		blit(parent.left - 48, parent.top + 5, parent.xSize, 0, 48, 30);
+		blit(parent.left - 16, parent.top + 13, parent.compiler.isErrored() ? 12 : 0, parent.ySize + 28, 12, 12);
 
 		if (mouseX > parent.left - 16 - 1 && mouseY > parent.top + 13 - 1 && mouseX < parent.left - 16 + 13 && mouseY < parent.top + 13 + 13) {
 			if (parent.compiler.isErrored()) {

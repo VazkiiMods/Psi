@@ -7,7 +7,6 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
@@ -21,7 +20,6 @@ import vazkii.psi.client.gui.GuiProgrammer;
 import vazkii.psi.client.gui.button.GuiButtonPage;
 import vazkii.psi.client.gui.button.GuiButtonSpellPiece;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
-import vazkii.psi.common.lib.LibResources;
 import vazkii.psi.common.spell.constant.PieceConstantNumber;
 
 import java.util.ArrayList;
@@ -51,8 +49,7 @@ public class PiecePanelWidget extends Widget implements IRenderable, IGuiEventLi
 	@Override
 	public void renderButton(int mouseX, int mouseY, float pTicks) {
         if (panelEnabled) {
-			TextureAtlasSprite texture = PsiAPI.getMiscMaterialFromAtlas(LibResources.GUI_PROGRAMMER).getSprite();
-			parent.getMinecraft().getTextureManager().bindTexture(texture.getAtlas().getId());
+			parent.getMinecraft().getTextureManager().bindTexture(GuiProgrammer.texture);
 
 			fill(x, y, x + width, y + height, 0x88000000);
 
@@ -64,7 +61,7 @@ public class PiecePanelWidget extends Widget implements IRenderable, IGuiEventLi
 			}
 
 			RenderSystem.color3f(1f, 1f, 1f);
-			blit(searchField.x - 14, searchField.y - 2, getBlitOffset(), 0, parent.ySize + 16, texture);
+			blit(searchField.x - 14, searchField.y - 2, 0, parent.ySize + 16, 12, 12);
 
 			String s = Math.min(Math.max(getPageCount(), 1), page + 1) + "/" + Math.max(getPageCount(), 1);
 			parent.getMinecraft().fontRenderer.drawStringWithShadow(s, x + width / 2f - parent.getMinecraft().fontRenderer.getStringWidth(s) / 2f, y + height - 12, 0xFFFFFF);

@@ -32,7 +32,6 @@ import org.lwjgl.opengl.GL11;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.internal.PsiRenderHelper;
 import vazkii.psi.api.internal.TooltipHelper;
-import vazkii.psi.client.gui.GuiProgrammer;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -256,25 +255,20 @@ public abstract class SpellPiece {
 	@OnlyIn(Dist.CLIENT)
 	public void drawComment(MatrixStack ms, IRenderTypeBuffer buffers, int light) {
 		if(comment != null && !comment.isEmpty()) {
-			Material programmerMaterial = PsiAPI.internalHandler.getProgrammerMaterial();
-			IVertexBuilder buffer = programmerMaterial.getVertexConsumer(buffers, GuiProgrammer::getIconsLayer);
+            IVertexBuilder buffer = buffers.getBuffer(PsiAPI.internalHandler.getProgrammerLayer());
 
-			float wh = 6F;
-			float minU = 150 / 256F;
-			float minV = 184 / 256F;
-			float maxU = (150 + wh) / 256F;
-			float maxV = (184 + wh) / 256F;
-			Matrix4f mat = ms.peek().getModel();
+            float wh = 6F;
+            float minU = 150 / 256F;
+            float minV = 184 / 256F;
+            float maxU = (150 + wh) / 256F;
+            float maxV = (184 + wh) / 256F;
+            Matrix4f mat = ms.peek().getModel();
 
-			buffer.vertex(mat, -2, 4, 0).color(1F, 1F, 1F, 1F);
-			buffer.texture(minU, maxV).light(light).endVertex();
-			buffer.vertex(mat, 4, 4, 0).color(1F, 1F, 1F, 1F);
-			buffer.texture(maxU, maxV).light(light).endVertex();
-			buffer.vertex(mat, 4, -2, 0).color(1F, 1F, 1F, 1F);
-			buffer.texture(maxU, minV).light(light).endVertex();
-			buffer.vertex(mat, -2, -2, 0).color(1F, 1F, 1F, 1F);
-			buffer.texture(minU, minV).light(light).endVertex();
-		}
+            buffer.vertex(mat, -2, 4, 0).color(1F, 1F, 1F, 1F).texture(minU, maxV).light(light).endVertex();
+            buffer.vertex(mat, 4, 4, 0).color(1F, 1F, 1F, 1F).texture(maxU, maxV).light(light).endVertex();
+            buffer.vertex(mat, 4, -2, 0).color(1F, 1F, 1F, 1F).texture(maxU, minV).light(light).endVertex();
+            buffer.vertex(mat, -2, -2, 0).color(1F, 1F, 1F, 1F).texture(minU, minV).light(light).endVertex();
+        }
 	}
 	
 	/**
@@ -282,39 +276,34 @@ public abstract class SpellPiece {
 	 */
 	@OnlyIn(Dist.CLIENT)
 	public void drawParams(MatrixStack ms, IRenderTypeBuffer buffers, int light) {
-		Material programmerMaterial = PsiAPI.internalHandler.getProgrammerMaterial();
-		IVertexBuilder buffer = programmerMaterial.getVertexConsumer(buffers, GuiProgrammer::getIconsLayer);
-		for (SpellParam param : paramSides.keySet()) {
-			SpellParam.Side side = paramSides.get(param);
-			if (side.isEnabled()) {
-				int minX = 4;
-				int minY = 4;
-				minX += side.offx * 9;
-				minY += side.offy * 9;
+        IVertexBuilder buffer = buffers.getBuffer(PsiAPI.internalHandler.getProgrammerLayer());
+        for (SpellParam param : paramSides.keySet()) {
+            SpellParam.Side side = paramSides.get(param);
+            if (side.isEnabled()) {
+                int minX = 4;
+                int minY = 4;
+                minX += side.offx * 9;
+                minY += side.offy * 9;
 
-				int maxX = minX + 8;
-				int maxY = minY + 8;
+                int maxX = minX + 8;
+                int maxY = minY + 8;
 
-				float wh = 8F;
-				float minU = side.u / 256F;
-				float minV = side.v / 256F;
-				float maxU = (side.u + wh) / 256F;
-				float maxV = (side.v + wh) / 256F;
-				int r = PsiRenderHelper.r(param.color);
-				int g = PsiRenderHelper.g(param.color);
-				int b = PsiRenderHelper.b(param.color);
-				int a = 255;
-				Matrix4f mat = ms.peek().getModel();
+                float wh = 8F;
+                float minU = side.u / 256F;
+                float minV = side.v / 256F;
+                float maxU = (side.u + wh) / 256F;
+                float maxV = (side.v + wh) / 256F;
+                int r = PsiRenderHelper.r(param.color);
+                int g = PsiRenderHelper.g(param.color);
+                int b = PsiRenderHelper.b(param.color);
+                int a = 255;
+                Matrix4f mat = ms.peek().getModel();
 
-				buffer.vertex(mat, minX, maxY, 0).color(r, g, b, a);
-				buffer.texture(minU, maxV).light(light).endVertex();
-				buffer.vertex(mat, maxX, maxY, 0).color(r, g, b, a);
-				buffer.texture(maxU, maxV).light(light).endVertex();
-				buffer.vertex(mat, maxX, minY, 0).color(r, g, b, a);
-				buffer.texture(maxU, minV).light(light).endVertex();
-				buffer.vertex(mat, minX, minY, 0).color(r, g, b, a);
-				buffer.texture(minU, minV).light(light).endVertex();
-			}
+                buffer.vertex(mat, minX, maxY, 0).color(r, g, b, a).texture(minU, maxV).light(light).endVertex();
+                buffer.vertex(mat, maxX, maxY, 0).color(r, g, b, a).texture(maxU, maxV).light(light).endVertex();
+                buffer.vertex(mat, maxX, minY, 0).color(r, g, b, a).texture(maxU, minV).light(light).endVertex();
+                buffer.vertex(mat, minX, minY, 0).color(r, g, b, a).texture(minU, minV).light(light).endVertex();
+      }
     }
   }
 

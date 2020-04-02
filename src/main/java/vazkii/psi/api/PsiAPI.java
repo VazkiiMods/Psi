@@ -77,12 +77,10 @@ public final class PsiAPI {
 
 	public static final String MOD_ID = "psi";
 	public static final ResourceLocation PSI_PIECE_TEXTURE_ATLAS = new ResourceLocation(MOD_ID, "spell_pieces");
-	public static final ResourceLocation PSI_PROGRAMMER_TEXTURE_ATLAS = new ResourceLocation(MOD_ID, "programmer");
 
 
 	private static final SimpleRegistry<Class<? extends SpellPiece>> spellPieceRegistry = new SimpleRegistry<>();
 	private static final Map<ResourceLocation, Material> simpleSpellTextures = new HashMap<>();
-	private static final Map<ResourceLocation, Material> miscAtlasTextures = new HashMap<>();
 	private static final Multimap<ResourceLocation, Class<? extends SpellPiece>> advancementGroups = HashMultimap.create();
 	private static final Map<Class<? extends SpellPiece>, ResourceLocation> advancementGroupsInverse = new HashMap<>();
 	private static final Map<ResourceLocation, Class<? extends SpellPiece>> mainPieceForGroup = new HashMap<>();
@@ -240,27 +238,11 @@ public final class PsiAPI {
 		return spellPieceRegistry.stream().collect(Collectors.toList());
 	}
 
-	public static void registerAtlasTexture(ResourceLocation id, ResourceLocation texture, ResourceLocation atlasID) {
-		miscAtlasTextures.put(id, new Material(atlasID, texture));
-	}
-
-	public static void registerAtlasTexture(ResourceLocation id, ResourceLocation atlasID) {
-		registerAtlasTexture(id, id, atlasID);
-	}
-
-	public static Material getMiscMaterialFromAtlas(ResourceLocation resourceLocation) {
-		return miscAtlasTextures.get(resourceLocation);
-	}
-
 	public static Collection<ResourceLocation> getAllPieceKeys() {
 		return spellPieceRegistry.keySet();
 	}
 
 	public static SimpleRegistry<Class<? extends SpellPiece>> getSpellPieceRegistry() {
 		return spellPieceRegistry;
-	}
-
-	public static Collection<Material> getMiscAtlasMaterial() {
-		return miscAtlasTextures.values();
 	}
 }

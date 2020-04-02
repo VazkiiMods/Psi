@@ -3,13 +3,10 @@ package vazkii.psi.client.gui.button;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.text.TranslationTextComponent;
-import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.internal.TooltipHelper;
 import vazkii.psi.client.gui.GuiProgrammer;
-import vazkii.psi.common.lib.LibResources;
 
 public class GuiButtonHelp extends Button {
 
@@ -25,9 +22,8 @@ public class GuiButtonHelp extends Button {
 	public void renderButton(int mouseX, int mouseY, float pTicks) {
 		if (!gui.takingScreenshot) {
 			boolean overHelp = mouseX > x && mouseY > y && mouseX < x + 12 && mouseY < y + 12;
-			TextureAtlasSprite texture = PsiAPI.getMiscMaterialFromAtlas(LibResources.GUI_PROGRAMMER).getSprite();
-			gui.getMinecraft().getTextureManager().bindTexture(texture.getAtlas().getId());
-			blit(x, y, getBlitOffset(), gui.xSize + (overHelp ? 12 : 0), gui.ySize + 9, texture);
+			gui.getMinecraft().getTextureManager().bindTexture(GuiProgrammer.texture);
+			blit(x, y, gui.xSize + (overHelp ? 12 : 0), gui.ySize + 9, 12, 12);
 			if (overHelp && !Screen.hasAltDown()) {
 				gui.tooltip.add(new TranslationTextComponent("psimisc.programmer_help"));
 				String ctrl = I18n.format(Minecraft.IS_RUNNING_ON_MAC ? "psimisc.ctrl_mac" : "psimisc.ctrl_windows");
