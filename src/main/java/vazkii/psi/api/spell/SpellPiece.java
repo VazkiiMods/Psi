@@ -44,6 +44,8 @@ import java.util.Map;
  */
 public abstract class SpellPiece {
 
+	@OnlyIn(Dist.CLIENT)
+	private static RenderType layer;
 	private static final String TAG_KEY_LEGACY = "spellKey";
 
 	private static final String TAG_KEY = "key";
@@ -204,16 +206,17 @@ public abstract class SpellPiece {
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	public static RenderType getRenderLayer(ResourceLocation texture) {
-		Preconditions.checkArgument(PsiAPI.PSI_PIECE_TEXTURE_ATLAS.equals(texture), "No other texture should be here!");
-		RenderType.State glState = RenderType.State.builder()
-				.texture(new RenderState.TextureState(texture, false, false))
-				.lightmap(new RenderState.LightmapState(true))
-				.alpha(new RenderState.AlphaState(0.004F))
-				.cull(new RenderState.CullState(false))
-				.build(false);
-		return RenderType.of(texture.toString(), DefaultVertexFormats.POSITION_COLOR_TEXTURE_LIGHT, GL11.GL_QUADS, 64, glState);
-
+	public static RenderType getLayer() {
+		if (layer == null) {
+			RenderType.State glState = RenderType.State.builder()
+							.texture(new RenderState.TextureState(PsiAPI.PSI_PIECE_TEXTURE_ATLAS, false, false))
+							.lightmap(new RenderState.LightmapState(true))
+							.alpha(new RenderState.AlphaState(0.004F))
+							.cull(new RenderState.CullState(false))
+							.build(false);
+			layer = RenderType.of(PsiAPI.PSI_PIECE_TEXTURE_ATLAS.toString(), DefaultVertexFormats.POSITION_COLOR_TEXTURE_LIGHT, GL11.GL_QUADS, 64, glState);
+		}
+		return layer;
 	}
 
 	/**
@@ -222,7 +225,7 @@ public abstract class SpellPiece {
 	@OnlyIn(Dist.CLIENT)
 	public void drawBackground(MatrixStack ms, IRenderTypeBuffer buffers, int light) {
 		Material material = PsiAPI.getSpellPieceMaterial(registryKey);
-		IVertexBuilder buffer = material.getVertexConsumer(buffers, SpellPiece::getRenderLayer);
+		IVertexBuilder buffer = material.getVertexConsumer(buffers, ignored -> getLayer());
 		Matrix4f mat = ms.peek().getModel();
 		// Cannot call .texture() on the chained object because SpriteAwareVertexBuilder is buggy
 		// and does not return itself, it returns the inner buffer

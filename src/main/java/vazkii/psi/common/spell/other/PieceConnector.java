@@ -76,7 +76,7 @@ public class PieceConnector extends SpellPiece implements IRedirector {
 	private void drawSide(MatrixStack ms, IRenderTypeBuffer buffers, int light, SpellParam.Side side) {
 		if(side.isEnabled()) {
 			Material material = new Material(PsiAPI.PSI_PIECE_TEXTURE_ATLAS, LINES_TEXTURE);
-			IVertexBuilder buffer = material.getVertexConsumer(buffers, SpellPiece::getRenderLayer);
+			IVertexBuilder buffer = material.getVertexConsumer(buffers, ignored -> SpellPiece.getLayer());
 
 			float minU = 0;
 			float minV = 0;
