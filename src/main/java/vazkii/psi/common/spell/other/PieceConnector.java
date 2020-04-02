@@ -16,6 +16,7 @@ import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.Matrix4f;
 import net.minecraft.client.renderer.RenderState;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.model.Material;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
@@ -23,6 +24,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.opengl.GL11;
+import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.param.ParamAny;
 import vazkii.psi.common.lib.LibMisc;
@@ -32,15 +34,7 @@ import java.util.List;
 
 public class PieceConnector extends SpellPiece implements IRedirector {
 
-	public static final RenderType LINES_LAYER;
-	static {
-		RenderType.State glState = RenderType.State.builder()
-						.texture(new RenderState.TextureState(new ResourceLocation(LibResources.SPELL_CONNECTOR_LINES), false, false))
-						.lightmap(new RenderState.LightmapState(true))
-						.alpha(new RenderState.AlphaState(0.004F))
-						.build(false);
-		LINES_LAYER = RenderType.of(LibMisc.PREFIX_MOD + "piece_connector_lines", DefaultVertexFormats.POSITION_COLOR_TEXTURE_LIGHT, GL11.GL_QUADS, 64, glState);
-	}
+	public static final ResourceLocation LINES_TEXTURE = new ResourceLocation(LibResources.SPELL_CONNECTOR_LINES);
 
 	public SpellParam<SpellParam.Any> target;
 
@@ -81,7 +75,8 @@ public class PieceConnector extends SpellPiece implements IRedirector {
 	@OnlyIn(Dist.CLIENT)
 	private void drawSide(MatrixStack ms, IRenderTypeBuffer buffers, int light, SpellParam.Side side) {
 		if(side.isEnabled()) {
-			IVertexBuilder buffer = buffers.getBuffer(LINES_LAYER);
+			Material material = new Material(PsiAPI.PSI_PIECE_TEXTURE_ATLAS, LINES_TEXTURE);
+			IVertexBuilder buffer = material.getVertexConsumer(buffers, SpellPiece::getRenderLayer);
 
 			float minU = 0;
 			float minV = 0;
@@ -105,11 +100,18 @@ public class PieceConnector extends SpellPiece implements IRedirector {
 			float maxU = minU + 0.5f;
 			float maxV = minV + 0.5f;
 
+			/*
+			  See note in SpellPiece#drawBackground for why this chain needs to be split
+ 			 */
 			Matrix4f mat = ms.peek().getModel();
-			buffer.vertex(mat, 0, 16, 0).color(1F, 1F, 1F, 1F).texture(minU, maxV).light(light).endVertex();
-			buffer.vertex(mat, 16, 16, 0).color(1F, 1F, 1F, 1F).texture(maxU, maxV).light(light).endVertex();
-			buffer.vertex(mat, 16, 0, 0).color(1F, 1F, 1F, 1F).texture(maxU, minV).light(light).endVertex();
-			buffer.vertex(mat, 0, 0, 0).color(1F, 1F, 1F, 1F).texture(minU, minV).light(light).endVertex();
+			buffer.vertex(mat, 0, 16, 0).color(1F, 1F, 1F, 1F);
+			buffer.texture(minU, maxV).light(light).endVertex();
+			buffer.vertex(mat, 16, 16, 0).color(1F, 1F, 1F, 1F);
+			buffer.texture(maxU, maxV).light(light).endVertex();
+			buffer.vertex(mat, 16, 0, 0).color(1F, 1F, 1F, 1F);
+			buffer.texture(maxU, minV).light(light).endVertex();
+			buffer.vertex(mat, 0, 0, 0).color(1F, 1F, 1F, 1F);
+			buffer.texture(minU, minV).light(light).endVertex();
 		}
 	}
 

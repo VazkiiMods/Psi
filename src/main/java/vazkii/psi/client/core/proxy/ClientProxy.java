@@ -15,6 +15,7 @@ import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
+import net.minecraft.client.renderer.model.Material;
 import net.minecraft.client.renderer.model.ModelBakery;
 import net.minecraft.client.renderer.model.ModelResourceLocation;
 import net.minecraft.entity.player.PlayerEntity;
@@ -55,6 +56,7 @@ import vazkii.psi.common.entity.*;
 import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.lib.LibItemNames;
 import vazkii.psi.common.lib.LibMisc;
+import vazkii.psi.common.lib.LibResources;
 import vazkii.psi.common.spell.other.PieceConnector;
 
 import java.util.Map;
@@ -86,6 +88,7 @@ public class ClientProxy implements IProxy {
 		RenderTypeLookup.setRenderLayer(ModBlocks.conjured, RenderType.getTranslucent());
 		ContributorSpellCircleHandler.firstStart();
 		ModelBakery.LOCATIONS_BUILTIN_TEXTURES.addAll(PsiAPI.getAllSpellPieceMaterial());
+		ModelBakery.LOCATIONS_BUILTIN_TEXTURES.add(new Material(PsiAPI.PSI_PIECE_TEXTURE_ATLAS, PieceConnector.LINES_TEXTURE));
 	}
 
 	private void loadComplete(FMLLoadCompleteEvent event) {
@@ -94,8 +97,6 @@ public class ClientProxy implements IProxy {
 			RenderType layer = SpellPiece.getRenderLayer(PsiAPI.PSI_PIECE_TEXTURE_ATLAS);
 			map.put(layer, new BufferBuilder(layer.getExpectedBufferSize()));
 			map.put(GuiProgrammer.LAYER, new BufferBuilder(GuiProgrammer.LAYER.getExpectedBufferSize()));
-			map.put(PieceConnector.LINES_LAYER, new BufferBuilder(PieceConnector.LINES_LAYER.getExpectedBufferSize()));
-
 			ColorHandler.init();
 		});
 	}
