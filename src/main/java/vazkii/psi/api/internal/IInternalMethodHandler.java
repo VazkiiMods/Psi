@@ -36,7 +36,7 @@ public interface IInternalMethodHandler {
 	ResourceLocation getProgrammerTexture();
 
 	/**
-	 * Gets the render layer for the programmer background.
+	 * Gets the render layer for the programmer.
 	 */
 	@OnlyIn(Dist.CLIENT)
 	RenderType getProgrammerLayer();
@@ -61,10 +61,20 @@ public interface IInternalMethodHandler {
 	 */
 	void setCrashData(CompiledSpell spell, SpellPiece piece);
 
+
+	/**
+	 * Renders a tooltip with the specified colors at the given x,y position
+	 */
 	@OnlyIn(Dist.CLIENT)
 	void renderTooltip(int x, int y, List<ITextComponent> tooltipData, int color, int color2);
 
+	/**
+	 * Creates a CAD with the given components
+	 */
 	ItemStack createDefaultCAD(List<ItemStack> components);
 
+	/**
+	 * Creates a CAD with the Assembly ItemStack as a base and the components array as its components
+	 */
 	ItemStack createCAD(ItemStack base, List<ItemStack> components);
 }

@@ -11,8 +11,12 @@
 package vazkii.psi.client.core.proxy;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
+import net.minecraft.client.renderer.model.Material;
+import net.minecraft.client.renderer.model.ModelBakery;
 import net.minecraft.client.renderer.model.ModelResourceLocation;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -27,11 +31,14 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.DeferredWorkQueue;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.cad.ICADColorizer;
+import vazkii.psi.api.spell.SpellPiece;
 import vazkii.psi.client.core.handler.*;
 import vazkii.psi.client.fx.SparkleParticleData;
 import vazkii.psi.client.fx.WispParticleData;
@@ -47,6 +54,10 @@ import vazkii.psi.common.entity.*;
 import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.lib.LibItemNames;
 import vazkii.psi.common.lib.LibMisc;
+import vazkii.psi.common.lib.LibResources;
+import vazkii.psi.common.spell.other.PieceConnector;
+
+import java.util.Map;
 
 @OnlyIn(Dist.CLIENT)
 public class ClientProxy implements IProxy {
@@ -61,7 +72,7 @@ public class ClientProxy implements IProxy {
 	}
 
 	private void clientSetup(FMLClientSetupEvent event) {
-		ShaderHandler.init();
+
 		KeybindHandler.init();
 
 		ClientRegistry.bindTileEntityRenderer(TileProgrammer.TYPE, RenderTileProgrammer::new);
@@ -73,10 +84,19 @@ public class ClientProxy implements IProxy {
 		RenderingRegistry.registerEntityRenderingHandler(EntitySpellMine.TYPE, RenderSpellProjectile::new);
 		RenderTypeLookup.setRenderLayer(ModBlocks.conjured, RenderType.getTranslucent());
 		ContributorSpellCircleHandler.firstStart();
+		ModelBakery.LOCATIONS_BUILTIN_TEXTURES.addAll(PsiAPI.getAllSpellPieceMaterial());
+		ModelBakery.LOCATIONS_BUILTIN_TEXTURES.add(new Material(PsiAPI.PSI_PIECE_TEXTURE_ATLAS, PieceConnector.LINES_TEXTURE));
 	}
 
 	private void loadComplete(FMLLoadCompleteEvent event) {
-		DeferredWorkQueue.runLater(ColorHandler::init);
+		DeferredWorkQueue.runLater(() -> {
+			Map<RenderType, BufferBuilder> map = ObfuscationReflectionHelper.getPrivateValue(IRenderTypeBuffer.Impl.class, Minecraft.getInstance().getBufferBuilders().getEntityVertexConsumers(), "field_228458_b_");
+			RenderType layer = SpellPiece.getLayer();
+			map.put(layer, new BufferBuilder(layer.getExpectedBufferSize()));
+			map.put(GuiProgrammer.LAYER, new BufferBuilder(GuiProgrammer.LAYER.getExpectedBufferSize()));
+			ColorHandler.init();
+			ShaderHandler.init();
+		});
 	}
 
 	private void modelBake(ModelBakeEvent event) {

@@ -12,6 +12,7 @@ package vazkii.psi.api;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+import net.minecraft.client.renderer.model.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
@@ -19,9 +20,12 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.registry.SimpleRegistry;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
-import org.apache.logging.log4j.Level;
+import net.minecraftforge.fml.DistExecutor;
+import org.apache.logging.log4j.LogManager;
 import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.cad.ICADData;
 import vazkii.psi.api.cad.IPsiBarDisplay;
@@ -37,12 +41,9 @@ import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellPiece;
 import vazkii.psi.api.spell.detonator.IDetonationHandler;
 import vazkii.psi.api.spell.piece.PieceTrick;
-import vazkii.psi.common.Psi;
-import vazkii.psi.common.lib.LibMisc;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public final class PsiAPI {
 
@@ -74,11 +75,15 @@ public final class PsiAPI {
 	public static Capability<ISocketableCapability> SOCKETABLE_CAPABILITY = null;
 
 
-	public static final SimpleRegistry<Class<? extends SpellPiece>> spellPieceRegistry = new SimpleRegistry<>();
-	public static final HashMap<ResourceLocation, ResourceLocation> simpleSpellTextures = new HashMap<>();
-	public static final Multimap<ResourceLocation, Class<? extends SpellPiece>> advancementGroups = HashMultimap.create();
-	public static final HashMap<Class<? extends SpellPiece>, ResourceLocation> advancementGroupsInverse = new HashMap<>();
-	public static final HashMap<ResourceLocation, Class<? extends SpellPiece>> mainPieceForGroup = new HashMap<>();
+	public static final String MOD_ID = "psi";
+	public static final ResourceLocation PSI_PIECE_TEXTURE_ATLAS = new ResourceLocation(MOD_ID, "spell_pieces");
+
+
+	private static final SimpleRegistry<Class<? extends SpellPiece>> spellPieceRegistry = new SimpleRegistry<>();
+	private static final Map<ResourceLocation, Material> simpleSpellTextures = new HashMap<>();
+	private static final Multimap<ResourceLocation, Class<? extends SpellPiece>> advancementGroups = HashMultimap.create();
+	private static final Map<Class<? extends SpellPiece>, ResourceLocation> advancementGroupsInverse = new HashMap<>();
+	private static final Map<ResourceLocation, Class<? extends SpellPiece>> mainPieceForGroup = new HashMap<>();
 
 	public static final List<TrickRecipe> trickRecipes = new ArrayList<>();
 
@@ -88,23 +93,33 @@ public final class PsiAPI {
 
 
 	/**
-	 * Registers a Spell Piece given its class, by which, it puts it in the registry.
+	 * Registers a Spell Piece.
 	 */
 	public static void registerSpellPiece(ResourceLocation resourceLocation, Class<? extends SpellPiece> clazz) {
 		PsiAPI.spellPieceRegistry.register(resourceLocation, clazz);
 	}
 
 	/**
-	 * Registers a spell piece and tries to create its relative texture given the current loading mod.
-	 * The spell texture should be in /assets/(yourmod)/textures/spell/(key).png.<br>
-	 * If you want to put the spell piece elsewhere or use some other type of resource location, feel free to map
-	 * the texture directly through {@link #simpleSpellTextures}.<br>
-	 * As SpellPiece objects can have custom renders, depending on how you wish to handle yours, you might
-	 * not even need to use this. In that case use {@link #registerSpellPiece(ResourceLocation, Class)}
+	 * Registers a spell piece and its texture.
+	 * The spell texture will be set to <code>/assets/(namespace)/textures/spell/(path).png</code>,
+	 * and will be stitched to an atlas for render.<br />
+	 * To use a different path, see {@link #registerPieceTexture}.<br />
+	 * To use custom rendering entirely, call {@link #registerSpellPiece} and override {@link SpellPiece#drawBackground} to do your own rendering.
 	 */
-	public static void registerSpellPieceAndTexture(ResourceLocation resourceLocation, Class<? extends SpellPiece> clazz) {
-		registerSpellPiece(resourceLocation, clazz);
-		PsiAPI.simpleSpellTextures.put(resourceLocation, new ResourceLocation(resourceLocation.getNamespace(), String.format("textures/spell/%s.png", resourceLocation.getPath())));
+	public static void registerSpellPieceAndTexture(ResourceLocation id, Class<? extends SpellPiece> clazz) {
+		registerSpellPiece(id, clazz);
+		DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> registerPieceTexture(id, new ResourceLocation(id.getNamespace(), "spell/" + id.getPath())));
+	}
+
+	/**
+	 * Register the texture of a piece
+	 * @param pieceId ID of the piece whose texture to register
+	 * @param texture Path to the piece's texture, where <code>domain:foo/bar</code> translates to <code>/assets/domain/textures/foo/bar.png</code>.
+	 *                In other words, do <b>not</b> prefix with textures/ nor suffix with .png.
+	 */
+	@OnlyIn(Dist.CLIENT)
+	public static void registerPieceTexture(ResourceLocation pieceId, ResourceLocation texture) {
+		PsiAPI.simpleSpellTextures.put(pieceId, new Material(PSI_PIECE_TEXTURE_ATLAS, texture));
 	}
 
 
@@ -119,7 +134,7 @@ public final class PsiAPI {
 
 		if (main) {
 			if (mainPieceForGroup.containsKey(resLoc))
-				Psi.logger.log(Level.INFO, "Group " + resLoc + " already has a main piece!");
+				LogManager.getLogger(MOD_ID).info("Group " + resLoc + " already has a main piece!");
 			mainPieceForGroup.put(resLoc, clazz);
 		}
 	}
@@ -182,9 +197,52 @@ public final class PsiAPI {
 			piece = SpellPiece.create(pieceClass, new Spell());
 		trickRecipes.add(new TrickRecipe((PieceTrick) piece, input, output, minAssembly));
 	}
-	
+
 	public static void registerTrickRecipe(String trick, Ingredient input, ItemStack output, ItemStack minAssembly) {
-		registerTrickRecipe(new ResourceLocation(LibMisc.MOD_ID, trick.toLowerCase()), input, output, minAssembly);
+		registerTrickRecipe(new ResourceLocation(MOD_ID, trick.toLowerCase()), input, output, minAssembly);
 	}
 
+	public static Class<? extends SpellPiece> getSpellPiece(ResourceLocation key) {
+		return spellPieceRegistry.getValue(key).orElse(null);
+	}
+
+	public static ResourceLocation getSpellPieceKey(Class<? extends SpellPiece> clazz) {
+		return spellPieceRegistry.getKey(clazz);
+	}
+
+	public static Material getSpellPieceMaterial(ResourceLocation key) {
+		return simpleSpellTextures.get(key);
+	}
+
+	public static Collection<Class<? extends SpellPiece>> getPiecesInAdvancementGroup(ResourceLocation group) {
+		return advancementGroups.get(group);
+	}
+
+	public static ResourceLocation getGroupForPiece(Class<? extends SpellPiece> piece) {
+		return advancementGroupsInverse.get(piece);
+	}
+
+	public static Class<? extends SpellPiece> getMainPieceForGroup(ResourceLocation group) {
+		return mainPieceForGroup.get(group);
+	}
+
+	public static boolean isPieceRegistered(ResourceLocation key) {
+		return spellPieceRegistry.getValue(key).isPresent();
+	}
+
+	public static Collection<Material> getAllSpellPieceMaterial() {
+		return simpleSpellTextures.values();
+	}
+
+	public static Collection<Class<? extends SpellPiece>> getAllRegisteredSpellPieces() {
+		return spellPieceRegistry.stream().collect(Collectors.toList());
+	}
+
+	public static Collection<ResourceLocation> getAllPieceKeys() {
+		return spellPieceRegistry.keySet();
+	}
+
+	public static SimpleRegistry<Class<? extends SpellPiece>> getSpellPieceRegistry() {
+		return spellPieceRegistry;
+	}
 }

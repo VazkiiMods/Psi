@@ -166,7 +166,7 @@ public final class HUDHandler {
 		int v = 0;
 
 		int texture = 0;
-		boolean shaders = ShaderHandler.useShaders();
+		boolean shaders = ShaderHandler.useShaders;
 
 		if (shaders) {
 			RenderSystem.activeTexture(ARBMultitexture.GL_TEXTURE0_ARB + secondaryTextureUnit);

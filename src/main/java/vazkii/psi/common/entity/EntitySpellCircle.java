@@ -186,11 +186,11 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 
     @Override
     public Vec3d getLookVec() {
-        float x = (float) dataManager.get(LOOK_X);
-        float y = (float) dataManager.get(LOOK_Y);
-        float z = (float) dataManager.get(LOOK_Z);
-        return new Vec3d(x, y, z);
-    }
+		float x = dataManager.get(LOOK_X);
+		float y = dataManager.get(LOOK_Y);
+		float z = dataManager.get(LOOK_Z);
+		return new Vec3d(x, y, z);
+	}
 
 	public int getTimeAlive() {
 		return dataManager.get(TIME_ALIVE);

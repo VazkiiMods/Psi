@@ -35,8 +35,8 @@ public class SideConfigWidget extends Widget {
 	@Override
 	public void renderButton(int mouseX, int mouseY, float pTicks) {
 		SpellPiece piece = null;
-		if (SpellGrid.exists(parent.selectedX, parent.selectedY))
-			piece = parent.spell.grid.gridData[parent.selectedX][parent.selectedY];
+		if (SpellGrid.exists(GuiProgrammer.selectedX, GuiProgrammer.selectedY))
+			piece = parent.spell.grid.gridData[GuiProgrammer.selectedX][GuiProgrammer.selectedY];
 		if (configEnabled && !parent.takingScreenshot) {
 			blit(parent.left - 81, parent.top + 55, parent.xSize, 30, 81, 115);
 			String configStr = I18n.format("psimisc.config");

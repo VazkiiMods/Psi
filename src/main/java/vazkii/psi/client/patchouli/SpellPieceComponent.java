@@ -26,7 +26,7 @@ public class SpellPieceComponent implements ICustomComponent {
 	public void build(int componentX, int componentY, int pageNum) {
 		this.x = componentX;
 		this.y = componentY;
-		this.piece = PsiAPI.spellPieceRegistry.getValue(new ResourceLocation(name))
+		this.piece = PsiAPI.getSpellPieceRegistry().getValue(new ResourceLocation(name))
 				.map(clazz -> SpellPiece.create(clazz, new Spell()))
 				.orElseThrow(() -> new IllegalArgumentException("Invalid spell piece name: " + name));
 	}

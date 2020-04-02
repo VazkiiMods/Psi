@@ -34,6 +34,7 @@ import vazkii.psi.client.gui.widget.*;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.tile.TileProgrammer;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
+import vazkii.psi.common.lib.LibBlockNames;
 import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.lib.LibResources;
 import vazkii.psi.common.network.MessageRegister;
@@ -49,24 +50,17 @@ import java.util.stream.Collectors;
 public class GuiProgrammer extends Screen {
 
 	public static final ResourceLocation texture = new ResourceLocation(LibResources.GUI_PROGRAMMER);
-	public static final RenderType ICONS_LAYER;
-	public static final RenderType BACKGROUND_LAYER;
+	public static final RenderType LAYER;
 	static {
+		RenderState.TransparencyState translucent = ObfuscationReflectionHelper.getPrivateValue(RenderState.class, null, "field_228515_g_");
 		RenderType.State glState = RenderType.State.builder()
 						.texture(new RenderState.TextureState(texture, false, false))
 						.lightmap(new RenderState.LightmapState(true))
 						.cull(new RenderState.CullState(false))
-						.alpha(new RenderState.AlphaState(0.004F)).build(false);
-		ICONS_LAYER = RenderType.of(LibMisc.PREFIX_MOD + "programmer_icons", DefaultVertexFormats.POSITION_COLOR_TEXTURE_LIGHT, GL11.GL_QUADS, 64, glState);
-
-		RenderState.TransparencyState translucent = ObfuscationReflectionHelper.getPrivateValue(RenderState.class, null, "field_228515_g_");
-		glState = RenderType.State.builder()
-						.texture(new RenderState.TextureState(texture, false, false))
-						.lightmap(new RenderState.LightmapState(true))
-						.cull(new RenderState.CullState(false))
+						.alpha(new RenderState.AlphaState(0.004F))
 						.transparency(translucent)
 						.build(false);
-		BACKGROUND_LAYER = RenderType.of(LibMisc.PREFIX_MOD + "programmer_background", DefaultVertexFormats.POSITION_COLOR_TEXTURE_LIGHT, GL11.GL_QUADS, 64, glState);
+		LAYER = RenderType.of(LibMisc.PREFIX_MOD + LibBlockNames.PROGRAMMER, DefaultVertexFormats.POSITION_COLOR_TEXTURE_LIGHT, GL11.GL_QUADS, 128, glState);
 	}
 
 	public final TileProgrammer programmer;
@@ -199,7 +193,7 @@ public class GuiProgrammer extends Screen {
 							for (int j = 0; j < SpellGrid.GRID_SIZE; j++) {
 								SpellPiece piece = spell.grid.gridData[i][j];
 								if (piece != null) {
-									ResourceLocation group = PsiAPI.advancementGroupsInverse.get(piece.getClass());
+									ResourceLocation group = PsiAPI.getGroupForPiece(piece.getClass());
 									if (!minecraft.player.isCreative() && (group == null || !data.isPieceGroupUnlocked(group, piece.registryKey))) {
 										minecraft.player.sendMessage(new TranslationTextComponent("psimisc.missing_pieces").setStyle(new Style().setColor(TextFormatting.RED)));
 										return;

@@ -11,12 +11,14 @@
 package vazkii.psi.api.spell;
 
 import com.google.common.base.CaseFormat;
+import com.google.common.base.Preconditions;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.Matrix4f;
 import net.minecraft.client.renderer.RenderState;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.model.Material;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
@@ -42,6 +44,8 @@ import java.util.Map;
  */
 public abstract class SpellPiece {
 
+	@OnlyIn(Dist.CLIENT)
+	private static RenderType layer;
 	private static final String TAG_KEY_LEGACY = "spellKey";
 
 	private static final String TAG_KEY = "key";
@@ -62,7 +66,7 @@ public abstract class SpellPiece {
 
 	public SpellPiece(Spell spell) {
 		this.spell = spell;
-		registryKey = PsiAPI.spellPieceRegistry.getKey(getClass());
+		registryKey = PsiAPI.getSpellPieceKey(getClass());
 		initParams();
 	}
 
@@ -201,18 +205,18 @@ public abstract class SpellPiece {
 		ms.pop();
 	}
 
-	// TODO 1.15 stitch all the pieces into an atlas?
 	@OnlyIn(Dist.CLIENT)
-	private RenderType getRenderLayer() {
-		ResourceLocation res = PsiAPI.simpleSpellTextures.get(registryKey);
-		RenderType.State glState = RenderType.State.builder()
-						.texture(new RenderState.TextureState(res, false, false))
-						.lightmap(new RenderState.LightmapState(true))
-						.alpha(new RenderState.AlphaState(0.004F))
-						.cull(new RenderState.CullState(false))
-						.build(false);
-		return RenderType.of("psi_spell_piece_" + registryKey, DefaultVertexFormats.POSITION_COLOR_TEXTURE_LIGHT, GL11.GL_QUADS, 64, glState);
-
+	public static RenderType getLayer() {
+		if (layer == null) {
+			RenderType.State glState = RenderType.State.builder()
+							.texture(new RenderState.TextureState(PsiAPI.PSI_PIECE_TEXTURE_ATLAS, false, false))
+							.lightmap(new RenderState.LightmapState(true))
+							.alpha(new RenderState.AlphaState(0.004F))
+							.cull(new RenderState.CullState(false))
+							.build(false);
+			layer = RenderType.of(PsiAPI.PSI_PIECE_TEXTURE_ATLAS.toString(), DefaultVertexFormats.POSITION_COLOR_TEXTURE_LIGHT, GL11.GL_QUADS, 64, glState);
+		}
+		return layer;
 	}
 
 	/**
@@ -220,13 +224,26 @@ public abstract class SpellPiece {
 	 */
 	@OnlyIn(Dist.CLIENT)
 	public void drawBackground(MatrixStack ms, IRenderTypeBuffer buffers, int light) {
-        IVertexBuilder buffer = buffers.getBuffer(getRenderLayer());
-        Matrix4f mat = ms.peek().getModel();
-        buffer.vertex(mat, 0, 16, 0).color(1F, 1F, 1F, 1F).texture(0, 1).light(light).endVertex();
-        buffer.vertex(mat, 16, 16, 0).color(1F, 1F, 1F, 1F).texture(1, 1).light(light).endVertex();
-        buffer.vertex(mat, 16, 0, 0).color(1F, 1F, 1F, 1F).texture(1, 0).light(light).endVertex();
-        buffer.vertex(mat, 0, 0, 0).color(1F, 1F, 1F, 1F).texture(0, 0).light(light).endVertex();
-    }
+		Material material = PsiAPI.getSpellPieceMaterial(registryKey);
+		IVertexBuilder buffer = material.getVertexConsumer(buffers, ignored -> getLayer());
+		Matrix4f mat = ms.peek().getModel();
+		// Cannot call .texture() on the chained object because SpriteAwareVertexBuilder is buggy
+		// and does not return itself, it returns the inner buffer
+		// This leads to .texture() using the implementation of the inner buffer,
+		// not of the SpriteAwareVertexBuilder, which is not what we want.
+		// Split the chain apart so that .texture() is called on the original buffer
+		buffer.vertex(mat, 0, 16, 0).color(1F, 1F, 1F, 1F);
+		buffer.texture(0, 1).light(light).endVertex();
+
+		buffer.vertex(mat, 16, 16, 0).color(1F, 1F, 1F, 1F);
+		buffer.texture(1, 1).light(light).endVertex();
+
+		buffer.vertex(mat, 16, 0, 0).color(1F, 1F, 1F, 1F);
+		buffer.texture(1, 0).light(light).endVertex();
+
+		buffer.vertex(mat, 0, 0, 0).color(1F, 1F, 1F, 1F);
+		buffer.texture(0, 0).light(light).endVertex();
+	}
 	
 	/**
 	 * Draws any additional stuff for this piece. Used in connectors
@@ -316,7 +333,7 @@ public abstract class SpellPiece {
 		tooltip.add(new TranslationTextComponent(getUnlocalizedName()));
 		TooltipHelper.tooltipIfShift(tooltip, () -> addToTooltipAfterShift(tooltip));
 
-		String addon = PsiAPI.spellPieceRegistry.getKey(getClass()).getNamespace();
+		String addon = registryKey.getNamespace();
 		if (!addon.equals("psi")) {
 
 			if (ModList.get().getModContainerById(addon).isPresent())
@@ -388,16 +405,16 @@ public abstract class SpellPiece {
 		}
 		boolean exists = false;
 		ResourceLocation rl = new ResourceLocation(key);
-		if (PsiAPI.spellPieceRegistry.getValue(rl).isPresent()) {
+		if (PsiAPI.isPieceRegistered(rl)) {
 			exists = true;
 		} else {
 			rl = new ResourceLocation("psi", key);
-			if (PsiAPI.spellPieceRegistry.getValue(rl).isPresent())
+			if (PsiAPI.isPieceRegistered(rl))
 				exists = true;
 		}
 
 		if (exists) {
-			Class<? extends SpellPiece> clazz = PsiAPI.spellPieceRegistry.getValue(rl).get();
+			Class<? extends SpellPiece> clazz = PsiAPI.getSpellPiece(rl);
 			SpellPiece p = create(clazz, spell);
 			p.readFromNBT(cmp);
 			return p;

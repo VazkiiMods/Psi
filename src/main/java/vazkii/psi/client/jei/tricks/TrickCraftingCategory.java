@@ -18,12 +18,14 @@ import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.category.IRecipeCategory;
+import net.minecraft.client.renderer.model.Material;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.recipe.TrickRecipe;
+import vazkii.psi.common.Psi;
 import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.lib.LibMisc;
 
@@ -97,13 +99,18 @@ public class TrickCraftingCategory implements IRecipeCategory<TrickRecipe> {
 	@Override
 	public void draw(TrickRecipe recipe, double mouseX, double mouseY) {
 		if (recipe.getPiece() != null) {
-			IDrawable trickIcon = trickIcons.computeIfAbsent(recipe.getPiece().registryKey, 
-				key -> helper.createDrawable(PsiAPI.simpleSpellTextures.get(key), 0, 0, 256, 256));
+			IDrawable trickIcon = trickIcons.computeIfAbsent(recipe.getPiece().registryKey,
+					key -> {
+						Material mat = PsiAPI.getSpellPieceMaterial(key);
+						if (mat == null) {
+							Psi.logger.warn("Not rendering complex (or missing) render for {}", key);
+							return helper.createBlankDrawable(16, 16);
+						}
+						return new DrawableTAS(mat.getSprite());
+					});
 			
 			RenderSystem.pushMatrix();
-			RenderSystem.scalef(0.0625f, 0.0625f, 0.0625f);
-			trickIcon.draw(trickX * 16, trickY * 16);
-			RenderSystem.color3f(1f, 1f, 1f);
+			trickIcon.draw(trickX, trickY);
 			RenderSystem.popMatrix();
 
 			if (onTrick(mouseX, mouseY))
