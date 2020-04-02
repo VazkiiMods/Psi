@@ -28,7 +28,6 @@ public final class ShaderHandler {
 	private static final int VERT_ST = ARBVertexShader.GL_VERTEX_SHADER_ARB;
 	private static final int FRAG_ST = ARBFragmentShader.GL_FRAGMENT_SHADER_ARB;
 	public static boolean useShaders = false;
-	public static boolean initialized = false;
 
 	private static final int VERT = 1;
 	private static final int FRAG = 2;
@@ -41,10 +40,7 @@ public final class ShaderHandler {
 	public static int simpleBloom;
 
 	public static void init() {
-		if (initialized)
-			return;
 		useShaders = canUseShaders();
-		initialized = true;
 		if (!useShaders)
 			return;
 		Psi.logger.info("Initializing Psi shaders!");

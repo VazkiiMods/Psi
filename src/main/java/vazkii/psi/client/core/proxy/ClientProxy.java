@@ -24,9 +24,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
-import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.DeferredWorkQueue;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
@@ -63,7 +61,6 @@ public class ClientProxy implements IProxy {
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::modelBake);
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::addCADModels);
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::loadComplete);
-		MinecraftForge.EVENT_BUS.addListener(this::initializeShaders);
 	}
 
 	private void clientSetup(FMLClientSetupEvent event) {
@@ -85,6 +82,7 @@ public class ClientProxy implements IProxy {
 
 	private void loadComplete(FMLLoadCompleteEvent event) {
 		DeferredWorkQueue.runLater(ColorHandler::init);
+		DeferredWorkQueue.runLater(ShaderHandler::init);
 	}
 
 	private void modelBake(ModelBakeEvent event) {
@@ -100,10 +98,6 @@ public class ClientProxy implements IProxy {
 		ModelBakery.LOCATIONS_BUILTIN_TEXTURES.addAll(PsiAPI.getMiscAtlasMaterial());
 	}
 
-	private void initializeShaders(RenderWorldLastEvent event) {
-		if (!ShaderHandler.initialized)
-			ShaderHandler.init();
-	}
 
 	private void addCADModels(ModelRegistryEvent event) {
 		ModelLoader.addSpecialModel(new ResourceLocation(LibMisc.MOD_ID, "item/" + LibItemNames.CAD_IRON));
