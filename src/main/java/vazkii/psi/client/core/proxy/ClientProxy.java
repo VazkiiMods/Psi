@@ -93,8 +93,7 @@ public class ClientProxy implements IProxy {
 			Map<RenderType, BufferBuilder> map = ObfuscationReflectionHelper.getPrivateValue(IRenderTypeBuffer.Impl.class, Minecraft.getInstance().getBufferBuilders().getEntityVertexConsumers(), "field_228458_b_");
 			RenderType layer = SpellPiece.getRenderLayer(PsiAPI.PSI_PIECE_TEXTURE_ATLAS);
 			map.put(layer, new BufferBuilder(layer.getExpectedBufferSize()));
-			map.put(GuiProgrammer.BACKGROUND_LAYER, new BufferBuilder(GuiProgrammer.BACKGROUND_LAYER.getExpectedBufferSize()));
-			map.put(GuiProgrammer.ICONS_LAYER, new BufferBuilder(GuiProgrammer.ICONS_LAYER.getExpectedBufferSize()));
+			map.put(GuiProgrammer.LAYER, new BufferBuilder(GuiProgrammer.LAYER.getExpectedBufferSize()));
 			map.put(PieceConnector.LINES_LAYER, new BufferBuilder(PieceConnector.LINES_LAYER.getExpectedBufferSize()));
 
 			ColorHandler.init();

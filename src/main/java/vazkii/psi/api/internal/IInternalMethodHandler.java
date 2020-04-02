@@ -36,7 +36,7 @@ public interface IInternalMethodHandler {
 	ResourceLocation getProgrammerTexture();
 
 	/**
-	 * Gets the render layer for the programmer background.
+	 * Gets the render layer for the programmer.
 	 */
 	@OnlyIn(Dist.CLIENT)
 	RenderType getProgrammerLayer();
