@@ -727,8 +727,10 @@ public class PlayerDataHandler {
 
 		@Override
 		public void markPieceExecuted(SpellPiece piece) {
+			PieceExecutedEvent event = new PieceExecutedEvent(piece, playerWR.get());
+			MinecraftForge.EVENT_BUS.post(event);
 			ResourceLocation advancement = PsiAPI.getGroupForPiece(piece.getClass());
-			if (advancement != null && PsiAPI.getMainPieceForGroup(advancement) == piece.getClass())
+			if (advancement != null && PsiAPI.getMainPieceForGroup(advancement) == piece.getClass() && !hasAdvancement(advancement))
 				tutorialComplete(advancement);
 		}
 
