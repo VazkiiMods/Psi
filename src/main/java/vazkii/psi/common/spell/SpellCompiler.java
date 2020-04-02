@@ -93,7 +93,7 @@ public final class SpellCompiler implements ISpellCompiler {
 
 		List<SpellParam.Side> usedSides = new ArrayList<>();
 
-		for(SpellParam param : piece.paramSides.keySet()) {
+		for(SpellParam<?> param : piece.paramSides.keySet()) {
 			SpellParam.Side side = piece.paramSides.get(param);
 			if(!side.isEnabled()) {
 				if(!param.canDisable)
@@ -130,7 +130,7 @@ public final class SpellCompiler implements ISpellCompiler {
 
 		List<SpellParam.Side> usedSides = new ArrayList<>();
 
-		for (SpellParam param : piece.paramSides.keySet()) {
+		for (SpellParam<?> param : piece.paramSides.keySet()) {
 			SpellParam.Side side = piece.paramSides.get(param);
 			if(!side.isEnabled()) {
 				if(!param.canDisable)
@@ -162,7 +162,7 @@ public final class SpellCompiler implements ISpellCompiler {
 
 			List<SpellParam.Side> usedSides = new ArrayList<>();
 
-			for (SpellParam param : piece.paramSides.keySet()) {
+			for (SpellParam<?> param : piece.paramSides.keySet()) {
 				SpellParam.Side side = piece.paramSides.get(param);
 				if (!side.isEnabled()) {
 					if (!param.canDisable)

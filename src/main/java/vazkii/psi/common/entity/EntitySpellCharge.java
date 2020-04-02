@@ -12,6 +12,7 @@ package vazkii.psi.common.entity;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.projectile.ThrowableEntity;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.registries.ObjectHolder;
@@ -23,7 +24,7 @@ public class EntitySpellCharge extends EntitySpellGrenade implements IDetonation
 	@ObjectHolder(LibResources.PREFIX_MOD + LibEntityNames.SPELL_CHARGE)
     public static EntityType<EntitySpellCharge> TYPE;
 
-    public EntitySpellCharge(EntityType<?> type, World worldIn) {
+    public EntitySpellCharge(EntityType<? extends ThrowableEntity> type, World worldIn) {
         super(type, worldIn);
     }
 

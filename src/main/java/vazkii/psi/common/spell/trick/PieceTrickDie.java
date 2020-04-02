@@ -22,7 +22,7 @@ import vazkii.psi.api.spell.piece.PieceTrick;
 
 public class PieceTrickDie extends PieceTrick {
 
-	SpellParam target;
+	SpellParam<Number> target;
 
 	public PieceTrickDie(Spell spell) {
 		super(spell);
@@ -40,7 +40,7 @@ public class PieceTrickDie extends PieceTrick {
 
 	@Override
 	public Object execute(SpellContext context) {
-		Double timeVal = this.<Double>getParamValue(context, target);
+		double timeVal = this.getParamValue(context, target).doubleValue();
 		if(Math.abs(timeVal) < 1)
 			context.stopped = true;
 

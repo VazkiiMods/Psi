@@ -110,8 +110,7 @@ public final class SpellGrid {
 					newGrid[i][newY] = p;
 					p.y = newY;
 
-					for (SpellParam param : p.paramSides.keySet())
-						p.paramSides.put(param, p.paramSides.get(param).mirrorVertical());
+					p.paramSides.replaceAll((k, v) -> p.paramSides.get(k).mirrorVertical());
 				}
 			}
 		}
@@ -141,7 +140,7 @@ public final class SpellGrid {
 					p.x = newX;
 					p.y = newY;
 
-					for (SpellParam param : p.paramSides.keySet()) {
+					for (SpellParam<?> param : p.paramSides.keySet()) {
 						SpellParam.Side side = p.paramSides.get(param);
 						p.paramSides.put(param, ccw ? side.rotateCCW() : side.rotateCW());
 					}

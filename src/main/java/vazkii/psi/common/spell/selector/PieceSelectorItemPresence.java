@@ -20,7 +20,7 @@ import vazkii.psi.api.spell.piece.PieceSelector;
 
 public class PieceSelectorItemPresence extends PieceSelector {
 
-	SpellParam slot;
+	SpellParam<Number> slot;
 
 	public PieceSelectorItemPresence(Spell spell) {
 		super(spell);
@@ -33,7 +33,7 @@ public class PieceSelectorItemPresence extends PieceSelector {
 
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
-		Double slotVal = this.<Double>getParamValue(context, slot);
+		Number slotVal = this.getParamValue(context, slot);
 		int invSlot = (slotVal == null ? context.getTargetSlot() : Math.abs(slotVal.intValue() - 1)) % context.caster.inventory.mainInventory.size();
 		ItemStack stack = context.caster.inventory.getStackInSlot(invSlot);
 		

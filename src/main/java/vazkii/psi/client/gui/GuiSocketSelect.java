@@ -73,7 +73,7 @@ public class GuiSocketSelect extends Screen {
     ItemStack socketableStack;
     ISocketableCapability socketable;
     List<Integer> slots;
-    Minecraft mc;
+    final Minecraft mc;
 
     public GuiSocketSelect(ItemStack stack) {
         super(new StringTextComponent(""));

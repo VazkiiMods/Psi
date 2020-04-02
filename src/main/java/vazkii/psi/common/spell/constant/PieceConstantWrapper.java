@@ -23,8 +23,8 @@ import vazkii.psi.api.spell.param.ParamNumber;
 
 public class PieceConstantWrapper extends SpellPiece {
 
-	SpellParam target;
-	SpellParam max;
+	SpellParam<Number> target;
+	SpellParam<Number> max;
 	
 	boolean evaluating = false;
 
@@ -45,8 +45,8 @@ public class PieceConstantWrapper extends SpellPiece {
 
 	@Override
 	public Object execute(SpellContext context) {
-		Double targetVal = this.<Double>getParamValue(context, target);
-		Double maxVal = this.<Double>getParamValue(context, max);
+		double targetVal = this.getParamValue(context, target).doubleValue();
+		double maxVal = this.getParamValue(context, max).doubleValue();
 
 		if(maxVal > 0)
 			return Math.min(maxVal, Math.abs(targetVal));

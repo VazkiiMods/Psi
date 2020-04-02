@@ -101,7 +101,7 @@ public class ClientProxy implements IProxy {
 
 	private void modelBake(ModelBakeEvent event) {
 		ModelResourceLocation key = new ModelResourceLocation(ModItems.cad.getRegistryName(), "inventory");
-		event.getModelRegistry().put(key, new ModelCAD(event.getModelRegistry().get(key)));
+		event.getModelRegistry().put(key, new ModelCAD());
 
 	}
 

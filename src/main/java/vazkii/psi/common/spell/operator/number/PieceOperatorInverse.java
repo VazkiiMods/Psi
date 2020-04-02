@@ -19,7 +19,7 @@ import vazkii.psi.api.spell.piece.PieceOperator;
 
 public class PieceOperatorInverse extends PieceOperator {
 
-	SpellParam num;
+	SpellParam<Number> num;
 
 	public PieceOperatorInverse(Spell spell) {
 		super(spell);
@@ -32,7 +32,7 @@ public class PieceOperatorInverse extends PieceOperator {
 
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
-		Double d = this.<Double>getParamValue(context, num);
+		double d = this.getParamValue(context, num).doubleValue();
 
 		if(d == 0)
 			throw new SpellRuntimeException(SpellRuntimeException.DIVIDE_BY_ZERO);

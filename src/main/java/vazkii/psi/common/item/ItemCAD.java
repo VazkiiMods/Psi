@@ -166,7 +166,7 @@ public class ItemCAD extends Item implements ICAD, ISpellSettable {
 		ItemStack bullet = getBulletInSocket(itemStackIn, getSelectedSlot(itemStackIn));
 		if (!getComponentInSlot(playerCad, EnumCADComponent.DYE).isEmpty() && ContributorSpellCircleHandler.isContributor(playerIn.getName().toString())) {
 			ItemStack dyeStack = getComponentInSlot(playerCad, EnumCADComponent.DYE);
-			if (((ICADColorizer) dyeStack.getItem()).getContributorName(dyeStack) != playerIn.getName().toString()) {
+			if (!((ICADColorizer) dyeStack.getItem()).getContributorName(dyeStack).equals(playerIn.getName().toString())) {
 				((ICADColorizer) dyeStack.getItem()).setContributorName(dyeStack, playerIn.getName().toString());
 			}
 		}

@@ -22,8 +22,8 @@ import vazkii.psi.api.spell.piece.PieceTrick;
 
 public class PieceTrickSwitchTargetSlot extends PieceTrick {
 
-	SpellParam pos;
-	SpellParam shift;
+	SpellParam<Number> pos;
+	SpellParam<Number> shift;
 	
 	public PieceTrickSwitchTargetSlot(Spell spell) {
 		super(spell);
@@ -45,8 +45,8 @@ public class PieceTrickSwitchTargetSlot extends PieceTrick {
 
 	@Override
 	public Object execute(SpellContext context) {
-		Double posVal = this.<Double>getParamValue(context, pos);
-		Double shiftVal = this.<Double>getParamValue(context, shift);
+		Number posVal = this.getParamValue(context, pos);
+		Number shiftVal = this.getParamValue(context, shift);
 		
 		if(shiftVal != null) {
 			context.shiftTargetSlot = true;

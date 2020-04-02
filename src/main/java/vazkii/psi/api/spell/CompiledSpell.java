@@ -128,7 +128,7 @@ public class CompiledSpell {
 
 	}
 
-	public class CatchHandler {
+	public static class CatchHandler {
 
 		public final SpellPiece handlerPiece;
 		public final IErrorCatcher handler;

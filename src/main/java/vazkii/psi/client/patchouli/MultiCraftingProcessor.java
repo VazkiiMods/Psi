@@ -65,7 +65,7 @@ public class MultiCraftingProcessor implements IComponentProcessor {
 			List<Ingredient> ingredients = new ArrayList<>();
 			for (ICraftingRecipe recipe : recipes) {
 				if (recipe instanceof IShapedRecipe) {
-					IShapedRecipe shaped = (IShapedRecipe) recipe;
+					IShapedRecipe<?> shaped = (IShapedRecipe<?>) recipe;
 					if (shaped.getRecipeWidth() < shapedX + 1) {
 						ingredients.add(Ingredient.EMPTY);
 					} else {

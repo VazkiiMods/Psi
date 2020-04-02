@@ -16,9 +16,9 @@ import java.util.List;
 
 public class SideConfigWidget extends Widget {
 
-	public List<Button> configButtons = new ArrayList<>();
+	public final List<Button> configButtons = new ArrayList<>();
 	public boolean configEnabled = false;
-	public GuiProgrammer parent;
+	public final GuiProgrammer parent;
 
 
 	public SideConfigWidget(int x, int y, int width, int height, GuiProgrammer programmer) {

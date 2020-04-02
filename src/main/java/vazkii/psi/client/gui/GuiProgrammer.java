@@ -306,7 +306,7 @@ public class GuiProgrammer extends Screen {
 
 			}
 
-			String coords = "";
+			String coords;
 			if (SpellGrid.exists(cursorX, cursorY))
 				coords = I18n.format("psimisc.programmer_coords", selectedX + 1, selectedY + 1, cursorX + 1, cursorY + 1);
 			else
@@ -432,7 +432,7 @@ public class GuiProgrammer extends Screen {
 				if (piece.hasConfig()) {
 					int i = 0;
 					for (String paramName : piece.params.keySet()) {
-						SpellParam param = piece.params.get(paramName);
+						SpellParam<?> param = piece.params.get(paramName);
 						int x = left - 17;
 						int y = top + 70 + i * 26;
 						for (SpellParam.Side side : ImmutableSet.of(SpellParam.Side.TOP, SpellParam.Side.BOTTOM, SpellParam.Side.LEFT, SpellParam.Side.RIGHT, SpellParam.Side.OFF)) {
@@ -468,7 +468,7 @@ public class GuiProgrammer extends Screen {
 			return false;
 		super.charTyped(character, keyCode);
 		if (!commentEnabled && !spellNameField.isFocused()) {
-			SpellPiece piece = null;
+			SpellPiece piece;
 			if (selectedX != -1 && selectedY != -1) {
 				piece = spell.grid.gridData[selectedX][selectedY];
 				if (piece != null && piece.interceptKeystrokes()) {

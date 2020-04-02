@@ -66,7 +66,7 @@ public class GuiButtonSideConfig extends Button {
             if (piece == null)
                 return;
 
-            SpellParam param = piece.params.get(paramName);
+            SpellParam<?> param = piece.params.get(paramName);
             if (param == null)
                 return;
 
@@ -103,15 +103,10 @@ public class GuiButtonSideConfig extends Button {
 		if (piece == null)
 			return;
 
-		SpellParam param = piece.params.get(paramName);
+		SpellParam<?> param = piece.params.get(paramName);
 		if (param == null)
 			return;
 
 		piece.paramSides.put(param, side);
-	}
-
-	@Override
-	public void onPress() {
-		super.onPress();
 	}
 }

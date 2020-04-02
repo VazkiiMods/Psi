@@ -16,7 +16,7 @@ import vazkii.psi.common.item.ItemCAD;
 
 public class SpellCostsWidget extends Widget {
 
-	private GuiProgrammer parent;
+	private final GuiProgrammer parent;
 
 
 	public SpellCostsWidget(int x, int y, int width, int height, String message, GuiProgrammer programmer) {

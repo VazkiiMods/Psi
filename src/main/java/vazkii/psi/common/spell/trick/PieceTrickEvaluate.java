@@ -21,7 +21,7 @@ import vazkii.psi.api.spell.piece.PieceTrick;
 
 public class PieceTrickEvaluate extends PieceTrick {
 
-	SpellParam target;
+	SpellParam<SpellParam.Any> target;
 
 	public PieceTrickEvaluate(Spell spell) {
 		super(spell);

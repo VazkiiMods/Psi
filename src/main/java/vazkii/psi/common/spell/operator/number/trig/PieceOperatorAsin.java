@@ -19,7 +19,7 @@ import vazkii.psi.api.spell.piece.PieceOperator;
 
 public class PieceOperatorAsin extends PieceOperator {
 
-	SpellParam num;
+	SpellParam<Number> num;
 
 	public PieceOperatorAsin(Spell spell) {
 		super(spell);
@@ -32,7 +32,7 @@ public class PieceOperatorAsin extends PieceOperator {
 
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
-		Double d = this.<Double>getParamValue(context, num);
+		double d = this.getParamValue(context, num).doubleValue();
 		if(d < -1 || d > 1)
 			throw new SpellRuntimeException("psi.spellerror.outsidetrigdomain");
 

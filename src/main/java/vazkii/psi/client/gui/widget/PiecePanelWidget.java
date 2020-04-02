@@ -31,9 +31,9 @@ import java.util.regex.Pattern;
 
 public class PiecePanelWidget extends Widget implements IRenderable, IGuiEventListener {
 
-	public GuiProgrammer parent;
+	public final GuiProgrammer parent;
 	public boolean panelEnabled = false;
-	public List<Button> panelButtons = new ArrayList<>();
+	public final List<Button> panelButtons = new ArrayList<>();
 	public int panelCursor;
 	public TextFieldWidget searchField;
 	public int page = 0;
@@ -318,7 +318,7 @@ public class PiecePanelWidget extends Widget implements IRenderable, IGuiEventLi
 					continue;
 
 				int maxRank = 0;
-				for (SpellParam param : p.params.values()) {
+				for (SpellParam<?> param : p.params.values()) {
 					String type = param.getRequiredTypeString().getFormattedText().toLowerCase();
 					maxRank = Math.max(maxRank, rankTextToken(type, clippedToken));
 				}

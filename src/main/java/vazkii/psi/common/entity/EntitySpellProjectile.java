@@ -60,12 +60,12 @@ public class EntitySpellProjectile extends ThrowableEntity {
 	public SpellContext context;
 	public int timeAlive;
 
-	public EntitySpellProjectile(EntityType<?> type, World worldIn) {
-		super((EntityType<? extends ThrowableEntity>) type, worldIn);
+	public EntitySpellProjectile(EntityType<? extends ThrowableEntity> type, World worldIn) {
+		super(type, worldIn);
 	}
 
-	protected EntitySpellProjectile(EntityType<?> type, World world, LivingEntity thrower) {
-		super((EntityType<? extends ThrowableEntity>) type, thrower, world);
+	protected EntitySpellProjectile(EntityType<? extends ThrowableEntity> type, World world, LivingEntity thrower) {
+		super(type, thrower, world);
 		
 		shoot(thrower, thrower.rotationPitch, thrower.rotationYaw, 0.0F, 1.5F, 1.0F);
 		double speed = 1.5;

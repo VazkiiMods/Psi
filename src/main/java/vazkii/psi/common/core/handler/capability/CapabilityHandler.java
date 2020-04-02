@@ -66,7 +66,7 @@ public class CapabilityHandler {
 		@Override
 		public INBT writeNBT(Capability<T> capability, T instance, Direction side) {
 			if (instance instanceof INBTSerializable)
-				return ((INBTSerializable) instance).serializeNBT();
+				return ((INBTSerializable<?>) instance).serializeNBT();
 			return null;
 		}
 

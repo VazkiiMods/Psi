@@ -16,8 +16,8 @@ import vazkii.psi.api.spell.CompiledSpell;
 import vazkii.psi.api.spell.SpellPiece;
 
 public class CrashReportHandler implements ICrashCallable {
-	private static ThreadLocal<CompiledSpell> activeSpell = new ThreadLocal<>();
-	private static ThreadLocal<SpellPiece> activePiece = new ThreadLocal<>();
+	private static final ThreadLocal<CompiledSpell> activeSpell = new ThreadLocal<>();
+	private static final ThreadLocal<SpellPiece> activePiece = new ThreadLocal<>();
 
 	public static void setSpell(CompiledSpell spell, SpellPiece piece) {
 		activeSpell.set(spell);

@@ -26,7 +26,7 @@ public final class ModEntities {
     @SubscribeEvent
 	public static void init(RegistryEvent.Register<EntityType<?>> evt) {
         IForgeRegistry<EntityType<?>> r = evt.getRegistry();
-        r.register(EntityType.Builder.create(EntitySpellProjectile::new, MISC)
+        r.register(EntityType.Builder.create((EntityType.IFactory<EntitySpellProjectile>) EntitySpellProjectile::new, MISC)
                 .setTrackingRange(256)
                 .setUpdateInterval(10)
                 .setShouldReceiveVelocityUpdates(true)
@@ -38,19 +38,19 @@ public final class ModEntities {
                 .setShouldReceiveVelocityUpdates(false)
                 .size(3, 0)
                 .build("").setRegistryName(LibMisc.MOD_ID, LibEntityNames.SPELL_CIRCLE));
-        r.register(EntityType.Builder.create(EntitySpellGrenade::new, MISC)
+        r.register(EntityType.Builder.create((EntityType.IFactory<EntitySpellGrenade>) EntitySpellGrenade::new, MISC)
                 .setTrackingRange(256)
                 .setUpdateInterval(10)
                 .setShouldReceiveVelocityUpdates(true)
                 .size(0, 0)
                 .build("").setRegistryName(LibMisc.MOD_ID, LibEntityNames.SPELL_GRENADE));
-        r.register(EntityType.Builder.create(EntitySpellCharge::new, MISC)
+        r.register(EntityType.Builder.create((EntityType.IFactory<EntitySpellCharge>) EntitySpellCharge::new, MISC)
                 .setTrackingRange(256)
                 .setUpdateInterval(10)
                 .setShouldReceiveVelocityUpdates(true)
                 .size(0, 0)
                 .build("").setRegistryName(LibMisc.MOD_ID, LibEntityNames.SPELL_CHARGE));
-        r.register(EntityType.Builder.create(EntitySpellMine::new, MISC)
+        r.register(EntityType.Builder.create((EntityType.IFactory<EntitySpellMine>) EntitySpellMine::new, MISC)
                 .setTrackingRange(256)
                 .setUpdateInterval(10)
                 .setShouldReceiveVelocityUpdates(true)

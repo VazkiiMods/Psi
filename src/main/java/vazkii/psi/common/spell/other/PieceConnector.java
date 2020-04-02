@@ -62,7 +62,7 @@ public class PieceConnector extends SpellPiece implements IRedirector {
 				if(side.isEnabled()) {
 					SpellPiece piece = spell.grid.getPieceAtSideSafely(x, y, side);
 					if(piece != null)
-						for(SpellParam param : piece.paramSides.keySet()) {
+						for(SpellParam<?> param : piece.paramSides.keySet()) {
 							SpellParam.Side paramSide = piece.paramSides.get(param);
 							if(paramSide.getOpposite() == side) {
 								drawSide(ms, buffers, light, side);
@@ -84,6 +84,7 @@ public class PieceConnector extends SpellPiece implements IRedirector {
 				case LEFT:
 					minU = 0.5f;
 					break;
+				default:
 				case RIGHT:
 					break;
 				case TOP:
@@ -92,8 +93,6 @@ public class PieceConnector extends SpellPiece implements IRedirector {
 				case BOTTOM:
 					minU = 0.5f;
 					minV = 0.5f;
-					break;
-				default:
 					break;
 			}
 

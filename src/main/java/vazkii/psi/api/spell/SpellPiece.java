@@ -130,7 +130,7 @@ public abstract class SpellPiece {
 	/**
 	 * Adds a {@link SpellParam} to this piece.
 	 */
-	public void addParam(SpellParam param) {
+	public void addParam(SpellParam<?> param) {
 		params.put(param.name, param);
 		paramSides.put(param, SpellParam.Side.OFF);
 	}
@@ -159,7 +159,7 @@ public abstract class SpellPiece {
 	 * {@link #evaluate()} and should only be used for {@link #addToMetadata(SpellMetadata)}
 	 */
 	@SuppressWarnings("unchecked")
-	public <T> T getParamEvaluation(SpellParam param) throws SpellCompilationException {
+	public <T> T getParamEvaluation(SpellParam<?> param) throws SpellCompilationException {
 		SpellParam.Side side = paramSides.get(param);
 		if(!side.isEnabled())
 			return null;
@@ -282,7 +282,7 @@ public abstract class SpellPiece {
 	@OnlyIn(Dist.CLIENT)
 	public void drawParams(MatrixStack ms, IRenderTypeBuffer buffers, int light) {
         IVertexBuilder buffer = buffers.getBuffer(PsiAPI.internalHandler.getProgrammerLayer());
-        for (SpellParam param : paramSides.keySet()) {
+        for (SpellParam<?> param : paramSides.keySet()) {
             SpellParam.Side side = paramSides.get(param);
             if (side.isEnabled()) {
                 int minX = 4;
@@ -349,7 +349,7 @@ public abstract class SpellPiece {
 		ITextComponent eval = getEvaluationTypeString().applyTextStyle(TextFormatting.GOLD);
 		tooltip.add(new StringTextComponent("<- ").appendSibling(eval));
 
-		for (SpellParam param : paramSides.keySet()) {
+		for (SpellParam<?> param : paramSides.keySet()) {
 			ITextComponent pName = new TranslationTextComponent(param.name).applyTextStyle(TextFormatting.YELLOW);
 			ITextComponent pEval = new StringTextComponent(" [").appendSibling(param.getRequiredTypeString()).appendText("]").applyTextStyle(TextFormatting.YELLOW);
 			tooltip.add(new StringTextComponent(param.canDisable ? "[->] " : " ->  ").appendSibling(pName).appendSibling(pEval));
@@ -446,7 +446,7 @@ public abstract class SpellPiece {
 	public void readFromNBT(CompoundNBT cmp) {
 		CompoundNBT paramCmp = cmp.getCompound(TAG_PARAMS);
 		for (String s : params.keySet()) {
-			SpellParam param = params.get(s);
+			SpellParam<?> param = params.get(s);
 
 			String key = s;
 			if (paramCmp.contains(key))
@@ -470,7 +470,7 @@ public abstract class SpellPiece {
         int paramCount = 0;
         CompoundNBT paramCmp = new CompoundNBT();
         for (String s : params.keySet()) {
-            SpellParam param = params.get(s);
+            SpellParam<?> param = params.get(s);
             SpellParam.Side side = paramSides.get(param);
             paramCmp.putInt(s.replaceAll("^" + SpellParam.PSI_PREFIX, "_"), side.asInt());
             paramCount++;

@@ -19,7 +19,7 @@ import vazkii.psi.api.spell.piece.PieceOperator;
 
 public class PieceOperatorAbsolute extends PieceOperator {
 
-	SpellParam num;
+	SpellParam<Number> num;
 
 	public PieceOperatorAbsolute(Spell spell) {
 		super(spell);
@@ -32,7 +32,7 @@ public class PieceOperatorAbsolute extends PieceOperator {
 
 	@Override
 	public Object execute(SpellContext context) {
-		Double d = this.<Double>getParamValue(context, num);
+		double d = this.getParamValue(context, num).doubleValue();
 
 		return Math.abs(d);
 	}

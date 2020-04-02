@@ -19,9 +19,9 @@ import vazkii.psi.api.spell.piece.PieceOperator;
 
 public class PieceOperatorMin extends PieceOperator {
 
-	SpellParam num1;
-	SpellParam num2;
-	SpellParam num3;
+	SpellParam<Number> num1;
+	SpellParam<Number> num2;
+	SpellParam<Number> num3;
 
 	public PieceOperatorMin(Spell spell) {
 		super(spell);
@@ -36,13 +36,13 @@ public class PieceOperatorMin extends PieceOperator {
 
 	@Override
 	public Object execute(SpellContext context) {
-		Double d1 = this.<Double>getParamValue(context, num1);
-		Double d2 = this.<Double>getParamValue(context, num2);
-		Double d3 = this.<Double>getParamValue(context, num3);
+		double d1 = this.getParamValue(context, num1).doubleValue();
+		double d2 = this.getParamValue(context, num2).doubleValue();
+		Number d3 = this.getParamValue(context, num3);
 		if(d3 == null)
 			d3 = Double.MAX_VALUE;
 
-		return Math.min(d1, Math.min(d2, d3));
+		return Math.min(d1, Math.min(d2, d3.doubleValue()));
 	}
 
 	@Override
