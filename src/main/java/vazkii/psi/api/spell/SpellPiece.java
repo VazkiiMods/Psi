@@ -11,6 +11,7 @@
 package vazkii.psi.api.spell;
 
 import com.google.common.base.CaseFormat;
+import com.google.common.base.Preconditions;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
@@ -203,14 +204,15 @@ public abstract class SpellPiece {
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	private static RenderType getRenderLayer(ResourceLocation resourceLocation) {
+	public static RenderType getRenderLayer(ResourceLocation texture) {
+		Preconditions.checkArgument(PsiAPI.PSI_PIECE_TEXTURE_ATLAS.equals(texture), "No other texture should be here!");
 		RenderType.State glState = RenderType.State.builder()
-				.texture(new RenderState.TextureState(resourceLocation, false, false))
+				.texture(new RenderState.TextureState(texture, false, false))
 				.lightmap(new RenderState.LightmapState(true))
 				.alpha(new RenderState.AlphaState(0.004F))
 				.cull(new RenderState.CullState(false))
 				.build(false);
-		return RenderType.of(resourceLocation.toString(), DefaultVertexFormats.POSITION_COLOR_TEXTURE_LIGHT, GL11.GL_QUADS, 64, glState);
+		return RenderType.of(texture.toString(), DefaultVertexFormats.POSITION_COLOR_TEXTURE_LIGHT, GL11.GL_QUADS, 64, glState);
 
 	}
 

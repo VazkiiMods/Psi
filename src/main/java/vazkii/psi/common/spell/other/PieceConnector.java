@@ -32,7 +32,7 @@ import java.util.List;
 
 public class PieceConnector extends SpellPiece implements IRedirector {
 
-	private static final RenderType LINES_LAYER;
+	public static final RenderType LINES_LAYER;
 	static {
 		RenderType.State glState = RenderType.State.builder()
 						.texture(new RenderState.TextureState(new ResourceLocation(LibResources.SPELL_CONNECTOR_LINES), false, false))

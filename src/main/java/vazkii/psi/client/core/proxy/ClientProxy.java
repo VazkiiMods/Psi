@@ -11,6 +11,8 @@
 package vazkii.psi.client.core.proxy;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.client.renderer.model.ModelBakery;
@@ -30,12 +32,14 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.DeferredWorkQueue;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.cad.ICADColorizer;
+import vazkii.psi.api.spell.SpellPiece;
 import vazkii.psi.client.core.handler.*;
 import vazkii.psi.client.fx.SparkleParticleData;
 import vazkii.psi.client.fx.WispParticleData;
@@ -51,6 +55,9 @@ import vazkii.psi.common.entity.*;
 import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.lib.LibItemNames;
 import vazkii.psi.common.lib.LibMisc;
+import vazkii.psi.common.spell.other.PieceConnector;
+
+import java.util.Map;
 
 @OnlyIn(Dist.CLIENT)
 public class ClientProxy implements IProxy {
@@ -82,7 +89,16 @@ public class ClientProxy implements IProxy {
 	}
 
 	private void loadComplete(FMLLoadCompleteEvent event) {
-		DeferredWorkQueue.runLater(ColorHandler::init);
+		DeferredWorkQueue.runLater(() -> {
+			Map<RenderType, BufferBuilder> map = ObfuscationReflectionHelper.getPrivateValue(IRenderTypeBuffer.Impl.class, Minecraft.getInstance().getBufferBuilders().getEntityVertexConsumers(), "field_228458_b_");
+			RenderType layer = SpellPiece.getRenderLayer(PsiAPI.PSI_PIECE_TEXTURE_ATLAS);
+			map.put(layer, new BufferBuilder(layer.getExpectedBufferSize()));
+			map.put(GuiProgrammer.BACKGROUND_LAYER, new BufferBuilder(GuiProgrammer.BACKGROUND_LAYER.getExpectedBufferSize()));
+			map.put(GuiProgrammer.ICONS_LAYER, new BufferBuilder(GuiProgrammer.ICONS_LAYER.getExpectedBufferSize()));
+			map.put(PieceConnector.LINES_LAYER, new BufferBuilder(PieceConnector.LINES_LAYER.getExpectedBufferSize()));
+
+			ColorHandler.init();
+		});
 	}
 
 	private void modelBake(ModelBakeEvent event) {
