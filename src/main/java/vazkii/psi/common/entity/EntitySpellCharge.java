@@ -29,7 +29,7 @@ public class EntitySpellCharge extends EntitySpellGrenade implements IDetonation
     }
 
     public EntitySpellCharge(World worldIn, LivingEntity throwerIn) {
-        super(worldIn, throwerIn);
+        super(TYPE, worldIn, throwerIn);
     }
 
     @Override
