@@ -20,7 +20,6 @@ public class LibResources {
 
 	public static final String PREFIX_SHADER = "/assets/psi/shaders/";
 	public static final String PREFIX_GUI = PREFIX_MOD + "textures/gui/";
-	public static final String PREFIX_SPELL = PREFIX_MOD + "textures/spell/";
 	public static final String PREFIX_MODEL = PREFIX_MOD + "textures/model/";
 	public static final String PREFIX_MISC = PREFIX_MOD + "textures/misc/";
 
@@ -36,7 +35,7 @@ public class LibResources {
 	public static final String GUI_SIGN = PREFIX_GUI + "signs/sign%d.png";
 	public static final String GUI_PROGRAMMER = PREFIX_GUI + "programmer.png";
 
-	public static final String SPELL_CONNECTOR_LINES = PREFIX_SPELL + "connector_lines.png";
+	public static final String SPELL_CONNECTOR_LINES = PREFIX_MOD + "spell/connector_lines";
 
 	public static final String MODEL_PSIMETAL_EXOSUIT = PREFIX_MODEL + "psimetal_exosuit.png";
 	public static final String MODEL_PSIMETAL_EXOSUIT_SENSOR = PREFIX_MODEL + "psimetal_exosuit_sensor.png";
