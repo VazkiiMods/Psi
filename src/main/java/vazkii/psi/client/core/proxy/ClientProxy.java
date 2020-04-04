@@ -11,6 +11,7 @@
 package vazkii.psi.client.core.proxy;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
@@ -54,7 +55,6 @@ import vazkii.psi.common.entity.*;
 import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.lib.LibItemNames;
 import vazkii.psi.common.lib.LibMisc;
-import vazkii.psi.common.lib.LibResources;
 import vazkii.psi.common.spell.other.PieceConnector;
 
 import java.util.Map;
@@ -115,7 +115,14 @@ public class ClientProxy implements IProxy {
 
 	}
 
-
+	@Override
+	public boolean hasAdvancement(ResourceLocation advancement, PlayerEntity playerEntity) {
+		if (playerEntity instanceof ClientPlayerEntity) {
+			ClientPlayerEntity clientPlayerEntity = (ClientPlayerEntity) playerEntity;
+			return clientPlayerEntity.connection.getAdvancementManager().getAdvancementList().getAdvancement(advancement) != null;
+		}
+		return false;
+	}
 
 	@Override
 	public void addParticleForce(World world, IParticleData particleData, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {

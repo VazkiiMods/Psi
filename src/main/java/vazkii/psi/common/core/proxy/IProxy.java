@@ -25,6 +25,8 @@ public interface IProxy {
 
 	void onLevelUp(ResourceLocation level);
 
+    default boolean hasAdvancement(ResourceLocation advancement, PlayerEntity playerEntity) {return false;}
+
     default int getColorForCAD(ItemStack cadStack) {
         return -1;
     }

@@ -14,7 +14,6 @@ import com.google.common.collect.ImmutableSet;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
@@ -677,15 +676,7 @@ public class PlayerDataHandler {
 
 		public boolean hasAdvancement(ResourceLocation group) {
 			PlayerEntity player = playerWR.get();
-			boolean hasAdvancement = false;
-			if (player instanceof ClientPlayerEntity) {
-				ClientPlayerEntity clientPlayerEntity = (ClientPlayerEntity) player;
-				hasAdvancement = clientPlayerEntity.connection.getAdvancementManager().getAdvancementList().getAdvancement(group) != null;
-			} else if (player instanceof ServerPlayerEntity) {
-				ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity) player;
-				hasAdvancement = serverPlayerEntity.getServer().getAdvancementManager().getAdvancement(group) != null && serverPlayerEntity.getAdvancements().getProgress(serverPlayerEntity.getServer().getAdvancementManager().getAdvancement(group)).isDone();
-			}
-			return hasAdvancement;
+			return Psi.proxy.hasAdvancement(group, player);
 		}
 
 		@Override
