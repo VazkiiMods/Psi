@@ -2,11 +2,15 @@ package vazkii.psi.client.patchouli;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.util.text.ITextComponent;
+import vazkii.patchouli.api.IComponentRenderContext;
 import vazkii.patchouli.api.PatchouliAPI;
+import vazkii.psi.api.spell.SpellPiece;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringJoiner;
+import java.util.stream.Collectors;
 
 //https://github.com/Vazkii/Botania/blob/master/src/main/java/vazkii/botania/client/patchouli/PatchouliUtils.java
 public class PatchouliUtils {
@@ -48,5 +52,14 @@ public class PatchouliUtils {
 	 */
 	public static String interweaveIngredients(List<Ingredient> ingredients) {
 		return interweaveIngredients(ingredients, ingredients.stream().mapToInt(ingr -> ingr.getMatchingStacks().length).max().orElse(1));
+	}
+
+	/**
+	 * Sets the tooltip to the passed spell piece's tooltip.
+	 */
+	public static void setPieceTooltip(IComponentRenderContext context, SpellPiece piece) {
+		List<ITextComponent> tooltip = new ArrayList<>();
+		piece.getTooltip(tooltip);
+		context.setHoverTooltip(tooltip.stream().map(ITextComponent::getFormattedText).collect(Collectors.toList()));
 	}
 }
