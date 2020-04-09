@@ -20,6 +20,7 @@ import net.minecraft.client.renderer.model.Material;
 import net.minecraft.client.renderer.model.ModelBakery;
 import net.minecraft.client.renderer.model.ModelResourceLocation;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particles.IParticleData;
 import net.minecraft.util.ResourceLocation;
@@ -120,6 +121,9 @@ public class ClientProxy implements IProxy {
 		if (playerEntity instanceof ClientPlayerEntity) {
 			ClientPlayerEntity clientPlayerEntity = (ClientPlayerEntity) playerEntity;
 			return clientPlayerEntity.connection.getAdvancementManager().getAdvancementList().getAdvancement(advancement) != null;
+		} else if (playerEntity instanceof ServerPlayerEntity) {
+			ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity) playerEntity;
+			return serverPlayerEntity.getServer().getAdvancementManager().getAdvancement(advancement) != null && serverPlayerEntity.getAdvancements().getProgress(serverPlayerEntity.getServer().getAdvancementManager().getAdvancement(advancement)).isDone();
 		}
 		return false;
 	}
