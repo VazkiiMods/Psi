@@ -11,7 +11,6 @@
 package vazkii.psi.api.spell;
 
 import com.google.common.base.CaseFormat;
-import com.google.common.base.Preconditions;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
@@ -347,12 +346,12 @@ public abstract class SpellPiece {
 
 		tooltip.add(new StringTextComponent(""));
 		ITextComponent eval = getEvaluationTypeString().applyTextStyle(TextFormatting.GOLD);
-		tooltip.add(new StringTextComponent("<- ").appendSibling(eval));
+		tooltip.add(new StringTextComponent("Output ").appendSibling(eval));
 
 		for (SpellParam<?> param : paramSides.keySet()) {
 			ITextComponent pName = new TranslationTextComponent(param.name).applyTextStyle(TextFormatting.YELLOW);
 			ITextComponent pEval = new StringTextComponent(" [").appendSibling(param.getRequiredTypeString()).appendText("]").applyTextStyle(TextFormatting.YELLOW);
-			tooltip.add(new StringTextComponent(param.canDisable ? "[->] " : " ->  ").appendSibling(pName).appendSibling(pEval));
+			tooltip.add(new StringTextComponent(param.canDisable ? "[Input] " : " Input  ").appendSibling(pName).appendSibling(pEval));
 		}
 	}
 
