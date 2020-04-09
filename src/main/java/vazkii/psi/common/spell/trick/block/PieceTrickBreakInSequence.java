@@ -11,14 +11,9 @@
 package vazkii.psi.common.spell.trick.block;
 
 import net.minecraft.util.math.BlockPos;
+import vazkii.psi.api.internal.MathHelper;
 import vazkii.psi.api.internal.Vector3;
-import vazkii.psi.api.spell.EnumSpellStat;
-import vazkii.psi.api.spell.Spell;
-import vazkii.psi.api.spell.SpellCompilationException;
-import vazkii.psi.api.spell.SpellContext;
-import vazkii.psi.api.spell.SpellMetadata;
-import vazkii.psi.api.spell.SpellParam;
-import vazkii.psi.api.spell.SpellRuntimeException;
+import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.param.ParamVector;
 import vazkii.psi.api.spell.piece.PieceTrick;
@@ -61,16 +56,13 @@ public class PieceTrickBreakInSequence extends PieceTrick {
 		if(positionVal == null)
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
 
-		int len = (int) targetVal.mag();
+
 		Vector3 targetNorm = targetVal.copy().normalize();
-		for(int i = 0; i < Math.min(len, maxBlocksInt); i++) {
-			Vector3 blockVec = positionVal.copy().add(targetNorm.copy().multiply(i));
-
-			if(!context.isInRadius(blockVec))
+		for (BlockPos blockPos : MathHelper.getBlocksAlongRay(positionVal.toVec3D(), positionVal.copy().add(targetNorm.copy().multiply(maxBlocksInt)).toVec3D(), maxBlocksInt)) {
+			if(!context.isInRadius(Vector3.fromBlockPos(blockPos)))
 				throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
+			PieceTrickBreakBlock.removeBlockWithDrops(context, context.caster, context.caster.getEntityWorld(), context.tool, blockPos, true);
 
-			BlockPos pos = blockVec.toBlockPos();
-			PieceTrickBreakBlock.removeBlockWithDrops(context, context.caster, context.caster.getEntityWorld(), context.tool, pos, true);
 		}
 
 		return null;

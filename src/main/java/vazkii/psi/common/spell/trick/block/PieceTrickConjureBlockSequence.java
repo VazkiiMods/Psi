@@ -13,6 +13,7 @@ package vazkii.psi.common.spell.trick.block;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import vazkii.psi.api.internal.MathHelper;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.param.ParamNumber;
@@ -62,22 +63,19 @@ public class PieceTrickConjureBlockSequence extends PieceTrick {
 		if(positionVal == null)
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
 
-		int len = (int) targetVal.mag();
 		Vector3 targetNorm = targetVal.copy().normalize();
 		World world = context.caster.getEntityWorld();
 
-		for(int i = 0; i < Math.min(len, maxBlocksInt); i++) {
-			Vector3 blockVec = positionVal.copy().add(targetNorm.copy().multiply(i));
-
-			if(!context.isInRadius(blockVec))
+		for (BlockPos blockPos : MathHelper.getBlocksAlongRay(positionVal.toVec3D(), positionVal.copy().add(targetNorm.copy().multiply(maxBlocksInt)).toVec3D(), maxBlocksInt)) {
+			if (!context.isInRadius(Vector3.fromBlockPos(blockPos)))
 				throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 
-			BlockPos pos = blockVec.toBlockPos();
-			if(!world.isBlockModifiable(context.caster, pos))
+			if(!world.isBlockModifiable(context.caster, blockPos))
 				continue;
 
-			PieceTrickConjureBlock.conjure(context, timeVal, pos, world, messWithState(ModBlocks.conjured.getDefaultState()));
+			PieceTrickConjureBlock.conjure(context, timeVal, blockPos, world, messWithState(ModBlocks.conjured.getDefaultState()));
 		}
+
 
 		return null;
 	}
