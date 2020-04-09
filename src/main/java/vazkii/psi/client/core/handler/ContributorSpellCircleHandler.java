@@ -2,6 +2,7 @@ package vazkii.psi.client.core.handler;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DefaultUncaughtExceptionHandler;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.apache.logging.log4j.Level;
@@ -63,6 +64,13 @@ public final class ContributorSpellCircleHandler {
 		if(ContributorSpellCircleHandler.isContributor(event.getPlayer().getName().getString().toLowerCase()) && !((ICAD) event.getCad().getItem()).getComponentInSlot(event.getCad(), EnumCADComponent.DYE).isEmpty()){
 			ItemStack dyeStack = ((ICAD) event.getCad().getItem()).getComponentInSlot(event.getCad(), EnumCADComponent.DYE);
 			((ICADColorizer) dyeStack.getItem()).setContributorName(dyeStack, event.getPlayer().getName().getString());
+		}
+	}
+
+	@SubscribeEvent
+	public static void craftColorizer(PlayerEvent.ItemCraftedEvent event){
+		if(ContributorSpellCircleHandler.isContributor(event.getPlayer().getName().getString().toLowerCase()) && event.getCrafting().getItem() instanceof ICADColorizer){
+			((ICADColorizer) event.getCrafting().getItem()).setContributorName(event.getCrafting(), event.getPlayer().getName().getString());
 		}
 	}
 

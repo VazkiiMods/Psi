@@ -26,12 +26,9 @@ public class ColorHandler {
 
 	public static int slideColor(int[] color, float speed) {
 		int n = color.length;
-		double t = (ClientTickHandler.ticksInGame * speed * n / Math.PI) % n;
+		double t = (ClientTickHandler.ticksInGame * speed * n / (Math.PI * 2)) % n;
 		int phase = (int) t;
 		double dt = t - phase;
-
-		if (dt == 0)
-			return color[phase];
 
 		int nextPhase = (phase + 1) % n;
 		return slideColorTime(color[phase], color[nextPhase], (float) (dt * Math.PI * 2));
@@ -43,10 +40,6 @@ public class ColorHandler {
 
 	public static int slideColorTime(int color, int secondColor, float t) {
 		float shift = (MathHelper.sin(t) + 1) / 2;
-		if (shift == 0)
-			return color;
-		else if (shift == 1)
-			return secondColor;
 
 		int redA = (0xFF0000 & color) >> 16;
 		int greenA = (0x00FF00 & color) >> 8;
