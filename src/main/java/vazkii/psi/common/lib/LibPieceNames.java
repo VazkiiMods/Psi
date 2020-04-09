@@ -82,11 +82,15 @@ public final class LibPieceNames {
 	public static final String OPERATOR_VECTOR_PROJECT = "operator_vector_project";
 	public static final String OPERATOR_VECTOR_RAYCAST_AXIS = "operator_vector_raycast_axis";
 	public static final String OPERATOR_VECTOR_DOT_PRODUCT = "operator_vector_dot_product";
+	public static final String OPERATOR_GAMMA_FUNCTION = "operator_gamma_function";
+	public static final String OPERATOR_PLANAR_NORMAL_VECTOR = "operator_planar_normal_vector";
+	public static final String OPERATOR_VECTOR_ROTATE = "operator_vector_rotate";
 
 	public static final String CONSTANT_NUMBER = "constant_number";
 	public static final String CONSTANT_PI = "constant_pi";
 	public static final String CONSTANT_E = "constant_e";
 	public static final String CONSTANT_WRAPPER = "constant_wrapper";
+	public static final String CONSTANT_TAU = "constant_tau";
 
 	public static final String CONNECTOR = "connector";
 	public static final String ERROR_SUPPRESSOR = "error_suppressor";

@@ -56,6 +56,9 @@ public abstract class SpellParam<T> {
 	public static final String GENERIC_NAME_TIME = PSI_PREFIX + "time";
 	public static final String GENERIC_NAME_BASE = PSI_PREFIX + "base";
 	public static final String GENERIC_NAME_RAY = PSI_PREFIX + "ray";
+	public static final String GENERIC_NAME_VECTOR = PSI_PREFIX + "vector";
+	public static final String GENERIC_NAME_AXIS = PSI_PREFIX + "axis";
+	public static final String GENERIC_NAME_ANGLE = PSI_PREFIX + "angle";
 
 	public final String name;
 	public final int color;

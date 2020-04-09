@@ -16,10 +16,7 @@ import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellPiece;
 import vazkii.psi.common.lib.LibPieceGroups;
 import vazkii.psi.common.lib.LibPieceNames;
-import vazkii.psi.common.spell.constant.PieceConstantE;
-import vazkii.psi.common.spell.constant.PieceConstantNumber;
-import vazkii.psi.common.spell.constant.PieceConstantPi;
-import vazkii.psi.common.spell.constant.PieceConstantWrapper;
+import vazkii.psi.common.spell.constant.*;
 import vazkii.psi.common.spell.operator.entity.*;
 import vazkii.psi.common.spell.operator.number.*;
 import vazkii.psi.common.spell.operator.number.trig.PieceOperatorAcos;
@@ -110,6 +107,8 @@ public final class ModSpellPieces {
 	public static PieceContainer operatorVectorRaycastAxis;
 	public static PieceContainer operatorVectorProject;
 	public static PieceContainer operatorVectorDotProduct;
+	public static PieceContainer operatorGammFunction;
+	public static PieceContainer operatorPlanarNormalVector;
 
 	public static PieceContainer constantNumber;
 	public static PieceContainer constantPi;
@@ -164,6 +163,8 @@ public final class ModSpellPieces {
 	public static PieceContainer trickConjureBlockSequence;
 	public static PieceContainer trickSwitchTargetSlot;
 	public static PieceContainer trickSaveVector;
+	public static PieceContainer operatorVectorRotate;
+	public static PieceContainer constantTau;
 
 	public static void init() {
 		selectorCaster = register(PieceSelectorCaster.class, LibPieceNames.SELECTOR_CASTER, LibPieceGroups.TUTORIAL_1);
@@ -236,10 +237,15 @@ public final class ModSpellPieces {
 		operatorVectorRaycastAxis = register(PieceOperatorVectorRaycastAxis.class, LibPieceNames.OPERATOR_VECTOR_RAYCAST_AXIS, LibPieceGroups.BLOCK_WORKS);
 		operatorVectorProject = register(PieceOperatorVectorProject.class, LibPieceNames.OPERATOR_VECTOR_PROJECT, LibPieceGroups.BLOCK_WORKS);
 		operatorVectorDotProduct = register(PieceOperatorVectorDotProduct.class, LibPieceNames.OPERATOR_VECTOR_DOT_PRODUCT, LibPieceGroups.TRIGNOMETRY);
+		operatorGammFunction = register(PieceOperatorGammaFunc.class, LibPieceNames.OPERATOR_GAMMA_FUNCTION, LibPieceGroups.TRIGNOMETRY);
+		operatorPlanarNormalVector = register(PieceOperatorPlanarNormalVector.class, LibPieceNames.OPERATOR_PLANAR_NORMAL_VECTOR, LibPieceGroups.TRIGNOMETRY);
+		operatorVectorRotate = register(PieceOperatorVectorRotate.class, LibPieceNames.OPERATOR_VECTOR_ROTATE, LibPieceGroups.TRIGNOMETRY);
+
 
 		constantNumber = register(PieceConstantNumber.class, LibPieceNames.CONSTANT_NUMBER, LibPieceGroups.TUTORIAL_2, true);
 		constantPi = register(PieceConstantPi.class, LibPieceNames.CONSTANT_PI, LibPieceGroups.TRIGNOMETRY, true);
 		constantE = register(PieceConstantE.class, LibPieceNames.CONSTANT_E, LibPieceGroups.SECONDARY_OPERATORS);
+		constantTau = register(PieceConstantTau.class, LibPieceNames.CONSTANT_TAU, LibPieceGroups.TRIGNOMETRY);
 
 		constantWrapper = register(PieceConstantWrapper.class, LibPieceNames.CONSTANT_WRAPPER, LibPieceGroups.FLOW_CONTROL);
 
