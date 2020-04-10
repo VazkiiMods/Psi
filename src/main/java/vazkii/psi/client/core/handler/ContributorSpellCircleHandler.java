@@ -11,6 +11,7 @@ import vazkii.psi.api.cad.EnumCADComponent;
 import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.cad.ICADColorizer;
 import vazkii.psi.common.Psi;
+import vazkii.psi.common.item.ItemCAD;
 import vazkii.psi.common.lib.LibMisc;
 
 import java.io.IOException;
@@ -64,6 +65,7 @@ public final class ContributorSpellCircleHandler {
 		if(ContributorSpellCircleHandler.isContributor(event.getPlayer().getName().getString().toLowerCase()) && !((ICAD) event.getCad().getItem()).getComponentInSlot(event.getCad(), EnumCADComponent.DYE).isEmpty()){
 			ItemStack dyeStack = ((ICAD) event.getCad().getItem()).getComponentInSlot(event.getCad(), EnumCADComponent.DYE);
 			((ICADColorizer) dyeStack.getItem()).setContributorName(dyeStack, event.getPlayer().getName().getString());
+			ItemCAD.setComponent(event.getCad(), dyeStack);
 		}
 	}
 

@@ -168,6 +168,7 @@ public class ItemCAD extends Item implements ICAD, ISpellSettable {
 			ItemStack dyeStack = getComponentInSlot(playerCad, EnumCADComponent.DYE);
 			if (!((ICADColorizer) dyeStack.getItem()).getContributorName(dyeStack).equals(playerIn.getName().getString().toLowerCase())) {
 				((ICADColorizer) dyeStack.getItem()).setContributorName(dyeStack, playerIn.getName().getString());
+				setCADComponent(playerCad, dyeStack);
 			}
 		}
 		boolean did = cast(worldIn, playerIn, data, bullet, itemStackIn, 40, 25, 0.5F, ctx -> ctx.castFrom = hand);
