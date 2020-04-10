@@ -2,6 +2,7 @@ package vazkii.psi.client.core.handler;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.color.ItemColors;
+import net.minecraft.util.math.MathHelper;
 import vazkii.psi.common.item.ItemCAD;
 import vazkii.psi.common.item.ItemExosuitSensor;
 import vazkii.psi.common.item.armor.ItemPsimetalArmor;
@@ -23,15 +24,29 @@ public class ColorHandler {
 				ModItems.cadColorizerBrown, ModItems.cadColorizerGreen, ModItems.cadColorizerRed, ModItems.cadColorizerBlack);
 	}
 
-	public static int slideColor(int[] color, float period) {
+	public static int slideColor(int[] color, float speed) {
 		int n = color.length;
-		float cyclePos = (ClientTickHandler.total % period / period) * n;
-		float tweenFactor = cyclePos % 1.0F;
-
-		return slideColor(color[(int) cyclePos % n], color[(1 + (int)cyclePos) % n], tweenFactor);
+		double t = (ClientTickHandler.total * speed * n / Math.PI) % n;
+		int phase = (int) t;
+		double dt = t - phase;
+		if (dt == 0)
+			return color[phase];
+		int nextPhase = (phase + 1) % n;
+		return slideColorTime(color[phase], color[nextPhase], (float) (dt * Math.PI));
 	}
 
-	public static int slideColor(int color, int secondColor, float tweenFactor) {
+	public static int slideColor(int color, int secondColor, double speed) {
+		return slideColorTime(color, secondColor, (float) (ClientTickHandler.total * speed));
+	}
+
+	public static int slideColorTime(int color, int secondColor, float t) {
+		float shift = (1 - MathHelper.cos(t)) / 2;
+		if (shift == 0)
+			return color;
+		else if (shift == 1)
+			return secondColor;
+
+
 		int redA = (0xFF0000 & color) >> 16;
 		int greenA = (0x00FF00 & color) >> 8;
 		int blueA = 0x0000FF & color;
@@ -39,9 +54,9 @@ public class ColorHandler {
 		int greenB = (0x00FF00 & secondColor) >> 8;
 		int blueB = 0x0000FF & secondColor;
 
-		int newRed = (int) (redA * (1 - tweenFactor) + redB * tweenFactor);
-		int newGreen = (int) (greenA * (1 - tweenFactor) + greenB * tweenFactor);
-		int newBlue = (int) (blueA * (1 - tweenFactor) + blueB * tweenFactor);
+		int newRed = (int) (redA * (1 - shift) + redB * shift);
+		int newGreen = (int) (greenA * (1 - shift) + greenB * shift);
+		int newBlue = (int) (blueA * (1 - shift) + blueB * shift);
 		return (newRed << 16) | (newGreen << 8) | newBlue;
 	}
 

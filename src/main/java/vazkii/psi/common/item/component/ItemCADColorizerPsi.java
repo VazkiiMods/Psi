@@ -19,7 +19,7 @@ public class ItemCADColorizerPsi extends ItemCADColorizer {
 	@OnlyIn(Dist.CLIENT)
 	public int getColor(ItemStack stack) {
 		if (!getContributorName(stack).isEmpty() && ContributorSpellCircleHandler.isContributor(getContributorName(stack).toLowerCase())) {
-			return ColorHandler.slideColor(ContributorSpellCircleHandler.getColors(getContributorName(stack).toLowerCase()), 200);
+			return ColorHandler.slideColor(ContributorSpellCircleHandler.getColors(getContributorName(stack).toLowerCase()), 0.0125f);
 		}
 		float time = ClientTickHandler.total;
 		float w = (float) (Math.sin(time * 0.4) * 0.5 + 0.5) * 0.1F;
