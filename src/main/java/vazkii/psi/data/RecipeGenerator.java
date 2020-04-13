@@ -668,6 +668,11 @@ public class RecipeGenerator extends RecipeProvider implements IConditionBuilder
 		);
 	}
 
+	@Override
+	public String getName() {
+		return "Psi crafting recipes";
+	}
+
 	private static void buildMagicalWrapper(ResourceLocation id, Consumer<IFinishedRecipe> consumer,
 											ICriterionInstance recipeUnlockCriterion, String criterionName, ShapelessRecipeBuilder builder) {
 		builder.addCriterion(criterionName, recipeUnlockCriterion);
