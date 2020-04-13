@@ -1,0 +1,13 @@
+{
+  "type": "psi:trick_crafting",
+  "input": {
+    "tag": "forge:gems/diamond"
+  },
+  "output": {
+    "item": "psi:psigem"
+  },
+  "cad": {
+    "item": "psi:cad_assembly_psimetal"
+  },
+  "trick": "psi:trick_greater_infusion"
+}

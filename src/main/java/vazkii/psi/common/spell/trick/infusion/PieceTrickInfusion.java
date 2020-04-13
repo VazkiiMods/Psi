@@ -10,14 +10,13 @@
  */
 package vazkii.psi.common.spell.trick.infusion;
 
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.Tags;
-import vazkii.psi.api.spell.*;
-import vazkii.psi.api.spell.piece.PieceTrick;
-import vazkii.psi.common.item.ItemCAD;
-import vazkii.psi.common.item.base.ModItems;
+import vazkii.psi.api.spell.EnumSpellStat;
+import vazkii.psi.api.spell.Spell;
+import vazkii.psi.api.spell.SpellCompilationException;
+import vazkii.psi.api.spell.SpellMetadata;
+import vazkii.psi.api.spell.piece.PieceCraftingTrick;
 
-public class PieceTrickInfusion extends PieceTrick {
+public class PieceTrickInfusion extends PieceCraftingTrick {
 	public PieceTrickInfusion(Spell spell) {
 		super(spell);
 	}
@@ -33,11 +32,8 @@ public class PieceTrickInfusion extends PieceTrick {
 		meta.addStat(EnumSpellStat.COST, 1200);
 	}
 
-	@Override
-	public Object execute(SpellContext context) {
-        ItemCAD.craft(context.caster, Tags.Items.DUSTS_REDSTONE, new ItemStack(ModItems.psidust));
-        ItemCAD.craft(context.caster, Tags.Items.INGOTS_GOLD, new ItemStack(ModItems.psimetal));
-        return null;
-    }
-
+    @Override
+	public boolean canCraft(PieceCraftingTrick trick) {
+		return trick instanceof PieceTrickInfusion;
+	}
 }

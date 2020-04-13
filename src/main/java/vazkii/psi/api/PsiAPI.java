@@ -34,15 +34,14 @@ import vazkii.psi.api.internal.DummyMethodHandler;
 import vazkii.psi.api.internal.IInternalMethodHandler;
 import vazkii.psi.api.material.PsimetalArmorMaterial;
 import vazkii.psi.api.material.PsimetalToolMaterial;
-import vazkii.psi.api.recipe.TrickRecipe;
 import vazkii.psi.api.spell.ISpellAcceptor;
 import vazkii.psi.api.spell.ISpellImmune;
-import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellPiece;
 import vazkii.psi.api.spell.detonator.IDetonationHandler;
-import vazkii.psi.api.spell.piece.PieceTrick;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public final class PsiAPI {
@@ -85,12 +84,8 @@ public final class PsiAPI {
 	private static final Map<Class<? extends SpellPiece>, ResourceLocation> advancementGroupsInverse = new HashMap<>();
 	private static final Map<ResourceLocation, Class<? extends SpellPiece>> mainPieceForGroup = new HashMap<>();
 
-	public static final List<TrickRecipe> trickRecipes = new ArrayList<>();
-
-
 	public static final PsimetalArmorMaterial PSIMETAL_ARMOR_MATERIAL = new PsimetalArmorMaterial("psimetal", 18, new int[]{2, 6, 5, 2}, 12, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0F, () -> Ingredient.fromTag(ItemTags.getCollection().getOrCreate(new ResourceLocation("forge", "ingots/psimetal"))));
 	public static final PsimetalToolMaterial PSIMETAL_TOOL_MATERIAL = new PsimetalToolMaterial();
-
 
 	/**
 	 * Registers a Spell Piece.
@@ -190,17 +185,6 @@ public final class PsiAPI {
 		return cadSlot < 9 || cadSlot == 40;
 	}
 
-	public static void registerTrickRecipe(ResourceLocation trick, Ingredient input, ItemStack output, ItemStack minAssembly) {
-		Class<? extends SpellPiece> pieceClass = spellPieceRegistry.getValue(trick).orElse(null);
-		SpellPiece piece = null;
-		if (pieceClass != null && PieceTrick.class.isAssignableFrom(pieceClass))
-			piece = SpellPiece.create(pieceClass, new Spell());
-		trickRecipes.add(new TrickRecipe((PieceTrick) piece, input, output, minAssembly));
-	}
-
-	public static void registerTrickRecipe(String trick, Ingredient input, ItemStack output, ItemStack minAssembly) {
-		registerTrickRecipe(new ResourceLocation(MOD_ID, trick.toLowerCase()), input, output, minAssembly);
-	}
 
 	public static Class<? extends SpellPiece> getSpellPiece(ResourceLocation key) {
 		return spellPieceRegistry.getValue(key).orElse(null);

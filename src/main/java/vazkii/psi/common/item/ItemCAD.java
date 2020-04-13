@@ -17,9 +17,7 @@ import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.*;
-import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tags.Tag;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
@@ -30,16 +28,19 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.items.wrapper.RecipeWrapper;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.*;
 import vazkii.psi.api.internal.PsiRenderHelper;
 import vazkii.psi.api.internal.TooltipHelper;
 import vazkii.psi.api.internal.Vector3;
+import vazkii.psi.api.recipe.ITrickRecipe;
 import vazkii.psi.api.spell.*;
+import vazkii.psi.api.spell.piece.PieceCraftingTrick;
 import vazkii.psi.client.core.handler.ContributorSpellCircleHandler;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.BlockProgrammer;
@@ -48,6 +49,7 @@ import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
 import vazkii.psi.common.core.handler.PsiSoundHandler;
 import vazkii.psi.common.core.handler.capability.CADData;
+import vazkii.psi.common.crafting.ModCraftingRecipes;
 import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.item.component.ItemCADSocket;
 import vazkii.psi.common.lib.LibPieceGroups;
@@ -60,8 +62,10 @@ import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -173,7 +177,7 @@ public class ItemCAD extends Item implements ICAD, ISpellSettable {
 		}
 		boolean did = cast(worldIn, playerIn, data, bullet, itemStackIn, 40, 25, 0.5F, ctx -> ctx.castFrom = hand);
 
-		if (!data.overflowed && bullet.isEmpty() && craft(playerIn, Tags.Items.DUSTS_REDSTONE, new ItemStack(ModItems.psidust))) {
+		if (!data.overflowed && bullet.isEmpty() && craft(playerCad, playerIn, null)) {
 			worldIn.playSound(null, playerIn.getX(), playerIn.getY(), playerIn.getZ(), PsiSoundHandler.cadShoot, SoundCategory.PLAYERS, 0.5F, (float) (0.5 + Math.random() * 0.5));
 			data.deductPsi(100, 60, true);
 
@@ -271,15 +275,8 @@ public class ItemCAD extends Item implements ICAD, ISpellSettable {
 		return false;
 	}
 
-	public static boolean craft(PlayerEntity player, ItemStack in, ItemStack out) {
-		return craft(player, Ingredient.fromStacks(in), out);
-	}
-
-	public static boolean craft(PlayerEntity player, Tag<Item> in, ItemStack out) {
-		return craft(player, Ingredient.fromTag(in), out);
-	}
-
-	public static boolean craft(PlayerEntity player, Ingredient in, ItemStack out) {
+	@Override
+	public boolean craft(ItemStack cad, PlayerEntity player, PieceCraftingTrick craftingTrick) {
 		if (player.world.isRemote)
 			return false;
 
@@ -287,22 +284,41 @@ public class ItemCAD extends Item implements ICAD, ISpellSettable {
 				player.getBoundingBox().grow(8),
 				entity -> entity != null && entity.getDistanceSq(player) <= 8 * 8);
 
+		CraftingWrapper inv = new CraftingWrapper();
 		boolean did = false;
 		for(ItemEntity item : items) {
 			ItemStack stack = item.getItem();
-			if(in.test(stack)) {
-				ItemStack outCopy = out.copy();
+			inv.setStack(stack);
+			Predicate<ITrickRecipe> predicate = r -> r.getPiece() == null;
+			if (craftingTrick != null) {
+				predicate = r -> r.getPiece() == null || r.getPiece().canCraft(craftingTrick);
+			}
+
+			Optional<ITrickRecipe> recipe = player.world.getRecipeManager().getRecipe(ModCraftingRecipes.TRICK_RECIPE_TYPE, inv, player.world)
+					.filter(predicate);
+			if (recipe.isPresent()) {
+				ItemStack outCopy = recipe.get().getRecipeOutput().copy();
 				outCopy.setCount(stack.getCount());
 				item.setItem(outCopy);
 				did = true;
 				MessageRegister.sendToAllAround(new MessageVisualEffect(ICADColorizer.DEFAULT_SPELL_COLOR,
 								item.getX(), item.getY(), item.getZ(), item.getWidth(), item.getHeight(), item.getYOffset(),
-								MessageVisualEffect.TYPE_CRAFT)
-						, item.getPosition(), item.getEntityWorld(), 32);
+								MessageVisualEffect.TYPE_CRAFT), 
+						item.getPosition(), item.getEntityWorld(), 32);
 			}
 		}
 
 		return did;
+	}
+	
+	private static class CraftingWrapper extends RecipeWrapper {
+		CraftingWrapper() {
+			super(new ItemStackHandler(1));
+		}
+
+		void setStack(ItemStack stack) {
+			inv.setStackInSlot(0, stack);
+		}
 	}
 
 	public static int getRealCost(ItemStack stack, ItemStack bullet, int cost) {
