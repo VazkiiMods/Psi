@@ -163,6 +163,7 @@ public final class ModSpellPieces {
 	public static PieceContainer trickConjureBlockSequence;
 	public static PieceContainer trickSwitchTargetSlot;
 	public static PieceContainer trickSaveVector;
+	public static PieceContainer trickBreakLoop;
 	public static PieceContainer operatorVectorRotate;
 	public static PieceContainer constantTau;
 
@@ -297,6 +298,7 @@ public final class ModSpellPieces {
 		trickConjureBlockSequence = register(PieceTrickConjureBlockSequence.class, LibPieceNames.TRICK_CONJURE_BLOCK_SEQUENCE, LibPieceGroups.BLOCK_CONJURATION);
 		trickSwitchTargetSlot = register(PieceTrickSwitchTargetSlot.class, LibPieceNames.TRICK_SWITCH_TARGET_SLOT, LibPieceGroups.DETECTION_DYNAMICS, true);
 		trickSaveVector = register(PieceTrickSaveVector.class, LibPieceNames.TRICK_SAVE_VECTOR, LibPieceGroups.MEMORY_MANAGEMENT, true);
+		trickBreakLoop = register(PieceTrickBreakLoop.class, LibPieceNames.TRICK_BREAK_LOOP, LibPieceGroups.FLOW_CONTROL);
 	}
 
 	public static PieceContainer register(Class<? extends SpellPiece> clazz, String name, String group) {

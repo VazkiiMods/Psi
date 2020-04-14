@@ -461,6 +461,8 @@
   "psi.spellpiece.trick_switch_target_slot.desc": "Changes the focused slot of this spell",
   "psi.spellpiece.trick_save_vector": "Trick: Save Vector",
   "psi.spellpiece.trick_save_vector.desc": "Saves a vector to CAD Memory",
+  "psi.spellpiece.trick_break_loop": "Trick: Break Loop",
+  "psi.spellpiece.trick_break_loop.desc": "Stops loop if target is within (-1,1)",
   "psi.spellparam.target": "Target",
   "psi.spellparam.number": "Number",
   "psi.spellparam.number1": "Number A",
