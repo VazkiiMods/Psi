@@ -22,13 +22,17 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import vazkii.psi.api.internal.PsiRenderHelper;
+import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.tile.TileConjured;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.Random;
 
 public class BlockConjured extends Block {
@@ -57,6 +61,16 @@ public class BlockConjured extends Block {
 			((TileConjured) inWorld).doParticles();
 	}
 
+	@Nullable
+	@Override
+	public float[] getBeaconColorMultiplier(BlockState state, IWorldReader world, BlockPos pos, BlockPos beaconPos){
+		TileEntity inWorld = world.getTileEntity(pos);
+		if (inWorld instanceof TileConjured){
+			int color = Psi.proxy.getColorForColorizer(((TileConjured) inWorld).colorizer);
+			return new float[]{PsiRenderHelper.r(color) / 255F, PsiRenderHelper.g(color) / 255F, PsiRenderHelper.b(color) / 255F};
+		}
+		return null;
+	}
 
 	@Override
 	public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
