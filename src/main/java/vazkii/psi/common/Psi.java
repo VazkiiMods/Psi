@@ -66,7 +66,6 @@ public class Psi {
 		new ModBlocks();
 		DefaultStats.registerStats();
 		ModSpellPieces.init();
-		ModCraftingRecipes.init();
 
 		CapabilityHandler.register();
 		MessageRegister.init();

@@ -10,10 +10,15 @@ public class DataGenerator {
 
     @SubscribeEvent
     public static void gatherData(GatherDataEvent event) {
-        event.getGenerator().addProvider(new BlockTagProvider(event.getGenerator()));
-        event.getGenerator().addProvider(new ItemTagProvider(event.getGenerator()));
-        event.getGenerator().addProvider(new RecipeGenerator(event.getGenerator()));
-        event.getGenerator().addProvider(new BlockModels(event.getGenerator(), event.getExistingFileHelper()));
-        event.getGenerator().addProvider(new ItemModels(event.getGenerator(), event.getExistingFileHelper()));
+        if (event.includeServer()) {
+            event.getGenerator().addProvider(new BlockTagProvider(event.getGenerator()));
+            event.getGenerator().addProvider(new ItemTagProvider(event.getGenerator()));
+            event.getGenerator().addProvider(new RecipeGenerator(event.getGenerator()));
+            event.getGenerator().addProvider(new TrickRecipeGenerator(event.getGenerator()));
+        }
+        if (event.includeClient()) {
+            event.getGenerator().addProvider(new BlockModels(event.getGenerator(), event.getExistingFileHelper()));
+            event.getGenerator().addProvider(new ItemModels(event.getGenerator(), event.getExistingFileHelper()));
+        }
     }
 }

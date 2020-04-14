@@ -10,12 +10,14 @@
  */
 package vazkii.psi.api.cad;
 
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.SpellRuntimeException;
+import vazkii.psi.api.spell.piece.PieceCraftingTrick;
 
 /**
  * Base interface for a CAD. You probably shouldn't implement this,
@@ -95,5 +97,15 @@ public interface ICAD extends ISocketable {
 	 */
 	@OnlyIn(Dist.CLIENT)
 	int getSpellColor(ItemStack stack);
+
+	/**
+	 * Performs crafting around the player using this CAD.
+	 *
+	 * @param cad    Stack casting the spell
+	 * @param entity Player casting the spell
+	 * @param trick  The trick used to craft
+	 * @return Whether crafting was successful
+	 */
+	boolean craft(ItemStack cad, PlayerEntity entity, PieceCraftingTrick trick);
 
 }

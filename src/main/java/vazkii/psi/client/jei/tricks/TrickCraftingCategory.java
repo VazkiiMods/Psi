@@ -24,7 +24,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import vazkii.psi.api.PsiAPI;
-import vazkii.psi.api.recipe.TrickRecipe;
+import vazkii.psi.api.recipe.ITrickRecipe;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.lib.LibMisc;
@@ -33,7 +33,7 @@ import javax.annotation.Nonnull;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class TrickCraftingCategory implements IRecipeCategory<TrickRecipe> {
+public class TrickCraftingCategory implements IRecipeCategory<ITrickRecipe> {
 	public static final ResourceLocation UID = new ResourceLocation(LibMisc.MOD_ID, "trick");
 
 	private static final int INPUT_SLOT = 0;
@@ -66,8 +66,8 @@ public class TrickCraftingCategory implements IRecipeCategory<TrickRecipe> {
 
 	@Nonnull
 	@Override
-	public Class<? extends TrickRecipe> getRecipeClass() {
-		return TrickRecipe.class;
+	public Class<? extends ITrickRecipe> getRecipeClass() {
+		return ITrickRecipe.class;
 	}
 
 	@Nonnull
@@ -89,15 +89,15 @@ public class TrickCraftingCategory implements IRecipeCategory<TrickRecipe> {
 	}
 
 	@Override
-	public void setIngredients(TrickRecipe recipe, IIngredients ingredients) {
+	public void setIngredients(ITrickRecipe recipe, IIngredients ingredients) {
 		ingredients.setInputLists(VanillaTypes.ITEM, ImmutableList.of(
-			ImmutableList.copyOf(recipe.getInput().getMatchingStacks()), ImmutableList.of(recipe.getCAD())
+			ImmutableList.copyOf(recipe.getInput().getMatchingStacks()), ImmutableList.of(recipe.getAssembly())
 		));
-		ingredients.setOutput(VanillaTypes.ITEM, recipe.getOutput());
+		ingredients.setOutput(VanillaTypes.ITEM, recipe.getRecipeOutput());
 	}
 
 	@Override
-	public void draw(TrickRecipe recipe, double mouseX, double mouseY) {
+	public void draw(ITrickRecipe recipe, double mouseX, double mouseY) {
 		if (recipe.getPiece() != null) {
 			IDrawable trickIcon = trickIcons.computeIfAbsent(recipe.getPiece().registryKey,
 					key -> {
@@ -120,7 +120,7 @@ public class TrickCraftingCategory implements IRecipeCategory<TrickRecipe> {
 
 	@Nonnull
 	@Override
-	public List<String> getTooltipStrings(TrickRecipe recipe, double mouseX, double mouseY) {
+	public List<String> getTooltipStrings(ITrickRecipe recipe, double mouseX, double mouseY) {
 		if (recipe.getPiece() != null && onTrick(mouseX, mouseY)) {
 			List<ITextComponent> tooltip = new ArrayList<>();
 			recipe.getPiece().getTooltip(tooltip);
@@ -136,7 +136,7 @@ public class TrickCraftingCategory implements IRecipeCategory<TrickRecipe> {
 	}
 
 	@Override
-	public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull TrickRecipe recipe, @Nonnull IIngredients ingredients) {
+	public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull ITrickRecipe recipe, @Nonnull IIngredients ingredients) {
 		recipeLayout.getItemStacks().init(INPUT_SLOT, true, 0, 5);
 		recipeLayout.getItemStacks().init(CAD_SLOT, true, 21, 23);
 		recipeLayout.getItemStacks().init(OUTPUT_SLOT, false, 73, 5);

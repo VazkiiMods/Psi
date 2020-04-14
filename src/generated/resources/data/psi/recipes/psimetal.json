@@ -1,0 +1,13 @@
+{
+  "type": "psi:trick_crafting",
+  "input": {
+    "tag": "forge:ingots/gold"
+  },
+  "output": {
+    "item": "psi:psimetal"
+  },
+  "cad": {
+    "item": "psi:cad_assembly_iron"
+  },
+  "trick": "psi:trick_infusion"
+}
