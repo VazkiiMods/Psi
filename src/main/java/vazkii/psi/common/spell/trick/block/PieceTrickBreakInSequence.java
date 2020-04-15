@@ -44,7 +44,7 @@ public class PieceTrickBreakInSequence extends PieceTrick {
 			throw new SpellCompilationException(SpellCompilationException.NON_POSITIVE_VALUE, x, y);
 
 		meta.addStat(EnumSpellStat.POTENCY, (int) (maxBlocksVal * 20));
-		meta.addStat(EnumSpellStat.COST, (int) (maxBlocksVal * 25));
+		meta.addStat(EnumSpellStat.COST, (int) (maxBlocksVal * 25 + 25));
 	}
 
 	@Override

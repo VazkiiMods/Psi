@@ -24,8 +24,8 @@ public class PieceTrickConjureLight extends PieceTrickConjureBlock {
 
 	@Override
 	public void addStats(SpellMetadata meta) {
-		meta.addStat(EnumSpellStat.POTENCY, 50);
-		meta.addStat(EnumSpellStat.COST, 200);
+		meta.addStat(EnumSpellStat.POTENCY, 25);
+		meta.addStat(EnumSpellStat.COST, 100);
 	}
 
 	@Override
