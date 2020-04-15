@@ -11,6 +11,7 @@
 package vazkii.psi.common.core.handler.capability;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -28,6 +29,7 @@ import vazkii.psi.api.spell.ISpellAcceptor;
 import vazkii.psi.api.spell.ISpellImmune;
 import vazkii.psi.api.spell.ISpellSettable;
 import vazkii.psi.api.spell.detonator.IDetonationHandler;
+import vazkii.psi.common.core.capability.CapabilityTriggerSensor;
 import vazkii.psi.common.core.handler.capability.wrappers.AcceptorWrapper;
 import vazkii.psi.common.core.handler.capability.wrappers.PsiBarWrapper;
 import vazkii.psi.common.core.handler.capability.wrappers.SimpleProvider;
@@ -83,6 +85,7 @@ public class CapabilityHandler {
 	private static final ResourceLocation PSI_BAR = new ResourceLocation(LibMisc.MOD_ID, "bar");
 	private static final ResourceLocation SPELL_IMMUNE = new ResourceLocation(LibMisc.MOD_ID, "immune");
 	private static final ResourceLocation DETONATOR = new ResourceLocation(LibMisc.MOD_ID, "detonator");
+	public static final ResourceLocation TRIGGER_SENSOR = new ResourceLocation(LibMisc.MOD_ID, "trigger_sensor");
 
 	@SubscribeEvent
 	public static void attachItemCapabilities(AttachCapabilitiesEvent<ItemStack> event) {
@@ -101,7 +104,8 @@ public class CapabilityHandler {
 		if (event.getObject() instanceof ISpellImmune)
 			event.addCapability(SPELL_IMMUNE, new SimpleProvider<>(SPELL_IMMUNE_CAPABILITY,
 					(ISpellImmune) event.getObject()));
-
+		if(event.getObject() instanceof PlayerEntity)
+			event.addCapability(TRIGGER_SENSOR, new CapabilityTriggerSensor((PlayerEntity) event.getObject()));
 		if (event.getObject() instanceof IDetonationHandler)
 			event.addCapability(DETONATOR, new SimpleProvider<>(DETONATION_HANDLER_CAPABILITY,
 					(IDetonationHandler) event.getObject()));

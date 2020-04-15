@@ -29,10 +29,13 @@ public class ItemDetonator extends Item {
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, @Nonnull Hand hand) {
 		ItemStack itemStackIn = playerIn.getHeldItem(hand);
-		IDetonationHandler.performDetonation(worldIn, playerIn);
 
-		if (!worldIn.isRemote)
+
+		if (!worldIn.isRemote){
+			IDetonationHandler.performDetonation(worldIn, playerIn);
 			worldIn.playSound(null, playerIn.getX(), playerIn.getY(), playerIn.getZ(), SoundEvents.UI_BUTTON_CLICK, SoundCategory.PLAYERS, 1F, 1F);
+		}
+
         else playerIn.swingArm(hand);
 
 		return new ActionResult<>(ActionResultType.SUCCESS, itemStackIn);

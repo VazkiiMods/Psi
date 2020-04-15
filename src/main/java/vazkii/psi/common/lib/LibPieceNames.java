@@ -142,5 +142,6 @@ public final class LibPieceNames {
 	public static final String TRICK_SAVE_VECTOR = "trick_save_vector";
 	public static final String TRICK_BREAK_LOOP = "trick_break_loop";
 	public static final String TRICK_PLAY_SOUND = "trick_play_sound";
+	public static final String TRICK_DETONATE = "trick_detonate";
 
 }
