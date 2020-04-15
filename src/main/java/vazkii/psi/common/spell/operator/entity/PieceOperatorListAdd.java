@@ -35,7 +35,7 @@ public class PieceOperatorListAdd extends PieceOperator {
 	@Override
 	public void initParams() {
 		addParam(target = new ParamEntity(SpellParam.GENERIC_NAME_TARGET, SpellParam.BLUE, false, false));
-		addParam(list = new ParamEntityListWrapper("psi.spellparam.list", SpellParam.YELLOW, false, false));
+		addParam(list = new ParamEntityListWrapper("psi.spellparam.list", SpellParam.YELLOW, true, false));
 	}
 
 	@Override
@@ -46,9 +46,15 @@ public class PieceOperatorListAdd extends PieceOperator {
 		if(targetVal == null)
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_TARGET);
 
-		List<Entity> list = new ArrayList<>(listVal.unwrap());
-		if(!list.contains(targetVal))
+		List<Entity> list = new ArrayList<>();
+		if(listVal.unwrap() != null){
+			list = new ArrayList<>(listVal.unwrap());
+			if(!list.contains(targetVal))
+				list.add(targetVal);
+		} else {
 			list.add(targetVal);
+		}
+
 
 		return new EntityListWrapper(list);
 	}
