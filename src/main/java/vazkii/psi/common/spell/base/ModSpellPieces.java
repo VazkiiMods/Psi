@@ -18,6 +18,10 @@ import vazkii.psi.common.lib.LibPieceGroups;
 import vazkii.psi.common.lib.LibPieceNames;
 import vazkii.psi.common.spell.constant.*;
 import vazkii.psi.common.spell.operator.entity.*;
+import vazkii.psi.common.spell.operator.list.PieceOperatorListExclusion;
+import vazkii.psi.common.spell.operator.list.PieceOperatorListIntersection;
+import vazkii.psi.common.spell.operator.list.PieceOperatorListSize;
+import vazkii.psi.common.spell.operator.list.PieceOperatorListUnion;
 import vazkii.psi.common.spell.operator.number.*;
 import vazkii.psi.common.spell.operator.number.trig.PieceOperatorAcos;
 import vazkii.psi.common.spell.operator.number.trig.PieceOperatorAsin;
@@ -59,6 +63,7 @@ public final class ModSpellPieces {
 	public static PieceContainer selectorBlockPresence;
 	public static PieceContainer selectorSaveVector;
 	public static PieceContainer selectorEidosChangelog;
+	public static PieceContainer selectorListFilter;
 
 	public static PieceContainer operatorSum;
 	public static PieceContainer operatorSubtract;
@@ -109,6 +114,10 @@ public final class ModSpellPieces {
 	public static PieceContainer operatorVectorDotProduct;
 	public static PieceContainer operatorGammFunction;
 	public static PieceContainer operatorPlanarNormalVector;
+	public static PieceContainer operatorListExclusion;
+	public static PieceContainer operatorListIntersection;
+	public static PieceContainer operatorListSize;
+	public static PieceContainer operatorListUnion;
 
 	public static PieceContainer constantNumber;
 	public static PieceContainer constantPi;
@@ -243,6 +252,11 @@ public final class ModSpellPieces {
 		operatorGammFunction = register(PieceOperatorGammaFunc.class, LibPieceNames.OPERATOR_GAMMA_FUNCTION, LibPieceGroups.TRIGONOMETRY);
 		operatorPlanarNormalVector = register(PieceOperatorPlanarNormalVector.class, LibPieceNames.OPERATOR_PLANAR_NORMAL_VECTOR, LibPieceGroups.TRIGONOMETRY);
 		operatorVectorRotate = register(PieceOperatorVectorRotate.class, LibPieceNames.OPERATOR_VECTOR_ROTATE, LibPieceGroups.TRIGONOMETRY);
+		operatorListExclusion = register(PieceOperatorListExclusion.class, LibPieceNames.OPERATOR_LIST_EXCLUSION, LibPieceGroups.LIST_OPERATIONS);
+		operatorListIntersection = register(PieceOperatorListIntersection.class, LibPieceNames.OPERATOR_LIST_INTERSECTION, LibPieceGroups.LIST_OPERATIONS);
+		operatorListSize = register(PieceOperatorListSize.class, LibPieceNames.OPERATOR_LIST_SIZE, LibPieceGroups.LIST_OPERATIONS);
+		operatorListUnion = register(PieceOperatorListUnion.class, LibPieceNames.OPERATOR_LIST_UNION, LibPieceGroups.LIST_OPERATIONS);
+		selectorListFilter = register(PieceSelectorListFilter.class, LibPieceNames.SELECTOR_LIST_FILTER, LibPieceGroups.LIST_OPERATIONS);
 
 
 		constantNumber = register(PieceConstantNumber.class, LibPieceNames.CONSTANT_NUMBER, LibPieceGroups.TUTORIAL_2, true);

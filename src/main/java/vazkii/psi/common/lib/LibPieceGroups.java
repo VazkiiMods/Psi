@@ -43,5 +43,6 @@ public final class LibPieceGroups {
 	public static final String MEMORY_MANAGEMENT = "memory_management";
 	public static final String SECONDARY_OPERATORS = "secondary_operators";
 	public static final String MISC_TRICKS = "misc_tricks";
+	public static final String LIST_OPERATIONS = "list_operations";
 
 }

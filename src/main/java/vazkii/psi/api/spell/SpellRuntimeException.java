@@ -28,6 +28,7 @@ public class SpellRuntimeException extends Exception {
 	public static final String IMMUNE_TARGET = "psi.spellerror.immunetarget";
 	public static final String NEGATIVE_NUMBER = "psi.spellerror.negativenumber";
 	public static final String NON_AXIAL_VECTOR = "psi.spellerror.nonaxial";
+	public static final String OUT_OF_BOUNDS = "psi.spellerror.out_of_bounds";
 
 	public SpellRuntimeException(String s) {
 		super(s);

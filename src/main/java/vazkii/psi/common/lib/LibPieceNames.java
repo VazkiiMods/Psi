@@ -33,6 +33,7 @@ public final class LibPieceNames {
 	public static final String SELECTOR_BLOCK_PRESENCE = "selector_block_presence";
 	public static final String SELECTOR_SAVED_VECTOR = "selector_saved_vector";
 	public static final String SELECTOR_EIDOS_CHANGELOG = "selector_eidos_changelog";
+	public static final String SELECTOR_LIST_FILTER = "selector_list_filter";
 
 	public static final String OPERATOR_SUM = "operator_sum";
 	public static final String OPERATOR_SUBTRACT = "operator_subtract";
@@ -85,6 +86,10 @@ public final class LibPieceNames {
 	public static final String OPERATOR_GAMMA_FUNCTION = "operator_gamma_function";
 	public static final String OPERATOR_PLANAR_NORMAL_VECTOR = "operator_planar_normal_vector";
 	public static final String OPERATOR_VECTOR_ROTATE = "operator_vector_rotate";
+	public static final String OPERATOR_LIST_EXCLUSION = "operator_list_exclusion";
+	public static final String OPERATOR_LIST_INTERSECTION = "operator_list_intersection";
+	public static final String OPERATOR_LIST_SIZE = "operator_list_size";
+	public static final String OPERATOR_LIST_UNION = "operator_list_union";
 
 	public static final String CONSTANT_NUMBER = "constant_number";
 	public static final String CONSTANT_PI = "constant_pi";
@@ -143,5 +148,6 @@ public final class LibPieceNames {
 	public static final String TRICK_BREAK_LOOP = "trick_break_loop";
 	public static final String TRICK_PLAY_SOUND = "trick_play_sound";
 	public static final String TRICK_DETONATE = "trick_detonate";
+
 
 }

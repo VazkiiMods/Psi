@@ -62,6 +62,9 @@ public abstract class SpellParam<T> {
 	public static final String GENERIC_NAME_PITCH = "psi.spellparam.pitch";
 	public static final String GENERIC_NAME_INSTRUMENT = "psi.spellparam.instrument";
 	public static final String GENERIC_NAME_VOLUME = "psi.spellparam.volume";
+	public static final String GENERIC_NAME_LIST1 = PSI_PREFIX + "list1";
+	public static final String GENERIC_NAME_LIST2 = PSI_PREFIX + "list2";
+	public static final String GENERIC_NAME_LIST = PSI_PREFIX + "list";
 
 
 	public final String name;
