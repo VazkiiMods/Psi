@@ -9,7 +9,7 @@ import vazkii.psi.common.entity.EntitySpellCircle;
 
 public class PieceTrickBreakLoop extends PieceTrick {
 
-	private SpellParam<Number> valueParam;
+	SpellParam<Number> valueParam;
 
 	public PieceTrickBreakLoop(Spell spell) {
 		super(spell);

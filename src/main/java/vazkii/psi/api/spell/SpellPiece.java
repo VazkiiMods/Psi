@@ -135,6 +135,16 @@ public abstract class SpellPiece {
 	}
 
 	/**
+	 * Null safe version of getParamValue
+	 */
+	public <T> T getNonnullParamValue(SpellContext context, SpellParam<T> param) throws SpellRuntimeException{
+		T v = getParamValue(context, param);
+		if(v == null)
+			throw new SpellRuntimeException(SpellRuntimeException.NULL_TARGET);
+		return v;
+	}
+
+	/**
 	 * Gets the value of one of this piece's params in the given context.
 	 */
 	public <T> T getParamValue(SpellContext context, SpellParam<T> param) {
@@ -151,6 +161,16 @@ public abstract class SpellPiece {
 		} catch(SpellCompilationException e) {
 			return null;
 		}
+	}
+
+	/**
+	 * Null safe version of getParamEvaluation()
+	 */
+	public <T> T getNonNullParamEvaluation(SpellParam<T> param) throws SpellCompilationException{
+		T v = getParamEvaluation(param);
+		if(v == null)
+			throw new SpellCompilationException(SpellCompilationException.NULL_PARAM, this.x, this.y);
+		return v;
 	}
 
 	/**

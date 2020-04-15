@@ -530,6 +530,7 @@
   "psi.spellerror.lockedmemory": "ERROR: Memory slot is locked.",
   "psi.spellerror.immunetarget": "ERROR: Target entity is immune or a boss.",
   "psi.spellerror.negativenumber": "ERROR: Target number is negative in a piece where it can't be.",
+  "psi.spellerror.nonaxial": "ERROR: Vector cannot be non-axial",
   "psi.levelskip": "Psi has found save data from a previous world.<br>Would you like to load it?<br><br>If you choose to load it, you'll be taken instantly to Level %d. Otherwise, this message won't show up again this session.",
   "command.psi.learn.usage": "/psi-learn <group> [player]",
   "command.psi.learn.success": "Successfully taught %s %s",

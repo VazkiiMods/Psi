@@ -27,6 +27,7 @@ public class SpellRuntimeException extends Exception {
 	public static final String LOCKED_MEMORY = "psi.spellerror.lockedmemory";
 	public static final String IMMUNE_TARGET = "psi.spellerror.immunetarget";
 	public static final String NEGATIVE_NUMBER = "psi.spellerror.negativenumber";
+	public static final String NON_AXIAL_VECTOR = "psi.spellerror.nonaxial";
 
 	public SpellRuntimeException(String s) {
 		super(s);
