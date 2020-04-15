@@ -50,7 +50,7 @@ public class Psi {
 	public static Psi instance;
 	public static boolean magical;
 	public static IProxy proxy;
-	public List<SoundEvent> noteblockSoundEvents = new ArrayList<>();
+	public static List<SoundEvent> noteblockSoundEvents = new ArrayList<>();
 
 	public Psi() {
 		instance = this;

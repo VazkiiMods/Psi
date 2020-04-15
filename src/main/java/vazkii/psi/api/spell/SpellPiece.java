@@ -135,6 +135,15 @@ public abstract class SpellPiece {
 	}
 
 	/**
+	 * Defaulted version of getParamValue
+	 * Should be used for optional params
+	 */
+	public <T> T getParamValueOrDefault(SpellContext context, SpellParam<T> param, T def){
+		T v = getParamValue(context, param);
+		return v == null ? def : v;
+	}
+
+	/**
 	 * Null safe version of getParamValue
 	 */
 	public <T> T getNonnullParamValue(SpellContext context, SpellParam<T> param) throws SpellRuntimeException{
@@ -161,6 +170,15 @@ public abstract class SpellPiece {
 		} catch(SpellCompilationException e) {
 			return null;
 		}
+	}
+
+	/**
+	 * Defaulted version of getParamEvaluation
+	 * Should be used for optional params
+	 */
+	public <T> T getParamEvaluationeOrDefault(SpellParam<T> param, T def) throws SpellCompilationException {
+		T v = getParamEvaluation(param);
+		return v == null ? def : v;
 	}
 
 	/**

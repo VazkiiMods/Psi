@@ -31,6 +31,9 @@ public class SpellCompilationException extends Exception {
 	public static final String NON_INTEGER = "psi.spellerror.noninteger";
 	public static final String NON_POSITIVE_INTEGER = "psi.spellerror.nonpositiveinteger";
 	public static final String STAT_OVERFLOW = "psi.spellerror.statoverflow";
+	public static final String PITCH = "psi.spellerror.pitch";
+	public static final String VOLUME = "psi.spellerror.volume";
+	public static final String INSTRUMENTS = "psi.spellerror.instruments";
 
 	public final Pair<Integer, Integer> location;
 

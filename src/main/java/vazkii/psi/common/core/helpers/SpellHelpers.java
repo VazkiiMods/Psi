@@ -13,7 +13,7 @@ public class SpellHelpers {
 		return val;
 	}
 
-	public static double ensurePositiveAndNonzero(SpellPiece piece, SpellParam<Number> param, double def) throws SpellCompilationException {
+	public static double ensurePositiveAndNonzero(SpellPiece piece, SpellParam<Number> param) throws SpellCompilationException {
 		double val = piece.getNonNullParamEvaluation(param).doubleValue();
 		if (val <= 0)
 			throw new SpellCompilationException(SpellCompilationException.NON_POSITIVE_VALUE, piece.x, piece.y);
@@ -21,6 +21,20 @@ public class SpellHelpers {
 		return val;
 	}
 
+	public static double ensurePositiveOrZero(SpellPiece piece, SpellParam<Number> param, double def) throws SpellCompilationException {
+		double val = piece.getParamEvaluationeOrDefault(param, def).doubleValue();
+		if (val < 0)
+			throw new SpellCompilationException(SpellCompilationException.NON_POSITIVE_VALUE, piece.x, piece.y);
+		return val;
+	}
+
+	public static double ensurePositiveAndNonzero(SpellPiece piece, SpellParam<Number> param, double def) throws SpellCompilationException {
+		double val = piece.getParamEvaluationeOrDefault(param, def).doubleValue();
+		if (val <= 0)
+			throw new SpellCompilationException(SpellCompilationException.NON_POSITIVE_VALUE, piece.x, piece.y);
+
+		return val;
+	}
 
 	public static BlockPos getBlockPos(SpellPiece piece, SpellContext context, SpellParam<Vector3> param) throws SpellRuntimeException {
 		Vector3 position = piece.getParamValue(context, param);

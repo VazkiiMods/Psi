@@ -59,6 +59,10 @@ public abstract class SpellParam<T> {
 	public static final String GENERIC_NAME_VECTOR = PSI_PREFIX + "vector";
 	public static final String GENERIC_NAME_AXIS = PSI_PREFIX + "axis";
 	public static final String GENERIC_NAME_ANGLE = PSI_PREFIX + "angle";
+	public static final String GENERIC_NAME_PITCH = "psi.spellparam.pitch";
+	public static final String GENERIC_NAME_INSTRUMENT = "psi.spellparam.instrument";
+	public static final String GENERIC_NAME_VOLUME = "psi.spellparam.volume";
+
 
 	public final String name;
 	public final int color;
