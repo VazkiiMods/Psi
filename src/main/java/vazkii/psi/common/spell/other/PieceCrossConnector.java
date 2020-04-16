@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.Matrix4f;
 import net.minecraft.client.renderer.model.Material;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
@@ -13,8 +14,7 @@ import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.internal.PsiRenderHelper;
 import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.param.ParamAny;
-
-import static vazkii.psi.common.spell.other.PieceConnector.LINES_TEXTURE;
+import vazkii.psi.common.lib.LibResources;
 
 public class PieceCrossConnector extends SpellPiece implements IGenericRedirector {
 
@@ -64,12 +64,10 @@ public class PieceCrossConnector extends SpellPiece implements IGenericRedirecto
 		drawSide(ms, buffers,paramSides.get(out2), light, LINE_TWO);
 	}
 
-
-
 	@OnlyIn(Dist.CLIENT)
 	private void drawSide(MatrixStack ms, IRenderTypeBuffer buffers, SpellParam.Side side, int light, int color) {
 		if(side.isEnabled()) {
-			Material material = new Material(PsiAPI.PSI_PIECE_TEXTURE_ATLAS, LINES_TEXTURE);
+			Material material = new Material(PsiAPI.PSI_PIECE_TEXTURE_ATLAS, new ResourceLocation(LibResources.SPELL_CONNECTOR_LINES));
 			IVertexBuilder buffer = material.getVertexConsumer(buffers, ignored -> SpellPiece.getLayer());
 
 			float minU = 0;
@@ -110,7 +108,42 @@ public class PieceCrossConnector extends SpellPiece implements IGenericRedirecto
 			buffer.texture(minU, minV).light(light).endVertex();
 		}
 	}
+	@OnlyIn(Dist.CLIENT)
+	public void drawParams(MatrixStack ms, IRenderTypeBuffer buffers, int light) {
 
+		drawParam(ms, buffers, light, in1);
+		drawParam(ms, buffers, light, in2);
+	}
+
+	public void drawParam(MatrixStack ms, IRenderTypeBuffer buffers, int light, SpellParam param) {
+		IVertexBuilder buffer = buffers.getBuffer(PsiAPI.internalHandler.getProgrammerLayer());
+		SpellParam.Side side = paramSides.get(param);
+		if (side.isEnabled()) {
+			int minX = 4;
+			int minY = 4;
+			minX += side.offx * 9;
+			minY += side.offy * 9;
+
+			int maxX = minX + 8;
+			int maxY = minY + 8;
+
+			float wh = 8F;
+			float minU = side.u / 256F;
+			float minV = side.v / 256F;
+			float maxU = (side.u + wh) / 256F;
+			float maxV = (side.v + wh) / 256F;
+			int r = PsiRenderHelper.r(param.color);
+			int g = PsiRenderHelper.g(param.color);
+			int b = PsiRenderHelper.b(param.color);
+			int a = 255;
+			Matrix4f mat = ms.peek().getModel();
+
+			buffer.vertex(mat, minX, maxY, 0).color(r, g, b, a).texture(minU, maxV).light(light).endVertex();
+			buffer.vertex(mat, maxX, maxY, 0).color(r, g, b, a).texture(maxU, maxV).light(light).endVertex();
+			buffer.vertex(mat, maxX, minY, 0).color(r, g, b, a).texture(maxU, minV).light(light).endVertex();
+			buffer.vertex(mat, minX, minY, 0).color(r, g, b, a).texture(minU, minV).light(light).endVertex();
+		}
+	}
 
 
 	@Override

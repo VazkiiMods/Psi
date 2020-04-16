@@ -34,6 +34,15 @@ public final class LibPieceNames {
 	public static final String SELECTOR_SAVED_VECTOR = "selector_saved_vector";
 	public static final String SELECTOR_EIDOS_CHANGELOG = "selector_eidos_changelog";
 	public static final String SELECTOR_LIST_FILTER = "selector_list_filter";
+	public static final String SELECTOR_NEARBY_CHARGES = "selector_nearby_charges";
+	public static final String SELECTOR_NEARBY_PLAYERS = "selector_nearby_players";
+	public static final String SELECTOR_NEARBY_GLOWING = "selector_nearby_glowing";
+	public static final String SELECTOR_NEARBY_VEHICLES = "selector_nearby_vehicles";
+	public static final String SELECTOR_NEARBY_FALLING_BLOCKS = "selector_nearby_falling_blocks";
+	public static final String SELECTOR_SUCCESS_COUNTER = "selector_sucession_counter";
+	public static final String SELECTOR_CASTER_ENERGY = "selector_caster_energy";
+	public static final String SELECTOR_CASTER_BATTERY = "selector_caster_battery";
+
 
 	public static final String OPERATOR_SUM = "operator_sum";
 	public static final String OPERATOR_SUBTRACT = "operator_subtract";
@@ -90,6 +99,9 @@ public final class LibPieceNames {
 	public static final String OPERATOR_LIST_INTERSECTION = "operator_list_intersection";
 	public static final String OPERATOR_LIST_SIZE = "operator_list_size";
 	public static final String OPERATOR_LIST_UNION = "operator_list_union";
+	public static final String OPERATOR_ROOT = "operator_root";
+	public static final String OPERATOR_SIGNUM = "operator_extract_sign";
+	public static final String OPERATOR_SWIZZLE = "operator_swizzle";
 
 	public static final String CONSTANT_NUMBER = "constant_number";
 	public static final String CONSTANT_PI = "constant_pi";
@@ -99,6 +111,7 @@ public final class LibPieceNames {
 
 	public static final String CONNECTOR = "connector";
 	public static final String CROSS_CONNECTOR = "cross_connector";
+	public static final String VECTOR_SUPPRESSOR = "vector_suppressor";
 	public static final String ERROR_SUPPRESSOR = "error_suppressor";
 
 	public static final String TRICK_DEBUG = "trick_debug";
@@ -150,6 +163,8 @@ public final class LibPieceNames {
 	public static final String TRICK_PLAY_SOUND = "trick_play_sound";
 	public static final String TRICK_DETONATE = "trick_detonate";
 	public static final String TRICK_MOVE_BLOCK_SEQUENCE = "trick_move_block_sequence";
+	public static final String TRICK_TILL = "trick_till";
+	public static final String TRICK_TILL_SEQUENCE = "trick_till_sequence";
 
 
 }

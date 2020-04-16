@@ -1,7 +1,10 @@
 package vazkii.psi.common.spell.operator.vector;
 
 import vazkii.psi.api.internal.Vector3;
-import vazkii.psi.api.spell.*;
+import vazkii.psi.api.spell.Spell;
+import vazkii.psi.api.spell.SpellContext;
+import vazkii.psi.api.spell.SpellParam;
+import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.param.ParamVector;
 import vazkii.psi.api.spell.piece.PieceOperator;
@@ -23,10 +26,6 @@ public class PieceOperatorVectorRotate extends PieceOperator {
 		addParam(angle = new ParamNumber(SpellParam.GENERIC_NAME_ANGLE, SpellParam.GREEN, false, false));
 	}
 
-	@Override
-	public void addToMetadata(SpellMetadata meta){
-		super.addToMetadata(meta);
-	}
 
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {

@@ -31,6 +31,7 @@ import vazkii.psi.common.spell.operator.vector.*;
 import vazkii.psi.common.spell.other.PieceConnector;
 import vazkii.psi.common.spell.other.PieceCrossConnector;
 import vazkii.psi.common.spell.other.PieceErrorSuppressor;
+import vazkii.psi.common.spell.other.PieceVectorCatch;
 import vazkii.psi.common.spell.selector.*;
 import vazkii.psi.common.spell.selector.entity.*;
 import vazkii.psi.common.spell.trick.*;
@@ -65,6 +66,14 @@ public final class ModSpellPieces {
 	public static PieceContainer selectorSaveVector;
 	public static PieceContainer selectorEidosChangelog;
 	public static PieceContainer selectorListFilter;
+	public static PieceContainer selectorNearbyCharges;
+	public static PieceContainer selectorNearbyFallingBlocks;
+	public static PieceContainer selectorNearbyGlowing;
+	public static PieceContainer selectorNearbyPlayers;
+	public static PieceContainer selectorNearbyVehicles;
+	public static PieceContainer selectorCasterBattery;
+	public static PieceContainer selectorCasterEnergy;
+	public static PieceContainer selectorSuccessCounter;
 
 	public static PieceContainer operatorSum;
 	public static PieceContainer operatorSubtract;
@@ -119,6 +128,9 @@ public final class ModSpellPieces {
 	public static PieceContainer operatorListIntersection;
 	public static PieceContainer operatorListSize;
 	public static PieceContainer operatorListUnion;
+	public static PieceContainer operatorRoot;
+	public static PieceContainer operatorSignum;
+	public static PieceContainer operatorSwizzle;
 
 	public static PieceContainer constantNumber;
 	public static PieceContainer constantPi;
@@ -128,6 +140,7 @@ public final class ModSpellPieces {
 	public static PieceContainer connector;
 	public static PieceContainer crossConnector;
 	public static PieceContainer errorSuppressor;
+	public static PieceContainer vectorSuppressor;
 
 	public static PieceContainer trickDebug;
 	public static PieceContainer trickDelay;
@@ -180,6 +193,8 @@ public final class ModSpellPieces {
 	public static PieceContainer trickPlaySound;
 	public static PieceContainer trickDetonate;
 	public static PieceContainer trickMoveBlockSequence;
+	public static PieceContainer trickTill;
+	public static PieceContainer trickTillSequence;
 
 	public static void init() {
 		selectorCaster = register(PieceSelectorCaster.class, LibPieceNames.SELECTOR_CASTER, LibPieceGroups.TUTORIAL_1);
@@ -203,6 +218,14 @@ public final class ModSpellPieces {
 		selectorBlockPresence = register(PieceSelectorBlockPresence.class, LibPieceNames.SELECTOR_BLOCK_PRESENCE, LibPieceGroups.DETECTION_DYNAMICS);
 		selectorSaveVector = register(PieceSelectorSavedVector.class, LibPieceNames.SELECTOR_SAVED_VECTOR, LibPieceGroups.MEMORY_MANAGEMENT);
 		selectorEidosChangelog = register(PieceSelectorEidosChangelog.class, LibPieceNames.SELECTOR_EIDOS_CHANGELOG, LibPieceGroups.EIDOS_REVERSAL);
+		selectorNearbyCharges = register(PieceSelectorNearbyCharges.class, LibPieceNames.SELECTOR_NEARBY_CHARGES, LibPieceGroups.ENTITIES_INTRO);
+		selectorNearbyFallingBlocks = register(PieceSelectorNearbyFallingBlocks.class, LibPieceNames.SELECTOR_NEARBY_FALLING_BLOCKS, LibPieceGroups.ENTITIES_INTRO);
+		selectorNearbyGlowing = register(PieceSelectorNearbyGlowing.class, LibPieceNames.SELECTOR_NEARBY_GLOWING, LibPieceGroups.ENTITIES_INTRO);
+		selectorNearbyPlayers = register(PieceSelectorNearbyPlayers.class, LibPieceNames.SELECTOR_NEARBY_PLAYERS, LibPieceGroups.ENTITIES_INTRO);
+		selectorNearbyVehicles = register(PieceSelectorNearbyVehicles.class, LibPieceNames.SELECTOR_NEARBY_VEHICLES, LibPieceGroups.ENTITIES_INTRO);
+		selectorSuccessCounter = register(PieceSelectorSuccessCounter.class, LibPieceNames.SELECTOR_SUCCESS_COUNTER, LibPieceGroups.EXOSUIT_CASTING);
+		selectorCasterBattery = register(PieceSelectorCasterBattery.class, LibPieceNames.SELECTOR_CASTER_BATTERY, LibPieceGroups.EXOSUIT_CASTING);
+		selectorCasterEnergy = register(PieceSelectorCasterEnergy.class, LibPieceNames.SELECTOR_CASTER_ENERGY, LibPieceGroups.EXOSUIT_CASTING);
 
 		operatorSum = register(PieceOperatorSum.class, LibPieceNames.OPERATOR_SUM, LibPieceGroups.NUMBERS_INTRO, true);
 		operatorSubtract = register(PieceOperatorSubtract.class, LibPieceNames.OPERATOR_SUBTRACT, LibPieceGroups.NUMBERS_INTRO);
@@ -259,6 +282,9 @@ public final class ModSpellPieces {
 		operatorListIntersection = register(PieceOperatorListIntersection.class, LibPieceNames.OPERATOR_LIST_INTERSECTION, LibPieceGroups.LIST_OPERATIONS);
 		operatorListSize = register(PieceOperatorListSize.class, LibPieceNames.OPERATOR_LIST_SIZE, LibPieceGroups.LIST_OPERATIONS);
 		operatorListUnion = register(PieceOperatorListUnion.class, LibPieceNames.OPERATOR_LIST_UNION, LibPieceGroups.LIST_OPERATIONS);
+		operatorRoot = register(PieceOperatorRoot.class, LibPieceNames.OPERATOR_ROOT, LibPieceGroups.NUMBERS_INTRO);
+		operatorSignum = register(PieceOperatorSignum.class, LibPieceNames.OPERATOR_SIGNUM, LibPieceGroups.TRIGONOMETRY);
+		operatorSwizzle = register(PieceOperatorSwizzle.class, LibPieceNames.OPERATOR_SWIZZLE, LibPieceGroups.TRIGONOMETRY);
 		selectorListFilter = register(PieceSelectorListFilter.class, LibPieceNames.SELECTOR_LIST_FILTER, LibPieceGroups.LIST_OPERATIONS);
 
 
@@ -272,6 +298,7 @@ public final class ModSpellPieces {
 		connector = register(PieceConnector.class, LibPieceNames.CONNECTOR, LibPieceGroups.TUTORIAL_2);
 		crossConnector = register(PieceCrossConnector.class, LibPieceNames.CROSS_CONNECTOR, LibPieceGroups.MEMORY_MANAGEMENT);
 		errorSuppressor = register(PieceErrorSuppressor.class, LibPieceNames.ERROR_SUPPRESSOR, LibPieceGroups.TUTORIAL_4);
+		vectorSuppressor = register(PieceVectorCatch.class, LibPieceNames.VECTOR_SUPPRESSOR, LibPieceGroups.TUTORIAL_4);
 
 		trickDebug = register(PieceTrickDebug.class, LibPieceNames.TRICK_DEBUG, LibPieceGroups.TUTORIAL_1, true);
 		trickDelay = register(PieceTrickDelay.class, LibPieceNames.TRICK_DELAY, LibPieceGroups.FLOW_CONTROL, true);
@@ -322,6 +349,8 @@ public final class ModSpellPieces {
 		trickPlaySound = register(PieceTrickPlaySound.class, LibPieceNames.TRICK_PLAY_SOUND, LibPieceGroups.MISC_TRICKS);
 		trickDetonate = register(PieceTrickDetonate.class, LibPieceNames.TRICK_DETONATE, LibPieceGroups.MEMORY_MANAGEMENT);
 		trickMoveBlockSequence = register(PieceTrickMoveBlockSequence.class, LibPieceNames.TRICK_MOVE_BLOCK_SEQUENCE, LibPieceGroups.BLOCK_MOVEMENT);
+		trickTill = register(PieceTrickTill.class, LibPieceNames.TRICK_TILL, LibPieceGroups.MISC_TRICKS);
+		trickTillSequence = register(PieceTrickTillSequence.class, LibPieceNames.TRICK_TILL_SEQUENCE, LibPieceGroups.MISC_TRICKS);
 	}
 
 	public static PieceContainer register(Class<? extends SpellPiece> clazz, String name, String group) {

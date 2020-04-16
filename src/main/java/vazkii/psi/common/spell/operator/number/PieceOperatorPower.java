@@ -35,16 +35,10 @@ public class PieceOperatorPower extends PieceOperator {
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		double d = this.getParamValue(context, num).doubleValue();
+		double pow = this.getParamValue(context, power).doubleValue();
 
-		int steps = this.getParamValue(context, power).intValue();
-		if(steps < 0)
-			throw new SpellRuntimeException(SpellRuntimeException.NEGATIVE_NUMBER);
-		
-		double dv = 1;
-		for(int i = 0; i < steps; i++)
-			dv *= d;
-		
-		return dv;
+
+		return Math.pow(d, pow);
 	}
 
 	@Override

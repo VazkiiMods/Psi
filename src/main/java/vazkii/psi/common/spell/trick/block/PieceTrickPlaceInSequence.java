@@ -10,6 +10,7 @@
  */
 package vazkii.psi.common.spell.trick.block;
 
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import vazkii.psi.api.internal.MathHelper;
 import vazkii.psi.api.internal.Vector3;
@@ -23,6 +24,7 @@ public class PieceTrickPlaceInSequence extends PieceTrick {
 	SpellParam<Vector3> position;
 	SpellParam<Vector3> target;
 	SpellParam<Number> maxBlocks;
+	SpellParam<Vector3> direction;
 
 	public PieceTrickPlaceInSequence(Spell spell) {
 		super(spell);
@@ -33,6 +35,7 @@ public class PieceTrickPlaceInSequence extends PieceTrick {
 		addParam(position = new ParamVector(SpellParam.GENERIC_NAME_POSITION, SpellParam.BLUE, false, false));
 		addParam(target = new ParamVector(SpellParam.GENERIC_NAME_TARGET, SpellParam.GREEN, false, false));
 		addParam(maxBlocks = new ParamNumber(SpellParam.GENERIC_NAME_MAX, SpellParam.RED, false, true));
+		addParam(direction = new ParamVector(SpellParam.GENERIC_NAME_DIRECTION, SpellParam.CYAN, true, false));
 	}
 
 	@Override
@@ -53,6 +56,11 @@ public class PieceTrickPlaceInSequence extends PieceTrick {
 		Vector3 targetVal = this.getParamValue(context, target);
 		Number maxBlocksVal = this.getParamValue(context, maxBlocks);
 		int maxBlocksInt = maxBlocksVal.intValue();
+		Vector3 directionVal = this.getParamValue(context, direction);
+
+		Direction direction = Direction.UP;
+		if(directionVal != null)
+			direction = Direction.getFacingFromVector(directionVal.x, directionVal.y, directionVal.z);
 
 		if(positionVal == null)
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
@@ -62,7 +70,7 @@ public class PieceTrickPlaceInSequence extends PieceTrick {
 			if (!context.isInRadius(Vector3.fromBlockPos(blockPos)))
 				throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 
-			PieceTrickPlaceBlock.placeBlock(context.caster, context.caster.getEntityWorld(), blockPos, context.getTargetSlot(), false);
+			PieceTrickPlaceBlock.placeBlock(context.caster, context.caster.getEntityWorld(), blockPos, context.getTargetSlot(), false, direction);
 		}
 
 		return null;
