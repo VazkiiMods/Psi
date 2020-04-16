@@ -67,6 +67,10 @@ public final class ModSpellPieces {
 	public static PieceContainer selectorEidosChangelog;
 	public static PieceContainer selectorListFilter;
 	public static PieceContainer selectorNearbyCharges;
+	public static PieceContainer selectorNearbyFallingBlocks;
+	public static PieceContainer selectorNearbyGlowing;
+	public static PieceContainer selectorNearbyPlayers;
+	public static PieceContainer selectorNearbyVehicles;
 
 	public static PieceContainer operatorSum;
 	public static PieceContainer operatorSubtract;
@@ -212,6 +216,10 @@ public final class ModSpellPieces {
 		selectorSaveVector = register(PieceSelectorSavedVector.class, LibPieceNames.SELECTOR_SAVED_VECTOR, LibPieceGroups.MEMORY_MANAGEMENT);
 		selectorEidosChangelog = register(PieceSelectorEidosChangelog.class, LibPieceNames.SELECTOR_EIDOS_CHANGELOG, LibPieceGroups.EIDOS_REVERSAL);
 		selectorNearbyCharges = register(PieceSelectorNearbyCharges.class, LibPieceNames.SELECTOR_NEARBY_CHARGES, LibPieceGroups.ENTITIES_INTRO);
+		selectorNearbyFallingBlocks = register(PieceSelectorNearbyFallingBlocks.class, LibPieceNames.SELECTOR_NEARBY_FALLING_BLOCKS, LibPieceGroups.ENTITIES_INTRO);
+		selectorNearbyGlowing = register(PieceSelectorNearbyGlowing.class, LibPieceNames.SELECTOR_NEARBY_GLOWING, LibPieceGroups.ENTITIES_INTRO);
+		selectorNearbyPlayers = register(PieceSelectorNearbyPlayers.class, LibPieceNames.SELECTOR_NEARBY_PLAYERS, LibPieceGroups.ENTITIES_INTRO);
+		selectorNearbyVehicles = register(PieceSelectorNearbyVehicles.class, LibPieceNames.SELECTOR_NEARBY_VEHICLES, LibPieceGroups.ENTITIES_INTRO);
 
 		operatorSum = register(PieceOperatorSum.class, LibPieceNames.OPERATOR_SUM, LibPieceGroups.NUMBERS_INTRO, true);
 		operatorSubtract = register(PieceOperatorSubtract.class, LibPieceNames.OPERATOR_SUBTRACT, LibPieceGroups.NUMBERS_INTRO);

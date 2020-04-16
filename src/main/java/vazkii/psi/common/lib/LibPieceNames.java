@@ -35,6 +35,11 @@ public final class LibPieceNames {
 	public static final String SELECTOR_EIDOS_CHANGELOG = "selector_eidos_changelog";
 	public static final String SELECTOR_LIST_FILTER = "selector_list_filter";
 	public static final String SELECTOR_NEARBY_CHARGES = "selector_nearby_charges";
+	public static final String SELECTOR_NEARBY_PLAYERS = "selector_nearby_players";
+	public static final String SELECTOR_NEARBY_GLOWING = "selector_nearby_glowing";
+	public static final String SELECTOR_NEARBY_VEHICLES = "selector_nearby_vehicles";
+	public static final String SELECTOR_NEARBY_FALLING_BLOCKS = "selector_nearby_falling_blocks";
+
 
 	public static final String OPERATOR_SUM = "operator_sum";
 	public static final String OPERATOR_SUBTRACT = "operator_subtract";
