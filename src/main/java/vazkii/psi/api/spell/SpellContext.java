@@ -185,7 +185,7 @@ public final class SpellContext {
 	public int getTargetSlot() throws SpellRuntimeException {
 		int slot;
 		if(customTargetSlot)
-			return targetSlot % 35;
+			return targetSlot % 36;
 		if(shiftTargetSlot) {
 			int cadSlot = PsiAPI.getPlayerCADSlot(caster);
 			if(cadSlot == -1)
