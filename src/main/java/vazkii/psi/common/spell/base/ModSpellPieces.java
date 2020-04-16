@@ -66,6 +66,7 @@ public final class ModSpellPieces {
 	public static PieceContainer selectorSaveVector;
 	public static PieceContainer selectorEidosChangelog;
 	public static PieceContainer selectorListFilter;
+	public static PieceContainer selectorNearbyCharges;
 
 	public static PieceContainer operatorSum;
 	public static PieceContainer operatorSubtract;
@@ -210,6 +211,7 @@ public final class ModSpellPieces {
 		selectorBlockPresence = register(PieceSelectorBlockPresence.class, LibPieceNames.SELECTOR_BLOCK_PRESENCE, LibPieceGroups.DETECTION_DYNAMICS);
 		selectorSaveVector = register(PieceSelectorSavedVector.class, LibPieceNames.SELECTOR_SAVED_VECTOR, LibPieceGroups.MEMORY_MANAGEMENT);
 		selectorEidosChangelog = register(PieceSelectorEidosChangelog.class, LibPieceNames.SELECTOR_EIDOS_CHANGELOG, LibPieceGroups.EIDOS_REVERSAL);
+		selectorNearbyCharges = register(PieceSelectorNearbyCharges.class, LibPieceNames.SELECTOR_NEARBY_CHARGES, LibPieceGroups.ENTITIES_INTRO);
 
 		operatorSum = register(PieceOperatorSum.class, LibPieceNames.OPERATOR_SUM, LibPieceGroups.NUMBERS_INTRO, true);
 		operatorSubtract = register(PieceOperatorSubtract.class, LibPieceNames.OPERATOR_SUBTRACT, LibPieceGroups.NUMBERS_INTRO);

@@ -259,6 +259,8 @@
   "psi.spellpiece.selector_eidos_changelog.desc": "Selects a position from the Eidos Changelog",
   "psi.spellpiece.selector_list_filter": "Selector: Indexed Element",
   "psi.spellpiece.selector_list_filter.desc": "Selects an entity from an entity list with a given index",
+  "psi.spellpiece.selector_number_charges": "Selector: Charge Density",
+  "psi.spellpiece.selector_number_charges.desc": "Gets the number of charges around a given radius of a position",
   "psi.spellpiece.operator_sum": "Operator: Sum",
   "psi.spellpiece.operator_sum.desc": "A + B (+ C)",
   "psi.spellpiece.operator_subtract": "Operator: Subtract",

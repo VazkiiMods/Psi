@@ -18,6 +18,7 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.world.World;
 import vazkii.psi.api.spell.Spell;
+import vazkii.psi.api.spell.SpellContext;
 
 import java.util.function.Predicate;
 
@@ -29,7 +30,7 @@ public class PieceSelectorNearbySmeltables extends PieceSelectorNearby {
 	}
 
 	@Override
-	public Predicate<Entity> getTargetPredicate() {
+	public Predicate<Entity> getTargetPredicate(SpellContext context) {
 		return this::accept;
 	}
 

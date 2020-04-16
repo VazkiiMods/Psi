@@ -15,6 +15,7 @@ import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.WaterMobEntity;
 import vazkii.psi.api.spell.Spell;
+import vazkii.psi.api.spell.SpellContext;
 
 import java.util.function.Predicate;
 
@@ -25,7 +26,7 @@ public class PieceSelectorNearbyAnimals extends PieceSelectorNearby {
 	}
 
 	@Override
-	public Predicate<Entity> getTargetPredicate() {
+	public Predicate<Entity> getTargetPredicate(SpellContext context) {
 		// for which classes to check, see ServerWorld despawning when spawn-animals server property is false
 		return (Entity e) -> (e instanceof AnimalEntity || e instanceof WaterMobEntity) && !(e instanceof IMob);
 	}

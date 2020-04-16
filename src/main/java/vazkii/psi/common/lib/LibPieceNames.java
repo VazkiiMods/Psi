@@ -34,6 +34,7 @@ public final class LibPieceNames {
 	public static final String SELECTOR_SAVED_VECTOR = "selector_saved_vector";
 	public static final String SELECTOR_EIDOS_CHANGELOG = "selector_eidos_changelog";
 	public static final String SELECTOR_LIST_FILTER = "selector_list_filter";
+	public static final String SELECTOR_NEARBY_CHARGES = "selector_nearby_charges";
 
 	public static final String OPERATOR_SUM = "operator_sum";
 	public static final String OPERATOR_SUBTRACT = "operator_subtract";

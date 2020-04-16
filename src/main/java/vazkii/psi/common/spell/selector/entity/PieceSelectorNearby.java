@@ -58,14 +58,14 @@ public abstract class PieceSelectorNearby extends PieceSelector {
 
 		AxisAlignedBB axis = new AxisAlignedBB(positionVal.x - radiusVal, positionVal.y - radiusVal, positionVal.z - radiusVal, positionVal.x + radiusVal, positionVal.y + radiusVal, positionVal.z + radiusVal);
 
-		Predicate<Entity> pred = getTargetPredicate();
+		Predicate<Entity> pred = getTargetPredicate(context);
 
 		List<Entity> list = context.caster.getEntityWorld().getEntitiesWithinAABB(Entity.class, axis, (Entity e) -> e != null && pred.test(e) && e != context.caster && e != context.focalPoint && context.isInRadius(e));
 
 		return new EntityListWrapper(list);
 	}
 
-	public abstract Predicate<Entity> getTargetPredicate();
+	public abstract Predicate<Entity> getTargetPredicate(SpellContext context);
 
 	@Override
 	public Class<?> getEvaluationType() {
