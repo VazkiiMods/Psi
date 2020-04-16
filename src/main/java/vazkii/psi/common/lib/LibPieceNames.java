@@ -92,6 +92,7 @@ public final class LibPieceNames {
 	public static final String OPERATOR_LIST_UNION = "operator_list_union";
 	public static final String OPERATOR_ROOT = "operator_root";
 	public static final String OPERATOR_SIGNUM = "operator_extract_sign";
+	public static final String OPERATOR_SWIZZLE = "operator_swizzle";
 
 	public static final String CONSTANT_NUMBER = "constant_number";
 	public static final String CONSTANT_PI = "constant_pi";

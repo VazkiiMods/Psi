@@ -122,6 +122,7 @@ public final class ModSpellPieces {
 	public static PieceContainer operatorListUnion;
 	public static PieceContainer operatorRoot;
 	public static PieceContainer operatorSignum;
+	public static PieceContainer operatorSwizzle;
 
 	public static PieceContainer constantNumber;
 	public static PieceContainer constantPi;
@@ -267,6 +268,7 @@ public final class ModSpellPieces {
 		operatorListUnion = register(PieceOperatorListUnion.class, LibPieceNames.OPERATOR_LIST_UNION, LibPieceGroups.LIST_OPERATIONS);
 		operatorRoot = register(PieceOperatorRoot.class, LibPieceNames.OPERATOR_ROOT, LibPieceGroups.NUMBERS_INTRO);
 		operatorSignum = register(PieceOperatorSignum.class, LibPieceNames.OPERATOR_SIGNUM, LibPieceGroups.TRIGONOMETRY);
+		operatorSwizzle = register(PieceOperatorSwizzle.class, LibPieceNames.OPERATOR_SWIZZLE, LibPieceGroups.TRIGONOMETRY);
 		selectorListFilter = register(PieceSelectorListFilter.class, LibPieceNames.SELECTOR_LIST_FILTER, LibPieceGroups.LIST_OPERATIONS);
 
 

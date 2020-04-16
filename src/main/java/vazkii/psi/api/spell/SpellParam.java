@@ -72,6 +72,7 @@ public abstract class SpellParam<T> {
 	public static final String CONNECTOR_NAME_TO2 = PSI_PREFIX + "to2";
 	public static final String GENERIC_NAME_ROOT = PSI_PREFIX + "root";
 	public static final String GENERIC_NAME_TOGGLE = PSI_PREFIX + "toggle";
+	public static final String GENERIC_NAME_MASK = PSI_PREFIX + "mask";
 
 
 	public final String name;
