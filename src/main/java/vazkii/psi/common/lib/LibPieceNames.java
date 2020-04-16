@@ -90,6 +90,7 @@ public final class LibPieceNames {
 	public static final String OPERATOR_LIST_INTERSECTION = "operator_list_intersection";
 	public static final String OPERATOR_LIST_SIZE = "operator_list_size";
 	public static final String OPERATOR_LIST_UNION = "operator_list_union";
+	public static final String OPERATOR_ROOT = "operator_root";
 
 	public static final String CONSTANT_NUMBER = "constant_number";
 	public static final String CONSTANT_PI = "constant_pi";
