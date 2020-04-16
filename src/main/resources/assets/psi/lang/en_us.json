@@ -371,6 +371,8 @@
   "psi.spellpiece.operator_list_exclusion.desc": "Makes a list with all items that are in the first list but not the second",
   "psi.spellpiece.operator_root": "Operator: Root",
   "psi.spellpiece.operator_root.desc": "Takes the nth root of the number",
+  "psi.spellpiece.operator_extract_sign": "Operator: Signum",
+  "psi.spellpiece.operator_extract_sign.desc": "Extracts the sign from the input",
   "psi.spellpiece.constant_number": "Constant: Number",
   "psi.spellpiece.constant_number.desc": "Select and type to set value",
   "psi.spellpiece.constant_pi": "Constant: Pi",

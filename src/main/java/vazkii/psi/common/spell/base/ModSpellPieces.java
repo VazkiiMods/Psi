@@ -120,6 +120,8 @@ public final class ModSpellPieces {
 	public static PieceContainer operatorListIntersection;
 	public static PieceContainer operatorListSize;
 	public static PieceContainer operatorListUnion;
+	public static PieceContainer operatorRoot;
+	public static PieceContainer operatorSignum;
 
 	public static PieceContainer constantNumber;
 	public static PieceContainer constantPi;
@@ -261,6 +263,8 @@ public final class ModSpellPieces {
 		operatorListIntersection = register(PieceOperatorListIntersection.class, LibPieceNames.OPERATOR_LIST_INTERSECTION, LibPieceGroups.LIST_OPERATIONS);
 		operatorListSize = register(PieceOperatorListSize.class, LibPieceNames.OPERATOR_LIST_SIZE, LibPieceGroups.LIST_OPERATIONS);
 		operatorListUnion = register(PieceOperatorListUnion.class, LibPieceNames.OPERATOR_LIST_UNION, LibPieceGroups.LIST_OPERATIONS);
+		operatorRoot = register(PieceOperatorRoot.class, LibPieceNames.OPERATOR_ROOT, LibPieceGroups.NUMBERS_INTRO);
+		operatorSignum = register(PieceOperatorSignum.class, LibPieceNames.OPERATOR_SIGNUM, LibPieceGroups.TRIGONOMETRY);
 		selectorListFilter = register(PieceSelectorListFilter.class, LibPieceNames.SELECTOR_LIST_FILTER, LibPieceGroups.LIST_OPERATIONS);
 
 
