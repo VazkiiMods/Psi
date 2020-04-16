@@ -71,6 +71,9 @@ public final class ModSpellPieces {
 	public static PieceContainer selectorNearbyGlowing;
 	public static PieceContainer selectorNearbyPlayers;
 	public static PieceContainer selectorNearbyVehicles;
+	public static PieceContainer selectorCasterBattery;
+	public static PieceContainer selectorCasterEnergy;
+	public static PieceContainer selectorSuccessCounter;
 
 	public static PieceContainer operatorSum;
 	public static PieceContainer operatorSubtract;
@@ -220,6 +223,9 @@ public final class ModSpellPieces {
 		selectorNearbyGlowing = register(PieceSelectorNearbyGlowing.class, LibPieceNames.SELECTOR_NEARBY_GLOWING, LibPieceGroups.ENTITIES_INTRO);
 		selectorNearbyPlayers = register(PieceSelectorNearbyPlayers.class, LibPieceNames.SELECTOR_NEARBY_PLAYERS, LibPieceGroups.ENTITIES_INTRO);
 		selectorNearbyVehicles = register(PieceSelectorNearbyVehicles.class, LibPieceNames.SELECTOR_NEARBY_VEHICLES, LibPieceGroups.ENTITIES_INTRO);
+		selectorSuccessCounter = register(PieceSelectorSuccessCounter.class, LibPieceNames.SELECTOR_SUCCESS_COUNTER, LibPieceGroups.EXOSUIT_CASTING);
+		selectorCasterBattery = register(PieceSelectorCasterBattery.class, LibPieceNames.SELECTOR_CASTER_BATTERY, LibPieceGroups.EXOSUIT_CASTING);
+		selectorCasterEnergy = register(PieceSelectorCasterEnergy.class, LibPieceNames.SELECTOR_CASTER_ENERGY, LibPieceGroups.EXOSUIT_CASTING);
 
 		operatorSum = register(PieceOperatorSum.class, LibPieceNames.OPERATOR_SUM, LibPieceGroups.NUMBERS_INTRO, true);
 		operatorSubtract = register(PieceOperatorSubtract.class, LibPieceNames.OPERATOR_SUBTRACT, LibPieceGroups.NUMBERS_INTRO);

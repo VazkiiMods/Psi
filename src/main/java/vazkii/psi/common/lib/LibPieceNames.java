@@ -39,6 +39,9 @@ public final class LibPieceNames {
 	public static final String SELECTOR_NEARBY_GLOWING = "selector_nearby_glowing";
 	public static final String SELECTOR_NEARBY_VEHICLES = "selector_nearby_vehicles";
 	public static final String SELECTOR_NEARBY_FALLING_BLOCKS = "selector_nearby_falling_blocks";
+	public static final String SELECTOR_SUCCESS_COUNTER = "selector_sucession_counter";
+	public static final String SELECTOR_CASTER_ENERGY = "selector_caster_energy";
+	public static final String SELECTOR_CASTER_BATTERY = "selector_caster_battery";
 
 
 	public static final String OPERATOR_SUM = "operator_sum";
