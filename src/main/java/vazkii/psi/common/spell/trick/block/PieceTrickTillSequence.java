@@ -34,7 +34,7 @@ public class PieceTrickTillSequence extends PieceTrick {
 		double maxBlocksVal = SpellHelpers.ensurePositiveAndNonzero(this, maxBlocks);
 
 		meta.addStat(EnumSpellStat.POTENCY, (int) (maxBlocksVal * 10));
-		meta.addStat(EnumSpellStat.COST, (int) (maxBlocksVal * 10));
+		meta.addStat(EnumSpellStat.COST, (int) ((12 + (maxBlocksVal-1)*7)));
 	}
 
 	@Override
