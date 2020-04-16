@@ -15,7 +15,7 @@ public class ColorHandler {
 		ItemColors items = Minecraft.getInstance().getItemColors();
 		items.register((stack, tintIndex) -> tintIndex == 1 ? ((ItemPsimetalArmor) stack.getItem()).getColor(stack) : 0xFFFFFF, ModItems.psimetalExosuitBoots, ModItems.psimetalExosuitChestplate, ModItems.psimetalExosuitBoots, ModItems.psimetalExosuitLeggings);
 
-		items.register((stack, tintIndex) -> tintIndex == 1 ? ((ItemExosuitSensor) stack.getItem()).getColor(stack) : 0xFFFFFF, ModItems.exosuitSensorHeat, ModItems.exosuitSensorLight, ModItems.exosuitSensorStress, ModItems.exosuitSensorWater);
+		items.register((stack, tintIndex) -> tintIndex == 1 ? ((ItemExosuitSensor) stack.getItem()).getColor(stack) : 0xFFFFFF, ModItems.exosuitSensorHeat, ModItems.exosuitSensorLight, ModItems.exosuitSensorStress, ModItems.exosuitSensorWater, ModItems.exosuitSensorTrigger);
 
 		items.register((stack, tintIndex) -> tintIndex == 1 ? ((ItemCAD) stack.getItem()).getSpellColor(stack) : 0xFFFFFF, ModItems.cad);
 
@@ -26,27 +26,46 @@ public class ColorHandler {
 
 	public static int slideColor(int[] color, float speed) {
 		int n = color.length;
-		double t = (ClientTickHandler.ticksInGame * speed * n / Math.PI) % n;
+		double t = (ClientTickHandler.total * speed * n / Math.PI) % n;
 		int phase = (int) t;
 		double dt = t - phase;
-
 		if (dt == 0)
 			return color[phase];
-
 		int nextPhase = (phase + 1) % n;
-		return slideColorTime(color[phase], color[nextPhase], (float) (dt * Math.PI * 2));
+		return slideColorTime(color[phase], color[nextPhase], (float) (dt * Math.PI));
 	}
 
 	public static int slideColor(int color, int secondColor, double speed) {
-		return slideColorTime(color, secondColor, (float) (ClientTickHandler.ticksInGame * speed));
+		return slideColorTime(color, secondColor, (float) (ClientTickHandler.total * speed));
+	}
+
+	public static int pulseColor(int source) {
+		return pulseColor(source, 1f, 0.2f, 24);
+	}
+
+	public static int pulseColor(int source, float speed, int magnitude) {
+		return pulseColor(source, 1f, speed, magnitude);
+	}
+
+
+	public static int pulseColor(int source, float multiplier, float speed, int magnitude) {
+		int add = (int) (MathHelper.sin(ClientTickHandler.ticksInGame * speed) * magnitude);
+		int red = (0xFF0000 & source) >> 16;
+		int green = (0x00FF00 & source) >> 8;
+		int blue = 0x0000FF & source;
+		int addedRed = MathHelper.clamp((int) (multiplier * (red + add)), 0, 255);
+		int addedGreen = MathHelper.clamp((int) (multiplier * (green + add)), 0, 255);
+		int addedBlue = MathHelper.clamp((int) (multiplier * (blue + add)), 0, 255);
+		return (addedRed << 16) | (addedGreen << 8) | addedBlue;
 	}
 
 	public static int slideColorTime(int color, int secondColor, float t) {
-		float shift = (MathHelper.sin(t) + 1) / 2;
+		float shift = (1 - MathHelper.cos(t)) / 2;
 		if (shift == 0)
 			return color;
 		else if (shift == 1)
 			return secondColor;
+
 
 		int redA = (0xFF0000 & color) >> 16;
 		int greenA = (0x00FF00 & color) >> 8;
@@ -60,4 +79,6 @@ public class ColorHandler {
 		int newBlue = (int) (blueA * (1 - shift) + blueB * shift);
 		return (newRed << 16) | (newGreen << 8) | newBlue;
 	}
+
+
 }

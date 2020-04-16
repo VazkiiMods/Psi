@@ -19,9 +19,9 @@ import vazkii.psi.api.spell.piece.PieceOperator;
 
 public class PieceOperatorIntegerDivide extends PieceOperator {
 
-	SpellParam num1;
-	SpellParam num2;
-	SpellParam num3;
+	SpellParam<Number> num1;
+	SpellParam<Number> num2;
+	SpellParam<Number> num3;
 
 	public PieceOperatorIntegerDivide(Spell spell) {
 		super(spell);
@@ -36,13 +36,13 @@ public class PieceOperatorIntegerDivide extends PieceOperator {
 
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
-		Double d1 = this.<Double>getParamValue(context, num1);
-		Double d2 = this.<Double>getParamValue(context, num2);
-		Double d3 = this.<Double>getParamValue(context, num3);
+		double d1 = this.getParamValue(context, num1).doubleValue();
+		Number d2 = this.getParamValue(context, num2).doubleValue();
+		Number d3 = this.getParamValue(context, num3);
 
-		if ((d2 == 0 || d2.intValue() == 0) || (d3 != null && (d3 == 0 || d3.intValue() == 0)))
+		if ((d2.doubleValue() == 0 || d2.intValue() == 0) || (d3 != null && (d3.doubleValue() == 0 || d3.intValue() == 0)))
 			throw new SpellRuntimeException(SpellRuntimeException.DIVIDE_BY_ZERO);
-		Double d4 = d3 != null ? (d1 / (d2 * d3)) : (d1 / d2);
+		Double d4 = d3 != null ?  (d1 / (d2.doubleValue() * d3.doubleValue())) :  (d1 / d2.doubleValue());
 		if (d4<0)
 			return Math.ceil(d4);
 		return Math.floor(d4);

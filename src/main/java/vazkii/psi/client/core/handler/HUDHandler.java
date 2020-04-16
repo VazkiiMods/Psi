@@ -166,7 +166,7 @@ public final class HUDHandler {
 		int v = 0;
 
 		int texture = 0;
-		boolean shaders = ShaderHandler.useShaders();
+		boolean shaders = ShaderHandler.useShaders;
 
 		if (shaders) {
 			RenderSystem.activeTexture(ARBMultitexture.GL_TEXTURE0_ARB + secondaryTextureUnit);
@@ -328,8 +328,8 @@ public final class HUDHandler {
 		RenderSystem.scalef(2F, 2F, 2F);
 		mc.fontRenderer.drawStringWithShadow(levelUp, x, y, 0x0013C5FF + alphaOverlay);
 
-		String currLevel = "" + I18n.format(levelValue.toString());
-		x = res.getScaledWidth() / 4;
+		String currLevel = "" + I18n.format(levelValue.toString().replace(":", "."));
+		x = res.getScaledWidth() / 4 - mc.fontRenderer.getStringWidth(currLevel) / 2;
 		y += 10;
 
 		if (levelDisplayTime > fadeTime) {

@@ -19,8 +19,8 @@ import vazkii.psi.api.spell.piece.PieceOperator;
 
 public class PieceOperatorLog extends PieceOperator {
 
-	SpellParam num;
-	SpellParam base;
+	SpellParam<Number> num;
+	SpellParam<Number> base;
 	
 	public PieceOperatorLog(Spell spell) {
 		super(spell);
@@ -34,19 +34,19 @@ public class PieceOperatorLog extends PieceOperator {
 
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
-		Double d = this.<Double>getParamValue(context, num);
+		double d = this.getParamValue(context, num).doubleValue();
 
 		if(d < 0)
 			throw new SpellRuntimeException(SpellRuntimeException.NEGATIVE_NUMBER);
 		
 		double logNum = Math.log10(d);
 		
-		Double b = this.<Double>getParamValue(context, base);
+		Number b = this.getParamValue(context, base);
 		if(b != null) {
-			if(b < 0)
+			if(b.doubleValue() < 0)
 				throw new SpellRuntimeException(SpellRuntimeException.NEGATIVE_NUMBER);
 			
-			logNum /= Math.log10(b);
+			logNum /= Math.log10(b.doubleValue());
 		}
 		
 		return logNum;

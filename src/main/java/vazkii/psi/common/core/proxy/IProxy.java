@@ -1,6 +1,5 @@
 package vazkii.psi.common.core.proxy;
 
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particles.IParticleData;
@@ -25,6 +24,8 @@ public interface IProxy {
     }
 
 	void onLevelUp(ResourceLocation level);
+
+    default boolean hasAdvancement(ResourceLocation advancement, PlayerEntity playerEntity) {return false;}
 
     default int getColorForCAD(ItemStack cadStack) {
         return -1;

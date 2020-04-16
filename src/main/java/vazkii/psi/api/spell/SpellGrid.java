@@ -13,7 +13,6 @@ package vazkii.psi.api.spell;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
@@ -111,8 +110,7 @@ public final class SpellGrid {
 					newGrid[i][newY] = p;
 					p.y = newY;
 
-					for (SpellParam param : p.paramSides.keySet())
-						p.paramSides.put(param, p.paramSides.get(param).mirrorVertical());
+					p.paramSides.replaceAll((k, v) -> p.paramSides.get(k).mirrorVertical());
 				}
 			}
 		}
@@ -142,7 +140,7 @@ public final class SpellGrid {
 					p.x = newX;
 					p.y = newY;
 
-					for (SpellParam param : p.paramSides.keySet()) {
+					for (SpellParam<?> param : p.paramSides.keySet()) {
 						SpellParam.Side side = p.paramSides.get(param);
 						p.paramSides.put(param, ccw ? side.rotateCCW() : side.rotateCW());
 					}

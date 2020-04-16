@@ -34,6 +34,7 @@ import vazkii.psi.client.gui.widget.*;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.tile.TileProgrammer;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
+import vazkii.psi.common.lib.LibBlockNames;
 import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.lib.LibResources;
 import vazkii.psi.common.network.MessageRegister;
@@ -49,24 +50,17 @@ import java.util.stream.Collectors;
 public class GuiProgrammer extends Screen {
 
 	public static final ResourceLocation texture = new ResourceLocation(LibResources.GUI_PROGRAMMER);
-	public static final RenderType ICONS_LAYER;
-	public static final RenderType BACKGROUND_LAYER;
+	public static final RenderType LAYER;
 	static {
+		RenderState.TransparencyState translucent = ObfuscationReflectionHelper.getPrivateValue(RenderState.class, null, "field_228515_g_");
 		RenderType.State glState = RenderType.State.builder()
 						.texture(new RenderState.TextureState(texture, false, false))
 						.lightmap(new RenderState.LightmapState(true))
 						.cull(new RenderState.CullState(false))
-						.alpha(new RenderState.AlphaState(0.004F)).build(false);
-		ICONS_LAYER = RenderType.of(LibMisc.PREFIX_MOD + "programmer_icons", DefaultVertexFormats.POSITION_COLOR_TEXTURE_LIGHT, GL11.GL_QUADS, 64, glState);
-
-		RenderState.TransparencyState translucent = ObfuscationReflectionHelper.getPrivateValue(RenderState.class, null, "field_228515_g_");
-		glState = RenderType.State.builder()
-						.texture(new RenderState.TextureState(texture, false, false))
-						.lightmap(new RenderState.LightmapState(true))
-						.cull(new RenderState.CullState(false))
+						.alpha(new RenderState.AlphaState(0.004F))
 						.transparency(translucent)
 						.build(false);
-		BACKGROUND_LAYER = RenderType.of(LibMisc.PREFIX_MOD + "programmer_background", DefaultVertexFormats.POSITION_COLOR_TEXTURE_LIGHT, GL11.GL_QUADS, 64, glState);
+		LAYER = RenderType.of(LibMisc.PREFIX_MOD + LibBlockNames.PROGRAMMER, DefaultVertexFormats.POSITION_COLOR_TEXTURE_LIGHT, GL11.GL_QUADS, 128, glState);
 	}
 
 	public final TileProgrammer programmer;
@@ -199,7 +193,7 @@ public class GuiProgrammer extends Screen {
 							for (int j = 0; j < SpellGrid.GRID_SIZE; j++) {
 								SpellPiece piece = spell.grid.gridData[i][j];
 								if (piece != null) {
-									ResourceLocation group = PsiAPI.advancementGroupsInverse.get(piece.getClass());
+									ResourceLocation group = PsiAPI.getGroupForPiece(piece.getClass());
 									if (!minecraft.player.isCreative() && (group == null || !data.isPieceGroupUnlocked(group, piece.registryKey))) {
 										minecraft.player.sendMessage(new TranslationTextComponent("psimisc.missing_pieces").setStyle(new Style().setColor(TextFormatting.RED)));
 										return;
@@ -312,7 +306,7 @@ public class GuiProgrammer extends Screen {
 
 			}
 
-			String coords = "";
+			String coords;
 			if (SpellGrid.exists(cursorX, cursorY))
 				coords = I18n.format("psimisc.programmer_coords", selectedX + 1, selectedY + 1, cursorX + 1, cursorY + 1);
 			else
@@ -438,7 +432,7 @@ public class GuiProgrammer extends Screen {
 				if (piece.hasConfig()) {
 					int i = 0;
 					for (String paramName : piece.params.keySet()) {
-						SpellParam param = piece.params.get(paramName);
+						SpellParam<?> param = piece.params.get(paramName);
 						int x = left - 17;
 						int y = top + 70 + i * 26;
 						for (SpellParam.Side side : ImmutableSet.of(SpellParam.Side.TOP, SpellParam.Side.BOTTOM, SpellParam.Side.LEFT, SpellParam.Side.RIGHT, SpellParam.Side.OFF)) {
@@ -474,7 +468,7 @@ public class GuiProgrammer extends Screen {
 			return false;
 		super.charTyped(character, keyCode);
 		if (!commentEnabled && !spellNameField.isFocused()) {
-			SpellPiece piece = null;
+			SpellPiece piece;
 			if (selectedX != -1 && selectedY != -1) {
 				piece = spell.grid.gridData[selectedX][selectedY];
 				if (piece != null && piece.interceptKeystrokes()) {

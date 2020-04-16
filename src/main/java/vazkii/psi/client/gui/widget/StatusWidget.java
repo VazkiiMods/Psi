@@ -13,7 +13,7 @@ import vazkii.psi.client.gui.GuiProgrammer;
 
 public class StatusWidget extends Widget {
 
-	private GuiProgrammer parent;
+	private final GuiProgrammer parent;
 
 	public StatusWidget(int x, int y, int width, int height, String message, GuiProgrammer programmer) {
 		super(x, y, width, height, message);

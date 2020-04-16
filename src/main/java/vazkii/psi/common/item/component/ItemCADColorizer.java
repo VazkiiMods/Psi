@@ -21,7 +21,7 @@ public class ItemCADColorizer extends ItemCADComponent implements ICADColorizer 
 
 
 	private final DyeColor color;
-	private String contributorName = "";
+	private final static String TAG_CONTRIBUTOR = "psi_contributor_name";
 
 	public ItemCADColorizer(Item.Properties properties, DyeColor color) {
 		super(properties);
@@ -41,7 +41,7 @@ public class ItemCADColorizer extends ItemCADComponent implements ICADColorizer 
 
 	@Override
 	public String getContributorName(ItemStack stack) {
-		return contributorName;
+		return stack.getOrCreateTag().getString(TAG_CONTRIBUTOR);
 	}
 
 	private static String getProperDyeName(DyeColor color) {
@@ -50,6 +50,6 @@ public class ItemCADColorizer extends ItemCADComponent implements ICADColorizer 
 
 	@Override
 	public void setContributorName(ItemStack stack, String name) {
-		contributorName = name;
+		stack.getOrCreateTag().putString(TAG_CONTRIBUTOR, name);
 	}
 }

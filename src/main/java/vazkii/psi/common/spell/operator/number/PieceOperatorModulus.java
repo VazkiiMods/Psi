@@ -21,8 +21,8 @@ import java.math.BigDecimal;
 
 public class PieceOperatorModulus extends PieceOperator {
 
-	SpellParam num1;
-	SpellParam num2;
+	SpellParam<Number> num1;
+	SpellParam<Number> num2;
 
 	public PieceOperatorModulus(Spell spell) {
 		super(spell);
@@ -36,8 +36,8 @@ public class PieceOperatorModulus extends PieceOperator {
 
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
-		Double d1 = this.<Double>getParamValue(context, num1);
-		Double d2 = this.<Double>getParamValue(context, num2);
+		double d1 = this.getParamValue(context, num1).doubleValue();
+		double d2 = this.getParamValue(context, num2).doubleValue();
 
 		if (d2 == 0)
 			throw new SpellRuntimeException(SpellRuntimeException.DIVIDE_BY_ZERO);

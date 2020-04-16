@@ -31,7 +31,7 @@ public abstract class PieceOperator extends SpellPiece {
 	}
 
 	@Override
-	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
+	public void addToMetadata(SpellMetadata meta) {
 		meta.addStat(EnumSpellStat.COMPLEXITY, 1);
 	}
 

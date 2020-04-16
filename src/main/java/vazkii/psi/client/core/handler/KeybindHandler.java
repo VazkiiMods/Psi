@@ -16,7 +16,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
-import vazkii.patchouli.client.book.ClientBookRegistry;
+import vazkii.patchouli.api.PatchouliAPI;
 import vazkii.psi.api.cad.ISocketableCapability;
 import vazkii.psi.api.cad.ISocketableController;
 import vazkii.psi.client.gui.GuiSocketSelect;
@@ -59,7 +59,7 @@ public class KeybindHandler {
 				if (!stack.isEmpty() && (ISocketableCapability.isSocketable(stack) || isSocketableController(mc.player, stack)))
 					mc.displayGuiScreen(new GuiSocketSelect(stack));
 				else {
-					ClientBookRegistry.INSTANCE.displayBookGui(LibResources.PATCHOULI_BOOK);
+					PatchouliAPI.instance.openBookGUI(LibResources.PATCHOULI_BOOK);
 				}
 
 			}

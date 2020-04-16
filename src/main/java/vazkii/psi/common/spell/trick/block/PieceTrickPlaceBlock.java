@@ -92,7 +92,7 @@ public class PieceTrickPlaceBlock extends PieceTrick {
 					ItemStack rem = removeFromInventory(player, stack);
 					BlockItem iblock = (BlockItem) rem.getItem();
 
-                    ItemStack save = ItemStack.EMPTY;
+                    ItemStack save;
                     BlockRayTraceResult hit = new BlockRayTraceResult(Vec3d.ZERO, Direction.UP, pos, false);
                     ItemUseContext ctx = new ItemUseContext(player, Hand.MAIN_HAND, hit);
 

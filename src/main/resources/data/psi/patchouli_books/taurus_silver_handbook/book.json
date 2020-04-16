@@ -1,6 +1,15 @@
 {
   "name": "psi.book.name",
   "landing_text": "psi.book.landing_text",
+  "i18n": true,
+  "show_progress": false,
   "model": "psi:taurus_silver_codex",
-  "version": 1
+  "book_texture": "psi:textures/gui/book.png",
+  "subtitle": "psi.book.subtitle",
+  "open_sound": "psi:book_open",
+  "flip_sound": "psi:book_flip",
+  "creative_tab": "psi",
+  "macros": {
+    "$(piece)": "$(3)"
+  }
 }

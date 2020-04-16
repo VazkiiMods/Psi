@@ -14,6 +14,8 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.SoundEvents;
+import net.minecraft.entity.projectile.ThrowableEntity;
+import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.registries.ObjectHolder;
 import vazkii.psi.api.spell.SpellContext;
@@ -21,6 +23,7 @@ import vazkii.psi.common.lib.LibEntityNames;
 import vazkii.psi.common.lib.LibResources;
 
 import java.util.List;
+import java.util.Optional;
 
 public class EntitySpellMine extends EntitySpellGrenade {
 	@ObjectHolder(LibResources.PREFIX_MOD + LibEntityNames.SPELL_MINE)
@@ -28,7 +31,7 @@ public class EntitySpellMine extends EntitySpellGrenade {
 
 	boolean triggered = false;
 
-	public EntitySpellMine(EntityType<?> type, World worldIn) {
+	public EntitySpellMine(EntityType<? extends ThrowableEntity> type, World worldIn) {
 		super(type, worldIn);
 	}
 
@@ -49,7 +52,7 @@ public class EntitySpellMine extends EntitySpellGrenade {
 			if (!triggered)
 				playSound(SoundEvents.BLOCK_STONE_PRESSURE_PLATE_CLICK_ON, 0.5F, 0.6F);
 			triggered = true;
-			targetEntity = entities.get(0);
+			dataManager.set(ATTACKTARGET_UUID, Optional.of(entities.get(0).getUniqueID()));
 		}
 		else if(triggered)
 			doExplosion();

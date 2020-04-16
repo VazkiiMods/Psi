@@ -10,14 +10,11 @@
  */
 package vazkii.psi.common.spell.trick.infusion;
 
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.Tags;
 import vazkii.psi.api.spell.EnumSpellStat;
 import vazkii.psi.api.spell.Spell;
-import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellMetadata;
-import vazkii.psi.common.item.ItemCAD;
-import vazkii.psi.common.item.base.ModItems;
+import vazkii.psi.api.spell.piece.PieceCraftingTrick;
+import vazkii.psi.api.spell.piece.PieceTrick;
 
 public class PieceTrickGreaterInfusion extends PieceTrickInfusion {
 	public PieceTrickGreaterInfusion(Spell spell) {
@@ -31,10 +28,7 @@ public class PieceTrickGreaterInfusion extends PieceTrickInfusion {
 	}
 
 	@Override
-	public Object execute(SpellContext context) {
-        super.execute(context);
-        ItemCAD.craft(context.caster, Tags.Items.GEMS_DIAMOND, new ItemStack(ModItems.psigem));
-        return null;
-    }
-
+	public boolean canCraft(PieceCraftingTrick trick) {
+		return trick instanceof PieceTrickGreaterInfusion;
+	}
 }

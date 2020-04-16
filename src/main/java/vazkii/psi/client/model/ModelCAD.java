@@ -27,11 +27,6 @@ import java.util.Random;
 
 @OnlyIn(Dist.CLIENT)
 public class ModelCAD implements IBakedModel {
-    private final IBakedModel original;
-
-    public ModelCAD(IBakedModel original) {
-        this.original = original;
-    }
 
     private final ItemOverrideList itemHandler = new ItemOverrideList() {
 

@@ -1,0 +1,72 @@
+{
+  "name": "psi.book.entry.tutorial6",
+  "category": "basics",
+  "icon": "minecraft:air",
+  "priority": true,
+  "pages": [
+    {
+      "type": "text",
+      "text": "psi.book.page.tutorial6.0"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.tutorial6.1"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.tutorial6.2"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.tutorial6.3"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.tutorial6.4"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.tutorial6.5"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.tutorial6.6"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.tutorial6.7"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.tutorial6.8"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.tutorial6.9"
+    },
+    {
+      "type": "image",
+      "text": "psi.book.page.tutorial6.10",
+      "images": [
+        "psi:textures/gui/entries/tutorial_6_spell.png"
+      ],
+      "border": false
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.tutorial6.11"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.tutorial6.12"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.tutorial6.13"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.tutorial6.14"
+    }
+  ]
+}

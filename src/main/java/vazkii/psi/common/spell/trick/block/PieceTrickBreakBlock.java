@@ -52,7 +52,7 @@ public class PieceTrickBreakBlock extends PieceTrick {
 		super.addToMetadata(meta);
 
 		meta.addStat(EnumSpellStat.POTENCY, 20);
-		meta.addStat(EnumSpellStat.COST, 25);
+		meta.addStat(EnumSpellStat.COST, 50);
 	}
 
 	@Override

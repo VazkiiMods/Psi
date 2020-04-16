@@ -10,16 +10,10 @@
  */
 package vazkii.psi.common.spell.trick.infusion;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.world.dimension.EndDimension;
-import net.minecraftforge.common.Tags;
 import vazkii.psi.api.spell.EnumSpellStat;
 import vazkii.psi.api.spell.Spell;
-import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellMetadata;
-import vazkii.psi.common.item.ItemCAD;
-import vazkii.psi.common.item.base.ModItems;
+import vazkii.psi.api.spell.piece.PieceCraftingTrick;
 
 public class PieceTrickEbonyIvory extends PieceTrickGreaterInfusion {
 	public PieceTrickEbonyIvory(Spell spell) {
@@ -33,14 +27,7 @@ public class PieceTrickEbonyIvory extends PieceTrickGreaterInfusion {
 	}
 
 	@Override
-	public Object execute(SpellContext context) {
-		super.execute(context);
-		if(context.caster.getEntityWorld().getDimension() instanceof EndDimension) {
-            ItemCAD.craft(context.caster, new ItemStack(Items.COAL), new ItemStack(ModItems.ebonySubstance));
-            ItemCAD.craft(context.caster, Tags.Items.GEMS_QUARTZ, new ItemStack(ModItems.ivorySubstance));
-        }
-
-		return null;
+	public boolean canCraft(PieceCraftingTrick trick) {
+		return trick instanceof PieceTrickEbonyIvory;
 	}
-
 }

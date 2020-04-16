@@ -1,5 +1,5 @@
 {
-  "processor": "vazkii.psi.client.patchouli.processor.MultiCraftingProcessor",
+  "processor": "vazkii.psi.client.patchouli.MultiCraftingProcessor",
   "components": [
     {
       "type": "header",

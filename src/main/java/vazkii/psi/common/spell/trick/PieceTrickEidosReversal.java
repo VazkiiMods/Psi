@@ -21,7 +21,7 @@ import vazkii.psi.common.network.message.MessageEidosSync;
 
 public class PieceTrickEidosReversal extends PieceTrick {
 
-	SpellParam time;
+	SpellParam<Number> time;
 
 	public PieceTrickEidosReversal(Spell spell) {
 		super(spell);
@@ -46,10 +46,10 @@ public class PieceTrickEidosReversal extends PieceTrick {
 
 	@Override
 	public Object execute(SpellContext context) {
-		Double timeVal = this.<Double>getParamValue(context, time);
+		int timeVal = this.getParamValue(context, time).intValue();
 		PlayerData data = PlayerDataHandler.get(context.caster);
 		if(!data.isReverting) {
-			data.eidosReversionTime = timeVal.intValue() * 10;
+			data.eidosReversionTime = timeVal * 10;
 			data.isReverting = true;
 			if (context.caster instanceof ServerPlayerEntity)
 				MessageRegister.HANDLER.sendToPlayer(new MessageEidosSync(data.eidosReversionTime), (ServerPlayerEntity) context.caster);

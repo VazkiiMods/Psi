@@ -31,9 +31,9 @@ import java.util.regex.Pattern;
 
 public class PiecePanelWidget extends Widget implements IRenderable, IGuiEventListener {
 
-	public GuiProgrammer parent;
+	public final GuiProgrammer parent;
 	public boolean panelEnabled = false;
-	public List<Button> panelButtons = new ArrayList<>();
+	public final List<Button> panelButtons = new ArrayList<>();
 	public int panelCursor;
 	public TextFieldWidget searchField;
 	public int page = 0;
@@ -83,8 +83,7 @@ public class PiecePanelWidget extends Widget implements IRenderable, IGuiEventLi
 	@Override
 	public boolean charTyped(char p_charTyped_1_, int p_charTyped_2_) {
 		if (panelEnabled) {
-			if (searchField.charTyped(p_charTyped_1_, p_charTyped_2_))
-				return true;
+			return searchField.charTyped(p_charTyped_1_, p_charTyped_2_);
 		}
 		return false;
 	}
@@ -126,12 +125,12 @@ public class PiecePanelWidget extends Widget implements IRenderable, IGuiEventLi
 
 	public void populatePanelButtons() {
 		PlayerDataHandler.PlayerData playerData = PlayerDataHandler.get(parent.getMinecraft().player);
-		ProgrammerPopulateEvent event = new ProgrammerPopulateEvent(parent.getMinecraft().player, PsiAPI.spellPieceRegistry);
+		ProgrammerPopulateEvent event = new ProgrammerPopulateEvent(parent.getMinecraft().player, PsiAPI.getSpellPieceRegistry());
 		List<SpellPiece> shownPieces = new ArrayList<>();
 		MinecraftForge.EVENT_BUS.post(event);
 		for (ResourceLocation key : event.getSpellPieceRegistry().keySet()) {
 			Class<? extends SpellPiece> clazz = event.getSpellPieceRegistry().getValue(key).get();
-			ResourceLocation group = PsiAPI.advancementGroupsInverse.get(clazz);
+			ResourceLocation group = PsiAPI.getGroupForPiece(clazz);
 
 			if (!parent.getMinecraft().player.isCreative() && (group == null || !playerData.isPieceGroupUnlocked(group, key)))
 				continue;
@@ -158,10 +157,10 @@ public class PiecePanelWidget extends Widget implements IRenderable, IGuiEventLi
 
 						}
 					}
-					parent.spell.grid.gridData[parent.selectedX][parent.selectedY] = piece1;
-					parent.spell.grid.gridData[parent.selectedX][parent.selectedY].isInGrid = true;
-					parent.spell.grid.gridData[parent.selectedX][parent.selectedY].x = parent.selectedX;
-					parent.spell.grid.gridData[parent.selectedX][parent.selectedY].y = parent.selectedY;
+					parent.spell.grid.gridData[GuiProgrammer.selectedX][GuiProgrammer.selectedY] = piece1;
+					parent.spell.grid.gridData[GuiProgrammer.selectedX][GuiProgrammer.selectedY].isInGrid = true;
+					parent.spell.grid.gridData[GuiProgrammer.selectedX][GuiProgrammer.selectedY].x = GuiProgrammer.selectedX;
+					parent.spell.grid.gridData[GuiProgrammer.selectedX][GuiProgrammer.selectedY].y = GuiProgrammer.selectedY;
 					parent.onSpellChanged(false);
 					closePanel();
 				});
@@ -319,7 +318,7 @@ public class PiecePanelWidget extends Widget implements IRenderable, IGuiEventLi
 					continue;
 
 				int maxRank = 0;
-				for (SpellParam param : p.params.values()) {
+				for (SpellParam<?> param : p.params.values()) {
 					String type = param.getRequiredTypeString().getFormattedText().toLowerCase();
 					maxRank = Math.max(maxRank, rankTextToken(type, clippedToken));
 				}
@@ -338,7 +337,7 @@ public class PiecePanelWidget extends Widget implements IRenderable, IGuiEventLi
 				if (clippedToken.isEmpty())
 					continue;
 
-				String mod = PsiAPI.spellPieceRegistry.getKey(p.getClass()).getNamespace();
+				String mod = PsiAPI.getSpellPieceKey(p.getClass()).getNamespace();
 				if (mod != null) {
 					int modRank = rankTextToken(mod, clippedToken);
 					if (modRank <= 0)
@@ -418,7 +417,7 @@ public class PiecePanelWidget extends Widget implements IRenderable, IGuiEventLi
 		closePanel();
 		panelEnabled = true;
 		page = Math.min(page, Math.max(0, getPageCount() - 1));
-		x = parent.gridLeft + (parent.selectedX + 1) * 18;
+		x = parent.gridLeft + (GuiProgrammer.selectedX + 1) * 18;
 		y = parent.gridTop;
 
 		searchField.x = x + 18;

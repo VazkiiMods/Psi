@@ -1,9 +1,18 @@
 package vazkii.psi.client.core.handler;
 
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.DefaultUncaughtExceptionHandler;
+import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 import org.apache.logging.log4j.Level;
+import vazkii.psi.api.cad.CADTakeEvent;
+import vazkii.psi.api.cad.EnumCADComponent;
+import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.cad.ICADColorizer;
 import vazkii.psi.common.Psi;
+import vazkii.psi.common.item.ItemCAD;
+import vazkii.psi.common.lib.LibMisc;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -15,6 +24,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.stream.Stream;
 
+@Mod.EventBusSubscriber(modid = LibMisc.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class ContributorSpellCircleHandler {
 
 	private static volatile Map<String, int[]> colormap = Collections.emptyMap();
@@ -26,7 +36,7 @@ public final class ContributorSpellCircleHandler {
 		for (String key : props.stringPropertyNames()) {
 			String value = props.getProperty(key);
 			try {
-				int[] values = Stream.of(value.split(",")).mapToInt(Integer::parseInt).toArray();
+				int[] values = Stream.of(value.split(",")).mapToInt(el -> Integer.parseInt(el.substring(2), 16)).toArray();
 				m.put(key, values);
 			} catch (NumberFormatException e) {
 				Psi.logger.log(Level.ERROR, "Contributor " + key + " has an invalid hexcode!");
@@ -48,6 +58,22 @@ public final class ContributorSpellCircleHandler {
 
 	public static boolean isContributor(String name) {
 		return colormap.containsKey(name);
+	}
+
+	@SubscribeEvent
+	public static void onCadTake(CADTakeEvent event){
+		if(ContributorSpellCircleHandler.isContributor(event.getPlayer().getName().getString().toLowerCase()) && !((ICAD) event.getCad().getItem()).getComponentInSlot(event.getCad(), EnumCADComponent.DYE).isEmpty()){
+			ItemStack dyeStack = ((ICAD) event.getCad().getItem()).getComponentInSlot(event.getCad(), EnumCADComponent.DYE);
+			((ICADColorizer) dyeStack.getItem()).setContributorName(dyeStack, event.getPlayer().getName().getString());
+			ItemCAD.setComponent(event.getCad(), dyeStack);
+		}
+	}
+
+	@SubscribeEvent
+	public static void craftColorizer(PlayerEvent.ItemCraftedEvent event){
+		if(ContributorSpellCircleHandler.isContributor(event.getPlayer().getName().getString().toLowerCase()) && event.getCrafting().getItem() instanceof ICADColorizer){
+			((ICADColorizer) event.getCrafting().getItem()).setContributorName(event.getCrafting(), event.getPlayer().getName().getString());
+		}
 	}
 
 	private static class ThreadContributorListLoader extends Thread {

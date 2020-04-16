@@ -16,12 +16,14 @@ import mezz.jei.api.helpers.IJeiHelpers;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
+import mezz.jei.api.registration.ISubtypeRegistration;
+import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
-import vazkii.psi.api.PsiAPI;
 import vazkii.psi.client.jei.tricks.TrickCraftingCategory;
+import vazkii.psi.common.crafting.ModCraftingRecipes;
 import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.lib.LibMisc;
 
@@ -47,7 +49,7 @@ public class JEICompat implements IModPlugin {
 
 	@Override
 	public void registerRecipes(IRecipeRegistration registration) {
-		registration.addRecipes(PsiAPI.trickRecipes, TrickCraftingCategory.UID);
+		registration.addRecipes(Minecraft.getInstance().world.getRecipeManager().getRecipes(ModCraftingRecipes.TRICK_RECIPE_TYPE).values(), TrickCraftingCategory.UID);
 	}
 
 	@Override
@@ -56,5 +58,10 @@ public class JEICompat implements IModPlugin {
 		ModItems.cad.fillItemGroup(ItemGroup.SEARCH, stacks);
 		for (ItemStack stack : stacks)
 			registration.addRecipeCatalyst(stack, TrickCraftingCategory.UID);
+	}
+
+	@Override
+	public void registerItemSubtypes(ISubtypeRegistration registration) {
+		registration.useNbtForSubtypes(ModItems.cad);
 	}
 }

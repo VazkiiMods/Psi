@@ -1,0 +1,28 @@
+{
+  "name": "psi.book.entry.tutorial2",
+  "category": "basics",
+  "icon": "minecraft:air",
+  "priority": true,
+  "pages": [
+    {
+      "type": "text",
+      "text": "psi.book.page.tutorial2.0"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.tutorial2.1"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.tutorial2.2"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.tutorial2.3"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.tutorial2.4"
+    }
+  ]
+}

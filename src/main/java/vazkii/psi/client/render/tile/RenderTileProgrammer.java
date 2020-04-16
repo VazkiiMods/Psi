@@ -79,7 +79,7 @@ public class RenderTileProgrammer extends TileEntityRenderer<TileProgrammer> {
 
             ms.push();
             ms.translate(0F, 0F, -0.01F);
-            IVertexBuilder buffer = buffers.getBuffer(GuiProgrammer.BACKGROUND_LAYER);
+            IVertexBuilder buffer = buffers.getBuffer(GuiProgrammer.LAYER);
             float x = -7, y = -7;
             float width = 174;
             float height = 184;

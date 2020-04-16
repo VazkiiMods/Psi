@@ -1,6 +1,7 @@
 package vazkii.psi.common.core.proxy;
 
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
@@ -51,5 +52,14 @@ public class ServerProxy implements IProxy {
 	@Override
 	public void openProgrammerGUI(TileProgrammer programmer) {
 		//NOOP
+	}
+
+	@Override
+	public boolean hasAdvancement(ResourceLocation advancement, PlayerEntity playerEntity) {
+		if (playerEntity instanceof ServerPlayerEntity) {
+			ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity) playerEntity;
+			return serverPlayerEntity.getServer().getAdvancementManager().getAdvancement(advancement) != null && serverPlayerEntity.getAdvancements().getProgress(serverPlayerEntity.getServer().getAdvancementManager().getAdvancement(advancement)).isDone();
+		}
+		return false;
 	}
 }

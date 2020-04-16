@@ -44,7 +44,7 @@ public final class InternalMethodHandler implements IInternalMethodHandler {
 	@OnlyIn(Dist.CLIENT)
 	@Override
 	public RenderType getProgrammerLayer() {
-		return GuiProgrammer.ICONS_LAYER;
+		return GuiProgrammer.LAYER;
 
 	}
 

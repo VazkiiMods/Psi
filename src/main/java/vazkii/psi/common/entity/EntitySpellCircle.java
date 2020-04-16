@@ -168,29 +168,32 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 				context.cspell.safeExecute(context);
 		}
 
-		ItemStack colorizer = dataManager.get(COLORIZER_DATA);
-		int colorVal = Psi.proxy.getColorForColorizer(colorizer);
+		if(world.isRemote){
+			ItemStack colorizer = dataManager.get(COLORIZER_DATA);
+			int colorVal = Psi.proxy.getColorForColorizer(colorizer);
 
 
-		float r = PsiRenderHelper.r(colorVal) / 255F;
-		float g = PsiRenderHelper.g(colorVal) / 255F;
-		float b = PsiRenderHelper.b(colorVal) / 255F;
-		for (int i = 0; i < 5; i++) {
-			double x = getX() + (Math.random() - 0.5) * getWidth();
-			double y = getY() - getYOffset();
-			double z = getZ() + (Math.random() - 0.5) * getWidth();
-			float grav = -0.15F - (float) Math.random() * 0.03F;
-            Psi.proxy.sparkleFX(x, y, z, r, g, b, grav, 0.25F, 15);
-        }
+			float r = PsiRenderHelper.r(colorVal) / 255F;
+			float g = PsiRenderHelper.g(colorVal) / 255F;
+			float b = PsiRenderHelper.b(colorVal) / 255F;
+			for (int i = 0; i < 5; i++) {
+				double x = getX() + (Math.random() - 0.5) * getWidth();
+				double y = getY() - getYOffset();
+				double z = getZ() + (Math.random() - 0.5) * getWidth();
+				float grav = -0.15F - (float) Math.random() * 0.03F;
+				Psi.proxy.sparkleFX(x, y, z, r, g, b, grav, 0.25F, 15);
+			}
+		}
+
 	}
 
     @Override
     public Vec3d getLookVec() {
-        float x = (float) dataManager.get(LOOK_X);
-        float y = (float) dataManager.get(LOOK_Y);
-        float z = (float) dataManager.get(LOOK_Z);
-        return new Vec3d(x, y, z);
-    }
+		float x = dataManager.get(LOOK_X);
+		float y = dataManager.get(LOOK_Y);
+		float z = dataManager.get(LOOK_Z);
+		return new Vec3d(x, y, z);
+	}
 
 	public int getTimeAlive() {
 		return dataManager.get(TIME_ALIVE);

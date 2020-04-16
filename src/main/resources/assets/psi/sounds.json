@@ -45,5 +45,19 @@
       "psi:book"
     ],
     "subtitle": "psi.subtitle.book"
+  },
+  "book_flip": {
+    "category": "player",
+    "sounds": [
+      "psi:book_flip"
+    ],
+    "subtitle": "patchouli.subtitle.book_flip"
+  },
+  "book_open": {
+    "category": "player",
+    "sounds": [
+      "psi:book_open"
+    ],
+    "subtitle": "patchouli.subtitle.book_open"
   }
 }

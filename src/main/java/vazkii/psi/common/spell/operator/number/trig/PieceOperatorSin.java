@@ -19,7 +19,7 @@ import vazkii.psi.api.spell.piece.PieceOperator;
 
 public class PieceOperatorSin extends PieceOperator {
 
-	SpellParam num;
+	SpellParam<Number> num;
 
 	public PieceOperatorSin(Spell spell) {
 		super(spell);
@@ -32,7 +32,7 @@ public class PieceOperatorSin extends PieceOperator {
 
 	@Override
 	public Object execute(SpellContext context) {
-		Double d = this.<Double>getParamValue(context, num);
+		double d = this.getParamValue(context, num).doubleValue();
 
 		return Math.sin(d);
 	}

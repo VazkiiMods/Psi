@@ -34,7 +34,7 @@ public final class LibPieceGroups {
 	public static final String POSITIVE_EFFECTS = "positive_effects";
 	public static final String NEGATIVE_EFFECTS = "negative_effects";
 	public static final String EXOSUIT_CASTING = "exosuit_casting";
-	public static final String TRIGNOMETRY = "trignometry";
+	public static final String TRIGONOMETRY = "trigonometry";
 	public static final String SMELTERY = "smeltery";
 	public static final String FLOW_CONTROL = "flow_control";
 	public static final String BLOCK_CONJURATION = "block_conjuration";
@@ -42,5 +42,7 @@ public final class LibPieceGroups {
 	public static final String DETECTION_DYNAMICS = "detection_dynamics";
 	public static final String MEMORY_MANAGEMENT = "memory_management";
 	public static final String SECONDARY_OPERATORS = "secondary_operators";
+	public static final String MISC_TRICKS = "misc_tricks";
+	public static final String LIST_OPERATIONS = "list_operations";
 
 }

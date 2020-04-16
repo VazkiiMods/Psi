@@ -12,6 +12,7 @@ package vazkii.psi.common.entity;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.projectile.ThrowableEntity;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.EntityRayTraceResult;
@@ -24,19 +25,19 @@ import vazkii.psi.common.lib.LibEntityNames;
 import vazkii.psi.common.lib.LibResources;
 
 import javax.annotation.Nonnull;
+import java.util.Optional;
 
 public class EntitySpellGrenade extends EntitySpellProjectile {
 	@ObjectHolder(LibResources.PREFIX_MOD + LibEntityNames.SPELL_GRENADE)
 	public static EntityType<EntitySpellGrenade> TYPE;
 
 	boolean sound = false;
-	LivingEntity targetEntity = null;
 
-	public EntitySpellGrenade(EntityType<?> type, World worldIn) {
+	public EntitySpellGrenade(EntityType<? extends ThrowableEntity> type, World worldIn) {
 		super(type, worldIn);
 	}
 
-	protected EntitySpellGrenade(EntityType<?> type, World worldIn, LivingEntity throwerIn) {
+	protected EntitySpellGrenade(EntityType<? extends ThrowableEntity> type, World worldIn, LivingEntity throwerIn) {
 		super(type, worldIn, throwerIn);
 
 		double speed = 0.65;
@@ -61,10 +62,10 @@ public class EntitySpellGrenade extends EntitySpellProjectile {
 	}
 
 	public void doExplosion() {
-		if(targetEntity !=null) {
+		if(getAttackTarget() !=null) {
 			cast((SpellContext context) -> {
 				if (context != null) {
-					context.attackedEntity = targetEntity;
+					context.attackedEntity = getAttackTarget();
 				}
 			});
 		} else cast();
@@ -87,7 +88,7 @@ public class EntitySpellGrenade extends EntitySpellProjectile {
 	@Override
 	protected void onImpact(@Nonnull RayTraceResult pos) {
 		if(pos instanceof EntityRayTraceResult && ((EntityRayTraceResult) pos).getEntity() instanceof LivingEntity) {
-			targetEntity = (LivingEntity) ((EntityRayTraceResult) pos).getEntity();
+			dataManager.set(ATTACKTARGET_UUID, Optional.of(((EntityRayTraceResult) pos).getEntity().getUniqueID()));
 		}
         if (!getEntityWorld().isRemote && !sound && explodes()) {
             playSound(SoundEvents.ENTITY_CREEPER_PRIMED, 2F, 1F);

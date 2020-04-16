@@ -14,7 +14,6 @@ import com.google.common.collect.ImmutableSet;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
@@ -393,7 +392,7 @@ public class PlayerDataHandler {
 								int cost = ItemCAD.getRealCost(cadStack, bullet, context.cspell.metadata.stats.get(EnumSpellStat.COST));
 								if(cost > 0 || cost == -1) {
 									if(cost != -1)
-										deductPsi(cost, 3, true);
+										deductPsi(cost, 0, true);
 
                                     if (!player.getEntityWorld().isRemote && loopcastTime % 10 == 0)
                                         player.getEntityWorld().playSound(null, player.getX(), player.getY(), player.getZ(), PsiSoundHandler.loopcast, SoundCategory.PLAYERS, 0.5F, (float) (0.35 + Math.random() * 0.85));
@@ -677,15 +676,7 @@ public class PlayerDataHandler {
 
 		public boolean hasAdvancement(ResourceLocation group) {
 			PlayerEntity player = playerWR.get();
-			boolean hasAdvancement = false;
-			if (player instanceof ClientPlayerEntity) {
-				ClientPlayerEntity clientPlayerEntity = (ClientPlayerEntity) player;
-				hasAdvancement = clientPlayerEntity.connection.getAdvancementManager().getAdvancementList().getAdvancement(group) != null;
-			} else if (player instanceof ServerPlayerEntity) {
-				ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity) player;
-				hasAdvancement = serverPlayerEntity.getServer().getAdvancementManager().getAdvancement(group) != null && serverPlayerEntity.getAdvancements().getProgress(serverPlayerEntity.getServer().getAdvancementManager().getAdvancement(group)).isDone();
-			}
-			return hasAdvancement;
+			return Psi.proxy.hasAdvancement(group, player);
 		}
 
 		@Override
@@ -727,8 +718,10 @@ public class PlayerDataHandler {
 
 		@Override
 		public void markPieceExecuted(SpellPiece piece) {
-			ResourceLocation advancement = PsiAPI.advancementGroupsInverse.get(piece);
-			if (advancement != null && PsiAPI.mainPieceForGroup.get(advancement) == piece.getClass())
+			PieceExecutedEvent event = new PieceExecutedEvent(piece, playerWR.get());
+			MinecraftForge.EVENT_BUS.post(event);
+			ResourceLocation advancement = PsiAPI.getGroupForPiece(piece.getClass());
+			if (advancement != null && PsiAPI.getMainPieceForGroup(advancement) == piece.getClass() && !hasAdvancement(advancement))
 				tutorialComplete(advancement);
 		}
 

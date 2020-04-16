@@ -102,6 +102,7 @@ public final class ModItems {
 	public static final Item exosuitSensorHeat = new ItemHeatExosuitSensor(defaultBuilder());
 	public static final Item exosuitSensorStress = new ItemStressExosuitSensor(defaultBuilder());
 	public static final Item exosuitSensorWater = new ItemWaterExosuitSensor(defaultBuilder());
+	public static final Item exosuitSensorTrigger = new ItemTriggerExosuitSensor(defaultBuilder());
 	public static final Item cad = new ItemCAD(defaultBuilder());
 
 	public static final Item vectorRuler = new ItemVectorRuler(defaultBuilder());
@@ -191,6 +192,7 @@ public final class ModItems {
 		r.register(exosuitSensorHeat.setRegistryName(LibMisc.MOD_ID, LibItemNames.EXOSUIT_SENSOR_HEAT));
 		r.register(exosuitSensorStress.setRegistryName(LibMisc.MOD_ID, LibItemNames.EXOSUIT_SENSOR_STRESS));
 		r.register(exosuitSensorWater.setRegistryName(LibMisc.MOD_ID, LibItemNames.EXOSUIT_SENSOR_WATER));
+		r.register(exosuitSensorTrigger.setRegistryName(LibMisc.MOD_ID, LibItemNames.EXOSUIT_SENSOR_TRIGGER));
 
 		r.register(cad.setRegistryName(LibMisc.MOD_ID, LibItemNames.CAD));
 

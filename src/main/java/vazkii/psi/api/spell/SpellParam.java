@@ -56,6 +56,21 @@ public abstract class SpellParam<T> {
 	public static final String GENERIC_NAME_TIME = PSI_PREFIX + "time";
 	public static final String GENERIC_NAME_BASE = PSI_PREFIX + "base";
 	public static final String GENERIC_NAME_RAY = PSI_PREFIX + "ray";
+	public static final String GENERIC_NAME_VECTOR = PSI_PREFIX + "vector";
+	public static final String GENERIC_NAME_AXIS = PSI_PREFIX + "axis";
+	public static final String GENERIC_NAME_ANGLE = PSI_PREFIX + "angle";
+	public static final String GENERIC_NAME_PITCH = "psi.spellparam.pitch";
+	public static final String GENERIC_NAME_INSTRUMENT = "psi.spellparam.instrument";
+	public static final String GENERIC_NAME_VOLUME = "psi.spellparam.volume";
+	public static final String GENERIC_NAME_LIST1 = PSI_PREFIX + "list1";
+	public static final String GENERIC_NAME_LIST2 = PSI_PREFIX + "list2";
+	public static final String GENERIC_NAME_LIST = PSI_PREFIX + "list";
+	public static final String GENERIC_NAME_DIRECTION = PSI_PREFIX + "direction";
+	public static final String CONNECTOR_NAME_FROM1 = PSI_PREFIX + "from1";
+	public static final String CONNECTOR_NAME_FROM2 = PSI_PREFIX + "from2";
+	public static final String CONNECTOR_NAME_TO1 = PSI_PREFIX + "to1";
+	public static final String CONNECTOR_NAME_TO2 = PSI_PREFIX + "to2";
+
 
 	public final String name;
 	public final int color;

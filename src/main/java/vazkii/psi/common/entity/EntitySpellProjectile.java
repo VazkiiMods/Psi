@@ -22,8 +22,10 @@ import net.minecraft.network.IPacket;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.registries.ObjectHolder;
@@ -37,6 +39,7 @@ import vazkii.psi.common.lib.LibEntityNames;
 import vazkii.psi.common.lib.LibResources;
 
 import javax.annotation.Nonnull;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -56,16 +59,17 @@ public class EntitySpellProjectile extends ThrowableEntity {
 	private static final DataParameter<ItemStack> COLORIZER_DATA = EntityDataManager.createKey(EntitySpellProjectile.class, DataSerializers.ITEMSTACK);
 	private static final DataParameter<ItemStack> BULLET_DATA = EntityDataManager.createKey(EntitySpellProjectile.class, DataSerializers.ITEMSTACK);
 	private static final DataParameter<Optional<UUID>> CASTER_UUID = EntityDataManager.createKey(EntitySpellProjectile.class, DataSerializers.OPTIONAL_UNIQUE_ID);
+	protected static final DataParameter<Optional<UUID>> ATTACKTARGET_UUID = EntityDataManager.createKey(EntitySpellProjectile.class, DataSerializers.OPTIONAL_UNIQUE_ID);
 
 	public SpellContext context;
 	public int timeAlive;
 
-	public EntitySpellProjectile(EntityType<?> type, World worldIn) {
-		super((EntityType<? extends ThrowableEntity>) type, worldIn);
+	public EntitySpellProjectile(EntityType<? extends ThrowableEntity> type, World worldIn) {
+		super(type, worldIn);
 	}
 
-	protected EntitySpellProjectile(EntityType<?> type, World world, LivingEntity thrower) {
-		super((EntityType<? extends ThrowableEntity>) type, thrower, world);
+	protected EntitySpellProjectile(EntityType<? extends ThrowableEntity> type, World world, LivingEntity thrower) {
+		super(type, thrower, world);
 		
 		shoot(thrower, thrower.rotationPitch, thrower.rotationYaw, 0.0F, 1.5F, 1.0F);
 		double speed = 1.5;
@@ -80,6 +84,7 @@ public class EntitySpellProjectile extends ThrowableEntity {
 		dataManager.set(COLORIZER_DATA, colorizer);
 		dataManager.set(BULLET_DATA, bullet);
 		dataManager.set(CASTER_UUID, Optional.of(player.getUniqueID()));
+		dataManager.set(ATTACKTARGET_UUID, Optional.empty());
 		return this;
 	}
 
@@ -88,6 +93,7 @@ public class EntitySpellProjectile extends ThrowableEntity {
 		dataManager.register(COLORIZER_DATA, new ItemStack(Blocks.STONE));
 		dataManager.register(BULLET_DATA, new ItemStack(Blocks.STONE));
 		dataManager.register(CASTER_UUID, Optional.empty());
+		dataManager.register(ATTACKTARGET_UUID, Optional.empty());
 	}
 
 	@Override
@@ -235,6 +241,20 @@ public class EntitySpellProjectile extends ThrowableEntity {
 
 		return dataManager.get(CASTER_UUID)
 				.map(u -> getEntityWorld().getPlayerByUuid(u))
+				.orElse(null);
+	}
+
+	public LivingEntity getAttackTarget() {
+		double radiusVal = SpellContext.MAX_DISTANCE;
+		Vec3d positionVal = this.getPositionVec();
+		AxisAlignedBB axis = new AxisAlignedBB(positionVal.x - radiusVal, positionVal.y - radiusVal, positionVal.z - radiusVal, positionVal.x + radiusVal, positionVal.y + radiusVal, positionVal.z + radiusVal);
+		return dataManager.get(ATTACKTARGET_UUID)
+				.map(u -> {
+					List<LivingEntity> a = getEntityWorld().getEntitiesWithinAABB(LivingEntity.class,axis,(Entity e) -> e.getUniqueID().equals(u));
+					if (a.size() > 0)
+						return a.get(0);
+					return null;
+				})
 				.orElse(null);
 	}
 
