@@ -42,8 +42,10 @@ public class PieceOperatorIntegerDivide extends PieceOperator {
 
 		if ((d2.doubleValue() == 0 || d2.intValue() == 0) || (d3 != null && (d3.doubleValue() == 0 || d3.intValue() == 0)))
 			throw new SpellRuntimeException(SpellRuntimeException.DIVIDE_BY_ZERO);
-
-		return d3 != null ? (int) (d1 / (d2.doubleValue() * d3.doubleValue())) : (int) (d1 / d2.doubleValue());
+		Double d4 = d3 != null ?  (d1 / (d2.doubleValue() * d3.doubleValue())) :  (d1 / d2.doubleValue());
+		if (d4<0)
+			return Math.ceil(d4);
+		return Math.floor(d4);
 	}
 
 	@Override
