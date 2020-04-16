@@ -10,13 +10,8 @@
  */
 package vazkii.psi.common.spell.trick;
 
-import vazkii.psi.api.spell.EnumSpellStat;
-import vazkii.psi.api.spell.Spell;
-import vazkii.psi.api.spell.SpellCompilationException;
-import vazkii.psi.api.spell.SpellContext;
-import vazkii.psi.api.spell.SpellMetadata;
-import vazkii.psi.api.spell.SpellParam;
-import vazkii.psi.api.spell.SpellRuntimeException;
+import vazkii.psi.api.spell.*;
+import vazkii.psi.api.spell.param.ParamAny;
 import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.piece.PieceTrick;
 
@@ -24,6 +19,7 @@ public class PieceTrickSwitchTargetSlot extends PieceTrick {
 
 	SpellParam<Number> pos;
 	SpellParam<Number> shift;
+	SpellParam<SpellParam.Any> toggle;
 	
 	public PieceTrickSwitchTargetSlot(Spell spell) {
 		super(spell);
@@ -33,11 +29,12 @@ public class PieceTrickSwitchTargetSlot extends PieceTrick {
 	public void initParams() {
 		addParam(pos = new ParamNumber(SpellParam.GENERIC_NAME_POSITION, SpellParam.BLUE, true, false));
 		addParam(shift = new ParamNumber("psi.spellparam.shift", SpellParam.GREEN, true, false));
+		addParam(toggle = new ParamAny("psi.spellparam.toggle", SpellParam.BLUE, true));
 	}
 
 	@Override
 	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
-		if(paramSides.get(pos) != SpellParam.Side.OFF && paramSides.get(shift) != SpellParam.Side.OFF)
+		if(paramSides.get(shift) != SpellParam.Side.OFF && (paramSides.get(pos) != SpellParam.Side.OFF || paramSides.get(toggle) != SpellParam.Side.OFF))
 			throw new SpellCompilationException("psi.spellerror.exclusiveparams", x, y);
 		
 		meta.addStat(EnumSpellStat.COMPLEXITY, 1);
@@ -47,7 +44,10 @@ public class PieceTrickSwitchTargetSlot extends PieceTrick {
 	public Object execute(SpellContext context) {
 		Number posVal = this.getParamValue(context, pos);
 		Number shiftVal = this.getParamValue(context, shift);
-		
+		Object targetVal = getParamValue(context, toggle);
+
+		if(targetVal != null)
+			context.customTargetSlot = true;
 		if(shiftVal != null) {
 			context.shiftTargetSlot = true;
 			context.targetSlot = shiftVal.intValue();
