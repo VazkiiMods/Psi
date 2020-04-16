@@ -66,6 +66,10 @@ public abstract class SpellParam<T> {
 	public static final String GENERIC_NAME_LIST2 = PSI_PREFIX + "list2";
 	public static final String GENERIC_NAME_LIST = PSI_PREFIX + "list";
 	public static final String GENERIC_NAME_DIRECTION = PSI_PREFIX + "direction";
+	public static final String CONNECTOR_NAME_FROM1 = PSI_PREFIX + "from1";
+	public static final String CONNECTOR_NAME_FROM2 = PSI_PREFIX + "from2";
+	public static final String CONNECTOR_NAME_TO1 = PSI_PREFIX + "to1";
+	public static final String CONNECTOR_NAME_TO2 = PSI_PREFIX + "to2";
 
 
 	public final String name;
