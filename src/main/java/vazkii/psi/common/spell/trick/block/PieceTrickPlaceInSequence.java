@@ -44,7 +44,7 @@ public class PieceTrickPlaceInSequence extends PieceTrick {
 			throw new SpellCompilationException(SpellCompilationException.NON_POSITIVE_VALUE, x, y);
 
 		meta.addStat(EnumSpellStat.POTENCY, (int) (maxBlocksVal * 8));
-		meta.addStat(EnumSpellStat.COST, (int) (maxBlocksVal * 8));
+		meta.addStat(EnumSpellStat.COST, (int) (int) ((9.6 + (maxBlocksVal-1)*5.6)));
 	}
 
 	@Override

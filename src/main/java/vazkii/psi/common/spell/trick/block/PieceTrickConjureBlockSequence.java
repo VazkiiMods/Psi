@@ -50,7 +50,7 @@ public class PieceTrickConjureBlockSequence extends PieceTrick {
 			throw new SpellCompilationException(SpellCompilationException.NON_POSITIVE_VALUE, x, y);
 
 		meta.addStat(EnumSpellStat.POTENCY, (int) (maxBlocksVal * 15));
-		meta.addStat(EnumSpellStat.COST, (int) (maxBlocksVal * 20));
+		meta.addStat(EnumSpellStat.COST, (int) (int) ((24 + (maxBlocksVal-1)*14)));
 	}
 
 	@Override

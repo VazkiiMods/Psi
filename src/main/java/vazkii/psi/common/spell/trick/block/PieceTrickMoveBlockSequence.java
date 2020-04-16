@@ -44,7 +44,7 @@ public class PieceTrickMoveBlockSequence extends PieceTrick {
 		double maxBlocksVal = SpellHelpers.ensurePositiveAndNonzero(this, maxBlocks);
 
 		meta.addStat(EnumSpellStat.POTENCY, (int) (maxBlocksVal * 10));
-		meta.addStat(EnumSpellStat.COST, (int) (maxBlocksVal * 15));
+		meta.addStat(EnumSpellStat.COST, (int) (int) ((18 + (maxBlocksVal-1)*10.5)));
 	}
 
 	@Override
