@@ -31,6 +31,7 @@ import vazkii.psi.common.spell.operator.vector.*;
 import vazkii.psi.common.spell.other.PieceConnector;
 import vazkii.psi.common.spell.other.PieceCrossConnector;
 import vazkii.psi.common.spell.other.PieceErrorSuppressor;
+import vazkii.psi.common.spell.other.PieceVectorCatch;
 import vazkii.psi.common.spell.selector.*;
 import vazkii.psi.common.spell.selector.entity.*;
 import vazkii.psi.common.spell.trick.*;
@@ -128,6 +129,7 @@ public final class ModSpellPieces {
 	public static PieceContainer connector;
 	public static PieceContainer crossConnector;
 	public static PieceContainer errorSuppressor;
+	public static PieceContainer vectorSuppressor;
 
 	public static PieceContainer trickDebug;
 	public static PieceContainer trickDelay;
@@ -272,6 +274,7 @@ public final class ModSpellPieces {
 		connector = register(PieceConnector.class, LibPieceNames.CONNECTOR, LibPieceGroups.TUTORIAL_2);
 		crossConnector = register(PieceCrossConnector.class, LibPieceNames.CROSS_CONNECTOR, LibPieceGroups.MEMORY_MANAGEMENT);
 		errorSuppressor = register(PieceErrorSuppressor.class, LibPieceNames.ERROR_SUPPRESSOR, LibPieceGroups.TUTORIAL_4);
+		vectorSuppressor = register(PieceVectorCatch.class, LibPieceNames.VECTOR_SUPPRESSOR, LibPieceGroups.TUTORIAL_4);
 
 		trickDebug = register(PieceTrickDebug.class, LibPieceNames.TRICK_DEBUG, LibPieceGroups.TUTORIAL_1, true);
 		trickDelay = register(PieceTrickDelay.class, LibPieceNames.TRICK_DELAY, LibPieceGroups.FLOW_CONTROL, true);

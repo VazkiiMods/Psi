@@ -385,6 +385,8 @@
   "psi.spellpiece.cross_connector.desc": "Can connect two paths",
   "psi.spellpiece.error_suppressor": "Error Suppressor",
   "psi.spellpiece.error_suppressor.desc": "Suppresses errors thrown by the spell",
+  "psi.spellpiece.vector_suppress": "Suppressor: Vector",
+  "psi.spellpiece.vector_suppress.desc": "Replaces error vectors with 0 length vectors",
   "psi.spellpiece.trick_debug": "Trick: Debug",
   "psi.spellpiece.trick_debug.desc": "For testing. Prints out the target",
   "psi.spellpiece.trick_delay": "Trick: Sleep",
