@@ -21,6 +21,10 @@ public class SpellHelpers {
 		return val;
 	}
 
+	public static boolean isBlockPosInRadius(SpellContext context, BlockPos pos) {
+		return context.isInRadius(pos.getX() + .5, pos.getY() + .5, pos.getZ() + .5);
+	}
+
 	public static double ensurePositiveOrZero(SpellPiece piece, SpellParam<Number> param, double def) throws SpellCompilationException {
 		double val = piece.getParamEvaluationeOrDefault(param, def).doubleValue();
 		if (val < 0)

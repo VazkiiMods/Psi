@@ -479,6 +479,8 @@
   "psi.spellpiece.trick_play_sound.desc": "Plays a note block sound",
   "psi.spellpiece.trick_detonate": "Trick: Detonate",
   "psi.spellpiece.trick_detonate.desc": "Detonates all charges in the radius of the caster",
+  "psi.spellpiece.trick_move_block_sequence": "Trick: Move Block Sequence",
+  "psi.spellpiece.trick_move_block_sequence.desc": "Moves a sequence of blocks a defined direction, starting with in a position",
   "psi.spellparam.target": "Target",
   "psi.spellparam.number": "Number",
   "psi.spellparam.list1": "List A",

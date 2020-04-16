@@ -148,6 +148,7 @@ public final class LibPieceNames {
 	public static final String TRICK_BREAK_LOOP = "trick_break_loop";
 	public static final String TRICK_PLAY_SOUND = "trick_play_sound";
 	public static final String TRICK_DETONATE = "trick_detonate";
+	public static final String TRICK_MOVE_BLOCK_SEQUENCE = "trick_move_block_sequence";
 
 
 }

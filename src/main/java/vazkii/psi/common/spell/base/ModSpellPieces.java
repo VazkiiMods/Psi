@@ -177,6 +177,7 @@ public final class ModSpellPieces {
 	public static PieceContainer constantTau;
 	public static PieceContainer trickPlaySound;
 	public static PieceContainer trickDetonate;
+	public static PieceContainer trickMoveBlockSequence;
 
 	public static void init() {
 		selectorCaster = register(PieceSelectorCaster.class, LibPieceNames.SELECTOR_CASTER, LibPieceGroups.TUTORIAL_1);
@@ -317,6 +318,7 @@ public final class ModSpellPieces {
 		trickBreakLoop = register(PieceTrickBreakLoop.class, LibPieceNames.TRICK_BREAK_LOOP, LibPieceGroups.FLOW_CONTROL);
 		trickPlaySound = register(PieceTrickPlaySound.class, LibPieceNames.TRICK_PLAY_SOUND, LibPieceGroups.MISC_TRICKS);
 		trickDetonate = register(PieceTrickDetonate.class, LibPieceNames.TRICK_DETONATE, LibPieceGroups.MEMORY_MANAGEMENT);
+		trickMoveBlockSequence = register(PieceTrickMoveBlockSequence.class, LibPieceNames.TRICK_MOVE_BLOCK_SEQUENCE, LibPieceGroups.BLOCK_MOVEMENT);
 	}
 
 	public static PieceContainer register(Class<? extends SpellPiece> clazz, String name, String group) {
