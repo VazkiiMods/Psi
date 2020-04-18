@@ -56,7 +56,7 @@ public class PieceTrickConjureBlockSequence extends PieceTrick {
 		}
 
 		meta.addStat(EnumSpellStat.POTENCY, (int) (maxBlocksVal * 15));
-		meta.addStat(EnumSpellStat.COST, (int) (int) ((24 + (maxBlocksVal - 1) * 14)));
+		meta.addStat(EnumSpellStat.COST, (int) ((24 + (maxBlocksVal - 1) * 14)));
 	}
 
 	@Override

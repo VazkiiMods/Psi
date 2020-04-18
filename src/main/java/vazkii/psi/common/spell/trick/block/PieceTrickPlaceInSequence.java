@@ -53,7 +53,7 @@ public class PieceTrickPlaceInSequence extends PieceTrick {
 		}
 
 		meta.addStat(EnumSpellStat.POTENCY, (int) (maxBlocksVal * 8));
-		meta.addStat(EnumSpellStat.COST, (int) (int) ((9.6 + (maxBlocksVal - 1) * 5.6)));
+		meta.addStat(EnumSpellStat.COST, (int) ((9.6 + (maxBlocksVal - 1) * 5.6)));
 	}
 
 	@Override

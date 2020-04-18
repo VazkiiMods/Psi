@@ -92,7 +92,7 @@ public class MultiCraftingProcessor implements IComponentProcessor {
 			return PatchouliUtils.interweaveIngredients(ingredients, longestIngredientSize);
 		}
 		if (key.equals("output")) {
-			return recipes.stream().map(IRecipe::getRecipeOutput).map(PatchouliAPI.instance::serializeItemStack).collect(Collectors.joining(","));
+			return recipes.stream().map(ICraftingRecipe::getRecipeOutput).map(PatchouliAPI.instance::serializeItemStack).collect(Collectors.joining(","));
 		}
 		if (key.equals("shapeless")) {}
 		return null;

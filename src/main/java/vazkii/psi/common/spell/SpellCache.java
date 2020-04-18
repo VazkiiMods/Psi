@@ -24,7 +24,7 @@ public final class SpellCache implements ISpellCache {
 	public static final Map<UUID, CompiledSpell> map = new LinkedHashMap<UUID, CompiledSpell>() {
 
 		@Override
-		protected boolean removeEldestEntry(Map.Entry eldest) {
+		protected boolean removeEldestEntry(Map.Entry<UUID, CompiledSpell> eldest) {
 			return size() > ConfigHandler.COMMON.spellCacheSize.get();
 		}
 

@@ -132,7 +132,7 @@ public class PieceCrossConnector extends SpellPiece implements IGenericRedirecto
 		drawParam(ms, buffers, light, in2);
 	}
 
-	public void drawParam(MatrixStack ms, IRenderTypeBuffer buffers, int light, SpellParam param) {
+	public void drawParam(MatrixStack ms, IRenderTypeBuffer buffers, int light, SpellParam<?> param) {
 		IVertexBuilder buffer = buffers.getBuffer(PsiAPI.internalHandler.getProgrammerLayer());
 		SpellParam.Side side = paramSides.get(param);
 		if (side.isEnabled()) {

@@ -12,7 +12,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.FurnaceRecipe;
 import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.world.World;
 
@@ -37,7 +37,7 @@ public class PieceSelectorNearbySmeltables extends PieceSelectorNearby {
 		DUMMY_INV.clear();
 		DUMMY_INV.setInventorySlotContents(0, input);
 		return world.getRecipeManager().getRecipe(IRecipeType.SMELTING, DUMMY_INV, world)
-				.map(IRecipe::getRecipeOutput)
+				.map(FurnaceRecipe::getRecipeOutput)
 				.orElse(ItemStack.EMPTY);
 	}
 

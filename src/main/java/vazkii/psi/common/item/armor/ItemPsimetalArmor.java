@@ -50,7 +50,7 @@ import java.util.List;
 public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiEventArmor {
 
 	public final EquipmentSlotType type;
-	private final LazyValue<BipedModel> model;
+	private final LazyValue<BipedModel<?>> model;
 
 	private static final String TAG_TIMES_CAST = "timesCast";
 
@@ -190,12 +190,12 @@ public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiE
 	@Nullable
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public BipedModel getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlotType armorSlot, BipedModel _default) {
-		return model.getValue();
+	public  <A extends BipedModel<?>> A getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlotType armorSlot, A _default) {
+		return (A) model.getValue();
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	public BipedModel provideArmorModelForSlot(EquipmentSlotType slot) {
+	public BipedModel<?> provideArmorModelForSlot(EquipmentSlotType slot) {
 		return new ModelPsimetalExosuit(slot);
 	}
 
