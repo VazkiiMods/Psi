@@ -19,3 +19,6 @@
 .mc-color-m { text-decoration: line-through; }
 .mc-color-n { text-decoration: underline; }
 .mc-color-o { font-style: italic; }
+
+.color-item  { color: #f8b; }
+.color-thing { color: #af5; }

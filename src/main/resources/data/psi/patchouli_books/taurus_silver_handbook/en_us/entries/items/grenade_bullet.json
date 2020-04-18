@@ -1,0 +1,24 @@
+{
+  "name": "psi.book.entry.grenadeBullet",
+  "category": "items",
+  "icon": "psi:spell_bullet_grenade",
+  "pages": [
+    {
+      "type": "text",
+      "text": "psi.book.page.grenadeBullet.0"
+    },
+    {
+      "type": "crafting",
+      "text": "psi.book.page.grenadeBullet.1",
+      "recipe": "psi:spell_bullet_grenade"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.grenadeBullet.2"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.grenadeBullet.3"
+    }
+  ]
+}

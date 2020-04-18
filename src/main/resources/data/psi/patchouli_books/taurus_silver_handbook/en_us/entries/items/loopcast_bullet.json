@@ -1,0 +1,32 @@
+{
+  "name": "psi.book.entry.loopcastBullet",
+  "category": "items",
+  "icon": "psi:spell_bullet_loop",
+  "pages": [
+    {
+      "type": "text",
+      "text": "psi.book.page.loopcastBullet.0"
+    },
+    {
+      "type": "crafting",
+      "text": "psi.book.page.loopcastBullet.1",
+      "recipe": "psi:spell_bullet_loopcast"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.loopcastBullet.2"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.loopcastBullet.3"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.loopcastBullet.4"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.loopcastBullet.5"
+    }
+  ]
+}
