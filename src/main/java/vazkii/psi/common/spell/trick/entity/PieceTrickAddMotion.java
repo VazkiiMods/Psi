@@ -1,20 +1,25 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [18/01/2016, 22:32:11 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.common.spell.trick.entity;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.play.server.SEntityVelocityPacket;
+
 import vazkii.psi.api.internal.Vector3;
-import vazkii.psi.api.spell.*;
+import vazkii.psi.api.spell.EnumSpellStat;
+import vazkii.psi.api.spell.Spell;
+import vazkii.psi.api.spell.SpellCompilationException;
+import vazkii.psi.api.spell.SpellContext;
+import vazkii.psi.api.spell.SpellMetadata;
+import vazkii.psi.api.spell.SpellParam;
+import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.api.spell.param.ParamEntity;
 import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.param.ParamVector;
@@ -44,11 +49,12 @@ public class PieceTrickAddMotion extends PieceTrick {
 	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
 		super.addToMetadata(meta);
 		Double speedVal = this.<Double>getParamEvaluation(speed);
-		if(speedVal == null)
+		if (speedVal == null) {
 			speedVal = 1D;
+		}
 
 		double absSpeed = Math.abs(speedVal);
-		meta.addStat(EnumSpellStat.POTENCY, (int) multiplySafe(absSpeed,  absSpeed, 3.5));
+		meta.addStat(EnumSpellStat.POTENCY, (int) multiplySafe(absSpeed, absSpeed, 3.5));
 		meta.addStat(EnumSpellStat.COST, (int) multiplySafe(absSpeed, Math.max(1, absSpeed), 100));
 	}
 
@@ -65,8 +71,9 @@ public class PieceTrickAddMotion extends PieceTrick {
 
 	public static void addMotion(SpellContext context, Entity e, Vector3 dir, double speed) throws SpellRuntimeException {
 		context.verifyEntity(e);
-		if(!context.isInRadius(e))
+		if (!context.isInRadius(e)) {
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
+		}
 
 		dir = dir.copy().normalize().multiply(MULTIPLIER * speed);
 
@@ -75,24 +82,25 @@ public class PieceTrickAddMotion extends PieceTrick {
 		double x = 0;
 		double y = 0;
 		double z = 0;
-		
-		if(Math.abs(dir.x) > 0.0001) {
+
+		if (Math.abs(dir.x) > 0.0001) {
 			String keyv = key + "X";
-			if(!context.customData.containsKey(keyv)) {
+			if (!context.customData.containsKey(keyv)) {
 				x += dir.x;
 				context.customData.put(keyv, 0);
 			}
 		}
 
-		if(Math.abs(dir.y) > 0.0001) {
+		if (Math.abs(dir.y) > 0.0001) {
 			String keyv = key + "Y";
-			if(!context.customData.containsKey(keyv)) {
+			if (!context.customData.containsKey(keyv)) {
 				y += dir.y;
 				context.customData.put(keyv, 0);
 			}
-			
-			if(e.getMotion().getY() >= 0)
+
+			if (e.getMotion().getY() >= 0) {
 				e.fallDistance = 0;
+			}
 		}
 
 		if (Math.abs(dir.z) > 0.0001) {
@@ -111,7 +119,6 @@ public class PieceTrickAddMotion extends PieceTrick {
 		} else {
 			AdditiveMotionHandler.addMotion(e, x, y, z);
 		}
-
 
 	}
 

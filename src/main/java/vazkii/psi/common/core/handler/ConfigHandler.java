@@ -1,18 +1,16 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [08/01/2016, 22:27:53 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.common.core.handler;
 
 import net.minecraftforge.common.ForgeConfigSpec;
-import org.apache.commons.lang3.tuple.Pair;
 
+import org.apache.commons.lang3.tuple.Pair;
 
 public class ConfigHandler {
 
@@ -65,7 +63,6 @@ public class ConfigHandler {
 			cadHarvestLevel = builder.comment("The harvest level of a CAD for the purposes of block breaking spells. Defaults to 3 (diamond level)")
 					.defineInRange("common.cadHarvestLevel", 3, 0, 255);
 
-
 		}
 	}
 
@@ -77,6 +74,5 @@ public class ConfigHandler {
 		COMMON_SPEC = specPair.getRight();
 		COMMON = specPair.getLeft();
 	}
-
 
 }

@@ -1,7 +1,20 @@
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
+ * https://github.com/Vazkii/Psi
+ *
+ * Psi is Open Source and distributed under the
+ * Psi License: https://psi.vazkii.net/license.php
+ */
 package vazkii.psi.common.spell.operator.number;
 
 import vazkii.psi.api.internal.math.Gamma;
-import vazkii.psi.api.spell.*;
+import vazkii.psi.api.spell.EnumSpellStat;
+import vazkii.psi.api.spell.Spell;
+import vazkii.psi.api.spell.SpellContext;
+import vazkii.psi.api.spell.SpellMetadata;
+import vazkii.psi.api.spell.SpellParam;
+import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.piece.PieceOperator;
 

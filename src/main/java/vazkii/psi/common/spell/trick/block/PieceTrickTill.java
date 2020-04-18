@@ -1,3 +1,11 @@
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
+ * https://github.com/Vazkii/Psi
+ *
+ * Psi is Open Source and distributed under the
+ * Psi License: https://psi.vazkii.net/license.php
+ */
 package vazkii.psi.common.spell.trick.block;
 
 import net.minecraft.entity.player.PlayerEntity;
@@ -10,8 +18,15 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+
 import vazkii.psi.api.internal.Vector3;
-import vazkii.psi.api.spell.*;
+import vazkii.psi.api.spell.EnumSpellStat;
+import vazkii.psi.api.spell.Spell;
+import vazkii.psi.api.spell.SpellCompilationException;
+import vazkii.psi.api.spell.SpellContext;
+import vazkii.psi.api.spell.SpellMetadata;
+import vazkii.psi.api.spell.SpellParam;
+import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.api.spell.param.ParamVector;
 import vazkii.psi.api.spell.piece.PieceTrick;
 import vazkii.psi.common.core.helpers.SpellHelpers;

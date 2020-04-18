@@ -1,20 +1,16 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [12/01/2016, 17:41:48 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.common.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalBlock;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.INamedContainerProvider;
@@ -32,16 +28,16 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.LazyOptional;
+
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.internal.VanillaPacketDispatcher;
 import vazkii.psi.api.spell.ISpellAcceptor;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.tile.TileProgrammer;
 import vazkii.psi.common.core.handler.PsiSoundHandler;
-import vazkii.psi.common.lib.LibBlockNames;
-import vazkii.psi.common.lib.LibMisc;
 
 import javax.annotation.Nullable;
+
 import java.util.UUID;
 
 public class BlockProgrammer extends HorizontalBlock {
@@ -53,24 +49,27 @@ public class BlockProgrammer extends HorizontalBlock {
 		setDefaultState(getStateContainer().getBaseState().with(HORIZONTAL_FACING, Direction.NORTH).with(ENABLED, false));
 	}
 
-
 	@Override
 	public ActionResultType onUse(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult rayTraceResult) {
 		ItemStack heldItem = player.getHeldItem(hand);
 		TileProgrammer programmer = (TileProgrammer) worldIn.getTileEntity(pos);
-		if (programmer == null)
+		if (programmer == null) {
 			return ActionResultType.PASS;
+		}
 
 		ActionResultType result = setSpell(worldIn, pos, player, heldItem);
-		if (result == ActionResultType.SUCCESS)
+		if (result == ActionResultType.SUCCESS) {
 			return ActionResultType.SUCCESS;
+		}
 
 		boolean enabled = programmer.isEnabled();
-		if (!enabled || programmer.playerLock.isEmpty())
+		if (!enabled || programmer.playerLock.isEmpty()) {
 			programmer.playerLock = player.getName().getString();
+		}
 
-		if (player instanceof ServerPlayerEntity)
+		if (player instanceof ServerPlayerEntity) {
 			VanillaPacketDispatcher.dispatchTEToPlayer(programmer, (ServerPlayerEntity) player);
+		}
 		if (worldIn.isRemote) {
 			Psi.proxy.openProgrammerGUI(programmer);
 		}
@@ -79,25 +78,29 @@ public class BlockProgrammer extends HorizontalBlock {
 
 	public ActionResultType setSpell(World worldIn, BlockPos pos, PlayerEntity playerIn, ItemStack heldItem) {
 		TileProgrammer programmer = (TileProgrammer) worldIn.getTileEntity(pos);
-		if (programmer == null)
+		if (programmer == null) {
 			return ActionResultType.FAIL;
+		}
 
 		boolean enabled = programmer.isEnabled();
 
 		LazyOptional<ISpellAcceptor> settable = heldItem.getCapability(PsiAPI.SPELL_ACCEPTOR_CAPABILITY);
-		if(enabled && !heldItem.isEmpty() && settable.isPresent() && programmer.spell != null && (playerIn.isSneaking() || !settable.orElse(null).requiresSneakForSpellSet())) {
-			if(programmer.canCompile()) {
-				if(!worldIn.isRemote)
+		if (enabled && !heldItem.isEmpty() && settable.isPresent() && programmer.spell != null && (playerIn.isSneaking() || !settable.orElse(null).requiresSneakForSpellSet())) {
+			if (programmer.canCompile()) {
+				if (!worldIn.isRemote) {
 					worldIn.playSound(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, PsiSoundHandler.bulletCreate, SoundCategory.BLOCKS, 0.5F, 1F);
+				}
 
 				programmer.spell.uuid = UUID.randomUUID();
 				settable.ifPresent(c -> c.setSpell(playerIn, programmer.spell));
-				if(playerIn instanceof ServerPlayerEntity)
+				if (playerIn instanceof ServerPlayerEntity) {
 					VanillaPacketDispatcher.dispatchTEToPlayer(programmer, (ServerPlayerEntity) playerIn);
+				}
 				return ActionResultType.SUCCESS;
 			} else {
-				if(!worldIn.isRemote)
+				if (!worldIn.isRemote) {
 					worldIn.playSound(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, PsiSoundHandler.compileError, SoundCategory.BLOCKS, 0.5F, 1F);
+				}
 				return ActionResultType.FAIL;
 			}
 		}
@@ -145,12 +148,13 @@ public class BlockProgrammer extends HorizontalBlock {
 		if (tile instanceof TileProgrammer) {
 			TileProgrammer programmer = (TileProgrammer) tile;
 
-			if (programmer.canCompile())
+			if (programmer.canCompile()) {
 				return 2;
-			else if (programmer.isEnabled())
+			} else if (programmer.isEnabled()) {
 				return 1;
-			else
+			} else {
 				return 0;
+			}
 		}
 
 		return 0;
@@ -161,6 +165,5 @@ public class BlockProgrammer extends HorizontalBlock {
 	public INamedContainerProvider getContainer(BlockState p_220052_1_, World p_220052_2_, BlockPos p_220052_3_) {
 		return super.getContainer(p_220052_1_, p_220052_2_, p_220052_3_);
 	}
-
 
 }

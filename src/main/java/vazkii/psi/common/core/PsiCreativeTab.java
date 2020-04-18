@@ -1,18 +1,17 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [08/01/2016, 21:49:46 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.common.core;
 
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
+
 import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.lib.LibResources;
@@ -40,6 +39,5 @@ public class PsiCreativeTab extends ItemGroup {
 	public boolean hasSearchBar() {
 		return true;
 	}
-
 
 }

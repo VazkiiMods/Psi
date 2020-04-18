@@ -1,10 +1,20 @@
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
+ * https://github.com/Vazkii/Psi
+ *
+ * Psi is Open Source and distributed under the
+ * Psi License: https://psi.vazkii.net/license.php
+ */
 package vazkii.psi.client.gui.widget;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
+
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.EnumCADStat;
 import vazkii.psi.api.cad.ICAD;
@@ -17,7 +27,6 @@ import vazkii.psi.common.item.ItemCAD;
 public class SpellCostsWidget extends Widget {
 
 	private final GuiProgrammer parent;
-
 
 	public SpellCostsWidget(int x, int y, int width, int height, String message, GuiProgrammer programmer) {
 		super(x, y, width, height, message);
@@ -43,16 +52,18 @@ public class SpellCostsWidget extends Widget {
 				EnumCADStat cadStat = stat.getTarget();
 				int cadVal = 0;
 
-				if (cadStat == null)
+				if (cadStat == null) {
 					cadVal = -1;
-				else if (!cad.isEmpty()) {
+				} else if (!cad.isEmpty()) {
 					ICAD cadItem = (ICAD) cad.getItem();
 					cadVal = cadItem.getStatValue(cad, cadStat);
 				}
 				String s = "" + val;
-				if (stat == EnumSpellStat.COST)
+				if (stat == EnumSpellStat.COST) {
 					s += " (" + Math.max(0, ItemCAD.getRealCost(cad, ItemStack.EMPTY, val)) + ")";
-				else s += "/" + (cadVal == -1 ? "\u221E" : cadVal);
+				} else {
+					s += "/" + (cadVal == -1 ? "\u221E" : cadVal);
+				}
 
 				RenderSystem.color3f(1f, 1f, 1f);
 				parent.getMinecraft().getTextureManager().bindTexture(GuiProgrammer.texture);

@@ -1,12 +1,10 @@
-/**
- * This class was created by <ChickenBones>. It's distributed as
- * part of the Botania Mod. Get the Source Code in github:
- * https://github.com/Vazkii/Botania
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
+ * https://github.com/Vazkii/Psi
  *
- * Botania is Open Source and distributed under the
- * Botania License: http://botaniamod.net/license.php
- *
- * File Created @ [? (GMT)]
+ * Psi is Open Source and distributed under the
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.api.internal;
 
@@ -82,8 +80,7 @@ public class Quat {
 
 	public void normalize() {
 		double d = mag();
-		if (d == 0.0D) {
-		} else {
+		if (d == 0.0D) {} else {
 			d = 1.0D / d;
 			x *= d;
 			y *= d;

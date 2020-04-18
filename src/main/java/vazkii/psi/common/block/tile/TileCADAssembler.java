@@ -1,12 +1,10 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [10/01/2016, 15:52:20 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.common.block.tile;
 
@@ -24,9 +22,15 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.registries.ObjectHolder;
+
 import vazkii.arl.block.tile.TileSimpleInventory;
 import vazkii.psi.api.PsiAPI;
-import vazkii.psi.api.cad.*;
+import vazkii.psi.api.cad.AssembleCADEvent;
+import vazkii.psi.api.cad.EnumCADComponent;
+import vazkii.psi.api.cad.ICADComponent;
+import vazkii.psi.api.cad.ISocketableCapability;
+import vazkii.psi.api.cad.ITileCADAssembler;
+import vazkii.psi.api.cad.PostCADCraftEvent;
 import vazkii.psi.common.block.base.ModBlocks;
 import vazkii.psi.common.block.tile.container.ContainerCADAssembler;
 import vazkii.psi.common.core.handler.PsiSoundHandler;
@@ -49,8 +53,9 @@ public class TileCADAssembler extends TileSimpleInventory implements ITileCADAss
 
 	@Override
 	public void inventoryChanged(int i) {
-		if (0 < i && i < 6)
+		if (0 < i && i < 6) {
 			clearCachedCAD();
+		}
 	}
 
 	@Override
@@ -63,19 +68,21 @@ public class TileCADAssembler extends TileSimpleInventory implements ITileCADAss
 		ItemStack cad = cachedCAD;
 		if (cad == null) {
 			ItemStack assembly = getStackForComponent(EnumCADComponent.ASSEMBLY);
-			if (!assembly.isEmpty())
+			if (!assembly.isEmpty()) {
 				cad = ItemCAD.makeCADWithAssembly(assembly, inventorySlots.subList(1, 6));
-			else
+			} else {
 				cad = ItemStack.EMPTY;
+			}
 
 			AssembleCADEvent assembling = new AssembleCADEvent(cad, this, player);
 
 			MinecraftForge.EVENT_BUS.post(assembling);
 
-			if (assembling.isCanceled())
+			if (assembling.isCanceled()) {
 				cad = ItemStack.EMPTY;
-			else
+			} else {
 				cad = assembling.getCad();
+			}
 
 			cachedCAD = cad;
 		}
@@ -133,16 +140,19 @@ public class TileCADAssembler extends TileSimpleInventory implements ITileCADAss
 	@Override
 	public void onCraftCAD(ItemStack cad) {
 		MinecraftForge.EVENT_BUS.post(new PostCADCraftEvent(cad, this));
-		for (int i = 1; i < 6; i++)
+		for (int i = 1; i < 6; i++) {
 			setInventorySlotContents(i, ItemStack.EMPTY);
-		if (!world.isRemote)
+		}
+		if (!world.isRemote) {
 			world.playSound(null, getPos().getX() + 0.5, getPos().getY() + 0.5, getPos().getZ() + 0.5, PsiSoundHandler.cadCreate, SoundCategory.BLOCKS, 0.5F, 1F);
+		}
 	}
 
 	@Override
 	public boolean isBulletSlotEnabled(int slot) {
-		if (getSocketableStack().isEmpty())
+		if (getSocketableStack().isEmpty()) {
 			return false;
+		}
 		ISocketableCapability socketable = getSocketable();
 		return socketable != null && socketable.isSocketSlotAvailable(slot);
 	}
@@ -159,14 +169,16 @@ public class TileCADAssembler extends TileSimpleInventory implements ITileCADAss
 
 	@Override
 	public boolean isItemValidForSlot(int slot, @Nonnull ItemStack stack) {
-		if (stack.isEmpty())
+		if (stack.isEmpty()) {
 			return true;
+		}
 
-		if (slot == 0)
+		if (slot == 0) {
 			return ISocketableCapability.isSocketable(stack);
-		else if (slot < 6)
+		} else if (slot < 6) {
 			return stack.getItem() instanceof ICADComponent &&
-				((ICADComponent) stack.getItem()).getComponentType(stack) == EnumCADComponent.values()[slot - 1];
+					((ICADComponent) stack.getItem()).getComponentType(stack) == EnumCADComponent.values()[slot - 1];
+		}
 
 		return false;
 	}
@@ -186,34 +198,43 @@ public class TileCADAssembler extends TileSimpleInventory implements ITileCADAss
 
 			LazyOptional<ISocketableCapability> socketable = LazyOptional.empty();
 
-			for(int i = 0; i < items.size(); ++i) {
+			for (int i = 0; i < items.size(); ++i) {
 				if (i == 0) // Skip the fake CAD slot
+				{
 					continue;
+				}
 
 				ItemStack stack = ItemStack.read(items.getCompound(i));
 
 				if (i == 6) { // Socketable item
 					setSocketableStack(stack);
 
-					if (!stack.isEmpty())
+					if (!stack.isEmpty()) {
 						socketable = stack.getCapability(PsiAPI.SOCKETABLE_CAPABILITY);
+					}
 				} else if (i == 1) // CORE
+				{
 					setStackForComponent(EnumCADComponent.CORE, stack);
-				else if (i == 2) // ASSEMBLY
+				} else if (i == 2) // ASSEMBLY
+				{
 					setStackForComponent(EnumCADComponent.ASSEMBLY, stack);
-				else if (i == 3) // SOCKET
+				} else if (i == 3) // SOCKET
+				{
 					setStackForComponent(EnumCADComponent.SOCKET, stack);
-				else if (i == 4) // BATTERY
+				} else if (i == 4) // BATTERY
+				{
 					setStackForComponent(EnumCADComponent.BATTERY, stack);
-				else if (i == 5) // DYE
+				} else if (i == 5) // DYE
+				{
 					setStackForComponent(EnumCADComponent.DYE, stack);
-				else { // If we've gotten here, the item is a bullet.
+				} else { // If we've gotten here, the item is a bullet.
 					int idx = i - 7;
 					socketable.ifPresent(s -> s.setBulletInSocket(idx, stack));
 				}
 			}
-		} else
+		} else {
 			super.readSharedNBT(tag);
+		}
 	}
 
 	@Override

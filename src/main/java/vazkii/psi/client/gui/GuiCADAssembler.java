@@ -1,16 +1,15 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [10/01/2016, 16:55:16 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.client.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.PlayerEntity;
@@ -19,6 +18,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
+
 import vazkii.psi.api.cad.EnumCADStat;
 import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.common.Psi;
@@ -28,7 +28,6 @@ import vazkii.psi.common.block.tile.container.ContainerCADAssembler;
 import vazkii.psi.common.lib.LibResources;
 
 public class GuiCADAssembler extends ContainerScreen<ContainerCADAssembler> {
-
 
 	private static final ResourceLocation texture = new ResourceLocation(LibResources.GUI_CAD_ASSEMBLER);
 	private final PlayerEntity player;
@@ -82,9 +81,11 @@ public class GuiCADAssembler extends ContainerScreen<ContainerCADAssembler> {
 		int y = (height - ySize) / 2;
 		blit(x, y, 0, 0, xSize, ySize);
 
-		for (int i = 0; i < 12; i++)
-			if (!assembler.isBulletSlotEnabled(i))
+		for (int i = 0; i < 12; i++) {
+			if (!assembler.isBulletSlotEnabled(i)) {
 				blit(x + 17 + i % 3 * 18, y + 57 + i / 3 * 18, 16, ySize, 16, 16);
+			}
+		}
 	}
 
 }

@@ -1,12 +1,10 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [22/01/2016, 16:06:41 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.common.spell;
 
@@ -21,24 +19,25 @@ import java.util.UUID;
 
 public final class SpellCache implements ISpellCache {
 
-    public static final SpellCache instance = new SpellCache();
+	public static final SpellCache instance = new SpellCache();
 
-    public static final Map<UUID, CompiledSpell> map = new LinkedHashMap<UUID, CompiledSpell>() {
+	public static final Map<UUID, CompiledSpell> map = new LinkedHashMap<UUID, CompiledSpell>() {
 
-        @Override
-        protected boolean removeEldestEntry(Map.Entry eldest) {
-            return size() > ConfigHandler.COMMON.spellCacheSize.get();
-        }
+		@Override
+		protected boolean removeEldestEntry(Map.Entry eldest) {
+			return size() > ConfigHandler.COMMON.spellCacheSize.get();
+		}
 
 	};
 
 	@Override
 	public CompiledSpell getCompiledSpell(Spell spell) {
-		if(map.containsKey(spell.uuid))
+		if (map.containsKey(spell.uuid)) {
 			return map.get(spell.uuid);
+		}
 
 		SpellCompiler compiler = new SpellCompiler(spell);
-		if(!compiler.isErrored()) {
+		if (!compiler.isErrored()) {
 			map.put(spell.uuid, compiler.getCompiledSpell());
 			return compiler.getCompiledSpell();
 		}

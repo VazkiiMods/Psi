@@ -1,12 +1,10 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [19/02/2016, 18:05:24 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.common.entity;
 
@@ -16,23 +14,24 @@ import net.minecraft.entity.projectile.ThrowableEntity;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.registries.ObjectHolder;
+
 import vazkii.psi.api.spell.detonator.IDetonationHandler;
 import vazkii.psi.common.lib.LibEntityNames;
 import vazkii.psi.common.lib.LibResources;
 
 public class EntitySpellCharge extends EntitySpellGrenade implements IDetonationHandler {
 	@ObjectHolder(LibResources.PREFIX_MOD + LibEntityNames.SPELL_CHARGE)
-    public static EntityType<EntitySpellCharge> TYPE;
+	public static EntityType<EntitySpellCharge> TYPE;
 
-    public EntitySpellCharge(EntityType<? extends ThrowableEntity> type, World worldIn) {
-        super(type, worldIn);
-    }
+	public EntitySpellCharge(EntityType<? extends ThrowableEntity> type, World worldIn) {
+		super(type, worldIn);
+	}
 
-    public EntitySpellCharge(World worldIn, LivingEntity throwerIn) {
-        super(TYPE, worldIn, throwerIn);
-    }
+	public EntitySpellCharge(World worldIn, LivingEntity throwerIn) {
+		super(TYPE, worldIn, throwerIn);
+	}
 
-    @Override
+	@Override
 	public int getParticleCount() {
 		return 2;
 	}

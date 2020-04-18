@@ -1,12 +1,10 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [25/01/2016, 20:16:02 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.common.spell.trick.infusion;
 
@@ -32,7 +30,7 @@ public class PieceTrickInfusion extends PieceCraftingTrick {
 		meta.addStat(EnumSpellStat.COST, 1200);
 	}
 
-    @Override
+	@Override
 	public boolean canCraft(PieceCraftingTrick trick) {
 		return trick instanceof PieceTrickInfusion;
 	}

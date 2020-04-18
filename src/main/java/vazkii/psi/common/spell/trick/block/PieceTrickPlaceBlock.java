@@ -1,12 +1,10 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [24/01/2016, 17:14:15 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.common.spell.trick.block;
 
@@ -27,8 +25,15 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.BlockSnapshot;
 import net.minecraftforge.event.world.BlockEvent;
+
 import vazkii.psi.api.internal.Vector3;
-import vazkii.psi.api.spell.*;
+import vazkii.psi.api.spell.EnumSpellStat;
+import vazkii.psi.api.spell.Spell;
+import vazkii.psi.api.spell.SpellCompilationException;
+import vazkii.psi.api.spell.SpellContext;
+import vazkii.psi.api.spell.SpellMetadata;
+import vazkii.psi.api.spell.SpellParam;
+import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.api.spell.param.ParamVector;
 import vazkii.psi.api.spell.piece.PieceTrick;
 import vazkii.psi.client.core.handler.HUDHandler;
@@ -63,13 +68,16 @@ public class PieceTrickPlaceBlock extends PieceTrick {
 		Vector3 directionVal = this.getParamValue(context, direction);
 
 		Direction direction = Direction.UP;
-		if(directionVal != null)
+		if (directionVal != null) {
 			direction = Direction.getFacingFromVector(directionVal.x, directionVal.y, directionVal.z);
+		}
 
-		if(positionVal == null)
+		if (positionVal == null) {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
-		if(!context.isInRadius(positionVal))
+		}
+		if (!context.isInRadius(positionVal)) {
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
+		}
 
 		BlockPos pos = positionVal.toBlockPos();
 		placeBlock(context.caster, context.caster.getEntityWorld(), pos, context.getTargetSlot(), false, direction);
@@ -82,8 +90,9 @@ public class PieceTrickPlaceBlock extends PieceTrick {
 	}
 
 	public static void placeBlock(PlayerEntity player, World world, BlockPos pos, int slot, boolean particles, boolean conjure, Direction direction) {
-		if (!world.isBlockLoaded(pos) || !world.isBlockModifiable(player, pos))
+		if (!world.isBlockLoaded(pos) || !world.isBlockModifiable(player, pos)) {
 			return;
+		}
 
 		BlockState state = world.getBlockState(pos);
 		BlockEvent.EntityPlaceEvent placeEvent = new BlockEvent.EntityPlaceEvent(BlockSnapshot.getBlockSnapshot(world, pos), world.getBlockState(pos.offset(Direction.UP)), player);
@@ -99,41 +108,46 @@ public class PieceTrickPlaceBlock extends PieceTrick {
 					ItemStack rem = removeFromInventory(player, stack);
 					BlockItem iblock = (BlockItem) rem.getItem();
 
-                    ItemStack save;
-                    BlockRayTraceResult hit = new BlockRayTraceResult(Vec3d.ZERO, direction, pos, false);
-                    ItemUseContext ctx = new ItemUseContext(player, Hand.MAIN_HAND, hit);
+					ItemStack save;
+					BlockRayTraceResult hit = new BlockRayTraceResult(Vec3d.ZERO, direction, pos, false);
+					ItemUseContext ctx = new ItemUseContext(player, Hand.MAIN_HAND, hit);
 
-                    save = player.getHeldItem(ctx.getHand());
-                    player.setHeldItem(ctx.getHand(), rem);
-                    ItemUseContext newCtx;
-                    newCtx = new ItemUseContext(ctx.getPlayer(), ctx.getHand(), hit);
-                    player.setHeldItem(newCtx.getHand(), save);
+					save = player.getHeldItem(ctx.getHand());
+					player.setHeldItem(ctx.getHand(), rem);
+					ItemUseContext newCtx;
+					newCtx = new ItemUseContext(ctx.getPlayer(), ctx.getHand(), hit);
+					player.setHeldItem(newCtx.getHand(), save);
 
-                    iblock.tryPlace(new BlockItemUseContext(newCtx));
+					iblock.tryPlace(new BlockItemUseContext(newCtx));
 
-                    if (player.abilities.isCreativeMode)
-                        HUDHandler.setRemaining(rem, -1);
-                    else HUDHandler.setRemaining(player, rem, null);
-                }
+					if (player.abilities.isCreativeMode) {
+						HUDHandler.setRemaining(rem, -1);
+					} else {
+						HUDHandler.setRemaining(player, rem, null);
+					}
+				}
 			}
 
-			if(particles)
+			if (particles) {
 				world.playEvent(2001, pos, Block.getStateId(world.getBlockState(pos)));
+			}
 		}
 	}
 
 	public static ItemStack removeFromInventory(PlayerEntity player, ItemStack stack) {
-		if(player.abilities.isCreativeMode)
+		if (player.abilities.isCreativeMode) {
 			return stack.copy();
+		}
 
 		PlayerInventory inv = player.inventory;
-		for(int i = inv.getSizeInventory() - 1; i >= 0; i--) {
+		for (int i = inv.getSizeInventory() - 1; i >= 0; i--) {
 			ItemStack invStack = inv.getStackInSlot(i);
-			if(!invStack.isEmpty() && invStack.isItemEqual(stack) && ItemStack.areItemStacksEqual(stack, invStack)) {
+			if (!invStack.isEmpty() && invStack.isItemEqual(stack) && ItemStack.areItemStacksEqual(stack, invStack)) {
 				ItemStack retStack = invStack.copy();
 				invStack.shrink(1);
-				if(invStack.getCount() == 0)
+				if (invStack.getCount() == 0) {
 					inv.setInventorySlotContents(i, ItemStack.EMPTY);
+				}
 				return retStack;
 			}
 		}

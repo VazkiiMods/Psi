@@ -1,12 +1,10 @@
-/**
- * This class was created by <WireSegal>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [28/02/2016, 20:27:15 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.common.core.handler.capability;
 
@@ -24,7 +22,12 @@ import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import vazkii.psi.api.cad.*;
+
+import vazkii.psi.api.cad.ICADData;
+import vazkii.psi.api.cad.IPsiBarDisplay;
+import vazkii.psi.api.cad.IShowPsiBar;
+import vazkii.psi.api.cad.ISocketable;
+import vazkii.psi.api.cad.ISocketableCapability;
 import vazkii.psi.api.spell.ISpellAcceptor;
 import vazkii.psi.api.spell.ISpellImmune;
 import vazkii.psi.api.spell.ISpellSettable;
@@ -49,8 +52,7 @@ public class CapabilityHandler {
 		register(ISocketableCapability.class, SocketWheel::new);
 		register(ISpellAcceptor.class, SpellHolder::new);
 
-		registerSingleDefault(IDetonationHandler.class, () -> {
-		});
+		registerSingleDefault(IDetonationHandler.class, () -> {});
 		registerSingleDefault(IPsiBarDisplay.class, data -> false);
 		registerSingleDefault(ISpellImmune.class, () -> false);
 	}
@@ -67,15 +69,17 @@ public class CapabilityHandler {
 
 		@Override
 		public INBT writeNBT(Capability<T> capability, T instance, Direction side) {
-			if (instance instanceof INBTSerializable)
+			if (instance instanceof INBTSerializable) {
 				return ((INBTSerializable<?>) instance).serializeNBT();
+			}
 			return null;
 		}
 
 		@Override
 		public void readNBT(Capability<T> capability, T instance, Direction side, INBT nbt) {
-			if (nbt instanceof CompoundNBT)
+			if (nbt instanceof CompoundNBT) {
 				((INBTSerializable) instance).deserializeNBT(nbt);
+			}
 		}
 
 	}
@@ -91,24 +95,30 @@ public class CapabilityHandler {
 	public static void attachItemCapabilities(AttachCapabilitiesEvent<ItemStack> event) {
 		Item item = event.getObject().getItem();
 
-		if (item instanceof ISocketable)
+		if (item instanceof ISocketable) {
 			event.addCapability(SOCKET, new SocketWrapper(event.getObject()));
-		if (event.getObject().getItem() instanceof IShowPsiBar)
+		}
+		if (event.getObject().getItem() instanceof IShowPsiBar) {
 			event.addCapability(PSI_BAR, new PsiBarWrapper(event.getObject()));
-		if (event.getObject().getItem() instanceof ISpellSettable)
+		}
+		if (event.getObject().getItem() instanceof ISpellSettable) {
 			event.addCapability(ACCEPTOR, new AcceptorWrapper(event.getObject()));
+		}
 	}
 
 	@SubscribeEvent
 	public static void attachEntityCapabilities(AttachCapabilitiesEvent<Entity> event) {
-		if (event.getObject() instanceof ISpellImmune)
+		if (event.getObject() instanceof ISpellImmune) {
 			event.addCapability(SPELL_IMMUNE, new SimpleProvider<>(SPELL_IMMUNE_CAPABILITY,
 					(ISpellImmune) event.getObject()));
-		if(event.getObject() instanceof PlayerEntity)
+		}
+		if (event.getObject() instanceof PlayerEntity) {
 			event.addCapability(TRIGGER_SENSOR, new CapabilityTriggerSensor((PlayerEntity) event.getObject()));
-		if (event.getObject() instanceof IDetonationHandler)
+		}
+		if (event.getObject() instanceof IDetonationHandler) {
 			event.addCapability(DETONATOR, new SimpleProvider<>(DETONATION_HANDLER_CAPABILITY,
 					(IDetonationHandler) event.getObject()));
+		}
 	}
 
 }

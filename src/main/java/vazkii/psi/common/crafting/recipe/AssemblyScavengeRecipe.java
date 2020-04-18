@@ -1,12 +1,10 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [05/02/2016, 21:23:39 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.common.crafting.recipe;
 
@@ -17,6 +15,7 @@ import net.minecraft.item.crafting.SpecialRecipe;
 import net.minecraft.item.crafting.SpecialRecipeSerializer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+
 import vazkii.psi.api.cad.EnumCADComponent;
 import vazkii.psi.api.cad.ICAD;
 
@@ -37,21 +36,26 @@ public class AssemblyScavengeRecipe extends SpecialRecipe {
 			ItemStack stack = inv.getStackInSlot(i);
 			if (!stack.isEmpty()) {
 				if (stack.getItem() instanceof ICAD) {
-					if (foundTarget)
+					if (foundTarget) {
 						return false;
+					}
 
 					for (EnumCADComponent comp : EnumCADComponent.class.getEnumConstants()) {
-						if (comp == EnumCADComponent.ASSEMBLY)
+						if (comp == EnumCADComponent.ASSEMBLY) {
 							continue;
+						}
 
 						ItemStack compStack = ((ICAD) stack.getItem()).getComponentInSlot(stack, comp);
 
-						if (!compStack.isEmpty())
+						if (!compStack.isEmpty()) {
 							return false;
+						}
 					}
 
 					foundTarget = true;
-				} else return false;
+				} else {
+					return false;
+				}
 			}
 		}
 
@@ -65,14 +69,14 @@ public class AssemblyScavengeRecipe extends SpecialRecipe {
 
 		for (int i = 0; i < inv.getSizeInventory(); i++) {
 			ItemStack stack = inv.getStackInSlot(i);
-			if (!stack.isEmpty())
+			if (!stack.isEmpty()) {
 				target = stack;
+			}
 		}
 
 		ItemStack compStack = ((ICAD) target.getItem()).getComponentInSlot(target, EnumCADComponent.ASSEMBLY);
 		return compStack.copy();
 	}
-
 
 	@Nonnull
 	@Override

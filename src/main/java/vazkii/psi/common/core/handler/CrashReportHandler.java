@@ -1,17 +1,16 @@
-/**
- * This class was created by <WireSegal>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
- * <p>
+ *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- * <p>
- * File Created @ [Apr 24, 2019, 15:49 AM (EST)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.common.core.handler;
 
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.fml.common.ICrashCallable;
+
 import vazkii.psi.api.spell.CompiledSpell;
 import vazkii.psi.api.spell.SpellPiece;
 
@@ -33,12 +32,14 @@ public class CrashReportHandler implements ICrashCallable {
 	public String call() {
 		CompiledSpell spell = activeSpell.get();
 		SpellPiece piece = activePiece.get();
-		if (spell == null)
+		if (spell == null) {
 			return "None";
+		}
 
 		String prefix = "";
-		if (piece != null)
-			prefix =  "[" + piece.x + ", " + piece.y + "] in ";
+		if (piece != null) {
+			prefix = "[" + piece.x + ", " + piece.y + "] in ";
+		}
 
 		CompoundNBT result = new CompoundNBT();
 		spell.sourceSpell.writeToNBT(result);

@@ -1,12 +1,10 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
- * 
+ *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- * 
- * File Created @ [10/03/2016, 19:48:45 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.common.spell.selector;
 
@@ -14,6 +12,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
+
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
@@ -39,17 +38,19 @@ public class PieceSelectorBlockPresence extends PieceSelector {
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		Vector3 positionVal = this.getParamValue(context, position);
 
-		if(positionVal == null)
+		if (positionVal == null) {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
-		
+		}
+
 		BlockPos pos = positionVal.toBlockPos();
 		BlockState state = context.caster.getEntityWorld().getBlockState(pos);
 		Block block = state.getBlock();
-		
-		if(state.isAir(context.caster.getEntityWorld(), pos) || state.getMaterial().isReplaceable())
+
+		if (state.isAir(context.caster.getEntityWorld(), pos) || state.getMaterial().isReplaceable()) {
 			return 0.0;
-		else if(state.getCollisionShape(context.caster.getEntityWorld(), pos, ISelectionContext.forEntity(context.caster)).isEmpty())
+		} else if (state.getCollisionShape(context.caster.getEntityWorld(), pos, ISelectionContext.forEntity(context.caster)).isEmpty()) {
 			return 1.0;
+		}
 		return 2.0;
 	}
 

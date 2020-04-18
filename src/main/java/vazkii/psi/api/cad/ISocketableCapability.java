@@ -1,20 +1,18 @@
-/**
- * This class was created by <WireSegal>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
- * <p>
+ *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- * <p>
- * File Created @ [Apr 03, 2019, 15:16 AM (EST)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.api.cad;
 
 import net.minecraft.item.ItemStack;
+
 import vazkii.psi.api.PsiAPI;
 
 public interface ISocketableCapability {
-
 
 	static boolean isSocketable(ItemStack stack) {
 		return stack.getCapability(PsiAPI.SOCKETABLE_CAPABILITY).isPresent();
@@ -23,7 +21,6 @@ public interface ISocketableCapability {
 	static ISocketableCapability socketable(ItemStack stack) {
 		return stack.getCapability(PsiAPI.SOCKETABLE_CAPABILITY).orElseThrow(NullPointerException::new);
 	}
-
 
 	boolean isSocketSlotAvailable(int slot);
 

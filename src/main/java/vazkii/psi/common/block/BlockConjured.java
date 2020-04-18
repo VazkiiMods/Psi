@@ -1,12 +1,10 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [17/02/2016, 18:23:26 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.common.block;
 
@@ -27,12 +25,14 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+
 import vazkii.psi.api.internal.PsiRenderHelper;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.tile.TileConjured;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
 import java.util.Random;
 
 public class BlockConjured extends Block {
@@ -57,17 +57,18 @@ public class BlockConjured extends Block {
 	@OnlyIn(Dist.CLIENT)
 	public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand) {
 		TileEntity inWorld = worldIn.getTileEntity(pos);
-		if (inWorld instanceof TileConjured)
+		if (inWorld instanceof TileConjured) {
 			((TileConjured) inWorld).doParticles();
+		}
 	}
 
 	@Nullable
 	@Override
-	public float[] getBeaconColorMultiplier(BlockState state, IWorldReader world, BlockPos pos, BlockPos beaconPos){
+	public float[] getBeaconColorMultiplier(BlockState state, IWorldReader world, BlockPos pos, BlockPos beaconPos) {
 		TileEntity inWorld = world.getTileEntity(pos);
-		if (inWorld instanceof TileConjured){
+		if (inWorld instanceof TileConjured) {
 			int color = Psi.proxy.getColorForColorizer(((TileConjured) inWorld).colorizer);
-			return new float[]{PsiRenderHelper.r(color) / 255F, PsiRenderHelper.g(color) / 255F, PsiRenderHelper.b(color) / 255F};
+			return new float[] { PsiRenderHelper.r(color) / 255F, PsiRenderHelper.g(color) / 255F, PsiRenderHelper.b(color) / 255F };
 		}
 		return null;
 	}
@@ -92,25 +93,25 @@ public class BlockConjured extends Block {
 	public BlockState updatePostPlacement(@Nonnull BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos) {
 		BooleanProperty prop;
 		switch (facing) {
-			default:
-			case DOWN:
-				prop = BLOCK_DOWN;
-				break;
-			case UP:
-				prop = BLOCK_UP;
-				break;
-			case NORTH:
-				prop = BLOCK_NORTH;
-				break;
-			case SOUTH:
-				prop = BLOCK_SOUTH;
-				break;
-			case WEST:
-				prop = BLOCK_WEST;
-				break;
-			case EAST:
-				prop = BLOCK_EAST;
-				break;
+		default:
+		case DOWN:
+			prop = BLOCK_DOWN;
+			break;
+		case UP:
+			prop = BLOCK_UP;
+			break;
+		case NORTH:
+			prop = BLOCK_NORTH;
+			break;
+		case SOUTH:
+			prop = BLOCK_SOUTH;
+			break;
+		case WEST:
+			prop = BLOCK_WEST;
+			break;
+		case EAST:
+			prop = BLOCK_EAST;
+			break;
 		}
 
 		if (state.getBlock() == facingState.getBlock() && state.get(LIGHT) == facingState.get(LIGHT) && state.get(SOLID) == facingState.get(SOLID)) {
@@ -156,6 +157,5 @@ public class BlockConjured extends Block {
 	public TileEntity createTileEntity(@Nonnull BlockState state, IBlockReader world) {
 		return new TileConjured();
 	}
-
 
 }

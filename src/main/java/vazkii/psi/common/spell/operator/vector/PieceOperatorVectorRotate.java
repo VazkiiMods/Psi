@@ -1,3 +1,11 @@
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
+ * https://github.com/Vazkii/Psi
+ *
+ * Psi is Open Source and distributed under the
+ * Psi License: https://psi.vazkii.net/license.php
+ */
 package vazkii.psi.common.spell.operator.vector;
 
 import vazkii.psi.api.internal.Vector3;
@@ -25,7 +33,6 @@ public class PieceOperatorVectorRotate extends PieceOperator {
 		addParam(axis = new ParamVector(SpellParam.GENERIC_NAME_AXIS, SpellParam.CYAN, false, false));
 		addParam(angle = new ParamNumber(SpellParam.GENERIC_NAME_ANGLE, SpellParam.GREEN, false, false));
 	}
-
 
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {

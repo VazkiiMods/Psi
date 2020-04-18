@@ -1,6 +1,15 @@
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
+ * https://github.com/Vazkii/Psi
+ *
+ * Psi is Open Source and distributed under the
+ * Psi License: https://psi.vazkii.net/license.php
+ */
 package vazkii.psi.common.crafting.recipe;
 
 import com.google.gson.JsonObject;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.IRecipeType;
@@ -12,6 +21,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.items.wrapper.RecipeWrapper;
 import net.minecraftforge.registries.ForgeRegistryEntry;
+
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.recipe.ITrickRecipe;
 import vazkii.psi.api.spell.Spell;
@@ -46,7 +56,7 @@ public class TrickRecipe implements ITrickRecipe {
 	public PieceCraftingTrick getPiece() {
 		return piece;
 	}
-	
+
 	@Override
 	public Ingredient getInput() {
 		return input;
@@ -103,7 +113,7 @@ public class TrickRecipe implements ITrickRecipe {
 			Ingredient ingredient = Ingredient.deserialize(JSONUtils.getJsonObject(json, "input"));
 			ItemStack output = CraftingHelper.getItemStack(JSONUtils.getJsonObject(json, "output"), true);
 			ItemStack cadAssembly = CraftingHelper.getItemStack(JSONUtils.getJsonObject(json, "cad"), true);
-			
+
 			PieceCraftingTrick trick = null;
 			if (json.has("trick")) {
 				trick = PsiAPI.getSpellPieceRegistry().getValue(new ResourceLocation(JSONUtils.getString(json, "trick")))

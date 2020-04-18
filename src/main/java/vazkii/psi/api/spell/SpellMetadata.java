@@ -1,16 +1,15 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [17/01/2016, 15:12:28 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.api.spell;
 
 import net.minecraft.item.ItemStack;
+
 import vazkii.psi.api.cad.EnumCADStat;
 import vazkii.psi.api.cad.ICAD;
 
@@ -31,8 +30,9 @@ public final class SpellMetadata {
 	public boolean errorsSuppressed = false;
 
 	public SpellMetadata() {
-		for(EnumSpellStat stat : EnumSpellStat.class.getEnumConstants())
+		for (EnumSpellStat stat : EnumSpellStat.class.getEnumConstants()) {
 			stats.put(stat, 0);
+		}
 	}
 
 	/**
@@ -56,19 +56,22 @@ public final class SpellMetadata {
 	 * of {@link ICAD}). Returns true if the stats are equal to or above the CAD.
 	 */
 	public boolean evaluateAgainst(ItemStack stack) {
-		if(stack == null || !(stack.getItem() instanceof ICAD))
+		if (stack == null || !(stack.getItem() instanceof ICAD)) {
 			return false;
+		}
 
 		ICAD cad = (ICAD) stack.getItem();
-		for(EnumSpellStat stat : stats.keySet()) {
+		for (EnumSpellStat stat : stats.keySet()) {
 			EnumCADStat cadStat = stat.getTarget();
-			if(cadStat == null)
+			if (cadStat == null) {
 				continue;
+			}
 
 			int statVal = stats.get(stat);
 			int cadVal = cad.getStatValue(stack, cadStat);
-			if(cadVal != -1 && cadVal < statVal)
+			if (cadVal != -1 && cadVal < statVal) {
 				return false;
+			}
 		}
 
 		return true;

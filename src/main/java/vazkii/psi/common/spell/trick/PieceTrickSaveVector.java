@@ -1,16 +1,15 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
- * 
+ *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- * 
- * File Created @ [10/03/2016, 23:03:43 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.common.spell.trick;
 
 import net.minecraft.item.ItemStack;
+
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.internal.Vector3;
@@ -26,9 +25,9 @@ import vazkii.psi.api.spell.param.ParamVector;
 import vazkii.psi.api.spell.piece.PieceTrick;
 
 public class PieceTrickSaveVector extends PieceTrick {
-	
+
 	public static final String KEY_SLOT_LOCKED = "psi:SlotLocked";
-	
+
 	SpellParam<Number> number;
 	SpellParam<Vector3> target;
 
@@ -47,8 +46,9 @@ public class PieceTrickSaveVector extends PieceTrick {
 		meta.addStat(EnumSpellStat.COMPLEXITY, 1);
 
 		Double numberVal = this.<Double>getParamEvaluation(number);
-		if(numberVal == null || numberVal <= 0 || numberVal != numberVal.intValue())
+		if (numberVal == null || numberVal <= 0 || numberVal != numberVal.intValue()) {
 			throw new SpellCompilationException(SpellCompilationException.NON_POSITIVE_INTEGER, x, y);
+		}
 
 		meta.addStat(EnumSpellStat.POTENCY, numberVal.intValue() * 8);
 	}
@@ -60,17 +60,19 @@ public class PieceTrickSaveVector extends PieceTrick {
 
 		int n = numberVal.intValue() - 1;
 
-		if(context.customData.containsKey(KEY_SLOT_LOCKED + n))
+		if (context.customData.containsKey(KEY_SLOT_LOCKED + n)) {
 			return null;
-		
+		}
+
 		ItemStack cadStack = PsiAPI.getPlayerCAD(context.caster);
-		if(cadStack == null || !(cadStack.getItem() instanceof ICAD))
+		if (cadStack == null || !(cadStack.getItem() instanceof ICAD)) {
 			throw new SpellRuntimeException(SpellRuntimeException.NO_CAD);
+		}
 		ICAD cad = (ICAD) cadStack.getItem();
 		cad.setStoredVector(cadStack, n, targetVal);
-		
+
 		context.customData.put(KEY_SLOT_LOCKED + n, 0);
-		
+
 		return null;
 	}
 

@@ -1,12 +1,10 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [17/02/2016, 18:30:46 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.common.block.tile;
 
@@ -18,6 +16,7 @@ import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.registries.ObjectHolder;
+
 import vazkii.psi.api.internal.PsiRenderHelper;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.BlockConjured;
@@ -53,37 +52,43 @@ public class TileConjured extends TileEntity {
 			boolean[] edges = new boolean[12];
 			Arrays.fill(edges, true);
 
-			if(state.get(BlockConjured.BLOCK_DOWN))
+			if (state.get(BlockConjured.BLOCK_DOWN)) {
 				removeEdges(edges, 0, 1, 2, 3);
-			if(state.get(BlockConjured.BLOCK_UP))
+			}
+			if (state.get(BlockConjured.BLOCK_UP)) {
 				removeEdges(edges, 4, 5, 6, 7);
-			if(state.get(BlockConjured.BLOCK_NORTH))
+			}
+			if (state.get(BlockConjured.BLOCK_NORTH)) {
 				removeEdges(edges, 3, 7, 8, 11);
-			if(state.get(BlockConjured.BLOCK_SOUTH))
+			}
+			if (state.get(BlockConjured.BLOCK_SOUTH)) {
 				removeEdges(edges, 1, 5, 9, 10);
-			if(state.get(BlockConjured.BLOCK_EAST))
+			}
+			if (state.get(BlockConjured.BLOCK_EAST)) {
 				removeEdges(edges, 2, 6, 10, 11);
-			if(state.get(BlockConjured.BLOCK_WEST))
+			}
+			if (state.get(BlockConjured.BLOCK_WEST)) {
 				removeEdges(edges, 0, 4, 8, 9);
+			}
 
 			double x = getPos().getX();
 			double y = getPos().getY();
 			double z = getPos().getZ();
 
-			makeParticle(edges[0],  r, g, b, x + 0, y + 0, z + 0, 0, 0, 1);
-			makeParticle(edges[1],  r, g, b, x + 0, y + 0, z + 1, 1, 0, 0);
-			makeParticle(edges[2],  r, g, b, x + 1, y + 0, z + 0, 0, 0, 1);
-			makeParticle(edges[3],  r, g, b, x + 0, y + 0, z + 0, 1, 0, 0);
+			makeParticle(edges[0], r, g, b, x + 0, y + 0, z + 0, 0, 0, 1);
+			makeParticle(edges[1], r, g, b, x + 0, y + 0, z + 1, 1, 0, 0);
+			makeParticle(edges[2], r, g, b, x + 1, y + 0, z + 0, 0, 0, 1);
+			makeParticle(edges[3], r, g, b, x + 0, y + 0, z + 0, 1, 0, 0);
 
 			// Top
-			makeParticle(edges[4],  r, g, b, x + 0, y + 1, z + 0, 0, 0, 1);
-			makeParticle(edges[5],  r, g, b, x + 0, y + 1, z + 1, 1, 0, 0);
-			makeParticle(edges[6],  r, g, b, x + 1, y + 1, z + 0, 0, 0, 1);
-			makeParticle(edges[7],  r, g, b, x + 0, y + 1, z + 0, 1, 0, 0);
+			makeParticle(edges[4], r, g, b, x + 0, y + 1, z + 0, 0, 0, 1);
+			makeParticle(edges[5], r, g, b, x + 0, y + 1, z + 1, 1, 0, 0);
+			makeParticle(edges[6], r, g, b, x + 1, y + 1, z + 0, 0, 0, 1);
+			makeParticle(edges[7], r, g, b, x + 0, y + 1, z + 0, 1, 0, 0);
 
 			// Sides
-			makeParticle(edges[8],  r, g, b, x + 0, y + 0, z + 0, 0, 1, 0);
-			makeParticle(edges[9],  r, g, b, x + 0, y + 0, z + 1, 0, 1, 0);
+			makeParticle(edges[8], r, g, b, x + 0, y + 0, z + 0, 0, 1, 0);
+			makeParticle(edges[9], r, g, b, x + 0, y + 0, z + 1, 0, 1, 0);
 			makeParticle(edges[10], r, g, b, x + 1, y + 0, z + 1, 0, 1, 0);
 			makeParticle(edges[11], r, g, b, x + 1, y + 0, z + 0, 0, 1, 0);
 
@@ -113,14 +118,15 @@ public class TileConjured extends TileEntity {
 	}
 
 	public void removeEdges(boolean[] edges, int... posArray) {
-		for(int i : posArray)
+		for (int i : posArray) {
 			edges[i] = false;
+		}
 	}
 
 	@Override
 	public CompoundNBT write(CompoundNBT cmp) {
 		cmp = super.write(cmp);
-		if(!colorizer.isEmpty()) {
+		if (!colorizer.isEmpty()) {
 			cmp.put(TAG_COLORIZER, colorizer.write(new CompoundNBT()));
 		}
 		return cmp;

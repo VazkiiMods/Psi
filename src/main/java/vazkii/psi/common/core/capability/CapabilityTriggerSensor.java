@@ -1,3 +1,11 @@
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
+ * https://github.com/Vazkii/Psi
+ *
+ * Psi is Open Source and distributed under the
+ * Psi License: https://psi.vazkii.net/license.php
+ */
 package vazkii.psi.common.core.capability;
 
 import net.minecraft.entity.player.PlayerEntity;
@@ -7,6 +15,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
+
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.exosuit.PsiArmorEvent;
 import vazkii.psi.api.spell.detonator.IDetonationHandler;
@@ -22,18 +31,15 @@ public class CapabilityTriggerSensor implements IDetonationHandler, ICapabilityP
 	public static final String EVENT_TRIGGER = LibMisc.MOD_ID + ".event.spell_detonate";
 	public static final String TRIGGER_TICK = LibMisc.MOD_ID + ":LastTriggeredDetonation";
 
-	public CapabilityTriggerSensor(PlayerEntity player){
+	public CapabilityTriggerSensor(PlayerEntity player) {
 		this.player = player;
 	}
-
 
 	@Override
 	@SuppressWarnings("ConstantConditions")
 	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability, @Nullable Direction facing) {
 		return PsiAPI.DETONATION_HANDLER_CAPABILITY.orEmpty(capability, LazyOptional.of(() -> this));
 	}
-
-
 
 	@Override
 	public void detonate() {

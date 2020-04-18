@@ -1,18 +1,17 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [22/01/2016, 22:56:10 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.api.spell.wrapper;
 
 import net.minecraft.entity.Entity;
 
 import javax.annotation.Nonnull;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -26,9 +25,11 @@ public class EntityListWrapper implements Iterable<Entity> {
 
 	public EntityListWrapper(List<Entity> list) {
 		List<Entity> copy = new ArrayList<>();
-		for(Entity e : list)
-			if(e != null)
+		for (Entity e : list) {
+			if (e != null) {
 				copy.add(e);
+			}
+		}
 		this.list = copy;
 	}
 
