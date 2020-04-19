@@ -19,7 +19,7 @@
         ],
         "key": {
           "M": {
-            "item": "minecraft:gunpowder"
+            "item": "minecraft:glistering_melon_slice"
           },
           "R": {
             "tag": "forge:ingots/iron"
@@ -29,7 +29,7 @@
           }
         },
         "result": {
-          "item": "psi:exosuit_sensor_stress"
+          "item": "psi:exosuit_sensor_trigger"
         }
       }
     }
