@@ -1,12 +1,10 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [15/02/2016, 18:08:02 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.common.spell.trick.block;
 
@@ -16,6 +14,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
+
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.EnumSpellStat;
 import vazkii.psi.api.spell.Spell;
@@ -54,23 +53,26 @@ public class PieceTrickSmeltBlock extends PieceTrick {
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		Vector3 positionVal = this.getParamValue(context, position);
 
-		if(positionVal == null)
+		if (positionVal == null) {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
-		if(!context.isInRadius(positionVal))
+		}
+		if (!context.isInRadius(positionVal)) {
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
+		}
 
 		BlockPos pos = positionVal.toBlockPos();
-		if(!context.caster.getEntityWorld().isBlockModifiable(context.caster, pos))
+		if (!context.caster.getEntityWorld().isBlockModifiable(context.caster, pos)) {
 			return null;
-		
+		}
+
 		BlockState state = context.caster.getEntityWorld().getBlockState(pos);
 		Block block = state.getBlock();
 		ItemStack stack = new ItemStack(block);
 		ItemStack result = PieceSelectorNearbySmeltables.simulateSmelt(context.caster.getEntityWorld(), stack);
-		if(!result.isEmpty()) {
+		if (!result.isEmpty()) {
 			Item item = result.getItem();
 			Block block1 = Block.getBlockFromItem(item);
-			if(block1 != Blocks.AIR) {
+			if (block1 != Blocks.AIR) {
 				context.caster.getEntityWorld().setBlockState(pos, block1.getDefaultState());
 				context.caster.getEntityWorld().playEvent(2001, pos, Block.getStateId(block1.getDefaultState()));
 			}

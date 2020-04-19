@@ -1,18 +1,17 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [13/01/2016, 18:38:54 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.api.cad;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
+
 import vazkii.psi.api.internal.IPlayerData;
 import vazkii.psi.api.spell.ISpellAcceptor;
 
@@ -28,15 +27,17 @@ public interface ISocketable extends IShowPsiBar {
 	int MAX_SLOTS = 12;
 
 	static ITextComponent getSocketedItemName(ItemStack stack, String fallbackKey) {
-		if(stack.isEmpty() || !ISocketableCapability.isSocketable(stack))
+		if (stack.isEmpty() || !ISocketableCapability.isSocketable(stack)) {
 			return new TranslationTextComponent(fallbackKey);
+		}
 
 		ISocketableCapability socketable = ISocketableCapability.socketable(stack);
 		ItemStack item = socketable.getBulletInSocket(socketable.getSelectedSlot());
-		if(item.isEmpty())
+		if (item.isEmpty()) {
 			return new TranslationTextComponent(fallbackKey);
+		}
 
-        return item.getDisplayName();
+		return item.getDisplayName();
 	}
 
 	/**
@@ -72,11 +73,13 @@ public interface ISocketable extends IShowPsiBar {
 	void setSelectedSlot(ItemStack stack, int slot);
 
 	default boolean isItemValid(ItemStack stack, int slot, ItemStack bullet) {
-		if (!isSocketSlotAvailable(stack, slot))
+		if (!isSocketSlotAvailable(stack, slot)) {
 			return false;
+		}
 
-		if (bullet.isEmpty() || !ISpellAcceptor.hasSpell(bullet))
+		if (bullet.isEmpty() || !ISpellAcceptor.hasSpell(bullet)) {
 			return false;
+		}
 
 		ISpellAcceptor container = ISpellAcceptor.acceptor(bullet);
 

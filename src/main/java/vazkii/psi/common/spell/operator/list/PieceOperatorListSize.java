@@ -1,3 +1,11 @@
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
+ * https://github.com/Vazkii/Psi
+ *
+ * Psi is Open Source and distributed under the
+ * Psi License: https://psi.vazkii.net/license.php
+ */
 package vazkii.psi.common.spell.operator.list;
 
 import vazkii.psi.api.spell.Spell;
@@ -18,7 +26,7 @@ public class PieceOperatorListSize extends PieceOperator {
 
 	@Override
 	public void initParams() {
-		addParam(list  = new ParamEntityListWrapper(SpellParam.GENERIC_NAME_LIST, SpellParam.RED, false, false));
+		addParam(list = new ParamEntityListWrapper(SpellParam.GENERIC_NAME_LIST, SpellParam.RED, false, false));
 	}
 
 	@Override

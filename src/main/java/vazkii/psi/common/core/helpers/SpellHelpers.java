@@ -1,22 +1,37 @@
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
+ * https://github.com/Vazkii/Psi
+ *
+ * Psi is Open Source and distributed under the
+ * Psi License: https://psi.vazkii.net/license.php
+ */
 package vazkii.psi.common.core.helpers;
 
 import net.minecraft.util.math.BlockPos;
+
 import vazkii.psi.api.internal.Vector3;
-import vazkii.psi.api.spell.*;
+import vazkii.psi.api.spell.SpellCompilationException;
+import vazkii.psi.api.spell.SpellContext;
+import vazkii.psi.api.spell.SpellParam;
+import vazkii.psi.api.spell.SpellPiece;
+import vazkii.psi.api.spell.SpellRuntimeException;
 
 public class SpellHelpers {
 
 	public static double ensurePositiveOrZero(SpellPiece piece, SpellParam<Number> param) throws SpellCompilationException {
 		double val = piece.getNonNullParamEvaluation(param).doubleValue();
-		if (val < 0)
+		if (val < 0) {
 			throw new SpellCompilationException(SpellCompilationException.NON_POSITIVE_VALUE, piece.x, piece.y);
+		}
 		return val;
 	}
 
 	public static double ensurePositiveAndNonzero(SpellPiece piece, SpellParam<Number> param) throws SpellCompilationException {
 		double val = piece.getNonNullParamEvaluation(param).doubleValue();
-		if (val <= 0)
+		if (val <= 0) {
 			throw new SpellCompilationException(SpellCompilationException.NON_POSITIVE_VALUE, piece.x, piece.y);
+		}
 
 		return val;
 	}
@@ -27,25 +42,29 @@ public class SpellHelpers {
 
 	public static double ensurePositiveOrZero(SpellPiece piece, SpellParam<Number> param, double def) throws SpellCompilationException {
 		double val = piece.getParamEvaluationeOrDefault(param, def).doubleValue();
-		if (val < 0)
+		if (val < 0) {
 			throw new SpellCompilationException(SpellCompilationException.NON_POSITIVE_VALUE, piece.x, piece.y);
+		}
 		return val;
 	}
 
 	public static double ensurePositiveAndNonzero(SpellPiece piece, SpellParam<Number> param, double def) throws SpellCompilationException {
 		double val = piece.getParamEvaluationeOrDefault(param, def).doubleValue();
-		if (val <= 0)
+		if (val <= 0) {
 			throw new SpellCompilationException(SpellCompilationException.NON_POSITIVE_VALUE, piece.x, piece.y);
+		}
 
 		return val;
 	}
 
 	public static BlockPos getBlockPos(SpellPiece piece, SpellContext context, SpellParam<Vector3> param) throws SpellRuntimeException {
 		Vector3 position = piece.getParamValue(context, param);
-		if (position == null)
+		if (position == null) {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
-		if (!context.isInRadius(position))
+		}
+		if (!context.isInRadius(position)) {
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
+		}
 		return position.toBlockPos();
 	}
 
@@ -75,12 +94,15 @@ public class SpellHelpers {
 
 	public static Vector3 checkPos(SpellPiece piece, SpellContext context, SpellParam<Vector3> param, boolean nonnull, boolean check, boolean shouldBeAxial) throws SpellRuntimeException {
 		Vector3 position = piece.getParamValue(context, param);
-		if (nonnull && (position == null || position.isZero()))
+		if (nonnull && (position == null || position.isZero())) {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
-		if (check && !context.isInRadius(position))
+		}
+		if (check && !context.isInRadius(position)) {
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
-		if (shouldBeAxial && !position.isAxial())
+		}
+		if (shouldBeAxial && !position.isAxial()) {
 			throw new SpellRuntimeException(SpellRuntimeException.NON_AXIAL_VECTOR);
+		}
 		return position;
 	}
 

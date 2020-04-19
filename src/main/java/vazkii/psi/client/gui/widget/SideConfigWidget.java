@@ -1,12 +1,23 @@
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
+ * https://github.com/Vazkii/Psi
+ *
+ * Psi is Open Source and distributed under the
+ * Psi License: https://psi.vazkii.net/license.php
+ */
 package vazkii.psi.client.gui.widget;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.InputMappings;
 import net.minecraft.util.text.TextFormatting;
+
 import org.lwjgl.glfw.GLFW;
+
 import vazkii.psi.api.spell.SpellGrid;
 import vazkii.psi.api.spell.SpellPiece;
 import vazkii.psi.client.gui.GuiProgrammer;
@@ -20,12 +31,10 @@ public class SideConfigWidget extends Widget {
 	public boolean configEnabled = false;
 	public final GuiProgrammer parent;
 
-
 	public SideConfigWidget(int x, int y, int width, int height, GuiProgrammer programmer) {
 		super(x, y, width, height, "");
 		this.parent = programmer;
 	}
-
 
 	@Override
 	protected boolean isValidClickButton(int p_isValidClickButton_1_) {
@@ -35,8 +44,9 @@ public class SideConfigWidget extends Widget {
 	@Override
 	public void renderButton(int mouseX, int mouseY, float pTicks) {
 		SpellPiece piece = null;
-		if (SpellGrid.exists(GuiProgrammer.selectedX, GuiProgrammer.selectedY))
+		if (SpellGrid.exists(GuiProgrammer.selectedX, GuiProgrammer.selectedY)) {
 			piece = parent.spell.grid.gridData[GuiProgrammer.selectedX][GuiProgrammer.selectedY];
+		}
 		if (configEnabled && !parent.takingScreenshot) {
 			blit(parent.left - 81, parent.top + 55, parent.xSize, 30, 81, 115);
 			String configStr = I18n.format("psimisc.config");
@@ -45,9 +55,11 @@ public class SideConfigWidget extends Widget {
 			int i = 0;
 			if (piece != null) {
 				int param = -1;
-				for (int j = 0; j < 4; j++)
-					if (InputMappings.isKeyDown(parent.getMinecraft().getWindow().getHandle(), GLFW.GLFW_KEY_1 + j))
+				for (int j = 0; j < 4; j++) {
+					if (InputMappings.isKeyDown(parent.getMinecraft().getWindow().getHandle(), GLFW.GLFW_KEY_1 + j)) {
 						param = j;
+					}
+				}
 
 				for (String s : piece.params.keySet()) {
 					int x = parent.left - 75;
@@ -58,8 +70,9 @@ public class SideConfigWidget extends Widget {
 					blit(x + 50, y - 8, parent.xSize, 145, 24, 24);
 
 					String localized = I18n.format(s);
-					if (i == param)
+					if (i == param) {
 						localized = TextFormatting.UNDERLINE + localized;
+					}
 
 					parent.getMinecraft().fontRenderer.drawString(localized, x, y, 0xFFFFFF);
 

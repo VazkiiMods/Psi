@@ -1,16 +1,15 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [06/02/2016, 20:09:22 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.common.item.tool;
 
 import com.google.common.collect.Multimap;
+
 import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
@@ -28,11 +27,13 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ToolType;
+
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ISocketable;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
 import java.util.List;
 
 public class ItemPsimetalShovel extends ShovelItem implements IPsimetalTool {
@@ -52,16 +53,18 @@ public class ItemPsimetalShovel extends ShovelItem implements IPsimetalTool {
 
 	@Override
 	public void setDamage(ItemStack stack, int damage) {
-		if (damage > stack.getMaxDamage())
+		if (damage > stack.getMaxDamage()) {
 			damage = stack.getDamage();
+		}
 		super.setDamage(stack, damage);
 	}
 
 	@Override
 	public Multimap<String, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
 		Multimap<String, AttributeModifier> modifiers = super.getAttributeModifiers(slot, stack);
-		if (!isEnabled(stack))
+		if (!isEnabled(stack)) {
 			modifiers.removeAll(SharedMonsterAttributes.ATTACK_DAMAGE.getName());
+		}
 		return modifiers;
 	}
 
@@ -69,18 +72,19 @@ public class ItemPsimetalShovel extends ShovelItem implements IPsimetalTool {
 	@Override
 	public String getTranslationKey(ItemStack stack) {
 		String name = super.getTranslationKey(stack);
-		if (!isEnabled(stack))
+		if (!isEnabled(stack)) {
 			name += ".broken";
+		}
 		return name;
 	}
 
 	@Override
 	public float getDestroySpeed(ItemStack stack, BlockState state) {
-		if (!isEnabled(stack))
+		if (!isEnabled(stack)) {
 			return 1;
+		}
 		return super.getDestroySpeed(stack, state);
 	}
-
 
 	@Override
 	public void inventoryTick(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {

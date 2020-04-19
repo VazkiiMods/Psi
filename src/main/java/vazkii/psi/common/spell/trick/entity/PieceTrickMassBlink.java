@@ -1,16 +1,15 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [29/01/2016, 17:23:57 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.common.spell.trick.entity;
 
 import net.minecraft.entity.Entity;
+
 import vazkii.psi.api.spell.EnumSpellStat;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellCompilationException;
@@ -42,8 +41,9 @@ public class PieceTrickMassBlink extends PieceTrick {
 	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
 		super.addToMetadata(meta);
 		Double distanceVal = this.<Double>getParamEvaluation(distance);
-		if(distanceVal == null)
+		if (distanceVal == null) {
 			distanceVal = 1D;
+		}
 
 		meta.addStat(EnumSpellStat.POTENCY, (int) (Math.abs(distanceVal) * 80));
 		meta.addStat(EnumSpellStat.COST, (int) (Math.abs(distanceVal) * 100));
@@ -54,8 +54,9 @@ public class PieceTrickMassBlink extends PieceTrick {
 		EntityListWrapper targetVal = this.getParamValue(context, target);
 		double distanceVal = this.getParamValue(context, distance).doubleValue();
 
-		for(Entity e : targetVal)
+		for (Entity e : targetVal) {
 			PieceTrickBlink.blink(context, e, distanceVal);
+		}
 
 		return null;
 	}

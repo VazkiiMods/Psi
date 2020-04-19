@@ -1,12 +1,10 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [09/02/2016, 23:21:57 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.common.spell.trick;
 
@@ -17,7 +15,6 @@ import vazkii.psi.api.spell.SpellCompilationException;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellMetadata;
 import vazkii.psi.api.spell.SpellParam;
-import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.piece.PieceTrick;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
@@ -41,8 +38,9 @@ public class PieceTrickEidosAnchor extends PieceTrick {
 		super.addToMetadata(meta);
 		Double timeVal = this.<Double>getParamEvaluation(time);
 
-		if(timeVal == null ||  timeVal <= 0 || timeVal != timeVal.intValue())
+		if (timeVal == null || timeVal <= 0 || timeVal != timeVal.intValue()) {
 			throw new SpellCompilationException(SpellCompilationException.NON_POSITIVE_INTEGER, x, y);
+		}
 
 		meta.addStat(EnumSpellStat.POTENCY, (int) (timeVal * 5.5 + 20));
 		meta.addStat(EnumSpellStat.COST, timeVal.intValue() * 40);

@@ -1,12 +1,10 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [06/02/2016, 21:14:58 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.common.item.tool;
 
@@ -21,6 +19,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ISocketable;
 import vazkii.psi.api.spell.ISpellAcceptor;
@@ -51,8 +50,9 @@ public interface IPsimetalTool extends ISocketable, ISpellSettable {
 		String name = TAG_BULLET_PREFIX + slot;
 		CompoundNBT cmp = stack.getOrCreateTag().getCompound(name);
 
-		if (cmp.isEmpty())
+		if (cmp.isEmpty()) {
 			return ItemStack.EMPTY;
+		}
 
 		return ItemStack.read(cmp);
 	}
@@ -62,8 +62,9 @@ public interface IPsimetalTool extends ISocketable, ISpellSettable {
 		String name = TAG_BULLET_PREFIX + slot;
 		CompoundNBT cmp = new CompoundNBT();
 
-		if (!bullet.isEmpty())
+		if (!bullet.isEmpty()) {
 			cmp = bullet.write(cmp);
+		}
 
 		stack.getOrCreateTag().put(name, cmp);
 	}
@@ -89,8 +90,9 @@ public interface IPsimetalTool extends ISocketable, ISpellSettable {
 	}
 
 	default void castOnBlockBreak(ItemStack itemstack, PlayerEntity player) {
-		if (!isEnabled(itemstack))
+		if (!isEnabled(itemstack)) {
 			return;
+		}
 
 		PlayerDataHandler.PlayerData data = PlayerDataHandler.get(player);
 		ItemStack playerCad = PsiAPI.getPlayerCAD(player);

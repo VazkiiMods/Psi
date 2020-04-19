@@ -1,23 +1,21 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [09/01/2016, 00:17:17 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.common.item.component;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+
 import vazkii.psi.api.cad.EnumCADComponent;
 
 public class ItemCADSocket extends ItemCADComponent {
 
 	public static final int MAX_SOCKETS = 12;
-
 
 	public ItemCADSocket(Item.Properties properties) {
 		super(properties);

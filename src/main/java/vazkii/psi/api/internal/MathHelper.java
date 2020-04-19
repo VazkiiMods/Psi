@@ -1,12 +1,10 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [23/01/2016, 00:09:20 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.api.internal;
 
@@ -27,6 +25,7 @@ public final class MathHelper {
 	public static double pointDistanceSpace(double x1, double y1, double z1, double x2, double y2, double z2) {
 		return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2) + Math.pow(z1 - z2, 2));
 	}
+
 	public static LinkedHashSet<BlockPos> getBlocksAlongRay(Vec3d origin, Vec3d end) {
 		return getBlocksAlongRay(origin, end, Integer.MAX_VALUE);
 	}
@@ -57,14 +56,14 @@ public final class MathHelper {
 			int signumX = net.minecraft.util.math.MathHelper.signum(lengthX);
 			int signumY = net.minecraft.util.math.MathHelper.signum(lengthY);
 			int signumZ = net.minecraft.util.math.MathHelper.signum(lengthZ);
-			double stepSizeX = signumX == 0 ? Double.MAX_VALUE : (double)signumX / lengthX;
-			double stepSizeY = signumY == 0 ? Double.MAX_VALUE : (double)signumY / lengthY;
-			double stepSizeZ = signumZ == 0 ? Double.MAX_VALUE : (double)signumZ / lengthZ;
+			double stepSizeX = signumX == 0 ? Double.MAX_VALUE : (double) signumX / lengthX;
+			double stepSizeY = signumY == 0 ? Double.MAX_VALUE : (double) signumY / lengthY;
+			double stepSizeZ = signumZ == 0 ? Double.MAX_VALUE : (double) signumZ / lengthZ;
 			double totalStepsX = stepSizeX * (signumX > 0 ? 1.0D - net.minecraft.util.math.MathHelper.frac(originX) : net.minecraft.util.math.MathHelper.frac(originX));
 			double totalStepsY = stepSizeY * (signumY > 0 ? 1.0D - net.minecraft.util.math.MathHelper.frac(originY) : net.minecraft.util.math.MathHelper.frac(originY));
 			double totalStepsZ = stepSizeZ * (signumZ > 0 ? 1.0D - net.minecraft.util.math.MathHelper.frac(originZ) : net.minecraft.util.math.MathHelper.frac(originZ));
 
-			while((totalStepsX <= 1.0D || totalStepsY <= 1.0D || totalStepsZ <= 1.0D) && positions.size() != maxBlocks) {
+			while ((totalStepsX <= 1.0D || totalStepsY <= 1.0D || totalStepsZ <= 1.0D) && positions.size() != maxBlocks) {
 				if (totalStepsX < totalStepsY) {
 					if (totalStepsX < totalStepsZ) {
 						blockX += signumX;

@@ -1,12 +1,10 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [30/01/2016, 16:09:44 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.common.entity;
 
@@ -25,6 +23,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.registries.ObjectHolder;
+
 import vazkii.psi.api.internal.PsiRenderHelper;
 import vazkii.psi.api.spell.ISpellAcceptor;
 import vazkii.psi.api.spell.ISpellImmune;
@@ -36,22 +35,23 @@ import vazkii.psi.common.lib.LibResources;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
 import java.util.Optional;
 import java.util.UUID;
 
 public class EntitySpellCircle extends Entity implements ISpellImmune {
 	@ObjectHolder(LibResources.PREFIX_MOD + LibEntityNames.SPELL_CIRCLE)
-    public static EntityType<EntitySpellCircle> TYPE;
+	public static EntityType<EntitySpellCircle> TYPE;
 
-    public static final int CAST_TIMES = 20;
-    public static final int CAST_DELAY = 5;
-    public static final int LIVE_TIME = (CAST_TIMES + 2) * CAST_DELAY;
+	public static final int CAST_TIMES = 20;
+	public static final int CAST_DELAY = 5;
+	public static final int LIVE_TIME = (CAST_TIMES + 2) * CAST_DELAY;
 
-    private static final String TAG_COLORIZER = "colorizer";
-    private static final String TAG_BULLET = "bullet";
-    private static final String TAG_CASTER = "caster";
-    private static final String TAG_TIME_ALIVE = "timeAlive";
-    private static final String TAG_TIMES_CAST = "timesCast";
+	private static final String TAG_COLORIZER = "colorizer";
+	private static final String TAG_BULLET = "bullet";
+	private static final String TAG_CASTER = "caster";
+	private static final String TAG_TIME_ALIVE = "timeAlive";
+	private static final String TAG_TIMES_CAST = "timesCast";
 
 	private static final String TAG_LOOK_X = "savedLookX";
 	private static final String TAG_LOOK_Y = "savedLookY";
@@ -72,7 +72,7 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 	}
 
 	public EntitySpellCircle setInfo(PlayerEntity player, ItemStack colorizer, ItemStack bullet) {
-		dataManager.set(COLORIZER_DATA,colorizer);
+		dataManager.set(COLORIZER_DATA, colorizer);
 		dataManager.set(BULLET_DATA, bullet);
 		dataManager.set(CASTER_UUID, Optional.of(player.getUniqueID()));
 
@@ -98,15 +98,17 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 	@Override
 	public void writeAdditional(@Nonnull CompoundNBT tagCompound) {
 		CompoundNBT colorizerCmp = new CompoundNBT();
-		ItemStack colorizer =  dataManager.get(COLORIZER_DATA);
-		if (!colorizer.isEmpty())
+		ItemStack colorizer = dataManager.get(COLORIZER_DATA);
+		if (!colorizer.isEmpty()) {
 			colorizerCmp = colorizer.write(colorizerCmp);
+		}
 		tagCompound.put(TAG_COLORIZER, colorizerCmp);
 
 		CompoundNBT bulletCmp = new CompoundNBT();
 		ItemStack bullet = dataManager.get(BULLET_DATA);
-		if (!bullet.isEmpty())
+		if (!bullet.isEmpty()) {
 			bulletCmp = bullet.write(bulletCmp);
+		}
 		tagCompound.put(TAG_BULLET, bulletCmp);
 
 		dataManager.get(CASTER_UUID).ifPresent(u -> tagCompound.putString(TAG_CASTER, u.toString()));
@@ -144,8 +146,9 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 		super.tick();
 
 		int timeAlive = getTimeAlive();
-		if (timeAlive > LIVE_TIME)
+		if (timeAlive > LIVE_TIME) {
 			remove();
+		}
 
 		setTimeAlive(timeAlive + 1);
 		int times = dataManager.get(TIMES_CAST);
@@ -158,20 +161,21 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 				if (!spellContainer.isEmpty() && ISpellAcceptor.isContainer(spellContainer)) {
 					dataManager.set(TIMES_CAST, times + 1);
 					Spell spell = ISpellAcceptor.acceptor(spellContainer).getSpell();
-					if (spell != null)
+					if (spell != null) {
 						context = new SpellContext().setPlayer((PlayerEntity) thrower).setFocalPoint(this)
 								.setSpell(spell).setLoopcastIndex(times);
+					}
 				}
 			}
 
-			if (context != null)
+			if (context != null) {
 				context.cspell.safeExecute(context);
+			}
 		}
 
-		if(world.isRemote){
+		if (world.isRemote) {
 			ItemStack colorizer = dataManager.get(COLORIZER_DATA);
 			int colorVal = Psi.proxy.getColorForColorizer(colorizer);
-
 
 			float r = PsiRenderHelper.r(colorVal) / 255F;
 			float g = PsiRenderHelper.g(colorVal) / 255F;
@@ -187,8 +191,8 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 
 	}
 
-    @Override
-    public Vec3d getLookVec() {
+	@Override
+	public Vec3d getLookVec() {
 		float x = dataManager.get(LOOK_X);
 		float y = dataManager.get(LOOK_Y);
 		float z = dataManager.get(LOOK_Z);

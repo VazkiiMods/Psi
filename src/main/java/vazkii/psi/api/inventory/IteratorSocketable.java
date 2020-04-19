@@ -1,16 +1,15 @@
-/**
- * This class was created by <WireSegal>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [02/01/2019, 21:52:33 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.api.inventory;
 
 import net.minecraft.item.ItemStack;
+
 import vazkii.psi.api.cad.ISocketableCapability;
 
 import java.util.Iterator;
@@ -38,8 +37,9 @@ public class IteratorSocketable implements Iterator<ItemStack> {
 
 	@Override
 	public void remove() {
-		if (index < 0 || removed)
+		if (index < 0 || removed) {
 			throw new IllegalStateException();
+		}
 
 		removed = true;
 		socketable.setBulletInSocket(index, ItemStack.EMPTY);

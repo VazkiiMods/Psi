@@ -1,8 +1,17 @@
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
+ * https://github.com/Vazkii/Psi
+ *
+ * Psi is Open Source and distributed under the
+ * Psi License: https://psi.vazkii.net/license.php
+ */
 package vazkii.psi.client.patchouli;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.text.ITextComponent;
+
 import vazkii.patchouli.api.IComponentRenderContext;
 import vazkii.patchouli.api.PatchouliAPI;
 import vazkii.psi.api.spell.SpellPiece;
@@ -12,7 +21,7 @@ import java.util.List;
 import java.util.StringJoiner;
 import java.util.stream.Collectors;
 
-//https://github.com/Vazkii/Botania/blob/master/src/main/java/vazkii/botania/client/patchouli/PatchouliUtils.java
+// https://github.com/Vazkii/Botania/blob/master/src/main/java/vazkii/botania/client/patchouli/PatchouliUtils.java
 public class PatchouliUtils {
 
 	/**
@@ -29,7 +38,7 @@ public class PatchouliUtils {
 			return PatchouliAPI.instance.serializeIngredient(ingredients.get(0));
 		}
 
-		ItemStack[] empty = {ItemStack.EMPTY};
+		ItemStack[] empty = { ItemStack.EMPTY };
 		List<ItemStack[]> stacks = new ArrayList<>();
 		for (Ingredient ingredient : ingredients) {
 			if (ingredient != null && !ingredient.hasNoMatchingItems()) {

@@ -1,12 +1,10 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
- * 
+ *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- * 
- * File Created @ [22/02/2016, 13:33:56 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.common.spell.selector.entity;
 
@@ -14,9 +12,10 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.FurnaceRecipe;
 import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.world.World;
+
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 
@@ -38,12 +37,12 @@ public class PieceSelectorNearbySmeltables extends PieceSelectorNearby {
 		DUMMY_INV.clear();
 		DUMMY_INV.setInventorySlotContents(0, input);
 		return world.getRecipeManager().getRecipe(IRecipeType.SMELTING, DUMMY_INV, world)
-				.map(IRecipe::getRecipeOutput)
+				.map(FurnaceRecipe::getRecipeOutput)
 				.orElse(ItemStack.EMPTY);
 	}
-	
+
 	public boolean accept(Entity e) {
-		if(e instanceof ItemEntity) {
+		if (e instanceof ItemEntity) {
 			ItemEntity eitem = (ItemEntity) e;
 			return !simulateSmelt(e.getEntityWorld(), eitem.getItem()).isEmpty();
 		}

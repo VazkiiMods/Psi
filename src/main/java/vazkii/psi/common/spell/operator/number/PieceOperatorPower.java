@@ -1,12 +1,10 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
- * 
+ *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- * 
- * File Created @ [11/03/2016, 20:22:18 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.common.spell.operator.number;
 
@@ -36,7 +34,6 @@ public class PieceOperatorPower extends PieceOperator {
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		double d = this.getParamValue(context, num).doubleValue();
 		double pow = this.getParamValue(context, power).doubleValue();
-
 
 		return Math.pow(d, pow);
 	}

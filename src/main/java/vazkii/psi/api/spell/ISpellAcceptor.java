@@ -1,17 +1,16 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [15/02/2016, 15:37:40 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.api.spell;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+
 import vazkii.psi.api.PsiAPI;
 
 import javax.annotation.Nullable;
@@ -22,7 +21,6 @@ import javax.annotation.Nullable;
  * returns true from {@link #castableFromSocket()}).
  */
 public interface ISpellAcceptor {
-
 
 	static boolean isAcceptor(ItemStack stack) {
 		return stack.getCapability(PsiAPI.SPELL_ACCEPTOR_CAPABILITY).isPresent();
@@ -56,7 +54,7 @@ public interface ISpellAcceptor {
 	double getCostModifier();
 
 	boolean isCADOnlyContainer();
-	
+
 	default boolean requiresSneakForSpellSet() {
 		return false;
 	}

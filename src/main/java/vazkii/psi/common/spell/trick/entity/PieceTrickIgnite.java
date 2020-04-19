@@ -1,16 +1,15 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [08/02/2016, 22:57:55 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.common.spell.trick.entity;
 
 import net.minecraft.entity.Entity;
+
 import vazkii.psi.api.spell.EnumSpellStat;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellCompilationException;
@@ -42,8 +41,9 @@ public class PieceTrickIgnite extends PieceTrick {
 		super.addToMetadata(meta);
 		Double timeVal = this.<Double>getParamEvaluation(time);
 
-		if(timeVal == null ||  timeVal <= 0 || timeVal != timeVal.intValue())
+		if (timeVal == null || timeVal <= 0 || timeVal != timeVal.intValue()) {
 			throw new SpellCompilationException(SpellCompilationException.NON_POSITIVE_INTEGER, x, y);
+		}
 
 		meta.addStat(EnumSpellStat.POTENCY, timeVal.intValue() * 40);
 		meta.addStat(EnumSpellStat.COST, timeVal.intValue() * 65);
@@ -53,7 +53,7 @@ public class PieceTrickIgnite extends PieceTrick {
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		Entity targetVal = this.getParamValue(context, target);
 		int timeVal = this.getParamValue(context, time).intValue();
-		
+
 		context.verifyEntity(targetVal);
 		targetVal.setFire(timeVal);
 

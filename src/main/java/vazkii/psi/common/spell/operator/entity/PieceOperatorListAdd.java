@@ -1,16 +1,15 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [09/02/2016, 00:04:21 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.common.spell.operator.entity;
 
 import net.minecraft.entity.Entity;
+
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellParam;
@@ -43,18 +42,19 @@ public class PieceOperatorListAdd extends PieceOperator {
 		Entity targetVal = this.getParamValue(context, target);
 		EntityListWrapper listVal = this.getParamValue(context, list);
 
-		if(targetVal == null)
+		if (targetVal == null) {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_TARGET);
+		}
 
 		List<Entity> list = new ArrayList<>();
-		if(listVal.unwrap() != null){
+		if (listVal.unwrap() != null) {
 			list = new ArrayList<>(listVal.unwrap());
-			if(!list.contains(targetVal))
+			if (!list.contains(targetVal)) {
 				list.add(targetVal);
+			}
 		} else {
 			list.add(targetVal);
 		}
-
 
 		return new EntityListWrapper(list);
 	}

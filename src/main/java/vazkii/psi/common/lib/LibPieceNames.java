@@ -1,12 +1,10 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [16/01/2016, 16:19:10 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.common.lib;
 
@@ -42,7 +40,6 @@ public final class LibPieceNames {
 	public static final String SELECTOR_SUCCESS_COUNTER = "selector_sucession_counter";
 	public static final String SELECTOR_CASTER_ENERGY = "selector_caster_energy";
 	public static final String SELECTOR_CASTER_BATTERY = "selector_caster_battery";
-
 
 	public static final String OPERATOR_SUM = "operator_sum";
 	public static final String OPERATOR_SUBTRACT = "operator_subtract";
@@ -165,6 +162,5 @@ public final class LibPieceNames {
 	public static final String TRICK_MOVE_BLOCK_SEQUENCE = "trick_move_block_sequence";
 	public static final String TRICK_TILL = "trick_till";
 	public static final String TRICK_TILL_SEQUENCE = "trick_till_sequence";
-
 
 }

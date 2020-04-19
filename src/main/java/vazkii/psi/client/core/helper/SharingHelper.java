@@ -1,21 +1,21 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
- * 
+ *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- * 
- * File Created @ [09/03/2016, 14:45:53 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.client.core.helper;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.NativeImage;
 import net.minecraft.util.ScreenShotHelper;
 import net.minecraft.util.Util;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -58,7 +58,7 @@ public final class SharingHelper {
 
 			String redditUrl = "https://old.reddit.com/r/psispellcompendium/submit?title=" + encodedTitle + "&text=" + encodedContents;
 			Util.getOSType().openURI(new URI(redditUrl));
-		} catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -67,7 +67,7 @@ public final class SharingHelper {
 		String url = uploadImage(title, export);
 		try {
 			Util.getOSType().openURI(new URI(url));
-		} catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -85,19 +85,19 @@ public final class SharingHelper {
 			list.add(new BasicNameValuePair("image", takeScreenshot()));
 			list.add(new BasicNameValuePair("name", title));
 			list.add(new BasicNameValuePair("description", desc));
-			
+
 			post.setEntity(new UrlEncodedFormEntity(list));
 			post.addHeader("Authorization", "Client-ID " + CLIENT_ID);
 
 			HttpResponse res = client.execute(post);
 			JsonObject resJson = new JsonParser().parse(EntityUtils.toString(res.getEntity())).getAsJsonObject();
-			if(resJson.has("success") && resJson.get("success").getAsBoolean()) {
+			if (resJson.has("success") && resJson.get("success").getAsBoolean()) {
 				JsonObject data = resJson.get("data").getAsJsonObject();
 				String id = data.get("id").getAsString();
-				
+
 				return "https://imgur.com/" + id;
 			}
-		} catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

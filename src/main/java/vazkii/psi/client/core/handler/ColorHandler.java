@@ -1,8 +1,17 @@
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
+ * https://github.com/Vazkii/Psi
+ *
+ * Psi is Open Source and distributed under the
+ * Psi License: https://psi.vazkii.net/license.php
+ */
 package vazkii.psi.client.core.handler;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.util.math.MathHelper;
+
 import vazkii.psi.common.item.ItemCAD;
 import vazkii.psi.common.item.ItemExosuitSensor;
 import vazkii.psi.common.item.armor.ItemPsimetalArmor;
@@ -29,8 +38,9 @@ public class ColorHandler {
 		double t = (ClientTickHandler.total * speed * n / Math.PI) % n;
 		int phase = (int) t;
 		double dt = t - phase;
-		if (dt == 0)
+		if (dt == 0) {
 			return color[phase];
+		}
 		int nextPhase = (phase + 1) % n;
 		return slideColorTime(color[phase], color[nextPhase], (float) (dt * Math.PI));
 	}
@@ -47,7 +57,6 @@ public class ColorHandler {
 		return pulseColor(source, 1f, speed, magnitude);
 	}
 
-
 	public static int pulseColor(int source, float multiplier, float speed, int magnitude) {
 		int add = (int) (MathHelper.sin(ClientTickHandler.ticksInGame * speed) * magnitude);
 		int red = (0xFF0000 & source) >> 16;
@@ -61,11 +70,11 @@ public class ColorHandler {
 
 	public static int slideColorTime(int color, int secondColor, float t) {
 		float shift = (1 - MathHelper.cos(t)) / 2;
-		if (shift == 0)
+		if (shift == 0) {
 			return color;
-		else if (shift == 1)
+		} else if (shift == 1) {
 			return secondColor;
-
+		}
 
 		int redA = (0xFF0000 & color) >> 16;
 		int greenA = (0x00FF00 & color) >> 8;
@@ -79,6 +88,5 @@ public class ColorHandler {
 		int newBlue = (int) (blueA * (1 - shift) + blueB * shift);
 		return (newRed << 16) | (newGreen << 8) | newBlue;
 	}
-
 
 }

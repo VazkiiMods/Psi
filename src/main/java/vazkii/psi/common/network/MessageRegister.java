@@ -1,12 +1,10 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [11/01/2016, 21:58:25 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.common.network;
 
@@ -18,6 +16,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkDirection;
+
 import vazkii.arl.network.IMessage;
 import vazkii.arl.network.MessageSerializer;
 import vazkii.arl.network.NetworkHandler;
@@ -52,23 +51,23 @@ public class MessageRegister {
 
 	private static Spell readSpell(PacketBuffer buf, Field f) {
 		CompoundNBT cmp = buf.readCompoundTag();
-        return Spell.createFromNBT(cmp);
-    }
+		return Spell.createFromNBT(cmp);
+	}
 
-    private static void writeSpell(PacketBuffer buf, Field f, Spell spell) {
-        CompoundNBT cmp = new CompoundNBT();
-        if (spell != null)
-            spell.writeToNBT(cmp);
+	private static void writeSpell(PacketBuffer buf, Field f, Spell spell) {
+		CompoundNBT cmp = new CompoundNBT();
+		if (spell != null) {
+			spell.writeToNBT(cmp);
+		}
 
-        buf.writeCompoundTag(cmp);
-    }
+		buf.writeCompoundTag(cmp);
+	}
 
-    public static void sendToAllAround(IMessage message, BlockPos origin, World world, int radius) {
-        List<PlayerEntity> players = world.getEntitiesWithinAABB(PlayerEntity.class, new AxisAlignedBB(origin.getX() - radius, origin.getY() - radius, origin.getZ() - radius, origin.getX() + radius, origin.getY() + 32, origin.getZ() + 32),
-                entity -> entity != null && entity.getDistanceSq(origin.getX(), origin.getY(), origin.getZ()) <= radius * radius);
-        players.forEach(pl -> HANDLER.sendToPlayer(message, (ServerPlayerEntity) pl));
+	public static void sendToAllAround(IMessage message, BlockPos origin, World world, int radius) {
+		List<PlayerEntity> players = world.getEntitiesWithinAABB(PlayerEntity.class, new AxisAlignedBB(origin.getX() - radius, origin.getY() - radius, origin.getZ() - radius, origin.getX() + radius, origin.getY() + 32, origin.getZ() + 32),
+				entity -> entity != null && entity.getDistanceSq(origin.getX(), origin.getY(), origin.getZ()) <= radius * radius);
+		players.forEach(pl -> HANDLER.sendToPlayer(message, (ServerPlayerEntity) pl));
 
-    }
-
+	}
 
 }

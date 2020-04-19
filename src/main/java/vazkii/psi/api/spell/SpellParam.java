@@ -1,16 +1,15 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [16/01/2016, 15:19:38 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.api.spell;
 
 import com.google.common.base.CaseFormat;
+
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
@@ -74,7 +73,6 @@ public abstract class SpellParam<T> {
 	public static final String GENERIC_NAME_TOGGLE = PSI_PREFIX + "toggle";
 	public static final String GENERIC_NAME_MASK = PSI_PREFIX + "mask";
 
-
 	public final String name;
 	public final int color;
 	public final boolean canDisable;
@@ -96,7 +94,8 @@ public abstract class SpellParam<T> {
 	protected abstract Class<T> getRequiredType();
 
 	/**
-	 * Gets if this parameter requires a constant ({@link EnumPieceType#CONSTANT}). Similarly to {@link #getRequiredType()} this
+	 * Gets if this parameter requires a constant ({@link EnumPieceType#CONSTANT}). Similarly to
+	 * {@link #getRequiredType()} this
 	 * is for internal use only.
 	 */
 	protected boolean requiresConstant() {
@@ -110,8 +109,9 @@ public abstract class SpellParam<T> {
 		Class<T> evalType = getRequiredType();
 		String evalStr = evalType == null ? "null" : CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, evalType.getSimpleName());
 		ITextComponent s = new TranslationTextComponent("psi.datatype." + evalStr);
-		if (requiresConstant())
+		if (requiresConstant()) {
 			s.appendText(" ").appendSibling(new TranslationTextComponent("psimisc.constant"));
+		}
 
 		return s;
 	}
@@ -175,16 +175,16 @@ public abstract class SpellParam<T> {
 
 		private Side mapSides(Side whenUp, Side whenDown, Side whenL, Side whenR) {
 			switch (this) {
-				case TOP:
-					return whenUp;
-				case BOTTOM:
-					return whenDown;
-				case LEFT:
-					return whenL;
-				case RIGHT:
-					return whenR;
-				default:
-					return OFF;
+			case TOP:
+				return whenUp;
+			case BOTTOM:
+				return whenDown;
+			case LEFT:
+				return whenL;
+			case RIGHT:
+				return whenR;
+			default:
+				return OFF;
 			}
 		}
 	}
@@ -192,6 +192,7 @@ public abstract class SpellParam<T> {
 	/**
 	 * Empty helper class for use with required types when any type is accepted.
 	 */
-	public static class Any { }
+	public static class Any {
+	}
 
 }

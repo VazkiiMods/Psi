@@ -1,12 +1,10 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [21/02/2016, 16:57:14 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.common.crafting.recipe;
 
@@ -17,6 +15,7 @@ import net.minecraft.item.crafting.SpecialRecipe;
 import net.minecraft.item.crafting.SpecialRecipeSerializer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+
 import vazkii.psi.api.exosuit.ISensorHoldable;
 
 import javax.annotation.Nonnull;
@@ -36,9 +35,11 @@ public class SensorRemoveRecipe extends SpecialRecipe {
 		for (int i = 0; i < inv.getSizeInventory(); i++) {
 			ItemStack stack = inv.getStackInSlot(i);
 			if (!stack.isEmpty()) {
-				if (!foundHoldable && stack.getItem() instanceof ISensorHoldable && !((ISensorHoldable) stack.getItem()).getAttachedSensor(stack).isEmpty())
+				if (!foundHoldable && stack.getItem() instanceof ISensorHoldable && !((ISensorHoldable) stack.getItem()).getAttachedSensor(stack).isEmpty()) {
 					foundHoldable = true;
-				else return false;
+				} else {
+					return false;
+				}
 			}
 		}
 
@@ -52,8 +53,9 @@ public class SensorRemoveRecipe extends SpecialRecipe {
 
 		for (int i = 0; i < inv.getSizeInventory(); i++) {
 			ItemStack stack = inv.getStackInSlot(i);
-			if (!stack.isEmpty())
+			if (!stack.isEmpty()) {
 				holdableItem = stack;
+			}
 		}
 
 		ItemStack copy = holdableItem.copy();
