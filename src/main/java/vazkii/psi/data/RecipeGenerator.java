@@ -597,6 +597,15 @@ public class RecipeGenerator extends RecipeProvider implements IConditionBuilder
 		);
 		buildMagicalWrapper(Psi.location("exosuit_sensor_stress"), consumer,
 				hasPsimetal, "has_psimetal", ShapedRecipeBuilder.shapedRecipe(ModItems.exosuitSensorStress)
+						.key('M', Items.GUNPOWDER)
+						.key('R', Tags.Items.INGOTS_IRON)
+						.key('I', ModTags.INGOT_PSIMETAL)
+						.patternLine(" I ")
+						.patternLine("IMR")
+						.patternLine(" R ")
+		);
+		buildMagicalWrapper(Psi.location("exosuit_sensor_trigger"), consumer,
+				hasPsimetal, "has_psimetal", ShapedRecipeBuilder.shapedRecipe(ModItems.exosuitSensorTrigger)
 						.key('M', Items.GLISTERING_MELON_SLICE)
 						.key('R', Tags.Items.INGOTS_IRON)
 						.key('I', ModTags.INGOT_PSIMETAL)
