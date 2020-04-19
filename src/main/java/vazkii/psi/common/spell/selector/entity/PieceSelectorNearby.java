@@ -1,19 +1,23 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [23/01/2016, 00:02:50 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.common.spell.selector.entity;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.AxisAlignedBB;
+
 import vazkii.psi.api.internal.Vector3;
-import vazkii.psi.api.spell.*;
+import vazkii.psi.api.spell.Spell;
+import vazkii.psi.api.spell.SpellCompilationException;
+import vazkii.psi.api.spell.SpellContext;
+import vazkii.psi.api.spell.SpellMetadata;
+import vazkii.psi.api.spell.SpellParam;
+import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.param.ParamVector;
 import vazkii.psi.api.spell.piece.PieceSelector;
@@ -42,8 +46,9 @@ public abstract class PieceSelectorNearby extends PieceSelector {
 		super.addToMetadata(meta);
 
 		Double radiusVal = this.<Double>getParamEvaluation(radius);
-		if (radiusVal == null || radiusVal <= 0)
+		if (radiusVal == null || radiusVal <= 0) {
 			throw new SpellCompilationException(SpellCompilationException.NON_POSITIVE_VALUE, x, y);
+		}
 	}
 
 	@Override
@@ -51,8 +56,9 @@ public abstract class PieceSelectorNearby extends PieceSelector {
 		Vector3 positionVal = this.getParamValue(context, position);
 		double radiusVal = this.getParamValue(context, radius).doubleValue();
 
-		if(!context.isInRadius(positionVal))
+		if (!context.isInRadius(positionVal)) {
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
+		}
 
 		AxisAlignedBB axis = new AxisAlignedBB(positionVal.x - radiusVal, positionVal.y - radiusVal, positionVal.z - radiusVal, positionVal.x + radiusVal, positionVal.y + radiusVal, positionVal.z + radiusVal);
 

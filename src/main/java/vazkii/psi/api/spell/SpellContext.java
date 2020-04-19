@@ -1,12 +1,10 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [16/01/2016, 19:56:25 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.api.spell;
 
@@ -16,6 +14,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockRayTraceResult;
+
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.internal.MathHelper;
 import vazkii.psi.api.internal.Vector3;
@@ -34,6 +33,7 @@ public final class SpellContext {
 	 * The maximum distance from the spell's {@link #focalPoint} a piece of the spell can interact with.<br>
 	 * This should be checked against in any tricks that affect parts of the world given a position
 	 * or entity.
+	 * 
 	 * @see #isInRadius(Entity), {@link #isInRadius(Vector3)}, {@link #isInRadius(double, double, double)}
 	 */
 	public static final double MAX_DISTANCE = 32;
@@ -81,7 +81,7 @@ public final class SpellContext {
 	public int targetSlot = 1;
 	public boolean shiftTargetSlot = true;
 	public boolean customTargetSlot = false;
-	
+
 	/**
 	 * A map for custom data where addon authors can put stuff. If you're going to put
 	 * anything here, prefix it with your mod ID to prevent collision. For example, Trick: Add Motion
@@ -147,6 +147,7 @@ public final class SpellContext {
 
 	/**
 	 * Used to check if a vector is within this context's radius.
+	 * 
 	 * @see #MAX_DISTANCE
 	 */
 	public boolean isInRadius(Vector3 vec) {
@@ -155,47 +156,58 @@ public final class SpellContext {
 
 	/**
 	 * Used to check if an entity is within this context's radius.
+	 * 
 	 * @see #MAX_DISTANCE
 	 */
 	public boolean isInRadius(Entity e) {
-        if (e == null)
-            return false;
-        if (e == focalPoint || e == caster)
-            return true;
+		if (e == null) {
+			return false;
+		}
+		if (e == focalPoint || e == caster) {
+			return true;
+		}
 
-        return isInRadius(e.getX(), e.getY(), e.getZ());
-    }
+		return isInRadius(e.getX(), e.getY(), e.getZ());
+	}
 
 	/**
 	 * Used to check if an (x,y,z) position is within this context's radius.
+	 * 
 	 * @see #MAX_DISTANCE
 	 */
 	public boolean isInRadius(double x, double y, double z) {
-        return MathHelper.pointDistanceSpace(x, y, z, focalPoint.getX(), focalPoint.getY(), focalPoint.getZ()) <= MAX_DISTANCE;
-    }
-	
-	public void verifyEntity(Entity e) throws SpellRuntimeException {
-		if(e == null)
-			throw new SpellRuntimeException(SpellRuntimeException.NULL_TARGET);
-		
-		if(ISpellImmune.isImmune(e))
-			throw new SpellRuntimeException(SpellRuntimeException.IMMUNE_TARGET);
+		return MathHelper.pointDistanceSpace(x, y, z, focalPoint.getX(), focalPoint.getY(), focalPoint.getZ()) <= MAX_DISTANCE;
 	}
-	
+
+	public void verifyEntity(Entity e) throws SpellRuntimeException {
+		if (e == null) {
+			throw new SpellRuntimeException(SpellRuntimeException.NULL_TARGET);
+		}
+
+		if (ISpellImmune.isImmune(e)) {
+			throw new SpellRuntimeException(SpellRuntimeException.IMMUNE_TARGET);
+		}
+	}
+
 	public int getTargetSlot() throws SpellRuntimeException {
 		int slot;
-		if(customTargetSlot)
+		if (customTargetSlot) {
 			return targetSlot % 36;
-		if(shiftTargetSlot) {
+		}
+		if (shiftTargetSlot) {
 			int cadSlot = PsiAPI.getPlayerCADSlot(caster);
-			if(cadSlot == -1)
+			if (cadSlot == -1) {
 				throw new SpellRuntimeException(SpellRuntimeException.NO_CAD);
-			
+			}
+
 			slot = (cadSlot + targetSlot) % 9;
-		} else slot = (targetSlot - 1) % 9; 
-			
-		if(slot < 0)
+		} else {
+			slot = (targetSlot - 1) % 9;
+		}
+
+		if (slot < 0) {
 			slot = 10 + slot;
+		}
 		return slot;
 	}
 

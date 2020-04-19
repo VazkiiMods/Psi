@@ -1,12 +1,10 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [08/01/2016, 21:48:12 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.common.item.base;
 
@@ -17,20 +15,27 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.IForgeRegistry;
+
 import vazkii.psi.common.core.PsiCreativeTab;
 import vazkii.psi.common.item.*;
 import vazkii.psi.common.item.armor.ItemPsimetalExosuitBoots;
 import vazkii.psi.common.item.armor.ItemPsimetalExosuitChestplate;
 import vazkii.psi.common.item.armor.ItemPsimetalExosuitHelmet;
 import vazkii.psi.common.item.armor.ItemPsimetalExosuitLeggings;
-import vazkii.psi.common.item.component.*;
+import vazkii.psi.common.item.component.ItemCADAssembly;
+import vazkii.psi.common.item.component.ItemCADBattery;
+import vazkii.psi.common.item.component.ItemCADColorizer;
+import vazkii.psi.common.item.component.ItemCADColorizerEmpty;
+import vazkii.psi.common.item.component.ItemCADColorizerPsi;
+import vazkii.psi.common.item.component.ItemCADColorizerRainbow;
+import vazkii.psi.common.item.component.ItemCADCore;
+import vazkii.psi.common.item.component.ItemCADSocket;
 import vazkii.psi.common.item.tool.ItemPsimetalAxe;
 import vazkii.psi.common.item.tool.ItemPsimetalPickaxe;
 import vazkii.psi.common.item.tool.ItemPsimetalShovel;
 import vazkii.psi.common.item.tool.ItemPsimetalSword;
 import vazkii.psi.common.lib.LibItemNames;
 import vazkii.psi.common.lib.LibMisc;
-
 
 @Mod.EventBusSubscriber(modid = LibMisc.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public final class ModItems {
@@ -115,11 +120,9 @@ public final class ModItems {
 	public static final Item psimetalExosuitLeggings = new ItemPsimetalExosuitLeggings(EquipmentSlotType.LEGS, defaultBuilder());
 	public static final Item psimetalExosuitBoots = new ItemPsimetalExosuitBoots(EquipmentSlotType.FEET, defaultBuilder());
 
-
 	public static Item.Properties defaultBuilder() {
 		return new Item.Properties().group(PsiCreativeTab.INSTANCE);
 	}
-
 
 	@SubscribeEvent
 	public static void registerItems(RegistryEvent.Register<Item> evt) {
@@ -208,8 +211,6 @@ public final class ModItems {
 		r.register(psimetalExosuitLeggings.setRegistryName(LibMisc.MOD_ID, LibItemNames.PSIMETAL_EXOSUIT_LEGGINGS));
 		r.register(psimetalExosuitBoots.setRegistryName(LibMisc.MOD_ID, LibItemNames.PSIMETAL_EXOSUIT_BOOTS));
 
-
 	}
-
 
 }

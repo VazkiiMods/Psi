@@ -1,13 +1,24 @@
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
+ * https://github.com/Vazkii/Psi
+ *
+ * Psi is Open Source and distributed under the
+ * Psi License: https://psi.vazkii.net/license.php
+ */
 package vazkii.psi.client.gui.widget;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
+
 import org.apache.commons.lang3.tuple.Pair;
+
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.client.gui.GuiProgrammer;
 
@@ -37,12 +48,13 @@ public class StatusWidget extends Widget {
 				parent.tooltip.add(new TranslationTextComponent("psimisc.errored").applyTextStyle(TextFormatting.RED));
 				parent.tooltip.add(new TranslationTextComponent(parent.compiler.getError()).applyTextStyle(TextFormatting.GRAY));
 				Pair<Integer, Integer> errorPos = parent.compiler.getErrorLocation();
-				if (errorPos != null && errorPos.getRight() != -1 && errorPos.getLeft() != -1)
+				if (errorPos != null && errorPos.getRight() != -1 && errorPos.getLeft() != -1) {
 					parent.tooltip.add(new StringTextComponent("[" + (errorPos.getLeft() + 1) + ", " + (errorPos.getRight() + 1) + "]").applyTextStyle(TextFormatting.GRAY));
-			} else
+				}
+			} else {
 				parent.tooltip.add(new TranslationTextComponent("psimisc.compiled").applyTextStyle(TextFormatting.GREEN));
+			}
 		}
-
 
 		ItemStack cad = PsiAPI.getPlayerCAD(parent.getMinecraft().player);
 		if (!cad.isEmpty()) {

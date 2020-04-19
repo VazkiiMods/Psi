@@ -1,21 +1,21 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [16/01/2016, 23:47:11 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.common.spell.constant;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.systems.RenderSystem;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.nbt.CompoundNBT;
+
 import org.lwjgl.glfw.GLFW;
+
 import vazkii.psi.api.spell.EnumPieceType;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
@@ -41,8 +41,9 @@ public class PieceConstantNumber extends SpellPiece {
 
 	@Override
 	public void drawAdditional(MatrixStack ms, IRenderTypeBuffer buffers, int light) {
-		if(valueStr == null || valueStr.isEmpty() || valueStr.length() > 5)
+		if (valueStr == null || valueStr.isEmpty() || valueStr.length() > 5) {
 			valueStr = "0";
+		}
 
 		Minecraft mc = Minecraft.getInstance();
 		int color = Psi.magical ? 0 : 0xFFFFFF;
@@ -68,27 +69,32 @@ public class PieceConstantNumber extends SpellPiece {
 
 	@Override
 	public boolean onCharTyped(char character, int keyCode, boolean doit) {
-		if ("FDfd".indexOf(character) >= 0)
+		if ("FDfd".indexOf(character) >= 0) {
 			return false;
+		}
 
 		String oldStr = valueStr;
 		String newStr = valueStr;
 		if (newStr.equals("0") || newStr.equals("-0")) {
-			if (character == '-')
+			if (character == '-') {
 				newStr = "-0";
-			else if (character != '.')
+			} else if (character != '.') {
 				newStr = newStr.replace("0", "");
+			}
 		}
 
-		if (character != '-')
+		if (character != '-') {
 			newStr += character;
+		}
 
-		if (newStr.isEmpty())
+		if (newStr.isEmpty()) {
 			newStr = "0";
+		}
 		newStr = newStr.trim();
 
-		if (newStr.length() > 5)
+		if (newStr.length() > 5) {
 			return false;
+		}
 
 		String newValueStr;
 		try {
@@ -98,8 +104,9 @@ public class PieceConstantNumber extends SpellPiece {
 			return false;
 		}
 
-		if (doit)
+		if (doit) {
 			valueStr = newValueStr;
+		}
 
 		return !newValueStr.equals(oldStr);
 	}
@@ -109,31 +116,35 @@ public class PieceConstantNumber extends SpellPiece {
 		String oldStr = valueStr;
 		String newStr = valueStr;
 		if (keyCode == GLFW.GLFW_KEY_BACKSPACE) {
-			if (newStr.length() == 2 && newStr.startsWith("-"))
+			if (newStr.length() == 2 && newStr.startsWith("-")) {
 				newStr = "-0";
-			else if (newStr.equals("-"))
+			} else if (newStr.equals("-")) {
 				newStr = "0";
-			else if (!newStr.isEmpty())
+			} else if (!newStr.isEmpty()) {
 				newStr = newStr.substring(0, newStr.length() - 1);
+			}
 		}
 
-		if (newStr.isEmpty())
+		if (newStr.isEmpty()) {
 			newStr = "0";
+		}
 		newStr = newStr.trim();
 
-		if (newStr.length() > 5)
+		if (newStr.length() > 5) {
 			return false;
+		}
 
 		String newValueStr;
 		try {
 			Double.parseDouble(newStr);
 			newValueStr = newStr;
-		} catch(NumberFormatException e) {
+		} catch (NumberFormatException e) {
 			return false;
 		}
 
-		if(doit)
+		if (doit) {
 			valueStr = newValueStr;
+		}
 
 		return !newValueStr.equals(oldStr);
 	}
@@ -162,12 +173,13 @@ public class PieceConstantNumber extends SpellPiece {
 
 	@Override
 	public Object evaluate() {
-		if(valueStr == null || valueStr.isEmpty() || valueStr.length() > 5)
+		if (valueStr == null || valueStr.isEmpty() || valueStr.length() > 5) {
 			valueStr = "0";
+		}
 
 		try {
 			return Double.parseDouble(valueStr);
-		} catch(NumberFormatException e) {
+		} catch (NumberFormatException e) {
 			return 0D;
 		}
 	}

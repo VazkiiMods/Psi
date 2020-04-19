@@ -1,3 +1,11 @@
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
+ * https://github.com/Vazkii/Psi
+ *
+ * Psi is Open Source and distributed under the
+ * Psi License: https://psi.vazkii.net/license.php
+ */
 package vazkii.psi.common.spell.selector.entity;
 
 import vazkii.psi.api.exosuit.IPsiEventArmor;
@@ -13,8 +21,9 @@ public class PieceSelectorSuccessCounter extends PieceSelector {
 
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
-		if (!(context.tool.getItem() instanceof IPsiEventArmor))
+		if (!(context.tool.getItem() instanceof IPsiEventArmor)) {
 			throw new SpellRuntimeException(SpellRuntimeException.ARMOR);
+		}
 		return context.tool.getOrCreateTag().getInt("timesCast") * 1.0;
 	}
 

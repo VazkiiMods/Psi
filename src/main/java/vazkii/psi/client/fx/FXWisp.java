@@ -1,16 +1,15 @@
-/**
- * This class was created by <Azanor>. It's distributed as
- * part of the Botania Mod. Get the Source Code in github:
- * https://github.com/Vazkii/Botania
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
+ * https://github.com/Vazkii/Psi
  *
- * Botania is Open Source and distributed under the
- * Botania License: http://botaniamod.net/license.php
- *
- * File Created @ [? (GMT)]
+ * Psi is Open Source and distributed under the
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.client.fx;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.IParticleRenderType;
 import net.minecraft.client.particle.SpriteTexturedParticle;
@@ -20,18 +19,19 @@ import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.world.World;
+
 import org.lwjgl.opengl.GL11;
 
 import javax.annotation.Nonnull;
 
-//https://github.com/Vazkii/Botania/blob/1.15/src/main/java/vazkii/botania/client/fx/FXWisp.java
+// https://github.com/Vazkii/Botania/blob/1.15/src/main/java/vazkii/botania/client/fx/FXWisp.java
 public class FXWisp extends SpriteTexturedParticle {
 
 	private final float moteParticleScale;
 	private final int moteHalfLife;
 
 	public FXWisp(World world, double d, double d1, double d2, double xSpeed, double ySpeed, double zSpeed,
-				  float size, float red, float green, float blue, float maxAgeMul) {
+			float size, float red, float green, float blue, float maxAgeMul) {
 		super(world, d, d1, d2, 0, 0, 0);
 		// super applies wiggle to motion so set it here instead
 		motionX = xSpeed;
@@ -58,8 +58,9 @@ public class FXWisp extends SpriteTexturedParticle {
 	@Override
 	public float getScale(float p_217561_1_) {
 		float agescale = (float) age / (float) moteHalfLife;
-		if (agescale > 1F)
+		if (agescale > 1F) {
 			agescale = 2 - agescale;
+		}
 
 		particleScale = moteParticleScale * agescale * 0.5F;
 		return particleScale;

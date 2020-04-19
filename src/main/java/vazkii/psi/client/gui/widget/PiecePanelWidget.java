@@ -1,6 +1,15 @@
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
+ * https://github.com/Vazkii/Psi
+ *
+ * Psi is Open Source and distributed under the
+ * Psi License: https://psi.vazkii.net/license.php
+ */
 package vazkii.psi.client.gui.widget;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+
 import net.minecraft.client.gui.IGuiEventListener;
 import net.minecraft.client.gui.IRenderable;
 import net.minecraft.client.gui.screen.Screen;
@@ -10,7 +19,9 @@ import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
+
 import org.lwjgl.glfw.GLFW;
+
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.spell.EnumPieceType;
 import vazkii.psi.api.spell.SpellParam;
@@ -40,7 +51,6 @@ public class PiecePanelWidget extends Widget implements IRenderable, IGuiEventLi
 	private static final int PIECES_PER_PAGE = 25;
 	public final List<GuiButtonSpellPiece> visibleButtons = new ArrayList<>();
 
-
 	public PiecePanelWidget(int x, int y, int width, int height, String message, GuiProgrammer programmer) {
 		super(x, y, width, height, message);
 		this.parent = programmer;
@@ -48,7 +58,7 @@ public class PiecePanelWidget extends Widget implements IRenderable, IGuiEventLi
 
 	@Override
 	public void renderButton(int mouseX, int mouseY, float pTicks) {
-        if (panelEnabled) {
+		if (panelEnabled) {
 			parent.getMinecraft().getTextureManager().bindTexture(GuiProgrammer.texture);
 
 			fill(x, y, x + width, y + height, 0x88000000);
@@ -92,27 +102,27 @@ public class PiecePanelWidget extends Widget implements IRenderable, IGuiEventLi
 	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
 		if (panelEnabled) {
 			switch (keyCode) {
-				case GLFW.GLFW_KEY_ESCAPE:
-					closePanel();
+			case GLFW.GLFW_KEY_ESCAPE:
+				closePanel();
+				return true;
+			case GLFW.GLFW_KEY_ENTER:
+				if (visibleButtons.size() >= 1) {
+					visibleButtons.get(panelCursor).onPress();
 					return true;
-				case GLFW.GLFW_KEY_ENTER:
-					if (visibleButtons.size() >= 1) {
-						visibleButtons.get(panelCursor).onPress();
+				}
+				return false;
+			case GLFW.GLFW_KEY_TAB:
+				if (visibleButtons.size() >= 1) {
+					int newCursor = panelCursor + (Screen.hasAltDown() ? -1 : 1);
+					if (newCursor >= (Math.min(visibleButtons.size(), 25))) {
+						panelCursor = 0;
+
 						return true;
 					}
-					return false;
-				case GLFW.GLFW_KEY_TAB:
-					if (visibleButtons.size() >= 1) {
-						int newCursor = panelCursor + (Screen.hasAltDown() ? -1 : 1);
-						if (newCursor >= (Math.min(visibleButtons.size(), 25))) {
-							panelCursor = 0;
 
-							return true;
-						}
-
-						panelCursor = Math.max(0, Math.min(newCursor, (Math.min(visibleButtons.size(), 25)) - 1));
-						return true;
-					}
+					panelCursor = Math.max(0, Math.min(newCursor, (Math.min(visibleButtons.size(), 25)) - 1));
+					return true;
+				}
 			}
 			searchField.keyPressed(keyCode, scanCode, modifiers);
 		}
@@ -132,16 +142,18 @@ public class PiecePanelWidget extends Widget implements IRenderable, IGuiEventLi
 			Class<? extends SpellPiece> clazz = event.getSpellPieceRegistry().getValue(key).get();
 			ResourceLocation group = PsiAPI.getGroupForPiece(clazz);
 
-			if (!parent.getMinecraft().player.isCreative() && (group == null || !playerData.isPieceGroupUnlocked(group, key)))
+			if (!parent.getMinecraft().player.isCreative() && (group == null || !playerData.isPieceGroupUnlocked(group, key))) {
 				continue;
+			}
 
 			SpellPiece piece = SpellPiece.create(clazz, parent.spell);
 			shownPieces.clear();
 			piece.getShownPieces(shownPieces);
 			for (SpellPiece shownPiece : shownPieces) {
 				GuiButtonSpellPiece spellPieceButton = new GuiButtonSpellPiece(parent, shownPiece, 0, 0, button -> {
-					if (parent.isSpectator())
+					if (parent.isSpectator()) {
 						return;
+					}
 					parent.pushState(true);
 					SpellPiece piece1 = ((GuiButtonSpellPiece) button).piece.copyFromSpell(parent.spell);
 					if (piece1.getPieceType() == EnumPieceType.TRICK && parent.spellNameField.getText().isEmpty()) {
@@ -169,7 +181,6 @@ public class PiecePanelWidget extends Widget implements IRenderable, IGuiEventLi
 				panelButtons.add(spellPieceButton);
 				visibleButtons.add(spellPieceButton);
 			}
-
 
 		}
 
@@ -215,7 +226,6 @@ public class PiecePanelWidget extends Widget implements IRenderable, IGuiEventLi
 		String text = searchField.getText().toLowerCase().trim();
 		boolean noSearchTerms = text.isEmpty();
 
-
 		parent.getButtons().forEach(button -> {
 			if (button instanceof GuiButtonSpellPiece) {
 				SpellPiece piece = ((GuiButtonSpellPiece) button).getPiece();
@@ -246,16 +256,14 @@ public class PiecePanelWidget extends Widget implements IRenderable, IGuiEventLi
 			}
 		});
 
-
 		Comparator<GuiButtonSpellPiece> comparator;
 
-		if (noSearchTerms)
+		if (noSearchTerms) {
 			comparator = Comparator.comparing(GuiButtonSpellPiece::getPieceSortingName);
-		else {
+		} else {
 			comparator = Comparator.comparingInt((p) -> -pieceRankings.get(p.getPiece().getClass()));
 			comparator = comparator.thenComparing(GuiButtonSpellPiece::getPieceSortingName);
 		}
-
 
 		visibleButtons.sort(comparator);
 		if ((!text.isEmpty() && text.length() <= 5 && (text.matches("^-?\\d+(?:\\.\\d*)?") || text.matches("^-?\\d*(?:\\.\\d+)?")))) {
@@ -273,8 +281,9 @@ public class PiecePanelWidget extends Widget implements IRenderable, IGuiEventLi
 		int start = page * PIECES_PER_PAGE;
 		for (int i = start; i < visibleButtons.size(); i++) {
 			int c = i - start;
-			if (c >= PIECES_PER_PAGE)
+			if (c >= PIECES_PER_PAGE) {
 				break;
+			}
 
 			GuiButtonSpellPiece piece = visibleButtons.get(i);
 			GuiButtonSpellPiece buttonSpellPiece = (GuiButtonSpellPiece) parent.getButtons().stream().filter(el -> el.equals(piece)).findFirst().orElse(null);
@@ -309,13 +318,15 @@ public class PiecePanelWidget extends Widget implements IRenderable, IGuiEventLi
 		String desc = I18n.format(p.getUnlocalizedDesc()).toLowerCase();
 
 		for (String nameToken : token.split("\\s+")) {
-			if (nameToken.isEmpty())
+			if (nameToken.isEmpty()) {
 				continue;
+			}
 
 			if (nameToken.startsWith("in:")) {
 				String clippedToken = nameToken.substring(3);
-				if (clippedToken.isEmpty())
+				if (clippedToken.isEmpty()) {
 					continue;
+				}
 
 				int maxRank = 0;
 				for (SpellParam<?> param : p.params.values()) {
@@ -326,30 +337,35 @@ public class PiecePanelWidget extends Widget implements IRenderable, IGuiEventLi
 				rank += maxRank;
 			} else if (nameToken.startsWith("out:")) {
 				String clippedToken = nameToken.substring(4);
-				if (clippedToken.isEmpty())
+				if (clippedToken.isEmpty()) {
 					continue;
+				}
 
 				String type = p.getEvaluationTypeString().getFormattedText().toLowerCase();
 
 				rank += rankTextToken(type, clippedToken);
 			} else if (nameToken.startsWith("@")) {
 				String clippedToken = nameToken.substring(1);
-				if (clippedToken.isEmpty())
+				if (clippedToken.isEmpty()) {
 					continue;
+				}
 
 				String mod = PsiAPI.getSpellPieceKey(p.getClass()).getNamespace();
 				if (mod != null) {
 					int modRank = rankTextToken(mod, clippedToken);
-					if (modRank <= 0)
+					if (modRank <= 0) {
 						return 0;
+					}
 					rank += modRank;
-				} else
+				} else {
 					return 0;
+				}
 			} else {
 				int nameRank = rankTextToken(name, nameToken);
 				rank += nameRank;
-				if (nameRank == 0)
+				if (nameRank == 0) {
 					rank += rankTextToken(desc, nameToken) / 2;
+				}
 			}
 		}
 
@@ -357,39 +373,47 @@ public class PiecePanelWidget extends Widget implements IRenderable, IGuiEventLi
 	}
 
 	private int rankTextToken(String haystack, String token) {
-		if (token.isEmpty())
+		if (token.isEmpty()) {
 			return 0;
+		}
 
 		if (token.startsWith("_")) {
 			String clippedToken = token.substring(1);
-			if (clippedToken.isEmpty())
+			if (clippedToken.isEmpty()) {
 				return 0;
+			}
 			if (haystack.endsWith(clippedToken)) {
-				if (!Character.isLetterOrDigit(haystack.charAt(haystack.length() - clippedToken.length() - 1)))
+				if (!Character.isLetterOrDigit(haystack.charAt(haystack.length() - clippedToken.length() - 1))) {
 					return clippedToken.length() * 3 / 2;
+				}
 				return clippedToken.length();
 			}
 		} else if (token.endsWith("_")) {
 			String clippedToken = token.substring(0, token.length() - 1);
-			if (clippedToken.isEmpty())
+			if (clippedToken.isEmpty()) {
 				return 0;
+			}
 			if (haystack.startsWith(clippedToken)) {
-				if (!Character.isLetterOrDigit(haystack.charAt(clippedToken.length() + 1)))
+				if (!Character.isLetterOrDigit(haystack.charAt(clippedToken.length() + 1))) {
 					return clippedToken.length() * 2;
+				}
 				return clippedToken.length();
 			}
 		} else {
-			if (token.startsWith("has:"))
+			if (token.startsWith("has:")) {
 				token = token.substring(4);
+			}
 
 			int idx = haystack.indexOf(token);
 			if (idx >= 0) {
 				int multiplier = 2;
-				if (idx == 0 || !Character.isLetterOrDigit(haystack.charAt(idx - 1)))
+				if (idx == 0 || !Character.isLetterOrDigit(haystack.charAt(idx - 1))) {
 					multiplier += 2;
+				}
 				if (idx + token.length() + 1 >= haystack.length() ||
-						!Character.isLetterOrDigit(haystack.charAt(idx + token.length() + 1)))
+						!Character.isLetterOrDigit(haystack.charAt(idx + token.length() + 1))) {
 					multiplier++;
+				}
 
 				return token.length() * multiplier / 2;
 			}

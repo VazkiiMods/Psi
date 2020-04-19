@@ -1,12 +1,10 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [31/01/2016, 18:06:16 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.common.item;
 
@@ -21,8 +19,13 @@ import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.*;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.Style;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+
 import vazkii.psi.api.internal.VanillaPacketDispatcher;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.common.block.tile.TileProgrammer;
@@ -50,19 +53,18 @@ public class ItemSpellDrive extends Item {
 		return itemStack.copy();
 	}
 
-
 	@Nonnull
 	@Override
 	public ITextComponent getDisplayName(ItemStack stack) {
 		String name = super.getDisplayName(stack).getFormattedText();
 		CompoundNBT cmp = stack.getOrCreateTag().getCompound(TAG_SPELL);
 		String spellName = cmp.getString(Spell.TAG_SPELL_NAME); // We don't need to load the whole spell just for the name
-		if (spellName.isEmpty())
+		if (spellName.isEmpty()) {
 			return new StringTextComponent(name);
+		}
 
 		return new StringTextComponent(name + " (" + TextFormatting.GREEN + spellName + TextFormatting.RESET + ")");
 	}
-
 
 	@Nonnull
 	@Override
@@ -78,18 +80,22 @@ public class ItemSpellDrive extends Item {
 			Spell spell = getSpell(stack);
 			if (spell == null && programmer.canCompile()) {
 				setSpell(stack, programmer.spell);
-				if (!worldIn.isRemote)
+				if (!worldIn.isRemote) {
 					worldIn.playSound(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, PsiSoundHandler.bulletCreate, SoundCategory.PLAYERS, 0.5F, 1F);
+				}
 				return ActionResultType.SUCCESS;
-			} else if(spell != null) {
+			} else if (spell != null) {
 				boolean enabled = programmer.isEnabled();
 				if (enabled && !programmer.playerLock.isEmpty()) {
 					if (!programmer.playerLock.equals(playerIn.getName().getString())) {
-						if (!worldIn.isRemote)
+						if (!worldIn.isRemote) {
 							playerIn.sendMessage(new TranslationTextComponent("psimisc.not_your_programmer").setStyle(new Style().setColor(TextFormatting.RED)));
+						}
 						return ActionResultType.SUCCESS;
 					}
-				} else programmer.playerLock = playerIn.getName().getString();
+				} else {
+					programmer.playerLock = playerIn.getName().getString();
+				}
 
 				programmer.spell = spell;
 				programmer.onSpellChanged();
@@ -104,15 +110,16 @@ public class ItemSpellDrive extends Item {
 		return ActionResultType.PASS;
 	}
 
-
 	@Nonnull
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, @Nonnull Hand hand) {
 		ItemStack itemStackIn = playerIn.getHeldItem(hand);
 		if (getSpell(itemStackIn) != null && playerIn.isSneaking()) {
-			if (!worldIn.isRemote)
+			if (!worldIn.isRemote) {
 				worldIn.playSound(null, playerIn.getX(), playerIn.getY(), playerIn.getZ(), PsiSoundHandler.compileError, SoundCategory.PLAYERS, 0.5F, 1F);
-			else playerIn.swingArm(hand);
+			} else {
+				playerIn.swingArm(hand);
+			}
 			setSpell(itemStackIn, null);
 
 			return new ActionResult<>(ActionResultType.SUCCESS, itemStackIn);
@@ -123,8 +130,9 @@ public class ItemSpellDrive extends Item {
 
 	public static void setSpell(ItemStack stack, Spell spell) {
 		CompoundNBT cmp = new CompoundNBT();
-		if (spell != null)
+		if (spell != null) {
 			spell.writeToNBT(cmp);
+		}
 
 		stack.getOrCreateTag().put(TAG_SPELL, cmp);
 		stack.getOrCreateTag().putBoolean(HAS_SPELL, true);

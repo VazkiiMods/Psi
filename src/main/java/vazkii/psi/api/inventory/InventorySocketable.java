@@ -1,16 +1,15 @@
-/**
- * This class was created by <WireSegal>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [02/01/2019, 21:51:23 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.api.inventory;
 
 import com.google.common.collect.Iterators;
+
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -18,10 +17,12 @@ import net.minecraft.util.IIntArray;
 import net.minecraft.util.INameable;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
+
 import vazkii.psi.api.cad.ISocketableCapability;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
 import java.util.Collections;
 import java.util.Iterator;
 
@@ -31,22 +32,25 @@ public class InventorySocketable implements IInventory, INameable, IIntArray {
 	private ISocketableCapability socketable;
 
 	public InventorySocketable(ItemStack stack) {
-		if (stack.isEmpty())
+		if (stack.isEmpty()) {
 			socketable = null;
-		else
+		} else {
 			socketable = ISocketableCapability.socketable(stack);
+		}
 	}
 
 	public void setStack(ItemStack stack) {
-		if (stack.isEmpty())
+		if (stack.isEmpty()) {
 			socketable = null;
-		else
+		} else {
 			socketable = ISocketableCapability.socketable(stack);
+		}
 	}
 
 	private Iterator<ItemStack> getSockerator() {
-		if (socketable == null)
+		if (socketable == null) {
 			return Collections.emptyIterator();
+		}
 		return new IteratorSocketable(socketable);
 	}
 
@@ -59,28 +63,34 @@ public class InventorySocketable implements IInventory, INameable, IIntArray {
 	@Override
 	public boolean isEmpty() {
 		Iterator<ItemStack> sockerator = getSockerator();
-		while (sockerator.hasNext())
-			if (!sockerator.next().isEmpty())
+		while (sockerator.hasNext()) {
+			if (!sockerator.next().isEmpty()) {
 				return false;
+			}
+		}
 		return true;
 	}
 
 	@Nonnull
 	@Override
 	public ItemStack getStackInSlot(int index) {
-		if (socketable == null)
+		if (socketable == null) {
 			return ItemStack.EMPTY;
+		}
 		return socketable.getBulletInSocket(index);
 	}
 
 	@Nonnull
 	@Override
 	public ItemStack decrStackSize(int index, int count) {
-		if (socketable == null)
+		if (socketable == null) {
 			return ItemStack.EMPTY;
+		}
 
 		ItemStack bullet = socketable.getBulletInSocket(index);
-		if (!bullet.isEmpty()) socketable.setBulletInSocket(index, ItemStack.EMPTY);
+		if (!bullet.isEmpty()) {
+			socketable.setBulletInSocket(index, ItemStack.EMPTY);
+		}
 		return bullet;
 	}
 
@@ -92,8 +102,9 @@ public class InventorySocketable implements IInventory, INameable, IIntArray {
 
 	@Override
 	public void setInventorySlotContents(int index, @Nonnull ItemStack bullet) {
-		if (socketable == null)
+		if (socketable == null) {
 			return;
+		}
 
 		socketable.setBulletInSocket(index, bullet);
 	}
@@ -129,17 +140,17 @@ public class InventorySocketable implements IInventory, INameable, IIntArray {
 	}
 
 	@Override
-    public int get(int id) {
+	public int get(int id) {
 		return 0;
 	}
 
 	@Override
-    public void set(int id, int value) {
+	public void set(int id, int value) {
 		// NO-OP
 	}
 
 	@Override
-    public int size() {
+	public int size() {
 		return 0;
 	}
 
@@ -152,11 +163,10 @@ public class InventorySocketable implements IInventory, INameable, IIntArray {
 		}
 	}
 
-
-    @Nonnull
+	@Nonnull
 	@Override
-    public ITextComponent getName() {
-        return new TranslationTextComponent("psi.container.socketable");
+	public ITextComponent getName() {
+		return new TranslationTextComponent("psi.container.socketable");
 	}
 
 	@Override

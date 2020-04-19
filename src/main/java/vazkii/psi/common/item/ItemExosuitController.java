@@ -1,12 +1,10 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [20/02/2016, 23:21:58 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.common.item;
 
@@ -18,12 +16,14 @@ import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
+
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ISocketableCapability;
 import vazkii.psi.api.cad.ISocketableController;
 import vazkii.psi.common.core.handler.PsiSoundHandler;
 
 import javax.annotation.Nonnull;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,16 +40,18 @@ public class ItemExosuitController extends Item implements ISocketableController
 	public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, @Nonnull Hand hand) {
 		ItemStack itemStackIn = playerIn.getHeldItem(hand);
 		if (playerIn.isSneaking()) {
-			if (!worldIn.isRemote)
+			if (!worldIn.isRemote) {
 				worldIn.playSound(null, playerIn.getX(), playerIn.getY(), playerIn.getZ(), PsiSoundHandler.compileError, SoundCategory.PLAYERS, 0.25F, 1F);
-			else playerIn.swingArm(hand);
+			} else {
+				playerIn.swingArm(hand);
+			}
 
 			ItemStack[] stacks = getControlledStacks(playerIn, itemStackIn);
 
-			for(ItemStack stack : stacks) {
+			for (ItemStack stack : stacks) {
 				stack.getCapability(PsiAPI.SOCKETABLE_CAPABILITY).ifPresent(c -> c.setSelectedSlot(3));
 			}
-			
+
 			return new ActionResult<>(ActionResultType.SUCCESS, itemStackIn);
 		}
 
@@ -59,10 +61,11 @@ public class ItemExosuitController extends Item implements ISocketableController
 	@Override
 	public ItemStack[] getControlledStacks(PlayerEntity player, ItemStack stack) {
 		List<ItemStack> stacks = new ArrayList<>();
-		for(int i = 0; i < 4; i++) {
+		for (int i = 0; i < 4; i++) {
 			ItemStack armor = player.inventory.armorInventory.get(3 - i);
-			if(!armor.isEmpty() && ISocketableCapability.isSocketable(armor))
+			if (!armor.isEmpty() && ISocketableCapability.isSocketable(armor)) {
 				stacks.add(armor);
+			}
 		}
 
 		return stacks.toArray(new ItemStack[0]);

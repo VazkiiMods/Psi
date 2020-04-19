@@ -1,12 +1,10 @@
-/**
- * This class was created by <WireSegal>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
- * <p>
+ *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- * <p>
- * File Created @ [Mar 16, 2019, 19:38 AM (EST)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.api.spell;
 
@@ -25,8 +23,8 @@ public interface IErrorCatcher {
 	 * It should either ensure it can handle the error, or return false.
 	 *
 	 * @param errorPiece The piece which is throwing the exception.
-	 * @param context The erroring context.
-	 * @param exception The exception.
+	 * @param context    The erroring context.
+	 * @param exception  The exception.
 	 * @return Whether to suppress the exception.
 	 */
 	boolean catchException(SpellPiece errorPiece, SpellContext context, SpellRuntimeException exception);
@@ -37,11 +35,12 @@ public interface IErrorCatcher {
 	 * The returned value's type should match that of the piece it's handling.
 	 * <p>
 	 * Unlike other spell-related methods, this method should not throw SpellRuntimeExceptions.
-	 * It should ensure it can handle the error in {@link #catchException(SpellPiece, SpellContext, SpellRuntimeException)}.
+	 * It should ensure it can handle the error in
+	 * {@link #catchException(SpellPiece, SpellContext, SpellRuntimeException)}.
 	 *
 	 * @param errorPiece The piece which is throwing the exception.
-	 * @param context The erroring context.
-	 * @param exception The exception.
+	 * @param context    The erroring context.
+	 * @param exception  The exception.
 	 * @return Whether to suppress the exception.
 	 */
 	@Nonnull

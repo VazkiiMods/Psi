@@ -1,12 +1,10 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [20/01/2016, 23:10:47 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.common.entity;
 
@@ -22,11 +20,14 @@ import net.minecraft.network.IPacket;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.registries.ObjectHolder;
+
 import vazkii.psi.api.internal.PsiRenderHelper;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.ISpellAcceptor;
@@ -37,6 +38,8 @@ import vazkii.psi.common.lib.LibEntityNames;
 import vazkii.psi.common.lib.LibResources;
 
 import javax.annotation.Nonnull;
+
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -56,6 +59,7 @@ public class EntitySpellProjectile extends ThrowableEntity {
 	private static final DataParameter<ItemStack> COLORIZER_DATA = EntityDataManager.createKey(EntitySpellProjectile.class, DataSerializers.ITEMSTACK);
 	private static final DataParameter<ItemStack> BULLET_DATA = EntityDataManager.createKey(EntitySpellProjectile.class, DataSerializers.ITEMSTACK);
 	private static final DataParameter<Optional<UUID>> CASTER_UUID = EntityDataManager.createKey(EntitySpellProjectile.class, DataSerializers.OPTIONAL_UNIQUE_ID);
+	protected static final DataParameter<Optional<UUID>> ATTACKTARGET_UUID = EntityDataManager.createKey(EntitySpellProjectile.class, DataSerializers.OPTIONAL_UNIQUE_ID);
 
 	public SpellContext context;
 	public int timeAlive;
@@ -66,7 +70,7 @@ public class EntitySpellProjectile extends ThrowableEntity {
 
 	protected EntitySpellProjectile(EntityType<? extends ThrowableEntity> type, World world, LivingEntity thrower) {
 		super(type, thrower, world);
-		
+
 		shoot(thrower, thrower.rotationPitch, thrower.rotationYaw, 0.0F, 1.5F, 1.0F);
 		double speed = 1.5;
 		setMotion(getMotion().mul(speed, speed, speed));
@@ -80,6 +84,7 @@ public class EntitySpellProjectile extends ThrowableEntity {
 		dataManager.set(COLORIZER_DATA, colorizer);
 		dataManager.set(BULLET_DATA, bullet);
 		dataManager.set(CASTER_UUID, Optional.of(player.getUniqueID()));
+		dataManager.set(ATTACKTARGET_UUID, Optional.empty());
 		return this;
 	}
 
@@ -88,6 +93,7 @@ public class EntitySpellProjectile extends ThrowableEntity {
 		dataManager.register(COLORIZER_DATA, new ItemStack(Blocks.STONE));
 		dataManager.register(BULLET_DATA, new ItemStack(Blocks.STONE));
 		dataManager.register(CASTER_UUID, Optional.empty());
+		dataManager.register(ATTACKTARGET_UUID, Optional.empty());
 	}
 
 	@Override
@@ -96,14 +102,16 @@ public class EntitySpellProjectile extends ThrowableEntity {
 
 		CompoundNBT colorizerCmp = new CompoundNBT();
 		ItemStack colorizer = dataManager.get(COLORIZER_DATA);
-		if(!colorizer.isEmpty())
+		if (!colorizer.isEmpty()) {
 			colorizerCmp = colorizer.write(colorizerCmp);
+		}
 		tagCompound.put(TAG_COLORIZER, colorizerCmp);
 
 		CompoundNBT bulletCmp = new CompoundNBT();
 		ItemStack bullet = dataManager.get(BULLET_DATA);
-		if(!bullet.isEmpty())
+		if (!bullet.isEmpty()) {
 			bulletCmp = bullet.write(bulletCmp);
+		}
 		tagCompound.put(TAG_BULLET, bulletCmp);
 
 		tagCompound.putInt(TAG_TIME_ALIVE, timeAlive);
@@ -126,8 +134,9 @@ public class EntitySpellProjectile extends ThrowableEntity {
 		dataManager.set(BULLET_DATA, bullet);
 
 		LivingEntity thrower = getThrower();
-		if(thrower instanceof PlayerEntity)
+		if (thrower instanceof PlayerEntity) {
 			dataManager.set(CASTER_UUID, Optional.of(thrower.getUniqueID()));
+		}
 
 		timeAlive = tagCompound.getInt(TAG_TIME_ALIVE);
 
@@ -140,28 +149,29 @@ public class EntitySpellProjectile extends ThrowableEntity {
 	@Override
 	public void tick() {
 		super.tick();
-		
-		int timeAlive = ticksExisted;
-		if(timeAlive > getLiveTime())
-			remove();
 
-        ItemStack colorizer = dataManager.get(COLORIZER_DATA);
+		int timeAlive = ticksExisted;
+		if (timeAlive > getLiveTime()) {
+			remove();
+		}
+
+		ItemStack colorizer = dataManager.get(COLORIZER_DATA);
 		int colorVal = Psi.proxy.getColorForColorizer(colorizer);
 
-        float r = PsiRenderHelper.r(colorVal) / 255F;
-        float g = PsiRenderHelper.g(colorVal) / 255F;
-        float b = PsiRenderHelper.b(colorVal) / 255F;
+		float r = PsiRenderHelper.r(colorVal) / 255F;
+		float g = PsiRenderHelper.g(colorVal) / 255F;
+		float b = PsiRenderHelper.b(colorVal) / 255F;
 
-        double x = getX();
-        double y = getY();
-        double z = getZ();
+		double x = getX();
+		double y = getY();
+		double z = getZ();
 
-        Vector3 lookOrig = new Vector3(getMotion()).normalize();
-        for (int i = 0; i < getParticleCount(); i++) {
-            Vector3 look = lookOrig.copy();
-            double spread = 0.6;
-            double dist = 0.15;
-            if (this instanceof EntitySpellGrenade) {
+		Vector3 lookOrig = new Vector3(getMotion()).normalize();
+		for (int i = 0; i < getParticleCount(); i++) {
+			Vector3 look = lookOrig.copy();
+			double spread = 0.6;
+			double dist = 0.15;
+			if (this instanceof EntitySpellGrenade) {
 				look.y += 1;
 				dist = 0.05;
 			}
@@ -172,8 +182,9 @@ public class EntitySpellProjectile extends ThrowableEntity {
 
 			look.normalize().multiply(dist);
 
-			if (world.isRemote())
+			if (world.isRemote()) {
 				Psi.proxy.sparkleFX(x, y, z, r, g, b, (float) look.x, (float) look.y, (float) look.z, 1.2F, 12);
+			}
 
 		}
 	}
@@ -188,13 +199,15 @@ public class EntitySpellProjectile extends ThrowableEntity {
 
 	@Override
 	protected void onImpact(@Nonnull RayTraceResult pos) {
-		if(pos instanceof EntityRayTraceResult && ((EntityRayTraceResult) pos).getEntity() instanceof LivingEntity) {
+		if (pos instanceof EntityRayTraceResult && ((EntityRayTraceResult) pos).getEntity() instanceof LivingEntity) {
 			cast((SpellContext context) -> {
 				if (context != null) {
 					context.attackedEntity = (LivingEntity) ((EntityRayTraceResult) pos).getEntity();
 				}
 			});
-		} else cast();
+		} else {
+			cast();
+		}
 	}
 
 	public void cast() {
@@ -205,24 +218,27 @@ public class EntitySpellProjectile extends ThrowableEntity {
 		Entity thrower = getThrower();
 		boolean canCast = false;
 
-		if(thrower instanceof PlayerEntity) {
+		if (thrower instanceof PlayerEntity) {
 			ItemStack spellContainer = dataManager.get(BULLET_DATA);
 			if (!spellContainer.isEmpty() && ISpellAcceptor.isContainer(spellContainer)) {
 				Spell spell = ISpellAcceptor.acceptor(spellContainer).getSpell();
-				if(spell != null) {
+				if (spell != null) {
 					canCast = true;
-					if(context == null)
+					if (context == null) {
 						context = new SpellContext().setPlayer((PlayerEntity) thrower).setFocalPoint(this).setSpell(spell);
+					}
 					context.setFocalPoint(this);
 				}
 			}
 		}
 
-		if(callback != null)
+		if (callback != null) {
 			callback.accept(context);
+		}
 
-		if(canCast && context != null)
+		if (canCast && context != null) {
 			context.cspell.safeExecute(context);
+		}
 
 		remove();
 	}
@@ -230,11 +246,27 @@ public class EntitySpellProjectile extends ThrowableEntity {
 	@Override
 	public LivingEntity getThrower() {
 		LivingEntity superThrower = super.getThrower();
-		if(superThrower != null)
+		if (superThrower != null) {
 			return superThrower;
+		}
 
 		return dataManager.get(CASTER_UUID)
 				.map(u -> getEntityWorld().getPlayerByUuid(u))
+				.orElse(null);
+	}
+
+	public LivingEntity getAttackTarget() {
+		double radiusVal = SpellContext.MAX_DISTANCE;
+		Vec3d positionVal = this.getPositionVec();
+		AxisAlignedBB axis = new AxisAlignedBB(positionVal.x - radiusVal, positionVal.y - radiusVal, positionVal.z - radiusVal, positionVal.x + radiusVal, positionVal.y + radiusVal, positionVal.z + radiusVal);
+		return dataManager.get(ATTACKTARGET_UUID)
+				.map(u -> {
+					List<LivingEntity> a = getEntityWorld().getEntitiesWithinAABB(LivingEntity.class, axis, (Entity e) -> e.getUniqueID().equals(u));
+					if (a.size() > 0) {
+						return a.get(0);
+					}
+					return null;
+				})
 				.orElse(null);
 	}
 

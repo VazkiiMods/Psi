@@ -1,28 +1,29 @@
-/**
- * This class was created by <WireSegal>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [21/12/2018, 18:33:16 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.client.jei.tricks;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.systems.RenderSystem;
+
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.category.IRecipeCategory;
+
 import net.minecraft.client.renderer.model.Material;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
+
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.recipe.ITrickRecipe;
 import vazkii.psi.common.Psi;
@@ -30,7 +31,12 @@ import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.lib.LibMisc;
 
 import javax.annotation.Nonnull;
-import java.util.*;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class TrickCraftingCategory implements IRecipeCategory<ITrickRecipe> {
@@ -91,7 +97,7 @@ public class TrickCraftingCategory implements IRecipeCategory<ITrickRecipe> {
 	@Override
 	public void setIngredients(ITrickRecipe recipe, IIngredients ingredients) {
 		ingredients.setInputLists(VanillaTypes.ITEM, ImmutableList.of(
-			ImmutableList.copyOf(recipe.getInput().getMatchingStacks()), ImmutableList.of(recipe.getAssembly())
+				ImmutableList.copyOf(recipe.getInput().getMatchingStacks()), ImmutableList.of(recipe.getAssembly())
 		));
 		ingredients.setOutput(VanillaTypes.ITEM, recipe.getRecipeOutput());
 	}
@@ -108,13 +114,14 @@ public class TrickCraftingCategory implements IRecipeCategory<ITrickRecipe> {
 						}
 						return new DrawableTAS(mat.getSprite());
 					});
-			
+
 			RenderSystem.pushMatrix();
 			trickIcon.draw(trickX, trickY);
 			RenderSystem.popMatrix();
 
-			if (onTrick(mouseX, mouseY))
+			if (onTrick(mouseX, mouseY)) {
 				programmerHover.draw(trickX, trickY);
+			}
 		}
 	}
 
@@ -125,8 +132,8 @@ public class TrickCraftingCategory implements IRecipeCategory<ITrickRecipe> {
 			List<ITextComponent> tooltip = new ArrayList<>();
 			recipe.getPiece().getTooltip(tooltip);
 			return tooltip.stream()
-				.map(ITextComponent::getFormattedText)
-				.collect(Collectors.toList());
+					.map(ITextComponent::getFormattedText)
+					.collect(Collectors.toList());
 		}
 		return Collections.emptyList();
 	}

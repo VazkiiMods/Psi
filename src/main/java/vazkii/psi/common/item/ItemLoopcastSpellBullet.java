@@ -1,7 +1,16 @@
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
+ * https://github.com/Vazkii/Psi
+ *
+ * Psi is Open Source and distributed under the
+ * Psi License: https://psi.vazkii.net/license.php
+ */
 package vazkii.psi.common.item;
 
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
+
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.EnumCADComponent;
 import vazkii.psi.api.cad.ICAD;
@@ -23,25 +32,26 @@ public class ItemLoopcastSpellBullet extends ItemSpellBullet {
 		if (!data.loopcasting || context.castFrom != data.loopcastHand) {
 			context.cspell.safeExecute(context);
 			data.loopcasting = true;
-            data.loopcastHand = context.castFrom;
-            data.lastTickLoopcastStack = null;
-            if (context.caster instanceof ServerPlayerEntity)
-                LoopcastTrackingHandler.syncForTrackers((ServerPlayerEntity) context.caster);
-        }
-    }
+			data.loopcastHand = context.castFrom;
+			data.lastTickLoopcastStack = null;
+			if (context.caster instanceof ServerPlayerEntity) {
+				LoopcastTrackingHandler.syncForTrackers((ServerPlayerEntity) context.caster);
+			}
+		}
+	}
 
-    @Override
-    public String getBulletType() {
-        return "loopcast";
-    }
+	@Override
+	public String getBulletType() {
+		return "loopcast";
+	}
 
-    @Override
-    public boolean isCADOnlyContainer(ItemStack stack) {
-        return true;
-    }
+	@Override
+	public boolean isCADOnlyContainer(ItemStack stack) {
+		return true;
+	}
 
-    @Override
-    public double getCostModifier(ItemStack stack) {
-        return 1.0;
-    }
+	@Override
+	public double getCostModifier(ItemStack stack) {
+		return 1.0;
+	}
 }

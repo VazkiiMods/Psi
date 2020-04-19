@@ -12,9 +12,15 @@ buildscript {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
     }
 }
+
+plugins {
+    id "com.diffplug.gradle.spotless" version "3.27.2"
+}
+
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven'
+apply plugin: 'pmd'
 
 ext.configFile = file('build.properties')
 ext.config = parseConfig(configFile)
@@ -110,6 +116,27 @@ dependencies {
     runtimeOnly fg.deobf("mezz.jei:jei-1.15.2:6.0.0.2")
 }
 
+spotless {
+    enforceCheck = false // workaround around jenkins having wrong line endings in some files
+    // we explicitly check in github actions builds
+    java {
+        targetExclude '**/Gamma.java'
+
+        indentWithTabs()
+        licenseHeaderFile( 'gradle/spotless/license_template.txt')
+        eclipse().configFile 'gradle/spotless/eclipseformat.xml'
+        importOrderFile 'gradle/spotless/eclipse.importorder'
+    }
+}
+
+pmd {
+    ruleSets = ["java-braces"]
+}
+
+task checkSyntax {
+    dependsOn spotlessJavaCheck, pmdMain
+}
+
 sourceSets.main.resources {
     srcDir 'src/generated/resources'
 }
@@ -128,6 +155,24 @@ processResources {
     from(sourceSets.main.resources.srcDirs) {
         exclude 'META-INF/mods.toml', '**/psd/**'
     }
+}
+
+task srcJar(type: Jar) {
+    from(sourceSets.main.java)
+    classifier = 'sources'
+}
+
+task apiJar(type: Jar) {
+    // Remove sources from the api jar when MinecraftForge/ForgeGradle#369 is fixed
+    from(sourceSets.main.allJava)
+    from(sourceSets.main.output)
+    include 'vazkii/psi/api/**'
+
+    classifier = 'api'
+}
+
+artifacts {
+    archives srcJar, apiJar
 }
 
 task incrementBuildNumber {
@@ -197,4 +242,4 @@ uploadArchives {
     }
 }
 
-defaultTasks 'clean', 'runData', 'build', 'sortArtifacts', 'incrementBuildNumber'
+defaultTasks 'clean', 'runData', 'checkSyntax', 'build', 'sortArtifacts', 'incrementBuildNumber'

@@ -83,9 +83,9 @@ hr {
 }
 
 .warning-txt {
-	color: #B71C1C;
+	color: #F76C6C;
 	font-weight: bold;
-	text-shadow: 1px 1px rgba(0, 0, 0, 0.3);
+	text-shadow: 1px 1px rgba(255, 255, 255, 0.3);
 }
 
 .whore-txt {
@@ -207,16 +207,22 @@ iframe {
 }
 
 .entry-text {
+	color: #eeeeee;
 	padding-left: 12px;
 }
 
 .entry-bookmark {
-	color: #33691E;
+	color: #6069F3;
 }
 
 .entry-bookmark:hover, .entry-bookmark:focus {
 	text-decoration: none;
-	color: #4AA825;
+	color: #A089F3;
+}
+
+.bookmark-anchor {
+	position: relative;
+	top: -120px;
 }
 
 .text-muted b {

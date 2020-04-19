@@ -1,0 +1,21 @@
+{
+  "name": "psi.book.entry.spellDrive",
+  "category": "items",
+  "icon": "psi:spell_drive",
+  "priority": true,
+  "pages": [
+    {
+      "type": "text",
+      "text": "psi.book.page.spellDrive.0"
+    },
+    {
+      "type": "crafting",
+      "text": "psi.book.page.spellDrive.1",
+      "recipe": "psi:spell_drive"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.spellDrive.2"
+    }
+  ]
+}

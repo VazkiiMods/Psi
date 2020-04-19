@@ -1,12 +1,10 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [23/01/2016, 00:47:31 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.api.spell.param;
 
@@ -22,6 +20,5 @@ public class ParamEntityListWrapper extends ParamSpecific<EntityListWrapper> {
 	protected Class<EntityListWrapper> getRequiredType() {
 		return EntityListWrapper.class;
 	}
-
 
 }

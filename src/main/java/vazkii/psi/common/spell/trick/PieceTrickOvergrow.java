@@ -1,21 +1,19 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [06/02/2016, 18:24:41 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.common.spell.trick;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BoneMealItem;
-import net.minecraft.item.Items;
-import net.minecraft.item.DyeItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.util.math.BlockPos;
+
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.EnumSpellStat;
 import vazkii.psi.api.spell.Spell;
@@ -51,23 +49,27 @@ public class PieceTrickOvergrow extends PieceTrick {
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		Vector3 positionVal = this.getParamValue(context, position);
 
-		if(positionVal == null)
+		if (positionVal == null) {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
-		if(!context.isInRadius(positionVal))
+		}
+		if (!context.isInRadius(positionVal)) {
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
+		}
 
 		BlockPos pos = positionVal.toBlockPos();
 
-		if(!bonemeal(context.caster, pos))
+		if (!bonemeal(context.caster, pos)) {
 			bonemeal(context.caster, pos.down());
+		}
 
 		return null;
 	}
 
 	public boolean bonemeal(PlayerEntity player, BlockPos pos) {
 		boolean did = BoneMealItem.applyBonemeal(new ItemStack(Items.BONE_MEAL), player.getEntityWorld(), pos, player);
-		if(did)
+		if (did) {
 			player.getEntityWorld().playEvent(2005, pos, 0);
+		}
 		return did;
 	}
 

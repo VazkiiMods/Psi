@@ -1,17 +1,16 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [15/02/2016, 18:45:31 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.common.network.message;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.network.NetworkEvent;
+
 import vazkii.arl.network.IMessage;
 import vazkii.psi.common.Psi;
 
@@ -19,8 +18,7 @@ public class MessageLevelUp implements IMessage {
 
 	public ResourceLocation level;
 
-	public MessageLevelUp() {
-	}
+	public MessageLevelUp() {}
 
 	public MessageLevelUp(ResourceLocation level) {
 		this.level = level;

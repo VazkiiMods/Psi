@@ -1,20 +1,23 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [17/01/2016, 14:48:11 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.common.spell;
 
 import org.apache.commons.lang3.tuple.Pair;
+
 import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.CompiledSpell.Action;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.Stack;
 
 public final class SpellCompiler implements ISpellCompiler {
 
@@ -35,33 +38,38 @@ public final class SpellCompiler implements ISpellCompiler {
 
 		try {
 			compile();
-		} catch(SpellCompilationException e) {
+		} catch (SpellCompilationException e) {
 			error = e.getMessage();
 			errorLocation = e.location;
 		}
 	}
 
 	public void compile() throws SpellCompilationException {
-		if(spell == null)
+		if (spell == null) {
 			throw new SpellCompilationException(SpellCompilationException.NO_SPELL);
+		}
 
 		compiled = new CompiledSpell(spell);
 		findTricks();
 
-		while(!tricks.isEmpty())
+		while (!tricks.isEmpty()) {
 			buildPiece(tricks.pop());
-
-		while(!errorHandlers.isEmpty()) {
-			SpellPiece piece = errorHandlers.pop();
-			if (!processedHandlers.contains(piece))
-				buildHandler(piece);
 		}
 
-		if(compiled.metadata.stats.get(EnumSpellStat.COST) < 0 || compiled.metadata.stats.get(EnumSpellStat.POTENCY) < 0)
-			throw new SpellCompilationException(SpellCompilationException.STAT_OVERFLOW);
+		while (!errorHandlers.isEmpty()) {
+			SpellPiece piece = errorHandlers.pop();
+			if (!processedHandlers.contains(piece)) {
+				buildHandler(piece);
+			}
+		}
 
-		if(spell.name == null || spell.name.isEmpty())
+		if (compiled.metadata.stats.get(EnumSpellStat.COST) < 0 || compiled.metadata.stats.get(EnumSpellStat.POTENCY) < 0) {
+			throw new SpellCompilationException(SpellCompilationException.STAT_OVERFLOW);
+		}
+
+		if (spell.name == null || spell.name.isEmpty()) {
 			throw new SpellCompilationException(SpellCompilationException.NO_NAME);
+		}
 	}
 
 	public void buildPiece(SpellPiece piece) throws SpellCompilationException {
@@ -69,10 +77,11 @@ public final class SpellCompiler implements ISpellCompiler {
 	}
 
 	public void buildPiece(SpellPiece piece, List<SpellPiece> visited) throws SpellCompilationException {
-		if(visited.contains(piece))
+		if (visited.contains(piece)) {
 			throw new SpellCompilationException(SpellCompilationException.INFINITE_LOOP, piece.x, piece.y);
+		}
 
-		if(compiled.actionMap.containsKey(piece)) { // move to top
+		if (compiled.actionMap.containsKey(piece)) { // move to top
 			Action a = compiled.actionMap.get(piece);
 			compiled.actions.remove(a);
 			compiled.actions.add(a);
@@ -93,36 +102,41 @@ public final class SpellCompiler implements ISpellCompiler {
 
 		List<SpellParam.Side> usedSides = new ArrayList<>();
 
-		for(SpellParam<?> param : piece.paramSides.keySet()) {
+		for (SpellParam<?> param : piece.paramSides.keySet()) {
 			SpellParam.Side side = piece.paramSides.get(param);
-			if(!side.isEnabled()) {
-				if(!param.canDisable)
+			if (!side.isEnabled()) {
+				if (!param.canDisable) {
 					throw new SpellCompilationException(SpellCompilationException.UNSET_PARAM, piece.x, piece.y);
+				}
 
 				continue;
 			}
 
-			if(usedSides.contains(side))
+			if (usedSides.contains(side)) {
 				throw new SpellCompilationException(SpellCompilationException.SAME_SIDE_PARAMS, piece.x, piece.y);
+			}
 			usedSides.add(side);
 
-
 			SpellPiece pieceAt = spell.grid.getPieceAtSideWithRedirections(piece.x, piece.y, side, this);
-			if(pieceAt == null)
+			if (pieceAt == null) {
 				throw new SpellCompilationException(SpellCompilationException.NULL_PARAM, piece.x, piece.y);
-			if(!param.canAccept(pieceAt))
+			}
+			if (!param.canAccept(pieceAt)) {
 				throw new SpellCompilationException(SpellCompilationException.INVALID_PARAM, piece.x, piece.y);
+			}
 
-			if (errorHandler != null)
+			if (errorHandler != null) {
 				compiled.errorHandlers.putIfAbsent(pieceAt, errorHandler);
+			}
 
 			buildPiece(pieceAt, new ArrayList<>(visited));
 		}
 	}
 
 	public void buildHandler(SpellPiece piece) throws SpellCompilationException {
-		if (!(piece instanceof IErrorCatcher))
+		if (!(piece instanceof IErrorCatcher)) {
 			return;
+		}
 
 		CompiledSpell.CatchHandler errorHandler = compiled.new CatchHandler(piece);
 
@@ -132,22 +146,26 @@ public final class SpellCompiler implements ISpellCompiler {
 
 		for (SpellParam<?> param : piece.paramSides.keySet()) {
 			SpellParam.Side side = piece.paramSides.get(param);
-			if(!side.isEnabled()) {
-				if(!param.canDisable)
+			if (!side.isEnabled()) {
+				if (!param.canDisable) {
 					throw new SpellCompilationException(SpellCompilationException.UNSET_PARAM, piece.x, piece.y);
+				}
 
 				continue;
 			}
 
-			if(usedSides.contains(side))
+			if (usedSides.contains(side)) {
 				throw new SpellCompilationException(SpellCompilationException.SAME_SIDE_PARAMS, piece.x, piece.y);
+			}
 			usedSides.add(side);
 
 			SpellPiece pieceAt = spell.grid.getPieceAtSideWithRedirections(piece.x, piece.y, side, this);
-			if(pieceAt == null)
+			if (pieceAt == null) {
 				throw new SpellCompilationException(SpellCompilationException.NULL_PARAM, piece.x, piece.y);
-			if(!param.canAccept(pieceAt))
+			}
+			if (!param.canAccept(pieceAt)) {
 				throw new SpellCompilationException(SpellCompilationException.INVALID_PARAM, piece.x, piece.y);
+			}
 
 			compiled.errorHandlers.putIfAbsent(pieceAt, errorHandler);
 		}
@@ -165,36 +183,41 @@ public final class SpellCompiler implements ISpellCompiler {
 			for (SpellParam<?> param : piece.paramSides.keySet()) {
 				SpellParam.Side side = piece.paramSides.get(param);
 				if (!side.isEnabled()) {
-					if (!param.canDisable)
+					if (!param.canDisable) {
 						throw new SpellCompilationException(SpellCompilationException.UNSET_PARAM, piece.x, piece.y);
+					}
 
 					continue;
 				}
 
-				if (usedSides.contains(side))
+				if (usedSides.contains(side)) {
 					throw new SpellCompilationException(SpellCompilationException.SAME_SIDE_PARAMS, piece.x, piece.y);
+				}
 				usedSides.add(side);
 			}
 		}
 	}
 
 	public void findTricks() throws SpellCompilationException {
-		for(int i = 0; i < SpellGrid.GRID_SIZE; i++)
-			for(int j = 0; j < SpellGrid.GRID_SIZE; j++) {
+		for (int i = 0; i < SpellGrid.GRID_SIZE; i++) {
+			for (int j = 0; j < SpellGrid.GRID_SIZE; j++) {
 				SpellPiece piece = spell.grid.gridData[j][i];
-				if(piece != null) {
-					if(piece.getPieceType() == EnumPieceType.TRICK)
+				if (piece != null) {
+					if (piece.getPieceType() == EnumPieceType.TRICK) {
 						tricks.add(piece);
-					else if(piece.getPieceType() == EnumPieceType.MODIFIER)
+					} else if (piece.getPieceType() == EnumPieceType.MODIFIER) {
 						piece.addToMetadata(compiled.metadata);
-					else if(piece.getPieceType() == EnumPieceType.ERROR_HANDLER)
+					} else if (piece.getPieceType() == EnumPieceType.ERROR_HANDLER) {
 						errorHandlers.add(piece);
+					}
 				}
 
 			}
+		}
 
-		if(tricks.isEmpty())
+		if (tricks.isEmpty()) {
 			throw new SpellCompilationException(SpellCompilationException.NO_TRICKS);
+		}
 	}
 
 	@Override

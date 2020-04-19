@@ -1,12 +1,10 @@
-/**
- * This class was created by <WireSegal>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
- * <p>
+ *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- * <p>
- * File Created @ [Mar 15, 2019, 10:51 AM (EST)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.common.network.message;
 
@@ -17,6 +15,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.NetworkEvent;
+
 import vazkii.arl.network.IMessage;
 
 public class MessageAdditiveMotion implements IMessage {
@@ -33,9 +32,9 @@ public class MessageAdditiveMotion implements IMessage {
 	public MessageAdditiveMotion(int entityID, double motionX, double motionY, double motionZ) {
 		this.entityID = entityID;
 
-		this.motionX = (int)(MathHelper.clamp(motionX, -3.9, 3.9) * 8000);
-		this.motionY = (int)(MathHelper.clamp(motionY, -3.9, 3.9) * 8000);
-		this.motionZ = (int)(MathHelper.clamp(motionZ, -3.9, 3.9) * 8000);
+		this.motionX = (int) (MathHelper.clamp(motionX, -3.9, 3.9) * 8000);
+		this.motionY = (int) (MathHelper.clamp(motionY, -3.9, 3.9) * 8000);
+		this.motionZ = (int) (MathHelper.clamp(motionZ, -3.9, 3.9) * 8000);
 	}
 
 	@Override

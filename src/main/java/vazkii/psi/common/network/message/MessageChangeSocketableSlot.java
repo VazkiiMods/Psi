@@ -1,12 +1,10 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [14/01/2016, 22:48:01 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.common.network.message;
 
@@ -14,16 +12,16 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 import net.minecraftforge.fml.network.NetworkEvent;
+
 import vazkii.arl.network.IMessage;
 import vazkii.psi.api.PsiAPI;
-import vazkii.psi.api.cad.ISocketableCapability;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 
 public class MessageChangeSocketableSlot implements IMessage {
 
 	public int slot;
 
-	public MessageChangeSocketableSlot() { }
+	public MessageChangeSocketableSlot() {}
 
 	public MessageChangeSocketableSlot(int slot) {
 		this.slot = slot;
@@ -35,11 +33,11 @@ public class MessageChangeSocketableSlot implements IMessage {
 			ServerPlayerEntity player = context.getSender();
 			ItemStack stack = player.getHeldItem(Hand.MAIN_HAND);
 
-			if(!stack.isEmpty())
+			if (!stack.isEmpty()) {
 				stack.getCapability(PsiAPI.SOCKETABLE_CAPABILITY).ifPresent(cap -> cap.setSelectedSlot(slot));
-			else {
+			} else {
 				stack = player.getHeldItem(Hand.OFF_HAND);
-				if(!stack.isEmpty()) {
+				if (!stack.isEmpty()) {
 					stack.getCapability(PsiAPI.SOCKETABLE_CAPABILITY).ifPresent(cap -> cap.setSelectedSlot(slot));
 				}
 			}

@@ -1,12 +1,10 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [18/01/2016, 19:29:43 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.common.spell.operator.number;
 
@@ -34,8 +32,9 @@ public class PieceOperatorInverse extends PieceOperator {
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		double d = this.getParamValue(context, num).doubleValue();
 
-		if(d == 0)
+		if (d == 0) {
 			throw new SpellRuntimeException(SpellRuntimeException.DIVIDE_BY_ZERO);
+		}
 
 		return 1.0 / d;
 	}

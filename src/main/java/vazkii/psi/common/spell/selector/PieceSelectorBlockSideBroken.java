@@ -1,12 +1,10 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [06/02/2016, 21:06:32 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.common.spell.selector;
 
@@ -30,8 +28,9 @@ public class PieceSelectorBlockSideBroken extends PieceSelector {
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 
-		if (context.positionBroken == null)
+		if (context.positionBroken == null) {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
+		}
 		if (context.positionBroken.isInside()) {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
 		}

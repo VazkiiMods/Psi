@@ -1,12 +1,10 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [08/01/2016, 21:19:53 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.common;
 
@@ -22,8 +20,10 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.ForgeRegistries;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.client.core.proxy.ClientProxy;
 import vazkii.psi.common.block.base.ModBlocks;
@@ -78,16 +78,16 @@ public class Psi {
 		MessageRegister.init();
 	}
 
-	private void loadComplete(FMLLoadCompleteEvent event){
+	private void loadComplete(FMLLoadCompleteEvent event) {
 		ForgeRegistries.SOUND_EVENTS.forEach(el -> {
-			if(el.getName().getPath().toLowerCase().startsWith("block.note_block"))
+			if (el.getName().getPath().toLowerCase().startsWith("block.note_block")) {
 				noteblockSoundEvents.add(el);
+			}
 		});
 	}
-
 
 	public static ResourceLocation location(String path) {
 		return new ResourceLocation(LibMisc.MOD_ID, path);
 	}
-	
+
 }

@@ -1,16 +1,15 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
- * 
+ *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- * 
- * File Created @ [10/03/2016, 23:27:24 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.common.spell.selector;
 
 import net.minecraft.item.ItemStack;
+
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.internal.Vector3;
@@ -43,8 +42,9 @@ public class PieceSelectorSavedVector extends PieceSelector {
 		super.addToMetadata(meta);
 
 		Double numberVal = this.<Double>getParamEvaluation(number);
-		if(numberVal == null || numberVal <= 0 || numberVal != numberVal.intValue())
+		if (numberVal == null || numberVal <= 0 || numberVal != numberVal.intValue()) {
 			throw new SpellCompilationException(SpellCompilationException.NON_POSITIVE_INTEGER, x, y);
+		}
 
 		meta.addStat(EnumSpellStat.POTENCY, numberVal.intValue() * 6);
 	}
@@ -52,14 +52,16 @@ public class PieceSelectorSavedVector extends PieceSelector {
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		int numberVal = this.getParamValue(context, number).intValue();
-		
+
 		int n = numberVal - 1;
-		if(context.customData.containsKey(PieceTrickSaveVector.KEY_SLOT_LOCKED + n))
+		if (context.customData.containsKey(PieceTrickSaveVector.KEY_SLOT_LOCKED + n)) {
 			throw new SpellRuntimeException(SpellRuntimeException.LOCKED_MEMORY);
-		
+		}
+
 		ItemStack cadStack = PsiAPI.getPlayerCAD(context.caster);
-		if(cadStack == null || !(cadStack.getItem() instanceof ICAD))
+		if (cadStack == null || !(cadStack.getItem() instanceof ICAD)) {
 			throw new SpellRuntimeException(SpellRuntimeException.NO_CAD);
+		}
 		ICAD cad = (ICAD) cadStack.getItem();
 		return cad.getStoredVector(cadStack, n);
 	}

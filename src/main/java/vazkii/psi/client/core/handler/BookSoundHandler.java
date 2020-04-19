@@ -1,3 +1,11 @@
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
+ * https://github.com/Vazkii/Psi
+ *
+ * Psi is Open Source and distributed under the
+ * Psi License: https://psi.vazkii.net/license.php
+ */
 package vazkii.psi.client.core.handler;
 
 import net.minecraft.client.Minecraft;
@@ -7,14 +15,16 @@ import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+
 import org.lwjgl.glfw.GLFW;
+
 import vazkii.patchouli.client.book.gui.GuiBook;
 import vazkii.patchouli.common.book.BookRegistry;
 import vazkii.psi.common.core.handler.PsiSoundHandler;
 import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.lib.LibResources;
 
-//https://github.com/Vazkii/Botania/blob/faeaf7285b0c9ef0918ad1cb2cbff88ed3ea1d65/src/main/java/vazkii/botania/client/core/handler/KonamiHandler.java
+// https://github.com/Vazkii/Botania/blob/faeaf7285b0c9ef0918ad1cb2cbff88ed3ea1d65/src/main/java/vazkii/botania/client/core/handler/KonamiHandler.java
 @Mod.EventBusSubscriber(modid = LibMisc.MOD_ID, value = Dist.CLIENT)
 public class BookSoundHandler {
 	private static final int[] SECRET_CODE = {

@@ -1,12 +1,10 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [06/02/2016, 19:06:33 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.common.spell.selector.entity;
 
@@ -14,13 +12,14 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.item.EyeOfEnderEntity;
 import net.minecraft.entity.projectile.DamagingProjectileEntity;
+
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.common.entity.EntitySpellProjectile;
 
 import java.util.function.Predicate;
 
-public class PieceSelectorNearbyProjectiles  extends PieceSelectorNearby {
+public class PieceSelectorNearbyProjectiles extends PieceSelectorNearby {
 
 	public PieceSelectorNearbyProjectiles(Spell spell) {
 		super(spell);

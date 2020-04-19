@@ -1,12 +1,10 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [19/02/2016, 19:11:22 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.common.spell.constant;
 
@@ -18,14 +16,13 @@ import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellMetadata;
 import vazkii.psi.api.spell.SpellParam;
 import vazkii.psi.api.spell.SpellPiece;
-import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.api.spell.param.ParamNumber;
 
 public class PieceConstantWrapper extends SpellPiece {
 
 	SpellParam<Number> target;
 	SpellParam<Number> max;
-	
+
 	boolean evaluating = false;
 
 	public PieceConstantWrapper(Spell spell) {
@@ -48,22 +45,25 @@ public class PieceConstantWrapper extends SpellPiece {
 		double targetVal = this.getParamValue(context, target).doubleValue();
 		double maxVal = this.getParamValue(context, max).doubleValue();
 
-		if(maxVal > 0)
+		if (maxVal > 0) {
 			return Math.min(maxVal, Math.abs(targetVal));
-		else if(maxVal < 0)
+		} else if (maxVal < 0) {
 			return Math.max(maxVal, -Math.abs(targetVal));
-		else return 0.0;
+		} else {
+			return 0.0;
+		}
 	}
 
 	@Override
 	public Object evaluate() throws SpellCompilationException {
-		if(evaluating)
+		if (evaluating) {
 			return 0.0;
-		
+		}
+
 		evaluating = true;
 		Object ret = getParamEvaluation(max);
 		evaluating = false;
-		
+
 		return ret;
 	}
 

@@ -1,12 +1,10 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [08/01/2016, 21:53:45 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.common.item.component;
 
@@ -18,6 +16,7 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+
 import vazkii.psi.api.cad.EnumCADComponent;
 import vazkii.psi.api.cad.EnumCADStat;
 import vazkii.psi.api.cad.ICADComponent;
@@ -25,72 +24,73 @@ import vazkii.psi.api.internal.TooltipHelper;
 import vazkii.psi.common.Psi;
 
 import javax.annotation.Nullable;
+
 import java.util.HashMap;
 import java.util.List;
 
 public abstract class ItemCADComponent extends Item implements ICADComponent {
 
-    private final HashMap<EnumCADStat, Integer> stats = new HashMap<>();
+	private final HashMap<EnumCADStat, Integer> stats = new HashMap<>();
 
-    public ItemCADComponent(Item.Properties properties) {
-        super(properties.maxStackSize(1));
-        registerStats();
-    }
+	public ItemCADComponent(Item.Properties properties) {
+		super(properties.maxStackSize(1));
+		registerStats();
+	}
 
-    public void registerStats() {
-        // NO-OP
-    }
+	public void registerStats() {
+		// NO-OP
+	}
 
-    @Override
-    public void addInformation(ItemStack stack, @Nullable World world, List<ITextComponent> tooltip, ITooltipFlag advanced) {
-        TooltipHelper.tooltipIfShift(tooltip, () -> {
-            EnumCADComponent componentType = getComponentType(stack);
+	@Override
+	public void addInformation(ItemStack stack, @Nullable World world, List<ITextComponent> tooltip, ITooltipFlag advanced) {
+		TooltipHelper.tooltipIfShift(tooltip, () -> {
+			EnumCADComponent componentType = getComponentType(stack);
 
-            TranslationTextComponent componentName = new TranslationTextComponent(componentType.getName());
-            tooltip.add(new TranslationTextComponent("psimisc.component_type", componentName));
-            for (EnumCADStat stat : EnumCADStat.class.getEnumConstants()) {
-                if (stat.getSourceType() == componentType) {
-                    int statVal = getCADStatValue(stack, stat);
-                    String statValStr = statVal == -1 ? "\u221E" : "" + statVal;
+			TranslationTextComponent componentName = new TranslationTextComponent(componentType.getName());
+			tooltip.add(new TranslationTextComponent("psimisc.component_type", componentName));
+			for (EnumCADStat stat : EnumCADStat.class.getEnumConstants()) {
+				if (stat.getSourceType() == componentType) {
+					int statVal = getCADStatValue(stack, stat);
+					String statValStr = statVal == -1 ? "\u221E" : "" + statVal;
 
-                    ITextComponent name = new TranslationTextComponent(stat.getName()).applyTextStyle(TextFormatting.AQUA);
-                    tooltip.add(new StringTextComponent(" ").appendSibling(name).appendText(": " + statValStr));
-                }
-            }
-        });
-    }
+					ITextComponent name = new TranslationTextComponent(stat.getName()).applyTextStyle(TextFormatting.AQUA);
+					tooltip.add(new StringTextComponent(" ").appendSibling(name).appendText(": " + statValStr));
+				}
+			}
+		});
+	}
 
+	public void addStat(HashMap<EnumCADStat, Integer> stats) {
+		stats.forEach(this::addStat);
+	}
 
-    public void addStat(HashMap<EnumCADStat, Integer> stats) {
-        stats.forEach(this::addStat);
-    }
+	public void addStat(EnumCADStat stat, int value) {
+		stats.put(stat, value);
+	}
 
-    public void addStat(EnumCADStat stat, int value) {
-        stats.put(stat, value);
-    }
+	public static void addStatToStack(ItemStack stack, EnumCADStat stat, int value) {
+		if (stack.getItem() instanceof ItemCADComponent) {
+			((ItemCADComponent) stack.getItem()).addStat(stat, value);
+		} else {
+			Psi.logger.error("Tried to add stats to non-component Item: " + stack.getItem().getName());
+		}
+	}
 
-    public static void addStatToStack(ItemStack stack, EnumCADStat stat, int value) {
-        if (stack.getItem() instanceof ItemCADComponent) {
-            ((ItemCADComponent) stack.getItem()).addStat(stat, value);
-        } else {
-            Psi.logger.error("Tried to add stats to non-component Item: " + stack.getItem().getName());
-        }
-    }
+	public static void addStatToStack(Item item, EnumCADStat stat, int value) {
+		if (item instanceof ItemCADComponent) {
+			((ItemCADComponent) item).addStat(stat, value);
+		} else {
+			Psi.logger.error("Tried to add stats to non-component Item: " + item.getName());
+		}
+	}
 
-    public static void addStatToStack(Item item, EnumCADStat stat, int value) {
-        if (item instanceof ItemCADComponent) {
-            ((ItemCADComponent) item).addStat(stat, value);
-        } else {
-            Psi.logger.error("Tried to add stats to non-component Item: " + item.getName());
-        }
-    }
+	@Override
+	public int getCADStatValue(ItemStack stack, EnumCADStat stat) {
+		if (stats.containsKey(stat)) {
+			return stats.get(stat);
+		}
 
-    @Override
-    public int getCADStatValue(ItemStack stack, EnumCADStat stat) {
-        if (stats.containsKey(stat))
-            return stats.get(stat);
-
-        return 0;
-    }
+		return 0;
+	}
 
 }

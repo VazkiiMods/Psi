@@ -1,12 +1,10 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [31/01/2016, 18:46:31 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.common.crafting.recipe;
 
@@ -17,6 +15,7 @@ import net.minecraft.item.crafting.SpecialRecipe;
 import net.minecraft.item.crafting.SpecialRecipeSerializer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.common.item.ItemSpellDrive;
 
@@ -39,15 +38,19 @@ public class DriveDuplicateRecipe extends SpecialRecipe {
 			if (!stack.isEmpty()) {
 				if (stack.getItem() instanceof ItemSpellDrive) {
 					if (ItemSpellDrive.getSpell(stack) == null) {
-						if (foundTarget)
+						if (foundTarget) {
 							return false;
+						}
 						foundTarget = true;
 					} else {
-						if (foundSource)
+						if (foundSource) {
 							return false;
+						}
 						foundSource = true;
 					}
-				} else return false;
+				} else {
+					return false;
+				}
 			}
 		}
 
@@ -64,9 +67,11 @@ public class DriveDuplicateRecipe extends SpecialRecipe {
 			ItemStack stack = inv.getStackInSlot(i);
 			if (!stack.isEmpty()) {
 				Spell spell = ItemSpellDrive.getSpell(stack);
-				if (spell != null)
+				if (spell != null) {
 					source = spell;
-				else target = stack;
+				} else {
+					target = stack;
+				}
 			}
 		}
 

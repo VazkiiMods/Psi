@@ -1,3 +1,11 @@
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
+ * https://github.com/Vazkii/Psi
+ *
+ * Psi is Open Source and distributed under the
+ * Psi License: https://psi.vazkii.net/license.php
+ */
 package vazkii.psi.client.core.handler;
 
 import net.minecraft.item.ItemStack;
@@ -5,7 +13,9 @@ import net.minecraft.util.DefaultUncaughtExceptionHandler;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+
 import org.apache.logging.log4j.Level;
+
 import vazkii.psi.api.cad.CADTakeEvent;
 import vazkii.psi.api.cad.EnumCADComponent;
 import vazkii.psi.api.cad.ICAD;
@@ -29,7 +39,6 @@ public final class ContributorSpellCircleHandler {
 
 	private static volatile Map<String, int[]> colormap = Collections.emptyMap();
 	private static boolean startedLoading = false;
-
 
 	public static void load(Properties props) {
 		Map<String, int[]> m = new HashMap<>();
@@ -61,8 +70,8 @@ public final class ContributorSpellCircleHandler {
 	}
 
 	@SubscribeEvent
-	public static void onCadTake(CADTakeEvent event){
-		if(ContributorSpellCircleHandler.isContributor(event.getPlayer().getName().getString().toLowerCase()) && !((ICAD) event.getCad().getItem()).getComponentInSlot(event.getCad(), EnumCADComponent.DYE).isEmpty()){
+	public static void onCadTake(CADTakeEvent event) {
+		if (ContributorSpellCircleHandler.isContributor(event.getPlayer().getName().getString().toLowerCase()) && !((ICAD) event.getCad().getItem()).getComponentInSlot(event.getCad(), EnumCADComponent.DYE).isEmpty()) {
 			ItemStack dyeStack = ((ICAD) event.getCad().getItem()).getComponentInSlot(event.getCad(), EnumCADComponent.DYE);
 			((ICADColorizer) dyeStack.getItem()).setContributorName(dyeStack, event.getPlayer().getName().getString());
 			ItemCAD.setComponent(event.getCad(), dyeStack);
@@ -70,8 +79,8 @@ public final class ContributorSpellCircleHandler {
 	}
 
 	@SubscribeEvent
-	public static void craftColorizer(PlayerEvent.ItemCraftedEvent event){
-		if(ContributorSpellCircleHandler.isContributor(event.getPlayer().getName().getString().toLowerCase()) && event.getCrafting().getItem() instanceof ICADColorizer){
+	public static void craftColorizer(PlayerEvent.ItemCraftedEvent event) {
+		if (ContributorSpellCircleHandler.isContributor(event.getPlayer().getName().getString().toLowerCase()) && event.getCrafting().getItem() instanceof ICADColorizer) {
 			((ICADColorizer) event.getCrafting().getItem()).setContributorName(event.getCrafting(), event.getPlayer().getName().getString());
 		}
 	}

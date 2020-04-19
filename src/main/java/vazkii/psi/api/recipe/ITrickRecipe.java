@@ -1,3 +1,11 @@
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
+ * https://github.com/Vazkii/Psi
+ *
+ * Psi is Open Source and distributed under the
+ * Psi License: https://psi.vazkii.net/license.php
+ */
 package vazkii.psi.api.recipe;
 
 import net.minecraft.item.ItemStack;
@@ -8,6 +16,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
 import net.minecraftforge.items.wrapper.RecipeWrapper;
+
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.spell.piece.PieceCraftingTrick;
 

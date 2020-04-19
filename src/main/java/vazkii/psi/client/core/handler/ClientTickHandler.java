@@ -1,12 +1,10 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [11/01/2016, 17:51:36 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.client.core.handler;
 
@@ -17,6 +15,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+
 import vazkii.psi.common.lib.LibMisc;
 
 @OnlyIn(Dist.CLIENT)
@@ -28,8 +27,7 @@ public class ClientTickHandler {
 	public static float delta = 0.0F;
 	public static float total = 0.0F;
 
-	public ClientTickHandler() {
-	}
+	public ClientTickHandler() {}
 
 	@OnlyIn(Dist.CLIENT)
 	private static void calcDelta() {
@@ -48,7 +46,6 @@ public class ClientTickHandler {
 		}
 	}
 
-
 	@SubscribeEvent
 	public static void clientTickEnd(TickEvent.ClientTickEvent event) {
 		if (event.phase == TickEvent.Phase.END) {
@@ -61,8 +58,9 @@ public class ClientTickHandler {
 			if (gui == null || !gui.isPauseScreen()) {
 				++ticksInGame;
 				partialTicks = 0.0F;
-				if (gui == null && KeybindHandler.keybind.isKeyDown())
+				if (gui == null && KeybindHandler.keybind.isKeyDown()) {
 					KeybindHandler.keyDown();
+				}
 			}
 
 			calcDelta();

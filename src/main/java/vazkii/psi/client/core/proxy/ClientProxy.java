@@ -1,12 +1,10 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [08/01/2016, 21:23:11 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.client.core.proxy;
 
@@ -37,11 +35,17 @@ import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.cad.ICADColorizer;
 import vazkii.psi.api.spell.SpellPiece;
-import vazkii.psi.client.core.handler.*;
+import vazkii.psi.client.core.handler.ClientTickHandler;
+import vazkii.psi.client.core.handler.ColorHandler;
+import vazkii.psi.client.core.handler.ContributorSpellCircleHandler;
+import vazkii.psi.client.core.handler.HUDHandler;
+import vazkii.psi.client.core.handler.KeybindHandler;
+import vazkii.psi.client.core.handler.ShaderHandler;
 import vazkii.psi.client.fx.SparkleParticleData;
 import vazkii.psi.client.fx.WispParticleData;
 import vazkii.psi.client.gui.GuiProgrammer;
@@ -52,7 +56,11 @@ import vazkii.psi.client.render.tile.RenderTileProgrammer;
 import vazkii.psi.common.block.base.ModBlocks;
 import vazkii.psi.common.block.tile.TileProgrammer;
 import vazkii.psi.common.core.proxy.IProxy;
-import vazkii.psi.common.entity.*;
+import vazkii.psi.common.entity.EntitySpellCharge;
+import vazkii.psi.common.entity.EntitySpellCircle;
+import vazkii.psi.common.entity.EntitySpellGrenade;
+import vazkii.psi.common.entity.EntitySpellMine;
+import vazkii.psi.common.entity.EntitySpellProjectile;
 import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.lib.LibItemNames;
 import vazkii.psi.common.lib.LibMisc;
@@ -63,9 +71,8 @@ import java.util.Map;
 @OnlyIn(Dist.CLIENT)
 public class ClientProxy implements IProxy {
 
-
-    @Override
-    public void registerHandlers() {
+	@Override
+	public void registerHandlers() {
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetup);
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::modelBake);
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::addCADModels);
@@ -133,49 +140,50 @@ public class ClientProxy implements IProxy {
 		world.addParticle(particleData, true, x, y, z, xSpeed, ySpeed, zSpeed);
 	}
 
-    @Override
-    public PlayerEntity getClientPlayer() {
-        return Minecraft.getInstance().player;
-    }
+	@Override
+	public PlayerEntity getClientPlayer() {
+		return Minecraft.getInstance().player;
+	}
 
-    @Override
-    public long getWorldElapsedTicks() {
+	@Override
+	public long getWorldElapsedTicks() {
 		return ClientTickHandler.ticksInGame;
-    }
+	}
 
-    @Override
-    public int getClientRenderDistance() {
-        return Minecraft.getInstance().gameSettings.renderDistanceChunks;
-    }
+	@Override
+	public int getClientRenderDistance() {
+		return Minecraft.getInstance().gameSettings.renderDistanceChunks;
+	}
 
-    @Override
+	@Override
 	public void onLevelUp(ResourceLocation level) {
 		HUDHandler.levelUp(level);
 	}
 
+	@Override
+	public int getColorForCAD(ItemStack cadStack) {
+		ICAD icad = (ICAD) cadStack.getItem();
+		return icad.getSpellColor(cadStack);
+	}
 
-    @Override
-    public int getColorForCAD(ItemStack cadStack) {
-        ICAD icad = (ICAD) cadStack.getItem();
-        return icad.getSpellColor(cadStack);
-    }
-
-    @Override
-    public int getColorForColorizer(ItemStack colorizer) {
-		if (colorizer.isEmpty())
+	@Override
+	public int getColorForColorizer(ItemStack colorizer) {
+		if (colorizer.isEmpty()) {
 			return ICADColorizer.DEFAULT_SPELL_COLOR;
+		}
 		ICADColorizer icc = (ICADColorizer) colorizer.getItem();
 		return icc.getColor(colorizer);
 	}
 
 	@Override
 	public void sparkleFX(World world, double x, double y, double z, float r, float g, float b, float motionx, float motiony, float motionz, float size, int m) {
-        if (m == 0)
-            return;
+		if (m == 0) {
+			return;
+		}
 		SparkleParticleData data = new SparkleParticleData(size, r, g, b, m, motionx, motiony, motionz);
-        addParticleForce(world, data, x, y, z, motionx, motiony, motionz);
+		addParticleForce(world, data, x, y, z, motionx, motiony, motionz);
 
-    }
+	}
 
 	@Override
 	public void sparkleFX(double x, double y, double z, float r, float g, float b, float motionx, float motiony, float motionz, float size, int m) {
@@ -184,8 +192,9 @@ public class ClientProxy implements IProxy {
 
 	@Override
 	public void wispFX(World world, double x, double y, double z, float r, float g, float b, float size, float motionx, float motiony, float motionz, float maxAgeMul) {
-		if (maxAgeMul == 0)
+		if (maxAgeMul == 0) {
 			return;
+		}
 		WispParticleData data = new WispParticleData(size, r, g, b, maxAgeMul);
 		addParticleForce(world, data, x, y, z, motionx, motiony, motionz);
 	}

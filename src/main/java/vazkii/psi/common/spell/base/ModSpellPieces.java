@@ -1,23 +1,34 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [16/01/2016, 16:10:43 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.common.spell.base;
 
 import net.minecraft.util.ResourceLocation;
+
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellPiece;
 import vazkii.psi.common.lib.LibPieceGroups;
 import vazkii.psi.common.lib.LibPieceNames;
-import vazkii.psi.common.spell.constant.*;
-import vazkii.psi.common.spell.operator.entity.*;
+import vazkii.psi.common.spell.constant.PieceConstantE;
+import vazkii.psi.common.spell.constant.PieceConstantNumber;
+import vazkii.psi.common.spell.constant.PieceConstantPi;
+import vazkii.psi.common.spell.constant.PieceConstantTau;
+import vazkii.psi.common.spell.constant.PieceConstantWrapper;
+import vazkii.psi.common.spell.operator.entity.PieceOperatorClosestToPoint;
+import vazkii.psi.common.spell.operator.entity.PieceOperatorEntityAxialLook;
+import vazkii.psi.common.spell.operator.entity.PieceOperatorEntityLook;
+import vazkii.psi.common.spell.operator.entity.PieceOperatorEntityMotion;
+import vazkii.psi.common.spell.operator.entity.PieceOperatorEntityPosition;
+import vazkii.psi.common.spell.operator.entity.PieceOperatorFocusedEntity;
+import vazkii.psi.common.spell.operator.entity.PieceOperatorListAdd;
+import vazkii.psi.common.spell.operator.entity.PieceOperatorListRemove;
+import vazkii.psi.common.spell.operator.entity.PieceOperatorRandomEntity;
 import vazkii.psi.common.spell.operator.list.PieceOperatorListExclusion;
 import vazkii.psi.common.spell.operator.list.PieceOperatorListIntersection;
 import vazkii.psi.common.spell.operator.list.PieceOperatorListSize;
@@ -36,7 +47,13 @@ import vazkii.psi.common.spell.selector.*;
 import vazkii.psi.common.spell.selector.entity.*;
 import vazkii.psi.common.spell.trick.*;
 import vazkii.psi.common.spell.trick.block.*;
-import vazkii.psi.common.spell.trick.entity.*;
+import vazkii.psi.common.spell.trick.entity.PieceTrickAddMotion;
+import vazkii.psi.common.spell.trick.entity.PieceTrickBlink;
+import vazkii.psi.common.spell.trick.entity.PieceTrickIgnite;
+import vazkii.psi.common.spell.trick.entity.PieceTrickMassAddMotion;
+import vazkii.psi.common.spell.trick.entity.PieceTrickMassBlink;
+import vazkii.psi.common.spell.trick.entity.PieceTrickMassExodus;
+import vazkii.psi.common.spell.trick.entity.PieceTrickSmeltItem;
 import vazkii.psi.common.spell.trick.infusion.PieceTrickEbonyIvory;
 import vazkii.psi.common.spell.trick.infusion.PieceTrickGreaterInfusion;
 import vazkii.psi.common.spell.trick.infusion.PieceTrickInfusion;
@@ -289,7 +306,6 @@ public final class ModSpellPieces {
 		operatorSignum = register(PieceOperatorSignum.class, LibPieceNames.OPERATOR_SIGNUM, LibPieceGroups.TRIGONOMETRY);
 		operatorSwizzle = register(PieceOperatorSwizzle.class, LibPieceNames.OPERATOR_SWIZZLE, LibPieceGroups.TRIGONOMETRY);
 		selectorListFilter = register(PieceSelectorListFilter.class, LibPieceNames.SELECTOR_LIST_FILTER, LibPieceGroups.LIST_OPERATIONS);
-
 
 		constantNumber = register(PieceConstantNumber.class, LibPieceNames.CONSTANT_NUMBER, LibPieceGroups.TUTORIAL_2, true);
 		constantPi = register(PieceConstantPi.class, LibPieceNames.CONSTANT_PI, LibPieceGroups.TRIGONOMETRY, true);

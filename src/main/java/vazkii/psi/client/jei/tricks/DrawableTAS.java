@@ -1,7 +1,17 @@
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
+ * https://github.com/Vazkii/Psi
+ *
+ * Psi is Open Source and distributed under the
+ * Psi License: https://psi.vazkii.net/license.php
+ */
 package vazkii.psi.client.jei.tricks;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+
 import mezz.jei.api.gui.drawable.IDrawableStatic;
+
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -27,10 +37,10 @@ public class DrawableTAS implements IDrawableStatic {
 		int height = textureHeight - maskBottom - maskTop;
 		float uSize = sprite.getMaxU() - sprite.getMinU();
 		float vSize = sprite.getMaxV() - sprite.getMinV();
-		float minU = sprite.getMinU() + uSize * ((float)maskLeft / (float)textureWidth);
-		float minV = sprite.getMinV() + vSize * ((float)maskTop / (float)textureHeight);
-		float maxU = sprite.getMaxU() - uSize * ((float)maskRight / (float)textureWidth);
-		float maxV = sprite.getMaxV() - vSize * ((float)maskBottom / (float)textureHeight);
+		float minU = sprite.getMinU() + uSize * ((float) maskLeft / (float) textureWidth);
+		float minV = sprite.getMinV() + vSize * ((float) maskTop / (float) textureHeight);
+		float maxU = sprite.getMaxU() - uSize * ((float) maskRight / (float) textureWidth);
+		float maxV = sprite.getMaxV() - vSize * ((float) maskBottom / (float) textureHeight);
 
 		RenderSystem.bindTexture(sprite.getAtlas().getGlTextureId());
 		Tessellator tessellator = Tessellator.getInstance();

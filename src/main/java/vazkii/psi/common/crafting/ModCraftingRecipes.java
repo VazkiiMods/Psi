@@ -1,12 +1,10 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [25/01/2016, 20:38:39 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.common.crafting;
 
@@ -20,6 +18,7 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.IForgeRegistryEntry;
+
 import vazkii.psi.api.recipe.ITrickRecipe;
 import vazkii.psi.common.crafting.recipe.AssemblyScavengeRecipe;
 import vazkii.psi.common.crafting.recipe.BulletToDriveRecipe;
@@ -39,15 +38,15 @@ public class ModCraftingRecipes {
 	@SubscribeEvent
 	public static void registerSerializers(RegistryEvent.Register<IRecipeSerializer<?>> event) {
 		event.getRegistry().registerAll(
-			name(AssemblyScavengeRecipe.SERIALIZER, "scavenge"),
-			name(BulletToDriveRecipe.SERIALIZER, "bullet_to_drive"),
-			name(ColorizerChangeRecipe.SERIALIZER, "colorizer_change"),
-			name(DriveDuplicateRecipe.SERIALIZER, "drive_duplicate"),
-			name(SensorAttachRecipe.SERIALIZER, "sensor_attach"),
-			name(SensorRemoveRecipe.SERIALIZER, "sensor_remove"),
-				
-			name(TrickRecipe.SERIALIZER, "trick_crafting"),
-			name(DimensionTrickRecipe.SERIALIZER, "dimension_trick_crafting")
+				name(AssemblyScavengeRecipe.SERIALIZER, "scavenge"),
+				name(BulletToDriveRecipe.SERIALIZER, "bullet_to_drive"),
+				name(ColorizerChangeRecipe.SERIALIZER, "colorizer_change"),
+				name(DriveDuplicateRecipe.SERIALIZER, "drive_duplicate"),
+				name(SensorAttachRecipe.SERIALIZER, "sensor_attach"),
+				name(SensorRemoveRecipe.SERIALIZER, "sensor_remove"),
+
+				name(TrickRecipe.SERIALIZER, "trick_crafting"),
+				name(DimensionTrickRecipe.SERIALIZER, "dimension_trick_crafting")
 		);
 
 		CraftingHelper.register(MagicalPsiCondition.Serializer.INSTANCE);
@@ -57,7 +56,7 @@ public class ModCraftingRecipes {
 	private static <T extends IForgeRegistryEntry<? extends T>> T name(T entry, String name) {
 		return entry.setRegistryName(new ResourceLocation(LibMisc.MOD_ID, name));
 	}
-	
+
 	private static class RecipeType<T extends IRecipe<?>> implements IRecipeType<T> {
 		@Override
 		public String toString() {

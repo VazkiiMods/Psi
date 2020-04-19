@@ -1,6 +1,19 @@
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
+ * https://github.com/Vazkii/Psi
+ *
+ * Psi is Open Source and distributed under the
+ * Psi License: https://psi.vazkii.net/license.php
+ */
 package vazkii.psi.common.spell.operator.number;
 
-import vazkii.psi.api.spell.*;
+import vazkii.psi.api.spell.EnumSpellStat;
+import vazkii.psi.api.spell.Spell;
+import vazkii.psi.api.spell.SpellContext;
+import vazkii.psi.api.spell.SpellMetadata;
+import vazkii.psi.api.spell.SpellParam;
+import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.piece.PieceOperator;
 
@@ -18,8 +31,9 @@ public class PieceOperatorSwizzle extends PieceOperator {
 		int[] newNumber = new int[maskDecompose.length];
 		for (int i = 0; i < newNumber.length; i++) {
 			int idx = maskDecompose[i];
-			if (idx <= nDecompose.length && idx > 0)
+			if (idx <= nDecompose.length && idx > 0) {
 				newNumber[i] = nDecompose[idx - 1];
+			}
 		}
 
 		return sgn * composeNumber(newNumber, base);
@@ -27,8 +41,9 @@ public class PieceOperatorSwizzle extends PieceOperator {
 
 	private static int composeNumber(int[] decomposed, int base) {
 		int n = 0;
-		for (int i = decomposed.length - 1; i >= 0; i--)
+		for (int i = decomposed.length - 1; i >= 0; i--) {
 			n = n * base + decomposed[i];
+		}
 
 		return n;
 	}
@@ -38,8 +53,9 @@ public class PieceOperatorSwizzle extends PieceOperator {
 		int[] decomposed = new int[size];
 		for (int i = 0; i < size; i++) {
 			decomposed[i] = n % base;
-			if ((n /= base) == 0)
+			if ((n /= base) == 0) {
 				break;
+			}
 		}
 		return decomposed;
 	}
@@ -66,8 +82,9 @@ public class PieceOperatorSwizzle extends PieceOperator {
 		int mask = this.getParamValue(context, this.mask).intValue();
 		int base = this.getParamValueOrDefault(context, this.base, 10).intValue();
 
-		if (base < Character.MIN_RADIX)
+		if (base < Character.MIN_RADIX) {
 			throw new SpellRuntimeException(SpellRuntimeException.INVALID_BASE);
+		}
 
 		return (double) swizzle(num, mask, base);
 	}

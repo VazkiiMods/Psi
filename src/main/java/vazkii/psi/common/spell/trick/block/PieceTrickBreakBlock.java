@@ -1,12 +1,10 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [24/01/2016, 15:35:27 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.common.spell.trick.block;
 
@@ -27,9 +25,16 @@ import net.minecraftforge.common.ToolType;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.world.BlockEvent.BreakEvent;
 import net.minecraftforge.fluids.IFluidBlock;
+
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.internal.Vector3;
-import vazkii.psi.api.spell.*;
+import vazkii.psi.api.spell.EnumSpellStat;
+import vazkii.psi.api.spell.Spell;
+import vazkii.psi.api.spell.SpellCompilationException;
+import vazkii.psi.api.spell.SpellContext;
+import vazkii.psi.api.spell.SpellMetadata;
+import vazkii.psi.api.spell.SpellParam;
+import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.api.spell.param.ParamVector;
 import vazkii.psi.api.spell.piece.PieceTrick;
 import vazkii.psi.common.core.handler.ConfigHandler;
@@ -59,10 +64,12 @@ public class PieceTrickBreakBlock extends PieceTrick {
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		Vector3 positionVal = this.getParamValue(context, position);
 
-		if(positionVal == null)
+		if (positionVal == null) {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
-		if(!context.isInRadius(positionVal))
+		}
+		if (!context.isInRadius(positionVal)) {
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
+		}
 
 		BlockPos pos = positionVal.toBlockPos();
 		removeBlockWithDrops(context, context.caster, context.caster.getEntityWorld(), context.tool, pos, true);
@@ -71,67 +78,77 @@ public class PieceTrickBreakBlock extends PieceTrick {
 	}
 
 	public static void removeBlockWithDrops(SpellContext context, PlayerEntity player, World world, ItemStack tool, BlockPos pos, boolean particles) {
-        if (!world.isBlockLoaded(pos) || (context.positionBroken != null && pos.equals(new BlockPos(context.positionBroken.getHitVec().x, context.positionBroken.getHitVec().y, context.positionBroken.getHitVec().z))) || !world.isBlockModifiable(player, pos))
-            return;
+		if (!world.isBlockLoaded(pos) || (context.positionBroken != null && pos.equals(new BlockPos(context.positionBroken.getHitVec().x, context.positionBroken.getHitVec().y, context.positionBroken.getHitVec().z))) || !world.isBlockModifiable(player, pos)) {
+			return;
+		}
 
-        if (tool.isEmpty())
-            tool = PsiAPI.getPlayerCAD(player);
+		if (tool.isEmpty()) {
+			tool = PsiAPI.getPlayerCAD(player);
+		}
 
-        BlockState state = world.getBlockState(pos);
-        Block block = state.getBlock();
-        if (!block.isAir(state, world, pos) && !(block instanceof IFluidBlock) && state.getPlayerRelativeBlockHardness(player, world, pos) > 0) {
-            if (!canHarvestBlock(block, player, world, pos, tool))
-                return;
+		BlockState state = world.getBlockState(pos);
+		Block block = state.getBlock();
+		if (!block.isAir(state, world, pos) && !(block instanceof IFluidBlock) && state.getPlayerRelativeBlockHardness(player, world, pos) > 0) {
+			if (!canHarvestBlock(block, player, world, pos, tool)) {
+				return;
+			}
 
-            BreakEvent event = createBreakEvent(state, player, world, pos, tool);
-            MinecraftForge.EVENT_BUS.post(event);
-            if (!event.isCanceled()) {
-                if (!player.abilities.isCreativeMode) {
-                    TileEntity tile = world.getTileEntity(pos);
+			BreakEvent event = createBreakEvent(state, player, world, pos, tool);
+			MinecraftForge.EVENT_BUS.post(event);
+			if (!event.isCanceled()) {
+				if (!player.abilities.isCreativeMode) {
+					TileEntity tile = world.getTileEntity(pos);
 
-                    if (block.removedByPlayer(state, world, pos, player, true, world.getFluidState(pos))) {
+					if (block.removedByPlayer(state, world, pos, player, true, world.getFluidState(pos))) {
 						block.onPlayerDestroy(world, pos, state);
-                        block.harvestBlock(world, player, pos, state, tile, tool);
-                    }
-                } else world.removeBlock(pos, false);
-            }
+						block.harvestBlock(world, player, pos, state, tile, tool);
+					}
+				} else {
+					world.removeBlock(pos, false);
+				}
+			}
 
-            if (particles)
-                world.playEvent(2001, pos, Block.getStateId(state));
-        }
-    }
+			if (particles) {
+				world.playEvent(2001, pos, Block.getStateId(state));
+			}
+		}
+	}
 
-    // Based on BreakEvent::new, allows a tool that isn't your mainhand tool to harvest the blocks
-    public static BreakEvent createBreakEvent(BlockState state, PlayerEntity player, World world, BlockPos pos, ItemStack tool) {
-        BreakEvent event = new BreakEvent(world, pos, state, player);
-        if (state == null || !ForgeHooks.canHarvestBlock(state, player, world, pos)) // Handle empty block or player unable to break block scenario
-        {
-            event.setExpToDrop(0);
-        } else {
-            int bonusLevel = EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, tool);
-            int silklevel = EnchantmentHelper.getEnchantmentLevel(Enchantments.SILK_TOUCH, tool);
-            event.setExpToDrop(state.getExpDrop(world, pos, bonusLevel, silklevel));
-        }
-        return event;
-    }
+	// Based on BreakEvent::new, allows a tool that isn't your mainhand tool to harvest the blocks
+	public static BreakEvent createBreakEvent(BlockState state, PlayerEntity player, World world, BlockPos pos, ItemStack tool) {
+		BreakEvent event = new BreakEvent(world, pos, state, player);
+		if (state == null || !ForgeHooks.canHarvestBlock(state, player, world, pos)) // Handle empty block or player unable to break block scenario
+		{
+			event.setExpToDrop(0);
+		} else {
+			int bonusLevel = EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, tool);
+			int silklevel = EnchantmentHelper.getEnchantmentLevel(Enchantments.SILK_TOUCH, tool);
+			event.setExpToDrop(state.getExpDrop(world, pos, bonusLevel, silklevel));
+		}
+		return event;
+	}
 
 	// todo 1.14 get rid of all this and just return cad harvest level from cad item code (possibly with a threadlocal hack to indicate this trick is in progress)
 	public static boolean canHarvestBlock(Block block, PlayerEntity player, World world, BlockPos pos, ItemStack tool) {
-        //General positive checks
-        BlockState state = world.getBlockState(pos);
-        int reqLevel = block.getHarvestLevel(state);
-        Item toolItem = tool.getItem();
-        if (tool.canHarvestBlock(state) || state.getMaterial().isToolNotRequired() || ConfigHandler.COMMON.cadHarvestLevel.get() >= reqLevel)
-            return ForgeEventFactory.doPlayerHarvestCheck(player, state, true);
+		//General positive checks
+		BlockState state = world.getBlockState(pos);
+		int reqLevel = block.getHarvestLevel(state);
+		Item toolItem = tool.getItem();
+		if (tool.canHarvestBlock(state) || state.getMaterial().isToolNotRequired() || ConfigHandler.COMMON.cadHarvestLevel.get() >= reqLevel) {
+			return ForgeEventFactory.doPlayerHarvestCheck(player, state, true);
+		}
 
-        //General negative checks
-        ToolType reqTool = block.getHarvestTool(state);
-        if (toolItem == Items.AIR || reqTool == null) return false;
+		//General negative checks
+		ToolType reqTool = block.getHarvestTool(state);
+		if (toolItem == Items.AIR || reqTool == null) {
+			return false;
+		}
 
-        //Targeted tool check
-        if (toolItem.getHarvestLevel(tool, reqTool, player, state) >= reqLevel)
-            return ForgeEventFactory.doPlayerHarvestCheck(player, state, true);
+		//Targeted tool check
+		if (toolItem.getHarvestLevel(tool, reqTool, player, state) >= reqLevel) {
+			return ForgeEventFactory.doPlayerHarvestCheck(player, state, true);
+		}
 
-        return false;
-    }
+		return false;
+	}
 }

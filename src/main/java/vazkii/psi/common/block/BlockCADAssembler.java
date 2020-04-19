@@ -1,12 +1,10 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [09/01/2016, 23:01:02 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.common.block;
 
@@ -28,6 +26,7 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.items.ItemHandlerHelper;
+
 import vazkii.arl.block.tile.TileSimpleInventory;
 import vazkii.psi.common.block.tile.TileCADAssembler;
 
@@ -70,20 +69,18 @@ public class BlockCADAssembler extends HorizontalBlock {
 	@Override
 	@SuppressWarnings("deprecation")
 	public int getComparatorInputOverride(BlockState blockState, World worldIn, BlockPos pos) {
-        TileEntity tile = worldIn.getTileEntity(pos);
-        if (tile != null) {
-            return tile.getCapability(ITEM_HANDLER_CAPABILITY)
-                    .map(ItemHandlerHelper::calcRedstoneFromInventory)
-                    .orElse(0);
-        }
+		TileEntity tile = worldIn.getTileEntity(pos);
+		if (tile != null) {
+			return tile.getCapability(ITEM_HANDLER_CAPABILITY)
+					.map(ItemHandlerHelper::calcRedstoneFromInventory)
+					.orElse(0);
+		}
 
-        return 0;
-    }
+		return 0;
+	}
 
-
-
-    @Override
-    public ActionResultType onUse(BlockState state, World world, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult rayTraceResult) {
+	@Override
+	public ActionResultType onUse(BlockState state, World world, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult rayTraceResult) {
 		if (!world.isRemote) {
 			TileEntity te = world.getTileEntity(pos);
 			if (te instanceof TileCADAssembler) {

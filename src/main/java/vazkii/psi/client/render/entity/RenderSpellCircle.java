@@ -1,24 +1,29 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [30/01/2016, 16:42:31 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.client.render.entity;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
-import net.minecraft.client.renderer.*;
+
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.Matrix4f;
+import net.minecraft.client.renderer.RenderState;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+
 import org.lwjgl.opengl.GL11;
+
 import vazkii.psi.api.internal.PsiRenderHelper;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.entity.EntitySpellCircle;
@@ -46,7 +51,6 @@ public class RenderSpellCircle extends EntityRenderer<EntitySpellCircle> {
 		super(renderManager);
 	}
 
-
 	@Override
 	public void render(EntitySpellCircle entity, float entityYaw, float partialTicks, MatrixStack ms, IRenderTypeBuffer buffers, int light) {
 		ms.push();
@@ -54,8 +58,9 @@ public class RenderSpellCircle extends EntityRenderer<EntitySpellCircle> {
 		int color = Psi.proxy.getColorForColorizer(colorizer);
 		float alive = entity.getTimeAlive() + partialTicks;
 		float scale = Math.min(1F, alive / EntitySpellCircle.CAST_DELAY);
-		if (alive > EntitySpellCircle.LIVE_TIME - EntitySpellCircle.CAST_DELAY)
+		if (alive > EntitySpellCircle.LIVE_TIME - EntitySpellCircle.CAST_DELAY) {
 			scale = 1F - Math.min(1F, Math.max(0, alive - (EntitySpellCircle.LIVE_TIME - EntitySpellCircle.CAST_DELAY)) / EntitySpellCircle.CAST_DELAY);
+		}
 		renderSpellCircle(alive, scale, 1, 0, 1, 0, color, ms, buffers);
 		ms.pop();
 	}
@@ -68,9 +73,9 @@ public class RenderSpellCircle extends EntityRenderer<EntitySpellCircle> {
 		float mag = xDir * xDir + yDir * yDir + zDir * zDir;
 		zDir /= mag;
 
-		if (zDir == -1)
+		if (zDir == -1) {
 			ms.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(180));
-		else if (zDir != 1) {
+		} else if (zDir != 1) {
 			ms.multiply(new Vector3f(-yDir / mag, xDir / mag, 0).getDegreesQuaternion((float) (Math.acos(zDir) * 180 / Math.PI)));
 		}
 		ms.translate(0, 0, 0.1);
@@ -85,15 +90,22 @@ public class RenderSpellCircle extends EntityRenderer<EntitySpellCircle> {
 			int gValue = g;
 			int bValue = b;
 
-			if (i == 1)
+			if (i == 1) {
 				rValue = gValue = bValue = 0xFF;
-			else if (i == 2) {
+			} else if (i == 2) {
 				int minBrightness = (int) (1 / (1 - BRIGHTNESS_FACTOR));
-				if (rValue == 0 && gValue == 0 && bValue == 0)
+				if (rValue == 0 && gValue == 0 && bValue == 0) {
 					rValue = gValue = bValue = minBrightness;
-				if (rValue > 0 && rValue < minBrightness) rValue = minBrightness;
-				if (gValue > 0 && gValue < minBrightness) gValue = minBrightness;
-				if (bValue > 0 && bValue < minBrightness) bValue = minBrightness;
+				}
+				if (rValue > 0 && rValue < minBrightness) {
+					rValue = minBrightness;
+				}
+				if (gValue > 0 && gValue < minBrightness) {
+					gValue = minBrightness;
+				}
+				if (bValue > 0 && bValue < minBrightness) {
+					bValue = minBrightness;
+				}
 
 				rValue = (int) Math.min(rValue / BRIGHTNESS_FACTOR, 0xFF);
 				gValue = (int) Math.min(gValue / BRIGHTNESS_FACTOR, 0xFF);
