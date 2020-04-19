@@ -42,6 +42,7 @@ public final class LibPieceNames {
 	public static final String SELECTOR_SUCCESS_COUNTER = "selector_sucession_counter";
 	public static final String SELECTOR_CASTER_ENERGY = "selector_caster_energy";
 	public static final String SELECTOR_CASTER_BATTERY = "selector_caster_battery";
+	public static final String SELECTOR_TRANSMISSION = "selector_transmission";
 
 
 	public static final String OPERATOR_SUM = "operator_sum";
@@ -165,6 +166,7 @@ public final class LibPieceNames {
 	public static final String TRICK_MOVE_BLOCK_SEQUENCE = "trick_move_block_sequence";
 	public static final String TRICK_TILL = "trick_till";
 	public static final String TRICK_TILL_SEQUENCE = "trick_till_sequence";
+	public static final String TRICK_BROADCAST = "trick_broadcast";
 
 
 }

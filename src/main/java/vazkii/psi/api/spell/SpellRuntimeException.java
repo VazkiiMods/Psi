@@ -32,6 +32,7 @@ public class SpellRuntimeException extends Exception {
 	public static final String EVEN_ROOT_NEGATIVE_NUMBER = "psi.spellerror.nthroot";
 	public static final String INVALID_BASE = "psi.spellerror.invalid_base";
 	public static final String ARMOR = "psi.spellerror.armor";
+	public static final String NO_MESSAGE = "psi.spellerror.no_message";
 
 	public SpellRuntimeException(String s) {
 		super(s);

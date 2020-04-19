@@ -74,6 +74,7 @@ public final class ModSpellPieces {
 	public static PieceContainer selectorCasterBattery;
 	public static PieceContainer selectorCasterEnergy;
 	public static PieceContainer selectorSuccessCounter;
+	public static PieceContainer selectorTransmission;
 
 	public static PieceContainer operatorSum;
 	public static PieceContainer operatorSubtract;
@@ -195,6 +196,7 @@ public final class ModSpellPieces {
 	public static PieceContainer trickMoveBlockSequence;
 	public static PieceContainer trickTill;
 	public static PieceContainer trickTillSequence;
+	public static PieceContainer trickBroadcast;
 
 	public static void init() {
 		selectorCaster = register(PieceSelectorCaster.class, LibPieceNames.SELECTOR_CASTER, LibPieceGroups.TUTORIAL_1);
@@ -226,6 +228,7 @@ public final class ModSpellPieces {
 		selectorSuccessCounter = register(PieceSelectorSuccessCounter.class, LibPieceNames.SELECTOR_SUCCESS_COUNTER, LibPieceGroups.EXOSUIT_CASTING);
 		selectorCasterBattery = register(PieceSelectorCasterBattery.class, LibPieceNames.SELECTOR_CASTER_BATTERY, LibPieceGroups.EXOSUIT_CASTING);
 		selectorCasterEnergy = register(PieceSelectorCasterEnergy.class, LibPieceNames.SELECTOR_CASTER_ENERGY, LibPieceGroups.EXOSUIT_CASTING);
+		selectorTransmission = register(PieceSelectorTransmission.class, LibPieceNames.SELECTOR_TRANSMISSION, LibPieceGroups.FLOW_CONTROL);
 
 		operatorSum = register(PieceOperatorSum.class, LibPieceNames.OPERATOR_SUM, LibPieceGroups.NUMBERS_INTRO, true);
 		operatorSubtract = register(PieceOperatorSubtract.class, LibPieceNames.OPERATOR_SUBTRACT, LibPieceGroups.NUMBERS_INTRO);
@@ -351,6 +354,7 @@ public final class ModSpellPieces {
 		trickMoveBlockSequence = register(PieceTrickMoveBlockSequence.class, LibPieceNames.TRICK_MOVE_BLOCK_SEQUENCE, LibPieceGroups.BLOCK_MOVEMENT);
 		trickTill = register(PieceTrickTill.class, LibPieceNames.TRICK_TILL, LibPieceGroups.MISC_TRICKS);
 		trickTillSequence = register(PieceTrickTillSequence.class, LibPieceNames.TRICK_TILL_SEQUENCE, LibPieceGroups.MISC_TRICKS);
+		trickBroadcast = register(PieceTrickBroadcast.class, LibPieceNames.TRICK_BROADCAST, LibPieceGroups.FLOW_CONTROL);
 	}
 
 	public static PieceContainer register(Class<? extends SpellPiece> clazz, String name, String group) {

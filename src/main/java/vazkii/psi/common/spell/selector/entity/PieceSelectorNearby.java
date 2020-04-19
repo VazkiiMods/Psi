@@ -27,8 +27,6 @@ public abstract class PieceSelectorNearby extends PieceSelector {
 	SpellParam<Vector3> position;
 	SpellParam<Number> radius;
 
-	//TODO add this in the next version
-
 	public PieceSelectorNearby(Spell spell) {
 		super(spell);
 	}
