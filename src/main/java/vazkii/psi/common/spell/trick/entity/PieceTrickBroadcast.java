@@ -69,7 +69,7 @@ public class PieceTrickBroadcast extends PieceTrick {
 
 		List<PlayerEntity> sec = new ArrayList<>();
 
-		String channelKey = "psi:" + channelVal;
+		String channelKey = "psi_broadcast_channel:" + channelVal;
 
 
 		AxisAlignedBB axis = new AxisAlignedBB(positionVal.x - radiusVal, positionVal.y - radiusVal, positionVal.z - radiusVal, positionVal.x + radiusVal, positionVal.y + radiusVal, positionVal.z + radiusVal);
@@ -108,7 +108,7 @@ public class PieceTrickBroadcast extends PieceTrick {
 			ListNBT list1 = (ListNBT) data.getCustomData().get(RECEIVERS_TRACKING_KEY);
 			int channel = data.getCustomData().getInt(CHANNEL_TRACKING_KEY);
 			double signal = data.getCustomData().getDouble(SIGNAL_TRACKING_KEY);
-			String key = "rpsideas:" + channel;
+			String key = "psi_broadcast_channel:" + channel;
 			for (INBT cmp : list1) {
 				CompoundNBT rcmp = (CompoundNBT) cmp;
 				PlayerEntity pl = world.getPlayerByUuid(Objects.requireNonNull(rcmp.getUniqueId(RECEIVERS_TRACKING_KEY)));
