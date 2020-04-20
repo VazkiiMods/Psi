@@ -10,8 +10,6 @@ package vazkii.psi.api.spell.wrapper;
 
 import net.minecraft.entity.Entity;
 
-import vazkii.psi.api.PsiAPI;
-
 import javax.annotation.Nonnull;
 
 import java.util.ArrayList;
@@ -30,7 +28,7 @@ public class EntityListWrapper implements Iterable<Entity> {
 
 	/**
 	 * Constructs an EntityListWrapper from a list. 
-	 * <b>The list must be sorted by {@link PsiAPI#compareEntities} and have no {@code null} values</b>.
+	 * <b>The list must be sorted by {@link #compareEntities} and have no {@code null} values</b>.
 	 * If you can't provide these guarantees, use {@link #makeCleanWrapper}.
 	 */
 	public EntityListWrapper(@Nonnull List<Entity> list) {
@@ -44,8 +42,15 @@ public class EntityListWrapper implements Iterable<Entity> {
 				copy.add(e);
 			}
 		}
-		copy.sort(PsiAPI::compareEntities);
+		copy.sort(EntityListWrapper::compareEntities);
 		return new EntityListWrapper(copy);
+	}
+
+	/**
+	 * A Comparator for Entities that's deterministic, to keep order with the Entity Lists.
+	 */
+	public static int compareEntities(Entity l, Entity r) {
+		return l.getUniqueID().compareTo(r.getUniqueID());
 	}
 
 	public List<Entity> unwrap() {

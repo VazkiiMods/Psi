@@ -19,6 +19,7 @@ import vazkii.psi.api.spell.piece.PieceOperator;
 import vazkii.psi.api.spell.wrapper.EntityListWrapper;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class PieceOperatorListExclusion extends PieceOperator {
@@ -41,9 +42,15 @@ public class PieceOperatorListExclusion extends PieceOperator {
 		EntityListWrapper l1 = this.getNonnullParamValue(context, list1);
 		EntityListWrapper l2 = this.getNonnullParamValue(context, list2);
 
-		List<Entity> entities = new ArrayList<>(l1.unwrap());
-		entities.removeAll(l2.unwrap());
-		return new EntityListWrapper(entities);
+		List<Entity> list = new ArrayList<>();
+		List<Entity> search = l2.unwrap();
+		for(Entity e : l1) {
+			if(Collections.binarySearch(search, e, EntityListWrapper::compareEntities) < 0) {
+				list.add(e);
+			}
+		}
+
+		return new EntityListWrapper(list);
 	}
 
 	@Override

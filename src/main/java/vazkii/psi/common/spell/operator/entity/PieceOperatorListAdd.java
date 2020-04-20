@@ -10,7 +10,6 @@ package vazkii.psi.common.spell.operator.entity;
 
 import net.minecraft.entity.Entity;
 
-import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellParam;
@@ -49,7 +48,7 @@ public class PieceOperatorListAdd extends PieceOperator {
 		}
 
 		List<Entity> list = new ArrayList<>(listVal.unwrap());
-		int index = Collections.binarySearch(list, targetVal, PsiAPI::compareEntities);
+		int index = Collections.binarySearch(list, targetVal, EntityListWrapper::compareEntities);
 		if (index < 0) {
 			list.add(~index, targetVal);
 		}

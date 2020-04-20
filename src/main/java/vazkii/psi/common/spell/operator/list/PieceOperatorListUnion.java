@@ -39,13 +39,22 @@ public class PieceOperatorListUnion extends PieceOperator {
 
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
-		EntityListWrapper l1 = this.getNonnullParamValue(context, list1);
-		EntityListWrapper l2 = this.getNonnullParamValue(context, list2);
+		List<Entity> l1 = this.getNonnullParamValue(context, list1).unwrap();
+		List<Entity> l2 = this.getNonnullParamValue(context, list2).unwrap();
 
-		List<Entity> entities = new ArrayList<>(l1.unwrap());
-		entities.addAll(l2.unwrap());
-		entities = new ArrayList<>(new LinkedHashSet<>(entities));
-		return EntityListWrapper.makeCleanWrapper(entities);
+		List<Entity> entities = new ArrayList<>(l1.size() + l2.size());
+		int i = 0, j = 0;
+		while(i < l1.size() && j < l2.size()) {
+			int cmp = EntityListWrapper.compareEntities(l1.get(i), l2.get(j));
+			if(cmp == 0) {
+				i++;
+				continue;
+			}
+			entities.add(cmp < 0 ? l1.get(i++) : l2.get(j++));
+		}
+		entities.addAll(l1.subList(i, l1.size()));
+		entities.addAll(l2.subList(j, l2.size()));
+		return new EntityListWrapper(entities);
 	}
 
 	@Override
