@@ -19,15 +19,15 @@ import vazkii.psi.api.spell.SpellParam;
 import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.api.spell.param.ParamEntityListWrapper;
 import vazkii.psi.api.spell.param.ParamNumber;
-import vazkii.psi.api.spell.piece.PieceSelector;
+import vazkii.psi.api.spell.piece.PieceOperator;
 import vazkii.psi.api.spell.wrapper.EntityListWrapper;
 
-public class PieceSelectorListFilter extends PieceSelector {
+public class PieceOperatorListIndex extends PieceOperator {
 
 	SpellParam<EntityListWrapper> list;
 	SpellParam<Number> number;
 
-	public PieceSelectorListFilter(Spell spell) {
+	public PieceOperatorListIndex(Spell spell) {
 		super(spell);
 	}
 
@@ -38,7 +38,7 @@ public class PieceSelectorListFilter extends PieceSelector {
 	}
 
 	@Override
-	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
+	public void addToMetadata(SpellMetadata meta) {
 		super.addToMetadata(meta);
 		meta.addStat(EnumSpellStat.COMPLEXITY, 1);
 	}

@@ -34,8 +34,9 @@ public class PieceSelectorTransmission extends PieceSelector {
 
 		PlayerDataHandler.PlayerData data = PlayerDataHandler.get(context.caster);
 
-		if(data.getCustomData().contains(key))
+		if(data.getCustomData().contains(key)) {
 			return data.getCustomData().getDouble(key);
+		}
 
 		throw new SpellRuntimeException(SpellRuntimeException.NO_MESSAGE);
 	}

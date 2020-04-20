@@ -62,8 +62,9 @@ public class PieceTrickBroadcast extends PieceTrick {
 		int channelVal = this.getParamValueOrDefault(context, channel, 0).intValue();
 		double signalVal = this.getParamValue(context, signal).doubleValue();
 
-		if (context.customData.containsKey(DUPLICATE_TRACKING_KEY))
+		if (context.customData.containsKey(DUPLICATE_TRACKING_KEY)) {
 			return null;
+		}
 
 		context.customData.put(DUPLICATE_TRACKING_KEY, true);
 

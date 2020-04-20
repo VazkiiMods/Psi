@@ -20,6 +20,7 @@ import vazkii.psi.api.spell.piece.PieceOperator;
 import vazkii.psi.api.spell.wrapper.EntityListWrapper;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class PieceOperatorListAdd extends PieceOperator {
@@ -46,14 +47,10 @@ public class PieceOperatorListAdd extends PieceOperator {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_TARGET);
 		}
 
-		List<Entity> list = new ArrayList<>();
-		if (listVal.unwrap() != null) {
-			list = new ArrayList<>(listVal.unwrap());
-			if (!list.contains(targetVal)) {
-				list.add(targetVal);
-			}
-		} else {
-			list.add(targetVal);
+		List<Entity> list = new ArrayList<>(listVal.unwrap());
+		int index = Collections.binarySearch(list, targetVal, EntityListWrapper::compareEntities);
+		if (index < 0) {
+			list.add(~index, targetVal);
 		}
 
 		return new EntityListWrapper(list);
