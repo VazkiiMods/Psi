@@ -14,15 +14,11 @@ import net.minecraft.block.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
-
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.world.BlockEvent;
+import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.internal.Vector3;
-import vazkii.psi.api.spell.EnumSpellStat;
-import vazkii.psi.api.spell.Spell;
-import vazkii.psi.api.spell.SpellCompilationException;
-import vazkii.psi.api.spell.SpellContext;
-import vazkii.psi.api.spell.SpellMetadata;
-import vazkii.psi.api.spell.SpellParam;
-import vazkii.psi.api.spell.SpellRuntimeException;
+import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.param.ParamVector;
 import vazkii.psi.api.spell.piece.PieceTrick;
 import vazkii.psi.common.spell.selector.entity.PieceSelectorNearbySmeltables;
@@ -53,6 +49,11 @@ public class PieceTrickSmeltBlock extends PieceTrick {
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		Vector3 positionVal = this.getParamValue(context, position);
 
+		ItemStack tool = context.tool;
+		if (tool.isEmpty()) {
+			tool = PsiAPI.getPlayerCAD(context.caster);
+		}
+
 		if (positionVal == null) {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
 		}
@@ -68,6 +69,11 @@ public class PieceTrickSmeltBlock extends PieceTrick {
 		BlockState state = context.caster.getEntityWorld().getBlockState(pos);
 		Block block = state.getBlock();
 		ItemStack stack = new ItemStack(block);
+		BlockEvent.BreakEvent event = PieceTrickBreakBlock.createBreakEvent(state, context.caster, context.caster.world, pos, tool);
+		MinecraftForge.EVENT_BUS.post(event);
+		if (event.isCanceled()) {
+			return null;
+		}
 		ItemStack result = PieceSelectorNearbySmeltables.simulateSmelt(context.caster.getEntityWorld(), stack);
 		if (!result.isEmpty()) {
 			Item item = result.getItem();

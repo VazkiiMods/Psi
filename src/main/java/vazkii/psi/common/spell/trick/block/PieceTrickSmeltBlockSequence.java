@@ -1,0 +1,97 @@
+package vazkii.psi.common.spell.trick.block;
+
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.world.BlockEvent;
+import vazkii.psi.api.PsiAPI;
+import vazkii.psi.api.internal.MathHelper;
+import vazkii.psi.api.internal.Vector3;
+import vazkii.psi.api.spell.*;
+import vazkii.psi.api.spell.param.ParamNumber;
+import vazkii.psi.api.spell.param.ParamVector;
+import vazkii.psi.api.spell.piece.PieceTrick;
+import vazkii.psi.common.spell.selector.entity.PieceSelectorNearbySmeltables;
+
+public class PieceTrickSmeltBlockSequence extends PieceTrick {
+	SpellParam<Vector3> position;
+	SpellParam<Vector3> target;
+	SpellParam<Number> maxBlocks;
+
+	public PieceTrickSmeltBlockSequence(Spell spell) {
+		super(spell);
+	}
+
+	@Override
+	public void initParams() {
+		addParam(position = new ParamVector(SpellParam.GENERIC_NAME_POSITION, SpellParam.BLUE, false, false));
+		addParam(target = new ParamVector(SpellParam.GENERIC_NAME_TARGET, SpellParam.GREEN, false, false));
+		addParam(maxBlocks = new ParamNumber(SpellParam.GENERIC_NAME_MAX, SpellParam.RED, false, true));
+	}
+
+	@Override
+	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
+		super.addToMetadata(meta);
+
+		Double maxBlocksVal = this.<Double>getParamEvaluation(maxBlocks);
+		if (maxBlocksVal == null || maxBlocksVal <= 0) {
+			throw new SpellCompilationException(SpellCompilationException.NON_POSITIVE_VALUE, x, y);
+		}
+
+		meta.addStat(EnumSpellStat.POTENCY, (int) (maxBlocksVal * 20));
+		meta.addStat(EnumSpellStat.COST, (int) ((60 + (maxBlocksVal - 1) * 35)));
+	}
+
+	@Override
+	public Object execute(SpellContext context) throws SpellRuntimeException {
+		Vector3 positionVal = this.getParamValue(context, position);
+		Vector3 targetVal = this.getParamValue(context, target);
+		int maxBlocksInt = this.getParamValue(context, maxBlocks).intValue();
+
+		if (positionVal == null) {
+			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
+		}
+
+		ItemStack tool = context.tool;
+		if (tool.isEmpty()) {
+			tool = PsiAPI.getPlayerCAD(context.caster);
+		}
+
+
+		Vector3 targetNorm = targetVal.copy().normalize();
+		for (BlockPos blockPos : MathHelper.getBlocksAlongRay(positionVal.toVec3D(), positionVal.copy().add(targetNorm.copy().multiply(maxBlocksInt)).toVec3D(), maxBlocksInt)) {
+			if (!context.isInRadius(Vector3.fromBlockPos(blockPos))) {
+				throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
+			}
+
+			if (!context.caster.getEntityWorld().isBlockModifiable(context.caster, blockPos)) {
+				return null;
+			}
+
+			BlockState state = context.caster.getEntityWorld().getBlockState(blockPos);
+			Block block = state.getBlock();
+			ItemStack stack = new ItemStack(block);
+			BlockEvent.BreakEvent event = PieceTrickBreakBlock.createBreakEvent(state, context.caster, context.caster.world, blockPos, tool);
+			MinecraftForge.EVENT_BUS.post(event);
+			if (event.isCanceled()) {
+				return null;
+			}
+			ItemStack result = PieceSelectorNearbySmeltables.simulateSmelt(context.caster.getEntityWorld(), stack);
+			if (!result.isEmpty()) {
+				Item item = result.getItem();
+				Block block1 = Block.getBlockFromItem(item);
+				if (block1 != Blocks.AIR) {
+					context.caster.getEntityWorld().setBlockState(blockPos, block1.getDefaultState());
+					context.caster.getEntityWorld().playEvent(2001, blockPos, Block.getStateId(block1.getDefaultState()));
+				}
+			}
+
+		}
+
+		return null;
+	}
+}

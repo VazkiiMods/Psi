@@ -517,6 +517,8 @@
   "psi.spellpiece.trick_broadcast.desc": "Broadcasts a number in a given channel to nearby CADs",
   "psi.spellpiece.trick_change_slot": "Trick: Slot Change (Inventory)",
   "psi.spellpiece.trick_change_slot.desc": "Changes the building slot to one of the 36 inventory slots.",
+  "psi.spellpiece.trick_smelt_block_sequence": "Trick: Smelt Block Sequence",
+  "psi.spellpiece.trick_smelt_block_sequence.desc": "Smelts blocks in a defined direction starting in a given position",
   "psi.spellparam.target": "Target",
   "psi.spellparam.number": "Number",
   "psi.spellparam.root": "Root",
