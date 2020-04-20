@@ -9,7 +9,6 @@
 package vazkii.psi.api.spell;
 
 import com.google.common.base.CaseFormat;
-
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
@@ -73,6 +72,7 @@ public abstract class SpellParam<T> {
 	public static final String GENERIC_NAME_TOGGLE = PSI_PREFIX + "toggle";
 	public static final String GENERIC_NAME_MASK = PSI_PREFIX + "mask";
 	public static final String GENERIC_NAME_CHANNEL = PSI_PREFIX + "channel";
+	public static final String GENERIC_NAME_SLOT = PSI_PREFIX + "slot";
 
 	public final String name;
 	public final int color;

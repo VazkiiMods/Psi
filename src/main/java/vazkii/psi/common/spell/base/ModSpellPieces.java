@@ -195,6 +195,7 @@ public final class ModSpellPieces {
 	public static PieceContainer trickTill;
 	public static PieceContainer trickTillSequence;
 	public static PieceContainer trickBroadcast;
+	public static PieceContainer trickChangeSlot;
 
 	public static void init() {
 		selectorCaster = register(PieceSelectorCaster.class, LibPieceNames.SELECTOR_CASTER, LibPieceGroups.TUTORIAL_1);
@@ -352,6 +353,7 @@ public final class ModSpellPieces {
 		trickTill = register(PieceTrickTill.class, LibPieceNames.TRICK_TILL, LibPieceGroups.MISC_TRICKS);
 		trickTillSequence = register(PieceTrickTillSequence.class, LibPieceNames.TRICK_TILL_SEQUENCE, LibPieceGroups.MISC_TRICKS);
 		trickBroadcast = register(PieceTrickBroadcast.class, LibPieceNames.TRICK_BROADCAST, LibPieceGroups.FLOW_CONTROL);
+		trickChangeSlot = register(PieceTrickChangeSlot.class, LibPieceNames.TRICK_CHANGE_SLOT, LibPieceGroups.DETECTION_DYNAMICS);
 	}
 
 	public static PieceContainer register(Class<? extends SpellPiece> clazz, String name, String group) {
