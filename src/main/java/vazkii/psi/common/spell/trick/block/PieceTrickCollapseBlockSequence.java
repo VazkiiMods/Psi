@@ -44,7 +44,7 @@ public class PieceTrickCollapseBlockSequence extends PieceTrick {
 		}
 
 		meta.addStat(EnumSpellStat.POTENCY, (int) (maxBlocksVal * 20));
-		meta.addStat(EnumSpellStat.COST, (int) ((60 + (maxBlocksVal - 1) * 35)));
+		meta.addStat(EnumSpellStat.COST, (int) ((150 + (maxBlocksVal - 1) * 100)));
 	}
 
 	@Override
