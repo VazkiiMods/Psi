@@ -63,7 +63,6 @@ public final class ModSpellPieces {
 	public static PieceContainer selectorBlockPresence;
 	public static PieceContainer selectorSaveVector;
 	public static PieceContainer selectorEidosChangelog;
-	public static PieceContainer selectorListFilter;
 	public static PieceContainer selectorNearbyCharges;
 	public static PieceContainer selectorNearbyFallingBlocks;
 	public static PieceContainer selectorNearbyGlowing;
@@ -105,6 +104,7 @@ public final class ModSpellPieces {
 	public static PieceContainer operatorFocusedEntity;
 	public static PieceContainer operatorListAdd;
 	public static PieceContainer operatorListRemove;
+	public static PieceContainer operatorListIndex;
 	public static PieceContainer operatorVectorRaycast;
 	public static PieceContainer operatorVectorSum;
 	public static PieceContainer operatorVectorSubtract;
@@ -286,7 +286,7 @@ public final class ModSpellPieces {
 		operatorRoot = register(PieceOperatorRoot.class, LibPieceNames.OPERATOR_ROOT, LibPieceGroups.NUMBERS_INTRO);
 		operatorSignum = register(PieceOperatorSignum.class, LibPieceNames.OPERATOR_SIGNUM, LibPieceGroups.TRIGONOMETRY);
 		operatorSwizzle = register(PieceOperatorSwizzle.class, LibPieceNames.OPERATOR_SWIZZLE, LibPieceGroups.TRIGONOMETRY);
-		selectorListFilter = register(PieceSelectorListFilter.class, LibPieceNames.SELECTOR_LIST_FILTER, LibPieceGroups.LIST_OPERATIONS);
+		operatorListIndex = register(PieceOperatorListIndex.class, LibPieceNames.OPERATOR_LIST_INDEX, LibPieceGroups.LIST_OPERATIONS);
 
 		constantNumber = register(PieceConstantNumber.class, LibPieceNames.CONSTANT_NUMBER, LibPieceGroups.TUTORIAL_2, true);
 		constantPi = register(PieceConstantPi.class, LibPieceNames.CONSTANT_PI, LibPieceGroups.TRIGONOMETRY, true);
