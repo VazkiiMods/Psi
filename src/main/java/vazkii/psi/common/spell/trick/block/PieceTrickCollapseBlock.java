@@ -16,16 +16,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.BlockEvent;
-
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.internal.Vector3;
-import vazkii.psi.api.spell.EnumSpellStat;
-import vazkii.psi.api.spell.Spell;
-import vazkii.psi.api.spell.SpellCompilationException;
-import vazkii.psi.api.spell.SpellContext;
-import vazkii.psi.api.spell.SpellMetadata;
-import vazkii.psi.api.spell.SpellParam;
-import vazkii.psi.api.spell.SpellRuntimeException;
+import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.param.ParamVector;
 import vazkii.psi.api.spell.piece.PieceTrick;
 
@@ -72,7 +65,6 @@ public class PieceTrickCollapseBlock extends PieceTrick {
 		BlockState state = world.getBlockState(pos);
 		BlockState stateDown = world.getBlockState(posDown);
 		Block block = state.getBlock();
-		Block blockBelow = stateDown.getBlock();
 
 		if (!world.isBlockModifiable(context.caster, pos)) {
 			return null;

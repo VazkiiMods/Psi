@@ -2,10 +2,10 @@ package vazkii.psi.common.spell.trick.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.item.Item;
+import net.minecraft.entity.item.FallingBlockEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.BlockEvent;
 import vazkii.psi.api.PsiAPI;
@@ -15,14 +15,15 @@ import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.param.ParamVector;
 import vazkii.psi.api.spell.piece.PieceTrick;
-import vazkii.psi.common.spell.selector.entity.PieceSelectorNearbySmeltables;
 
-public class PieceTrickSmeltBlockSequence extends PieceTrick {
+public class PieceTrickCollapseBlockSequence extends PieceTrick {
+
+
 	SpellParam<Vector3> position;
 	SpellParam<Vector3> target;
 	SpellParam<Number> maxBlocks;
 
-	public PieceTrickSmeltBlockSequence(Spell spell) {
+	public PieceTrickCollapseBlockSequence(Spell spell) {
 		super(spell);
 	}
 
@@ -43,7 +44,7 @@ public class PieceTrickSmeltBlockSequence extends PieceTrick {
 		}
 
 		meta.addStat(EnumSpellStat.POTENCY, (int) (maxBlocksVal * 20));
-		meta.addStat(EnumSpellStat.COST, (int) ((96 + (maxBlocksVal - 1) * 64)));
+		meta.addStat(EnumSpellStat.COST, (int) ((60 + (maxBlocksVal - 1) * 35)));
 	}
 
 	@Override
@@ -57,39 +58,38 @@ public class PieceTrickSmeltBlockSequence extends PieceTrick {
 		}
 
 		ItemStack tool = context.tool;
-		if (tool.isEmpty()) {
+		if (tool.isEmpty())
 			tool = PsiAPI.getPlayerCAD(context.caster);
-		}
 
 
+		World world = context.caster.world;
 		Vector3 targetNorm = targetVal.copy().normalize();
 		for (BlockPos blockPos : MathHelper.getBlocksAlongRay(positionVal.toVec3D(), positionVal.copy().add(targetNorm.copy().multiply(maxBlocksInt)).toVec3D(), maxBlocksInt)) {
 			if (!context.isInRadius(Vector3.fromBlockPos(blockPos))) {
 				throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 			}
-
-			if (!context.caster.getEntityWorld().isBlockModifiable(context.caster, blockPos)) {
-				return null;
-			}
-
-			BlockState state = context.caster.getEntityWorld().getBlockState(blockPos);
+			BlockPos posDown = blockPos.down();
+			BlockState state = world.getBlockState(blockPos);
+			BlockState stateDown = world.getBlockState(posDown);
 			Block block = state.getBlock();
-			ItemStack stack = new ItemStack(block);
-			BlockEvent.BreakEvent event = PieceTrickBreakBlock.createBreakEvent(state, context.caster, context.caster.world, blockPos, tool);
-			MinecraftForge.EVENT_BUS.post(event);
-			if (event.isCanceled()) {
+
+			if (!world.isBlockModifiable(context.caster, blockPos)) {
 				return null;
 			}
-			ItemStack result = PieceSelectorNearbySmeltables.simulateSmelt(context.caster.getEntityWorld(), stack);
-			if (!result.isEmpty()) {
-				Item item = result.getItem();
-				Block block1 = Block.getBlockFromItem(item);
-				if (block1 != Blocks.AIR) {
-					context.caster.getEntityWorld().setBlockState(blockPos, block1.getDefaultState());
-					context.caster.getEntityWorld().playEvent(2001, blockPos, Block.getStateId(block1.getDefaultState()));
-				}
-			}
 
+			if (stateDown.isAir(world, posDown) && state.getBlockHardness(world, blockPos) != -1 &&
+					PieceTrickBreakBlock.canHarvestBlock(block, context.caster, world, blockPos, tool) &&
+					world.getTileEntity(blockPos) == null) {
+
+				BlockEvent.BreakEvent event = PieceTrickBreakBlock.createBreakEvent(state, context.caster, world, blockPos, tool);
+				MinecraftForge.EVENT_BUS.post(event);
+				if (event.isCanceled()) {
+					return null;
+				}
+
+				FallingBlockEntity falling = new FallingBlockEntity(world, blockPos.getX() + 0.5, blockPos.getY() + 0.5, blockPos.getZ() + 0.5, state);
+				world.addEntity(falling);
+			}
 		}
 
 		return null;
