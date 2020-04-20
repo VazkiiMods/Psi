@@ -10,27 +10,42 @@ package vazkii.psi.api.spell.wrapper;
 
 import net.minecraft.entity.Entity;
 
+import vazkii.psi.api.PsiAPI;
+
 import javax.annotation.Nonnull;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Wrapper class for an Entity list.
+ * The Wrapper gets "ownership" of the list and will probably modify it.
+ * If you don't want to give up ownership use {@link #makeCleanWrapper}.
  */
 public class EntityListWrapper implements Iterable<Entity> {
 
 	private final List<Entity> list;
 
-	public EntityListWrapper(List<Entity> list) {
+	/**
+	 * Constructs an EntityListWrapper from a list. 
+	 * <b>The list must be sorted by {@link PsiAPI#compareEntities} and have no {@code null} values</b>.
+	 * If you can't provide these guarantees, use {@link #makeCleanWrapper}.
+	 */
+	public EntityListWrapper(@Nonnull List<Entity> list) {
+		this.list = Objects.requireNonNull(list);
+	}
+
+	public static EntityListWrapper makeCleanWrapper(@Nonnull List<Entity> list) {
 		List<Entity> copy = new ArrayList<>();
 		for (Entity e : list) {
 			if (e != null) {
 				copy.add(e);
 			}
 		}
-		this.list = copy;
+		copy.sort(PsiAPI::compareEntities);
+		return new EntityListWrapper(copy);
 	}
 
 	public List<Entity> unwrap() {

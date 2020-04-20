@@ -45,7 +45,7 @@ public class PieceOperatorListUnion extends PieceOperator {
 		List<Entity> entities = new ArrayList<>(l1.unwrap());
 		entities.addAll(l2.unwrap());
 		entities = new ArrayList<>(new LinkedHashSet<>(entities));
-		return new EntityListWrapper(entities);
+		return EntityListWrapper.makeCleanWrapper(entities);
 	}
 
 	@Override

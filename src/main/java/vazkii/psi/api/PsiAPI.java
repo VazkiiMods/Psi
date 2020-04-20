@@ -12,6 +12,7 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 
 import net.minecraft.client.renderer.model.Material;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
@@ -159,6 +160,13 @@ public final class PsiAPI {
 		}
 
 		return cad;
+	}
+
+	/**
+	 * A Comparator for Entities that's deterministic, to keep order with the Entity Lists.
+	 */
+	public static int compareEntities(Entity l, Entity r) {
+		return l.getUniqueID().compareTo(r.getUniqueID());
 	}
 
 	public static int getPlayerCADSlot(PlayerEntity player) {
