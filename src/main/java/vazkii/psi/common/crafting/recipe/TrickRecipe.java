@@ -9,6 +9,7 @@
 package vazkii.psi.common.crafting.recipe;
 
 import com.google.gson.JsonObject;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.IRecipeType;
@@ -20,6 +21,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.items.wrapper.RecipeWrapper;
 import net.minecraftforge.registries.ForgeRegistryEntry;
+
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.recipe.ITrickRecipe;
 import vazkii.psi.api.spell.Spell;
@@ -142,11 +144,9 @@ public class TrickRecipe implements ITrickRecipe {
 			recipe.input.write(buf);
 			buf.writeItemStack(recipe.output);
 			buf.writeItemStack(recipe.cad);
+			buf.writeBoolean(recipe.piece != null);
 			if (recipe.piece != null) {
-				buf.writeBoolean(true);
 				buf.writeResourceLocation(recipe.piece.registryKey);
-			} else {
-				buf.writeBoolean(false);
 			}
 		}
 	}
