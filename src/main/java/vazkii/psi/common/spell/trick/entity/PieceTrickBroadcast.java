@@ -1,3 +1,11 @@
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
+ * https://github.com/Vazkii/Psi
+ *
+ * Psi is Open Source and distributed under the
+ * Psi License: https://psi.vazkii.net/license.php
+ */
 package vazkii.psi.common.spell.trick.entity;
 
 import net.minecraft.entity.Entity;
@@ -72,9 +80,7 @@ public class PieceTrickBroadcast extends PieceTrick {
 
 		String channelKey = "psi_broadcast_channel:" + channelVal;
 
-
 		AxisAlignedBB axis = new AxisAlignedBB(positionVal.x - radiusVal, positionVal.y - radiusVal, positionVal.z - radiusVal, positionVal.x + radiusVal, positionVal.y + radiusVal, positionVal.z + radiusVal);
-
 
 		List<PlayerEntity> list = context.caster.world.getEntitiesWithinAABB(PlayerEntity.class, axis,
 				(PlayerEntity e) -> e != null && e != context.caster && e != context.focalPoint && context.isInRadius(e));
@@ -122,7 +128,6 @@ public class PieceTrickBroadcast extends PieceTrick {
 				}
 			}
 		}
-
 
 		ListNBT list1 = new ListNBT();
 		for (PlayerEntity pl : list) {

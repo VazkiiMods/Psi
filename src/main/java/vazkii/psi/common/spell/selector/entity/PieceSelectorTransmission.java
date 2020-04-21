@@ -1,3 +1,11 @@
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
+ * https://github.com/Vazkii/Psi
+ *
+ * Psi is Open Source and distributed under the
+ * Psi License: https://psi.vazkii.net/license.php
+ */
 package vazkii.psi.common.spell.selector.entity;
 
 import vazkii.psi.api.spell.*;
@@ -34,7 +42,7 @@ public class PieceSelectorTransmission extends PieceSelector {
 
 		PlayerDataHandler.PlayerData data = PlayerDataHandler.get(context.caster);
 
-		if(data.getCustomData().contains(key)) {
+		if (data.getCustomData().contains(key)) {
 			return data.getCustomData().getDouble(key);
 		}
 

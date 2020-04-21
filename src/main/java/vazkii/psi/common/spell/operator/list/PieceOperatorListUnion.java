@@ -9,7 +9,6 @@
 package vazkii.psi.common.spell.operator.list;
 
 import net.minecraft.entity.Entity;
-
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellParam;
@@ -19,7 +18,6 @@ import vazkii.psi.api.spell.piece.PieceOperator;
 import vazkii.psi.api.spell.wrapper.EntityListWrapper;
 
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
 
 public class PieceOperatorListUnion extends PieceOperator {
@@ -44,9 +42,9 @@ public class PieceOperatorListUnion extends PieceOperator {
 
 		List<Entity> entities = new ArrayList<>(l1.size() + l2.size());
 		int i = 0, j = 0;
-		while(i < l1.size() && j < l2.size()) {
+		while (i < l1.size() && j < l2.size()) {
 			int cmp = EntityListWrapper.compareEntities(l1.get(i), l2.get(j));
-			if(cmp == 0) {
+			if (cmp == 0) {
 				i++;
 				continue;
 			}

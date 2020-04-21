@@ -1,3 +1,11 @@
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
+ * https://github.com/Vazkii/Psi
+ *
+ * Psi is Open Source and distributed under the
+ * Psi License: https://psi.vazkii.net/license.php
+ */
 package vazkii.psi.common.spell.trick.block;
 
 import net.minecraft.block.Block;
@@ -60,7 +68,6 @@ public class PieceTrickSmeltBlockSequence extends PieceTrick {
 		if (tool.isEmpty()) {
 			tool = PsiAPI.getPlayerCAD(context.caster);
 		}
-
 
 		Vector3 targetNorm = targetVal.copy().normalize();
 		for (BlockPos blockPos : MathHelper.getBlocksAlongRay(positionVal.toVec3D(), positionVal.copy().add(targetNorm.copy().multiply(maxBlocksInt)).toVec3D(), maxBlocksInt)) {

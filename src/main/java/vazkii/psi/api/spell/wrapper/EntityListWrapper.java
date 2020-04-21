@@ -11,7 +11,6 @@ package vazkii.psi.api.spell.wrapper;
 import net.minecraft.entity.Entity;
 
 import javax.annotation.Nonnull;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -27,7 +26,7 @@ public class EntityListWrapper implements Iterable<Entity> {
 	private final List<Entity> list;
 
 	/**
-	 * Constructs an EntityListWrapper from a list. 
+	 * Constructs an EntityListWrapper from a list.
 	 * <b>The list must be sorted by {@link #compareEntities} and have no {@code null} values</b>.
 	 * If you can't provide these guarantees, use {@link #makeCleanWrapper}.
 	 */

@@ -9,7 +9,6 @@
 package vazkii.psi.common.spell.operator.list;
 
 import net.minecraft.entity.Entity;
-
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellParam;
@@ -44,8 +43,8 @@ public class PieceOperatorListExclusion extends PieceOperator {
 
 		List<Entity> list = new ArrayList<>();
 		List<Entity> search = l2.unwrap();
-		for(Entity e : l1) {
-			if(Collections.binarySearch(search, e, EntityListWrapper::compareEntities) < 0) {
+		for (Entity e : l1) {
+			if (Collections.binarySearch(search, e, EntityListWrapper::compareEntities) < 0) {
 				list.add(e);
 			}
 		}
