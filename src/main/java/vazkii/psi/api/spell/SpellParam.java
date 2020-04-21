@@ -9,6 +9,7 @@
 package vazkii.psi.api.spell;
 
 import com.google.common.base.CaseFormat;
+
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 

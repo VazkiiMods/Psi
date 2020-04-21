@@ -11,6 +11,7 @@ package vazkii.psi.api.spell.wrapper;
 import net.minecraft.entity.Entity;
 
 import javax.annotation.Nonnull;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;

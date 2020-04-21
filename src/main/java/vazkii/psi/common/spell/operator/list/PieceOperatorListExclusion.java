@@ -9,6 +9,7 @@
 package vazkii.psi.common.spell.operator.list;
 
 import net.minecraft.entity.Entity;
+
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellParam;
