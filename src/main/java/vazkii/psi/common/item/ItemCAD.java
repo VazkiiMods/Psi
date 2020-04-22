@@ -214,7 +214,7 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 		if (!data.overflowed && data.getAvailablePsi() > 0 && !cad.isEmpty() && !bullet.isEmpty() && ISpellAcceptor.hasSpell(bullet) && isTruePlayer(player)) {
 			ISpellAcceptor spellContainer = ISpellAcceptor.acceptor(bullet);
 			Spell spell = spellContainer.getSpell();
-			SpellContext context = new SpellContext(cad).setPlayer(player).setSpell(spell);
+			SpellContext context = new SpellContext().setPlayer(player).setSpell(spell);
 			if (predicate != null)
 				predicate.accept(context);
 

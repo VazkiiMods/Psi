@@ -22,8 +22,6 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
-import vazkii.psi.api.cad.EnumCADComponent;
-import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.cad.ICADColorizer;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.ISpellAcceptor;
@@ -38,7 +36,7 @@ import java.util.function.Consumer;
 @SuppressWarnings({"rawtypes", "unchecked"})
 public class EntitySpellProjectile extends EntityThrowable {
 
-	private static final String TAG_CAD = "cad";
+	private static final String TAG_COLORIZER = "colorizer";
 	private static final String TAG_BULLET = "bullet";
 	private static final String TAG_TIME_ALIVE = "timeAlive";
 
@@ -46,7 +44,7 @@ public class EntitySpellProjectile extends EntityThrowable {
 	private static final String TAG_LAST_MOTION_Y = "lastMotionY";
 	private static final String TAG_LAST_MOTION_Z = "lastMotionZ";
 
-	private static final DataParameter<ItemStack> CAD_DATA = EntityDataManager.createKey(EntitySpellProjectile.class, DataSerializers.ITEM_STACK);
+	private static final DataParameter<ItemStack> COLORIZER_DATA = EntityDataManager.createKey(EntitySpellProjectile.class, DataSerializers.ITEM_STACK);
 	private static final DataParameter<ItemStack> BULLET_DATA = EntityDataManager.createKey(EntitySpellProjectile.class, DataSerializers.ITEM_STACK);
 	private static final DataParameter<String> CASTER_NAME = EntityDataManager.createKey(EntitySpellProjectile.class, DataSerializers.STRING);
 
@@ -68,8 +66,8 @@ public class EntitySpellProjectile extends EntityThrowable {
 		motionZ *= speed;
 	}
 
-	public EntitySpellProjectile setInfo(EntityPlayer player, ItemStack cad, ItemStack bullet) {
-		dataManager.set(CAD_DATA, cad);
+	public EntitySpellProjectile setInfo(EntityPlayer player, ItemStack colorizer, ItemStack bullet) {
+		dataManager.set(COLORIZER_DATA, colorizer);
 		dataManager.set(BULLET_DATA, bullet);
 		dataManager.set(CASTER_NAME, player.getName());
 		return this;
@@ -77,7 +75,7 @@ public class EntitySpellProjectile extends EntityThrowable {
 
 	@Override
 	protected void entityInit() {
-		dataManager.register(CAD_DATA, new ItemStack(Blocks.STONE));
+		dataManager.register(COLORIZER_DATA, new ItemStack(Blocks.STONE));
 		dataManager.register(BULLET_DATA, new ItemStack(Blocks.STONE));
 		dataManager.register(CASTER_NAME, "");
 	}
@@ -86,11 +84,11 @@ public class EntitySpellProjectile extends EntityThrowable {
 	public void writeEntityToNBT(NBTTagCompound tagCompound) {
 		super.writeEntityToNBT(tagCompound);
 
-		NBTTagCompound cadCmp = new NBTTagCompound();
-		ItemStack cad = dataManager.get(CAD_DATA);
-		if(!cad.isEmpty())
-			cad.writeToNBT(cadCmp);
-		tagCompound.setTag(TAG_CAD, cadCmp);
+		NBTTagCompound colorizerCmp = new NBTTagCompound();
+		ItemStack colorizer = dataManager.get(COLORIZER_DATA);
+		if(!colorizer.isEmpty())
+			colorizer.writeToNBT(colorizerCmp);
+		tagCompound.setTag(TAG_COLORIZER, colorizerCmp);
 
 		NBTTagCompound bulletCmp = new NBTTagCompound();
 		ItemStack bullet = dataManager.get(BULLET_DATA);
@@ -109,9 +107,9 @@ public class EntitySpellProjectile extends EntityThrowable {
 	public void readEntityFromNBT(NBTTagCompound tagCompound) {
 		super.readEntityFromNBT(tagCompound);
 
-		NBTTagCompound cadCmp = tagCompound.getCompoundTag(TAG_CAD);
-		ItemStack cad = new ItemStack(cadCmp);
-		dataManager.set(CAD_DATA, cad);
+		NBTTagCompound colorizerCmp = tagCompound.getCompoundTag(TAG_COLORIZER);
+		ItemStack colorizer = new ItemStack(colorizerCmp);
+		dataManager.set(COLORIZER_DATA, colorizer);
 
 		NBTTagCompound bulletCmp = tagCompound.getCompoundTag(TAG_BULLET);
 		ItemStack bullet = new ItemStack(bulletCmp);
@@ -140,12 +138,9 @@ public class EntitySpellProjectile extends EntityThrowable {
 			setDead();
 		
 		int colorVal = ICADColorizer.DEFAULT_SPELL_COLOR;
-		ItemStack cad = dataManager.get(CAD_DATA);
-		if(!cad.isEmpty() && cad.getItem() instanceof ICAD) {
-			ItemStack colorizer = ((ICAD) cad.getItem()).getComponentInSlot(cad, EnumCADComponent.DYE);
-			if(!colorizer.isEmpty() && colorizer.getItem() instanceof ICADColorizer)
-				colorVal = Psi.proxy.getColorForColorizer(colorizer);
-		}
+		ItemStack colorizer = dataManager.get(COLORIZER_DATA);
+		if(!colorizer.isEmpty() && colorizer.getItem() instanceof ICADColorizer)
+			colorVal = Psi.proxy.getColorForColorizer(colorizer);
 
 		float r = PsiRenderHelper.r(colorVal) / 255F;
 		float g = PsiRenderHelper.g(colorVal) / 255F;
@@ -204,15 +199,13 @@ public class EntitySpellProjectile extends EntityThrowable {
 		boolean canCast = false;
 
 		if(thrower instanceof EntityPlayer) {
-			EntityPlayer player = (EntityPlayer) thrower;
-			ItemStack cad = dataManager.get(CAD_DATA);
 			ItemStack spellContainer = dataManager.get(BULLET_DATA);
 			if (!spellContainer.isEmpty() && ISpellAcceptor.isContainer(spellContainer)) {
 				Spell spell = ISpellAcceptor.acceptor(spellContainer).getSpell();
 				if(spell != null) {
 					canCast = true;
 					if(context == null)
-						context = new SpellContext(cad).setPlayer(player).setFocalPoint(this).setSpell(spell);
+						context = new SpellContext().setPlayer((EntityPlayer) thrower).setFocalPoint(this).setSpell(spell);
 					context.setFocalPoint(this);
 				}
 			}

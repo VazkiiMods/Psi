@@ -58,14 +58,8 @@ public class PieceTrickMoveBlock extends PieceTrick {
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 
 		ItemStack tool = context.tool;
-		if(tool.isEmpty()) {
+		if (tool.isEmpty())
 			tool = PsiAPI.getPlayerCAD(context.caster);
-			if(tool.isEmpty()) {
-				tool = context.cad;
-				if(tool.isEmpty())
-					throw new SpellRuntimeException(SpellRuntimeException.NO_CAD);
-			}
-		}
 
 		World world = context.caster.getEntityWorld();
 		BlockPos pos = positionVal.toBlockPos();

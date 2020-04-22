@@ -18,8 +18,6 @@ import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import vazkii.psi.api.cad.EnumCADComponent;
-import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.cad.ICADColorizer;
 import vazkii.psi.api.internal.PsiRenderHelper;
 import vazkii.psi.common.Psi;
@@ -47,14 +45,9 @@ public class RenderSpellCircle extends Render<EntitySpellCircle> {
 		super.doRender(entity, x, y, z, entityYaw, partialTicks);
 
 		int colorVal = ICADColorizer.DEFAULT_SPELL_COLOR;
-
-		ItemStack cad = entity.getDataManager().get(EntitySpellCircle.CAD_DATA);
-		if(!cad.isEmpty() && cad.getItem() instanceof ICAD) {
-			ItemStack colorizer = ((ICAD) cad.getItem()).getComponentInSlot(cad, EnumCADComponent.DYE);
-			if(!colorizer.isEmpty() && colorizer.getItem() instanceof ICADColorizer)
-				colorVal = Psi.proxy.getColorForColorizer(colorizer);
-		}
-
+		ItemStack colorizer = entity.getDataManager().get(EntitySpellCircle.COLORIZER_DATA);
+		if(!colorizer.isEmpty() && colorizer.getItem() instanceof ICADColorizer)
+			colorVal = Psi.proxy.getColorForColorizer(colorizer);
 		float alive = entity.getTimeAlive() + partialTicks;
 		float s1 = Math.min(1F, alive / EntitySpellCircle.CAST_DELAY);
 		if(alive > EntitySpellCircle.LIVE_TIME - EntitySpellCircle.CAST_DELAY)
