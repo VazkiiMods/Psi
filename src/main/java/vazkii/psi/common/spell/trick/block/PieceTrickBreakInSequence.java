@@ -10,6 +10,7 @@
  */
 package vazkii.psi.common.spell.trick.block;
 
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.EnumSpellStat;
@@ -54,6 +55,7 @@ public class PieceTrickBreakInSequence extends PieceTrick {
 
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
+		ItemStack tool = context.getHarvestTool();
 		Vector3 positionVal = this.getParamValue(context, position);
 		Vector3 targetVal = this.getParamValue(context, target);
 		Double maxBlocksVal = this.<Double>getParamValue(context, maxBlocks);
@@ -71,7 +73,7 @@ public class PieceTrickBreakInSequence extends PieceTrick {
 				throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 
 			BlockPos pos = blockVec.toBlockPos();
-			PieceTrickBreakBlock.removeBlockWithDrops(context, context.caster, context.caster.getEntityWorld(), context.tool, pos, true);
+			PieceTrickBreakBlock.removeBlockWithDrops(context, context.caster, context.caster.getEntityWorld(), tool, pos, true);
 		}
 
 		return null;

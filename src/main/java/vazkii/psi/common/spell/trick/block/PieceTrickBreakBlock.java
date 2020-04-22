@@ -53,6 +53,7 @@ public class PieceTrickBreakBlock extends PieceTrick {
 
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
+		ItemStack tool = context.getHarvestTool();
 		Vector3 positionVal = this.getParamValue(context, position);
 
 		if(positionVal == null)
@@ -61,7 +62,7 @@ public class PieceTrickBreakBlock extends PieceTrick {
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 
 		BlockPos pos = positionVal.toBlockPos();
-		removeBlockWithDrops(context, context.caster, context.caster.getEntityWorld(), context.tool, pos, true);
+		removeBlockWithDrops(context, context.caster, context.caster.getEntityWorld(), tool, pos, true);
 
 		return null;
 	}
