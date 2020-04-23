@@ -54,7 +54,7 @@ public abstract class PieceSelectorNearby extends PieceSelector {
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		Vector3 positionVal = this.getParamValueOrDefault(context, position, Vector3.fromVec3d(context.focalPoint.getPositionVector()));
-		double radiusVal = Math.min(this.getParamValueOrDefault(context, radius, SpellContext.MAX_DISTANCE).doubleValue(), SpellContext.MAX_DISTANCE);
+		double radiusVal = Math.min(this.getParamValueOrDefault(context, radius, 2 * SpellContext.MAX_DISTANCE).doubleValue(), 2 * SpellContext.MAX_DISTANCE);
 
 		if (!context.isInRadius(positionVal)) {
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
