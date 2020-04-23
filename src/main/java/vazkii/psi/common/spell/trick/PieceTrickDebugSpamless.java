@@ -1,3 +1,11 @@
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
+ * https://github.com/Vazkii/Psi
+ *
+ * Psi is Open Source and distributed under the
+ * Psi License: https://psi.vazkii.net/license.php
+ */
 package vazkii.psi.common.spell.trick;
 
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -56,11 +64,10 @@ public class PieceTrickDebugSpamless extends PieceTrick {
 					.appendSibling(component.setStyle(new Style().setColor(TextFormatting.RESET)));
 		}
 
-		if(context.caster instanceof ServerPlayerEntity){
+		if (context.caster instanceof ServerPlayerEntity) {
 			MessageSpamlessChat chatMessage = new MessageSpamlessChat(component, numberVal == null ? -1 : numberVal.intValue());
-			MessageRegister.HANDLER.sendToPlayer(chatMessage, (ServerPlayerEntity)context.caster);
+			MessageRegister.sendToPlayer(chatMessage, context.caster);
 		}
-
 
 		return null;
 	}

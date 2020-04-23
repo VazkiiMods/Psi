@@ -10,88 +10,96 @@ package vazkii.psi.common.network;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.network.NetworkDirection;
+import net.minecraftforge.fml.network.NetworkRegistry;
+import net.minecraftforge.fml.network.PacketDistributor;
+import net.minecraftforge.fml.network.simple.SimpleChannel;
 
-import vazkii.arl.network.IMessage;
-import vazkii.arl.network.MessageSerializer;
-import vazkii.arl.network.NetworkHandler;
-import vazkii.psi.api.spell.Spell;
 import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.network.message.*;
 
-import java.lang.reflect.Field;
-import java.util.List;
-
 public class MessageRegister {
-	public static final NetworkHandler HANDLER = new NetworkHandler(LibMisc.MOD_ID, 1);
+	private static final String VERSION = "2";
+	public static final SimpleChannel HANDLER = NetworkRegistry.newSimpleChannel(new ResourceLocation(LibMisc.MOD_ID, "main"),
+			() -> VERSION,
+			VERSION::equals,
+			VERSION::equals);
 
-	@SuppressWarnings("unchecked")
 	public static void init() {
-		HANDLER.register(MessageLoopcastSync.class, NetworkDirection.PLAY_TO_CLIENT);
-		HANDLER.register(MessageDataSync.class, NetworkDirection.PLAY_TO_CLIENT);
-		HANDLER.register(MessageEidosSync.class, NetworkDirection.PLAY_TO_CLIENT);
-		HANDLER.register(MessageCADDataSync.class, NetworkDirection.PLAY_TO_CLIENT);
-		HANDLER.register(MessageDeductPsi.class, NetworkDirection.PLAY_TO_CLIENT);
-		HANDLER.register(MessageChangeSocketableSlot.class, NetworkDirection.PLAY_TO_SERVER);
-		HANDLER.register(MessageSpellModified.class, NetworkDirection.PLAY_TO_SERVER);
-		HANDLER.register(MessageLevelUp.class, NetworkDirection.PLAY_TO_CLIENT);
-		HANDLER.register(MessageChangeControllerSlot.class, NetworkDirection.PLAY_TO_SERVER);
-		HANDLER.register(MessageTriggerJumpSpell.class, NetworkDirection.PLAY_TO_SERVER);
-		HANDLER.register(MessageVisualEffect.class, NetworkDirection.PLAY_TO_CLIENT);
-		HANDLER.register(MessageAdditiveMotion.class, NetworkDirection.PLAY_TO_CLIENT);
-		HANDLER.register(MessageBlink.class, NetworkDirection.PLAY_TO_CLIENT);
-		HANDLER.register(MessageSpamlessChat.class, NetworkDirection.PLAY_TO_CLIENT);
-		HANDLER.register(MessageParticleTrail.class, NetworkDirection.PLAY_TO_CLIENT);
-
-		MessageSerializer.mapHandler(Spell.class, MessageRegister::readSpell, MessageRegister::writeSpell);
-		MessageSerializer.mapHandler(ITextComponent.class, MessageRegister::readTextComponent, MessageRegister::writeTextComponent);
-		MessageSerializer.mapHandler(Vec3d.class, MessageRegister::readVec3d, MessageRegister::writeVec3d);
+		int id = 0;
+		HANDLER.messageBuilder(MessageLoopcastSync.class, id++)
+				.encoder(MessageLoopcastSync::encode)
+				.decoder(MessageLoopcastSync::new)
+				.consumer(MessageLoopcastSync::receive).add();
+		HANDLER.messageBuilder(MessageDataSync.class, id++)
+				.encoder(MessageDataSync::encode)
+				.decoder(MessageDataSync::new)
+				.consumer(MessageDataSync::receive).add();
+		HANDLER.messageBuilder(MessageEidosSync.class, id++)
+				.encoder(MessageEidosSync::encode)
+				.decoder(MessageEidosSync::new)
+				.consumer(MessageEidosSync::receive).add();
+		HANDLER.messageBuilder(MessageCADDataSync.class, id++)
+				.encoder(MessageCADDataSync::encode)
+				.decoder(MessageCADDataSync::new)
+				.consumer(MessageCADDataSync::receive).add();
+		HANDLER.messageBuilder(MessageDeductPsi.class, id++)
+				.encoder(MessageDeductPsi::encode)
+				.decoder(MessageDeductPsi::new)
+				.consumer(MessageDeductPsi::receive).add();
+		HANDLER.messageBuilder(MessageChangeSocketableSlot.class, id++)
+				.encoder(MessageChangeSocketableSlot::encode)
+				.decoder(MessageChangeSocketableSlot::new)
+				.consumer(MessageChangeSocketableSlot::receive).add();
+		HANDLER.messageBuilder(MessageSpellModified.class, id++)
+				.encoder(MessageSpellModified::encode)
+				.decoder(MessageSpellModified::new)
+				.consumer(MessageSpellModified::receive).add();
+		HANDLER.messageBuilder(MessageLevelUp.class, id++)
+				.encoder(MessageLevelUp::encode)
+				.decoder(MessageLevelUp::new)
+				.consumer(MessageLevelUp::receive).add();
+		HANDLER.messageBuilder(MessageChangeControllerSlot.class, id++)
+				.encoder(MessageChangeControllerSlot::encode)
+				.decoder(MessageChangeControllerSlot::new)
+				.consumer(MessageChangeControllerSlot::receive).add();
+		HANDLER.messageBuilder(MessageTriggerJumpSpell.class, id++)
+				.encoder((msg, buf) -> {})
+				.decoder($ -> new MessageTriggerJumpSpell())
+				.consumer(MessageTriggerJumpSpell::receive).add();
+		HANDLER.messageBuilder(MessageVisualEffect.class, id++)
+				.encoder(MessageVisualEffect::encode)
+				.decoder(MessageVisualEffect::new)
+				.consumer(MessageVisualEffect::receive).add();
+		HANDLER.messageBuilder(MessageAdditiveMotion.class, id++)
+				.encoder(MessageAdditiveMotion::encode)
+				.decoder(MessageAdditiveMotion::new)
+				.consumer(MessageAdditiveMotion::receive).add();
+		HANDLER.messageBuilder(MessageSpamlessChat.class, id++)
+				.encoder(MessageSpamlessChat::encode)
+				.decoder(MessageSpamlessChat::new)
+				.consumer(MessageSpamlessChat::receive).add();
+		HANDLER.messageBuilder(MessageParticleTrail.class, id++)
+				.encoder(MessageParticleTrail::encode)
+				.decoder(MessageParticleTrail::new)
+				.consumer(MessageParticleTrail::receive).add();
 	}
 
-	private static void writeVec3d(PacketBuffer buf, Field f, Vec3d vec3d){
+	public static void writeVec3d(PacketBuffer buf, Vec3d vec3d) {
 		buf.writeDouble(vec3d.x);
 		buf.writeDouble(vec3d.y);
 		buf.writeDouble(vec3d.z);
 	}
 
-	private static Vec3d readVec3d(PacketBuffer buf, Field f){
+	public static Vec3d readVec3d(PacketBuffer buf) {
 		return new Vec3d(buf.readDouble(), buf.readDouble(), buf.readDouble());
 	}
 
-	private static void writeTextComponent(PacketBuffer buf, Field f, ITextComponent component){
-		buf.writeTextComponent(component);
-	}
-
-	private static ITextComponent readTextComponent(PacketBuffer buf, Field f){
-		return buf.readTextComponent();
-	}
-
-	private static Spell readSpell(PacketBuffer buf, Field f) {
-		CompoundNBT cmp = buf.readCompoundTag();
-		return Spell.createFromNBT(cmp);
-	}
-
-	private static void writeSpell(PacketBuffer buf, Field f, Spell spell) {
-		CompoundNBT cmp = new CompoundNBT();
-		if (spell != null) {
-			spell.writeToNBT(cmp);
-		}
-
-		buf.writeCompoundTag(cmp);
-	}
-
-	public static void sendToAllAround(IMessage message, BlockPos origin, World world, int radius) {
-		List<PlayerEntity> players = world.getEntitiesWithinAABB(PlayerEntity.class, new AxisAlignedBB(origin.getX() - radius, origin.getY() - radius, origin.getZ() - radius, origin.getX() + radius, origin.getY() + 32, origin.getZ() + 32),
-				entity -> entity != null && entity.getDistanceSq(origin.getX(), origin.getY(), origin.getZ()) <= radius * radius);
-		players.forEach(pl -> HANDLER.sendToPlayer(message, (ServerPlayerEntity) pl));
-
+	public static void sendToPlayer(Object msg, PlayerEntity player) {
+		ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
+		HANDLER.send(PacketDistributor.PLAYER.with(() -> serverPlayer), msg);
 	}
 
 }

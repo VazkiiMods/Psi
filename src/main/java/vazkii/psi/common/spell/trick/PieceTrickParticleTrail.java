@@ -1,3 +1,11 @@
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
+ * https://github.com/Vazkii/Psi
+ *
+ * Psi is Open Source and distributed under the
+ * Psi License: https://psi.vazkii.net/license.php
+ */
 package vazkii.psi.common.spell.trick;
 
 import net.minecraftforge.fml.network.PacketDistributor;
@@ -52,16 +60,17 @@ public class PieceTrickParticleTrail extends PieceTrick {
 		double length = this.getParamValue(context, lengthParam).doubleValue();
 		int time = Math.min(this.getParamValueOrDefault(context, timeParam, 20).intValue(), 1200);
 
-		if (time <= 0) throw new SpellRuntimeException(SpellRuntimeException.NEGATIVE_NUMBER);
+		if (time <= 0) {
+			throw new SpellRuntimeException(SpellRuntimeException.NEGATIVE_NUMBER);
+		}
 
 		time = time / 6;
-
 
 		if (!context.isInRadius(pos.copy().add(dir.copy().multiply(length)))) {
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 		}
 
-		MessageRegister.HANDLER.channel.send(PacketDistributor.DIMENSION.with(() -> context.caster.world.dimension.getType()), new MessageParticleTrail(pos.toVec3D(), dir.toVec3D(), length, (int) time, PsiAPI.getPlayerCAD(context.caster)));
+		MessageRegister.HANDLER.send(PacketDistributor.DIMENSION.with(() -> context.caster.world.dimension.getType()), new MessageParticleTrail(pos.toVec3D(), dir.toVec3D(), length, (int) time, PsiAPI.getPlayerCAD(context.caster)));
 		return null;
 	}
 }

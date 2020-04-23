@@ -9,7 +9,6 @@
 package vazkii.psi.common.spell.trick.entity;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.math.Vec3d;
 
 import vazkii.psi.api.spell.EnumSpellStat;
@@ -22,8 +21,6 @@ import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.api.spell.param.ParamEntity;
 import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.piece.PieceTrick;
-import vazkii.psi.common.network.MessageRegister;
-import vazkii.psi.common.network.message.MessageBlink;
 
 public class PieceTrickBlink extends PieceTrick {
 
@@ -74,10 +71,7 @@ public class PieceTrickBlink extends PieceTrick {
 		double offY = Math.max(0, look.y * dist);
 		double offZ = look.z * dist;
 
-		e.setPosition(e.getX() + offX, e.getY() + offY, e.getZ() + offZ);
-		if (e instanceof ServerPlayerEntity) {
-			MessageRegister.HANDLER.sendToPlayer(new MessageBlink(offX, offY, offZ), (ServerPlayerEntity) e);
-		}
+		e.setPositionAndUpdate(e.getX() + offX, e.getY() + offY, e.getZ() + offZ);
 	}
 
 }
