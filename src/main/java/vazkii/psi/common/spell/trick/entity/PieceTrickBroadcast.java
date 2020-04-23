@@ -18,7 +18,13 @@ import net.minecraft.world.World;
 
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.internal.Vector3;
-import vazkii.psi.api.spell.*;
+import vazkii.psi.api.spell.EnumSpellStat;
+import vazkii.psi.api.spell.Spell;
+import vazkii.psi.api.spell.SpellCompilationException;
+import vazkii.psi.api.spell.SpellContext;
+import vazkii.psi.api.spell.SpellMetadata;
+import vazkii.psi.api.spell.SpellParam;
+import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.param.ParamVector;
 import vazkii.psi.api.spell.piece.PieceTrick;
@@ -67,7 +73,7 @@ public class PieceTrickBroadcast extends PieceTrick {
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		Vector3 positionVal = SpellHelpers.getVector3(this, context, position, true, false);
-		double radiusVal = Math.max(this.getParamValue(context, radius).doubleValue(), SpellContext.MAX_DISTANCE);
+		double radiusVal = Math.min(this.getParamValue(context, radius).doubleValue(), SpellContext.MAX_DISTANCE);
 		int channelVal = this.getParamValueOrDefault(context, channel, 0).intValue();
 		double signalVal = this.getParamValue(context, signal).doubleValue();
 
