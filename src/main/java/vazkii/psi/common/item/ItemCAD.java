@@ -39,6 +39,7 @@ import net.minecraftforge.common.ToolType;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.fml.network.PacketDistributor;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.wrapper.RecipeWrapper;
 
@@ -167,7 +168,8 @@ public class ItemCAD extends Item implements ICAD, ISpellSettable {
 			}
 
 			if (entityIn instanceof ServerPlayerEntity && data.isDirty()) {
-				MessageRegister.HANDLER.sendToPlayer(new MessageCADDataSync(data), (ServerPlayerEntity) entityIn);
+				ServerPlayerEntity player = (ServerPlayerEntity) entityIn;
+				MessageRegister.sendToPlayer(new MessageCADDataSync(data), player);
 				data.markDirty(false);
 			}
 		});
@@ -346,10 +348,10 @@ public class ItemCAD extends Item implements ICAD, ISpellSettable {
 				outCopy.setCount(stack.getCount());
 				item.setItem(outCopy);
 				did = true;
-				MessageRegister.sendToAllAround(new MessageVisualEffect(ICADColorizer.DEFAULT_SPELL_COLOR,
+				MessageVisualEffect msg = new MessageVisualEffect(ICADColorizer.DEFAULT_SPELL_COLOR,
 						item.getX(), item.getY(), item.getZ(), item.getWidth(), item.getHeight(), item.getYOffset(),
-						MessageVisualEffect.TYPE_CRAFT),
-						item.getPosition(), item.getEntityWorld(), 32);
+						MessageVisualEffect.TYPE_CRAFT);
+				MessageRegister.HANDLER.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> item), msg);
 			}
 		}
 

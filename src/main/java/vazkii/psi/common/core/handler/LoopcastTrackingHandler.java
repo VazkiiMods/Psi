@@ -45,13 +45,14 @@ public class LoopcastTrackingHandler {
 
 	public static void syncDataFor(PlayerEntity player, ServerPlayerEntity receiver) {
 		PlayerDataHandler.PlayerData data = PlayerDataHandler.get(player);
-		MessageRegister.HANDLER.sendToPlayer(new MessageLoopcastSync(player.getEntityId(), data.loopcasting, data.loopcastHand), receiver);
+
+		MessageRegister.sendToPlayer(new MessageLoopcastSync(player.getEntityId(), data.loopcasting, data.loopcastHand), receiver);
 	}
 
 	public static void syncForTrackers(ServerPlayerEntity player) {
 
 		PlayerDataHandler.PlayerData data = PlayerDataHandler.get(player);
-		MessageRegister.HANDLER.channel.send(PacketDistributor.TRACKING_ENTITY.with(() -> player), new MessageLoopcastSync(player.getEntityId(), data.loopcasting, data.loopcastHand));
+		MessageRegister.HANDLER.send(PacketDistributor.TRACKING_ENTITY.with(() -> player), new MessageLoopcastSync(player.getEntityId(), data.loopcasting, data.loopcastHand));
 
 	}
 }

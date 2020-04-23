@@ -10,27 +10,34 @@ package vazkii.psi.common.network.message;
 
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.Hand;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-import vazkii.arl.network.IMessage;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 
-public class MessageChangeSocketableSlot implements IMessage {
+import java.util.function.Supplier;
 
-	public int slot;
+public class MessageChangeSocketableSlot {
 
-	public MessageChangeSocketableSlot() {}
+	private final int slot;
 
 	public MessageChangeSocketableSlot(int slot) {
 		this.slot = slot;
 	}
 
-	@Override
-	public boolean receive(NetworkEvent.Context context) {
-		context.enqueueWork(() -> {
-			ServerPlayerEntity player = context.getSender();
+	public MessageChangeSocketableSlot(PacketBuffer buf) {
+		this.slot = buf.readVarInt();
+	}
+
+	public void encode(PacketBuffer buf) {
+		buf.writeVarInt(slot);
+	}
+
+	public boolean receive(Supplier<NetworkEvent.Context> context) {
+		context.get().enqueueWork(() -> {
+			ServerPlayerEntity player = context.get().getSender();
 			ItemStack stack = player.getHeldItem(Hand.MAIN_HAND);
 
 			if (!stack.isEmpty()) {

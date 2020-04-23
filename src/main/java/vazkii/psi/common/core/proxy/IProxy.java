@@ -23,6 +23,10 @@ public interface IProxy {
 
 	PlayerEntity getClientPlayer();
 
+	default World getClientWorld() {
+		return null;
+	}
+
 	long getWorldElapsedTicks();
 
 	int getClientRenderDistance();

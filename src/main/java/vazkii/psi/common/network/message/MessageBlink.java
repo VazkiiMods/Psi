@@ -8,22 +8,18 @@
  */
 package vazkii.psi.common.network.message;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-import vazkii.arl.network.IMessage;
+import vazkii.psi.common.Psi;
 
-public class MessageBlink implements IMessage {
-	public double offX;
-	public double offY;
-	public double offZ;
+import java.util.function.Supplier;
 
-	public MessageBlink() {
-		// NO-OP
-	}
+public class MessageBlink {
+	private final double offX;
+	private final double offY;
+	private final double offZ;
 
 	public MessageBlink(double offX, double offY, double offZ) {
 		this.offX = offX;
@@ -31,11 +27,21 @@ public class MessageBlink implements IMessage {
 		this.offZ = offZ;
 	}
 
-	@Override
-	@OnlyIn(Dist.CLIENT)
-	public boolean receive(NetworkEvent.Context context) {
-		context.enqueueWork(() -> {
-			Entity entity = Minecraft.getInstance().player;
+	public MessageBlink(PacketBuffer buf) {
+		this.offX = buf.readDouble();
+		this.offY = buf.readDouble();
+		this.offZ = buf.readDouble();
+	}
+
+	public void encode(PacketBuffer buf) {
+		buf.writeDouble(offX);
+		buf.writeDouble(offY);
+		buf.writeDouble(offZ);
+	}
+
+	public boolean receive(Supplier<NetworkEvent.Context> context) {
+		context.get().enqueueWork(() -> {
+			Entity entity = Psi.proxy.getClientPlayer();
 			if (entity != null) {
 				entity.setPosition(entity.getX() + offX, entity.getY() + offY, entity.getZ() + offZ);
 			}

@@ -9,28 +9,34 @@
 package vazkii.psi.common.network.message;
 
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-import vazkii.arl.network.IMessage;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 
-public class MessageEidosSync implements IMessage {
+import java.util.function.Supplier;
 
-	public int reversionTime;
+public class MessageEidosSync {
 
-	public MessageEidosSync() {}
+	private final int reversionTime;
 
 	public MessageEidosSync(int reversionTime) {
 		this.reversionTime = reversionTime;
 	}
 
-	@Override
-	@OnlyIn(Dist.CLIENT)
-	public boolean receive(NetworkEvent.Context context) {
-		context.enqueueWork(() -> {
+	public MessageEidosSync(PacketBuffer buf) {
+		this.reversionTime = buf.readInt();
+	}
+
+	public void encode(PacketBuffer buf) {
+		buf.writeInt(reversionTime);
+	}
+
+	public boolean receive(Supplier<NetworkEvent.Context> context) {
+		context.get().enqueueWork(() -> {
 			PlayerEntity player = Psi.proxy.getClientPlayer();
 			if (player != null) {
 				PlayerDataHandler.PlayerData data = PlayerDataHandler.get(player);

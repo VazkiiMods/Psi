@@ -1,3 +1,11 @@
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
+ * https://github.com/Vazkii/Psi
+ *
+ * Psi is Open Source and distributed under the
+ * Psi License: https://psi.vazkii.net/license.php
+ */
 package vazkii.psi.common.spell.operator.entity;
 
 import net.minecraft.entity.Entity;
@@ -38,12 +46,11 @@ public class PieceOperatorClosestToLine extends PieceOperator {
 		Vector3 rayStart = SpellHelpers.getVector3(this, context, rayStartParam, false, false);
 		Vector3 rayEnd = SpellHelpers.getVector3(this, context, rayEndParam, false, false);
 		EntityListWrapper list = this.getNonnullParamValue(context, entList);
-		if(list.unwrap().isEmpty())
+		if (list.unwrap().isEmpty())
 			return null;
 
 		return closestToLineSegment(rayStart, rayEnd, list);
 	}
-
 
 	@Override
 	public Class<?> getEvaluationType() {
@@ -51,30 +58,34 @@ public class PieceOperatorClosestToLine extends PieceOperator {
 	}
 
 	public static Entity closestToLineSegment(Vector3 a, Vector3 b, Iterable<Entity> list) throws SpellRuntimeException {
-		if(a.equals(b)) return closestToPoint(a, list);
-		Vec3d start   = a.toVec3D();
-		Vec3d end     = b.toVec3D();
-		Vec3d diff    = end.subtract(start).normalize();
+		if (a.equals(b))
+			return closestToPoint(a, list);
+		Vec3d start = a.toVec3D();
+		Vec3d end = b.toVec3D();
+		Vec3d diff = end.subtract(start).normalize();
 		double minDot = diff.dotProduct(start);
 		double maxDot = diff.dotProduct(end);
 
 		double minDist = Double.MAX_VALUE;
 		Entity found = null;
 
-		for(Entity e : list) {
+		for (Entity e : list) {
 			Vec3d pos = e.getPositionVector();
 			double dot = diff.dotProduct(pos);
 			double dist;
-			if(dot <= minDot)      dist = pos.subtract(start).length();
-			else if(dot >= maxDot) dist = pos.subtract(end).length();
-			else                   dist = pos.subtract(start).crossProduct(diff).length();
+			if (dot <= minDot)
+				dist = pos.subtract(start).length();
+			else if (dot >= maxDot)
+				dist = pos.subtract(end).length();
+			else
+				dist = pos.subtract(start).crossProduct(diff).length();
 
-			if(dist < minDist) {
+			if (dist < minDist) {
 				minDist = dist;
 				found = e;
 			}
 		}
-		if(found == null)
+		if (found == null)
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_TARGET);
 		return found;
 	}

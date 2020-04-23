@@ -10,29 +10,35 @@ package vazkii.psi.common.network.message;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-import vazkii.arl.network.IMessage;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ICADData;
 import vazkii.psi.common.Psi;
 
-public class MessageCADDataSync implements IMessage {
+import java.util.function.Supplier;
 
-	public CompoundNBT cmp;
+public class MessageCADDataSync {
 
-	public MessageCADDataSync() {}
+	private final CompoundNBT cmp;
 
 	public MessageCADDataSync(ICADData data) {
 		cmp = data.serializeForSynchronization();
 	}
 
-	@Override
-	@OnlyIn(Dist.CLIENT)
-	public boolean receive(NetworkEvent.Context context) {
-		context.enqueueWork(() -> {
+	public MessageCADDataSync(PacketBuffer buf) {
+		cmp = buf.readCompoundTag();
+	}
+
+	public void encode(PacketBuffer buf) {
+		buf.writeCompoundTag(cmp);
+	}
+
+	public boolean receive(Supplier<NetworkEvent.Context> context) {
+		context.get().enqueueWork(() -> {
 			ItemStack cad = PsiAPI.getPlayerCAD(Psi.proxy.getClientPlayer());
 			if (!cad.isEmpty()) {
 				cad.getCapability(PsiAPI.CAD_DATA_CAPABILITY).ifPresent(d -> d.deserializeNBT(cmp));

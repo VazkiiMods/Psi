@@ -27,7 +27,6 @@ import net.minecraft.util.text.TextFormatting;
 
 import org.lwjgl.opengl.GL11;
 
-import vazkii.arl.network.IMessage;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ISocketable;
 import vazkii.psi.api.cad.ISocketableCapability;
@@ -301,7 +300,7 @@ public class GuiSocketSelect extends Screen {
 				int slot = slots.get(slotSelected);
 				PlayerDataHandler.get(mc.player).stopLoopcast();
 
-				IMessage message;
+				Object message;
 				if (!controllerStack.isEmpty()) {
 					message = new MessageChangeControllerSlot(controlSlot, slot);
 				} else {

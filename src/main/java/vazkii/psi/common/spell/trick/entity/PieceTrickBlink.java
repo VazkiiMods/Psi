@@ -76,7 +76,7 @@ public class PieceTrickBlink extends PieceTrick {
 
 		e.setPosition(e.getX() + offX, e.getY() + offY, e.getZ() + offZ);
 		if (e instanceof ServerPlayerEntity) {
-			MessageRegister.HANDLER.sendToPlayer(new MessageBlink(offX, offY, offZ), (ServerPlayerEntity) e);
+			MessageRegister.sendToPlayer(new MessageBlink(offX, offY, offZ), (ServerPlayerEntity) e);
 		}
 	}
 

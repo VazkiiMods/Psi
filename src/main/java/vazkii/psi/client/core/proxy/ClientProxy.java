@@ -146,6 +146,11 @@ public class ClientProxy implements IProxy {
 	}
 
 	@Override
+	public World getClientWorld() {
+		return Minecraft.getInstance().world;
+	}
+
+	@Override
 	public long getWorldElapsedTicks() {
 		return ClientTickHandler.ticksInGame;
 	}

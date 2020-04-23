@@ -1,27 +1,34 @@
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
+ * https://github.com/Vazkii/Psi
+ *
+ * Psi is Open Source and distributed under the
+ * Psi License: https://psi.vazkii.net/license.php
+ */
 package vazkii.psi.common.network.message;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-import vazkii.arl.network.IMessage;
 import vazkii.psi.api.internal.PsiRenderHelper;
 import vazkii.psi.common.Psi;
+import vazkii.psi.common.network.MessageRegister;
 
-public class MessageParticleTrail implements IMessage {
+import java.util.function.Supplier;
+
+public class MessageParticleTrail {
 	private static final int STEPS_PER_UNIT = 4;
 
-	public Vec3d position;
-	public Vec3d direction;
-	public double length;
-	public int time;
-	public ItemStack cad;
-
-	public MessageParticleTrail(){
-		//NO-OP
-	}
+	private final Vec3d position;
+	private final Vec3d direction;
+	private final double length;
+	private final int time;
+	private final ItemStack cad;
 
 	public MessageParticleTrail(Vec3d position, Vec3d direction, double length, int time, ItemStack cad) {
 		this.position = position;
@@ -31,10 +38,25 @@ public class MessageParticleTrail implements IMessage {
 		this.cad = cad;
 	}
 
-	@Override
-	public boolean receive(NetworkEvent.Context context) {
-		context.enqueueWork(() -> {
-			World world = Minecraft.getInstance().world;
+	public MessageParticleTrail(PacketBuffer buf) {
+		this.position = MessageRegister.readVec3d(buf);
+		this.direction = MessageRegister.readVec3d(buf);
+		this.length = buf.readDouble();
+		this.time = buf.readVarInt();
+		this.cad = buf.readItemStack();
+	}
+
+	public void encode(PacketBuffer buf) {
+		MessageRegister.writeVec3d(buf, position);
+		MessageRegister.writeVec3d(buf, direction);
+		buf.writeDouble(length);
+		buf.writeVarInt(time);
+		buf.writeItemStack(cad);
+	}
+
+	public boolean receive(Supplier<NetworkEvent.Context> context) {
+		context.get().enqueueWork(() -> {
+			World world = Psi.proxy.getClientWorld();
 
 			int color = Psi.proxy.getColorForCAD(cad);
 

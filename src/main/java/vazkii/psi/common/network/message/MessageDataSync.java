@@ -10,30 +10,36 @@ package vazkii.psi.common.network.message;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-import vazkii.arl.network.IMessage;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
 
-public class MessageDataSync implements IMessage {
+import java.util.function.Supplier;
 
-	public CompoundNBT cmp;
+public class MessageDataSync {
 
-	public MessageDataSync() {}
+	private final CompoundNBT cmp;
 
 	public MessageDataSync(PlayerData data) {
 		cmp = new CompoundNBT();
 		data.writeToNBT(cmp);
 	}
 
-	@Override
-	@OnlyIn(Dist.CLIENT)
-	public boolean receive(NetworkEvent.Context context) {
-		context.enqueueWork(() -> {
+	public MessageDataSync(PacketBuffer buf) {
+		cmp = buf.readCompoundTag();
+	}
+
+	public void encode(PacketBuffer buf) {
+		buf.writeCompoundTag(cmp);
+	}
+
+	public boolean receive(Supplier<NetworkEvent.Context> context) {
+		context.get().enqueueWork(() -> {
 			PlayerEntity player = Psi.proxy.getClientPlayer();
 			if (player != null) {
 				PlayerData data = PlayerDataHandler.get(player);

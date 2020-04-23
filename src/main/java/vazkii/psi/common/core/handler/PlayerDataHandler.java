@@ -42,6 +42,7 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.network.PacketDistributor;
 
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.EnumCADStat;
@@ -187,7 +188,7 @@ public class PlayerDataHandler {
 		public static void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
 			if (event.getPlayer() instanceof ServerPlayerEntity) {
 				MessageDataSync message = new MessageDataSync(get(event.getPlayer()));
-				MessageRegister.HANDLER.sendToPlayer(message, (ServerPlayerEntity) event.getPlayer());
+				MessageRegister.sendToPlayer(message, event.getPlayer());
 			}
 		}
 
@@ -674,7 +675,7 @@ public class PlayerDataHandler {
 
 			if (sync && player instanceof ServerPlayerEntity) {
 				MessageDeductPsi message = new MessageDeductPsi(currentPsi, availablePsi, regenCooldown, shatter);
-				MessageRegister.HANDLER.sendToPlayer(message, (ServerPlayerEntity) player);
+				MessageRegister.sendToPlayer(message, player);
 			}
 
 			save();
@@ -785,8 +786,8 @@ public class PlayerDataHandler {
 					MessageLevelUp message = new MessageLevelUp(resourceLocation);
 					MessageDataSync message2 = new MessageDataSync(this);
 
-					MessageRegister.HANDLER.sendToPlayer(message, (ServerPlayerEntity) player);
-					MessageRegister.HANDLER.sendToPlayer(message2, (ServerPlayerEntity) player);
+					MessageRegister.sendToPlayer(message, player);
+					MessageRegister.sendToPlayer(message2, player);
 					unlockPieceGroup(resourceLocation);
 				}
 			}

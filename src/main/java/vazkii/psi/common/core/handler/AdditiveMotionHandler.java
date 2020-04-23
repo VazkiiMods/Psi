@@ -52,11 +52,11 @@ public class AdditiveMotionHandler {
 						MessageAdditiveMotion motion = new MessageAdditiveMotion(entity.getEntityId(), vec.x, vec.y, vec.z);
 
 						if (entity instanceof ServerPlayerEntity) {
-							MessageRegister.HANDLER.sendToPlayer(motion, (ServerPlayerEntity) entity);
+							MessageRegister.sendToPlayer(motion, (ServerPlayerEntity) entity);
 						}
 
 						if (entity.world instanceof ServerWorld) {
-							MessageRegister.HANDLER.channel.send(PacketDistributor.TRACKING_ENTITY.with(() -> entity), motion);
+							MessageRegister.HANDLER.send(PacketDistributor.TRACKING_ENTITY.with(() -> entity), motion);
 						}
 					}
 				}

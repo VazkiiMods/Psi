@@ -8,25 +8,32 @@
  */
 package vazkii.psi.common.network.message;
 
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-import vazkii.arl.network.IMessage;
 import vazkii.psi.common.Psi;
 
-public class MessageLevelUp implements IMessage {
+import java.util.function.Supplier;
 
-	public ResourceLocation level;
+public class MessageLevelUp {
 
-	public MessageLevelUp() {}
+	private final ResourceLocation level;
 
 	public MessageLevelUp(ResourceLocation level) {
 		this.level = level;
 	}
 
-	@Override
-	public boolean receive(NetworkEvent.Context context) {
-		context.enqueueWork(() -> Psi.proxy.onLevelUp(level));
+	public MessageLevelUp(PacketBuffer buf) {
+		this.level = buf.readResourceLocation();
+	}
+
+	public void encode(PacketBuffer buf) {
+		buf.writeResourceLocation(level);
+	}
+
+	public boolean receive(Supplier<NetworkEvent.Context> context) {
+		context.get().enqueueWork(() -> Psi.proxy.onLevelUp(level));
 		return true;
 	}
 

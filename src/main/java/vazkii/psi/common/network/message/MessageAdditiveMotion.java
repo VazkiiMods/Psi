@@ -8,26 +8,22 @@
  */
 package vazkii.psi.common.network.message;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-import vazkii.arl.network.IMessage;
+import vazkii.psi.common.Psi;
 
-public class MessageAdditiveMotion implements IMessage {
+import java.util.function.Supplier;
 
-	public int entityID;
-	public int motionX;
-	public int motionY;
-	public int motionZ;
+public class MessageAdditiveMotion {
 
-	public MessageAdditiveMotion() {
-		// NO-OP
-	}
+	private final int entityID;
+	private final int motionX;
+	private final int motionY;
+	private final int motionZ;
 
 	public MessageAdditiveMotion(int entityID, double motionX, double motionY, double motionZ) {
 		this.entityID = entityID;
@@ -37,11 +33,23 @@ public class MessageAdditiveMotion implements IMessage {
 		this.motionZ = (int) (MathHelper.clamp(motionZ, -3.9, 3.9) * 8000);
 	}
 
-	@Override
-	@OnlyIn(Dist.CLIENT)
-	public boolean receive(NetworkEvent.Context context) {
-		context.enqueueWork(() -> {
-			World world = Minecraft.getInstance().world;
+	public MessageAdditiveMotion(PacketBuffer buf) {
+		entityID = buf.readVarInt();
+		motionX = buf.readInt();
+		motionY = buf.readInt();
+		motionZ = buf.readInt();
+	}
+
+	public void encode(PacketBuffer buf) {
+		buf.writeVarInt(entityID);
+		buf.writeInt(motionX);
+		buf.writeInt(motionY);
+		buf.writeInt(motionZ);
+	}
+
+	public boolean receive(Supplier<NetworkEvent.Context> context) {
+		context.get().enqueueWork(() -> {
+			World world = Psi.proxy.getClientWorld();
 			if (world != null) {
 				Entity entity = world.getEntityByID(entityID);
 				if (entity != null) {

@@ -1,34 +1,44 @@
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
+ * https://github.com/Vazkii/Psi
+ *
+ * Psi is Open Source and distributed under the
+ * Psi License: https://psi.vazkii.net/license.php
+ */
 package vazkii.psi.common.network.message;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.NewChatGui;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-import vazkii.arl.network.IMessage;
+import java.util.function.Supplier;
 
-public class MessageSpamlessChat implements IMessage {
+public class MessageSpamlessChat {
 
-	public ITextComponent message;
-	public static final int BASE_MAGIC = 696969;
-	public int magic;
+	private final ITextComponent message;
+	private static final int BASE_MAGIC = 696969;
+	private final int magic;
 
-	public MessageSpamlessChat(){
-		//NO-OP
-	}
-
-	public MessageSpamlessChat(ITextComponent message, int magic){
+	public MessageSpamlessChat(ITextComponent message, int magic) {
 		this.message = message;
 		this.magic = BASE_MAGIC + magic;
 	}
 
+	public MessageSpamlessChat(PacketBuffer buf) {
+		this.message = buf.readTextComponent();
+		this.magic = buf.readInt();
+	}
 
-	@OnlyIn(Dist.CLIENT)
-	@Override
-	public boolean receive(NetworkEvent.Context context) {
-		context.enqueueWork(() -> {
+	public void encode(PacketBuffer buf) {
+		buf.writeTextComponent(message);
+		buf.writeInt(magic);
+	}
+
+	public boolean receive(Supplier<NetworkEvent.Context> context) {
+		context.get().enqueueWork(() -> {
 			NewChatGui chatGui = Minecraft.getInstance().ingameGUI.getChatGUI();
 			chatGui.deleteChatLine(magic);
 			chatGui.printChatMessageWithOptionalDeletion(message, magic);
