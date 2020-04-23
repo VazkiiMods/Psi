@@ -99,6 +99,10 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 
 		new AssemblyScavengeRecipe();
 		setCreativeTab(PsiCreativeTab.INSTANCE);
+
+		setHarvestLevel("pickaxe", ConfigHandler.cadHarvestLevel);
+		setHarvestLevel("axe", ConfigHandler.cadHarvestLevel);
+		setHarvestLevel("shovel", ConfigHandler.cadHarvestLevel);
 	}
 
 	private ICADData getCADData(ItemStack stack) {
@@ -214,7 +218,7 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 		if (!data.overflowed && data.getAvailablePsi() > 0 && !cad.isEmpty() && !bullet.isEmpty() && ISpellAcceptor.hasSpell(bullet) && isTruePlayer(player)) {
 			ISpellAcceptor spellContainer = ISpellAcceptor.acceptor(bullet);
 			Spell spell = spellContainer.getSpell();
-			SpellContext context = new SpellContext(cad).setPlayer(player).setSpell(spell);
+			SpellContext context = new SpellContext().setPlayer(player).setSpell(spell);
 			if (predicate != null)
 				predicate.accept(context);
 
@@ -540,30 +544,6 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 		if(memorySlot < 0 || memorySlot >= size)
 			throw new SpellRuntimeException(SpellRuntimeException.MEMORY_OUT_OF_BOUNDS);
 		return getCADData(stack).getSavedVector(memorySlot);
-	}
-
-	// Based on ItemTool::getHarvestLevel
-	@Override
-	public int getHarvestLevel(ItemStack stack, @Nonnull String toolClass, @Nullable EntityPlayer player, @Nullable IBlockState blockState) {
-		int level = super.getHarvestLevel(stack, toolClass, player, blockState);
-		if(level == -1 && getToolClasses(stack).contains(toolClass))
-			return ConfigHandler.cadHarvestLevel;
-		else
-			return level;
-	}
-
-	@Nonnull
-	@Override
-	public Set<String> getToolClasses(ItemStack stack) {
-		return ImmutableSet.of("pickaxe", "axe", "shovel");
-	}
-
-	@Override
-	public boolean canHarvestBlock(@Nonnull IBlockState state, ItemStack stack) {
-		Block block = state.getBlock();
-		String tool = block.getHarvestTool(state);
-		int level = block.getHarvestLevel(state);
-		return getHarvestLevel(stack, tool, null, state) >= level;
 	}
 
 	@Override

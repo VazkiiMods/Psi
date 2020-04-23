@@ -26,6 +26,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import vazkii.arl.item.ItemMod;
 import vazkii.arl.util.ItemNBTHelper;
 import vazkii.psi.api.PsiAPI;
+import vazkii.psi.api.cad.EnumCADComponent;
+import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.internal.TooltipHelper;
 import vazkii.psi.api.spell.ISpellContainer;
 import vazkii.psi.api.spell.Spell;
@@ -138,6 +140,7 @@ public class ItemSpellBullet extends ItemMod implements ISpellContainer, IPsiIte
 	@Override
 	public void castSpell(ItemStack stack, SpellContext context) {
 		ItemStack cad = PsiAPI.getPlayerCAD(context.caster);
+		ItemStack colorizer = ((ICAD) cad.getItem()).getComponentInSlot(cad, EnumCADComponent.DYE);
 
 		EntitySpellProjectile projectile = null;
 
@@ -168,7 +171,7 @@ public class ItemSpellBullet extends ItemMod implements ISpellContainer, IPsiIte
 
 				if (pos != null) {
 					EntitySpellCircle circle = new EntitySpellCircle(context.caster.getEntityWorld());
-					circle.setInfo(context.caster, cad, stack);
+					circle.setInfo(context.caster, colorizer, stack);
 					circle.setPosition(pos.hitVec.x, pos.hitVec.y, pos.hitVec.z);
 					circle.getEntityWorld().spawnEntity(circle);
 				}
@@ -189,7 +192,7 @@ public class ItemSpellBullet extends ItemMod implements ISpellContainer, IPsiIte
 		}
 
 		if (projectile != null) {
-			projectile.setInfo(context.caster, cad, stack);
+			projectile.setInfo(context.caster, colorizer, stack);
 			projectile.context = context;
 			projectile.getEntityWorld().spawnEntity(projectile);
 		}

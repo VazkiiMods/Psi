@@ -53,22 +53,13 @@ public class PieceTrickBreakBlock extends PieceTrick {
 
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
+		ItemStack tool = context.getHarvestTool();
 		Vector3 positionVal = this.getParamValue(context, position);
 
 		if(positionVal == null)
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
 		if(!context.isInRadius(positionVal))
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
-
-		ItemStack tool = context.tool;
-		if(tool.isEmpty()) {
-			tool = PsiAPI.getPlayerCAD(context.caster);
-			if(tool.isEmpty()) {
-				tool = context.cad;
-				if(tool.isEmpty())
-					throw new SpellRuntimeException(SpellRuntimeException.NO_CAD);
-			}
-		}
 
 		BlockPos pos = positionVal.toBlockPos();
 		removeBlockWithDrops(context, context.caster, context.caster.getEntityWorld(), tool, pos, true);
@@ -80,9 +71,12 @@ public class PieceTrickBreakBlock extends PieceTrick {
 		if(!world.isBlockLoaded(pos) || (context.positionBroken != null && pos.equals(context.positionBroken.getBlockPos())) || !world.isBlockModifiable(player, pos))
 			return;
 
+		if (tool.isEmpty())
+			tool = PsiAPI.getPlayerCAD(player);
+
 		IBlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
-		if(!block.isAir(state, world, pos) && !(block instanceof BlockLiquid) && !(block instanceof IFluidBlock) && state.getBlockHardness(world, pos) > 0) {
+		if(!block.isAir(state, world, pos) && !(block instanceof BlockLiquid) && !(block instanceof IFluidBlock) && state.getBlockHardness(world, pos) != -1) {
 			if(!canHarvestBlock(block, player, world, pos, tool))
 				return;
 
@@ -95,6 +89,7 @@ public class PieceTrickBreakBlock extends PieceTrick {
 					if(block.removedByPlayer(state, world, pos, player, true)) {
 						block.onPlayerDestroy(world, pos, state);
 						block.harvestBlock(world, player, pos, state, tile, tool);
+						block.dropXpOnBlockBreak(world, pos, event.getExpToDrop());
 					}
 				} else world.setBlockToAir(pos);
 			}

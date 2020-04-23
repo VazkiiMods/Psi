@@ -49,6 +49,7 @@ public class PieceTrickMoveBlock extends PieceTrick {
 
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
+		ItemStack tool = context.getHarvestTool();
 		Vector3 positionVal = this.getParamValue(context, position);
 		Vector3 targetVal = this.getParamValue(context, target);
 
@@ -57,23 +58,13 @@ public class PieceTrickMoveBlock extends PieceTrick {
 		if(!context.isInRadius(positionVal))
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 
-		ItemStack tool = context.tool;
-		if(tool.isEmpty()) {
-			tool = PsiAPI.getPlayerCAD(context.caster);
-			if(tool.isEmpty()) {
-				tool = context.cad;
-				if(tool.isEmpty())
-					throw new SpellRuntimeException(SpellRuntimeException.NO_CAD);
-			}
-		}
-
 		World world = context.caster.getEntityWorld();
 		BlockPos pos = positionVal.toBlockPos();
 		IBlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
 		if(world.getTileEntity(pos) != null || state.getPushReaction() != EnumPushReaction.NORMAL ||
 				!block.canSilkHarvest(world, pos, state, context.caster) ||
-				state.getBlockHardness(world, pos) <= 0 ||
+				state.getBlockHardness(world, pos) == -1 ||
 				!PieceTrickBreakBlock.canHarvestBlock(block, context.caster, world, pos, tool))
 			return null;
 		
