@@ -13,11 +13,13 @@ import net.minecraft.block.BlockState;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.MinecraftForge;
@@ -115,7 +117,10 @@ public class PieceTrickBreakBlock extends PieceTrick {
 		}
 	}
 
-	// Based on BreakEvent::new, allows a tool that isn't your mainhand tool to harvest the blocks
+	/**
+	 * Based on {@link BreakEvent#BreakEvent(World, BlockPos, BlockState, PlayerEntity)}.
+	 * Allows a tool that isn't your mainhand tool to harvest the blocks.
+	 */
 	public static BreakEvent createBreakEvent(BlockState state, PlayerEntity player, World world, BlockPos pos, ItemStack tool) {
 		BreakEvent event = new BreakEvent(world, pos, state, player);
 		if (state == null || !ForgeHooks.canHarvestBlock(state, player, world, pos)) // Handle empty block or player unable to break block scenario
@@ -129,7 +134,9 @@ public class PieceTrickBreakBlock extends PieceTrick {
 		return event;
 	}
 
-	// Based on InventoryPlayer::canHarvestBlock
+	/**
+	 * Based on {@link PlayerInventory#canHarvestBlock(BlockState)}.
+	 */
 	public static boolean canHarvestBlock(BlockState state, ItemStack itemstack) {
 		if (state.getMaterial().isToolNotRequired()) {
 			return true;
@@ -138,7 +145,10 @@ public class PieceTrickBreakBlock extends PieceTrick {
 		}
 	}
 
-	// Based on ForgeHooks::canHarvestBlock and EntityPlayer::canHarvestBlock
+	/**
+	 * Based on {@link ForgeHooks#canHarvestBlock(BlockState, PlayerEntity, IBlockReader, BlockPos)}
+	 * and {@link PlayerEntity#canHarvestBlock(BlockState)}.
+	 */
 	public static boolean canHarvestBlock(Block block, PlayerEntity player, World world, BlockPos pos, ItemStack stack) {
 		BlockState state = world.getBlockState(pos);
 		if (state.getMaterial().isToolNotRequired()) {
