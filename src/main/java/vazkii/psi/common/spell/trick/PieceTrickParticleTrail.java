@@ -60,8 +60,9 @@ public class PieceTrickParticleTrail extends PieceTrick {
 		double length = this.getParamValue(context, lengthParam).doubleValue();
 		int time = Math.min(this.getParamValueOrDefault(context, timeParam, 20).intValue(), 1200);
 
-		if (time <= 0)
+		if (time <= 0) {
 			throw new SpellRuntimeException(SpellRuntimeException.NEGATIVE_NUMBER);
+		}
 
 		time = time / 6;
 

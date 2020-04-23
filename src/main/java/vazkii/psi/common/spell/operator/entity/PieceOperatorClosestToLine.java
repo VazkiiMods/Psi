@@ -46,8 +46,9 @@ public class PieceOperatorClosestToLine extends PieceOperator {
 		Vector3 rayStart = SpellHelpers.getVector3(this, context, rayStartParam, false, false);
 		Vector3 rayEnd = SpellHelpers.getVector3(this, context, rayEndParam, false, false);
 		EntityListWrapper list = this.getNonnullParamValue(context, entList);
-		if (list.unwrap().isEmpty())
+		if (list.unwrap().isEmpty()) {
 			return null;
+		}
 
 		return closestToLineSegment(rayStart, rayEnd, list);
 	}
@@ -58,8 +59,9 @@ public class PieceOperatorClosestToLine extends PieceOperator {
 	}
 
 	public static Entity closestToLineSegment(Vector3 a, Vector3 b, Iterable<Entity> list) throws SpellRuntimeException {
-		if (a.equals(b))
+		if (a.equals(b)) {
 			return closestToPoint(a, list);
+		}
 		Vec3d start = a.toVec3D();
 		Vec3d end = b.toVec3D();
 		Vec3d diff = end.subtract(start).normalize();
@@ -73,20 +75,22 @@ public class PieceOperatorClosestToLine extends PieceOperator {
 			Vec3d pos = e.getPositionVector();
 			double dot = diff.dotProduct(pos);
 			double dist;
-			if (dot <= minDot)
+			if (dot <= minDot) {
 				dist = pos.subtract(start).length();
-			else if (dot >= maxDot)
+			} else if (dot >= maxDot) {
 				dist = pos.subtract(end).length();
-			else
+			} else {
 				dist = pos.subtract(start).crossProduct(diff).length();
+			}
 
 			if (dist < minDist) {
 				minDist = dist;
 				found = e;
 			}
 		}
-		if (found == null)
+		if (found == null) {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_TARGET);
+		}
 		return found;
 	}
 }
