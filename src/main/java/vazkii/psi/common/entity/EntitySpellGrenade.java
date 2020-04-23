@@ -19,6 +19,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.registries.ObjectHolder;
 
+import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.common.lib.LibEntityNames;
 import vazkii.psi.common.lib.LibResources;
@@ -97,7 +98,9 @@ public class EntitySpellGrenade extends EntitySpellProjectile {
 			playSound(SoundEvents.ENTITY_CREEPER_PRIMED, 2F, 1F);
 			sound = true;
 		}
-		setPos(pos.getHitVec().x, pos.getHitVec().y, pos.getHitVec().z);
+		Vector3 offset = Vector3.fromVec3d(this.getPositionVec()).subtract(Vector3.fromVec3d(pos.getHitVec())).multiply(0.05);
+		Vector3 newpos = Vector3.fromVec3d(pos.getHitVec()).add(offset);
+		setPos(newpos.x, newpos.y, newpos.z);
 		setMotion(Vec3d.ZERO);
 	}
 
