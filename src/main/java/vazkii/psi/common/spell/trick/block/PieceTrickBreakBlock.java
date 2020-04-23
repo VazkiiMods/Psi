@@ -37,7 +37,6 @@ import vazkii.psi.api.spell.SpellParam;
 import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.api.spell.param.ParamVector;
 import vazkii.psi.api.spell.piece.PieceTrick;
-import vazkii.psi.common.core.handler.ConfigHandler;
 
 public class PieceTrickBreakBlock extends PieceTrick {
 
@@ -62,6 +61,7 @@ public class PieceTrickBreakBlock extends PieceTrick {
 
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
+		ItemStack tool = context.getHarvestTool();
 		Vector3 positionVal = this.getParamValue(context, position);
 
 		if (positionVal == null) {
@@ -72,7 +72,7 @@ public class PieceTrickBreakBlock extends PieceTrick {
 		}
 
 		BlockPos pos = positionVal.toBlockPos();
-		removeBlockWithDrops(context, context.caster, context.caster.getEntityWorld(), context.tool, pos, true);
+		removeBlockWithDrops(context, context.caster, context.caster.getEntityWorld(), tool, pos, true);
 
 		return null;
 	}
@@ -88,7 +88,7 @@ public class PieceTrickBreakBlock extends PieceTrick {
 
 		BlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
-		if (!block.isAir(state, world, pos) && !(block instanceof IFluidBlock) && state.getPlayerRelativeBlockHardness(player, world, pos) > 0) {
+		if (!block.isAir(state, world, pos) && !(block instanceof IFluidBlock) && state.getBlockHardness(world, pos) != -1) {
 			if (!canHarvestBlock(block, player, world, pos, tool)) {
 				return;
 			}
@@ -102,6 +102,7 @@ public class PieceTrickBreakBlock extends PieceTrick {
 					if (block.removedByPlayer(state, world, pos, player, true, world.getFluidState(pos))) {
 						block.onPlayerDestroy(world, pos, state);
 						block.harvestBlock(world, player, pos, state, tile, tool);
+						block.dropXpOnBlockBreak(world, pos, event.getExpToDrop());
 					}
 				} else {
 					world.removeBlock(pos, false);
@@ -128,27 +129,31 @@ public class PieceTrickBreakBlock extends PieceTrick {
 		return event;
 	}
 
-	// todo 1.14 get rid of all this and just return cad harvest level from cad item code (possibly with a threadlocal hack to indicate this trick is in progress)
-	public static boolean canHarvestBlock(Block block, PlayerEntity player, World world, BlockPos pos, ItemStack tool) {
-		//General positive checks
+	// Based on InventoryPlayer::canHarvestBlock
+	public static boolean canHarvestBlock(BlockState state, ItemStack itemstack) {
+		if(state.getMaterial().isToolNotRequired())
+			return true;
+		else
+			return !itemstack.isEmpty() && itemstack.canHarvestBlock(state);
+	}
+
+	// Based on ForgeHooks::canHarvestBlock and EntityPlayer::canHarvestBlock
+	public static boolean canHarvestBlock(Block block, PlayerEntity player, World world, BlockPos pos, ItemStack stack) {
 		BlockState state = world.getBlockState(pos);
-		int reqLevel = block.getHarvestLevel(state);
-		Item toolItem = tool.getItem();
-		if (tool.canHarvestBlock(state) || state.getMaterial().isToolNotRequired() || ConfigHandler.COMMON.cadHarvestLevel.get() >= reqLevel) {
-			return ForgeEventFactory.doPlayerHarvestCheck(player, state, true);
-		}
+		if(state.getMaterial().isToolNotRequired())
+			return true;
 
-		//General negative checks
-		ToolType reqTool = block.getHarvestTool(state);
-		if (toolItem == Items.AIR || reqTool == null) {
-			return false;
-		}
+		// ItemStack stack = player.getHeldItemMainhand();
+		ToolType tool = block.getHarvestTool(state);
+		if(stack.isEmpty() || tool == null)
+			// return player.canHarvestBlock(state);
+			return ForgeEventFactory.doPlayerHarvestCheck(player, state, canHarvestBlock(state, stack));
 
-		//Targeted tool check
-		if (toolItem.getHarvestLevel(tool, reqTool, player, state) >= reqLevel) {
-			return ForgeEventFactory.doPlayerHarvestCheck(player, state, true);
-		}
+		int toolLevel = stack.getItem().getHarvestLevel(stack, tool, player, state);
+		if(toolLevel < 0)
+			// return player.canHarvestBlock(state);
+			return ForgeEventFactory.doPlayerHarvestCheck(player, state, canHarvestBlock(state, stack));
 
-		return false;
+		return toolLevel >= block.getHarvestLevel(state);
 	}
 }
