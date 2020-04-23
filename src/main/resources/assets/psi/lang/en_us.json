@@ -523,6 +523,8 @@
   "psi.spellpiece.trick_smelt_block_sequence.desc": "Smelts blocks in a defined direction starting in a given position",
   "psi.spellpiece.trick_collapse_block_sequence": "Trick: Collapse Block Sequence",
   "psi.spellpiece.trick_collapse_block_sequence.desc": "Collapses a sequence of blocks, as if they were sand",
+  "psi.spellpiece.trick_debug_spamless": "Trick: Channeled Debug",
+  "psi.spellpiece.trick_debug_spamless.desc": "Prints out the target, replacing any previous prints with the same number",
   "psi.spellparam.target": "Target",
   "psi.spellparam.number": "Number",
   "psi.spellparam.root": "Root",

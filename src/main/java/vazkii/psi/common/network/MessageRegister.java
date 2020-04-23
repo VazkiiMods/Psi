@@ -14,6 +14,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkDirection;
 
@@ -22,7 +23,20 @@ import vazkii.arl.network.MessageSerializer;
 import vazkii.arl.network.NetworkHandler;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.common.lib.LibMisc;
-import vazkii.psi.common.network.message.*;
+import vazkii.psi.common.network.message.MessageAdditiveMotion;
+import vazkii.psi.common.network.message.MessageBlink;
+import vazkii.psi.common.network.message.MessageCADDataSync;
+import vazkii.psi.common.network.message.MessageChangeControllerSlot;
+import vazkii.psi.common.network.message.MessageChangeSocketableSlot;
+import vazkii.psi.common.network.message.MessageDataSync;
+import vazkii.psi.common.network.message.MessageDeductPsi;
+import vazkii.psi.common.network.message.MessageEidosSync;
+import vazkii.psi.common.network.message.MessageLevelUp;
+import vazkii.psi.common.network.message.MessageLoopcastSync;
+import vazkii.psi.common.network.message.MessageSpamlessChat;
+import vazkii.psi.common.network.message.MessageSpellModified;
+import vazkii.psi.common.network.message.MessageTriggerJumpSpell;
+import vazkii.psi.common.network.message.MessageVisualEffect;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -45,8 +59,18 @@ public class MessageRegister {
 		HANDLER.register(MessageVisualEffect.class, NetworkDirection.PLAY_TO_CLIENT);
 		HANDLER.register(MessageAdditiveMotion.class, NetworkDirection.PLAY_TO_CLIENT);
 		HANDLER.register(MessageBlink.class, NetworkDirection.PLAY_TO_CLIENT);
+		HANDLER.register(MessageSpamlessChat.class, NetworkDirection.PLAY_TO_CLIENT);
 
 		MessageSerializer.mapHandler(Spell.class, MessageRegister::readSpell, MessageRegister::writeSpell);
+		MessageSerializer.mapHandler(ITextComponent.class, MessageRegister::readTextComponent, MessageRegister::writeTextComponent);
+	}
+
+	private static void writeTextComponent(PacketBuffer buf, Field f, ITextComponent component){
+		buf.writeTextComponent(component);
+	}
+
+	private static ITextComponent readTextComponent(PacketBuffer buf, Field f){
+		return buf.readTextComponent();
 	}
 
 	private static Spell readSpell(PacketBuffer buf, Field f) {
