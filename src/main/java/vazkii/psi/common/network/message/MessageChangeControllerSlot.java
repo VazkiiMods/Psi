@@ -37,7 +37,7 @@ public class MessageChangeControllerSlot implements IMessage {
 			if (!stack.isEmpty() && stack.getItem() instanceof ISocketableController) {
 				((ISocketableController) stack.getItem()).setSelectedSlot(player, stack, controlSlot, slot);
 			} else {
-				stack = player.getHeldItem(Hand.MAIN_HAND);
+				stack = player.getHeldItem(Hand.OFF_HAND);
 				if (!stack.isEmpty() && stack.getItem() instanceof ISocketableController) {
 					((ISocketableController) stack.getItem()).setSelectedSlot(player, stack, controlSlot, slot);
 				}
