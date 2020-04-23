@@ -169,5 +169,6 @@ public final class LibPieceNames {
 	public static final String TRICK_SMELT_BLOCK_SEQUENCE = "trick_smelt_block_sequence";
 	public static final String TRICK_COLLAPSE_BLOCK_SEQUENCE = "trick_collapse_block_sequence";
 	public static final String TRICK_DEBUG_SPAMLESS = "trick_debug_spamless";
+	public static final String TRICK_NIGHT_VISION = "trick_night_vision";
 
 }

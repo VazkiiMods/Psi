@@ -75,6 +75,7 @@ import vazkii.psi.common.spell.trick.potion.PieceTrickFireResistance;
 import vazkii.psi.common.spell.trick.potion.PieceTrickHaste;
 import vazkii.psi.common.spell.trick.potion.PieceTrickInvisibility;
 import vazkii.psi.common.spell.trick.potion.PieceTrickJumpBoost;
+import vazkii.psi.common.spell.trick.potion.PieceTrickNightVision;
 import vazkii.psi.common.spell.trick.potion.PieceTrickRegeneration;
 import vazkii.psi.common.spell.trick.potion.PieceTrickResistance;
 import vazkii.psi.common.spell.trick.potion.PieceTrickSlowness;
@@ -244,6 +245,7 @@ public final class ModSpellPieces {
 	public static PieceContainer trickSmeltBlockSequence;
 	public static PieceContainer trickCollapseBlockSequence;
 	public static PieceContainer trickDebugSpamless;
+	public static PieceContainer trickNightVision;
 
 	public static void init() {
 		selectorCaster = register(PieceSelectorCaster.class, LibPieceNames.SELECTOR_CASTER, LibPieceGroups.TUTORIAL_1);
@@ -406,6 +408,7 @@ public final class ModSpellPieces {
 		trickSmeltBlockSequence = register(PieceTrickSmeltBlockSequence.class, LibPieceNames.TRICK_SMELT_BLOCK_SEQUENCE, LibPieceGroups.SMELTERY);
 		trickCollapseBlockSequence = register(PieceTrickCollapseBlockSequence.class, LibPieceNames.TRICK_COLLAPSE_BLOCK_SEQUENCE, LibPieceGroups.BLOCK_MOVEMENT);
 		trickDebugSpamless = register(PieceTrickDebugSpamless.class, LibPieceNames.TRICK_DEBUG_SPAMLESS, LibPieceGroups.TUTORIAL_1);
+		trickNightVision = register(PieceTrickNightVision.class, LibPieceNames.TRICK_NIGHT_VISION, LibPieceGroups.POSITIVE_EFFECTS);
 	}
 
 	public static PieceContainer register(Class<? extends SpellPiece> clazz, String name, String group) {
