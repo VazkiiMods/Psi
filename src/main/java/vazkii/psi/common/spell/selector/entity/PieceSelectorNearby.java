@@ -12,6 +12,7 @@ package vazkii.psi.common.spell.selector.entity;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.Vec3d;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.param.ParamNumber;
@@ -53,14 +54,20 @@ public abstract class PieceSelectorNearby extends PieceSelector {
 		Vector3 positionVal = this.getParamValue(context, position);
 		double radiusVal = this.getParamValue(context, radius).doubleValue();
 
+		Vec3d positionCenter = context.focalPoint.getPositionVector();
+
 		if(!context.isInRadius(positionVal))
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 
-		AxisAlignedBB axis = new AxisAlignedBB(positionVal.x - radiusVal, positionVal.y - radiusVal, positionVal.z - radiusVal, positionVal.x + radiusVal, positionVal.y + radiusVal, positionVal.z + radiusVal);
+		AxisAlignedBB axis = new AxisAlignedBB(positionVal.x - radiusVal, positionVal.y - radiusVal, positionVal.z - radiusVal,
+			positionVal.x + radiusVal, positionVal.y + radiusVal, positionVal.z + radiusVal);
+		AxisAlignedBB eris = new AxisAlignedBB(positionCenter.x - SpellContext.MAX_DISTANCE, positionCenter.y - SpellContext.MAX_DISTANCE, positionCenter.z - SpellContext.MAX_DISTANCE,
+			positionCenter.x + SpellContext.MAX_DISTANCE, positionCenter.y + SpellContext.MAX_DISTANCE, positionCenter.z + SpellContext.MAX_DISTANCE);
+		AxisAlignedBB area = axis.intersect(eris);
 
 		Predicate<Entity> pred = getTargetPredicate(context);
 
-		List<Entity> list = context.caster.getEntityWorld().getEntitiesWithinAABB(Entity.class, axis, (Entity e) -> e != null && pred.test(e) && e != context.caster && e != context.focalPoint && context.isInRadius(e));
+		List<Entity> list = context.caster.getEntityWorld().getEntitiesWithinAABB(Entity.class, area, (Entity e) -> e != null && pred.test(e) && e != context.caster && e != context.focalPoint && context.isInRadius(e));
 
 		return new EntityListWrapper(list);
 	}
