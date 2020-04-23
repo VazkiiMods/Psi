@@ -1,18 +1,17 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [24/01/2016, 15:03:19 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.common.spell.operator.entity;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.Vec3d;
+
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
@@ -38,8 +37,9 @@ public class PieceOperatorEntityAxialLook extends PieceOperator {
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		Entity e = this.getParamValue(context, target);
 
-		if(e == null)
+		if (e == null) {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_TARGET);
+		}
 		Vec3d look = e.getLook(1F);
 		Direction facing = Direction.getFacingFromVector((float) look.x, (float) look.y, (float) look.z);
 

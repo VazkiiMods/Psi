@@ -1,12 +1,10 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [23/01/2016, 21:48:13 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.client.core.helper;
 
@@ -23,26 +21,26 @@ public final class TextHelper {
 
 	@OnlyIn(Dist.CLIENT)
 	public static List<String> renderText(int x, int y, int width, String unlocalizedText, boolean centered, boolean doit, Object... format) {
-        FontRenderer font = Minecraft.getInstance().fontRenderer;
-        boolean unicode = font.getBidiFlag();
-        font.setBidiFlag(true);
-        String text = I18n.format(unlocalizedText, format);
+		FontRenderer font = Minecraft.getInstance().fontRenderer;
+		boolean unicode = font.getBidiFlag();
+		font.setBidiFlag(true);
+		String text = I18n.format(unlocalizedText, format);
 
-        String[] textEntries = text.split("<br>");
-        List<List<String>> lines = new ArrayList<>();
+		String[] textEntries = text.split("<br>");
+		List<List<String>> lines = new ArrayList<>();
 
-        String controlCodes;
-        for (String s : textEntries) {
-            List<String> words = new ArrayList<>();
-            String lineStr = "";
-            String[] tokens = s.split(" ");
-            for (String token : tokens) {
+		String controlCodes;
+		for (String s : textEntries) {
+			List<String> words = new ArrayList<>();
+			String lineStr = "";
+			String[] tokens = s.split(" ");
+			for (String token : tokens) {
 				String prev = lineStr;
 				String spaced = token + " ";
 				lineStr += spaced;
 
 				controlCodes = toControlCodes(getControlCodes(prev));
-				if(font.getStringWidth(lineStr) > width) {
+				if (font.getStringWidth(lineStr) > width) {
 					lines.add(words);
 					lineStr = controlCodes + spaced;
 					words = new ArrayList<>();
@@ -51,43 +49,46 @@ public final class TextHelper {
 				words.add(controlCodes + token);
 			}
 
-			if(!lineStr.isEmpty())
+			if (!lineStr.isEmpty()) {
 				lines.add(words);
+			}
 			lines.add(new ArrayList<>());
 		}
 
 		List<String> textLines = new ArrayList<>();
 
 		String lastLine = "";
-		for(List<String> words : lines) {
+		for (List<String> words : lines) {
 			words.size();
 			int xi = x;
 			int spacing = 4;
 
 			StringBuilder lineStr = new StringBuilder();
-			for(String s : words) {
+			for (String s : words) {
 				int extra = 0;
 
 				int swidth = font.getStringWidth(s);
-				if(doit) {
-					if(centered)
+				if (doit) {
+					if (centered) {
 						font.drawString(s, xi + width / 2 - swidth / 2, y, 0xFFFFFF);
-					else font.drawString(s, xi, y, 0xFFFFFF);
+					} else {
+						font.drawString(s, xi, y, 0xFFFFFF);
+					}
 				}
 				xi += swidth + spacing + extra;
-                lineStr.append(s).append(" ");
-            }
+				lineStr.append(s).append(" ");
+			}
 
-            if ((lineStr.length() > 0) || lastLine.isEmpty()) {
-                y += 10;
-                textLines.add(lineStr.toString());
-            }
-            lastLine = lineStr.toString();
-        }
+			if ((lineStr.length() > 0) || lastLine.isEmpty()) {
+				y += 10;
+				textLines.add(lineStr.toString());
+			}
+			lastLine = lineStr.toString();
+		}
 
-        font.setBidiFlag(unicode);
-        return textLines;
-    }
+		font.setBidiFlag(unicode);
+		return textLines;
+	}
 
 	public static String getControlCodes(String s) {
 		String controls = s.replaceAll("(?<!\u00a7)(.)", "");
@@ -97,6 +98,5 @@ public final class TextHelper {
 	public static String toControlCodes(String s) {
 		return s.replaceAll("(?i)[\\dA-FK-OR]", "\u00a7$0");
 	}
-
 
 }

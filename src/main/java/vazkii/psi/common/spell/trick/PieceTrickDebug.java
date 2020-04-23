@@ -1,19 +1,18 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [16/01/2016, 16:13:25 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.common.spell.trick;
 
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.Style;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
+
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellMetadata;
@@ -49,9 +48,9 @@ public class PieceTrickDebug extends PieceTrick {
 
 		ITextComponent component = new StringTextComponent(String.valueOf(targetVal));
 
-		if(numberVal != null) {
+		if (numberVal != null) {
 			String numStr = "" + numberVal;
-			if(numberVal.doubleValue() - numberVal.intValue() == 0) {
+			if (numberVal.doubleValue() - numberVal.intValue() == 0) {
 				int numInt = numberVal.intValue();
 				numStr = "" + numInt;
 			}
@@ -67,6 +66,5 @@ public class PieceTrickDebug extends PieceTrick {
 
 		return null;
 	}
-
 
 }

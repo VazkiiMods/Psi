@@ -1,23 +1,35 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [16/01/2016, 16:10:43 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.common.spell.base;
 
 import net.minecraft.util.ResourceLocation;
+
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellPiece;
 import vazkii.psi.common.lib.LibPieceGroups;
 import vazkii.psi.common.lib.LibPieceNames;
-import vazkii.psi.common.spell.constant.*;
-import vazkii.psi.common.spell.operator.entity.*;
+import vazkii.psi.common.spell.constant.PieceConstantE;
+import vazkii.psi.common.spell.constant.PieceConstantNumber;
+import vazkii.psi.common.spell.constant.PieceConstantPi;
+import vazkii.psi.common.spell.constant.PieceConstantTau;
+import vazkii.psi.common.spell.constant.PieceConstantWrapper;
+import vazkii.psi.common.spell.operator.entity.PieceOperatorClosestToLine;
+import vazkii.psi.common.spell.operator.entity.PieceOperatorClosestToPoint;
+import vazkii.psi.common.spell.operator.entity.PieceOperatorEntityAxialLook;
+import vazkii.psi.common.spell.operator.entity.PieceOperatorEntityLook;
+import vazkii.psi.common.spell.operator.entity.PieceOperatorEntityMotion;
+import vazkii.psi.common.spell.operator.entity.PieceOperatorEntityPosition;
+import vazkii.psi.common.spell.operator.entity.PieceOperatorFocusedEntity;
+import vazkii.psi.common.spell.operator.entity.PieceOperatorListAdd;
+import vazkii.psi.common.spell.operator.entity.PieceOperatorListRemove;
+import vazkii.psi.common.spell.operator.entity.PieceOperatorRandomEntity;
 import vazkii.psi.common.spell.operator.list.PieceOperatorListExclusion;
 import vazkii.psi.common.spell.operator.list.PieceOperatorListIntersection;
 import vazkii.psi.common.spell.operator.list.PieceOperatorListSize;
@@ -33,14 +45,45 @@ import vazkii.psi.common.spell.other.PieceCrossConnector;
 import vazkii.psi.common.spell.other.PieceErrorSuppressor;
 import vazkii.psi.common.spell.other.PieceVectorCatch;
 import vazkii.psi.common.spell.selector.*;
-import vazkii.psi.common.spell.selector.entity.*;
+import vazkii.psi.common.spell.selector.entity.PieceSelectorCasterBattery;
+import vazkii.psi.common.spell.selector.entity.PieceSelectorCasterEnergy;
+import vazkii.psi.common.spell.selector.entity.PieceSelectorNearbyAnimals;
+import vazkii.psi.common.spell.selector.entity.PieceSelectorNearbyCharges;
+import vazkii.psi.common.spell.selector.entity.PieceSelectorNearbyEnemies;
+import vazkii.psi.common.spell.selector.entity.PieceSelectorNearbyFallingBlocks;
+import vazkii.psi.common.spell.selector.entity.PieceSelectorNearbyGlowing;
+import vazkii.psi.common.spell.selector.entity.PieceSelectorNearbyItems;
+import vazkii.psi.common.spell.selector.entity.PieceSelectorNearbyLiving;
+import vazkii.psi.common.spell.selector.entity.PieceSelectorNearbyPlayers;
+import vazkii.psi.common.spell.selector.entity.PieceSelectorNearbyProjectiles;
+import vazkii.psi.common.spell.selector.entity.PieceSelectorNearbySmeltables;
+import vazkii.psi.common.spell.selector.entity.PieceSelectorNearbyVehicles;
+import vazkii.psi.common.spell.selector.entity.PieceSelectorSuccessCounter;
 import vazkii.psi.common.spell.trick.*;
 import vazkii.psi.common.spell.trick.block.*;
-import vazkii.psi.common.spell.trick.entity.*;
+import vazkii.psi.common.spell.trick.entity.PieceTrickAddMotion;
+import vazkii.psi.common.spell.trick.entity.PieceTrickBlink;
+import vazkii.psi.common.spell.trick.entity.PieceTrickIgnite;
+import vazkii.psi.common.spell.trick.entity.PieceTrickMassAddMotion;
+import vazkii.psi.common.spell.trick.entity.PieceTrickMassBlink;
+import vazkii.psi.common.spell.trick.entity.PieceTrickMassExodus;
+import vazkii.psi.common.spell.trick.entity.PieceTrickSmeltItem;
 import vazkii.psi.common.spell.trick.infusion.PieceTrickEbonyIvory;
 import vazkii.psi.common.spell.trick.infusion.PieceTrickGreaterInfusion;
 import vazkii.psi.common.spell.trick.infusion.PieceTrickInfusion;
-import vazkii.psi.common.spell.trick.potion.*;
+import vazkii.psi.common.spell.trick.potion.PieceTrickFireResistance;
+import vazkii.psi.common.spell.trick.potion.PieceTrickHaste;
+import vazkii.psi.common.spell.trick.potion.PieceTrickInvisibility;
+import vazkii.psi.common.spell.trick.potion.PieceTrickJumpBoost;
+import vazkii.psi.common.spell.trick.potion.PieceTrickNightVision;
+import vazkii.psi.common.spell.trick.potion.PieceTrickRegeneration;
+import vazkii.psi.common.spell.trick.potion.PieceTrickResistance;
+import vazkii.psi.common.spell.trick.potion.PieceTrickSlowness;
+import vazkii.psi.common.spell.trick.potion.PieceTrickSpeed;
+import vazkii.psi.common.spell.trick.potion.PieceTrickStrength;
+import vazkii.psi.common.spell.trick.potion.PieceTrickWaterBreathing;
+import vazkii.psi.common.spell.trick.potion.PieceTrickWeakness;
+import vazkii.psi.common.spell.trick.potion.PieceTrickWither;
 
 public final class ModSpellPieces {
 
@@ -65,7 +108,6 @@ public final class ModSpellPieces {
 	public static PieceContainer selectorBlockPresence;
 	public static PieceContainer selectorSaveVector;
 	public static PieceContainer selectorEidosChangelog;
-	public static PieceContainer selectorListFilter;
 	public static PieceContainer selectorNearbyCharges;
 	public static PieceContainer selectorNearbyFallingBlocks;
 	public static PieceContainer selectorNearbyGlowing;
@@ -74,6 +116,7 @@ public final class ModSpellPieces {
 	public static PieceContainer selectorCasterBattery;
 	public static PieceContainer selectorCasterEnergy;
 	public static PieceContainer selectorSuccessCounter;
+	//public static PieceContainer selectorTransmission;
 
 	public static PieceContainer operatorSum;
 	public static PieceContainer operatorSubtract;
@@ -106,6 +149,7 @@ public final class ModSpellPieces {
 	public static PieceContainer operatorFocusedEntity;
 	public static PieceContainer operatorListAdd;
 	public static PieceContainer operatorListRemove;
+	public static PieceContainer operatorListIndex;
 	public static PieceContainer operatorVectorRaycast;
 	public static PieceContainer operatorVectorSum;
 	public static PieceContainer operatorVectorSubtract;
@@ -131,6 +175,7 @@ public final class ModSpellPieces {
 	public static PieceContainer operatorRoot;
 	public static PieceContainer operatorSignum;
 	public static PieceContainer operatorSwizzle;
+	public static PieceContainer operatorClosestToLine;
 
 	public static PieceContainer constantNumber;
 	public static PieceContainer constantPi;
@@ -195,6 +240,13 @@ public final class ModSpellPieces {
 	public static PieceContainer trickMoveBlockSequence;
 	public static PieceContainer trickTill;
 	public static PieceContainer trickTillSequence;
+	//public static PieceContainer trickBroadcast;
+	public static PieceContainer trickChangeSlot;
+	public static PieceContainer trickSmeltBlockSequence;
+	public static PieceContainer trickCollapseBlockSequence;
+	public static PieceContainer trickDebugSpamless;
+	public static PieceContainer trickNightVision;
+	public static PieceContainer trickParticleTrail;
 
 	public static void init() {
 		selectorCaster = register(PieceSelectorCaster.class, LibPieceNames.SELECTOR_CASTER, LibPieceGroups.TUTORIAL_1);
@@ -226,6 +278,7 @@ public final class ModSpellPieces {
 		selectorSuccessCounter = register(PieceSelectorSuccessCounter.class, LibPieceNames.SELECTOR_SUCCESS_COUNTER, LibPieceGroups.EXOSUIT_CASTING);
 		selectorCasterBattery = register(PieceSelectorCasterBattery.class, LibPieceNames.SELECTOR_CASTER_BATTERY, LibPieceGroups.EXOSUIT_CASTING);
 		selectorCasterEnergy = register(PieceSelectorCasterEnergy.class, LibPieceNames.SELECTOR_CASTER_ENERGY, LibPieceGroups.EXOSUIT_CASTING);
+		//selectorTransmission = register(PieceSelectorTransmission.class, LibPieceNames.SELECTOR_TRANSMISSION, LibPieceGroups.FLOW_CONTROL);
 
 		operatorSum = register(PieceOperatorSum.class, LibPieceNames.OPERATOR_SUM, LibPieceGroups.NUMBERS_INTRO, true);
 		operatorSubtract = register(PieceOperatorSubtract.class, LibPieceNames.OPERATOR_SUBTRACT, LibPieceGroups.NUMBERS_INTRO);
@@ -285,8 +338,8 @@ public final class ModSpellPieces {
 		operatorRoot = register(PieceOperatorRoot.class, LibPieceNames.OPERATOR_ROOT, LibPieceGroups.NUMBERS_INTRO);
 		operatorSignum = register(PieceOperatorSignum.class, LibPieceNames.OPERATOR_SIGNUM, LibPieceGroups.TRIGONOMETRY);
 		operatorSwizzle = register(PieceOperatorSwizzle.class, LibPieceNames.OPERATOR_SWIZZLE, LibPieceGroups.TRIGONOMETRY);
-		selectorListFilter = register(PieceSelectorListFilter.class, LibPieceNames.SELECTOR_LIST_FILTER, LibPieceGroups.LIST_OPERATIONS);
-
+		operatorListIndex = register(PieceOperatorListIndex.class, LibPieceNames.OPERATOR_LIST_INDEX, LibPieceGroups.LIST_OPERATIONS);
+		operatorClosestToLine = register(PieceOperatorClosestToLine.class, LibPieceNames.OPERATOR_CLOSEST_TO_LINE, LibPieceGroups.ENTITIES_INTRO);
 
 		constantNumber = register(PieceConstantNumber.class, LibPieceNames.CONSTANT_NUMBER, LibPieceGroups.TUTORIAL_2, true);
 		constantPi = register(PieceConstantPi.class, LibPieceNames.CONSTANT_PI, LibPieceGroups.TRIGONOMETRY, true);
@@ -351,6 +404,13 @@ public final class ModSpellPieces {
 		trickMoveBlockSequence = register(PieceTrickMoveBlockSequence.class, LibPieceNames.TRICK_MOVE_BLOCK_SEQUENCE, LibPieceGroups.BLOCK_MOVEMENT);
 		trickTill = register(PieceTrickTill.class, LibPieceNames.TRICK_TILL, LibPieceGroups.MISC_TRICKS);
 		trickTillSequence = register(PieceTrickTillSequence.class, LibPieceNames.TRICK_TILL_SEQUENCE, LibPieceGroups.MISC_TRICKS);
+		//trickBroadcast = register(PieceTrickBroadcast.class, LibPieceNames.TRICK_BROADCAST, LibPieceGroups.FLOW_CONTROL);
+		trickChangeSlot = register(PieceTrickChangeSlot.class, LibPieceNames.TRICK_CHANGE_SLOT, LibPieceGroups.DETECTION_DYNAMICS);
+		trickSmeltBlockSequence = register(PieceTrickSmeltBlockSequence.class, LibPieceNames.TRICK_SMELT_BLOCK_SEQUENCE, LibPieceGroups.SMELTERY);
+		trickCollapseBlockSequence = register(PieceTrickCollapseBlockSequence.class, LibPieceNames.TRICK_COLLAPSE_BLOCK_SEQUENCE, LibPieceGroups.BLOCK_MOVEMENT);
+		trickDebugSpamless = register(PieceTrickDebugSpamless.class, LibPieceNames.TRICK_DEBUG_SPAMLESS, LibPieceGroups.TUTORIAL_1);
+		trickNightVision = register(PieceTrickNightVision.class, LibPieceNames.TRICK_NIGHT_VISION, LibPieceGroups.POSITIVE_EFFECTS);
+		trickParticleTrail = register(PieceTrickParticleTrail.class, LibPieceNames.TRICK_PARTICLE_TRAIL, LibPieceGroups.BLOCK_CONJURATION);
 	}
 
 	public static PieceContainer register(Class<? extends SpellPiece> clazz, String name, String group) {

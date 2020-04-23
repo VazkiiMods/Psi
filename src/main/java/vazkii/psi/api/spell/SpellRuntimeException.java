@@ -1,12 +1,10 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [18/01/2016, 19:42:22 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.api.spell;
 
@@ -32,6 +30,7 @@ public class SpellRuntimeException extends Exception {
 	public static final String EVEN_ROOT_NEGATIVE_NUMBER = "psi.spellerror.nthroot";
 	public static final String INVALID_BASE = "psi.spellerror.invalid_base";
 	public static final String ARMOR = "psi.spellerror.armor";
+	public static final String NO_MESSAGE = "psi.spellerror.no_message";
 
 	public SpellRuntimeException(String s) {
 		super(s);

@@ -1,12 +1,10 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [14/02/2016, 21:54:35 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.common.crafting.recipe;
 
@@ -17,6 +15,7 @@ import net.minecraft.item.crafting.SpecialRecipe;
 import net.minecraft.item.crafting.SpecialRecipeSerializer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+
 import vazkii.psi.api.spell.ISpellAcceptor;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.common.item.ItemSpellDrive;
@@ -39,14 +38,18 @@ public class BulletToDriveRecipe extends SpecialRecipe {
 			ItemStack stack = inv.getStackInSlot(i);
 			if (!stack.isEmpty()) {
 				if (ISpellAcceptor.hasSpell(stack)) {
-					if (foundTarget)
+					if (foundTarget) {
 						return false;
+					}
 					foundTarget = true;
 				} else if (stack.getItem() instanceof ItemSpellDrive && ItemSpellDrive.getSpell(stack) == null) {
-					if (foundSource)
+					if (foundSource) {
 						return false;
+					}
 					foundSource = true;
-				} else return false;
+				} else {
+					return false;
+				}
 			}
 		}
 
@@ -62,9 +65,11 @@ public class BulletToDriveRecipe extends SpecialRecipe {
 		for (int i = 0; i < inv.getSizeInventory(); i++) {
 			ItemStack stack = inv.getStackInSlot(i);
 			if (!stack.isEmpty()) {
-				if (ISpellAcceptor.hasSpell(stack))
+				if (ISpellAcceptor.hasSpell(stack)) {
 					source = ISpellAcceptor.acceptor(stack).getSpell();
-				else target = stack;
+				} else {
+					target = stack;
+				}
 			}
 		}
 

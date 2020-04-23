@@ -1,6 +1,15 @@
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
+ * https://github.com/Vazkii/Psi
+ *
+ * Psi is Open Source and distributed under the
+ * Psi License: https://psi.vazkii.net/license.php
+ */
 package vazkii.psi.common.item;
 
 import net.minecraft.item.ItemStack;
+
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.EnumCADComponent;
 import vazkii.psi.api.cad.ICAD;
@@ -8,7 +17,6 @@ import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.common.entity.EntitySpellProjectile;
 
 public class ItemProjectileSpellBullet extends ItemSpellBullet {
-
 
 	public ItemProjectileSpellBullet(Properties properties) {
 		super(properties);
@@ -22,20 +30,20 @@ public class ItemProjectileSpellBullet extends ItemSpellBullet {
 		projectile.setInfo(context.caster, colorizer, stack);
 		projectile.context = context;
 		projectile.getEntityWorld().addEntity(projectile);
-    }
+	}
 
-    @Override
-    public double getCostModifier(ItemStack stack) {
-        return 1.02;
-    }
+	@Override
+	public double getCostModifier(ItemStack stack) {
+		return 1.02;
+	}
 
-    @Override
-    public boolean isCADOnlyContainer(ItemStack stack) {
-        return true;
-    }
+	@Override
+	public boolean isCADOnlyContainer(ItemStack stack) {
+		return true;
+	}
 
-    @Override
-    public String getBulletType() {
-        return "projectile";
-    }
+	@Override
+	public String getBulletType() {
+		return "projectile";
+	}
 }

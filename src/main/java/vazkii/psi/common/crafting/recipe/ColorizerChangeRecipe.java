@@ -1,12 +1,10 @@
-/**
- * This class was created by <WireSegal>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [28/02/2016, 12:17:15 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.common.crafting.recipe;
 
@@ -19,6 +17,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
+
 import vazkii.psi.api.cad.EnumCADComponent;
 import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.cad.ICADColorizer;
@@ -42,14 +41,18 @@ public class ColorizerChangeRecipe extends SpecialRecipe {
 			ItemStack stack = inv.getStackInSlot(i);
 			if (!stack.isEmpty()) {
 				if (stack.getItem() instanceof ICAD) {
-					if (foundCAD)
+					if (foundCAD) {
 						return false;
+					}
 					foundCAD = true;
 				} else if (stack.getItem() instanceof ICADColorizer) {
-					if (foundColorizer)
+					if (foundColorizer) {
 						return false;
+					}
 					foundColorizer = true;
-				} else return false;
+				} else {
+					return false;
+				}
 			}
 		}
 
@@ -65,14 +68,17 @@ public class ColorizerChangeRecipe extends SpecialRecipe {
 		for (int i = 0; i < inv.getSizeInventory(); i++) {
 			ItemStack stack = inv.getStackInSlot(i);
 			if (!stack.isEmpty()) {
-				if (stack.getItem() instanceof ICADColorizer)
+				if (stack.getItem() instanceof ICADColorizer) {
 					colorizer = stack;
-				else cad = stack;
+				} else {
+					cad = stack;
+				}
 			}
 		}
 
-		if (cad.isEmpty() || colorizer.isEmpty())
+		if (cad.isEmpty() || colorizer.isEmpty()) {
 			return ItemStack.EMPTY;
+		}
 
 		ItemStack copy = cad.copy();
 		ItemCAD.setComponent(copy, colorizer);
@@ -91,8 +97,9 @@ public class ColorizerChangeRecipe extends SpecialRecipe {
 			if (!stack.isEmpty() && stack.getItem() instanceof ICAD) {
 				cad = stack;
 			} else {
-				if (!stack.isEmpty() && stack.getItem() instanceof ICADColorizer)
+				if (!stack.isEmpty() && stack.getItem() instanceof ICADColorizer) {
 					dyeIndex = i;
+				}
 				ret.set(i, ForgeHooks.getContainerItem(stack));
 			}
 		}

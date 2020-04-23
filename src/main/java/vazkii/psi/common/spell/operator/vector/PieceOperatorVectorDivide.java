@@ -1,12 +1,10 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [20/01/2016, 15:47:39 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.common.spell.operator.vector;
 
@@ -39,8 +37,9 @@ public class PieceOperatorVectorDivide extends PieceOperator {
 		Vector3 v1 = this.getParamValue(context, vec1);
 		double d = this.getParamValue(context, num2).doubleValue();
 
-		if(d == 0)
+		if (d == 0) {
 			throw new SpellRuntimeException(SpellRuntimeException.DIVIDE_BY_ZERO);
+		}
 
 		return v1.copy().multiply(1.0 / d);
 	}

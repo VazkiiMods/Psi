@@ -1,16 +1,15 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [10/01/2016, 16:52:47 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.common.block.tile.container;
 
 import com.mojang.datafixers.util.Pair;
+
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.EquipmentSlotType;
@@ -26,6 +25,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.registries.ObjectHolder;
+
 import vazkii.psi.api.cad.EnumCADComponent;
 import vazkii.psi.api.cad.ICADComponent;
 import vazkii.psi.api.cad.ISocketableCapability;
@@ -45,7 +45,7 @@ public class ContainerCADAssembler extends Container {
 	@ObjectHolder(LibMisc.PREFIX_MOD + LibBlockNames.CAD_ASSEMBLER)
 	public static ContainerType<ContainerCADAssembler> TYPE;
 
-	private static final EquipmentSlotType[] equipmentSlots = new EquipmentSlotType[]{EquipmentSlotType.HEAD, EquipmentSlotType.CHEST, EquipmentSlotType.LEGS, EquipmentSlotType.FEET};
+	private static final EquipmentSlotType[] equipmentSlots = new EquipmentSlotType[] { EquipmentSlotType.HEAD, EquipmentSlotType.CHEST, EquipmentSlotType.LEGS, EquipmentSlotType.FEET };
 
 	public final TileCADAssembler assembler;
 
@@ -89,25 +89,29 @@ public class ContainerCADAssembler extends Container {
 		addSlot(new SlotSocketable(assembler, bullets, 0, 35, 21));
 		socketableEnd = inventorySlots.size();
 
-
 		bulletStart = inventorySlots.size();
-		for (int row = 0; row < 4; row++)
-			for (int col = 0; col < 3; col++)
+		for (int row = 0; row < 4; row++) {
+			for (int col = 0; col < 3; col++) {
 				addSlot(new ValidatorSlot(bullets, col + row * 3, 17 + col * 18, 57 + row * 18));
+			}
+		}
 		bulletEnd = inventorySlots.size();
 
 		int xs = 48;
 		int ys = 143;
 
 		playerStart = inventorySlots.size();
-		for (int row = 0; row < 3; row++)
-			for (int col = 0; col < 9; col++)
+		for (int row = 0; row < 3; row++) {
+			for (int col = 0; col < 9; col++) {
 				addSlot(new Slot(playerInventory, col + row * 9 + 9, xs + col * 18, ys + row * 18));
+			}
+		}
 		playerEnd = inventorySlots.size();
 
 		hotbarStart = inventorySlots.size();
-		for (int col = 0; col < 9; col++)
+		for (int col = 0; col < 9; col++) {
 			addSlot(new Slot(playerInventory, col, xs + col * 18, ys + 58));
+		}
 		hotbarEnd = inventorySlots.size();
 
 		armorStart = inventorySlots.size();
@@ -162,34 +166,42 @@ public class ContainerCADAssembler extends Container {
 				if (stackInSlot.getItem() instanceof ICADComponent) {
 					EnumCADComponent componentType = ((ICADComponent) stackInSlot.getItem()).getComponentType(stackInSlot);
 					int componentSlot = cadComponentStart + componentType.ordinal();
-					if (!mergeItemStack(stackInSlot, componentSlot, componentSlot + 1, false))
+					if (!mergeItemStack(stackInSlot, componentSlot, componentSlot + 1, false)) {
 						return ItemStack.EMPTY;
+					}
 				} else if (ISocketableCapability.isSocketable(stackInSlot)) {
-					if (!mergeItemStack(stackInSlot, socketableStart, socketableEnd, false))
+					if (!mergeItemStack(stackInSlot, socketableStart, socketableEnd, false)) {
 						return ItemStack.EMPTY;
+					}
 				} else if (ISpellAcceptor.isAcceptor(stackInSlot)) {
-					if (!mergeItemStack(stackInSlot, bulletStart, bulletEnd, false))
+					if (!mergeItemStack(stackInSlot, bulletStart, bulletEnd, false)) {
 						return ItemStack.EMPTY;
+					}
 				} else if (from < hotbarStart) {
-					if (!mergeItemStack(stackInSlot, hotbarStart, hotbarEnd, true))
+					if (!mergeItemStack(stackInSlot, hotbarStart, hotbarEnd, true)) {
 						return ItemStack.EMPTY;
-				} else if (!mergeItemStack(stackInSlot, playerStart, playerEnd, false))
+					}
+				} else if (!mergeItemStack(stackInSlot, playerStart, playerEnd, false)) {
 					return ItemStack.EMPTY;
+				}
 			} else if (stackInSlot.getItem() instanceof ArmorItem) {
 				ArmorItem armor = (ArmorItem) stackInSlot.getItem();
 				int armorSlot = armorStart + armor.getEquipmentSlot().getSlotIndex() - 1;
 				if (!mergeItemStack(stackInSlot, armorSlot, armorSlot + 1, true) &&
-						!mergeItemStack(stackInSlot, playerStart, hotbarEnd, true))
+						!mergeItemStack(stackInSlot, playerStart, hotbarEnd, true)) {
 					return ItemStack.EMPTY;
-			} else if (!mergeItemStack(stackInSlot, playerStart, hotbarEnd, true))
+				}
+			} else if (!mergeItemStack(stackInSlot, playerStart, hotbarEnd, true)) {
 				return ItemStack.EMPTY;
+			}
 
 			slot.onSlotChanged();
 
-			if (stackInSlot.isEmpty())
+			if (stackInSlot.isEmpty()) {
 				slot.putStack(ItemStack.EMPTY);
-			else if (stackInSlot.getCount() == mergeStack.getCount())
+			} else if (stackInSlot.getCount() == mergeStack.getCount()) {
 				return ItemStack.EMPTY;
+			}
 
 			slot.onTake(playerIn, stackInSlot);
 		}

@@ -1,12 +1,10 @@
-/**
- * This class was created by <WireSegal>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
- * <p>
+ *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- * <p>
- * File Created @ [May 19, 2019, 23:14 AM (EST)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.api.spell.detonator;
 
@@ -15,6 +13,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+
 import vazkii.psi.api.PsiAPI;
 
 import java.util.List;
@@ -29,8 +28,6 @@ import static vazkii.psi.api.spell.SpellContext.MAX_DISTANCE;
  * Typically only seen on entities, but can be implemented
  */
 public interface IDetonationHandler {
-
-
 
 	static IDetonationHandler detonator(Entity entity) {
 		return entity.getCapability(PsiAPI.DETONATION_HANDLER_CAPABILITY).orElseThrow(NullPointerException::new);
@@ -68,12 +65,14 @@ public interface IDetonationHandler {
 		List<Entity> charges = world.getEntitiesWithinAABB(Entity.class,
 				center.getBoundingBox().grow(range),
 				entity -> {
-					if (entity == null)
+					if (entity == null) {
 						return false;
+					}
 					return entity.getCapability(PsiAPI.DETONATION_HANDLER_CAPABILITY).map(detonator -> {
 						Vec3d locus = detonator.objectLocus();
-						if (locus == null || locus.squareDistanceTo(center.getX(), center.getY(), center.getZ()) > range * range)
+						if (locus == null || locus.squareDistanceTo(center.getX(), center.getY(), center.getZ()) > range * range) {
 							return false;
+						}
 						return filter == null || filter.test(entity);
 					}).orElse(false);
 				});
@@ -84,8 +83,9 @@ public interface IDetonationHandler {
 
 		if (!MinecraftForge.EVENT_BUS.post(new DetonationEvent(player, center, range, handlers))) {
 			if (!handlers.isEmpty()) {
-				for (IDetonationHandler handler : handlers)
+				for (IDetonationHandler handler : handlers) {
 					handler.detonate();
+				}
 			}
 		}
 	}

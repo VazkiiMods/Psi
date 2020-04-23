@@ -1,12 +1,10 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [20/01/2016, 15:47:39 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.common.spell.operator.vector;
 
@@ -14,7 +12,6 @@ import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellParam;
-import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.api.spell.param.ParamVector;
 import vazkii.psi.api.spell.piece.PieceOperator;
 
@@ -42,8 +39,9 @@ public class PieceOperatorVectorSum extends PieceOperator {
 		Vector3 v3 = this.getParamValue(context, vec3);
 
 		Vector3 r = v1.copy().add(v2);
-		if(v3 != null)
+		if (v3 != null) {
 			r.add(v3);
+		}
 
 		return r;
 	}

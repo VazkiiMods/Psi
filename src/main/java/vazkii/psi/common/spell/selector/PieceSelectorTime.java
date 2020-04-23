@@ -1,16 +1,15 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [21/02/2016, 15:19:06 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.common.spell.selector;
 
 import net.minecraft.item.ItemStack;
+
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.spell.Spell;
@@ -32,10 +31,11 @@ public class PieceSelectorTime extends PieceSelector {
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		ItemStack cadStack = PsiAPI.getPlayerCAD(context.caster);
-		if(cadStack != null && cadStack.getItem() instanceof ICAD)
+		if (cadStack != null && cadStack.getItem() instanceof ICAD) {
 			return (double) ((ICAD) cadStack.getItem()).getTime(cadStack);
-		else throw new SpellRuntimeException(SpellRuntimeException.NO_CAD);
+		} else {
+			throw new SpellRuntimeException(SpellRuntimeException.NO_CAD);
+		}
 	}
-
 
 }

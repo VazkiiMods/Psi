@@ -1,21 +1,20 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [16/01/2016, 17:35:40 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.client.gui.button;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.systems.RenderSystem;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.Tessellator;
+
 import vazkii.psi.api.spell.SpellPiece;
 import vazkii.psi.client.gui.GuiProgrammer;
 
@@ -23,23 +22,21 @@ public class GuiButtonSpellPiece extends Button {
 	public SpellPiece piece;
 	final GuiProgrammer gui;
 
-
 	public GuiButtonSpellPiece(GuiProgrammer gui, SpellPiece piece, int x, int y) {
-		super(x, y, 16, 16, "", button -> {
-		});
+		super(x, y, 16, 16, "", button -> {});
 		this.gui = gui;
 		this.piece = piece;
 	}
 
 	public GuiButtonSpellPiece(GuiProgrammer gui, SpellPiece piece, int x, int y, Button.IPressable pressable) {
-        super(x, y, 16, 16, "", pressable);
-        this.gui = gui;
-        this.piece = piece;
-    }
+		super(x, y, 16, 16, "", pressable);
+		this.gui = gui;
+		this.piece = piece;
+	}
 
-    @Override
-    public void renderButton(int mouseX, int mouseY, float pTicks) {
-        if (active && visible) {
+	@Override
+	public void renderButton(int mouseX, int mouseY, float pTicks) {
+		if (active && visible) {
 			boolean hover = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
 
 			IRenderTypeBuffer.Impl buffers = IRenderTypeBuffer.immediate(Tessellator.getInstance().getBuffer());

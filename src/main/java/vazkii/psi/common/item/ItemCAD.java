@@ -1,24 +1,31 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [09/01/2016, 17:04:30 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.common.item;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.*;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUseContext;
+import net.minecraft.item.Rarity;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.*;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Hand;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.Style;
@@ -28,23 +35,41 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.ToolType;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.wrapper.RecipeWrapper;
+
 import vazkii.psi.api.PsiAPI;
-import vazkii.psi.api.cad.*;
+import vazkii.psi.api.cad.CADStatEvent;
+import vazkii.psi.api.cad.EnumCADComponent;
+import vazkii.psi.api.cad.EnumCADStat;
+import vazkii.psi.api.cad.ICAD;
+import vazkii.psi.api.cad.ICADAssembly;
+import vazkii.psi.api.cad.ICADColorizer;
+import vazkii.psi.api.cad.ICADComponent;
+import vazkii.psi.api.cad.ICADData;
+import vazkii.psi.api.cad.ISocketable;
 import vazkii.psi.api.internal.PsiRenderHelper;
 import vazkii.psi.api.internal.TooltipHelper;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.recipe.ITrickRecipe;
-import vazkii.psi.api.spell.*;
+import vazkii.psi.api.spell.EnumSpellStat;
+import vazkii.psi.api.spell.ISpellAcceptor;
+import vazkii.psi.api.spell.ISpellSettable;
+import vazkii.psi.api.spell.PreSpellCastEvent;
+import vazkii.psi.api.spell.Spell;
+import vazkii.psi.api.spell.SpellCastEvent;
+import vazkii.psi.api.spell.SpellContext;
+import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.api.spell.piece.PieceCraftingTrick;
 import vazkii.psi.client.core.handler.ContributorSpellCircleHandler;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.BlockProgrammer;
 import vazkii.psi.common.block.base.ModBlocks;
+import vazkii.psi.common.core.handler.ConfigHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
 import vazkii.psi.common.core.handler.PsiSoundHandler;
@@ -59,6 +84,7 @@ import vazkii.psi.common.network.message.MessageVisualEffect;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -86,7 +112,12 @@ public class ItemCAD extends Item implements ICAD, ISpellSettable {
 	private static final Pattern FAKE_PLAYER_PATTERN = Pattern.compile("^(?:\\[.*])|(?:ComputerCraft)$");
 
 	public ItemCAD(Item.Properties properties) {
-		super(properties.maxStackSize(1));
+		super(properties
+				.maxStackSize(1)
+				.addToolType(ToolType.PICKAXE, ConfigHandler.COMMON.cadHarvestLevel.get())
+				.addToolType(ToolType.AXE, ConfigHandler.COMMON.cadHarvestLevel.get())
+				.addToolType(ToolType.SHOVEL, ConfigHandler.COMMON.cadHarvestLevel.get())
+		);
 	}
 
 	private ICADData getCADData(ItemStack stack) {
@@ -97,16 +128,15 @@ public class ItemCAD extends Item implements ICAD, ISpellSettable {
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
 		CADData data = new CADData();
-		if (nbt != null && nbt.contains("Parent", Constants.NBT.TAG_COMPOUND))
+		if (nbt != null && nbt.contains("Parent", Constants.NBT.TAG_COMPOUND)) {
 			data.deserializeNBT(nbt.getCompound("Parent"));
+		}
 		return data;
 	}
-
 
 	@Override
 	public void inventoryTick(ItemStack stack, World world, Entity entityIn, int itemSlot, boolean isSelected) {
 		CompoundNBT compound = stack.getOrCreateTag();
-
 
 		stack.getCapability(PsiAPI.CAD_DATA_CAPABILITY).ifPresent(data -> {
 			if (compound.contains(TAG_TIME_LEGACY, Constants.NBT.TAG_ANY_NUMERIC)) {
@@ -154,6 +184,13 @@ public class ItemCAD extends Item implements ICAD, ISpellSettable {
 		return block == ModBlocks.programmer ? ((BlockProgrammer) block).setSpell(worldIn, pos, playerIn, stack) : ActionResultType.PASS;
 	}
 
+	@Override
+	public float getDestroySpeed(ItemStack stack, BlockState state) {
+		if (state.getMaterial().isToolNotRequired()) {
+			return 1.0f;
+		}
+		return 0.0f;
+	}
 
 	@Nonnull
 	@Override
@@ -162,8 +199,9 @@ public class ItemCAD extends Item implements ICAD, ISpellSettable {
 		PlayerData data = PlayerDataHandler.get(playerIn);
 		ItemStack playerCad = PsiAPI.getPlayerCAD(playerIn);
 		if (playerCad != itemStackIn) {
-			if (!worldIn.isRemote)
+			if (!worldIn.isRemote) {
 				playerIn.sendMessage(new TranslationTextComponent("psimisc.multiple_cads").setStyle(new Style().setColor(TextFormatting.RED)));
+			}
 			return new ActionResult<>(ActionResultType.SUCCESS, itemStackIn);
 		}
 
@@ -181,8 +219,9 @@ public class ItemCAD extends Item implements ICAD, ISpellSettable {
 			worldIn.playSound(null, playerIn.getX(), playerIn.getY(), playerIn.getZ(), PsiSoundHandler.cadShoot, SoundCategory.PLAYERS, 0.5F, (float) (0.5 + Math.random() * 0.5));
 			data.deductPsi(100, 60, true);
 
-			if (!data.hasAdvancement(LibPieceGroups.FAKE_LEVEL_PSIDUST))
+			if (!data.hasAdvancement(LibPieceGroups.FAKE_LEVEL_PSIDUST)) {
 				data.tutorialComplete(LibPieceGroups.FAKE_LEVEL_PSIDUST);
+			}
 			did = true;
 		}
 
@@ -205,8 +244,9 @@ public class ItemCAD extends Item implements ICAD, ISpellSettable {
 			ISpellAcceptor spellContainer = ISpellAcceptor.acceptor(bullet);
 			Spell spell = spellContainer.getSpell();
 			SpellContext context = new SpellContext().setPlayer(player).setSpell(spell);
-			if (predicate != null)
+			if (predicate != null) {
 				predicate.accept(context);
+			}
 
 			if (context.isValid()) {
 				if (context.cspell.metadata.evaluateAgainst(cad)) {
@@ -214,8 +254,9 @@ public class ItemCAD extends Item implements ICAD, ISpellSettable {
 					PreSpellCastEvent event = new PreSpellCastEvent(cost, sound, particles, cd, spell, context, player, data, cad, bullet);
 					if (MinecraftForge.EVENT_BUS.post(event)) {
 						String cancelMessage = event.getCancellationMessage();
-						if (cancelMessage != null && !cancelMessage.isEmpty())
+						if (cancelMessage != null && !cancelMessage.isEmpty()) {
 							player.sendMessage(new TranslationTextComponent(cancelMessage).setStyle(new Style().setColor(TextFormatting.RED)));
+						}
 						return false;
 					}
 
@@ -227,13 +268,14 @@ public class ItemCAD extends Item implements ICAD, ISpellSettable {
 					spell = event.getSpell();
 					context = event.getContext();
 
-					if (cost > 0)
+					if (cost > 0) {
 						data.deductPsi(cost, cd, true);
+					}
 
 					if (cost != 0 && sound > 0) {
-						if (!world.isRemote)
+						if (!world.isRemote) {
 							world.playSound(null, player.getX(), player.getY(), player.getZ(), PsiSoundHandler.cadShoot, SoundCategory.PLAYERS, sound, (float) (0.5 + Math.random() * 0.5));
-						else {
+						} else {
 							int color = Psi.proxy.getColorForCAD(cad);
 							float r = PsiRenderHelper.r(color) / 255F;
 							float g = PsiRenderHelper.g(color) / 255F;
@@ -263,12 +305,14 @@ public class ItemCAD extends Item implements ICAD, ISpellSettable {
 						}
 					}
 
-					if (!world.isRemote)
+					if (!world.isRemote) {
 						spellContainer.castSpell(context);
+					}
 					MinecraftForge.EVENT_BUS.post(new SpellCastEvent(spell, context, player, data, cad, bullet));
 					return true;
-				} else if (!world.isRemote)
+				} else if (!world.isRemote) {
 					player.sendMessage(new TranslationTextComponent("psimisc.weak_cad").setStyle(new Style().setColor(TextFormatting.RED)));
+				}
 			}
 		}
 
@@ -277,8 +321,9 @@ public class ItemCAD extends Item implements ICAD, ISpellSettable {
 
 	@Override
 	public boolean craft(ItemStack cad, PlayerEntity player, PieceCraftingTrick craftingTrick) {
-		if (player.world.isRemote)
+		if (player.world.isRemote) {
 			return false;
+		}
 
 		List<ItemEntity> items = player.getEntityWorld().getEntitiesWithinAABB(ItemEntity.class,
 				player.getBoundingBox().grow(8),
@@ -286,7 +331,7 @@ public class ItemCAD extends Item implements ICAD, ISpellSettable {
 
 		CraftingWrapper inv = new CraftingWrapper();
 		boolean did = false;
-		for(ItemEntity item : items) {
+		for (ItemEntity item : items) {
 			ItemStack stack = item.getItem();
 			inv.setStack(stack);
 			Predicate<ITrickRecipe> predicate = r -> r.getPiece() == null;
@@ -302,15 +347,15 @@ public class ItemCAD extends Item implements ICAD, ISpellSettable {
 				item.setItem(outCopy);
 				did = true;
 				MessageRegister.sendToAllAround(new MessageVisualEffect(ICADColorizer.DEFAULT_SPELL_COLOR,
-								item.getX(), item.getY(), item.getZ(), item.getWidth(), item.getHeight(), item.getYOffset(),
-								MessageVisualEffect.TYPE_CRAFT), 
+						item.getX(), item.getY(), item.getZ(), item.getWidth(), item.getHeight(), item.getYOffset(),
+						MessageVisualEffect.TYPE_CRAFT),
 						item.getPosition(), item.getEntityWorld(), 32);
 			}
 		}
 
 		return did;
 	}
-	
+
 	private static class CraftingWrapper extends RecipeWrapper {
 		CraftingWrapper() {
 			super(new ItemStackHandler(1));
@@ -322,17 +367,20 @@ public class ItemCAD extends Item implements ICAD, ISpellSettable {
 	}
 
 	public static int getRealCost(ItemStack stack, ItemStack bullet, int cost) {
-		if(!stack.isEmpty() && stack.getItem() instanceof ICAD) {
+		if (!stack.isEmpty() && stack.getItem() instanceof ICAD) {
 			int eff = ((ICAD) stack.getItem()).getStatValue(stack, EnumCADStat.EFFICIENCY);
-			if(eff == -1)
+			if (eff == -1) {
 				return -1;
-			if(eff == 0)
+			}
+			if (eff == 0) {
 				return cost;
+			}
 
 			double effPercentile = (double) eff / 100;
 			double procCost = cost / effPercentile;
-			if(!bullet.isEmpty() && ISpellAcceptor.isContainer(bullet))
+			if (!bullet.isEmpty() && ISpellAcceptor.isContainer(bullet)) {
 				procCost *= ISpellAcceptor.acceptor(bullet).getCostModifier();
+			}
 
 			return (int) procCost;
 		}
@@ -341,8 +389,9 @@ public class ItemCAD extends Item implements ICAD, ISpellSettable {
 	}
 
 	public static boolean isTruePlayer(Entity e) {
-		if (!(e instanceof PlayerEntity))
+		if (!(e instanceof PlayerEntity)) {
 			return false;
+		}
 
 		PlayerEntity player = (PlayerEntity) e;
 
@@ -351,8 +400,9 @@ public class ItemCAD extends Item implements ICAD, ISpellSettable {
 	}
 
 	public static void setComponent(ItemStack stack, ItemStack componentStack) {
-		if (stack.getItem() instanceof ICAD)
+		if (stack.getItem() instanceof ICAD) {
 			((ICAD) stack.getItem()).setCADComponent(stack, componentStack);
+		}
 	}
 
 	public static ItemStack makeCAD(ItemStack... components) {
@@ -360,9 +410,7 @@ public class ItemCAD extends Item implements ICAD, ISpellSettable {
 	}
 
 	public static ItemStack makeCADWithAssembly(ItemStack assembly, List<ItemStack> components) {
-		ItemStack cad = assembly.getItem() instanceof ICADAssembly ?
-				((ICADAssembly) assembly.getItem()).createCADStack(assembly, components) :
-				new ItemStack(ModItems.cad);
+		ItemStack cad = assembly.getItem() instanceof ICADAssembly ? ((ICADAssembly) assembly.getItem()).createCADStack(assembly, components) : new ItemStack(ModItems.cad);
 
 		return makeCAD(cad, components);
 	}
@@ -373,8 +421,9 @@ public class ItemCAD extends Item implements ICAD, ISpellSettable {
 
 	public static ItemStack makeCAD(ItemStack base, List<ItemStack> components) {
 		ItemStack stack = base.copy();
-		for(ItemStack component : components)
+		for (ItemStack component : components) {
 			setComponent(stack, component);
+		}
 		return stack;
 	}
 
@@ -383,8 +432,9 @@ public class ItemCAD extends Item implements ICAD, ISpellSettable {
 		String name = TAG_COMPONENT_PREFIX + type.name();
 		CompoundNBT cmp = stack.getOrCreateTag().getCompound(name);
 
-		if (cmp.isEmpty())
+		if (cmp.isEmpty()) {
 			return ItemStack.EMPTY;
+		}
 
 		return ItemStack.read(cmp);
 	}
@@ -393,7 +443,7 @@ public class ItemCAD extends Item implements ICAD, ISpellSettable {
 	public int getStatValue(ItemStack stack, EnumCADStat stat) {
 		int statValue = 0;
 		ItemStack componentStack = getComponentInSlot(stack, stat.getSourceType());
-		if(!componentStack.isEmpty() && componentStack.getItem() instanceof ICADComponent) {
+		if (!componentStack.isEmpty() && componentStack.getItem() instanceof ICADComponent) {
 			ICADComponent component = (ICADComponent) componentStack.getItem();
 			statValue = component.getCADStatValue(componentStack, stat);
 		}
@@ -416,8 +466,9 @@ public class ItemCAD extends Item implements ICAD, ISpellSettable {
 	@Override
 	public boolean isSocketSlotAvailable(ItemStack stack, int slot) {
 		int sockets = getStatValue(stack, EnumCADStat.SOCKETS);
-		if (sockets == -1 || sockets > ItemCADSocket.MAX_SOCKETS)
+		if (sockets == -1 || sockets > ItemCADSocket.MAX_SOCKETS) {
 			sockets = ItemCADSocket.MAX_SOCKETS;
+		}
 		return slot < sockets;
 	}
 
@@ -426,8 +477,9 @@ public class ItemCAD extends Item implements ICAD, ISpellSettable {
 		String name = TAG_BULLET_PREFIX + slot;
 		CompoundNBT cmp = stack.getOrCreateTag().getCompound(name);
 
-		if (cmp.isEmpty())
+		if (cmp.isEmpty()) {
 			return ItemStack.EMPTY;
+		}
 
 		return ItemStack.read(cmp);
 	}
@@ -437,8 +489,9 @@ public class ItemCAD extends Item implements ICAD, ISpellSettable {
 		String name = TAG_BULLET_PREFIX + slot;
 		CompoundNBT cmp = new CompoundNBT();
 
-		if (!bullet.isEmpty())
+		if (!bullet.isEmpty()) {
 			bullet.write(cmp);
+		}
 
 		stack.getOrCreateTag().put(name, cmp);
 	}
@@ -457,7 +510,7 @@ public class ItemCAD extends Item implements ICAD, ISpellSettable {
 	public int getTime(ItemStack stack) {
 		return getCADData(stack).getTime();
 	}
-	
+
 	@Override
 	public void incrementTime(ItemStack stack) {
 		ICADData data = getCADData(stack);
@@ -474,13 +527,14 @@ public class ItemCAD extends Item implements ICAD, ISpellSettable {
 	@Override
 	public void regenPsi(ItemStack stack, int psi) {
 		int maxPsi = getStatValue(stack, EnumCADStat.OVERFLOW);
-		if (maxPsi == -1)
+		if (maxPsi == -1) {
 			return;
+		}
 
 		int currPsi = getStoredPsi(stack);
 		int endPsi = Math.min(currPsi + psi, maxPsi);
 
-		if(endPsi != currPsi) {
+		if (endPsi != currPsi) {
 			ICADData data = getCADData(stack);
 			data.setBattery(endPsi);
 			data.markDirty(true);
@@ -489,13 +543,15 @@ public class ItemCAD extends Item implements ICAD, ISpellSettable {
 
 	@Override
 	public int consumePsi(ItemStack stack, int psi) {
-		if (psi == 0)
+		if (psi == 0) {
 			return 0;
+		}
 
 		int currPsi = getStoredPsi(stack);
 
-		if (currPsi == -1)
+		if (currPsi == -1) {
 			return 0;
+		}
 
 		ICADData data = getCADData(stack);
 
@@ -513,33 +569,35 @@ public class ItemCAD extends Item implements ICAD, ISpellSettable {
 	@Override
 	public int getMemorySize(ItemStack stack) {
 		int sockets = getStatValue(stack, EnumCADStat.SOCKETS);
-		if (sockets == -1)
+		if (sockets == -1) {
 			return 0xFF;
+		}
 		return sockets / 3;
 	}
-	
+
 	@Override
 	public void setStoredVector(ItemStack stack, int memorySlot, Vector3 vec) throws SpellRuntimeException {
 		int size = getMemorySize(stack);
-		if(memorySlot < 0 || memorySlot >= size)
+		if (memorySlot < 0 || memorySlot >= size) {
 			throw new SpellRuntimeException(SpellRuntimeException.MEMORY_OUT_OF_BOUNDS);
+		}
 		getCADData(stack).setSavedVector(memorySlot, vec);
 	}
 
 	@Override
 	public Vector3 getStoredVector(ItemStack stack, int memorySlot) throws SpellRuntimeException {
 		int size = getMemorySize(stack);
-		if(memorySlot < 0 || memorySlot >= size)
+		if (memorySlot < 0 || memorySlot >= size) {
 			throw new SpellRuntimeException(SpellRuntimeException.MEMORY_OUT_OF_BOUNDS);
+		}
 		return getCADData(stack).getSavedVector(memorySlot);
 	}
 
-
 	@Override
 	public void fillItemGroup(@Nonnull ItemGroup tab, @Nonnull NonNullList<ItemStack> subItems) {
-		if (!isInGroup(tab))
+		if (!isInGroup(tab)) {
 			return;
-
+		}
 
 		// Basic Iron CAD
 		subItems.add(makeCAD(new ItemStack(ModItems.cadAssemblyIron)));
@@ -555,7 +613,6 @@ public class ItemCAD extends Item implements ICAD, ISpellSettable {
 				new ItemStack(ModItems.cadCoreBasic),
 				new ItemStack(ModItems.cadSocketBasic),
 				new ItemStack(ModItems.cadBatteryBasic)));
-
 
 		// Psimetal CAD
 		subItems.add(makeCAD(new ItemStack(ModItems.cadAssemblyPsimetal),
@@ -575,7 +632,6 @@ public class ItemCAD extends Item implements ICAD, ISpellSettable {
 				new ItemStack(ModItems.cadSocketTransmissive),
 				new ItemStack(ModItems.cadBatteryUltradense)));
 
-
 		// Creative CAD
 		subItems.add(makeCAD(new ItemStack(ModItems.cadAssemblyCreative),
 				new ItemStack(ModItems.cadCoreHyperClocked),
@@ -594,8 +650,9 @@ public class ItemCAD extends Item implements ICAD, ISpellSettable {
 			for (EnumCADComponent componentType : EnumCADComponent.class.getEnumConstants()) {
 				ItemStack componentStack = getComponentInSlot(stack, componentType);
 				ITextComponent name = new TranslationTextComponent("psimisc.none");
-				if (!componentStack.isEmpty())
+				if (!componentStack.isEmpty()) {
 					name = componentStack.getDisplayName();
+				}
 
 				ITextComponent componentTypeName = new TranslationTextComponent(componentType.getName()).applyTextStyle(TextFormatting.GREEN);
 				tooltip.add(componentTypeName.appendText(": ").appendSibling(name));
@@ -623,6 +680,5 @@ public class ItemCAD extends Item implements ICAD, ISpellSettable {
 	public Rarity getRarity(ItemStack stack) {
 		return Rarity.RARE;
 	}
-
 
 }

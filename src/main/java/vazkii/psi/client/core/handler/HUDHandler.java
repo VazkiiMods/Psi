@@ -1,17 +1,15 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [11/01/2016, 00:30:54 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.client.core.handler;
 
-
 import com.mojang.blaze3d.systems.RenderSystem;
+
 import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SimpleSound;
@@ -30,9 +28,11 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+
 import org.lwjgl.opengl.ARBMultitexture;
 import org.lwjgl.opengl.ARBShaderObjects;
 import org.lwjgl.opengl.GL11;
+
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.cad.ICADColorizer;
@@ -80,33 +80,40 @@ public final class HUDHandler {
 			MainWindow resolution = event.getWindow();
 			float partialTicks = event.getPartialTicks();
 
-
-			if (!MinecraftForge.EVENT_BUS.post(new RenderPsiHudEvent(PsiHudElementType.PSI_BAR)))
+			if (!MinecraftForge.EVENT_BUS.post(new RenderPsiHudEvent(PsiHudElementType.PSI_BAR))) {
 				drawPsiBar(resolution, partialTicks);
-			if (!MinecraftForge.EVENT_BUS.post(new RenderPsiHudEvent(PsiHudElementType.SOCKETABLE_EQUIPPED_NAME)))
+			}
+			if (!MinecraftForge.EVENT_BUS.post(new RenderPsiHudEvent(PsiHudElementType.SOCKETABLE_EQUIPPED_NAME))) {
 				renderSocketableEquippedName(resolution, partialTicks);
-			if (!MinecraftForge.EVENT_BUS.post(new RenderPsiHudEvent(PsiHudElementType.LEVEL_UP_INDICATOR)))
+			}
+			if (!MinecraftForge.EVENT_BUS.post(new RenderPsiHudEvent(PsiHudElementType.LEVEL_UP_INDICATOR))) {
 				renderLevelUpIndicator(resolution);
-			if (!MinecraftForge.EVENT_BUS.post(new RenderPsiHudEvent(PsiHudElementType.REMAINING_ITEMS)))
+			}
+			if (!MinecraftForge.EVENT_BUS.post(new RenderPsiHudEvent(PsiHudElementType.REMAINING_ITEMS))) {
 				renderRemainingItems(resolution, partialTicks);
-			if (!MinecraftForge.EVENT_BUS.post(new RenderPsiHudEvent(PsiHudElementType.HUD_ITEM)))
+			}
+			if (!MinecraftForge.EVENT_BUS.post(new RenderPsiHudEvent(PsiHudElementType.HUD_ITEM))) {
 				renderHUDItem(resolution, partialTicks);
+			}
 		}
 	}
 
 	public static void tick() {
-		if (showLevelUp)
+		if (showLevelUp) {
 			levelDisplayTime++;
+		}
 
-		if (remainingTime > 0)
+		if (remainingTime > 0) {
 			--remainingTime;
+		}
 	}
 
 	private static boolean showsBar(PlayerData data, ItemStack stack) {
-		if (stack.isEmpty())
+		if (stack.isEmpty()) {
 			return false;
-		else
+		} else {
 			return stack.getCapability(PsiAPI.PSI_BAR_DISPLAY_CAPABILITY).map(c -> c.shouldShow(data)).orElse(false);
+		}
 	}
 
 	@OnlyIn(Dist.CLIENT)
@@ -114,8 +121,9 @@ public final class HUDHandler {
 		Minecraft mc = Minecraft.getInstance();
 		ItemStack cadStack = PsiAPI.getPlayerCAD(mc.player);
 
-		if (cadStack.isEmpty())
+		if (cadStack.isEmpty()) {
 			return;
+		}
 
 		ICAD cad = (ICAD) cadStack.getItem();
 		PlayerData data = PlayerDataHandler.get(mc.player);
@@ -125,8 +133,9 @@ public final class HUDHandler {
 
 		if (ConfigHandler.CLIENT.contextSensitiveBar.get() && currPsi == totalPsi &&
 				!showsBar(data, mc.player.getHeldItemMainhand()) &&
-				!showsBar(data, mc.player.getHeldItemOffhand()))
+				!showsBar(data, mc.player.getHeldItemOffhand())) {
 			return;
+		}
 
 		RenderSystem.pushMatrix();
 
@@ -137,8 +146,9 @@ public final class HUDHandler {
 		int height = 140;
 
 		int x = -pad;
-		if (right)
+		if (right) {
 			x = res.getScaledWidth() + pad - width;
+		}
 		int y = res.getScaledHeight() / 2 - height / 2;
 
 		if (!registeredMask) {
@@ -198,10 +208,12 @@ public final class HUDHandler {
 				float textHeight = (float) (origHeight
 						* (data.availablePsi * pticks + data.lastAvailablePsi * (1.0 - pticks)) / totalPsi);
 				textY = origY + (origHeight - textHeight);
-			} else
+			} else {
 				textY = y;
-		} else
+			}
+		} else {
 			height = 0;
+		}
 
 		RenderSystem.color3f(r, g, b);
 		ShaderHandler.useShader(ShaderHandler.psiBar, generateCallback(1F, false, data.overflowed));
@@ -260,8 +272,9 @@ public final class HUDHandler {
 		Minecraft mc = Minecraft.getInstance();
 		ItemStack stack = mc.player.getHeldItem(Hand.MAIN_HAND);
 		String name = ISocketable.getSocketedItemName(stack, "").getFormattedText();
-		if (stack.isEmpty() || name.trim().isEmpty())
+		if (stack.isEmpty() || name.trim().isEmpty()) {
 			return;
+		}
 
 		int ticks = mc.ingameGUI.remainingHighlightTicks;
 		ticks -= 10;
@@ -275,8 +288,9 @@ public final class HUDHandler {
 
 			int x = res.getScaledWidth() / 2 - mc.fontRenderer.getStringWidth(name) / 2;
 			int y = res.getScaledHeight() - 71;
-			if (mc.player.abilities.isCreativeMode)
+			if (mc.player.abilities.isCreativeMode) {
 				y += 14;
+			}
 
 			RenderSystem.enableBlend();
 			RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -302,8 +316,9 @@ public final class HUDHandler {
 	@OnlyIn(Dist.CLIENT)
 	private static void renderLevelUpIndicator(MainWindow res) {
 		Minecraft mc = Minecraft.getInstance();
-		if (!showLevelUp)
+		if (!showLevelUp) {
 			return;
+		}
 
 		RenderSystem.enableBlend();
 		RenderSystem.disableAlphaTest();
@@ -333,8 +348,9 @@ public final class HUDHandler {
 		y += 10;
 
 		if (levelDisplayTime > fadeTime) {
-			if (levelDisplayTime - fadeTime == 1)
+			if (levelDisplayTime - fadeTime == 1) {
 				mc.getSoundHandler().play(SimpleSound.master(PsiSoundHandler.levelUp, 0.5F));
+			}
 
 			float a1 = Math.min(1F, (float) (levelDisplayTime - fadeTime) / fadeTime) * a;
 			int color1 = 0x00FFFFFF + ((int) (a1 * 0xFF) << 24);
@@ -368,8 +384,9 @@ public final class HUDHandler {
 
 		RenderSystem.enableAlphaTest();
 		RenderSystem.disableBlend();
-		if (levelDisplayTime >= time + fadeoutTime)
+		if (levelDisplayTime >= time + fadeoutTime) {
 			showLevelUp = false;
+		}
 	}
 
 	@OnlyIn(Dist.CLIENT)
@@ -408,14 +425,16 @@ public final class HUDHandler {
 				int stacks = remainingCount / max;
 				int rem = remainingCount % max;
 
-				if (stacks == 0)
+				if (stacks == 0) {
 					text = "" + remainingCount;
-				else
+				} else {
 					text = remainingCount + " (" + TextFormatting.AQUA + stacks + TextFormatting.RESET + "*"
 							+ TextFormatting.GRAY + max + TextFormatting.RESET + "+" + TextFormatting.YELLOW + rem
 							+ TextFormatting.RESET + ")";
-			} else if (remainingCount == -1)
+				}
+			} else if (remainingCount == -1) {
 				text = "\u221E";
+			}
 
 			int color = 0x00FFFFFF | (int) (alpha * 0xFF) << 24;
 			mc.fontRenderer.drawStringWithShadow(text, x + 20, y + 6, color);
@@ -429,12 +448,14 @@ public final class HUDHandler {
 	private static void renderHUDItem(MainWindow resolution, float partTicks) {
 		Minecraft mc = Minecraft.getInstance();
 		ItemStack stack = mc.player.getHeldItemMainhand();
-		if (!stack.isEmpty() && stack.getItem() instanceof IHUDItem)
+		if (!stack.isEmpty() && stack.getItem() instanceof IHUDItem) {
 			((IHUDItem) stack.getItem()).drawHUD(resolution, partTicks, stack);
+		}
 
 		stack = mc.player.getHeldItemOffhand();
-		if (!stack.isEmpty() && stack.getItem() instanceof IHUDItem)
+		if (!stack.isEmpty() && stack.getItem() instanceof IHUDItem) {
 			((IHUDItem) stack.getItem()).drawHUD(resolution, partTicks, stack);
+		}
 	}
 
 	public static void setRemaining(ItemStack stack, int count) {
@@ -447,8 +468,9 @@ public final class HUDHandler {
 		int count = 0;
 		for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
 			ItemStack stack = player.inventory.getStackInSlot(i);
-			if (!stack.isEmpty() && (pattern == null ? ItemStack.areItemsEqual(displayStack, stack) : pattern.matcher(stack.getTranslationKey()).find()))
+			if (!stack.isEmpty() && (pattern == null ? ItemStack.areItemsEqual(displayStack, stack) : pattern.matcher(stack.getTranslationKey()).find())) {
 				count += stack.getCount();
+			}
 		}
 
 		setRemaining(displayStack, count);

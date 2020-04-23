@@ -1,6 +1,15 @@
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
+ * https://github.com/Vazkii/Psi
+ *
+ * Psi is Open Source and distributed under the
+ * Psi License: https://psi.vazkii.net/license.php
+ */
 package vazkii.psi.data;
 
 import com.google.gson.JsonObject;
+
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.IFinishedRecipe;
 import net.minecraft.data.RecipeProvider;
@@ -9,6 +18,7 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraftforge.common.Tags;
+
 import vazkii.psi.api.recipe.TrickRecipeBuilder;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.crafting.recipe.DimensionTrickRecipe;
@@ -16,6 +26,7 @@ import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.lib.LibPieceNames;
 
 import javax.annotation.Nonnull;
+
 import java.util.function.Consumer;
 
 public class TrickRecipeGenerator extends RecipeProvider {
@@ -57,7 +68,7 @@ public class TrickRecipeGenerator extends RecipeProvider {
 	}
 
 	public static void dimension(TrickRecipeBuilder builder, Consumer<IFinishedRecipe> parent,
-								 ResourceLocation id, DimensionType type) {
+			ResourceLocation id, DimensionType type) {
 		parent.accept(new DimensionResult(id, builder, type));
 	}
 

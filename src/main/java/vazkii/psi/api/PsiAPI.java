@@ -1,18 +1,18 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [13/01/2016, 16:08:02 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.api;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+
 import net.minecraft.client.renderer.model.Material;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
@@ -25,7 +25,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.fml.DistExecutor;
+
 import org.apache.logging.log4j.LogManager;
+
 import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.cad.ICADData;
 import vazkii.psi.api.cad.IPsiBarDisplay;
@@ -49,7 +51,8 @@ public final class PsiAPI {
 	/**
 	 * The internal method handler in use. This object allows the API to interact with the mod.
 	 * By default this is a dummy. In the mod itself, this is replaced with an implementation that
-	 * can handle all of its queries.<br><br>
+	 * can handle all of its queries.<br>
+	 * <br>
 	 *
 	 * <b>DO NOT EVER, EVER, OVERWRITE THIS VALUE</b>
 	 */
@@ -73,10 +76,8 @@ public final class PsiAPI {
 	@CapabilityInject(ISocketableCapability.class)
 	public static Capability<ISocketableCapability> SOCKETABLE_CAPABILITY = null;
 
-
 	public static final String MOD_ID = "psi";
 	public static final ResourceLocation PSI_PIECE_TEXTURE_ATLAS = new ResourceLocation(MOD_ID, "spell_pieces");
-
 
 	private static final SimpleRegistry<Class<? extends SpellPiece>> spellPieceRegistry = new SimpleRegistry<>();
 	private static final Map<ResourceLocation, Material> simpleSpellTextures = new HashMap<>();
@@ -84,7 +85,7 @@ public final class PsiAPI {
 	private static final Map<Class<? extends SpellPiece>, ResourceLocation> advancementGroupsInverse = new HashMap<>();
 	private static final Map<ResourceLocation, Class<? extends SpellPiece>> mainPieceForGroup = new HashMap<>();
 
-	public static final PsimetalArmorMaterial PSIMETAL_ARMOR_MATERIAL = new PsimetalArmorMaterial("psimetal", 18, new int[]{2, 6, 5, 2}, 12, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0F, () -> Ingredient.fromTag(ItemTags.getCollection().getOrCreate(new ResourceLocation("forge", "ingots/psimetal"))));
+	public static final PsimetalArmorMaterial PSIMETAL_ARMOR_MATERIAL = new PsimetalArmorMaterial("psimetal", 18, new int[] { 2, 6, 5, 2 }, 12, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0F, () -> Ingredient.fromTag(ItemTags.getCollection().getOrCreate(new ResourceLocation("forge", "ingots/psimetal"))));
 	public static final PsimetalToolMaterial PSIMETAL_TOOL_MATERIAL = new PsimetalToolMaterial();
 
 	/**
@@ -99,7 +100,8 @@ public final class PsiAPI {
 	 * The spell texture will be set to <code>/assets/(namespace)/textures/spell/(path).png</code>,
 	 * and will be stitched to an atlas for render.<br />
 	 * To use a different path, see {@link #registerPieceTexture}.<br />
-	 * To use custom rendering entirely, call {@link #registerSpellPiece} and override {@link SpellPiece#drawBackground} to do your own rendering.
+	 * To use custom rendering entirely, call {@link #registerSpellPiece} and override {@link SpellPiece#drawBackground}
+	 * to do your own rendering.
 	 */
 	public static void registerSpellPieceAndTexture(ResourceLocation id, Class<? extends SpellPiece> clazz) {
 		registerSpellPiece(id, clazz);
@@ -108,15 +110,16 @@ public final class PsiAPI {
 
 	/**
 	 * Register the texture of a piece
+	 * 
 	 * @param pieceId ID of the piece whose texture to register
-	 * @param texture Path to the piece's texture, where <code>domain:foo/bar</code> translates to <code>/assets/domain/textures/foo/bar.png</code>.
+	 * @param texture Path to the piece's texture, where <code>domain:foo/bar</code> translates to
+	 *                <code>/assets/domain/textures/foo/bar.png</code>.
 	 *                In other words, do <b>not</b> prefix with textures/ nor suffix with .png.
 	 */
 	@OnlyIn(Dist.CLIENT)
 	public static void registerPieceTexture(ResourceLocation pieceId, ResourceLocation texture) {
 		PsiAPI.simpleSpellTextures.put(pieceId, new Material(PSI_PIECE_TEXTURE_ATLAS, texture));
 	}
-
 
 	/**
 	 * Adds a piece to a group. This must be done for every piece, or it'll not be selectable in the programmer
@@ -128,8 +131,9 @@ public final class PsiAPI {
 		advancementGroupsInverse.put(clazz, resLoc);
 
 		if (main) {
-			if (mainPieceForGroup.containsKey(resLoc))
+			if (mainPieceForGroup.containsKey(resLoc)) {
 				LogManager.getLogger(MOD_ID).info("Group " + resLoc + " already has a main piece!");
+			}
 			mainPieceForGroup.put(resLoc, clazz);
 		}
 	}
@@ -139,15 +143,17 @@ public final class PsiAPI {
 	 * more than one, this will return null.
 	 */
 	public static ItemStack getPlayerCAD(PlayerEntity player) {
-		if(player == null)
+		if (player == null) {
 			return ItemStack.EMPTY;
+		}
 
 		ItemStack cad = ItemStack.EMPTY;
-		for(int i = 0; i < player.inventory.getSizeInventory(); i++) {
+		for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
 			ItemStack stackAt = player.inventory.getStackInSlot(i);
-			if(!stackAt.isEmpty() && stackAt.getItem() instanceof ICAD) {
-				if(!cad.isEmpty())
+			if (!stackAt.isEmpty() && stackAt.getItem() instanceof ICAD) {
+				if (!cad.isEmpty()) {
 					return ItemStack.EMPTY; // Player can only have one CAD
+				}
 
 				cad = stackAt;
 			}
@@ -155,17 +161,19 @@ public final class PsiAPI {
 
 		return cad;
 	}
-	
+
 	public static int getPlayerCADSlot(PlayerEntity player) {
-		if(player == null)
+		if (player == null) {
 			return -1;
+		}
 
 		int slot = -1;
-		for(int i = 0; i < player.inventory.getSizeInventory(); i++) {
+		for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
 			ItemStack stackAt = player.inventory.getStackInSlot(i);
-			if(!stackAt.isEmpty() && stackAt.getItem() instanceof ICAD) {
-				if(slot != -1)
+			if (!stackAt.isEmpty() && stackAt.getItem() instanceof ICAD) {
+				if (slot != -1) {
 					return -1; // Player can only have one CAD
+				}
 
 				slot = i;
 			}
@@ -175,16 +183,17 @@ public final class PsiAPI {
 	}
 
 	public static boolean canCADBeUpdated(PlayerEntity player) {
-		if(player == null)
+		if (player == null) {
 			return false;
+		}
 
-		if(player.openContainer == null)
+		if (player.openContainer == null) {
 			return true;
+		}
 
 		int cadSlot = getPlayerCADSlot(player);
 		return cadSlot < 9 || cadSlot == 40;
 	}
-
 
 	public static Class<? extends SpellPiece> getSpellPiece(ResourceLocation key) {
 		return spellPieceRegistry.getValue(key).orElse(null);

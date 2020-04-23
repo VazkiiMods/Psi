@@ -1,35 +1,27 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [16/01/2016, 16:27:55 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.common.block.tile;
 
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.registries.ObjectHolder;
+
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.common.block.BlockProgrammer;
-import vazkii.psi.common.block.base.ModBlocks;
 import vazkii.psi.common.lib.LibBlockNames;
 import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.spell.SpellCompiler;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 public class TileProgrammer extends TileEntity {
 	@ObjectHolder(LibMisc.PREFIX_MOD + LibBlockNames.PROGRAMMER)
@@ -58,7 +50,7 @@ public class TileProgrammer extends TileEntity {
 	public void onSpellChanged() {
 		boolean wasEnabled = enabled;
 		enabled = isEnabled();
-		if(wasEnabled != enabled) {
+		if (wasEnabled != enabled) {
 			getWorld().setBlockState(pos, getBlockState().with(BlockProgrammer.ENABLED, enabled));
 		}
 	}
@@ -69,8 +61,9 @@ public class TileProgrammer extends TileEntity {
 		cmp = super.write(cmp);
 
 		CompoundNBT spellCmp = new CompoundNBT();
-		if(spell != null)
+		if (spell != null) {
 			spell.writeToNBT(spellCmp);
+		}
 		cmp.put(TAG_SPELL, spellCmp);
 		cmp.putString(TAG_PLAYER_LOCK, playerLock);
 		return cmp;
@@ -81,9 +74,11 @@ public class TileProgrammer extends TileEntity {
 		super.read(cmp);
 
 		CompoundNBT spellCmp = cmp.getCompound(TAG_SPELL);
-		if (spell == null)
+		if (spell == null) {
 			spell = Spell.createFromNBT(spellCmp);
-		else spell.readFromNBT(spellCmp);
+		} else {
+			spell.readFromNBT(spellCmp);
+		}
 		playerLock = cmp.getString(TAG_PLAYER_LOCK);
 	}
 

@@ -1,7 +1,16 @@
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
+ * https://github.com/Vazkii/Psi
+ *
+ * Psi is Open Source and distributed under the
+ * Psi License: https://psi.vazkii.net/license.php
+ */
 package vazkii.psi.common.item;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.RayTraceResult;
+
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.EnumCADComponent;
 import vazkii.psi.api.cad.ICAD;
@@ -23,23 +32,23 @@ public class ItemCircleSpellBullet extends ItemSpellBullet {
 		if (pos != null) {
 			EntitySpellCircle circle = new EntitySpellCircle(EntitySpellCircle.TYPE, context.caster.getEntityWorld());
 			circle.setInfo(context.caster, colorizer, stack);
-            circle.setPosition(pos.getHitVec().x, pos.getHitVec().y, pos.getHitVec().z);
-            circle.getEntityWorld().addEntity(circle);
-        }
-    }
+			circle.setPosition(pos.getHitVec().x, pos.getHitVec().y, pos.getHitVec().z);
+			circle.getEntityWorld().addEntity(circle);
+		}
+	}
 
-    @Override
-    public double getCostModifier(ItemStack stack) {
-        return EntitySpellCircle.CAST_TIMES * 0.75;
-    }
+	@Override
+	public double getCostModifier(ItemStack stack) {
+		return EntitySpellCircle.CAST_TIMES * 0.75;
+	}
 
-    @Override
-    public String getBulletType() {
-        return "circle";
-    }
+	@Override
+	public String getBulletType() {
+		return "circle";
+	}
 
-    @Override
-    public boolean isCADOnlyContainer(ItemStack stack) {
-        return true;
-    }
+	@Override
+	public boolean isCADOnlyContainer(ItemStack stack) {
+		return true;
+	}
 }

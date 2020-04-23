@@ -1,12 +1,10 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [08/02/2016, 19:24:01 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.common.spell.trick.potion;
 
@@ -14,6 +12,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectInstance;
+
 import vazkii.psi.api.spell.EnumSpellStat;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellCompilationException;
@@ -38,8 +37,9 @@ public abstract class PieceTrickPotionBase extends PieceTrick {
 	@Override
 	public void initParams() {
 		addParam(target = new ParamEntity(SpellParam.GENERIC_NAME_TARGET, SpellParam.YELLOW, false, false));
-		if(hasPower())
+		if (hasPower()) {
 			addParam(power = new ParamNumber(SpellParam.GENERIC_NAME_POWER, SpellParam.RED, false, true));
+		}
 		addParam(time = new ParamNumber(SpellParam.GENERIC_NAME_TIME, SpellParam.BLUE, false, true));
 	}
 
@@ -47,12 +47,14 @@ public abstract class PieceTrickPotionBase extends PieceTrick {
 	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
 		super.addToMetadata(meta);
 		Double powerVal = 1D;
-		if(hasPower())
+		if (hasPower()) {
 			powerVal = this.<Double>getParamEvaluation(power);
+		}
 		Double timeVal = this.<Double>getParamEvaluation(time);
 
-		if(powerVal == null || timeVal == null || powerVal <= 0 || powerVal != powerVal.intValue() || timeVal <= 0 || timeVal != timeVal.intValue())
+		if (powerVal == null || timeVal == null || powerVal <= 0 || powerVal != powerVal.intValue() || timeVal <= 0 || timeVal != timeVal.intValue()) {
 			throw new SpellCompilationException(SpellCompilationException.NON_POSITIVE_INTEGER, x, y);
+		}
 
 		meta.addStat(EnumSpellStat.POTENCY, 20 + getPotency(powerVal.intValue(), timeVal.intValue()));
 		meta.addStat(EnumSpellStat.COST, 40 + getCost(powerVal.intValue(), timeVal.intValue()));
@@ -63,14 +65,17 @@ public abstract class PieceTrickPotionBase extends PieceTrick {
 		Entity targetVal = this.getParamValue(context, target);
 
 		context.verifyEntity(targetVal);
-		if(!(targetVal instanceof LivingEntity))
+		if (!(targetVal instanceof LivingEntity)) {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_TARGET);
-		if(!context.isInRadius(targetVal))
+		}
+		if (!context.isInRadius(targetVal)) {
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
+		}
 
 		double powerVal = 1.0;
-		if(hasPower())
+		if (hasPower()) {
 			powerVal = this.getParamValue(context, power).doubleValue();
+		}
 		double timeVal = this.getParamValue(context, time).doubleValue();
 
 		((LivingEntity) targetVal).addPotionEffect(new EffectInstance(getPotion(), Math.max(1, (int) timeVal) * 20, hasPower() ? Math.max(0, (int) powerVal - 1) : 0));

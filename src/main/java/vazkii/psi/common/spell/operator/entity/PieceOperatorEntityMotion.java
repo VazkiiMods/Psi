@@ -1,17 +1,16 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [23/01/2016, 01:09:11 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.common.spell.operator.entity;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
+
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
@@ -40,17 +39,19 @@ public class PieceOperatorEntityMotion extends PieceOperator {
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		Entity e = this.getParamValue(context, target);
 
-		if(e == null)
+		if (e == null) {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_TARGET);
+		}
 
-		if(e instanceof PlayerEntity) {
+		if (e instanceof PlayerEntity) {
 			PlayerEntity player = (PlayerEntity) e;
 			PlayerData data = PlayerDataHandler.get(player);
-			if(data.eidosChangelog.size() >= 2) {
+			if (data.eidosChangelog.size() >= 2) {
 				Vector3 last = data.eidosChangelog.get(data.eidosChangelog.size() - 2);
 				Vector3 vec = Vector3.fromEntity(e).sub(last).multiply(1.0 / PieceTrickAddMotion.MULTIPLIER);
-				if(vec.mag() < 10)
+				if (vec.mag() < 10) {
 					return vec;
+				}
 			}
 		}
 

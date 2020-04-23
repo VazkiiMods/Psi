@@ -1,12 +1,10 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [13/01/2016, 16:48:52 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.common.item;
 
@@ -22,6 +20,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+
 import vazkii.psi.api.internal.TooltipHelper;
 import vazkii.psi.api.spell.ISpellContainer;
 import vazkii.psi.api.spell.Spell;
@@ -29,6 +28,7 @@ import vazkii.psi.api.spell.SpellContext;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
 import java.util.List;
 
 public class ItemSpellBullet extends Item implements ISpellContainer {
@@ -56,8 +56,9 @@ public class ItemSpellBullet extends Item implements ISpellContainer {
 		if (containsSpell(stack)) {
 			CompoundNBT cmp = stack.getOrCreateTag().getCompound(TAG_SPELL);
 			String name = cmp.getString(Spell.TAG_SPELL_NAME); // We don't need to load the whole spell just for the name
-			if (name.isEmpty())
+			if (name.isEmpty()) {
 				return super.getDisplayName(stack);
+			}
 			return new StringTextComponent(name);
 		}
 		return super.getDisplayName(stack);
@@ -111,7 +112,7 @@ public class ItemSpellBullet extends Item implements ISpellContainer {
 	public boolean isCADOnlyContainer(ItemStack stack) {
 		return false;
 	}
-	
+
 	@Override
 	public boolean requiresSneakForSpellSet(ItemStack stack) {
 		return false;

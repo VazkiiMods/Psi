@@ -1,22 +1,22 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [16/01/2016, 15:17:25 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.api.spell;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
+
 import java.util.UUID;
 
 /**
@@ -44,8 +44,9 @@ public final class Spell {
 
 	@Nullable
 	public static Spell createFromNBT(CompoundNBT cmp) {
-		if(cmp == null || !cmp.getBoolean(TAG_VALID))
+		if (cmp == null || !cmp.getBoolean(TAG_VALID)) {
 			return null;
+		}
 
 		Spell spell = new Spell();
 		spell.readFromNBT(cmp);
@@ -58,8 +59,9 @@ public final class Spell {
 		if (cmp.contains(TAG_UUID_MOST)) {
 			long uuidMost = cmp.getLong(TAG_UUID_MOST);
 			long uuidLeast = cmp.getLong(TAG_UUID_LEAST);
-			if (uuid.getMostSignificantBits() != uuidMost || uuid.getLeastSignificantBits() != uuidLeast)
+			if (uuid.getMostSignificantBits() != uuidMost || uuid.getLeastSignificantBits() != uuidLeast) {
 				uuid = new UUID(uuidMost, uuidLeast);
+			}
 		}
 
 		grid.readFromNBT(cmp);

@@ -1,21 +1,19 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [18/01/2016, 22:02:05 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.common.spell.operator.vector;
-
 
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
+
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
@@ -47,18 +45,21 @@ public class PieceOperatorVectorRaycast extends PieceOperator {
 		Vector3 originVal = this.getParamValue(context, origin);
 		Vector3 rayVal = this.getParamValue(context, ray);
 
-		if (originVal == null || rayVal == null)
+		if (originVal == null || rayVal == null) {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
+		}
 
 		double maxLen = SpellContext.MAX_DISTANCE;
 		Number numberVal = this.getParamValue(context, max);
-		if (numberVal != null)
+		if (numberVal != null) {
 			maxLen = numberVal.doubleValue();
+		}
 		maxLen = Math.min(SpellContext.MAX_DISTANCE, maxLen);
 
 		BlockRayTraceResult pos = raycast(context.caster, originVal, rayVal, maxLen);
-		if (pos.getType() == RayTraceResult.Type.MISS)
+		if (pos.getType() == RayTraceResult.Type.MISS) {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
+		}
 
 		return Vector3.fromBlockPos(pos.getPos());
 	}
@@ -66,7 +67,7 @@ public class PieceOperatorVectorRaycast extends PieceOperator {
 	public static BlockRayTraceResult raycast(Entity e, double len) {
 		Vector3 vec = Vector3.fromEntity(e);
 		vec.add(0, e.getEyeHeight(), 0);
-		
+
 		Vec3d look = e.getLookVec();
 
 		return raycast(e, vec, new Vector3(look), len);

@@ -1,3 +1,11 @@
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
+ * https://github.com/Vazkii/Psi
+ *
+ * Psi is Open Source and distributed under the
+ * Psi License: https://psi.vazkii.net/license.php
+ */
 package vazkii.psi.client.patchouli;
 
 import net.minecraft.client.Minecraft;
@@ -9,6 +17,7 @@ import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.crafting.IShapedRecipe;
+
 import vazkii.patchouli.api.IComponentProcessor;
 import vazkii.patchouli.api.IVariableProvider;
 import vazkii.patchouli.api.PatchouliAPI;
@@ -18,7 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-//https://github.com/Vazkii/Botania/blob/master/src/main/java/vazkii/botania/client/patchouli/processor/MultiCraftingProcessor.java
+// https://github.com/Vazkii/Botania/blob/master/src/main/java/vazkii/botania/client/patchouli/processor/MultiCraftingProcessor.java
 public class MultiCraftingProcessor implements IComponentProcessor {
 	private List<ICraftingRecipe> recipes;
 	private boolean shapeless = true;
@@ -54,8 +63,9 @@ public class MultiCraftingProcessor implements IComponentProcessor {
 			return null;
 		}
 		if (key.equals("heading")) {
-			if (!hasCustomHeading)
+			if (!hasCustomHeading) {
 				return recipes.get(0).getRecipeOutput().getDisplayName().getString();
+			}
 			return null;
 		}
 		if (key.startsWith("input")) {
@@ -82,10 +92,9 @@ public class MultiCraftingProcessor implements IComponentProcessor {
 			return PatchouliUtils.interweaveIngredients(ingredients, longestIngredientSize);
 		}
 		if (key.equals("output")) {
-			return recipes.stream().map(IRecipe::getRecipeOutput).map(PatchouliAPI.instance::serializeItemStack).collect(Collectors.joining(","));
+			return recipes.stream().map(ICraftingRecipe::getRecipeOutput).map(PatchouliAPI.instance::serializeItemStack).collect(Collectors.joining(","));
 		}
-		if (key.equals("shapeless")) {
-		}
+		if (key.equals("shapeless")) {}
 		return null;
 	}
 }

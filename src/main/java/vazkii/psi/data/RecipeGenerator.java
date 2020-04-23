@@ -1,3 +1,11 @@
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
+ * https://github.com/Vazkii/Psi
+ *
+ * Psi is Open Source and distributed under the
+ * Psi License: https://psi.vazkii.net/license.php
+ */
 package vazkii.psi.data;
 
 import net.minecraft.advancements.Advancement;
@@ -5,8 +13,12 @@ import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.ICriterionInstance;
 import net.minecraft.advancements.IRequirementsStrategy;
 import net.minecraft.advancements.criterion.RecipeUnlockedTrigger;
+import net.minecraft.data.CustomRecipeBuilder;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.*;
+import net.minecraft.data.IFinishedRecipe;
+import net.minecraft.data.RecipeProvider;
+import net.minecraft.data.ShapedRecipeBuilder;
+import net.minecraft.data.ShapelessRecipeBuilder;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.crafting.Ingredient;
@@ -18,9 +30,15 @@ import net.minecraftforge.common.crafting.ConditionalAdvancement;
 import net.minecraftforge.common.crafting.ConditionalRecipe;
 import net.minecraftforge.common.crafting.conditions.IConditionBuilder;
 import net.minecraftforge.common.crafting.conditions.NotCondition;
+
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.base.ModBlocks;
-import vazkii.psi.common.crafting.recipe.*;
+import vazkii.psi.common.crafting.recipe.AssemblyScavengeRecipe;
+import vazkii.psi.common.crafting.recipe.BulletToDriveRecipe;
+import vazkii.psi.common.crafting.recipe.ColorizerChangeRecipe;
+import vazkii.psi.common.crafting.recipe.DriveDuplicateRecipe;
+import vazkii.psi.common.crafting.recipe.SensorAttachRecipe;
+import vazkii.psi.common.crafting.recipe.SensorRemoveRecipe;
 import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.lib.ModTags;
 
@@ -597,6 +615,15 @@ public class RecipeGenerator extends RecipeProvider implements IConditionBuilder
 		);
 		buildMagicalWrapper(Psi.location("exosuit_sensor_stress"), consumer,
 				hasPsimetal, "has_psimetal", ShapedRecipeBuilder.shapedRecipe(ModItems.exosuitSensorStress)
+						.key('M', Items.GUNPOWDER)
+						.key('R', Tags.Items.INGOTS_IRON)
+						.key('I', ModTags.INGOT_PSIMETAL)
+						.patternLine(" I ")
+						.patternLine("IMR")
+						.patternLine(" R ")
+		);
+		buildMagicalWrapper(Psi.location("exosuit_sensor_trigger"), consumer,
+				hasPsimetal, "has_psimetal", ShapedRecipeBuilder.shapedRecipe(ModItems.exosuitSensorTrigger)
 						.key('M', Items.GLISTERING_MELON_SLICE)
 						.key('R', Tags.Items.INGOTS_IRON)
 						.key('I', ModTags.INGOT_PSIMETAL)
@@ -674,19 +701,19 @@ public class RecipeGenerator extends RecipeProvider implements IConditionBuilder
 	}
 
 	private static void buildMagicalWrapper(ResourceLocation id, Consumer<IFinishedRecipe> consumer,
-											ICriterionInstance recipeUnlockCriterion, String criterionName, ShapelessRecipeBuilder builder) {
+			ICriterionInstance recipeUnlockCriterion, String criterionName, ShapelessRecipeBuilder builder) {
 		builder.addCriterion(criterionName, recipeUnlockCriterion);
 		buildMagicalWrapper(id, consumer, recipeUnlockCriterion, criterionName, builder::build);
 	}
 
 	private static void buildMagicalWrapper(ResourceLocation id, Consumer<IFinishedRecipe> consumer,
-											ICriterionInstance recipeUnlockCriterion, String criterionName, ShapedRecipeBuilder builder) {
+			ICriterionInstance recipeUnlockCriterion, String criterionName, ShapedRecipeBuilder builder) {
 		builder.addCriterion(criterionName, recipeUnlockCriterion);
 		buildMagicalWrapper(id, consumer, recipeUnlockCriterion, criterionName, builder::build);
 	}
 
 	private static void buildMagicalWrapper(ResourceLocation id, Consumer<IFinishedRecipe> consumer, ICriterionInstance criterion,
-											String criterionName, Consumer<Consumer<IFinishedRecipe>> recipe) {
+			String criterionName, Consumer<Consumer<IFinishedRecipe>> recipe) {
 		ConditionalRecipe.builder()
 				.addCondition(new NotCondition(MagicalPsiCondition.INSTANCE))
 				.addRecipe(recipe)

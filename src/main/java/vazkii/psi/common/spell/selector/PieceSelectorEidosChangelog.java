@@ -1,12 +1,10 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
- * 
+ *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- * 
- * File Created @ [11/03/2016, 20:03:51 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.common.spell.selector;
 
@@ -37,14 +35,16 @@ public class PieceSelectorEidosChangelog extends PieceSelector {
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		int i = this.getParamValue(context, number).intValue();
 		PlayerData data = PlayerDataHandler.get(context.caster);
-		
-		if(i <= 0 || i >= data.eidosChangelog.size())
+
+		if (i <= 0 || i >= data.eidosChangelog.size()) {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
-		
+		}
+
 		Vector3 vec = data.eidosChangelog.get(data.eidosChangelog.size() - i);
-		if(vec == null)
+		if (vec == null) {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
-		
+		}
+
 		return vec;
 	}
 

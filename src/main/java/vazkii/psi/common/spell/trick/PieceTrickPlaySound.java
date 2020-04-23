@@ -1,10 +1,25 @@
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
+ * https://github.com/Vazkii/Psi
+ *
+ * Psi is Open Source and distributed under the
+ * Psi License: https://psi.vazkii.net/license.php
+ */
 package vazkii.psi.common.spell.trick;
 
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+
 import vazkii.psi.api.internal.Vector3;
-import vazkii.psi.api.spell.*;
+import vazkii.psi.api.spell.EnumSpellStat;
+import vazkii.psi.api.spell.Spell;
+import vazkii.psi.api.spell.SpellCompilationException;
+import vazkii.psi.api.spell.SpellContext;
+import vazkii.psi.api.spell.SpellMetadata;
+import vazkii.psi.api.spell.SpellParam;
+import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.param.ParamVector;
 import vazkii.psi.api.spell.piece.PieceTrick;
@@ -37,14 +52,17 @@ public class PieceTrickPlaySound extends PieceTrick {
 		double dPit = SpellHelpers.ensurePositiveOrZero(this, pitch, 0);
 		double dIn = SpellHelpers.ensurePositiveOrZero(this, instrument);
 
-		if (dPit > 24)
+		if (dPit > 24) {
 			throw new SpellCompilationException(SpellCompilationException.PITCH, x, y);
+		}
 
-		if (dVol > 1)
+		if (dVol > 1) {
 			throw new SpellCompilationException(SpellCompilationException.VOLUME, x, y);
+		}
 
-		if (dIn >= Psi.noteblockSoundEvents.size())
+		if (dIn >= Psi.noteblockSoundEvents.size()) {
 			throw new SpellCompilationException(SpellCompilationException.INSTRUMENTS, x, y);
+		}
 
 		meta.addStat(EnumSpellStat.POTENCY, 1);
 

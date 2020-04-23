@@ -1,10 +1,18 @@
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
+ * https://github.com/Vazkii/Psi
+ *
+ * Psi is Open Source and distributed under the
+ * Psi License: https://psi.vazkii.net/license.php
+ */
 package vazkii.psi.api.cad;
-
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.eventbus.api.Cancelable;
 import net.minecraftforge.eventbus.api.Event;
+
 import vazkii.psi.api.internal.IPlayerData;
 
 /**
@@ -56,8 +64,9 @@ public class RegenPsiEvent extends Event {
 			ICAD cadItem = (ICAD) cad.getItem();
 			this.cadPsiCapacity = cadItem.getStatValue(cad, EnumCADStat.OVERFLOW);
 			this.cadPsi = cadItem.getStoredPsi(cad);
-		} else
+		} else {
 			this.cadPsiCapacity = this.cadPsi = 0;
+		}
 
 		this.player = player;
 		this.playerData = playerData;
@@ -255,8 +264,9 @@ public class RegenPsiEvent extends Event {
 	}
 
 	private void applyRegen() {
-		if (regenCooldown != 0)
+		if (regenCooldown != 0) {
 			return;
+		}
 
 		cadRegenCost = 0;
 		cadRegen = 0;
@@ -264,41 +274,50 @@ public class RegenPsiEvent extends Event {
 
 		int regenLeft = regenRate;
 
-		if (regenCadFirst) regenLeft = applyCadRegen(regenLeft);
+		if (regenCadFirst) {
+			regenLeft = applyCadRegen(regenLeft);
+		}
 		regenLeft = applyPlayerRegen(regenLeft);
-		if (!regenCadFirst) applyCadRegen(regenLeft);
+		if (!regenCadFirst) {
+			applyCadRegen(regenLeft);
+		}
 	}
 
 	private int applyPlayerRegen(int regenLeft) {
 		int playerRegenTotal = Math.min(playerPsiCapacity - playerPsi, regenLeft);
-		if (maxPlayerRegen >= 0)
+		if (maxPlayerRegen >= 0) {
 			playerRegenTotal = Math.min(maxPlayerRegen, playerRegenTotal);
+		}
 
 		if (regenLeft > 0 && playerRegenTotal > 0) {
 			playerRegen = playerRegenTotal;
 			regenLeft -= playerRegenTotal;
-		} else
+		} else {
 			playerRegen = 0;
+		}
 
 		healOverflow = regenLeft > 0;
-		if (healOverflow && wasOverflowed)
+		if (healOverflow && wasOverflowed) {
 			regenLeft--;
+		}
 
 		return regenLeft;
 	}
 
 	private int applyCadRegen(int regenLeft) {
 		int cadRegenTotal = cadPsiCapacity - cadPsi;
-		if (maxCadRegen >= 0)
+		if (maxCadRegen >= 0) {
 			cadRegenTotal = Math.min(maxCadRegen, cadRegenTotal);
+		}
 
 		cadRegenCost = Math.min(regenLeft, cadRegenTotal * 2);
 
 		if (cadRegenCost > 0) {
 			cadRegen = Math.min(Math.max(1, cadRegenCost / 2), cadRegenTotal);
 			regenLeft -= cadRegenCost;
-		} else
+		} else {
 			cadRegen = 0;
+		}
 		return regenLeft;
 	}
 }

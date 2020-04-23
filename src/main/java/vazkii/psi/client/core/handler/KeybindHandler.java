@@ -1,12 +1,10 @@
-/**
- * This class was created by <Vazkii>. It's distributed as
- * part of the Psi Mod. Get the Source Code in github:
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
- * Psi License: http://psi.vazkii.us/license.php
- *
- * File Created @ [13/01/2016, 23:25:53 (GMT)]
+ * Psi License: https://psi.vazkii.net/license.php
  */
 package vazkii.psi.client.core.handler;
 
@@ -16,6 +14,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
+
 import vazkii.patchouli.api.PatchouliAPI;
 import vazkii.psi.api.cad.ISocketableCapability;
 import vazkii.psi.api.cad.ISocketableController;
@@ -34,14 +33,16 @@ public class KeybindHandler {
 	}
 
 	private static boolean isSocketableController(PlayerEntity player, ItemStack stack) {
-		if (!(stack.getItem() instanceof ISocketableController))
+		if (!(stack.getItem() instanceof ISocketableController)) {
 			return false;
+		}
 
 		ItemStack[] stacks = ((ISocketableController) stack.getItem()).getControlledStacks(player, stack);
 
 		for (ItemStack controlled : stacks) {
-			if (!controlled.isEmpty() && ISocketableCapability.isSocketable(controlled))
+			if (!controlled.isEmpty() && ISocketableCapability.isSocketable(controlled)) {
 				return true;
+			}
 		}
 
 		return false;
@@ -50,15 +51,15 @@ public class KeybindHandler {
 	public static void keyDown() {
 		Minecraft mc = Minecraft.getInstance();
 		ItemStack stack = mc.player.getHeldItem(Hand.MAIN_HAND);
-		
-		if(mc.currentScreen == null) {
-			if (!stack.isEmpty() && (ISocketableCapability.isSocketable(stack) || isSocketableController(mc.player, stack)))
+
+		if (mc.currentScreen == null) {
+			if (!stack.isEmpty() && (ISocketableCapability.isSocketable(stack) || isSocketableController(mc.player, stack))) {
 				mc.displayGuiScreen(new GuiSocketSelect(stack));
-			else {
+			} else {
 				stack = mc.player.getHeldItem(Hand.OFF_HAND);
-				if (!stack.isEmpty() && (ISocketableCapability.isSocketable(stack) || isSocketableController(mc.player, stack)))
+				if (!stack.isEmpty() && (ISocketableCapability.isSocketable(stack) || isSocketableController(mc.player, stack))) {
 					mc.displayGuiScreen(new GuiSocketSelect(stack));
-				else {
+				} else {
 					PatchouliAPI.instance.openBookGUI(LibResources.PATCHOULI_BOOK);
 				}
 
