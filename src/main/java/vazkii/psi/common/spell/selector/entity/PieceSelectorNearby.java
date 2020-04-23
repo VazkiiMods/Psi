@@ -10,7 +10,6 @@ package vazkii.psi.common.spell.selector.entity;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.Vec3d;
 
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.Spell;
@@ -55,9 +54,9 @@ public abstract class PieceSelectorNearby extends PieceSelector {
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		Vector3 positionVal = this.getParamValueOrDefault(context, position, Vector3.fromVec3d(context.focalPoint.getPositionVector()));
-		double radiusVal = Math.min(this.getParamValueOrDefault(context, radius, 2 * SpellContext.MAX_DISTANCE).doubleValue(), 2 * SpellContext.MAX_DISTANCE);
+		double radiusVal = this.getParamValueOrDefault(context, radius, 2 * SpellContext.MAX_DISTANCE).doubleValue();
 
-		Vec3d positionCenter = context.focalPoint.getPositionVector();
+		Vector3 positionCenter = Vector3.fromVec3d(context.focalPoint.getPositionVector());
 
 		if(!context.isInRadius(positionVal)) {
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
