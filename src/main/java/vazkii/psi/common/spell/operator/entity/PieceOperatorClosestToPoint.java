@@ -41,10 +41,14 @@ public class PieceOperatorClosestToPoint extends PieceOperator {
 		EntityListWrapper listVal = this.getParamValue(context, list);
 		Vector3 positionVal = this.getParamValue(context, position);
 
+		return closestToPoint(positionVal, listVal);
+	}
+
+	public static Entity closestToPoint(Vector3 position, Iterable<Entity> list) throws SpellRuntimeException {
 		double closest = Double.MAX_VALUE;
 		Entity closestEntity = null;
-		for (Entity e : listVal) {
-			double dist = MathHelper.pointDistanceSpace(positionVal.x, positionVal.y, positionVal.z, e.getX(), e.getY(), e.getZ());
+		for (Entity e : list) {
+			double dist = MathHelper.pointDistanceSpace(position.x, position.y, position.z, e.getX(), e.getY(), e.getZ());
 			if (dist < closest) {
 				closest = dist;
 				closestEntity = e;

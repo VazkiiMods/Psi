@@ -74,6 +74,9 @@ public abstract class SpellParam<T> {
 	public static final String GENERIC_NAME_MASK = PSI_PREFIX + "mask";
 	public static final String GENERIC_NAME_CHANNEL = PSI_PREFIX + "channel";
 	public static final String GENERIC_NAME_SLOT = PSI_PREFIX + "slot";
+	public static final String GENERIC_NAME_RAY_END = PSI_PREFIX + "ray_end";
+	public static final String GENERIC_NAME_RAY_START = PSI_PREFIX + "ray_start";
+
 
 	public final String name;
 	public final int color;
