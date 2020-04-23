@@ -186,8 +186,9 @@ public class ItemCAD extends Item implements ICAD, ISpellSettable {
 
 	@Override
 	public float getDestroySpeed(ItemStack stack, BlockState state) {
-		if(state.getMaterial().isToolNotRequired())
+		if (state.getMaterial().isToolNotRequired()) {
 			return 1.0f;
+		}
 		return 0.0f;
 	}
 

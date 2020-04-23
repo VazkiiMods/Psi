@@ -131,28 +131,32 @@ public class PieceTrickBreakBlock extends PieceTrick {
 
 	// Based on InventoryPlayer::canHarvestBlock
 	public static boolean canHarvestBlock(BlockState state, ItemStack itemstack) {
-		if(state.getMaterial().isToolNotRequired())
+		if (state.getMaterial().isToolNotRequired()) {
 			return true;
-		else
+		} else {
 			return !itemstack.isEmpty() && itemstack.canHarvestBlock(state);
+		}
 	}
 
 	// Based on ForgeHooks::canHarvestBlock and EntityPlayer::canHarvestBlock
 	public static boolean canHarvestBlock(Block block, PlayerEntity player, World world, BlockPos pos, ItemStack stack) {
 		BlockState state = world.getBlockState(pos);
-		if(state.getMaterial().isToolNotRequired())
+		if (state.getMaterial().isToolNotRequired()) {
 			return true;
+		}
 
 		// ItemStack stack = player.getHeldItemMainhand();
 		ToolType tool = block.getHarvestTool(state);
-		if(stack.isEmpty() || tool == null)
+		if (stack.isEmpty() || tool == null) {
 			// return player.canHarvestBlock(state);
 			return ForgeEventFactory.doPlayerHarvestCheck(player, state, canHarvestBlock(state, stack));
+		}
 
 		int toolLevel = stack.getItem().getHarvestLevel(stack, tool, player, state);
-		if(toolLevel < 0)
+		if (toolLevel < 0) {
 			// return player.canHarvestBlock(state);
 			return ForgeEventFactory.doPlayerHarvestCheck(player, state, canHarvestBlock(state, stack));
+		}
 
 		return toolLevel >= block.getHarvestLevel(state);
 	}

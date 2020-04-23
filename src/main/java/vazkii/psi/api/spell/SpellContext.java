@@ -213,16 +213,19 @@ public final class SpellContext {
 
 	/**
 	 * Gets the tool to use for harvesting purposes.
+	 * 
 	 * @return tool if it has tool classes, otherwise the caster's cad, otherwise raises exception
 	 * @throws SpellRuntimeException NO_CAD
 	 */
 	public ItemStack getHarvestTool() throws SpellRuntimeException {
-		if (!tool.isEmpty() && !tool.getItem().getToolTypes(tool).isEmpty())
+		if (!tool.isEmpty() && !tool.getItem().getToolTypes(tool).isEmpty()) {
 			return tool;
+		}
 
 		ItemStack cad = PsiAPI.getPlayerCAD(caster);
-		if(cad.isEmpty())
+		if (cad.isEmpty()) {
 			throw new SpellRuntimeException(SpellRuntimeException.NO_CAD);
+		}
 		return cad;
 	}
 }
