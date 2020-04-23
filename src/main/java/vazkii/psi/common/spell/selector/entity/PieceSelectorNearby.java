@@ -37,8 +37,8 @@ public abstract class PieceSelectorNearby extends PieceSelector {
 
 	@Override
 	public void initParams() {
-		addParam(position = new ParamVector(SpellParam.GENERIC_NAME_POSITION, SpellParam.BLUE, false, false));
-		addParam(radius = new ParamNumber(SpellParam.GENERIC_NAME_RADIUS, SpellParam.GREEN, false, true));
+		addParam(position = new ParamVector(SpellParam.GENERIC_NAME_POSITION, SpellParam.BLUE, true, false));
+		addParam(radius = new ParamNumber(SpellParam.GENERIC_NAME_RADIUS, SpellParam.GREEN, true, true));
 	}
 
 	@Override
@@ -53,8 +53,8 @@ public abstract class PieceSelectorNearby extends PieceSelector {
 
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
-		Vector3 positionVal = this.getParamValue(context, position);
-		double radiusVal = this.getParamValue(context, radius).doubleValue();
+		Vector3 positionVal = this.getParamValueOrDefault(context, position, Vector3.fromVec3d(context.focalPoint.getPositionVector()));
+		double radiusVal = Math.max(this.getParamValueOrDefault(context, radius, SpellContext.MAX_DISTANCE).doubleValue(), SpellContext.MAX_DISTANCE);
 
 		if (!context.isInRadius(positionVal)) {
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
