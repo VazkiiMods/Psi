@@ -527,6 +527,8 @@
   "psi.spellpiece.trick_debug_spamless.desc": "Prints out the target, replacing any previous prints with the same number",
   "psi.spellpiece.trick_night_vision": "Trick: Night Vision",
   "psi.spellpiece.trick_night_vision.desc": "Applies a Night Vision effect",
+  "psi.spellpiece.trick_particle_trail": "Trick: Particle Trail",
+  "psi.spellpiece.trick_particle_trail.desc": "Makes a particle trail from a position along a ray",
   "psi.spellparam.target": "Target",
   "psi.spellparam.number": "Number",
   "psi.spellparam.root": "Root",

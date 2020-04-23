@@ -246,6 +246,7 @@ public final class ModSpellPieces {
 	public static PieceContainer trickCollapseBlockSequence;
 	public static PieceContainer trickDebugSpamless;
 	public static PieceContainer trickNightVision;
+	public static PieceContainer trickParticleTrail;
 
 	public static void init() {
 		selectorCaster = register(PieceSelectorCaster.class, LibPieceNames.SELECTOR_CASTER, LibPieceGroups.TUTORIAL_1);
@@ -409,6 +410,7 @@ public final class ModSpellPieces {
 		trickCollapseBlockSequence = register(PieceTrickCollapseBlockSequence.class, LibPieceNames.TRICK_COLLAPSE_BLOCK_SEQUENCE, LibPieceGroups.BLOCK_MOVEMENT);
 		trickDebugSpamless = register(PieceTrickDebugSpamless.class, LibPieceNames.TRICK_DEBUG_SPAMLESS, LibPieceGroups.TUTORIAL_1);
 		trickNightVision = register(PieceTrickNightVision.class, LibPieceNames.TRICK_NIGHT_VISION, LibPieceGroups.POSITIVE_EFFECTS);
+		trickParticleTrail = register(PieceTrickParticleTrail.class, LibPieceNames.TRICK_PARTICLE_TRAIL, LibPieceGroups.BLOCK_CONJURATION);
 	}
 
 	public static PieceContainer register(Class<? extends SpellPiece> clazz, String name, String group) {
