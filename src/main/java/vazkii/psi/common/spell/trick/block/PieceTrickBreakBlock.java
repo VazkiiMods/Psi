@@ -76,7 +76,7 @@ public class PieceTrickBreakBlock extends PieceTrick {
 
 		IBlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
-		if(!block.isAir(state, world, pos) && !(block instanceof BlockLiquid) && !(block instanceof IFluidBlock) && state.getBlockHardness(world, pos) > 0) {
+		if(!block.isAir(state, world, pos) && !(block instanceof BlockLiquid) && !(block instanceof IFluidBlock) && state.getBlockHardness(world, pos) != -1) {
 			if(!canHarvestBlock(block, player, world, pos, tool))
 				return;
 
