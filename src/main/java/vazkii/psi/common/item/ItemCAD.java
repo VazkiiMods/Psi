@@ -9,6 +9,7 @@
 package vazkii.psi.common.item;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.ItemEntity;
@@ -34,6 +35,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.ToolType;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.FakePlayer;
@@ -67,6 +69,7 @@ import vazkii.psi.client.core.handler.ContributorSpellCircleHandler;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.BlockProgrammer;
 import vazkii.psi.common.block.base.ModBlocks;
+import vazkii.psi.common.core.handler.ConfigHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
 import vazkii.psi.common.core.handler.PsiSoundHandler;
@@ -109,7 +112,12 @@ public class ItemCAD extends Item implements ICAD, ISpellSettable {
 	private static final Pattern FAKE_PLAYER_PATTERN = Pattern.compile("^(?:\\[.*])|(?:ComputerCraft)$");
 
 	public ItemCAD(Item.Properties properties) {
-		super(properties.maxStackSize(1));
+		super(properties
+				.maxStackSize(1)
+				.addToolType(ToolType.PICKAXE, ConfigHandler.COMMON.cadHarvestLevel.get())
+				.addToolType(ToolType.AXE, ConfigHandler.COMMON.cadHarvestLevel.get())
+				.addToolType(ToolType.SHOVEL, ConfigHandler.COMMON.cadHarvestLevel.get())
+		);
 	}
 
 	private ICADData getCADData(ItemStack stack) {
@@ -174,6 +182,14 @@ public class ItemCAD extends Item implements ICAD, ISpellSettable {
 		ItemStack stack = playerIn.getHeldItem(hand);
 		Block block = worldIn.getBlockState(pos).getBlock();
 		return block == ModBlocks.programmer ? ((BlockProgrammer) block).setSpell(worldIn, pos, playerIn, stack) : ActionResultType.PASS;
+	}
+
+	@Override
+	public float getDestroySpeed(ItemStack stack, BlockState state) {
+		if (state.getMaterial().isToolNotRequired()) {
+			return 1.0f;
+		}
+		return 0.0f;
 	}
 
 	@Nonnull

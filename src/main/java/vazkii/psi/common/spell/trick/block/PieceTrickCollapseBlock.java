@@ -46,6 +46,7 @@ public class PieceTrickCollapseBlock extends PieceTrick {
 
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
+		ItemStack tool = context.getHarvestTool();
 		Vector3 positionVal = this.getParamValue(context, position);
 
 		if (positionVal == null) {
@@ -53,11 +54,6 @@ public class PieceTrickCollapseBlock extends PieceTrick {
 		}
 		if (!context.isInRadius(positionVal)) {
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
-		}
-
-		ItemStack tool = context.tool;
-		if (tool.isEmpty()) {
-			tool = PsiAPI.getPlayerCAD(context.caster);
 		}
 
 		World world = context.caster.getEntityWorld();
