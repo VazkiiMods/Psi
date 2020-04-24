@@ -178,6 +178,7 @@ public final class ModSpellPieces {
 	public static PieceContainer operatorSwizzle;
 	public static PieceContainer operatorClosestToLine;
 	public static PieceContainer operatorEntityHealth;
+	public static PieceContainer operatorVectorAbsolute;
 
 	public static PieceContainer constantNumber;
 	public static PieceContainer constantPi;
@@ -343,6 +344,7 @@ public final class ModSpellPieces {
 		operatorListIndex = register(PieceOperatorListIndex.class, LibPieceNames.OPERATOR_LIST_INDEX, LibPieceGroups.LIST_OPERATIONS);
 		operatorClosestToLine = register(PieceOperatorClosestToLine.class, LibPieceNames.OPERATOR_CLOSEST_TO_LINE, LibPieceGroups.ENTITIES_INTRO);
 		operatorEntityHealth = register(PieceOperatorEntityHealth.class, LibPieceNames.OPERATOR_ENTITY_HEALTH, LibPieceGroups.ENTITIES_INTRO);
+		operatorVectorAbsolute = register(PieceOperatorVectorAbsolute.class, LibPieceNames.OPERATOR_VECTOR_ABSOLUTE, LibPieceGroups.TRIGONOMETRY);
 
 		constantNumber = register(PieceConstantNumber.class, LibPieceNames.CONSTANT_NUMBER, LibPieceGroups.TUTORIAL_2, true);
 		constantPi = register(PieceConstantPi.class, LibPieceNames.CONSTANT_PI, LibPieceGroups.TRIGONOMETRY, true);

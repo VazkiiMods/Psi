@@ -399,6 +399,8 @@
   "psi.spellpiece.operator_closest_to_line.desc": "Select the closest entity to the line segment",
   "psi.spellpiece.operator_entity_health": "Operator: Entity Health",
   "psi.spellpiece.operator_entity_health.desc": "Gets an entity's current health percentage",
+  "psi.spellpiece.operator_vector_absolute": "Operator: Vector Absolute",
+  "psi.spellpiece.operator_vector_absolute.desc": "Takes the absolute value of all vector values and returns a new vector",
   "psi.spellpiece.constant_pi": "Constant: Pi",
   "psi.spellpiece.constant_pi.desc": "Returns the value of Pi",
   "psi.spellpiece.constant_e": "Constant: e",
