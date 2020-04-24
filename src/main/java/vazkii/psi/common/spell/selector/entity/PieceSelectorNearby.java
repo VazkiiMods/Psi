@@ -54,17 +54,21 @@ public abstract class PieceSelectorNearby extends PieceSelector {
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		Vector3 positionVal = this.getParamValueOrDefault(context, position, Vector3.fromVec3d(context.focalPoint.getPositionVector()));
-		double radiusVal = Math.min(this.getParamValueOrDefault(context, radius, 2 * SpellContext.MAX_DISTANCE).doubleValue(), 2 * SpellContext.MAX_DISTANCE);
+		double radiusVal = this.getParamValueOrDefault(context, radius, 2 * SpellContext.MAX_DISTANCE).doubleValue();
+
+		Vector3 positionCenter = Vector3.fromVec3d(context.focalPoint.getPositionVector());
 
 		if (!context.isInRadius(positionVal)) {
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 		}
 
 		AxisAlignedBB axis = new AxisAlignedBB(positionVal.x - radiusVal, positionVal.y - radiusVal, positionVal.z - radiusVal, positionVal.x + radiusVal, positionVal.y + radiusVal, positionVal.z + radiusVal);
+		AxisAlignedBB eris = new AxisAlignedBB(positionCenter.x - SpellContext.MAX_DISTANCE, positionCenter.y - SpellContext.MAX_DISTANCE, positionCenter.z - SpellContext.MAX_DISTANCE, positionCenter.x + SpellContext.MAX_DISTANCE, positionCenter.y + SpellContext.MAX_DISTANCE, positionCenter.z + SpellContext.MAX_DISTANCE);
+		AxisAlignedBB area = axis.intersect(eris);
 
 		Predicate<Entity> pred = getTargetPredicate(context);
 
-		List<Entity> list = context.caster.getEntityWorld().getEntitiesWithinAABB(Entity.class, axis, (Entity e) -> e != null && pred.test(e) && e != context.caster && e != context.focalPoint && context.isInRadius(e));
+		List<Entity> list = context.caster.getEntityWorld().getEntitiesWithinAABB(Entity.class, area, (Entity e) -> e != null && pred.test(e) && e != context.caster && e != context.focalPoint && context.isInRadius(e));
 
 		return EntityListWrapper.makeCleanWrapper(list);
 	}

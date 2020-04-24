@@ -21,6 +21,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.registries.ObjectHolder;
 
+import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.common.lib.LibEntityNames;
 import vazkii.psi.common.lib.LibResources;
@@ -93,21 +94,25 @@ public class EntitySpellGrenade extends EntitySpellProjectile {
 	}
 
 	@Override
-	protected void onImpact(@Nonnull RayTraceResult pos) {
-		if (pos instanceof EntityRayTraceResult && ((EntityRayTraceResult) pos).getEntity() instanceof LivingEntity) {
-			dataManager.set(ATTACKTARGET_UUID, Optional.of(((EntityRayTraceResult) pos).getEntity().getUniqueID()));
+	protected void onImpact(@Nonnull RayTraceResult ray) {
+		if (ray instanceof EntityRayTraceResult && ((EntityRayTraceResult) ray).getEntity() instanceof LivingEntity) {
+			dataManager.set(ATTACKTARGET_UUID, Optional.of(((EntityRayTraceResult) ray).getEntity().getUniqueID()));
 		}
 		if (!getEntityWorld().isRemote && !sound && explodes()) {
 			playSound(SoundEvents.ENTITY_CREEPER_PRIMED, 2F, 1F);
 			sound = true;
 		}
 
-		if (pos.getType() == RayTraceResult.Type.BLOCK) {
-			BlockRayTraceResult ray = (BlockRayTraceResult) pos;
-			Direction face = ray.getFace();
-			if (face == Direction.UP) {
-				setPositionAndUpdate(ray.getHitVec().x, ray.getHitVec().y, ray.getHitVec().z);
+		if (ray.getType() == RayTraceResult.Type.BLOCK) {
+			Direction face = ((BlockRayTraceResult) ray).getFace();
+			Vector3 position = Vector3.fromVec3d(ray.getHitVec());
+			if (face != Direction.UP) {
+				position.add(Vector3.fromDirection(face).multiply(0.1d));
 			}
+			setPositionAndUpdate(position.x, position.y, position.z);
+			setMotion(Vec3d.ZERO);
+		} else if (ray.getType() == RayTraceResult.Type.ENTITY) {
+			setPositionAndUpdate(ray.getHitVec().x, ray.getHitVec().y, ray.getHitVec().z);
 			setMotion(Vec3d.ZERO);
 		}
 	}

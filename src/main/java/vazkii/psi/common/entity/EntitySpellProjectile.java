@@ -23,7 +23,6 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.registries.ObjectHolder;
@@ -257,7 +256,7 @@ public class EntitySpellProjectile extends ThrowableEntity {
 
 	public LivingEntity getAttackTarget() {
 		double radiusVal = SpellContext.MAX_DISTANCE;
-		Vec3d positionVal = this.getPositionVec();
+		Vector3 positionVal = Vector3.fromVec3d(this.getPositionVector());
 		AxisAlignedBB axis = new AxisAlignedBB(positionVal.x - radiusVal, positionVal.y - radiusVal, positionVal.z - radiusVal, positionVal.x + radiusVal, positionVal.y + radiusVal, positionVal.z + radiusVal);
 		return dataManager.get(ATTACKTARGET_UUID)
 				.map(u -> {
