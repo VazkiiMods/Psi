@@ -18,14 +18,14 @@ import vazkii.psi.api.spell.piece.PieceOperator;
 import java.util.Optional;
 import java.util.function.Predicate;
 
-public class OperatorEntityRaycast extends PieceOperator {
+public class PieceOperatorEntityRaycast extends PieceOperator {
 
 
 	SpellParam<Vector3> origin;
 	SpellParam<Vector3> ray;
 	SpellParam<Number> max;
 
-	public OperatorEntityRaycast(Spell spell) {
+	public PieceOperatorEntityRaycast(Spell spell) {
 		super(spell);
 	}
 

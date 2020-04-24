@@ -5,9 +5,9 @@ import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.api.spell.piece.PieceOperator;
 
-public class OperatorIsElytraFlying extends PieceOperator {
+public class PieceOperatorIsElytraFlying extends PieceOperator {
 
-	public OperatorIsElytraFlying(Spell spell) {
+	public PieceOperatorIsElytraFlying(Spell spell) {
 		super(spell);
 	}
 
