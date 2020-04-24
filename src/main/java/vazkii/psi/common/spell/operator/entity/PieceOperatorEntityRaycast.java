@@ -1,3 +1,11 @@
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
+ * https://github.com/Vazkii/Psi
+ *
+ * Psi is Open Source and distributed under the
+ * Psi License: https://psi.vazkii.net/license.php
+ */
 package vazkii.psi.common.spell.operator.entity;
 
 import net.minecraft.entity.Entity;
@@ -19,7 +27,6 @@ import java.util.Optional;
 import java.util.function.Predicate;
 
 public class PieceOperatorEntityRaycast extends PieceOperator {
-
 
 	SpellParam<Vector3> origin;
 	SpellParam<Vector3> ray;
@@ -56,7 +63,8 @@ public class PieceOperatorEntityRaycast extends PieceOperator {
 	}
 
 	/**
-	 * [VanillaCopy] {@link net.minecraft.entity.projectile.ProjectileHelper#rayTraceEntities(World, Entity, Vec3d, Vec3d, AxisAlignedBB, Predicate, double)}
+	 * [VanillaCopy]
+	 * {@link net.minecraft.entity.projectile.ProjectileHelper#rayTraceEntities(World, Entity, Vec3d, Vec3d, AxisAlignedBB, Predicate, double)}
 	 * Some slight tweaks as we don't need an AABB provided to us, we can just make one.
 	 */
 	public static Entity rayTraceEntities(World world, Entity caster, Vec3d positionVector, Vec3d lookVector, Predicate<Entity> predicate, double maxDistance) {
@@ -65,7 +73,7 @@ public class PieceOperatorEntityRaycast extends PieceOperator {
 
 		Vec3d reachVector = positionVector.add(lookVector.scale(maxDistance));
 		AxisAlignedBB aabb = new AxisAlignedBB(positionVector.x, positionVector.y, positionVector.z, reachVector.x, reachVector.y, reachVector.z).grow(1f, 1f, 1f);
-		for(Entity entity1 : world.getEntitiesInAABBexcluding(caster, aabb, predicate)) {
+		for (Entity entity1 : world.getEntitiesInAABBexcluding(caster, aabb, predicate)) {
 			float collisionBorderSize = entity1.getCollisionBorderSize();
 			AxisAlignedBB axisalignedbb = entity1.getBoundingBox().grow(collisionBorderSize);
 			Optional<Vec3d> optional = axisalignedbb.rayTrace(positionVector, reachVector);

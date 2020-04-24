@@ -1,3 +1,11 @@
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
+ * https://github.com/Vazkii/Psi
+ *
+ * Psi is Open Source and distributed under the
+ * Psi License: https://psi.vazkii.net/license.php
+ */
 package vazkii.psi.common.spell.operator.block;
 
 import net.minecraft.block.BlockState;
@@ -36,8 +44,9 @@ public class PieceOperatorBlockComparatorStrength extends PieceOperator {
 		BlockPos pos = SpellHelpers.getBlockPos(this, context, target, false, false);
 
 		Direction whichWay = SpellHelpers.getFacing(this, context, axisParam);
-		if(whichWay == Direction.UP || whichWay == Direction.DOWN)
+		if (whichWay == Direction.UP || whichWay == Direction.DOWN) {
 			throw new SpellRuntimeException(SpellRuntimeException.COMPARATOR);
+		}
 
 		BlockState state = Blocks.COMPARATOR.getDefaultState()
 				.with(HorizontalBlock.HORIZONTAL_FACING, whichWay.getOpposite());

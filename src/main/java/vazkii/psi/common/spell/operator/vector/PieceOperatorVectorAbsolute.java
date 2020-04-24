@@ -1,3 +1,11 @@
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
+ * https://github.com/Vazkii/Psi
+ *
+ * Psi is Open Source and distributed under the
+ * Psi License: https://psi.vazkii.net/license.php
+ */
 package vazkii.psi.common.spell.operator.vector;
 
 import vazkii.psi.api.internal.Vector3;
@@ -27,7 +35,6 @@ public class PieceOperatorVectorAbsolute extends PieceOperator {
 		Vector3 vector = SpellHelpers.getVector3(this, context, vec, false, false);
 		return new Vector3(Math.abs(vector.x), Math.abs(vector.y), Math.abs(vector.z));
 	}
-
 
 	@Override
 	public Class<?> getEvaluationType() {

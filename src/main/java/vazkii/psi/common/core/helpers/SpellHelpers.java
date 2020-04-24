@@ -44,8 +44,9 @@ public class SpellHelpers {
 
 	public static Direction getFacing(SpellPiece piece, SpellContext context, SpellParam<Vector3> param, Direction def) throws SpellRuntimeException {
 		Vector3 face = getVector3(piece, context, param, true, false, true);
-		if (face == null)
+		if (face == null) {
 			return def;
+		}
 		return Direction.getFacingFromVector((float) face.x, (float) face.y, (float) face.z);
 	}
 

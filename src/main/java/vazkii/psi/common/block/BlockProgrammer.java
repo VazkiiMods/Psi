@@ -76,10 +76,14 @@ public class BlockProgrammer extends HorizontalBlock {
 	public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx) {
 		switch (state.get(HORIZONTAL_FACING)) {
 		default:
-		case NORTH: return SHAPE_NORTH;
-		case SOUTH: return SHAPE_SOUTH;
-		case WEST: return SHAPE_WEST;
-		case EAST: return SHAPE_EAST;
+		case NORTH:
+			return SHAPE_NORTH;
+		case SOUTH:
+			return SHAPE_SOUTH;
+		case WEST:
+			return SHAPE_WEST;
+		case EAST:
+			return SHAPE_EAST;
 		}
 	}
 
