@@ -20,6 +20,7 @@ import vazkii.psi.common.spell.constant.PieceConstantNumber;
 import vazkii.psi.common.spell.constant.PieceConstantPi;
 import vazkii.psi.common.spell.constant.PieceConstantTau;
 import vazkii.psi.common.spell.constant.PieceConstantWrapper;
+import vazkii.psi.common.spell.operator.block.PieceOperatorBlockHardness;
 import vazkii.psi.common.spell.operator.block.PieceOperatorBlockLightLevel;
 import vazkii.psi.common.spell.operator.entity.PieceOperatorClosestToLine;
 import vazkii.psi.common.spell.operator.entity.PieceOperatorClosestToPoint;
@@ -186,6 +187,7 @@ public final class ModSpellPieces {
 	public static PieceContainer operatorIsElytraFlying;
 	public static PieceContainer operatorEntityRaycast;
 	public static PieceContainer operatorBlockLight;
+	public static PieceContainer operatorBlockHardness;
 
 	public static PieceContainer constantNumber;
 	public static PieceContainer constantPi;
@@ -355,6 +357,7 @@ public final class ModSpellPieces {
 		operatorIsElytraFlying = register(PieceOperatorIsElytraFlying.class, LibPieceNames.OPERATOR_IS_ELYTRA_FLYING, LibPieceGroups.MOVEMENT);
 		operatorEntityRaycast = register(PieceOperatorEntityRaycast.class, LibPieceNames.OPERATOR_ENTITY_RAYCAST, LibPieceGroups.ENTITIES_INTRO);
 		operatorBlockLight = register(PieceOperatorBlockLightLevel.class, LibPieceNames.OPERATOR_BLOCK_LIGHT, LibPieceGroups.BLOCK_WORKS);
+		operatorBlockHardness = register(PieceOperatorBlockHardness.class, LibPieceNames.OPERATOR_BLOCK_HARDNESS, LibPieceGroups.BLOCK_WORKS);
 
 		constantNumber = register(PieceConstantNumber.class, LibPieceNames.CONSTANT_NUMBER, LibPieceGroups.TUTORIAL_2, true);
 		constantPi = register(PieceConstantPi.class, LibPieceNames.CONSTANT_PI, LibPieceGroups.TRIGONOMETRY, true);

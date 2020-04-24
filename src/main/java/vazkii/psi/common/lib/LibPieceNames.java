@@ -106,6 +106,7 @@ public final class LibPieceNames {
 	public static final String OPERATOR_IS_ELYTRA_FLYING = "operator_is_elytra_flying";
 	public static final String OPERATOR_ENTITY_RAYCAST = "operator_entity_raycast";
 	public static final String OPERATOR_BLOCK_LIGHT = "operator_block_light";
+	public static final String OPERATOR_BLOCK_HARDNESS = "operator_block_hardness";
 
 	public static final String CONSTANT_NUMBER = "constant_number";
 	public static final String CONSTANT_PI = "constant_pi";
