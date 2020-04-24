@@ -109,6 +109,7 @@ public final class LibPieceNames {
 	public static final String OPERATOR_BLOCK_HARDNESS = "operator_block_hardness";
 	public static final String OPERATOR_BLOCK_COMPARATOR_STRENGTH = "operator_block_comparator_strength";
 	public static final String OPERATOR_BLOCK_SIDE_SOLIDITY = "operator_block_side_solidity";
+	public static final String OPERATOR_BLOCK_MINING_LEVEL = "operator_block_mining_level";
 
 	public static final String CONSTANT_NUMBER = "constant_number";
 	public static final String CONSTANT_PI = "constant_pi";
