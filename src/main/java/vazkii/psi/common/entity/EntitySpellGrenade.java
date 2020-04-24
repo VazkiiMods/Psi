@@ -111,8 +111,7 @@ public class EntitySpellGrenade extends EntitySpellProjectile {
 			}
 			setPositionAndUpdate(position.x, position.y, position.z);
 			setMotion(Vec3d.ZERO);
-		}
-		else if (ray.getType() == RayTraceResult.Type.ENTITY) {
+		} else if (ray.getType() == RayTraceResult.Type.ENTITY) {
 			setPositionAndUpdate(ray.getHitVec().x, ray.getHitVec().y, ray.getHitVec().z);
 			setMotion(Vec3d.ZERO);
 		}
