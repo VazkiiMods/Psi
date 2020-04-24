@@ -411,6 +411,8 @@
   "psi.spellpiece.operator_block_hardness": "Operator: Block Hardness",
   "psi.spellpiece.operator_block_comparator_strength": "Operator: Block Comparator",
   "psi.spellpiece.operator_block_comparator_strength.desc": "Gets the comparator strength a block has",
+  "psi.spellpiece.operator_block_side_solidity": "Operator: Block Side Solidity",
+  "psi.spellpiece.operator_block_side_solidity.desc": "Gets whether the side of a block is solid",
   "psi.spellpiece.constant_pi": "Constant: Pi",
   "psi.spellpiece.constant_pi.desc": "Returns the value of Pi",
   "psi.spellpiece.constant_e": "Constant: e",

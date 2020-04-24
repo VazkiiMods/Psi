@@ -23,6 +23,7 @@ import vazkii.psi.common.spell.constant.PieceConstantWrapper;
 import vazkii.psi.common.spell.operator.block.PieceOperatorBlockComparatorStrength;
 import vazkii.psi.common.spell.operator.block.PieceOperatorBlockHardness;
 import vazkii.psi.common.spell.operator.block.PieceOperatorBlockLightLevel;
+import vazkii.psi.common.spell.operator.block.PieceOperatorBlockSideSolidity;
 import vazkii.psi.common.spell.operator.entity.PieceOperatorClosestToLine;
 import vazkii.psi.common.spell.operator.entity.PieceOperatorClosestToPoint;
 import vazkii.psi.common.spell.operator.entity.PieceOperatorEntityAxialLook;
@@ -190,6 +191,7 @@ public final class ModSpellPieces {
 	public static PieceContainer operatorBlockLight;
 	public static PieceContainer operatorBlockHardness;
 	public static PieceContainer operatorBlockComparatorStrength;
+	public static PieceContainer operatorBlockSideSolidity;
 
 	public static PieceContainer constantNumber;
 	public static PieceContainer constantPi;
@@ -361,6 +363,7 @@ public final class ModSpellPieces {
 		operatorBlockLight = register(PieceOperatorBlockLightLevel.class, LibPieceNames.OPERATOR_BLOCK_LIGHT, LibPieceGroups.BLOCK_WORKS);
 		operatorBlockHardness = register(PieceOperatorBlockHardness.class, LibPieceNames.OPERATOR_BLOCK_HARDNESS, LibPieceGroups.BLOCK_WORKS);
 		operatorBlockComparatorStrength = register(PieceOperatorBlockComparatorStrength.class, LibPieceNames.OPERATOR_BLOCK_COMPARATOR_STRENGTH, LibPieceGroups.BLOCK_WORKS);
+		operatorBlockSideSolidity = register(PieceOperatorBlockSideSolidity.class, LibPieceNames.OPERATOR_BLOCK_SIDE_SOLIDITY, LibPieceGroups.BLOCK_WORKS);
 
 		constantNumber = register(PieceConstantNumber.class, LibPieceNames.CONSTANT_NUMBER, LibPieceGroups.TUTORIAL_2, true);
 		constantPi = register(PieceConstantPi.class, LibPieceNames.CONSTANT_PI, LibPieceGroups.TRIGONOMETRY, true);
