@@ -73,7 +73,7 @@ public class PieceOperatorVectorRaycast extends PieceOperator {
 		return raycast(e, vec, new Vector3(look), len);
 	}
 
-	private static BlockRayTraceResult raycast(Entity entity, Vector3 origin, Vector3 ray, double len) {
+	public static BlockRayTraceResult raycast(Entity entity, Vector3 origin, Vector3 ray, double len) {
 		Vector3 end = origin.copy().add(ray.copy().normalize().multiply(len));
 		return entity.world.rayTraceBlocks(new RayTraceContext(origin.toVec3D(), end.toVec3D(), RayTraceContext.BlockMode.OUTLINE, RayTraceContext.FluidMode.NONE, entity));
 	}

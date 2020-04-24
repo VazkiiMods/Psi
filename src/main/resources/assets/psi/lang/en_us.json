@@ -403,6 +403,8 @@
   "psi.spellpiece.operator_vector_absolute.desc": "Takes the absolute value of all vector values and returns a new vector",
   "psi.spellpiece.operator_is_elytra_flying": "Operator: Elytra Deployed",
   "psi.spellpiece.operator_is_elytra_flying.desc": "Returns 1 if the caster has their elytra deployed",
+  "psi.spellpiece.operator_entity_raycast": "Operator: Entity Raycast",
+  "psi.spellpiece.operator_entity_raycast.desc": "Raycasts from a given position and returns the first entity it finds",
   "psi.spellpiece.constant_pi": "Constant: Pi",
   "psi.spellpiece.constant_pi.desc": "Returns the value of Pi",
   "psi.spellpiece.constant_e": "Constant: e",

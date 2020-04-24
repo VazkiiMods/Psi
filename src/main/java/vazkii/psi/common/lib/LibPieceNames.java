@@ -101,6 +101,10 @@ public final class LibPieceNames {
 	public static final String OPERATOR_SIGNUM = "operator_extract_sign";
 	public static final String OPERATOR_SWIZZLE = "operator_swizzle";
 	public static final String OPERATOR_CLOSEST_TO_LINE = "operator_closest_to_line";
+	public static final String OPERATOR_ENTITY_HEALTH = "operator_entity_health";
+	public static final String OPERATOR_VECTOR_ABSOLUTE = "operator_vector_absolute";
+	public static final String OPERATOR_IS_ELYTRA_FLYING = "operator_is_elytra_flying";
+	public static final String OPERATOR_ENTITY_RAYCAST = "operator_entity_raycast";
 
 	public static final String CONSTANT_NUMBER = "constant_number";
 	public static final String CONSTANT_PI = "constant_pi";
@@ -171,8 +175,6 @@ public final class LibPieceNames {
 	public static final String TRICK_DEBUG_SPAMLESS = "trick_debug_spamless";
 	public static final String TRICK_NIGHT_VISION = "trick_night_vision";
 	public static final String TRICK_PARTICLE_TRAIL = "trick_particle_trail";
-	public static final String OPERATOR_ENTITY_HEALTH = "operator_entity_health";
-	public static final String OPERATOR_VECTOR_ABSOLUTE = "operator_vector_absolute";
-	public static final String OPERATOR_IS_ELYTRA_FLYING = "operator_is_elytra_flying";
+
 
 }
