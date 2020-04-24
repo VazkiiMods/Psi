@@ -12,7 +12,9 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.ThrowableEntity;
 import net.minecraft.particles.ParticleTypes;
+import net.minecraft.util.Direction;
 import net.minecraft.util.SoundEvents;
+import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
@@ -97,8 +99,15 @@ public class EntitySpellGrenade extends EntitySpellProjectile {
 			playSound(SoundEvents.ENTITY_CREEPER_PRIMED, 2F, 1F);
 			sound = true;
 		}
-		setPos(pos.getHitVec().x, pos.getHitVec().y, pos.getHitVec().z);
-		setMotion(Vec3d.ZERO);
+
+		if (pos.getType() == RayTraceResult.Type.BLOCK) {
+			BlockRayTraceResult ray = (BlockRayTraceResult) pos;
+			Direction face = ray.getFace();
+			if (face == Direction.UP) {
+				setPositionAndUpdate(ray.getHitVec().x, ray.getHitVec().y, ray.getHitVec().z);
+			}
+			setMotion(Vec3d.ZERO);
+		}
 	}
 
 }
