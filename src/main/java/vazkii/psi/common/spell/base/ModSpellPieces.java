@@ -23,6 +23,7 @@ import vazkii.psi.common.spell.constant.PieceConstantWrapper;
 import vazkii.psi.common.spell.operator.entity.PieceOperatorClosestToLine;
 import vazkii.psi.common.spell.operator.entity.PieceOperatorClosestToPoint;
 import vazkii.psi.common.spell.operator.entity.PieceOperatorEntityAxialLook;
+import vazkii.psi.common.spell.operator.entity.PieceOperatorEntityHealth;
 import vazkii.psi.common.spell.operator.entity.PieceOperatorEntityLook;
 import vazkii.psi.common.spell.operator.entity.PieceOperatorEntityMotion;
 import vazkii.psi.common.spell.operator.entity.PieceOperatorEntityPosition;
@@ -176,6 +177,7 @@ public final class ModSpellPieces {
 	public static PieceContainer operatorSignum;
 	public static PieceContainer operatorSwizzle;
 	public static PieceContainer operatorClosestToLine;
+	public static PieceContainer operatorEntityHealth;
 
 	public static PieceContainer constantNumber;
 	public static PieceContainer constantPi;
@@ -340,6 +342,7 @@ public final class ModSpellPieces {
 		operatorSwizzle = register(PieceOperatorSwizzle.class, LibPieceNames.OPERATOR_SWIZZLE, LibPieceGroups.TRIGONOMETRY);
 		operatorListIndex = register(PieceOperatorListIndex.class, LibPieceNames.OPERATOR_LIST_INDEX, LibPieceGroups.LIST_OPERATIONS);
 		operatorClosestToLine = register(PieceOperatorClosestToLine.class, LibPieceNames.OPERATOR_CLOSEST_TO_LINE, LibPieceGroups.ENTITIES_INTRO);
+		operatorEntityHealth = register(PieceOperatorEntityHealth.class, LibPieceNames.OPERATOR_ENTITY_HEALTH, LibPieceGroups.ENTITIES_INTRO);
 
 		constantNumber = register(PieceConstantNumber.class, LibPieceNames.CONSTANT_NUMBER, LibPieceGroups.TUTORIAL_2, true);
 		constantPi = register(PieceConstantPi.class, LibPieceNames.CONSTANT_PI, LibPieceGroups.TRIGONOMETRY, true);

@@ -397,6 +397,8 @@
   "psi.spellpiece.constant_number.desc": "Select and type to set value",
   "psi.spellpiece.operator_closest_to_line": "Operator: Closest To Line",
   "psi.spellpiece.operator_closest_to_line.desc": "Select the closest entity to the line segment",
+  "psi.spellpiece.operator_entity_health": "Operator: Entity Health",
+  "psi.spellpiece.operator_entity_health.desc": "Gets an entity's current health percentage",
   "psi.spellpiece.constant_pi": "Constant: Pi",
   "psi.spellpiece.constant_pi.desc": "Returns the value of Pi",
   "psi.spellpiece.constant_e": "Constant: e",
