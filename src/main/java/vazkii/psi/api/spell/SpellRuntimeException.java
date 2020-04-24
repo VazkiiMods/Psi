@@ -31,6 +31,7 @@ public class SpellRuntimeException extends Exception {
 	public static final String INVALID_BASE = "psi.spellerror.invalid_base";
 	public static final String ARMOR = "psi.spellerror.armor";
 	public static final String NO_MESSAGE = "psi.spellerror.no_message";
+	public static final String COMPARATOR = "psi.spellerror.comparator";
 
 	public SpellRuntimeException(String s) {
 		super(s);

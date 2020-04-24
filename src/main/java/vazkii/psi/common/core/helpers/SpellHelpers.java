@@ -8,6 +8,7 @@
  */
 package vazkii.psi.common.core.helpers;
 
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 
 import vazkii.psi.api.internal.Vector3;
@@ -34,6 +35,18 @@ public class SpellHelpers {
 		}
 
 		return val;
+	}
+
+	public static Direction getFacing(SpellPiece piece, SpellContext context, SpellParam<Vector3> param) throws SpellRuntimeException {
+		Vector3 face = getVector3(piece, context, param, false, true);
+		return Direction.getFacingFromVector((float) face.x, (float) face.y, (float) face.z);
+	}
+
+	public static Direction getFacing(SpellPiece piece, SpellContext context, SpellParam<Vector3> param, Direction def) throws SpellRuntimeException {
+		Vector3 face = getVector3(piece, context, param, true, false, true);
+		if (face == null)
+			return def;
+		return Direction.getFacingFromVector((float) face.x, (float) face.y, (float) face.z);
 	}
 
 	public static boolean isBlockPosInRadius(SpellContext context, BlockPos pos) {

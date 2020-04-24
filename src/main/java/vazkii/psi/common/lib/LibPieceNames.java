@@ -107,6 +107,7 @@ public final class LibPieceNames {
 	public static final String OPERATOR_ENTITY_RAYCAST = "operator_entity_raycast";
 	public static final String OPERATOR_BLOCK_LIGHT = "operator_block_light";
 	public static final String OPERATOR_BLOCK_HARDNESS = "operator_block_hardness";
+	public static final String OPERATOR_BLOCK_COMPARATOR_STRENGTH = "operator_block_comparator_strength";
 
 	public static final String CONSTANT_NUMBER = "constant_number";
 	public static final String CONSTANT_PI = "constant_pi";
