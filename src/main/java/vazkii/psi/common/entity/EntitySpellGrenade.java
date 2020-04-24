@@ -12,7 +12,9 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.ThrowableEntity;
 import net.minecraft.particles.ParticleTypes;
+import net.minecraft.util.Direction;
 import net.minecraft.util.SoundEvents;
+import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
@@ -75,13 +77,15 @@ public class EntitySpellGrenade extends EntitySpellProjectile {
 		}
 		playSound(SoundEvents.ENTITY_GENERIC_EXPLODE, 0.5F, 1F);
 		double m = 0.1;
-		double d3 = 0.0D;
 		for (int j = 0; j < 40; j++) {
 			double d0 = getEntityWorld().rand.nextGaussian() * m;
 			double d1 = getEntityWorld().rand.nextGaussian() * m;
 			double d2 = getEntityWorld().rand.nextGaussian() * m;
 
-			getEntityWorld().addParticle(ParticleTypes.EXPLOSION, getX() + getEntityWorld().rand.nextFloat() * getWidth() * 2.0F - getWidth() - d0 * d3, getY() + getEntityWorld().rand.nextFloat() * getHeight() - d1 * d3, getZ() + getEntityWorld().rand.nextFloat() * getWidth() * 2.0F - getWidth() - d2 * d3, d0, d1, d2);
+			double x = getX() + 0.75 * getEntityWorld().rand.nextFloat() - 0.375;
+			double y = getY() + 0.5 * getEntityWorld().rand.nextFloat();
+			double z = getZ() + 0.75 * getEntityWorld().rand.nextFloat() - 0.375;
+			getEntityWorld().addParticle(ParticleTypes.EXPLOSION, x, y, z, d0, d1, d2);
 		}
 	}
 
@@ -90,18 +94,28 @@ public class EntitySpellGrenade extends EntitySpellProjectile {
 	}
 
 	@Override
-	protected void onImpact(@Nonnull RayTraceResult pos) {
-		if (pos instanceof EntityRayTraceResult && ((EntityRayTraceResult) pos).getEntity() instanceof LivingEntity) {
-			dataManager.set(ATTACKTARGET_UUID, Optional.of(((EntityRayTraceResult) pos).getEntity().getUniqueID()));
+	protected void onImpact(@Nonnull RayTraceResult ray) {
+		if (ray instanceof EntityRayTraceResult && ((EntityRayTraceResult) ray).getEntity() instanceof LivingEntity) {
+			dataManager.set(ATTACKTARGET_UUID, Optional.of(((EntityRayTraceResult) ray).getEntity().getUniqueID()));
 		}
 		if (!getEntityWorld().isRemote && !sound && explodes()) {
 			playSound(SoundEvents.ENTITY_CREEPER_PRIMED, 2F, 1F);
 			sound = true;
 		}
-		Vector3 offset = Vector3.fromVec3d(this.getPositionVec()).subtract(Vector3.fromVec3d(pos.getHitVec())).multiply(0.05);
-		Vector3 newpos = Vector3.fromVec3d(pos.getHitVec()).add(offset);
-		setPos(newpos.x, newpos.y, newpos.z);
-		setMotion(Vec3d.ZERO);
+
+		if (ray.getType() == RayTraceResult.Type.BLOCK) {
+			Direction face = ((BlockRayTraceResult) ray).getFace();
+			Vector3 position = Vector3.fromVec3d(ray.getHitVec());
+			if (face != Direction.UP) {
+				position.add(Vector3.fromDirection(face).multiply(0.1d));
+			}
+			setPositionAndUpdate(position.x, position.y, position.z);
+			setMotion(Vec3d.ZERO);
+		}
+		else if (ray.getType() == RayTraceResult.Type.ENTITY) {
+			setPositionAndUpdate(ray.getHitVec().x, ray.getHitVec().y, ray.getHitVec().z);
+			setMotion(Vec3d.ZERO);
+		}
 	}
 
 }

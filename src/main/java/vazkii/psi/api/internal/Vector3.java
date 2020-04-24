@@ -206,7 +206,7 @@ public class Vector3 {
 
 	@Override
 	public String toString() {
-		MathContext cont = new MathContext(4, RoundingMode.HALF_UP);
+		MathContext cont = new MathContext(5, RoundingMode.HALF_UP);
 		return "Vector[" + new BigDecimal(x, cont) + ", " + new BigDecimal(y, cont) + ", " + new BigDecimal(z, cont) + "]";
 	}
 
