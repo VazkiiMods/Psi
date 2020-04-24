@@ -34,6 +34,7 @@ import vazkii.psi.common.spell.operator.entity.PieceOperatorListAdd;
 import vazkii.psi.common.spell.operator.entity.PieceOperatorListRemove;
 import vazkii.psi.common.spell.operator.entity.PieceOperatorRandomEntity;
 import vazkii.psi.common.spell.operator.list.PieceOperatorListExclusion;
+import vazkii.psi.common.spell.operator.list.PieceOperatorListIndex;
 import vazkii.psi.common.spell.operator.list.PieceOperatorListIntersection;
 import vazkii.psi.common.spell.operator.list.PieceOperatorListSize;
 import vazkii.psi.common.spell.operator.list.PieceOperatorListUnion;
