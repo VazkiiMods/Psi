@@ -76,13 +76,15 @@ public class EntitySpellGrenade extends EntitySpellProjectile {
 		}
 		playSound(SoundEvents.ENTITY_GENERIC_EXPLODE, 0.5F, 1F);
 		double m = 0.1;
-		double d3 = 0.0D;
 		for (int j = 0; j < 40; j++) {
 			double d0 = getEntityWorld().rand.nextGaussian() * m;
 			double d1 = getEntityWorld().rand.nextGaussian() * m;
 			double d2 = getEntityWorld().rand.nextGaussian() * m;
 
-			getEntityWorld().addParticle(ParticleTypes.EXPLOSION, getX() + getEntityWorld().rand.nextFloat() * getWidth() * 2.0F - getWidth() - d0 * d3, getY() + getEntityWorld().rand.nextFloat() * getHeight() - d1 * d3, getZ() + getEntityWorld().rand.nextFloat() * getWidth() * 2.0F - getWidth() - d2 * d3, d0, d1, d2);
+			double x = getX() + 0.75 * getEntityWorld().rand.nextFloat() - 0.375;
+			double y = getY() + 0.5 * getEntityWorld().rand.nextFloat();
+			double z = getZ() + 0.75 * getEntityWorld().rand.nextFloat() - 0.375;
+			getEntityWorld().addParticle(ParticleTypes.EXPLOSION, x, y, z, d0, d1, d2);
 		}
 	}
 
