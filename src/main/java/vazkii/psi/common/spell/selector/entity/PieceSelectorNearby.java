@@ -46,7 +46,7 @@ public abstract class PieceSelectorNearby extends PieceSelector {
 		super.addToMetadata(meta);
 
 		Double radiusVal = this.<Double>getParamEvaluation(radius);
-		if (radiusVal == null || radiusVal <= 0) {
+		if (radiusVal != null && radiusVal <= 0) {
 			throw new SpellCompilationException(SpellCompilationException.NON_POSITIVE_VALUE, x, y);
 		}
 	}
