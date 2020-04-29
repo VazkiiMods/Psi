@@ -6,16 +6,17 @@
  * Psi is Open Source and distributed under the
  * Psi License: https://psi.vazkii.net/license.php
  */
-package vazkii.psi.common.spell.operator.entity;
+package vazkii.psi.common.spell.selector.entity;
 
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.api.spell.piece.PieceOperator;
+import vazkii.psi.api.spell.piece.PieceSelector;
 
-public class PieceOperatorIsElytraFlying extends PieceOperator {
+public class PieceSelectorIsElytraFlying extends PieceSelector {
 
-	public PieceOperatorIsElytraFlying(Spell spell) {
+	public PieceSelectorIsElytraFlying(Spell spell) {
 		super(spell);
 	}
 

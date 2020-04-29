@@ -39,6 +39,7 @@ public final class LibPieceNames {
 	public static final String SELECTOR_SUCCESS_COUNTER = "selector_sucession_counter";
 	public static final String SELECTOR_CASTER_ENERGY = "selector_caster_energy";
 	public static final String SELECTOR_CASTER_BATTERY = "selector_caster_battery";
+	public static final String SELECTOR_IS_ELYTRA_FLYING = "selector_is_elytra_flying";
 	public static final String SELECTOR_TRANSMISSION = "selector_transmission";
 
 	public static final String OPERATOR_SUM = "operator_sum";
@@ -103,7 +104,6 @@ public final class LibPieceNames {
 	public static final String OPERATOR_CLOSEST_TO_LINE = "operator_closest_to_line";
 	public static final String OPERATOR_ENTITY_HEALTH = "operator_entity_health";
 	public static final String OPERATOR_VECTOR_ABSOLUTE = "operator_vector_absolute";
-	public static final String OPERATOR_IS_ELYTRA_FLYING = "operator_is_elytra_flying";
 	public static final String OPERATOR_ENTITY_RAYCAST = "operator_entity_raycast";
 	public static final String OPERATOR_BLOCK_LIGHT = "operator_block_light";
 	public static final String OPERATOR_BLOCK_HARDNESS = "operator_block_hardness";

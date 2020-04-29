@@ -34,7 +34,6 @@ import vazkii.psi.common.spell.operator.entity.PieceOperatorEntityMotion;
 import vazkii.psi.common.spell.operator.entity.PieceOperatorEntityPosition;
 import vazkii.psi.common.spell.operator.entity.PieceOperatorEntityRaycast;
 import vazkii.psi.common.spell.operator.entity.PieceOperatorFocusedEntity;
-import vazkii.psi.common.spell.operator.entity.PieceOperatorIsElytraFlying;
 import vazkii.psi.common.spell.operator.entity.PieceOperatorListAdd;
 import vazkii.psi.common.spell.operator.entity.PieceOperatorListRemove;
 import vazkii.psi.common.spell.operator.entity.PieceOperatorRandomEntity;
@@ -56,6 +55,7 @@ import vazkii.psi.common.spell.other.PieceVectorCatch;
 import vazkii.psi.common.spell.selector.*;
 import vazkii.psi.common.spell.selector.entity.PieceSelectorCasterBattery;
 import vazkii.psi.common.spell.selector.entity.PieceSelectorCasterEnergy;
+import vazkii.psi.common.spell.selector.entity.PieceSelectorIsElytraFlying;
 import vazkii.psi.common.spell.selector.entity.PieceSelectorNearbyAnimals;
 import vazkii.psi.common.spell.selector.entity.PieceSelectorNearbyCharges;
 import vazkii.psi.common.spell.selector.entity.PieceSelectorNearbyEnemies;
@@ -113,6 +113,7 @@ public final class ModSpellPieces {
 	public static PieceContainer selectorAttacker;
 	public static PieceContainer selectorDamageTaken;
 	public static PieceContainer selectorRulerVector;
+	public static PieceContainer selectorIsElytraFlying;
 	public static PieceContainer selectorItemPresence;
 	public static PieceContainer selectorBlockPresence;
 	public static PieceContainer selectorSaveVector;
@@ -187,7 +188,6 @@ public final class ModSpellPieces {
 	public static PieceContainer operatorClosestToLine;
 	public static PieceContainer operatorEntityHealth;
 	public static PieceContainer operatorVectorAbsolute;
-	public static PieceContainer operatorIsElytraFlying;
 	public static PieceContainer operatorEntityRaycast;
 	public static PieceContainer operatorBlockLight;
 	public static PieceContainer operatorBlockHardness;
@@ -296,6 +296,7 @@ public final class ModSpellPieces {
 		selectorSuccessCounter = register(PieceSelectorSuccessCounter.class, LibPieceNames.SELECTOR_SUCCESS_COUNTER, LibPieceGroups.EXOSUIT_CASTING);
 		selectorCasterBattery = register(PieceSelectorCasterBattery.class, LibPieceNames.SELECTOR_CASTER_BATTERY, LibPieceGroups.EXOSUIT_CASTING);
 		selectorCasterEnergy = register(PieceSelectorCasterEnergy.class, LibPieceNames.SELECTOR_CASTER_ENERGY, LibPieceGroups.EXOSUIT_CASTING);
+		selectorIsElytraFlying = register(PieceSelectorIsElytraFlying.class, LibPieceNames.SELECTOR_IS_ELYTRA_FLYING, LibPieceGroups.MOVEMENT);
 		//selectorTransmission = register(PieceSelectorTransmission.class, LibPieceNames.SELECTOR_TRANSMISSION, LibPieceGroups.FLOW_CONTROL);
 
 		operatorSum = register(PieceOperatorSum.class, LibPieceNames.OPERATOR_SUM, LibPieceGroups.NUMBERS_INTRO, true);
@@ -360,7 +361,6 @@ public final class ModSpellPieces {
 		operatorClosestToLine = register(PieceOperatorClosestToLine.class, LibPieceNames.OPERATOR_CLOSEST_TO_LINE, LibPieceGroups.ENTITIES_INTRO);
 		operatorEntityHealth = register(PieceOperatorEntityHealth.class, LibPieceNames.OPERATOR_ENTITY_HEALTH, LibPieceGroups.ENTITIES_INTRO);
 		operatorVectorAbsolute = register(PieceOperatorVectorAbsolute.class, LibPieceNames.OPERATOR_VECTOR_ABSOLUTE, LibPieceGroups.TRIGONOMETRY);
-		operatorIsElytraFlying = register(PieceOperatorIsElytraFlying.class, LibPieceNames.OPERATOR_IS_ELYTRA_FLYING, LibPieceGroups.MOVEMENT);
 		operatorEntityRaycast = register(PieceOperatorEntityRaycast.class, LibPieceNames.OPERATOR_ENTITY_RAYCAST, LibPieceGroups.ENTITIES_INTRO);
 		operatorBlockLight = register(PieceOperatorBlockLightLevel.class, LibPieceNames.OPERATOR_BLOCK_LIGHT, LibPieceGroups.BLOCK_WORKS);
 		operatorBlockHardness = register(PieceOperatorBlockHardness.class, LibPieceNames.OPERATOR_BLOCK_HARDNESS, LibPieceGroups.BLOCK_WORKS);
