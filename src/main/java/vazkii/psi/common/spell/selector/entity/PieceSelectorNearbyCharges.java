@@ -9,16 +9,12 @@
 package vazkii.psi.common.spell.selector.entity;
 
 import net.minecraft.entity.Entity;
-
-import net.minecraft.util.math.AxisAlignedBB;
-import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.api.spell.wrapper.EntityListWrapper;
 import vazkii.psi.common.entity.EntitySpellCharge;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.function.Predicate;
 
