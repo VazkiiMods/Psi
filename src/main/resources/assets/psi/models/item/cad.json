@@ -3,6 +3,7 @@
     "textures": {
         "layer1": "psi:items/cad_color"
     },
+    "gui_light": "front",
     "elements": [
         {
             "name": "_barrel1",
