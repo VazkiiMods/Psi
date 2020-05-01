@@ -45,8 +45,8 @@ public abstract class PieceSelectorNearby extends PieceSelector {
 	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
 		super.addToMetadata(meta);
 
-		Double radiusVal = this.<Double>getParamEvaluation(radius);
-		if (radiusVal != null && radiusVal <= 0) {
+		Double radiusVal = this.getParamEvaluationeOrDefault(radius, 2 * SpellContext.MAX_DISTANCE).doubleValue();
+		if (radiusVal <= 0) {
 			throw new SpellCompilationException(SpellCompilationException.NON_POSITIVE_VALUE, x, y);
 		}
 	}
