@@ -49,6 +49,7 @@
   "psimisc.programmer_coords": "Selected: [%d, %d] | Cursor: [%d, %d]",
   "psimisc.programmer_coords_no_cursor": "Selected: [%d, %d]",
   "psimisc.name": "Name",
+  "psimisc.requiredaddons": "Required Addons: ",
   "psi.container.socketable": "Sockets",
   "psi.subtitle.bullet_create": "Spell stored",
   "psi.subtitle.cad_create": "CAD assembled",

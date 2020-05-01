@@ -32,6 +32,7 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.client.gui.GuiUtils;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
@@ -66,7 +67,10 @@ import vazkii.psi.common.spell.SpellCompiler;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 import java.util.Stack;
 import java.util.stream.Collectors;
 
@@ -296,6 +300,30 @@ public class GuiProgrammer extends Screen {
 			cursorY = selectedY;
 			mouseX = gridLeft + cursorX * 18 + 10;
 			mouseY = gridTop + cursorY * 18 + 8;
+		}
+
+		if(takingScreenshot){
+			Set<String> addons = Collections.newSetFromMap(new HashMap<>());
+			for (SpellPiece[] gridDatum : spell.grid.gridData) {
+				for (SpellPiece spellPiece : gridDatum) {
+					if(spellPiece != null && !spellPiece.registryKey.getNamespace().equals("psi")){
+						addons.add(spellPiece.registryKey.getNamespace());
+					}
+				}
+			}
+			if(addons.size() > 0){
+				String requiredAddons = TextFormatting.GREEN + "Required Addons:";
+				font.drawStringWithShadow(requiredAddons, left - font.getStringWidth(requiredAddons) - 5, top + 40, 0xFFFFFF);
+				int i = 1;
+				for (String addon : addons) {
+					if(ModList.get().getModContainerById(addon).isPresent()){
+						String modName = ModList.get().getModContainerById(addon).get().getModInfo().getDisplayName();
+						font.drawStringWithShadow("* " + modName, left - font.getStringWidth(requiredAddons) - 5, top + 40 + 10 * i, 0xFFFFFF);
+					}
+				}
+			}
+			String version = "Psi " + ModList.get().getModContainerById("psi").get().getModInfo().getVersion().toString();
+			font.drawStringWithShadow(version, left + xSize / 2f - font.getStringWidth(version) / 2f, top - 22, 0xFFFFFF);
 		}
 
 		SpellPiece pieceAtCursor = null;
