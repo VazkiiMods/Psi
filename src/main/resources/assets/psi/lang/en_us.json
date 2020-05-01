@@ -333,8 +333,6 @@
   "psi.spellpiece.operator_entity_axial_look.desc": "Gets an Entity's look vector, aligned to an axis",
   "psi.spellpiece.operator_focused_entity": "Operator: Focused Entity",
   "psi.spellpiece.operator_focused_entity.desc": "Gets the entity the target entity is looking at",
-  "psi.spellpiece.operator_swizzle": "Operator: Recompose Number",
-  "psi.spellpiece.operator_swizzle.desc": "Rearranges the digits number according to a given pattern",
   "psi.spellpiece.operator_vector_raycast": "Operator: Vector Raycast",
   "psi.spellpiece.operator_vector_raycast.desc": "Gets a localized raycast's result (max 32)",
   "psi.spellpiece.operator_vector_raycast_axis": "Operator: Vector Axis Raycast",

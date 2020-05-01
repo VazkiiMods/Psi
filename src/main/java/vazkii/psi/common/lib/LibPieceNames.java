@@ -100,7 +100,6 @@ public final class LibPieceNames {
 	public static final String OPERATOR_LIST_INDEX = "operator_list_index";
 	public static final String OPERATOR_ROOT = "operator_root";
 	public static final String OPERATOR_SIGNUM = "operator_extract_sign";
-	public static final String OPERATOR_SWIZZLE = "operator_swizzle";
 	public static final String OPERATOR_CLOSEST_TO_LINE = "operator_closest_to_line";
 	public static final String OPERATOR_ENTITY_HEALTH = "operator_entity_health";
 	public static final String OPERATOR_VECTOR_ABSOLUTE = "operator_vector_absolute";
