@@ -27,13 +27,13 @@ public class SpellPieceComponent implements ICustomComponent {
 	private transient int x, y;
 	private transient SpellPiece piece;
 
-	private String name;
+	private IVariable name;
 
 	@Override
 	public void build(int componentX, int componentY, int pageNum) {
 		this.x = componentX;
 		this.y = componentY;
-		this.piece = PsiAPI.getSpellPieceRegistry().getValue(new ResourceLocation(name))
+		this.piece = PsiAPI.getSpellPieceRegistry().getValue(new ResourceLocation(name.asString()))
 				.map(clazz -> SpellPiece.create(clazz, new Spell()))
 				.orElseThrow(() -> new IllegalArgumentException("Invalid spell piece name: " + name));
 	}
@@ -54,6 +54,6 @@ public class SpellPieceComponent implements ICustomComponent {
 
 	@Override
 	public void onVariablesAvailable(UnaryOperator<IVariable> function) {
-		name = function.apply(IVariable.from(name)).asString("");
+		name = function.apply(name);
 	}
 }
