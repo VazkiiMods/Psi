@@ -25,6 +25,7 @@ public final class Spell {
 	public static final String TAG_SPELL_NAME = "spellName";
 	public static final String TAG_UUID_MOST = "uuidMost";
 	public static final String TAG_UUID_LEAST = "uuidLeast";
+	public static final String TAG_MODS_REQUIRED = "modsRequired";
 
 	public final SpellGrid grid = new SpellGrid(this);
 	public String name = "";

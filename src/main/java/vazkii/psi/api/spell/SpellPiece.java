@@ -22,13 +22,18 @@ import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModContainer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import org.apache.commons.lang3.StringUtils;
+
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.internal.PsiRenderHelper;
 import vazkii.psi.api.internal.TooltipHelper;
 
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * A basic abstract piece of a spell. Instances of this class are created as needed
@@ -365,6 +370,11 @@ public abstract class SpellPiece {
 		
 		if(key.startsWith("_"))
 			key = PSI_PREFIX + key.substring(1);
+
+		if(key.matches("^[a-z][a-z0-9_]+\\:[a-z0-9_]+$")){
+			key = key.substring(key.indexOf(":") + 1);
+			key = StringUtils.uncapitalize(Arrays.stream(key.split("_")).map(StringUtils::capitalize).collect(Collectors.joining()));
+		}
 		
 		Class<? extends SpellPiece> clazz = PsiAPI.spellPieceRegistry.getObject(key);
 		if(clazz != null) {

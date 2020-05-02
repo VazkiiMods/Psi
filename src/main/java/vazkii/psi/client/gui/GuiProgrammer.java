@@ -11,8 +11,7 @@
 package vazkii.psi.client.gui;
 
 import com.google.common.collect.ImmutableSet;
-import gnu.trove.map.TObjectIntMap;
-import gnu.trove.map.hash.TObjectIntHashMap;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -27,17 +26,27 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
+
 import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
+
 import vazkii.arl.network.NetworkHandler;
 import vazkii.arl.util.RenderHelper;
 import vazkii.arl.util.TooltipHandler;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.EnumCADStat;
 import vazkii.psi.api.cad.ICAD;
-import vazkii.psi.api.spell.*;
+import vazkii.psi.api.spell.EnumPieceType;
+import vazkii.psi.api.spell.EnumSpellStat;
+import vazkii.psi.api.spell.PieceGroup;
+import vazkii.psi.api.spell.Spell;
+import vazkii.psi.api.spell.SpellCompilationException;
+import vazkii.psi.api.spell.SpellGrid;
+import vazkii.psi.api.spell.SpellMetadata;
+import vazkii.psi.api.spell.SpellParam;
 import vazkii.psi.api.spell.SpellParam.Side;
+import vazkii.psi.api.spell.SpellPiece;
 import vazkii.psi.client.core.helper.SharingHelper;
 import vazkii.psi.client.gui.button.GuiButtonIO;
 import vazkii.psi.client.gui.button.GuiButtonPage;
@@ -55,9 +64,15 @@ import vazkii.psi.common.spell.SpellCompiler;
 import vazkii.psi.common.spell.constant.PieceConstantNumber;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import gnu.trove.map.TObjectIntMap;
+import gnu.trove.map.hash.TObjectIntHashMap;
 
 public class GuiProgrammer extends GuiScreen {
 
@@ -823,6 +838,9 @@ public class GuiProgrammer extends GuiScreen {
 					try {
 						cb = cb.replaceAll("([^a-z0-9])\\d+:", "$1"); // backwards compatibility with pre 1.12 nbt json
 						NBTTagCompound cmp = JsonToNBT.getTagFromJson(cb);
+						if (cmp.hasKey(Spell.TAG_MODS_REQUIRED)) {
+							mc.player.sendMessage(new TextComponentTranslation("psimisc.spellOnNewerVersion").setStyle(new Style().setColor(TextFormatting.RED)));
+						}
 						spell = Spell.createFromNBT(cmp);
 						PlayerData data = PlayerDataHandler.get(mc.player);
 						for(int i = 0; i < SpellGrid.GRID_SIZE; i++)
