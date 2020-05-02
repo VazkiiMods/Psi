@@ -50,6 +50,8 @@
   "psimisc.programmer_coords_no_cursor": "Selected: [%d, %d]",
   "psimisc.name": "Name",
   "psimisc.requiredaddons": "Required Addons: ",
+  "psimisc.modnotfound": "The spell you tried to import will not be imported in its interity due to having pieces from the mod %d which is not present",
+  "psimisc.spellonnewerversion": "This spell was made on a newer version of Psi, it may or may not work as intended.",
   "psi.container.socketable": "Sockets",
   "psi.subtitle.bullet_create": "Spell stored",
   "psi.subtitle.cad_create": "CAD assembled",

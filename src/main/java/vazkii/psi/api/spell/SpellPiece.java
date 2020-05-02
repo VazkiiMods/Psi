@@ -37,6 +37,8 @@ import vazkii.psi.api.internal.TooltipHelper;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * A basic abstract piece of a spell. Instances of this class are created as needed
@@ -458,9 +460,12 @@ public abstract class SpellPiece {
 		if (PsiAPI.isPieceRegistered(rl)) {
 			exists = true;
 		} else {
-			rl = new ResourceLocation("psi", key);
-			if (PsiAPI.isPieceRegistered(rl)) {
-				exists = true;
+			Set<String> pieceNamespaces = PsiAPI.getSpellPieceRegistry().keySet().stream().map(ResourceLocation::getNamespace).collect(Collectors.toSet());
+			for (String namespace : pieceNamespaces) {
+				rl = new ResourceLocation(namespace, key);
+				if (PsiAPI.isPieceRegistered(rl)) {
+					exists = true;
+				}
 			}
 		}
 

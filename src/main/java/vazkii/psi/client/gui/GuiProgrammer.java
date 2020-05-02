@@ -12,6 +12,7 @@ import com.google.common.collect.ImmutableSet;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.gui.widget.Widget;
@@ -25,7 +26,9 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.client.util.InputMappings;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.INBT;
 import net.minecraft.nbt.JsonToNBT;
+import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
@@ -67,8 +70,6 @@ import vazkii.psi.common.spell.SpellCompiler;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 import java.util.Stack;
@@ -215,6 +216,36 @@ public class GuiProgrammer extends Screen {
 					try {
 						cb = cb.replaceAll("([^a-z0-9])\\d+:", "$1"); // backwards compatibility with pre 1.12 nbt json
 						CompoundNBT cmp = JsonToNBT.getTagFromJson(cb);
+						if (cmp.contains(Spell.TAG_MODS_REQUIRED)) {
+							ListNBT mods = (ListNBT) cmp.get(Spell.TAG_MODS_REQUIRED);
+							for (INBT mod : mods) {
+								String modName = ((CompoundNBT) mod).getString(Spell.TAG_MOD_NAME);
+								if (!PsiAPI.getSpellPieceRegistry().keySet().stream().map(ResourceLocation::getNamespace).collect(Collectors.toSet()).contains(modName)) {
+									Minecraft.getInstance().player.sendMessage(new TranslationTextComponent("psimisc.modnotfound", modName).setStyle(new Style().setColor(TextFormatting.RED)));
+								}
+								if (modName.equals("psi")) {
+									boolean sendMessage = false;
+									String modVersion = ((CompoundNBT) mod).getString(Spell.TAG_MOD_VERSION);
+									int[] versionEntry = Arrays.stream(modVersion.split("\\D+")).mapToInt(Integer::parseInt).toArray();
+									int[] currentVersion = Arrays.stream(ModList.get().getModContainerById("psi").get().getModInfo().getVersion().toString().split("\\D+")).mapToInt(Integer::parseInt).toArray();
+									for (int i = 0; i < versionEntry.length; i++) {
+										if (i + 1 > currentVersion.length) {
+											sendMessage = true;
+											break;
+										}
+										if (currentVersion[i] > versionEntry[i]) {
+											break;
+										} else if (currentVersion[i] < versionEntry[i]) {
+											sendMessage = true;
+											break;
+										}
+									}
+									if (sendMessage) {
+										Minecraft.getInstance().player.sendMessage(new TranslationTextComponent("psimisc.spellonnewerversion").setStyle(new Style().setColor(TextFormatting.RED)));
+									}
+								}
+							}
+						}
 						spell = Spell.createFromNBT(cmp);
 						PlayerDataHandler.PlayerData data = PlayerDataHandler.get(minecraft.player);
 						for (int i = 0; i < SpellGrid.GRID_SIZE; i++) {
@@ -302,21 +333,14 @@ public class GuiProgrammer extends Screen {
 			mouseY = gridTop + cursorY * 18 + 8;
 		}
 
-		if(takingScreenshot){
-			Set<String> addons = Collections.newSetFromMap(new HashMap<>());
-			for (SpellPiece[] gridDatum : spell.grid.gridData) {
-				for (SpellPiece spellPiece : gridDatum) {
-					if(spellPiece != null && !spellPiece.registryKey.getNamespace().equals("psi")){
-						addons.add(spellPiece.registryKey.getNamespace());
-					}
-				}
-			}
-			if(addons.size() > 0){
+		if (takingScreenshot) {
+			Set<String> addons = spell.getPieceNamespaces().stream().filter(namespace -> !namespace.equals("psi")).collect(Collectors.toSet());
+			if (addons.size() > 0) {
 				String requiredAddons = TextFormatting.GREEN + "Required Addons:";
 				font.drawStringWithShadow(requiredAddons, left - font.getStringWidth(requiredAddons) - 5, top + 40, 0xFFFFFF);
 				int i = 1;
 				for (String addon : addons) {
-					if(ModList.get().getModContainerById(addon).isPresent()){
+					if (ModList.get().getModContainerById(addon).isPresent()) {
 						String modName = ModList.get().getModContainerById(addon).get().getModInfo().getDisplayName();
 						font.drawStringWithShadow("* " + modName, left - font.getStringWidth(requiredAddons) - 5, top + 40 + 10 * i, 0xFFFFFF);
 					}
