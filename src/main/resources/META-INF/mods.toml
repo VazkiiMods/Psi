@@ -1,5 +1,5 @@
 modLoader="javafml"
-loaderVersion="[30,)"
+loaderVersion="[31,)"
 issueTrackerURL="https://github.com/Vazkii/Psi"
 
 [[mods]]
@@ -11,13 +11,6 @@ description='''
 Psionic Spellcasting Instruments
 '''
 [[dependencies.psi]]
-    modId="autoreglib"
-    mandatory=true
-    versionRange="[1.5-36,)"
-    ordering="AFTER"
-    side="BOTH"
-
-[[dependencies.psi]]
     modId="patchouli"
     mandatory=true
     versionRange="[1.15.2-1.2-27,)"
@@ -27,6 +20,6 @@ Psionic Spellcasting Instruments
 [[dependencies.psi]]
     modId="forge"
     mandatory=true
-    versionRange="[30.0.42,)"
+    versionRange="[31.1.65,)"
     ordering="AFTER"
     side="BOTH"

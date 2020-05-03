@@ -8,6 +8,8 @@
  */
 package vazkii.psi.common.core.handler;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -15,8 +17,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.client.gui.GuiUtils;
 
-import vazkii.arl.util.RenderHelper;
 import vazkii.psi.api.internal.IInternalMethodHandler;
 import vazkii.psi.api.internal.IPlayerData;
 import vazkii.psi.api.spell.CompiledSpell;
@@ -76,8 +78,12 @@ public final class InternalMethodHandler implements IInternalMethodHandler {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void renderTooltip(int x, int y, List<ITextComponent> tooltipData, int color, int color2) {
-		RenderHelper.renderTooltip(x, y, tooltipData.stream().map(ITextComponent::getFormattedText).collect(Collectors.toList()), color, color2);
+	public void renderTooltip(int x, int y, List<ITextComponent> tooltipData, int color, int color2, int width, int height) {
+		if(!tooltipData.isEmpty()){
+			List<String> tooltipDataString = tooltipData.stream().map(ITextComponent::getFormattedText).collect(Collectors.toList());
+			FontRenderer fontRenderer = Minecraft.getInstance().fontRenderer;
+			GuiUtils.drawHoveringText(tooltipDataString, x, y, width, height, -1, color2, color, color, fontRenderer);
+		}
 	}
 
 	@Override

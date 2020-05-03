@@ -69,7 +69,7 @@ public interface IInternalMethodHandler {
 	 * Renders a tooltip with the specified colors at the given x,y position
 	 */
 	@OnlyIn(Dist.CLIENT)
-	void renderTooltip(int x, int y, List<ITextComponent> tooltipData, int color, int color2);
+	void renderTooltip(int x, int y, List<ITextComponent> tooltipData, int color, int color2, int width, int height);
 
 	/**
 	 * Creates a CAD with the given components

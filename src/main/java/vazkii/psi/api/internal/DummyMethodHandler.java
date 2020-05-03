@@ -69,7 +69,7 @@ public final class DummyMethodHandler implements IInternalMethodHandler {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void renderTooltip(int x, int y, List<ITextComponent> tooltipData, int color, int color2) {
+	public void renderTooltip(int x, int y, List<ITextComponent> tooltipData, int color, int color2, int width, int height) {
 		// NO-OP
 	}
 

@@ -430,12 +430,12 @@ public class GuiProgrammer extends Screen {
 		}
 		if (!takingScreenshot && pieceAtCursor != null) {
 			if (tooltip != null && !tooltip.isEmpty()) {
-				pieceAtCursor.drawTooltip(mouseX, mouseY, tooltip);
+				pieceAtCursor.drawTooltip(mouseX, mouseY, tooltip, this);
 			}
 
 			if (comment != null && !comment.isEmpty()) {
 				List<ITextComponent> commentList = Arrays.stream(comment.split(";")).map(StringTextComponent::new).collect(Collectors.toList());
-				pieceAtCursor.drawCommentText(mouseX, mouseY, commentList);
+				pieceAtCursor.drawCommentText(mouseX, mouseY, commentList, this);
 			}
 		}
 
