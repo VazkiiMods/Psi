@@ -16,6 +16,7 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.item.ItemStack;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
@@ -27,9 +28,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.items.ItemHandlerHelper;
 
-import vazkii.arl.block.tile.TileSimpleInventory;
 import vazkii.psi.common.block.tile.TileCADAssembler;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import static net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY;
@@ -51,10 +52,15 @@ public class BlockCADAssembler extends HorizontalBlock {
 	}
 
 	@Override
-	public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
+	public void onReplaced(BlockState state, @Nonnull World world, @Nonnull BlockPos pos, BlockState newState, boolean isMoving) {
 		if (state.getBlock() != newState.getBlock()) {
-			TileSimpleInventory inv = (TileSimpleInventory) world.getTileEntity(pos);
-			InventoryHelper.dropInventoryItems(world, pos, inv);
+			TileCADAssembler te = (TileCADAssembler) world.getTileEntity(pos);
+			for (int i = 0; i < te.getInventory().getSlots(); i++) {
+				ItemStack stack = te.getInventory().getStackInSlot(i);
+				if (!stack.isEmpty()) {
+					InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), stack);
+				}
+			}
 		}
 
 		super.onReplaced(state, world, pos, newState, isMoving);
@@ -82,9 +88,9 @@ public class BlockCADAssembler extends HorizontalBlock {
 	@Override
 	public ActionResultType onUse(BlockState state, World world, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult rayTraceResult) {
 		if (!world.isRemote) {
-			TileEntity te = world.getTileEntity(pos);
-			if (te instanceof TileCADAssembler) {
-				NetworkHooks.openGui((ServerPlayerEntity) playerIn, (INamedContainerProvider) te, pos);
+			INamedContainerProvider container = state.getContainer(world, pos);
+			if (container != null) {
+				NetworkHooks.openGui((ServerPlayerEntity) playerIn, container, pos);
 				return ActionResultType.SUCCESS;
 			}
 		}
@@ -93,8 +99,12 @@ public class BlockCADAssembler extends HorizontalBlock {
 
 	@Nullable
 	@Override
-	public INamedContainerProvider getContainer(BlockState p_220052_1_, World p_220052_2_, BlockPos p_220052_3_) {
-		return super.getContainer(p_220052_1_, p_220052_2_, p_220052_3_);
+	public INamedContainerProvider getContainer(@Nonnull BlockState state, @Nonnull World world, @Nonnull BlockPos pos) {
+		TileEntity te = world.getTileEntity(pos);
+		if (te instanceof TileCADAssembler) {
+			return (INamedContainerProvider) te;
+		}
+		return null;
 	}
 
 	@Override

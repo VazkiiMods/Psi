@@ -15,15 +15,23 @@ import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
+import net.minecraft.network.play.server.SUpdateTileEntityPacket;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.util.Direction;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
+import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.registries.ObjectHolder;
 
-import vazkii.arl.block.tile.TileSimpleInventory;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.AssembleCADEvent;
 import vazkii.psi.api.cad.EnumCADComponent;
@@ -40,22 +48,83 @@ import vazkii.psi.common.lib.LibMisc;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
-public class TileCADAssembler extends TileSimpleInventory implements ITileCADAssembler, INamedContainerProvider {
+public class TileCADAssembler extends TileEntity implements ITileCADAssembler, INamedContainerProvider {
 	@ObjectHolder(LibMisc.PREFIX_MOD + LibBlockNames.CAD_ASSEMBLER)
 	public static TileEntityType<TileCADAssembler> TYPE;
 
-	private transient ItemStack cachedCAD;
+	private final IItemHandlerModifiable inventory = new ItemStackHandler(6) {
+		@Override
+		protected void onContentsChanged(int slot) {
+			super.onContentsChanged(slot);
+			if (0 < slot && slot < 6) {
+				clearCachedCAD();
+			}
+		}
+
+		@Override
+		public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
+			if (stack.isEmpty()) {
+				return true;
+			}
+
+			if (slot == 0) {
+				return ISocketableCapability.isSocketable(stack);
+			} else if (slot < 6) {
+				return stack.getItem() instanceof ICADComponent &&
+								((ICADComponent) stack.getItem()).getComponentType(stack) == EnumCADComponent.values()[slot - 1];
+			}
+
+			return false;
+		}
+	};
+	private final IItemHandler publicInv = new IItemHandler() {
+		@Override
+		public int getSlots() {
+			return inventory.getSlots();
+		}
+
+		@Nonnull
+		@Override public ItemStack getStackInSlot(int slot) {
+			return inventory.getStackInSlot(slot);
+		}
+
+		@Nonnull
+		@Override public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
+			return stack;
+		}
+
+		@Nonnull
+		@Override public ItemStack extractItem(int slot, int amount, boolean simulate) {
+			return ItemStack.EMPTY;
+		}
+
+		@Override
+		public int getSlotLimit(int slot) {
+			return inventory.getSlotLimit(slot);
+		}
+
+		@Override
+		public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
+			return inventory.isItemValid(slot, stack);
+		}
+	};
+	private ItemStack cachedCAD;
 
 	public TileCADAssembler() {
 		super(TYPE);
 	}
 
-	@Override
-	public void inventoryChanged(int i) {
-		if (0 < i && i < 6) {
-			clearCachedCAD();
-		}
+	public IItemHandlerModifiable getInventory() {
+		return inventory;
+	}
+
+	@Nonnull
+	@Override public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
+		return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.orEmpty(cap, LazyOptional.of(() -> publicInv));
 	}
 
 	@Override
@@ -69,7 +138,8 @@ public class TileCADAssembler extends TileSimpleInventory implements ITileCADAss
 		if (cad == null) {
 			ItemStack assembly = getStackForComponent(EnumCADComponent.ASSEMBLY);
 			if (!assembly.isEmpty()) {
-				cad = ItemCAD.makeCADWithAssembly(assembly, inventorySlots.subList(1, 6));
+				List<ItemStack> components = IntStream.range(1, 6).mapToObj(inventory::getStackInSlot).collect(Collectors.toList());
+				cad = ItemCAD.makeCADWithAssembly(assembly, components);
 			} else {
 				cad = ItemStack.EMPTY;
 			}
@@ -97,19 +167,19 @@ public class TileCADAssembler extends TileSimpleInventory implements ITileCADAss
 
 	@Override
 	public ItemStack getStackForComponent(EnumCADComponent componentType) {
-		return getStackInSlot(getComponentSlot(componentType));
+		return inventory.getStackInSlot(getComponentSlot(componentType));
 	}
 
 	@Override
 	public boolean setStackForComponent(EnumCADComponent componentType, ItemStack component) {
 		int slot = getComponentSlot(componentType);
 		if (component.isEmpty()) {
-			setInventorySlotContents(slot, component);
+			inventory.setStackInSlot(slot, component);
 			return true;
 		} else if (component.getItem() instanceof ICADComponent) {
 			ICADComponent componentItem = (ICADComponent) component.getItem();
 			if (componentItem.getComponentType(component) == componentType) {
-				setInventorySlotContents(slot, component);
+				inventory.setStackInSlot(slot, component);
 				return true;
 			}
 		}
@@ -119,7 +189,7 @@ public class TileCADAssembler extends TileSimpleInventory implements ITileCADAss
 
 	@Override
 	public ItemStack getSocketableStack() {
-		return getStackInSlot(0);
+		return inventory.getStackInSlot(0);
 	}
 
 	@Override
@@ -130,7 +200,7 @@ public class TileCADAssembler extends TileSimpleInventory implements ITileCADAss
 	@Override
 	public boolean setSocketableStack(ItemStack stack) {
 		if (stack.isEmpty() || ISocketableCapability.isSocketable(stack)) {
-			setInventorySlotContents(0, stack);
+			inventory.setStackInSlot(0, stack);
 			return true;
 		}
 
@@ -141,7 +211,7 @@ public class TileCADAssembler extends TileSimpleInventory implements ITileCADAss
 	public void onCraftCAD(ItemStack cad) {
 		MinecraftForge.EVENT_BUS.post(new PostCADCraftEvent(cad, this));
 		for (int i = 1; i < 6; i++) {
-			setInventorySlotContents(i, ItemStack.EMPTY);
+			inventory.setStackInSlot(i, ItemStack.EMPTY);
 		}
 		if (!world.isRemote) {
 			world.playSound(null, getPos().getX() + 0.5, getPos().getY() + 0.5, getPos().getZ() + 0.5, PsiSoundHandler.cadCreate, SoundCategory.BLOCKS, 0.5F, 1F);
@@ -157,44 +227,25 @@ public class TileCADAssembler extends TileSimpleInventory implements ITileCADAss
 		return socketable != null && socketable.isSocketSlotAvailable(slot);
 	}
 
+	@Nonnull
 	@Override
-	public int getSizeInventory() {
-		return 6;
-	}
-
-	@Override
-	public boolean isAutomationEnabled() {
-		return false;
-	}
-
-	@Override
-	public boolean isItemValidForSlot(int slot, @Nonnull ItemStack stack) {
-		if (stack.isEmpty()) {
-			return true;
-		}
-
-		if (slot == 0) {
-			return ISocketableCapability.isSocketable(stack);
-		} else if (slot < 6) {
-			return stack.getItem() instanceof ICADComponent &&
-					((ICADComponent) stack.getItem()).getComponentType(stack) == EnumCADComponent.values()[slot - 1];
-		}
-
-		return false;
-	}
-
-	@Override
-	public void writeSharedNBT(CompoundNBT tag) {
-		super.writeSharedNBT(tag);
+	public CompoundNBT write(@Nonnull CompoundNBT tag) {
+		tag = super.write(tag);
 		tag.putInt("version", 1);
+		tag.put("Items", CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.writeNBT(inventory, null));
+		return tag;
 	}
 
 	@Override
-	public void readSharedNBT(CompoundNBT tag) {
+	public void read(@Nonnull CompoundNBT tag) {
+		super.read(tag);
+
 		// Migrate old CAD assemblers to the new format
-		if (needsToSyncInventory() && tag.getInt("version") < 1) {
+		if (tag.getInt("version") < 1) {
 			ListNBT items = tag.getList("Items", 10);
-			this.clear();
+			for (int i = 0; i < inventory.getSlots(); i++) {
+				inventory.setStackInSlot(i, ItemStack.EMPTY);
+			}
 
 			LazyOptional<ISocketableCapability> socketable = LazyOptional.empty();
 
@@ -233,10 +284,22 @@ public class TileCADAssembler extends TileSimpleInventory implements ITileCADAss
 				}
 			}
 		} else {
-			super.readSharedNBT(tag);
+			CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.readNBT(inventory, null, tag.getList("Items", Constants.NBT.TAG_COMPOUND));
 		}
 	}
 
+	@Override
+	public SUpdateTileEntityPacket getUpdatePacket() {
+		return new SUpdateTileEntityPacket(getPos(), -1, getUpdateTag());
+	}
+
+	@Nonnull
+	@Override
+	public CompoundNBT getUpdateTag() {
+		return write(new CompoundNBT());
+	}
+
+	@Nonnull
 	@Override
 	public ITextComponent getDisplayName() {
 		return new TranslationTextComponent(ModBlocks.cadAssembler.getTranslationKey());
