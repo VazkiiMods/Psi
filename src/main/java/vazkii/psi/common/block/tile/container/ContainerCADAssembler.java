@@ -24,6 +24,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.items.IItemHandlerModifiable;
+import net.minecraftforge.items.SlotItemHandler;
 import net.minecraftforge.registries.ObjectHolder;
 
 import vazkii.psi.api.cad.EnumCADComponent;
@@ -71,6 +73,7 @@ public class ContainerCADAssembler extends Container {
 		int playerSize = playerInventory.getSizeInventory();
 
 		this.assembler = assembler;
+		IItemHandlerModifiable assemblerInv = assembler.getInventory();
 		assembler.clearCachedCAD();
 
 		InventoryAssemblerOutput output = new InventoryAssemblerOutput(player, assembler);
@@ -79,14 +82,14 @@ public class ContainerCADAssembler extends Container {
 		addSlot(new SlotCADOutput(output, assembler, 120, 35));
 
 		cadComponentStart = inventorySlots.size();
-		addSlot(new ValidatorSlot(assembler, assembler.getComponentSlot(EnumCADComponent.ASSEMBLY), 120, 91));
-		addSlot(new ValidatorSlot(assembler, assembler.getComponentSlot(EnumCADComponent.CORE), 100, 91));
-		addSlot(new ValidatorSlot(assembler, assembler.getComponentSlot(EnumCADComponent.SOCKET), 140, 91));
-		addSlot(new ValidatorSlot(assembler, assembler.getComponentSlot(EnumCADComponent.BATTERY), 110, 111));
-		addSlot(new ValidatorSlot(assembler, assembler.getComponentSlot(EnumCADComponent.DYE), 130, 111));
+		addSlot(new SlotItemHandler(assemblerInv, assembler.getComponentSlot(EnumCADComponent.ASSEMBLY), 120, 91));
+		addSlot(new SlotItemHandler(assemblerInv, assembler.getComponentSlot(EnumCADComponent.CORE), 100, 91));
+		addSlot(new SlotItemHandler(assemblerInv, assembler.getComponentSlot(EnumCADComponent.SOCKET), 140, 91));
+		addSlot(new SlotItemHandler(assemblerInv, assembler.getComponentSlot(EnumCADComponent.BATTERY), 110, 111));
+		addSlot(new SlotItemHandler(assemblerInv, assembler.getComponentSlot(EnumCADComponent.DYE), 130, 111));
 
 		socketableStart = inventorySlots.size();
-		addSlot(new SlotSocketable(assembler, bullets, 0, 35, 21));
+		addSlot(new SlotSocketable(assemblerInv, bullets, 0, 35, 21));
 		socketableEnd = inventorySlots.size();
 
 		bulletStart = inventorySlots.size();
@@ -149,7 +152,7 @@ public class ContainerCADAssembler extends Container {
 
 	@Override
 	public boolean canInteractWith(@Nonnull PlayerEntity playerIn) {
-		return assembler.isUsableByPlayer(playerIn);
+		return assembler.getPos().distanceSq(playerIn.getX(), playerIn.getY(), playerIn.getZ(), true) <= 64;
 	}
 
 	@Nonnull
