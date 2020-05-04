@@ -48,6 +48,7 @@ import vazkii.psi.common.lib.LibMisc;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -75,7 +76,7 @@ public class TileCADAssembler extends TileEntity implements ITileCADAssembler, I
 				return ISocketableCapability.isSocketable(stack);
 			} else if (slot < 6) {
 				return stack.getItem() instanceof ICADComponent &&
-								((ICADComponent) stack.getItem()).getComponentType(stack) == EnumCADComponent.values()[slot - 1];
+						((ICADComponent) stack.getItem()).getComponentType(stack) == EnumCADComponent.values()[slot - 1];
 			}
 
 			return false;
@@ -88,17 +89,20 @@ public class TileCADAssembler extends TileEntity implements ITileCADAssembler, I
 		}
 
 		@Nonnull
-		@Override public ItemStack getStackInSlot(int slot) {
+		@Override
+		public ItemStack getStackInSlot(int slot) {
 			return inventory.getStackInSlot(slot);
 		}
 
 		@Nonnull
-		@Override public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
+		@Override
+		public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
 			return stack;
 		}
 
 		@Nonnull
-		@Override public ItemStack extractItem(int slot, int amount, boolean simulate) {
+		@Override
+		public ItemStack extractItem(int slot, int amount, boolean simulate) {
 			return ItemStack.EMPTY;
 		}
 
@@ -123,7 +127,8 @@ public class TileCADAssembler extends TileEntity implements ITileCADAssembler, I
 	}
 
 	@Nonnull
-	@Override public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
+	@Override
+	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
 		return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.orEmpty(cap, LazyOptional.of(() -> publicInv));
 	}
 

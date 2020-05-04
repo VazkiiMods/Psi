@@ -79,7 +79,7 @@ public final class InternalMethodHandler implements IInternalMethodHandler {
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public void renderTooltip(int x, int y, List<ITextComponent> tooltipData, int color, int color2, int width, int height) {
-		if(!tooltipData.isEmpty()){
+		if (!tooltipData.isEmpty()) {
 			List<String> tooltipDataString = tooltipData.stream().map(ITextComponent::getFormattedText).collect(Collectors.toList());
 			FontRenderer fontRenderer = Minecraft.getInstance().fontRenderer;
 			GuiUtils.drawHoveringText(tooltipDataString, x, y, width, height, -1, color2, color, color, fontRenderer);

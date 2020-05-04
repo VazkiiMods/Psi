@@ -9,9 +9,9 @@
 package vazkii.psi.common.block.tile.container.slot;
 
 import net.minecraft.item.ItemStack;
-
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.SlotItemHandler;
+
 import vazkii.psi.api.cad.ISocketableCapability;
 import vazkii.psi.api.inventory.InventorySocketable;
 
