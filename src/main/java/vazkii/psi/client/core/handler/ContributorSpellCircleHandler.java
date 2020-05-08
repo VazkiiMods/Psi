@@ -43,7 +43,7 @@ public final class ContributorSpellCircleHandler {
 	public static void load(Properties props) {
 		Map<String, int[]> m = new HashMap<>();
 		for (String key : props.stringPropertyNames()) {
-			String value = props.getProperty(key);
+			String value = props.getProperty(key).replace("#", "0x");
 			try {
 				int[] values = Stream.of(value.split(",")).mapToInt(el -> Integer.parseInt(el.substring(2), 16)).toArray();
 				m.put(key, values);
