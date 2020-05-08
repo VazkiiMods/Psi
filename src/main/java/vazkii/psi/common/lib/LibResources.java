@@ -13,7 +13,7 @@ import net.minecraft.util.ResourceLocation;
 public class LibResources {
 
 	public static final String PREFIX_MOD = "psi:";
-	public static final ResourceLocation PATCHOULI_BOOK = new ResourceLocation(LibMisc.MOD_ID, "taurus_silver_handbook");
+	public static final ResourceLocation PATCHOULI_BOOK = new ResourceLocation(LibMisc.MOD_ID, "encyclopaedia_psionica");
 
 	public static final String PREFIX_SHADER = "/assets/psi/shaders/";
 	public static final String PREFIX_GUI = PREFIX_MOD + "textures/gui/";
