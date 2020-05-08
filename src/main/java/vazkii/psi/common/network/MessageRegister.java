@@ -18,7 +18,19 @@ import net.minecraftforge.fml.network.PacketDistributor;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
 
 import vazkii.psi.common.lib.LibMisc;
-import vazkii.psi.common.network.message.*;
+import vazkii.psi.common.network.message.MessageAdditiveMotion;
+import vazkii.psi.common.network.message.MessageCADDataSync;
+import vazkii.psi.common.network.message.MessageChangeControllerSlot;
+import vazkii.psi.common.network.message.MessageChangeSocketableSlot;
+import vazkii.psi.common.network.message.MessageDataSync;
+import vazkii.psi.common.network.message.MessageDeductPsi;
+import vazkii.psi.common.network.message.MessageEidosSync;
+import vazkii.psi.common.network.message.MessageLoopcastSync;
+import vazkii.psi.common.network.message.MessageParticleTrail;
+import vazkii.psi.common.network.message.MessageSpamlessChat;
+import vazkii.psi.common.network.message.MessageSpellModified;
+import vazkii.psi.common.network.message.MessageTriggerJumpSpell;
+import vazkii.psi.common.network.message.MessageVisualEffect;
 
 public class MessageRegister {
 	private static final String VERSION = "2";
@@ -57,10 +69,6 @@ public class MessageRegister {
 				.encoder(MessageSpellModified::encode)
 				.decoder(MessageSpellModified::new)
 				.consumer(MessageSpellModified::receive).add();
-		HANDLER.messageBuilder(MessageLevelUp.class, id++)
-				.encoder(MessageLevelUp::encode)
-				.decoder(MessageLevelUp::new)
-				.consumer(MessageLevelUp::receive).add();
 		HANDLER.messageBuilder(MessageChangeControllerSlot.class, id++)
 				.encoder(MessageChangeControllerSlot::encode)
 				.decoder(MessageChangeControllerSlot::new)

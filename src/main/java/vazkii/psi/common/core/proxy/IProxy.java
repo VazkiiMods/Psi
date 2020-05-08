@@ -16,7 +16,7 @@ import net.minecraft.world.World;
 
 import vazkii.psi.common.block.tile.TileProgrammer;
 
-import java.awt.*;
+import java.awt.Color;
 
 public interface IProxy {
 	default void registerHandlers() {}
@@ -33,8 +33,6 @@ public interface IProxy {
 
 	// Side-safe version of world.addParticle with noDistanceLimit flag set to true
 	default void addParticleForce(World world, IParticleData particleData, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {}
-
-	void onLevelUp(ResourceLocation level);
 
 	default boolean hasAdvancement(ResourceLocation advancement, PlayerEntity playerEntity) {
 		return false;

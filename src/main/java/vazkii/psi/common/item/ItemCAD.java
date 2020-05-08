@@ -60,6 +60,7 @@ import vazkii.psi.api.recipe.ITrickRecipe;
 import vazkii.psi.api.spell.EnumSpellStat;
 import vazkii.psi.api.spell.ISpellAcceptor;
 import vazkii.psi.api.spell.ISpellSettable;
+import vazkii.psi.api.spell.PieceGroupAdvancementComplete;
 import vazkii.psi.api.spell.PreSpellCastEvent;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellCastEvent;
@@ -222,7 +223,7 @@ public class ItemCAD extends Item implements ICAD, ISpellSettable {
 			data.deductPsi(100, 60, true);
 
 			if (!data.hasAdvancement(LibPieceGroups.FAKE_LEVEL_PSIDUST)) {
-				data.tutorialComplete(LibPieceGroups.FAKE_LEVEL_PSIDUST);
+				MinecraftForge.EVENT_BUS.post(new PieceGroupAdvancementComplete(null, playerIn, LibPieceGroups.FAKE_LEVEL_PSIDUST));
 			}
 			did = true;
 		}

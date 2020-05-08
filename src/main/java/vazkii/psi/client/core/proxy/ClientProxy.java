@@ -43,7 +43,6 @@ import vazkii.psi.api.spell.SpellPiece;
 import vazkii.psi.client.core.handler.ClientTickHandler;
 import vazkii.psi.client.core.handler.ColorHandler;
 import vazkii.psi.client.core.handler.ContributorSpellCircleHandler;
-import vazkii.psi.client.core.handler.HUDHandler;
 import vazkii.psi.client.core.handler.KeybindHandler;
 import vazkii.psi.client.core.handler.ShaderHandler;
 import vazkii.psi.client.fx.SparkleParticleData;
@@ -158,11 +157,6 @@ public class ClientProxy implements IProxy {
 	@Override
 	public int getClientRenderDistance() {
 		return Minecraft.getInstance().gameSettings.renderDistanceChunks;
-	}
-
-	@Override
-	public void onLevelUp(ResourceLocation level) {
-		HUDHandler.levelUp(level);
 	}
 
 	@Override

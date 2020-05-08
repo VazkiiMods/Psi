@@ -42,7 +42,6 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.network.PacketDistributor;
 
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.EnumCADStat;
@@ -58,6 +57,7 @@ import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.EnumSpellStat;
 import vazkii.psi.api.spell.ISpellAcceptor;
 import vazkii.psi.api.spell.PieceExecutedEvent;
+import vazkii.psi.api.spell.PieceGroupAdvancementComplete;
 import vazkii.psi.api.spell.PieceKnowledgeEvent;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
@@ -70,7 +70,6 @@ import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.network.MessageRegister;
 import vazkii.psi.common.network.message.MessageDataSync;
 import vazkii.psi.common.network.message.MessageDeductPsi;
-import vazkii.psi.common.network.message.MessageLevelUp;
 import vazkii.psi.common.network.message.MessageTriggerJumpSpell;
 
 import javax.annotation.Nonnull;
@@ -774,22 +773,7 @@ public class PlayerDataHandler {
 			MinecraftForge.EVENT_BUS.post(event);
 			ResourceLocation advancement = PsiAPI.getGroupForPiece(piece.getClass());
 			if (advancement != null && PsiAPI.getMainPieceForGroup(advancement) == piece.getClass() && !hasAdvancement(advancement)) {
-				tutorialComplete(advancement);
-			}
-		}
-
-		public void tutorialComplete(ResourceLocation resourceLocation) {
-			PlayerEntity player = playerWR.get();
-			if (player != null) {
-				save();
-				if (player instanceof ServerPlayerEntity) {
-					MessageLevelUp message = new MessageLevelUp(resourceLocation);
-					MessageDataSync message2 = new MessageDataSync(this);
-
-					MessageRegister.sendToPlayer(message, player);
-					MessageRegister.sendToPlayer(message2, player);
-					unlockPieceGroup(resourceLocation);
-				}
+				MinecraftForge.EVENT_BUS.post(new PieceGroupAdvancementComplete(piece, playerWR.get(), advancement));
 			}
 		}
 

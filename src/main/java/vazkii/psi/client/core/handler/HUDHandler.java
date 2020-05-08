@@ -12,10 +12,8 @@ import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
@@ -45,7 +43,6 @@ import vazkii.psi.common.core.handler.ConfigHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData.Deduction;
-import vazkii.psi.common.core.handler.PsiSoundHandler;
 import vazkii.psi.common.item.base.IHUDItem;
 import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.lib.LibResources;
@@ -65,10 +62,6 @@ public final class HUDHandler {
 	private static boolean registeredMask = false;
 	private static final int maxRemainingTicks = 30;
 
-	public static boolean showLevelUp = false;
-	public static int levelDisplayTime = 0;
-	public static ResourceLocation levelValue = null;
-
 	private static ItemStack remainingDisplayStack;
 	private static int remainingTime;
 	private static int remainingCount;
@@ -86,9 +79,6 @@ public final class HUDHandler {
 			if (!MinecraftForge.EVENT_BUS.post(new RenderPsiHudEvent(PsiHudElementType.SOCKETABLE_EQUIPPED_NAME))) {
 				renderSocketableEquippedName(resolution, partialTicks);
 			}
-			if (!MinecraftForge.EVENT_BUS.post(new RenderPsiHudEvent(PsiHudElementType.LEVEL_UP_INDICATOR))) {
-				renderLevelUpIndicator(resolution);
-			}
 			if (!MinecraftForge.EVENT_BUS.post(new RenderPsiHudEvent(PsiHudElementType.REMAINING_ITEMS))) {
 				renderRemainingItems(resolution, partialTicks);
 			}
@@ -99,9 +89,6 @@ public final class HUDHandler {
 	}
 
 	public static void tick() {
-		if (showLevelUp) {
-			levelDisplayTime++;
-		}
 
 		if (remainingTime > 0) {
 			--remainingTime;
@@ -304,88 +291,6 @@ public final class HUDHandler {
 			mc.getItemRenderer().renderItemIntoGUI(bullet, 0, 0);
 			RenderSystem.popMatrix();
 			RenderSystem.disableBlend();
-		}
-	}
-
-	public static void levelUp(ResourceLocation level) {
-		levelValue = level;
-		levelDisplayTime = 0;
-		showLevelUp = true;
-	}
-
-	@OnlyIn(Dist.CLIENT)
-	private static void renderLevelUpIndicator(MainWindow res) {
-		Minecraft mc = Minecraft.getInstance();
-		if (!showLevelUp) {
-			return;
-		}
-
-		RenderSystem.enableBlend();
-		RenderSystem.disableAlphaTest();
-		RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-
-		int time = 100;
-		int fadeTime = time / 10;
-		int fadeoutTime = fadeTime * 2;
-
-		String levelUp = I18n.format("psimisc.levelup");
-		int len = levelUp.length();
-		int effLen = Math.min(len, len * levelDisplayTime / fadeTime);
-		levelUp = levelUp.substring(0, effLen);
-
-		int swidth = mc.fontRenderer.getStringWidth(levelUp);
-		int x = res.getScaledWidth() / 4 - swidth / 2;
-		int y = 25;
-		float a = 1F - Math.max(0F, Math.min(1F, (float) (levelDisplayTime - time) / fadeoutTime));
-		int alphaOverlay = (int) (a * 0xFF) << 24;
-
-		RenderSystem.pushMatrix();
-		RenderSystem.scalef(2F, 2F, 2F);
-		mc.fontRenderer.drawStringWithShadow(levelUp, x, y, 0x0013C5FF + alphaOverlay);
-
-		String currLevel = "" + I18n.format(levelValue.toString().replace(":", "."));
-		x = res.getScaledWidth() / 4 - mc.fontRenderer.getStringWidth(currLevel) / 2;
-		y += 10;
-
-		if (levelDisplayTime > fadeTime) {
-			if (levelDisplayTime - fadeTime == 1) {
-				mc.getSoundHandler().play(SimpleSound.master(PsiSoundHandler.levelUp, 0.5F));
-			}
-
-			float a1 = Math.min(1F, (float) (levelDisplayTime - fadeTime) / fadeTime) * a;
-			int color1 = 0x00FFFFFF + ((int) (a1 * 0xFF) << 24);
-			mc.fontRenderer.drawStringWithShadow(TextFormatting.GOLD + currLevel, x, y, color1);
-		}
-		RenderSystem.popMatrix();
-
-		if (levelDisplayTime > fadeTime * 2) {
-			String s = I18n.format("psimisc.level_up_info1");
-			swidth = mc.fontRenderer.getStringWidth(s);
-			len = s.length();
-			effLen = Math.min(len, len * (levelDisplayTime - fadeTime * 2) / fadeTime);
-			s = s.substring(0, effLen);
-			x = res.getScaledWidth() / 2 - swidth / 2;
-			y += 65;
-
-			mc.fontRenderer.drawStringWithShadow(s, x, y, 0x00FFFFFF + alphaOverlay);
-		}
-
-		if (levelDisplayTime > fadeTime * 3) {
-			String s = I18n.format("psimisc.level_up_info2", TextFormatting.GREEN + KeybindHandler.keybind.getLocalizedName().toUpperCase() + TextFormatting.WHITE);
-			swidth = mc.fontRenderer.getStringWidth(s);
-			len = s.length();
-			effLen = Math.min(len, len * (levelDisplayTime - fadeTime * 3) / fadeTime);
-			s = s.substring(0, effLen);
-			x = res.getScaledWidth() / 2 - swidth / 2;
-			y += 10;
-
-			mc.fontRenderer.drawStringWithShadow(s, x, y, 0x00FFFFFF + alphaOverlay);
-		}
-
-		RenderSystem.enableAlphaTest();
-		RenderSystem.disableBlend();
-		if (levelDisplayTime >= time + fadeoutTime) {
-			showLevelUp = false;
 		}
 	}
 
