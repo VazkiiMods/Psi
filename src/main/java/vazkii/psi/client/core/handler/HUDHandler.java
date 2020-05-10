@@ -258,6 +258,9 @@ public final class HUDHandler {
 	private static void renderSocketableEquippedName(MainWindow res, float pticks) {
 		Minecraft mc = Minecraft.getInstance();
 		ItemStack stack = mc.player.getHeldItem(Hand.MAIN_HAND);
+		if (!ISocketableCapability.isSocketable(stack)) {
+			return;
+		}
 		String name = ISocketable.getSocketedItemName(stack, "").getFormattedText();
 		if (stack.isEmpty() || name.trim().isEmpty()) {
 			return;
