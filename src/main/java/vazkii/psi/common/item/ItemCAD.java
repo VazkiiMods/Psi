@@ -12,6 +12,7 @@ package vazkii.psi.common.item;
 
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -23,6 +24,8 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.EnumRarity;
+import net.minecraft.item.ItemPickaxe;
+import net.minecraft.item.ItemSpade;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.nbt.NBTTagCompound;
@@ -32,6 +35,7 @@ import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.crafting.CraftingHelper;
@@ -544,6 +548,25 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 		if(memorySlot < 0 || memorySlot >= size)
 			throw new SpellRuntimeException(SpellRuntimeException.MEMORY_OUT_OF_BOUNDS);
 		return getCADData(stack).getSavedVector(memorySlot);
+	}
+
+	/**
+	 * Mostly handled by forge assigning tool classes to vanilla blocks {@link ForgeHooks#initTools()}.
+	 * Currently this only needs Materials special cased to match the vanilla pickaxe but this may change.
+	 *
+	 * @see ItemPickaxe#canHarvestBlock(IBlockState)
+	 * @see ItemSpade#canHarvestBlock(IBlockState)
+	 */
+	@Override
+	public boolean canHarvestBlock(@Nonnull IBlockState state, ItemStack stack) {
+		Block block = state.getBlock();
+		String tool = block.getHarvestTool(state);
+		int level = tool == null ? -1 : getHarvestLevel(stack, tool, null, state);
+		if (level >= 0) {
+			return level >= block.getHarvestLevel(state);
+		}
+		Material material = state.getMaterial();
+		return material == Material.ROCK || material == Material.IRON || material == Material.ANVIL;
 	}
 
 	@Override
