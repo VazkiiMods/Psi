@@ -168,6 +168,6 @@ public class PieceTrickBreakBlock extends PieceTrick {
 			return ForgeEventFactory.doPlayerHarvestCheck(player, state, canHarvestBlock(state, stack));
 		}
 
-		return toolLevel >= block.getHarvestLevel(state);
+		return ForgeEventFactory.doPlayerHarvestCheck(player, state, toolLevel >= block.getHarvestLevel(state));
 	}
 }

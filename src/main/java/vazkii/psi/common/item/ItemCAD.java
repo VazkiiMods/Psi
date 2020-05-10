@@ -10,16 +10,13 @@ package vazkii.psi.common.item;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
-import net.minecraft.item.Rarity;
+import net.minecraft.item.*;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
@@ -34,6 +31,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -594,6 +592,25 @@ public class ItemCAD extends Item implements ICAD, ISpellSettable {
 			throw new SpellRuntimeException(SpellRuntimeException.MEMORY_OUT_OF_BOUNDS);
 		}
 		return getCADData(stack).getSavedVector(memorySlot);
+	}
+
+	/**
+	 * Mostly handled by forge assigning tool classes to vanilla blocks {@link ForgeHooks#initTools()}.
+	 * Currently this only needs Materials special cased to match the vanilla pickaxe but this may change.
+	 *
+	 * @see PickaxeItem#canHarvestBlock(BlockState)
+	 * @see ShovelItem#canHarvestBlock(BlockState)
+	 */
+	@Override
+	public boolean canHarvestBlock(ItemStack stack, @Nonnull BlockState state) {
+		Block block = state.getBlock();
+		ToolType tool = block.getHarvestTool(state);
+		int level = tool == null ? -1 : getHarvestLevel(stack, tool, null, state);
+		if (level >= 0) {
+			return level >= block.getHarvestLevel(state);
+		}
+		Material material = state.getMaterial();
+		return material == Material.ROCK || material == Material.IRON || material == Material.ANVIL;
 	}
 
 	@Override
