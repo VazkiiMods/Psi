@@ -1,0 +1,11 @@
+{
+  "name": "psi.book.entry.blockConjuration",
+  "category": "legacy",
+  "icon": "psi:textures/spell/trick_conjure_block.png",
+  "pages": [
+    {
+      "type": "text",
+      "text": "psi.book.page.blockConjuration.0"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "name": "psi.book.entry.loopcasting",
+  "category": "legacy",
+  "icon": "psi:textures/spell/selector_loopcast_index.png",
+  "pages": [
+    {
+      "type": "text",
+      "text": "psi.book.page.loopcasting.0"
+    }
+  ]
+}

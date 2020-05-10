@@ -1,0 +1,11 @@
+{
+  "name": "psi.book.entry.trigonometry",
+  "category": "items",
+  "icon": "psi:textures/spell/constant_pi.png",
+  "pages": [
+    {
+      "type": "text",
+      "text": "psi.book.page.trigonometry.0"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "name": "psi.book.entry.vectors101",
+  "category": "legacy",
+  "icon": "psi:textures/spell/operator_vector_construct.png",
+  "pages": [
+    {
+      "type": "text",
+      "text": "psi.book.page.vectors101.0"
+    }
+  ]
+}

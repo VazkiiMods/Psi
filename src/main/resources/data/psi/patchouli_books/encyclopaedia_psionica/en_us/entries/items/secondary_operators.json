@@ -1,0 +1,11 @@
+{
+  "name": "psi.book.entry.secondaryOperators",
+  "category": "items",
+  "icon": "psi:textures/spell/operator_square.png",
+  "pages": [
+    {
+      "type": "text",
+      "text": "psi.book.page.secondaryOperators.0"
+    }
+  ]
+}

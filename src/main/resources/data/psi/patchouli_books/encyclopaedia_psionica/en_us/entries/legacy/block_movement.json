@@ -1,0 +1,11 @@
+{
+  "name": "psi.book.entry.blockMovement",
+  "category": "legacy",
+  "icon": "psi:textures/spell/trick_move_block.png",
+  "pages": [
+    {
+      "type": "text",
+      "text": "psi.book.page.blockMovement.0"
+    }
+  ]
+}

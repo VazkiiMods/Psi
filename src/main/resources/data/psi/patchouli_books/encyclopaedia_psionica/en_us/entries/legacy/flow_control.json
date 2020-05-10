@@ -1,0 +1,11 @@
+{
+  "name": "psi.book.entry.flowControl",
+  "category": "legacy",
+  "icon": "psi:textures/spell/trick_delay.png",
+  "pages": [
+    {
+      "type": "text",
+      "text": "psi.book.page.flowControl.0"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "name": "psi.book.entry.detectionDynamics",
+  "category": "items",
+  "icon": "psi:textures/spell/trick_switch_target_slot.png",
+  "pages": [
+    {
+      "type": "text",
+      "text": "psi.book.page.detectionDynamics.0"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "name": "psi.book.entry.positiveEffects",
+  "category": "legacy",
+  "icon": "psi:textures/spell/trick_speed.png",
+  "pages": [
+    {
+      "type": "text",
+      "text": "psi.book.page.positiveEffects.0"
+    }
+  ]
+}

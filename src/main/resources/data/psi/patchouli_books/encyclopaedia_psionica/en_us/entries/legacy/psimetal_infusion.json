@@ -1,0 +1,11 @@
+{
+  "name": "psi.book.entry.psimetalInfusion",
+  "category": "legacy",
+  "icon": "psi:textures/spell/trick_infusion.png",
+  "pages": [
+    {
+      "type": "text",
+      "text": "psi.book.page.psimetalInfusion.0"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "name": "psi.book.entry.elementalArts",
+  "category": "items",
+  "icon": "psi:textures/spell/trick_smite.png",
+  "pages": [
+    {
+      "type": "text",
+      "text": "psi.book.page.elementalArts.0"
+    }
+  ]
+}

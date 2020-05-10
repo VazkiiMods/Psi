@@ -8,7 +8,7 @@
   "open_sound": "psi:book_open",
   "flip_sound": "psi:book_flip",
   "creative_tab": "psi",
-  "model": "psi:taurus_silver_codex",
+  "model": "psi:encyclopaedia_psionica",
   "macros": {
     "$(piece)": "$(3)"
   }

@@ -1,0 +1,11 @@
+{
+  "name": "psi.book.entry.numbers101",
+  "category": "legacy",
+  "icon": "psi:textures/spell/operator_sum.png",
+  "pages": [
+    {
+      "type": "text",
+      "text": "psi.book.page.numbers101.0"
+    }
+  ]
+}

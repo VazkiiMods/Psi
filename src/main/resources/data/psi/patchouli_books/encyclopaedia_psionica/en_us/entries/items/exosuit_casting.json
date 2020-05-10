@@ -1,0 +1,11 @@
+{
+  "name": "psi.book.entry.exosuitCasting",
+  "category": "items",
+  "icon": "psi:textures/spell/selector_time.png",
+  "pages": [
+    {
+      "type": "text",
+      "text": "psi.book.page.exosuitCasting.0"
+    }
+  ]
+}

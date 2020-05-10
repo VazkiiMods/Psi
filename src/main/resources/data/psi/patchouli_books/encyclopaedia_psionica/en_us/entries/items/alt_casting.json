@@ -1,0 +1,11 @@
+{
+  "name": "psi.book.entry.altCasting",
+  "category": "items",
+  "icon": "psi:textures/spell/selector_focal_point.png",
+  "pages": [
+    {
+      "type": "text",
+      "text": "psi.book.page.altCasting.0"
+    }
+  ]
+}

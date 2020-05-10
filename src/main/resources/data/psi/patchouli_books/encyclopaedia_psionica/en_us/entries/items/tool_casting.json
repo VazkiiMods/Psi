@@ -1,0 +1,11 @@
+{
+  "name": "psi.book.entry.toolCasting",
+  "category": "items",
+  "icon": "psi:textures/spell/selector_block_broken.png",
+  "pages": [
+    {
+      "type": "text",
+      "text": "psi.book.page.toolCasting.0"
+    }
+  ]
+}
