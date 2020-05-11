@@ -369,7 +369,7 @@ public class PiecePanelWidget extends Widget implements IRenderable, IGuiEventLi
 			} else {
 				int nameRank = rankTextToken(name, nameToken);
 				rank += nameRank;
-				if (nameRank <= 0 && rankTextToken(desc, nameToken) <= 0 ) {
+				if (nameRank <= 0 && rankTextToken(desc, nameToken) <= 0) {
 					return 0;
 				} else {
 					rank += rankTextToken(desc, nameToken) / 2;
@@ -402,7 +402,7 @@ public class PiecePanelWidget extends Widget implements IRenderable, IGuiEventLi
 				return 0;
 			}
 			if (haystack.startsWith(clippedToken)) {
-				if (haystack.length() >= clippedToken.length() + 1  && !Character.isLetterOrDigit(haystack.charAt(clippedToken.length() + 1))) {
+				if (haystack.length() >= clippedToken.length() + 1 && !Character.isLetterOrDigit(haystack.charAt(clippedToken.length() + 1))) {
 					return clippedToken.length() * 2;
 				}
 				return clippedToken.length();
