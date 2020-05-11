@@ -334,6 +334,9 @@ public class PiecePanelWidget extends Widget implements IRenderable, IGuiEventLi
 					maxRank = Math.max(maxRank, rankTextToken(type, clippedToken));
 				}
 
+				if (maxRank <= 0) {
+					return 0;
+				}
 				rank += maxRank;
 			} else if (nameToken.startsWith("out:")) {
 				String clippedToken = nameToken.substring(4);
@@ -343,6 +346,9 @@ public class PiecePanelWidget extends Widget implements IRenderable, IGuiEventLi
 
 				String type = p.getEvaluationTypeString().getFormattedText().toLowerCase();
 
+				if (rankTextToken(type, clippedToken) <= 0) {
+					return 0;
+				}
 				rank += rankTextToken(type, clippedToken);
 			} else if (nameToken.startsWith("@")) {
 				String clippedToken = nameToken.substring(1);
@@ -363,7 +369,9 @@ public class PiecePanelWidget extends Widget implements IRenderable, IGuiEventLi
 			} else {
 				int nameRank = rankTextToken(name, nameToken);
 				rank += nameRank;
-				if (nameRank == 0) {
+				if (nameRank <= 0 && rankTextToken(desc, nameToken) <= 0 ) {
+					return 0;
+				} else {
 					rank += rankTextToken(desc, nameToken) / 2;
 				}
 			}
@@ -394,7 +402,7 @@ public class PiecePanelWidget extends Widget implements IRenderable, IGuiEventLi
 				return 0;
 			}
 			if (haystack.startsWith(clippedToken)) {
-				if (!Character.isLetterOrDigit(haystack.charAt(clippedToken.length() + 1))) {
+				if (haystack.length() >= clippedToken.length() + 1  && !Character.isLetterOrDigit(haystack.charAt(clippedToken.length() + 1))) {
 					return clippedToken.length() * 2;
 				}
 				return clippedToken.length();
