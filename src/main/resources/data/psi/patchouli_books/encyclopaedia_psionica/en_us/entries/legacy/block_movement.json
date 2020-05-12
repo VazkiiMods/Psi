@@ -6,6 +6,10 @@
     {
       "type": "text",
       "text": "psi.book.page.blockMovement.0"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.blockMovement.1"
     }
   ]
 }

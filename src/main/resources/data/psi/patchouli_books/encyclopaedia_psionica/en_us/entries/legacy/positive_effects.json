@@ -6,6 +6,10 @@
     {
       "type": "text",
       "text": "psi.book.page.positiveEffects.0"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.positiveEffects.1"
     }
   ]
 }

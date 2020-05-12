@@ -1,6 +1,6 @@
 {
   "name": "psi.book.category.items",
-  "description": "psi.book.category.items",
+  "description": "psi.book.category.items.desc",
   "icon": "psi:spell_bullet",
   "sortnum": 2
 }

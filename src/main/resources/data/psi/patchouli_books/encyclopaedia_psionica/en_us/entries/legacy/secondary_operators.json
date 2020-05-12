@@ -6,6 +6,14 @@
     {
       "type": "text",
       "text": "psi.book.page.secondaryOperators.0"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.secondaryOperators.1"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.secondaryOperators.2"
     }
   ]
 }

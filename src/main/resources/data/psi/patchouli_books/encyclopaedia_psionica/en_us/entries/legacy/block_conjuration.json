@@ -6,6 +6,14 @@
     {
       "type": "text",
       "text": "psi.book.page.blockConjuration.0"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.blockConjuration.1"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.blockConjuration.2"
     }
   ]
 }

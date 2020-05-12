@@ -6,6 +6,10 @@
     {
       "type": "text",
       "text": "psi.book.page.smeltery.0"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.smeltery.1"
     }
   ]
 }

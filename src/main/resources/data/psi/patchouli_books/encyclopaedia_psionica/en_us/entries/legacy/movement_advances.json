@@ -6,6 +6,10 @@
     {
       "type": "text",
       "text": "psi.book.page.movementAdvances.0"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.movementAdvances.1"
     }
   ]
 }
