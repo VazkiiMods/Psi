@@ -98,6 +98,6 @@ public class DefaultStats {
 		ItemCADComponent.addStatToStack(ModItems.cadBatteryExtended, EnumCADStat.OVERFLOW, 200);
 
 		// Ultradense
-		ItemCADComponent.addStatToStack(ModItems.cadBatteryUltradense, EnumCADStat.OVERFLOW, 800);
+		ItemCADComponent.addStatToStack(ModItems.cadBatteryUltradense, EnumCADStat.OVERFLOW, 400);
 	}
 }

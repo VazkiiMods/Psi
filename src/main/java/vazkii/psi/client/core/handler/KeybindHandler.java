@@ -16,7 +16,7 @@ import net.minecraft.util.Hand;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 
 import vazkii.patchouli.api.PatchouliAPI;
-import vazkii.psi.api.cad.ISocketableCapability;
+import vazkii.psi.api.cad.ISocketable;
 import vazkii.psi.api.cad.ISocketableController;
 import vazkii.psi.client.gui.GuiSocketSelect;
 import vazkii.psi.common.lib.LibResources;
@@ -40,7 +40,7 @@ public class KeybindHandler {
 		ItemStack[] stacks = ((ISocketableController) stack.getItem()).getControlledStacks(player, stack);
 
 		for (ItemStack controlled : stacks) {
-			if (!controlled.isEmpty() && ISocketableCapability.isSocketable(controlled)) {
+			if (!controlled.isEmpty() && ISocketable.isSocketable(controlled)) {
 				return true;
 			}
 		}
@@ -53,11 +53,11 @@ public class KeybindHandler {
 		ItemStack stack = mc.player.getHeldItem(Hand.MAIN_HAND);
 
 		if (mc.currentScreen == null) {
-			if (!stack.isEmpty() && (ISocketableCapability.isSocketable(stack) || isSocketableController(mc.player, stack))) {
+			if (!stack.isEmpty() && (ISocketable.isSocketable(stack) || isSocketableController(mc.player, stack))) {
 				mc.displayGuiScreen(new GuiSocketSelect(stack));
 			} else {
 				stack = mc.player.getHeldItem(Hand.OFF_HAND);
-				if (!stack.isEmpty() && (ISocketableCapability.isSocketable(stack) || isSocketableController(mc.player, stack))) {
+				if (!stack.isEmpty() && (ISocketable.isSocketable(stack) || isSocketableController(mc.player, stack))) {
 					mc.displayGuiScreen(new GuiSocketSelect(stack));
 				} else {
 					PatchouliAPI.instance.openBookGUI(LibResources.PATCHOULI_BOOK);

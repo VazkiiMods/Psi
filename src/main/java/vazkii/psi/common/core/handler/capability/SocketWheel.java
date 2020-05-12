@@ -14,9 +14,8 @@ import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.items.ItemStackHandler;
 
 import vazkii.psi.api.cad.ISocketable;
-import vazkii.psi.api.cad.ISocketableCapability;
 
-public class SocketWheel implements ISocketableCapability, INBTSerializable<CompoundNBT> {
+public class SocketWheel implements ISocketable, INBTSerializable<CompoundNBT> {
 
 	private final int size;
 
@@ -64,7 +63,7 @@ public class SocketWheel implements ISocketableCapability, INBTSerializable<Comp
 	}
 
 	@Override
-	public boolean canLoopcast(ItemStack stack) {
+	public boolean canLoopcast() {
 		return false;
 	}
 

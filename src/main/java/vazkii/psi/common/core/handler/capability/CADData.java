@@ -10,6 +10,8 @@ package vazkii.psi.common.core.handler.capability;
 
 import com.google.common.collect.Lists;
 
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.DoubleNBT;
 import net.minecraft.nbt.ListNBT;
@@ -20,27 +22,49 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
 
 import vazkii.psi.api.PsiAPI;
+import vazkii.psi.api.cad.EnumCADStat;
+import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.cad.ICADData;
+import vazkii.psi.api.cad.IPsiBarDisplay;
+import vazkii.psi.api.cad.ISocketable;
+import vazkii.psi.api.internal.IPlayerData;
 import vazkii.psi.api.internal.Vector3;
+import vazkii.psi.api.spell.ISpellAcceptor;
+import vazkii.psi.api.spell.Spell;
+import vazkii.psi.common.item.component.ItemCADSocket;
+import vazkii.psi.common.item.tool.IPsimetalTool;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import java.util.List;
 
-public class CADData implements ICapabilityProvider, ICADData {
+public class CADData implements ICapabilityProvider, ICADData, ISpellAcceptor, ISocketable, IPsiBarDisplay {
 
+	private final ItemStack cad;
 	private int time;
 	private int battery;
 	private List<Vector3> vectors = Lists.newArrayList();
 
 	private boolean dirty;
 
+	private final LazyOptional<?> optional;
+
+	public CADData(ItemStack cad) {
+		this.cad = cad;
+		optional = LazyOptional.of(() -> this);
+	}
+
 	@Nonnull
 	@Override
-	@SuppressWarnings("ConstantConditions")
 	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability, @Nullable Direction facing) {
-		return PsiAPI.CAD_DATA_CAPABILITY.orEmpty(capability, LazyOptional.of(() -> this));
+		if (capability == PsiAPI.SOCKETABLE_CAPABILITY
+				|| capability == PsiAPI.CAD_DATA_CAPABILITY
+				|| capability == PsiAPI.PSI_BAR_DISPLAY_CAPABILITY
+				|| capability == PsiAPI.SPELL_ACCEPTOR_CAPABILITY) {
+			return optional.cast();
+		}
+		return LazyOptional.empty();
 	}
 
 	@Override
@@ -95,6 +119,65 @@ public class CADData implements ICapabilityProvider, ICADData {
 	}
 
 	@Override
+	public void setSpell(PlayerEntity player, Spell spell) {
+		int slot = getSelectedSlot();
+		ItemStack bullet = getBulletInSocket(slot);
+		if (!bullet.isEmpty() && ISpellAcceptor.isAcceptor(bullet)) {
+			ISpellAcceptor.acceptor(bullet).setSpell(player, spell);
+			setBulletInSocket(slot, bullet);
+			player.getCooldownTracker().setCooldown(cad.getItem(), 10);
+		}
+	}
+
+	@Override
+	public boolean requiresSneakForSpellSet() {
+		return true;
+	}
+
+	@Override
+	public boolean isSocketSlotAvailable(int slot) {
+		int sockets = ((ICAD) cad.getItem()).getStatValue(cad, EnumCADStat.SOCKETS);
+		if (sockets == -1 || sockets > ItemCADSocket.MAX_SOCKETS) {
+			sockets = ItemCADSocket.MAX_SOCKETS;
+		}
+		return slot < sockets;
+	}
+
+	@Override
+	public ItemStack getBulletInSocket(int slot) {
+		String name = IPsimetalTool.TAG_BULLET_PREFIX + slot;
+		CompoundNBT cmp = cad.getOrCreateTag().getCompound(name);
+
+		if (cmp.isEmpty()) {
+			return ItemStack.EMPTY;
+		}
+
+		return ItemStack.read(cmp);
+	}
+
+	@Override
+	public void setBulletInSocket(int slot, ItemStack bullet) {
+		String name = IPsimetalTool.TAG_BULLET_PREFIX + slot;
+		CompoundNBT cmp = new CompoundNBT();
+
+		if (!bullet.isEmpty()) {
+			bullet.write(cmp);
+		}
+
+		cad.getOrCreateTag().put(name, cmp);
+	}
+
+	@Override
+	public int getSelectedSlot() {
+		return cad.getOrCreateTag().getInt(IPsimetalTool.TAG_SELECTED_SLOT);
+	}
+
+	@Override
+	public void setSelectedSlot(int slot) {
+		cad.getOrCreateTag().putInt(IPsimetalTool.TAG_SELECTED_SLOT, slot);
+	}
+
+	@Override
 	public CompoundNBT serializeForSynchronization() {
 		CompoundNBT compound = new CompoundNBT();
 		compound.putInt("Time", time);
@@ -146,5 +229,10 @@ public class CADData implements ICapabilityProvider, ICADData {
 			}
 			vectors = newVectors;
 		}
+	}
+
+	@Override
+	public boolean shouldShow(IPlayerData data) {
+		return true;
 	}
 }

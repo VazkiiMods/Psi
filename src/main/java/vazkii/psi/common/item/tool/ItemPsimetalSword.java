@@ -21,11 +21,13 @@ import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SwordItem;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ISocketable;
@@ -56,7 +58,7 @@ public class ItemPsimetalSword extends SwordItem implements IPsimetalTool {
 			ItemStack playerCad = PsiAPI.getPlayerCAD(player);
 
 			if (!playerCad.isEmpty()) {
-				ItemStack bullet = getBulletInSocket(itemstack, getSelectedSlot(itemstack));
+				ItemStack bullet = ISocketable.socketable(itemstack).getSelectedBullet();
 				ItemCAD.cast(player.getEntityWorld(), player, data, bullet, playerCad, 5, 10, 0.05F,
 						(SpellContext context) -> {
 							context.attackedEntity = target;
@@ -120,9 +122,9 @@ public class ItemPsimetalSword extends SwordItem implements IPsimetalTool {
 		return IPsimetalTool.isRepairableBy(material) || super.getIsRepairable(thisStack, material);
 	}
 
+	@Nullable
 	@Override
-	public boolean requiresSneakForSpellSet(ItemStack stack) {
-		return false;
+	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
+		return IPsimetalTool.super.initCapabilities(stack, nbt);
 	}
-
 }

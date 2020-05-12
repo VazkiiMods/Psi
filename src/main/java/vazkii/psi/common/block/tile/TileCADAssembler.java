@@ -36,7 +36,7 @@ import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.AssembleCADEvent;
 import vazkii.psi.api.cad.EnumCADComponent;
 import vazkii.psi.api.cad.ICADComponent;
-import vazkii.psi.api.cad.ISocketableCapability;
+import vazkii.psi.api.cad.ISocketable;
 import vazkii.psi.api.cad.ITileCADAssembler;
 import vazkii.psi.api.cad.PostCADCraftEvent;
 import vazkii.psi.common.block.base.ModBlocks;
@@ -73,7 +73,7 @@ public class TileCADAssembler extends TileEntity implements ITileCADAssembler, I
 			}
 
 			if (slot == 0) {
-				return ISocketableCapability.isSocketable(stack);
+				return ISocketable.isSocketable(stack);
 			} else if (slot < 6) {
 				return stack.getItem() instanceof ICADComponent &&
 						((ICADComponent) stack.getItem()).getComponentType(stack) == EnumCADComponent.values()[slot - 1];
@@ -198,13 +198,13 @@ public class TileCADAssembler extends TileEntity implements ITileCADAssembler, I
 	}
 
 	@Override
-	public ISocketableCapability getSocketable() {
-		return ISocketableCapability.socketable(getSocketableStack());
+	public ISocketable getSocketable() {
+		return ISocketable.socketable(getSocketableStack());
 	}
 
 	@Override
 	public boolean setSocketableStack(ItemStack stack) {
-		if (stack.isEmpty() || ISocketableCapability.isSocketable(stack)) {
+		if (stack.isEmpty() || ISocketable.isSocketable(stack)) {
 			inventory.setStackInSlot(0, stack);
 			return true;
 		}
@@ -228,7 +228,7 @@ public class TileCADAssembler extends TileEntity implements ITileCADAssembler, I
 		if (getSocketableStack().isEmpty()) {
 			return false;
 		}
-		ISocketableCapability socketable = getSocketable();
+		ISocketable socketable = getSocketable();
 		return socketable != null && socketable.isSocketSlotAvailable(slot);
 	}
 
@@ -252,7 +252,7 @@ public class TileCADAssembler extends TileEntity implements ITileCADAssembler, I
 				inventory.setStackInSlot(i, ItemStack.EMPTY);
 			}
 
-			LazyOptional<ISocketableCapability> socketable = LazyOptional.empty();
+			LazyOptional<ISocketable> socketable = LazyOptional.empty();
 
 			for (int i = 0; i < items.size(); ++i) {
 				if (i == 0) // Skip the fake CAD slot

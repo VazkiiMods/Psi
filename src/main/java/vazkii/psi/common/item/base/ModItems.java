@@ -17,6 +17,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.IForgeRegistry;
 
 import vazkii.psi.common.core.PsiCreativeTab;
+import vazkii.psi.common.core.handler.capability.CapabilityHandler;
 import vazkii.psi.common.item.*;
 import vazkii.psi.common.item.armor.ItemPsimetalExosuitBoots;
 import vazkii.psi.common.item.armor.ItemPsimetalExosuitChestplate;
@@ -126,6 +127,8 @@ public final class ModItems {
 
 	@SubscribeEvent
 	public static void registerItems(RegistryEvent.Register<Item> evt) {
+		CapabilityHandler.register();
+
 		IForgeRegistry<Item> r = evt.getRegistry();
 
 		r.register(psidust.setRegistryName(LibMisc.MOD_ID, LibItemNames.PSIDUST));

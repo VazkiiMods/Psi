@@ -29,7 +29,6 @@ import org.lwjgl.opengl.GL11;
 
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ISocketable;
-import vazkii.psi.api.cad.ISocketableCapability;
 import vazkii.psi.api.cad.ISocketableController;
 import vazkii.psi.api.internal.PsiRenderHelper;
 import vazkii.psi.client.core.handler.KeybindHandler;
@@ -70,7 +69,7 @@ public class GuiSocketSelect extends Screen {
 	int controlSlot;
 
 	ItemStack socketableStack;
-	ISocketableCapability socketable;
+	ISocketable socketable;
 	List<Integer> slots;
 	final Minecraft mc;
 
@@ -81,7 +80,7 @@ public class GuiSocketSelect extends Screen {
 		controllerStack = ItemStack.EMPTY;
 		socketableStack = ItemStack.EMPTY;
 
-		if (ISocketableCapability.isSocketable(stack)) {
+		if (ISocketable.isSocketable(stack)) {
 			setSocketable(stack);
 		} else if (stack.getItem() instanceof ISocketableController) {
 			controllerStack = stack;
@@ -103,7 +102,7 @@ public class GuiSocketSelect extends Screen {
 		}
 
 		socketableStack = stack;
-		socketable = ISocketableCapability.socketable(stack);
+		socketable = ISocketable.socketable(stack);
 
 		for (int i = 0; i < ISocketable.MAX_SLOTS; i++) {
 			if (socketable.showSlotInRadialMenu(i)) {

@@ -19,75 +19,23 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 import vazkii.psi.api.PsiAPI;
+import vazkii.psi.api.cad.IPsiBarDisplay;
 import vazkii.psi.api.cad.ISocketable;
 import vazkii.psi.api.spell.ISpellAcceptor;
-import vazkii.psi.api.spell.ISpellSettable;
-import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.item.ItemCAD;
 
-public interface IPsimetalTool extends ISocketable, ISpellSettable {
+import javax.annotation.Nullable;
+
+public interface IPsimetalTool {
 
 	String TAG_REGEN_TIME = "regenTime";
 	String TAG_BULLET_PREFIX = "bullet";
 	String TAG_SELECTED_SLOT = "selectedSlot";
-
-	@Override
-	default boolean isSocketSlotAvailable(ItemStack stack, int slot) {
-		return slot < 3;
-	}
-
-	@Override
-	default boolean showSlotInRadialMenu(ItemStack stack, int slot) {
-		return isSocketSlotAvailable(stack, slot - 1);
-	}
-
-	@Override
-	default ItemStack getBulletInSocket(ItemStack stack, int slot) {
-		String name = TAG_BULLET_PREFIX + slot;
-		CompoundNBT cmp = stack.getOrCreateTag().getCompound(name);
-
-		if (cmp.isEmpty()) {
-			return ItemStack.EMPTY;
-		}
-
-		return ItemStack.read(cmp);
-	}
-
-	@Override
-	default void setBulletInSocket(ItemStack stack, int slot, ItemStack bullet) {
-		String name = TAG_BULLET_PREFIX + slot;
-		CompoundNBT cmp = new CompoundNBT();
-
-		if (!bullet.isEmpty()) {
-			cmp = bullet.write(cmp);
-		}
-
-		stack.getOrCreateTag().put(name, cmp);
-	}
-
-	@Override
-	default int getSelectedSlot(ItemStack stack) {
-		return stack.getOrCreateTag().getInt(TAG_SELECTED_SLOT);
-	}
-
-	@Override
-	default void setSelectedSlot(ItemStack stack, int slot) {
-		stack.getOrCreateTag().putInt(TAG_SELECTED_SLOT, slot);
-	}
-
-	@Override
-	default void setSpell(PlayerEntity player, ItemStack stack, Spell spell) {
-		int slot = getSelectedSlot(stack);
-		ItemStack bullet = getBulletInSocket(stack, slot);
-		if (!bullet.isEmpty() && ISpellAcceptor.isAcceptor(bullet)) {
-			ISpellAcceptor.acceptor(bullet).setSpell(player, spell);
-			setBulletInSocket(stack, slot, bullet);
-		}
-	}
 
 	default void castOnBlockBreak(ItemStack itemstack, PlayerEntity player) {
 		if (!isEnabled(itemstack)) {
@@ -98,7 +46,8 @@ public interface IPsimetalTool extends ISocketable, ISpellSettable {
 		ItemStack playerCad = PsiAPI.getPlayerCAD(player);
 
 		if (!playerCad.isEmpty()) {
-			ItemStack bullet = getBulletInSocket(itemstack, getSelectedSlot(itemstack));
+			ISocketable sockets = ISocketable.socketable(itemstack);
+			ItemStack bullet = sockets.getSelectedBullet();
 			ItemCAD.cast(player.getEntityWorld(), player, data, bullet, playerCad, 5, 10, 0.05F, (SpellContext context) -> {
 				context.tool = itemstack;
 				context.positionBroken = raytraceFromEntity(player.getEntityWorld(), player, RayTraceContext.FluidMode.NONE, player.getAttributes().getAttributeInstance(PlayerEntity.REACH_DISTANCE).getValue());
@@ -141,5 +90,13 @@ public interface IPsimetalTool extends ISocketable, ISpellSettable {
 
 	default boolean isEnabled(ItemStack stack) {
 		return stack.getDamage() < stack.getMaxDamage();
+	}
+
+	/**
+	 * Override and return {@code IPsimetalTool.super.initCapabilities(stack, nbt)}, or your own implementation
+	 * of {@link ISocketable}, {@link IPsiBarDisplay} and {@link ISpellAcceptor} caps.
+	 */
+	default ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
+		return new ToolSocketable(stack, 3);
 	}
 }

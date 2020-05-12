@@ -35,7 +35,6 @@ import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.cad.ICADColorizer;
 import vazkii.psi.api.cad.ISocketable;
-import vazkii.psi.api.cad.ISocketableCapability;
 import vazkii.psi.api.gui.PsiHudElementType;
 import vazkii.psi.api.gui.RenderPsiHudEvent;
 import vazkii.psi.api.internal.PsiRenderHelper;
@@ -258,7 +257,7 @@ public final class HUDHandler {
 	private static void renderSocketableEquippedName(MainWindow res, float pticks) {
 		Minecraft mc = Minecraft.getInstance();
 		ItemStack stack = mc.player.getHeldItem(Hand.MAIN_HAND);
-		if (!ISocketableCapability.isSocketable(stack)) {
+		if (!ISocketable.isSocketable(stack)) {
 			return;
 		}
 		String name = ISocketable.getSocketedItemName(stack, "").getFormattedText();
@@ -270,8 +269,8 @@ public final class HUDHandler {
 		ticks -= 10;
 
 		if (ticks > 0) {
-			ISocketableCapability socketable = ISocketableCapability.socketable(stack);
-			ItemStack bullet = socketable.getBulletInSocket(socketable.getSelectedSlot());
+			ISocketable socketable = ISocketable.socketable(stack);
+			ItemStack bullet = socketable.getSelectedBullet();
 
 			int alpha = Math.min(255, (int) ((ticks - pticks) * 256.0F / 10.0F));
 			int color = ICADColorizer.DEFAULT_SPELL_COLOR + (alpha << 24);
