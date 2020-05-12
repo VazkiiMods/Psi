@@ -20,6 +20,7 @@ import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.AxeItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -27,6 +28,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ToolType;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ISocketable;
@@ -49,6 +51,12 @@ public class ItemPsimetalAxe extends AxeItem implements IPsimetalTool {
 		castOnBlockBreak(itemstack, player);
 
 		return false;
+	}
+
+	@Nullable
+	@Override
+	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
+		return IPsimetalTool.super.initCapabilities(stack, nbt);
 	}
 
 	@Override
@@ -106,11 +114,6 @@ public class ItemPsimetalAxe extends AxeItem implements IPsimetalTool {
 	@Override
 	public boolean getIsRepairable(ItemStack thisStack, @Nonnull ItemStack material) {
 		return IPsimetalTool.isRepairableBy(material) || super.getIsRepairable(thisStack, material);
-	}
-
-	@Override
-	public boolean requiresSneakForSpellSet(ItemStack stack) {
-		return false;
 	}
 
 }

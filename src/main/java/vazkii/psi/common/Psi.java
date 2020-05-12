@@ -69,12 +69,8 @@ public class Psi {
 		ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ConfigHandler.CLIENT_SPEC);
 		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ConfigHandler.COMMON_SPEC);
 
-		new ModItems();
-		new ModBlocks();
 		DefaultStats.registerStats();
 		ModSpellPieces.init();
-
-		CapabilityHandler.register();
 		MessageRegister.init();
 	}
 

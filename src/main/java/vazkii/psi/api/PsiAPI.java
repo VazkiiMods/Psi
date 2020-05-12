@@ -12,7 +12,6 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 
 import net.minecraft.client.renderer.model.Material;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
@@ -31,7 +30,7 @@ import org.apache.logging.log4j.LogManager;
 import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.cad.ICADData;
 import vazkii.psi.api.cad.IPsiBarDisplay;
-import vazkii.psi.api.cad.ISocketableCapability;
+import vazkii.psi.api.cad.ISocketable;
 import vazkii.psi.api.internal.DummyMethodHandler;
 import vazkii.psi.api.internal.IInternalMethodHandler;
 import vazkii.psi.api.material.PsimetalArmorMaterial;
@@ -73,8 +72,8 @@ public final class PsiAPI {
 	@CapabilityInject(ICADData.class)
 	public static Capability<ICADData> CAD_DATA_CAPABILITY = null;
 
-	@CapabilityInject(ISocketableCapability.class)
-	public static Capability<ISocketableCapability> SOCKETABLE_CAPABILITY = null;
+	@CapabilityInject(ISocketable.class)
+	public static Capability<ISocketable> SOCKETABLE_CAPABILITY = null;
 
 	public static final String MOD_ID = "psi";
 	public static final ResourceLocation PSI_PIECE_TEXTURE_ATLAS = new ResourceLocation(MOD_ID, "spell_pieces");

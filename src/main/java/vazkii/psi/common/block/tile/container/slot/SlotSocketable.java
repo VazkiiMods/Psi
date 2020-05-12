@@ -12,7 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.SlotItemHandler;
 
-import vazkii.psi.api.cad.ISocketableCapability;
+import vazkii.psi.api.cad.ISocketable;
 import vazkii.psi.api.inventory.InventorySocketable;
 
 import javax.annotation.Nonnull;
@@ -28,7 +28,7 @@ public class SlotSocketable extends SlotItemHandler {
 
 	@Override
 	public boolean isItemValid(@Nonnull ItemStack stack) {
-		return ISocketableCapability.isSocketable(stack);
+		return ISocketable.isSocketable(stack);
 	}
 
 	@Override

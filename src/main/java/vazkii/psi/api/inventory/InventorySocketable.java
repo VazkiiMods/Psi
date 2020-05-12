@@ -18,7 +18,7 @@ import net.minecraft.util.INameable;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
-import vazkii.psi.api.cad.ISocketableCapability;
+import vazkii.psi.api.cad.ISocketable;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -29,13 +29,13 @@ import java.util.Iterator;
 public class InventorySocketable implements IInventory, INameable, IIntArray {
 
 	@Nullable
-	private ISocketableCapability socketable;
+	private ISocketable socketable;
 
 	public InventorySocketable(ItemStack stack) {
 		if (stack.isEmpty()) {
 			socketable = null;
 		} else {
-			socketable = ISocketableCapability.socketable(stack);
+			socketable = ISocketable.socketable(stack);
 		}
 	}
 
@@ -43,7 +43,7 @@ public class InventorySocketable implements IInventory, INameable, IIntArray {
 		if (stack.isEmpty()) {
 			socketable = null;
 		} else {
-			socketable = ISocketableCapability.socketable(stack);
+			socketable = ISocketable.socketable(stack);
 		}
 	}
 

@@ -47,7 +47,7 @@ import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.EnumCADStat;
 import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.cad.ICADColorizer;
-import vazkii.psi.api.cad.ISocketableCapability;
+import vazkii.psi.api.cad.ISocketable;
 import vazkii.psi.api.cad.RegenPsiEvent;
 import vazkii.psi.api.exosuit.IPsiEventArmor;
 import vazkii.psi.api.exosuit.PsiArmorEvent;
@@ -365,20 +365,20 @@ public class PlayerDataHandler {
 					ItemStack stackInHand = player.getHeldItem(loopcastHand);
 
 					if (stackInHand.isEmpty() ||
-							!ISocketableCapability.isSocketable(stackInHand) ||
-							!ISocketableCapability.socketable(stackInHand).canLoopcast(stackInHand)) {
+							!ISocketable.isSocketable(stackInHand) ||
+							!ISocketable.socketable(stackInHand).canLoopcast()) {
 						stopLoopcast();
 						break loopcast;
 					}
 
 					if (lastTickLoopcastStack != null) {
 						if (!ItemStack.areItemsEqual(lastTickLoopcastStack, stackInHand) ||
-								!ISocketableCapability.isSocketable(lastTickLoopcastStack)) {
+								!ISocketable.isSocketable(lastTickLoopcastStack)) {
 							stopLoopcast();
 							break loopcast;
 						} else {
-							ISocketableCapability lastTickItem = ISocketableCapability.socketable(lastTickLoopcastStack);
-							ISocketableCapability thisTickItem = ISocketableCapability.socketable(stackInHand);
+							ISocketable lastTickItem = ISocketable.socketable(lastTickLoopcastStack);
+							ISocketable thisTickItem = ISocketable.socketable(stackInHand);
 
 							int lastSlot = lastTickItem.getSelectedSlot();
 							int thisSlot = thisTickItem.getSelectedSlot();
@@ -398,7 +398,7 @@ public class PlayerDataHandler {
 
 					lastTickLoopcastStack = stackInHand.copy();
 
-					ISocketableCapability castingItem = ISocketableCapability.socketable(stackInHand);
+					ISocketable socketable = ISocketable.socketable(stackInHand);
 
 					for (int i = 0; i < 5; i++) {
 						double x = player.getX() + (Math.random() - 0.5) * 2.1 * player.getWidth();
@@ -409,7 +409,7 @@ public class PlayerDataHandler {
 					}
 
 					if (loopcastTime > 0 && loopcastTime % 5 == 0) {
-						ItemStack bullet = castingItem.getBulletInSocket(castingItem.getSelectedSlot());
+						ItemStack bullet = socketable.getSelectedBullet();
 						if (bullet.isEmpty() || !ISpellAcceptor.hasSpell(bullet)) {
 							stopLoopcast();
 							break loopcast;

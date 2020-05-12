@@ -10,17 +10,17 @@ package vazkii.psi.api.inventory;
 
 import net.minecraft.item.ItemStack;
 
-import vazkii.psi.api.cad.ISocketableCapability;
+import vazkii.psi.api.cad.ISocketable;
 
 import java.util.Iterator;
 
 public class IteratorSocketable implements Iterator<ItemStack> {
 
-	private final ISocketableCapability socketable;
+	private final ISocketable socketable;
 	private int index = -1;
 	private boolean removed = false;
 
-	public IteratorSocketable(ISocketableCapability socketable) {
+	public IteratorSocketable(ISocketable socketable) {
 		this.socketable = socketable;
 	}
 

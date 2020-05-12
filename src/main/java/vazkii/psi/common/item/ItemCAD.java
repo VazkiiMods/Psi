@@ -28,10 +28,10 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -42,22 +42,13 @@ import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.wrapper.RecipeWrapper;
 
 import vazkii.psi.api.PsiAPI;
-import vazkii.psi.api.cad.CADStatEvent;
-import vazkii.psi.api.cad.EnumCADComponent;
-import vazkii.psi.api.cad.EnumCADStat;
-import vazkii.psi.api.cad.ICAD;
-import vazkii.psi.api.cad.ICADAssembly;
-import vazkii.psi.api.cad.ICADColorizer;
-import vazkii.psi.api.cad.ICADComponent;
-import vazkii.psi.api.cad.ICADData;
-import vazkii.psi.api.cad.ISocketable;
+import vazkii.psi.api.cad.*;
 import vazkii.psi.api.internal.PsiRenderHelper;
 import vazkii.psi.api.internal.TooltipHelper;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.recipe.ITrickRecipe;
 import vazkii.psi.api.spell.EnumSpellStat;
 import vazkii.psi.api.spell.ISpellAcceptor;
-import vazkii.psi.api.spell.ISpellSettable;
 import vazkii.psi.api.spell.PieceGroupAdvancementComplete;
 import vazkii.psi.api.spell.PreSpellCastEvent;
 import vazkii.psi.api.spell.Spell;
@@ -76,7 +67,6 @@ import vazkii.psi.common.core.handler.PsiSoundHandler;
 import vazkii.psi.common.core.handler.capability.CADData;
 import vazkii.psi.common.crafting.ModCraftingRecipes;
 import vazkii.psi.common.item.base.ModItems;
-import vazkii.psi.common.item.component.ItemCADSocket;
 import vazkii.psi.common.lib.LibPieceGroups;
 import vazkii.psi.common.network.MessageRegister;
 import vazkii.psi.common.network.message.MessageCADDataSync;
@@ -95,10 +85,7 @@ import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ItemCAD extends Item implements ICAD, ISpellSettable {
-
-	private static final String TAG_BULLET_PREFIX = "bullet";
-	private static final String TAG_SELECTED_SLOT = "selectedSlot";
+public class ItemCAD extends Item implements ICAD {
 
 	// Legacy tags
 	private static final String TAG_TIME_LEGACY = "time";
@@ -121,13 +108,17 @@ public class ItemCAD extends Item implements ICAD, ISpellSettable {
 	}
 
 	private ICADData getCADData(ItemStack stack) {
-		return stack.getCapability(PsiAPI.CAD_DATA_CAPABILITY).orElseGet(CADData::new);
+		return stack.getCapability(PsiAPI.CAD_DATA_CAPABILITY).orElseGet(() -> new CADData(stack));
+	}
+
+	private ISocketable getSocketable(ItemStack stack) {
+		return stack.getCapability(PsiAPI.SOCKETABLE_CAPABILITY).orElseGet(() -> new CADData(stack));
 	}
 
 	@Nullable
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
-		CADData data = new CADData();
+		CADData data = new CADData(stack);
 		if (nbt != null && nbt.contains("Parent", Constants.NBT.TAG_COMPOUND)) {
 			data.deserializeNBT(nbt.getCompound("Parent"));
 		}
@@ -205,8 +196,9 @@ public class ItemCAD extends Item implements ICAD, ISpellSettable {
 			}
 			return new ActionResult<>(ActionResultType.SUCCESS, itemStackIn);
 		}
+		ISocketable sockets = getSocketable(playerCad);
 
-		ItemStack bullet = getBulletInSocket(itemStackIn, getSelectedSlot(itemStackIn));
+		ItemStack bullet = sockets.getSelectedBullet();
 		if (!getComponentInSlot(playerCad, EnumCADComponent.DYE).isEmpty() && ContributorSpellCircleHandler.isContributor(playerIn.getName().getString().toLowerCase())) {
 			ItemStack dyeStack = getComponentInSlot(playerCad, EnumCADComponent.DYE);
 			if (!((ICADColorizer) dyeStack.getItem()).getContributorName(dyeStack).equals(playerIn.getName().getString().toLowerCase())) {
@@ -227,17 +219,6 @@ public class ItemCAD extends Item implements ICAD, ISpellSettable {
 		}
 
 		return new ActionResult<>(did ? ActionResultType.PASS : ActionResultType.PASS, itemStackIn);
-	}
-
-	@Override
-	public void setSpell(PlayerEntity player, ItemStack stack, Spell spell) {
-		int slot = getSelectedSlot(stack);
-		ItemStack bullet = getBulletInSocket(stack, slot);
-		if (!bullet.isEmpty() && ISpellAcceptor.isAcceptor(bullet)) {
-			ISpellAcceptor.acceptor(bullet).setSpell(player, spell);
-			setBulletInSocket(stack, slot, bullet);
-			player.getCooldownTracker().setCooldown(stack.getItem(), 10);
-		}
 	}
 
 	public static boolean cast(World world, PlayerEntity player, PlayerData data, ItemStack bullet, ItemStack cad, int cd, int particles, float sound, Consumer<SpellContext> predicate) {
@@ -465,49 +446,6 @@ public class ItemCAD extends Item implements ICAD, ISpellSettable {
 	}
 
 	@Override
-	public boolean isSocketSlotAvailable(ItemStack stack, int slot) {
-		int sockets = getStatValue(stack, EnumCADStat.SOCKETS);
-		if (sockets == -1 || sockets > ItemCADSocket.MAX_SOCKETS) {
-			sockets = ItemCADSocket.MAX_SOCKETS;
-		}
-		return slot < sockets;
-	}
-
-	@Override
-	public ItemStack getBulletInSocket(ItemStack stack, int slot) {
-		String name = TAG_BULLET_PREFIX + slot;
-		CompoundNBT cmp = stack.getOrCreateTag().getCompound(name);
-
-		if (cmp.isEmpty()) {
-			return ItemStack.EMPTY;
-		}
-
-		return ItemStack.read(cmp);
-	}
-
-	@Override
-	public void setBulletInSocket(ItemStack stack, int slot, ItemStack bullet) {
-		String name = TAG_BULLET_PREFIX + slot;
-		CompoundNBT cmp = new CompoundNBT();
-
-		if (!bullet.isEmpty()) {
-			bullet.write(cmp);
-		}
-
-		stack.getOrCreateTag().put(name, cmp);
-	}
-
-	@Override
-	public int getSelectedSlot(ItemStack stack) {
-		return stack.getOrCreateTag().getInt(TAG_SELECTED_SLOT);
-	}
-
-	@Override
-	public void setSelectedSlot(ItemStack stack, int slot) {
-		stack.getOrCreateTag().putInt(TAG_SELECTED_SLOT, slot);
-	}
-
-	@Override
 	public int getTime(ItemStack stack) {
 		return getCADData(stack).getTime();
 	}
@@ -595,7 +533,7 @@ public class ItemCAD extends Item implements ICAD, ISpellSettable {
 	}
 
 	/**
-	 * Mostly handled by forge assigning tool classes to vanilla blocks {@link ForgeHooks#initTools()}.
+	 * Mostly handled by forge assigning tool classes to vanilla blocks in ForgeHooks#initTools().
 	 * Currently this only needs Materials special cased to match the vanilla pickaxe but this may change.
 	 *
 	 * @see PickaxeItem#canHarvestBlock(BlockState)
@@ -688,11 +626,6 @@ public class ItemCAD extends Item implements ICAD, ISpellSettable {
 				}
 			}
 		});
-	}
-
-	@Override
-	public boolean requiresSneakForSpellSet(ItemStack stack) {
-		return true;
 	}
 
 	@Nonnull
