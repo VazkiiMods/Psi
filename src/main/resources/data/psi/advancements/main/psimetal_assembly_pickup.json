@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "psi:cad_assembly_psimetal"
+    },
+    "title": {
+      "translate": "advancement.psi:psimetal_assembly_pickup"
+    },
+    "description": {
+      "translate": "advancement.psi:psimetal_assembly_pickup.desc"
+    }
+  },
+  "parent": "psi:main/psimetal_pickup",
+  "criteria": {
+    "flower": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "psi:cad_assembly_psimetal"
+          }
+        ]
+      }
+    }
+  }
+}

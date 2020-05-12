@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "psi:cad_assembly_gold"
+    },
+    "title": {
+      "translate": "advancement.psi:gold_assembly_pickup"
+    },
+    "description": {
+      "translate": "advancement.psi:gold_assembly_pickup.desc"
+    }
+  },
+  "parent": "psi:main/root",
+  "criteria": {
+    "flower": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "psi:cad_assembly_gold"
+          }
+        ]
+      }
+    }
+  }
+}

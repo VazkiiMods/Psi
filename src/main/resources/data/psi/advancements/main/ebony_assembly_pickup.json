@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "psi:cad_assembly_ebony_psimetal"
+    },
+    "title": {
+      "translate": "advancement.psi:ebony_assembly_pickup"
+    },
+    "description": {
+      "translate": "advancement.psi:ebony_assembly_pickup.desc"
+    }
+  },
+  "parent": "psi:main/ebony_pickup",
+  "criteria": {
+    "flower": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "psi:cad_assembly_ebony_psimetal"
+          }
+        ]
+      }
+    }
+  }
+}

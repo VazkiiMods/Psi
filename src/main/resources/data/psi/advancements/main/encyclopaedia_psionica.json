@@ -1,0 +1,28 @@
+{
+  "display": {
+    "icon": {
+      "item": "patchouli:guide_book",
+      "nbt": "{\"patchouli:book\": \"psi:encyclopaedia_psionica\"}"
+    },
+    "title": {
+      "translate": "advancement.psi:encyclopaedia_psionica"
+    },
+    "description": {
+      "translate": "advancement.psi:encyclopaedia_psionica.desc"
+    }
+  },
+  "parent": "psi:main/iron_cad_pickup",
+  "criteria": {
+    "flower": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "patchouli:guide_book",
+            "nbt": "{\"patchouli:book\": \"psi:encyclopaedia_psionica\"}"
+          }
+        ]
+      }
+    }
+  }
+}

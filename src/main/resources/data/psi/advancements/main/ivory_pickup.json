@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "psi:ivory_substance"
+    },
+    "title": {
+      "translate": "advancement.psi:ivory_pickup"
+    },
+    "description": {
+      "translate": "advancement.psi:ivory_pickup.desc"
+    }
+  },
+  "parent": "psi:main/psimetal_assembly_pickup",
+  "criteria": {
+    "flower": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "psi:ivory_substance"
+          }
+        ]
+      }
+    }
+  }
+}

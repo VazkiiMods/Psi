@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "psi:psidust"
+    },
+    "title": {
+      "translate": "advancement.psi:psidust"
+    },
+    "description": {
+      "translate": "advancement.psi:psidust.desc"
+    }
+  },
+  "parent": "psi:main/iron_cad_pickup",
+  "criteria": {
+    "flower": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "psi:psidust"
+          }
+        ]
+      }
+    }
+  }
+}
