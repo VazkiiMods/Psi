@@ -1,0 +1,15 @@
+{
+  "type": "psi:trick_crafting",
+  "input": {
+    "item": "minecraft:book"
+  },
+  "output": {
+    "nbt": {
+      "patchouli:book": "psi:encyclopaedia_psionica"
+    },
+    "item": "patchouli:guide_book"
+  },
+  "cad": {
+    "item": "psi:cad_assembly_iron"
+  }
+}

@@ -19,7 +19,7 @@
         ],
         "key": {
           "M": {
-            "item": "minecraft:glistering_melon_slice"
+            "item": "minecraft:gunpowder"
           },
           "R": {
             "tag": "forge:ingots/iron"
