@@ -27,7 +27,7 @@ public interface ITileCADAssembler {
 
 	ItemStack getSocketableStack();
 
-	ISocketableCapability getSocketable();
+	ISocketable getSocketable();
 
 	boolean setSocketableStack(ItemStack stack);
 

@@ -18,7 +18,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 
 import vazkii.psi.api.PsiAPI;
-import vazkii.psi.api.cad.ISocketableCapability;
+import vazkii.psi.api.cad.ISocketable;
 import vazkii.psi.api.cad.ISocketableController;
 import vazkii.psi.common.core.handler.PsiSoundHandler;
 
@@ -63,7 +63,7 @@ public class ItemExosuitController extends Item implements ISocketableController
 		List<ItemStack> stacks = new ArrayList<>();
 		for (int i = 0; i < 4; i++) {
 			ItemStack armor = player.inventory.armorInventory.get(3 - i);
-			if (!armor.isEmpty() && ISocketableCapability.isSocketable(armor)) {
+			if (!armor.isEmpty() && ISocketable.isSocketable(armor)) {
 				stacks.add(armor);
 			}
 		}

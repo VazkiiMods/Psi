@@ -19,11 +19,14 @@ import javax.annotation.Nullable;
  * An item that provides this can have a spell set through right clicking the
  * Spell Programmer, as well as being a valid item for a CAD (if it
  * returns true from {@link #castableFromSocket()}).
+ *
+ * If the item this counts as a Spell Container, by which
+ * a {@link Spell} can be derived and cast from it. This is used by Spell Bullets.
  */
 public interface ISpellAcceptor {
 
 	static boolean isAcceptor(ItemStack stack) {
-		return stack.getCapability(PsiAPI.SPELL_ACCEPTOR_CAPABILITY).isPresent();
+		return !stack.isEmpty() && stack.getCapability(PsiAPI.SPELL_ACCEPTOR_CAPABILITY).isPresent();
 	}
 
 	static boolean isContainer(ItemStack stack) {
@@ -31,7 +34,7 @@ public interface ISpellAcceptor {
 	}
 
 	static boolean hasSpell(ItemStack stack) {
-		return isContainer(stack) && stack.getCapability(PsiAPI.SPELL_ACCEPTOR_CAPABILITY)
+		return stack.getCapability(PsiAPI.SPELL_ACCEPTOR_CAPABILITY)
 				.map(ISpellAcceptor::containsSpell)
 				.orElse(false);
 	}
@@ -42,18 +45,37 @@ public interface ISpellAcceptor {
 
 	void setSpell(PlayerEntity player, Spell spell);
 
-	boolean castableFromSocket();
+	/**
+	 * @return true if this can be placed in a CAD. Override the following methods in that case.
+	 */
+	default boolean castableFromSocket() {
+		return false;
+	}
 
 	@Nullable
-	Spell getSpell();
+	default Spell getSpell() {
+		return null;
+	}
 
-	boolean containsSpell();
+	default boolean containsSpell() {
+		return false;
+	}
 
-	void castSpell(SpellContext context);
+	/**
+	 * Casts this spell given the passed in context. The spell should be casted
+	 * using {@link CompiledSpell#execute(SpellContext)} on {@link SpellContext#cspell}. Thrown exceptions
+	 * must be handled and not leaked. Ideal implementation of exception catching is to
+	 * alarm the player through a chat message.
+	 */
+	default void castSpell(SpellContext context) {}
 
-	double getCostModifier();
+	default double getCostModifier() {
+		return 1.0;
+	}
 
-	boolean isCADOnlyContainer();
+	default boolean isCADOnlyContainer() {
+		return false;
+	}
 
 	default boolean requiresSneakForSpellSet() {
 		return false;

@@ -30,7 +30,7 @@ import net.minecraftforge.registries.ObjectHolder;
 
 import vazkii.psi.api.cad.EnumCADComponent;
 import vazkii.psi.api.cad.ICADComponent;
-import vazkii.psi.api.cad.ISocketableCapability;
+import vazkii.psi.api.cad.ISocketable;
 import vazkii.psi.api.inventory.InventorySocketable;
 import vazkii.psi.api.spell.ISpellAcceptor;
 import vazkii.psi.common.block.tile.TileCADAssembler;
@@ -172,7 +172,7 @@ public class ContainerCADAssembler extends Container {
 					if (!mergeItemStack(stackInSlot, componentSlot, componentSlot + 1, false)) {
 						return ItemStack.EMPTY;
 					}
-				} else if (ISocketableCapability.isSocketable(stackInSlot)) {
+				} else if (ISocketable.isSocketable(stackInSlot)) {
 					if (!mergeItemStack(stackInSlot, socketableStart, socketableEnd, false)) {
 						return ItemStack.EMPTY;
 					}

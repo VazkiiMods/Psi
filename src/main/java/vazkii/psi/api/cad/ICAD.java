@@ -22,7 +22,7 @@ import vazkii.psi.api.spell.piece.PieceCraftingTrick;
  * Base interface for a CAD. You probably shouldn't implement this,
  * unless you absolutely know what you are doing.
  */
-public interface ICAD extends ISocketable {
+public interface ICAD {
 
 	String TAG_COMPONENT_PREFIX = "component";
 

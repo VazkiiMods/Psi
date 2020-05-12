@@ -20,12 +20,14 @@ import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.IArmorMaterial;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.LazyValue;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fml.DistExecutor;
 
 import vazkii.psi.api.PsiAPI;
@@ -40,6 +42,7 @@ import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
 import vazkii.psi.common.item.ItemCAD;
 import vazkii.psi.common.item.tool.IPsimetalTool;
+import vazkii.psi.common.item.tool.ToolSocketable;
 import vazkii.psi.common.lib.LibResources;
 
 import javax.annotation.Nonnull;
@@ -99,6 +102,12 @@ public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiE
 		IPsimetalTool.regen(stack, entityIn, isSelected);
 	}
 
+	@Nullable
+	@Override
+	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
+		return new ArmorSocketable(stack, 3);
+	}
+
 	public void cast(ItemStack stack, PsiArmorEvent event) {
 		PlayerData data = PlayerDataHandler.get(event.getPlayer());
 		ItemStack playerCad = PsiAPI.getPlayerCAD(event.getPlayer());
@@ -106,7 +115,7 @@ public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiE
 		if (isEnabled(stack) && !playerCad.isEmpty()) {
 			int timesCast = stack.getOrCreateTag().getInt(TAG_TIMES_CAST);
 
-			ItemStack bullet = getBulletInSocket(stack, getSelectedSlot(stack));
+			ItemStack bullet = ISocketable.socketable(stack).getSelectedBullet();
 			ItemCAD.cast(event.getPlayer().getEntityWorld(), event.getPlayer(), data, bullet, playerCad, getCastCooldown(stack), 0, getCastVolume(), (SpellContext context) -> {
 				context.tool = stack;
 				context.attackingEntity = event.attacker;
@@ -123,18 +132,6 @@ public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiE
 		if (event.type.equals(getTrueEvent(stack))) {
 			cast(stack, event);
 		}
-	}
-
-	@Override
-	public void setSelectedSlot(ItemStack stack, int slot) {
-		IPsimetalTool.super.setSelectedSlot(stack, slot);
-		stack.getOrCreateTag().putInt(TAG_TIMES_CAST, 0);
-	}
-
-	@Override
-	public void setBulletInSocket(ItemStack stack, int slot, ItemStack bullet) {
-		IPsimetalTool.super.setBulletInSocket(stack, slot, bullet);
-		stack.getOrCreateTag().putInt(TAG_TIMES_CAST, 0);
 	}
 
 	public String getEvent(ItemStack stack) {
@@ -199,9 +196,23 @@ public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiE
 		return new ModelPsimetalExosuit(slot);
 	}
 
-	@Override
-	public boolean requiresSneakForSpellSet(ItemStack stack) {
-		return false;
+	public static class ArmorSocketable extends ToolSocketable {
+		public ArmorSocketable(ItemStack tool, int slots) {
+			super(tool, slots);
+		}
+
+		@Override
+		public void setSelectedSlot(int slot) {
+			super.setSelectedSlot(slot);
+			tool.getOrCreateTag().putInt(TAG_TIMES_CAST, 0);
+		}
+
+		@Override
+		public void setBulletInSocket(int slot, ItemStack bullet) {
+			super.setBulletInSocket(slot, bullet);
+			tool.getOrCreateTag().putInt(TAG_TIMES_CAST, 0);
+		}
+
 	}
 
 }

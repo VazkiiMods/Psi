@@ -10,8 +10,6 @@ package vazkii.psi.common.core.handler.capability;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
 import net.minecraft.util.Direction;
@@ -25,18 +23,12 @@ import net.minecraftforge.fml.common.Mod;
 
 import vazkii.psi.api.cad.ICADData;
 import vazkii.psi.api.cad.IPsiBarDisplay;
-import vazkii.psi.api.cad.IShowPsiBar;
 import vazkii.psi.api.cad.ISocketable;
-import vazkii.psi.api.cad.ISocketableCapability;
 import vazkii.psi.api.spell.ISpellAcceptor;
 import vazkii.psi.api.spell.ISpellImmune;
-import vazkii.psi.api.spell.ISpellSettable;
 import vazkii.psi.api.spell.detonator.IDetonationHandler;
 import vazkii.psi.common.core.capability.CapabilityTriggerSensor;
-import vazkii.psi.common.core.handler.capability.wrappers.AcceptorWrapper;
-import vazkii.psi.common.core.handler.capability.wrappers.PsiBarWrapper;
 import vazkii.psi.common.core.handler.capability.wrappers.SimpleProvider;
-import vazkii.psi.common.core.handler.capability.wrappers.SocketWrapper;
 import vazkii.psi.common.lib.LibMisc;
 
 import java.util.concurrent.Callable;
@@ -48,8 +40,8 @@ import static vazkii.psi.api.PsiAPI.SPELL_IMMUNE_CAPABILITY;
 public class CapabilityHandler {
 
 	public static void register() {
-		register(ICADData.class, CADData::new);
-		register(ISocketableCapability.class, SocketWheel::new);
+		register(ICADData.class, CapabilityHandler::noDefault);
+		register(ISocketable.class, SocketWheel::new);
 		register(ISpellAcceptor.class, SpellHolder::new);
 
 		registerSingleDefault(IDetonationHandler.class, () -> {});
@@ -63,6 +55,10 @@ public class CapabilityHandler {
 
 	private static <T> void register(Class<T> clazz, Callable<T> provider) {
 		CapabilityManager.INSTANCE.register(clazz, new CapabilityFactory<>(), provider);
+	}
+
+	private static <T> T noDefault() {
+		throw new UnsupportedOperationException("No default instance!");
 	}
 
 	private static class CapabilityFactory<T> implements Capability.IStorage<T> {
@@ -84,27 +80,9 @@ public class CapabilityHandler {
 
 	}
 
-	private static final ResourceLocation SOCKET = new ResourceLocation(LibMisc.MOD_ID, "socketable");
-	private static final ResourceLocation ACCEPTOR = new ResourceLocation(LibMisc.MOD_ID, "spell");
-	private static final ResourceLocation PSI_BAR = new ResourceLocation(LibMisc.MOD_ID, "bar");
 	private static final ResourceLocation SPELL_IMMUNE = new ResourceLocation(LibMisc.MOD_ID, "immune");
 	private static final ResourceLocation DETONATOR = new ResourceLocation(LibMisc.MOD_ID, "detonator");
 	public static final ResourceLocation TRIGGER_SENSOR = new ResourceLocation(LibMisc.MOD_ID, "trigger_sensor");
-
-	@SubscribeEvent
-	public static void attachItemCapabilities(AttachCapabilitiesEvent<ItemStack> event) {
-		Item item = event.getObject().getItem();
-
-		if (item instanceof ISocketable) {
-			event.addCapability(SOCKET, new SocketWrapper(event.getObject()));
-		}
-		if (event.getObject().getItem() instanceof IShowPsiBar) {
-			event.addCapability(PSI_BAR, new PsiBarWrapper(event.getObject()));
-		}
-		if (event.getObject().getItem() instanceof ISpellSettable) {
-			event.addCapability(ACCEPTOR, new AcceptorWrapper(event.getObject()));
-		}
-	}
 
 	@SubscribeEvent
 	public static void attachEntityCapabilities(AttachCapabilitiesEvent<Entity> event) {
