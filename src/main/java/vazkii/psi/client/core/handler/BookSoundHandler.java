@@ -18,11 +18,12 @@ import net.minecraftforge.fml.common.Mod;
 
 import org.lwjgl.glfw.GLFW;
 
-import vazkii.patchouli.client.book.gui.GuiBook;
-import vazkii.patchouli.common.book.BookRegistry;
+import vazkii.patchouli.api.PatchouliAPI;
 import vazkii.psi.common.core.handler.PsiSoundHandler;
 import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.lib.LibResources;
+
+import java.util.Objects;
 
 // https://github.com/Vazkii/Botania/blob/faeaf7285b0c9ef0918ad1cb2cbff88ed3ea1d65/src/main/java/vazkii/botania/client/core/handler/KonamiHandler.java
 @Mod.EventBusSubscriber(modid = LibMisc.MOD_ID, value = Dist.CLIENT)
@@ -37,8 +38,7 @@ public class BookSoundHandler {
 	private static int bookTime = 0;
 
 	private static boolean isBookOpen() {
-		Minecraft mc = Minecraft.getInstance();
-		return mc.currentScreen instanceof GuiBook && ((GuiBook) mc.currentScreen).book == BookRegistry.INSTANCE.books.get(LibResources.PATCHOULI_BOOK);
+		return Objects.equals(PatchouliAPI.instance.getOpenBookGui(), LibResources.PATCHOULI_BOOK);
 	}
 
 	@SubscribeEvent
