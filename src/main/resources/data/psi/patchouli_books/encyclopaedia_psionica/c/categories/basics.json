@@ -1,0 +1,6 @@
+{
+  "name": "psi.book.category.basics",
+  "description": "psi.book.category.basics.desc",
+  "icon": "psi:textures/spell/trick_debug.png",
+  "sortnum": 0
+}

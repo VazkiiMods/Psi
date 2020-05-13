@@ -1,0 +1,16 @@
+{
+  "name": "psi.book.entry.basicBullet",
+  "category": "items",
+  "icon": "psi:spell_bullet",
+  "pages": [
+    {
+      "type": "text",
+      "text": "psi.book.page.basicBullet.0"
+    },
+    {
+      "type": "crafting",
+      "text": "psi.book.page.basicBullet.1",
+      "recipe": "psi:spell_bullet_basic"
+    }
+  ]
+}

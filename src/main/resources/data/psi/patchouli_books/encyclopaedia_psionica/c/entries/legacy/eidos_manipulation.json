@@ -1,0 +1,23 @@
+{
+  "name": "psi.book.entry.eidosManipulation",
+  "category": "legacy",
+  "icon": "psi:textures/spell/trick_eidos_reversal.png",
+  "pages": [
+    {
+      "type": "text",
+      "text": "psi.book.page.eidosManipulation.0"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.eidosManipulation.1"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.eidosManipulation.2"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.eidosManipulation.3"
+    }
+  ]
+}

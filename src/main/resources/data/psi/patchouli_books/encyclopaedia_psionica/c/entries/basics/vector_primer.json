@@ -1,0 +1,110 @@
+{
+  "name": "psi.book.entry.vectorPrimer",
+  "category": "basics",
+  "icon": "psi:textures/spell/operator_vector_construct.png",
+  "pages": [
+    {
+      "type": "link",
+      "text": "psi.book.page.vectorPrimer.0",
+      "url": "https://www.youtube.com/watch?v=fNk_zzaMoSs",
+      "link_text": "3Blue1Brown"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.vectorPrimer.1"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.vectorPrimer.2"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.vectorPrimer.3"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.vectorPrimer.4"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.vectorPrimer.5"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.vectorPrimer.6"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.vectorPrimer.7"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.vectorPrimer.8"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.vectorPrimer.9"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.vectorPrimer.10"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.vectorPrimer.11"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.vectorPrimer.12"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.vectorPrimer.13"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.vectorPrimer.14"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.vectorPrimer.15"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.vectorPrimer.16"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.vectorPrimer.17"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.vectorPrimer.18"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.vectorPrimer.19"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.vectorPrimer.20"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.vectorPrimer.21"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.vectorPrimer.22",
+      "anchor": "ops"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.vectorPrimer.23"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.vectorPrimer.24"
+    }
+  ]
+}

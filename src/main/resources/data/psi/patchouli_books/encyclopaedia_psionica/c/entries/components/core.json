@@ -1,0 +1,75 @@
+{
+  "name": "psi.book.entry.core",
+  "category": "components",
+  "icon": "psi:cad_core_basic",
+  "pages": [
+    {
+      "type": "text",
+      "text": "psi.book.page.core.0"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.core.1"
+    },
+    {
+      "type": "spotlight",
+      "text": "psi.book.page.core.2",
+      "item": "psi:cad_core_basic",
+      "link_recipe": false,
+      "anchor": "basic"
+    },
+    {
+      "type": "crafting",
+      "text": "psi.book.page.core.3",
+      "recipe": "psi:cad_core_basic"
+    },
+    {
+      "type": "spotlight",
+      "text": "psi.book.page.core.4",
+      "item": "psi:cad_core_overclocked",
+      "link_recipe": false,
+      "anchor": "overclocked"
+    },
+    {
+      "type": "crafting",
+      "text": "psi.book.page.core.5",
+      "recipe": "psi:cad_core_overclocked"
+    },
+    {
+      "type": "spotlight",
+      "text": "psi.book.page.core.6",
+      "item": "psi:cad_core_conductive",
+      "link_recipe": false,
+      "anchor": "conductive"
+    },
+    {
+      "type": "crafting",
+      "text": "psi.book.page.core.7",
+      "recipe": "psi:cad_core_conductive"
+    },
+    {
+      "type": "spotlight",
+      "text": "psi.book.page.core.8",
+      "item": "psi:cad_core_hyperclocked",
+      "link_recipe": false,
+      "anchor": "hyperclocked"
+    },
+    {
+      "type": "crafting",
+      "text": "psi.book.page.core.9",
+      "recipe": "psi:cad_core_hyperclocked"
+    },
+    {
+      "type": "spotlight",
+      "text": "psi.book.page.core.10",
+      "item": "psi:cad_core_radiative",
+      "link_recipe": false,
+      "anchor": "radiative"
+    },
+    {
+      "type": "crafting",
+      "text": "psi.book.page.core.11",
+      "recipe": "psi:cad_core_radiative"
+    }
+  ]
+}

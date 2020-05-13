@@ -1,0 +1,35 @@
+{
+  "name": "psi.book.entry.detectionDynamics",
+  "category": "legacy",
+  "icon": "psi:textures/spell/trick_switch_target_slot.png",
+  "pages": [
+    {
+      "type": "text",
+      "text": "psi.book.page.detectionDynamics.0"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.detectionDynamics.1"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.detectionDynamics.2"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.detectionDynamics.3"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.detectionDynamics.4"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.detectionDynamics.5"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.detectionDynamics.6"
+    }
+  ]
+}

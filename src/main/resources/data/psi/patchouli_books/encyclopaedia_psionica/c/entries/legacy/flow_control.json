@@ -1,0 +1,39 @@
+{
+  "name": "psi.book.entry.flowControl",
+  "category": "legacy",
+  "icon": "psi:textures/spell/trick_delay.png",
+  "pages": [
+    {
+      "type": "text",
+      "text": "psi.book.page.flowControl.0"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.flowControl.1"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.flowControl.2"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.flowControl.3"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.flowControl.4"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.flowControl.5"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.flowControl.6"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.flowControl.7"
+    }
+  ]
+}

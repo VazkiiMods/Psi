@@ -1,0 +1,15 @@
+{
+  "name": "psi.book.entry.smeltery",
+  "category": "legacy",
+  "icon": "psi:textures/spell/trick_smelt_item.png",
+  "pages": [
+    {
+      "type": "text",
+      "text": "psi.book.page.smeltery.0"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.smeltery.1"
+    }
+  ]
+}

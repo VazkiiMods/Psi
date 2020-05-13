@@ -1,0 +1,43 @@
+{
+  "name": "psi.book.entry.blockworks",
+  "category": "legacy",
+  "icon": "psi:textures/spell/trick_break_in_sequence.png",
+  "pages": [
+    {
+      "type": "text",
+      "text": "psi.book.page.blockworks.0"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.blockworks.1"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.blockworks.2"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.blockworks.3"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.blockworks.4"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.blockworks.5"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.blockworks.6"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.blockworks.7"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.blockworks.8"
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "name": "psi.book.entry.secondaryOperators",
+  "category": "legacy",
+  "icon": "psi:textures/spell/operator_square.png",
+  "pages": [
+    {
+      "type": "text",
+      "text": "psi.book.page.secondaryOperators.0"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.secondaryOperators.1"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.secondaryOperators.2"
+    }
+  ]
+}

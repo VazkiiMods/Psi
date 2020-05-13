@@ -1,0 +1,23 @@
+{
+  "name": "psi.book.entry.memoryManagement",
+  "category": "legacy",
+  "icon": "psi:textures/spell/trick_save_vector.png",
+  "pages": [
+    {
+      "type": "text",
+      "text": "psi.book.page.memoryManagement.0"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.memoryManagement.1"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.memoryManagement.2"
+    },
+    {
+      "type": "text",
+      "text": "psi.book.page.memoryManagement.3"
+    }
+  ]
+}
