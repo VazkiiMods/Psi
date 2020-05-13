@@ -25,8 +25,6 @@ import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistries;
 
-import vazkii.psi.common.crafting.recipe.TrickRecipe;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -136,7 +134,7 @@ public class TrickRecipeBuilder {
 		@Nonnull
 		@Override
 		public IRecipeSerializer<?> getSerializer() {
-			return Objects.requireNonNull(ForgeRegistries.RECIPE_SERIALIZERS.getValue(TrickRecipe.TYPE_ID));
+			return Objects.requireNonNull(ForgeRegistries.RECIPE_SERIALIZERS.getValue(ITrickRecipe.TYPE_ID));
 		}
 
 		@Nullable
