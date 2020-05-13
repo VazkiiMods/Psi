@@ -382,7 +382,7 @@
   "psi.spellpiece.operator_vector_rotate": "Operator: Rotate Vector",
   "psi.spellpiece.operator_vector_rotate.desc": "Rotates a vector around an axis",
   "psi.spellpiece.operator_gamma_function": "Operator: Gamma Function",
-  "psi.spellpiece.operator_gamma_function.desc": "\u0393(x), equivalent to (x+1)!",
+  "psi.spellpiece.operator_gamma_function.desc": "\u0393(x), equivalent to (x-1)!",
   "psi.spellpiece.operator_list_size": "Operator: List Size",
   "psi.spellpiece.operator_list_size.desc": "Gets the number of entities in a list",
   "psi.spellpiece.operator_list_union": "Operator: List Concatenation",
