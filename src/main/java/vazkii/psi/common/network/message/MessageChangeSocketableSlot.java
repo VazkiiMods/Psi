@@ -40,7 +40,7 @@ public class MessageChangeSocketableSlot {
 			ServerPlayerEntity player = context.get().getSender();
 			ItemStack stack = player.getHeldItem(Hand.MAIN_HAND);
 
-			if (!stack.isEmpty()) {
+			if (!stack.isEmpty() && stack.getCapability(PsiAPI.SOCKETABLE_CAPABILITY).isPresent()) {
 				stack.getCapability(PsiAPI.SOCKETABLE_CAPABILITY).ifPresent(cap -> cap.setSelectedSlot(slot));
 			} else {
 				stack = player.getHeldItem(Hand.OFF_HAND);
