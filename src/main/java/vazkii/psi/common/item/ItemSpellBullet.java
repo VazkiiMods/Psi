@@ -151,6 +151,11 @@ public class ItemSpellBullet extends Item {
 		}
 
 		@Override
+		public boolean castableFromSocket() {
+			return true;
+		}
+
+		@Override
 		public boolean isCADOnlyContainer() {
 			return bulletItem().isCADOnlyContainer(stack);
 		}
