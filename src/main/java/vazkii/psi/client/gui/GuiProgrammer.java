@@ -226,8 +226,8 @@ public class GuiProgrammer extends Screen {
 								if (modName.equals("psi")) {
 									boolean sendMessage = false;
 									String modVersion = ((CompoundNBT) mod).getString(Spell.TAG_MOD_VERSION);
-									int[] versionEntry = Arrays.stream(modVersion.replaceFirst("^\\D+","").split("\\D+")).mapToInt(Integer::parseInt).toArray();
-									int[] currentVersion = Arrays.stream(ModList.get().getModContainerById("psi").get().getModInfo().getVersion().toString().replaceFirst("^\\D+","").split("\\D+")).mapToInt(Integer::parseInt).toArray();
+									int[] versionEntry = Arrays.stream(modVersion.replaceFirst("^\\D+", "").split("\\D+")).mapToInt(Integer::parseInt).toArray();
+									int[] currentVersion = Arrays.stream(ModList.get().getModContainerById("psi").get().getModInfo().getVersion().toString().replaceFirst("^\\D+", "").split("\\D+")).mapToInt(Integer::parseInt).toArray();
 									for (int i = 0; i < versionEntry.length; i++) {
 										if (i + 1 > currentVersion.length) {
 											sendMessage = true;
