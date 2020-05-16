@@ -167,7 +167,7 @@ public class ClientProxy implements IProxy {
 
 	@Override
 	public int getColorForColorizer(ItemStack colorizer) {
-		if (colorizer.isEmpty()) {
+		if (colorizer.isEmpty() || !(colorizer.getItem() instanceof ICADColorizer)) {
 			return ICADColorizer.DEFAULT_SPELL_COLOR;
 		}
 		ICADColorizer icc = (ICADColorizer) colorizer.getItem();
