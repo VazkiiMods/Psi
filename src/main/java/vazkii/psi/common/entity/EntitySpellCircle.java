@@ -13,6 +13,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
@@ -85,8 +86,8 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 
 	@Override
 	protected void registerData() {
-		dataManager.register(COLORIZER_DATA, new ItemStack(Blocks.STONE));
-		dataManager.register(BULLET_DATA, new ItemStack(Blocks.STONE));
+		dataManager.register(COLORIZER_DATA, ItemStack.EMPTY);
+		dataManager.register(BULLET_DATA, ItemStack.EMPTY);
 		dataManager.register(CASTER_UUID, Optional.empty());
 		dataManager.register(TIME_ALIVE, 0);
 		dataManager.register(TIMES_CAST, 0);

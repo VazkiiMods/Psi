@@ -89,8 +89,8 @@ public class EntitySpellProjectile extends ThrowableEntity {
 
 	@Override
 	protected void registerData() {
-		dataManager.register(COLORIZER_DATA, new ItemStack(Blocks.STONE));
-		dataManager.register(BULLET_DATA, new ItemStack(Blocks.STONE));
+		dataManager.register(COLORIZER_DATA, ItemStack.EMPTY);
+		dataManager.register(BULLET_DATA, ItemStack.EMPTY);
 		dataManager.register(CASTER_UUID, Optional.empty());
 		dataManager.register(ATTACKTARGET_UUID, Optional.empty());
 	}
