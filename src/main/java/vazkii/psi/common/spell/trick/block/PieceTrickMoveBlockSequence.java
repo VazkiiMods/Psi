@@ -79,12 +79,11 @@ public class PieceTrickMoveBlockSequence extends PieceTrick {
 		for (BlockPos blockPos : positions) {
 			World world = context.caster.world;
 			BlockState state = world.getBlockState(blockPos);
-			Block block = state.getBlock();
 
 			if (world.getTileEntity(blockPos) != null ||
 					state.getPushReaction() != PushReaction.NORMAL ||
 					state.getPlayerRelativeBlockHardness(context.caster, world, blockPos) <= 0 ||
-					!PieceTrickBreakBlock.canHarvestBlock(block, context.caster, world, blockPos, context.tool) ||
+					!PieceTrickBreakBlock.canHarvestBlock(state, context.caster, world, blockPos, context.tool) ||
 					!SpellHelpers.isBlockPosInRadius(context, blockPos) ||
 					!world.isBlockModifiable(context.caster, blockPos) ||
 					world.isAirBlock(blockPos)) {

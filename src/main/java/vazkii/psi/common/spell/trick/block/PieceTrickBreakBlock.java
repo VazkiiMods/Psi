@@ -18,9 +18,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.extensions.IForgeBlock;
+import net.minecraftforge.common.extensions.IForgeBlockState;
 import net.minecraftforge.event.world.BlockEvent.BreakEvent;
 import net.minecraftforge.fluids.IFluidBlock;
 
@@ -89,7 +88,7 @@ public class PieceTrickBreakBlock extends PieceTrick {
 		BlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
 		if (!block.isAir(state, world, pos) && !(block instanceof IFluidBlock) && state.getBlockHardness(world, pos) != -1) {
-			if (!canHarvestBlock(block, player, world, pos, tool)) {
+			if (!canHarvestBlock(state, player, world, pos, tool)) {
 				return;
 			}
 
@@ -121,7 +120,7 @@ public class PieceTrickBreakBlock extends PieceTrick {
 	 */
 	public static BreakEvent createBreakEvent(BlockState state, PlayerEntity player, World world, BlockPos pos, ItemStack tool) {
 		BreakEvent event = new BreakEvent(world, pos, state, player);
-		if (state == null || !ForgeHooks.canHarvestBlock(state, player, world, pos)) // Handle empty block or player unable to break block scenario
+		if (state == null || !canHarvestBlock(state, player, world, pos, tool)) // Handle empty block or player unable to break block scenario
 		{
 			event.setExpToDrop(0);
 		} else {
@@ -135,9 +134,10 @@ public class PieceTrickBreakBlock extends PieceTrick {
 	/**
 	 * Item stack aware harvest check
 	 * Also sets global state {@link PieceTrickBreakBlock#doingHarvestCheck} to true during the check
-	 * @see IForgeBlock#canHarvestBlock(BlockState, IBlockReader, BlockPos, PlayerEntity)
+	 * 
+	 * @see IForgeBlockState#canHarvestBlock(IBlockReader, BlockPos, PlayerEntity)
 	 */
-	public static boolean canHarvestBlock(Block block, PlayerEntity player, World world, BlockPos pos, ItemStack stack) {
+	public static boolean canHarvestBlock(BlockState state, PlayerEntity player, World world, BlockPos pos, ItemStack stack) {
 		// So the CAD can only be used as a tool when a harvest check is ongoing
 		boolean wasChecking = doingHarvestCheck.get();
 		doingHarvestCheck.set(true);
@@ -149,7 +149,7 @@ public class PieceTrickBreakBlock extends PieceTrick {
 		player.inventory.mainInventory.set(player.inventory.currentItem, stack);
 
 		// Harvest check
-		boolean canHarvest = block.canHarvestBlock(world.getBlockState(pos), world, pos, player);
+		boolean canHarvest = state.canHarvestBlock(world, pos, player);
 
 		// Swap back the main hand
 		player.inventory.mainInventory.set(player.inventory.currentItem, oldHeldStack);

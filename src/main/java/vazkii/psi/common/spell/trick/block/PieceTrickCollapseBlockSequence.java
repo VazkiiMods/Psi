@@ -8,7 +8,6 @@
  */
 package vazkii.psi.common.spell.trick.block;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.item.FallingBlockEntity;
 import net.minecraft.item.ItemStack;
@@ -79,14 +78,13 @@ public class PieceTrickCollapseBlockSequence extends PieceTrick {
 			BlockPos posDown = blockPos.down();
 			BlockState state = world.getBlockState(blockPos);
 			BlockState stateDown = world.getBlockState(posDown);
-			Block block = state.getBlock();
 
 			if (!world.isBlockModifiable(context.caster, blockPos)) {
 				return null;
 			}
 
 			if (stateDown.isAir(world, posDown) && state.getBlockHardness(world, blockPos) != -1 &&
-					PieceTrickBreakBlock.canHarvestBlock(block, context.caster, world, blockPos, tool) &&
+					PieceTrickBreakBlock.canHarvestBlock(state, context.caster, world, blockPos, tool) &&
 					world.getTileEntity(blockPos) == null) {
 
 				BlockEvent.BreakEvent event = PieceTrickBreakBlock.createBreakEvent(state, context.caster, world, blockPos, tool);
