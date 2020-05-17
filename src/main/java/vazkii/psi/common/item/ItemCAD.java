@@ -70,10 +70,12 @@ import vazkii.psi.common.item.component.ItemCADSocket;
 import vazkii.psi.common.lib.LibItemNames;
 import vazkii.psi.common.network.message.MessageCADDataSync;
 import vazkii.psi.common.network.message.MessageVisualEffect;
+import vazkii.psi.common.spell.trick.block.PieceTrickBreakBlock;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -171,13 +173,6 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 		ItemStack stack = playerIn.getHeldItem(hand);
 		Block block = worldIn.getBlockState(pos).getBlock(); 
 		return block == ModBlocks.programmer ? ((BlockProgrammer) block).setSpell(worldIn, pos, playerIn, stack) : EnumActionResult.PASS;
-	}
-
-	@Override
-	public float getDestroySpeed(ItemStack stack, IBlockState state) {
-		if(state.getMaterial().isToolNotRequired())
-			return 1.0f;
-		return 0.0f;
 	}
 
 	@Nonnull
@@ -550,6 +545,23 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 		return getCADData(stack).getSavedVector(memorySlot);
 	}
 
+	@Override
+	public int getHarvestLevel(ItemStack stack, @Nonnull String toolClass, @Nullable EntityPlayer player, @Nullable IBlockState blockState) {
+		if (!PieceTrickBreakBlock.doingHarvestCheck.get()) {
+			return -1;
+		}
+		return super.getHarvestLevel(stack, toolClass, player, blockState);
+	}
+
+	@Nonnull
+	@Override
+	public Set<String> getToolClasses(ItemStack stack) {
+		if (!PieceTrickBreakBlock.doingHarvestCheck.get()) {
+			return Collections.emptySet();
+		}
+		return super.getToolClasses(stack);
+	}
+
 	/**
 	 * Mostly handled by forge assigning tool classes to vanilla blocks {@link ForgeHooks#initTools()}.
 	 * Currently this only needs Materials special cased to match the vanilla pickaxe but this may change.
@@ -559,6 +571,9 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 	 */
 	@Override
 	public boolean canHarvestBlock(@Nonnull IBlockState state, ItemStack stack) {
+		if (!PieceTrickBreakBlock.doingHarvestCheck.get()) {
+			return super.canHarvestBlock(state, stack);
+		}
 		Block block = state.getBlock();
 		String tool = block.getHarvestTool(state);
 		int level = tool == null ? -1 : getHarvestLevel(stack, tool, null, state);
