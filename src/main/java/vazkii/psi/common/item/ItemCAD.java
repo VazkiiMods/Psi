@@ -71,11 +71,13 @@ import vazkii.psi.common.lib.LibPieceGroups;
 import vazkii.psi.common.network.MessageRegister;
 import vazkii.psi.common.network.message.MessageCADDataSync;
 import vazkii.psi.common.network.message.MessageVisualEffect;
+import vazkii.psi.common.spell.trick.block.PieceTrickBreakBlock;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -174,14 +176,6 @@ public class ItemCAD extends Item implements ICAD {
 		ItemStack stack = playerIn.getHeldItem(hand);
 		Block block = worldIn.getBlockState(pos).getBlock();
 		return block == ModBlocks.programmer ? ((BlockProgrammer) block).setSpell(worldIn, pos, playerIn, stack) : ActionResultType.PASS;
-	}
-
-	@Override
-	public float getDestroySpeed(ItemStack stack, BlockState state) {
-		if (state.getMaterial().isToolNotRequired()) {
-			return 1.0f;
-		}
-		return 0.0f;
 	}
 
 	@Nonnull
@@ -532,6 +526,23 @@ public class ItemCAD extends Item implements ICAD {
 		return getCADData(stack).getSavedVector(memorySlot);
 	}
 
+	@Override
+	public int getHarvestLevel(ItemStack stack, ToolType tool, @Nullable PlayerEntity player, @Nullable BlockState blockState) {
+		if (!PieceTrickBreakBlock.doingHarvestCheck.get()) {
+			return -1;
+		}
+		return super.getHarvestLevel(stack, tool, player, blockState);
+	}
+
+	@Nonnull
+	@Override
+	public Set<ToolType> getToolTypes(ItemStack stack) {
+		if (!PieceTrickBreakBlock.doingHarvestCheck.get()) {
+			return Collections.emptySet();
+		}
+		return super.getToolTypes(stack);
+	}
+
 	/**
 	 * Mostly handled by forge assigning tool classes to vanilla blocks in ForgeHooks#initTools().
 	 * Currently this only needs Materials special cased to match the vanilla pickaxe but this may change.
@@ -541,6 +552,9 @@ public class ItemCAD extends Item implements ICAD {
 	 */
 	@Override
 	public boolean canHarvestBlock(ItemStack stack, @Nonnull BlockState state) {
+		if (!PieceTrickBreakBlock.doingHarvestCheck.get()) {
+			return super.canHarvestBlock(stack, state);
+		}
 		Block block = state.getBlock();
 		ToolType tool = block.getHarvestTool(state);
 		int level = tool == null ? -1 : getHarvestLevel(stack, tool, null, state);
