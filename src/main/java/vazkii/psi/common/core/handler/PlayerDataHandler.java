@@ -14,7 +14,6 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -427,7 +426,7 @@ public class PlayerDataHandler {
 									}
 
 									if (!player.getEntityWorld().isRemote && loopcastTime % 10 == 0) {
-										player.getEntityWorld().playSound(null, player.getX(), player.getY(), player.getZ(), PsiSoundHandler.loopcast, SoundCategory.PLAYERS, 0.5F, (float) (0.35 + Math.random() * 0.85));
+										player.getEntityWorld().playSound(null, player.getX(), player.getY(), player.getZ(), PsiSoundHandler.loopcast, SoundCategory.PLAYERS, 0.1F, (float) (0.15 + Math.random() * 0.85));
 									}
 								}
 
@@ -847,9 +846,6 @@ public class PlayerDataHandler {
 			double x = player.lastTickPosX + (player.getX() - player.lastTickPosX) * partTicks - renderManager.info.getProjectedView().x;
 			double y = player.lastTickPosY + (player.getY() - player.lastTickPosY) * partTicks - renderManager.info.getProjectedView().y;
 			double z = player.lastTickPosZ + (player.getZ() - player.lastTickPosZ) * partTicks - renderManager.info.getProjectedView().z;
-			ms.push();
-			ms.translate(x, y, z); // todo 1.15 recheck this
-
 			float scale = 0.75F;
 			if (loopcasting) {
 				float mul = Math.min(5F, loopcastTime + partTicks) / 5F;
@@ -868,8 +864,10 @@ public class PlayerDataHandler {
 				color = icad.getSpellColor(cad);
 			}
 
-			IRenderTypeBuffer.Impl buffers = IRenderTypeBuffer.immediate(Tessellator.getInstance().getBuffer());
-			RenderSpellCircle.renderSpellCircle(ClientTickHandler.ticksInGame + partTicks, scale, 1, 0, 1, 0, color, ms, buffers);
+			ms.push();
+			ms.translate(x, y + 0.15, z);
+			IRenderTypeBuffer.Impl buffers = Minecraft.getInstance().getBufferBuilders().getEntityVertexConsumers();
+			RenderSpellCircle.renderSpellCircle(ClientTickHandler.ticksInGame + partTicks, scale, 1, 0, -1, 0, color, ms, buffers);
 			buffers.draw();
 			ms.pop();
 		}

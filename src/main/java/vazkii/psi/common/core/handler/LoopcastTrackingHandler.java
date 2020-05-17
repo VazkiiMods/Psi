@@ -55,4 +55,11 @@ public class LoopcastTrackingHandler {
 		MessageRegister.HANDLER.send(PacketDistributor.TRACKING_ENTITY.with(() -> player), new MessageLoopcastSync(player.getEntityId(), data.loopcasting, data.loopcastHand));
 
 	}
+
+	public static void syncForTrackersAndSelf(ServerPlayerEntity playerEntity) {
+		PlayerDataHandler.PlayerData data = PlayerDataHandler.get(playerEntity);
+		MessageLoopcastSync messageLoopcastSync = new MessageLoopcastSync(playerEntity.getEntityId(), data.loopcasting, data.loopcastHand);
+		MessageRegister.HANDLER.send(PacketDistributor.TRACKING_ENTITY.with(() -> playerEntity), messageLoopcastSync);
+		MessageRegister.sendToPlayer(messageLoopcastSync, playerEntity);
+	}
 }
