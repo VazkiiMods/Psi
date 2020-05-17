@@ -13,18 +13,14 @@ import net.minecraft.block.BlockState;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.ToolType;
-import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraftforge.common.extensions.IForgeBlock;
 import net.minecraftforge.event.world.BlockEvent.BreakEvent;
 import net.minecraftforge.fluids.IFluidBlock;
 
@@ -41,6 +37,8 @@ import vazkii.psi.api.spell.param.ParamVector;
 import vazkii.psi.api.spell.piece.PieceTrick;
 
 public class PieceTrickBreakBlock extends PieceTrick {
+
+	public static ThreadLocal<Boolean> doingHarvestCheck = ThreadLocal.withInitial(() -> false);
 
 	SpellParam<Vector3> position;
 
@@ -135,39 +133,29 @@ public class PieceTrickBreakBlock extends PieceTrick {
 	}
 
 	/**
-	 * Based on {@link PlayerInventory#canHarvestBlock(BlockState)}.
-	 */
-	public static boolean canHarvestBlock(BlockState state, ItemStack itemstack) {
-		if (state.getMaterial().isToolNotRequired()) {
-			return true;
-		} else {
-			return !itemstack.isEmpty() && itemstack.canHarvestBlock(state);
-		}
-	}
-
-	/**
-	 * Based on {@link ForgeHooks#canHarvestBlock(BlockState, PlayerEntity, IBlockReader, BlockPos)}
-	 * and {@link PlayerEntity#canHarvestBlock(BlockState)}.
+	 * Item stack aware harvest check
+	 * Also sets global state {@link PieceTrickBreakBlock#doingHarvestCheck} to true during the check
+	 * @see IForgeBlock#canHarvestBlock(BlockState, IBlockReader, BlockPos, PlayerEntity)
 	 */
 	public static boolean canHarvestBlock(Block block, PlayerEntity player, World world, BlockPos pos, ItemStack stack) {
-		BlockState state = world.getBlockState(pos);
-		if (state.getMaterial().isToolNotRequired()) {
-			return true;
-		}
+		// So the CAD can only be used as a tool when a harvest check is ongoing
+		boolean wasChecking = doingHarvestCheck.get();
+		doingHarvestCheck.set(true);
 
-		// ItemStack stack = player.getHeldItemMainhand();
-		ToolType tool = block.getHarvestTool(state);
-		if (stack.isEmpty() || tool == null) {
-			// return player.canHarvestBlock(state);
-			return ForgeEventFactory.doPlayerHarvestCheck(player, state, canHarvestBlock(state, stack));
-		}
+		// Swap the main hand with the stack temporarily to do the harvest check
+		ItemStack oldHeldStack = player.getHeldItemMainhand();
+		//player.setHeldItem(EnumHand.MAIN_HAND, oldHeldStack);
+		// Need to do this instead of the above to prevent the re-equip sound
+		player.inventory.mainInventory.set(player.inventory.currentItem, stack);
 
-		int toolLevel = stack.getItem().getHarvestLevel(stack, tool, player, state);
-		if (toolLevel < 0) {
-			// return player.canHarvestBlock(state);
-			return ForgeEventFactory.doPlayerHarvestCheck(player, state, canHarvestBlock(state, stack));
-		}
+		// Harvest check
+		boolean canHarvest = block.canHarvestBlock(world.getBlockState(pos), world, pos, player);
 
-		return ForgeEventFactory.doPlayerHarvestCheck(player, state, toolLevel >= block.getHarvestLevel(state));
+		// Swap back the main hand
+		player.inventory.mainInventory.set(player.inventory.currentItem, oldHeldStack);
+
+		// Reset the harvest check to its previous value
+		doingHarvestCheck.set(wasChecking);
+		return canHarvest;
 	}
 }
