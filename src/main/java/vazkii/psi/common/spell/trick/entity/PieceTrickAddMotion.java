@@ -113,7 +113,7 @@ public class PieceTrickAddMotion extends PieceTrick {
 		}
 
 		if (e instanceof ServerPlayerEntity) {
-			MessageAdditiveMotion motion = new MessageAdditiveMotion(e.getEntityId(), x,y ,z);
+			MessageAdditiveMotion motion = new MessageAdditiveMotion(e.getEntityId(), x, y, z);
 			MessageRegister.sendToPlayer(motion, (ServerPlayerEntity) e);
 		} else {
 			AdditiveMotionHandler.addMotion(e, x, y, z);
