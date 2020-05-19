@@ -111,7 +111,8 @@ public class EntityListWrapper implements Iterable<Entity> {
 	}
 
 	/**
-	 * Returns the underlying list for this ELW. Unsafe, as clients are able to modify the list so that it doesn't maintain its guarantees.
+	 * Returns the underlying list for this ELW. Unsafe, as clients are able to modify the list so that it doesn't
+	 * maintain its guarantees.
 	 */
 	@Deprecated
 	private List<Entity> unwrap() {
