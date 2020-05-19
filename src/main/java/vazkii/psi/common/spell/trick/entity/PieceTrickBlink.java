@@ -68,7 +68,7 @@ public class PieceTrickBlink extends PieceTrick {
 		Vec3d look = e.getLookVec();
 
 		double offX = look.x * dist;
-		double offY = Math.max(0, look.y * dist);
+		double offY = e.equals(context.caster) ? look.y * dist : Math.max(0, look.y * dist);
 		double offZ = look.z * dist;
 
 		e.setPositionAndUpdate(e.getX() + offX, e.getY() + offY, e.getZ() + offZ);
