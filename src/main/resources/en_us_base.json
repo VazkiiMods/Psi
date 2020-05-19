@@ -283,7 +283,7 @@
   "psi.spellpiece.selector_transmission": "Selector: Last Transmission",
   "psi.spellpiece.selector_transmission.desc": "Gets the last message this CAD received in a given channel",
   "psi.spellpiece.selector_item_count": "Selector: Item Count",
-  "psi.spellpiece.selector_item_count.desc": "Gets the count of all the items in your inventory that are the same as the one in the building slot",
+  "psi.spellpiece.selector_item_count.desc": "Counts the items in your inventory identical to the one in your target slot",
   "psi.spellpiece.operator_sum": "Operator: Sum",
   "psi.spellpiece.operator_sum.desc": "A + B (+ C)",
   "psi.spellpiece.operator_subtract": "Operator: Subtract",
