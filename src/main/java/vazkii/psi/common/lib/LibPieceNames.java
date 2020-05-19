@@ -41,6 +41,7 @@ public final class LibPieceNames {
 	public static final String SELECTOR_CASTER_BATTERY = "selector_caster_battery";
 	public static final String SELECTOR_IS_ELYTRA_FLYING = "selector_is_elytra_flying";
 	public static final String SELECTOR_TRANSMISSION = "selector_transmission";
+	public static final String SELECTOR_ITEM_COUNT = "selector_item_count";
 
 	public static final String OPERATOR_SUM = "operator_sum";
 	public static final String OPERATOR_SUBTRACT = "operator_subtract";

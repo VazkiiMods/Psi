@@ -282,6 +282,8 @@
   "psi.spellpiece.selector_is_elytra_flying.desc": "Returns 1 if the caster has their elytra deployed",
   "psi.spellpiece.selector_transmission": "Selector: Last Transmission",
   "psi.spellpiece.selector_transmission.desc": "Gets the last message this CAD received in a given channel",
+  "psi.spellpiece.selector_item_count": "Selector: Item Count",
+  "psi.spellpiece.selector_item_count.desc": "Gets the count of all the items in your inventory that are the same as the one in the building slot",
   "psi.spellpiece.operator_sum": "Operator: Sum",
   "psi.spellpiece.operator_sum.desc": "A + B (+ C)",
   "psi.spellpiece.operator_subtract": "Operator: Subtract",

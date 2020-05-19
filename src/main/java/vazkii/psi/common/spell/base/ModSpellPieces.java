@@ -114,6 +114,7 @@ public final class ModSpellPieces {
 	public static PieceContainer selectorCasterEnergy;
 	public static PieceContainer selectorSuccessCounter;
 	//public static PieceContainer selectorTransmission;
+	public static PieceContainer selectorItemCount;
 
 	public static PieceContainer operatorSum;
 	public static PieceContainer operatorSubtract;
@@ -287,6 +288,7 @@ public final class ModSpellPieces {
 		selectorCasterEnergy = register(PieceSelectorCasterEnergy.class, LibPieceNames.SELECTOR_CASTER_ENERGY, LibPieceGroups.EXOSUIT_CASTING);
 		selectorIsElytraFlying = register(PieceSelectorIsElytraFlying.class, LibPieceNames.SELECTOR_IS_ELYTRA_FLYING, LibPieceGroups.MOVEMENT);
 		//selectorTransmission = register(PieceSelectorTransmission.class, LibPieceNames.SELECTOR_TRANSMISSION, LibPieceGroups.FLOW_CONTROL);
+		selectorItemCount = register(PieceSelectorItemCount.class, LibPieceNames.SELECTOR_ITEM_COUNT, LibPieceGroups.TOOL_CASTING);
 
 		operatorSum = register(PieceOperatorSum.class, LibPieceNames.OPERATOR_SUM, LibPieceGroups.NUMBERS_INTRO, true);
 		operatorSubtract = register(PieceOperatorSubtract.class, LibPieceNames.OPERATOR_SUBTRACT, LibPieceGroups.NUMBERS_INTRO);
