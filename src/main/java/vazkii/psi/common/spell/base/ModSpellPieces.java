@@ -179,6 +179,8 @@ public final class ModSpellPieces {
 	public static PieceContainer operatorBlockComparatorStrength;
 	public static PieceContainer operatorBlockSideSolidity;
 	public static PieceContainer operatorBlockMiningLevel;
+	public static PieceContainer operatorVectorMaximum;
+	public static PieceContainer operatorVectorMinimum;
 
 	public static PieceContainer constantNumber;
 	public static PieceContainer constantPi;
@@ -351,6 +353,8 @@ public final class ModSpellPieces {
 		operatorBlockComparatorStrength = register(PieceOperatorBlockComparatorStrength.class, LibPieceNames.OPERATOR_BLOCK_COMPARATOR_STRENGTH, LibPieceGroups.BLOCK_WORKS);
 		operatorBlockSideSolidity = register(PieceOperatorBlockSideSolidity.class, LibPieceNames.OPERATOR_BLOCK_SIDE_SOLIDITY, LibPieceGroups.BLOCK_WORKS);
 		operatorBlockMiningLevel = register(PieceOperatorBlockMiningLevel.class, LibPieceNames.OPERATOR_BLOCK_MINING_LEVEL, LibPieceGroups.BLOCK_WORKS);
+		operatorVectorMaximum = register(PieceOperatorVectorMaximum.class, LibPieceNames.OPERATOR_VECTOR_MAXIMUM, LibPieceGroups.VECTORS_INTRO);
+		operatorVectorMinimum = register(PieceOperatorVectorMinimum.class, LibPieceNames.OPERATOR_VECTOR_MINIMUM, LibPieceGroups.VECTORS_INTRO);
 
 		constantNumber = register(PieceConstantNumber.class, LibPieceNames.CONSTANT_NUMBER, LibPieceGroups.TUTORIAL_2, true);
 		constantPi = register(PieceConstantPi.class, LibPieceNames.CONSTANT_PI, LibPieceGroups.TRIGONOMETRY, true);
