@@ -46,10 +46,7 @@ public class PieceOperatorListRemove extends PieceOperator {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_TARGET);
 		}
 
-		List<Entity> list = new ArrayList<>(listVal.unwrap());
-		list.remove(targetVal);
-
-		return new EntityListWrapper(list);
+		return EntityListWrapper.withRemoved(listVal, targetVal);
 	}
 
 	@Override

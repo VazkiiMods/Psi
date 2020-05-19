@@ -42,15 +42,7 @@ public class PieceOperatorListIntersection extends PieceOperator {
 		EntityListWrapper l1 = this.getNonnullParamValue(context, list1);
 		EntityListWrapper l2 = this.getNonnullParamValue(context, list2);
 
-		List<Entity> list = new ArrayList<>();
-		List<Entity> search = l2.unwrap();
-		for (Entity e : l1) {
-			if (Collections.binarySearch(search, e, EntityListWrapper::compareEntities) >= 0) {
-				list.add(e);
-			}
-		}
-
-		return new EntityListWrapper(list);
+		return EntityListWrapper.intersection(l1, l2);
 	}
 
 	@Override
