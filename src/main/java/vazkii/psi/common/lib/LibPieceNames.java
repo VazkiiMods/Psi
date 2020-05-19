@@ -111,6 +111,7 @@ public final class LibPieceNames {
 	public static final String OPERATOR_BLOCK_MINING_LEVEL = "operator_block_mining_level";
 	public static final String OPERATOR_VECTOR_MAXIMUM = "operator_vector_piecewise_maximum";
 	public static final String OPERATOR_VECTOR_MINIMUM = "operator_vector_piecewise_minimum";
+	public static final String OPERATOR_ENTITY_HEIGHT = "operator_entity_height";
 
 	public static final String CONSTANT_NUMBER = "constant_number";
 	public static final String CONSTANT_PI = "constant_pi";

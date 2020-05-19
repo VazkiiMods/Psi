@@ -29,6 +29,7 @@ import vazkii.psi.common.spell.operator.entity.PieceOperatorClosestToLine;
 import vazkii.psi.common.spell.operator.entity.PieceOperatorClosestToPoint;
 import vazkii.psi.common.spell.operator.entity.PieceOperatorEntityAxialLook;
 import vazkii.psi.common.spell.operator.entity.PieceOperatorEntityHealth;
+import vazkii.psi.common.spell.operator.entity.PieceOperatorEntityHeight;
 import vazkii.psi.common.spell.operator.entity.PieceOperatorEntityLook;
 import vazkii.psi.common.spell.operator.entity.PieceOperatorEntityMotion;
 import vazkii.psi.common.spell.operator.entity.PieceOperatorEntityPosition;
@@ -181,6 +182,7 @@ public final class ModSpellPieces {
 	public static PieceContainer operatorBlockMiningLevel;
 	public static PieceContainer operatorVectorMaximum;
 	public static PieceContainer operatorVectorMinimum;
+	public static PieceContainer operatorEntityHeight;
 
 	public static PieceContainer constantNumber;
 	public static PieceContainer constantPi;
@@ -355,6 +357,7 @@ public final class ModSpellPieces {
 		operatorBlockMiningLevel = register(PieceOperatorBlockMiningLevel.class, LibPieceNames.OPERATOR_BLOCK_MINING_LEVEL, LibPieceGroups.BLOCK_WORKS);
 		operatorVectorMaximum = register(PieceOperatorVectorMaximum.class, LibPieceNames.OPERATOR_VECTOR_MAXIMUM, LibPieceGroups.VECTORS_INTRO);
 		operatorVectorMinimum = register(PieceOperatorVectorMinimum.class, LibPieceNames.OPERATOR_VECTOR_MINIMUM, LibPieceGroups.VECTORS_INTRO);
+		operatorEntityHeight = register(PieceOperatorEntityHeight.class, LibPieceNames.OPERATOR_ENTITY_HEIGHT, LibPieceGroups.ENTITIES_INTRO);
 
 		constantNumber = register(PieceConstantNumber.class, LibPieceNames.CONSTANT_NUMBER, LibPieceGroups.TUTORIAL_2, true);
 		constantPi = register(PieceConstantPi.class, LibPieceNames.CONSTANT_PI, LibPieceGroups.TRIGONOMETRY, true);
