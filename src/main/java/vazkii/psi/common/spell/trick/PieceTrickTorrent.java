@@ -9,9 +9,17 @@
 package vazkii.psi.common.spell.trick;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
+import net.minecraft.block.ILiquidContainer;
+import net.minecraft.block.material.Material;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.FlowingFluid;
+import net.minecraft.fluid.Fluids;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.Direction;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.BlockSnapshot;
 import net.minecraftforge.event.world.BlockEvent;
@@ -26,6 +34,9 @@ import vazkii.psi.api.spell.SpellParam;
 import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.api.spell.param.ParamVector;
 import vazkii.psi.api.spell.piece.PieceTrick;
+import vazkii.psi.common.core.helpers.SpellHelpers;
+
+import javax.annotation.Nullable;
 
 public class PieceTrickTorrent extends PieceTrick {
 
@@ -52,35 +63,52 @@ public class PieceTrickTorrent extends PieceTrick {
 		if (context.caster.getEntityWorld().getDimension().doesWaterVaporize()) {
 			return null;
 		}
-
-		Vector3 positionVal = this.getParamValue(context, position);
-
-		if (positionVal == null) {
-			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
-		}
-		if (!context.isInRadius(positionVal)) {
-			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
-		}
-
-		BlockPos pos = positionVal.toBlockPos();
-
-		BlockState state = context.caster.getEntityWorld().getBlockState(pos);
+		BlockPos pos = SpellHelpers.getBlockPos(this, context, position, true, false);
 		BlockEvent.EntityPlaceEvent placeEvent = new BlockEvent.EntityPlaceEvent(BlockSnapshot.getBlockSnapshot(context.caster.getEntityWorld(), pos), context.caster.getEntityWorld().getBlockState(pos.offset(Direction.UP)), context.caster);
 		MinecraftForge.EVENT_BUS.post(placeEvent);
 		if (placeEvent.isCanceled()) {
 			return null;
 		}
-		if (state.isAir(context.caster.getEntityWorld(), pos) || state.getMaterial().isReplaceable()) {
-			context.caster.getEntityWorld().setBlockState(pos, Blocks.WATER.getDefaultState());
-		} else {
-			pos = pos.up();
-			state = context.caster.getEntityWorld().getBlockState(pos);
-			if (state.isAir(context.caster.getEntityWorld(), pos) || state.getMaterial().isReplaceable()) {
-				context.caster.getEntityWorld().setBlockState(pos, Blocks.WATER.getDefaultState());
-			}
-		}
-
-		return null;
+		return placeWater(context.caster, context.caster.world, pos);
 	}
+
+
+
+	// [VanillaCopy] BucketItem.tryPlaceContainingLiquid because buckets are dumb
+	public static boolean placeWater(@Nullable PlayerEntity playerIn, World worldIn, BlockPos pos) {
+		if (!worldIn.isBlockLoaded(pos) || !worldIn.isBlockModifiable(playerIn, pos)) {
+			return false;
+		}
+		BlockState blockstate = worldIn.getBlockState(pos);
+		Material material = blockstate.getMaterial();
+		boolean flag = blockstate.canBucketPlace(Fluids.WATER);
+		if (blockstate.isAir() || flag || blockstate.getBlock() instanceof ILiquidContainer && ((ILiquidContainer) blockstate.getBlock()).canContainFluid(worldIn, pos, blockstate, Fluids.WATER)) {
+			if (worldIn.dimension.doesWaterVaporize()) {
+				int i = pos.getX();
+				int j = pos.getY();
+				int k = pos.getZ();
+				worldIn.playSound(playerIn, pos, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 0.5F, 2.6F + (worldIn.rand.nextFloat() - worldIn.rand.nextFloat()) * 0.8F);
+
+				for (int l = 0; l < 8; ++l) {
+					worldIn.addParticle(ParticleTypes.LARGE_SMOKE, (double) i + Math.random(), (double) j + Math.random(), (double) k + Math.random(), 0.0D, 0.0D, 0.0D);
+				}
+			} else if (blockstate.getBlock() instanceof ILiquidContainer) {
+				if (((ILiquidContainer) blockstate.getBlock()).receiveFluid(worldIn, pos, blockstate, ((FlowingFluid) Fluids.WATER).getStillFluidState(false))) {
+					worldIn.playSound(playerIn, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
+				}
+			} else {
+				if (!worldIn.isRemote && flag && !material.isLiquid()) {
+					worldIn.destroyBlock(pos, true);
+				}
+
+				worldIn.playSound(playerIn, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
+				worldIn.setBlockState(pos, Fluids.WATER.getDefaultState().getBlockState(), 11);
+			}
+
+			return true;
+		}
+		return false;
+	}
+
 
 }
