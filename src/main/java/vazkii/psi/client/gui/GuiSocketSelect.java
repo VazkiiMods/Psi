@@ -169,7 +169,7 @@ public class GuiSocketSelect extends Screen {
 				} else {
 					r = g = b = 0xFF;
 				}
-			} else if(seg == socketable.getSelectedSlot()){
+			} else if (seg == socketable.getSelectedSlot()) {
 				if (!cadStack.isEmpty()) {
 					int color = Psi.proxy.getColorForCAD(cadStack);
 					r = 0xFF - PsiRenderHelper.r(color);
@@ -230,7 +230,7 @@ public class GuiSocketSelect extends Screen {
 				}
 
 				mc.fontRenderer.drawStringWithShadow(name, xsp, ysp, 0xFFFFFF);
-				if(seg == socketable.getSelectedSlot()){
+				if (seg == socketable.getSelectedSlot()) {
 					int color = 0x00FF00;
 					if (!cadStack.isEmpty()) {
 						color = 0xFF0000 - Psi.proxy.getColorForCAD(cadStack);

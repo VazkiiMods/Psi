@@ -72,8 +72,6 @@ public class PieceTrickTorrent extends PieceTrick {
 		return placeWater(context.caster, context.caster.world, pos);
 	}
 
-
-
 	// [VanillaCopy] BucketItem.tryPlaceContainingLiquid because buckets are dumb
 	public static boolean placeWater(@Nullable PlayerEntity playerIn, World worldIn, BlockPos pos) {
 		if (!worldIn.isBlockLoaded(pos) || !worldIn.isBlockModifiable(playerIn, pos)) {
@@ -109,6 +107,5 @@ public class PieceTrickTorrent extends PieceTrick {
 		}
 		return false;
 	}
-
 
 }

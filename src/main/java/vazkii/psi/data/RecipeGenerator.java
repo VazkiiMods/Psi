@@ -525,7 +525,6 @@ public class RecipeGenerator extends RecipeProvider implements IConditionBuilder
 						.addIngredient(ItemTags.BUTTONS)
 		);
 
-
 		buildMagicalWrapper(Psi.location("spell_drive"), consumer,
 				hasPsimetal, "has_psimetal", ShapedRecipeBuilder.shapedRecipe(ModItems.spellDrive)
 						.key('I', ModTags.INGOT_PSIMETAL)
