@@ -7,6 +7,7 @@
   "psimisc.stats": "Stats",
   "psimisc.socketing": "Socketing",
   "psimisc.keybind": "Psi Master Keybind",
+  "psimisc.selected": "Selected",
   "psimisc.spell_selected": "\u00a7dSpell Selected\u00a77: %s",
   "psimisc": "Name:",
   "psimisc.compiled": "Compilation Successful",

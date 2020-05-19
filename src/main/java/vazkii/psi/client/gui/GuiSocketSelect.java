@@ -17,6 +17,7 @@ import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.client.util.InputMappings;
 import net.minecraft.item.ItemStack;
@@ -234,7 +235,7 @@ public class GuiSocketSelect extends Screen {
 					if (!cadStack.isEmpty()) {
 						color = 0xFF0000 - Psi.proxy.getColorForCAD(cadStack);
 					}
-					mc.fontRenderer.drawStringWithShadow("Selected", xsp + width / 4, ysp + font.FONT_HEIGHT, color);
+					mc.fontRenderer.drawStringWithShadow(I18n.format("psimisc.selected"), xsp + width / 4, ysp + font.FONT_HEIGHT, color);
 				}
 
 				mod = 0.8;
