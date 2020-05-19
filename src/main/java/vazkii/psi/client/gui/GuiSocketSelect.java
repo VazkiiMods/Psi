@@ -140,7 +140,7 @@ public class GuiSocketSelect extends Screen {
 		for (int seg = 0; seg < segments; seg++) {
 			boolean mouseInSector = degPer * seg < angle && angle < degPer * (seg + 1);
 			float radius = Math.max(0F, Math.min((timeIn + partialTicks - seg * 6F / segments) * 40F, maxRadius));
-			if (mouseInSector) {
+			if (mouseInSector || seg == socketable.getSelectedSlot()) {
 				radius *= 1.025f;
 			}
 
@@ -168,6 +168,17 @@ public class GuiSocketSelect extends Screen {
 				} else {
 					r = g = b = 0xFF;
 				}
+			} else if(seg == socketable.getSelectedSlot()){
+				if (!cadStack.isEmpty()) {
+					int color = Psi.proxy.getColorForCAD(cadStack);
+					r = 0xFF - PsiRenderHelper.r(color);
+					g = 0xFF - PsiRenderHelper.g(color);
+					b = 0xFF - PsiRenderHelper.b(color);
+				} else {
+					r = 0x00;
+					g = 0xFF;
+					b = 0x00;
+				}
 			}
 
 			for (float i = 0; i < degPer + step / 2; i += step) {
@@ -189,7 +200,7 @@ public class GuiSocketSelect extends Screen {
 		for (int seg = 0; seg < segments; seg++) {
 			boolean mouseInSector = degPer * seg < angle && angle < degPer * (seg + 1);
 			float radius = Math.max(0F, Math.min((timeIn + partialTicks - seg * 6F / segments) * 40F, maxRadius));
-			if (mouseInSector) {
+			if (mouseInSector || seg == socketable.getSelectedSlot()) {
 				radius *= 1.025f;
 			}
 
@@ -218,6 +229,13 @@ public class GuiSocketSelect extends Screen {
 				}
 
 				mc.fontRenderer.drawStringWithShadow(name, xsp, ysp, 0xFFFFFF);
+				if(seg == socketable.getSelectedSlot()){
+					int color = 0x00FF00;
+					if (!cadStack.isEmpty()) {
+						color = 0xFF0000 - Psi.proxy.getColorForCAD(cadStack);
+					}
+					mc.fontRenderer.drawStringWithShadow("Selected", xsp + width / 4, ysp + font.FONT_HEIGHT, color);
+				}
 
 				mod = 0.8;
 				xdp = (int) ((xp - x) * mod + x);
