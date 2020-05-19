@@ -9,10 +9,15 @@
 package vazkii.psi.common.spell.trick;
 
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.BoneMealItem;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUseContext;
 import net.minecraft.item.Items;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.World;
 
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.EnumSpellStat;
@@ -24,6 +29,7 @@ import vazkii.psi.api.spell.SpellParam;
 import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.api.spell.param.ParamVector;
 import vazkii.psi.api.spell.piece.PieceTrick;
+import vazkii.psi.common.core.helpers.SpellHelpers;
 
 public class PieceTrickOvergrow extends PieceTrick {
 
@@ -47,30 +53,16 @@ public class PieceTrickOvergrow extends PieceTrick {
 
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
-		Vector3 positionVal = this.getParamValue(context, position);
-
-		if (positionVal == null) {
-			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
-		}
-		if (!context.isInRadius(positionVal)) {
-			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
-		}
-
-		BlockPos pos = positionVal.toBlockPos();
-
-		if (!bonemeal(context.caster, pos)) {
-			bonemeal(context.caster, pos.down());
-		}
-
-		return null;
+		BlockPos pos = SpellHelpers.getBlockPos(this, context, position, true, false);
+		return bonemeal(context.caster, context.caster.world, pos);
 	}
 
-	public boolean bonemeal(PlayerEntity player, BlockPos pos) {
-		boolean did = BoneMealItem.applyBonemeal(new ItemStack(Items.BONE_MEAL), player.getEntityWorld(), pos, player);
-		if (did) {
-			player.getEntityWorld().playEvent(2005, pos, 0);
+	public ActionResultType bonemeal(PlayerEntity player, World world, BlockPos pos) {
+		if (!world.isBlockLoaded(pos) || !world.isBlockModifiable(player, pos)) {
+			return ActionResultType.PASS;
 		}
-		return did;
+		BlockRayTraceResult hit = new BlockRayTraceResult(Vec3d.ZERO, Direction.UP, pos, false);
+		return Items.BONE_MEAL.onItemUse(new ItemUseContext(player, Hand.MAIN_HAND, hit));
 	}
 
 }
