@@ -448,6 +448,12 @@ public class RecipeGenerator extends RecipeProvider implements IConditionBuilder
 						.key('A', Tags.Items.ARROWS)
 						.patternLine("AID")
 		);
+		buildMagicalWrapper(Psi.location("spell_bullet_projectile_upgrade"), consumer,
+				hasItem(ModItems.psidust), "has_psidust",
+				ShapelessRecipeBuilder.shapelessRecipe(ModItems.projectileSpellBullet)
+						.addIngredient(ModItems.spellBullet)
+						.addIngredient(Tags.Items.ARROWS)
+		);
 
 		buildMagicalWrapper(Psi.location("spell_bullet_loopcast"), consumer,
 				hasPsidust, "has_psidust", ShapedRecipeBuilder.shapedRecipe(ModItems.loopSpellBullet)
@@ -455,6 +461,12 @@ public class RecipeGenerator extends RecipeProvider implements IConditionBuilder
 						.key('D', ModTags.PSIDUST)
 						.key('A', Tags.Items.STRING)
 						.patternLine("AID")
+		);
+		buildMagicalWrapper(Psi.location("spell_bullet_loopcast_upgrade"), consumer,
+				hasItem(ModItems.psidust), "has_psidust",
+				ShapelessRecipeBuilder.shapelessRecipe(ModItems.loopSpellBullet)
+						.addIngredient(ModItems.spellBullet)
+						.addIngredient(Tags.Items.STRING)
 		);
 		buildMagicalWrapper(Psi.location("spell_bullet_circle"), consumer,
 				hasPsidust, "has_psidust", ShapedRecipeBuilder.shapedRecipe(ModItems.circleSpellBullet)
@@ -465,12 +477,26 @@ public class RecipeGenerator extends RecipeProvider implements IConditionBuilder
 								new Ingredient.SingleItemList(new ItemStack(Items.SNOWBALL)))))
 						.patternLine("AID")
 		);
+		buildMagicalWrapper(Psi.location("spell_bullet_circle_upgrade"), consumer,
+				hasItem(ModItems.psidust), "has_psidust",
+				ShapelessRecipeBuilder.shapelessRecipe(ModItems.circleSpellBullet)
+						.addIngredient(ModItems.spellBullet)
+						.addIngredient(Ingredient.fromItemListStream(Stream.of(
+								new Ingredient.TagList(Tags.Items.SLIMEBALLS),
+								new Ingredient.SingleItemList(new ItemStack(Items.SNOWBALL)))))
+		);
 		buildMagicalWrapper(Psi.location("spell_bullet_grenade"), consumer,
 				hasPsidust, "has_psidust", ShapedRecipeBuilder.shapedRecipe(ModItems.grenadeSpellBullet)
 						.key('I', Tags.Items.INGOTS_IRON)
 						.key('D', ModTags.PSIDUST)
 						.key('A', Tags.Items.GUNPOWDER)
 						.patternLine("AID")
+		);
+		buildMagicalWrapper(Psi.location("spell_bullet_grenade_upgrade"), consumer,
+				hasItem(ModItems.psidust), "has_psidust",
+				ShapelessRecipeBuilder.shapelessRecipe(ModItems.grenadeSpellBullet)
+						.addIngredient(ModItems.spellBullet)
+						.addIngredient(Tags.Items.GUNPOWDER)
 		);
 		buildMagicalWrapper(Psi.location("spell_bullet_charge"), consumer,
 				hasPsidust, "has_psidust", ShapedRecipeBuilder.shapedRecipe(ModItems.chargeSpellBullet)
@@ -479,6 +505,12 @@ public class RecipeGenerator extends RecipeProvider implements IConditionBuilder
 						.key('A', Tags.Items.DUSTS_REDSTONE)
 						.patternLine("AID")
 		);
+		buildMagicalWrapper(Psi.location("spell_bullet_charge_upgrade"), consumer,
+				hasItem(ModItems.psidust), "has_psidust",
+				ShapelessRecipeBuilder.shapelessRecipe(ModItems.chargeSpellBullet)
+						.addIngredient(ModItems.spellBullet)
+						.addIngredient(Tags.Items.DUSTS_REDSTONE)
+		);
 		buildMagicalWrapper(Psi.location("spell_bullet_mine"), consumer,
 				hasPsidust, "has_psidust", ShapedRecipeBuilder.shapedRecipe(ModItems.mineSpellBullet)
 						.key('I', Tags.Items.INGOTS_IRON)
@@ -486,6 +518,13 @@ public class RecipeGenerator extends RecipeProvider implements IConditionBuilder
 						.key('A', ItemTags.BUTTONS)
 						.patternLine("AID")
 		);
+		buildMagicalWrapper(Psi.location("spell_bullet_mine_upgrade"), consumer,
+				hasItem(ModItems.psidust), "has_psidust",
+				ShapelessRecipeBuilder.shapelessRecipe(ModItems.mineSpellBullet)
+						.addIngredient(ModItems.spellBullet)
+						.addIngredient(ItemTags.BUTTONS)
+		);
+
 
 		buildMagicalWrapper(Psi.location("spell_drive"), consumer,
 				hasPsimetal, "has_psimetal", ShapedRecipeBuilder.shapedRecipe(ModItems.spellDrive)

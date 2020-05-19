@@ -1,0 +1,29 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "value": {
+            "type": "psi:magipsi_enabled"
+          },
+          "type": "forge:not"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shapeless",
+        "ingredients": [
+          {
+            "item": "psi:spell_bullet"
+          },
+          {
+            "tag": "minecraft:buttons"
+          }
+        ],
+        "result": {
+          "item": "psi:spell_bullet_mine"
+        }
+      }
+    }
+  ]
+}

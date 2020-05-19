@@ -1,0 +1,46 @@
+{
+  "advancements": [
+    {
+      "conditions": [
+        {
+          "value": {
+            "type": "psi:magipsi_enabled"
+          },
+          "type": "forge:not"
+        }
+      ],
+      "advancement": {
+        "parent": "minecraft:recipes/root",
+        "rewards": {
+          "recipes": [
+            "psi:spell_bullet_loopcast_upgrade"
+          ]
+        },
+        "criteria": {
+          "has_psidust": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+              "items": [
+                {
+                  "item": "psi:psidust"
+                }
+              ]
+            }
+          },
+          "has_the_recipe": {
+            "trigger": "minecraft:recipe_unlocked",
+            "conditions": {
+              "recipe": "psi:spell_bullet_loopcast_upgrade"
+            }
+          }
+        },
+        "requirements": [
+          [
+            "has_psidust",
+            "has_the_recipe"
+          ]
+        ]
+      }
+    }
+  ]
+}
