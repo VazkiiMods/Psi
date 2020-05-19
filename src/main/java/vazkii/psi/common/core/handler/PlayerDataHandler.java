@@ -532,7 +532,7 @@ public class PlayerDataHandler {
 			int blocklight = player.getEntityWorld().getLightLevel(LightType.BLOCK, pos);
 			int light = Math.max(skylight, blocklight);
 
-			boolean lowLight = light < 7;
+			boolean lowLight = light <= 7;
 			if (!this.lowLight && lowLight) {
 				PsiArmorEvent.post(new PsiArmorEvent(player, PsiArmorEvent.LOW_LIGHT));
 			}
