@@ -32,7 +32,7 @@ public class PieceSelectorNearbyCharges extends PieceSelectorNearby {
 
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
-		return (double) ((EntityListWrapper) super.execute(context)).unwrap().size();
+		return (double) ((EntityListWrapper) super.execute(context)).size();
 	}
 
 	@Override

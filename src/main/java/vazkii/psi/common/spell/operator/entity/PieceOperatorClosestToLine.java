@@ -46,7 +46,7 @@ public class PieceOperatorClosestToLine extends PieceOperator {
 		Vector3 rayStart = SpellHelpers.getVector3(this, context, rayStartParam, false, false);
 		Vector3 rayEnd = SpellHelpers.getVector3(this, context, rayEndParam, false, false);
 		EntityListWrapper list = this.getNonnullParamValue(context, entList);
-		if (list.unwrap().isEmpty()) {
+		if (list.size() == 0) {
 			return null;
 		}
 

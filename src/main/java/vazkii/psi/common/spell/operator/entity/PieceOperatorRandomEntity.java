@@ -36,12 +36,11 @@ public class PieceOperatorRandomEntity extends PieceOperator {
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		EntityListWrapper listVal = this.getParamValue(context, list);
-		List<Entity> entities = listVal.unwrap();
-		if (entities.size() == 0) {
+		if (listVal.size() == 0) {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_TARGET);
 		}
 
-		return entities.get(context.caster.getEntityWorld().rand.nextInt(entities.size()));
+		return listVal.get(context.caster.getEntityWorld().rand.nextInt(listVal.size()));
 	}
 
 	@Override

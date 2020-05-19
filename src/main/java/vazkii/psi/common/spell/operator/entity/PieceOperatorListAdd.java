@@ -41,19 +41,13 @@ public class PieceOperatorListAdd extends PieceOperator {
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		Entity targetVal = this.getParamValue(context, target);
-		EntityListWrapper listVal = this.getParamValue(context, list);
+		EntityListWrapper listVal = this.getParamValueOrDefault(context, list, EntityListWrapper.EMPTY);
 
 		if (targetVal == null) {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_TARGET);
 		}
 
-		List<Entity> list = new ArrayList<>(listVal.unwrap());
-		int index = Collections.binarySearch(list, targetVal, EntityListWrapper::compareEntities);
-		if (index < 0) {
-			list.add(~index, targetVal);
-		}
-
-		return new EntityListWrapper(list);
+		return EntityListWrapper.withAdded(listVal, targetVal);
 	}
 
 	@Override
