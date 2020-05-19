@@ -70,7 +70,7 @@ public abstract class PieceSelectorNearby extends PieceSelector {
 
 		List<Entity> list = context.caster.getEntityWorld().getEntitiesWithinAABB(Entity.class, area, (Entity e) -> e != null && pred.test(e) && e != context.caster && e != context.focalPoint && context.isInRadius(e));
 
-		return EntityListWrapper.makeCleanWrapper(list);
+		return EntityListWrapper.make(list);
 	}
 
 	public abstract Predicate<Entity> getTargetPredicate(SpellContext context);
