@@ -1,3 +1,11 @@
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
+ * https://github.com/Vazkii/Psi
+ *
+ * Psi is Open Source and distributed under the
+ * Psi License: https://psi.vazkii.net/license.php
+ */
 package vazkii.psi.common.block.base;
 
 import net.minecraft.item.BlockItemUseContext;
@@ -22,6 +30,6 @@ public class DirectionBlockItemUseContext extends BlockItemUseContext {
 
 	@Override
 	public Direction[] getNearestLookingDirections() {
-		return new Direction[]{rayTraceResult.getFace()};
+		return new Direction[] { rayTraceResult.getFace() };
 	}
 }
