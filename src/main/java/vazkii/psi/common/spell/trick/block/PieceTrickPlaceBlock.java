@@ -13,7 +13,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.BlockItem;
-import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.util.Direction;
@@ -37,6 +36,7 @@ import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.api.spell.param.ParamVector;
 import vazkii.psi.api.spell.piece.PieceTrick;
 import vazkii.psi.client.core.handler.HUDHandler;
+import vazkii.psi.common.block.base.DirectionBlockItemUseContext;
 import vazkii.psi.common.block.base.ModBlocks;
 
 public class PieceTrickPlaceBlock extends PieceTrick {
@@ -118,7 +118,7 @@ public class PieceTrickPlaceBlock extends PieceTrick {
 					newCtx = new ItemUseContext(ctx.getPlayer(), ctx.getHand(), hit);
 					player.setHeldItem(newCtx.getHand(), save);
 
-					iblock.tryPlace(new BlockItemUseContext(newCtx));
+					iblock.tryPlace(new DirectionBlockItemUseContext(newCtx));
 
 					if (player.abilities.isCreativeMode) {
 						HUDHandler.setRemaining(rem, -1);
