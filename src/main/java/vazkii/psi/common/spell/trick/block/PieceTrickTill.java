@@ -9,6 +9,7 @@
 package vazkii.psi.common.spell.trick.block;
 
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.item.Items;
 import net.minecraft.util.ActionResultType;
@@ -43,7 +44,11 @@ public class PieceTrickTill extends PieceTrick {
 			return ActionResultType.PASS;
 		}
 		BlockRayTraceResult hit = new BlockRayTraceResult(Vec3d.ZERO, Direction.UP, pos, false);
-		return Items.IRON_HOE.onItemUse(new ItemUseContext(player, Hand.MAIN_HAND, hit));
+		ItemStack save = player.getHeldItem(Hand.MAIN_HAND);
+		player.setHeldItem(Hand.MAIN_HAND, new ItemStack(Items.BONE_MEAL));
+		ItemUseContext fakeContext = new ItemUseContext(player, Hand.MAIN_HAND, hit);
+		player.setHeldItem(Hand.MAIN_HAND, save);
+		return Items.IRON_HOE.onItemUse(fakeContext);
 	}
 
 	@Override
