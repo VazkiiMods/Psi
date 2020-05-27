@@ -56,6 +56,8 @@ public class Psi {
 		instance = this;
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::commonSetup);
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::loadComplete);
+		ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ConfigHandler.CLIENT_SPEC);
+		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ConfigHandler.COMMON_SPEC);
 		proxy = DistExecutor.runForDist(() -> ClientProxy::new, () -> ServerProxy::new);
 		proxy.registerHandlers();
 	}
@@ -65,9 +67,6 @@ public class Psi {
 		PsiAPI.internalHandler = new InternalMethodHandler();
 
 		CrashReportExtender.registerCrashCallable(new CrashReportHandler());
-
-		ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ConfigHandler.CLIENT_SPEC);
-		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ConfigHandler.COMMON_SPEC);
 
 		DefaultStats.registerStats();
 		ModSpellPieces.init();
