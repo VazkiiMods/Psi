@@ -106,9 +106,9 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 		new AssemblyScavengeRecipe();
 		setCreativeTab(PsiCreativeTab.INSTANCE);
 
-		setHarvestLevel("pickaxe", ConfigHandler.cadHarvestLevel);
-		setHarvestLevel("axe", ConfigHandler.cadHarvestLevel);
-		setHarvestLevel("shovel", ConfigHandler.cadHarvestLevel);
+		setHarvestLevel("pickaxe", 0);
+		setHarvestLevel("axe", 0);
+		setHarvestLevel("shovel", 0);
 	}
 
 	private ICADData getCADData(ItemStack stack) {
@@ -550,7 +550,8 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 		if (!PieceTrickBreakBlock.doingHarvestCheck.get()) {
 			return -1;
 		}
-		return super.getHarvestLevel(stack, toolClass, player, blockState);
+		int level = super.getHarvestLevel(stack, toolClass, player, blockState);
+		return level < 0 ? -1 : Math.max(level, ConfigHandler.cadHarvestLevel);
 	}
 
 	@Nonnull
