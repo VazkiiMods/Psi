@@ -103,9 +103,9 @@ public class ItemCAD extends Item implements ICAD {
 	public ItemCAD(Item.Properties properties) {
 		super(properties
 				.maxStackSize(1)
-				.addToolType(ToolType.PICKAXE, ConfigHandler.COMMON.cadHarvestLevel.get())
-				.addToolType(ToolType.AXE, ConfigHandler.COMMON.cadHarvestLevel.get())
-				.addToolType(ToolType.SHOVEL, ConfigHandler.COMMON.cadHarvestLevel.get())
+				.addToolType(ToolType.PICKAXE, 0)
+				.addToolType(ToolType.AXE, 0)
+				.addToolType(ToolType.SHOVEL, 0)
 		);
 	}
 
@@ -531,7 +531,8 @@ public class ItemCAD extends Item implements ICAD {
 		if (!PieceTrickBreakBlock.doingHarvestCheck.get()) {
 			return -1;
 		}
-		return super.getHarvestLevel(stack, tool, player, blockState);
+		int level = super.getHarvestLevel(stack, tool, player, blockState);
+		return level < 0 ? -1 : Math.max(level, ConfigHandler.COMMON.cadHarvestLevel.get());
 	}
 
 	@Nonnull
