@@ -609,7 +609,7 @@ public class PlayerDataHandler {
 
 			PlayerEntity player = playerWR.get();
 			if (player instanceof ServerPlayerEntity) {
-				LoopcastTrackingHandler.syncForTrackers((ServerPlayerEntity) player);
+				LoopcastTrackingHandler.syncForTrackersAndSelf((ServerPlayerEntity) player);
 			}
 		}
 
