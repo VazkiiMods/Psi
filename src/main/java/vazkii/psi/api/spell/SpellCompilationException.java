@@ -15,6 +15,7 @@ import org.apache.commons.lang3.tuple.Pair;
  * and will show up as an error in it, as well as its {@link #location} as a "warning"
  * display next to the piece it indicates.
  */
+@SuppressWarnings("serial")
 public class SpellCompilationException extends Exception {
 
 	public static final String NO_SPELL = "psi.spellerror.nospell";

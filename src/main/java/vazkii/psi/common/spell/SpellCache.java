@@ -21,6 +21,7 @@ public final class SpellCache implements ISpellCache {
 
 	public static final SpellCache instance = new SpellCache();
 
+	@SuppressWarnings("serial")
 	public static final Map<UUID, CompiledSpell> map = new LinkedHashMap<UUID, CompiledSpell>() {
 
 		@Override

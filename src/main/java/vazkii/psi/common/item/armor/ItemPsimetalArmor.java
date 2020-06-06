@@ -184,12 +184,14 @@ public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiE
 		return ICADColorizer.DEFAULT_SPELL_COLOR;
 	}
 
+/*
 	@Nullable
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public <A extends BipedModel<?>> A getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlotType armorSlot, A _default) {
 		return (A) model.getValue();
 	}
+*/
 
 	@OnlyIn(Dist.CLIENT)
 	public BipedModel<?> provideArmorModelForSlot(EquipmentSlotType slot) {

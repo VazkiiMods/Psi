@@ -163,6 +163,7 @@ public abstract class SpellPiece {
 	/**
 	 * Gets the value of one of this piece's params in the given context.
 	 */
+	@SuppressWarnings("unchecked")
 	public <T> T getParamValue(SpellContext context, SpellParam<T> param) {
 		SpellParam.Side side = paramSides.get(param);
 		if (!side.isEnabled()) {
