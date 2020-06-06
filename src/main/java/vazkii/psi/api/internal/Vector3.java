@@ -315,6 +315,6 @@ public class Vector3 {
 
 	@Override
 	public int hashCode() {
-		return 31 * (31 * Double.hashCode(x) + Double.hashCode(y)) + Double.hashCode(z);
+		return 31 * (31 * (31 + Double.hashCode(x)) + Double.hashCode(y)) + Double.hashCode(z);
 	}
 }
