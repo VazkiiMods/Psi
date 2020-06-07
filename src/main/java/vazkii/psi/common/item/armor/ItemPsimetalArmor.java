@@ -187,6 +187,7 @@ public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiE
 	@Nullable
 	@Override
 	@OnlyIn(Dist.CLIENT)
+	@SuppressWarnings("unchecked")
 	public <A extends BipedModel<?>> A getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlotType armorSlot, A _default) {
 		return (A) model.getValue();
 	}

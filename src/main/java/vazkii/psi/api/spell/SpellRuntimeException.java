@@ -13,6 +13,7 @@ package vazkii.psi.api.spell;
  * execution code and adds the localized value of the exception's message to
  * the player's chat.
  */
+@SuppressWarnings("serial")
 public class SpellRuntimeException extends Exception {
 
 	public static final String DIVIDE_BY_ZERO = "psi.spellerror.dividebyzero";

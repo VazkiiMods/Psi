@@ -312,4 +312,9 @@ public class Vector3 {
 		Vector3 v = (Vector3) o;
 		return x == v.x && y == v.y && z == v.z;
 	}
+
+	@Override
+	public int hashCode() {
+		return 31 * (31 * (31 + Double.hashCode(x)) + Double.hashCode(y)) + Double.hashCode(z);
+	}
 }

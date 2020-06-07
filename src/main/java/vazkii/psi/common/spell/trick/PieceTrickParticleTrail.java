@@ -70,7 +70,7 @@ public class PieceTrickParticleTrail extends PieceTrick {
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 		}
 
-		MessageRegister.HANDLER.send(PacketDistributor.DIMENSION.with(() -> context.caster.world.dimension.getType()), new MessageParticleTrail(pos.toVec3D(), dir.toVec3D(), length, (int) time, PsiAPI.getPlayerCAD(context.caster)));
+		MessageRegister.HANDLER.send(PacketDistributor.DIMENSION.with(() -> context.caster.world.dimension.getType()), new MessageParticleTrail(pos.toVec3D(), dir.toVec3D(), length, time, PsiAPI.getPlayerCAD(context.caster)));
 		return null;
 	}
 }

@@ -91,7 +91,7 @@ public class PieceTrickTorrent extends PieceTrick {
 					worldIn.addParticle(ParticleTypes.LARGE_SMOKE, (double) i + Math.random(), (double) j + Math.random(), (double) k + Math.random(), 0.0D, 0.0D, 0.0D);
 				}
 			} else if (blockstate.getBlock() instanceof ILiquidContainer) {
-				if (((ILiquidContainer) blockstate.getBlock()).receiveFluid(worldIn, pos, blockstate, ((FlowingFluid) Fluids.WATER).getStillFluidState(false))) {
+				if (((ILiquidContainer) blockstate.getBlock()).receiveFluid(worldIn, pos, blockstate, Fluids.WATER.getStillFluidState(false))) {
 					worldIn.playSound(playerIn, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
 				}
 			} else {

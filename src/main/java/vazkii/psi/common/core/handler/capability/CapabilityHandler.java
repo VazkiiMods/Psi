@@ -72,9 +72,10 @@ public class CapabilityHandler {
 		}
 
 		@Override
+		@SuppressWarnings("unchecked")
 		public void readNBT(Capability<T> capability, T instance, Direction side, INBT nbt) {
 			if (nbt instanceof CompoundNBT) {
-				((INBTSerializable) instance).deserializeNBT(nbt);
+				((INBTSerializable<INBT>) instance).deserializeNBT(nbt);
 			}
 		}
 
