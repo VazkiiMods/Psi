@@ -381,6 +381,7 @@ public abstract class SpellPiece {
 	@OnlyIn(Dist.CLIENT)
 	public void getTooltip(List<ITextComponent> tooltip) {
 		tooltip.add(new TranslationTextComponent(getUnlocalizedName()));
+		tooltip.add(new TranslationTextComponent(getUnlocalizedDesc()).applyTextStyle(TextFormatting.GRAY));
 		TooltipHelper.tooltipIfShift(tooltip, () -> addToTooltipAfterShift(tooltip));
 
 		String addon = registryKey.getNamespace();
@@ -394,8 +395,6 @@ public abstract class SpellPiece {
 
 	@OnlyIn(Dist.CLIENT)
 	public void addToTooltipAfterShift(List<ITextComponent> tooltip) {
-		tooltip.add(new TranslationTextComponent(getUnlocalizedDesc()).applyTextStyle(TextFormatting.GRAY));
-
 		tooltip.add(new StringTextComponent(""));
 		ITextComponent eval = getEvaluationTypeString().applyTextStyle(TextFormatting.GOLD);
 		tooltip.add(new StringTextComponent("Output ").appendSibling(eval));
