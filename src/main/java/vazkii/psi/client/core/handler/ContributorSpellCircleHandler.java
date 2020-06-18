@@ -62,7 +62,7 @@ public final class ContributorSpellCircleHandler {
 	}
 
 	public static int[] getColors(String name) {
-		return colormap.getOrDefault(name, new int[ICADColorizer.DEFAULT_SPELL_COLOR]);
+		return colormap.getOrDefault(name, new int[] { ICADColorizer.DEFAULT_SPELL_COLOR });
 	}
 
 	public static boolean isContributor(String name) {

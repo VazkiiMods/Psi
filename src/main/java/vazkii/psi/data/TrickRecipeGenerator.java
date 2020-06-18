@@ -41,7 +41,12 @@ public class TrickRecipeGenerator extends RecipeProvider {
 	protected void registerRecipes(Consumer<IFinishedRecipe> consumer) {
 		TrickRecipeBuilder.of(ModItems.psidust).input(Tags.Items.DUSTS_REDSTONE).cad(ModItems.cadAssemblyIron).build(consumer);
 		TrickRecipeBuilder.of(PatchouliAPI.instance.getBookStack(LibResources.PATCHOULI_BOOK)).input(Items.BOOK).cad(ModItems.cadAssemblyIron).build(consumer);
-		TrickRecipeBuilder.of(ModItems.cadAssemblyPsimetal).input(ModItems.cadAssemblyGold).cad(ModItems.cadAssemblyIron).build(consumer);
+
+		TrickRecipeBuilder.of(ModItems.cadAssemblyPsimetal)
+				.input(ModItems.cadAssemblyGold)
+				.trick(Psi.location(LibPieceNames.TRICK_INFUSION))
+				.cad(ModItems.cadAssemblyIron)
+				.build(consumer, Psi.location("gold_to_psimetal_assembly_upgrade"));
 
 		TrickRecipeBuilder.of(ModItems.psimetal)
 				.input(Tags.Items.INGOTS_GOLD)
@@ -78,7 +83,7 @@ public class TrickRecipeGenerator extends RecipeProvider {
 	}
 
 	public static class DimensionResult extends TrickRecipeBuilder.Result {
-		private ResourceLocation dimensionId;
+		private final ResourceLocation dimensionId;
 
 		protected DimensionResult(ResourceLocation id, TrickRecipeBuilder builder, DimensionType type) {
 			super(id, builder);
