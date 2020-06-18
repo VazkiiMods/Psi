@@ -39,7 +39,7 @@ public class ItemProjectileSpellBullet extends ItemSpellBullet {
 
 	@Override
 	public boolean isCADOnlyContainer(ItemStack stack) {
-		return true;
+		return false;
 	}
 
 	@Override
