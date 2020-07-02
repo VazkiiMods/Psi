@@ -13,7 +13,7 @@ pipeline {
         stage('Build and Deploy') {
             steps {
                 echo 'Building and Deploying to Maven'
-					sh './gradlew build sort uploadArchives'
+					sh './gradlew build uploadArchives'
                 }
             }
         }
