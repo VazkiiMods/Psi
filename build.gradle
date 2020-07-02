@@ -184,25 +184,6 @@ task incrementBuildNumber {
     }
 }
 
-import java.util.regex.Pattern
-task sortArtifacts(type: Copy) {
-    from jar.destinationDir
-    into config.dir_output
-    //Put each jar with a classifier in a subfolder with the classifier as its name
-    eachFile {
-        //This matcher is used to get the classifier of the jar
-        def matcher = Pattern.compile(Pattern.quote("$config.mod_name-$version") + "-(?<classifier>\\w+).jar").matcher(it.name)
-        //Only change the destination for full matches, i.e jars with classifiers
-        if (matcher.matches())
-        {
-            def classifier = matcher.group('classifier')
-            /* Set the relative path to change the destination, since
-             * Gradle doesn't seem to like the absolute path being set*/
-            it.relativePath = it.relativePath.parent.append(false, classifier, it.name)
-        }
-    }
-}
-
 def parseConfig(File config) {
     config.withReader {
         def prop = new Properties()
@@ -242,4 +223,4 @@ uploadArchives {
     }
 }
 
-defaultTasks 'clean', 'runData', 'checkSyntax', 'build', 'sortArtifacts', 'incrementBuildNumber'
+defaultTasks 'clean', 'runData', 'checkSyntax', 'build', 'incrementBuildNumber'
