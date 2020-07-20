@@ -9,6 +9,7 @@
 package vazkii.psi.common.item.armor;
 
 import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.IDyeableArmorItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -20,7 +21,8 @@ import vazkii.psi.api.exosuit.ISensorHoldable;
 
 import javax.annotation.Nonnull;
 
-public class ItemPsimetalExosuitHelmet extends ItemPsimetalArmor implements ISensorHoldable {
+public class ItemPsimetalExosuitHelmet extends ItemPsimetalArmor implements ISensorHoldable,
+		IDyeableArmorItem {
 
 	private static final String TAG_SENSOR = "sensor";
 
