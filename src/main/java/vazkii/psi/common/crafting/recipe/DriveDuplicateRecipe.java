@@ -90,4 +90,9 @@ public class DriveDuplicateRecipe extends SpecialRecipe {
 	public boolean canFit(int width, int height) {
 		return true;
 	}
+
+	@Override
+	public boolean isDynamic() {
+		return true;
+	}
 }

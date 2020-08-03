@@ -60,4 +60,10 @@ public class DimensionTrickRecipe extends TrickRecipe {
 			buf.writeResourceLocation(recipe.dimensionId);
 		}
 	}
+
+	@Override
+	public boolean isDynamic() {
+		return true;
+	}
+
 }

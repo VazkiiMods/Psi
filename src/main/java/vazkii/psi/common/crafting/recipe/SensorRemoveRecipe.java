@@ -76,4 +76,9 @@ public class SensorRemoveRecipe extends SpecialRecipe {
 		return true;
 	}
 
+	@Override
+	public boolean isDynamic() {
+		return true;
+	}
+
 }

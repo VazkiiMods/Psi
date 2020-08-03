@@ -90,4 +90,8 @@ public class SensorAttachRecipe extends SpecialRecipe {
 		return true;
 	}
 
+	@Override
+	public boolean isDynamic() {
+		return true;
+	}
 }

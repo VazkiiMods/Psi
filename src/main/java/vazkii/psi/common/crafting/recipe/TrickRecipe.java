@@ -153,4 +153,9 @@ public class TrickRecipe implements ITrickRecipe {
 		}
 	}
 
+	@Override
+	public boolean isDynamic() {
+		return true;
+	}
+
 }
