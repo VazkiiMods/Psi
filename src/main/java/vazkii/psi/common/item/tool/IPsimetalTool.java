@@ -74,7 +74,7 @@ public interface IPsimetalTool {
 		return worldIn.rayTraceBlocks(new RayTraceContext(vec3d, vec3d1, RayTraceContext.BlockMode.OUTLINE, fluidMode, player));
 	}
 
-	static void regen(ItemStack stack, Entity entityIn, boolean isSelected) {
+	static void regen(ItemStack stack, Entity entityIn) {
 		if (isItemValidForRegen(stack, entityIn)) {
 			PlayerEntity player = (PlayerEntity) entityIn;
 			PlayerDataHandler.PlayerData data = PlayerDataHandler.get(player);
@@ -93,7 +93,7 @@ public interface IPsimetalTool {
 			return false;
 		}
 		PlayerEntity player = (PlayerEntity) entityIn;
-		return player.getHeldItemOffhand() != stack && player.getHeldItemMainhand() != stack;
+		return player.getHeldItemOffhand() != stack && player.getHeldItemMainhand() != stack && stack.getDamage() > 0;
 	}
 
 	default boolean isEnabled(ItemStack stack) {

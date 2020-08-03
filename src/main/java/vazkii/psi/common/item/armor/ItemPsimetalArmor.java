@@ -99,7 +99,7 @@ public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiE
 
 	@Override
 	public void inventoryTick(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
-		IPsimetalTool.regen(stack, entityIn, isSelected);
+		IPsimetalTool.regen(stack, entityIn);
 	}
 
 	@Nullable

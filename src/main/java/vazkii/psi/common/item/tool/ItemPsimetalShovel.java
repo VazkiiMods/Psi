@@ -90,7 +90,7 @@ public class ItemPsimetalShovel extends ShovelItem implements IPsimetalTool {
 
 	@Override
 	public void inventoryTick(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
-		IPsimetalTool.regen(stack, entityIn, isSelected);
+		IPsimetalTool.regen(stack, entityIn);
 	}
 
 	@Override

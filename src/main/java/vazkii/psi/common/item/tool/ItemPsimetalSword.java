@@ -107,7 +107,7 @@ public class ItemPsimetalSword extends SwordItem implements IPsimetalTool {
 
 	@Override
 	public void inventoryTick(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
-		IPsimetalTool.regen(stack, entityIn, isSelected);
+		IPsimetalTool.regen(stack, entityIn);
 	}
 
 	@OnlyIn(Dist.CLIENT)
