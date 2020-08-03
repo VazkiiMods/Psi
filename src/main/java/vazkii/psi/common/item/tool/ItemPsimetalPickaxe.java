@@ -48,7 +48,7 @@ public class ItemPsimetalPickaxe extends PickaxeItem implements IPsimetalTool {
 	@Override
 	public boolean onBlockDestroyed(ItemStack itemstack, World world, BlockState state, BlockPos pos, LivingEntity player) {
 		super.onBlockDestroyed(itemstack, world, state, pos, player);
-		if(!(player instanceof PlayerEntity)) {
+		if (!(player instanceof PlayerEntity)) {
 			return false;
 		}
 		castOnBlockBreak(itemstack, (PlayerEntity) player);

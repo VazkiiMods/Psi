@@ -32,7 +32,7 @@ public class PieceOperatorVectorAbsolute extends PieceOperator {
 
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
-		Vector3 vector = SpellHelpers.getVector3(this, context, vec, false,false, false);
+		Vector3 vector = SpellHelpers.getVector3(this, context, vec, false, false, false);
 		return new Vector3(Math.abs(vector.x), Math.abs(vector.y), Math.abs(vector.z));
 	}
 

@@ -77,7 +77,6 @@ public final class PsiAPI {
 
 	public static final String MOD_ID = "psi";
 
-
 	private static final SimpleRegistry<Class<? extends SpellPiece>> spellPieceRegistry = new SimpleRegistry<>();
 	private static final Multimap<ResourceLocation, Class<? extends SpellPiece>> advancementGroups = HashMultimap.create();
 	private static final Map<Class<? extends SpellPiece>, ResourceLocation> advancementGroupsInverse = new HashMap<>();
@@ -187,7 +186,6 @@ public final class PsiAPI {
 	public static ResourceLocation getSpellPieceKey(Class<? extends SpellPiece> clazz) {
 		return spellPieceRegistry.getKey(clazz);
 	}
-
 
 	public static Collection<Class<? extends SpellPiece>> getPiecesInAdvancementGroup(ResourceLocation group) {
 		return advancementGroups.get(group);

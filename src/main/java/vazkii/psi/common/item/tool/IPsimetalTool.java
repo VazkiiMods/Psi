@@ -89,7 +89,7 @@ public interface IPsimetalTool {
 	}
 
 	static boolean isItemValidForRegen(ItemStack stack, Entity entityIn) {
-		if(!(entityIn instanceof PlayerEntity)) {
+		if (!(entityIn instanceof PlayerEntity)) {
 			return false;
 		}
 		PlayerEntity player = (PlayerEntity) entityIn;

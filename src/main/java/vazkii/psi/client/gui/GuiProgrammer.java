@@ -247,7 +247,7 @@ public class GuiProgrammer extends Screen {
 							}
 						}
 						spell = Spell.createFromNBT(cmp);
-						if(spell == null) {
+						if (spell == null) {
 							return;
 						}
 						PlayerDataHandler.PlayerData data = PlayerDataHandler.get(minecraft.player);

@@ -1,3 +1,11 @@
+/*
+ * This class is distributed as a part of the Psi Mod.
+ * Get the Source Code on GitHub:
+ * https://github.com/Vazkii/Psi
+ *
+ * Psi is Open Source and distributed under the
+ * Psi License: https://psi.vazkii.net/license.php
+ */
 package vazkii.psi.api;
 
 import net.minecraft.client.renderer.model.Material;
@@ -16,7 +24,6 @@ public class ClientPsiAPI {
 
 	public static final ResourceLocation PSI_PIECE_TEXTURE_ATLAS = new ResourceLocation(MOD_ID, "spell_pieces");
 	private static final Map<ResourceLocation, Material> simpleSpellTextures = new HashMap<>();
-
 
 	/**
 	 * Register the texture of a piece

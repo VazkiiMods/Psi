@@ -110,7 +110,7 @@ public class BlockCADAssembler extends HorizontalBlock {
 	public void onReplaced(BlockState state, @Nonnull World world, @Nonnull BlockPos pos, BlockState newState, boolean isMoving) {
 		if (state.getBlock() != newState.getBlock() && !isMoving) {
 			TileCADAssembler te = (TileCADAssembler) world.getTileEntity(pos);
-			if(te != null){
+			if (te != null) {
 				for (int i = 0; i < te.getInventory().getSlots(); i++) {
 					ItemStack stack = te.getInventory().getStackInSlot(i);
 					if (!stack.isEmpty()) {
