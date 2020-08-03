@@ -247,6 +247,9 @@ public class GuiProgrammer extends Screen {
 							}
 						}
 						spell = Spell.createFromNBT(cmp);
+						if(spell == null) {
+							return;
+						}
 						PlayerDataHandler.PlayerData data = PlayerDataHandler.get(minecraft.player);
 						for (int i = 0; i < SpellGrid.GRID_SIZE; i++) {
 							for (int j = 0; j < SpellGrid.GRID_SIZE; j++) {
