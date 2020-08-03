@@ -13,6 +13,7 @@ import com.google.common.collect.Multimap;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.PlayerEntity;
@@ -45,12 +46,14 @@ public class ItemPsimetalPickaxe extends PickaxeItem implements IPsimetalTool {
 	}
 
 	@Override
-	public boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, PlayerEntity player) {
-		super.onBlockStartBreak(itemstack, pos, player);
+	public boolean onBlockDestroyed(ItemStack itemstack, World world, BlockState state, BlockPos pos, LivingEntity player) {
+		super.onBlockDestroyed(itemstack, world, state, pos, player);
+		if(!(player instanceof PlayerEntity)) {
+			return false;
+		}
+		castOnBlockBreak(itemstack, (PlayerEntity) player);
 
-		castOnBlockBreak(itemstack, player);
-
-		return false;
+		return true;
 	}
 
 	@Override
