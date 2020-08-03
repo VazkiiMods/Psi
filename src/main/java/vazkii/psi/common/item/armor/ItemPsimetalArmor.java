@@ -173,7 +173,7 @@ public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiE
 	@Override
 	public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlotType slot, String type) {
 		boolean overlay = type != null && type.equals("overlay");
-		return overlay ? LibResources.MODEL_PSIMETAL_EXOSUIT_SENSOR : LibResources.MODEL_PSIMETAL_EXOSUIT;
+		return overlay ? LibResources.MODEL_PSIMETAL_EXOSUIT : LibResources.MODEL_PSIMETAL_EXOSUIT_SENSOR;
 	}
 
 	public boolean hasColor(@Nonnull ItemStack stack) {
