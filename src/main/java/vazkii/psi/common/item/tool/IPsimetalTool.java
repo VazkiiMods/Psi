@@ -75,7 +75,7 @@ public interface IPsimetalTool {
 	}
 
 	static void regen(ItemStack stack, Entity entityIn, boolean isSelected) {
-		if (entityIn instanceof PlayerEntity && stack.getDamage() > 0 && !isSelected) {
+		if (isItemValidForRegen(stack, entityIn)) {
 			PlayerEntity player = (PlayerEntity) entityIn;
 			PlayerDataHandler.PlayerData data = PlayerDataHandler.get(player);
 			int regenTime = stack.getOrCreateTag().getInt(TAG_REGEN_TIME);
@@ -86,6 +86,14 @@ public interface IPsimetalTool {
 			}
 			stack.getOrCreateTag().putInt(TAG_REGEN_TIME, regenTime + 1);
 		}
+	}
+
+	static boolean isItemValidForRegen(ItemStack stack, Entity entityIn) {
+		if(!(entityIn instanceof PlayerEntity)) {
+			return false;
+		}
+		PlayerEntity player = (PlayerEntity) entityIn;
+		return player.getHeldItemOffhand() != stack && player.getHeldItemMainhand() != stack;
 	}
 
 	default boolean isEnabled(ItemStack stack) {
