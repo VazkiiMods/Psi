@@ -29,6 +29,9 @@ import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import vazkii.psi.common.block.tile.TileCADAssembler;
+import vazkii.psi.common.block.tile.TileProgrammer;
+import vazkii.psi.common.network.MessageRegister;
+import vazkii.psi.common.network.message.MessageSpellModified;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -49,21 +52,6 @@ public class BlockCADAssembler extends HorizontalBlock {
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext ctx) {
 		return getDefaultState().with(HORIZONTAL_FACING, ctx.getPlacementHorizontalFacing().getOpposite());
-	}
-
-	@Override
-	public void onReplaced(BlockState state, @Nonnull World world, @Nonnull BlockPos pos, BlockState newState, boolean isMoving) {
-		if (state.getBlock() != newState.getBlock()) {
-			TileCADAssembler te = (TileCADAssembler) world.getTileEntity(pos);
-			for (int i = 0; i < te.getInventory().getSlots(); i++) {
-				ItemStack stack = te.getInventory().getStackInSlot(i);
-				if (!stack.isEmpty()) {
-					InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), stack);
-				}
-			}
-		}
-
-		super.onReplaced(state, world, pos, newState, isMoving);
 	}
 
 	@Override
@@ -117,5 +105,4 @@ public class BlockCADAssembler extends HorizontalBlock {
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
 		return new TileCADAssembler();
 	}
-
 }
