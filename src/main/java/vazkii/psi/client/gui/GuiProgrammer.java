@@ -408,7 +408,7 @@ public class GuiProgrammer extends Screen {
 			font.drawStringWithShadow(enterCommit, left + xSize / 2f - font.getStringWidth(enterCommit) / 2f, commentField.y + 24, 0xFFFFFF);
 
 			String semicolonLine = I18n.format("psimisc.semicolon_line");
-			font.drawStringWithShadow(enterCommit, left + xSize / 2f - font.getStringWidth(enterCommit) / 2f, commentField.y + 34, 0xFFFFFF);
+			font.drawStringWithShadow(semicolonLine, left + xSize / 2f - font.getStringWidth(semicolonLine) / 2f, commentField.y + 34, 0xFFFFFF);
 		}
 
 		List<ITextComponent> legitTooltip = null;

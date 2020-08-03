@@ -31,6 +31,7 @@ import net.minecraftforge.fml.ModList;
 
 import org.lwjgl.opengl.GL11;
 
+import vazkii.psi.api.ClientPsiAPI;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.internal.PsiRenderHelper;
 import vazkii.psi.api.internal.TooltipHelper;
@@ -259,12 +260,12 @@ public abstract class SpellPiece {
 	public static RenderType getLayer() {
 		if (layer == null) {
 			RenderType.State glState = RenderType.State.builder()
-					.texture(new RenderState.TextureState(PsiAPI.PSI_PIECE_TEXTURE_ATLAS, false, false))
+					.texture(new RenderState.TextureState(ClientPsiAPI.PSI_PIECE_TEXTURE_ATLAS, false, false))
 					.lightmap(new RenderState.LightmapState(true))
 					.alpha(new RenderState.AlphaState(0.004F))
 					.cull(new RenderState.CullState(false))
 					.build(false);
-			layer = RenderType.of(PsiAPI.PSI_PIECE_TEXTURE_ATLAS.toString(), DefaultVertexFormats.POSITION_COLOR_TEXTURE_LIGHT, GL11.GL_QUADS, 64, glState);
+			layer = RenderType.of(ClientPsiAPI.PSI_PIECE_TEXTURE_ATLAS.toString(), DefaultVertexFormats.POSITION_COLOR_TEXTURE_LIGHT, GL11.GL_QUADS, 64, glState);
 		}
 		return layer;
 	}
@@ -274,7 +275,7 @@ public abstract class SpellPiece {
 	 */
 	@OnlyIn(Dist.CLIENT)
 	public void drawBackground(MatrixStack ms, IRenderTypeBuffer buffers, int light) {
-		Material material = PsiAPI.getSpellPieceMaterial(registryKey);
+		Material material = ClientPsiAPI.getSpellPieceMaterial(registryKey);
 		IVertexBuilder buffer = material.getVertexConsumer(buffers, ignored -> getLayer());
 		Matrix4f mat = ms.peek().getModel();
 		// Cannot call .texture() on the chained object because SpriteAwareVertexBuilder is buggy

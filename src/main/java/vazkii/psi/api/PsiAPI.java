@@ -76,10 +76,9 @@ public final class PsiAPI {
 	public static Capability<ISocketable> SOCKETABLE_CAPABILITY = null;
 
 	public static final String MOD_ID = "psi";
-	public static final ResourceLocation PSI_PIECE_TEXTURE_ATLAS = new ResourceLocation(MOD_ID, "spell_pieces");
+
 
 	private static final SimpleRegistry<Class<? extends SpellPiece>> spellPieceRegistry = new SimpleRegistry<>();
-	private static final Map<ResourceLocation, Material> simpleSpellTextures = new HashMap<>();
 	private static final Multimap<ResourceLocation, Class<? extends SpellPiece>> advancementGroups = HashMultimap.create();
 	private static final Map<Class<? extends SpellPiece>, ResourceLocation> advancementGroupsInverse = new HashMap<>();
 	private static final Map<ResourceLocation, Class<? extends SpellPiece>> mainPieceForGroup = new HashMap<>();
@@ -98,26 +97,13 @@ public final class PsiAPI {
 	 * Registers a spell piece and its texture.
 	 * The spell texture will be set to <code>/assets/(namespace)/textures/spell/(path).png</code>,
 	 * and will be stitched to an atlas for render.<br />
-	 * To use a different path, see {@link #registerPieceTexture}.<br />
+	 * To use a different path, see {@link ClientPsiAPI#registerPieceTexture}.<br />
 	 * To use custom rendering entirely, call {@link #registerSpellPiece} and override {@link SpellPiece#drawBackground}
 	 * to do your own rendering.
 	 */
 	public static void registerSpellPieceAndTexture(ResourceLocation id, Class<? extends SpellPiece> clazz) {
 		registerSpellPiece(id, clazz);
-		DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> registerPieceTexture(id, new ResourceLocation(id.getNamespace(), "spell/" + id.getPath())));
-	}
-
-	/**
-	 * Register the texture of a piece
-	 * 
-	 * @param pieceId ID of the piece whose texture to register
-	 * @param texture Path to the piece's texture, where <code>domain:foo/bar</code> translates to
-	 *                <code>/assets/domain/textures/foo/bar.png</code>.
-	 *                In other words, do <b>not</b> prefix with textures/ nor suffix with .png.
-	 */
-	@OnlyIn(Dist.CLIENT)
-	public static void registerPieceTexture(ResourceLocation pieceId, ResourceLocation texture) {
-		PsiAPI.simpleSpellTextures.put(pieceId, new Material(PSI_PIECE_TEXTURE_ATLAS, texture));
+		DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> ClientPsiAPI.registerPieceTexture(id, new ResourceLocation(id.getNamespace(), "spell/" + id.getPath())));
 	}
 
 	/**
@@ -202,9 +188,6 @@ public final class PsiAPI {
 		return spellPieceRegistry.getKey(clazz);
 	}
 
-	public static Material getSpellPieceMaterial(ResourceLocation key) {
-		return simpleSpellTextures.get(key);
-	}
 
 	public static Collection<Class<? extends SpellPiece>> getPiecesInAdvancementGroup(ResourceLocation group) {
 		return advancementGroups.get(group);
@@ -220,10 +203,6 @@ public final class PsiAPI {
 
 	public static boolean isPieceRegistered(ResourceLocation key) {
 		return spellPieceRegistry.getValue(key).isPresent();
-	}
-
-	public static Collection<Material> getAllSpellPieceMaterial() {
-		return simpleSpellTextures.values();
 	}
 
 	public static Collection<Class<? extends SpellPiece>> getAllRegisteredSpellPieces() {

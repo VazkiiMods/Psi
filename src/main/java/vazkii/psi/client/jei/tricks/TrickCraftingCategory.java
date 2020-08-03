@@ -24,6 +24,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 
+import vazkii.psi.api.ClientPsiAPI;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.recipe.ITrickRecipe;
 import vazkii.psi.common.Psi;
@@ -107,7 +108,7 @@ public class TrickCraftingCategory implements IRecipeCategory<ITrickRecipe> {
 		if (recipe.getPiece() != null) {
 			IDrawable trickIcon = trickIcons.computeIfAbsent(recipe.getPiece().registryKey,
 					key -> {
-						Material mat = PsiAPI.getSpellPieceMaterial(key);
+						Material mat = ClientPsiAPI.getSpellPieceMaterial(key);
 						if (mat == null) {
 							Psi.logger.warn("Not rendering complex (or missing) render for {}", key);
 							return helper.createBlankDrawable(16, 16);
