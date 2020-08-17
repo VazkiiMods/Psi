@@ -53,8 +53,8 @@ public abstract class ItemCADComponent extends Item implements ICADComponent {
 					int statVal = getCADStatValue(stack, stat);
 					String statValStr = statVal == -1 ? "\u221E" : "" + statVal;
 
-					ITextComponent name = new TranslationTextComponent(stat.getName()).applyTextStyle(TextFormatting.AQUA);
-					tooltip.add(new StringTextComponent(" ").appendSibling(name).appendText(": " + statValStr));
+					ITextComponent name = new TranslationTextComponent(stat.getName()).formatted(TextFormatting.AQUA);
+					tooltip.add(new StringTextComponent(" ").append(name).append(": " + statValStr));
 				}
 			}
 		});

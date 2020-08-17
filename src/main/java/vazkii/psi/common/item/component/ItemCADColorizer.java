@@ -43,7 +43,7 @@ public class ItemCADColorizer extends ItemCADComponent implements ICADColorizer 
 	}
 
 	private static String getProperDyeName(DyeColor color) {
-		return color.getName();
+		return color.getString();
 	}
 
 	@Override

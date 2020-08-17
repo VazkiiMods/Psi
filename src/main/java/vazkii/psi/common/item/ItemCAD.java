@@ -23,7 +23,9 @@ import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
@@ -186,7 +188,7 @@ public class ItemCAD extends Item implements ICAD {
 		ItemStack playerCad = PsiAPI.getPlayerCAD(playerIn);
 		if (playerCad != itemStackIn) {
 			if (!worldIn.isRemote) {
-				playerIn.sendMessage(new TranslationTextComponent("psimisc.multiple_cads").setStyle(new Style().setColor(TextFormatting.RED)));
+				playerIn.sendMessage(new TranslationTextComponent("psimisc.multiple_cads").setStyle(Style.EMPTY.withColor(TextFormatting.RED)), Util.NIL_UUID);
 			}
 			return new ActionResult<>(ActionResultType.SUCCESS, itemStackIn);
 		}
@@ -231,7 +233,7 @@ public class ItemCAD extends Item implements ICAD {
 					if (MinecraftForge.EVENT_BUS.post(event)) {
 						String cancelMessage = event.getCancellationMessage();
 						if (cancelMessage != null && !cancelMessage.isEmpty()) {
-							player.sendMessage(new TranslationTextComponent(cancelMessage).setStyle(new Style().setColor(TextFormatting.RED)));
+							player.sendMessage(new TranslationTextComponent(cancelMessage).setStyle(Style.EMPTY.withColor(TextFormatting.RED)), Util.NIL_UUID);
 						}
 						return false;
 					}
@@ -287,7 +289,7 @@ public class ItemCAD extends Item implements ICAD {
 					MinecraftForge.EVENT_BUS.post(new SpellCastEvent(spell, context, player, data, cad, bullet));
 					return true;
 				} else if (!world.isRemote) {
-					player.sendMessage(new TranslationTextComponent("psimisc.weak_cad").setStyle(new Style().setColor(TextFormatting.RED)));
+					player.sendMessage(new TranslationTextComponent("psimisc.weak_cad").setStyle(Style.EMPTY.withColor(TextFormatting.RED)), Util.NIL_UUID);
 				}
 			}
 		}
@@ -627,8 +629,8 @@ public class ItemCAD extends Item implements ICAD {
 					name = componentStack.getDisplayName();
 				}
 
-				ITextComponent componentTypeName = new TranslationTextComponent(componentType.getName()).applyTextStyle(TextFormatting.GREEN);
-				tooltip.add(componentTypeName.appendText(": ").appendSibling(name));
+				IFormattableTextComponent componentTypeName = new TranslationTextComponent(componentType.getName()).formatted(TextFormatting.GREEN);
+				tooltip.add(componentTypeName.append(": ").append(name));
 
 				for (EnumCADStat stat : EnumCADStat.class.getEnumConstants()) {
 					if (stat.getSourceType() == componentType) {
@@ -636,7 +638,7 @@ public class ItemCAD extends Item implements ICAD {
 						int statVal = getStatValue(stack, stat);
 						String statValStr = statVal == -1 ? "\u221E" : "" + statVal;
 
-						tooltip.add(new TranslationTextComponent(shrt).applyTextStyle(TextFormatting.AQUA).appendText(": " + statValStr));
+						tooltip.add(new TranslationTextComponent(shrt).formatted(TextFormatting.AQUA).append(": " + statValStr));
 					}
 				}
 			}

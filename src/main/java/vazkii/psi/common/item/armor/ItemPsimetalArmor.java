@@ -14,8 +14,9 @@ import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.IArmorMaterial;
@@ -77,11 +78,11 @@ public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiE
 	}
 
 	@Override
-	public Multimap<String, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
-		Multimap<String, AttributeModifier> modifiers = super.getAttributeModifiers(slot, stack);
+	public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
+		Multimap<Attribute, AttributeModifier> modifiers = super.getAttributeModifiers(slot, stack);
 		if (!isEnabled(stack)) {
-			modifiers.removeAll(SharedMonsterAttributes.ARMOR.getName());
-			modifiers.removeAll(SharedMonsterAttributes.ARMOR_TOUGHNESS.getName());
+			modifiers.removeAll(Attributes.field_233826_i_); //ARMOR
+			modifiers.removeAll(Attributes.field_233827_j_); //ARMOR_TOUGHNESS
 		}
 
 		return modifiers;

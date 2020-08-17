@@ -18,6 +18,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
@@ -56,7 +57,7 @@ public class ItemSpellDrive extends Item {
 	@Nonnull
 	@Override
 	public ITextComponent getDisplayName(ItemStack stack) {
-		String name = super.getDisplayName(stack).getFormattedText();
+		String name = super.getDisplayName(stack).getString();
 		CompoundNBT cmp = stack.getOrCreateTag().getCompound(TAG_SPELL);
 		String spellName = cmp.getString(Spell.TAG_SPELL_NAME); // We don't need to load the whole spell just for the name
 		if (spellName.isEmpty()) {
@@ -89,7 +90,7 @@ public class ItemSpellDrive extends Item {
 				if (enabled && !programmer.playerLock.isEmpty()) {
 					if (!programmer.playerLock.equals(playerIn.getName().getString())) {
 						if (!worldIn.isRemote) {
-							playerIn.sendMessage(new TranslationTextComponent("psimisc.not_your_programmer").setStyle(new Style().setColor(TextFormatting.RED)));
+							playerIn.sendMessage(new TranslationTextComponent("psimisc.not_your_programmer").setStyle(Style.EMPTY.withColor(TextFormatting.RED)), Util.NIL_UUID);
 						}
 						return ActionResultType.SUCCESS;
 					}

@@ -8,6 +8,8 @@
  */
 package vazkii.psi.common.item;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+
 import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -104,8 +106,9 @@ public class ItemVectorRuler extends Item implements IHUDItem {
 	public void drawHUD(MainWindow res, float partTicks, ItemStack stack) {
 		String s = getVector(stack).toString();
 
+		MatrixStack matrixStack = new MatrixStack();
 		FontRenderer font = Minecraft.getInstance().fontRenderer;
 		int w = font.getStringWidth(s);
-		font.drawStringWithShadow(s, res.getScaledWidth() / 2f - w / 2f, res.getScaledHeight() / 2f + 10, 0xFFFFFFFF);
+		font.draw(matrixStack, s, res.getScaledWidth() / 2f - w / 2f, res.getScaledHeight() / 2f + 10, 0xFFFFFFFF);
 	}
 }
