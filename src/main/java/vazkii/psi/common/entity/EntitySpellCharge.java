@@ -11,7 +11,7 @@ package vazkii.psi.common.entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.ThrowableEntity;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.registries.ObjectHolder;
 
@@ -47,8 +47,8 @@ public class EntitySpellCharge extends EntitySpellGrenade implements IDetonation
 	}
 
 	@Override
-	public Vec3d objectLocus() {
-		return getPositionVector();
+	public Vector3d objectLocus() {
+		return getPositionVec();
 	}
 
 	@Override

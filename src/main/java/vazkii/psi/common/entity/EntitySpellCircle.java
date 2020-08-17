@@ -20,7 +20,7 @@ import net.minecraft.network.IPacket;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.registries.ObjectHolder;
@@ -77,7 +77,7 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 		dataManager.set(BULLET_DATA, bullet);
 		dataManager.set(CASTER_UUID, Optional.of(player.getUniqueID()));
 
-		Vec3d lookVec = player.getLook(1F);
+		Vector3d lookVec = player.getLook(1F);
 		dataManager.set(LOOK_X, (float) lookVec.x);
 		dataManager.set(LOOK_Y, (float) lookVec.y);
 		dataManager.set(LOOK_Z, (float) lookVec.z);
@@ -193,11 +193,11 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 	}
 
 	@Override
-	public Vec3d getLookVec() {
+	public Vector3d getLookVec() {
 		float x = dataManager.get(LOOK_X);
 		float y = dataManager.get(LOOK_Y);
 		float z = dataManager.get(LOOK_Z);
-		return new Vec3d(x, y, z);
+		return new Vector3d(x, y, z);
 	}
 
 	public int getTimeAlive() {

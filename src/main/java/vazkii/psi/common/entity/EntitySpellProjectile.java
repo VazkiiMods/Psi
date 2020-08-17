@@ -70,7 +70,8 @@ public class EntitySpellProjectile extends ThrowableEntity {
 	protected EntitySpellProjectile(EntityType<? extends ThrowableEntity> type, World world, LivingEntity thrower) {
 		super(type, thrower, world);
 
-		shoot(thrower, thrower.rotationPitch, thrower.rotationYaw, 0.0F, 1.5F, 1.0F);
+		setShooter(thrower);
+		shoot(thrower.rotationPitch, thrower.rotationYaw, 0.0F, 1.5F, 1.0F);
 		double speed = 1.5;
 		setMotion(getMotion().mul(speed, speed, speed));
 	}
@@ -132,7 +133,7 @@ public class EntitySpellProjectile extends ThrowableEntity {
 		ItemStack bullet = ItemStack.read(bulletCmp);
 		dataManager.set(BULLET_DATA, bullet);
 
-		LivingEntity thrower = getThrower();
+		Entity thrower = getOwner();
 		if (thrower instanceof PlayerEntity) {
 			dataManager.set(CASTER_UUID, Optional.of(thrower.getUniqueID()));
 		}
@@ -214,7 +215,7 @@ public class EntitySpellProjectile extends ThrowableEntity {
 	}
 
 	public void cast(Consumer<SpellContext> callback) {
-		Entity thrower = getThrower();
+		Entity thrower = getOwner();
 		boolean canCast = false;
 
 		if (thrower instanceof PlayerEntity) {
@@ -243,8 +244,8 @@ public class EntitySpellProjectile extends ThrowableEntity {
 	}
 
 	@Override
-	public LivingEntity getThrower() {
-		LivingEntity superThrower = super.getThrower();
+	public Entity getOwner() {
+		Entity superThrower = super.getOwner();
 		if (superThrower != null) {
 			return superThrower;
 		}
@@ -256,7 +257,7 @@ public class EntitySpellProjectile extends ThrowableEntity {
 
 	public LivingEntity getAttackTarget() {
 		double radiusVal = SpellContext.MAX_DISTANCE;
-		Vector3 positionVal = Vector3.fromVec3d(this.getPositionVector());
+		Vector3 positionVal = Vector3.fromVec3d(this.getPositionVec());
 		AxisAlignedBB axis = new AxisAlignedBB(positionVal.x - radiusVal, positionVal.y - radiusVal, positionVal.z - radiusVal, positionVal.x + radiusVal, positionVal.y + radiusVal, positionVal.z + radiusVal);
 		return dataManager.get(ATTACKTARGET_UUID)
 				.map(u -> {

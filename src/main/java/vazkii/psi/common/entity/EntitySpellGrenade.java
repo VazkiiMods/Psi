@@ -17,7 +17,7 @@ import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.registries.ObjectHolder;
 
@@ -110,10 +110,10 @@ public class EntitySpellGrenade extends EntitySpellProjectile {
 				position.add(Vector3.fromDirection(face).multiply(0.1d));
 			}
 			setPositionAndUpdate(position.x, position.y, position.z);
-			setMotion(Vec3d.ZERO);
+			setMotion(Vector3d.ZERO);
 		} else if (ray.getType() == RayTraceResult.Type.ENTITY) {
 			setPositionAndUpdate(ray.getHitVec().x, ray.getHitVec().y, ray.getHitVec().z);
-			setMotion(Vec3d.ZERO);
+			setMotion(Vector3d.ZERO);
 		}
 	}
 

@@ -8,6 +8,7 @@
  */
 package vazkii.psi.common.entity;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.ThrowableEntity;
@@ -40,7 +41,7 @@ public class EntitySpellMine extends EntitySpellGrenade {
 		super.tick();
 
 		List<LivingEntity> entities = getEntityWorld().getEntitiesWithinAABB(LivingEntity.class, getBoundingBox().grow(1, 1, 1));
-		LivingEntity thrower = getThrower();
+		Entity thrower = getOwner();
 		if (thrower != null && ticksExisted < 30) {
 			entities.remove(thrower);
 		}
