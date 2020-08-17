@@ -1,6 +1,6 @@
 /*
- * This class is distributed as a part of the Psi Mod.
- * Get the Source Code on GitHub:
+ * This class is distributed as part of the Psi Mod.
+ * Get the Source Code in github:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -9,7 +9,6 @@
 package vazkii.psi.common.spell.trick;
 
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraftforge.fml.network.PacketDistributor;
 
 import vazkii.psi.api.spell.EnumSpellStat;
 import vazkii.psi.api.spell.Spell;

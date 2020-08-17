@@ -1,6 +1,6 @@
 /*
- * This class is distributed as a part of the Psi Mod.
- * Get the Source Code on GitHub:
+ * This class is distributed as part of the Psi Mod.
+ * Get the Source Code in github:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -12,7 +12,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.ILiquidContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.FlowingFluid;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.Direction;

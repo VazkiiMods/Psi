@@ -1,6 +1,6 @@
 /*
- * This class is distributed as a part of the Psi Mod.
- * Get the Source Code on GitHub:
+ * This class is distributed as part of the Psi Mod.
+ * Get the Source Code in github:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -37,7 +37,6 @@ import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 import vazkii.psi.api.ClientPsiAPI;
-import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.cad.ICADColorizer;
 import vazkii.psi.api.spell.SpellPiece;

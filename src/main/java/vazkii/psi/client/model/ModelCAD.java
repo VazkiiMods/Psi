@@ -1,6 +1,6 @@
 /*
- * This class is distributed as a part of the Psi Mod.
- * Get the Source Code on GitHub:
+ * This class is distributed as part of the Psi Mod.
+ * Get the Source Code in github:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -21,7 +21,6 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 

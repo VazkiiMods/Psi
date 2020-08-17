@@ -1,6 +1,6 @@
 /*
- * This class is distributed as a part of the Psi Mod.
- * Get the Source Code on GitHub:
+ * This class is distributed as part of the Psi Mod.
+ * Get the Source Code in github:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -11,7 +11,6 @@ package vazkii.psi.common.spell.selector.entity;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellRuntimeException;
-import vazkii.psi.api.spell.piece.PieceOperator;
 import vazkii.psi.api.spell.piece.PieceSelector;
 
 public class PieceSelectorIsElytraFlying extends PieceSelector {

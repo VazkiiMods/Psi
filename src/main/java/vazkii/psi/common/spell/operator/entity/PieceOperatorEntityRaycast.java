@@ -1,6 +1,6 @@
 /*
- * This class is distributed as a part of the Psi Mod.
- * Get the Source Code on GitHub:
+ * This class is distributed as part of the Psi Mod.
+ * Get the Source Code in github:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -64,7 +64,8 @@ public class PieceOperatorEntityRaycast extends PieceOperator {
 
 	/**
 	 * [VanillaCopy]
-	 * {@link net.minecraft.entity.projectile.ProjectileHelper#rayTraceEntities(World, Entity, Vector3d, Vector3d, AxisAlignedBB, Predicate)} (World, Entity, Vector3d, Vector3d, AxisAlignedBB, Predicate, double)}
+	 * {@link net.minecraft.entity.projectile.ProjectileHelper#rayTraceEntities(World, Entity, Vector3d, Vector3d, AxisAlignedBB, Predicate)}
+	 * (World, Entity, Vector3d, Vector3d, AxisAlignedBB, Predicate, double)}
 	 * Some slight tweaks as we don't need an AABB provided to us, we can just make one.
 	 */
 	public static Entity rayTraceEntities(World world, Entity caster, Vector3d positionVector, Vector3d lookVector, Predicate<Entity> predicate, double maxDistance) {

@@ -1,6 +1,6 @@
 /*
- * This class is distributed as a part of the Psi Mod.
- * Get the Source Code on GitHub:
+ * This class is distributed as part of the Psi Mod.
+ * Get the Source Code in github:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -29,9 +29,6 @@ import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import vazkii.psi.common.block.tile.TileCADAssembler;
-import vazkii.psi.common.block.tile.TileProgrammer;
-import vazkii.psi.common.network.MessageRegister;
-import vazkii.psi.common.network.message.MessageSpellModified;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

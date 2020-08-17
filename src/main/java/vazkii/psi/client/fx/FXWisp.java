@@ -1,6 +1,6 @@
 /*
- * This class is distributed as a part of the Psi Mod.
- * Get the Source Code on GitHub:
+ * This class is distributed as part of the Psi Mod.
+ * Get the Source Code in github:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -19,7 +19,6 @@ import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.world.ClientWorld;
-import net.minecraft.world.World;
 
 import org.lwjgl.opengl.GL11;
 
@@ -32,7 +31,7 @@ public class FXWisp extends SpriteTexturedParticle {
 	private final int moteHalfLife;
 
 	public FXWisp(ClientWorld world, double d, double d1, double d2, double xSpeed, double ySpeed, double zSpeed,
-				  float size, float red, float green, float blue, float maxAgeMul) {
+			float size, float red, float green, float blue, float maxAgeMul) {
 		super(world, d, d1, d2, 0, 0, 0);
 		// super applies wiggle to motion so set it here instead
 		motionX = xSpeed;

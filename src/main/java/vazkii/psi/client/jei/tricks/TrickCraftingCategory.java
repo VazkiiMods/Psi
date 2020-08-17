@@ -1,6 +1,6 @@
 /*
- * This class is distributed as a part of the Psi Mod.
- * Get the Source Code on GitHub:
+ * This class is distributed as part of the Psi Mod.
+ * Get the Source Code in github:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -17,7 +17,6 @@ import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.category.IRecipeCategory;
-
 
 import net.minecraft.client.renderer.model.RenderMaterial;
 import net.minecraft.client.resources.I18n;
@@ -38,7 +37,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class TrickCraftingCategory implements IRecipeCategory<ITrickRecipe> {
 	public static final ResourceLocation UID = new ResourceLocation(LibMisc.MOD_ID, "trick");
@@ -125,7 +123,6 @@ public class TrickCraftingCategory implements IRecipeCategory<ITrickRecipe> {
 			}
 		}
 	}
-
 
 	@Nonnull
 	@Override

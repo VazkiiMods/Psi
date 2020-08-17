@@ -1,6 +1,6 @@
 /*
- * This class is distributed as a part of the Psi Mod.
- * Get the Source Code on GitHub:
+ * This class is distributed as part of the Psi Mod.
+ * Get the Source Code in github:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -14,18 +14,15 @@ import net.minecraft.util.text.ITextComponent;
 
 import vazkii.patchouli.api.IComponentRenderContext;
 import vazkii.patchouli.api.IVariable;
-import vazkii.patchouli.api.PatchouliAPI;
 import vazkii.psi.api.spell.SpellPiece;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.StringJoiner;
 import java.util.stream.Collectors;
 
 // https://github.com/Vazkii/Botania/blob/master/src/main/java/vazkii/botania/client/patchouli/PatchouliUtils.java
 public class PatchouliUtils {
-
 
 	/**
 	 * Combines the ingredients, returning the first matching stack of each, then the second stack of each, etc.
@@ -65,7 +62,6 @@ public class PatchouliUtils {
 	public static IVariable interweaveIngredients(List<Ingredient> ingredients) {
 		return interweaveIngredients(ingredients, ingredients.stream().mapToInt(ingr -> ingr.getMatchingStacks().length).max().orElse(1));
 	}
-
 
 	/**
 	 * Sets the tooltip to the passed spell piece's tooltip.

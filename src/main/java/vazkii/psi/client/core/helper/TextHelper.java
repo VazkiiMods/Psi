@@ -1,6 +1,6 @@
 /*
- * This class is distributed as a part of the Psi Mod.
- * Get the Source Code on GitHub:
+ * This class is distributed as part of the Psi Mod.
+ * Get the Source Code in github:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -73,7 +73,7 @@ public final class TextHelper {
 					if (centered) {
 						font.draw(matrixStack, s, xi + width / 2 - swidth / 2, y, 0xFFFFFF);
 					} else {
-						font.draw(matrixStack,s, xi, y, 0xFFFFFF);
+						font.draw(matrixStack, s, xi, y, 0xFFFFFF);
 					}
 				}
 				xi += swidth + spacing + extra;

@@ -1,6 +1,6 @@
 /*
- * This class is distributed as a part of the Psi Mod.
- * Get the Source Code on GitHub:
+ * This class is distributed as part of the Psi Mod.
+ * Get the Source Code in github:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -21,7 +21,6 @@ import net.minecraft.client.renderer.texture.Texture;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.world.ClientWorld;
-import net.minecraft.world.World;
 
 import org.lwjgl.opengl.GL11;
 
@@ -35,7 +34,7 @@ public class FXSparkle extends SpriteTexturedParticle {
 	private final IAnimatedSprite sprite;
 
 	public FXSparkle(ClientWorld world, double x, double y, double z, float size,
-					 float red, float green, float blue, int m, double mx, double my, double mz, IAnimatedSprite sprite) {
+			float red, float green, float blue, int m, double mx, double my, double mz, IAnimatedSprite sprite) {
 		super(world, x, y, z, 0.0D, 0.0D, 0.0D);
 		particleRed = red;
 		particleGreen = green;
