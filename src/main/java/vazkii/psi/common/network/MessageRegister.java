@@ -33,7 +33,7 @@ import vazkii.psi.common.network.message.MessageTriggerJumpSpell;
 import vazkii.psi.common.network.message.MessageVisualEffect;
 
 public class MessageRegister {
-	private static final String VERSION = "1";
+	private static final String VERSION = "3";
 	public static final SimpleChannel HANDLER = NetworkRegistry.newSimpleChannel(new ResourceLocation(LibMisc.MOD_ID, "main"),
 			() -> VERSION,
 			VERSION::equals,
