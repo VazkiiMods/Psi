@@ -31,7 +31,7 @@ public class FXWisp extends SpriteTexturedParticle {
 	private final int moteHalfLife;
 
 	public FXWisp(World world, double d, double d1, double d2, double xSpeed, double ySpeed, double zSpeed,
-				  float size, float red, float green, float blue, float maxAgeMul) {
+			float size, float red, float green, float blue, float maxAgeMul) {
 		super(world, d, d1, d2, 0, 0, 0);
 		// super applies wiggle to motion so set it here instead
 		motionX = xSpeed;

@@ -19,6 +19,7 @@ import net.minecraftforge.fml.network.simple.SimpleChannel;
 
 import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.network.message.MessageAdditiveMotion;
+import vazkii.psi.common.network.message.MessageBlink;
 import vazkii.psi.common.network.message.MessageCADDataSync;
 import vazkii.psi.common.network.message.MessageChangeControllerSlot;
 import vazkii.psi.common.network.message.MessageChangeSocketableSlot;
