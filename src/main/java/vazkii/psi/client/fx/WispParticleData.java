@@ -10,6 +10,8 @@ package vazkii.psi.client.fx;
 
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.particles.IParticleData;
@@ -21,6 +23,14 @@ import java.util.Locale;
 
 // https://github.com/Vazkii/Botania/blob/1.15/src/main/java/vazkii/botania/client/fx/WispParticleData.java
 public class WispParticleData implements IParticleData {
+	public static final Codec<WispParticleData> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+			Codec.FLOAT.fieldOf("size").forGetter(d -> d.size),
+			Codec.FLOAT.fieldOf("r").forGetter(d -> d.r),
+			Codec.FLOAT.fieldOf("g").forGetter(d -> d.g),
+			Codec.FLOAT.fieldOf("b").forGetter(d -> d.b),
+			Codec.FLOAT.fieldOf("maxAgeMul").forGetter(d -> d.maxAgeMul)
+	)
+			.apply(instance, WispParticleData::new));
 	public final float size;
 	public final float r, g, b;
 	public final float maxAgeMul;

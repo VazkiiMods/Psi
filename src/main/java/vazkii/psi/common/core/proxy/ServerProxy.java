@@ -12,7 +12,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.minecraft.world.dimension.DimensionType;
 import net.minecraftforge.fml.server.ServerLifecycleHooks;
 
 import vazkii.psi.common.block.tile.TileProgrammer;
@@ -25,7 +24,7 @@ public class ServerProxy implements IProxy {
 
 	@Override
 	public long getWorldElapsedTicks() {
-		return ServerLifecycleHooks.getCurrentServer().getWorld(DimensionType.OVERWORLD).getGameTime();
+		return ServerLifecycleHooks.getCurrentServer().getWorld(World.OVERWORLD).getGameTime();
 	}
 
 	@Override

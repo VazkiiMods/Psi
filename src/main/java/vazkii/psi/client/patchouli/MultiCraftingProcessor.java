@@ -19,8 +19,11 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.crafting.IShapedRecipe;
 
 import vazkii.patchouli.api.IComponentProcessor;
+import vazkii.patchouli.api.IVariable;
 import vazkii.patchouli.api.IVariableProvider;
 import vazkii.patchouli.api.PatchouliAPI;
+import vazkii.psi.common.Psi;
+import vazkii.psi.common.crafting.ModCraftingRecipes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,9 +38,9 @@ public class MultiCraftingProcessor implements IComponentProcessor {
 	private boolean hasCustomHeading;
 
 	@Override
-	public void setup(IVariableProvider<String> variables) {
+	public void setup(IVariableProvider variables) {
 		Map<ResourceLocation, IRecipe<CraftingInventory>> recipeMap = Minecraft.getInstance().world.getRecipeManager().getRecipes(IRecipeType.CRAFTING);
-		String[] names = variables.get("recipes").split(";");
+		List<String> names = variables.get("recipes").asStream().map(IVariable::asString).collect(Collectors.toList());
 		this.recipes = new ArrayList<>();
 		for (String name : names) {
 			IRecipe<?> recipe = recipeMap.get(new ResourceLocation(name));
@@ -52,19 +55,21 @@ public class MultiCraftingProcessor implements IComponentProcessor {
 						longestIngredientSize = size;
 					}
 				}
+			} else {
+				Psi.logger.warn("Missing crafting recipe " + name);
 			}
 		}
 		this.hasCustomHeading = variables.has("heading");
 	}
 
 	@Override
-	public String process(String key) {
+	public IVariable process(String key) {
 		if (recipes.isEmpty()) {
 			return null;
 		}
 		if (key.equals("heading")) {
 			if (!hasCustomHeading) {
-				return recipes.get(0).getRecipeOutput().getDisplayName().getString();
+				return IVariable.from(recipes.get(0).getRecipeOutput().getDisplayName());
 			}
 			return null;
 		}
@@ -92,9 +97,11 @@ public class MultiCraftingProcessor implements IComponentProcessor {
 			return PatchouliUtils.interweaveIngredients(ingredients, longestIngredientSize);
 		}
 		if (key.equals("output")) {
-			return recipes.stream().map(ICraftingRecipe::getRecipeOutput).map(PatchouliAPI.instance::serializeItemStack).collect(Collectors.joining(","));
+			return IVariable.wrapList(recipes.stream().map(ICraftingRecipe::getRecipeOutput).map(IVariable::from).collect(Collectors.toList()));
 		}
-		if (key.equals("shapeless")) {}
+		if (key.equals("shapeless")) {
+			return IVariable.wrap(shapeless);
+		}
 		return null;
 	}
 }

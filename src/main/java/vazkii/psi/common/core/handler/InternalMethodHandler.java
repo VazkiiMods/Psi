@@ -8,6 +8,8 @@
  */
 package vazkii.psi.common.core.handler;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.RenderType;
@@ -80,9 +82,9 @@ public final class InternalMethodHandler implements IInternalMethodHandler {
 	@OnlyIn(Dist.CLIENT)
 	public void renderTooltip(int x, int y, List<ITextComponent> tooltipData, int color, int color2, int width, int height) {
 		if (!tooltipData.isEmpty()) {
-			List<String> tooltipDataString = tooltipData.stream().map(ITextComponent::getFormattedText).collect(Collectors.toList());
+			MatrixStack matrixStack = new MatrixStack();
 			FontRenderer fontRenderer = Minecraft.getInstance().fontRenderer;
-			GuiUtils.drawHoveringText(tooltipDataString, x, y, width, height, -1, color2, color, color, fontRenderer);
+			GuiUtils.drawHoveringText(matrixStack, tooltipData, x, y, width, height, -1, color2, color, color, fontRenderer);
 		}
 	}
 

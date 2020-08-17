@@ -10,6 +10,8 @@ package vazkii.psi.client.fx;
 
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.particles.IParticleData;
@@ -21,6 +23,16 @@ import java.util.Locale;
 
 // https://github.com/Vazkii/Botania/blob/1.15/src/main/java/vazkii/botania/client/fx/SparkleParticleData.java
 public class SparkleParticleData implements IParticleData {
+	public static final Codec<SparkleParticleData> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+			Codec.FLOAT.fieldOf("size").forGetter(d -> d.size),
+			Codec.FLOAT.fieldOf("r").forGetter(d -> d.r),
+			Codec.FLOAT.fieldOf("g").forGetter(d -> d.g),
+			Codec.FLOAT.fieldOf("b").forGetter(d -> d.b),
+			Codec.INT.fieldOf("m").forGetter(d -> d.m),
+			Codec.DOUBLE.fieldOf("mx").forGetter(d -> d.mx),
+			Codec.DOUBLE.fieldOf("my").forGetter(d -> d.my),
+			Codec.DOUBLE.fieldOf("mz").forGetter(d -> d.mz)
+	).apply(instance, SparkleParticleData::new));
 	public final float size;
 	public final float r, g, b;
 	public final int m;

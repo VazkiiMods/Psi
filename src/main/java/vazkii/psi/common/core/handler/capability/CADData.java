@@ -221,7 +221,7 @@ public class CADData implements ICapabilityProvider, ICADData, ISpellAcceptor, I
 			List<Vector3> newVectors = Lists.newArrayList();
 			for (int i = 0; i < memory.size(); i++) {
 				ListNBT vec = (ListNBT) memory.get(i);
-				if (vec.getTagType() == Constants.NBT.TAG_DOUBLE && vec.size() >= 3) {
+				if (vec.getElementType() == Constants.NBT.TAG_DOUBLE && vec.size() >= 3) {
 					newVectors.add(new Vector3(vec.getDouble(0), vec.getDouble(1), vec.getDouble(2)));
 				} else {
 					newVectors.add(null);

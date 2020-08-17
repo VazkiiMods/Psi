@@ -9,7 +9,7 @@
 package vazkii.psi.client.jei.tricks;
 
 import com.google.common.collect.ImmutableList;
-import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.matrix.MatrixStack;
 
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.IRecipeLayout;
@@ -18,14 +18,14 @@ import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 
-import net.minecraft.client.renderer.model.Material;
+
+import net.minecraft.client.renderer.model.RenderMaterial;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 
 import vazkii.psi.api.ClientPsiAPI;
-import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.recipe.ITrickRecipe;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.item.base.ModItems;
@@ -104,11 +104,11 @@ public class TrickCraftingCategory implements IRecipeCategory<ITrickRecipe> {
 	}
 
 	@Override
-	public void draw(ITrickRecipe recipe, double mouseX, double mouseY) {
+	public void draw(ITrickRecipe recipe, MatrixStack matrixStack, double mouseX, double mouseY) {
 		if (recipe.getPiece() != null) {
 			IDrawable trickIcon = trickIcons.computeIfAbsent(recipe.getPiece().registryKey,
 					key -> {
-						Material mat = ClientPsiAPI.getSpellPieceMaterial(key);
+						RenderMaterial mat = ClientPsiAPI.getSpellPieceMaterial(key);
 						if (mat == null) {
 							Psi.logger.warn("Not rendering complex (or missing) render for {}", key);
 							return helper.createBlankDrawable(16, 16);
@@ -116,25 +116,24 @@ public class TrickCraftingCategory implements IRecipeCategory<ITrickRecipe> {
 						return new DrawableTAS(mat.getSprite());
 					});
 
-			RenderSystem.pushMatrix();
-			trickIcon.draw(trickX, trickY);
-			RenderSystem.popMatrix();
+			matrixStack.push();
+			trickIcon.draw(matrixStack, trickX, trickY);
+			matrixStack.pop();
 
 			if (onTrick(mouseX, mouseY)) {
-				programmerHover.draw(trickX, trickY);
+				programmerHover.draw(matrixStack, trickX, trickY);
 			}
 		}
 	}
 
+
 	@Nonnull
 	@Override
-	public List<String> getTooltipStrings(ITrickRecipe recipe, double mouseX, double mouseY) {
+	public List<ITextComponent> getTooltipStrings(ITrickRecipe recipe, double mouseX, double mouseY) {
 		if (recipe.getPiece() != null && onTrick(mouseX, mouseY)) {
 			List<ITextComponent> tooltip = new ArrayList<>();
 			recipe.getPiece().getTooltip(tooltip);
-			return tooltip.stream()
-					.map(ITextComponent::getFormattedText)
-					.collect(Collectors.toList());
+			return tooltip;
 		}
 		return Collections.emptyList();
 	}

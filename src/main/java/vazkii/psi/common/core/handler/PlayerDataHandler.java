@@ -24,11 +24,11 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.play.server.SPlayerPositionLookPacket.Flags;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
+import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.LightType;
-import net.minecraft.world.dimension.Dimension;
+import net.minecraft.world.DimensionType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.FOVUpdateEvent;
@@ -286,7 +286,7 @@ public class PlayerDataHandler {
 		public int eidosAnchorTime;
 		public int postAnchorRecallTime;
 		public int eidosReversionTime;
-		public Dimension lastDimension;
+		public DimensionType lastDimension;
 
 		// Exosuit Event Stuff
 		private boolean lowLight, underwater, lowHp;
@@ -318,7 +318,7 @@ public class PlayerDataHandler {
 				return;
 			}
 
-			Dimension dimension = player.getEntityWorld().getDimension();
+			DimensionType dimension = player.getEntityWorld().getDimension();
 
 			if (deductTick) {
 				deductTick = false;
@@ -527,10 +527,8 @@ public class PlayerDataHandler {
 				eidosChangelog.push(Vector3.fromEntity(player));
 			}
 
-			BlockPos pos = player.getPosition();
-			int skylight = (int) (player.getEntityWorld().getLightLevel(LightType.SKY, pos) * player.getEntityWorld().dimension.getBrightness(1));
-			int blocklight = player.getEntityWorld().getLightLevel(LightType.BLOCK, pos);
-			int light = Math.max(skylight, blocklight);
+			BlockPos pos = player.getBlockPos();
+			int light = player.getEntityWorld().getLightingProvider().getLight(pos, 0);
 
 			boolean lowLight = light <= 7;
 			if (!this.lowLight && lowLight) {

@@ -10,7 +10,7 @@ package vazkii.psi.common.core.handler;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -26,7 +26,7 @@ import java.util.WeakHashMap;
 
 @Mod.EventBusSubscriber(modid = LibMisc.MOD_ID)
 public class AdditiveMotionHandler {
-	private static final Map<Entity, Vec3d> toUpdate = new WeakHashMap<>();
+	private static final Map<Entity, Vector3d> toUpdate = new WeakHashMap<>();
 
 	public static void addMotion(Entity entity, double x, double y, double z) {
 		if (x == 0 && y == 0 && z == 0) {
@@ -36,7 +36,7 @@ public class AdditiveMotionHandler {
 		entity.addVelocity(x, y, z);
 
 		if (!entity.world.isRemote) {
-			Vec3d base = toUpdate.getOrDefault(entity, Vec3d.ZERO);
+			Vector3d base = toUpdate.getOrDefault(entity, Vector3d.ZERO);
 
 			toUpdate.put(entity, base.add(x, y, z));
 		}
@@ -47,7 +47,7 @@ public class AdditiveMotionHandler {
 		if (e.side.isServer() && e.phase == TickEvent.Phase.END) {
 			for (Entity entity : toUpdate.keySet()) {
 				if (!entity.velocityChanged) { // Allow velocity change packets to take priority.
-					Vec3d vec = toUpdate.get(entity);
+					Vector3d vec = toUpdate.get(entity);
 					if (vec != null) { // Edge case where the entity expired in the ms between calls
 						MessageAdditiveMotion motion = new MessageAdditiveMotion(entity.getEntityId(), vec.x, vec.y, vec.z);
 

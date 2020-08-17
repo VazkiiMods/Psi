@@ -20,6 +20,7 @@ import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.Texture;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.world.World;
 
 import org.lwjgl.opengl.GL11;
@@ -33,8 +34,8 @@ public class FXSparkle extends SpriteTexturedParticle {
 	public final int particle = 16;
 	private final IAnimatedSprite sprite;
 
-	public FXSparkle(World world, double x, double y, double z, float size,
-			float red, float green, float blue, int m, double mx, double my, double mz, IAnimatedSprite sprite) {
+	public FXSparkle(ClientWorld world, double x, double y, double z, float size,
+					 float red, float green, float blue, int m, double mx, double my, double mz, IAnimatedSprite sprite) {
 		super(world, x, y, z, 0.0D, 0.0D, 0.0D);
 		particleRed = red;
 		particleGreen = green;

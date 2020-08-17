@@ -16,11 +16,13 @@ import net.minecraft.util.ResourceLocation;
 
 import vazkii.patchouli.api.IComponentRenderContext;
 import vazkii.patchouli.api.ICustomComponent;
+import vazkii.patchouli.api.IVariable;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellPiece;
 
 import java.util.function.Function;
+import java.util.function.UnaryOperator;
 
 public class SpellPieceComponent implements ICustomComponent {
 	private transient int x, y;
@@ -38,9 +40,9 @@ public class SpellPieceComponent implements ICustomComponent {
 	}
 
 	@Override
-	public void render(IComponentRenderContext context, float pticks, int mouseX, int mouseY) {
+	public void render(MatrixStack ms, IComponentRenderContext context, float pticks, int mouseX, int mouseY) {
 		IRenderTypeBuffer.Impl buffer = IRenderTypeBuffer.immediate(Tessellator.getInstance().getBuffer());
-		MatrixStack ms = new MatrixStack();
+		ms.push();
 		ms.translate(x, y, 0);
 		piece.draw(ms, buffer, 0xF000F0);
 		buffer.draw();
@@ -48,10 +50,11 @@ public class SpellPieceComponent implements ICustomComponent {
 		if (context.isAreaHovered(mouseX, mouseY, x - 1, y - 1, 16, 16)) {
 			PatchouliUtils.setPieceTooltip(context, piece);
 		}
+		ms.pop();
 	}
 
 	@Override
-	public void onVariablesAvailable(Function<String, String> function) {
-		name = function.apply(name);
+	public void onVariablesAvailable(UnaryOperator<IVariable> function) {
+		name = function.apply(IVariable.from(name)).asString("");
 	}
 }

@@ -15,7 +15,9 @@ import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.JSONUtils;
+import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 import net.minecraftforge.items.wrapper.RecipeWrapper;
 import net.minecraftforge.registries.ForgeRegistryEntry;
@@ -28,6 +30,11 @@ public class DimensionTrickRecipe extends TrickRecipe {
 	public static final IRecipeSerializer<DimensionTrickRecipe> SERIALIZER = new Serializer();
 	private final ResourceLocation dimensionId;
 
+	public DimensionTrickRecipe(ResourceLocation id, @Nullable PieceCraftingTrick piece, Ingredient input, ItemStack output, ItemStack cad, RegistryKey<DimensionType> dimensionId) {
+		super(id, piece, input, output, cad);
+		this.dimensionId = dimensionId.getRegistryName();
+	}
+
 	public DimensionTrickRecipe(ResourceLocation id, @Nullable PieceCraftingTrick piece, Ingredient input, ItemStack output, ItemStack cad, ResourceLocation dimensionId) {
 		super(id, piece, input, output, cad);
 		this.dimensionId = dimensionId;
@@ -35,7 +42,7 @@ public class DimensionTrickRecipe extends TrickRecipe {
 
 	@Override
 	public boolean matches(RecipeWrapper inv, World world) {
-		return super.matches(inv, world) && dimensionId.equals(world.getDimension().getType().getRegistryName());
+		return super.matches(inv, world) && dimensionId.equals(world.getDimensionRegistryKey());
 	}
 
 	public static class Serializer extends ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<DimensionTrickRecipe> {

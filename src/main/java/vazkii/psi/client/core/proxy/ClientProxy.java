@@ -14,9 +14,9 @@ import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
-import net.minecraft.client.renderer.model.Material;
 import net.minecraft.client.renderer.model.ModelBakery;
 import net.minecraft.client.renderer.model.ModelResourceLocation;
+import net.minecraft.client.renderer.model.RenderMaterial;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -93,7 +93,7 @@ public class ClientProxy implements IProxy {
 		RenderTypeLookup.setRenderLayer(ModBlocks.conjured, RenderType.getTranslucent());
 		ContributorSpellCircleHandler.firstStart();
 		ModelBakery.LOCATIONS_BUILTIN_TEXTURES.addAll(ClientPsiAPI.getAllSpellPieceMaterial());
-		ModelBakery.LOCATIONS_BUILTIN_TEXTURES.add(new Material(ClientPsiAPI.PSI_PIECE_TEXTURE_ATLAS, PieceConnector.LINES_TEXTURE));
+		ModelBakery.LOCATIONS_BUILTIN_TEXTURES.add(new RenderMaterial(ClientPsiAPI.PSI_PIECE_TEXTURE_ATLAS, PieceConnector.LINES_TEXTURE));
 	}
 
 	private void loadComplete(FMLLoadCompleteEvent event) {

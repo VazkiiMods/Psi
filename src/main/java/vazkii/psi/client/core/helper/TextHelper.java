@@ -8,6 +8,8 @@
  */
 package vazkii.psi.client.core.helper;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.resources.I18n;
@@ -21,9 +23,8 @@ public final class TextHelper {
 
 	@OnlyIn(Dist.CLIENT)
 	public static List<String> renderText(int x, int y, int width, String unlocalizedText, boolean centered, boolean doit, Object... format) {
+		MatrixStack matrixStack = new MatrixStack();
 		FontRenderer font = Minecraft.getInstance().fontRenderer;
-		boolean unicode = font.getBidiFlag();
-		font.setBidiFlag(true);
 		String text = I18n.format(unlocalizedText, format);
 
 		String[] textEntries = text.split("<br>");
@@ -70,9 +71,9 @@ public final class TextHelper {
 				int swidth = font.getStringWidth(s);
 				if (doit) {
 					if (centered) {
-						font.drawString(s, xi + width / 2 - swidth / 2, y, 0xFFFFFF);
+						font.draw(matrixStack, s, xi + width / 2 - swidth / 2, y, 0xFFFFFF);
 					} else {
-						font.drawString(s, xi, y, 0xFFFFFF);
+						font.draw(matrixStack,s, xi, y, 0xFFFFFF);
 					}
 				}
 				xi += swidth + spacing + extra;
@@ -85,8 +86,6 @@ public final class TextHelper {
 			}
 			lastLine = lineStr.toString();
 		}
-
-		font.setBidiFlag(unicode);
 		return textLines;
 	}
 

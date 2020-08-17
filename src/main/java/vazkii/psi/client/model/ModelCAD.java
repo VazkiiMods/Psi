@@ -16,6 +16,7 @@ import net.minecraft.client.renderer.model.ItemOverrideList;
 import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.MissingTextureSprite;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
@@ -39,9 +40,9 @@ import java.util.Random;
 public class ModelCAD implements IBakedModel {
 
 	private final ItemOverrideList itemHandler = new ItemOverrideList() {
-
+		@Nullable
 		@Override
-		public IBakedModel getModelWithOverrides(@Nonnull IBakedModel model, ItemStack stack, @Nullable World world, @Nullable LivingEntity entity) {
+		public IBakedModel apply(IBakedModel model, ItemStack stack, @Nullable ClientWorld world, @Nullable LivingEntity entity) {
 			ICAD cad = (ICAD) stack.getItem();
 			ItemStack assemblyStack = cad.getComponentInSlot(stack, EnumCADComponent.ASSEMBLY);
 			if (assemblyStack.isEmpty()) {

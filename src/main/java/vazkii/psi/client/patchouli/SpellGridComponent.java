@@ -19,11 +19,13 @@ import net.minecraft.util.StringUtils;
 
 import vazkii.patchouli.api.IComponentRenderContext;
 import vazkii.patchouli.api.ICustomComponent;
+import vazkii.patchouli.api.IVariable;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellGrid;
 import vazkii.psi.api.spell.SpellPiece;
 
 import java.util.function.Function;
+import java.util.function.UnaryOperator;
 
 public class SpellGridComponent implements ICustomComponent {
 	private transient int x, y;
@@ -52,11 +54,11 @@ public class SpellGridComponent implements ICustomComponent {
 	}
 
 	@Override
-	public void render(IComponentRenderContext context, float pticks, int mouseX, int mouseY) {
+	public void render(MatrixStack ms, IComponentRenderContext context, float pticks, int mouseX, int mouseY) {
 		float scale = isDownscaled ? 0.5f : 1.0f;
 
 		IRenderTypeBuffer.Impl buffer = IRenderTypeBuffer.immediate(Tessellator.getInstance().getBuffer());
-		MatrixStack ms = new MatrixStack();
+		ms.push();
 		ms.translate(x, y, 0);
 		ms.scale(scale, scale, scale);
 		grid.draw(ms, buffer, 0xF000F0);
@@ -75,11 +77,12 @@ public class SpellGridComponent implements ICustomComponent {
 				}
 			}
 		}
+		ms.pop();
 	}
 
 	@Override
-	public void onVariablesAvailable(Function<String, String> lookup) {
-		spell = lookup.apply(spell);
-		halfsize = lookup.apply(halfsize);
+	public void onVariablesAvailable(UnaryOperator<IVariable> lookup) {
+		spell = lookup.apply(IVariable.from(spell)).asString("");
+		halfsize = lookup.apply(IVariable.from(halfsize)).asString("");
 	}
 }
