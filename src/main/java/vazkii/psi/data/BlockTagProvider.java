@@ -21,10 +21,10 @@ public class BlockTagProvider extends BlockTagsProvider {
 
 	@Override
 	protected void registerTags() {
-		getBuilder(ModTags.Blocks.BLOCK_PSIMETAL).add(ModBlocks.psimetalBlock);
-		getBuilder(ModTags.Blocks.BLOCK_PSIGEM).add(ModBlocks.psigemBlock);
-		getBuilder(ModTags.Blocks.BLOCK_EBONY_PSIMETAL).add(ModBlocks.psimetalEbony);
-		getBuilder(ModTags.Blocks.BLOCK_IVORY_PSIMETAL).add(ModBlocks.psimetalIvory);
+		getOrCreateTagBuilder(ModTags.Blocks.BLOCK_PSIMETAL).add(ModBlocks.psimetalBlock);
+		getOrCreateTagBuilder(ModTags.Blocks.BLOCK_PSIGEM).add(ModBlocks.psigemBlock);
+		getOrCreateTagBuilder(ModTags.Blocks.BLOCK_EBONY_PSIMETAL).add(ModBlocks.psimetalEbony);
+		getOrCreateTagBuilder(ModTags.Blocks.BLOCK_IVORY_PSIMETAL).add(ModBlocks.psimetalIvory);
 	}
 
 	@Override

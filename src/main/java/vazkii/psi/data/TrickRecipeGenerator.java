@@ -16,8 +16,9 @@ import net.minecraft.data.RecipeProvider;
 import net.minecraft.item.Items;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.dimension.DimensionType;
+import net.minecraft.world.DimensionType;
 import net.minecraftforge.common.Tags;
 
 import vazkii.patchouli.api.PatchouliAPI;
@@ -62,13 +63,13 @@ public class TrickRecipeGenerator extends RecipeProvider {
 				.input(ItemTags.COALS)
 				.trick(Psi.location(LibPieceNames.TRICK_EBONY_IVORY))
 				.cad(ModItems.cadAssemblyPsimetal);
-		dimension(builder, consumer, ModItems.ebonySubstance.getRegistryName(), DimensionType.THE_END);
+		dimension(builder, consumer, ModItems.ebonySubstance.getRegistryName(), DimensionType.THE_END_REGISTRY_KEY);
 
 		builder = TrickRecipeBuilder.of(ModItems.ivorySubstance)
 				.input(Tags.Items.GEMS_QUARTZ)
 				.trick(Psi.location(LibPieceNames.TRICK_EBONY_IVORY))
 				.cad(ModItems.cadAssemblyPsimetal);
-		dimension(builder, consumer, ModItems.ivorySubstance.getRegistryName(), DimensionType.THE_END);
+		dimension(builder, consumer, ModItems.ivorySubstance.getRegistryName(), DimensionType.THE_END_REGISTRY_KEY);
 	}
 
 	@Nonnull
@@ -78,14 +79,14 @@ public class TrickRecipeGenerator extends RecipeProvider {
 	}
 
 	public static void dimension(TrickRecipeBuilder builder, Consumer<IFinishedRecipe> parent,
-			ResourceLocation id, DimensionType type) {
+			ResourceLocation id, RegistryKey<DimensionType> type) {
 		parent.accept(new DimensionResult(id, builder, type));
 	}
 
 	public static class DimensionResult extends TrickRecipeBuilder.Result {
 		private final ResourceLocation dimensionId;
 
-		protected DimensionResult(ResourceLocation id, TrickRecipeBuilder builder, DimensionType type) {
+		protected DimensionResult(ResourceLocation id, TrickRecipeBuilder builder, RegistryKey<DimensionType> type) {
 			super(id, builder);
 			this.dimensionId = type.getRegistryName();
 		}

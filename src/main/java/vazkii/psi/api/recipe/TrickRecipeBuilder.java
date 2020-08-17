@@ -9,8 +9,8 @@
 package vazkii.psi.api.recipe;
 
 import com.google.gson.JsonObject;
-import com.mojang.datafixers.Dynamic;
-import com.mojang.datafixers.types.JsonOps;
+import com.mojang.serialization.Dynamic;
+import com.mojang.serialization.JsonOps;
 
 import net.minecraft.data.IFinishedRecipe;
 import net.minecraft.item.Item;
@@ -20,6 +20,7 @@ import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
 import net.minecraft.nbt.NBTDynamicOps;
+import net.minecraft.tags.ITag;
 import net.minecraft.tags.Tag;
 import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
@@ -64,6 +65,11 @@ public class TrickRecipeBuilder {
 	}
 
 	public TrickRecipeBuilder input(Tag<Item> input) {
+		this.input = Ingredient.fromTag(input);
+		return this;
+	}
+
+	public TrickRecipeBuilder input(ITag.INamedTag<Item> input) {
 		this.input = Ingredient.fromTag(input);
 		return this;
 	}

@@ -20,8 +20,9 @@ public class DataGenerator {
 	@SubscribeEvent
 	public static void gatherData(GatherDataEvent event) {
 		if (event.includeServer()) {
-			event.getGenerator().addProvider(new BlockTagProvider(event.getGenerator()));
-			event.getGenerator().addProvider(new ItemTagProvider(event.getGenerator()));
+			BlockTagProvider blockTagProvider = new BlockTagProvider(event.getGenerator());
+			event.getGenerator().addProvider(blockTagProvider);
+			event.getGenerator().addProvider(new ItemTagProvider(event.getGenerator(), blockTagProvider));
 			event.getGenerator().addProvider(new RecipeGenerator(event.getGenerator()));
 			event.getGenerator().addProvider(new TrickRecipeGenerator(event.getGenerator()));
 		}
