@@ -12,7 +12,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
@@ -60,7 +60,7 @@ public class PieceOperatorFocusedEntity extends PieceOperator {
 		final double finalDistance = 32;
 		double distance = finalDistance;
 		RayTraceResult pos = PieceOperatorVectorRaycast.raycast(e, finalDistance);
-		Vec3d positionVector = e.getPositionVector();
+		Vector3d positionVector = e.getPositionVec();
 		if (e instanceof PlayerEntity) {
 			positionVector = positionVector.add(0, e.getEyeHeight(), 0);
 		}
@@ -69,8 +69,8 @@ public class PieceOperatorFocusedEntity extends PieceOperator {
 			distance = pos.getHitVec().distanceTo(positionVector);
 		}
 
-		Vec3d lookVector = e.getLookVec();
-		Vec3d reachVector = positionVector.add(lookVector.x * finalDistance, lookVector.y * finalDistance, lookVector.z * finalDistance);
+		Vector3d lookVector = e.getLookVec();
+		Vector3d reachVector = positionVector.add(lookVector.x * finalDistance, lookVector.y * finalDistance, lookVector.z * finalDistance);
 
 		Entity lookedEntity = null;
 		List<Entity> entitiesInBoundingBox = e.getEntityWorld().getEntitiesWithinAABBExcludingEntity(e, e.getBoundingBox().grow(lookVector.x * finalDistance, lookVector.y * finalDistance, lookVector.z * finalDistance).grow(1F, 1F, 1F));
@@ -80,7 +80,7 @@ public class PieceOperatorFocusedEntity extends PieceOperator {
 			if (entity.canBeCollidedWith()) {
 				float collisionBorderSize = entity.getCollisionBorderSize();
 				AxisAlignedBB hitbox = entity.getBoundingBox().grow(collisionBorderSize, collisionBorderSize, collisionBorderSize);
-				Optional<Vec3d> interceptPosition = hitbox.rayTrace(positionVector, reachVector);
+				Optional<Vector3d> interceptPosition = hitbox.rayTrace(positionVector, reachVector);
 
 				if (hitbox.contains(positionVector)) {
 					if (0.0D < minDistance || minDistance == 0.0D) {

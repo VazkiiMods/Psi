@@ -10,8 +10,9 @@ package vazkii.psi.common.spell.trick.entity;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 
+import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.EnumSpellStat;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellCompilationException;
@@ -68,7 +69,7 @@ public class PieceTrickBlink extends PieceTrick {
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 		}
 
-		Vec3d look = e.getLookVec();
+		Vector3d look = e.getLookVec();
 
 		double offX = look.x * dist;
 		double offY = e.equals(context.caster) ? look.y * dist : Math.max(0, look.y * dist);

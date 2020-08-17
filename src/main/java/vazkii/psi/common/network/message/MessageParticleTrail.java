@@ -8,10 +8,9 @@
  */
 package vazkii.psi.common.network.message;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkEvent;
 
@@ -24,13 +23,13 @@ import java.util.function.Supplier;
 public class MessageParticleTrail {
 	private static final int STEPS_PER_UNIT = 4;
 
-	private final Vec3d position;
-	private final Vec3d direction;
+	private final Vector3d position;
+	private final Vector3d direction;
 	private final double length;
 	private final int time;
 	private final ItemStack cad;
 
-	public MessageParticleTrail(Vec3d position, Vec3d direction, double length, int time, ItemStack cad) {
+	public MessageParticleTrail(Vector3d position, Vector3d direction, double length, int time, ItemStack cad) {
 		this.position = position;
 		this.direction = direction;
 		this.length = length;
@@ -64,7 +63,7 @@ public class MessageParticleTrail {
 			float green = PsiRenderHelper.g(color);
 			float blue = PsiRenderHelper.b(color);
 
-			Vec3d ray = direction.normalize().scale(1f / STEPS_PER_UNIT);
+			Vector3d ray = direction.normalize().scale(1f / STEPS_PER_UNIT);
 			int steps = (int) (length * STEPS_PER_UNIT);
 
 			for (int i = 0; i < steps; i++) {

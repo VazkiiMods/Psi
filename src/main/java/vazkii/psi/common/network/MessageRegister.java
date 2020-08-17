@@ -12,7 +12,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.PacketDistributor;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
@@ -100,14 +100,14 @@ public class MessageRegister {
 				.consumer(MessageParticleTrail::receive).add();
 	}
 
-	public static void writeVec3d(PacketBuffer buf, Vec3d vec3d) {
+	public static void writeVec3d(PacketBuffer buf, Vector3d vec3d) {
 		buf.writeDouble(vec3d.x);
 		buf.writeDouble(vec3d.y);
 		buf.writeDouble(vec3d.z);
 	}
 
-	public static Vec3d readVec3d(PacketBuffer buf) {
-		return new Vec3d(buf.readDouble(), buf.readDouble(), buf.readDouble());
+	public static Vector3d readVec3d(PacketBuffer buf) {
+		return new Vector3d(buf.readDouble(), buf.readDouble(), buf.readDouble());
 	}
 
 	public static void sendToPlayer(Object msg, PlayerEntity player) {

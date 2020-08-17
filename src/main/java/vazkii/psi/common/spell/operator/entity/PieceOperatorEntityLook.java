@@ -9,9 +9,8 @@
 package vazkii.psi.common.spell.operator.entity;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.item.FallingBlockEntity;
-import net.minecraft.entity.projectile.DamagingProjectileEntity;
+import net.minecraft.entity.projectile.ProjectileEntity;
 
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.Spell;
@@ -41,7 +40,7 @@ public class PieceOperatorEntityLook extends PieceOperator {
 		if (e == null) {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_TARGET);
 		}
-		if (e instanceof IProjectile || e instanceof DamagingProjectileEntity || e instanceof FallingBlockEntity) {
+		if (e instanceof ProjectileEntity || e instanceof FallingBlockEntity) {
 			return new Vector3(e.getMotion());
 		}
 

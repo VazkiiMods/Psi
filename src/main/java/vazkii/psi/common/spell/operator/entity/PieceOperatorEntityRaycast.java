@@ -10,7 +10,7 @@ package vazkii.psi.common.spell.operator.entity;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 
 import vazkii.psi.api.internal.Vector3;
@@ -64,19 +64,19 @@ public class PieceOperatorEntityRaycast extends PieceOperator {
 
 	/**
 	 * [VanillaCopy]
-	 * {@link net.minecraft.entity.projectile.ProjectileHelper#rayTraceEntities(World, Entity, Vec3d, Vec3d, AxisAlignedBB, Predicate, double)}
+	 * {@link net.minecraft.entity.projectile.ProjectileHelper#rayTraceEntities(World, Entity, Vector3d, Vector3d, AxisAlignedBB, Predicate)} (World, Entity, Vector3d, Vector3d, AxisAlignedBB, Predicate, double)}
 	 * Some slight tweaks as we don't need an AABB provided to us, we can just make one.
 	 */
-	public static Entity rayTraceEntities(World world, Entity caster, Vec3d positionVector, Vec3d lookVector, Predicate<Entity> predicate, double maxDistance) {
+	public static Entity rayTraceEntities(World world, Entity caster, Vector3d positionVector, Vector3d lookVector, Predicate<Entity> predicate, double maxDistance) {
 		double distance = maxDistance;
 		Entity entity = null;
 
-		Vec3d reachVector = positionVector.add(lookVector.scale(maxDistance));
+		Vector3d reachVector = positionVector.add(lookVector.scale(maxDistance));
 		AxisAlignedBB aabb = new AxisAlignedBB(positionVector.x, positionVector.y, positionVector.z, reachVector.x, reachVector.y, reachVector.z).grow(1f, 1f, 1f);
 		for (Entity entity1 : world.getEntitiesInAABBexcluding(caster, aabb, predicate)) {
 			float collisionBorderSize = entity1.getCollisionBorderSize();
 			AxisAlignedBB axisalignedbb = entity1.getBoundingBox().grow(collisionBorderSize);
-			Optional<Vec3d> optional = axisalignedbb.rayTrace(positionVector, reachVector);
+			Optional<Vector3d> optional = axisalignedbb.rayTrace(positionVector, reachVector);
 			if (axisalignedbb.contains(positionVector)) {
 				if (0.0D < distance || distance == 0.0D) {
 					entity = entity1;

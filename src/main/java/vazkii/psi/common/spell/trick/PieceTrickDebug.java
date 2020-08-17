@@ -8,6 +8,7 @@
  */
 package vazkii.psi.common.spell.trick;
 
+import net.minecraft.util.Util;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.Style;
@@ -56,13 +57,13 @@ public class PieceTrickDebug extends PieceTrick {
 			}
 
 			component = new StringTextComponent("[" + numStr + "]")
-					.setStyle(new Style().setColor(TextFormatting.AQUA))
-					.appendSibling(new StringTextComponent(" ")
-							.setStyle(new Style().setColor(TextFormatting.RESET)))
-					.appendSibling(component);
+					.setStyle(Style.EMPTY.withColor(TextFormatting.AQUA))
+					.append(new StringTextComponent(" ")
+							.setStyle(Style.EMPTY.withColor(TextFormatting.RESET)))
+					.append(component);
 		}
 
-		context.caster.sendMessage(component);
+		context.caster.sendMessage(component, Util.NIL_UUID);
 
 		return null;
 	}

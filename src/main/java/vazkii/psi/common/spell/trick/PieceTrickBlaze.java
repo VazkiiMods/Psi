@@ -62,7 +62,7 @@ public class PieceTrickBlaze extends PieceTrick {
 
 		pos = pos.down();
 		BlockState state = context.caster.getEntityWorld().getBlockState(pos);
-		BlockEvent.EntityPlaceEvent placeEvent = new BlockEvent.EntityPlaceEvent(BlockSnapshot.getBlockSnapshot(context.caster.getEntityWorld(), pos), context.caster.getEntityWorld().getBlockState(pos.offset(Direction.UP)), context.caster);
+		BlockEvent.EntityPlaceEvent placeEvent = new BlockEvent.EntityPlaceEvent(BlockSnapshot.create(context.caster.getEntityWorld(), pos), context.caster.getEntityWorld().getBlockState(pos.offset(Direction.UP)), context.caster);
 		MinecraftForge.EVENT_BUS.post(placeEvent);
 		if (placeEvent.isCanceled()) {
 			return null;

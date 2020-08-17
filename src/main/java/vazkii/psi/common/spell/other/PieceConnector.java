@@ -12,9 +12,9 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 
 import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.Matrix4f;
-import net.minecraft.client.renderer.model.Material;
+import net.minecraft.client.renderer.model.RenderMaterial;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
@@ -79,7 +79,7 @@ public class PieceConnector extends SpellPiece implements IRedirector {
 	@OnlyIn(Dist.CLIENT)
 	private void drawSide(MatrixStack ms, IRenderTypeBuffer buffers, int light, SpellParam.Side side) {
 		if (side.isEnabled()) {
-			Material material = new Material(ClientPsiAPI.PSI_PIECE_TEXTURE_ATLAS, LINES_TEXTURE);
+			RenderMaterial material = new RenderMaterial(ClientPsiAPI.PSI_PIECE_TEXTURE_ATLAS, LINES_TEXTURE);
 			IVertexBuilder buffer = material.getVertexConsumer(buffers, ignored -> SpellPiece.getLayer());
 
 			float minU = 0;

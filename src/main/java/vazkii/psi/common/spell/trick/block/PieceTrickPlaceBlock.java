@@ -19,7 +19,7 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.BlockSnapshot;
@@ -95,7 +95,7 @@ public class PieceTrickPlaceBlock extends PieceTrick {
 		}
 
 		BlockState state = world.getBlockState(pos);
-		BlockEvent.EntityPlaceEvent placeEvent = new BlockEvent.EntityPlaceEvent(BlockSnapshot.getBlockSnapshot(world, pos), world.getBlockState(pos.offset(Direction.UP)), player);
+		BlockEvent.EntityPlaceEvent placeEvent = new BlockEvent.EntityPlaceEvent(BlockSnapshot.create(world, pos), world.getBlockState(pos.offset(Direction.UP)), player);
 		MinecraftForge.EVENT_BUS.post(placeEvent);
 		if (state.isAir(world, pos) || state.getMaterial().isReplaceable() && !placeEvent.isCanceled()) {
 
@@ -109,7 +109,7 @@ public class PieceTrickPlaceBlock extends PieceTrick {
 					BlockItem iblock = (BlockItem) rem.getItem();
 
 					ItemStack save;
-					BlockRayTraceResult hit = new BlockRayTraceResult(Vec3d.ZERO, direction, pos, false);
+					BlockRayTraceResult hit = new BlockRayTraceResult(Vector3d.ZERO, direction, pos, false);
 					ItemUseContext ctx = new ItemUseContext(player, Hand.MAIN_HAND, hit);
 
 					save = player.getHeldItem(ctx.getHand());

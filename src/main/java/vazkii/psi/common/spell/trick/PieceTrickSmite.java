@@ -8,6 +8,7 @@
  */
 package vazkii.psi.common.spell.trick;
 
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.effect.LightningBoltEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.world.server.ServerWorld;
@@ -57,15 +58,16 @@ public class PieceTrickSmite extends PieceTrick {
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 		}
 
-		BlockEvent.EntityPlaceEvent placeEvent = new BlockEvent.EntityPlaceEvent(BlockSnapshot.getBlockSnapshot(context.caster.getEntityWorld(), positionVal.toBlockPos()), context.caster.getEntityWorld().getBlockState(positionVal.toBlockPos().offset(Direction.UP)), context.caster);
+		BlockEvent.EntityPlaceEvent placeEvent = new BlockEvent.EntityPlaceEvent(BlockSnapshot.create(context.caster.getEntityWorld(), positionVal.toBlockPos()), context.caster.getEntityWorld().getBlockState(positionVal.toBlockPos().offset(Direction.UP)), context.caster);
 		MinecraftForge.EVENT_BUS.post(placeEvent);
 		if (placeEvent.isCanceled()) {
 			return null;
 		}
 
 		if (context.caster.getEntityWorld() instanceof ServerWorld) {
-			LightningBoltEntity lightning = new LightningBoltEntity(context.caster.getEntityWorld(), positionVal.x, positionVal.y, positionVal.z, false);
-			((ServerWorld) context.caster.getEntityWorld()).addLightningBolt(lightning);
+			LightningBoltEntity lightning = new LightningBoltEntity(EntityType.LIGHTNING_BOLT, context.caster.world);
+			lightning.setPos(positionVal.x, positionVal.y, positionVal.z);
+			((ServerWorld) context.caster.getEntityWorld()).addEntity(lightning);
 		}
 
 		return null;

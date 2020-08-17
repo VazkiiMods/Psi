@@ -10,7 +10,7 @@ package vazkii.psi.common.spell.selector.entity;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.item.EyeOfEnderEntity;
+import net.minecraft.entity.projectile.EyeOfEnderEntity;
 import net.minecraft.potion.Effects;
 
 import vazkii.psi.api.spell.Spell;

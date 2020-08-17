@@ -12,7 +12,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.Spell;
@@ -68,7 +68,7 @@ public class PieceOperatorVectorRaycast extends PieceOperator {
 		Vector3 vec = Vector3.fromEntity(e);
 		vec.add(0, e.getEyeHeight(), 0);
 
-		Vec3d look = e.getLookVec();
+		Vector3d look = e.getLookVec();
 
 		return raycast(e, vec, new Vector3(look), len);
 	}

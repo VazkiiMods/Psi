@@ -60,11 +60,11 @@ public class PieceTrickTorrent extends PieceTrick {
 
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
-		if (context.caster.getEntityWorld().getDimension().doesWaterVaporize()) {
+		if (context.caster.getEntityWorld().getDimension().isUltrawarm()) {
 			return null;
 		}
 		BlockPos pos = SpellHelpers.getBlockPos(this, context, position, true, false);
-		BlockEvent.EntityPlaceEvent placeEvent = new BlockEvent.EntityPlaceEvent(BlockSnapshot.getBlockSnapshot(context.caster.getEntityWorld(), pos), context.caster.getEntityWorld().getBlockState(pos.offset(Direction.UP)), context.caster);
+		BlockEvent.EntityPlaceEvent placeEvent = new BlockEvent.EntityPlaceEvent(BlockSnapshot.create(context.caster.getEntityWorld(), pos), context.caster.getEntityWorld().getBlockState(pos.offset(Direction.UP)), context.caster);
 		MinecraftForge.EVENT_BUS.post(placeEvent);
 		if (placeEvent.isCanceled()) {
 			return null;
@@ -81,7 +81,7 @@ public class PieceTrickTorrent extends PieceTrick {
 		Material material = blockstate.getMaterial();
 		boolean flag = blockstate.canBucketPlace(Fluids.WATER);
 		if (blockstate.isAir() || flag || blockstate.getBlock() instanceof ILiquidContainer && ((ILiquidContainer) blockstate.getBlock()).canContainFluid(worldIn, pos, blockstate, Fluids.WATER)) {
-			if (worldIn.dimension.doesWaterVaporize()) {
+			if (worldIn.getDimension().isUltrawarm()) {
 				int i = pos.getX();
 				int j = pos.getY();
 				int k = pos.getZ();

@@ -17,7 +17,7 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 
 import vazkii.psi.api.internal.Vector3;
@@ -43,7 +43,7 @@ public class PieceTrickTill extends PieceTrick {
 		if (!world.isBlockLoaded(pos) || !world.isBlockModifiable(player, pos)) {
 			return ActionResultType.PASS;
 		}
-		BlockRayTraceResult hit = new BlockRayTraceResult(Vec3d.ZERO, Direction.UP, pos, false);
+		BlockRayTraceResult hit = new BlockRayTraceResult(Vector3d.ZERO, Direction.UP, pos, false);
 		ItemStack save = player.getHeldItem(Hand.MAIN_HAND);
 		player.setHeldItem(Hand.MAIN_HAND, new ItemStack(Items.BONE_MEAL));
 		ItemUseContext fakeContext = new ItemUseContext(player, Hand.MAIN_HAND, hit);
