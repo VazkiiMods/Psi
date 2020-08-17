@@ -27,8 +27,9 @@ public class PsimetalArmorMaterial implements IArmorMaterial {
 	private final SoundEvent soundEvent;
 	private final float toughness;
 	private final LazyValue<Ingredient> repairMaterial;
+	private final float knockbackResistance;
 
-	public PsimetalArmorMaterial(String nameIn, int maxDamageFactorIn, int[] damageReductionAmountsIn, int enchantabilityIn, SoundEvent equipSoundIn, float p_i48533_8_, Supplier<Ingredient> repairMaterialSupplier) {
+	public PsimetalArmorMaterial(String nameIn, int maxDamageFactorIn, int[] damageReductionAmountsIn, int enchantabilityIn, SoundEvent equipSoundIn, float p_i48533_8_, Supplier<Ingredient> repairMaterialSupplier, float knockbackResistance) {
 		this.name = nameIn;
 		this.maxDamageFactor = maxDamageFactorIn;
 		this.damageReductionAmountArray = damageReductionAmountsIn;
@@ -36,6 +37,7 @@ public class PsimetalArmorMaterial implements IArmorMaterial {
 		this.soundEvent = equipSoundIn;
 		this.toughness = p_i48533_8_;
 		this.repairMaterial = new LazyValue<>(repairMaterialSupplier);
+		this.knockbackResistance = knockbackResistance;
 	}
 
 	public int getDurability(EquipmentSlotType slotIn) {
@@ -65,5 +67,10 @@ public class PsimetalArmorMaterial implements IArmorMaterial {
 
 	public float getToughness() {
 		return this.toughness;
+	}
+
+	@Override
+	public float getKnockbackResistance() {
+		return this.knockbackResistance;
 	}
 }

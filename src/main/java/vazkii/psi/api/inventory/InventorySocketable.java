@@ -177,6 +177,6 @@ public class InventorySocketable implements IInventory, INameable, IIntArray {
 	@Nonnull
 	@Override
 	public ITextComponent getDisplayName() {
-		return new TranslationTextComponent(getName().getFormattedText());
+		return new TranslationTextComponent(getName().getString());
 	}
 }

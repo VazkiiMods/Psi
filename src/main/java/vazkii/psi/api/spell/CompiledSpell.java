@@ -8,6 +8,7 @@
  */
 package vazkii.psi.api.spell;
 
+import net.minecraft.util.Util;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -88,11 +89,11 @@ public class CompiledSpell {
 			}
 		} catch (SpellRuntimeException e) {
 			if (!context.shouldSuppressErrors()) {
-				context.caster.sendMessage(new TranslationTextComponent(e.getMessage()).setStyle(new Style().setColor(TextFormatting.RED)));
+				context.caster.sendMessage(new TranslationTextComponent(e.getMessage()).setStyle(Style.EMPTY.withColor(TextFormatting.RED)), Util.NIL_UUID);
 
 				int x = context.cspell.currentAction.piece.x + 1;
 				int y = context.cspell.currentAction.piece.y + 1;
-				context.caster.sendMessage(new TranslationTextComponent("psi.spellerror.position", x, y).setStyle(new Style().setColor(TextFormatting.RED)));
+				context.caster.sendMessage(new TranslationTextComponent("psi.spellerror.position", x, y).setStyle(Style.EMPTY.withColor(TextFormatting.RED)), Util.NIL_UUID);
 			}
 		}
 	}

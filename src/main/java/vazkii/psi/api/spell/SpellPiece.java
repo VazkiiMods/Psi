@@ -14,13 +14,14 @@ import com.mojang.blaze3d.vertex.IVertexBuilder;
 
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.Matrix4f;
 import net.minecraft.client.renderer.RenderState;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.model.Material;
+import net.minecraft.client.renderer.model.RenderMaterial;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.vector.Matrix4f;
+import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
@@ -118,9 +119,9 @@ public abstract class SpellPiece {
 	public ITextComponent getEvaluationTypeString() {
 		Class<?> evalType = getEvaluationType();
 		String evalStr = evalType == null ? "null" : CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, evalType.getSimpleName());
-		ITextComponent s = new TranslationTextComponent("psi.datatype." + evalStr);
+		TranslationTextComponent s = new TranslationTextComponent("psi.datatype." + evalStr);
 		if (getPieceType() == EnumPieceType.CONSTANT) {
-			s.appendSibling(new StringTextComponent(" ")).appendSibling(new TranslationTextComponent("psimisc.constant"));
+			s.append(new StringTextComponent(" ")).append(new TranslationTextComponent("psimisc.constant"));
 		}
 
 		return s;
@@ -228,7 +229,7 @@ public abstract class SpellPiece {
 	}
 
 	public String getSortingName() {
-		return new TranslationTextComponent(getUnlocalizedName()).getFormattedText();
+		return new TranslationTextComponent(getUnlocalizedName()).getString();
 	}
 
 	public String getUnlocalizedDesc() {
@@ -275,7 +276,7 @@ public abstract class SpellPiece {
 	 */
 	@OnlyIn(Dist.CLIENT)
 	public void drawBackground(MatrixStack ms, IRenderTypeBuffer buffers, int light) {
-		Material material = ClientPsiAPI.getSpellPieceMaterial(registryKey);
+		RenderMaterial material = ClientPsiAPI.getSpellPieceMaterial(registryKey);
 		IVertexBuilder buffer = material.getVertexConsumer(buffers, ignored -> getLayer());
 		Matrix4f mat = ms.peek().getModel();
 		// Cannot call .texture() on the chained object because SpriteAwareVertexBuilder is buggy
@@ -382,7 +383,7 @@ public abstract class SpellPiece {
 	@OnlyIn(Dist.CLIENT)
 	public void getTooltip(List<ITextComponent> tooltip) {
 		tooltip.add(new TranslationTextComponent(getUnlocalizedName()));
-		tooltip.add(new TranslationTextComponent(getUnlocalizedDesc()).applyTextStyle(TextFormatting.GRAY));
+		tooltip.add(new TranslationTextComponent(getUnlocalizedDesc()).formatted(TextFormatting.GRAY));
 		TooltipHelper.tooltipIfShift(tooltip, () -> addToTooltipAfterShift(tooltip));
 
 		String addon = registryKey.getNamespace();
@@ -397,13 +398,13 @@ public abstract class SpellPiece {
 	@OnlyIn(Dist.CLIENT)
 	public void addToTooltipAfterShift(List<ITextComponent> tooltip) {
 		tooltip.add(new StringTextComponent(""));
-		ITextComponent eval = getEvaluationTypeString().applyTextStyle(TextFormatting.GOLD);
-		tooltip.add(new StringTextComponent("Output ").appendSibling(eval));
+		IFormattableTextComponent eval = getEvaluationTypeString().copy().formatted(TextFormatting.GOLD);
+		tooltip.add(new StringTextComponent("Output ").append(eval));
 
 		for (SpellParam<?> param : paramSides.keySet()) {
-			ITextComponent pName = new TranslationTextComponent(param.name).applyTextStyle(TextFormatting.YELLOW);
-			ITextComponent pEval = new StringTextComponent(" [").appendSibling(param.getRequiredTypeString()).appendText("]").applyTextStyle(TextFormatting.YELLOW);
-			tooltip.add(new StringTextComponent(param.canDisable ? "[Input] " : " Input  ").appendSibling(pName).appendSibling(pEval));
+			ITextComponent pName = new TranslationTextComponent(param.name).formatted(TextFormatting.YELLOW);
+			ITextComponent pEval = new StringTextComponent(" [").append(param.getRequiredTypeString()).append("]").formatted(TextFormatting.YELLOW);
+			tooltip.add(new StringTextComponent(param.canDisable ? "[Input] " : " Input  ").append(pName).append(pEval));
 		}
 	}
 

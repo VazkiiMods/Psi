@@ -112,9 +112,9 @@ public abstract class SpellParam<T> {
 	public ITextComponent getRequiredTypeString() {
 		Class<T> evalType = getRequiredType();
 		String evalStr = evalType == null ? "null" : CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, evalType.getSimpleName());
-		ITextComponent s = new TranslationTextComponent("psi.datatype." + evalStr);
+		TranslationTextComponent s = new TranslationTextComponent("psi.datatype." + evalStr);
 		if (requiresConstant()) {
-			s.appendText(" ").appendSibling(new TranslationTextComponent("psimisc.constant"));
+			s.append(" ").append(new TranslationTextComponent("psimisc.constant"));
 		}
 
 		return s;

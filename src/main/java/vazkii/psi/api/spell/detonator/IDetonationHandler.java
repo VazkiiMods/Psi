@@ -10,7 +10,7 @@ package vazkii.psi.api.spell.detonator;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -69,7 +69,7 @@ public interface IDetonationHandler {
 						return false;
 					}
 					return entity.getCapability(PsiAPI.DETONATION_HANDLER_CAPABILITY).map(detonator -> {
-						Vec3d locus = detonator.objectLocus();
+						Vector3d locus = detonator.objectLocus();
 						if (locus == null || locus.squareDistanceTo(center.getX(), center.getY(), center.getZ()) > range * range) {
 							return false;
 						}
@@ -95,7 +95,7 @@ public interface IDetonationHandler {
 	 *
 	 * Null implies this detonator does not exist in the world.
 	 */
-	default Vec3d objectLocus() {
+	default Vector3d objectLocus() {
 		return null;
 	}
 

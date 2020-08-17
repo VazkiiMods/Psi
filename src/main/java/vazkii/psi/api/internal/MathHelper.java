@@ -10,7 +10,7 @@ package vazkii.psi.api.internal;
 
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceContext;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 
 import java.util.LinkedHashSet;
 import java.util.function.BiFunction;
@@ -26,7 +26,7 @@ public final class MathHelper {
 		return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2) + Math.pow(z1 - z2, 2));
 	}
 
-	public static LinkedHashSet<BlockPos> getBlocksAlongRay(Vec3d origin, Vec3d end) {
+	public static LinkedHashSet<BlockPos> getBlocksAlongRay(Vector3d origin, Vector3d end) {
 		return getBlocksAlongRay(origin, end, Integer.MAX_VALUE);
 	}
 
@@ -34,7 +34,7 @@ public final class MathHelper {
 	 * [VanillaCopy] of {@link net.minecraft.world.IWorldReader#func_217300_a(RayTraceContext, BiFunction, Function)}
 	 * but without the extra processing and endpoint bumping
 	 */
-	public static LinkedHashSet<BlockPos> getBlocksAlongRay(Vec3d origin, Vec3d end, int maxBlocks) {
+	public static LinkedHashSet<BlockPos> getBlocksAlongRay(Vector3d origin, Vector3d end, int maxBlocks) {
 		LinkedHashSet<BlockPos> positions = new LinkedHashSet<>();
 		if (origin.equals(end)) {
 			positions.add(new BlockPos(origin.x, origin.y, origin.z));

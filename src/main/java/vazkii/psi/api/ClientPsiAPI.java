@@ -8,7 +8,7 @@
  */
 package vazkii.psi.api;
 
-import net.minecraft.client.renderer.model.Material;
+import net.minecraft.client.renderer.model.RenderMaterial;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -23,7 +23,7 @@ import static vazkii.psi.api.PsiAPI.MOD_ID;
 public class ClientPsiAPI {
 
 	public static final ResourceLocation PSI_PIECE_TEXTURE_ATLAS = new ResourceLocation(MOD_ID, "spell_pieces");
-	private static final Map<ResourceLocation, Material> simpleSpellTextures = new HashMap<>();
+	private static final Map<ResourceLocation, RenderMaterial> simpleSpellTextures = new HashMap<>();
 
 	/**
 	 * Register the texture of a piece
@@ -35,14 +35,14 @@ public class ClientPsiAPI {
 	 */
 	@OnlyIn(Dist.CLIENT)
 	public static void registerPieceTexture(ResourceLocation pieceId, ResourceLocation texture) {
-		ClientPsiAPI.simpleSpellTextures.put(pieceId, new Material(PSI_PIECE_TEXTURE_ATLAS, texture));
+		ClientPsiAPI.simpleSpellTextures.put(pieceId, new RenderMaterial(PSI_PIECE_TEXTURE_ATLAS, texture));
 	}
 
-	public static Material getSpellPieceMaterial(ResourceLocation key) {
+	public static RenderMaterial getSpellPieceMaterial(ResourceLocation key) {
 		return simpleSpellTextures.get(key);
 	}
 
-	public static Collection<Material> getAllSpellPieceMaterial() {
+	public static Collection<RenderMaterial> getAllSpellPieceMaterial() {
 		return simpleSpellTextures.values();
 	}
 
