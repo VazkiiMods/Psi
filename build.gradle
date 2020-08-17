@@ -25,7 +25,7 @@ apply plugin: 'pmd'
 ext.configFile = file('build.properties')
 ext.config = parseConfig(configFile)
 
-def mc_version = "1.15.2"
+def mc_version = "1.16.1"
 version = "${config.version}-${config.build_number}"
 group = "vazkii.${config.mod_id}" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = config.mod_name
@@ -37,7 +37,7 @@ if (System.getenv('BUILD_NUMBER') != null) {
 }
 
 minecraft {
-    mappings channel: "snapshot", version: "20200123-mixed-1.15.2"
+    mappings channel: "snapshot", version: "20200801-mixed-1.16.1"
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
     runs {
@@ -107,13 +107,14 @@ repositories {
 }
 
 dependencies {
-    minecraft group: 'net.minecraftforge', name: 'forge', version: "${mc_version}-31.2.0"
+    minecraft group: 'net.minecraftforge', name: 'forge', version: "${mc_version}-32.0.108"
 
-    compileOnly fg.deobf("vazkii.patchouli:Patchouli:1.15.2-1.2-32.168:api")
-    runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:1.15.2-1.2-32.168")
+    compileOnly fg.deobf("vazkii.patchouli:Patchouli:1.16-39:api")
+    runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:1.16-39")
 
-    compileOnly fg.deobf("mezz.jei:jei-1.15.2:6.0.0.2:api")
-    runtimeOnly fg.deobf("mezz.jei:jei-1.15.2:6.0.0.2")
+    compileOnly fg.deobf("mezz.jei:jei-1.16.1:7.0.0.2:api")
+    runtimeOnly fg.deobf("mezz.jei:jei-1.16.1:7.0.0.2")
+
 }
 
 spotless {
@@ -123,15 +124,20 @@ spotless {
         targetExclude '**/Gamma.java'
 
         indentWithTabs()
-        licenseHeaderFile( 'gradle/spotless/license_template.txt')
-        eclipse().configFile 'gradle/spotless/eclipseformat.xml'
-        importOrderFile 'gradle/spotless/eclipse.importorder'
+        licenseHeaderFile( 'spotless/license_template.txt')
+        eclipse().configFile 'spotless/eclipseformat.xml'
+        removeUnusedImports()
+        importOrderFile 'spotless/eclipse.importorder'
     }
 }
 
 pmd {
-    ruleSets = ["java-braces"]
+    toolVersion '6.22.0'
+    incrementalAnalysis.set(true)
+    ruleSets.clear()
+    ruleSetFiles = files("spotless/pmd-ruleset.xml")
 }
+
 
 task checkSyntax {
     dependsOn spotlessJavaCheck, pmdMain

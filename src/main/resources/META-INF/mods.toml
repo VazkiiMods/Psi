@@ -6,6 +6,7 @@ issueTrackerURL="https://github.com/Vazkii/Psi"
 modId="psi"
 displayName="Psi"
 version="${version}"
+license="https://psi.vazkii.net/license.php"
 authors="Vazkii, Wiiv, WireSegal, Kamefrede, Williewillus"
 description='''
 Psionic Spellcasting Instruments
@@ -13,13 +14,13 @@ Psionic Spellcasting Instruments
 [[dependencies.psi]]
     modId="patchouli"
     mandatory=true
-    versionRange="[1.15.2-1.2-27,)"
+    versionRange="[1.16-39,)"
     side="BOTH"
 
 
 [[dependencies.psi]]
     modId="forge"
     mandatory=true
-    versionRange="[31.1.65,)"
+    versionRange="[32.0.108,)"
     ordering="AFTER"
     side="BOTH"
