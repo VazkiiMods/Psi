@@ -76,7 +76,6 @@ public class GuiCADAssembler extends ContainerScreen<ContainerCADAssembler> {
 		}
 	}
 
-
 	@Override
 	protected void drawBackground(MatrixStack ms, float partialTicks, int mouseX, int mouseY) {
 		RenderSystem.color3f(1F, 1F, 1F);

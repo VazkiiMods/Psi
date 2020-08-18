@@ -126,9 +126,9 @@ public class PieceCrossConnector extends SpellPiece implements IGenericRedirecto
 		}
 	}
 
+	@Override
 	@OnlyIn(Dist.CLIENT)
 	public void drawParams(MatrixStack ms, IRenderTypeBuffer buffers, int light) {
-
 		drawParam(ms, buffers, light, in1);
 		drawParam(ms, buffers, light, in2);
 	}

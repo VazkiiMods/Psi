@@ -66,7 +66,6 @@ public class DrawableTAS implements IDrawableStatic {
 		return sprite.getHeight();
 	}
 
-
 	@Override
 	public void draw(MatrixStack ms, int xOff, int yOff) {
 		draw(ms, xOff, yOff, 0, 0, 0, 0);

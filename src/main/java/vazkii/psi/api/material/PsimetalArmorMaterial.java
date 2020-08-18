@@ -40,31 +40,38 @@ public class PsimetalArmorMaterial implements IArmorMaterial {
 		this.knockbackResistance = knockbackResistance;
 	}
 
+	@Override
 	public int getDurability(EquipmentSlotType slotIn) {
 		return MAX_DAMAGE_ARRAY[slotIn.getIndex()] * this.maxDamageFactor;
 	}
 
+	@Override
 	public int getDamageReductionAmount(EquipmentSlotType slotIn) {
 		return this.damageReductionAmountArray[slotIn.getIndex()];
 	}
 
+	@Override
 	public int getEnchantability() {
 		return this.enchantability;
 	}
 
+	@Override
 	public SoundEvent getSoundEvent() {
 		return this.soundEvent;
 	}
 
+	@Override
 	public Ingredient getRepairMaterial() {
 		return this.repairMaterial.getValue();
 	}
 
+	@Override
 	@OnlyIn(Dist.CLIENT)
 	public String getName() {
 		return this.name;
 	}
 
+	@Override
 	public float getToughness() {
 		return this.toughness;
 	}
