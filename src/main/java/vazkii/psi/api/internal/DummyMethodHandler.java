@@ -8,6 +8,7 @@
  */
 package vazkii.psi.api.internal;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -69,7 +70,7 @@ public final class DummyMethodHandler implements IInternalMethodHandler {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void renderTooltip(int x, int y, List<ITextComponent> tooltipData, int color, int color2, int width, int height) {
+	public void renderTooltip(MatrixStack ms, int x, int y, List<ITextComponent> tooltipData, int color, int color2, int width, int height) {
 		// NO-OP
 	}
 
