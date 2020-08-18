@@ -102,7 +102,7 @@ public class PieceTrickBreakBlock extends PieceTrick {
 					if (block.removedByPlayer(state, world, pos, player, true, world.getFluidState(pos))) {
 						block.onPlayerDestroy(world, pos, state);
 						block.harvestBlock(world, player, pos, state, tile, tool);
-						if(world instanceof ServerWorld) {
+						if (world instanceof ServerWorld) {
 							block.dropXpOnBlockBreak((ServerWorld) world, pos, event.getExpToDrop());
 						}
 					}
