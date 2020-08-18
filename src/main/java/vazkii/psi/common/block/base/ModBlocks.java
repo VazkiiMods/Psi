@@ -48,9 +48,9 @@ public class ModBlocks {
 	public static final Block psimetalBlock = new Block(Block.Properties.create(Material.IRON).hardnessAndResistance(5, 10).sound(SoundType.METAL));
 	public static final Block psigemBlock = new Block(Block.Properties.create(Material.IRON).hardnessAndResistance(5, 10).sound(SoundType.METAL));
 	public static final Block psimetalPlateBlack = new Block(Block.Properties.create(Material.IRON).hardnessAndResistance(5, 10).sound(SoundType.METAL));
-	public static final Block psimetalPlateBlackLight = new Block(Block.Properties.create(Material.IRON).hardnessAndResistance(5, 10).sound(SoundType.METAL).lightValue(15));
+	public static final Block psimetalPlateBlackLight = new Block(Block.Properties.create(Material.IRON).hardnessAndResistance(5, 10).sound(SoundType.METAL).lightLevel((blockState) -> 15));
 	public static final Block psimetalPlateWhite = new Block(Block.Properties.create(Material.IRON).hardnessAndResistance(5, 10).sound(SoundType.METAL));
-	public static final Block psimetalPlateWhiteLight = new Block(Block.Properties.create(Material.IRON).hardnessAndResistance(5, 10).sound(SoundType.METAL).lightValue(15));
+	public static final Block psimetalPlateWhiteLight = new Block(Block.Properties.create(Material.IRON).hardnessAndResistance(5, 10).sound(SoundType.METAL).lightLevel((blockstate) -> 15));
 	public static final Block psimetalEbony = new Block(Block.Properties.create(Material.IRON).hardnessAndResistance(5, 10).sound(SoundType.METAL));
 	public static final Block psimetalIvory = new Block(Block.Properties.create(Material.IRON).hardnessAndResistance(5, 10).sound(SoundType.METAL));
 	public static final ContainerType<ContainerCADAssembler> containerCADAssembler = IForgeContainerType.create(ContainerCADAssembler::fromNetwork);

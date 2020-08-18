@@ -8,6 +8,7 @@
  */
 package vazkii.psi.common.block.tile;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
@@ -242,9 +243,12 @@ public class TileCADAssembler extends TileEntity implements ITileCADAssembler, I
 	}
 
 	@Override
-	public void read(@Nonnull CompoundNBT tag) {
-		super.read(tag);
+	public void fromTag(BlockState state, CompoundNBT cmp) {
+		super.fromTag(state, cmp);
+		readPacketNBT(cmp);
+	}
 
+	public void readPacketNBT(@Nonnull CompoundNBT tag) {
 		// Migrate old CAD assemblers to the new format
 		if (tag.getInt("version") < 1) {
 			ListNBT items = tag.getList("Items", 10);

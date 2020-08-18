@@ -133,8 +133,12 @@ public class TileConjured extends TileEntity {
 	}
 
 	@Override
-	public void read(CompoundNBT cmp) {
-		super.read(cmp);
+	public void fromTag(BlockState state, CompoundNBT cmp) {
+		super.fromTag(state, cmp);
+		this.readPacketNBT(cmp);
+	}
+
+	public void readPacketNBT(CompoundNBT cmp) {
 		if (cmp.contains(TAG_COLORIZER)) {
 			colorizer = ItemStack.read(cmp.getCompound(TAG_COLORIZER));
 		} else {
@@ -149,7 +153,7 @@ public class TileConjured extends TileEntity {
 
 	@Override
 	public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
-		read(pkt.getNbtCompound());
+		this.readPacketNBT(pkt.getNbtCompound());
 	}
 
 	@Override

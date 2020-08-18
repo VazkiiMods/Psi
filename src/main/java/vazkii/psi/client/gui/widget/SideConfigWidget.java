@@ -8,12 +8,14 @@
  */
 package vazkii.psi.client.gui.widget;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.InputMappings;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 
 import org.lwjgl.glfw.GLFW;
@@ -32,7 +34,7 @@ public class SideConfigWidget extends Widget {
 	public final GuiProgrammer parent;
 
 	public SideConfigWidget(int x, int y, int width, int height, GuiProgrammer programmer) {
-		super(x, y, width, height, "");
+		super(x, y, width, height, ITextComponent.func_241827_a_(""));
 		this.parent = programmer;
 	}
 
@@ -42,15 +44,15 @@ public class SideConfigWidget extends Widget {
 	}
 
 	@Override
-	public void renderButton(int mouseX, int mouseY, float pTicks) {
+	public void renderButton(MatrixStack ms, int mouseX, int mouseY, float pTicks) {
 		SpellPiece piece = null;
 		if (SpellGrid.exists(GuiProgrammer.selectedX, GuiProgrammer.selectedY)) {
 			piece = parent.spell.grid.gridData[GuiProgrammer.selectedX][GuiProgrammer.selectedY];
 		}
 		if (configEnabled && !parent.takingScreenshot) {
-			blit(parent.left - 81, parent.top + 55, parent.xSize, 30, 81, 115);
+			drawTexture(ms, parent.left - 81, parent.top + 55, parent.xSize, 30, 81, 115);
 			String configStr = I18n.format("psimisc.config");
-			parent.getMinecraft().fontRenderer.drawString(configStr, parent.left - parent.getMinecraft().fontRenderer.getStringWidth(configStr) - 2, parent.top + 45, 0xFFFFFF);
+			parent.getMinecraft().fontRenderer.draw(ms, configStr, parent.left - parent.getMinecraft().fontRenderer.getStringWidth(configStr) - 2, parent.top + 45, 0xFFFFFF);
 
 			int i = 0;
 			if (piece != null) {
@@ -67,14 +69,14 @@ public class SideConfigWidget extends Widget {
 
 					RenderSystem.color3f(1F, 1F, 1F);
 					parent.getMinecraft().getTextureManager().bindTexture(GuiProgrammer.texture);
-					blit(x + 50, y - 8, parent.xSize, 145, 24, 24);
+					drawTexture(ms, x + 50, y - 8, parent.xSize, 145, 24, 24);
 
 					String localized = I18n.format(s);
 					if (i == param) {
 						localized = TextFormatting.UNDERLINE + localized;
 					}
 
-					parent.getMinecraft().fontRenderer.drawString(localized, x, y, 0xFFFFFF);
+					parent.getMinecraft().fontRenderer.draw(ms, localized, x, y, 0xFFFFFF);
 
 					i++;
 				}

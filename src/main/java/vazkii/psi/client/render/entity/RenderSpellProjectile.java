@@ -8,7 +8,7 @@
  */
 package vazkii.psi.client.render.entity;
 
-import net.minecraft.client.renderer.culling.ClippingHelperImpl;
+import net.minecraft.client.renderer.culling.ClippingHelper;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.util.ResourceLocation;
@@ -22,7 +22,7 @@ public class RenderSpellProjectile extends EntityRenderer<EntitySpellProjectile>
 	}
 
 	@Override
-	public boolean shouldRender(EntitySpellProjectile p_225626_1_, ClippingHelperImpl p_225626_2_, double p_225626_3_, double p_225626_5_, double p_225626_7_) {
+	public boolean shouldRender(EntitySpellProjectile p_225626_1_, ClippingHelper p_225626_2_, double p_225626_3_, double p_225626_5_, double p_225626_7_) {
 		return false;
 	}
 

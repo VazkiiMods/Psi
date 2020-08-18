@@ -8,6 +8,7 @@
  */
 package vazkii.psi.client.core.handler;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.minecraft.client.MainWindow;
@@ -105,6 +106,7 @@ public final class HUDHandler {
 	@OnlyIn(Dist.CLIENT)
 	public static void drawPsiBar(MainWindow res, float pticks) {
 		Minecraft mc = Minecraft.getInstance();
+		MatrixStack ms = new MatrixStack();
 		ItemStack cadStack = PsiAPI.getPlayerCAD(mc.player);
 
 		if (cadStack.isEmpty()) {
@@ -123,7 +125,7 @@ public final class HUDHandler {
 			return;
 		}
 
-		RenderSystem.pushMatrix();
+		ms.push();
 
 		boolean right = ConfigHandler.CLIENT.psiBarOnRight.get();
 
@@ -145,7 +147,7 @@ public final class HUDHandler {
 
 		RenderSystem.enableBlend();
 		mc.textureManager.bindTexture(psiBar);
-		AbstractGui.blit(x, y, 0, 0, width, height, 64, 256);
+		AbstractGui.drawTexture(ms, x, y, 0, 0, width, height, 64, 256);
 
 		x += 8;
 		y += 26;
@@ -181,7 +183,7 @@ public final class HUDHandler {
 			y = origY + v;
 
 			ShaderHandler.useShader(ShaderHandler.psiBar, generateCallback(a, d.shatter, data.overflowed));
-			AbstractGui.blit(x, y, 32, v, width, height, 64, 256);
+			AbstractGui.drawTexture(ms, x, y, 32, v, width, height, 64, 256);
 		}
 
 		float textY = origY;
@@ -203,7 +205,7 @@ public final class HUDHandler {
 
 		RenderSystem.color3f(r, g, b);
 		ShaderHandler.useShader(ShaderHandler.psiBar, generateCallback(1F, false, data.overflowed));
-		AbstractGui.blit(x, y, 32, v, width, height, 64, 256);
+		AbstractGui.drawTexture(ms, x, y, 32, v, width, height, 64, 256);
 		ShaderHandler.releaseShader();
 
 		if (shaders) {
@@ -214,8 +216,8 @@ public final class HUDHandler {
 
 		RenderSystem.color3f(1F, 1F, 1F);
 
-		RenderSystem.pushMatrix();
-		RenderSystem.translatef(0F, textY, 0F);
+		ms.push();
+		ms.translate(0F, textY, 0F);
 		width = 44;
 		height = 3;
 
@@ -239,28 +241,29 @@ public final class HUDHandler {
 				PsiRenderHelper.g(color) / 255F,
 				PsiRenderHelper.b(color) / 255F, 1F);
 
-		AbstractGui.blit(x - offBar, -2, 0, 140, width, height, 64, 256);
-		mc.fontRenderer.drawStringWithShadow(s1, x - offStr1, -11, 0xFFFFFF);
-		RenderSystem.popMatrix();
+		AbstractGui.drawTexture(ms, x - offBar, -2, 0, 140, width, height, 64, 256);
+		mc.fontRenderer.drawWithShadow(ms, s1, x - offStr1, -11, 0xFFFFFF);
+		ms.pop();
 
 		if (storedPsi != -1) {
-			RenderSystem.pushMatrix();
+			ms.push();
 			RenderSystem.translatef(0F, Math.max(textY + 3, origY + 100), 0F);
-			mc.fontRenderer.drawStringWithShadow(s2, x - offStr2, 0, 0xFFFFFF);
-			RenderSystem.popMatrix();
+			mc.fontRenderer.drawWithShadow(ms, s2, x - offStr2, 0, 0xFFFFFF);
+			ms.pop();
 		}
 		RenderSystem.disableBlend();
-		RenderSystem.popMatrix();
+		ms.pop();
 	}
 
 	@OnlyIn(Dist.CLIENT)
 	private static void renderSocketableEquippedName(MainWindow res, float pticks) {
+		MatrixStack ms = new MatrixStack();
 		Minecraft mc = Minecraft.getInstance();
 		ItemStack stack = mc.player.getHeldItem(Hand.MAIN_HAND);
 		if (!ISocketable.isSocketable(stack)) {
 			return;
 		}
-		String name = ISocketable.getSocketedItemName(stack, "").getFormattedText();
+		String name = ISocketable.getSocketedItemName(stack, "").getString();
 		if (stack.isEmpty() || name.trim().isEmpty()) {
 			return;
 		}
@@ -283,15 +286,15 @@ public final class HUDHandler {
 
 			RenderSystem.enableBlend();
 			RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-			mc.fontRenderer.drawStringWithShadow(name, x, y, color);
+			mc.fontRenderer.drawWithShadow(ms, name, x, y, color);
 
 			int w = mc.fontRenderer.getStringWidth(name);
-			RenderSystem.pushMatrix();
-			RenderSystem.translatef(x + w, y - 6, 0);
-			RenderSystem.scalef(alpha / 255F, 1F, 1);
+			ms.push();
+			ms.translate(x + w, y - 6, 0);
+			ms.scale(alpha / 255F, 1F, 1);
 			RenderSystem.color3f(1F, 1F, 1F);
 			mc.getItemRenderer().renderItemIntoGUI(bullet, 0, 0);
-			RenderSystem.popMatrix();
+			ms.pop();
 			RenderSystem.disableBlend();
 		}
 	}
@@ -299,6 +302,7 @@ public final class HUDHandler {
 	@OnlyIn(Dist.CLIENT)
 	private static void renderRemainingItems(MainWindow resolution, float partTicks) {
 		if (remainingTime > 0 && !remainingDisplayStack.isEmpty()) {
+			MatrixStack ms = new MatrixStack();
 			int pos = maxRemainingTicks - remainingTime;
 			Minecraft mc = Minecraft.getInstance();
 			int remainingLeaveTicks = 20;
@@ -317,16 +321,16 @@ public final class HUDHandler {
 			RenderSystem.enableLighting();
 			RenderSystem.enableColorMaterial();
 			int xp = x + (int) (16F * (1F - alpha));
-			RenderSystem.translatef(xp, y, 0F);
-			RenderSystem.scalef(alpha, 1F, 1F);
+			ms.translate(xp, y, 0F);
+			ms.scale(alpha, 1F, 1F);
 			mc.getItemRenderer().renderItemAndEffectIntoGUI(remainingDisplayStack, 0, 0);
-			RenderSystem.scalef(1F / alpha, 1F, 1F);
-			RenderSystem.translatef(-xp, -y, 0F);
+			ms.scale(1F / alpha, 1F, 1F);
+			ms.translate(-xp, -y, 0F);
 			RenderHelper.disableStandardItemLighting();
 			RenderSystem.color4f(1F, 1F, 1F, 1F);
 			RenderSystem.enableBlend();
 
-			String text = remainingDisplayStack.getDisplayName().applyTextStyle(TextFormatting.GREEN).getFormattedText();
+			String text = remainingDisplayStack.getDisplayName().copy().formatted(TextFormatting.GREEN).getString();
 			if (remainingCount >= 0) {
 				int max = remainingDisplayStack.getMaxStackSize();
 				int stacks = remainingCount / max;
@@ -344,7 +348,7 @@ public final class HUDHandler {
 			}
 
 			int color = 0x00FFFFFF | (int) (alpha * 0xFF) << 24;
-			mc.fontRenderer.drawStringWithShadow(text, x + 20, y + 6, color);
+			mc.fontRenderer.drawWithShadow(ms, text, x + 20, y + 6, color);
 
 			RenderSystem.disableBlend();
 			RenderSystem.enableAlphaTest();

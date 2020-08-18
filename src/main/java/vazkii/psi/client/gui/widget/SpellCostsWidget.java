@@ -8,10 +8,12 @@
  */
 package vazkii.psi.client.gui.widget;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 
@@ -29,7 +31,7 @@ public class SpellCostsWidget extends Widget {
 	private final GuiProgrammer parent;
 
 	public SpellCostsWidget(int x, int y, int width, int height, String message, GuiProgrammer programmer) {
-		super(x, y, width, height, message);
+		super(x, y, width, height, ITextComponent.func_241827_a_(message));
 		this.parent = programmer;
 	}
 
@@ -39,7 +41,7 @@ public class SpellCostsWidget extends Widget {
 	}
 
 	@Override
-	public void renderButton(int mouseX, int mouseY, float pTicks) {
+	public void renderButton(MatrixStack ms, int mouseX, int mouseY, float pTicks) {
 		if (!parent.compiler.isErrored()) {
 			int i = 0;
 			int statX = parent.left + parent.xSize + 3;
@@ -67,12 +69,12 @@ public class SpellCostsWidget extends Widget {
 
 				RenderSystem.color3f(1f, 1f, 1f);
 				parent.getMinecraft().getTextureManager().bindTexture(GuiProgrammer.texture);
-				blit(statX, statY, (stat.ordinal() + 1) * 12, parent.ySize + 16, 12, 12);
-				parent.getMinecraft().fontRenderer.drawString(s, statX + 16, statY + 2, cadStat != null && cadVal < val && cadVal != -1 ? 0xFF6666 : 0xFFFFFF);
+				drawTexture(ms, statX, statY, (stat.ordinal() + 1) * 12, parent.ySize + 16, 12, 12);
+				parent.getMinecraft().fontRenderer.draw(ms, s, statX + 16, statY + 2, cadStat != null && cadVal < val && cadVal != -1 ? 0xFF6666 : 0xFFFFFF);
 
 				if (mouseX > statX && mouseY > statY && mouseX < statX + 12 && mouseY < statY + 12 && !parent.panelWidget.panelEnabled) {
-					parent.tooltip.add(new TranslationTextComponent(stat.getName()).applyTextStyle(Psi.magical ? TextFormatting.LIGHT_PURPLE : TextFormatting.AQUA));
-					parent.tooltip.add(new TranslationTextComponent(stat.getDesc()).applyTextStyle(TextFormatting.GRAY));
+					parent.tooltip.add(new TranslationTextComponent(stat.getName()).formatted(Psi.magical ? TextFormatting.LIGHT_PURPLE : TextFormatting.AQUA));
+					parent.tooltip.add(new TranslationTextComponent(stat.getDesc()).formatted(TextFormatting.GRAY));
 				}
 				i++;
 

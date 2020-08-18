@@ -9,6 +9,7 @@
 package vazkii.psi.client.gui;
 
 import com.google.common.collect.ImmutableSet;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.minecraft.client.Minecraft;
@@ -113,8 +114,8 @@ public class GuiSocketSelect extends Screen {
 	}
 
 	@Override
-	public void render(int mx, int my, float partialTicks) {
-		super.render(mx, my, partialTicks);
+	public void render(MatrixStack ms, int mx, int my, float partialTicks) {
+		super.render(ms, mx, my, partialTicks);
 
 		int x = width / 2;
 		int y = height / 2;
@@ -213,8 +214,8 @@ public class GuiSocketSelect extends Screen {
 			if (!stack.isEmpty()) {
 				float xsp = xp - 4;
 				float ysp = yp;
-				String name = (mouseInSector ? TextFormatting.UNDERLINE : TextFormatting.RESET) + stack.getDisplayName().getFormattedText();
-				int width = mc.fontRenderer.getStringWidth(name);
+				String name = (mouseInSector ? TextFormatting.UNDERLINE : TextFormatting.RESET) + stack.getDisplayName().getString();
+				int width = textRenderer.getStringWidth(name);
 
 				double mod = 0.6;
 				int xdp = (int) ((xp - x) * mod + x);
@@ -229,13 +230,13 @@ public class GuiSocketSelect extends Screen {
 					ysp -= 9;
 				}
 
-				mc.fontRenderer.drawStringWithShadow(name, xsp, ysp, 0xFFFFFF);
+				textRenderer.drawWithShadow(ms, name, xsp, ysp, 0xFFFFFF);
 				if (seg == socketable.getSelectedSlot()) {
 					int color = 0x00FF00;
 					if (!cadStack.isEmpty()) {
 						color = 0xFF0000 - Psi.proxy.getColorForCAD(cadStack);
 					}
-					mc.fontRenderer.drawStringWithShadow(I18n.format("psimisc.selected"), xsp + width / 4, ysp + font.FONT_HEIGHT, color);
+					textRenderer.drawWithShadow(ms, I18n.format("psimisc.selected"), xsp + width / 4, ysp + textRenderer.FONT_HEIGHT, color);
 				}
 
 				mod = 0.8;
@@ -243,7 +244,7 @@ public class GuiSocketSelect extends Screen {
 				ydp = (int) ((yp - y) * mod + y);
 
 				mc.textureManager.bindTexture(signs[seg]);
-				blit(xdp - 8, ydp - 8, 0, 0, 16, 16, 16, 16);
+				drawTexture(ms, xdp - 8, ydp - 8, 0, 0, 16, 16, 16, 16);
 			}
 		}
 
@@ -265,20 +266,20 @@ public class GuiSocketSelect extends Screen {
 					yoff += 5F;
 				}
 
-				RenderSystem.pushMatrix();
-				RenderSystem.translatef(0, -yoff * shift, 0F);
+				ms.push();
+				ms.translate(0, -yoff * shift, 0F);
 				mc.getItemRenderer().renderItemAndEffectIntoGUI(controlledStacks[i], xs + i * 18, ys);
-				RenderSystem.popMatrix();
+				ms.pop();
 			}
 
 		}
 
 		if (!socketableStack.isEmpty()) {
-			RenderSystem.pushMatrix();
-			RenderSystem.scalef(scale, scale, scale);
+			ms.push();
+			ms.scale(scale, scale, scale);
 			mc.getItemRenderer().renderItemAndEffectIntoGUI(socketableStack,
 					(int) (x / scale) - 8, (int) (y / scale) - 8);
-			RenderSystem.popMatrix();
+			ms.pop();
 		}
 		RenderHelper.disableStandardItemLighting();
 		RenderSystem.disableBlend();

@@ -11,6 +11,7 @@ package vazkii.psi.client.gui.widget;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.gui.widget.Widget;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -19,7 +20,7 @@ public class CallbackTextFieldWidget extends TextFieldWidget {
 	protected final CallbackTextFieldWidget.IPressable pressable;
 
 	public CallbackTextFieldWidget(FontRenderer font, int x, int y, int width, int height, CallbackTextFieldWidget.IPressable pressable) {
-		super(font, x, y, width, height, null, "");
+		super(font, x, y, width, height, null, ITextComponent.func_241827_a_(""));
 		this.pressable = pressable;
 	}
 

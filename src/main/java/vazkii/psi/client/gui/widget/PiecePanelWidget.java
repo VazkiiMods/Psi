@@ -8,6 +8,7 @@
  */
 package vazkii.psi.client.gui.widget;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.minecraft.client.gui.IGuiEventListener;
@@ -18,6 +19,7 @@ import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.common.MinecraftForge;
 
 import org.lwjgl.glfw.GLFW;
@@ -52,29 +54,29 @@ public class PiecePanelWidget extends Widget implements IRenderable, IGuiEventLi
 	public final List<GuiButtonSpellPiece> visibleButtons = new ArrayList<>();
 
 	public PiecePanelWidget(int x, int y, int width, int height, String message, GuiProgrammer programmer) {
-		super(x, y, width, height, message);
+		super(x, y, width, height, ITextComponent.func_241827_a_(message));
 		this.parent = programmer;
 	}
 
 	@Override
-	public void renderButton(int mouseX, int mouseY, float pTicks) {
+	public void renderButton(MatrixStack ms, int mouseX, int mouseY, float pTicks) {
 		if (panelEnabled) {
 			parent.getMinecraft().getTextureManager().bindTexture(GuiProgrammer.texture);
 
-			fill(x, y, x + width, y + height, 0x88000000);
+			fill(ms, x, y, x + width, y + height, 0x88000000);
 
 			if (visibleButtons.size() > 0) {
 				Button button = visibleButtons.get(Math.max(0, Math.min(panelCursor, visibleButtons.size() - 1)));
 				int panelPieceX = button.x;
 				int panelPieceY = button.y;
-				fill(panelPieceX - 1, panelPieceY - 1, panelPieceX + 17, panelPieceY + 17, 0x559999FF);
+				fill(ms, panelPieceX - 1, panelPieceY - 1, panelPieceX + 17, panelPieceY + 17, 0x559999FF);
 			}
 
 			RenderSystem.color3f(1f, 1f, 1f);
-			blit(searchField.x - 14, searchField.y - 2, 0, parent.ySize + 16, 12, 12);
+			drawTexture(ms, searchField.x - 14, searchField.y - 2, 0, parent.ySize + 16, 12, 12);
 
 			String s = Math.min(Math.max(getPageCount(), 1), page + 1) + "/" + Math.max(getPageCount(), 1);
-			parent.getMinecraft().fontRenderer.drawStringWithShadow(s, x + width / 2f - parent.getMinecraft().fontRenderer.getStringWidth(s) / 2f, y + height - 12, 0xFFFFFF);
+			parent.getMinecraft().fontRenderer.drawWithShadow(ms, s, x + width / 2f - parent.getMinecraft().fontRenderer.getStringWidth(s) / 2f, y + height - 12, 0xFFFFFF);
 		}
 	}
 
@@ -330,7 +332,7 @@ public class PiecePanelWidget extends Widget implements IRenderable, IGuiEventLi
 
 				int maxRank = 0;
 				for (SpellParam<?> param : p.params.values()) {
-					String type = param.getRequiredTypeString().getFormattedText().toLowerCase();
+					String type = param.getRequiredTypeString().getString().toLowerCase();
 					maxRank = Math.max(maxRank, rankTextToken(type, clippedToken));
 				}
 
@@ -344,7 +346,7 @@ public class PiecePanelWidget extends Widget implements IRenderable, IGuiEventLi
 					continue;
 				}
 
-				String type = p.getEvaluationTypeString().getFormattedText().toLowerCase();
+				String type = p.getEvaluationTypeString().getString().toLowerCase();
 
 				if (rankTextToken(type, clippedToken) <= 0) {
 					return 0;

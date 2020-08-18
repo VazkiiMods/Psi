@@ -8,6 +8,7 @@
  */
 package vazkii.psi.client.gui.button;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.minecraft.client.Minecraft;
@@ -15,6 +16,7 @@ import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.util.text.ITextComponent;
 
 import vazkii.psi.api.internal.PsiRenderHelper;
 import vazkii.psi.api.spell.SpellParam;
@@ -31,7 +33,7 @@ public class GuiButtonSideConfig extends Button {
 	final SpellParam.Side side;
 
 	public GuiButtonSideConfig(GuiProgrammer gui, int gridX, int gridY, int paramIndex, String paramName, SpellParam.Side side, int x, int y) {
-		super(x, y, 8, 8, "", Button::onPress);
+		super(x, y, 8, 8, ITextComponent.func_241827_a_(""), Button::onPress);
 		this.gui = gui;
 		this.gridX = gridX;
 		this.gridY = gridY;
@@ -41,7 +43,7 @@ public class GuiButtonSideConfig extends Button {
 	}
 
 	public GuiButtonSideConfig(GuiProgrammer gui, int gridX, int gridY, int paramIndex, String paramName, SpellParam.Side side, int x, int y, IPressable pressable) {
-		super(x, y, 8, 8, "", pressable);
+		super(x, y, 8, 8, ITextComponent.func_241827_a_(""), pressable);
 		this.gui = gui;
 		this.gridX = gridX;
 		this.gridY = gridY;
@@ -51,7 +53,7 @@ public class GuiButtonSideConfig extends Button {
 	}
 
 	@Override
-	public void renderButton(int par2, int par3, float pTicks) {
+	public void renderButton(MatrixStack ms, int par2, int par3, float pTicks) {
 		if (active && visible && !gui.takingScreenshot) {
 			int minX = x;
 			int minY = y;

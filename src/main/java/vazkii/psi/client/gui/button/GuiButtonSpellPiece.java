@@ -14,6 +14,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.util.text.ITextComponent;
 
 import vazkii.psi.api.spell.SpellPiece;
 import vazkii.psi.client.gui.GuiProgrammer;
@@ -23,24 +24,24 @@ public class GuiButtonSpellPiece extends Button {
 	final GuiProgrammer gui;
 
 	public GuiButtonSpellPiece(GuiProgrammer gui, SpellPiece piece, int x, int y) {
-		super(x, y, 16, 16, "", button -> {});
+		super(x, y, 16, 16, ITextComponent.func_241827_a_(""), button -> {});
 		this.gui = gui;
 		this.piece = piece;
 	}
 
 	public GuiButtonSpellPiece(GuiProgrammer gui, SpellPiece piece, int x, int y, Button.IPressable pressable) {
-		super(x, y, 16, 16, "", pressable);
+		super(x, y, 16, 16, ITextComponent.func_241827_a_(""), pressable);
 		this.gui = gui;
 		this.piece = piece;
 	}
 
 	@Override
-	public void renderButton(int mouseX, int mouseY, float pTicks) {
+	public void renderButton(MatrixStack ms ,int mouseX, int mouseY, float pTicks) {
 		if (active && visible) {
 			boolean hover = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
 
 			IRenderTypeBuffer.Impl buffers = IRenderTypeBuffer.immediate(Tessellator.getInstance().getBuffer());
-			MatrixStack ms = new MatrixStack();
+			ms.push();
 			ms.translate(x, y, 0);
 			piece.draw(ms, buffers, 0xF000F0);
 			buffers.draw();
@@ -48,8 +49,9 @@ public class GuiButtonSpellPiece extends Button {
 			Minecraft.getInstance().getTextureManager().bindTexture(GuiProgrammer.texture);
 			if (hover) {
 				piece.getTooltip(gui.tooltip);
-				blit(x, y, 16, gui.ySize, 16, 16);
+				drawTexture(ms, x, y, 16, gui.ySize, 16, 16);
 			}
+			ms.pop();
 
 		}
 	}

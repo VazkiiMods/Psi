@@ -8,6 +8,7 @@
  */
 package vazkii.psi.common.block.tile;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
@@ -56,6 +57,13 @@ public class TileProgrammer extends TileEntity {
 		}
 	}
 
+
+	@Override
+	public void fromTag(BlockState state, CompoundNBT cmp) {
+		super.fromTag(state, cmp);
+		readPacketNBT(cmp);
+	}
+
 	@Nonnull
 	@Override
 	public CompoundNBT write(CompoundNBT cmp) {
@@ -70,10 +78,7 @@ public class TileProgrammer extends TileEntity {
 		return cmp;
 	}
 
-	@Override
-	public void read(CompoundNBT cmp) {
-		super.read(cmp);
-
+	public void readPacketNBT(CompoundNBT cmp) {
 		CompoundNBT spellCmp = cmp.getCompound(TAG_SPELL);
 		if (spell == null) {
 			spell = Spell.createFromNBT(spellCmp);
@@ -99,6 +104,6 @@ public class TileProgrammer extends TileEntity {
 
 	@Override
 	public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
-		this.read(pkt.getNbtCompound());
+		this.readPacketNBT(pkt.getNbtCompound());
 	}
 }

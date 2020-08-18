@@ -8,6 +8,7 @@
  */
 package vazkii.psi.client.gui.button;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.minecraft.client.Minecraft;
@@ -24,32 +25,32 @@ public class GuiButtonIO extends Button {
 	final GuiProgrammer gui;
 
 	public GuiButtonIO(int x, int y, boolean out, GuiProgrammer gui) {
-		super(x, y, 12, 12, "", button -> {});
+		super(x, y, 12, 12, ITextComponent.func_241827_a_(""), button -> {});
 		this.out = out;
 		this.gui = gui;
 	}
 
 	public GuiButtonIO(int x, int y, boolean out, GuiProgrammer gui, IPressable pressable) {
-		super(x, y, 12, 12, "", pressable);
+		super(x, y, 12, 12, ITextComponent.func_241827_a_(""), pressable);
 		this.out = out;
 		this.gui = gui;
 	}
 
 	@Override
-	public void renderButton(int par2, int par3, float pticks) {
+	public void renderButton(MatrixStack ms, int par2, int par3, float pticks) {
 		if (active && !gui.takingScreenshot) {
 			boolean hover = par2 >= x && par3 >= y && par2 < x + width && par3 < y + height;
 
 			Minecraft.getInstance().textureManager.bindTexture(GuiProgrammer.texture);
 			RenderSystem.color4f(1F, 1F, 1F, 1F);
-			blit(x, y, hover ? 186 : 174, out ? 169 : 181, width, height);
+			drawTexture(ms, x, y, hover ? 186 : 174, out ? 169 : 181, width, height);
 
 			if (hover) {
 				String key = out ? "psimisc.export_to_clipboard" : "psimisc.import_from_clipboard";
 				TextFormatting color = out ? TextFormatting.RED : TextFormatting.BLUE;
-				ITextComponent tip = new TranslationTextComponent(key).applyTextStyle(color);
+				ITextComponent tip = new TranslationTextComponent(key).formatted(color);
 				gui.tooltip.add(tip);
-				gui.tooltip.add(new TranslationTextComponent("psimisc.must_hold_shift").applyTextStyle(TextFormatting.GRAY));
+				gui.tooltip.add(new TranslationTextComponent("psimisc.must_hold_shift").formatted(TextFormatting.GRAY));
 			}
 		}
 	}

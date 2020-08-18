@@ -30,6 +30,7 @@ import net.minecraft.nbt.INBT;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Util;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.Style;
@@ -141,12 +142,12 @@ public class GuiProgrammer extends Screen {
 		gridLeft = left + padLeft;
 		gridTop = top + padTop;
 		cursorX = cursorY = -1;
-		tooltipFlag = minecraft.gameSettings.advancedItemTooltips ? ITooltipFlag.TooltipFlags.ADVANCED : ITooltipFlag.TooltipFlags.NORMAL;
+		tooltipFlag = getMinecraft().gameSettings.advancedItemTooltips ? ITooltipFlag.TooltipFlags.ADVANCED : ITooltipFlag.TooltipFlags.NORMAL;
 
 		if (programmer == null) {
 			spectator = false;
 		} else {
-			spectator = !programmer.playerLock.isEmpty() && !programmer.playerLock.equals(minecraft.player.getName().getString());
+			spectator = !programmer.playerLock.isEmpty() && !programmer.playerLock.equals(getMinecraft().player.getName().getString());
 		}
 
 		statusWidget = addButton(new StatusWidget(left - 48, top + 5, 48, 30, "", this));
@@ -155,7 +156,7 @@ public class GuiProgrammer extends Screen {
 		helpButton = addButton(new GuiButtonHelp(left + xSize + 2, top + ySize - (spectator ? 32 : 48), this));
 		configWidget = addButton(new SideConfigWidget(left - 81, top + 55, 81, 115, this));
 
-		spellNameField = addButton(new CallbackTextFieldWidget(font, left + xSize - 130, top + ySize - 14, 120, 10, button -> {
+		spellNameField = addButton(new CallbackTextFieldWidget(getMinecraft().fontRenderer, left + xSize - 130, top + ySize - 14, 120, 10, button -> {
 			spell.name = spellNameField.getText();
 			onSpellChanged(true);
 		}));
@@ -163,14 +164,14 @@ public class GuiProgrammer extends Screen {
 		spellNameField.setMaxStringLength(20);
 		spellNameField.setEnabled(!spectator);
 
-		commentField = addButton(new CallbackTextFieldWidget(font, left, top + ySize / 2 - 10, xSize, 20, button -> {
+		commentField = addButton(new CallbackTextFieldWidget(getMinecraft().fontRenderer, left, top + ySize / 2 - 10, xSize, 20, button -> {
 
 		}));
 		commentField.setEnabled(false);
 		commentField.setVisible(false);
 		commentField.setMaxStringLength(500);
 
-		panelWidget.searchField = addButton(new CallbackTextFieldWidget(font, 0, 0, 70, 10, button -> {
+		panelWidget.searchField = addButton(new CallbackTextFieldWidget(getMinecraft().fontRenderer, 0, 0, 70, 10, button -> {
 			panelWidget.page = 0;
 			panelWidget.updatePanelButtons();
 		}));
@@ -201,7 +202,7 @@ public class GuiProgrammer extends Screen {
 				if (spell != null) {
 					spell.writeToNBT(cmp);
 				}
-				minecraft.keyboardListener.setClipboardString(cmp.toString());
+				getMinecraft().keyboardListener.setClipboardString(cmp.toString());
 			}
 		}));
 
@@ -211,7 +212,7 @@ public class GuiProgrammer extends Screen {
 		if (!spectator) {
 			addButton(new GuiButtonIO(left + xSize + 2, top + ySize - 16, false, this, button -> {
 				if (hasShiftDown()) {
-					String cb = minecraft.keyboardListener.getClipboardString();
+					String cb = getMinecraft().keyboardListener.getClipboardString();
 
 					try {
 						cb = cb.replaceAll("([^a-z0-9])\\d+:", "$1"); // backwards compatibility with pre 1.12 nbt json
@@ -221,7 +222,7 @@ public class GuiProgrammer extends Screen {
 							for (INBT mod : mods) {
 								String modName = ((CompoundNBT) mod).getString(Spell.TAG_MOD_NAME);
 								if (!PsiAPI.getSpellPieceRegistry().keySet().stream().map(ResourceLocation::getNamespace).collect(Collectors.toSet()).contains(modName)) {
-									Minecraft.getInstance().player.sendMessage(new TranslationTextComponent("psimisc.modnotfound", modName).setStyle(new Style().setColor(TextFormatting.RED)));
+									Minecraft.getInstance().player.sendMessage(new TranslationTextComponent("psimisc.modnotfound", modName).setStyle(Style.EMPTY.withColor(TextFormatting.RED)), Util.NIL_UUID);
 								}
 								if (modName.equals("psi")) {
 									boolean sendMessage = false;
@@ -241,7 +242,7 @@ public class GuiProgrammer extends Screen {
 										}
 									}
 									if (sendMessage) {
-										Minecraft.getInstance().player.sendMessage(new TranslationTextComponent("psimisc.spellonnewerversion").setStyle(new Style().setColor(TextFormatting.RED)));
+										Minecraft.getInstance().player.sendMessage(new TranslationTextComponent("psimisc.spellonnewerversion").setStyle(Style.EMPTY.withColor(TextFormatting.RED)), Util.NIL_UUID);
 									}
 								}
 							}
@@ -250,14 +251,14 @@ public class GuiProgrammer extends Screen {
 						if (spell == null) {
 							return;
 						}
-						PlayerDataHandler.PlayerData data = PlayerDataHandler.get(minecraft.player);
+						PlayerDataHandler.PlayerData data = PlayerDataHandler.get(getMinecraft().player);
 						for (int i = 0; i < SpellGrid.GRID_SIZE; i++) {
 							for (int j = 0; j < SpellGrid.GRID_SIZE; j++) {
 								SpellPiece piece = spell.grid.gridData[i][j];
 								if (piece != null) {
 									ResourceLocation group = PsiAPI.getGroupForPiece(piece.getClass());
-									if (!minecraft.player.isCreative() && (group == null || !data.isPieceGroupUnlocked(group, piece.registryKey))) {
-										minecraft.player.sendMessage(new TranslationTextComponent("psimisc.missing_pieces").setStyle(new Style().setColor(TextFormatting.RED)));
+									if (!getMinecraft().player.isCreative() && (group == null || !data.isPieceGroupUnlocked(group, piece.registryKey))) {
+										getMinecraft().player.sendMessage(new TranslationTextComponent("psimisc.missing_pieces").setStyle(Style.EMPTY.withColor(TextFormatting.RED)), Util.NIL_UUID);
 										return;
 									}
 								}
@@ -268,7 +269,7 @@ public class GuiProgrammer extends Screen {
 						spellNameField.setText(spell.name);
 						onSpellChanged(false);
 					} catch (Throwable t) {
-						minecraft.player.sendMessage(new TranslationTextComponent("psimisc.malformed_json", t.getMessage()).setStyle(new Style().setColor(TextFormatting.RED)));
+						getMinecraft().player.sendMessage(new TranslationTextComponent("psimisc.malformed_json", t.getMessage()).setStyle(Style.EMPTY.withColor(TextFormatting.RED)), Util.NIL_UUID);
 					}
 				}
 			}));
@@ -276,22 +277,22 @@ public class GuiProgrammer extends Screen {
 	}
 
 	@Override
-	public void render(int mouseX, int mouseY, float partialTicks) {
-		if (programmer != null && (programmer.getWorld().getTileEntity(programmer.getPos()) != programmer || !programmer.canPlayerInteract(minecraft.player))) {
-			minecraft.displayGuiScreen(null);
+	public void render(MatrixStack ms, int mouseX, int mouseY, float partialTicks) {
+		if (programmer != null && (programmer.getWorld().getTileEntity(programmer.getPos()) != programmer || !programmer.canPlayerInteract(getMinecraft().player))) {
+			getMinecraft().displayGuiScreen(null);
 			return;
 		}
 
 		String comment = "";
 		int color = Psi.magical ? 0 : 0xFFFFFF;
 
-		RenderSystem.pushMatrix();
-		renderBackground();
+		ms.push();
+		renderBackground(ms);
 
 		RenderSystem.color3f(1F, 1F, 1F);
-		minecraft.getTextureManager().bindTexture(texture);
+		getMinecraft().getTextureManager().bindTexture(texture);
 
-		blit(left, top, 0, 0, xSize, ySize);
+		drawTexture(ms, left, top, 0, 0, xSize, ySize);
 
 		//Currently selected piece
 		SpellPiece piece = null;
@@ -306,26 +307,26 @@ public class GuiProgrammer extends Screen {
 			cursorY = -1;
 		}
 
-		RenderSystem.pushMatrix();
+		ms.push();
 		tooltip.clear();
-		RenderSystem.translatef(gridLeft, gridTop, 0);
+		ms.translate(gridLeft, gridTop, 0);
 		IRenderTypeBuffer.Impl buffers = IRenderTypeBuffer.immediate(Tessellator.getInstance().getBuffer());
-		spell.draw(new MatrixStack(), buffers, 0xF000F0);
+		spell.draw(ms, buffers, 0xF000F0);
 		buffers.draw();
 
 		if (compiler.isErrored()) {
 			Pair<Integer, Integer> errorPos = compiler.getErrorLocation();
 			if (errorPos != null && errorPos.getRight() != -1 && errorPos.getLeft() != -1) {
-				font.drawStringWithShadow("!!", errorPos.getLeft() * 18 + 12, errorPos.getRight() * 18 + 8, 0xFF0000);
+				textRenderer.drawWithShadow(ms, "!!", errorPos.getLeft() * 18 + 12, errorPos.getRight() * 18 + 8, 0xFF0000);
 			}
 		}
-		RenderSystem.popMatrix();
+		ms.pop();
 		RenderSystem.color3f(1f, 1f, 1f);
-		RenderSystem.translatef(0, 0, 1);
-		minecraft.getTextureManager().bindTexture(texture);
+		ms.translate(0, 0, 1);
+		getMinecraft().getTextureManager().bindTexture(texture);
 
 		if (selectedX != -1 && selectedY != -1 && !takingScreenshot) {
-			blit(gridLeft + selectedX * 18, gridTop + selectedY * 18, 32, ySize, 16, 16);
+			drawTexture(ms, gridLeft + selectedX * 18, gridTop + selectedY * 18, 32, ySize, 16, 16);
 		}
 
 		if (hasAltDown()) {
@@ -340,17 +341,17 @@ public class GuiProgrammer extends Screen {
 			Set<String> addons = spell.getPieceNamespaces().stream().filter(namespace -> !namespace.equals("psi")).collect(Collectors.toSet());
 			if (addons.size() > 0) {
 				String requiredAddons = TextFormatting.GREEN + "Required Addons:";
-				font.drawStringWithShadow(requiredAddons, left - font.getStringWidth(requiredAddons) - 5, top + 40, 0xFFFFFF);
+				textRenderer.drawWithShadow(ms, requiredAddons, left - textRenderer.getStringWidth(requiredAddons) - 5, top + 40, 0xFFFFFF);
 				int i = 1;
 				for (String addon : addons) {
 					if (ModList.get().getModContainerById(addon).isPresent()) {
 						String modName = ModList.get().getModContainerById(addon).get().getModInfo().getDisplayName();
-						font.drawStringWithShadow("* " + modName, left - font.getStringWidth(requiredAddons) - 5, top + 40 + 10 * i, 0xFFFFFF);
+						textRenderer.drawWithShadow(ms, "* " + modName, left - textRenderer.getStringWidth(requiredAddons) - 5, top + 40 + 10 * i, 0xFFFFFF);
 					}
 				}
 			}
 			String version = "Psi " + ModList.get().getModContainerById("psi").get().getModInfo().getVersion().toString();
-			font.drawStringWithShadow(version, left + xSize / 2f - font.getStringWidth(version) / 2f, top - 22, 0xFFFFFF);
+			textRenderer.drawWithShadow(ms, version, left + xSize / 2f - textRenderer.getStringWidth(version) / 2f, top - 22, 0xFFFFFF);
 		}
 
 		SpellPiece pieceAtCursor = null;
@@ -363,9 +364,9 @@ public class GuiProgrammer extends Screen {
 
 			if (!takingScreenshot) {
 				if (cursorX == selectedX && cursorY == selectedY) {
-					blit(gridLeft + cursorX * 18, gridTop + cursorY * 18, 16, ySize, 8, 16);
+					drawTexture(ms, gridLeft + cursorX * 18, gridTop + cursorY * 18, 16, ySize, 8, 16);
 				} else {
-					blit(gridLeft + cursorX * 18, gridTop + cursorY * 18, 16, ySize, 16, 16);
+					drawTexture(ms, gridLeft + cursorX * 18, gridTop + cursorY * 18, 16, ySize, 16, 16);
 				}
 			}
 		}
@@ -376,17 +377,17 @@ public class GuiProgrammer extends Screen {
 			int topYText = topY;
 			if (spectator) {
 				String spectator = TextFormatting.RED + I18n.format("psimisc.spectator");
-				font.drawStringWithShadow(spectator, left + xSize / 2f - font.getStringWidth(spectator) / 2f, topYText, 0xFFFFFF);
+				textRenderer.drawWithShadow(ms, spectator, left + xSize / 2f - textRenderer.getStringWidth(spectator) / 2f, topYText, 0xFFFFFF);
 				topYText -= 10;
 			}
 			if (piece != null) {
 				String pieceName = I18n.format(piece.getUnlocalizedName());
-				font.drawStringWithShadow(pieceName, left + xSize / 2f - font.getStringWidth(pieceName) / 2f, topYText, 0xFFFFFF);
+				textRenderer.drawWithShadow(ms, pieceName, left + xSize / 2f - textRenderer.getStringWidth(pieceName) / 2f, topYText, 0xFFFFFF);
 				topYText -= 10;
 			}
 			if (LibMisc.BETA_TESTING) {
 				String betaTest = TextFormatting.GOLD + I18n.format("psimisc.wip");
-				font.drawStringWithShadow(betaTest, left + xSize / 2f - font.getStringWidth(betaTest) / 2f, topYText, 0xFFFFFF);
+				textRenderer.drawWithShadow(ms, betaTest, left + xSize / 2f - textRenderer.getStringWidth(betaTest) / 2f, topYText, 0xFFFFFF);
 
 			}
 
@@ -396,22 +397,22 @@ public class GuiProgrammer extends Screen {
 			} else {
 				coords = I18n.format("psimisc.programmer_coords_no_cursor", selectedX + 1, selectedY + 1);
 			}
-			font.drawString(coords, left + 4, topY + ySize + 24, 0x44FFFFFF);
+			textRenderer.draw(ms, coords, left + 4, topY + ySize + 24, 0x44FFFFFF);
 		}
 
 		if (Psi.magical) {
-			font.drawString(I18n.format("psimisc.name"), left + padLeft, spellNameField.y + 1, color);
+			textRenderer.draw(ms, I18n.format("psimisc.name"), left + padLeft, spellNameField.y + 1, color);
 		} else {
-			font.drawStringWithShadow(I18n.format("psimisc.name"), left + padLeft, spellNameField.y + 1, color);
+			textRenderer.drawWithShadow(ms, I18n.format("psimisc.name"), left + padLeft, spellNameField.y + 1, color);
 		}
 
 		//Add here comment
 		if (commentEnabled) {
 			String enterCommit = I18n.format("psimisc.enter_commit");
-			font.drawStringWithShadow(enterCommit, left + xSize / 2f - font.getStringWidth(enterCommit) / 2f, commentField.y + 24, 0xFFFFFF);
+			textRenderer.drawWithShadow(ms, enterCommit, left + xSize / 2f - textRenderer.getStringWidth(enterCommit) / 2f, commentField.y + 24, 0xFFFFFF);
 
 			String semicolonLine = I18n.format("psimisc.semicolon_line");
-			font.drawStringWithShadow(semicolonLine, left + xSize / 2f - font.getStringWidth(semicolonLine) / 2f, commentField.y + 34, 0xFFFFFF);
+			textRenderer.drawWithShadow(ms, semicolonLine, left + xSize / 2f - textRenderer.getStringWidth(semicolonLine) / 2f, commentField.y + 34, 0xFFFFFF);
 		}
 
 		List<ITextComponent> legitTooltip = null;
@@ -423,12 +424,10 @@ public class GuiProgrammer extends Screen {
 			tooltip = legitTooltip;
 		}
 
-		super.render(mouseX, mouseY, partialTicks);
+		super.render(ms, mouseX, mouseY, partialTicks);
 
 		if (!takingScreenshot && tooltip != null && !tooltip.isEmpty() && pieceAtCursor == null) {
-			List<String> textComptoString = new ArrayList<>();
-			tooltip.forEach(el -> textComptoString.add(el.getFormattedText()));
-			GuiUtils.drawHoveringText(textComptoString, mouseX, mouseY, width, height, -1, font);
+			GuiUtils.drawHoveringText(ms, tooltip, mouseX, mouseY, width, height, -1, this.textRenderer);
 
 		}
 		if (!takingScreenshot && pieceAtCursor != null) {
@@ -442,7 +441,7 @@ public class GuiProgrammer extends Screen {
 			}
 		}
 
-		RenderSystem.popMatrix();
+		ms.pop();
 
 		if (takingScreenshot) {
 			String name = spell.name;
@@ -577,7 +576,7 @@ public class GuiProgrammer extends Screen {
 
 	@Override
 	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-		minecraft.keyboardListener.enableRepeatEvents(true);
+		getMinecraft().keyboardListener.enableRepeatEvents(true);
 		if (programmer != null) {
 			spell = programmer.spell;
 		}
@@ -619,7 +618,7 @@ public class GuiProgrammer extends Screen {
 		if (!spellNameField.isFocused() && !panelWidget.panelEnabled && !commentEnabled) {
 			int param = -1;
 			for (int i = 0; i < 4; i++) {
-				if (InputMappings.isKeyDown(minecraft.getWindow().getHandle(), GLFW.GLFW_KEY_1 + i)) {
+				if (InputMappings.isKeyDown(getMinecraft().getWindow().getHandle(), GLFW.GLFW_KEY_1 + i)) {
 					param = i;
 				}
 			}

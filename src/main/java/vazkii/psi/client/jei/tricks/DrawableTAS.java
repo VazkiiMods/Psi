@@ -8,6 +8,7 @@
  */
 package vazkii.psi.client.jei.tricks;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import mezz.jei.api.gui.drawable.IDrawableStatic;
@@ -28,7 +29,7 @@ public class DrawableTAS implements IDrawableStatic {
 	}
 
 	@Override
-	public void draw(int xOffset, int yOffset, int maskTop, int maskBottom, int maskLeft, int maskRight) {
+	public void draw(MatrixStack ms, int xOffset, int yOffset, int maskTop, int maskBottom, int maskLeft, int maskRight) {
 		int textureWidth = sprite.getWidth();
 		int textureHeight = sprite.getHeight();
 		int x = xOffset + maskLeft;
@@ -42,6 +43,7 @@ public class DrawableTAS implements IDrawableStatic {
 		float maxU = sprite.getMaxU() - uSize * ((float) maskRight / (float) textureWidth);
 		float maxV = sprite.getMaxV() - vSize * ((float) maskBottom / (float) textureHeight);
 
+		ms.push();
 		RenderSystem.bindTexture(sprite.getAtlas().getGlTextureId());
 		Tessellator tessellator = Tessellator.getInstance();
 		BufferBuilder buf = tessellator.getBuffer();
@@ -51,6 +53,7 @@ public class DrawableTAS implements IDrawableStatic {
 		buf.vertex(x + width, y, 0.0D).texture(maxU, minV).endVertex();
 		buf.vertex(x, y, 0.0D).texture(minU, minV).endVertex();
 		tessellator.draw();
+		ms.pop();
 	}
 
 	@Override
@@ -63,8 +66,9 @@ public class DrawableTAS implements IDrawableStatic {
 		return sprite.getHeight();
 	}
 
+
 	@Override
-	public void draw(int xOff, int yOff) {
-		draw(xOff, yOff, 0, 0, 0, 0);
+	public void draw(MatrixStack ms, int xOff, int yOff) {
+		draw(ms, xOff, yOff, 0, 0, 0, 0);
 	}
 }
