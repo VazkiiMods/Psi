@@ -122,7 +122,7 @@ public class BlockConjured extends Block {
 	}
 
 	@Override
-	public int getLightValue(BlockState state) {
+	public int getLightValue(BlockState state, IBlockReader world, BlockPos pos) {
 		return state.get(LIGHT) ? 15 : 0;
 	}
 
