@@ -36,7 +36,7 @@ entry_pat = re_compile(r"#(\w+)(\+?)(?: gate:(\w+))?(?: turnin:(\w+))?(?: icon:(
 anchor_pat = re_compile(r"#!(\w+)\s*(?:\(([^)]+)\))?\s+(.*)")
 page_patterns = [
     ("crafting",             re_compile(r"@RECIPE\s*\((\w+)\)(?:: (.*))?"),                 lambda match: (match.group(2), {"recipe": modpfx + match.group(1)})),
-    ("crafting_multi",       re_compile(r"@RECIPES\s*\((\w*):([\w;]+)\)(?:: (.*))?"),       lambda match: (match.group(3), {"recipes": ";".join(modpfx + match.group(1) + rec for rec in match.group(2).split(";"))})),
+    ("crafting_multi",       re_compile(r"@RECIPES\s*\((\w*):([\w;]+)\)(?:: (.*))?"),       lambda match: (match.group(3), {"recipes": [modpfx + match.group(1) + rec for rec in match.group(2).split(";")]})),
     ("spotlight",            re_compile(r"@ITEM\s*\((\w+)(\+)?\)(?:: (.*))?"),              lambda match: (match.group(3), {"item": modpfx + "{}".format(match.group(1)), "link_recipe": bool(match.group(2))})),
     ("spellpiece_spotlight", re_compile(r"@PIECE\s*\((\w+)\)(?:: (.*))?"),                  lambda match: (match.group(2), {"title": modname + ".spellpiece." + match.group(1), "spellpiece": modpfx + "{}".format(match.group(1))})),
     ("image",                re_compile(r"@IMAGE\s*(B)?\(([\w,]+)\)(?:: (.*))?"),           lambda match: (match.group(3), {"images": [modpfx + imagepath.format(fn) for fn in match.group(2).split(",")], "border": bool(match.group(1))})),

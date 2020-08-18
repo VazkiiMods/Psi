@@ -18,7 +18,27 @@
     {
       "type": "crafting_multi",
       "text": "psi.book.page.colorizer.3",
-      "recipes": "psi:cad_colorizer_psi;psi:cad_colorizer_rainbow;psi:cad_colorizer_empty;psi:cad_colorizer_white;psi:cad_colorizer_orange;psi:cad_colorizer_magenta;psi:cad_colorizer_light_blue;psi:cad_colorizer_yellow;psi:cad_colorizer_lime;psi:cad_colorizer_pink;psi:cad_colorizer_gray;psi:cad_colorizer_light_gray;psi:cad_colorizer_cyan;psi:cad_colorizer_purple;psi:cad_colorizer_blue;psi:cad_colorizer_brown;psi:cad_colorizer_green;psi:cad_colorizer_red;psi:cad_colorizer_black"
+      "recipes": [
+        "psi:cad_colorizer_psi",
+        "psi:cad_colorizer_rainbow",
+        "psi:cad_colorizer_empty",
+        "psi:cad_colorizer_white",
+        "psi:cad_colorizer_orange",
+        "psi:cad_colorizer_magenta",
+        "psi:cad_colorizer_light_blue",
+        "psi:cad_colorizer_yellow",
+        "psi:cad_colorizer_lime",
+        "psi:cad_colorizer_pink",
+        "psi:cad_colorizer_gray",
+        "psi:cad_colorizer_light_gray",
+        "psi:cad_colorizer_cyan",
+        "psi:cad_colorizer_purple",
+        "psi:cad_colorizer_blue",
+        "psi:cad_colorizer_brown",
+        "psi:cad_colorizer_green",
+        "psi:cad_colorizer_red",
+        "psi:cad_colorizer_black"
+      ]
     }
   ]
 }
