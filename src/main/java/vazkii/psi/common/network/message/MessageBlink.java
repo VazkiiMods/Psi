@@ -16,6 +16,9 @@ import vazkii.psi.common.Psi;
 
 import java.util.function.Supplier;
 
+/**
+ * This is needed instead of a serverside position set to avoid jittering, especially under lag.
+ */
 public class MessageBlink {
 	private final double offX;
 	private final double offY;
