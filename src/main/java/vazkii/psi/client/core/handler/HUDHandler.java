@@ -246,7 +246,7 @@ public final class HUDHandler {
 
 		if (storedPsi != -1) {
 			ms.push();
-			RenderSystem.translatef(0F, Math.max(textY + 3, origY + 100), 0F);
+			ms.translate(0F, Math.max(textY + 3, origY + 100), 0F);
 			mc.fontRenderer.drawWithShadow(ms, s2, x - offStr2, 0, 0xFFFFFF);
 			ms.pop();
 		}
@@ -282,18 +282,14 @@ public final class HUDHandler {
 				y += 14;
 			}
 
-			RenderSystem.enableBlend();
-			RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 			mc.fontRenderer.drawWithShadow(ms, name, x, y, color);
 
 			int w = mc.fontRenderer.getStringWidth(name);
 			ms.push();
 			ms.translate(x + w, y - 6, 0);
 			ms.scale(alpha / 255F, 1F, 1);
-			RenderSystem.color3f(1F, 1F, 1F);
 			mc.getItemRenderer().renderItemIntoGUI(bullet, 0, 0);
 			ms.pop();
-			RenderSystem.disableBlend();
 		}
 	}
 
@@ -309,23 +305,15 @@ public final class HUDHandler {
 			int start = maxRemainingTicks - remainingLeaveTicks;
 			float alpha = remainingTime + partTicks > start ? 1F : (remainingTime + partTicks) / start;
 
-			RenderSystem.disableAlphaTest();
-			RenderSystem.disableBlend();
-			RenderSystem.disableRescaleNormal();
-			RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-
 			RenderSystem.color4f(1F, 1F, 1F, alpha);
-			RenderSystem.enableLighting();
-			RenderSystem.enableColorMaterial();
 			int xp = x + (int) (16F * (1F - alpha));
+			ms.push();
 			ms.translate(xp, y, 0F);
 			ms.scale(alpha, 1F, 1F);
 			mc.getItemRenderer().renderItemAndEffectIntoGUI(remainingDisplayStack, 0, 0);
 			ms.scale(1F / alpha, 1F, 1F);
 			ms.translate(-xp, -y, 0F);
-			RenderHelper.disableStandardItemLighting();
 			RenderSystem.color4f(1F, 1F, 1F, 1F);
-			RenderSystem.enableBlend();
 
 			String text = remainingDisplayStack.getDisplayName().copy().formatted(TextFormatting.GREEN).getString();
 			if (remainingCount >= 0) {
@@ -347,8 +335,7 @@ public final class HUDHandler {
 			int color = 0x00FFFFFF | (int) (alpha * 0xFF) << 24;
 			mc.fontRenderer.drawWithShadow(ms, text, x + 20, y + 6, color);
 
-			RenderSystem.disableBlend();
-			RenderSystem.enableAlphaTest();
+			ms.pop();
 		}
 	}
 
