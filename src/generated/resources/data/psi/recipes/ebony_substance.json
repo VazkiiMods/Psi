@@ -10,5 +10,5 @@
     "item": "psi:cad_assembly_psimetal"
   },
   "trick": "psi:trick_ebony_ivory",
-  "dimension": "minecraft:the_end"
+  "dimension": "minecraft:dimension_type"
 }
