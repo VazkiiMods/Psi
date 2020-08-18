@@ -82,8 +82,9 @@ public class PsiGuiUtils {
 			int backgroundColor, int borderColorStart, int borderColorEnd, FontRenderer font) {
 		if (!textLines.isEmpty()) {
 			RenderTooltipEvent.Pre event = new RenderTooltipEvent.Pre(stack, textLines, mStack, mouseX, mouseY, screenWidth, screenHeight, maxTextWidth, font);
-			if (MinecraftForge.EVENT_BUS.post(event))
+			if (MinecraftForge.EVENT_BUS.post(event)) {
 				return;
+			}
 			mouseX = event.getX();
 			mouseY = event.getY();
 			screenWidth = event.getScreenWidth();
@@ -95,8 +96,9 @@ public class PsiGuiUtils {
 			int tooltipTextWidth = 0;
 			for (ITextProperties textLine : textLines) {
 				int textLineWidth = font.getWidth(textLine);
-				if (textLineWidth > tooltipTextWidth)
+				if (textLineWidth > tooltipTextWidth) {
 					tooltipTextWidth = textLineWidth;
+				}
 			}
 			boolean needsWrap = false;
 			int titleLinesCount = 1;
@@ -105,10 +107,11 @@ public class PsiGuiUtils {
 				tooltipX = mouseX - 16 - tooltipTextWidth;
 				if (tooltipX < 4) // if the tooltip doesn't fit on the screen
 				{
-					if (mouseX > screenWidth / 2)
+					if (mouseX > screenWidth / 2) {
 						tooltipTextWidth = mouseX - 12 - 8;
-					else
+					} else {
 						tooltipTextWidth = screenWidth - 16 - mouseX;
+					}
 					needsWrap = true;
 				}
 			}
@@ -122,33 +125,38 @@ public class PsiGuiUtils {
 				for (int i = 0; i < textLines.size(); i++) {
 					ITextProperties textLine = textLines.get(i);
 					List<ITextProperties> wrappedLine = font.getTextHandler().wrapLines(textLine, tooltipTextWidth, Style.EMPTY);
-					if (i == 0)
+					if (i == 0) {
 						titleLinesCount = wrappedLine.size();
+					}
 					for (ITextProperties line : wrappedLine) {
 						int lineWidth = font.getWidth(line);
-						if (lineWidth > wrappedTooltipWidth)
+						if (lineWidth > wrappedTooltipWidth) {
 							wrappedTooltipWidth = lineWidth;
+						}
 						wrappedTextLines.add(line);
 					}
 				}
 				tooltipTextWidth = wrappedTooltipWidth;
 				textLines = wrappedTextLines;
-				if (mouseX > screenWidth / 2)
+				if (mouseX > screenWidth / 2) {
 					tooltipX = mouseX - 16 - tooltipTextWidth;
-				else
+				} else {
 					tooltipX = mouseX + 12;
+				}
 			}
 			int tooltipY = mouseY - 12;
 			int tooltipHeight = 8;
 			if (textLines.size() > 1) {
 				tooltipHeight += (textLines.size() - 1) * 10;
-				if (textLines.size() > titleLinesCount)
+				if (textLines.size() > titleLinesCount) {
 					tooltipHeight += 2; // gap between title lines and next lines
+				}
 			}
-			if (tooltipY < 4)
+			if (tooltipY < 4) {
 				tooltipY = 4;
-			else if (tooltipY + tooltipHeight + 4 > screenHeight)
+			} else if (tooltipY + tooltipHeight + 4 > screenHeight) {
 				tooltipY = screenHeight - tooltipHeight - 4;
+			}
 			final int zLevel = 400;
 			RenderTooltipEvent.Color colorEvent = new RenderTooltipEvent.Color(stack, textLines, mStack, tooltipX, tooltipY, font, backgroundColor, borderColorStart, borderColorEnd);
 			MinecraftForge.EVENT_BUS.post(colorEvent);
@@ -173,10 +181,12 @@ public class PsiGuiUtils {
 			int tooltipTop = tooltipY;
 			for (int lineNumber = 0; lineNumber < textLines.size(); ++lineNumber) {
 				ITextProperties line = textLines.get(lineNumber);
-				if (line != null && line instanceof ITextComponent)
+				if (line != null && line instanceof ITextComponent) {
 					font.func_243247_a((ITextComponent) line, (float) tooltipX, (float) tooltipY, -1, true, mat, renderType, false, 0, 15728880);
-				if (lineNumber + 1 == titleLinesCount)
+				}
+				if (lineNumber + 1 == titleLinesCount) {
 					tooltipY += 2;
+				}
 				tooltipY += 10;
 			}
 			renderType.draw();
