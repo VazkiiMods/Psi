@@ -50,6 +50,7 @@ import vazkii.psi.api.spell.SpellCompilationException;
 import vazkii.psi.api.spell.SpellGrid;
 import vazkii.psi.api.spell.SpellParam;
 import vazkii.psi.api.spell.SpellPiece;
+import vazkii.psi.client.core.PsiGuiUtils;
 import vazkii.psi.client.core.helper.SharingHelper;
 import vazkii.psi.client.gui.button.GuiButtonHelp;
 import vazkii.psi.client.gui.button.GuiButtonIO;
@@ -427,7 +428,7 @@ public class GuiProgrammer extends Screen {
 		super.render(ms, mouseX, mouseY, partialTicks);
 
 		if (!takingScreenshot && tooltip != null && !tooltip.isEmpty() && pieceAtCursor == null) {
-			GuiUtils.drawHoveringText(ms, tooltip, mouseX, mouseY, width, height, -1, this.textRenderer);
+			PsiGuiUtils.drawHoveringText(ms, tooltip, mouseX, mouseY, width, height, -1, this.textRenderer);
 
 		}
 		if (!takingScreenshot && pieceAtCursor != null) {

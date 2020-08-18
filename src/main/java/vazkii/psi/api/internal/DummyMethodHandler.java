@@ -9,6 +9,7 @@
 package vazkii.psi.api.internal;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;

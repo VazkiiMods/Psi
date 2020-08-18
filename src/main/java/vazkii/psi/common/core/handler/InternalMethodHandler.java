@@ -29,6 +29,7 @@ import vazkii.psi.api.spell.ISpellCompiler;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellPiece;
+import vazkii.psi.client.core.PsiGuiUtils;
 import vazkii.psi.client.gui.GuiProgrammer;
 import vazkii.psi.common.item.ItemCAD;
 import vazkii.psi.common.spell.SpellCache;
@@ -82,7 +83,7 @@ public final class InternalMethodHandler implements IInternalMethodHandler {
 	public void renderTooltip(MatrixStack ms, int x, int y, List<ITextComponent> tooltipData, int color, int color2, int width, int height) {
 		if (!tooltipData.isEmpty()) {
 			FontRenderer fontRenderer = Minecraft.getInstance().fontRenderer;
-			GuiUtils.drawHoveringText(ms, tooltipData, x, y, width, height, -1, color2, color, color, fontRenderer);
+			PsiGuiUtils.drawHoveringText(ms, tooltipData, x, y, width, height, -1, color2, color, color, fontRenderer);
 		}
 	}
 

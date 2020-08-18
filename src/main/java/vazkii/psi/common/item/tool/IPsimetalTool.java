@@ -57,7 +57,7 @@ public interface IPsimetalTool {
 	}
 
 	static boolean isRepairableBy(ItemStack stack) {
-		return ItemTags.getCollection().getOrCreate(new ResourceLocation("forge", "ingots/psimetal")).contains(stack.getItem());
+		return ItemTags.getCollection().func_241834_b(new ResourceLocation("forge", "ingots/psimetal")).contains(stack.getItem());
 	}
 
 	static BlockRayTraceResult raytraceFromEntity(World worldIn, PlayerEntity player, RayTraceContext.FluidMode fluidMode, double range) {

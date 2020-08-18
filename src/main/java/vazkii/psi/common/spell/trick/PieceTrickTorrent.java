@@ -63,7 +63,7 @@ public class PieceTrickTorrent extends PieceTrick {
 			return null;
 		}
 		BlockPos pos = SpellHelpers.getBlockPos(this, context, position, true, false);
-		BlockEvent.EntityPlaceEvent placeEvent = new BlockEvent.EntityPlaceEvent(BlockSnapshot.create(context.caster.getEntityWorld(), pos), context.caster.getEntityWorld().getBlockState(pos.offset(Direction.UP)), context.caster);
+		BlockEvent.EntityPlaceEvent placeEvent = new BlockEvent.EntityPlaceEvent(BlockSnapshot.create(context.caster.getEntityWorld().getRegistryKey(), context.caster.getEntityWorld(), pos), context.caster.getEntityWorld().getBlockState(pos.offset(Direction.UP)), context.caster);
 		MinecraftForge.EVENT_BUS.post(placeEvent);
 		if (placeEvent.isCanceled()) {
 			return null;
