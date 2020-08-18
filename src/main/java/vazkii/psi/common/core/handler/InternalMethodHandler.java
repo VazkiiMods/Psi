@@ -79,11 +79,10 @@ public final class InternalMethodHandler implements IInternalMethodHandler {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void renderTooltip(int x, int y, List<ITextComponent> tooltipData, int color, int color2, int width, int height) {
+	public void renderTooltip(MatrixStack ms, int x, int y, List<ITextComponent> tooltipData, int color, int color2, int width, int height) {
 		if (!tooltipData.isEmpty()) {
-			MatrixStack matrixStack = new MatrixStack();
 			FontRenderer fontRenderer = Minecraft.getInstance().fontRenderer;
-			GuiUtils.drawHoveringText(matrixStack, tooltipData, x, y, width, height, -1, color2, color, color, fontRenderer);
+			GuiUtils.drawHoveringText(ms, tooltipData, x, y, width, height, -1, color2, color, color, fontRenderer);
 		}
 	}
 

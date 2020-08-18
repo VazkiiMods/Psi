@@ -74,16 +74,16 @@ public final class HUDHandler {
 			float partialTicks = event.getPartialTicks();
 
 			if (!MinecraftForge.EVENT_BUS.post(new RenderPsiHudEvent(PsiHudElementType.PSI_BAR))) {
-				drawPsiBar(resolution, partialTicks);
+				drawPsiBar(event.getMatrixStack(), resolution, partialTicks);
 			}
 			if (!MinecraftForge.EVENT_BUS.post(new RenderPsiHudEvent(PsiHudElementType.SOCKETABLE_EQUIPPED_NAME))) {
-				renderSocketableEquippedName(resolution, partialTicks);
+				renderSocketableEquippedName(event.getMatrixStack(), resolution, partialTicks);
 			}
 			if (!MinecraftForge.EVENT_BUS.post(new RenderPsiHudEvent(PsiHudElementType.REMAINING_ITEMS))) {
-				renderRemainingItems(resolution, partialTicks);
+				renderRemainingItems(event.getMatrixStack(), resolution, partialTicks);
 			}
 			if (!MinecraftForge.EVENT_BUS.post(new RenderPsiHudEvent(PsiHudElementType.HUD_ITEM))) {
-				renderHUDItem(resolution, partialTicks);
+				renderHUDItem(event.getMatrixStack(), resolution, partialTicks);
 			}
 		}
 	}
@@ -104,9 +104,8 @@ public final class HUDHandler {
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	public static void drawPsiBar(MainWindow res, float pticks) {
+	public static void drawPsiBar(MatrixStack ms, MainWindow res, float pticks) {
 		Minecraft mc = Minecraft.getInstance();
-		MatrixStack ms = new MatrixStack();
 		ItemStack cadStack = PsiAPI.getPlayerCAD(mc.player);
 
 		if (cadStack.isEmpty()) {
@@ -256,8 +255,7 @@ public final class HUDHandler {
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	private static void renderSocketableEquippedName(MainWindow res, float pticks) {
-		MatrixStack ms = new MatrixStack();
+	private static void renderSocketableEquippedName(MatrixStack ms, MainWindow res, float pticks) {
 		Minecraft mc = Minecraft.getInstance();
 		ItemStack stack = mc.player.getHeldItem(Hand.MAIN_HAND);
 		if (!ISocketable.isSocketable(stack)) {
@@ -300,9 +298,8 @@ public final class HUDHandler {
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	private static void renderRemainingItems(MainWindow resolution, float partTicks) {
+	private static void renderRemainingItems(MatrixStack ms, MainWindow resolution, float partTicks) {
 		if (remainingTime > 0 && !remainingDisplayStack.isEmpty()) {
-			MatrixStack ms = new MatrixStack();
 			int pos = maxRemainingTicks - remainingTime;
 			Minecraft mc = Minecraft.getInstance();
 			int remainingLeaveTicks = 20;
@@ -356,16 +353,16 @@ public final class HUDHandler {
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	private static void renderHUDItem(MainWindow resolution, float partTicks) {
+	private static void renderHUDItem(MatrixStack ms, MainWindow resolution, float partTicks) {
 		Minecraft mc = Minecraft.getInstance();
 		ItemStack stack = mc.player.getHeldItemMainhand();
 		if (!stack.isEmpty() && stack.getItem() instanceof IHUDItem) {
-			((IHUDItem) stack.getItem()).drawHUD(resolution, partTicks, stack);
+			((IHUDItem) stack.getItem()).drawHUD(ms, resolution, partTicks, stack);
 		}
 
 		stack = mc.player.getHeldItemOffhand();
 		if (!stack.isEmpty() && stack.getItem() instanceof IHUDItem) {
-			((IHUDItem) stack.getItem()).drawHUD(resolution, partTicks, stack);
+			((IHUDItem) stack.getItem()).drawHUD(ms, resolution, partTicks, stack);
 		}
 	}
 

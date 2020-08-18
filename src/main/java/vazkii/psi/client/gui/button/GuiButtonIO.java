@@ -14,6 +14,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 
@@ -25,13 +26,13 @@ public class GuiButtonIO extends Button {
 	final GuiProgrammer gui;
 
 	public GuiButtonIO(int x, int y, boolean out, GuiProgrammer gui) {
-		super(x, y, 12, 12, ITextComponent.func_241827_a_(""), button -> {});
+		super(x, y, 12, 12, StringTextComponent.EMPTY, button -> {});
 		this.out = out;
 		this.gui = gui;
 	}
 
 	public GuiButtonIO(int x, int y, boolean out, GuiProgrammer gui, IPressable pressable) {
-		super(x, y, 12, 12, ITextComponent.func_241827_a_(""), pressable);
+		super(x, y, 12, 12, StringTextComponent.EMPTY, pressable);
 		this.out = out;
 		this.gui = gui;
 	}

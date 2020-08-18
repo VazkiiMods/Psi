@@ -16,6 +16,7 @@ import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.text.ITextComponent;
 
+import net.minecraft.util.text.StringTextComponent;
 import vazkii.psi.api.spell.SpellPiece;
 import vazkii.psi.client.gui.GuiProgrammer;
 
@@ -24,13 +25,13 @@ public class GuiButtonSpellPiece extends Button {
 	final GuiProgrammer gui;
 
 	public GuiButtonSpellPiece(GuiProgrammer gui, SpellPiece piece, int x, int y) {
-		super(x, y, 16, 16, ITextComponent.func_241827_a_(""), button -> {});
+		super(x, y, 16, 16, StringTextComponent.EMPTY, button -> {});
 		this.gui = gui;
 		this.piece = piece;
 	}
 
 	public GuiButtonSpellPiece(GuiProgrammer gui, SpellPiece piece, int x, int y, Button.IPressable pressable) {
-		super(x, y, 16, 16, ITextComponent.func_241827_a_(""), pressable);
+		super(x, y, 16, 16, StringTextComponent.EMPTY, pressable);
 		this.gui = gui;
 		this.piece = piece;
 	}

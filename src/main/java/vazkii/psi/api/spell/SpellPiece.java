@@ -368,16 +368,16 @@ public abstract class SpellPiece {
 	 * Draws this piece's tooltip.
 	 */
 	@OnlyIn(Dist.CLIENT)
-	public void drawTooltip(int tooltipX, int tooltipY, List<ITextComponent> tooltip, Screen screen) {
-		PsiAPI.internalHandler.renderTooltip(tooltipX, tooltipY, tooltip, 0x505000ff, 0xf0100010, screen.width, screen.height);
+	public void drawTooltip(MatrixStack ms, int tooltipX, int tooltipY, List<ITextComponent> tooltip, Screen screen) {
+		PsiAPI.internalHandler.renderTooltip(ms, tooltipX, tooltipY, tooltip, 0x505000ff, 0xf0100010, screen.width, screen.height);
 	}
 
 	/**
 	 * Draws this piece's comment tooltip.
 	 */
 	@OnlyIn(Dist.CLIENT)
-	public void drawCommentText(int tooltipX, int tooltipY, List<ITextComponent> commentText, Screen screen) {
-		PsiAPI.internalHandler.renderTooltip(tooltipX, tooltipY - 9 - commentText.size() * 10, commentText, 0x5000a000, 0xf0001e00, screen.width, screen.height);
+	public void drawCommentText(MatrixStack ms, int tooltipX, int tooltipY, List<ITextComponent> commentText, Screen screen) {
+		PsiAPI.internalHandler.renderTooltip(ms, tooltipX, tooltipY - 9 - commentText.size() * 10, commentText, 0x5000a000, 0xf0001e00, screen.width, screen.height);
 	}
 
 	@OnlyIn(Dist.CLIENT)

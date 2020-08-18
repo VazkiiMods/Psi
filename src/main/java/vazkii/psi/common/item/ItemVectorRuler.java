@@ -103,12 +103,11 @@ public class ItemVectorRuler extends Item implements IHUDItem {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void drawHUD(MainWindow res, float partTicks, ItemStack stack) {
+	public void drawHUD(MatrixStack ms, MainWindow res, float partTicks, ItemStack stack) {
 		String s = getVector(stack).toString();
 
-		MatrixStack matrixStack = new MatrixStack();
 		FontRenderer font = Minecraft.getInstance().fontRenderer;
 		int w = font.getStringWidth(s);
-		font.draw(matrixStack, s, res.getScaledWidth() / 2f - w / 2f, res.getScaledHeight() / 2f + 10, 0xFFFFFFFF);
+		font.draw(ms, s, res.getScaledWidth() / 2f - w / 2f, res.getScaledHeight() / 2f + 10, 0xFFFFFFFF);
 	}
 }

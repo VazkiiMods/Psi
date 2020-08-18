@@ -16,6 +16,7 @@ import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.InputMappings;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 
 import org.lwjgl.glfw.GLFW;
@@ -34,7 +35,7 @@ public class SideConfigWidget extends Widget {
 	public final GuiProgrammer parent;
 
 	public SideConfigWidget(int x, int y, int width, int height, GuiProgrammer programmer) {
-		super(x, y, width, height, ITextComponent.func_241827_a_(""));
+		super(x, y, width, height, StringTextComponent.EMPTY);
 		this.parent = programmer;
 	}
 
