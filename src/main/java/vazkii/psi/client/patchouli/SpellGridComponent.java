@@ -31,16 +31,17 @@ public class SpellGridComponent implements ICustomComponent {
 	private transient boolean isDownscaled;
 	private transient SpellGrid grid;
 
-	public String spell;
-	public String halfsize;
+	public IVariable spell;
+	public IVariable halfsize;
 
 	@Override
 	public void build(int componentX, int componentY, int pageNum) {
 		try {
-			if (StringUtils.isNullOrEmpty(spell)) {
+			String spellstr = spell.asString("");
+			if (StringUtils.isNullOrEmpty(spellstr)) {
 				throw new IllegalArgumentException("Spell string is missing!");
 			}
-			CompoundNBT cmp = JsonToNBT.getTagFromJson(spell);
+			CompoundNBT cmp = JsonToNBT.getTagFromJson(spellstr);
 			Spell fromNBT = Spell.createFromNBT(cmp);
 			if (fromNBT == null) {
 				throw new IllegalArgumentException("Invalid spell string: " + spell);
@@ -49,7 +50,7 @@ public class SpellGridComponent implements ICustomComponent {
 		} catch (CommandSyntaxException e) {
 			throw new IllegalArgumentException("Invalid spell string: " + spell, e);
 		}
-		isDownscaled = "true".equals(halfsize);
+		isDownscaled = halfsize.asBoolean(false);
 	}
 
 	@Override
@@ -81,7 +82,7 @@ public class SpellGridComponent implements ICustomComponent {
 
 	@Override
 	public void onVariablesAvailable(UnaryOperator<IVariable> lookup) {
-		spell = lookup.apply(IVariable.from(spell)).asString("");
-		halfsize = lookup.apply(IVariable.from(halfsize)).asString("");
+		spell = lookup.apply(spell);
+		halfsize = lookup.apply(halfsize);
 	}
 }
