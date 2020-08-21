@@ -266,10 +266,9 @@ public class GuiSocketSelect extends Screen {
 					yoff += 5F;
 				}
 
-				ms.push();
-				ms.translate(0, -yoff * shift, 0F);
-				mc.getItemRenderer().renderItemAndEffectIntoGUI(controlledStacks[i], xs + i * 18, ys);
-				ms.pop();
+				ItemStack stack = controlledStacks[i];
+				float rx = xs + i * 18 + (-yoff * shift);
+				PsiRenderHelper.transferMsToGl(ms, () -> mc.getItemRenderer().renderItemAndEffectIntoGUI(stack, (int) rx, ys));
 			}
 
 		}
@@ -277,8 +276,8 @@ public class GuiSocketSelect extends Screen {
 		if (!socketableStack.isEmpty()) {
 			ms.push();
 			ms.scale(scale, scale, scale);
-			mc.getItemRenderer().renderItemAndEffectIntoGUI(socketableStack,
-					(int) (x / scale) - 8, (int) (y / scale) - 8);
+			PsiRenderHelper.transferMsToGl(ms, () -> mc.getItemRenderer().renderItemAndEffectIntoGUI(socketableStack,
+					(int) (x / scale) - 8, (int) (y / scale) - 8));
 			ms.pop();
 		}
 		RenderHelper.disableStandardItemLighting();

@@ -287,7 +287,7 @@ public final class HUDHandler {
 			ms.push();
 			ms.translate(x + w, y - 6, 0);
 			ms.scale(alpha / 255F, 1F, 1);
-			mc.getItemRenderer().renderItemIntoGUI(bullet, 0, 0);
+			PsiRenderHelper.transferMsToGl(ms, () -> mc.getItemRenderer().renderItemIntoGUI(bullet, 0, 0));
 			ms.pop();
 		}
 	}
@@ -309,7 +309,7 @@ public final class HUDHandler {
 			ms.push();
 			ms.translate(xp, y, 0F);
 			ms.scale(alpha, 1F, 1F);
-			mc.getItemRenderer().renderItemAndEffectIntoGUI(remainingDisplayStack, 0, 0);
+			PsiRenderHelper.transferMsToGl(ms, () -> mc.getItemRenderer().renderItemAndEffectIntoGUI(remainingDisplayStack, 0, 0));
 			ms.scale(1F / alpha, 1F, 1F);
 			ms.translate(-xp, -y, 0F);
 			RenderSystem.color4f(1F, 1F, 1F, 1F);
