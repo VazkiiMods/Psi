@@ -53,7 +53,7 @@ public interface ITrickRecipe extends IRecipe<RecipeWrapper> {
 	@Nonnull
 	@Override
 	default IRecipeType<?> getType() {
-		return Registry.RECIPE_TYPE.getValue(TYPE_ID).get();
+		return Registry.RECIPE_TYPE.getOrDefault(TYPE_ID);
 	}
 
 	@Nonnull

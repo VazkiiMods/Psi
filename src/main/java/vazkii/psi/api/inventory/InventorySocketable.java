@@ -169,14 +169,4 @@ public class InventorySocketable implements IInventory, INameable, IIntArray {
 		return new TranslationTextComponent("psi.container.socketable");
 	}
 
-	@Override
-	public boolean hasCustomName() {
-		return false;
-	}
-
-	@Nonnull
-	@Override
-	public ITextComponent getDisplayName() {
-		return new TranslationTextComponent(getName().getString());
-	}
 }

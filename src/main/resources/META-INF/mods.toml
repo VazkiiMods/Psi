@@ -1,12 +1,12 @@
 modLoader="javafml"
 loaderVersion="[31,)"
 issueTrackerURL="https://github.com/Vazkii/Psi"
+license="https://psi.vazkii.net/license.php"
 
 [[mods]]
 modId="psi"
 displayName="Psi"
 version="${version}"
-license="https://psi.vazkii.net/license.php"
 authors="Vazkii, Wiiv, WireSegal, Kamefrede, Williewillus"
 description='''
 Psionic Spellcasting Instruments

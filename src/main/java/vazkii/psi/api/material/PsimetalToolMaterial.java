@@ -41,6 +41,6 @@ public class PsimetalToolMaterial implements IItemTier {
 
 	@Override
 	public Ingredient getRepairMaterial() {
-		return Ingredient.fromTag(ItemTags.getCollection().getOrCreate(new ResourceLocation("forge", "ingots/psimetal")));
+		return Ingredient.fromTag(ItemTags.getCollection().func_241834_b(new ResourceLocation("forge", "ingots/psimetal")));
 	}
 }

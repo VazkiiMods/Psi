@@ -13,7 +13,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
 import vazkii.psi.client.gui.GuiProgrammer;
@@ -24,13 +24,13 @@ public class GuiButtonPage extends Button {
 	final GuiProgrammer gui;
 
 	public GuiButtonPage(int x, int y, boolean right, GuiProgrammer gui) {
-		super(x, y, 18, 10, ITextComponent.func_241827_a_(""), button -> {});
+		super(x, y, 18, 10, StringTextComponent.EMPTY, button -> {});
 		this.gui = gui;
 		this.right = right;
 	}
 
 	public GuiButtonPage(int x, int y, boolean right, GuiProgrammer gui, Button.IPressable pressable) {
-		super(x, y, 18, 10, ITextComponent.func_241827_a_(""), pressable);
+		super(x, y, 18, 10, StringTextComponent.EMPTY, pressable);
 		this.gui = gui;
 		this.right = right;
 	}

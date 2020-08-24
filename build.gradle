@@ -25,7 +25,7 @@ apply plugin: 'pmd'
 ext.configFile = file('build.properties')
 ext.config = parseConfig(configFile)
 
-def mc_version = "1.16.1"
+def mc_version = "1.16.2"
 version = "${config.version}-${config.build_number}"
 group = "vazkii.${config.mod_id}" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = config.mod_name
@@ -107,13 +107,13 @@ repositories {
 }
 
 dependencies {
-    minecraft group: 'net.minecraftforge', name: 'forge', version: "${mc_version}-32.0.108"
+    minecraft group: 'net.minecraftforge', name: 'forge', version: "${mc_version}-33.0.5"
 
-    compileOnly fg.deobf("vazkii.patchouli:Patchouli:1.16-39:api")
-    runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:1.16-39")
+    compileOnly fg.deobf("vazkii.patchouli:Patchouli:1.16-40:api")
+    runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:1.16-40")
 
-    compileOnly fg.deobf("mezz.jei:jei-1.16.1:7.0.0.2:api")
-    runtimeOnly fg.deobf("mezz.jei:jei-1.16.1:7.0.0.2")
+    compileOnly fg.deobf("mezz.jei:jei-1.16.2:7.1.0.11:api")
+    runtimeOnly fg.deobf("mezz.jei:jei-1.16.2:7.1.0.11")
 
 }
 

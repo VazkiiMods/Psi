@@ -58,7 +58,7 @@ public class PieceTrickSmite extends PieceTrick {
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 		}
 
-		BlockEvent.EntityPlaceEvent placeEvent = new BlockEvent.EntityPlaceEvent(BlockSnapshot.create(context.caster.getEntityWorld(), positionVal.toBlockPos()), context.caster.getEntityWorld().getBlockState(positionVal.toBlockPos().offset(Direction.UP)), context.caster);
+		BlockEvent.EntityPlaceEvent placeEvent = new BlockEvent.EntityPlaceEvent(BlockSnapshot.create(context.caster.getEntityWorld().getRegistryKey(), context.caster.getEntityWorld(), positionVal.toBlockPos()), context.caster.getEntityWorld().getBlockState(positionVal.toBlockPos().offset(Direction.UP)), context.caster);
 		MinecraftForge.EVENT_BUS.post(placeEvent);
 		if (placeEvent.isCanceled()) {
 			return null;

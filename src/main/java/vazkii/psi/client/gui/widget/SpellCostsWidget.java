@@ -31,7 +31,7 @@ public class SpellCostsWidget extends Widget {
 	private final GuiProgrammer parent;
 
 	public SpellCostsWidget(int x, int y, int width, int height, String message, GuiProgrammer programmer) {
-		super(x, y, width, height, ITextComponent.func_241827_a_(message));
+		super(x, y, width, height, ITextComponent.func_244388_a(message));
 		this.parent = programmer;
 	}
 

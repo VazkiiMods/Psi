@@ -19,4 +19,26 @@ jobs:
         path: ~/.gradle/caches
         key: ${{ runner.os }}-gradle-${{ hashFiles('build.gradle') }}
     - name: Build with Gradle
-      run: ./gradlew checkSyntax build --no-daemon
+      run: ./gradlew checkSyntax build --no-daemon --max-workers 1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -18,6 +18,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.extensions.IForgeBlockState;
 import net.minecraftforge.event.world.BlockEvent.BreakEvent;
@@ -101,7 +102,9 @@ public class PieceTrickBreakBlock extends PieceTrick {
 					if (block.removedByPlayer(state, world, pos, player, true, world.getFluidState(pos))) {
 						block.onPlayerDestroy(world, pos, state);
 						block.harvestBlock(world, player, pos, state, tile, tool);
-						block.dropXpOnBlockBreak(world, pos, event.getExpToDrop());
+						if (world instanceof ServerWorld) {
+							block.dropXpOnBlockBreak((ServerWorld) world, pos, event.getExpToDrop());
+						}
 					}
 				} else {
 					world.removeBlock(pos, false);

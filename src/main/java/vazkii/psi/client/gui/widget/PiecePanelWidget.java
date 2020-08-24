@@ -54,7 +54,7 @@ public class PiecePanelWidget extends Widget implements IRenderable, IGuiEventLi
 	public final List<GuiButtonSpellPiece> visibleButtons = new ArrayList<>();
 
 	public PiecePanelWidget(int x, int y, int width, int height, String message, GuiProgrammer programmer) {
-		super(x, y, width, height, ITextComponent.func_241827_a_(message));
+		super(x, y, width, height, ITextComponent.func_244388_a(message));
 		this.parent = programmer;
 	}
 
@@ -141,7 +141,7 @@ public class PiecePanelWidget extends Widget implements IRenderable, IGuiEventLi
 		List<SpellPiece> shownPieces = new ArrayList<>();
 		MinecraftForge.EVENT_BUS.post(event);
 		for (ResourceLocation key : event.getSpellPieceRegistry().keySet()) {
-			Class<? extends SpellPiece> clazz = event.getSpellPieceRegistry().getValue(key).get();
+			Class<? extends SpellPiece> clazz = event.getSpellPieceRegistry().func_241873_b(key).get();
 			ResourceLocation group = PsiAPI.getGroupForPiece(clazz);
 
 			if (!parent.getMinecraft().player.isCreative() && (group == null || !playerData.isPieceGroupUnlocked(group, key))) {

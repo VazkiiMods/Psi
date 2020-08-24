@@ -14,7 +14,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
 import vazkii.psi.api.internal.TooltipHelper;
@@ -25,7 +25,7 @@ public class GuiButtonHelp extends Button {
 	final GuiProgrammer gui;
 
 	public GuiButtonHelp(int x, int y, GuiProgrammer gui) {
-		super(x, y, 12, 12, ITextComponent.func_241827_a_(""), button -> {});
+		super(x, y, 12, 12, StringTextComponent.EMPTY, button -> {});
 		this.gui = gui;
 	}
 

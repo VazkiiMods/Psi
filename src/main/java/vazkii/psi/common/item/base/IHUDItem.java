@@ -8,6 +8,8 @@
  */
 package vazkii.psi.common.item.base;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+
 import net.minecraft.client.MainWindow;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
@@ -16,6 +18,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public interface IHUDItem {
 
 	@OnlyIn(Dist.CLIENT)
-	void drawHUD(MainWindow res, float partTicks, ItemStack stack);
+	void drawHUD(MatrixStack ms, MainWindow res, float partTicks, ItemStack stack);
 
 }

@@ -14,7 +14,6 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
-import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
@@ -74,16 +73,16 @@ public final class HUDHandler {
 			float partialTicks = event.getPartialTicks();
 
 			if (!MinecraftForge.EVENT_BUS.post(new RenderPsiHudEvent(PsiHudElementType.PSI_BAR))) {
-				drawPsiBar(resolution, partialTicks);
+				drawPsiBar(event.getMatrixStack(), resolution, partialTicks);
 			}
 			if (!MinecraftForge.EVENT_BUS.post(new RenderPsiHudEvent(PsiHudElementType.SOCKETABLE_EQUIPPED_NAME))) {
-				renderSocketableEquippedName(resolution, partialTicks);
+				renderSocketableEquippedName(event.getMatrixStack(), resolution, partialTicks);
 			}
 			if (!MinecraftForge.EVENT_BUS.post(new RenderPsiHudEvent(PsiHudElementType.REMAINING_ITEMS))) {
-				renderRemainingItems(resolution, partialTicks);
+				renderRemainingItems(event.getMatrixStack(), resolution, partialTicks);
 			}
 			if (!MinecraftForge.EVENT_BUS.post(new RenderPsiHudEvent(PsiHudElementType.HUD_ITEM))) {
-				renderHUDItem(resolution, partialTicks);
+				renderHUDItem(event.getMatrixStack(), resolution, partialTicks);
 			}
 		}
 	}
@@ -104,9 +103,8 @@ public final class HUDHandler {
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	public static void drawPsiBar(MainWindow res, float pticks) {
+	public static void drawPsiBar(MatrixStack ms, MainWindow res, float pticks) {
 		Minecraft mc = Minecraft.getInstance();
-		MatrixStack ms = new MatrixStack();
 		ItemStack cadStack = PsiAPI.getPlayerCAD(mc.player);
 
 		if (cadStack.isEmpty()) {
@@ -247,7 +245,7 @@ public final class HUDHandler {
 
 		if (storedPsi != -1) {
 			ms.push();
-			RenderSystem.translatef(0F, Math.max(textY + 3, origY + 100), 0F);
+			ms.translate(0F, Math.max(textY + 3, origY + 100), 0F);
 			mc.fontRenderer.drawWithShadow(ms, s2, x - offStr2, 0, 0xFFFFFF);
 			ms.pop();
 		}
@@ -256,8 +254,7 @@ public final class HUDHandler {
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	private static void renderSocketableEquippedName(MainWindow res, float pticks) {
-		MatrixStack ms = new MatrixStack();
+	private static void renderSocketableEquippedName(MatrixStack ms, MainWindow res, float pticks) {
 		Minecraft mc = Minecraft.getInstance();
 		ItemStack stack = mc.player.getHeldItem(Hand.MAIN_HAND);
 		if (!ISocketable.isSocketable(stack)) {
@@ -284,25 +281,20 @@ public final class HUDHandler {
 				y += 14;
 			}
 
-			RenderSystem.enableBlend();
-			RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 			mc.fontRenderer.drawWithShadow(ms, name, x, y, color);
 
 			int w = mc.fontRenderer.getStringWidth(name);
 			ms.push();
 			ms.translate(x + w, y - 6, 0);
 			ms.scale(alpha / 255F, 1F, 1);
-			RenderSystem.color3f(1F, 1F, 1F);
-			mc.getItemRenderer().renderItemIntoGUI(bullet, 0, 0);
+			PsiRenderHelper.transferMsToGl(ms, () -> mc.getItemRenderer().renderItemIntoGUI(bullet, 0, 0));
 			ms.pop();
-			RenderSystem.disableBlend();
 		}
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	private static void renderRemainingItems(MainWindow resolution, float partTicks) {
+	private static void renderRemainingItems(MatrixStack ms, MainWindow resolution, float partTicks) {
 		if (remainingTime > 0 && !remainingDisplayStack.isEmpty()) {
-			MatrixStack ms = new MatrixStack();
 			int pos = maxRemainingTicks - remainingTime;
 			Minecraft mc = Minecraft.getInstance();
 			int remainingLeaveTicks = 20;
@@ -312,23 +304,15 @@ public final class HUDHandler {
 			int start = maxRemainingTicks - remainingLeaveTicks;
 			float alpha = remainingTime + partTicks > start ? 1F : (remainingTime + partTicks) / start;
 
-			RenderSystem.disableAlphaTest();
-			RenderSystem.disableBlend();
-			RenderSystem.disableRescaleNormal();
-			RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-
 			RenderSystem.color4f(1F, 1F, 1F, alpha);
-			RenderSystem.enableLighting();
-			RenderSystem.enableColorMaterial();
 			int xp = x + (int) (16F * (1F - alpha));
+			ms.push();
 			ms.translate(xp, y, 0F);
 			ms.scale(alpha, 1F, 1F);
-			mc.getItemRenderer().renderItemAndEffectIntoGUI(remainingDisplayStack, 0, 0);
+			PsiRenderHelper.transferMsToGl(ms, () -> mc.getItemRenderer().renderItemAndEffectIntoGUI(remainingDisplayStack, 0, 0));
 			ms.scale(1F / alpha, 1F, 1F);
 			ms.translate(-xp, -y, 0F);
-			RenderHelper.disableStandardItemLighting();
 			RenderSystem.color4f(1F, 1F, 1F, 1F);
-			RenderSystem.enableBlend();
 
 			String text = remainingDisplayStack.getDisplayName().copy().formatted(TextFormatting.GREEN).getString();
 			if (remainingCount >= 0) {
@@ -350,22 +334,21 @@ public final class HUDHandler {
 			int color = 0x00FFFFFF | (int) (alpha * 0xFF) << 24;
 			mc.fontRenderer.drawWithShadow(ms, text, x + 20, y + 6, color);
 
-			RenderSystem.disableBlend();
-			RenderSystem.enableAlphaTest();
+			ms.pop();
 		}
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	private static void renderHUDItem(MainWindow resolution, float partTicks) {
+	private static void renderHUDItem(MatrixStack ms, MainWindow resolution, float partTicks) {
 		Minecraft mc = Minecraft.getInstance();
 		ItemStack stack = mc.player.getHeldItemMainhand();
 		if (!stack.isEmpty() && stack.getItem() instanceof IHUDItem) {
-			((IHUDItem) stack.getItem()).drawHUD(resolution, partTicks, stack);
+			((IHUDItem) stack.getItem()).drawHUD(ms, resolution, partTicks, stack);
 		}
 
 		stack = mc.player.getHeldItemOffhand();
 		if (!stack.isEmpty() && stack.getItem() instanceof IHUDItem) {
-			((IHUDItem) stack.getItem()).drawHUD(resolution, partTicks, stack);
+			((IHUDItem) stack.getItem()).drawHUD(ms, resolution, partTicks, stack);
 		}
 	}
 
