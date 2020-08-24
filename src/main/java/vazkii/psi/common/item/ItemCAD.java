@@ -217,8 +217,9 @@ public class ItemCAD extends Item implements ICAD {
 	}
 
 	public static boolean cast(World world, PlayerEntity player, PlayerData data, ItemStack bullet, ItemStack cad, int cd, int particles, float sound, Consumer<SpellContext> predicate) {
-		return cast(world, player, data, bullet, cad, cd, particles, sound, predicate,0);
+		return cast(world, player, data, bullet, cad, cd, particles, sound, predicate, 0);
 	}
+
 	public static boolean cast(World world, PlayerEntity player, PlayerData data, ItemStack bullet, ItemStack cad, int cd, int particles, float sound, Consumer<SpellContext> predicate, int reservoir) {
 		if (!data.overflowed && data.getAvailablePsi() > 0 && !cad.isEmpty() && !bullet.isEmpty() && ISpellAcceptor.hasSpell(bullet) && isTruePlayer(player)) {
 			ISpellAcceptor spellContainer = ISpellAcceptor.acceptor(bullet);
