@@ -10,11 +10,11 @@ package vazkii.psi.common.item;
 
 import net.minecraft.item.ItemStack;
 
+import vazkii.psi.api.exosuit.PsiArmorEvent;
 import vazkii.psi.client.core.handler.ColorHandler;
 import vazkii.psi.common.lib.LibMisc;
 
 public class ItemTriggerExosuitSensor extends ItemExosuitSensor {
-	public static final String EVENT_TRIGGER = LibMisc.MOD_ID + ".event.spell_detonate";
 
 	public ItemTriggerExosuitSensor(Properties properties) {
 		super(properties);
@@ -27,6 +27,6 @@ public class ItemTriggerExosuitSensor extends ItemExosuitSensor {
 
 	@Override
 	public String getEventType(ItemStack stack) {
-		return EVENT_TRIGGER;
+		return PsiArmorEvent.DETONATE;
 	}
 }

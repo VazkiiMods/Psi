@@ -26,6 +26,7 @@ public class PsiArmorEvent extends PlayerEvent {
 	public static final String UNDERWATER = "psi.event.underwater";
 	public static final String ON_FIRE = "psi.event.onFire";
 	public static final String LOW_HP = "psi.event.lowHp";
+	public static final String DETONATE = "psi.event.spell_detonate";
 
 	private static boolean posting = false;
 
