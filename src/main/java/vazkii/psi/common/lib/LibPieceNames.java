@@ -122,7 +122,7 @@ public final class LibPieceNames {
 
 	public static final String CONNECTOR = "connector";
 	public static final String CROSS_CONNECTOR = "cross_connector";
-	public static final String VECTOR_SUPPRESSOR = "vector_suppressor";
+	public static final String ERROR_CATCH = "error_catch";
 	public static final String ERROR_SUPPRESSOR = "error_suppressor";
 
 	public static final String TRICK_DEBUG = "trick_debug";
