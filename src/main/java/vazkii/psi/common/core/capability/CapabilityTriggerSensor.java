@@ -19,7 +19,6 @@ import net.minecraftforge.common.util.LazyOptional;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.exosuit.PsiArmorEvent;
 import vazkii.psi.api.spell.detonator.IDetonationHandler;
-import vazkii.psi.common.item.ItemTriggerExosuitSensor;
 import vazkii.psi.common.lib.LibMisc;
 
 import javax.annotation.Nonnull;
@@ -28,7 +27,6 @@ import javax.annotation.Nullable;
 public class CapabilityTriggerSensor implements IDetonationHandler, ICapabilityProvider {
 
 	public final PlayerEntity player;
-	public static final String EVENT_TRIGGER = LibMisc.MOD_ID + ".event.spell_detonate";
 	public static final String TRIGGER_TICK = LibMisc.MOD_ID + ":LastTriggeredDetonation";
 
 	public CapabilityTriggerSensor(PlayerEntity player) {
@@ -50,7 +48,7 @@ public class CapabilityTriggerSensor implements IDetonationHandler, ICapabilityP
 		if (detonated != worldTime) {
 			playerData.putLong(TRIGGER_TICK, worldTime);
 
-			PsiArmorEvent.post(new PsiArmorEvent(player, ItemTriggerExosuitSensor.EVENT_TRIGGER));
+			PsiArmorEvent.post(new PsiArmorEvent(player, PsiArmorEvent.DETONATE));
 		}
 	}
 

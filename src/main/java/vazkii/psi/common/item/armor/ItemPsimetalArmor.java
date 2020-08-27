@@ -122,7 +122,7 @@ public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiE
 				context.attackingEntity = event.attacker;
 				context.damageTaken = event.damage;
 				context.loopcastIndex = timesCast;
-			});
+			}, (int) (data.calculateDamageDeduction((float) event.damage) * 0.75));
 
 			stack.getOrCreateTag().putInt(TAG_TIMES_CAST, timesCast + 1);
 		}

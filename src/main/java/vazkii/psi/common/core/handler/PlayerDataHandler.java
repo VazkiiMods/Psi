@@ -610,8 +610,12 @@ public class PlayerDataHandler {
 			}
 		}
 
+		public int calculateDamageDeduction(float amount) {
+			return (int) (getTotalPsi() * 0.02 * amount);
+		}
+
 		public void damage(float amount) {
-			int psi = (int) (getTotalPsi() * 0.02 * amount);
+			int psi = calculateDamageDeduction(amount);
 			if (psi > 0 && availablePsi > 0) {
 				psi = Math.min(psi, availablePsi);
 				deductPsi(psi, 20, true, true);

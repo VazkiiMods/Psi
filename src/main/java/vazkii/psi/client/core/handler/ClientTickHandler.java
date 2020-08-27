@@ -16,7 +16,10 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+import vazkii.psi.api.exosuit.PsiArmorEvent;
 import vazkii.psi.common.lib.LibMisc;
+import vazkii.psi.common.network.MessageRegister;
+import vazkii.psi.common.network.message.MessageTriggerJumpSpell;
 
 @OnlyIn(Dist.CLIENT)
 @Mod.EventBusSubscriber(value = Dist.CLIENT, modid = LibMisc.MOD_ID)
@@ -26,6 +29,8 @@ public class ClientTickHandler {
 	public static float partialTicks = 0.0F;
 	public static float delta = 0.0F;
 	public static float total = 0.0F;
+
+	private static boolean lastJumpKeyState = false;
 
 	public ClientTickHandler() {}
 
@@ -47,10 +52,20 @@ public class ClientTickHandler {
 	}
 
 	@SubscribeEvent
-	public static void clientTickEnd(TickEvent.ClientTickEvent event) {
-		if (event.phase == TickEvent.Phase.END) {
+	public static void clientTick(TickEvent.ClientTickEvent event) {
 
-			Minecraft mc = Minecraft.getInstance();
+		Minecraft mc = Minecraft.getInstance();
+
+		if (event.phase == TickEvent.Phase.START) {
+
+			boolean pressed = mc.gameSettings.keyBindJump.isPressed();
+			if (mc.player != null && pressed && (!lastJumpKeyState && !mc.player.isOnGround())) {
+				PsiArmorEvent.post(new PsiArmorEvent(mc.player, PsiArmorEvent.JUMP));
+				MessageRegister.HANDLER.sendToServer(new MessageTriggerJumpSpell());
+			}
+			lastJumpKeyState = pressed;
+		}
+		if (event.phase == TickEvent.Phase.END) {
 
 			HUDHandler.tick();
 
