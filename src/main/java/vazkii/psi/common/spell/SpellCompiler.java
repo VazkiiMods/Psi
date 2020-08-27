@@ -167,7 +167,11 @@ public final class SpellCompiler implements ISpellCompiler {
 				throw new SpellCompilationException(SpellCompilationException.INVALID_PARAM, piece.x, piece.y);
 			}
 
-			compiled.errorHandlers.putIfAbsent(pieceAt, errorHandler);
+			if (((IErrorCatcher) piece).catchParam(param)) {
+				compiled.errorHandlers.putIfAbsent(pieceAt, errorHandler);
+			} else {
+				buildPiece(pieceAt);
+			}
 		}
 	}
 
@@ -206,7 +210,7 @@ public final class SpellCompiler implements ISpellCompiler {
 					if (piece.getPieceType() == EnumPieceType.TRICK) {
 						tricks.add(piece);
 					} else if (piece.getPieceType() == EnumPieceType.MODIFIER) {
-						piece.addToMetadata(compiled.metadata);
+						tricks.add(piece);
 					} else if (piece.getPieceType() == EnumPieceType.ERROR_HANDLER) {
 						errorHandlers.add(piece);
 					}

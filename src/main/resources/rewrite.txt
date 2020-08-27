@@ -444,7 +444,7 @@ constant_wrapper
 
 #Error Suppressors
 error_suppressor
-vector_suppressor
+error_catcher
 
 #Simple Selectors
 caster

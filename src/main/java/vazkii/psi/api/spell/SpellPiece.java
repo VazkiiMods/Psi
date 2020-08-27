@@ -167,6 +167,13 @@ public abstract class SpellPiece {
 	 */
 	@SuppressWarnings("unchecked")
 	public <T> T getParamValue(SpellContext context, SpellParam<T> param) {
+		return (T) getRawParamValue(context, param);
+	}
+
+	/**
+	 * Gets the value of one of this piece's params in the given context.
+	 */
+	public Object getRawParamValue(SpellContext context, SpellParam<?> param) {
 		SpellParam.Side side = paramSides.get(param);
 		if (!side.isEnabled()) {
 			return null;
@@ -178,7 +185,7 @@ public abstract class SpellPiece {
 				return null;
 			}
 
-			return (T) context.evaluatedObjects[piece.x][piece.y];
+			return context.evaluatedObjects[piece.x][piece.y];
 		} catch (SpellCompilationException e) {
 			return null;
 		}

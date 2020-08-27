@@ -57,4 +57,9 @@ public abstract class PieceErrorHandler extends SpellPiece implements IErrorCatc
 	}
 
 	protected abstract String paramName();
+
+	@Override
+	public boolean catchParam(SpellParam<?> param) {
+		return param == piece;
+	}
 }
