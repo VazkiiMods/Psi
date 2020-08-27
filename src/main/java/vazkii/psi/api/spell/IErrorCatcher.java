@@ -46,4 +46,11 @@ public interface IErrorCatcher {
 	@Nonnull
 	Object supplyReplacementValue(SpellPiece errorPiece, SpellContext context, SpellRuntimeException exception);
 
+	/**
+	 * Selects which params are handled error sources and which are executed inputs.
+	 * 
+	 * @return true if param is a handled error source
+	 */
+	boolean catchParam(SpellParam<?> param);
+
 }
