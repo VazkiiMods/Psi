@@ -19,6 +19,7 @@ import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.IArmorMaterial;
+import net.minecraft.item.IDyeableArmorItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.LazyValue;
@@ -50,7 +51,7 @@ import javax.annotation.Nullable;
 
 import java.util.List;
 
-public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiEventArmor {
+public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiEventArmor{
 
 	public final EquipmentSlotType type;
 	private final LazyValue<BipedModel<?>> model;
@@ -134,6 +135,10 @@ public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiE
 		}
 	}
 
+	public int getColor(ItemStack p_200886_1_) {
+		return ICADColorizer.DEFAULT_SPELL_COLOR;
+	}
+
 	public String getEvent(ItemStack stack) {
 		return PsiArmorEvent.NONE;
 	}
@@ -172,17 +177,10 @@ public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiE
 
 	@Override
 	public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlotType slot, String type) {
-		boolean overlay = type != null && type.equals("overlay");
-		return overlay ? LibResources.MODEL_PSIMETAL_EXOSUIT : LibResources.MODEL_PSIMETAL_EXOSUIT_SENSOR;
+		return LibResources.MODEL_PSIMETAL_EXOSUIT;
 	}
 
-	public boolean hasColor(@Nonnull ItemStack stack) {
-		return true;
-	}
 
-	public int getColor(@Nonnull ItemStack stack) {
-		return ICADColorizer.DEFAULT_SPELL_COLOR;
-	}
 
 	@Nullable
 	@Override

@@ -8,6 +8,7 @@
  */
 package vazkii.psi.common.item.armor;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.IDyeableArmorItem;
 import net.minecraft.item.Item;
@@ -16,8 +17,10 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+import vazkii.psi.api.cad.ICADColorizer;
 import vazkii.psi.api.exosuit.IExosuitSensor;
 import vazkii.psi.api.exosuit.ISensorHoldable;
+import vazkii.psi.common.lib.LibResources;
 
 import javax.annotation.Nonnull;
 
@@ -28,6 +31,19 @@ public class ItemPsimetalExosuitHelmet extends ItemPsimetalArmor implements ISen
 
 	public ItemPsimetalExosuitHelmet(EquipmentSlotType slotType, Item.Properties properties) {
 		super(slotType, properties);
+	}
+
+	@Override
+	public boolean hasColor(@Nonnull ItemStack stack) {
+		return true;
+	}
+
+	@Override
+	public void setColor(@Nonnull ItemStack stack, int p_200885_2_) {
+	}
+
+	@Override
+	public void removeColor(@Nonnull ItemStack stack) {
 	}
 
 	@Override
@@ -80,6 +96,12 @@ public class ItemPsimetalExosuitHelmet extends ItemPsimetalArmor implements ISen
 	@Override
 	public ItemStack getContainerItem(@Nonnull ItemStack itemStack) {
 		return getAttachedSensor(itemStack);
+	}
+
+	@Override
+	public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlotType slot, String type) {
+		boolean overlay = type != null && type.equals("overlay");
+		return overlay ? LibResources.MODEL_PSIMETAL_EXOSUIT : LibResources.MODEL_PSIMETAL_EXOSUIT_SENSOR;
 	}
 
 }
