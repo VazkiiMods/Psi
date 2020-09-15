@@ -39,12 +39,10 @@ public class ItemPsimetalExosuitHelmet extends ItemPsimetalArmor implements ISen
 	}
 
 	@Override
-	public void setColor(@Nonnull ItemStack stack, int p_200885_2_) {
-	}
+	public void setColor(@Nonnull ItemStack stack, int p_200885_2_) {}
 
 	@Override
-	public void removeColor(@Nonnull ItemStack stack) {
-	}
+	public void removeColor(@Nonnull ItemStack stack) {}
 
 	@Override
 	public String getEvent(ItemStack stack) {

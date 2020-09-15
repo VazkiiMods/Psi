@@ -51,7 +51,7 @@ import javax.annotation.Nullable;
 
 import java.util.List;
 
-public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiEventArmor{
+public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiEventArmor {
 
 	public final EquipmentSlotType type;
 	private final LazyValue<BipedModel<?>> model;
@@ -179,8 +179,6 @@ public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiE
 	public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlotType slot, String type) {
 		return LibResources.MODEL_PSIMETAL_EXOSUIT;
 	}
-
-
 
 	@Nullable
 	@Override
