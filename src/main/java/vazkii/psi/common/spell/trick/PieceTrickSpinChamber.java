@@ -1,3 +1,11 @@
+/*
+ * This class is distributed as part of the Psi Mod.
+ * Get the Source Code in github:
+ * https://github.com/Vazkii/Psi
+ *
+ * Psi is Open Source and distributed under the
+ * Psi License: https://psi.vazkii.net/license.php
+ */
 package vazkii.psi.common.spell.trick;
 
 import net.minecraft.item.ItemStack;
@@ -15,7 +23,6 @@ import vazkii.psi.api.spell.SpellParam;
 import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.piece.PieceTrick;
-import vazkii.psi.common.core.helpers.SpellHelpers;
 import vazkii.psi.common.item.ItemCAD;
 
 public class PieceTrickSpinChamber extends PieceTrick {
@@ -40,21 +47,23 @@ public class PieceTrickSpinChamber extends PieceTrick {
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		double num = this.getParamValue(context, number).doubleValue();
 
-		if (num == 0)
+		if (num == 0) {
 			return null;
+		}
 
-		if (!context.tool.isEmpty() || context.castFrom == null || context.focalPoint != context.caster)
+		if (!context.tool.isEmpty() || context.castFrom == null || context.focalPoint != context.caster) {
 			throw new SpellRuntimeException(SpellRuntimeException.CAD_CASTING_ONLY);
+		}
 
 		ItemStack inHand = context.caster.getHeldItem(context.castFrom);
 
-		if (inHand.isEmpty() || !(inHand.getItem() instanceof ICAD) || !inHand.getCapability(PsiAPI.SOCKETABLE_CAPABILITY).isPresent())
+		if (inHand.isEmpty() || !(inHand.getItem() instanceof ICAD) || !inHand.getCapability(PsiAPI.SOCKETABLE_CAPABILITY).isPresent()) {
 			throw new SpellRuntimeException(SpellRuntimeException.CAD_CASTING_ONLY);
+		}
 
 		ItemStack stack = PsiAPI.getPlayerCAD(context.caster);
 		ISocketable capability = inHand.getCapability(PsiAPI.SOCKETABLE_CAPABILITY).orElseThrow(NullPointerException::new);
 		ItemCAD cad = (ItemCAD) stack.getItem();
-
 
 		int selectedSlot = capability.getSelectedSlot();
 		int sockets = cad.getStatValue(stack, EnumCADStat.SOCKETS);

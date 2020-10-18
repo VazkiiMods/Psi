@@ -117,9 +117,15 @@ public class DefaultStats {
 		ItemStack assembly = cadItem.getComponentInSlot(cad, EnumCADComponent.ASSEMBLY);
 		if (!assembly.isEmpty() && assembly.getItem() == ModItems.cadAssemblyCreative) {
 			switch (event.getStat()) {
-			case BANDWIDTH: event.setStatValue(9); break;
-			case SOCKETS: event.setStatValue(12); break;
-			default: event.setStatValue(-1); break;
+			case BANDWIDTH:
+				event.setStatValue(9);
+				break;
+			case SOCKETS:
+				event.setStatValue(12);
+				break;
+			default:
+				event.setStatValue(-1);
+				break;
 			}
 		}
 	}

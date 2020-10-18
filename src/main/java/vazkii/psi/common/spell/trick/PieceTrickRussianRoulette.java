@@ -1,3 +1,11 @@
+/*
+ * This class is distributed as part of the Psi Mod.
+ * Get the Source Code in github:
+ * https://github.com/Vazkii/Psi
+ *
+ * Psi is Open Source and distributed under the
+ * Psi License: https://psi.vazkii.net/license.php
+ */
 package vazkii.psi.common.spell.trick;
 
 import net.minecraft.item.ItemStack;
@@ -6,18 +14,15 @@ import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.EnumCADStat;
 import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.cad.ISocketable;
-import vazkii.psi.api.spell.EnumSpellStat;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellCompilationException;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellMetadata;
-import vazkii.psi.api.spell.SpellParam;
 import vazkii.psi.api.spell.SpellRuntimeException;
-import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.piece.PieceTrick;
 import vazkii.psi.common.item.ItemCAD;
 
-public class PieceTrickRussianRoulette  extends PieceTrick {
+public class PieceTrickRussianRoulette extends PieceTrick {
 	public PieceTrickRussianRoulette(Spell spell) {
 		super(spell);
 	}
@@ -30,13 +35,15 @@ public class PieceTrickRussianRoulette  extends PieceTrick {
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 
-		if (!context.tool.isEmpty() || context.castFrom == null || context.focalPoint != context.caster)
+		if (!context.tool.isEmpty() || context.castFrom == null || context.focalPoint != context.caster) {
 			throw new SpellRuntimeException(SpellRuntimeException.CAD_CASTING_ONLY);
+		}
 
 		ItemStack inHand = context.caster.getHeldItem(context.castFrom);
 
-		if (inHand.isEmpty() || !(inHand.getItem() instanceof ICAD) || !inHand.getCapability(PsiAPI.SOCKETABLE_CAPABILITY).isPresent())
+		if (inHand.isEmpty() || !(inHand.getItem() instanceof ICAD) || !inHand.getCapability(PsiAPI.SOCKETABLE_CAPABILITY).isPresent()) {
 			throw new SpellRuntimeException(SpellRuntimeException.CAD_CASTING_ONLY);
+		}
 
 		ItemStack stack = PsiAPI.getPlayerCAD(context.caster);
 		ISocketable capability = inHand.getCapability(PsiAPI.SOCKETABLE_CAPABILITY).orElseThrow(NullPointerException::new);

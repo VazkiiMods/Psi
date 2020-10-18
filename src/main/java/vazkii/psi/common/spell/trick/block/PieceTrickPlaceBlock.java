@@ -122,7 +122,6 @@ public class PieceTrickPlaceBlock extends PieceTrick {
 
 					iblock.tryPlace(new DirectionBlockItemUseContext(newCtx, horizontalDirection));
 
-
 					if (player.abilities.isCreativeMode) {
 						HUDHandler.setRemaining(rem, -1);
 					} else {

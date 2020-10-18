@@ -9,7 +9,6 @@
 package vazkii.psi.common.spell.trick;
 
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 
 import vazkii.psi.api.PsiAPI;
@@ -63,7 +62,7 @@ public class PieceTrickBreakLoop extends PieceTrick {
 			} else {
 				if (!context.tool.isEmpty() && context.tool.getItem() instanceof ItemPsimetalArmor) {
 					ItemPsimetalArmor armor = (ItemPsimetalArmor) context.tool.getItem();
-					if(armor.type == EquipmentSlotType.LEGS && context.tool.getCapability(PsiAPI.SOCKETABLE_CAPABILITY).isPresent()) {
+					if (armor.type == EquipmentSlotType.LEGS && context.tool.getCapability(PsiAPI.SOCKETABLE_CAPABILITY).isPresent()) {
 						ISocketable socketableCap = context.tool.getCapability(PsiAPI.SOCKETABLE_CAPABILITY).orElseThrow(NullPointerException::new);
 						int currentSlot = socketableCap.getSelectedSlot();
 						if (socketableCap.isSocketSlotAvailable(currentSlot + 1)) {
