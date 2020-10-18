@@ -248,13 +248,14 @@ public final class ModSpellPieces {
 	public static PieceContainer trickMoveBlockSequence;
 	public static PieceContainer trickTill;
 	public static PieceContainer trickTillSequence;
-	//public static PieceContainer trickBroadcast;
+	public static PieceContainer trickSpinChamber;
 	public static PieceContainer trickChangeSlot;
 	public static PieceContainer trickSmeltBlockSequence;
 	public static PieceContainer trickCollapseBlockSequence;
 	public static PieceContainer trickDebugSpamless;
 	public static PieceContainer trickNightVision;
 	public static PieceContainer trickParticleTrail;
+	public static PieceContainer trickRussianRoulette;
 
 	public static void init() {
 		selectorCaster = register(PieceSelectorCaster.class, LibPieceNames.SELECTOR_CASTER, LibPieceGroups.TUTORIAL_1);
@@ -424,13 +425,14 @@ public final class ModSpellPieces {
 		trickMoveBlockSequence = register(PieceTrickMoveBlockSequence.class, LibPieceNames.TRICK_MOVE_BLOCK_SEQUENCE, LibPieceGroups.BLOCK_MOVEMENT);
 		trickTill = register(PieceTrickTill.class, LibPieceNames.TRICK_TILL, LibPieceGroups.MISC_TRICKS);
 		trickTillSequence = register(PieceTrickTillSequence.class, LibPieceNames.TRICK_TILL_SEQUENCE, LibPieceGroups.MISC_TRICKS);
-		//trickBroadcast = register(PieceTrickBroadcast.class, LibPieceNames.TRICK_BROADCAST, LibPieceGroups.FLOW_CONTROL);
+		trickSpinChamber = register(PieceTrickSpinChamber.class, LibPieceNames.TRICK_SPIN_CHAMBER, LibPieceGroups.MISC_TRICKS);
 		trickChangeSlot = register(PieceTrickChangeSlot.class, LibPieceNames.TRICK_CHANGE_SLOT, LibPieceGroups.DETECTION_DYNAMICS);
 		trickSmeltBlockSequence = register(PieceTrickSmeltBlockSequence.class, LibPieceNames.TRICK_SMELT_BLOCK_SEQUENCE, LibPieceGroups.SMELTERY);
 		trickCollapseBlockSequence = register(PieceTrickCollapseBlockSequence.class, LibPieceNames.TRICK_COLLAPSE_BLOCK_SEQUENCE, LibPieceGroups.BLOCK_MOVEMENT);
 		trickDebugSpamless = register(PieceTrickDebugSpamless.class, LibPieceNames.TRICK_DEBUG_SPAMLESS, LibPieceGroups.TUTORIAL_1);
 		trickNightVision = register(PieceTrickNightVision.class, LibPieceNames.TRICK_NIGHT_VISION, LibPieceGroups.POSITIVE_EFFECTS);
 		trickParticleTrail = register(PieceTrickParticleTrail.class, LibPieceNames.TRICK_PARTICLE_TRAIL, LibPieceGroups.BLOCK_CONJURATION);
+		trickRussianRoulette = register(PieceTrickRussianRoulette.class, LibPieceNames.TRICK_RUSSIAN_ROULETTE, LibPieceGroups.FLOW_CONTROL);
 	}
 
 	public static PieceContainer register(Class<? extends SpellPiece> clazz, String name, String group) {

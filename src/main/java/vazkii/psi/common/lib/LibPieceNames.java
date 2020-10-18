@@ -176,12 +176,13 @@ public final class LibPieceNames {
 	public static final String TRICK_MOVE_BLOCK_SEQUENCE = "trick_move_block_sequence";
 	public static final String TRICK_TILL = "trick_till";
 	public static final String TRICK_TILL_SEQUENCE = "trick_till_sequence";
-	public static final String TRICK_BROADCAST = "trick_broadcast";
+	public static final String TRICK_SPIN_CHAMBER = "trick_spin_chamber";
 	public static final String TRICK_CHANGE_SLOT = "trick_change_slot";
 	public static final String TRICK_SMELT_BLOCK_SEQUENCE = "trick_smelt_block_sequence";
 	public static final String TRICK_COLLAPSE_BLOCK_SEQUENCE = "trick_collapse_block_sequence";
 	public static final String TRICK_DEBUG_SPAMLESS = "trick_debug_spamless";
 	public static final String TRICK_NIGHT_VISION = "trick_night_vision";
 	public static final String TRICK_PARTICLE_TRAIL = "trick_particle_trail";
+	public static final String TRICK_RUSSIAN_ROULETTE = "trick_russian_roulette";
 
 }
