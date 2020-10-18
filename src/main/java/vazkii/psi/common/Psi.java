@@ -34,7 +34,6 @@ import vazkii.psi.common.core.proxy.ServerProxy;
 import vazkii.psi.common.item.component.DefaultStats;
 import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.network.MessageRegister;
-import vazkii.psi.common.spell.base.ModSpellPieces;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,7 +65,6 @@ public class Psi {
 		CrashReportExtender.registerCrashCallable(new CrashReportHandler());
 
 		DefaultStats.registerStats();
-		ModSpellPieces.init();
 		MessageRegister.init();
 	}
 

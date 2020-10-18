@@ -94,11 +94,15 @@ public final class PsiAPI {
 	 * Registers a Spell Piece.
 	 */
 	public static void registerSpellPiece(ResourceLocation resourceLocation, Class<? extends SpellPiece> clazz) {
-		PsiAPI.spellPieceRegistry.register(RegistryKey.of(SPELL_PIECE_REGISTRY_TYPE_KEY, resourceLocation), clazz, Lifecycle.stable());
+		synchronized (PsiAPI.spellPieceRegistry) {
+			PsiAPI.spellPieceRegistry.register(RegistryKey.of(SPELL_PIECE_REGISTRY_TYPE_KEY, resourceLocation), clazz, Lifecycle.stable());
+		}
 	}
 
 	/**
 	 * Registers a spell piece and its texture.
+	 * On Forge, call this at any time before registry events finish (e.g. during item registration).
+	 * Note that common setup event is <em>too late</em>!
 	 * The spell texture will be set to <code>/assets/(namespace)/textures/spell/(path).png</code>,
 	 * and will be stitched to an atlas for render.<br />
 	 * To use a different path, see {@link ClientPsiAPI#registerPieceTexture}.<br />

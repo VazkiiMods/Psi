@@ -37,6 +37,7 @@ import vazkii.psi.common.item.tool.ItemPsimetalShovel;
 import vazkii.psi.common.item.tool.ItemPsimetalSword;
 import vazkii.psi.common.lib.LibItemNames;
 import vazkii.psi.common.lib.LibMisc;
+import vazkii.psi.common.spell.base.ModSpellPieces;
 
 @Mod.EventBusSubscriber(modid = LibMisc.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public final class ModItems {
@@ -127,6 +128,7 @@ public final class ModItems {
 
 	@SubscribeEvent
 	public static void registerItems(RegistryEvent.Register<Item> evt) {
+		ModSpellPieces.init();
 		CapabilityHandler.register();
 
 		IForgeRegistry<Item> r = evt.getRegistry();

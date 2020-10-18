@@ -44,11 +44,9 @@ minecraft {
         client {
             workingDirectory project.file('run')
 
-            // Recommended logging data for a userdev environment
             properties 'fml.earlyprogresswindow': 'false'
-
-            // Recommended logging level for the console
             property 'forge.logging.console.level', 'debug'
+            property 'mixin.env.disableRefMap', 'true'
 
             mods {
                 psi {
@@ -60,10 +58,8 @@ minecraft {
         server {
             workingDirectory project.file('run')
 
-            // Recommended logging data for a userdev environment
-
-            // Recommended logging level for the console
             property 'forge.logging.console.level', 'debug'
+            property 'mixin.env.disableRefMap', 'true'
             singleInstance(true)
             mods {
                 psi {
@@ -72,9 +68,9 @@ minecraft {
             }
         }
         data {
-            properties 'forge.logging.markers': 'REGISTRIES,REGISTRYDUMP'
             properties 'forge.logging.console.level': 'debug'
             properties 'fml.earlyprogresswindow': 'false'
+            property 'mixin.env.disableRefMap', 'true'
             workingDirectory project.file('run')
             mods {
                 psi {
@@ -109,8 +105,8 @@ repositories {
 dependencies {
     minecraft group: 'net.minecraftforge', name: 'forge', version: "${mc_version}-34.1.0"
 
-    compileOnly fg.deobf("vazkii.patchouli:Patchouli:1.16.2-46:api")
-    runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:1.16.2-46")
+    compileOnly fg.deobf("vazkii.patchouli:Patchouli:1.16.2-47-SNAPSHOT:api")
+    runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:1.16.2-47-SNAPSHOT")
 
     compileOnly fg.deobf("mezz.jei:jei-1.16.2:7.3.2.25:api")
     runtimeOnly fg.deobf("mezz.jei:jei-1.16.2:7.3.2.25")
