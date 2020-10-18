@@ -14,8 +14,8 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static vazkii.psi.api.PsiAPI.MOD_ID;
 
@@ -23,10 +23,19 @@ import static vazkii.psi.api.PsiAPI.MOD_ID;
 public class ClientPsiAPI {
 
 	public static final ResourceLocation PSI_PIECE_TEXTURE_ATLAS = new ResourceLocation(MOD_ID, "spell_pieces");
-	private static final Map<ResourceLocation, RenderMaterial> simpleSpellTextures = new HashMap<>();
+	private static final Map<ResourceLocation, RenderMaterial> simpleSpellTextures = new ConcurrentHashMap<>();
 
 	/**
 	 * Register the texture of a piece
+	 *
+	 * On Forge, call this at any time before registry events finish (e.g. during item registration).
+	 * Note that common setup event is <em>too late</em>!
+	 *
+	 * NB: Why the strange restriction? Because in 1.16.2+ forge, texture stitching, model baking, etc. go on
+	 * <em>concurrently</em> with all setup events (client, common). So by then, it is way too late to tell the game
+	 * to load these textures. Registry events are the final thing that runs serially until loading is done, so
+	 * we have to receive all registrations by then. This makes the setup events, particularly the client one,
+	 * pretty much useless for doing anything that interacts with the vanilla game. Awesome system design right there!
 	 *
 	 * @param pieceId ID of the piece whose texture to register
 	 * @param texture Path to the piece's texture, where <code>domain:foo/bar</code> translates to
