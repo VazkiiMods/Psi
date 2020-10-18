@@ -17,7 +17,7 @@
             "item": "psi:spell_bullet"
           },
           {
-            "tag": "forge:arrows"
+            "tag": "minecraft:arrows"
           }
         ],
         "result": {

@@ -23,7 +23,7 @@
             "tag": "psi:psidust"
           },
           "A": {
-            "tag": "forge:arrows"
+            "tag": "minecraft:arrows"
           }
         },
         "result": {

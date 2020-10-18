@@ -205,7 +205,7 @@ public final class PsiAPI {
 	}
 
 	public static boolean isPieceRegistered(ResourceLocation key) {
-		return spellPieceRegistry.containsKey(key);
+		return spellPieceRegistry.keySet().contains(key);
 	}
 
 	public static Collection<Class<? extends SpellPiece>> getAllRegisteredSpellPieces() {
