@@ -8,9 +8,18 @@
  */
 package vazkii.psi.common.item.component;
 
-import vazkii.psi.api.cad.EnumCADStat;
-import vazkii.psi.common.item.base.ModItems;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 
+import vazkii.psi.api.cad.CADStatEvent;
+import vazkii.psi.api.cad.EnumCADComponent;
+import vazkii.psi.api.cad.EnumCADStat;
+import vazkii.psi.api.cad.ICAD;
+import vazkii.psi.common.item.base.ModItems;
+import vazkii.psi.common.lib.LibMisc;
+
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE, modid = LibMisc.MOD_ID)
 public class DefaultStats {
 
 	public static void registerStats() {
@@ -99,5 +108,19 @@ public class DefaultStats {
 
 		// Ultradense
 		ItemCADComponent.addStatToStack(ModItems.cadBatteryUltradense, EnumCADStat.OVERFLOW, 400);
+	}
+
+	@SubscribeEvent
+	public static void modifyCreativeAssemblyStats(CADStatEvent event) {
+		ItemStack cad = event.getCad();
+		ICAD cadItem = (ICAD) cad.getItem();
+		ItemStack assembly = cadItem.getComponentInSlot(cad, EnumCADComponent.ASSEMBLY);
+		if (!assembly.isEmpty() && assembly.getItem() == ModItems.cadAssemblyCreative) {
+			switch (event.getStat()) {
+			case BANDWIDTH: event.setStatValue(9); break;
+			case SOCKETS: event.setStatValue(12); break;
+			default: event.setStatValue(-1); break;
+			}
+		}
 	}
 }
