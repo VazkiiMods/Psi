@@ -14,13 +14,16 @@ import net.minecraft.util.Direction;
 
 public class DirectionBlockItemUseContext extends BlockItemUseContext {
 
-	public DirectionBlockItemUseContext(ItemUseContext itemUseContext) {
+	private Direction horizontalFacing;
+
+	public DirectionBlockItemUseContext(ItemUseContext itemUseContext, Direction horizontalFacing) {
 		super(itemUseContext);
+		this.horizontalFacing = horizontalFacing;
 	}
 
 	@Override
 	public Direction getPlacementHorizontalFacing() {
-		return rayTraceResult.getFace();
+		return horizontalFacing.getAxis() == Direction.Axis.Y ? Direction.NORTH : horizontalFacing;
 	}
 
 	@Override
@@ -30,6 +33,20 @@ public class DirectionBlockItemUseContext extends BlockItemUseContext {
 
 	@Override
 	public Direction[] getNearestLookingDirections() {
-		return new Direction[] { rayTraceResult.getFace() };
+		switch(this.rayTraceResult.getFace()) {
+		case DOWN:
+		default:
+			return new Direction[]{Direction.DOWN, Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST, Direction.UP};
+		case UP:
+			return new Direction[]{Direction.DOWN, Direction.UP, Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST};
+		case NORTH:
+			return new Direction[]{Direction.DOWN, Direction.NORTH, Direction.EAST, Direction.WEST, Direction.UP, Direction.SOUTH};
+		case SOUTH:
+			return new Direction[]{Direction.DOWN, Direction.SOUTH, Direction.EAST, Direction.WEST, Direction.UP, Direction.NORTH};
+		case WEST:
+			return new Direction[]{Direction.DOWN, Direction.WEST, Direction.SOUTH, Direction.UP, Direction.NORTH, Direction.EAST};
+		case EAST:
+			return new Direction[]{Direction.DOWN, Direction.EAST, Direction.SOUTH, Direction.UP, Direction.NORTH, Direction.WEST};
+		}
 	}
 }

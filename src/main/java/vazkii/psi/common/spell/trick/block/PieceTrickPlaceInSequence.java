@@ -64,9 +64,11 @@ public class PieceTrickPlaceInSequence extends PieceTrick {
 		int maxBlocksInt = maxBlocksVal.intValue();
 		Vector3 directionVal = this.getParamValue(context, direction);
 
-		Direction direction = Direction.UP;
+		Direction direction = Direction.NORTH;
+		Direction horizontalFacing = Direction.NORTH;
 		if (directionVal != null) {
 			direction = Direction.getFacingFromVector(directionVal.x, directionVal.y, directionVal.z);
+			horizontalFacing = Direction.getFacingFromVector(directionVal.x, 0.0, directionVal.z);
 		}
 
 		if (positionVal == null) {
@@ -79,7 +81,7 @@ public class PieceTrickPlaceInSequence extends PieceTrick {
 				throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 			}
 
-			PieceTrickPlaceBlock.placeBlock(context.caster, context.caster.getEntityWorld(), blockPos, context.getTargetSlot(), false, direction);
+			PieceTrickPlaceBlock.placeBlock(context.caster, context.caster.getEntityWorld(), blockPos, context.getTargetSlot(), false, direction, horizontalFacing);
 		}
 
 		return null;

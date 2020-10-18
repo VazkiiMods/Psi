@@ -67,9 +67,11 @@ public class PieceTrickPlaceBlock extends PieceTrick {
 		Vector3 positionVal = this.getParamValue(context, position);
 		Vector3 directionVal = this.getParamValue(context, direction);
 
-		Direction direction = Direction.UP;
+		Direction facing = Direction.NORTH;
+		Direction horizontalFacing = Direction.NORTH;
 		if (directionVal != null) {
-			direction = Direction.getFacingFromVector(directionVal.x, directionVal.y, directionVal.z);
+			facing = Direction.getFacingFromVector(directionVal.x, directionVal.y, directionVal.z);
+			horizontalFacing = Direction.getFacingFromVector(directionVal.x, 0.0, directionVal.z);
 		}
 
 		if (positionVal == null) {
@@ -80,16 +82,16 @@ public class PieceTrickPlaceBlock extends PieceTrick {
 		}
 
 		BlockPos pos = positionVal.toBlockPos();
-		placeBlock(context.caster, context.caster.getEntityWorld(), pos, context.getTargetSlot(), false, direction);
+		placeBlock(context.caster, context.caster.getEntityWorld(), pos, context.getTargetSlot(), false, facing, horizontalFacing);
 
 		return null;
 	}
 
-	public static void placeBlock(PlayerEntity player, World world, BlockPos pos, int slot, boolean particles, Direction direction) {
-		placeBlock(player, world, pos, slot, particles, false, direction);
+	public static void placeBlock(PlayerEntity player, World world, BlockPos pos, int slot, boolean particles, Direction direction, Direction horizontalDirection) {
+		placeBlock(player, world, pos, slot, particles, false, direction, horizontalDirection);
 	}
 
-	public static void placeBlock(PlayerEntity player, World world, BlockPos pos, int slot, boolean particles, boolean conjure, Direction direction) {
+	public static void placeBlock(PlayerEntity player, World world, BlockPos pos, int slot, boolean particles, boolean conjure, Direction direction, Direction horizontalDirection) {
 		if (!world.isBlockLoaded(pos) || !world.isBlockModifiable(player, pos)) {
 			return;
 		}
@@ -118,7 +120,8 @@ public class PieceTrickPlaceBlock extends PieceTrick {
 					newCtx = new ItemUseContext(ctx.getPlayer(), ctx.getHand(), hit);
 					player.setHeldItem(newCtx.getHand(), save);
 
-					iblock.tryPlace(new DirectionBlockItemUseContext(newCtx));
+					iblock.tryPlace(new DirectionBlockItemUseContext(newCtx, horizontalDirection));
+
 
 					if (player.abilities.isCreativeMode) {
 						HUDHandler.setRemaining(rem, -1);

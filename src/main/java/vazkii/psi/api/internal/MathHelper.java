@@ -36,6 +36,9 @@ public final class MathHelper {
 	 */
 	public static LinkedHashSet<BlockPos> getBlocksAlongRay(Vector3d origin, Vector3d end, int maxBlocks) {
 		LinkedHashSet<BlockPos> positions = new LinkedHashSet<>();
+		if (maxBlocks == 0) {
+			return positions;
+		}
 		if (origin.equals(end)) {
 			positions.add(new BlockPos(origin.x, origin.y, origin.z));
 		} else {
