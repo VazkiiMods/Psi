@@ -520,7 +520,7 @@ public class PlayerDataHandler {
 					isReverting = false;
 				}
 			} else {
-				if (eidosChangelog.size() >= 600) {
+				if (eidosChangelog.size() > 600) {
 					eidosChangelog.remove(0);
 				}
 				eidosChangelog.push(Vector3.fromEntity(player));
