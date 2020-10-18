@@ -37,6 +37,7 @@ import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fml.ModList;
+import net.minecraftforge.fml.client.gui.GuiUtils;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -49,7 +50,6 @@ import vazkii.psi.api.spell.SpellCompilationException;
 import vazkii.psi.api.spell.SpellGrid;
 import vazkii.psi.api.spell.SpellParam;
 import vazkii.psi.api.spell.SpellPiece;
-import vazkii.psi.client.core.PsiGuiUtils;
 import vazkii.psi.client.core.helper.SharingHelper;
 import vazkii.psi.client.gui.button.GuiButtonHelp;
 import vazkii.psi.client.gui.button.GuiButtonIO;
@@ -427,7 +427,7 @@ public class GuiProgrammer extends Screen {
 		super.render(ms, mouseX, mouseY, partialTicks);
 
 		if (!takingScreenshot && tooltip != null && !tooltip.isEmpty() && pieceAtCursor == null) {
-			PsiGuiUtils.drawHoveringText(ms, tooltip, mouseX, mouseY, width, height, -1, this.textRenderer);
+			GuiUtils.drawHoveringText(ms, tooltip, mouseX, mouseY, width, height, -1, this.textRenderer);
 
 		}
 		if (!takingScreenshot && pieceAtCursor != null) {

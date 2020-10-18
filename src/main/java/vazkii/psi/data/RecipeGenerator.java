@@ -446,14 +446,14 @@ public class RecipeGenerator extends RecipeProvider implements IConditionBuilder
 				hasPsidust, "has_psidust", ShapedRecipeBuilder.shapedRecipe(ModItems.projectileSpellBullet)
 						.key('I', Tags.Items.INGOTS_IRON)
 						.key('D', ModTags.PSIDUST)
-						.key('A', Tags.Items.ARROWS)
+						.key('A', ItemTags.ARROWS)
 						.patternLine("AID")
 		);
 		buildMagicalWrapper(Psi.location("spell_bullet_projectile_upgrade"), consumer,
 				hasItem(ModItems.psidust), "has_psidust",
 				ShapelessRecipeBuilder.shapelessRecipe(ModItems.projectileSpellBullet)
 						.addIngredient(ModItems.spellBullet)
-						.addIngredient(Tags.Items.ARROWS)
+						.addIngredient(ItemTags.ARROWS)
 		);
 
 		buildMagicalWrapper(Psi.location("spell_bullet_loopcast"), consumer,

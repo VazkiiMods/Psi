@@ -47,7 +47,7 @@ public class GuiCADAssembler extends ContainerScreen<ContainerCADAssembler> {
 	public void render(MatrixStack ms, int x, int y, float pTicks) {
 		this.renderBackground(ms);
 		super.render(ms, x, y, pTicks);
-		//this.renderHoveredToolTip(ms, x, y);
+		this.drawMouseoverTooltip(ms, x, y);
 		this.renderTextHoverEffect(ms, Style.EMPTY, x, y);
 	}
 

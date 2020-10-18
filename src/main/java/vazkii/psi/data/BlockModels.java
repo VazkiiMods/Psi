@@ -10,7 +10,7 @@ package vazkii.psi.data;
 
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
-import net.minecraftforge.client.model.generators.ExistingFileHelper;
+import net.minecraftforge.common.data.ExistingFileHelper;
 
 import vazkii.psi.common.block.base.ModBlocks;
 import vazkii.psi.common.lib.LibMisc;

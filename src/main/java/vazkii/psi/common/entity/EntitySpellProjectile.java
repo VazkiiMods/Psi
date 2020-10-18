@@ -21,6 +21,7 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.EntityRayTraceResult;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
@@ -70,9 +71,13 @@ public class EntitySpellProjectile extends ThrowableEntity {
 		super(type, thrower, world);
 
 		setShooter(thrower);
-		shoot(thrower.rotationPitch, thrower.rotationYaw, 0.0F, 1.5F, 1.0F);
-		double speed = 1.5;
-		setMotion(getMotion().mul(speed, speed, speed));
+		this.rotationPitch = thrower.rotationPitch;
+		this.rotationYaw = thrower.rotationYaw;
+		float f = 1.5F;
+		double mx = MathHelper.sin(rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(rotationPitch / 180.0F * (float) Math.PI) * f / 2D;
+		double mz = -(MathHelper.cos(rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(rotationPitch / 180.0F * (float) Math.PI) * f) / 2D;
+		double my = MathHelper.sin(rotationPitch / 180.0F * (float) Math.PI) * f / 2D;
+		setMotion(mx, my, mz);
 	}
 
 	public EntitySpellProjectile(World world, LivingEntity thrower) {
