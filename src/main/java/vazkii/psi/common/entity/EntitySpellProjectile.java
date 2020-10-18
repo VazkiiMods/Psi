@@ -71,8 +71,7 @@ public class EntitySpellProjectile extends ThrowableEntity {
 		super(type, thrower, world);
 
 		setShooter(thrower);
-		this.rotationPitch = thrower.rotationPitch;
-		this.rotationYaw = thrower.rotationYaw;
+		setRotation(thrower.rotationYaw + 180, -thrower.rotationPitch);
 		float f = 1.5F;
 		double mx = MathHelper.sin(rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(rotationPitch / 180.0F * (float) Math.PI) * f / 2D;
 		double mz = -(MathHelper.cos(rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(rotationPitch / 180.0F * (float) Math.PI) * f) / 2D;
