@@ -8,8 +8,12 @@
  */
 package vazkii.psi.common.spell.trick;
 
+import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 
+import vazkii.psi.api.PsiAPI;
+import vazkii.psi.api.cad.ISocketable;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellCompilationException;
 import vazkii.psi.api.spell.SpellContext;
@@ -20,6 +24,7 @@ import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.piece.PieceTrick;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.entity.EntitySpellCircle;
+import vazkii.psi.common.item.armor.ItemPsimetalArmor;
 
 public class PieceTrickBreakLoop extends PieceTrick {
 
@@ -56,6 +61,18 @@ public class PieceTrickBreakLoop extends PieceTrick {
 					context.focalPoint.remove();
 				}
 			} else {
+				if (!context.tool.isEmpty() && context.tool.getItem() instanceof ItemPsimetalArmor) {
+					ItemPsimetalArmor armor = (ItemPsimetalArmor) context.tool.getItem();
+					if(armor.type == EquipmentSlotType.LEGS && context.tool.getCapability(PsiAPI.SOCKETABLE_CAPABILITY).isPresent()) {
+						ISocketable socketableCap = context.tool.getCapability(PsiAPI.SOCKETABLE_CAPABILITY).orElseThrow(NullPointerException::new);
+						int currentSlot = socketableCap.getSelectedSlot();
+						if (socketableCap.isSocketSlotAvailable(currentSlot + 1)) {
+							socketableCap.setSelectedSlot(currentSlot + 1);
+						} else if (socketableCap.isSocketSlotAvailable(currentSlot - 1)) {
+							socketableCap.setSelectedSlot(currentSlot - 1);
+						}
+					}
+				}
 				PlayerDataHandler.PlayerData data = PlayerDataHandler.get(context.caster);
 				data.stopLoopcast();
 			}
