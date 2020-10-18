@@ -52,7 +52,6 @@ public class GuiButtonSpellPiece extends Button {
 				drawTexture(ms, x, y, 16, gui.ySize, 16, 16);
 			}
 
-
 		}
 	}
 
