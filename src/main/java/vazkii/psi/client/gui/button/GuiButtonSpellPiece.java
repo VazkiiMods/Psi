@@ -45,13 +45,13 @@ public class GuiButtonSpellPiece extends Button {
 			ms.translate(x, y, 0);
 			piece.draw(ms, buffers, 0xF000F0);
 			buffers.draw();
-
+			ms.pop();
 			Minecraft.getInstance().getTextureManager().bindTexture(GuiProgrammer.texture);
 			if (hover) {
 				piece.getTooltip(gui.tooltip);
 				drawTexture(ms, x, y, 16, gui.ySize, 16, 16);
 			}
-			ms.pop();
+
 
 		}
 	}
