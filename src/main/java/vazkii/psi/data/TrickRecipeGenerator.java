@@ -19,6 +19,7 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.DimensionType;
+import net.minecraft.world.World;
 import net.minecraftforge.common.Tags;
 
 import vazkii.patchouli.api.PatchouliAPI;
@@ -63,13 +64,13 @@ public class TrickRecipeGenerator extends RecipeProvider {
 				.input(ItemTags.COALS)
 				.trick(Psi.location(LibPieceNames.TRICK_EBONY_IVORY))
 				.cad(ModItems.cadAssemblyPsimetal);
-		dimension(builder, consumer, ModItems.ebonySubstance.getRegistryName(), DimensionType.THE_END);
+		dimension(builder, consumer, ModItems.ebonySubstance.getRegistryName(), World.THE_END);
 
 		builder = TrickRecipeBuilder.of(ModItems.ivorySubstance)
 				.input(Tags.Items.GEMS_QUARTZ)
 				.trick(Psi.location(LibPieceNames.TRICK_EBONY_IVORY))
 				.cad(ModItems.cadAssemblyPsimetal);
-		dimension(builder, consumer, ModItems.ivorySubstance.getRegistryName(), DimensionType.THE_END);
+		dimension(builder, consumer, ModItems.ivorySubstance.getRegistryName(), World.THE_END);
 	}
 
 	@Nonnull
@@ -79,22 +80,22 @@ public class TrickRecipeGenerator extends RecipeProvider {
 	}
 
 	public static void dimension(TrickRecipeBuilder builder, Consumer<IFinishedRecipe> parent,
-			ResourceLocation id, RegistryKey<DimensionType> type) {
-		parent.accept(new DimensionResult(id, builder, type));
+			ResourceLocation id, RegistryKey<World> dimensionKey) {
+		parent.accept(new DimensionResult(id, builder, dimensionKey));
 	}
 
 	public static class DimensionResult extends TrickRecipeBuilder.Result {
-		private final ResourceLocation dimensionId;
+		private final RegistryKey<World> dimensionId;
 
-		protected DimensionResult(ResourceLocation id, TrickRecipeBuilder builder, RegistryKey<DimensionType> type) {
+		protected DimensionResult(ResourceLocation id, TrickRecipeBuilder builder, RegistryKey<World> type) {
 			super(id, builder);
-			this.dimensionId = type.getRegistryName();
+			this.dimensionId = type;
 		}
 
 		@Override
 		public void serialize(@Nonnull JsonObject json) {
 			super.serialize(json);
-			json.addProperty("dimension", dimensionId.toString());
+			json.addProperty("dimension", dimensionId.getLocation().toString());
 		}
 
 		@Nonnull
