@@ -17,6 +17,7 @@ import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.util.math.vector.Matrix4f;
 
 /**
  * Like JEI's DrawableSprite, but works for any {@link TextureAtlasSprite}.
@@ -43,17 +44,16 @@ public class DrawableTAS implements IDrawableStatic {
 		float maxU = sprite.getMaxU() - uSize * ((float) maskRight / (float) textureWidth);
 		float maxV = sprite.getMaxV() - vSize * ((float) maskBottom / (float) textureHeight);
 
-		ms.push();
+		Matrix4f matrix = ms.getLast().getMatrix();
 		RenderSystem.bindTexture(sprite.getAtlasTexture().getGlTextureId());
 		Tessellator tessellator = Tessellator.getInstance();
 		BufferBuilder buf = tessellator.getBuffer();
 		buf.begin(7, DefaultVertexFormats.POSITION_TEX);
-		buf.pos(x, y + height, 0.0D).tex(minU, maxV).endVertex();
-		buf.pos(x + width, y + height, 0.0D).tex(maxU, maxV).endVertex();
-		buf.pos(x + width, y, 0.0D).tex(maxU, minV).endVertex();
-		buf.pos(x, y, 0.0D).tex(minU, minV).endVertex();
+		buf.pos(matrix, x, y + height, 0.0f).tex(minU, maxV).endVertex();
+		buf.pos(matrix, x + width, y + height, 0.0f).tex(maxU, maxV).endVertex();
+		buf.pos(matrix, x + width, y, 0.0f).tex(maxU, minV).endVertex();
+		buf.pos(matrix, x, y, 0.0f).tex(minU, minV).endVertex();
 		tessellator.draw();
-		ms.pop();
 	}
 
 	@Override
