@@ -1,37 +1,22 @@
 {
-  "type": "forge:conditional",
-  "recipes": [
-    {
-      "conditions": [
-        {
-          "value": {
-            "type": "psi:magipsi_enabled"
-          },
-          "type": "forge:not"
-        }
-      ],
-      "recipe": {
-        "type": "minecraft:crafting_shaped",
-        "pattern": [
-          " I ",
-          "IMR",
-          " R "
-        ],
-        "key": {
-          "M": {
-            "tag": "forge:dusts/glowstone"
-          },
-          "R": {
-            "tag": "forge:ingots/iron"
-          },
-          "I": {
-            "tag": "forge:ingots/psimetal"
-          }
-        },
-        "result": {
-          "item": "psi:exosuit_sensor_light"
-        }
-      }
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " I ",
+    "IMR",
+    " R "
+  ],
+  "key": {
+    "M": {
+      "tag": "forge:dusts/glowstone"
+    },
+    "R": {
+      "tag": "forge:ingots/iron"
+    },
+    "I": {
+      "tag": "forge:ingots/psimetal"
     }
-  ]
+  },
+  "result": {
+    "item": "psi:exosuit_sensor_light"
+  }
 }

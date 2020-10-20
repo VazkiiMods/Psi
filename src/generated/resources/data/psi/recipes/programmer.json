@@ -1,34 +1,19 @@
 {
-  "type": "forge:conditional",
-  "recipes": [
-    {
-      "conditions": [
-        {
-          "value": {
-            "type": "psi:magipsi_enabled"
-          },
-          "type": "forge:not"
-        }
-      ],
-      "recipe": {
-        "type": "minecraft:crafting_shaped",
-        "pattern": [
-          "IDI",
-          "I I",
-          " I "
-        ],
-        "key": {
-          "I": {
-            "tag": "forge:ingots/iron"
-          },
-          "D": {
-            "tag": "psi:psidust"
-          }
-        },
-        "result": {
-          "item": "psi:programmer"
-        }
-      }
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "IDI",
+    "I I",
+    " I "
+  ],
+  "key": {
+    "I": {
+      "tag": "forge:ingots/iron"
+    },
+    "D": {
+      "tag": "psi:psidust"
     }
-  ]
+  },
+  "result": {
+    "item": "psi:programmer"
+  }
 }

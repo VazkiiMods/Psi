@@ -1,41 +1,26 @@
 {
-  "type": "forge:conditional",
-  "recipes": [
-    {
-      "conditions": [
-        {
-          "value": {
-            "type": "psi:magipsi_enabled"
-          },
-          "type": "forge:not"
-        }
-      ],
-      "recipe": {
-        "type": "minecraft:crafting_shaped",
-        "group": "psi:colorizer",
-        "pattern": [
-          " D ",
-          "GCG",
-          " I "
-        ],
-        "key": {
-          "D": {
-            "tag": "psi:psidust"
-          },
-          "I": {
-            "tag": "forge:ingots/iron"
-          },
-          "G": {
-            "tag": "forge:glass"
-          },
-          "C": {
-            "tag": "forge:dyes/orange"
-          }
-        },
-        "result": {
-          "item": "psi:cad_colorizer_orange"
-        }
-      }
+  "type": "minecraft:crafting_shaped",
+  "group": "psi:colorizer",
+  "pattern": [
+    " D ",
+    "GCG",
+    " I "
+  ],
+  "key": {
+    "D": {
+      "tag": "psi:psidust"
+    },
+    "I": {
+      "tag": "forge:ingots/iron"
+    },
+    "G": {
+      "tag": "forge:glass"
+    },
+    "C": {
+      "tag": "forge:dyes/orange"
     }
-  ]
+  },
+  "result": {
+    "item": "psi:cad_colorizer_orange"
+  }
 }

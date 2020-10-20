@@ -18,7 +18,6 @@ import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 import net.minecraftforge.common.Tags;
 

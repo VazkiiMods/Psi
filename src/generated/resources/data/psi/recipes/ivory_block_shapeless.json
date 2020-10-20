@@ -1,50 +1,35 @@
 {
-  "type": "forge:conditional",
-  "recipes": [
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
     {
-      "conditions": [
-        {
-          "value": {
-            "type": "psi:magipsi_enabled"
-          },
-          "type": "forge:not"
-        }
-      ],
-      "recipe": {
-        "type": "minecraft:crafting_shapeless",
-        "ingredients": [
-          {
-            "item": "psi:ivory_psimetal"
-          },
-          {
-            "item": "psi:ivory_psimetal"
-          },
-          {
-            "item": "psi:ivory_psimetal"
-          },
-          {
-            "item": "psi:ivory_psimetal"
-          },
-          {
-            "item": "psi:ivory_psimetal"
-          },
-          {
-            "item": "psi:ivory_psimetal"
-          },
-          {
-            "item": "psi:ivory_psimetal"
-          },
-          {
-            "item": "psi:ivory_psimetal"
-          },
-          {
-            "item": "psi:ivory_psimetal"
-          }
-        ],
-        "result": {
-          "item": "psi:ivory_psimetal_block"
-        }
-      }
+      "item": "psi:ivory_psimetal"
+    },
+    {
+      "item": "psi:ivory_psimetal"
+    },
+    {
+      "item": "psi:ivory_psimetal"
+    },
+    {
+      "item": "psi:ivory_psimetal"
+    },
+    {
+      "item": "psi:ivory_psimetal"
+    },
+    {
+      "item": "psi:ivory_psimetal"
+    },
+    {
+      "item": "psi:ivory_psimetal"
+    },
+    {
+      "item": "psi:ivory_psimetal"
+    },
+    {
+      "item": "psi:ivory_psimetal"
     }
-  ]
+  ],
+  "result": {
+    "item": "psi:ivory_psimetal_block"
+  }
 }

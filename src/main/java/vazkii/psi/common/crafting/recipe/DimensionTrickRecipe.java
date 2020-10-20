@@ -9,6 +9,7 @@
 package vazkii.psi.common.crafting.recipe;
 
 import com.google.gson.JsonObject;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.Ingredient;
@@ -20,6 +21,7 @@ import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import net.minecraftforge.items.wrapper.RecipeWrapper;
 import net.minecraftforge.registries.ForgeRegistryEntry;
+
 import vazkii.psi.api.spell.piece.PieceCraftingTrick;
 
 import javax.annotation.Nullable;
