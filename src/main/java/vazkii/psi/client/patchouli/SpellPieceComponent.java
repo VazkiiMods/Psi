@@ -33,18 +33,18 @@ public class SpellPieceComponent implements ICustomComponent {
 	public void build(int componentX, int componentY, int pageNum) {
 		this.x = componentX;
 		this.y = componentY;
-		this.piece = PsiAPI.getSpellPieceRegistry().func_241873_b(new ResourceLocation(name.asString()))
+		this.piece = PsiAPI.getSpellPieceRegistry().getOptional(new ResourceLocation(name.asString()))
 				.map(clazz -> SpellPiece.create(clazz, new Spell()))
 				.orElseThrow(() -> new IllegalArgumentException("Invalid spell piece name: " + name));
 	}
 
 	@Override
 	public void render(MatrixStack ms, IComponentRenderContext context, float pticks, int mouseX, int mouseY) {
-		IRenderTypeBuffer.Impl buffer = IRenderTypeBuffer.immediate(Tessellator.getInstance().getBuffer());
+		IRenderTypeBuffer.Impl buffer = IRenderTypeBuffer.getImpl(Tessellator.getInstance().getBuffer());
 		ms.push();
 		ms.translate(x, y, 0);
 		piece.draw(ms, buffer, 0xF000F0);
-		buffer.draw();
+		buffer.finish();
 
 		if (context.isAreaHovered(mouseX, mouseY, x - 1, y - 1, 16, 16)) {
 			PatchouliUtils.setPieceTooltip(context, piece);

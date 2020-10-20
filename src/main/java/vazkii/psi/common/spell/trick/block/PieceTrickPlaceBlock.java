@@ -97,7 +97,7 @@ public class PieceTrickPlaceBlock extends PieceTrick {
 		}
 
 		BlockState state = world.getBlockState(pos);
-		BlockEvent.EntityPlaceEvent placeEvent = new BlockEvent.EntityPlaceEvent(BlockSnapshot.create(world.getRegistryKey(), world, pos), world.getBlockState(pos.offset(Direction.UP)), player);
+		BlockEvent.EntityPlaceEvent placeEvent = new BlockEvent.EntityPlaceEvent(BlockSnapshot.create(world.getDimensionKey(), world, pos), world.getBlockState(pos.offset(Direction.UP)), player);
 		MinecraftForge.EVENT_BUS.post(placeEvent);
 		if (state.isAir(world, pos) || state.getMaterial().isReplaceable() && !placeEvent.isCanceled()) {
 

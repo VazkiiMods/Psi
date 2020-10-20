@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "psi:cad_assembly_gold"
+    ]
+  },
+  "criteria": {
+    "has_gold": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "forge:ingots/gold"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "psi:cad_assembly_gold"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_gold",
+      "has_the_recipe"
+    ]
+  ]
+}

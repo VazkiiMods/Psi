@@ -1,34 +1,19 @@
 {
-  "type": "forge:conditional",
-  "recipes": [
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
     {
-      "conditions": [
-        {
-          "value": {
-            "type": "psi:magipsi_enabled"
-          },
-          "type": "forge:not"
-        }
-      ],
-      "recipe": {
-        "type": "minecraft:crafting_shapeless",
-        "ingredients": [
-          {
-            "item": "psi:spell_bullet"
-          },
-          [
-            {
-              "tag": "forge:slimeballs"
-            },
-            {
-              "item": "minecraft:snowball"
-            }
-          ]
-        ],
-        "result": {
-          "item": "psi:spell_bullet_circle"
-        }
+      "item": "psi:spell_bullet"
+    },
+    [
+      {
+        "tag": "forge:slimeballs"
+      },
+      {
+        "item": "minecraft:snowball"
       }
-    }
-  ]
+    ]
+  ],
+  "result": {
+    "item": "psi:spell_bullet_circle"
+  }
 }

@@ -52,7 +52,7 @@ public class ModTags {
 		public static final ITag.INamedTag<Block> BLOCK_IVORY_PSIMETAL = fromTag(ModTags.BLOCK_IVORY_PSIMETAL);
 
 		private static ITag.INamedTag<Block> fromTag(ITag.INamedTag<?> tag) {
-			return BlockTags.makeWrapperTag(tag.getId().toString());
+			return BlockTags.makeWrapperTag(tag.getName().toString());
 		}
 	}
 }

@@ -27,7 +27,7 @@ public class PieceSelectorNearbyCharges extends PieceSelectorNearby {
 
 	@Override
 	public Predicate<Entity> getTargetPredicate(SpellContext context) {
-		return (Entity e) -> e instanceof EntitySpellCharge && (Objects.requireNonNull(((EntitySpellCharge) e).getOwner()).getName().equals(context.caster.getName()));
+		return (Entity e) -> e instanceof EntitySpellCharge && (Objects.requireNonNull(((EntitySpellCharge) e).func_234616_v_()).getName().equals(context.caster.getName()));
 	}
 
 	@Override

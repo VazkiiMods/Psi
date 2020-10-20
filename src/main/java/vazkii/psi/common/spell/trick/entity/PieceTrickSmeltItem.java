@@ -60,7 +60,7 @@ public class PieceTrickSmeltItem extends PieceTrick {
 					eitem.remove();
 				}
 
-				ItemEntity item = new ItemEntity(context.caster.getEntityWorld(), eitem.getX(), eitem.getY(), eitem.getZ(), result.copy());
+				ItemEntity item = new ItemEntity(context.caster.getEntityWorld(), eitem.getPosX(), eitem.getPosY(), eitem.getPosZ(), result.copy());
 				context.caster.getEntityWorld().addEntity(item);
 			}
 		} else {

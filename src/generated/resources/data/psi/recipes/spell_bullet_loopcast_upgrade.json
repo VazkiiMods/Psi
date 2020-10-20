@@ -1,29 +1,14 @@
 {
-  "type": "forge:conditional",
-  "recipes": [
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
     {
-      "conditions": [
-        {
-          "value": {
-            "type": "psi:magipsi_enabled"
-          },
-          "type": "forge:not"
-        }
-      ],
-      "recipe": {
-        "type": "minecraft:crafting_shapeless",
-        "ingredients": [
-          {
-            "item": "psi:spell_bullet"
-          },
-          {
-            "tag": "forge:string"
-          }
-        ],
-        "result": {
-          "item": "psi:spell_bullet_loop"
-        }
-      }
+      "item": "psi:spell_bullet"
+    },
+    {
+      "tag": "forge:string"
     }
-  ]
+  ],
+  "result": {
+    "item": "psi:spell_bullet_loop"
+  }
 }

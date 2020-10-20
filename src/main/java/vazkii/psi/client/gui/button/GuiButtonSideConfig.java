@@ -88,10 +88,10 @@ public class GuiButtonSideConfig extends Button {
 			RenderSystem.enableAlphaTest();
 			BufferBuilder wr = Tessellator.getInstance().getBuffer();
 			wr.begin(7, DefaultVertexFormats.POSITION_TEX);
-			wr.vertex(minX, maxY, 0).texture(minU, maxV).endVertex();
-			wr.vertex(maxX, maxY, 0).texture(maxU, maxV).endVertex();
-			wr.vertex(maxX, minY, 0).texture(maxU, minV).endVertex();
-			wr.vertex(minX, minY, 0).texture(minU, minV).endVertex();
+			wr.pos(minX, maxY, 0).tex(minU, maxV).endVertex();
+			wr.pos(maxX, maxY, 0).tex(maxU, maxV).endVertex();
+			wr.pos(maxX, minY, 0).tex(maxU, minV).endVertex();
+			wr.pos(minX, minY, 0).tex(minU, minV).endVertex();
 			Tessellator.getInstance().draw();
 			RenderSystem.disableAlphaTest();
 		}

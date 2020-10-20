@@ -145,7 +145,7 @@ public final class HUDHandler {
 
 		RenderSystem.enableBlend();
 		mc.textureManager.bindTexture(psiBar);
-		AbstractGui.drawTexture(ms, x, y, 0, 0, width, height, 64, 256);
+		AbstractGui.blit(ms, x, y, 0, 0, width, height, 64, 256);
 
 		x += 8;
 		y += 26;
@@ -181,7 +181,7 @@ public final class HUDHandler {
 			y = origY + v;
 
 			ShaderHandler.useShader(ShaderHandler.psiBar, generateCallback(a, d.shatter, data.overflowed));
-			AbstractGui.drawTexture(ms, x, y, 32, v, width, height, 64, 256);
+			AbstractGui.blit(ms, x, y, 32, v, width, height, 64, 256);
 		}
 
 		float textY = origY;
@@ -203,7 +203,7 @@ public final class HUDHandler {
 
 		RenderSystem.color3f(r, g, b);
 		ShaderHandler.useShader(ShaderHandler.psiBar, generateCallback(1F, false, data.overflowed));
-		AbstractGui.drawTexture(ms, x, y, 32, v, width, height, 64, 256);
+		AbstractGui.blit(ms, x, y, 32, v, width, height, 64, 256);
 		ShaderHandler.releaseShader();
 
 		if (shaders) {
@@ -239,14 +239,14 @@ public final class HUDHandler {
 				PsiRenderHelper.g(color) / 255F,
 				PsiRenderHelper.b(color) / 255F, 1F);
 
-		AbstractGui.drawTexture(ms, x - offBar, -2, 0, 140, width, height, 64, 256);
-		mc.fontRenderer.drawWithShadow(ms, s1, x - offStr1, -11, 0xFFFFFF);
+		AbstractGui.blit(ms, x - offBar, -2, 0, 140, width, height, 64, 256);
+		mc.fontRenderer.drawStringWithShadow(ms, s1, x - offStr1, -11, 0xFFFFFF);
 		ms.pop();
 
 		if (storedPsi != -1) {
 			ms.push();
 			ms.translate(0F, Math.max(textY + 3, origY + 100), 0F);
-			mc.fontRenderer.drawWithShadow(ms, s2, x - offStr2, 0, 0xFFFFFF);
+			mc.fontRenderer.drawStringWithShadow(ms, s2, x - offStr2, 0, 0xFFFFFF);
 			ms.pop();
 		}
 		RenderSystem.disableBlend();
@@ -281,7 +281,7 @@ public final class HUDHandler {
 				y += 14;
 			}
 
-			mc.fontRenderer.drawWithShadow(ms, name, x, y, color);
+			mc.fontRenderer.drawStringWithShadow(ms, name, x, y, color);
 
 			int w = mc.fontRenderer.getStringWidth(name);
 			ms.push();
@@ -314,7 +314,7 @@ public final class HUDHandler {
 			ms.translate(-xp, -y, 0F);
 			RenderSystem.color4f(1F, 1F, 1F, 1F);
 
-			String text = remainingDisplayStack.getDisplayName().copy().formatted(TextFormatting.GREEN).getString();
+			String text = remainingDisplayStack.getDisplayName().copyRaw().mergeStyle(TextFormatting.GREEN).getString();
 			if (remainingCount >= 0) {
 				int max = remainingDisplayStack.getMaxStackSize();
 				int stacks = remainingCount / max;
@@ -332,7 +332,7 @@ public final class HUDHandler {
 			}
 
 			int color = 0x00FFFFFF | (int) (alpha * 0xFF) << 24;
-			mc.fontRenderer.drawWithShadow(ms, text, x + 20, y + 6, color);
+			mc.fontRenderer.drawStringWithShadow(ms, text, x + 20, y + 6, color);
 
 			ms.pop();
 		}

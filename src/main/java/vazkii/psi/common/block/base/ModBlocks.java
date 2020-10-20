@@ -41,16 +41,16 @@ import static vazkii.psi.common.item.base.ModItems.defaultBuilder;
 @Mod.EventBusSubscriber(modid = LibMisc.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ModBlocks {
 
-	public static final Block cadAssembler = new BlockCADAssembler(Block.Properties.create(Material.IRON).hardnessAndResistance(5, 10).sound(SoundType.METAL).nonOpaque());
-	public static final Block programmer = new BlockProgrammer(Block.Properties.create(Material.IRON).hardnessAndResistance(5, 10).sound(SoundType.METAL).nonOpaque());
-	public static final Block conjured = new BlockConjured(Block.Properties.create(Material.GLASS).noDrops().nonOpaque());
+	public static final Block cadAssembler = new BlockCADAssembler(Block.Properties.create(Material.IRON).hardnessAndResistance(5, 10).sound(SoundType.METAL).notSolid());
+	public static final Block programmer = new BlockProgrammer(Block.Properties.create(Material.IRON).hardnessAndResistance(5, 10).sound(SoundType.METAL).notSolid());
+	public static final Block conjured = new BlockConjured(Block.Properties.create(Material.GLASS).noDrops().notSolid());
 	public static final Block psidustBlock = new Block(Block.Properties.create(Material.IRON).hardnessAndResistance(5, 10).sound(SoundType.METAL));
 	public static final Block psimetalBlock = new Block(Block.Properties.create(Material.IRON).hardnessAndResistance(5, 10).sound(SoundType.METAL));
 	public static final Block psigemBlock = new Block(Block.Properties.create(Material.IRON).hardnessAndResistance(5, 10).sound(SoundType.METAL));
 	public static final Block psimetalPlateBlack = new Block(Block.Properties.create(Material.IRON).hardnessAndResistance(5, 10).sound(SoundType.METAL));
-	public static final Block psimetalPlateBlackLight = new Block(Block.Properties.create(Material.IRON).hardnessAndResistance(5, 10).sound(SoundType.METAL).lightLevel((blockState) -> 15));
+	public static final Block psimetalPlateBlackLight = new Block(Block.Properties.create(Material.IRON).hardnessAndResistance(5, 10).sound(SoundType.METAL).setLightLevel((blockState) -> 15));
 	public static final Block psimetalPlateWhite = new Block(Block.Properties.create(Material.IRON).hardnessAndResistance(5, 10).sound(SoundType.METAL));
-	public static final Block psimetalPlateWhiteLight = new Block(Block.Properties.create(Material.IRON).hardnessAndResistance(5, 10).sound(SoundType.METAL).lightLevel((blockstate) -> 15));
+	public static final Block psimetalPlateWhiteLight = new Block(Block.Properties.create(Material.IRON).hardnessAndResistance(5, 10).sound(SoundType.METAL).setLightLevel((blockstate) -> 15));
 	public static final Block psimetalEbony = new Block(Block.Properties.create(Material.IRON).hardnessAndResistance(5, 10).sound(SoundType.METAL));
 	public static final Block psimetalIvory = new Block(Block.Properties.create(Material.IRON).hardnessAndResistance(5, 10).sound(SoundType.METAL));
 	public static final ContainerType<ContainerCADAssembler> containerCADAssembler = IForgeContainerType.create(ContainerCADAssembler::fromNetwork);

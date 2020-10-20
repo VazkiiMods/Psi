@@ -114,9 +114,7 @@ public class TrickCraftingCategory implements IRecipeCategory<ITrickRecipe> {
 						return new DrawableTAS(mat.getSprite());
 					});
 
-			matrixStack.push();
 			trickIcon.draw(matrixStack, trickX, trickY);
-			matrixStack.pop();
 
 			if (onTrick(mouseX, mouseY)) {
 				programmerHover.draw(matrixStack, trickX, trickY);

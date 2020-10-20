@@ -29,13 +29,13 @@ public class PsimetalArmorMaterial implements IArmorMaterial {
 	private final LazyValue<Ingredient> repairMaterial;
 	private final float knockbackResistance;
 
-	public PsimetalArmorMaterial(String nameIn, int maxDamageFactorIn, int[] damageReductionAmountsIn, int enchantabilityIn, SoundEvent equipSoundIn, float p_i48533_8_, Supplier<Ingredient> repairMaterialSupplier, float knockbackResistance) {
+	public PsimetalArmorMaterial(String nameIn, int maxDamageFactorIn, int[] damageReductionAmountsIn, int enchantabilityIn, SoundEvent equipSoundIn, float toughnessIn, Supplier<Ingredient> repairMaterialSupplier, float knockbackResistance) {
 		this.name = nameIn;
 		this.maxDamageFactor = maxDamageFactorIn;
 		this.damageReductionAmountArray = damageReductionAmountsIn;
 		this.enchantability = enchantabilityIn;
 		this.soundEvent = equipSoundIn;
-		this.toughness = p_i48533_8_;
+		this.toughness = toughnessIn;
 		this.repairMaterial = new LazyValue<>(repairMaterialSupplier);
 		this.knockbackResistance = knockbackResistance;
 	}

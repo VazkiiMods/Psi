@@ -48,7 +48,7 @@ public class PieceOperatorClosestToPoint extends PieceOperator {
 		double closest = Double.MAX_VALUE;
 		Entity closestEntity = null;
 		for (Entity e : list) {
-			double dist = MathHelper.pointDistanceSpace(position.x, position.y, position.z, e.getX(), e.getY(), e.getZ());
+			double dist = MathHelper.pointDistanceSpace(position.x, position.y, position.z, e.getPosX(), e.getPosY(), e.getPosZ());
 			if (dist < closest) {
 				closest = dist;
 				closestEntity = e;

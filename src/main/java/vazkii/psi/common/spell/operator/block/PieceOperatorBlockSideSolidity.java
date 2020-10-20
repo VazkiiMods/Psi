@@ -41,7 +41,7 @@ public class PieceOperatorBlockSideSolidity extends PieceOperator {
 		Direction facing = SpellHelpers.getFacing(this, context, axisParam);
 
 		BlockState state = context.caster.world.getBlockState(pos);
-		return state.isSideSolidFullSquare(context.caster.world, pos, facing) ? 1.0D : 0.D;
+		return state.isSolidSide(context.caster.world, pos, facing) ? 1.0D : 0.D;
 	}
 
 	@Override

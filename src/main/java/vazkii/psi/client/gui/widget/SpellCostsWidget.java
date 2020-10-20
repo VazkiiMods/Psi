@@ -31,7 +31,7 @@ public class SpellCostsWidget extends Widget {
 	private final GuiProgrammer parent;
 
 	public SpellCostsWidget(int x, int y, int width, int height, String message, GuiProgrammer programmer) {
-		super(x, y, width, height, ITextComponent.func_244388_a(message));
+		super(x, y, width, height, ITextComponent.getTextComponentOrEmpty(message));
 		this.parent = programmer;
 	}
 
@@ -69,12 +69,12 @@ public class SpellCostsWidget extends Widget {
 
 				RenderSystem.color3f(1f, 1f, 1f);
 				parent.getMinecraft().getTextureManager().bindTexture(GuiProgrammer.texture);
-				drawTexture(ms, statX, statY, (stat.ordinal() + 1) * 12, parent.ySize + 16, 12, 12);
-				parent.getMinecraft().fontRenderer.draw(ms, s, statX + 16, statY + 2, cadStat != null && cadVal < val && cadVal != -1 ? 0xFF6666 : 0xFFFFFF);
+				blit(ms, statX, statY, (stat.ordinal() + 1) * 12, parent.ySize + 16, 12, 12);
+				parent.getMinecraft().fontRenderer.drawString(ms, s, statX + 16, statY + 2, cadStat != null && cadVal < val && cadVal != -1 ? 0xFF6666 : 0xFFFFFF);
 
 				if (mouseX > statX && mouseY > statY && mouseX < statX + 12 && mouseY < statY + 12 && !parent.panelWidget.panelEnabled) {
-					parent.tooltip.add(new TranslationTextComponent(stat.getName()).formatted(Psi.magical ? TextFormatting.LIGHT_PURPLE : TextFormatting.AQUA));
-					parent.tooltip.add(new TranslationTextComponent(stat.getDesc()).formatted(TextFormatting.GRAY));
+					parent.tooltip.add(new TranslationTextComponent(stat.getName()).mergeStyle(Psi.magical ? TextFormatting.LIGHT_PURPLE : TextFormatting.AQUA));
+					parent.tooltip.add(new TranslationTextComponent(stat.getDesc()).mergeStyle(TextFormatting.GRAY));
 				}
 				i++;
 

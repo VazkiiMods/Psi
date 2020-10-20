@@ -82,9 +82,9 @@ public class EntitySpellGrenade extends EntitySpellProjectile {
 			double d1 = getEntityWorld().rand.nextGaussian() * m;
 			double d2 = getEntityWorld().rand.nextGaussian() * m;
 
-			double x = getX() + 0.75 * getEntityWorld().rand.nextFloat() - 0.375;
-			double y = getY() + 0.5 * getEntityWorld().rand.nextFloat();
-			double z = getZ() + 0.75 * getEntityWorld().rand.nextFloat() - 0.375;
+			double x = getPosX() + 0.75 * getEntityWorld().rand.nextFloat() - 0.375;
+			double y = getPosY() + 0.5 * getEntityWorld().rand.nextFloat();
+			double z = getPosZ() + 0.75 * getEntityWorld().rand.nextFloat() - 0.375;
 			getEntityWorld().addParticle(ParticleTypes.EXPLOSION, x, y, z, d0, d1, d2);
 		}
 	}

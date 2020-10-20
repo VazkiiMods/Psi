@@ -1,37 +1,22 @@
 {
-  "type": "forge:conditional",
-  "recipes": [
-    {
-      "conditions": [
-        {
-          "value": {
-            "type": "psi:magipsi_enabled"
-          },
-          "type": "forge:not"
-        }
-      ],
-      "recipe": {
-        "type": "minecraft:crafting_shaped",
-        "pattern": [
-          " D ",
-          "G G",
-          " I "
-        ],
-        "key": {
-          "D": {
-            "tag": "psi:psidust"
-          },
-          "G": {
-            "tag": "forge:glass"
-          },
-          "I": {
-            "tag": "forge:ingots/iron"
-          }
-        },
-        "result": {
-          "item": "psi:cad_colorizer_empty"
-        }
-      }
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " D ",
+    "G G",
+    " I "
+  ],
+  "key": {
+    "D": {
+      "tag": "psi:psidust"
+    },
+    "G": {
+      "tag": "forge:glass"
+    },
+    "I": {
+      "tag": "forge:ingots/iron"
     }
-  ]
+  },
+  "result": {
+    "item": "psi:cad_colorizer_empty"
+  }
 }

@@ -167,7 +167,7 @@ public final class SpellContext {
 			return true;
 		}
 
-		return isInRadius(e.getX(), e.getY(), e.getZ());
+		return isInRadius(e.getPosX(), e.getPosY(), e.getPosZ());
 	}
 
 	/**
@@ -176,7 +176,7 @@ public final class SpellContext {
 	 * @see #MAX_DISTANCE
 	 */
 	public boolean isInRadius(double x, double y, double z) {
-		return MathHelper.pointDistanceSpace(x, y, z, focalPoint.getX(), focalPoint.getY(), focalPoint.getZ()) <= MAX_DISTANCE;
+		return MathHelper.pointDistanceSpace(x, y, z, focalPoint.getPosX(), focalPoint.getPosY(), focalPoint.getPosZ()) <= MAX_DISTANCE;
 	}
 
 	public void verifyEntity(Entity e) throws SpellRuntimeException {

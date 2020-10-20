@@ -41,7 +41,7 @@ public class EntitySpellMine extends EntitySpellGrenade {
 		super.tick();
 
 		List<LivingEntity> entities = getEntityWorld().getEntitiesWithinAABB(LivingEntity.class, getBoundingBox().grow(1, 1, 1));
-		Entity thrower = getOwner();
+		Entity thrower = func_234616_v_();
 		if (thrower != null && ticksExisted < 30) {
 			entities.remove(thrower);
 		}

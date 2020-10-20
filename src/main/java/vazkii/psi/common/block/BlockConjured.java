@@ -74,7 +74,7 @@ public class BlockConjured extends Block {
 	}
 
 	@Override
-	public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+	public void tick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
 		world.removeBlock(pos, false);
 	}
 
@@ -84,7 +84,7 @@ public class BlockConjured extends Block {
 	}
 
 	@Override
-	public boolean func_220074_n(BlockState state) {
+	public boolean isTransparent(BlockState state) {
 		return true;
 	}
 
@@ -138,13 +138,13 @@ public class BlockConjured extends Block {
 	}
 
 	@Override
-	public boolean propagatesSkylightDown(BlockState p_200123_1_, IBlockReader p_200123_2_, BlockPos p_200123_3_) {
+	public boolean propagatesSkylightDown(BlockState state, IBlockReader reader, BlockPos pos) {
 		return true;
 	}
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public float getAmbientOcclusionLightValue(BlockState p_220080_1_, IBlockReader p_220080_2_, BlockPos p_220080_3_) {
+	public float getAmbientOcclusionLightValue(BlockState state, IBlockReader worldIn, BlockPos pos) {
 		return 1.0F;
 	}
 

@@ -1,34 +1,19 @@
 {
-  "type": "forge:conditional",
-  "recipes": [
-    {
-      "conditions": [
-        {
-          "value": {
-            "type": "psi:magipsi_enabled"
-          },
-          "type": "forge:not"
-        }
-      ],
-      "recipe": {
-        "type": "minecraft:crafting_shaped",
-        "pattern": [
-          "SSS",
-          "SIS",
-          "SSS"
-        ],
-        "key": {
-          "S": {
-            "tag": "psi:ivory_substance"
-          },
-          "I": {
-            "tag": "forge:ingots/psimetal"
-          }
-        },
-        "result": {
-          "item": "psi:ivory_psimetal"
-        }
-      }
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SSS",
+    "SIS",
+    "SSS"
+  ],
+  "key": {
+    "S": {
+      "tag": "psi:ivory_substance"
+    },
+    "I": {
+      "tag": "forge:ingots/psimetal"
     }
-  ]
+  },
+  "result": {
+    "item": "psi:ivory_psimetal"
+  }
 }

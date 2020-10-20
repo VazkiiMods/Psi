@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "psi:cad_core_radiative"
+    ]
+  },
+  "criteria": {
+    "has_psimetal": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "forge:ingots/psimetal"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "psi:cad_core_radiative"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_psimetal",
+      "has_the_recipe"
+    ]
+  ]
+}

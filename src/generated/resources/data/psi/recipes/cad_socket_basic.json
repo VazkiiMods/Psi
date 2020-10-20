@@ -1,33 +1,18 @@
 {
-  "type": "forge:conditional",
-  "recipes": [
-    {
-      "conditions": [
-        {
-          "value": {
-            "type": "psi:magipsi_enabled"
-          },
-          "type": "forge:not"
-        }
-      ],
-      "recipe": {
-        "type": "minecraft:crafting_shaped",
-        "pattern": [
-          "DI ",
-          "I  "
-        ],
-        "key": {
-          "I": {
-            "tag": "forge:ingots/iron"
-          },
-          "D": {
-            "tag": "psi:psidust"
-          }
-        },
-        "result": {
-          "item": "psi:cad_socket_basic"
-        }
-      }
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "DI ",
+    "I  "
+  ],
+  "key": {
+    "I": {
+      "tag": "forge:ingots/iron"
+    },
+    "D": {
+      "tag": "psi:psidust"
     }
-  ]
+  },
+  "result": {
+    "item": "psi:cad_socket_basic"
+  }
 }

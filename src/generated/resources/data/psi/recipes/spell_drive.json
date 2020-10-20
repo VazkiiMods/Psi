@@ -1,34 +1,19 @@
 {
-  "type": "forge:conditional",
-  "recipes": [
-    {
-      "conditions": [
-        {
-          "value": {
-            "type": "psi:magipsi_enabled"
-          },
-          "type": "forge:not"
-        }
-      ],
-      "recipe": {
-        "type": "minecraft:crafting_shaped",
-        "pattern": [
-          "I",
-          "R",
-          "I"
-        ],
-        "key": {
-          "I": {
-            "tag": "forge:ingots/psimetal"
-          },
-          "R": {
-            "tag": "forge:dusts/redstone"
-          }
-        },
-        "result": {
-          "item": "psi:spell_drive"
-        }
-      }
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "I",
+    "R",
+    "I"
+  ],
+  "key": {
+    "I": {
+      "tag": "forge:ingots/psimetal"
+    },
+    "R": {
+      "tag": "forge:dusts/redstone"
     }
-  ]
+  },
+  "result": {
+    "item": "psi:spell_drive"
+  }
 }

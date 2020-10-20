@@ -317,7 +317,7 @@ public class PlayerDataHandler {
 				return;
 			}
 
-			DimensionType dimension = player.getEntityWorld().getDimension();
+			DimensionType dimension = player.getEntityWorld().getDimensionType();
 
 			if (deductTick) {
 				deductTick = false;
@@ -399,9 +399,9 @@ public class PlayerDataHandler {
 					ISocketable socketable = ISocketable.socketable(stackInHand);
 
 					for (int i = 0; i < 5; i++) {
-						double x = player.getX() + (Math.random() - 0.5) * 2.1 * player.getWidth();
-						double y = player.getY() - player.getYOffset();
-						double z = player.getZ() + (Math.random() - 0.5) * 2.1 * player.getWidth();
+						double x = player.getPosX() + (Math.random() - 0.5) * 2.1 * player.getWidth();
+						double y = player.getPosY() - player.getYOffset();
+						double z = player.getPosZ() + (Math.random() - 0.5) * 2.1 * player.getWidth();
 						float grav = -0.15F - (float) Math.random() * 0.03F;
 						Psi.proxy.sparkleFX(x, y, z, r, g, b, grav, 0.25F, 15);
 					}
@@ -425,7 +425,7 @@ public class PlayerDataHandler {
 									}
 
 									if (!player.getEntityWorld().isRemote && loopcastTime % 10 == 0) {
-										player.getEntityWorld().playSound(null, player.getX(), player.getY(), player.getZ(), PsiSoundHandler.loopcast, SoundCategory.PLAYERS, 0.1F, (float) (0.15 + Math.random() * 0.85));
+										player.getEntityWorld().playSound(null, player.getPosX(), player.getPosY(), player.getPosZ(), PsiSoundHandler.loopcast, SoundCategory.PLAYERS, 0.1F, (float) (0.15 + Math.random() * 0.85));
 									}
 								}
 
@@ -501,9 +501,9 @@ public class PlayerDataHandler {
 							for (int i = 0; i < 5; i++) {
 								double spread = 0.6;
 
-								double x = player.getX() + (Math.random() - 0.5) * spread;
-								double y = player.getY() + (Math.random() - 0.5) * spread;
-								double z = player.getZ() + (Math.random() - 0.5) * spread;
+								double x = player.getPosX() + (Math.random() - 0.5) * spread;
+								double y = player.getPosY() + (Math.random() - 0.5) * spread;
+								double z = player.getPosZ() + (Math.random() - 0.5) * spread;
 
 								Psi.proxy.sparkleFX(x, y, z, r, g, b, 0, 0, 0, 1.2F, 12);
 							}
@@ -526,8 +526,8 @@ public class PlayerDataHandler {
 				eidosChangelog.push(Vector3.fromEntity(player));
 			}
 
-			BlockPos pos = player.getBlockPos();
-			int light = player.getEntityWorld().getLightingProvider().getLight(pos, 0);
+			BlockPos pos = player.getPosition();
+			int light = player.getEntityWorld().getLightManager().getLightSubtracted(pos, 0);
 
 			boolean lowLight = light <= 7;
 			if (!this.lowLight && lowLight) {
@@ -844,9 +844,9 @@ public class PlayerDataHandler {
 		@OnlyIn(Dist.CLIENT)
 		public void render(PlayerEntity player, float partTicks, MatrixStack ms) {
 			EntityRendererManager renderManager = Minecraft.getInstance().getRenderManager();
-			double x = player.lastTickPosX + (player.getX() - player.lastTickPosX) * partTicks - renderManager.info.getProjectedView().x;
-			double y = player.lastTickPosY + (player.getY() - player.lastTickPosY) * partTicks - renderManager.info.getProjectedView().y;
-			double z = player.lastTickPosZ + (player.getZ() - player.lastTickPosZ) * partTicks - renderManager.info.getProjectedView().z;
+			double x = player.lastTickPosX + (player.getPosX() - player.lastTickPosX) * partTicks - renderManager.info.getProjectedView().x;
+			double y = player.lastTickPosY + (player.getPosY() - player.lastTickPosY) * partTicks - renderManager.info.getProjectedView().y;
+			double z = player.lastTickPosZ + (player.getPosZ() - player.lastTickPosZ) * partTicks - renderManager.info.getProjectedView().z;
 			float scale = 0.75F;
 			if (loopcasting) {
 				float mul = Math.min(5F, loopcastTime + partTicks) / 5F;
@@ -867,9 +867,9 @@ public class PlayerDataHandler {
 
 			ms.push();
 			ms.translate(x, y + 0.15, z);
-			IRenderTypeBuffer.Impl buffers = Minecraft.getInstance().getBufferBuilders().getEntityVertexConsumers();
+			IRenderTypeBuffer.Impl buffers = Minecraft.getInstance().getRenderTypeBuffers().getBufferSource();
 			RenderSpellCircle.renderSpellCircle(ClientTickHandler.ticksInGame + partTicks, scale, 1, 0, -1, 0, color, ms, buffers);
-			buffers.draw();
+			buffers.finish();
 			ms.pop();
 		}
 

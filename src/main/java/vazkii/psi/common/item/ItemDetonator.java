@@ -35,7 +35,7 @@ public class ItemDetonator extends Item {
 
 		if (!worldIn.isRemote) {
 			IDetonationHandler.performDetonation(worldIn, playerIn);
-			worldIn.playSound(null, playerIn.getX(), playerIn.getY(), playerIn.getZ(), SoundEvents.UI_BUTTON_CLICK, SoundCategory.PLAYERS, 1F, 1F);
+			worldIn.playSound(null, playerIn.getPosX(), playerIn.getPosY(), playerIn.getPosZ(), SoundEvents.UI_BUTTON_CLICK, SoundCategory.PLAYERS, 1F, 1F);
 		}
 
 		else {

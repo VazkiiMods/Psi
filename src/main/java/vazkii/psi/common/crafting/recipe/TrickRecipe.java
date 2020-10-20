@@ -116,7 +116,7 @@ public class TrickRecipe implements ITrickRecipe {
 
 			PieceCraftingTrick trick = null;
 			if (json.has("trick")) {
-				trick = PsiAPI.getSpellPieceRegistry().func_241873_b(new ResourceLocation(JSONUtils.getString(json, "trick")))
+				trick = PsiAPI.getSpellPieceRegistry().getOptional(new ResourceLocation(JSONUtils.getString(json, "trick")))
 						.filter(PieceCraftingTrick.class::isAssignableFrom)
 						.map(clazz -> (PieceCraftingTrick) SpellPiece.create(clazz, dummySpell))
 						.orElse(null);
@@ -132,7 +132,7 @@ public class TrickRecipe implements ITrickRecipe {
 			ItemStack cadAssembly = buf.readItemStack();
 			PieceCraftingTrick trick = null;
 			if (buf.readBoolean()) {
-				trick = PsiAPI.getSpellPieceRegistry().func_241873_b(buf.readResourceLocation())
+				trick = PsiAPI.getSpellPieceRegistry().getOptional(buf.readResourceLocation())
 						.map(clazz -> (PieceCraftingTrick) SpellPiece.create(clazz, dummySpell))
 						.orElse(null);
 			}

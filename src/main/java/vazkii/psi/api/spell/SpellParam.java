@@ -114,7 +114,7 @@ public abstract class SpellParam<T> {
 		String evalStr = evalType == null ? "null" : CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, evalType.getSimpleName());
 		TranslationTextComponent s = new TranslationTextComponent("psi.datatype." + evalStr);
 		if (requiresConstant()) {
-			s.append(" ").append(new TranslationTextComponent("psimisc.constant"));
+			s.appendString(" ").append(new TranslationTextComponent("psimisc.constant"));
 		}
 
 		return s;

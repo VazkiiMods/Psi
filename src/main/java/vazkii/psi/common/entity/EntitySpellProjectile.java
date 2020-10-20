@@ -136,7 +136,7 @@ public class EntitySpellProjectile extends ThrowableEntity {
 		ItemStack bullet = ItemStack.read(bulletCmp);
 		dataManager.set(BULLET_DATA, bullet);
 
-		Entity thrower = getOwner();
+		Entity thrower = func_234616_v_();
 		if (thrower instanceof PlayerEntity) {
 			dataManager.set(CASTER_UUID, Optional.of(thrower.getUniqueID()));
 		}
@@ -165,9 +165,9 @@ public class EntitySpellProjectile extends ThrowableEntity {
 		float g = PsiRenderHelper.g(colorVal) / 255F;
 		float b = PsiRenderHelper.b(colorVal) / 255F;
 
-		double x = getX();
-		double y = getY();
-		double z = getZ();
+		double x = getPosX();
+		double y = getPosY();
+		double z = getPosZ();
 
 		Vector3 lookOrig = new Vector3(getMotion()).normalize();
 		for (int i = 0; i < getParticleCount(); i++) {
@@ -218,7 +218,7 @@ public class EntitySpellProjectile extends ThrowableEntity {
 	}
 
 	public void cast(Consumer<SpellContext> callback) {
-		Entity thrower = getOwner();
+		Entity thrower = func_234616_v_();
 		boolean canCast = false;
 
 		if (thrower instanceof PlayerEntity) {
@@ -247,8 +247,8 @@ public class EntitySpellProjectile extends ThrowableEntity {
 	}
 
 	@Override
-	public Entity getOwner() {
-		Entity superThrower = super.getOwner();
+	public Entity func_234616_v_() {
+		Entity superThrower = super.func_234616_v_();
 		if (superThrower != null) {
 			return superThrower;
 		}

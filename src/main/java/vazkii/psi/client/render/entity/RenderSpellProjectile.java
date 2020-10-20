@@ -17,17 +17,17 @@ import vazkii.psi.common.entity.EntitySpellProjectile;
 
 public class RenderSpellProjectile extends EntityRenderer<EntitySpellProjectile> {
 
-	public RenderSpellProjectile(EntityRendererManager p_i46179_1_) {
-		super(p_i46179_1_);
+	public RenderSpellProjectile(EntityRendererManager renderManager) {
+		super(renderManager);
 	}
 
 	@Override
-	public boolean shouldRender(EntitySpellProjectile p_225626_1_, ClippingHelper p_225626_2_, double p_225626_3_, double p_225626_5_, double p_225626_7_) {
+	public boolean shouldRender(EntitySpellProjectile livingEntityIn, ClippingHelper camera, double camX, double camY, double camZ) {
 		return false;
 	}
 
 	@Override
-	public ResourceLocation getEntityTexture(EntitySpellProjectile p_110775_1_) {
+	public ResourceLocation getEntityTexture(EntitySpellProjectile entity) {
 		return null;
 	}
 }

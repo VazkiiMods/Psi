@@ -14,7 +14,7 @@ buildscript {
 }
 
 plugins {
-    id "com.diffplug.gradle.spotless" version "3.27.2"
+    id "com.diffplug.gradle.spotless" version "4.5.1"
 }
 
 apply plugin: 'net.minecraftforge.gradle'
@@ -37,7 +37,7 @@ if (System.getenv('BUILD_NUMBER') != null) {
 }
 
 minecraft {
-    mappings channel: "snapshot", version: "20200801-mixed-1.16.1"
+    mappings channel: "snapshot", version: "20200916-1.16.2"
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
     runs {
