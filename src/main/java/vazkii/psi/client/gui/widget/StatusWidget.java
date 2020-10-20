@@ -29,7 +29,7 @@ public class StatusWidget extends Widget {
 	private final GuiProgrammer parent;
 
 	public StatusWidget(int x, int y, int width, int height, String message, GuiProgrammer programmer) {
-		super(x, y, width, height, ITextComponent.func_244388_a(message));
+		super(x, y, width, height, ITextComponent.getTextComponentOrEmpty(message));
 		this.parent = programmer;
 	}
 
@@ -42,19 +42,19 @@ public class StatusWidget extends Widget {
 	public void renderButton(MatrixStack ms, int mouseX, int mouseY, float pTicks) {
 		RenderSystem.color3f(1f, 1f, 1f);
 		parent.getMinecraft().getTextureManager().bindTexture(GuiProgrammer.texture);
-		drawTexture(ms, parent.left - 48, parent.top + 5, parent.xSize, 0, 48, 30);
-		drawTexture(ms, parent.left - 16, parent.top + 13, parent.compiler.isErrored() ? 12 : 0, parent.ySize + 28, 12, 12);
+		blit(ms, parent.left - 48, parent.top + 5, parent.xSize, 0, 48, 30);
+		blit(ms, parent.left - 16, parent.top + 13, parent.compiler.isErrored() ? 12 : 0, parent.ySize + 28, 12, 12);
 
 		if (mouseX > parent.left - 16 - 1 && mouseY > parent.top + 13 - 1 && mouseX < parent.left - 16 + 13 && mouseY < parent.top + 13 + 13) {
 			if (parent.compiler.isErrored()) {
-				parent.tooltip.add(new TranslationTextComponent("psimisc.errored").formatted(TextFormatting.RED));
-				parent.tooltip.add(new TranslationTextComponent(parent.compiler.getError()).formatted(TextFormatting.GRAY));
+				parent.tooltip.add(new TranslationTextComponent("psimisc.errored").mergeStyle(TextFormatting.RED));
+				parent.tooltip.add(new TranslationTextComponent(parent.compiler.getError()).mergeStyle(TextFormatting.GRAY));
 				Pair<Integer, Integer> errorPos = parent.compiler.getErrorLocation();
 				if (errorPos != null && errorPos.getRight() != -1 && errorPos.getLeft() != -1) {
-					parent.tooltip.add(new StringTextComponent("[" + (errorPos.getLeft() + 1) + ", " + (errorPos.getRight() + 1) + "]").formatted(TextFormatting.GRAY));
+					parent.tooltip.add(new StringTextComponent("[" + (errorPos.getLeft() + 1) + ", " + (errorPos.getRight() + 1) + "]").mergeStyle(TextFormatting.GRAY));
 				}
 			} else {
-				parent.tooltip.add(new TranslationTextComponent("psimisc.compiled").formatted(TextFormatting.GREEN));
+				parent.tooltip.add(new TranslationTextComponent("psimisc.compiled").mergeStyle(TextFormatting.GREEN));
 			}
 		}
 

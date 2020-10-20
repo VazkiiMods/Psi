@@ -52,7 +52,7 @@ public class SlotCADOutput extends Slot {
 			String cancelMessage = event.getCancellationMessage();
 			if (!playerIn.world.isRemote) {
 				if (cancelMessage != null && !cancelMessage.isEmpty()) {
-					playerIn.sendMessage(new TranslationTextComponent(cancelMessage).setStyle(Style.EMPTY.withColor(TextFormatting.RED)), Util.NIL_UUID);
+					playerIn.sendMessage(new TranslationTextComponent(cancelMessage).setStyle(Style.EMPTY.setFormatting(TextFormatting.RED)), Util.DUMMY_UUID);
 				}
 				playerIn.world.playSound(null, assemblerPos.getX(), assemblerPos.getY(), assemblerPos.getZ(), PsiSoundHandler.compileError, SoundCategory.BLOCKS, sound, 1F);
 			}

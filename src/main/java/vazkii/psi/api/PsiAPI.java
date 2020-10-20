@@ -47,8 +47,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static net.minecraft.util.registry.Registry.createRegistryKey;
-
 public final class PsiAPI {
 
 	/**
@@ -81,13 +79,13 @@ public final class PsiAPI {
 
 	public static final String MOD_ID = "psi";
 
-	public static final RegistryKey<Registry<Class<? extends SpellPiece>>> SPELL_PIECE_REGISTRY_TYPE_KEY = createRegistryKey("spell_piece_registry_type_key");
-	private static final SimpleRegistry<Class<? extends SpellPiece>> spellPieceRegistry = (SimpleRegistry<Class<? extends SpellPiece>>) Registry.create(SPELL_PIECE_REGISTRY_TYPE_KEY, Lifecycle.stable(), () -> PieceTrickDebug.class);
+	public static final RegistryKey<Registry<Class<? extends SpellPiece>>> SPELL_PIECE_REGISTRY_TYPE_KEY = Registry.createKey("spell_piece_registry_type_key");
+	private static final SimpleRegistry<Class<? extends SpellPiece>> spellPieceRegistry = (SimpleRegistry<Class<? extends SpellPiece>>) Registry.register(SPELL_PIECE_REGISTRY_TYPE_KEY, Lifecycle.stable(), () -> PieceTrickDebug.class);
 	private static final Multimap<ResourceLocation, Class<? extends SpellPiece>> advancementGroups = HashMultimap.create();
 	private static final Map<Class<? extends SpellPiece>, ResourceLocation> advancementGroupsInverse = new HashMap<>();
 	private static final Map<ResourceLocation, Class<? extends SpellPiece>> mainPieceForGroup = new HashMap<>();
 
-	public static final PsimetalArmorMaterial PSIMETAL_ARMOR_MATERIAL = new PsimetalArmorMaterial("psimetal", 18, new int[] { 2, 5, 6, 2 }, 12, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0F, () -> Ingredient.fromTag(ItemTags.getCollection().func_241834_b(new ResourceLocation("forge", "ingots/psimetal"))), 0.0f);
+	public static final PsimetalArmorMaterial PSIMETAL_ARMOR_MATERIAL = new PsimetalArmorMaterial("psimetal", 18, new int[] { 2, 5, 6, 2 }, 12, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0F, () -> Ingredient.fromTag(ItemTags.getCollection().getTagByID(new ResourceLocation("forge", "ingots/psimetal"))), 0.0f);
 	public static final PsimetalToolMaterial PSIMETAL_TOOL_MATERIAL = new PsimetalToolMaterial();
 
 	/**
@@ -95,7 +93,7 @@ public final class PsiAPI {
 	 */
 	public static void registerSpellPiece(ResourceLocation resourceLocation, Class<? extends SpellPiece> clazz) {
 		synchronized (PsiAPI.spellPieceRegistry) {
-			PsiAPI.spellPieceRegistry.register(RegistryKey.of(SPELL_PIECE_REGISTRY_TYPE_KEY, resourceLocation), clazz, Lifecycle.stable());
+			PsiAPI.spellPieceRegistry.register(RegistryKey.getOrCreateKey(SPELL_PIECE_REGISTRY_TYPE_KEY, resourceLocation), clazz, Lifecycle.stable());
 		}
 	}
 

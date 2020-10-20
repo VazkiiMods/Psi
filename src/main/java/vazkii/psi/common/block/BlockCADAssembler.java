@@ -71,7 +71,7 @@ public class BlockCADAssembler extends HorizontalBlock {
 	}
 
 	@Override
-	public ActionResultType onUse(BlockState state, World world, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult rayTraceResult) {
+	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult rayTraceResult) {
 		if (!world.isRemote) {
 			INamedContainerProvider container = state.getContainer(world, pos);
 			if (container != null) {

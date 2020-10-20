@@ -63,13 +63,13 @@ public class TrickRecipeGenerator extends RecipeProvider {
 				.input(ItemTags.COALS)
 				.trick(Psi.location(LibPieceNames.TRICK_EBONY_IVORY))
 				.cad(ModItems.cadAssemblyPsimetal);
-		dimension(builder, consumer, ModItems.ebonySubstance.getRegistryName(), DimensionType.THE_END_REGISTRY_KEY);
+		dimension(builder, consumer, ModItems.ebonySubstance.getRegistryName(), DimensionType.THE_END);
 
 		builder = TrickRecipeBuilder.of(ModItems.ivorySubstance)
 				.input(Tags.Items.GEMS_QUARTZ)
 				.trick(Psi.location(LibPieceNames.TRICK_EBONY_IVORY))
 				.cad(ModItems.cadAssemblyPsimetal);
-		dimension(builder, consumer, ModItems.ivorySubstance.getRegistryName(), DimensionType.THE_END_REGISTRY_KEY);
+		dimension(builder, consumer, ModItems.ivorySubstance.getRegistryName(), DimensionType.THE_END);
 	}
 
 	@Nonnull

@@ -88,7 +88,7 @@ public class BlockProgrammer extends HorizontalBlock {
 	}
 
 	@Override
-	public ActionResultType onUse(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult rayTraceResult) {
+	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult rayTraceResult) {
 		ItemStack heldItem = player.getHeldItem(hand);
 		TileProgrammer programmer = (TileProgrammer) worldIn.getTileEntity(pos);
 		if (programmer == null) {
@@ -195,8 +195,8 @@ public class BlockProgrammer extends HorizontalBlock {
 
 	@Nullable
 	@Override
-	public INamedContainerProvider getContainer(BlockState p_220052_1_, World p_220052_2_, BlockPos p_220052_3_) {
-		return super.getContainer(p_220052_1_, p_220052_2_, p_220052_3_);
+	public INamedContainerProvider getContainer(BlockState state, World worldIn, BlockPos pos) {
+		return super.getContainer(state, worldIn, pos);
 	}
 
 }

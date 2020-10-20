@@ -107,8 +107,8 @@ public final class SharingHelper {
 	public static String takeScreenshot() throws Exception {
 		Minecraft mc = Minecraft.getInstance();
 
-		int screenWidth = mc.getWindow().getWidth();
-		int screenHeight = mc.getWindow().getHeight();
+		int screenWidth = mc.getMainWindow().getWidth();
+		int screenHeight = mc.getMainWindow().getHeight();
 
 		NativeImage image = ScreenShotHelper.createScreenshot(screenWidth, screenHeight, mc.getFramebuffer());
 		byte[] bArray = image.getBytes();

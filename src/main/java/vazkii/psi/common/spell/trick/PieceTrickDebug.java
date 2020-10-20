@@ -57,13 +57,13 @@ public class PieceTrickDebug extends PieceTrick {
 			}
 
 			component = new StringTextComponent("[" + numStr + "]")
-					.setStyle(Style.EMPTY.withColor(TextFormatting.AQUA))
+					.setStyle(Style.EMPTY.setFormatting(TextFormatting.AQUA))
 					.append(new StringTextComponent(" ")
-							.setStyle(Style.EMPTY.withColor(TextFormatting.RESET)))
+							.setStyle(Style.EMPTY.setFormatting(TextFormatting.RESET)))
 					.append(component);
 		}
 
-		context.caster.sendMessage(component, Util.NIL_UUID);
+		context.caster.sendMessage(component, Util.DUMMY_UUID);
 
 		return null;
 	}

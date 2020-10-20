@@ -57,12 +57,12 @@ public class SpellGridComponent implements ICustomComponent {
 	public void render(MatrixStack ms, IComponentRenderContext context, float pticks, int mouseX, int mouseY) {
 		float scale = isDownscaled ? 0.5f : 1.0f;
 
-		IRenderTypeBuffer.Impl buffer = IRenderTypeBuffer.immediate(Tessellator.getInstance().getBuffer());
+		IRenderTypeBuffer.Impl buffer = IRenderTypeBuffer.getImpl(Tessellator.getInstance().getBuffer());
 		ms.push();
 		ms.translate(x, y, 0);
 		ms.scale(scale, scale, scale);
 		grid.draw(ms, buffer, 0xF000F0);
-		buffer.draw();
+		buffer.finish();
 
 		float scaledSize = 18 * scale;
 		int scaledHoverSize = (int) (16 * scale);

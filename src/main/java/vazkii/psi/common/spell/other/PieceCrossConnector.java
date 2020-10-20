@@ -85,7 +85,7 @@ public class PieceCrossConnector extends SpellPiece implements IGenericRedirecto
 	private void drawSide(MatrixStack ms, IRenderTypeBuffer buffers, SpellParam.Side side, int light, int color) {
 		if (side.isEnabled()) {
 			RenderMaterial material = new RenderMaterial(ClientPsiAPI.PSI_PIECE_TEXTURE_ATLAS, new ResourceLocation(LibResources.SPELL_CONNECTOR_LINES));
-			IVertexBuilder buffer = material.getVertexConsumer(buffers, ignored -> SpellPiece.getLayer());
+			IVertexBuilder buffer = material.getBuffer(buffers, ignored -> SpellPiece.getLayer());
 
 			float minU = 0;
 			float minV = 0;
@@ -114,15 +114,15 @@ public class PieceCrossConnector extends SpellPiece implements IGenericRedirecto
 			/*
 			See note in SpellPiece#drawBackground for why this chain needs to be split
 			*/
-			Matrix4f mat = ms.peek().getModel();
-			buffer.vertex(mat, 0, 16, 0).color(r, g, b, 1F);
-			buffer.texture(minU, maxV).light(light).endVertex();
-			buffer.vertex(mat, 16, 16, 0).color(r, g, b, 1F);
-			buffer.texture(maxU, maxV).light(light).endVertex();
-			buffer.vertex(mat, 16, 0, 0).color(r, g, b, 1F);
-			buffer.texture(maxU, minV).light(light).endVertex();
-			buffer.vertex(mat, 0, 0, 0).color(r, g, b, 1F);
-			buffer.texture(minU, minV).light(light).endVertex();
+			Matrix4f mat = ms.getLast().getMatrix();
+			buffer.pos(mat, 0, 16, 0).color(r, g, b, 1F);
+			buffer.tex(minU, maxV).lightmap(light).endVertex();
+			buffer.pos(mat, 16, 16, 0).color(r, g, b, 1F);
+			buffer.tex(maxU, maxV).lightmap(light).endVertex();
+			buffer.pos(mat, 16, 0, 0).color(r, g, b, 1F);
+			buffer.tex(maxU, minV).lightmap(light).endVertex();
+			buffer.pos(mat, 0, 0, 0).color(r, g, b, 1F);
+			buffer.tex(minU, minV).lightmap(light).endVertex();
 		}
 	}
 
@@ -154,12 +154,12 @@ public class PieceCrossConnector extends SpellPiece implements IGenericRedirecto
 			int g = PsiRenderHelper.g(param.color);
 			int b = PsiRenderHelper.b(param.color);
 			int a = 255;
-			Matrix4f mat = ms.peek().getModel();
+			Matrix4f mat = ms.getLast().getMatrix();
 
-			buffer.vertex(mat, minX, maxY, 0).color(r, g, b, a).texture(minU, maxV).light(light).endVertex();
-			buffer.vertex(mat, maxX, maxY, 0).color(r, g, b, a).texture(maxU, maxV).light(light).endVertex();
-			buffer.vertex(mat, maxX, minY, 0).color(r, g, b, a).texture(maxU, minV).light(light).endVertex();
-			buffer.vertex(mat, minX, minY, 0).color(r, g, b, a).texture(minU, minV).light(light).endVertex();
+			buffer.pos(mat, minX, maxY, 0).color(r, g, b, a).tex(minU, maxV).lightmap(light).endVertex();
+			buffer.pos(mat, maxX, maxY, 0).color(r, g, b, a).tex(maxU, maxV).lightmap(light).endVertex();
+			buffer.pos(mat, maxX, minY, 0).color(r, g, b, a).tex(maxU, minV).lightmap(light).endVertex();
+			buffer.pos(mat, minX, minY, 0).color(r, g, b, a).tex(minU, minV).lightmap(light).endVertex();
 		}
 	}
 

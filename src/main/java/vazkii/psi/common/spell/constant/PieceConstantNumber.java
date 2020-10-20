@@ -58,7 +58,7 @@ public class PieceConstantNumber extends SpellPiece {
 		ms.push();
 		ms.scale(1F / scale, 1F / scale, 1F);
 		ms.translate((9 - efflen / 2) * scale, 4 * scale, 0);
-		mc.fontRenderer.draw(valueStr, 0, 0, color, false, ms.peek().getModel(), buffers, false, 0, light);
+		mc.fontRenderer.renderString(valueStr, 0, 0, color, false, ms.getLast().getMatrix(), buffers, false, 0, light);
 		ms.pop();
 	}
 

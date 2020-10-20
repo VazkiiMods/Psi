@@ -51,13 +51,13 @@ public interface IPsimetalTool {
 			ItemStack bullet = sockets.getSelectedBullet();
 			ItemCAD.cast(player.getEntityWorld(), player, data, bullet, playerCad, 5, 10, 0.05F, (SpellContext context) -> {
 				context.tool = itemstack;
-				context.positionBroken = raytraceFromEntity(player.getEntityWorld(), player, RayTraceContext.FluidMode.NONE, player.getAttributes().getValue(ForgeMod.REACH_DISTANCE.get()));
+				context.positionBroken = raytraceFromEntity(player.getEntityWorld(), player, RayTraceContext.FluidMode.NONE, player.getAttributeManager().getAttributeValue(ForgeMod.REACH_DISTANCE.get()));
 			});
 		}
 	}
 
 	static boolean isRepairableBy(ItemStack stack) {
-		return ItemTags.getCollection().func_241834_b(new ResourceLocation("forge", "ingots/psimetal")).contains(stack.getItem());
+		return ItemTags.getCollection().getTagByID(new ResourceLocation("forge", "ingots/psimetal")).contains(stack.getItem());
 	}
 
 	static BlockRayTraceResult raytraceFromEntity(World worldIn, PlayerEntity player, RayTraceContext.FluidMode fluidMode, double range) {

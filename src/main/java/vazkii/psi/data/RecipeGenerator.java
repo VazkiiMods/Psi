@@ -762,13 +762,13 @@ public class RecipeGenerator extends RecipeProvider implements IConditionBuilder
 								.withParentId(new ResourceLocation("recipes/root"))
 								.withRewards(AdvancementRewards.Builder.recipe(id))
 								.withCriterion(criterionName, criterion)
-								.withCriterion("has_the_recipe", new RecipeUnlockedTrigger.Instance(EntityPredicate.AndPredicate.EMPTY, id))
+								.withCriterion("has_the_recipe", new RecipeUnlockedTrigger.Instance(EntityPredicate.AndPredicate.ANY_AND, id))
 								.withRequirementsStrategy(IRequirementsStrategy.OR)))
 				.build(consumer, id);
 	}
 
 	private static void specialRecipe(SpecialRecipeSerializer<?> serializer, Consumer<IFinishedRecipe> consumer) {
-		CustomRecipeBuilder.func_218656_a(serializer).build(consumer, Psi.location("dynamic/" + serializer.getRegistryName().getPath()).toString());
+		CustomRecipeBuilder.customRecipe(serializer).build(consumer, Psi.location("dynamic/" + serializer.getRegistryName().getPath()).toString());
 	}
 
 }

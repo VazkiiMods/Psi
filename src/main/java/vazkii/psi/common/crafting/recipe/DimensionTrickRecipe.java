@@ -42,7 +42,7 @@ public class DimensionTrickRecipe extends TrickRecipe {
 
 	@Override
 	public boolean matches(RecipeWrapper inv, World world) {
-		return super.matches(inv, world) && dimensionId.equals(world.getDimension().func_242725_p());
+		return super.matches(inv, world) && dimensionId.equals(world.getDimensionType().getEffects());
 	}
 
 	public static class Serializer extends ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<DimensionTrickRecipe> {

@@ -44,14 +44,14 @@ public class DrawableTAS implements IDrawableStatic {
 		float maxV = sprite.getMaxV() - vSize * ((float) maskBottom / (float) textureHeight);
 
 		ms.push();
-		RenderSystem.bindTexture(sprite.getAtlas().getGlTextureId());
+		RenderSystem.bindTexture(sprite.getAtlasTexture().getGlTextureId());
 		Tessellator tessellator = Tessellator.getInstance();
 		BufferBuilder buf = tessellator.getBuffer();
 		buf.begin(7, DefaultVertexFormats.POSITION_TEX);
-		buf.vertex(x, y + height, 0.0D).texture(minU, maxV).endVertex();
-		buf.vertex(x + width, y + height, 0.0D).texture(maxU, maxV).endVertex();
-		buf.vertex(x + width, y, 0.0D).texture(maxU, minV).endVertex();
-		buf.vertex(x, y, 0.0D).texture(minU, minV).endVertex();
+		buf.pos(x, y + height, 0.0D).tex(minU, maxV).endVertex();
+		buf.pos(x + width, y + height, 0.0D).tex(maxU, maxV).endVertex();
+		buf.pos(x + width, y, 0.0D).tex(maxU, minV).endVertex();
+		buf.pos(x, y, 0.0D).tex(minU, minV).endVertex();
 		tessellator.draw();
 		ms.pop();
 	}

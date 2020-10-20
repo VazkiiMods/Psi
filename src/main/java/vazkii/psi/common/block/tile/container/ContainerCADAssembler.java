@@ -135,8 +135,8 @@ public class ContainerCADAssembler extends Container {
 
 				@OnlyIn(Dist.CLIENT)
 				@Override
-				public Pair<ResourceLocation, ResourceLocation> getBackgroundSprite() {
-					return Pair.of(PlayerContainer.BLOCK_ATLAS_TEXTURE, PlayerContainer.ARMOR_SLOT_TEXTURES[slot.getIndex()]);
+				public Pair<ResourceLocation, ResourceLocation> getBackground() {
+					return Pair.of(PlayerContainer.LOCATION_BLOCKS_TEXTURE, PlayerContainer.ARMOR_SLOT_TEXTURES[slot.getIndex()]);
 				}
 			});
 		}
@@ -144,15 +144,15 @@ public class ContainerCADAssembler extends Container {
 		addSlot(new Slot(playerInventory, playerSize - 1, 219, 143) {
 			@OnlyIn(Dist.CLIENT)
 			@Override
-			public Pair<ResourceLocation, ResourceLocation> getBackgroundSprite() {
-				return Pair.of(PlayerContainer.BLOCK_ATLAS_TEXTURE, PlayerContainer.EMPTY_OFFHAND_ARMOR_SLOT);
+			public Pair<ResourceLocation, ResourceLocation> getBackground() {
+				return Pair.of(PlayerContainer.LOCATION_BLOCKS_TEXTURE, PlayerContainer.EMPTY_ARMOR_SLOT_SHIELD);
 			}
 		});
 	}
 
 	@Override
 	public boolean canInteractWith(@Nonnull PlayerEntity playerIn) {
-		return assembler.getPos().distanceSq(playerIn.getX(), playerIn.getY(), playerIn.getZ(), true) <= 64;
+		return assembler.getPos().distanceSq(playerIn.getPosX(), playerIn.getPosY(), playerIn.getPosZ(), true) <= 64;
 	}
 
 	@Nonnull

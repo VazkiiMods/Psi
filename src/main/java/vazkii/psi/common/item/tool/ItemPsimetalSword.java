@@ -75,7 +75,7 @@ public class ItemPsimetalSword extends SwordItem implements IPsimetalTool {
 	public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
 		Multimap<Attribute, AttributeModifier> modifiers = super.getAttributeModifiers(slot, stack);
 		if (!isEnabled(stack)) {
-			modifiers.removeAll(Attributes.field_233823_f_); //ATTACK_DAMAGE
+			modifiers.removeAll(Attributes.ATTACK_DAMAGE);
 		}
 		return modifiers;
 	}

@@ -44,14 +44,14 @@ public class GuiButtonIO extends Button {
 
 			Minecraft.getInstance().textureManager.bindTexture(GuiProgrammer.texture);
 			RenderSystem.color4f(1F, 1F, 1F, 1F);
-			drawTexture(ms, x, y, hover ? 186 : 174, out ? 169 : 181, width, height);
+			blit(ms, x, y, hover ? 186 : 174, out ? 169 : 181, width, height);
 
 			if (hover) {
 				String key = out ? "psimisc.export_to_clipboard" : "psimisc.import_from_clipboard";
 				TextFormatting color = out ? TextFormatting.RED : TextFormatting.BLUE;
-				ITextComponent tip = new TranslationTextComponent(key).formatted(color);
+				ITextComponent tip = new TranslationTextComponent(key).mergeStyle(color);
 				gui.tooltip.add(tip);
-				gui.tooltip.add(new TranslationTextComponent("psimisc.must_hold_shift").formatted(TextFormatting.GRAY));
+				gui.tooltip.add(new TranslationTextComponent("psimisc.must_hold_shift").mergeStyle(TextFormatting.GRAY));
 			}
 		}
 	}

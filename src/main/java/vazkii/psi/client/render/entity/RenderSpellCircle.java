@@ -36,12 +36,12 @@ public class RenderSpellCircle extends EntityRenderer<EntitySpellCircle> {
 	static {
 		for (int i = 0; i < LAYERS.length; i++) {
 			ResourceLocation texture = new ResourceLocation(String.format(LibResources.MISC_SPELL_CIRCLE, i));
-			RenderType.State glState = RenderType.State.builder().texture(new RenderState.TextureState(texture, false, false))
+			RenderType.State glState = RenderType.State.getBuilder().texture(new RenderState.TextureState(texture, false, false))
 					.cull(new RenderState.CullState(false))
 					.alpha(new RenderState.AlphaState(0.004F))
 					.lightmap(new RenderState.LightmapState(true))
 					.build(true);
-			LAYERS[i] = RenderType.of(LibMisc.MOD_ID + ":spell_circle_" + i, DefaultVertexFormats.POSITION_COLOR_TEXTURE_LIGHT, GL11.GL_QUADS, 64, false, false, glState);
+			LAYERS[i] = RenderType.makeType(LibMisc.MOD_ID + ":spell_circle_" + i, DefaultVertexFormats.POSITION_COLOR_TEX_LIGHTMAP, GL11.GL_QUADS, 64, false, false, glState);
 		}
 	}
 
@@ -74,9 +74,9 @@ public class RenderSpellCircle extends EntityRenderer<EntitySpellCircle> {
 		zDir /= mag;
 
 		if (zDir == -1) {
-			ms.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(180));
+			ms.rotate(Vector3f.XP.rotationDegrees(180));
 		} else if (zDir != 1) {
-			ms.multiply(new Vector3f(-yDir / mag, xDir / mag, 0).getDegreesQuaternion((float) (Math.acos(zDir) * 180 / Math.PI)));
+			ms.rotate(new Vector3f(-yDir / mag, xDir / mag, 0).rotationDegrees((float) (Math.acos(zDir) * 180 / Math.PI)));
 		}
 		ms.translate(0, 0, 0.1);
 		ms.scale((float) ratio * scale, (float) ratio * scale, (float) ratio);
@@ -113,15 +113,15 @@ public class RenderSpellCircle extends EntityRenderer<EntitySpellCircle> {
 			}
 
 			ms.push();
-			ms.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(i == 0 ? -alive : alive));
+			ms.rotate(Vector3f.ZP.rotationDegrees(i == 0 ? -alive : alive));
 
 			IVertexBuilder buffer = buffers.getBuffer(LAYERS[i]);
-			Matrix4f mat = ms.peek().getModel();
+			Matrix4f mat = ms.getLast().getMatrix();
 			int fullbright = 0xF000F0;
-			buffer.vertex(mat, -32, 32, 0).color(rValue, gValue, bValue, 255).texture(0, 1).light(fullbright).endVertex();
-			buffer.vertex(mat, 32, 32, 0).color(rValue, gValue, bValue, 255).texture(1, 1).light(fullbright).endVertex();
-			buffer.vertex(mat, 32, -32, 0).color(rValue, gValue, bValue, 255).texture(1, 0).light(fullbright).endVertex();
-			buffer.vertex(mat, -32, -32, 0).color(rValue, gValue, bValue, 255).texture(0, 0).light(fullbright).endVertex();
+			buffer.pos(mat, -32, 32, 0).color(rValue, gValue, bValue, 255).tex(0, 1).lightmap(fullbright).endVertex();
+			buffer.pos(mat, 32, 32, 0).color(rValue, gValue, bValue, 255).tex(1, 1).lightmap(fullbright).endVertex();
+			buffer.pos(mat, 32, -32, 0).color(rValue, gValue, bValue, 255).tex(1, 0).lightmap(fullbright).endVertex();
+			buffer.pos(mat, -32, -32, 0).color(rValue, gValue, bValue, 255).tex(0, 0).lightmap(fullbright).endVertex();
 			ms.pop();
 
 			ms.translate(0, 0, -0.5);

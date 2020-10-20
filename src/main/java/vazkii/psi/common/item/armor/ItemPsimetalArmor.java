@@ -81,8 +81,8 @@ public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiE
 	public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
 		Multimap<Attribute, AttributeModifier> modifiers = super.getAttributeModifiers(slot, stack);
 		if (!isEnabled(stack)) {
-			modifiers.removeAll(Attributes.field_233826_i_); //ARMOR
-			modifiers.removeAll(Attributes.field_233827_j_); //ARMOR_TOUGHNESS
+			modifiers.removeAll(Attributes.ARMOR);
+			modifiers.removeAll(Attributes.ARMOR_TOUGHNESS);
 		}
 
 		return modifiers;

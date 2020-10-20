@@ -70,7 +70,7 @@ public interface IDetonationHandler {
 					}
 					return entity.getCapability(PsiAPI.DETONATION_HANDLER_CAPABILITY).map(detonator -> {
 						Vector3d locus = detonator.objectLocus();
-						if (locus == null || locus.squareDistanceTo(center.getX(), center.getY(), center.getZ()) > range * range) {
+						if (locus == null || locus.squareDistanceTo(center.getPosX(), center.getPosY(), center.getPosZ()) > range * range) {
 							return false;
 						}
 						return filter == null || filter.test(entity);
