@@ -7,8 +7,8 @@
   "mixins": [
   ],
   "client": [
-    "AccessorRenderBuffers",
-    "AccessorRenderState"
+    "client.AccessorRenderBuffers",
+    "client.AccessorRenderState"
   ],
   "injectors": {
     "defaultRequire": 1
