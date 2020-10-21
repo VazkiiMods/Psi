@@ -1,15 +1,13 @@
 buildscript {
     repositories {
         maven { url = 'https://files.minecraftforge.net/maven' }
-        maven {
-            url "https://maven.tterrag.com/"
-        }
         jcenter()
         mavenCentral()
-        mavenLocal()
+        maven { url = 'https://dist.creeper.host/Sponge/maven' }
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
+        classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
     }
 }
 
@@ -21,6 +19,7 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven'
 apply plugin: 'pmd'
+apply plugin: 'org.spongepowered.mixin'
 
 ext.configFile = file('build.properties')
 ext.config = parseConfig(configFile)
@@ -47,6 +46,7 @@ minecraft {
             properties 'fml.earlyprogresswindow': 'false'
             property 'forge.logging.console.level', 'debug'
             property 'mixin.env.disableRefMap', 'true'
+            arg "-mixin.config=" + config.mod_id + ".mixins.json"
 
             mods {
                 psi {
@@ -60,6 +60,7 @@ minecraft {
 
             property 'forge.logging.console.level', 'debug'
             property 'mixin.env.disableRefMap', 'true'
+            arg "-mixin.config=" + config.mod_id + ".mixins.json"
             singleInstance(true)
             mods {
                 psi {
@@ -71,6 +72,7 @@ minecraft {
             properties 'forge.logging.console.level': 'debug'
             properties 'fml.earlyprogresswindow': 'false'
             property 'mixin.env.disableRefMap', 'true'
+            arg "-mixin.config=" + config.mod_id + ".mixins.json"
             workingDirectory project.file('run')
             mods {
                 psi {
@@ -105,12 +107,28 @@ repositories {
 dependencies {
     minecraft group: 'net.minecraftforge', name: 'forge', version: "${mc_version}-34.1.0"
 
+    annotationProcessor 'org.spongepowered:mixin:0.8.1'
+    annotationProcessor 'com.google.code.gson:gson:2.8.0'
+    annotationProcessor 'com.google.guava:guava:21.0'
+    annotationProcessor 'org.ow2.asm:asm-tree:7.2'
+    annotationProcessor 'org.ow2.asm:asm-commons:7.2'
+    annotationProcessor 'org.ow2.asm:asm-util:7.2'
+
     compileOnly fg.deobf("vazkii.patchouli:Patchouli:1.16.2-47-SNAPSHOT:api")
     runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:1.16.2-47-SNAPSHOT")
 
     compileOnly fg.deobf("mezz.jei:jei-1.16.2:7.3.2.25:api")
     runtimeOnly fg.deobf("mezz.jei:jei-1.16.2:7.3.2.25")
 
+}
+
+// Prevent Mixin annotation processor from getting into IDEA's annotation processor settings
+if (System.getProperty("idea.sync.active") == "true") {
+    afterEvaluate {
+        tasks.withType(JavaCompile).all {
+            it.options.annotationProcessorPath = files()
+        }
+    }
 }
 
 spotless {
@@ -206,7 +224,8 @@ jar {
                 "Implementation-Title": "${config.mod_id}",
                 "Implementation-Version": "${version}",
                 "Implementation-Vendor" :"vazkii",
-                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+                "MixinConfigs": "${config.mod_id}.mixins.json"
         ])
     }
 
@@ -223,6 +242,10 @@ uploadArchives {
             repository(url: "file://" + (System.getenv("local_maven") != null ? System.getenv("local_maven") : System.getenv("bamboo_local_maven")))
         }
     }
+}
+
+mixin {
+    add sourceSets.main, "${config.mod_id}.refmap.json"
 }
 
 defaultTasks 'clean', 'runData', 'checkSyntax', 'build', 'incrementBuildNumber'
