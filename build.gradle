@@ -228,9 +228,9 @@ jar {
     exclude "**/*.exe"
     exclude "**/unused"
     exclude "**/*.py"
-    excluse "**/*.sh"
-    excluse "**/*.txt"
-    excluse "**/*.sh"
+    exclude "**/*.sh"
+    exclude "**/*.txt"
+    exclude "**/*.sh"
 }
 
 
