@@ -231,6 +231,9 @@ jar {
     exclude "**/*.sh"
     exclude "**/*.txt"
     exclude "**/*.sh"
+    exclude "**/*.vim"
+    exclude "**/mappings-en_us.json"
+    exclude "**/en_us_base.json"
 }
 
 
