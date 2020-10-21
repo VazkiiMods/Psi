@@ -11,7 +11,6 @@ package vazkii.psi.client.core.proxy;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.client.renderer.model.ModelBakery;
@@ -31,7 +30,6 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.DeferredWorkQueue;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -64,6 +62,7 @@ import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.lib.LibItemNames;
 import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.spell.other.PieceConnector;
+import vazkii.psi.mixin.client.AccessorRenderBuffers;
 
 import java.util.Map;
 
@@ -95,7 +94,7 @@ public class ClientProxy implements IProxy {
 
 	private void loadComplete(FMLLoadCompleteEvent event) {
 		DeferredWorkQueue.runLater(() -> {
-			Map<RenderType, BufferBuilder> map = ObfuscationReflectionHelper.getPrivateValue(IRenderTypeBuffer.Impl.class, Minecraft.getInstance().getRenderTypeBuffers().getBufferSource(), "field_228458_b_ ");
+			Map<RenderType, BufferBuilder> map = ((AccessorRenderBuffers) Minecraft.getInstance().getRenderTypeBuffers().getBufferSource()).getFixedBuffers();
 			RenderType layer = SpellPiece.getLayer();
 			map.put(layer, new BufferBuilder(layer.getBufferSize()));
 			map.put(GuiProgrammer.LAYER, new BufferBuilder(GuiProgrammer.LAYER.getBufferSize()));
