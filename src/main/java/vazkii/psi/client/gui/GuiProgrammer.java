@@ -81,7 +81,7 @@ public class GuiProgrammer extends Screen {
 	public static final ResourceLocation texture = new ResourceLocation(LibResources.GUI_PROGRAMMER);
 	public static final RenderType LAYER;
 	static {
-		RenderState.TransparencyState translucent = ObfuscationReflectionHelper.getPrivateValue(RenderState.class, null, "TRANSLUCENT_TRANSPARENCY");
+		RenderState.TransparencyState translucent = ObfuscationReflectionHelper.getPrivateValue(RenderState.class, null, "field_228515_g_");
 		RenderType.State glState = RenderType.State.getBuilder()
 				.texture(new RenderState.TextureState(texture, false, false))
 				.lightmap(new RenderState.LightmapState(true))
