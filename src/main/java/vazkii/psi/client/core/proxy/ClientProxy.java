@@ -95,7 +95,7 @@ public class ClientProxy implements IProxy {
 
 	private void loadComplete(FMLLoadCompleteEvent event) {
 		DeferredWorkQueue.runLater(() -> {
-			Map<RenderType, BufferBuilder> map = ObfuscationReflectionHelper.getPrivateValue(IRenderTypeBuffer.Impl.class, Minecraft.getInstance().getRenderTypeBuffers().getBufferSource(), "fixedBuffers");
+			Map<RenderType, BufferBuilder> map = ObfuscationReflectionHelper.getPrivateValue(IRenderTypeBuffer.Impl.class, Minecraft.getInstance().getRenderTypeBuffers().getBufferSource(), "field_228458_b_ ");
 			RenderType layer = SpellPiece.getLayer();
 			map.put(layer, new BufferBuilder(layer.getBufferSize()));
 			map.put(GuiProgrammer.LAYER, new BufferBuilder(GuiProgrammer.LAYER.getBufferSize()));
