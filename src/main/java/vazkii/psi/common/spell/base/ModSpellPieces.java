@@ -184,6 +184,7 @@ public final class ModSpellPieces {
 	public static PieceContainer operatorVectorMaximum;
 	public static PieceContainer operatorVectorMinimum;
 	public static PieceContainer operatorEntityHeight;
+	public static PieceContainer operatorVectorSignum;
 
 	public static PieceContainer constantNumber;
 	public static PieceContainer constantPi;
@@ -361,6 +362,7 @@ public final class ModSpellPieces {
 		operatorVectorMaximum = register(PieceOperatorVectorMaximum.class, LibPieceNames.OPERATOR_VECTOR_MAXIMUM, LibPieceGroups.VECTORS_INTRO);
 		operatorVectorMinimum = register(PieceOperatorVectorMinimum.class, LibPieceNames.OPERATOR_VECTOR_MINIMUM, LibPieceGroups.VECTORS_INTRO);
 		operatorEntityHeight = register(PieceOperatorEntityHeight.class, LibPieceNames.OPERATOR_ENTITY_HEIGHT, LibPieceGroups.ENTITIES_INTRO);
+		operatorVectorSignum = register(PieceOperatorVectorSignum.class, LibPieceNames.OPERATOR_VECTOR_SIGNUM, LibPieceGroups.VECTORS_INTRO);
 
 		constantNumber = register(PieceConstantNumber.class, LibPieceNames.CONSTANT_NUMBER, LibPieceGroups.TUTORIAL_2, true);
 		constantPi = register(PieceConstantPi.class, LibPieceNames.CONSTANT_PI, LibPieceGroups.TRIGONOMETRY, true);
