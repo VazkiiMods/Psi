@@ -15,6 +15,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
@@ -107,7 +108,7 @@ public class PieceTrickPlaceBlock extends PieceTrick {
 			} else {
 				ItemStack stack = player.inventory.getStackInSlot(slot);
 				if (!stack.isEmpty() && stack.getItem() instanceof BlockItem) {
-					ItemStack rem = removeFromInventory(player, stack);
+					ItemStack rem = removeFromInventory(player, stack, true);
 					BlockItem iblock = (BlockItem) rem.getItem();
 
 					ItemStack save;
@@ -120,12 +121,15 @@ public class PieceTrickPlaceBlock extends PieceTrick {
 					newCtx = new ItemUseContext(ctx.getPlayer(), ctx.getHand(), hit);
 					player.setHeldItem(newCtx.getHand(), save);
 
-					iblock.tryPlace(new DirectionBlockItemUseContext(newCtx, horizontalDirection));
+					ActionResultType result = iblock.tryPlace(new DirectionBlockItemUseContext(newCtx, horizontalDirection));
 
-					if (player.abilities.isCreativeMode) {
-						HUDHandler.setRemaining(rem, -1);
-					} else {
-						HUDHandler.setRemaining(player, rem, null);
+					if (result != ActionResultType.FAIL) {
+						removeFromInventory(player, stack, false);
+						if (player.abilities.isCreativeMode) {
+							HUDHandler.setRemaining(rem, -1);
+						} else {
+							HUDHandler.setRemaining(player, rem, null);
+						}
 					}
 				}
 			}
@@ -136,7 +140,7 @@ public class PieceTrickPlaceBlock extends PieceTrick {
 		}
 	}
 
-	public static ItemStack removeFromInventory(PlayerEntity player, ItemStack stack) {
+	public static ItemStack removeFromInventory(PlayerEntity player, ItemStack stack, boolean copy) {
 		if (player.abilities.isCreativeMode) {
 			return stack.copy();
 		}
@@ -146,9 +150,11 @@ public class PieceTrickPlaceBlock extends PieceTrick {
 			ItemStack invStack = inv.getStackInSlot(i);
 			if (!invStack.isEmpty() && invStack.isItemEqual(stack) && ItemStack.areItemStacksEqual(stack, invStack)) {
 				ItemStack retStack = invStack.copy();
-				invStack.shrink(1);
-				if (invStack.getCount() == 0) {
-					inv.setInventorySlotContents(i, ItemStack.EMPTY);
+				if (!copy) {
+					invStack.shrink(1);
+					if (invStack.getCount() == 0) {
+						inv.setInventorySlotContents(i, ItemStack.EMPTY);
+					}
 				}
 				return retStack;
 			}
