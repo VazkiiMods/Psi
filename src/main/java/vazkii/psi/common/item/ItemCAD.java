@@ -213,7 +213,7 @@ public class ItemCAD extends Item implements ICAD {
 			did = true;
 		}
 
-		return new ActionResult<>(did ? ActionResultType.PASS : ActionResultType.PASS, itemStackIn);
+		return new ActionResult<>(did ? ActionResultType.SUCCESS : ActionResultType.PASS, itemStackIn);
 	}
 
 	public static boolean cast(World world, PlayerEntity player, PlayerData data, ItemStack bullet, ItemStack cad, int cd, int particles, float sound, Consumer<SpellContext> predicate) {
