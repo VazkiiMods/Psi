@@ -8,8 +8,10 @@
  */
 package vazkii.psi.client.model;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
+
 import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 
 public class ModelPsimetalExosuit extends ModelArmor {
@@ -149,7 +151,7 @@ public class ModelPsimetalExosuit extends ModelArmor {
 	}
 
 	@Override
-	public void setRotationAngles(LivingEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void render(MatrixStack ms, IVertexBuilder buffer, int light, int overlay, float r, float g, float b, float a) {
 		helm.showModel = slot == EquipmentSlotType.HEAD;
 		body.showModel = slot == EquipmentSlotType.CHEST;
 		armR.showModel = slot == EquipmentSlotType.CHEST;
@@ -167,7 +169,7 @@ public class ModelPsimetalExosuit extends ModelArmor {
 			bipedRightLeg = bootR;
 			bipedLeftLeg = bootL;
 		}
-		super.setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+		super.render(ms, buffer, light, overlay, r, g, b, a);
 	}
 
 }
