@@ -13,6 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.SpecialRecipe;
 import net.minecraft.item.crafting.SpecialRecipeSerializer;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
@@ -78,6 +79,21 @@ public class DriveDuplicateRecipe extends SpecialRecipe {
 		ItemStack copy = target.copy();
 		ItemSpellDrive.setSpell(copy, source);
 		return copy;
+	}
+
+	@Override
+	public NonNullList<ItemStack> getRemainingItems(CraftingInventory inv) {
+		NonNullList<ItemStack> list = NonNullList.withSize(inv.getSizeInventory(), ItemStack.EMPTY);
+
+		for (int i = 0; i < list.size(); ++i) {
+			ItemStack item = inv.getStackInSlot(i);
+			if (!item.isEmpty() && ItemSpellDrive.getSpell(item) != null) {
+				list.set(i, item.copy());
+				break;
+			}
+		}
+
+		return list;
 	}
 
 	@Nonnull

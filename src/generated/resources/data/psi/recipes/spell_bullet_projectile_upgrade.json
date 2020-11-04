@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:crafting_shapeless",
+  "type": "psi:bullet_upgrade",
   "ingredients": [
     {
       "item": "psi:spell_bullet"

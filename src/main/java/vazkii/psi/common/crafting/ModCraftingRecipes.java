@@ -22,6 +22,7 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 import vazkii.psi.api.recipe.ITrickRecipe;
 import vazkii.psi.common.crafting.recipe.AssemblyScavengeRecipe;
 import vazkii.psi.common.crafting.recipe.BulletToDriveRecipe;
+import vazkii.psi.common.crafting.recipe.BulletUpgradeRecipe;
 import vazkii.psi.common.crafting.recipe.ColorizerChangeRecipe;
 import vazkii.psi.common.crafting.recipe.DimensionTrickRecipe;
 import vazkii.psi.common.crafting.recipe.DriveDuplicateRecipe;
@@ -40,6 +41,7 @@ public class ModCraftingRecipes {
 		event.getRegistry().registerAll(
 				name(AssemblyScavengeRecipe.SERIALIZER, "scavenge"),
 				name(BulletToDriveRecipe.SERIALIZER, "bullet_to_drive"),
+				name(BulletUpgradeRecipe.SERIALIZER, "bullet_upgrade"),
 				name(ColorizerChangeRecipe.SERIALIZER, "colorizer_change"),
 				name(DriveDuplicateRecipe.SERIALIZER, "drive_duplicate"),
 				name(SensorAttachRecipe.SERIALIZER, "sensor_attach"),

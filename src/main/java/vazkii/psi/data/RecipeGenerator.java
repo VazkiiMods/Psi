@@ -27,12 +27,7 @@ import net.minecraftforge.common.crafting.conditions.IConditionBuilder;
 
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.base.ModBlocks;
-import vazkii.psi.common.crafting.recipe.AssemblyScavengeRecipe;
-import vazkii.psi.common.crafting.recipe.BulletToDriveRecipe;
-import vazkii.psi.common.crafting.recipe.ColorizerChangeRecipe;
-import vazkii.psi.common.crafting.recipe.DriveDuplicateRecipe;
-import vazkii.psi.common.crafting.recipe.SensorAttachRecipe;
-import vazkii.psi.common.crafting.recipe.SensorRemoveRecipe;
+import vazkii.psi.common.crafting.recipe.*;
 import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.lib.LibItemNames;
 import vazkii.psi.common.lib.ModTags;
@@ -284,7 +279,7 @@ public class RecipeGenerator extends RecipeProvider implements IConditionBuilder
 				.addIngredient(ModItems.spellBullet)
 				.addIngredient(ItemTags.ARROWS)
 				.addCriterion("has_psidust", hasItem(ModItems.psidust))
-				.build(consumer, Psi.location("spell_bullet_projectile_upgrade"));
+				.build(WrapperResult.ofType(BulletUpgradeRecipe.SERIALIZER, consumer), Psi.location("spell_bullet_projectile_upgrade"));
 
 		ShapedRecipeBuilder.shapedRecipe(ModItems.loopSpellBullet)
 				.key('I', Tags.Items.INGOTS_IRON)
@@ -297,7 +292,7 @@ public class RecipeGenerator extends RecipeProvider implements IConditionBuilder
 				.addIngredient(ModItems.spellBullet)
 				.addIngredient(Tags.Items.STRING)
 				.addCriterion("has_psidust", hasItem(ModItems.psidust))
-				.build(consumer, Psi.location("spell_bullet_loopcast_upgrade"));
+				.build(WrapperResult.ofType(BulletUpgradeRecipe.SERIALIZER, consumer), Psi.location("spell_bullet_loopcast_upgrade"));
 		ShapedRecipeBuilder.shapedRecipe(ModItems.circleSpellBullet)
 				.key('I', Tags.Items.INGOTS_IRON)
 				.key('D', ModTags.PSIDUST)
@@ -313,7 +308,7 @@ public class RecipeGenerator extends RecipeProvider implements IConditionBuilder
 						new Ingredient.TagList(Tags.Items.SLIMEBALLS),
 						new Ingredient.SingleItemList(new ItemStack(Items.SNOWBALL)))))
 				.addCriterion("has_psidust", hasItem(ModItems.psidust))
-				.build(consumer, Psi.location("spell_bullet_circle_upgrade"));
+				.build(WrapperResult.ofType(BulletUpgradeRecipe.SERIALIZER, consumer), Psi.location("spell_bullet_circle_upgrade"));
 		ShapedRecipeBuilder.shapedRecipe(ModItems.grenadeSpellBullet)
 				.key('I', Tags.Items.INGOTS_IRON)
 				.key('D', ModTags.PSIDUST)
@@ -325,7 +320,7 @@ public class RecipeGenerator extends RecipeProvider implements IConditionBuilder
 				.addIngredient(ModItems.spellBullet)
 				.addIngredient(Tags.Items.GUNPOWDER)
 				.addCriterion("has_psidust", hasItem(ModItems.psidust))
-				.build(consumer, Psi.location("spell_bullet_grenade_upgrade"));
+				.build(WrapperResult.ofType(BulletUpgradeRecipe.SERIALIZER, consumer), Psi.location("spell_bullet_grenade_upgrade"));
 		ShapedRecipeBuilder.shapedRecipe(ModItems.chargeSpellBullet)
 				.key('I', Tags.Items.INGOTS_IRON)
 				.key('D', ModTags.PSIDUST)
@@ -337,7 +332,7 @@ public class RecipeGenerator extends RecipeProvider implements IConditionBuilder
 				.addIngredient(ModItems.spellBullet)
 				.addIngredient(Tags.Items.DUSTS_REDSTONE)
 				.addCriterion("has_psidust", hasItem(ModItems.psidust))
-				.build(consumer, Psi.location("spell_bullet_charge_upgrade"));
+				.build(WrapperResult.ofType(BulletUpgradeRecipe.SERIALIZER, consumer), Psi.location("spell_bullet_charge_upgrade"));
 		ShapedRecipeBuilder.shapedRecipe(ModItems.mineSpellBullet)
 				.key('I', Tags.Items.INGOTS_IRON)
 				.key('D', ModTags.PSIDUST)
@@ -349,7 +344,7 @@ public class RecipeGenerator extends RecipeProvider implements IConditionBuilder
 				.addIngredient(ModItems.spellBullet)
 				.addIngredient(ItemTags.BUTTONS)
 				.addCriterion("has_psidust", hasItem(ModItems.psidust))
-				.build(consumer, Psi.location("spell_bullet_mine_upgrade"));
+				.build(WrapperResult.ofType(BulletUpgradeRecipe.SERIALIZER, consumer), Psi.location("spell_bullet_mine_upgrade"));
 
 		ShapedRecipeBuilder.shapedRecipe(ModItems.spellDrive)
 				.key('I', ModTags.INGOT_PSIMETAL)

@@ -78,15 +78,4 @@ public class ItemPsimetalExosuitHelmet extends ItemPsimetalArmor implements ISen
 		stack.getOrCreateTag().put(TAG_SENSOR, cmp);
 	}
 
-	@Override
-	public boolean hasContainerItem(ItemStack stack) {
-		return !getContainerItem(stack).isEmpty();
-	}
-
-	@Nonnull
-	@Override
-	public ItemStack getContainerItem(@Nonnull ItemStack itemStack) {
-		return getAttachedSensor(itemStack);
-	}
-
 }
