@@ -11,10 +11,7 @@ package vazkii.psi.client.jei;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.helpers.IJeiHelpers;
-import mezz.jei.api.registration.IRecipeCatalystRegistration;
-import mezz.jei.api.registration.IRecipeCategoryRegistration;
-import mezz.jei.api.registration.IRecipeRegistration;
-import mezz.jei.api.registration.ISubtypeRegistration;
+import mezz.jei.api.registration.*;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemGroup;
@@ -22,8 +19,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 
+import vazkii.psi.client.jei.crafting.BulletToDriveExtension;
+import vazkii.psi.client.jei.crafting.DriveDuplicateExtension;
 import vazkii.psi.client.jei.tricks.TrickCraftingCategory;
 import vazkii.psi.common.crafting.ModCraftingRecipes;
+import vazkii.psi.common.crafting.recipe.BulletToDriveRecipe;
+import vazkii.psi.common.crafting.recipe.DriveDuplicateRecipe;
 import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.lib.LibMisc;
 
@@ -44,6 +45,12 @@ public class JEICompat implements IModPlugin {
 	public void registerCategories(IRecipeCategoryRegistration registry) {
 		helpers = registry.getJeiHelpers();
 		registry.addRecipeCategories(new TrickCraftingCategory(helpers.getGuiHelper()));
+	}
+
+	@Override
+	public void registerVanillaCategoryExtensions(IVanillaCategoryExtensionRegistration registration) {
+		registration.getCraftingCategory().addCategoryExtension(BulletToDriveRecipe.class, BulletToDriveExtension::new);
+		registration.getCraftingCategory().addCategoryExtension(DriveDuplicateRecipe.class, DriveDuplicateExtension::new);
 	}
 
 	@Override
