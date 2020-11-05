@@ -43,17 +43,6 @@ public class ItemSpellDrive extends Item {
 		super(properties.maxStackSize(1));
 	}
 
-	@Override
-	public boolean hasContainerItem(ItemStack stack) {
-		return getSpell(stack) != null;
-	}
-
-	@Nonnull
-	@Override
-	public ItemStack getContainerItem(@Nonnull ItemStack itemStack) {
-		return itemStack.copy();
-	}
-
 	@Nonnull
 	@Override
 	public ITextComponent getDisplayName(ItemStack stack) {

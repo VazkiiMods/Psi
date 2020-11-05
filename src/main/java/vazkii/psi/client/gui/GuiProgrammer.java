@@ -60,6 +60,7 @@ import vazkii.psi.client.gui.widget.SpellCostsWidget;
 import vazkii.psi.client.gui.widget.StatusWidget;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.tile.TileProgrammer;
+import vazkii.psi.common.core.handler.ConfigHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.lib.LibBlockNames;
 import vazkii.psi.common.lib.LibMisc;
@@ -902,5 +903,10 @@ public class GuiProgrammer extends Screen {
 
 	public List<Widget> getButtons() {
 		return this.buttons;
+	}
+
+	@Override
+	public boolean isPauseScreen() {
+		return ConfigHandler.CLIENT.pauseGameInProgrammer.get();
 	}
 }
