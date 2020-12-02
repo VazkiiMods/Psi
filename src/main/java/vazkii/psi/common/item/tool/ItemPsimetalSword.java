@@ -118,11 +118,6 @@ public class ItemPsimetalSword extends SwordItem implements IPsimetalTool {
 		tooltip.add(new TranslationTextComponent("psimisc.spell_selected", componentName));
 	}
 
-	@Override
-	public boolean getIsRepairable(ItemStack thisStack, @Nonnull ItemStack material) {
-		return IPsimetalTool.isRepairableBy(material) || super.getIsRepairable(thisStack, material);
-	}
-
 	@Nullable
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {

@@ -12,8 +12,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tags.ItemTags;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceContext;
@@ -29,6 +27,7 @@ import vazkii.psi.api.spell.ISpellAcceptor;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.item.ItemCAD;
+import vazkii.psi.common.item.base.ModItems;
 
 import javax.annotation.Nullable;
 
@@ -56,8 +55,9 @@ public interface IPsimetalTool {
 		}
 	}
 
+	@Deprecated // todo remove in 1.17? Provide the proper tool material in your tools for other materials instead
 	static boolean isRepairableBy(ItemStack stack) {
-		return ItemTags.getCollection().getTagByID(new ResourceLocation("forge", "ingots/psimetal")).contains(stack.getItem());
+		return stack.getItem() == ModItems.psimetal;
 	}
 
 	static BlockRayTraceResult raytraceFromEntity(World worldIn, PlayerEntity player, RayTraceContext.FluidMode fluidMode, double range) {

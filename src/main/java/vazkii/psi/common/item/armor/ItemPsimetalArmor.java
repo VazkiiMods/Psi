@@ -162,11 +162,6 @@ public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiE
 	}
 
 	@Override
-	public boolean getIsRepairable(ItemStack thisStack, @Nonnull ItemStack material) {
-		return IPsimetalTool.isRepairableBy(material) || super.getIsRepairable(thisStack, material);
-	}
-
-	@Override
 	public boolean isRepairable(ItemStack stack) {
 		return super.isRepairable(stack);
 	}

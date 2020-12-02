@@ -115,9 +115,4 @@ public class ItemPsimetalAxe extends AxeItem implements IPsimetalTool {
 		tooltip.add(new TranslationTextComponent("psimisc.spell_selected", componentName));
 	}
 
-	@Override
-	public boolean getIsRepairable(ItemStack thisStack, @Nonnull ItemStack material) {
-		return IPsimetalTool.isRepairableBy(material) || super.getIsRepairable(thisStack, material);
-	}
-
 }
