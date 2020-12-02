@@ -25,6 +25,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.Style;
@@ -189,7 +190,7 @@ public class ItemCAD extends Item implements ICAD {
 			if (!worldIn.isRemote) {
 				playerIn.sendMessage(new TranslationTextComponent("psimisc.multiple_cads").setStyle(Style.EMPTY.setFormatting(TextFormatting.RED)), Util.DUMMY_UUID);
 			}
-			return new ActionResult<>(ActionResultType.SUCCESS, itemStackIn);
+			return new ActionResult<>(ActionResultType.CONSUME, itemStackIn);
 		}
 		ISocketable sockets = getSocketable(playerCad);
 
@@ -213,7 +214,7 @@ public class ItemCAD extends Item implements ICAD {
 			did = true;
 		}
 
-		return new ActionResult<>(did ? ActionResultType.SUCCESS : ActionResultType.PASS, itemStackIn);
+		return new ActionResult<>(did ? ActionResultType.CONSUME : ActionResultType.PASS, itemStackIn);
 	}
 
 	public static boolean cast(World world, PlayerEntity player, PlayerData data, ItemStack bullet, ItemStack cad, int cd, int particles, float sound, Consumer<SpellContext> predicate) {
@@ -302,7 +303,8 @@ public class ItemCAD extends Item implements ICAD {
 
 	@Override
 	public boolean craft(ItemStack cad, PlayerEntity player, PieceCraftingTrick craftingTrick) {
-		if (player.world.isRemote) {
+		World world = player.world;
+		if (world.isRemote) {
 			return false;
 		}
 
@@ -320,11 +322,24 @@ public class ItemCAD extends Item implements ICAD {
 				predicate = r -> r.getPiece() == null || r.getPiece().canCraft(craftingTrick);
 			}
 
-			Optional<ITrickRecipe> recipe = player.world.getRecipeManager().getRecipe(ModCraftingRecipes.TRICK_RECIPE_TYPE, inv, player.world)
+			Optional<ITrickRecipe> recipe = world.getRecipeManager().getRecipe(ModCraftingRecipes.TRICK_RECIPE_TYPE, inv, world)
 					.filter(predicate);
 			if (recipe.isPresent()) {
 				ItemStack outCopy = recipe.get().getRecipeOutput().copy();
-				outCopy.setCount(stack.getCount());
+				int count = stack.getCount() * outCopy.getCount();
+				while (count > 64) {
+					int dropCount = world.getRandom().nextInt(32) + 32;
+					ItemEntity drop = new ItemEntity(world, item.getPosX(), item.getPosY(), item.getPosZ(),
+							new ItemStack(outCopy.getItem(), dropCount));
+					Vector3d motion = item.getMotion();
+					drop.setMotion(motion.getX() + (world.getRandom().nextFloat() - 0.5D) / 5,
+							motion.getY() + (world.getRandom().nextFloat()) / 10,
+							motion.getZ() + (world.getRandom().nextFloat() - 0.5D) / 5);
+					world.addEntity(drop);
+					count -= dropCount;
+				}
+
+				outCopy.setCount(count);
 				item.setItem(outCopy);
 				did = true;
 				MessageVisualEffect msg = new MessageVisualEffect(ICADColorizer.DEFAULT_SPELL_COLOR,
