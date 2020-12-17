@@ -13,8 +13,7 @@ import net.minecraft.item.ItemStack;
 import vazkii.psi.api.cad.EnumCADStat;
 import vazkii.psi.api.cad.ICAD;
 
-import java.util.EnumMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Metadata for a given spell. Basically just a fancy holder for a map of the spell's
@@ -23,7 +22,7 @@ import java.util.Map;
 public final class SpellMetadata {
 
 	public final Map<EnumSpellStat, Integer> stats = new EnumMap<>(EnumSpellStat.class);
-
+	private Set<String> flags = new HashSet<>();
 	/**
 	 * Should errors from this spell not be sent to the player's chat?
 	 */
@@ -49,6 +48,24 @@ public final class SpellMetadata {
 	 */
 	public void setStat(EnumSpellStat stat, int val) {
 		stats.put(stat, val);
+	}
+
+	/**
+	 * Sets a flag in the metadata.
+	 */
+	public void setFlag(String flag, boolean val) {
+		if (val) {
+			flags.add(flag);
+		} else {
+			flags.remove(flag);
+		}
+	}
+
+	/**
+	 * Returns if a flag exists in the metadata.
+	 */
+	public boolean getFlag(String flag) {
+		return flags.contains(flag);
 	}
 
 	/**
