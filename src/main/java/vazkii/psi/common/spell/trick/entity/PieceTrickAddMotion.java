@@ -99,13 +99,14 @@ public class PieceTrickAddMotion extends PieceTrick {
 				context.customData.put(keyv, 0);
 			}
 
-			if (e.getMotion().getY() >= 0) {
+			if (e.getMotion().getY() + dir.y >= 0) {
 				e.fallDistance = 0;
 			} else if (dir.y > 0) {
 				double magicnumber = 25d / 98d; // Equal to 1/terminal velocity of living entity
-				double yvel = 1 - e.getMotion().getY() * magicnumber; // inverse % of terminal velocity
+				double yvel = (e.getMotion().getY() + dir.y) * magicnumber + 1; // inverse % of terminal velocity
 				if (yvel > 0) {
-					e.fallDistance = (float) Math.min(e.fallDistance, -(49 / magicnumber) + (49 * yvel - Math.log(yvel) / Math.log(4 * magicnumber) / magicnumber));
+					float newfall = (float) (-(49 / magicnumber) + (((49 * yvel) - (Math.log(yvel) / Math.log(4 * magicnumber))) / magicnumber));
+					e.fallDistance = Math.min(e.fallDistance, Math.max(0, newfall));
 				}
 			}
 		}
