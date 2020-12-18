@@ -89,11 +89,11 @@ public class CompiledSpell {
 			}
 		} catch (SpellRuntimeException e) {
 			if (!context.shouldSuppressErrors()) {
-				context.caster.sendMessage(new TranslationTextComponent(e.getMessage()).setStyle(Style.EMPTY.withColor(TextFormatting.RED)), Util.NIL_UUID);
+				context.caster.sendMessage(new TranslationTextComponent(e.getMessage()).setStyle(Style.EMPTY.setFormatting(TextFormatting.RED)), Util.DUMMY_UUID);
 
 				int x = context.cspell.currentAction.piece.x + 1;
 				int y = context.cspell.currentAction.piece.y + 1;
-				context.caster.sendMessage(new TranslationTextComponent("psi.spellerror.position", x, y).setStyle(Style.EMPTY.withColor(TextFormatting.RED)), Util.NIL_UUID);
+				context.caster.sendMessage(new TranslationTextComponent("psi.spellerror.position", x, y).setStyle(Style.EMPTY.setFormatting(TextFormatting.RED)), Util.DUMMY_UUID);
 			}
 		}
 	}

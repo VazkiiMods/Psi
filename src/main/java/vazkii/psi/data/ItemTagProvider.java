@@ -21,19 +21,19 @@ public class ItemTagProvider extends ItemTagsProvider {
 
 	@Override
 	protected void registerTags() {
-		getOrCreateTagBuilder(ModTags.PSIDUST).add(ModItems.psidust);
-		getOrCreateTagBuilder(ModTags.EBONY_SUBSTANCE).add(ModItems.ebonySubstance);
-		getOrCreateTagBuilder(ModTags.IVORY_SUBSTANCE).add(ModItems.ivorySubstance);
+		getOrCreateBuilder(ModTags.PSIDUST).addItemEntry(ModItems.psidust);
+		getOrCreateBuilder(ModTags.EBONY_SUBSTANCE).addItemEntry(ModItems.ebonySubstance);
+		getOrCreateBuilder(ModTags.IVORY_SUBSTANCE).addItemEntry(ModItems.ivorySubstance);
 
-		getOrCreateTagBuilder(ModTags.INGOT_PSIMETAL).add(ModItems.psimetal);
+		getOrCreateBuilder(ModTags.INGOT_PSIMETAL).addItemEntry(ModItems.psimetal);
 		copy(ModTags.Blocks.BLOCK_PSIMETAL, ModTags.BLOCK_PSIMETAL);
 
-		getOrCreateTagBuilder(ModTags.GEM_PSIGEM).add(ModItems.psigem);
+		getOrCreateBuilder(ModTags.GEM_PSIGEM).addItemEntry(ModItems.psigem);
 		copy(ModTags.Blocks.BLOCK_PSIGEM, ModTags.BLOCK_PSIGEM);
 
-		getOrCreateTagBuilder(ModTags.INGOT_EBONY_PSIMETAL).add(ModItems.ebonyPsimetal);
+		getOrCreateBuilder(ModTags.INGOT_EBONY_PSIMETAL).addItemEntry(ModItems.ebonyPsimetal);
 		copy(ModTags.Blocks.BLOCK_EBONY_PSIMETAL, ModTags.BLOCK_EBONY_PSIMETAL);
-		getOrCreateTagBuilder(ModTags.INGOT_IVORY_PSIMETAL).add(ModItems.ivoryPsimetal);
+		getOrCreateBuilder(ModTags.INGOT_IVORY_PSIMETAL).addItemEntry(ModItems.ivoryPsimetal);
 		copy(ModTags.Blocks.BLOCK_IVORY_PSIMETAL, ModTags.BLOCK_IVORY_PSIMETAL);
 	}
 

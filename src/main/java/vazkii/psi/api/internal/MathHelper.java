@@ -31,7 +31,7 @@ public final class MathHelper {
 	}
 
 	/**
-	 * [VanillaCopy] of {@link net.minecraft.world.IWorldReader#func_217300_a(RayTraceContext, BiFunction, Function)}
+	 * [VanillaCopy] of {@link net.minecraft.world.IWorldReader#doRayTrace(RayTraceContext, BiFunction, Function)}
 	 * but without the extra processing and endpoint bumping
 	 */
 	public static LinkedHashSet<BlockPos> getBlocksAlongRay(Vector3d origin, Vector3d end, int maxBlocks) {

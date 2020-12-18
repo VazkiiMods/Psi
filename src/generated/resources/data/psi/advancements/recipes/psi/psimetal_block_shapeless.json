@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "psi:psimetal_block_shapeless"
+    ]
+  },
+  "criteria": {
+    "has_psimetal": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "forge:ingots/psimetal"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "psi:psimetal_block_shapeless"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_psimetal",
+      "has_the_recipe"
+    ]
+  ]
+}

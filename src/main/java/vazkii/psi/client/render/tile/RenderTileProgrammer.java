@@ -29,8 +29,8 @@ import vazkii.psi.common.block.tile.TileProgrammer;
 
 public class RenderTileProgrammer extends TileEntityRenderer<TileProgrammer> {
 
-	public RenderTileProgrammer(TileEntityRendererDispatcher p_i226006_1_) {
-		super(p_i226006_1_);
+	public RenderTileProgrammer(TileEntityRendererDispatcher rendererDispatcherIn) {
+		super(rendererDispatcherIn);
 	}
 
 	@Override
@@ -40,8 +40,8 @@ public class RenderTileProgrammer extends TileEntityRenderer<TileProgrammer> {
 			int light = Psi.magical ? worldLight : 0xF000F0;
 
 			ms.translate(0, 1.62F, 0);
-			ms.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(180F));
-			ms.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(-90F));
+			ms.rotate(Vector3f.ZP.rotationDegrees(180F));
+			ms.rotate(Vector3f.YP.rotationDegrees(-90F));
 
 			float rot = 90F;
 			BlockState state = te.getBlockState();
@@ -62,16 +62,16 @@ public class RenderTileProgrammer extends TileEntityRenderer<TileProgrammer> {
 			}
 
 			ms.translate(0.5F, 0F, 0.5F);
-			ms.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(rot));
+			ms.rotate(Vector3f.YP.rotationDegrees(rot));
 			ms.translate(-0.5F, 0F, -0.5F);
 
 			float f = 1F / 300F;
 			ms.scale(f, f, -f);
 
 			if (Psi.magical) {
-				ms.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(90F));
+				ms.rotate(Vector3f.XP.rotationDegrees(90F));
 				ms.translate(70F, -220F, -100F + Math.sin(ClientTickHandler.total / 50) * 10);
-				ms.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(-16F + (float) Math.cos(ClientTickHandler.total / 100) * 10F));
+				ms.rotate(Vector3f.XP.rotationDegrees(-16F + (float) Math.cos(ClientTickHandler.total / 100) * 10F));
 			} else {
 				ms.translate(70F, 0F, -200F);
 			}
@@ -87,17 +87,17 @@ public class RenderTileProgrammer extends TileEntityRenderer<TileProgrammer> {
 			float u = 0, v = 0;
 			float rescale = 1 / 256F;
 			float a = Psi.magical ? 1F : 0.5F;
-			Matrix4f mat = ms.peek().getModel();
-			buffer.vertex(mat, x, y + height, 0).color(1, 1, 1, a).texture(u * rescale, (v + height) * rescale).light(light).endVertex();
-			buffer.vertex(mat, x + width, y + height, 0).color(1, 1, 1, a).texture((u + width) * rescale, (v + height) * rescale).light(light).endVertex();
-			buffer.vertex(mat, x + width, y, 0).color(1, 1, 1, a).texture((u + width) * rescale, v * rescale).light(light).endVertex();
-			buffer.vertex(mat, x, y, 0).color(1, 1, 1, a).texture(u * rescale, v * rescale).light(light).endVertex();
+			Matrix4f mat = ms.getLast().getMatrix();
+			buffer.pos(mat, x, y + height, 0).color(1, 1, 1, a).tex(u * rescale, (v + height) * rescale).lightmap(light).endVertex();
+			buffer.pos(mat, x + width, y + height, 0).color(1, 1, 1, a).tex((u + width) * rescale, (v + height) * rescale).lightmap(light).endVertex();
+			buffer.pos(mat, x + width, y, 0).color(1, 1, 1, a).tex((u + width) * rescale, v * rescale).lightmap(light).endVertex();
+			buffer.pos(mat, x, y, 0).color(1, 1, 1, a).tex(u * rescale, v * rescale).lightmap(light).endVertex();
 			ms.pop();
 
 			int color = Psi.magical ? 0 : 0xFFFFFF;
 			Minecraft mc = Minecraft.getInstance();
-			mc.fontRenderer.draw(I18n.format("psimisc.name"), 0, 164, color, false, ms.peek().getModel(), buffers, false, 0, 0xF000F0);
-			mc.fontRenderer.draw(te.spell.name, 38, 164, color, false, ms.peek().getModel(), buffers, false, 0, 0xF000F0);
+			mc.fontRenderer.renderString(I18n.format("psimisc.name"), 0, 164, color, false, ms.getLast().getMatrix(), buffers, false, 0, 0xF000F0);
+			mc.fontRenderer.renderString(te.spell.name, 38, 164, color, false, ms.getLast().getMatrix(), buffers, false, 0, 0xF000F0);
 
 			ms.pop();
 		}

@@ -22,11 +22,7 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
 
 import vazkii.psi.api.PsiAPI;
-import vazkii.psi.api.cad.EnumCADStat;
-import vazkii.psi.api.cad.ICAD;
-import vazkii.psi.api.cad.ICADData;
-import vazkii.psi.api.cad.IPsiBarDisplay;
-import vazkii.psi.api.cad.ISocketable;
+import vazkii.psi.api.cad.*;
 import vazkii.psi.api.internal.IPlayerData;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.ISpellAcceptor;
@@ -196,9 +192,9 @@ public class CADData implements ICapabilityProvider, ICADData, ISpellAcceptor, I
 				memory.add(new ListNBT());
 			} else {
 				ListNBT vec = new ListNBT();
-				vec.add(DoubleNBT.of(vector.x));
-				vec.add(DoubleNBT.of(vector.y));
-				vec.add(DoubleNBT.of(vector.z));
+				vec.add(DoubleNBT.valueOf(vector.x));
+				vec.add(DoubleNBT.valueOf(vector.y));
+				vec.add(DoubleNBT.valueOf(vector.z));
 				memory.add(vec);
 			}
 		}
@@ -221,7 +217,7 @@ public class CADData implements ICapabilityProvider, ICADData, ISpellAcceptor, I
 			List<Vector3> newVectors = Lists.newArrayList();
 			for (int i = 0; i < memory.size(); i++) {
 				ListNBT vec = (ListNBT) memory.get(i);
-				if (vec.getElementType() == Constants.NBT.TAG_DOUBLE && vec.size() >= 3) {
+				if (vec.getTagType() == Constants.NBT.TAG_DOUBLE && vec.size() >= 3) {
 					newVectors.add(new Vector3(vec.getDouble(0), vec.getDouble(1), vec.getDouble(2)));
 				} else {
 					newVectors.add(null);

@@ -40,16 +40,16 @@ public class GuiButtonSpellPiece extends Button {
 		if (active && visible) {
 			boolean hover = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
 
-			IRenderTypeBuffer.Impl buffers = IRenderTypeBuffer.immediate(Tessellator.getInstance().getBuffer());
+			IRenderTypeBuffer.Impl buffers = IRenderTypeBuffer.getImpl(Tessellator.getInstance().getBuffer());
 			ms.push();
 			ms.translate(x, y, 0);
 			piece.draw(ms, buffers, 0xF000F0);
-			buffers.draw();
+			buffers.finish();
 			ms.pop();
 			Minecraft.getInstance().getTextureManager().bindTexture(GuiProgrammer.texture);
 			if (hover) {
 				piece.getTooltip(gui.tooltip);
-				drawTexture(ms, x, y, 16, gui.ySize, 16, 16);
+				blit(ms, x, y, 16, gui.ySize, 16, 16);
 			}
 
 		}

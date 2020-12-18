@@ -81,8 +81,8 @@ public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiE
 	public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
 		Multimap<Attribute, AttributeModifier> modifiers = super.getAttributeModifiers(slot, stack);
 		if (!isEnabled(stack)) {
-			modifiers.removeAll(Attributes.field_233826_i_); //ARMOR
-			modifiers.removeAll(Attributes.field_233827_j_); //ARMOR_TOUGHNESS
+			modifiers.removeAll(Attributes.ARMOR);
+			modifiers.removeAll(Attributes.ARMOR_TOUGHNESS);
 		}
 
 		return modifiers;
@@ -162,19 +162,13 @@ public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiE
 	}
 
 	@Override
-	public boolean getIsRepairable(ItemStack thisStack, @Nonnull ItemStack material) {
-		return IPsimetalTool.isRepairableBy(material) || super.getIsRepairable(thisStack, material);
-	}
-
-	@Override
 	public boolean isRepairable(ItemStack stack) {
 		return super.isRepairable(stack);
 	}
 
 	@Override
 	public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlotType slot, String type) {
-		boolean overlay = type != null && type.equals("overlay");
-		return overlay ? LibResources.MODEL_PSIMETAL_EXOSUIT : LibResources.MODEL_PSIMETAL_EXOSUIT_SENSOR;
+		return LibResources.MODEL_PSIMETAL_EXOSUIT;
 	}
 
 	public boolean hasColor(@Nonnull ItemStack stack) {

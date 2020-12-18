@@ -54,7 +54,7 @@ public class PiecePanelWidget extends Widget implements IRenderable, IGuiEventLi
 	public final List<GuiButtonSpellPiece> visibleButtons = new ArrayList<>();
 
 	public PiecePanelWidget(int x, int y, int width, int height, String message, GuiProgrammer programmer) {
-		super(x, y, width, height, ITextComponent.func_244388_a(message));
+		super(x, y, width, height, ITextComponent.getTextComponentOrEmpty(message));
 		this.parent = programmer;
 	}
 
@@ -73,10 +73,10 @@ public class PiecePanelWidget extends Widget implements IRenderable, IGuiEventLi
 			}
 
 			RenderSystem.color3f(1f, 1f, 1f);
-			drawTexture(ms, searchField.x - 14, searchField.y - 2, 0, parent.ySize + 16, 12, 12);
+			blit(ms, searchField.x - 14, searchField.y - 2, 0, parent.ySize + 16, 12, 12);
 
 			String s = Math.min(Math.max(getPageCount(), 1), page + 1) + "/" + Math.max(getPageCount(), 1);
-			parent.getMinecraft().fontRenderer.drawWithShadow(ms, s, x + width / 2f - parent.getMinecraft().fontRenderer.getStringWidth(s) / 2f, y + height - 12, 0xFFFFFF);
+			parent.getMinecraft().fontRenderer.drawStringWithShadow(ms, s, x + width / 2f - parent.getMinecraft().fontRenderer.getStringWidth(s) / 2f, y + height - 12, 0xFFFFFF);
 		}
 	}
 
@@ -141,7 +141,7 @@ public class PiecePanelWidget extends Widget implements IRenderable, IGuiEventLi
 		List<SpellPiece> shownPieces = new ArrayList<>();
 		MinecraftForge.EVENT_BUS.post(event);
 		for (ResourceLocation key : event.getSpellPieceRegistry().keySet()) {
-			Class<? extends SpellPiece> clazz = event.getSpellPieceRegistry().func_241873_b(key).get();
+			Class<? extends SpellPiece> clazz = event.getSpellPieceRegistry().getOptional(key).get();
 			ResourceLocation group = PsiAPI.getGroupForPiece(clazz);
 
 			if (!parent.getMinecraft().player.isCreative() && (group == null || !playerData.isPieceGroupUnlocked(group, key))) {
@@ -443,7 +443,7 @@ public class PiecePanelWidget extends Widget implements IRenderable, IGuiEventLi
 		searchField.visible = false;
 		searchField.setEnabled(false);
 		searchField.setFocused2(false);
-		parent.setFocused(parent.statusWidget);
+		parent.setListener(parent.statusWidget);
 		parent.changeFocus(true);
 	}
 
@@ -461,7 +461,7 @@ public class PiecePanelWidget extends Widget implements IRenderable, IGuiEventLi
 		searchField.active = true;
 		searchField.setEnabled(true);
 		searchField.setFocused2(true);
-		parent.setFocused(searchField);
+		parent.setListener(searchField);
 		updatePanelButtons();
 	}
 }

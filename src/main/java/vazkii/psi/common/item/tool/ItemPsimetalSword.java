@@ -75,7 +75,7 @@ public class ItemPsimetalSword extends SwordItem implements IPsimetalTool {
 	public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
 		Multimap<Attribute, AttributeModifier> modifiers = super.getAttributeModifiers(slot, stack);
 		if (!isEnabled(stack)) {
-			modifiers.removeAll(Attributes.field_233823_f_); //ATTACK_DAMAGE
+			modifiers.removeAll(Attributes.ATTACK_DAMAGE);
 		}
 		return modifiers;
 	}
@@ -116,11 +116,6 @@ public class ItemPsimetalSword extends SwordItem implements IPsimetalTool {
 	public void addInformation(ItemStack stack, @Nullable World playerIn, List<ITextComponent> tooltip, ITooltipFlag advanced) {
 		ITextComponent componentName = ISocketable.getSocketedItemName(stack, "psimisc.none");
 		tooltip.add(new TranslationTextComponent("psimisc.spell_selected", componentName));
-	}
-
-	@Override
-	public boolean getIsRepairable(ItemStack thisStack, @Nonnull ItemStack material) {
-		return IPsimetalTool.isRepairableBy(material) || super.getIsRepairable(thisStack, material);
 	}
 
 	@Nullable

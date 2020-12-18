@@ -38,7 +38,6 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.client.gui.GuiUtils;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.glfw.GLFW;
@@ -61,6 +60,7 @@ import vazkii.psi.client.gui.widget.SpellCostsWidget;
 import vazkii.psi.client.gui.widget.StatusWidget;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.tile.TileProgrammer;
+import vazkii.psi.common.core.handler.ConfigHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.lib.LibBlockNames;
 import vazkii.psi.common.lib.LibMisc;
@@ -68,6 +68,7 @@ import vazkii.psi.common.lib.LibResources;
 import vazkii.psi.common.network.MessageRegister;
 import vazkii.psi.common.network.message.MessageSpellModified;
 import vazkii.psi.common.spell.SpellCompiler;
+import vazkii.psi.mixin.client.AccessorRenderState;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -81,15 +82,15 @@ public class GuiProgrammer extends Screen {
 	public static final ResourceLocation texture = new ResourceLocation(LibResources.GUI_PROGRAMMER);
 	public static final RenderType LAYER;
 	static {
-		RenderState.TransparencyState translucent = ObfuscationReflectionHelper.getPrivateValue(RenderState.class, null, "field_228515_g_");
-		RenderType.State glState = RenderType.State.builder()
+		RenderState.TransparencyState translucent = AccessorRenderState.getTranslucentTransprency();
+		RenderType.State glState = RenderType.State.getBuilder()
 				.texture(new RenderState.TextureState(texture, false, false))
 				.lightmap(new RenderState.LightmapState(true))
 				.cull(new RenderState.CullState(false))
 				.alpha(new RenderState.AlphaState(0.004F))
 				.transparency(translucent)
 				.build(false);
-		LAYER = RenderType.of(LibMisc.PREFIX_MOD + LibBlockNames.PROGRAMMER, DefaultVertexFormats.POSITION_COLOR_TEXTURE_LIGHT, GL11.GL_QUADS, 128, glState);
+		LAYER = RenderType.makeType(LibMisc.PREFIX_MOD + LibBlockNames.PROGRAMMER, DefaultVertexFormats.POSITION_COLOR_TEX_LIGHTMAP, GL11.GL_QUADS, 128, glState);
 	}
 
 	public final TileProgrammer programmer;
@@ -222,7 +223,7 @@ public class GuiProgrammer extends Screen {
 							for (INBT mod : mods) {
 								String modName = ((CompoundNBT) mod).getString(Spell.TAG_MOD_NAME);
 								if (!PsiAPI.getSpellPieceRegistry().keySet().stream().map(ResourceLocation::getNamespace).collect(Collectors.toSet()).contains(modName)) {
-									Minecraft.getInstance().player.sendMessage(new TranslationTextComponent("psimisc.modnotfound", modName).setStyle(Style.EMPTY.withColor(TextFormatting.RED)), Util.NIL_UUID);
+									Minecraft.getInstance().player.sendMessage(new TranslationTextComponent("psimisc.modnotfound", modName).setStyle(Style.EMPTY.setFormatting(TextFormatting.RED)), Util.DUMMY_UUID);
 								}
 								if (modName.equals("psi")) {
 									boolean sendMessage = false;
@@ -242,7 +243,7 @@ public class GuiProgrammer extends Screen {
 										}
 									}
 									if (sendMessage) {
-										Minecraft.getInstance().player.sendMessage(new TranslationTextComponent("psimisc.spellonnewerversion").setStyle(Style.EMPTY.withColor(TextFormatting.RED)), Util.NIL_UUID);
+										Minecraft.getInstance().player.sendMessage(new TranslationTextComponent("psimisc.spellonnewerversion").setStyle(Style.EMPTY.setFormatting(TextFormatting.RED)), Util.DUMMY_UUID);
 									}
 								}
 							}
@@ -258,7 +259,7 @@ public class GuiProgrammer extends Screen {
 								if (piece != null) {
 									ResourceLocation group = PsiAPI.getGroupForPiece(piece.getClass());
 									if (!getMinecraft().player.isCreative() && (group == null || !data.isPieceGroupUnlocked(group, piece.registryKey))) {
-										getMinecraft().player.sendMessage(new TranslationTextComponent("psimisc.missing_pieces").setStyle(Style.EMPTY.withColor(TextFormatting.RED)), Util.NIL_UUID);
+										getMinecraft().player.sendMessage(new TranslationTextComponent("psimisc.missing_pieces").setStyle(Style.EMPTY.setFormatting(TextFormatting.RED)), Util.DUMMY_UUID);
 										return;
 									}
 								}
@@ -269,7 +270,7 @@ public class GuiProgrammer extends Screen {
 						spellNameField.setText(spell.name);
 						onSpellChanged(false);
 					} catch (Throwable t) {
-						getMinecraft().player.sendMessage(new TranslationTextComponent("psimisc.malformed_json", t.getMessage()).setStyle(Style.EMPTY.withColor(TextFormatting.RED)), Util.NIL_UUID);
+						getMinecraft().player.sendMessage(new TranslationTextComponent("psimisc.malformed_json", t.getMessage()).setStyle(Style.EMPTY.setFormatting(TextFormatting.RED)), Util.DUMMY_UUID);
 					}
 				}
 			}));
@@ -292,7 +293,7 @@ public class GuiProgrammer extends Screen {
 		RenderSystem.color3f(1F, 1F, 1F);
 		getMinecraft().getTextureManager().bindTexture(texture);
 
-		drawTexture(ms, left, top, 0, 0, xSize, ySize);
+		blit(ms, left, top, 0, 0, xSize, ySize);
 
 		//Currently selected piece
 		SpellPiece piece = null;
@@ -310,14 +311,14 @@ public class GuiProgrammer extends Screen {
 		ms.push();
 		tooltip.clear();
 		ms.translate(gridLeft, gridTop, 0);
-		IRenderTypeBuffer.Impl buffers = IRenderTypeBuffer.immediate(Tessellator.getInstance().getBuffer());
+		IRenderTypeBuffer.Impl buffers = IRenderTypeBuffer.getImpl(Tessellator.getInstance().getBuffer());
 		spell.draw(ms, buffers, 0xF000F0);
-		buffers.draw();
+		buffers.finish();
 
 		if (compiler.isErrored()) {
 			Pair<Integer, Integer> errorPos = compiler.getErrorLocation();
 			if (errorPos != null && errorPos.getRight() != -1 && errorPos.getLeft() != -1) {
-				textRenderer.drawWithShadow(ms, "!!", errorPos.getLeft() * 18 + 12, errorPos.getRight() * 18 + 8, 0xFF0000);
+				font.drawStringWithShadow(ms, "!!", errorPos.getLeft() * 18 + 12, errorPos.getRight() * 18 + 8, 0xFF0000);
 			}
 		}
 		ms.pop();
@@ -326,7 +327,7 @@ public class GuiProgrammer extends Screen {
 		getMinecraft().getTextureManager().bindTexture(texture);
 
 		if (selectedX != -1 && selectedY != -1 && !takingScreenshot) {
-			drawTexture(ms, gridLeft + selectedX * 18, gridTop + selectedY * 18, 32, ySize, 16, 16);
+			blit(ms, gridLeft + selectedX * 18, gridTop + selectedY * 18, 32, ySize, 16, 16);
 		}
 
 		if (hasAltDown()) {
@@ -341,17 +342,17 @@ public class GuiProgrammer extends Screen {
 			Set<String> addons = spell.getPieceNamespaces().stream().filter(namespace -> !namespace.equals("psi")).collect(Collectors.toSet());
 			if (addons.size() > 0) {
 				String requiredAddons = TextFormatting.GREEN + "Required Addons:";
-				textRenderer.drawWithShadow(ms, requiredAddons, left - textRenderer.getStringWidth(requiredAddons) - 5, top + 40, 0xFFFFFF);
+				font.drawStringWithShadow(ms, requiredAddons, left - font.getStringWidth(requiredAddons) - 5, top + 40, 0xFFFFFF);
 				int i = 1;
 				for (String addon : addons) {
 					if (ModList.get().getModContainerById(addon).isPresent()) {
 						String modName = ModList.get().getModContainerById(addon).get().getModInfo().getDisplayName();
-						textRenderer.drawWithShadow(ms, "* " + modName, left - textRenderer.getStringWidth(requiredAddons) - 5, top + 40 + 10 * i, 0xFFFFFF);
+						font.drawStringWithShadow(ms, "* " + modName, left - font.getStringWidth(requiredAddons) - 5, top + 40 + 10 * i, 0xFFFFFF);
 					}
 				}
 			}
 			String version = "Psi " + ModList.get().getModContainerById("psi").get().getModInfo().getVersion().toString();
-			textRenderer.drawWithShadow(ms, version, left + xSize / 2f - textRenderer.getStringWidth(version) / 2f, top - 22, 0xFFFFFF);
+			font.drawStringWithShadow(ms, version, left + xSize / 2f - font.getStringWidth(version) / 2f, top - 22, 0xFFFFFF);
 		}
 
 		SpellPiece pieceAtCursor = null;
@@ -364,9 +365,9 @@ public class GuiProgrammer extends Screen {
 
 			if (!takingScreenshot) {
 				if (cursorX == selectedX && cursorY == selectedY) {
-					drawTexture(ms, gridLeft + cursorX * 18, gridTop + cursorY * 18, 16, ySize, 8, 16);
+					blit(ms, gridLeft + cursorX * 18, gridTop + cursorY * 18, 16, ySize, 8, 16);
 				} else {
-					drawTexture(ms, gridLeft + cursorX * 18, gridTop + cursorY * 18, 16, ySize, 16, 16);
+					blit(ms, gridLeft + cursorX * 18, gridTop + cursorY * 18, 16, ySize, 16, 16);
 				}
 			}
 		}
@@ -377,17 +378,17 @@ public class GuiProgrammer extends Screen {
 			int topYText = topY;
 			if (spectator) {
 				String spectator = TextFormatting.RED + I18n.format("psimisc.spectator");
-				textRenderer.drawWithShadow(ms, spectator, left + xSize / 2f - textRenderer.getStringWidth(spectator) / 2f, topYText, 0xFFFFFF);
+				font.drawStringWithShadow(ms, spectator, left + xSize / 2f - font.getStringWidth(spectator) / 2f, topYText, 0xFFFFFF);
 				topYText -= 10;
 			}
 			if (piece != null) {
 				String pieceName = I18n.format(piece.getUnlocalizedName());
-				textRenderer.drawWithShadow(ms, pieceName, left + xSize / 2f - textRenderer.getStringWidth(pieceName) / 2f, topYText, 0xFFFFFF);
+				font.drawStringWithShadow(ms, pieceName, left + xSize / 2f - font.getStringWidth(pieceName) / 2f, topYText, 0xFFFFFF);
 				topYText -= 10;
 			}
 			if (LibMisc.BETA_TESTING) {
 				String betaTest = TextFormatting.GOLD + I18n.format("psimisc.wip");
-				textRenderer.drawWithShadow(ms, betaTest, left + xSize / 2f - textRenderer.getStringWidth(betaTest) / 2f, topYText, 0xFFFFFF);
+				font.drawStringWithShadow(ms, betaTest, left + xSize / 2f - font.getStringWidth(betaTest) / 2f, topYText, 0xFFFFFF);
 
 			}
 
@@ -397,22 +398,22 @@ public class GuiProgrammer extends Screen {
 			} else {
 				coords = I18n.format("psimisc.programmer_coords_no_cursor", selectedX + 1, selectedY + 1);
 			}
-			textRenderer.draw(ms, coords, left + 4, topY + ySize + 24, 0x44FFFFFF);
+			font.drawString(ms, coords, left + 4, topY + ySize + 24, 0x44FFFFFF);
 		}
 
 		if (Psi.magical) {
-			textRenderer.draw(ms, I18n.format("psimisc.name"), left + padLeft, spellNameField.y + 1, color);
+			font.drawString(ms, I18n.format("psimisc.name"), left + padLeft, spellNameField.y + 1, color);
 		} else {
-			textRenderer.drawWithShadow(ms, I18n.format("psimisc.name"), left + padLeft, spellNameField.y + 1, color);
+			font.drawStringWithShadow(ms, I18n.format("psimisc.name"), left + padLeft, spellNameField.y + 1, color);
 		}
 
 		//Add here comment
 		if (commentEnabled) {
 			String enterCommit = I18n.format("psimisc.enter_commit");
-			textRenderer.drawWithShadow(ms, enterCommit, left + xSize / 2f - textRenderer.getStringWidth(enterCommit) / 2f, commentField.y + 24, 0xFFFFFF);
+			font.drawStringWithShadow(ms, enterCommit, left + xSize / 2f - font.getStringWidth(enterCommit) / 2f, commentField.y + 24, 0xFFFFFF);
 
 			String semicolonLine = I18n.format("psimisc.semicolon_line");
-			textRenderer.drawWithShadow(ms, semicolonLine, left + xSize / 2f - textRenderer.getStringWidth(semicolonLine) / 2f, commentField.y + 34, 0xFFFFFF);
+			font.drawStringWithShadow(ms, semicolonLine, left + xSize / 2f - font.getStringWidth(semicolonLine) / 2f, commentField.y + 34, 0xFFFFFF);
 		}
 
 		List<ITextComponent> legitTooltip = null;
@@ -427,7 +428,7 @@ public class GuiProgrammer extends Screen {
 		super.render(ms, mouseX, mouseY, partialTicks);
 
 		if (!takingScreenshot && tooltip != null && !tooltip.isEmpty() && pieceAtCursor == null) {
-			GuiUtils.drawHoveringText(ms, tooltip, mouseX, mouseY, width, height, -1, this.textRenderer);
+			GuiUtils.drawHoveringText(ms, tooltip, mouseX, mouseY, width, height, -1, this.font);
 
 		}
 		if (!takingScreenshot && pieceAtCursor != null) {
@@ -581,7 +582,7 @@ public class GuiProgrammer extends Screen {
 			spell = programmer.spell;
 		}
 		if (keyCode == GLFW.GLFW_KEY_ESCAPE && shouldCloseOnEsc()) {
-			this.onClose();
+			this.closeScreen();
 			return true;
 		}
 		if (spectator) {
@@ -618,7 +619,7 @@ public class GuiProgrammer extends Screen {
 		if (!spellNameField.isFocused() && !panelWidget.panelEnabled && !commentEnabled) {
 			int param = -1;
 			for (int i = 0; i < 4; i++) {
-				if (InputMappings.isKeyDown(getMinecraft().getWindow().getHandle(), GLFW.GLFW_KEY_1 + i)) {
+				if (InputMappings.isKeyDown(getMinecraft().getMainWindow().getHandle(), GLFW.GLFW_KEY_1 + i)) {
 					param = i;
 				}
 			}
@@ -902,5 +903,10 @@ public class GuiProgrammer extends Screen {
 
 	public List<Widget> getButtons() {
 		return this.buttons;
+	}
+
+	@Override
+	public boolean isPauseScreen() {
+		return ConfigHandler.CLIENT.pauseGameInProgrammer.get();
 	}
 }

@@ -47,16 +47,16 @@ public class GuiCADAssembler extends ContainerScreen<ContainerCADAssembler> {
 	public void render(MatrixStack ms, int x, int y, float pTicks) {
 		this.renderBackground(ms);
 		super.render(ms, x, y, pTicks);
-		this.drawMouseoverTooltip(ms, x, y);
-		this.renderTextHoverEffect(ms, Style.EMPTY, x, y);
+		this.renderHoveredTooltip(ms, x, y);
+		this.renderComponentHoverEffect(ms, Style.EMPTY, x, y);
 	}
 
 	@Override
-	protected void drawForeground(MatrixStack ms, int mouseX, int mouseY) {
+	protected void drawGuiContainerForegroundLayer(MatrixStack ms, int mouseX, int mouseY) {
 		int color = 4210752;
 
 		String name = new ItemStack(ModBlocks.cadAssembler).getDisplayName().getString();
-		textRenderer.draw(ms, name, xSize / 2 - textRenderer.getStringWidth(name) / 2, 10, color);
+		font.drawString(ms, name, xSize / 2 - font.getStringWidth(name) / 2, 10, color);
 
 		ItemStack cad = assembler.getCachedCAD(player);
 		if (!cad.isEmpty()) {
@@ -66,27 +66,27 @@ public class GuiCADAssembler extends ContainerScreen<ContainerCADAssembler> {
 			ICAD cadItem = (ICAD) cad.getItem();
 			String stats = I18n.format("psimisc.stats");
 			String s = TextFormatting.BOLD + stats;
-			textRenderer.drawWithShadow(ms, s, 213 - textRenderer.getStringWidth(s) / 2f, 34, color);
+			font.drawStringWithShadow(ms, s, 213 - font.getStringWidth(s) / 2f, 34, color);
 
 			for (EnumCADStat stat : EnumCADStat.class.getEnumConstants()) {
 				s = (Psi.magical ? TextFormatting.LIGHT_PURPLE : TextFormatting.AQUA) + I18n.format(stat.getName()) + TextFormatting.RESET + ": " + cadItem.getStatValue(cad, stat);
-				textRenderer.drawWithShadow(ms, s, 179, 50 + i * 10, color);
+				font.drawStringWithShadow(ms, s, 179, 50 + i * 10, color);
 				i++;
 			}
 		}
 	}
 
 	@Override
-	protected void drawBackground(MatrixStack ms, float partialTicks, int mouseX, int mouseY) {
+	protected void drawGuiContainerBackgroundLayer(MatrixStack ms, float partialTicks, int mouseX, int mouseY) {
 		RenderSystem.color3f(1F, 1F, 1F);
 		getMinecraft().getTextureManager().bindTexture(texture);
 		int x = (width - xSize) / 2;
 		int y = (height - ySize) / 2;
-		drawTexture(ms, x, y, 0, 0, xSize, ySize);
+		blit(ms, x, y, 0, 0, xSize, ySize);
 
 		for (int i = 0; i < 12; i++) {
 			if (!assembler.isBulletSlotEnabled(i)) {
-				drawTexture(ms, x + 17 + i % 3 * 18, y + 57 + i / 3 * 18, 16, ySize, 16, 16);
+				blit(ms, x + 17 + i % 3 * 18, y + 57 + i / 3 * 18, 16, ySize, 16, 16);
 			}
 		}
 	}

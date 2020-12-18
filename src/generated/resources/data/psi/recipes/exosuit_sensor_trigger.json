@@ -1,37 +1,22 @@
 {
-  "type": "forge:conditional",
-  "recipes": [
-    {
-      "conditions": [
-        {
-          "value": {
-            "type": "psi:magipsi_enabled"
-          },
-          "type": "forge:not"
-        }
-      ],
-      "recipe": {
-        "type": "minecraft:crafting_shaped",
-        "pattern": [
-          " I ",
-          "IMR",
-          " R "
-        ],
-        "key": {
-          "M": {
-            "item": "minecraft:gunpowder"
-          },
-          "R": {
-            "tag": "forge:ingots/iron"
-          },
-          "I": {
-            "tag": "forge:ingots/psimetal"
-          }
-        },
-        "result": {
-          "item": "psi:exosuit_sensor_trigger"
-        }
-      }
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " I ",
+    "IMR",
+    " R "
+  ],
+  "key": {
+    "M": {
+      "item": "minecraft:gunpowder"
+    },
+    "R": {
+      "tag": "forge:ingots/iron"
+    },
+    "I": {
+      "tag": "forge:ingots/psimetal"
     }
-  ]
+  },
+  "result": {
+    "item": "psi:exosuit_sensor_trigger"
+  }
 }

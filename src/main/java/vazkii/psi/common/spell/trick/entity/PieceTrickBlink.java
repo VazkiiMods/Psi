@@ -74,7 +74,7 @@ public class PieceTrickBlink extends PieceTrick {
 		double offY = e.equals(context.caster) ? look.y * dist : Math.max(0, look.y * dist);
 		double offZ = look.z * dist;
 
-		e.setPosition(e.getX() + offX, e.getY() + offY, e.getZ() + offZ);
+		e.setPosition(e.getPosX() + offX, e.getPosY() + offY, e.getPosZ() + offZ);
 		if (e instanceof ServerPlayerEntity) {
 			MessageRegister.sendToPlayer(new MessageBlink(offX, offY, offZ), (ServerPlayerEntity) e);
 		}

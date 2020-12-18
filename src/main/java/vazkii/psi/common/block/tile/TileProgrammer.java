@@ -58,8 +58,8 @@ public class TileProgrammer extends TileEntity {
 	}
 
 	@Override
-	public void fromTag(BlockState state, CompoundNBT cmp) {
-		super.fromTag(state, cmp);
+	public void read(BlockState state, CompoundNBT cmp) {
+		super.read(state, cmp);
 		readPacketNBT(cmp);
 	}
 

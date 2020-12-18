@@ -25,6 +25,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.Style;
@@ -187,9 +188,9 @@ public class ItemCAD extends Item implements ICAD {
 		ItemStack playerCad = PsiAPI.getPlayerCAD(playerIn);
 		if (playerCad != itemStackIn) {
 			if (!worldIn.isRemote) {
-				playerIn.sendMessage(new TranslationTextComponent("psimisc.multiple_cads").setStyle(Style.EMPTY.withColor(TextFormatting.RED)), Util.NIL_UUID);
+				playerIn.sendMessage(new TranslationTextComponent("psimisc.multiple_cads").setStyle(Style.EMPTY.setFormatting(TextFormatting.RED)), Util.DUMMY_UUID);
 			}
-			return new ActionResult<>(ActionResultType.SUCCESS, itemStackIn);
+			return new ActionResult<>(ActionResultType.CONSUME, itemStackIn);
 		}
 		ISocketable sockets = getSocketable(playerCad);
 
@@ -204,7 +205,7 @@ public class ItemCAD extends Item implements ICAD {
 		boolean did = cast(worldIn, playerIn, data, bullet, itemStackIn, 40, 25, 0.5F, ctx -> ctx.castFrom = hand);
 
 		if (!data.overflowed && bullet.isEmpty() && craft(playerCad, playerIn, null)) {
-			worldIn.playSound(null, playerIn.getX(), playerIn.getY(), playerIn.getZ(), PsiSoundHandler.cadShoot, SoundCategory.PLAYERS, 0.5F, (float) (0.5 + Math.random() * 0.5));
+			worldIn.playSound(null, playerIn.getPosX(), playerIn.getPosY(), playerIn.getPosZ(), PsiSoundHandler.cadShoot, SoundCategory.PLAYERS, 0.5F, (float) (0.5 + Math.random() * 0.5));
 			data.deductPsi(100, 60, true);
 
 			if (!data.hasAdvancement(LibPieceGroups.FAKE_LEVEL_PSIDUST)) {
@@ -213,7 +214,7 @@ public class ItemCAD extends Item implements ICAD {
 			did = true;
 		}
 
-		return new ActionResult<>(did ? ActionResultType.PASS : ActionResultType.PASS, itemStackIn);
+		return new ActionResult<>(did ? ActionResultType.CONSUME : ActionResultType.PASS, itemStackIn);
 	}
 
 	public static boolean cast(World world, PlayerEntity player, PlayerData data, ItemStack bullet, ItemStack cad, int cd, int particles, float sound, Consumer<SpellContext> predicate) {
@@ -236,7 +237,7 @@ public class ItemCAD extends Item implements ICAD {
 					if (MinecraftForge.EVENT_BUS.post(event)) {
 						String cancelMessage = event.getCancellationMessage();
 						if (cancelMessage != null && !cancelMessage.isEmpty()) {
-							player.sendMessage(new TranslationTextComponent(cancelMessage).setStyle(Style.EMPTY.withColor(TextFormatting.RED)), Util.NIL_UUID);
+							player.sendMessage(new TranslationTextComponent(cancelMessage).setStyle(Style.EMPTY.setFormatting(TextFormatting.RED)), Util.DUMMY_UUID);
 						}
 						return false;
 					}
@@ -255,23 +256,23 @@ public class ItemCAD extends Item implements ICAD {
 
 					if (cost != 0 && sound > 0) {
 						if (!world.isRemote) {
-							world.playSound(null, player.getX(), player.getY(), player.getZ(), PsiSoundHandler.cadShoot, SoundCategory.PLAYERS, sound, (float) (0.5 + Math.random() * 0.5));
+							world.playSound(null, player.getPosX(), player.getPosY(), player.getPosZ(), PsiSoundHandler.cadShoot, SoundCategory.PLAYERS, sound, (float) (0.5 + Math.random() * 0.5));
 						} else {
 							int color = Psi.proxy.getColorForCAD(cad);
 							float r = PsiRenderHelper.r(color) / 255F;
 							float g = PsiRenderHelper.g(color) / 255F;
 							float b = PsiRenderHelper.b(color) / 255F;
 							for (int i = 0; i < particles; i++) {
-								double x = player.getX() + (Math.random() - 0.5) * 2.1 * player.getWidth();
-								double y = player.getY() - player.getYOffset();
-								double z = player.getZ() + (Math.random() - 0.5) * 2.1 * player.getWidth();
+								double x = player.getPosX() + (Math.random() - 0.5) * 2.1 * player.getWidth();
+								double y = player.getPosY() - player.getYOffset();
+								double z = player.getPosZ() + (Math.random() - 0.5) * 2.1 * player.getWidth();
 								float grav = -0.15F - (float) Math.random() * 0.03F;
 								Psi.proxy.sparkleFX(x, y, z, r, g, b, grav, 0.25F, 15);
 							}
 
-							double x = player.getX();
-							double y = player.getY() + player.getEyeHeight() - 0.1;
-							double z = player.getZ();
+							double x = player.getPosX();
+							double y = player.getPosY() + player.getEyeHeight() - 0.1;
+							double z = player.getPosZ();
 							Vector3 lookOrig = new Vector3(player.getLookVec());
 							for (int i = 0; i < 25; i++) {
 								Vector3 look = lookOrig.copy();
@@ -292,7 +293,7 @@ public class ItemCAD extends Item implements ICAD {
 					MinecraftForge.EVENT_BUS.post(new SpellCastEvent(spell, context, player, data, cad, bullet));
 					return true;
 				} else if (!world.isRemote) {
-					player.sendMessage(new TranslationTextComponent("psimisc.weak_cad").setStyle(Style.EMPTY.withColor(TextFormatting.RED)), Util.NIL_UUID);
+					player.sendMessage(new TranslationTextComponent("psimisc.weak_cad").setStyle(Style.EMPTY.setFormatting(TextFormatting.RED)), Util.DUMMY_UUID);
 				}
 			}
 		}
@@ -302,7 +303,8 @@ public class ItemCAD extends Item implements ICAD {
 
 	@Override
 	public boolean craft(ItemStack cad, PlayerEntity player, PieceCraftingTrick craftingTrick) {
-		if (player.world.isRemote) {
+		World world = player.world;
+		if (world.isRemote) {
 			return false;
 		}
 
@@ -320,15 +322,28 @@ public class ItemCAD extends Item implements ICAD {
 				predicate = r -> r.getPiece() == null || r.getPiece().canCraft(craftingTrick);
 			}
 
-			Optional<ITrickRecipe> recipe = player.world.getRecipeManager().getRecipe(ModCraftingRecipes.TRICK_RECIPE_TYPE, inv, player.world)
+			Optional<ITrickRecipe> recipe = world.getRecipeManager().getRecipe(ModCraftingRecipes.TRICK_RECIPE_TYPE, inv, world)
 					.filter(predicate);
 			if (recipe.isPresent()) {
 				ItemStack outCopy = recipe.get().getRecipeOutput().copy();
-				outCopy.setCount(stack.getCount());
+				int count = stack.getCount() * outCopy.getCount();
+				while (count > 64) {
+					int dropCount = world.getRandom().nextInt(32) + 32;
+					ItemEntity drop = new ItemEntity(world, item.getPosX(), item.getPosY(), item.getPosZ(),
+							new ItemStack(outCopy.getItem(), dropCount));
+					Vector3d motion = item.getMotion();
+					drop.setMotion(motion.getX() + (world.getRandom().nextFloat() - 0.5D) / 5,
+							motion.getY() + (world.getRandom().nextFloat()) / 10,
+							motion.getZ() + (world.getRandom().nextFloat() - 0.5D) / 5);
+					world.addEntity(drop);
+					count -= dropCount;
+				}
+
+				outCopy.setCount(count);
 				item.setItem(outCopy);
 				did = true;
 				MessageVisualEffect msg = new MessageVisualEffect(ICADColorizer.DEFAULT_SPELL_COLOR,
-						item.getX(), item.getY(), item.getZ(), item.getWidth(), item.getHeight(), item.getYOffset(),
+						item.getPosX(), item.getPosY(), item.getPosZ(), item.getWidth(), item.getHeight(), item.getYOffset(),
 						MessageVisualEffect.TYPE_CRAFT);
 				MessageRegister.HANDLER.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> item), msg);
 			}
@@ -632,8 +647,8 @@ public class ItemCAD extends Item implements ICAD {
 					name = componentStack.getDisplayName();
 				}
 
-				IFormattableTextComponent componentTypeName = new TranslationTextComponent(componentType.getName()).formatted(TextFormatting.GREEN);
-				tooltip.add(componentTypeName.append(": ").append(name));
+				IFormattableTextComponent componentTypeName = new TranslationTextComponent(componentType.getName()).mergeStyle(TextFormatting.GREEN);
+				tooltip.add(componentTypeName.appendString(": ").append(name));
 
 				for (EnumCADStat stat : EnumCADStat.class.getEnumConstants()) {
 					if (stat.getSourceType() == componentType) {
@@ -641,7 +656,7 @@ public class ItemCAD extends Item implements ICAD {
 						int statVal = getStatValue(stack, stat);
 						String statValStr = statVal == -1 ? "\u221E" : "" + statVal;
 
-						tooltip.add(new TranslationTextComponent(shrt).formatted(TextFormatting.AQUA).append(": " + statValStr));
+						tooltip.add(new TranslationTextComponent(shrt).mergeStyle(TextFormatting.AQUA).appendString(": " + statValStr));
 					}
 				}
 			}

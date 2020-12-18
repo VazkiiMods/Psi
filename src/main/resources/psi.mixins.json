@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "compatibilityLevel": "JAVA_8",
+  "package": "vazkii.psi.mixin",
+  "refmap": "psi.refmap.json",
+  "mixins": [
+  ],
+  "client": [
+    "client.AccessorRenderBuffers",
+    "client.AccessorRenderState"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

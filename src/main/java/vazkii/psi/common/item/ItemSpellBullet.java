@@ -38,7 +38,7 @@ import java.util.List;
 
 public class ItemSpellBullet extends Item {
 
-	private static final String TAG_SPELL = "spell";
+	public static final String TAG_SPELL = "spell";
 
 	public ItemSpellBullet(Item.Properties properties) {
 		super(properties.maxStackSize(16));
@@ -48,17 +48,6 @@ public class ItemSpellBullet extends Item {
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
 		return new SpellAcceptor(stack);
-	}
-
-	@Override
-	public boolean hasContainerItem(ItemStack stack) {
-		return ISpellAcceptor.hasSpell(stack);
-	}
-
-	@Nonnull
-	@Override
-	public ItemStack getContainerItem(@Nonnull ItemStack itemStack) {
-		return itemStack.copy();
 	}
 
 	@Nonnull

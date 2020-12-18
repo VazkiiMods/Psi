@@ -19,6 +19,7 @@ public class ConfigHandler {
 		public final ForgeConfigSpec.BooleanValue useShaders;
 		public final ForgeConfigSpec.BooleanValue psiBarOnRight;
 		public final ForgeConfigSpec.BooleanValue contextSensitiveBar;
+		public final ForgeConfigSpec.BooleanValue pauseGameInProgrammer;
 		public final ForgeConfigSpec.IntValue maxPsiBarScale;
 
 		public Client(ForgeConfigSpec.Builder builder) {
@@ -33,6 +34,9 @@ public class ConfigHandler {
 
 			maxPsiBarScale = builder.comment("The maximum scale your Psi bar can be. This prevents it from being too large on a bigger GUI scale. This is maximum amount of \\\"on screen pixels\\\" each actual pixel can take.")
 					.defineInRange("client.maxPsiBarScale", 3, 1, 5);
+
+			pauseGameInProgrammer = builder.comment("Controls whether the Spell Programmer screen will pause the game in singleplayer.")
+					.define("client.pauseGameInProgrammer", true);
 		}
 
 	}

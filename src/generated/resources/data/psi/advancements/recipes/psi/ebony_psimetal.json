@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "psi:ebony_psimetal"
+    ]
+  },
+  "criteria": {
+    "has_ebony_substance": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "psi:ebony_substance"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "psi:ebony_psimetal"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_ebony_substance",
+      "has_the_recipe"
+    ]
+  ]
+}

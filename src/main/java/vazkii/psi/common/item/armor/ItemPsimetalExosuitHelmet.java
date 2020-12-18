@@ -8,6 +8,7 @@
  */
 package vazkii.psi.common.item.armor;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.IDyeableArmorItem;
 import net.minecraft.item.Item;
@@ -18,11 +19,11 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 import vazkii.psi.api.exosuit.IExosuitSensor;
 import vazkii.psi.api.exosuit.ISensorHoldable;
+import vazkii.psi.common.lib.LibResources;
 
 import javax.annotation.Nonnull;
 
-public class ItemPsimetalExosuitHelmet extends ItemPsimetalArmor implements ISensorHoldable,
-		IDyeableArmorItem {
+public class ItemPsimetalExosuitHelmet extends ItemPsimetalArmor implements ISensorHoldable, IDyeableArmorItem {
 
 	private static final String TAG_SENSOR = "sensor";
 
@@ -63,23 +64,18 @@ public class ItemPsimetalExosuitHelmet extends ItemPsimetalArmor implements ISen
 	}
 
 	@Override
+	public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlotType slot, String type) {
+		boolean overlay = type != null && type.equals("overlay");
+		return overlay ? LibResources.MODEL_PSIMETAL_EXOSUIT : LibResources.MODEL_PSIMETAL_EXOSUIT_SENSOR;
+	}
+
+	@Override
 	public void attachSensor(ItemStack stack, ItemStack sensor) {
 		CompoundNBT cmp = new CompoundNBT();
 		if (!sensor.isEmpty()) {
 			sensor.write(cmp);
 		}
 		stack.getOrCreateTag().put(TAG_SENSOR, cmp);
-	}
-
-	@Override
-	public boolean hasContainerItem(ItemStack stack) {
-		return !getContainerItem(stack).isEmpty();
-	}
-
-	@Nonnull
-	@Override
-	public ItemStack getContainerItem(@Nonnull ItemStack itemStack) {
-		return getAttachedSensor(itemStack);
 	}
 
 }

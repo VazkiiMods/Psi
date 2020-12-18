@@ -180,9 +180,9 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 			float g = PsiRenderHelper.g(colorVal) / 255F;
 			float b = PsiRenderHelper.b(colorVal) / 255F;
 			for (int i = 0; i < 5; i++) {
-				double x = getX() + (Math.random() - 0.5) * getWidth();
-				double y = getY() - getYOffset();
-				double z = getZ() + (Math.random() - 0.5) * getWidth();
+				double x = getPosX() + (Math.random() - 0.5) * getWidth();
+				double y = getPosY() - getYOffset();
+				double z = getPosZ() + (Math.random() - 0.5) * getWidth();
 				float grav = -0.15F - (float) Math.random() * 0.03F;
 				Psi.proxy.sparkleFX(x, y, z, r, g, b, grav, 0.25F, 15);
 			}

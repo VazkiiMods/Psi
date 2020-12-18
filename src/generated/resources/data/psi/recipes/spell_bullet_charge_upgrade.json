@@ -1,29 +1,14 @@
 {
-  "type": "forge:conditional",
-  "recipes": [
+  "type": "psi:bullet_upgrade",
+  "ingredients": [
     {
-      "conditions": [
-        {
-          "value": {
-            "type": "psi:magipsi_enabled"
-          },
-          "type": "forge:not"
-        }
-      ],
-      "recipe": {
-        "type": "minecraft:crafting_shapeless",
-        "ingredients": [
-          {
-            "item": "psi:spell_bullet"
-          },
-          {
-            "tag": "forge:dusts/redstone"
-          }
-        ],
-        "result": {
-          "item": "psi:spell_bullet_charge"
-        }
-      }
+      "item": "psi:spell_bullet"
+    },
+    {
+      "tag": "forge:dusts/redstone"
     }
-  ]
+  ],
+  "result": {
+    "item": "psi:spell_bullet_charge"
+  }
 }

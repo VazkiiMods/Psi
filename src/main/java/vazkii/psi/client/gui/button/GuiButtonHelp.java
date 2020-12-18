@@ -34,7 +34,7 @@ public class GuiButtonHelp extends Button {
 		if (!gui.takingScreenshot) {
 			boolean overHelp = mouseX > x && mouseY > y && mouseX < x + 12 && mouseY < y + 12;
 			gui.getMinecraft().getTextureManager().bindTexture(GuiProgrammer.texture);
-			drawTexture(ms, x, y, gui.xSize + (overHelp ? 12 : 0), gui.ySize + 9, 12, 12);
+			blit(ms, x, y, gui.xSize + (overHelp ? 12 : 0), gui.ySize + 9, 12, 12);
 			if (overHelp && !Screen.hasAltDown()) {
 				gui.tooltip.add(new TranslationTextComponent("psimisc.programmer_help"));
 				String ctrl = I18n.format(Minecraft.IS_RUNNING_ON_MAC ? "psimisc.ctrl_mac" : "psimisc.ctrl_windows");

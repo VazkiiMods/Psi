@@ -43,17 +43,6 @@ public class ItemSpellDrive extends Item {
 		super(properties.maxStackSize(1));
 	}
 
-	@Override
-	public boolean hasContainerItem(ItemStack stack) {
-		return getSpell(stack) != null;
-	}
-
-	@Nonnull
-	@Override
-	public ItemStack getContainerItem(@Nonnull ItemStack itemStack) {
-		return itemStack.copy();
-	}
-
 	@Nonnull
 	@Override
 	public ITextComponent getDisplayName(ItemStack stack) {
@@ -90,7 +79,7 @@ public class ItemSpellDrive extends Item {
 				if (enabled && !programmer.playerLock.isEmpty()) {
 					if (!programmer.playerLock.equals(playerIn.getName().getString())) {
 						if (!worldIn.isRemote) {
-							playerIn.sendMessage(new TranslationTextComponent("psimisc.not_your_programmer").setStyle(Style.EMPTY.withColor(TextFormatting.RED)), Util.NIL_UUID);
+							playerIn.sendMessage(new TranslationTextComponent("psimisc.not_your_programmer").setStyle(Style.EMPTY.setFormatting(TextFormatting.RED)), Util.DUMMY_UUID);
 						}
 						return ActionResultType.SUCCESS;
 					}
@@ -117,7 +106,7 @@ public class ItemSpellDrive extends Item {
 		ItemStack itemStackIn = playerIn.getHeldItem(hand);
 		if (getSpell(itemStackIn) != null && playerIn.isSneaking()) {
 			if (!worldIn.isRemote) {
-				worldIn.playSound(null, playerIn.getX(), playerIn.getY(), playerIn.getZ(), PsiSoundHandler.compileError, SoundCategory.PLAYERS, 0.5F, 1F);
+				worldIn.playSound(null, playerIn.getPosX(), playerIn.getPosY(), playerIn.getPosZ(), PsiSoundHandler.compileError, SoundCategory.PLAYERS, 0.5F, 1F);
 			} else {
 				playerIn.swingArm(hand);
 			}

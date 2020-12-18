@@ -71,9 +71,9 @@ public final class TextHelper {
 				int swidth = font.getStringWidth(s);
 				if (doit) {
 					if (centered) {
-						font.draw(matrixStack, s, xi + width / 2 - swidth / 2, y, 0xFFFFFF);
+						font.drawString(matrixStack, s, xi + width / 2 - swidth / 2, y, 0xFFFFFF);
 					} else {
-						font.draw(matrixStack, s, xi, y, 0xFFFFFF);
+						font.drawString(matrixStack, s, xi, y, 0xFFFFFF);
 					}
 				}
 				xi += swidth + spacing + extra;

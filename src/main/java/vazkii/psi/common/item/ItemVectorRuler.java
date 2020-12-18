@@ -108,6 +108,6 @@ public class ItemVectorRuler extends Item implements IHUDItem {
 
 		FontRenderer font = Minecraft.getInstance().fontRenderer;
 		int w = font.getStringWidth(s);
-		font.draw(ms, s, res.getScaledWidth() / 2f - w / 2f, res.getScaledHeight() / 2f + 10, 0xFFFFFFFF);
+		font.drawString(ms, s, res.getScaledWidth() / 2f - w / 2f, res.getScaledHeight() / 2f + 10, 0xFFFFFFFF);
 	}
 }
