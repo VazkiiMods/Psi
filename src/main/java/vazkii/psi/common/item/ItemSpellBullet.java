@@ -116,7 +116,17 @@ public class ItemSpellBullet extends Item {
 
 		@Override
 		public void setSpell(PlayerEntity player, Spell spell) {
-			ItemSpellDrive.setSpell(stack, spell);
+			if (stack.getCount() == 1) {
+				ItemSpellDrive.setSpell(stack, spell);
+				return;
+			}
+			stack.shrink(1);
+			ItemStack newStack = stack.copy();
+			newStack.setCount(1);
+			ItemSpellDrive.setSpell(newStack, spell);
+			if (!player.addItemStackToInventory(newStack)) {
+				player.dropItem(newStack, false);
+			}
 		}
 
 		@Override
