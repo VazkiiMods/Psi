@@ -122,10 +122,13 @@ public class ItemSpellDrive extends Item {
 		CompoundNBT cmp = new CompoundNBT();
 		if (spell != null) {
 			spell.writeToNBT(cmp);
+			stack.getOrCreateTag().put(TAG_SPELL, cmp);
+			stack.getOrCreateTag().putBoolean(HAS_SPELL, true);
+		} else {
+			stack.getOrCreateTag().remove(TAG_SPELL);
+			stack.getOrCreateTag().remove(HAS_SPELL);
 		}
 
-		stack.getOrCreateTag().put(TAG_SPELL, cmp);
-		stack.getOrCreateTag().putBoolean(HAS_SPELL, true);
 	}
 
 	public static Spell getSpell(ItemStack stack) {
