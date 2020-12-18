@@ -41,7 +41,7 @@ public class ItemSpellBullet extends Item {
 	private static final String TAG_SPELL = "spell";
 
 	public ItemSpellBullet(Item.Properties properties) {
-		super(properties.maxStackSize(1));
+		super(properties.maxStackSize(16));
 	}
 
 	@Nullable
