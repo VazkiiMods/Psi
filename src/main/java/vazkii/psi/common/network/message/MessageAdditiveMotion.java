@@ -10,7 +10,6 @@ package vazkii.psi.common.network.message;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkEvent;
 
@@ -21,30 +20,30 @@ import java.util.function.Supplier;
 public class MessageAdditiveMotion {
 
 	private final int entityID;
-	private final int motionX;
-	private final int motionY;
-	private final int motionZ;
+	private final double motionX;
+	private final double motionY;
+	private final double motionZ;
 
 	public MessageAdditiveMotion(int entityID, double motionX, double motionY, double motionZ) {
 		this.entityID = entityID;
 
-		this.motionX = (int) (MathHelper.clamp(motionX, -3.9, 3.9) * 8000);
-		this.motionY = (int) (MathHelper.clamp(motionY, -3.9, 3.9) * 8000);
-		this.motionZ = (int) (MathHelper.clamp(motionZ, -3.9, 3.9) * 8000);
+		this.motionX = motionX;
+		this.motionY = motionY;
+		this.motionZ = motionZ;
 	}
 
 	public MessageAdditiveMotion(PacketBuffer buf) {
 		entityID = buf.readVarInt();
-		motionX = buf.readInt();
-		motionY = buf.readInt();
-		motionZ = buf.readInt();
+		motionX = buf.readDouble();
+		motionY = buf.readDouble();
+		motionZ = buf.readDouble();
 	}
 
 	public void encode(PacketBuffer buf) {
 		buf.writeVarInt(entityID);
-		buf.writeInt(motionX);
-		buf.writeInt(motionY);
-		buf.writeInt(motionZ);
+		buf.writeDouble(motionX);
+		buf.writeDouble(motionY);
+		buf.writeDouble(motionZ);
 	}
 
 	public boolean receive(Supplier<NetworkEvent.Context> context) {
@@ -53,7 +52,7 @@ public class MessageAdditiveMotion {
 			if (world != null) {
 				Entity entity = world.getEntityByID(entityID);
 				if (entity != null) {
-					entity.setMotion(entity.getMotion().add(motionX / 8000.0, motionY / 8000.0, motionZ / 8000.0));
+					entity.setMotion(entity.getMotion().add(motionX, motionY, motionZ));
 				}
 			}
 		});
