@@ -10,11 +10,14 @@
  */
 package vazkii.psi.common.spell.trick.infusion;
 
-import net.minecraft.item.ItemStack;
+import vazkii.psi.api.PsiAPI;
+import vazkii.psi.api.recipe.TrickRecipe;
 import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.piece.PieceTrick;
 import vazkii.psi.common.item.ItemCAD;
-import vazkii.psi.common.item.base.ModItems;
+import vazkii.psi.common.lib.LibPieceNames;
+
+import java.util.stream.Collectors;
 
 public class PieceTrickInfusion extends PieceTrick {
 	public PieceTrickInfusion(Spell spell) {
@@ -34,8 +37,14 @@ public class PieceTrickInfusion extends PieceTrick {
 
 	@Override
 	public Object execute(SpellContext context) {
-		ItemCAD.craft(context.caster, "dustRedstone", new ItemStack(ModItems.material));
-		ItemCAD.craft(context.caster, "ingotGold", new ItemStack(ModItems.material, 1, 1));
+		for (TrickRecipe recipe :
+				PsiAPI.trickRecipes.stream()
+						.filter(recipe ->
+								recipe.getPiece().isEmpty() || LibPieceNames.TRICK_INFUSION.equals(recipe.getPiece()))
+						.collect(Collectors.toList())
+			) {
+				ItemCAD.craft(context.caster, recipe.getInput(), recipe.getOutput());
+			}
 		return null;
 	}
 

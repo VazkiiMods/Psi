@@ -53,6 +53,7 @@ import vazkii.psi.api.cad.*;
 import vazkii.psi.api.internal.PsiRenderHelper;
 import vazkii.psi.api.internal.TooltipHelper;
 import vazkii.psi.api.internal.Vector3;
+import vazkii.psi.api.recipe.TrickRecipe;
 import vazkii.psi.api.spell.*;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.BlockProgrammer;
@@ -74,14 +75,11 @@ import vazkii.psi.common.spell.trick.block.PieceTrickBreakBlock;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColorProvider, IPsiItem {
 
@@ -190,13 +188,23 @@ public class ItemCAD extends ItemMod implements ICAD, ISpellSettable, IItemColor
 		ItemStack bullet = getBulletInSocket(itemStackIn, getSelectedSlot(itemStackIn));
 		boolean did = cast(worldIn, playerIn, data, bullet, itemStackIn, 40, 25, 0.5F, ctx -> ctx.castFrom = hand);
 
-		if(!data.overflowed && bullet.isEmpty() && craft(playerIn, "dustRedstone", new ItemStack(ModItems.material))) {
-			worldIn.playSound(null, playerIn.posX, playerIn.posY, playerIn.posZ, PsiSoundHandler.cadShoot, SoundCategory.PLAYERS, 0.5F, (float) (0.5 + Math.random() * 0.5));
-			data.deductPsi(100, 60, true);
+		if (!data.overflowed && bullet.isEmpty()) {
+			//Get Recipes from Registry
+			for (TrickRecipe recipe :
+				PsiAPI.trickRecipes.stream()
+							.filter(recipe -> recipe.getPiece().isEmpty())
+							.collect(Collectors.toList())
+			) {
+				if (craft(playerIn, recipe.getInput(), recipe.getOutput())) {
+					worldIn.playSound(null, playerIn.posX, playerIn.posY, playerIn.posZ, PsiSoundHandler.cadShoot, SoundCategory.PLAYERS, 0.5F, (float) (0.5 + Math.random() * 0.5));
+					data.deductPsi(100, 60, true);
 
-			if(data.level == 0)
-				data.levelUp();
-			did = true;
+					if(data.level == 0)
+					data.levelUp();
+					did = true;
+				}
+			}
+
 		}
 
 		return new ActionResult<>(did ? EnumActionResult.SUCCESS : EnumActionResult.PASS, itemStackIn);

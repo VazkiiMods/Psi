@@ -13,9 +13,16 @@ package vazkii.psi.common.spell.trick.infusion;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.WorldProviderEnd;
-import vazkii.psi.api.spell.*;
+import vazkii.psi.api.PsiAPI;
+import vazkii.psi.api.recipe.TrickRecipe;
+import vazkii.psi.api.spell.EnumSpellStat;
+import vazkii.psi.api.spell.Spell;
+import vazkii.psi.api.spell.SpellContext;
+import vazkii.psi.api.spell.SpellMetadata;
 import vazkii.psi.common.item.ItemCAD;
-import vazkii.psi.common.item.base.ModItems;
+import vazkii.psi.common.lib.LibPieceNames;
+
+import java.util.stream.Collectors;
 
 public class PieceTrickEbonyIvory extends PieceTrickGreaterInfusion {
 	public PieceTrickEbonyIvory(Spell spell) {
@@ -32,8 +39,13 @@ public class PieceTrickEbonyIvory extends PieceTrickGreaterInfusion {
 	public Object execute(SpellContext context) {
 		super.execute(context);
 		if(context.caster.getEntityWorld().provider instanceof WorldProviderEnd) {
-			ItemCAD.craft(context.caster, new ItemStack(Items.COAL), new ItemStack(ModItems.material, 1, 5));
-			ItemCAD.craft(context.caster, "gemQuartz", new ItemStack(ModItems.material, 1, 6));
+			for (TrickRecipe recipe :
+					PsiAPI.trickRecipes.stream()
+							.filter(recipe -> LibPieceNames.TRICK_EBONY_IVORY.equals(recipe.getPiece()))
+							.collect(Collectors.toList())
+			) {
+				ItemCAD.craft(context.caster, recipe.getInput(), recipe.getOutput());
+			}
 		}
 
 		return null;
