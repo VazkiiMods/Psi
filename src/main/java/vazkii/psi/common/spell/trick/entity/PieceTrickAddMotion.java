@@ -9,7 +9,6 @@
 package vazkii.psi.common.spell.trick.entity;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.ServerPlayerEntity;
 
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.EnumSpellStat;
@@ -24,8 +23,6 @@ import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.param.ParamVector;
 import vazkii.psi.api.spell.piece.PieceTrick;
 import vazkii.psi.common.core.handler.AdditiveMotionHandler;
-import vazkii.psi.common.network.MessageRegister;
-import vazkii.psi.common.network.message.MessageAdditiveMotion;
 
 public class PieceTrickAddMotion extends PieceTrick {
 
@@ -96,12 +93,7 @@ public class PieceTrickAddMotion extends PieceTrick {
 			}
 		}
 
-		if (e instanceof ServerPlayerEntity) {
-			MessageAdditiveMotion motion = new MessageAdditiveMotion(e.getEntityId(), dir.x, dir.y, dir.z);
-			MessageRegister.sendToPlayer(motion, (ServerPlayerEntity) e);
-		} else {
-			AdditiveMotionHandler.addMotion(e, dir.x, dir.y, dir.z);
-		}
+		AdditiveMotionHandler.addMotion(e, dir.x, dir.y, dir.z);
 
 	}
 

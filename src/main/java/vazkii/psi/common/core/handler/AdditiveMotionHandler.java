@@ -32,12 +32,8 @@ public class AdditiveMotionHandler {
 		if (x == 0 && y == 0 && z == 0) {
 			return;
 		}
-
-		entity.addVelocity(x, y, z);
-
 		if (!entity.world.isRemote) {
 			Vector3d base = toUpdate.getOrDefault(entity, Vector3d.ZERO);
-
 			toUpdate.put(entity, base.add(x, y, z));
 		}
 	}
@@ -50,14 +46,17 @@ public class AdditiveMotionHandler {
 					Vector3d vec = toUpdate.get(entity);
 					if (vec != null) { // Edge case where the entity expired in the ms between calls
 						MessageAdditiveMotion motion = new MessageAdditiveMotion(entity.getEntityId(), vec.x, vec.y, vec.z);
-
+						//We want a player's motion to be handled client-side to ensure movement consistency
+						//Otherwise it feels jerky.
 						if (entity instanceof ServerPlayerEntity) {
 							MessageRegister.sendToPlayer(motion, (ServerPlayerEntity) entity);
+						} else {
+							entity.addVelocity(vec.x, vec.y, vec.z);
 						}
-
 						if (entity.world instanceof ServerWorld) {
 							MessageRegister.HANDLER.send(PacketDistributor.TRACKING_ENTITY.with(() -> entity), motion);
 						}
+
 					}
 				}
 			}
