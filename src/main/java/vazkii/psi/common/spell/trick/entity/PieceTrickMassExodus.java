@@ -49,8 +49,9 @@ public class PieceTrickMassExodus extends PieceTrick {
 			speedVal = 1D;
 		}
 
-		meta.addStat(EnumSpellStat.POTENCY, (int) (Math.abs(speedVal) * 50));
-		meta.addStat(EnumSpellStat.COST, (int) (Math.abs(speedVal) * 70));
+		double absSpeed = Math.abs(speedVal);
+		meta.addStat(EnumSpellStat.POTENCY, (int) (absSpeed * 50));
+		meta.addStat(EnumSpellStat.COST, (int) Math.max(1, absSpeed * 100));
 	}
 
 	@Override

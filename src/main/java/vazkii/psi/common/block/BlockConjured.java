@@ -10,8 +10,12 @@ package vazkii.psi.common.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.IWaterLoggable;
+import net.minecraft.fluid.FluidState;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
+import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
@@ -35,7 +39,7 @@ import javax.annotation.Nullable;
 
 import java.util.Random;
 
-public class BlockConjured extends Block {
+public class BlockConjured extends Block implements IWaterLoggable {
 
 	public static final BooleanProperty SOLID = BooleanProperty.create("solid");
 	public static final BooleanProperty LIGHT = BooleanProperty.create("light");
@@ -45,12 +49,13 @@ public class BlockConjured extends Block {
 	public static final BooleanProperty BLOCK_SOUTH = BooleanProperty.create("block_south");
 	public static final BooleanProperty BLOCK_WEST = BooleanProperty.create("block_west");
 	public static final BooleanProperty BLOCK_EAST = BooleanProperty.create("block_east");
+	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
 	protected static final VoxelShape LIGHT_SHAPE = Block.makeCuboidShape(4, 4, 4, 12, 12, 12);
 
 	public BlockConjured(Properties properties) {
 		super(properties);
-		setDefaultState(getStateContainer().getBaseState().with(LIGHT, false).with(SOLID, false).with(BLOCK_DOWN, false).with(BLOCK_UP, false).with(BLOCK_EAST, false).with(BLOCK_WEST, false).with(BLOCK_NORTH, false).with(BLOCK_SOUTH, false));
+		setDefaultState(getStateContainer().getBaseState().with(LIGHT, false).with(SOLID, false).with(WATERLOGGED, false).with(BLOCK_DOWN, false).with(BLOCK_UP, false).with(BLOCK_EAST, false).with(BLOCK_WEST, false).with(BLOCK_NORTH, false).with(BLOCK_SOUTH, false));
 	}
 
 	@Override
@@ -80,7 +85,7 @@ public class BlockConjured extends Block {
 
 	@Override
 	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-		builder.add(SOLID, LIGHT, BLOCK_UP, BLOCK_DOWN, BLOCK_NORTH, BLOCK_SOUTH, BLOCK_WEST, BLOCK_EAST);
+		builder.add(SOLID, LIGHT, BLOCK_UP, BLOCK_DOWN, BLOCK_NORTH, BLOCK_SOUTH, BLOCK_WEST, BLOCK_EAST, WATERLOGGED);
 	}
 
 	@Override
@@ -113,7 +118,9 @@ public class BlockConjured extends Block {
 			prop = BLOCK_EAST;
 			break;
 		}
-
+		if (state.get(WATERLOGGED)) {
+			world.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(world));
+		}
 		if (state.getBlock() == facingState.getBlock() && state.get(LIGHT) == facingState.get(LIGHT) && state.get(SOLID) == facingState.get(SOLID)) {
 			return state.with(prop, true);
 		} else {
@@ -135,6 +142,11 @@ public class BlockConjured extends Block {
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context) {
 		return state.get(SOLID) ? VoxelShapes.fullCube() : LIGHT_SHAPE;
+	}
+
+	@Override
+	public FluidState getFluidState(BlockState state) {
+		return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
 	}
 
 	@Override

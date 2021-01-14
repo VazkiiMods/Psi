@@ -48,7 +48,7 @@ public class PieceTrickExplode extends PieceTrick {
 			throw new SpellCompilationException(SpellCompilationException.NON_POSITIVE_VALUE, x, y);
 		}
 
-		powerVal = Math.max(1, powerVal);
+		powerVal = Math.max(0.5, powerVal);
 
 		meta.addStat(EnumSpellStat.POTENCY, (int) (powerVal * 70));
 		meta.addStat(EnumSpellStat.COST, (int) (powerVal * 210));
@@ -69,7 +69,7 @@ public class PieceTrickExplode extends PieceTrick {
 		BlockPos pos = positionVal.toBlockPos();
 		BlockState state = context.caster.getEntityWorld().getBlockState(pos);
 
-		context.caster.getEntityWorld().createExplosion(context.focalPoint, positionVal.x, positionVal.y, positionVal.z, (float) powerVal, state.getMaterial().isLiquid() ? Explosion.Mode.NONE : Explosion.Mode.DESTROY);
+		context.caster.getEntityWorld().createExplosion(context.focalPoint, positionVal.x, positionVal.y, positionVal.z, (float) powerVal, state.getMaterial().isLiquid() ? Explosion.Mode.NONE : Explosion.Mode.BREAK);
 		return null;
 	}
 

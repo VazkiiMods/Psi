@@ -14,7 +14,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Rarity;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
+import net.minecraft.util.*;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -30,6 +30,7 @@ import vazkii.psi.api.internal.TooltipHelper;
 import vazkii.psi.api.spell.ISpellAcceptor;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
+import vazkii.psi.common.core.handler.PsiSoundHandler;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -41,7 +42,7 @@ public class ItemSpellBullet extends Item {
 	public static final String TAG_SPELL = "spell";
 
 	public ItemSpellBullet(Item.Properties properties) {
-		super(properties.maxStackSize(1));
+		super(properties.maxStackSize(16));
 	}
 
 	@Nullable
@@ -77,6 +78,24 @@ public class ItemSpellBullet extends Item {
 			tooltip.add(new TranslationTextComponent("psimisc.bullet_type", new TranslationTextComponent("psi.bullet_type_" + getBulletType())));
 			tooltip.add(new TranslationTextComponent("psimisc.bullet_cost", (int) (ISpellAcceptor.acceptor(stack).getCostModifier() * 100)));
 		});
+	}
+
+	@Nonnull
+	@Override
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, @Nonnull Hand hand) {
+		ItemStack itemStackIn = playerIn.getHeldItem(hand);
+		if (ItemSpellDrive.getSpell(itemStackIn) != null && playerIn.isSneaking()) {
+			if (!worldIn.isRemote) {
+				worldIn.playSound(null, playerIn.getPosX(), playerIn.getPosY(), playerIn.getPosZ(), PsiSoundHandler.compileError, SoundCategory.PLAYERS, 0.5F, 1F);
+			} else {
+				playerIn.swingArm(hand);
+			}
+			ItemSpellDrive.setSpell(itemStackIn, null);
+
+			return new ActionResult<>(ActionResultType.SUCCESS, itemStackIn);
+		}
+
+		return new ActionResult<>(ActionResultType.PASS, itemStackIn);
 	}
 
 	public String getBulletType() {
@@ -116,7 +135,17 @@ public class ItemSpellBullet extends Item {
 
 		@Override
 		public void setSpell(PlayerEntity player, Spell spell) {
-			ItemSpellDrive.setSpell(stack, spell);
+			if (stack.getCount() == 1) {
+				ItemSpellDrive.setSpell(stack, spell);
+				return;
+			}
+			stack.shrink(1);
+			ItemStack newStack = stack.copy();
+			newStack.setCount(1);
+			ItemSpellDrive.setSpell(newStack, spell);
+			if (!player.addItemStackToInventory(newStack)) {
+				player.dropItem(newStack, false);
+			}
 		}
 
 		@Override

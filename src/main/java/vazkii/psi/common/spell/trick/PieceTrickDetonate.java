@@ -55,7 +55,7 @@ public class PieceTrickDetonate extends PieceTrick {
 			IDetonationHandler.performDetonation(context.caster.world, context.caster, 0, entity -> entity == context.caster);
 			return null;
 		}
-		IDetonationHandler.performDetonation(context.caster.world, context.caster, radiusVal);
+		IDetonationHandler.performDetonation(context.caster.world, context.caster, context.focalPoint, radiusVal);
 		return null;
 	}
 }

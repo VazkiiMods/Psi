@@ -67,7 +67,7 @@ public interface ISocketable {
 			return false;
 		}
 
-		if (bullet.isEmpty() || !ISpellAcceptor.hasSpell(bullet)) {
+		if (bullet.isEmpty()) {
 			return false;
 		}
 
