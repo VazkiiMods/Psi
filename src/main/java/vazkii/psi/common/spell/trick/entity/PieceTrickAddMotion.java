@@ -52,8 +52,13 @@ public class PieceTrickAddMotion extends PieceTrick {
 		}
 
 		double absSpeed = Math.abs(speedVal);
+		int dc = 0;
+		if (!meta.getFlag("psi.addmotion")) {
+			meta.setFlag("psi.addmotion", true);
+			dc = 3;
+		}
 		meta.addStat(EnumSpellStat.POTENCY, (int) absSpeed * 50);
-		meta.addStat(EnumSpellStat.COST, (int) Math.max(1, absSpeed * 90));
+		meta.addStat(EnumSpellStat.COST, (int) Math.max(1, absSpeed * 90 - 3));
 	}
 
 	@Override
