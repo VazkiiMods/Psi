@@ -13,6 +13,7 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.gui.widget.Widget;
@@ -214,6 +215,7 @@ public class GuiProgrammer extends Screen {
 			addButton(new GuiButtonIO(left + xSize + 2, top + ySize - 16, false, this, button -> {
 				if (hasShiftDown()) {
 					String cb = getMinecraft().keyboardListener.getClipboardString();
+					ClientPlayerEntity player = Minecraft.getInstance().player;
 
 					try {
 						cb = cb.replaceAll("([^a-z0-9])\\d+:", "$1"); // backwards compatibility with pre 1.12 nbt json
@@ -223,7 +225,7 @@ public class GuiProgrammer extends Screen {
 							for (INBT mod : mods) {
 								String modName = ((CompoundNBT) mod).getString(Spell.TAG_MOD_NAME);
 								if (!PsiAPI.getSpellPieceRegistry().keySet().stream().map(ResourceLocation::getNamespace).collect(Collectors.toSet()).contains(modName)) {
-									Minecraft.getInstance().player.sendMessage(new TranslationTextComponent("psimisc.modnotfound", modName).setStyle(Style.EMPTY.setFormatting(TextFormatting.RED)), Util.DUMMY_UUID);
+									player.sendMessage(new TranslationTextComponent("psimisc.modnotfound", modName).setStyle(Style.EMPTY.setFormatting(TextFormatting.RED)), Util.DUMMY_UUID);
 								}
 								if (modName.equals("psi")) {
 									boolean sendMessage = false;
@@ -243,7 +245,7 @@ public class GuiProgrammer extends Screen {
 										}
 									}
 									if (sendMessage) {
-										Minecraft.getInstance().player.sendMessage(new TranslationTextComponent("psimisc.spellonnewerversion").setStyle(Style.EMPTY.setFormatting(TextFormatting.RED)), Util.DUMMY_UUID);
+										player.sendMessage(new TranslationTextComponent("psimisc.spellonnewerversion").setStyle(Style.EMPTY.setFormatting(TextFormatting.RED)), Util.DUMMY_UUID);
 									}
 								}
 							}
@@ -252,14 +254,14 @@ public class GuiProgrammer extends Screen {
 						if (spell == null) {
 							return;
 						}
-						PlayerDataHandler.PlayerData data = PlayerDataHandler.get(getMinecraft().player);
+						PlayerDataHandler.PlayerData data = PlayerDataHandler.get(player);
 						for (int i = 0; i < SpellGrid.GRID_SIZE; i++) {
 							for (int j = 0; j < SpellGrid.GRID_SIZE; j++) {
 								SpellPiece piece = spell.grid.gridData[i][j];
 								if (piece != null) {
 									ResourceLocation group = PsiAPI.getGroupForPiece(piece.getClass());
-									if (!getMinecraft().player.isCreative() && (group == null || !data.isPieceGroupUnlocked(group, piece.registryKey))) {
-										getMinecraft().player.sendMessage(new TranslationTextComponent("psimisc.missing_pieces").setStyle(Style.EMPTY.setFormatting(TextFormatting.RED)), Util.DUMMY_UUID);
+									if (!player.isCreative() && (group == null || !data.isPieceGroupUnlocked(group, piece.registryKey))) {
+										player.sendMessage(new TranslationTextComponent("psimisc.missing_pieces").setStyle(Style.EMPTY.setFormatting(TextFormatting.RED)), Util.DUMMY_UUID);
 										return;
 									}
 								}
@@ -269,8 +271,9 @@ public class GuiProgrammer extends Screen {
 						pushState(true);
 						spellNameField.setText(spell.name);
 						onSpellChanged(false);
-					} catch (Throwable t) {
-						getMinecraft().player.sendMessage(new TranslationTextComponent("psimisc.malformed_json", t.getMessage()).setStyle(Style.EMPTY.setFormatting(TextFormatting.RED)), Util.DUMMY_UUID);
+					} catch (Exception t) {
+						player.sendMessage(new TranslationTextComponent("psimisc.malformed_json", t.getMessage()).setStyle(Style.EMPTY.setFormatting(TextFormatting.RED)), Util.DUMMY_UUID);
+						Psi.logger.error("Error importing spell from clipboard", t);
 					}
 				}
 			}));
