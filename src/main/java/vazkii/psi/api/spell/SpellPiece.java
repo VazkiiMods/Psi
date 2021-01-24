@@ -475,6 +475,7 @@ public abstract class SpellPiece {
 				rl = new ResourceLocation(namespace, key);
 				if (PsiAPI.isPieceRegistered(rl)) {
 					exists = true;
+					break;
 				}
 			}
 		}
