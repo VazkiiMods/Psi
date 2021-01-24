@@ -9,6 +9,7 @@
 package vazkii.psi.common.spell.selector;
 
 import net.minecraft.entity.LivingEntity;
+import net.minecraftforge.common.util.FakePlayer;
 
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
@@ -28,7 +29,7 @@ public class PieceSelectorAttacker extends PieceSelector {
 
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
-		if (context.attackingEntity == null) {
+		if (context.attackingEntity == null || context.attackingEntity instanceof FakePlayer) {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_TARGET);
 		}
 
