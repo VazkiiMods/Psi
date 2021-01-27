@@ -104,7 +104,7 @@ public class GuiProgrammer extends Screen {
 	public final Stack<Spell> redoSteps = new Stack<>();
 	public static SpellPiece clipboard = null;
 
-	public Either<SpellCompilationException, CompiledSpell> compileResult;
+	public Either<CompiledSpell, SpellCompilationException> compileResult;
 
 	public int xSize, ySize, padLeft, padTop, left, top, gridLeft, gridTop;
 	public int cursorX, cursorY;
@@ -320,7 +320,7 @@ public class GuiProgrammer extends Screen {
 		spell.draw(ms, buffers, 0xF000F0);
 		buffers.finish();
 
-		compileResult.left().ifPresent(ex -> {
+		compileResult.right().ifPresent(ex -> {
 			Pair<Integer, Integer> errorPos = ex.location;
 			if (errorPos != null && errorPos.getRight() != -1 && errorPos.getLeft() != -1) {
 				font.drawStringWithShadow(ms, "!!", errorPos.getLeft() * 18 + 12, errorPos.getRight() * 18 + 8, 0xFF0000);
@@ -505,7 +505,7 @@ public class GuiProgrammer extends Screen {
 
 		onSelectedChanged();
 
-		if (!nameOnly || compileResult.left().filter(ex -> ex.getMessage().equals(SpellCompilationException.NO_NAME)).isPresent() || spell.name.isEmpty()) {
+		if (!nameOnly || compileResult.right().filter(ex -> ex.getMessage().equals(SpellCompilationException.NO_NAME)).isPresent() || spell.name.isEmpty()) {
 			compileResult = new SpellCompiler().compile(spell);
 		}
 	}

@@ -38,7 +38,7 @@ public final class SpellCache implements ISpellCache {
 			return map.get(spell.uuid);
 		}
 
-		Optional<CompiledSpell> result = new SpellCompiler().compile(spell).right();
+		Optional<CompiledSpell> result = new SpellCompiler().compile(spell).left();
 		return result.map(compSpell -> {
 			map.put(spell.uuid, compSpell);
 			return compSpell;

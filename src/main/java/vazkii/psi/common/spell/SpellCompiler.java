@@ -31,11 +31,11 @@ public final class SpellCompiler implements ISpellCompiler {
 	private final Set<SpellPiece> redirectionPieces = new HashSet<>();
 
 	@Override
-	public Either<SpellCompilationException, CompiledSpell> compile(Spell in) {
+	public Either<CompiledSpell, SpellCompilationException> compile(Spell in) {
 		try {
-			return Either.right(doCompile(in));
+			return Either.left(doCompile(in));
 		} catch (SpellCompilationException e) {
-			return Either.left(e);
+			return Either.right(e);
 		}
 	}
 

@@ -42,7 +42,7 @@ public class SpellCostsWidget extends Widget {
 
 	@Override
 	public void renderButton(MatrixStack ms, int mouseX, int mouseY, float pTicks) {
-		parent.compileResult.right().ifPresent(compiledSpell -> {
+		parent.compileResult.left().ifPresent(compiledSpell -> {
 			int i = 0;
 			int statX = parent.left + parent.xSize + 3;
 
