@@ -13,7 +13,7 @@ import com.mojang.datafixers.util.Either;
 import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.CompiledSpell.Action;
 
-import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -57,8 +57,8 @@ public final class SpellCompiler implements ISpellCompiler {
 		}
 
 		for (SpellPiece piece : findPieces(Predicate.isEqual(EnumPieceType.ERROR_HANDLER))) {
-			if (!processedHandlers.contains(piece)) {
-				buildHandler(piece);
+			if (!processedHandlers.add(piece)) {
+				buildPiece(piece);
 			}
 		}
 
@@ -98,22 +98,14 @@ public final class SpellCompiler implements ISpellCompiler {
 			processedHandlers.add(piece);
 		}
 
-		List<SpellParam.Side> usedSides = new ArrayList<>();
+		EnumSet<SpellParam.Side> usedSides = EnumSet.noneOf(SpellParam.Side.class);
 
 		for (SpellParam<?> param : piece.paramSides.keySet()) {
-			SpellParam.Side side = piece.paramSides.get(param);
-			if (!side.isEnabled()) {
-				if (!param.canDisable) {
-					throw new SpellCompilationException(SpellCompilationException.UNSET_PARAM, piece.x, piece.y);
-				}
-
+			if (checkSideDisabled(param, piece, usedSides)) {
 				continue;
 			}
 
-			if (usedSides.contains(side)) {
-				throw new SpellCompilationException(SpellCompilationException.SAME_SIDE_PARAMS, piece.x, piece.y);
-			}
-			usedSides.add(side);
+			SpellParam.Side side = piece.paramSides.get(param);
 
 			SpellPiece pieceAt = compiled.sourceSpell.grid.getPieceAtSideWithRedirections(piece.x, piece.y, side, this::buildRedirect);
 
@@ -124,52 +116,10 @@ public final class SpellCompiler implements ISpellCompiler {
 				throw new SpellCompilationException(SpellCompilationException.INVALID_PARAM, piece.x, piece.y);
 			}
 
-			if (errorHandler != null) {
-				compiled.errorHandlers.putIfAbsent(pieceAt, errorHandler);
-			}
-
-			buildPiece(pieceAt, new HashSet<>(visited));
-		}
-	}
-
-	public void buildHandler(SpellPiece piece) throws SpellCompilationException {
-		if (!(piece instanceof IErrorCatcher)) {
-			return;
-		}
-
-		CompiledSpell.CatchHandler errorHandler = compiled.new CatchHandler(piece);
-
-		piece.addToMetadata(compiled.metadata);
-
-		List<SpellParam.Side> usedSides = new ArrayList<>();
-
-		for (SpellParam<?> param : piece.paramSides.keySet()) {
-			SpellParam.Side side = piece.paramSides.get(param);
-			if (!side.isEnabled()) {
-				if (!param.canDisable) {
-					throw new SpellCompilationException(SpellCompilationException.UNSET_PARAM, piece.x, piece.y);
-				}
-
-				continue;
-			}
-
-			if (usedSides.contains(side)) {
-				throw new SpellCompilationException(SpellCompilationException.SAME_SIDE_PARAMS, piece.x, piece.y);
-			}
-			usedSides.add(side);
-
-			SpellPiece pieceAt = compiled.sourceSpell.grid.getPieceAtSideWithRedirections(piece.x, piece.y, side, this::buildRedirect);
-			if (pieceAt == null) {
-				throw new SpellCompilationException(SpellCompilationException.NULL_PARAM, piece.x, piece.y);
-			}
-			if (!param.canAccept(pieceAt)) {
-				throw new SpellCompilationException(SpellCompilationException.INVALID_PARAM, piece.x, piece.y);
-			}
-
-			if (((IErrorCatcher) piece).catchParam(param)) {
+			if (errorHandler != null && ((IErrorCatcher) piece).catchParam(param)) {
 				compiled.errorHandlers.putIfAbsent(pieceAt, errorHandler);
 			} else {
-				buildPiece(pieceAt);
+				buildPiece(pieceAt, new HashSet<>(visited));
 			}
 		}
 	}
@@ -180,23 +130,27 @@ public final class SpellCompiler implements ISpellCompiler {
 
 			redirectionPieces.add(piece);
 
-			List<SpellParam.Side> usedSides = new ArrayList<>();
+			EnumSet<SpellParam.Side> usedSides = EnumSet.noneOf(SpellParam.Side.class);
 
 			for (SpellParam<?> param : piece.paramSides.keySet()) {
-				SpellParam.Side side = piece.paramSides.get(param);
-				if (!side.isEnabled()) {
-					if (!param.canDisable) {
-						throw new SpellCompilationException(SpellCompilationException.UNSET_PARAM, piece.x, piece.y);
-					}
-
-					continue;
-				}
-
-				if (usedSides.contains(side)) {
-					throw new SpellCompilationException(SpellCompilationException.SAME_SIDE_PARAMS, piece.x, piece.y);
-				}
-				usedSides.add(side);
+				checkSideDisabled(param, piece, usedSides);
 			}
+		}
+	}
+
+	/** @return whether this piece should get skipped over */
+	private boolean checkSideDisabled(SpellParam<?> param, SpellPiece parent, EnumSet<SpellParam.Side> seen) throws SpellCompilationException {
+		SpellParam.Side side = parent.paramSides.get(param);
+		if (side.isEnabled()) {
+			if (seen.add(side)) {
+				throw new SpellCompilationException(SpellCompilationException.SAME_SIDE_PARAMS, parent.x, parent.y);
+			}
+			return false;
+		} else {
+			if (!param.canDisable) {
+				throw new SpellCompilationException(SpellCompilationException.UNSET_PARAM, parent.x, parent.y);
+			}
+			return true;
 		}
 	}
 
