@@ -198,11 +198,10 @@ public final class SpellGrid {
 
 	private SpellPiece getPieceAtSide(Multimap<SpellPiece, SpellParam.Side> traversed, int x, int y, SpellParam.Side side) throws SpellCompilationException {
 		SpellPiece atSide = getPieceAtSideSafely(x, y, side);
-		if (traversed.containsEntry(atSide, side)) {
+		if (traversed.put(atSide, side)) {
 			throw new SpellCompilationException(SpellCompilationException.INFINITE_LOOP);
 		}
 
-		traversed.put(atSide, side);
 		return atSide;
 	}
 
@@ -213,32 +212,23 @@ public final class SpellGrid {
 	}
 
 	public SpellPiece getPieceAtSideWithRedirections(int x, int y, SpellParam.Side side) throws SpellCompilationException {
-		return getPieceAtSideWithRedirections(HashMultimap.create(), x, y, side);
-	}
-
-	public SpellPiece getPieceAtSideWithRedirections(Multimap<SpellPiece, SpellParam.Side> traversed, int x, int y, SpellParam.Side side) throws SpellCompilationException {
-		return getPieceAtSideWithRedirections(traversed, x, y, side, piece -> {});
-	}
-
-	public SpellPiece getPieceAtSideWithRedirections(int x, int y, SpellParam.Side side, SpellPieceConsumer walker) throws SpellCompilationException {
-		return getPieceAtSideWithRedirections(HashMultimap.create(), x, y, side, walker);
+		return getPieceAtSideWithRedirections(x, y, side, piece -> {});
 	}
 
 	/** @param walker a callback that incrementally gets called on each redirector reached */
-	public SpellPiece getPieceAtSideWithRedirections(Multimap<SpellPiece, SpellParam.Side> traversed, int x, int y, SpellParam.Side side, SpellPieceConsumer walker) throws SpellCompilationException {
-		SpellPiece atSide = getPieceAtSide(traversed, x, y, side);
-		if (!(atSide instanceof IGenericRedirector)) {
-			return atSide;
+	public SpellPiece getPieceAtSideWithRedirections(int x, int y, SpellParam.Side side, SpellPieceConsumer walker) throws SpellCompilationException {
+		SpellPiece atSide;
+		Multimap<SpellPiece, SpellParam.Side> traversed = HashMultimap.create();
+		while ((atSide = getPieceAtSide(traversed, x, y, side)) instanceof IGenericRedirector) {
+			IGenericRedirector redirector = (IGenericRedirector) atSide;
+			walker.accept(atSide);
+			SpellParam.Side rside = redirector.remapSide(side);
+			if (!rside.isEnabled()) {
+				return null;
+			}
 		}
 
-		IGenericRedirector redirector = (IGenericRedirector) atSide;
-		walker.accept(atSide);
-		SpellParam.Side rside = redirector.remapSide(side);
-		if (!rside.isEnabled()) {
-			return null;
-		}
-
-		return getPieceAtSideWithRedirections(traversed, atSide.x, atSide.y, rside, walker);
+		return atSide;
 	}
 
 	public SpellPiece getPieceAtSideSafely(int x, int y, SpellParam.Side side) {
