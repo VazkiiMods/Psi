@@ -11,6 +11,7 @@ package vazkii.psi.client.gui;
 import com.google.common.collect.ImmutableSet;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.datafixers.util.Either;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
@@ -45,6 +46,7 @@ import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
 import vazkii.psi.api.PsiAPI;
+import vazkii.psi.api.spell.CompiledSpell;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellCompilationException;
 import vazkii.psi.api.spell.SpellGrid;
@@ -102,7 +104,7 @@ public class GuiProgrammer extends Screen {
 	public final Stack<Spell> redoSteps = new Stack<>();
 	public static SpellPiece clipboard = null;
 
-	public SpellCompiler compiler;
+	public Either<CompiledSpell, SpellCompilationException> compileResult;
 
 	public int xSize, ySize, padLeft, padTop, left, top, gridLeft, gridTop;
 	public int cursorX, cursorY;
@@ -130,7 +132,7 @@ public class GuiProgrammer extends Screen {
 		super(new StringTextComponent(""));
 		programmer = tile;
 		this.spell = spell;
-		compiler = new SpellCompiler(spell);
+		compileResult = new SpellCompiler().compile(spell);
 	}
 
 	@Override
@@ -318,12 +320,12 @@ public class GuiProgrammer extends Screen {
 		spell.draw(ms, buffers, 0xF000F0);
 		buffers.finish();
 
-		if (compiler.isErrored()) {
-			Pair<Integer, Integer> errorPos = compiler.getErrorLocation();
+		compileResult.right().ifPresent(ex -> {
+			Pair<Integer, Integer> errorPos = ex.location;
 			if (errorPos != null && errorPos.getRight() != -1 && errorPos.getLeft() != -1) {
 				font.drawStringWithShadow(ms, "!!", errorPos.getLeft() * 18 + 12, errorPos.getRight() * 18 + 8, 0xFF0000);
 			}
-		}
+		});
 		ms.pop();
 		RenderSystem.color3f(1f, 1f, 1f);
 		ms.translate(0, 0, 1);
@@ -503,8 +505,8 @@ public class GuiProgrammer extends Screen {
 
 		onSelectedChanged();
 
-		if (!nameOnly || compiler != null && compiler.getError() != null && compiler.getError().equals(SpellCompilationException.NO_NAME) || spell.name.isEmpty()) {
-			compiler = new SpellCompiler(spell);
+		if (!nameOnly || compileResult.right().filter(ex -> ex.getMessage().equals(SpellCompilationException.NO_NAME)).isPresent() || spell.name.isEmpty()) {
+			compileResult = new SpellCompiler().compile(spell);
 		}
 	}
 

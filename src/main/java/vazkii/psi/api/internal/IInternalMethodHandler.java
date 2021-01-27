@@ -21,7 +21,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.psi.api.spell.CompiledSpell;
 import vazkii.psi.api.spell.ISpellCache;
 import vazkii.psi.api.spell.ISpellCompiler;
-import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellPiece;
 
@@ -50,7 +49,7 @@ public interface IInternalMethodHandler {
 	/**
 	 * Gets an instance of a spell compiler. In most cases, you should use {@link #getSpellCache()} instead.
 	 */
-	ISpellCompiler getCompiler(Spell spell);
+	ISpellCompiler getCompiler();
 
 	/**
 	 * Gets the singleton instance of the spell cache.

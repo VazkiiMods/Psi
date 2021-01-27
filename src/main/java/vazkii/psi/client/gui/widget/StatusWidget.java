@@ -22,6 +22,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.internal.PsiRenderHelper;
+import vazkii.psi.api.spell.SpellCompilationException;
 import vazkii.psi.client.gui.GuiProgrammer;
 
 public class StatusWidget extends Widget {
@@ -43,13 +44,15 @@ public class StatusWidget extends Widget {
 		RenderSystem.color3f(1f, 1f, 1f);
 		parent.getMinecraft().getTextureManager().bindTexture(GuiProgrammer.texture);
 		blit(ms, parent.left - 48, parent.top + 5, parent.xSize, 0, 48, 30);
-		blit(ms, parent.left - 16, parent.top + 13, parent.compiler.isErrored() ? 12 : 0, parent.ySize + 28, 12, 12);
+		blit(ms, parent.left - 16, parent.top + 13, parent.compileResult.right().isPresent() ? 12 : 0, parent.ySize + 28, 12, 12);
 
 		if (mouseX > parent.left - 16 - 1 && mouseY > parent.top + 13 - 1 && mouseX < parent.left - 16 + 13 && mouseY < parent.top + 13 + 13) {
-			if (parent.compiler.isErrored()) {
+			if (parent.compileResult.right().isPresent()) {
+				// no such thing as ifPresentOrElse in J8, sadly
+				SpellCompilationException ex = parent.compileResult.right().get();
 				parent.tooltip.add(new TranslationTextComponent("psimisc.errored").mergeStyle(TextFormatting.RED));
-				parent.tooltip.add(new TranslationTextComponent(parent.compiler.getError()).mergeStyle(TextFormatting.GRAY));
-				Pair<Integer, Integer> errorPos = parent.compiler.getErrorLocation();
+				parent.tooltip.add(new TranslationTextComponent(ex.getMessage()).mergeStyle(TextFormatting.GRAY));
+				Pair<Integer, Integer> errorPos = ex.location;
 				if (errorPos != null && errorPos.getRight() != -1 && errorPos.getLeft() != -1) {
 					parent.tooltip.add(new StringTextComponent("[" + (errorPos.getLeft() + 1) + ", " + (errorPos.getRight() + 1) + "]").mergeStyle(TextFormatting.GRAY));
 				}

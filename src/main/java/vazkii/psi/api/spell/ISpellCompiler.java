@@ -8,7 +8,7 @@
  */
 package vazkii.psi.api.spell;
 
-import org.apache.commons.lang3.tuple.Pair;
+import com.mojang.datafixers.util.Either;
 
 /**
  * Base interface for a Spell Compiler. To get an instance use PsiAPI.internalHandler.getCompiler.<br>
@@ -16,16 +16,5 @@ import org.apache.commons.lang3.tuple.Pair;
  * to be used, as {@link ISpellCache} compiles spells if they're missing.
  */
 public interface ISpellCompiler {
-
-	CompiledSpell getCompiledSpell();
-
-	String getError();
-
-	Pair<Integer, Integer> getErrorLocation();
-
-	@Deprecated // Replace with callback
-	void buildRedirect(SpellPiece piece) throws SpellCompilationException;
-
-	boolean isErrored();
-
+	Either<CompiledSpell, SpellCompilationException> compile(Spell in);
 }

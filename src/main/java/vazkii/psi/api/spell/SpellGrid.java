@@ -217,38 +217,28 @@ public final class SpellGrid {
 	}
 
 	public SpellPiece getPieceAtSideWithRedirections(Multimap<SpellPiece, SpellParam.Side> traversed, int x, int y, SpellParam.Side side) throws SpellCompilationException {
+		return getPieceAtSideWithRedirections(traversed, x, y, side, piece -> {});
+	}
+
+	public SpellPiece getPieceAtSideWithRedirections(int x, int y, SpellParam.Side side, SpellPieceConsumer walker) throws SpellCompilationException {
+		return getPieceAtSideWithRedirections(HashMultimap.create(), x, y, side, walker);
+	}
+
+	/** @param walker a callback that incrementally gets called on each redirector reached */
+	public SpellPiece getPieceAtSideWithRedirections(Multimap<SpellPiece, SpellParam.Side> traversed, int x, int y, SpellParam.Side side, SpellPieceConsumer walker) throws SpellCompilationException {
 		SpellPiece atSide = getPieceAtSide(traversed, x, y, side);
 		if (!(atSide instanceof IGenericRedirector)) {
 			return atSide;
 		}
 
 		IGenericRedirector redirector = (IGenericRedirector) atSide;
+		walker.accept(atSide);
 		SpellParam.Side rside = redirector.remapSide(side);
 		if (!rside.isEnabled()) {
 			return null;
 		}
 
-		return getPieceAtSideWithRedirections(traversed, atSide.x, atSide.y, rside);
-	}
-
-	public SpellPiece getPieceAtSideWithRedirections(int x, int y, SpellParam.Side side, ISpellCompiler compiler) throws SpellCompilationException {
-		return getPieceAtSideWithRedirections(HashMultimap.create(), x, y, side, compiler);
-	}
-
-	public SpellPiece getPieceAtSideWithRedirections(Multimap<SpellPiece, SpellParam.Side> traversed, int x, int y, SpellParam.Side side, ISpellCompiler compiler) throws SpellCompilationException {
-		SpellPiece atSide = getPieceAtSide(traversed, x, y, side);
-		if (!(atSide instanceof IGenericRedirector)) {
-			return atSide;
-		}
-
-		IGenericRedirector redirector = (IGenericRedirector) atSide;
-		compiler.buildRedirect(atSide);
-		SpellParam.Side rside = redirector.remapSide(side);
-		if (!rside.isEnabled()) {
-			return null;
-		}
-
-		return getPieceAtSideWithRedirections(traversed, atSide.x, atSide.y, rside, compiler);
+		return getPieceAtSideWithRedirections(traversed, atSide.x, atSide.y, rside, walker);
 	}
 
 	public SpellPiece getPieceAtSideSafely(int x, int y, SpellParam.Side side) {
@@ -335,4 +325,9 @@ public final class SpellGrid {
 		cmp.put(TAG_SPELL_LIST, list);
 	}
 
+	// TODO: Put this somewhere nicer, or track down a library? Not sure where
+	@FunctionalInterface
+	public interface SpellPieceConsumer {
+		public void accept(SpellPiece piece) throws SpellCompilationException;
+	}
 }

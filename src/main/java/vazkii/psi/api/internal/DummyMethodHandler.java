@@ -21,7 +21,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.psi.api.spell.CompiledSpell;
 import vazkii.psi.api.spell.ISpellCache;
 import vazkii.psi.api.spell.ISpellCompiler;
-import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellPiece;
 
@@ -50,7 +49,7 @@ public final class DummyMethodHandler implements IInternalMethodHandler {
 	}
 
 	@Override
-	public ISpellCompiler getCompiler(Spell spell) {
+	public ISpellCompiler getCompiler() {
 		return null;
 	}
 

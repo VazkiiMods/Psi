@@ -8,7 +8,7 @@
  */
 package vazkii.psi.common.spell;
 
-import org.apache.commons.lang3.tuple.Pair;
+import com.mojang.datafixers.util.Either;
 
 import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.CompiledSpell.Action;
@@ -20,34 +20,32 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
 
+/* Probably not thread-safe. */
 public final class SpellCompiler implements ISpellCompiler {
 
-	final Spell spell;
-	CompiledSpell compiled;
+	/** The current spell being compiled. */
+	private CompiledSpell compiled;
 
-	String error;
-	Pair<Integer, Integer> errorLocation;
+	private final Set<SpellPiece> processedHandlers = new HashSet<>();
 
-	final Set<SpellPiece> processedHandlers = new HashSet<>();
+	private final Set<SpellPiece> redirectionPieces = new HashSet<>();
 
-	final Set<SpellPiece> redirectionPieces = new HashSet<>();
-
-	public SpellCompiler(Spell spell) {
-		this.spell = spell;
-
+	@Override
+	public Either<CompiledSpell, SpellCompilationException> compile(Spell in) {
 		try {
-			compile();
+			return Either.left(doCompile(in));
 		} catch (SpellCompilationException e) {
-			error = e.getMessage();
-			errorLocation = e.location;
+			return Either.right(e);
 		}
 	}
 
-	public void compile() throws SpellCompilationException {
+	public CompiledSpell doCompile(Spell spell) throws SpellCompilationException {
 		if (spell == null) {
 			throw new SpellCompilationException(SpellCompilationException.NO_SPELL);
 		}
 
+		processedHandlers.clear();
+		redirectionPieces.clear();
 		compiled = new CompiledSpell(spell);
 
 		List<SpellPiece> tricks = findPieces(EnumPieceType::isTrick);
@@ -71,6 +69,7 @@ public final class SpellCompiler implements ISpellCompiler {
 		if (spell.name == null || spell.name.isEmpty()) {
 			throw new SpellCompilationException(SpellCompilationException.NO_NAME);
 		}
+		return compiled;
 	}
 
 	public void buildPiece(SpellPiece piece) throws SpellCompilationException {
@@ -116,7 +115,8 @@ public final class SpellCompiler implements ISpellCompiler {
 			}
 			usedSides.add(side);
 
-			SpellPiece pieceAt = spell.grid.getPieceAtSideWithRedirections(piece.x, piece.y, side, this);
+			SpellPiece pieceAt = compiled.sourceSpell.grid.getPieceAtSideWithRedirections(piece.x, piece.y, side, this::buildRedirect);
+
 			if (pieceAt == null) {
 				throw new SpellCompilationException(SpellCompilationException.NULL_PARAM, piece.x, piece.y);
 			}
@@ -158,7 +158,7 @@ public final class SpellCompiler implements ISpellCompiler {
 			}
 			usedSides.add(side);
 
-			SpellPiece pieceAt = spell.grid.getPieceAtSideWithRedirections(piece.x, piece.y, side, this);
+			SpellPiece pieceAt = compiled.sourceSpell.grid.getPieceAtSideWithRedirections(piece.x, piece.y, side, this::buildRedirect);
 			if (pieceAt == null) {
 				throw new SpellCompilationException(SpellCompilationException.NULL_PARAM, piece.x, piece.y);
 			}
@@ -174,7 +174,6 @@ public final class SpellCompiler implements ISpellCompiler {
 		}
 	}
 
-	@Override
 	public void buildRedirect(SpellPiece piece) throws SpellCompilationException {
 		if (!redirectionPieces.contains(piece)) {
 			piece.addToMetadata(compiled.metadata);
@@ -205,7 +204,7 @@ public final class SpellCompiler implements ISpellCompiler {
 		List<SpellPiece> results = new LinkedList<>();
 		for (int i = 0; i < SpellGrid.GRID_SIZE; i++) {
 			for (int j = 0; j < SpellGrid.GRID_SIZE; j++) {
-				SpellPiece piece = spell.grid.gridData[j][i];
+				SpellPiece piece = compiled.sourceSpell.grid.gridData[j][i];
 				if (piece != null && match.test(piece.getPieceType())) {
 					results.add(0, piece);
 				}
@@ -214,26 +213,6 @@ public final class SpellCompiler implements ISpellCompiler {
 		}
 
 		return results;
-	}
-
-	@Override
-	public CompiledSpell getCompiledSpell() {
-		return compiled;
-	}
-
-	@Override
-	public String getError() {
-		return error;
-	}
-
-	@Override
-	public Pair<Integer, Integer> getErrorLocation() {
-		return errorLocation;
-	}
-
-	@Override
-	public boolean isErrored() {
-		return error != null;
 	}
 
 }
