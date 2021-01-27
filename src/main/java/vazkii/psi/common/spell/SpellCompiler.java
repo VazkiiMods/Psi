@@ -14,21 +14,20 @@ import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.CompiledSpell.Action;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.Stack;
+import java.util.function.Predicate;
 
 public final class SpellCompiler implements ISpellCompiler {
 
 	final Spell spell;
-	CompiledSpell compiled = null;
+	CompiledSpell compiled;
 
-	String error = null;
-	Pair<Integer, Integer> errorLocation = null;
+	String error;
+	Pair<Integer, Integer> errorLocation;
 
-	final Stack<SpellPiece> tricks = new Stack<>();
-	final Stack<SpellPiece> errorHandlers = new Stack<>();
 	final Set<SpellPiece> processedHandlers = new HashSet<>();
 
 	final Set<SpellPiece> redirectionPieces = new HashSet<>();
@@ -50,14 +49,16 @@ public final class SpellCompiler implements ISpellCompiler {
 		}
 
 		compiled = new CompiledSpell(spell);
-		findTricks();
 
-		while (!tricks.isEmpty()) {
-			buildPiece(tricks.pop());
+		List<SpellPiece> tricks = findPieces(EnumPieceType::isTrick);
+		if (tricks.isEmpty()) {
+			throw new SpellCompilationException(SpellCompilationException.NO_TRICKS);
+		}
+		for (SpellPiece trick : tricks) {
+			buildPiece(trick);
 		}
 
-		while (!errorHandlers.isEmpty()) {
-			SpellPiece piece = errorHandlers.pop();
+		for (SpellPiece piece : findPieces(Predicate.isEqual(EnumPieceType.ERROR_HANDLER))) {
 			if (!processedHandlers.contains(piece)) {
 				buildHandler(piece);
 			}
@@ -73,11 +74,11 @@ public final class SpellCompiler implements ISpellCompiler {
 	}
 
 	public void buildPiece(SpellPiece piece) throws SpellCompilationException {
-		buildPiece(piece, new ArrayList<>());
+		buildPiece(piece, new HashSet<>());
 	}
 
-	public void buildPiece(SpellPiece piece, List<SpellPiece> visited) throws SpellCompilationException {
-		if (visited.contains(piece)) {
+	public void buildPiece(SpellPiece piece, Set<SpellPiece> visited) throws SpellCompilationException {
+		if (visited.add(piece)) {
 			throw new SpellCompilationException(SpellCompilationException.INFINITE_LOOP, piece.x, piece.y);
 		}
 
@@ -97,8 +98,6 @@ public final class SpellCompiler implements ISpellCompiler {
 			errorHandler = compiled.new CatchHandler(piece);
 			processedHandlers.add(piece);
 		}
-
-		visited.add(piece);
 
 		List<SpellParam.Side> usedSides = new ArrayList<>();
 
@@ -129,7 +128,7 @@ public final class SpellCompiler implements ISpellCompiler {
 				compiled.errorHandlers.putIfAbsent(pieceAt, errorHandler);
 			}
 
-			buildPiece(pieceAt, new ArrayList<>(visited));
+			buildPiece(pieceAt, new HashSet<>(visited));
 		}
 	}
 
@@ -202,26 +201,19 @@ public final class SpellCompiler implements ISpellCompiler {
 		}
 	}
 
-	public void findTricks() throws SpellCompilationException {
+	public List<SpellPiece> findPieces(Predicate<EnumPieceType> match) throws SpellCompilationException {
+		List<SpellPiece> results = new LinkedList<>();
 		for (int i = 0; i < SpellGrid.GRID_SIZE; i++) {
 			for (int j = 0; j < SpellGrid.GRID_SIZE; j++) {
 				SpellPiece piece = spell.grid.gridData[j][i];
-				if (piece != null) {
-					if (piece.getPieceType() == EnumPieceType.TRICK) {
-						tricks.add(piece);
-					} else if (piece.getPieceType() == EnumPieceType.MODIFIER) {
-						tricks.add(piece);
-					} else if (piece.getPieceType() == EnumPieceType.ERROR_HANDLER) {
-						errorHandlers.add(piece);
-					}
+				if (piece != null && match.test(piece.getPieceType())) {
+					results.add(0, piece);
 				}
 
 			}
 		}
 
-		if (tricks.isEmpty()) {
-			throw new SpellCompilationException(SpellCompilationException.NO_TRICKS);
-		}
+		return results;
 	}
 
 	@Override

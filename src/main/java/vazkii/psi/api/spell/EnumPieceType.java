@@ -19,6 +19,10 @@ public enum EnumPieceType {
 	CONNECTOR,
 	MODIFIER, // eg: Error Suppressor
 	TRICK,
-	ERROR_HANDLER
+	ERROR_HANDLER;
+
+	public boolean isTrick() {
+		return this == TRICK || this == MODIFIER;
+	}
 
 }

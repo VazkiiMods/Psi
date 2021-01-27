@@ -23,6 +23,7 @@ public interface ISpellCompiler {
 
 	Pair<Integer, Integer> getErrorLocation();
 
+	@Deprecated // Replace with callback
 	void buildRedirect(SpellPiece piece) throws SpellCompilationException;
 
 	boolean isErrored();
