@@ -46,7 +46,7 @@ public class TileProgrammer extends TileEntity {
 	}
 
 	public boolean canCompile() {
-		return isEnabled() && !new SpellCompiler(spell).isErrored();
+		return isEnabled() && new SpellCompiler().compile(spell).left().isPresent();
 	}
 
 	public void onSpellChanged() {

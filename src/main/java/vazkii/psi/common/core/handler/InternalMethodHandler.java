@@ -26,7 +26,6 @@ import vazkii.psi.api.internal.IPlayerData;
 import vazkii.psi.api.spell.CompiledSpell;
 import vazkii.psi.api.spell.ISpellCache;
 import vazkii.psi.api.spell.ISpellCompiler;
-import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellPiece;
 import vazkii.psi.client.gui.GuiProgrammer;
@@ -56,8 +55,8 @@ public final class InternalMethodHandler implements IInternalMethodHandler {
 	}
 
 	@Override
-	public ISpellCompiler getCompiler(Spell spell) {
-		return new SpellCompiler(spell);
+	public ISpellCompiler getCompiler() {
+		return new SpellCompiler();
 	}
 
 	@Override

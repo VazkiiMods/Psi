@@ -15,6 +15,7 @@ import vazkii.psi.common.core.handler.ConfigHandler;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 public final class SpellCache implements ISpellCache {
@@ -37,13 +38,11 @@ public final class SpellCache implements ISpellCache {
 			return map.get(spell.uuid);
 		}
 
-		SpellCompiler compiler = new SpellCompiler(spell);
-		if (!compiler.isErrored()) {
-			map.put(spell.uuid, compiler.getCompiledSpell());
-			return compiler.getCompiledSpell();
-		}
-
-		return null;
+		Optional<CompiledSpell> result = new SpellCompiler().compile(spell).left();
+		return result.map(compSpell -> {
+			map.put(spell.uuid, compSpell);
+			return compSpell;
+		}).orElse(null);
 	}
 
 }

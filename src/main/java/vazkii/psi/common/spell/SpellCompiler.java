@@ -8,58 +8,57 @@
  */
 package vazkii.psi.common.spell;
 
-import org.apache.commons.lang3.tuple.Pair;
+import com.mojang.datafixers.util.Either;
 
 import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.CompiledSpell.Action;
 
-import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.util.Stack;
+import java.util.function.Predicate;
 
+/* Probably not thread-safe. */
 public final class SpellCompiler implements ISpellCompiler {
 
-	final Spell spell;
-	CompiledSpell compiled = null;
+	/** The current spell being compiled. */
+	private CompiledSpell compiled;
 
-	String error = null;
-	Pair<Integer, Integer> errorLocation = null;
+	private final Set<SpellPiece> processedHandlers = new HashSet<>();
 
-	final Stack<SpellPiece> tricks = new Stack<>();
-	final Stack<SpellPiece> errorHandlers = new Stack<>();
-	final Set<SpellPiece> processedHandlers = new HashSet<>();
+	private final Set<SpellPiece> redirectionPieces = new HashSet<>();
 
-	final Set<SpellPiece> redirectionPieces = new HashSet<>();
-
-	public SpellCompiler(Spell spell) {
-		this.spell = spell;
-
+	@Override
+	public Either<CompiledSpell, SpellCompilationException> compile(Spell in) {
 		try {
-			compile();
+			return Either.left(doCompile(in));
 		} catch (SpellCompilationException e) {
-			error = e.getMessage();
-			errorLocation = e.location;
+			return Either.right(e);
 		}
 	}
 
-	public void compile() throws SpellCompilationException {
+	public CompiledSpell doCompile(Spell spell) throws SpellCompilationException {
 		if (spell == null) {
 			throw new SpellCompilationException(SpellCompilationException.NO_SPELL);
 		}
 
+		processedHandlers.clear();
+		redirectionPieces.clear();
 		compiled = new CompiledSpell(spell);
-		findTricks();
 
-		while (!tricks.isEmpty()) {
-			buildPiece(tricks.pop());
+		List<SpellPiece> tricks = findPieces(EnumPieceType::isTrick);
+		if (tricks.isEmpty()) {
+			throw new SpellCompilationException(SpellCompilationException.NO_TRICKS);
+		}
+		for (SpellPiece trick : tricks) {
+			buildPiece(trick);
 		}
 
-		while (!errorHandlers.isEmpty()) {
-			SpellPiece piece = errorHandlers.pop();
-			if (!processedHandlers.contains(piece)) {
-				buildHandler(piece);
+		for (SpellPiece piece : findPieces(Predicate.isEqual(EnumPieceType.ERROR_HANDLER))) {
+			if (!processedHandlers.add(piece)) {
+				buildPiece(piece);
 			}
 		}
 
@@ -70,14 +69,15 @@ public final class SpellCompiler implements ISpellCompiler {
 		if (spell.name == null || spell.name.isEmpty()) {
 			throw new SpellCompilationException(SpellCompilationException.NO_NAME);
 		}
+		return compiled;
 	}
 
 	public void buildPiece(SpellPiece piece) throws SpellCompilationException {
-		buildPiece(piece, new ArrayList<>());
+		buildPiece(piece, new HashSet<>());
 	}
 
-	public void buildPiece(SpellPiece piece, List<SpellPiece> visited) throws SpellCompilationException {
-		if (visited.contains(piece)) {
+	public void buildPiece(SpellPiece piece, Set<SpellPiece> visited) throws SpellCompilationException {
+		if (visited.add(piece)) {
 			throw new SpellCompilationException(SpellCompilationException.INFINITE_LOOP, piece.x, piece.y);
 		}
 
@@ -98,26 +98,17 @@ public final class SpellCompiler implements ISpellCompiler {
 			processedHandlers.add(piece);
 		}
 
-		visited.add(piece);
-
-		List<SpellParam.Side> usedSides = new ArrayList<>();
+		EnumSet<SpellParam.Side> usedSides = EnumSet.noneOf(SpellParam.Side.class);
 
 		for (SpellParam<?> param : piece.paramSides.keySet()) {
-			SpellParam.Side side = piece.paramSides.get(param);
-			if (!side.isEnabled()) {
-				if (!param.canDisable) {
-					throw new SpellCompilationException(SpellCompilationException.UNSET_PARAM, piece.x, piece.y);
-				}
-
+			if (checkSideDisabled(param, piece, usedSides)) {
 				continue;
 			}
 
-			if (usedSides.contains(side)) {
-				throw new SpellCompilationException(SpellCompilationException.SAME_SIDE_PARAMS, piece.x, piece.y);
-			}
-			usedSides.add(side);
+			SpellParam.Side side = piece.paramSides.get(param);
 
-			SpellPiece pieceAt = spell.grid.getPieceAtSideWithRedirections(piece.x, piece.y, side, this);
+			SpellPiece pieceAt = compiled.sourceSpell.grid.getPieceAtSideWithRedirections(piece.x, piece.y, side, this::buildRedirect);
+
 			if (pieceAt == null) {
 				throw new SpellCompilationException(SpellCompilationException.NULL_PARAM, piece.x, piece.y);
 			}
@@ -125,123 +116,57 @@ public final class SpellCompiler implements ISpellCompiler {
 				throw new SpellCompilationException(SpellCompilationException.INVALID_PARAM, piece.x, piece.y);
 			}
 
-			if (errorHandler != null) {
-				compiled.errorHandlers.putIfAbsent(pieceAt, errorHandler);
-			}
-
-			buildPiece(pieceAt, new ArrayList<>(visited));
-		}
-	}
-
-	public void buildHandler(SpellPiece piece) throws SpellCompilationException {
-		if (!(piece instanceof IErrorCatcher)) {
-			return;
-		}
-
-		CompiledSpell.CatchHandler errorHandler = compiled.new CatchHandler(piece);
-
-		piece.addToMetadata(compiled.metadata);
-
-		List<SpellParam.Side> usedSides = new ArrayList<>();
-
-		for (SpellParam<?> param : piece.paramSides.keySet()) {
-			SpellParam.Side side = piece.paramSides.get(param);
-			if (!side.isEnabled()) {
-				if (!param.canDisable) {
-					throw new SpellCompilationException(SpellCompilationException.UNSET_PARAM, piece.x, piece.y);
-				}
-
-				continue;
-			}
-
-			if (usedSides.contains(side)) {
-				throw new SpellCompilationException(SpellCompilationException.SAME_SIDE_PARAMS, piece.x, piece.y);
-			}
-			usedSides.add(side);
-
-			SpellPiece pieceAt = spell.grid.getPieceAtSideWithRedirections(piece.x, piece.y, side, this);
-			if (pieceAt == null) {
-				throw new SpellCompilationException(SpellCompilationException.NULL_PARAM, piece.x, piece.y);
-			}
-			if (!param.canAccept(pieceAt)) {
-				throw new SpellCompilationException(SpellCompilationException.INVALID_PARAM, piece.x, piece.y);
-			}
-
-			if (((IErrorCatcher) piece).catchParam(param)) {
+			if (errorHandler != null && ((IErrorCatcher) piece).catchParam(param)) {
 				compiled.errorHandlers.putIfAbsent(pieceAt, errorHandler);
 			} else {
-				buildPiece(pieceAt);
+				buildPiece(pieceAt, new HashSet<>(visited));
 			}
 		}
 	}
 
-	@Override
 	public void buildRedirect(SpellPiece piece) throws SpellCompilationException {
 		if (!redirectionPieces.contains(piece)) {
 			piece.addToMetadata(compiled.metadata);
 
 			redirectionPieces.add(piece);
 
-			List<SpellParam.Side> usedSides = new ArrayList<>();
+			EnumSet<SpellParam.Side> usedSides = EnumSet.noneOf(SpellParam.Side.class);
 
 			for (SpellParam<?> param : piece.paramSides.keySet()) {
-				SpellParam.Side side = piece.paramSides.get(param);
-				if (!side.isEnabled()) {
-					if (!param.canDisable) {
-						throw new SpellCompilationException(SpellCompilationException.UNSET_PARAM, piece.x, piece.y);
-					}
-
-					continue;
-				}
-
-				if (usedSides.contains(side)) {
-					throw new SpellCompilationException(SpellCompilationException.SAME_SIDE_PARAMS, piece.x, piece.y);
-				}
-				usedSides.add(side);
+				checkSideDisabled(param, piece, usedSides);
 			}
 		}
 	}
 
-	public void findTricks() throws SpellCompilationException {
+	/** @return whether this piece should get skipped over */
+	private boolean checkSideDisabled(SpellParam<?> param, SpellPiece parent, EnumSet<SpellParam.Side> seen) throws SpellCompilationException {
+		SpellParam.Side side = parent.paramSides.get(param);
+		if (side.isEnabled()) {
+			if (seen.add(side)) {
+				throw new SpellCompilationException(SpellCompilationException.SAME_SIDE_PARAMS, parent.x, parent.y);
+			}
+			return false;
+		} else {
+			if (!param.canDisable) {
+				throw new SpellCompilationException(SpellCompilationException.UNSET_PARAM, parent.x, parent.y);
+			}
+			return true;
+		}
+	}
+
+	public List<SpellPiece> findPieces(Predicate<EnumPieceType> match) throws SpellCompilationException {
+		List<SpellPiece> results = new LinkedList<>();
 		for (int i = 0; i < SpellGrid.GRID_SIZE; i++) {
 			for (int j = 0; j < SpellGrid.GRID_SIZE; j++) {
-				SpellPiece piece = spell.grid.gridData[j][i];
-				if (piece != null) {
-					if (piece.getPieceType() == EnumPieceType.TRICK) {
-						tricks.add(piece);
-					} else if (piece.getPieceType() == EnumPieceType.MODIFIER) {
-						tricks.add(piece);
-					} else if (piece.getPieceType() == EnumPieceType.ERROR_HANDLER) {
-						errorHandlers.add(piece);
-					}
+				SpellPiece piece = compiled.sourceSpell.grid.gridData[j][i];
+				if (piece != null && match.test(piece.getPieceType())) {
+					results.add(0, piece);
 				}
 
 			}
 		}
 
-		if (tricks.isEmpty()) {
-			throw new SpellCompilationException(SpellCompilationException.NO_TRICKS);
-		}
-	}
-
-	@Override
-	public CompiledSpell getCompiledSpell() {
-		return compiled;
-	}
-
-	@Override
-	public String getError() {
-		return error;
-	}
-
-	@Override
-	public Pair<Integer, Integer> getErrorLocation() {
-		return errorLocation;
-	}
-
-	@Override
-	public boolean isErrored() {
-		return error != null;
+		return results;
 	}
 
 }

@@ -42,11 +42,11 @@ public class SpellCostsWidget extends Widget {
 
 	@Override
 	public void renderButton(MatrixStack ms, int mouseX, int mouseY, float pTicks) {
-		if (!parent.compiler.isErrored()) {
+		parent.compileResult.left().ifPresent(compiledSpell -> {
 			int i = 0;
 			int statX = parent.left + parent.xSize + 3;
 
-			SpellMetadata meta = parent.compiler.getCompiledSpell().metadata;
+			SpellMetadata meta = compiledSpell.metadata;
 			ItemStack cad = PsiAPI.getPlayerCAD(parent.getMinecraft().player);
 			for (EnumSpellStat stat : meta.stats.keySet()) {
 				int val = meta.stats.get(stat);
@@ -79,6 +79,6 @@ public class SpellCostsWidget extends Widget {
 				i++;
 
 			}
-		}
+		});
 	}
 }
