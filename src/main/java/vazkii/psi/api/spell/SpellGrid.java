@@ -198,7 +198,7 @@ public final class SpellGrid {
 
 	private SpellPiece getPieceAtSide(Multimap<SpellPiece, SpellParam.Side> traversed, int x, int y, SpellParam.Side side) throws SpellCompilationException {
 		SpellPiece atSide = getPieceAtSideSafely(x, y, side);
-		if (traversed.put(atSide, side)) {
+		if (!traversed.put(atSide, side)) {
 			throw new SpellCompilationException(SpellCompilationException.INFINITE_LOOP);
 		}
 

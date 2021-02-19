@@ -10,8 +10,17 @@ package vazkii.psi.common.spell;
 
 import com.mojang.datafixers.util.Either;
 
-import vazkii.psi.api.spell.*;
+import vazkii.psi.api.spell.CompiledSpell;
 import vazkii.psi.api.spell.CompiledSpell.Action;
+import vazkii.psi.api.spell.EnumPieceType;
+import vazkii.psi.api.spell.EnumSpellStat;
+import vazkii.psi.api.spell.IErrorCatcher;
+import vazkii.psi.api.spell.ISpellCompiler;
+import vazkii.psi.api.spell.Spell;
+import vazkii.psi.api.spell.SpellCompilationException;
+import vazkii.psi.api.spell.SpellGrid;
+import vazkii.psi.api.spell.SpellParam;
+import vazkii.psi.api.spell.SpellPiece;
 
 import java.util.EnumSet;
 import java.util.HashSet;
@@ -56,8 +65,8 @@ public final class SpellCompiler implements ISpellCompiler {
 			buildPiece(trick);
 		}
 
-		for (SpellPiece piece : findPieces(Predicate.isEqual(EnumPieceType.ERROR_HANDLER))) {
-			if (!processedHandlers.add(piece)) {
+		for (SpellPiece piece : findPieces(EnumPieceType.ERROR_HANDLER::equals)) {
+			if (processedHandlers.add(piece)) {
 				buildPiece(piece);
 			}
 		}
@@ -77,7 +86,7 @@ public final class SpellCompiler implements ISpellCompiler {
 	}
 
 	public void buildPiece(SpellPiece piece, Set<SpellPiece> visited) throws SpellCompilationException {
-		if (visited.add(piece)) {
+		if (!visited.add(piece)) {
 			throw new SpellCompilationException(SpellCompilationException.INFINITE_LOOP, piece.x, piece.y);
 		}
 
@@ -125,10 +134,8 @@ public final class SpellCompiler implements ISpellCompiler {
 	}
 
 	public void buildRedirect(SpellPiece piece) throws SpellCompilationException {
-		if (!redirectionPieces.contains(piece)) {
+		if (redirectionPieces.add(piece)) {
 			piece.addToMetadata(compiled.metadata);
-
-			redirectionPieces.add(piece);
 
 			EnumSet<SpellParam.Side> usedSides = EnumSet.noneOf(SpellParam.Side.class);
 
@@ -142,7 +149,7 @@ public final class SpellCompiler implements ISpellCompiler {
 	private boolean checkSideDisabled(SpellParam<?> param, SpellPiece parent, EnumSet<SpellParam.Side> seen) throws SpellCompilationException {
 		SpellParam.Side side = parent.paramSides.get(param);
 		if (side.isEnabled()) {
-			if (seen.add(side)) {
+			if (!seen.add(side)) {
 				throw new SpellCompilationException(SpellCompilationException.SAME_SIDE_PARAMS, parent.x, parent.y);
 			}
 			return false;
