@@ -301,7 +301,7 @@
   "psi.spellpiece.operator_integer_divide": "Operator: Integer Divide",
   "psi.spellpiece.operator_integer_divide.desc": "A / B (Integer)",
   "psi.spellpiece.operator_random": "Operator: Random",
-  "psi.spellpiece.operator_random.desc": "Random between 0 and the given number (exclusive)",
+  "psi.spellpiece.operator_random.desc": "Random between the lower bound(defaults to 0) and the given number (exclusive)",
   "psi.spellpiece.operator_sin": "Operator: Sine",
   "psi.spellpiece.operator_sin.desc": "sin(A)",
   "psi.spellpiece.operator_cos": "Operator: Cosine",

@@ -17,7 +17,8 @@ import vazkii.psi.api.spell.piece.PieceOperator;
 
 public class PieceOperatorRandom extends PieceOperator {
 
-	SpellParam<Number> num;
+	SpellParam<Number> max;
+	SpellParam<Number> min;
 
 	public PieceOperatorRandom(Spell spell) {
 		super(spell);
@@ -25,25 +26,20 @@ public class PieceOperatorRandom extends PieceOperator {
 
 	@Override
 	public void initParams() {
-		addParam(num = new ParamNumber(SpellParam.GENERIC_NAME_TARGET, SpellParam.BLUE, false, false));
+		addParam(max = new ParamNumber(SpellParam.GENERIC_NAME_MAX, SpellParam.BLUE, false, false));
+		addParam(min = new ParamNumber(SpellParam.GENERIC_NAME_MIN, SpellParam.RED, true, false));
 	}
 
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
-		int d = this.getParamValue(context, num).intValue();
+		int maxVal = this.getParamValue(context, max).intValue();
+		int minVal = this.getParamValueOrDefault(context, min, 0).intValue();
 
-		boolean neg = d < 0;
-		int i = Math.abs(d);
-		if (i == 0) {
-			throw new SpellRuntimeException(SpellRuntimeException.DIVIDE_BY_ZERO);
+		if (maxVal - minVal <= 0) {
+			throw new SpellRuntimeException(SpellRuntimeException.NEGATIVE_NUMBER);
 		}
 
-		int v = context.caster.getEntityWorld().rand.nextInt(i);
-		if (neg) {
-			v = -v;
-		}
-
-		return (double) v;
+		return (double) (context.caster.getEntityWorld().rand.nextInt(maxVal - minVal) + minVal);
 	}
 
 	@Override
