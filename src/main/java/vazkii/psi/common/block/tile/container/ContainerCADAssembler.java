@@ -176,7 +176,7 @@ public class ContainerCADAssembler extends Container {
 					if (!mergeItemStack(stackInSlot, socketableStart, socketableEnd, false)) {
 						return ItemStack.EMPTY;
 					}
-				} else if (ISpellAcceptor.isAcceptor(stackInSlot)) {
+				} else if (ISpellAcceptor.isContainer(stackInSlot)) {
 					if (!mergeItemStack(stackInSlot, bulletStart, bulletEnd, false)) {
 						return ItemStack.EMPTY;
 					}
