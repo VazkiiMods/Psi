@@ -8,10 +8,12 @@
  */
 package vazkii.psi.common.block.base;
 
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.gui.ScreenManager;
+import net.minecraft.entity.EntityType;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -40,10 +42,12 @@ import static vazkii.psi.common.item.base.ModItems.defaultBuilder;
 
 @Mod.EventBusSubscriber(modid = LibMisc.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ModBlocks {
+	private static final AbstractBlock.IExtendedPositionPredicate<EntityType<?>> NO_SPAWN = (state, world, pos, et) -> false;
+	private static final AbstractBlock.IPositionPredicate NO_SUFFOCATION = (state, world, pos) -> false;
 
 	public static final Block cadAssembler = new BlockCADAssembler(Block.Properties.create(Material.IRON).hardnessAndResistance(5, 10).sound(SoundType.METAL).notSolid());
 	public static final Block programmer = new BlockProgrammer(Block.Properties.create(Material.IRON).hardnessAndResistance(5, 10).sound(SoundType.METAL).notSolid());
-	public static final Block conjured = new BlockConjured(Block.Properties.create(Material.GLASS).noDrops().notSolid().setLightLevel(state -> state.get(BlockConjured.LIGHT) ? 15 : 0));
+	public static final Block conjured = new BlockConjured(Block.Properties.create(Material.GLASS).noDrops().setLightLevel(state -> state.get(BlockConjured.LIGHT) ? 15 : 0).notSolid().setAllowsSpawn(NO_SPAWN).setOpaque(NO_SUFFOCATION).setSuffocates(NO_SUFFOCATION).setBlocksVision(NO_SUFFOCATION));
 	public static final Block psidustBlock = new Block(Block.Properties.create(Material.IRON).hardnessAndResistance(5, 10).sound(SoundType.METAL));
 	public static final Block psimetalBlock = new Block(Block.Properties.create(Material.IRON).hardnessAndResistance(5, 10).sound(SoundType.METAL));
 	public static final Block psigemBlock = new Block(Block.Properties.create(Material.IRON).hardnessAndResistance(5, 10).sound(SoundType.METAL));
