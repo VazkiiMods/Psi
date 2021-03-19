@@ -150,6 +150,11 @@ public class BlockConjured extends Block implements IWaterLoggable {
 	}
 
 	@Override
+	public VoxelShape getRayTraceShape(BlockState state, IBlockReader reader, BlockPos pos, ISelectionContext context) {
+		return VoxelShapes.empty();
+	}
+
+	@Override
 	public boolean propagatesSkylightDown(BlockState state, IBlockReader reader, BlockPos pos) {
 		return true;
 	}
