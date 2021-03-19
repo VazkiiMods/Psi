@@ -251,6 +251,8 @@ public class GuiProgrammer extends Screen {
 									}
 								}
 							}
+						} else {
+							player.sendMessage(new TranslationTextComponent("psimisc.spellmaynotfunctionasintended").setStyle(Style.EMPTY.setFormatting(TextFormatting.RED)), Util.DUMMY_UUID);
 						}
 						spell = Spell.createFromNBT(cmp);
 						if (spell == null) {
