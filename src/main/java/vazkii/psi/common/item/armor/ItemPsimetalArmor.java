@@ -130,7 +130,7 @@ public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiE
 
 	@Override
 	public void onEvent(ItemStack stack, PsiArmorEvent event) {
-		if (event.type.equals(getTrueEvent(stack))) {
+		if (event.type.equals(getTrueEvent(stack)) && event.getPlayer() != null) {
 			cast(stack, event);
 		}
 	}
