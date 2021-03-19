@@ -1,8 +1,9 @@
 buildscript {
     repositories {
-        mavenCentral()
         maven { url = 'https://files.minecraftforge.net/maven' }
         maven { url = 'https://dist.creeper.host/Sponge/maven' }
+        maven { url = 'https://repo.spongepowered.org/maven' }
+        mavenCentral()
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
@@ -23,7 +24,7 @@ apply plugin: 'org.spongepowered.mixin'
 ext.configFile = file('build.properties')
 ext.config = parseConfig(configFile)
 
-def mc_version = "1.16.3"
+def mc_version = "1.16.5"
 version = "${config.version}-${config.build_number}"
 group = "vazkii.${config.mod_id}" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = config.mod_name
@@ -104,7 +105,7 @@ repositories {
 }
 
 dependencies {
-    minecraft group: 'net.minecraftforge', name: 'forge', version: "${mc_version}-34.1.0"
+    minecraft group: 'net.minecraftforge', name: 'forge', version: "${mc_version}-36.1.0"
 
     annotationProcessor 'org.spongepowered:mixin:0.8.1:processor'
 
