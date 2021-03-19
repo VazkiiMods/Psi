@@ -45,6 +45,11 @@ public class PieceConstantWrapper extends SpellPiece {
 		double targetVal = this.getParamValue(context, target).doubleValue();
 		double maxVal = this.getParamValue(context, max).doubleValue();
 
+		//TODO: Actually fix this in the whole project instead of using a band-aid fix like this.
+		if (Double.isNaN(targetVal) || Double.isNaN(maxVal)) {
+			return 0;
+		}
+
 		if (maxVal > 0) {
 			return Math.min(maxVal, Math.abs(targetVal));
 		} else if (maxVal < 0) {
