@@ -226,6 +226,9 @@ public final class SpellGrid {
 			if (!rside.isEnabled()) {
 				return null;
 			}
+			side = rside;
+			x = atSide.x;
+			y = atSide.y;
 		}
 
 		return atSide;
