@@ -70,12 +70,13 @@ public class ClientTickHandler {
 			HUDHandler.tick();
 
 			Screen gui = mc.currentScreen;
-			if (gui == null || !gui.isPauseScreen()) {
+			if (gui == null && KeybindHandler.keybind.isKeyDown()) {
+				KeybindHandler.keyDown();
+			}
+
+			if (!mc.isGamePaused()) {
 				++ticksInGame;
 				partialTicks = 0.0F;
-				if (gui == null && KeybindHandler.keybind.isKeyDown()) {
-					KeybindHandler.keyDown();
-				}
 			}
 
 			calcDelta();
