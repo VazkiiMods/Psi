@@ -14,7 +14,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 import vazkii.psi.client.core.handler.ClientTickHandler;
 import vazkii.psi.client.core.handler.ColorHandler;
-import vazkii.psi.client.core.handler.ContributorSpellCircleHandler;
+import vazkii.psi.common.core.handler.ContributorSpellCircleHandler;
 
 import java.awt.*;
 
