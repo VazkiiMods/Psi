@@ -27,6 +27,7 @@ import org.apache.logging.log4j.Logger;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.client.core.proxy.ClientProxy;
 import vazkii.psi.common.core.handler.ConfigHandler;
+import vazkii.psi.common.core.handler.ContributorSpellCircleHandler;
 import vazkii.psi.common.core.handler.CrashReportHandler;
 import vazkii.psi.common.core.handler.InternalMethodHandler;
 import vazkii.psi.common.core.proxy.IProxy;
@@ -64,6 +65,7 @@ public class Psi {
 
 		CrashReportExtender.registerCrashCallable(new CrashReportHandler());
 
+		ContributorSpellCircleHandler.firstStart();
 		DefaultStats.registerStats();
 		MessageRegister.init();
 	}
