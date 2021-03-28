@@ -35,7 +35,7 @@ public final class ModEntities {
 				.setTrackingRange(256)
 				.setUpdateInterval(10)
 				.setShouldReceiveVelocityUpdates(false)
-				.size(3, 0)
+				.size(3, 0.2)
 				.build("").setRegistryName(LibMisc.MOD_ID, LibEntityNames.SPELL_CIRCLE));
 		r.register(EntityType.Builder.create((EntityType.IFactory<EntitySpellGrenade>) EntitySpellGrenade::new, MISC)
 				.setTrackingRange(256)
