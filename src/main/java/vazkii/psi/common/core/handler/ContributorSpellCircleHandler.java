@@ -6,7 +6,7 @@
  * Psi is Open Source and distributed under the
  * Psi License: https://psi.vazkii.net/license.php
  */
-package vazkii.psi.client.core.handler;
+package vazkii.psi.common.core.handler;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DefaultUncaughtExceptionHandler;
