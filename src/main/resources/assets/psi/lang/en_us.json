@@ -623,6 +623,7 @@
   "psi.datatype.living_entity_base": "Entity (Living)",
   "psi.datatype.player_entity": "Entity (Player, Living)",
   "psi.datatype.entity_list_wrapper": "Entity List",
+  "psi.spellerror.nan": "ERROR: Not a Number",
   "psi.spellerror.nospell": "No Spell to compile",
   "psi.spellerror.invalid_base": "ERROR: Cannot interpret bases below 2",
   "psi.spellerror.nthroot": "ERROR: Even numbered roots can't accept negative numbers",

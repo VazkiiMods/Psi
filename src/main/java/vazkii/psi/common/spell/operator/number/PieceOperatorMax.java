@@ -11,6 +11,7 @@ package vazkii.psi.common.spell.operator.number;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellParam;
+import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.piece.PieceOperator;
 
@@ -32,7 +33,7 @@ public class PieceOperatorMax extends PieceOperator {
 	}
 
 	@Override
-	public Object execute(SpellContext context) {
+	public Object execute(SpellContext context) throws SpellRuntimeException {
 		double d1 = this.getParamValue(context, num1).doubleValue();
 		double d2 = this.getParamValue(context, num2).doubleValue();
 		Number d3 = this.getParamValue(context, num3);

@@ -15,6 +15,7 @@ import vazkii.psi.api.spell.SpellCompilationException;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellMetadata;
 import vazkii.psi.api.spell.SpellParam;
+import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.piece.PieceTrick;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
@@ -47,7 +48,7 @@ public class PieceTrickEidosAnchor extends PieceTrick {
 	}
 
 	@Override
-	public Object execute(SpellContext context) {
+	public Object execute(SpellContext context) throws SpellRuntimeException {
 		int timeVal = this.getParamValue(context, time).intValue();
 		PlayerData data = PlayerDataHandler.get(context.caster);
 		data.eidosAnchor = Vector3.fromEntity(context.caster);

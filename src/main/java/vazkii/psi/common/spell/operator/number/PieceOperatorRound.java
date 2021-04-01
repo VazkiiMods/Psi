@@ -11,6 +11,7 @@ package vazkii.psi.common.spell.operator.number;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellParam;
+import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.piece.PieceOperator;
 
@@ -28,7 +29,7 @@ public class PieceOperatorRound extends PieceOperator {
 	}
 
 	@Override
-	public Object execute(SpellContext context) {
+	public Object execute(SpellContext context) throws SpellRuntimeException {
 		double d = this.getParamValue(context, num).doubleValue();
 
 		return (double) Math.round(d);

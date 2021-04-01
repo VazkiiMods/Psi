@@ -12,6 +12,7 @@ import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellParam;
+import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.param.ParamVector;
 import vazkii.psi.api.spell.piece.PieceOperator;
@@ -32,7 +33,7 @@ public class PieceOperatorVectorMultiply extends PieceOperator {
 	}
 
 	@Override
-	public Object execute(SpellContext context) {
+	public Object execute(SpellContext context) throws SpellRuntimeException {
 		Vector3 v1 = this.getParamValue(context, vec1);
 		double d = this.getParamValue(context, num2).doubleValue();
 

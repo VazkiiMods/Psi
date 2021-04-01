@@ -16,6 +16,7 @@ import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellMetadata;
 import vazkii.psi.api.spell.SpellParam;
 import vazkii.psi.api.spell.SpellPiece;
+import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.api.spell.param.ParamNumber;
 
 public class PieceConstantWrapper extends SpellPiece {
@@ -41,14 +42,9 @@ public class PieceConstantWrapper extends SpellPiece {
 	}
 
 	@Override
-	public Object execute(SpellContext context) {
+	public Object execute(SpellContext context) throws SpellRuntimeException {
 		double targetVal = this.getParamValue(context, target).doubleValue();
 		double maxVal = this.getParamValue(context, max).doubleValue();
-
-		//TODO: Actually fix this in the whole project instead of using a band-aid fix like this.
-		if (Double.isNaN(targetVal) || Double.isNaN(maxVal)) {
-			return 0;
-		}
 
 		if (maxVal > 0) {
 			return Math.min(maxVal, Math.abs(targetVal));
