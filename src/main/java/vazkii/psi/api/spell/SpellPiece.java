@@ -181,7 +181,6 @@ public abstract class SpellPiece {
 		return returnValue;
 	}
 
-
 	/**
 	 * Gets the value of one of this piece's params in the given context.
 	 */
