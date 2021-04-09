@@ -146,9 +146,13 @@ public abstract class SpellPiece {
 	 * Defaulted version of getParamValue
 	 * Should be used for optional params
 	 */
-	public <T> T getParamValueOrDefault(SpellContext context, SpellParam<T> param, T def) {
-		T v = getParamValue(context, param);
-		return v == null ? def : v;
+	public <T> T getParamValueOrDefault(SpellContext context, SpellParam<T> param, T def) throws SpellRuntimeException {
+		try {
+			T v = getParamValue(context, param);
+			return v == null ? def : v;
+		} catch (SpellRuntimeException e) {
+			return def;
+		}
 	}
 
 	/**
@@ -166,8 +170,15 @@ public abstract class SpellPiece {
 	 * Gets the value of one of this piece's params in the given context.
 	 */
 	@SuppressWarnings("unchecked")
-	public <T> T getParamValue(SpellContext context, SpellParam<T> param) {
-		return (T) getRawParamValue(context, param);
+	public <T> T getParamValue(SpellContext context, SpellParam<T> param) throws SpellRuntimeException {
+		T returnValue = (T) getRawParamValue(context, param);
+		if (returnValue instanceof Number) {
+			Number number = (Number) returnValue;
+			if (Double.isNaN(number.doubleValue())) {
+				throw new SpellRuntimeException(SpellRuntimeException.NAN);
+			}
+		}
+		return returnValue;
 	}
 
 	/**

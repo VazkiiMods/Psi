@@ -13,6 +13,7 @@ import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellMetadata;
 import vazkii.psi.api.spell.SpellParam;
+import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.piece.PieceTrick;
 
@@ -35,7 +36,7 @@ public class PieceTrickDie extends PieceTrick {
 	}
 
 	@Override
-	public Object execute(SpellContext context) {
+	public Object execute(SpellContext context) throws SpellRuntimeException {
 		double timeVal = this.getParamValue(context, target).doubleValue();
 		if (Math.abs(timeVal) < 1) {
 			context.stopped = true;

@@ -34,6 +34,7 @@ public class SpellRuntimeException extends Exception {
 	public static final String ARMOR = "psi.spellerror.armor";
 	public static final String NO_MESSAGE = "psi.spellerror.no_message";
 	public static final String COMPARATOR = "psi.spellerror.comparator";
+	public static final String NAN = "psi.spellerror.nan";
 
 	public SpellRuntimeException(String s) {
 		super(s);
