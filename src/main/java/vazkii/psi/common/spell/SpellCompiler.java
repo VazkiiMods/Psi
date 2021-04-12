@@ -12,6 +12,7 @@ import com.mojang.datafixers.util.Either;
 
 import vazkii.psi.api.spell.CompiledSpell;
 import vazkii.psi.api.spell.CompiledSpell.Action;
+import vazkii.psi.api.spell.CompiledSpell.CatchHandler;
 import vazkii.psi.api.spell.EnumPieceType;
 import vazkii.psi.api.spell.EnumSpellStat;
 import vazkii.psi.api.spell.IErrorCatcher;
@@ -106,9 +107,17 @@ public final class SpellCompiler implements ISpellCompiler {
 			errorHandler = compiled.new CatchHandler(piece);
 			processedHandlers.add(piece);
 		}
+		
+		// error handler params must be evaluated before the handled piece
+		CatchHandler catchHandler = compiled.errorHandlers.get(piece);
+		if (catchHandler != null) {
+			buildPiece(catchHandler.handlerPiece, new HashSet<>(visited));
+		}
 
 		EnumSet<SpellParam.Side> usedSides = EnumSet.noneOf(SpellParam.Side.class);
 
+		HashSet<SpellPiece> params = new HashSet<>();
+		HashSet<SpellPiece> handledErrors = new HashSet<>();
 		for (SpellParam<?> param : piece.paramSides.keySet()) {
 			if (checkSideDisabled(param, piece, usedSides)) {
 				continue;
@@ -127,9 +136,16 @@ public final class SpellCompiler implements ISpellCompiler {
 
 			if (errorHandler != null && ((IErrorCatcher) piece).catchParam(param)) {
 				compiled.errorHandlers.putIfAbsent(pieceAt, errorHandler);
+				handledErrors.add(pieceAt);
 			} else {
-				buildPiece(pieceAt, new HashSet<>(visited));
+				params.add(pieceAt);
 			}
+		}
+		for (SpellPiece pieceAt : params) {
+			HashSet<SpellPiece> visitedCopy = new HashSet<>(visited);
+			// error handler params can't depend on handled pieces
+			visitedCopy.addAll(handledErrors);
+			buildPiece(pieceAt, visitedCopy);
 		}
 	}
 
