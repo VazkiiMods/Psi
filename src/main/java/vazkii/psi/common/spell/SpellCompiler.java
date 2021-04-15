@@ -107,7 +107,7 @@ public final class SpellCompiler implements ISpellCompiler {
 			errorHandler = compiled.new CatchHandler(piece);
 			processedHandlers.add(piece);
 		}
-		
+
 		// error handler params must be evaluated before the handled piece
 		CatchHandler catchHandler = compiled.errorHandlers.get(piece);
 		if (catchHandler != null) {
