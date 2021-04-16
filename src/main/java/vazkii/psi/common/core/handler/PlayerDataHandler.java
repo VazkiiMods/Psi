@@ -431,7 +431,7 @@ public class PlayerDataHandler {
 								}
 
 								if (!player.getEntityWorld().isRemote) {
-									context.cspell.safeExecute(context);
+									spellContainer.loopcastSpell(context);
 								}
 								loopcastAmount++;
 							}

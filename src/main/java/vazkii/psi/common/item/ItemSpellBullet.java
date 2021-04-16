@@ -106,6 +106,10 @@ public class ItemSpellBullet extends Item {
 		context.cspell.safeExecute(context);
 	}
 
+	public void loopcastSpell(ItemStack stack, SpellContext context) {
+		castSpell(stack, context);
+	}
+
 	public double getCostModifier(ItemStack stack) {
 		return 1.0;
 	}
@@ -161,6 +165,11 @@ public class ItemSpellBullet extends Item {
 		@Override
 		public void castSpell(SpellContext context) {
 			bulletItem().castSpell(stack, context);
+		}
+
+		@Override
+		public void loopcastSpell(SpellContext context) {
+			bulletItem().loopcastSpell(stack, context);
 		}
 
 		@Override

@@ -69,6 +69,10 @@ public interface ISpellAcceptor {
 	 */
 	default void castSpell(SpellContext context) {}
 
+	default void loopcastSpell(SpellContext context) {
+		castSpell(context);
+	}
+
 	default double getCostModifier() {
 		return 1.0;
 	}

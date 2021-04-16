@@ -36,6 +36,11 @@ public class ItemLoopcastSpellBullet extends ItemSpellBullet {
 	}
 
 	@Override
+	public void loopcastSpell(ItemStack stack, SpellContext context) {
+		context.cspell.safeExecute(context);
+	}
+
+	@Override
 	public String getBulletType() {
 		return "loopcast";
 	}
