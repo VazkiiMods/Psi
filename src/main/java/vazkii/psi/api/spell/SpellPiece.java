@@ -174,7 +174,7 @@ public abstract class SpellPiece {
 		T returnValue = (T) getRawParamValue(context, param);
 		if (returnValue instanceof Number) {
 			Number number = (Number) returnValue;
-			if (Double.isNaN(number.doubleValue())) {
+			if (Double.isNaN(number.doubleValue()) || Double.isInfinite(number.doubleValue())) {
 				throw new SpellRuntimeException(SpellRuntimeException.NAN);
 			}
 		}
