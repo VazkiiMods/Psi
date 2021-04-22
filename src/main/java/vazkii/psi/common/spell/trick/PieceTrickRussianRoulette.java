@@ -11,7 +11,6 @@ package vazkii.psi.common.spell.trick;
 import net.minecraft.item.ItemStack;
 
 import vazkii.psi.api.PsiAPI;
-import vazkii.psi.api.cad.EnumCADStat;
 import vazkii.psi.api.cad.ISocketable;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellCompilationException;
@@ -19,7 +18,6 @@ import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellMetadata;
 import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.api.spell.piece.PieceTrick;
-import vazkii.psi.common.item.ItemCAD;
 
 public class PieceTrickRussianRoulette extends PieceTrick {
 	public PieceTrickRussianRoulette(Spell spell) {
@@ -31,6 +29,12 @@ public class PieceTrickRussianRoulette extends PieceTrick {
 		super.addToMetadata(meta);
 	}
 
+	public static int getRandomSocketableSlot(ISocketable socketable) {
+		int maxSlots;
+		for (maxSlots = 0; !socketable.isSocketSlotAvailable(maxSlots); maxSlots++) ;
+		return (int) ((Math.random() * (maxSlots + 1)));
+	}
+
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 
@@ -40,12 +44,11 @@ public class PieceTrickRussianRoulette extends PieceTrick {
 
 		ItemStack stack = context.tool.isEmpty() ? PsiAPI.getPlayerCAD(context.caster) : context.tool;
 		ISocketable capability = stack.getCapability(PsiAPI.SOCKETABLE_CAPABILITY).orElseThrow(NullPointerException::new);
-		ItemCAD cad = (ItemCAD) stack.getItem();
 
-		int sockets = cad.getStatValue(stack, EnumCADStat.SOCKETS);
-		int target = (int) ((Math.random() * sockets));
+		int targetSlot = getRandomSocketableSlot(capability);
 
-		capability.setSelectedSlot(target);
+		capability.setSelectedSlot(targetSlot);
 		return null;
 	}
+
 }
