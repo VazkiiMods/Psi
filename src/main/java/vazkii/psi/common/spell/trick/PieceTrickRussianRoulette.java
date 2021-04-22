@@ -20,6 +20,7 @@ import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellMetadata;
 import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.api.spell.piece.PieceTrick;
+import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.item.ItemCAD;
 
 public class PieceTrickRussianRoulette extends PieceTrick {
@@ -53,6 +54,7 @@ public class PieceTrickRussianRoulette extends PieceTrick {
 		int target = (int) ((Math.random() * sockets));
 
 		capability.setSelectedSlot(target);
+		PlayerDataHandler.get(context.caster).lastTickLoopcastStack = inHand.copy();
 
 		return null;
 	}

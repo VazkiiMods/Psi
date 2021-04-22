@@ -23,6 +23,7 @@ import vazkii.psi.api.spell.SpellParam;
 import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.piece.PieceTrick;
+import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.item.ItemCAD;
 
 public class PieceTrickSpinChamber extends PieceTrick {
@@ -73,6 +74,7 @@ public class PieceTrickSpinChamber extends PieceTrick {
 		int target = ((selectedSlot + offset) + sockets) % sockets;
 
 		capability.setSelectedSlot(target);
+		PlayerDataHandler.get(context.caster).lastTickLoopcastStack = inHand.copy();
 
 		return null;
 	}

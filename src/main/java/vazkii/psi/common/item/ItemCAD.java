@@ -669,4 +669,9 @@ public class ItemCAD extends Item implements ICAD {
 		return Rarity.RARE;
 	}
 
+	@Override
+	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+		return !oldStack.isItemEqual(newStack);
+	}
+
 }
