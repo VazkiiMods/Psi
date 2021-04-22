@@ -11,6 +11,7 @@ package vazkii.psi.common.spell.trick;
 import net.minecraft.item.ItemStack;
 
 import vazkii.psi.api.PsiAPI;
+import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.cad.ISocketable;
 import vazkii.psi.api.spell.EnumSpellStat;
 import vazkii.psi.api.spell.Spell;
@@ -21,6 +22,7 @@ import vazkii.psi.api.spell.SpellParam;
 import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.piece.PieceTrick;
+import vazkii.psi.common.core.handler.PlayerDataHandler;
 
 public class PieceTrickSpinChamber extends PieceTrick {
 	private SpellParam<Number> number;
@@ -51,6 +53,7 @@ public class PieceTrickSpinChamber extends PieceTrick {
 		int targetSlot;
 		for (targetSlot = 0; !socketable.isSocketSlotAvailable(targetSlot); targetSlot++) {
 		}
+
 		return targetSlot;
 	}
 
@@ -63,14 +66,16 @@ public class PieceTrickSpinChamber extends PieceTrick {
 		}
 
 		ItemStack stack = context.tool.isEmpty() ? PsiAPI.getPlayerCAD(context.caster) : context.tool;
+		boolean updateLoopcast = (stack.getItem() instanceof ICAD) && (context.castFrom == PlayerDataHandler.get(context.caster).loopcastHand);
 		ISocketable capability = stack.getCapability(PsiAPI.SOCKETABLE_CAPABILITY).orElseThrow(NullPointerException::new);
-
 		int offset = num > 0 ? 1 : -1;
-
 		int targetSlot = getNextSlotFromOffset(capability, offset);
 
 		capability.setSelectedSlot(targetSlot);
 
+		if (updateLoopcast) {
+			PlayerDataHandler.get(context.caster).lastTickLoopcastStack = stack.copy();
+		}
 		return null;
 	}
 }
