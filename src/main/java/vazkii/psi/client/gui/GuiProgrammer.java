@@ -203,8 +203,8 @@ public class GuiProgrammer extends Screen {
 		onSelectedChanged();
 
 		/*
-		 * Export button
-		 */
+		* Export button
+		*/
 
 		addButton(new GuiButtonIO(left + xSize + 2, top + ySize - (spectator ? 16 : 32), true, this, button -> {
 			if (hasShiftDown()) {
@@ -217,8 +217,8 @@ public class GuiProgrammer extends Screen {
 		}));
 
 		/*
-		 * Import button
-		 */
+		* Import button
+		*/
 		if (!spectator) {
 			addButton(new GuiButtonIO(left + xSize + 2, top + ySize - 16, false, this, button -> {
 				if (hasShiftDown()) {
