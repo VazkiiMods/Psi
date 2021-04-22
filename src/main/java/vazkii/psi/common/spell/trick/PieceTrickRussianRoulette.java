@@ -31,7 +31,8 @@ public class PieceTrickRussianRoulette extends PieceTrick {
 
 	public static int getRandomSocketableSlot(ISocketable socketable) {
 		int maxSlots;
-		for (maxSlots = 0; !socketable.isSocketSlotAvailable(maxSlots); maxSlots++) ;
+		for (maxSlots = 0; !socketable.isSocketSlotAvailable(maxSlots); maxSlots++) {
+		}
 		return (int) ((Math.random() * (maxSlots + 1)));
 	}
 

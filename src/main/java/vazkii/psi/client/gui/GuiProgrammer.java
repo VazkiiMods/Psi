@@ -120,6 +120,7 @@ public class GuiProgrammer extends Screen {
 	public StatusWidget statusWidget;
 	public ITooltipFlag tooltipFlag;
 
+	public boolean mouseMoved = false;
 	public boolean takingScreenshot = false;
 	public boolean shareToReddit = false;
 	boolean spectator;
@@ -133,6 +134,11 @@ public class GuiProgrammer extends Screen {
 		programmer = tile;
 		this.spell = spell;
 		compileResult = new SpellCompiler().compile(spell);
+	}
+
+	@Override
+	public void mouseMoved(double xPos, double mouseY) {
+		mouseMoved = true;
 	}
 
 	@Override
@@ -197,8 +203,8 @@ public class GuiProgrammer extends Screen {
 		onSelectedChanged();
 
 		/*
-		* Export button
-		*/
+		 * Export button
+		 */
 
 		addButton(new GuiButtonIO(left + xSize + 2, top + ySize - (spectator ? 16 : 32), true, this, button -> {
 			if (hasShiftDown()) {
@@ -211,8 +217,8 @@ public class GuiProgrammer extends Screen {
 		}));
 
 		/*
-		* Import button
-		*/
+		 * Import button
+		 */
 		if (!spectator) {
 			addButton(new GuiButtonIO(left + xSize + 2, top + ySize - 16, false, this, button -> {
 				if (hasShiftDown()) {
@@ -434,11 +440,11 @@ public class GuiProgrammer extends Screen {
 
 		super.render(ms, mouseX, mouseY, partialTicks);
 
-		if (!takingScreenshot && tooltip != null && !tooltip.isEmpty() && pieceAtCursor == null) {
+		if (!takingScreenshot && tooltip != null && !tooltip.isEmpty() && pieceAtCursor == null && mouseMoved) {
 			GuiUtils.drawHoveringText(ms, tooltip, mouseX, mouseY, width, height, -1, this.font);
 
 		}
-		if (!takingScreenshot && pieceAtCursor != null) {
+		if (!takingScreenshot && pieceAtCursor != null && mouseMoved) {
 			if (tooltip != null && !tooltip.isEmpty()) {
 				pieceAtCursor.drawTooltip(ms, mouseX, mouseY, tooltip, this);
 			}
