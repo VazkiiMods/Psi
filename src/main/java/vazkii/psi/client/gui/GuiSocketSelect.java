@@ -36,7 +36,6 @@ import vazkii.psi.api.internal.PsiRenderHelper;
 import vazkii.psi.client.core.handler.KeybindHandler;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
-import vazkii.psi.common.lib.LibResources;
 import vazkii.psi.common.network.MessageRegister;
 import vazkii.psi.common.network.message.MessageChangeControllerSlot;
 import vazkii.psi.common.network.message.MessageChangeSocketableSlot;
@@ -45,22 +44,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GuiSocketSelect extends Screen {
-
-	private static final ResourceLocation[] signs = new ResourceLocation[] {
-			new ResourceLocation(String.format(LibResources.GUI_SIGN, 0)),
-			new ResourceLocation(String.format(LibResources.GUI_SIGN, 1)),
-			new ResourceLocation(String.format(LibResources.GUI_SIGN, 2)),
-			new ResourceLocation(String.format(LibResources.GUI_SIGN, 3)),
-			new ResourceLocation(String.format(LibResources.GUI_SIGN, 4)),
-			new ResourceLocation(String.format(LibResources.GUI_SIGN, 5)),
-			new ResourceLocation(String.format(LibResources.GUI_SIGN, 6)),
-			new ResourceLocation(String.format(LibResources.GUI_SIGN, 7)),
-			new ResourceLocation(String.format(LibResources.GUI_SIGN, 8)),
-			new ResourceLocation(String.format(LibResources.GUI_SIGN, 9)),
-			new ResourceLocation(String.format(LibResources.GUI_SIGN, 10)),
-			new ResourceLocation(String.format(LibResources.GUI_SIGN, 11)),
-			new ResourceLocation(String.format(LibResources.GUI_SIGN, 12))
-	};
 
 	int timeIn = 0;
 	int slotSelected = -1;
@@ -73,6 +56,7 @@ public class GuiSocketSelect extends Screen {
 	ItemStack socketableStack;
 	ISocketable socketable;
 	List<Integer> slots;
+	List<ResourceLocation> signs;
 	final Minecraft mc;
 
 	public GuiSocketSelect(ItemStack stack) {
@@ -98,19 +82,15 @@ public class GuiSocketSelect extends Screen {
 	}
 
 	public void setSocketable(ItemStack stack) {
-		slots = new ArrayList<>();
 		if (stack.isEmpty()) {
+			slots = new ArrayList<>();
 			return;
 		}
 
 		socketableStack = stack;
 		socketable = ISocketable.socketable(stack);
-
-		for (int i = 0; i < ISocketable.MAX_SLOTS; i++) {
-			if (socketable.showSlotInRadialMenu(i)) {
-				slots.add(i);
-			}
-		}
+		slots = socketable.getRadialMenuSlots();
+		signs = socketable.getRadialMenuIcons();
 	}
 
 	@Override
@@ -243,7 +223,7 @@ public class GuiSocketSelect extends Screen {
 				xdp = (int) ((xp - x) * mod + x);
 				ydp = (int) ((yp - y) * mod + y);
 
-				mc.textureManager.bindTexture(signs[seg]);
+				mc.textureManager.bindTexture(signs.get(seg));
 				blit(ms, xdp - 8, ydp - 8, 0, 0, 16, 16, 16, 16);
 			}
 		}

@@ -15,6 +15,9 @@ import net.minecraftforge.items.ItemStackHandler;
 
 import vazkii.psi.api.cad.ISocketable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SocketWheel implements ISocketable, INBTSerializable<CompoundNBT> {
 
 	private final int size;
@@ -24,7 +27,7 @@ public class SocketWheel implements ISocketable, INBTSerializable<CompoundNBT> {
 	private int selectedSlot = 0;
 
 	public SocketWheel() {
-		this(ISocketable.MAX_SLOTS);
+		this(ISocketable.MAX_ASSEMBLER_SLOTS);
 	}
 
 	public SocketWheel(int size) {
@@ -35,6 +38,17 @@ public class SocketWheel implements ISocketable, INBTSerializable<CompoundNBT> {
 	@Override
 	public boolean isSocketSlotAvailable(int slot) {
 		return slot < size;
+	}
+
+	@Override
+	public List<Integer> getRadialMenuSlots() {
+		List<Integer> list = new ArrayList<>();
+		for (int i = 0; i < size; i++) {
+			if (isSocketSlotAvailable(i)) {
+				list.add(i);
+			}
+		}
+		return list;
 	}
 
 	@Override

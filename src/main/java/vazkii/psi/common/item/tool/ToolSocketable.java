@@ -27,6 +27,9 @@ import vazkii.psi.api.spell.Spell;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ToolSocketable implements ICapabilityProvider, ISocketable, IPsiBarDisplay, ISpellAcceptor {
 	protected final ItemStack tool;
 	protected final int slots;
@@ -35,7 +38,7 @@ public class ToolSocketable implements ICapabilityProvider, ISocketable, IPsiBar
 
 	public ToolSocketable(ItemStack tool, int slots) {
 		this.tool = tool;
-		this.slots = MathHelper.clamp(slots, 1, MAX_SLOTS - 1);
+		this.slots = MathHelper.clamp(slots, 1, MAX_ASSEMBLER_SLOTS - 1);
 		this.capOptional = LazyOptional.of(() -> this);
 	}
 
@@ -56,8 +59,12 @@ public class ToolSocketable implements ICapabilityProvider, ISocketable, IPsiBar
 	}
 
 	@Override
-	public boolean showSlotInRadialMenu(int slot) {
-		return isSocketSlotAvailable(slot - 1);
+	public List<Integer> getRadialMenuSlots() {
+		List<Integer> list = new ArrayList<>();
+		for (int i = 0; i <= slots; i++) {
+			list.add(i);
+		}
+		return list;
 	}
 
 	@Override
