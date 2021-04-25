@@ -521,11 +521,11 @@ public class ItemCAD extends Item implements ICAD {
 
 	@Override
 	public int getMemorySize(ItemStack stack) {
-		int sockets = getStatValue(stack, EnumCADStat.SOCKETS);
-		if (sockets == -1) {
+		int vectors = getStatValue(stack, EnumCADStat.SAVED_VECTORS);
+		if (vectors == -1) {
 			return 0xFF;
 		}
-		return sockets / 3;
+		return vectors;
 	}
 
 	@Override
