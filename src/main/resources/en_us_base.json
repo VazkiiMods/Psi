@@ -333,6 +333,8 @@
   "psi.spellpiece.operator_round.desc": "Rounds a number to an integer",
   "psi.spellpiece.operator_entity_position": "Operator: Entity Position",
   "psi.spellpiece.operator_entity_position.desc": "Gets an Entity's position",
+  "psi.spellpiece.operator_entity_eye_position": "Operator: Entity Eye Position",
+  "psi.spellpiece.operator_entity_eye_position.desc": "Gets an Entity's eye position",
   "psi.spellpiece.operator_entity_look": "Operator: Entity Look",
   "psi.spellpiece.operator_entity_look.desc": "Gets an Entity's look vector",
   "psi.spellpiece.operator_entity_motion": "Operator: Entity Motion",

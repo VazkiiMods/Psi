@@ -18,11 +18,11 @@ import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.api.spell.param.ParamEntity;
 import vazkii.psi.api.spell.piece.PieceOperator;
 
-public class PieceOperatorEntityPosition extends PieceOperator {
+public class PieceOperatorEntityEyePosition extends PieceOperator {
 
 	SpellParam<Entity> target;
 
-	public PieceOperatorEntityPosition(Spell spell) {
+	public PieceOperatorEntityEyePosition(Spell spell) {
 		super(spell);
 	}
 
@@ -40,6 +40,7 @@ public class PieceOperatorEntityPosition extends PieceOperator {
 		}
 
 		Vector3 vec = Vector3.fromEntity(e);
+		vec.add(0, e.getEyeHeight(), 0);
 
 		return vec;
 	}

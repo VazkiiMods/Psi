@@ -67,6 +67,7 @@ public final class LibPieceNames {
 	public static final String OPERATOR_FLOOR = "operator_floor";
 	public static final String OPERATOR_ROUND = "operator_round";
 	public static final String OPERATOR_ENTITY_POSITION = "operator_entity_position";
+	public static final String OPERATOR_ENTITY_EYE_POSITION = "operator_entity_eye_position";
 	public static final String OPERATOR_ENTITY_LOOK = "operator_entity_look";
 	public static final String OPERATOR_ENTITY_MOTION = "operator_entity_motion";
 	public static final String OPERATOR_ENTITY_AXIAL_LOOK = "operator_entity_axial_look";

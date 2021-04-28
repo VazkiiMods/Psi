@@ -28,6 +28,7 @@ import vazkii.psi.common.spell.operator.block.PieceOperatorBlockSideSolidity;
 import vazkii.psi.common.spell.operator.entity.PieceOperatorClosestToLine;
 import vazkii.psi.common.spell.operator.entity.PieceOperatorClosestToPoint;
 import vazkii.psi.common.spell.operator.entity.PieceOperatorEntityAxialLook;
+import vazkii.psi.common.spell.operator.entity.PieceOperatorEntityEyePosition;
 import vazkii.psi.common.spell.operator.entity.PieceOperatorEntityHealth;
 import vazkii.psi.common.spell.operator.entity.PieceOperatorEntityHeight;
 import vazkii.psi.common.spell.operator.entity.PieceOperatorEntityLook;
@@ -140,6 +141,7 @@ public final class ModSpellPieces {
 	public static PieceContainer operatorFloor;
 	public static PieceContainer operatorRound;
 	public static PieceContainer operatorEntityPosition;
+	public static PieceContainer operatorEntityEyePosition;
 	public static PieceContainer operatorEntityLook;
 	public static PieceContainer operatorEntityMotion;
 	public static PieceContainer operatorClosestToPoint;
@@ -316,6 +318,7 @@ public final class ModSpellPieces {
 		operatorFloor = register(PieceOperatorFloor.class, LibPieceNames.OPERATOR_FLOOR, LibPieceGroups.SECONDARY_OPERATORS);
 		operatorRound = register(PieceOperatorRound.class, LibPieceNames.OPERATOR_ROUND, LibPieceGroups.SECONDARY_OPERATORS);
 		operatorEntityPosition = register(PieceOperatorEntityPosition.class, LibPieceNames.OPERATOR_ENTITY_POSITION, LibPieceGroups.TUTORIAL_4);
+		operatorEntityEyePosition = register(PieceOperatorEntityEyePosition.class, LibPieceNames.OPERATOR_ENTITY_EYE_POSITION, LibPieceGroups.TUTORIAL_4);
 		operatorEntityLook = register(PieceOperatorEntityLook.class, LibPieceNames.OPERATOR_ENTITY_LOOK, LibPieceGroups.TUTORIAL_3);
 		operatorEntityMotion = register(PieceOperatorEntityMotion.class, LibPieceNames.OPERATOR_ENTITY_MOTION, LibPieceGroups.ENTITIES_INTRO);
 		operatorEntityMotion = register(PieceOperatorEntityAxialLook.class, LibPieceNames.OPERATOR_ENTITY_AXIAL_LOOK, LibPieceGroups.BLOCK_WORKS);
