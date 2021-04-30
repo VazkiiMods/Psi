@@ -48,8 +48,8 @@ public class SpellCostsWidget extends Widget {
 
 			SpellMetadata meta = compiledSpell.metadata;
 			ItemStack cad = PsiAPI.getPlayerCAD(parent.getMinecraft().player);
-			for (EnumSpellStat stat : meta.stats.keySet()) {
-				int val = meta.stats.get(stat);
+			for (EnumSpellStat stat : meta.getStatSet()) {
+				int val = meta.getStat(stat);
 				int statY = parent.top + (parent.takingScreenshot ? 40 : 20) + i * 20;
 				EnumCADStat cadStat = stat.getTarget();
 				int cadVal = 0;

@@ -21,7 +21,8 @@ import java.util.*;
  */
 public final class SpellMetadata {
 
-	public final Map<EnumSpellStat, Integer> stats = new EnumMap<>(EnumSpellStat.class);
+	private final Map<EnumSpellStat, Integer> stats = new EnumMap<>(EnumSpellStat.class);
+	private final Map<EnumSpellStat, Double> statMultipliers = new EnumMap<>(EnumSpellStat.class);
 	private Set<String> flags = new HashSet<>();
 	/**
 	 * Should errors from this spell not be sent to the player's chat?
@@ -31,6 +32,7 @@ public final class SpellMetadata {
 	public SpellMetadata() {
 		for (EnumSpellStat stat : EnumSpellStat.class.getEnumConstants()) {
 			stats.put(stat, 0);
+			statMultipliers.put(stat, 1.0);
 		}
 	}
 
@@ -48,6 +50,43 @@ public final class SpellMetadata {
 	 */
 	public void setStat(EnumSpellStat stat, int val) {
 		stats.put(stat, val);
+	}
+
+	/**
+	 * Gets a stat's value from the metadata.
+	 */
+	public int getStat(EnumSpellStat stat) {
+		return stats.get(stat);
+	}
+
+	/**
+	 * Adds to stat multiplier metadata, incrementing over the previous value.
+	 */
+	public void addStatMultiplier(EnumSpellStat stat, double val) {
+		double curr = statMultipliers.get(stat);
+		setStatMultiplier(stat, val + curr);
+	}
+
+	/**
+	 * Sets a stat's multiplier. No consideration over the previous value is done, so
+	 * unless you really want to be weird, use {@link #addStatMultiplier(EnumSpellStat, double)} instead.
+	 */
+	public void setStatMultiplier(EnumSpellStat stat, double val) {
+		statMultipliers.put(stat, val);
+	}
+
+	/**
+	 * Gets a stat's multiplier from the metadata.
+	 */
+	public double getStatMultiplier(EnumSpellStat stat) {
+		return statMultipliers.get(stat);
+	}
+
+	/**
+	 *
+	 */
+	public Set<EnumSpellStat> getStatSet() {
+		return stats.keySet();
 	}
 
 	/**
