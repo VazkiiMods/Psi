@@ -60,6 +60,14 @@ public final class SpellMetadata {
 	}
 
 	/**
+	 * Multiplies current stat multiplier by new value.
+	 */
+	public void compoundStatMultiplier(EnumSpellStat stat, double val) {
+		double curr = statMultipliers.get(stat);
+		setStatMultiplier(stat, val * curr);
+	}
+
+	/**
 	 * Adds to stat multiplier metadata, incrementing over the previous value.
 	 */
 	public void addStatMultiplier(EnumSpellStat stat, double val) {
