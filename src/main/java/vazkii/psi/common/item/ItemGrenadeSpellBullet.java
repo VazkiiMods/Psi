@@ -18,8 +18,8 @@ import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.common.entity.EntitySpellGrenade;
 import vazkii.psi.common.entity.EntitySpellProjectile;
 
+import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Set;
 
 public class ItemGrenadeSpellBullet extends ItemSpellBullet {
 
@@ -28,7 +28,7 @@ public class ItemGrenadeSpellBullet extends ItemSpellBullet {
 	}
 
 	@Override
-	public Set<Entity> castSpell(ItemStack stack, SpellContext context) {
+	public ArrayList<Entity> castSpell(ItemStack stack, SpellContext context) {
 		ItemStack cad = PsiAPI.getPlayerCAD(context.caster);
 		ItemStack colorizer = ((ICAD) cad.getItem()).getComponentInSlot(cad, EnumCADComponent.DYE);
 
@@ -36,7 +36,7 @@ public class ItemGrenadeSpellBullet extends ItemSpellBullet {
 		projectile.setInfo(context.caster, colorizer, stack);
 		projectile.context = context;
 		projectile.getEntityWorld().addEntity(projectile);
-		HashSet<Entity> spellEntities = new HashSet<>();
+		ArrayList<Entity> spellEntities = new ArrayList<>();
 		spellEntities.add(projectile);
 		return spellEntities;
 	}

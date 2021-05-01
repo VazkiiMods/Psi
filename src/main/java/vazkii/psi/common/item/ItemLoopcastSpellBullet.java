@@ -16,8 +16,8 @@ import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.common.core.handler.LoopcastTrackingHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 
+import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Set;
 
 public class ItemLoopcastSpellBullet extends ItemSpellBullet {
 
@@ -26,7 +26,7 @@ public class ItemLoopcastSpellBullet extends ItemSpellBullet {
 	}
 
 	@Override
-	public Set<Entity> castSpell(ItemStack stack, SpellContext context) {
+	public ArrayList<Entity> castSpell(ItemStack stack, SpellContext context) {
 		PlayerDataHandler.PlayerData data = PlayerDataHandler.get(context.caster);
 		if (!data.loopcasting || context.castFrom != data.loopcastHand) {
 			context.cspell.safeExecute(context);
@@ -37,7 +37,7 @@ public class ItemLoopcastSpellBullet extends ItemSpellBullet {
 				LoopcastTrackingHandler.syncForTrackersAndSelf((ServerPlayerEntity) context.caster);
 			}
 		}
-		return new HashSet<>();
+		return null;
 	}
 
 	@Override

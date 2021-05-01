@@ -19,8 +19,8 @@ import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.common.entity.EntitySpellCircle;
 import vazkii.psi.common.spell.operator.vector.PieceOperatorVectorRaycast;
 
+import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Set;
 
 public class ItemCircleSpellBullet extends ItemSpellBullet {
 
@@ -29,11 +29,11 @@ public class ItemCircleSpellBullet extends ItemSpellBullet {
 	}
 
 	@Override
-	public Set<Entity> castSpell(ItemStack stack, SpellContext context) {
+	public ArrayList<Entity> castSpell(ItemStack stack, SpellContext context) {
 		ItemStack cad = PsiAPI.getPlayerCAD(context.caster);
 		ItemStack colorizer = ((ICAD) cad.getItem()).getComponentInSlot(cad, EnumCADComponent.DYE);
 		RayTraceResult pos = PieceOperatorVectorRaycast.raycast(context.caster, 32);
-		HashSet<Entity> spellEntities = new HashSet<>();
+		ArrayList<Entity> spellEntities = new ArrayList<>();
 		if (pos != null) {
 			EntitySpellCircle circle = new EntitySpellCircle(EntitySpellCircle.TYPE, context.caster.getEntityWorld());
 			circle.setInfo(context.caster, colorizer, stack);

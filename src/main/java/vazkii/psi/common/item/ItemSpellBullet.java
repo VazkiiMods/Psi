@@ -36,9 +36,8 @@ import vazkii.psi.common.core.handler.PsiSoundHandler;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 public class ItemSpellBullet extends Item {
 
@@ -105,9 +104,9 @@ public class ItemSpellBullet extends Item {
 		return "basic";
 	}
 
-	public Set<Entity> castSpell(ItemStack stack, SpellContext context) {
+	public ArrayList<Entity> castSpell(ItemStack stack, SpellContext context) {
 		context.cspell.safeExecute(context);
-		return new HashSet<>();
+		return new ArrayList<>();
 	}
 
 	public double getCostModifier(ItemStack stack) {
@@ -163,8 +162,8 @@ public class ItemSpellBullet extends Item {
 		}
 
 		@Override
-		public void castSpell(SpellContext context) {
-			bulletItem().castSpell(stack, context);
+		public ArrayList<Entity> castSpell(SpellContext context) {
+			return bulletItem().castSpell(stack, context);
 		}
 
 		@Override
