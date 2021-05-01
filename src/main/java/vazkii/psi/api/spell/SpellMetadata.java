@@ -92,7 +92,7 @@ public final class SpellMetadata {
 	}
 
 	/**
-	 *
+	 * Should be equivalent to EnumSpellStat.class.getEnumConstants()
 	 */
 	public Set<EnumSpellStat> getStatSet() {
 		return stats.keySet();

@@ -88,15 +88,50 @@ public final class SpellContext {
 	 * anything here, prefix it with your mod ID to prevent collision. For example, Trick: Add Motion
 	 * uses psi:Entity1MotionX.
 	 */
-	public final Map<String, Object> customData = new HashMap<>();
+	public final Map<String, Object> customData;
 
 	// Runtime information, do not mess with =================================================
-	public final Object[][] evaluatedObjects = new Object[SpellGrid.GRID_SIZE][SpellGrid.GRID_SIZE];
+	public final Object[][] evaluatedObjects;
 	public Stack<Action> actions = null;
 
 	public boolean stopped = false;
 	public int delay = 0;
 	// End Runtime information ===============================================================
+
+	/**
+	 * Default constructor
+	 */
+	public SpellContext() {
+		super();
+		customData = new HashMap<>();
+		evaluatedObjects  = new Object[SpellGrid.GRID_SIZE][SpellGrid.GRID_SIZE];
+	}
+
+	/**
+	 * Shallow copy constructor
+	 * @param original SpellContext to copy
+	 */
+	public SpellContext(SpellContext original) {
+		super();
+		caster = original.caster;
+		focalPoint = original.focalPoint;
+		cspell = original.cspell;
+		loopcastIndex = original.loopcastIndex;
+		castFrom = original.castFrom;
+		tool = original.tool;
+		positionBroken = original.positionBroken;
+		attackedEntity = original.attackedEntity;
+		attackingEntity = original.attackingEntity;
+		damageTaken = original.damageTaken;
+		targetSlot = original.targetSlot;
+		shiftTargetSlot = original.shiftTargetSlot;
+		customTargetSlot = original.customTargetSlot;
+		customData = original.customData;
+		evaluatedObjects = original.evaluatedObjects;
+		actions = original.actions;
+		stopped = original.stopped;
+		delay = original.delay;
+	}
 
 	/**
 	 * Sets the {@link #caster} and returns itself. This also calls {@link #setFocalPoint(Entity)}.
