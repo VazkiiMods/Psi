@@ -355,6 +355,10 @@ public class PlayerDataHandler {
 			float b = PsiRenderHelper.b(color) / 255F;
 
 			loopcast: {
+				if (player.isSpectator()) {
+					stopLoopcast();
+				}
+
 				if (overflowed) {
 					stopLoopcast();
 				}
