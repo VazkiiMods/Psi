@@ -54,6 +54,7 @@ import vazkii.psi.api.internal.PsiRenderHelper;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.EnumSpellStat;
 import vazkii.psi.api.spell.ISpellAcceptor;
+import vazkii.psi.api.spell.LoopcastEndEvent;
 import vazkii.psi.api.spell.PieceExecutedEvent;
 import vazkii.psi.api.spell.PieceGroupAdvancementComplete;
 import vazkii.psi.api.spell.PieceKnowledgeEvent;
@@ -594,8 +595,11 @@ public class PlayerDataHandler {
 		}
 
 		public void stopLoopcast() {
+			PlayerEntity player = playerWR.get();
+
 			if (loopcasting) {
 				loopcastFadeTime = 5;
+				MinecraftForge.EVENT_BUS.post(new LoopcastEndEvent(player, this, loopcastHand, loopcastAmount));
 			}
 			loopcasting = false;
 
@@ -605,7 +609,6 @@ public class PlayerDataHandler {
 			loopcastTime = 1;
 			loopcastAmount = 0;
 
-			PlayerEntity player = playerWR.get();
 			if (player instanceof ServerPlayerEntity) {
 				LoopcastTrackingHandler.syncForTrackersAndSelf((ServerPlayerEntity) player);
 			}
