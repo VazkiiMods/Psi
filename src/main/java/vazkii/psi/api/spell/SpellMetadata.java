@@ -53,10 +53,11 @@ public final class SpellMetadata {
 	}
 
 	/**
-	 * Gets a stat's value from the metadata.
+	 * Gets a stat's value (including multiplier) from the metadata.
 	 */
 	public int getStat(EnumSpellStat stat) {
-		return stats.get(stat);
+
+		return (int) (stats.get(stat) * statMultipliers.get(stat));
 	}
 
 	/**
