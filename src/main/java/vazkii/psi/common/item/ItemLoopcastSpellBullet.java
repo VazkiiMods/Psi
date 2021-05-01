@@ -8,12 +8,16 @@
  */
 package vazkii.psi.common.item;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.common.core.handler.LoopcastTrackingHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class ItemLoopcastSpellBullet extends ItemSpellBullet {
 
@@ -22,7 +26,7 @@ public class ItemLoopcastSpellBullet extends ItemSpellBullet {
 	}
 
 	@Override
-	public void castSpell(ItemStack stack, SpellContext context) {
+	public Set<Entity> castSpell(ItemStack stack, SpellContext context) {
 		PlayerDataHandler.PlayerData data = PlayerDataHandler.get(context.caster);
 		if (!data.loopcasting || context.castFrom != data.loopcastHand) {
 			context.cspell.safeExecute(context);
@@ -33,6 +37,7 @@ public class ItemLoopcastSpellBullet extends ItemSpellBullet {
 				LoopcastTrackingHandler.syncForTrackersAndSelf((ServerPlayerEntity) context.caster);
 			}
 		}
+		return new HashSet<>();
 	}
 
 	@Override

@@ -8,6 +8,7 @@
  */
 package vazkii.psi.common.item;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 
 import vazkii.psi.api.PsiAPI;
@@ -16,6 +17,9 @@ import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.common.entity.EntitySpellCharge;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class ItemChargeSpellBullet extends ItemSpellBullet {
 
 	public ItemChargeSpellBullet(Properties properties) {
@@ -23,7 +27,7 @@ public class ItemChargeSpellBullet extends ItemSpellBullet {
 	}
 
 	@Override
-	public void castSpell(ItemStack stack, SpellContext context) {
+	public Set<Entity> castSpell(ItemStack stack, SpellContext context) {
 		ItemStack cad = PsiAPI.getPlayerCAD(context.caster);
 		ItemStack colorizer = ((ICAD) cad.getItem()).getComponentInSlot(cad, EnumCADComponent.DYE);
 
@@ -31,6 +35,9 @@ public class ItemChargeSpellBullet extends ItemSpellBullet {
 		projectile.setInfo(context.caster, colorizer, stack);
 		projectile.context = context;
 		projectile.getEntityWorld().addEntity(projectile);
+		HashSet<Entity> spellEntities = new HashSet<>();
+		spellEntities.add(projectile);
+		return spellEntities;
 	}
 
 	@Override
