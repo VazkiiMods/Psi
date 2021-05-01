@@ -51,6 +51,7 @@ import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellCompilationException;
 import vazkii.psi.api.spell.SpellGrid;
 import vazkii.psi.api.spell.SpellParam;
+import vazkii.psi.api.spell.SpellParam.Side;
 import vazkii.psi.api.spell.SpellPiece;
 import vazkii.psi.client.core.helper.SharingHelper;
 import vazkii.psi.client.gui.button.GuiButtonHelp;
@@ -71,6 +72,7 @@ import vazkii.psi.common.lib.LibResources;
 import vazkii.psi.common.network.MessageRegister;
 import vazkii.psi.common.network.message.MessageSpellModified;
 import vazkii.psi.common.spell.SpellCompiler;
+import vazkii.psi.common.spell.other.PieceConnector;
 import vazkii.psi.mixin.client.AccessorRenderState;
 
 import java.util.ArrayList;
@@ -675,6 +677,14 @@ public class GuiProgrammer extends Screen {
 					if (!onSideButtonKeybind(piece, param, SpellParam.Side.TOP) && selectedY > 0) {
 						selectedY--;
 						onSelectedChanged();
+						if (hasShiftDown() && spell.grid.gridData[selectedX][selectedY] == null) {
+							PieceConnector connector = new PieceConnector(spell);
+							connector.x = selectedX;
+							connector.y = selectedY;
+							connector.paramSides.put(connector.target, Side.BOTTOM);
+							spell.grid.gridData[selectedX][selectedY] = connector;
+							onSpellChanged(false);
+						}
 						return true;
 					}
 				}
@@ -696,6 +706,14 @@ public class GuiProgrammer extends Screen {
 					if (!onSideButtonKeybind(piece, param, SpellParam.Side.LEFT) && selectedX > 0) {
 						selectedX--;
 						onSelectedChanged();
+						if (hasShiftDown() && spell.grid.gridData[selectedX][selectedY] == null) {
+							PieceConnector connector = new PieceConnector(spell);
+							connector.x = selectedX;
+							connector.y = selectedY;
+							connector.paramSides.put(connector.target, Side.RIGHT);
+							spell.grid.gridData[selectedX][selectedY] = connector;
+							onSpellChanged(false);
+						}
 						return true;
 					}
 				}
@@ -717,6 +735,14 @@ public class GuiProgrammer extends Screen {
 					if (!onSideButtonKeybind(piece, param, SpellParam.Side.RIGHT) && selectedX < SpellGrid.GRID_SIZE - 1) {
 						selectedX++;
 						onSelectedChanged();
+						if (hasShiftDown() && spell.grid.gridData[selectedX][selectedY] == null) {
+							PieceConnector connector = new PieceConnector(spell);
+							connector.x = selectedX;
+							connector.y = selectedY;
+							connector.paramSides.put(connector.target, Side.LEFT);
+							spell.grid.gridData[selectedX][selectedY] = connector;
+							onSpellChanged(false);
+						}
 						return true;
 					}
 				}
@@ -738,6 +764,14 @@ public class GuiProgrammer extends Screen {
 					if (!onSideButtonKeybind(piece, param, SpellParam.Side.BOTTOM) && selectedY < SpellGrid.GRID_SIZE - 1) {
 						selectedY++;
 						onSelectedChanged();
+						if (hasShiftDown() && spell.grid.gridData[selectedX][selectedY] == null) {
+							PieceConnector connector = new PieceConnector(spell);
+							connector.x = selectedX;
+							connector.y = selectedY;
+							connector.paramSides.put(connector.target, Side.TOP);
+							spell.grid.gridData[selectedX][selectedY] = connector;
+							onSpellChanged(false);
+						}
 						return true;
 					}
 				}
