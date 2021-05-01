@@ -15,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import vazkii.psi.api.PsiAPI;
 
 import javax.annotation.Nullable;
+
 import java.util.ArrayList;
 
 /**
@@ -69,7 +70,9 @@ public interface ISpellAcceptor {
 	 * must be handled and not leaked. Ideal implementation of exception catching is to
 	 * alarm the player through a chat message.
 	 */
-	default ArrayList<Entity> castSpell(SpellContext context) { return null; }
+	default ArrayList<Entity> castSpell(SpellContext context) {
+		return null;
+	}
 
 	default double getCostModifier() {
 		return 1.0;

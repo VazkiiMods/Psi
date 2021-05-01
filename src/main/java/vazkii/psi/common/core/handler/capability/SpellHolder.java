@@ -16,6 +16,7 @@ import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 
 import javax.annotation.Nullable;
+
 import java.util.ArrayList;
 
 public class SpellHolder implements ISpellAcceptor {

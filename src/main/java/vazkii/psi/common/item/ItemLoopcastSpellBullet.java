@@ -17,7 +17,6 @@ import vazkii.psi.common.core.handler.LoopcastTrackingHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 
 public class ItemLoopcastSpellBullet extends ItemSpellBullet {
 

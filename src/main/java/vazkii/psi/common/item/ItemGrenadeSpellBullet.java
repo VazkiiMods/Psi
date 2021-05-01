@@ -19,7 +19,6 @@ import vazkii.psi.common.entity.EntitySpellGrenade;
 import vazkii.psi.common.entity.EntitySpellProjectile;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 
 public class ItemGrenadeSpellBullet extends ItemSpellBullet {
 

@@ -18,7 +18,6 @@ import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.common.entity.EntitySpellProjectile;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 
 public class ItemProjectileSpellBullet extends ItemSpellBullet {
 

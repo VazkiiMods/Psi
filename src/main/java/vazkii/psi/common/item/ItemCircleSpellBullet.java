@@ -20,7 +20,6 @@ import vazkii.psi.common.entity.EntitySpellCircle;
 import vazkii.psi.common.spell.operator.vector.PieceOperatorVectorRaycast;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 
 public class ItemCircleSpellBullet extends ItemSpellBullet {
 
