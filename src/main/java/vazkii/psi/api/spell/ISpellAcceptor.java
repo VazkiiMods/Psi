@@ -8,12 +8,15 @@
  */
 package vazkii.psi.api.spell;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 
 import vazkii.psi.api.PsiAPI;
 
 import javax.annotation.Nullable;
+
+import java.util.ArrayList;
 
 /**
  * An item that provides this can have a spell set through right clicking the
@@ -67,7 +70,9 @@ public interface ISpellAcceptor {
 	 * must be handled and not leaked. Ideal implementation of exception catching is to
 	 * alarm the player through a chat message.
 	 */
-	default void castSpell(SpellContext context) {}
+	default ArrayList<Entity> castSpell(SpellContext context) {
+		return null;
+	}
 
 	default double getCostModifier() {
 		return 1.0;

@@ -72,7 +72,7 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 
 	public EntitySpellCircle setInfo(PlayerEntity player, ItemStack colorizer, ItemStack bullet) {
 		dataManager.set(COLORIZER_DATA, colorizer);
-		dataManager.set(BULLET_DATA, bullet);
+		dataManager.set(BULLET_DATA, bullet.copy());
 		dataManager.set(CASTER_UUID, Optional.of(player.getUniqueID()));
 
 		Vector3d lookVec = player.getLook(1F);

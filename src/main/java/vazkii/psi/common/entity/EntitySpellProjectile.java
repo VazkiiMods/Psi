@@ -85,7 +85,7 @@ public class EntitySpellProjectile extends ThrowableEntity {
 
 	public EntitySpellProjectile setInfo(PlayerEntity player, ItemStack colorizer, ItemStack bullet) {
 		dataManager.set(COLORIZER_DATA, colorizer);
-		dataManager.set(BULLET_DATA, bullet);
+		dataManager.set(BULLET_DATA, bullet.copy());
 		dataManager.set(CASTER_UUID, Optional.of(player.getUniqueID()));
 		dataManager.set(ATTACKTARGET_UUID, Optional.empty());
 		return this;

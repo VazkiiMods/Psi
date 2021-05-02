@@ -54,7 +54,7 @@ public class PieceTrickEidosReversal extends PieceTrick {
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		int timeVal = this.getParamValue(context, time).intValue();
 		PlayerData data = PlayerDataHandler.get(context.caster);
-		if (!data.isReverting) {
+		if (timeVal > 0 && !data.isReverting) {
 			data.eidosReversionTime = timeVal * 10;
 			data.isReverting = true;
 			if (context.caster instanceof ServerPlayerEntity) {

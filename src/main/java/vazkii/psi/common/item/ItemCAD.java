@@ -232,7 +232,7 @@ public class ItemCAD extends Item implements ICAD {
 
 			if (context.isValid()) {
 				if (context.cspell.metadata.evaluateAgainst(cad)) {
-					int cost = Math.max(getRealCost(cad, bullet, context.cspell.metadata.stats.get(EnumSpellStat.COST)) - reservoir, 0);
+					int cost = Math.max(getRealCost(cad, bullet, context.cspell.metadata.getStat(EnumSpellStat.COST)) - reservoir, 0);
 					PreSpellCastEvent event = new PreSpellCastEvent(cost, sound, particles, cd, spell, context, player, data, cad, bullet);
 					if (MinecraftForge.EVENT_BUS.post(event)) {
 						String cancelMessage = event.getCancellationMessage();

@@ -8,6 +8,7 @@
  */
 package vazkii.psi.common.core.handler.capability;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 
 import vazkii.psi.api.spell.ISpellAcceptor;
@@ -15,6 +16,8 @@ import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 
 import javax.annotation.Nullable;
+
+import java.util.ArrayList;
 
 public class SpellHolder implements ISpellAcceptor {
 	private Spell spell;
@@ -41,8 +44,9 @@ public class SpellHolder implements ISpellAcceptor {
 	}
 
 	@Override
-	public void castSpell(SpellContext context) {
+	public ArrayList<Entity> castSpell(SpellContext context) {
 		// NO-OP
+		return null;
 	}
 
 	@Override

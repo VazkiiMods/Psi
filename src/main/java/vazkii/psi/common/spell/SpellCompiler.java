@@ -72,7 +72,7 @@ public final class SpellCompiler implements ISpellCompiler {
 			}
 		}
 
-		if (compiled.metadata.stats.get(EnumSpellStat.COST) < 0 || compiled.metadata.stats.get(EnumSpellStat.POTENCY) < 0) {
+		if (compiled.metadata.getStat(EnumSpellStat.COST) < 0 || compiled.metadata.getStat(EnumSpellStat.POTENCY) < 0) {
 			throw new SpellCompilationException(SpellCompilationException.STAT_OVERFLOW);
 		}
 

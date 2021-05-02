@@ -424,7 +424,7 @@ public class PlayerDataHandler {
 						context.castFrom = loopcastHand;
 						if (context.isValid()) {
 							if (context.cspell.metadata.evaluateAgainst(cadStack)) {
-								int cost = ItemCAD.getRealCost(cadStack, bullet, context.cspell.metadata.stats.get(EnumSpellStat.COST));
+								int cost = ItemCAD.getRealCost(cadStack, bullet, context.cspell.metadata.getStat(EnumSpellStat.COST));
 								if (cost > 0 || cost == -1) {
 									if (cost != -1) {
 										deductPsi(cost, 0, true);
