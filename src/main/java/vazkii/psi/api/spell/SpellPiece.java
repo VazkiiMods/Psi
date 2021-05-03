@@ -361,7 +361,7 @@ public abstract class SpellPiece {
 	@OnlyIn(Dist.CLIENT)
 	public void drawParam(MatrixStack ms, IVertexBuilder buffer, int light, SpellParam<?> param) {
 		SpellParam.Side side = paramSides.get(param);
-		if (!side.isEnabled() || param.arrowType == ArrowType.NONE) {
+		if (!side.isEnabled() || param.getArrowType() == ArrowType.NONE) {
 			return;
 		}
 
@@ -370,7 +370,7 @@ public abstract class SpellPiece {
 			if (p == param) {
 				index = count;
 			}
-			if (p.arrowType != ArrowType.NONE && paramSides.get(p) == side) {
+			if (p.getArrowType() != ArrowType.NONE && paramSides.get(p) == side) {
 				count++;
 			}
 		}
@@ -378,7 +378,7 @@ public abstract class SpellPiece {
 		if (neighbour != null) {
 			int nbcount = 0;
 			for (SpellParam<?> p : neighbour.paramSides.keySet()) {
-				if (p.arrowType != ArrowType.NONE && neighbour.paramSides.get(p) == side.getOpposite()) {
+				if (p.getArrowType() != ArrowType.NONE && neighbour.paramSides.get(p) == side.getOpposite()) {
 					nbcount++;
 				}
 			}
@@ -402,7 +402,7 @@ public abstract class SpellPiece {
 		float maxX = minX + 8;
 		float maxY = minY + 8;
 
-		if (param.arrowType == ArrowType.OUT) {
+		if (param.getArrowType() == ArrowType.OUT) {
 			side = side.getOpposite();
 		}
 		float wh = 8F;

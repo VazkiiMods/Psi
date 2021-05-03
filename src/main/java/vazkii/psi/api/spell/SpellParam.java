@@ -135,6 +135,13 @@ public abstract class SpellParam<T> {
 	}
 
 	/**
+	 * Gets the {@link ArrowType} that should be drawn for this parameter.
+	 */
+	public ArrowType getArrowType() {
+		return arrowType;
+	}
+
+	/**
 	 * Helper Enum for the various sides a parameter can take.
 	 */
 	public enum Side {
