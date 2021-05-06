@@ -11,6 +11,7 @@
 package vazkii.psi.client.gui;
 
 import com.google.common.collect.ImmutableSet;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -18,6 +19,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.settings.GameSettings;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -279,7 +281,7 @@ public class GuiSocketSelect extends GuiScreen {
 	public void updateScreen() {
 		super.updateScreen();
 
-		if(!isKeyDown(KeybindHandler.keybind)) {
+		if(!GameSettings.isKeyDown(KeybindHandler.keybind)) {
 			mc.displayGuiScreen(null);
 			if(slotSelected != -1) {
 				int slot = slots.get(slotSelected);
@@ -295,18 +297,9 @@ public class GuiSocketSelect extends GuiScreen {
 
 		ImmutableSet<KeyBinding> set = ImmutableSet.of(mc.gameSettings.keyBindForward, mc.gameSettings.keyBindLeft, mc.gameSettings.keyBindBack, mc.gameSettings.keyBindRight, mc.gameSettings.keyBindSneak, mc.gameSettings.keyBindSprint, mc.gameSettings.keyBindJump);
 		for(KeyBinding k : set)
-			KeyBinding.setKeyBindState(k.getKeyCode(), isKeyDown(k));
+			KeyBinding.setKeyBindState(k.getKeyCode(), GameSettings.isKeyDown(k));
 
 		timeIn++;
-	}
-
-	public boolean isKeyDown(KeyBinding keybind) {
-		int key = keybind.getKeyCode();
-		if(key < 0) {
-			int button = 100 + key;
-			return Mouse.isButtonDown(button);
-		}
-		return Keyboard.isKeyDown(key);
 	}
 
 	@Override
