@@ -58,6 +58,11 @@ public class PieceCrossConnector extends SpellPiece implements IGenericRedirecto
 	}
 
 	@Override
+	public boolean isInputSide(SpellParam.Side side) {
+		return paramSides.get(in1) == side || paramSides.get(in2) == side;
+	}
+
+	@Override
 	public String getSortingName() {
 		return "00000000000";
 	}

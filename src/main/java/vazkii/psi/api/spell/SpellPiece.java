@@ -143,6 +143,14 @@ public abstract class SpellPiece {
 	}
 
 	/**
+	 * Checks whether the piece accepts an input on the given side.
+	 * Used by connectors to display output lines.
+	 */
+	public boolean isInputSide(SpellParam.Side side) {
+		return paramSides.containsValue(side);
+	}
+
+	/**
 	 * Defaulted version of getParamValue
 	 * Should be used for optional params
 	 */
