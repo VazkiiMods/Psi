@@ -12,6 +12,7 @@ import javax.annotation.Nonnull;
 
 /**
  * Interface for a SpellPiece that can catch exceptions of pieces it's attached to.
+ * Pieces implementing this should be of type {@link EnumPieceType#ERROR_HANDLER}.
  */
 public interface IErrorCatcher {
 
