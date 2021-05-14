@@ -54,7 +54,7 @@ public final class SpellCompiler implements ISpellCompiler {
 
 		redirectionPieces.clear();
 		compiled = new CompiledSpell(spell);
-		
+
 		for (SpellPiece piece : findPieces(EnumPieceType.ERROR_HANDLER::equals)) {
 			buildHandler(piece);
 		}
