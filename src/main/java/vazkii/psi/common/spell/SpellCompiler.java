@@ -36,8 +36,6 @@ public final class SpellCompiler implements ISpellCompiler {
 	/** The current spell being compiled. */
 	private CompiledSpell compiled;
 
-	private final Set<SpellPiece> processedHandlers = new HashSet<>();
-
 	private final Set<SpellPiece> redirectionPieces = new HashSet<>();
 
 	@Override
@@ -54,9 +52,12 @@ public final class SpellCompiler implements ISpellCompiler {
 			throw new SpellCompilationException(SpellCompilationException.NO_SPELL);
 		}
 
-		processedHandlers.clear();
 		redirectionPieces.clear();
 		compiled = new CompiledSpell(spell);
+
+		for (SpellPiece piece : findPieces(EnumPieceType.ERROR_HANDLER::equals)) {
+			buildHandler(piece);
+		}
 
 		List<SpellPiece> tricks = findPieces(EnumPieceType::isTrick);
 		if (tricks.isEmpty()) {
@@ -64,12 +65,6 @@ public final class SpellCompiler implements ISpellCompiler {
 		}
 		for (SpellPiece trick : tricks) {
 			buildPiece(trick);
-		}
-
-		for (SpellPiece piece : findPieces(EnumPieceType.ERROR_HANDLER::equals)) {
-			if (processedHandlers.add(piece)) {
-				buildPiece(piece);
-			}
 		}
 
 		if (compiled.metadata.getStat(EnumSpellStat.COST) < 0 || compiled.metadata.getStat(EnumSpellStat.POTENCY) < 0) {
@@ -102,12 +97,6 @@ public final class SpellCompiler implements ISpellCompiler {
 			piece.addToMetadata(compiled.metadata);
 		}
 
-		CompiledSpell.CatchHandler errorHandler = null;
-		if (piece instanceof IErrorCatcher) {
-			errorHandler = compiled.new CatchHandler(piece);
-			processedHandlers.add(piece);
-		}
-
 		// error handler params must be evaluated before the handled piece
 		CatchHandler catchHandler = compiled.errorHandlers.get(piece);
 		if (catchHandler != null) {
@@ -134,8 +123,7 @@ public final class SpellCompiler implements ISpellCompiler {
 				throw new SpellCompilationException(SpellCompilationException.INVALID_PARAM, piece.x, piece.y);
 			}
 
-			if (errorHandler != null && ((IErrorCatcher) piece).catchParam(param)) {
-				compiled.errorHandlers.putIfAbsent(pieceAt, errorHandler);
+			if (piece instanceof IErrorCatcher && ((IErrorCatcher) piece).catchParam(param)) {
 				handledErrors.add(pieceAt);
 			} else {
 				params.add(pieceAt);
@@ -146,6 +134,35 @@ public final class SpellCompiler implements ISpellCompiler {
 			// error handler params can't depend on handled pieces
 			visitedCopy.addAll(handledErrors);
 			buildPiece(pieceAt, visitedCopy);
+		}
+	}
+
+	public void buildHandler(SpellPiece piece) throws SpellCompilationException {
+		if (!(piece instanceof IErrorCatcher)) {
+			return;
+		}
+		IErrorCatcher errorCatcher = (IErrorCatcher) piece;
+		CompiledSpell.CatchHandler errorHandler = compiled.new CatchHandler(piece);
+
+		EnumSet<SpellParam.Side> usedSides = EnumSet.noneOf(SpellParam.Side.class);
+
+		for (SpellParam<?> param : piece.paramSides.keySet()) {
+			if (!errorCatcher.catchParam(param) || checkSideDisabled(param, piece, usedSides)) {
+				continue;
+			}
+
+			SpellParam.Side side = piece.paramSides.get(param);
+
+			SpellPiece pieceAt = compiled.sourceSpell.grid.getPieceAtSideWithRedirections(piece.x, piece.y, side, this::buildRedirect);
+
+			if (pieceAt == null) {
+				throw new SpellCompilationException(SpellCompilationException.NULL_PARAM, piece.x, piece.y);
+			}
+			if (!param.canAccept(pieceAt)) {
+				throw new SpellCompilationException(SpellCompilationException.INVALID_PARAM, piece.x, piece.y);
+			}
+
+			compiled.errorHandlers.put(pieceAt, errorHandler);
 		}
 	}
 
