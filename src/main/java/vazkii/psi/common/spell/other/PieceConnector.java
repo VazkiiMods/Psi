@@ -61,14 +61,8 @@ public class PieceConnector extends SpellPiece implements IRedirector {
 			for (SpellParam.Side side : SpellParam.Side.class.getEnumConstants()) {
 				if (side.isEnabled()) {
 					SpellPiece piece = spell.grid.getPieceAtSideSafely(x, y, side);
-					if (piece != null) {
-						for (SpellParam<?> param : piece.paramSides.keySet()) {
-							SpellParam.Side paramSide = piece.paramSides.get(param);
-							if (paramSide.getOpposite() == side) {
-								drawSide(ms, buffers, light, side);
-								break;
-							}
-						}
+					if (piece != null && piece.isInputSide(side.getOpposite())) {
+						drawSide(ms, buffers, light, side);
 					}
 				}
 			}
