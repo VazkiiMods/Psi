@@ -80,11 +80,17 @@ public abstract class SpellParam<T> {
 	public final String name;
 	public final int color;
 	public final boolean canDisable;
+	public final ArrowType arrowType;
 
 	public SpellParam(String name, int color, boolean canDisable) {
+		this(name, color, canDisable, ArrowType.IN);
+	}
+
+	public SpellParam(String name, int color, boolean canDisable, ArrowType arrowType) {
 		this.name = name;
 		this.color = color;
 		this.canDisable = canDisable;
+		this.arrowType = arrowType;
 	}
 
 	/**
@@ -129,22 +135,33 @@ public abstract class SpellParam<T> {
 	}
 
 	/**
+	 * Gets the {@link ArrowType} that should be drawn for this parameter.
+	 */
+	public ArrowType getArrowType() {
+		return arrowType;
+	}
+
+	/**
 	 * Helper Enum for the various sides a parameter can take.
 	 */
 	public enum Side {
-		OFF(0, 0, 238, 0),
-		TOP(0, -1, 222, 8),
-		BOTTOM(0, 1, 230, 8),
-		LEFT(-1, 0, 230, 0),
-		RIGHT(1, 0, 222, 0);
+		OFF(0, 0, 0, 0, 0, 0, 238, 0),
+		TOP(0, -1, 4, -9, -4, -9, 222, 8),
+		BOTTOM(0, 1, 4, 9, -4, 9, 230, 8),
+		LEFT(-1, 0, -9, 4, -9, -4, 230, 0),
+		RIGHT(1, 0, 9, 4, 9, -4, 222, 0);
 
 		public static final Side[] DIRECTIONS = new Side[] { TOP, BOTTOM, LEFT, RIGHT };
 
-		public final int offx, offy, u, v;
+		public final int offx, offy, minx, miny, maxx, maxy, u, v;
 
-		Side(int offx, int offy, int u, int v) {
+		Side(int offx, int offy, int minx, int miny, int maxx, int maxy, int u, int v) {
 			this.offx = offx;
 			this.offy = offy;
+			this.minx = minx;
+			this.miny = miny;
+			this.maxx = maxx;
+			this.maxy = maxy;
 			this.u = u;
 			this.v = v;
 		}
@@ -191,6 +208,15 @@ public abstract class SpellParam<T> {
 				return OFF;
 			}
 		}
+	}
+
+	/**
+	 * Helper enum for the various arrow types that can be drawn for a parameter.
+	 */
+	public enum ArrowType {
+		NONE,
+		OUT,
+		IN
 	}
 
 	/**

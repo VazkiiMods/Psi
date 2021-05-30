@@ -36,6 +36,7 @@ import vazkii.psi.api.ClientPsiAPI;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.internal.PsiRenderHelper;
 import vazkii.psi.api.internal.TooltipHelper;
+import vazkii.psi.api.spell.SpellParam.ArrowType;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -361,33 +362,72 @@ public abstract class SpellPiece {
 	public void drawParams(MatrixStack ms, IRenderTypeBuffer buffers, int light) {
 		IVertexBuilder buffer = buffers.getBuffer(PsiAPI.internalHandler.getProgrammerLayer());
 		for (SpellParam<?> param : paramSides.keySet()) {
-			SpellParam.Side side = paramSides.get(param);
-			if (side.isEnabled()) {
-				int minX = 4;
-				int minY = 4;
-				minX += side.offx * 9;
-				minY += side.offy * 9;
+			drawParam(ms, buffer, light, param);
+		}
+	}
 
-				int maxX = minX + 8;
-				int maxY = minY + 8;
+	@OnlyIn(Dist.CLIENT)
+	public void drawParam(MatrixStack ms, IVertexBuilder buffer, int light, SpellParam<?> param) {
+		SpellParam.Side side = paramSides.get(param);
+		if (!side.isEnabled() || param.getArrowType() == ArrowType.NONE) {
+			return;
+		}
 
-				float wh = 8F;
-				float minU = side.u / 256F;
-				float minV = side.v / 256F;
-				float maxU = (side.u + wh) / 256F;
-				float maxV = (side.v + wh) / 256F;
-				int r = PsiRenderHelper.r(param.color);
-				int g = PsiRenderHelper.g(param.color);
-				int b = PsiRenderHelper.b(param.color);
-				int a = 255;
-				Matrix4f mat = ms.getLast().getMatrix();
-
-				buffer.pos(mat, minX, maxY, 0).color(r, g, b, a).tex(minU, maxV).lightmap(light).endVertex();
-				buffer.pos(mat, maxX, maxY, 0).color(r, g, b, a).tex(maxU, maxV).lightmap(light).endVertex();
-				buffer.pos(mat, maxX, minY, 0).color(r, g, b, a).tex(maxU, minV).lightmap(light).endVertex();
-				buffer.pos(mat, minX, minY, 0).color(r, g, b, a).tex(minU, minV).lightmap(light).endVertex();
+		int index = 0, count = 0;
+		for (SpellParam<?> p : paramSides.keySet()) {
+			if (p == param) {
+				index = count;
+			}
+			if (p.getArrowType() != ArrowType.NONE && paramSides.get(p) == side) {
+				count++;
 			}
 		}
+		SpellPiece neighbour = spell.grid.getPieceAtSideSafely(x, y, side);
+		if (neighbour != null) {
+			int nbcount = 0;
+			for (SpellParam<?> p : neighbour.paramSides.keySet()) {
+				if (p.getArrowType() != ArrowType.NONE && neighbour.paramSides.get(p) == side.getOpposite()) {
+					nbcount++;
+				}
+			}
+			if (side.asInt() > side.getOpposite().asInt()) {
+				index += nbcount;
+			}
+			count += nbcount;
+		}
+
+		float minX = 4;
+		float minY = 4;
+		if (count == 1) {
+			minX += (side.minx + side.maxx) / 2;
+			minY += (side.miny + side.maxy) / 2;
+		} else {
+			float percent = (float) index / (count - 1);
+			minX += side.minx * percent + side.maxx * (1 - percent);
+			minY += side.miny * percent + side.maxy * (1 - percent);
+		}
+
+		float maxX = minX + 8;
+		float maxY = minY + 8;
+
+		if (param.getArrowType() == ArrowType.OUT) {
+			side = side.getOpposite();
+		}
+		float wh = 8F;
+		float minU = side.u / 256F;
+		float minV = side.v / 256F;
+		float maxU = (side.u + wh) / 256F;
+		float maxV = (side.v + wh) / 256F;
+		int r = PsiRenderHelper.r(param.color);
+		int g = PsiRenderHelper.g(param.color);
+		int b = PsiRenderHelper.b(param.color);
+		int a = 255;
+		Matrix4f mat = ms.getLast().getMatrix();
+
+		buffer.pos(mat, minX, maxY, 0).color(r, g, b, a).tex(minU, maxV).lightmap(light).endVertex();
+		buffer.pos(mat, maxX, maxY, 0).color(r, g, b, a).tex(maxU, maxV).lightmap(light).endVertex();
+		buffer.pos(mat, maxX, minY, 0).color(r, g, b, a).tex(maxU, minV).lightmap(light).endVertex();
+		buffer.pos(mat, minX, minY, 0).color(r, g, b, a).tex(minU, minV).lightmap(light).endVertex();
 	}
 
 	/**
