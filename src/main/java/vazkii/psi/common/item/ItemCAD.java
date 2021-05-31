@@ -78,6 +78,7 @@ import vazkii.psi.common.spell.trick.block.PieceTrickBreakBlock;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -202,7 +203,7 @@ public class ItemCAD extends Item implements ICAD {
 				setCADComponent(playerCad, dyeStack);
 			}
 		}
-		boolean did = cast(worldIn, playerIn, data, bullet, itemStackIn, 40, 25, 0.5F, ctx -> ctx.castFrom = hand);
+		boolean did = cast(worldIn, playerIn, data, bullet, itemStackIn, 40, 25, 0.5F, ctx -> ctx.castFrom = hand).isPresent();
 
 		if (!data.overflowed && bullet.isEmpty() && craft(playerCad, playerIn, null)) {
 			worldIn.playSound(null, playerIn.getPosX(), playerIn.getPosY(), playerIn.getPosZ(), PsiSoundHandler.cadShoot, SoundCategory.PLAYERS, 0.5F, (float) (0.5 + Math.random() * 0.5));
@@ -217,11 +218,11 @@ public class ItemCAD extends Item implements ICAD {
 		return new ActionResult<>(did ? ActionResultType.CONSUME : ActionResultType.PASS, itemStackIn);
 	}
 
-	public static boolean cast(World world, PlayerEntity player, PlayerData data, ItemStack bullet, ItemStack cad, int cd, int particles, float sound, Consumer<SpellContext> predicate) {
+	public static Optional<ArrayList<Entity>> cast(World world, PlayerEntity player, PlayerData data, ItemStack bullet, ItemStack cad, int cd, int particles, float sound, Consumer<SpellContext> predicate) {
 		return cast(world, player, data, bullet, cad, cd, particles, sound, predicate, 0);
 	}
 
-	public static boolean cast(World world, PlayerEntity player, PlayerData data, ItemStack bullet, ItemStack cad, int cd, int particles, float sound, Consumer<SpellContext> predicate, int reservoir) {
+	public static Optional<ArrayList<Entity>> cast(World world, PlayerEntity player, PlayerData data, ItemStack bullet, ItemStack cad, int cd, int particles, float sound, Consumer<SpellContext> predicate, int reservoir) {
 		if (!data.overflowed && data.getAvailablePsi() > 0 && !cad.isEmpty() && !bullet.isEmpty() && ISpellAcceptor.hasSpell(bullet) && isTruePlayer(player)) {
 			ISpellAcceptor spellContainer = ISpellAcceptor.acceptor(bullet);
 			Spell spell = spellContainer.getSpell();
@@ -239,7 +240,7 @@ public class ItemCAD extends Item implements ICAD {
 						if (cancelMessage != null && !cancelMessage.isEmpty()) {
 							player.sendMessage(new TranslationTextComponent(cancelMessage).setStyle(Style.EMPTY.setFormatting(TextFormatting.RED)), Util.DUMMY_UUID);
 						}
-						return false;
+						return Optional.empty();
 					}
 
 					cd = event.getCooldown();
@@ -286,19 +287,19 @@ public class ItemCAD extends Item implements ICAD {
 							}
 						}
 					}
-
+					ArrayList<Entity> SpellEntities = new ArrayList<>();
 					if (!world.isRemote) {
-						spellContainer.castSpell(context);
+						SpellEntities = spellContainer.castSpell(context);
 					}
 					MinecraftForge.EVENT_BUS.post(new SpellCastEvent(spell, context, player, data, cad, bullet));
-					return true;
+					return Optional.of(SpellEntities);
 				} else if (!world.isRemote) {
 					player.sendMessage(new TranslationTextComponent("psimisc.weak_cad").setStyle(Style.EMPTY.setFormatting(TextFormatting.RED)), Util.DUMMY_UUID);
 				}
 			}
 		}
 
-		return false;
+		return Optional.empty();
 	}
 
 	@Override

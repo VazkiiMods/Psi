@@ -91,7 +91,7 @@ public class PlayerDataHandler {
 
 	private static final String DATA_TAG = "PsiData";
 
-	public static final DamageSource damageSourceOverload = new DamageSource("psi-overload").setDamageBypassesArmor().setMagicDamage();
+	public static final DamageSource damageSourceOverload = new DamageSource("psi-overload").setDamageBypassesArmor().setDamageIsAbsolute();
 
 	@Nonnull
 	public static PlayerData get(PlayerEntity player) {
