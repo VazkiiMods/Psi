@@ -499,26 +499,61 @@ public class RecipeGenerator extends RecipeProvider implements IConditionBuilder
 				.patternLine(" I ")
 				.addCriterion("has_psidust", hasPsidust)
 				.build(consumer, Psi.location("cad_colorizer_empty"));
-		ShapelessRecipeBuilder.shapelessRecipe(ModBlocks.psidustBlock.asItem())
-				.addIngredient(ModItems.psidust, 9)
+		ShapedRecipeBuilder.shapedRecipe(ModBlocks.psidustBlock.asItem())
+				.key('I', ModItems.psidust)
+				.patternLine("III")
+				.patternLine("III")
+				.patternLine("III")
 				.addCriterion("has_psidust", hasPsidust)
-				.build(consumer, Psi.location("psidust_block_shapeless"));
-		ShapelessRecipeBuilder.shapelessRecipe(ModBlocks.psimetalBlock.asItem())
-				.addIngredient(ModItems.psimetal, 9)
+				.build(consumer, Psi.location("psidust_block"));
+		ShapedRecipeBuilder.shapedRecipe(ModBlocks.psimetalBlock.asItem())
+				.key('I', ModItems.psimetal)
+				.patternLine("III")
+				.patternLine("III")
+				.patternLine("III")
 				.addCriterion("has_psimetal", hasPsimetal)
-				.build(consumer, Psi.location("psimetal_block_shapeless"));
-		ShapelessRecipeBuilder.shapelessRecipe(ModBlocks.psigemBlock.asItem())
-				.addIngredient(ModItems.psigem, 9)
+				.build(consumer, Psi.location("psimetal_block"));
+		ShapedRecipeBuilder.shapedRecipe(ModBlocks.psigemBlock.asItem())
+				.key('I', ModItems.psigem)
+				.patternLine("III")
+				.patternLine("III")
+				.patternLine("III")
 				.addCriterion("has_psigem", hasItem(ModItems.psigem))
-				.build(consumer, Psi.location("psigem_block_shapeless"));
-		ShapelessRecipeBuilder.shapelessRecipe(ModBlocks.psimetalEbony.asItem())
-				.addIngredient(ModItems.ebonyPsimetal, 9)
+				.build(consumer, Psi.location("psigem_block"));
+		ShapedRecipeBuilder.shapedRecipe(ModBlocks.psimetalEbony.asItem())
+				.key('I', ModItems.ebonyPsimetal)
+				.patternLine("III")
+				.patternLine("III")
+				.patternLine("III")
 				.addCriterion("has_ebony_psimetal", hasEbonyPsimetal)
-				.build(consumer, Psi.location("ebony_block_shapeless"));
-		ShapelessRecipeBuilder.shapelessRecipe(ModBlocks.psimetalIvory.asItem())
-				.addIngredient(ModItems.ivoryPsimetal, 9)
+				.build(consumer, Psi.location("ebony_block"));
+		ShapedRecipeBuilder.shapedRecipe(ModBlocks.psimetalIvory.asItem())
+				.key('I', ModItems.ivoryPsimetal)
+				.patternLine("III")
+				.patternLine("III")
+				.patternLine("III")
 				.addCriterion("has_ivory_psimetal", hasIvoryPsimetal)
-				.build(consumer, Psi.location("ivory_block_shapeless"));
+				.build(consumer, Psi.location("ivory_block"));
+		ShapelessRecipeBuilder.shapelessRecipe(ModItems.psidust, 9)
+				.addIngredient(ModBlocks.psidustBlock.asItem())
+				.addCriterion("has_psidust", hasPsidust)
+				.build(consumer, Psi.location("psidust_shapeless"));
+		ShapelessRecipeBuilder.shapelessRecipe(ModItems.psimetal, 9)
+				.addIngredient(ModBlocks.psimetalBlock.asItem())
+				.addCriterion("has_psimetal", hasPsimetal)
+				.build(consumer, Psi.location("psimetal_shapeless"));
+		ShapelessRecipeBuilder.shapelessRecipe(ModItems.psigem, 9)
+				.addIngredient(ModBlocks.psigemBlock.asItem())
+				.addCriterion("has_psigem", hasItem(ModItems.psigem))
+				.build(consumer, Psi.location("psigem_shapeless"));
+		ShapelessRecipeBuilder.shapelessRecipe(ModItems.ebonyPsimetal, 9)
+				.addIngredient(ModBlocks.psimetalEbony.asItem())
+				.addCriterion("has_ebony_psimetal", hasEbonyPsimetal)
+				.build(consumer, Psi.location("ebony_ingot_shapeless"));
+		ShapelessRecipeBuilder.shapelessRecipe(ModItems.ivoryPsimetal, 9)
+				.addIngredient(ModBlocks.psimetalIvory.asItem())
+				.addCriterion("has_ivory_psimetal", hasIvoryPsimetal)
+				.build(consumer, Psi.location("ivory_ingot_shapeless"));
 		ShapedRecipeBuilder.shapedRecipe(ModBlocks.psimetalPlateBlack.asItem())
 				.key('C', ItemTags.COALS)
 				.key('I', ModTags.INGOT_PSIMETAL)
