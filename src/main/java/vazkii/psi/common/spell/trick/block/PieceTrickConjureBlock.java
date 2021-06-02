@@ -75,7 +75,7 @@ public class PieceTrickConjureBlock extends PieceTrick {
 
 		BlockPos pos = positionVal.toBlockPos();
 
-		World world = context.caster.getEntityWorld();
+		World world = context.focalPoint.getEntityWorld();
 
 		if (!world.isBlockModifiable(context.caster, pos)) {
 			return null;

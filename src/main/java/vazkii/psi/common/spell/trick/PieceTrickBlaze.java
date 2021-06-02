@@ -61,19 +61,19 @@ public class PieceTrickBlaze extends PieceTrick {
 		BlockPos pos = positionVal.toBlockPos();
 
 		pos = pos.down();
-		BlockState state = context.caster.getEntityWorld().getBlockState(pos);
-		BlockEvent.EntityPlaceEvent placeEvent = new BlockEvent.EntityPlaceEvent(BlockSnapshot.create(context.caster.getEntityWorld().getDimensionKey(), context.caster.getEntityWorld(), pos), context.caster.getEntityWorld().getBlockState(pos.offset(Direction.UP)), context.caster);
+		BlockState state = context.focalPoint.getEntityWorld().getBlockState(pos);
+		BlockEvent.EntityPlaceEvent placeEvent = new BlockEvent.EntityPlaceEvent(BlockSnapshot.create(context.focalPoint.getEntityWorld().getDimensionKey(), context.focalPoint.getEntityWorld(), pos), context.focalPoint.getEntityWorld().getBlockState(pos.offset(Direction.UP)), context.caster);
 		MinecraftForge.EVENT_BUS.post(placeEvent);
 		if (placeEvent.isCanceled()) {
 			return null;
 		}
-		if (state.isAir(context.caster.getEntityWorld(), pos) || state.getMaterial().isReplaceable()) {
-			context.caster.getEntityWorld().setBlockState(pos, Blocks.FIRE.getDefaultState());
+		if (state.isAir(context.focalPoint.getEntityWorld(), pos) || state.getMaterial().isReplaceable()) {
+			context.focalPoint.getEntityWorld().setBlockState(pos, Blocks.FIRE.getDefaultState());
 		} else {
 			pos = pos.up();
-			state = context.caster.getEntityWorld().getBlockState(pos);
-			if (state.isAir(context.caster.getEntityWorld(), pos) || state.getMaterial().isReplaceable()) {
-				context.caster.getEntityWorld().setBlockState(pos, Blocks.FIRE.getDefaultState());
+			state = context.focalPoint.getEntityWorld().getBlockState(pos);
+			if (state.isAir(context.focalPoint.getEntityWorld(), pos) || state.getMaterial().isReplaceable()) {
+				context.focalPoint.getEntityWorld().setBlockState(pos, Blocks.FIRE.getDefaultState());
 			}
 		}
 

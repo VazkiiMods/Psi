@@ -71,7 +71,7 @@ public class PieceTrickConjureBlockSequence extends PieceTrick {
 		}
 
 		Vector3 targetNorm = targetVal.copy().normalize();
-		World world = context.caster.getEntityWorld();
+		World world = context.focalPoint.getEntityWorld();
 
 		for (BlockPos blockPos : MathHelper.getBlocksAlongRay(positionVal.toVec3D(), positionVal.copy().add(targetNorm.copy().multiply(maxBlocksInt)).toVec3D(), maxBlocksInt)) {
 			if (!context.isInRadius(Vector3.fromBlockPos(blockPos))) {

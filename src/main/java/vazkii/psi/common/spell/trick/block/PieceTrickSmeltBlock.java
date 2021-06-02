@@ -63,11 +63,11 @@ public class PieceTrickSmeltBlock extends PieceTrick {
 		}
 
 		BlockPos pos = positionVal.toBlockPos();
-		if (!context.caster.getEntityWorld().isBlockModifiable(context.caster, pos)) {
+		if (!context.focalPoint.getEntityWorld().isBlockModifiable(context.caster, pos)) {
 			return null;
 		}
 
-		BlockState state = context.caster.getEntityWorld().getBlockState(pos);
+		BlockState state = context.focalPoint.getEntityWorld().getBlockState(pos);
 		Block block = state.getBlock();
 		ItemStack stack = new ItemStack(block);
 		BlockEvent.BreakEvent event = PieceTrickBreakBlock.createBreakEvent(state, context.caster, context.caster.world, pos, tool);
@@ -75,13 +75,13 @@ public class PieceTrickSmeltBlock extends PieceTrick {
 		if (event.isCanceled()) {
 			return null;
 		}
-		ItemStack result = PieceSelectorNearbySmeltables.simulateSmelt(context.caster.getEntityWorld(), stack);
+		ItemStack result = PieceSelectorNearbySmeltables.simulateSmelt(context.focalPoint.getEntityWorld(), stack);
 		if (!result.isEmpty()) {
 			Item item = result.getItem();
 			Block block1 = Block.getBlockFromItem(item);
 			if (block1 != Blocks.AIR) {
-				context.caster.getEntityWorld().setBlockState(pos, block1.getDefaultState());
-				context.caster.getEntityWorld().playEvent(2001, pos, Block.getStateId(block1.getDefaultState()));
+				context.focalPoint.getEntityWorld().setBlockState(pos, block1.getDefaultState());
+				context.focalPoint.getEntityWorld().playEvent(2001, pos, Block.getStateId(block1.getDefaultState()));
 			}
 		}
 
