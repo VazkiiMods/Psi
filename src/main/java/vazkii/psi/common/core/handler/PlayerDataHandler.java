@@ -76,7 +76,7 @@ import javax.annotation.Nullable;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -87,7 +87,7 @@ public class PlayerDataHandler {
 
 	private static final WeakHashMap<PlayerEntity, PlayerData> remotePlayerData = new WeakHashMap<>();
 	private static final WeakHashMap<PlayerEntity, PlayerData> playerData = new WeakHashMap<>();
-	public static final Set<SpellContext> delayedContexts = new HashSet<>();
+	public static final Set<SpellContext> delayedContexts = new LinkedHashSet<>();
 
 	private static final String DATA_TAG = "PsiData";
 
@@ -138,12 +138,9 @@ public class PlayerDataHandler {
 					context.delay--;
 
 					if (context.delay <= 0) {
+						delayedContexts.remove(context);
 						context.delay = 0; // Just in case it goes under 0
 						context.cspell.safeExecute(context);
-
-						if (context.delay == 0) {
-							delayedContexts.remove(context);
-						}
 					}
 				}
 			}
