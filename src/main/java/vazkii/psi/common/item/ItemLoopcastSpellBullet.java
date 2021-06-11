@@ -36,7 +36,7 @@ public class ItemLoopcastSpellBullet extends ItemSpellBullet {
 				LoopcastTrackingHandler.syncForTrackersAndSelf((ServerPlayerEntity) context.caster);
 			}
 		}
-		return null;
+		return new ArrayList<>();
 	}
 
 	@Override
