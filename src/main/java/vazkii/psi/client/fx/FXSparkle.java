@@ -48,6 +48,9 @@ public class FXSparkle extends SpriteTexturedParticle {
 		maxAge = 3 * m;
 		multipler = m;
 		setSize(0.01F, 0.01F);
+		// 10 is the sum of the infinite geometric series defined by the drag value of 0.9
+		// This is expanding the AABB to contain everywhere the particle will travel
+		this.setBoundingBox(this.getBoundingBox().grow(mx * 10, my * 10, mz * 10));
 		prevPosX = posX;
 		prevPosY = posY;
 		prevPosZ = posZ;
