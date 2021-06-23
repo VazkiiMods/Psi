@@ -25,7 +25,7 @@ public class PieceTrickInfusion extends PieceCraftingTrick {
 		addPotencyAndCost(meta);
 	}
 
-	protected void addPotencyAndCost(SpellMetadata meta) {
+	protected void addPotencyAndCost(SpellMetadata meta) throws SpellCompilationException {
 		meta.addStat(EnumSpellStat.POTENCY, 100);
 		meta.addStat(EnumSpellStat.COST, 1200);
 	}
