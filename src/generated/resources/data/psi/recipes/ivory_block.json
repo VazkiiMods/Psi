@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "III",
+    "III",
+    "III"
+  ],
+  "key": {
+    "I": {
+      "item": "psi:ivory_psimetal"
+    }
+  },
+  "result": {
+    "item": "psi:ivory_psimetal_block"
+  }
+}

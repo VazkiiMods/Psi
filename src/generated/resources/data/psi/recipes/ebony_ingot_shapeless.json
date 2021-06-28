@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "psi:ebony_psimetal_block"
+    }
+  ],
+  "result": {
+    "item": "psi:ebony_psimetal",
+    "count": 9
+  }
+}

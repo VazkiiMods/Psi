@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "psi:ivory_psimetal_block"
+    }
+  ],
+  "result": {
+    "item": "psi:ivory_psimetal",
+    "count": 9
+  }
+}

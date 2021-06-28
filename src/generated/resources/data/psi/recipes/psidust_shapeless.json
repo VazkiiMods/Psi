@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "psi:psidust_block"
+    }
+  ],
+  "result": {
+    "item": "psi:psidust",
+    "count": 9
+  }
+}

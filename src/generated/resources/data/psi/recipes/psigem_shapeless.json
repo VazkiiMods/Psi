@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "psi:psigem_block"
+    }
+  ],
+  "result": {
+    "item": "psi:psigem",
+    "count": 9
+  }
+}
