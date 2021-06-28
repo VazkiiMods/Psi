@@ -41,9 +41,13 @@ public final class SpellMetadata {
 	 */
 	public void addStat(EnumSpellStat stat, int val) throws SpellCompilationException {
 		int curr = stats.get(stat);
+		boolean overflow = false;
 		try {
 			setStat(stat, Math.addExact(val, curr));
 		} catch (ArithmeticException exception) {
+			overflow = true;
+		}
+		if (overflow) {
 			throw new SpellCompilationException(SpellCompilationException.STAT_OVERFLOW);
 		}
 	}
