@@ -76,6 +76,7 @@ public interface ISpellAcceptor {
 
 	/**
 	 * Casts this spell in a loopcast.
+	 * 
 	 * @return whether to continue loopcasting
 	 */
 	default boolean loopcastSpell(SpellContext context) {
