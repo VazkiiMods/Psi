@@ -75,15 +75,17 @@ public class PieceConstantNumber extends SpellPiece {
 
 		String oldStr = valueStr;
 		String newStr = valueStr;
-		if (newStr.equals("0") || newStr.equals("-0")) {
-			if (character == '-') {
-				newStr = "-0";
-			} else if (character != '.') {
-				newStr = newStr.replace("0", "");
-			}
+		if ((newStr.equals("0") || newStr.equals("-0")) && "+-.".indexOf(character) < 0) {
+			newStr = newStr.replace("0", "");
 		}
 
-		if (character != '-') {
+		if (character == '+') {
+			newStr = newStr.replace("-", "");
+		} else if (character == '-') {
+			if (!newStr.startsWith("-")) {
+				newStr = "-" + newStr;
+			}
+		} else {
 			newStr += character;
 		}
 

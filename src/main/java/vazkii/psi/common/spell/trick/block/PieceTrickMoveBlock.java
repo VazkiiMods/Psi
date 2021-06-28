@@ -64,7 +64,7 @@ public class PieceTrickMoveBlock extends PieceTrick {
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 		}
 
-		World world = context.caster.getEntityWorld();
+		World world = context.focalPoint.getEntityWorld();
 		BlockPos pos = positionVal.toBlockPos();
 		BlockState state = world.getBlockState(pos);
 		if (world.getTileEntity(pos) != null || state.getPushReaction() != PushReaction.NORMAL ||

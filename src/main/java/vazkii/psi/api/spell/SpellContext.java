@@ -11,6 +11,7 @@ package vazkii.psi.api.spell;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockRayTraceResult;
@@ -200,7 +201,11 @@ public final class SpellContext {
 				throw new SpellRuntimeException(SpellRuntimeException.NO_CAD);
 			}
 
-			slot = (cadSlot + targetSlot) % 9;
+			if (PlayerInventory.isHotbar(cadSlot)) {
+				slot = (cadSlot + targetSlot) % 9;
+			} else {
+				slot = (caster.inventory.currentItem + targetSlot) % 9;
+			}
 		} else {
 			slot = (targetSlot - 1) % 9;
 		}

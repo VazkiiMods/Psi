@@ -59,11 +59,11 @@ public class PieceTrickTorrent extends PieceTrick {
 
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
-		if (context.caster.getEntityWorld().getDimensionType().isUltrawarm()) {
+		if (context.focalPoint.getEntityWorld().getDimensionType().isUltrawarm()) {
 			return null;
 		}
 		BlockPos pos = SpellHelpers.getBlockPos(this, context, position, true, false);
-		BlockEvent.EntityPlaceEvent placeEvent = new BlockEvent.EntityPlaceEvent(BlockSnapshot.create(context.caster.getEntityWorld().getDimensionKey(), context.caster.getEntityWorld(), pos), context.caster.getEntityWorld().getBlockState(pos.offset(Direction.UP)), context.caster);
+		BlockEvent.EntityPlaceEvent placeEvent = new BlockEvent.EntityPlaceEvent(BlockSnapshot.create(context.focalPoint.getEntityWorld().getDimensionKey(), context.focalPoint.getEntityWorld(), pos), context.focalPoint.getEntityWorld().getBlockState(pos.offset(Direction.UP)), context.caster);
 		MinecraftForge.EVENT_BUS.post(placeEvent);
 		if (placeEvent.isCanceled()) {
 			return null;

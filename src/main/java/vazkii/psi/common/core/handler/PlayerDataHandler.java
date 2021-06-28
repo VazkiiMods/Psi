@@ -54,6 +54,7 @@ import vazkii.psi.api.internal.PsiRenderHelper;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.EnumSpellStat;
 import vazkii.psi.api.spell.ISpellAcceptor;
+import vazkii.psi.api.spell.LoopcastEndEvent;
 import vazkii.psi.api.spell.PieceExecutedEvent;
 import vazkii.psi.api.spell.PieceGroupAdvancementComplete;
 import vazkii.psi.api.spell.PieceKnowledgeEvent;
@@ -75,7 +76,7 @@ import javax.annotation.Nullable;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -86,11 +87,11 @@ public class PlayerDataHandler {
 
 	private static final WeakHashMap<PlayerEntity, PlayerData> remotePlayerData = new WeakHashMap<>();
 	private static final WeakHashMap<PlayerEntity, PlayerData> playerData = new WeakHashMap<>();
-	public static final Set<SpellContext> delayedContexts = new HashSet<>();
+	public static final Set<SpellContext> delayedContexts = new LinkedHashSet<>();
 
 	private static final String DATA_TAG = "PsiData";
 
-	public static final DamageSource damageSourceOverload = new DamageSource("psi-overload").setDamageBypassesArmor().setMagicDamage();
+	public static final DamageSource damageSourceOverload = new DamageSource("psi-overload").setDamageBypassesArmor().setDamageIsAbsolute();
 
 	@Nonnull
 	public static PlayerData get(PlayerEntity player) {
@@ -137,12 +138,9 @@ public class PlayerDataHandler {
 					context.delay--;
 
 					if (context.delay <= 0) {
+						delayedContexts.remove(context);
 						context.delay = 0; // Just in case it goes under 0
 						context.cspell.safeExecute(context);
-
-						if (context.delay == 0) {
-							delayedContexts.remove(context);
-						}
 					}
 				}
 			}
@@ -355,6 +353,10 @@ public class PlayerDataHandler {
 			float b = PsiRenderHelper.b(color) / 255F;
 
 			loopcast: {
+				if (player.isSpectator()) {
+					stopLoopcast();
+				}
+
 				if (overflowed) {
 					stopLoopcast();
 				}
@@ -419,7 +421,7 @@ public class PlayerDataHandler {
 						context.castFrom = loopcastHand;
 						if (context.isValid()) {
 							if (context.cspell.metadata.evaluateAgainst(cadStack)) {
-								int cost = ItemCAD.getRealCost(cadStack, bullet, context.cspell.metadata.stats.get(EnumSpellStat.COST));
+								int cost = ItemCAD.getRealCost(cadStack, bullet, context.cspell.metadata.getStat(EnumSpellStat.COST));
 								if (cost > 0 || cost == -1) {
 									if (cost != -1) {
 										deductPsi(cost, 0, true);
@@ -594,8 +596,11 @@ public class PlayerDataHandler {
 		}
 
 		public void stopLoopcast() {
+			PlayerEntity player = playerWR.get();
+
 			if (loopcasting) {
 				loopcastFadeTime = 5;
+				MinecraftForge.EVENT_BUS.post(new LoopcastEndEvent(player, this, loopcastHand, loopcastAmount));
 			}
 			loopcasting = false;
 
@@ -605,7 +610,6 @@ public class PlayerDataHandler {
 			loopcastTime = 1;
 			loopcastAmount = 0;
 
-			PlayerEntity player = playerWR.get();
 			if (player instanceof ServerPlayerEntity) {
 				LoopcastTrackingHandler.syncForTrackersAndSelf((ServerPlayerEntity) player);
 			}

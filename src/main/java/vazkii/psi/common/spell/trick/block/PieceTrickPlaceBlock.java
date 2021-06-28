@@ -83,7 +83,7 @@ public class PieceTrickPlaceBlock extends PieceTrick {
 		}
 
 		BlockPos pos = positionVal.toBlockPos();
-		placeBlock(context.caster, context.caster.getEntityWorld(), pos, context.getTargetSlot(), false, facing, horizontalFacing);
+		placeBlock(context.caster, context.focalPoint.getEntityWorld(), pos, context.getTargetSlot(), false, facing, horizontalFacing);
 
 		return null;
 	}

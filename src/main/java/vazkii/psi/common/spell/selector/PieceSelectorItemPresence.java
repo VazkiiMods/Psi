@@ -27,7 +27,7 @@ public class PieceSelectorItemPresence extends PieceSelector {
 
 	@Override
 	public void initParams() {
-		addParam(slot = new ParamNumber("psi.spellparam.slot", SpellParam.BLUE, true, true));
+		addParam(slot = new ParamNumber("psi.spellparam.slot", SpellParam.BLUE, true, false));
 	}
 
 	@Override

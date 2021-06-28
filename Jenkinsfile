@@ -1,10 +1,13 @@
 #!/usr/bin/env groovy
 
 pipeline {
-     options {
-	buildDiscarder(logRotator(numToKeepStr: '10'))
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '10'))
     }
     agent any
+    tools {
+        jdk "jdk8u292-b10"
+    }
     stages {
         stage('Clean') {
             steps {

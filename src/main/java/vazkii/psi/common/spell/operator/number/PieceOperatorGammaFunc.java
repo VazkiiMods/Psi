@@ -39,8 +39,8 @@ public class PieceOperatorGammaFunc extends PieceOperator {
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		double d1 = this.getParamValue(context, num1).doubleValue();
-		if (d1 < 0) {
-			throw new SpellRuntimeException(SpellRuntimeException.NEGATIVE_NUMBER);
+		if (d1 <= 0) {
+			throw new SpellRuntimeException(SpellRuntimeException.NON_POSITIVE_VALUE);
 		}
 		return Gamma.gamma(d1);
 	}

@@ -19,6 +19,7 @@ public enum EnumCADStat {
 	PROJECTION(EnumCADComponent.CORE),
 	BANDWIDTH(EnumCADComponent.SOCKET),
 	SOCKETS(EnumCADComponent.SOCKET),
+	SAVED_VECTORS(EnumCADComponent.SOCKET),
 	OVERFLOW(EnumCADComponent.BATTERY);
 
 	EnumCADStat(EnumCADComponent source) {

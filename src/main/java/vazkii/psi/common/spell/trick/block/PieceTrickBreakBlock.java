@@ -72,7 +72,7 @@ public class PieceTrickBreakBlock extends PieceTrick {
 		}
 
 		BlockPos pos = positionVal.toBlockPos();
-		removeBlockWithDrops(context, context.caster, context.caster.getEntityWorld(), tool, pos, true);
+		removeBlockWithDrops(context, context.caster, context.focalPoint.getEntityWorld(), tool, pos, true);
 
 		return null;
 	}

@@ -11,7 +11,6 @@ package vazkii.psi.common.spell.trick;
 import net.minecraft.item.ItemStack;
 
 import vazkii.psi.api.PsiAPI;
-import vazkii.psi.api.cad.EnumCADStat;
 import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.cad.ISocketable;
 import vazkii.psi.api.spell.EnumSpellStat;
@@ -24,7 +23,6 @@ import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.piece.PieceTrick;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
-import vazkii.psi.common.item.ItemCAD;
 
 public class PieceTrickSpinChamber extends PieceTrick {
 	private SpellParam<Number> number;
@@ -44,6 +42,20 @@ public class PieceTrickSpinChamber extends PieceTrick {
 		meta.addStat(EnumSpellStat.POTENCY, 2);
 	}
 
+	public static int getNextSlotFromOffset(ISocketable socketable, int offset) {
+		int currentSlot = socketable.getSelectedSlot();
+		if (offset > 0) {
+			return socketable.isSocketSlotAvailable(currentSlot + 1) ? currentSlot + 1 : 0;
+		}
+		if (socketable.isSocketSlotAvailable(currentSlot - 1)) {
+			return currentSlot - 1;
+		}
+		int targetSlot;
+		for (targetSlot = 0; !socketable.isSocketSlotAvailable(targetSlot); targetSlot++) {}
+
+		return targetSlot;
+	}
+
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		double num = this.getParamValue(context, number).doubleValue();
@@ -52,30 +64,17 @@ public class PieceTrickSpinChamber extends PieceTrick {
 			return null;
 		}
 
-		if (!context.tool.isEmpty() || context.castFrom == null || context.focalPoint != context.caster) {
-			throw new SpellRuntimeException(SpellRuntimeException.CAD_CASTING_ONLY);
-		}
-
-		ItemStack inHand = context.caster.getHeldItem(context.castFrom);
-
-		if (inHand.isEmpty() || !(inHand.getItem() instanceof ICAD) || !inHand.getCapability(PsiAPI.SOCKETABLE_CAPABILITY).isPresent()) {
-			throw new SpellRuntimeException(SpellRuntimeException.CAD_CASTING_ONLY);
-		}
-
-		ItemStack stack = PsiAPI.getPlayerCAD(context.caster);
-		ISocketable capability = inHand.getCapability(PsiAPI.SOCKETABLE_CAPABILITY).orElseThrow(NullPointerException::new);
-		ItemCAD cad = (ItemCAD) stack.getItem();
-
-		int selectedSlot = capability.getSelectedSlot();
-		int sockets = cad.getStatValue(stack, EnumCADStat.SOCKETS);
-
+		ItemStack stack = context.tool.isEmpty() ? PsiAPI.getPlayerCAD(context.caster) : context.tool;
+		boolean updateLoopcast = (stack.getItem() instanceof ICAD) && (context.castFrom == PlayerDataHandler.get(context.caster).loopcastHand);
+		ISocketable capability = stack.getCapability(PsiAPI.SOCKETABLE_CAPABILITY).orElseThrow(NullPointerException::new);
 		int offset = num > 0 ? 1 : -1;
+		int targetSlot = getNextSlotFromOffset(capability, offset);
 
-		int target = ((selectedSlot + offset) + sockets) % sockets;
+		capability.setSelectedSlot(targetSlot);
 
-		capability.setSelectedSlot(target);
-		PlayerDataHandler.get(context.caster).lastTickLoopcastStack = inHand.copy();
-
+		if (updateLoopcast) {
+			PlayerDataHandler.get(context.caster).lastTickLoopcastStack = stack.copy();
+		}
 		return null;
 	}
 }

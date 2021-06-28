@@ -9,6 +9,7 @@
 package vazkii.psi.common.item;
 
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -35,6 +36,7 @@ import vazkii.psi.common.core.handler.PsiSoundHandler;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ItemSpellBullet extends Item {
@@ -102,8 +104,9 @@ public class ItemSpellBullet extends Item {
 		return "basic";
 	}
 
-	public void castSpell(ItemStack stack, SpellContext context) {
+	public ArrayList<Entity> castSpell(ItemStack stack, SpellContext context) {
 		context.cspell.safeExecute(context);
+		return new ArrayList<>();
 	}
 
 	public void loopcastSpell(ItemStack stack, SpellContext context) {
@@ -163,8 +166,8 @@ public class ItemSpellBullet extends Item {
 		}
 
 		@Override
-		public void castSpell(SpellContext context) {
-			bulletItem().castSpell(stack, context);
+		public ArrayList<Entity> castSpell(SpellContext context) {
+			return bulletItem().castSpell(stack, context);
 		}
 
 		@Override

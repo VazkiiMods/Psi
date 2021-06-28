@@ -58,16 +58,16 @@ public class PieceTrickSmite extends PieceTrick {
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 		}
 
-		BlockEvent.EntityPlaceEvent placeEvent = new BlockEvent.EntityPlaceEvent(BlockSnapshot.create(context.caster.getEntityWorld().getDimensionKey(), context.caster.getEntityWorld(), positionVal.toBlockPos()), context.caster.getEntityWorld().getBlockState(positionVal.toBlockPos().offset(Direction.UP)), context.caster);
+		BlockEvent.EntityPlaceEvent placeEvent = new BlockEvent.EntityPlaceEvent(BlockSnapshot.create(context.focalPoint.getEntityWorld().getDimensionKey(), context.focalPoint.getEntityWorld(), positionVal.toBlockPos()), context.focalPoint.getEntityWorld().getBlockState(positionVal.toBlockPos().offset(Direction.UP)), context.caster);
 		MinecraftForge.EVENT_BUS.post(placeEvent);
 		if (placeEvent.isCanceled()) {
 			return null;
 		}
 
-		if (context.caster.getEntityWorld() instanceof ServerWorld) {
+		if (context.focalPoint.getEntityWorld() instanceof ServerWorld) {
 			LightningBoltEntity lightning = new LightningBoltEntity(EntityType.LIGHTNING_BOLT, context.caster.world);
 			lightning.setRawPosition(positionVal.x, positionVal.y, positionVal.z);
-			((ServerWorld) context.caster.getEntityWorld()).addEntity(lightning);
+			((ServerWorld) context.focalPoint.getEntityWorld()).addEntity(lightning);
 		}
 
 		return null;

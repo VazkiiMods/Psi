@@ -16,6 +16,10 @@ public class ParamAny extends SpellParam<SpellParam.Any> {
 		super(name, color, canDisable);
 	}
 
+	public ParamAny(String name, int color, boolean canDisable, ArrowType arrowType) {
+		super(name, color, canDisable, arrowType);
+	}
+
 	@Override
 	public Class<Any> getRequiredType() {
 		return Any.class;

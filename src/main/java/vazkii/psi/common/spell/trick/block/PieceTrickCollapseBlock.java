@@ -54,7 +54,7 @@ public class PieceTrickCollapseBlock extends PieceTrick {
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 		}
 
-		World world = context.caster.getEntityWorld();
+		World world = context.focalPoint.getEntityWorld();
 		BlockPos pos = positionVal.toBlockPos();
 		BlockPos posDown = pos.down();
 		BlockState state = world.getBlockState(pos);
