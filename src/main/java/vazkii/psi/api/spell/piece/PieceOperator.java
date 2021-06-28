@@ -8,7 +8,14 @@
  */
 package vazkii.psi.api.spell.piece;
 
-import vazkii.psi.api.spell.*;
+import vazkii.psi.api.spell.EnumPieceType;
+import vazkii.psi.api.spell.EnumSpellStat;
+import vazkii.psi.api.spell.Spell;
+import vazkii.psi.api.spell.SpellCompilationException;
+import vazkii.psi.api.spell.SpellContext;
+import vazkii.psi.api.spell.SpellMetadata;
+import vazkii.psi.api.spell.SpellPiece;
+import vazkii.psi.api.spell.SpellRuntimeException;
 
 public abstract class PieceOperator extends SpellPiece {
 
