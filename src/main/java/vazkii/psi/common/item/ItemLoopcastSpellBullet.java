@@ -40,8 +40,9 @@ public class ItemLoopcastSpellBullet extends ItemSpellBullet {
 	}
 
 	@Override
-	public void loopcastSpell(ItemStack stack, SpellContext context) {
+	public boolean loopcastSpell(ItemStack stack, SpellContext context) {
 		context.cspell.safeExecute(context);
+		return true;
 	}
 
 	@Override
