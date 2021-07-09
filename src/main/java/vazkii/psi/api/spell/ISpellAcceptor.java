@@ -74,6 +74,16 @@ public interface ISpellAcceptor {
 		return null;
 	}
 
+	/**
+	 * Casts this spell in a loopcast.
+	 * 
+	 * @return whether to continue loopcasting
+	 */
+	default boolean loopcastSpell(SpellContext context) {
+		castSpell(context);
+		return false;
+	}
+
 	default double getCostModifier() {
 		return 1.0;
 	}

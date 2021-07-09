@@ -433,7 +433,10 @@ public class PlayerDataHandler {
 								}
 
 								if (!player.getEntityWorld().isRemote) {
-									context.cspell.safeExecute(context);
+									if (!spellContainer.loopcastSpell(context)) {
+										stopLoopcast();
+										break loopcast;
+									}
 								}
 								loopcastAmount++;
 							}

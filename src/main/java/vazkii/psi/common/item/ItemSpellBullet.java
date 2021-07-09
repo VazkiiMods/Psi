@@ -109,6 +109,11 @@ public class ItemSpellBullet extends Item {
 		return new ArrayList<>();
 	}
 
+	public boolean loopcastSpell(ItemStack stack, SpellContext context) {
+		castSpell(stack, context);
+		return false;
+	}
+
 	public double getCostModifier(ItemStack stack) {
 		return 1.0;
 	}
@@ -164,6 +169,11 @@ public class ItemSpellBullet extends Item {
 		@Override
 		public ArrayList<Entity> castSpell(SpellContext context) {
 			return bulletItem().castSpell(stack, context);
+		}
+
+		@Override
+		public boolean loopcastSpell(SpellContext context) {
+			return bulletItem().loopcastSpell(stack, context);
 		}
 
 		@Override
