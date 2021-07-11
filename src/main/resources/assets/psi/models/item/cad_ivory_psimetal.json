@@ -3,9 +3,8 @@
 	"ambientocclusion": false,
 	"texture_size": [32, 32],
 	"textures": {
-		"1": "psi:item/cad_color",
-		"3": "psi:item/cad_assembly_1",
-		"particle": "psi:item/cad_assembly_1"
+		"1": "psi:items/cad_color",
+		"3": "psi:items/cad_assembly_1"
 	},
 	"elements": [
 		{
