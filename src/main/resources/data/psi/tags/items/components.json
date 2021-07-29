@@ -1,0 +1,9 @@
+{
+	"values": [
+		"#psi:assemblies",
+		"#psi:cores",
+		"#psi:sockets",
+		"#psi:batteries",
+		"#psi:colorizers"
+	]
+}

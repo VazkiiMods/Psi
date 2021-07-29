@@ -1,0 +1,7 @@
+{
+	"values": [
+		"psi:cad_battery_basic",
+		"psi:cad_battery_extended",
+		"psi:cad_battery_ultradense"
+	]
+}

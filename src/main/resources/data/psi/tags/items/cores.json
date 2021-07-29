@@ -1,0 +1,9 @@
+{
+	"values": [
+		"psi:cad_core_basic",
+		"psi:cad_core_overclocked",
+		"psi:cad_core_conductive",
+		"psi:cad_core_hyperclocked",
+		"psi:cad_core_radiative"
+	]
+}
