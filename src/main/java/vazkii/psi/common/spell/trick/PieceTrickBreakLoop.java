@@ -75,8 +75,6 @@ public class PieceTrickBreakLoop extends PieceTrick {
 				PlayerDataHandler.PlayerData data = PlayerDataHandler.get(context.caster);
 				data.stopLoopcast();
 			}
-
-			context.stopped = true;
 		}
 		return null;
 	}
