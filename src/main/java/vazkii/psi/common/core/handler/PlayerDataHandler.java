@@ -151,7 +151,6 @@ public class PlayerDataHandler {
 			if (event.getEntityLiving() instanceof PlayerEntity && !event.getEntityLiving().isSpectator()) {
 				PlayerEntity player = (PlayerEntity) event.getEntityLiving();
 
-
 				ItemStack cadStack = PsiAPI.getPlayerCAD(player);
 				if (!cadStack.isEmpty() && cadStack.getItem() instanceof ICAD && PsiAPI.canCADBeUpdated(player)) {
 					((ICAD) cadStack.getItem()).incrementTime(cadStack);

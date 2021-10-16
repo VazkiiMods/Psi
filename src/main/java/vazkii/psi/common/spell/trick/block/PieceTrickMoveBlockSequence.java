@@ -81,12 +81,13 @@ public class PieceTrickMoveBlockSequence extends PieceTrick {
 		LinkedHashSet<BlockPos> moveableBlocks = new LinkedHashSet<>();
 		LinkedHashSet<BlockPos> immovableBlocks = new LinkedHashSet<>();
 
-
 		/**
 		 * TODO: Find a better solution than this bandaid for block duping (see #740)
 		 * A possible solution is moving this logic to {@link PieceTrickBreakBlock}
-		 * As well as passing the spell context to it as a parameter. The Spell Context would need to have a way to check if it has been delayed or not
-		 * Since there are legitimate use cases besides duping when you want to move a block that is in the same position that you previously had broken.
+		 * As well as passing the spell context to it as a parameter. The Spell Context would need to have a way to
+		 * check if it has been delayed or not
+		 * Since there are legitimate use cases besides duping when you want to move a block that is in the same
+		 * position that you previously had broken.
 		 */
 		if (context.positionBroken != null) {
 			immovableBlocks.add(context.positionBroken.getPos());
@@ -125,8 +126,7 @@ public class PieceTrickMoveBlockSequence extends PieceTrick {
 			moveableBlocks.add(blockPos);
 		}
 
-		outer:
-		for (BlockPos blockPos : moveableBlocks) {
+		outer: for (BlockPos blockPos : moveableBlocks) {
 			BlockState state = world.getBlockState(blockPos);
 			BlockPos pushToPos = blockPos.add(directNorm.x, directNorm.y, directNorm.z);
 			BlockState pushToState = world.getBlockState(pushToPos);
