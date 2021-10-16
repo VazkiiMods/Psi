@@ -148,8 +148,9 @@ public class PlayerDataHandler {
 
 		@SubscribeEvent
 		public static void onPlayerTick(LivingUpdateEvent event) {
-			if (event.getEntityLiving() instanceof PlayerEntity) {
+			if (event.getEntityLiving() instanceof PlayerEntity && !event.getEntityLiving().isSpectator()) {
 				PlayerEntity player = (PlayerEntity) event.getEntityLiving();
+
 
 				ItemStack cadStack = PsiAPI.getPlayerCAD(player);
 				if (!cadStack.isEmpty() && cadStack.getItem() instanceof ICAD && PsiAPI.canCADBeUpdated(player)) {
@@ -189,7 +190,7 @@ public class PlayerDataHandler {
 
 		@SubscribeEvent
 		public static void onEntityJump(LivingJumpEvent event) {
-			if (event.getEntityLiving() instanceof PlayerEntity && event.getEntity().world.isRemote) {
+			if (event.getEntityLiving() instanceof PlayerEntity && event.getEntity().world.isRemote && !event.getEntityLiving().isSpectator()) {
 				PlayerEntity player = (PlayerEntity) event.getEntityLiving();
 				PsiArmorEvent.post(new PsiArmorEvent(player, PsiArmorEvent.JUMP));
 				MessageRegister.HANDLER.sendToServer(new MessageTriggerJumpSpell());
@@ -198,6 +199,10 @@ public class PlayerDataHandler {
 
 		@SubscribeEvent
 		public static void onPsiArmorEvent(PsiArmorEvent event) {
+			if (event.getEntityLiving().isSpectator()) {
+				return;
+			}
+
 			for (int i = 0; i < 4; i++) {
 				ItemStack armor = ((PlayerEntity) event.getEntityLiving()).inventory.armorInventory.get(i);
 				if (!armor.isEmpty() && armor.getItem() instanceof IPsiEventArmor) {
