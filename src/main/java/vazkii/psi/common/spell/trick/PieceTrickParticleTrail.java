@@ -66,7 +66,7 @@ public class PieceTrickParticleTrail extends PieceTrick {
 
 		time = time / 6;
 
-		if (!context.isInRadius(pos.copy().add(dir.copy().multiply(length)))) {
+		if (!context.isInRadius(pos.copy().add(dir.copy().normalize().multiply(length)))) {
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 		}
 
