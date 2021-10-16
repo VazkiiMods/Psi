@@ -51,9 +51,9 @@ public class PieceTrickSpinChamber extends PieceTrick {
 			return currentSlot - 1;
 		}
 		int targetSlot;
-		for (targetSlot = 0; !socketable.isSocketSlotAvailable(targetSlot); targetSlot++) {}
+		for (targetSlot = 0; socketable.isSocketSlotAvailable(targetSlot); targetSlot++) ;
 
-		return targetSlot;
+		return targetSlot - 1;
 	}
 
 	@Override

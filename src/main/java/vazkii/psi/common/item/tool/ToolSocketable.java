@@ -55,7 +55,7 @@ public class ToolSocketable implements ICapabilityProvider, ISocketable, IPsiBar
 
 	@Override
 	public boolean isSocketSlotAvailable(int slot) {
-		return slot < slots;
+		return slot < slots && slot >= 0;
 	}
 
 	@Override
