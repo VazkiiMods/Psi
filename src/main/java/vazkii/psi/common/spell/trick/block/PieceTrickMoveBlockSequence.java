@@ -8,8 +8,6 @@
  */
 package vazkii.psi.common.spell.trick.block;
 
-import com.google.common.collect.Maps;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.PushReaction;
@@ -32,6 +30,7 @@ import vazkii.psi.api.spell.param.ParamVector;
 import vazkii.psi.api.spell.piece.PieceTrick;
 import vazkii.psi.common.core.helpers.SpellHelpers;
 
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 
@@ -71,8 +70,8 @@ public class PieceTrickMoveBlockSequence extends PieceTrick {
 		int maxBlocksVal = this.getParamValue(context, maxBlocks).intValue();
 		World world = context.caster.world;
 
-		Map<BlockPos, BlockState> toSet = Maps.newHashMap();
-		Map<BlockPos, BlockState> toRemove = Maps.newHashMap();
+		Map<BlockPos, BlockState> toSet = new HashMap<>();
+		Map<BlockPos, BlockState> toRemove = new HashMap<>();
 
 		Vector3 directNorm = directionVal.copy().normalize();
 		Vector3 targetNorm = targetVal.copy().normalize();
