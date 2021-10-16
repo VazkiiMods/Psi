@@ -10,6 +10,7 @@ package vazkii.psi.data;
 
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.ItemTagsProvider;
+import net.minecraftforge.common.Tags;
 
 import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.lib.ModTags;
@@ -21,6 +22,13 @@ public class ItemTagProvider extends ItemTagsProvider {
 
 	@Override
 	protected void registerTags() {
+
+		getOrCreateBuilder(Tags.Items.DUSTS).addItemEntry(ModItems.psidust);
+		getOrCreateBuilder(Tags.Items.INGOTS).addItemEntry(ModItems.psimetal);
+		getOrCreateBuilder(Tags.Items.INGOTS).addItemEntry(ModItems.ebonyPsimetal);
+		getOrCreateBuilder(Tags.Items.INGOTS).addItemEntry(ModItems.ivoryPsimetal);
+		getOrCreateBuilder(Tags.Items.GEMS).addItemEntry(ModItems.psigem);
+
 		getOrCreateBuilder(ModTags.PSIDUST).addItemEntry(ModItems.psidust);
 		getOrCreateBuilder(ModTags.EBONY_SUBSTANCE).addItemEntry(ModItems.ebonySubstance);
 		getOrCreateBuilder(ModTags.IVORY_SUBSTANCE).addItemEntry(ModItems.ivorySubstance);
@@ -35,6 +43,7 @@ public class ItemTagProvider extends ItemTagsProvider {
 		copy(ModTags.Blocks.BLOCK_EBONY_PSIMETAL, ModTags.BLOCK_EBONY_PSIMETAL);
 		getOrCreateBuilder(ModTags.INGOT_IVORY_PSIMETAL).addItemEntry(ModItems.ivoryPsimetal);
 		copy(ModTags.Blocks.BLOCK_IVORY_PSIMETAL, ModTags.BLOCK_IVORY_PSIMETAL);
+		copy(Tags.Blocks.STORAGE_BLOCKS, Tags.Items.STORAGE_BLOCKS);
 	}
 
 	@Override

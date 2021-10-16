@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "psi:psimetal_block",
+    "psi:psigem_block",
+    "psi:ebony_psimetal_block",
+    "psi:ivory_psimetal_block"
+  ]
+}

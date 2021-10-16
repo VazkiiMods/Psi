@@ -10,6 +10,7 @@ package vazkii.psi.data;
 
 import net.minecraft.data.BlockTagsProvider;
 import net.minecraft.data.DataGenerator;
+import net.minecraftforge.common.Tags;
 
 import vazkii.psi.common.block.base.ModBlocks;
 import vazkii.psi.common.lib.ModTags;
@@ -25,6 +26,11 @@ public class BlockTagProvider extends BlockTagsProvider {
 		getOrCreateBuilder(ModTags.Blocks.BLOCK_PSIGEM).addItemEntry(ModBlocks.psigemBlock);
 		getOrCreateBuilder(ModTags.Blocks.BLOCK_EBONY_PSIMETAL).addItemEntry(ModBlocks.psimetalEbony);
 		getOrCreateBuilder(ModTags.Blocks.BLOCK_IVORY_PSIMETAL).addItemEntry(ModBlocks.psimetalIvory);
+
+		getOrCreateBuilder(Tags.Blocks.STORAGE_BLOCKS).addItemEntry(ModBlocks.psimetalBlock);
+		getOrCreateBuilder(Tags.Blocks.STORAGE_BLOCKS).addItemEntry(ModBlocks.psigemBlock);
+		getOrCreateBuilder(Tags.Blocks.STORAGE_BLOCKS).addItemEntry(ModBlocks.psimetalEbony);
+		getOrCreateBuilder(Tags.Blocks.STORAGE_BLOCKS).addItemEntry(ModBlocks.psimetalIvory);
 	}
 
 	@Override
