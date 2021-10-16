@@ -136,7 +136,7 @@ public class CADData implements ICapabilityProvider, ICADData, ISpellAcceptor, I
 		if (sockets == -1 || sockets > ItemCADSocket.MAX_SOCKETS) {
 			sockets = ItemCADSocket.MAX_SOCKETS;
 		}
-		return slot < sockets;
+		return slot < sockets && slot >= 0;
 	}
 
 	@Override

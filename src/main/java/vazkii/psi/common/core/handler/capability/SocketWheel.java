@@ -37,7 +37,7 @@ public class SocketWheel implements ISocketable, INBTSerializable<CompoundNBT> {
 
 	@Override
 	public boolean isSocketSlotAvailable(int slot) {
-		return slot < size;
+		return slot < size && slot >= 0;
 	}
 
 	@Override
