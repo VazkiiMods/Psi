@@ -50,7 +50,6 @@ public class PieceTrickPlaySound extends PieceTrick {
 		super.addToMetadata(meta);
 		double dVol = SpellHelpers.ensurePositiveOrZero(this, volume, 1);
 		double dPit = SpellHelpers.ensurePositiveOrZero(this, pitch, 0);
-		double dIn = SpellHelpers.ensurePositiveOrZero(this, instrument);
 
 		if (dPit > 24) {
 			throw new SpellCompilationException(SpellCompilationException.PITCH, x, y);
@@ -59,13 +58,6 @@ public class PieceTrickPlaySound extends PieceTrick {
 		if (dVol > 1) {
 			throw new SpellCompilationException(SpellCompilationException.VOLUME, x, y);
 		}
-
-		if (dIn >= Psi.noteblockSoundEvents.size()) {
-			throw new SpellCompilationException(SpellCompilationException.INSTRUMENTS, x, y);
-		}
-
-		meta.addStat(EnumSpellStat.POTENCY, 1);
-
 	}
 
 	@Override
