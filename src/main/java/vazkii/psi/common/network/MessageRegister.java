@@ -18,20 +18,7 @@ import net.minecraftforge.fml.network.PacketDistributor;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
 
 import vazkii.psi.common.lib.LibMisc;
-import vazkii.psi.common.network.message.MessageAdditiveMotion;
-import vazkii.psi.common.network.message.MessageBlink;
-import vazkii.psi.common.network.message.MessageCADDataSync;
-import vazkii.psi.common.network.message.MessageChangeControllerSlot;
-import vazkii.psi.common.network.message.MessageChangeSocketableSlot;
-import vazkii.psi.common.network.message.MessageDataSync;
-import vazkii.psi.common.network.message.MessageDeductPsi;
-import vazkii.psi.common.network.message.MessageEidosSync;
-import vazkii.psi.common.network.message.MessageLoopcastSync;
-import vazkii.psi.common.network.message.MessageParticleTrail;
-import vazkii.psi.common.network.message.MessageSpamlessChat;
-import vazkii.psi.common.network.message.MessageSpellModified;
-import vazkii.psi.common.network.message.MessageTriggerJumpSpell;
-import vazkii.psi.common.network.message.MessageVisualEffect;
+import vazkii.psi.common.network.message.*;
 
 public class MessageRegister {
 	private static final String VERSION = "3";
@@ -98,6 +85,10 @@ public class MessageRegister {
 				.encoder(MessageParticleTrail::encode)
 				.decoder(MessageParticleTrail::new)
 				.consumer(MessageParticleTrail::receive).add();
+		HANDLER.messageBuilder(MessageSpellError.class, id++)
+				.encoder(MessageSpellError::encode)
+				.decoder(MessageSpellError::new)
+				.consumer(MessageSpellError::receive).add();
 	}
 
 	public static void writeVec3d(PacketBuffer buf, Vector3d vec3d) {

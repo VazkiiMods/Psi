@@ -21,6 +21,7 @@ public class ConfigHandler {
 		public final ForgeConfigSpec.BooleanValue contextSensitiveBar;
 		public final ForgeConfigSpec.BooleanValue pauseGameInProgrammer;
 		public final ForgeConfigSpec.IntValue maxPsiBarScale;
+		public final ForgeConfigSpec.BooleanValue changeGridCoordinatesToLetterNumber;
 
 		public Client(ForgeConfigSpec.Builder builder) {
 			useShaders = builder.comment("Controls whether Psi's shaders are used. If you're using the GLSL Shaders mod and are having graphical troubles with Psi stuff, you may want to turn this off.")
@@ -37,6 +38,9 @@ public class ConfigHandler {
 
 			pauseGameInProgrammer = builder.comment("Controls whether the Spell Programmer screen will pause the game in singleplayer.")
 					.define("client.pauseGameInProgrammer", true);
+
+			changeGridCoordinatesToLetterNumber = builder.comment("Controls whether or not the Programmer will display the coordinates as a pair of two numbers or as a letter and a number")
+					.define("client.changeGridCoordinatesToLetterNumber", false);
 		}
 
 	}

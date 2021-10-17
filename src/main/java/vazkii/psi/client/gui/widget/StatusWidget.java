@@ -54,7 +54,7 @@ public class StatusWidget extends Widget {
 				parent.tooltip.add(new TranslationTextComponent(ex.getMessage()).mergeStyle(TextFormatting.GRAY));
 				Pair<Integer, Integer> errorPos = ex.location;
 				if (errorPos != null && errorPos.getRight() != -1 && errorPos.getLeft() != -1) {
-					parent.tooltip.add(new StringTextComponent("[" + (errorPos.getLeft() + 1) + ", " + (errorPos.getRight() + 1) + "]").mergeStyle(TextFormatting.GRAY));
+					parent.tooltip.add(new StringTextComponent("[" + GuiProgrammer.convertIntToLetter((errorPos.getLeft() + 1)) + ", " + (errorPos.getRight() + 1) + "]").mergeStyle(TextFormatting.GRAY));
 				}
 			} else {
 				parent.tooltip.add(new TranslationTextComponent("psimisc.compiled").mergeStyle(TextFormatting.GREEN));

@@ -15,6 +15,8 @@ import net.minecraft.util.text.TranslationTextComponent;
 
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.internal.IPlayerData;
+import vazkii.psi.common.network.MessageRegister;
+import vazkii.psi.common.network.message.MessageSpellError;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -93,7 +95,8 @@ public class CompiledSpell {
 
 				int x = context.cspell.currentAction.piece.x + 1;
 				int y = context.cspell.currentAction.piece.y + 1;
-				context.caster.sendMessage(new TranslationTextComponent("psi.spellerror.position", x, y).setStyle(Style.EMPTY.setFormatting(TextFormatting.RED)), Util.DUMMY_UUID);
+				MessageSpellError message = new MessageSpellError("psi.spellerror.position", x, y);
+				MessageRegister.sendToPlayer(message, context.caster);
 			}
 		}
 	}

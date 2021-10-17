@@ -409,11 +409,13 @@ public class GuiProgrammer extends Screen {
 
 			String coords;
 			if (SpellGrid.exists(cursorX, cursorY)) {
-				coords = I18n.format("psimisc.programmer_coords", selectedX + 1, selectedY + 1, cursorX + 1, cursorY + 1);
+				coords = I18n.format("psimisc.programmer_coords", convertIntToLetter(selectedX + 1), selectedY + 1, convertIntToLetter(cursorX + 1), cursorY + 1);
 			} else {
-				coords = I18n.format("psimisc.programmer_coords_no_cursor", selectedX + 1, selectedY + 1);
+				coords = I18n.format("psimisc.programmer_coords_no_cursor", convertIntToLetter(selectedX + 1), selectedY + 1);
 			}
 			font.drawString(ms, coords, left + 4, topY + ySize + 24, 0x44FFFFFF);
+			String version = "Psi " + ModList.get().getModContainerById("psi").get().getModInfo().getVersion().toString();
+			font.drawStringWithShadow(ms, version, left + xSize / 2f - font.getStringWidth(version) / 2f, topY + ySize + 24 + font.getWordWrappedHeight(coords, font.getStringWidth(coords)) + 5, 0x44FFFFFF);
 		}
 
 		if (Psi.magical) {
@@ -953,5 +955,12 @@ public class GuiProgrammer extends Screen {
 	@Override
 	public boolean isPauseScreen() {
 		return ConfigHandler.CLIENT.pauseGameInProgrammer.get();
+	}
+
+	public static String convertIntToLetter(int i) {
+		if (!ConfigHandler.CLIENT.changeGridCoordinatesToLetterNumber.get()) {
+			return String.valueOf(i);
+		}
+		return String.valueOf((char) ((i % 27) + 64));
 	}
 }
