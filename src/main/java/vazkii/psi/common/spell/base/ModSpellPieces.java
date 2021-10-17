@@ -115,6 +115,8 @@ public final class ModSpellPieces {
 	public static PieceContainer selectorSuccessCounter;
 	//public static PieceContainer selectorTransmission;
 	public static PieceContainer selectorItemCount;
+	public static PieceContainer selectorTickTime;
+	public static PieceContainer selectorTps;
 
 	public static PieceContainer operatorSum;
 	public static PieceContainer operatorSubtract;
@@ -291,6 +293,8 @@ public final class ModSpellPieces {
 		selectorIsElytraFlying = register(PieceSelectorIsElytraFlying.class, LibPieceNames.SELECTOR_IS_ELYTRA_FLYING, LibPieceGroups.MOVEMENT);
 		//selectorTransmission = register(PieceSelectorTransmission.class, LibPieceNames.SELECTOR_TRANSMISSION, LibPieceGroups.FLOW_CONTROL);
 		selectorItemCount = register(PieceSelectorItemCount.class, LibPieceNames.SELECTOR_ITEM_COUNT, LibPieceGroups.TOOL_CASTING);
+		selectorTickTime = register(PieceSelectorTickTime.class, LibPieceNames.SELECTOR_TICK_TIME, LibPieceGroups.FLOW_CONTROL);
+		selectorTps = register(PieceSelectorTps.class, LibPieceNames.SELECTOR_TPS, LibPieceGroups.FLOW_CONTROL);
 
 		operatorSum = register(PieceOperatorSum.class, LibPieceNames.OPERATOR_SUM, LibPieceGroups.NUMBERS_INTRO, true);
 		operatorSubtract = register(PieceOperatorSubtract.class, LibPieceNames.OPERATOR_SUBTRACT, LibPieceGroups.NUMBERS_INTRO);
