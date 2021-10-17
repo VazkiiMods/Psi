@@ -81,27 +81,27 @@ public class DefaultStats {
 		//Basic
 		ItemCADComponent.addStatToStack(ModItems.cadSocketBasic, EnumCADStat.BANDWIDTH, 5);
 		ItemCADComponent.addStatToStack(ModItems.cadSocketBasic, EnumCADStat.SOCKETS, 4);
-		ItemCADComponent.addStatToStack(ModItems.cadSocketBasic, EnumCADStat.SAVED_VECTORS, 1);
+		ItemCADComponent.addStatToStack(ModItems.cadSocketBasic, EnumCADStat.SAVED_VECTORS, 7);
 
 		// Signaling
 		ItemCADComponent.addStatToStack(ModItems.cadSocketSignaling, EnumCADStat.BANDWIDTH, 7);
 		ItemCADComponent.addStatToStack(ModItems.cadSocketSignaling, EnumCADStat.SOCKETS, 6);
-		ItemCADComponent.addStatToStack(ModItems.cadSocketSignaling, EnumCADStat.SAVED_VECTORS, 2);
+		ItemCADComponent.addStatToStack(ModItems.cadSocketSignaling, EnumCADStat.SAVED_VECTORS, 14);
 
 		// Large
 		ItemCADComponent.addStatToStack(ModItems.cadSocketLarge, EnumCADStat.BANDWIDTH, 6);
 		ItemCADComponent.addStatToStack(ModItems.cadSocketLarge, EnumCADStat.SOCKETS, 8);
-		ItemCADComponent.addStatToStack(ModItems.cadSocketLarge, EnumCADStat.SAVED_VECTORS, 2);
+		ItemCADComponent.addStatToStack(ModItems.cadSocketLarge, EnumCADStat.SAVED_VECTORS, 14);
 
 		// Transmissive
 		ItemCADComponent.addStatToStack(ModItems.cadSocketTransmissive, EnumCADStat.BANDWIDTH, 9);
 		ItemCADComponent.addStatToStack(ModItems.cadSocketTransmissive, EnumCADStat.SOCKETS, 10);
-		ItemCADComponent.addStatToStack(ModItems.cadSocketTransmissive, EnumCADStat.SAVED_VECTORS, 3);
+		ItemCADComponent.addStatToStack(ModItems.cadSocketTransmissive, EnumCADStat.SAVED_VECTORS, 18);
 
 		// Huge
 		ItemCADComponent.addStatToStack(ModItems.cadSocketHuge, EnumCADStat.BANDWIDTH, 8);
 		ItemCADComponent.addStatToStack(ModItems.cadSocketHuge, EnumCADStat.SOCKETS, 12);
-		ItemCADComponent.addStatToStack(ModItems.cadSocketHuge, EnumCADStat.SAVED_VECTORS, 4);
+		ItemCADComponent.addStatToStack(ModItems.cadSocketHuge, EnumCADStat.SAVED_VECTORS, 21);
 	}
 
 	public static void registerBatteryStats() {
