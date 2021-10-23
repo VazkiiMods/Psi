@@ -174,6 +174,15 @@ public class CADData implements ICapabilityProvider, ICADData, ISpellAcceptor, I
 	}
 
 	@Override
+	public int getLastSlot() {
+		int sockets = ((ICAD) cad.getItem()).getStatValue(cad, EnumCADStat.SOCKETS);
+		if (sockets == -1 || sockets > ItemCADSocket.MAX_SOCKETS) {
+			sockets = ItemCADSocket.MAX_SOCKETS;
+		}
+		return sockets - 1;
+	}
+
+	@Override
 	public CompoundNBT serializeForSynchronization() {
 		CompoundNBT compound = new CompoundNBT();
 		compound.putInt("Time", time);

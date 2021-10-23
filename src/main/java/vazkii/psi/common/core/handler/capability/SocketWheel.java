@@ -72,6 +72,11 @@ public class SocketWheel implements ISocketable, INBTSerializable<CompoundNBT> {
 	}
 
 	@Override
+	public int getLastSlot() {
+		return size - 1;
+	}
+
+	@Override
 	public boolean isItemValid(int slot, ItemStack bullet) {
 		return handler.insertItem(slot, bullet, true).isEmpty();
 	}

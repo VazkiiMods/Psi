@@ -102,6 +102,11 @@ public class ToolSocketable implements ICapabilityProvider, ISocketable, IPsiBar
 	}
 
 	@Override
+	public int getLastSlot() {
+		return slots - 1;
+	}
+
+	@Override
 	public boolean shouldShow(IPlayerData data) {
 		return false;
 	}
