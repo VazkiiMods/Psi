@@ -54,7 +54,7 @@ public class PieceOperatorVectorRaycast extends PieceOperator {
 		if (numberVal != null) {
 			maxLen = numberVal.doubleValue();
 		}
-		maxLen = Math.min(SpellContext.MAX_DISTANCE, maxLen);
+		maxLen = Math.min(SpellContext.MAX_DISTANCE, Math.max(-SpellContext.MAX_DISTANCE, maxLen));
 
 		BlockRayTraceResult pos = raycast(context.caster, originVal, rayVal, maxLen);
 		if (pos.getType() == RayTraceResult.Type.MISS) {

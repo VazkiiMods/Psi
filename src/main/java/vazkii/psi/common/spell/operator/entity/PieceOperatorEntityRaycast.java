@@ -47,11 +47,17 @@ public class PieceOperatorEntityRaycast extends PieceOperator {
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		Vector3 originVal = this.getParamValue(context, origin);
 		Vector3 rayVal = this.getParamValue(context, ray);
-		double maxLen = this.getParamValueOrDefault(context, max, SpellContext.MAX_DISTANCE).doubleValue();
 
 		if (originVal == null || rayVal == null) {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
 		}
+
+		double maxLen = SpellContext.MAX_DISTANCE;
+		Number numberVal = this.getParamValue(context, max);
+		if (numberVal != null) {
+			maxLen = numberVal.doubleValue();
+		}
+		maxLen = Math.min(SpellContext.MAX_DISTANCE, Math.max(-SpellContext.MAX_DISTANCE, maxLen));
 
 		Entity entity = rayTraceEntities(context.caster.world, context.caster, originVal.toVec3D(), rayVal.toVec3D(),
 				pred -> !pred.isSpectator() && pred.isAlive() && pred.canBeCollidedWith() && !(pred instanceof ISpellImmune), maxLen);

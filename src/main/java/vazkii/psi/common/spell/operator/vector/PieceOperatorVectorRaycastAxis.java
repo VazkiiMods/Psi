@@ -53,7 +53,7 @@ public class PieceOperatorVectorRaycastAxis extends PieceOperator {
 		if (numberVal != null) {
 			maxLen = numberVal.doubleValue();
 		}
-		maxLen = Math.min(SpellContext.MAX_DISTANCE, maxLen);
+		maxLen = Math.min(SpellContext.MAX_DISTANCE, Math.max(-SpellContext.MAX_DISTANCE, maxLen));
 
 		Vector3 end = originVal.copy().add(rayVal.copy().normalize().multiply(maxLen));
 
