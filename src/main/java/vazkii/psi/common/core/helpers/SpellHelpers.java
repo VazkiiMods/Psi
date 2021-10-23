@@ -37,6 +37,14 @@ public class SpellHelpers {
 		return val;
 	}
 
+	public static double rangeLimitParam(SpellPiece piece, SpellContext context, SpellParam<Number> param, double max) throws SpellRuntimeException {
+		Number numberVal = piece.getParamValue(context, param);
+		if (numberVal == null) {
+			return max;
+		}
+		return Math.min(max, Math.max(-max, numberVal.doubleValue()));
+	}
+
 	public static Direction getFacing(SpellPiece piece, SpellContext context, SpellParam<Vector3> param) throws SpellRuntimeException {
 		Vector3 face = getVector3(piece, context, param, false, true);
 		return Direction.getFacingFromVector((float) face.x, (float) face.y, (float) face.z);

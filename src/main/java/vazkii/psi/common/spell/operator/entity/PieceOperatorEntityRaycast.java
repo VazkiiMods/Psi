@@ -22,6 +22,7 @@ import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.param.ParamVector;
 import vazkii.psi.api.spell.piece.PieceOperator;
+import vazkii.psi.common.core.helpers.SpellHelpers;
 
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -47,11 +48,12 @@ public class PieceOperatorEntityRaycast extends PieceOperator {
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		Vector3 originVal = this.getParamValue(context, origin);
 		Vector3 rayVal = this.getParamValue(context, ray);
-		double maxLen = this.getParamValueOrDefault(context, max, SpellContext.MAX_DISTANCE).doubleValue();
 
 		if (originVal == null || rayVal == null) {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
 		}
+
+		double maxLen = SpellHelpers.rangeLimitParam(this, context, max, SpellContext.MAX_DISTANCE);
 
 		Entity entity = rayTraceEntities(context.caster.world, context.caster, originVal.toVec3D(), rayVal.toVec3D(),
 				pred -> !pred.isSpectator() && pred.isAlive() && pred.canBeCollidedWith() && !(pred instanceof ISpellImmune), maxLen);
