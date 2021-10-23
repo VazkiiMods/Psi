@@ -22,6 +22,7 @@ import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.param.ParamVector;
 import vazkii.psi.api.spell.piece.PieceOperator;
+import vazkii.psi.common.core.helpers.SpellHelpers;
 
 public class PieceOperatorVectorRaycast extends PieceOperator {
 
@@ -49,12 +50,7 @@ public class PieceOperatorVectorRaycast extends PieceOperator {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
 		}
 
-		double maxLen = SpellContext.MAX_DISTANCE;
-		Number numberVal = this.getParamValue(context, max);
-		if (numberVal != null) {
-			maxLen = numberVal.doubleValue();
-		}
-		maxLen = Math.min(SpellContext.MAX_DISTANCE, Math.max(-SpellContext.MAX_DISTANCE, maxLen));
+		double maxLen = SpellHelpers.rangeLimitParam(this, context, max, SpellContext.MAX_DISTANCE);
 
 		BlockRayTraceResult pos = raycast(context.caster, originVal, rayVal, maxLen);
 		if (pos.getType() == RayTraceResult.Type.MISS) {
