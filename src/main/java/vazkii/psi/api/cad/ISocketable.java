@@ -90,6 +90,14 @@ public interface ISocketable {
 
 	void setSelectedSlot(int slot);
 
+	default int getLastSlot() {
+		int slot = 0;
+		while (isSocketSlotAvailable(slot + 1)) {
+			slot++;
+		}
+		return slot;
+	}
+
 	default ItemStack getSelectedBullet() {
 		return getBulletInSocket(getSelectedSlot());
 	}
