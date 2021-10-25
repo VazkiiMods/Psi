@@ -373,44 +373,36 @@ public abstract class SpellPiece {
 			return;
 		}
 
-		int index = 0, count = 0;
-		for (SpellParam<?> p : paramSides.keySet()) {
-			if (p == param) {
-				index = count;
-			}
-			if (p.getArrowType() != ArrowType.NONE && paramSides.get(p) == side) {
-				count++;
-			}
-		}
+		int index = getParamArrowIndex(param);
+		int count = getParamArrowCount(side);
 		SpellPiece neighbour = spell.grid.getPieceAtSideSafely(x, y, side);
 		if (neighbour != null) {
-			int nbcount = 0;
-			for (SpellParam<?> p : neighbour.paramSides.keySet()) {
-				if (p.getArrowType() != ArrowType.NONE && neighbour.paramSides.get(p) == side.getOpposite()) {
-					nbcount++;
-				}
-			}
+			int nbcount = neighbour.getParamArrowCount(side.getOpposite());
 			if (side.asInt() > side.getOpposite().asInt()) {
 				index += nbcount;
 			}
 			count += nbcount;
 		}
 
-		float minX = 4;
-		float minY = 4;
-		if (count == 1) {
-			minX += (side.minx + side.maxx) / 2;
-			minY += (side.miny + side.maxy) / 2;
-		} else {
-			float percent = (float) index / (count - 1);
-			minX += side.minx * percent + side.maxx * (1 - percent);
-			minY += side.miny * percent + side.maxy * (1 - percent);
+		float percent = 0.5f;
+		if (count > 1) {
+			percent = (float) index / (count - 1);
+		}
+		drawParam(ms, buffer, light, side, param.color, param.getArrowType(), percent);
+	}
+
+	@OnlyIn(Dist.CLIENT)
+	public void drawParam(MatrixStack ms, IVertexBuilder buffer, int light, SpellParam.Side side, int color, SpellParam.ArrowType arrowType, float percent) {
+		if (arrowType == ArrowType.NONE) {
+			return;
 		}
 
+		float minX = 4 + side.minx * percent + side.maxx * (1 - percent);
+		float minY = 4 + side.miny * percent + side.maxy * (1 - percent);
 		float maxX = minX + 8;
 		float maxY = minY + 8;
 
-		if (param.getArrowType() == ArrowType.OUT) {
+		if (arrowType == ArrowType.OUT) {
 			side = side.getOpposite();
 		}
 		float wh = 8F;
@@ -418,9 +410,10 @@ public abstract class SpellPiece {
 		float minV = side.v / 256F;
 		float maxU = (side.u + wh) / 256F;
 		float maxV = (side.v + wh) / 256F;
-		int r = PsiRenderHelper.r(param.color);
-		int g = PsiRenderHelper.g(param.color);
-		int b = PsiRenderHelper.b(param.color);
+
+		int r = PsiRenderHelper.r(color);
+		int g = PsiRenderHelper.g(color);
+		int b = PsiRenderHelper.b(color);
 		int a = 255;
 		Matrix4f mat = ms.getLast().getMatrix();
 
@@ -428,6 +421,32 @@ public abstract class SpellPiece {
 		buffer.pos(mat, maxX, maxY, 0).color(r, g, b, a).tex(maxU, maxV).lightmap(light).endVertex();
 		buffer.pos(mat, maxX, minY, 0).color(r, g, b, a).tex(maxU, minV).lightmap(light).endVertex();
 		buffer.pos(mat, minX, minY, 0).color(r, g, b, a).tex(minU, minV).lightmap(light).endVertex();
+	}
+
+	@OnlyIn(Dist.CLIENT)
+	public int getParamArrowCount(SpellParam.Side side) {
+		int count = 0;
+		for (SpellParam<?> p : paramSides.keySet()) {
+			if (p.getArrowType() != ArrowType.NONE && paramSides.get(p) == side) {
+				count++;
+			}
+		}
+		return count;
+	}
+
+	@OnlyIn(Dist.CLIENT)
+	public int getParamArrowIndex(SpellParam<?> param) {
+		SpellParam.Side side = paramSides.get(param);
+		int count = 0;
+		for (SpellParam<?> p : paramSides.keySet()) {
+			if (p == param) {
+				return count;
+			}
+			if (p.getArrowType() != ArrowType.NONE && paramSides.get(p) == side) {
+				count++;
+			}
+		}
+		return 0;
 	}
 
 	/**
