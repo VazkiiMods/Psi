@@ -25,7 +25,7 @@ public abstract class PieceOperator extends SpellPiece {
 
 	@Override
 	public EnumPieceType getPieceType() {
-		return EnumPieceType.SELECTOR;
+		return EnumPieceType.OPERATOR;
 	}
 
 	@Override

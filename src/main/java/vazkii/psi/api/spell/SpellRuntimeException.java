@@ -37,6 +37,8 @@ public class SpellRuntimeException extends Exception {
 	public static final String COMPARATOR = "psi.spellerror.comparator";
 	public static final String NAN = "psi.spellerror.nan";
 
+	public int x, y;
+
 	public SpellRuntimeException(String s) {
 		super(s);
 	}

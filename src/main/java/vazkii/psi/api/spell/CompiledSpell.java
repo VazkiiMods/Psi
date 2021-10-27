@@ -15,6 +15,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.internal.IPlayerData;
+import vazkii.psi.api.spell.param.ParamError;
 import vazkii.psi.common.network.MessageRegister;
 import vazkii.psi.common.network.message.MessageSpellError;
 
@@ -31,10 +32,8 @@ public class CompiledSpell {
 	public final SpellMetadata metadata = new SpellMetadata();
 
 	public final Stack<Action> actions = new Stack<>();
-	public final Map<SpellPiece, CatchHandler> errorHandlers = new HashMap<>();
 	public final Map<SpellPiece, Action> actionMap = new HashMap<>();
 
-	public Action currentAction;
 	public final boolean[][] spotsEvaluated;
 
 	public CompiledSpell(Spell source) {
@@ -52,13 +51,10 @@ public class CompiledSpell {
 		IPlayerData data = PsiAPI.internalHandler.getDataForPlayer(context.caster);
 		while (!context.actions.isEmpty()) {
 			Action a = context.actions.pop();
-			currentAction = a;
 
 			PsiAPI.internalHandler.setCrashData(this, a.piece);
 			a.execute(data, context);
 			PsiAPI.internalHandler.setCrashData(null, null);
-
-			currentAction = null;
 
 			if (context.stopped) {
 				return false;
@@ -93,9 +89,7 @@ public class CompiledSpell {
 			if (!context.shouldSuppressErrors()) {
 				context.caster.sendMessage(new TranslationTextComponent(e.getMessage()).setStyle(Style.EMPTY.setFormatting(TextFormatting.RED)), Util.DUMMY_UUID);
 
-				int x = context.cspell.currentAction.piece.x + 1;
-				int y = context.cspell.currentAction.piece.y + 1;
-				MessageSpellError message = new MessageSpellError("psi.spellerror.position", x, y);
+				MessageSpellError message = new MessageSpellError("psi.spellerror.position", e.x + 1, e.y + 1);
 				MessageRegister.sendToPlayer(message, context.caster);
 			}
 		}
@@ -119,6 +113,15 @@ public class CompiledSpell {
 
 		public void execute(IPlayerData data, SpellContext context) throws SpellRuntimeException {
 			try {
+				for (SpellParam<?> param : piece.paramSides.keySet()) {
+					if (!(param instanceof ParamError)) {
+						Object v = piece.getRawParamValue(context, param);
+						if (v instanceof SpellRuntimeException) {
+							throw (SpellRuntimeException) v;
+						}
+					}
+				}
+				
 				data.markPieceExecuted(piece);
 				Object o = piece.execute(context);
 
@@ -127,40 +130,16 @@ public class CompiledSpell {
 					context.evaluatedObjects[piece.x][piece.y] = o;
 				}
 			} catch (SpellRuntimeException exception) {
-				if (errorHandlers.containsKey(piece)) {
-					if (!errorHandlers.get(piece).suppress(piece, context, exception)) {
-						throw exception;
-					}
-					return;
-				}
-				throw exception;
-			}
-		}
-
-	}
-
-	public class CatchHandler {
-
-		public final SpellPiece handlerPiece;
-		public final IErrorCatcher handler;
-
-		public CatchHandler(SpellPiece handlerPiece) {
-			this.handlerPiece = handlerPiece;
-			this.handler = (IErrorCatcher) handlerPiece;
-		}
-
-		public boolean suppress(SpellPiece piece, SpellContext context, SpellRuntimeException exception) {
-			boolean handled = handler.catchException(piece, context, exception);
-			if (handled) {
-				Class<?> eval = piece.getEvaluationType();
-				if (eval != null && eval != Void.class) {
-					context.evaluatedObjects[piece.x][piece.y] =
-							handler.supplyReplacementValue(piece, context, exception);
+				exception.x = piece.x;
+				exception.y = piece.y;
+				if (metadata.errorSuppressed[piece.x][piece.y]) {
+					context.evaluatedObjects[piece.x][piece.y] = exception;
+				} else {
+					throw exception;
 				}
 			}
-
-			return handled;
 		}
+
 	}
 
 }

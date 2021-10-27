@@ -12,10 +12,8 @@ import com.mojang.datafixers.util.Either;
 
 import vazkii.psi.api.spell.CompiledSpell;
 import vazkii.psi.api.spell.CompiledSpell.Action;
-import vazkii.psi.api.spell.CompiledSpell.CatchHandler;
 import vazkii.psi.api.spell.EnumPieceType;
 import vazkii.psi.api.spell.EnumSpellStat;
-import vazkii.psi.api.spell.IErrorCatcher;
 import vazkii.psi.api.spell.ISpellCompiler;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellCompilationException;
@@ -55,10 +53,6 @@ public final class SpellCompiler implements ISpellCompiler {
 		redirectionPieces.clear();
 		compiled = new CompiledSpell(spell);
 
-		for (SpellPiece piece : findPieces(EnumPieceType.ERROR_HANDLER::equals)) {
-			buildHandler(piece);
-		}
-
 		List<SpellPiece> tricks = findPieces(EnumPieceType::isTrick);
 		if (tricks.isEmpty()) {
 			throw new SpellCompilationException(SpellCompilationException.NO_TRICKS);
@@ -97,16 +91,8 @@ public final class SpellCompiler implements ISpellCompiler {
 			piece.addToMetadata(compiled.metadata);
 		}
 
-		// error handler params must be evaluated before the handled piece
-		CatchHandler catchHandler = compiled.errorHandlers.get(piece);
-		if (catchHandler != null) {
-			buildPiece(catchHandler.handlerPiece, new HashSet<>(visited));
-		}
-
 		EnumSet<SpellParam.Side> usedSides = EnumSet.noneOf(SpellParam.Side.class);
 
-		HashSet<SpellPiece> params = new HashSet<>();
-		HashSet<SpellPiece> handledErrors = new HashSet<>();
 		for (SpellParam<?> param : piece.paramSides.keySet()) {
 			if (checkSideDisabled(param, piece, usedSides)) {
 				continue;
@@ -123,46 +109,7 @@ public final class SpellCompiler implements ISpellCompiler {
 				throw new SpellCompilationException(SpellCompilationException.INVALID_PARAM, piece.x, piece.y);
 			}
 
-			if (piece instanceof IErrorCatcher && ((IErrorCatcher) piece).catchParam(param)) {
-				handledErrors.add(pieceAt);
-			} else {
-				params.add(pieceAt);
-			}
-		}
-		for (SpellPiece pieceAt : params) {
-			HashSet<SpellPiece> visitedCopy = new HashSet<>(visited);
-			// error handler params can't depend on handled pieces
-			visitedCopy.addAll(handledErrors);
-			buildPiece(pieceAt, visitedCopy);
-		}
-	}
-
-	public void buildHandler(SpellPiece piece) throws SpellCompilationException {
-		if (!(piece instanceof IErrorCatcher)) {
-			return;
-		}
-		IErrorCatcher errorCatcher = (IErrorCatcher) piece;
-		CompiledSpell.CatchHandler errorHandler = compiled.new CatchHandler(piece);
-
-		EnumSet<SpellParam.Side> usedSides = EnumSet.noneOf(SpellParam.Side.class);
-
-		for (SpellParam<?> param : piece.paramSides.keySet()) {
-			if (!errorCatcher.catchParam(param) || checkSideDisabled(param, piece, usedSides)) {
-				continue;
-			}
-
-			SpellParam.Side side = piece.paramSides.get(param);
-
-			SpellPiece pieceAt = compiled.sourceSpell.grid.getPieceAtSideWithRedirections(piece.x, piece.y, side, this::buildRedirect);
-
-			if (pieceAt == null) {
-				throw new SpellCompilationException(SpellCompilationException.NULL_PARAM, piece.x, piece.y);
-			}
-			if (!param.canAccept(pieceAt)) {
-				throw new SpellCompilationException(SpellCompilationException.INVALID_PARAM, piece.x, piece.y);
-			}
-
-			compiled.errorHandlers.put(pieceAt, errorHandler);
+			buildPiece(pieceAt, new HashSet<>(visited));
 		}
 	}
 

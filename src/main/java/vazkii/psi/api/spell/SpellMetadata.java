@@ -28,12 +28,15 @@ public final class SpellMetadata {
 	 * Should errors from this spell not be sent to the player's chat?
 	 */
 	public boolean errorsSuppressed = false;
+	public final boolean[][] errorSuppressed;
 
 	public SpellMetadata() {
 		for (EnumSpellStat stat : EnumSpellStat.class.getEnumConstants()) {
 			stats.put(stat, 0);
 			statMultipliers.put(stat, 1.0);
 		}
+
+		errorSuppressed = new boolean[SpellGrid.GRID_SIZE][SpellGrid.GRID_SIZE];
 	}
 
 	/**

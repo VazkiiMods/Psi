@@ -11,16 +11,19 @@ package vazkii.psi.common.spell.other;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellCompilationException;
 import vazkii.psi.api.spell.SpellContext;
+import vazkii.psi.api.spell.SpellMetadata;
 import vazkii.psi.api.spell.SpellParam;
+import vazkii.psi.api.spell.SpellParam.Any;
+import vazkii.psi.api.spell.SpellParam.Side;
 import vazkii.psi.api.spell.SpellPiece;
 import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.api.spell.param.ParamAny;
-import vazkii.psi.api.spell.piece.PieceErrorHandler;
+import vazkii.psi.api.spell.param.ParamError;
+import vazkii.psi.api.spell.piece.PieceOperator;
+import vazkii.psi.common.core.helpers.SpellHelpers;
 
-import javax.annotation.Nonnull;
-
-public class PieceErrorCatch extends PieceErrorHandler {
-	SpellParam<SpellParam.Any> fallback;
+public class PieceErrorCatch extends PieceOperator {
+	SpellParam<SpellParam.Any> target, fallback;
 
 	public PieceErrorCatch(Spell spell) {
 		super(spell);
@@ -28,12 +31,12 @@ public class PieceErrorCatch extends PieceErrorHandler {
 
 	@Override
 	public void initParams() {
-		super.initParams();
+		addParam(target = new ParamError(SpellParam.GENERIC_NAME_TARGET, SpellParam.BROWN, false));
 		addParam(fallback = new ParamAny(SpellParam.PSI_PREFIX + "fallback", SpellParam.GRAY, false) {
 			@Override
 			public boolean canAccept(SpellPiece other) {
 				try {
-					SpellParam.Side side = paramSides.get(piece);
+					SpellParam.Side side = paramSides.get(target);
 					SpellPiece actualPiece = spell.grid.getPieceAtSideWithRedirections(x, y, side);
 					return super.canAccept(other) && actualPiece.getEvaluationType().isAssignableFrom(other.getEvaluationType());
 				} catch (SpellCompilationException e) {
@@ -44,24 +47,37 @@ public class PieceErrorCatch extends PieceErrorHandler {
 	}
 
 	@Override
-	protected String paramName() {
-		return SpellParam.GENERIC_NAME_TARGET;
-	}
-
-	@Override
-	public boolean catchException(SpellPiece errorPiece, SpellContext context, SpellRuntimeException exception) {
-		try {
-			SpellParam.Side side = paramSides.get(piece);
-			SpellPiece actualPiece = spell.grid.getPieceAtSideWithRedirections(x, y, side);
-			return errorPiece == actualPiece;
-		} catch (SpellCompilationException e) {
-			return false;
+	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
+		super.addToMetadata(meta);
+		SpellPiece piece = spell.grid.getPieceAtSideWithRedirections(x, y, paramSides.get(target));
+		if (piece != null) {
+			meta.errorSuppressed[piece.x][piece.y] = true;
 		}
 	}
 
-	@Nonnull
 	@Override
-	public Object supplyReplacementValue(SpellPiece errorPiece, SpellContext context, SpellRuntimeException exception) {
-		return getRawParamValue(context, fallback);
+	public Object execute(SpellContext context) throws SpellRuntimeException {
+		Object value = getRawParamValue(context, target);
+		if (value instanceof SpellRuntimeException) {
+			value = getRawParamValue(context, fallback);
+		}
+		return value;
+	}
+
+	@Override
+	public Class<?> getEvaluationType() {
+		if (!isInGrid || paramSides.get(target) == Side.OFF) {
+			return Any.class;
+		}
+		SpellPiece piece;
+		try {
+			piece = spell.grid.getPieceAtSideWithRedirections(x, y, paramSides.get(target));
+			if (piece == null || SpellHelpers.isLoop(this)) {
+				return Any.class;
+			}
+			return piece.getEvaluationType();
+		} catch (SpellCompilationException e) {
+			return Any.class;
+		}
 	}
 }

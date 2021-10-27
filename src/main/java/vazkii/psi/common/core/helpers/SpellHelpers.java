@@ -8,6 +8,10 @@
  */
 package vazkii.psi.common.core.helpers;
 
+import java.util.HashSet;
+import java.util.Set;
+import java.util.Map.Entry;
+
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 
@@ -17,6 +21,7 @@ import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellParam;
 import vazkii.psi.api.spell.SpellPiece;
 import vazkii.psi.api.spell.SpellRuntimeException;
+import vazkii.psi.api.spell.SpellParam.Side;
 
 public class SpellHelpers {
 
@@ -126,6 +131,26 @@ public class SpellHelpers {
 			throw new SpellRuntimeException(SpellRuntimeException.NON_AXIAL_VECTOR);
 		}
 		return position;
+	}
+
+	public static boolean isLoop(SpellPiece piece) {
+		return isLoop(piece, new HashSet<>());
+	}
+
+	public static boolean isLoop(SpellPiece piece, Set<SpellPiece> visited) {
+		if (piece == null) return false;
+		if (visited.contains(piece)) return true;
+		visited.add(piece);
+		for (Entry<SpellParam<?>, Side> param : piece.paramSides.entrySet()) {
+			if (!param.getValue().isEnabled()) continue;
+			try {
+				SpellPiece other = piece.spell.grid.getPieceAtSideWithRedirections(piece.x, piece.y, param.getValue());
+				if (isLoop(other, new HashSet<>(visited))) return true;
+			} catch (SpellCompilationException e) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }
