@@ -47,8 +47,7 @@ public class PieceErrorCatch extends PieceOperator {
 	}
 
 	@Override
-	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
-		super.addToMetadata(meta);
+	public void addModifierToMetadata(SpellMetadata meta) throws SpellCompilationException {
 		SpellPiece piece = spell.grid.getPieceAtSideWithRedirections(x, y, paramSides.get(target));
 		if (piece != null) {
 			meta.errorSuppressed[piece.x][piece.y] = true;

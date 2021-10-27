@@ -26,7 +26,7 @@ public class PieceErrorSuppressor extends SpellPiece {
 	}
 
 	@Override
-	public void addToMetadata(SpellMetadata meta) {
+	public void addModifierToMetadata(SpellMetadata meta) {
 		meta.errorsSuppressed = true;
 	}
 

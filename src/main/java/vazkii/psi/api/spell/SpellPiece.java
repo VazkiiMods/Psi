@@ -136,6 +136,14 @@ public abstract class SpellPiece {
 	}
 
 	/**
+	 * Adds this piece's stats to the Spell's metadata.
+	 * Also called on pieces not referenced anywhere in the spell.
+	 */
+	public void addModifierToMetadata(SpellMetadata meta) throws SpellCompilationException {
+		// NO-OP
+	}
+
+	/**
 	 * Adds a {@link SpellParam} to this piece.
 	 */
 	public void addParam(SpellParam<?> param) {

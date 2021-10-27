@@ -53,6 +53,15 @@ public final class SpellCompiler implements ISpellCompiler {
 		redirectionPieces.clear();
 		compiled = new CompiledSpell(spell);
 
+		for (int i = 0; i < SpellGrid.GRID_SIZE; i++) {
+			for (int j = 0; j < SpellGrid.GRID_SIZE; j++) {
+				SpellPiece piece = compiled.sourceSpell.grid.gridData[j][i];
+				if (piece != null) {
+					piece.addModifierToMetadata(compiled.metadata);
+				}
+			}
+		}
+
 		List<SpellPiece> tricks = findPieces(EnumPieceType::isTrick);
 		if (tricks.isEmpty()) {
 			throw new SpellCompilationException(SpellCompilationException.NO_TRICKS);
