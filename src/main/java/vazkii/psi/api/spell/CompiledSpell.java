@@ -112,16 +112,15 @@ public class CompiledSpell {
 		}
 
 		public void execute(IPlayerData data, SpellContext context) throws SpellRuntimeException {
-			try {
-				for (SpellParam<?> param : piece.paramSides.keySet()) {
-					if (!(param instanceof ParamError)) {
-						Object v = piece.getRawParamValue(context, param);
-						if (v instanceof SpellRuntimeException) {
-							throw (SpellRuntimeException) v;
-						}
+			for (SpellParam<?> param : piece.paramSides.keySet()) {
+				if (!(param instanceof ParamError)) {
+					Object v = piece.getRawParamValue(context, param);
+					if (v instanceof SpellRuntimeException) {
+						throw (SpellRuntimeException) v;
 					}
 				}
-				
+			}
+			try {
 				data.markPieceExecuted(piece);
 				Object o = piece.execute(context);
 
