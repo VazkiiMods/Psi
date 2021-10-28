@@ -100,6 +100,14 @@ public abstract class SpellPiece {
 	public abstract Class<?> getEvaluationType();
 
 	/**
+	 * Gets what type this piece evaluates as. Use for parameter dependent evaluation
+	 * types to avoid infinite loops. Only called for pieces in a spell grid.
+	 */
+	public Class<?> getEvaluationType(Set<SpellPiece> visited) {
+		return getEvaluationType();
+	}
+
+	/**
 	 * Evaluates this piece for the purpose of spell metadata calculation. If the piece
 	 * is not a constant, you can safely return null.
 	 */

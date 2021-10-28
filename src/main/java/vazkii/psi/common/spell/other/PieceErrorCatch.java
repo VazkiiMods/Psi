@@ -8,6 +8,9 @@
  */
 package vazkii.psi.common.spell.other;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellCompilationException;
 import vazkii.psi.api.spell.SpellContext;
@@ -20,7 +23,6 @@ import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.api.spell.param.ParamAny;
 import vazkii.psi.api.spell.param.ParamError;
 import vazkii.psi.api.spell.piece.PieceOperator;
-import vazkii.psi.common.core.helpers.SpellHelpers;
 
 public class PieceErrorCatch extends PieceOperator {
 	SpellParam<SpellParam.Any> target, fallback;
@@ -65,18 +67,27 @@ public class PieceErrorCatch extends PieceOperator {
 
 	@Override
 	public Class<?> getEvaluationType() {
-		if (!isInGrid || paramSides.get(target) == Side.OFF) {
+		if (isInGrid && paramSides.get(target) != Side.OFF) {
+			return getEvaluationType(new HashSet<>());
+		}
+		return Any.class;
+	}
+
+	@Override
+	public Class<?> getEvaluationType(Set<SpellPiece> visited) {
+		if (visited.contains(this)) {
 			return Any.class;
 		}
-		SpellPiece piece;
+		visited.add(this);
 		try {
-			piece = spell.grid.getPieceAtSideWithRedirections(x, y, paramSides.get(target));
-			if (piece == null || SpellHelpers.isLoop(this)) {
+			SpellPiece piece = spell.grid.getPieceAtSideWithRedirections(x, y, paramSides.get(target));
+			if (piece == null) {
 				return Any.class;
 			}
-			return piece.getEvaluationType();
+			return piece.getEvaluationType(visited);
 		} catch (SpellCompilationException e) {
 			return Any.class;
 		}
 	}
+
 }
