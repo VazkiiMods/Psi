@@ -8,9 +8,6 @@
  */
 package vazkii.psi.common.spell.other;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellCompilationException;
 import vazkii.psi.api.spell.SpellContext;
@@ -23,6 +20,9 @@ import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.api.spell.param.ParamAny;
 import vazkii.psi.api.spell.param.ParamError;
 import vazkii.psi.api.spell.piece.PieceOperator;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class PieceErrorCatch extends PieceOperator {
 	SpellParam<SpellParam.Any> target, fallback;
