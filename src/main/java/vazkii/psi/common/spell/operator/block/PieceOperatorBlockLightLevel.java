@@ -13,11 +13,11 @@ import net.minecraft.util.math.BlockPos;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
+import vazkii.psi.api.spell.SpellHelpers;
 import vazkii.psi.api.spell.SpellParam;
 import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.api.spell.param.ParamVector;
 import vazkii.psi.api.spell.piece.PieceOperator;
-import vazkii.psi.common.core.helpers.SpellHelpers;
 
 public class PieceOperatorBlockLightLevel extends PieceOperator {
 

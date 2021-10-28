@@ -11,7 +11,6 @@ package vazkii.psi.common.spell.trick;
 import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.piece.PieceTrick;
-import vazkii.psi.common.core.helpers.SpellHelpers;
 
 public class PieceTrickChangeSlot extends PieceTrick {
 

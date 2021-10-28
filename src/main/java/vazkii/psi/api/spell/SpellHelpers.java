@@ -6,17 +6,12 @@
  * Psi is Open Source and distributed under the
  * Psi License: https://psi.vazkii.net/license.php
  */
-package vazkii.psi.common.core.helpers;
+package vazkii.psi.api.spell;
 
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 
 import vazkii.psi.api.internal.Vector3;
-import vazkii.psi.api.spell.SpellCompilationException;
-import vazkii.psi.api.spell.SpellContext;
-import vazkii.psi.api.spell.SpellParam;
-import vazkii.psi.api.spell.SpellPiece;
-import vazkii.psi.api.spell.SpellRuntimeException;
 
 public class SpellHelpers {
 
