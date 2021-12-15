@@ -16,6 +16,7 @@ import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellCompilationException;
 import vazkii.psi.api.spell.SpellContext;
+import vazkii.psi.api.spell.SpellHelpers;
 import vazkii.psi.api.spell.SpellMetadata;
 import vazkii.psi.api.spell.SpellParam;
 import vazkii.psi.api.spell.SpellRuntimeException;
@@ -23,7 +24,6 @@ import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.param.ParamVector;
 import vazkii.psi.api.spell.piece.PieceTrick;
 import vazkii.psi.common.Psi;
-import vazkii.psi.common.core.helpers.SpellHelpers;
 
 public class PieceTrickPlaySound extends PieceTrick {
 
