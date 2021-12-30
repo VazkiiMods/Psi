@@ -36,7 +36,7 @@ public class PieceTrickAddMotion extends PieceTrick {
 	public PieceTrickAddMotion(Spell spell) {
 		super(spell);
 		setStatLabel(EnumSpellStat.POTENCY, new StatLabel("psi.spellparam.speed", true).abs().mul(50));
-		setStatLabel(EnumSpellStat.COST, new StatLabel("psi.spellparam.speed", true).abs().mul(90).sub(new StatLabel(3).mul("isLast").parenthesize()).max(1));
+		setStatLabel(EnumSpellStat.COST, new StatLabel("psi.spellparam.speed", true).abs().mul(90).sub(new StatLabel(3).mul("psi.statlabel.is_last", true).parenthesize()).max(1));
 	}
 
 	@Override
