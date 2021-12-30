@@ -28,8 +28,8 @@ public class PieceTrickEidosAnchor extends PieceTrick {
 
 	public PieceTrickEidosAnchor(Spell spell) {
 		super(spell);
-		setStatLabel(EnumSpellStat.POTENCY, new StatLabel(SpellParam.GENERIC_NAME_TIME, true).mul(5.5).add(20).floor());
-		setStatLabel(EnumSpellStat.COST, new StatLabel(SpellParam.GENERIC_NAME_TIME, true).floor().mul(40));
+		setStatLabel(EnumSpellStat.POTENCY, new StatLabel(SpellParam.GENERIC_NAME_TIME, true).mul(5.5).add(20));
+		setStatLabel(EnumSpellStat.COST, new StatLabel(SpellParam.GENERIC_NAME_TIME, true).mul(40));
 	}
 
 	@Override

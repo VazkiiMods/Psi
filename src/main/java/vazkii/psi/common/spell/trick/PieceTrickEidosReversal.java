@@ -31,8 +31,8 @@ public class PieceTrickEidosReversal extends PieceTrick {
 
 	public PieceTrickEidosReversal(Spell spell) {
 		super(spell);
-		setStatLabel(EnumSpellStat.POTENCY, new StatLabel(SpellParam.GENERIC_NAME_TIME, true).mul(11).add(20).floor());
-		setStatLabel(EnumSpellStat.COST, new StatLabel(SpellParam.GENERIC_NAME_TIME, true).floor().mul(40));
+		setStatLabel(EnumSpellStat.POTENCY, new StatLabel(SpellParam.GENERIC_NAME_TIME, true).mul(11).add(20));
+		setStatLabel(EnumSpellStat.COST, new StatLabel(SpellParam.GENERIC_NAME_TIME, true).mul(40));
 	}
 
 	@Override
