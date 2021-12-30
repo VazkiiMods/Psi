@@ -2,6 +2,7 @@
   "itemGroup.psi": "Psi",
   "psi.desc": "This is a joke that breaks the 4th wall, enjoy.",
   "psimisc.shift_for_info": "\u00a77Hold \u00a7bSHIFT\u00a77 for more info",
+  "psimisc.ctrl_for_stats": "\u00a77Hold \u00a7bCTRL\u00a77 for piece stats",
   "psimisc.spellmaynotfunctionasintended": "Beep boop! Seems like you're importing a spell created on an older Psi version. If that spell contains motion or sequence tricks, the same functionality( and cost) as when it was created is not assured.",
   "psimisc.component_type": "\u00a7aComponent Type\u00a77: %s",
   "psimisc.none": "(none)",

@@ -66,7 +66,7 @@ public abstract class SpellPiece {
 
 	public boolean isInGrid = false;
 	public int x, y;
-	private final Map<EnumSpellStat, StatLabel> dynamicStats = new HashMap<>();
+	private final Map<EnumSpellStat, StatLabel> statLabels = new HashMap<>();
 	public String comment;
 
 	public final Map<String, SpellParam<?>> params = new LinkedHashMap<>();
@@ -269,7 +269,7 @@ public abstract class SpellPiece {
 	 * Sets a {@link StatLabel}'s value.
 	 */
 	public void setStatLabel(EnumSpellStat type, StatLabel descriptor) {
-		dynamicStats.put(type, descriptor);
+		statLabels.put(type, descriptor);
 	}
 
 	/**
@@ -479,6 +479,9 @@ public abstract class SpellPiece {
 		tooltip.add(new TranslationTextComponent(getUnlocalizedName()));
 		tooltip.add(new TranslationTextComponent(getUnlocalizedDesc()).mergeStyle(TextFormatting.GRAY));
 		TooltipHelper.tooltipIfShift(tooltip, () -> addToTooltipAfterShift(tooltip));
+		if (!statLabels.isEmpty()) {
+			TooltipHelper.tooltipIfCtrl(tooltip, () -> addToTooltipAfterCtrl(tooltip));
+		}
 
 		String addon = registryKey.getNamespace();
 		if (!addon.equals("psi")) {
@@ -500,9 +503,13 @@ public abstract class SpellPiece {
 			ITextComponent pEval = new StringTextComponent(" [").append(param.getRequiredTypeString()).appendString("]").mergeStyle(TextFormatting.YELLOW);
 			tooltip.add(new StringTextComponent(param.canDisable ? "[Input] " : " Input  ").append(pName).append(pEval));
 		}
+	}
 
+	@OnlyIn(Dist.CLIENT)
+	public void addToTooltipAfterCtrl(List<ITextComponent> tooltip) {
 		tooltip.add(new StringTextComponent(""));
-		dynamicStats.forEach((type, stat) -> {
+
+		statLabels.forEach((type, stat) -> {
 			tooltip.add(new TranslationTextComponent(type.getName()).appendString(":"));
 			tooltip.add(new StringTextComponent(" " + stat.toString()).mergeStyle(TextFormatting.YELLOW));
 		});
