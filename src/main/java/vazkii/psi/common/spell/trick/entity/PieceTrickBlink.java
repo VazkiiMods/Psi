@@ -19,6 +19,7 @@ import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellMetadata;
 import vazkii.psi.api.spell.SpellParam;
 import vazkii.psi.api.spell.SpellRuntimeException;
+import vazkii.psi.api.spell.StatLabel;
 import vazkii.psi.api.spell.param.ParamEntity;
 import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.piece.PieceTrick;
@@ -32,6 +33,8 @@ public class PieceTrickBlink extends PieceTrick {
 
 	public PieceTrickBlink(Spell spell) {
 		super(spell);
+		setStatLabel(EnumSpellStat.POTENCY, new StatLabel(SpellParam.GENERIC_NAME_DISTANCE, true).abs().mul(30));
+		setStatLabel(EnumSpellStat.COST, new StatLabel(SpellParam.GENERIC_NAME_DISTANCE, true).abs().mul(40));
 	}
 
 	@Override

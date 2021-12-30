@@ -13,6 +13,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 
 import vazkii.psi.api.internal.Vector3;
+import vazkii.psi.api.spell.StatLabel;
 import vazkii.psi.api.spell.EnumSpellStat;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellCompilationException;
@@ -31,6 +32,8 @@ public class PieceTrickExplode extends PieceTrick {
 
 	public PieceTrickExplode(Spell spell) {
 		super(spell);
+		setStatLabel(EnumSpellStat.POTENCY, new StatLabel(SpellParam.GENERIC_NAME_POWER, true).max(0.5).mul(70).floor());
+		setStatLabel(EnumSpellStat.COST, new StatLabel(SpellParam.GENERIC_NAME_POWER, true).max(0.5).mul(210).floor());
 	}
 
 	@Override

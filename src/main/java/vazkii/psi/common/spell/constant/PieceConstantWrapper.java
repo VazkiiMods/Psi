@@ -17,6 +17,7 @@ import vazkii.psi.api.spell.SpellMetadata;
 import vazkii.psi.api.spell.SpellParam;
 import vazkii.psi.api.spell.SpellPiece;
 import vazkii.psi.api.spell.SpellRuntimeException;
+import vazkii.psi.api.spell.StatLabel;
 import vazkii.psi.api.spell.param.ParamNumber;
 
 public class PieceConstantWrapper extends SpellPiece {
@@ -28,6 +29,7 @@ public class PieceConstantWrapper extends SpellPiece {
 
 	public PieceConstantWrapper(Spell spell) {
 		super(spell);
+		setStatLabel(EnumSpellStat.COMPLEXITY, new StatLabel(1));
 	}
 
 	@Override

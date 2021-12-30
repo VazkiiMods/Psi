@@ -19,6 +19,7 @@ import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellMetadata;
 import vazkii.psi.api.spell.SpellParam;
 import vazkii.psi.api.spell.SpellRuntimeException;
+import vazkii.psi.api.spell.StatLabel;
 import vazkii.psi.api.spell.param.ParamEntity;
 import vazkii.psi.api.spell.piece.PieceTrick;
 import vazkii.psi.common.spell.selector.entity.PieceSelectorNearbySmeltables;
@@ -29,6 +30,8 @@ public class PieceTrickSmeltItem extends PieceTrick {
 
 	public PieceTrickSmeltItem(Spell spell) {
 		super(spell);
+		setStatLabel(EnumSpellStat.POTENCY, new StatLabel(80));
+		setStatLabel(EnumSpellStat.COST, new StatLabel(240));
 	}
 
 	@Override

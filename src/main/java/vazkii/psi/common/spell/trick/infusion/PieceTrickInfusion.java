@@ -12,11 +12,14 @@ import vazkii.psi.api.spell.EnumSpellStat;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellCompilationException;
 import vazkii.psi.api.spell.SpellMetadata;
+import vazkii.psi.api.spell.StatLabel;
 import vazkii.psi.api.spell.piece.PieceCraftingTrick;
 
 public class PieceTrickInfusion extends PieceCraftingTrick {
 	public PieceTrickInfusion(Spell spell) {
 		super(spell);
+		setStatLabel(EnumSpellStat.POTENCY, new StatLabel(100));
+		setStatLabel(EnumSpellStat.COST, new StatLabel(1200));
 	}
 
 	@Override

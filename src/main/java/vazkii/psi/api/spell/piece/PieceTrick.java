@@ -16,11 +16,14 @@ import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellMetadata;
 import vazkii.psi.api.spell.SpellPiece;
 import vazkii.psi.api.spell.SpellRuntimeException;
+import vazkii.psi.api.spell.StatLabel;
 
 public abstract class PieceTrick extends SpellPiece {
 
 	public PieceTrick(Spell spell) {
 		super(spell);
+		setStatLabel(EnumSpellStat.COMPLEXITY, new StatLabel(1));
+		setStatLabel(EnumSpellStat.PROJECTION, new StatLabel(1));
 	}
 
 	@Override

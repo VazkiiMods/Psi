@@ -24,6 +24,7 @@ import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellMetadata;
 import vazkii.psi.api.spell.SpellParam;
 import vazkii.psi.api.spell.SpellRuntimeException;
+import vazkii.psi.api.spell.StatLabel;
 import vazkii.psi.api.spell.param.ParamVector;
 import vazkii.psi.api.spell.piece.PieceTrick;
 
@@ -33,6 +34,8 @@ public class PieceTrickSmite extends PieceTrick {
 
 	public PieceTrickSmite(Spell spell) {
 		super(spell);
+		setStatLabel(EnumSpellStat.POTENCY, new StatLabel(100));
+		setStatLabel(EnumSpellStat.COST, new StatLabel(400));
 	}
 
 	@Override
