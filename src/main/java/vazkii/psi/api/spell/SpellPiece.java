@@ -12,6 +12,7 @@ import com.google.common.base.CaseFormat;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 
+import java.util.HashMap;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderState;
@@ -65,6 +66,7 @@ public abstract class SpellPiece {
 
 	public boolean isInGrid = false;
 	public int x, y;
+	private final Map<EnumSpellStat, StatLabel> dynamicStats = new HashMap<>();
 	public String comment;
 
 	public final Map<String, SpellParam<?>> params = new LinkedHashMap<>();
@@ -261,6 +263,13 @@ public abstract class SpellPiece {
 
 	public String getUnlocalizedDesc() {
 		return registryKey.getNamespace() + ".spellpiece." + registryKey.getPath() + ".desc";
+	}
+
+	/**
+	 * Sets a {@link StatLabel}'s value.
+	 */
+	public void setStatLabel(EnumSpellStat type, StatLabel descriptor) {
+		dynamicStats.put(type, descriptor);
 	}
 
 	/**
@@ -491,6 +500,12 @@ public abstract class SpellPiece {
 			ITextComponent pEval = new StringTextComponent(" [").append(param.getRequiredTypeString()).appendString("]").mergeStyle(TextFormatting.YELLOW);
 			tooltip.add(new StringTextComponent(param.canDisable ? "[Input] " : " Input  ").append(pName).append(pEval));
 		}
+
+		tooltip.add(new StringTextComponent(""));
+		dynamicStats.forEach((type, stat) -> {
+			tooltip.add(new TranslationTextComponent(type.getName()).appendString(":"));
+			tooltip.add(new StringTextComponent(" " + stat.toString()).mergeStyle(TextFormatting.YELLOW));
+		});
 	}
 
 	/**
