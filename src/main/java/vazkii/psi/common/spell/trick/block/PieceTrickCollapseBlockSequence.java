@@ -32,6 +32,8 @@ public class PieceTrickCollapseBlockSequence extends PieceTrick {
 
 	public PieceTrickCollapseBlockSequence(Spell spell) {
 		super(spell);
+		setStatLabel(EnumSpellStat.POTENCY, new StatLabel(SpellParam.GENERIC_NAME_MAX, true).mul(20));
+		setStatLabel(EnumSpellStat.COST, new StatLabel(SpellParam.GENERIC_NAME_MAX, true).sub(1).parenthesize().mul(150).add(100));
 	}
 
 	@Override
