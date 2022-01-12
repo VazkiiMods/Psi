@@ -737,5 +737,6 @@
   "advancement.psi:encyclopaedia_psionica": "Put It On My Tablet",
   "advancement.psi:encyclopaedia_psionica.desc": "Craft the Encyclopaedia Psionica, your guide for all things Psi",
   "_comment": "Book stuff",
-  "psi.book.subtitle": "Spellslinging 101"
+  "psi.book.subtitle": "Spellslinging 101",
+  "psi.statlabel.is_last": "isLast"
 }
