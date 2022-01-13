@@ -14,7 +14,7 @@ Psionic Spellcasting Instruments
 [[dependencies.psi]]
     modId="patchouli"
     mandatory=true
-    versionRange="[1.18-45,)"
+    versionRange="[1.16-45,)"
     side="BOTH"
 
 
