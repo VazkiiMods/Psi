@@ -29,6 +29,7 @@ import vazkii.psi.api.spell.SpellHelpers;
 import vazkii.psi.api.spell.SpellMetadata;
 import vazkii.psi.api.spell.SpellParam;
 import vazkii.psi.api.spell.SpellRuntimeException;
+import vazkii.psi.api.spell.StatLabel;
 import vazkii.psi.api.spell.param.ParamVector;
 import vazkii.psi.api.spell.piece.PieceTrick;
 
@@ -38,6 +39,8 @@ public class PieceTrickOvergrow extends PieceTrick {
 
 	public PieceTrickOvergrow(Spell spell) {
 		super(spell);
+		setStatLabel(EnumSpellStat.POTENCY, new StatLabel(100));
+		setStatLabel(EnumSpellStat.COST, new StatLabel(200));
 	}
 
 	@Override

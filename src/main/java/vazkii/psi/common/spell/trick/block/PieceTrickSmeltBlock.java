@@ -30,6 +30,8 @@ public class PieceTrickSmeltBlock extends PieceTrick {
 
 	public PieceTrickSmeltBlock(Spell spell) {
 		super(spell);
+		setStatLabel(EnumSpellStat.POTENCY, new StatLabel(20));
+		setStatLabel(EnumSpellStat.COST, new StatLabel(80));
 	}
 
 	@Override

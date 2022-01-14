@@ -11,13 +11,17 @@ package vazkii.psi.common.spell.trick.potion;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.Effects;
 
+import vazkii.psi.api.spell.EnumSpellStat;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellCompilationException;
+import vazkii.psi.api.spell.SpellParam;
+import vazkii.psi.api.spell.StatLabel;
 
 public class PieceTrickWither extends PieceTrickPotionBase {
 
 	public PieceTrickWither(Spell spell) {
 		super(spell);
+		setStatLabel(EnumSpellStat.POTENCY, new StatLabel(SpellParam.GENERIC_NAME_TIME, true).mul(SpellParam.GENERIC_NAME_POWER, true).square().mul(20));
 	}
 
 	@Override

@@ -33,6 +33,8 @@ public class PieceTrickSmeltBlockSequence extends PieceTrick {
 
 	public PieceTrickSmeltBlockSequence(Spell spell) {
 		super(spell);
+		setStatLabel(EnumSpellStat.POTENCY, new StatLabel(SpellParam.GENERIC_NAME_MAX, true).mul(20));
+		setStatLabel(EnumSpellStat.COST, new StatLabel(SpellParam.GENERIC_NAME_MAX, true).sub(1).parenthesize().mul(64).add(96));
 	}
 
 	@Override

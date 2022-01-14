@@ -2,6 +2,7 @@
   "itemGroup.psi": "Psi",
   "psi.desc": "This is a joke that breaks the 4th wall, enjoy.",
   "psimisc.shift_for_info": "\u00a77Hold \u00a7bSHIFT\u00a77 for more info",
+  "psimisc.ctrl_for_stats": "\u00a77Hold \u00a7bCTRL\u00a77 for piece stats",
   "psimisc.component_type": "\u00a7aComponent Type\u00a77: %s",
   "psimisc.none": "(none)",
   "psimisc.stats": "Stats",
@@ -737,5 +738,6 @@
   "advancement.psi:encyclopaedia_psionica": "Put It On My Tablet",
   "advancement.psi:encyclopaedia_psionica.desc": "Craft the Encyclopaedia Psionica, your guide for all things Psi",
   "_comment": "Book stuff",
-  "psi.book.subtitle": "Spellslinging 101"
+  "psi.book.subtitle": "Spellslinging 101",
+  "psi.statlabel.is_last": "isLast"
 }
