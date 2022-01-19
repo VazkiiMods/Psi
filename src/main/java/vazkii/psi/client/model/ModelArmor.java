@@ -8,16 +8,16 @@
  */
 package vazkii.psi.client.model;
 
-import net.minecraft.client.renderer.entity.model.BipedModel;
-import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.item.ArmorStandEntity;
-import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.decoration.ArmorStand;
+import net.minecraft.world.entity.EquipmentSlot;
 
-public class ModelArmor extends BipedModel<LivingEntity> {
-	protected final EquipmentSlotType slot;
+public class ModelArmor extends HumanoidModel<LivingEntity> {
+	protected final EquipmentSlot slot;
 
-	public ModelArmor(EquipmentSlotType slot) {
+	public ModelArmor(EquipmentSlot slot) {
 		super(1);
 		this.slot = slot;
 	}
@@ -26,12 +26,12 @@ public class ModelArmor extends BipedModel<LivingEntity> {
 	// This fixes the armor "breathing" and helmets always facing south on armor stands
 	@Override
 	public void setupAnim(LivingEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		if (!(entity instanceof ArmorStandEntity)) {
+		if (!(entity instanceof ArmorStand)) {
 			super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 			return;
 		}
 
-		ArmorStandEntity entityIn = (ArmorStandEntity) entity;
+		ArmorStand entityIn = (ArmorStand) entity;
 		this.head.xRot = ((float) Math.PI / 180F) * entityIn.getHeadPose().getX();
 		this.head.yRot = ((float) Math.PI / 180F) * entityIn.getHeadPose().getY();
 		this.head.zRot = ((float) Math.PI / 180F) * entityIn.getHeadPose().getZ();
@@ -56,7 +56,7 @@ public class ModelArmor extends BipedModel<LivingEntity> {
 		this.hat.copyFrom(this.head);
 	}
 
-	protected void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z) {
+	protected void setRotateAngle(ModelPart modelRenderer, float x, float y, float z) {
 		modelRenderer.xRot = x;
 		modelRenderer.yRot = y;
 		modelRenderer.zRot = z;

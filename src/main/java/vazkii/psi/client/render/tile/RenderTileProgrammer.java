@@ -8,33 +8,33 @@
  */
 package vazkii.psi.client.render.tile;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.HorizontalFaceBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.FaceAttachedHorizontalDirectionalBlock;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.vector.Matrix4f;
-import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
+import net.minecraft.client.resources.language.I18n;
+import net.minecraft.core.Direction;
+import com.mojang.math.Matrix4f;
+import com.mojang.math.Vector3f;
 
 import vazkii.psi.client.core.handler.ClientTickHandler;
 import vazkii.psi.client.gui.GuiProgrammer;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.tile.TileProgrammer;
 
-public class RenderTileProgrammer extends TileEntityRenderer<TileProgrammer> {
+public class RenderTileProgrammer extends BlockEntityRenderer<TileProgrammer> {
 
-	public RenderTileProgrammer(TileEntityRendererDispatcher rendererDispatcherIn) {
+	public RenderTileProgrammer(BlockEntityRenderDispatcher rendererDispatcherIn) {
 		super(rendererDispatcherIn);
 	}
 
 	@Override
-	public void render(TileProgrammer te, float partialticks, MatrixStack ms, IRenderTypeBuffer buffers, int worldLight, int overlay) {
+	public void render(TileProgrammer te, float partialticks, PoseStack ms, MultiBufferSource buffers, int worldLight, int overlay) {
 		if (te.isEnabled()) {
 			ms.pushPose();
 			int light = Psi.magical ? worldLight : 0xF000F0;
@@ -46,7 +46,7 @@ public class RenderTileProgrammer extends TileEntityRenderer<TileProgrammer> {
 			float rot = 90F;
 			BlockState state = te.getBlockState();
 
-			Direction facing = state.getValue(HorizontalFaceBlock.FACING);
+			Direction facing = state.getValue(FaceAttachedHorizontalDirectionalBlock.FACING);
 			switch (facing) {
 			case SOUTH:
 				rot = -90F;
@@ -80,7 +80,7 @@ public class RenderTileProgrammer extends TileEntityRenderer<TileProgrammer> {
 
 			ms.pushPose();
 			ms.translate(0F, 0F, -0.01F);
-			IVertexBuilder buffer = buffers.getBuffer(GuiProgrammer.LAYER);
+			VertexConsumer buffer = buffers.getBuffer(GuiProgrammer.LAYER);
 			float x = -7, y = -7;
 			float width = 174;
 			float height = 184;

@@ -8,10 +8,10 @@
  */
 package vazkii.psi.common.core.capability;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.Direction;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
@@ -26,10 +26,10 @@ import javax.annotation.Nullable;
 
 public class CapabilityTriggerSensor implements IDetonationHandler, ICapabilityProvider {
 
-	public final PlayerEntity player;
+	public final Player player;
 	public static final String TRIGGER_TICK = LibMisc.MOD_ID + ":LastTriggeredDetonation";
 
-	public CapabilityTriggerSensor(PlayerEntity player) {
+	public CapabilityTriggerSensor(Player player) {
 		this.player = player;
 	}
 
@@ -41,7 +41,7 @@ public class CapabilityTriggerSensor implements IDetonationHandler, ICapabilityP
 
 	@Override
 	public void detonate() {
-		CompoundNBT playerData = player.getPersistentData();
+		CompoundTag playerData = player.getPersistentData();
 		long detonated = playerData.getLong(TRIGGER_TICK);
 		long worldTime = player.level.getGameTime();
 
@@ -53,7 +53,7 @@ public class CapabilityTriggerSensor implements IDetonationHandler, ICapabilityP
 	}
 
 	@Override
-	public Vector3d objectLocus() {
+	public Vec3 objectLocus() {
 		return player.position();
 	}
 }

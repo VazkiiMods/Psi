@@ -8,16 +8,16 @@
  */
 package vazkii.psi.api.material;
 
-import net.minecraft.item.IItemTier;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.LazyValue;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.util.LazyLoadedValue;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.Registry;
 
 import vazkii.psi.api.PsiAPI;
 
-public class PsimetalToolMaterial implements IItemTier {
-	private static final LazyValue<Ingredient> REPAIR_MATERIAL = new LazyValue<>(
+public class PsimetalToolMaterial implements Tier {
+	private static final LazyLoadedValue<Ingredient> REPAIR_MATERIAL = new LazyLoadedValue<>(
 			() -> Ingredient.of(Registry.ITEM.get(new ResourceLocation(PsiAPI.MOD_ID, "psimetal"))));
 
 	@Override

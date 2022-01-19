@@ -8,16 +8,16 @@
  */
 package vazkii.psi.common.item.base;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 
-import net.minecraft.client.MainWindow;
-import net.minecraft.item.ItemStack;
+import com.mojang.blaze3d.platform.Window;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 public interface IHUDItem {
 
 	@OnlyIn(Dist.CLIENT)
-	void drawHUD(MatrixStack ms, MainWindow res, float partTicks, ItemStack stack);
+	void drawHUD(PoseStack ms, Window res, float partTicks, ItemStack stack);
 
 }

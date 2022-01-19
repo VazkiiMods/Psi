@@ -8,15 +8,15 @@
  */
 package vazkii.psi.common.item.armor;
 
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 
 import vazkii.psi.api.exosuit.PsiArmorEvent;
 
 public class ItemPsimetalExosuitLeggings extends ItemPsimetalArmor {
 
-	public ItemPsimetalExosuitLeggings(EquipmentSlotType slotType, Item.Properties properties) {
+	public ItemPsimetalExosuitLeggings(EquipmentSlot slotType, Item.Properties properties) {
 		super(slotType, properties);
 	}
 

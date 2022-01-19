@@ -8,13 +8,13 @@
  */
 package vazkii.psi.client.gui.button;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.renderer.MultiBufferSource;
+import com.mojang.blaze3d.vertex.Tesselator;
+import net.minecraft.network.chat.TextComponent;
 
 import vazkii.psi.api.spell.SpellPiece;
 import vazkii.psi.client.gui.GuiProgrammer;
@@ -24,23 +24,23 @@ public class GuiButtonSpellPiece extends Button {
 	final GuiProgrammer gui;
 
 	public GuiButtonSpellPiece(GuiProgrammer gui, SpellPiece piece, int x, int y) {
-		super(x, y, 16, 16, StringTextComponent.EMPTY, button -> {});
+		super(x, y, 16, 16, TextComponent.EMPTY, button -> {});
 		this.gui = gui;
 		this.piece = piece;
 	}
 
-	public GuiButtonSpellPiece(GuiProgrammer gui, SpellPiece piece, int x, int y, Button.IPressable pressable) {
-		super(x, y, 16, 16, StringTextComponent.EMPTY, pressable);
+	public GuiButtonSpellPiece(GuiProgrammer gui, SpellPiece piece, int x, int y, Button.OnPress pressable) {
+		super(x, y, 16, 16, TextComponent.EMPTY, pressable);
 		this.gui = gui;
 		this.piece = piece;
 	}
 
 	@Override
-	public void renderButton(MatrixStack ms, int mouseX, int mouseY, float pTicks) {
+	public void renderButton(PoseStack ms, int mouseX, int mouseY, float pTicks) {
 		if (active && visible) {
 			boolean hover = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
 
-			IRenderTypeBuffer.Impl buffers = IRenderTypeBuffer.immediate(Tessellator.getInstance().getBuilder());
+			MultiBufferSource.BufferSource buffers = MultiBufferSource.immediate(Tesselator.getInstance().getBuilder());
 			ms.pushPose();
 			ms.translate(x, y, 0);
 			piece.draw(ms, buffers, 0xF000F0);

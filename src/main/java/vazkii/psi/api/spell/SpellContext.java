@@ -8,13 +8,13 @@
  */
 package vazkii.psi.api.spell;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.phys.BlockHitResult;
 
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.internal.MathHelper;
@@ -42,7 +42,7 @@ public final class SpellContext {
 	/**
 	 * The player casting this spell.
 	 */
-	public PlayerEntity caster;
+	public Player caster;
 
 	/**
 	 * The focal point of this spell. This can be the same as {@link #caster}, but will often be different,
@@ -67,11 +67,11 @@ public final class SpellContext {
 	 * This is only used for loopcasting. If the context doesn't support loopcasting,
 	 * there is no need to set this field.
 	 */
-	public Hand castFrom;
+	public InteractionHand castFrom;
 
 	// Tool stuff. Only available if the spell is casted from a Psimetal Tool
 	public ItemStack tool = ItemStack.EMPTY;
-	public BlockRayTraceResult positionBroken;
+	public BlockHitResult positionBroken;
 	// Sword stuff
 	public LivingEntity attackedEntity;
 	// Armor Stuff
@@ -101,7 +101,7 @@ public final class SpellContext {
 	/**
 	 * Sets the {@link #caster} and returns itself. This also calls {@link #setFocalPoint(Entity)}.
 	 */
-	public SpellContext setPlayer(PlayerEntity player) {
+	public SpellContext setPlayer(Player player) {
 		caster = player;
 		return setFocalPoint(player);
 	}
@@ -201,7 +201,7 @@ public final class SpellContext {
 				throw new SpellRuntimeException(SpellRuntimeException.NO_CAD);
 			}
 
-			if (PlayerInventory.isHotbarSlot(cadSlot)) {
+			if (Inventory.isHotbarSlot(cadSlot)) {
 				slot = (cadSlot + targetSlot) % 9;
 			} else {
 				slot = (caster.inventory.selected + targetSlot) % 9;

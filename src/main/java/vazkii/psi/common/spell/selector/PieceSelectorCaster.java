@@ -8,7 +8,7 @@
  */
 package vazkii.psi.common.spell.selector;
 
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.entity.player.Player;
 
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
@@ -22,7 +22,7 @@ public class PieceSelectorCaster extends PieceSelector {
 
 	@Override
 	public Class<?> getEvaluationType() {
-		return PlayerEntity.class;
+		return Player.class;
 	}
 
 	@Override

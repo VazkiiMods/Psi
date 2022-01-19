@@ -8,18 +8,18 @@
  */
 package vazkii.psi.client.gui;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
-import net.minecraft.client.gui.screen.inventory.ContainerScreen;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.Style;
-import net.minecraft.util.text.TextFormatting;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.resources.language.I18n;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
+import net.minecraft.ChatFormatting;
 
 import vazkii.psi.api.cad.EnumCADStat;
 import vazkii.psi.api.cad.ICAD;
@@ -29,13 +29,13 @@ import vazkii.psi.common.block.tile.TileCADAssembler;
 import vazkii.psi.common.block.tile.container.ContainerCADAssembler;
 import vazkii.psi.common.lib.LibResources;
 
-public class GuiCADAssembler extends ContainerScreen<ContainerCADAssembler> {
+public class GuiCADAssembler extends AbstractContainerScreen<ContainerCADAssembler> {
 
 	private static final ResourceLocation texture = new ResourceLocation(LibResources.GUI_CAD_ASSEMBLER);
-	private final PlayerEntity player;
+	private final Player player;
 	private final TileCADAssembler assembler;
 
-	public GuiCADAssembler(ContainerCADAssembler containerCADAssembler, PlayerInventory inventory, ITextComponent component) {
+	public GuiCADAssembler(ContainerCADAssembler containerCADAssembler, Inventory inventory, Component component) {
 		super(containerCADAssembler, inventory, component);
 		this.player = inventory.player;
 		this.assembler = containerCADAssembler.assembler;
@@ -44,7 +44,7 @@ public class GuiCADAssembler extends ContainerScreen<ContainerCADAssembler> {
 	}
 
 	@Override
-	public void render(MatrixStack ms, int x, int y, float pTicks) {
+	public void render(PoseStack ms, int x, int y, float pTicks) {
 		this.renderBackground(ms);
 		super.render(ms, x, y, pTicks);
 		this.renderTooltip(ms, x, y);
@@ -52,7 +52,7 @@ public class GuiCADAssembler extends ContainerScreen<ContainerCADAssembler> {
 	}
 
 	@Override
-	protected void renderLabels(MatrixStack ms, int mouseX, int mouseY) {
+	protected void renderLabels(PoseStack ms, int mouseX, int mouseY) {
 		int color = 4210752;
 
 		String name = new ItemStack(ModBlocks.cadAssembler).getHoverName().getString();
@@ -65,11 +65,11 @@ public class GuiCADAssembler extends ContainerScreen<ContainerCADAssembler> {
 			int i = 0;
 			ICAD cadItem = (ICAD) cad.getItem();
 			String stats = I18n.get("psimisc.stats");
-			String s = TextFormatting.BOLD + stats;
+			String s = ChatFormatting.BOLD + stats;
 			font.drawShadow(ms, s, 213 - font.width(s) / 2f, 34, color);
 
 			for (EnumCADStat stat : EnumCADStat.class.getEnumConstants()) {
-				s = (Psi.magical ? TextFormatting.LIGHT_PURPLE : TextFormatting.AQUA) + I18n.get(stat.getName()) + TextFormatting.RESET + ": " + cadItem.getStatValue(cad, stat);
+				s = (Psi.magical ? ChatFormatting.LIGHT_PURPLE : ChatFormatting.AQUA) + I18n.get(stat.getName()) + ChatFormatting.RESET + ": " + cadItem.getStatValue(cad, stat);
 				font.drawShadow(ms, s, 179, 50 + i * 10, color);
 				i++;
 			}
@@ -77,7 +77,7 @@ public class GuiCADAssembler extends ContainerScreen<ContainerCADAssembler> {
 	}
 
 	@Override
-	protected void renderBg(MatrixStack ms, float partialTicks, int mouseX, int mouseY) {
+	protected void renderBg(PoseStack ms, float partialTicks, int mouseX, int mouseY) {
 		RenderSystem.color3f(1F, 1F, 1F);
 		getMinecraft().getTextureManager().bind(texture);
 		int x = (width - imageWidth) / 2;

@@ -8,14 +8,14 @@
  */
 package vazkii.psi.common.item.component;
 
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
 
 import vazkii.psi.api.cad.EnumCADComponent;
 import vazkii.psi.api.cad.EnumCADStat;
@@ -42,19 +42,19 @@ public abstract class ItemCADComponent extends Item implements ICADComponent {
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, @Nullable World world, List<ITextComponent> tooltip, ITooltipFlag advanced) {
+	public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag advanced) {
 		TooltipHelper.tooltipIfShift(tooltip, () -> {
 			EnumCADComponent componentType = getComponentType(stack);
 
-			TranslationTextComponent componentName = new TranslationTextComponent(componentType.getName());
-			tooltip.add(new TranslationTextComponent("psimisc.component_type", componentName));
+			TranslatableComponent componentName = new TranslatableComponent(componentType.getName());
+			tooltip.add(new TranslatableComponent("psimisc.component_type", componentName));
 			for (EnumCADStat stat : EnumCADStat.class.getEnumConstants()) {
 				if (stat.getSourceType() == componentType) {
 					int statVal = getCADStatValue(stack, stat);
 					String statValStr = statVal == -1 ? "\u221E" : "" + statVal;
 
-					ITextComponent name = new TranslationTextComponent(stat.getName()).withStyle(TextFormatting.AQUA);
-					tooltip.add(new StringTextComponent(" ").append(name).append(": " + statValStr));
+					Component name = new TranslatableComponent(stat.getName()).withStyle(ChatFormatting.AQUA);
+					tooltip.add(new TextComponent(" ").append(name).append(": " + statValStr));
 				}
 			}
 		});

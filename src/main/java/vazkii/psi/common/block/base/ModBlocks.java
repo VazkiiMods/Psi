@@ -8,17 +8,17 @@
  */
 package vazkii.psi.common.block.base;
 
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.gui.ScreenManager;
-import net.minecraft.entity.EntityType;
-import net.minecraft.inventory.container.ContainerType;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.Rarity;
-import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.extensions.IForgeContainerType;
 import net.minecraftforge.event.RegistryEvent;
@@ -42,8 +42,8 @@ import static vazkii.psi.common.item.base.ModItems.defaultBuilder;
 
 @Mod.EventBusSubscriber(modid = LibMisc.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ModBlocks {
-	private static final AbstractBlock.IExtendedPositionPredicate<EntityType<?>> NO_SPAWN = (state, world, pos, et) -> false;
-	private static final AbstractBlock.IPositionPredicate NO_SUFFOCATION = (state, world, pos) -> false;
+	private static final BlockBehaviour.StateArgumentPredicate<EntityType<?>> NO_SPAWN = (state, world, pos, et) -> false;
+	private static final BlockBehaviour.StatePredicate NO_SUFFOCATION = (state, world, pos) -> false;
 
 	public static final Block cadAssembler = new BlockCADAssembler(Block.Properties.of(Material.METAL).strength(5, 10).sound(SoundType.METAL).noOcclusion());
 	public static final Block programmer = new BlockProgrammer(Block.Properties.of(Material.METAL).strength(5, 10).sound(SoundType.METAL).noOcclusion());
@@ -57,7 +57,7 @@ public class ModBlocks {
 	public static final Block psimetalPlateWhiteLight = new Block(Block.Properties.of(Material.METAL).strength(5, 10).sound(SoundType.METAL).lightLevel((blockstate) -> 15));
 	public static final Block psimetalEbony = new Block(Block.Properties.of(Material.METAL).strength(5, 10).sound(SoundType.METAL));
 	public static final Block psimetalIvory = new Block(Block.Properties.of(Material.METAL).strength(5, 10).sound(SoundType.METAL));
-	public static final ContainerType<ContainerCADAssembler> containerCADAssembler = IForgeContainerType.create(ContainerCADAssembler::fromNetwork);
+	public static final MenuType<ContainerCADAssembler> containerCADAssembler = IForgeContainerType.create(ContainerCADAssembler::fromNetwork);
 
 	@SubscribeEvent
 	public static void registerBlocks(RegistryEvent.Register<Block> evt) {
@@ -93,18 +93,18 @@ public class ModBlocks {
 	}
 
 	@SubscribeEvent
-	public static void initTileEntities(RegistryEvent.Register<TileEntityType<?>> evt) {
-		IForgeRegistry<TileEntityType<?>> r = evt.getRegistry();
-		r.register(TileEntityType.Builder.of(TileCADAssembler::new, cadAssembler).build(null).setRegistryName(cadAssembler.getRegistryName()));
-		r.register(TileEntityType.Builder.of(TileProgrammer::new, programmer).build(null).setRegistryName(programmer.getRegistryName()));
-		r.register(TileEntityType.Builder.of(TileConjured::new, conjured).build(null).setRegistryName(conjured.getRegistryName()));
+	public static void initTileEntities(RegistryEvent.Register<BlockEntityType<?>> evt) {
+		IForgeRegistry<BlockEntityType<?>> r = evt.getRegistry();
+		r.register(BlockEntityType.Builder.of(TileCADAssembler::new, cadAssembler).build(null).setRegistryName(cadAssembler.getRegistryName()));
+		r.register(BlockEntityType.Builder.of(TileProgrammer::new, programmer).build(null).setRegistryName(programmer.getRegistryName()));
+		r.register(BlockEntityType.Builder.of(TileConjured::new, conjured).build(null).setRegistryName(conjured.getRegistryName()));
 	}
 
 	@SubscribeEvent
-	public static void registerContainers(RegistryEvent.Register<ContainerType<?>> evt) {
+	public static void registerContainers(RegistryEvent.Register<MenuType<?>> evt) {
 		evt.getRegistry().register(containerCADAssembler.setRegistryName(LibMisc.MOD_ID, LibBlockNames.CAD_ASSEMBLER));
 		DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
-			ScreenManager.register(containerCADAssembler, GuiCADAssembler::new);
+			MenuScreens.register(containerCADAssembler, GuiCADAssembler::new);
 		});
 	}
 

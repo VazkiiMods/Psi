@@ -13,18 +13,18 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.particles.IParticleData;
-import net.minecraft.particles.ParticleType;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleType;
 
 import javax.annotation.Nonnull;
 
 import java.util.Locale;
 
 // https://github.com/Vazkii/Botania/blob/1.15/src/main/java/vazkii/botania/client/fx/SparkleParticleData.java
-import net.minecraft.particles.IParticleData.IDeserializer;
+import net.minecraft.core.particles.ParticleOptions.Deserializer;
 
-public class SparkleParticleData implements IParticleData {
+public class SparkleParticleData implements ParticleOptions {
 	public static final Codec<SparkleParticleData> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 			Codec.FLOAT.fieldOf("size").forGetter(d -> d.size),
 			Codec.FLOAT.fieldOf("r").forGetter(d -> d.r),
@@ -62,7 +62,7 @@ public class SparkleParticleData implements IParticleData {
 	}
 
 	@Override
-	public void writeToNetwork(PacketBuffer buf) {
+	public void writeToNetwork(FriendlyByteBuf buf) {
 		buf.writeFloat(size);
 		buf.writeFloat(r);
 		buf.writeFloat(g);
@@ -80,7 +80,7 @@ public class SparkleParticleData implements IParticleData {
 				this.getType().getRegistryName(), this.size, this.r, this.g, this.b, this.m, this.mx, this.my, this.mz);
 	}
 
-	public static final IDeserializer<SparkleParticleData> DESERIALIZER = new IDeserializer<SparkleParticleData>() {
+	public static final Deserializer<SparkleParticleData> DESERIALIZER = new Deserializer<SparkleParticleData>() {
 		@Nonnull
 		@Override
 		public SparkleParticleData fromCommand(@Nonnull ParticleType<SparkleParticleData> type, @Nonnull StringReader reader) throws CommandSyntaxException {
@@ -104,7 +104,7 @@ public class SparkleParticleData implements IParticleData {
 		}
 
 		@Override
-		public SparkleParticleData fromNetwork(@Nonnull ParticleType<SparkleParticleData> type, PacketBuffer buf) {
+		public SparkleParticleData fromNetwork(@Nonnull ParticleType<SparkleParticleData> type, FriendlyByteBuf buf) {
 			return new SparkleParticleData(buf.readFloat(), buf.readFloat(), buf.readFloat(), buf.readFloat(), buf.readInt(), buf.readDouble(), buf.readDouble(), buf.readDouble());
 		}
 	};

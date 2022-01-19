@@ -8,20 +8,20 @@
  */
 package vazkii.psi.common.spell.trick.block;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.BlockSnapshot;
 import net.minecraftforge.event.world.BlockEvent;
@@ -88,11 +88,11 @@ public class PieceTrickPlaceBlock extends PieceTrick {
 		return null;
 	}
 
-	public static void placeBlock(PlayerEntity player, World world, BlockPos pos, int slot, boolean particles, Direction direction, Direction horizontalDirection) {
+	public static void placeBlock(Player player, Level world, BlockPos pos, int slot, boolean particles, Direction direction, Direction horizontalDirection) {
 		placeBlock(player, world, pos, slot, particles, false, direction, horizontalDirection);
 	}
 
-	public static void placeBlock(PlayerEntity player, World world, BlockPos pos, int slot, boolean particles, boolean conjure, Direction direction, Direction horizontalDirection) {
+	public static void placeBlock(Player player, Level world, BlockPos pos, int slot, boolean particles, boolean conjure, Direction direction, Direction horizontalDirection) {
 		if (!world.hasChunkAt(pos) || !world.mayInteract(player, pos)) {
 			return;
 		}
@@ -112,18 +112,18 @@ public class PieceTrickPlaceBlock extends PieceTrick {
 					BlockItem iblock = (BlockItem) rem.getItem();
 
 					ItemStack save;
-					BlockRayTraceResult hit = new BlockRayTraceResult(Vector3d.ZERO, direction, pos, false);
-					ItemUseContext ctx = new ItemUseContext(player, Hand.MAIN_HAND, hit);
+					BlockHitResult hit = new BlockHitResult(Vec3.ZERO, direction, pos, false);
+					UseOnContext ctx = new UseOnContext(player, InteractionHand.MAIN_HAND, hit);
 
 					save = player.getItemInHand(ctx.getHand());
 					player.setItemInHand(ctx.getHand(), rem);
-					ItemUseContext newCtx;
-					newCtx = new ItemUseContext(ctx.getPlayer(), ctx.getHand(), hit);
+					UseOnContext newCtx;
+					newCtx = new UseOnContext(ctx.getPlayer(), ctx.getHand(), hit);
 					player.setItemInHand(newCtx.getHand(), save);
 
-					ActionResultType result = iblock.place(new DirectionBlockItemUseContext(newCtx, horizontalDirection));
+					InteractionResult result = iblock.place(new DirectionBlockItemUseContext(newCtx, horizontalDirection));
 
-					if (result != ActionResultType.FAIL) {
+					if (result != InteractionResult.FAIL) {
 						removeFromInventory(player, stack, false);
 						if (player.abilities.instabuild) {
 							HUDHandler.setRemaining(rem, -1);
@@ -140,12 +140,12 @@ public class PieceTrickPlaceBlock extends PieceTrick {
 		}
 	}
 
-	public static ItemStack removeFromInventory(PlayerEntity player, ItemStack stack, boolean copy) {
+	public static ItemStack removeFromInventory(Player player, ItemStack stack, boolean copy) {
 		if (player.abilities.instabuild) {
 			return stack.copy();
 		}
 
-		PlayerInventory inv = player.inventory;
+		Inventory inv = player.inventory;
 		for (int i = inv.getContainerSize() - 1; i >= 0; i--) {
 			ItemStack invStack = inv.getItem(i);
 			if (!invStack.isEmpty() && invStack.sameItem(stack) && ItemStack.matches(stack, invStack)) {

@@ -8,11 +8,11 @@
  */
 package vazkii.psi.common.spell.operator.vector;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.RayTraceContext;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.Spell;
@@ -52,26 +52,26 @@ public class PieceOperatorVectorRaycast extends PieceOperator {
 
 		double maxLen = SpellHelpers.rangeLimitParam(this, context, max, SpellContext.MAX_DISTANCE);
 
-		BlockRayTraceResult pos = raycast(context.caster, originVal, rayVal, maxLen);
-		if (pos.getType() == RayTraceResult.Type.MISS) {
+		BlockHitResult pos = raycast(context.caster, originVal, rayVal, maxLen);
+		if (pos.getType() == HitResult.Type.MISS) {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
 		}
 
 		return Vector3.fromBlockPos(pos.getBlockPos());
 	}
 
-	public static BlockRayTraceResult raycast(Entity e, double len) {
+	public static BlockHitResult raycast(Entity e, double len) {
 		Vector3 vec = Vector3.fromEntity(e);
 		vec.add(0, e.getEyeHeight(), 0);
 
-		Vector3d look = e.getLookAngle();
+		Vec3 look = e.getLookAngle();
 
 		return raycast(e, vec, new Vector3(look), len);
 	}
 
-	public static BlockRayTraceResult raycast(Entity entity, Vector3 origin, Vector3 ray, double len) {
+	public static BlockHitResult raycast(Entity entity, Vector3 origin, Vector3 ray, double len) {
 		Vector3 end = origin.copy().add(ray.copy().normalize().multiply(len));
-		return entity.level.clip(new RayTraceContext(origin.toVec3D(), end.toVec3D(), RayTraceContext.BlockMode.OUTLINE, RayTraceContext.FluidMode.NONE, entity));
+		return entity.level.clip(new ClipContext(origin.toVec3D(), end.toVec3D(), ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, entity));
 	}
 
 	@Override

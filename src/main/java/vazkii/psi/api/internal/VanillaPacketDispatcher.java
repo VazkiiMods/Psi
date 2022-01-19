@@ -8,20 +8,20 @@
  */
 package vazkii.psi.api.internal;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.network.play.server.SUpdateTileEntityPacket;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 
 public final class VanillaPacketDispatcher {
 
-	public static void dispatchTEToNearbyPlayers(TileEntity tile) {
-		World world = tile.getLevel();
-		for (PlayerEntity player : world.players()) {
-			if (player instanceof ServerPlayerEntity) {
-				ServerPlayerEntity mp = (ServerPlayerEntity) player;
+	public static void dispatchTEToNearbyPlayers(BlockEntity tile) {
+		Level world = tile.getLevel();
+		for (Player player : world.players()) {
+			if (player instanceof ServerPlayer) {
+				ServerPlayer mp = (ServerPlayer) player;
 				if (MathHelper.pointDistancePlane(mp.getX(), mp.getZ(), tile.getBlockPos().getX() + 0.5, tile.getBlockPos().getZ() + 0.5) < 64) {
 					dispatchTEToPlayer(tile, mp);
 				}
@@ -29,15 +29,15 @@ public final class VanillaPacketDispatcher {
 		}
 	}
 
-	public static void dispatchTEToNearbyPlayers(World world, BlockPos pos) {
-		TileEntity tile = world.getBlockEntity(pos);
+	public static void dispatchTEToNearbyPlayers(Level world, BlockPos pos) {
+		BlockEntity tile = world.getBlockEntity(pos);
 		if (tile != null) {
 			dispatchTEToNearbyPlayers(tile);
 		}
 	}
 
-	public static void dispatchTEToPlayer(TileEntity tile, ServerPlayerEntity p) {
-		SUpdateTileEntityPacket packet = tile.getUpdatePacket();
+	public static void dispatchTEToPlayer(BlockEntity tile, ServerPlayer p) {
+		ClientboundBlockEntityDataPacket packet = tile.getUpdatePacket();
 		if (packet != null) {
 			p.connection.send(packet);
 		}

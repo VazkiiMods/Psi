@@ -8,12 +8,12 @@
  */
 package vazkii.psi.common.core.handler.capability;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.INBT;
-import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.util.INBTSerializable;
@@ -64,7 +64,7 @@ public class CapabilityHandler {
 	private static class CapabilityFactory<T> implements Capability.IStorage<T> {
 
 		@Override
-		public INBT writeNBT(Capability<T> capability, T instance, Direction side) {
+		public Tag writeNBT(Capability<T> capability, T instance, Direction side) {
 			if (instance instanceof INBTSerializable) {
 				return ((INBTSerializable<?>) instance).serializeNBT();
 			}
@@ -73,9 +73,9 @@ public class CapabilityHandler {
 
 		@Override
 		@SuppressWarnings("unchecked")
-		public void readNBT(Capability<T> capability, T instance, Direction side, INBT nbt) {
-			if (nbt instanceof CompoundNBT) {
-				((INBTSerializable<INBT>) instance).deserializeNBT(nbt);
+		public void readNBT(Capability<T> capability, T instance, Direction side, Tag nbt) {
+			if (nbt instanceof CompoundTag) {
+				((INBTSerializable<Tag>) instance).deserializeNBT(nbt);
 			}
 		}
 
@@ -91,8 +91,8 @@ public class CapabilityHandler {
 			event.addCapability(SPELL_IMMUNE, new SimpleProvider<>(SPELL_IMMUNE_CAPABILITY,
 					(ISpellImmune) event.getObject()));
 		}
-		if (event.getObject() instanceof PlayerEntity) {
-			event.addCapability(TRIGGER_SENSOR, new CapabilityTriggerSensor((PlayerEntity) event.getObject()));
+		if (event.getObject() instanceof Player) {
+			event.addCapability(TRIGGER_SENSOR, new CapabilityTriggerSensor((Player) event.getObject()));
 		}
 		if (event.getObject() instanceof IDetonationHandler) {
 			event.addCapability(DETONATOR, new SimpleProvider<>(DETONATION_HANDLER_CAPABILITY,

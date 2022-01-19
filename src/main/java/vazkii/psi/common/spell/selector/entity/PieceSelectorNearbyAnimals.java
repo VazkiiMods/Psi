@@ -8,10 +8,10 @@
  */
 package vazkii.psi.common.spell.selector.entity;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.monster.IMob;
-import net.minecraft.entity.passive.AnimalEntity;
-import net.minecraft.entity.passive.WaterMobEntity;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.monster.Enemy;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.animal.WaterAnimal;
 
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
@@ -27,7 +27,7 @@ public class PieceSelectorNearbyAnimals extends PieceSelectorNearby {
 	@Override
 	public Predicate<Entity> getTargetPredicate(SpellContext context) {
 		// for which classes to check, see ServerWorld despawning when spawn-animals server property is false
-		return (Entity e) -> (e instanceof AnimalEntity || e instanceof WaterMobEntity) && !(e instanceof IMob);
+		return (Entity e) -> (e instanceof Animal || e instanceof WaterAnimal) && !(e instanceof Enemy);
 	}
 
 }

@@ -8,10 +8,10 @@
  */
 package vazkii.psi.common.spell.trick;
 
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.effect.LightningBoltEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LightningBolt;
+import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.BlockSnapshot;
 import net.minecraftforge.event.world.BlockEvent;
@@ -64,10 +64,10 @@ public class PieceTrickSmite extends PieceTrick {
 			return null;
 		}
 
-		if (context.focalPoint.getCommandSenderWorld() instanceof ServerWorld) {
-			LightningBoltEntity lightning = new LightningBoltEntity(EntityType.LIGHTNING_BOLT, context.caster.level);
+		if (context.focalPoint.getCommandSenderWorld() instanceof ServerLevel) {
+			LightningBolt lightning = new LightningBolt(EntityType.LIGHTNING_BOLT, context.caster.level);
 			lightning.setPosRaw(positionVal.x, positionVal.y, positionVal.z);
-			((ServerWorld) context.focalPoint.getCommandSenderWorld()).addFreshEntity(lightning);
+			((ServerLevel) context.focalPoint.getCommandSenderWorld()).addFreshEntity(lightning);
 		}
 
 		return null;

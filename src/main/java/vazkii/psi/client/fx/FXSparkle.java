@@ -11,30 +11,30 @@ package vazkii.psi.client.fx;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.IAnimatedSprite;
-import net.minecraft.client.particle.IParticleRenderType;
-import net.minecraft.client.particle.SpriteTexturedParticle;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.texture.AtlasTexture;
-import net.minecraft.client.renderer.texture.Texture;
+import net.minecraft.client.particle.SpriteSet;
+import net.minecraft.client.particle.ParticleRenderType;
+import net.minecraft.client.particle.TextureSheetParticle;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.Tesselator;
+import net.minecraft.client.renderer.texture.TextureAtlas;
+import net.minecraft.client.renderer.texture.AbstractTexture;
 import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.client.world.ClientWorld;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import net.minecraft.client.multiplayer.ClientLevel;
 
 import org.lwjgl.opengl.GL11;
 
 import javax.annotation.Nonnull;
 
 // https://github.com/Vazkii/Botania/blob/1.15/src/main/java/vazkii/botania/client/fx/FXSparkle.java
-public class FXSparkle extends SpriteTexturedParticle {
+public class FXSparkle extends TextureSheetParticle {
 
 	public int multipler;
 	public final int particle = 16;
-	private final IAnimatedSprite sprite;
+	private final SpriteSet sprite;
 
-	public FXSparkle(ClientWorld world, double x, double y, double z, float size,
-			float red, float green, float blue, int m, double mx, double my, double mz, IAnimatedSprite sprite) {
+	public FXSparkle(ClientLevel world, double x, double y, double z, float size,
+			float red, float green, float blue, int m, double mx, double my, double mz, SpriteSet sprite) {
 		super(world, x, y, z, 0.0D, 0.0D, 0.0D);
 		rCol = red;
 		gCol = green;
@@ -91,7 +91,7 @@ public class FXSparkle extends SpriteTexturedParticle {
 
 	@Nonnull
 	@Override
-	public IParticleRenderType getRenderType() {
+	public ParticleRenderType getRenderType() {
 		return NORMAL_RENDER;
 	}
 
@@ -101,27 +101,27 @@ public class FXSparkle extends SpriteTexturedParticle {
 		RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
 		RenderSystem.alphaFunc(GL11.GL_GREATER, 0.003921569F);
 		RenderSystem.disableLighting();
-		textureManager.bind(AtlasTexture.LOCATION_PARTICLES);
-		Texture tex = textureManager.getTexture(AtlasTexture.LOCATION_PARTICLES);
+		textureManager.bind(TextureAtlas.LOCATION_PARTICLES);
+		AbstractTexture tex = textureManager.getTexture(TextureAtlas.LOCATION_PARTICLES);
 		tex.setFilter(true, false);
-		buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.PARTICLE);
+		buffer.begin(GL11.GL_QUADS, DefaultVertexFormat.PARTICLE);
 	}
 
 	private static void endRenderCommon() {
-		Minecraft.getInstance().textureManager.getTexture(AtlasTexture.LOCATION_PARTICLES).restoreLastBlurMipmap();
+		Minecraft.getInstance().textureManager.getTexture(TextureAtlas.LOCATION_PARTICLES).restoreLastBlurMipmap();
 		RenderSystem.alphaFunc(GL11.GL_GREATER, 0.1F);
 		RenderSystem.disableBlend();
 		RenderSystem.depthMask(true);
 	}
 
-	private static final IParticleRenderType NORMAL_RENDER = new IParticleRenderType() {
+	private static final ParticleRenderType NORMAL_RENDER = new ParticleRenderType() {
 		@Override
 		public void begin(BufferBuilder bufferBuilder, TextureManager textureManager) {
 			beginRenderCommon(bufferBuilder, textureManager);
 		}
 
 		@Override
-		public void end(Tessellator tessellator) {
+		public void end(Tesselator tessellator) {
 			tessellator.end();
 			endRenderCommon();
 		}

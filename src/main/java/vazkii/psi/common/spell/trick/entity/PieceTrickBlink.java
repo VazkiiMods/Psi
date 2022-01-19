@@ -8,9 +8,9 @@
  */
 package vazkii.psi.common.spell.trick.entity;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.phys.Vec3;
 
 import vazkii.psi.api.spell.EnumSpellStat;
 import vazkii.psi.api.spell.Spell;
@@ -68,15 +68,15 @@ public class PieceTrickBlink extends PieceTrick {
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 		}
 
-		Vector3d look = e.getLookAngle();
+		Vec3 look = e.getLookAngle();
 
 		double offX = look.x * dist;
 		double offY = e.equals(context.caster) ? look.y * dist : Math.max(0, look.y * dist);
 		double offZ = look.z * dist;
 
 		e.setPos(e.getX() + offX, e.getY() + offY, e.getZ() + offZ);
-		if (e instanceof ServerPlayerEntity) {
-			MessageRegister.sendToPlayer(new MessageBlink(offX, offY, offZ), (ServerPlayerEntity) e);
+		if (e instanceof ServerPlayer) {
+			MessageRegister.sendToPlayer(new MessageBlink(offX, offY, offZ), (ServerPlayer) e);
 		}
 	}
 

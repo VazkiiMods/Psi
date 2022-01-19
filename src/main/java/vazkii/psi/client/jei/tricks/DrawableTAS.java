@@ -8,16 +8,16 @@
  */
 package vazkii.psi.client.jei.tricks;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import mezz.jei.api.gui.drawable.IDrawableStatic;
 
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.Tessellator;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.Tesselator;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.util.math.vector.Matrix4f;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.math.Matrix4f;
 
 /**
  * Like JEI's DrawableSprite, but works for any {@link TextureAtlasSprite}.
@@ -30,7 +30,7 @@ public class DrawableTAS implements IDrawableStatic {
 	}
 
 	@Override
-	public void draw(MatrixStack ms, int xOffset, int yOffset, int maskTop, int maskBottom, int maskLeft, int maskRight) {
+	public void draw(PoseStack ms, int xOffset, int yOffset, int maskTop, int maskBottom, int maskLeft, int maskRight) {
 		int textureWidth = sprite.getWidth();
 		int textureHeight = sprite.getHeight();
 		int x = xOffset + maskLeft;
@@ -46,9 +46,9 @@ public class DrawableTAS implements IDrawableStatic {
 
 		Matrix4f matrix = ms.last().pose();
 		RenderSystem.bindTexture(sprite.atlas().getId());
-		Tessellator tessellator = Tessellator.getInstance();
+		Tesselator tessellator = Tesselator.getInstance();
 		BufferBuilder buf = tessellator.getBuilder();
-		buf.begin(7, DefaultVertexFormats.POSITION_TEX);
+		buf.begin(7, DefaultVertexFormat.POSITION_TEX);
 		buf.vertex(matrix, x, y + height, 0.0f).uv(minU, maxV).endVertex();
 		buf.vertex(matrix, x + width, y + height, 0.0f).uv(maxU, maxV).endVertex();
 		buf.vertex(matrix, x + width, y, 0.0f).uv(maxU, minV).endVertex();
@@ -67,7 +67,7 @@ public class DrawableTAS implements IDrawableStatic {
 	}
 
 	@Override
-	public void draw(MatrixStack ms, int xOff, int yOff) {
+	public void draw(PoseStack ms, int xOff, int yOff) {
 		draw(ms, xOff, yOff, 0, 0, 0, 0);
 	}
 }

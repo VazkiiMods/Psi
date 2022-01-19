@@ -8,15 +8,15 @@
  */
 package vazkii.psi.client.gui.widget;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
-import net.minecraft.client.gui.widget.Widget;
-import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.client.util.InputMappings;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
+import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.resources.language.I18n;
+import com.mojang.blaze3d.platform.InputConstants;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.ChatFormatting;
 
 import org.lwjgl.glfw.GLFW;
 
@@ -27,14 +27,14 @@ import vazkii.psi.client.gui.GuiProgrammer;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SideConfigWidget extends Widget {
+public class SideConfigWidget extends AbstractWidget {
 
 	public final List<Button> configButtons = new ArrayList<>();
 	public boolean configEnabled = false;
 	public final GuiProgrammer parent;
 
 	public SideConfigWidget(int x, int y, int width, int height, GuiProgrammer programmer) {
-		super(x, y, width, height, StringTextComponent.EMPTY);
+		super(x, y, width, height, TextComponent.EMPTY);
 		this.parent = programmer;
 	}
 
@@ -44,7 +44,7 @@ public class SideConfigWidget extends Widget {
 	}
 
 	@Override
-	public void renderButton(MatrixStack ms, int mouseX, int mouseY, float pTicks) {
+	public void renderButton(PoseStack ms, int mouseX, int mouseY, float pTicks) {
 		SpellPiece piece = null;
 		if (SpellGrid.exists(GuiProgrammer.selectedX, GuiProgrammer.selectedY)) {
 			piece = parent.spell.grid.gridData[GuiProgrammer.selectedX][GuiProgrammer.selectedY];
@@ -58,7 +58,7 @@ public class SideConfigWidget extends Widget {
 			if (piece != null) {
 				int param = -1;
 				for (int j = 0; j < 4; j++) {
-					if (InputMappings.isKeyDown(parent.getMinecraft().getWindow().getWindow(), GLFW.GLFW_KEY_1 + j)) {
+					if (InputConstants.isKeyDown(parent.getMinecraft().getWindow().getWindow(), GLFW.GLFW_KEY_1 + j)) {
 						param = j;
 					}
 				}
@@ -73,7 +73,7 @@ public class SideConfigWidget extends Widget {
 
 					String localized = I18n.get(s);
 					if (i == param) {
-						localized = TextFormatting.UNDERLINE + localized;
+						localized = ChatFormatting.UNDERLINE + localized;
 					}
 
 					parent.getMinecraft().font.draw(ms, localized, x, y, 0xFFFFFF);

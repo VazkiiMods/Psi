@@ -8,10 +8,10 @@
  */
 package vazkii.psi.common.spell.trick.potion;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.potion.Effect;
-import net.minecraft.potion.EffectInstance;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
 
 import vazkii.psi.api.spell.EnumSpellStat;
 import vazkii.psi.api.spell.Spell;
@@ -78,12 +78,12 @@ public abstract class PieceTrickPotionBase extends PieceTrick {
 		}
 		double timeVal = this.getParamValue(context, time).doubleValue();
 
-		((LivingEntity) targetVal).addEffect(new EffectInstance(getPotion(), Math.max(1, (int) timeVal) * 20, hasPower() ? Math.max(0, (int) powerVal - 1) : 0));
+		((LivingEntity) targetVal).addEffect(new MobEffectInstance(getPotion(), Math.max(1, (int) timeVal) * 20, hasPower() ? Math.max(0, (int) powerVal - 1) : 0));
 
 		return null;
 	}
 
-	public abstract Effect getPotion();
+	public abstract MobEffect getPotion();
 
 	public int getCost(int power, int time) throws SpellCompilationException {
 		return (int) multiplySafe(getPotency(power, time) * 5);

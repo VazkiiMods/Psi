@@ -8,21 +8,21 @@
  */
 package vazkii.psi.common.item;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 
-import net.minecraft.client.MainWindow;
+import com.mojang.blaze3d.platform.Window;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.client.gui.Font;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -48,7 +48,7 @@ public class ItemVectorRuler extends Item implements IHUDItem {
 	}
 
 	@Override
-	public ActionResultType useOn(ItemUseContext ctx) {
+	public InteractionResult useOn(UseOnContext ctx) {
 		BlockPos pos = ctx.getClickedPos();
 
 		ItemStack stack = ctx.getPlayer().getItemInHand(ctx.getHand());
@@ -65,13 +65,13 @@ public class ItemVectorRuler extends Item implements IHUDItem {
 			stack.getOrCreateTag().putInt(TAG_DST_Z, pos.getZ());
 		}
 
-		return ActionResultType.SUCCESS;
+		return InteractionResult.SUCCESS;
 	}
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable World world, List<ITextComponent> tooltip, ITooltipFlag advanced) {
-		tooltip.add(new StringTextComponent(getVector(stack).toString()));
+	public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag advanced) {
+		tooltip.add(new TextComponent(getVector(stack).toString()));
 	}
 
 	public Vector3 getVector(ItemStack stack) {
@@ -90,7 +90,7 @@ public class ItemVectorRuler extends Item implements IHUDItem {
 		return new Vector3(dstX - srcX, dstY - srcY, dstZ - srcZ);
 	}
 
-	public static Vector3 getRulerVector(PlayerEntity player) {
+	public static Vector3 getRulerVector(Player player) {
 		for (int i = 0; i < player.inventory.getContainerSize(); i++) {
 			ItemStack stack = player.inventory.getItem(i);
 			if (!stack.isEmpty() && stack.getItem() instanceof ItemVectorRuler) {
@@ -103,10 +103,10 @@ public class ItemVectorRuler extends Item implements IHUDItem {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void drawHUD(MatrixStack ms, MainWindow res, float partTicks, ItemStack stack) {
+	public void drawHUD(PoseStack ms, Window res, float partTicks, ItemStack stack) {
 		String s = getVector(stack).toString();
 
-		FontRenderer font = Minecraft.getInstance().font;
+		Font font = Minecraft.getInstance().font;
 		int w = font.width(s);
 		font.draw(ms, s, res.getGuiScaledWidth() / 2f - w / 2f, res.getGuiScaledHeight() / 2f + 10, 0xFFFFFFFF);
 	}

@@ -8,8 +8,8 @@
  */
 package vazkii.psi.common.network.message;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 import vazkii.psi.common.Psi;
@@ -25,17 +25,17 @@ public class MessageEidosSync {
 		this.reversionTime = reversionTime;
 	}
 
-	public MessageEidosSync(PacketBuffer buf) {
+	public MessageEidosSync(FriendlyByteBuf buf) {
 		this.reversionTime = buf.readInt();
 	}
 
-	public void encode(PacketBuffer buf) {
+	public void encode(FriendlyByteBuf buf) {
 		buf.writeInt(reversionTime);
 	}
 
 	public boolean receive(Supplier<NetworkEvent.Context> context) {
 		context.get().enqueueWork(() -> {
-			PlayerEntity player = Psi.proxy.getClientPlayer();
+			Player player = Psi.proxy.getClientPlayer();
 			if (player != null) {
 				PlayerDataHandler.PlayerData data = PlayerDataHandler.get(player);
 				data.eidosReversionTime = reversionTime;

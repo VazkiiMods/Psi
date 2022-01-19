@@ -10,11 +10,11 @@ package vazkii.psi.api.spell;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 
-import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -45,7 +45,7 @@ public final class SpellGrid {
 	private int leftmost, rightmost, topmost, bottommost;
 
 	@OnlyIn(Dist.CLIENT)
-	public void draw(MatrixStack ms, IRenderTypeBuffer buffers, int light) {
+	public void draw(PoseStack ms, MultiBufferSource buffers, int light) {
 		for (int i = 0; i < GRID_SIZE; i++) {
 			for (int j = 0; j < GRID_SIZE; j++) {
 				SpellPiece p = gridData[i][j];
@@ -262,13 +262,13 @@ public final class SpellGrid {
 		return true;
 	}
 
-	public void readFromNBT(CompoundNBT cmp) {
+	public void readFromNBT(CompoundTag cmp) {
 		gridData = new SpellPiece[GRID_SIZE][GRID_SIZE];
 
-		ListNBT list = cmp.getList(TAG_SPELL_LIST, 10);
+		ListTag list = cmp.getList(TAG_SPELL_LIST, 10);
 		int len = list.size();
 		for (int i = 0; i < len; i++) {
-			CompoundNBT lcmp = list.getCompound(i);
+			CompoundTag lcmp = list.getCompound(i);
 			int posX, posY;
 
 			if (lcmp.contains(TAG_SPELL_POS_X_LEGACY)) {
@@ -279,7 +279,7 @@ public final class SpellGrid {
 				posY = lcmp.getInt(TAG_SPELL_POS_Y);
 			}
 
-			CompoundNBT data;
+			CompoundTag data;
 			if (lcmp.contains(TAG_SPELL_DATA_LEGACY)) {
 				data = lcmp.getCompound(TAG_SPELL_DATA_LEGACY);
 			} else {
@@ -296,17 +296,17 @@ public final class SpellGrid {
 		}
 	}
 
-	public void writeToNBT(CompoundNBT cmp) {
-		ListNBT list = new ListNBT();
+	public void writeToNBT(CompoundTag cmp) {
+		ListTag list = new ListTag();
 		for (int i = 0; i < GRID_SIZE; i++) {
 			for (int j = 0; j < GRID_SIZE; j++) {
 				SpellPiece piece = gridData[i][j];
 				if (piece != null) {
-					CompoundNBT lcmp = new CompoundNBT();
+					CompoundTag lcmp = new CompoundTag();
 					lcmp.putInt(TAG_SPELL_POS_X, i);
 					lcmp.putInt(TAG_SPELL_POS_Y, j);
 
-					CompoundNBT data = new CompoundNBT();
+					CompoundTag data = new CompoundTag();
 					piece.writeToNBT(data);
 					lcmp.put(TAG_SPELL_DATA, data);
 

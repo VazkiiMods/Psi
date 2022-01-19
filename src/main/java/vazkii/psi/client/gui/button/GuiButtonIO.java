@@ -8,19 +8,19 @@
  */
 package vazkii.psi.client.gui.button;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TranslatableComponent;
 
 import vazkii.psi.client.gui.GuiProgrammer;
 
-import net.minecraft.client.gui.widget.button.Button.IPressable;
+import net.minecraft.client.gui.components.Button.OnPress;
 
 public class GuiButtonIO extends Button {
 
@@ -28,19 +28,19 @@ public class GuiButtonIO extends Button {
 	final GuiProgrammer gui;
 
 	public GuiButtonIO(int x, int y, boolean out, GuiProgrammer gui) {
-		super(x, y, 12, 12, StringTextComponent.EMPTY, button -> {});
+		super(x, y, 12, 12, TextComponent.EMPTY, button -> {});
 		this.out = out;
 		this.gui = gui;
 	}
 
-	public GuiButtonIO(int x, int y, boolean out, GuiProgrammer gui, IPressable pressable) {
-		super(x, y, 12, 12, StringTextComponent.EMPTY, pressable);
+	public GuiButtonIO(int x, int y, boolean out, GuiProgrammer gui, OnPress pressable) {
+		super(x, y, 12, 12, TextComponent.EMPTY, pressable);
 		this.out = out;
 		this.gui = gui;
 	}
 
 	@Override
-	public void renderButton(MatrixStack ms, int par2, int par3, float pticks) {
+	public void renderButton(PoseStack ms, int par2, int par3, float pticks) {
 		if (active && !gui.takingScreenshot) {
 			boolean hover = par2 >= x && par3 >= y && par2 < x + width && par3 < y + height;
 
@@ -50,10 +50,10 @@ public class GuiButtonIO extends Button {
 
 			if (hover) {
 				String key = out ? "psimisc.export_to_clipboard" : "psimisc.import_from_clipboard";
-				TextFormatting color = out ? TextFormatting.RED : TextFormatting.BLUE;
-				ITextComponent tip = new TranslationTextComponent(key).withStyle(color);
+				ChatFormatting color = out ? ChatFormatting.RED : ChatFormatting.BLUE;
+				Component tip = new TranslatableComponent(key).withStyle(color);
 				gui.tooltip.add(tip);
-				gui.tooltip.add(new TranslationTextComponent("psimisc.must_hold_shift").withStyle(TextFormatting.GRAY));
+				gui.tooltip.add(new TranslatableComponent("psimisc.must_hold_shift").withStyle(ChatFormatting.GRAY));
 			}
 		}
 	}

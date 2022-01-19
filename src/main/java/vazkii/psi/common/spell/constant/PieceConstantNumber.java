@@ -8,11 +8,11 @@
  */
 package vazkii.psi.common.spell.constant;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.nbt.CompoundTag;
 
 import org.lwjgl.glfw.GLFW;
 
@@ -40,7 +40,7 @@ public class PieceConstantNumber extends SpellPiece {
 	}
 
 	@Override
-	public void drawAdditional(MatrixStack ms, IRenderTypeBuffer buffers, int light) {
+	public void drawAdditional(PoseStack ms, MultiBufferSource buffers, int light) {
 		if (valueStr == null || valueStr.isEmpty() || valueStr.length() > 5) {
 			valueStr = "0";
 		}
@@ -157,13 +157,13 @@ public class PieceConstantNumber extends SpellPiece {
 	}
 
 	@Override
-	public void writeToNBT(CompoundNBT cmp) {
+	public void writeToNBT(CompoundTag cmp) {
 		super.writeToNBT(cmp);
 		cmp.putString(TAG_CONSTANT_VALUE, valueStr);
 	}
 
 	@Override
-	public void readFromNBT(CompoundNBT cmp) {
+	public void readFromNBT(CompoundTag cmp) {
 		super.readFromNBT(cmp);
 		valueStr = cmp.getString(TAG_CONSTANT_VALUE);
 	}

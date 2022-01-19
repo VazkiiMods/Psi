@@ -8,14 +8,14 @@
  */
 package vazkii.psi.common.crafting.recipe;
 
-import net.minecraft.inventory.CraftingInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.item.crafting.SpecialRecipe;
-import net.minecraft.item.crafting.SpecialRecipeSerializer;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
+import net.minecraft.world.inventory.CraftingContainer;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.CustomRecipe;
+import net.minecraft.world.item.crafting.SimpleRecipeSerializer;
+import net.minecraft.core.NonNullList;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.ForgeHooks;
 
 import vazkii.psi.api.cad.EnumCADComponent;
@@ -25,15 +25,15 @@ import vazkii.psi.common.item.ItemCAD;
 
 import javax.annotation.Nonnull;
 
-public class ColorizerChangeRecipe extends SpecialRecipe {
-	public static final SpecialRecipeSerializer<ColorizerChangeRecipe> SERIALIZER = new SpecialRecipeSerializer<>(ColorizerChangeRecipe::new);
+public class ColorizerChangeRecipe extends CustomRecipe {
+	public static final SimpleRecipeSerializer<ColorizerChangeRecipe> SERIALIZER = new SimpleRecipeSerializer<>(ColorizerChangeRecipe::new);
 
 	public ColorizerChangeRecipe(ResourceLocation id) {
 		super(id);
 	}
 
 	@Override
-	public boolean matches(@Nonnull CraftingInventory inv, @Nonnull World world) {
+	public boolean matches(@Nonnull CraftingContainer inv, @Nonnull Level world) {
 		boolean foundColorizer = false;
 		boolean foundCAD = false;
 
@@ -61,7 +61,7 @@ public class ColorizerChangeRecipe extends SpecialRecipe {
 
 	@Nonnull
 	@Override
-	public ItemStack assemble(@Nonnull CraftingInventory inv) {
+	public ItemStack assemble(@Nonnull CraftingContainer inv) {
 		ItemStack colorizer = ItemStack.EMPTY;
 		ItemStack cad = ItemStack.EMPTY;
 
@@ -88,7 +88,7 @@ public class ColorizerChangeRecipe extends SpecialRecipe {
 
 	@Nonnull
 	@Override
-	public NonNullList<ItemStack> getRemainingItems(CraftingInventory inv) {
+	public NonNullList<ItemStack> getRemainingItems(CraftingContainer inv) {
 		NonNullList<ItemStack> ret = NonNullList.withSize(inv.getContainerSize(), ItemStack.EMPTY);
 		int dyeIndex = -1;
 		ItemStack cad = ItemStack.EMPTY;
@@ -113,7 +113,7 @@ public class ColorizerChangeRecipe extends SpecialRecipe {
 
 	@Nonnull
 	@Override
-	public IRecipeSerializer<?> getSerializer() {
+	public RecipeSerializer<?> getSerializer() {
 		return SERIALIZER;
 	}
 

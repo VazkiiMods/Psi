@@ -8,17 +8,17 @@
  */
 package vazkii.psi.common.spell.trick;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
-import net.minecraft.item.Items;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.Level;
 
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.EnumSpellStat;
@@ -58,15 +58,15 @@ public class PieceTrickOvergrow extends PieceTrick {
 		return bonemeal(context.caster, context.caster.level, pos);
 	}
 
-	public ActionResultType bonemeal(PlayerEntity player, World world, BlockPos pos) {
+	public InteractionResult bonemeal(Player player, Level world, BlockPos pos) {
 		if (!world.hasChunkAt(pos) || !world.mayInteract(player, pos)) {
-			return ActionResultType.PASS;
+			return InteractionResult.PASS;
 		}
-		BlockRayTraceResult hit = new BlockRayTraceResult(Vector3d.ZERO, Direction.UP, pos, false);
-		ItemStack save = player.getItemInHand(Hand.MAIN_HAND);
-		player.setItemInHand(Hand.MAIN_HAND, new ItemStack(Items.BONE_MEAL));
-		ItemUseContext fakeContext = new ItemUseContext(player, Hand.MAIN_HAND, hit);
-		player.setItemInHand(Hand.MAIN_HAND, save);
+		BlockHitResult hit = new BlockHitResult(Vec3.ZERO, Direction.UP, pos, false);
+		ItemStack save = player.getItemInHand(InteractionHand.MAIN_HAND);
+		player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.BONE_MEAL));
+		UseOnContext fakeContext = new UseOnContext(player, InteractionHand.MAIN_HAND, hit);
+		player.setItemInHand(InteractionHand.MAIN_HAND, save);
 		return Items.BONE_MEAL.useOn(fakeContext);
 	}
 

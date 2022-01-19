@@ -8,14 +8,14 @@
  */
 package vazkii.psi.common.crafting.recipe;
 
-import net.minecraft.inventory.CraftingInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.item.crafting.SpecialRecipe;
-import net.minecraft.item.crafting.SpecialRecipeSerializer;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
+import net.minecraft.world.inventory.CraftingContainer;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.CustomRecipe;
+import net.minecraft.world.item.crafting.SimpleRecipeSerializer;
+import net.minecraft.core.NonNullList;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.Level;
 
 import vazkii.psi.api.spell.ISpellAcceptor;
 import vazkii.psi.api.spell.Spell;
@@ -23,15 +23,15 @@ import vazkii.psi.common.item.ItemSpellDrive;
 
 import javax.annotation.Nonnull;
 
-public class BulletToDriveRecipe extends SpecialRecipe {
-	public static final SpecialRecipeSerializer<BulletToDriveRecipe> SERIALIZER = new SpecialRecipeSerializer<>(BulletToDriveRecipe::new);
+public class BulletToDriveRecipe extends CustomRecipe {
+	public static final SimpleRecipeSerializer<BulletToDriveRecipe> SERIALIZER = new SimpleRecipeSerializer<>(BulletToDriveRecipe::new);
 
 	public BulletToDriveRecipe(ResourceLocation id) {
 		super(id);
 	}
 
 	@Override
-	public boolean matches(@Nonnull CraftingInventory inv, @Nonnull World world) {
+	public boolean matches(@Nonnull CraftingContainer inv, @Nonnull Level world) {
 		boolean foundSource = false;
 		boolean foundTarget = false;
 
@@ -59,7 +59,7 @@ public class BulletToDriveRecipe extends SpecialRecipe {
 
 	@Nonnull
 	@Override
-	public ItemStack assemble(@Nonnull CraftingInventory inv) {
+	public ItemStack assemble(@Nonnull CraftingContainer inv) {
 		Spell source = null;
 		ItemStack target = ItemStack.EMPTY;
 
@@ -80,7 +80,7 @@ public class BulletToDriveRecipe extends SpecialRecipe {
 	}
 
 	@Override
-	public NonNullList<ItemStack> getRemainingItems(CraftingInventory inv) {
+	public NonNullList<ItemStack> getRemainingItems(CraftingContainer inv) {
 		NonNullList<ItemStack> list = NonNullList.withSize(inv.getContainerSize(), ItemStack.EMPTY);
 
 		for (int i = 0; i < list.size(); ++i) {
@@ -96,7 +96,7 @@ public class BulletToDriveRecipe extends SpecialRecipe {
 
 	@Nonnull
 	@Override
-	public IRecipeSerializer<?> getSerializer() {
+	public RecipeSerializer<?> getSerializer() {
 		return SERIALIZER;
 	}
 

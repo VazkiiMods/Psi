@@ -8,19 +8,19 @@
  */
 package vazkii.psi.client.render.entity;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 
-import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.RenderState;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.vector.Matrix4f;
-import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.resources.ResourceLocation;
+import com.mojang.math.Matrix4f;
+import com.mojang.math.Vector3f;
 
 import org.lwjgl.opengl.GL11;
 
@@ -36,23 +36,23 @@ public class RenderSpellCircle extends EntityRenderer<EntitySpellCircle> {
 	static {
 		for (int i = 0; i < LAYERS.length; i++) {
 			ResourceLocation texture = new ResourceLocation(String.format(LibResources.MISC_SPELL_CIRCLE, i));
-			RenderType.State glState = RenderType.State.builder().setTextureState(new RenderState.TextureState(texture, false, false))
-					.setCullState(new RenderState.CullState(false))
-					.setAlphaState(new RenderState.AlphaState(0.004F))
-					.setLightmapState(new RenderState.LightmapState(true))
+			RenderType.CompositeState glState = RenderType.CompositeState.builder().setTextureState(new RenderStateShard.TextureStateShard(texture, false, false))
+					.setCullState(new RenderStateShard.CullStateShard(false))
+					.setAlphaState(new RenderStateShard.AlphaStateShard(0.004F))
+					.setLightmapState(new RenderStateShard.LightmapStateShard(true))
 					.createCompositeState(true);
-			LAYERS[i] = RenderType.create(LibMisc.MOD_ID + ":spell_circle_" + i, DefaultVertexFormats.POSITION_COLOR_TEX_LIGHTMAP, GL11.GL_QUADS, 64, false, false, glState);
+			LAYERS[i] = RenderType.create(LibMisc.MOD_ID + ":spell_circle_" + i, DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP, GL11.GL_QUADS, 64, false, false, glState);
 		}
 	}
 
 	private static final float BRIGHTNESS_FACTOR = 0.7F;
 
-	public RenderSpellCircle(EntityRendererManager renderManager) {
+	public RenderSpellCircle(EntityRenderDispatcher renderManager) {
 		super(renderManager);
 	}
 
 	@Override
-	public void render(EntitySpellCircle entity, float entityYaw, float partialTicks, MatrixStack ms, IRenderTypeBuffer buffers, int light) {
+	public void render(EntitySpellCircle entity, float entityYaw, float partialTicks, PoseStack ms, MultiBufferSource buffers, int light) {
 		ms.pushPose();
 		ItemStack colorizer = entity.getEntityData().get(EntitySpellCircle.COLORIZER_DATA);
 		int color = Psi.proxy.getColorForColorizer(colorizer);
@@ -65,7 +65,7 @@ public class RenderSpellCircle extends EntityRenderer<EntitySpellCircle> {
 		ms.popPose();
 	}
 
-	public static void renderSpellCircle(float alive, float scale, float horizontalScale, float xDir, float yDir, float zDir, int color, MatrixStack ms, IRenderTypeBuffer buffers) {
+	public static void renderSpellCircle(float alive, float scale, float horizontalScale, float xDir, float yDir, float zDir, int color, PoseStack ms, MultiBufferSource buffers) {
 
 		ms.pushPose();
 		double ratio = 0.0625 * horizontalScale;
@@ -115,7 +115,7 @@ public class RenderSpellCircle extends EntityRenderer<EntitySpellCircle> {
 			ms.pushPose();
 			ms.mulPose(Vector3f.ZP.rotationDegrees(i == 0 ? -alive : alive));
 
-			IVertexBuilder buffer = buffers.getBuffer(LAYERS[i]);
+			VertexConsumer buffer = buffers.getBuffer(LAYERS[i]);
 			Matrix4f mat = ms.last().pose();
 			int fullbright = 0xF000F0;
 			buffer.vertex(mat, -32, 32, 0).color(rValue, gValue, bValue, 255).uv(0, 1).uv2(fullbright).endVertex();

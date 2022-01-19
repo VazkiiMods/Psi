@@ -8,11 +8,11 @@
  */
 package vazkii.psi.common.item.tool;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.Direction;
+import net.minecraft.util.Mth;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
@@ -38,7 +38,7 @@ public class ToolSocketable implements ICapabilityProvider, ISocketable, IPsiBar
 
 	public ToolSocketable(ItemStack tool, int slots) {
 		this.tool = tool;
-		this.slots = MathHelper.clamp(slots, 1, MAX_ASSEMBLER_SLOTS - 1);
+		this.slots = Mth.clamp(slots, 1, MAX_ASSEMBLER_SLOTS - 1);
 		this.capOptional = LazyOptional.of(() -> this);
 	}
 
@@ -70,7 +70,7 @@ public class ToolSocketable implements ICapabilityProvider, ISocketable, IPsiBar
 	@Override
 	public ItemStack getBulletInSocket(int slot) {
 		String name = IPsimetalTool.TAG_BULLET_PREFIX + slot;
-		CompoundNBT cmp = tool.getOrCreateTag().getCompound(name);
+		CompoundTag cmp = tool.getOrCreateTag().getCompound(name);
 
 		if (cmp.isEmpty()) {
 			return ItemStack.EMPTY;
@@ -82,7 +82,7 @@ public class ToolSocketable implements ICapabilityProvider, ISocketable, IPsiBar
 	@Override
 	public void setBulletInSocket(int slot, ItemStack bullet) {
 		String name = IPsimetalTool.TAG_BULLET_PREFIX + slot;
-		CompoundNBT cmp = new CompoundNBT();
+		CompoundTag cmp = new CompoundTag();
 
 		if (!bullet.isEmpty()) {
 			cmp = bullet.save(cmp);
@@ -112,7 +112,7 @@ public class ToolSocketable implements ICapabilityProvider, ISocketable, IPsiBar
 	}
 
 	@Override
-	public void setSpell(PlayerEntity player, Spell spell) {
+	public void setSpell(Player player, Spell spell) {
 		int slot = getSelectedSlot();
 		ItemStack bullet = getBulletInSocket(slot);
 		if (!bullet.isEmpty() && ISpellAcceptor.isAcceptor(bullet)) {

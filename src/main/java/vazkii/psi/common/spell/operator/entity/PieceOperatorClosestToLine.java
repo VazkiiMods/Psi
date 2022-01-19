@@ -8,8 +8,8 @@
  */
 package vazkii.psi.common.spell.operator.entity;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.phys.Vec3;
 
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.Spell;
@@ -62,9 +62,9 @@ public class PieceOperatorClosestToLine extends PieceOperator {
 		if (a.equals(b)) {
 			return closestToPoint(a, list);
 		}
-		Vector3d start = a.toVec3D();
-		Vector3d end = b.toVec3D();
-		Vector3d diff = end.subtract(start).normalize();
+		Vec3 start = a.toVec3D();
+		Vec3 end = b.toVec3D();
+		Vec3 diff = end.subtract(start).normalize();
 		double minDot = diff.dot(start);
 		double maxDot = diff.dot(end);
 
@@ -72,7 +72,7 @@ public class PieceOperatorClosestToLine extends PieceOperator {
 		Entity found = null;
 
 		for (Entity e : list) {
-			Vector3d pos = e.position();
+			Vec3 pos = e.position();
 			double dot = diff.dot(pos);
 			double dist;
 			if (dot <= minDot) {

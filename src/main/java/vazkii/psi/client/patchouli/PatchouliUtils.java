@@ -8,9 +8,9 @@
  */
 package vazkii.psi.client.patchouli;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.network.chat.Component;
 
 import vazkii.patchouli.api.IComponentRenderContext;
 import vazkii.patchouli.api.IVariable;
@@ -67,7 +67,7 @@ public class PatchouliUtils {
 	 * Sets the tooltip to the passed spell piece's tooltip.
 	 */
 	public static void setPieceTooltip(IComponentRenderContext context, SpellPiece piece) {
-		List<ITextComponent> tooltip = new ArrayList<>();
+		List<Component> tooltip = new ArrayList<>();
 		piece.getTooltip(tooltip);
 		context.setHoverTooltipComponents(tooltip);
 	}

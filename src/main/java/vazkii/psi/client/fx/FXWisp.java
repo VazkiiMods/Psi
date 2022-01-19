@@ -11,26 +11,26 @@ package vazkii.psi.client.fx;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.IParticleRenderType;
-import net.minecraft.client.particle.SpriteTexturedParticle;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.texture.AtlasTexture;
+import net.minecraft.client.particle.ParticleRenderType;
+import net.minecraft.client.particle.TextureSheetParticle;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.Tesselator;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.client.world.ClientWorld;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import net.minecraft.client.multiplayer.ClientLevel;
 
 import org.lwjgl.opengl.GL11;
 
 import javax.annotation.Nonnull;
 
 // https://github.com/Vazkii/Botania/blob/1.15/src/main/java/vazkii/botania/client/fx/FXWisp.java
-public class FXWisp extends SpriteTexturedParticle {
+public class FXWisp extends TextureSheetParticle {
 
 	private final float moteParticleScale;
 	private final int moteHalfLife;
 
-	public FXWisp(ClientWorld world, double d, double d1, double d2, double xSpeed, double ySpeed, double zSpeed,
+	public FXWisp(ClientLevel world, double d, double d1, double d2, double xSpeed, double ySpeed, double zSpeed,
 			float size, float red, float green, float blue, float maxAgeMul) {
 		super(world, d, d1, d2, 0, 0, 0);
 		// super applies wiggle to motion so set it here instead
@@ -73,7 +73,7 @@ public class FXWisp extends SpriteTexturedParticle {
 
 	@Nonnull
 	@Override
-	public IParticleRenderType getRenderType() {
+	public ParticleRenderType getRenderType() {
 		return NORMAL_RENDER;
 	}
 
@@ -106,26 +106,26 @@ public class FXWisp extends SpriteTexturedParticle {
 		RenderSystem.alphaFunc(GL11.GL_GREATER, 0.003921569F);
 		RenderSystem.disableLighting();
 
-		textureManager.bind(AtlasTexture.LOCATION_PARTICLES);
-		textureManager.getTexture(AtlasTexture.LOCATION_PARTICLES).setFilter(true, false);
-		bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.PARTICLE);
+		textureManager.bind(TextureAtlas.LOCATION_PARTICLES);
+		textureManager.getTexture(TextureAtlas.LOCATION_PARTICLES).setFilter(true, false);
+		bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormat.PARTICLE);
 	}
 
 	private static void endRenderCommon() {
-		Minecraft.getInstance().textureManager.getTexture(AtlasTexture.LOCATION_PARTICLES).restoreLastBlurMipmap();
+		Minecraft.getInstance().textureManager.getTexture(TextureAtlas.LOCATION_PARTICLES).restoreLastBlurMipmap();
 		RenderSystem.alphaFunc(GL11.GL_GREATER, 0.1F);
 		RenderSystem.disableBlend();
 		RenderSystem.depthMask(true);
 	}
 
-	private static final IParticleRenderType NORMAL_RENDER = new IParticleRenderType() {
+	private static final ParticleRenderType NORMAL_RENDER = new ParticleRenderType() {
 		@Override
 		public void begin(BufferBuilder bufferBuilder, TextureManager textureManager) {
 			beginRenderCommon(bufferBuilder, textureManager);
 		}
 
 		@Override
-		public void end(Tessellator tessellator) {
+		public void end(Tesselator tessellator) {
 			tessellator.end();
 			endRenderCommon();
 		}

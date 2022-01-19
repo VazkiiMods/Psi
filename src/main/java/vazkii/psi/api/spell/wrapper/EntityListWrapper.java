@@ -8,7 +8,7 @@
  */
 package vazkii.psi.api.spell.wrapper;
 
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 
 import javax.annotation.Nonnull;
 

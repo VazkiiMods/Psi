@@ -12,9 +12,9 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.texture.NativeImage;
-import net.minecraft.util.ScreenShotHelper;
-import net.minecraft.util.Util;
+import com.mojang.blaze3d.platform.NativeImage;
+import net.minecraft.client.Screenshot;
+import net.minecraft.Util;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -110,7 +110,7 @@ public final class SharingHelper {
 		int screenWidth = mc.getWindow().getScreenWidth();
 		int screenHeight = mc.getWindow().getScreenHeight();
 
-		NativeImage image = ScreenShotHelper.takeScreenshot(screenWidth, screenHeight, mc.getMainRenderTarget());
+		NativeImage image = Screenshot.takeScreenshot(screenWidth, screenHeight, mc.getMainRenderTarget());
 		byte[] bArray = image.asByteArray();
 		return Base64.getEncoder().encodeToString(bArray);
 	}

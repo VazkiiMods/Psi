@@ -8,8 +8,8 @@
  */
 package vazkii.psi.common.item;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.ItemStack;
 
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.EnumCADComponent;
@@ -19,7 +19,7 @@ import vazkii.psi.common.entity.EntitySpellProjectile;
 
 import java.util.ArrayList;
 
-import net.minecraft.item.Item.Properties;
+import net.minecraft.world.item.Item.Properties;
 
 public class ItemProjectileSpellBullet extends ItemSpellBullet {
 

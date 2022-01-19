@@ -8,10 +8,10 @@
  */
 package vazkii.psi.api.spell;
 
-import net.minecraft.util.Util;
-import net.minecraft.util.text.Style;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.Util;
+import net.minecraft.network.chat.Style;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TranslatableComponent;
 
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.internal.IPlayerData;
@@ -91,7 +91,7 @@ public class CompiledSpell {
 			}
 		} catch (SpellRuntimeException e) {
 			if (!context.shouldSuppressErrors()) {
-				context.caster.sendMessage(new TranslationTextComponent(e.getMessage()).setStyle(Style.EMPTY.withColor(TextFormatting.RED)), Util.NIL_UUID);
+				context.caster.sendMessage(new TranslatableComponent(e.getMessage()).setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), Util.NIL_UUID);
 
 				int x = context.cspell.currentAction.piece.x + 1;
 				int y = context.cspell.currentAction.piece.y + 1;

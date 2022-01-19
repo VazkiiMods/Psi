@@ -8,8 +8,8 @@
  */
 package vazkii.psi.api.cad;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 
 /**
  * Base interface for an item that can control other ISocketables, such as the
@@ -21,10 +21,10 @@ public interface ISocketableController {
 	 * Returns an array of stacks this item can control. Can't be null.
 	 * Elements can be empty. The item of every non-empty stack must provide an ISocketableCapability.
 	 */
-	ItemStack[] getControlledStacks(PlayerEntity player, ItemStack stack);
+	ItemStack[] getControlledStacks(Player player, ItemStack stack);
 
 	int getDefaultControlSlot(ItemStack stack);
 
-	void setSelectedSlot(PlayerEntity player, ItemStack stack, int controlSlot, int slot);
+	void setSelectedSlot(Player player, ItemStack stack, int controlSlot, int slot);
 
 }

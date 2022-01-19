@@ -8,11 +8,11 @@
  */
 package vazkii.psi.common.spell.operator.entity;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
@@ -59,9 +59,9 @@ public class PieceOperatorFocusedEntity extends PieceOperator {
 
 		final double finalDistance = 32;
 		double distance = finalDistance;
-		RayTraceResult pos = PieceOperatorVectorRaycast.raycast(e, finalDistance);
-		Vector3d positionVector = e.position();
-		if (e instanceof PlayerEntity) {
+		HitResult pos = PieceOperatorVectorRaycast.raycast(e, finalDistance);
+		Vec3 positionVector = e.position();
+		if (e instanceof Player) {
 			positionVector = positionVector.add(0, e.getEyeHeight(), 0);
 		}
 
@@ -69,8 +69,8 @@ public class PieceOperatorFocusedEntity extends PieceOperator {
 			distance = pos.getLocation().distanceTo(positionVector);
 		}
 
-		Vector3d lookVector = e.getLookAngle();
-		Vector3d reachVector = positionVector.add(lookVector.x * finalDistance, lookVector.y * finalDistance, lookVector.z * finalDistance);
+		Vec3 lookVector = e.getLookAngle();
+		Vec3 reachVector = positionVector.add(lookVector.x * finalDistance, lookVector.y * finalDistance, lookVector.z * finalDistance);
 
 		Entity lookedEntity = null;
 		List<Entity> entitiesInBoundingBox = e.getCommandSenderWorld().getEntities(e, e.getBoundingBox().inflate(lookVector.x * finalDistance, lookVector.y * finalDistance, lookVector.z * finalDistance).inflate(1F, 1F, 1F));
@@ -79,8 +79,8 @@ public class PieceOperatorFocusedEntity extends PieceOperator {
 		for (Entity entity : entitiesInBoundingBox) {
 			if (entity.isPickable()) {
 				float collisionBorderSize = entity.getPickRadius();
-				AxisAlignedBB hitbox = entity.getBoundingBox().inflate(collisionBorderSize, collisionBorderSize, collisionBorderSize);
-				Optional<Vector3d> interceptPosition = hitbox.clip(positionVector, reachVector);
+				AABB hitbox = entity.getBoundingBox().inflate(collisionBorderSize, collisionBorderSize, collisionBorderSize);
+				Optional<Vec3> interceptPosition = hitbox.clip(positionVector, reachVector);
 
 				if (hitbox.contains(positionVector)) {
 					if (0.0D < minDistance || minDistance == 0.0D) {

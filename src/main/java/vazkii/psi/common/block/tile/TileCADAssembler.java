@@ -8,21 +8,21 @@
  */
 package vazkii.psi.common.block.tile;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.INamedContainerProvider;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
-import net.minecraft.network.play.server.SUpdateTileEntityPacket;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants;
@@ -54,9 +54,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class TileCADAssembler extends TileEntity implements ITileCADAssembler, INamedContainerProvider {
+public class TileCADAssembler extends BlockEntity implements ITileCADAssembler, MenuProvider {
 	@ObjectHolder(LibMisc.PREFIX_MOD + LibBlockNames.CAD_ASSEMBLER)
-	public static TileEntityType<TileCADAssembler> TYPE;
+	public static BlockEntityType<TileCADAssembler> TYPE;
 
 	private final IItemHandlerModifiable inventory = new ItemStackHandler(6) {
 		@Override
@@ -139,7 +139,7 @@ public class TileCADAssembler extends TileEntity implements ITileCADAssembler, I
 	}
 
 	@Override
-	public ItemStack getCachedCAD(PlayerEntity player) {
+	public ItemStack getCachedCAD(Player player) {
 		ItemStack cad = cachedCAD;
 		if (cad == null) {
 			ItemStack assembly = getStackForComponent(EnumCADComponent.ASSEMBLY);
@@ -220,7 +220,7 @@ public class TileCADAssembler extends TileEntity implements ITileCADAssembler, I
 			inventory.setStackInSlot(i, ItemStack.EMPTY);
 		}
 		if (!level.isClientSide) {
-			level.playSound(null, getBlockPos().getX() + 0.5, getBlockPos().getY() + 0.5, getBlockPos().getZ() + 0.5, PsiSoundHandler.cadCreate, SoundCategory.BLOCKS, 0.5F, 1F);
+			level.playSound(null, getBlockPos().getX() + 0.5, getBlockPos().getY() + 0.5, getBlockPos().getZ() + 0.5, PsiSoundHandler.cadCreate, SoundSource.BLOCKS, 0.5F, 1F);
 		}
 	}
 
@@ -235,7 +235,7 @@ public class TileCADAssembler extends TileEntity implements ITileCADAssembler, I
 
 	@Nonnull
 	@Override
-	public CompoundNBT save(@Nonnull CompoundNBT tag) {
+	public CompoundTag save(@Nonnull CompoundTag tag) {
 		tag = super.save(tag);
 		tag.putInt("version", 1);
 		tag.put("Items", CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.writeNBT(inventory, null));
@@ -243,15 +243,15 @@ public class TileCADAssembler extends TileEntity implements ITileCADAssembler, I
 	}
 
 	@Override
-	public void load(BlockState state, CompoundNBT cmp) {
+	public void load(BlockState state, CompoundTag cmp) {
 		super.load(state, cmp);
 		readPacketNBT(cmp);
 	}
 
-	public void readPacketNBT(@Nonnull CompoundNBT tag) {
+	public void readPacketNBT(@Nonnull CompoundTag tag) {
 		// Migrate old CAD assemblers to the new format
 		if (tag.getInt("version") < 1) {
-			ListNBT items = tag.getList("Items", 10);
+			ListTag items = tag.getList("Items", 10);
 			for (int i = 0; i < inventory.getSlots(); i++) {
 				inventory.setStackInSlot(i, ItemStack.EMPTY);
 			}
@@ -298,25 +298,25 @@ public class TileCADAssembler extends TileEntity implements ITileCADAssembler, I
 	}
 
 	@Override
-	public SUpdateTileEntityPacket getUpdatePacket() {
-		return new SUpdateTileEntityPacket(getBlockPos(), -1, getUpdateTag());
+	public ClientboundBlockEntityDataPacket getUpdatePacket() {
+		return new ClientboundBlockEntityDataPacket(getBlockPos(), -1, getUpdateTag());
 	}
 
 	@Nonnull
 	@Override
-	public CompoundNBT getUpdateTag() {
-		return save(new CompoundNBT());
+	public CompoundTag getUpdateTag() {
+		return save(new CompoundTag());
 	}
 
 	@Nonnull
 	@Override
-	public ITextComponent getDisplayName() {
-		return new TranslationTextComponent(ModBlocks.cadAssembler.getDescriptionId());
+	public Component getDisplayName() {
+		return new TranslatableComponent(ModBlocks.cadAssembler.getDescriptionId());
 	}
 
 	@Nullable
 	@Override
-	public Container createMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
+	public AbstractContainerMenu createMenu(int i, Inventory playerInventory, Player playerEntity) {
 		return new ContainerCADAssembler(i, playerInventory, this);
 	}
 }

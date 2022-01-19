@@ -9,7 +9,7 @@
 package vazkii.psi.data;
 
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.ItemTagsProvider;
+import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraftforge.common.Tags;
 
 import vazkii.psi.common.item.base.ModItems;

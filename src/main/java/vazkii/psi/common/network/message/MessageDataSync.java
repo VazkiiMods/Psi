@@ -8,9 +8,9 @@
  */
 package vazkii.psi.common.network.message;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 import vazkii.psi.common.Psi;
@@ -21,24 +21,24 @@ import java.util.function.Supplier;
 
 public class MessageDataSync {
 
-	private final CompoundNBT cmp;
+	private final CompoundTag cmp;
 
 	public MessageDataSync(PlayerData data) {
-		cmp = new CompoundNBT();
+		cmp = new CompoundTag();
 		data.writeToNBT(cmp);
 	}
 
-	public MessageDataSync(PacketBuffer buf) {
+	public MessageDataSync(FriendlyByteBuf buf) {
 		cmp = buf.readNbt();
 	}
 
-	public void encode(PacketBuffer buf) {
+	public void encode(FriendlyByteBuf buf) {
 		buf.writeNbt(cmp);
 	}
 
 	public boolean receive(Supplier<NetworkEvent.Context> context) {
 		context.get().enqueueWork(() -> {
-			PlayerEntity player = Psi.proxy.getClientPlayer();
+			Player player = Psi.proxy.getClientPlayer();
 			if (player != null) {
 				PlayerData data = PlayerDataHandler.get(player);
 				data.lastAvailablePsi = data.availablePsi;

@@ -8,30 +8,30 @@
  */
 package vazkii.psi.common.item;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.item.*;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.Util;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.IFormattableTextComponent;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.Style;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.core.NonNullList;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.Util;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
@@ -90,6 +90,12 @@ import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.context.UseOnContext;
+
 public class ItemCAD extends Item implements ICAD {
 
 	// Legacy tags
@@ -122,7 +128,7 @@ public class ItemCAD extends Item implements ICAD {
 
 	@Nullable
 	@Override
-	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
+	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
 		CADData data = new CADData(stack);
 		if (nbt != null && nbt.contains("Parent", Constants.NBT.TAG_COMPOUND)) {
 			data.deserializeNBT(nbt.getCompound("Parent"));
@@ -131,8 +137,8 @@ public class ItemCAD extends Item implements ICAD {
 	}
 
 	@Override
-	public void inventoryTick(ItemStack stack, World world, Entity entityIn, int itemSlot, boolean isSelected) {
-		CompoundNBT compound = stack.getOrCreateTag();
+	public void inventoryTick(ItemStack stack, Level world, Entity entityIn, int itemSlot, boolean isSelected) {
+		CompoundTag compound = stack.getOrCreateTag();
 
 		stack.getCapability(PsiAPI.CAD_DATA_CAPABILITY).ifPresent(data -> {
 			if (compound.contains(TAG_TIME_LEGACY, Constants.NBT.TAG_ANY_NUMERIC)) {
@@ -152,7 +158,7 @@ public class ItemCAD extends Item implements ICAD {
 			for (String key : keys) {
 				Matcher matcher = VECTOR_PREFIX_PATTERN.matcher(key);
 				if (matcher.find()) {
-					CompoundNBT vec = compound.getCompound(key);
+					CompoundTag vec = compound.getCompound(key);
 					compound.remove(key);
 					int memory = Integer.parseInt(matcher.group(1));
 					Vector3 vector = new Vector3(vec.getDouble(TAG_X_LEGACY),
@@ -162,8 +168,8 @@ public class ItemCAD extends Item implements ICAD {
 				}
 			}
 
-			if (entityIn instanceof ServerPlayerEntity && data.isDirty()) {
-				ServerPlayerEntity player = (ServerPlayerEntity) entityIn;
+			if (entityIn instanceof ServerPlayer && data.isDirty()) {
+				ServerPlayer player = (ServerPlayer) entityIn;
 				MessageRegister.sendToPlayer(new MessageCADDataSync(data), player);
 				data.markDirty(false);
 			}
@@ -171,27 +177,27 @@ public class ItemCAD extends Item implements ICAD {
 	}
 
 	@Override
-	public ActionResultType useOn(ItemUseContext ctx) {
-		World worldIn = ctx.getLevel();
-		Hand hand = ctx.getHand();
+	public InteractionResult useOn(UseOnContext ctx) {
+		Level worldIn = ctx.getLevel();
+		InteractionHand hand = ctx.getHand();
 		BlockPos pos = ctx.getClickedPos();
-		PlayerEntity playerIn = ctx.getPlayer();
+		Player playerIn = ctx.getPlayer();
 		ItemStack stack = playerIn.getItemInHand(hand);
 		Block block = worldIn.getBlockState(pos).getBlock();
-		return block == ModBlocks.programmer ? ((BlockProgrammer) block).setSpell(worldIn, pos, playerIn, stack) : ActionResultType.PASS;
+		return block == ModBlocks.programmer ? ((BlockProgrammer) block).setSpell(worldIn, pos, playerIn, stack) : InteractionResult.PASS;
 	}
 
 	@Nonnull
 	@Override
-	public ActionResult<ItemStack> use(World worldIn, PlayerEntity playerIn, @Nonnull Hand hand) {
+	public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, @Nonnull InteractionHand hand) {
 		ItemStack itemStackIn = playerIn.getItemInHand(hand);
 		PlayerData data = PlayerDataHandler.get(playerIn);
 		ItemStack playerCad = PsiAPI.getPlayerCAD(playerIn);
 		if (playerCad != itemStackIn) {
 			if (!worldIn.isClientSide) {
-				playerIn.sendMessage(new TranslationTextComponent("psimisc.multiple_cads").setStyle(Style.EMPTY.withColor(TextFormatting.RED)), Util.NIL_UUID);
+				playerIn.sendMessage(new TranslatableComponent("psimisc.multiple_cads").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), Util.NIL_UUID);
 			}
-			return new ActionResult<>(ActionResultType.CONSUME, itemStackIn);
+			return new InteractionResultHolder<>(InteractionResult.CONSUME, itemStackIn);
 		}
 		ISocketable sockets = getSocketable(playerCad);
 
@@ -206,7 +212,7 @@ public class ItemCAD extends Item implements ICAD {
 		boolean did = cast(worldIn, playerIn, data, bullet, itemStackIn, 40, 25, 0.5F, ctx -> ctx.castFrom = hand).isPresent();
 
 		if (!data.overflowed && bullet.isEmpty() && craft(playerCad, playerIn, null)) {
-			worldIn.playSound(null, playerIn.getX(), playerIn.getY(), playerIn.getZ(), PsiSoundHandler.cadShoot, SoundCategory.PLAYERS, 0.5F, (float) (0.5 + Math.random() * 0.5));
+			worldIn.playSound(null, playerIn.getX(), playerIn.getY(), playerIn.getZ(), PsiSoundHandler.cadShoot, SoundSource.PLAYERS, 0.5F, (float) (0.5 + Math.random() * 0.5));
 			data.deductPsi(100, 60, true);
 
 			if (!data.hasAdvancement(LibPieceGroups.FAKE_LEVEL_PSIDUST)) {
@@ -215,14 +221,14 @@ public class ItemCAD extends Item implements ICAD {
 			did = true;
 		}
 
-		return new ActionResult<>(did ? ActionResultType.CONSUME : ActionResultType.PASS, itemStackIn);
+		return new InteractionResultHolder<>(did ? InteractionResult.CONSUME : InteractionResult.PASS, itemStackIn);
 	}
 
-	public static Optional<ArrayList<Entity>> cast(World world, PlayerEntity player, PlayerData data, ItemStack bullet, ItemStack cad, int cd, int particles, float sound, Consumer<SpellContext> predicate) {
+	public static Optional<ArrayList<Entity>> cast(Level world, Player player, PlayerData data, ItemStack bullet, ItemStack cad, int cd, int particles, float sound, Consumer<SpellContext> predicate) {
 		return cast(world, player, data, bullet, cad, cd, particles, sound, predicate, 0);
 	}
 
-	public static Optional<ArrayList<Entity>> cast(World world, PlayerEntity player, PlayerData data, ItemStack bullet, ItemStack cad, int cd, int particles, float sound, Consumer<SpellContext> predicate, int reservoir) {
+	public static Optional<ArrayList<Entity>> cast(Level world, Player player, PlayerData data, ItemStack bullet, ItemStack cad, int cd, int particles, float sound, Consumer<SpellContext> predicate, int reservoir) {
 		if (!data.overflowed && data.getAvailablePsi() > 0 && !cad.isEmpty() && !bullet.isEmpty() && ISpellAcceptor.hasSpell(bullet) && isTruePlayer(player)) {
 			ISpellAcceptor spellContainer = ISpellAcceptor.acceptor(bullet);
 			Spell spell = spellContainer.getSpell();
@@ -238,7 +244,7 @@ public class ItemCAD extends Item implements ICAD {
 					if (MinecraftForge.EVENT_BUS.post(event)) {
 						String cancelMessage = event.getCancellationMessage();
 						if (cancelMessage != null && !cancelMessage.isEmpty()) {
-							player.sendMessage(new TranslationTextComponent(cancelMessage).setStyle(Style.EMPTY.withColor(TextFormatting.RED)), Util.NIL_UUID);
+							player.sendMessage(new TranslatableComponent(cancelMessage).setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), Util.NIL_UUID);
 						}
 						return Optional.empty();
 					}
@@ -257,7 +263,7 @@ public class ItemCAD extends Item implements ICAD {
 
 					if (cost != 0 && sound > 0) {
 						if (!world.isClientSide) {
-							world.playSound(null, player.getX(), player.getY(), player.getZ(), PsiSoundHandler.cadShoot, SoundCategory.PLAYERS, sound, (float) (0.5 + Math.random() * 0.5));
+							world.playSound(null, player.getX(), player.getY(), player.getZ(), PsiSoundHandler.cadShoot, SoundSource.PLAYERS, sound, (float) (0.5 + Math.random() * 0.5));
 						} else {
 							int color = Psi.proxy.getColorForCAD(cad);
 							float r = PsiRenderHelper.r(color) / 255F;
@@ -294,7 +300,7 @@ public class ItemCAD extends Item implements ICAD {
 					MinecraftForge.EVENT_BUS.post(new SpellCastEvent(spell, context, player, data, cad, bullet));
 					return Optional.of(SpellEntities);
 				} else if (!world.isClientSide) {
-					player.sendMessage(new TranslationTextComponent("psimisc.weak_cad").setStyle(Style.EMPTY.withColor(TextFormatting.RED)), Util.NIL_UUID);
+					player.sendMessage(new TranslatableComponent("psimisc.weak_cad").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), Util.NIL_UUID);
 				}
 			}
 		}
@@ -303,8 +309,8 @@ public class ItemCAD extends Item implements ICAD {
 	}
 
 	@Override
-	public boolean craft(ItemStack cad, PlayerEntity player, PieceCraftingTrick craftingTrick) {
-		World world = player.level;
+	public boolean craft(ItemStack cad, Player player, PieceCraftingTrick craftingTrick) {
+		Level world = player.level;
 		if (world.isClientSide) {
 			return false;
 		}
@@ -332,7 +338,7 @@ public class ItemCAD extends Item implements ICAD {
 					int dropCount = world.getRandom().nextInt(32) + 32;
 					ItemEntity drop = new ItemEntity(world, item.getX(), item.getY(), item.getZ(),
 							new ItemStack(outCopy.getItem(), dropCount));
-					Vector3d motion = item.getDeltaMovement();
+					Vec3 motion = item.getDeltaMovement();
 					drop.setDeltaMovement(motion.x() + (world.getRandom().nextFloat() - 0.5D) / 5,
 							motion.y() + (world.getRandom().nextFloat()) / 10,
 							motion.z() + (world.getRandom().nextFloat() - 0.5D) / 5);
@@ -386,11 +392,11 @@ public class ItemCAD extends Item implements ICAD {
 	}
 
 	public static boolean isTruePlayer(Entity e) {
-		if (!(e instanceof PlayerEntity)) {
+		if (!(e instanceof Player)) {
 			return false;
 		}
 
-		PlayerEntity player = (PlayerEntity) e;
+		Player player = (Player) e;
 
 		String name = player.getName().getString();
 		return !(player instanceof FakePlayer || FAKE_PLAYER_PATTERN.matcher(name).matches());
@@ -427,7 +433,7 @@ public class ItemCAD extends Item implements ICAD {
 	@Override
 	public ItemStack getComponentInSlot(ItemStack stack, EnumCADComponent type) {
 		String name = TAG_COMPONENT_PREFIX + type.name();
-		CompoundNBT cmp = stack.getOrCreateTag().getCompound(name);
+		CompoundTag cmp = stack.getOrCreateTag().getCompound(name);
 
 		if (cmp.isEmpty()) {
 			return ItemStack.EMPTY;
@@ -548,7 +554,7 @@ public class ItemCAD extends Item implements ICAD {
 	}
 
 	@Override
-	public int getHarvestLevel(ItemStack stack, ToolType tool, @Nullable PlayerEntity player, @Nullable BlockState blockState) {
+	public int getHarvestLevel(ItemStack stack, ToolType tool, @Nullable Player player, @Nullable BlockState blockState) {
 		if (!PieceTrickBreakBlock.doingHarvestCheck.get()) {
 			return -1;
 		}
@@ -588,7 +594,7 @@ public class ItemCAD extends Item implements ICAD {
 	}
 
 	@Override
-	public void fillItemCategory(@Nonnull ItemGroup tab, @Nonnull NonNullList<ItemStack> subItems) {
+	public void fillItemCategory(@Nonnull CreativeModeTab tab, @Nonnull NonNullList<ItemStack> subItems) {
 		if (!allowdedIn(tab)) {
 			return;
 		}
@@ -636,19 +642,19 @@ public class ItemCAD extends Item implements ICAD {
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public void appendHoverText(ItemStack stack, @Nullable World playerin, List<ITextComponent> tooltip, ITooltipFlag advanced) {
+	public void appendHoverText(ItemStack stack, @Nullable Level playerin, List<Component> tooltip, TooltipFlag advanced) {
 		TooltipHelper.tooltipIfShift(tooltip, () -> {
-			ITextComponent componentName = ISocketable.getSocketedItemName(stack, "psimisc.none");
-			tooltip.add(new TranslationTextComponent("psimisc.spell_selected", componentName));
+			Component componentName = ISocketable.getSocketedItemName(stack, "psimisc.none");
+			tooltip.add(new TranslatableComponent("psimisc.spell_selected", componentName));
 
 			for (EnumCADComponent componentType : EnumCADComponent.class.getEnumConstants()) {
 				ItemStack componentStack = getComponentInSlot(stack, componentType);
-				ITextComponent name = new TranslationTextComponent("psimisc.none");
+				Component name = new TranslatableComponent("psimisc.none");
 				if (!componentStack.isEmpty()) {
 					name = componentStack.getHoverName();
 				}
 
-				IFormattableTextComponent componentTypeName = new TranslationTextComponent(componentType.getName()).withStyle(TextFormatting.GREEN);
+				MutableComponent componentTypeName = new TranslatableComponent(componentType.getName()).withStyle(ChatFormatting.GREEN);
 				tooltip.add(componentTypeName.append(": ").append(name));
 
 				for (EnumCADStat stat : EnumCADStat.class.getEnumConstants()) {
@@ -657,7 +663,7 @@ public class ItemCAD extends Item implements ICAD {
 						int statVal = getStatValue(stack, stat);
 						String statValStr = statVal == -1 ? "\u221E" : "" + statVal;
 
-						tooltip.add(new TranslationTextComponent(shrt).withStyle(TextFormatting.AQUA).append(": " + statValStr));
+						tooltip.add(new TranslatableComponent(shrt).withStyle(ChatFormatting.AQUA).append(": " + statValStr));
 					}
 				}
 			}

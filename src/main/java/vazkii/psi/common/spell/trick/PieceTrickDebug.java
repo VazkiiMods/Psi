@@ -8,11 +8,11 @@
  */
 package vazkii.psi.common.spell.trick;
 
-import net.minecraft.util.Util;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.Style;
-import net.minecraft.util.text.TextFormatting;
+import net.minecraft.Util;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Style;
+import net.minecraft.ChatFormatting;
 
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
@@ -48,7 +48,7 @@ public class PieceTrickDebug extends PieceTrick {
 		Number numberVal = this.getParamValue(context, number);
 		Object targetVal = getParamValue(context, target);
 
-		ITextComponent component = new StringTextComponent(String.valueOf(targetVal));
+		Component component = new TextComponent(String.valueOf(targetVal));
 
 		if (numberVal != null) {
 			String numStr = "" + numberVal;
@@ -57,10 +57,10 @@ public class PieceTrickDebug extends PieceTrick {
 				numStr = "" + numInt;
 			}
 
-			component = new StringTextComponent("[" + numStr + "]")
-					.setStyle(Style.EMPTY.withColor(TextFormatting.AQUA))
-					.append(new StringTextComponent(" ")
-							.setStyle(Style.EMPTY.withColor(TextFormatting.RESET)))
+			component = new TextComponent("[" + numStr + "]")
+					.setStyle(Style.EMPTY.withColor(ChatFormatting.AQUA))
+					.append(new TextComponent(" ")
+							.setStyle(Style.EMPTY.withColor(ChatFormatting.RESET)))
 					.append(component);
 		}
 

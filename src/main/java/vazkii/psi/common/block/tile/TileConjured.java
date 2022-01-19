@@ -8,13 +8,13 @@
  */
 package vazkii.psi.common.block.tile;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SUpdateTileEntityPacket;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.registries.ObjectHolder;
 
 import vazkii.psi.api.internal.PsiRenderHelper;
@@ -26,9 +26,9 @@ import vazkii.psi.common.lib.LibMisc;
 
 import java.util.Arrays;
 
-public class TileConjured extends TileEntity {
+public class TileConjured extends BlockEntity {
 	@ObjectHolder(LibMisc.PREFIX_MOD + LibBlockNames.CONJURED)
-	public static TileEntityType<TileConjured> TYPE;
+	public static BlockEntityType<TileConjured> TYPE;
 
 	private static final String TAG_COLORIZER = "colorizer";
 
@@ -124,21 +124,21 @@ public class TileConjured extends TileEntity {
 	}
 
 	@Override
-	public CompoundNBT save(CompoundNBT cmp) {
+	public CompoundTag save(CompoundTag cmp) {
 		cmp = super.save(cmp);
 		if (!colorizer.isEmpty()) {
-			cmp.put(TAG_COLORIZER, colorizer.save(new CompoundNBT()));
+			cmp.put(TAG_COLORIZER, colorizer.save(new CompoundTag()));
 		}
 		return cmp;
 	}
 
 	@Override
-	public void load(BlockState state, CompoundNBT cmp) {
+	public void load(BlockState state, CompoundTag cmp) {
 		super.load(state, cmp);
 		this.readPacketNBT(cmp);
 	}
 
-	public void readPacketNBT(CompoundNBT cmp) {
+	public void readPacketNBT(CompoundTag cmp) {
 		if (cmp.contains(TAG_COLORIZER)) {
 			colorizer = ItemStack.of(cmp.getCompound(TAG_COLORIZER));
 		} else {
@@ -147,18 +147,18 @@ public class TileConjured extends TileEntity {
 	}
 
 	@Override
-	public SUpdateTileEntityPacket getUpdatePacket() {
-		return new SUpdateTileEntityPacket(getBlockPos(), 0, save(new CompoundNBT()));
+	public ClientboundBlockEntityDataPacket getUpdatePacket() {
+		return new ClientboundBlockEntityDataPacket(getBlockPos(), 0, save(new CompoundTag()));
 	}
 
 	@Override
-	public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
+	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
 		this.readPacketNBT(pkt.getTag());
 	}
 
 	@Override
-	public CompoundNBT getUpdateTag() {
-		return save(new CompoundNBT());
+	public CompoundTag getUpdateTag() {
+		return save(new CompoundTag());
 	}
 
 }

@@ -8,12 +8,12 @@
  */
 package vazkii.psi.common.entity;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.projectile.ThrowableEntity;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.projectile.ThrowableProjectile;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ObjectHolder;
 
 import vazkii.psi.common.lib.LibEntityNames;
@@ -28,11 +28,11 @@ public class EntitySpellMine extends EntitySpellGrenade {
 
 	boolean triggered = false;
 
-	public EntitySpellMine(EntityType<? extends ThrowableEntity> type, World worldIn) {
+	public EntitySpellMine(EntityType<? extends ThrowableProjectile> type, Level worldIn) {
 		super(type, worldIn);
 	}
 
-	public EntitySpellMine(World worldIn, LivingEntity throwerIn) {
+	public EntitySpellMine(Level worldIn, LivingEntity throwerIn) {
 		super(TYPE, worldIn, throwerIn);
 	}
 

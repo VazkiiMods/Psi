@@ -8,14 +8,14 @@
  */
 package vazkii.psi.client.gui.widget;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
-import net.minecraft.client.gui.widget.Widget;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.network.chat.Component;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TranslatableComponent;
 
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.EnumCADStat;
@@ -26,12 +26,12 @@ import vazkii.psi.client.gui.GuiProgrammer;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.item.ItemCAD;
 
-public class SpellCostsWidget extends Widget {
+public class SpellCostsWidget extends AbstractWidget {
 
 	private final GuiProgrammer parent;
 
 	public SpellCostsWidget(int x, int y, int width, int height, String message, GuiProgrammer programmer) {
-		super(x, y, width, height, ITextComponent.nullToEmpty(message));
+		super(x, y, width, height, Component.nullToEmpty(message));
 		this.parent = programmer;
 	}
 
@@ -41,7 +41,7 @@ public class SpellCostsWidget extends Widget {
 	}
 
 	@Override
-	public void renderButton(MatrixStack ms, int mouseX, int mouseY, float pTicks) {
+	public void renderButton(PoseStack ms, int mouseX, int mouseY, float pTicks) {
 		parent.compileResult.left().ifPresent(compiledSpell -> {
 			int i = 0;
 			int statX = parent.left + parent.xSize + 3;
@@ -73,8 +73,8 @@ public class SpellCostsWidget extends Widget {
 				parent.getMinecraft().font.draw(ms, s, statX + 16, statY + 2, cadStat != null && cadVal < val && cadVal != -1 ? 0xFF6666 : 0xFFFFFF);
 
 				if (mouseX > statX && mouseY > statY && mouseX < statX + 12 && mouseY < statY + 12 && !parent.panelWidget.panelEnabled) {
-					parent.tooltip.add(new TranslationTextComponent(stat.getName()).withStyle(Psi.magical ? TextFormatting.LIGHT_PURPLE : TextFormatting.AQUA));
-					parent.tooltip.add(new TranslationTextComponent(stat.getDesc()).withStyle(TextFormatting.GRAY));
+					parent.tooltip.add(new TranslatableComponent(stat.getName()).withStyle(Psi.magical ? ChatFormatting.LIGHT_PURPLE : ChatFormatting.AQUA));
+					parent.tooltip.add(new TranslatableComponent(stat.getDesc()).withStyle(ChatFormatting.GRAY));
 				}
 				i++;
 

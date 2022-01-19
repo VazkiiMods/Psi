@@ -8,9 +8,9 @@
  */
 package vazkii.psi.common.spell.trick.block;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 
 import vazkii.psi.api.internal.MathHelper;
 import vazkii.psi.api.internal.Vector3;
@@ -71,7 +71,7 @@ public class PieceTrickConjureBlockSequence extends PieceTrick {
 		}
 
 		Vector3 targetNorm = targetVal.copy().normalize();
-		World world = context.focalPoint.getCommandSenderWorld();
+		Level world = context.focalPoint.getCommandSenderWorld();
 
 		for (BlockPos blockPos : MathHelper.getBlocksAlongRay(positionVal.toVec3D(), positionVal.copy().add(targetNorm.copy().multiply(maxBlocksInt)).toVec3D(), maxBlocksInt)) {
 			if (!context.isInRadius(Vector3.fromBlockPos(blockPos))) {

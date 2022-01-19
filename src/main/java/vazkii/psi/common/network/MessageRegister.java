@@ -8,11 +8,11 @@
  */
 package vazkii.psi.common.network;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.PacketDistributor;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
@@ -91,18 +91,18 @@ public class MessageRegister {
 				.consumer(MessageSpellError::receive).add();
 	}
 
-	public static void writeVec3d(PacketBuffer buf, Vector3d vec3d) {
+	public static void writeVec3d(FriendlyByteBuf buf, Vec3 vec3d) {
 		buf.writeDouble(vec3d.x);
 		buf.writeDouble(vec3d.y);
 		buf.writeDouble(vec3d.z);
 	}
 
-	public static Vector3d readVec3d(PacketBuffer buf) {
-		return new Vector3d(buf.readDouble(), buf.readDouble(), buf.readDouble());
+	public static Vec3 readVec3d(FriendlyByteBuf buf) {
+		return new Vec3(buf.readDouble(), buf.readDouble(), buf.readDouble());
 	}
 
-	public static void sendToPlayer(Object msg, PlayerEntity player) {
-		ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
+	public static void sendToPlayer(Object msg, Player player) {
+		ServerPlayer serverPlayer = (ServerPlayer) player;
 		HANDLER.send(PacketDistributor.PLAYER.with(() -> serverPlayer), msg);
 	}
 

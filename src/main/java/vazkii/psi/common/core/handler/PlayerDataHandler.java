@@ -9,25 +9,25 @@
 package vazkii.psi.common.core.handler;
 
 import com.google.common.collect.ImmutableSet;
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.advancements.Advancement;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.play.server.SPlayerPositionLookPacket.Flags;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.Hand;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.DimensionType;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.game.ClientboundPlayerPositionPacket.RelativeArgument;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.FOVUpdateEvent;
@@ -85,8 +85,8 @@ import java.util.WeakHashMap;
 
 public class PlayerDataHandler {
 
-	private static final WeakHashMap<PlayerEntity, PlayerData> remotePlayerData = new WeakHashMap<>();
-	private static final WeakHashMap<PlayerEntity, PlayerData> playerData = new WeakHashMap<>();
+	private static final WeakHashMap<Player, PlayerData> remotePlayerData = new WeakHashMap<>();
+	private static final WeakHashMap<Player, PlayerData> playerData = new WeakHashMap<>();
 	public static final Set<SpellContext> delayedContexts = new LinkedHashSet<>();
 
 	private static final String DATA_TAG = "PsiData";
@@ -94,16 +94,16 @@ public class PlayerDataHandler {
 	public static final DamageSource damageSourceOverload = new DamageSource("psi-overload").bypassArmor().bypassMagic();
 
 	@Nonnull
-	public static PlayerData get(PlayerEntity player) {
+	public static PlayerData get(Player player) {
 		if (player == null) {
 			return new PlayerData();
 		}
 
-		Map<PlayerEntity, PlayerData> dataMap = player.level.isClientSide ? remotePlayerData : playerData;
+		Map<Player, PlayerData> dataMap = player.level.isClientSide ? remotePlayerData : playerData;
 
 		PlayerData data = dataMap.computeIfAbsent(player, PlayerData::new);
 		if (data.playerWR != null && data.playerWR.get() != player) {
-			CompoundNBT cmp = new CompoundNBT();
+			CompoundTag cmp = new CompoundTag();
 			data.writeToNBT(cmp);
 			dataMap.remove(player);
 			data = get(player);
@@ -113,15 +113,15 @@ public class PlayerDataHandler {
 		return data;
 	}
 
-	public static CompoundNBT getDataCompoundForPlayer(PlayerEntity player) {
-		CompoundNBT forgeData = player.getPersistentData();
-		if (!forgeData.contains(PlayerEntity.PERSISTED_NBT_TAG)) {
-			forgeData.put(PlayerEntity.PERSISTED_NBT_TAG, new CompoundNBT());
+	public static CompoundTag getDataCompoundForPlayer(Player player) {
+		CompoundTag forgeData = player.getPersistentData();
+		if (!forgeData.contains(Player.PERSISTED_NBT_TAG)) {
+			forgeData.put(Player.PERSISTED_NBT_TAG, new CompoundTag());
 		}
 
-		CompoundNBT persistentData = forgeData.getCompound(PlayerEntity.PERSISTED_NBT_TAG);
+		CompoundTag persistentData = forgeData.getCompound(Player.PERSISTED_NBT_TAG);
 		if (!persistentData.contains(DATA_TAG)) {
-			persistentData.put(DATA_TAG, new CompoundNBT());
+			persistentData.put(DATA_TAG, new CompoundTag());
 		}
 
 		return persistentData.getCompound(DATA_TAG);
@@ -148,8 +148,8 @@ public class PlayerDataHandler {
 
 		@SubscribeEvent
 		public static void onPlayerTick(LivingUpdateEvent event) {
-			if (event.getEntityLiving() instanceof PlayerEntity && !event.getEntityLiving().isSpectator()) {
-				PlayerEntity player = (PlayerEntity) event.getEntityLiving();
+			if (event.getEntityLiving() instanceof Player && !event.getEntityLiving().isSpectator()) {
+				Player player = (Player) event.getEntityLiving();
 
 				ItemStack cadStack = PsiAPI.getPlayerCAD(player);
 				if (!cadStack.isEmpty() && cadStack.getItem() instanceof ICAD && PsiAPI.canCADBeUpdated(player)) {
@@ -163,8 +163,8 @@ public class PlayerDataHandler {
 
 		@SubscribeEvent
 		public static void onEntityDamage(LivingHurtEvent event) {
-			if (event.getEntityLiving() instanceof PlayerEntity) {
-				PlayerEntity player = (PlayerEntity) event.getEntityLiving();
+			if (event.getEntityLiving() instanceof Player) {
+				Player player = (Player) event.getEntityLiving();
 				PlayerDataHandler.get(player).damage(event.getAmount());
 
 				LivingEntity attacker = null;
@@ -181,7 +181,7 @@ public class PlayerDataHandler {
 
 		@SubscribeEvent
 		public static void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
-			if (event.getPlayer() instanceof ServerPlayerEntity) {
+			if (event.getPlayer() instanceof ServerPlayer) {
 				MessageDataSync message = new MessageDataSync(get(event.getPlayer()));
 				MessageRegister.sendToPlayer(message, event.getPlayer());
 			}
@@ -189,8 +189,8 @@ public class PlayerDataHandler {
 
 		@SubscribeEvent
 		public static void onEntityJump(LivingJumpEvent event) {
-			if (event.getEntityLiving() instanceof PlayerEntity && event.getEntity().level.isClientSide && !event.getEntityLiving().isSpectator()) {
-				PlayerEntity player = (PlayerEntity) event.getEntityLiving();
+			if (event.getEntityLiving() instanceof Player && event.getEntity().level.isClientSide && !event.getEntityLiving().isSpectator()) {
+				Player player = (Player) event.getEntityLiving();
 				PsiArmorEvent.post(new PsiArmorEvent(player, PsiArmorEvent.JUMP));
 				MessageRegister.HANDLER.sendToServer(new MessageTriggerJumpSpell());
 			}
@@ -203,7 +203,7 @@ public class PlayerDataHandler {
 			}
 
 			for (int i = 0; i < 4; i++) {
-				ItemStack armor = ((PlayerEntity) event.getEntityLiving()).inventory.armor.get(i);
+				ItemStack armor = ((Player) event.getEntityLiving()).inventory.armor.get(i);
 				if (!armor.isEmpty() && armor.getItem() instanceof IPsiEventArmor) {
 					IPsiEventArmor handler = (IPsiEventArmor) armor.getItem();
 					handler.onEvent(armor, event);
@@ -223,7 +223,7 @@ public class PlayerDataHandler {
 			Entity cameraEntity = mc.getCameraEntity();
 			if (cameraEntity != null) {
 				float partialTicks = event.getPartialTicks();
-				for (PlayerEntity player : mc.level.players()) {
+				for (Player player : mc.level.players()) {
 					PlayerDataHandler.get(player).render(player, partialTicks, event.getMatrixStack());
 				}
 			}
@@ -270,7 +270,7 @@ public class PlayerDataHandler {
 		public int regenCooldown;
 
 		public boolean loopcasting = false;
-		public Hand loopcastHand = null;
+		public InteractionHand loopcastHand = null;
 		public ItemStack lastTickLoopcastStack;
 
 		public int loopcastTime = 1;
@@ -295,18 +295,18 @@ public class PlayerDataHandler {
 		public boolean deductTick;
 
 		public final List<Deduction> deductions = new ArrayList<>();
-		public final WeakReference<PlayerEntity> playerWR;
+		public final WeakReference<Player> playerWR;
 		private final boolean client;
 
 		// Custom Data
-		private CompoundNBT customData;
+		private CompoundTag customData;
 
 		private PlayerData() {
 			playerWR = new WeakReference<>(null);
 			client = true;
 		}
 
-		public PlayerData(PlayerEntity player) {
+		public PlayerData(Player player) {
 			playerWR = new WeakReference<>(player);
 			client = player.getCommandSenderWorld().isClientSide;
 
@@ -314,7 +314,7 @@ public class PlayerDataHandler {
 		}
 
 		public void tick() {
-			PlayerEntity player = playerWR.get();
+			Player player = playerWR.get();
 			if (player == null) {
 				return;
 			}
@@ -432,7 +432,7 @@ public class PlayerDataHandler {
 									}
 
 									if (!player.getCommandSenderWorld().isClientSide && loopcastTime % 10 == 0) {
-										player.getCommandSenderWorld().playSound(null, player.getX(), player.getY(), player.getZ(), PsiSoundHandler.loopcast, SoundCategory.PLAYERS, 0.1F, (float) (0.15 + Math.random() * 0.85));
+										player.getCommandSenderWorld().playSound(null, player.getX(), player.getY(), player.getZ(), PsiSoundHandler.loopcast, SoundSource.PLAYERS, 0.1F, (float) (0.15 + Math.random() * 0.85));
 									}
 								}
 
@@ -463,8 +463,8 @@ public class PlayerDataHandler {
 
 			if (eidosAnchorTime > 0) {
 				if (eidosAnchorTime == 1) {
-					if (player instanceof ServerPlayerEntity) {
-						ServerPlayerEntity pmp = (ServerPlayerEntity) player;
+					if (player instanceof ServerPlayer) {
+						ServerPlayer pmp = (ServerPlayer) player;
 						pmp.connection.teleport(eidosAnchor.x, eidosAnchor.y, eidosAnchor.z, (float) eidosAnchorYaw, (float) eidosAnchorPitch);
 
 						Entity riding = player.getVehicle();
@@ -492,9 +492,9 @@ public class PlayerDataHandler {
 						isReverting = false;
 					} else {
 						Vector3 vec = eidosChangelog.pop();
-						if (player instanceof ServerPlayerEntity) {
-							ServerPlayerEntity pmp = (ServerPlayerEntity) player;
-							pmp.connection.teleport(vec.x, vec.y, vec.z, 0, 0, ImmutableSet.of(Flags.X_ROT, Flags.Y_ROT));
+						if (player instanceof ServerPlayer) {
+							ServerPlayer pmp = (ServerPlayer) player;
+							pmp.connection.teleport(vec.x, vec.y, vec.z, 0, 0, ImmutableSet.of(RelativeArgument.X_ROT, RelativeArgument.Y_ROT));
 							pmp.connection.resetPosition();
 						} else {
 							player.setPos(vec.x, vec.y, vec.z);
@@ -570,7 +570,7 @@ public class PlayerDataHandler {
 			lastDimension = dimension;
 		}
 
-		private void applyRegen(PlayerEntity player, int max, ItemStack cadStack) {
+		private void applyRegen(Player player, int max, ItemStack cadStack) {
 			RegenPsiEvent event = new RegenPsiEvent(player, this, cadStack);
 
 			if (!MinecraftForge.EVENT_BUS.post(event)) {
@@ -603,7 +603,7 @@ public class PlayerDataHandler {
 		}
 
 		public void stopLoopcast() {
-			PlayerEntity player = playerWR.get();
+			Player player = playerWR.get();
 
 			if (loopcasting) {
 				loopcastFadeTime = 5;
@@ -617,8 +617,8 @@ public class PlayerDataHandler {
 			loopcastTime = 1;
 			loopcastAmount = 0;
 
-			if (player instanceof ServerPlayerEntity) {
-				LoopcastTrackingHandler.syncForTrackersAndSelf((ServerPlayerEntity) player);
+			if (player instanceof ServerPlayer) {
+				LoopcastTrackingHandler.syncForTrackersAndSelf((ServerPlayer) player);
 			}
 		}
 
@@ -646,7 +646,7 @@ public class PlayerDataHandler {
 		public void deductPsi(int psi, int cd, boolean sync, boolean shatter) {
 			int currentPsi = availablePsi;
 
-			PlayerEntity player = playerWR.get();
+			Player player = playerWR.get();
 			if (player == null) {
 				return;
 			}
@@ -684,7 +684,7 @@ public class PlayerDataHandler {
 				}
 			}
 
-			if (sync && player instanceof ServerPlayerEntity) {
+			if (sync && player instanceof ServerPlayer) {
 				MessageDeductPsi message = new MessageDeductPsi(currentPsi, availablePsi, regenCooldown, shatter);
 				MessageRegister.sendToPlayer(message, player);
 			}
@@ -738,13 +738,13 @@ public class PlayerDataHandler {
 		}
 
 		public boolean hasAdvancement(ResourceLocation group) {
-			PlayerEntity player = playerWR.get();
+			Player player = playerWR.get();
 			return Psi.proxy.hasAdvancement(group, player);
 		}
 
 		@Override
 		public boolean isPieceGroupUnlocked(ResourceLocation group, @Nullable ResourceLocation name) {
-			PlayerEntity player = playerWR.get();
+			Player player = playerWR.get();
 			if (player == null) {
 				return false;
 			}
@@ -767,9 +767,9 @@ public class PlayerDataHandler {
 
 		@Override
 		public void unlockPieceGroup(ResourceLocation resourceLocation) {
-			PlayerEntity player = playerWR.get();
-			if (player instanceof ServerPlayerEntity) {
-				ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
+			Player player = playerWR.get();
+			if (player instanceof ServerPlayer) {
+				ServerPlayer serverPlayer = (ServerPlayer) player;
 				Advancement advancement = serverPlayer.getServer().getAdvancements().getAdvancement(resourceLocation);
 				if (advancement != null && !serverPlayer.getAdvancements().getOrStartProgress(advancement).isDone()) {
 					for (String s : serverPlayer.getAdvancements().getOrStartProgress(advancement).getRemainingCriteria()) {
@@ -790,9 +790,9 @@ public class PlayerDataHandler {
 		}
 
 		@Override
-		public CompoundNBT getCustomData() {
+		public CompoundTag getCustomData() {
 			if (customData == null) {
-				return customData = new CompoundNBT();
+				return customData = new CompoundTag();
 			}
 			return customData;
 		}
@@ -800,16 +800,16 @@ public class PlayerDataHandler {
 		@Override
 		public void save() {
 			if (!client) {
-				PlayerEntity player = playerWR.get();
+				Player player = playerWR.get();
 
 				if (player != null) {
-					CompoundNBT cmp = getDataCompoundForPlayer(player);
+					CompoundTag cmp = getDataCompoundForPlayer(player);
 					writeToNBT(cmp);
 				}
 			}
 		}
 
-		public void writeToNBT(CompoundNBT cmp) {
+		public void writeToNBT(CompoundTag cmp) {
 			cmp.putInt(TAG_AVAILABLE_PSI, availablePsi);
 			cmp.putInt(TAG_REGEN_CD, regenCooldown);
 			cmp.putBoolean(TAG_OVERFLOWED, overflowed);
@@ -828,16 +828,16 @@ public class PlayerDataHandler {
 
 		public void load() {
 			if (!client) {
-				PlayerEntity player = playerWR.get();
+				Player player = playerWR.get();
 
 				if (player != null) {
-					CompoundNBT cmp = getDataCompoundForPlayer(player);
+					CompoundTag cmp = getDataCompoundForPlayer(player);
 					readFromNBT(cmp);
 				}
 			}
 		}
 
-		public void readFromNBT(CompoundNBT cmp) {
+		public void readFromNBT(CompoundTag cmp) {
 			availablePsi = cmp.getInt(TAG_AVAILABLE_PSI);
 			regenCooldown = cmp.getInt(TAG_REGEN_CD);
 			overflowed = cmp.getBoolean(TAG_OVERFLOWED);
@@ -854,8 +854,8 @@ public class PlayerDataHandler {
 		}
 
 		@OnlyIn(Dist.CLIENT)
-		public void render(PlayerEntity player, float partTicks, MatrixStack ms) {
-			EntityRendererManager renderManager = Minecraft.getInstance().getEntityRenderDispatcher();
+		public void render(Player player, float partTicks, PoseStack ms) {
+			EntityRenderDispatcher renderManager = Minecraft.getInstance().getEntityRenderDispatcher();
 			double x = player.xOld + (player.getX() - player.xOld) * partTicks - renderManager.camera.getPosition().x;
 			double y = player.yOld + (player.getY() - player.yOld) * partTicks - renderManager.camera.getPosition().y;
 			double z = player.zOld + (player.getZ() - player.zOld) * partTicks - renderManager.camera.getPosition().z;
@@ -879,7 +879,7 @@ public class PlayerDataHandler {
 
 			ms.pushPose();
 			ms.translate(x, y + 0.15, z);
-			IRenderTypeBuffer.Impl buffers = Minecraft.getInstance().renderBuffers().bufferSource();
+			MultiBufferSource.BufferSource buffers = Minecraft.getInstance().renderBuffers().bufferSource();
 			RenderSpellCircle.renderSpellCircle(ClientTickHandler.ticksInGame + partTicks, scale, 1, 0, -1, 0, color, ms, buffers);
 			buffers.endBatch();
 			ms.popPose();

@@ -8,9 +8,9 @@
  */
 package vazkii.psi.common.block.tile.container.slot;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.Container;
+import net.minecraft.world.item.ItemStack;
 
 import vazkii.psi.common.block.tile.TileCADAssembler;
 
@@ -20,12 +20,12 @@ import javax.annotation.Nonnull;
  * @author WireSegal
  *         Created at 4:44 PM on 1/2/19.
  */
-public class InventoryAssemblerOutput implements IInventory {
+public class InventoryAssemblerOutput implements Container {
 
-	private final PlayerEntity player;
+	private final Player player;
 	private final TileCADAssembler assembler;
 
-	public InventoryAssemblerOutput(PlayerEntity player, TileCADAssembler assembler) {
+	public InventoryAssemblerOutput(Player player, TileCADAssembler assembler) {
 		this.player = player;
 		this.assembler = assembler;
 	}
@@ -78,17 +78,17 @@ public class InventoryAssemblerOutput implements IInventory {
 	}
 
 	@Override
-	public boolean stillValid(@Nonnull PlayerEntity player) {
+	public boolean stillValid(@Nonnull Player player) {
 		return true;
 	}
 
 	@Override
-	public void startOpen(@Nonnull PlayerEntity player) {
+	public void startOpen(@Nonnull Player player) {
 		// NO-OP
 	}
 
 	@Override
-	public void stopOpen(@Nonnull PlayerEntity player) {
+	public void stopOpen(@Nonnull Player player) {
 		// NO-OP
 	}
 

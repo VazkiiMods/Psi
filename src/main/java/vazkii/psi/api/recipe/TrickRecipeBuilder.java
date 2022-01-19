@@ -12,18 +12,18 @@ import com.google.gson.JsonObject;
 import com.mojang.serialization.Dynamic;
 import com.mojang.serialization.JsonOps;
 
-import net.minecraft.data.IFinishedRecipe;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.INBT;
-import net.minecraft.nbt.NBTDynamicOps;
-import net.minecraft.tags.ITag;
+import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.tags.Tag;
-import net.minecraft.util.IItemProvider;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.tags.SetTag;
+import net.minecraft.world.level.ItemLike;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
@@ -50,7 +50,7 @@ public class TrickRecipeBuilder {
 		return new TrickRecipeBuilder(output);
 	}
 
-	public static TrickRecipeBuilder of(IItemProvider output) {
+	public static TrickRecipeBuilder of(ItemLike output) {
 		return new TrickRecipeBuilder(new ItemStack(output.asItem()));
 	}
 
@@ -64,22 +64,22 @@ public class TrickRecipeBuilder {
 		return this;
 	}
 
-	public TrickRecipeBuilder input(Tag<Item> input) {
+	public TrickRecipeBuilder input(SetTag<Item> input) {
 		this.input = Ingredient.of(input);
 		return this;
 	}
 
-	public TrickRecipeBuilder input(ITag.INamedTag<Item> input) {
+	public TrickRecipeBuilder input(Tag.Named<Item> input) {
 		this.input = Ingredient.of(input);
 		return this;
 	}
 
-	public TrickRecipeBuilder input(IItemProvider... input) {
+	public TrickRecipeBuilder input(ItemLike... input) {
 		this.input = Ingredient.of(input);
 		return this;
 	}
 
-	public TrickRecipeBuilder cad(IItemProvider input) {
+	public TrickRecipeBuilder cad(ItemLike input) {
 		this.cadAssembly = new ItemStack(input.asItem());
 		return this;
 	}
@@ -94,15 +94,15 @@ public class TrickRecipeBuilder {
 		return this;
 	}
 
-	public void build(Consumer<IFinishedRecipe> consumer) {
+	public void build(Consumer<FinishedRecipe> consumer) {
 		this.build(consumer, output.getItem().getRegistryName());
 	}
 
-	public void build(Consumer<IFinishedRecipe> consumer, ResourceLocation id) {
+	public void build(Consumer<FinishedRecipe> consumer, ResourceLocation id) {
 		consumer.accept(new Result(id, output, input, cadAssembly, trick));
 	}
 
-	public static class Result implements IFinishedRecipe {
+	public static class Result implements FinishedRecipe {
 		private final Ingredient input;
 		private final ItemStack output;
 		private final ItemStack cadAssembly;
@@ -139,7 +139,7 @@ public class TrickRecipeBuilder {
 
 		@Nonnull
 		@Override
-		public IRecipeSerializer<?> getType() {
+		public RecipeSerializer<?> getType() {
 			return Objects.requireNonNull(ForgeRegistries.RECIPE_SERIALIZERS.getValue(ITrickRecipe.TYPE_ID));
 		}
 
@@ -162,7 +162,7 @@ public class TrickRecipeBuilder {
 	 * would be able to read the result back
 	 */
 	private static JsonObject serializeStack(ItemStack stack) {
-		CompoundNBT nbt = stack.save(new CompoundNBT());
+		CompoundTag nbt = stack.save(new CompoundTag());
 		byte c = nbt.getByte("Count");
 		if (c != 1) {
 			nbt.putByte("count", c);
@@ -170,12 +170,12 @@ public class TrickRecipeBuilder {
 		nbt.remove("Count");
 		renameTag(nbt, "id", "item");
 		renameTag(nbt, "tag", "nbt");
-		Dynamic<INBT> dyn = new Dynamic<>(NBTDynamicOps.INSTANCE, nbt);
+		Dynamic<Tag> dyn = new Dynamic<>(NbtOps.INSTANCE, nbt);
 		return dyn.convert(JsonOps.INSTANCE).getValue().getAsJsonObject();
 	}
 
-	private static void renameTag(CompoundNBT nbt, String oldName, String newName) {
-		INBT tag = nbt.get(oldName);
+	private static void renameTag(CompoundTag nbt, String oldName, String newName) {
+		Tag tag = nbt.get(oldName);
 		if (tag != null) {
 			nbt.remove(oldName);
 			nbt.put(newName, tag);

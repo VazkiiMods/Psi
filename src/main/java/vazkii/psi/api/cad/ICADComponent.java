@@ -8,7 +8,7 @@
  */
 package vazkii.psi.api.cad;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 
 /**
  * An item that implements this counts as a CAD component and can be used to

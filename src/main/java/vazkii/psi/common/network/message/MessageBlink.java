@@ -8,8 +8,8 @@
  */
 package vazkii.psi.common.network.message;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 import vazkii.psi.common.Psi;
@@ -30,13 +30,13 @@ public class MessageBlink {
 		this.offZ = offZ;
 	}
 
-	public MessageBlink(PacketBuffer buf) {
+	public MessageBlink(FriendlyByteBuf buf) {
 		this.offX = buf.readDouble();
 		this.offY = buf.readDouble();
 		this.offZ = buf.readDouble();
 	}
 
-	public void encode(PacketBuffer buf) {
+	public void encode(FriendlyByteBuf buf) {
 		buf.writeDouble(offX);
 		buf.writeDouble(offY);
 		buf.writeDouble(offZ);

@@ -8,18 +8,18 @@
  */
 package vazkii.psi.client.gui.widget;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
-import net.minecraft.client.gui.IGuiEventListener;
-import net.minecraft.client.gui.IRenderable;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.client.gui.widget.Widget;
-import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.client.gui.components.events.GuiEventListener;
+import net.minecraft.client.gui.components.Widget;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.resources.language.I18n;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.Component;
 import net.minecraftforge.common.MinecraftForge;
 
 import org.lwjgl.glfw.GLFW;
@@ -42,24 +42,24 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class PiecePanelWidget extends Widget implements IRenderable, IGuiEventListener {
+public class PiecePanelWidget extends AbstractWidget implements Widget, GuiEventListener {
 
 	public final GuiProgrammer parent;
 	public boolean panelEnabled = false;
 	public final List<Button> panelButtons = new ArrayList<>();
 	public int panelCursor;
-	public TextFieldWidget searchField;
+	public EditBox searchField;
 	public int page = 0;
 	private static final int PIECES_PER_PAGE = 25;
 	public final List<GuiButtonSpellPiece> visibleButtons = new ArrayList<>();
 
 	public PiecePanelWidget(int x, int y, int width, int height, String message, GuiProgrammer programmer) {
-		super(x, y, width, height, ITextComponent.nullToEmpty(message));
+		super(x, y, width, height, Component.nullToEmpty(message));
 		this.parent = programmer;
 	}
 
 	@Override
-	public void renderButton(MatrixStack ms, int mouseX, int mouseY, float pTicks) {
+	public void renderButton(PoseStack ms, int mouseX, int mouseY, float pTicks) {
 		if (panelEnabled) {
 			parent.getMinecraft().getTextureManager().bind(GuiProgrammer.texture);
 

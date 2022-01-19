@@ -14,10 +14,10 @@ import mezz.jei.api.helpers.IJeiHelpers;
 import mezz.jei.api.registration.*;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.NonNullList;
+import net.minecraft.resources.ResourceLocation;
 
 import vazkii.psi.client.jei.crafting.BulletToDriveExtension;
 import vazkii.psi.client.jei.crafting.DriveDuplicateExtension;
@@ -61,7 +61,7 @@ public class JEICompat implements IModPlugin {
 	@Override
 	public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
 		NonNullList<ItemStack> stacks = NonNullList.create();
-		ModItems.cad.fillItemCategory(ItemGroup.TAB_SEARCH, stacks);
+		ModItems.cad.fillItemCategory(CreativeModeTab.TAB_SEARCH, stacks);
 		for (ItemStack stack : stacks) {
 			registration.addRecipeCatalyst(stack, TrickCraftingCategory.UID);
 		}

@@ -8,11 +8,11 @@
  */
 package vazkii.psi.client.core.helper;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.resources.I18n;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.resources.language.I18n;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -23,8 +23,8 @@ public final class TextHelper {
 
 	@OnlyIn(Dist.CLIENT)
 	public static List<String> renderText(int x, int y, int width, String unlocalizedText, boolean centered, boolean doit, Object... format) {
-		MatrixStack matrixStack = new MatrixStack();
-		FontRenderer font = Minecraft.getInstance().font;
+		PoseStack matrixStack = new PoseStack();
+		Font font = Minecraft.getInstance().font;
 		String text = I18n.get(unlocalizedText, format);
 
 		String[] textEntries = text.split("<br>");

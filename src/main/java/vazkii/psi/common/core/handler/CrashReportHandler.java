@@ -8,7 +8,7 @@
  */
 package vazkii.psi.common.core.handler;
 
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraftforge.fml.common.ICrashCallable;
 
 import vazkii.psi.api.spell.CompiledSpell;
@@ -41,7 +41,7 @@ public class CrashReportHandler implements ICrashCallable {
 			prefix = "[" + piece.x + ", " + piece.y + "] in ";
 		}
 
-		CompoundNBT result = new CompoundNBT();
+		CompoundTag result = new CompoundTag();
 		spell.sourceSpell.writeToNBT(result);
 		return prefix + result;
 	}

@@ -8,7 +8,7 @@
  */
 package vazkii.psi.api.exosuit;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 
 /**
  * An item that implements this can have a sensor attacked to it.

@@ -8,9 +8,9 @@
  */
 package vazkii.psi.common.network.message;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 import vazkii.psi.common.Psi;
@@ -32,14 +32,14 @@ public class MessageAdditiveMotion {
 		this.motionZ = motionZ;
 	}
 
-	public MessageAdditiveMotion(PacketBuffer buf) {
+	public MessageAdditiveMotion(FriendlyByteBuf buf) {
 		entityID = buf.readVarInt();
 		motionX = buf.readDouble();
 		motionY = buf.readDouble();
 		motionZ = buf.readDouble();
 	}
 
-	public void encode(PacketBuffer buf) {
+	public void encode(FriendlyByteBuf buf) {
 		buf.writeVarInt(entityID);
 		buf.writeDouble(motionX);
 		buf.writeDouble(motionY);
@@ -48,7 +48,7 @@ public class MessageAdditiveMotion {
 
 	public boolean receive(Supplier<NetworkEvent.Context> context) {
 		context.get().enqueueWork(() -> {
-			World world = Psi.proxy.getClientWorld();
+			Level world = Psi.proxy.getClientWorld();
 			if (world != null) {
 				Entity entity = world.getEntity(entityID);
 				if (entity != null) {

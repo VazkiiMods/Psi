@@ -8,15 +8,15 @@
  */
 package vazkii.psi.common.item.tool;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.RayTraceContext;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
@@ -37,7 +37,7 @@ public interface IPsimetalTool {
 	String TAG_BULLET_PREFIX = "bullet";
 	String TAG_SELECTED_SLOT = "selectedSlot";
 
-	default void castOnBlockBreak(ItemStack itemstack, PlayerEntity player) {
+	default void castOnBlockBreak(ItemStack itemstack, Player player) {
 		if (!isEnabled(itemstack)) {
 			return;
 		}
@@ -50,7 +50,7 @@ public interface IPsimetalTool {
 			ItemStack bullet = sockets.getSelectedBullet();
 			ItemCAD.cast(player.getCommandSenderWorld(), player, data, bullet, playerCad, 5, 10, 0.05F, (SpellContext context) -> {
 				context.tool = itemstack;
-				context.positionBroken = raytraceFromEntity(player.getCommandSenderWorld(), player, RayTraceContext.FluidMode.NONE, player.getAttributes().getValue(ForgeMod.REACH_DISTANCE.get()));
+				context.positionBroken = raytraceFromEntity(player.getCommandSenderWorld(), player, ClipContext.Fluid.NONE, player.getAttributes().getValue(ForgeMod.REACH_DISTANCE.get()));
 			});
 		}
 	}
@@ -60,24 +60,24 @@ public interface IPsimetalTool {
 		return stack.getItem() == ModItems.psimetal;
 	}
 
-	static BlockRayTraceResult raytraceFromEntity(World worldIn, PlayerEntity player, RayTraceContext.FluidMode fluidMode, double range) {
+	static BlockHitResult raytraceFromEntity(Level worldIn, Player player, ClipContext.Fluid fluidMode, double range) {
 		float f = player.xRot;
 		float f1 = player.yRot;
-		Vector3d vec3d = player.getEyePosition(1.0F);
-		float f2 = MathHelper.cos(-f1 * ((float) Math.PI / 180F) - (float) Math.PI);
-		float f3 = MathHelper.sin(-f1 * ((float) Math.PI / 180F) - (float) Math.PI);
-		float f4 = -MathHelper.cos(-f * ((float) Math.PI / 180F));
-		float f5 = MathHelper.sin(-f * ((float) Math.PI / 180F));
+		Vec3 vec3d = player.getEyePosition(1.0F);
+		float f2 = Mth.cos(-f1 * ((float) Math.PI / 180F) - (float) Math.PI);
+		float f3 = Mth.sin(-f1 * ((float) Math.PI / 180F) - (float) Math.PI);
+		float f4 = -Mth.cos(-f * ((float) Math.PI / 180F));
+		float f5 = Mth.sin(-f * ((float) Math.PI / 180F));
 		float f6 = f3 * f4;
 		float f7 = f2 * f4;
 		double d0 = range; // Botania - use custom range
-		Vector3d vec3d1 = vec3d.add((double) f6 * d0, (double) f5 * d0, (double) f7 * d0);
-		return worldIn.clip(new RayTraceContext(vec3d, vec3d1, RayTraceContext.BlockMode.OUTLINE, fluidMode, player));
+		Vec3 vec3d1 = vec3d.add((double) f6 * d0, (double) f5 * d0, (double) f7 * d0);
+		return worldIn.clip(new ClipContext(vec3d, vec3d1, ClipContext.Block.OUTLINE, fluidMode, player));
 	}
 
 	static void regen(ItemStack stack, Entity entityIn) {
 		if (isItemValidForRegen(stack, entityIn)) {
-			PlayerEntity player = (PlayerEntity) entityIn;
+			Player player = (Player) entityIn;
 			PlayerDataHandler.PlayerData data = PlayerDataHandler.get(player);
 			int regenTime = stack.getOrCreateTag().getInt(TAG_REGEN_TIME);
 
@@ -90,10 +90,10 @@ public interface IPsimetalTool {
 	}
 
 	static boolean isItemValidForRegen(ItemStack stack, Entity entityIn) {
-		if (!(entityIn instanceof PlayerEntity)) {
+		if (!(entityIn instanceof Player)) {
 			return false;
 		}
-		PlayerEntity player = (PlayerEntity) entityIn;
+		Player player = (Player) entityIn;
 		return player.getOffhandItem() != stack && player.getMainHandItem() != stack && stack.getDamageValue() > 0;
 	}
 
@@ -105,7 +105,7 @@ public interface IPsimetalTool {
 	 * Override and return {@code IPsimetalTool.super.initCapabilities(stack, nbt)}, or your own implementation
 	 * of {@link ISocketable}, {@link IPsiBarDisplay} and {@link ISpellAcceptor} caps.
 	 */
-	default ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
+	default ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
 		return new ToolSocketable(stack, 3);
 	}
 }

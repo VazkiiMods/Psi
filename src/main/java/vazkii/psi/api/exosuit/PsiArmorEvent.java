@@ -8,8 +8,8 @@
  */
 package vazkii.psi.api.exosuit;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 
@@ -34,11 +34,11 @@ public class PsiArmorEvent extends PlayerEvent {
 	public final double damage;
 	public final LivingEntity attacker;
 
-	public PsiArmorEvent(PlayerEntity player, String type) {
+	public PsiArmorEvent(Player player, String type) {
 		this(player, type, 0, null);
 	}
 
-	public PsiArmorEvent(PlayerEntity player, String type, double damage, LivingEntity attacker) {
+	public PsiArmorEvent(Player player, String type, double damage, LivingEntity attacker) {
 		super(player);
 		this.type = type;
 		this.damage = damage;

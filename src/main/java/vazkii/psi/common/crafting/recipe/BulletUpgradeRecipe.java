@@ -10,22 +10,22 @@ package vazkii.psi.common.crafting.recipe;
 
 import com.google.gson.JsonObject;
 
-import net.minecraft.inventory.CraftingInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.ICraftingRecipe;
-import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.item.crafting.ShapelessRecipe;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
+import net.minecraft.world.inventory.CraftingContainer;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingRecipe;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.ShapelessRecipe;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.core.NonNullList;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 
 import vazkii.psi.common.item.ItemSpellBullet;
 
-public class BulletUpgradeRecipe implements ICraftingRecipe {
-	public static final IRecipeSerializer<BulletUpgradeRecipe> SERIALIZER = new Serializer();
+public class BulletUpgradeRecipe implements CraftingRecipe {
+	public static final RecipeSerializer<BulletUpgradeRecipe> SERIALIZER = new Serializer();
 
 	private final ShapelessRecipe compose;
 
@@ -34,12 +34,12 @@ public class BulletUpgradeRecipe implements ICraftingRecipe {
 	}
 
 	@Override
-	public boolean matches(CraftingInventory inv, World worldIn) {
+	public boolean matches(CraftingContainer inv, Level worldIn) {
 		return compose.matches(inv, worldIn);
 	}
 
 	@Override
-	public ItemStack assemble(CraftingInventory inv) {
+	public ItemStack assemble(CraftingContainer inv) {
 		ItemStack output = compose.assemble(inv);
 		for (int i = 0; i < inv.getContainerSize(); i++) {
 			ItemStack stack = inv.getItem(i);
@@ -61,7 +61,7 @@ public class BulletUpgradeRecipe implements ICraftingRecipe {
 	}
 
 	@Override
-	public NonNullList<ItemStack> getRemainingItems(CraftingInventory inv) {
+	public NonNullList<ItemStack> getRemainingItems(CraftingContainer inv) {
 		return compose.getRemainingItems(inv);
 	}
 
@@ -91,23 +91,23 @@ public class BulletUpgradeRecipe implements ICraftingRecipe {
 	}
 
 	@Override
-	public IRecipeSerializer<?> getSerializer() {
+	public RecipeSerializer<?> getSerializer() {
 		return SERIALIZER;
 	}
 
-	private static class Serializer extends ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<BulletUpgradeRecipe> {
+	private static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<BulletUpgradeRecipe> {
 		@Override
 		public BulletUpgradeRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
 			return new BulletUpgradeRecipe(SHAPELESS_RECIPE.fromJson(recipeId, json));
 		}
 
 		@Override
-		public BulletUpgradeRecipe fromNetwork(ResourceLocation recipeId, PacketBuffer buffer) {
+		public BulletUpgradeRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
 			return new BulletUpgradeRecipe(SHAPELESS_RECIPE.fromNetwork(recipeId, buffer));
 		}
 
 		@Override
-		public void toNetwork(PacketBuffer buffer, BulletUpgradeRecipe recipe) {
+		public void toNetwork(FriendlyByteBuf buffer, BulletUpgradeRecipe recipe) {
 			SHAPELESS_RECIPE.toNetwork(buffer, recipe.compose);
 		}
 	}

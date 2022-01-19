@@ -8,12 +8,12 @@
  */
 package vazkii.psi.common.item.armor;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.IDyeableArmorItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.DyeableLeatherItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -23,11 +23,11 @@ import vazkii.psi.common.lib.LibResources;
 
 import javax.annotation.Nonnull;
 
-public class ItemPsimetalExosuitHelmet extends ItemPsimetalArmor implements ISensorHoldable, IDyeableArmorItem {
+public class ItemPsimetalExosuitHelmet extends ItemPsimetalArmor implements ISensorHoldable, DyeableLeatherItem {
 
 	private static final String TAG_SENSOR = "sensor";
 
-	public ItemPsimetalExosuitHelmet(EquipmentSlotType slotType, Item.Properties properties) {
+	public ItemPsimetalExosuitHelmet(EquipmentSlot slotType, Item.Properties properties) {
 		super(slotType, properties);
 	}
 
@@ -59,19 +59,19 @@ public class ItemPsimetalExosuitHelmet extends ItemPsimetalArmor implements ISen
 
 	@Override
 	public ItemStack getAttachedSensor(ItemStack stack) {
-		CompoundNBT cmp = stack.getOrCreateTag().getCompound(TAG_SENSOR);
+		CompoundTag cmp = stack.getOrCreateTag().getCompound(TAG_SENSOR);
 		return ItemStack.of(cmp);
 	}
 
 	@Override
-	public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlotType slot, String type) {
+	public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
 		boolean overlay = type != null && type.equals("overlay");
 		return overlay ? LibResources.MODEL_PSIMETAL_EXOSUIT : LibResources.MODEL_PSIMETAL_EXOSUIT_SENSOR;
 	}
 
 	@Override
 	public void attachSensor(ItemStack stack, ItemStack sensor) {
-		CompoundNBT cmp = new CompoundNBT();
+		CompoundTag cmp = new CompoundTag();
 		if (!sensor.isEmpty()) {
 			sensor.save(cmp);
 		}

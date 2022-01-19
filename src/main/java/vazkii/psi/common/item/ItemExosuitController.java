@@ -8,14 +8,14 @@
  */
 package vazkii.psi.common.item;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.level.Level;
 
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ISocketable;
@@ -37,11 +37,11 @@ public class ItemExosuitController extends Item implements ISocketableController
 
 	@Nonnull
 	@Override
-	public ActionResult<ItemStack> use(World worldIn, PlayerEntity playerIn, @Nonnull Hand hand) {
+	public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, @Nonnull InteractionHand hand) {
 		ItemStack itemStackIn = playerIn.getItemInHand(hand);
 		if (playerIn.isShiftKeyDown()) {
 			if (!worldIn.isClientSide) {
-				worldIn.playSound(null, playerIn.getX(), playerIn.getY(), playerIn.getZ(), PsiSoundHandler.compileError, SoundCategory.PLAYERS, 0.25F, 1F);
+				worldIn.playSound(null, playerIn.getX(), playerIn.getY(), playerIn.getZ(), PsiSoundHandler.compileError, SoundSource.PLAYERS, 0.25F, 1F);
 			} else {
 				playerIn.swing(hand);
 			}
@@ -52,14 +52,14 @@ public class ItemExosuitController extends Item implements ISocketableController
 				stack.getCapability(PsiAPI.SOCKETABLE_CAPABILITY).ifPresent(c -> c.setSelectedSlot(3));
 			}
 
-			return new ActionResult<>(ActionResultType.SUCCESS, itemStackIn);
+			return new InteractionResultHolder<>(InteractionResult.SUCCESS, itemStackIn);
 		}
 
-		return new ActionResult<>(ActionResultType.PASS, itemStackIn);
+		return new InteractionResultHolder<>(InteractionResult.PASS, itemStackIn);
 	}
 
 	@Override
-	public ItemStack[] getControlledStacks(PlayerEntity player, ItemStack stack) {
+	public ItemStack[] getControlledStacks(Player player, ItemStack stack) {
 		List<ItemStack> stacks = new ArrayList<>();
 		for (int i = 0; i < 4; i++) {
 			ItemStack armor = player.inventory.armor.get(3 - i);
@@ -77,7 +77,7 @@ public class ItemExosuitController extends Item implements ISocketableController
 	}
 
 	@Override
-	public void setSelectedSlot(PlayerEntity player, ItemStack stack, int controlSlot, int slot) {
+	public void setSelectedSlot(Player player, ItemStack stack, int controlSlot, int slot) {
 		stack.getOrCreateTag().putInt(TAG_SELECTED_CONTROL_SLOT, controlSlot);
 
 		ItemStack[] stacks = getControlledStacks(player, stack);

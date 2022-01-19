@@ -9,7 +9,7 @@
 package vazkii.psi.client.jei.tricks;
 
 import com.google.common.collect.ImmutableList;
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.IRecipeLayout;
@@ -18,11 +18,11 @@ import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 
-import net.minecraft.client.renderer.model.RenderMaterial;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.client.resources.model.Material;
+import net.minecraft.client.resources.language.I18n;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.Component;
 
 import vazkii.psi.api.ClientPsiAPI;
 import vazkii.psi.api.recipe.ITrickRecipe;
@@ -102,11 +102,11 @@ public class TrickCraftingCategory implements IRecipeCategory<ITrickRecipe> {
 	}
 
 	@Override
-	public void draw(ITrickRecipe recipe, MatrixStack matrixStack, double mouseX, double mouseY) {
+	public void draw(ITrickRecipe recipe, PoseStack matrixStack, double mouseX, double mouseY) {
 		if (recipe.getPiece() != null) {
 			IDrawable trickIcon = trickIcons.computeIfAbsent(recipe.getPiece().registryKey,
 					key -> {
-						RenderMaterial mat = ClientPsiAPI.getSpellPieceMaterial(key);
+						Material mat = ClientPsiAPI.getSpellPieceMaterial(key);
 						if (mat == null) {
 							Psi.logger.warn("Not rendering complex (or missing) render for {}", key);
 							return helper.createBlankDrawable(16, 16);
@@ -124,9 +124,9 @@ public class TrickCraftingCategory implements IRecipeCategory<ITrickRecipe> {
 
 	@Nonnull
 	@Override
-	public List<ITextComponent> getTooltipStrings(ITrickRecipe recipe, double mouseX, double mouseY) {
+	public List<Component> getTooltipStrings(ITrickRecipe recipe, double mouseX, double mouseY) {
 		if (recipe.getPiece() != null && onTrick(mouseX, mouseY)) {
-			List<ITextComponent> tooltip = new ArrayList<>();
+			List<Component> tooltip = new ArrayList<>();
 			recipe.getPiece().getTooltip(tooltip);
 			return tooltip;
 		}

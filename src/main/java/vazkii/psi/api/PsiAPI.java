@@ -12,14 +12,14 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.mojang.serialization.Lifecycle;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.RegistryKey;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.SimpleRegistry;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.core.Registry;
+import net.minecraft.core.MappedRegistry;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
@@ -78,8 +78,8 @@ public final class PsiAPI {
 
 	public static final String MOD_ID = "psi";
 
-	public static final RegistryKey<Registry<Class<? extends SpellPiece>>> SPELL_PIECE_REGISTRY_TYPE_KEY = Registry.createRegistryKey("spell_piece_registry_type_key");
-	private static final SimpleRegistry<Class<? extends SpellPiece>> spellPieceRegistry = (SimpleRegistry<Class<? extends SpellPiece>>) Registry.registerSimple(SPELL_PIECE_REGISTRY_TYPE_KEY, Lifecycle.stable(), () -> PieceTrickDebug.class);
+	public static final ResourceKey<Registry<Class<? extends SpellPiece>>> SPELL_PIECE_REGISTRY_TYPE_KEY = Registry.createRegistryKey("spell_piece_registry_type_key");
+	private static final MappedRegistry<Class<? extends SpellPiece>> spellPieceRegistry = (MappedRegistry<Class<? extends SpellPiece>>) Registry.registerSimple(SPELL_PIECE_REGISTRY_TYPE_KEY, Lifecycle.stable(), () -> PieceTrickDebug.class);
 	private static final Multimap<ResourceLocation, Class<? extends SpellPiece>> advancementGroups = HashMultimap.create();
 	private static final Map<Class<? extends SpellPiece>, ResourceLocation> advancementGroupsInverse = new HashMap<>();
 	private static final Map<ResourceLocation, Class<? extends SpellPiece>> mainPieceForGroup = new HashMap<>();
@@ -93,7 +93,7 @@ public final class PsiAPI {
 	 */
 	public static void registerSpellPiece(ResourceLocation resourceLocation, Class<? extends SpellPiece> clazz) {
 		synchronized (PsiAPI.spellPieceRegistry) {
-			PsiAPI.spellPieceRegistry.register(RegistryKey.create(SPELL_PIECE_REGISTRY_TYPE_KEY, resourceLocation), clazz, Lifecycle.stable());
+			PsiAPI.spellPieceRegistry.register(ResourceKey.create(SPELL_PIECE_REGISTRY_TYPE_KEY, resourceLocation), clazz, Lifecycle.stable());
 		}
 	}
 
@@ -133,7 +133,7 @@ public final class PsiAPI {
 	 * Gets the CAD the passed PlayerEntity is using. As a player can only have one CAD, if there's
 	 * more than one, this will return null.
 	 */
-	public static ItemStack getPlayerCAD(PlayerEntity player) {
+	public static ItemStack getPlayerCAD(Player player) {
 		if (player == null) {
 			return ItemStack.EMPTY;
 		}
@@ -153,7 +153,7 @@ public final class PsiAPI {
 		return cad;
 	}
 
-	public static int getPlayerCADSlot(PlayerEntity player) {
+	public static int getPlayerCADSlot(Player player) {
 		if (player == null) {
 			return -1;
 		}
@@ -173,7 +173,7 @@ public final class PsiAPI {
 		return slot;
 	}
 
-	public static boolean canCADBeUpdated(PlayerEntity player) {
+	public static boolean canCADBeUpdated(Player player) {
 		if (player == null) {
 			return false;
 		}
@@ -218,7 +218,7 @@ public final class PsiAPI {
 		return spellPieceRegistry.keySet();
 	}
 
-	public static SimpleRegistry<Class<? extends SpellPiece>> getSpellPieceRegistry() {
+	public static MappedRegistry<Class<? extends SpellPiece>> getSpellPieceRegistry() {
 		return spellPieceRegistry;
 	}
 }

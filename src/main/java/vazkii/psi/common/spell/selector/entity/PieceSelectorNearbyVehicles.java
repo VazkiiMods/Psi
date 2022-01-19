@@ -8,11 +8,11 @@
  */
 package vazkii.psi.common.spell.selector.entity;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.BoatEntity;
-import net.minecraft.entity.item.minecart.MinecartEntity;
-import net.minecraft.entity.passive.PigEntity;
-import net.minecraft.entity.passive.horse.AbstractHorseEntity;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.vehicle.Boat;
+import net.minecraft.world.entity.vehicle.Minecart;
+import net.minecraft.world.entity.animal.Pig;
+import net.minecraft.world.entity.animal.horse.AbstractHorse;
 
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
@@ -27,6 +27,6 @@ public class PieceSelectorNearbyVehicles extends PieceSelectorNearby {
 
 	@Override
 	public Predicate<Entity> getTargetPredicate(SpellContext context) {
-		return (Entity e) -> e instanceof MinecartEntity || e instanceof BoatEntity || (e instanceof AbstractHorseEntity && ((AbstractHorseEntity) e).isSaddled()) || (e instanceof PigEntity && ((PigEntity) e).isSaddled());
+		return (Entity e) -> e instanceof Minecart || e instanceof Boat || (e instanceof AbstractHorse && ((AbstractHorse) e).isSaddled()) || (e instanceof Pig && ((Pig) e).isSaddled());
 	}
 }

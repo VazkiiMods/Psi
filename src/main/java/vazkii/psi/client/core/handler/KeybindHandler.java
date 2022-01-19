@@ -9,10 +9,10 @@
 package vazkii.psi.client.core.handler;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Hand;
+import net.minecraft.client.KeyMapping;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.InteractionHand;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 
 import vazkii.patchouli.api.PatchouliAPI;
@@ -25,14 +25,14 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_C;
 
 public class KeybindHandler {
 
-	public static KeyBinding keybind;
+	public static KeyMapping keybind;
 
 	public static void init() {
-		keybind = new KeyBinding("psimisc.keybind", GLFW_KEY_C, "key.categories.inventory");
+		keybind = new KeyMapping("psimisc.keybind", GLFW_KEY_C, "key.categories.inventory");
 		ClientRegistry.registerKeyBinding(keybind);
 	}
 
-	private static boolean isSocketableController(PlayerEntity player, ItemStack stack) {
+	private static boolean isSocketableController(Player player, ItemStack stack) {
 		if (!(stack.getItem() instanceof ISocketableController)) {
 			return false;
 		}
@@ -50,13 +50,13 @@ public class KeybindHandler {
 
 	public static void keyDown() {
 		Minecraft mc = Minecraft.getInstance();
-		ItemStack stack = mc.player.getItemInHand(Hand.MAIN_HAND);
+		ItemStack stack = mc.player.getItemInHand(InteractionHand.MAIN_HAND);
 
 		if (mc.screen == null) {
 			if (!stack.isEmpty() && (ISocketable.isSocketable(stack) || isSocketableController(mc.player, stack))) {
 				mc.setScreen(new GuiSocketSelect(stack));
 			} else {
-				stack = mc.player.getItemInHand(Hand.OFF_HAND);
+				stack = mc.player.getItemInHand(InteractionHand.OFF_HAND);
 				if (!stack.isEmpty() && (ISocketable.isSocketable(stack) || isSocketableController(mc.player, stack))) {
 					mc.setScreen(new GuiSocketSelect(stack));
 				} else {

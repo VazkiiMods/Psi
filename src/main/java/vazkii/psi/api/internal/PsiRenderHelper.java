@@ -8,7 +8,7 @@
  */
 package vazkii.psi.api.internal;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 public class PsiRenderHelper {
@@ -17,7 +17,7 @@ public class PsiRenderHelper {
 	 * Shim for rendering functions that don't take a MatrixStack when they should.
 	 * Temporary, remove when Mojang adds MatrixStacks to those methods.
 	 */
-	public static void transferMsToGl(MatrixStack ms, Runnable function) {
+	public static void transferMsToGl(PoseStack ms, Runnable function) {
 		try {
 			RenderSystem.pushMatrix();
 			RenderSystem.multMatrix(ms.last().pose());

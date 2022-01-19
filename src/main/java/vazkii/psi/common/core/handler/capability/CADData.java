@@ -10,12 +10,12 @@ package vazkii.psi.common.core.handler.capability;
 
 import com.google.common.collect.Lists;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.DoubleNBT;
-import net.minecraft.nbt.ListNBT;
-import net.minecraft.util.Direction;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.DoubleTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.core.Direction;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.Constants;
@@ -115,7 +115,7 @@ public class CADData implements ICapabilityProvider, ICADData, ISpellAcceptor, I
 	}
 
 	@Override
-	public void setSpell(PlayerEntity player, Spell spell) {
+	public void setSpell(Player player, Spell spell) {
 		int slot = getSelectedSlot();
 		ItemStack bullet = getBulletInSocket(slot);
 		if (!bullet.isEmpty() && ISpellAcceptor.isAcceptor(bullet)) {
@@ -142,7 +142,7 @@ public class CADData implements ICapabilityProvider, ICADData, ISpellAcceptor, I
 	@Override
 	public ItemStack getBulletInSocket(int slot) {
 		String name = IPsimetalTool.TAG_BULLET_PREFIX + slot;
-		CompoundNBT cmp = cad.getOrCreateTag().getCompound(name);
+		CompoundTag cmp = cad.getOrCreateTag().getCompound(name);
 
 		if (cmp.isEmpty()) {
 			return ItemStack.EMPTY;
@@ -154,7 +154,7 @@ public class CADData implements ICapabilityProvider, ICADData, ISpellAcceptor, I
 	@Override
 	public void setBulletInSocket(int slot, ItemStack bullet) {
 		String name = IPsimetalTool.TAG_BULLET_PREFIX + slot;
-		CompoundNBT cmp = new CompoundNBT();
+		CompoundTag cmp = new CompoundTag();
 
 		if (!bullet.isEmpty()) {
 			bullet.save(cmp);
@@ -183,8 +183,8 @@ public class CADData implements ICapabilityProvider, ICADData, ISpellAcceptor, I
 	}
 
 	@Override
-	public CompoundNBT serializeForSynchronization() {
-		CompoundNBT compound = new CompoundNBT();
+	public CompoundTag serializeForSynchronization() {
+		CompoundTag compound = new CompoundTag();
 		compound.putInt("Time", time);
 		compound.putInt("Battery", battery);
 
@@ -192,18 +192,18 @@ public class CADData implements ICapabilityProvider, ICADData, ISpellAcceptor, I
 	}
 
 	@Override
-	public CompoundNBT serializeNBT() {
-		CompoundNBT compound = serializeForSynchronization();
+	public CompoundTag serializeNBT() {
+		CompoundTag compound = serializeForSynchronization();
 
-		ListNBT memory = new ListNBT();
+		ListTag memory = new ListTag();
 		for (Vector3 vector : vectors) {
 			if (vector == null) {
-				memory.add(new ListNBT());
+				memory.add(new ListTag());
 			} else {
-				ListNBT vec = new ListNBT();
-				vec.add(DoubleNBT.valueOf(vector.x));
-				vec.add(DoubleNBT.valueOf(vector.y));
-				vec.add(DoubleNBT.valueOf(vector.z));
+				ListTag vec = new ListTag();
+				vec.add(DoubleTag.valueOf(vector.x));
+				vec.add(DoubleTag.valueOf(vector.y));
+				vec.add(DoubleTag.valueOf(vector.z));
 				memory.add(vec);
 			}
 		}
@@ -213,7 +213,7 @@ public class CADData implements ICapabilityProvider, ICADData, ISpellAcceptor, I
 	}
 
 	@Override
-	public void deserializeNBT(CompoundNBT nbt) {
+	public void deserializeNBT(CompoundTag nbt) {
 		if (nbt.contains("Time", Constants.NBT.TAG_ANY_NUMERIC)) {
 			time = nbt.getInt("Time");
 		}
@@ -222,10 +222,10 @@ public class CADData implements ICapabilityProvider, ICADData, ISpellAcceptor, I
 		}
 
 		if (nbt.contains("Memory", Constants.NBT.TAG_LIST)) {
-			ListNBT memory = nbt.getList("Memory", Constants.NBT.TAG_LIST);
+			ListTag memory = nbt.getList("Memory", Constants.NBT.TAG_LIST);
 			List<Vector3> newVectors = Lists.newArrayList();
 			for (int i = 0; i < memory.size(); i++) {
-				ListNBT vec = (ListNBT) memory.get(i);
+				ListTag vec = (ListTag) memory.get(i);
 				if (vec.getElementType() == Constants.NBT.TAG_DOUBLE && vec.size() >= 3) {
 					newVectors.add(new Vector3(vec.getDouble(0), vec.getDouble(1), vec.getDouble(2)));
 				} else {

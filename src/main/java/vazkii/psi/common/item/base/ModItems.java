@@ -8,9 +8,9 @@
  */
 package vazkii.psi.common.item.base;
 
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.DyeColor;
-import net.minecraft.item.Item;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.Item;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -117,10 +117,10 @@ public final class ModItems {
 	public static final Item psimetalPickaxe = new ItemPsimetalPickaxe(defaultBuilder());
 	public static final Item psimetalAxe = new ItemPsimetalAxe(defaultBuilder());
 	public static final Item psimetalSword = new ItemPsimetalSword(defaultBuilder());
-	public static final Item psimetalExosuitHelmet = new ItemPsimetalExosuitHelmet(EquipmentSlotType.HEAD, defaultBuilder());
-	public static final Item psimetalExosuitChestplate = new ItemPsimetalExosuitChestplate(EquipmentSlotType.CHEST, defaultBuilder());
-	public static final Item psimetalExosuitLeggings = new ItemPsimetalExosuitLeggings(EquipmentSlotType.LEGS, defaultBuilder());
-	public static final Item psimetalExosuitBoots = new ItemPsimetalExosuitBoots(EquipmentSlotType.FEET, defaultBuilder());
+	public static final Item psimetalExosuitHelmet = new ItemPsimetalExosuitHelmet(EquipmentSlot.HEAD, defaultBuilder());
+	public static final Item psimetalExosuitChestplate = new ItemPsimetalExosuitChestplate(EquipmentSlot.CHEST, defaultBuilder());
+	public static final Item psimetalExosuitLeggings = new ItemPsimetalExosuitLeggings(EquipmentSlot.LEGS, defaultBuilder());
+	public static final Item psimetalExosuitBoots = new ItemPsimetalExosuitBoots(EquipmentSlot.FEET, defaultBuilder());
 
 	public static Item.Properties defaultBuilder() {
 		return new Item.Properties().tab(PsiCreativeTab.INSTANCE);

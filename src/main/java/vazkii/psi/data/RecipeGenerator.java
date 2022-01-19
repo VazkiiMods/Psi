@@ -8,20 +8,20 @@
  */
 package vazkii.psi.data;
 
-import net.minecraft.advancements.ICriterionInstance;
-import net.minecraft.data.CustomRecipeBuilder;
+import net.minecraft.advancements.CriterionTriggerInstance;
+import net.minecraft.data.recipes.SpecialRecipeBuilder;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.IFinishedRecipe;
-import net.minecraft.data.RecipeProvider;
-import net.minecraft.data.ShapedRecipeBuilder;
-import net.minecraft.data.ShapelessRecipeBuilder;
-import net.minecraft.item.DyeColor;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.item.crafting.SpecialRecipeSerializer;
+import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.data.recipes.ShapedRecipeBuilder;
+import net.minecraft.data.recipes.ShapelessRecipeBuilder;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.SimpleRecipeSerializer;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.core.Registry;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.crafting.conditions.IConditionBuilder;
 
@@ -42,7 +42,7 @@ public class RecipeGenerator extends RecipeProvider implements IConditionBuilder
 	}
 
 	@Override
-	protected void buildShapelessRecipes(Consumer<IFinishedRecipe> consumer) {
+	protected void buildShapelessRecipes(Consumer<FinishedRecipe> consumer) {
 		specialRecipe(AssemblyScavengeRecipe.SERIALIZER, consumer);
 		specialRecipe(BulletToDriveRecipe.SERIALIZER, consumer);
 		specialRecipe(ColorizerChangeRecipe.SERIALIZER, consumer);
@@ -50,11 +50,11 @@ public class RecipeGenerator extends RecipeProvider implements IConditionBuilder
 		specialRecipe(SensorAttachRecipe.SERIALIZER, consumer);
 		specialRecipe(SensorRemoveRecipe.SERIALIZER, consumer);
 
-		ICriterionInstance hasIron = has(Tags.Items.INGOTS_IRON);
-		ICriterionInstance hasPsimetal = has(ModTags.INGOT_PSIMETAL);
-		ICriterionInstance hasEbonyPsimetal = has(ModTags.INGOT_EBONY_PSIMETAL);
-		ICriterionInstance hasIvoryPsimetal = has(ModTags.INGOT_IVORY_PSIMETAL);
-		ICriterionInstance hasPsidust = has(ModTags.PSIDUST);
+		CriterionTriggerInstance hasIron = has(Tags.Items.INGOTS_IRON);
+		CriterionTriggerInstance hasPsimetal = has(ModTags.INGOT_PSIMETAL);
+		CriterionTriggerInstance hasEbonyPsimetal = has(ModTags.INGOT_EBONY_PSIMETAL);
+		CriterionTriggerInstance hasIvoryPsimetal = has(ModTags.INGOT_IVORY_PSIMETAL);
+		CriterionTriggerInstance hasPsidust = has(ModTags.PSIDUST);
 
 		ShapedRecipeBuilder.shaped(ModBlocks.cadAssembler)
 				.define('I', Tags.Items.INGOTS_IRON)
@@ -297,16 +297,16 @@ public class RecipeGenerator extends RecipeProvider implements IConditionBuilder
 				.define('I', Tags.Items.INGOTS_IRON)
 				.define('D', ModTags.PSIDUST)
 				.define('A', Ingredient.fromValues(Stream.of(
-						new Ingredient.TagList(Tags.Items.SLIMEBALLS),
-						new Ingredient.SingleItemList(new ItemStack(Items.SNOWBALL)))))
+						new Ingredient.TagValue(Tags.Items.SLIMEBALLS),
+						new Ingredient.ItemValue(new ItemStack(Items.SNOWBALL)))))
 				.pattern("AID")
 				.unlockedBy("has_psidust", hasPsidust)
 				.save(consumer, Psi.location("spell_bullet_circle"));
 		ShapelessRecipeBuilder.shapeless(ModItems.circleSpellBullet)
 				.requires(ModItems.spellBullet)
 				.requires(Ingredient.fromValues(Stream.of(
-						new Ingredient.TagList(Tags.Items.SLIMEBALLS),
-						new Ingredient.SingleItemList(new ItemStack(Items.SNOWBALL)))))
+						new Ingredient.TagValue(Tags.Items.SLIMEBALLS),
+						new Ingredient.ItemValue(new ItemStack(Items.SNOWBALL)))))
 				.unlockedBy("has_psidust", has(ModItems.psidust))
 				.save(WrapperResult.ofType(BulletUpgradeRecipe.SERIALIZER, consumer), Psi.location("spell_bullet_circle_upgrade"));
 		ShapedRecipeBuilder.shaped(ModItems.grenadeSpellBullet)
@@ -587,8 +587,8 @@ public class RecipeGenerator extends RecipeProvider implements IConditionBuilder
 		return "Psi crafting recipes";
 	}
 
-	private static void specialRecipe(SpecialRecipeSerializer<?> serializer, Consumer<IFinishedRecipe> consumer) {
-		CustomRecipeBuilder.special(serializer).save(consumer, Psi.location("dynamic/" + serializer.getRegistryName().getPath()).toString());
+	private static void specialRecipe(SimpleRecipeSerializer<?> serializer, Consumer<FinishedRecipe> consumer) {
+		SpecialRecipeBuilder.special(serializer).save(consumer, Psi.location("dynamic/" + serializer.getRegistryName().getPath()).toString());
 	}
 
 }

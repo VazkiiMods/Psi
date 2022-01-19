@@ -8,17 +8,17 @@
  */
 package vazkii.psi.api.material;
 
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.IArmorMaterial;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.LazyValue;
-import net.minecraft.util.SoundEvent;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ArmorMaterial;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.util.LazyLoadedValue;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.function.Supplier;
 
-public class PsimetalArmorMaterial implements IArmorMaterial {
+public class PsimetalArmorMaterial implements ArmorMaterial {
 	private static final int[] MAX_DAMAGE_ARRAY = new int[] { 13, 15, 16, 11 };
 	private final String name;
 	private final int maxDamageFactor;
@@ -26,7 +26,7 @@ public class PsimetalArmorMaterial implements IArmorMaterial {
 	private final int enchantability;
 	private final SoundEvent soundEvent;
 	private final float toughness;
-	private final LazyValue<Ingredient> repairMaterial;
+	private final LazyLoadedValue<Ingredient> repairMaterial;
 	private final float knockbackResistance;
 
 	public PsimetalArmorMaterial(String nameIn, int maxDamageFactorIn, int[] damageReductionAmountsIn, int enchantabilityIn, SoundEvent equipSoundIn, float toughnessIn, Supplier<Ingredient> repairMaterialSupplier, float knockbackResistance) {
@@ -36,17 +36,17 @@ public class PsimetalArmorMaterial implements IArmorMaterial {
 		this.enchantability = enchantabilityIn;
 		this.soundEvent = equipSoundIn;
 		this.toughness = toughnessIn;
-		this.repairMaterial = new LazyValue<>(repairMaterialSupplier);
+		this.repairMaterial = new LazyLoadedValue<>(repairMaterialSupplier);
 		this.knockbackResistance = knockbackResistance;
 	}
 
 	@Override
-	public int getDurabilityForSlot(EquipmentSlotType slotIn) {
+	public int getDurabilityForSlot(EquipmentSlot slotIn) {
 		return MAX_DAMAGE_ARRAY[slotIn.getIndex()] * this.maxDamageFactor;
 	}
 
 	@Override
-	public int getDefenseForSlot(EquipmentSlotType slotIn) {
+	public int getDefenseForSlot(EquipmentSlot slotIn) {
 		return this.damageReductionAmountArray[slotIn.getIndex()];
 	}
 

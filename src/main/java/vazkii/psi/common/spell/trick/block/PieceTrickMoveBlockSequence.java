@@ -8,11 +8,11 @@
  */
 package vazkii.psi.common.spell.trick.block;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.material.PushReaction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.PushReaction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.BlockEvent;
 
@@ -68,7 +68,7 @@ public class PieceTrickMoveBlockSequence extends PieceTrick {
 		Vector3 positionVal = SpellHelpers.getVector3(this, context, position, true, false);
 		Vector3 targetVal = SpellHelpers.getVector3(this, context, target, false, false);
 		int maxBlocksVal = this.getParamValue(context, maxBlocks).intValue();
-		World world = context.caster.level;
+		Level world = context.caster.level;
 
 		Map<BlockPos, BlockState> toSet = new HashMap<>();
 		Map<BlockPos, BlockState> toRemove = new HashMap<>();

@@ -10,14 +10,14 @@ package vazkii.psi.common.crafting.recipe;
 
 import com.google.gson.JsonObject;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.item.crafting.IRecipeType;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.items.wrapper.RecipeWrapper;
 import net.minecraftforge.registries.ForgeRegistryEntry;
@@ -33,7 +33,7 @@ import vazkii.psi.common.item.base.ModItems;
 import javax.annotation.Nullable;
 
 public class TrickRecipe implements ITrickRecipe {
-	public static final IRecipeSerializer<TrickRecipe> SERIALIZER = new Serializer();
+	public static final RecipeSerializer<TrickRecipe> SERIALIZER = new Serializer();
 	private static final Spell dummySpell = new Spell();
 
 	@Nullable
@@ -73,7 +73,7 @@ public class TrickRecipe implements ITrickRecipe {
 	}
 
 	@Override
-	public boolean matches(RecipeWrapper inv, World world) {
+	public boolean matches(RecipeWrapper inv, Level world) {
 		return getInput().test(inv.getItem(0));
 	}
 
@@ -93,7 +93,7 @@ public class TrickRecipe implements ITrickRecipe {
 	}
 
 	@Override
-	public IRecipeSerializer<?> getSerializer() {
+	public RecipeSerializer<?> getSerializer() {
 		return SERIALIZER;
 	}
 
@@ -103,20 +103,20 @@ public class TrickRecipe implements ITrickRecipe {
 	}
 
 	@Override
-	public IRecipeType<?> getType() {
+	public RecipeType<?> getType() {
 		return ModCraftingRecipes.TRICK_RECIPE_TYPE;
 	}
 
-	static class Serializer extends ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<TrickRecipe> {
+	static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<TrickRecipe> {
 		@Override
 		public TrickRecipe fromJson(ResourceLocation id, JsonObject json) {
-			Ingredient ingredient = Ingredient.fromJson(JSONUtils.getAsJsonObject(json, "input"));
-			ItemStack output = CraftingHelper.getItemStack(JSONUtils.getAsJsonObject(json, "output"), true);
-			ItemStack cadAssembly = CraftingHelper.getItemStack(JSONUtils.getAsJsonObject(json, "cad"), true);
+			Ingredient ingredient = Ingredient.fromJson(GsonHelper.getAsJsonObject(json, "input"));
+			ItemStack output = CraftingHelper.getItemStack(GsonHelper.getAsJsonObject(json, "output"), true);
+			ItemStack cadAssembly = CraftingHelper.getItemStack(GsonHelper.getAsJsonObject(json, "cad"), true);
 
 			PieceCraftingTrick trick = null;
 			if (json.has("trick")) {
-				trick = PsiAPI.getSpellPieceRegistry().getOptional(new ResourceLocation(JSONUtils.getAsString(json, "trick")))
+				trick = PsiAPI.getSpellPieceRegistry().getOptional(new ResourceLocation(GsonHelper.getAsString(json, "trick")))
 						.filter(PieceCraftingTrick.class::isAssignableFrom)
 						.map(clazz -> (PieceCraftingTrick) SpellPiece.create(clazz, dummySpell))
 						.orElse(null);
@@ -126,7 +126,7 @@ public class TrickRecipe implements ITrickRecipe {
 
 		@Nullable
 		@Override
-		public TrickRecipe fromNetwork(ResourceLocation id, PacketBuffer buf) {
+		public TrickRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buf) {
 			Ingredient ingredient = Ingredient.fromNetwork(buf);
 			ItemStack output = buf.readItem();
 			ItemStack cadAssembly = buf.readItem();
@@ -140,7 +140,7 @@ public class TrickRecipe implements ITrickRecipe {
 		}
 
 		@Override
-		public void toNetwork(PacketBuffer buf, TrickRecipe recipe) {
+		public void toNetwork(FriendlyByteBuf buf, TrickRecipe recipe) {
 			recipe.input.toNetwork(buf);
 			buf.writeItem(recipe.output);
 			buf.writeItem(recipe.cad);

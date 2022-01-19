@@ -8,13 +8,13 @@
  */
 package vazkii.psi.common.spell.selector.entity;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.FurnaceRecipe;
-import net.minecraft.item.crafting.IRecipeType;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.SmeltingRecipe;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.Level;
 
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
@@ -22,7 +22,7 @@ import vazkii.psi.api.spell.SpellContext;
 import java.util.function.Predicate;
 
 public class PieceSelectorNearbySmeltables extends PieceSelectorNearby {
-	private static final Inventory DUMMY_INV = new Inventory(3);
+	private static final SimpleContainer DUMMY_INV = new SimpleContainer(3);
 
 	public PieceSelectorNearbySmeltables(Spell spell) {
 		super(spell);
@@ -33,11 +33,11 @@ public class PieceSelectorNearbySmeltables extends PieceSelectorNearby {
 		return this::accept;
 	}
 
-	public static ItemStack simulateSmelt(World world, ItemStack input) {
+	public static ItemStack simulateSmelt(Level world, ItemStack input) {
 		DUMMY_INV.clearContent();
 		DUMMY_INV.setItem(0, input);
-		return world.getRecipeManager().getRecipeFor(IRecipeType.SMELTING, DUMMY_INV, world)
-				.map(FurnaceRecipe::getResultItem)
+		return world.getRecipeManager().getRecipeFor(RecipeType.SMELTING, DUMMY_INV, world)
+				.map(SmeltingRecipe::getResultItem)
 				.orElse(ItemStack.EMPTY);
 	}
 

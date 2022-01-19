@@ -8,14 +8,14 @@
  */
 package vazkii.psi.client.patchouli;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 
-import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.JsonToNBT;
-import net.minecraft.util.StringUtils;
+import net.minecraft.client.renderer.MultiBufferSource;
+import com.mojang.blaze3d.vertex.Tesselator;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.TagParser;
+import net.minecraft.util.StringUtil;
 
 import vazkii.patchouli.api.IComponentRenderContext;
 import vazkii.patchouli.api.ICustomComponent;
@@ -38,10 +38,10 @@ public class SpellGridComponent implements ICustomComponent {
 	public void build(int componentX, int componentY, int pageNum) {
 		try {
 			String spellstr = spell.asString("");
-			if (StringUtils.isNullOrEmpty(spellstr)) {
+			if (StringUtil.isNullOrEmpty(spellstr)) {
 				throw new IllegalArgumentException("Spell string is missing!");
 			}
-			CompoundNBT cmp = JsonToNBT.parseTag(spellstr);
+			CompoundTag cmp = TagParser.parseTag(spellstr);
 			Spell fromNBT = Spell.createFromNBT(cmp);
 			if (fromNBT == null) {
 				throw new IllegalArgumentException("Invalid spell string: " + spell);
@@ -54,10 +54,10 @@ public class SpellGridComponent implements ICustomComponent {
 	}
 
 	@Override
-	public void render(MatrixStack ms, IComponentRenderContext context, float pticks, int mouseX, int mouseY) {
+	public void render(PoseStack ms, IComponentRenderContext context, float pticks, int mouseX, int mouseY) {
 		float scale = isDownscaled ? 0.5f : 1.0f;
 
-		IRenderTypeBuffer.Impl buffer = IRenderTypeBuffer.immediate(Tessellator.getInstance().getBuilder());
+		MultiBufferSource.BufferSource buffer = MultiBufferSource.immediate(Tesselator.getInstance().getBuilder());
 		ms.pushPose();
 		ms.translate(x, y, 0);
 		ms.scale(scale, scale, scale);

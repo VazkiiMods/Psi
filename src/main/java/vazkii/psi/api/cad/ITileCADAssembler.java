@@ -8,8 +8,8 @@
  */
 package vazkii.psi.api.cad;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 
 /**
  * This interface represents a CAD Assembler tile. You probably shouldn't implement this.
@@ -17,7 +17,7 @@ import net.minecraft.item.ItemStack;
 public interface ITileCADAssembler {
 	int getComponentSlot(EnumCADComponent componentType);
 
-	ItemStack getCachedCAD(PlayerEntity player);
+	ItemStack getCachedCAD(Player player);
 
 	void clearCachedCAD();
 

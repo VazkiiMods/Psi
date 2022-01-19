@@ -8,8 +8,8 @@
  */
 package vazkii.psi.common.core.handler;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.DefaultUncaughtExceptionHandler;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.DefaultUncaughtExceptionHandler;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;

@@ -8,29 +8,29 @@
  */
 package vazkii.psi.common.block;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.HorizontalBlock;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.container.INamedContainerProvider;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.shapes.IBooleanFunction;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.BooleanOp;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.LazyOptional;
 
 import vazkii.psi.api.PsiAPI;
@@ -44,9 +44,9 @@ import javax.annotation.Nullable;
 
 import java.util.UUID;
 
-import net.minecraft.block.AbstractBlock.Properties;
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
-public class BlockProgrammer extends HorizontalBlock {
+public class BlockProgrammer extends HorizontalDirectionalBlock {
 
 	public static final BooleanProperty ENABLED = BooleanProperty.create("enabled");
 	private static final VoxelShape SHAPE_NORTH;
@@ -59,14 +59,14 @@ public class BlockProgrammer extends HorizontalBlock {
 		VoxelShape northMiddle = Block.box(2, 0, 14, 14, 8, 16);
 		VoxelShape southMiddle = Block.box(2, 0, 0, 14, 8, 2);
 		VoxelShape zBottom = Block.box(2, 0, 0, 14, 1, 16);
-		SHAPE_NORTH = VoxelShapes.join(top, VoxelShapes.join(zBottom, northMiddle, IBooleanFunction.OR), IBooleanFunction.OR);
-		SHAPE_SOUTH = VoxelShapes.join(top, VoxelShapes.join(zBottom, southMiddle, IBooleanFunction.OR), IBooleanFunction.OR);
+		SHAPE_NORTH = Shapes.join(top, Shapes.join(zBottom, northMiddle, BooleanOp.OR), BooleanOp.OR);
+		SHAPE_SOUTH = Shapes.join(top, Shapes.join(zBottom, southMiddle, BooleanOp.OR), BooleanOp.OR);
 
 		VoxelShape westMiddle = Block.box(14, 0, 2, 16, 8, 14);
 		VoxelShape eastMiddle = Block.box(0, 0, 2, 2, 8, 14);
 		VoxelShape xBottom = Block.box(0, 0, 2, 16, 1, 14);
-		SHAPE_WEST = VoxelShapes.join(top, VoxelShapes.join(xBottom, westMiddle, IBooleanFunction.OR), IBooleanFunction.OR);
-		SHAPE_EAST = VoxelShapes.join(top, VoxelShapes.join(xBottom, eastMiddle, IBooleanFunction.OR), IBooleanFunction.OR);
+		SHAPE_WEST = Shapes.join(top, Shapes.join(xBottom, westMiddle, BooleanOp.OR), BooleanOp.OR);
+		SHAPE_EAST = Shapes.join(top, Shapes.join(xBottom, eastMiddle, BooleanOp.OR), BooleanOp.OR);
 	}
 
 	public BlockProgrammer(Properties props) {
@@ -75,7 +75,7 @@ public class BlockProgrammer extends HorizontalBlock {
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx) {
+	public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext ctx) {
 		switch (state.getValue(FACING)) {
 		default:
 		case NORTH:
@@ -90,16 +90,16 @@ public class BlockProgrammer extends HorizontalBlock {
 	}
 
 	@Override
-	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult rayTraceResult) {
+	public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand hand, BlockHitResult rayTraceResult) {
 		ItemStack heldItem = player.getItemInHand(hand);
 		TileProgrammer programmer = (TileProgrammer) worldIn.getBlockEntity(pos);
 		if (programmer == null) {
-			return ActionResultType.PASS;
+			return InteractionResult.PASS;
 		}
 
-		ActionResultType result = setSpell(worldIn, pos, player, heldItem);
-		if (result == ActionResultType.SUCCESS) {
-			return ActionResultType.SUCCESS;
+		InteractionResult result = setSpell(worldIn, pos, player, heldItem);
+		if (result == InteractionResult.SUCCESS) {
+			return InteractionResult.SUCCESS;
 		}
 
 		boolean enabled = programmer.isEnabled();
@@ -107,19 +107,19 @@ public class BlockProgrammer extends HorizontalBlock {
 			programmer.playerLock = player.getName().getString();
 		}
 
-		if (player instanceof ServerPlayerEntity) {
-			VanillaPacketDispatcher.dispatchTEToPlayer(programmer, (ServerPlayerEntity) player);
+		if (player instanceof ServerPlayer) {
+			VanillaPacketDispatcher.dispatchTEToPlayer(programmer, (ServerPlayer) player);
 		}
 		if (worldIn.isClientSide) {
 			Psi.proxy.openProgrammerGUI(programmer);
 		}
-		return ActionResultType.SUCCESS;
+		return InteractionResult.SUCCESS;
 	}
 
-	public ActionResultType setSpell(World worldIn, BlockPos pos, PlayerEntity playerIn, ItemStack heldItem) {
+	public InteractionResult setSpell(Level worldIn, BlockPos pos, Player playerIn, ItemStack heldItem) {
 		TileProgrammer programmer = (TileProgrammer) worldIn.getBlockEntity(pos);
 		if (programmer == null) {
-			return ActionResultType.FAIL;
+			return InteractionResult.FAIL;
 		}
 
 		boolean enabled = programmer.isEnabled();
@@ -128,40 +128,40 @@ public class BlockProgrammer extends HorizontalBlock {
 		if (enabled && !heldItem.isEmpty() && settable.isPresent() && programmer.spell != null && (playerIn.isShiftKeyDown() || !settable.orElse(null).requiresSneakForSpellSet())) {
 			if (programmer.canCompile()) {
 				if (!worldIn.isClientSide) {
-					worldIn.playSound(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, PsiSoundHandler.bulletCreate, SoundCategory.BLOCKS, 0.5F, 1F);
+					worldIn.playSound(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, PsiSoundHandler.bulletCreate, SoundSource.BLOCKS, 0.5F, 1F);
 				}
 
 				programmer.spell.uuid = UUID.randomUUID();
 				settable.ifPresent(c -> c.setSpell(playerIn, programmer.spell));
-				if (playerIn instanceof ServerPlayerEntity) {
-					VanillaPacketDispatcher.dispatchTEToPlayer(programmer, (ServerPlayerEntity) playerIn);
+				if (playerIn instanceof ServerPlayer) {
+					VanillaPacketDispatcher.dispatchTEToPlayer(programmer, (ServerPlayer) playerIn);
 				}
-				return ActionResultType.SUCCESS;
+				return InteractionResult.SUCCESS;
 			} else {
 				if (!worldIn.isClientSide) {
-					worldIn.playSound(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, PsiSoundHandler.compileError, SoundCategory.BLOCKS, 0.5F, 1F);
+					worldIn.playSound(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, PsiSoundHandler.compileError, SoundSource.BLOCKS, 0.5F, 1F);
 				}
-				return ActionResultType.FAIL;
+				return InteractionResult.FAIL;
 			}
 		}
 
-		return ActionResultType.PASS;
+		return InteractionResult.PASS;
 	}
 
 	@Override
-	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
 		builder.add(FACING, ENABLED);
 	}
 
 	@Nullable
 	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext ctx) {
+	public BlockState getStateForPlacement(BlockPlaceContext ctx) {
 		return defaultBlockState().setValue(FACING, ctx.getHorizontalDirection().getOpposite());
 	}
 
 	@Nullable
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+	public BlockEntity createTileEntity(BlockState state, BlockGetter world) {
 		return new TileProgrammer();
 	}
 
@@ -178,8 +178,8 @@ public class BlockProgrammer extends HorizontalBlock {
 
 	@Override
 	@SuppressWarnings("deprecation")
-	public int getAnalogOutputSignal(BlockState blockState, World worldIn, BlockPos pos) {
-		TileEntity tile = worldIn.getBlockEntity(pos);
+	public int getAnalogOutputSignal(BlockState blockState, Level worldIn, BlockPos pos) {
+		BlockEntity tile = worldIn.getBlockEntity(pos);
 		if (tile instanceof TileProgrammer) {
 			TileProgrammer programmer = (TileProgrammer) tile;
 
@@ -197,7 +197,7 @@ public class BlockProgrammer extends HorizontalBlock {
 
 	@Nullable
 	@Override
-	public INamedContainerProvider getMenuProvider(BlockState state, World worldIn, BlockPos pos) {
+	public MenuProvider getMenuProvider(BlockState state, Level worldIn, BlockPos pos) {
 		return super.getMenuProvider(state, worldIn, pos);
 	}
 

@@ -8,7 +8,7 @@
  */
 package vazkii.psi.api.inventory;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 
 import vazkii.psi.api.cad.ISocketable;
 

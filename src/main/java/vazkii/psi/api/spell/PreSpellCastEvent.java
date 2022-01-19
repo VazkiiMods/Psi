@@ -8,8 +8,8 @@
  */
 package vazkii.psi.api.spell;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.eventbus.api.Cancelable;
 import net.minecraftforge.eventbus.api.Event;
 
@@ -33,7 +33,7 @@ public class PreSpellCastEvent extends Event {
 	private Spell spell;
 	private SpellContext context;
 
-	private final PlayerEntity player;
+	private final Player player;
 	private final IPlayerData playerData;
 	private final ItemStack cad;
 	private final ItemStack bullet;
@@ -41,7 +41,7 @@ public class PreSpellCastEvent extends Event {
 	@Nullable
 	private String cancellationMessage = "psimisc.canceled_spell";
 
-	public PreSpellCastEvent(int cost, float sound, int particles, int cooldown, Spell spell, SpellContext context, PlayerEntity player, IPlayerData playerData, ItemStack cad, ItemStack bullet) {
+	public PreSpellCastEvent(int cost, float sound, int particles, int cooldown, Spell spell, SpellContext context, Player player, IPlayerData playerData, ItemStack cad, ItemStack bullet) {
 		this.cost = cost;
 		this.sound = sound;
 		this.particles = particles;
@@ -112,7 +112,7 @@ public class PreSpellCastEvent extends Event {
 		this.context = context;
 	}
 
-	public PlayerEntity getPlayer() {
+	public Player getPlayer() {
 		return player;
 	}
 

@@ -8,18 +8,18 @@
  */
 package vazkii.psi.common.entity;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.IPacket;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.registries.ObjectHolder;
 
@@ -56,26 +56,26 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 	private static final String TAG_LOOK_Y = "savedLookY";
 	private static final String TAG_LOOK_Z = "savedLookZ";
 
-	public static final DataParameter<ItemStack> COLORIZER_DATA = EntityDataManager.defineId(EntitySpellCircle.class, DataSerializers.ITEM_STACK);
-	private static final DataParameter<ItemStack> BULLET_DATA = EntityDataManager.defineId(EntitySpellCircle.class, DataSerializers.ITEM_STACK);
-	private static final DataParameter<Optional<UUID>> CASTER_UUID = EntityDataManager.defineId(EntitySpellCircle.class, DataSerializers.OPTIONAL_UUID);
-	private static final DataParameter<Integer> TIME_ALIVE = EntityDataManager.defineId(EntitySpellCircle.class, DataSerializers.INT);
-	private static final DataParameter<Integer> TIMES_CAST = EntityDataManager.defineId(EntitySpellCircle.class, DataSerializers.INT);
+	public static final EntityDataAccessor<ItemStack> COLORIZER_DATA = SynchedEntityData.defineId(EntitySpellCircle.class, EntityDataSerializers.ITEM_STACK);
+	private static final EntityDataAccessor<ItemStack> BULLET_DATA = SynchedEntityData.defineId(EntitySpellCircle.class, EntityDataSerializers.ITEM_STACK);
+	private static final EntityDataAccessor<Optional<UUID>> CASTER_UUID = SynchedEntityData.defineId(EntitySpellCircle.class, EntityDataSerializers.OPTIONAL_UUID);
+	private static final EntityDataAccessor<Integer> TIME_ALIVE = SynchedEntityData.defineId(EntitySpellCircle.class, EntityDataSerializers.INT);
+	private static final EntityDataAccessor<Integer> TIMES_CAST = SynchedEntityData.defineId(EntitySpellCircle.class, EntityDataSerializers.INT);
 
-	private static final DataParameter<Float> LOOK_X = EntityDataManager.defineId(EntitySpellCircle.class, DataSerializers.FLOAT);
-	private static final DataParameter<Float> LOOK_Y = EntityDataManager.defineId(EntitySpellCircle.class, DataSerializers.FLOAT);
-	private static final DataParameter<Float> LOOK_Z = EntityDataManager.defineId(EntitySpellCircle.class, DataSerializers.FLOAT);
+	private static final EntityDataAccessor<Float> LOOK_X = SynchedEntityData.defineId(EntitySpellCircle.class, EntityDataSerializers.FLOAT);
+	private static final EntityDataAccessor<Float> LOOK_Y = SynchedEntityData.defineId(EntitySpellCircle.class, EntityDataSerializers.FLOAT);
+	private static final EntityDataAccessor<Float> LOOK_Z = SynchedEntityData.defineId(EntitySpellCircle.class, EntityDataSerializers.FLOAT);
 
-	public EntitySpellCircle(EntityType<?> type, World worldIn) {
+	public EntitySpellCircle(EntityType<?> type, Level worldIn) {
 		super(type, worldIn);
 	}
 
-	public EntitySpellCircle setInfo(PlayerEntity player, ItemStack colorizer, ItemStack bullet) {
+	public EntitySpellCircle setInfo(Player player, ItemStack colorizer, ItemStack bullet) {
 		entityData.set(COLORIZER_DATA, colorizer);
 		entityData.set(BULLET_DATA, bullet.copy());
 		entityData.set(CASTER_UUID, Optional.of(player.getUUID()));
 
-		Vector3d lookVec = player.getViewVector(1F);
+		Vec3 lookVec = player.getViewVector(1F);
 		entityData.set(LOOK_X, (float) lookVec.x);
 		entityData.set(LOOK_Y, (float) lookVec.y);
 		entityData.set(LOOK_Z, (float) lookVec.z);
@@ -95,15 +95,15 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 	}
 
 	@Override
-	public void addAdditionalSaveData(@Nonnull CompoundNBT tagCompound) {
-		CompoundNBT colorizerCmp = new CompoundNBT();
+	public void addAdditionalSaveData(@Nonnull CompoundTag tagCompound) {
+		CompoundTag colorizerCmp = new CompoundTag();
 		ItemStack colorizer = entityData.get(COLORIZER_DATA);
 		if (!colorizer.isEmpty()) {
 			colorizerCmp = colorizer.save(colorizerCmp);
 		}
 		tagCompound.put(TAG_COLORIZER, colorizerCmp);
 
-		CompoundNBT bulletCmp = new CompoundNBT();
+		CompoundTag bulletCmp = new CompoundTag();
 		ItemStack bullet = entityData.get(BULLET_DATA);
 		if (!bullet.isEmpty()) {
 			bulletCmp = bullet.save(bulletCmp);
@@ -120,12 +120,12 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 	}
 
 	@Override
-	public void readAdditionalSaveData(@Nonnull CompoundNBT tagCompound) {
-		CompoundNBT colorizerCmp = tagCompound.getCompound(TAG_COLORIZER);
+	public void readAdditionalSaveData(@Nonnull CompoundTag tagCompound) {
+		CompoundTag colorizerCmp = tagCompound.getCompound(TAG_COLORIZER);
 		ItemStack colorizer = ItemStack.of(colorizerCmp);
 		entityData.set(COLORIZER_DATA, colorizer);
 
-		CompoundNBT bulletCmp = tagCompound.getCompound(TAG_BULLET);
+		CompoundTag bulletCmp = tagCompound.getCompound(TAG_BULLET);
 		ItemStack bullet = ItemStack.of(bulletCmp);
 		entityData.set(BULLET_DATA, bullet);
 
@@ -155,13 +155,13 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 		if (timeAlive > CAST_DELAY && timeAlive % CAST_DELAY == 0 && times < 20) {
 			SpellContext context = null;
 			Entity thrower = getCaster();
-			if (thrower instanceof PlayerEntity) {
+			if (thrower instanceof Player) {
 				ItemStack spellContainer = entityData.get(BULLET_DATA);
 				if (!spellContainer.isEmpty() && ISpellAcceptor.isContainer(spellContainer)) {
 					entityData.set(TIMES_CAST, times + 1);
 					Spell spell = ISpellAcceptor.acceptor(spellContainer).getSpell();
 					if (spell != null) {
-						context = new SpellContext().setPlayer((PlayerEntity) thrower).setFocalPoint(this)
+						context = new SpellContext().setPlayer((Player) thrower).setFocalPoint(this)
 								.setSpell(spell).setLoopcastIndex(times);
 					}
 				}
@@ -191,11 +191,11 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 	}
 
 	@Override
-	public Vector3d getLookAngle() {
+	public Vec3 getLookAngle() {
 		float x = entityData.get(LOOK_X);
 		float y = entityData.get(LOOK_Y);
 		float z = entityData.get(LOOK_Z);
-		return new Vector3d(x, y, z);
+		return new Vec3(x, y, z);
 	}
 
 	public int getTimeAlive() {
@@ -223,7 +223,7 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 
 	@Nonnull
 	@Override
-	public IPacket<?> getAddEntityPacket() {
+	public Packet<?> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 }

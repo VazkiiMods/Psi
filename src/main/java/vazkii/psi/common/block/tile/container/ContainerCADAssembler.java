@@ -10,18 +10,18 @@ package vazkii.psi.common.block.tile.container;
 
 import com.mojang.datafixers.util.Pair;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.ContainerType;
-import net.minecraft.inventory.container.PlayerContainer;
-import net.minecraft.inventory.container.Slot;
-import net.minecraft.item.ArmorItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.inventory.InventoryMenu;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.BlockPos;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.items.IItemHandlerModifiable;
@@ -43,11 +43,11 @@ import vazkii.psi.common.lib.LibMisc;
 
 import javax.annotation.Nonnull;
 
-public class ContainerCADAssembler extends Container {
+public class ContainerCADAssembler extends AbstractContainerMenu {
 	@ObjectHolder(LibMisc.PREFIX_MOD + LibBlockNames.CAD_ASSEMBLER)
-	public static ContainerType<ContainerCADAssembler> TYPE;
+	public static MenuType<ContainerCADAssembler> TYPE;
 
-	private static final EquipmentSlotType[] equipmentSlots = new EquipmentSlotType[] { EquipmentSlotType.HEAD, EquipmentSlotType.CHEST, EquipmentSlotType.LEGS, EquipmentSlotType.FEET };
+	private static final EquipmentSlot[] equipmentSlots = new EquipmentSlot[] { EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET };
 
 	public final TileCADAssembler assembler;
 
@@ -62,14 +62,14 @@ public class ContainerCADAssembler extends Container {
 	private final int hotbarEnd;
 	private final int armorStart;
 
-	public static ContainerCADAssembler fromNetwork(int windowId, PlayerInventory playerInventory, PacketBuffer buf) {
+	public static ContainerCADAssembler fromNetwork(int windowId, Inventory playerInventory, FriendlyByteBuf buf) {
 		BlockPos pos = buf.readBlockPos();
 		return new ContainerCADAssembler(windowId, playerInventory, (TileCADAssembler) playerInventory.player.level.getBlockEntity(pos));
 	}
 
-	public ContainerCADAssembler(int windowId, PlayerInventory playerInventory, TileCADAssembler assembler) {
+	public ContainerCADAssembler(int windowId, Inventory playerInventory, TileCADAssembler assembler) {
 		super(TYPE, windowId);
-		PlayerEntity player = playerInventory.player;
+		Player player = playerInventory.player;
 		int playerSize = playerInventory.getContainerSize();
 
 		this.assembler = assembler;
@@ -119,7 +119,7 @@ public class ContainerCADAssembler extends Container {
 
 		armorStart = slots.size();
 		for (int armorSlot = 0; armorSlot < 4; armorSlot++) {
-			final EquipmentSlotType slot = equipmentSlots[armorSlot];
+			final EquipmentSlot slot = equipmentSlots[armorSlot];
 
 			addSlot(new Slot(playerInventory, playerSize - 2 - armorSlot,
 					xs - 27, ys + 18 * armorSlot) {
@@ -136,7 +136,7 @@ public class ContainerCADAssembler extends Container {
 				@OnlyIn(Dist.CLIENT)
 				@Override
 				public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
-					return Pair.of(PlayerContainer.BLOCK_ATLAS, PlayerContainer.TEXTURE_EMPTY_SLOTS[slot.getIndex()]);
+					return Pair.of(InventoryMenu.BLOCK_ATLAS, InventoryMenu.TEXTURE_EMPTY_SLOTS[slot.getIndex()]);
 				}
 			});
 		}
@@ -145,19 +145,19 @@ public class ContainerCADAssembler extends Container {
 			@OnlyIn(Dist.CLIENT)
 			@Override
 			public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
-				return Pair.of(PlayerContainer.BLOCK_ATLAS, PlayerContainer.EMPTY_ARMOR_SLOT_SHIELD);
+				return Pair.of(InventoryMenu.BLOCK_ATLAS, InventoryMenu.EMPTY_ARMOR_SLOT_SHIELD);
 			}
 		});
 	}
 
 	@Override
-	public boolean stillValid(@Nonnull PlayerEntity playerIn) {
+	public boolean stillValid(@Nonnull Player playerIn) {
 		return assembler.getBlockPos().distSqr(playerIn.getX(), playerIn.getY(), playerIn.getZ(), true) <= 64;
 	}
 
 	@Nonnull
 	@Override
-	public ItemStack quickMoveStack(PlayerEntity playerIn, int from) {
+	public ItemStack quickMoveStack(Player playerIn, int from) {
 		ItemStack mergeStack = ItemStack.EMPTY;
 		Slot slot = slots.get(from);
 
@@ -213,7 +213,7 @@ public class ContainerCADAssembler extends Container {
 	}
 
 	@Override
-	public void removed(PlayerEntity playerIn) {
+	public void removed(Player playerIn) {
 		assembler.clearCachedCAD();
 	}
 }

@@ -8,17 +8,17 @@
  */
 package vazkii.psi.common.spell.trick.block;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.Enchantments;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.extensions.IForgeBlockState;
 import net.minecraftforge.event.world.BlockEvent.BreakEvent;
@@ -77,7 +77,7 @@ public class PieceTrickBreakBlock extends PieceTrick {
 		return null;
 	}
 
-	public static void removeBlockWithDrops(SpellContext context, PlayerEntity player, World world, ItemStack tool, BlockPos pos, boolean particles) {
+	public static void removeBlockWithDrops(SpellContext context, Player player, Level world, ItemStack tool, BlockPos pos, boolean particles) {
 		if (!world.hasChunkAt(pos) || (context.positionBroken != null && pos.equals(new BlockPos(context.positionBroken.getLocation().x, context.positionBroken.getLocation().y, context.positionBroken.getLocation().z))) || !world.mayInteract(player, pos)) {
 			return;
 		}
@@ -97,13 +97,13 @@ public class PieceTrickBreakBlock extends PieceTrick {
 			MinecraftForge.EVENT_BUS.post(event);
 			if (!event.isCanceled()) {
 				if (!player.abilities.instabuild) {
-					TileEntity tile = world.getBlockEntity(pos);
+					BlockEntity tile = world.getBlockEntity(pos);
 
 					if (block.removedByPlayer(state, world, pos, player, true, world.getFluidState(pos))) {
 						block.destroy(world, pos, state);
 						block.playerDestroy(world, player, pos, state, tile, tool);
-						if (world instanceof ServerWorld) {
-							block.popExperience((ServerWorld) world, pos, event.getExpToDrop());
+						if (world instanceof ServerLevel) {
+							block.popExperience((ServerLevel) world, pos, event.getExpToDrop());
 						}
 					}
 				} else {
@@ -121,7 +121,7 @@ public class PieceTrickBreakBlock extends PieceTrick {
 	 * Based on {@link BreakEvent#BreakEvent(World, BlockPos, BlockState, PlayerEntity)}.
 	 * Allows a tool that isn't your mainhand tool to harvest the blocks.
 	 */
-	public static BreakEvent createBreakEvent(BlockState state, PlayerEntity player, World world, BlockPos pos, ItemStack tool) {
+	public static BreakEvent createBreakEvent(BlockState state, Player player, Level world, BlockPos pos, ItemStack tool) {
 		BreakEvent event = new BreakEvent(world, pos, state, player);
 		if (state == null || !canHarvestBlock(state, player, world, pos, tool)) // Handle empty block or player unable to break block scenario
 		{
@@ -140,7 +140,7 @@ public class PieceTrickBreakBlock extends PieceTrick {
 	 * 
 	 * @see IForgeBlockState#canHarvestBlock(IBlockReader, BlockPos, PlayerEntity)
 	 */
-	public static boolean canHarvestBlock(BlockState state, PlayerEntity player, World world, BlockPos pos, ItemStack stack) {
+	public static boolean canHarvestBlock(BlockState state, Player player, Level world, BlockPos pos, ItemStack stack) {
 		// So the CAD can only be used as a tool when a harvest check is ongoing
 		boolean wasChecking = doingHarvestCheck.get();
 		doingHarvestCheck.set(true);

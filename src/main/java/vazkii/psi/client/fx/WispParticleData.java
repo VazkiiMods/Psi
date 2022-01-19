@@ -13,18 +13,18 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.particles.IParticleData;
-import net.minecraft.particles.ParticleType;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleType;
 
 import javax.annotation.Nonnull;
 
 import java.util.Locale;
 
 // https://github.com/Vazkii/Botania/blob/1.15/src/main/java/vazkii/botania/client/fx/WispParticleData.java
-import net.minecraft.particles.IParticleData.IDeserializer;
+import net.minecraft.core.particles.ParticleOptions.Deserializer;
 
-public class WispParticleData implements IParticleData {
+public class WispParticleData implements ParticleOptions {
 	public static final Codec<WispParticleData> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 			Codec.FLOAT.fieldOf("size").forGetter(d -> d.size),
 			Codec.FLOAT.fieldOf("r").forGetter(d -> d.r),
@@ -60,7 +60,7 @@ public class WispParticleData implements IParticleData {
 	}
 
 	@Override
-	public void writeToNetwork(PacketBuffer buf) {
+	public void writeToNetwork(FriendlyByteBuf buf) {
 		buf.writeFloat(size);
 		buf.writeFloat(r);
 		buf.writeFloat(g);
@@ -75,7 +75,7 @@ public class WispParticleData implements IParticleData {
 				this.getType().getRegistryName(), this.size, this.r, this.g, this.b, this.maxAgeMul);
 	}
 
-	public static final IDeserializer<WispParticleData> DESERIALIZER = new IDeserializer<WispParticleData>() {
+	public static final Deserializer<WispParticleData> DESERIALIZER = new Deserializer<WispParticleData>() {
 		@Nonnull
 		@Override
 		public WispParticleData fromCommand(@Nonnull ParticleType<WispParticleData> type, @Nonnull StringReader reader) throws CommandSyntaxException {
@@ -93,7 +93,7 @@ public class WispParticleData implements IParticleData {
 		}
 
 		@Override
-		public WispParticleData fromNetwork(@Nonnull ParticleType<WispParticleData> type, PacketBuffer buf) {
+		public WispParticleData fromNetwork(@Nonnull ParticleType<WispParticleData> type, FriendlyByteBuf buf) {
 			return new WispParticleData(buf.readFloat(), buf.readFloat(), buf.readFloat(), buf.readFloat(), buf.readFloat());
 		}
 	};

@@ -8,17 +8,17 @@
  */
 package vazkii.psi.client.core.handler;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
-import net.minecraft.client.MainWindow;
+import com.mojang.blaze3d.platform.Window;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.AbstractGui;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Hand;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.TextFormatting;
+import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.ChatFormatting;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -69,7 +69,7 @@ public final class HUDHandler {
 	@OnlyIn(Dist.CLIENT)
 	public static void onDraw(RenderGameOverlayEvent.Post event) {
 		if (event.getType() == ElementType.HOTBAR) {
-			MainWindow resolution = event.getWindow();
+			Window resolution = event.getWindow();
 			float partialTicks = event.getPartialTicks();
 
 			if (!MinecraftForge.EVENT_BUS.post(new RenderPsiHudEvent(PsiHudElementType.PSI_BAR))) {
@@ -103,7 +103,7 @@ public final class HUDHandler {
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	public static void drawPsiBar(MatrixStack ms, MainWindow res, float pticks) {
+	public static void drawPsiBar(PoseStack ms, Window res, float pticks) {
 		Minecraft mc = Minecraft.getInstance();
 		ItemStack cadStack = PsiAPI.getPlayerCAD(mc.player);
 
@@ -145,7 +145,7 @@ public final class HUDHandler {
 
 		RenderSystem.enableBlend();
 		mc.textureManager.bind(psiBar);
-		AbstractGui.blit(ms, x, y, 0, 0, width, height, 64, 256);
+		GuiComponent.blit(ms, x, y, 0, 0, width, height, 64, 256);
 
 		x += 8;
 		y += 26;
@@ -181,7 +181,7 @@ public final class HUDHandler {
 			y = origY + v;
 
 			ShaderHandler.useShader(ShaderHandler.psiBar, generateCallback(a, d.shatter, data.overflowed));
-			AbstractGui.blit(ms, x, y, 32, v, width, height, 64, 256);
+			GuiComponent.blit(ms, x, y, 32, v, width, height, 64, 256);
 		}
 
 		float textY = origY;
@@ -203,7 +203,7 @@ public final class HUDHandler {
 
 		RenderSystem.color3f(r, g, b);
 		ShaderHandler.useShader(ShaderHandler.psiBar, generateCallback(1F, false, data.overflowed));
-		AbstractGui.blit(ms, x, y, 32, v, width, height, 64, 256);
+		GuiComponent.blit(ms, x, y, 32, v, width, height, 64, 256);
 		ShaderHandler.releaseShader();
 
 		if (shaders) {
@@ -239,7 +239,7 @@ public final class HUDHandler {
 				PsiRenderHelper.g(color) / 255F,
 				PsiRenderHelper.b(color) / 255F, 1F);
 
-		AbstractGui.blit(ms, x - offBar, -2, 0, 140, width, height, 64, 256);
+		GuiComponent.blit(ms, x - offBar, -2, 0, 140, width, height, 64, 256);
 		mc.font.drawShadow(ms, s1, x - offStr1, -11, 0xFFFFFF);
 		ms.popPose();
 
@@ -254,9 +254,9 @@ public final class HUDHandler {
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	private static void renderSocketableEquippedName(MatrixStack ms, MainWindow res, float pticks) {
+	private static void renderSocketableEquippedName(PoseStack ms, Window res, float pticks) {
 		Minecraft mc = Minecraft.getInstance();
-		ItemStack stack = mc.player.getItemInHand(Hand.MAIN_HAND);
+		ItemStack stack = mc.player.getItemInHand(InteractionHand.MAIN_HAND);
 		if (!ISocketable.isSocketable(stack)) {
 			return;
 		}
@@ -293,7 +293,7 @@ public final class HUDHandler {
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	private static void renderRemainingItems(MatrixStack ms, MainWindow resolution, float partTicks) {
+	private static void renderRemainingItems(PoseStack ms, Window resolution, float partTicks) {
 		if (remainingTime > 0 && !remainingDisplayStack.isEmpty()) {
 			int pos = maxRemainingTicks - remainingTime;
 			Minecraft mc = Minecraft.getInstance();
@@ -314,7 +314,7 @@ public final class HUDHandler {
 			ms.translate(-xp, -y, 0F);
 			RenderSystem.color4f(1F, 1F, 1F, 1F);
 
-			String text = remainingDisplayStack.getHoverName().plainCopy().withStyle(TextFormatting.GREEN).getString();
+			String text = remainingDisplayStack.getHoverName().plainCopy().withStyle(ChatFormatting.GREEN).getString();
 			if (remainingCount >= 0) {
 				int max = remainingDisplayStack.getMaxStackSize();
 				int stacks = remainingCount / max;
@@ -323,9 +323,9 @@ public final class HUDHandler {
 				if (stacks == 0) {
 					text = "" + remainingCount;
 				} else {
-					text = remainingCount + " (" + TextFormatting.AQUA + stacks + TextFormatting.RESET + "*"
-							+ TextFormatting.GRAY + max + TextFormatting.RESET + "+" + TextFormatting.YELLOW + rem
-							+ TextFormatting.RESET + ")";
+					text = remainingCount + " (" + ChatFormatting.AQUA + stacks + ChatFormatting.RESET + "*"
+							+ ChatFormatting.GRAY + max + ChatFormatting.RESET + "+" + ChatFormatting.YELLOW + rem
+							+ ChatFormatting.RESET + ")";
 				}
 			} else if (remainingCount == -1) {
 				text = "\u221E";
@@ -339,7 +339,7 @@ public final class HUDHandler {
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	private static void renderHUDItem(MatrixStack ms, MainWindow resolution, float partTicks) {
+	private static void renderHUDItem(PoseStack ms, Window resolution, float partTicks) {
 		Minecraft mc = Minecraft.getInstance();
 		ItemStack stack = mc.player.getMainHandItem();
 		if (!stack.isEmpty() && stack.getItem() instanceof IHUDItem) {
@@ -358,7 +358,7 @@ public final class HUDHandler {
 		remainingTime = stack.isEmpty() ? 0 : maxRemainingTicks;
 	}
 
-	public static void setRemaining(PlayerEntity player, ItemStack displayStack, Pattern pattern) {
+	public static void setRemaining(Player player, ItemStack displayStack, Pattern pattern) {
 		int count = 0;
 		for (int i = 0; i < player.inventory.getContainerSize(); i++) {
 			ItemStack stack = player.inventory.getItem(i);

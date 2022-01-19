@@ -8,21 +8,21 @@
  */
 package vazkii.psi.client.render.entity;
 
-import net.minecraft.client.renderer.culling.ClippingHelper;
+import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.resources.ResourceLocation;
 
 import vazkii.psi.common.entity.EntitySpellProjectile;
 
 public class RenderSpellProjectile extends EntityRenderer<EntitySpellProjectile> {
 
-	public RenderSpellProjectile(EntityRendererManager renderManager) {
+	public RenderSpellProjectile(EntityRenderDispatcher renderManager) {
 		super(renderManager);
 	}
 
 	@Override
-	public boolean shouldRender(EntitySpellProjectile livingEntityIn, ClippingHelper camera, double camX, double camY, double camZ) {
+	public boolean shouldRender(EntitySpellProjectile livingEntityIn, Frustum camera, double camX, double camY, double camZ) {
 		return false;
 	}
 

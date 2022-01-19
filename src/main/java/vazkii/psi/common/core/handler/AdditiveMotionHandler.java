@@ -8,10 +8,10 @@
  */
 package vazkii.psi.common.core.handler;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -26,14 +26,14 @@ import java.util.WeakHashMap;
 
 @Mod.EventBusSubscriber(modid = LibMisc.MOD_ID)
 public class AdditiveMotionHandler {
-	private static final Map<Entity, Vector3d> toUpdate = new WeakHashMap<>();
+	private static final Map<Entity, Vec3> toUpdate = new WeakHashMap<>();
 
 	public static void addMotion(Entity entity, double x, double y, double z) {
 		if (x == 0 && y == 0 && z == 0) {
 			return;
 		}
 		if (!entity.level.isClientSide) {
-			Vector3d base = toUpdate.getOrDefault(entity, Vector3d.ZERO);
+			Vec3 base = toUpdate.getOrDefault(entity, Vec3.ZERO);
 			toUpdate.put(entity, base.add(x, y, z));
 		}
 	}
@@ -43,17 +43,17 @@ public class AdditiveMotionHandler {
 		if (e.side.isServer() && e.phase == TickEvent.Phase.END) {
 			for (Entity entity : toUpdate.keySet()) {
 				if (!entity.hurtMarked) { // Allow velocity change packets to take priority.
-					Vector3d vec = toUpdate.get(entity);
+					Vec3 vec = toUpdate.get(entity);
 					if (vec != null) { // Edge case where the entity expired in the ms between calls
 						MessageAdditiveMotion motion = new MessageAdditiveMotion(entity.getId(), vec.x, vec.y, vec.z);
 						//We want a player's motion to be handled client-side to ensure movement consistency
 						//Otherwise it feels jerky.
-						if (entity instanceof ServerPlayerEntity) {
-							MessageRegister.sendToPlayer(motion, (ServerPlayerEntity) entity);
+						if (entity instanceof ServerPlayer) {
+							MessageRegister.sendToPlayer(motion, (ServerPlayer) entity);
 						} else {
 							entity.push(vec.x, vec.y, vec.z);
 						}
-						if (entity.level instanceof ServerWorld) {
+						if (entity.level instanceof ServerLevel) {
 							MessageRegister.HANDLER.send(PacketDistributor.TRACKING_ENTITY.with(() -> entity), motion);
 						}
 

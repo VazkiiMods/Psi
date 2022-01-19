@@ -8,12 +8,12 @@
  */
 package vazkii.psi.common.spell.trick.block;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.EnumCADComponent;
@@ -75,7 +75,7 @@ public class PieceTrickConjureBlock extends PieceTrick {
 
 		BlockPos pos = positionVal.toBlockPos();
 
-		World world = context.focalPoint.getCommandSenderWorld();
+		Level world = context.focalPoint.getCommandSenderWorld();
 
 		if (!world.mayInteract(context.caster, pos)) {
 			return null;
@@ -86,7 +86,7 @@ public class PieceTrickConjureBlock extends PieceTrick {
 		return null;
 	}
 
-	public static void conjure(SpellContext context, @Nullable Number timeVal, BlockPos pos, World world, BlockState state) {
+	public static void conjure(SpellContext context, @Nullable Number timeVal, BlockPos pos, Level world, BlockState state) {
 		if (world.getBlockState(pos).getBlock() != state.getBlock()) {
 			if (conjure(world, pos, context.caster, state)) {
 				if (timeVal != null && timeVal.intValue() > 0) {
@@ -94,7 +94,7 @@ public class PieceTrickConjureBlock extends PieceTrick {
 					world.getBlockTicks().scheduleTick(pos, state.getBlock(), val);
 				}
 
-				TileEntity tile = world.getBlockEntity(pos);
+				BlockEntity tile = world.getBlockEntity(pos);
 
 				ItemStack cad = PsiAPI.getPlayerCAD(context.caster);
 				if (tile instanceof TileConjured && !cad.isEmpty()) {
@@ -105,7 +105,7 @@ public class PieceTrickConjureBlock extends PieceTrick {
 		}
 	}
 
-	public static boolean conjure(World world, BlockPos pos, PlayerEntity player, BlockState state) {
+	public static boolean conjure(Level world, BlockPos pos, Player player, BlockState state) {
 		if (!world.hasChunkAt(pos) || !world.mayInteract(player, pos)) {
 			return false;
 		}
