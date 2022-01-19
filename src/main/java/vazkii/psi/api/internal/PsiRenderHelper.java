@@ -20,7 +20,7 @@ public class PsiRenderHelper {
 	public static void transferMsToGl(MatrixStack ms, Runnable function) {
 		try {
 			RenderSystem.pushMatrix();
-			RenderSystem.multMatrix(ms.getLast().getMatrix());
+			RenderSystem.multMatrix(ms.last().pose());
 			function.run();
 		} finally {
 			RenderSystem.popMatrix();

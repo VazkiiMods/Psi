@@ -50,15 +50,15 @@ public class KeybindHandler {
 
 	public static void keyDown() {
 		Minecraft mc = Minecraft.getInstance();
-		ItemStack stack = mc.player.getHeldItem(Hand.MAIN_HAND);
+		ItemStack stack = mc.player.getItemInHand(Hand.MAIN_HAND);
 
-		if (mc.currentScreen == null) {
+		if (mc.screen == null) {
 			if (!stack.isEmpty() && (ISocketable.isSocketable(stack) || isSocketableController(mc.player, stack))) {
-				mc.displayGuiScreen(new GuiSocketSelect(stack));
+				mc.setScreen(new GuiSocketSelect(stack));
 			} else {
-				stack = mc.player.getHeldItem(Hand.OFF_HAND);
+				stack = mc.player.getItemInHand(Hand.OFF_HAND);
 				if (!stack.isEmpty() && (ISocketable.isSocketable(stack) || isSocketableController(mc.player, stack))) {
-					mc.displayGuiScreen(new GuiSocketSelect(stack));
+					mc.setScreen(new GuiSocketSelect(stack));
 				} else {
 					PatchouliAPI.instance.openBookGUI(LibResources.PATCHOULI_BOOK);
 				}

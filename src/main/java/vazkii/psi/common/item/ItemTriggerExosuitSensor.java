@@ -13,6 +13,8 @@ import net.minecraft.item.ItemStack;
 import vazkii.psi.api.exosuit.PsiArmorEvent;
 import vazkii.psi.client.core.handler.ColorHandler;
 
+import net.minecraft.item.Item.Properties;
+
 public class ItemTriggerExosuitSensor extends ItemExosuitSensor {
 
 	public ItemTriggerExosuitSensor(Properties properties) {

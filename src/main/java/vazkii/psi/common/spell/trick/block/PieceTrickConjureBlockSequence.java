@@ -71,25 +71,25 @@ public class PieceTrickConjureBlockSequence extends PieceTrick {
 		}
 
 		Vector3 targetNorm = targetVal.copy().normalize();
-		World world = context.focalPoint.getEntityWorld();
+		World world = context.focalPoint.getCommandSenderWorld();
 
 		for (BlockPos blockPos : MathHelper.getBlocksAlongRay(positionVal.toVec3D(), positionVal.copy().add(targetNorm.copy().multiply(maxBlocksInt)).toVec3D(), maxBlocksInt)) {
 			if (!context.isInRadius(Vector3.fromBlockPos(blockPos))) {
 				throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 			}
 
-			if (!world.isBlockModifiable(context.caster, blockPos)) {
+			if (!world.mayInteract(context.caster, blockPos)) {
 				continue;
 			}
 
-			PieceTrickConjureBlock.conjure(context, timeVal, blockPos, world, messWithState(ModBlocks.conjured.getDefaultState()));
+			PieceTrickConjureBlock.conjure(context, timeVal, blockPos, world, messWithState(ModBlocks.conjured.defaultBlockState()));
 		}
 
 		return null;
 	}
 
 	public BlockState messWithState(BlockState state) {
-		return state.with(BlockConjured.SOLID, true);
+		return state.setValue(BlockConjured.SOLID, true);
 	}
 
 }

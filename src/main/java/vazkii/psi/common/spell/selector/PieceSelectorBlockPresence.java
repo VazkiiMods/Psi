@@ -43,12 +43,12 @@ public class PieceSelectorBlockPresence extends PieceSelector {
 		}
 
 		BlockPos pos = positionVal.toBlockPos();
-		BlockState state = context.caster.getEntityWorld().getBlockState(pos);
+		BlockState state = context.caster.getCommandSenderWorld().getBlockState(pos);
 		Block block = state.getBlock();
 
-		if (state.isAir(context.caster.getEntityWorld(), pos) || state.getMaterial().isReplaceable()) {
+		if (state.isAir(context.caster.getCommandSenderWorld(), pos) || state.getMaterial().isReplaceable()) {
 			return 0.0;
-		} else if (state.getCollisionShape(context.caster.getEntityWorld(), pos, ISelectionContext.forEntity(context.caster)).isEmpty()) {
+		} else if (state.getCollisionShape(context.caster.getCommandSenderWorld(), pos, ISelectionContext.of(context.caster)).isEmpty()) {
 			return 1.0;
 		}
 		return 2.0;

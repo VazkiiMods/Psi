@@ -60,7 +60,7 @@ public class ItemPsimetalExosuitHelmet extends ItemPsimetalArmor implements ISen
 	@Override
 	public ItemStack getAttachedSensor(ItemStack stack) {
 		CompoundNBT cmp = stack.getOrCreateTag().getCompound(TAG_SENSOR);
-		return ItemStack.read(cmp);
+		return ItemStack.of(cmp);
 	}
 
 	@Override
@@ -73,7 +73,7 @@ public class ItemPsimetalExosuitHelmet extends ItemPsimetalArmor implements ISen
 	public void attachSensor(ItemStack stack, ItemStack sensor) {
 		CompoundNBT cmp = new CompoundNBT();
 		if (!sensor.isEmpty()) {
-			sensor.write(cmp);
+			sensor.save(cmp);
 		}
 		stack.getOrCreateTag().put(TAG_SENSOR, cmp);
 	}

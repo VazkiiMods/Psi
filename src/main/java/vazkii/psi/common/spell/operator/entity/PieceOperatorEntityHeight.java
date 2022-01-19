@@ -38,7 +38,7 @@ public class PieceOperatorEntityHeight extends PieceOperator {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_TARGET);
 		}
 
-		return e.getHeight();
+		return e.getBbHeight();
 	}
 
 	@Override

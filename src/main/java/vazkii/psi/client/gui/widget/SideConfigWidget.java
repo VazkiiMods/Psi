@@ -51,14 +51,14 @@ public class SideConfigWidget extends Widget {
 		}
 		if (configEnabled && !parent.takingScreenshot) {
 			blit(ms, parent.left - 81, parent.top + 55, parent.xSize, 30, 81, 115);
-			String configStr = I18n.format("psimisc.config");
-			parent.getMinecraft().fontRenderer.drawString(ms, configStr, parent.left - parent.getMinecraft().fontRenderer.getStringWidth(configStr) - 2, parent.top + 45, 0xFFFFFF);
+			String configStr = I18n.get("psimisc.config");
+			parent.getMinecraft().font.draw(ms, configStr, parent.left - parent.getMinecraft().font.width(configStr) - 2, parent.top + 45, 0xFFFFFF);
 
 			int i = 0;
 			if (piece != null) {
 				int param = -1;
 				for (int j = 0; j < 4; j++) {
-					if (InputMappings.isKeyDown(parent.getMinecraft().getMainWindow().getHandle(), GLFW.GLFW_KEY_1 + j)) {
+					if (InputMappings.isKeyDown(parent.getMinecraft().getWindow().getWindow(), GLFW.GLFW_KEY_1 + j)) {
 						param = j;
 					}
 				}
@@ -68,15 +68,15 @@ public class SideConfigWidget extends Widget {
 					int y = parent.top + 70 + i * 26;
 
 					RenderSystem.color3f(1F, 1F, 1F);
-					parent.getMinecraft().getTextureManager().bindTexture(GuiProgrammer.texture);
+					parent.getMinecraft().getTextureManager().bind(GuiProgrammer.texture);
 					blit(ms, x + 50, y - 8, parent.xSize, 145, 24, 24);
 
-					String localized = I18n.format(s);
+					String localized = I18n.get(s);
 					if (i == param) {
 						localized = TextFormatting.UNDERLINE + localized;
 					}
 
-					parent.getMinecraft().fontRenderer.drawString(ms, localized, x, y, 0xFFFFFF);
+					parent.getMinecraft().font.draw(ms, localized, x, y, 0xFFFFFF);
 
 					i++;
 				}

@@ -87,15 +87,15 @@ public class ClientProxy implements IProxy {
 		RenderingRegistry.registerEntityRenderingHandler(EntitySpellGrenade.TYPE, RenderSpellProjectile::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntitySpellProjectile.TYPE, RenderSpellProjectile::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntitySpellMine.TYPE, RenderSpellProjectile::new);
-		RenderTypeLookup.setRenderLayer(ModBlocks.conjured, RenderType.getTranslucent());
+		RenderTypeLookup.setRenderLayer(ModBlocks.conjured, RenderType.translucent());
 	}
 
 	private void loadComplete(FMLLoadCompleteEvent event) {
 		DeferredWorkQueue.runLater(() -> {
-			Map<RenderType, BufferBuilder> map = ((AccessorRenderBuffers) Minecraft.getInstance().getRenderTypeBuffers().getBufferSource()).getFixedBuffers();
+			Map<RenderType, BufferBuilder> map = ((AccessorRenderBuffers) Minecraft.getInstance().renderBuffers().bufferSource()).getFixedBuffers();
 			RenderType layer = SpellPiece.getLayer();
-			map.put(layer, new BufferBuilder(layer.getBufferSize()));
-			map.put(GuiProgrammer.LAYER, new BufferBuilder(GuiProgrammer.LAYER.getBufferSize()));
+			map.put(layer, new BufferBuilder(layer.bufferSize()));
+			map.put(GuiProgrammer.LAYER, new BufferBuilder(GuiProgrammer.LAYER.bufferSize()));
 			ColorHandler.init();
 			ShaderHandler.init();
 		});
@@ -114,18 +114,18 @@ public class ClientProxy implements IProxy {
 		ModelLoader.addSpecialModel(new ResourceLocation(LibMisc.MOD_ID, "item/" + LibItemNames.CAD_EBONY_PSIMETAL));
 		ModelLoader.addSpecialModel(new ResourceLocation(LibMisc.MOD_ID, "item/" + LibItemNames.CAD_IVORY_PSIMETAL));
 		ModelLoader.addSpecialModel(new ResourceLocation(LibMisc.MOD_ID, "item/" + LibItemNames.CAD_CREATIVE));
-		ModelBakery.LOCATIONS_BUILTIN_TEXTURES.addAll(ClientPsiAPI.getAllSpellPieceMaterial());
-		ModelBakery.LOCATIONS_BUILTIN_TEXTURES.add(new RenderMaterial(ClientPsiAPI.PSI_PIECE_TEXTURE_ATLAS, PieceConnector.LINES_TEXTURE));
+		ModelBakery.UNREFERENCED_TEXTURES.addAll(ClientPsiAPI.getAllSpellPieceMaterial());
+		ModelBakery.UNREFERENCED_TEXTURES.add(new RenderMaterial(ClientPsiAPI.PSI_PIECE_TEXTURE_ATLAS, PieceConnector.LINES_TEXTURE));
 	}
 
 	@Override
 	public boolean hasAdvancement(ResourceLocation advancement, PlayerEntity playerEntity) {
 		if (playerEntity instanceof ClientPlayerEntity) {
 			ClientPlayerEntity clientPlayerEntity = (ClientPlayerEntity) playerEntity;
-			return clientPlayerEntity.connection.getAdvancementManager().getAdvancementList().getAdvancement(advancement) != null;
+			return clientPlayerEntity.connection.getAdvancements().getAdvancements().get(advancement) != null;
 		} else if (playerEntity instanceof ServerPlayerEntity) {
 			ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity) playerEntity;
-			return serverPlayerEntity.getServer().getAdvancementManager().getAdvancement(advancement) != null && serverPlayerEntity.getAdvancements().getProgress(serverPlayerEntity.getServer().getAdvancementManager().getAdvancement(advancement)).isDone();
+			return serverPlayerEntity.getServer().getAdvancements().getAdvancement(advancement) != null && serverPlayerEntity.getAdvancements().getOrStartProgress(serverPlayerEntity.getServer().getAdvancements().getAdvancement(advancement)).isDone();
 		}
 		return false;
 	}
@@ -142,7 +142,7 @@ public class ClientProxy implements IProxy {
 
 	@Override
 	public World getClientWorld() {
-		return Minecraft.getInstance().world;
+		return Minecraft.getInstance().level;
 	}
 
 	@Override
@@ -152,7 +152,7 @@ public class ClientProxy implements IProxy {
 
 	@Override
 	public int getClientRenderDistance() {
-		return Minecraft.getInstance().gameSettings.renderDistanceChunks;
+		return Minecraft.getInstance().options.renderDistance;
 	}
 
 	@Override
@@ -182,7 +182,7 @@ public class ClientProxy implements IProxy {
 
 	@Override
 	public void sparkleFX(double x, double y, double z, float r, float g, float b, float motionx, float motiony, float motionz, float size, int m) {
-		sparkleFX(Minecraft.getInstance().world, x, y, z, r, g, b, motionx, motiony, motionz, size, m);
+		sparkleFX(Minecraft.getInstance().level, x, y, z, r, g, b, motionx, motiony, motionz, size, m);
 	}
 
 	@Override
@@ -196,12 +196,12 @@ public class ClientProxy implements IProxy {
 
 	@Override
 	public void wispFX(double x, double y, double z, float r, float g, float b, float size, float motionx, float motiony, float motionz, float maxAgeMul) {
-		wispFX(Minecraft.getInstance().world, x, y, z, r, g, b, size, motionx, motiony, motionz, maxAgeMul);
+		wispFX(Minecraft.getInstance().level, x, y, z, r, g, b, size, motionx, motiony, motionz, maxAgeMul);
 	}
 
 	@Override
 	public void openProgrammerGUI(TileProgrammer programmer) {
-		Minecraft.getInstance().displayGuiScreen(new GuiProgrammer(programmer));
+		Minecraft.getInstance().setScreen(new GuiProgrammer(programmer));
 	}
 
 }

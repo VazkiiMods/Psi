@@ -270,7 +270,7 @@ public abstract class SpellPiece {
 	 */
 	@OnlyIn(Dist.CLIENT)
 	public void draw(MatrixStack ms, IRenderTypeBuffer buffers, int light) {
-		ms.push();
+		ms.pushPose();
 		drawBackground(ms, buffers, light);
 		ms.translate(0F, 0F, 0.1F);
 		drawAdditional(ms, buffers, light);
@@ -281,19 +281,19 @@ public abstract class SpellPiece {
 			drawComment(ms, buffers, light);
 		}
 
-		ms.pop();
+		ms.popPose();
 	}
 
 	@OnlyIn(Dist.CLIENT)
 	public static RenderType getLayer() {
 		if (layer == null) {
-			RenderType.State glState = RenderType.State.getBuilder()
-					.texture(new RenderState.TextureState(ClientPsiAPI.PSI_PIECE_TEXTURE_ATLAS, false, false))
-					.lightmap(new RenderState.LightmapState(true))
-					.alpha(new RenderState.AlphaState(0.004F))
-					.cull(new RenderState.CullState(false))
-					.build(false);
-			layer = RenderType.makeType(ClientPsiAPI.PSI_PIECE_TEXTURE_ATLAS.toString(), DefaultVertexFormats.POSITION_COLOR_TEX_LIGHTMAP, GL11.GL_QUADS, 64, glState);
+			RenderType.State glState = RenderType.State.builder()
+					.setTextureState(new RenderState.TextureState(ClientPsiAPI.PSI_PIECE_TEXTURE_ATLAS, false, false))
+					.setLightmapState(new RenderState.LightmapState(true))
+					.setAlphaState(new RenderState.AlphaState(0.004F))
+					.setCullState(new RenderState.CullState(false))
+					.createCompositeState(false);
+			layer = RenderType.create(ClientPsiAPI.PSI_PIECE_TEXTURE_ATLAS.toString(), DefaultVertexFormats.POSITION_COLOR_TEX_LIGHTMAP, GL11.GL_QUADS, 64, glState);
 		}
 		return layer;
 	}
@@ -304,24 +304,24 @@ public abstract class SpellPiece {
 	@OnlyIn(Dist.CLIENT)
 	public void drawBackground(MatrixStack ms, IRenderTypeBuffer buffers, int light) {
 		RenderMaterial material = ClientPsiAPI.getSpellPieceMaterial(registryKey);
-		IVertexBuilder buffer = material.getBuffer(buffers, ignored -> getLayer());
-		Matrix4f mat = ms.getLast().getMatrix();
+		IVertexBuilder buffer = material.buffer(buffers, ignored -> getLayer());
+		Matrix4f mat = ms.last().pose();
 		// Cannot call .texture() on the chained object because SpriteAwareVertexBuilder is buggy
 		// and does not return itself, it returns the inner buffer
 		// This leads to .texture() using the implementation of the inner buffer,
 		// not of the SpriteAwareVertexBuilder, which is not what we want.
 		// Split the chain apart so that .texture() is called on the original buffer
-		buffer.pos(mat, 0, 16, 0).color(1F, 1F, 1F, 1F);
-		buffer.tex(0, 1).lightmap(light).endVertex();
+		buffer.vertex(mat, 0, 16, 0).color(1F, 1F, 1F, 1F);
+		buffer.uv(0, 1).uv2(light).endVertex();
 
-		buffer.pos(mat, 16, 16, 0).color(1F, 1F, 1F, 1F);
-		buffer.tex(1, 1).lightmap(light).endVertex();
+		buffer.vertex(mat, 16, 16, 0).color(1F, 1F, 1F, 1F);
+		buffer.uv(1, 1).uv2(light).endVertex();
 
-		buffer.pos(mat, 16, 0, 0).color(1F, 1F, 1F, 1F);
-		buffer.tex(1, 0).lightmap(light).endVertex();
+		buffer.vertex(mat, 16, 0, 0).color(1F, 1F, 1F, 1F);
+		buffer.uv(1, 0).uv2(light).endVertex();
 
-		buffer.pos(mat, 0, 0, 0).color(1F, 1F, 1F, 1F);
-		buffer.tex(0, 0).lightmap(light).endVertex();
+		buffer.vertex(mat, 0, 0, 0).color(1F, 1F, 1F, 1F);
+		buffer.uv(0, 0).uv2(light).endVertex();
 	}
 
 	/**
@@ -346,12 +346,12 @@ public abstract class SpellPiece {
 			float minV = 184 / 256F;
 			float maxU = (150 + wh) / 256F;
 			float maxV = (184 + wh) / 256F;
-			Matrix4f mat = ms.getLast().getMatrix();
+			Matrix4f mat = ms.last().pose();
 
-			buffer.pos(mat, -2, 4, 0).color(1F, 1F, 1F, 1F).tex(minU, maxV).lightmap(light).endVertex();
-			buffer.pos(mat, 4, 4, 0).color(1F, 1F, 1F, 1F).tex(maxU, maxV).lightmap(light).endVertex();
-			buffer.pos(mat, 4, -2, 0).color(1F, 1F, 1F, 1F).tex(maxU, minV).lightmap(light).endVertex();
-			buffer.pos(mat, -2, -2, 0).color(1F, 1F, 1F, 1F).tex(minU, minV).lightmap(light).endVertex();
+			buffer.vertex(mat, -2, 4, 0).color(1F, 1F, 1F, 1F).uv(minU, maxV).uv2(light).endVertex();
+			buffer.vertex(mat, 4, 4, 0).color(1F, 1F, 1F, 1F).uv(maxU, maxV).uv2(light).endVertex();
+			buffer.vertex(mat, 4, -2, 0).color(1F, 1F, 1F, 1F).uv(maxU, minV).uv2(light).endVertex();
+			buffer.vertex(mat, -2, -2, 0).color(1F, 1F, 1F, 1F).uv(minU, minV).uv2(light).endVertex();
 		}
 	}
 
@@ -415,12 +415,12 @@ public abstract class SpellPiece {
 		int g = PsiRenderHelper.g(color);
 		int b = PsiRenderHelper.b(color);
 		int a = 255;
-		Matrix4f mat = ms.getLast().getMatrix();
+		Matrix4f mat = ms.last().pose();
 
-		buffer.pos(mat, minX, maxY, 0).color(r, g, b, a).tex(minU, maxV).lightmap(light).endVertex();
-		buffer.pos(mat, maxX, maxY, 0).color(r, g, b, a).tex(maxU, maxV).lightmap(light).endVertex();
-		buffer.pos(mat, maxX, minY, 0).color(r, g, b, a).tex(maxU, minV).lightmap(light).endVertex();
-		buffer.pos(mat, minX, minY, 0).color(r, g, b, a).tex(minU, minV).lightmap(light).endVertex();
+		buffer.vertex(mat, minX, maxY, 0).color(r, g, b, a).uv(minU, maxV).uv2(light).endVertex();
+		buffer.vertex(mat, maxX, maxY, 0).color(r, g, b, a).uv(maxU, maxV).uv2(light).endVertex();
+		buffer.vertex(mat, maxX, minY, 0).color(r, g, b, a).uv(maxU, minV).uv2(light).endVertex();
+		buffer.vertex(mat, minX, minY, 0).color(r, g, b, a).uv(minU, minV).uv2(light).endVertex();
 	}
 
 	@OnlyIn(Dist.CLIENT)
@@ -468,7 +468,7 @@ public abstract class SpellPiece {
 	@OnlyIn(Dist.CLIENT)
 	public void getTooltip(List<ITextComponent> tooltip) {
 		tooltip.add(new TranslationTextComponent(getUnlocalizedName()));
-		tooltip.add(new TranslationTextComponent(getUnlocalizedDesc()).mergeStyle(TextFormatting.GRAY));
+		tooltip.add(new TranslationTextComponent(getUnlocalizedDesc()).withStyle(TextFormatting.GRAY));
 		TooltipHelper.tooltipIfShift(tooltip, () -> addToTooltipAfterShift(tooltip));
 
 		String addon = registryKey.getNamespace();
@@ -483,12 +483,12 @@ public abstract class SpellPiece {
 	@OnlyIn(Dist.CLIENT)
 	public void addToTooltipAfterShift(List<ITextComponent> tooltip) {
 		tooltip.add(new StringTextComponent(""));
-		IFormattableTextComponent eval = getEvaluationTypeString().copyRaw().mergeStyle(TextFormatting.GOLD);
+		IFormattableTextComponent eval = getEvaluationTypeString().plainCopy().withStyle(TextFormatting.GOLD);
 		tooltip.add(new StringTextComponent("Output ").append(eval));
 
 		for (SpellParam<?> param : paramSides.keySet()) {
-			ITextComponent pName = new TranslationTextComponent(param.name).mergeStyle(TextFormatting.YELLOW);
-			ITextComponent pEval = new StringTextComponent(" [").append(param.getRequiredTypeString()).appendString("]").mergeStyle(TextFormatting.YELLOW);
+			ITextComponent pName = new TranslationTextComponent(param.name).withStyle(TextFormatting.YELLOW);
+			ITextComponent pEval = new StringTextComponent(" [").append(param.getRequiredTypeString()).append("]").withStyle(TextFormatting.YELLOW);
 			tooltip.add(new StringTextComponent(param.canDisable ? "[Input] " : " Input  ").append(pName).append(pEval));
 		}
 	}

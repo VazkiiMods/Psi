@@ -1,7 +1,7 @@
 {
   "required": true,
-  "minVersion": "0.8",
-  "compatibilityLevel": "JAVA_8",
+  "minVersion": "0.8.3",
+  "compatibilityLevel": "JAVA_17",
   "package": "vazkii.psi.mixin",
   "refmap": "psi.refmap.json",
   "mixins": [

@@ -44,7 +44,7 @@ public class ItemSpellBullet extends Item {
 	public static final String TAG_SPELL = "spell";
 
 	public ItemSpellBullet(Item.Properties properties) {
-		super(properties.maxStackSize(16));
+		super(properties.stacksTo(16));
 	}
 
 	@Nullable
@@ -55,16 +55,16 @@ public class ItemSpellBullet extends Item {
 
 	@Nonnull
 	@Override
-	public ITextComponent getDisplayName(@Nonnull ItemStack stack) {
+	public ITextComponent getName(@Nonnull ItemStack stack) {
 		if (ISpellAcceptor.hasSpell(stack)) {
 			CompoundNBT cmp = stack.getOrCreateTag().getCompound(TAG_SPELL);
 			String name = cmp.getString(Spell.TAG_SPELL_NAME); // We don't need to load the whole spell just for the name
 			if (name.isEmpty()) {
-				return super.getDisplayName(stack);
+				return super.getName(stack);
 			}
 			return new StringTextComponent(name);
 		}
-		return super.getDisplayName(stack);
+		return super.getName(stack);
 	}
 
 	@Nonnull
@@ -75,7 +75,7 @@ public class ItemSpellBullet extends Item {
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, @Nullable World playerIn, List<ITextComponent> tooltip, ITooltipFlag advanced) {
+	public void appendHoverText(ItemStack stack, @Nullable World playerIn, List<ITextComponent> tooltip, ITooltipFlag advanced) {
 		TooltipHelper.tooltipIfShift(tooltip, () -> {
 			tooltip.add(new TranslationTextComponent("psimisc.bullet_type", new TranslationTextComponent("psi.bullet_type_" + getBulletType())));
 			tooltip.add(new TranslationTextComponent("psimisc.bullet_cost", (int) (ISpellAcceptor.acceptor(stack).getCostModifier() * 100)));
@@ -84,13 +84,13 @@ public class ItemSpellBullet extends Item {
 
 	@Nonnull
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, @Nonnull Hand hand) {
-		ItemStack itemStackIn = playerIn.getHeldItem(hand);
-		if (ItemSpellDrive.getSpell(itemStackIn) != null && playerIn.isSneaking()) {
-			if (!worldIn.isRemote) {
-				worldIn.playSound(null, playerIn.getPosX(), playerIn.getPosY(), playerIn.getPosZ(), PsiSoundHandler.compileError, SoundCategory.PLAYERS, 0.5F, 1F);
+	public ActionResult<ItemStack> use(World worldIn, PlayerEntity playerIn, @Nonnull Hand hand) {
+		ItemStack itemStackIn = playerIn.getItemInHand(hand);
+		if (ItemSpellDrive.getSpell(itemStackIn) != null && playerIn.isShiftKeyDown()) {
+			if (!worldIn.isClientSide) {
+				worldIn.playSound(null, playerIn.getX(), playerIn.getY(), playerIn.getZ(), PsiSoundHandler.compileError, SoundCategory.PLAYERS, 0.5F, 1F);
 			} else {
-				playerIn.swingArm(hand);
+				playerIn.swing(hand);
 			}
 			ItemSpellDrive.setSpell(itemStackIn, null);
 
@@ -151,8 +151,8 @@ public class ItemSpellBullet extends Item {
 			ItemStack newStack = stack.copy();
 			newStack.setCount(1);
 			ItemSpellDrive.setSpell(newStack, spell);
-			if (!player.addItemStackToInventory(newStack)) {
-				player.dropItem(newStack, false);
+			if (!player.addItem(newStack)) {
+				player.drop(newStack, false);
 			}
 		}
 

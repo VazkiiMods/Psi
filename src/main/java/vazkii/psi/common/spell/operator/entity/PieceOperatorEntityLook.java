@@ -41,10 +41,10 @@ public class PieceOperatorEntityLook extends PieceOperator {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_TARGET);
 		}
 		if (e instanceof ProjectileEntity || e instanceof FallingBlockEntity) {
-			return new Vector3(e.getMotion());
+			return new Vector3(e.getDeltaMovement());
 		}
 
-		return new Vector3(e.getLook(1F));
+		return new Vector3(e.getViewVector(1F));
 	}
 
 	@Override

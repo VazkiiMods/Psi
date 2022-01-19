@@ -21,16 +21,16 @@ public class BlockTagProvider extends BlockTagsProvider {
 	}
 
 	@Override
-	protected void registerTags() {
-		getOrCreateBuilder(ModTags.Blocks.BLOCK_PSIMETAL).addItemEntry(ModBlocks.psimetalBlock);
-		getOrCreateBuilder(ModTags.Blocks.BLOCK_PSIGEM).addItemEntry(ModBlocks.psigemBlock);
-		getOrCreateBuilder(ModTags.Blocks.BLOCK_EBONY_PSIMETAL).addItemEntry(ModBlocks.psimetalEbony);
-		getOrCreateBuilder(ModTags.Blocks.BLOCK_IVORY_PSIMETAL).addItemEntry(ModBlocks.psimetalIvory);
+	protected void addTags() {
+		tag(ModTags.Blocks.BLOCK_PSIMETAL).add(ModBlocks.psimetalBlock);
+		tag(ModTags.Blocks.BLOCK_PSIGEM).add(ModBlocks.psigemBlock);
+		tag(ModTags.Blocks.BLOCK_EBONY_PSIMETAL).add(ModBlocks.psimetalEbony);
+		tag(ModTags.Blocks.BLOCK_IVORY_PSIMETAL).add(ModBlocks.psimetalIvory);
 
-		getOrCreateBuilder(Tags.Blocks.STORAGE_BLOCKS).addItemEntry(ModBlocks.psimetalBlock);
-		getOrCreateBuilder(Tags.Blocks.STORAGE_BLOCKS).addItemEntry(ModBlocks.psigemBlock);
-		getOrCreateBuilder(Tags.Blocks.STORAGE_BLOCKS).addItemEntry(ModBlocks.psimetalEbony);
-		getOrCreateBuilder(Tags.Blocks.STORAGE_BLOCKS).addItemEntry(ModBlocks.psimetalIvory);
+		tag(Tags.Blocks.STORAGE_BLOCKS).add(ModBlocks.psimetalBlock);
+		tag(Tags.Blocks.STORAGE_BLOCKS).add(ModBlocks.psigemBlock);
+		tag(Tags.Blocks.STORAGE_BLOCKS).add(ModBlocks.psimetalEbony);
+		tag(Tags.Blocks.STORAGE_BLOCKS).add(ModBlocks.psimetalIvory);
 	}
 
 	@Override

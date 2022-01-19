@@ -41,7 +41,7 @@ public class SpellGridComponent implements ICustomComponent {
 			if (StringUtils.isNullOrEmpty(spellstr)) {
 				throw new IllegalArgumentException("Spell string is missing!");
 			}
-			CompoundNBT cmp = JsonToNBT.getTagFromJson(spellstr);
+			CompoundNBT cmp = JsonToNBT.parseTag(spellstr);
 			Spell fromNBT = Spell.createFromNBT(cmp);
 			if (fromNBT == null) {
 				throw new IllegalArgumentException("Invalid spell string: " + spell);
@@ -57,12 +57,12 @@ public class SpellGridComponent implements ICustomComponent {
 	public void render(MatrixStack ms, IComponentRenderContext context, float pticks, int mouseX, int mouseY) {
 		float scale = isDownscaled ? 0.5f : 1.0f;
 
-		IRenderTypeBuffer.Impl buffer = IRenderTypeBuffer.getImpl(Tessellator.getInstance().getBuffer());
-		ms.push();
+		IRenderTypeBuffer.Impl buffer = IRenderTypeBuffer.immediate(Tessellator.getInstance().getBuilder());
+		ms.pushPose();
 		ms.translate(x, y, 0);
 		ms.scale(scale, scale, scale);
 		grid.draw(ms, buffer, 0xF000F0);
-		buffer.finish();
+		buffer.endBatch();
 
 		float scaledSize = 18 * scale;
 		int scaledHoverSize = (int) (16 * scale);
@@ -77,7 +77,7 @@ public class SpellGridComponent implements ICustomComponent {
 				}
 			}
 		}
-		ms.pop();
+		ms.popPose();
 	}
 
 	@Override

@@ -33,22 +33,22 @@ public class MessageSpellError {
 	}
 
 	public MessageSpellError(PacketBuffer buf) {
-		this.message = buf.readString();
+		this.message = buf.readUtf();
 		this.x = buf.readInt();
 		this.y = buf.readInt();
 	}
 
 	public void encode(PacketBuffer buf) {
-		buf.writeString(message);
+		buf.writeUtf(message);
 		buf.writeInt(x);
 		buf.writeInt(y);
 	}
 
 	public boolean receive(Supplier<NetworkEvent.Context> context) {
 		context.get().enqueueWork(() -> {
-			NewChatGui chatGui = Minecraft.getInstance().ingameGUI.getChatGUI();
-			ITextComponent chatMessage = new TranslationTextComponent(message, GuiProgrammer.convertIntToLetter(x), y).setStyle(Style.EMPTY.setFormatting(TextFormatting.RED));
-			chatGui.printChatMessage(chatMessage);
+			NewChatGui chatGui = Minecraft.getInstance().gui.getChat();
+			ITextComponent chatMessage = new TranslationTextComponent(message, GuiProgrammer.convertIntToLetter(x), y).setStyle(Style.EMPTY.withColor(TextFormatting.RED));
+			chatGui.addMessage(chatMessage);
 		});
 		return true;
 	}

@@ -121,7 +121,7 @@ public class CADData implements ICapabilityProvider, ICADData, ISpellAcceptor, I
 		if (!bullet.isEmpty() && ISpellAcceptor.isAcceptor(bullet)) {
 			ISpellAcceptor.acceptor(bullet).setSpell(player, spell);
 			setBulletInSocket(slot, bullet);
-			player.getCooldownTracker().setCooldown(cad.getItem(), 10);
+			player.getCooldowns().addCooldown(cad.getItem(), 10);
 		}
 	}
 
@@ -148,7 +148,7 @@ public class CADData implements ICapabilityProvider, ICADData, ISpellAcceptor, I
 			return ItemStack.EMPTY;
 		}
 
-		return ItemStack.read(cmp);
+		return ItemStack.of(cmp);
 	}
 
 	@Override
@@ -157,7 +157,7 @@ public class CADData implements ICapabilityProvider, ICADData, ISpellAcceptor, I
 		CompoundNBT cmp = new CompoundNBT();
 
 		if (!bullet.isEmpty()) {
-			bullet.write(cmp);
+			bullet.save(cmp);
 		}
 
 		cad.getOrCreateTag().put(name, cmp);
@@ -226,7 +226,7 @@ public class CADData implements ICapabilityProvider, ICADData, ISpellAcceptor, I
 			List<Vector3> newVectors = Lists.newArrayList();
 			for (int i = 0; i < memory.size(); i++) {
 				ListNBT vec = (ListNBT) memory.get(i);
-				if (vec.getTagType() == Constants.NBT.TAG_DOUBLE && vec.size() >= 3) {
+				if (vec.getElementType() == Constants.NBT.TAG_DOUBLE && vec.size() >= 3) {
 					newVectors.add(new Vector3(vec.getDouble(0), vec.getDouble(1), vec.getDouble(2)));
 				} else {
 					newVectors.add(null);

@@ -67,9 +67,9 @@ public class PieceTrickExplode extends PieceTrick {
 		}
 
 		BlockPos pos = positionVal.toBlockPos();
-		BlockState state = context.focalPoint.getEntityWorld().getBlockState(pos);
+		BlockState state = context.focalPoint.getCommandSenderWorld().getBlockState(pos);
 
-		context.focalPoint.getEntityWorld().createExplosion(context.focalPoint, positionVal.x, positionVal.y, positionVal.z, (float) powerVal, state.getMaterial().isLiquid() ? Explosion.Mode.NONE : Explosion.Mode.BREAK);
+		context.focalPoint.getCommandSenderWorld().explode(context.focalPoint, positionVal.x, positionVal.y, positionVal.z, (float) powerVal, state.getMaterial().isLiquid() ? Explosion.Mode.NONE : Explosion.Mode.BREAK);
 		return null;
 	}
 

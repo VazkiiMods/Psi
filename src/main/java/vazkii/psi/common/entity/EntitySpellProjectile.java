@@ -55,10 +55,10 @@ public class EntitySpellProjectile extends ThrowableEntity {
 	private static final String TAG_LAST_MOTION_Y = "lastMotionY";
 	private static final String TAG_LAST_MOTION_Z = "lastMotionZ";
 
-	private static final DataParameter<ItemStack> COLORIZER_DATA = EntityDataManager.createKey(EntitySpellProjectile.class, DataSerializers.ITEMSTACK);
-	private static final DataParameter<ItemStack> BULLET_DATA = EntityDataManager.createKey(EntitySpellProjectile.class, DataSerializers.ITEMSTACK);
-	private static final DataParameter<Optional<UUID>> CASTER_UUID = EntityDataManager.createKey(EntitySpellProjectile.class, DataSerializers.OPTIONAL_UNIQUE_ID);
-	protected static final DataParameter<Optional<UUID>> ATTACKTARGET_UUID = EntityDataManager.createKey(EntitySpellProjectile.class, DataSerializers.OPTIONAL_UNIQUE_ID);
+	private static final DataParameter<ItemStack> COLORIZER_DATA = EntityDataManager.defineId(EntitySpellProjectile.class, DataSerializers.ITEM_STACK);
+	private static final DataParameter<ItemStack> BULLET_DATA = EntityDataManager.defineId(EntitySpellProjectile.class, DataSerializers.ITEM_STACK);
+	private static final DataParameter<Optional<UUID>> CASTER_UUID = EntityDataManager.defineId(EntitySpellProjectile.class, DataSerializers.OPTIONAL_UUID);
+	protected static final DataParameter<Optional<UUID>> ATTACKTARGET_UUID = EntityDataManager.defineId(EntitySpellProjectile.class, DataSerializers.OPTIONAL_UUID);
 
 	public SpellContext context;
 	public int timeAlive;
@@ -70,13 +70,13 @@ public class EntitySpellProjectile extends ThrowableEntity {
 	protected EntitySpellProjectile(EntityType<? extends ThrowableEntity> type, World world, LivingEntity thrower) {
 		super(type, thrower, world);
 
-		setShooter(thrower);
-		setRotation(thrower.rotationYaw + 180, -thrower.rotationPitch);
+		setOwner(thrower);
+		setRot(thrower.yRot + 180, -thrower.xRot);
 		float f = 1.5F;
-		double mx = MathHelper.sin(rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(rotationPitch / 180.0F * (float) Math.PI) * f / 2D;
-		double mz = -(MathHelper.cos(rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(rotationPitch / 180.0F * (float) Math.PI) * f) / 2D;
-		double my = MathHelper.sin(rotationPitch / 180.0F * (float) Math.PI) * f / 2D;
-		setMotion(mx, my, mz);
+		double mx = MathHelper.sin(yRot / 180.0F * (float) Math.PI) * MathHelper.cos(xRot / 180.0F * (float) Math.PI) * f / 2D;
+		double mz = -(MathHelper.cos(yRot / 180.0F * (float) Math.PI) * MathHelper.cos(xRot / 180.0F * (float) Math.PI) * f) / 2D;
+		double my = MathHelper.sin(xRot / 180.0F * (float) Math.PI) * f / 2D;
+		setDeltaMovement(mx, my, mz);
 	}
 
 	public EntitySpellProjectile(World world, LivingEntity thrower) {
@@ -84,61 +84,61 @@ public class EntitySpellProjectile extends ThrowableEntity {
 	}
 
 	public EntitySpellProjectile setInfo(PlayerEntity player, ItemStack colorizer, ItemStack bullet) {
-		dataManager.set(COLORIZER_DATA, colorizer);
-		dataManager.set(BULLET_DATA, bullet.copy());
-		dataManager.set(CASTER_UUID, Optional.of(player.getUniqueID()));
-		dataManager.set(ATTACKTARGET_UUID, Optional.empty());
+		entityData.set(COLORIZER_DATA, colorizer);
+		entityData.set(BULLET_DATA, bullet.copy());
+		entityData.set(CASTER_UUID, Optional.of(player.getUUID()));
+		entityData.set(ATTACKTARGET_UUID, Optional.empty());
 		return this;
 	}
 
 	@Override
-	protected void registerData() {
-		dataManager.register(COLORIZER_DATA, ItemStack.EMPTY);
-		dataManager.register(BULLET_DATA, ItemStack.EMPTY);
-		dataManager.register(CASTER_UUID, Optional.empty());
-		dataManager.register(ATTACKTARGET_UUID, Optional.empty());
+	protected void defineSynchedData() {
+		entityData.define(COLORIZER_DATA, ItemStack.EMPTY);
+		entityData.define(BULLET_DATA, ItemStack.EMPTY);
+		entityData.define(CASTER_UUID, Optional.empty());
+		entityData.define(ATTACKTARGET_UUID, Optional.empty());
 	}
 
 	@Override
-	public void writeAdditional(CompoundNBT tagCompound) {
-		super.writeAdditional(tagCompound);
+	public void addAdditionalSaveData(CompoundNBT tagCompound) {
+		super.addAdditionalSaveData(tagCompound);
 
 		CompoundNBT colorizerCmp = new CompoundNBT();
-		ItemStack colorizer = dataManager.get(COLORIZER_DATA);
+		ItemStack colorizer = entityData.get(COLORIZER_DATA);
 		if (!colorizer.isEmpty()) {
-			colorizerCmp = colorizer.write(colorizerCmp);
+			colorizerCmp = colorizer.save(colorizerCmp);
 		}
 		tagCompound.put(TAG_COLORIZER, colorizerCmp);
 
 		CompoundNBT bulletCmp = new CompoundNBT();
-		ItemStack bullet = dataManager.get(BULLET_DATA);
+		ItemStack bullet = entityData.get(BULLET_DATA);
 		if (!bullet.isEmpty()) {
-			bulletCmp = bullet.write(bulletCmp);
+			bulletCmp = bullet.save(bulletCmp);
 		}
 		tagCompound.put(TAG_BULLET, bulletCmp);
 
 		tagCompound.putInt(TAG_TIME_ALIVE, timeAlive);
 
-		tagCompound.putDouble(TAG_LAST_MOTION_X, getMotion().getX());
-		tagCompound.putDouble(TAG_LAST_MOTION_Y, getMotion().getY());
-		tagCompound.putDouble(TAG_LAST_MOTION_Z, getMotion().getZ());
+		tagCompound.putDouble(TAG_LAST_MOTION_X, getDeltaMovement().x());
+		tagCompound.putDouble(TAG_LAST_MOTION_Y, getDeltaMovement().y());
+		tagCompound.putDouble(TAG_LAST_MOTION_Z, getDeltaMovement().z());
 	}
 
 	@Override
-	public void readAdditional(CompoundNBT tagCompound) {
-		super.readAdditional(tagCompound);
+	public void readAdditionalSaveData(CompoundNBT tagCompound) {
+		super.readAdditionalSaveData(tagCompound);
 
 		CompoundNBT colorizerCmp = tagCompound.getCompound(TAG_COLORIZER);
-		ItemStack colorizer = ItemStack.read(colorizerCmp);
-		dataManager.set(COLORIZER_DATA, colorizer);
+		ItemStack colorizer = ItemStack.of(colorizerCmp);
+		entityData.set(COLORIZER_DATA, colorizer);
 
 		CompoundNBT bulletCmp = tagCompound.getCompound(TAG_BULLET);
-		ItemStack bullet = ItemStack.read(bulletCmp);
-		dataManager.set(BULLET_DATA, bullet);
+		ItemStack bullet = ItemStack.of(bulletCmp);
+		entityData.set(BULLET_DATA, bullet);
 
-		Entity thrower = func_234616_v_();
+		Entity thrower = getOwner();
 		if (thrower instanceof PlayerEntity) {
-			dataManager.set(CASTER_UUID, Optional.of(thrower.getUniqueID()));
+			entityData.set(CASTER_UUID, Optional.of(thrower.getUUID()));
 		}
 
 		timeAlive = tagCompound.getInt(TAG_TIME_ALIVE);
@@ -146,30 +146,30 @@ public class EntitySpellProjectile extends ThrowableEntity {
 		double lastMotionX = tagCompound.getDouble(TAG_LAST_MOTION_X);
 		double lastMotionY = tagCompound.getDouble(TAG_LAST_MOTION_Y);
 		double lastMotionZ = tagCompound.getDouble(TAG_LAST_MOTION_Z);
-		setMotion(lastMotionX, lastMotionY, lastMotionZ);
+		setDeltaMovement(lastMotionX, lastMotionY, lastMotionZ);
 	}
 
 	@Override
 	public void tick() {
 		super.tick();
 
-		int timeAlive = ticksExisted;
+		int timeAlive = tickCount;
 		if (timeAlive > getLiveTime()) {
 			remove();
 		}
 
-		ItemStack colorizer = dataManager.get(COLORIZER_DATA);
+		ItemStack colorizer = entityData.get(COLORIZER_DATA);
 		int colorVal = Psi.proxy.getColorForColorizer(colorizer);
 
 		float r = PsiRenderHelper.r(colorVal) / 255F;
 		float g = PsiRenderHelper.g(colorVal) / 255F;
 		float b = PsiRenderHelper.b(colorVal) / 255F;
 
-		double x = getPosX();
-		double y = getPosY();
-		double z = getPosZ();
+		double x = getX();
+		double y = getY();
+		double z = getZ();
 
-		Vector3 lookOrig = new Vector3(getMotion()).normalize();
+		Vector3 lookOrig = new Vector3(getDeltaMovement()).normalize();
 		for (int i = 0; i < getParticleCount(); i++) {
 			Vector3 look = lookOrig.copy();
 			double spread = 0.6;
@@ -185,7 +185,7 @@ public class EntitySpellProjectile extends ThrowableEntity {
 
 			look.normalize().multiply(dist);
 
-			if (world.isRemote()) {
+			if (level.isClientSide()) {
 				Psi.proxy.sparkleFX(x, y, z, r, g, b, (float) look.x, (float) look.y, (float) look.z, 1.2F, 12);
 			}
 
@@ -201,7 +201,7 @@ public class EntitySpellProjectile extends ThrowableEntity {
 	}
 
 	@Override
-	protected void onImpact(@Nonnull RayTraceResult pos) {
+	protected void onHit(@Nonnull RayTraceResult pos) {
 		if (pos instanceof EntityRayTraceResult && ((EntityRayTraceResult) pos).getEntity() instanceof LivingEntity) {
 			cast((SpellContext context) -> {
 				if (context != null) {
@@ -218,11 +218,11 @@ public class EntitySpellProjectile extends ThrowableEntity {
 	}
 
 	public void cast(Consumer<SpellContext> callback) {
-		Entity thrower = func_234616_v_();
+		Entity thrower = getOwner();
 		boolean canCast = false;
 
 		if (thrower instanceof PlayerEntity) {
-			ItemStack spellContainer = dataManager.get(BULLET_DATA);
+			ItemStack spellContainer = entityData.get(BULLET_DATA);
 			if (!spellContainer.isEmpty() && ISpellAcceptor.isContainer(spellContainer)) {
 				Spell spell = ISpellAcceptor.acceptor(spellContainer).getSpell();
 				if (spell != null) {
@@ -247,24 +247,24 @@ public class EntitySpellProjectile extends ThrowableEntity {
 	}
 
 	@Override
-	public Entity func_234616_v_() {
-		Entity superThrower = super.func_234616_v_();
+	public Entity getOwner() {
+		Entity superThrower = super.getOwner();
 		if (superThrower != null) {
 			return superThrower;
 		}
 
-		return dataManager.get(CASTER_UUID)
-				.map(u -> getEntityWorld().getPlayerByUuid(u))
+		return entityData.get(CASTER_UUID)
+				.map(u -> getCommandSenderWorld().getPlayerByUUID(u))
 				.orElse(null);
 	}
 
 	public LivingEntity getAttackTarget() {
 		double radiusVal = SpellContext.MAX_DISTANCE;
-		Vector3 positionVal = Vector3.fromVec3d(this.getPositionVec());
+		Vector3 positionVal = Vector3.fromVec3d(this.position());
 		AxisAlignedBB axis = new AxisAlignedBB(positionVal.x - radiusVal, positionVal.y - radiusVal, positionVal.z - radiusVal, positionVal.x + radiusVal, positionVal.y + radiusVal, positionVal.z + radiusVal);
-		return dataManager.get(ATTACKTARGET_UUID)
+		return entityData.get(ATTACKTARGET_UUID)
 				.map(u -> {
-					List<LivingEntity> a = getEntityWorld().getEntitiesWithinAABB(LivingEntity.class, axis, (Entity e) -> e.getUniqueID().equals(u));
+					List<LivingEntity> a = getCommandSenderWorld().getEntitiesOfClass(LivingEntity.class, axis, (Entity e) -> e.getUUID().equals(u));
 					if (a.size() > 0) {
 						return a.get(0);
 					}
@@ -274,18 +274,18 @@ public class EntitySpellProjectile extends ThrowableEntity {
 	}
 
 	@Override
-	protected float getGravityVelocity() {
+	protected float getGravity() {
 		return 0F;
 	}
 
 	@Override
-	public boolean doesEntityNotTriggerPressurePlate() {
+	public boolean isIgnoringBlockTriggers() {
 		return true;
 	}
 
 	@Nonnull
 	@Override
-	public IPacket<?> createSpawnPacket() {
+	public IPacket<?> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 }

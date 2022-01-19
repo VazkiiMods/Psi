@@ -27,6 +27,6 @@ public class PieceSelectorNearbyVehicles extends PieceSelectorNearby {
 
 	@Override
 	public Predicate<Entity> getTargetPredicate(SpellContext context) {
-		return (Entity e) -> e instanceof MinecartEntity || e instanceof BoatEntity || (e instanceof AbstractHorseEntity && ((AbstractHorseEntity) e).isHorseSaddled()) || (e instanceof PigEntity && ((PigEntity) e).isHorseSaddled());
+		return (Entity e) -> e instanceof MinecartEntity || e instanceof BoatEntity || (e instanceof AbstractHorseEntity && ((AbstractHorseEntity) e).isSaddled()) || (e instanceof PigEntity && ((PigEntity) e).isSaddled());
 	}
 }

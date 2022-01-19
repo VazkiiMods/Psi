@@ -21,7 +21,7 @@ public class PieceTrickHaste extends PieceTrickPotionBase {
 
 	@Override
 	public Effect getPotion() {
-		return Effects.HASTE;
+		return Effects.DIG_SPEED;
 	}
 
 }

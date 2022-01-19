@@ -49,8 +49,8 @@ public class ItemPsimetalSword extends SwordItem implements IPsimetalTool {
 	}
 
 	@Override
-	public boolean hitEntity(ItemStack itemstack, LivingEntity target, @Nonnull LivingEntity attacker) {
-		super.hitEntity(itemstack, target, attacker);
+	public boolean hurtEnemy(ItemStack itemstack, LivingEntity target, @Nonnull LivingEntity attacker) {
+		super.hurtEnemy(itemstack, target, attacker);
 
 		if (isEnabled(itemstack) && attacker instanceof PlayerEntity) {
 			PlayerEntity player = (PlayerEntity) attacker;
@@ -60,7 +60,7 @@ public class ItemPsimetalSword extends SwordItem implements IPsimetalTool {
 
 			if (!playerCad.isEmpty()) {
 				ItemStack bullet = ISocketable.socketable(itemstack).getSelectedBullet();
-				ItemCAD.cast(player.getEntityWorld(), player, data, bullet, playerCad, 5, 10, 0.05F,
+				ItemCAD.cast(player.getCommandSenderWorld(), player, data, bullet, playerCad, 5, 10, 0.05F,
 						(SpellContext context) -> {
 							context.attackedEntity = target;
 							context.tool = itemstack;
@@ -83,7 +83,7 @@ public class ItemPsimetalSword extends SwordItem implements IPsimetalTool {
 	@Override
 	public void setDamage(ItemStack stack, int damage) {
 		if (damage > stack.getMaxDamage()) {
-			damage = stack.getDamage();
+			damage = stack.getDamageValue();
 		}
 		super.setDamage(stack, damage);
 	}
@@ -98,8 +98,8 @@ public class ItemPsimetalSword extends SwordItem implements IPsimetalTool {
 
 	@Nonnull
 	@Override
-	public String getTranslationKey(ItemStack stack) {
-		String name = super.getTranslationKey(stack);
+	public String getDescriptionId(ItemStack stack) {
+		String name = super.getDescriptionId(stack);
 		if (!isEnabled(stack)) {
 			name += ".broken";
 		}
@@ -113,7 +113,7 @@ public class ItemPsimetalSword extends SwordItem implements IPsimetalTool {
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public void addInformation(ItemStack stack, @Nullable World playerIn, List<ITextComponent> tooltip, ITooltipFlag advanced) {
+	public void appendHoverText(ItemStack stack, @Nullable World playerIn, List<ITextComponent> tooltip, ITooltipFlag advanced) {
 		ITextComponent componentName = ISocketable.getSocketedItemName(stack, "psimisc.none");
 		tooltip.add(new TranslationTextComponent("psimisc.spell_selected", componentName));
 	}

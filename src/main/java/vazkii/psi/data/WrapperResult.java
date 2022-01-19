@@ -50,43 +50,43 @@ public class WrapperResult implements IFinishedRecipe {
 	}
 
 	@Override
-	public void serialize(JsonObject json) {
-		delegate.serialize(json);
+	public void serializeRecipeData(JsonObject json) {
+		delegate.serializeRecipeData(json);
 		if (transform != null) {
 			transform.accept(json);
 		}
 	}
 
 	@Override
-	public JsonObject getRecipeJson() {
+	public JsonObject serializeRecipe() {
 		if (type == null) {
-			return IFinishedRecipe.super.getRecipeJson();
+			return IFinishedRecipe.super.serializeRecipe();
 		}
 		JsonObject jsonobject = new JsonObject();
 		jsonobject.addProperty("type", Registry.RECIPE_SERIALIZER.getKey(this.type).toString());
-		this.serialize(jsonobject);
+		this.serializeRecipeData(jsonobject);
 		return jsonobject;
 	}
 
 	@Override
-	public ResourceLocation getID() {
-		return delegate.getID();
+	public ResourceLocation getId() {
+		return delegate.getId();
 	}
 
 	@Override
-	public IRecipeSerializer<?> getSerializer() {
-		return type != null ? type : delegate.getSerializer();
-	}
-
-	@Nullable
-	@Override
-	public JsonObject getAdvancementJson() {
-		return delegate.getAdvancementJson();
+	public IRecipeSerializer<?> getType() {
+		return type != null ? type : delegate.getType();
 	}
 
 	@Nullable
 	@Override
-	public ResourceLocation getAdvancementID() {
-		return delegate.getAdvancementID();
+	public JsonObject serializeAdvancement() {
+		return delegate.serializeAdvancement();
+	}
+
+	@Nullable
+	@Override
+	public ResourceLocation getAdvancementId() {
+		return delegate.getAdvancementId();
 	}
 }

@@ -54,14 +54,14 @@ public class PiecePanelWidget extends Widget implements IRenderable, IGuiEventLi
 	public final List<GuiButtonSpellPiece> visibleButtons = new ArrayList<>();
 
 	public PiecePanelWidget(int x, int y, int width, int height, String message, GuiProgrammer programmer) {
-		super(x, y, width, height, ITextComponent.getTextComponentOrEmpty(message));
+		super(x, y, width, height, ITextComponent.nullToEmpty(message));
 		this.parent = programmer;
 	}
 
 	@Override
 	public void renderButton(MatrixStack ms, int mouseX, int mouseY, float pTicks) {
 		if (panelEnabled) {
-			parent.getMinecraft().getTextureManager().bindTexture(GuiProgrammer.texture);
+			parent.getMinecraft().getTextureManager().bind(GuiProgrammer.texture);
 
 			fill(ms, x, y, x + width, y + height, 0x88000000);
 
@@ -76,7 +76,7 @@ public class PiecePanelWidget extends Widget implements IRenderable, IGuiEventLi
 			blit(ms, searchField.x - 14, searchField.y - 2, 0, parent.ySize + 16, 12, 12);
 
 			String s = Math.min(Math.max(getPageCount(), 1), page + 1) + "/" + Math.max(getPageCount(), 1);
-			parent.getMinecraft().fontRenderer.drawStringWithShadow(ms, s, x + width / 2f - parent.getMinecraft().fontRenderer.getStringWidth(s) / 2f, y + height - 12, 0xFFFFFF);
+			parent.getMinecraft().font.drawShadow(ms, s, x + width / 2f - parent.getMinecraft().font.width(s) / 2f, y + height - 12, 0xFFFFFF);
 		}
 	}
 
@@ -158,14 +158,14 @@ public class PiecePanelWidget extends Widget implements IRenderable, IGuiEventLi
 					}
 					parent.pushState(true);
 					SpellPiece piece1 = ((GuiButtonSpellPiece) button).piece.copyFromSpell(parent.spell);
-					if (piece1.getPieceType() == EnumPieceType.TRICK && parent.spellNameField.getText().isEmpty()) {
-						String pieceName = I18n.format(piece1.getUnlocalizedName());
-						String patternStr = I18n.format("psimisc.trick_pattern");
+					if (piece1.getPieceType() == EnumPieceType.TRICK && parent.spellNameField.getValue().isEmpty()) {
+						String pieceName = I18n.get(piece1.getUnlocalizedName());
+						String patternStr = I18n.get("psimisc.trick_pattern");
 						Pattern pattern = Pattern.compile(patternStr);
 						Matcher matcher = pattern.matcher(pieceName);
 						if (matcher.matches()) {
 							String spellName = matcher.group(1);
-							parent.spellNameField.setText(spellName);
+							parent.spellNameField.setValue(spellName);
 							parent.spell.name = spellName;
 							parent.onSpellChanged(true);
 
@@ -225,7 +225,7 @@ public class PiecePanelWidget extends Widget implements IRenderable, IGuiEventLi
 
 		HashMap<Class<? extends SpellPiece>, Integer> pieceRankings = new HashMap<>();
 
-		String text = searchField.getText().toLowerCase().trim();
+		String text = searchField.getValue().toLowerCase().trim();
 		boolean noSearchTerms = text.isEmpty();
 
 		parent.getButtons().forEach(button -> {
@@ -316,8 +316,8 @@ public class PiecePanelWidget extends Widget implements IRenderable, IGuiEventLi
 
 	private int ranking(String token, SpellPiece p) {
 		int rank = 0;
-		String name = I18n.format(p.getUnlocalizedName()).toLowerCase();
-		String desc = I18n.format(p.getUnlocalizedDesc()).toLowerCase();
+		String name = I18n.get(p.getUnlocalizedName()).toLowerCase();
+		String desc = I18n.get(p.getUnlocalizedDesc()).toLowerCase();
 
 		for (String nameToken : token.split("\\s+")) {
 			if (nameToken.isEmpty()) {
@@ -441,9 +441,9 @@ public class PiecePanelWidget extends Widget implements IRenderable, IGuiEventLi
 			}
 		});
 		searchField.visible = false;
-		searchField.setEnabled(false);
-		searchField.setFocused2(false);
-		parent.setListener(parent.statusWidget);
+		searchField.setEditable(false);
+		searchField.setFocus(false);
+		parent.setFocused(parent.statusWidget);
 		parent.changeFocus(true);
 	}
 
@@ -456,12 +456,12 @@ public class PiecePanelWidget extends Widget implements IRenderable, IGuiEventLi
 
 		searchField.x = x + 18;
 		searchField.y = y + 4;
-		searchField.setText("");
+		searchField.setValue("");
 		searchField.setVisible(true);
 		searchField.active = true;
-		searchField.setEnabled(true);
-		searchField.setFocused2(true);
-		parent.setListener(searchField);
+		searchField.setEditable(true);
+		searchField.setFocus(true);
+		parent.setFocused(searchField);
 		updatePanelButtons();
 	}
 }

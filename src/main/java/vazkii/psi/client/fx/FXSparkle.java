@@ -36,56 +36,56 @@ public class FXSparkle extends SpriteTexturedParticle {
 	public FXSparkle(ClientWorld world, double x, double y, double z, float size,
 			float red, float green, float blue, int m, double mx, double my, double mz, IAnimatedSprite sprite) {
 		super(world, x, y, z, 0.0D, 0.0D, 0.0D);
-		particleRed = red;
-		particleGreen = green;
-		particleBlue = blue;
-		particleAlpha = 0.5F;
-		particleGravity = 0;
-		motionX = mx;
-		motionY = my;
-		motionZ = mz;
-		particleScale *= size;
-		maxAge = 3 * m;
+		rCol = red;
+		gCol = green;
+		bCol = blue;
+		alpha = 0.5F;
+		gravity = 0;
+		xd = mx;
+		yd = my;
+		zd = mz;
+		quadSize *= size;
+		lifetime = 3 * m;
 		multipler = m;
 		setSize(0.01F, 0.01F);
 		// 10 is the sum of the infinite geometric series defined by the drag value of 0.9
 		// This is expanding the AABB to contain everywhere the particle will travel
-		this.setBoundingBox(this.getBoundingBox().grow(mx * 10, my * 10, mz * 10));
-		prevPosX = posX;
-		prevPosY = posY;
-		prevPosZ = posZ;
+		this.setBoundingBox(this.getBoundingBox().inflate(mx * 10, my * 10, mz * 10));
+		xo = x;
+		yo = y;
+		zo = z;
 		this.sprite = sprite;
-		selectSpriteWithAge(sprite);
+		setSpriteFromAge(sprite);
 	}
 
 	@Override
-	public float getScale(float partialTicks) {
-		return particleScale * (maxAge - age + 1) / (float) maxAge;
+	public float getQuadSize(float partialTicks) {
+		return quadSize * (lifetime - age + 1) / (float) lifetime;
 	}
 
 	@Override
 	public void tick() {
-		prevPosX = posX;
-		prevPosY = posY;
-		prevPosZ = posZ;
+		xo = x;
+		yo = y;
+		zo = z;
 
-		if (age++ >= maxAge) {
-			setExpired();
+		if (age++ >= lifetime) {
+			remove();
 		}
 //		if (!noClip)
 //			pushOutOfBlocks(posX, (getEntityBoundingBox().minY + getEntityBoundingBox().maxY) / 2.0D, posZ);
 
-		posX += motionX;
-		posY += motionY;
-		posZ += motionZ;
+		x += xd;
+		y += yd;
+		z += zd;
 
-		motionX *= 0.9f;
-		motionY *= 0.9f;
-		motionZ *= 0.9f;
+		xd *= 0.9f;
+		yd *= 0.9f;
+		zd *= 0.9f;
 
 		if (onGround) {
-			motionX *= 0.7f;
-			motionZ *= 0.7f;
+			xd *= 0.7f;
+			zd *= 0.7f;
 		}
 	}
 
@@ -101,14 +101,14 @@ public class FXSparkle extends SpriteTexturedParticle {
 		RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
 		RenderSystem.alphaFunc(GL11.GL_GREATER, 0.003921569F);
 		RenderSystem.disableLighting();
-		textureManager.bindTexture(AtlasTexture.LOCATION_PARTICLES_TEXTURE);
-		Texture tex = textureManager.getTexture(AtlasTexture.LOCATION_PARTICLES_TEXTURE);
-		tex.setBlurMipmapDirect(true, false);
-		buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.PARTICLE_POSITION_TEX_COLOR_LMAP);
+		textureManager.bind(AtlasTexture.LOCATION_PARTICLES);
+		Texture tex = textureManager.getTexture(AtlasTexture.LOCATION_PARTICLES);
+		tex.setFilter(true, false);
+		buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.PARTICLE);
 	}
 
 	private static void endRenderCommon() {
-		Minecraft.getInstance().textureManager.getTexture(AtlasTexture.LOCATION_PARTICLES_TEXTURE).restoreLastBlurMipmap();
+		Minecraft.getInstance().textureManager.getTexture(AtlasTexture.LOCATION_PARTICLES).restoreLastBlurMipmap();
 		RenderSystem.alphaFunc(GL11.GL_GREATER, 0.1F);
 		RenderSystem.disableBlend();
 		RenderSystem.depthMask(true);
@@ -116,13 +116,13 @@ public class FXSparkle extends SpriteTexturedParticle {
 
 	private static final IParticleRenderType NORMAL_RENDER = new IParticleRenderType() {
 		@Override
-		public void beginRender(BufferBuilder bufferBuilder, TextureManager textureManager) {
+		public void begin(BufferBuilder bufferBuilder, TextureManager textureManager) {
 			beginRenderCommon(bufferBuilder, textureManager);
 		}
 
 		@Override
-		public void finishRender(Tessellator tessellator) {
-			tessellator.draw();
+		public void end(Tessellator tessellator) {
+			tessellator.end();
 			endRenderCommon();
 		}
 

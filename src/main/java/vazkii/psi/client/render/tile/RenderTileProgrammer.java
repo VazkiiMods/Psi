@@ -36,17 +36,17 @@ public class RenderTileProgrammer extends TileEntityRenderer<TileProgrammer> {
 	@Override
 	public void render(TileProgrammer te, float partialticks, MatrixStack ms, IRenderTypeBuffer buffers, int worldLight, int overlay) {
 		if (te.isEnabled()) {
-			ms.push();
+			ms.pushPose();
 			int light = Psi.magical ? worldLight : 0xF000F0;
 
 			ms.translate(0, 1.62F, 0);
-			ms.rotate(Vector3f.ZP.rotationDegrees(180F));
-			ms.rotate(Vector3f.YP.rotationDegrees(-90F));
+			ms.mulPose(Vector3f.ZP.rotationDegrees(180F));
+			ms.mulPose(Vector3f.YP.rotationDegrees(-90F));
 
 			float rot = 90F;
 			BlockState state = te.getBlockState();
 
-			Direction facing = state.get(HorizontalFaceBlock.HORIZONTAL_FACING);
+			Direction facing = state.getValue(HorizontalFaceBlock.FACING);
 			switch (facing) {
 			case SOUTH:
 				rot = -90F;
@@ -62,23 +62,23 @@ public class RenderTileProgrammer extends TileEntityRenderer<TileProgrammer> {
 			}
 
 			ms.translate(0.5F, 0F, 0.5F);
-			ms.rotate(Vector3f.YP.rotationDegrees(rot));
+			ms.mulPose(Vector3f.YP.rotationDegrees(rot));
 			ms.translate(-0.5F, 0F, -0.5F);
 
 			float f = 1F / 300F;
 			ms.scale(f, f, -f);
 
 			if (Psi.magical) {
-				ms.rotate(Vector3f.XP.rotationDegrees(90F));
+				ms.mulPose(Vector3f.XP.rotationDegrees(90F));
 				ms.translate(70F, -220F, -100F + Math.sin(ClientTickHandler.total / 50) * 10);
-				ms.rotate(Vector3f.XP.rotationDegrees(-16F + (float) Math.cos(ClientTickHandler.total / 100) * 10F));
+				ms.mulPose(Vector3f.XP.rotationDegrees(-16F + (float) Math.cos(ClientTickHandler.total / 100) * 10F));
 			} else {
 				ms.translate(70F, 0F, -200F);
 			}
 
 			te.spell.draw(ms, buffers, light);
 
-			ms.push();
+			ms.pushPose();
 			ms.translate(0F, 0F, -0.01F);
 			IVertexBuilder buffer = buffers.getBuffer(GuiProgrammer.LAYER);
 			float x = -7, y = -7;
@@ -87,19 +87,19 @@ public class RenderTileProgrammer extends TileEntityRenderer<TileProgrammer> {
 			float u = 0, v = 0;
 			float rescale = 1 / 256F;
 			float a = Psi.magical ? 1F : 0.5F;
-			Matrix4f mat = ms.getLast().getMatrix();
-			buffer.pos(mat, x, y + height, 0).color(1, 1, 1, a).tex(u * rescale, (v + height) * rescale).lightmap(light).endVertex();
-			buffer.pos(mat, x + width, y + height, 0).color(1, 1, 1, a).tex((u + width) * rescale, (v + height) * rescale).lightmap(light).endVertex();
-			buffer.pos(mat, x + width, y, 0).color(1, 1, 1, a).tex((u + width) * rescale, v * rescale).lightmap(light).endVertex();
-			buffer.pos(mat, x, y, 0).color(1, 1, 1, a).tex(u * rescale, v * rescale).lightmap(light).endVertex();
-			ms.pop();
+			Matrix4f mat = ms.last().pose();
+			buffer.vertex(mat, x, y + height, 0).color(1, 1, 1, a).uv(u * rescale, (v + height) * rescale).uv2(light).endVertex();
+			buffer.vertex(mat, x + width, y + height, 0).color(1, 1, 1, a).uv((u + width) * rescale, (v + height) * rescale).uv2(light).endVertex();
+			buffer.vertex(mat, x + width, y, 0).color(1, 1, 1, a).uv((u + width) * rescale, v * rescale).uv2(light).endVertex();
+			buffer.vertex(mat, x, y, 0).color(1, 1, 1, a).uv(u * rescale, v * rescale).uv2(light).endVertex();
+			ms.popPose();
 
 			int color = Psi.magical ? 0 : 0xFFFFFF;
 			Minecraft mc = Minecraft.getInstance();
-			mc.fontRenderer.renderString(I18n.format("psimisc.name"), 0, 164, color, false, ms.getLast().getMatrix(), buffers, false, 0, 0xF000F0);
-			mc.fontRenderer.renderString(te.spell.name, 38, 164, color, false, ms.getLast().getMatrix(), buffers, false, 0, 0xF000F0);
+			mc.font.drawInBatch(I18n.get("psimisc.name"), 0, 164, color, false, ms.last().pose(), buffers, false, 0, 0xF000F0);
+			mc.font.drawInBatch(te.spell.name, 38, 164, color, false, ms.last().pose(), buffers, false, 0, 0xF000F0);
 
-			ms.pop();
+			ms.popPose();
 		}
 	}
 }

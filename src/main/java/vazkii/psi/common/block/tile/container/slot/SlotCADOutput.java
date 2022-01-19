@@ -44,25 +44,25 @@ public class SlotCADOutput extends Slot {
 	}
 
 	@Override
-	public boolean canTakeStack(PlayerEntity playerIn) {
-		CADTakeEvent event = new CADTakeEvent(getStack(), assembler, playerIn);
+	public boolean mayPickup(PlayerEntity playerIn) {
+		CADTakeEvent event = new CADTakeEvent(getItem(), assembler, playerIn);
 		float sound = event.getSound();
 		if (MinecraftForge.EVENT_BUS.post(event)) {
-			BlockPos assemblerPos = this.assembler.getPos();
+			BlockPos assemblerPos = this.assembler.getBlockPos();
 			String cancelMessage = event.getCancellationMessage();
-			if (!playerIn.world.isRemote) {
+			if (!playerIn.level.isClientSide) {
 				if (cancelMessage != null && !cancelMessage.isEmpty()) {
-					playerIn.sendMessage(new TranslationTextComponent(cancelMessage).setStyle(Style.EMPTY.setFormatting(TextFormatting.RED)), Util.DUMMY_UUID);
+					playerIn.sendMessage(new TranslationTextComponent(cancelMessage).setStyle(Style.EMPTY.withColor(TextFormatting.RED)), Util.NIL_UUID);
 				}
-				playerIn.world.playSound(null, assemblerPos.getX(), assemblerPos.getY(), assemblerPos.getZ(), PsiSoundHandler.compileError, SoundCategory.BLOCKS, sound, 1F);
+				playerIn.level.playSound(null, assemblerPos.getX(), assemblerPos.getY(), assemblerPos.getZ(), PsiSoundHandler.compileError, SoundCategory.BLOCKS, sound, 1F);
 			}
 			return false;
 		}
-		return super.canTakeStack(playerIn);
+		return super.mayPickup(playerIn);
 	}
 
 	@Override
-	public boolean isItemValid(ItemStack stack) {
+	public boolean mayPlace(ItemStack stack) {
 		return false;
 	}
 }

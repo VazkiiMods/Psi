@@ -23,6 +23,8 @@ import vazkii.psi.api.spell.SpellParam;
 import vazkii.psi.api.spell.SpellPiece;
 import vazkii.psi.client.gui.GuiProgrammer;
 
+import net.minecraft.client.gui.widget.button.Button.IPressable;
+
 public class GuiButtonSideConfig extends Button {
 
 	final GuiProgrammer gui;
@@ -60,7 +62,7 @@ public class GuiButtonSideConfig extends Button {
 			int maxX = minX + 8;
 			int maxY = minY + 8;
 
-			Minecraft.getInstance().textureManager.bindTexture(GuiProgrammer.texture);
+			Minecraft.getInstance().textureManager.bind(GuiProgrammer.texture);
 			SpellPiece piece = gui.spell.grid.gridData[gridX][gridY];
 			if (piece == null) {
 				return;
@@ -86,13 +88,13 @@ public class GuiButtonSideConfig extends Button {
 			float maxU = (side.u + wh) / 256F;
 			float maxV = (side.v + wh) / 256F;
 			RenderSystem.enableAlphaTest();
-			BufferBuilder wr = Tessellator.getInstance().getBuffer();
+			BufferBuilder wr = Tessellator.getInstance().getBuilder();
 			wr.begin(7, DefaultVertexFormats.POSITION_TEX);
-			wr.pos(minX, maxY, 0).tex(minU, maxV).endVertex();
-			wr.pos(maxX, maxY, 0).tex(maxU, maxV).endVertex();
-			wr.pos(maxX, minY, 0).tex(maxU, minV).endVertex();
-			wr.pos(minX, minY, 0).tex(minU, minV).endVertex();
-			Tessellator.getInstance().draw();
+			wr.vertex(minX, maxY, 0).uv(minU, maxV).endVertex();
+			wr.vertex(maxX, maxY, 0).uv(maxU, maxV).endVertex();
+			wr.vertex(maxX, minY, 0).uv(maxU, minV).endVertex();
+			wr.vertex(minX, minY, 0).uv(minU, minV).endVertex();
+			Tessellator.getInstance().end();
 			RenderSystem.disableAlphaTest();
 		}
 	}

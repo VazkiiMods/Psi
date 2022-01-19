@@ -46,19 +46,19 @@ public class LoopcastTrackingHandler {
 	public static void syncDataFor(PlayerEntity player, ServerPlayerEntity receiver) {
 		PlayerDataHandler.PlayerData data = PlayerDataHandler.get(player);
 
-		MessageRegister.sendToPlayer(new MessageLoopcastSync(player.getEntityId(), data.loopcasting, data.loopcastHand), receiver);
+		MessageRegister.sendToPlayer(new MessageLoopcastSync(player.getId(), data.loopcasting, data.loopcastHand), receiver);
 	}
 
 	public static void syncForTrackers(ServerPlayerEntity player) {
 
 		PlayerDataHandler.PlayerData data = PlayerDataHandler.get(player);
-		MessageRegister.HANDLER.send(PacketDistributor.TRACKING_ENTITY.with(() -> player), new MessageLoopcastSync(player.getEntityId(), data.loopcasting, data.loopcastHand));
+		MessageRegister.HANDLER.send(PacketDistributor.TRACKING_ENTITY.with(() -> player), new MessageLoopcastSync(player.getId(), data.loopcasting, data.loopcastHand));
 
 	}
 
 	public static void syncForTrackersAndSelf(ServerPlayerEntity playerEntity) {
 		PlayerDataHandler.PlayerData data = PlayerDataHandler.get(playerEntity);
-		MessageLoopcastSync messageLoopcastSync = new MessageLoopcastSync(playerEntity.getEntityId(), data.loopcasting, data.loopcastHand);
+		MessageLoopcastSync messageLoopcastSync = new MessageLoopcastSync(playerEntity.getId(), data.loopcasting, data.loopcastHand);
 		MessageRegister.HANDLER.send(PacketDistributor.TRACKING_ENTITY.with(() -> playerEntity), messageLoopcastSync);
 		MessageRegister.sendToPlayer(messageLoopcastSync, playerEntity);
 	}

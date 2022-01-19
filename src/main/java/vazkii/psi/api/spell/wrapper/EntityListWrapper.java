@@ -107,7 +107,7 @@ public class EntityListWrapper implements Iterable<Entity> {
 	 * A Comparator for Entities that's deterministic, to keep order with the Entity Lists.
 	 */
 	public static int compareEntities(Entity l, Entity r) {
-		return l.getUniqueID().compareTo(r.getUniqueID());
+		return l.getUUID().compareTo(r.getUUID());
 	}
 
 	/**

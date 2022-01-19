@@ -57,21 +57,21 @@ public class PieceOperatorVectorRaycast extends PieceOperator {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
 		}
 
-		return Vector3.fromBlockPos(pos.getPos());
+		return Vector3.fromBlockPos(pos.getBlockPos());
 	}
 
 	public static BlockRayTraceResult raycast(Entity e, double len) {
 		Vector3 vec = Vector3.fromEntity(e);
 		vec.add(0, e.getEyeHeight(), 0);
 
-		Vector3d look = e.getLookVec();
+		Vector3d look = e.getLookAngle();
 
 		return raycast(e, vec, new Vector3(look), len);
 	}
 
 	public static BlockRayTraceResult raycast(Entity entity, Vector3 origin, Vector3 ray, double len) {
 		Vector3 end = origin.copy().add(ray.copy().normalize().multiply(len));
-		return entity.world.rayTraceBlocks(new RayTraceContext(origin.toVec3D(), end.toVec3D(), RayTraceContext.BlockMode.OUTLINE, RayTraceContext.FluidMode.NONE, entity));
+		return entity.level.clip(new RayTraceContext(origin.toVec3D(), end.toVec3D(), RayTraceContext.BlockMode.OUTLINE, RayTraceContext.FluidMode.NONE, entity));
 	}
 
 	@Override

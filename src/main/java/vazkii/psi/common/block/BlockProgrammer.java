@@ -44,6 +44,8 @@ import javax.annotation.Nullable;
 
 import java.util.UUID;
 
+import net.minecraft.block.AbstractBlock.Properties;
+
 public class BlockProgrammer extends HorizontalBlock {
 
 	public static final BooleanProperty ENABLED = BooleanProperty.create("enabled");
@@ -52,29 +54,29 @@ public class BlockProgrammer extends HorizontalBlock {
 	private static final VoxelShape SHAPE_WEST;
 	private static final VoxelShape SHAPE_EAST;
 	static {
-		VoxelShape top = Block.makeCuboidShape(0, 8, 0, 16, 16, 16);
+		VoxelShape top = Block.box(0, 8, 0, 16, 16, 16);
 
-		VoxelShape northMiddle = Block.makeCuboidShape(2, 0, 14, 14, 8, 16);
-		VoxelShape southMiddle = Block.makeCuboidShape(2, 0, 0, 14, 8, 2);
-		VoxelShape zBottom = Block.makeCuboidShape(2, 0, 0, 14, 1, 16);
-		SHAPE_NORTH = VoxelShapes.combineAndSimplify(top, VoxelShapes.combineAndSimplify(zBottom, northMiddle, IBooleanFunction.OR), IBooleanFunction.OR);
-		SHAPE_SOUTH = VoxelShapes.combineAndSimplify(top, VoxelShapes.combineAndSimplify(zBottom, southMiddle, IBooleanFunction.OR), IBooleanFunction.OR);
+		VoxelShape northMiddle = Block.box(2, 0, 14, 14, 8, 16);
+		VoxelShape southMiddle = Block.box(2, 0, 0, 14, 8, 2);
+		VoxelShape zBottom = Block.box(2, 0, 0, 14, 1, 16);
+		SHAPE_NORTH = VoxelShapes.join(top, VoxelShapes.join(zBottom, northMiddle, IBooleanFunction.OR), IBooleanFunction.OR);
+		SHAPE_SOUTH = VoxelShapes.join(top, VoxelShapes.join(zBottom, southMiddle, IBooleanFunction.OR), IBooleanFunction.OR);
 
-		VoxelShape westMiddle = Block.makeCuboidShape(14, 0, 2, 16, 8, 14);
-		VoxelShape eastMiddle = Block.makeCuboidShape(0, 0, 2, 2, 8, 14);
-		VoxelShape xBottom = Block.makeCuboidShape(0, 0, 2, 16, 1, 14);
-		SHAPE_WEST = VoxelShapes.combineAndSimplify(top, VoxelShapes.combineAndSimplify(xBottom, westMiddle, IBooleanFunction.OR), IBooleanFunction.OR);
-		SHAPE_EAST = VoxelShapes.combineAndSimplify(top, VoxelShapes.combineAndSimplify(xBottom, eastMiddle, IBooleanFunction.OR), IBooleanFunction.OR);
+		VoxelShape westMiddle = Block.box(14, 0, 2, 16, 8, 14);
+		VoxelShape eastMiddle = Block.box(0, 0, 2, 2, 8, 14);
+		VoxelShape xBottom = Block.box(0, 0, 2, 16, 1, 14);
+		SHAPE_WEST = VoxelShapes.join(top, VoxelShapes.join(xBottom, westMiddle, IBooleanFunction.OR), IBooleanFunction.OR);
+		SHAPE_EAST = VoxelShapes.join(top, VoxelShapes.join(xBottom, eastMiddle, IBooleanFunction.OR), IBooleanFunction.OR);
 	}
 
 	public BlockProgrammer(Properties props) {
 		super(props);
-		setDefaultState(getStateContainer().getBaseState().with(HORIZONTAL_FACING, Direction.NORTH).with(ENABLED, false));
+		registerDefaultState(getStateDefinition().any().setValue(FACING, Direction.NORTH).setValue(ENABLED, false));
 	}
 
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx) {
-		switch (state.get(HORIZONTAL_FACING)) {
+		switch (state.getValue(FACING)) {
 		default:
 		case NORTH:
 			return SHAPE_NORTH;
@@ -88,9 +90,9 @@ public class BlockProgrammer extends HorizontalBlock {
 	}
 
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult rayTraceResult) {
-		ItemStack heldItem = player.getHeldItem(hand);
-		TileProgrammer programmer = (TileProgrammer) worldIn.getTileEntity(pos);
+	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult rayTraceResult) {
+		ItemStack heldItem = player.getItemInHand(hand);
+		TileProgrammer programmer = (TileProgrammer) worldIn.getBlockEntity(pos);
 		if (programmer == null) {
 			return ActionResultType.PASS;
 		}
@@ -108,14 +110,14 @@ public class BlockProgrammer extends HorizontalBlock {
 		if (player instanceof ServerPlayerEntity) {
 			VanillaPacketDispatcher.dispatchTEToPlayer(programmer, (ServerPlayerEntity) player);
 		}
-		if (worldIn.isRemote) {
+		if (worldIn.isClientSide) {
 			Psi.proxy.openProgrammerGUI(programmer);
 		}
 		return ActionResultType.SUCCESS;
 	}
 
 	public ActionResultType setSpell(World worldIn, BlockPos pos, PlayerEntity playerIn, ItemStack heldItem) {
-		TileProgrammer programmer = (TileProgrammer) worldIn.getTileEntity(pos);
+		TileProgrammer programmer = (TileProgrammer) worldIn.getBlockEntity(pos);
 		if (programmer == null) {
 			return ActionResultType.FAIL;
 		}
@@ -123,9 +125,9 @@ public class BlockProgrammer extends HorizontalBlock {
 		boolean enabled = programmer.isEnabled();
 
 		LazyOptional<ISpellAcceptor> settable = heldItem.getCapability(PsiAPI.SPELL_ACCEPTOR_CAPABILITY);
-		if (enabled && !heldItem.isEmpty() && settable.isPresent() && programmer.spell != null && (playerIn.isSneaking() || !settable.orElse(null).requiresSneakForSpellSet())) {
+		if (enabled && !heldItem.isEmpty() && settable.isPresent() && programmer.spell != null && (playerIn.isShiftKeyDown() || !settable.orElse(null).requiresSneakForSpellSet())) {
 			if (programmer.canCompile()) {
-				if (!worldIn.isRemote) {
+				if (!worldIn.isClientSide) {
 					worldIn.playSound(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, PsiSoundHandler.bulletCreate, SoundCategory.BLOCKS, 0.5F, 1F);
 				}
 
@@ -136,7 +138,7 @@ public class BlockProgrammer extends HorizontalBlock {
 				}
 				return ActionResultType.SUCCESS;
 			} else {
-				if (!worldIn.isRemote) {
+				if (!worldIn.isClientSide) {
 					worldIn.playSound(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, PsiSoundHandler.compileError, SoundCategory.BLOCKS, 0.5F, 1F);
 				}
 				return ActionResultType.FAIL;
@@ -147,14 +149,14 @@ public class BlockProgrammer extends HorizontalBlock {
 	}
 
 	@Override
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-		builder.add(HORIZONTAL_FACING, ENABLED);
+	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+		builder.add(FACING, ENABLED);
 	}
 
 	@Nullable
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext ctx) {
-		return getDefaultState().with(HORIZONTAL_FACING, ctx.getPlacementHorizontalFacing().getOpposite());
+		return defaultBlockState().setValue(FACING, ctx.getHorizontalDirection().getOpposite());
 	}
 
 	@Nullable
@@ -170,14 +172,14 @@ public class BlockProgrammer extends HorizontalBlock {
 
 	@Override
 	@SuppressWarnings("deprecation")
-	public boolean hasComparatorInputOverride(BlockState state) {
+	public boolean hasAnalogOutputSignal(BlockState state) {
 		return true;
 	}
 
 	@Override
 	@SuppressWarnings("deprecation")
-	public int getComparatorInputOverride(BlockState blockState, World worldIn, BlockPos pos) {
-		TileEntity tile = worldIn.getTileEntity(pos);
+	public int getAnalogOutputSignal(BlockState blockState, World worldIn, BlockPos pos) {
+		TileEntity tile = worldIn.getBlockEntity(pos);
 		if (tile instanceof TileProgrammer) {
 			TileProgrammer programmer = (TileProgrammer) tile;
 
@@ -195,8 +197,8 @@ public class BlockProgrammer extends HorizontalBlock {
 
 	@Nullable
 	@Override
-	public INamedContainerProvider getContainer(BlockState state, World worldIn, BlockPos pos) {
-		return super.getContainer(state, worldIn, pos);
+	public INamedContainerProvider getMenuProvider(BlockState state, World worldIn, BlockPos pos) {
+		return super.getMenuProvider(state, worldIn, pos);
 	}
 
 }

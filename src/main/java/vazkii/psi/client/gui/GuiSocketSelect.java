@@ -111,7 +111,7 @@ public class GuiSocketSelect extends Screen {
 		slotSelected = -1;
 
 		Tessellator tess = Tessellator.getInstance();
-		BufferBuilder buf = tess.getBuffer();
+		BufferBuilder buf = tess.getBuilder();
 
 		RenderSystem.disableCull();
 		RenderSystem.disableTexture();
@@ -136,7 +136,7 @@ public class GuiSocketSelect extends Screen {
 			int a = 0x66;
 
 			if (seg == 0) {
-				buf.pos(x, y, 0).color(r, g, b, a).endVertex();
+				buf.vertex(x, y, 0).color(r, g, b, a).endVertex();
 			}
 
 			if (mouseInSector) {
@@ -169,12 +169,12 @@ public class GuiSocketSelect extends Screen {
 				float yp = y + MathHelper.sin(rad) * radius;
 
 				if (i == 0) {
-					buf.pos(xp, yp, 0).color(r, g, b, a).endVertex();
+					buf.vertex(xp, yp, 0).color(r, g, b, a).endVertex();
 				}
-				buf.pos(xp, yp, 0).color(r, g, b, a).endVertex();
+				buf.vertex(xp, yp, 0).color(r, g, b, a).endVertex();
 			}
 		}
-		tess.draw();
+		tess.end();
 
 		RenderSystem.shadeModel(GL11.GL_FLAT);
 		RenderSystem.enableTexture();
@@ -194,14 +194,14 @@ public class GuiSocketSelect extends Screen {
 			if (!stack.isEmpty()) {
 				float xsp = xp - 4;
 				float ysp = yp;
-				String name = (mouseInSector ? TextFormatting.UNDERLINE : TextFormatting.RESET) + stack.getDisplayName().getString();
-				int width = font.getStringWidth(name);
+				String name = (mouseInSector ? TextFormatting.UNDERLINE : TextFormatting.RESET) + stack.getHoverName().getString();
+				int width = font.width(name);
 
 				double mod = 0.6;
 				int xdp = (int) ((xp - x) * mod + x);
 				int ydp = (int) ((yp - y) * mod + y);
 
-				mc.getItemRenderer().renderItemIntoGUI(stack, xdp - 8, ydp - 8);
+				mc.getItemRenderer().renderGuiItem(stack, xdp - 8, ydp - 8);
 
 				if (xsp < x) {
 					xsp -= width - 8;
@@ -210,20 +210,20 @@ public class GuiSocketSelect extends Screen {
 					ysp -= 9;
 				}
 
-				font.drawStringWithShadow(ms, name, xsp, ysp, 0xFFFFFF);
+				font.drawShadow(ms, name, xsp, ysp, 0xFFFFFF);
 				if (seg == socketable.getSelectedSlot()) {
 					int color = 0x00FF00;
 					if (!cadStack.isEmpty()) {
 						color = 0xFF0000 - Psi.proxy.getColorForCAD(cadStack);
 					}
-					font.drawStringWithShadow(ms, I18n.format("psimisc.selected"), xsp + width / 4, ysp + font.FONT_HEIGHT, color);
+					font.drawShadow(ms, I18n.get("psimisc.selected"), xsp + width / 4, ysp + font.lineHeight, color);
 				}
 
 				mod = 0.8;
 				xdp = (int) ((xp - x) * mod + x);
 				ydp = (int) ((yp - y) * mod + y);
 
-				mc.textureManager.bindTexture(signs.get(seg));
+				mc.textureManager.bind(signs.get(seg));
 				blit(ms, xdp - 8, ydp - 8, 0, 0, 16, 16, 16, 16);
 			}
 		}
@@ -248,19 +248,19 @@ public class GuiSocketSelect extends Screen {
 
 				ItemStack stack = controlledStacks[i];
 				float rx = xs + i * 18 + (-yoff * shift);
-				PsiRenderHelper.transferMsToGl(ms, () -> mc.getItemRenderer().renderItemAndEffectIntoGUI(stack, (int) rx, ys));
+				PsiRenderHelper.transferMsToGl(ms, () -> mc.getItemRenderer().renderAndDecorateItem(stack, (int) rx, ys));
 			}
 
 		}
 
 		if (!socketableStack.isEmpty()) {
-			ms.push();
+			ms.pushPose();
 			ms.scale(scale, scale, scale);
-			PsiRenderHelper.transferMsToGl(ms, () -> mc.getItemRenderer().renderItemAndEffectIntoGUI(socketableStack,
+			PsiRenderHelper.transferMsToGl(ms, () -> mc.getItemRenderer().renderAndDecorateItem(socketableStack,
 					(int) (x / scale) - 8, (int) (y / scale) - 8));
-			ms.pop();
+			ms.popPose();
 		}
-		RenderHelper.disableStandardItemLighting();
+		RenderHelper.turnOff();
 		RenderSystem.disableBlend();
 		RenderSystem.disableRescaleNormal();
 
@@ -293,7 +293,7 @@ public class GuiSocketSelect extends Screen {
 	public void tick() {
 		super.tick();
 		if (!isKeyDown(KeybindHandler.keybind)) {
-			mc.displayGuiScreen(null);
+			mc.setScreen(null);
 			if (slotSelected != -1) {
 				int slot = slots.get(slotSelected);
 				PlayerDataHandler.get(mc.player).stopLoopcast();
@@ -308,9 +308,9 @@ public class GuiSocketSelect extends Screen {
 			}
 		}
 
-		ImmutableSet<KeyBinding> set = ImmutableSet.of(mc.gameSettings.keyBindForward, mc.gameSettings.keyBindLeft, mc.gameSettings.keyBindBack, mc.gameSettings.keyBindRight, mc.gameSettings.keyBindSneak, mc.gameSettings.keyBindSprint, mc.gameSettings.keyBindJump);
+		ImmutableSet<KeyBinding> set = ImmutableSet.of(mc.options.keyUp, mc.options.keyLeft, mc.options.keyDown, mc.options.keyRight, mc.options.keyShift, mc.options.keySprint, mc.options.keyJump);
 		for (KeyBinding k : set) {
-			KeyBinding.setKeyBindState(k.getKey(), isKeyDown(k));
+			KeyBinding.set(k.getKey(), isKeyDown(k));
 		}
 
 		timeIn++;
@@ -319,9 +319,9 @@ public class GuiSocketSelect extends Screen {
 	public boolean isKeyDown(KeyBinding keybind) {
 		InputMappings.Input key = keybind.getKey();
 		if (key.getType() == InputMappings.Type.MOUSE) {
-			return keybind.isKeyDown();
+			return keybind.isDown();
 		}
-		return InputMappings.isKeyDown(Minecraft.getInstance().getMainWindow().getHandle(), key.getKeyCode());
+		return InputMappings.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), key.getValue());
 	}
 
 	@Override

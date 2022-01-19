@@ -22,7 +22,7 @@ public class PieceTrickResistance extends PieceTrickPotionBase {
 
 	@Override
 	public Effect getPotion() {
-		return Effects.RESISTANCE;
+		return Effects.DAMAGE_RESISTANCE;
 	}
 
 	@Override

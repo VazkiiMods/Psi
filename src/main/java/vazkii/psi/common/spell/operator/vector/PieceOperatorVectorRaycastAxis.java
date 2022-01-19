@@ -53,13 +53,13 @@ public class PieceOperatorVectorRaycastAxis extends PieceOperator {
 
 		Vector3 end = originVal.copy().add(rayVal.copy().normalize().multiply(maxLen));
 
-		BlockRayTraceResult pos = context.caster.getEntityWorld().rayTraceBlocks(new RayTraceContext(originVal.toVec3D(), end.toVec3D(), RayTraceContext.BlockMode.OUTLINE, RayTraceContext.FluidMode.NONE, context.caster));
+		BlockRayTraceResult pos = context.caster.getCommandSenderWorld().clip(new RayTraceContext(originVal.toVec3D(), end.toVec3D(), RayTraceContext.BlockMode.OUTLINE, RayTraceContext.FluidMode.NONE, context.caster));
 		if (pos.getType() == RayTraceResult.Type.MISS) {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
 		}
 
-		Direction facing = pos.getFace();
-		return new Vector3(facing.getXOffset(), facing.getYOffset(), facing.getZOffset());
+		Direction facing = pos.getDirection();
+		return new Vector3(facing.getStepX(), facing.getStepY(), facing.getStepZ());
 	}
 
 	@Override

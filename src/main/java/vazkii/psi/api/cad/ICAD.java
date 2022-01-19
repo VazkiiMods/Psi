@@ -37,7 +37,7 @@ public interface ICAD {
 			String name = TAG_COMPONENT_PREFIX + componentType.name();
 
 			CompoundNBT cmp = new CompoundNBT();
-			componentStack.write(cmp);
+			componentStack.save(cmp);
 
 			stack.getOrCreateTag().put(name, cmp);
 		}

@@ -25,14 +25,14 @@ public class CallbackTextFieldWidget extends TextFieldWidget {
 	}
 
 	@Override
-	public void writeText(String textToWrite) {
-		super.writeText(textToWrite);
+	public void insertText(String textToWrite) {
+		super.insertText(textToWrite);
 		onPress();
 	}
 
 	@Override
-	public void deleteFromCursor(int num) {
-		super.deleteFromCursor(num);
+	public void deleteChars(int num) {
+		super.deleteChars(num);
 		onPress();
 	}
 

@@ -39,7 +39,7 @@ public class PieceOperatorRandom extends PieceOperator {
 			throw new SpellRuntimeException(SpellRuntimeException.NEGATIVE_NUMBER);
 		}
 
-		return (double) (context.caster.getEntityWorld().rand.nextInt(maxVal - minVal) + minVal);
+		return (double) (context.caster.getCommandSenderWorld().random.nextInt(maxVal - minVal) + minVal);
 	}
 
 	@Override

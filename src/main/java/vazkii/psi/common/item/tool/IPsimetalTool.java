@@ -48,9 +48,9 @@ public interface IPsimetalTool {
 		if (!playerCad.isEmpty()) {
 			ISocketable sockets = ISocketable.socketable(itemstack);
 			ItemStack bullet = sockets.getSelectedBullet();
-			ItemCAD.cast(player.getEntityWorld(), player, data, bullet, playerCad, 5, 10, 0.05F, (SpellContext context) -> {
+			ItemCAD.cast(player.getCommandSenderWorld(), player, data, bullet, playerCad, 5, 10, 0.05F, (SpellContext context) -> {
 				context.tool = itemstack;
-				context.positionBroken = raytraceFromEntity(player.getEntityWorld(), player, RayTraceContext.FluidMode.NONE, player.getAttributeManager().getAttributeValue(ForgeMod.REACH_DISTANCE.get()));
+				context.positionBroken = raytraceFromEntity(player.getCommandSenderWorld(), player, RayTraceContext.FluidMode.NONE, player.getAttributes().getValue(ForgeMod.REACH_DISTANCE.get()));
 			});
 		}
 	}
@@ -61,8 +61,8 @@ public interface IPsimetalTool {
 	}
 
 	static BlockRayTraceResult raytraceFromEntity(World worldIn, PlayerEntity player, RayTraceContext.FluidMode fluidMode, double range) {
-		float f = player.rotationPitch;
-		float f1 = player.rotationYaw;
+		float f = player.xRot;
+		float f1 = player.yRot;
 		Vector3d vec3d = player.getEyePosition(1.0F);
 		float f2 = MathHelper.cos(-f1 * ((float) Math.PI / 180F) - (float) Math.PI);
 		float f3 = MathHelper.sin(-f1 * ((float) Math.PI / 180F) - (float) Math.PI);
@@ -72,7 +72,7 @@ public interface IPsimetalTool {
 		float f7 = f2 * f4;
 		double d0 = range; // Botania - use custom range
 		Vector3d vec3d1 = vec3d.add((double) f6 * d0, (double) f5 * d0, (double) f7 * d0);
-		return worldIn.rayTraceBlocks(new RayTraceContext(vec3d, vec3d1, RayTraceContext.BlockMode.OUTLINE, fluidMode, player));
+		return worldIn.clip(new RayTraceContext(vec3d, vec3d1, RayTraceContext.BlockMode.OUTLINE, fluidMode, player));
 	}
 
 	static void regen(ItemStack stack, Entity entityIn) {
@@ -83,7 +83,7 @@ public interface IPsimetalTool {
 
 			if (!data.overflowed && regenTime % 16 == 0 && (float) data.getAvailablePsi() / (float) data.getTotalPsi() > 0.5F) {
 				data.deductPsi(150, 0, true);
-				stack.setDamage(stack.getDamage() - 1);
+				stack.setDamageValue(stack.getDamageValue() - 1);
 			}
 			stack.getOrCreateTag().putInt(TAG_REGEN_TIME, regenTime + 1);
 		}
@@ -94,11 +94,11 @@ public interface IPsimetalTool {
 			return false;
 		}
 		PlayerEntity player = (PlayerEntity) entityIn;
-		return player.getHeldItemOffhand() != stack && player.getHeldItemMainhand() != stack && stack.getDamage() > 0;
+		return player.getOffhandItem() != stack && player.getMainHandItem() != stack && stack.getDamageValue() > 0;
 	}
 
 	default boolean isEnabled(ItemStack stack) {
-		return stack.getDamage() < stack.getMaxDamage();
+		return stack.getDamageValue() < stack.getMaxDamage();
 	}
 
 	/**

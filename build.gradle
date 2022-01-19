@@ -1,11 +1,11 @@
 buildscript {
     repositories {
         mavenCentral()
-        maven { url = 'https://files.minecraftforge.net/maven' }
-        maven { url = 'https://repo.spongepowered.org/repository/maven-public' }
+        maven { url = 'https://maven.minecraftforge.net' }
+        maven { url = 'https://repo.spongepowered.org/maven' }
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1+', changing: true
         classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
     }
 }
@@ -16,9 +16,11 @@ plugins {
 
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
-apply plugin: 'maven'
-apply plugin: 'pmd'
+apply plugin: 'maven-publish'
+//apply plugin: 'pmd'
 apply plugin: 'org.spongepowered.mixin'
+
+apply from: 'https://raw.githubusercontent.com/SizableShrimp/Forge-Class-Remapper/main/classremapper.gradle'
 
 ext.configFile = file('build.properties')
 ext.config = parseConfig(configFile)
@@ -94,19 +96,19 @@ repositories {
     maven {
         // for Patchouli
         name "blamejared"
-        url "http://maven.blamejared.com/"
+        url "https://maven.blamejared.com/"
     }
     maven {
         // for JEI
         name "promwml16"
-        url "http://dvs1.progwml6.com/files/maven"
+        url "https://dvs1.progwml6.com/files/maven"
     }
 }
 
 dependencies {
-    minecraft group: 'net.minecraftforge', name: 'forge', version: "${mc_version}-34.1.0"
+    minecraft "net.minecraftforge:forge:${mc_version}-34.1.0"
 
-    annotationProcessor 'org.spongepowered:mixin:0.8.1:processor'
+    annotationProcessor 'org.spongepowered:mixin:0.8.3:processor'
 
     compileOnly fg.deobf("vazkii.patchouli:Patchouli:1.16.2-47-SNAPSHOT:api")
     runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:1.16.2-47-SNAPSHOT")
@@ -139,16 +141,17 @@ spotless {
     }
 }
 
+/*
 pmd {
     toolVersion '6.22.0'
     incrementalAnalysis.set(true)
     ruleSets.clear()
     ruleSetFiles = files("spotless/pmd-ruleset.xml")
 }
-
+*/
 
 task checkSyntax {
-    dependsOn spotlessJavaCheck, pmdMain
+    dependsOn spotlessJavaCheck//, pmdMain
 }
 
 sourceSets.main.resources {
@@ -236,17 +239,14 @@ jar {
     exclude "**/en_us_base.json"
 }
 
-
+/*
 uploadArchives {
     repositories {
         mavenDeployer {
             repository(url: "file://" + (System.getenv("local_maven") != null ? System.getenv("local_maven") : System.getenv("bamboo_local_maven")))
         }
     }
-}
+}*/
 
-mixin {
-    add sourceSets.main, "${config.mod_id}.refmap.json"
-}
 
 defaultTasks 'clean', 'runData', 'checkSyntax', 'build', 'incrementBuildNumber'

@@ -56,88 +56,88 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 	private static final String TAG_LOOK_Y = "savedLookY";
 	private static final String TAG_LOOK_Z = "savedLookZ";
 
-	public static final DataParameter<ItemStack> COLORIZER_DATA = EntityDataManager.createKey(EntitySpellCircle.class, DataSerializers.ITEMSTACK);
-	private static final DataParameter<ItemStack> BULLET_DATA = EntityDataManager.createKey(EntitySpellCircle.class, DataSerializers.ITEMSTACK);
-	private static final DataParameter<Optional<UUID>> CASTER_UUID = EntityDataManager.createKey(EntitySpellCircle.class, DataSerializers.OPTIONAL_UNIQUE_ID);
-	private static final DataParameter<Integer> TIME_ALIVE = EntityDataManager.createKey(EntitySpellCircle.class, DataSerializers.VARINT);
-	private static final DataParameter<Integer> TIMES_CAST = EntityDataManager.createKey(EntitySpellCircle.class, DataSerializers.VARINT);
+	public static final DataParameter<ItemStack> COLORIZER_DATA = EntityDataManager.defineId(EntitySpellCircle.class, DataSerializers.ITEM_STACK);
+	private static final DataParameter<ItemStack> BULLET_DATA = EntityDataManager.defineId(EntitySpellCircle.class, DataSerializers.ITEM_STACK);
+	private static final DataParameter<Optional<UUID>> CASTER_UUID = EntityDataManager.defineId(EntitySpellCircle.class, DataSerializers.OPTIONAL_UUID);
+	private static final DataParameter<Integer> TIME_ALIVE = EntityDataManager.defineId(EntitySpellCircle.class, DataSerializers.INT);
+	private static final DataParameter<Integer> TIMES_CAST = EntityDataManager.defineId(EntitySpellCircle.class, DataSerializers.INT);
 
-	private static final DataParameter<Float> LOOK_X = EntityDataManager.createKey(EntitySpellCircle.class, DataSerializers.FLOAT);
-	private static final DataParameter<Float> LOOK_Y = EntityDataManager.createKey(EntitySpellCircle.class, DataSerializers.FLOAT);
-	private static final DataParameter<Float> LOOK_Z = EntityDataManager.createKey(EntitySpellCircle.class, DataSerializers.FLOAT);
+	private static final DataParameter<Float> LOOK_X = EntityDataManager.defineId(EntitySpellCircle.class, DataSerializers.FLOAT);
+	private static final DataParameter<Float> LOOK_Y = EntityDataManager.defineId(EntitySpellCircle.class, DataSerializers.FLOAT);
+	private static final DataParameter<Float> LOOK_Z = EntityDataManager.defineId(EntitySpellCircle.class, DataSerializers.FLOAT);
 
 	public EntitySpellCircle(EntityType<?> type, World worldIn) {
 		super(type, worldIn);
 	}
 
 	public EntitySpellCircle setInfo(PlayerEntity player, ItemStack colorizer, ItemStack bullet) {
-		dataManager.set(COLORIZER_DATA, colorizer);
-		dataManager.set(BULLET_DATA, bullet.copy());
-		dataManager.set(CASTER_UUID, Optional.of(player.getUniqueID()));
+		entityData.set(COLORIZER_DATA, colorizer);
+		entityData.set(BULLET_DATA, bullet.copy());
+		entityData.set(CASTER_UUID, Optional.of(player.getUUID()));
 
-		Vector3d lookVec = player.getLook(1F);
-		dataManager.set(LOOK_X, (float) lookVec.x);
-		dataManager.set(LOOK_Y, (float) lookVec.y);
-		dataManager.set(LOOK_Z, (float) lookVec.z);
+		Vector3d lookVec = player.getViewVector(1F);
+		entityData.set(LOOK_X, (float) lookVec.x);
+		entityData.set(LOOK_Y, (float) lookVec.y);
+		entityData.set(LOOK_Z, (float) lookVec.z);
 		return this;
 	}
 
 	@Override
-	protected void registerData() {
-		dataManager.register(COLORIZER_DATA, ItemStack.EMPTY);
-		dataManager.register(BULLET_DATA, ItemStack.EMPTY);
-		dataManager.register(CASTER_UUID, Optional.empty());
-		dataManager.register(TIME_ALIVE, 0);
-		dataManager.register(TIMES_CAST, 0);
-		dataManager.register(LOOK_X, 0F);
-		dataManager.register(LOOK_Y, 0F);
-		dataManager.register(LOOK_Z, 0F);
+	protected void defineSynchedData() {
+		entityData.define(COLORIZER_DATA, ItemStack.EMPTY);
+		entityData.define(BULLET_DATA, ItemStack.EMPTY);
+		entityData.define(CASTER_UUID, Optional.empty());
+		entityData.define(TIME_ALIVE, 0);
+		entityData.define(TIMES_CAST, 0);
+		entityData.define(LOOK_X, 0F);
+		entityData.define(LOOK_Y, 0F);
+		entityData.define(LOOK_Z, 0F);
 	}
 
 	@Override
-	public void writeAdditional(@Nonnull CompoundNBT tagCompound) {
+	public void addAdditionalSaveData(@Nonnull CompoundNBT tagCompound) {
 		CompoundNBT colorizerCmp = new CompoundNBT();
-		ItemStack colorizer = dataManager.get(COLORIZER_DATA);
+		ItemStack colorizer = entityData.get(COLORIZER_DATA);
 		if (!colorizer.isEmpty()) {
-			colorizerCmp = colorizer.write(colorizerCmp);
+			colorizerCmp = colorizer.save(colorizerCmp);
 		}
 		tagCompound.put(TAG_COLORIZER, colorizerCmp);
 
 		CompoundNBT bulletCmp = new CompoundNBT();
-		ItemStack bullet = dataManager.get(BULLET_DATA);
+		ItemStack bullet = entityData.get(BULLET_DATA);
 		if (!bullet.isEmpty()) {
-			bulletCmp = bullet.write(bulletCmp);
+			bulletCmp = bullet.save(bulletCmp);
 		}
 		tagCompound.put(TAG_BULLET, bulletCmp);
 
-		dataManager.get(CASTER_UUID).ifPresent(u -> tagCompound.putString(TAG_CASTER, u.toString()));
+		entityData.get(CASTER_UUID).ifPresent(u -> tagCompound.putString(TAG_CASTER, u.toString()));
 		tagCompound.putInt(TAG_TIME_ALIVE, getTimeAlive());
-		tagCompound.putInt(TAG_TIMES_CAST, dataManager.get(TIMES_CAST));
+		tagCompound.putInt(TAG_TIMES_CAST, entityData.get(TIMES_CAST));
 
-		tagCompound.putFloat(TAG_LOOK_X, dataManager.get(LOOK_X));
-		tagCompound.putFloat(TAG_LOOK_Y, dataManager.get(LOOK_Y));
-		tagCompound.putFloat(TAG_LOOK_Z, dataManager.get(LOOK_Z));
+		tagCompound.putFloat(TAG_LOOK_X, entityData.get(LOOK_X));
+		tagCompound.putFloat(TAG_LOOK_Y, entityData.get(LOOK_Y));
+		tagCompound.putFloat(TAG_LOOK_Z, entityData.get(LOOK_Z));
 	}
 
 	@Override
-	public void readAdditional(@Nonnull CompoundNBT tagCompound) {
+	public void readAdditionalSaveData(@Nonnull CompoundNBT tagCompound) {
 		CompoundNBT colorizerCmp = tagCompound.getCompound(TAG_COLORIZER);
-		ItemStack colorizer = ItemStack.read(colorizerCmp);
-		dataManager.set(COLORIZER_DATA, colorizer);
+		ItemStack colorizer = ItemStack.of(colorizerCmp);
+		entityData.set(COLORIZER_DATA, colorizer);
 
 		CompoundNBT bulletCmp = tagCompound.getCompound(TAG_BULLET);
-		ItemStack bullet = ItemStack.read(bulletCmp);
-		dataManager.set(BULLET_DATA, bullet);
+		ItemStack bullet = ItemStack.of(bulletCmp);
+		entityData.set(BULLET_DATA, bullet);
 
 		if (tagCompound.contains(TAG_CASTER)) {
-			dataManager.set(CASTER_UUID, Optional.of(UUID.fromString(tagCompound.getString(TAG_CASTER))));
+			entityData.set(CASTER_UUID, Optional.of(UUID.fromString(tagCompound.getString(TAG_CASTER))));
 		}
 		setTimeAlive(tagCompound.getInt(TAG_TIME_ALIVE));
-		dataManager.set(TIMES_CAST, tagCompound.getInt(TAG_TIMES_CAST));
+		entityData.set(TIMES_CAST, tagCompound.getInt(TAG_TIMES_CAST));
 
-		dataManager.set(LOOK_X, tagCompound.getFloat(TAG_LOOK_X));
-		dataManager.set(LOOK_Y, tagCompound.getFloat(TAG_LOOK_Y));
-		dataManager.set(LOOK_Z, tagCompound.getFloat(TAG_LOOK_Z));
+		entityData.set(LOOK_X, tagCompound.getFloat(TAG_LOOK_X));
+		entityData.set(LOOK_Y, tagCompound.getFloat(TAG_LOOK_Y));
+		entityData.set(LOOK_Z, tagCompound.getFloat(TAG_LOOK_Z));
 	}
 
 	@Override
@@ -150,15 +150,15 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 		}
 
 		setTimeAlive(timeAlive + 1);
-		int times = dataManager.get(TIMES_CAST);
+		int times = entityData.get(TIMES_CAST);
 
 		if (timeAlive > CAST_DELAY && timeAlive % CAST_DELAY == 0 && times < 20) {
 			SpellContext context = null;
 			Entity thrower = getCaster();
 			if (thrower instanceof PlayerEntity) {
-				ItemStack spellContainer = dataManager.get(BULLET_DATA);
+				ItemStack spellContainer = entityData.get(BULLET_DATA);
 				if (!spellContainer.isEmpty() && ISpellAcceptor.isContainer(spellContainer)) {
-					dataManager.set(TIMES_CAST, times + 1);
+					entityData.set(TIMES_CAST, times + 1);
 					Spell spell = ISpellAcceptor.acceptor(spellContainer).getSpell();
 					if (spell != null) {
 						context = new SpellContext().setPlayer((PlayerEntity) thrower).setFocalPoint(this)
@@ -172,17 +172,17 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 			}
 		}
 
-		if (world.isRemote) {
-			ItemStack colorizer = dataManager.get(COLORIZER_DATA);
+		if (level.isClientSide) {
+			ItemStack colorizer = entityData.get(COLORIZER_DATA);
 			int colorVal = Psi.proxy.getColorForColorizer(colorizer);
 
 			float r = PsiRenderHelper.r(colorVal) / 255F;
 			float g = PsiRenderHelper.g(colorVal) / 255F;
 			float b = PsiRenderHelper.b(colorVal) / 255F;
 			for (int i = 0; i < 5; i++) {
-				double x = getPosX() + (Math.random() - 0.5) * getWidth();
-				double y = getPosY() - getYOffset();
-				double z = getPosZ() + (Math.random() - 0.5) * getWidth();
+				double x = getX() + (Math.random() - 0.5) * getBbWidth();
+				double y = getY() - getMyRidingOffset();
+				double z = getZ() + (Math.random() - 0.5) * getBbWidth();
 				float grav = -0.15F - (float) Math.random() * 0.03F;
 				Psi.proxy.sparkleFX(x, y, z, r, g, b, grav, 0.25F, 15);
 			}
@@ -191,24 +191,24 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 	}
 
 	@Override
-	public Vector3d getLookVec() {
-		float x = dataManager.get(LOOK_X);
-		float y = dataManager.get(LOOK_Y);
-		float z = dataManager.get(LOOK_Z);
+	public Vector3d getLookAngle() {
+		float x = entityData.get(LOOK_X);
+		float y = entityData.get(LOOK_Y);
+		float z = entityData.get(LOOK_Z);
 		return new Vector3d(x, y, z);
 	}
 
 	public int getTimeAlive() {
-		return dataManager.get(TIME_ALIVE);
+		return entityData.get(TIME_ALIVE);
 	}
 
 	public void setTimeAlive(int i) {
-		dataManager.set(TIME_ALIVE, i);
+		entityData.set(TIME_ALIVE, i);
 	}
 
 	@Nullable
 	public LivingEntity getCaster() {
-		return dataManager.get(CASTER_UUID).map(getEntityWorld()::getPlayerByUuid).orElse(null);
+		return entityData.get(CASTER_UUID).map(getCommandSenderWorld()::getPlayerByUUID).orElse(null);
 	}
 
 	@Override
@@ -217,13 +217,13 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 	}
 
 	@Override
-	public boolean doesEntityNotTriggerPressurePlate() {
+	public boolean isIgnoringBlockTriggers() {
 		return true;
 	}
 
 	@Nonnull
 	@Override
-	public IPacket<?> createSpawnPacket() {
+	public IPacket<?> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 }

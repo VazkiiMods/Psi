@@ -21,7 +21,7 @@ public class PieceSelectorIsElytraFlying extends PieceSelector {
 
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
-		return context.caster.isElytraFlying() ? 1.0D : 0.0D;
+		return context.caster.isFallFlying() ? 1.0D : 0.0D;
 	}
 
 	@Override

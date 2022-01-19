@@ -25,7 +25,7 @@ public class PieceSelectorSneakStatus extends PieceSelector {
 
 	@Override
 	public Object execute(SpellContext context) {
-		return context.caster.isSneaking() ? 0D : 1D;
+		return context.caster.isShiftKeyDown() ? 0D : 1D;
 	}
 
 }

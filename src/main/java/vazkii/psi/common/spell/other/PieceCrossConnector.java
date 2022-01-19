@@ -90,7 +90,7 @@ public class PieceCrossConnector extends SpellPiece implements IGenericRedirecto
 	private void drawSide(MatrixStack ms, IRenderTypeBuffer buffers, SpellParam.Side side, int light, int color) {
 		if (side.isEnabled()) {
 			RenderMaterial material = new RenderMaterial(ClientPsiAPI.PSI_PIECE_TEXTURE_ATLAS, new ResourceLocation(LibResources.SPELL_CONNECTOR_LINES));
-			IVertexBuilder buffer = material.getBuffer(buffers, ignored -> SpellPiece.getLayer());
+			IVertexBuilder buffer = material.buffer(buffers, ignored -> SpellPiece.getLayer());
 
 			float minU = 0;
 			float minV = 0;
@@ -119,15 +119,15 @@ public class PieceCrossConnector extends SpellPiece implements IGenericRedirecto
 			/*
 			See note in SpellPiece#drawBackground for why this chain needs to be split
 			*/
-			Matrix4f mat = ms.getLast().getMatrix();
-			buffer.pos(mat, 0, 16, 0).color(r, g, b, 1F);
-			buffer.tex(minU, maxV).lightmap(light).endVertex();
-			buffer.pos(mat, 16, 16, 0).color(r, g, b, 1F);
-			buffer.tex(maxU, maxV).lightmap(light).endVertex();
-			buffer.pos(mat, 16, 0, 0).color(r, g, b, 1F);
-			buffer.tex(maxU, minV).lightmap(light).endVertex();
-			buffer.pos(mat, 0, 0, 0).color(r, g, b, 1F);
-			buffer.tex(minU, minV).lightmap(light).endVertex();
+			Matrix4f mat = ms.last().pose();
+			buffer.vertex(mat, 0, 16, 0).color(r, g, b, 1F);
+			buffer.uv(minU, maxV).uv2(light).endVertex();
+			buffer.vertex(mat, 16, 16, 0).color(r, g, b, 1F);
+			buffer.uv(maxU, maxV).uv2(light).endVertex();
+			buffer.vertex(mat, 16, 0, 0).color(r, g, b, 1F);
+			buffer.uv(maxU, minV).uv2(light).endVertex();
+			buffer.vertex(mat, 0, 0, 0).color(r, g, b, 1F);
+			buffer.uv(minU, minV).uv2(light).endVertex();
 		}
 	}
 

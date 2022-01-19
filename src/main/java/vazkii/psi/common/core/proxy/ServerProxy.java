@@ -24,7 +24,7 @@ public class ServerProxy implements IProxy {
 
 	@Override
 	public long getWorldElapsedTicks() {
-		return ServerLifecycleHooks.getCurrentServer().getWorld(World.OVERWORLD).getGameTime();
+		return ServerLifecycleHooks.getCurrentServer().getLevel(World.OVERWORLD).getGameTime();
 	}
 
 	@Override
@@ -61,7 +61,7 @@ public class ServerProxy implements IProxy {
 	public boolean hasAdvancement(ResourceLocation advancement, PlayerEntity playerEntity) {
 		if (playerEntity instanceof ServerPlayerEntity) {
 			ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity) playerEntity;
-			return serverPlayerEntity.getServer().getAdvancementManager().getAdvancement(advancement) != null && serverPlayerEntity.getAdvancements().getProgress(serverPlayerEntity.getServer().getAdvancementManager().getAdvancement(advancement)).isDone();
+			return serverPlayerEntity.getServer().getAdvancements().getAdvancement(advancement) != null && serverPlayerEntity.getAdvancements().getOrStartProgress(serverPlayerEntity.getServer().getAdvancements().getAdvancement(advancement)).isDone();
 		}
 		return false;
 	}

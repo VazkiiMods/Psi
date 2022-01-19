@@ -51,6 +51,8 @@ import javax.annotation.Nullable;
 
 import java.util.List;
 
+import net.minecraft.item.Item.Properties;
+
 public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiEventArmor {
 
 	public final EquipmentSlotType type;
@@ -72,7 +74,7 @@ public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiE
 	@Override
 	public void setDamage(ItemStack stack, int damage) {
 		if (damage > stack.getMaxDamage()) {
-			damage = stack.getDamage();
+			damage = stack.getDamageValue();
 		}
 		super.setDamage(stack, damage);
 	}
@@ -90,8 +92,8 @@ public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiE
 
 	@Nonnull
 	@Override
-	public String getTranslationKey(ItemStack stack) {
-		String name = super.getTranslationKey(stack);
+	public String getDescriptionId(ItemStack stack) {
+		String name = super.getDescriptionId(stack);
 		if (!isEnabled(stack)) {
 			name += ".broken";
 		}
@@ -117,7 +119,7 @@ public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiE
 			int timesCast = stack.getOrCreateTag().getInt(TAG_TIMES_CAST);
 
 			ItemStack bullet = ISocketable.socketable(stack).getSelectedBullet();
-			ItemCAD.cast(event.getPlayer().getEntityWorld(), event.getPlayer(), data, bullet, playerCad, getCastCooldown(stack), 0, getCastVolume(), (SpellContext context) -> {
+			ItemCAD.cast(event.getPlayer().getCommandSenderWorld(), event.getPlayer(), data, bullet, playerCad, getCastCooldown(stack), 0, getCastVolume(), (SpellContext context) -> {
 				context.tool = stack;
 				context.attackingEntity = event.attacker;
 				context.damageTaken = event.damage;
@@ -153,7 +155,7 @@ public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiE
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public void addInformation(ItemStack stack, @Nullable World playerIn, List<ITextComponent> tooltip, ITooltipFlag advanced) {
+	public void appendHoverText(ItemStack stack, @Nullable World playerIn, List<ITextComponent> tooltip, ITooltipFlag advanced) {
 		TooltipHelper.tooltipIfShift(tooltip, () -> {
 			ITextComponent componentName = ISocketable.getSocketedItemName(stack, "psimisc.none");
 			tooltip.add(new TranslationTextComponent("psimisc.spell_selected", componentName));
@@ -184,7 +186,7 @@ public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiE
 	@OnlyIn(Dist.CLIENT)
 	@SuppressWarnings("unchecked")
 	public <A extends BipedModel<?>> A getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlotType armorSlot, A _default) {
-		return (A) model.getValue();
+		return (A) model.get();
 	}
 
 	@OnlyIn(Dist.CLIENT)

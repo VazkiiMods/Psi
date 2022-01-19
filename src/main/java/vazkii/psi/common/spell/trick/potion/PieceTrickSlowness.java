@@ -21,7 +21,7 @@ public class PieceTrickSlowness extends PieceTrickPotionBase {
 
 	@Override
 	public Effect getPotion() {
-		return Effects.SLOWNESS;
+		return Effects.MOVEMENT_SLOWDOWN;
 	}
 
 }

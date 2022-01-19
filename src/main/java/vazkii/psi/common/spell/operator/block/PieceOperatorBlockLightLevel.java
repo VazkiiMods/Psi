@@ -35,7 +35,7 @@ public class PieceOperatorBlockLightLevel extends PieceOperator {
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		BlockPos pos = SpellHelpers.getBlockPos(this, context, target, false, false);
-		int j = context.caster.world.getLight(pos);
+		int j = context.caster.level.getMaxLocalRawBrightness(pos);
 		return j * 1.0;
 	}
 

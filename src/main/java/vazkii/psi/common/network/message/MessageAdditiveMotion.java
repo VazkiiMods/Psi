@@ -50,9 +50,9 @@ public class MessageAdditiveMotion {
 		context.get().enqueueWork(() -> {
 			World world = Psi.proxy.getClientWorld();
 			if (world != null) {
-				Entity entity = world.getEntityByID(entityID);
+				Entity entity = world.getEntity(entityID);
 				if (entity != null) {
-					entity.setMotion(entity.getMotion().add(motionX, motionY, motionZ));
+					entity.setDeltaMovement(entity.getDeltaMovement().add(motionX, motionY, motionZ));
 				}
 			}
 		});

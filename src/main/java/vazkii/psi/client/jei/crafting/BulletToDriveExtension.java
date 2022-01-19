@@ -45,8 +45,8 @@ public class BulletToDriveExtension implements ICustomCraftingCategoryExtension 
 				.filter(item -> item instanceof ItemSpellBullet)
 				.toArray(Item[]::new);
 		inputs = ImmutableList.of(
-				Ingredient.fromItems(ModItems.spellDrive),
-				Ingredient.fromItems(bullets));
+				Ingredient.of(ModItems.spellDrive),
+				Ingredient.of(bullets));
 	}
 
 	@Override
@@ -75,7 +75,7 @@ public class BulletToDriveExtension implements ICustomCraftingCategoryExtension 
 
 	@Override
 	public void drawInfo(int recipeWidth, int recipeHeight, MatrixStack matrixStack, double mouseX, double mouseY) {
-		Minecraft.getInstance().fontRenderer.drawString(matrixStack, I18n.format("jei.psi.spell_copy"), 57, 46, 0x808080);
+		Minecraft.getInstance().font.draw(matrixStack, I18n.get("jei.psi.spell_copy"), 57, 46, 0x808080);
 		RenderSystem.enableAlphaTest(); // Prevents state leak affecting the shapeless icon
 	}
 

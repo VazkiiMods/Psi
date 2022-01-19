@@ -60,22 +60,22 @@ public class TrickRecipeBuilder {
 	}
 
 	public TrickRecipeBuilder input(ItemStack... input) {
-		this.input = Ingredient.fromStacks(input);
+		this.input = Ingredient.of(input);
 		return this;
 	}
 
 	public TrickRecipeBuilder input(Tag<Item> input) {
-		this.input = Ingredient.fromTag(input);
+		this.input = Ingredient.of(input);
 		return this;
 	}
 
 	public TrickRecipeBuilder input(ITag.INamedTag<Item> input) {
-		this.input = Ingredient.fromTag(input);
+		this.input = Ingredient.of(input);
 		return this;
 	}
 
 	public TrickRecipeBuilder input(IItemProvider... input) {
-		this.input = Ingredient.fromItems(input);
+		this.input = Ingredient.of(input);
 		return this;
 	}
 
@@ -122,8 +122,8 @@ public class TrickRecipeBuilder {
 		}
 
 		@Override
-		public void serialize(@Nonnull JsonObject json) {
-			json.add("input", input.serialize());
+		public void serializeRecipeData(@Nonnull JsonObject json) {
+			json.add("input", input.toJson());
 			json.add("output", serializeStack(output));
 			json.add("cad", serializeStack(cadAssembly));
 			if (trick != null) {
@@ -133,25 +133,25 @@ public class TrickRecipeBuilder {
 
 		@Nonnull
 		@Override
-		public ResourceLocation getID() {
+		public ResourceLocation getId() {
 			return id;
 		}
 
 		@Nonnull
 		@Override
-		public IRecipeSerializer<?> getSerializer() {
+		public IRecipeSerializer<?> getType() {
 			return Objects.requireNonNull(ForgeRegistries.RECIPE_SERIALIZERS.getValue(ITrickRecipe.TYPE_ID));
 		}
 
 		@Nullable
 		@Override
-		public JsonObject getAdvancementJson() {
+		public JsonObject serializeAdvancement() {
 			return null;
 		}
 
 		@Nullable
 		@Override
-		public ResourceLocation getAdvancementID() {
+		public ResourceLocation getAdvancementId() {
 			return null;
 		}
 	}
@@ -162,7 +162,7 @@ public class TrickRecipeBuilder {
 	 * would be able to read the result back
 	 */
 	private static JsonObject serializeStack(ItemStack stack) {
-		CompoundNBT nbt = stack.write(new CompoundNBT());
+		CompoundNBT nbt = stack.save(new CompoundNBT());
 		byte c = nbt.getByte("Count");
 		if (c != 1) {
 			nbt.putByte("count", c);

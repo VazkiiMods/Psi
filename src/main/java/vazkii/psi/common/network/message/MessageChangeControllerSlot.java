@@ -42,11 +42,11 @@ public class MessageChangeControllerSlot {
 	public boolean receive(Supplier<NetworkEvent.Context> context) {
 		context.get().enqueueWork(() -> {
 			ServerPlayerEntity player = context.get().getSender();
-			ItemStack stack = player.getHeldItem(Hand.MAIN_HAND);
+			ItemStack stack = player.getItemInHand(Hand.MAIN_HAND);
 			if (!stack.isEmpty() && stack.getItem() instanceof ISocketableController) {
 				((ISocketableController) stack.getItem()).setSelectedSlot(player, stack, controlSlot, slot);
 			} else {
-				stack = player.getHeldItem(Hand.OFF_HAND);
+				stack = player.getItemInHand(Hand.OFF_HAND);
 				if (!stack.isEmpty() && stack.getItem() instanceof ISocketableController) {
 					((ISocketableController) stack.getItem()).setSelectedSlot(player, stack, controlSlot, slot);
 				}

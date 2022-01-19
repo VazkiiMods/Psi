@@ -29,11 +29,11 @@ public class MessageDataSync {
 	}
 
 	public MessageDataSync(PacketBuffer buf) {
-		cmp = buf.readCompoundTag();
+		cmp = buf.readNbt();
 	}
 
 	public void encode(PacketBuffer buf) {
-		buf.writeCompoundTag(cmp);
+		buf.writeNbt(cmp);
 	}
 
 	public boolean receive(Supplier<NetworkEvent.Context> context) {

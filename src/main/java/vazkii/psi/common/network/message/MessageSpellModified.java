@@ -36,7 +36,7 @@ public class MessageSpellModified {
 	}
 
 	private static Spell readSpell(PacketBuffer buf) {
-		CompoundNBT cmp = buf.readCompoundTag();
+		CompoundNBT cmp = buf.readNbt();
 		return Spell.createFromNBT(cmp);
 	}
 
@@ -46,7 +46,7 @@ public class MessageSpellModified {
 			spell.writeToNBT(cmp);
 		}
 
-		buf.writeCompoundTag(cmp);
+		buf.writeNbt(cmp);
 	}
 
 	public void encode(PacketBuffer buf) {
@@ -56,7 +56,7 @@ public class MessageSpellModified {
 
 	public void receive(Supplier<NetworkEvent.Context> context) {
 		context.get().enqueueWork(() -> {
-			TileEntity te = context.get().getSender().world.getTileEntity(pos);
+			TileEntity te = context.get().getSender().level.getBlockEntity(pos);
 			if (te instanceof TileProgrammer) {
 				TileProgrammer tile = (TileProgrammer) te;
 				if (tile.playerLock == null || tile.playerLock.isEmpty() || tile.playerLock.equals(context.get().getSender().getName().getString())) {

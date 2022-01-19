@@ -37,8 +37,8 @@ public class ColorizerChangeRecipe extends SpecialRecipe {
 		boolean foundColorizer = false;
 		boolean foundCAD = false;
 
-		for (int i = 0; i < inv.getSizeInventory(); i++) {
-			ItemStack stack = inv.getStackInSlot(i);
+		for (int i = 0; i < inv.getContainerSize(); i++) {
+			ItemStack stack = inv.getItem(i);
 			if (!stack.isEmpty()) {
 				if (stack.getItem() instanceof ICAD) {
 					if (foundCAD) {
@@ -61,12 +61,12 @@ public class ColorizerChangeRecipe extends SpecialRecipe {
 
 	@Nonnull
 	@Override
-	public ItemStack getCraftingResult(@Nonnull CraftingInventory inv) {
+	public ItemStack assemble(@Nonnull CraftingInventory inv) {
 		ItemStack colorizer = ItemStack.EMPTY;
 		ItemStack cad = ItemStack.EMPTY;
 
-		for (int i = 0; i < inv.getSizeInventory(); i++) {
-			ItemStack stack = inv.getStackInSlot(i);
+		for (int i = 0; i < inv.getContainerSize(); i++) {
+			ItemStack stack = inv.getItem(i);
 			if (!stack.isEmpty()) {
 				if (stack.getItem() instanceof ICADColorizer) {
 					colorizer = stack;
@@ -89,11 +89,11 @@ public class ColorizerChangeRecipe extends SpecialRecipe {
 	@Nonnull
 	@Override
 	public NonNullList<ItemStack> getRemainingItems(CraftingInventory inv) {
-		NonNullList<ItemStack> ret = NonNullList.withSize(inv.getSizeInventory(), ItemStack.EMPTY);
+		NonNullList<ItemStack> ret = NonNullList.withSize(inv.getContainerSize(), ItemStack.EMPTY);
 		int dyeIndex = -1;
 		ItemStack cad = ItemStack.EMPTY;
 		for (int i = 0; i < ret.size(); i++) {
-			ItemStack stack = inv.getStackInSlot(i);
+			ItemStack stack = inv.getItem(i);
 			if (!stack.isEmpty() && stack.getItem() instanceof ICAD) {
 				cad = stack;
 			} else {
@@ -118,12 +118,12 @@ public class ColorizerChangeRecipe extends SpecialRecipe {
 	}
 
 	@Override
-	public boolean canFit(int width, int height) {
+	public boolean canCraftInDimensions(int width, int height) {
 		return true;
 	}
 
 	@Override
-	public boolean isDynamic() {
+	public boolean isSpecial() {
 		return true;
 	}
 

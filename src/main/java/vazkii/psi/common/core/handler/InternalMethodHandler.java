@@ -66,7 +66,7 @@ public final class InternalMethodHandler implements IInternalMethodHandler {
 
 	@Override
 	public void delayContext(SpellContext context) {
-		if (!context.caster.world.isRemote) {
+		if (!context.caster.level.isClientSide) {
 			PlayerDataHandler.delayedContexts.add(context);
 		}
 	}
@@ -80,7 +80,7 @@ public final class InternalMethodHandler implements IInternalMethodHandler {
 	@OnlyIn(Dist.CLIENT)
 	public void renderTooltip(MatrixStack ms, int x, int y, List<ITextComponent> tooltipData, int color, int color2, int width, int height) {
 		if (!tooltipData.isEmpty()) {
-			FontRenderer fontRenderer = Minecraft.getInstance().fontRenderer;
+			FontRenderer fontRenderer = Minecraft.getInstance().font;
 			GuiUtils.drawHoveringText(ms, tooltipData, x, y, width, height, -1, color2, color, color, fontRenderer);
 		}
 	}

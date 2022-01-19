@@ -59,7 +59,7 @@ public class BookSoundHandler {
 			if (bookTime == 0 && evt.getKey() == SECRET_CODE[nextLetter]) {
 				nextLetter++;
 				if (nextLetter >= SECRET_CODE.length) {
-					mc.getSoundHandler().play(SimpleSound.master(PsiSoundHandler.book, 1.0F));
+					mc.getSoundManager().play(SimpleSound.forUI(PsiSoundHandler.book, 1.0F));
 					nextLetter = 0;
 					bookTime = 320;
 				}

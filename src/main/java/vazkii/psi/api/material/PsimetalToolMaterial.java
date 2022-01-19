@@ -18,35 +18,35 @@ import vazkii.psi.api.PsiAPI;
 
 public class PsimetalToolMaterial implements IItemTier {
 	private static final LazyValue<Ingredient> REPAIR_MATERIAL = new LazyValue<>(
-			() -> Ingredient.fromItems(Registry.ITEM.getOrDefault(new ResourceLocation(PsiAPI.MOD_ID, "psimetal"))));
+			() -> Ingredient.of(Registry.ITEM.get(new ResourceLocation(PsiAPI.MOD_ID, "psimetal"))));
 
 	@Override
-	public int getMaxUses() {
+	public int getUses() {
 		return 900;
 	}
 
 	@Override
-	public float getEfficiency() {
+	public float getSpeed() {
 		return 7.8F;
 	}
 
 	@Override
-	public float getAttackDamage() {
+	public float getAttackDamageBonus() {
 		return 2F;
 	}
 
 	@Override
-	public int getHarvestLevel() {
+	public int getLevel() {
 		return 3;
 	}
 
 	@Override
-	public int getEnchantability() {
+	public int getEnchantmentValue() {
 		return 12;
 	}
 
 	@Override
-	public Ingredient getRepairMaterial() {
-		return REPAIR_MATERIAL.getValue();
+	public Ingredient getRepairIngredient() {
+		return REPAIR_MATERIAL.get();
 	}
 }

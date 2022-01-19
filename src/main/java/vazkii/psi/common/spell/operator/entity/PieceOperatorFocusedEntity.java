@@ -60,27 +60,27 @@ public class PieceOperatorFocusedEntity extends PieceOperator {
 		final double finalDistance = 32;
 		double distance = finalDistance;
 		RayTraceResult pos = PieceOperatorVectorRaycast.raycast(e, finalDistance);
-		Vector3d positionVector = e.getPositionVec();
+		Vector3d positionVector = e.position();
 		if (e instanceof PlayerEntity) {
 			positionVector = positionVector.add(0, e.getEyeHeight(), 0);
 		}
 
 		if (pos != null) {
-			distance = pos.getHitVec().distanceTo(positionVector);
+			distance = pos.getLocation().distanceTo(positionVector);
 		}
 
-		Vector3d lookVector = e.getLookVec();
+		Vector3d lookVector = e.getLookAngle();
 		Vector3d reachVector = positionVector.add(lookVector.x * finalDistance, lookVector.y * finalDistance, lookVector.z * finalDistance);
 
 		Entity lookedEntity = null;
-		List<Entity> entitiesInBoundingBox = e.getEntityWorld().getEntitiesWithinAABBExcludingEntity(e, e.getBoundingBox().grow(lookVector.x * finalDistance, lookVector.y * finalDistance, lookVector.z * finalDistance).grow(1F, 1F, 1F));
+		List<Entity> entitiesInBoundingBox = e.getCommandSenderWorld().getEntities(e, e.getBoundingBox().inflate(lookVector.x * finalDistance, lookVector.y * finalDistance, lookVector.z * finalDistance).inflate(1F, 1F, 1F));
 		double minDistance = distance;
 
 		for (Entity entity : entitiesInBoundingBox) {
-			if (entity.canBeCollidedWith()) {
-				float collisionBorderSize = entity.getCollisionBorderSize();
-				AxisAlignedBB hitbox = entity.getBoundingBox().grow(collisionBorderSize, collisionBorderSize, collisionBorderSize);
-				Optional<Vector3d> interceptPosition = hitbox.rayTrace(positionVector, reachVector);
+			if (entity.isPickable()) {
+				float collisionBorderSize = entity.getPickRadius();
+				AxisAlignedBB hitbox = entity.getBoundingBox().inflate(collisionBorderSize, collisionBorderSize, collisionBorderSize);
+				Optional<Vector3d> interceptPosition = hitbox.clip(positionVector, reachVector);
 
 				if (hitbox.contains(positionVector)) {
 					if (0.0D < minDistance || minDistance == 0.0D) {

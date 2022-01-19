@@ -53,20 +53,20 @@ public class TileProgrammer extends TileEntity {
 		boolean wasEnabled = enabled;
 		enabled = isEnabled();
 		if (wasEnabled != enabled) {
-			getWorld().setBlockState(pos, getBlockState().with(BlockProgrammer.ENABLED, enabled));
+			getLevel().setBlockAndUpdate(worldPosition, getBlockState().setValue(BlockProgrammer.ENABLED, enabled));
 		}
 	}
 
 	@Override
-	public void read(BlockState state, CompoundNBT cmp) {
-		super.read(state, cmp);
+	public void load(BlockState state, CompoundNBT cmp) {
+		super.load(state, cmp);
 		readPacketNBT(cmp);
 	}
 
 	@Nonnull
 	@Override
-	public CompoundNBT write(CompoundNBT cmp) {
-		cmp = super.write(cmp);
+	public CompoundNBT save(CompoundNBT cmp) {
+		cmp = super.save(cmp);
 
 		CompoundNBT spellCmp = new CompoundNBT();
 		if (spell != null) {
@@ -89,20 +89,20 @@ public class TileProgrammer extends TileEntity {
 
 	@Override
 	public SUpdateTileEntityPacket getUpdatePacket() {
-		return new SUpdateTileEntityPacket(getPos(), 0, write(new CompoundNBT()));
+		return new SUpdateTileEntityPacket(getBlockPos(), 0, save(new CompoundNBT()));
 	}
 
 	@Override
 	public CompoundNBT getUpdateTag() {
-		return write(new CompoundNBT());
+		return save(new CompoundNBT());
 	}
 
 	public boolean canPlayerInteract(PlayerEntity player) {
-		return player.isAlive() && player.getDistanceSq((double) this.pos.getX() + 0.5D, (double) this.pos.getY() + 0.5D, (double) this.pos.getZ() + 0.5D) <= 64.0D;
+		return player.isAlive() && player.distanceToSqr((double) this.worldPosition.getX() + 0.5D, (double) this.worldPosition.getY() + 0.5D, (double) this.worldPosition.getZ() + 0.5D) <= 64.0D;
 	}
 
 	@Override
 	public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
-		this.readPacketNBT(pkt.getNbtCompound());
+		this.readPacketNBT(pkt.getTag());
 	}
 }

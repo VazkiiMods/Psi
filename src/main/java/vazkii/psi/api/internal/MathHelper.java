@@ -52,13 +52,13 @@ public final class MathHelper {
 			int blockY = net.minecraft.util.math.MathHelper.floor(originY);
 			int blockZ = net.minecraft.util.math.MathHelper.floor(originZ);
 			BlockPos.Mutable blockPos = new BlockPos.Mutable(blockX, blockY, blockZ);
-			positions.add(blockPos.toImmutable());
+			positions.add(blockPos.immutable());
 			double lengthX = endX - originX;
 			double lengthY = endY - originY;
 			double lengthZ = endZ - originZ;
-			int signumX = net.minecraft.util.math.MathHelper.signum(lengthX);
-			int signumY = net.minecraft.util.math.MathHelper.signum(lengthY);
-			int signumZ = net.minecraft.util.math.MathHelper.signum(lengthZ);
+			int signumX = net.minecraft.util.math.MathHelper.sign(lengthX);
+			int signumY = net.minecraft.util.math.MathHelper.sign(lengthY);
+			int signumZ = net.minecraft.util.math.MathHelper.sign(lengthZ);
 			double stepSizeX = signumX == 0 ? Double.MAX_VALUE : (double) signumX / lengthX;
 			double stepSizeY = signumY == 0 ? Double.MAX_VALUE : (double) signumY / lengthY;
 			double stepSizeZ = signumZ == 0 ? Double.MAX_VALUE : (double) signumZ / lengthZ;
@@ -82,8 +82,8 @@ public final class MathHelper {
 					blockZ += signumZ;
 					totalStepsZ += stepSizeZ;
 				}
-				blockPos.setPos(blockX, blockY, blockZ);
-				positions.add(blockPos.toImmutable());
+				blockPos.set(blockX, blockY, blockZ);
+				positions.add(blockPos.immutable());
 			}
 		}
 		return positions;

@@ -55,7 +55,7 @@ public class PieceTrickIgnite extends PieceTrick {
 		int timeVal = this.getParamValue(context, time).intValue();
 
 		context.verifyEntity(targetVal);
-		targetVal.setFire(timeVal);
+		targetVal.setSecondsOnFire(timeVal);
 
 		return null;
 	}

@@ -123,7 +123,7 @@ public final class ModItems {
 	public static final Item psimetalExosuitBoots = new ItemPsimetalExosuitBoots(EquipmentSlotType.FEET, defaultBuilder());
 
 	public static Item.Properties defaultBuilder() {
-		return new Item.Properties().group(PsiCreativeTab.INSTANCE);
+		return new Item.Properties().tab(PsiCreativeTab.INSTANCE);
 	}
 
 	@SubscribeEvent

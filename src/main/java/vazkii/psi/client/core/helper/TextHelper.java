@@ -24,8 +24,8 @@ public final class TextHelper {
 	@OnlyIn(Dist.CLIENT)
 	public static List<String> renderText(int x, int y, int width, String unlocalizedText, boolean centered, boolean doit, Object... format) {
 		MatrixStack matrixStack = new MatrixStack();
-		FontRenderer font = Minecraft.getInstance().fontRenderer;
-		String text = I18n.format(unlocalizedText, format);
+		FontRenderer font = Minecraft.getInstance().font;
+		String text = I18n.get(unlocalizedText, format);
 
 		String[] textEntries = text.split("<br>");
 		List<List<String>> lines = new ArrayList<>();
@@ -41,7 +41,7 @@ public final class TextHelper {
 				lineStr += spaced;
 
 				controlCodes = toControlCodes(getControlCodes(prev));
-				if (font.getStringWidth(lineStr) > width) {
+				if (font.width(lineStr) > width) {
 					lines.add(words);
 					lineStr = controlCodes + spaced;
 					words = new ArrayList<>();
@@ -68,12 +68,12 @@ public final class TextHelper {
 			for (String s : words) {
 				int extra = 0;
 
-				int swidth = font.getStringWidth(s);
+				int swidth = font.width(s);
 				if (doit) {
 					if (centered) {
-						font.drawString(matrixStack, s, xi + width / 2 - swidth / 2, y, 0xFFFFFF);
+						font.draw(matrixStack, s, xi + width / 2 - swidth / 2, y, 0xFFFFFF);
 					} else {
-						font.drawString(matrixStack, s, xi, y, 0xFFFFFF);
+						font.draw(matrixStack, s, xi, y, 0xFFFFFF);
 					}
 				}
 				xi += swidth + spacing + extra;

@@ -37,23 +37,23 @@ public class DrawableTAS implements IDrawableStatic {
 		int y = yOffset + maskTop;
 		int width = textureWidth - maskRight - maskLeft;
 		int height = textureHeight - maskBottom - maskTop;
-		float uSize = sprite.getMaxU() - sprite.getMinU();
-		float vSize = sprite.getMaxV() - sprite.getMinV();
-		float minU = sprite.getMinU() + uSize * ((float) maskLeft / (float) textureWidth);
-		float minV = sprite.getMinV() + vSize * ((float) maskTop / (float) textureHeight);
-		float maxU = sprite.getMaxU() - uSize * ((float) maskRight / (float) textureWidth);
-		float maxV = sprite.getMaxV() - vSize * ((float) maskBottom / (float) textureHeight);
+		float uSize = sprite.getU1() - sprite.getU0();
+		float vSize = sprite.getV1() - sprite.getV0();
+		float minU = sprite.getU0() + uSize * ((float) maskLeft / (float) textureWidth);
+		float minV = sprite.getV0() + vSize * ((float) maskTop / (float) textureHeight);
+		float maxU = sprite.getU1() - uSize * ((float) maskRight / (float) textureWidth);
+		float maxV = sprite.getV1() - vSize * ((float) maskBottom / (float) textureHeight);
 
-		Matrix4f matrix = ms.getLast().getMatrix();
-		RenderSystem.bindTexture(sprite.getAtlasTexture().getGlTextureId());
+		Matrix4f matrix = ms.last().pose();
+		RenderSystem.bindTexture(sprite.atlas().getId());
 		Tessellator tessellator = Tessellator.getInstance();
-		BufferBuilder buf = tessellator.getBuffer();
+		BufferBuilder buf = tessellator.getBuilder();
 		buf.begin(7, DefaultVertexFormats.POSITION_TEX);
-		buf.pos(matrix, x, y + height, 0.0f).tex(minU, maxV).endVertex();
-		buf.pos(matrix, x + width, y + height, 0.0f).tex(maxU, maxV).endVertex();
-		buf.pos(matrix, x + width, y, 0.0f).tex(maxU, minV).endVertex();
-		buf.pos(matrix, x, y, 0.0f).tex(minU, minV).endVertex();
-		tessellator.draw();
+		buf.vertex(matrix, x, y + height, 0.0f).uv(minU, maxV).endVertex();
+		buf.vertex(matrix, x + width, y + height, 0.0f).uv(maxU, maxV).endVertex();
+		buf.vertex(matrix, x + width, y, 0.0f).uv(maxU, minV).endVertex();
+		buf.vertex(matrix, x, y, 0.0f).uv(minU, minV).endVertex();
+		tessellator.end();
 	}
 
 	@Override

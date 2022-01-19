@@ -59,10 +59,10 @@ public class PieceTrickDebugSpamless extends PieceTrick {
 			}
 
 			component = new StringTextComponent("[" + numStr + "]")
-					.setStyle(Style.EMPTY.setFormatting(TextFormatting.AQUA))
+					.setStyle(Style.EMPTY.withColor(TextFormatting.AQUA))
 					.append(new StringTextComponent(" ")
-							.setStyle(Style.EMPTY.setFormatting(TextFormatting.RESET)))
-					.append(component.copyRaw().setStyle(Style.EMPTY.setFormatting(TextFormatting.RESET)));
+							.setStyle(Style.EMPTY.withColor(TextFormatting.RESET)))
+					.append(component.plainCopy().setStyle(Style.EMPTY.withColor(TextFormatting.RESET)));
 		}
 
 		if (context.caster instanceof ServerPlayerEntity) {

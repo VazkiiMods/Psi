@@ -10,6 +10,9 @@ package vazkii.psi.api.spell.param;
 
 import vazkii.psi.api.spell.SpellParam;
 
+import vazkii.psi.api.spell.SpellParam.Any;
+import vazkii.psi.api.spell.SpellParam.ArrowType;
+
 public class ParamAny extends SpellParam<SpellParam.Any> {
 
 	public ParamAny(String name, int color, boolean canDisable) {

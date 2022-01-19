@@ -76,7 +76,7 @@ public class ToolSocketable implements ICapabilityProvider, ISocketable, IPsiBar
 			return ItemStack.EMPTY;
 		}
 
-		return ItemStack.read(cmp);
+		return ItemStack.of(cmp);
 	}
 
 	@Override
@@ -85,7 +85,7 @@ public class ToolSocketable implements ICapabilityProvider, ISocketable, IPsiBar
 		CompoundNBT cmp = new CompoundNBT();
 
 		if (!bullet.isEmpty()) {
-			cmp = bullet.write(cmp);
+			cmp = bullet.save(cmp);
 		}
 
 		tool.getOrCreateTag().put(name, cmp);

@@ -79,14 +79,14 @@ public class MessageVisualEffect {
 					double m = 0.01;
 					double d3 = 10.0D;
 					for (int j = 0; j < 3; j++) {
-						double d0 = world.rand.nextGaussian() * m;
-						double d1 = world.rand.nextGaussian() * m;
-						double d2 = world.rand.nextGaussian() * m;
+						double d0 = world.random.nextGaussian() * m;
+						double d1 = world.random.nextGaussian() * m;
+						double d2 = world.random.nextGaussian() * m;
 
 						world.addParticle(ParticleTypes.EXPLOSION,
-								x + world.rand.nextFloat() * width * 2.0F - width - d0 * d3,
-								y + world.rand.nextFloat() * height - d1 * d3,
-								z + world.rand.nextFloat() * width * 2.0F - width - d2 * d3, d0, d1, d2);
+								x + world.random.nextFloat() * width * 2.0F - width - d0 * d3,
+								y + world.random.nextFloat() * height - d1 * d3,
+								z + world.random.nextFloat() * width * 2.0F - width - d2 * d3, d0, d1, d2);
 					}
 				}
 				break;

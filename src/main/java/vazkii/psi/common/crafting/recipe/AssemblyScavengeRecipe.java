@@ -32,8 +32,8 @@ public class AssemblyScavengeRecipe extends SpecialRecipe {
 	public boolean matches(@Nonnull CraftingInventory inv, @Nonnull World world) {
 		boolean foundTarget = false;
 
-		for (int i = 0; i < inv.getSizeInventory(); i++) {
-			ItemStack stack = inv.getStackInSlot(i);
+		for (int i = 0; i < inv.getContainerSize(); i++) {
+			ItemStack stack = inv.getItem(i);
 			if (!stack.isEmpty()) {
 				if (stack.getItem() instanceof ICAD) {
 					if (foundTarget) {
@@ -64,11 +64,11 @@ public class AssemblyScavengeRecipe extends SpecialRecipe {
 
 	@Nonnull
 	@Override
-	public ItemStack getCraftingResult(@Nonnull CraftingInventory inv) {
+	public ItemStack assemble(@Nonnull CraftingInventory inv) {
 		ItemStack target = ItemStack.EMPTY;
 
-		for (int i = 0; i < inv.getSizeInventory(); i++) {
-			ItemStack stack = inv.getStackInSlot(i);
+		for (int i = 0; i < inv.getContainerSize(); i++) {
+			ItemStack stack = inv.getItem(i);
 			if (!stack.isEmpty()) {
 				target = stack;
 			}
@@ -85,12 +85,12 @@ public class AssemblyScavengeRecipe extends SpecialRecipe {
 	}
 
 	@Override
-	public boolean canFit(int width, int height) {
+	public boolean canCraftInDimensions(int width, int height) {
 		return true;
 	}
 
 	@Override
-	public boolean isDynamic() {
+	public boolean isSpecial() {
 		return true;
 	}
 }

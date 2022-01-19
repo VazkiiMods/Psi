@@ -27,12 +27,12 @@ public class SlotSocketable extends SlotItemHandler {
 	}
 
 	@Override
-	public boolean isItemValid(@Nonnull ItemStack stack) {
+	public boolean mayPlace(@Nonnull ItemStack stack) {
 		return ISocketable.isSocketable(stack);
 	}
 
 	@Override
-	public void onSlotChanged() {
-		bullets.setStack(getStack());
+	public void setChanged() {
+		bullets.setStack(getItem());
 	}
 }

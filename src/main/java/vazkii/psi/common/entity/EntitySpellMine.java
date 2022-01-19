@@ -40,18 +40,18 @@ public class EntitySpellMine extends EntitySpellGrenade {
 	public void tick() {
 		super.tick();
 
-		List<LivingEntity> entities = getEntityWorld().getEntitiesWithinAABB(LivingEntity.class, getBoundingBox().grow(1, 1, 1));
-		Entity thrower = func_234616_v_();
-		if (thrower != null && ticksExisted < 30) {
+		List<LivingEntity> entities = getCommandSenderWorld().getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(1, 1, 1));
+		Entity thrower = getOwner();
+		if (thrower != null && tickCount < 30) {
 			entities.remove(thrower);
 		}
 
 		if (!entities.isEmpty()) {
 			if (!triggered) {
-				playSound(SoundEvents.BLOCK_STONE_PRESSURE_PLATE_CLICK_ON, 0.5F, 0.6F);
+				playSound(SoundEvents.STONE_PRESSURE_PLATE_CLICK_ON, 0.5F, 0.6F);
 			}
 			triggered = true;
-			dataManager.set(ATTACKTARGET_UUID, Optional.of(entities.get(0).getUniqueID()));
+			entityData.set(ATTACKTARGET_UUID, Optional.of(entities.get(0).getUUID()));
 		} else if (triggered) {
 			doExplosion();
 		}

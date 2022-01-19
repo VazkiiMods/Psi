@@ -39,10 +39,10 @@ public class BulletUpgradeRecipe implements ICraftingRecipe {
 	}
 
 	@Override
-	public ItemStack getCraftingResult(CraftingInventory inv) {
-		ItemStack output = compose.getCraftingResult(inv);
-		for (int i = 0; i < inv.getSizeInventory(); i++) {
-			ItemStack stack = inv.getStackInSlot(i);
+	public ItemStack assemble(CraftingInventory inv) {
+		ItemStack output = compose.assemble(inv);
+		for (int i = 0; i < inv.getContainerSize(); i++) {
+			ItemStack stack = inv.getItem(i);
 			if (stack.getItem() instanceof ItemSpellBullet) {
 				output.setTag(stack.getTag());
 			}
@@ -51,13 +51,13 @@ public class BulletUpgradeRecipe implements ICraftingRecipe {
 	}
 
 	@Override
-	public boolean canFit(int width, int height) {
-		return compose.canFit(width, height);
+	public boolean canCraftInDimensions(int width, int height) {
+		return compose.canCraftInDimensions(width, height);
 	}
 
 	@Override
-	public ItemStack getRecipeOutput() {
-		return compose.getRecipeOutput();
+	public ItemStack getResultItem() {
+		return compose.getResultItem();
 	}
 
 	@Override
@@ -71,8 +71,8 @@ public class BulletUpgradeRecipe implements ICraftingRecipe {
 	}
 
 	@Override
-	public boolean isDynamic() {
-		return compose.isDynamic();
+	public boolean isSpecial() {
+		return compose.isSpecial();
 	}
 
 	@Override
@@ -81,8 +81,8 @@ public class BulletUpgradeRecipe implements ICraftingRecipe {
 	}
 
 	@Override
-	public ItemStack getIcon() {
-		return compose.getIcon();
+	public ItemStack getToastSymbol() {
+		return compose.getToastSymbol();
 	}
 
 	@Override
@@ -97,18 +97,18 @@ public class BulletUpgradeRecipe implements ICraftingRecipe {
 
 	private static class Serializer extends ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<BulletUpgradeRecipe> {
 		@Override
-		public BulletUpgradeRecipe read(ResourceLocation recipeId, JsonObject json) {
-			return new BulletUpgradeRecipe(CRAFTING_SHAPELESS.read(recipeId, json));
+		public BulletUpgradeRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
+			return new BulletUpgradeRecipe(SHAPELESS_RECIPE.fromJson(recipeId, json));
 		}
 
 		@Override
-		public BulletUpgradeRecipe read(ResourceLocation recipeId, PacketBuffer buffer) {
-			return new BulletUpgradeRecipe(CRAFTING_SHAPELESS.read(recipeId, buffer));
+		public BulletUpgradeRecipe fromNetwork(ResourceLocation recipeId, PacketBuffer buffer) {
+			return new BulletUpgradeRecipe(SHAPELESS_RECIPE.fromNetwork(recipeId, buffer));
 		}
 
 		@Override
-		public void write(PacketBuffer buffer, BulletUpgradeRecipe recipe) {
-			CRAFTING_SHAPELESS.write(buffer, recipe.compose);
+		public void toNetwork(PacketBuffer buffer, BulletUpgradeRecipe recipe) {
+			SHAPELESS_RECIPE.toNetwork(buffer, recipe.compose);
 		}
 	}
 

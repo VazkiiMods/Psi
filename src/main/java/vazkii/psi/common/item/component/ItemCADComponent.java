@@ -33,7 +33,7 @@ public abstract class ItemCADComponent extends Item implements ICADComponent {
 	private final HashMap<EnumCADStat, Integer> stats = new HashMap<>();
 
 	public ItemCADComponent(Item.Properties properties) {
-		super(properties.maxStackSize(1));
+		super(properties.stacksTo(1));
 		registerStats();
 	}
 
@@ -42,7 +42,7 @@ public abstract class ItemCADComponent extends Item implements ICADComponent {
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, @Nullable World world, List<ITextComponent> tooltip, ITooltipFlag advanced) {
+	public void appendHoverText(ItemStack stack, @Nullable World world, List<ITextComponent> tooltip, ITooltipFlag advanced) {
 		TooltipHelper.tooltipIfShift(tooltip, () -> {
 			EnumCADComponent componentType = getComponentType(stack);
 
@@ -53,8 +53,8 @@ public abstract class ItemCADComponent extends Item implements ICADComponent {
 					int statVal = getCADStatValue(stack, stat);
 					String statValStr = statVal == -1 ? "\u221E" : "" + statVal;
 
-					ITextComponent name = new TranslationTextComponent(stat.getName()).mergeStyle(TextFormatting.AQUA);
-					tooltip.add(new StringTextComponent(" ").append(name).appendString(": " + statValStr));
+					ITextComponent name = new TranslationTextComponent(stat.getName()).withStyle(TextFormatting.AQUA);
+					tooltip.add(new StringTextComponent(" ").append(name).append(": " + statValStr));
 				}
 			}
 		});
@@ -72,7 +72,7 @@ public abstract class ItemCADComponent extends Item implements ICADComponent {
 		if (stack.getItem() instanceof ItemCADComponent) {
 			((ItemCADComponent) stack.getItem()).addStat(stat, value);
 		} else {
-			Psi.logger.error("Tried to add stats to non-component Item: " + stack.getItem().getName());
+			Psi.logger.error("Tried to add stats to non-component Item: " + stack.getItem().getDescription());
 		}
 	}
 
@@ -80,7 +80,7 @@ public abstract class ItemCADComponent extends Item implements ICADComponent {
 		if (item instanceof ItemCADComponent) {
 			((ItemCADComponent) item).addStat(stat, value);
 		} else {
-			Psi.logger.error("Tried to add stats to non-component Item: " + item.getName());
+			Psi.logger.error("Tried to add stats to non-component Item: " + item.getDescription());
 		}
 	}
 

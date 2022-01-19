@@ -37,7 +37,7 @@ public class DriveDuplicateExtension implements ICustomCraftingCategoryExtension
 
 	public DriveDuplicateExtension(DriveDuplicateRecipe recipe) {
 		this.recipe = recipe;
-		Ingredient drive = Ingredient.fromItems(ModItems.spellDrive);
+		Ingredient drive = Ingredient.of(ModItems.spellDrive);
 		this.inputs = ImmutableList.of(drive, drive);
 	}
 
@@ -77,7 +77,7 @@ public class DriveDuplicateExtension implements ICustomCraftingCategoryExtension
 
 	@Override
 	public void drawInfo(int recipeWidth, int recipeHeight, MatrixStack matrixStack, double mouseX, double mouseY) {
-		Minecraft.getInstance().fontRenderer.drawString(matrixStack, I18n.format("jei.psi.spell_copy"), 57, 46, 0x808080);
+		Minecraft.getInstance().font.draw(matrixStack, I18n.get("jei.psi.spell_copy"), 57, 46, 0x808080);
 		RenderSystem.enableAlphaTest(); // Prevents state leak affecting the shapeless icon
 	}
 }

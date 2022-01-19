@@ -20,6 +20,8 @@ import net.minecraft.util.text.TranslationTextComponent;
 
 import vazkii.psi.client.gui.GuiProgrammer;
 
+import net.minecraft.client.gui.widget.button.Button.IPressable;
+
 public class GuiButtonIO extends Button {
 
 	public final boolean out;
@@ -42,16 +44,16 @@ public class GuiButtonIO extends Button {
 		if (active && !gui.takingScreenshot) {
 			boolean hover = par2 >= x && par3 >= y && par2 < x + width && par3 < y + height;
 
-			Minecraft.getInstance().textureManager.bindTexture(GuiProgrammer.texture);
+			Minecraft.getInstance().textureManager.bind(GuiProgrammer.texture);
 			RenderSystem.color4f(1F, 1F, 1F, 1F);
 			blit(ms, x, y, hover ? 186 : 174, out ? 169 : 181, width, height);
 
 			if (hover) {
 				String key = out ? "psimisc.export_to_clipboard" : "psimisc.import_from_clipboard";
 				TextFormatting color = out ? TextFormatting.RED : TextFormatting.BLUE;
-				ITextComponent tip = new TranslationTextComponent(key).mergeStyle(color);
+				ITextComponent tip = new TranslationTextComponent(key).withStyle(color);
 				gui.tooltip.add(tip);
-				gui.tooltip.add(new TranslationTextComponent("psimisc.must_hold_shift").mergeStyle(TextFormatting.GRAY));
+				gui.tooltip.add(new TranslationTextComponent("psimisc.must_hold_shift").withStyle(TextFormatting.GRAY));
 			}
 		}
 	}

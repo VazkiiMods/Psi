@@ -27,7 +27,7 @@ public class RenderSpellProjectile extends EntityRenderer<EntitySpellProjectile>
 	}
 
 	@Override
-	public ResourceLocation getEntityTexture(EntitySpellProjectile entity) {
+	public ResourceLocation getTextureLocation(EntitySpellProjectile entity) {
 		return null;
 	}
 }

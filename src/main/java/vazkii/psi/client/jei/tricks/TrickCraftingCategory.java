@@ -78,7 +78,7 @@ public class TrickCraftingCategory implements IRecipeCategory<ITrickRecipe> {
 	@Nonnull
 	@Override
 	public String getTitle() {
-		return I18n.format("jei." + LibMisc.MOD_ID + ".category.trick");
+		return I18n.get("jei." + LibMisc.MOD_ID + ".category.trick");
 	}
 
 	@Nonnull
@@ -96,9 +96,9 @@ public class TrickCraftingCategory implements IRecipeCategory<ITrickRecipe> {
 	@Override
 	public void setIngredients(ITrickRecipe recipe, IIngredients ingredients) {
 		ingredients.setInputLists(VanillaTypes.ITEM, ImmutableList.of(
-				ImmutableList.copyOf(recipe.getInput().getMatchingStacks()), ImmutableList.of(recipe.getAssembly())
+				ImmutableList.copyOf(recipe.getInput().getItems()), ImmutableList.of(recipe.getAssembly())
 		));
-		ingredients.setOutput(VanillaTypes.ITEM, recipe.getRecipeOutput());
+		ingredients.setOutput(VanillaTypes.ITEM, recipe.getResultItem());
 	}
 
 	@Override
@@ -111,7 +111,7 @@ public class TrickCraftingCategory implements IRecipeCategory<ITrickRecipe> {
 							Psi.logger.warn("Not rendering complex (or missing) render for {}", key);
 							return helper.createBlankDrawable(16, 16);
 						}
-						return new DrawableTAS(mat.getSprite());
+						return new DrawableTAS(mat.sprite());
 					});
 
 			trickIcon.draw(matrixStack, trickX, trickY);

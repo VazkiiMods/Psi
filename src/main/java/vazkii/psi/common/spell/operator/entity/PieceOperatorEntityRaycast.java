@@ -55,8 +55,8 @@ public class PieceOperatorEntityRaycast extends PieceOperator {
 
 		double maxLen = SpellHelpers.rangeLimitParam(this, context, max, SpellContext.MAX_DISTANCE);
 
-		Entity entity = rayTraceEntities(context.caster.world, context.caster, originVal.toVec3D(), rayVal.toVec3D(),
-				pred -> !pred.isSpectator() && pred.isAlive() && pred.canBeCollidedWith() && !(pred instanceof ISpellImmune), maxLen);
+		Entity entity = rayTraceEntities(context.caster.level, context.caster, originVal.toVec3D(), rayVal.toVec3D(),
+				pred -> !pred.isSpectator() && pred.isAlive() && pred.isPickable() && !(pred instanceof ISpellImmune), maxLen);
 		if (entity == null) {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_TARGET);
 		}
@@ -75,11 +75,11 @@ public class PieceOperatorEntityRaycast extends PieceOperator {
 		Entity entity = null;
 
 		Vector3d reachVector = positionVector.add(lookVector.scale(maxDistance));
-		AxisAlignedBB aabb = new AxisAlignedBB(positionVector.x, positionVector.y, positionVector.z, reachVector.x, reachVector.y, reachVector.z).grow(1f, 1f, 1f);
-		for (Entity entity1 : world.getEntitiesInAABBexcluding(caster, aabb, predicate)) {
-			float collisionBorderSize = entity1.getCollisionBorderSize();
-			AxisAlignedBB axisalignedbb = entity1.getBoundingBox().grow(collisionBorderSize);
-			Optional<Vector3d> optional = axisalignedbb.rayTrace(positionVector, reachVector);
+		AxisAlignedBB aabb = new AxisAlignedBB(positionVector.x, positionVector.y, positionVector.z, reachVector.x, reachVector.y, reachVector.z).inflate(1f, 1f, 1f);
+		for (Entity entity1 : world.getEntities(caster, aabb, predicate)) {
+			float collisionBorderSize = entity1.getPickRadius();
+			AxisAlignedBB axisalignedbb = entity1.getBoundingBox().inflate(collisionBorderSize);
+			Optional<Vector3d> optional = axisalignedbb.clip(positionVector, reachVector);
 			if (axisalignedbb.contains(positionVector)) {
 				if (0.0D < distance || distance == 0.0D) {
 					entity = entity1;

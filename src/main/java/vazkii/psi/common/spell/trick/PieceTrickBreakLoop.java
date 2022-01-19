@@ -50,10 +50,10 @@ public class PieceTrickBreakLoop extends PieceTrick {
 				if (context.focalPoint instanceof EntitySpellCircle) {
 					EntitySpellCircle circle = (EntitySpellCircle) context.focalPoint;
 					CompoundNBT circleNBT = new CompoundNBT();
-					circle.writeAdditional(circleNBT);
+					circle.addAdditionalSaveData(circleNBT);
 					circleNBT.putInt("timesCast", 20);
 					circleNBT.putInt("timesAlive", 100);
-					circle.read(circleNBT);
+					circle.load(circleNBT);
 				} else {
 					context.focalPoint.remove();
 				}

@@ -60,20 +60,20 @@ public class PieceTrickBlaze extends PieceTrick {
 
 		BlockPos pos = positionVal.toBlockPos();
 
-		pos = pos.down();
-		BlockState state = context.focalPoint.getEntityWorld().getBlockState(pos);
-		BlockEvent.EntityPlaceEvent placeEvent = new BlockEvent.EntityPlaceEvent(BlockSnapshot.create(context.focalPoint.getEntityWorld().getDimensionKey(), context.focalPoint.getEntityWorld(), pos), context.focalPoint.getEntityWorld().getBlockState(pos.offset(Direction.UP)), context.caster);
+		pos = pos.below();
+		BlockState state = context.focalPoint.getCommandSenderWorld().getBlockState(pos);
+		BlockEvent.EntityPlaceEvent placeEvent = new BlockEvent.EntityPlaceEvent(BlockSnapshot.create(context.focalPoint.getCommandSenderWorld().dimension(), context.focalPoint.getCommandSenderWorld(), pos), context.focalPoint.getCommandSenderWorld().getBlockState(pos.relative(Direction.UP)), context.caster);
 		MinecraftForge.EVENT_BUS.post(placeEvent);
 		if (placeEvent.isCanceled()) {
 			return null;
 		}
-		if (state.isAir(context.focalPoint.getEntityWorld(), pos) || state.getMaterial().isReplaceable()) {
-			context.focalPoint.getEntityWorld().setBlockState(pos, Blocks.FIRE.getDefaultState());
+		if (state.isAir(context.focalPoint.getCommandSenderWorld(), pos) || state.getMaterial().isReplaceable()) {
+			context.focalPoint.getCommandSenderWorld().setBlockAndUpdate(pos, Blocks.FIRE.defaultBlockState());
 		} else {
-			pos = pos.up();
-			state = context.focalPoint.getEntityWorld().getBlockState(pos);
-			if (state.isAir(context.focalPoint.getEntityWorld(), pos) || state.getMaterial().isReplaceable()) {
-				context.focalPoint.getEntityWorld().setBlockState(pos, Blocks.FIRE.getDefaultState());
+			pos = pos.above();
+			state = context.focalPoint.getCommandSenderWorld().getBlockState(pos);
+			if (state.isAir(context.focalPoint.getCommandSenderWorld(), pos) || state.getMaterial().isReplaceable()) {
+				context.focalPoint.getCommandSenderWorld().setBlockAndUpdate(pos, Blocks.FIRE.defaultBlockState());
 			}
 		}
 

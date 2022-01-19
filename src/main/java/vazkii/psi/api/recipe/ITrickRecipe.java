@@ -43,7 +43,7 @@ public interface ITrickRecipe extends IRecipe<RecipeWrapper> {
 
 	@Override
 	@Nonnull
-	ItemStack getRecipeOutput();
+	ItemStack getResultItem();
 
 	/**
 	 * @return a recommended minimum CAD assembly that can craft this recipe, for JEI display purposes.
@@ -53,7 +53,7 @@ public interface ITrickRecipe extends IRecipe<RecipeWrapper> {
 	@Nonnull
 	@Override
 	default IRecipeType<?> getType() {
-		return Registry.RECIPE_TYPE.getOrDefault(TYPE_ID);
+		return Registry.RECIPE_TYPE.get(TYPE_ID);
 	}
 
 	@Nonnull

@@ -48,7 +48,7 @@ public class EntitySpellCharge extends EntitySpellGrenade implements IDetonation
 
 	@Override
 	public Vector3d objectLocus() {
-		return getPositionVec();
+		return position();
 	}
 
 	@Override

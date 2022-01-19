@@ -42,7 +42,7 @@ public class MessageParticleTrail {
 		this.direction = MessageRegister.readVec3d(buf);
 		this.length = buf.readDouble();
 		this.time = buf.readVarInt();
-		this.cad = buf.readItemStack();
+		this.cad = buf.readItem();
 	}
 
 	public void encode(PacketBuffer buf) {
@@ -50,7 +50,7 @@ public class MessageParticleTrail {
 		MessageRegister.writeVec3d(buf, direction);
 		buf.writeDouble(length);
 		buf.writeVarInt(time);
-		buf.writeItemStack(cad);
+		buf.writeItem(cad);
 	}
 
 	public boolean receive(Supplier<NetworkEvent.Context> context) {

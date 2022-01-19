@@ -78,14 +78,14 @@ public final class PsiAPI {
 
 	public static final String MOD_ID = "psi";
 
-	public static final RegistryKey<Registry<Class<? extends SpellPiece>>> SPELL_PIECE_REGISTRY_TYPE_KEY = Registry.createKey("spell_piece_registry_type_key");
-	private static final SimpleRegistry<Class<? extends SpellPiece>> spellPieceRegistry = (SimpleRegistry<Class<? extends SpellPiece>>) Registry.register(SPELL_PIECE_REGISTRY_TYPE_KEY, Lifecycle.stable(), () -> PieceTrickDebug.class);
+	public static final RegistryKey<Registry<Class<? extends SpellPiece>>> SPELL_PIECE_REGISTRY_TYPE_KEY = Registry.createRegistryKey("spell_piece_registry_type_key");
+	private static final SimpleRegistry<Class<? extends SpellPiece>> spellPieceRegistry = (SimpleRegistry<Class<? extends SpellPiece>>) Registry.registerSimple(SPELL_PIECE_REGISTRY_TYPE_KEY, Lifecycle.stable(), () -> PieceTrickDebug.class);
 	private static final Multimap<ResourceLocation, Class<? extends SpellPiece>> advancementGroups = HashMultimap.create();
 	private static final Map<Class<? extends SpellPiece>, ResourceLocation> advancementGroupsInverse = new HashMap<>();
 	private static final Map<ResourceLocation, Class<? extends SpellPiece>> mainPieceForGroup = new HashMap<>();
 
 	public static final PsimetalArmorMaterial PSIMETAL_ARMOR_MATERIAL = new PsimetalArmorMaterial("psimetal", 18, new int[] { 2, 5, 6, 2 },
-			12, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0F, () -> Ingredient.fromItems(Registry.ITEM.getOrDefault(new ResourceLocation(MOD_ID, "psimetal"))), 0.0f);
+			12, SoundEvents.ARMOR_EQUIP_IRON, 0F, () -> Ingredient.of(Registry.ITEM.get(new ResourceLocation(MOD_ID, "psimetal"))), 0.0f);
 	public static final PsimetalToolMaterial PSIMETAL_TOOL_MATERIAL = new PsimetalToolMaterial();
 
 	/**
@@ -93,7 +93,7 @@ public final class PsiAPI {
 	 */
 	public static void registerSpellPiece(ResourceLocation resourceLocation, Class<? extends SpellPiece> clazz) {
 		synchronized (PsiAPI.spellPieceRegistry) {
-			PsiAPI.spellPieceRegistry.register(RegistryKey.getOrCreateKey(SPELL_PIECE_REGISTRY_TYPE_KEY, resourceLocation), clazz, Lifecycle.stable());
+			PsiAPI.spellPieceRegistry.register(RegistryKey.create(SPELL_PIECE_REGISTRY_TYPE_KEY, resourceLocation), clazz, Lifecycle.stable());
 		}
 	}
 
@@ -139,8 +139,8 @@ public final class PsiAPI {
 		}
 
 		ItemStack cad = ItemStack.EMPTY;
-		for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
-			ItemStack stackAt = player.inventory.getStackInSlot(i);
+		for (int i = 0; i < player.inventory.getContainerSize(); i++) {
+			ItemStack stackAt = player.inventory.getItem(i);
 			if (!stackAt.isEmpty() && stackAt.getItem() instanceof ICAD) {
 				if (!cad.isEmpty()) {
 					return ItemStack.EMPTY; // Player can only have one CAD
@@ -159,8 +159,8 @@ public final class PsiAPI {
 		}
 
 		int slot = -1;
-		for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
-			ItemStack stackAt = player.inventory.getStackInSlot(i);
+		for (int i = 0; i < player.inventory.getContainerSize(); i++) {
+			ItemStack stackAt = player.inventory.getItem(i);
 			if (!stackAt.isEmpty() && stackAt.getItem() instanceof ICAD) {
 				if (slot != -1) {
 					return -1; // Player can only have one CAD
@@ -178,7 +178,7 @@ public final class PsiAPI {
 			return false;
 		}
 
-		if (player.openContainer == null) {
+		if (player.containerMenu == null) {
 			return true;
 		}
 
@@ -187,7 +187,7 @@ public final class PsiAPI {
 	}
 
 	public static Class<? extends SpellPiece> getSpellPiece(ResourceLocation key) {
-		return spellPieceRegistry.getOrDefault(key);
+		return spellPieceRegistry.get(key);
 	}
 
 	public static ResourceLocation getSpellPieceKey(Class<? extends SpellPiece> clazz) {

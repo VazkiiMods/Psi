@@ -28,20 +28,20 @@ public class MessageSpamlessChat {
 	}
 
 	public MessageSpamlessChat(PacketBuffer buf) {
-		this.message = buf.readTextComponent();
+		this.message = buf.readComponent();
 		this.magic = buf.readInt();
 	}
 
 	public void encode(PacketBuffer buf) {
-		buf.writeTextComponent(message);
+		buf.writeComponent(message);
 		buf.writeInt(magic);
 	}
 
 	public boolean receive(Supplier<NetworkEvent.Context> context) {
 		context.get().enqueueWork(() -> {
-			NewChatGui chatGui = Minecraft.getInstance().ingameGUI.getChatGUI();
-			chatGui.deleteChatLine(magic);
-			chatGui.printChatMessageWithOptionalDeletion(message, magic);
+			NewChatGui chatGui = Minecraft.getInstance().gui.getChat();
+			chatGui.removeById(magic);
+			chatGui.addMessage(message, magic);
 		});
 		return true;
 	}

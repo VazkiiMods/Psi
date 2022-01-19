@@ -12,6 +12,8 @@ import net.minecraft.item.ItemStack;
 
 import vazkii.psi.api.exosuit.PsiArmorEvent;
 
+import net.minecraft.item.Item.Properties;
+
 public class ItemHeatExosuitSensor extends ItemExosuitSensor {
 
 	public ItemHeatExosuitSensor(Properties properties) {

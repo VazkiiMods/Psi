@@ -39,7 +39,7 @@ public class TrickRecipeGenerator extends RecipeProvider {
 	}
 
 	@Override
-	protected void registerRecipes(Consumer<IFinishedRecipe> consumer) {
+	protected void buildShapelessRecipes(Consumer<IFinishedRecipe> consumer) {
 		TrickRecipeBuilder.of(ModItems.psidust).input(Tags.Items.DUSTS_REDSTONE).cad(ModItems.cadAssemblyIron).build(consumer);
 		TrickRecipeBuilder.of(PatchouliAPI.instance.getBookStack(LibResources.PATCHOULI_BOOK)).input(Items.BOOK).cad(ModItems.cadAssemblyIron).build(consumer);
 
@@ -63,13 +63,13 @@ public class TrickRecipeGenerator extends RecipeProvider {
 				.input(ItemTags.COALS)
 				.trick(Psi.location(LibPieceNames.TRICK_EBONY_IVORY))
 				.cad(ModItems.cadAssemblyPsimetal);
-		dimension(builder, consumer, ModItems.ebonySubstance.getRegistryName(), World.THE_END);
+		dimension(builder, consumer, ModItems.ebonySubstance.getRegistryName(), World.END);
 
 		builder = TrickRecipeBuilder.of(ModItems.ivorySubstance)
 				.input(Tags.Items.GEMS_QUARTZ)
 				.trick(Psi.location(LibPieceNames.TRICK_EBONY_IVORY))
 				.cad(ModItems.cadAssemblyPsimetal);
-		dimension(builder, consumer, ModItems.ivorySubstance.getRegistryName(), World.THE_END);
+		dimension(builder, consumer, ModItems.ivorySubstance.getRegistryName(), World.END);
 	}
 
 	@Nonnull
@@ -92,14 +92,14 @@ public class TrickRecipeGenerator extends RecipeProvider {
 		}
 
 		@Override
-		public void serialize(@Nonnull JsonObject json) {
-			super.serialize(json);
-			json.addProperty("dimension", dimensionId.getLocation().toString());
+		public void serializeRecipeData(@Nonnull JsonObject json) {
+			super.serializeRecipeData(json);
+			json.addProperty("dimension", dimensionId.location().toString());
 		}
 
 		@Nonnull
 		@Override
-		public IRecipeSerializer<?> getSerializer() {
+		public IRecipeSerializer<?> getType() {
 			return DimensionTrickRecipe.SERIALIZER;
 		}
 	}

@@ -72,13 +72,13 @@ public class PieceTrickBreakBlock extends PieceTrick {
 		}
 
 		BlockPos pos = positionVal.toBlockPos();
-		removeBlockWithDrops(context, context.caster, context.focalPoint.getEntityWorld(), tool, pos, true);
+		removeBlockWithDrops(context, context.caster, context.focalPoint.getCommandSenderWorld(), tool, pos, true);
 
 		return null;
 	}
 
 	public static void removeBlockWithDrops(SpellContext context, PlayerEntity player, World world, ItemStack tool, BlockPos pos, boolean particles) {
-		if (!world.isBlockLoaded(pos) || (context.positionBroken != null && pos.equals(new BlockPos(context.positionBroken.getHitVec().x, context.positionBroken.getHitVec().y, context.positionBroken.getHitVec().z))) || !world.isBlockModifiable(player, pos)) {
+		if (!world.hasChunkAt(pos) || (context.positionBroken != null && pos.equals(new BlockPos(context.positionBroken.getLocation().x, context.positionBroken.getLocation().y, context.positionBroken.getLocation().z))) || !world.mayInteract(player, pos)) {
 			return;
 		}
 
@@ -88,7 +88,7 @@ public class PieceTrickBreakBlock extends PieceTrick {
 
 		BlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
-		if (!block.isAir(state, world, pos) && !(block instanceof IFluidBlock) && state.getBlockHardness(world, pos) != -1) {
+		if (!block.isAir(state, world, pos) && !(block instanceof IFluidBlock) && state.getDestroySpeed(world, pos) != -1) {
 			if (!canHarvestBlock(state, player, world, pos, tool)) {
 				return;
 			}
@@ -96,14 +96,14 @@ public class PieceTrickBreakBlock extends PieceTrick {
 			BreakEvent event = createBreakEvent(state, player, world, pos, tool);
 			MinecraftForge.EVENT_BUS.post(event);
 			if (!event.isCanceled()) {
-				if (!player.abilities.isCreativeMode) {
-					TileEntity tile = world.getTileEntity(pos);
+				if (!player.abilities.instabuild) {
+					TileEntity tile = world.getBlockEntity(pos);
 
 					if (block.removedByPlayer(state, world, pos, player, true, world.getFluidState(pos))) {
-						block.onPlayerDestroy(world, pos, state);
-						block.harvestBlock(world, player, pos, state, tile, tool);
+						block.destroy(world, pos, state);
+						block.playerDestroy(world, player, pos, state, tile, tool);
 						if (world instanceof ServerWorld) {
-							block.dropXpOnBlockBreak((ServerWorld) world, pos, event.getExpToDrop());
+							block.popExperience((ServerWorld) world, pos, event.getExpToDrop());
 						}
 					}
 				} else {
@@ -112,7 +112,7 @@ public class PieceTrickBreakBlock extends PieceTrick {
 			}
 
 			if (particles) {
-				world.playEvent(2001, pos, Block.getStateId(state));
+				world.levelEvent(2001, pos, Block.getId(state));
 			}
 		}
 	}
@@ -127,8 +127,8 @@ public class PieceTrickBreakBlock extends PieceTrick {
 		{
 			event.setExpToDrop(0);
 		} else {
-			int bonusLevel = EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, tool);
-			int silklevel = EnchantmentHelper.getEnchantmentLevel(Enchantments.SILK_TOUCH, tool);
+			int bonusLevel = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.BLOCK_FORTUNE, tool);
+			int silklevel = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SILK_TOUCH, tool);
 			event.setExpToDrop(state.getExpDrop(world, pos, bonusLevel, silklevel));
 		}
 		return event;
@@ -146,16 +146,16 @@ public class PieceTrickBreakBlock extends PieceTrick {
 		doingHarvestCheck.set(true);
 
 		// Swap the main hand with the stack temporarily to do the harvest check
-		ItemStack oldHeldStack = player.getHeldItemMainhand();
+		ItemStack oldHeldStack = player.getMainHandItem();
 		//player.setHeldItem(EnumHand.MAIN_HAND, oldHeldStack);
 		// Need to do this instead of the above to prevent the re-equip sound
-		player.inventory.mainInventory.set(player.inventory.currentItem, stack);
+		player.inventory.items.set(player.inventory.selected, stack);
 
 		// Harvest check
 		boolean canHarvest = state.canHarvestBlock(world, pos, player);
 
 		// Swap back the main hand
-		player.inventory.mainInventory.set(player.inventory.currentItem, oldHeldStack);
+		player.inventory.items.set(player.inventory.selected, oldHeldStack);
 
 		// Reset the harvest check to its previous value
 		doingHarvestCheck.set(wasChecking);

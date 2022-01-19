@@ -75,13 +75,13 @@ public class PieceTrickConjureBlock extends PieceTrick {
 
 		BlockPos pos = positionVal.toBlockPos();
 
-		World world = context.focalPoint.getEntityWorld();
+		World world = context.focalPoint.getCommandSenderWorld();
 
-		if (!world.isBlockModifiable(context.caster, pos)) {
+		if (!world.mayInteract(context.caster, pos)) {
 			return null;
 		}
 
-		conjure(context, timeVal, pos, world, messWithState(ModBlocks.conjured.getDefaultState()));
+		conjure(context, timeVal, pos, world, messWithState(ModBlocks.conjured.defaultBlockState()));
 
 		return null;
 	}
@@ -91,10 +91,10 @@ public class PieceTrickConjureBlock extends PieceTrick {
 			if (conjure(world, pos, context.caster, state)) {
 				if (timeVal != null && timeVal.intValue() > 0) {
 					int val = timeVal.intValue();
-					world.getPendingBlockTicks().scheduleTick(pos, state.getBlock(), val);
+					world.getBlockTicks().scheduleTick(pos, state.getBlock(), val);
 				}
 
-				TileEntity tile = world.getTileEntity(pos);
+				TileEntity tile = world.getBlockEntity(pos);
 
 				ItemStack cad = PsiAPI.getPlayerCAD(context.caster);
 				if (tile instanceof TileConjured && !cad.isEmpty()) {
@@ -106,19 +106,19 @@ public class PieceTrickConjureBlock extends PieceTrick {
 	}
 
 	public static boolean conjure(World world, BlockPos pos, PlayerEntity player, BlockState state) {
-		if (!world.isBlockLoaded(pos) || !world.isBlockModifiable(player, pos)) {
+		if (!world.hasChunkAt(pos) || !world.mayInteract(player, pos)) {
 			return false;
 		}
 
 		BlockState inWorld = world.getBlockState(pos);
 		if (inWorld.isAir(world, pos) || inWorld.getMaterial().isReplaceable()) {
-			return world.setBlockState(pos, state);
+			return world.setBlockAndUpdate(pos, state);
 		}
 		return false;
 	}
 
 	public BlockState messWithState(BlockState state) {
-		return state.with(BlockConjured.SOLID, true);
+		return state.setValue(BlockConjured.SOLID, true);
 	}
 
 }

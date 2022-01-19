@@ -38,7 +38,7 @@ public class PieceOperatorRandomEntity extends PieceOperator {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_TARGET);
 		}
 
-		return listVal.get(context.caster.getEntityWorld().rand.nextInt(listVal.size()));
+		return listVal.get(context.caster.getCommandSenderWorld().random.nextInt(listVal.size()));
 	}
 
 	@Override

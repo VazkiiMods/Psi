@@ -58,16 +58,16 @@ public class PieceTrickSmite extends PieceTrick {
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 		}
 
-		BlockEvent.EntityPlaceEvent placeEvent = new BlockEvent.EntityPlaceEvent(BlockSnapshot.create(context.focalPoint.getEntityWorld().getDimensionKey(), context.focalPoint.getEntityWorld(), positionVal.toBlockPos()), context.focalPoint.getEntityWorld().getBlockState(positionVal.toBlockPos().offset(Direction.UP)), context.caster);
+		BlockEvent.EntityPlaceEvent placeEvent = new BlockEvent.EntityPlaceEvent(BlockSnapshot.create(context.focalPoint.getCommandSenderWorld().dimension(), context.focalPoint.getCommandSenderWorld(), positionVal.toBlockPos()), context.focalPoint.getCommandSenderWorld().getBlockState(positionVal.toBlockPos().relative(Direction.UP)), context.caster);
 		MinecraftForge.EVENT_BUS.post(placeEvent);
 		if (placeEvent.isCanceled()) {
 			return null;
 		}
 
-		if (context.focalPoint.getEntityWorld() instanceof ServerWorld) {
-			LightningBoltEntity lightning = new LightningBoltEntity(EntityType.LIGHTNING_BOLT, context.caster.world);
-			lightning.setRawPosition(positionVal.x, positionVal.y, positionVal.z);
-			((ServerWorld) context.focalPoint.getEntityWorld()).addEntity(lightning);
+		if (context.focalPoint.getCommandSenderWorld() instanceof ServerWorld) {
+			LightningBoltEntity lightning = new LightningBoltEntity(EntityType.LIGHTNING_BOLT, context.caster.level);
+			lightning.setPosRaw(positionVal.x, positionVal.y, positionVal.z);
+			((ServerWorld) context.focalPoint.getCommandSenderWorld()).addFreshEntity(lightning);
 		}
 
 		return null;

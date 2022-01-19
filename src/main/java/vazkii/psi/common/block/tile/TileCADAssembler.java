@@ -219,8 +219,8 @@ public class TileCADAssembler extends TileEntity implements ITileCADAssembler, I
 		for (int i = 1; i < 6; i++) {
 			inventory.setStackInSlot(i, ItemStack.EMPTY);
 		}
-		if (!world.isRemote) {
-			world.playSound(null, getPos().getX() + 0.5, getPos().getY() + 0.5, getPos().getZ() + 0.5, PsiSoundHandler.cadCreate, SoundCategory.BLOCKS, 0.5F, 1F);
+		if (!level.isClientSide) {
+			level.playSound(null, getBlockPos().getX() + 0.5, getBlockPos().getY() + 0.5, getBlockPos().getZ() + 0.5, PsiSoundHandler.cadCreate, SoundCategory.BLOCKS, 0.5F, 1F);
 		}
 	}
 
@@ -235,16 +235,16 @@ public class TileCADAssembler extends TileEntity implements ITileCADAssembler, I
 
 	@Nonnull
 	@Override
-	public CompoundNBT write(@Nonnull CompoundNBT tag) {
-		tag = super.write(tag);
+	public CompoundNBT save(@Nonnull CompoundNBT tag) {
+		tag = super.save(tag);
 		tag.putInt("version", 1);
 		tag.put("Items", CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.writeNBT(inventory, null));
 		return tag;
 	}
 
 	@Override
-	public void read(BlockState state, CompoundNBT cmp) {
-		super.read(state, cmp);
+	public void load(BlockState state, CompoundNBT cmp) {
+		super.load(state, cmp);
 		readPacketNBT(cmp);
 	}
 
@@ -264,7 +264,7 @@ public class TileCADAssembler extends TileEntity implements ITileCADAssembler, I
 					continue;
 				}
 
-				ItemStack stack = ItemStack.read(items.getCompound(i));
+				ItemStack stack = ItemStack.of(items.getCompound(i));
 
 				if (i == 6) { // Socketable item
 					setSocketableStack(stack);
@@ -299,19 +299,19 @@ public class TileCADAssembler extends TileEntity implements ITileCADAssembler, I
 
 	@Override
 	public SUpdateTileEntityPacket getUpdatePacket() {
-		return new SUpdateTileEntityPacket(getPos(), -1, getUpdateTag());
+		return new SUpdateTileEntityPacket(getBlockPos(), -1, getUpdateTag());
 	}
 
 	@Nonnull
 	@Override
 	public CompoundNBT getUpdateTag() {
-		return write(new CompoundNBT());
+		return save(new CompoundNBT());
 	}
 
 	@Nonnull
 	@Override
 	public ITextComponent getDisplayName() {
-		return new TranslationTextComponent(ModBlocks.cadAssembler.getTranslationKey());
+		return new TranslationTextComponent(ModBlocks.cadAssembler.getDescriptionId());
 	}
 
 	@Nullable

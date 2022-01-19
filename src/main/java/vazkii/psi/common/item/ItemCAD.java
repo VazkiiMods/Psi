@@ -105,7 +105,7 @@ public class ItemCAD extends Item implements ICAD {
 
 	public ItemCAD(Item.Properties properties) {
 		super(properties
-				.maxStackSize(1)
+				.stacksTo(1)
 				.addToolType(ToolType.PICKAXE, 0)
 				.addToolType(ToolType.AXE, 0)
 				.addToolType(ToolType.SHOVEL, 0)
@@ -147,7 +147,7 @@ public class ItemCAD extends Item implements ICAD {
 				compound.remove(TAG_STORED_PSI_LEGACY);
 			}
 
-			Set<String> keys = new HashSet<>(compound.keySet());
+			Set<String> keys = new HashSet<>(compound.getAllKeys());
 
 			for (String key : keys) {
 				Matcher matcher = VECTOR_PREFIX_PATTERN.matcher(key);
@@ -171,25 +171,25 @@ public class ItemCAD extends Item implements ICAD {
 	}
 
 	@Override
-	public ActionResultType onItemUse(ItemUseContext ctx) {
-		World worldIn = ctx.getWorld();
+	public ActionResultType useOn(ItemUseContext ctx) {
+		World worldIn = ctx.getLevel();
 		Hand hand = ctx.getHand();
-		BlockPos pos = ctx.getPos();
+		BlockPos pos = ctx.getClickedPos();
 		PlayerEntity playerIn = ctx.getPlayer();
-		ItemStack stack = playerIn.getHeldItem(hand);
+		ItemStack stack = playerIn.getItemInHand(hand);
 		Block block = worldIn.getBlockState(pos).getBlock();
 		return block == ModBlocks.programmer ? ((BlockProgrammer) block).setSpell(worldIn, pos, playerIn, stack) : ActionResultType.PASS;
 	}
 
 	@Nonnull
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, @Nonnull Hand hand) {
-		ItemStack itemStackIn = playerIn.getHeldItem(hand);
+	public ActionResult<ItemStack> use(World worldIn, PlayerEntity playerIn, @Nonnull Hand hand) {
+		ItemStack itemStackIn = playerIn.getItemInHand(hand);
 		PlayerData data = PlayerDataHandler.get(playerIn);
 		ItemStack playerCad = PsiAPI.getPlayerCAD(playerIn);
 		if (playerCad != itemStackIn) {
-			if (!worldIn.isRemote) {
-				playerIn.sendMessage(new TranslationTextComponent("psimisc.multiple_cads").setStyle(Style.EMPTY.setFormatting(TextFormatting.RED)), Util.DUMMY_UUID);
+			if (!worldIn.isClientSide) {
+				playerIn.sendMessage(new TranslationTextComponent("psimisc.multiple_cads").setStyle(Style.EMPTY.withColor(TextFormatting.RED)), Util.NIL_UUID);
 			}
 			return new ActionResult<>(ActionResultType.CONSUME, itemStackIn);
 		}
@@ -206,7 +206,7 @@ public class ItemCAD extends Item implements ICAD {
 		boolean did = cast(worldIn, playerIn, data, bullet, itemStackIn, 40, 25, 0.5F, ctx -> ctx.castFrom = hand).isPresent();
 
 		if (!data.overflowed && bullet.isEmpty() && craft(playerCad, playerIn, null)) {
-			worldIn.playSound(null, playerIn.getPosX(), playerIn.getPosY(), playerIn.getPosZ(), PsiSoundHandler.cadShoot, SoundCategory.PLAYERS, 0.5F, (float) (0.5 + Math.random() * 0.5));
+			worldIn.playSound(null, playerIn.getX(), playerIn.getY(), playerIn.getZ(), PsiSoundHandler.cadShoot, SoundCategory.PLAYERS, 0.5F, (float) (0.5 + Math.random() * 0.5));
 			data.deductPsi(100, 60, true);
 
 			if (!data.hasAdvancement(LibPieceGroups.FAKE_LEVEL_PSIDUST)) {
@@ -238,7 +238,7 @@ public class ItemCAD extends Item implements ICAD {
 					if (MinecraftForge.EVENT_BUS.post(event)) {
 						String cancelMessage = event.getCancellationMessage();
 						if (cancelMessage != null && !cancelMessage.isEmpty()) {
-							player.sendMessage(new TranslationTextComponent(cancelMessage).setStyle(Style.EMPTY.setFormatting(TextFormatting.RED)), Util.DUMMY_UUID);
+							player.sendMessage(new TranslationTextComponent(cancelMessage).setStyle(Style.EMPTY.withColor(TextFormatting.RED)), Util.NIL_UUID);
 						}
 						return Optional.empty();
 					}
@@ -256,25 +256,25 @@ public class ItemCAD extends Item implements ICAD {
 					}
 
 					if (cost != 0 && sound > 0) {
-						if (!world.isRemote) {
-							world.playSound(null, player.getPosX(), player.getPosY(), player.getPosZ(), PsiSoundHandler.cadShoot, SoundCategory.PLAYERS, sound, (float) (0.5 + Math.random() * 0.5));
+						if (!world.isClientSide) {
+							world.playSound(null, player.getX(), player.getY(), player.getZ(), PsiSoundHandler.cadShoot, SoundCategory.PLAYERS, sound, (float) (0.5 + Math.random() * 0.5));
 						} else {
 							int color = Psi.proxy.getColorForCAD(cad);
 							float r = PsiRenderHelper.r(color) / 255F;
 							float g = PsiRenderHelper.g(color) / 255F;
 							float b = PsiRenderHelper.b(color) / 255F;
 							for (int i = 0; i < particles; i++) {
-								double x = player.getPosX() + (Math.random() - 0.5) * 2.1 * player.getWidth();
-								double y = player.getPosY() - player.getYOffset();
-								double z = player.getPosZ() + (Math.random() - 0.5) * 2.1 * player.getWidth();
+								double x = player.getX() + (Math.random() - 0.5) * 2.1 * player.getBbWidth();
+								double y = player.getY() - player.getMyRidingOffset();
+								double z = player.getZ() + (Math.random() - 0.5) * 2.1 * player.getBbWidth();
 								float grav = -0.15F - (float) Math.random() * 0.03F;
 								Psi.proxy.sparkleFX(x, y, z, r, g, b, grav, 0.25F, 15);
 							}
 
-							double x = player.getPosX();
-							double y = player.getPosY() + player.getEyeHeight() - 0.1;
-							double z = player.getPosZ();
-							Vector3 lookOrig = new Vector3(player.getLookVec());
+							double x = player.getX();
+							double y = player.getY() + player.getEyeHeight() - 0.1;
+							double z = player.getZ();
+							Vector3 lookOrig = new Vector3(player.getLookAngle());
 							for (int i = 0; i < 25; i++) {
 								Vector3 look = lookOrig.copy();
 								double spread = 0.25;
@@ -288,13 +288,13 @@ public class ItemCAD extends Item implements ICAD {
 						}
 					}
 					ArrayList<Entity> SpellEntities = new ArrayList<>();
-					if (!world.isRemote) {
+					if (!world.isClientSide) {
 						SpellEntities = spellContainer.castSpell(context);
 					}
 					MinecraftForge.EVENT_BUS.post(new SpellCastEvent(spell, context, player, data, cad, bullet));
 					return Optional.of(SpellEntities);
-				} else if (!world.isRemote) {
-					player.sendMessage(new TranslationTextComponent("psimisc.weak_cad").setStyle(Style.EMPTY.setFormatting(TextFormatting.RED)), Util.DUMMY_UUID);
+				} else if (!world.isClientSide) {
+					player.sendMessage(new TranslationTextComponent("psimisc.weak_cad").setStyle(Style.EMPTY.withColor(TextFormatting.RED)), Util.NIL_UUID);
 				}
 			}
 		}
@@ -304,14 +304,14 @@ public class ItemCAD extends Item implements ICAD {
 
 	@Override
 	public boolean craft(ItemStack cad, PlayerEntity player, PieceCraftingTrick craftingTrick) {
-		World world = player.world;
-		if (world.isRemote) {
+		World world = player.level;
+		if (world.isClientSide) {
 			return false;
 		}
 
-		List<ItemEntity> items = player.getEntityWorld().getEntitiesWithinAABB(ItemEntity.class,
-				player.getBoundingBox().grow(8),
-				entity -> entity != null && entity.getDistanceSq(player) <= 8 * 8);
+		List<ItemEntity> items = player.getCommandSenderWorld().getEntitiesOfClass(ItemEntity.class,
+				player.getBoundingBox().inflate(8),
+				entity -> entity != null && entity.distanceToSqr(player) <= 8 * 8);
 
 		CraftingWrapper inv = new CraftingWrapper();
 		boolean did = false;
@@ -323,20 +323,20 @@ public class ItemCAD extends Item implements ICAD {
 				predicate = r -> r.getPiece() == null || r.getPiece().canCraft(craftingTrick);
 			}
 
-			Optional<ITrickRecipe> recipe = world.getRecipeManager().getRecipe(ModCraftingRecipes.TRICK_RECIPE_TYPE, inv, world)
+			Optional<ITrickRecipe> recipe = world.getRecipeManager().getRecipeFor(ModCraftingRecipes.TRICK_RECIPE_TYPE, inv, world)
 					.filter(predicate);
 			if (recipe.isPresent()) {
-				ItemStack outCopy = recipe.get().getRecipeOutput().copy();
+				ItemStack outCopy = recipe.get().getResultItem().copy();
 				int count = stack.getCount() * outCopy.getCount();
 				while (count > 64) {
 					int dropCount = world.getRandom().nextInt(32) + 32;
-					ItemEntity drop = new ItemEntity(world, item.getPosX(), item.getPosY(), item.getPosZ(),
+					ItemEntity drop = new ItemEntity(world, item.getX(), item.getY(), item.getZ(),
 							new ItemStack(outCopy.getItem(), dropCount));
-					Vector3d motion = item.getMotion();
-					drop.setMotion(motion.getX() + (world.getRandom().nextFloat() - 0.5D) / 5,
-							motion.getY() + (world.getRandom().nextFloat()) / 10,
-							motion.getZ() + (world.getRandom().nextFloat() - 0.5D) / 5);
-					world.addEntity(drop);
+					Vector3d motion = item.getDeltaMovement();
+					drop.setDeltaMovement(motion.x() + (world.getRandom().nextFloat() - 0.5D) / 5,
+							motion.y() + (world.getRandom().nextFloat()) / 10,
+							motion.z() + (world.getRandom().nextFloat() - 0.5D) / 5);
+					world.addFreshEntity(drop);
 					count -= dropCount;
 				}
 
@@ -344,7 +344,7 @@ public class ItemCAD extends Item implements ICAD {
 				item.setItem(outCopy);
 				did = true;
 				MessageVisualEffect msg = new MessageVisualEffect(ICADColorizer.DEFAULT_SPELL_COLOR,
-						item.getPosX(), item.getPosY(), item.getPosZ(), item.getWidth(), item.getHeight(), item.getYOffset(),
+						item.getX(), item.getY(), item.getZ(), item.getBbWidth(), item.getBbHeight(), item.getMyRidingOffset(),
 						MessageVisualEffect.TYPE_CRAFT);
 				MessageRegister.HANDLER.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> item), msg);
 			}
@@ -433,7 +433,7 @@ public class ItemCAD extends Item implements ICAD {
 			return ItemStack.EMPTY;
 		}
 
-		return ItemStack.read(cmp);
+		return ItemStack.of(cmp);
 	}
 
 	@Override
@@ -584,12 +584,12 @@ public class ItemCAD extends Item implements ICAD {
 			return level >= block.getHarvestLevel(state);
 		}
 		Material material = state.getMaterial();
-		return material == Material.ROCK || material == Material.IRON || material == Material.ANVIL;
+		return material == Material.STONE || material == Material.METAL || material == Material.HEAVY_METAL;
 	}
 
 	@Override
-	public void fillItemGroup(@Nonnull ItemGroup tab, @Nonnull NonNullList<ItemStack> subItems) {
-		if (!isInGroup(tab)) {
+	public void fillItemCategory(@Nonnull ItemGroup tab, @Nonnull NonNullList<ItemStack> subItems) {
+		if (!allowdedIn(tab)) {
 			return;
 		}
 
@@ -636,7 +636,7 @@ public class ItemCAD extends Item implements ICAD {
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public void addInformation(ItemStack stack, @Nullable World playerin, List<ITextComponent> tooltip, ITooltipFlag advanced) {
+	public void appendHoverText(ItemStack stack, @Nullable World playerin, List<ITextComponent> tooltip, ITooltipFlag advanced) {
 		TooltipHelper.tooltipIfShift(tooltip, () -> {
 			ITextComponent componentName = ISocketable.getSocketedItemName(stack, "psimisc.none");
 			tooltip.add(new TranslationTextComponent("psimisc.spell_selected", componentName));
@@ -645,11 +645,11 @@ public class ItemCAD extends Item implements ICAD {
 				ItemStack componentStack = getComponentInSlot(stack, componentType);
 				ITextComponent name = new TranslationTextComponent("psimisc.none");
 				if (!componentStack.isEmpty()) {
-					name = componentStack.getDisplayName();
+					name = componentStack.getHoverName();
 				}
 
-				IFormattableTextComponent componentTypeName = new TranslationTextComponent(componentType.getName()).mergeStyle(TextFormatting.GREEN);
-				tooltip.add(componentTypeName.appendString(": ").append(name));
+				IFormattableTextComponent componentTypeName = new TranslationTextComponent(componentType.getName()).withStyle(TextFormatting.GREEN);
+				tooltip.add(componentTypeName.append(": ").append(name));
 
 				for (EnumCADStat stat : EnumCADStat.class.getEnumConstants()) {
 					if (stat.getSourceType() == componentType) {
@@ -657,7 +657,7 @@ public class ItemCAD extends Item implements ICAD {
 						int statVal = getStatValue(stack, stat);
 						String statValStr = statVal == -1 ? "\u221E" : "" + statVal;
 
-						tooltip.add(new TranslationTextComponent(shrt).mergeStyle(TextFormatting.AQUA).appendString(": " + statValStr));
+						tooltip.add(new TranslationTextComponent(shrt).withStyle(TextFormatting.AQUA).append(": " + statValStr));
 					}
 				}
 			}
@@ -672,7 +672,7 @@ public class ItemCAD extends Item implements ICAD {
 
 	@Override
 	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
-		return !oldStack.isItemEqual(newStack);
+		return !oldStack.sameItem(newStack);
 	}
 
 }

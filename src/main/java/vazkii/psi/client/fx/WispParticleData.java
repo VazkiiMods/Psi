@@ -22,6 +22,8 @@ import javax.annotation.Nonnull;
 import java.util.Locale;
 
 // https://github.com/Vazkii/Botania/blob/1.15/src/main/java/vazkii/botania/client/fx/WispParticleData.java
+import net.minecraft.particles.IParticleData.IDeserializer;
+
 public class WispParticleData implements IParticleData {
 	public static final Codec<WispParticleData> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 			Codec.FLOAT.fieldOf("size").forGetter(d -> d.size),
@@ -58,7 +60,7 @@ public class WispParticleData implements IParticleData {
 	}
 
 	@Override
-	public void write(PacketBuffer buf) {
+	public void writeToNetwork(PacketBuffer buf) {
 		buf.writeFloat(size);
 		buf.writeFloat(r);
 		buf.writeFloat(g);
@@ -68,7 +70,7 @@ public class WispParticleData implements IParticleData {
 
 	@Nonnull
 	@Override
-	public String getParameters() {
+	public String writeToString() {
 		return String.format(Locale.ROOT, "%s %.2f %.2f %.2f %.2f %.2f",
 				this.getType().getRegistryName(), this.size, this.r, this.g, this.b, this.maxAgeMul);
 	}
@@ -76,7 +78,7 @@ public class WispParticleData implements IParticleData {
 	public static final IDeserializer<WispParticleData> DESERIALIZER = new IDeserializer<WispParticleData>() {
 		@Nonnull
 		@Override
-		public WispParticleData deserialize(@Nonnull ParticleType<WispParticleData> type, @Nonnull StringReader reader) throws CommandSyntaxException {
+		public WispParticleData fromCommand(@Nonnull ParticleType<WispParticleData> type, @Nonnull StringReader reader) throws CommandSyntaxException {
 			reader.expect(' ');
 			float size = reader.readFloat();
 			reader.expect(' ');
@@ -91,7 +93,7 @@ public class WispParticleData implements IParticleData {
 		}
 
 		@Override
-		public WispParticleData read(@Nonnull ParticleType<WispParticleData> type, PacketBuffer buf) {
+		public WispParticleData fromNetwork(@Nonnull ParticleType<WispParticleData> type, PacketBuffer buf) {
 			return new WispParticleData(buf.readFloat(), buf.readFloat(), buf.readFloat(), buf.readFloat(), buf.readFloat());
 		}
 	};

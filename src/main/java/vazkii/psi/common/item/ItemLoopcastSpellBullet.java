@@ -18,6 +18,8 @@ import vazkii.psi.common.core.handler.PlayerDataHandler;
 
 import java.util.ArrayList;
 
+import net.minecraft.item.Item.Properties;
+
 public class ItemLoopcastSpellBullet extends ItemSpellBullet {
 
 	public ItemLoopcastSpellBullet(Properties properties) {

@@ -24,7 +24,7 @@ public interface ISpellImmune {
 	boolean isImmune();
 
 	static boolean isImmune(Entity e) {
-		return !e.isNonBoss() || e.getCapability(PsiAPI.SPELL_IMMUNE_CAPABILITY).map(ISpellImmune::isImmune).orElse(false);
+		return !e.canChangeDimensions() || e.getCapability(PsiAPI.SPELL_IMMUNE_CAPABILITY).map(ISpellImmune::isImmune).orElse(false);
 	}
 
 }

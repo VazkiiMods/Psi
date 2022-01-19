@@ -21,6 +21,8 @@ import vazkii.psi.common.spell.operator.vector.PieceOperatorVectorRaycast;
 
 import java.util.ArrayList;
 
+import net.minecraft.item.Item.Properties;
+
 public class ItemCircleSpellBullet extends ItemSpellBullet {
 
 	public ItemCircleSpellBullet(Properties properties) {
@@ -34,10 +36,10 @@ public class ItemCircleSpellBullet extends ItemSpellBullet {
 		RayTraceResult pos = PieceOperatorVectorRaycast.raycast(context.caster, 32);
 		ArrayList<Entity> spellEntities = new ArrayList<>();
 		if (pos != null) {
-			EntitySpellCircle circle = new EntitySpellCircle(EntitySpellCircle.TYPE, context.caster.getEntityWorld());
+			EntitySpellCircle circle = new EntitySpellCircle(EntitySpellCircle.TYPE, context.caster.getCommandSenderWorld());
 			circle.setInfo(context.caster, colorizer, stack);
-			circle.setPosition(pos.getHitVec().x, pos.getHitVec().y, pos.getHitVec().z);
-			circle.getEntityWorld().addEntity(circle);
+			circle.setPos(pos.getLocation().x, pos.getLocation().y, pos.getLocation().z);
+			circle.getCommandSenderWorld().addFreshEntity(circle);
 			spellEntities.add(circle);
 		}
 		return spellEntities;

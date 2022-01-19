@@ -40,16 +40,16 @@ public class SpellPieceComponent implements ICustomComponent {
 
 	@Override
 	public void render(MatrixStack ms, IComponentRenderContext context, float pticks, int mouseX, int mouseY) {
-		IRenderTypeBuffer.Impl buffer = IRenderTypeBuffer.getImpl(Tessellator.getInstance().getBuffer());
-		ms.push();
+		IRenderTypeBuffer.Impl buffer = IRenderTypeBuffer.immediate(Tessellator.getInstance().getBuilder());
+		ms.pushPose();
 		ms.translate(x, y, 0);
 		piece.draw(ms, buffer, 0xF000F0);
-		buffer.finish();
+		buffer.endBatch();
 
 		if (context.isAreaHovered(mouseX, mouseY, x - 1, y - 1, 16, 16)) {
 			PatchouliUtils.setPieceTooltip(context, piece);
 		}
-		ms.pop();
+		ms.popPose();
 	}
 
 	@Override

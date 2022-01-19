@@ -23,8 +23,8 @@ public class PieceSelectorItemCount extends PieceSelector {
 
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
-		ItemStack toCount = context.caster.inventory.mainInventory.get(context.getTargetSlot());
-		return context.caster.inventory.mainInventory.stream().filter(stack -> stack.isItemEqual(toCount)).mapToInt(ItemStack::getCount).reduce(Integer::sum).orElse(0);
+		ItemStack toCount = context.caster.inventory.items.get(context.getTargetSlot());
+		return context.caster.inventory.items.stream().filter(stack -> stack.sameItem(toCount)).mapToInt(ItemStack::getCount).reduce(Integer::sum).orElse(0);
 	}
 
 	@Override

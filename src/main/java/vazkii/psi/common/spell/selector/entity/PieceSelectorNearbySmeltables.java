@@ -34,17 +34,17 @@ public class PieceSelectorNearbySmeltables extends PieceSelectorNearby {
 	}
 
 	public static ItemStack simulateSmelt(World world, ItemStack input) {
-		DUMMY_INV.clear();
-		DUMMY_INV.setInventorySlotContents(0, input);
-		return world.getRecipeManager().getRecipe(IRecipeType.SMELTING, DUMMY_INV, world)
-				.map(FurnaceRecipe::getRecipeOutput)
+		DUMMY_INV.clearContent();
+		DUMMY_INV.setItem(0, input);
+		return world.getRecipeManager().getRecipeFor(IRecipeType.SMELTING, DUMMY_INV, world)
+				.map(FurnaceRecipe::getResultItem)
 				.orElse(ItemStack.EMPTY);
 	}
 
 	public boolean accept(Entity e) {
 		if (e instanceof ItemEntity) {
 			ItemEntity eitem = (ItemEntity) e;
-			return !simulateSmelt(e.getEntityWorld(), eitem.getItem()).isEmpty();
+			return !simulateSmelt(e.getCommandSenderWorld(), eitem.getItem()).isEmpty();
 		}
 
 		return false;

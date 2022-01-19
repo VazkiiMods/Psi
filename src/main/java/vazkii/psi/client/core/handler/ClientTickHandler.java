@@ -58,7 +58,7 @@ public class ClientTickHandler {
 
 		if (event.phase == TickEvent.Phase.START) {
 
-			boolean pressed = mc.gameSettings.keyBindJump.isPressed();
+			boolean pressed = mc.options.keyJump.consumeClick();
 			if (mc.player != null && pressed && (!lastJumpKeyState && !mc.player.isOnGround())) {
 				PsiArmorEvent.post(new PsiArmorEvent(mc.player, PsiArmorEvent.JUMP));
 				MessageRegister.HANDLER.sendToServer(new MessageTriggerJumpSpell());
@@ -69,12 +69,12 @@ public class ClientTickHandler {
 
 			HUDHandler.tick();
 
-			Screen gui = mc.currentScreen;
-			if (gui == null && KeybindHandler.keybind.isKeyDown()) {
+			Screen gui = mc.screen;
+			if (gui == null && KeybindHandler.keybind.isDown()) {
 				KeybindHandler.keyDown();
 			}
 
-			if (!mc.isGamePaused()) {
+			if (!mc.isPaused()) {
 				++ticksInGame;
 				partialTicks = 0.0F;
 			}

@@ -43,12 +43,12 @@ import java.util.List;
 public class ItemPsimetalAxe extends AxeItem implements IPsimetalTool {
 
 	public ItemPsimetalAxe(Item.Properties properties) {
-		super(PsiAPI.PSIMETAL_TOOL_MATERIAL, 5.0F, -3.0F, properties.addToolType(ToolType.AXE, PsiAPI.PSIMETAL_TOOL_MATERIAL.getHarvestLevel()));
+		super(PsiAPI.PSIMETAL_TOOL_MATERIAL, 5.0F, -3.0F, properties.addToolType(ToolType.AXE, PsiAPI.PSIMETAL_TOOL_MATERIAL.getLevel()));
 	}
 
 	@Override
-	public boolean onBlockDestroyed(ItemStack itemstack, World world, BlockState state, BlockPos pos, LivingEntity player) {
-		super.onBlockDestroyed(itemstack, world, state, pos, player);
+	public boolean mineBlock(ItemStack itemstack, World world, BlockState state, BlockPos pos, LivingEntity player) {
+		super.mineBlock(itemstack, world, state, pos, player);
 		if (!(player instanceof PlayerEntity)) {
 			return false;
 		}
@@ -66,7 +66,7 @@ public class ItemPsimetalAxe extends AxeItem implements IPsimetalTool {
 	@Override
 	public void setDamage(ItemStack stack, int damage) {
 		if (damage > stack.getMaxDamage()) {
-			damage = stack.getDamage();
+			damage = stack.getDamageValue();
 		}
 		super.setDamage(stack, damage);
 	}
@@ -82,8 +82,8 @@ public class ItemPsimetalAxe extends AxeItem implements IPsimetalTool {
 
 	@Nonnull
 	@Override
-	public String getTranslationKey(ItemStack stack) {
-		String name = super.getTranslationKey(stack);
+	public String getDescriptionId(ItemStack stack) {
+		String name = super.getDescriptionId(stack);
 		if (!isEnabled(stack)) {
 			name += ".broken";
 		}
@@ -110,7 +110,7 @@ public class ItemPsimetalAxe extends AxeItem implements IPsimetalTool {
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public void addInformation(ItemStack stack, @Nullable World playerIn, List<ITextComponent> tooltip, ITooltipFlag advanced) {
+	public void appendHoverText(ItemStack stack, @Nullable World playerIn, List<ITextComponent> tooltip, ITooltipFlag advanced) {
 		ITextComponent componentName = ISocketable.getSocketedItemName(stack, "psimisc.none");
 		tooltip.add(new TranslationTextComponent("psimisc.spell_selected", componentName));
 	}

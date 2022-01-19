@@ -27,7 +27,7 @@ public abstract class ItemExosuitSensor extends Item implements IExosuitSensor {
 	public static int lowHealthColor = 0xFF8CC5;
 
 	public ItemExosuitSensor(Item.Properties properties) {
-		super(properties.maxStackSize(1));
+		super(properties.stacksTo(1));
 	}
 
 	@Override

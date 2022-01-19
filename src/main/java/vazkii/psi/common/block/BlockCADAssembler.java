@@ -35,6 +35,8 @@ import javax.annotation.Nullable;
 
 import static net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY;
 
+import net.minecraft.block.AbstractBlock.Properties;
+
 public class BlockCADAssembler extends HorizontalBlock {
 
 	public BlockCADAssembler(Properties props) {
@@ -42,25 +44,25 @@ public class BlockCADAssembler extends HorizontalBlock {
 	}
 
 	@Override
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-		builder.add(HORIZONTAL_FACING);
+	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+		builder.add(FACING);
 	}
 
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext ctx) {
-		return getDefaultState().with(HORIZONTAL_FACING, ctx.getPlacementHorizontalFacing().getOpposite());
+		return defaultBlockState().setValue(FACING, ctx.getHorizontalDirection().getOpposite());
 	}
 
 	@Override
 	@SuppressWarnings("deprecation")
-	public boolean hasComparatorInputOverride(BlockState state) {
+	public boolean hasAnalogOutputSignal(BlockState state) {
 		return true;
 	}
 
 	@Override
 	@SuppressWarnings("deprecation")
-	public int getComparatorInputOverride(BlockState blockState, World worldIn, BlockPos pos) {
-		TileEntity tile = worldIn.getTileEntity(pos);
+	public int getAnalogOutputSignal(BlockState blockState, World worldIn, BlockPos pos) {
+		TileEntity tile = worldIn.getBlockEntity(pos);
 		if (tile != null) {
 			return tile.getCapability(ITEM_HANDLER_CAPABILITY)
 					.map(ItemHandlerHelper::calcRedstoneFromInventory)
@@ -71,9 +73,9 @@ public class BlockCADAssembler extends HorizontalBlock {
 	}
 
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult rayTraceResult) {
-		if (!world.isRemote) {
-			INamedContainerProvider container = state.getContainer(world, pos);
+	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult rayTraceResult) {
+		if (!world.isClientSide) {
+			INamedContainerProvider container = state.getMenuProvider(world, pos);
 			if (container != null) {
 				NetworkHooks.openGui((ServerPlayerEntity) playerIn, container, pos);
 				return ActionResultType.SUCCESS;
@@ -84,8 +86,8 @@ public class BlockCADAssembler extends HorizontalBlock {
 
 	@Nullable
 	@Override
-	public INamedContainerProvider getContainer(@Nonnull BlockState state, @Nonnull World world, @Nonnull BlockPos pos) {
-		TileEntity te = world.getTileEntity(pos);
+	public INamedContainerProvider getMenuProvider(@Nonnull BlockState state, @Nonnull World world, @Nonnull BlockPos pos) {
+		TileEntity te = world.getBlockEntity(pos);
 		if (te instanceof TileCADAssembler) {
 			return (INamedContainerProvider) te;
 		}
@@ -104,20 +106,20 @@ public class BlockCADAssembler extends HorizontalBlock {
 	}
 
 	@Override
-	public void onReplaced(BlockState state, @Nonnull World world, @Nonnull BlockPos pos, BlockState newState, boolean isMoving) {
+	public void onRemove(BlockState state, @Nonnull World world, @Nonnull BlockPos pos, BlockState newState, boolean isMoving) {
 		if (state.getBlock() != newState.getBlock() && !isMoving) {
-			TileCADAssembler te = (TileCADAssembler) world.getTileEntity(pos);
+			TileCADAssembler te = (TileCADAssembler) world.getBlockEntity(pos);
 			if (te != null) {
 				for (int i = 0; i < te.getInventory().getSlots(); i++) {
 					ItemStack stack = te.getInventory().getStackInSlot(i);
 					if (!stack.isEmpty()) {
-						InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), stack);
+						InventoryHelper.dropItemStack(world, pos.getX(), pos.getY(), pos.getZ(), stack);
 					}
 				}
 			}
 		}
 
-		super.onReplaced(state, world, pos, newState, isMoving);
+		super.onRemove(state, world, pos, newState, isMoving);
 	}
 
 }

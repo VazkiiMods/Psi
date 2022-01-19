@@ -48,10 +48,10 @@ public class PieceOperatorBlockComparatorStrength extends PieceOperator {
 			throw new SpellRuntimeException(SpellRuntimeException.COMPARATOR);
 		}
 
-		BlockState state = Blocks.COMPARATOR.getDefaultState()
-				.with(HorizontalBlock.HORIZONTAL_FACING, whichWay.getOpposite());
+		BlockState state = Blocks.COMPARATOR.defaultBlockState()
+				.setValue(HorizontalBlock.FACING, whichWay.getOpposite());
 
-		return ((ComparatorBlock) Blocks.COMPARATOR).calculateInputStrength(context.caster.world, pos.offset(whichWay), state) * 1.0;
+		return ((ComparatorBlock) Blocks.COMPARATOR).getInputSignal(context.caster.level, pos.relative(whichWay), state) * 1.0;
 	}
 
 	@Override

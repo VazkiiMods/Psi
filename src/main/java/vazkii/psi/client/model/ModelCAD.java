@@ -41,7 +41,7 @@ public class ModelCAD implements IBakedModel {
 	private final ItemOverrideList itemHandler = new ItemOverrideList() {
 		@Nullable
 		@Override
-		public IBakedModel getOverrideModel(IBakedModel model, ItemStack stack, @Nullable ClientWorld world, @Nullable LivingEntity entity) {
+		public IBakedModel resolve(IBakedModel model, ItemStack stack, @Nullable ClientWorld world, @Nullable LivingEntity entity) {
 			ICAD cad = (ICAD) stack.getItem();
 			ItemStack assemblyStack = cad.getComponentInSlot(stack, EnumCADComponent.ASSEMBLY);
 			if (assemblyStack.isEmpty()) {
@@ -58,7 +58,7 @@ public class ModelCAD implements IBakedModel {
 	}
 
 	@Override
-	public boolean isAmbientOcclusion() {
+	public boolean useAmbientOcclusion() {
 		return true;
 	}
 
@@ -68,19 +68,19 @@ public class ModelCAD implements IBakedModel {
 	}
 
 	@Override
-	public boolean isSideLit() {
+	public boolean usesBlockLight() {
 		return true;
 	}
 
 	@Override
-	public boolean isBuiltInRenderer() {
+	public boolean isCustomRenderer() {
 		return false;
 	}
 
 	@Nonnull
 	@Override
-	public TextureAtlasSprite getParticleTexture() {
-		return Minecraft.getInstance().getAtlasSpriteGetter(AtlasTexture.LOCATION_BLOCKS_TEXTURE).apply(MissingTextureSprite.getLocation());
+	public TextureAtlasSprite getParticleIcon() {
+		return Minecraft.getInstance().getTextureAtlas(AtlasTexture.LOCATION_BLOCKS).apply(MissingTextureSprite.getLocation());
 	}
 
 	@Nonnull

@@ -68,13 +68,13 @@ public class PieceTrickBlink extends PieceTrick {
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 		}
 
-		Vector3d look = e.getLookVec();
+		Vector3d look = e.getLookAngle();
 
 		double offX = look.x * dist;
 		double offY = e.equals(context.caster) ? look.y * dist : Math.max(0, look.y * dist);
 		double offZ = look.z * dist;
 
-		e.setPosition(e.getPosX() + offX, e.getPosY() + offY, e.getPosZ() + offZ);
+		e.setPos(e.getX() + offX, e.getY() + offY, e.getZ() + offZ);
 		if (e instanceof ServerPlayerEntity) {
 			MessageRegister.sendToPlayer(new MessageBlink(offX, offY, offZ), (ServerPlayerEntity) e);
 		}

@@ -55,7 +55,7 @@ public class PieceOperatorEntityMotion extends PieceOperator {
 			}
 		}
 
-		return new Vector3(e.getMotion()).multiply(1.0 / PieceTrickAddMotion.MULTIPLIER);
+		return new Vector3(e.getDeltaMovement()).multiply(1.0 / PieceTrickAddMotion.MULTIPLIER);
 	}
 
 	@Override

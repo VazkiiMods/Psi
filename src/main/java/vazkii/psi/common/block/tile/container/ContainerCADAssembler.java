@@ -64,13 +64,13 @@ public class ContainerCADAssembler extends Container {
 
 	public static ContainerCADAssembler fromNetwork(int windowId, PlayerInventory playerInventory, PacketBuffer buf) {
 		BlockPos pos = buf.readBlockPos();
-		return new ContainerCADAssembler(windowId, playerInventory, (TileCADAssembler) playerInventory.player.world.getTileEntity(pos));
+		return new ContainerCADAssembler(windowId, playerInventory, (TileCADAssembler) playerInventory.player.level.getBlockEntity(pos));
 	}
 
 	public ContainerCADAssembler(int windowId, PlayerInventory playerInventory, TileCADAssembler assembler) {
 		super(TYPE, windowId);
 		PlayerEntity player = playerInventory.player;
-		int playerSize = playerInventory.getSizeInventory();
+		int playerSize = playerInventory.getContainerSize();
 
 		this.assembler = assembler;
 		IItemHandlerModifiable assemblerInv = assembler.getInventory();
@@ -81,62 +81,62 @@ public class ContainerCADAssembler extends Container {
 
 		addSlot(new SlotCADOutput(output, assembler, 120, 35));
 
-		cadComponentStart = inventorySlots.size();
+		cadComponentStart = slots.size();
 		addSlot(new SlotItemHandler(assemblerInv, assembler.getComponentSlot(EnumCADComponent.ASSEMBLY), 120, 91));
 		addSlot(new SlotItemHandler(assemblerInv, assembler.getComponentSlot(EnumCADComponent.CORE), 100, 91));
 		addSlot(new SlotItemHandler(assemblerInv, assembler.getComponentSlot(EnumCADComponent.SOCKET), 140, 91));
 		addSlot(new SlotItemHandler(assemblerInv, assembler.getComponentSlot(EnumCADComponent.BATTERY), 110, 111));
 		addSlot(new SlotItemHandler(assemblerInv, assembler.getComponentSlot(EnumCADComponent.DYE), 130, 111));
 
-		socketableStart = inventorySlots.size();
+		socketableStart = slots.size();
 		addSlot(new SlotSocketable(assemblerInv, bullets, 0, 35, 21));
-		socketableEnd = inventorySlots.size();
+		socketableEnd = slots.size();
 
-		bulletStart = inventorySlots.size();
+		bulletStart = slots.size();
 		for (int row = 0; row < 4; row++) {
 			for (int col = 0; col < 3; col++) {
 				addSlot(new ValidatorSlot(bullets, col + row * 3, 17 + col * 18, 57 + row * 18));
 			}
 		}
-		bulletEnd = inventorySlots.size();
+		bulletEnd = slots.size();
 
 		int xs = 48;
 		int ys = 143;
 
-		playerStart = inventorySlots.size();
+		playerStart = slots.size();
 		for (int row = 0; row < 3; row++) {
 			for (int col = 0; col < 9; col++) {
 				addSlot(new Slot(playerInventory, col + row * 9 + 9, xs + col * 18, ys + row * 18));
 			}
 		}
-		playerEnd = inventorySlots.size();
+		playerEnd = slots.size();
 
-		hotbarStart = inventorySlots.size();
+		hotbarStart = slots.size();
 		for (int col = 0; col < 9; col++) {
 			addSlot(new Slot(playerInventory, col, xs + col * 18, ys + 58));
 		}
-		hotbarEnd = inventorySlots.size();
+		hotbarEnd = slots.size();
 
-		armorStart = inventorySlots.size();
+		armorStart = slots.size();
 		for (int armorSlot = 0; armorSlot < 4; armorSlot++) {
 			final EquipmentSlotType slot = equipmentSlots[armorSlot];
 
 			addSlot(new Slot(playerInventory, playerSize - 2 - armorSlot,
 					xs - 27, ys + 18 * armorSlot) {
 				@Override
-				public int getSlotStackLimit() {
+				public int getMaxStackSize() {
 					return 1;
 				}
 
 				@Override
-				public boolean isItemValid(ItemStack stack) {
+				public boolean mayPlace(ItemStack stack) {
 					return !stack.isEmpty() && stack.getItem().canEquip(stack, slot, player);
 				}
 
 				@OnlyIn(Dist.CLIENT)
 				@Override
-				public Pair<ResourceLocation, ResourceLocation> getBackground() {
-					return Pair.of(PlayerContainer.LOCATION_BLOCKS_TEXTURE, PlayerContainer.ARMOR_SLOT_TEXTURES[slot.getIndex()]);
+				public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
+					return Pair.of(PlayerContainer.BLOCK_ATLAS, PlayerContainer.TEXTURE_EMPTY_SLOTS[slot.getIndex()]);
 				}
 			});
 		}
@@ -144,64 +144,64 @@ public class ContainerCADAssembler extends Container {
 		addSlot(new Slot(playerInventory, playerSize - 1, 219, 143) {
 			@OnlyIn(Dist.CLIENT)
 			@Override
-			public Pair<ResourceLocation, ResourceLocation> getBackground() {
-				return Pair.of(PlayerContainer.LOCATION_BLOCKS_TEXTURE, PlayerContainer.EMPTY_ARMOR_SLOT_SHIELD);
+			public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
+				return Pair.of(PlayerContainer.BLOCK_ATLAS, PlayerContainer.EMPTY_ARMOR_SLOT_SHIELD);
 			}
 		});
 	}
 
 	@Override
-	public boolean canInteractWith(@Nonnull PlayerEntity playerIn) {
-		return assembler.getPos().distanceSq(playerIn.getPosX(), playerIn.getPosY(), playerIn.getPosZ(), true) <= 64;
+	public boolean stillValid(@Nonnull PlayerEntity playerIn) {
+		return assembler.getBlockPos().distSqr(playerIn.getX(), playerIn.getY(), playerIn.getZ(), true) <= 64;
 	}
 
 	@Nonnull
 	@Override
-	public ItemStack transferStackInSlot(PlayerEntity playerIn, int from) {
+	public ItemStack quickMoveStack(PlayerEntity playerIn, int from) {
 		ItemStack mergeStack = ItemStack.EMPTY;
-		Slot slot = inventorySlots.get(from);
+		Slot slot = slots.get(from);
 
-		if (slot != null && slot.getHasStack()) {
-			ItemStack stackInSlot = slot.getStack();
+		if (slot != null && slot.hasItem()) {
+			ItemStack stackInSlot = slot.getItem();
 			mergeStack = stackInSlot.copy();
 
 			if (from >= playerStart) {
 				if (stackInSlot.getItem() instanceof ICADComponent) {
 					EnumCADComponent componentType = ((ICADComponent) stackInSlot.getItem()).getComponentType(stackInSlot);
 					int componentSlot = cadComponentStart + componentType.ordinal();
-					if (!mergeItemStack(stackInSlot, componentSlot, componentSlot + 1, false)) {
+					if (!moveItemStackTo(stackInSlot, componentSlot, componentSlot + 1, false)) {
 						return ItemStack.EMPTY;
 					}
 				} else if (ISocketable.isSocketable(stackInSlot)) {
-					if (!mergeItemStack(stackInSlot, socketableStart, socketableEnd, false)) {
+					if (!moveItemStackTo(stackInSlot, socketableStart, socketableEnd, false)) {
 						return ItemStack.EMPTY;
 					}
 				} else if (ISpellAcceptor.isContainer(stackInSlot)) {
-					if (!mergeItemStack(stackInSlot, bulletStart, bulletEnd, false)) {
+					if (!moveItemStackTo(stackInSlot, bulletStart, bulletEnd, false)) {
 						return ItemStack.EMPTY;
 					}
 				} else if (from < hotbarStart) {
-					if (!mergeItemStack(stackInSlot, hotbarStart, hotbarEnd, true)) {
+					if (!moveItemStackTo(stackInSlot, hotbarStart, hotbarEnd, true)) {
 						return ItemStack.EMPTY;
 					}
-				} else if (!mergeItemStack(stackInSlot, playerStart, playerEnd, false)) {
+				} else if (!moveItemStackTo(stackInSlot, playerStart, playerEnd, false)) {
 					return ItemStack.EMPTY;
 				}
 			} else if (stackInSlot.getItem() instanceof ArmorItem) {
 				ArmorItem armor = (ArmorItem) stackInSlot.getItem();
-				int armorSlot = armorStart + armor.getEquipmentSlot().getSlotIndex() - 1;
-				if (!mergeItemStack(stackInSlot, armorSlot, armorSlot + 1, true) &&
-						!mergeItemStack(stackInSlot, playerStart, hotbarEnd, true)) {
+				int armorSlot = armorStart + armor.getSlot().getFilterFlag() - 1;
+				if (!moveItemStackTo(stackInSlot, armorSlot, armorSlot + 1, true) &&
+						!moveItemStackTo(stackInSlot, playerStart, hotbarEnd, true)) {
 					return ItemStack.EMPTY;
 				}
-			} else if (!mergeItemStack(stackInSlot, playerStart, hotbarEnd, true)) {
+			} else if (!moveItemStackTo(stackInSlot, playerStart, hotbarEnd, true)) {
 				return ItemStack.EMPTY;
 			}
 
-			slot.onSlotChanged();
+			slot.setChanged();
 
 			if (stackInSlot.isEmpty()) {
-				slot.putStack(ItemStack.EMPTY);
+				slot.set(ItemStack.EMPTY);
 			} else if (stackInSlot.getCount() == mergeStack.getCount()) {
 				return ItemStack.EMPTY;
 			}
@@ -213,7 +213,7 @@ public class ContainerCADAssembler extends Container {
 	}
 
 	@Override
-	public void onContainerClosed(PlayerEntity playerIn) {
+	public void removed(PlayerEntity playerIn) {
 		assembler.clearCachedCAD();
 	}
 }

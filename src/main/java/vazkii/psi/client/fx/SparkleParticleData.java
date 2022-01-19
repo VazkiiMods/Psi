@@ -22,6 +22,8 @@ import javax.annotation.Nonnull;
 import java.util.Locale;
 
 // https://github.com/Vazkii/Botania/blob/1.15/src/main/java/vazkii/botania/client/fx/SparkleParticleData.java
+import net.minecraft.particles.IParticleData.IDeserializer;
+
 public class SparkleParticleData implements IParticleData {
 	public static final Codec<SparkleParticleData> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 			Codec.FLOAT.fieldOf("size").forGetter(d -> d.size),
@@ -60,7 +62,7 @@ public class SparkleParticleData implements IParticleData {
 	}
 
 	@Override
-	public void write(PacketBuffer buf) {
+	public void writeToNetwork(PacketBuffer buf) {
 		buf.writeFloat(size);
 		buf.writeFloat(r);
 		buf.writeFloat(g);
@@ -73,7 +75,7 @@ public class SparkleParticleData implements IParticleData {
 
 	@Nonnull
 	@Override
-	public String getParameters() {
+	public String writeToString() {
 		return String.format(Locale.ROOT, "%s %.2f %.2f %.2f %.2f %d %.2f %.2f %.2f",
 				this.getType().getRegistryName(), this.size, this.r, this.g, this.b, this.m, this.mx, this.my, this.mz);
 	}
@@ -81,7 +83,7 @@ public class SparkleParticleData implements IParticleData {
 	public static final IDeserializer<SparkleParticleData> DESERIALIZER = new IDeserializer<SparkleParticleData>() {
 		@Nonnull
 		@Override
-		public SparkleParticleData deserialize(@Nonnull ParticleType<SparkleParticleData> type, @Nonnull StringReader reader) throws CommandSyntaxException {
+		public SparkleParticleData fromCommand(@Nonnull ParticleType<SparkleParticleData> type, @Nonnull StringReader reader) throws CommandSyntaxException {
 			reader.expect(' ');
 			float size = reader.readFloat();
 			reader.expect(' ');
@@ -102,7 +104,7 @@ public class SparkleParticleData implements IParticleData {
 		}
 
 		@Override
-		public SparkleParticleData read(@Nonnull ParticleType<SparkleParticleData> type, PacketBuffer buf) {
+		public SparkleParticleData fromNetwork(@Nonnull ParticleType<SparkleParticleData> type, PacketBuffer buf) {
 			return new SparkleParticleData(buf.readFloat(), buf.readFloat(), buf.readFloat(), buf.readFloat(), buf.readInt(), buf.readDouble(), buf.readDouble(), buf.readDouble());
 		}
 	};

@@ -57,7 +57,7 @@ public final class SharingHelper {
 			String encodedTitle = URLEncoder.encode(title, "UTF-8");
 
 			String redditUrl = "https://old.reddit.com/r/psispellcompendium/submit?title=" + encodedTitle + "&text=" + encodedContents;
-			Util.getOSType().openURI(new URI(redditUrl));
+			Util.getPlatform().openUri(new URI(redditUrl));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -66,7 +66,7 @@ public final class SharingHelper {
 	public static void uploadAndOpen(String title, String export) {
 		String url = uploadImage(title, export);
 		try {
-			Util.getOSType().openURI(new URI(url));
+			Util.getPlatform().openUri(new URI(url));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -107,11 +107,11 @@ public final class SharingHelper {
 	public static String takeScreenshot() throws Exception {
 		Minecraft mc = Minecraft.getInstance();
 
-		int screenWidth = mc.getMainWindow().getWidth();
-		int screenHeight = mc.getMainWindow().getHeight();
+		int screenWidth = mc.getWindow().getScreenWidth();
+		int screenHeight = mc.getWindow().getScreenHeight();
 
-		NativeImage image = ScreenShotHelper.createScreenshot(screenWidth, screenHeight, mc.getFramebuffer());
-		byte[] bArray = image.getBytes();
+		NativeImage image = ScreenShotHelper.takeScreenshot(screenWidth, screenHeight, mc.getMainRenderTarget());
+		byte[] bArray = image.asByteArray();
 		return Base64.getEncoder().encodeToString(bArray);
 	}
 

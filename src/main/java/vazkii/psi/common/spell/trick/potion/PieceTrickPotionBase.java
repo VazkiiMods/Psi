@@ -78,7 +78,7 @@ public abstract class PieceTrickPotionBase extends PieceTrick {
 		}
 		double timeVal = this.getParamValue(context, time).doubleValue();
 
-		((LivingEntity) targetVal).addPotionEffect(new EffectInstance(getPotion(), Math.max(1, (int) timeVal) * 20, hasPower() ? Math.max(0, (int) powerVal - 1) : 0));
+		((LivingEntity) targetVal).addEffect(new EffectInstance(getPotion(), Math.max(1, (int) timeVal) * 20, hasPower() ? Math.max(0, (int) powerVal - 1) : 0));
 
 		return null;
 	}

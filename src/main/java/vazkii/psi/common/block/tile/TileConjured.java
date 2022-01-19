@@ -45,35 +45,35 @@ public class TileConjured extends TileEntity {
 		float g = PsiRenderHelper.g(color) / 255F;
 		float b = PsiRenderHelper.b(color) / 255F;
 
-		BlockState state = getWorld().getBlockState(getPos());
+		BlockState state = getLevel().getBlockState(getBlockPos());
 
-		if (state.getBlock() == ModBlocks.conjured && state.get(BlockConjured.SOLID)) {
+		if (state.getBlock() == ModBlocks.conjured && state.getValue(BlockConjured.SOLID)) {
 			// http://cns-alumni.bu.edu/~lavanya/Graphics/cs580/p5/web-page/cube_edges.gif
 			boolean[] edges = new boolean[12];
 			Arrays.fill(edges, true);
 
-			if (state.get(BlockConjured.BLOCK_DOWN)) {
+			if (state.getValue(BlockConjured.BLOCK_DOWN)) {
 				removeEdges(edges, 0, 1, 2, 3);
 			}
-			if (state.get(BlockConjured.BLOCK_UP)) {
+			if (state.getValue(BlockConjured.BLOCK_UP)) {
 				removeEdges(edges, 4, 5, 6, 7);
 			}
-			if (state.get(BlockConjured.BLOCK_NORTH)) {
+			if (state.getValue(BlockConjured.BLOCK_NORTH)) {
 				removeEdges(edges, 3, 7, 8, 11);
 			}
-			if (state.get(BlockConjured.BLOCK_SOUTH)) {
+			if (state.getValue(BlockConjured.BLOCK_SOUTH)) {
 				removeEdges(edges, 1, 5, 9, 10);
 			}
-			if (state.get(BlockConjured.BLOCK_EAST)) {
+			if (state.getValue(BlockConjured.BLOCK_EAST)) {
 				removeEdges(edges, 2, 6, 10, 11);
 			}
-			if (state.get(BlockConjured.BLOCK_WEST)) {
+			if (state.getValue(BlockConjured.BLOCK_WEST)) {
 				removeEdges(edges, 0, 4, 8, 9);
 			}
 
-			double x = getPos().getX();
-			double y = getPos().getY();
-			double z = getPos().getZ();
+			double x = getBlockPos().getX();
+			double y = getBlockPos().getY();
+			double z = getBlockPos().getZ();
 
 			makeParticle(edges[0], r, g, b, x + 0, y + 0, z + 0, 0, 0, 1);
 			makeParticle(edges[1], r, g, b, x + 0, y + 0, z + 1, 1, 0, 0);
@@ -95,9 +95,9 @@ public class TileConjured extends TileEntity {
 		} else if (Math.random() < 0.5) {
 			float w = 0.15F;
 			float h = 0.05F;
-			double x = getPos().getX() + 0.5 + (Math.random() - 0.5) * w;
-			double y = getPos().getY() + 0.25 + (Math.random() - 0.5) * h;
-			double z = getPos().getZ() + 0.5 + (Math.random() - 0.5) * w;
+			double x = getBlockPos().getX() + 0.5 + (Math.random() - 0.5) * w;
+			double y = getBlockPos().getY() + 0.25 + (Math.random() - 0.5) * h;
+			double z = getBlockPos().getZ() + 0.5 + (Math.random() - 0.5) * w;
 
 			float s = 0.2F + (float) Math.random() * 0.1F;
 			float m = 0.01F + (float) Math.random() * 0.015F;
@@ -124,23 +124,23 @@ public class TileConjured extends TileEntity {
 	}
 
 	@Override
-	public CompoundNBT write(CompoundNBT cmp) {
-		cmp = super.write(cmp);
+	public CompoundNBT save(CompoundNBT cmp) {
+		cmp = super.save(cmp);
 		if (!colorizer.isEmpty()) {
-			cmp.put(TAG_COLORIZER, colorizer.write(new CompoundNBT()));
+			cmp.put(TAG_COLORIZER, colorizer.save(new CompoundNBT()));
 		}
 		return cmp;
 	}
 
 	@Override
-	public void read(BlockState state, CompoundNBT cmp) {
-		super.read(state, cmp);
+	public void load(BlockState state, CompoundNBT cmp) {
+		super.load(state, cmp);
 		this.readPacketNBT(cmp);
 	}
 
 	public void readPacketNBT(CompoundNBT cmp) {
 		if (cmp.contains(TAG_COLORIZER)) {
-			colorizer = ItemStack.read(cmp.getCompound(TAG_COLORIZER));
+			colorizer = ItemStack.of(cmp.getCompound(TAG_COLORIZER));
 		} else {
 			colorizer = ItemStack.EMPTY;
 		}
@@ -148,17 +148,17 @@ public class TileConjured extends TileEntity {
 
 	@Override
 	public SUpdateTileEntityPacket getUpdatePacket() {
-		return new SUpdateTileEntityPacket(getPos(), 0, write(new CompoundNBT()));
+		return new SUpdateTileEntityPacket(getBlockPos(), 0, save(new CompoundNBT()));
 	}
 
 	@Override
 	public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
-		this.readPacketNBT(pkt.getNbtCompound());
+		this.readPacketNBT(pkt.getTag());
 	}
 
 	@Override
 	public CompoundNBT getUpdateTag() {
-		return write(new CompoundNBT());
+		return save(new CompoundNBT());
 	}
 
 }

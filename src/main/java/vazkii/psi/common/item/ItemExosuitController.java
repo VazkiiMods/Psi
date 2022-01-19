@@ -32,18 +32,18 @@ public class ItemExosuitController extends Item implements ISocketableController
 	private static final String TAG_SELECTED_CONTROL_SLOT = "selectedControlSlot";
 
 	public ItemExosuitController(Item.Properties properties) {
-		super(properties.maxStackSize(1));
+		super(properties.stacksTo(1));
 	}
 
 	@Nonnull
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, @Nonnull Hand hand) {
-		ItemStack itemStackIn = playerIn.getHeldItem(hand);
-		if (playerIn.isSneaking()) {
-			if (!worldIn.isRemote) {
-				worldIn.playSound(null, playerIn.getPosX(), playerIn.getPosY(), playerIn.getPosZ(), PsiSoundHandler.compileError, SoundCategory.PLAYERS, 0.25F, 1F);
+	public ActionResult<ItemStack> use(World worldIn, PlayerEntity playerIn, @Nonnull Hand hand) {
+		ItemStack itemStackIn = playerIn.getItemInHand(hand);
+		if (playerIn.isShiftKeyDown()) {
+			if (!worldIn.isClientSide) {
+				worldIn.playSound(null, playerIn.getX(), playerIn.getY(), playerIn.getZ(), PsiSoundHandler.compileError, SoundCategory.PLAYERS, 0.25F, 1F);
 			} else {
-				playerIn.swingArm(hand);
+				playerIn.swing(hand);
 			}
 
 			ItemStack[] stacks = getControlledStacks(playerIn, itemStackIn);
@@ -62,7 +62,7 @@ public class ItemExosuitController extends Item implements ISocketableController
 	public ItemStack[] getControlledStacks(PlayerEntity player, ItemStack stack) {
 		List<ItemStack> stacks = new ArrayList<>();
 		for (int i = 0; i < 4; i++) {
-			ItemStack armor = player.inventory.armorInventory.get(3 - i);
+			ItemStack armor = player.inventory.armor.get(3 - i);
 			if (!armor.isEmpty() && ISocketable.isSocketable(armor)) {
 				stacks.add(armor);
 			}

@@ -40,13 +40,13 @@ public class ItemSpellDrive extends Item {
 	public static final String HAS_SPELL = "has_spell";
 
 	public ItemSpellDrive(Item.Properties properties) {
-		super(properties.maxStackSize(1));
+		super(properties.stacksTo(1));
 	}
 
 	@Nonnull
 	@Override
-	public ITextComponent getDisplayName(ItemStack stack) {
-		String name = super.getDisplayName(stack).getString();
+	public ITextComponent getName(ItemStack stack) {
+		String name = super.getName(stack).getString();
 		CompoundNBT cmp = stack.getOrCreateTag().getCompound(TAG_SPELL);
 		String spellName = cmp.getString(Spell.TAG_SPELL_NAME); // We don't need to load the whole spell just for the name
 		if (spellName.isEmpty()) {
@@ -58,19 +58,19 @@ public class ItemSpellDrive extends Item {
 
 	@Nonnull
 	@Override
-	public ActionResultType onItemUse(ItemUseContext ctx) {
+	public ActionResultType useOn(ItemUseContext ctx) {
 		PlayerEntity playerIn = ctx.getPlayer();
 		Hand hand = ctx.getHand();
-		World worldIn = ctx.getWorld();
-		BlockPos pos = ctx.getPos();
-		ItemStack stack = playerIn.getHeldItem(hand);
-		TileEntity tile = worldIn.getTileEntity(pos);
+		World worldIn = ctx.getLevel();
+		BlockPos pos = ctx.getClickedPos();
+		ItemStack stack = playerIn.getItemInHand(hand);
+		TileEntity tile = worldIn.getBlockEntity(pos);
 		if (tile instanceof TileProgrammer) {
 			TileProgrammer programmer = (TileProgrammer) tile;
 			Spell spell = getSpell(stack);
 			if (spell == null && programmer.canCompile()) {
 				setSpell(stack, programmer.spell);
-				if (!worldIn.isRemote) {
+				if (!worldIn.isClientSide) {
 					worldIn.playSound(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, PsiSoundHandler.bulletCreate, SoundCategory.PLAYERS, 0.5F, 1F);
 				}
 				return ActionResultType.SUCCESS;
@@ -78,8 +78,8 @@ public class ItemSpellDrive extends Item {
 				boolean enabled = programmer.isEnabled();
 				if (enabled && !programmer.playerLock.isEmpty()) {
 					if (!programmer.playerLock.equals(playerIn.getName().getString())) {
-						if (!worldIn.isRemote) {
-							playerIn.sendMessage(new TranslationTextComponent("psimisc.not_your_programmer").setStyle(Style.EMPTY.setFormatting(TextFormatting.RED)), Util.DUMMY_UUID);
+						if (!worldIn.isClientSide) {
+							playerIn.sendMessage(new TranslationTextComponent("psimisc.not_your_programmer").setStyle(Style.EMPTY.withColor(TextFormatting.RED)), Util.NIL_UUID);
 						}
 						return ActionResultType.SUCCESS;
 					}
@@ -89,7 +89,7 @@ public class ItemSpellDrive extends Item {
 
 				programmer.spell = spell;
 				programmer.onSpellChanged();
-				if (!worldIn.isRemote) {
+				if (!worldIn.isClientSide) {
 					worldIn.playSound(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, PsiSoundHandler.bulletCreate, SoundCategory.PLAYERS, 0.5F, 1F);
 					VanillaPacketDispatcher.dispatchTEToNearbyPlayers(programmer);
 				}
@@ -102,13 +102,13 @@ public class ItemSpellDrive extends Item {
 
 	@Nonnull
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, @Nonnull Hand hand) {
-		ItemStack itemStackIn = playerIn.getHeldItem(hand);
-		if (getSpell(itemStackIn) != null && playerIn.isSneaking()) {
-			if (!worldIn.isRemote) {
-				worldIn.playSound(null, playerIn.getPosX(), playerIn.getPosY(), playerIn.getPosZ(), PsiSoundHandler.compileError, SoundCategory.PLAYERS, 0.5F, 1F);
+	public ActionResult<ItemStack> use(World worldIn, PlayerEntity playerIn, @Nonnull Hand hand) {
+		ItemStack itemStackIn = playerIn.getItemInHand(hand);
+		if (getSpell(itemStackIn) != null && playerIn.isShiftKeyDown()) {
+			if (!worldIn.isClientSide) {
+				worldIn.playSound(null, playerIn.getX(), playerIn.getY(), playerIn.getZ(), PsiSoundHandler.compileError, SoundCategory.PLAYERS, 0.5F, 1F);
 			} else {
-				playerIn.swingArm(hand);
+				playerIn.swing(hand);
 			}
 			setSpell(itemStackIn, null);
 

@@ -47,19 +47,19 @@ public class PieceConstantNumber extends SpellPiece {
 
 		Minecraft mc = Minecraft.getInstance();
 		int color = Psi.magical ? 0 : 0xFFFFFF;
-		float efflen = mc.fontRenderer.getStringWidth(valueStr);
+		float efflen = mc.font.width(valueStr);
 		float scale = 1;
 
 		while (efflen > 16) {
 			scale++;
-			efflen = mc.fontRenderer.getStringWidth(valueStr) / scale;
+			efflen = mc.font.width(valueStr) / scale;
 		}
 
-		ms.push();
+		ms.pushPose();
 		ms.scale(1F / scale, 1F / scale, 1F);
 		ms.translate((9 - efflen / 2) * scale, 4 * scale, 0);
-		mc.fontRenderer.renderString(valueStr, 0, 0, color, false, ms.getLast().getMatrix(), buffers, false, 0, light);
-		ms.pop();
+		mc.font.drawInBatch(valueStr, 0, 0, color, false, ms.last().pose(), buffers, false, 0, light);
+		ms.popPose();
 	}
 
 	@Override

@@ -35,8 +35,8 @@ public class BulletToDriveRecipe extends SpecialRecipe {
 		boolean foundSource = false;
 		boolean foundTarget = false;
 
-		for (int i = 0; i < inv.getSizeInventory(); i++) {
-			ItemStack stack = inv.getStackInSlot(i);
+		for (int i = 0; i < inv.getContainerSize(); i++) {
+			ItemStack stack = inv.getItem(i);
 			if (!stack.isEmpty()) {
 				if (ISpellAcceptor.hasSpell(stack)) {
 					if (foundTarget) {
@@ -59,12 +59,12 @@ public class BulletToDriveRecipe extends SpecialRecipe {
 
 	@Nonnull
 	@Override
-	public ItemStack getCraftingResult(@Nonnull CraftingInventory inv) {
+	public ItemStack assemble(@Nonnull CraftingInventory inv) {
 		Spell source = null;
 		ItemStack target = ItemStack.EMPTY;
 
-		for (int i = 0; i < inv.getSizeInventory(); i++) {
-			ItemStack stack = inv.getStackInSlot(i);
+		for (int i = 0; i < inv.getContainerSize(); i++) {
+			ItemStack stack = inv.getItem(i);
 			if (!stack.isEmpty()) {
 				if (ISpellAcceptor.hasSpell(stack)) {
 					source = ISpellAcceptor.acceptor(stack).getSpell();
@@ -81,10 +81,10 @@ public class BulletToDriveRecipe extends SpecialRecipe {
 
 	@Override
 	public NonNullList<ItemStack> getRemainingItems(CraftingInventory inv) {
-		NonNullList<ItemStack> list = NonNullList.withSize(inv.getSizeInventory(), ItemStack.EMPTY);
+		NonNullList<ItemStack> list = NonNullList.withSize(inv.getContainerSize(), ItemStack.EMPTY);
 
 		for (int i = 0; i < list.size(); ++i) {
-			ItemStack item = inv.getStackInSlot(i);
+			ItemStack item = inv.getItem(i);
 			if (ISpellAcceptor.hasSpell(item)) {
 				list.set(i, item.copy());
 				break;
@@ -101,12 +101,12 @@ public class BulletToDriveRecipe extends SpecialRecipe {
 	}
 
 	@Override
-	public boolean canFit(int width, int height) {
+	public boolean canCraftInDimensions(int width, int height) {
 		return true;
 	}
 
 	@Override
-	public boolean isDynamic() {
+	public boolean isSpecial() {
 		return true;
 	}
 

@@ -55,7 +55,7 @@ public class InventorySocketable implements IInventory, INameable, IIntArray {
 	}
 
 	@Override
-	public int getSizeInventory() {
+	public int getContainerSize() {
 		Iterator<ItemStack> sockerator = getSockerator();
 		return Iterators.size(sockerator);
 	}
@@ -73,7 +73,7 @@ public class InventorySocketable implements IInventory, INameable, IIntArray {
 
 	@Nonnull
 	@Override
-	public ItemStack getStackInSlot(int index) {
+	public ItemStack getItem(int index) {
 		if (socketable == null) {
 			return ItemStack.EMPTY;
 		}
@@ -82,7 +82,7 @@ public class InventorySocketable implements IInventory, INameable, IIntArray {
 
 	@Nonnull
 	@Override
-	public ItemStack decrStackSize(int index, int count) {
+	public ItemStack removeItem(int index, int count) {
 		if (socketable == null) {
 			return ItemStack.EMPTY;
 		}
@@ -96,12 +96,12 @@ public class InventorySocketable implements IInventory, INameable, IIntArray {
 
 	@Nonnull
 	@Override
-	public ItemStack removeStackFromSlot(int index) {
-		return decrStackSize(index, 1);
+	public ItemStack removeItemNoUpdate(int index) {
+		return removeItem(index, 1);
 	}
 
 	@Override
-	public void setInventorySlotContents(int index, @Nonnull ItemStack bullet) {
+	public void setItem(int index, @Nonnull ItemStack bullet) {
 		if (socketable == null) {
 			return;
 		}
@@ -110,32 +110,32 @@ public class InventorySocketable implements IInventory, INameable, IIntArray {
 	}
 
 	@Override
-	public int getInventoryStackLimit() {
+	public int getMaxStackSize() {
 		return 1;
 	}
 
 	@Override
-	public void markDirty() {
+	public void setChanged() {
 		// NO-OP
 	}
 
 	@Override
-	public boolean isUsableByPlayer(@Nonnull PlayerEntity player) {
+	public boolean stillValid(@Nonnull PlayerEntity player) {
 		return true;
 	}
 
 	@Override
-	public void openInventory(@Nonnull PlayerEntity player) {
+	public void startOpen(@Nonnull PlayerEntity player) {
 		// NO-OP
 	}
 
 	@Override
-	public void closeInventory(@Nonnull PlayerEntity player) {
+	public void stopOpen(@Nonnull PlayerEntity player) {
 		// NO-OP
 	}
 
 	@Override
-	public boolean isItemValidForSlot(int index, @Nonnull ItemStack stack) {
+	public boolean canPlaceItem(int index, @Nonnull ItemStack stack) {
 		return socketable != null && socketable.isItemValid(index, stack);
 	}
 
@@ -150,12 +150,12 @@ public class InventorySocketable implements IInventory, INameable, IIntArray {
 	}
 
 	@Override
-	public int size() {
+	public int getCount() {
 		return 0;
 	}
 
 	@Override
-	public void clear() {
+	public void clearContent() {
 		Iterator<ItemStack> sockerator = getSockerator();
 		while (sockerator.hasNext()) {
 			sockerator.next();

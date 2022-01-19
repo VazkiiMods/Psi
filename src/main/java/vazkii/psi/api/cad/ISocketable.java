@@ -55,7 +55,7 @@ public interface ISocketable {
 			return new TranslationTextComponent(fallbackKey);
 		}
 
-		return item.getDisplayName();
+		return item.getHoverName();
 	}
 
 	static boolean isSocketable(ItemStack stack) {

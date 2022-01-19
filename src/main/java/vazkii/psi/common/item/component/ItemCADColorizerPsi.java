@@ -18,6 +18,8 @@ import vazkii.psi.common.core.handler.ContributorSpellCircleHandler;
 
 import java.awt.*;
 
+import net.minecraft.item.Item.Properties;
+
 public class ItemCADColorizerPsi extends ItemCADColorizer {
 
 	public ItemCADColorizerPsi(Properties properties) {

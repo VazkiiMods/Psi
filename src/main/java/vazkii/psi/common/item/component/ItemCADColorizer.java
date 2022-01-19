@@ -16,6 +16,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 import vazkii.psi.api.cad.ICADColorizer;
 
+import net.minecraft.item.Item.Properties;
+
 public class ItemCADColorizer extends ItemCADComponent implements ICADColorizer {
 
 	private final DyeColor color;
@@ -43,7 +45,7 @@ public class ItemCADColorizer extends ItemCADComponent implements ICADColorizer 
 	}
 
 	private static String getProperDyeName(DyeColor color) {
-		return color.getString();
+		return color.getSerializedName();
 	}
 
 	@Override

@@ -25,21 +25,21 @@ import javax.annotation.Nonnull;
 public class ItemDetonator extends Item {
 
 	public ItemDetonator(Item.Properties properties) {
-		super(properties.maxStackSize(1));
+		super(properties.stacksTo(1));
 	}
 
 	@Nonnull
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, @Nonnull Hand hand) {
-		ItemStack itemStackIn = playerIn.getHeldItem(hand);
+	public ActionResult<ItemStack> use(World worldIn, PlayerEntity playerIn, @Nonnull Hand hand) {
+		ItemStack itemStackIn = playerIn.getItemInHand(hand);
 
-		if (!worldIn.isRemote) {
+		if (!worldIn.isClientSide) {
 			IDetonationHandler.performDetonation(worldIn, playerIn);
-			worldIn.playSound(null, playerIn.getPosX(), playerIn.getPosY(), playerIn.getPosZ(), SoundEvents.UI_BUTTON_CLICK, SoundCategory.PLAYERS, 1F, 1F);
+			worldIn.playSound(null, playerIn.getX(), playerIn.getY(), playerIn.getZ(), SoundEvents.UI_BUTTON_CLICK, SoundCategory.PLAYERS, 1F, 1F);
 		}
 
 		else {
-			playerIn.swingArm(hand);
+			playerIn.swing(hand);
 		}
 
 		return new ActionResult<>(ActionResultType.SUCCESS, itemStackIn);

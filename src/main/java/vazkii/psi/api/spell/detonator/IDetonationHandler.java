@@ -62,15 +62,15 @@ public interface IDetonationHandler {
 	}
 
 	static void performDetonation(World world, PlayerEntity player, Entity center, double range, Predicate<Entity> filter) {
-		List<Entity> charges = world.getEntitiesWithinAABB(Entity.class,
-				center.getBoundingBox().grow(range),
+		List<Entity> charges = world.getEntitiesOfClass(Entity.class,
+				center.getBoundingBox().inflate(range),
 				entity -> {
 					if (entity == null) {
 						return false;
 					}
 					return entity.getCapability(PsiAPI.DETONATION_HANDLER_CAPABILITY).map(detonator -> {
 						Vector3d locus = detonator.objectLocus();
-						if (locus == null || locus.squareDistanceTo(center.getPosX(), center.getPosY(), center.getPosZ()) > range * range) {
+						if (locus == null || locus.distanceToSqr(center.getX(), center.getY(), center.getZ()) > range * range) {
 							return false;
 						}
 						return filter == null || filter.test(entity);

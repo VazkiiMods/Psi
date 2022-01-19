@@ -53,10 +53,10 @@ public abstract class PieceSelectorNearby extends PieceSelector {
 
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
-		Vector3 positionVal = this.getParamValueOrDefault(context, position, Vector3.fromVec3d(context.focalPoint.getPositionVec()));
+		Vector3 positionVal = this.getParamValueOrDefault(context, position, Vector3.fromVec3d(context.focalPoint.position()));
 		double radiusVal = this.getParamValueOrDefault(context, radius, 2 * SpellContext.MAX_DISTANCE).doubleValue();
 
-		Vector3 positionCenter = Vector3.fromVec3d(context.focalPoint.getPositionVec());
+		Vector3 positionCenter = Vector3.fromVec3d(context.focalPoint.position());
 
 		if (!context.isInRadius(positionVal)) {
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
@@ -68,7 +68,7 @@ public abstract class PieceSelectorNearby extends PieceSelector {
 
 		Predicate<Entity> pred = getTargetPredicate(context);
 
-		List<Entity> list = context.caster.getEntityWorld().getEntitiesWithinAABB(Entity.class, area, (Entity e) -> e != null && pred.test(e) && e != context.caster && e != context.focalPoint && context.isInRadius(e));
+		List<Entity> list = context.caster.getCommandSenderWorld().getEntitiesOfClass(Entity.class, area, (Entity e) -> e != null && pred.test(e) && e != context.caster && e != context.focalPoint && context.isInRadius(e));
 
 		return EntityListWrapper.make(list);
 	}

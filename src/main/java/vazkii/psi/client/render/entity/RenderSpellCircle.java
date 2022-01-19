@@ -36,12 +36,12 @@ public class RenderSpellCircle extends EntityRenderer<EntitySpellCircle> {
 	static {
 		for (int i = 0; i < LAYERS.length; i++) {
 			ResourceLocation texture = new ResourceLocation(String.format(LibResources.MISC_SPELL_CIRCLE, i));
-			RenderType.State glState = RenderType.State.getBuilder().texture(new RenderState.TextureState(texture, false, false))
-					.cull(new RenderState.CullState(false))
-					.alpha(new RenderState.AlphaState(0.004F))
-					.lightmap(new RenderState.LightmapState(true))
-					.build(true);
-			LAYERS[i] = RenderType.makeType(LibMisc.MOD_ID + ":spell_circle_" + i, DefaultVertexFormats.POSITION_COLOR_TEX_LIGHTMAP, GL11.GL_QUADS, 64, false, false, glState);
+			RenderType.State glState = RenderType.State.builder().setTextureState(new RenderState.TextureState(texture, false, false))
+					.setCullState(new RenderState.CullState(false))
+					.setAlphaState(new RenderState.AlphaState(0.004F))
+					.setLightmapState(new RenderState.LightmapState(true))
+					.createCompositeState(true);
+			LAYERS[i] = RenderType.create(LibMisc.MOD_ID + ":spell_circle_" + i, DefaultVertexFormats.POSITION_COLOR_TEX_LIGHTMAP, GL11.GL_QUADS, 64, false, false, glState);
 		}
 	}
 
@@ -53,8 +53,8 @@ public class RenderSpellCircle extends EntityRenderer<EntitySpellCircle> {
 
 	@Override
 	public void render(EntitySpellCircle entity, float entityYaw, float partialTicks, MatrixStack ms, IRenderTypeBuffer buffers, int light) {
-		ms.push();
-		ItemStack colorizer = entity.getDataManager().get(EntitySpellCircle.COLORIZER_DATA);
+		ms.pushPose();
+		ItemStack colorizer = entity.getEntityData().get(EntitySpellCircle.COLORIZER_DATA);
 		int color = Psi.proxy.getColorForColorizer(colorizer);
 		float alive = entity.getTimeAlive() + partialTicks;
 		float scale = Math.min(1F, alive / EntitySpellCircle.CAST_DELAY);
@@ -62,21 +62,21 @@ public class RenderSpellCircle extends EntityRenderer<EntitySpellCircle> {
 			scale = 1F - Math.min(1F, Math.max(0, alive - (EntitySpellCircle.LIVE_TIME - EntitySpellCircle.CAST_DELAY)) / EntitySpellCircle.CAST_DELAY);
 		}
 		renderSpellCircle(alive, scale, 1, 0, 1, 0, color, ms, buffers);
-		ms.pop();
+		ms.popPose();
 	}
 
 	public static void renderSpellCircle(float alive, float scale, float horizontalScale, float xDir, float yDir, float zDir, int color, MatrixStack ms, IRenderTypeBuffer buffers) {
 
-		ms.push();
+		ms.pushPose();
 		double ratio = 0.0625 * horizontalScale;
 
 		float mag = xDir * xDir + yDir * yDir + zDir * zDir;
 		zDir /= mag;
 
 		if (zDir == -1) {
-			ms.rotate(Vector3f.XP.rotationDegrees(180));
+			ms.mulPose(Vector3f.XP.rotationDegrees(180));
 		} else if (zDir != 1) {
-			ms.rotate(new Vector3f(-yDir / mag, xDir / mag, 0).rotationDegrees((float) (Math.acos(zDir) * 180 / Math.PI)));
+			ms.mulPose(new Vector3f(-yDir / mag, xDir / mag, 0).rotationDegrees((float) (Math.acos(zDir) * 180 / Math.PI)));
 		}
 		ms.translate(0, 0, 0.1);
 		ms.scale((float) ratio * scale, (float) ratio * scale, (float) ratio);
@@ -112,26 +112,26 @@ public class RenderSpellCircle extends EntityRenderer<EntitySpellCircle> {
 				bValue = (int) Math.min(bValue / BRIGHTNESS_FACTOR, 0xFF);
 			}
 
-			ms.push();
-			ms.rotate(Vector3f.ZP.rotationDegrees(i == 0 ? -alive : alive));
+			ms.pushPose();
+			ms.mulPose(Vector3f.ZP.rotationDegrees(i == 0 ? -alive : alive));
 
 			IVertexBuilder buffer = buffers.getBuffer(LAYERS[i]);
-			Matrix4f mat = ms.getLast().getMatrix();
+			Matrix4f mat = ms.last().pose();
 			int fullbright = 0xF000F0;
-			buffer.pos(mat, -32, 32, 0).color(rValue, gValue, bValue, 255).tex(0, 1).lightmap(fullbright).endVertex();
-			buffer.pos(mat, 32, 32, 0).color(rValue, gValue, bValue, 255).tex(1, 1).lightmap(fullbright).endVertex();
-			buffer.pos(mat, 32, -32, 0).color(rValue, gValue, bValue, 255).tex(1, 0).lightmap(fullbright).endVertex();
-			buffer.pos(mat, -32, -32, 0).color(rValue, gValue, bValue, 255).tex(0, 0).lightmap(fullbright).endVertex();
-			ms.pop();
+			buffer.vertex(mat, -32, 32, 0).color(rValue, gValue, bValue, 255).uv(0, 1).uv2(fullbright).endVertex();
+			buffer.vertex(mat, 32, 32, 0).color(rValue, gValue, bValue, 255).uv(1, 1).uv2(fullbright).endVertex();
+			buffer.vertex(mat, 32, -32, 0).color(rValue, gValue, bValue, 255).uv(1, 0).uv2(fullbright).endVertex();
+			buffer.vertex(mat, -32, -32, 0).color(rValue, gValue, bValue, 255).uv(0, 0).uv2(fullbright).endVertex();
+			ms.popPose();
 
 			ms.translate(0, 0, -0.5);
 		}
 
-		ms.pop();
+		ms.popPose();
 	}
 
 	@Override
-	public ResourceLocation getEntityTexture(EntitySpellCircle entitySpellCircle) {
+	public ResourceLocation getTextureLocation(EntitySpellCircle entitySpellCircle) {
 		return null;
 	}
 }

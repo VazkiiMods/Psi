@@ -91,7 +91,7 @@ public class PlayerDataHandler {
 
 	private static final String DATA_TAG = "PsiData";
 
-	public static final DamageSource damageSourceOverload = new DamageSource("psi-overload").setDamageBypassesArmor().setDamageIsAbsolute();
+	public static final DamageSource damageSourceOverload = new DamageSource("psi-overload").bypassArmor().bypassMagic();
 
 	@Nonnull
 	public static PlayerData get(PlayerEntity player) {
@@ -99,7 +99,7 @@ public class PlayerDataHandler {
 			return new PlayerData();
 		}
 
-		Map<PlayerEntity, PlayerData> dataMap = player.world.isRemote ? remotePlayerData : playerData;
+		Map<PlayerEntity, PlayerData> dataMap = player.level.isClientSide ? remotePlayerData : playerData;
 
 		PlayerData data = dataMap.computeIfAbsent(player, PlayerData::new);
 		if (data.playerWR != null && data.playerWR.get() != player) {
@@ -168,12 +168,12 @@ public class PlayerDataHandler {
 				PlayerDataHandler.get(player).damage(event.getAmount());
 
 				LivingEntity attacker = null;
-				if (event.getSource().getTrueSource() != null && event.getSource().getTrueSource() instanceof LivingEntity) {
-					attacker = (LivingEntity) event.getSource().getTrueSource();
+				if (event.getSource().getEntity() != null && event.getSource().getEntity() instanceof LivingEntity) {
+					attacker = (LivingEntity) event.getSource().getEntity();
 				}
 
 				PsiArmorEvent.post(new PsiArmorEvent(player, PsiArmorEvent.DAMAGE, event.getAmount(), attacker));
-				if (event.getSource().isFireDamage()) {
+				if (event.getSource().isFire()) {
 					PsiArmorEvent.post(new PsiArmorEvent(player, PsiArmorEvent.ON_FIRE));
 				}
 			}
@@ -189,7 +189,7 @@ public class PlayerDataHandler {
 
 		@SubscribeEvent
 		public static void onEntityJump(LivingJumpEvent event) {
-			if (event.getEntityLiving() instanceof PlayerEntity && event.getEntity().world.isRemote && !event.getEntityLiving().isSpectator()) {
+			if (event.getEntityLiving() instanceof PlayerEntity && event.getEntity().level.isClientSide && !event.getEntityLiving().isSpectator()) {
 				PlayerEntity player = (PlayerEntity) event.getEntityLiving();
 				PsiArmorEvent.post(new PsiArmorEvent(player, PsiArmorEvent.JUMP));
 				MessageRegister.HANDLER.sendToServer(new MessageTriggerJumpSpell());
@@ -203,7 +203,7 @@ public class PlayerDataHandler {
 			}
 
 			for (int i = 0; i < 4; i++) {
-				ItemStack armor = ((PlayerEntity) event.getEntityLiving()).inventory.armorInventory.get(i);
+				ItemStack armor = ((PlayerEntity) event.getEntityLiving()).inventory.armor.get(i);
 				if (!armor.isEmpty() && armor.getItem() instanceof IPsiEventArmor) {
 					IPsiEventArmor handler = (IPsiEventArmor) armor.getItem();
 					handler.onEvent(armor, event);
@@ -220,10 +220,10 @@ public class PlayerDataHandler {
 		@OnlyIn(Dist.CLIENT)
 		public static void onRenderWorldLast(RenderWorldLastEvent event) {
 			Minecraft mc = Minecraft.getInstance();
-			Entity cameraEntity = mc.getRenderViewEntity();
+			Entity cameraEntity = mc.getCameraEntity();
 			if (cameraEntity != null) {
 				float partialTicks = event.getPartialTicks();
-				for (PlayerEntity player : mc.world.getPlayers()) {
+				for (PlayerEntity player : mc.level.players()) {
 					PlayerDataHandler.get(player).render(player, partialTicks, event.getMatrixStack());
 				}
 			}
@@ -308,7 +308,7 @@ public class PlayerDataHandler {
 
 		public PlayerData(PlayerEntity player) {
 			playerWR = new WeakReference<>(player);
-			client = player.getEntityWorld().isRemote;
+			client = player.getCommandSenderWorld().isClientSide;
 
 			load();
 		}
@@ -319,7 +319,7 @@ public class PlayerDataHandler {
 				return;
 			}
 
-			DimensionType dimension = player.getEntityWorld().getDimensionType();
+			DimensionType dimension = player.getCommandSenderWorld().dimensionType();
 
 			if (deductTick) {
 				deductTick = false;
@@ -366,7 +366,7 @@ public class PlayerDataHandler {
 				}
 
 				if (loopcasting && loopcastHand != null) {
-					ItemStack stackInHand = player.getHeldItem(loopcastHand);
+					ItemStack stackInHand = player.getItemInHand(loopcastHand);
 
 					if (stackInHand.isEmpty() ||
 							!ISocketable.isSocketable(stackInHand) ||
@@ -376,7 +376,7 @@ public class PlayerDataHandler {
 					}
 
 					if (lastTickLoopcastStack != null) {
-						if (!ItemStack.areItemsEqual(lastTickLoopcastStack, stackInHand) ||
+						if (!ItemStack.isSame(lastTickLoopcastStack, stackInHand) ||
 								!ISocketable.isSocketable(lastTickLoopcastStack)) {
 							stopLoopcast();
 							break loopcast;
@@ -393,7 +393,7 @@ public class PlayerDataHandler {
 
 							ItemStack lastTick = lastTickItem.getBulletInSocket(lastSlot);
 							ItemStack thisTick = thisTickItem.getBulletInSocket(thisSlot);
-							if (!ItemStack.areItemStacksEqual(lastTick, thisTick)) {
+							if (!ItemStack.matches(lastTick, thisTick)) {
 								stopLoopcast();
 								break loopcast;
 							}
@@ -405,9 +405,9 @@ public class PlayerDataHandler {
 					ISocketable socketable = ISocketable.socketable(stackInHand);
 
 					for (int i = 0; i < 5; i++) {
-						double x = player.getPosX() + (Math.random() - 0.5) * 2.1 * player.getWidth();
-						double y = player.getPosY() - player.getYOffset();
-						double z = player.getPosZ() + (Math.random() - 0.5) * 2.1 * player.getWidth();
+						double x = player.getX() + (Math.random() - 0.5) * 2.1 * player.getBbWidth();
+						double y = player.getY() - player.getMyRidingOffset();
+						double z = player.getZ() + (Math.random() - 0.5) * 2.1 * player.getBbWidth();
 						float grav = -0.15F - (float) Math.random() * 0.03F;
 						Psi.proxy.sparkleFX(x, y, z, r, g, b, grav, 0.25F, 15);
 					}
@@ -431,12 +431,12 @@ public class PlayerDataHandler {
 										deductPsi(cost, 0, true);
 									}
 
-									if (!player.getEntityWorld().isRemote && loopcastTime % 10 == 0) {
-										player.getEntityWorld().playSound(null, player.getPosX(), player.getPosY(), player.getPosZ(), PsiSoundHandler.loopcast, SoundCategory.PLAYERS, 0.1F, (float) (0.15 + Math.random() * 0.85));
+									if (!player.getCommandSenderWorld().isClientSide && loopcastTime % 10 == 0) {
+										player.getCommandSenderWorld().playSound(null, player.getX(), player.getY(), player.getZ(), PsiSoundHandler.loopcast, SoundCategory.PLAYERS, 0.1F, (float) (0.15 + Math.random() * 0.85));
 									}
 								}
 
-								if (!player.getEntityWorld().isRemote) {
+								if (!player.getCommandSenderWorld().isClientSide) {
 									if (!spellContainer.loopcastSpell(context)) {
 										stopLoopcast();
 										break loopcast;
@@ -465,12 +465,12 @@ public class PlayerDataHandler {
 				if (eidosAnchorTime == 1) {
 					if (player instanceof ServerPlayerEntity) {
 						ServerPlayerEntity pmp = (ServerPlayerEntity) player;
-						pmp.connection.setPlayerLocation(eidosAnchor.x, eidosAnchor.y, eidosAnchor.z, (float) eidosAnchorYaw, (float) eidosAnchorPitch);
+						pmp.connection.teleport(eidosAnchor.x, eidosAnchor.y, eidosAnchor.z, (float) eidosAnchorYaw, (float) eidosAnchorPitch);
 
-						Entity riding = player.getRidingEntity();
+						Entity riding = player.getVehicle();
 						while (riding != null) {
-							riding.setPosition(eidosAnchor.x, eidosAnchor.y, eidosAnchor.z);
-							riding = riding.getRidingEntity();
+							riding.setPos(eidosAnchor.x, eidosAnchor.y, eidosAnchor.z);
+							riding = riding.getVehicle();
 						}
 					}
 					postAnchorRecallTime = 0;
@@ -494,38 +494,38 @@ public class PlayerDataHandler {
 						Vector3 vec = eidosChangelog.pop();
 						if (player instanceof ServerPlayerEntity) {
 							ServerPlayerEntity pmp = (ServerPlayerEntity) player;
-							pmp.connection.setPlayerLocation(vec.x, vec.y, vec.z, 0, 0, ImmutableSet.of(Flags.X_ROT, Flags.Y_ROT));
-							pmp.connection.captureCurrentPosition();
+							pmp.connection.teleport(vec.x, vec.y, vec.z, 0, 0, ImmutableSet.of(Flags.X_ROT, Flags.Y_ROT));
+							pmp.connection.resetPosition();
 						} else {
-							player.setPosition(vec.x, vec.y, vec.z);
+							player.setPos(vec.x, vec.y, vec.z);
 						}
 
-						Entity riding = player.getRidingEntity();
+						Entity riding = player.getVehicle();
 						while (riding != null) {
-							riding.setPosition(vec.x, vec.y, vec.z);
+							riding.setPos(vec.x, vec.y, vec.z);
 
-							riding = riding.getRidingEntity();
+							riding = riding.getVehicle();
 						}
 
-						if (player.world.isRemote) {
+						if (player.level.isClientSide) {
 							for (int i = 0; i < 5; i++) {
 								double spread = 0.6;
 
-								double x = player.getPosX() + (Math.random() - 0.5) * spread;
-								double y = player.getPosY() + (Math.random() - 0.5) * spread;
-								double z = player.getPosZ() + (Math.random() - 0.5) * spread;
+								double x = player.getX() + (Math.random() - 0.5) * spread;
+								double y = player.getY() + (Math.random() - 0.5) * spread;
+								double z = player.getZ() + (Math.random() - 0.5) * spread;
 
 								Psi.proxy.sparkleFX(x, y, z, r, g, b, 0, 0, 0, 1.2F, 12);
 							}
 						}
 
-						player.setMotion(0, 0, 0);
+						player.setDeltaMovement(0, 0, 0);
 						player.fallDistance = 0F;
 					}
 				}
 
 				eidosReversionTime--;
-				if (eidosReversionTime == 0 || player.isSneaking()) {
+				if (eidosReversionTime == 0 || player.isShiftKeyDown()) {
 					eidosChangelog.clear();
 					isReverting = false;
 				}
@@ -536,8 +536,8 @@ public class PlayerDataHandler {
 				eidosChangelog.push(Vector3.fromEntity(player));
 			}
 
-			BlockPos pos = player.getPosition();
-			int light = player.getEntityWorld().getLightManager().getLightSubtracted(pos, 0);
+			BlockPos pos = player.blockPosition();
+			int light = player.getCommandSenderWorld().getLightEngine().getRawBrightness(pos, 0);
 
 			boolean lowLight = light <= 7;
 			if (!this.lowLight && lowLight) {
@@ -678,7 +678,7 @@ public class PlayerDataHandler {
 				if (!shatter && overflow > 0) {
 					float dmg = (float) overflow / (loopcasting ? 50 : 125);
 					if (!client) {
-						player.attackEntityFrom(damageSourceOverload, dmg);
+						player.hurt(damageSourceOverload, dmg);
 					}
 					overflowed = true;
 				}
@@ -770,10 +770,10 @@ public class PlayerDataHandler {
 			PlayerEntity player = playerWR.get();
 			if (player instanceof ServerPlayerEntity) {
 				ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
-				Advancement advancement = serverPlayer.getServer().getAdvancementManager().getAdvancement(resourceLocation);
-				if (advancement != null && !serverPlayer.getAdvancements().getProgress(advancement).isDone()) {
-					for (String s : serverPlayer.getAdvancements().getProgress(advancement).getRemaningCriteria()) {
-						serverPlayer.getAdvancements().getProgress(advancement).grantCriterion(s);
+				Advancement advancement = serverPlayer.getServer().getAdvancements().getAdvancement(resourceLocation);
+				if (advancement != null && !serverPlayer.getAdvancements().getOrStartProgress(advancement).isDone()) {
+					for (String s : serverPlayer.getAdvancements().getOrStartProgress(advancement).getRemainingCriteria()) {
+						serverPlayer.getAdvancements().getOrStartProgress(advancement).grantProgress(s);
 					}
 				}
 			}
@@ -855,10 +855,10 @@ public class PlayerDataHandler {
 
 		@OnlyIn(Dist.CLIENT)
 		public void render(PlayerEntity player, float partTicks, MatrixStack ms) {
-			EntityRendererManager renderManager = Minecraft.getInstance().getRenderManager();
-			double x = player.lastTickPosX + (player.getPosX() - player.lastTickPosX) * partTicks - renderManager.info.getProjectedView().x;
-			double y = player.lastTickPosY + (player.getPosY() - player.lastTickPosY) * partTicks - renderManager.info.getProjectedView().y;
-			double z = player.lastTickPosZ + (player.getPosZ() - player.lastTickPosZ) * partTicks - renderManager.info.getProjectedView().z;
+			EntityRendererManager renderManager = Minecraft.getInstance().getEntityRenderDispatcher();
+			double x = player.xOld + (player.getX() - player.xOld) * partTicks - renderManager.camera.getPosition().x;
+			double y = player.yOld + (player.getY() - player.yOld) * partTicks - renderManager.camera.getPosition().y;
+			double z = player.zOld + (player.getZ() - player.zOld) * partTicks - renderManager.camera.getPosition().z;
 			float scale = 0.75F;
 			if (loopcasting) {
 				float mul = Math.min(5F, loopcastTime + partTicks) / 5F;
@@ -877,12 +877,12 @@ public class PlayerDataHandler {
 				color = icad.getSpellColor(cad);
 			}
 
-			ms.push();
+			ms.pushPose();
 			ms.translate(x, y + 0.15, z);
-			IRenderTypeBuffer.Impl buffers = Minecraft.getInstance().getRenderTypeBuffers().getBufferSource();
+			IRenderTypeBuffer.Impl buffers = Minecraft.getInstance().renderBuffers().bufferSource();
 			RenderSpellCircle.renderSpellCircle(ClientTickHandler.ticksInGame + partTicks, scale, 1, 0, -1, 0, color, ms, buffers);
-			buffers.finish();
-			ms.pop();
+			buffers.endBatch();
+			ms.popPose();
 		}
 
 		public static class Deduction {

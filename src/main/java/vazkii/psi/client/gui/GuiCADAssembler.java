@@ -39,24 +39,24 @@ public class GuiCADAssembler extends ContainerScreen<ContainerCADAssembler> {
 		super(containerCADAssembler, inventory, component);
 		this.player = inventory.player;
 		this.assembler = containerCADAssembler.assembler;
-		xSize = 256;
-		ySize = 225;
+		imageWidth = 256;
+		imageHeight = 225;
 	}
 
 	@Override
 	public void render(MatrixStack ms, int x, int y, float pTicks) {
 		this.renderBackground(ms);
 		super.render(ms, x, y, pTicks);
-		this.renderHoveredTooltip(ms, x, y);
+		this.renderTooltip(ms, x, y);
 		this.renderComponentHoverEffect(ms, Style.EMPTY, x, y);
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(MatrixStack ms, int mouseX, int mouseY) {
+	protected void renderLabels(MatrixStack ms, int mouseX, int mouseY) {
 		int color = 4210752;
 
-		String name = new ItemStack(ModBlocks.cadAssembler).getDisplayName().getString();
-		font.drawString(ms, name, xSize / 2 - font.getStringWidth(name) / 2, 10, color);
+		String name = new ItemStack(ModBlocks.cadAssembler).getHoverName().getString();
+		font.draw(ms, name, imageWidth / 2 - font.width(name) / 2, 10, color);
 
 		ItemStack cad = assembler.getCachedCAD(player);
 		if (!cad.isEmpty()) {
@@ -64,29 +64,29 @@ public class GuiCADAssembler extends ContainerScreen<ContainerCADAssembler> {
 
 			int i = 0;
 			ICAD cadItem = (ICAD) cad.getItem();
-			String stats = I18n.format("psimisc.stats");
+			String stats = I18n.get("psimisc.stats");
 			String s = TextFormatting.BOLD + stats;
-			font.drawStringWithShadow(ms, s, 213 - font.getStringWidth(s) / 2f, 34, color);
+			font.drawShadow(ms, s, 213 - font.width(s) / 2f, 34, color);
 
 			for (EnumCADStat stat : EnumCADStat.class.getEnumConstants()) {
-				s = (Psi.magical ? TextFormatting.LIGHT_PURPLE : TextFormatting.AQUA) + I18n.format(stat.getName()) + TextFormatting.RESET + ": " + cadItem.getStatValue(cad, stat);
-				font.drawStringWithShadow(ms, s, 179, 50 + i * 10, color);
+				s = (Psi.magical ? TextFormatting.LIGHT_PURPLE : TextFormatting.AQUA) + I18n.get(stat.getName()) + TextFormatting.RESET + ": " + cadItem.getStatValue(cad, stat);
+				font.drawShadow(ms, s, 179, 50 + i * 10, color);
 				i++;
 			}
 		}
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(MatrixStack ms, float partialTicks, int mouseX, int mouseY) {
+	protected void renderBg(MatrixStack ms, float partialTicks, int mouseX, int mouseY) {
 		RenderSystem.color3f(1F, 1F, 1F);
-		getMinecraft().getTextureManager().bindTexture(texture);
-		int x = (width - xSize) / 2;
-		int y = (height - ySize) / 2;
-		blit(ms, x, y, 0, 0, xSize, ySize);
+		getMinecraft().getTextureManager().bind(texture);
+		int x = (width - imageWidth) / 2;
+		int y = (height - imageHeight) / 2;
+		blit(ms, x, y, 0, 0, imageWidth, imageHeight);
 
 		for (int i = 0; i < 12; i++) {
 			if (!assembler.isBulletSlotEnabled(i)) {
-				blit(ms, x + 17 + i % 3 * 18, y + 57 + i / 3 * 18, 16, ySize, 16, 16);
+				blit(ms, x + 17 + i % 3 * 18, y + 57 + i / 3 * 18, 16, imageHeight, 16, 16);
 			}
 		}
 	}

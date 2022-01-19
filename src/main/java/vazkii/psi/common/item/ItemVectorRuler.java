@@ -44,17 +44,17 @@ public class ItemVectorRuler extends Item implements IHUDItem {
 	private static final String TAG_DST_Z = "dstZ";
 
 	public ItemVectorRuler(Item.Properties properties) {
-		super(properties.maxStackSize(1));
+		super(properties.stacksTo(1));
 	}
 
 	@Override
-	public ActionResultType onItemUse(ItemUseContext ctx) {
-		BlockPos pos = ctx.getPos();
+	public ActionResultType useOn(ItemUseContext ctx) {
+		BlockPos pos = ctx.getClickedPos();
 
-		ItemStack stack = ctx.getPlayer().getHeldItem(ctx.getHand());
+		ItemStack stack = ctx.getPlayer().getItemInHand(ctx.getHand());
 		int srcY = stack.getOrCreateTag().contains(TAG_SRC_Y) ? stack.getOrCreateTag().getInt(TAG_SRC_Y) : -1;
 
-		if (srcY == -1 || ctx.getPlayer().isSneaking()) {
+		if (srcY == -1 || ctx.getPlayer().isShiftKeyDown()) {
 			stack.getOrCreateTag().putInt(TAG_SRC_X, pos.getX());
 			stack.getOrCreateTag().putInt(TAG_SRC_Y, pos.getY());
 			stack.getOrCreateTag().putInt(TAG_SRC_Z, pos.getZ());
@@ -70,7 +70,7 @@ public class ItemVectorRuler extends Item implements IHUDItem {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void addInformation(ItemStack stack, @Nullable World world, List<ITextComponent> tooltip, ITooltipFlag advanced) {
+	public void appendHoverText(ItemStack stack, @Nullable World world, List<ITextComponent> tooltip, ITooltipFlag advanced) {
 		tooltip.add(new StringTextComponent(getVector(stack).toString()));
 	}
 
@@ -91,8 +91,8 @@ public class ItemVectorRuler extends Item implements IHUDItem {
 	}
 
 	public static Vector3 getRulerVector(PlayerEntity player) {
-		for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
-			ItemStack stack = player.inventory.getStackInSlot(i);
+		for (int i = 0; i < player.inventory.getContainerSize(); i++) {
+			ItemStack stack = player.inventory.getItem(i);
 			if (!stack.isEmpty() && stack.getItem() instanceof ItemVectorRuler) {
 				return ((ItemVectorRuler) stack.getItem()).getVector(stack);
 			}
@@ -106,8 +106,8 @@ public class ItemVectorRuler extends Item implements IHUDItem {
 	public void drawHUD(MatrixStack ms, MainWindow res, float partTicks, ItemStack stack) {
 		String s = getVector(stack).toString();
 
-		FontRenderer font = Minecraft.getInstance().fontRenderer;
-		int w = font.getStringWidth(s);
-		font.drawString(ms, s, res.getScaledWidth() / 2f - w / 2f, res.getScaledHeight() / 2f + 10, 0xFFFFFFFF);
+		FontRenderer font = Minecraft.getInstance().font;
+		int w = font.width(s);
+		font.draw(ms, s, res.getGuiScaledWidth() / 2f - w / 2f, res.getGuiScaledHeight() / 2f + 10, 0xFFFFFFFF);
 	}
 }

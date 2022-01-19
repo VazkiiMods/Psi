@@ -40,15 +40,15 @@ public class PieceTrickTill extends PieceTrick {
 	}
 
 	public static ActionResultType tillBlock(PlayerEntity player, World world, BlockPos pos) {
-		if (!world.isBlockLoaded(pos) || !world.isBlockModifiable(player, pos)) {
+		if (!world.hasChunkAt(pos) || !world.mayInteract(player, pos)) {
 			return ActionResultType.PASS;
 		}
 		BlockRayTraceResult hit = new BlockRayTraceResult(Vector3d.ZERO, Direction.UP, pos, false);
-		ItemStack save = player.getHeldItem(Hand.MAIN_HAND);
-		player.setHeldItem(Hand.MAIN_HAND, new ItemStack(Items.BONE_MEAL));
+		ItemStack save = player.getItemInHand(Hand.MAIN_HAND);
+		player.setItemInHand(Hand.MAIN_HAND, new ItemStack(Items.BONE_MEAL));
 		ItemUseContext fakeContext = new ItemUseContext(player, Hand.MAIN_HAND, hit);
-		player.setHeldItem(Hand.MAIN_HAND, save);
-		return Items.IRON_HOE.onItemUse(fakeContext);
+		player.setItemInHand(Hand.MAIN_HAND, save);
+		return Items.IRON_HOE.useOn(fakeContext);
 	}
 
 	@Override
@@ -67,7 +67,7 @@ public class PieceTrickTill extends PieceTrick {
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		BlockPos pos = SpellHelpers.getBlockPos(this, context, position, true, false);
 
-		return tillBlock(context.caster, context.caster.world, pos);
+		return tillBlock(context.caster, context.caster.level, pos);
 	}
 
 }

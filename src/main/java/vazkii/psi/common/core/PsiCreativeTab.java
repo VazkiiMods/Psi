@@ -25,13 +25,13 @@ public class PsiCreativeTab extends ItemGroup {
 
 	public PsiCreativeTab() {
 		super(LibMisc.MOD_ID);
-		setNoTitle();
-		setBackgroundImageName(LibResources.GUI_CREATIVE);
+		hideTitle();
+		setBackgroundSuffix(LibResources.GUI_CREATIVE);
 	}
 
 	@Nonnull
 	@Override
-	public ItemStack createIcon() {
+	public ItemStack makeIcon() {
 		return new ItemStack(ModItems.cadAssemblyIron);
 	}
 

@@ -73,7 +73,7 @@ public class PieceConnector extends SpellPiece implements IRedirector {
 	private void drawSide(MatrixStack ms, IRenderTypeBuffer buffers, int light, SpellParam.Side side) {
 		if (side.isEnabled()) {
 			RenderMaterial material = new RenderMaterial(ClientPsiAPI.PSI_PIECE_TEXTURE_ATLAS, LINES_TEXTURE);
-			IVertexBuilder buffer = material.getBuffer(buffers, ignored -> SpellPiece.getLayer());
+			IVertexBuilder buffer = material.buffer(buffers, ignored -> SpellPiece.getLayer());
 
 			float minU = 0;
 			float minV = 0;
@@ -99,15 +99,15 @@ public class PieceConnector extends SpellPiece implements IRedirector {
 			/*
 			See note in SpellPiece#drawBackground for why this chain needs to be split
 			*/
-			Matrix4f mat = ms.getLast().getMatrix();
-			buffer.pos(mat, 0, 16, 0).color(1F, 1F, 1F, 1F);
-			buffer.tex(minU, maxV).lightmap(light).endVertex();
-			buffer.pos(mat, 16, 16, 0).color(1F, 1F, 1F, 1F);
-			buffer.tex(maxU, maxV).lightmap(light).endVertex();
-			buffer.pos(mat, 16, 0, 0).color(1F, 1F, 1F, 1F);
-			buffer.tex(maxU, minV).lightmap(light).endVertex();
-			buffer.pos(mat, 0, 0, 0).color(1F, 1F, 1F, 1F);
-			buffer.tex(minU, minV).lightmap(light).endVertex();
+			Matrix4f mat = ms.last().pose();
+			buffer.vertex(mat, 0, 16, 0).color(1F, 1F, 1F, 1F);
+			buffer.uv(minU, maxV).uv2(light).endVertex();
+			buffer.vertex(mat, 16, 16, 0).color(1F, 1F, 1F, 1F);
+			buffer.uv(maxU, maxV).uv2(light).endVertex();
+			buffer.vertex(mat, 16, 0, 0).color(1F, 1F, 1F, 1F);
+			buffer.uv(maxU, minV).uv2(light).endVertex();
+			buffer.vertex(mat, 0, 0, 0).color(1F, 1F, 1F, 1F);
+			buffer.uv(minU, minV).uv2(light).endVertex();
 		}
 	}
 

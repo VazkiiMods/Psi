@@ -16,6 +16,8 @@ import vazkii.psi.client.core.handler.ClientTickHandler;
 
 import java.awt.*;
 
+import net.minecraft.item.Item.Properties;
+
 public class ItemCADColorizerRainbow extends ItemCADColorizer {
 	public ItemCADColorizerRainbow(Properties properties) {
 		super(properties);

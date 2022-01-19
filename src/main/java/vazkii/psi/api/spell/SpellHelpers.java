@@ -42,7 +42,7 @@ public class SpellHelpers {
 
 	public static Direction getFacing(SpellPiece piece, SpellContext context, SpellParam<Vector3> param) throws SpellRuntimeException {
 		Vector3 face = getVector3(piece, context, param, false, true);
-		return Direction.getFacingFromVector((float) face.x, (float) face.y, (float) face.z);
+		return Direction.getNearest((float) face.x, (float) face.y, (float) face.z);
 	}
 
 	public static Direction getFacing(SpellPiece piece, SpellContext context, SpellParam<Vector3> param, Direction def) throws SpellRuntimeException {
@@ -50,7 +50,7 @@ public class SpellHelpers {
 		if (face == null) {
 			return def;
 		}
-		return Direction.getFacingFromVector((float) face.x, (float) face.y, (float) face.z);
+		return Direction.getNearest((float) face.x, (float) face.y, (float) face.z);
 	}
 
 	public static boolean isBlockPosInRadius(SpellContext context, BlockPos pos) {

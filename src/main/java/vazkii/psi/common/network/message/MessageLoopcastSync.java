@@ -50,12 +50,12 @@ public class MessageLoopcastSync {
 			if (mcPlayer == null) {
 				return;
 			}
-			World world = mcPlayer.world;
+			World world = mcPlayer.level;
 
 			Entity player = null;
 			if (world != null) {
-				player = world.getEntityByID(entityId);
-			} else if (mcPlayer.getEntityId() == entityId) {
+				player = world.getEntity(entityId);
+			} else if (mcPlayer.getId() == entityId) {
 				player = mcPlayer;
 			}
 

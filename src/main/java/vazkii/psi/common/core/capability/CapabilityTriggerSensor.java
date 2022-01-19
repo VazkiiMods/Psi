@@ -43,7 +43,7 @@ public class CapabilityTriggerSensor implements IDetonationHandler, ICapabilityP
 	public void detonate() {
 		CompoundNBT playerData = player.getPersistentData();
 		long detonated = playerData.getLong(TRIGGER_TICK);
-		long worldTime = player.world.getGameTime();
+		long worldTime = player.level.getGameTime();
 
 		if (detonated != worldTime) {
 			playerData.putLong(TRIGGER_TICK, worldTime);
@@ -54,6 +54,6 @@ public class CapabilityTriggerSensor implements IDetonationHandler, ICapabilityP
 
 	@Override
 	public Vector3d objectLocus() {
-		return player.getPositionVec();
+		return player.position();
 	}
 }

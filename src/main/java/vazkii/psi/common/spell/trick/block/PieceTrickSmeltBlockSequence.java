@@ -76,25 +76,25 @@ public class PieceTrickSmeltBlockSequence extends PieceTrick {
 				throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 			}
 
-			if (!context.focalPoint.getEntityWorld().isBlockModifiable(context.caster, blockPos)) {
+			if (!context.focalPoint.getCommandSenderWorld().mayInteract(context.caster, blockPos)) {
 				return null;
 			}
 
-			BlockState state = context.focalPoint.getEntityWorld().getBlockState(blockPos);
+			BlockState state = context.focalPoint.getCommandSenderWorld().getBlockState(blockPos);
 			Block block = state.getBlock();
 			ItemStack stack = new ItemStack(block);
-			BlockEvent.BreakEvent event = PieceTrickBreakBlock.createBreakEvent(state, context.caster, context.caster.world, blockPos, tool);
+			BlockEvent.BreakEvent event = PieceTrickBreakBlock.createBreakEvent(state, context.caster, context.caster.level, blockPos, tool);
 			MinecraftForge.EVENT_BUS.post(event);
 			if (event.isCanceled()) {
 				return null;
 			}
-			ItemStack result = PieceSelectorNearbySmeltables.simulateSmelt(context.focalPoint.getEntityWorld(), stack);
+			ItemStack result = PieceSelectorNearbySmeltables.simulateSmelt(context.focalPoint.getCommandSenderWorld(), stack);
 			if (!result.isEmpty()) {
 				Item item = result.getItem();
-				Block block1 = Block.getBlockFromItem(item);
+				Block block1 = Block.byItem(item);
 				if (block1 != Blocks.AIR) {
-					context.focalPoint.getEntityWorld().setBlockState(blockPos, block1.getDefaultState());
-					context.focalPoint.getEntityWorld().playEvent(2001, blockPos, Block.getStateId(block1.getDefaultState()));
+					context.focalPoint.getCommandSenderWorld().setBlockAndUpdate(blockPos, block1.defaultBlockState());
+					context.focalPoint.getCommandSenderWorld().levelEvent(2001, blockPos, Block.getId(block1.defaultBlockState()));
 				}
 			}
 

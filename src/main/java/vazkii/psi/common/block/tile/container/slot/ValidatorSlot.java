@@ -19,7 +19,7 @@ public class ValidatorSlot extends Slot {
 	}
 
 	@Override
-	public boolean isItemValid(ItemStack stack) {
-		return inventory.isItemValidForSlot(getSlotIndex(), stack);
+	public boolean mayPlace(ItemStack stack) {
+		return container.canPlaceItem(getSlotIndex(), stack);
 	}
 }

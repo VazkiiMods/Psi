@@ -22,18 +22,18 @@ public class DirectionBlockItemUseContext extends BlockItemUseContext {
 	}
 
 	@Override
-	public Direction getPlacementHorizontalFacing() {
+	public Direction getHorizontalDirection() {
 		return horizontalFacing.getAxis() == Direction.Axis.Y ? Direction.NORTH : horizontalFacing;
 	}
 
 	@Override
 	public Direction getNearestLookingDirection() {
-		return rayTraceResult.getFace();
+		return hitResult.getDirection();
 	}
 
 	@Override
 	public Direction[] getNearestLookingDirections() {
-		switch (this.rayTraceResult.getFace()) {
+		switch (this.hitResult.getDirection()) {
 		case DOWN:
 		default:
 			return new Direction[] { Direction.DOWN, Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST, Direction.UP };

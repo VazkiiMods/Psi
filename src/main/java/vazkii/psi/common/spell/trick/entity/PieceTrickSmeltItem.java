@@ -51,7 +51,7 @@ public class PieceTrickSmeltItem extends PieceTrick {
 		if (targetVal instanceof ItemEntity && targetVal.isAlive()) {
 			ItemEntity eitem = (ItemEntity) targetVal;
 			ItemStack stack = eitem.getItem();
-			ItemStack result = PieceSelectorNearbySmeltables.simulateSmelt(eitem.getEntityWorld(), stack);
+			ItemStack result = PieceSelectorNearbySmeltables.simulateSmelt(eitem.getCommandSenderWorld(), stack);
 
 			if (!result.isEmpty()) {
 				stack.shrink(1);
@@ -60,8 +60,8 @@ public class PieceTrickSmeltItem extends PieceTrick {
 					eitem.remove();
 				}
 
-				ItemEntity item = new ItemEntity(context.focalPoint.getEntityWorld(), eitem.getPosX(), eitem.getPosY(), eitem.getPosZ(), result.copy());
-				context.focalPoint.getEntityWorld().addEntity(item);
+				ItemEntity item = new ItemEntity(context.focalPoint.getCommandSenderWorld(), eitem.getX(), eitem.getY(), eitem.getZ(), result.copy());
+				context.focalPoint.getCommandSenderWorld().addFreshEntity(item);
 			}
 		} else {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_TARGET);

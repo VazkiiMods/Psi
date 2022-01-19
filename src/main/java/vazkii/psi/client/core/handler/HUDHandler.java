@@ -118,12 +118,12 @@ public final class HUDHandler {
 		int currPsi = data.getAvailablePsi();
 
 		if (ConfigHandler.CLIENT.contextSensitiveBar.get() && currPsi == totalPsi &&
-				!showsBar(data, mc.player.getHeldItemMainhand()) &&
-				!showsBar(data, mc.player.getHeldItemOffhand())) {
+				!showsBar(data, mc.player.getMainHandItem()) &&
+				!showsBar(data, mc.player.getOffhandItem())) {
 			return;
 		}
 
-		ms.push();
+		ms.pushPose();
 
 		boolean right = ConfigHandler.CLIENT.psiBarOnRight.get();
 
@@ -133,18 +133,18 @@ public final class HUDHandler {
 
 		int x = -pad;
 		if (right) {
-			x = res.getScaledWidth() + pad - width;
+			x = res.getGuiScaledWidth() + pad - width;
 		}
-		int y = res.getScaledHeight() / 2 - height / 2;
+		int y = res.getGuiScaledHeight() / 2 - height / 2;
 
 		if (!registeredMask) {
-			mc.textureManager.bindTexture(psiBarMask);
-			mc.textureManager.bindTexture(psiBarShatter);
+			mc.textureManager.bind(psiBarMask);
+			mc.textureManager.bind(psiBarShatter);
 			registeredMask = true;
 		}
 
 		RenderSystem.enableBlend();
-		mc.textureManager.bindTexture(psiBar);
+		mc.textureManager.bind(psiBar);
 		AbstractGui.blit(ms, x, y, 0, 0, width, height, 64, 256);
 
 		x += 8;
@@ -214,7 +214,7 @@ public final class HUDHandler {
 
 		RenderSystem.color3f(1F, 1F, 1F);
 
-		ms.push();
+		ms.pushPose();
 		ms.translate(0F, textY, 0F);
 		width = 44;
 		height = 3;
@@ -225,8 +225,8 @@ public final class HUDHandler {
 		String s2 = "" + storedPsi;
 
 		int offBar = 22;
-		int offStr1 = 7 + mc.fontRenderer.getStringWidth(s1);
-		int offStr2 = 7 + mc.fontRenderer.getStringWidth(s2);
+		int offStr1 = 7 + mc.font.width(s1);
+		int offStr2 = 7 + mc.font.width(s2);
 
 		if (!right) {
 			offBar = 6;
@@ -240,23 +240,23 @@ public final class HUDHandler {
 				PsiRenderHelper.b(color) / 255F, 1F);
 
 		AbstractGui.blit(ms, x - offBar, -2, 0, 140, width, height, 64, 256);
-		mc.fontRenderer.drawStringWithShadow(ms, s1, x - offStr1, -11, 0xFFFFFF);
-		ms.pop();
+		mc.font.drawShadow(ms, s1, x - offStr1, -11, 0xFFFFFF);
+		ms.popPose();
 
 		if (storedPsi != -1) {
-			ms.push();
+			ms.pushPose();
 			ms.translate(0F, Math.max(textY + 3, origY + 100), 0F);
-			mc.fontRenderer.drawStringWithShadow(ms, s2, x - offStr2, 0, 0xFFFFFF);
-			ms.pop();
+			mc.font.drawShadow(ms, s2, x - offStr2, 0, 0xFFFFFF);
+			ms.popPose();
 		}
 		RenderSystem.disableBlend();
-		ms.pop();
+		ms.popPose();
 	}
 
 	@OnlyIn(Dist.CLIENT)
 	private static void renderSocketableEquippedName(MatrixStack ms, MainWindow res, float pticks) {
 		Minecraft mc = Minecraft.getInstance();
-		ItemStack stack = mc.player.getHeldItem(Hand.MAIN_HAND);
+		ItemStack stack = mc.player.getItemInHand(Hand.MAIN_HAND);
 		if (!ISocketable.isSocketable(stack)) {
 			return;
 		}
@@ -265,7 +265,7 @@ public final class HUDHandler {
 			return;
 		}
 
-		int ticks = mc.ingameGUI.remainingHighlightTicks;
+		int ticks = mc.gui.toolHighlightTimer;
 		ticks -= 10;
 
 		if (ticks > 0) {
@@ -275,20 +275,20 @@ public final class HUDHandler {
 			int alpha = Math.min(255, (int) ((ticks - pticks) * 256.0F / 10.0F));
 			int color = ICADColorizer.DEFAULT_SPELL_COLOR + (alpha << 24);
 
-			int x = res.getScaledWidth() / 2 - mc.fontRenderer.getStringWidth(name) / 2;
-			int y = res.getScaledHeight() - 71;
-			if (mc.player.abilities.isCreativeMode) {
+			int x = res.getGuiScaledWidth() / 2 - mc.font.width(name) / 2;
+			int y = res.getGuiScaledHeight() - 71;
+			if (mc.player.abilities.instabuild) {
 				y += 14;
 			}
 
-			mc.fontRenderer.drawStringWithShadow(ms, name, x, y, color);
+			mc.font.drawShadow(ms, name, x, y, color);
 
-			int w = mc.fontRenderer.getStringWidth(name);
-			ms.push();
+			int w = mc.font.width(name);
+			ms.pushPose();
 			ms.translate(x + w, y - 6, 0);
 			ms.scale(alpha / 255F, 1F, 1);
-			PsiRenderHelper.transferMsToGl(ms, () -> mc.getItemRenderer().renderItemIntoGUI(bullet, 0, 0));
-			ms.pop();
+			PsiRenderHelper.transferMsToGl(ms, () -> mc.getItemRenderer().renderGuiItem(bullet, 0, 0));
+			ms.popPose();
 		}
 	}
 
@@ -298,23 +298,23 @@ public final class HUDHandler {
 			int pos = maxRemainingTicks - remainingTime;
 			Minecraft mc = Minecraft.getInstance();
 			int remainingLeaveTicks = 20;
-			int x = resolution.getScaledWidth() / 2 + 10 + Math.max(0, pos - remainingLeaveTicks);
-			int y = resolution.getScaledHeight() / 2;
+			int x = resolution.getGuiScaledWidth() / 2 + 10 + Math.max(0, pos - remainingLeaveTicks);
+			int y = resolution.getGuiScaledHeight() / 2;
 
 			int start = maxRemainingTicks - remainingLeaveTicks;
 			float alpha = remainingTime + partTicks > start ? 1F : (remainingTime + partTicks) / start;
 
 			RenderSystem.color4f(1F, 1F, 1F, alpha);
 			int xp = x + (int) (16F * (1F - alpha));
-			ms.push();
+			ms.pushPose();
 			ms.translate(xp, y, 0F);
 			ms.scale(alpha, 1F, 1F);
-			PsiRenderHelper.transferMsToGl(ms, () -> mc.getItemRenderer().renderItemAndEffectIntoGUI(remainingDisplayStack, 0, 0));
+			PsiRenderHelper.transferMsToGl(ms, () -> mc.getItemRenderer().renderAndDecorateItem(remainingDisplayStack, 0, 0));
 			ms.scale(1F / alpha, 1F, 1F);
 			ms.translate(-xp, -y, 0F);
 			RenderSystem.color4f(1F, 1F, 1F, 1F);
 
-			String text = remainingDisplayStack.getDisplayName().copyRaw().mergeStyle(TextFormatting.GREEN).getString();
+			String text = remainingDisplayStack.getHoverName().plainCopy().withStyle(TextFormatting.GREEN).getString();
 			if (remainingCount >= 0) {
 				int max = remainingDisplayStack.getMaxStackSize();
 				int stacks = remainingCount / max;
@@ -332,21 +332,21 @@ public final class HUDHandler {
 			}
 
 			int color = 0x00FFFFFF | (int) (alpha * 0xFF) << 24;
-			mc.fontRenderer.drawStringWithShadow(ms, text, x + 20, y + 6, color);
+			mc.font.drawShadow(ms, text, x + 20, y + 6, color);
 
-			ms.pop();
+			ms.popPose();
 		}
 	}
 
 	@OnlyIn(Dist.CLIENT)
 	private static void renderHUDItem(MatrixStack ms, MainWindow resolution, float partTicks) {
 		Minecraft mc = Minecraft.getInstance();
-		ItemStack stack = mc.player.getHeldItemMainhand();
+		ItemStack stack = mc.player.getMainHandItem();
 		if (!stack.isEmpty() && stack.getItem() instanceof IHUDItem) {
 			((IHUDItem) stack.getItem()).drawHUD(ms, resolution, partTicks, stack);
 		}
 
-		stack = mc.player.getHeldItemOffhand();
+		stack = mc.player.getOffhandItem();
 		if (!stack.isEmpty() && stack.getItem() instanceof IHUDItem) {
 			((IHUDItem) stack.getItem()).drawHUD(ms, resolution, partTicks, stack);
 		}
@@ -360,9 +360,9 @@ public final class HUDHandler {
 
 	public static void setRemaining(PlayerEntity player, ItemStack displayStack, Pattern pattern) {
 		int count = 0;
-		for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
-			ItemStack stack = player.inventory.getStackInSlot(i);
-			if (!stack.isEmpty() && (pattern == null ? ItemStack.areItemsEqual(displayStack, stack) : pattern.matcher(stack.getTranslationKey()).find())) {
+		for (int i = 0; i < player.inventory.getContainerSize(); i++) {
+			ItemStack stack = player.inventory.getItem(i);
+			if (!stack.isEmpty() && (pattern == null ? ItemStack.isSame(displayStack, stack) : pattern.matcher(stack.getDescriptionId()).find())) {
 				count += stack.getCount();
 			}
 		}
@@ -380,14 +380,14 @@ public final class HUDHandler {
 			int maskUniform = ARBShaderObjects.glGetUniformLocationARB(shader, "mask");
 
 			RenderSystem.activeTexture(ARBMultitexture.GL_TEXTURE0_ARB);
-			mc.textureManager.bindTexture(psiBar);
+			mc.textureManager.bind(psiBar);
 			ARBShaderObjects.glUniform1iARB(imageUniform, 0);
 
 			RenderSystem.activeTexture(ARBMultitexture.GL_TEXTURE0_ARB + secondaryTextureUnit);
 
 			RenderSystem.enableTexture();
 
-			mc.textureManager.bindTexture(shatter ? psiBarShatter : psiBarMask);
+			mc.textureManager.bind(shatter ? psiBarShatter : psiBarMask);
 			ARBShaderObjects.glUniform1iARB(maskUniform, secondaryTextureUnit);
 
 			ARBShaderObjects.glUniform1fARB(percentileUniform, percentile);

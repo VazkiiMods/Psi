@@ -35,7 +35,7 @@ public class InventoryAssemblerOutput implements IInventory {
 	}
 
 	@Override
-	public int getSizeInventory() {
+	public int getContainerSize() {
 		return 1;
 	}
 
@@ -46,59 +46,59 @@ public class InventoryAssemblerOutput implements IInventory {
 
 	@Nonnull
 	@Override
-	public ItemStack getStackInSlot(int index) {
+	public ItemStack getItem(int index) {
 		return getStack();
 	}
 
 	@Nonnull
 	@Override
-	public ItemStack decrStackSize(int index, int count) {
+	public ItemStack removeItem(int index, int count) {
 		return getStack();
 	}
 
 	@Nonnull
 	@Override
-	public ItemStack removeStackFromSlot(int index) {
+	public ItemStack removeItemNoUpdate(int index) {
 		return getStack();
 	}
 
 	@Override
-	public void setInventorySlotContents(int index, @Nonnull ItemStack stack) {
+	public void setItem(int index, @Nonnull ItemStack stack) {
 		// NO-OP
 	}
 
 	@Override
-	public int getInventoryStackLimit() {
+	public int getMaxStackSize() {
 		return 1;
 	}
 
 	@Override
-	public void markDirty() {
+	public void setChanged() {
 		// NO-OP
 	}
 
 	@Override
-	public boolean isUsableByPlayer(@Nonnull PlayerEntity player) {
+	public boolean stillValid(@Nonnull PlayerEntity player) {
 		return true;
 	}
 
 	@Override
-	public void openInventory(@Nonnull PlayerEntity player) {
+	public void startOpen(@Nonnull PlayerEntity player) {
 		// NO-OP
 	}
 
 	@Override
-	public void closeInventory(@Nonnull PlayerEntity player) {
+	public void stopOpen(@Nonnull PlayerEntity player) {
 		// NO-OP
 	}
 
 	@Override
-	public boolean isItemValidForSlot(int index, @Nonnull ItemStack stack) {
+	public boolean canPlaceItem(int index, @Nonnull ItemStack stack) {
 		return false;
 	}
 
 	@Override
-	public void clear() {
+	public void clearContent() {
 		// NO-OP
 	}
 }

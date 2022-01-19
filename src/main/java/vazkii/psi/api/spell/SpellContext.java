@@ -168,7 +168,7 @@ public final class SpellContext {
 			return true;
 		}
 
-		return isInRadius(e.getPosX(), e.getPosY(), e.getPosZ());
+		return isInRadius(e.getX(), e.getY(), e.getZ());
 	}
 
 	/**
@@ -177,7 +177,7 @@ public final class SpellContext {
 	 * @see #MAX_DISTANCE
 	 */
 	public boolean isInRadius(double x, double y, double z) {
-		return MathHelper.pointDistanceSpace(x, y, z, focalPoint.getPosX(), focalPoint.getPosY(), focalPoint.getPosZ()) <= MAX_DISTANCE;
+		return MathHelper.pointDistanceSpace(x, y, z, focalPoint.getX(), focalPoint.getY(), focalPoint.getZ()) <= MAX_DISTANCE;
 	}
 
 	public void verifyEntity(Entity e) throws SpellRuntimeException {
@@ -201,10 +201,10 @@ public final class SpellContext {
 				throw new SpellRuntimeException(SpellRuntimeException.NO_CAD);
 			}
 
-			if (PlayerInventory.isHotbar(cadSlot)) {
+			if (PlayerInventory.isHotbarSlot(cadSlot)) {
 				slot = (cadSlot + targetSlot) % 9;
 			} else {
-				slot = (caster.inventory.currentItem + targetSlot) % 9;
+				slot = (caster.inventory.selected + targetSlot) % 9;
 			}
 		} else {
 			slot = (targetSlot - 1) % 9;

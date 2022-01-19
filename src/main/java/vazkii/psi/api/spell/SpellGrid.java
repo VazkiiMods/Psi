@@ -50,10 +50,10 @@ public final class SpellGrid {
 			for (int j = 0; j < GRID_SIZE; j++) {
 				SpellPiece p = gridData[i][j];
 				if (p != null) {
-					ms.push();
+					ms.pushPose();
 					ms.translate(i * 18, j * 18, 0);
 					p.draw(ms, buffers, light);
-					ms.pop();
+					ms.popPose();
 				}
 			}
 		}

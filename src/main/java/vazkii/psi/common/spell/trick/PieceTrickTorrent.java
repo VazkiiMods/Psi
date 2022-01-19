@@ -59,47 +59,47 @@ public class PieceTrickTorrent extends PieceTrick {
 
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
-		if (context.focalPoint.getEntityWorld().getDimensionType().isUltrawarm()) {
+		if (context.focalPoint.getCommandSenderWorld().dimensionType().ultraWarm()) {
 			return null;
 		}
 		BlockPos pos = SpellHelpers.getBlockPos(this, context, position, true, false);
-		BlockEvent.EntityPlaceEvent placeEvent = new BlockEvent.EntityPlaceEvent(BlockSnapshot.create(context.focalPoint.getEntityWorld().getDimensionKey(), context.focalPoint.getEntityWorld(), pos), context.focalPoint.getEntityWorld().getBlockState(pos.offset(Direction.UP)), context.caster);
+		BlockEvent.EntityPlaceEvent placeEvent = new BlockEvent.EntityPlaceEvent(BlockSnapshot.create(context.focalPoint.getCommandSenderWorld().dimension(), context.focalPoint.getCommandSenderWorld(), pos), context.focalPoint.getCommandSenderWorld().getBlockState(pos.relative(Direction.UP)), context.caster);
 		MinecraftForge.EVENT_BUS.post(placeEvent);
 		if (placeEvent.isCanceled()) {
 			return null;
 		}
-		return placeWater(context.caster, context.caster.world, pos);
+		return placeWater(context.caster, context.caster.level, pos);
 	}
 
 	// [VanillaCopy] BucketItem.tryPlaceContainingLiquid because buckets are dumb
 	public static boolean placeWater(@Nullable PlayerEntity playerIn, World worldIn, BlockPos pos) {
-		if (!worldIn.isBlockLoaded(pos) || !worldIn.isBlockModifiable(playerIn, pos)) {
+		if (!worldIn.hasChunkAt(pos) || !worldIn.mayInteract(playerIn, pos)) {
 			return false;
 		}
 		BlockState blockstate = worldIn.getBlockState(pos);
 		Material material = blockstate.getMaterial();
-		boolean flag = blockstate.isReplaceable(Fluids.WATER);
-		if (blockstate.isAir() || flag || blockstate.getBlock() instanceof ILiquidContainer && ((ILiquidContainer) blockstate.getBlock()).canContainFluid(worldIn, pos, blockstate, Fluids.WATER)) {
-			if (worldIn.getDimensionType().isUltrawarm()) {
+		boolean flag = blockstate.canBeReplaced(Fluids.WATER);
+		if (blockstate.isAir() || flag || blockstate.getBlock() instanceof ILiquidContainer && ((ILiquidContainer) blockstate.getBlock()).canPlaceLiquid(worldIn, pos, blockstate, Fluids.WATER)) {
+			if (worldIn.dimensionType().ultraWarm()) {
 				int i = pos.getX();
 				int j = pos.getY();
 				int k = pos.getZ();
-				worldIn.playSound(playerIn, pos, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 0.5F, 2.6F + (worldIn.rand.nextFloat() - worldIn.rand.nextFloat()) * 0.8F);
+				worldIn.playSound(playerIn, pos, SoundEvents.FIRE_EXTINGUISH, SoundCategory.BLOCKS, 0.5F, 2.6F + (worldIn.random.nextFloat() - worldIn.random.nextFloat()) * 0.8F);
 
 				for (int l = 0; l < 8; ++l) {
 					worldIn.addParticle(ParticleTypes.LARGE_SMOKE, (double) i + Math.random(), (double) j + Math.random(), (double) k + Math.random(), 0.0D, 0.0D, 0.0D);
 				}
 			} else if (blockstate.getBlock() instanceof ILiquidContainer) {
-				if (((ILiquidContainer) blockstate.getBlock()).receiveFluid(worldIn, pos, blockstate, Fluids.WATER.getStillFluidState(false))) {
-					worldIn.playSound(playerIn, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
+				if (((ILiquidContainer) blockstate.getBlock()).placeLiquid(worldIn, pos, blockstate, Fluids.WATER.getSource(false))) {
+					worldIn.playSound(playerIn, pos, SoundEvents.BUCKET_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
 				}
 			} else {
-				if (!worldIn.isRemote && flag && !material.isLiquid()) {
+				if (!worldIn.isClientSide && flag && !material.isLiquid()) {
 					worldIn.destroyBlock(pos, true);
 				}
 
-				worldIn.playSound(playerIn, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
-				worldIn.setBlockState(pos, Fluids.WATER.getDefaultState().getBlockState(), 11);
+				worldIn.playSound(playerIn, pos, SoundEvents.BUCKET_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
+				worldIn.setBlock(pos, Fluids.WATER.defaultFluidState().createLegacyBlock(), 11);
 			}
 
 			return true;

@@ -46,7 +46,7 @@ public class MessageBlink {
 		context.get().enqueueWork(() -> {
 			Entity entity = Psi.proxy.getClientPlayer();
 			if (entity != null) {
-				entity.setPosition(entity.getPosX() + offX, entity.getPosY() + offY, entity.getPosZ() + offZ);
+				entity.setPos(entity.getX() + offX, entity.getY() + offY, entity.getZ() + offZ);
 			}
 		});
 		return true;

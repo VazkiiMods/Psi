@@ -26,7 +26,7 @@ public class PieceSelectorNearbyGlowing extends PieceSelectorNearby {
 
 	@Override
 	public Predicate<Entity> getTargetPredicate(SpellContext context) {
-		return (Entity e) -> e != null && (e instanceof EyeOfEnderEntity || e.isBurning() || e.isGlowing() ||
-				(e instanceof LivingEntity && ((LivingEntity) e).isPotionActive(Effects.GLOWING)));
+		return (Entity e) -> e != null && (e instanceof EyeOfEnderEntity || e.isOnFire() || e.isGlowing() ||
+				(e instanceof LivingEntity && ((LivingEntity) e).hasEffect(Effects.GLOWING)));
 	}
 }
