@@ -71,11 +71,11 @@ public class EntitySpellProjectile extends ThrowableProjectile {
 		super(type, thrower, world);
 
 		setOwner(thrower);
-		setRot(thrower.yRot + 180, -thrower.xRot);
+		setRot(thrower.getYRot() + 180, -thrower.getXRot());
 		float f = 1.5F;
-		double mx = Mth.sin(yRot / 180.0F * (float) Math.PI) * Mth.cos(xRot / 180.0F * (float) Math.PI) * f / 2D;
-		double mz = -(Mth.cos(yRot / 180.0F * (float) Math.PI) * Mth.cos(xRot / 180.0F * (float) Math.PI) * f) / 2D;
-		double my = Mth.sin(xRot / 180.0F * (float) Math.PI) * f / 2D;
+		double mx = Mth.sin(yRotO / 180.0F * (float) Math.PI) * Mth.cos(xRotO / 180.0F * (float) Math.PI) * f / 2D;
+		double mz = -(Mth.cos(yRotO / 180.0F * (float) Math.PI) * Mth.cos(xRotO / 180.0F * (float) Math.PI) * f) / 2D;
+		double my = Mth.sin(xRotO / 180.0F * (float) Math.PI) * f / 2D;
 		setDeltaMovement(mx, my, mz);
 	}
 
@@ -155,7 +155,7 @@ public class EntitySpellProjectile extends ThrowableProjectile {
 
 		int timeAlive = tickCount;
 		if (timeAlive > getLiveTime()) {
-			remove();
+			remove(RemovalReason.DISCARDED);
 		}
 
 		ItemStack colorizer = entityData.get(COLORIZER_DATA);
@@ -243,7 +243,7 @@ public class EntitySpellProjectile extends ThrowableProjectile {
 			context.cspell.safeExecute(context);
 		}
 
-		remove();
+		remove(RemovalReason.DISCARDED);
 	}
 
 	@Override

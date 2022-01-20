@@ -180,7 +180,7 @@ public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiE
 	public int getColor(@Nonnull ItemStack stack) {
 		return ICADColorizer.DEFAULT_SPELL_COLOR;
 	}
-
+/*
 	@Nullable
 	@Override
 	@OnlyIn(Dist.CLIENT)
@@ -188,7 +188,7 @@ public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiE
 	public <A extends HumanoidModel<?>> A getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlot armorSlot, A _default) {
 		return (A) model.get();
 	}
-
+*/
 	@OnlyIn(Dist.CLIENT)
 	public HumanoidModel<?> provideArmorModelForSlot(EquipmentSlot slot) {
 		return new ModelPsimetalExosuit(slot);

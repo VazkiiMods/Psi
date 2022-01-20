@@ -36,8 +36,8 @@ public class ItemCADColorizer extends ItemCADComponent implements ICADColorizer 
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public int getColor(ItemStack stack) {
-		return color.getColorValue();
-	}
+		return color.getTextColor();
+	} //TODO check if text color is proper
 
 	@Override
 	public String getContributorName(ItemStack stack) {

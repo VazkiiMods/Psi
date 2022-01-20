@@ -146,7 +146,7 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 
 		int timeAlive = getTimeAlive();
 		if (timeAlive > LIVE_TIME) {
-			remove();
+			remove(RemovalReason.DISCARDED);
 		}
 
 		setTimeAlive(timeAlive + 1);

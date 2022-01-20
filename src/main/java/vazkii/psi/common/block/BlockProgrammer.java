@@ -9,6 +9,7 @@
 package vazkii.psi.common.block;
 
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.entity.player.Player;
@@ -40,13 +41,14 @@ import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.tile.TileProgrammer;
 import vazkii.psi.common.core.handler.PsiSoundHandler;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import java.util.UUID;
 
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
-public class BlockProgrammer extends HorizontalDirectionalBlock {
+public class BlockProgrammer extends HorizontalDirectionalBlock implements EntityBlock {
 
 	public static final BooleanProperty ENABLED = BooleanProperty.create("enabled");
 	private static final VoxelShape SHAPE_NORTH;
@@ -159,15 +161,9 @@ public class BlockProgrammer extends HorizontalDirectionalBlock {
 		return defaultBlockState().setValue(FACING, ctx.getHorizontalDirection().getOpposite());
 	}
 
-	@Nullable
 	@Override
-	public BlockEntity createTileEntity(BlockState state, BlockGetter world) {
+	public BlockEntity newBlockEntity(@Nonnull BlockPos pos, @Nonnull BlockState state) {
 		return new TileProgrammer();
-	}
-
-	@Override
-	public boolean hasTileEntity(BlockState state) {
-		return true;
 	}
 
 	@Override

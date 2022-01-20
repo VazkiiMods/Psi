@@ -30,8 +30,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.FOVUpdateEvent;
-import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.client.event.FOVModifierEvent;
+import net.minecraftforge.client.event.RenderLevelLastEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
@@ -203,7 +203,7 @@ public class PlayerDataHandler {
 			}
 
 			for (int i = 0; i < 4; i++) {
-				ItemStack armor = ((Player) event.getEntityLiving()).inventory.armor.get(i);
+				ItemStack armor = ((Player) event.getEntityLiving()).getInventory().armor.get(i);
 				if (!armor.isEmpty() && armor.getItem() instanceof IPsiEventArmor) {
 					IPsiEventArmor handler = (IPsiEventArmor) armor.getItem();
 					handler.onEvent(armor, event);
@@ -218,13 +218,13 @@ public class PlayerDataHandler {
 
 		@SubscribeEvent
 		@OnlyIn(Dist.CLIENT)
-		public static void onRenderWorldLast(RenderWorldLastEvent event) {
+		public static void onRenderWorldLast(RenderLevelLastEvent event) {
 			Minecraft mc = Minecraft.getInstance();
 			Entity cameraEntity = mc.getCameraEntity();
 			if (cameraEntity != null) {
-				float partialTicks = event.getPartialTicks();
+				float partialTicks = event.getPartialTick();
 				for (Player player : mc.level.players()) {
-					PlayerDataHandler.get(player).render(player, partialTicks, event.getMatrixStack());
+					PlayerDataHandler.get(player).render(player, partialTicks, event.getPoseStack());
 				}
 			}
 
@@ -232,7 +232,7 @@ public class PlayerDataHandler {
 
 		@SubscribeEvent
 		@OnlyIn(Dist.CLIENT)
-		public static void onFOVUpdate(FOVUpdateEvent event) {
+		public static void onFOVUpdate(FOVModifierEvent event) {
 			PlayerData data = get(Minecraft.getInstance().player);
 			if (data.isAnchored) {
 				float fov = event.getNewfov();

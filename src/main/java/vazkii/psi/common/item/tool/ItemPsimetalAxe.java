@@ -29,7 +29,7 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.ToolType;
+import net.minecraftforge.common.ToolAction;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 import vazkii.psi.api.PsiAPI;
@@ -43,7 +43,7 @@ import java.util.List;
 public class ItemPsimetalAxe extends AxeItem implements IPsimetalTool {
 
 	public ItemPsimetalAxe(Item.Properties properties) {
-		super(PsiAPI.PSIMETAL_TOOL_MATERIAL, 5.0F, -3.0F, properties.addToolType(ToolType.AXE, PsiAPI.PSIMETAL_TOOL_MATERIAL.getLevel()));
+		super(PsiAPI.PSIMETAL_TOOL_MATERIAL, 5.0F, -3.0F, properties);
 	}
 
 	@Override

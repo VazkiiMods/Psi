@@ -133,8 +133,8 @@ public class TileConjured extends BlockEntity {
 	}
 
 	@Override
-	public void load(BlockState state, CompoundTag cmp) {
-		super.load(state, cmp);
+	public void load(CompoundTag cmp) {
+		super.load(cmp);
 		this.readPacketNBT(cmp);
 	}
 

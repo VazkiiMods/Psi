@@ -13,7 +13,7 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.InteractionHand;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.client.ClientRegistry;
 
 import vazkii.patchouli.api.PatchouliAPI;
 import vazkii.psi.api.cad.ISocketable;

@@ -18,11 +18,11 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.core.Registry;
 import net.minecraft.core.MappedRegistry;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityInject;
+import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.fml.DistExecutor;
 
 import org.apache.logging.log4j.LogManager;
@@ -58,23 +58,23 @@ public final class PsiAPI {
 	 */
 	public static IInternalMethodHandler internalHandler = new DummyMethodHandler();
 
-	@CapabilityInject(ISpellImmune.class)
-	public static Capability<ISpellImmune> SPELL_IMMUNE_CAPABILITY = null;
+	public static Capability<ISpellImmune> SPELL_IMMUNE_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {
+	});
 
-	@CapabilityInject(IDetonationHandler.class)
-	public static Capability<IDetonationHandler> DETONATION_HANDLER_CAPABILITY = null;
+	public static Capability<IDetonationHandler> DETONATION_HANDLER_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {
+	});
 
-	@CapabilityInject(IPsiBarDisplay.class)
-	public static Capability<IPsiBarDisplay> PSI_BAR_DISPLAY_CAPABILITY = null;
+	public static Capability<IPsiBarDisplay> PSI_BAR_DISPLAY_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {
+	});
 
-	@CapabilityInject(ISpellAcceptor.class)
-	public static Capability<ISpellAcceptor> SPELL_ACCEPTOR_CAPABILITY = null;
+	public static Capability<ISpellAcceptor> SPELL_ACCEPTOR_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {
+	});
 
-	@CapabilityInject(ICADData.class)
-	public static Capability<ICADData> CAD_DATA_CAPABILITY = null;
+	public static Capability<ICADData> CAD_DATA_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {
+	});
 
-	@CapabilityInject(ISocketable.class)
-	public static Capability<ISocketable> SOCKETABLE_CAPABILITY = null;
+	public static Capability<ISocketable> SOCKETABLE_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {
+	});
 
 	public static final String MOD_ID = "psi";
 

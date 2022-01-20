@@ -34,7 +34,7 @@ import vazkii.psi.data.MagicalPsiCondition;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, modid = LibMisc.MOD_ID)
 public class ModCraftingRecipes {
-	public static final RecipeType<ITrickRecipe> TRICK_RECIPE_TYPE = new RecipeType<>();
+	public static final RecipeType<ITrickRecipe> TRICK_RECIPE_TYPE = new PsiRecipeType<>();
 
 	@SubscribeEvent
 	public static void registerSerializers(RegistryEvent.Register<RecipeSerializer<?>> event) {
@@ -59,7 +59,7 @@ public class ModCraftingRecipes {
 		return entry.setRegistryName(new ResourceLocation(LibMisc.MOD_ID, name));
 	}
 
-	private static class RecipeType<T extends Recipe<?>> implements RecipeType<T> {
+	private static class PsiRecipeType<T extends Recipe<?>> implements RecipeType<T> {
 		@Override
 		public String toString() {
 			return Registry.RECIPE_TYPE.getKey(this).toString();

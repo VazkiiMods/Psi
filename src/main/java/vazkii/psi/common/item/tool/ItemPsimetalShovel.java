@@ -29,7 +29,6 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.ToolType;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 import vazkii.psi.api.PsiAPI;
@@ -43,7 +42,7 @@ import java.util.List;
 public class ItemPsimetalShovel extends ShovelItem implements IPsimetalTool {
 
 	public ItemPsimetalShovel(Item.Properties properties) {
-		super(PsiAPI.PSIMETAL_TOOL_MATERIAL, 1.5F, -3.0F, properties.addToolType(ToolType.SHOVEL, PsiAPI.PSIMETAL_TOOL_MATERIAL.getLevel()));
+		super(PsiAPI.PSIMETAL_TOOL_MATERIAL, 1.5F, -3.0F, properties);
 	}
 
 	@Override

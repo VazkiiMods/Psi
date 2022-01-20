@@ -29,7 +29,6 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.ToolType;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 import vazkii.psi.api.PsiAPI;
@@ -43,7 +42,7 @@ import java.util.List;
 public class ItemPsimetalPickaxe extends PickaxeItem implements IPsimetalTool {
 
 	public ItemPsimetalPickaxe(Item.Properties properties) {
-		super(PsiAPI.PSIMETAL_TOOL_MATERIAL, 1, -2.8F, properties.addToolType(ToolType.PICKAXE, PsiAPI.PSIMETAL_TOOL_MATERIAL.getLevel()));
+		super(PsiAPI.PSIMETAL_TOOL_MATERIAL, 1, -2.8F, properties);
 	}
 
 	@Override

@@ -11,6 +11,7 @@ package vazkii.psi.common.block.base;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.core.Direction;
+import org.jetbrains.annotations.NotNull;
 
 public class DirectionBlockItemUseContext extends BlockPlaceContext {
 
@@ -22,18 +23,18 @@ public class DirectionBlockItemUseContext extends BlockPlaceContext {
 	}
 
 	@Override
-	public Direction getHorizontalDirection() {
+	public @NotNull Direction getHorizontalDirection() {
 		return horizontalFacing.getAxis() == Direction.Axis.Y ? Direction.NORTH : horizontalFacing;
 	}
 
 	@Override
-	public Direction getNearestLookingDirection() {
-		return hitResult.getDirection();
+	public @NotNull Direction getNearestLookingDirection() {
+		return getHitResult().getDirection();
 	}
 
 	@Override
-	public Direction[] getNearestLookingDirections() {
-		switch (this.hitResult.getDirection()) {
+	public Direction @NotNull [] getNearestLookingDirections() {
+		switch (getHitResult().getDirection()) {
 		case DOWN:
 		default:
 			return new Direction[] { Direction.DOWN, Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST, Direction.UP };

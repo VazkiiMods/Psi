@@ -17,9 +17,9 @@ import net.minecraftforge.registries.IForgeRegistry;
 import vazkii.psi.common.lib.LibEntityNames;
 import vazkii.psi.common.lib.LibMisc;
 
-import static net.minecraft.entity.EntityClassification.MISC;
+import static net.minecraft.world.entity.MobCategory.MISC;
 
-@Mod.EventBunet.minecraft.world.entity.MobCategory Mod.EventBusSubscriber.Bus.MOD)
+@Mod.EventBusSubscriber(modid = LibMisc.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public final class ModEntities {
 
 	@SubscribeEvent

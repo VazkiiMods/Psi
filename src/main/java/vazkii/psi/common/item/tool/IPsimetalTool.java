@@ -61,8 +61,8 @@ public interface IPsimetalTool {
 	}
 
 	static BlockHitResult raytraceFromEntity(Level worldIn, Player player, ClipContext.Fluid fluidMode, double range) {
-		float f = player.xRot;
-		float f1 = player.yRot;
+		float f = player.getXRot();
+		float f1 = player.getYRot();
 		Vec3 vec3d = player.getEyePosition(1.0F);
 		float f2 = Mth.cos(-f1 * ((float) Math.PI / 180F) - (float) Math.PI);
 		float f3 = Mth.sin(-f1 * ((float) Math.PI / 180F) - (float) Math.PI);

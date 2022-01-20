@@ -9,6 +9,7 @@
 package vazkii.psi.common.block;
 
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.entity.player.Player;
@@ -37,7 +38,7 @@ import static net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABI
 
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
-public class BlockCADAssembler extends HorizontalDirectionalBlock {
+public class BlockCADAssembler extends HorizontalDirectionalBlock implements EntityBlock {
 
 	public BlockCADAssembler(Properties props) {
 		super(props);
@@ -95,13 +96,7 @@ public class BlockCADAssembler extends HorizontalDirectionalBlock {
 	}
 
 	@Override
-	public boolean hasTileEntity(BlockState state) {
-		return true;
-	}
-
-	@Nullable
-	@Override
-	public BlockEntity createTileEntity(BlockState state, BlockGetter world) {
+	public BlockEntity newBlockEntity(@Nonnull BlockPos pos, @Nonnull BlockState state) {
 		return new TileCADAssembler();
 	}
 
