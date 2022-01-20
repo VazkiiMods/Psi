@@ -46,7 +46,7 @@ public class GuiButtonSpellPiece extends Button {
 			piece.draw(ms, buffers, 0xF000F0);
 			buffers.endBatch();
 			ms.popPose();
-			Minecraft.getInstance().getTextureManager().bind(GuiProgrammer.texture);
+			Minecraft.getInstance().getTextureManager().bindForSetup(GuiProgrammer.texture);
 			if (hover) {
 				piece.getTooltip(gui.tooltip);
 				blit(ms, x, y, 16, gui.ySize, 16, 16);

@@ -149,13 +149,13 @@ public class PieceTrickBreakBlock extends PieceTrick {
 		ItemStack oldHeldStack = player.getMainHandItem();
 		//player.setHeldItem(EnumHand.MAIN_HAND, oldHeldStack);
 		// Need to do this instead of the above to prevent the re-equip sound
-		player.inventory.items.set(player.inventory.selected, stack);
+		player.getInventory().items.set(player.getInventory().selected, stack);
 
 		// Harvest check
 		boolean canHarvest = state.canHarvestBlock(world, pos, player);
 
 		// Swap back the main hand
-		player.inventory.items.set(player.inventory.selected, oldHeldStack);
+		player.getInventory().items.set(player.getInventory().selected, oldHeldStack);
 
 		// Reset the harvest check to its previous value
 		doingHarvestCheck.set(wasChecking);

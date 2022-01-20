@@ -62,7 +62,7 @@ public class ItemExosuitController extends Item implements ISocketableController
 	public ItemStack[] getControlledStacks(Player player, ItemStack stack) {
 		List<ItemStack> stacks = new ArrayList<>();
 		for (int i = 0; i < 4; i++) {
-			ItemStack armor = player.inventory.armor.get(3 - i);
+			ItemStack armor = player.getInventory().armor.get(3 - i);
 			if (!armor.isEmpty() && ISocketable.isSocketable(armor)) {
 				stacks.add(armor);
 			}

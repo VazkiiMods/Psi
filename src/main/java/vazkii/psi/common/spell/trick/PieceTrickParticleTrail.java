@@ -8,7 +8,7 @@
  */
 package vazkii.psi.common.spell.trick;
 
-import net.minecraftforge.fml.network.PacketDistributor;
+import net.minecraftforge.network.PacketDistributor;
 
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.internal.Vector3;

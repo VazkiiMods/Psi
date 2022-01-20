@@ -9,6 +9,7 @@
 package vazkii.psi.common.block;
 
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.material.FluidState;
@@ -41,7 +42,7 @@ import java.util.Random;
 
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
-public class BlockConjured extends Block implements SimpleWaterloggedBlock {
+public class BlockConjured extends Block implements EntityBlock, SimpleWaterloggedBlock {
 
 	public static final BooleanProperty SOLID = BooleanProperty.create("solid");
 	public static final BooleanProperty LIGHT = BooleanProperty.create("light");
@@ -121,7 +122,7 @@ public class BlockConjured extends Block implements SimpleWaterloggedBlock {
 			break;
 		}
 		if (state.getValue(WATERLOGGED)) {
-			world.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
+			world.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
 		}
 		if (state.getBlock() == facingState.getBlock() && state.getValue(LIGHT) == facingState.getValue(LIGHT) && state.getValue(SOLID) == facingState.getValue(SOLID)) {
 			return state.setValue(prop, true);
@@ -131,7 +132,7 @@ public class BlockConjured extends Block implements SimpleWaterloggedBlock {
 	}
 
 	@Override
-	public int getLightValue(BlockState state, BlockGetter world, BlockPos pos) {
+	public int getLightEmission(BlockState state, BlockGetter world, BlockPos pos) {
 		return state.getValue(LIGHT) ? 15 : 0;
 	}
 
@@ -168,12 +169,7 @@ public class BlockConjured extends Block implements SimpleWaterloggedBlock {
 	}
 
 	@Override
-	public boolean hasTileEntity(BlockState state) {
-		return true;
-	}
-
-	@Override
-	public BlockEntity createTileEntity(@Nonnull BlockState state, BlockGetter world) {
+	public BlockEntity newBlockEntity(@Nonnull BlockPos pos, @Nonnull BlockState state) {
 		return new TileConjured();
 	}
 

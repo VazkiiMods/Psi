@@ -306,7 +306,7 @@ public class GuiProgrammer extends Screen {
 		renderBackground(ms);
 
 		RenderSystem.color3f(1F, 1F, 1F);
-		getMinecraft().getTextureManager().bind(texture);
+		getMinecraft().getTextureManager().bindForSetup(texture);
 
 		blit(ms, left, top, 0, 0, xSize, ySize);
 
@@ -339,7 +339,7 @@ public class GuiProgrammer extends Screen {
 		ms.popPose();
 		RenderSystem.color3f(1f, 1f, 1f);
 		ms.translate(0, 0, 1);
-		getMinecraft().getTextureManager().bind(texture);
+		getMinecraft().getTextureManager().bindForSetup(texture);
 
 		if (selectedX != -1 && selectedY != -1 && !takingScreenshot) {
 			blit(ms, gridLeft + selectedX * 18, gridTop + selectedY * 18, 32, ySize, 16, 16);

@@ -38,7 +38,7 @@ public class BookSoundHandler {
 	private static int bookTime = 0;
 
 	private static boolean isBookOpen() {
-		return Objects.equals(PatchouliAPI.instance.getOpenBookGui(), LibResources.PATCHOULI_BOOK);
+		return Objects.equals(PatchouliAPI.get().getOpenBookGui(), LibResources.PATCHOULI_BOOK);
 	}
 
 	@SubscribeEvent

@@ -61,7 +61,7 @@ public class PiecePanelWidget extends AbstractWidget implements Widget, GuiEvent
 	@Override
 	public void renderButton(PoseStack ms, int mouseX, int mouseY, float pTicks) {
 		if (panelEnabled) {
-			parent.getMinecraft().getTextureManager().bind(GuiProgrammer.texture);
+			parent.getMinecraft().getTextureManager().bindForSetup(GuiProgrammer.texture);
 
 			fill(ms, x, y, x + width, y + height, 0x88000000);
 

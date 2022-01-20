@@ -60,7 +60,7 @@ public class KeybindHandler {
 				if (!stack.isEmpty() && (ISocketable.isSocketable(stack) || isSocketableController(mc.player, stack))) {
 					mc.setScreen(new GuiSocketSelect(stack));
 				} else {
-					PatchouliAPI.instance.openBookGUI(LibResources.PATCHOULI_BOOK);
+					PatchouliAPI.get().openBookGUI(LibResources.PATCHOULI_BOOK);
 				}
 
 			}

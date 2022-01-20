@@ -42,7 +42,7 @@ public class StatusWidget extends AbstractWidget {
 	@Override
 	public void renderButton(PoseStack ms, int mouseX, int mouseY, float pTicks) {
 		RenderSystem.color3f(1f, 1f, 1f);
-		parent.getMinecraft().getTextureManager().bind(GuiProgrammer.texture);
+		parent.getMinecraft().getTextureManager().bindForSetup(GuiProgrammer.texture);
 		blit(ms, parent.left - 48, parent.top + 5, parent.xSize, 0, 48, 30);
 		blit(ms, parent.left - 16, parent.top + 13, parent.compileResult.right().isPresent() ? 12 : 0, parent.ySize + 28, 12, 12);
 

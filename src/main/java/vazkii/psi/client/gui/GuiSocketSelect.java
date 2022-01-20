@@ -223,7 +223,7 @@ public class GuiSocketSelect extends Screen {
 				xdp = (int) ((xp - x) * mod + x);
 				ydp = (int) ((yp - y) * mod + y);
 
-				mc.textureManager.bind(signs.get(seg));
+				mc.textureManager.bindForSetup(signs.get(seg));
 				blit(ms, xdp - 8, ydp - 8, 0, 0, 16, 16, 16, 16);
 			}
 		}

@@ -13,15 +13,16 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.fml.network.NetworkRegistry;
-import net.minecraftforge.fml.network.PacketDistributor;
-import net.minecraftforge.fml.network.simple.SimpleChannel;
+import net.minecraftforge.network.NetworkRegistry;
+import net.minecraftforge.network.PacketDistributor;
+import net.minecraftforge.network.simple.SimpleChannel;
 
 import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.network.message.*;
 
 public class MessageRegister {
 	private static final String VERSION = "3";
+
 	public static final SimpleChannel HANDLER = NetworkRegistry.newSimpleChannel(new ResourceLocation(LibMisc.MOD_ID, "main"),
 			() -> VERSION,
 			VERSION::equals,

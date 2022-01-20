@@ -106,7 +106,7 @@ public class PieceTrickPlaceBlock extends PieceTrick {
 
 				world.setBlockAndUpdate(pos, ModBlocks.conjured.defaultBlockState());
 			} else {
-				ItemStack stack = player.inventory.getItem(slot);
+				ItemStack stack = player.getInventory().getItem(slot);
 				if (!stack.isEmpty() && stack.getItem() instanceof BlockItem) {
 					ItemStack rem = removeFromInventory(player, stack, true);
 					BlockItem iblock = (BlockItem) rem.getItem();

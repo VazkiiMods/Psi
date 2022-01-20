@@ -34,11 +34,11 @@ public class ModTags {
 	public static final Tag.Named<Item> BLOCK_IVORY_PSIMETAL = forgeTag("storage_blocks/ivory_psimetal");
 
 	private static Tag.Named<Item> tag(String name) {
-		return ItemTags.bind(prefix(name).toString());
+		return ItemTags.bindForSetup(prefix(name).toString());
 	}
 
 	private static Tag.Named<Item> forgeTag(String name) {
-		return ItemTags.bind(new ResourceLocation("forge", name).toString());
+		return ItemTags.bindForSetup(new ResourceLocation("forge", name).toString());
 	}
 
 	public static ResourceLocation prefix(String path) {
@@ -52,7 +52,7 @@ public class ModTags {
 		public static final Tag.Named<Block> BLOCK_IVORY_PSIMETAL = fromTag(ModTags.BLOCK_IVORY_PSIMETAL);
 
 		private static Tag.Named<Block> fromTag(Tag.Named<?> tag) {
-			return BlockTags.bind(tag.getName().toString());
+			return BlockTags.bindForSetup(tag.getName().toString());
 		}
 	}
 }

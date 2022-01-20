@@ -68,7 +68,7 @@ public class SpellCostsWidget extends AbstractWidget {
 				}
 
 				RenderSystem.color3f(1f, 1f, 1f);
-				parent.getMinecraft().getTextureManager().bind(GuiProgrammer.texture);
+				parent.getMinecraft().getTextureManager().bindForSetup(GuiProgrammer.texture);
 				blit(ms, statX, statY, (stat.ordinal() + 1) * 12, parent.ySize + 16, 12, 12);
 				parent.getMinecraft().font.draw(ms, s, statX + 16, statY + 2, cadStat != null && cadVal < val && cadVal != -1 ? 0xFF6666 : 0xFFFFFF);
 
