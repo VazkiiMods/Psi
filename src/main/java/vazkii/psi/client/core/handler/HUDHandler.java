@@ -174,7 +174,7 @@ public final class HUDHandler {
 
 		for (Deduction d : data.deductions) {
 			float a = d.getPercentile(pticks);
-			RenderSystem.color4f(r, g, b, a);
+			RenderSystem.setShaderColor(r, g, b, a);
 			height = (int) Math.ceil(origHeight * (double) d.deduct / totalPsi);
 			int effHeight = (int) (origHeight * (double) d.current / totalPsi);
 			v = origHeight - effHeight;
@@ -201,7 +201,7 @@ public final class HUDHandler {
 			height = 0;
 		}
 
-		RenderSystem.color3f(r, g, b);
+		RenderSystem.setShaderColor(r, g, b, 1F);
 		ShaderHandler.useShader(ShaderHandler.psiBar, generateCallback(1F, false, data.overflowed));
 		GuiComponent.blit(ms, x, y, 32, v, width, height, 64, 256);
 		ShaderHandler.releaseShader();
@@ -212,7 +212,7 @@ public final class HUDHandler {
 			RenderSystem.activeTexture(ARBMultitexture.GL_TEXTURE0_ARB);
 		}
 
-		RenderSystem.color3f(1F, 1F, 1F);
+		RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
 
 		ms.pushPose();
 		ms.translate(0F, textY, 0F);
@@ -235,7 +235,7 @@ public final class HUDHandler {
 		}
 
 		int color = cad.getSpellColor(cadStack);
-		RenderSystem.color4f(PsiRenderHelper.r(color) / 255F,
+		RenderSystem.setShaderColor(PsiRenderHelper.r(color) / 255F,
 				PsiRenderHelper.g(color) / 255F,
 				PsiRenderHelper.b(color) / 255F, 1F);
 
@@ -277,7 +277,7 @@ public final class HUDHandler {
 
 			int x = res.getGuiScaledWidth() / 2 - mc.font.width(name) / 2;
 			int y = res.getGuiScaledHeight() - 71;
-			if (mc.player.abilities.instabuild) {
+			if (mc.player.isCreative()) {
 				y += 14;
 			}
 
@@ -304,7 +304,7 @@ public final class HUDHandler {
 			int start = maxRemainingTicks - remainingLeaveTicks;
 			float alpha = remainingTime + partTicks > start ? 1F : (remainingTime + partTicks) / start;
 
-			RenderSystem.color4f(1F, 1F, 1F, alpha);
+			RenderSystem.setShaderColor(1F, 1F, 1F, alpha);
 			int xp = x + (int) (16F * (1F - alpha));
 			ms.pushPose();
 			ms.translate(xp, y, 0F);
@@ -312,7 +312,7 @@ public final class HUDHandler {
 			PsiRenderHelper.transferMsToGl(ms, () -> mc.getItemRenderer().renderAndDecorateItem(remainingDisplayStack, 0, 0));
 			ms.scale(1F / alpha, 1F, 1F);
 			ms.translate(-xp, -y, 0F);
-			RenderSystem.color4f(1F, 1F, 1F, 1F);
+			RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
 
 			String text = remainingDisplayStack.getHoverName().plainCopy().withStyle(ChatFormatting.GREEN).getString();
 			if (remainingCount >= 0) {

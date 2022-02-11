@@ -39,9 +39,9 @@ public class TrickRecipeGenerator extends RecipeProvider {
 	}
 
 	@Override
-	protected void buildShapelessRecipes(Consumer<FinishedRecipe> consumer) {
+	protected void buildCraftingRecipes(Consumer<FinishedRecipe> consumer) {
 		TrickRecipeBuilder.of(ModItems.psidust).input(Tags.Items.DUSTS_REDSTONE).cad(ModItems.cadAssemblyIron).build(consumer);
-		TrickRecipeBuilder.of(PatchouliAPI.instance.getBookStack(LibResources.PATCHOULI_BOOK)).input(Items.BOOK).cad(ModItems.cadAssemblyIron).build(consumer);
+		TrickRecipeBuilder.of(PatchouliAPI.get().getBookStack(LibResources.PATCHOULI_BOOK)).input(Items.BOOK).cad(ModItems.cadAssemblyIron).build(consumer);
 
 		TrickRecipeBuilder.of(ModItems.cadAssemblyPsimetal)
 				.input(ModItems.cadAssemblyGold)

@@ -8,6 +8,7 @@
  */
 package vazkii.psi.common.item;
 
+import net.minecraft.nbt.Tag;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
@@ -16,7 +17,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.item.*;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.InteractionResult;
@@ -35,9 +35,7 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.ToolType;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.items.ItemStackHandler;
@@ -112,9 +110,6 @@ public class ItemCAD extends Item implements ICAD {
 	public ItemCAD(Item.Properties properties) {
 		super(properties
 				.stacksTo(1)
-				.addToolType(ToolType.PICKAXE, 0)
-				.addToolType(ToolType.AXE, 0)
-				.addToolType(ToolType.SHOVEL, 0)
 		);
 	}
 
@@ -130,7 +125,7 @@ public class ItemCAD extends Item implements ICAD {
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
 		CADData data = new CADData(stack);
-		if (nbt != null && nbt.contains("Parent", Constants.NBT.TAG_COMPOUND)) {
+		if (nbt != null && nbt.contains("Parent", Tag.TAG_COMPOUND)) {
 			data.deserializeNBT(nbt.getCompound("Parent"));
 		}
 		return data;
@@ -141,13 +136,13 @@ public class ItemCAD extends Item implements ICAD {
 		CompoundTag compound = stack.getOrCreateTag();
 
 		stack.getCapability(PsiAPI.CAD_DATA_CAPABILITY).ifPresent(data -> {
-			if (compound.contains(TAG_TIME_LEGACY, Constants.NBT.TAG_ANY_NUMERIC)) {
+			if (compound.contains(TAG_TIME_LEGACY, Tag.TAG_ANY_NUMERIC)) {
 				data.setTime(compound.getInt(TAG_TIME_LEGACY));
 				data.markDirty(true);
 				compound.remove(TAG_TIME_LEGACY);
 			}
 
-			if (compound.contains(TAG_STORED_PSI_LEGACY, Constants.NBT.TAG_ANY_NUMERIC)) {
+			if (compound.contains(TAG_STORED_PSI_LEGACY, Tag.TAG_ANY_NUMERIC)) {
 				data.setBattery(compound.getInt(TAG_STORED_PSI_LEGACY));
 				data.markDirty(true);
 				compound.remove(TAG_STORED_PSI_LEGACY);
@@ -554,40 +549,16 @@ public class ItemCAD extends Item implements ICAD {
 	}
 
 	@Override
-	public int getHarvestLevel(ItemStack stack, ToolType tool, @Nullable Player player, @Nullable BlockState blockState) {
+	public boolean isCorrectToolForDrops(ItemStack stack, @Nonnull BlockState state) {
 		if (!PieceTrickBreakBlock.doingHarvestCheck.get()) {
-			return -1;
-		}
-		int level = super.getHarvestLevel(stack, tool, player, blockState);
-		return level < 0 ? -1 : Math.max(level, ConfigHandler.COMMON.cadHarvestLevel.get());
-	}
-
-	@Nonnull
-	@Override
-	public Set<ToolType> getToolTypes(ItemStack stack) {
-		if (!PieceTrickBreakBlock.doingHarvestCheck.get()) {
-			return Collections.emptySet();
-		}
-		return super.getToolTypes(stack);
-	}
-
-	/**
-	 * Mostly handled by forge assigning tool classes to vanilla blocks in ForgeHooks#initTools().
-	 * Currently this only needs Materials special cased to match the vanilla pickaxe but this may change.
-	 *
-	 * @see PickaxeItem#canHarvestBlock(BlockState)
-	 * @see ShovelItem#canHarvestBlock(BlockState)
-	 */
-	@Override
-	public boolean canHarvestBlock(ItemStack stack, @Nonnull BlockState state) {
-		if (!PieceTrickBreakBlock.doingHarvestCheck.get()) {
-			return super.canHarvestBlock(stack, state);
+			return super.isCorrectToolForDrops(stack, state);
 		}
 		Block block = state.getBlock();
-		ToolType tool = block.getHarvestTool(state);
-		int level = tool == null ? -1 : getHarvestLevel(stack, tool, null, state);
+		//ToolType tool = block.getHarvestTool(state);
+		int level = ConfigHandler.COMMON.cadHarvestLevel.get(); //TODO revisit for better checking of harvestability
+		//int level = tool == null ? -1 : getHarvestLevel(stack, tool, null, state);
 		if (level >= 0) {
-			return level >= block.getHarvestLevel(state);
+			//return level >= block.getHarvestLevel(state);
 		}
 		Material material = state.getMaterial();
 		return material == Material.STONE || material == Material.METAL || material == Material.HEAVY_METAL;

@@ -8,33 +8,27 @@
  */
 package vazkii.psi.client.core.proxy;
 
+import com.mojang.blaze3d.vertex.BufferBuilder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
-import com.mojang.blaze3d.vertex.BufferBuilder;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
-import net.minecraft.client.resources.model.ModelBakery;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.resources.model.ModelResourceLocation;
-import net.minecraft.client.resources.model.Material;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
-import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.DeferredWorkQueue;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-
-import vazkii.psi.api.ClientPsiAPI;
 import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.cad.ICADColorizer;
 import vazkii.psi.api.spell.SpellPiece;
@@ -52,15 +46,8 @@ import vazkii.psi.client.render.tile.RenderTileProgrammer;
 import vazkii.psi.common.block.base.ModBlocks;
 import vazkii.psi.common.block.tile.TileProgrammer;
 import vazkii.psi.common.core.proxy.IProxy;
-import vazkii.psi.common.entity.EntitySpellCharge;
-import vazkii.psi.common.entity.EntitySpellCircle;
-import vazkii.psi.common.entity.EntitySpellGrenade;
-import vazkii.psi.common.entity.EntitySpellMine;
-import vazkii.psi.common.entity.EntitySpellProjectile;
+import vazkii.psi.common.entity.*;
 import vazkii.psi.common.item.base.ModItems;
-import vazkii.psi.common.lib.LibItemNames;
-import vazkii.psi.common.lib.LibMisc;
-import vazkii.psi.common.spell.other.PieceConnector;
 import vazkii.psi.mixin.client.AccessorRenderBuffers;
 
 import java.util.Map;
@@ -80,18 +67,23 @@ public class ClientProxy implements IProxy {
 
 		KeybindHandler.init();
 
-		ClientRegistry.bindTileEntityRenderer(TileProgrammer.TYPE, RenderTileProgrammer::new);
-
-		RenderingRegistry.registerEntityRenderingHandler(EntitySpellCircle.TYPE, RenderSpellCircle::new);
-		RenderingRegistry.registerEntityRenderingHandler(EntitySpellCharge.TYPE, RenderSpellProjectile::new);
-		RenderingRegistry.registerEntityRenderingHandler(EntitySpellGrenade.TYPE, RenderSpellProjectile::new);
-		RenderingRegistry.registerEntityRenderingHandler(EntitySpellProjectile.TYPE, RenderSpellProjectile::new);
-		RenderingRegistry.registerEntityRenderingHandler(EntitySpellMine.TYPE, RenderSpellProjectile::new);
 		ItemBlockRenderTypes.setRenderLayer(ModBlocks.conjured, RenderType.translucent());
 	}
 
+
+
+	@SubscribeEvent
+	public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers evt) {
+		evt.registerBlockEntityRenderer(TileProgrammer.TYPE, RenderTileProgrammer::new);
+		evt.registerEntityRenderer(EntitySpellCircle.TYPE, RenderSpellCircle::new);
+		evt.registerEntityRenderer(EntitySpellCharge.TYPE, RenderSpellProjectile::new);
+		evt.registerEntityRenderer(EntitySpellGrenade.TYPE, RenderSpellProjectile::new);
+		evt.registerEntityRenderer(EntitySpellProjectile.TYPE, RenderSpellProjectile::new);
+		evt.registerEntityRenderer(EntitySpellMine.TYPE, RenderSpellProjectile::new);
+	}
+
 	private void loadComplete(FMLLoadCompleteEvent event) {
-		DeferredWorkQueue.runLater(() -> {
+		event.enqueueWork(() -> {
 			Map<RenderType, BufferBuilder> map = ((AccessorRenderBuffers) Minecraft.getInstance().renderBuffers().bufferSource()).getFixedBuffers();
 			RenderType layer = SpellPiece.getLayer();
 			map.put(layer, new BufferBuilder(layer.bufferSize()));
@@ -108,14 +100,14 @@ public class ClientProxy implements IProxy {
 	}
 
 	private void addCADModels(ModelRegistryEvent event) {
-		ModelLoader.addSpecialModel(new ResourceLocation(LibMisc.MOD_ID, "item/" + LibItemNames.CAD_IRON));
+		/*ModelLoader.addSpecialModel(new ResourceLocation(LibMisc.MOD_ID, "item/" + LibItemNames.CAD_IRON));
 		ModelLoader.addSpecialModel(new ResourceLocation(LibMisc.MOD_ID, "item/" + LibItemNames.CAD_GOLD));
 		ModelLoader.addSpecialModel(new ResourceLocation(LibMisc.MOD_ID, "item/" + LibItemNames.CAD_PSIMETAL));
 		ModelLoader.addSpecialModel(new ResourceLocation(LibMisc.MOD_ID, "item/" + LibItemNames.CAD_EBONY_PSIMETAL));
 		ModelLoader.addSpecialModel(new ResourceLocation(LibMisc.MOD_ID, "item/" + LibItemNames.CAD_IVORY_PSIMETAL));
 		ModelLoader.addSpecialModel(new ResourceLocation(LibMisc.MOD_ID, "item/" + LibItemNames.CAD_CREATIVE));
 		ModelBakery.UNREFERENCED_TEXTURES.addAll(ClientPsiAPI.getAllSpellPieceMaterial());
-		ModelBakery.UNREFERENCED_TEXTURES.add(new Material(ClientPsiAPI.PSI_PIECE_TEXTURE_ATLAS, PieceConnector.LINES_TEXTURE));
+		ModelBakery.UNREFERENCED_TEXTURES.add(new Material(ClientPsiAPI.PSI_PIECE_TEXTURE_ATLAS, PieceConnector.LINES_TEXTURE));*/ //TODO MODELS F**K
 	}
 
 	@Override

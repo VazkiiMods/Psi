@@ -8,6 +8,7 @@
  */
 package vazkii.psi.common.block.tile;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.nbt.CompoundTag;
@@ -37,7 +38,7 @@ public class TileProgrammer extends BlockEntity {
 
 	public String playerLock = "";
 
-	public TileProgrammer() {
+	public TileProgrammer(BlockPos pos, BlockState state) {
 		super(TYPE);
 	}
 

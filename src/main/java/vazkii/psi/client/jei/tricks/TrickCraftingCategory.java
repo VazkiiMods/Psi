@@ -10,20 +10,18 @@ package vazkii.psi.client.jei.tricks;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
-
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.category.IRecipeCategory;
-
-import net.minecraft.client.resources.model.Material;
 import net.minecraft.client.resources.language.I18n;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.client.resources.model.Material;
 import net.minecraft.network.chat.Component;
-
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 import vazkii.psi.api.ClientPsiAPI;
 import vazkii.psi.api.recipe.ITrickRecipe;
 import vazkii.psi.common.Psi;
@@ -31,12 +29,7 @@ import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.lib.LibMisc;
 
 import javax.annotation.Nonnull;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class TrickCraftingCategory implements IRecipeCategory<ITrickRecipe> {
 	public static final ResourceLocation UID = new ResourceLocation(LibMisc.MOD_ID, "trick");
@@ -77,8 +70,8 @@ public class TrickCraftingCategory implements IRecipeCategory<ITrickRecipe> {
 
 	@Nonnull
 	@Override
-	public String getTitle() {
-		return I18n.get("jei." + LibMisc.MOD_ID + ".category.trick");
+	public Component getTitle() {
+		return new TextComponent(I18n.get("jei." + LibMisc.MOD_ID + ".category.trick"));
 	}
 
 	@Nonnull

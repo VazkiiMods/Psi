@@ -10,6 +10,7 @@ package vazkii.psi.common.core.handler.capability;
 
 import com.google.common.collect.Lists;
 
+import net.minecraft.nbt.Tag;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
@@ -18,7 +19,6 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.core.Direction;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
 
 import vazkii.psi.api.PsiAPI;
@@ -214,19 +214,19 @@ public class CADData implements ICapabilityProvider, ICADData, ISpellAcceptor, I
 
 	@Override
 	public void deserializeNBT(CompoundTag nbt) {
-		if (nbt.contains("Time", Constants.NBT.TAG_ANY_NUMERIC)) {
+		if (nbt.contains("Time", Tag.TAG_ANY_NUMERIC)) {
 			time = nbt.getInt("Time");
 		}
-		if (nbt.contains("Battery", Constants.NBT.TAG_ANY_NUMERIC)) {
+		if (nbt.contains("Battery", Tag.TAG_ANY_NUMERIC)) {
 			battery = nbt.getInt("Battery");
 		}
 
-		if (nbt.contains("Memory", Constants.NBT.TAG_LIST)) {
-			ListTag memory = nbt.getList("Memory", Constants.NBT.TAG_LIST);
+		if (nbt.contains("Memory", Tag.TAG_LIST)) {
+			ListTag memory = nbt.getList("Memory", Tag.TAG_LIST);
 			List<Vector3> newVectors = Lists.newArrayList();
 			for (int i = 0; i < memory.size(); i++) {
 				ListTag vec = (ListTag) memory.get(i);
-				if (vec.getElementType() == Constants.NBT.TAG_DOUBLE && vec.size() >= 3) {
+				if (vec.getElementType() == Tag.TAG_DOUBLE && vec.size() >= 3) {
 					newVectors.add(new Vector3(vec.getDouble(0), vec.getDouble(1), vec.getDouble(2)));
 				} else {
 					newVectors.add(null);

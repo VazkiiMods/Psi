@@ -100,7 +100,7 @@ public class PieceTrickPlaceBlock extends PieceTrick {
 		BlockState state = world.getBlockState(pos);
 		BlockEvent.EntityPlaceEvent placeEvent = new BlockEvent.EntityPlaceEvent(BlockSnapshot.create(world.dimension(), world, pos), world.getBlockState(pos.relative(Direction.UP)), player);
 		MinecraftForge.EVENT_BUS.post(placeEvent);
-		if (state.isAir(world, pos) || state.getMaterial().isReplaceable() && !placeEvent.isCanceled()) {
+		if (state.isAir() || state.getMaterial().isReplaceable() && !placeEvent.isCanceled()) {
 
 			if (conjure) {
 
@@ -125,7 +125,7 @@ public class PieceTrickPlaceBlock extends PieceTrick {
 
 					if (result != InteractionResult.FAIL) {
 						removeFromInventory(player, stack, false);
-						if (player.abilities.instabuild) {
+						if (player.isCreative()) {
 							HUDHandler.setRemaining(rem, -1);
 						} else {
 							HUDHandler.setRemaining(player, rem, null);
@@ -141,11 +141,11 @@ public class PieceTrickPlaceBlock extends PieceTrick {
 	}
 
 	public static ItemStack removeFromInventory(Player player, ItemStack stack, boolean copy) {
-		if (player.abilities.instabuild) {
+		if (player.isCreative()) {
 			return stack.copy();
 		}
 
-		Inventory inv = player.inventory;
+		Inventory inv = player.getInventory();
 		for (int i = inv.getContainerSize() - 1; i >= 0; i--) {
 			ItemStack invStack = inv.getItem(i);
 			if (!invStack.isEmpty() && invStack.sameItem(stack) && ItemStack.matches(stack, invStack)) {

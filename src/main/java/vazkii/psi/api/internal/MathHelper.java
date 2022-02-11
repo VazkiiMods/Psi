@@ -9,12 +9,9 @@
 package vazkii.psi.api.internal;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.LinkedHashSet;
-import java.util.function.BiFunction;
-import java.util.function.Function;
 
 public final class MathHelper {
 
@@ -31,7 +28,7 @@ public final class MathHelper {
 	}
 
 	/**
-	 * [VanillaCopy] of {@link net.minecraft.world.IWorldReader#doRayTrace(RayTraceContext, BiFunction, Function)}
+	 * [VanillaCopy] of {//@link net.minecraft.world.IWorldReader#doRayTrace(RayTraceContext, BiFunction, Function)}
 	 * but without the extra processing and endpoint bumping
 	 */
 	public static LinkedHashSet<BlockPos> getBlocksAlongRay(Vec3 origin, Vec3 end, int maxBlocks) {

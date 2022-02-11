@@ -12,6 +12,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.network.chat.Component;
 import net.minecraft.ChatFormatting;
@@ -67,7 +68,7 @@ public class SpellCostsWidget extends AbstractWidget {
 					s += "/" + (cadVal == -1 ? "\u221E" : cadVal);
 				}
 
-				RenderSystem.color3f(1f, 1f, 1f);
+				RenderSystem.setShaderColor(1f, 1f, 1f, 1F);
 				parent.getMinecraft().getTextureManager().bindForSetup(GuiProgrammer.texture);
 				blit(ms, statX, statY, (stat.ordinal() + 1) * 12, parent.ySize + 16, 12, 12);
 				parent.getMinecraft().font.draw(ms, s, statX + 16, statY + 2, cadStat != null && cadVal < val && cadVal != -1 ? 0xFF6666 : 0xFFFFFF);
@@ -80,5 +81,10 @@ public class SpellCostsWidget extends AbstractWidget {
 
 			}
 		});
+	}
+
+	@Override
+	public void updateNarration(NarrationElementOutput p_169152_) {
+		//TODO Narration?
 	}
 }

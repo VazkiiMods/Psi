@@ -13,6 +13,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.resources.language.I18n;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.network.chat.TextComponent;
@@ -67,7 +68,7 @@ public class SideConfigWidget extends AbstractWidget {
 					int x = parent.left - 75;
 					int y = parent.top + 70 + i * 26;
 
-					RenderSystem.color3f(1F, 1F, 1F);
+					RenderSystem.setShaderColor(1F, 1F, 1F, 1F);;
 					parent.getMinecraft().getTextureManager().bindForSetup(GuiProgrammer.texture);
 					blit(ms, x + 50, y - 8, parent.xSize, 145, 24, 24);
 
@@ -82,5 +83,10 @@ public class SideConfigWidget extends AbstractWidget {
 				}
 			}
 		}
+	}
+
+	@Override
+	public void updateNarration(NarrationElementOutput p_169152_) {
+
 	}
 }

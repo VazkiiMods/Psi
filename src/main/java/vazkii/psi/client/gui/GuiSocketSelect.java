@@ -9,15 +9,12 @@
 package vazkii.psi.client.gui;
 
 import com.google.common.collect.ImmutableSet;
-import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.*;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
-import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.platform.Lighting;
-import com.mojang.blaze3d.vertex.Tesselator;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.client.KeyMapping;
 import com.mojang.blaze3d.platform.InputConstants;
@@ -94,7 +91,7 @@ public class GuiSocketSelect extends Screen {
 	}
 
 	@Override
-	public void render(PoseStack ms, int mx, int my, float partialTicks) {
+	public void render(PoseStack ms, int mx, int my, float partialTicks) { //TODO This entire function
 		super.render(ms, mx, my, partialTicks);
 
 		int x = width / 2;
@@ -116,8 +113,8 @@ public class GuiSocketSelect extends Screen {
 		RenderSystem.disableCull();
 		RenderSystem.disableTexture();
 		RenderSystem.enableBlend();
-		RenderSystem.shadeModel(GL11.GL_SMOOTH);
-		buf.begin(GL11.GL_TRIANGLE_FAN, DefaultVertexFormat.POSITION_COLOR);
+		//RenderSystem.shadeModel(GL11.GL_SMOOTH);
+		buf.begin(VertexFormat.Mode.TRIANGLE_FAN, DefaultVertexFormat.POSITION_COLOR);
 
 		for (int seg = 0; seg < segments; seg++) {
 			boolean mouseInSector = degPer * seg < angle && angle < degPer * (seg + 1);
@@ -176,7 +173,7 @@ public class GuiSocketSelect extends Screen {
 		}
 		tess.end();
 
-		RenderSystem.shadeModel(GL11.GL_FLAT);
+		//RenderSystem.shadeModel(GL11.GL_FLAT);
 		RenderSystem.enableTexture();
 
 		for (int seg = 0; seg < segments; seg++) {
@@ -230,11 +227,11 @@ public class GuiSocketSelect extends Screen {
 
 		float shift = Math.min(5, timeIn + partialTicks) / 5;
 		float scale = 3 * shift;
-		RenderSystem.enableRescaleNormal();
+		//RenderSystem.enableRescaleNormal();
 		RenderSystem.enableBlend();
 		RenderSystem.blendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, 1, 0);
-		RenderSystem.enableLighting();
-		RenderSystem.enableColorMaterial();
+		//RenderSystem.enableLighting();
+		//RenderSystem.enableColorMaterial();
 
 		if (controlledStacks != null && controlledStacks.length > 0) {
 			int xs = width / 2 - 18 * controlledStacks.length / 2;
@@ -260,9 +257,9 @@ public class GuiSocketSelect extends Screen {
 					(int) (x / scale) - 8, (int) (y / scale) - 8));
 			ms.popPose();
 		}
-		Lighting.turnOff();
+		//Lighting.turnOff();
 		RenderSystem.disableBlend();
-		RenderSystem.disableRescaleNormal();
+		//RenderSystem.disableRescaleNormal();
 
 	}
 

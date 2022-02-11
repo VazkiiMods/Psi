@@ -13,6 +13,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.components.Widget;
+import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.AbstractWidget;
@@ -72,7 +73,7 @@ public class PiecePanelWidget extends AbstractWidget implements Widget, GuiEvent
 				fill(ms, panelPieceX - 1, panelPieceY - 1, panelPieceX + 17, panelPieceY + 17, 0x559999FF);
 			}
 
-			RenderSystem.color3f(1f, 1f, 1f);
+			RenderSystem.setShaderColor(1F, 1F, 1F, 1F);;
 			blit(ms, searchField.x - 14, searchField.y - 2, 0, parent.ySize + 16, 12, 12);
 
 			String s = Math.min(Math.max(getPageCount(), 1), page + 1) + "/" + Math.max(getPageCount(), 1);
@@ -463,5 +464,10 @@ public class PiecePanelWidget extends AbstractWidget implements Widget, GuiEvent
 		searchField.setFocus(true);
 		parent.setFocused(searchField);
 		updatePanelButtons();
+	}
+
+	@Override
+	public void updateNarration(NarrationElementOutput p_169152_) {
+
 	}
 }

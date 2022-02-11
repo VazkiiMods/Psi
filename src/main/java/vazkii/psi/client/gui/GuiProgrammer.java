@@ -39,7 +39,7 @@ import net.minecraft.network.chat.Style;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.client.gui.GuiUtils;
+import net.minecraftforge.client.gui.GuiUtils;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.glfw.GLFW;
@@ -305,7 +305,7 @@ public class GuiProgrammer extends Screen {
 		ms.pushPose();
 		renderBackground(ms);
 
-		RenderSystem.color3f(1F, 1F, 1F);
+		RenderSystem.setShaderColor(1F, 1F, 1F, 1F);;
 		getMinecraft().getTextureManager().bindForSetup(texture);
 
 		blit(ms, left, top, 0, 0, xSize, ySize);
@@ -337,7 +337,7 @@ public class GuiProgrammer extends Screen {
 			}
 		});
 		ms.popPose();
-		RenderSystem.color3f(1f, 1f, 1f);
+		RenderSystem.setShaderColor(1F, 1F, 1F, 1F);;
 		ms.translate(0, 0, 1);
 		getMinecraft().getTextureManager().bindForSetup(texture);
 

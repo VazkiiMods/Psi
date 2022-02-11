@@ -8,6 +8,7 @@
  */
 package vazkii.psi.common.block.tile;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
@@ -34,7 +35,7 @@ public class TileConjured extends BlockEntity {
 
 	public ItemStack colorizer = ItemStack.EMPTY;
 
-	public TileConjured() {
+	public TileConjured(BlockPos pos, BlockState state) {
 		super(TYPE);
 	}
 

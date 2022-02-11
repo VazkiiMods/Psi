@@ -64,7 +64,7 @@ public class PieceTrickCollapseBlock extends PieceTrick {
 			return null;
 		}
 
-		if (stateDown.isAir(world, posDown) && state.getDestroySpeed(world, pos) != -1 &&
+		if (stateDown.isAir() && state.getDestroySpeed(world, pos) != -1 &&
 				PieceTrickBreakBlock.canHarvestBlock(state, context.caster, world, pos, tool) &&
 				world.getBlockEntity(pos) == null) {
 

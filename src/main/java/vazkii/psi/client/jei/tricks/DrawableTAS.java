@@ -8,15 +8,12 @@
  */
 package vazkii.psi.client.jei.tricks;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.*;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import mezz.jei.api.gui.drawable.IDrawableStatic;
 
-import com.mojang.blaze3d.vertex.BufferBuilder;
-import com.mojang.blaze3d.vertex.Tesselator;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.math.Matrix4f;
 
 /**
@@ -48,7 +45,7 @@ public class DrawableTAS implements IDrawableStatic {
 		RenderSystem.bindTexture(sprite.atlas().getId());
 		Tesselator tessellator = Tesselator.getInstance();
 		BufferBuilder buf = tessellator.getBuilder();
-		buf.begin(7, DefaultVertexFormat.POSITION_TEX);
+		buf.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX); //TODO Verify QUADS is correct
 		buf.vertex(matrix, x, y + height, 0.0f).uv(minU, maxV).endVertex();
 		buf.vertex(matrix, x + width, y + height, 0.0f).uv(maxU, maxV).endVertex();
 		buf.vertex(matrix, x + width, y, 0.0f).uv(maxU, minV).endVertex();

@@ -10,6 +10,7 @@ package vazkii.psi.client.fx;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 
+import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.particle.TextureSheetParticle;
@@ -103,17 +104,17 @@ public class FXWisp extends TextureSheetParticle {
 		RenderSystem.depthMask(false);
 		RenderSystem.enableBlend();
 		RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
-		RenderSystem.alphaFunc(GL11.GL_GREATER, 0.003921569F);
-		RenderSystem.disableLighting();
+		//RenderSystem.alphaFunc(GL11.GL_GREATER, 0.003921569F);
+		//RenderSystem.disableLighting();
 
 		textureManager.bindForSetup(TextureAtlas.LOCATION_PARTICLES);
 		textureManager.getTexture(TextureAtlas.LOCATION_PARTICLES).setFilter(true, false);
-		bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormat.PARTICLE);
+		bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
 	}
 
 	private static void endRenderCommon() {
 		Minecraft.getInstance().textureManager.getTexture(TextureAtlas.LOCATION_PARTICLES).restoreLastBlurMipmap();
-		RenderSystem.alphaFunc(GL11.GL_GREATER, 0.1F);
+		//RenderSystem.alphaFunc(GL11.GL_GREATER, 0.1F);
 		RenderSystem.disableBlend();
 		RenderSystem.depthMask(true);
 	}

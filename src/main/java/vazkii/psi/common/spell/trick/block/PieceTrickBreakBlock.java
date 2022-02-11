@@ -16,11 +16,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.IBlockReader;
 import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.extensions.IForgeBlockState;
 import net.minecraftforge.event.world.BlockEvent.BreakEvent;
 import net.minecraftforge.fluids.IFluidBlock;
 
@@ -88,7 +86,7 @@ public class PieceTrickBreakBlock extends PieceTrick {
 
 		BlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
-		if (!block.isAir(state, world, pos) && !(block instanceof IFluidBlock) && state.getDestroySpeed(world, pos) != -1) {
+		if (!state.isAir() && !(block instanceof IFluidBlock) && state.getDestroySpeed(world, pos) != -1) {
 			if (!canHarvestBlock(state, player, world, pos, tool)) {
 				return;
 			}
@@ -96,10 +94,9 @@ public class PieceTrickBreakBlock extends PieceTrick {
 			BreakEvent event = createBreakEvent(state, player, world, pos, tool);
 			MinecraftForge.EVENT_BUS.post(event);
 			if (!event.isCanceled()) {
-				if (!player.abilities.instabuild) {
+				if (!player.isCreative()) {
 					BlockEntity tile = world.getBlockEntity(pos);
-
-					if (block.removedByPlayer(state, world, pos, player, true, world.getFluidState(pos))) {
+					if (block.canHarvestBlock(state, world, pos, player)) {
 						block.destroy(world, pos, state);
 						block.playerDestroy(world, player, pos, state, tile, tool);
 						if (world instanceof ServerLevel) {
@@ -118,7 +115,7 @@ public class PieceTrickBreakBlock extends PieceTrick {
 	}
 
 	/**
-	 * Based on {@link BreakEvent#BreakEvent(World, BlockPos, BlockState, PlayerEntity)}.
+	 * Based on {//@link BreakEvent#BreakEvent(World, BlockPos, BlockState, PlayerEntity)}.
 	 * Allows a tool that isn't your mainhand tool to harvest the blocks.
 	 */
 	public static BreakEvent createBreakEvent(BlockState state, Player player, Level world, BlockPos pos, ItemStack tool) {
@@ -138,7 +135,7 @@ public class PieceTrickBreakBlock extends PieceTrick {
 	 * Item stack aware harvest check
 	 * Also sets global state {@link PieceTrickBreakBlock#doingHarvestCheck} to true during the check
 	 * 
-	 * @see IForgeBlockState#canHarvestBlock(IBlockReader, BlockPos, PlayerEntity)
+	 * //@see IForgeBlockState#canHarvestBlock(IBlockReader, BlockPos, PlayerEntity)
 	 */
 	public static boolean canHarvestBlock(BlockState state, Player player, Level world, BlockPos pos, ItemStack stack) {
 		// So the CAD can only be used as a tool when a harvest check is ongoing

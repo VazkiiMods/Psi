@@ -8,9 +8,12 @@
  */
 package vazkii.psi.common.block.base;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.world.entity.EntityType;
@@ -20,7 +23,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.common.extensions.IForgeContainerType;
+import net.minecraftforge.common.extensions.IForgeMenuType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
@@ -37,6 +40,8 @@ import vazkii.psi.common.block.tile.TileProgrammer;
 import vazkii.psi.common.block.tile.container.ContainerCADAssembler;
 import vazkii.psi.common.lib.LibBlockNames;
 import vazkii.psi.common.lib.LibMisc;
+
+import java.util.function.BiFunction;
 
 import static vazkii.psi.common.item.base.ModItems.defaultBuilder;
 
@@ -57,7 +62,16 @@ public class ModBlocks {
 	public static final Block psimetalPlateWhiteLight = new Block(Block.Properties.of(Material.METAL).strength(5, 10).sound(SoundType.METAL).lightLevel((blockstate) -> 15));
 	public static final Block psimetalEbony = new Block(Block.Properties.of(Material.METAL).strength(5, 10).sound(SoundType.METAL));
 	public static final Block psimetalIvory = new Block(Block.Properties.of(Material.METAL).strength(5, 10).sound(SoundType.METAL));
-	public static final MenuType<ContainerCADAssembler> containerCADAssembler = IForgeContainerType.create(ContainerCADAssembler::fromNetwork);
+	public static final MenuType<ContainerCADAssembler> containerCADAssembler = IForgeMenuType.create(ContainerCADAssembler::fromNetwork);
+
+	public static final BlockEntityType<TileCADAssembler> ASSEMBLER = createBlockEntityType(TileCADAssembler::new, cadAssembler);
+	public static final BlockEntityType<TileProgrammer> PROGRAMMER = createBlockEntityType(TileProgrammer::new, programmer);
+	public static final BlockEntityType<TileConjured> CONJURED = createBlockEntityType(TileConjured::new, conjured);
+
+
+	public static <T extends BlockEntity> BlockEntityType<T> createBlockEntityType(BiFunction<BlockPos, BlockState, T> func, Block... blocks) {
+		return BlockEntityType.Builder.of(func::apply, blocks).build(null);
+	} //TODO replace, maybe in multiloader?
 
 	@SubscribeEvent
 	public static void registerBlocks(RegistryEvent.Register<Block> evt) {

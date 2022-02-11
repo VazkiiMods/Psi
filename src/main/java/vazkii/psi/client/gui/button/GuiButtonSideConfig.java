@@ -8,14 +8,11 @@
  */
 package vazkii.psi.client.gui.button;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.*;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
-import com.mojang.blaze3d.vertex.BufferBuilder;
-import com.mojang.blaze3d.vertex.Tesselator;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import net.minecraft.network.chat.TextComponent;
 
 import vazkii.psi.api.internal.PsiRenderHelper;
@@ -75,11 +72,11 @@ public class GuiButtonSideConfig extends Button {
 
 			SpellParam.Side currSide = piece.paramSides.get(param);
 			if (currSide == side) {
-				RenderSystem.color4f(PsiRenderHelper.r(param.color) / 255F,
+				RenderSystem.setShaderColor(PsiRenderHelper.r(param.color) / 255F,
 						PsiRenderHelper.g(param.color) / 255F,
 						PsiRenderHelper.b(param.color) / 255F, 1F);
 			} else {
-				RenderSystem.color3f(1F, 1F, 1F);
+				RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
 			}
 
 			float wh = 8F;
@@ -87,15 +84,15 @@ public class GuiButtonSideConfig extends Button {
 			float minV = side.v / 256F;
 			float maxU = (side.u + wh) / 256F;
 			float maxV = (side.v + wh) / 256F;
-			RenderSystem.enableAlphaTest();
+			//RenderSystem.enableAlphaTest(); //TODO Alpha Test?
 			BufferBuilder wr = Tesselator.getInstance().getBuilder();
-			wr.begin(7, DefaultVertexFormat.POSITION_TEX);
+			wr.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX); //TODO Check if QUADS is correct
 			wr.vertex(minX, maxY, 0).uv(minU, maxV).endVertex();
 			wr.vertex(maxX, maxY, 0).uv(maxU, maxV).endVertex();
 			wr.vertex(maxX, minY, 0).uv(maxU, minV).endVertex();
 			wr.vertex(minX, minY, 0).uv(minU, minV).endVertex();
 			Tesselator.getInstance().end();
-			RenderSystem.disableAlphaTest();
+			//RenderSystem.disableAlphaTest();
 		}
 	}
 

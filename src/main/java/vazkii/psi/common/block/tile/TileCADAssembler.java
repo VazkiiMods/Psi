@@ -8,6 +8,9 @@
  */
 package vazkii.psi.common.block.tile;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.NonNullList;
+import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.player.Inventory;
@@ -25,7 +28,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
@@ -119,8 +121,8 @@ public class TileCADAssembler extends BlockEntity implements ITileCADAssembler, 
 	};
 	private ItemStack cachedCAD;
 
-	public TileCADAssembler() {
-		super(TYPE);
+	public TileCADAssembler(BlockPos pos, BlockState state) {
+		super(TYPE, pos, state);
 	}
 
 	public IItemHandlerModifiable getInventory() {
@@ -233,13 +235,14 @@ public class TileCADAssembler extends BlockEntity implements ITileCADAssembler, 
 		return socketable != null && socketable.isSocketSlotAvailable(slot);
 	}
 
-	@Nonnull
 	@Override
-	public CompoundTag save(@Nonnull CompoundTag tag) {
-		tag = super.save(tag);
-		tag.putInt("version", 1);
-		tag.put("Items", CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.writeNBT(inventory, null));
-		return tag;
+	protected void saveAdditional(CompoundTag tag) {
+		super.saveAdditional(tag);
+		NonNullList<ItemStack> items = NonNullList.withSize(inventory.getSlots(), ItemStack.EMPTY);
+		for (int i = 0; i < inventory.getSlots(); i++) {
+			items.set(i, inventory.getStackInSlot(i));
+		}
+		ContainerHelper.saveAllItems(tag, items);
 	}
 
 	@Override
@@ -293,14 +296,15 @@ public class TileCADAssembler extends BlockEntity implements ITileCADAssembler, 
 				}
 			}
 		} else {
-			CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.readNBT(inventory, null, tag.getList("Items", Constants.NBT.TAG_COMPOUND));
+			//CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.readNBT(inventory, null, tag.getList("Items", Tag.TAG_COMPOUND)); //TODO Fix this but we need answers
 		}
 	}
 
+	/*
 	@Override
 	public ClientboundBlockEntityDataPacket getUpdatePacket() {
 		return new ClientboundBlockEntityDataPacket(getBlockPos(), -1, getUpdateTag());
-	}
+	}*///TODO what does this even do?
 
 	@Nonnull
 	@Override

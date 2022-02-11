@@ -11,6 +11,7 @@ package vazkii.psi.client.render.tile;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
+import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.FaceAttachedHorizontalDirectionalBlock;
 import net.minecraft.client.Minecraft;
@@ -27,10 +28,9 @@ import vazkii.psi.client.gui.GuiProgrammer;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.tile.TileProgrammer;
 
-public class RenderTileProgrammer extends BlockEntityRenderer<TileProgrammer> {
+public class RenderTileProgrammer implements BlockEntityRenderer<TileProgrammer> {
 
-	public RenderTileProgrammer(BlockEntityRenderDispatcher rendererDispatcherIn) {
-		super(rendererDispatcherIn);
+	public RenderTileProgrammer(BlockEntityRendererProvider.Context ctx) {
 	}
 
 	@Override

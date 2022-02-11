@@ -12,6 +12,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
@@ -41,7 +42,7 @@ public class StatusWidget extends AbstractWidget {
 
 	@Override
 	public void renderButton(PoseStack ms, int mouseX, int mouseY, float pTicks) {
-		RenderSystem.color3f(1f, 1f, 1f);
+		RenderSystem.setShaderColor(1f, 1f, 1f, 1F);
 		parent.getMinecraft().getTextureManager().bindForSetup(GuiProgrammer.texture);
 		blit(ms, parent.left - 48, parent.top + 5, parent.xSize, 0, 48, 30);
 		blit(ms, parent.left - 16, parent.top + 13, parent.compileResult.right().isPresent() ? 12 : 0, parent.ySize + 28, 12, 12);
@@ -72,5 +73,10 @@ public class StatusWidget extends AbstractWidget {
 				parent.tooltip.addAll(cad.getTooltipLines(parent.getMinecraft().player, parent.tooltipFlag));
 			}
 		}
+	}
+
+	@Override
+	public void updateNarration(NarrationElementOutput p_169152_) {
+		//TODO Narration?
 	}
 }

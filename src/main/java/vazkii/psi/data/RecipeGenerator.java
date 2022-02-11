@@ -42,7 +42,7 @@ public class RecipeGenerator extends RecipeProvider implements IConditionBuilder
 	}
 
 	@Override
-	protected void buildShapelessRecipes(Consumer<FinishedRecipe> consumer) {
+	protected void buildCraftingRecipes(Consumer<FinishedRecipe> consumer) {
 		specialRecipe(AssemblyScavengeRecipe.SERIALIZER, consumer);
 		specialRecipe(BulletToDriveRecipe.SERIALIZER, consumer);
 		specialRecipe(ColorizerChangeRecipe.SERIALIZER, consumer);

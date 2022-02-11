@@ -11,12 +11,14 @@ package vazkii.psi.client.render.entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
+import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.resources.ResourceLocation;
 import com.mojang.math.Matrix4f;
@@ -38,17 +40,17 @@ public class RenderSpellCircle extends EntityRenderer<EntitySpellCircle> {
 			ResourceLocation texture = new ResourceLocation(String.format(LibResources.MISC_SPELL_CIRCLE, i));
 			RenderType.CompositeState glState = RenderType.CompositeState.builder().setTextureState(new RenderStateShard.TextureStateShard(texture, false, false))
 					.setCullState(new RenderStateShard.CullStateShard(false))
-					.setAlphaState(new RenderStateShard.AlphaStateShard(0.004F))
+					//.setAlphaState(new RenderStateShard.AlphaStateShard(0.004F))
 					.setLightmapState(new RenderStateShard.LightmapStateShard(true))
 					.createCompositeState(true);
-			LAYERS[i] = RenderType.create(LibMisc.MOD_ID + ":spell_circle_" + i, DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP, GL11.GL_QUADS, 64, false, false, glState);
+			LAYERS[i] = RenderType.create(LibMisc.MOD_ID + ":spell_circle_" + i, DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP, VertexFormat.Mode.QUADS, 64, false, false, glState);
 		}
 	}
 
 	private static final float BRIGHTNESS_FACTOR = 0.7F;
 
-	public RenderSpellCircle(EntityRenderDispatcher renderManager) {
-		super(renderManager);
+	public RenderSpellCircle(EntityRendererProvider.Context ctx) {
+		super(ctx);
 	}
 
 	@Override

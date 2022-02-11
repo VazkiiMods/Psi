@@ -10,7 +10,6 @@ package vazkii.psi.common;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraftforge.fml.CrashReportExtender;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -63,7 +62,7 @@ public class Psi {
 		magical = ModList.get().isLoaded("magipsi");
 		PsiAPI.internalHandler = new InternalMethodHandler();
 
-		CrashReportExtender.registerCrashCallable(new CrashReportHandler());
+		//CrashReportExtender.registerCrashCallable(new CrashReportHandler());
 
 		ContributorSpellCircleHandler.firstStart();
 		DefaultStats.registerStats();
