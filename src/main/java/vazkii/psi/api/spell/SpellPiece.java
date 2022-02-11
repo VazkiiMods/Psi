@@ -12,6 +12,7 @@ import com.google.common.base.CaseFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
+import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderStateShard;
@@ -290,10 +291,10 @@ public abstract class SpellPiece {
 			RenderType.CompositeState glState = RenderType.CompositeState.builder()
 					.setTextureState(new RenderStateShard.TextureStateShard(ClientPsiAPI.PSI_PIECE_TEXTURE_ATLAS, false, false))
 					.setLightmapState(new RenderStateShard.LightmapStateShard(true))
-					.setAlphaState(new RenderStateShard.AlphaStateShard(0.004F))
+					//.setAlphaState(new RenderStateShard.AlphaStateShard(0.004F))
 					.setCullState(new RenderStateShard.CullStateShard(false))
 					.createCompositeState(false);
-			layer = RenderType.create(ClientPsiAPI.PSI_PIECE_TEXTURE_ATLAS.toString(), DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP, GL11.GL_QUADS, 64, glState);
+			layer = RenderType.create(ClientPsiAPI.PSI_PIECE_TEXTURE_ATLAS.toString(), DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP, VertexFormat.Mode.QUADS, 64, false, false, glState);
 		}
 		return layer;
 	}

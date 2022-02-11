@@ -219,8 +219,8 @@ public class PiecePanelWidget extends AbstractWidget implements Widget, GuiEvent
 		visibleButtons.clear();
 		parent.getButtons().forEach(button -> {
 			if (button instanceof GuiButtonPage || button instanceof GuiButtonSpellPiece) {
-				button.active = false;
-				button.visible = false;
+				((Button) button).active = false;
+				((Button) button).visible = false;
 			}
 		});
 
@@ -245,16 +245,16 @@ public class PiecePanelWidget extends AbstractWidget implements Widget, GuiEvent
 			} else if (button instanceof GuiButtonPage) {
 				GuiButtonPage page = (GuiButtonPage) button;
 				if (page.isRight() && this.page < getPageCount() - 1) {
-					button.x = x + width - 22;
-					button.y = y + height - 15;
-					button.visible = true;
-					button.active = true;
+					page.x = x + width - 22;
+					page.y = y + height - 15;
+					page.visible = true;
+					page.active = true;
 
 				} else if (!page.isRight() && this.page > 0) {
-					button.x = x + 4;
-					button.y = y + height - 15;
-					button.visible = true;
-					button.active = true;
+					page.x = x + 4;
+					page.y = y + height - 15;
+					page.visible = true;
+					page.active = true;
 				}
 			}
 		});
@@ -437,8 +437,8 @@ public class PiecePanelWidget extends AbstractWidget implements Widget, GuiEvent
 		panelEnabled = false;
 		parent.getButtons().forEach(button -> {
 			if (button instanceof GuiButtonSpellPiece || button instanceof GuiButtonPage) {
-				button.visible = false;
-				button.active = false;
+				((Button) button).visible = false;
+				((Button) button).active = false;
 			}
 		});
 		searchField.visible = false;

@@ -18,13 +18,14 @@ public class PsiRenderHelper {
 	 * Temporary, remove when Mojang adds MatrixStacks to those methods.
 	 */
 	public static void transferMsToGl(PoseStack ms, Runnable function) {
-		try {
+		/*try {
 			RenderSystem.pushMatrix();
 			RenderSystem.multMatrix(ms.last().pose());
 			function.run();
 		} finally {
 			RenderSystem.popMatrix();
-		}
+		}*/ //TODO Is this no longer needed?
+		function.run();
 	}
 
 	public static int r(int color) {

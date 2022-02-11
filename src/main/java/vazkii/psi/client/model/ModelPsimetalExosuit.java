@@ -15,7 +15,8 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.world.entity.EquipmentSlot;
 
 public class ModelPsimetalExosuit extends ModelArmor {
-
+//TODO Armor model
+		/*
 	private final ModelPart helm;
 	private final ModelPart helmDetailR;
 	private final ModelPart helmDetailL;
@@ -40,10 +41,10 @@ public class ModelPsimetalExosuit extends ModelArmor {
 
 	private final ModelPart sensor;
 	private final ModelPart sensorColor;
-
+*/
 	public ModelPsimetalExosuit(EquipmentSlot slot) {
-		super(slot);
-
+		super(null, slot);
+		/*
 		texWidth = 64;
 		texHeight = 128;
 		float s = 0.01F;
@@ -147,11 +148,12 @@ public class ModelPsimetalExosuit extends ModelArmor {
 		beltAnchor.addChild(belt);
 		pantsAnchor.addChild(legL);
 		pantsAnchor.addChild(legR);
-
+		*/
 	}
 
 	@Override
 	public void renderToBuffer(PoseStack ms, VertexConsumer buffer, int light, int overlay, float r, float g, float b, float a) {
+		/*
 		helm.visible = slot == EquipmentSlot.HEAD;
 		body.visible = slot == EquipmentSlot.CHEST;
 		armR.visible = slot == EquipmentSlot.CHEST;
@@ -168,7 +170,7 @@ public class ModelPsimetalExosuit extends ModelArmor {
 		} else {
 			rightLeg = bootR;
 			leftLeg = bootL;
-		}
+		}*/
 		super.renderToBuffer(ms, buffer, light, overlay, r, g, b, a);
 	}
 

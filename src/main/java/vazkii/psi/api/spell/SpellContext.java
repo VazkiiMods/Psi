@@ -204,7 +204,7 @@ public final class SpellContext {
 			if (Inventory.isHotbarSlot(cadSlot)) {
 				slot = (cadSlot + targetSlot) % 9;
 			} else {
-				slot = (caster.inventory.selected + targetSlot) % 9;
+				slot = (caster.getInventory().selected + targetSlot) % 9;
 			}
 		} else {
 			slot = (targetSlot - 1) % 9;
@@ -223,7 +223,7 @@ public final class SpellContext {
 	 * @throws SpellRuntimeException NO_CAD
 	 */
 	public ItemStack getHarvestTool() throws SpellRuntimeException {
-		if (!tool.isEmpty() && !tool.getItem().getToolTypes(tool).isEmpty()) {
+		if (!tool.isEmpty()) { //TODO Armor
 			return tool;
 		}
 

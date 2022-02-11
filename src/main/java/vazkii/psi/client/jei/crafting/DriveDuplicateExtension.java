@@ -78,6 +78,6 @@ public class DriveDuplicateExtension implements ICustomCraftingCategoryExtension
 	@Override
 	public void drawInfo(int recipeWidth, int recipeHeight, PoseStack matrixStack, double mouseX, double mouseY) {
 		Minecraft.getInstance().font.draw(matrixStack, I18n.get("jei.psi.spell_copy"), 57, 46, 0x808080);
-		RenderSystem.enableAlphaTest(); // Prevents state leak affecting the shapeless icon
+		//RenderSystem.enableAlphaTest(); // Prevents state leak affecting the shapeless icon
 	}
 }

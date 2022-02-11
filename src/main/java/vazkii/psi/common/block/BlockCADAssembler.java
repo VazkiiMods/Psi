@@ -97,7 +97,7 @@ public class BlockCADAssembler extends HorizontalDirectionalBlock implements Ent
 
 	@Override
 	public BlockEntity newBlockEntity(@Nonnull BlockPos pos, @Nonnull BlockState state) {
-		return new TileCADAssembler();
+		return new TileCADAssembler(pos, state);
 	}
 
 	@Override

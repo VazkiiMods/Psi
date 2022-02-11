@@ -10,6 +10,7 @@ package vazkii.psi.common.spell.trick;
 
 import net.minecraft.nbt.CompoundTag;
 
+import net.minecraft.world.entity.Entity;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ISocketable;
 import vazkii.psi.api.spell.Spell;
@@ -55,7 +56,7 @@ public class PieceTrickBreakLoop extends PieceTrick {
 					circleNBT.putInt("timesAlive", 100);
 					circle.load(circleNBT);
 				} else {
-					context.focalPoint.remove();
+					context.focalPoint.remove(Entity.RemovalReason.DISCARDED);
 				}
 			} else {
 				if (!context.tool.isEmpty() && context.tool.getCapability(PsiAPI.SOCKETABLE_CAPABILITY).isPresent()) {

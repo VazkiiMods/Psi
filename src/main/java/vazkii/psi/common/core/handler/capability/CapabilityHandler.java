@@ -38,7 +38,7 @@ import static vazkii.psi.api.PsiAPI.SPELL_IMMUNE_CAPABILITY;
 
 @Mod.EventBusSubscriber(modid = LibMisc.MOD_ID)
 public class CapabilityHandler {
-
+	/*
 	public static void register() {
 		register(ICADData.class, CapabilityHandler::noDefault);
 		register(ISocketable.class, SocketWheel::new);
@@ -80,7 +80,7 @@ public class CapabilityHandler {
 		}
 
 	}
-
+	*/
 	private static final ResourceLocation SPELL_IMMUNE = new ResourceLocation(LibMisc.MOD_ID, "immune");
 	private static final ResourceLocation DETONATOR = new ResourceLocation(LibMisc.MOD_ID, "detonator");
 	public static final ResourceLocation TRIGGER_SENSOR = new ResourceLocation(LibMisc.MOD_ID, "trigger_sensor");

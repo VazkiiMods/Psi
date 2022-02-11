@@ -8,9 +8,10 @@
  */
 package vazkii.psi.api.internal;
 
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
@@ -37,7 +38,7 @@ public final class VanillaPacketDispatcher {
 	}
 
 	public static void dispatchTEToPlayer(BlockEntity tile, ServerPlayer p) {
-		ClientboundBlockEntityDataPacket packet = tile.getUpdatePacket();
+		Packet<ClientGamePacketListener> packet = tile.getUpdatePacket();
 		if (packet != null) {
 			p.connection.send(packet);
 		}

@@ -170,7 +170,7 @@ public class BlockConjured extends Block implements EntityBlock, SimpleWaterlogg
 
 	@Override
 	public BlockEntity newBlockEntity(@Nonnull BlockPos pos, @Nonnull BlockState state) {
-		return new TileConjured();
+		return new TileConjured(pos, state);
 	}
 
 }

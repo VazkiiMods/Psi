@@ -36,7 +36,7 @@ public class TileConjured extends BlockEntity {
 	public ItemStack colorizer = ItemStack.EMPTY;
 
 	public TileConjured(BlockPos pos, BlockState state) {
-		super(TYPE);
+		super(TYPE, pos, state);
 	}
 
 	public void doParticles() {
@@ -147,10 +147,11 @@ public class TileConjured extends BlockEntity {
 		}
 	}
 
+	/*
 	@Override
 	public ClientboundBlockEntityDataPacket getUpdatePacket() {
 		return new ClientboundBlockEntityDataPacket(getBlockPos(), 0, save(new CompoundTag()));
-	}
+	}*/
 
 	@Override
 	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {

@@ -33,8 +33,8 @@ public class PieceSelectorItemPresence extends PieceSelector {
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		Number slotVal = this.getParamValue(context, slot);
-		int invSlot = (slotVal == null ? context.getTargetSlot() : Math.abs(slotVal.intValue() - 1)) % context.caster.inventory.items.size();
-		ItemStack stack = context.caster.inventory.getItem(invSlot);
+		int invSlot = (slotVal == null ? context.getTargetSlot() : Math.abs(slotVal.intValue() - 1)) % context.caster.getInventory().items.size();
+		ItemStack stack = context.caster.getInventory().getItem(invSlot);
 
 		return (double) stack.getCount();
 	}

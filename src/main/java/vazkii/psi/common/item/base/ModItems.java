@@ -129,7 +129,7 @@ public final class ModItems {
 	@SubscribeEvent
 	public static void registerItems(RegistryEvent.Register<Item> evt) {
 		ModSpellPieces.init();
-		CapabilityHandler.register();
+		//CapabilityHandler.register();
 
 		IForgeRegistry<Item> r = evt.getRegistry();
 

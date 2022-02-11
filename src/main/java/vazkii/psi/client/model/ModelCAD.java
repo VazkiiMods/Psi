@@ -38,9 +38,8 @@ import java.util.Random;
 @OnlyIn(Dist.CLIENT)
 public class ModelCAD implements BakedModel {
 
-	private final ItemOverrides itemHandler = new ItemOverrides() {
+	private final ItemOverrides itemHandler = new ItemOverrides() { //TODO Fix CAD model
 		@Nullable
-		@Override
 		public BakedModel resolve(BakedModel model, ItemStack stack, @Nullable ClientLevel world, @Nullable LivingEntity entity) {
 			ICAD cad = (ICAD) stack.getItem();
 			ItemStack assemblyStack = cad.getComponentInSlot(stack, EnumCADComponent.ASSEMBLY);

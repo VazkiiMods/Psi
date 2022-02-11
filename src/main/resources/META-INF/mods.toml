@@ -6,8 +6,8 @@ license="https://psi.vazkii.net/license.php"
 [[mods]]
 modId="psi"
 displayName="Psi"
-version="${version}"
-authors="Vazkii, Wiiv, WireSegal, Kamefrede, Williewillus, Hubry"
+version="2.0.0"
+authors="Vazkii, Wiiv, WireSegal, Kamefrede, Williewillus, Hubry, Dudblockman"
 description='''
 Psionic Spellcasting Instruments
 '''

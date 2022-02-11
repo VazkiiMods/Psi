@@ -163,7 +163,7 @@ public class BlockProgrammer extends HorizontalDirectionalBlock implements Entit
 
 	@Override
 	public BlockEntity newBlockEntity(@Nonnull BlockPos pos, @Nonnull BlockState state) {
-		return new TileProgrammer();
+		return new TileProgrammer(pos, state);
 	}
 
 	@Override

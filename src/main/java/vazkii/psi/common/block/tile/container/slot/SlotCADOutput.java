@@ -37,10 +37,10 @@ public class SlotCADOutput extends Slot {
 
 	@Nonnull
 	@Override
-	public ItemStack onTake(Player playerIn, @Nonnull ItemStack stack) {
+	public void onTake(Player playerIn, @Nonnull ItemStack stack) {
 		super.onTake(playerIn, stack);
 		assembler.onCraftCAD(stack);
-		return stack;
+		//return stack;
 	}
 
 	@Override

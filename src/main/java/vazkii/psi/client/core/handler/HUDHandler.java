@@ -68,7 +68,7 @@ public final class HUDHandler {
 	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
 	public static void onDraw(RenderGameOverlayEvent.Post event) {
-		if (event.getType() == ElementType.HOTBAR) {
+		if (event.getType() == ElementType.LAYER) { //TODO figure out new ElementType.HOTBAR
 			Window resolution = event.getWindow();
 			float partialTicks = event.getPartialTicks();
 

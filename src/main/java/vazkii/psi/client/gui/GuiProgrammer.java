@@ -11,9 +11,11 @@ package vazkii.psi.client.gui;
 import com.google.common.collect.ImmutableSet;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.datafixers.util.Either;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.components.Widget;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.components.EditBox;
@@ -25,6 +27,7 @@ import net.minecraft.client.renderer.RenderType;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import net.minecraft.client.resources.language.I18n;
+import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.item.TooltipFlag;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.nbt.CompoundTag;
@@ -92,10 +95,10 @@ public class GuiProgrammer extends Screen {
 				.setTextureState(new RenderStateShard.TextureStateShard(texture, false, false))
 				.setLightmapState(new RenderStateShard.LightmapStateShard(true))
 				.setCullState(new RenderStateShard.CullStateShard(false))
-				.setAlphaState(new RenderStateShard.AlphaStateShard(0.004F))
+				//.setAlphaState(new RenderStateShard.AlphaStateShard(0.004F))
 				.setTransparencyState(translucent)
 				.createCompositeState(false);
-		LAYER = RenderType.create(LibMisc.PREFIX_MOD + LibBlockNames.PROGRAMMER, DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP, GL11.GL_QUADS, 128, glState);
+		LAYER = RenderType.create(LibMisc.PREFIX_MOD + LibBlockNames.PROGRAMMER, DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP, VertexFormat.Mode.QUADS, 128, glState);
 	}
 
 	public final TileProgrammer programmer;
@@ -162,13 +165,13 @@ public class GuiProgrammer extends Screen {
 			spectator = !programmer.playerLock.isEmpty() && !programmer.playerLock.equals(getMinecraft().player.getName().getString());
 		}
 
-		statusWidget = addButton(new StatusWidget(left - 48, top + 5, 48, 30, "", this));
-		spellCostsWidget = addButton(new SpellCostsWidget(left + xSize + 3, top + (takingScreenshot ? 40 : 20), 100, 126, "", this));
-		panelWidget = addButton(new PiecePanelWidget(0, 0, 100, 125, "", this));
-		helpButton = addButton(new GuiButtonHelp(left + xSize + 2, top + ySize - (spectator ? 32 : 48), this));
-		configWidget = addButton(new SideConfigWidget(left - 81, top + 55, 81, 115, this));
+		statusWidget = addRenderableWidget(new StatusWidget(left - 48, top + 5, 48, 30, "", this));
+		spellCostsWidget = addRenderableWidget(new SpellCostsWidget(left + xSize + 3, top + (takingScreenshot ? 40 : 20), 100, 126, "", this));
+		panelWidget = addRenderableWidget(new PiecePanelWidget(0, 0, 100, 125, "", this));
+		helpButton = addRenderableWidget(new GuiButtonHelp(left + xSize + 2, top + ySize - (spectator ? 32 : 48), this));
+		configWidget = addRenderableWidget(new SideConfigWidget(left - 81, top + 55, 81, 115, this));
 
-		spellNameField = addButton(new CallbackTextFieldWidget(getMinecraft().font, left + xSize - 130, top + ySize - 14, 120, 10, button -> {
+		spellNameField = addRenderableWidget(new CallbackTextFieldWidget(getMinecraft().font, left + xSize - 130, top + ySize - 14, 120, 10, button -> {
 			spell.name = spellNameField.getValue();
 			onSpellChanged(true);
 		}));
@@ -176,14 +179,14 @@ public class GuiProgrammer extends Screen {
 		spellNameField.setMaxLength(20);
 		spellNameField.setEditable(!spectator);
 
-		commentField = addButton(new CallbackTextFieldWidget(getMinecraft().font, left, top + ySize / 2 - 10, xSize, 20, button -> {
+		commentField = addRenderableWidget(new CallbackTextFieldWidget(getMinecraft().font, left, top + ySize / 2 - 10, xSize, 20, button -> {
 
 		}));
 		commentField.setEditable(false);
 		commentField.setVisible(false);
 		commentField.setMaxLength(500);
 
-		panelWidget.searchField = addButton(new CallbackTextFieldWidget(getMinecraft().font, 0, 0, 70, 10, button -> {
+		panelWidget.searchField = addRenderableWidget(new CallbackTextFieldWidget(getMinecraft().font, 0, 0, 70, 10, button -> {
 			panelWidget.page = 0;
 			panelWidget.updatePanelButtons();
 		}));
@@ -208,7 +211,7 @@ public class GuiProgrammer extends Screen {
 		* Export button
 		*/
 
-		addButton(new GuiButtonIO(left + xSize + 2, top + ySize - (spectator ? 16 : 32), true, this, button -> {
+		addRenderableWidget(new GuiButtonIO(left + xSize + 2, top + ySize - (spectator ? 16 : 32), true, this, button -> {
 			if (hasShiftDown()) {
 				CompoundTag cmp = new CompoundTag();
 				if (spell != null) {
@@ -222,7 +225,7 @@ public class GuiProgrammer extends Screen {
 		* Import button
 		*/
 		if (!spectator) {
-			addButton(new GuiButtonIO(left + xSize + 2, top + ySize - 16, false, this, button -> {
+			addRenderableWidget(new GuiButtonIO(left + xSize + 2, top + ySize - 16, false, this, button -> {
 				if (hasShiftDown()) {
 					String cb = getMinecraft().keyboardHandler.getClipboard();
 					LocalPlayer player = Minecraft.getInstance().player;
@@ -445,8 +448,7 @@ public class GuiProgrammer extends Screen {
 		super.render(ms, mouseX, mouseY, partialTicks);
 
 		if (!takingScreenshot && tooltip != null && !tooltip.isEmpty() && pieceAtCursor == null && mouseMoved) {
-			GuiUtils.drawHoveringText(ms, tooltip, mouseX, mouseY, width, height, -1, this.font);
-
+			//this.renderTooltip(ms, (List<? extends FormattedCharSequence>) tooltip, mouseX, mouseY);
 		}
 		if (!takingScreenshot && pieceAtCursor != null && mouseMoved) {
 			if (tooltip != null && !tooltip.isEmpty()) {
@@ -486,12 +488,12 @@ public class GuiProgrammer extends Screen {
 	}
 
 	private void removeButtonList(List<Button> list) {
-		buttons.removeAll(list);
-		children.removeAll(list);
+		renderables.removeAll(list);
+		//children.removeAll(list);
 	}
 
 	public void addButtons(List<Button> list) {
-		list.forEach(this::addButton);
+		list.forEach(this::addRenderableWidget);
 	}
 
 	public void pushState(boolean wipeRedo) {
@@ -523,8 +525,8 @@ public class GuiProgrammer extends Screen {
 	}
 
 	public void onSelectedChanged() {
-		buttons.removeAll(configWidget.configButtons);
-		children.removeAll(configWidget.configButtons);
+		renderables.removeAll(configWidget.configButtons);
+		//children.removeAll(configWidget.configButtons);
 		configWidget.configButtons.clear();
 
 		spellNameField.setEditable(!spectator);
@@ -557,7 +559,7 @@ public class GuiProgrammer extends Screen {
 						}
 						i++;
 					}
-					configWidget.configButtons.forEach(this::addButton);
+					configWidget.configButtons.forEach(this::addRenderableWidget);
 					configWidget.configEnabled = true;
 					return;
 				}
@@ -948,8 +950,8 @@ public class GuiProgrammer extends Screen {
 		return !panelWidget.panelEnabled && !commentEnabled;
 	}
 
-	public List<AbstractWidget> getButtons() {
-		return this.buttons;
+	public List<Widget> getButtons() {
+		return this.renderables;
 	}
 
 	@Override

@@ -8,6 +8,8 @@
  */
 package vazkii.psi.client.model;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.world.entity.LivingEntity;
@@ -17,21 +19,20 @@ import net.minecraft.world.entity.EquipmentSlot;
 public class ModelArmor extends HumanoidModel<LivingEntity> {
 	protected final EquipmentSlot slot;
 
-	public ModelArmor(EquipmentSlot slot) {
-		super(1);
+	public ModelArmor(ModelPart root, EquipmentSlot slot) {
+		super(root);
 		this.slot = slot;
 	}
 
-	// [VanillaCopy] ArmorStandArmorModel.setRotationAngles because armor stands are dumb
+	// [VanillaCopy] ArmorStandArmorModel.setupAnim because armor stands are dumb
 	// This fixes the armor "breathing" and helmets always facing south on armor stands
 	@Override
 	public void setupAnim(LivingEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		if (!(entity instanceof ArmorStand)) {
+		if (!(entity instanceof ArmorStand entityIn)) {
 			super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 			return;
 		}
 
-		ArmorStand entityIn = (ArmorStand) entity;
 		this.head.xRot = ((float) Math.PI / 180F) * entityIn.getHeadPose().getX();
 		this.head.yRot = ((float) Math.PI / 180F) * entityIn.getHeadPose().getY();
 		this.head.zRot = ((float) Math.PI / 180F) * entityIn.getHeadPose().getZ();
@@ -56,9 +57,34 @@ public class ModelArmor extends HumanoidModel<LivingEntity> {
 		this.hat.copyFrom(this.head);
 	}
 
-	protected void setRotateAngle(ModelPart modelRenderer, float x, float y, float z) {
-		modelRenderer.xRot = x;
-		modelRenderer.yRot = y;
-		modelRenderer.zRot = z;
+	@Override
+	public void renderToBuffer(PoseStack ms, VertexConsumer buffer, int light, int overlay, float r, float g, float b, float a) {
+		setPartVisibility(slot);
+		super.renderToBuffer(ms, buffer, light, overlay, r, g, b, a);
+	}
+
+	// [VanillaCopy] HumanoidArmorLayer
+	private void setPartVisibility(EquipmentSlot slot) {
+		setAllVisible(false);
+		switch (slot) {
+			case HEAD -> {
+				head.visible = true;
+				hat.visible = true;
+			}
+			case CHEST -> {
+				body.visible = true;
+				rightArm.visible = true;
+				leftArm.visible = true;
+			}
+			case LEGS -> {
+				body.visible = true;
+				rightLeg.visible = true;
+				leftLeg.visible = true;
+			}
+			case FEET -> {
+				rightLeg.visible = true;
+				leftLeg.visible = true;
+			}
+		}
 	}
 }

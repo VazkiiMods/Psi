@@ -57,7 +57,7 @@ public class PieceTrickSmeltItem extends PieceTrick {
 				stack.shrink(1);
 				eitem.setItem(stack);
 				if (stack.getCount() == 0) {
-					eitem.remove();
+					eitem.remove(Entity.RemovalReason.DISCARDED);
 				}
 
 				ItemEntity item = new ItemEntity(context.focalPoint.getCommandSenderWorld(), eitem.getX(), eitem.getY(), eitem.getZ(), result.copy());
