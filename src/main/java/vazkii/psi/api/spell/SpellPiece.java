@@ -9,6 +9,8 @@
 package vazkii.psi.api.spell;
 
 import com.google.common.base.CaseFormat;
+import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
@@ -293,10 +295,16 @@ public abstract class SpellPiece {
 					.setShaderState(new RenderStateShard.ShaderStateShard(GameRenderer::getPositionColorTexShader))
 					.setTextureState(new RenderStateShard.TextureStateShard(ClientPsiAPI.PSI_PIECE_TEXTURE_ATLAS, false, false))
 					.setLightmapState(new RenderStateShard.LightmapStateShard(true))
-					//.setAlphaState(new RenderStateShard.AlphaStateShard(0.004F))
+					.setTransparencyState(new RenderStateShard.TransparencyStateShard("translucent_transparency", () -> {
+						RenderSystem.enableBlend();
+						RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+					}, () -> {
+						RenderSystem.disableBlend();
+						RenderSystem.defaultBlendFunc();
+					}))
 					.setCullState(new RenderStateShard.CullStateShard(false))
 					.createCompositeState(false);
-			layer = RenderType.create(ClientPsiAPI.PSI_PIECE_TEXTURE_ATLAS.toString(), DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP, VertexFormat.Mode.QUADS, 64, false, false, glState);
+			layer = RenderType.create(ClientPsiAPI.PSI_PIECE_TEXTURE_ATLAS.toString(), DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP, VertexFormat.Mode.QUADS, 64, glState);
 		}
 		return layer;
 	}

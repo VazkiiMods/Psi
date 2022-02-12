@@ -228,7 +228,6 @@ public class GuiSocketSelect extends Screen {
 
 		float shift = Math.min(5, timeIn + partialTicks) / 5;
 		float scale = 3 * shift;
-		//RenderSystem.enableRescaleNormal();
 		RenderSystem.enableBlend();
 		RenderSystem.blendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, 1, 0);
 		//RenderSystem.enableLighting();

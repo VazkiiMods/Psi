@@ -9,6 +9,7 @@
 package vazkii.psi.client.gui;
 
 import com.google.common.collect.ImmutableSet;
+import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.VertexFormat;
@@ -94,7 +95,13 @@ public class GuiProgrammer extends Screen {
 				.setTextureState(new RenderStateShard.TextureStateShard(texture, false, false))
 				.setLightmapState(new RenderStateShard.LightmapStateShard(true))
 				.setCullState(new RenderStateShard.CullStateShard(false))
-				//.setAlphaState(new RenderStateShard.AlphaStateShard(0.004F))
+				.setTransparencyState(new RenderStateShard.TransparencyStateShard("translucent_transparency", () -> {
+					RenderSystem.enableBlend();
+					RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+				}, () -> {
+					RenderSystem.disableBlend();
+					RenderSystem.defaultBlendFunc();
+				}))
 				.setTransparencyState(translucent)
 				.createCompositeState(false);
 		LAYER = RenderType.create(LibMisc.PREFIX_MOD + LibBlockNames.PROGRAMMER, DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP, VertexFormat.Mode.QUADS, 128, glState);
