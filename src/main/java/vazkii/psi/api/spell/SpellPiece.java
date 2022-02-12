@@ -16,6 +16,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 
 import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
@@ -291,6 +292,7 @@ public abstract class SpellPiece {
 	public static RenderType getLayer() {
 		if (layer == null) {
 			RenderType.CompositeState glState = RenderType.CompositeState.builder()
+					.setShaderState(new RenderStateShard.ShaderStateShard(GameRenderer::getPositionColorTexShader))
 					.setTextureState(new RenderStateShard.TextureStateShard(ClientPsiAPI.PSI_PIECE_TEXTURE_ATLAS, false, false))
 					.setLightmapState(new RenderStateShard.LightmapStateShard(true))
 					.setTransparencyState(new RenderStateShard.TransparencyStateShard("translucent_transparency", () -> {

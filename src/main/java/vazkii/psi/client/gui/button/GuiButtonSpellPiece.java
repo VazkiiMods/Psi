@@ -8,6 +8,7 @@
  */
 package vazkii.psi.client.gui.button;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.Minecraft;
@@ -46,7 +47,7 @@ public class GuiButtonSpellPiece extends Button {
 			piece.draw(ms, buffers, 0xF000F0);
 			buffers.endBatch();
 			ms.popPose();
-			Minecraft.getInstance().getTextureManager().bindForSetup(GuiProgrammer.texture);
+			RenderSystem.setShaderTexture(0, GuiProgrammer.texture);
 			if (hover) {
 				piece.getTooltip(gui.tooltip);
 				blit(ms, x, y, 16, gui.ySize, 16, 16);

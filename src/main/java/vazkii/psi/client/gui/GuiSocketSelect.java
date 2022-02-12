@@ -14,6 +14,8 @@ import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.renderer.GameRenderer;
+
 import com.mojang.blaze3d.platform.Lighting;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.client.KeyMapping;
@@ -91,7 +93,7 @@ public class GuiSocketSelect extends Screen {
 	}
 
 	@Override
-	public void render(PoseStack ms, int mx, int my, float partialTicks) { //TODO This entire function
+	public void render(PoseStack ms, int mx, int my, float partialTicks) { //TODO item positions
 		super.render(ms, mx, my, partialTicks);
 
 		int x = width / 2;
@@ -113,7 +115,7 @@ public class GuiSocketSelect extends Screen {
 		RenderSystem.disableCull();
 		RenderSystem.disableTexture();
 		RenderSystem.enableBlend();
-		//RenderSystem.shadeModel(GL11.GL_SMOOTH);
+		RenderSystem.setShader(GameRenderer::getPositionColorShader);
 		buf.begin(VertexFormat.Mode.TRIANGLE_FAN, DefaultVertexFormat.POSITION_COLOR);
 
 		for (int seg = 0; seg < segments; seg++) {
@@ -173,7 +175,6 @@ public class GuiSocketSelect extends Screen {
 		}
 		tess.end();
 
-		//RenderSystem.shadeModel(GL11.GL_FLAT);
 		RenderSystem.enableTexture();
 
 		for (int seg = 0; seg < segments; seg++) {
