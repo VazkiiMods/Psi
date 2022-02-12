@@ -19,15 +19,15 @@ import net.minecraft.client.gui.components.Widget;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.components.EditBox;
-import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderStateShard;
+import net.minecraft.client.renderer.RenderStateShard.ShaderStateShard;
 import net.minecraft.client.renderer.RenderType;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import net.minecraft.client.resources.language.I18n;
-import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.item.TooltipFlag;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.nbt.CompoundTag;
@@ -42,11 +42,9 @@ import net.minecraft.network.chat.Style;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.fml.ModList;
-import net.minecraftforge.client.gui.GuiUtils;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.glfw.GLFW;
-import org.lwjgl.opengl.GL11;
 
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.spell.CompiledSpell;
@@ -92,6 +90,7 @@ public class GuiProgrammer extends Screen {
 	static {
 		RenderStateShard.TransparencyStateShard translucent = AccessorRenderState.getTranslucentTransprency();
 		RenderType.CompositeState glState = RenderType.CompositeState.builder()
+				.setShaderState(new ShaderStateShard(GameRenderer::getPositionColorTexShader))
 				.setTextureState(new RenderStateShard.TextureStateShard(texture, false, false))
 				.setLightmapState(new RenderStateShard.LightmapStateShard(true))
 				.setCullState(new RenderStateShard.CullStateShard(false))
@@ -308,8 +307,8 @@ public class GuiProgrammer extends Screen {
 		ms.pushPose();
 		renderBackground(ms);
 
-		RenderSystem.setShaderColor(1F, 1F, 1F, 1F);;
-		getMinecraft().getTextureManager().bindForSetup(texture);
+		RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
+		RenderSystem.setShaderTexture(0, texture);
 
 		blit(ms, left, top, 0, 0, xSize, ySize);
 
@@ -342,7 +341,7 @@ public class GuiProgrammer extends Screen {
 		ms.popPose();
 		RenderSystem.setShaderColor(1F, 1F, 1F, 1F);;
 		ms.translate(0, 0, 1);
-		getMinecraft().getTextureManager().bindForSetup(texture);
+		RenderSystem.setShaderTexture(0, texture);
 
 		if (selectedX != -1 && selectedY != -1 && !takingScreenshot) {
 			blit(ms, gridLeft + selectedX * 18, gridTop + selectedY * 18, 32, ySize, 16, 16);

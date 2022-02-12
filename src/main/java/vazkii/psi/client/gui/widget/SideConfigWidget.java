@@ -68,8 +68,8 @@ public class SideConfigWidget extends AbstractWidget {
 					int x = parent.left - 75;
 					int y = parent.top + 70 + i * 26;
 
-					RenderSystem.setShaderColor(1F, 1F, 1F, 1F);;
-					parent.getMinecraft().getTextureManager().bindForSetup(GuiProgrammer.texture);
+					RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
+					RenderSystem.setShaderTexture(0, GuiProgrammer.texture);
 					blit(ms, x + 50, y - 8, parent.xSize, 145, 24, 24);
 
 					String localized = I18n.get(s);

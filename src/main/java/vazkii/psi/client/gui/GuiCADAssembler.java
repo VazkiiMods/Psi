@@ -79,7 +79,7 @@ public class GuiCADAssembler extends AbstractContainerScreen<ContainerCADAssembl
 	@Override
 	protected void renderBg(PoseStack ms, float partialTicks, int mouseX, int mouseY) {
 		RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
-		getMinecraft().getTextureManager().bindForSetup(texture);
+		RenderSystem.setShaderTexture(0, texture);
 		int x = (width - imageWidth) / 2;
 		int y = (height - imageHeight) / 2;
 		blit(ms, x, y, 0, 0, imageWidth, imageHeight);

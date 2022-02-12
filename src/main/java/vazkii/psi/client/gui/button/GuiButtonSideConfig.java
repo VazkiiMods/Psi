@@ -59,7 +59,7 @@ public class GuiButtonSideConfig extends Button {
 			int maxX = minX + 8;
 			int maxY = minY + 8;
 
-			Minecraft.getInstance().textureManager.bindForSetup(GuiProgrammer.texture);
+			RenderSystem.setShaderTexture(0, GuiProgrammer.texture);
 			SpellPiece piece = gui.spell.grid.gridData[gridX][gridY];
 			if (piece == null) {
 				return;

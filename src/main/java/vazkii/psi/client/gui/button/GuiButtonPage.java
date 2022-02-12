@@ -40,7 +40,7 @@ public class GuiButtonPage extends Button {
 		if (active) {
 			boolean hover = par2 >= x && par3 >= y && par2 < x + width && par3 < y + height;
 
-			Minecraft.getInstance().textureManager.bindForSetup(GuiProgrammer.texture);
+			RenderSystem.setShaderTexture(0, GuiProgrammer.texture);
 			RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
 			blit(ms, x, y, hover ? 216 : 198, right ? 145 : 155, width, height);
 
