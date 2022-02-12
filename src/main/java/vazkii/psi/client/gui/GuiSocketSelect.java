@@ -220,14 +220,13 @@ public class GuiSocketSelect extends Screen {
 				xdp = (int) ((xp - x) * mod + x);
 				ydp = (int) ((yp - y) * mod + y);
 
-				mc.textureManager.bindForSetup(signs.get(seg));
+				RenderSystem.setShaderTexture(0, signs.get(seg));
 				blit(ms, xdp - 8, ydp - 8, 0, 0, 16, 16, 16, 16);
 			}
 		}
 
 		float shift = Math.min(5, timeIn + partialTicks) / 5;
 		float scale = 3 * shift;
-		//RenderSystem.enableRescaleNormal();
 		RenderSystem.enableBlend();
 		RenderSystem.blendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, 1, 0);
 		//RenderSystem.enableLighting();

@@ -8,6 +8,7 @@
  */
 package vazkii.psi.client.gui.button;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.Minecraft;
@@ -33,7 +34,7 @@ public class GuiButtonHelp extends Button {
 	public void renderButton(PoseStack ms, int mouseX, int mouseY, float pTicks) {
 		if (!gui.takingScreenshot) {
 			boolean overHelp = mouseX > x && mouseY > y && mouseX < x + 12 && mouseY < y + 12;
-			gui.getMinecraft().getTextureManager().bindForSetup(GuiProgrammer.texture);
+			RenderSystem.setShaderTexture(0, GuiProgrammer.texture);
 			blit(ms, x, y, gui.xSize + (overHelp ? 12 : 0), gui.ySize + 9, 12, 12);
 			if (overHelp && !Screen.hasAltDown()) {
 				gui.tooltip.add(new TranslatableComponent("psimisc.programmer_help"));

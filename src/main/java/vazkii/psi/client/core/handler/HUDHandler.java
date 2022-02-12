@@ -138,13 +138,13 @@ public final class HUDHandler {
 		int y = res.getGuiScaledHeight() / 2 - height / 2;
 
 		if (!registeredMask) {
-			mc.textureManager.bindForSetup(psiBarMask);
-			mc.textureManager.bindForSetup(psiBarShatter);
+			RenderSystem.setShaderTexture(0, psiBarMask);
+			RenderSystem.setShaderTexture(1, psiBarShatter);
 			registeredMask = true;
 		}
 
 		RenderSystem.enableBlend();
-		mc.textureManager.bindForSetup(psiBar);
+		RenderSystem.setShaderTexture(0, psiBar);
 		GuiComponent.blit(ms, x, y, 0, 0, width, height, 64, 256);
 
 		x += 8;
@@ -380,14 +380,14 @@ public final class HUDHandler {
 			int maskUniform = ARBShaderObjects.glGetUniformLocationARB(shader, "mask");
 
 			RenderSystem.activeTexture(ARBMultitexture.GL_TEXTURE0_ARB);
-			mc.textureManager.bindForSetup(psiBar);
+			RenderSystem.setShaderTexture(0, psiBar);
 			ARBShaderObjects.glUniform1iARB(imageUniform, 0);
 
 			RenderSystem.activeTexture(ARBMultitexture.GL_TEXTURE0_ARB + secondaryTextureUnit);
 
 			RenderSystem.enableTexture();
 
-			mc.textureManager.bindForSetup(shatter ? psiBarShatter : psiBarMask);
+			RenderSystem.setShaderTexture(1, shatter ? psiBarShatter : psiBarMask);
 			ARBShaderObjects.glUniform1iARB(maskUniform, secondaryTextureUnit);
 
 			ARBShaderObjects.glUniform1fARB(percentileUniform, percentile);
