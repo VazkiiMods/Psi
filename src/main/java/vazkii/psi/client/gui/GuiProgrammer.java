@@ -372,6 +372,7 @@ public class GuiProgrammer extends Screen {
 					if (ModList.get().getModContainerById(addon).isPresent()) {
 						String modName = ModList.get().getModContainerById(addon).get().getModInfo().getDisplayName();
 						font.drawShadow(ms, "* " + modName, left - font.width(requiredAddons) - 5, top + 40 + 10 * i, 0xFFFFFF);
+						i++;
 					}
 				}
 			}
@@ -454,7 +455,7 @@ public class GuiProgrammer extends Screen {
 		super.render(ms, mouseX, mouseY, partialTicks);
 
 		if (!takingScreenshot && tooltip != null && !tooltip.isEmpty() && pieceAtCursor == null && mouseMoved) {
-			//this.renderTooltip(ms, (List<? extends FormattedCharSequence>) tooltip, mouseX, mouseY);
+			this.renderComponentTooltip(ms, tooltip, mouseX, mouseY);
 		}
 		if (!takingScreenshot && pieceAtCursor != null && mouseMoved) {
 			if (tooltip != null && !tooltip.isEmpty()) {

@@ -88,11 +88,12 @@ public class TileProgrammer extends BlockEntity {
 		playerLock = cmp.getString(TAG_PLAYER_LOCK);
 	}
 
-	/*
+
 	@Override
 	public ClientboundBlockEntityDataPacket getUpdatePacket() {
-		return new ClientboundBlockEntityDataPacket(getBlockPos(), 0, save(new CompoundTag()));
-	}*/ //TODO Hopefully not needed right now
+		return ClientboundBlockEntityDataPacket.create(this, (BlockEntity e) -> getUpdateTag());
+		//return new ClientboundBlockEntityDataPacket(getBlockPos(), 0, save(new CompoundTag()));
+	}//TODO Hopefully fixed?
 
 	@Override
 	public CompoundTag getUpdateTag() {

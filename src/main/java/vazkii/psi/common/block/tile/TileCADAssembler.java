@@ -300,11 +300,11 @@ public class TileCADAssembler extends BlockEntity implements ITileCADAssembler, 
 		}
 	}
 
-	/*
 	@Override
 	public ClientboundBlockEntityDataPacket getUpdatePacket() {
-		return new ClientboundBlockEntityDataPacket(getBlockPos(), -1, getUpdateTag());
-	}*///TODO what does this even do?
+		return ClientboundBlockEntityDataPacket.create(this, (BlockEntity e) -> getUpdateTag());
+		//return new ClientboundBlockEntityDataPacket(getBlockPos(), -1, getUpdateTag());
+	}//TODO Hopefully fixed?
 
 	@Nonnull
 	@Override
