@@ -56,6 +56,7 @@ public class TileProgrammer extends BlockEntity {
 		if (wasEnabled != enabled) {
 			getLevel().setBlockAndUpdate(worldPosition, getBlockState().setValue(BlockProgrammer.ENABLED, enabled));
 		}
+		setChanged();
 	}
 
 	@Override
@@ -66,8 +67,8 @@ public class TileProgrammer extends BlockEntity {
 
 	@Nonnull
 	@Override
-	public CompoundTag save(CompoundTag cmp) {
-		cmp = super.save(cmp);
+	public void saveAdditional(CompoundTag cmp) {
+		super.saveAdditional(cmp);
 
 		CompoundTag spellCmp = new CompoundTag();
 		if (spell != null) {
@@ -75,7 +76,6 @@ public class TileProgrammer extends BlockEntity {
 		}
 		cmp.put(TAG_SPELL, spellCmp);
 		cmp.putString(TAG_PLAYER_LOCK, playerLock);
-		return cmp;
 	}
 
 	public void readPacketNBT(CompoundTag cmp) {
@@ -91,13 +91,14 @@ public class TileProgrammer extends BlockEntity {
 
 	@Override
 	public ClientboundBlockEntityDataPacket getUpdatePacket() {
-		return ClientboundBlockEntityDataPacket.create(this, (BlockEntity e) -> getUpdateTag());
-		//return new ClientboundBlockEntityDataPacket(getBlockPos(), 0, save(new CompoundTag()));
-	}//TODO Hopefully fixed?
+		return ClientboundBlockEntityDataPacket.create(this);
+	}
 
 	@Override
 	public CompoundTag getUpdateTag() {
-		return save(new CompoundTag());
+		CompoundTag cmp = new CompoundTag();
+		saveAdditional(cmp);
+		return cmp;
 	}
 
 	public boolean canPlayerInteract(Player player) {

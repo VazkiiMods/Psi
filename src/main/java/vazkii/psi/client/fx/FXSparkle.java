@@ -8,6 +8,7 @@
  */
 package vazkii.psi.client.fx;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import com.mojang.blaze3d.vertex.VertexFormat;
@@ -97,12 +98,12 @@ public class FXSparkle extends TextureSheetParticle {
 	}
 
 	private static void beginRenderCommon(BufferBuilder buffer, TextureManager textureManager) {
+		Minecraft.getInstance().gameRenderer.lightTexture().turnOnLightLayer();
+		RenderSystem.enableDepthTest();
 		RenderSystem.depthMask(false);
 		RenderSystem.enableBlend();
 		RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
-		//RenderSystem.alphaFunc(GL11.GL_GREATER, 0.003921569F);
-		//RenderSystem.disableLighting();
-		textureManager.bindForSetup(TextureAtlas.LOCATION_PARTICLES);
+		RenderSystem.setShaderTexture(0, TextureAtlas.LOCATION_PARTICLES);
 		AbstractTexture tex = textureManager.getTexture(TextureAtlas.LOCATION_PARTICLES);
 		tex.setFilter(true, false);
 		buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);

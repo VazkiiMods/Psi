@@ -80,7 +80,6 @@ public final class ShaderHandler {
 		useShader(0);
 	}
 
-	//TODO Need alternative to GLX.isNextGen();
 	public static boolean canUseShaders() {
 		RenderSystem.assertOnRenderThread();
 		return ConfigHandler.CLIENT.useShaders.get() && ((GL.getCapabilities().OpenGL14 && (GL.getCapabilities().GL_ARB_framebuffer_object || GL.getCapabilities().GL_EXT_framebuffer_object || GL.getCapabilities().OpenGL30))

@@ -16,6 +16,7 @@ import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.particle.TextureSheetParticle;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.Tesselator;
+import net.minecraft.client.renderer.texture.AbstractTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureManager;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
@@ -101,14 +102,14 @@ public class FXWisp extends TextureSheetParticle {
 	}
 
 	private static void beginRenderCommon(BufferBuilder bufferBuilder, TextureManager textureManager) {
+		Minecraft.getInstance().gameRenderer.lightTexture().turnOnLightLayer();
 		RenderSystem.depthMask(false);
 		RenderSystem.enableBlend();
 		RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
-		//RenderSystem.alphaFunc(GL11.GL_GREATER, 0.003921569F);
-		//RenderSystem.disableLighting();
 
-		textureManager.bindForSetup(TextureAtlas.LOCATION_PARTICLES);
-		textureManager.getTexture(TextureAtlas.LOCATION_PARTICLES).setFilter(true, false);
+		RenderSystem.setShaderTexture(0, TextureAtlas.LOCATION_PARTICLES);
+		AbstractTexture tex = textureManager.getTexture(TextureAtlas.LOCATION_PARTICLES);
+		tex.setFilter(true, false);
 		bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
 	}
 

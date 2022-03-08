@@ -19,10 +19,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.ChatFormatting;
+import net.minecraft.world.level.GameType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
+import net.minecraftforge.client.gui.IIngameOverlay;
+import net.minecraftforge.client.gui.OverlayRegistry;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -68,7 +71,7 @@ public final class HUDHandler {
 	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
 	public static void onDraw(RenderGameOverlayEvent.Post event) {
-		if (event.getType() == ElementType.LAYER) { //TODO figure out new ElementType.HOTBAR
+		if (event.getType() == ElementType.LAYER) { //TODO figure out new ElementType.HOTBAR, may need to rewrite to use IIngameOverlay implementation
 			Window resolution = event.getWindow();
 			float partialTicks = event.getPartialTicks();
 

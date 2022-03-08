@@ -25,6 +25,7 @@ import vazkii.psi.common.block.base.ModBlocks;
 import vazkii.psi.common.lib.LibBlockNames;
 import vazkii.psi.common.lib.LibMisc;
 
+import javax.annotation.Nonnull;
 import java.util.Arrays;
 
 public class TileConjured extends BlockEntity {
@@ -124,13 +125,13 @@ public class TileConjured extends BlockEntity {
 		}
 	}
 
+	@Nonnull
 	@Override
-	public CompoundTag save(CompoundTag cmp) {
-		cmp = super.save(cmp);
+	public void saveAdditional(CompoundTag cmp) {
+		super.saveAdditional(cmp);
 		if (!colorizer.isEmpty()) {
 			cmp.put(TAG_COLORIZER, colorizer.save(new CompoundTag()));
 		}
-		return cmp;
 	}
 
 	@Override
@@ -147,20 +148,22 @@ public class TileConjured extends BlockEntity {
 		}
 	}
 
-	/*
 	@Override
 	public ClientboundBlockEntityDataPacket getUpdatePacket() {
-		return new ClientboundBlockEntityDataPacket(getBlockPos(), 0, save(new CompoundTag()));
-	}*/
+		return ClientboundBlockEntityDataPacket.create(this);
+	}
+
+	@Override
+	public CompoundTag getUpdateTag() {
+		CompoundTag cmp = new CompoundTag();
+		saveAdditional(cmp);
+		return cmp;
+	}
 
 	@Override
 	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
 		this.readPacketNBT(pkt.getTag());
 	}
 
-	@Override
-	public CompoundTag getUpdateTag() {
-		return save(new CompoundTag());
-	}
 
 }
