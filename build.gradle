@@ -11,7 +11,7 @@ buildscript {
 }
 
 plugins {
-    id "com.diffplug.spotless" version "5.7.0"
+    id "com.diffplug.spotless" version "5.12.5"
 }
 
 apply plugin: 'net.minecraftforge.gradle'
@@ -144,7 +144,7 @@ spotless {
 
 /*
 pmd {
-    toolVersion '6.22.0'
+    toolVersion '6.35.0'
     incrementalAnalysis.set(true)
     ruleSets.clear()
     ruleSetFiles = files("spotless/pmd-ruleset.xml")
