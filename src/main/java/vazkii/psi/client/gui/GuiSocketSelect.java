@@ -93,7 +93,7 @@ public class GuiSocketSelect extends Screen {
 	}
 
 	@Override
-	public void render(PoseStack ms, int mx, int my, float partialTicks) { //TODO item positions
+	public void render(PoseStack ms, int mx, int my, float partialTicks) {
 		super.render(ms, mx, my, partialTicks);
 
 		int x = width / 2;
@@ -234,18 +234,19 @@ public class GuiSocketSelect extends Screen {
 		//RenderSystem.enableColorMaterial();
 
 		if (controlledStacks != null && controlledStacks.length > 0) {
-			int xs = width / 2 - 18 * controlledStacks.length / 2;
+			int xs = width / 2 - 18 * controlledStacks.length / 2 + 1;
 			int ys = height / 2;
 
 			for (int i = 0; i < controlledStacks.length; i++) {
-				float yoff = 25F + maxRadius;
+				float yoff = 20F + maxRadius;
 				if (i == controlSlot) {
 					yoff += 5F;
 				}
 
 				ItemStack stack = controlledStacks[i];
-				float rx = xs + i * 18 + (-yoff * shift);
-				PsiRenderHelper.transferMsToGl(ms, () -> mc.getItemRenderer().renderAndDecorateItem(stack, (int) rx, ys));
+				int rx = xs + i * 18 ;
+				float ry = ys + (-yoff * shift);
+				PsiRenderHelper.transferMsToGl(ms, () -> mc.getItemRenderer().renderAndDecorateItem(stack, rx, (int) ry));
 			}
 
 		}
