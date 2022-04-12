@@ -1,6 +1,6 @@
 {
   "name": "psi.book.entry.grenadeBullet",
-  "category": "items",
+  "category": "psi:items",
   "icon": "psi:spell_bullet_grenade",
   "pages": [
     {

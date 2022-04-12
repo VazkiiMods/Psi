@@ -1,6 +1,6 @@
 {
   "name": "psi.book.entry.positiveEffects",
-  "category": "legacy",
+  "category": "psi:legacy",
   "icon": "psi:textures/spell/trick_speed.png",
   "pages": [
     {

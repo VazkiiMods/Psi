@@ -1,6 +1,6 @@
 {
   "name": "psi.book.entry.introduction",
-  "category": "basics",
+  "category": "psi:basics",
   "icon": "minecraft:air",
   "priority": true,
   "pages": [

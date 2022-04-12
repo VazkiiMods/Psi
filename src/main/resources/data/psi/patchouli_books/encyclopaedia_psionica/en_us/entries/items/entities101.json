@@ -1,6 +1,6 @@
 {
   "name": "psi.book.entry.entities101",
-  "category": "items",
+  "category": "psi:items",
   "icon": "psi:textures/spell/operator_closest_to_point.png",
   "pages": [
     {

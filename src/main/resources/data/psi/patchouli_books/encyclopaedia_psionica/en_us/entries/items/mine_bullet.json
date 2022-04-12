@@ -1,6 +1,6 @@
 {
   "name": "psi.book.entry.mineBullet",
-  "category": "items",
+  "category": "psi:items",
   "icon": "psi:spell_bullet_mine",
   "pages": [
     {

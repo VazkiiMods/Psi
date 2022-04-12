@@ -1,6 +1,6 @@
 {
   "name": "psi.book.entry.core",
-  "category": "components",
+  "category": "psi:components",
   "icon": "psi:cad_core_basic",
   "pages": [
     {

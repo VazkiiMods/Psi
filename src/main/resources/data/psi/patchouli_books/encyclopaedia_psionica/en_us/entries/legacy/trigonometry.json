@@ -1,6 +1,6 @@
 {
   "name": "psi.book.entry.trigonometry",
-  "category": "legacy",
+  "category": "psi:legacy",
   "icon": "psi:textures/spell/constant_pi.png",
   "pages": [
     {

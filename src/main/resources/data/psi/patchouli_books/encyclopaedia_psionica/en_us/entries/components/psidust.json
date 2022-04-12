@@ -1,6 +1,6 @@
 {
   "name": "psi.book.entry.psidust",
-  "category": "components",
+  "category": "psi:components",
   "icon": "psi:psidust",
   "priority": true,
   "pages": [

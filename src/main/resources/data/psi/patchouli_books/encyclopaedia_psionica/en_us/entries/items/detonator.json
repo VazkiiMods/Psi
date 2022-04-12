@@ -1,6 +1,6 @@
 {
   "name": "psi.book.entry.detonator",
-  "category": "items",
+  "category": "psi:items",
   "icon": "psi:detonator",
   "pages": [
     {

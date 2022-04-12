@@ -1,6 +1,6 @@
 {
   "name": "psi.book.entry.secondaryOperators",
-  "category": "items",
+  "category": "psi:items",
   "icon": "psi:textures/spell/operator_square.png",
   "pages": [
     {

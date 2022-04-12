@@ -1,6 +1,6 @@
 {
   "name": "psi.book.entry.battery",
-  "category": "components",
+  "category": "psi:components",
   "icon": "psi:cad_battery_basic",
   "pages": [
     {

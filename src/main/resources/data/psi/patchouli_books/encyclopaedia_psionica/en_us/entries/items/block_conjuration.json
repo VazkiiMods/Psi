@@ -1,6 +1,6 @@
 {
   "name": "psi.book.entry.blockConjuration",
-  "category": "items",
+  "category": "psi:items",
   "icon": "psi:textures/spell/trick_conjure_block.png",
   "pages": [
     {

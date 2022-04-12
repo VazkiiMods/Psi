@@ -1,6 +1,6 @@
 {
   "name": "psi.book.entry.greaterInfusion",
-  "category": "items",
+  "category": "psi:items",
   "icon": "psi:textures/spell/trick_greater_infusion.png",
   "pages": [
     {

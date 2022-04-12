@@ -1,6 +1,6 @@
 {
   "name": "psi.book.entry.psigem",
-  "category": "components",
+  "category": "psi:components",
   "icon": "psi:psigem",
   "priority": true,
   "pages": [

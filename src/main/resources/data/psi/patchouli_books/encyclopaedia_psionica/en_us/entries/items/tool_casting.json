@@ -1,6 +1,6 @@
 {
   "name": "psi.book.entry.toolCasting",
-  "category": "items",
+  "category": "psi:items",
   "icon": "psi:textures/spell/selector_block_broken.png",
   "pages": [
     {

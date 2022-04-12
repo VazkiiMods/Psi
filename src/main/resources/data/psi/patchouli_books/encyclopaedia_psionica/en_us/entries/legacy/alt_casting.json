@@ -1,6 +1,6 @@
 {
   "name": "psi.book.entry.altCasting",
-  "category": "legacy",
+  "category": "psi:legacy",
   "icon": "psi:textures/spell/selector_focal_point.png",
   "pages": [
     {

@@ -1,6 +1,6 @@
 {
   "name": "psi.book.entry.psimetal",
-  "category": "components",
+  "category": "psi:components",
   "icon": "psi:psimetal",
   "priority": true,
   "pages": [

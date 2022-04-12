@@ -1,6 +1,6 @@
 {
   "name": "psi.book.entry.flowControl",
-  "category": "items",
+  "category": "psi:items",
   "icon": "psi:textures/spell/trick_delay.png",
   "pages": [
     {
