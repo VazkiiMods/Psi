@@ -107,7 +107,7 @@ repositories {
 }
 
 dependencies {
-    minecraft "net.minecraftforge:forge:${mc_version}-39.0.19"
+    minecraft "net.minecraftforge:forge:${mc_version}-39.1.2"
 
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 

@@ -309,7 +309,9 @@ public class TileCADAssembler extends BlockEntity implements ITileCADAssembler, 
 	@Nonnull
 	@Override
 	public CompoundTag getUpdateTag() {
-		return save(new CompoundTag());
+		CompoundTag cmp = new CompoundTag();
+		saveAdditional(cmp);
+		return cmp;
 	}
 
 	@Nonnull
