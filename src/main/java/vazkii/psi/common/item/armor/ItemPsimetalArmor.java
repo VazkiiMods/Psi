@@ -22,14 +22,13 @@ import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.LazyLoadedValue;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.IItemRenderProperties;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.fml.DistExecutor;
 
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ICADColorizer;
@@ -38,7 +37,7 @@ import vazkii.psi.api.exosuit.IPsiEventArmor;
 import vazkii.psi.api.exosuit.PsiArmorEvent;
 import vazkii.psi.api.internal.TooltipHelper;
 import vazkii.psi.api.spell.SpellContext;
-import vazkii.psi.client.model.ModelPsimetalExosuit;
+import vazkii.psi.client.model.ArmorModels;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
 import vazkii.psi.common.item.ItemCAD;
@@ -50,13 +49,12 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import java.util.List;
-
-import net.minecraft.world.item.Item.Properties;
+import java.util.function.Consumer;
 
 public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiEventArmor {
 
 	public final EquipmentSlot type;
-	private final LazyLoadedValue<HumanoidModel<?>> model;
+	//private final LazyLoadedValue<HumanoidModel<?>> model;
 
 	private static final String TAG_TIMES_CAST = "timesCast";
 
@@ -67,8 +65,8 @@ public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiE
 	public ItemPsimetalArmor(EquipmentSlot type, ArmorMaterial mat, Properties props) {
 		super(mat, type, props);
 		this.type = type;
-		this.model = DistExecutor.runForDist(() -> () -> new LazyLoadedValue<>(() -> this.provideArmorModelForSlot(type)),
-				() -> () -> null);
+		/*this.model = DistExecutor.runForDist(() -> () -> new LazyLoadedValue<>(() -> this.provideArmorModelForSlot(type)),
+				() -> () -> null);*/
 	}
 
 	@Override
@@ -173,25 +171,23 @@ public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiE
 		return LibResources.MODEL_PSIMETAL_EXOSUIT;
 	}
 
-	public boolean hasColor(@Nonnull ItemStack stack) {
+	public boolean hasCustomColor(@Nonnull ItemStack stack) {
 		return true;
 	}
 
 	public int getColor(@Nonnull ItemStack stack) {
 		return ICADColorizer.DEFAULT_SPELL_COLOR;
 	}
-/*
-	@Nullable
+
 	@Override
-	@OnlyIn(Dist.CLIENT)
-	@SuppressWarnings("unchecked")
-	public <A extends HumanoidModel<?>> A getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlot armorSlot, A _default) {
-		return (A) model.get();
-	}
-*/
-	@OnlyIn(Dist.CLIENT)
-	public HumanoidModel<?> provideArmorModelForSlot(EquipmentSlot slot) {
-		return new ModelPsimetalExosuit(slot);
+	public void initializeClient(Consumer<IItemRenderProperties> consumer) {
+		consumer.accept(new IItemRenderProperties() {
+			@Override
+			public <A extends HumanoidModel<?>> A getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlot armorSlot, A defaultModel) {
+				HumanoidModel<LivingEntity> model = ArmorModels.get(itemStack);
+				return (A) model;
+			}
+		});
 	}
 
 	public static class ArmorSocketable extends ToolSocketable {
