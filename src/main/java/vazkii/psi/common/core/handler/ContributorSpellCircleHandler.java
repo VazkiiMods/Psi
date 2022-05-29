@@ -49,7 +49,7 @@ public final class ContributorSpellCircleHandler {
 				int[] values = Stream.of(value.split(",")).mapToInt(el -> Integer.parseInt(el.substring(2), 16)).toArray();
 				m.put(key, values);
 			} catch (NumberFormatException e) {
-				Psi.logger.log(Level.ERROR, "Contributor " + key + " has an invalid hexcode!");
+				Psi.logger.error("Contributor " + key + " has an invalid hexcode!");
 			}
 		}
 		colormap = m;

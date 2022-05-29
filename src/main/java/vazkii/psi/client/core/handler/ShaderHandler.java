@@ -119,13 +119,13 @@ public final class ShaderHandler {
 
 		ARBShaderObjects.glLinkProgramARB(program);
 		if (ARBShaderObjects.glGetObjectParameteriARB(program, ARBShaderObjects.GL_OBJECT_LINK_STATUS_ARB) == GL11.GL_FALSE) {
-			Psi.logger.log(Level.ERROR, getLogInfo(program));
+			Psi.logger.error(getLogInfo(program));
 			return 0;
 		}
 
 		ARBShaderObjects.glValidateProgramARB(program);
 		if (ARBShaderObjects.glGetObjectParameteriARB(program, ARBShaderObjects.GL_OBJECT_VALIDATE_STATUS_ARB) == GL11.GL_FALSE) {
-			Psi.logger.log(Level.ERROR, getLogInfo(program));
+			Psi.logger.error(getLogInfo(program));
 			return 0;
 		}
 
