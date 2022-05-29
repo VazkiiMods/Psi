@@ -17,7 +17,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.IForgeRegistry;
 
 import vazkii.psi.common.core.PsiCreativeTab;
-import vazkii.psi.common.core.handler.capability.CapabilityHandler;
 import vazkii.psi.common.item.*;
 import vazkii.psi.common.item.armor.ItemPsimetalExosuitBoots;
 import vazkii.psi.common.item.armor.ItemPsimetalExosuitChestplate;

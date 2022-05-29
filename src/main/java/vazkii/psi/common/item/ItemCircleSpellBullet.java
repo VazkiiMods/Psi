@@ -9,6 +9,7 @@
 package vazkii.psi.common.item;
 
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.Item.Properties;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.HitResult;
 
@@ -20,8 +21,6 @@ import vazkii.psi.common.entity.EntitySpellCircle;
 import vazkii.psi.common.spell.operator.vector.PieceOperatorVectorRaycast;
 
 import java.util.ArrayList;
-
-import net.minecraft.world.item.Item.Properties;
 
 public class ItemCircleSpellBullet extends ItemSpellBullet {
 

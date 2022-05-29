@@ -20,12 +20,9 @@ apply plugin: 'maven-publish'
 apply plugin: 'pmd'
 apply plugin: 'org.spongepowered.mixin'
 
-ext.configFile = file('build.properties')
-ext.config = parseConfig(configFile)
-
-version = "${config.mc_version}-${config.build_number}"
-group = "vazkii.${config.mod_id}" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = config.mod_name
+version = "${mc_version}-${build_number}"
+group = "vazkii.${mod_id}" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = mod_name
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
@@ -35,7 +32,7 @@ if (System.getenv('BUILD_NUMBER') != null) {
 }
 
 minecraft {
-    mappings channel: 'official', version: config.mc_version
+    mappings channel: 'official', version: mc_version
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
     runs {
@@ -104,15 +101,15 @@ repositories {
 }
 
 dependencies {
-    minecraft "net.minecraftforge:forge:${config.mc_version}-${config.forge_version}"
+    minecraft "net.minecraftforge:forge:${mc_version}-${forge_version}"
 
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 
-    compileOnly fg.deobf("vazkii.patchouli:Patchouli:${config.patchy_version}:api")
-    runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:${config.patchy_version}")
+    compileOnly fg.deobf("vazkii.patchouli:Patchouli:${patchy_version}:api")
+    runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:${patchy_version}")
 
-    compileOnly fg.deobf("mezz.jei:${config.jei_version}:api")
-    runtimeOnly fg.deobf("mezz.jei:${config.jei_version}")
+    compileOnly fg.deobf("mezz.jei:${jei_version}:api")
+    runtimeOnly fg.deobf("mezz.jei:${jei_version}")
 }
 
 // Prevent Mixin annotation processor from getting into IDEA's annotation processor settings
@@ -175,22 +172,14 @@ artifacts {
     archives srcJar, apiJar
 }
 
-task incrementBuildNumber {
-    doFirst {
-        config.build_number = (config.build_number.toString().toInteger()) + 1
-        configFile.withWriter {
-            config.toProperties().store(it, "")
-        }
-    }
-}
-
-def parseConfig(File config) {
-    config.withReader {
-        def prop = new Properties()
-        prop.load(it)
-        return (new ConfigSlurper().parse(prop))
-    }
-}
+//task incrementBuildNumber {
+//    doFirst {
+//        config.build_number = (config.build_number.toString().toInteger()) + 1
+//        configFile.withWriter {
+//            config.toProperties().store(it, "")
+//        }
+//    }
+//}
 
 jar {
     //rename the default output, for some better... sanity with scipts
@@ -198,14 +187,14 @@ jar {
 
     manifest {
         attributes([
-                "Specification-Title": "${config.mod_id}",
+                "Specification-Title": "${mod_id}",
                 "Specification-Vendor": "vazkii",
                 "Specification-Version": "1", // We are version 1 of ourselves
-                "Implementation-Title": "${config.mod_id}",
+                "Implementation-Title": "${mod_id}",
                 "Implementation-Version": "${version}",
                 "Implementation-Vendor" :"vazkii",
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-                "MixinConfigs": "${config.mod_id}.mixins.json"
+                "MixinConfigs": "${mod_id}.mixins.json"
         ])
     }
 
@@ -230,9 +219,5 @@ uploadArchives {
         }
     }
 }*/
-
-mixin {
-    add sourceSets.main, "${config.mod_id}.refmap.json"
-}
 
 defaultTasks 'clean', 'runData', 'checkSyntax', 'build', 'incrementBuildNumber'

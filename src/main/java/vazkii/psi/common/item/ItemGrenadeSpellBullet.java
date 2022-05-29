@@ -9,6 +9,7 @@
 package vazkii.psi.common.item;
 
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.Item.Properties;
 import net.minecraft.world.item.ItemStack;
 
 import vazkii.psi.api.PsiAPI;
@@ -19,8 +20,6 @@ import vazkii.psi.common.entity.EntitySpellGrenade;
 import vazkii.psi.common.entity.EntitySpellProjectile;
 
 import java.util.ArrayList;
-
-import net.minecraft.world.item.Item.Properties;
 
 public class ItemGrenadeSpellBullet extends ItemSpellBullet {
 

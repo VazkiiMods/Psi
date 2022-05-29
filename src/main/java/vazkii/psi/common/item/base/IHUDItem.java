@@ -8,9 +8,9 @@
  */
 package vazkii.psi.common.item.base;
 
+import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.vertex.PoseStack;
 
-import com.mojang.blaze3d.platform.Window;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;

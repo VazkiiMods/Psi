@@ -163,54 +163,18 @@ public final class ShaderHandler {
 	private static String readFileAsString(String filename) throws Exception {
 		StringBuilder source = new StringBuilder();
 		InputStream in = ShaderHandler.class.getResourceAsStream(filename);
-		Exception exception = null;
-		BufferedReader reader;
 
 		if (in == null) {
 			return "";
 		}
 
-		try {
-			reader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
-
-			Exception innerExc = null;
-			try {
-				String line;
-				while ((line = reader.readLine()) != null) {
-					source.append(line).append('\n');
-				}
-			} catch (Exception exc) {
-				exception = exc;
-			} finally {
-				try {
-					reader.close();
-				} catch (Exception exc) {
-					innerExc = exc;
-				}
-			}
-
-			if (innerExc != null) {
-				throw innerExc;
-			}
-		} catch (Exception exc) {
-			exception = exc;
-		} finally {
-			try {
-				in.close();
-			} catch (Exception exc) {
-				if (exception == null) {
-					exception = exc;
-				} else {
-					exc.printStackTrace();
-				}
-			}
-
-			if (exception != null) {
-				throw exception;
+		try (BufferedReader reader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8))) {
+			String line;
+			while ((line = reader.readLine()) != null) {
+				source.append(line).append('\n');
 			}
 		}
 
 		return source.toString();
 	}
-
 }

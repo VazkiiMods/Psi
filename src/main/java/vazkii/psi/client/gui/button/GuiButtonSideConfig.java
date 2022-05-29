@@ -8,19 +8,17 @@
  */
 package vazkii.psi.client.gui.button;
 
-import com.mojang.blaze3d.vertex.*;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.*;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.Button.OnPress;
 import net.minecraft.network.chat.TextComponent;
 
 import vazkii.psi.api.internal.PsiRenderHelper;
 import vazkii.psi.api.spell.SpellParam;
 import vazkii.psi.api.spell.SpellPiece;
 import vazkii.psi.client.gui.GuiProgrammer;
-
-import net.minecraft.client.gui.components.Button.OnPress;
 
 public class GuiButtonSideConfig extends Button {
 

@@ -9,13 +9,13 @@
 package vazkii.psi.common.block.tile;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.registries.ObjectHolder;
 
 import vazkii.psi.api.spell.Spell;
@@ -87,7 +87,6 @@ public class TileProgrammer extends BlockEntity {
 		}
 		playerLock = cmp.getString(TAG_PLAYER_LOCK);
 	}
-
 
 	@Override
 	public ClientboundBlockEntityDataPacket getUpdatePacket() {

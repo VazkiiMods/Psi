@@ -9,13 +9,13 @@
 package vazkii.psi.common.block.tile;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.registries.ObjectHolder;
 
 import vazkii.psi.api.internal.PsiRenderHelper;
@@ -26,6 +26,7 @@ import vazkii.psi.common.lib.LibBlockNames;
 import vazkii.psi.common.lib.LibMisc;
 
 import javax.annotation.Nonnull;
+
 import java.util.Arrays;
 
 public class TileConjured extends BlockEntity {
@@ -164,6 +165,5 @@ public class TileConjured extends BlockEntity {
 	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
 		this.readPacketNBT(pkt.getTag());
 	}
-
 
 }

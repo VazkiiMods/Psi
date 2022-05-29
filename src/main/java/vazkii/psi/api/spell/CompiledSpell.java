@@ -8,9 +8,9 @@
  */
 package vazkii.psi.api.spell;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.network.chat.Style;
-import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.TranslatableComponent;
 
 import vazkii.psi.api.PsiAPI;

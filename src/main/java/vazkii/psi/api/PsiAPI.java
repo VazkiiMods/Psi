@@ -12,21 +12,20 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.mojang.serialization.Lifecycle;
 
+import net.minecraft.core.MappedRegistry;
 import net.minecraft.core.Registry;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.core.MappedRegistry;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.fml.DistExecutor;
 
-import net.minecraftforge.registries.DeferredRegister;
 import org.apache.logging.log4j.LogManager;
 
 import vazkii.psi.api.cad.ICAD;
@@ -60,23 +59,17 @@ public final class PsiAPI {
 	 */
 	public static IInternalMethodHandler internalHandler = new DummyMethodHandler();
 
-	public static Capability<ISpellImmune> SPELL_IMMUNE_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {
-	});
+	public static Capability<ISpellImmune> SPELL_IMMUNE_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {});
 
-	public static Capability<IDetonationHandler> DETONATION_HANDLER_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {
-	});
+	public static Capability<IDetonationHandler> DETONATION_HANDLER_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {});
 
-	public static Capability<IPsiBarDisplay> PSI_BAR_DISPLAY_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {
-	});
+	public static Capability<IPsiBarDisplay> PSI_BAR_DISPLAY_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {});
 
-	public static Capability<ISpellAcceptor> SPELL_ACCEPTOR_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {
-	});
+	public static Capability<ISpellAcceptor> SPELL_ACCEPTOR_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {});
 
-	public static Capability<ICADData> CAD_DATA_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {
-	});
+	public static Capability<ICADData> CAD_DATA_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {});
 
-	public static Capability<ISocketable> SOCKETABLE_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {
-	});
+	public static Capability<ISocketable> SOCKETABLE_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {});
 
 	public static final String MOD_ID = "psi";
 

@@ -8,9 +8,9 @@
  */
 package vazkii.psi.common.spell.selector;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.shapes.CollisionContext;
 
 import vazkii.psi.api.internal.Vector3;

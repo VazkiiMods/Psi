@@ -9,22 +9,20 @@
 package vazkii.psi.client.gui;
 
 import com.google.common.collect.ImmutableSet;
-import com.mojang.blaze3d.vertex.*;
+import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.*;
 
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
-
-import com.mojang.blaze3d.platform.Lighting;
 import net.minecraft.client.resources.language.I18n;
-import net.minecraft.client.KeyMapping;
-import com.mojang.blaze3d.platform.InputConstants;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.ChatFormatting;
+import net.minecraft.world.item.ItemStack;
 
 import org.lwjgl.opengl.GL11;
 
@@ -244,7 +242,7 @@ public class GuiSocketSelect extends Screen {
 				}
 
 				ItemStack stack = controlledStacks[i];
-				int rx = xs + i * 18 ;
+				int rx = xs + i * 18;
 				float ry = ys + (-yoff * shift);
 				PsiRenderHelper.transferMsToGl(ms, () -> mc.getItemRenderer().renderAndDecorateItem(stack, rx, (int) ry));
 			}

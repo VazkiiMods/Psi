@@ -8,8 +8,9 @@
  */
 package vazkii.psi.common.item;
 
-import net.minecraft.world.entity.Entity;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.Item.Properties;
 import net.minecraft.world.item.ItemStack;
 
 import vazkii.psi.api.spell.SpellContext;
@@ -17,8 +18,6 @@ import vazkii.psi.common.core.handler.LoopcastTrackingHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 
 import java.util.ArrayList;
-
-import net.minecraft.world.item.Item.Properties;
 
 public class ItemLoopcastSpellBullet extends ItemSpellBullet {
 

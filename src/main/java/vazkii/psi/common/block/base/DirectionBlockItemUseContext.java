@@ -8,9 +8,10 @@
  */
 package vazkii.psi.common.block.base;
 
+import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
-import net.minecraft.core.Direction;
+
 import org.jetbrains.annotations.NotNull;
 
 public class DirectionBlockItemUseContext extends BlockPlaceContext {

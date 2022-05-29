@@ -10,7 +10,6 @@ package vazkii.psi.client.jei.crafting;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.systems.RenderSystem;
 
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.IRecipeLayout;
@@ -20,11 +19,11 @@ import mezz.jei.api.recipe.category.extensions.vanilla.crafting.ICustomCraftingC
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.language.I18n;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.core.Registry;
 
 import vazkii.psi.api.spell.ISpellAcceptor;
 import vazkii.psi.common.crafting.recipe.BulletToDriveRecipe;

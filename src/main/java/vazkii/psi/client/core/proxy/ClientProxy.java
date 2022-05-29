@@ -9,6 +9,7 @@
 package vazkii.psi.client.core.proxy;
 
 import com.mojang.blaze3d.vertex.BufferBuilder;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.player.LocalPlayer;
@@ -33,6 +34,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+
 import vazkii.psi.api.ClientPsiAPI;
 import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.cad.ICADColorizer;
@@ -81,8 +83,6 @@ public class ClientProxy implements IProxy {
 		ItemBlockRenderTypes.setRenderLayer(ModBlocks.conjured, RenderType.translucent());
 	}
 
-
-
 	@SubscribeEvent
 	public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers evt) {
 		evt.registerBlockEntityRenderer(TileProgrammer.TYPE, RenderTileProgrammer::new);
@@ -92,6 +92,7 @@ public class ClientProxy implements IProxy {
 		evt.registerEntityRenderer(EntitySpellProjectile.TYPE, RenderSpellProjectile::new);
 		evt.registerEntityRenderer(EntitySpellMine.TYPE, RenderSpellProjectile::new);
 	}
+
 	@SubscribeEvent
 	public static void registerEntityLayers(EntityRenderersEvent.RegisterLayerDefinitions evt) {
 		evt.registerLayerDefinition(ModModelLayers.PSIMETAL_EXOSUIT_INNER_ARMOR, () -> LayerDefinition.create(ModelPsimetalExosuit.createInsideMesh(), 64, 128));

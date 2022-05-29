@@ -8,8 +8,8 @@
  */
 package vazkii.psi.common.core.handler;
 
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.DefaultUncaughtExceptionHandler;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -30,6 +30,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 import java.util.stream.Stream;
@@ -71,7 +72,7 @@ public final class ContributorSpellCircleHandler {
 
 	@SubscribeEvent
 	public static void onCadTake(CADTakeEvent event) {
-		if (ContributorSpellCircleHandler.isContributor(event.getPlayer().getName().getString().toLowerCase()) && !((ICAD) event.getCad().getItem()).getComponentInSlot(event.getCad(), EnumCADComponent.DYE).isEmpty()) {
+		if (ContributorSpellCircleHandler.isContributor(event.getPlayer().getName().getString().toLowerCase(Locale.ROOT)) && !((ICAD) event.getCad().getItem()).getComponentInSlot(event.getCad(), EnumCADComponent.DYE).isEmpty()) {
 			ItemStack dyeStack = ((ICAD) event.getCad().getItem()).getComponentInSlot(event.getCad(), EnumCADComponent.DYE);
 			((ICADColorizer) dyeStack.getItem()).setContributorName(dyeStack, event.getPlayer().getName().getString());
 			ItemCAD.setComponent(event.getCad(), dyeStack);
@@ -80,7 +81,7 @@ public final class ContributorSpellCircleHandler {
 
 	@SubscribeEvent
 	public static void craftColorizer(PlayerEvent.ItemCraftedEvent event) {
-		if (ContributorSpellCircleHandler.isContributor(event.getPlayer().getName().getString().toLowerCase()) && event.getCrafting().getItem() instanceof ICADColorizer) {
+		if (ContributorSpellCircleHandler.isContributor(event.getPlayer().getName().getString().toLowerCase(Locale.ROOT)) && event.getCrafting().getItem() instanceof ICADColorizer) {
 			((ICADColorizer) event.getCrafting().getItem()).setContributorName(event.getCrafting(), event.getPlayer().getName().getString());
 		}
 	}

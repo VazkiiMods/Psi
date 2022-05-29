@@ -10,18 +10,17 @@ package vazkii.psi.client.render.tile;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Matrix4f;
+import com.mojang.math.Vector3f;
 
-import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.FaceAttachedHorizontalDirectionalBlock;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
+import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.Direction;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Vector3f;
+import net.minecraft.world.level.block.FaceAttachedHorizontalDirectionalBlock;
+import net.minecraft.world.level.block.state.BlockState;
 
 import vazkii.psi.client.core.handler.ClientTickHandler;
 import vazkii.psi.client.gui.GuiProgrammer;
@@ -30,8 +29,7 @@ import vazkii.psi.common.block.tile.TileProgrammer;
 
 public class RenderTileProgrammer implements BlockEntityRenderer<TileProgrammer> {
 
-	public RenderTileProgrammer(BlockEntityRendererProvider.Context ctx) {
-	}
+	public RenderTileProgrammer(BlockEntityRendererProvider.Context ctx) {}
 
 	@Override
 	public void render(TileProgrammer te, float partialticks, PoseStack ms, MultiBufferSource buffers, int worldLight, int overlay) {
