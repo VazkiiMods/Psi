@@ -16,6 +16,7 @@ import net.minecraftforge.fml.common.Mod;
 
 import org.apache.logging.log4j.Level;
 
+import org.apache.logging.log4j.Logger;
 import vazkii.psi.api.cad.CADTakeEvent;
 import vazkii.psi.api.cad.EnumCADComponent;
 import vazkii.psi.api.cad.ICAD;
@@ -91,7 +92,7 @@ public final class ContributorSpellCircleHandler {
 		public ThreadContributorListLoader() {
 			setName("Psi Contributor Spell Circle Loader Thread");
 			setDaemon(true);
-			setUncaughtExceptionHandler(new DefaultUncaughtExceptionHandler(Psi.logger));
+			setUncaughtExceptionHandler(new Log4jUncaughtExceptionHandler(Psi.logger));
 			start();
 		}
 
@@ -108,6 +109,12 @@ public final class ContributorSpellCircleHandler {
 				Psi.logger.info("Could not load contributors list. Either you're offline or github is down. Nothing to worry about, carry on~");
 			}
 		}
-
+		
+		private static record Log4jUncaughtExceptionHandler(Logger logger) implements UncaughtExceptionHandler {
+			@Override
+			public void uncaughtException(Thread t, Throwable e) {
+				logger.error("Caught off-thread exception from " + t.getName() + ": ", e);
+			}
+		}
 	}
 }

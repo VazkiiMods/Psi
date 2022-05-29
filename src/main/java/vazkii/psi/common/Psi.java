@@ -21,7 +21,8 @@ import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.ForgeRegistries;
 
-import org.slf4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.client.core.proxy.ClientProxy;
 import vazkii.psi.common.core.handler.ConfigHandler;
@@ -40,7 +41,7 @@ import java.util.Locale;
 @Mod(LibMisc.MOD_ID)
 public class Psi {
 
-	public static final Logger logger = LogUtils.getLogger();
+	public static final Logger logger = LogManager.getLogger(LibMisc.MOD_ID);
 
 	public static Psi instance;
 	public static boolean magical;
