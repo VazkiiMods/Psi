@@ -21,7 +21,7 @@ jobs:
         uses: jwgmeligmeyling/pmd-github-action@v1
         if: failure()
         with:
-          path: 'build/reports/pmd/main.xml'
+          path: '**/reports/pmd/main.xml'
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
