@@ -15,7 +15,13 @@ jobs:
       - name: Gradle build
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: build
+          arguments: pmdMain spotlessJavaCheck build
+
+      - name: PMD report
+        uses: jwgmeligmeyling/pmd-github-action@v1
+        if: failure()
+        with:
+          path: 'build/reports/pmd/main.xml'
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v2

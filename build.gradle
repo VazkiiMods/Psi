@@ -17,7 +17,7 @@ plugins {
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
-//apply plugin: 'pmd'
+apply plugin: 'pmd'
 apply plugin: 'org.spongepowered.mixin'
 
 ext.configFile = file('build.properties')
@@ -124,31 +124,29 @@ if (System.getProperty("idea.sync.active") == "true") {
     }
 }
 
+pmd {
+	toolVersion '6.35.0'
+	incrementalAnalysis.set(true)
+	ruleSets.clear()
+	ruleSetFiles = files("spotless/pmd-ruleset.xml")
+}
+
 spotless {
     enforceCheck = false // workaround around jenkins having wrong line endings in some files
-    // we explicitly check in github actions builds
+    // we explicitly check in github actions builds (do we?)
     java {
         targetExclude '**/Gamma.java'
 
         indentWithTabs()
-        licenseHeaderFile( 'spotless/license_template.txt')
+        licenseHeaderFile('spotless/license_template.txt')
         eclipse().configFile 'spotless/eclipseformat.xml'
         removeUnusedImports()
         importOrderFile 'spotless/eclipse.importorder'
     }
 }
 
-/*
-pmd {
-    toolVersion '6.35.0'
-    incrementalAnalysis.set(true)
-    ruleSets.clear()
-    ruleSetFiles = files("spotless/pmd-ruleset.xml")
-}
-*/
-
 task checkSyntax {
-    dependsOn spotlessJavaCheck//, pmdMain
+    dependsOn spotlessJavaCheck, pmdMain
 }
 
 sourceSets.main.resources {
