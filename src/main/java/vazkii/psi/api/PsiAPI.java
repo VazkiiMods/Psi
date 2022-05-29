@@ -74,7 +74,8 @@ public final class PsiAPI {
 	public static final String MOD_ID = "psi";
 
 	public static final ResourceKey<Registry<Class<? extends SpellPiece>>> SPELL_PIECE_REGISTRY_TYPE_KEY = Registry.createRegistryKey("spell_piece_registry_type_key");
-	private static final MappedRegistry<Class<? extends SpellPiece>> spellPieceRegistry = (MappedRegistry<Class<? extends SpellPiece>>) Registry.registerSimple(SPELL_PIECE_REGISTRY_TYPE_KEY, Lifecycle.stable(), () -> PieceTrickDebug.class);
+	//private static final MappedRegistry<Class<? extends SpellPiece>> spellPieceRegistry = (MappedRegistry<Class<? extends SpellPiece>>) Registry.registerSimple(SPELL_PIECE_REGISTRY_TYPE_KEY, Lifecycle.stable(), () -> PieceTrickDebug.class);
+	private static final MappedRegistry<Class<? extends SpellPiece>> spellPieceRegistry = new MappedRegistry<>(SPELL_PIECE_REGISTRY_TYPE_KEY, Lifecycle.stable(), null); //TODO (circa 1.18.2): un-duct-tape this
 	private static final Multimap<ResourceLocation, Class<? extends SpellPiece>> advancementGroups = HashMultimap.create();
 	private static final Map<Class<? extends SpellPiece>, ResourceLocation> advancementGroupsInverse = new HashMap<>();
 	private static final Map<ResourceLocation, Class<? extends SpellPiece>> mainPieceForGroup = new HashMap<>();
