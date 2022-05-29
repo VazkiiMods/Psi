@@ -93,8 +93,7 @@ public class PieceTrickCollapseBlockSequence extends PieceTrick {
 					return null;
 				}
 
-				FallingBlockEntity falling = new FallingBlockEntity(world, blockPos.getX() + 0.5, blockPos.getY() + 0.5, blockPos.getZ() + 0.5, state);
-				world.addFreshEntity(falling);
+				FallingBlockEntity.fall(world, blockPos, state);
 			}
 		}
 
