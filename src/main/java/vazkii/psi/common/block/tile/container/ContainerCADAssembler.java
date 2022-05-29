@@ -152,7 +152,7 @@ public class ContainerCADAssembler extends AbstractContainerMenu {
 
 	@Override
 	public boolean stillValid(@Nonnull Player playerIn) {
-		return assembler.getBlockPos().distSqr(playerIn.getX(), playerIn.getY(), playerIn.getZ(), true) <= 64;
+		return !playerIn.isRemoved() && assembler.getBlockPos().distToCenterSqr(playerIn.position()) <= 64;
 	}
 
 	@Nonnull
