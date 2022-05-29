@@ -11,7 +11,6 @@ package vazkii.psi.client.core.handler;
 import com.google.common.io.CharStreams;
 import com.mojang.blaze3d.systems.RenderSystem;
 
-import org.apache.logging.log4j.Level;
 import org.lwjgl.opengl.ARBFragmentShader;
 import org.lwjgl.opengl.ARBShaderObjects;
 import org.lwjgl.opengl.ARBVertexShader;

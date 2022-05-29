@@ -40,7 +40,6 @@ import vazkii.psi.api.spell.ISpellAcceptor;
 import vazkii.psi.api.spell.ISpellImmune;
 import vazkii.psi.api.spell.SpellPiece;
 import vazkii.psi.api.spell.detonator.IDetonationHandler;
-import vazkii.psi.common.spell.trick.PieceTrickDebug;
 
 import java.util.Collection;
 import java.util.HashMap;

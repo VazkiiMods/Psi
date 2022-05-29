@@ -130,30 +130,30 @@ public final class ModItems {
 		ivoryPsimetal = new Item(defaultBuilder());
 		ebonySubstance = new Item(defaultBuilder());
 		ivorySubstance = new Item(defaultBuilder());
-		
+
 		cadAssemblyIron = new ItemCADAssembly(defaultBuilder(), LibItemNames.CAD_IRON);
 		cadAssemblyGold = new ItemCADAssembly(defaultBuilder(), LibItemNames.CAD_GOLD);
 		cadAssemblyPsimetal = new ItemCADAssembly(defaultBuilder(), LibItemNames.CAD_PSIMETAL);
 		cadAssemblyIvory = new ItemCADAssembly(defaultBuilder(), LibItemNames.CAD_IVORY_PSIMETAL);
 		cadAssemblyEbony = new ItemCADAssembly(defaultBuilder(), LibItemNames.CAD_EBONY_PSIMETAL);
 		cadAssemblyCreative = new ItemCADAssembly(defaultBuilder(), LibItemNames.CAD_CREATIVE);
-		
+
 		cadCoreBasic = new ItemCADCore(defaultBuilder());
 		cadCoreOverclocked = new ItemCADCore(defaultBuilder());
 		cadCoreConductive = new ItemCADCore(defaultBuilder());
 		cadCoreHyperClocked = new ItemCADCore(defaultBuilder());
 		cadCoreRadiative = new ItemCADCore(defaultBuilder());
-		
+
 		cadSocketBasic = new ItemCADSocket(defaultBuilder());
 		cadSocketSignaling = new ItemCADSocket(defaultBuilder());
 		cadSocketLarge = new ItemCADSocket(defaultBuilder());
 		cadSocketTransmissive = new ItemCADSocket(defaultBuilder());
 		cadSocketHuge = new ItemCADSocket(defaultBuilder());
-		
+
 		cadBatteryBasic = new ItemCADBattery(defaultBuilder());
 		cadBatteryExtended = new ItemCADBattery(defaultBuilder());
 		cadBatteryUltradense = new ItemCADBattery(defaultBuilder());
-		
+
 		cadColorizerWhite = new ItemCADColorizer(defaultBuilder(), DyeColor.WHITE);
 		cadColorizerOrange = new ItemCADColorizer(defaultBuilder(), DyeColor.ORANGE);
 		cadColorizerMagenta = new ItemCADColorizer(defaultBuilder(), DyeColor.MAGENTA);
@@ -173,7 +173,7 @@ public final class ModItems {
 		cadColorizerRainbow = new ItemCADColorizerRainbow(defaultBuilder());
 		cadColorizerPsi = new ItemCADColorizerPsi(defaultBuilder());
 		cadColorizerEmpty = new ItemCADColorizerEmpty(defaultBuilder());
-		
+
 		spellBullet = new ItemSpellBullet(defaultBuilder());
 		projectileSpellBullet = new ItemProjectileSpellBullet(defaultBuilder());
 		loopSpellBullet = new ItemLoopcastSpellBullet(defaultBuilder());
@@ -181,18 +181,18 @@ public final class ModItems {
 		grenadeSpellBullet = new ItemGrenadeSpellBullet(defaultBuilder());
 		chargeSpellBullet = new ItemChargeSpellBullet(defaultBuilder());
 		mineSpellBullet = new ItemMineSpellBullet(defaultBuilder());
-		
+
 		spellDrive = new ItemSpellDrive(defaultBuilder());
 		detonator = new ItemDetonator(defaultBuilder());
 		exosuitController = new ItemExosuitController(defaultBuilder());
-		
+
 		exosuitSensorLight = new ItemLightExosuitSensor(defaultBuilder());
 		exosuitSensorHeat = new ItemHeatExosuitSensor(defaultBuilder());
 		exosuitSensorStress = new ItemStressExosuitSensor(defaultBuilder());
 		exosuitSensorWater = new ItemWaterExosuitSensor(defaultBuilder());
 		exosuitSensorTrigger = new ItemTriggerExosuitSensor(defaultBuilder());
 		cad = new ItemCAD(defaultBuilder());
-		
+
 		vectorRuler = new ItemVectorRuler(defaultBuilder());
 		psimetalShovel = new ItemPsimetalShovel(defaultBuilder());
 		psimetalPickaxe = new ItemPsimetalPickaxe(defaultBuilder());
@@ -202,7 +202,7 @@ public final class ModItems {
 		psimetalExosuitChestplate = new ItemPsimetalExosuitChestplate(EquipmentSlot.CHEST, defaultBuilder());
 		psimetalExosuitLeggings = new ItemPsimetalExosuitLeggings(EquipmentSlot.LEGS, defaultBuilder());
 		psimetalExosuitBoots = new ItemPsimetalExosuitBoots(EquipmentSlot.FEET, defaultBuilder());
-		
+
 		ModSpellPieces.init();
 		//CapabilityHandler.register();
 
@@ -292,7 +292,7 @@ public final class ModItems {
 		r.register(psimetalExosuitBoots.setRegistryName(LibMisc.MOD_ID, LibItemNames.PSIMETAL_EXOSUIT_BOOTS));
 
 	}
-	
+
 	public static Item.Properties defaultBuilder() {
 		return new Item.Properties().tab(PsiCreativeTab.INSTANCE);
 	}

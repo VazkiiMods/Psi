@@ -8,7 +8,6 @@
  */
 package vazkii.psi.common;
 
-import com.mojang.logging.LogUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.fml.DistExecutor;
@@ -23,6 +22,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.client.core.proxy.ClientProxy;
 import vazkii.psi.common.core.handler.ConfigHandler;

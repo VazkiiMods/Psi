@@ -9,7 +9,6 @@
 package vazkii.psi.common.block.base;
 
 import net.minecraft.client.gui.screens.MenuScreens;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
@@ -17,10 +16,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.extensions.IForgeMenuType;
@@ -41,8 +38,6 @@ import vazkii.psi.common.block.tile.container.ContainerCADAssembler;
 import vazkii.psi.common.lib.LibBlockNames;
 import vazkii.psi.common.lib.LibMisc;
 
-import java.util.function.BiFunction;
-
 import static vazkii.psi.common.item.base.ModItems.defaultBuilder;
 
 @Mod.EventBusSubscriber(modid = LibMisc.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -62,7 +57,7 @@ public class ModBlocks {
 	public static Block psimetalPlateWhiteLight;
 	public static Block psimetalEbony;
 	public static Block psimetalIvory;
-	
+
 	public static final MenuType<ContainerCADAssembler> containerCADAssembler = IForgeMenuType.create(ContainerCADAssembler::fromNetwork);
 
 	@SubscribeEvent
@@ -79,7 +74,7 @@ public class ModBlocks {
 		psimetalPlateWhiteLight = new Block(Block.Properties.of(Material.METAL).strength(5, 10).sound(SoundType.METAL).lightLevel((blockstate) -> 15));
 		psimetalEbony = new Block(Block.Properties.of(Material.METAL).strength(5, 10).sound(SoundType.METAL));
 		psimetalIvory = new Block(Block.Properties.of(Material.METAL).strength(5, 10).sound(SoundType.METAL));
-		
+
 		IForgeRegistry<Block> r = evt.getRegistry();
 		r.register(cadAssembler.setRegistryName(LibMisc.MOD_ID, LibBlockNames.CAD_ASSEMBLER));
 		r.register(programmer.setRegistryName(LibMisc.MOD_ID, LibBlockNames.PROGRAMMER));

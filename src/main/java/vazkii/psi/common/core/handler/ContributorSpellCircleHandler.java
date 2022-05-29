@@ -8,15 +8,13 @@
  */
 package vazkii.psi.common.core.handler;
 
-import net.minecraft.DefaultUncaughtExceptionHandler;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-import org.apache.logging.log4j.Level;
-
 import org.apache.logging.log4j.Logger;
+
 import vazkii.psi.api.cad.CADTakeEvent;
 import vazkii.psi.api.cad.EnumCADComponent;
 import vazkii.psi.api.cad.ICAD;
@@ -109,7 +107,7 @@ public final class ContributorSpellCircleHandler {
 				Psi.logger.info("Could not load contributors list. Either you're offline or github is down. Nothing to worry about, carry on~");
 			}
 		}
-		
+
 		private static record Log4jUncaughtExceptionHandler(Logger logger) implements UncaughtExceptionHandler {
 			@Override
 			public void uncaughtException(Thread t, Throwable e) {
