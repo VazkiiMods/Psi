@@ -8,6 +8,7 @@
  */
 package vazkii.psi.client.core.handler;
 
+import com.google.common.io.CharStreams;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import org.apache.logging.log4j.Level;
@@ -21,7 +22,6 @@ import vazkii.psi.common.Psi;
 import vazkii.psi.common.core.handler.ConfigHandler;
 import vazkii.psi.common.lib.LibResources;
 
-import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
@@ -161,20 +161,12 @@ public final class ShaderHandler {
 	}
 
 	private static String readFileAsString(String filename) throws Exception {
-		StringBuilder source = new StringBuilder();
-		InputStream in = ShaderHandler.class.getResourceAsStream(filename);
-
-		if (in == null) {
-			return "";
-		}
-
-		try (BufferedReader reader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8))) {
-			String line;
-			while ((line = reader.readLine()) != null) {
-				source.append(line).append('\n');
+		try (InputStream in = ShaderHandler.class.getResourceAsStream(filename)) {
+			if (in == null) {
+				return "";
 			}
-		}
 
-		return source.toString();
+			return CharStreams.toString(new InputStreamReader(in, StandardCharsets.UTF_8));
+		}
 	}
 }
