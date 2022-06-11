@@ -8,8 +8,8 @@
  */
 package vazkii.psi.api.spell.programmer;
 
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.core.MappedRegistry;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.eventbus.api.Event;
 
 import vazkii.psi.api.spell.SpellPiece;

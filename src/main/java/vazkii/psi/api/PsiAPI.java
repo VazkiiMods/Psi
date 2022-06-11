@@ -12,21 +12,20 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.mojang.serialization.Lifecycle;
 
+import net.minecraft.core.MappedRegistry;
 import net.minecraft.core.Registry;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.core.MappedRegistry;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.fml.DistExecutor;
 
-import net.minecraftforge.registries.DeferredRegister;
 import org.apache.logging.log4j.LogManager;
 
 import vazkii.psi.api.cad.ICAD;
@@ -41,7 +40,6 @@ import vazkii.psi.api.spell.ISpellAcceptor;
 import vazkii.psi.api.spell.ISpellImmune;
 import vazkii.psi.api.spell.SpellPiece;
 import vazkii.psi.api.spell.detonator.IDetonationHandler;
-import vazkii.psi.common.spell.trick.PieceTrickDebug;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -60,28 +58,23 @@ public final class PsiAPI {
 	 */
 	public static IInternalMethodHandler internalHandler = new DummyMethodHandler();
 
-	public static Capability<ISpellImmune> SPELL_IMMUNE_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {
-	});
+	public static Capability<ISpellImmune> SPELL_IMMUNE_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {});
 
-	public static Capability<IDetonationHandler> DETONATION_HANDLER_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {
-	});
+	public static Capability<IDetonationHandler> DETONATION_HANDLER_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {});
 
-	public static Capability<IPsiBarDisplay> PSI_BAR_DISPLAY_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {
-	});
+	public static Capability<IPsiBarDisplay> PSI_BAR_DISPLAY_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {});
 
-	public static Capability<ISpellAcceptor> SPELL_ACCEPTOR_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {
-	});
+	public static Capability<ISpellAcceptor> SPELL_ACCEPTOR_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {});
 
-	public static Capability<ICADData> CAD_DATA_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {
-	});
+	public static Capability<ICADData> CAD_DATA_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {});
 
-	public static Capability<ISocketable> SOCKETABLE_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {
-	});
+	public static Capability<ISocketable> SOCKETABLE_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {});
 
 	public static final String MOD_ID = "psi";
 
 	public static final ResourceKey<Registry<Class<? extends SpellPiece>>> SPELL_PIECE_REGISTRY_TYPE_KEY = Registry.createRegistryKey("spell_piece_registry_type_key");
-	private static final MappedRegistry<Class<? extends SpellPiece>> spellPieceRegistry = (MappedRegistry<Class<? extends SpellPiece>>) Registry.registerSimple(SPELL_PIECE_REGISTRY_TYPE_KEY, Lifecycle.stable(), () -> PieceTrickDebug.class);
+	//private static final MappedRegistry<Class<? extends SpellPiece>> spellPieceRegistry = (MappedRegistry<Class<? extends SpellPiece>>) Registry.registerSimple(SPELL_PIECE_REGISTRY_TYPE_KEY, Lifecycle.stable(), () -> PieceTrickDebug.class);
+	private static final MappedRegistry<Class<? extends SpellPiece>> spellPieceRegistry = new MappedRegistry<>(SPELL_PIECE_REGISTRY_TYPE_KEY, Lifecycle.stable(), null); //TODO (circa 1.18.2): un-duct-tape this
 	private static final Multimap<ResourceLocation, Class<? extends SpellPiece>> advancementGroups = HashMultimap.create();
 	private static final Map<Class<? extends SpellPiece>, ResourceLocation> advancementGroupsInverse = new HashMap<>();
 	private static final Map<ResourceLocation, Class<? extends SpellPiece>> mainPieceForGroup = new HashMap<>();

@@ -8,9 +8,8 @@
  */
 package vazkii.psi.common.item.component;
 
-import net.minecraft.world.item.ItemStack;
-
 import net.minecraft.world.item.Item.Properties;
+import net.minecraft.world.item.ItemStack;
 
 public class ItemCADColorizerEmpty extends ItemCADColorizer {
 

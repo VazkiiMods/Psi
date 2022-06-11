@@ -8,8 +8,8 @@
  */
 package vazkii.psi.common.network.message;
 
-import net.minecraft.world.entity.Entity;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.entity.Entity;
 import net.minecraftforge.network.NetworkEvent;
 
 import vazkii.psi.common.Psi;

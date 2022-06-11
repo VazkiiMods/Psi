@@ -17,8 +17,7 @@ import vazkii.psi.client.core.handler.ColorHandler;
 import vazkii.psi.common.core.handler.ContributorSpellCircleHandler;
 
 import java.awt.*;
-
-import net.minecraft.world.item.Item.Properties;
+import java.util.Locale;
 
 public class ItemCADColorizerPsi extends ItemCADColorizer {
 
@@ -29,8 +28,8 @@ public class ItemCADColorizerPsi extends ItemCADColorizer {
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public int getColor(ItemStack stack) {
-		if (!getContributorName(stack).isEmpty() && ContributorSpellCircleHandler.isContributor(getContributorName(stack).toLowerCase())) {
-			return ColorHandler.slideColor(ContributorSpellCircleHandler.getColors(getContributorName(stack).toLowerCase()), 0.0125f);
+		if (!getContributorName(stack).isEmpty() && ContributorSpellCircleHandler.isContributor(getContributorName(stack).toLowerCase(Locale.ROOT))) {
+			return ColorHandler.slideColor(ContributorSpellCircleHandler.getColors(getContributorName(stack).toLowerCase(Locale.ROOT)), 0.0125f);
 		}
 		float time = ClientTickHandler.total;
 		float w = (float) (Math.sin(time * 0.4) * 0.5 + 0.5) * 0.1F;

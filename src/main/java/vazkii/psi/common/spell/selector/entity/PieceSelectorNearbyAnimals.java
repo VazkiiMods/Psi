@@ -9,9 +9,9 @@
 package vazkii.psi.common.spell.selector.entity;
 
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.WaterAnimal;
+import net.minecraft.world.entity.monster.Enemy;
 
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;

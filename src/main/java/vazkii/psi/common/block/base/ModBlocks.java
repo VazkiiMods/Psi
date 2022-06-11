@@ -8,20 +8,17 @@
  */
 package vazkii.psi.common.block.base;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.material.Material;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.extensions.IForgeMenuType;
 import net.minecraftforge.event.RegistryEvent;
@@ -41,8 +38,6 @@ import vazkii.psi.common.block.tile.container.ContainerCADAssembler;
 import vazkii.psi.common.lib.LibBlockNames;
 import vazkii.psi.common.lib.LibMisc;
 
-import java.util.function.BiFunction;
-
 import static vazkii.psi.common.item.base.ModItems.defaultBuilder;
 
 @Mod.EventBusSubscriber(modid = LibMisc.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -50,31 +45,36 @@ public class ModBlocks {
 	private static final BlockBehaviour.StateArgumentPredicate<EntityType<?>> NO_SPAWN = (state, world, pos, et) -> false;
 	private static final BlockBehaviour.StatePredicate NO_SUFFOCATION = (state, world, pos) -> false;
 
-	public static final Block cadAssembler = new BlockCADAssembler(Block.Properties.of(Material.METAL).strength(5, 10).sound(SoundType.METAL).noOcclusion());
-	public static final Block programmer = new BlockProgrammer(Block.Properties.of(Material.METAL).strength(5, 10).sound(SoundType.METAL).noOcclusion());
-	public static final Block conjured = new BlockConjured(Block.Properties.of(Material.GLASS).noDrops().lightLevel(state -> state.getValue(BlockConjured.LIGHT) ? 15 : 0).noOcclusion().isValidSpawn(NO_SPAWN).isRedstoneConductor(NO_SUFFOCATION).isSuffocating(NO_SUFFOCATION).isViewBlocking(NO_SUFFOCATION));
-	public static final Block psidustBlock = new Block(Block.Properties.of(Material.METAL).strength(5, 10).sound(SoundType.METAL));
-	public static final Block psimetalBlock = new Block(Block.Properties.of(Material.METAL).strength(5, 10).sound(SoundType.METAL));
-	public static final Block psigemBlock = new Block(Block.Properties.of(Material.METAL).strength(5, 10).sound(SoundType.METAL));
-	public static final Block psimetalPlateBlack = new Block(Block.Properties.of(Material.METAL).strength(5, 10).sound(SoundType.METAL));
-	public static final Block psimetalPlateBlackLight = new Block(Block.Properties.of(Material.METAL).strength(5, 10).sound(SoundType.METAL).lightLevel((blockState) -> 15));
-	public static final Block psimetalPlateWhite = new Block(Block.Properties.of(Material.METAL).strength(5, 10).sound(SoundType.METAL));
-	public static final Block psimetalPlateWhiteLight = new Block(Block.Properties.of(Material.METAL).strength(5, 10).sound(SoundType.METAL).lightLevel((blockstate) -> 15));
-	public static final Block psimetalEbony = new Block(Block.Properties.of(Material.METAL).strength(5, 10).sound(SoundType.METAL));
-	public static final Block psimetalIvory = new Block(Block.Properties.of(Material.METAL).strength(5, 10).sound(SoundType.METAL));
+	public static Block cadAssembler;
+	public static Block programmer;
+	public static Block conjured;
+	public static Block psidustBlock;
+	public static Block psimetalBlock;
+	public static Block psigemBlock;
+	public static Block psimetalPlateBlack;
+	public static Block psimetalPlateBlackLight;
+	public static Block psimetalPlateWhite;
+	public static Block psimetalPlateWhiteLight;
+	public static Block psimetalEbony;
+	public static Block psimetalIvory;
+
 	public static final MenuType<ContainerCADAssembler> containerCADAssembler = IForgeMenuType.create(ContainerCADAssembler::fromNetwork);
-
-	public static final BlockEntityType<TileCADAssembler> ASSEMBLER = createBlockEntityType(TileCADAssembler::new, cadAssembler);
-	public static final BlockEntityType<TileProgrammer> PROGRAMMER = createBlockEntityType(TileProgrammer::new, programmer);
-	public static final BlockEntityType<TileConjured> CONJURED = createBlockEntityType(TileConjured::new, conjured);
-
-
-	public static <T extends BlockEntity> BlockEntityType<T> createBlockEntityType(BiFunction<BlockPos, BlockState, T> func, Block... blocks) {
-		return BlockEntityType.Builder.of(func::apply, blocks).build(null);
-	} //TODO replace, maybe in multiloader?
 
 	@SubscribeEvent
 	public static void registerBlocks(RegistryEvent.Register<Block> evt) {
+		cadAssembler = new BlockCADAssembler(Block.Properties.of(Material.METAL).strength(5, 10).sound(SoundType.METAL).noOcclusion());
+		programmer = new BlockProgrammer(Block.Properties.of(Material.METAL).strength(5, 10).sound(SoundType.METAL).noOcclusion());
+		conjured = new BlockConjured(Block.Properties.of(Material.GLASS).noDrops().lightLevel(state -> state.getValue(BlockConjured.LIGHT) ? 15 : 0).noOcclusion().isValidSpawn(NO_SPAWN).isRedstoneConductor(NO_SUFFOCATION).isSuffocating(NO_SUFFOCATION).isViewBlocking(NO_SUFFOCATION));
+		psidustBlock = new Block(Block.Properties.of(Material.METAL).strength(5, 10).sound(SoundType.METAL));
+		psimetalBlock = new Block(Block.Properties.of(Material.METAL).strength(5, 10).sound(SoundType.METAL));
+		psigemBlock = new Block(Block.Properties.of(Material.METAL).strength(5, 10).sound(SoundType.METAL));
+		psimetalPlateBlack = new Block(Block.Properties.of(Material.METAL).strength(5, 10).sound(SoundType.METAL));
+		psimetalPlateBlackLight = new Block(Block.Properties.of(Material.METAL).strength(5, 10).sound(SoundType.METAL).lightLevel((blockState) -> 15));
+		psimetalPlateWhite = new Block(Block.Properties.of(Material.METAL).strength(5, 10).sound(SoundType.METAL));
+		psimetalPlateWhiteLight = new Block(Block.Properties.of(Material.METAL).strength(5, 10).sound(SoundType.METAL).lightLevel((blockstate) -> 15));
+		psimetalEbony = new Block(Block.Properties.of(Material.METAL).strength(5, 10).sound(SoundType.METAL));
+		psimetalIvory = new Block(Block.Properties.of(Material.METAL).strength(5, 10).sound(SoundType.METAL));
+
 		IForgeRegistry<Block> r = evt.getRegistry();
 		r.register(cadAssembler.setRegistryName(LibMisc.MOD_ID, LibBlockNames.CAD_ASSEMBLER));
 		r.register(programmer.setRegistryName(LibMisc.MOD_ID, LibBlockNames.PROGRAMMER));

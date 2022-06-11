@@ -8,9 +8,9 @@
  */
 package vazkii.psi.common.network.message;
 
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.network.NetworkEvent;
 
 import vazkii.psi.api.PsiAPI;

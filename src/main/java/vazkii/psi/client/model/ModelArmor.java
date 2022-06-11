@@ -10,11 +10,12 @@ package vazkii.psi.client.model;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.decoration.ArmorStand;
-import net.minecraft.world.entity.EquipmentSlot;
 
 public class ModelArmor extends HumanoidModel<LivingEntity> {
 	protected final EquipmentSlot slot;
@@ -67,24 +68,24 @@ public class ModelArmor extends HumanoidModel<LivingEntity> {
 	private void setPartVisibility(EquipmentSlot slot) {
 		setAllVisible(false);
 		switch (slot) {
-			case HEAD -> {
-				head.visible = true;
-				hat.visible = true;
-			}
-			case CHEST -> {
-				body.visible = true;
-				rightArm.visible = true;
-				leftArm.visible = true;
-			}
-			case LEGS -> {
-				body.visible = true;
-				rightLeg.visible = true;
-				leftLeg.visible = true;
-			}
-			case FEET -> {
-				rightLeg.visible = true;
-				leftLeg.visible = true;
-			}
+		case HEAD -> {
+			head.visible = true;
+			hat.visible = true;
+		}
+		case CHEST -> {
+			body.visible = true;
+			rightArm.visible = true;
+			leftArm.visible = true;
+		}
+		case LEGS -> {
+			body.visible = true;
+			rightLeg.visible = true;
+			leftLeg.visible = true;
+		}
+		case FEET -> {
+			rightLeg.visible = true;
+			leftLeg.visible = true;
+		}
 		}
 	}
 }

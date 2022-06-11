@@ -8,19 +8,17 @@
  */
 package vazkii.psi.client.gui.button;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 
-import net.minecraft.client.Minecraft;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.Button.OnPress;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
-import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.TranslatableComponent;
 
 import vazkii.psi.client.gui.GuiProgrammer;
-
-import net.minecraft.client.gui.components.Button.OnPress;
 
 public class GuiButtonIO extends Button {
 

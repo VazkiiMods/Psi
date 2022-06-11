@@ -14,17 +14,15 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.network.chat.Component;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.gui.GuiUtils;
 
 import vazkii.psi.api.internal.IInternalMethodHandler;
 import vazkii.psi.api.internal.IPlayerData;
-import vazkii.psi.api.internal.TooltipHelper;
 import vazkii.psi.api.spell.CompiledSpell;
 import vazkii.psi.api.spell.ISpellCache;
 import vazkii.psi.api.spell.ISpellCompiler;
@@ -85,7 +83,7 @@ public final class InternalMethodHandler implements IInternalMethodHandler {
 			Font fontRenderer = Minecraft.getInstance().font;
 			Screen screen = Minecraft.getInstance().screen;
 			assert screen != null;
-			screen.renderTooltip(ms,tooltipData, java.util.Optional.empty(),x,y,fontRenderer);//TODO Fix color/color2? Is it needed?
+			screen.renderTooltip(ms, tooltipData, java.util.Optional.empty(), x, y, fontRenderer);//TODO Fix color/color2? Is it needed?
 			//GuiUtils.drawHoveringText(ms, tooltipData, x, y, width, height, -1, color2, color, color, fontRenderer);
 		}
 	}

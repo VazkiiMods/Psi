@@ -8,13 +8,13 @@
  */
 package vazkii.psi.client.jei.tricks;
 
-import com.mojang.blaze3d.vertex.*;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.*;
+import com.mojang.math.Matrix4f;
 
 import mezz.jei.api.gui.drawable.IDrawableStatic;
 
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import com.mojang.math.Matrix4f;
 
 /**
  * Like JEI's DrawableSprite, but works for any {@link TextureAtlasSprite}.

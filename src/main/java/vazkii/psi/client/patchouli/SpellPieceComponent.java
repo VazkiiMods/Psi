@@ -9,9 +9,9 @@
 package vazkii.psi.client.patchouli;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.Tesselator;
 
 import net.minecraft.client.renderer.MultiBufferSource;
-import com.mojang.blaze3d.vertex.Tesselator;
 import net.minecraft.resources.ResourceLocation;
 
 import vazkii.patchouli.api.IComponentRenderContext;

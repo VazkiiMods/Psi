@@ -9,21 +9,18 @@
 package vazkii.psi.common.item.component;
 
 import net.minecraft.world.item.DyeColor;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import vazkii.psi.api.cad.ICADColorizer;
 
-import net.minecraft.world.item.Item.Properties;
-
 public class ItemCADColorizer extends ItemCADComponent implements ICADColorizer {
 
 	private final DyeColor color;
 	private final static String TAG_CONTRIBUTOR = "psi_contributor_name";
 
-	public ItemCADColorizer(Item.Properties properties, DyeColor color) {
+	public ItemCADColorizer(Properties properties, DyeColor color) {
 		super(properties);
 		this.color = color;
 	}

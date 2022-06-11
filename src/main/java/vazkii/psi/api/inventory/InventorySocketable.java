@@ -10,13 +10,13 @@ package vazkii.psi.api.inventory;
 
 import com.google.common.collect.Iterators;
 
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.Container;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.inventory.ContainerData;
-import net.minecraft.world.Nameable;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.Container;
+import net.minecraft.world.Nameable;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.item.ItemStack;
 
 import vazkii.psi.api.cad.ISocketable;
 

@@ -8,9 +8,9 @@
  */
 package vazkii.psi.common.spell.trick;
 
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Explosion;
+import net.minecraft.world.level.block.state.BlockState;
 
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.EnumSpellStat;

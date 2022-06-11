@@ -8,11 +8,11 @@
  */
 package vazkii.psi.common.spell.trick.block;
 
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.BlockEvent;
 
@@ -93,8 +93,7 @@ public class PieceTrickCollapseBlockSequence extends PieceTrick {
 					return null;
 				}
 
-				FallingBlockEntity falling = new FallingBlockEntity(world, blockPos.getX() + 0.5, blockPos.getY() + 0.5, blockPos.getZ() + 0.5, state);
-				world.addFreshEntity(falling);
+				FallingBlockEntity.fall(world, blockPos, state);
 			}
 		}
 

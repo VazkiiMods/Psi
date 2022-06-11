@@ -321,6 +321,6 @@ public final class SpellGrid {
 	// TODO: Put this somewhere nicer, or track down a library? Not sure where
 	@FunctionalInterface
 	public interface SpellPieceConsumer {
-		public void accept(SpellPiece piece) throws SpellCompilationException;
+		void accept(SpellPiece piece) throws SpellCompilationException;
 	}
 }

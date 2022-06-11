@@ -10,6 +10,7 @@ package vazkii.psi.common.core.handler;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraftforge.fml.ISystemReportExtender;
+
 import vazkii.psi.api.spell.CompiledSpell;
 import vazkii.psi.api.spell.SpellPiece;
 
