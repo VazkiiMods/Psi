@@ -8,10 +8,9 @@
  */
 package vazkii.psi.common.core;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.core.NonNullList;
-
 import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.lib.LibResources;
@@ -21,12 +20,11 @@ import javax.annotation.Nonnull;
 public class PsiCreativeTab extends CreativeModeTab {
 
 	public static final PsiCreativeTab INSTANCE = new PsiCreativeTab();
-	private NonNullList<ItemStack> list;
 
 	public PsiCreativeTab() {
 		super(LibMisc.MOD_ID);
 		hideTitle();
-		setBackgroundSuffix(LibResources.GUI_CREATIVE);
+		setBackgroundImage(new ResourceLocation(LibMisc.MOD_ID, LibResources.GUI_CREATIVE));
 	}
 
 	@Nonnull

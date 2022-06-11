@@ -8,8 +8,7 @@
   ],
   "client": [
     "client.AccessorRenderBuffers",
-    "client.AccessorRenderState",
-    "client.ArmorModelHook"
+    "client.AccessorRenderState"
   ],
   "injectors": {
     "defaultRequire": 1

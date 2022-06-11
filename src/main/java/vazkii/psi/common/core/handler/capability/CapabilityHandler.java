@@ -38,7 +38,7 @@ import static vazkii.psi.api.PsiAPI.SPELL_IMMUNE_CAPABILITY;
 
 @Mod.EventBusSubscriber(modid = LibMisc.MOD_ID)
 public class CapabilityHandler {
-	/*
+	/* //TODO Does this need reimplimentation?
 	public static void register() {
 		register(ICADData.class, CapabilityHandler::noDefault);
 		register(ISocketable.class, SocketWheel::new);

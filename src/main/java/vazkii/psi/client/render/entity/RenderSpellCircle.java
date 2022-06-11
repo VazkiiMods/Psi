@@ -27,6 +27,7 @@ import com.mojang.math.Vector3f;
 import org.lwjgl.opengl.GL11;
 
 import vazkii.psi.api.internal.PsiRenderHelper;
+import vazkii.psi.client.model.ArmorModels;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.entity.EntitySpellCircle;
 import vazkii.psi.common.lib.LibMisc;
@@ -51,6 +52,8 @@ public class RenderSpellCircle extends EntityRenderer<EntitySpellCircle> {
 
 	public RenderSpellCircle(EntityRendererProvider.Context ctx) {
 		super(ctx);
+		// Ugly hack to get context
+		ArmorModels.init(ctx);
 	}
 
 	@Override
