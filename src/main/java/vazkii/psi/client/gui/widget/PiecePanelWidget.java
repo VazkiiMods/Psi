@@ -8,19 +8,19 @@
  */
 package vazkii.psi.client.gui.widget;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 
-import net.minecraft.client.gui.components.events.GuiEventListener;
-import net.minecraft.client.gui.components.Widget;
-import net.minecraft.client.gui.narration.NarrationElementOutput;
-import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.components.Widget;
+import net.minecraft.client.gui.components.events.GuiEventListener;
+import net.minecraft.client.gui.narration.NarrationElementOutput;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.language.I18n;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 
 import org.lwjgl.glfw.GLFW;
@@ -40,6 +40,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -226,7 +227,7 @@ public class PiecePanelWidget extends AbstractWidget implements Widget, GuiEvent
 
 		HashMap<Class<? extends SpellPiece>, Integer> pieceRankings = new HashMap<>();
 
-		String text = searchField.getValue().toLowerCase().trim();
+		String text = searchField.getValue().toLowerCase(Locale.ROOT).trim();
 		boolean noSearchTerms = text.isEmpty();
 
 		parent.getButtons().forEach(button -> {
@@ -317,8 +318,8 @@ public class PiecePanelWidget extends AbstractWidget implements Widget, GuiEvent
 
 	private int ranking(String token, SpellPiece p) {
 		int rank = 0;
-		String name = I18n.get(p.getUnlocalizedName()).toLowerCase();
-		String desc = I18n.get(p.getUnlocalizedDesc()).toLowerCase();
+		String name = I18n.get(p.getUnlocalizedName()).toLowerCase(Locale.ROOT);
+		String desc = I18n.get(p.getUnlocalizedDesc()).toLowerCase(Locale.ROOT);
 
 		for (String nameToken : token.split("\\s+")) {
 			if (nameToken.isEmpty()) {
@@ -333,7 +334,7 @@ public class PiecePanelWidget extends AbstractWidget implements Widget, GuiEvent
 
 				int maxRank = 0;
 				for (SpellParam<?> param : p.params.values()) {
-					String type = param.getRequiredTypeString().getString().toLowerCase();
+					String type = param.getRequiredTypeString().getString().toLowerCase(Locale.ROOT);
 					maxRank = Math.max(maxRank, rankTextToken(type, clippedToken));
 				}
 
@@ -347,7 +348,7 @@ public class PiecePanelWidget extends AbstractWidget implements Widget, GuiEvent
 					continue;
 				}
 
-				String type = p.getEvaluationTypeString().getString().toLowerCase();
+				String type = p.getEvaluationTypeString().getString().toLowerCase(Locale.ROOT);
 
 				if (rankTextToken(type, clippedToken) <= 0) {
 					return 0;

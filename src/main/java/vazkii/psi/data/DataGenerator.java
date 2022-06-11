@@ -10,8 +10,8 @@ package vazkii.psi.data;
 
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-
 import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
+
 import vazkii.psi.common.lib.LibMisc;
 
 @Mod.EventBusSubscriber(modid = LibMisc.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)

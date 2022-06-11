@@ -8,11 +8,11 @@
  */
 package vazkii.psi.api.material;
 
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.LazyLoadedValue;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.util.LazyLoadedValue;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.core.Registry;
 
 import vazkii.psi.api.PsiAPI;
 

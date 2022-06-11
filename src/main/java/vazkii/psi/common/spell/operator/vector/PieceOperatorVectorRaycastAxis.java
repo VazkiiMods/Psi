@@ -9,8 +9,8 @@
 package vazkii.psi.common.spell.operator.vector;
 
 import net.minecraft.core.Direction;
-import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 
 import vazkii.psi.api.internal.Vector3;

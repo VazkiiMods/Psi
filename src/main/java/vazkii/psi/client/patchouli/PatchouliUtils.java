@@ -8,9 +8,9 @@
  */
 package vazkii.psi.client.patchouli;
 
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.network.chat.Component;
 
 import vazkii.patchouli.api.IComponentRenderContext;
 import vazkii.patchouli.api.IVariable;

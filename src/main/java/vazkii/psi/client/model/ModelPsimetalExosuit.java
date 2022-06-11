@@ -13,7 +13,7 @@ import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 
-public class ModelPsimetalExosuit  {
+public class ModelPsimetalExosuit {
 
 	public static MeshDefinition createInsideMesh() {
 		var deformation = new CubeDeformation(0.01F);
@@ -62,15 +62,15 @@ public class ModelPsimetalExosuit  {
 				.mirror()
 				.addBox(0.5F, 6.0F, -2.5F, 3, 4, 5, deformation), PartPose.ZERO);
 		var armLpauldron = armL.addOrReplaceChild("armLpauldron", CubeListBuilder.create().texOffs(0, 32)
-						.mirror()
-						.addBox(1.0F, -2.5F, -2.5F, 3, 7, 5, deformation),
+				.mirror()
+				.addBox(1.0F, -2.5F, -2.5F, 3, 7, 5, deformation),
 				PartPose.offsetAndRotation(0.0f, 0.0f, 0.0f, 0.0F, 0.0F, -0.17453292519943295F));
 		var rightArm = root.addOrReplaceChild("right_arm", CubeListBuilder.create().texOffs(0, 0)
 				.mirror(), PartPose.ZERO);
 		var armR = rightArm.addOrReplaceChild("armR", CubeListBuilder.create().texOffs(0, 44)
 				.addBox(-3.5F, 6.0F, -2.51F, 3, 4, 5, deformation), PartPose.ZERO);
 		var armRpauldron = armR.addOrReplaceChild("armRpauldron", CubeListBuilder.create().texOffs(0, 32)
-						.addBox(-4.0F, -2.5F, -2.5F, 3, 7, 5, deformation),
+				.addBox(-4.0F, -2.5F, -2.5F, 3, 7, 5, deformation),
 				PartPose.offsetAndRotation(0.0f, 0.0f, 0.0f, 0.0F, 0.0F, 0.17453292519943295F));
 
 		var belt = root.addOrReplaceChild("belt", CubeListBuilder.create().texOffs(0, 53)

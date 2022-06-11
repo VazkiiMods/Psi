@@ -8,10 +8,10 @@
  */
 package vazkii.psi.common.spell.selector.entity;
 
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.EyeOfEnder;
-import net.minecraft.world.effect.MobEffects;
 
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;

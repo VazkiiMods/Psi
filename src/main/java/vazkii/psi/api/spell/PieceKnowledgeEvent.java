@@ -8,8 +8,8 @@
  */
 package vazkii.psi.api.spell;
 
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.eventbus.api.Event;
 
 import vazkii.psi.api.internal.IPlayerData;

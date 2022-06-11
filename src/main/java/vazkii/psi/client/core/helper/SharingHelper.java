@@ -10,11 +10,11 @@ package vazkii.psi.client.core.helper;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-
-import net.minecraft.client.Minecraft;
 import com.mojang.blaze3d.platform.NativeImage;
-import net.minecraft.client.Screenshot;
+
 import net.minecraft.Util;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.Screenshot;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;

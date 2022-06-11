@@ -8,8 +8,8 @@
  */
 package vazkii.psi.data;
 
-import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraftforge.common.Tags;
 
 import vazkii.psi.common.block.base.ModBlocks;

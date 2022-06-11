@@ -8,9 +8,9 @@
  */
 package vazkii.psi.common.item.component;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.resources.ResourceLocation;
 
 import vazkii.psi.api.cad.EnumCADComponent;
 import vazkii.psi.api.cad.ICADAssembly;

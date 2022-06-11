@@ -8,12 +8,12 @@
  */
 package vazkii.psi.common.crafting.recipe;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.CustomRecipe;
+import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.SimpleRecipeSerializer;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 
 import vazkii.psi.api.cad.EnumCADComponent;

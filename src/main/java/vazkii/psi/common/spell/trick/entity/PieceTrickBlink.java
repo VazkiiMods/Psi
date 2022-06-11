@@ -8,8 +8,8 @@
  */
 package vazkii.psi.common.spell.trick.entity;
 
-import net.minecraft.world.entity.Entity;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 
 import vazkii.psi.api.spell.EnumSpellStat;

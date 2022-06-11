@@ -13,16 +13,16 @@ import com.mojang.serialization.Dynamic;
 import com.mojang.serialization.JsonOps;
 
 import net.minecraft.data.recipes.FinishedRecipe;
-import net.minecraft.tags.SetTag;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
+import net.minecraft.nbt.Tag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
-import net.minecraft.nbt.NbtOps;
+import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.ItemLike;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
@@ -63,12 +63,7 @@ public class TrickRecipeBuilder {
 		return this;
 	}
 
-	public TrickRecipeBuilder input(SetTag<Item> input) {
-		this.input = Ingredient.of(input);
-		return this;
-	}
-
-	public TrickRecipeBuilder input(net.minecraft.tags.Tag.Named<Item> input) {
+	public TrickRecipeBuilder input(TagKey<Item> input) {
 		this.input = Ingredient.of(input);
 		return this;
 	}
