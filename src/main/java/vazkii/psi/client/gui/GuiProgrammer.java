@@ -533,7 +533,7 @@ public class GuiProgrammer extends Screen {
 
 	public void onSelectedChanged() {
 		renderables.removeAll(configWidget.configButtons);
-		//children.removeAll(configWidget.configButtons);
+		children().removeAll(configWidget.configButtons);
 		configWidget.configButtons.clear();
 
 		spellNameField.setEditable(!spectator);

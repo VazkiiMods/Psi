@@ -22,9 +22,11 @@ public class PsiRenderHelper {
 		try {
 			stack.pushPose();
 			stack.mulPoseMatrix(ms.last().pose());
+			RenderSystem.applyModelViewMatrix();
 			function.run();
 		} finally {
 			stack.popPose();
+			RenderSystem.applyModelViewMatrix();
 		}
 	}
 

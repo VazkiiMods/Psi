@@ -9,8 +9,10 @@
 package vazkii.psi.common.spell.operator.block;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 
+import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
@@ -19,6 +21,7 @@ import vazkii.psi.api.spell.SpellParam;
 import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.api.spell.param.ParamVector;
 import vazkii.psi.api.spell.piece.PieceOperator;
+import vazkii.psi.common.spell.trick.block.PieceTrickBreakBlock;
 
 public class PieceOperatorBlockMiningLevel extends PieceOperator {
 
@@ -37,7 +40,16 @@ public class PieceOperatorBlockMiningLevel extends PieceOperator {
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		BlockPos pos = SpellHelpers.getBlockPos(this, context, position, false, false);
 		BlockState state = context.caster.level.getBlockState(pos);
-		return 1.0D; //TODO reimplement mining level
+		ItemStack tool = context.tool;
+		if (tool.isEmpty()) {
+			tool = PsiAPI.getPlayerCAD(context.caster);
+		}
+		//TODO Perhaps a more granular mining level solution?
+		if (PieceTrickBreakBlock.canHarvestBlock(state, context.caster, context.focalPoint.level, pos, tool)) {
+			return 1.0D;
+		} else {
+			return 0.0D;
+		}
 	}
 
 	@Override
