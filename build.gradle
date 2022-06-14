@@ -209,6 +209,7 @@ jar {
     exclude "**/*.vim"
     exclude "**/mappings-en_us.json"
     exclude "**/en_us_base.json"
+    finalizedBy 'reobfJar'
 }
 
 /*
