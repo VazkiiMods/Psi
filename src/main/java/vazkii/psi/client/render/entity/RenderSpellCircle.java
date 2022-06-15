@@ -29,6 +29,7 @@ import vazkii.psi.common.Psi;
 import vazkii.psi.common.entity.EntitySpellCircle;
 import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.lib.LibResources;
+import vazkii.psi.mixin.client.AccessorRenderType;
 
 public class RenderSpellCircle extends EntityRenderer<EntitySpellCircle> {
 
@@ -39,9 +40,10 @@ public class RenderSpellCircle extends EntityRenderer<EntitySpellCircle> {
 			RenderType.CompositeState glState = RenderType.CompositeState.builder().setTextureState(new RenderStateShard.TextureStateShard(texture, false, false))
 					.setCullState(new RenderStateShard.CullStateShard(false))
 					//.setAlphaState(new RenderStateShard.AlphaStateShard(0.004F))
+					.setShaderState(RenderStateShard.POSITION_COLOR_TEX_SHADER)
 					.setLightmapState(new RenderStateShard.LightmapStateShard(true))
 					.createCompositeState(true);
-			LAYERS[i] = RenderType.create(LibMisc.MOD_ID + ":spell_circle_" + i, DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP, VertexFormat.Mode.QUADS, 64, false, false, glState);
+			LAYERS[i] = AccessorRenderType.create(LibMisc.MOD_ID + ":spell_circle_" + i, DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP, VertexFormat.Mode.QUADS, 64, false, false, glState);
 		}
 	}
 

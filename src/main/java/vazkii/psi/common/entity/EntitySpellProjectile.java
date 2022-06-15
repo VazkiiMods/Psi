@@ -73,10 +73,10 @@ public class EntitySpellProjectile extends ThrowableProjectile {
 		setOwner(thrower);
 		setRot(thrower.getYRot() + 180, -thrower.getXRot());
 		float f = 1.5F;
-		double mx = Mth.sin(yRotO / 180.0F * (float) Math.PI) * Mth.cos(xRotO / 180.0F * (float) Math.PI) * f / 2D;
-		double mz = -(Mth.cos(yRotO / 180.0F * (float) Math.PI) * Mth.cos(xRotO / 180.0F * (float) Math.PI) * f) / 2D;
-		double my = Mth.sin(xRotO / 180.0F * (float) Math.PI) * f / 2D;
-		setDeltaMovement(mx, my, mz);
+		double mx = Mth.sin(getYRot() / 180.0F * (float) Math.PI) * Mth.cos(getXRot() / 180.0F * (float) Math.PI) * f / 2D;
+		double mz = -(Mth.cos(getYRot() / 180.0F * (float) Math.PI) * Mth.cos(getXRot() / 180.0F * (float) Math.PI) * f) / 2D;
+		double my = Mth.sin(getXRot() / 180.0F * (float) Math.PI) * f / 2D;
+		this.push(mx, my, mz);
 	}
 
 	public EntitySpellProjectile(Level world, LivingEntity thrower) {

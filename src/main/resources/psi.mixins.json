@@ -8,7 +8,8 @@
   ],
   "client": [
     "client.AccessorRenderBuffers",
-    "client.AccessorRenderState"
+    "client.AccessorRenderState",
+    "client.AccessorRenderType"
   ],
   "injectors": {
     "defaultRequire": 1

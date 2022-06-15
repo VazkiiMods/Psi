@@ -9,13 +9,17 @@
 package vazkii.psi.common.spell.trick.block;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.protocol.game.ClientboundLevelEventPacket;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.MinecraftForge;
@@ -33,6 +37,8 @@ import vazkii.psi.api.spell.SpellParam;
 import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.api.spell.param.ParamVector;
 import vazkii.psi.api.spell.piece.PieceTrick;
+
+import java.util.function.Predicate;
 
 public class PieceTrickBreakBlock extends PieceTrick {
 
@@ -70,47 +76,34 @@ public class PieceTrickBreakBlock extends PieceTrick {
 		}
 
 		BlockPos pos = positionVal.toBlockPos();
-		removeBlockWithDrops(context, context.caster, context.focalPoint.getCommandSenderWorld(), tool, pos, true);
+		removeBlockWithDrops(context, context.caster, context.focalPoint.getCommandSenderWorld(), tool, pos, (v)->true);
 
 		return null;
 	}
 
-	public static void removeBlockWithDrops(SpellContext context, Player player, Level world, ItemStack tool, BlockPos pos, boolean particles) {
-		if (!world.hasChunkAt(pos) || (context.positionBroken != null && pos.equals(new BlockPos(context.positionBroken.getLocation().x, context.positionBroken.getLocation().y, context.positionBroken.getLocation().z))) || !world.mayInteract(player, pos)) {
+	public static void removeBlockWithDrops(SpellContext context, Player player, Level world, ItemStack stack, BlockPos pos,
+											Predicate<BlockState> filter) {
+		if (stack.isEmpty()) {
+			stack = PsiAPI.getPlayerCAD(player);
+		}
+
+		if (!world.hasChunkAt(pos)) {
 			return;
 		}
 
-		if (tool.isEmpty()) {
-			tool = PsiAPI.getPlayerCAD(player);
-		}
-
-		BlockState state = world.getBlockState(pos);
-		Block block = state.getBlock();
-		if (!state.isAir() && !(block instanceof IFluidBlock) && state.getDestroySpeed(world, pos) != -1) {
-			if (!canHarvestBlock(state, player, world, pos, tool)) {
-				return;
-			}
-
-			BreakEvent event = createBreakEvent(state, player, world, pos, tool);
-			MinecraftForge.EVENT_BUS.post(event);
-			if (!event.isCanceled()) {
-				if (!player.isCreative()) {
-					BlockEntity tile = world.getBlockEntity(pos);
-					if (block.canHarvestBlock(state, world, pos, player)) {
-						block.destroy(world, pos, state);
-						block.playerDestroy(world, player, pos, state, tile, tool);
-						if (world instanceof ServerLevel) {
-							block.popExperience((ServerLevel) world, pos, event.getExpToDrop());
-						}
-					}
-				} else {
-					world.removeBlock(pos, false);
-				}
-			}
-
-			if (particles) {
-				world.levelEvent(2001, pos, Block.getId(state));
-			}
+		BlockState blockstate = world.getBlockState(pos);
+		boolean unminable = blockstate.getDestroyProgress(player, world, pos) == 0;
+		unminable = false;
+		if (!world.isClientSide && !unminable && filter.test(blockstate) && !blockstate.isAir()) {
+			ItemStack save = player.getMainHandItem();
+			boolean wasChecking = doingHarvestCheck.get();
+			doingHarvestCheck.set(true);
+			player.setItemInHand(InteractionHand.MAIN_HAND, stack);
+			((ServerPlayer) player).connection.send(
+					new ClientboundLevelEventPacket(LevelEvent.PARTICLES_DESTROY_BLOCK, pos, Block.getId(blockstate), false));
+			((ServerPlayer) player).gameMode.destroyBlock(pos);
+			doingHarvestCheck.set(wasChecking);
+			player.setItemInHand(InteractionHand.MAIN_HAND, save);
 		}
 	}
 
