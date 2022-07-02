@@ -14,12 +14,15 @@ import vazkii.psi.api.spell.EnumSpellStat;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellCompilationException;
 import vazkii.psi.api.spell.SpellMetadata;
+import vazkii.psi.api.spell.StatLabel;
 import vazkii.psi.common.block.BlockConjured;
 
 public class PieceTrickConjureLight extends PieceTrickConjureBlock {
 
 	public PieceTrickConjureLight(Spell spell) {
 		super(spell);
+		setStatLabel(EnumSpellStat.POTENCY, new StatLabel(25));
+		setStatLabel(EnumSpellStat.COST, new StatLabel(100));
 	}
 
 	@Override

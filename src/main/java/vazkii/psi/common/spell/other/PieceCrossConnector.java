@@ -32,6 +32,7 @@ import vazkii.psi.api.spell.SpellMetadata;
 import vazkii.psi.api.spell.SpellParam;
 import vazkii.psi.api.spell.SpellParam.ArrowType;
 import vazkii.psi.api.spell.SpellPiece;
+import vazkii.psi.api.spell.StatLabel;
 import vazkii.psi.api.spell.param.ParamAny;
 import vazkii.psi.common.lib.LibResources;
 
@@ -44,6 +45,7 @@ public class PieceCrossConnector extends SpellPiece implements IGenericRedirecto
 
 	public PieceCrossConnector(Spell spell) {
 		super(spell);
+		setStatLabel(EnumSpellStat.COMPLEXITY, new StatLabel(1));
 	}
 
 	private static final int LINE_ONE = 0xA0A0A0;

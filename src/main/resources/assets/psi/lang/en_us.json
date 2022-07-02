@@ -2,6 +2,7 @@
   "itemGroup.psi": "Psi",
   "psi.desc": "This is a joke that breaks the 4th wall, enjoy.",
   "psimisc.shift_for_info": "\u00a77Hold \u00a7bSHIFT\u00a77 for more info",
+  "psimisc.ctrl_for_stats": "\u00a77Hold \u00a7bCTRL\u00a77 for piece stats",
   "psimisc.spellmaynotfunctionasintended": "Beep boop! Seems like you're importing a spell created on an older Psi version. If that spell contains motion or sequence tricks, the same functionality( and cost) as when it was created is not assured.",
   "psimisc.component_type": "\u00a7aComponent Type\u00a77: %s",
   "psimisc.none": "(none)",
@@ -1114,5 +1115,6 @@
   "psi.book.entry.secondaryOperators": "Secondary Operators",
   "psi.book.page.secondaryOperators.0": "As its name implies, this group is composed of mathematical $(thing)Operators$(0) that aren't quite as important as the \"primary\" ones, like addition or subtraction. This group's just a mixed bag of all sorts of math or logic relates pieces that can be used to help with $(thing)Spell$(0) creation. We'll separate the pieces in two sets to make them easier to explain.",
   "psi.book.page.secondaryOperators.1": "The first set is related to raising numbers to power, including pieces like $(piece)Operator: Square$(0), $(piece)Operator: Power$(0), $(piece)Operator: Square Root$(0) and even $(piece)Operator: Logarithm$(0). Most of these operate exactly how you'd expect them to.$(p)Note that $(piece)Operator: Logarithm$(0) takes an optional Base argument; if no base is passed in, it'll default to base 10.$(p)$(piece)Constant: e$(0) can also be used to get a natural logarithm.",
-  "psi.book.page.secondaryOperators.2": "The second set of $(thing)Operators$(0) are related to logic. They're pieces that do rounding (to an integer).$(p)$(piece)Operator: Ceiling$(0), $(piece)Operator: Floor$(0) and $(piece)Operator: Round$(0) round up, down, and to the closest integer, respectively.$(p)This group also includes $(piece)Operator: Min$(0) and $(piece)Operator: Max$(0). These get the smallest and largest, respectively, of their parameters."
+  "psi.book.page.secondaryOperators.2": "The second set of $(thing)Operators$(0) are related to logic. They're pieces that do rounding (to an integer).$(p)$(piece)Operator: Ceiling$(0), $(piece)Operator: Floor$(0) and $(piece)Operator: Round$(0) round up, down, and to the closest integer, respectively.$(p)This group also includes $(piece)Operator: Min$(0) and $(piece)Operator: Max$(0). These get the smallest and largest, respectively, of their parameters.",
+  "psi.statlabel.is_last": "isLast"
 }

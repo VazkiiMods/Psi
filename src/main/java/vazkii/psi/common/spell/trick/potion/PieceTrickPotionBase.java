@@ -20,6 +20,7 @@ import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellMetadata;
 import vazkii.psi.api.spell.SpellParam;
 import vazkii.psi.api.spell.SpellRuntimeException;
+import vazkii.psi.api.spell.StatLabel;
 import vazkii.psi.api.spell.param.ParamEntity;
 import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.piece.PieceTrick;
@@ -32,6 +33,8 @@ public abstract class PieceTrickPotionBase extends PieceTrick {
 
 	public PieceTrickPotionBase(Spell spell) {
 		super(spell);
+		setStatLabel(EnumSpellStat.POTENCY, new StatLabel(SpellParam.GENERIC_NAME_TIME, true).mul(SpellParam.GENERIC_NAME_POWER, true).square().mul(5));
+		setStatLabel(EnumSpellStat.COST, new StatLabel(SpellParam.GENERIC_NAME_TIME, true).mul(SpellParam.GENERIC_NAME_POWER, true).square().mul(5).square());
 	}
 
 	@Override

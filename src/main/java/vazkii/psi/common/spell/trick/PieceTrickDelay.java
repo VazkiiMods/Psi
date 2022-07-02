@@ -15,6 +15,7 @@ import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellMetadata;
 import vazkii.psi.api.spell.SpellParam;
 import vazkii.psi.api.spell.SpellRuntimeException;
+import vazkii.psi.api.spell.StatLabel;
 import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.piece.PieceTrick;
 
@@ -24,6 +25,8 @@ public class PieceTrickDelay extends PieceTrick {
 
 	public PieceTrickDelay(Spell spell) {
 		super(spell);
+		setStatLabel(EnumSpellStat.COMPLEXITY, new StatLabel(2));
+		setStatLabel(EnumSpellStat.POTENCY, new StatLabel(SpellParam.GENERIC_NAME_TIME, true));
 	}
 
 	@Override

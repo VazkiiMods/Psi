@@ -17,6 +17,7 @@ import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellMetadata;
 import vazkii.psi.api.spell.SpellParam;
 import vazkii.psi.api.spell.SpellPiece;
+import vazkii.psi.api.spell.StatLabel;
 import vazkii.psi.api.spell.param.ParamAny;
 
 public abstract class PieceErrorHandler extends SpellPiece implements IErrorCatcher {
@@ -25,6 +26,7 @@ public abstract class PieceErrorHandler extends SpellPiece implements IErrorCatc
 
 	public PieceErrorHandler(Spell spell) {
 		super(spell);
+		setStatLabel(EnumSpellStat.COMPLEXITY, new StatLabel(1));
 	}
 
 	@Override

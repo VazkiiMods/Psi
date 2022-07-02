@@ -16,6 +16,7 @@ import vazkii.psi.api.spell.SpellHelpers;
 import vazkii.psi.api.spell.SpellMetadata;
 import vazkii.psi.api.spell.SpellParam;
 import vazkii.psi.api.spell.SpellRuntimeException;
+import vazkii.psi.api.spell.StatLabel;
 import vazkii.psi.api.spell.detonator.IDetonationHandler;
 import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.piece.PieceTrick;
@@ -28,6 +29,9 @@ public class PieceTrickDetonate extends PieceTrick {
 
 	public PieceTrickDetonate(Spell spell) {
 		super(spell);
+		setStatLabel(EnumSpellStat.COMPLEXITY, new StatLabel(1).add("(").append(SpellParam.GENERIC_NAME_RADIUS, true).append(" == 0)"));
+		setStatLabel(EnumSpellStat.POTENCY, new StatLabel(SpellParam.GENERIC_NAME_RADIUS, true).min(5));
+		setStatLabel(EnumSpellStat.COST, new StatLabel(SpellParam.GENERIC_NAME_RADIUS, true).mul(5).ceil());
 	}
 
 	@Override

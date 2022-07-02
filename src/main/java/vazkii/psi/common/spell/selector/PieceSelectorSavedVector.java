@@ -20,6 +20,7 @@ import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellMetadata;
 import vazkii.psi.api.spell.SpellParam;
 import vazkii.psi.api.spell.SpellRuntimeException;
+import vazkii.psi.api.spell.StatLabel;
 import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.piece.PieceSelector;
 import vazkii.psi.common.spell.trick.PieceTrickSaveVector;
@@ -30,6 +31,7 @@ public class PieceSelectorSavedVector extends PieceSelector {
 
 	public PieceSelectorSavedVector(Spell spell) {
 		super(spell);
+		setStatLabel(EnumSpellStat.POTENCY, new StatLabel(SpellParam.GENERIC_NAME_NUMBER, true).mul(6));
 	}
 
 	@Override

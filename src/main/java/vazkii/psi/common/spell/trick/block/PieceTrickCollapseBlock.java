@@ -27,6 +27,8 @@ public class PieceTrickCollapseBlock extends PieceTrick {
 
 	public PieceTrickCollapseBlock(Spell spell) {
 		super(spell);
+		setStatLabel(EnumSpellStat.POTENCY, new StatLabel(80));
+		setStatLabel(EnumSpellStat.COST, new StatLabel(125));
 	}
 
 	@Override
