@@ -515,12 +515,12 @@ public abstract class SpellPiece {
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	public void addToTooltipAfterCtrl(List<ITextComponent> tooltip) {
-		tooltip.add(new StringTextComponent(""));
+	public void addToTooltipAfterCtrl(List<Component> tooltip) {
+		tooltip.add(new TextComponent(""));
 
 		statLabels.forEach((type, stat) -> {
-			tooltip.add(new TranslationTextComponent(type.getName()).appendString(":"));
-			tooltip.add(new StringTextComponent(" " + stat.toString()).mergeStyle(TextFormatting.YELLOW));
+			tooltip.add(new TranslatableComponent(type.getName()).append(":"));
+			tooltip.add(new TextComponent(" " + stat.toString()).withStyle(ChatFormatting.YELLOW));
 		});
 	}
 

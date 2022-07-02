@@ -28,11 +28,11 @@ public final class TooltipHelper {
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	public static void tooltipIfCtrl(List<ITextComponent> tooltip, Runnable r) {
+	public static void tooltipIfCtrl(List<Component> tooltip, Runnable r) {
 		if (Screen.hasControlDown()) {
 			r.run();
 		} else {
-			tooltip.add(new TranslationTextComponent("psimisc.ctrl_for_stats"));
+			tooltip.add(new TranslatableComponent("psimisc.ctrl_for_stats"));
 		}
 	}
 
