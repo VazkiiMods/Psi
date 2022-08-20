@@ -204,7 +204,7 @@ public final class SpellContext {
 			if (Inventory.isHotbarSlot(cadSlot)) {
 				slot = (cadSlot + targetSlot) % 9;
 			} else {
-				slot = (caster.getInventory().selected + targetSlot) % 9;
+				slot = (caster.getInventory().selected) % 9;
 			}
 		} else {
 			slot = (targetSlot - 1) % 9;
