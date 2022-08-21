@@ -96,7 +96,6 @@ public class PieceTrickBreakBlock extends PieceTrick {
 
 		BlockState blockstate = world.getBlockState(pos);
 		boolean unminable = blockstate.getDestroyProgress(player, world, pos) == 0;
-		unminable = false;
 		if (!world.isClientSide && !unminable && filter.test(blockstate) && !blockstate.isAir()) {
 			ItemStack save = player.getMainHandItem();
 			boolean wasChecking = doingHarvestCheck.get();
