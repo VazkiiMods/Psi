@@ -51,11 +51,19 @@ public abstract class PieceTrick extends SpellPiece {
 		return null;
 	}
 	
+	private boolean isBelowZeroOrAtMax(int n) {
+		return n < 0 || n == Integer.MAX_VALUE;
+	}
+	
 	public double multiplySafe(double v1, double... arr) throws SpellCompilationException {
 		double a = v1;
+		
+		if (isBelowZeroOrAtMax((int) a))
+			throw new SpellCompilationException(SpellCompilationException.STAT_OVERFLOW);
+			
 		for (double b : arr) {
 			a = a * b;
-			if ((int) a < 0 || (int) a == Integer.MAX_VALUE)
+			if (isBelowZeroOrAtMax((int) a))
 				throw new SpellCompilationException(SpellCompilationException.STAT_OVERFLOW);
 		}
 		

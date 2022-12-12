@@ -81,7 +81,7 @@ public abstract class PieceTrickPotionBase extends PieceTrick {
 	public abstract Potion getPotion();
 
 	public int getCost(int power, int time) throws SpellCompilationException {
-		return (int) multiplySafe(getPotency(power, time) * 5);
+		return (int) multiplySafe(getPotency(power, time), 5);
 	}
 
 	public int getPotency(int power, int time) throws SpellCompilationException {
