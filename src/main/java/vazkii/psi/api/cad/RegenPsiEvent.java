@@ -235,7 +235,8 @@ public class RegenPsiEvent extends Event {
 	 * Sets the maximum amount the CAD battery is allowed to regenerate Psi this tick.
 	 */
 	public void setMaxCadRegen(int maxCadRegen) {
-		this.maxCadRegen = maxCadRegen;
+		//Increased the max cadRegen
+		this.maxCadRegen = maxCadRegen*2;
 		applyRegen();
 	}
 

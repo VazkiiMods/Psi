@@ -45,25 +45,27 @@ public class ItemCADAssembly extends ItemCADComponent implements ICADAssembly, I
 
 	@Override
 	public void registerStats() {
+		//Increased the potency for CAD's 
+
 		// Iron
 		addStat(EnumCADStat.EFFICIENCY, 0, 70);
-		addStat(EnumCADStat.POTENCY, 0, 100);
+		addStat(EnumCADStat.POTENCY, 0, 1000);
 
 		// Gold
 		addStat(EnumCADStat.EFFICIENCY, 1, 65);
-		addStat(EnumCADStat.POTENCY, 1, 150);
+		addStat(EnumCADStat.POTENCY, 1, 1500);
 
 		// Psimetal
 		addStat(EnumCADStat.EFFICIENCY, 2, 80);
-		addStat(EnumCADStat.POTENCY, 2, 250);
+		addStat(EnumCADStat.POTENCY, 2, 2500);
 
 		// Ebony Psimetal
-		addStat(EnumCADStat.EFFICIENCY, 3, 90);
-		addStat(EnumCADStat.POTENCY, 3, 350);
+		addStat(EnumCADStat.EFFICIENCY, 3, 85);
+		addStat(EnumCADStat.POTENCY, 3, 4200);
 
 		// Ivory Psimetal
 		addStat(EnumCADStat.EFFICIENCY, 4, 95);
-		addStat(EnumCADStat.POTENCY, 4, 320);
+		addStat(EnumCADStat.POTENCY, 4, 3200);
 
 		// Creative
 		addStat(EnumCADStat.EFFICIENCY, 5, -1);
