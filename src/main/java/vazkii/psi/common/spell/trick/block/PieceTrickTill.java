@@ -48,7 +48,7 @@ public class PieceTrickTill extends PieceTrick {
 		}
 		BlockHitResult hit = new BlockHitResult(Vec3.ZERO, Direction.UP, pos, false);
 		ItemStack save = player.getItemInHand(InteractionHand.MAIN_HAND);
-		player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.BONE_MEAL));
+		player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.IRON_HOE));
 		UseOnContext fakeContext = new UseOnContext(player, InteractionHand.MAIN_HAND, hit);
 		player.setItemInHand(InteractionHand.MAIN_HAND, save);
 		return Items.IRON_HOE.useOn(fakeContext);
