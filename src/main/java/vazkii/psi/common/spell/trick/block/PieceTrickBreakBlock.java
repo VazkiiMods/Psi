@@ -10,7 +10,6 @@ package vazkii.psi.common.spell.trick.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.protocol.game.ClientboundLevelEventPacket;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
@@ -22,11 +21,8 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LevelEvent;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.BlockEvent.BreakEvent;
-import net.minecraftforge.fluids.IFluidBlock;
 
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.internal.Vector3;
@@ -84,13 +80,13 @@ public class PieceTrickBreakBlock extends PieceTrick {
 		}
 
 		BlockPos pos = positionVal.toBlockPos();
-		removeBlockWithDrops(context, context.caster, context.focalPoint.getCommandSenderWorld(), tool, pos, (v)->tool.isCorrectToolForDrops(v) || canHarvest(ConfigHandler.COMMON.cadHarvestLevel.get(), v));
+		removeBlockWithDrops(context, context.caster, context.focalPoint.getCommandSenderWorld(), tool, pos, (v) -> tool.isCorrectToolForDrops(v) || canHarvest(ConfigHandler.COMMON.cadHarvestLevel.get(), v));
 
 		return null;
 	}
 
 	public static void removeBlockWithDrops(SpellContext context, Player player, Level world, ItemStack stack, BlockPos pos,
-											Predicate<BlockState> filter) {
+			Predicate<BlockState> filter) {
 		if (stack.isEmpty()) {
 			stack = PsiAPI.getPlayerCAD(player);
 		}
@@ -194,6 +190,7 @@ public class PieceTrickBreakBlock extends PieceTrick {
 
 		return ItemStack.EMPTY;
 	}
+
 	//TODO Fix mining level on blocks that can be broken by hand.
 	public static int getHarvestLevel(BlockState state) {
 		if (Items.AIR.isCorrectToolForDrops(state)) {
@@ -202,10 +199,10 @@ public class PieceTrickBreakBlock extends PieceTrick {
 		for (int i = 0; i < HARVEST_TOOLS_BY_LEVEL.size(); i++) {
 			for (var tool : HARVEST_TOOLS_BY_LEVEL.get(i)) {
 				if (tool.isCorrectToolForDrops(state)) {
-					return i+1;
+					return i + 1;
 				}
 			}
 		}
-		return HARVEST_TOOLS_BY_LEVEL.size()+1;
+		return HARVEST_TOOLS_BY_LEVEL.size() + 1;
 	}
 }
