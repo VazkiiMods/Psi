@@ -14,7 +14,9 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
@@ -38,8 +40,11 @@ import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.api.spell.StatLabel;
 import vazkii.psi.api.spell.param.ParamVector;
 import vazkii.psi.api.spell.piece.PieceTrick;
+import vazkii.psi.common.core.handler.ConfigHandler;
 
+import java.util.List;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 public class PieceTrickBreakBlock extends PieceTrick {
 
@@ -79,7 +84,7 @@ public class PieceTrickBreakBlock extends PieceTrick {
 		}
 
 		BlockPos pos = positionVal.toBlockPos();
-		removeBlockWithDrops(context, context.caster, context.focalPoint.getCommandSenderWorld(), tool, pos, (v)->true);
+		removeBlockWithDrops(context, context.caster, context.focalPoint.getCommandSenderWorld(), tool, pos, (v)->tool.isCorrectToolForDrops(v) || canHarvest(ConfigHandler.COMMON.cadHarvestLevel.get(), v));
 
 		return null;
 	}
@@ -95,8 +100,8 @@ public class PieceTrickBreakBlock extends PieceTrick {
 		}
 
 		BlockState blockstate = world.getBlockState(pos);
-		boolean unminable = blockstate.getDestroyProgress(player, world, pos) == 0;
-		unminable = false;
+		boolean unminable = blockstate.getDestroySpeed(world, pos) == -1;
+
 		if (!world.isClientSide && !unminable && filter.test(blockstate) && !blockstate.isAir()) {
 			ItemStack save = player.getMainHandItem();
 			boolean wasChecking = doingHarvestCheck.get();
@@ -153,5 +158,54 @@ public class PieceTrickBreakBlock extends PieceTrick {
 		// Reset the harvest check to its previous value
 		doingHarvestCheck.set(wasChecking);
 		return canHarvest;
+	}
+
+	private static List<ItemStack> stacks(Item... items) {
+		return Stream.of(items).map(ItemStack::new).toList();
+	}
+
+	private static final List<List<ItemStack>> HARVEST_TOOLS_BY_LEVEL = List.of(
+			stacks(Items.WOODEN_PICKAXE, Items.WOODEN_AXE, Items.WOODEN_HOE, Items.WOODEN_SHOVEL),
+			stacks(Items.STONE_PICKAXE, Items.STONE_AXE, Items.STONE_HOE, Items.STONE_SHOVEL),
+			stacks(Items.IRON_PICKAXE, Items.IRON_AXE, Items.IRON_HOE, Items.IRON_SHOVEL),
+			stacks(Items.DIAMOND_PICKAXE, Items.DIAMOND_AXE, Items.DIAMOND_HOE, Items.DIAMOND_SHOVEL),
+			stacks(Items.NETHERITE_PICKAXE, Items.NETHERITE_AXE, Items.NETHERITE_HOE, Items.NETHERITE_SHOVEL)
+	);
+
+	public static boolean canHarvest(int harvestLevel, BlockState state) {
+		return !getTool(harvestLevel, state).isEmpty();
+	}
+
+	public static ItemStack getHarvestToolStack(int harvestLevel, BlockState state) {
+		return getTool(harvestLevel, state).copy();
+	}
+
+	private static ItemStack getTool(int harvestLevel, BlockState state) {
+		if (!state.requiresCorrectToolForDrops()) {
+			return HARVEST_TOOLS_BY_LEVEL.get(0).get(0);
+		}
+
+		int idx = Math.min(harvestLevel, HARVEST_TOOLS_BY_LEVEL.size() - 1);
+		for (var tool : HARVEST_TOOLS_BY_LEVEL.get(idx)) {
+			if (tool.isCorrectToolForDrops(state)) {
+				return tool;
+			}
+		}
+
+		return ItemStack.EMPTY;
+	}
+	//TODO Fix mining level on blocks that can be broken by hand.
+	public static int getHarvestLevel(BlockState state) {
+		if (Items.AIR.isCorrectToolForDrops(state)) {
+			return 0;
+		}
+		for (int i = 0; i < HARVEST_TOOLS_BY_LEVEL.size(); i++) {
+			for (var tool : HARVEST_TOOLS_BY_LEVEL.get(i)) {
+				if (tool.isCorrectToolForDrops(state)) {
+					return i+1;
+				}
+			}
+		}
+		return HARVEST_TOOLS_BY_LEVEL.size()+1;
 	}
 }

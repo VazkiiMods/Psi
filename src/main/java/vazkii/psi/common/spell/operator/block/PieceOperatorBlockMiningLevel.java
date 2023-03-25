@@ -44,12 +44,8 @@ public class PieceOperatorBlockMiningLevel extends PieceOperator {
 		if (tool.isEmpty()) {
 			tool = PsiAPI.getPlayerCAD(context.caster);
 		}
-		//TODO Perhaps a more granular mining level solution?
-		if (PieceTrickBreakBlock.canHarvestBlock(state, context.caster, context.focalPoint.level, pos, tool)) {
-			return 1.0D;
-		} else {
-			return 0.0D;
-		}
+		//TODO Fix low mining level items returning 1
+		return PieceTrickBreakBlock.getHarvestLevel(state);
 	}
 
 	@Override

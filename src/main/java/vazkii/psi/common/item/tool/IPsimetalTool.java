@@ -28,6 +28,7 @@ import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.item.ItemCAD;
 import vazkii.psi.common.item.base.ModItems;
+import vazkii.psi.common.spell.trick.block.PieceTrickBreakBlock;
 
 import javax.annotation.Nullable;
 
@@ -38,7 +39,7 @@ public interface IPsimetalTool {
 	String TAG_SELECTED_SLOT = "selectedSlot";
 
 	default void castOnBlockBreak(ItemStack itemstack, Player player) {
-		if (!isEnabled(itemstack)) {
+		if (!isEnabled(itemstack) || PieceTrickBreakBlock.doingHarvestCheck.get()) { //TODO Harvest Check dirty hack, why does this get triggered during TrickBreakBlock?
 			return;
 		}
 

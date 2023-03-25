@@ -552,15 +552,11 @@ public class ItemCAD extends Item implements ICAD {
 		if (!PieceTrickBreakBlock.doingHarvestCheck.get()) {
 			return super.isCorrectToolForDrops(stack, state);
 		}
-		Block block = state.getBlock();
-		//ToolType tool = block.getHarvestTool(state);
 		int level = ConfigHandler.COMMON.cadHarvestLevel.get(); //TODO revisit for better checking of harvestability
-		//int level = tool == null ? -1 : getHarvestLevel(stack, tool, null, state);
 		if (level >= 0) {
-			//return level >= block.getHarvestLevel(state);
+			return PieceTrickBreakBlock.canHarvest(level, state);
 		}
-		Material material = state.getMaterial();
-		return material == Material.STONE || material == Material.METAL || material == Material.HEAVY_METAL;
+		return false;
 	}
 
 	@Override
