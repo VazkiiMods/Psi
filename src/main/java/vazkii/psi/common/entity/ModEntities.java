@@ -8,12 +8,13 @@
  */
 package vazkii.psi.common.entity;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.ForgeRegistries;
 
+import net.minecraftforge.registries.RegisterEvent;
 import vazkii.psi.common.lib.LibEntityNames;
 import vazkii.psi.common.lib.LibMisc;
 
@@ -23,38 +24,44 @@ import static net.minecraft.world.entity.MobCategory.MISC;
 public final class ModEntities {
 
 	@SubscribeEvent
-	public static void init(RegistryEvent.Register<EntityType<?>> evt) {
-		IForgeRegistry<EntityType<?>> r = evt.getRegistry();
-		r.register(EntityType.Builder.of((EntityType.EntityFactory<EntitySpellProjectile>) EntitySpellProjectile::new, MISC)
-				.setTrackingRange(256)
-				.setUpdateInterval(10)
-				.setShouldReceiveVelocityUpdates(true)
-				.sized(0, 0)
-				.build("").setRegistryName(LibMisc.MOD_ID, LibEntityNames.SPELL_PROJECTILE));
-		r.register(EntityType.Builder.of(EntitySpellCircle::new, MISC)
-				.setTrackingRange(256)
-				.setUpdateInterval(10)
-				.setShouldReceiveVelocityUpdates(false)
-				.sized(3.0f, 0.3f)
-				.fireImmune()
-				.build("").setRegistryName(LibMisc.MOD_ID, LibEntityNames.SPELL_CIRCLE));
-		r.register(EntityType.Builder.of((EntityType.EntityFactory<EntitySpellGrenade>) EntitySpellGrenade::new, MISC)
-				.setTrackingRange(256)
-				.setUpdateInterval(10)
-				.setShouldReceiveVelocityUpdates(true)
-				.sized(0, 0)
-				.build("").setRegistryName(LibMisc.MOD_ID, LibEntityNames.SPELL_GRENADE));
-		r.register(EntityType.Builder.of((EntityType.EntityFactory<EntitySpellCharge>) EntitySpellCharge::new, MISC)
-				.setTrackingRange(256)
-				.setUpdateInterval(10)
-				.setShouldReceiveVelocityUpdates(true)
-				.sized(0, 0)
-				.build("").setRegistryName(LibMisc.MOD_ID, LibEntityNames.SPELL_CHARGE));
-		r.register(EntityType.Builder.of((EntityType.EntityFactory<EntitySpellMine>) EntitySpellMine::new, MISC)
-				.setTrackingRange(256)
-				.setUpdateInterval(10)
-				.setShouldReceiveVelocityUpdates(true)
-				.sized(0, 0)
-				.build("").setRegistryName(LibMisc.MOD_ID, LibEntityNames.SPELL_MINE));
+	public static void register(RegisterEvent evt) {
+		evt.register(ForgeRegistries.Keys.ENTITY_TYPES, helper -> {
+			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibEntityNames.SPELL_PROJECTILE),
+					EntityType.Builder.of((EntityType.EntityFactory<EntitySpellProjectile>) EntitySpellProjectile::new, MISC)
+					.setTrackingRange(256)
+					.setUpdateInterval(10)
+					.setShouldReceiveVelocityUpdates(true)
+					.sized(0, 0)
+					.build(""));
+			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibEntityNames.SPELL_PROJECTILE),
+					EntityType.Builder.of(EntitySpellCircle::new, MISC)
+					.setTrackingRange(256)
+					.setUpdateInterval(10)
+					.setShouldReceiveVelocityUpdates(false)
+					.sized(3.0f, 0.3f)
+					.fireImmune()
+					.build(""));
+			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibEntityNames.SPELL_GRENADE),
+					EntityType.Builder.of((EntityType.EntityFactory<EntitySpellGrenade>) EntitySpellGrenade::new, MISC)
+					.setTrackingRange(256)
+					.setUpdateInterval(10)
+					.setShouldReceiveVelocityUpdates(true)
+					.sized(0, 0)
+					.build(""));
+			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibEntityNames.SPELL_CHARGE),
+					EntityType.Builder.of((EntityType.EntityFactory<EntitySpellCharge>) EntitySpellCharge::new, MISC)
+					.setTrackingRange(256)
+					.setUpdateInterval(10)
+					.setShouldReceiveVelocityUpdates(true)
+					.sized(0, 0)
+					.build(""));
+			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibEntityNames.SPELL_MINE),
+					EntityType.Builder.of((EntityType.EntityFactory<EntitySpellMine>) EntitySpellMine::new, MISC)
+					.setTrackingRange(256)
+					.setUpdateInterval(10)
+					.setShouldReceiveVelocityUpdates(true)
+					.sized(0, 0)
+					.build(""));
+		});
 	}
 }
