@@ -68,7 +68,7 @@ public class PiecePanelWidget extends AbstractWidget implements Widget, GuiEvent
 			fill(ms, x, y, x + width, y + height, 0x88000000);
 
 			if (visibleButtons.size() > 0) {
-				Button button = visibleButtons.get(Math.max(0, Math.min(panelCursor, visibleButtons.size() - 1)));
+				Button button = visibleButtons.get(Math.max(0, Math.min(panelCursor + (page * PIECES_PER_PAGE), visibleButtons.size() - 1)));
 				int panelPieceX = button.x;
 				int panelPieceY = button.y;
 				fill(ms, panelPieceX - 1, panelPieceY - 1, panelPieceX + 17, panelPieceY + 17, 0x559999FF);
