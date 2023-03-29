@@ -9,7 +9,6 @@
 package vazkii.psi.api.cad;
 
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
@@ -46,13 +45,13 @@ public interface ISocketable {
 
 	static Component getSocketedItemName(ItemStack stack, String fallbackKey) {
 		if (stack.isEmpty() || !isSocketable(stack)) {
-			return new TranslatableComponent(fallbackKey);
+			return Component.translatable(fallbackKey);
 		}
 
 		ISocketable socketable = socketable(stack);
 		ItemStack item = socketable.getSelectedBullet();
 		if (item.isEmpty()) {
-			return new TranslatableComponent(fallbackKey);
+			return Component.translatable(fallbackKey);
 		}
 
 		return item.getHoverName();

@@ -14,7 +14,6 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.ContainerHelper;
@@ -317,7 +316,7 @@ public class TileCADAssembler extends BlockEntity implements ITileCADAssembler, 
 	@Nonnull
 	@Override
 	public Component getDisplayName() {
-		return new TranslatableComponent(ModBlocks.cadAssembler.getDescriptionId());
+		return Component.translatable(ModBlocks.cadAssembler.getDescriptionId());
 	}
 
 	@Nullable

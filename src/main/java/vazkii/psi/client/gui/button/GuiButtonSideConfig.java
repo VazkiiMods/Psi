@@ -12,9 +12,8 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.Button.OnPress;
-import net.minecraft.network.chat.TextComponent;
 
+import net.minecraft.network.chat.Component;
 import vazkii.psi.api.internal.PsiRenderHelper;
 import vazkii.psi.api.spell.SpellParam;
 import vazkii.psi.api.spell.SpellPiece;
@@ -30,7 +29,7 @@ public class GuiButtonSideConfig extends Button {
 	final SpellParam.Side side;
 
 	public GuiButtonSideConfig(GuiProgrammer gui, int gridX, int gridY, int paramIndex, String paramName, SpellParam.Side side, int x, int y) {
-		super(x, y, 8, 8, TextComponent.EMPTY, Button::onPress);
+		super(x, y, 8, 8, Component.empty(), Button::onPress);
 		this.gui = gui;
 		this.gridX = gridX;
 		this.gridY = gridY;
@@ -40,7 +39,7 @@ public class GuiButtonSideConfig extends Button {
 	}
 
 	public GuiButtonSideConfig(GuiProgrammer gui, int gridX, int gridY, int paramIndex, String paramName, SpellParam.Side side, int x, int y, OnPress pressable) {
-		super(x, y, 8, 8, TextComponent.EMPTY, pressable);
+		super(x, y, 8, 8, Component.empty(), pressable);
 		this.gui = gui;
 		this.gridX = gridX;
 		this.gridY = gridY;

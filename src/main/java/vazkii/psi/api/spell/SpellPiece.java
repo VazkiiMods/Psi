@@ -27,8 +27,6 @@ import net.minecraft.client.resources.model.Material;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -124,9 +122,9 @@ public abstract class SpellPiece {
 	public Component getEvaluationTypeString() {
 		Class<?> evalType = getEvaluationType();
 		String evalStr = evalType == null ? "null" : CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, evalType.getSimpleName());
-		TranslatableComponent s = new TranslatableComponent("psi.datatype." + evalStr);
+		MutableComponent s = Component.translatable("psi.datatype." + evalStr);
 		if (getPieceType() == EnumPieceType.CONSTANT) {
-			s.append(new TextComponent(" ")).append(new TranslatableComponent("psimisc.constant"));
+			s.append(" ").append(Component.translatable("psimisc.constant"));
 		}
 
 		return s;
@@ -260,7 +258,7 @@ public abstract class SpellPiece {
 	}
 
 	public String getSortingName() {
-		return new TranslatableComponent(getUnlocalizedName()).getString();
+		return Component.translatable(getUnlocalizedName()).getString();
 	}
 
 	public String getUnlocalizedDesc() {
@@ -485,8 +483,8 @@ public abstract class SpellPiece {
 
 	@OnlyIn(Dist.CLIENT)
 	public void getTooltip(List<Component> tooltip) {
-		tooltip.add(new TranslatableComponent(getUnlocalizedName()));
-		tooltip.add(new TranslatableComponent(getUnlocalizedDesc()).withStyle(ChatFormatting.GRAY));
+		tooltip.add(Component.translatable(getUnlocalizedName()));
+		tooltip.add(Component.translatable(getUnlocalizedDesc()).withStyle(ChatFormatting.GRAY));
 		TooltipHelper.tooltipIfShift(tooltip, () -> addToTooltipAfterShift(tooltip));
 		if (!statLabels.isEmpty()) {
 			TooltipHelper.tooltipIfCtrl(tooltip, () -> addToTooltipAfterCtrl(tooltip));
@@ -496,31 +494,31 @@ public abstract class SpellPiece {
 		if (!addon.equals("psi")) {
 
 			if (ModList.get().getModContainerById(addon).isPresent()) {
-				tooltip.add(new TranslatableComponent("psimisc.provider_mod", ModList.get().getModContainerById(addon).get().getNamespace()));
+				tooltip.add(Component.translatable("psimisc.provider_mod", ModList.get().getModContainerById(addon).get().getNamespace()));
 			}
 		}
 	}
 
 	@OnlyIn(Dist.CLIENT)
 	public void addToTooltipAfterShift(List<Component> tooltip) {
-		tooltip.add(new TextComponent(""));
+		tooltip.add(Component.literal(""));
 		MutableComponent eval = getEvaluationTypeString().plainCopy().withStyle(ChatFormatting.GOLD);
-		tooltip.add(new TextComponent("Output ").append(eval));
+		tooltip.add(Component.literal("Output ").append(eval));
 
 		for (SpellParam<?> param : paramSides.keySet()) {
-			Component pName = new TranslatableComponent(param.name).withStyle(ChatFormatting.YELLOW);
-			Component pEval = new TextComponent(" [").append(param.getRequiredTypeString()).append("]").withStyle(ChatFormatting.YELLOW);
-			tooltip.add(new TextComponent(param.canDisable ? "[Input] " : " Input  ").append(pName).append(pEval));
+			Component pName = Component.translatable(param.name).withStyle(ChatFormatting.YELLOW);
+			Component pEval = Component.literal(" [").append(param.getRequiredTypeString()).append("]").withStyle(ChatFormatting.YELLOW);
+			tooltip.add(Component.literal(param.canDisable ? "[Input] " : " Input  ").append(pName).append(pEval));
 		}
 	}
 
 	@OnlyIn(Dist.CLIENT)
 	public void addToTooltipAfterCtrl(List<Component> tooltip) {
-		tooltip.add(new TextComponent(""));
+		tooltip.add(Component.literal(""));
 
 		statLabels.forEach((type, stat) -> {
-			tooltip.add(new TranslatableComponent(type.getName()).append(":"));
-			tooltip.add(new TextComponent(" " + stat.toString()).withStyle(ChatFormatting.YELLOW));
+			tooltip.add(Component.translatable(type.getName()).append(":"));
+			tooltip.add(Component.literal(" " + stat.toString()).withStyle(ChatFormatting.YELLOW));
 		});
 	}
 

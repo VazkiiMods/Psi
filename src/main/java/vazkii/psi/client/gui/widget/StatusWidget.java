@@ -15,8 +15,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.item.ItemStack;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -51,14 +49,14 @@ public class StatusWidget extends AbstractWidget {
 			if (parent.compileResult.right().isPresent()) {
 				// no such thing as ifPresentOrElse in J8, sadly
 				SpellCompilationException ex = parent.compileResult.right().get();
-				parent.tooltip.add(new TranslatableComponent("psimisc.errored").withStyle(ChatFormatting.RED));
-				parent.tooltip.add(new TranslatableComponent(ex.getMessage()).withStyle(ChatFormatting.GRAY));
+				parent.tooltip.add(Component.translatable("psimisc.errored").withStyle(ChatFormatting.RED));
+				parent.tooltip.add(Component.translatable(ex.getMessage()).withStyle(ChatFormatting.GRAY));
 				Pair<Integer, Integer> errorPos = ex.location;
 				if (errorPos != null && errorPos.getRight() != -1 && errorPos.getLeft() != -1) {
-					parent.tooltip.add(new TextComponent("[" + GuiProgrammer.convertIntToLetter((errorPos.getLeft() + 1)) + ", " + (errorPos.getRight() + 1) + "]").withStyle(ChatFormatting.GRAY));
+					parent.tooltip.add(Component.literal("[" + GuiProgrammer.convertIntToLetter((errorPos.getLeft() + 1)) + ", " + (errorPos.getRight() + 1) + "]").withStyle(ChatFormatting.GRAY));
 				}
 			} else {
-				parent.tooltip.add(new TranslatableComponent("psimisc.compiled").withStyle(ChatFormatting.GREEN));
+				parent.tooltip.add(Component.translatable("psimisc.compiled").withStyle(ChatFormatting.GREEN));
 			}
 		}
 

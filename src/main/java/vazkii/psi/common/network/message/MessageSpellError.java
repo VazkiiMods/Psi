@@ -14,7 +14,6 @@ import net.minecraft.client.gui.components.ChatComponent;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.network.NetworkEvent;
 
 import vazkii.psi.client.gui.GuiProgrammer;
@@ -47,7 +46,7 @@ public class MessageSpellError {
 	public boolean receive(Supplier<NetworkEvent.Context> context) {
 		context.get().enqueueWork(() -> {
 			ChatComponent chatGui = Minecraft.getInstance().gui.getChat();
-			Component chatMessage = new TranslatableComponent(message, GuiProgrammer.convertIntToLetter(x), y).setStyle(Style.EMPTY.withColor(ChatFormatting.RED));
+			Component chatMessage = Component.translatable(message, GuiProgrammer.convertIntToLetter(x), y).setStyle(Style.EMPTY.withColor(ChatFormatting.RED));
 			chatGui.addMessage(chatMessage);
 		});
 		return true;

@@ -13,7 +13,6 @@ import com.google.common.collect.Multimap;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -156,8 +155,8 @@ public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiE
 	public void appendHoverText(ItemStack stack, @Nullable Level playerIn, List<Component> tooltip, TooltipFlag advanced) {
 		TooltipHelper.tooltipIfShift(tooltip, () -> {
 			Component componentName = ISocketable.getSocketedItemName(stack, "psimisc.none");
-			tooltip.add(new TranslatableComponent("psimisc.spell_selected", componentName));
-			tooltip.add(new TranslatableComponent(getTrueEvent(stack)));
+			tooltip.add(Component.translatable("psimisc.spell_selected", componentName));
+			tooltip.add(Component.translatable(getTrueEvent(stack)));
 		});
 	}
 

@@ -10,8 +10,6 @@ package vazkii.psi.common.item.component;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -46,15 +44,15 @@ public abstract class ItemCADComponent extends Item implements ICADComponent {
 		TooltipHelper.tooltipIfShift(tooltip, () -> {
 			EnumCADComponent componentType = getComponentType(stack);
 
-			TranslatableComponent componentName = new TranslatableComponent(componentType.getName());
-			tooltip.add(new TranslatableComponent("psimisc.component_type", componentName));
+			Component componentName = Component.translatable(componentType.getName());
+			tooltip.add(Component.translatable("psimisc.component_type", componentName));
 			for (EnumCADStat stat : EnumCADStat.class.getEnumConstants()) {
 				if (stat.getSourceType() == componentType) {
 					int statVal = getCADStatValue(stack, stat);
 					String statValStr = statVal == -1 ? "\u221E" : "" + statVal;
 
-					Component name = new TranslatableComponent(stat.getName()).withStyle(ChatFormatting.AQUA);
-					tooltip.add(new TextComponent(" ").append(name).append(": " + statValStr));
+					Component name = Component.translatable(stat.getName()).withStyle(ChatFormatting.AQUA);
+					tooltip.add(Component.literal(" ").append(name).append(": " + statValStr));
 				}
 			}
 		});

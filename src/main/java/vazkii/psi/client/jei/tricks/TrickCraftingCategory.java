@@ -21,7 +21,6 @@ import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
@@ -75,7 +74,7 @@ public class TrickCraftingCategory implements IRecipeCategory<ITrickRecipe> {
 	@Nonnull
 	@Override
 	public Component getTitle() {
-		return new TextComponent(I18n.get("jei." + LibMisc.MOD_ID + ".category.trick"));
+		return Component.literal(I18n.get("jei." + LibMisc.MOD_ID + ".category.trick"));
 	}
 
 	@Nonnull

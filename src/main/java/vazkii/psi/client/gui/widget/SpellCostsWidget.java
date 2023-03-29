@@ -15,7 +15,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.item.ItemStack;
 
 import vazkii.psi.api.PsiAPI;
@@ -74,8 +73,8 @@ public class SpellCostsWidget extends AbstractWidget {
 				parent.getMinecraft().font.draw(ms, s, statX + 16, statY + 2, cadStat != null && cadVal < val && cadVal != -1 ? 0xFF6666 : 0xFFFFFF);
 
 				if (mouseX > statX && mouseY > statY && mouseX < statX + 12 && mouseY < statY + 12 && !parent.panelWidget.panelEnabled) {
-					parent.tooltip.add(new TranslatableComponent(stat.getName()).withStyle(Psi.magical ? ChatFormatting.LIGHT_PURPLE : ChatFormatting.AQUA));
-					parent.tooltip.add(new TranslatableComponent(stat.getDesc()).withStyle(ChatFormatting.GRAY));
+					parent.tooltip.add(Component.translatable(stat.getName()).withStyle(Psi.magical ? ChatFormatting.LIGHT_PURPLE : ChatFormatting.AQUA));
+					parent.tooltip.add(Component.translatable(stat.getDesc()).withStyle(ChatFormatting.GRAY));
 				}
 				i++;
 

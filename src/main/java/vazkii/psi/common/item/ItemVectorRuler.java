@@ -15,7 +15,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -71,7 +70,7 @@ public class ItemVectorRuler extends Item implements IHUDItem {
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag advanced) {
-		tooltip.add(new TextComponent(getVector(stack).toString()));
+		tooltip.add(Component.literal(getVector(stack).toString()));
 	}
 
 	public Vector3 getVector(ItemStack stack) {
