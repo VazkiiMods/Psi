@@ -8,7 +8,6 @@
  */
 package vazkii.psi.common.item;
 
-import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.Minecraft;
@@ -102,11 +101,11 @@ public class ItemVectorRuler extends Item implements IHUDItem {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void drawHUD(PoseStack ms, Window res, float partTicks, ItemStack stack) {
+	public void drawHUD(PoseStack ms, float partTicks, int screenWidth, int screenHeight, ItemStack stack) {
 		String s = getVector(stack).toString();
 
 		Font font = Minecraft.getInstance().font;
 		int w = font.width(s);
-		font.draw(ms, s, res.getGuiScaledWidth() / 2f - w / 2f, res.getGuiScaledHeight() / 2f + 10, 0xFFFFFFFF);
+		font.draw(ms, s, screenWidth / 2f - w / 2f, screenHeight / 2f + 10, 0xFFFFFFFF);
 	}
 }
