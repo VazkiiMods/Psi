@@ -20,7 +20,6 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.items.wrapper.RecipeWrapper;
-import net.minecraftforge.registries.ForgeRegistryEntry;
 
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.recipe.ITrickRecipe;
@@ -107,7 +106,7 @@ public class TrickRecipe implements ITrickRecipe {
 		return ModCraftingRecipes.TRICK_RECIPE_TYPE;
 	}
 
-	static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<TrickRecipe> {
+	static class Serializer implements RecipeSerializer<TrickRecipe> {
 		@Override
 		public TrickRecipe fromJson(ResourceLocation id, JsonObject json) {
 			Ingredient ingredient = Ingredient.fromJson(GsonHelper.getAsJsonObject(json, "input"));

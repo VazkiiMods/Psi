@@ -11,6 +11,7 @@ package vazkii.psi.common.spell.trick.block;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.protocol.game.ClientboundLevelEventPacket;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -22,7 +23,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.event.world.BlockEvent.BreakEvent;
+import net.minecraftforge.event.level.BlockEvent.BreakEvent;
 
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.internal.Vector3;
@@ -40,6 +41,7 @@ import vazkii.psi.common.core.handler.ConfigHandler;
 
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class PieceTrickBreakBlock extends PieceTrick {
@@ -121,9 +123,9 @@ public class PieceTrickBreakBlock extends PieceTrick {
 		{
 			event.setExpToDrop(0);
 		} else {
-			int bonusLevel = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.BLOCK_FORTUNE, tool);
-			int silklevel = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SILK_TOUCH, tool);
-			event.setExpToDrop(state.getExpDrop(world, pos, bonusLevel, silklevel));
+			int fortuneLevel = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.BLOCK_FORTUNE, tool);
+			int silkLevel = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SILK_TOUCH, tool);
+			event.setExpToDrop(state.getExpDrop(world, RandomSource.create(), pos, fortuneLevel, silkLevel));
 		}
 		return event;
 	}
@@ -157,7 +159,7 @@ public class PieceTrickBreakBlock extends PieceTrick {
 	}
 
 	private static List<ItemStack> stacks(Item... items) {
-		return Stream.of(items).map(ItemStack::new).toList();
+		return Stream.of(items).map(ItemStack::new).collect(Collectors.toList());
 	}
 
 	private static final List<List<ItemStack>> HARVEST_TOOLS_BY_LEVEL = List.of(

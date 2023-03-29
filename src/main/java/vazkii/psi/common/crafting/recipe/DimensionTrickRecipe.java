@@ -20,7 +20,6 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.items.wrapper.RecipeWrapper;
-import net.minecraftforge.registries.ForgeRegistryEntry;
 
 import vazkii.psi.api.spell.piece.PieceCraftingTrick;
 
@@ -44,7 +43,7 @@ public class DimensionTrickRecipe extends TrickRecipe {
 		return super.matches(inv, world) && world.dimension() == dimensionKey;
 	}
 
-	public static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<DimensionTrickRecipe> {
+	public static class Serializer implements RecipeSerializer<DimensionTrickRecipe> {
 		@Override
 		public DimensionTrickRecipe fromJson(ResourceLocation id, JsonObject json) {
 			TrickRecipe recipe = TrickRecipe.SERIALIZER.fromJson(id, json);

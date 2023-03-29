@@ -16,6 +16,7 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.resources.model.Material;
+import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.resources.ResourceLocation;
@@ -26,22 +27,20 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.client.event.ModelBakeEvent;
-import net.minecraftforge.client.event.ModelRegistryEvent;
-import net.minecraftforge.client.model.ForgeModelBakery;
+import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
+import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.psi.api.ClientPsiAPI;
 import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.cad.ICADColorizer;
 import vazkii.psi.api.spell.SpellPiece;
 import vazkii.psi.client.core.handler.ClientTickHandler;
 import vazkii.psi.client.core.handler.ColorHandler;
-import vazkii.psi.client.core.handler.KeybindHandler;
 import vazkii.psi.client.core.handler.ShaderHandler;
 import vazkii.psi.client.fx.SparkleParticleData;
 import vazkii.psi.client.fx.WispParticleData;
@@ -77,9 +76,6 @@ public class ClientProxy implements IProxy {
 	}
 
 	private void clientSetup(FMLClientSetupEvent event) {
-
-		KeybindHandler.init();
-
 		ItemBlockRenderTypes.setRenderLayer(ModBlocks.conjured, RenderType.translucent());
 	}
 
@@ -110,21 +106,19 @@ public class ClientProxy implements IProxy {
 		});
 	}
 
-	private void modelBake(ModelBakeEvent event) {
-		ModelResourceLocation key = new ModelResourceLocation(ModItems.cad.getRegistryName(), "inventory");
-		event.getModelRegistry().put(key, new ModelCAD());
-
+	private void modelBake(ModelEvent.BakingCompleted event) {
+		event.getModels().put(new ModelResourceLocation(ForgeRegistries.ITEMS.getKey(ModItems.cad), "inventory"), new ModelCAD());
 	}
 
-	private void addCADModels(ModelRegistryEvent event) {
-		ForgeModelBakery.addSpecialModel(new ResourceLocation(LibMisc.MOD_ID, "item/" + LibItemNames.CAD_IRON));
-		ForgeModelBakery.addSpecialModel(new ResourceLocation(LibMisc.MOD_ID, "item/" + LibItemNames.CAD_GOLD));
-		ForgeModelBakery.addSpecialModel(new ResourceLocation(LibMisc.MOD_ID, "item/" + LibItemNames.CAD_PSIMETAL));
-		ForgeModelBakery.addSpecialModel(new ResourceLocation(LibMisc.MOD_ID, "item/" + LibItemNames.CAD_EBONY_PSIMETAL));
-		ForgeModelBakery.addSpecialModel(new ResourceLocation(LibMisc.MOD_ID, "item/" + LibItemNames.CAD_IVORY_PSIMETAL));
-		ForgeModelBakery.addSpecialModel(new ResourceLocation(LibMisc.MOD_ID, "item/" + LibItemNames.CAD_CREATIVE)); //TODO models
-		ForgeModelBakery.UNREFERENCED_TEXTURES.addAll(ClientPsiAPI.getAllSpellPieceMaterial());
-		ForgeModelBakery.UNREFERENCED_TEXTURES.add(new Material(ClientPsiAPI.PSI_PIECE_TEXTURE_ATLAS, PieceConnector.LINES_TEXTURE));
+	private void addCADModels(ModelEvent.RegisterAdditional event) {
+		event.register(new ResourceLocation(LibMisc.MOD_ID, "item/" + LibItemNames.CAD_IRON));
+		event.register(new ResourceLocation(LibMisc.MOD_ID, "item/" + LibItemNames.CAD_GOLD));
+		event.register(new ResourceLocation(LibMisc.MOD_ID, "item/" + LibItemNames.CAD_PSIMETAL));
+		event.register(new ResourceLocation(LibMisc.MOD_ID, "item/" + LibItemNames.CAD_EBONY_PSIMETAL));
+		event.register(new ResourceLocation(LibMisc.MOD_ID, "item/" + LibItemNames.CAD_IVORY_PSIMETAL));
+		event.register(new ResourceLocation(LibMisc.MOD_ID, "item/" + LibItemNames.CAD_CREATIVE)); //TODO models
+		ModelBakery.UNREFERENCED_TEXTURES.addAll(ClientPsiAPI.getAllSpellPieceMaterial());
+		ModelBakery.UNREFERENCED_TEXTURES.add(new Material(ClientPsiAPI.PSI_PIECE_TEXTURE_ATLAS, PieceConnector.LINES_TEXTURE));
 	}
 
 	@Override
@@ -161,7 +155,7 @@ public class ClientProxy implements IProxy {
 
 	@Override
 	public int getClientRenderDistance() {
-		return Minecraft.getInstance().options.renderDistance;
+		return Minecraft.getInstance().options.renderDistance().get();
 	}
 
 	@Override

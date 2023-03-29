@@ -26,9 +26,10 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.IItemRenderProperties;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
+import org.jetbrains.annotations.NotNull;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ICADColorizer;
 import vazkii.psi.api.cad.ISocketable;
@@ -109,14 +110,14 @@ public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiE
 	}
 
 	public void cast(ItemStack stack, PsiArmorEvent event) {
-		PlayerData data = PlayerDataHandler.get(event.getPlayer());
-		ItemStack playerCad = PsiAPI.getPlayerCAD(event.getPlayer());
+		PlayerData data = PlayerDataHandler.get(event.getEntity());
+		ItemStack playerCad = PsiAPI.getPlayerCAD(event.getEntity());
 
 		if (isEnabled(stack) && !playerCad.isEmpty()) {
 			int timesCast = stack.getOrCreateTag().getInt(TAG_TIMES_CAST);
 
 			ItemStack bullet = ISocketable.socketable(stack).getSelectedBullet();
-			ItemCAD.cast(event.getPlayer().getCommandSenderWorld(), event.getPlayer(), data, bullet, playerCad, getCastCooldown(stack), 0, getCastVolume(), (SpellContext context) -> {
+			ItemCAD.cast(event.getEntity().getCommandSenderWorld(), event.getEntity(), data, bullet, playerCad, getCastCooldown(stack), 0, getCastVolume(), (SpellContext context) -> {
 				context.tool = stack;
 				context.attackingEntity = event.attacker;
 				context.damageTaken = event.damage;
@@ -129,7 +130,7 @@ public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiE
 
 	@Override
 	public void onEvent(ItemStack stack, PsiArmorEvent event) {
-		if (event.type.equals(getTrueEvent(stack)) && event.getPlayer() != null) {
+		if (event.type.equals(getTrueEvent(stack)) && event.getEntity() != null) {
 			cast(stack, event);
 		}
 	}
@@ -179,10 +180,10 @@ public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiE
 	}
 
 	@Override
-	public void initializeClient(Consumer<IItemRenderProperties> consumer) {
-		consumer.accept(new IItemRenderProperties() {
+	public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+		consumer.accept(new IClientItemExtensions() {
 			@Override
-			public HumanoidModel<?> getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlot armorSlot, HumanoidModel<?> defaultModel) {
+			public @NotNull HumanoidModel<?> getHumanoidArmorModel(LivingEntity livingEntity, ItemStack itemStack, EquipmentSlot equipmentSlot, HumanoidModel<?> original) {
 				return ArmorModels.get(itemStack);
 			}
 		});

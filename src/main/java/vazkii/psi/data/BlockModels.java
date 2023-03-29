@@ -12,6 +12,7 @@ import net.minecraft.data.DataGenerator;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
+import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.psi.common.block.base.ModBlocks;
 import vazkii.psi.common.lib.LibMisc;
 
@@ -26,18 +27,18 @@ public class BlockModels extends BlockStateProvider {
 
 	@Override
 	protected void registerStatesAndModels() {
-		simpleBlock(ModBlocks.psidustBlock, models().cubeAll(ModBlocks.psidustBlock.getRegistryName().getPath(), location("blocks/psidust_block")));
-		simpleBlock(ModBlocks.psimetalBlock, models().cubeAll(ModBlocks.psimetalBlock.getRegistryName().getPath(), location("blocks/psimetal_block")));
-		simpleBlock(ModBlocks.psigemBlock, models().cubeAll(ModBlocks.psigemBlock.getRegistryName().getPath(), location("blocks/psigem_block")));
-		simpleBlock(ModBlocks.psimetalPlateBlack, models().cubeAll(ModBlocks.psimetalPlateBlack.getRegistryName().getPath(), location("blocks/psimetal_plate_black")));
-		simpleBlock(ModBlocks.psimetalPlateWhite, models().cubeAll(ModBlocks.psimetalPlateWhite.getRegistryName().getPath(), location("blocks/psimetal_plate_white")));
-		simpleBlock(ModBlocks.psimetalPlateBlackLight, models().cubeBottomTop(ModBlocks.psimetalPlateBlackLight.getRegistryName().getPath(),
+		simpleBlock(ModBlocks.psidustBlock, models().cubeAll(ForgeRegistries.BLOCKS.getKey(ModBlocks.psidustBlock).getPath(), location("blocks/psidust_block")));
+		simpleBlock(ModBlocks.psimetalBlock, models().cubeAll(ForgeRegistries.BLOCKS.getKey(ModBlocks.psimetalBlock).getPath(), location("blocks/psimetal_block")));
+		simpleBlock(ModBlocks.psigemBlock, models().cubeAll(ForgeRegistries.BLOCKS.getKey(ModBlocks.psigemBlock).getPath(), location("blocks/psigem_block")));
+		simpleBlock(ModBlocks.psimetalPlateBlack, models().cubeAll(ForgeRegistries.BLOCKS.getKey(ModBlocks.psimetalPlateBlack).getPath(), location("blocks/psimetal_plate_black")));
+		simpleBlock(ModBlocks.psimetalPlateWhite, models().cubeAll(ForgeRegistries.BLOCKS.getKey(ModBlocks.psimetalPlateWhite).getPath(), location("blocks/psimetal_plate_white")));
+		simpleBlock(ModBlocks.psimetalPlateBlackLight, models().cubeBottomTop(ForgeRegistries.BLOCKS.getKey(ModBlocks.psimetalPlateBlackLight).getPath(),
 				location("blocks/psimetal_plate_black_light"), location("blocks/psimetal_plate_black"), location("blocks/psimetal_plate_black")));
-		simpleBlock(ModBlocks.psimetalPlateWhiteLight, models().cubeBottomTop(ModBlocks.psimetalPlateWhiteLight.getRegistryName().getPath(),
+		simpleBlock(ModBlocks.psimetalPlateWhiteLight, models().cubeBottomTop(ForgeRegistries.BLOCKS.getKey(ModBlocks.psimetalPlateWhiteLight).getPath(),
 				location("blocks/psimetal_plate_white_light"), location("blocks/psimetal_plate_white"), location("blocks/psimetal_plate_white")));
-		simpleBlock(ModBlocks.psimetalEbony, models().cubeAll(ModBlocks.psimetalEbony.getRegistryName().getPath(), location("blocks/ebony_psimetal_block")));
-		simpleBlock(ModBlocks.psimetalIvory, models().cubeAll(ModBlocks.psimetalIvory.getRegistryName().getPath(), location("blocks/ivory_psimetal_block")));
-		simpleBlock(ModBlocks.conjured, models().withExistingParent(ModBlocks.conjured.getRegistryName().getPath(), "block/block").texture("particle", location("blocks/empty")));
+		simpleBlock(ModBlocks.psimetalEbony, models().cubeAll(ForgeRegistries.BLOCKS.getKey(ModBlocks.psimetalEbony).getPath(), location("blocks/ebony_psimetal_block")));
+		simpleBlock(ModBlocks.psimetalIvory, models().cubeAll(ForgeRegistries.BLOCKS.getKey(ModBlocks.psimetalIvory).getPath(), location("blocks/ivory_psimetal_block")));
+		simpleBlock(ModBlocks.conjured, models().withExistingParent(ForgeRegistries.BLOCKS.getKey(ModBlocks.conjured).getPath(), "block/block").texture("particle", location("blocks/empty")));
 	}
 
 	@Nonnull
