@@ -56,7 +56,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class TileCADAssembler extends BlockEntity implements ITileCADAssembler, MenuProvider {
-	@ObjectHolder(LibMisc.PREFIX_MOD + LibBlockNames.CAD_ASSEMBLER)
+	@ObjectHolder(registryName = "minecraft:block_entity_type", value = LibMisc.PREFIX_MOD + LibBlockNames.CAD_ASSEMBLER)
 	public static BlockEntityType<TileCADAssembler> TYPE;
 
 	private final IItemHandlerModifiable inventory = new ItemStackHandler(6) {

@@ -30,7 +30,7 @@ import javax.annotation.Nonnull;
 import java.util.Arrays;
 
 public class TileConjured extends BlockEntity {
-	@ObjectHolder(LibMisc.PREFIX_MOD + LibBlockNames.CONJURED)
+	@ObjectHolder(registryName = "minecraft:block_entity_type", value = LibMisc.PREFIX_MOD + LibBlockNames.CONJURED)
 	public static BlockEntityType<TileConjured> TYPE;
 
 	private static final String TAG_COLORIZER = "colorizer";

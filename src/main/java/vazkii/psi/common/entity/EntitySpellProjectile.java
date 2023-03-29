@@ -44,7 +44,7 @@ import java.util.UUID;
 import java.util.function.Consumer;
 
 public class EntitySpellProjectile extends ThrowableProjectile {
-	@ObjectHolder(LibResources.PREFIX_MOD + LibEntityNames.SPELL_PROJECTILE)
+	@ObjectHolder(registryName = "minecraft:entity_type", value = LibResources.PREFIX_MOD + LibEntityNames.SPELL_PROJECTILE)
 	public static EntityType<EntitySpellProjectile> TYPE;
 
 	private static final String TAG_COLORIZER = "colorizer";

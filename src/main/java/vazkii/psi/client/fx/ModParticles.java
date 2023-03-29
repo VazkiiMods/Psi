@@ -23,10 +23,10 @@ import vazkii.psi.common.lib.LibMisc;
 // https://github.com/Vazkii/Botania/blob/1.15/src/main/java/vazkii/botania/client/fx/ModParticles.java
 @Mod.EventBusSubscriber(modid = LibMisc.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ModParticles {
-	@ObjectHolder(LibMisc.MOD_ID + ":wisp")
+	@ObjectHolder(registryName = "particle_type", value = LibMisc.MOD_ID + ":wisp")
 	public static ParticleType<WispParticleData> WISP;
 
-	@ObjectHolder(LibMisc.MOD_ID + ":sparkle")
+	@ObjectHolder(registryName = "particle_type", value = LibMisc.MOD_ID + ":sparkle")
 	public static ParticleType<SparkleParticleData> SPARKLE;
 
 	@SubscribeEvent

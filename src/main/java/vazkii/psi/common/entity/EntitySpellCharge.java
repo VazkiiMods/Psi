@@ -20,7 +20,7 @@ import vazkii.psi.common.lib.LibEntityNames;
 import vazkii.psi.common.lib.LibResources;
 
 public class EntitySpellCharge extends EntitySpellGrenade implements IDetonationHandler {
-	@ObjectHolder(LibResources.PREFIX_MOD + LibEntityNames.SPELL_CHARGE)
+	@ObjectHolder(registryName = "minecraft:entity_type", value = LibResources.PREFIX_MOD + LibEntityNames.SPELL_CHARGE)
 	public static EntityType<EntitySpellCharge> TYPE;
 
 	public EntitySpellCharge(EntityType<? extends ThrowableProjectile> type, Level worldIn) {

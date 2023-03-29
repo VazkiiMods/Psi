@@ -31,7 +31,7 @@ import javax.annotation.Nonnull;
 import java.util.Optional;
 
 public class EntitySpellGrenade extends EntitySpellProjectile {
-	@ObjectHolder(LibResources.PREFIX_MOD + LibEntityNames.SPELL_GRENADE)
+	@ObjectHolder(registryName = "minecraft:entity_type", value = LibResources.PREFIX_MOD + LibEntityNames.SPELL_GRENADE)
 	public static EntityType<EntitySpellGrenade> TYPE;
 
 	boolean sound = false;
