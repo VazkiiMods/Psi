@@ -33,7 +33,7 @@ public final class ModEntities {
 					.setShouldReceiveVelocityUpdates(true)
 					.sized(0, 0)
 					.build(""));
-			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibEntityNames.SPELL_PROJECTILE),
+			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibEntityNames.SPELL_CIRCLE),
 					EntityType.Builder.of(EntitySpellCircle::new, MISC)
 					.setTrackingRange(256)
 					.setUpdateInterval(10)

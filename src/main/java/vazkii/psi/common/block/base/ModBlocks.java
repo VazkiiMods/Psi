@@ -86,7 +86,7 @@ public class ModBlocks {
 			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibBlockNames.PSIMETAL_PLATE_BLACK_LIGHT), psimetalPlateBlackLight);
 			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibBlockNames.PSIMETAL_PLATE_WHITE), psimetalPlateWhite);
 			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibBlockNames.PSIMETAL_PLATE_WHITE_LIGHT), psimetalPlateWhiteLight);
-			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibBlockNames.EBONY_PSIMETAL_BLOCK), psimetalBlock);
+			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibBlockNames.EBONY_PSIMETAL_BLOCK), psimetalEbony);
 			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibBlockNames.IVORY_PSIMETAL_BLOCK), psimetalIvory);
 		});
 

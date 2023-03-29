@@ -50,7 +50,10 @@ public class ModCraftingRecipes {
 			helper.register(new ResourceLocation(LibMisc.MOD_ID, "dimension_trick_crafting"), DimensionTrickRecipe.SERIALIZER);
 
 			CraftingHelper.register(MagicalPsiCondition.Serializer.INSTANCE);
-			Registry.register(Registry.RECIPE_TYPE, ITrickRecipe.TYPE_ID, TRICK_RECIPE_TYPE);
+		});
+
+		event.register(ForgeRegistries.Keys.RECIPE_TYPES, helper -> {
+			helper.register(ITrickRecipe.TYPE_ID, TRICK_RECIPE_TYPE);
 		});
 	}
 
