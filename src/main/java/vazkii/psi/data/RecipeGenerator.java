@@ -25,6 +25,7 @@ import net.minecraft.world.item.crafting.SimpleRecipeSerializer;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.crafting.conditions.IConditionBuilder;
 
+import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.base.ModBlocks;
 import vazkii.psi.common.crafting.recipe.*;
@@ -588,7 +589,7 @@ public class RecipeGenerator extends RecipeProvider implements IConditionBuilder
 	}
 
 	private static void specialRecipe(SimpleRecipeSerializer<?> serializer, Consumer<FinishedRecipe> consumer) {
-		SpecialRecipeBuilder.special(serializer).save(consumer, Psi.location("dynamic/" + serializer.getRegistryName().getPath()).toString());
+		SpecialRecipeBuilder.special(serializer).save(consumer, Psi.location("dynamic/" + ForgeRegistries.RECIPE_SERIALIZERS.getKey(serializer).getPath()).toString());
 	}
 
 }

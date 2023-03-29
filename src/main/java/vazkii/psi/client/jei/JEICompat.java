@@ -13,18 +13,17 @@ import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.helpers.IJeiHelpers;
 import mezz.jei.api.registration.*;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 
-import vazkii.psi.client.jei.crafting.BulletToDriveExtension;
-import vazkii.psi.client.jei.crafting.DriveDuplicateExtension;
-import vazkii.psi.client.jei.tricks.TrickCraftingCategory;
-import vazkii.psi.common.crafting.ModCraftingRecipes;
-import vazkii.psi.common.crafting.recipe.BulletToDriveRecipe;
-import vazkii.psi.common.crafting.recipe.DriveDuplicateRecipe;
+//import vazkii.psi.client.jei.crafting.BulletToDriveExtension;
+//import vazkii.psi.client.jei.crafting.DriveDuplicateExtension;
+//import vazkii.psi.client.jei.tricks.TrickCraftingCategory;
+//import vazkii.psi.common.crafting.ModCraftingRecipes;
+//import vazkii.psi.common.crafting.recipe.BulletToDriveRecipe;
+//import vazkii.psi.common.crafting.recipe.DriveDuplicateRecipe;
 import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.lib.LibMisc;
 
@@ -44,18 +43,18 @@ public class JEICompat implements IModPlugin {
 	@Override
 	public void registerCategories(IRecipeCategoryRegistration registry) {
 		helpers = registry.getJeiHelpers();
-		registry.addRecipeCategories(new TrickCraftingCategory(helpers.getGuiHelper()));
+//		registry.addRecipeCategories(new TrickCraftingCategory(helpers.getGuiHelper()));
 	}
 
 	@Override
 	public void registerVanillaCategoryExtensions(IVanillaCategoryExtensionRegistration registration) {
-		registration.getCraftingCategory().addCategoryExtension(BulletToDriveRecipe.class, BulletToDriveExtension::new);
-		registration.getCraftingCategory().addCategoryExtension(DriveDuplicateRecipe.class, DriveDuplicateExtension::new);
+//		registration.getCraftingCategory().addCategoryExtension(BulletToDriveRecipe.class, BulletToDriveExtension::new);
+//		registration.getCraftingCategory().addCategoryExtension(DriveDuplicateRecipe.class, DriveDuplicateExtension::new);
 	}
 
 	@Override
 	public void registerRecipes(IRecipeRegistration registration) {
-		registration.addRecipes(Minecraft.getInstance().level.getRecipeManager().byType(ModCraftingRecipes.TRICK_RECIPE_TYPE).values(), TrickCraftingCategory.UID);
+//		registration.addRecipes(TrickCraftingCategory.TYPE, Minecraft.getInstance().level.getRecipeManager().getAllRecipesFor(ModCraftingRecipes.TRICK_RECIPE_TYPE));
 	}
 
 	@Override
@@ -63,7 +62,7 @@ public class JEICompat implements IModPlugin {
 		NonNullList<ItemStack> stacks = NonNullList.create();
 		ModItems.cad.fillItemCategory(CreativeModeTab.TAB_SEARCH, stacks);
 		for (ItemStack stack : stacks) {
-			registration.addRecipeCatalyst(stack, TrickCraftingCategory.UID);
+//			registration.addRecipeCatalyst(stack, TrickCraftingCategory.TYPE);
 		}
 	}
 

@@ -89,7 +89,7 @@ public class TrickRecipeBuilder {
 	}
 
 	public void build(Consumer<FinishedRecipe> consumer) {
-		this.build(consumer, output.getItem().getRegistryName());
+		this.build(consumer, ForgeRegistries.ITEMS.getKey(output.getItem()));
 	}
 
 	public void build(Consumer<FinishedRecipe> consumer, ResourceLocation id) {

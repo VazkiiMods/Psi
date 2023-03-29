@@ -18,6 +18,7 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraftforge.common.crafting.IShapedRecipe;
 
+import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.patchouli.api.IComponentProcessor;
 import vazkii.patchouli.api.IVariable;
 import vazkii.patchouli.api.IVariableProvider;
@@ -37,13 +38,13 @@ public class MultiCraftingProcessor implements IComponentProcessor {
 
 	@Override
 	public void setup(IVariableProvider variables) {
-		Map<ResourceLocation, Recipe<CraftingContainer>> recipeMap = Minecraft.getInstance().level.getRecipeManager().byType(RecipeType.CRAFTING);
+		Map<ResourceLocation, CraftingRecipe> recipeMap = Minecraft.getInstance().level.getRecipeManager().byType(RecipeType.CRAFTING);
 		List<String> names = variables.get("recipes").asStream().map(IVariable::asString).collect(Collectors.toList());
 		this.recipes = new ArrayList<>();
 		for (String name : names) {
-			Recipe<?> recipe = recipeMap.get(new ResourceLocation(name));
+			CraftingRecipe recipe = recipeMap.get(new ResourceLocation(name));
 			if (recipe != null) {
-				recipes.add((CraftingRecipe) recipe);
+				recipes.add(recipe);
 				if (shapeless) {
 					shapeless = !(recipe instanceof IShapedRecipe);
 				}

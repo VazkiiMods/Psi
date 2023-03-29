@@ -559,7 +559,7 @@ public class ItemCAD extends Item implements ICAD {
 
 	@Override
 	public void fillItemCategory(@Nonnull CreativeModeTab tab, @Nonnull NonNullList<ItemStack> subItems) {
-		if (!allowdedIn(tab)) {
+		if (!allowedIn(tab)) {
 			return;
 		}
 

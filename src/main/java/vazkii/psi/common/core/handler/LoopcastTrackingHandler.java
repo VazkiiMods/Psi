@@ -24,23 +24,23 @@ public class LoopcastTrackingHandler {
 	@SubscribeEvent
 	public static void onPlayerStartTracking(PlayerEvent.StartTracking event) {
 		if (event.getTarget() instanceof Player) {
-			syncDataFor((Player) event.getTarget(), (ServerPlayer) event.getPlayer());
+			syncDataFor((Player) event.getTarget(), (ServerPlayer) event.getEntity());
 		}
 	}
 
 	@SubscribeEvent
 	public static void onPlayerChangeDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
-		syncDataFor(event.getPlayer(), (ServerPlayer) event.getPlayer());
+		syncDataFor(event.getEntity(), (ServerPlayer) event.getEntity());
 	}
 
 	@SubscribeEvent
 	public static void onPlayerLogIn(PlayerEvent.PlayerLoggedInEvent event) {
-		syncDataFor(event.getPlayer(), (ServerPlayer) event.getPlayer());
+		syncDataFor(event.getEntity(), (ServerPlayer) event.getEntity());
 	}
 
 	@SubscribeEvent
 	public static void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event) {
-		syncDataFor(event.getPlayer(), (ServerPlayer) event.getPlayer());
+		syncDataFor(event.getEntity(), (ServerPlayer) event.getEntity());
 	}
 
 	public static void syncDataFor(Player player, ServerPlayer receiver) {

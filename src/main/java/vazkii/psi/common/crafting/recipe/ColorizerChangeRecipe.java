@@ -100,7 +100,7 @@ public class ColorizerChangeRecipe extends CustomRecipe {
 				if (!stack.isEmpty() && stack.getItem() instanceof ICADColorizer) {
 					dyeIndex = i;
 				}
-				ret.set(i, ForgeHooks.getContainerItem(stack));
+				ret.set(i, ForgeHooks.getCraftingRemainingItem(stack));
 			}
 		}
 		if (!cad.isEmpty() && dyeIndex != -1) {

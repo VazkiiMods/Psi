@@ -14,9 +14,9 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.core.particles.ParticleOptions.Deserializer;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
 
@@ -75,7 +75,7 @@ public class SparkleParticleData implements ParticleOptions {
 	@Override
 	public String writeToString() {
 		return String.format(Locale.ROOT, "%s %.2f %.2f %.2f %.2f %d %.2f %.2f %.2f",
-				this.getType().getRegistryName(), this.size, this.r, this.g, this.b, this.m, this.mx, this.my, this.mz);
+				ForgeRegistries.PARTICLE_TYPES.getKey(this.getType()), this.size, this.r, this.g, this.b, this.m, this.mx, this.my, this.mz);
 	}
 
 	public static final Deserializer<SparkleParticleData> DESERIALIZER = new Deserializer<SparkleParticleData>() {
