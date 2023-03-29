@@ -27,7 +27,7 @@ import vazkii.psi.common.spell.SpellCompiler;
 import javax.annotation.Nonnull;
 
 public class TileProgrammer extends BlockEntity {
-	@ObjectHolder(LibMisc.PREFIX_MOD + LibBlockNames.PROGRAMMER)
+	@ObjectHolder(registryName = "minecraft:block_entity_type", value = LibMisc.PREFIX_MOD + LibBlockNames.PROGRAMMER)
 	public static BlockEntityType<TileProgrammer> TYPE;
 
 	private static final String TAG_SPELL = "spell";

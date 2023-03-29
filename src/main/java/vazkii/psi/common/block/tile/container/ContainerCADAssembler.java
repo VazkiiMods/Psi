@@ -44,7 +44,7 @@ import vazkii.psi.common.lib.LibMisc;
 import javax.annotation.Nonnull;
 
 public class ContainerCADAssembler extends AbstractContainerMenu {
-	@ObjectHolder(LibMisc.PREFIX_MOD + LibBlockNames.CAD_ASSEMBLER)
+	@ObjectHolder(registryName = "minecraft:menu", value = LibMisc.PREFIX_MOD + LibBlockNames.CAD_ASSEMBLER)
 	public static MenuType<ContainerCADAssembler> TYPE;
 
 	private static final EquipmentSlot[] equipmentSlots = new EquipmentSlot[] { EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET };
