@@ -40,8 +40,10 @@ public class MessageSpamlessChat {
 	public boolean receive(Supplier<NetworkEvent.Context> context) {
 		context.get().enqueueWork(() -> {
 			ChatComponent chatGui = Minecraft.getInstance().gui.getChat();
-			chatGui.removeById(magic);
-			chatGui.addMessage(message, magic);
+			// TODO: Currently unable to do this way, because of limitations of the new chat system
+			// chatGui.deleteMessage(magic);
+			// chatGui.addMessage(message, magic);
+			chatGui.addMessage(message);
 		});
 		return true;
 	}
