@@ -8,18 +8,16 @@
  */
 package vazkii.psi.client.fx;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
-import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.IForgeRegistry;
-import net.minecraftforge.registries.IForgeRegistryEntry;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.ObjectHolder;
 
+import net.minecraftforge.registries.RegisterEvent;
 import vazkii.psi.common.lib.LibMisc;
 
 // https://github.com/Vazkii/Botania/blob/1.15/src/main/java/vazkii/botania/client/fx/ModParticles.java
@@ -32,25 +30,20 @@ public class ModParticles {
 	public static ParticleType<SparkleParticleData> SPARKLE;
 
 	@SubscribeEvent
-	public static void registerParticles(RegistryEvent.Register<ParticleType<?>> evt) {
-		register(evt.getRegistry(), new WispParticleType(), "wisp");
-		register(evt.getRegistry(), new SparkleParticleType(), "sparkle");
+	public static void register(RegisterEvent evt) {
+		evt.register(ForgeRegistries.Keys.PARTICLE_TYPES, helper -> {
+			helper.register(new ResourceLocation(LibMisc.MOD_ID, "wisp"), new WispParticleType());
+			helper.register(new ResourceLocation(LibMisc.MOD_ID, "sparkle"), new SparkleParticleType());
+		});
 	}
 
 	@Mod.EventBusSubscriber(value = Dist.CLIENT, modid = LibMisc.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 	public static class FactoryHandler {
+
 		@SubscribeEvent
-		public static void registerFactories(ParticleFactoryRegisterEvent evt) {
-			Minecraft.getInstance().particleEngine.register(ModParticles.WISP, WispParticleType.Factory::new);
-			Minecraft.getInstance().particleEngine.register(ModParticles.SPARKLE, SparkleParticleType.Factory::new);
+		public static void registerFactories(RegisterParticleProvidersEvent evt) {
+			evt.register(ModParticles.WISP, WispParticleType.Factory::new);
+			evt.register(ModParticles.SPARKLE, SparkleParticleType.Factory::new);
 		}
-	}
-
-	public static <V extends IForgeRegistryEntry<V>> void register(IForgeRegistry<V> reg, IForgeRegistryEntry<V> thing, ResourceLocation name) {
-		reg.register(thing.setRegistryName(name));
-	}
-
-	public static <V extends IForgeRegistryEntry<V>> void register(IForgeRegistry<V> reg, IForgeRegistryEntry<V> thing, String name) {
-		register(reg, thing, new ResourceLocation(LibMisc.MOD_ID, name));
 	}
 }
