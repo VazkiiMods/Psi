@@ -22,10 +22,10 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.network.NetworkHooks;
 
@@ -33,8 +33,6 @@ import vazkii.psi.common.block.tile.TileCADAssembler;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
-import static net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY;
 
 public class BlockCADAssembler extends HorizontalDirectionalBlock implements EntityBlock {
 
@@ -63,7 +61,7 @@ public class BlockCADAssembler extends HorizontalDirectionalBlock implements Ent
 	public int getAnalogOutputSignal(BlockState blockState, Level worldIn, BlockPos pos) {
 		BlockEntity tile = worldIn.getBlockEntity(pos);
 		if (tile != null) {
-			return tile.getCapability(ITEM_HANDLER_CAPABILITY)
+			return tile.getCapability(ForgeCapabilities.ITEM_HANDLER)
 					.map(ItemHandlerHelper::calcRedstoneFromInventory)
 					.orElse(0);
 		}
@@ -76,7 +74,7 @@ public class BlockCADAssembler extends HorizontalDirectionalBlock implements Ent
 		if (!world.isClientSide) {
 			MenuProvider container = state.getMenuProvider(world, pos);
 			if (container != null) {
-				NetworkHooks.openGui((ServerPlayer) playerIn, container, pos);
+				NetworkHooks.openScreen((ServerPlayer) playerIn, container, pos);
 				return InteractionResult.SUCCESS;
 			}
 		}
