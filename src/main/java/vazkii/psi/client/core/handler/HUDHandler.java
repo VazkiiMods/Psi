@@ -8,7 +8,6 @@
  */
 package vazkii.psi.client.core.handler;
 
-import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
@@ -49,7 +48,7 @@ import vazkii.psi.common.lib.LibResources;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
-@Mod.EventBusSubscriber(value = Dist.CLIENT, modid = LibMisc.MOD_ID)
+@Mod.EventBusSubscriber(value = Dist.CLIENT, modid = LibMisc.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public final class HUDHandler {
 
 	private static final ResourceLocation psiBar = new ResourceLocation(LibResources.GUI_PSI_BAR);
