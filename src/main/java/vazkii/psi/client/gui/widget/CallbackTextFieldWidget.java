@@ -11,7 +11,7 @@ package vazkii.psi.client.gui.widget;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.EditBox;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -20,7 +20,7 @@ public class CallbackTextFieldWidget extends EditBox {
 	protected final CallbackTextFieldWidget.IPressable pressable;
 
 	public CallbackTextFieldWidget(Font font, int x, int y, int width, int height, CallbackTextFieldWidget.IPressable pressable) {
-		super(font, x, y, width, height, null, TextComponent.EMPTY);
+		super(font, x, y, width, height, null, Component.empty());
 		this.pressable = pressable;
 	}
 

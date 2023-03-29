@@ -14,8 +14,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -50,10 +48,10 @@ public class ItemSpellDrive extends Item {
 		CompoundTag cmp = stack.getOrCreateTag().getCompound(TAG_SPELL);
 		String spellName = cmp.getString(Spell.TAG_SPELL_NAME); // We don't need to load the whole spell just for the name
 		if (spellName.isEmpty()) {
-			return new TextComponent(name);
+			return Component.literal(name);
 		}
 
-		return new TextComponent(name + " (" + ChatFormatting.GREEN + spellName + ChatFormatting.RESET + ")");
+		return Component.literal(name + " (" + ChatFormatting.GREEN + spellName + ChatFormatting.RESET + ")");
 	}
 
 	@Nonnull
@@ -79,7 +77,7 @@ public class ItemSpellDrive extends Item {
 				if (enabled && !programmer.playerLock.isEmpty()) {
 					if (!programmer.playerLock.equals(playerIn.getName().getString())) {
 						if (!worldIn.isClientSide) {
-							playerIn.sendMessage(new TranslatableComponent("psimisc.not_your_programmer").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), Util.NIL_UUID);
+							playerIn.sendSystemMessage(Component.translatable("psimisc.not_your_programmer").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)));
 						}
 						return InteractionResult.SUCCESS;
 					}

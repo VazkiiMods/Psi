@@ -38,8 +38,6 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.nbt.TagParser;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraftforge.fml.ModList;
@@ -141,7 +139,7 @@ public class GuiProgrammer extends Screen {
 	}
 
 	public GuiProgrammer(TileProgrammer tile, Spell spell) {
-		super(new TextComponent(""));
+		super(Component.empty());
 		programmer = tile;
 		this.spell = spell;
 		compileResult = new SpellCompiler().compile(spell);
@@ -244,7 +242,7 @@ public class GuiProgrammer extends Screen {
 							for (Tag mod : mods) {
 								String modName = ((CompoundTag) mod).getString(Spell.TAG_MOD_NAME);
 								if (!PsiAPI.getSpellPieceRegistry().keySet().stream().map(ResourceLocation::getNamespace).collect(Collectors.toSet()).contains(modName)) {
-									player.sendMessage(new TranslatableComponent("psimisc.modnotfound", modName).setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), Util.NIL_UUID);
+									player.sendSystemMessage(Component.translatable("psimisc.modnotfound", modName).setStyle(Style.EMPTY.withColor(ChatFormatting.RED)));
 								}
 								if (modName.equals("psi")) {
 									boolean sendMessage = false;
@@ -264,12 +262,12 @@ public class GuiProgrammer extends Screen {
 										}
 									}
 									if (sendMessage) {
-										player.sendMessage(new TranslatableComponent("psimisc.spellonnewerversion").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), Util.NIL_UUID);
+										player.sendSystemMessage(Component.translatable("psimisc.spellonnewerversion").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)));
 									}
 								}
 							}
 						} else {
-							player.sendMessage(new TranslatableComponent("psimisc.spellmaynotfunctionasintended").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), Util.NIL_UUID);
+							player.sendSystemMessage(Component.translatable("psimisc.spellmaynotfunctionasintended").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)));
 						}
 						spell = Spell.createFromNBT(cmp);
 						if (spell == null) {
@@ -282,7 +280,7 @@ public class GuiProgrammer extends Screen {
 								if (piece != null) {
 									ResourceLocation group = PsiAPI.getGroupForPiece(piece.getClass());
 									if (!player.isCreative() && (group == null || !data.isPieceGroupUnlocked(group, piece.registryKey))) {
-										player.sendMessage(new TranslatableComponent("psimisc.missing_pieces").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), Util.NIL_UUID);
+										player.sendSystemMessage(Component.translatable("psimisc.missing_pieces").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)));
 										return;
 									}
 								}
@@ -293,7 +291,7 @@ public class GuiProgrammer extends Screen {
 						spellNameField.setValue(spell.name);
 						onSpellChanged(false);
 					} catch (Exception t) {
-						player.sendMessage(new TranslatableComponent("psimisc.malformed_json", t.getMessage()).setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), Util.NIL_UUID);
+						player.sendSystemMessage(Component.translatable("psimisc.malformed_json", t.getMessage()).setStyle(Style.EMPTY.withColor(ChatFormatting.RED)));
 						Psi.logger.error("Error importing spell from clipboard", t);
 					}
 				}
@@ -463,7 +461,7 @@ public class GuiProgrammer extends Screen {
 			}
 
 			if (comment != null && !comment.isEmpty()) {
-				List<Component> commentList = Arrays.stream(comment.split(";")).map(TextComponent::new).collect(Collectors.toList());
+				List<Component> commentList = Arrays.stream(comment.split(";")).map(Component::literal).collect(Collectors.toList());
 				pieceAtCursor.drawCommentText(ms, mouseX, mouseY, commentList, this);
 			}
 		}

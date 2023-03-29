@@ -15,7 +15,6 @@ import com.mojang.math.Matrix4f;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -71,7 +70,7 @@ public class PieceCrossConnector extends SpellPiece implements IGenericRedirecto
 
 	@Override
 	public Component getEvaluationTypeString() {
-		return new TranslatableComponent("psi.datatype.any");
+		return Component.translatable("psi.datatype.any");
 	}
 
 	@Override

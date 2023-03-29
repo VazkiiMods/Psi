@@ -13,10 +13,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.Button.OnPress;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 
 import vazkii.psi.client.gui.GuiProgrammer;
 
@@ -26,13 +23,13 @@ public class GuiButtonIO extends Button {
 	final GuiProgrammer gui;
 
 	public GuiButtonIO(int x, int y, boolean out, GuiProgrammer gui) {
-		super(x, y, 12, 12, TextComponent.EMPTY, button -> {});
+		super(x, y, 12, 12, Component.empty(), button -> {});
 		this.out = out;
 		this.gui = gui;
 	}
 
 	public GuiButtonIO(int x, int y, boolean out, GuiProgrammer gui, OnPress pressable) {
-		super(x, y, 12, 12, TextComponent.EMPTY, pressable);
+		super(x, y, 12, 12, Component.empty(), pressable);
 		this.out = out;
 		this.gui = gui;
 	}
@@ -49,9 +46,9 @@ public class GuiButtonIO extends Button {
 			if (hover) {
 				String key = out ? "psimisc.export_to_clipboard" : "psimisc.import_from_clipboard";
 				ChatFormatting color = out ? ChatFormatting.RED : ChatFormatting.BLUE;
-				Component tip = new TranslatableComponent(key).withStyle(color);
+				Component tip = Component.translatable(key).withStyle(color);
 				gui.tooltip.add(tip);
-				gui.tooltip.add(new TranslatableComponent("psimisc.must_hold_shift").withStyle(ChatFormatting.GRAY));
+				gui.tooltip.add(Component.translatable("psimisc.must_hold_shift").withStyle(ChatFormatting.GRAY));
 			}
 		}
 	}

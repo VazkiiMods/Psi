@@ -11,10 +11,7 @@ package vazkii.psi.common.item;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.*;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -67,7 +64,7 @@ public class ItemSpellBullet extends Item {
 			if (name.isEmpty()) {
 				return super.getName(stack);
 			}
-			return new TextComponent(name);
+			return Component.literal(name);
 		}
 		return super.getName(stack);
 	}
@@ -82,8 +79,8 @@ public class ItemSpellBullet extends Item {
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level playerIn, List<Component> tooltip, TooltipFlag advanced) {
 		TooltipHelper.tooltipIfShift(tooltip, () -> {
-			tooltip.add(new TranslatableComponent("psimisc.bullet_type", new TranslatableComponent("psi.bullet_type_" + getBulletType())));
-			tooltip.add(new TranslatableComponent("psimisc.bullet_cost", (int) (ISpellAcceptor.acceptor(stack).getCostModifier() * 100)));
+			tooltip.add(Component.translatable("psimisc.bullet_type", Component.translatable("psi.bullet_type_" + getBulletType())));
+			tooltip.add(Component.translatable("psimisc.bullet_cost", (int) (ISpellAcceptor.acceptor(stack).getCostModifier() * 100)));
 		});
 	}
 

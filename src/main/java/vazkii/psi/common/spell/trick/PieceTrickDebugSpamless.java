@@ -11,7 +11,6 @@ package vazkii.psi.common.spell.trick;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.level.ServerPlayer;
 
 import vazkii.psi.api.spell.Spell;
@@ -50,7 +49,7 @@ public class PieceTrickDebugSpamless extends PieceTrick {
 		Number numberVal = this.getParamValue(context, number);
 		Object targetVal = getParamValue(context, target);
 
-		Component component = new TextComponent(String.valueOf(targetVal));
+		Component component = Component.literal(String.valueOf(targetVal));
 		if (numberVal != null) {
 			String numStr = "" + numberVal;
 			if (numberVal.doubleValue() - numberVal.intValue() == 0) {
@@ -58,9 +57,9 @@ public class PieceTrickDebugSpamless extends PieceTrick {
 				numStr = "" + numInt;
 			}
 
-			component = new TextComponent("[" + numStr + "]")
+			component = Component.literal("[" + numStr + "]")
 					.setStyle(Style.EMPTY.withColor(ChatFormatting.AQUA))
-					.append(new TextComponent(" ")
+					.append(Component.literal(" ")
 							.setStyle(Style.EMPTY.withColor(ChatFormatting.RESET)))
 					.append(component.plainCopy().setStyle(Style.EMPTY.withColor(ChatFormatting.RESET)));
 		}

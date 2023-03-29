@@ -17,7 +17,6 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -188,7 +187,7 @@ public class ItemCAD extends Item implements ICAD {
 		ItemStack playerCad = PsiAPI.getPlayerCAD(playerIn);
 		if (playerCad != itemStackIn) {
 			if (!worldIn.isClientSide) {
-				playerIn.sendMessage(new TranslatableComponent("psimisc.multiple_cads").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), Util.NIL_UUID);
+				playerIn.sendSystemMessage(Component.translatable("psimisc.multiple_cads").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)));
 			}
 			return new InteractionResultHolder<>(InteractionResult.CONSUME, itemStackIn);
 		}
@@ -237,7 +236,7 @@ public class ItemCAD extends Item implements ICAD {
 					if (MinecraftForge.EVENT_BUS.post(event)) {
 						String cancelMessage = event.getCancellationMessage();
 						if (cancelMessage != null && !cancelMessage.isEmpty()) {
-							player.sendMessage(new TranslatableComponent(cancelMessage).setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), Util.NIL_UUID);
+							player.sendSystemMessage(Component.translatable(cancelMessage).setStyle(Style.EMPTY.withColor(ChatFormatting.RED)));
 						}
 						return Optional.empty();
 					}
@@ -293,7 +292,7 @@ public class ItemCAD extends Item implements ICAD {
 					MinecraftForge.EVENT_BUS.post(new SpellCastEvent(spell, context, player, data, cad, bullet));
 					return Optional.of(SpellEntities);
 				} else if (!world.isClientSide) {
-					player.sendMessage(new TranslatableComponent("psimisc.weak_cad").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), Util.NIL_UUID);
+					player.sendSystemMessage(Component.translatable("psimisc.weak_cad").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)));
 				}
 			}
 		}
@@ -610,16 +609,16 @@ public class ItemCAD extends Item implements ICAD {
 	public void appendHoverText(ItemStack stack, @Nullable Level playerin, List<Component> tooltip, TooltipFlag advanced) {
 		TooltipHelper.tooltipIfShift(tooltip, () -> {
 			Component componentName = ISocketable.getSocketedItemName(stack, "psimisc.none");
-			tooltip.add(new TranslatableComponent("psimisc.spell_selected", componentName));
+			tooltip.add(Component.translatable("psimisc.spell_selected", componentName));
 
 			for (EnumCADComponent componentType : EnumCADComponent.class.getEnumConstants()) {
 				ItemStack componentStack = getComponentInSlot(stack, componentType);
-				Component name = new TranslatableComponent("psimisc.none");
+				Component name = Component.translatable("psimisc.none");
 				if (!componentStack.isEmpty()) {
 					name = componentStack.getHoverName();
 				}
 
-				MutableComponent componentTypeName = new TranslatableComponent(componentType.getName()).withStyle(ChatFormatting.GREEN);
+				MutableComponent componentTypeName = Component.translatable(componentType.getName()).withStyle(ChatFormatting.GREEN);
 				tooltip.add(componentTypeName.append(": ").append(name));
 
 				for (EnumCADStat stat : EnumCADStat.class.getEnumConstants()) {
@@ -628,7 +627,7 @@ public class ItemCAD extends Item implements ICAD {
 						int statVal = getStatValue(stack, stat);
 						String statValStr = statVal == -1 ? "\u221E" : "" + statVal;
 
-						tooltip.add(new TranslatableComponent(shrt).withStyle(ChatFormatting.AQUA).append(": " + statValStr));
+						tooltip.add(Component.translatable(shrt).withStyle(ChatFormatting.AQUA).append(": " + statValStr));
 					}
 				}
 			}

@@ -11,7 +11,6 @@ package vazkii.psi.api.inventory;
 import com.google.common.collect.Iterators;
 
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.Container;
 import net.minecraft.world.Nameable;
 import net.minecraft.world.entity.player.Player;
@@ -166,7 +165,7 @@ public class InventorySocketable implements Container, Nameable, ContainerData {
 	@Nonnull
 	@Override
 	public Component getName() {
-		return new TranslatableComponent("psi.container.socketable");
+		return Component.translatable("psi.container.socketable");
 	}
 
 }
