@@ -14,13 +14,13 @@ Psionic Spellcasting Instruments
 [[dependencies.psi]]
     modId="patchouli"
     mandatory=true
-    versionRange="[1.18-45,)"
+    versionRange="[1.19.2-77,)"
     side="BOTH"
 
 
 [[dependencies.psi]]
     modId="forge"
     mandatory=true
-    versionRange="[34.1.0,)"
+    versionRange="[42.2.0,)"
     ordering="AFTER"
     side="BOTH"
