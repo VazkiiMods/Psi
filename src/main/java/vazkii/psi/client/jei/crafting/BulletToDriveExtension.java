@@ -12,18 +12,16 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import mezz.jei.api.constants.VanillaTypes;
-import mezz.jei.api.gui.IRecipeLayout;
-import mezz.jei.api.ingredients.IIngredients;
-import mezz.jei.api.recipe.IFocus;
-import mezz.jei.api.recipe.category.extensions.vanilla.crafting.ICustomCraftingCategoryExtension;
+import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
+import mezz.jei.api.gui.ingredient.ICraftingGridHelper;
+import mezz.jei.api.recipe.IFocusGroup;
+import mezz.jei.api.recipe.category.extensions.vanilla.crafting.ICraftingCategoryExtension;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
 
 import vazkii.psi.api.spell.ISpellAcceptor;
 import vazkii.psi.common.crafting.recipe.BulletToDriveRecipe;
@@ -32,44 +30,37 @@ import vazkii.psi.common.item.ItemSpellDrive;
 import vazkii.psi.common.item.base.ModItems;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
-public class BulletToDriveExtension implements ICustomCraftingCategoryExtension {
-	private final List<Ingredient> inputs;
+public class BulletToDriveExtension implements ICraftingCategoryExtension {
+	private final List<List<ItemStack>> inputs;
 	private final BulletToDriveRecipe recipe;
 
 	public BulletToDriveExtension(BulletToDriveRecipe recipe) {
 		this.recipe = recipe;
 
-		Item[] bullets = Registry.ITEM.stream()
-				.filter(item -> item instanceof ItemSpellBullet)
-				.toArray(Item[]::new);
 		inputs = ImmutableList.of(
-				Ingredient.of(ModItems.spellDrive),
-				Ingredient.of(bullets));
+				ImmutableList.of(new ItemStack(ModItems.spellDrive)),
+				Registry.ITEM.stream()
+						.filter(item -> item instanceof ItemSpellBullet)
+						.map(ItemStack::new)
+						.collect(Collectors.toList()));
 	}
 
 	@Override
-	public void setIngredients(IIngredients ingredients) {
-		ingredients.setInputIngredients(inputs);
-		ingredients.setOutput(VanillaTypes.ITEM, new ItemStack(ModItems.spellDrive));
-	}
+	public void setRecipe(IRecipeLayoutBuilder builder, ICraftingGridHelper helper, IFocusGroup focuses) {
+		ItemStack drive = new ItemStack(ModItems.spellDrive);
 
-	@Override
-	public void setRecipe(IRecipeLayout recipeLayout, IIngredients ingredients) {
-		recipeLayout.setShapeless();
-		recipeLayout.getItemStacks().set(ingredients);
+		focuses.getFocuses(VanillaTypes.ITEM_STACK)
+				.filter(focus -> focus.getTypedValue().getIngredient().getItem() instanceof ItemSpellBullet)
+				.findFirst()
+				.map(focus -> focus.getTypedValue().getIngredient())
+				.flatMap(stack -> ISpellAcceptor.hasSpell(stack) ? Optional.ofNullable(ISpellAcceptor.acceptor(stack).getSpell()) : Optional.empty())
+				.ifPresent(spell -> ItemSpellDrive.setSpell(drive, spell));
 
-		IFocus<ItemStack> focus = recipeLayout.getFocus(VanillaTypes.ITEM);
-		if (focus != null) {
-			ItemStack stack = focus.getValue();
-
-			if (stack.getItem() instanceof ItemSpellBullet && ISpellAcceptor.hasSpell(stack)) {
-				ItemStack drive = new ItemStack(ModItems.spellDrive);
-				ItemSpellDrive.setSpell(drive, ISpellAcceptor.acceptor(stack).getSpell());
-				recipeLayout.getItemStacks().set(0, drive);
-				recipeLayout.getItemStacks().set(2, stack.copy());
-			}
-		}
+		helper.createAndSetInputs(builder, inputs, 0, 0);
+		helper.createAndSetOutputs(builder, ImmutableList.of(drive));
 	}
 
 	@Override
