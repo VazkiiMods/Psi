@@ -172,14 +172,14 @@ artifacts {
     archives srcJar, apiJar
 }
 
-//task incrementBuildNumber {
-//    doFirst {
-//        config.build_number = (config.build_number.toString().toInteger()) + 1
-//        configFile.withWriter {
-//            config.toProperties().store(it, "")
-//        }
-//    }
-//}
+task incrementBuildNumber {
+   doFirst {
+       config.build_number = (config.build_number.toString().toInteger()) + 1
+       configFile.withWriter {
+           config.toProperties().store(it, "")
+       }
+   }
+}
 
 jar {
     //rename the default output, for some better... sanity with scipts
@@ -212,13 +212,13 @@ jar {
     finalizedBy 'reobfJar'
 }
 
-/*
-uploadArchives {
+
+publishing {
     repositories {
-        mavenDeployer {
-            repository(url: "file://" + (System.getenv("local_maven") != null ? System.getenv("local_maven") : System.getenv("bamboo_local_maven")))
+        maven {
+            url = uri("file://" + (System.getenv("local_maven") != null ? System.getenv("local_maven") : System.getenv("bamboo_local_maven")))
         }
     }
-}*/
+}
 
 defaultTasks 'clean', 'runData', 'checkSyntax', 'build', 'incrementBuildNumber'
