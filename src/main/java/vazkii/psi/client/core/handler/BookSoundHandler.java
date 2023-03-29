@@ -53,7 +53,7 @@ public class BookSoundHandler {
 	}
 
 	@SubscribeEvent
-	public static void handleInput(InputEvent.KeyInputEvent evt) {
+	public static void handleInput(InputEvent.Key evt) {
 		Minecraft mc = Minecraft.getInstance();
 		if (evt.getModifiers() == 0 && evt.getAction() == GLFW.GLFW_PRESS && isBookOpen()) {
 			if (bookTime == 0 && evt.getKey() == SECRET_CODE[nextLetter]) {

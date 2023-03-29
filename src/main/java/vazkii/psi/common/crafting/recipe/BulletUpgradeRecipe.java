@@ -20,7 +20,6 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.ShapelessRecipe;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.registries.ForgeRegistryEntry;
 
 import vazkii.psi.common.item.ItemSpellBullet;
 
@@ -95,7 +94,7 @@ public class BulletUpgradeRecipe implements CraftingRecipe {
 		return SERIALIZER;
 	}
 
-	private static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<BulletUpgradeRecipe> {
+	private static class Serializer implements RecipeSerializer<BulletUpgradeRecipe> {
 		@Override
 		public BulletUpgradeRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
 			return new BulletUpgradeRecipe(SHAPELESS_RECIPE.fromJson(recipeId, json));

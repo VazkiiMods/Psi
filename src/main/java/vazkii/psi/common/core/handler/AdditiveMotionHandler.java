@@ -39,7 +39,7 @@ public class AdditiveMotionHandler {
 	}
 
 	@SubscribeEvent
-	public static void onPlayerTick(TickEvent.WorldTickEvent e) {
+	public static void onPlayerTick(TickEvent.LevelTickEvent e) {
 		if (e.side.isServer() && e.phase == TickEvent.Phase.END) {
 			for (Entity entity : toUpdate.keySet()) {
 				if (!entity.hurtMarked) { // Allow velocity change packets to take priority.
