@@ -69,14 +69,9 @@ public class ClientProxy implements IProxy {
 
 	@Override
 	public void registerHandlers() {
-		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetup);
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::modelBake);
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::addCADModels);
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::loadComplete);
-	}
-
-	private void clientSetup(FMLClientSetupEvent event) {
-		ItemBlockRenderTypes.setRenderLayer(ModBlocks.conjured, RenderType.translucent());
 	}
 
 	@SubscribeEvent
