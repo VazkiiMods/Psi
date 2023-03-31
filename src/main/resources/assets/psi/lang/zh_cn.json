@@ -554,8 +554,6 @@
   "psi.spellpiece.trick_smelt_block_sequence.desc": "熔炼指定方向上一系列方块",
   "psi.spellpiece.trick_collapse_block_sequence": "启动式:崩塌方块序列",
   "psi.spellpiece.trick_collapse_block_sequence.desc": "让一系列方块像沙子一样崩塌",
-  "psi.spellpiece.trick_debug_spamless": "启动式:频道调试",
-  "psi.spellpiece.trick_debug_spamless.desc": "输出目标调试信息，替换之前同一频道的信息",
   "psi.spellpiece.trick_night_vision": "启动式:夜视",
   "psi.spellpiece.trick_night_vision.desc": "赋予夜视效果",
   "psi.spellpiece.trick_particle_trail": "启动式:粒子轨迹",

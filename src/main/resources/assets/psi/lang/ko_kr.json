@@ -560,8 +560,6 @@
   "psi.spellpiece.trick_smelt_block_sequence.desc": "주어진 위치에서 시작하여 정의된 방향으로 블록을 제련합니다.",
   "psi.spellpiece.trick_collapse_block_sequence": "동작: 블록 묶음 무너뜨리기",
   "psi.spellpiece.trick_collapse_block_sequence.desc": "마치 모래처럼 일련의 블록을 무너뜨립니다.",
-  "psi.spellpiece.trick_debug_spamless": "동작: 채널형 디버그",
-  "psi.spellpiece.trick_debug_spamless.desc": "표적을 인쇄하여 이전의 모든 인쇄물을 동일한 번호로 교체합니다.",
   "psi.spellpiece.trick_night_vision": "동작: 야간 투시",
   "psi.spellpiece.trick_night_vision.desc": "야간 투시 효과를 적용합니다.",
   "psi.spellpiece.trick_particle_trail": "동작: 입자 흔적",

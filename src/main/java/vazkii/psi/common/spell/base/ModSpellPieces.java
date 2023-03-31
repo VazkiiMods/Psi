@@ -255,7 +255,6 @@ public final class ModSpellPieces {
 	public static PieceContainer trickChangeSlot;
 	public static PieceContainer trickSmeltBlockSequence;
 	public static PieceContainer trickCollapseBlockSequence;
-	public static PieceContainer trickDebugSpamless;
 	public static PieceContainer trickNightVision;
 	public static PieceContainer trickParticleTrail;
 	public static PieceContainer trickRussianRoulette;
@@ -435,7 +434,6 @@ public final class ModSpellPieces {
 		trickChangeSlot = register(PieceTrickChangeSlot.class, LibPieceNames.TRICK_CHANGE_SLOT, LibPieceGroups.DETECTION_DYNAMICS);
 		trickSmeltBlockSequence = register(PieceTrickSmeltBlockSequence.class, LibPieceNames.TRICK_SMELT_BLOCK_SEQUENCE, LibPieceGroups.SMELTERY);
 		trickCollapseBlockSequence = register(PieceTrickCollapseBlockSequence.class, LibPieceNames.TRICK_COLLAPSE_BLOCK_SEQUENCE, LibPieceGroups.BLOCK_MOVEMENT);
-		trickDebugSpamless = register(PieceTrickDebugSpamless.class, LibPieceNames.TRICK_DEBUG_SPAMLESS, LibPieceGroups.TUTORIAL_1);
 		trickNightVision = register(PieceTrickNightVision.class, LibPieceNames.TRICK_NIGHT_VISION, LibPieceGroups.POSITIVE_EFFECTS);
 		trickParticleTrail = register(PieceTrickParticleTrail.class, LibPieceNames.TRICK_PARTICLE_TRAIL, LibPieceGroups.BLOCK_CONJURATION);
 		trickRussianRoulette = register(PieceTrickRussianRoulette.class, LibPieceNames.TRICK_RUSSIAN_ROULETTE, LibPieceGroups.FLOW_CONTROL);

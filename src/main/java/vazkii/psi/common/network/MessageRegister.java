@@ -78,10 +78,6 @@ public class MessageRegister {
 				.encoder(MessageBlink::encode)
 				.decoder(MessageBlink::new)
 				.consumer(MessageBlink::receive).add();
-		HANDLER.messageBuilder(MessageSpamlessChat.class, id++)
-				.encoder(MessageSpamlessChat::encode)
-				.decoder(MessageSpamlessChat::new)
-				.consumer(MessageSpamlessChat::receive).add();
 		HANDLER.messageBuilder(MessageParticleTrail.class, id++)
 				.encoder(MessageParticleTrail::encode)
 				.decoder(MessageParticleTrail::new)
