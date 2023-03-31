@@ -16,20 +16,22 @@ plugins {
 
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
-apply plugin: 'maven-publish'
 apply plugin: 'pmd'
 apply plugin: 'org.spongepowered.mixin'
 
-version = "${mc_version}-${build_number}"
-group = "vazkii.${mod_id}" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = mod_name
+def getGitHash() {
+    def stdout = new ByteArrayOutputStream()
+    exec {
+        commandLine 'git', 'rev-parse', '--short', 'HEAD'
+        standardOutput = stdout
+    }
+    return stdout.toString().trim()
+}
+
+version = "${mc_version}-${getGitHash()}"
+group = "io.github.panda885"
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
-println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
-
-if (System.getenv('BUILD_NUMBER') != null) {
-    version += "." + System.getenv('BUILD_NUMBER')
-}
 
 minecraft {
     mappings channel: 'official', version: mc_version
@@ -59,6 +61,7 @@ minecraft {
                 }
             }
         }
+
         data {
             properties 'forge.logging.console.level': 'debug'
             properties 'fml.earlyprogresswindow': 'false'
@@ -132,57 +135,23 @@ spotless {
     }
 }
 
-task checkSyntax {
-    dependsOn spotlessJavaCheck, pmdMain
-}
-
 sourceSets.main.resources {
     srcDir 'src/generated/resources'
 }
 
-processResources {
-
+java {
+    withSourcesJar()
 }
-
-task srcJar(type: Jar) {
-    from(sourceSets.main.java)
-    classifier = 'sources'
-}
-
-task apiJar(type: Jar) {
-    // Remove sources from the api jar when MinecraftForge/ForgeGradle#369 is fixed
-    from(sourceSets.main.allJava)
-    from(sourceSets.main.output)
-    include 'vazkii/psi/api/**'
-
-    classifier = 'api'
-}
-
-artifacts {
-    archives srcJar, apiJar
-}
-
-//task incrementBuildNumber {
-//    doFirst {
-//        config.build_number = (config.build_number.toString().toInteger()) + 1
-//        configFile.withWriter {
-//            config.toProperties().store(it, "")
-//        }
-//    }
-//}
 
 jar {
-    //rename the default output, for some better... sanity with scipts
-    archiveName = "${baseName} ${version}.${extension}"
-
     manifest {
         attributes([
-                "Specification-Title": "${mod_id}",
-                "Specification-Vendor": "vazkii",
+                "Specification-Title": "${name}",
+                "Specification-Vendor": "panda885",
                 "Specification-Version": "1", // We are version 1 of ourselves
-                "Implementation-Title": "${mod_id}",
-                "Implementation-Version": "${version}",
-                "Implementation-Vendor" :"vazkii",
+                "Implementation-Title": "${name}",
+                "Implementation-Version": "${archiveVersion}",
+                "Implementation-Vendor": "panda885",
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
                 "MixinConfigs": "${mod_id}.mixins.json"
         ])
@@ -201,14 +170,3 @@ jar {
     exclude "**/en_us_base.json"
     finalizedBy 'reobfJar'
 }
-
-/*
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            repository(url: "file://" + (System.getenv("local_maven") != null ? System.getenv("local_maven") : System.getenv("bamboo_local_maven")))
-        }
-    }
-}*/
-
-defaultTasks 'clean', 'runData', 'checkSyntax', 'build', 'incrementBuildNumber'
