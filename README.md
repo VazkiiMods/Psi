@@ -18,4 +18,4 @@ This mod requires [Patchouli](https://github.com/Vazkii/Patchouli).
 
 ### License
 
-Psi Starless and the original mod is licensed under the [Psi License](http://psi.vazkii.net/license.php).
+Psi Starless and the original mod are licensed under the [Psi License](http://psi.vazkii.net/license.php).
