@@ -14,8 +14,8 @@ import com.mojang.blaze3d.vertex.Tesselator;
 
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.MultiBufferSource;
-
 import net.minecraft.network.chat.Component;
+
 import vazkii.psi.api.spell.SpellPiece;
 import vazkii.psi.client.gui.GuiProgrammer;
 

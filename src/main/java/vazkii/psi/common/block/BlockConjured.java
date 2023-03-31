@@ -39,8 +39,6 @@ import vazkii.psi.common.block.tile.TileConjured;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import java.util.Random;
-
 public class BlockConjured extends Block implements EntityBlock, SimpleWaterloggedBlock {
 
 	public static final BooleanProperty SOLID = BooleanProperty.create("solid");

@@ -20,8 +20,8 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.Tags;
-
 import net.minecraftforge.registries.ForgeRegistries;
+
 import vazkii.patchouli.api.PatchouliAPI;
 import vazkii.psi.api.recipe.TrickRecipeBuilder;
 import vazkii.psi.common.Psi;

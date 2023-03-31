@@ -11,8 +11,8 @@ package vazkii.psi.data;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
-
 import net.minecraftforge.registries.ForgeRegistries;
+
 import vazkii.psi.common.block.base.ModBlocks;
 import vazkii.psi.common.lib.LibMisc;
 

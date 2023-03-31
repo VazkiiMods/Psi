@@ -17,8 +17,8 @@ import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.resources.language.I18n;
-
 import net.minecraft.network.chat.Component;
+
 import org.lwjgl.glfw.GLFW;
 
 import vazkii.psi.api.spell.SpellGrid;
