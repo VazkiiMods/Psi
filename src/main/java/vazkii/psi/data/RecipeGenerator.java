@@ -24,8 +24,8 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.SimpleRecipeSerializer;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.crafting.conditions.IConditionBuilder;
-
 import net.minecraftforge.registries.ForgeRegistries;
+
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.base.ModBlocks;
 import vazkii.psi.common.crafting.recipe.*;

@@ -12,8 +12,8 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.gui.components.Button;
-
 import net.minecraft.network.chat.Component;
+
 import vazkii.psi.client.gui.GuiProgrammer;
 
 public class GuiButtonPage extends Button {
@@ -22,7 +22,7 @@ public class GuiButtonPage extends Button {
 	final GuiProgrammer gui;
 
 	public GuiButtonPage(int x, int y, boolean right, GuiProgrammer gui) {
-		super(x, y, 18, 10, Component.empty(),button -> {});
+		super(x, y, 18, 10, Component.empty(), button -> {});
 		this.gui = gui;
 		this.right = right;
 	}

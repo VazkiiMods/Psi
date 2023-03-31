@@ -16,8 +16,8 @@ import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
-
 import net.minecraftforge.registries.RegisterEvent;
+
 import vazkii.psi.api.recipe.ITrickRecipe;
 import vazkii.psi.common.crafting.recipe.AssemblyScavengeRecipe;
 import vazkii.psi.common.crafting.recipe.BulletToDriveRecipe;

@@ -15,8 +15,8 @@ import net.minecraft.world.item.Item;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
-
 import net.minecraftforge.registries.RegisterEvent;
+
 import vazkii.psi.common.core.PsiCreativeTab;
 import vazkii.psi.common.item.*;
 import vazkii.psi.common.item.armor.ItemPsimetalExosuitBoots;
