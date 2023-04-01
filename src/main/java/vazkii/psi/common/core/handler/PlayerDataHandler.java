@@ -579,12 +579,7 @@ public class PlayerDataHandler {
 				if (!cadStack.isEmpty()) {
 					ICAD cad = (ICAD) cadStack.getItem();
 					cad.regenPsi(cadStack, event.getCadRegen());
-					cadStack.getCapability(PsiAPI.CAD_DATA_CAPABILITY).ifPresent(data -> {
-						if (data.isDirty() && player instanceof ServerPlayer) {
-							MessageRegister.sendToPlayer(new MessageCADDataSync(data), player);
-							data.markDirty(false);
-						}
-					});
+					cad.sync(cadStack, player);
 				}
 
 				boolean anyChange = false;
@@ -688,6 +683,7 @@ public class PlayerDataHandler {
 				if (!cadStack.isEmpty()) {
 					ICAD cad = (ICAD) cadStack.getItem();
 					overflow = cad.consumePsi(cadStack, overflow);
+					cad.sync(cadStack, player);
 				}
 
 				if (!shatter && overflow > 0) {

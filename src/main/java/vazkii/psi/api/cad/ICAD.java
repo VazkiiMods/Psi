@@ -9,6 +9,7 @@
 package vazkii.psi.api.cad;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
@@ -76,6 +77,18 @@ public interface ICAD {
 	 * the remainder that couldn't be consumed. Used to prevent damage.
 	 */
 	int consumePsi(ItemStack stack, int psi);
+
+	/**
+	 * <h2>Added by Starless</h2>
+	 *
+	 * Synchronizes CAD's data with a player when marked dirty and <strong>sets dirty to false</strong>.
+	 * When the player is not a server player or the data is not marked dirty, it returns false.
+	 *
+	 * @param stack item stack of CAD
+	 * @param player the player to sync the data with
+	 * @return true, if successful
+	 */
+	boolean sync(ItemStack stack, Player player);
 
 	/**
 	 * Gets how many vectors this CAD can store in memory.
