@@ -128,6 +128,22 @@ public class ItemCAD extends Item implements ICAD {
 	}
 
 	@Override
+	public @Nullable CompoundTag getShareTag(ItemStack stack) {
+		CompoundTag nbt = stack.getOrCreateTag();
+		stack.getCapability(PsiAPI.CAD_DATA_CAPABILITY).ifPresent(data -> nbt.put("CapabalityData", data.serializeNBT()));
+		return nbt;
+	}
+
+	@Override
+	public void readShareTag(ItemStack stack, @Nullable CompoundTag nbt) {
+		super.readShareTag(stack, nbt);
+
+		if (nbt != null) {
+			stack.getCapability(PsiAPI.CAD_DATA_CAPABILITY).ifPresent(data -> data.deserializeNBT(nbt.getCompound("CapabilityData")));
+		}
+	}
+
+	@Override
 	public void inventoryTick(ItemStack stack, Level world, Entity entityIn, int itemSlot, boolean isSelected) {
 		CompoundTag compound = stack.getOrCreateTag();
 
