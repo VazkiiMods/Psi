@@ -167,6 +167,12 @@ public final class HUDHandler {
 		float g = 0.65F;
 		float b = 1F;
 
+		if (data.isOverflowed()) {
+			r = 1F;
+			g = 0.6F;
+			b = 0.6F;
+		}
+
 		int origHeight = height;
 		int origY = y;
 		int v = 0;
