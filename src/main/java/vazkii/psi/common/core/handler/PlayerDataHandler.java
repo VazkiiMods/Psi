@@ -67,7 +67,6 @@ import vazkii.psi.common.Psi;
 import vazkii.psi.common.item.ItemCAD;
 import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.network.MessageRegister;
-import vazkii.psi.common.network.message.MessageCADDataSync;
 import vazkii.psi.common.network.message.MessageDataSync;
 import vazkii.psi.common.network.message.MessageDeductPsi;
 import vazkii.psi.common.network.message.MessageTriggerJumpSpell;
@@ -579,7 +578,6 @@ public class PlayerDataHandler {
 				if (!cadStack.isEmpty()) {
 					ICAD cad = (ICAD) cadStack.getItem();
 					cad.regenPsi(cadStack, event.getCadRegen());
-					cad.sync(cadStack, player);
 				}
 
 				boolean anyChange = false;
@@ -683,7 +681,6 @@ public class PlayerDataHandler {
 				if (!cadStack.isEmpty()) {
 					ICAD cad = (ICAD) cadStack.getItem();
 					overflow = cad.consumePsi(cadStack, overflow);
-					cad.sync(cadStack, player);
 				}
 
 				if (!shatter && overflow > 0) {

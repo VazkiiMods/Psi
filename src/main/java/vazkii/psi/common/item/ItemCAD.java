@@ -175,8 +175,10 @@ public class ItemCAD extends Item implements ICAD {
 				}
 			}
 
-			if (entityIn instanceof ServerPlayer player) {
-				sync(data, player);
+			if (entityIn instanceof ServerPlayer && data.isDirty()) {
+				ServerPlayer player = (ServerPlayer) entityIn;
+				MessageRegister.sendToPlayer(new MessageCADDataSync(data), player);
+				data.markDirty(false);
 			}
 		});
 	}
@@ -529,21 +531,6 @@ public class ItemCAD extends Item implements ICAD {
 		data.setBattery(0);
 		data.markDirty(true);
 		return psi - currPsi;
-	}
-
-	@Override
-	public boolean sync(ItemStack stack, Player player) {
-		return sync(getCADData(stack), player);
-	}
-
-	private boolean sync(ICADData data, Player player ){
-		if (!(player instanceof ServerPlayer) || !data.isDirty()) {
-			return false;
-		}
-
-		MessageRegister.sendToPlayer(new MessageCADDataSync(data), player);
-		data.markDirty(false);
-		return true;
 	}
 
 	@Override
