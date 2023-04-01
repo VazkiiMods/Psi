@@ -585,6 +585,8 @@ public class PlayerDataHandler {
 				if (availablePsi != max && event.getPlayerRegen() > 0) {
 					anyChange = true;
 				}
+
+				int prevPsi = availablePsi;
 				availablePsi = Math.min(max, availablePsi + event.getPlayerRegen());
 
 				if (overflowed && event.willHealOverflow()) {
@@ -598,6 +600,11 @@ public class PlayerDataHandler {
 				regenCooldown = event.getRegenCooldown();
 
 				if (anyChange) {
+					if (player instanceof ServerPlayer) {
+						MessageDeductPsi message = new MessageDeductPsi(prevPsi, availablePsi, regenCooldown, false);
+						MessageRegister.sendToPlayer(message, player);
+					}
+
 					save();
 				}
 			}
