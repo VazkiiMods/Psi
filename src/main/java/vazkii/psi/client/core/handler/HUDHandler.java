@@ -84,7 +84,7 @@ public final class HUDHandler {
 
 	public static final IGuiOverlay HUD_ITEM = (gui, poseStack, partialTick, screenWidth, screenHeight) -> {
 		if (!MinecraftForge.EVENT_BUS.post(new RenderPsiHudEvent(PsiHudElementType.HUD_ITEM))) {
-			renderRemainingItems(poseStack, partialTick, screenWidth, screenHeight);
+			renderHUDItem(poseStack, partialTick, screenWidth, screenHeight);
 		}
 	};
 
