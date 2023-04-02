@@ -128,10 +128,12 @@ public class PieceTrickPlaceBlock extends PieceTrick {
 
 					if (result != InteractionResult.FAIL) {
 						removeFromInventory(player, stack, false);
-						if (player.isCreative()) {
-							HUDHandler.setRemaining(rem, -1);
-						} else {
-							HUDHandler.setRemaining(player, rem, null);
+						if (world.isClientSide()) {
+							if (player.isCreative()) {
+								HUDHandler.setRemaining(rem, -1);
+							} else {
+								HUDHandler.setRemaining(player, rem, null);
+							}
 						}
 					}
 				}
