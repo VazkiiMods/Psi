@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class EntitySpellMine extends EntitySpellGrenade {
-	@ObjectHolder(LibResources.PREFIX_MOD + LibEntityNames.SPELL_MINE)
+	@ObjectHolder(registryName = "entity_type", value = LibResources.PREFIX_MOD + LibEntityNames.SPELL_MINE)
 	public static EntityType<EntitySpellMine> TYPE;
 
 	boolean triggered = false;

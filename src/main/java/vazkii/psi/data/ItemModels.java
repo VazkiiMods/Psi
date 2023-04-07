@@ -13,6 +13,7 @@ import net.minecraft.world.item.Item;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.base.ModBlocks;
@@ -26,7 +27,7 @@ public class ItemModels extends ItemModelProvider {
 	}
 
 	private void pointToBlock(Item item) {
-		String name = item.getRegistryName().getPath();
+		String name = ForgeRegistries.ITEMS.getKey(item).getPath();
 		getBuilder(name).parent(new ModelFile.UncheckedModelFile(Psi.location("block/" + name)));
 	}
 

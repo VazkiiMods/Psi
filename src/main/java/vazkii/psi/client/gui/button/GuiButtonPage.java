@@ -12,8 +12,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 
 import vazkii.psi.client.gui.GuiProgrammer;
 
@@ -23,13 +22,13 @@ public class GuiButtonPage extends Button {
 	final GuiProgrammer gui;
 
 	public GuiButtonPage(int x, int y, boolean right, GuiProgrammer gui) {
-		super(x, y, 18, 10, TextComponent.EMPTY, button -> {});
+		super(x, y, 18, 10, Component.empty(), button -> {});
 		this.gui = gui;
 		this.right = right;
 	}
 
 	public GuiButtonPage(int x, int y, boolean right, GuiProgrammer gui, Button.OnPress pressable) {
-		super(x, y, 18, 10, TextComponent.EMPTY, pressable);
+		super(x, y, 18, 10, Component.empty(), pressable);
 		this.gui = gui;
 		this.right = right;
 	}
@@ -44,7 +43,7 @@ public class GuiButtonPage extends Button {
 			blit(ms, x, y, hover ? 216 : 198, right ? 145 : 155, width, height);
 
 			if (hover) {
-				gui.tooltip.add(new TranslatableComponent(right ? "psimisc.next_page" : "psimisc.prev_page"));
+				gui.tooltip.add(Component.translatable(right ? "psimisc.next_page" : "psimisc.prev_page"));
 			}
 		}
 	}

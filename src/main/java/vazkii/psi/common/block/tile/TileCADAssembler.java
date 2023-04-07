@@ -14,7 +14,6 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.ContainerHelper;
@@ -57,7 +56,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class TileCADAssembler extends BlockEntity implements ITileCADAssembler, MenuProvider {
-	@ObjectHolder(LibMisc.PREFIX_MOD + LibBlockNames.CAD_ASSEMBLER)
+	@ObjectHolder(registryName = "minecraft:block_entity_type", value = LibMisc.PREFIX_MOD + LibBlockNames.CAD_ASSEMBLER)
 	public static BlockEntityType<TileCADAssembler> TYPE;
 
 	private final IItemHandlerModifiable inventory = new ItemStackHandler(6) {
@@ -317,7 +316,7 @@ public class TileCADAssembler extends BlockEntity implements ITileCADAssembler, 
 	@Nonnull
 	@Override
 	public Component getDisplayName() {
-		return new TranslatableComponent(ModBlocks.cadAssembler.getDescriptionId());
+		return Component.translatable(ModBlocks.cadAssembler.getDescriptionId());
 	}
 
 	@Nullable

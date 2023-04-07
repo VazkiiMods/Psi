@@ -20,6 +20,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.Tags;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import vazkii.patchouli.api.PatchouliAPI;
 import vazkii.psi.api.recipe.TrickRecipeBuilder;
@@ -63,13 +64,13 @@ public class TrickRecipeGenerator extends RecipeProvider {
 				.input(ItemTags.COALS)
 				.trick(Psi.location(LibPieceNames.TRICK_EBONY_IVORY))
 				.cad(ModItems.cadAssemblyPsimetal);
-		dimension(builder, consumer, ModItems.ebonySubstance.getRegistryName(), Level.END);
+		dimension(builder, consumer, ForgeRegistries.ITEMS.getKey(ModItems.ebonySubstance), Level.END);
 
 		builder = TrickRecipeBuilder.of(ModItems.ivorySubstance)
 				.input(Tags.Items.GEMS_QUARTZ)
 				.trick(Psi.location(LibPieceNames.TRICK_EBONY_IVORY))
 				.cad(ModItems.cadAssemblyPsimetal);
-		dimension(builder, consumer, ModItems.ivorySubstance.getRegistryName(), Level.END);
+		dimension(builder, consumer, ForgeRegistries.ITEMS.getKey(ModItems.ivorySubstance), Level.END);
 	}
 
 	@Nonnull

@@ -8,9 +8,9 @@
  */
 package vazkii.psi.data;
 
+import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
 
 import vazkii.psi.common.lib.LibMisc;
 
@@ -21,14 +21,14 @@ public class DataGenerator {
 	public static void gatherData(GatherDataEvent event) {
 		if (event.includeServer()) {
 			BlockTagProvider blockTagProvider = new BlockTagProvider(event.getGenerator());
-			event.getGenerator().addProvider(blockTagProvider);
-			event.getGenerator().addProvider(new ItemTagProvider(event.getGenerator(), blockTagProvider));
-			event.getGenerator().addProvider(new RecipeGenerator(event.getGenerator()));
-			event.getGenerator().addProvider(new TrickRecipeGenerator(event.getGenerator()));
+			event.getGenerator().addProvider(true, blockTagProvider);
+			event.getGenerator().addProvider(true, new ItemTagProvider(event.getGenerator(), blockTagProvider));
+			event.getGenerator().addProvider(true, new RecipeGenerator(event.getGenerator()));
+			event.getGenerator().addProvider(true, new TrickRecipeGenerator(event.getGenerator()));
 		}
 		if (event.includeClient()) {
-			event.getGenerator().addProvider(new BlockModels(event.getGenerator(), event.getExistingFileHelper()));
-			event.getGenerator().addProvider(new ItemModels(event.getGenerator(), event.getExistingFileHelper()));
+			event.getGenerator().addProvider(true, new BlockModels(event.getGenerator(), event.getExistingFileHelper()));
+			event.getGenerator().addProvider(true, new ItemModels(event.getGenerator(), event.getExistingFileHelper()));
 		}
 	}
 }

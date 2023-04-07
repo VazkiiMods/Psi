@@ -17,7 +17,7 @@ import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.resources.language.I18n;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 
 import org.lwjgl.glfw.GLFW;
 
@@ -35,7 +35,7 @@ public class SideConfigWidget extends AbstractWidget {
 	public final GuiProgrammer parent;
 
 	public SideConfigWidget(int x, int y, int width, int height, GuiProgrammer programmer) {
-		super(x, y, width, height, TextComponent.EMPTY);
+		super(x, y, width, height, Component.empty());
 		this.parent = programmer;
 	}
 

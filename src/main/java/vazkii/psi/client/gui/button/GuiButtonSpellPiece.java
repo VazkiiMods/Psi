@@ -14,7 +14,7 @@ import com.mojang.blaze3d.vertex.Tesselator;
 
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 
 import vazkii.psi.api.spell.SpellPiece;
 import vazkii.psi.client.gui.GuiProgrammer;
@@ -24,13 +24,13 @@ public class GuiButtonSpellPiece extends Button {
 	final GuiProgrammer gui;
 
 	public GuiButtonSpellPiece(GuiProgrammer gui, SpellPiece piece, int x, int y) {
-		super(x, y, 16, 16, TextComponent.EMPTY, button -> {});
+		super(x, y, 16, 16, Component.empty(), button -> {});
 		this.gui = gui;
 		this.piece = piece;
 	}
 
 	public GuiButtonSpellPiece(GuiProgrammer gui, SpellPiece piece, int x, int y, Button.OnPress pressable) {
-		super(x, y, 16, 16, TextComponent.EMPTY, pressable);
+		super(x, y, 16, 16, Component.empty(), pressable);
 		this.gui = gui;
 		this.piece = piece;
 	}

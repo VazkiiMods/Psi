@@ -10,7 +10,6 @@ package vazkii.psi.api.internal;
 
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -23,7 +22,7 @@ public final class TooltipHelper {
 		if (Screen.hasShiftDown()) {
 			r.run();
 		} else {
-			tooltip.add(new TranslatableComponent("psimisc.shift_for_info"));
+			tooltip.add(Component.translatable("psimisc.shift_for_info"));
 		}
 	}
 
@@ -32,7 +31,7 @@ public final class TooltipHelper {
 		if (Screen.hasControlDown()) {
 			r.run();
 		} else {
-			tooltip.add(new TranslatableComponent("psimisc.ctrl_for_stats"));
+			tooltip.add(Component.translatable("psimisc.ctrl_for_stats"));
 		}
 	}
 

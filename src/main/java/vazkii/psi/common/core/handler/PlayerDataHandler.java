@@ -30,12 +30,12 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.FOVModifierEvent;
-import net.minecraftforge.client.event.RenderLevelLastEvent;
+import net.minecraftforge.client.event.ComputeFovModifierEvent;
+import net.minecraftforge.client.event.RenderLevelStageEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
-import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -147,9 +147,9 @@ public class PlayerDataHandler {
 		}
 
 		@SubscribeEvent
-		public static void onPlayerTick(LivingUpdateEvent event) {
-			if (event.getEntityLiving() instanceof Player && !event.getEntityLiving().isSpectator()) {
-				Player player = (Player) event.getEntityLiving();
+		public static void onPlayerTick(LivingEvent.LivingTickEvent event) {
+			if (event.getEntity() instanceof Player && !event.getEntity().isSpectator()) {
+				Player player = (Player) event.getEntity();
 
 				ItemStack cadStack = PsiAPI.getPlayerCAD(player);
 				if (!cadStack.isEmpty() && cadStack.getItem() instanceof ICAD && PsiAPI.canCADBeUpdated(player)) {
@@ -163,8 +163,8 @@ public class PlayerDataHandler {
 
 		@SubscribeEvent
 		public static void onEntityDamage(LivingHurtEvent event) {
-			if (event.getEntityLiving() instanceof Player) {
-				Player player = (Player) event.getEntityLiving();
+			if (event.getEntity() instanceof Player) {
+				Player player = (Player) event.getEntity();
 				PlayerDataHandler.get(player).damage(event.getAmount());
 
 				LivingEntity attacker = null;
@@ -181,16 +181,16 @@ public class PlayerDataHandler {
 
 		@SubscribeEvent
 		public static void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
-			if (event.getPlayer() instanceof ServerPlayer) {
-				MessageDataSync message = new MessageDataSync(get(event.getPlayer()));
-				MessageRegister.sendToPlayer(message, event.getPlayer());
+			if (event.getEntity() instanceof ServerPlayer) {
+				MessageDataSync message = new MessageDataSync(get(event.getEntity()));
+				MessageRegister.sendToPlayer(message, event.getEntity());
 			}
 		}
 
 		@SubscribeEvent
 		public static void onEntityJump(LivingJumpEvent event) {
-			if (event.getEntityLiving() instanceof Player && event.getEntity().level.isClientSide && !event.getEntityLiving().isSpectator()) {
-				Player player = (Player) event.getEntityLiving();
+			if (event.getEntity() instanceof Player && event.getEntity().level.isClientSide && !event.getEntity().isSpectator()) {
+				Player player = (Player) event.getEntity();
 				PsiArmorEvent.post(new PsiArmorEvent(player, PsiArmorEvent.JUMP));
 				MessageRegister.HANDLER.sendToServer(new MessageTriggerJumpSpell());
 			}
@@ -198,12 +198,12 @@ public class PlayerDataHandler {
 
 		@SubscribeEvent
 		public static void onPsiArmorEvent(PsiArmorEvent event) {
-			if (event.getEntityLiving().isSpectator()) {
+			if (event.getEntity().isSpectator()) {
 				return;
 			}
 
 			for (int i = 0; i < 4; i++) {
-				ItemStack armor = ((Player) event.getEntityLiving()).getInventory().armor.get(i);
+				ItemStack armor = event.getEntity().getInventory().armor.get(i);
 				if (!armor.isEmpty() && armor.getItem() instanceof IPsiEventArmor) {
 					IPsiEventArmor handler = (IPsiEventArmor) armor.getItem();
 					handler.onEvent(armor, event);
@@ -213,35 +213,36 @@ public class PlayerDataHandler {
 
 		@SubscribeEvent
 		public static void onChangeDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
-			get(event.getPlayer()).eidosChangelog.clear();
+			get(event.getEntity()).eidosChangelog.clear();
 		}
 
 		@SubscribeEvent
 		@OnlyIn(Dist.CLIENT)
-		public static void onRenderWorldLast(RenderLevelLastEvent event) {
-			Minecraft mc = Minecraft.getInstance();
-			Entity cameraEntity = mc.getCameraEntity();
-			if (cameraEntity != null) {
-				float partialTicks = event.getPartialTick();
-				for (Player player : mc.level.players()) {
-					PlayerDataHandler.get(player).render(player, partialTicks, event.getPoseStack());
+		public static void onRenderWorldLast(RenderLevelStageEvent event) {
+			if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_PARTICLES) {
+				Minecraft mc = Minecraft.getInstance();
+				Entity cameraEntity = mc.getCameraEntity();
+				if (cameraEntity != null) {
+					float partialTicks = event.getPartialTick();
+					for (Player player : mc.level.players()) {
+						PlayerDataHandler.get(player).render(player, partialTicks, event.getPoseStack());
+					}
 				}
 			}
-
 		}
 
 		@SubscribeEvent
 		@OnlyIn(Dist.CLIENT)
-		public static void onFOVUpdate(FOVModifierEvent event) {
+		public static void onFOVUpdate(ComputeFovModifierEvent event) {
 			PlayerData data = get(Minecraft.getInstance().player);
 			if (data.isAnchored) {
-				float fov = event.getNewfov();
+				float fov = event.getNewFovModifier();
 				if (data.eidosAnchorTime > 0) {
 					fov *= Math.min(5, data.eidosAnchorTime - ClientTickHandler.partialTicks) / 5;
 				} else {
 					fov *= (10 - Math.min(10, data.postAnchorRecallTime + ClientTickHandler.partialTicks)) / 10;
 				}
-				event.setNewfov(fov);
+				event.setNewFovModifier(fov);
 			}
 		}
 
@@ -584,6 +585,8 @@ public class PlayerDataHandler {
 				if (availablePsi != max && event.getPlayerRegen() > 0) {
 					anyChange = true;
 				}
+
+				int prevPsi = availablePsi;
 				availablePsi = Math.min(max, availablePsi + event.getPlayerRegen());
 
 				if (overflowed && event.willHealOverflow()) {
@@ -597,6 +600,11 @@ public class PlayerDataHandler {
 				regenCooldown = event.getRegenCooldown();
 
 				if (anyChange) {
+					if (player instanceof ServerPlayer) {
+						MessageDeductPsi message = new MessageDeductPsi(prevPsi, availablePsi, regenCooldown, false);
+						MessageRegister.sendToPlayer(message, player);
+					}
+
 					save();
 				}
 			}

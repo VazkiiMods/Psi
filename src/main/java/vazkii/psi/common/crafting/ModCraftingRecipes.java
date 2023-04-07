@@ -11,13 +11,12 @@ package vazkii.psi.common.crafting;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraftforge.common.crafting.CraftingHelper;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.IForgeRegistryEntry;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegisterEvent;
 
 import vazkii.psi.api.recipe.ITrickRecipe;
 import vazkii.psi.common.crafting.recipe.AssemblyScavengeRecipe;
@@ -37,26 +36,25 @@ public class ModCraftingRecipes {
 	public static final RecipeType<ITrickRecipe> TRICK_RECIPE_TYPE = new PsiRecipeType<>();
 
 	@SubscribeEvent
-	public static void registerSerializers(RegistryEvent.Register<RecipeSerializer<?>> event) {
-		event.getRegistry().registerAll(
-				name(AssemblyScavengeRecipe.SERIALIZER, "scavenge"),
-				name(BulletToDriveRecipe.SERIALIZER, "bullet_to_drive"),
-				name(BulletUpgradeRecipe.SERIALIZER, "bullet_upgrade"),
-				name(ColorizerChangeRecipe.SERIALIZER, "colorizer_change"),
-				name(DriveDuplicateRecipe.SERIALIZER, "drive_duplicate"),
-				name(SensorAttachRecipe.SERIALIZER, "sensor_attach"),
-				name(SensorRemoveRecipe.SERIALIZER, "sensor_remove"),
+	public static void registerSerializers(RegisterEvent event) {
+		event.register(ForgeRegistries.Keys.RECIPE_SERIALIZERS, helper -> {
+			helper.register(new ResourceLocation(LibMisc.MOD_ID, "scavenge"), AssemblyScavengeRecipe.SERIALIZER);
+			helper.register(new ResourceLocation(LibMisc.MOD_ID, "bullet_to_drive"), BulletToDriveRecipe.SERIALIZER);
+			helper.register(new ResourceLocation(LibMisc.MOD_ID, "bullet_upgrade"), BulletUpgradeRecipe.SERIALIZER);
+			helper.register(new ResourceLocation(LibMisc.MOD_ID, "colorizer_change"), ColorizerChangeRecipe.SERIALIZER);
+			helper.register(new ResourceLocation(LibMisc.MOD_ID, "drive_duplicate"), DriveDuplicateRecipe.SERIALIZER);
+			helper.register(new ResourceLocation(LibMisc.MOD_ID, "sensor_attach"), SensorAttachRecipe.SERIALIZER);
+			helper.register(new ResourceLocation(LibMisc.MOD_ID, "sensor_remove"), SensorRemoveRecipe.SERIALIZER);
 
-				name(TrickRecipe.SERIALIZER, "trick_crafting"),
-				name(DimensionTrickRecipe.SERIALIZER, "dimension_trick_crafting")
-		);
+			helper.register(new ResourceLocation(LibMisc.MOD_ID, "trick_crafting"), TrickRecipe.SERIALIZER);
+			helper.register(new ResourceLocation(LibMisc.MOD_ID, "dimension_trick_crafting"), DimensionTrickRecipe.SERIALIZER);
 
-		CraftingHelper.register(MagicalPsiCondition.Serializer.INSTANCE);
-		Registry.register(Registry.RECIPE_TYPE, ITrickRecipe.TYPE_ID, TRICK_RECIPE_TYPE);
-	}
+			CraftingHelper.register(MagicalPsiCondition.Serializer.INSTANCE);
+		});
 
-	private static <T extends IForgeRegistryEntry<? extends T>> T name(T entry, String name) {
-		return entry.setRegistryName(new ResourceLocation(LibMisc.MOD_ID, name));
+		event.register(ForgeRegistries.Keys.RECIPE_TYPES, helper -> {
+			helper.register(ITrickRecipe.TYPE_ID, TRICK_RECIPE_TYPE);
+		});
 	}
 
 	private static class PsiRecipeType<T extends Recipe<?>> implements RecipeType<T> {

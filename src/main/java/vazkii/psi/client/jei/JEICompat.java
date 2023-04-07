@@ -55,7 +55,7 @@ public class JEICompat implements IModPlugin {
 
 	@Override
 	public void registerRecipes(IRecipeRegistration registration) {
-		registration.addRecipes(Minecraft.getInstance().level.getRecipeManager().byType(ModCraftingRecipes.TRICK_RECIPE_TYPE).values(), TrickCraftingCategory.UID);
+		registration.addRecipes(TrickCraftingCategory.TYPE, Minecraft.getInstance().level.getRecipeManager().getAllRecipesFor(ModCraftingRecipes.TRICK_RECIPE_TYPE));
 	}
 
 	@Override
@@ -63,7 +63,7 @@ public class JEICompat implements IModPlugin {
 		NonNullList<ItemStack> stacks = NonNullList.create();
 		ModItems.cad.fillItemCategory(CreativeModeTab.TAB_SEARCH, stacks);
 		for (ItemStack stack : stacks) {
-			registration.addRecipeCatalyst(stack, TrickCraftingCategory.UID);
+			registration.addRecipeCatalyst(stack, TrickCraftingCategory.TYPE);
 		}
 	}
 

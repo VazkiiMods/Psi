@@ -9,10 +9,9 @@
 package vazkii.psi.common.block.tile.container.slot;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
@@ -52,7 +51,7 @@ public class SlotCADOutput extends Slot {
 			String cancelMessage = event.getCancellationMessage();
 			if (!playerIn.level.isClientSide) {
 				if (cancelMessage != null && !cancelMessage.isEmpty()) {
-					playerIn.sendMessage(new TranslatableComponent(cancelMessage).setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), Util.NIL_UUID);
+					playerIn.sendSystemMessage(Component.translatable(cancelMessage).setStyle(Style.EMPTY.withColor(ChatFormatting.RED)));
 				}
 				playerIn.level.playSound(null, assemblerPos.getX(), assemblerPos.getY(), assemblerPos.getZ(), PsiSoundHandler.compileError, SoundSource.BLOCKS, sound, 1F);
 			}

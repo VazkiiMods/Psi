@@ -12,7 +12,6 @@ import com.google.common.collect.Multimap;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -115,7 +114,7 @@ public class ItemPsimetalSword extends SwordItem implements IPsimetalTool {
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level playerIn, List<Component> tooltip, TooltipFlag advanced) {
 		Component componentName = ISocketable.getSocketedItemName(stack, "psimisc.none");
-		tooltip.add(new TranslatableComponent("psimisc.spell_selected", componentName));
+		tooltip.add(Component.translatable("psimisc.spell_selected", componentName));
 	}
 
 	@Nullable

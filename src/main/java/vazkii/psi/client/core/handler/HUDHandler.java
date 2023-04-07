@@ -8,7 +8,6 @@
  */
 package vazkii.psi.client.core.handler;
 
-import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
@@ -21,8 +20,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
+import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
+import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -49,7 +48,7 @@ import vazkii.psi.common.lib.LibResources;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
-@Mod.EventBusSubscriber(value = Dist.CLIENT, modid = LibMisc.MOD_ID)
+@Mod.EventBusSubscriber(value = Dist.CLIENT, modid = LibMisc.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public final class HUDHandler {
 
 	private static final ResourceLocation psiBar = new ResourceLocation(LibResources.GUI_PSI_BAR);
@@ -65,26 +64,37 @@ public final class HUDHandler {
 	private static int remainingTime;
 	private static int remainingCount;
 
+	public static final IGuiOverlay PSI_BAR = (gui, poseStack, partialTick, screenWidth, screenHeight) -> {
+		if (!MinecraftForge.EVENT_BUS.post(new RenderPsiHudEvent(PsiHudElementType.PSI_BAR))) {
+			drawPsiBar(poseStack, partialTick, screenWidth, screenHeight);
+		}
+	};
+
+	public static final IGuiOverlay SOCKETABLE_EQUIPPED_NAME = (gui, poseStack, partialTick, screenWidth, screenHeight) -> {
+		if (!MinecraftForge.EVENT_BUS.post(new RenderPsiHudEvent(PsiHudElementType.SOCKETABLE_EQUIPPED_NAME))) {
+			renderSocketableEquippedName(poseStack, partialTick, screenWidth, screenHeight);
+		}
+	};
+
+	public static final IGuiOverlay REMAINING_ITEMS = (gui, poseStack, partialTick, screenWidth, screenHeight) -> {
+		if (!MinecraftForge.EVENT_BUS.post(new RenderPsiHudEvent(PsiHudElementType.REMAINING_ITEMS))) {
+			renderRemainingItems(poseStack, partialTick, screenWidth, screenHeight);
+		}
+	};
+
+	public static final IGuiOverlay HUD_ITEM = (gui, poseStack, partialTick, screenWidth, screenHeight) -> {
+		if (!MinecraftForge.EVENT_BUS.post(new RenderPsiHudEvent(PsiHudElementType.HUD_ITEM))) {
+			renderHUDItem(poseStack, partialTick, screenWidth, screenHeight);
+		}
+	};
+
 	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
-	public static void onDraw(RenderGameOverlayEvent.Post event) {
-		if (event.getType() == ElementType.LAYER) { //TODO figure out new ElementType.HOTBAR, may need to rewrite to use IIngameOverlay implementation
-			Window resolution = event.getWindow();
-			float partialTicks = event.getPartialTicks();
-
-			if (!MinecraftForge.EVENT_BUS.post(new RenderPsiHudEvent(PsiHudElementType.PSI_BAR))) {
-				drawPsiBar(event.getMatrixStack(), resolution, partialTicks);
-			}
-			if (!MinecraftForge.EVENT_BUS.post(new RenderPsiHudEvent(PsiHudElementType.SOCKETABLE_EQUIPPED_NAME))) {
-				renderSocketableEquippedName(event.getMatrixStack(), resolution, partialTicks);
-			}
-			if (!MinecraftForge.EVENT_BUS.post(new RenderPsiHudEvent(PsiHudElementType.REMAINING_ITEMS))) {
-				renderRemainingItems(event.getMatrixStack(), resolution, partialTicks);
-			}
-			if (!MinecraftForge.EVENT_BUS.post(new RenderPsiHudEvent(PsiHudElementType.HUD_ITEM))) {
-				renderHUDItem(event.getMatrixStack(), resolution, partialTicks);
-			}
-		}
+	public static void register(RegisterGuiOverlaysEvent event) {
+		event.registerAboveAll("psi_bar", PSI_BAR);
+		event.registerAboveAll("socketable_equipped_name", SOCKETABLE_EQUIPPED_NAME);
+		event.registerAboveAll("remaining_items", REMAINING_ITEMS);
+		event.registerAboveAll("hud_item", HUD_ITEM);
 	}
 
 	public static void tick() {
@@ -103,7 +113,7 @@ public final class HUDHandler {
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	public static void drawPsiBar(PoseStack ms, Window res, float pticks) {
+	public static void drawPsiBar(PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
 		Minecraft mc = Minecraft.getInstance();
 		ItemStack cadStack = PsiAPI.getPlayerCAD(mc.player);
 
@@ -123,7 +133,7 @@ public final class HUDHandler {
 			return;
 		}
 
-		ms.pushPose();
+		poseStack.pushPose();
 
 		boolean right = ConfigHandler.CLIENT.psiBarOnRight.get();
 
@@ -133,9 +143,9 @@ public final class HUDHandler {
 
 		int x = -pad;
 		if (right) {
-			x = res.getGuiScaledWidth() + pad - width;
+			x = screenWidth + pad - width;
 		}
-		int y = res.getGuiScaledHeight() / 2 - height / 2;
+		int y = screenHeight / 2 - height / 2;
 
 		if (!registeredMask) {
 			RenderSystem.setShaderTexture(0, psiBarMask);
@@ -145,7 +155,7 @@ public final class HUDHandler {
 
 		RenderSystem.enableBlend();
 		RenderSystem.setShaderTexture(0, psiBar);
-		GuiComponent.blit(ms, x, y, 0, 0, width, height, 64, 256);
+		GuiComponent.blit(poseStack, x, y, 0, 0, width, height, 64, 256);
 
 		x += 8;
 		y += 26;
@@ -156,6 +166,12 @@ public final class HUDHandler {
 		float r = 0.6F;
 		float g = 0.65F;
 		float b = 1F;
+
+		if (data.isOverflowed()) {
+			r = 1F;
+			g = 0.6F;
+			b = 0.6F;
+		}
 
 		int origHeight = height;
 		int origY = y;
@@ -173,7 +189,7 @@ public final class HUDHandler {
 		RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
 		for (Deduction d : data.deductions) {
-			float a = d.getPercentile(pticks);
+			float a = d.getPercentile(partialTick);
 			RenderSystem.setShaderColor(r, g, b, a);
 			height = (int) Math.ceil(origHeight * (double) d.deduct / totalPsi);
 			int effHeight = (int) (origHeight * (double) d.current / totalPsi);
@@ -181,7 +197,7 @@ public final class HUDHandler {
 			y = origY + v;
 
 			ShaderHandler.useShader(ShaderHandler.psiBar, generateCallback(a, d.shatter, data.overflowed));
-			GuiComponent.blit(ms, x, y, 32, v, width, height, 64, 256);
+			GuiComponent.blit(poseStack, x, y, 32, v, width, height, 64, 256);
 		}
 
 		float textY = origY;
@@ -192,7 +208,7 @@ public final class HUDHandler {
 
 			if (data.availablePsi != data.lastAvailablePsi) {
 				float textHeight = (float) (origHeight
-						* (data.availablePsi * pticks + data.lastAvailablePsi * (1.0 - pticks)) / totalPsi);
+						* (data.availablePsi * partialTick + data.lastAvailablePsi * (1.0 - partialTick)) / totalPsi);
 				textY = origY + (origHeight - textHeight);
 			} else {
 				textY = y;
@@ -203,7 +219,7 @@ public final class HUDHandler {
 
 		RenderSystem.setShaderColor(r, g, b, 1F);
 		ShaderHandler.useShader(ShaderHandler.psiBar, generateCallback(1F, false, data.overflowed));
-		GuiComponent.blit(ms, x, y, 32, v, width, height, 64, 256);
+		GuiComponent.blit(poseStack, x, y, 32, v, width, height, 64, 256);
 		ShaderHandler.releaseShader();
 
 		if (shaders) {
@@ -214,8 +230,8 @@ public final class HUDHandler {
 
 		RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
 
-		ms.pushPose();
-		ms.translate(0F, textY, 0F);
+		poseStack.pushPose();
+		poseStack.translate(0F, textY, 0F);
 		width = 44;
 		height = 3;
 
@@ -239,22 +255,22 @@ public final class HUDHandler {
 				PsiRenderHelper.g(color) / 255F,
 				PsiRenderHelper.b(color) / 255F, 1F);
 
-		GuiComponent.blit(ms, x - offBar, -2, 0, 140, width, height, 64, 256);
-		mc.font.drawShadow(ms, s1, x - offStr1, -11, 0xFFFFFF);
-		ms.popPose();
+		GuiComponent.blit(poseStack, x - offBar, -2, 0, 140, width, height, 64, 256);
+		mc.font.drawShadow(poseStack, s1, x - offStr1, -11, 0xFFFFFF);
+		poseStack.popPose();
 
 		if (storedPsi != -1) {
-			ms.pushPose();
-			ms.translate(0F, Math.max(textY + 3, origY + 100), 0F);
-			mc.font.drawShadow(ms, s2, x - offStr2, 0, 0xFFFFFF);
-			ms.popPose();
+			poseStack.pushPose();
+			poseStack.translate(0F, Math.max(textY + 3, origY + 100), 0F);
+			mc.font.drawShadow(poseStack, s2, x - offStr2, 0, 0xFFFFFF);
+			poseStack.popPose();
 		}
 		RenderSystem.disableBlend();
-		ms.popPose();
+		poseStack.popPose();
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	private static void renderSocketableEquippedName(PoseStack ms, Window res, float pticks) {
+	private static void renderSocketableEquippedName(PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
 		Minecraft mc = Minecraft.getInstance();
 		ItemStack stack = mc.player.getItemInHand(InteractionHand.MAIN_HAND);
 		if (!ISocketable.isSocketable(stack)) {
@@ -272,46 +288,46 @@ public final class HUDHandler {
 			ISocketable socketable = ISocketable.socketable(stack);
 			ItemStack bullet = socketable.getSelectedBullet();
 
-			int alpha = Math.min(255, (int) ((ticks - pticks) * 256.0F / 10.0F));
+			int alpha = Math.min(255, (int) ((ticks - partialTick) * 256.0F / 10.0F));
 			int color = ICADColorizer.DEFAULT_SPELL_COLOR + (alpha << 24);
 
-			int x = res.getGuiScaledWidth() / 2 - mc.font.width(name) / 2;
-			int y = res.getGuiScaledHeight() - 71;
+			int x = screenWidth / 2 - mc.font.width(name) / 2;
+			int y = screenHeight - 71;
 			if (mc.player.isCreative()) {
 				y += 14;
 			}
 
-			mc.font.drawShadow(ms, name, x, y, color);
+			mc.font.drawShadow(poseStack, name, x, y, color);
 
 			int w = mc.font.width(name);
-			ms.pushPose();
-			ms.translate(x + w, y - 6, 0);
-			ms.scale(alpha / 255F, 1F, 1);
-			PsiRenderHelper.transferMsToGl(ms, () -> mc.getItemRenderer().renderGuiItem(bullet, 0, 0));
-			ms.popPose();
+			poseStack.pushPose();
+			poseStack.translate(x + w, y - 6, 0);
+			poseStack.scale(alpha / 255F, 1F, 1);
+			PsiRenderHelper.transferMsToGl(poseStack, () -> mc.getItemRenderer().renderGuiItem(bullet, 0, 0));
+			poseStack.popPose();
 		}
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	private static void renderRemainingItems(PoseStack ms, Window resolution, float partTicks) {
+	private static void renderRemainingItems(PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
 		if (remainingTime > 0 && !remainingDisplayStack.isEmpty()) {
 			int pos = maxRemainingTicks - remainingTime;
 			Minecraft mc = Minecraft.getInstance();
 			int remainingLeaveTicks = 20;
-			int x = resolution.getGuiScaledWidth() / 2 + 10 + Math.max(0, pos - remainingLeaveTicks);
-			int y = resolution.getGuiScaledHeight() / 2;
+			int x = screenWidth / 2 + 10 + Math.max(0, pos - remainingLeaveTicks);
+			int y = screenHeight / 2;
 
 			int start = maxRemainingTicks - remainingLeaveTicks;
-			float alpha = remainingTime + partTicks > start ? 1F : (remainingTime + partTicks) / start;
+			float alpha = remainingTime + partialTick > start ? 1F : (remainingTime + partialTick) / start;
 
 			RenderSystem.setShaderColor(1F, 1F, 1F, alpha);
 			int xp = x + (int) (16F * (1F - alpha));
-			ms.pushPose();
-			ms.translate(xp, y, 0F);
-			ms.scale(alpha, 1F, 1F);
-			PsiRenderHelper.transferMsToGl(ms, () -> mc.getItemRenderer().renderAndDecorateItem(remainingDisplayStack, 0, 0));
-			ms.scale(1F / alpha, 1F, 1F);
-			ms.translate(-xp, -y, 0F);
+			poseStack.pushPose();
+			poseStack.translate(xp, y, 0F);
+			poseStack.scale(alpha, 1F, 1F);
+			PsiRenderHelper.transferMsToGl(poseStack, () -> mc.getItemRenderer().renderAndDecorateItem(remainingDisplayStack, 0, 0));
+			poseStack.scale(1F / alpha, 1F, 1F);
+			poseStack.translate(-xp, -y, 0F);
 			RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
 
 			String text = remainingDisplayStack.getHoverName().plainCopy().withStyle(ChatFormatting.GREEN).getString();
@@ -332,23 +348,23 @@ public final class HUDHandler {
 			}
 
 			int color = 0x00FFFFFF | (int) (alpha * 0xFF) << 24;
-			mc.font.drawShadow(ms, text, x + 20, y + 6, color);
+			mc.font.drawShadow(poseStack, text, x + 20, y + 6, color);
 
-			ms.popPose();
+			poseStack.popPose();
 		}
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	private static void renderHUDItem(PoseStack ms, Window resolution, float partTicks) {
+	private static void renderHUDItem(PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
 		Minecraft mc = Minecraft.getInstance();
 		ItemStack stack = mc.player.getMainHandItem();
 		if (!stack.isEmpty() && stack.getItem() instanceof IHUDItem) {
-			((IHUDItem) stack.getItem()).drawHUD(ms, resolution, partTicks, stack);
+			((IHUDItem) stack.getItem()).drawHUD(poseStack, partialTicks, screenWidth, screenHeight, stack);
 		}
 
 		stack = mc.player.getOffhandItem();
 		if (!stack.isEmpty() && stack.getItem() instanceof IHUDItem) {
-			((IHUDItem) stack.getItem()).drawHUD(ms, resolution, partTicks, stack);
+			((IHUDItem) stack.getItem()).drawHUD(poseStack, partialTicks, screenWidth, screenHeight, stack);
 		}
 	}
 

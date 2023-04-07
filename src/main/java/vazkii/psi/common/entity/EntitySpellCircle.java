@@ -39,7 +39,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 public class EntitySpellCircle extends Entity implements ISpellImmune {
-	@ObjectHolder(LibResources.PREFIX_MOD + LibEntityNames.SPELL_CIRCLE)
+	@ObjectHolder(registryName = "minecraft:entity_type", value = LibResources.PREFIX_MOD + LibEntityNames.SPELL_CIRCLE)
 	public static EntityType<EntitySpellCircle> TYPE;
 
 	public static final int CAST_TIMES = 20;
