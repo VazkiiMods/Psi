@@ -714,7 +714,7 @@
   "jei.psi.category.trick": "Spell Infusion",
   "jei.psi.spell_copy": "Copies spell",
   "psi.subtitle.book": "Sweet Alexum plays in the distance",
-  "_comment": "Advancement stuff",
+  "_comment": "Book stuff",
   "advancement.psi:iron_cad_pickup": "Sweet Bod",
   "advancement.psi:iron_cad_pickup.desc": "Craft an Iron CAD Assembly",
   "advancement.psi:gold_assembly_pickup": "Worth Its Weight In Gold",
@@ -737,7 +737,6 @@
   "advancement.psi:ivory_pickup.desc": "Infuse your first Ivory substance out of Quartz",
   "advancement.psi:encyclopaedia_psionica": "Put It On My Tablet",
   "advancement.psi:encyclopaedia_psionica.desc": "Craft the Encyclopaedia Psionica, your guide for all things Psi",
-  "_comment": "Book stuff",
   "psi.book.subtitle": "Spellslinging 101",
   "psi.statlabel.is_last": "isLast"
 }
