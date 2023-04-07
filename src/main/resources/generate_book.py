@@ -83,7 +83,7 @@ if __name__ == "__main__":
                     bookpfx = modname + "." + i18pfx
                     i18n = True
                 else: bookpfx = None
-                basepath = "data/" + modname + "/patchouli_books/" + bookid + "/" + lang
+                basepath = "assets/" + modname + "/patchouli_books/" + bookid + "/" + lang
                 makedirs(basepath + "/categories", exist_ok=True)
                 book_json = {
                     "name": langput("name", langname),
@@ -99,7 +99,7 @@ if __name__ == "__main__":
                         k, v = mp.split("->", maxsplit=1)
                         mdata[k] = v
                     book_json["macros"] = mdata
-                with open(basepath + "/../book.json", "w") as book_file:
+                with open("data/" + modname + "/patchouli_books/" + bookid + "/" + "book.json", "w") as book_file:
                     dump_json(book_json, book_file, indent=2)
                 continue
             matcher = section_pat.fullmatch(line)
@@ -131,7 +131,7 @@ if __name__ == "__main__":
                 entry_key = camelcased(name)
                 entry_data = {
                     "name": langput("entry." + entry_key, langname),
-                    "category": section,
+                    "category": modpfx + section,
                     "icon": (modpfx + icon) if icon else "minecraft:air"
                 }
                 if important: entry_data["priority"] = True

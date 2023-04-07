@@ -7,8 +7,8 @@
   "subtitle": "psi.book.subtitle",
   "open_sound": "psi:book_open",
   "flip_sound": "psi:book_flip",
-  "text_overflow_mode": "overflow",
   "creative_tab": "psi",
+  "use_resource_pack": true,
   "model": "psi:encyclopaedia_psionica",
   "macros": {
     "$(piece)": "$(3)"
