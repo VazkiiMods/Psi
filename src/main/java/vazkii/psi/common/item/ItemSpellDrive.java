@@ -8,24 +8,24 @@
  */
 package vazkii.psi.common.item;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.Util;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.Style;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.ChatFormatting;
+import net.minecraft.Util;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
 import vazkii.psi.api.internal.VanillaPacketDispatcher;
 import vazkii.psi.api.spell.Spell;
@@ -40,48 +40,48 @@ public class ItemSpellDrive extends Item {
 	public static final String HAS_SPELL = "has_spell";
 
 	public ItemSpellDrive(Item.Properties properties) {
-		super(properties.maxStackSize(1));
+		super(properties.stacksTo(1));
 	}
 
 	@Nonnull
 	@Override
-	public ITextComponent getDisplayName(ItemStack stack) {
-		String name = super.getDisplayName(stack).getString();
-		CompoundNBT cmp = stack.getOrCreateTag().getCompound(TAG_SPELL);
+	public Component getName(ItemStack stack) {
+		String name = super.getName(stack).getString();
+		CompoundTag cmp = stack.getOrCreateTag().getCompound(TAG_SPELL);
 		String spellName = cmp.getString(Spell.TAG_SPELL_NAME); // We don't need to load the whole spell just for the name
 		if (spellName.isEmpty()) {
-			return new StringTextComponent(name);
+			return new TextComponent(name);
 		}
 
-		return new StringTextComponent(name + " (" + TextFormatting.GREEN + spellName + TextFormatting.RESET + ")");
+		return new TextComponent(name + " (" + ChatFormatting.GREEN + spellName + ChatFormatting.RESET + ")");
 	}
 
 	@Nonnull
 	@Override
-	public ActionResultType onItemUse(ItemUseContext ctx) {
-		PlayerEntity playerIn = ctx.getPlayer();
-		Hand hand = ctx.getHand();
-		World worldIn = ctx.getWorld();
-		BlockPos pos = ctx.getPos();
-		ItemStack stack = playerIn.getHeldItem(hand);
-		TileEntity tile = worldIn.getTileEntity(pos);
+	public InteractionResult useOn(UseOnContext ctx) {
+		Player playerIn = ctx.getPlayer();
+		InteractionHand hand = ctx.getHand();
+		Level worldIn = ctx.getLevel();
+		BlockPos pos = ctx.getClickedPos();
+		ItemStack stack = playerIn.getItemInHand(hand);
+		BlockEntity tile = worldIn.getBlockEntity(pos);
 		if (tile instanceof TileProgrammer) {
 			TileProgrammer programmer = (TileProgrammer) tile;
 			Spell spell = getSpell(stack);
 			if (spell == null && programmer.canCompile()) {
 				setSpell(stack, programmer.spell);
-				if (!worldIn.isRemote) {
-					worldIn.playSound(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, PsiSoundHandler.bulletCreate, SoundCategory.PLAYERS, 0.5F, 1F);
+				if (!worldIn.isClientSide) {
+					worldIn.playSound(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, PsiSoundHandler.bulletCreate, SoundSource.PLAYERS, 0.5F, 1F);
 				}
-				return ActionResultType.SUCCESS;
+				return InteractionResult.SUCCESS;
 			} else if (spell != null) {
 				boolean enabled = programmer.isEnabled();
 				if (enabled && !programmer.playerLock.isEmpty()) {
 					if (!programmer.playerLock.equals(playerIn.getName().getString())) {
-						if (!worldIn.isRemote) {
-							playerIn.sendMessage(new TranslationTextComponent("psimisc.not_your_programmer").setStyle(Style.EMPTY.setFormatting(TextFormatting.RED)), Util.DUMMY_UUID);
+						if (!worldIn.isClientSide) {
+							playerIn.sendMessage(new TranslatableComponent("psimisc.not_your_programmer").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), Util.NIL_UUID);
 						}
-						return ActionResultType.SUCCESS;
+						return InteractionResult.SUCCESS;
 					}
 				} else {
 					programmer.playerLock = playerIn.getName().getString();
@@ -89,37 +89,37 @@ public class ItemSpellDrive extends Item {
 
 				programmer.spell = spell;
 				programmer.onSpellChanged();
-				if (!worldIn.isRemote) {
-					worldIn.playSound(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, PsiSoundHandler.bulletCreate, SoundCategory.PLAYERS, 0.5F, 1F);
+				if (!worldIn.isClientSide) {
+					worldIn.playSound(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, PsiSoundHandler.bulletCreate, SoundSource.PLAYERS, 0.5F, 1F);
 					VanillaPacketDispatcher.dispatchTEToNearbyPlayers(programmer);
 				}
-				return ActionResultType.SUCCESS;
+				return InteractionResult.SUCCESS;
 			}
 		}
 
-		return ActionResultType.PASS;
+		return InteractionResult.PASS;
 	}
 
 	@Nonnull
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, @Nonnull Hand hand) {
-		ItemStack itemStackIn = playerIn.getHeldItem(hand);
-		if (getSpell(itemStackIn) != null && playerIn.isSneaking()) {
-			if (!worldIn.isRemote) {
-				worldIn.playSound(null, playerIn.getPosX(), playerIn.getPosY(), playerIn.getPosZ(), PsiSoundHandler.compileError, SoundCategory.PLAYERS, 0.5F, 1F);
+	public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, @Nonnull InteractionHand hand) {
+		ItemStack itemStackIn = playerIn.getItemInHand(hand);
+		if (getSpell(itemStackIn) != null && playerIn.isShiftKeyDown()) {
+			if (!worldIn.isClientSide) {
+				worldIn.playSound(null, playerIn.getX(), playerIn.getY(), playerIn.getZ(), PsiSoundHandler.compileError, SoundSource.PLAYERS, 0.5F, 1F);
 			} else {
-				playerIn.swingArm(hand);
+				playerIn.swing(hand);
 			}
 			setSpell(itemStackIn, null);
 
-			return new ActionResult<>(ActionResultType.SUCCESS, itemStackIn);
+			return new InteractionResultHolder<>(InteractionResult.SUCCESS, itemStackIn);
 		}
 
-		return new ActionResult<>(ActionResultType.PASS, itemStackIn);
+		return new InteractionResultHolder<>(InteractionResult.PASS, itemStackIn);
 	}
 
 	public static void setSpell(ItemStack stack, Spell spell) {
-		CompoundNBT cmp = new CompoundNBT();
+		CompoundTag cmp = new CompoundTag();
 		if (spell != null) {
 			spell.writeToNBT(cmp);
 			stack.getOrCreateTag().put(TAG_SPELL, cmp);
@@ -132,7 +132,7 @@ public class ItemSpellDrive extends Item {
 	}
 
 	public static Spell getSpell(ItemStack stack) {
-		CompoundNBT cmp = stack.getOrCreateTag().getCompound(TAG_SPELL);
+		CompoundTag cmp = stack.getOrCreateTag().getCompound(TAG_SPELL);
 		return Spell.createFromNBT(cmp);
 	}
 

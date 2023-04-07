@@ -8,7 +8,7 @@
  */
 package vazkii.psi.common.spell.selector;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ICAD;

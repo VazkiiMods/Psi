@@ -8,7 +8,7 @@
  */
 package vazkii.psi.common.spell.selector;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
@@ -33,8 +33,8 @@ public class PieceSelectorItemPresence extends PieceSelector {
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		Number slotVal = this.getParamValue(context, slot);
-		int invSlot = (slotVal == null ? context.getTargetSlot() : Math.abs(slotVal.intValue() - 1)) % context.caster.inventory.mainInventory.size();
-		ItemStack stack = context.caster.inventory.getStackInSlot(invSlot);
+		int invSlot = (slotVal == null ? context.getTargetSlot() : Math.abs(slotVal.intValue() - 1)) % context.caster.getInventory().items.size();
+		ItemStack stack = context.caster.getInventory().getItem(invSlot);
 
 		return (double) stack.getCount();
 	}

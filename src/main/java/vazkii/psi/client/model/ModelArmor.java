@@ -8,57 +8,84 @@
  */
 package vazkii.psi.client.model;
 
-import net.minecraft.client.renderer.entity.model.BipedModel;
-import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.item.ArmorStandEntity;
-import net.minecraft.inventory.EquipmentSlotType;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 
-public class ModelArmor extends BipedModel<LivingEntity> {
-	protected final EquipmentSlotType slot;
+import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.decoration.ArmorStand;
 
-	public ModelArmor(EquipmentSlotType slot) {
-		super(1);
+public class ModelArmor extends HumanoidModel<LivingEntity> {
+	protected final EquipmentSlot slot;
+
+	public ModelArmor(ModelPart root, EquipmentSlot slot) {
+		super(root);
 		this.slot = slot;
 	}
 
-	// [VanillaCopy] ArmorStandArmorModel.setRotationAngles because armor stands are dumb
+	// [VanillaCopy] ArmorStandArmorModel.setupAnim because armor stands are dumb
 	// This fixes the armor "breathing" and helmets always facing south on armor stands
 	@Override
-	public void setRotationAngles(LivingEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		if (!(entity instanceof ArmorStandEntity)) {
-			super.setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+	public void setupAnim(LivingEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+		if (!(entity instanceof ArmorStand entityIn)) {
+			super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 			return;
 		}
 
-		ArmorStandEntity entityIn = (ArmorStandEntity) entity;
-		this.bipedHead.rotateAngleX = ((float) Math.PI / 180F) * entityIn.getHeadRotation().getX();
-		this.bipedHead.rotateAngleY = ((float) Math.PI / 180F) * entityIn.getHeadRotation().getY();
-		this.bipedHead.rotateAngleZ = ((float) Math.PI / 180F) * entityIn.getHeadRotation().getZ();
-		this.bipedHead.setRotationPoint(0.0F, 1.0F, 0.0F);
-		this.bipedBody.rotateAngleX = ((float) Math.PI / 180F) * entityIn.getBodyRotation().getX();
-		this.bipedBody.rotateAngleY = ((float) Math.PI / 180F) * entityIn.getBodyRotation().getY();
-		this.bipedBody.rotateAngleZ = ((float) Math.PI / 180F) * entityIn.getBodyRotation().getZ();
-		this.bipedLeftArm.rotateAngleX = ((float) Math.PI / 180F) * entityIn.getLeftArmRotation().getX();
-		this.bipedLeftArm.rotateAngleY = ((float) Math.PI / 180F) * entityIn.getLeftArmRotation().getY();
-		this.bipedLeftArm.rotateAngleZ = ((float) Math.PI / 180F) * entityIn.getLeftArmRotation().getZ();
-		this.bipedRightArm.rotateAngleX = ((float) Math.PI / 180F) * entityIn.getRightArmRotation().getX();
-		this.bipedRightArm.rotateAngleY = ((float) Math.PI / 180F) * entityIn.getRightArmRotation().getY();
-		this.bipedRightArm.rotateAngleZ = ((float) Math.PI / 180F) * entityIn.getRightArmRotation().getZ();
-		this.bipedLeftLeg.rotateAngleX = ((float) Math.PI / 180F) * entityIn.getLeftLegRotation().getX();
-		this.bipedLeftLeg.rotateAngleY = ((float) Math.PI / 180F) * entityIn.getLeftLegRotation().getY();
-		this.bipedLeftLeg.rotateAngleZ = ((float) Math.PI / 180F) * entityIn.getLeftLegRotation().getZ();
-		this.bipedLeftLeg.setRotationPoint(1.9F, 11.0F, 0.0F);
-		this.bipedRightLeg.rotateAngleX = ((float) Math.PI / 180F) * entityIn.getRightLegRotation().getX();
-		this.bipedRightLeg.rotateAngleY = ((float) Math.PI / 180F) * entityIn.getRightLegRotation().getY();
-		this.bipedRightLeg.rotateAngleZ = ((float) Math.PI / 180F) * entityIn.getRightLegRotation().getZ();
-		this.bipedRightLeg.setRotationPoint(-1.9F, 11.0F, 0.0F);
-		this.bipedHeadwear.copyModelAngles(this.bipedHead);
+		this.head.xRot = ((float) Math.PI / 180F) * entityIn.getHeadPose().getX();
+		this.head.yRot = ((float) Math.PI / 180F) * entityIn.getHeadPose().getY();
+		this.head.zRot = ((float) Math.PI / 180F) * entityIn.getHeadPose().getZ();
+		this.head.setPos(0.0F, 1.0F, 0.0F);
+		this.body.xRot = ((float) Math.PI / 180F) * entityIn.getBodyPose().getX();
+		this.body.yRot = ((float) Math.PI / 180F) * entityIn.getBodyPose().getY();
+		this.body.zRot = ((float) Math.PI / 180F) * entityIn.getBodyPose().getZ();
+		this.leftArm.xRot = ((float) Math.PI / 180F) * entityIn.getLeftArmPose().getX();
+		this.leftArm.yRot = ((float) Math.PI / 180F) * entityIn.getLeftArmPose().getY();
+		this.leftArm.zRot = ((float) Math.PI / 180F) * entityIn.getLeftArmPose().getZ();
+		this.rightArm.xRot = ((float) Math.PI / 180F) * entityIn.getRightArmPose().getX();
+		this.rightArm.yRot = ((float) Math.PI / 180F) * entityIn.getRightArmPose().getY();
+		this.rightArm.zRot = ((float) Math.PI / 180F) * entityIn.getRightArmPose().getZ();
+		this.leftLeg.xRot = ((float) Math.PI / 180F) * entityIn.getLeftLegPose().getX();
+		this.leftLeg.yRot = ((float) Math.PI / 180F) * entityIn.getLeftLegPose().getY();
+		this.leftLeg.zRot = ((float) Math.PI / 180F) * entityIn.getLeftLegPose().getZ();
+		this.leftLeg.setPos(1.9F, 11.0F, 0.0F);
+		this.rightLeg.xRot = ((float) Math.PI / 180F) * entityIn.getRightLegPose().getX();
+		this.rightLeg.yRot = ((float) Math.PI / 180F) * entityIn.getRightLegPose().getY();
+		this.rightLeg.zRot = ((float) Math.PI / 180F) * entityIn.getRightLegPose().getZ();
+		this.rightLeg.setPos(-1.9F, 11.0F, 0.0F);
+		this.hat.copyFrom(this.head);
 	}
 
-	protected void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z) {
-		modelRenderer.rotateAngleX = x;
-		modelRenderer.rotateAngleY = y;
-		modelRenderer.rotateAngleZ = z;
+	@Override
+	public void renderToBuffer(PoseStack ms, VertexConsumer buffer, int light, int overlay, float r, float g, float b, float a) {
+		setPartVisibility(slot);
+		super.renderToBuffer(ms, buffer, light, overlay, r, g, b, a);
+	}
+
+	// [VanillaCopy] HumanoidArmorLayer
+	private void setPartVisibility(EquipmentSlot slot) {
+		setAllVisible(false);
+		switch (slot) {
+		case HEAD -> {
+			head.visible = true;
+			hat.visible = true;
+		}
+		case CHEST -> {
+			body.visible = true;
+			rightArm.visible = true;
+			leftArm.visible = true;
+		}
+		case LEGS -> {
+			body.visible = true;
+			rightLeg.visible = true;
+			leftLeg.visible = true;
+		}
+		case FEET -> {
+			rightLeg.visible = true;
+			leftLeg.visible = true;
+		}
+		}
 	}
 }

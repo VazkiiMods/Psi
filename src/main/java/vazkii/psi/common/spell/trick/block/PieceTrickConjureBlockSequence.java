@@ -8,9 +8,9 @@
  */
 package vazkii.psi.common.spell.trick.block;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 
 import vazkii.psi.api.internal.MathHelper;
 import vazkii.psi.api.internal.Vector3;
@@ -74,25 +74,25 @@ public class PieceTrickConjureBlockSequence extends PieceTrick {
 		}
 
 		Vector3 targetNorm = targetVal.copy().normalize();
-		World world = context.focalPoint.getEntityWorld();
+		Level world = context.focalPoint.getCommandSenderWorld();
 
 		for (BlockPos blockPos : MathHelper.getBlocksAlongRay(positionVal.toVec3D(), positionVal.copy().add(targetNorm.copy().multiply(maxBlocksInt)).toVec3D(), maxBlocksInt)) {
 			if (!context.isInRadius(Vector3.fromBlockPos(blockPos))) {
 				throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 			}
 
-			if (!world.isBlockModifiable(context.caster, blockPos)) {
+			if (!world.mayInteract(context.caster, blockPos)) {
 				continue;
 			}
 
-			PieceTrickConjureBlock.conjure(context, timeVal, blockPos, world, messWithState(ModBlocks.conjured.getDefaultState()));
+			PieceTrickConjureBlock.conjure(context, timeVal, blockPos, world, messWithState(ModBlocks.conjured.defaultBlockState()));
 		}
 
 		return null;
 	}
 
 	public BlockState messWithState(BlockState state) {
-		return state.with(BlockConjured.SOLID, true);
+		return state.setValue(BlockConjured.SOLID, true);
 	}
 
 }

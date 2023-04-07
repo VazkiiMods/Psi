@@ -1,6 +1,6 @@
 {
   "name": "psi.book.entry.smeltery",
-  "category": "items",
+  "category": "psi:items",
   "icon": "psi:textures/spell/trick_smelt_item.png",
   "pages": [
     {

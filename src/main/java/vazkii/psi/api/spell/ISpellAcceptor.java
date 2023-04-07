@@ -8,9 +8,9 @@
  */
 package vazkii.psi.api.spell;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 
 import vazkii.psi.api.PsiAPI;
 
@@ -46,7 +46,7 @@ public interface ISpellAcceptor {
 		return stack.getCapability(PsiAPI.SPELL_ACCEPTOR_CAPABILITY).orElseThrow(NullPointerException::new);
 	}
 
-	void setSpell(PlayerEntity player, Spell spell);
+	void setSpell(Player player, Spell spell);
 
 	/**
 	 * @return true if this can be placed in a CAD. Override the following methods in that case.

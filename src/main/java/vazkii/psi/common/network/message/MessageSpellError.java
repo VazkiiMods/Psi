@@ -8,14 +8,14 @@
  */
 package vazkii.psi.common.network.message;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.NewChatGui;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.Style;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraft.client.gui.components.ChatComponent;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraftforge.network.NetworkEvent;
 
 import vazkii.psi.client.gui.GuiProgrammer;
 
@@ -32,23 +32,23 @@ public class MessageSpellError {
 		this.y = y;
 	}
 
-	public MessageSpellError(PacketBuffer buf) {
-		this.message = buf.readString();
+	public MessageSpellError(FriendlyByteBuf buf) {
+		this.message = buf.readUtf();
 		this.x = buf.readInt();
 		this.y = buf.readInt();
 	}
 
-	public void encode(PacketBuffer buf) {
-		buf.writeString(message);
+	public void encode(FriendlyByteBuf buf) {
+		buf.writeUtf(message);
 		buf.writeInt(x);
 		buf.writeInt(y);
 	}
 
 	public boolean receive(Supplier<NetworkEvent.Context> context) {
 		context.get().enqueueWork(() -> {
-			NewChatGui chatGui = Minecraft.getInstance().ingameGUI.getChatGUI();
-			ITextComponent chatMessage = new TranslationTextComponent(message, GuiProgrammer.convertIntToLetter(x), y).setStyle(Style.EMPTY.setFormatting(TextFormatting.RED));
-			chatGui.printChatMessage(chatMessage);
+			ChatComponent chatGui = Minecraft.getInstance().gui.getChat();
+			Component chatMessage = new TranslatableComponent(message, GuiProgrammer.convertIntToLetter(x), y).setStyle(Style.EMPTY.withColor(ChatFormatting.RED));
+			chatGui.addMessage(chatMessage);
 		});
 		return true;
 	}

@@ -8,7 +8,7 @@
  */
 package vazkii.psi.common.spell.selector;
 
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.common.util.FakePlayer;
 
 import vazkii.psi.api.spell.Spell;

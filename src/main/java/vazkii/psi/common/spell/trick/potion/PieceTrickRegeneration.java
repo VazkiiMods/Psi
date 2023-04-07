@@ -8,8 +8,8 @@
  */
 package vazkii.psi.common.spell.trick.potion;
 
-import net.minecraft.potion.Effect;
-import net.minecraft.potion.Effects;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffects;
 
 import vazkii.psi.api.spell.EnumSpellStat;
 import vazkii.psi.api.spell.Spell;
@@ -25,8 +25,8 @@ public class PieceTrickRegeneration extends PieceTrickPotionBase {
 	}
 
 	@Override
-	public Effect getPotion() {
-		return Effects.REGENERATION;
+	public MobEffect getPotion() {
+		return MobEffects.REGENERATION;
 	}
 
 	@Override

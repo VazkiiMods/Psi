@@ -8,16 +8,15 @@
  */
 package vazkii.psi.common.item.base;
 
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.DyeColor;
-import net.minecraft.item.Item;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.Item;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.IForgeRegistry;
 
 import vazkii.psi.common.core.PsiCreativeTab;
-import vazkii.psi.common.core.handler.capability.CapabilityHandler;
 import vazkii.psi.common.item.*;
 import vazkii.psi.common.item.armor.ItemPsimetalExosuitBoots;
 import vazkii.psi.common.item.armor.ItemPsimetalExosuitChestplate;
@@ -42,94 +41,170 @@ import vazkii.psi.common.spell.base.ModSpellPieces;
 @Mod.EventBusSubscriber(modid = LibMisc.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public final class ModItems {
 
-	public static final Item psidust = new Item(defaultBuilder());
-	public static final Item psimetal = new Item(defaultBuilder());
-	public static final Item psigem = new Item(defaultBuilder());
-	public static final Item ebonyPsimetal = new Item(defaultBuilder());
-	public static final Item ivoryPsimetal = new Item(defaultBuilder());
-	public static final Item ebonySubstance = new Item(defaultBuilder());
-	public static final Item ivorySubstance = new Item(defaultBuilder());
+	public static Item psidust;
+	public static Item psimetal;
+	public static Item psigem;
+	public static Item ebonyPsimetal;
+	public static Item ivoryPsimetal;
+	public static Item ebonySubstance;
+	public static Item ivorySubstance;
 
-	public static final Item cadAssemblyIron = new ItemCADAssembly(defaultBuilder(), LibItemNames.CAD_IRON);
-	public static final Item cadAssemblyGold = new ItemCADAssembly(defaultBuilder(), LibItemNames.CAD_GOLD);
-	public static final Item cadAssemblyPsimetal = new ItemCADAssembly(defaultBuilder(), LibItemNames.CAD_PSIMETAL);
-	public static final Item cadAssemblyIvory = new ItemCADAssembly(defaultBuilder(), LibItemNames.CAD_IVORY_PSIMETAL);
-	public static final Item cadAssemblyEbony = new ItemCADAssembly(defaultBuilder(), LibItemNames.CAD_EBONY_PSIMETAL);
-	public static final Item cadAssemblyCreative = new ItemCADAssembly(defaultBuilder(), LibItemNames.CAD_CREATIVE);
+	public static Item cadAssemblyIron;
+	public static Item cadAssemblyGold;
+	public static Item cadAssemblyPsimetal;
+	public static Item cadAssemblyIvory;
+	public static Item cadAssemblyEbony;
+	public static Item cadAssemblyCreative;
 
-	public static final Item cadCoreBasic = new ItemCADCore(defaultBuilder());
-	public static final Item cadCoreOverclocked = new ItemCADCore(defaultBuilder());
-	public static final Item cadCoreConductive = new ItemCADCore(defaultBuilder());
-	public static final Item cadCoreHyperClocked = new ItemCADCore(defaultBuilder());
-	public static final Item cadCoreRadiative = new ItemCADCore(defaultBuilder());
+	public static Item cadCoreBasic;
+	public static Item cadCoreOverclocked;
+	public static Item cadCoreConductive;
+	public static Item cadCoreHyperClocked;
+	public static Item cadCoreRadiative;
 
-	public static final Item cadSocketBasic = new ItemCADSocket(defaultBuilder());
-	public static final Item cadSocketSignaling = new ItemCADSocket(defaultBuilder());
-	public static final Item cadSocketLarge = new ItemCADSocket(defaultBuilder());
-	public static final Item cadSocketTransmissive = new ItemCADSocket(defaultBuilder());
-	public static final Item cadSocketHuge = new ItemCADSocket(defaultBuilder());
+	public static Item cadSocketBasic;
+	public static Item cadSocketSignaling;
+	public static Item cadSocketLarge;
+	public static Item cadSocketTransmissive;
+	public static Item cadSocketHuge;
 
-	public static final Item cadBatteryBasic = new ItemCADBattery(defaultBuilder());
-	public static final Item cadBatteryExtended = new ItemCADBattery(defaultBuilder());
-	public static final Item cadBatteryUltradense = new ItemCADBattery(defaultBuilder());
+	public static Item cadBatteryBasic;
+	public static Item cadBatteryExtended;
+	public static Item cadBatteryUltradense;
 
-	public static final Item cadColorizerWhite = new ItemCADColorizer(defaultBuilder(), DyeColor.WHITE);
-	public static final Item cadColorizerOrange = new ItemCADColorizer(defaultBuilder(), DyeColor.ORANGE);
-	public static final Item cadColorizerMagenta = new ItemCADColorizer(defaultBuilder(), DyeColor.MAGENTA);
-	public static final Item cadColorizerLightBlue = new ItemCADColorizer(defaultBuilder(), DyeColor.LIGHT_BLUE);
-	public static final Item cadColorizerYellow = new ItemCADColorizer(defaultBuilder(), DyeColor.YELLOW);
-	public static final Item cadColorizerLime = new ItemCADColorizer(defaultBuilder(), DyeColor.LIME);
-	public static final Item cadColorizerPink = new ItemCADColorizer(defaultBuilder(), DyeColor.PINK);
-	public static final Item cadColorizerGray = new ItemCADColorizer(defaultBuilder(), DyeColor.GRAY);
-	public static final Item cadColorizerLightGray = new ItemCADColorizer(defaultBuilder(), DyeColor.LIGHT_GRAY);
-	public static final Item cadColorizerCyan = new ItemCADColorizer(defaultBuilder(), DyeColor.CYAN);
-	public static final Item cadColorizerPurple = new ItemCADColorizer(defaultBuilder(), DyeColor.PURPLE);
-	public static final Item cadColorizerBlue = new ItemCADColorizer(defaultBuilder(), DyeColor.BLUE);
-	public static final Item cadColorizerBrown = new ItemCADColorizer(defaultBuilder(), DyeColor.BROWN);
-	public static final Item cadColorizerGreen = new ItemCADColorizer(defaultBuilder(), DyeColor.GREEN);
-	public static final Item cadColorizerRed = new ItemCADColorizer(defaultBuilder(), DyeColor.RED);
-	public static final Item cadColorizerBlack = new ItemCADColorizer(defaultBuilder(), DyeColor.BLACK);
-	public static final Item cadColorizerRainbow = new ItemCADColorizerRainbow(defaultBuilder());
-	public static final Item cadColorizerPsi = new ItemCADColorizerPsi(defaultBuilder());
-	public static final Item cadColorizerEmpty = new ItemCADColorizerEmpty(defaultBuilder());
+	public static Item cadColorizerWhite;
+	public static Item cadColorizerOrange;
+	public static Item cadColorizerMagenta;
+	public static Item cadColorizerLightBlue;
+	public static Item cadColorizerYellow;
+	public static Item cadColorizerLime;
+	public static Item cadColorizerPink;
+	public static Item cadColorizerGray;
+	public static Item cadColorizerLightGray;
+	public static Item cadColorizerCyan;
+	public static Item cadColorizerPurple;
+	public static Item cadColorizerBlue;
+	public static Item cadColorizerBrown;
+	public static Item cadColorizerGreen;
+	public static Item cadColorizerRed;
+	public static Item cadColorizerBlack;
+	public static Item cadColorizerRainbow;
+	public static Item cadColorizerPsi;
+	public static Item cadColorizerEmpty;
 
-	public static final Item spellBullet = new ItemSpellBullet(defaultBuilder());
-	public static final Item projectileSpellBullet = new ItemProjectileSpellBullet(defaultBuilder());
-	public static final Item loopSpellBullet = new ItemLoopcastSpellBullet(defaultBuilder());
-	public static final Item circleSpellBullet = new ItemCircleSpellBullet(defaultBuilder());
-	public static final Item grenadeSpellBullet = new ItemGrenadeSpellBullet(defaultBuilder());
-	public static final Item chargeSpellBullet = new ItemChargeSpellBullet(defaultBuilder());
-	public static final Item mineSpellBullet = new ItemMineSpellBullet(defaultBuilder());
+	public static Item spellBullet;
+	public static Item projectileSpellBullet;
+	public static Item loopSpellBullet;
+	public static Item circleSpellBullet;
+	public static Item grenadeSpellBullet;
+	public static Item chargeSpellBullet;
+	public static Item mineSpellBullet;
 
-	public static final Item spellDrive = new ItemSpellDrive(defaultBuilder());
-	public static final Item detonator = new ItemDetonator(defaultBuilder());
-	public static final Item exosuitController = new ItemExosuitController(defaultBuilder());
+	public static Item spellDrive;
+	public static Item detonator;
+	public static Item exosuitController;
 
-	public static final Item exosuitSensorLight = new ItemLightExosuitSensor(defaultBuilder());
-	public static final Item exosuitSensorHeat = new ItemHeatExosuitSensor(defaultBuilder());
-	public static final Item exosuitSensorStress = new ItemStressExosuitSensor(defaultBuilder());
-	public static final Item exosuitSensorWater = new ItemWaterExosuitSensor(defaultBuilder());
-	public static final Item exosuitSensorTrigger = new ItemTriggerExosuitSensor(defaultBuilder());
-	public static final Item cad = new ItemCAD(defaultBuilder());
+	public static Item exosuitSensorLight;
+	public static Item exosuitSensorHeat;
+	public static Item exosuitSensorStress;
+	public static Item exosuitSensorWater;
+	public static Item exosuitSensorTrigger;
+	public static Item cad;
 
-	public static final Item vectorRuler = new ItemVectorRuler(defaultBuilder());
-	public static final Item psimetalShovel = new ItemPsimetalShovel(defaultBuilder());
-	public static final Item psimetalPickaxe = new ItemPsimetalPickaxe(defaultBuilder());
-	public static final Item psimetalAxe = new ItemPsimetalAxe(defaultBuilder());
-	public static final Item psimetalSword = new ItemPsimetalSword(defaultBuilder());
-	public static final Item psimetalExosuitHelmet = new ItemPsimetalExosuitHelmet(EquipmentSlotType.HEAD, defaultBuilder());
-	public static final Item psimetalExosuitChestplate = new ItemPsimetalExosuitChestplate(EquipmentSlotType.CHEST, defaultBuilder());
-	public static final Item psimetalExosuitLeggings = new ItemPsimetalExosuitLeggings(EquipmentSlotType.LEGS, defaultBuilder());
-	public static final Item psimetalExosuitBoots = new ItemPsimetalExosuitBoots(EquipmentSlotType.FEET, defaultBuilder());
-
-	public static Item.Properties defaultBuilder() {
-		return new Item.Properties().group(PsiCreativeTab.INSTANCE);
-	}
+	public static Item vectorRuler;
+	public static Item psimetalShovel;
+	public static Item psimetalPickaxe;
+	public static Item psimetalAxe;
+	public static Item psimetalSword;
+	public static Item psimetalExosuitHelmet;
+	public static Item psimetalExosuitChestplate;
+	public static Item psimetalExosuitLeggings;
+	public static Item psimetalExosuitBoots;
 
 	@SubscribeEvent
 	public static void registerItems(RegistryEvent.Register<Item> evt) {
+		psidust = new Item(defaultBuilder());
+		psimetal = new Item(defaultBuilder());
+		psigem = new Item(defaultBuilder());
+		ebonyPsimetal = new Item(defaultBuilder());
+		ivoryPsimetal = new Item(defaultBuilder());
+		ebonySubstance = new Item(defaultBuilder());
+		ivorySubstance = new Item(defaultBuilder());
+
+		cadAssemblyIron = new ItemCADAssembly(defaultBuilder(), LibItemNames.CAD_IRON);
+		cadAssemblyGold = new ItemCADAssembly(defaultBuilder(), LibItemNames.CAD_GOLD);
+		cadAssemblyPsimetal = new ItemCADAssembly(defaultBuilder(), LibItemNames.CAD_PSIMETAL);
+		cadAssemblyIvory = new ItemCADAssembly(defaultBuilder(), LibItemNames.CAD_IVORY_PSIMETAL);
+		cadAssemblyEbony = new ItemCADAssembly(defaultBuilder(), LibItemNames.CAD_EBONY_PSIMETAL);
+		cadAssemblyCreative = new ItemCADAssembly(defaultBuilder(), LibItemNames.CAD_CREATIVE);
+
+		cadCoreBasic = new ItemCADCore(defaultBuilder());
+		cadCoreOverclocked = new ItemCADCore(defaultBuilder());
+		cadCoreConductive = new ItemCADCore(defaultBuilder());
+		cadCoreHyperClocked = new ItemCADCore(defaultBuilder());
+		cadCoreRadiative = new ItemCADCore(defaultBuilder());
+
+		cadSocketBasic = new ItemCADSocket(defaultBuilder());
+		cadSocketSignaling = new ItemCADSocket(defaultBuilder());
+		cadSocketLarge = new ItemCADSocket(defaultBuilder());
+		cadSocketTransmissive = new ItemCADSocket(defaultBuilder());
+		cadSocketHuge = new ItemCADSocket(defaultBuilder());
+
+		cadBatteryBasic = new ItemCADBattery(defaultBuilder());
+		cadBatteryExtended = new ItemCADBattery(defaultBuilder());
+		cadBatteryUltradense = new ItemCADBattery(defaultBuilder());
+
+		cadColorizerWhite = new ItemCADColorizer(defaultBuilder(), DyeColor.WHITE);
+		cadColorizerOrange = new ItemCADColorizer(defaultBuilder(), DyeColor.ORANGE);
+		cadColorizerMagenta = new ItemCADColorizer(defaultBuilder(), DyeColor.MAGENTA);
+		cadColorizerLightBlue = new ItemCADColorizer(defaultBuilder(), DyeColor.LIGHT_BLUE);
+		cadColorizerYellow = new ItemCADColorizer(defaultBuilder(), DyeColor.YELLOW);
+		cadColorizerLime = new ItemCADColorizer(defaultBuilder(), DyeColor.LIME);
+		cadColorizerPink = new ItemCADColorizer(defaultBuilder(), DyeColor.PINK);
+		cadColorizerGray = new ItemCADColorizer(defaultBuilder(), DyeColor.GRAY);
+		cadColorizerLightGray = new ItemCADColorizer(defaultBuilder(), DyeColor.LIGHT_GRAY);
+		cadColorizerCyan = new ItemCADColorizer(defaultBuilder(), DyeColor.CYAN);
+		cadColorizerPurple = new ItemCADColorizer(defaultBuilder(), DyeColor.PURPLE);
+		cadColorizerBlue = new ItemCADColorizer(defaultBuilder(), DyeColor.BLUE);
+		cadColorizerBrown = new ItemCADColorizer(defaultBuilder(), DyeColor.BROWN);
+		cadColorizerGreen = new ItemCADColorizer(defaultBuilder(), DyeColor.GREEN);
+		cadColorizerRed = new ItemCADColorizer(defaultBuilder(), DyeColor.RED);
+		cadColorizerBlack = new ItemCADColorizer(defaultBuilder(), DyeColor.BLACK);
+		cadColorizerRainbow = new ItemCADColorizerRainbow(defaultBuilder());
+		cadColorizerPsi = new ItemCADColorizerPsi(defaultBuilder());
+		cadColorizerEmpty = new ItemCADColorizerEmpty(defaultBuilder());
+
+		spellBullet = new ItemSpellBullet(defaultBuilder());
+		projectileSpellBullet = new ItemProjectileSpellBullet(defaultBuilder());
+		loopSpellBullet = new ItemLoopcastSpellBullet(defaultBuilder());
+		circleSpellBullet = new ItemCircleSpellBullet(defaultBuilder());
+		grenadeSpellBullet = new ItemGrenadeSpellBullet(defaultBuilder());
+		chargeSpellBullet = new ItemChargeSpellBullet(defaultBuilder());
+		mineSpellBullet = new ItemMineSpellBullet(defaultBuilder());
+
+		spellDrive = new ItemSpellDrive(defaultBuilder());
+		detonator = new ItemDetonator(defaultBuilder());
+		exosuitController = new ItemExosuitController(defaultBuilder());
+
+		exosuitSensorLight = new ItemLightExosuitSensor(defaultBuilder());
+		exosuitSensorHeat = new ItemHeatExosuitSensor(defaultBuilder());
+		exosuitSensorStress = new ItemStressExosuitSensor(defaultBuilder());
+		exosuitSensorWater = new ItemWaterExosuitSensor(defaultBuilder());
+		exosuitSensorTrigger = new ItemTriggerExosuitSensor(defaultBuilder());
+		cad = new ItemCAD(defaultBuilder());
+
+		vectorRuler = new ItemVectorRuler(defaultBuilder());
+		psimetalShovel = new ItemPsimetalShovel(defaultBuilder());
+		psimetalPickaxe = new ItemPsimetalPickaxe(defaultBuilder());
+		psimetalAxe = new ItemPsimetalAxe(defaultBuilder());
+		psimetalSword = new ItemPsimetalSword(defaultBuilder());
+		psimetalExosuitHelmet = new ItemPsimetalExosuitHelmet(EquipmentSlot.HEAD, defaultBuilder());
+		psimetalExosuitChestplate = new ItemPsimetalExosuitChestplate(EquipmentSlot.CHEST, defaultBuilder());
+		psimetalExosuitLeggings = new ItemPsimetalExosuitLeggings(EquipmentSlot.LEGS, defaultBuilder());
+		psimetalExosuitBoots = new ItemPsimetalExosuitBoots(EquipmentSlot.FEET, defaultBuilder());
+
 		ModSpellPieces.init();
-		CapabilityHandler.register();
+		//CapabilityHandler.register();
 
 		IForgeRegistry<Item> r = evt.getRegistry();
 
@@ -216,6 +291,10 @@ public final class ModItems {
 		r.register(psimetalExosuitLeggings.setRegistryName(LibMisc.MOD_ID, LibItemNames.PSIMETAL_EXOSUIT_LEGGINGS));
 		r.register(psimetalExosuitBoots.setRegistryName(LibMisc.MOD_ID, LibItemNames.PSIMETAL_EXOSUIT_BOOTS));
 
+	}
+
+	public static Item.Properties defaultBuilder() {
+		return new Item.Properties().tab(PsiCreativeTab.INSTANCE);
 	}
 
 }

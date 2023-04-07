@@ -8,7 +8,7 @@
  */
 package vazkii.psi.common.spell.trick.block;
 
-import net.minecraft.block.BlockState;
+import net.minecraft.world.level.block.state.BlockState;
 
 import vazkii.psi.api.spell.EnumSpellStat;
 import vazkii.psi.api.spell.Spell;
@@ -33,7 +33,7 @@ public class PieceTrickConjureLight extends PieceTrickConjureBlock {
 
 	@Override
 	public BlockState messWithState(BlockState state) {
-		return state.with(BlockConjured.LIGHT, true);
+		return state.setValue(BlockConjured.LIGHT, true);
 	}
 
 }

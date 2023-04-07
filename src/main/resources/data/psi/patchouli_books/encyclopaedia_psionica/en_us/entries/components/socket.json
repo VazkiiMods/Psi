@@ -1,6 +1,6 @@
 {
   "name": "psi.book.entry.socket",
-  "category": "components",
+  "category": "psi:components",
   "icon": "psi:cad_socket_basic",
   "pages": [
     {

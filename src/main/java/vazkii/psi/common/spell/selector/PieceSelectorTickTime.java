@@ -29,7 +29,7 @@ public class PieceSelectorTickTime extends PieceSelector {
 	}
 
 	public static double getMspt(SpellContext context) {
-		long[] tickTimes = context.focalPoint.getServer().getTickTime(context.focalPoint.world.getDimensionKey());
+		long[] tickTimes = context.focalPoint.getServer().getTickTime(context.focalPoint.level.dimension());
 		if (tickTimes == null) {
 			return 0;
 		}

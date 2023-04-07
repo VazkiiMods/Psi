@@ -8,11 +8,11 @@
  */
 package vazkii.psi.common.network.message;
 
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.Hand;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.network.NetworkEvent;
 
 import vazkii.psi.api.cad.ISocketableController;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
@@ -29,24 +29,24 @@ public class MessageChangeControllerSlot {
 		this.slot = slot;
 	}
 
-	public MessageChangeControllerSlot(PacketBuffer buf) {
+	public MessageChangeControllerSlot(FriendlyByteBuf buf) {
 		this.controlSlot = buf.readVarInt();
 		this.slot = buf.readVarInt();
 	}
 
-	public void encode(PacketBuffer buf) {
+	public void encode(FriendlyByteBuf buf) {
 		buf.writeVarInt(controlSlot);
 		buf.writeVarInt(slot);
 	}
 
 	public boolean receive(Supplier<NetworkEvent.Context> context) {
 		context.get().enqueueWork(() -> {
-			ServerPlayerEntity player = context.get().getSender();
-			ItemStack stack = player.getHeldItem(Hand.MAIN_HAND);
+			ServerPlayer player = context.get().getSender();
+			ItemStack stack = player.getItemInHand(InteractionHand.MAIN_HAND);
 			if (!stack.isEmpty() && stack.getItem() instanceof ISocketableController) {
 				((ISocketableController) stack.getItem()).setSelectedSlot(player, stack, controlSlot, slot);
 			} else {
-				stack = player.getHeldItem(Hand.OFF_HAND);
+				stack = player.getItemInHand(InteractionHand.OFF_HAND);
 				if (!stack.isEmpty() && stack.getItem() instanceof ISocketableController) {
 					((ISocketableController) stack.getItem()).setSelectedSlot(player, stack, controlSlot, slot);
 				}

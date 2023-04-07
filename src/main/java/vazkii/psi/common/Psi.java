@@ -8,9 +8,8 @@
  */
 package vazkii.psi.common;
 
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
-import net.minecraftforge.fml.CrashReportExtender;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -28,7 +27,6 @@ import vazkii.psi.api.PsiAPI;
 import vazkii.psi.client.core.proxy.ClientProxy;
 import vazkii.psi.common.core.handler.ConfigHandler;
 import vazkii.psi.common.core.handler.ContributorSpellCircleHandler;
-import vazkii.psi.common.core.handler.CrashReportHandler;
 import vazkii.psi.common.core.handler.InternalMethodHandler;
 import vazkii.psi.common.core.proxy.IProxy;
 import vazkii.psi.common.core.proxy.ServerProxy;
@@ -38,6 +36,7 @@ import vazkii.psi.common.network.MessageRegister;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 @Mod(LibMisc.MOD_ID)
 public class Psi {
@@ -63,7 +62,7 @@ public class Psi {
 		magical = ModList.get().isLoaded("magipsi");
 		PsiAPI.internalHandler = new InternalMethodHandler();
 
-		CrashReportExtender.registerCrashCallable(new CrashReportHandler());
+		//CrashReportExtender.registerCrashCallable(new CrashReportHandler());
 
 		ContributorSpellCircleHandler.firstStart();
 		DefaultStats.registerStats();
@@ -72,7 +71,7 @@ public class Psi {
 
 	private void loadComplete(FMLLoadCompleteEvent event) {
 		ForgeRegistries.SOUND_EVENTS.forEach(el -> {
-			if (el.getRegistryName().getPath().toLowerCase().startsWith("block.note_block")) {
+			if (el.getRegistryName().getPath().toLowerCase(Locale.ROOT).startsWith("block.note_block")) {
 				noteblockSoundEvents.add(el);
 			}
 		});

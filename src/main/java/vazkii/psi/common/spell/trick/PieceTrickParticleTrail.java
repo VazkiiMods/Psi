@@ -8,7 +8,7 @@
  */
 package vazkii.psi.common.spell.trick;
 
-import net.minecraftforge.fml.network.PacketDistributor;
+import net.minecraftforge.network.PacketDistributor;
 
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.internal.Vector3;
@@ -72,7 +72,7 @@ public class PieceTrickParticleTrail extends PieceTrick {
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 		}
 
-		MessageRegister.HANDLER.send(PacketDistributor.DIMENSION.with(() -> context.focalPoint.getEntityWorld().getDimensionKey()), new MessageParticleTrail(pos.toVec3D(), dir.toVec3D(), length, time, PsiAPI.getPlayerCAD(context.caster)));
+		MessageRegister.HANDLER.send(PacketDistributor.DIMENSION.with(() -> context.focalPoint.getCommandSenderWorld().dimension()), new MessageParticleTrail(pos.toVec3D(), dir.toVec3D(), length, time, PsiAPI.getPlayerCAD(context.caster)));
 		return null;
 	}
 }

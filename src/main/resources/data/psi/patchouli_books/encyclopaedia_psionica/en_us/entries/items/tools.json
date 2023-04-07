@@ -1,6 +1,6 @@
 {
   "name": "psi.book.entry.tools",
-  "category": "items",
+  "category": "psi:items",
   "icon": "psi:psimetal_pickaxe",
   "pages": [
     {

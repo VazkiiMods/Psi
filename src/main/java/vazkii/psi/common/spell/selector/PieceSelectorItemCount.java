@@ -8,7 +8,7 @@
  */
 package vazkii.psi.common.spell.selector;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
@@ -23,8 +23,8 @@ public class PieceSelectorItemCount extends PieceSelector {
 
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
-		ItemStack toCount = context.caster.inventory.mainInventory.get(context.getTargetSlot());
-		return context.caster.inventory.mainInventory.stream().filter(stack -> stack.isItemEqual(toCount)).mapToInt(ItemStack::getCount).reduce(Integer::sum).orElse(0);
+		ItemStack toCount = context.caster.getInventory().items.get(context.getTargetSlot());
+		return context.caster.getInventory().items.stream().filter(stack -> stack.sameItem(toCount)).mapToInt(ItemStack::getCount).reduce(Integer::sum).orElse(0);
 	}
 
 	@Override

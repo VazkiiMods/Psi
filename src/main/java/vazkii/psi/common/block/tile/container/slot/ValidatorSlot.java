@@ -8,18 +8,18 @@
  */
 package vazkii.psi.common.block.tile.container.slot;
 
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.container.Slot;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.Container;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
 
 public class ValidatorSlot extends Slot {
 
-	public ValidatorSlot(IInventory inventoryIn, int index, int xPosition, int yPosition) {
+	public ValidatorSlot(Container inventoryIn, int index, int xPosition, int yPosition) {
 		super(inventoryIn, index, xPosition, yPosition);
 	}
 
 	@Override
-	public boolean isItemValid(ItemStack stack) {
-		return inventory.isItemValidForSlot(getSlotIndex(), stack);
+	public boolean mayPlace(ItemStack stack) {
+		return container.canPlaceItem(getSlotIndex(), stack);
 	}
 }

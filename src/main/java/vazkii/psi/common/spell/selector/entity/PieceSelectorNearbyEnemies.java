@@ -8,8 +8,8 @@
  */
 package vazkii.psi.common.spell.selector.entity;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.monster.IMob;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.monster.Enemy;
 
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
@@ -24,7 +24,7 @@ public class PieceSelectorNearbyEnemies extends PieceSelectorNearby {
 
 	@Override
 	public Predicate<Entity> getTargetPredicate(SpellContext context) {
-		return (Entity e) -> e instanceof IMob;
+		return (Entity e) -> e instanceof Enemy;
 	}
 
 }

@@ -1,6 +1,6 @@
 {
   "name": "psi.book.entry.chargeBullet",
-  "category": "items",
+  "category": "psi:items",
   "icon": "psi:spell_bullet_charge",
   "pages": [
     {

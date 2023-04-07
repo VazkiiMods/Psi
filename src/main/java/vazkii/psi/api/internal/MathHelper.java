@@ -8,13 +8,10 @@
  */
 package vazkii.psi.api.internal;
 
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.RayTraceContext;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.LinkedHashSet;
-import java.util.function.BiFunction;
-import java.util.function.Function;
 
 public final class MathHelper {
 
@@ -26,15 +23,15 @@ public final class MathHelper {
 		return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2) + Math.pow(z1 - z2, 2));
 	}
 
-	public static LinkedHashSet<BlockPos> getBlocksAlongRay(Vector3d origin, Vector3d end) {
+	public static LinkedHashSet<BlockPos> getBlocksAlongRay(Vec3 origin, Vec3 end) {
 		return getBlocksAlongRay(origin, end, Integer.MAX_VALUE);
 	}
 
 	/**
-	 * [VanillaCopy] of {@link net.minecraft.world.IWorldReader#doRayTrace(RayTraceContext, BiFunction, Function)}
+	 * [VanillaCopy] of {//@link net.minecraft.world.IWorldReader#doRayTrace(RayTraceContext, BiFunction, Function)}
 	 * but without the extra processing and endpoint bumping
 	 */
-	public static LinkedHashSet<BlockPos> getBlocksAlongRay(Vector3d origin, Vector3d end, int maxBlocks) {
+	public static LinkedHashSet<BlockPos> getBlocksAlongRay(Vec3 origin, Vec3 end, int maxBlocks) {
 		LinkedHashSet<BlockPos> positions = new LinkedHashSet<>();
 		if (maxBlocks == 0) {
 			return positions;
@@ -48,23 +45,23 @@ public final class MathHelper {
 			double originX = origin.x;
 			double originY = origin.y;
 			double originZ = origin.z;
-			int blockX = net.minecraft.util.math.MathHelper.floor(originX);
-			int blockY = net.minecraft.util.math.MathHelper.floor(originY);
-			int blockZ = net.minecraft.util.math.MathHelper.floor(originZ);
-			BlockPos.Mutable blockPos = new BlockPos.Mutable(blockX, blockY, blockZ);
-			positions.add(blockPos.toImmutable());
+			int blockX = net.minecraft.util.Mth.floor(originX);
+			int blockY = net.minecraft.util.Mth.floor(originY);
+			int blockZ = net.minecraft.util.Mth.floor(originZ);
+			BlockPos.MutableBlockPos blockPos = new BlockPos.MutableBlockPos(blockX, blockY, blockZ);
+			positions.add(blockPos.immutable());
 			double lengthX = endX - originX;
 			double lengthY = endY - originY;
 			double lengthZ = endZ - originZ;
-			int signumX = net.minecraft.util.math.MathHelper.signum(lengthX);
-			int signumY = net.minecraft.util.math.MathHelper.signum(lengthY);
-			int signumZ = net.minecraft.util.math.MathHelper.signum(lengthZ);
+			int signumX = net.minecraft.util.Mth.sign(lengthX);
+			int signumY = net.minecraft.util.Mth.sign(lengthY);
+			int signumZ = net.minecraft.util.Mth.sign(lengthZ);
 			double stepSizeX = signumX == 0 ? Double.MAX_VALUE : (double) signumX / lengthX;
 			double stepSizeY = signumY == 0 ? Double.MAX_VALUE : (double) signumY / lengthY;
 			double stepSizeZ = signumZ == 0 ? Double.MAX_VALUE : (double) signumZ / lengthZ;
-			double totalStepsX = stepSizeX * (signumX > 0 ? 1.0D - net.minecraft.util.math.MathHelper.frac(originX) : net.minecraft.util.math.MathHelper.frac(originX));
-			double totalStepsY = stepSizeY * (signumY > 0 ? 1.0D - net.minecraft.util.math.MathHelper.frac(originY) : net.minecraft.util.math.MathHelper.frac(originY));
-			double totalStepsZ = stepSizeZ * (signumZ > 0 ? 1.0D - net.minecraft.util.math.MathHelper.frac(originZ) : net.minecraft.util.math.MathHelper.frac(originZ));
+			double totalStepsX = stepSizeX * (signumX > 0 ? 1.0D - net.minecraft.util.Mth.frac(originX) : net.minecraft.util.Mth.frac(originX));
+			double totalStepsY = stepSizeY * (signumY > 0 ? 1.0D - net.minecraft.util.Mth.frac(originY) : net.minecraft.util.Mth.frac(originY));
+			double totalStepsZ = stepSizeZ * (signumZ > 0 ? 1.0D - net.minecraft.util.Mth.frac(originZ) : net.minecraft.util.Mth.frac(originZ));
 
 			while ((totalStepsX <= 1.0D || totalStepsY <= 1.0D || totalStepsZ <= 1.0D) && positions.size() != maxBlocks) {
 				if (totalStepsX < totalStepsY) {
@@ -82,8 +79,8 @@ public final class MathHelper {
 					blockZ += signumZ;
 					totalStepsZ += stepSizeZ;
 				}
-				blockPos.setPos(blockX, blockY, blockZ);
-				positions.add(blockPos.toImmutable());
+				blockPos.set(blockX, blockY, blockZ);
+				positions.add(blockPos.immutable());
 			}
 		}
 		return positions;

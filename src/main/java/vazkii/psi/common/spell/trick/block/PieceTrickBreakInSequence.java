@@ -8,8 +8,8 @@
  */
 package vazkii.psi.common.spell.trick.block;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.item.ItemStack;
 
 import vazkii.psi.api.internal.MathHelper;
 import vazkii.psi.api.internal.Vector3;
@@ -73,7 +73,7 @@ public class PieceTrickBreakInSequence extends PieceTrick {
 			if (!context.isInRadius(Vector3.fromBlockPos(blockPos))) {
 				throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 			}
-			PieceTrickBreakBlock.removeBlockWithDrops(context, context.caster, context.focalPoint.getEntityWorld(), tool, blockPos, true);
+			PieceTrickBreakBlock.removeBlockWithDrops(context, context.caster, context.focalPoint.getCommandSenderWorld(), tool, blockPos, (v) -> true);
 
 		}
 

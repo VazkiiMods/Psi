@@ -9,8 +9,8 @@
 package vazkii.psi.client.fx;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.particles.ParticleType;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.core.particles.ParticleType;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.event.RegistryEvent;
@@ -41,8 +41,8 @@ public class ModParticles {
 	public static class FactoryHandler {
 		@SubscribeEvent
 		public static void registerFactories(ParticleFactoryRegisterEvent evt) {
-			Minecraft.getInstance().particles.registerFactory(ModParticles.WISP, WispParticleType.Factory::new);
-			Minecraft.getInstance().particles.registerFactory(ModParticles.SPARKLE, SparkleParticleType.Factory::new);
+			Minecraft.getInstance().particleEngine.register(ModParticles.WISP, WispParticleType.Factory::new);
+			Minecraft.getInstance().particleEngine.register(ModParticles.SPARKLE, SparkleParticleType.Factory::new);
 		}
 	}
 

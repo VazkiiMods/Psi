@@ -8,7 +8,7 @@
  */
 package vazkii.psi.common.spell.operator.entity;
 
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 
 import vazkii.psi.api.internal.MathHelper;
 import vazkii.psi.api.internal.Vector3;
@@ -48,7 +48,7 @@ public class PieceOperatorClosestToPoint extends PieceOperator {
 		double closest = Double.MAX_VALUE;
 		Entity closestEntity = null;
 		for (Entity e : list) {
-			double dist = MathHelper.pointDistanceSpace(position.x, position.y, position.z, e.getPosX(), e.getPosY(), e.getPosZ());
+			double dist = MathHelper.pointDistanceSpace(position.x, position.y, position.z, e.getX(), e.getY(), e.getZ());
 			if (dist < closest) {
 				closest = dist;
 				closestEntity = e;

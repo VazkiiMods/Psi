@@ -8,11 +8,11 @@
  */
 package vazkii.psi.common.network.message;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.network.NetworkEvent;
 
 import vazkii.psi.api.internal.PsiRenderHelper;
 import vazkii.psi.common.Psi;
@@ -23,13 +23,13 @@ import java.util.function.Supplier;
 public class MessageParticleTrail {
 	private static final int STEPS_PER_UNIT = 4;
 
-	private final Vector3d position;
-	private final Vector3d direction;
+	private final Vec3 position;
+	private final Vec3 direction;
 	private final double length;
 	private final int time;
 	private final ItemStack cad;
 
-	public MessageParticleTrail(Vector3d position, Vector3d direction, double length, int time, ItemStack cad) {
+	public MessageParticleTrail(Vec3 position, Vec3 direction, double length, int time, ItemStack cad) {
 		this.position = position;
 		this.direction = direction;
 		this.length = length;
@@ -37,25 +37,25 @@ public class MessageParticleTrail {
 		this.cad = cad;
 	}
 
-	public MessageParticleTrail(PacketBuffer buf) {
+	public MessageParticleTrail(FriendlyByteBuf buf) {
 		this.position = MessageRegister.readVec3d(buf);
 		this.direction = MessageRegister.readVec3d(buf);
 		this.length = buf.readDouble();
 		this.time = buf.readVarInt();
-		this.cad = buf.readItemStack();
+		this.cad = buf.readItem();
 	}
 
-	public void encode(PacketBuffer buf) {
+	public void encode(FriendlyByteBuf buf) {
 		MessageRegister.writeVec3d(buf, position);
 		MessageRegister.writeVec3d(buf, direction);
 		buf.writeDouble(length);
 		buf.writeVarInt(time);
-		buf.writeItemStack(cad);
+		buf.writeItem(cad);
 	}
 
 	public boolean receive(Supplier<NetworkEvent.Context> context) {
 		context.get().enqueueWork(() -> {
-			World world = Psi.proxy.getClientWorld();
+			Level world = Psi.proxy.getClientWorld();
 
 			int color = Psi.proxy.getColorForCAD(cad);
 
@@ -63,7 +63,7 @@ public class MessageParticleTrail {
 			float green = PsiRenderHelper.g(color);
 			float blue = PsiRenderHelper.b(color);
 
-			Vector3d ray = direction.normalize().scale(1f / STEPS_PER_UNIT);
+			Vec3 ray = direction.normalize().scale(1f / STEPS_PER_UNIT);
 			int steps = (int) (length * STEPS_PER_UNIT);
 
 			for (int i = 0; i < steps; i++) {

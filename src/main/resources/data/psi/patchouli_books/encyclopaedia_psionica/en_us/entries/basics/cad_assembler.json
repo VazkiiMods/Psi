@@ -1,6 +1,6 @@
 {
   "name": "psi.book.entry.cadAssembler",
-  "category": "basics",
+  "category": "psi:basics",
   "icon": "psi:cad_assembler",
   "pages": [
     {

@@ -8,17 +8,17 @@
  */
 package vazkii.psi.common.entity;
 
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.projectile.ThrowableEntity;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.Direction;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.EntityRayTraceResult;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.projectile.ThrowableProjectile;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ObjectHolder;
 
 import vazkii.psi.api.internal.Vector3;
@@ -36,23 +36,23 @@ public class EntitySpellGrenade extends EntitySpellProjectile {
 
 	boolean sound = false;
 
-	public EntitySpellGrenade(EntityType<? extends ThrowableEntity> type, World worldIn) {
+	public EntitySpellGrenade(EntityType<? extends ThrowableProjectile> type, Level worldIn) {
 		super(type, worldIn);
 	}
 
-	protected EntitySpellGrenade(EntityType<? extends ThrowableEntity> type, World worldIn, LivingEntity throwerIn) {
+	protected EntitySpellGrenade(EntityType<? extends ThrowableProjectile> type, Level worldIn, LivingEntity throwerIn) {
 		super(type, worldIn, throwerIn);
 
 		double speed = 0.65;
-		setMotion(getMotion().mul(speed, speed, speed));
+		setDeltaMovement(getDeltaMovement().multiply(speed, speed, speed));
 	}
 
-	public EntitySpellGrenade(World world, LivingEntity thrower) {
+	public EntitySpellGrenade(Level world, LivingEntity thrower) {
 		this(TYPE, world, thrower);
 	}
 
 	@Override
-	protected float getGravityVelocity() {
+	protected float getGravity() {
 		return 0.05F;
 	}
 
@@ -60,7 +60,7 @@ public class EntitySpellGrenade extends EntitySpellProjectile {
 	public void tick() {
 		super.tick();
 
-		if (ticksExisted > 60 && isAlive() && explodes()) {
+		if (tickCount > 60 && isAlive() && explodes()) {
 			doExplosion();
 		}
 	}
@@ -75,17 +75,17 @@ public class EntitySpellGrenade extends EntitySpellProjectile {
 		} else {
 			cast();
 		}
-		playSound(SoundEvents.ENTITY_GENERIC_EXPLODE, 0.5F, 1F);
+		playSound(SoundEvents.GENERIC_EXPLODE, 0.5F, 1F);
 		double m = 0.1;
 		for (int j = 0; j < 40; j++) {
-			double d0 = getEntityWorld().rand.nextGaussian() * m;
-			double d1 = getEntityWorld().rand.nextGaussian() * m;
-			double d2 = getEntityWorld().rand.nextGaussian() * m;
+			double d0 = getCommandSenderWorld().random.nextGaussian() * m;
+			double d1 = getCommandSenderWorld().random.nextGaussian() * m;
+			double d2 = getCommandSenderWorld().random.nextGaussian() * m;
 
-			double x = getPosX() + 0.75 * getEntityWorld().rand.nextFloat() - 0.375;
-			double y = getPosY() + 0.5 * getEntityWorld().rand.nextFloat();
-			double z = getPosZ() + 0.75 * getEntityWorld().rand.nextFloat() - 0.375;
-			getEntityWorld().addParticle(ParticleTypes.EXPLOSION, x, y, z, d0, d1, d2);
+			double x = getX() + 0.75 * getCommandSenderWorld().random.nextFloat() - 0.375;
+			double y = getY() + 0.5 * getCommandSenderWorld().random.nextFloat();
+			double z = getZ() + 0.75 * getCommandSenderWorld().random.nextFloat() - 0.375;
+			getCommandSenderWorld().addParticle(ParticleTypes.EXPLOSION, x, y, z, d0, d1, d2);
 		}
 	}
 
@@ -94,26 +94,26 @@ public class EntitySpellGrenade extends EntitySpellProjectile {
 	}
 
 	@Override
-	protected void onImpact(@Nonnull RayTraceResult ray) {
-		if (ray instanceof EntityRayTraceResult && ((EntityRayTraceResult) ray).getEntity() instanceof LivingEntity) {
-			dataManager.set(ATTACKTARGET_UUID, Optional.of(((EntityRayTraceResult) ray).getEntity().getUniqueID()));
+	protected void onHit(@Nonnull HitResult ray) {
+		if (ray instanceof EntityHitResult && ((EntityHitResult) ray).getEntity() instanceof LivingEntity) {
+			entityData.set(ATTACKTARGET_UUID, Optional.of(((EntityHitResult) ray).getEntity().getUUID()));
 		}
-		if (!getEntityWorld().isRemote && !sound && explodes()) {
-			playSound(SoundEvents.ENTITY_CREEPER_PRIMED, 2F, 1F);
+		if (!getCommandSenderWorld().isClientSide && !sound && explodes()) {
+			playSound(SoundEvents.CREEPER_PRIMED, 2F, 1F);
 			sound = true;
 		}
 
-		if (ray.getType() == RayTraceResult.Type.BLOCK) {
-			Direction face = ((BlockRayTraceResult) ray).getFace();
-			Vector3 position = Vector3.fromVec3d(ray.getHitVec());
+		if (ray.getType() == HitResult.Type.BLOCK) {
+			Direction face = ((BlockHitResult) ray).getDirection();
+			Vector3 position = Vector3.fromVec3d(ray.getLocation());
 			if (face != Direction.UP) {
 				position.add(Vector3.fromDirection(face).multiply(0.1d));
 			}
-			setPositionAndUpdate(position.x, position.y, position.z);
-			setMotion(Vector3d.ZERO);
-		} else if (ray.getType() == RayTraceResult.Type.ENTITY) {
-			setPositionAndUpdate(ray.getHitVec().x, ray.getHitVec().y, ray.getHitVec().z);
-			setMotion(Vector3d.ZERO);
+			teleportTo(position.x, position.y, position.z);
+			setDeltaMovement(Vec3.ZERO);
+		} else if (ray.getType() == HitResult.Type.ENTITY) {
+			teleportTo(ray.getLocation().x, ray.getLocation().y, ray.getLocation().z);
+			setDeltaMovement(Vec3.ZERO);
 		}
 	}
 

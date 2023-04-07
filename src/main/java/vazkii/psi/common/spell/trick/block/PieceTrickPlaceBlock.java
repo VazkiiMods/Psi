@@ -8,20 +8,20 @@
  */
 package vazkii.psi.common.spell.trick.block;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.BlockSnapshot;
 import net.minecraftforge.event.world.BlockEvent;
@@ -74,8 +74,8 @@ public class PieceTrickPlaceBlock extends PieceTrick {
 		Direction facing = Direction.NORTH;
 		Direction horizontalFacing = Direction.NORTH;
 		if (directionVal != null) {
-			facing = Direction.getFacingFromVector(directionVal.x, directionVal.y, directionVal.z);
-			horizontalFacing = Direction.getFacingFromVector(directionVal.x, 0.0, directionVal.z);
+			facing = Direction.getNearest(directionVal.x, directionVal.y, directionVal.z);
+			horizontalFacing = Direction.getNearest(directionVal.x, 0.0, directionVal.z);
 		}
 
 		if (positionVal == null) {
@@ -86,49 +86,49 @@ public class PieceTrickPlaceBlock extends PieceTrick {
 		}
 
 		BlockPos pos = positionVal.toBlockPos();
-		placeBlock(context.caster, context.focalPoint.getEntityWorld(), pos, context.getTargetSlot(), false, facing, horizontalFacing);
+		placeBlock(context.caster, context.focalPoint.getCommandSenderWorld(), pos, context.getTargetSlot(), false, facing, horizontalFacing);
 
 		return null;
 	}
 
-	public static void placeBlock(PlayerEntity player, World world, BlockPos pos, int slot, boolean particles, Direction direction, Direction horizontalDirection) {
+	public static void placeBlock(Player player, Level world, BlockPos pos, int slot, boolean particles, Direction direction, Direction horizontalDirection) {
 		placeBlock(player, world, pos, slot, particles, false, direction, horizontalDirection);
 	}
 
-	public static void placeBlock(PlayerEntity player, World world, BlockPos pos, int slot, boolean particles, boolean conjure, Direction direction, Direction horizontalDirection) {
-		if (!world.isBlockLoaded(pos) || !world.isBlockModifiable(player, pos)) {
+	public static void placeBlock(Player player, Level world, BlockPos pos, int slot, boolean particles, boolean conjure, Direction direction, Direction horizontalDirection) {
+		if (!world.hasChunkAt(pos) || !world.mayInteract(player, pos)) {
 			return;
 		}
 
 		BlockState state = world.getBlockState(pos);
-		BlockEvent.EntityPlaceEvent placeEvent = new BlockEvent.EntityPlaceEvent(BlockSnapshot.create(world.getDimensionKey(), world, pos), world.getBlockState(pos.offset(Direction.UP)), player);
+		BlockEvent.EntityPlaceEvent placeEvent = new BlockEvent.EntityPlaceEvent(BlockSnapshot.create(world.dimension(), world, pos), world.getBlockState(pos.relative(Direction.UP)), player);
 		MinecraftForge.EVENT_BUS.post(placeEvent);
-		if (state.isAir(world, pos) || state.getMaterial().isReplaceable() && !placeEvent.isCanceled()) {
+		if (state.isAir() || state.getMaterial().isReplaceable() && !placeEvent.isCanceled()) {
 
 			if (conjure) {
 
-				world.setBlockState(pos, ModBlocks.conjured.getDefaultState());
+				world.setBlockAndUpdate(pos, ModBlocks.conjured.defaultBlockState());
 			} else {
-				ItemStack stack = player.inventory.getStackInSlot(slot);
+				ItemStack stack = player.getInventory().getItem(slot);
 				if (!stack.isEmpty() && stack.getItem() instanceof BlockItem) {
 					ItemStack rem = removeFromInventory(player, stack, true);
 					BlockItem iblock = (BlockItem) rem.getItem();
 
 					ItemStack save;
-					BlockRayTraceResult hit = new BlockRayTraceResult(Vector3d.ZERO, direction, pos, false);
-					ItemUseContext ctx = new ItemUseContext(player, Hand.MAIN_HAND, hit);
+					BlockHitResult hit = new BlockHitResult(Vec3.ZERO, direction, pos, false);
+					UseOnContext ctx = new UseOnContext(player, InteractionHand.MAIN_HAND, hit);
 
-					save = player.getHeldItem(ctx.getHand());
-					player.setHeldItem(ctx.getHand(), rem);
-					ItemUseContext newCtx;
-					newCtx = new ItemUseContext(ctx.getPlayer(), ctx.getHand(), hit);
-					player.setHeldItem(newCtx.getHand(), save);
+					save = player.getItemInHand(ctx.getHand());
+					player.setItemInHand(ctx.getHand(), rem);
+					UseOnContext newCtx;
+					newCtx = new UseOnContext(ctx.getPlayer(), ctx.getHand(), hit);
+					player.setItemInHand(newCtx.getHand(), save);
 
-					ActionResultType result = iblock.tryPlace(new DirectionBlockItemUseContext(newCtx, horizontalDirection));
+					InteractionResult result = iblock.place(new DirectionBlockItemUseContext(newCtx, horizontalDirection));
 
-					if (result != ActionResultType.FAIL) {
+					if (result != InteractionResult.FAIL) {
 						removeFromInventory(player, stack, false);
-						if (player.abilities.isCreativeMode) {
+						if (player.isCreative()) {
 							HUDHandler.setRemaining(rem, -1);
 						} else {
 							HUDHandler.setRemaining(player, rem, null);
@@ -138,25 +138,25 @@ public class PieceTrickPlaceBlock extends PieceTrick {
 			}
 
 			if (particles) {
-				world.playEvent(2001, pos, Block.getStateId(world.getBlockState(pos)));
+				world.levelEvent(2001, pos, Block.getId(world.getBlockState(pos)));
 			}
 		}
 	}
 
-	public static ItemStack removeFromInventory(PlayerEntity player, ItemStack stack, boolean copy) {
-		if (player.abilities.isCreativeMode) {
+	public static ItemStack removeFromInventory(Player player, ItemStack stack, boolean copy) {
+		if (player.isCreative()) {
 			return stack.copy();
 		}
 
-		PlayerInventory inv = player.inventory;
-		for (int i = inv.getSizeInventory() - 1; i >= 0; i--) {
-			ItemStack invStack = inv.getStackInSlot(i);
-			if (!invStack.isEmpty() && invStack.isItemEqual(stack) && ItemStack.areItemStacksEqual(stack, invStack)) {
+		Inventory inv = player.getInventory();
+		for (int i = inv.getContainerSize() - 1; i >= 0; i--) {
+			ItemStack invStack = inv.getItem(i);
+			if (!invStack.isEmpty() && invStack.sameItem(stack) && ItemStack.matches(stack, invStack)) {
 				ItemStack retStack = invStack.copy();
 				if (!copy) {
 					invStack.shrink(1);
 					if (invStack.getCount() == 0) {
-						inv.setInventorySlotContents(i, ItemStack.EMPTY);
+						inv.setItem(i, ItemStack.EMPTY);
 					}
 				}
 				return retStack;

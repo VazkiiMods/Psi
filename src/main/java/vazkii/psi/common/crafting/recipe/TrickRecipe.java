@@ -10,14 +10,14 @@ package vazkii.psi.common.crafting.recipe;
 
 import com.google.gson.JsonObject;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.item.crafting.IRecipeType;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.items.wrapper.RecipeWrapper;
 import net.minecraftforge.registries.ForgeRegistryEntry;
@@ -33,7 +33,7 @@ import vazkii.psi.common.item.base.ModItems;
 import javax.annotation.Nullable;
 
 public class TrickRecipe implements ITrickRecipe {
-	public static final IRecipeSerializer<TrickRecipe> SERIALIZER = new Serializer();
+	public static final RecipeSerializer<TrickRecipe> SERIALIZER = new Serializer();
 	private static final Spell dummySpell = new Spell();
 
 	@Nullable
@@ -63,7 +63,7 @@ public class TrickRecipe implements ITrickRecipe {
 	}
 
 	@Override
-	public ItemStack getRecipeOutput() {
+	public ItemStack getResultItem() {
 		return output;
 	}
 
@@ -73,17 +73,17 @@ public class TrickRecipe implements ITrickRecipe {
 	}
 
 	@Override
-	public boolean matches(RecipeWrapper inv, World world) {
-		return getInput().test(inv.getStackInSlot(0));
+	public boolean matches(RecipeWrapper inv, Level world) {
+		return getInput().test(inv.getItem(0));
 	}
 
 	@Override
-	public ItemStack getCraftingResult(RecipeWrapper inv) {
-		return getRecipeOutput();
+	public ItemStack assemble(RecipeWrapper inv) {
+		return getResultItem();
 	}
 
 	@Override
-	public ItemStack getIcon() {
+	public ItemStack getToastSymbol() {
 		return new ItemStack(ModItems.cad);
 	}
 
@@ -93,30 +93,30 @@ public class TrickRecipe implements ITrickRecipe {
 	}
 
 	@Override
-	public IRecipeSerializer<?> getSerializer() {
+	public RecipeSerializer<?> getSerializer() {
 		return SERIALIZER;
 	}
 
 	@Override
-	public boolean canFit(int width, int height) {
+	public boolean canCraftInDimensions(int width, int height) {
 		return true;
 	}
 
 	@Override
-	public IRecipeType<?> getType() {
+	public RecipeType<?> getType() {
 		return ModCraftingRecipes.TRICK_RECIPE_TYPE;
 	}
 
-	static class Serializer extends ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<TrickRecipe> {
+	static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<TrickRecipe> {
 		@Override
-		public TrickRecipe read(ResourceLocation id, JsonObject json) {
-			Ingredient ingredient = Ingredient.deserialize(JSONUtils.getJsonObject(json, "input"));
-			ItemStack output = CraftingHelper.getItemStack(JSONUtils.getJsonObject(json, "output"), true);
-			ItemStack cadAssembly = CraftingHelper.getItemStack(JSONUtils.getJsonObject(json, "cad"), true);
+		public TrickRecipe fromJson(ResourceLocation id, JsonObject json) {
+			Ingredient ingredient = Ingredient.fromJson(GsonHelper.getAsJsonObject(json, "input"));
+			ItemStack output = CraftingHelper.getItemStack(GsonHelper.getAsJsonObject(json, "output"), true);
+			ItemStack cadAssembly = CraftingHelper.getItemStack(GsonHelper.getAsJsonObject(json, "cad"), true);
 
 			PieceCraftingTrick trick = null;
 			if (json.has("trick")) {
-				trick = PsiAPI.getSpellPieceRegistry().getOptional(new ResourceLocation(JSONUtils.getString(json, "trick")))
+				trick = PsiAPI.getSpellPieceRegistry().getOptional(new ResourceLocation(GsonHelper.getAsString(json, "trick")))
 						.filter(PieceCraftingTrick.class::isAssignableFrom)
 						.map(clazz -> (PieceCraftingTrick) SpellPiece.create(clazz, dummySpell))
 						.orElse(null);
@@ -126,10 +126,10 @@ public class TrickRecipe implements ITrickRecipe {
 
 		@Nullable
 		@Override
-		public TrickRecipe read(ResourceLocation id, PacketBuffer buf) {
-			Ingredient ingredient = Ingredient.read(buf);
-			ItemStack output = buf.readItemStack();
-			ItemStack cadAssembly = buf.readItemStack();
+		public TrickRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buf) {
+			Ingredient ingredient = Ingredient.fromNetwork(buf);
+			ItemStack output = buf.readItem();
+			ItemStack cadAssembly = buf.readItem();
 			PieceCraftingTrick trick = null;
 			if (buf.readBoolean()) {
 				trick = PsiAPI.getSpellPieceRegistry().getOptional(buf.readResourceLocation())
@@ -140,10 +140,10 @@ public class TrickRecipe implements ITrickRecipe {
 		}
 
 		@Override
-		public void write(PacketBuffer buf, TrickRecipe recipe) {
-			recipe.input.write(buf);
-			buf.writeItemStack(recipe.output);
-			buf.writeItemStack(recipe.cad);
+		public void toNetwork(FriendlyByteBuf buf, TrickRecipe recipe) {
+			recipe.input.toNetwork(buf);
+			buf.writeItem(recipe.output);
+			buf.writeItem(recipe.cad);
 			if (recipe.piece != null) {
 				buf.writeBoolean(true);
 				buf.writeResourceLocation(recipe.piece.registryKey);
@@ -154,7 +154,7 @@ public class TrickRecipe implements ITrickRecipe {
 	}
 
 	@Override
-	public boolean isDynamic() {
+	public boolean isSpecial() {
 		return true;
 	}
 

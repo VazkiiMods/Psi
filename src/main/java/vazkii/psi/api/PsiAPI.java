@@ -12,17 +12,18 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.mojang.serialization.Lifecycle;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.RegistryKey;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.SimpleRegistry;
+import net.minecraft.core.MappedRegistry;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityInject;
+import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.fml.DistExecutor;
 
 import org.apache.logging.log4j.LogManager;
@@ -39,7 +40,6 @@ import vazkii.psi.api.spell.ISpellAcceptor;
 import vazkii.psi.api.spell.ISpellImmune;
 import vazkii.psi.api.spell.SpellPiece;
 import vazkii.psi.api.spell.detonator.IDetonationHandler;
-import vazkii.psi.common.spell.trick.PieceTrickDebug;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -58,34 +58,29 @@ public final class PsiAPI {
 	 */
 	public static IInternalMethodHandler internalHandler = new DummyMethodHandler();
 
-	@CapabilityInject(ISpellImmune.class)
-	public static Capability<ISpellImmune> SPELL_IMMUNE_CAPABILITY = null;
+	public static Capability<ISpellImmune> SPELL_IMMUNE_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {});
 
-	@CapabilityInject(IDetonationHandler.class)
-	public static Capability<IDetonationHandler> DETONATION_HANDLER_CAPABILITY = null;
+	public static Capability<IDetonationHandler> DETONATION_HANDLER_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {});
 
-	@CapabilityInject(IPsiBarDisplay.class)
-	public static Capability<IPsiBarDisplay> PSI_BAR_DISPLAY_CAPABILITY = null;
+	public static Capability<IPsiBarDisplay> PSI_BAR_DISPLAY_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {});
 
-	@CapabilityInject(ISpellAcceptor.class)
-	public static Capability<ISpellAcceptor> SPELL_ACCEPTOR_CAPABILITY = null;
+	public static Capability<ISpellAcceptor> SPELL_ACCEPTOR_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {});
 
-	@CapabilityInject(ICADData.class)
-	public static Capability<ICADData> CAD_DATA_CAPABILITY = null;
+	public static Capability<ICADData> CAD_DATA_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {});
 
-	@CapabilityInject(ISocketable.class)
-	public static Capability<ISocketable> SOCKETABLE_CAPABILITY = null;
+	public static Capability<ISocketable> SOCKETABLE_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {});
 
 	public static final String MOD_ID = "psi";
 
-	public static final RegistryKey<Registry<Class<? extends SpellPiece>>> SPELL_PIECE_REGISTRY_TYPE_KEY = Registry.createKey("spell_piece_registry_type_key");
-	private static final SimpleRegistry<Class<? extends SpellPiece>> spellPieceRegistry = (SimpleRegistry<Class<? extends SpellPiece>>) Registry.register(SPELL_PIECE_REGISTRY_TYPE_KEY, Lifecycle.stable(), () -> PieceTrickDebug.class);
+	public static final ResourceKey<Registry<Class<? extends SpellPiece>>> SPELL_PIECE_REGISTRY_TYPE_KEY = Registry.createRegistryKey("spell_piece_registry_type_key");
+	//private static final MappedRegistry<Class<? extends SpellPiece>> spellPieceRegistry = (MappedRegistry<Class<? extends SpellPiece>>) Registry.registerSimple(SPELL_PIECE_REGISTRY_TYPE_KEY, Lifecycle.stable(), () -> PieceTrickDebug.class);
+	private static final MappedRegistry<Class<? extends SpellPiece>> spellPieceRegistry = new MappedRegistry<>(SPELL_PIECE_REGISTRY_TYPE_KEY, Lifecycle.stable(), null); //TODO (circa 1.18.2): un-duct-tape this
 	private static final Multimap<ResourceLocation, Class<? extends SpellPiece>> advancementGroups = HashMultimap.create();
 	private static final Map<Class<? extends SpellPiece>, ResourceLocation> advancementGroupsInverse = new HashMap<>();
 	private static final Map<ResourceLocation, Class<? extends SpellPiece>> mainPieceForGroup = new HashMap<>();
 
 	public static final PsimetalArmorMaterial PSIMETAL_ARMOR_MATERIAL = new PsimetalArmorMaterial("psimetal", 18, new int[] { 2, 5, 6, 2 },
-			12, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0F, () -> Ingredient.fromItems(Registry.ITEM.getOrDefault(new ResourceLocation(MOD_ID, "psimetal"))), 0.0f);
+			12, SoundEvents.ARMOR_EQUIP_IRON, 0F, () -> Ingredient.of(Registry.ITEM.get(new ResourceLocation(MOD_ID, "psimetal"))), 0.0f);
 	public static final PsimetalToolMaterial PSIMETAL_TOOL_MATERIAL = new PsimetalToolMaterial();
 
 	/**
@@ -93,7 +88,7 @@ public final class PsiAPI {
 	 */
 	public static void registerSpellPiece(ResourceLocation resourceLocation, Class<? extends SpellPiece> clazz) {
 		synchronized (PsiAPI.spellPieceRegistry) {
-			PsiAPI.spellPieceRegistry.register(RegistryKey.getOrCreateKey(SPELL_PIECE_REGISTRY_TYPE_KEY, resourceLocation), clazz, Lifecycle.stable());
+			PsiAPI.spellPieceRegistry.register(ResourceKey.create(SPELL_PIECE_REGISTRY_TYPE_KEY, resourceLocation), clazz, Lifecycle.stable());
 		}
 	}
 
@@ -133,14 +128,14 @@ public final class PsiAPI {
 	 * Gets the CAD the passed PlayerEntity is using. As a player can only have one CAD, if there's
 	 * more than one, this will return null.
 	 */
-	public static ItemStack getPlayerCAD(PlayerEntity player) {
+	public static ItemStack getPlayerCAD(Player player) {
 		if (player == null) {
 			return ItemStack.EMPTY;
 		}
 
 		ItemStack cad = ItemStack.EMPTY;
-		for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
-			ItemStack stackAt = player.inventory.getStackInSlot(i);
+		for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
+			ItemStack stackAt = player.getInventory().getItem(i);
 			if (!stackAt.isEmpty() && stackAt.getItem() instanceof ICAD) {
 				if (!cad.isEmpty()) {
 					return ItemStack.EMPTY; // Player can only have one CAD
@@ -153,14 +148,14 @@ public final class PsiAPI {
 		return cad;
 	}
 
-	public static int getPlayerCADSlot(PlayerEntity player) {
+	public static int getPlayerCADSlot(Player player) {
 		if (player == null) {
 			return -1;
 		}
 
 		int slot = -1;
-		for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
-			ItemStack stackAt = player.inventory.getStackInSlot(i);
+		for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
+			ItemStack stackAt = player.getInventory().getItem(i);
 			if (!stackAt.isEmpty() && stackAt.getItem() instanceof ICAD) {
 				if (slot != -1) {
 					return -1; // Player can only have one CAD
@@ -173,12 +168,12 @@ public final class PsiAPI {
 		return slot;
 	}
 
-	public static boolean canCADBeUpdated(PlayerEntity player) {
+	public static boolean canCADBeUpdated(Player player) {
 		if (player == null) {
 			return false;
 		}
 
-		if (player.openContainer == null) {
+		if (player.containerMenu == null) {
 			return true;
 		}
 
@@ -187,7 +182,7 @@ public final class PsiAPI {
 	}
 
 	public static Class<? extends SpellPiece> getSpellPiece(ResourceLocation key) {
-		return spellPieceRegistry.getOrDefault(key);
+		return spellPieceRegistry.get(key);
 	}
 
 	public static ResourceLocation getSpellPieceKey(Class<? extends SpellPiece> clazz) {
@@ -218,7 +213,7 @@ public final class PsiAPI {
 		return spellPieceRegistry.keySet();
 	}
 
-	public static SimpleRegistry<Class<? extends SpellPiece>> getSpellPieceRegistry() {
+	public static MappedRegistry<Class<? extends SpellPiece>> getSpellPieceRegistry() {
 		return spellPieceRegistry;
 	}
 }

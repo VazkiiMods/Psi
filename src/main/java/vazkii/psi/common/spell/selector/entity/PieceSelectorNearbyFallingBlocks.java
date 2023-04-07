@@ -8,8 +8,8 @@
  */
 package vazkii.psi.common.spell.selector.entity;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.FallingBlockEntity;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.item.FallingBlockEntity;
 
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;

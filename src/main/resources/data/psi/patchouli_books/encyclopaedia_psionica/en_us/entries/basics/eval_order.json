@@ -1,6 +1,6 @@
 {
   "name": "psi.book.entry.evalOrder",
-  "category": "basics",
+  "category": "psi:basics",
   "icon": "minecraft:air",
   "pages": [
     {

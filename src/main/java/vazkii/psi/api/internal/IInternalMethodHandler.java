@@ -8,13 +8,13 @@
  */
 package vazkii.psi.api.internal;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -32,7 +32,7 @@ public interface IInternalMethodHandler {
 	 * Gets the player data for a given player. Player Data contains info such as the
 	 * player's Psi value or level.
 	 */
-	IPlayerData getDataForPlayer(PlayerEntity player);
+	IPlayerData getDataForPlayer(Player player);
 
 	/**
 	 * Gets the texture for the programmer. Used for drawing the arrows in a SpellPiece's
@@ -70,7 +70,7 @@ public interface IInternalMethodHandler {
 	 * Renders a tooltip with the specified colors at the given x,y position
 	 */
 	@OnlyIn(Dist.CLIENT)
-	void renderTooltip(MatrixStack ms, int x, int y, List<ITextComponent> tooltipData, int color, int color2, int width, int height);
+	void renderTooltip(PoseStack ms, int x, int y, List<Component> tooltipData, int color, int color2, int width, int height);
 
 	/**
 	 * Creates a CAD with the given components

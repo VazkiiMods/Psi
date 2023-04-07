@@ -8,25 +8,27 @@
  */
 package vazkii.psi.common.block;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.IWaterLoggable;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -39,7 +41,7 @@ import javax.annotation.Nullable;
 
 import java.util.Random;
 
-public class BlockConjured extends Block implements IWaterLoggable {
+public class BlockConjured extends Block implements EntityBlock, SimpleWaterloggedBlock {
 
 	public static final BooleanProperty SOLID = BooleanProperty.create("solid");
 	public static final BooleanProperty LIGHT = BooleanProperty.create("light");
@@ -51,17 +53,17 @@ public class BlockConjured extends Block implements IWaterLoggable {
 	public static final BooleanProperty BLOCK_EAST = BooleanProperty.create("block_east");
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-	protected static final VoxelShape LIGHT_SHAPE = Block.makeCuboidShape(4, 4, 4, 12, 12, 12);
+	protected static final VoxelShape LIGHT_SHAPE = Block.box(4, 4, 4, 12, 12, 12);
 
 	public BlockConjured(Properties properties) {
 		super(properties);
-		setDefaultState(getStateContainer().getBaseState().with(LIGHT, false).with(SOLID, false).with(WATERLOGGED, false).with(BLOCK_DOWN, false).with(BLOCK_UP, false).with(BLOCK_EAST, false).with(BLOCK_WEST, false).with(BLOCK_NORTH, false).with(BLOCK_SOUTH, false));
+		registerDefaultState(getStateDefinition().any().setValue(LIGHT, false).setValue(SOLID, false).setValue(WATERLOGGED, false).setValue(BLOCK_DOWN, false).setValue(BLOCK_UP, false).setValue(BLOCK_EAST, false).setValue(BLOCK_WEST, false).setValue(BLOCK_NORTH, false).setValue(BLOCK_SOUTH, false));
 	}
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand) {
-		TileEntity inWorld = worldIn.getTileEntity(pos);
+	public void animateTick(BlockState stateIn, Level worldIn, BlockPos pos, Random rand) {
+		BlockEntity inWorld = worldIn.getBlockEntity(pos);
 		if (inWorld instanceof TileConjured) {
 			((TileConjured) inWorld).doParticles();
 		}
@@ -69,8 +71,8 @@ public class BlockConjured extends Block implements IWaterLoggable {
 
 	@Nullable
 	@Override
-	public float[] getBeaconColorMultiplier(BlockState state, IWorldReader world, BlockPos pos, BlockPos beaconPos) {
-		TileEntity inWorld = world.getTileEntity(pos);
+	public float[] getBeaconColorMultiplier(BlockState state, LevelReader world, BlockPos pos, BlockPos beaconPos) {
+		BlockEntity inWorld = world.getBlockEntity(pos);
 		if (inWorld instanceof TileConjured) {
 			int color = Psi.proxy.getColorForColorizer(((TileConjured) inWorld).colorizer);
 			return new float[] { PsiRenderHelper.r(color) / 255F, PsiRenderHelper.g(color) / 255F, PsiRenderHelper.b(color) / 255F };
@@ -79,23 +81,23 @@ public class BlockConjured extends Block implements IWaterLoggable {
 	}
 
 	@Override
-	public void tick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+	public void tick(BlockState state, ServerLevel world, BlockPos pos, Random random) {
 		world.removeBlock(pos, false);
 	}
 
 	@Override
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
 		builder.add(SOLID, LIGHT, BLOCK_UP, BLOCK_DOWN, BLOCK_NORTH, BLOCK_SOUTH, BLOCK_WEST, BLOCK_EAST, WATERLOGGED);
 	}
 
 	@Override
-	public boolean isTransparent(BlockState state) {
+	public boolean useShapeForLightOcclusion(BlockState state) {
 		return true;
 	}
 
 	@Nonnull
 	@Override
-	public BlockState updatePostPlacement(@Nonnull BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos) {
+	public BlockState updateShape(@Nonnull BlockState state, Direction facing, BlockState facingState, LevelAccessor world, BlockPos currentPos, BlockPos facingPos) {
 		BooleanProperty prop;
 		switch (facing) {
 		default:
@@ -118,61 +120,56 @@ public class BlockConjured extends Block implements IWaterLoggable {
 			prop = BLOCK_EAST;
 			break;
 		}
-		if (state.get(WATERLOGGED)) {
-			world.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(world));
+		if (state.getValue(WATERLOGGED)) {
+			world.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
 		}
-		if (state.getBlock() == facingState.getBlock() && state.get(LIGHT) == facingState.get(LIGHT) && state.get(SOLID) == facingState.get(SOLID)) {
-			return state.with(prop, true);
+		if (state.getBlock() == facingState.getBlock() && state.getValue(LIGHT) == facingState.getValue(LIGHT) && state.getValue(SOLID) == facingState.getValue(SOLID)) {
+			return state.setValue(prop, true);
 		} else {
-			return state.with(prop, false);
+			return state.setValue(prop, false);
 		}
 	}
 
 	@Override
-	public int getLightValue(BlockState state, IBlockReader world, BlockPos pos) {
-		return state.get(LIGHT) ? 15 : 0;
+	public int getLightEmission(BlockState state, BlockGetter world, BlockPos pos) {
+		return state.getValue(LIGHT) ? 15 : 0;
 	}
 
 	@Nonnull
 	@Override
-	public VoxelShape getCollisionShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context) {
-		return state.get(SOLID) ? VoxelShapes.fullCube() : VoxelShapes.empty();
+	public VoxelShape getCollisionShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
+		return state.getValue(SOLID) ? Shapes.block() : Shapes.empty();
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context) {
-		return state.get(SOLID) ? VoxelShapes.fullCube() : LIGHT_SHAPE;
+	public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
+		return state.getValue(SOLID) ? Shapes.block() : LIGHT_SHAPE;
 	}
 
 	@Override
 	public FluidState getFluidState(BlockState state) {
-		return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
+		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
 	}
 
 	@Override
-	public VoxelShape getRayTraceShape(BlockState state, IBlockReader reader, BlockPos pos, ISelectionContext context) {
-		return VoxelShapes.empty();
+	public VoxelShape getVisualShape(BlockState state, BlockGetter reader, BlockPos pos, CollisionContext context) {
+		return Shapes.empty();
 	}
 
 	@Override
-	public boolean propagatesSkylightDown(BlockState state, IBlockReader reader, BlockPos pos) {
+	public boolean propagatesSkylightDown(BlockState state, BlockGetter reader, BlockPos pos) {
 		return true;
 	}
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public float getAmbientOcclusionLightValue(BlockState state, IBlockReader worldIn, BlockPos pos) {
+	public float getShadeBrightness(BlockState state, BlockGetter worldIn, BlockPos pos) {
 		return 1.0F;
 	}
 
 	@Override
-	public boolean hasTileEntity(BlockState state) {
-		return true;
-	}
-
-	@Override
-	public TileEntity createTileEntity(@Nonnull BlockState state, IBlockReader world) {
-		return new TileConjured();
+	public BlockEntity newBlockEntity(@Nonnull BlockPos pos, @Nonnull BlockState state) {
+		return new TileConjured(pos, state);
 	}
 
 }

@@ -8,15 +8,15 @@
  */
 package vazkii.psi.common.spell.other;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Matrix4f;
 
-import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.model.RenderMaterial;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.vector.Matrix4f;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.resources.model.Material;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -70,8 +70,8 @@ public class PieceCrossConnector extends SpellPiece implements IGenericRedirecto
 	}
 
 	@Override
-	public ITextComponent getEvaluationTypeString() {
-		return new TranslationTextComponent("psi.datatype.any");
+	public Component getEvaluationTypeString() {
+		return new TranslatableComponent("psi.datatype.any");
 	}
 
 	@Override
@@ -80,7 +80,7 @@ public class PieceCrossConnector extends SpellPiece implements IGenericRedirecto
 	}
 
 	@Override
-	public void drawAdditional(MatrixStack ms, IRenderTypeBuffer buffers, int light) {
+	public void drawAdditional(PoseStack ms, MultiBufferSource buffers, int light) {
 		drawSide(ms, buffers, paramSides.get(in1), light, LINE_ONE);
 		drawSide(ms, buffers, paramSides.get(out1), light, LINE_ONE);
 
@@ -89,10 +89,10 @@ public class PieceCrossConnector extends SpellPiece implements IGenericRedirecto
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	private void drawSide(MatrixStack ms, IRenderTypeBuffer buffers, SpellParam.Side side, int light, int color) {
+	private void drawSide(PoseStack ms, MultiBufferSource buffers, SpellParam.Side side, int light, int color) {
 		if (side.isEnabled()) {
-			RenderMaterial material = new RenderMaterial(ClientPsiAPI.PSI_PIECE_TEXTURE_ATLAS, new ResourceLocation(LibResources.SPELL_CONNECTOR_LINES));
-			IVertexBuilder buffer = material.getBuffer(buffers, ignored -> SpellPiece.getLayer());
+			Material material = new Material(ClientPsiAPI.PSI_PIECE_TEXTURE_ATLAS, new ResourceLocation(LibResources.SPELL_CONNECTOR_LINES));
+			VertexConsumer buffer = material.buffer(buffers, ignored -> SpellPiece.getLayer());
 
 			float minU = 0;
 			float minV = 0;
@@ -121,15 +121,15 @@ public class PieceCrossConnector extends SpellPiece implements IGenericRedirecto
 			/*
 			See note in SpellPiece#drawBackground for why this chain needs to be split
 			*/
-			Matrix4f mat = ms.getLast().getMatrix();
-			buffer.pos(mat, 0, 16, 0).color(r, g, b, 1F);
-			buffer.tex(minU, maxV).lightmap(light).endVertex();
-			buffer.pos(mat, 16, 16, 0).color(r, g, b, 1F);
-			buffer.tex(maxU, maxV).lightmap(light).endVertex();
-			buffer.pos(mat, 16, 0, 0).color(r, g, b, 1F);
-			buffer.tex(maxU, minV).lightmap(light).endVertex();
-			buffer.pos(mat, 0, 0, 0).color(r, g, b, 1F);
-			buffer.tex(minU, minV).lightmap(light).endVertex();
+			Matrix4f mat = ms.last().pose();
+			buffer.vertex(mat, 0, 16, 0).color(r, g, b, 1F);
+			buffer.uv(minU, maxV).uv2(light).endVertex();
+			buffer.vertex(mat, 16, 16, 0).color(r, g, b, 1F);
+			buffer.uv(maxU, maxV).uv2(light).endVertex();
+			buffer.vertex(mat, 16, 0, 0).color(r, g, b, 1F);
+			buffer.uv(maxU, minV).uv2(light).endVertex();
+			buffer.vertex(mat, 0, 0, 0).color(r, g, b, 1F);
+			buffer.uv(minU, minV).uv2(light).endVertex();
 		}
 	}
 

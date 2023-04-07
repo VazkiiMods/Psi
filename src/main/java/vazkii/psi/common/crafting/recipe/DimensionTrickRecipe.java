@@ -10,15 +10,15 @@ package vazkii.psi.common.crafting.recipe;
 
 import com.google.gson.JsonObject;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.RegistryKey;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.world.World;
+import net.minecraft.core.Registry;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.items.wrapper.RecipeWrapper;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 
@@ -27,48 +27,48 @@ import vazkii.psi.api.spell.piece.PieceCraftingTrick;
 import javax.annotation.Nullable;
 
 public class DimensionTrickRecipe extends TrickRecipe {
-	public static final IRecipeSerializer<DimensionTrickRecipe> SERIALIZER = new Serializer();
-	private final RegistryKey<World> dimensionKey;
+	public static final RecipeSerializer<DimensionTrickRecipe> SERIALIZER = new Serializer();
+	private final ResourceKey<Level> dimensionKey;
 
-	public DimensionTrickRecipe(ResourceLocation id, @Nullable PieceCraftingTrick piece, Ingredient input, ItemStack output, ItemStack cad, RegistryKey<World> dimensionKey) {
+	public DimensionTrickRecipe(ResourceLocation id, @Nullable PieceCraftingTrick piece, Ingredient input, ItemStack output, ItemStack cad, ResourceKey<Level> dimensionKey) {
 		super(id, piece, input, output, cad);
 		this.dimensionKey = dimensionKey;
 	}
 
 	public DimensionTrickRecipe(ResourceLocation id, @Nullable PieceCraftingTrick piece, Ingredient input, ItemStack output, ItemStack cad, ResourceLocation dimensionKey) {
-		this(id, piece, input, output, cad, RegistryKey.getOrCreateKey(Registry.WORLD_KEY, dimensionKey));
+		this(id, piece, input, output, cad, ResourceKey.create(Registry.DIMENSION_REGISTRY, dimensionKey));
 	}
 
 	@Override
-	public boolean matches(RecipeWrapper inv, World world) {
-		return super.matches(inv, world) && world.getDimensionKey() == dimensionKey;
+	public boolean matches(RecipeWrapper inv, Level world) {
+		return super.matches(inv, world) && world.dimension() == dimensionKey;
 	}
 
-	public static class Serializer extends ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<DimensionTrickRecipe> {
+	public static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<DimensionTrickRecipe> {
 		@Override
-		public DimensionTrickRecipe read(ResourceLocation id, JsonObject json) {
-			TrickRecipe recipe = TrickRecipe.SERIALIZER.read(id, json);
-			ResourceLocation dimensionId = new ResourceLocation(JSONUtils.getString(json, "dimension"));
-			return new DimensionTrickRecipe(id, recipe.getPiece(), recipe.getInput(), recipe.getRecipeOutput(), recipe.getAssembly(), dimensionId);
+		public DimensionTrickRecipe fromJson(ResourceLocation id, JsonObject json) {
+			TrickRecipe recipe = TrickRecipe.SERIALIZER.fromJson(id, json);
+			ResourceLocation dimensionId = new ResourceLocation(GsonHelper.getAsString(json, "dimension"));
+			return new DimensionTrickRecipe(id, recipe.getPiece(), recipe.getInput(), recipe.getResultItem(), recipe.getAssembly(), dimensionId);
 		}
 
 		@Nullable
 		@Override
-		public DimensionTrickRecipe read(ResourceLocation id, PacketBuffer buf) {
-			TrickRecipe recipe = TrickRecipe.SERIALIZER.read(id, buf);
+		public DimensionTrickRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buf) {
+			TrickRecipe recipe = TrickRecipe.SERIALIZER.fromNetwork(id, buf);
 			ResourceLocation dimensionId = buf.readResourceLocation();
-			return new DimensionTrickRecipe(id, recipe.getPiece(), recipe.getInput(), recipe.getRecipeOutput(), recipe.getAssembly(), dimensionId);
+			return new DimensionTrickRecipe(id, recipe.getPiece(), recipe.getInput(), recipe.getResultItem(), recipe.getAssembly(), dimensionId);
 		}
 
 		@Override
-		public void write(PacketBuffer buf, DimensionTrickRecipe recipe) {
-			TrickRecipe.SERIALIZER.write(buf, recipe);
-			buf.writeResourceLocation(recipe.dimensionKey.getLocation());
+		public void toNetwork(FriendlyByteBuf buf, DimensionTrickRecipe recipe) {
+			TrickRecipe.SERIALIZER.toNetwork(buf, recipe);
+			buf.writeResourceLocation(recipe.dimensionKey.location());
 		}
 	}
 
 	@Override
-	public boolean isDynamic() {
+	public boolean isSpecial() {
 		return true;
 	}
 

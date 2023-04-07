@@ -1,6 +1,6 @@
 {
   "name": "psi.book.entry.exosuitCasting",
-  "category": "legacy",
+  "category": "psi:legacy",
   "icon": "psi:textures/spell/selector_time.png",
   "pages": [
     {

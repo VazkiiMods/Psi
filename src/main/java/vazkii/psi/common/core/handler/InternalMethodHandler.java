@@ -8,18 +8,18 @@
  */
 package vazkii.psi.common.core.handler;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.client.gui.GuiUtils;
 
 import vazkii.psi.api.internal.IInternalMethodHandler;
 import vazkii.psi.api.internal.IPlayerData;
@@ -38,7 +38,7 @@ import java.util.List;
 public final class InternalMethodHandler implements IInternalMethodHandler {
 
 	@Override
-	public IPlayerData getDataForPlayer(PlayerEntity player) {
+	public IPlayerData getDataForPlayer(Player player) {
 		return PlayerDataHandler.get(player);
 	}
 
@@ -66,7 +66,7 @@ public final class InternalMethodHandler implements IInternalMethodHandler {
 
 	@Override
 	public void delayContext(SpellContext context) {
-		if (!context.caster.world.isRemote) {
+		if (!context.caster.level.isClientSide) {
 			PlayerDataHandler.delayedContexts.add(context);
 		}
 	}
@@ -78,10 +78,13 @@ public final class InternalMethodHandler implements IInternalMethodHandler {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void renderTooltip(MatrixStack ms, int x, int y, List<ITextComponent> tooltipData, int color, int color2, int width, int height) {
+	public void renderTooltip(PoseStack ms, int x, int y, List<Component> tooltipData, int color, int color2, int width, int height) {
 		if (!tooltipData.isEmpty()) {
-			FontRenderer fontRenderer = Minecraft.getInstance().fontRenderer;
-			GuiUtils.drawHoveringText(ms, tooltipData, x, y, width, height, -1, color2, color, color, fontRenderer);
+			Font fontRenderer = Minecraft.getInstance().font;
+			Screen screen = Minecraft.getInstance().screen;
+			assert screen != null;
+			screen.renderTooltip(ms, tooltipData, java.util.Optional.empty(), x, y, fontRenderer);//TODO Fix color/color2? Is it needed?
+			//GuiUtils.drawHoveringText(ms, tooltipData, x, y, width, height, -1, color2, color, color, fontRenderer);
 		}
 	}
 

@@ -8,7 +8,7 @@
  */
 package vazkii.psi.common.spell.trick.block;
 
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
 
 import vazkii.psi.api.internal.MathHelper;
 import vazkii.psi.api.internal.Vector3;
@@ -65,7 +65,7 @@ public class PieceTrickTillSequence extends PieceTrick {
 		for (BlockPos blockPos : MathHelper.getBlocksAlongRay(positionVal.toVec3D(), positionVal.copy().add(targetNorm.copy().multiply(maxBlocksInt)).toVec3D(), maxBlocksInt)) {
 
 			if (SpellHelpers.isBlockPosInRadius(context, blockPos)) {
-				PieceTrickTill.tillBlock(context.caster, context.caster.world, blockPos);
+				PieceTrickTill.tillBlock(context.caster, context.caster.level, blockPos);
 			}
 
 		}

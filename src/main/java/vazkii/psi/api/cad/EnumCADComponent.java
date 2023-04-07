@@ -8,6 +8,8 @@
  */
 package vazkii.psi.api.cad;
 
+import java.util.Locale;
+
 /**
  * An Enum defining all types of CAD components.
  */
@@ -22,7 +24,7 @@ public enum EnumCADComponent {
 	DYE;
 
 	public String getName() {
-		return "psi.component." + name().toLowerCase();
+		return "psi.component." + name().toLowerCase(Locale.ROOT);
 	}
 
 }

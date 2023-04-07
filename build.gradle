@@ -1,45 +1,38 @@
 buildscript {
     repositories {
         mavenCentral()
-        maven { url = 'https://files.minecraftforge.net/maven' }
-        maven { url = 'https://repo.spongepowered.org/repository/maven-public' }
+        maven { url = 'https://maven.minecraftforge.net' }
+        maven { url = 'https://repo.spongepowered.org/maven' }
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1+', changing: true
         classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
     }
 }
 
 plugins {
-    id "com.diffplug.spotless" version "5.7.0"
+    id "com.diffplug.spotless" version "5.12.5"
 }
 
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
-apply plugin: 'maven'
+apply plugin: 'maven-publish'
 apply plugin: 'pmd'
 apply plugin: 'org.spongepowered.mixin'
 
-ext.configFile = file('build.properties')
-ext.config = parseConfig(configFile)
+version = "${mc_version}-${build_number}"
+group = "vazkii.${mod_id}" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = mod_name
 
-def mc_version = "1.16.3"
-version = "${config.version}-${config.build_number}"
-group = "vazkii.${config.mod_id}" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = config.mod_name
-
-sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 
 if (System.getenv('BUILD_NUMBER') != null) {
     version += "." + System.getenv('BUILD_NUMBER')
 }
 
-mixin {
-  add sourceSets.main, "psi.refmap.json"
-}
-
 minecraft {
-    mappings channel: "snapshot", version: "20200916-1.16.2"
+    mappings channel: 'official', version: mc_version
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
     runs {
@@ -48,9 +41,6 @@ minecraft {
 
             properties 'fml.earlyprogresswindow': 'false'
             property 'forge.logging.console.level', 'debug'
-            property 'mixin.env.disableRefMap', 'true'
-            arg "-mixin.config=" + config.mod_id + ".mixins.json"
-
             mods {
                 psi {
                     source sourceSets.main
@@ -62,8 +52,6 @@ minecraft {
             workingDirectory project.file('run')
 
             property 'forge.logging.console.level', 'debug'
-            property 'mixin.env.disableRefMap', 'true'
-            arg "-mixin.config=" + config.mod_id + ".mixins.json"
             singleInstance(true)
             mods {
                 psi {
@@ -74,8 +62,6 @@ minecraft {
         data {
             properties 'forge.logging.console.level': 'debug'
             properties 'fml.earlyprogresswindow': 'false'
-            property 'mixin.env.disableRefMap', 'true'
-            arg "-mixin.config=" + config.mod_id + ".mixins.json"
             workingDirectory project.file('run')
             mods {
                 psi {
@@ -89,31 +75,41 @@ minecraft {
     }
 }
 
+mixin {
+    add sourceSets.main, "psi.refmap.json"
+    config "psi.mixins.json"
+}
+
 repositories {
     mavenCentral()
     maven {
         // for Patchouli
         name "blamejared"
-        url "http://maven.blamejared.com/"
+        url "https://maven.blamejared.com/"
+        content {
+            includeGroup "vazkii.patchouli"
+        }
     }
     maven {
         // for JEI
         name "promwml16"
-        url "http://dvs1.progwml6.com/files/maven"
+        url "https://dvs1.progwml6.com/files/maven"
+        content {
+            includeGroup "mezz.jei"
+        }
     }
 }
 
 dependencies {
-    minecraft group: 'net.minecraftforge', name: 'forge', version: "${mc_version}-34.1.0"
+    minecraft "net.minecraftforge:forge:${mc_version}-${forge_version}"
 
-    annotationProcessor 'org.spongepowered:mixin:0.8.1:processor'
+    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 
-    compileOnly fg.deobf("vazkii.patchouli:Patchouli:1.16.2-47-SNAPSHOT:api")
-    runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:1.16.2-47-SNAPSHOT")
+    compileOnly fg.deobf("vazkii.patchouli:Patchouli:${patchy_version}:api")
+    runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:${patchy_version}")
 
-    compileOnly fg.deobf("mezz.jei:jei-1.16.2:7.3.2.25:api")
-    runtimeOnly fg.deobf("mezz.jei:jei-1.16.2:7.3.2.25")
-
+    compileOnly fg.deobf("mezz.jei:${jei_version}:api")
+    runtimeOnly fg.deobf("mezz.jei:${jei_version}")
 }
 
 // Prevent Mixin annotation processor from getting into IDEA's annotation processor settings
@@ -125,27 +121,26 @@ if (System.getProperty("idea.sync.active") == "true") {
     }
 }
 
+pmd {
+	toolVersion '6.35.0'
+	incrementalAnalysis.set(true)
+	ruleSets.clear()
+	ruleSetFiles = files("spotless/pmd-ruleset.xml")
+}
+
 spotless {
     enforceCheck = false // workaround around jenkins having wrong line endings in some files
-    // we explicitly check in github actions builds
+    // we explicitly check in github actions builds (do we?)
     java {
         targetExclude '**/Gamma.java'
 
         indentWithTabs()
-        licenseHeaderFile( 'spotless/license_template.txt')
+        licenseHeaderFile('spotless/license_template.txt')
         eclipse().configFile 'spotless/eclipseformat.xml'
         removeUnusedImports()
         importOrderFile 'spotless/eclipse.importorder'
     }
 }
-
-pmd {
-    toolVersion '6.22.0'
-    incrementalAnalysis.set(true)
-    ruleSets.clear()
-    ruleSetFiles = files("spotless/pmd-ruleset.xml")
-}
-
 
 task checkSyntax {
     dependsOn spotlessJavaCheck, pmdMain
@@ -155,20 +150,8 @@ sourceSets.main.resources {
     srcDir 'src/generated/resources'
 }
 
-
 processResources {
-    // replace stuff in mods.toml, nothing else
-    from(sourceSets.main.resources.srcDirs) {
-        include 'META-INF/mods.toml'
 
-        // replace version and mcversion
-        expand 'version': project.version
-    }
-
-    // copy everything else, thats not the mods.toml
-    from(sourceSets.main.resources.srcDirs) {
-        exclude 'META-INF/mods.toml', '**/psd/**'
-    }
 }
 
 task srcJar(type: Jar) {
@@ -190,20 +173,12 @@ artifacts {
 }
 
 task incrementBuildNumber {
-    doFirst {
-        config.build_number = (config.build_number.toString().toInteger()) + 1
-        configFile.withWriter {
-            config.toProperties().store(it, "")
-        }
-    }
-}
-
-def parseConfig(File config) {
-    config.withReader {
-        def prop = new Properties()
-        prop.load(it)
-        return (new ConfigSlurper().parse(prop))
-    }
+   doFirst {
+       config.build_number = (config.build_number.toString().toInteger()) + 1
+       configFile.withWriter {
+           config.toProperties().store(it, "")
+       }
+   }
 }
 
 jar {
@@ -212,14 +187,14 @@ jar {
 
     manifest {
         attributes([
-                "Specification-Title": "${config.mod_id}",
+                "Specification-Title": "${mod_id}",
                 "Specification-Vendor": "vazkii",
                 "Specification-Version": "1", // We are version 1 of ourselves
-                "Implementation-Title": "${config.mod_id}",
+                "Implementation-Title": "${mod_id}",
                 "Implementation-Version": "${version}",
                 "Implementation-Vendor" :"vazkii",
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-                "MixinConfigs": "${config.mod_id}.mixins.json"
+                "MixinConfigs": "${mod_id}.mixins.json"
         ])
     }
 
@@ -234,19 +209,16 @@ jar {
     exclude "**/*.vim"
     exclude "**/mappings-en_us.json"
     exclude "**/en_us_base.json"
+    finalizedBy 'reobfJar'
 }
 
 
-uploadArchives {
+publishing {
     repositories {
-        mavenDeployer {
-            repository(url: "file://" + (System.getenv("local_maven") != null ? System.getenv("local_maven") : System.getenv("bamboo_local_maven")))
+        maven {
+            url = uri("file://" + (System.getenv("local_maven") != null ? System.getenv("local_maven") : System.getenv("bamboo_local_maven")))
         }
     }
-}
-
-mixin {
-    add sourceSets.main, "${config.mod_id}.refmap.json"
 }
 
 defaultTasks 'clean', 'runData', 'checkSyntax', 'build', 'incrementBuildNumber'

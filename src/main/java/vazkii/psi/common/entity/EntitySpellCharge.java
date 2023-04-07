@@ -8,11 +8,11 @@
  */
 package vazkii.psi.common.entity;
 
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.projectile.ThrowableEntity;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.projectile.ThrowableProjectile;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ObjectHolder;
 
 import vazkii.psi.api.spell.detonator.IDetonationHandler;
@@ -23,11 +23,11 @@ public class EntitySpellCharge extends EntitySpellGrenade implements IDetonation
 	@ObjectHolder(LibResources.PREFIX_MOD + LibEntityNames.SPELL_CHARGE)
 	public static EntityType<EntitySpellCharge> TYPE;
 
-	public EntitySpellCharge(EntityType<? extends ThrowableEntity> type, World worldIn) {
+	public EntitySpellCharge(EntityType<? extends ThrowableProjectile> type, Level worldIn) {
 		super(type, worldIn);
 	}
 
-	public EntitySpellCharge(World worldIn, LivingEntity throwerIn) {
+	public EntitySpellCharge(Level worldIn, LivingEntity throwerIn) {
 		super(TYPE, worldIn, throwerIn);
 	}
 
@@ -47,8 +47,8 @@ public class EntitySpellCharge extends EntitySpellGrenade implements IDetonation
 	}
 
 	@Override
-	public Vector3d objectLocus() {
-		return getPositionVec();
+	public Vec3 objectLocus() {
+		return position();
 	}
 
 	@Override

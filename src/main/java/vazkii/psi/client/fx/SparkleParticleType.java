@@ -10,11 +10,11 @@ package vazkii.psi.client.fx;
 
 import com.mojang.serialization.Codec;
 
-import net.minecraft.client.particle.IAnimatedSprite;
-import net.minecraft.client.particle.IParticleFactory;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.particles.ParticleType;
+import net.minecraft.client.particle.ParticleProvider;
+import net.minecraft.client.particle.SpriteSet;
+import net.minecraft.core.particles.ParticleType;
 
 // https://github.com/Vazkii/Botania/blob/1.15/src/main/java/vazkii/botania/client/fx/SparkleParticleType.java
 public class SparkleParticleType extends ParticleType<SparkleParticleData> {
@@ -24,19 +24,19 @@ public class SparkleParticleType extends ParticleType<SparkleParticleData> {
 	}
 
 	@Override
-	public Codec<SparkleParticleData> func_230522_e_() {
+	public Codec<SparkleParticleData> codec() {
 		return SparkleParticleData.CODEC;
 	}
 
-	public static class Factory implements IParticleFactory<SparkleParticleData> {
-		private final IAnimatedSprite sprite;
+	public static class Factory implements ParticleProvider<SparkleParticleData> {
+		private final SpriteSet sprite;
 
-		public Factory(IAnimatedSprite sprite) {
+		public Factory(SpriteSet sprite) {
 			this.sprite = sprite;
 		}
 
 		@Override
-		public Particle makeParticle(SparkleParticleData data, ClientWorld world, double x, double y, double z, double mx, double my, double mz) {
+		public Particle createParticle(SparkleParticleData data, ClientLevel world, double x, double y, double z, double mx, double my, double mz) {
 			return new FXSparkle(world, x, y, z, data.size, data.r, data.g, data.b, data.m, mx, my, mz, sprite);
 		}
 	}

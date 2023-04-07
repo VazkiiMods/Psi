@@ -1,6 +1,6 @@
 {
   "name": "psi.book.entry.detectionDynamics",
-  "category": "legacy",
+  "category": "psi:legacy",
   "icon": "psi:textures/spell/trick_switch_target_slot.png",
   "pages": [
     {

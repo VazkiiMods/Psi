@@ -8,10 +8,10 @@
  */
 package vazkii.psi.common.spell.operator.vector;
 
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.RayTraceContext;
-import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.Spell;
@@ -53,13 +53,13 @@ public class PieceOperatorVectorRaycastAxis extends PieceOperator {
 
 		Vector3 end = originVal.copy().add(rayVal.copy().normalize().multiply(maxLen));
 
-		BlockRayTraceResult pos = context.caster.getEntityWorld().rayTraceBlocks(new RayTraceContext(originVal.toVec3D(), end.toVec3D(), RayTraceContext.BlockMode.OUTLINE, RayTraceContext.FluidMode.NONE, context.caster));
-		if (pos.getType() == RayTraceResult.Type.MISS) {
+		BlockHitResult pos = context.caster.getCommandSenderWorld().clip(new ClipContext(originVal.toVec3D(), end.toVec3D(), ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, context.caster));
+		if (pos.getType() == HitResult.Type.MISS) {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
 		}
 
-		Direction facing = pos.getFace();
-		return new Vector3(facing.getXOffset(), facing.getYOffset(), facing.getZOffset());
+		Direction facing = pos.getDirection();
+		return new Vector3(facing.getStepX(), facing.getStepY(), facing.getStepZ());
 	}
 
 	@Override

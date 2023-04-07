@@ -8,9 +8,9 @@
  */
 package vazkii.psi.common.spell.selector.entity;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.projectile.EyeOfEnderEntity;
-import net.minecraft.entity.projectile.ProjectileEntity;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.projectile.EyeOfEnder;
+import net.minecraft.world.entity.projectile.Projectile;
 
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
@@ -26,7 +26,7 @@ public class PieceSelectorNearbyProjectiles extends PieceSelectorNearby {
 
 	@Override
 	public Predicate<Entity> getTargetPredicate(SpellContext context) {
-		return (Entity e) -> (e instanceof ProjectileEntity || e instanceof EyeOfEnderEntity) && !(e instanceof EntitySpellProjectile);
+		return (Entity e) -> (e instanceof Projectile || e instanceof EyeOfEnder) && !(e instanceof EntitySpellProjectile);
 	}
 
 }

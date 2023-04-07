@@ -8,17 +8,17 @@
  */
 package vazkii.psi.common.spell.trick.block;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
-import net.minecraft.item.Items;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
 
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.EnumSpellStat;
@@ -42,16 +42,16 @@ public class PieceTrickTill extends PieceTrick {
 		setStatLabel(EnumSpellStat.COST, new StatLabel(10));
 	}
 
-	public static ActionResultType tillBlock(PlayerEntity player, World world, BlockPos pos) {
-		if (!world.isBlockLoaded(pos) || !world.isBlockModifiable(player, pos)) {
-			return ActionResultType.PASS;
+	public static InteractionResult tillBlock(Player player, Level world, BlockPos pos) {
+		if (!world.hasChunkAt(pos) || !world.mayInteract(player, pos)) {
+			return InteractionResult.PASS;
 		}
-		BlockRayTraceResult hit = new BlockRayTraceResult(Vector3d.ZERO, Direction.UP, pos, false);
-		ItemStack save = player.getHeldItem(Hand.MAIN_HAND);
-		player.setHeldItem(Hand.MAIN_HAND, new ItemStack(Items.BONE_MEAL));
-		ItemUseContext fakeContext = new ItemUseContext(player, Hand.MAIN_HAND, hit);
-		player.setHeldItem(Hand.MAIN_HAND, save);
-		return Items.IRON_HOE.onItemUse(fakeContext);
+		BlockHitResult hit = new BlockHitResult(Vec3.ZERO, Direction.UP, pos, false);
+		ItemStack save = player.getItemInHand(InteractionHand.MAIN_HAND);
+		player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.IRON_HOE));
+		UseOnContext fakeContext = new UseOnContext(player, InteractionHand.MAIN_HAND, hit);
+		player.setItemInHand(InteractionHand.MAIN_HAND, save);
+		return Items.IRON_HOE.useOn(fakeContext);
 	}
 
 	@Override
@@ -70,7 +70,7 @@ public class PieceTrickTill extends PieceTrick {
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		BlockPos pos = SpellHelpers.getBlockPos(this, context, position, true, false);
 
-		return tillBlock(context.caster, context.caster.world, pos);
+		return tillBlock(context.caster, context.caster.level, pos);
 	}
 
 }

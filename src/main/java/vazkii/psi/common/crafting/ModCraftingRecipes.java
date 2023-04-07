@@ -8,11 +8,11 @@
  */
 package vazkii.psi.common.crafting;
 
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.item.crafting.IRecipeType;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -34,10 +34,10 @@ import vazkii.psi.data.MagicalPsiCondition;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, modid = LibMisc.MOD_ID)
 public class ModCraftingRecipes {
-	public static final IRecipeType<ITrickRecipe> TRICK_RECIPE_TYPE = new RecipeType<>();
+	public static final RecipeType<ITrickRecipe> TRICK_RECIPE_TYPE = new PsiRecipeType<>();
 
 	@SubscribeEvent
-	public static void registerSerializers(RegistryEvent.Register<IRecipeSerializer<?>> event) {
+	public static void registerSerializers(RegistryEvent.Register<RecipeSerializer<?>> event) {
 		event.getRegistry().registerAll(
 				name(AssemblyScavengeRecipe.SERIALIZER, "scavenge"),
 				name(BulletToDriveRecipe.SERIALIZER, "bullet_to_drive"),
@@ -59,7 +59,7 @@ public class ModCraftingRecipes {
 		return entry.setRegistryName(new ResourceLocation(LibMisc.MOD_ID, name));
 	}
 
-	private static class RecipeType<T extends IRecipe<?>> implements IRecipeType<T> {
+	private static class PsiRecipeType<T extends Recipe<?>> implements RecipeType<T> {
 		@Override
 		public String toString() {
 			return Registry.RECIPE_TYPE.getKey(this).toString();

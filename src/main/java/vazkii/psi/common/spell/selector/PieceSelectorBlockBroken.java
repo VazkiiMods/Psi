@@ -30,7 +30,7 @@ public class PieceSelectorBlockBroken extends PieceSelector {
 		if (context.positionBroken == null) {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
 		}
-		return Vector3.fromBlockPos(context.positionBroken.getPos());
+		return Vector3.fromBlockPos(context.positionBroken.getBlockPos());
 	}
 
 }

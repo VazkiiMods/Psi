@@ -1,6 +1,6 @@
 {
   "name": "psi.book.entry.vectorPrimer",
-  "category": "basics",
+  "category": "psi:basics",
   "icon": "psi:textures/spell/operator_vector_construct.png",
   "pages": [
     {

@@ -8,11 +8,11 @@
  */
 package vazkii.psi.common.spell.trick.block;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.item.FallingBlockEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.item.FallingBlockEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.BlockEvent;
 
@@ -71,23 +71,23 @@ public class PieceTrickCollapseBlockSequence extends PieceTrick {
 			tool = PsiAPI.getPlayerCAD(context.caster);
 		}
 
-		World world = context.caster.world;
+		Level world = context.caster.level;
 		Vector3 targetNorm = targetVal.copy().normalize();
 		for (BlockPos blockPos : MathHelper.getBlocksAlongRay(positionVal.toVec3D(), positionVal.copy().add(targetNorm.copy().multiply(maxBlocksInt)).toVec3D(), maxBlocksInt)) {
 			if (!context.isInRadius(Vector3.fromBlockPos(blockPos))) {
 				throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 			}
-			BlockPos posDown = blockPos.down();
+			BlockPos posDown = blockPos.below();
 			BlockState state = world.getBlockState(blockPos);
 			BlockState stateDown = world.getBlockState(posDown);
 
-			if (!world.isBlockModifiable(context.caster, blockPos)) {
+			if (!world.mayInteract(context.caster, blockPos)) {
 				return null;
 			}
 
-			if (stateDown.isAir(world, posDown) && state.getBlockHardness(world, blockPos) != -1 &&
+			if (stateDown.isAir() && state.getDestroySpeed(world, blockPos) != -1 &&
 					PieceTrickBreakBlock.canHarvestBlock(state, context.caster, world, blockPos, tool) &&
-					world.getTileEntity(blockPos) == null) {
+					world.getBlockEntity(blockPos) == null) {
 
 				BlockEvent.BreakEvent event = PieceTrickBreakBlock.createBreakEvent(state, context.caster, world, blockPos, tool);
 				MinecraftForge.EVENT_BUS.post(event);
@@ -95,8 +95,7 @@ public class PieceTrickCollapseBlockSequence extends PieceTrick {
 					return null;
 				}
 
-				FallingBlockEntity falling = new FallingBlockEntity(world, blockPos.getX() + 0.5, blockPos.getY() + 0.5, blockPos.getZ() + 0.5, state);
-				world.addEntity(falling);
+				FallingBlockEntity.fall(world, blockPos, state);
 			}
 		}
 

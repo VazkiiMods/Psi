@@ -1,6 +1,6 @@
 {
   "name": "psi.book.entry.vectors101",
-  "category": "items",
+  "category": "psi:items",
   "icon": "psi:textures/spell/operator_vector_construct.png",
   "pages": [
     {

@@ -8,12 +8,12 @@
  */
 package vazkii.psi.api.internal;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -53,7 +53,7 @@ public class Vector3 {
 		z = vec.z;
 	}
 
-	public Vector3(Vector3d vec) {
+	public Vector3(Vec3 vec) {
 		x = vec.x;
 		y = vec.y;
 		z = vec.z;
@@ -64,18 +64,18 @@ public class Vector3 {
 	}
 
 	public static Vector3 fromEntity(Entity e) {
-		return new Vector3(e.getPosX(), e.getPosY(), e.getPosZ());
+		return new Vector3(e.getX(), e.getY(), e.getZ());
 	}
 
 	public static Vector3 fromEntityCenter(Entity e) {
-		return new Vector3(e.getPosX(), e.getPosY() - e.getYOffset() + e.getHeight() / 2, e.getPosZ());
+		return new Vector3(e.getX(), e.getY() - e.getMyRidingOffset() + e.getBbHeight() / 2, e.getZ());
 	}
 
-	public static Vector3 fromTileEntity(TileEntity e) {
-		return fromBlockPos(e.getPos());
+	public static Vector3 fromTileEntity(BlockEntity e) {
+		return fromBlockPos(e.getBlockPos());
 	}
 
-	public static Vector3 fromTileEntityCenter(TileEntity e) {
+	public static Vector3 fromTileEntityCenter(BlockEntity e) {
 		return fromTileEntity(e).add(0.5, 0.5, 0.5);
 	}
 
@@ -83,12 +83,12 @@ public class Vector3 {
 		return new Vector3(pos.getX(), pos.getY(), pos.getZ());
 	}
 
-	public static Vector3 fromVec3d(Vector3d vec3d) {
-		return new Vector3(vec3d.getX(), vec3d.getY(), vec3d.getZ());
+	public static Vector3 fromVec3d(Vec3 vec3d) {
+		return new Vector3(vec3d.x(), vec3d.y(), vec3d.z());
 	}
 
 	public static Vector3 fromDirection(Direction direction) {
-		return new Vector3(direction.getXOffset(), direction.getYOffset(), direction.getZOffset());
+		return new Vector3(direction.getStepX(), direction.getStepY(), direction.getStepZ());
 	}
 
 	public Vector3 set(double d, double d1, double d2) {
@@ -245,8 +245,8 @@ public class Vector3 {
 		return this;
 	}
 
-	public Vector3d toVec3D() {
-		return new Vector3d(x, y, z);
+	public Vec3 toVec3D() {
+		return new Vec3(x, y, z);
 	}
 
 	public BlockPos toBlockPos() {
@@ -257,7 +257,7 @@ public class Vector3 {
 		return Math.acos(copy().normalize().dotProduct(vec.copy().normalize()));
 	}
 
-	public boolean isInside(AxisAlignedBB aabb) {
+	public boolean isInside(AABB aabb) {
 		return x >= aabb.minX && y >= aabb.maxY && z >= aabb.minZ && x < aabb.maxX && y < aabb.maxY && z < aabb.maxZ;
 	}
 

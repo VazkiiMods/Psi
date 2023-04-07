@@ -8,12 +8,12 @@
  */
 package vazkii.psi.common.entity;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.projectile.ThrowableEntity;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.world.World;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.projectile.ThrowableProjectile;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ObjectHolder;
 
 import vazkii.psi.common.lib.LibEntityNames;
@@ -28,11 +28,11 @@ public class EntitySpellMine extends EntitySpellGrenade {
 
 	boolean triggered = false;
 
-	public EntitySpellMine(EntityType<? extends ThrowableEntity> type, World worldIn) {
+	public EntitySpellMine(EntityType<? extends ThrowableProjectile> type, Level worldIn) {
 		super(type, worldIn);
 	}
 
-	public EntitySpellMine(World worldIn, LivingEntity throwerIn) {
+	public EntitySpellMine(Level worldIn, LivingEntity throwerIn) {
 		super(TYPE, worldIn, throwerIn);
 	}
 
@@ -40,18 +40,18 @@ public class EntitySpellMine extends EntitySpellGrenade {
 	public void tick() {
 		super.tick();
 
-		List<LivingEntity> entities = getEntityWorld().getEntitiesWithinAABB(LivingEntity.class, getBoundingBox().grow(1, 1, 1));
-		Entity thrower = func_234616_v_();
-		if (thrower != null && ticksExisted < 30) {
+		List<LivingEntity> entities = getCommandSenderWorld().getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(1, 1, 1));
+		Entity thrower = getOwner();
+		if (thrower != null && tickCount < 30) {
 			entities.remove(thrower);
 		}
 
 		if (!entities.isEmpty()) {
 			if (!triggered) {
-				playSound(SoundEvents.BLOCK_STONE_PRESSURE_PLATE_CLICK_ON, 0.5F, 0.6F);
+				playSound(SoundEvents.STONE_PRESSURE_PLATE_CLICK_ON, 0.5F, 0.6F);
 			}
 			triggered = true;
-			dataManager.set(ATTACKTARGET_UUID, Optional.of(entities.get(0).getUniqueID()));
+			entityData.set(ATTACKTARGET_UUID, Optional.of(entities.get(0).getUUID()));
 		} else if (triggered) {
 			doExplosion();
 		}

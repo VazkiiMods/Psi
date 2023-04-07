@@ -1,6 +1,6 @@
 {
   "name": "psi.book.entry.exosuitSensor",
-  "category": "items",
+  "category": "psi:items",
   "icon": "psi:exosuit_sensor_light",
   "pages": [
     {

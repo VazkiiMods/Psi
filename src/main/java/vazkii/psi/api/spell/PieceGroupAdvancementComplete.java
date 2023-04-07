@@ -8,8 +8,8 @@
  */
 package vazkii.psi.api.spell;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.eventbus.api.Event;
 
 import javax.annotation.Nonnull;
@@ -26,12 +26,12 @@ public class PieceGroupAdvancementComplete extends Event {
 	private final SpellPiece piece;
 
 	@Nonnull
-	private final PlayerEntity playerEntity;
+	private final Player playerEntity;
 
 	@Nonnull
 	private final ResourceLocation pieceGroup;
 
-	public PieceGroupAdvancementComplete(@Nullable SpellPiece piece, @Nonnull PlayerEntity playerEntity, @Nonnull ResourceLocation pieceGroup) {
+	public PieceGroupAdvancementComplete(@Nullable SpellPiece piece, @Nonnull Player playerEntity, @Nonnull ResourceLocation pieceGroup) {
 		this.piece = piece;
 		this.playerEntity = playerEntity;
 		this.pieceGroup = pieceGroup;
@@ -48,7 +48,7 @@ public class PieceGroupAdvancementComplete extends Event {
 	}
 
 	@Nonnull
-	public PlayerEntity getPlayerEntity() {
+	public Player getPlayerEntity() {
 		return playerEntity;
 	}
 }

@@ -8,7 +8,7 @@
  */
 package vazkii.psi.api.exosuit;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 
 /**
  * An ItemArmor that implements this can have stuff happen when a PsiArmorEvent happens.

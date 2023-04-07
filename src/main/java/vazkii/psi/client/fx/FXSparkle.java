@@ -9,120 +9,121 @@
 package vazkii.psi.client.fx;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.Tesselator;
+import com.mojang.blaze3d.vertex.VertexFormat;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.IAnimatedSprite;
-import net.minecraft.client.particle.IParticleRenderType;
-import net.minecraft.client.particle.SpriteTexturedParticle;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.texture.AtlasTexture;
-import net.minecraft.client.renderer.texture.Texture;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.particle.ParticleRenderType;
+import net.minecraft.client.particle.SpriteSet;
+import net.minecraft.client.particle.TextureSheetParticle;
+import net.minecraft.client.renderer.texture.AbstractTexture;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.client.world.ClientWorld;
 
 import org.lwjgl.opengl.GL11;
 
 import javax.annotation.Nonnull;
 
 // https://github.com/Vazkii/Botania/blob/1.15/src/main/java/vazkii/botania/client/fx/FXSparkle.java
-public class FXSparkle extends SpriteTexturedParticle {
+public class FXSparkle extends TextureSheetParticle {
 
 	public int multipler;
 	public final int particle = 16;
-	private final IAnimatedSprite sprite;
+	private final SpriteSet sprite;
 
-	public FXSparkle(ClientWorld world, double x, double y, double z, float size,
-			float red, float green, float blue, int m, double mx, double my, double mz, IAnimatedSprite sprite) {
+	public FXSparkle(ClientLevel world, double x, double y, double z, float size,
+			float red, float green, float blue, int m, double mx, double my, double mz, SpriteSet sprite) {
 		super(world, x, y, z, 0.0D, 0.0D, 0.0D);
-		particleRed = red;
-		particleGreen = green;
-		particleBlue = blue;
-		particleAlpha = 0.5F;
-		particleGravity = 0;
-		motionX = mx;
-		motionY = my;
-		motionZ = mz;
-		particleScale *= size;
-		maxAge = 3 * m;
+		rCol = red;
+		gCol = green;
+		bCol = blue;
+		alpha = 0.5F;
+		gravity = 0;
+		xd = mx;
+		yd = my;
+		zd = mz;
+		quadSize *= size;
+		lifetime = 3 * m;
 		multipler = m;
 		setSize(0.01F, 0.01F);
 		// 10 is the sum of the infinite geometric series defined by the drag value of 0.9
 		// This is expanding the AABB to contain everywhere the particle will travel
-		this.setBoundingBox(this.getBoundingBox().grow(mx * 10, my * 10, mz * 10));
-		prevPosX = posX;
-		prevPosY = posY;
-		prevPosZ = posZ;
+		this.setBoundingBox(this.getBoundingBox().inflate(mx * 10, my * 10, mz * 10));
+		xo = x;
+		yo = y;
+		zo = z;
 		this.sprite = sprite;
-		selectSpriteWithAge(sprite);
+		setSpriteFromAge(sprite);
 	}
 
 	@Override
-	public float getScale(float partialTicks) {
-		return particleScale * (maxAge - age + 1) / (float) maxAge;
+	public float getQuadSize(float partialTicks) {
+		return quadSize * (lifetime - age + 1) / (float) lifetime;
 	}
 
 	@Override
 	public void tick() {
-		prevPosX = posX;
-		prevPosY = posY;
-		prevPosZ = posZ;
+		xo = x;
+		yo = y;
+		zo = z;
 
-		if (age++ >= maxAge) {
-			setExpired();
+		if (age++ >= lifetime) {
+			remove();
 		}
 //		if (!noClip)
 //			pushOutOfBlocks(posX, (getEntityBoundingBox().minY + getEntityBoundingBox().maxY) / 2.0D, posZ);
 
-		posX += motionX;
-		posY += motionY;
-		posZ += motionZ;
+		x += xd;
+		y += yd;
+		z += zd;
 
-		motionX *= 0.9f;
-		motionY *= 0.9f;
-		motionZ *= 0.9f;
+		xd *= 0.9f;
+		yd *= 0.9f;
+		zd *= 0.9f;
 
 		if (onGround) {
-			motionX *= 0.7f;
-			motionZ *= 0.7f;
+			xd *= 0.7f;
+			zd *= 0.7f;
 		}
 	}
 
 	@Nonnull
 	@Override
-	public IParticleRenderType getRenderType() {
+	public ParticleRenderType getRenderType() {
 		return NORMAL_RENDER;
 	}
 
 	private static void beginRenderCommon(BufferBuilder buffer, TextureManager textureManager) {
+		Minecraft.getInstance().gameRenderer.lightTexture().turnOnLightLayer();
+		RenderSystem.enableDepthTest();
 		RenderSystem.depthMask(false);
 		RenderSystem.enableBlend();
 		RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
-		RenderSystem.alphaFunc(GL11.GL_GREATER, 0.003921569F);
-		RenderSystem.disableLighting();
-		textureManager.bindTexture(AtlasTexture.LOCATION_PARTICLES_TEXTURE);
-		Texture tex = textureManager.getTexture(AtlasTexture.LOCATION_PARTICLES_TEXTURE);
-		tex.setBlurMipmapDirect(true, false);
-		buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.PARTICLE_POSITION_TEX_COLOR_LMAP);
+		RenderSystem.setShaderTexture(0, TextureAtlas.LOCATION_PARTICLES);
+		AbstractTexture tex = textureManager.getTexture(TextureAtlas.LOCATION_PARTICLES);
+		tex.setFilter(true, false);
+		buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
 	}
 
 	private static void endRenderCommon() {
-		Minecraft.getInstance().textureManager.getTexture(AtlasTexture.LOCATION_PARTICLES_TEXTURE).restoreLastBlurMipmap();
-		RenderSystem.alphaFunc(GL11.GL_GREATER, 0.1F);
+		Minecraft.getInstance().textureManager.getTexture(TextureAtlas.LOCATION_PARTICLES).restoreLastBlurMipmap();
+		//RenderSystem.alphaFunc(GL11.GL_GREATER, 0.1F);
 		RenderSystem.disableBlend();
 		RenderSystem.depthMask(true);
 	}
 
-	private static final IParticleRenderType NORMAL_RENDER = new IParticleRenderType() {
+	private static final ParticleRenderType NORMAL_RENDER = new ParticleRenderType() {
 		@Override
-		public void beginRender(BufferBuilder bufferBuilder, TextureManager textureManager) {
+		public void begin(BufferBuilder bufferBuilder, TextureManager textureManager) {
 			beginRenderCommon(bufferBuilder, textureManager);
 		}
 
 		@Override
-		public void finishRender(Tessellator tessellator) {
-			tessellator.draw();
+		public void end(Tesselator tessellator) {
+			tessellator.end();
 			endRenderCommon();
 		}
 

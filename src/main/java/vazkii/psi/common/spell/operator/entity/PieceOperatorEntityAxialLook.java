@@ -8,9 +8,9 @@
  */
 package vazkii.psi.common.spell.operator.entity;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.core.Direction;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.phys.Vec3;
 
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.Spell;
@@ -40,10 +40,10 @@ public class PieceOperatorEntityAxialLook extends PieceOperator {
 		if (e == null) {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_TARGET);
 		}
-		Vector3d look = e.getLook(1F);
-		Direction facing = Direction.getFacingFromVector((float) look.x, (float) look.y, (float) look.z);
+		Vec3 look = e.getViewVector(1F);
+		Direction facing = Direction.getNearest((float) look.x, (float) look.y, (float) look.z);
 
-		return new Vector3(facing.getXOffset(), facing.getYOffset(), facing.getZOffset());
+		return new Vector3(facing.getStepX(), facing.getStepY(), facing.getStepZ());
 	}
 
 	@Override

@@ -1,6 +1,6 @@
 {
   "name": "psi.book.entry.vectorRuler",
-  "category": "items",
+  "category": "psi:items",
   "icon": "psi:vector_ruler",
   "priority": true,
   "pages": [

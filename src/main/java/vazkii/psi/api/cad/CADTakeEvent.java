@@ -8,8 +8,8 @@
  */
 package vazkii.psi.api.cad;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.eventbus.api.Cancelable;
 import net.minecraftforge.eventbus.api.Event;
 
@@ -25,14 +25,14 @@ public class CADTakeEvent extends Event {
 
 	private final ItemStack cad;
 	private final ITileCADAssembler assembler;
-	private final PlayerEntity player;
+	private final Player player;
 
 	@Nullable
 	private String cancellationMessage = "psimisc.cancelled_cad_take";
 
 	private float sound = 0.5f;
 
-	public CADTakeEvent(ItemStack cad, ITileCADAssembler assembler, PlayerEntity player) {
+	public CADTakeEvent(ItemStack cad, ITileCADAssembler assembler, Player player) {
 		this.cad = cad;
 		this.assembler = assembler;
 		this.player = player;
@@ -63,7 +63,7 @@ public class CADTakeEvent extends Event {
 		return cad;
 	}
 
-	public PlayerEntity getPlayer() {
+	public Player getPlayer() {
 		return player;
 	}
 

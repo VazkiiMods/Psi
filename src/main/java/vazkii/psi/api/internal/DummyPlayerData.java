@@ -8,8 +8,8 @@
  */
 package vazkii.psi.api.internal;
 
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 
 import vazkii.psi.api.spell.SpellPiece;
 
@@ -72,7 +72,7 @@ public class DummyPlayerData implements IPlayerData {
 	}
 
 	@Override
-	public CompoundNBT getCustomData() {
+	public CompoundTag getCustomData() {
 		return null;
 	}
 

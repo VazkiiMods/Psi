@@ -8,10 +8,10 @@
  */
 package vazkii.psi.common.network.message;
 
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.level.Level;
+import net.minecraftforge.network.NetworkEvent;
 
 import vazkii.psi.common.Psi;
 
@@ -38,7 +38,7 @@ public class MessageVisualEffect {
 		this.effectType = effectType;
 	}
 
-	public MessageVisualEffect(PacketBuffer buf) {
+	public MessageVisualEffect(FriendlyByteBuf buf) {
 		this.color = buf.readInt();
 		this.x = buf.readDouble();
 		this.y = buf.readDouble();
@@ -49,7 +49,7 @@ public class MessageVisualEffect {
 		this.effectType = buf.readVarInt();
 	}
 
-	public void encode(PacketBuffer buf) {
+	public void encode(FriendlyByteBuf buf) {
 		buf.writeInt(color);
 		buf.writeDouble(x);
 		buf.writeDouble(y);
@@ -66,7 +66,7 @@ public class MessageVisualEffect {
 		float b = (color & 0xFF) / 255f;
 
 		context.get().enqueueWork(() -> {
-			World world = Psi.proxy.getClientWorld();
+			Level world = Psi.proxy.getClientWorld();
 			switch (effectType) {
 			case TYPE_CRAFT:
 				for (int i = 0; i < 5; i++) {
@@ -79,14 +79,14 @@ public class MessageVisualEffect {
 					double m = 0.01;
 					double d3 = 10.0D;
 					for (int j = 0; j < 3; j++) {
-						double d0 = world.rand.nextGaussian() * m;
-						double d1 = world.rand.nextGaussian() * m;
-						double d2 = world.rand.nextGaussian() * m;
+						double d0 = world.random.nextGaussian() * m;
+						double d1 = world.random.nextGaussian() * m;
+						double d2 = world.random.nextGaussian() * m;
 
 						world.addParticle(ParticleTypes.EXPLOSION,
-								x + world.rand.nextFloat() * width * 2.0F - width - d0 * d3,
-								y + world.rand.nextFloat() * height - d1 * d3,
-								z + world.rand.nextFloat() * width * 2.0F - width - d2 * d3, d0, d1, d2);
+								x + world.random.nextFloat() * width * 2.0F - width - d0 * d3,
+								y + world.random.nextFloat() * height - d1 * d3,
+								z + world.random.nextFloat() * width * 2.0F - width - d2 * d3, d0, d1, d2);
 					}
 				}
 				break;

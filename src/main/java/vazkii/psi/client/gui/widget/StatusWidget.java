@@ -8,15 +8,16 @@
  */
 package vazkii.psi.client.gui.widget;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 
-import net.minecraft.client.gui.widget.Widget;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.narration.NarrationElementOutput;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.item.ItemStack;
 
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -25,12 +26,12 @@ import vazkii.psi.api.internal.PsiRenderHelper;
 import vazkii.psi.api.spell.SpellCompilationException;
 import vazkii.psi.client.gui.GuiProgrammer;
 
-public class StatusWidget extends Widget {
+public class StatusWidget extends AbstractWidget {
 
 	private final GuiProgrammer parent;
 
 	public StatusWidget(int x, int y, int width, int height, String message, GuiProgrammer programmer) {
-		super(x, y, width, height, ITextComponent.getTextComponentOrEmpty(message));
+		super(x, y, width, height, Component.nullToEmpty(message));
 		this.parent = programmer;
 	}
 
@@ -40,9 +41,9 @@ public class StatusWidget extends Widget {
 	}
 
 	@Override
-	public void renderButton(MatrixStack ms, int mouseX, int mouseY, float pTicks) {
-		RenderSystem.color3f(1f, 1f, 1f);
-		parent.getMinecraft().getTextureManager().bindTexture(GuiProgrammer.texture);
+	public void renderButton(PoseStack ms, int mouseX, int mouseY, float pTicks) {
+		RenderSystem.setShaderColor(1f, 1f, 1f, 1F);
+		RenderSystem.setShaderTexture(0, GuiProgrammer.texture);
 		blit(ms, parent.left - 48, parent.top + 5, parent.xSize, 0, 48, 30);
 		blit(ms, parent.left - 16, parent.top + 13, parent.compileResult.right().isPresent() ? 12 : 0, parent.ySize + 28, 12, 12);
 
@@ -50,14 +51,14 @@ public class StatusWidget extends Widget {
 			if (parent.compileResult.right().isPresent()) {
 				// no such thing as ifPresentOrElse in J8, sadly
 				SpellCompilationException ex = parent.compileResult.right().get();
-				parent.tooltip.add(new TranslationTextComponent("psimisc.errored").mergeStyle(TextFormatting.RED));
-				parent.tooltip.add(new TranslationTextComponent(ex.getMessage()).mergeStyle(TextFormatting.GRAY));
+				parent.tooltip.add(new TranslatableComponent("psimisc.errored").withStyle(ChatFormatting.RED));
+				parent.tooltip.add(new TranslatableComponent(ex.getMessage()).withStyle(ChatFormatting.GRAY));
 				Pair<Integer, Integer> errorPos = ex.location;
 				if (errorPos != null && errorPos.getRight() != -1 && errorPos.getLeft() != -1) {
-					parent.tooltip.add(new StringTextComponent("[" + GuiProgrammer.convertIntToLetter((errorPos.getLeft() + 1)) + ", " + (errorPos.getRight() + 1) + "]").mergeStyle(TextFormatting.GRAY));
+					parent.tooltip.add(new TextComponent("[" + GuiProgrammer.convertIntToLetter((errorPos.getLeft() + 1)) + ", " + (errorPos.getRight() + 1) + "]").withStyle(ChatFormatting.GRAY));
 				}
 			} else {
-				parent.tooltip.add(new TranslationTextComponent("psimisc.compiled").mergeStyle(TextFormatting.GREEN));
+				parent.tooltip.add(new TranslatableComponent("psimisc.compiled").withStyle(ChatFormatting.GREEN));
 			}
 		}
 
@@ -66,11 +67,16 @@ public class StatusWidget extends Widget {
 			int cadX = parent.left - 42;
 			int cadY = parent.top + 12;
 
-			PsiRenderHelper.transferMsToGl(ms, () -> parent.getMinecraft().getItemRenderer().renderItemAndEffectIntoGUI(cad, cadX, cadY));
+			PsiRenderHelper.transferMsToGl(ms, () -> parent.getMinecraft().getItemRenderer().renderAndDecorateItem(cad, cadX, cadY));
 
 			if (mouseX > cadX && mouseY > cadY && mouseX < cadX + 16 && mouseY < cadY + 16) {
-				parent.tooltip.addAll(cad.getTooltip(parent.getMinecraft().player, parent.tooltipFlag));
+				parent.tooltip.addAll(cad.getTooltipLines(parent.getMinecraft().player, parent.tooltipFlag));
 			}
 		}
+	}
+
+	@Override
+	public void updateNarration(NarrationElementOutput p_169152_) {
+		//TODO Narration?
 	}
 }

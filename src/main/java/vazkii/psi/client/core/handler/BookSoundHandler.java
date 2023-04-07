@@ -9,7 +9,7 @@
 package vazkii.psi.client.core.handler;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.SimpleSound;
+import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.event.TickEvent;
@@ -38,7 +38,7 @@ public class BookSoundHandler {
 	private static int bookTime = 0;
 
 	private static boolean isBookOpen() {
-		return Objects.equals(PatchouliAPI.instance.getOpenBookGui(), LibResources.PATCHOULI_BOOK);
+		return Objects.equals(PatchouliAPI.get().getOpenBookGui(), LibResources.PATCHOULI_BOOK);
 	}
 
 	@SubscribeEvent
@@ -59,7 +59,7 @@ public class BookSoundHandler {
 			if (bookTime == 0 && evt.getKey() == SECRET_CODE[nextLetter]) {
 				nextLetter++;
 				if (nextLetter >= SECRET_CODE.length) {
-					mc.getSoundHandler().play(SimpleSound.master(PsiSoundHandler.book, 1.0F));
+					mc.getSoundManager().play(SimpleSoundInstance.forUI(PsiSoundHandler.book, 1.0F));
 					nextLetter = 0;
 					bookTime = 320;
 				}

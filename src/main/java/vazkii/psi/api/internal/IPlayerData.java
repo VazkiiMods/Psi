@@ -8,8 +8,8 @@
  */
 package vazkii.psi.api.internal;
 
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 
 import vazkii.psi.api.spell.SpellPiece;
 
@@ -86,7 +86,7 @@ public interface IPlayerData {
 	 * going to write any data here, please ensure it's prefixed with
 	 * your mod ID so stuff doesn't get written over other stuff.
 	 */
-	CompoundNBT getCustomData();
+	CompoundTag getCustomData();
 
 	/**
 	 * Saves the data to the player entity's NBT tags.

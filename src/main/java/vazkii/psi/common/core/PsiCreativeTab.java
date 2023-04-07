@@ -8,9 +8,9 @@
  */
 package vazkii.psi.common.core;
 
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
+import net.minecraft.core.NonNullList;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
 
 import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.lib.LibMisc;
@@ -18,20 +18,20 @@ import vazkii.psi.common.lib.LibResources;
 
 import javax.annotation.Nonnull;
 
-public class PsiCreativeTab extends ItemGroup {
+public class PsiCreativeTab extends CreativeModeTab {
 
 	public static final PsiCreativeTab INSTANCE = new PsiCreativeTab();
 	private NonNullList<ItemStack> list;
 
 	public PsiCreativeTab() {
 		super(LibMisc.MOD_ID);
-		setNoTitle();
-		setBackgroundImageName(LibResources.GUI_CREATIVE);
+		hideTitle();
+		setBackgroundSuffix(LibResources.GUI_CREATIVE);
 	}
 
 	@Nonnull
 	@Override
-	public ItemStack createIcon() {
+	public ItemStack makeIcon() {
 		return new ItemStack(ModItems.cadAssemblyIron);
 	}
 

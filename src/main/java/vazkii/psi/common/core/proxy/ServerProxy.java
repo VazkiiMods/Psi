@@ -8,23 +8,23 @@
  */
 package vazkii.psi.common.core.proxy;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.server.ServerLifecycleHooks;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraftforge.server.ServerLifecycleHooks;
 
 import vazkii.psi.common.block.tile.TileProgrammer;
 
 public class ServerProxy implements IProxy {
 	@Override
-	public PlayerEntity getClientPlayer() {
+	public Player getClientPlayer() {
 		return null;
 	}
 
 	@Override
 	public long getWorldElapsedTicks() {
-		return ServerLifecycleHooks.getCurrentServer().getWorld(World.OVERWORLD).getGameTime();
+		return ServerLifecycleHooks.getCurrentServer().getLevel(Level.OVERWORLD).getGameTime();
 	}
 
 	@Override
@@ -33,7 +33,7 @@ public class ServerProxy implements IProxy {
 	}
 
 	@Override
-	public void sparkleFX(World world, double x, double y, double z, float r, float g, float b, float motionx, float motiony, float motionz, float size, int m) {
+	public void sparkleFX(Level world, double x, double y, double z, float r, float g, float b, float motionx, float motiony, float motionz, float size, int m) {
 		//NOOP
 	}
 
@@ -43,7 +43,7 @@ public class ServerProxy implements IProxy {
 	}
 
 	@Override
-	public void wispFX(World world, double x, double y, double z, float r, float g, float b, float size, float motionx, float motiony, float motionz, float maxAgeMul) {
+	public void wispFX(Level world, double x, double y, double z, float r, float g, float b, float size, float motionx, float motiony, float motionz, float maxAgeMul) {
 		//NOOP
 	}
 
@@ -58,10 +58,10 @@ public class ServerProxy implements IProxy {
 	}
 
 	@Override
-	public boolean hasAdvancement(ResourceLocation advancement, PlayerEntity playerEntity) {
-		if (playerEntity instanceof ServerPlayerEntity) {
-			ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity) playerEntity;
-			return serverPlayerEntity.getServer().getAdvancementManager().getAdvancement(advancement) != null && serverPlayerEntity.getAdvancements().getProgress(serverPlayerEntity.getServer().getAdvancementManager().getAdvancement(advancement)).isDone();
+	public boolean hasAdvancement(ResourceLocation advancement, Player playerEntity) {
+		if (playerEntity instanceof ServerPlayer) {
+			ServerPlayer serverPlayerEntity = (ServerPlayer) playerEntity;
+			return serverPlayerEntity.getServer().getAdvancements().getAdvancement(advancement) != null && serverPlayerEntity.getAdvancements().getOrStartProgress(serverPlayerEntity.getServer().getAdvancements().getAdvancement(advancement)).isDone();
 		}
 		return false;
 	}

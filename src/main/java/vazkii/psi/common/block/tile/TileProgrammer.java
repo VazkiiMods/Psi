@@ -8,13 +8,14 @@
  */
 package vazkii.psi.common.block.tile;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SUpdateTileEntityPacket;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.registries.ObjectHolder;
 
 import vazkii.psi.api.spell.Spell;
@@ -25,9 +26,9 @@ import vazkii.psi.common.spell.SpellCompiler;
 
 import javax.annotation.Nonnull;
 
-public class TileProgrammer extends TileEntity {
+public class TileProgrammer extends BlockEntity {
 	@ObjectHolder(LibMisc.PREFIX_MOD + LibBlockNames.PROGRAMMER)
-	public static TileEntityType<TileProgrammer> TYPE;
+	public static BlockEntityType<TileProgrammer> TYPE;
 
 	private static final String TAG_SPELL = "spell";
 	private static final String TAG_PLAYER_LOCK = "playerLock";
@@ -37,8 +38,8 @@ public class TileProgrammer extends TileEntity {
 
 	public String playerLock = "";
 
-	public TileProgrammer() {
-		super(TYPE);
+	public TileProgrammer(BlockPos pos, BlockState state) {
+		super(TYPE, pos, state);
 	}
 
 	public boolean isEnabled() {
@@ -53,32 +54,32 @@ public class TileProgrammer extends TileEntity {
 		boolean wasEnabled = enabled;
 		enabled = isEnabled();
 		if (wasEnabled != enabled) {
-			getWorld().setBlockState(pos, getBlockState().with(BlockProgrammer.ENABLED, enabled));
+			getLevel().setBlockAndUpdate(worldPosition, getBlockState().setValue(BlockProgrammer.ENABLED, enabled));
 		}
+		setChanged();
 	}
 
 	@Override
-	public void read(BlockState state, CompoundNBT cmp) {
-		super.read(state, cmp);
+	public void load(CompoundTag cmp) {
+		super.load(cmp);
 		readPacketNBT(cmp);
 	}
 
 	@Nonnull
 	@Override
-	public CompoundNBT write(CompoundNBT cmp) {
-		cmp = super.write(cmp);
+	public void saveAdditional(CompoundTag cmp) {
+		super.saveAdditional(cmp);
 
-		CompoundNBT spellCmp = new CompoundNBT();
+		CompoundTag spellCmp = new CompoundTag();
 		if (spell != null) {
 			spell.writeToNBT(spellCmp);
 		}
 		cmp.put(TAG_SPELL, spellCmp);
 		cmp.putString(TAG_PLAYER_LOCK, playerLock);
-		return cmp;
 	}
 
-	public void readPacketNBT(CompoundNBT cmp) {
-		CompoundNBT spellCmp = cmp.getCompound(TAG_SPELL);
+	public void readPacketNBT(CompoundTag cmp) {
+		CompoundTag spellCmp = cmp.getCompound(TAG_SPELL);
 		if (spell == null) {
 			spell = Spell.createFromNBT(spellCmp);
 		} else {
@@ -88,21 +89,23 @@ public class TileProgrammer extends TileEntity {
 	}
 
 	@Override
-	public SUpdateTileEntityPacket getUpdatePacket() {
-		return new SUpdateTileEntityPacket(getPos(), 0, write(new CompoundNBT()));
+	public ClientboundBlockEntityDataPacket getUpdatePacket() {
+		return ClientboundBlockEntityDataPacket.create(this);
 	}
 
 	@Override
-	public CompoundNBT getUpdateTag() {
-		return write(new CompoundNBT());
+	public CompoundTag getUpdateTag() {
+		CompoundTag cmp = new CompoundTag();
+		saveAdditional(cmp);
+		return cmp;
 	}
 
-	public boolean canPlayerInteract(PlayerEntity player) {
-		return player.isAlive() && player.getDistanceSq((double) this.pos.getX() + 0.5D, (double) this.pos.getY() + 0.5D, (double) this.pos.getZ() + 0.5D) <= 64.0D;
+	public boolean canPlayerInteract(Player player) {
+		return player.isAlive() && player.distanceToSqr((double) this.worldPosition.getX() + 0.5D, (double) this.worldPosition.getY() + 0.5D, (double) this.worldPosition.getZ() + 0.5D) <= 64.0D;
 	}
 
 	@Override
-	public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
-		this.readPacketNBT(pkt.getNbtCompound());
+	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
+		this.readPacketNBT(pkt.getTag());
 	}
 }

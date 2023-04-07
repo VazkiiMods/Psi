@@ -8,18 +8,19 @@
  */
 package vazkii.psi.client.gui.widget;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 
-import net.minecraft.client.gui.IGuiEventListener;
-import net.minecraft.client.gui.IRenderable;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.client.gui.widget.Widget;
-import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.components.Widget;
+import net.minecraft.client.gui.components.events.GuiEventListener;
+import net.minecraft.client.gui.narration.NarrationElementOutput;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.resources.language.I18n;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 
 import org.lwjgl.glfw.GLFW;
@@ -39,44 +40,45 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class PiecePanelWidget extends Widget implements IRenderable, IGuiEventListener {
+public class PiecePanelWidget extends AbstractWidget implements Widget, GuiEventListener {
 
 	public final GuiProgrammer parent;
 	public boolean panelEnabled = false;
 	public final List<Button> panelButtons = new ArrayList<>();
 	public int panelCursor;
-	public TextFieldWidget searchField;
+	public EditBox searchField;
 	public int page = 0;
 	private static final int PIECES_PER_PAGE = 25;
 	public final List<GuiButtonSpellPiece> visibleButtons = new ArrayList<>();
 
 	public PiecePanelWidget(int x, int y, int width, int height, String message, GuiProgrammer programmer) {
-		super(x, y, width, height, ITextComponent.getTextComponentOrEmpty(message));
+		super(x, y, width, height, Component.nullToEmpty(message));
 		this.parent = programmer;
 	}
 
 	@Override
-	public void renderButton(MatrixStack ms, int mouseX, int mouseY, float pTicks) {
+	public void renderButton(PoseStack ms, int mouseX, int mouseY, float pTicks) {
 		if (panelEnabled) {
-			parent.getMinecraft().getTextureManager().bindTexture(GuiProgrammer.texture);
+			RenderSystem.setShaderTexture(0, GuiProgrammer.texture);
 
 			fill(ms, x, y, x + width, y + height, 0x88000000);
 
 			if (visibleButtons.size() > 0) {
-				Button button = visibleButtons.get(Math.max(0, Math.min(panelCursor, visibleButtons.size() - 1)));
+				Button button = visibleButtons.get(Math.max(0, Math.min(panelCursor + (page * PIECES_PER_PAGE), visibleButtons.size() - 1)));
 				int panelPieceX = button.x;
 				int panelPieceY = button.y;
 				fill(ms, panelPieceX - 1, panelPieceY - 1, panelPieceX + 17, panelPieceY + 17, 0x559999FF);
 			}
 
-			RenderSystem.color3f(1f, 1f, 1f);
+			RenderSystem.setShaderColor(1F, 1F, 1F, 1F);;
 			blit(ms, searchField.x - 14, searchField.y - 2, 0, parent.ySize + 16, 12, 12);
 
 			String s = Math.min(Math.max(getPageCount(), 1), page + 1) + "/" + Math.max(getPageCount(), 1);
-			parent.getMinecraft().fontRenderer.drawStringWithShadow(ms, s, x + width / 2f - parent.getMinecraft().fontRenderer.getStringWidth(s) / 2f, y + height - 12, 0xFFFFFF);
+			parent.getMinecraft().font.drawShadow(ms, s, x + width / 2f - parent.getMinecraft().font.width(s) / 2f, y + height - 12, 0xFFFFFF);
 		}
 	}
 
@@ -158,14 +160,14 @@ public class PiecePanelWidget extends Widget implements IRenderable, IGuiEventLi
 					}
 					parent.pushState(true);
 					SpellPiece piece1 = ((GuiButtonSpellPiece) button).piece.copyFromSpell(parent.spell);
-					if (piece1.getPieceType() == EnumPieceType.TRICK && parent.spellNameField.getText().isEmpty()) {
-						String pieceName = I18n.format(piece1.getUnlocalizedName());
-						String patternStr = I18n.format("psimisc.trick_pattern");
+					if (piece1.getPieceType() == EnumPieceType.TRICK && parent.spellNameField.getValue().isEmpty()) {
+						String pieceName = I18n.get(piece1.getUnlocalizedName());
+						String patternStr = I18n.get("psimisc.trick_pattern");
 						Pattern pattern = Pattern.compile(patternStr);
 						Matcher matcher = pattern.matcher(pieceName);
 						if (matcher.matches()) {
 							String spellName = matcher.group(1);
-							parent.spellNameField.setText(spellName);
+							parent.spellNameField.setValue(spellName);
 							parent.spell.name = spellName;
 							parent.onSpellChanged(true);
 
@@ -218,14 +220,14 @@ public class PiecePanelWidget extends Widget implements IRenderable, IGuiEventLi
 		visibleButtons.clear();
 		parent.getButtons().forEach(button -> {
 			if (button instanceof GuiButtonPage || button instanceof GuiButtonSpellPiece) {
-				button.active = false;
-				button.visible = false;
+				((Button) button).active = false;
+				((Button) button).visible = false;
 			}
 		});
 
 		HashMap<Class<? extends SpellPiece>, Integer> pieceRankings = new HashMap<>();
 
-		String text = searchField.getText().toLowerCase().trim();
+		String text = searchField.getValue().toLowerCase(Locale.ROOT).trim();
 		boolean noSearchTerms = text.isEmpty();
 
 		parent.getButtons().forEach(button -> {
@@ -244,16 +246,16 @@ public class PiecePanelWidget extends Widget implements IRenderable, IGuiEventLi
 			} else if (button instanceof GuiButtonPage) {
 				GuiButtonPage page = (GuiButtonPage) button;
 				if (page.isRight() && this.page < getPageCount() - 1) {
-					button.x = x + width - 22;
-					button.y = y + height - 15;
-					button.visible = true;
-					button.active = true;
+					page.x = x + width - 22;
+					page.y = y + height - 15;
+					page.visible = true;
+					page.active = true;
 
 				} else if (!page.isRight() && this.page > 0) {
-					button.x = x + 4;
-					button.y = y + height - 15;
-					button.visible = true;
-					button.active = true;
+					page.x = x + 4;
+					page.y = y + height - 15;
+					page.visible = true;
+					page.active = true;
 				}
 			}
 		});
@@ -316,8 +318,8 @@ public class PiecePanelWidget extends Widget implements IRenderable, IGuiEventLi
 
 	private int ranking(String token, SpellPiece p) {
 		int rank = 0;
-		String name = I18n.format(p.getUnlocalizedName()).toLowerCase();
-		String desc = I18n.format(p.getUnlocalizedDesc()).toLowerCase();
+		String name = I18n.get(p.getUnlocalizedName()).toLowerCase(Locale.ROOT);
+		String desc = I18n.get(p.getUnlocalizedDesc()).toLowerCase(Locale.ROOT);
 
 		for (String nameToken : token.split("\\s+")) {
 			if (nameToken.isEmpty()) {
@@ -332,7 +334,7 @@ public class PiecePanelWidget extends Widget implements IRenderable, IGuiEventLi
 
 				int maxRank = 0;
 				for (SpellParam<?> param : p.params.values()) {
-					String type = param.getRequiredTypeString().getString().toLowerCase();
+					String type = param.getRequiredTypeString().getString().toLowerCase(Locale.ROOT);
 					maxRank = Math.max(maxRank, rankTextToken(type, clippedToken));
 				}
 
@@ -346,7 +348,7 @@ public class PiecePanelWidget extends Widget implements IRenderable, IGuiEventLi
 					continue;
 				}
 
-				String type = p.getEvaluationTypeString().getString().toLowerCase();
+				String type = p.getEvaluationTypeString().getString().toLowerCase(Locale.ROOT);
 
 				if (rankTextToken(type, clippedToken) <= 0) {
 					return 0;
@@ -436,14 +438,14 @@ public class PiecePanelWidget extends Widget implements IRenderable, IGuiEventLi
 		panelEnabled = false;
 		parent.getButtons().forEach(button -> {
 			if (button instanceof GuiButtonSpellPiece || button instanceof GuiButtonPage) {
-				button.visible = false;
-				button.active = false;
+				((Button) button).visible = false;
+				((Button) button).active = false;
 			}
 		});
 		searchField.visible = false;
-		searchField.setEnabled(false);
-		searchField.setFocused2(false);
-		parent.setListener(parent.statusWidget);
+		searchField.setEditable(false);
+		searchField.setFocus(false);
+		parent.setFocused(parent.statusWidget);
 		parent.changeFocus(true);
 	}
 
@@ -456,12 +458,17 @@ public class PiecePanelWidget extends Widget implements IRenderable, IGuiEventLi
 
 		searchField.x = x + 18;
 		searchField.y = y + 4;
-		searchField.setText("");
+		searchField.setValue("");
 		searchField.setVisible(true);
 		searchField.active = true;
-		searchField.setEnabled(true);
-		searchField.setFocused2(true);
-		parent.setListener(searchField);
+		searchField.setEditable(true);
+		searchField.setFocus(true);
+		parent.setFocused(searchField);
 		updatePanelButtons();
+	}
+
+	@Override
+	public void updateNarration(NarrationElementOutput p_169152_) {
+
 	}
 }

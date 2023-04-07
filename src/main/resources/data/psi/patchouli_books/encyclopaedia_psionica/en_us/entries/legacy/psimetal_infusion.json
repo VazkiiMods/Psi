@@ -1,6 +1,6 @@
 {
   "name": "psi.book.entry.psimetalInfusion",
-  "category": "legacy",
+  "category": "psi:legacy",
   "icon": "psi:textures/spell/trick_infusion.png",
   "pages": [
     {

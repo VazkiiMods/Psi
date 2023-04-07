@@ -8,8 +8,8 @@
  */
 package vazkii.psi.common.item;
 
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -27,7 +27,7 @@ public abstract class ItemExosuitSensor extends Item implements IExosuitSensor {
 	public static int lowHealthColor = 0xFF8CC5;
 
 	public ItemExosuitSensor(Item.Properties properties) {
-		super(properties.maxStackSize(1));
+		super(properties.stacksTo(1));
 	}
 
 	@Override

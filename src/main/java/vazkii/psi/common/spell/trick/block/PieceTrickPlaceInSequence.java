@@ -8,8 +8,8 @@
  */
 package vazkii.psi.common.spell.trick.block;
 
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 
 import vazkii.psi.api.internal.MathHelper;
 import vazkii.psi.api.internal.Vector3;
@@ -70,8 +70,8 @@ public class PieceTrickPlaceInSequence extends PieceTrick {
 		Direction direction = Direction.NORTH;
 		Direction horizontalFacing = Direction.NORTH;
 		if (directionVal != null) {
-			direction = Direction.getFacingFromVector(directionVal.x, directionVal.y, directionVal.z);
-			horizontalFacing = Direction.getFacingFromVector(directionVal.x, 0.0, directionVal.z);
+			direction = Direction.getNearest(directionVal.x, directionVal.y, directionVal.z);
+			horizontalFacing = Direction.getNearest(directionVal.x, 0.0, directionVal.z);
 		}
 
 		if (positionVal == null) {
@@ -84,7 +84,7 @@ public class PieceTrickPlaceInSequence extends PieceTrick {
 				throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 			}
 
-			PieceTrickPlaceBlock.placeBlock(context.caster, context.focalPoint.getEntityWorld(), blockPos, context.getTargetSlot(), false, direction, horizontalFacing);
+			PieceTrickPlaceBlock.placeBlock(context.caster, context.focalPoint.getCommandSenderWorld(), blockPos, context.getTargetSlot(), false, direction, horizontalFacing);
 		}
 
 		return null;

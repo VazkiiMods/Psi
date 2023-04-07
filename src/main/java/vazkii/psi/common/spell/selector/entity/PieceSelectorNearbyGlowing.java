@@ -8,10 +8,10 @@
  */
 package vazkii.psi.common.spell.selector.entity;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.projectile.EyeOfEnderEntity;
-import net.minecraft.potion.Effects;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.projectile.EyeOfEnder;
 
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
@@ -26,7 +26,7 @@ public class PieceSelectorNearbyGlowing extends PieceSelectorNearby {
 
 	@Override
 	public Predicate<Entity> getTargetPredicate(SpellContext context) {
-		return (Entity e) -> e != null && (e instanceof EyeOfEnderEntity || e.isBurning() || e.isGlowing() ||
-				(e instanceof LivingEntity && ((LivingEntity) e).isPotionActive(Effects.GLOWING)));
+		return (Entity e) -> e != null && (e instanceof EyeOfEnder || e.isOnFire() || e.hasGlowingTag() ||
+				(e instanceof LivingEntity && ((LivingEntity) e).hasEffect(MobEffects.GLOWING)));
 	}
 }

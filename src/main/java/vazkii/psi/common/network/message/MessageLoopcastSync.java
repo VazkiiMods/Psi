@@ -8,12 +8,12 @@
  */
 package vazkii.psi.common.network.message;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.Hand;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraftforge.network.NetworkEvent;
 
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
@@ -25,17 +25,17 @@ public class MessageLoopcastSync {
 	private final int entityId;
 	private final byte loopcastState;
 
-	public MessageLoopcastSync(int entityId, boolean isLoopcasting, Hand hand) {
+	public MessageLoopcastSync(int entityId, boolean isLoopcasting, InteractionHand hand) {
 		this.entityId = entityId;
 		loopcastState = (byte) ((isLoopcasting ? 1 : 0) | (hand == null ? 0 : hand.ordinal() << 1));
 	}
 
-	public MessageLoopcastSync(PacketBuffer buf) {
+	public MessageLoopcastSync(FriendlyByteBuf buf) {
 		entityId = buf.readVarInt();
 		loopcastState = buf.readByte();
 	}
 
-	public void encode(PacketBuffer buf) {
+	public void encode(FriendlyByteBuf buf) {
 		buf.writeVarInt(entityId);
 		buf.writeByte(loopcastState);
 	}
@@ -43,24 +43,24 @@ public class MessageLoopcastSync {
 	public boolean receive(Supplier<NetworkEvent.Context> context) {
 		boolean isLoopcasting = (loopcastState & 0b1) != 0;
 
-		Hand loopcastHand = isLoopcasting ? ((loopcastState & 0b10) != 0 ? Hand.OFF_HAND : Hand.MAIN_HAND) : null;
+		InteractionHand loopcastHand = isLoopcasting ? ((loopcastState & 0b10) != 0 ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND) : null;
 
 		context.get().enqueueWork(() -> {
-			PlayerEntity mcPlayer = Psi.proxy.getClientPlayer();
+			Player mcPlayer = Psi.proxy.getClientPlayer();
 			if (mcPlayer == null) {
 				return;
 			}
-			World world = mcPlayer.world;
+			Level world = mcPlayer.level;
 
 			Entity player = null;
 			if (world != null) {
-				player = world.getEntityByID(entityId);
-			} else if (mcPlayer.getEntityId() == entityId) {
+				player = world.getEntity(entityId);
+			} else if (mcPlayer.getId() == entityId) {
 				player = mcPlayer;
 			}
 
-			if (player instanceof PlayerEntity) {
-				PlayerDataHandler.PlayerData data = PlayerDataHandler.get((PlayerEntity) player);
+			if (player instanceof Player) {
+				PlayerDataHandler.PlayerData data = PlayerDataHandler.get((Player) player);
 				data.loopcasting = isLoopcasting;
 				data.loopcastHand = loopcastHand;
 			}

@@ -1,6 +1,6 @@
 {
   "name": "psi.book.entry.memoryManagement",
-  "category": "legacy",
+  "category": "psi:legacy",
   "icon": "psi:textures/spell/trick_save_vector.png",
   "pages": [
     {

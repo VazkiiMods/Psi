@@ -8,37 +8,36 @@
  */
 package vazkii.psi.common.lib;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.ITag;
-import net.minecraft.tags.ItemTags;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 
 public class ModTags {
 
-	public static final ITag.INamedTag<Item> PSIDUST = tag("psidust");
-	public static final ITag.INamedTag<Item> IVORY_SUBSTANCE = tag("ivory_substance");
-	public static final ITag.INamedTag<Item> EBONY_SUBSTANCE = tag("ebony_substance");
+	public static final TagKey<Item> PSIDUST = tag("psidust");
+	public static final TagKey<Item> IVORY_SUBSTANCE = tag("ivory_substance");
+	public static final TagKey<Item> EBONY_SUBSTANCE = tag("ebony_substance");
 
-	public static final ITag.INamedTag<Item> INGOT_PSIMETAL = forgeTag("ingots/psimetal");
-	public static final ITag.INamedTag<Item> BLOCK_PSIMETAL = forgeTag("storage_blocks/psimetal");
+	public static final TagKey<Item> INGOT_PSIMETAL = forgeTag("ingots/psimetal");
+	public static final TagKey<Item> BLOCK_PSIMETAL = forgeTag("storage_blocks/psimetal");
 
-	public static final ITag.INamedTag<Item> GEM_PSIGEM = forgeTag("gems/psigem");
-	public static final ITag.INamedTag<Item> BLOCK_PSIGEM = forgeTag("storage_blocks/psigem");
+	public static final TagKey<Item> GEM_PSIGEM = forgeTag("gems/psigem");
+	public static final TagKey<Item> BLOCK_PSIGEM = forgeTag("storage_blocks/psigem");
 
-	public static final ITag.INamedTag<Item> INGOT_EBONY_PSIMETAL = forgeTag("ingots/ebony_psimetal");
-	public static final ITag.INamedTag<Item> BLOCK_EBONY_PSIMETAL = forgeTag("storage_blocks/ebony_psimetal");
+	public static final TagKey<Item> INGOT_EBONY_PSIMETAL = forgeTag("ingots/ebony_psimetal");
+	public static final TagKey<Item> BLOCK_EBONY_PSIMETAL = forgeTag("storage_blocks/ebony_psimetal");
 
-	public static final ITag.INamedTag<Item> INGOT_IVORY_PSIMETAL = forgeTag("ingots/ivory_psimetal");
-	public static final ITag.INamedTag<Item> BLOCK_IVORY_PSIMETAL = forgeTag("storage_blocks/ivory_psimetal");
+	public static final TagKey<Item> INGOT_IVORY_PSIMETAL = forgeTag("ingots/ivory_psimetal");
+	public static final TagKey<Item> BLOCK_IVORY_PSIMETAL = forgeTag("storage_blocks/ivory_psimetal");
 
-	private static ITag.INamedTag<Item> tag(String name) {
-		return ItemTags.makeWrapperTag(prefix(name).toString());
+	private static TagKey<Item> tag(String name) {
+		return TagKey.create(Registry.ITEM_REGISTRY, prefix(name));
 	}
 
-	private static ITag.INamedTag<Item> forgeTag(String name) {
-		return ItemTags.makeWrapperTag(new ResourceLocation("forge", name).toString());
+	private static TagKey<Item> forgeTag(String name) {
+		return TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation("forge", name));
 	}
 
 	public static ResourceLocation prefix(String path) {
@@ -46,13 +45,13 @@ public class ModTags {
 	}
 
 	public static class Blocks {
-		public static final ITag.INamedTag<Block> BLOCK_PSIMETAL = fromTag(ModTags.BLOCK_PSIMETAL);
-		public static final ITag.INamedTag<Block> BLOCK_PSIGEM = fromTag(ModTags.BLOCK_PSIGEM);
-		public static final ITag.INamedTag<Block> BLOCK_EBONY_PSIMETAL = fromTag(ModTags.BLOCK_EBONY_PSIMETAL);
-		public static final ITag.INamedTag<Block> BLOCK_IVORY_PSIMETAL = fromTag(ModTags.BLOCK_IVORY_PSIMETAL);
+		public static final TagKey<Block> BLOCK_PSIMETAL = fromTag(ModTags.BLOCK_PSIMETAL);
+		public static final TagKey<Block> BLOCK_PSIGEM = fromTag(ModTags.BLOCK_PSIGEM);
+		public static final TagKey<Block> BLOCK_EBONY_PSIMETAL = fromTag(ModTags.BLOCK_EBONY_PSIMETAL);
+		public static final TagKey<Block> BLOCK_IVORY_PSIMETAL = fromTag(ModTags.BLOCK_IVORY_PSIMETAL);
 
-		private static ITag.INamedTag<Block> fromTag(ITag.INamedTag<?> tag) {
-			return BlockTags.makeWrapperTag(tag.getName().toString());
+		private static TagKey<Block> fromTag(TagKey<?> tag) {
+			return TagKey.create(Registry.BLOCK_REGISTRY, tag.location());
 		}
 	}
 }

@@ -8,9 +8,9 @@
  */
 package vazkii.psi.client.patchouli;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 
 import vazkii.patchouli.api.IComponentRenderContext;
 import vazkii.patchouli.api.IVariable;
@@ -35,14 +35,14 @@ public class PatchouliUtils {
 	 */
 	public static IVariable interweaveIngredients(List<Ingredient> ingredients, int longestIngredientSize) {
 		if (ingredients.size() == 1) {
-			return IVariable.wrapList(Arrays.stream(ingredients.get(0).getMatchingStacks()).map(IVariable::from).collect(Collectors.toList()));
+			return IVariable.wrapList(Arrays.stream(ingredients.get(0).getItems()).map(IVariable::from).collect(Collectors.toList()));
 		}
 
 		ItemStack[] empty = { ItemStack.EMPTY };
 		List<ItemStack[]> stacks = new ArrayList<>();
 		for (Ingredient ingredient : ingredients) {
-			if (ingredient != null && !ingredient.hasNoMatchingItems()) {
-				stacks.add(ingredient.getMatchingStacks());
+			if (ingredient != null && !ingredient.isEmpty()) {
+				stacks.add(ingredient.getItems());
 			} else {
 				stacks.add(empty);
 			}
@@ -60,14 +60,14 @@ public class PatchouliUtils {
 	 * Overload of the method above that uses the provided list's longest ingredient size.
 	 */
 	public static IVariable interweaveIngredients(List<Ingredient> ingredients) {
-		return interweaveIngredients(ingredients, ingredients.stream().mapToInt(ingr -> ingr.getMatchingStacks().length).max().orElse(1));
+		return interweaveIngredients(ingredients, ingredients.stream().mapToInt(ingr -> ingr.getItems().length).max().orElse(1));
 	}
 
 	/**
 	 * Sets the tooltip to the passed spell piece's tooltip.
 	 */
 	public static void setPieceTooltip(IComponentRenderContext context, SpellPiece piece) {
-		List<ITextComponent> tooltip = new ArrayList<>();
+		List<Component> tooltip = new ArrayList<>();
 		piece.getTooltip(tooltip);
 		context.setHoverTooltipComponents(tooltip);
 	}

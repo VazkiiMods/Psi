@@ -6,15 +6,15 @@ license="https://psi.vazkii.net/license.php"
 [[mods]]
 modId="psi"
 displayName="Psi"
-version="${version}"
-authors="Vazkii, Wiiv, WireSegal, Kamefrede, Williewillus, Hubry"
+version="2.0.0"
+authors="Vazkii, Wiiv, WireSegal, Kamefrede, Williewillus, Hubry, Dudblockman"
 description='''
 Psionic Spellcasting Instruments
 '''
 [[dependencies.psi]]
     modId="patchouli"
     mandatory=true
-    versionRange="[1.16-45,)"
+    versionRange="[1.18-45,)"
     side="BOTH"
 
 

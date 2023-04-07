@@ -1,6 +1,6 @@
 {
   "name": "psi.book.entry.spellProgrammer",
-  "category": "basics",
+  "category": "psi:basics",
   "icon": "psi:programmer",
   "pages": [
     {

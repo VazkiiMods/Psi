@@ -8,9 +8,9 @@
  */
 package vazkii.psi.common.network.message;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.network.NetworkEvent;
 
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
@@ -32,14 +32,14 @@ public class MessageDeductPsi {
 		this.shatter = shatter;
 	}
 
-	public MessageDeductPsi(PacketBuffer buf) {
+	public MessageDeductPsi(FriendlyByteBuf buf) {
 		this.prev = buf.readVarInt();
 		this.current = buf.readVarInt();
 		this.cd = buf.readVarInt();
 		this.shatter = buf.readBoolean();
 	}
 
-	public void encode(PacketBuffer buf) {
+	public void encode(FriendlyByteBuf buf) {
 		buf.writeVarInt(prev);
 		buf.writeVarInt(current);
 		buf.writeVarInt(cd);
@@ -48,7 +48,7 @@ public class MessageDeductPsi {
 
 	public boolean receive(Supplier<NetworkEvent.Context> context) {
 		context.get().enqueueWork(() -> {
-			PlayerEntity player = Psi.proxy.getClientPlayer();
+			Player player = Psi.proxy.getClientPlayer();
 			if (player != null) {
 				PlayerData data = PlayerDataHandler.get(player);
 				data.lastAvailablePsi = data.availablePsi;

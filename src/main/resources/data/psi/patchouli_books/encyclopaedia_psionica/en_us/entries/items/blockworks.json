@@ -1,6 +1,6 @@
 {
   "name": "psi.book.entry.blockworks",
-  "category": "items",
+  "category": "psi:items",
   "icon": "psi:textures/spell/trick_break_in_sequence.png",
   "pages": [
     {
