@@ -85,29 +85,36 @@ mixin {
 }
 
 repositories {
+    mavenCentral()
     maven {
         // for Patchouli
         name "blamejared"
         url "https://maven.blamejared.com/"
+        content {
+            includeGroup "vazkii.patchouli"
+        }
     }
     maven {
         // for JEI
         name "progwml6"
         url "https://dvs1.progwml6.com/files/maven"
+        content {
+            includeGroup "mezz.jei"
+        }
     }
 }
 
 
 dependencies {
-    minecraft "net.minecraftforge:forge:${mc_version}-${forge_version}"
+    minecraft "net.minecraftforge:forge:${config.mc_version}-${config.forge_version}"
 
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 
-    compileOnly fg.deobf("vazkii.patchouli:Patchouli:${patchy_version}:api")
-    runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:${patchy_version}")
+    compileOnly fg.deobf("vazkii.patchouli:Patchouli:${config.patchy_version}:api")
+    runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:${config.patchy_version}")
 
-    compileOnly fg.deobf("mezz.jei:${jei_version}:api")
-    runtimeOnly fg.deobf("mezz.jei:${jei_version}")
+    compileOnly fg.deobf("mezz.jei:${config.jei_version}:api")
+    runtimeOnly fg.deobf("mezz.jei:${config.jei_version}")
 }
 
 if (System.getProperty("idea.sync.active") == "true") {
