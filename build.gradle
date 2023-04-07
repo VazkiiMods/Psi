@@ -1,8 +1,8 @@
 buildscript {
     repositories {
-        mavenCentral()
         maven { url = 'https://maven.minecraftforge.net' }
         maven { url = 'https://repo.spongepowered.org/maven' }
+        mavenCentral()
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1+', changing: true
@@ -11,18 +11,23 @@ buildscript {
 }
 
 plugins {
-    id "com.diffplug.spotless" version "5.12.5"
+    id 'com.diffplug.gradle.spotless' version '4.5.1'
 }
 
 apply plugin: 'net.minecraftforge.gradle'
+apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 apply plugin: 'pmd'
-apply plugin: 'org.spongepowered.mixin'
 
-version = "${mc_version}-${build_number}"
-group = "vazkii.${mod_id}" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = mod_name
+ext.configFile = file('build.properties')
+ext.config = parseConfig(configFile)
+
+version = "${config.version}-${config.build_number}"
+group = "vazkii.${config.mod_id}" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = config.mod_name
+
+compileJava.options.compilerArgs << "-Xlint:all,-classfile,-processing,-deprecation"
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
@@ -32,15 +37,16 @@ if (System.getenv('BUILD_NUMBER') != null) {
 }
 
 minecraft {
-    mappings channel: 'official', version: mc_version
+    mappings channel: "${config.mapping_channel}", version: "${config.mapping_version}"
+    // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
+
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
+    // Default run configurations.
+    // These can be tweaked, removed, or duplicated as needed.
     runs {
         client {
             workingDirectory project.file('run')
-
-            properties 'fml.earlyprogresswindow': 'false'
-            property 'forge.logging.console.level', 'debug'
             mods {
                 psi {
                     source sourceSets.main
@@ -50,15 +56,13 @@ minecraft {
 
         server {
             workingDirectory project.file('run')
-
-            property 'forge.logging.console.level', 'debug'
-            singleInstance(true)
             mods {
                 psi {
                     source sourceSets.main
                 }
             }
         }
+
         data {
             properties 'forge.logging.console.level': 'debug'
             properties 'fml.earlyprogresswindow': 'false'
@@ -76,8 +80,8 @@ minecraft {
 }
 
 mixin {
-    add sourceSets.main, "psi.refmap.json"
-    config "psi.mixins.json"
+    add sourceSets.main, 'psi.refmap.json'
+    config 'psi.mixins.json'
 }
 
 repositories {
@@ -86,23 +90,27 @@ repositories {
         // for Patchouli and JEI
         name "blamejared"
         url "https://maven.blamejared.com/"
+        content {
+            includeGroup "vazkii.patchouli"
+            includeGroup "mezz.jei"
+        }
     }
 }
 
+
 dependencies {
-    minecraft "net.minecraftforge:forge:${mc_version}-${forge_version}"
+    minecraft "net.minecraftforge:forge:${config.mc_version}-${config.forge_version}"
 
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 
-    compileOnly fg.deobf("vazkii.patchouli:Patchouli:${patchy_version}:api")
-    runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:${patchy_version}")
+    compileOnly fg.deobf("vazkii.patchouli:Patchouli:${config.patchy_version}:api")
+    runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:${config.patchy_version}")
 
-    compileOnly fg.deobf("mezz.jei:jei-${mc_version}-common-api:${jei_version}")
-    compileOnly fg.deobf("mezz.jei:jei-${mc_version}-forge-api:${jei_version}")
-    runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}-forge:${jei_version}")
+    compileOnly fg.deobf("mezz.jei:jei-${config.mc_version}-common-api:${config.jei_version}")
+    compileOnly fg.deobf("mezz.jei:jei-${config.mc_version}-forge-api:${config.jei_version}")
+    runtimeOnly fg.deobf("mezz.jei:jei-${config.mc_version}-forge:${config.jei_version}")
 }
 
-// Prevent Mixin annotation processor from getting into IDEA's annotation processor settings
 if (System.getProperty("idea.sync.active") == "true") {
     afterEvaluate {
         tasks.withType(JavaCompile).all {
@@ -111,80 +119,92 @@ if (System.getProperty("idea.sync.active") == "true") {
     }
 }
 
-pmd {
-	toolVersion '6.35.0'
-	incrementalAnalysis.set(true)
-	ruleSets.clear()
-	ruleSetFiles = files("spotless/pmd-ruleset.xml")
-}
-
 spotless {
     enforceCheck = false // workaround around jenkins having wrong line endings in some files
-    // we explicitly check in github actions builds (do we?)
     java {
-        targetExclude '**/Gamma.java'
-
-        indentWithTabs()
-        licenseHeaderFile('spotless/license_template.txt')
+        target project.fileTree(dir: 'src/main/java/vazkii/psi', include: '**/*.java')
+        //indentWithTabs()
         eclipse().configFile 'spotless/eclipseformat.xml'
         removeUnusedImports()
         importOrderFile 'spotless/eclipse.importorder'
+        replaceRegex 'Too much space after if', '(if|for|while|switch) +\\(', '$1('
     }
 }
 
-task checkSyntax {
-    dependsOn spotlessJavaCheck, pmdMain
+pmd {
+    toolVersion '6.42.0'
+    incrementalAnalysis.set(true)
+    ruleSets.clear()
+    ruleSetFiles = files("spotless/pmd-ruleset.xml")
 }
 
-sourceSets.main.resources {
-    srcDir 'src/generated/resources'
+task checkSyntax (group: "verification") {
+    // Replace the following line when Spotless is setup
+    //dependsOn spotlessJavaCheck, pmdMain
+    dependsOn pmdMain
 }
 
 processResources {
-
+    // copy everything excluding psd files
+    from(sourceSets.main.resources.srcDirs) {
+        exclude '**/psd/**'
+        duplicatesStrategy 'include'
+    }
 }
 
-task srcJar(type: Jar) {
-    from(sourceSets.main.java)
-    classifier = 'sources'
+task incrementBuildNumber {
+    doFirst {
+        config.build_number = (config.build_number.toString().toInteger()) + 1
+        configFile.withWriter {
+            config.toProperties().store(it, "")
+        }
+    }
+
+    //file('web/versions.ini').append("\n${version}=${minecraft.version}")
+    //file("${config.dir_repo}/version/${minecraft.version}.txt").write("${version}")
 }
 
-task apiJar(type: Jar) {
-    // Remove sources from the api jar when MinecraftForge/ForgeGradle#369 is fixed
-    from(sourceSets.main.allJava)
-    from(sourceSets.main.output)
-    include 'vazkii/psi/api/**'
-
-    classifier = 'api'
+import java.util.regex.Pattern
+task sortArtifacts(type: Copy) {
+    from jar.destinationDir
+    into config.dir_output
+    //Put each jar with a classifier in a subfolder with the classifier as its name
+    eachFile {
+        //This matcher is used to get the classifier of the jar
+        def matcher = Pattern.compile(Pattern.quote("$config.mod_name-$version") + "-(?<classifier>\\w+).jar").matcher(it.name)
+        //Only change the destination for full matches, i.e jars with classifiers
+        if (matcher.matches())
+        {
+            def classifier = matcher.group('classifier')
+            /* Set the relative path to change the destination, since
+             * Gradle doesn't seem to like the absolute path being set*/
+            it.relativePath = it.relativePath.parent.append(false, classifier, it.name)
+        }
+    }
 }
 
-artifacts {
-    archives srcJar, apiJar
+def parseConfig(File config) {
+    config.withReader {
+        def prop = new Properties()
+        prop.load(it)
+        return (new ConfigSlurper().parse(prop))
+    }
 }
-
-//task incrementBuildNumber {
-//    doFirst {
-//        config.build_number = (config.build_number.toString().toInteger()) + 1
-//        configFile.withWriter {
-//            config.toProperties().store(it, "")
-//        }
-//    }
-//}
 
 jar {
     //rename the default output, for some better... sanity with scipts
-    archiveName = "${baseName} ${version}.${extension}"
+    archiveName = "${baseName}-${version}.${extension}"
 
-    manifest {
+     manifest {
         attributes([
-                "Specification-Title": "${mod_id}",
-                "Specification-Vendor": "vazkii",
-                "Specification-Version": "1", // We are version 1 of ourselves
-                "Implementation-Title": "${mod_id}",
-                "Implementation-Version": "${version}",
-                "Implementation-Vendor" :"vazkii",
-                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-                "MixinConfigs": "${mod_id}.mixins.json"
+            "Specification-Title": "${config.mod_id}",
+            "Specification-Vendor": "vazkii",
+            "Specification-Version": "1", // We are version 1 of ourselves
+            "Implementation-Title": "${config.mod_id}",
+            "Implementation-Version": "${version}",
+            "Implementation-Vendor" :"vazkii",
+            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+            "MixinConfigs": "psi.mixins.json"
         ])
     }
 
@@ -192,23 +212,66 @@ jar {
     exclude "**/*.psd"
     exclude "**/*.exe"
     exclude "**/unused"
-    exclude "**/*.py"
-    exclude "**/*.sh"
-    exclude "**/*.txt"
-    exclude "**/*.sh"
-    exclude "**/*.vim"
-    exclude "**/mappings-en_us.json"
-    exclude "**/en_us_base.json"
-    finalizedBy 'reobfJar'
+    exclude "**/genscripts"
 }
 
-/*
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            repository(url: "file://" + (System.getenv("local_maven") != null ? System.getenv("local_maven") : System.getenv("bamboo_local_maven")))
+task sourcesJar(type: Jar) {
+    classifier = "sources"
+    from sourceSets.main.allJava
+}
+
+task deobfJar(type: Jar) {
+    classifier = "deobf"
+    from sourceSets.main.output
+}
+
+artifacts {
+    archives sourcesJar
+    archives deobfJar
+}
+
+publish.dependsOn(project.tasks.getByName("assemble"))
+publish.mustRunAfter(project.tasks.getByName("build"))
+
+publishing {
+
+    publications {
+
+        mavenJava(MavenPublication) {
+
+            groupId project.group
+            artifactId project.archivesBaseName
+            version project.version
+            from components.java
+
+            // Allows the maven pom file to be modified.
+            pom.withXml {
+
+                // Go through all the dependencies.
+                asNode().dependencies.dependency.each { dep ->
+
+                    println 'Surpressing artifact ' + dep.artifactId.last().value().last() + ' from maven dependencies.'
+                    assert dep.parent().remove(dep)
+                }
+            }
+
+            artifact sourcesJar {
+                classifier 'sources'
+            }
         }
     }
-}*/
 
-defaultTasks 'clean', 'runData', 'checkSyntax', 'build', 'incrementBuildNumber'
+    repositories {
+        maven {
+            url "file://" + System.getenv("local_maven")
+        }
+    }
+}
+
+// Disables Gradle's custom module metadata from being published to maven. The
+// metadata includes mapped dependencies which are not reasonably consumable by
+// other mod developers.
+tasks.withType(GenerateModuleMetadata) {
+
+    enabled = false
+}
