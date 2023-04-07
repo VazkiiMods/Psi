@@ -15,6 +15,7 @@ Thumbs.db
 /.project
 /eclipse
 /bin
+*.launch
 
 ## intellij
 /out
