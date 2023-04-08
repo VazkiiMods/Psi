@@ -540,7 +540,7 @@ public class PlayerDataHandler {
 			BlockPos pos = player.blockPosition();
 			int light = player.getCommandSenderWorld().getLightEngine().getRawBrightness(pos, 0);
 
-			boolean lowLight = light <= 7;
+			boolean lowLight = light == 0;
 			if (!this.lowLight && lowLight) {
 				PsiArmorEvent.post(new PsiArmorEvent(player, PsiArmorEvent.LOW_LIGHT));
 			}
