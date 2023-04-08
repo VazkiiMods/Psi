@@ -1,17 +1,17 @@
 {
   "type": "minecraft:crafting_shaped",
+  "key": {
+    "D": {
+      "tag": "forge:dusts/redstone"
+    },
+    "I": {
+      "tag": "forge:ingots/psimetal"
+    }
+  },
   "pattern": [
     "DI ",
     "I  "
   ],
-  "key": {
-    "I": {
-      "tag": "forge:ingots/psimetal"
-    },
-    "D": {
-      "tag": "forge:dusts/redstone"
-    }
-  },
   "result": {
     "item": "psi:cad_socket_signaling"
   }

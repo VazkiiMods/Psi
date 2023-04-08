@@ -1,18 +1,18 @@
 {
   "type": "minecraft:crafting_shaped",
+  "key": {
+    "D": {
+      "tag": "forge:dusts/glowstone"
+    },
+    "I": {
+      "tag": "forge:ingots/psimetal"
+    }
+  },
   "pattern": [
     " I ",
     "IDI",
     " I "
   ],
-  "key": {
-    "I": {
-      "tag": "forge:ingots/psimetal"
-    },
-    "D": {
-      "tag": "forge:dusts/glowstone"
-    }
-  },
   "result": {
     "item": "psi:cad_core_conductive"
   }

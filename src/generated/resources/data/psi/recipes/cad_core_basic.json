@@ -1,18 +1,18 @@
 {
   "type": "minecraft:crafting_shaped",
+  "key": {
+    "D": {
+      "tag": "psi:psidust"
+    },
+    "I": {
+      "tag": "forge:ingots/iron"
+    }
+  },
   "pattern": [
     " I ",
     "IDI",
     " I "
   ],
-  "key": {
-    "I": {
-      "tag": "forge:ingots/iron"
-    },
-    "D": {
-      "tag": "psi:psidust"
-    }
-  },
   "result": {
     "item": "psi:cad_core_basic"
   }

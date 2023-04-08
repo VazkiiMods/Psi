@@ -1,14 +1,14 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "III",
-    "I  "
-  ],
   "key": {
     "I": {
       "tag": "forge:ingots/iron"
     }
   },
+  "pattern": [
+    "III",
+    "I  "
+  ],
   "result": {
     "item": "psi:cad_assembly_iron"
   }

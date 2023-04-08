@@ -36,9 +36,9 @@ import vazkii.psi.common.lib.ModTags;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
-public class RecipeGenerator extends RecipeProvider implements IConditionBuilder {
+public class PsiRecipeGenerator extends RecipeProvider implements IConditionBuilder {
 
-	public RecipeGenerator(DataGenerator generator) {
+	public PsiRecipeGenerator(DataGenerator generator) {
 		super(generator);
 	}
 

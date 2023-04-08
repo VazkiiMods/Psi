@@ -1,17 +1,17 @@
 {
   "type": "minecraft:crafting_shaped",
+  "key": {
+    "D": {
+      "tag": "forge:dusts/glowstone"
+    },
+    "I": {
+      "tag": "forge:ingots/psimetal"
+    }
+  },
   "pattern": [
     "DI ",
     "I  "
   ],
-  "key": {
-    "I": {
-      "tag": "forge:ingots/psimetal"
-    },
-    "D": {
-      "tag": "forge:dusts/glowstone"
-    }
-  },
   "result": {
     "item": "psi:cad_socket_large"
   }

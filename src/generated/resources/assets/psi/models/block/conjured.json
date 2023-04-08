@@ -1,6 +1,5 @@
 {
   "parent": "minecraft:block/block",
-  "render_type": "translucent",
   "textures": {
     "particle": "psi:blocks/empty"
   }

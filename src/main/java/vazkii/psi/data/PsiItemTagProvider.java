@@ -11,18 +11,19 @@ package vazkii.psi.data;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraftforge.common.Tags;
-
+import net.minecraftforge.common.data.ExistingFileHelper;
 import vazkii.psi.common.item.base.ModItems;
+import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.lib.ModTags;
 
-public class ItemTagProvider extends ItemTagsProvider {
-	public ItemTagProvider(DataGenerator generator, BlockTagProvider blockTagProvider) {
-		super(generator, blockTagProvider);
+public class PsiItemTagProvider extends ItemTagsProvider {
+	
+	public PsiItemTagProvider(DataGenerator generator, PsiBlockTagProvider blockTagProvider, ExistingFileHelper existingFileHelper) {
+		super(generator, blockTagProvider, LibMisc.MOD_ID, existingFileHelper);
 	}
 
 	@Override
 	protected void addTags() {
-
 		tag(Tags.Items.DUSTS).add(ModItems.psidust);
 		tag(Tags.Items.INGOTS).add(ModItems.psimetal);
 		tag(Tags.Items.INGOTS).add(ModItems.ebonyPsimetal);

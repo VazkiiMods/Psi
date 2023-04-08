@@ -11,13 +11,15 @@ package vazkii.psi.data;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraftforge.common.Tags;
-
+import net.minecraftforge.common.data.ExistingFileHelper;
 import vazkii.psi.common.block.base.ModBlocks;
+import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.lib.ModTags;
 
-public class BlockTagProvider extends BlockTagsProvider {
-	public BlockTagProvider(DataGenerator generator) {
-		super(generator);
+public class PsiBlockTagProvider extends BlockTagsProvider {
+
+	public PsiBlockTagProvider(DataGenerator dataGenerator, ExistingFileHelper existingFileHelper) {
+		super(dataGenerator, LibMisc.MOD_ID, existingFileHelper);
 	}
 
 	@Override

@@ -1,21 +1,21 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "I",
-    "D",
-    "G"
-  ],
   "key": {
-    "I": {
-      "tag": "forge:ingots/iron"
-    },
     "D": {
       "tag": "forge:gems/psigem"
     },
     "G": {
       "tag": "forge:ingots/gold"
+    },
+    "I": {
+      "tag": "forge:ingots/iron"
     }
   },
+  "pattern": [
+    "I",
+    "D",
+    "G"
+  ],
   "result": {
     "item": "psi:cad_battery_ultradense"
   }

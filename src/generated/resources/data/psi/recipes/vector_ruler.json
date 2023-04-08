@@ -1,10 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "D",
-    "I",
-    "I"
-  ],
   "key": {
     "D": {
       "tag": "psi:psidust"
@@ -13,6 +8,11 @@
       "tag": "forge:ingots/iron"
     }
   },
+  "pattern": [
+    "D",
+    "I",
+    "I"
+  ],
   "result": {
     "item": "psi:vector_ruler"
   }

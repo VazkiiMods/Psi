@@ -1,10 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    " D ",
-    "G G",
-    " I "
-  ],
   "key": {
     "D": {
       "tag": "psi:psidust"
@@ -16,6 +11,11 @@
       "tag": "forge:ingots/iron"
     }
   },
+  "pattern": [
+    " D ",
+    "G G",
+    " I "
+  ],
   "result": {
     "item": "psi:cad_colorizer_empty"
   }

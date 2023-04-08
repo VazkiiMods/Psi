@@ -1,10 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "I",
-    "R",
-    "I"
-  ],
   "key": {
     "I": {
       "tag": "forge:ingots/psimetal"
@@ -13,6 +8,11 @@
       "tag": "forge:dusts/redstone"
     }
   },
+  "pattern": [
+    "I",
+    "R",
+    "I"
+  ],
   "result": {
     "item": "psi:spell_drive"
   }

@@ -1,21 +1,21 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "R",
-    "G",
-    "I"
-  ],
   "key": {
-    "R": {
-      "tag": "forge:dusts/redstone"
-    },
     "G": {
       "tag": "forge:glass"
     },
     "I": {
       "tag": "forge:ingots/psimetal"
+    },
+    "R": {
+      "tag": "forge:dusts/redstone"
     }
   },
+  "pattern": [
+    "R",
+    "G",
+    "I"
+  ],
   "result": {
     "item": "psi:exosuit_controller"
   }

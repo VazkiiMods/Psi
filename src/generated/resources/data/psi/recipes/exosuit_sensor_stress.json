@@ -1,21 +1,21 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    " I ",
-    "IMR",
-    " R "
-  ],
   "key": {
+    "I": {
+      "tag": "forge:ingots/psimetal"
+    },
     "M": {
       "item": "minecraft:glistering_melon_slice"
     },
     "R": {
       "tag": "forge:ingots/iron"
-    },
-    "I": {
-      "tag": "forge:ingots/psimetal"
     }
   },
+  "pattern": [
+    " I ",
+    "IMR",
+    " R "
+  ],
   "result": {
     "item": "psi:exosuit_sensor_stress"
   }

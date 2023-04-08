@@ -1,21 +1,21 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    " G ",
-    "IDI",
-    " G "
-  ],
   "key": {
-    "I": {
-      "tag": "forge:ingots/psimetal"
-    },
     "D": {
       "tag": "forge:dusts/glowstone"
     },
     "G": {
       "tag": "forge:gems/psigem"
+    },
+    "I": {
+      "tag": "forge:ingots/psimetal"
     }
   },
+  "pattern": [
+    " G ",
+    "IDI",
+    " G "
+  ],
   "result": {
     "item": "psi:cad_core_radiative"
   }

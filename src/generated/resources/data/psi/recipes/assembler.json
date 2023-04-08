@@ -1,10 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "IPI",
-    "I I",
-    " I "
-  ],
   "key": {
     "I": {
       "tag": "forge:ingots/iron"
@@ -13,6 +8,11 @@
       "item": "minecraft:piston"
     }
   },
+  "pattern": [
+    "IPI",
+    "I I",
+    " I "
+  ],
   "result": {
     "item": "psi:cad_assembler"
   }
