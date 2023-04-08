@@ -1,20 +1,20 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "DI ",
-    "IG "
-  ],
   "key": {
-    "I": {
-      "tag": "forge:ingots/psimetal"
-    },
     "D": {
       "tag": "forge:dusts/redstone"
     },
     "G": {
       "tag": "forge:gems/psigem"
+    },
+    "I": {
+      "tag": "forge:ingots/psimetal"
     }
   },
+  "pattern": [
+    "DI ",
+    "IG "
+  ],
   "result": {
     "item": "psi:cad_socket_transmissive"
   }

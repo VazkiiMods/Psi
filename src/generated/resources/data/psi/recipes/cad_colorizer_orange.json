@@ -1,25 +1,25 @@
 {
   "type": "minecraft:crafting_shaped",
   "group": "psi:colorizer",
+  "key": {
+    "C": {
+      "tag": "forge:dyes/orange"
+    },
+    "D": {
+      "tag": "psi:psidust"
+    },
+    "G": {
+      "tag": "forge:glass"
+    },
+    "I": {
+      "tag": "forge:ingots/iron"
+    }
+  },
   "pattern": [
     " D ",
     "GCG",
     " I "
   ],
-  "key": {
-    "D": {
-      "tag": "psi:psidust"
-    },
-    "I": {
-      "tag": "forge:ingots/iron"
-    },
-    "G": {
-      "tag": "forge:glass"
-    },
-    "C": {
-      "tag": "forge:dyes/orange"
-    }
-  },
   "result": {
     "item": "psi:cad_colorizer_orange"
   }

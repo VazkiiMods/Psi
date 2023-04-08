@@ -1,10 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    " C ",
-    "CIC",
-    " C "
-  ],
   "key": {
     "C": {
       "tag": "minecraft:coals"
@@ -13,6 +8,11 @@
       "tag": "forge:ingots/psimetal"
     }
   },
+  "pattern": [
+    " C ",
+    "CIC",
+    " C "
+  ],
   "result": {
     "item": "psi:black_psimetal_plate"
   }

@@ -1,26 +1,23 @@
 {
   "parent": "minecraft:recipes/root",
-  "rewards": {
-    "recipes": [
-      "psi:spell_bullet_loopcast_upgrade"
-    ]
-  },
   "criteria": {
     "has_psidust": {
-      "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "psi:psidust"
+            "items": [
+              "psi:psidust"
+            ]
           }
         ]
-      }
+      },
+      "trigger": "minecraft:inventory_changed"
     },
     "has_the_recipe": {
-      "trigger": "minecraft:recipe_unlocked",
       "conditions": {
         "recipe": "psi:spell_bullet_loopcast_upgrade"
-      }
+      },
+      "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
@@ -28,5 +25,10 @@
       "has_psidust",
       "has_the_recipe"
     ]
-  ]
+  ],
+  "rewards": {
+    "recipes": [
+      "psi:spell_bullet_loopcast_upgrade"
+    ]
+  }
 }

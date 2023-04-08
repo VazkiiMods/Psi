@@ -1,15 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "AID"
-  ],
   "key": {
-    "I": {
-      "tag": "forge:ingots/iron"
-    },
-    "D": {
-      "tag": "psi:psidust"
-    },
     "A": [
       {
         "tag": "forge:slimeballs"
@@ -17,8 +8,17 @@
       {
         "item": "minecraft:snowball"
       }
-    ]
+    ],
+    "D": {
+      "tag": "psi:psidust"
+    },
+    "I": {
+      "tag": "forge:ingots/iron"
+    }
   },
+  "pattern": [
+    "AID"
+  ],
   "result": {
     "item": "psi:spell_bullet_circle"
   }

@@ -1,14 +1,14 @@
 {
   "type": "psi:dimension_trick_crafting",
+  "cad": {
+    "item": "psi:cad_assembly_psimetal"
+  },
+  "dimension": "minecraft:the_end",
   "input": {
     "tag": "minecraft:coals"
   },
   "output": {
     "item": "psi:ebony_substance"
   },
-  "cad": {
-    "item": "psi:cad_assembly_psimetal"
-  },
-  "trick": "psi:trick_ebony_ivory",
-  "dimension": "minecraft:the_end"
+  "trick": "psi:trick_ebony_ivory"
 }

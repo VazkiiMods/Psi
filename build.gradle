@@ -144,6 +144,10 @@ task checkSyntax (group: "verification") {
     dependsOn pmdMain
 }
 
+sourceSets.main.resources {
+    srcDir 'src/generated/resources'
+}
+
 processResources {
     // copy everything excluding psd files
     from(sourceSets.main.resources.srcDirs) {

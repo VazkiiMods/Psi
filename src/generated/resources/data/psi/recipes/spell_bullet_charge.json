@@ -1,19 +1,19 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "AID"
-  ],
   "key": {
-    "I": {
-      "tag": "forge:ingots/iron"
+    "A": {
+      "tag": "forge:dusts/redstone"
     },
     "D": {
       "tag": "psi:psidust"
     },
-    "A": {
-      "tag": "forge:dusts/redstone"
+    "I": {
+      "tag": "forge:ingots/iron"
     }
   },
+  "pattern": [
+    "AID"
+  ],
   "result": {
     "item": "psi:spell_bullet_charge"
   }

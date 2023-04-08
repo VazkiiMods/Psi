@@ -20,8 +20,8 @@ import javax.annotation.Nonnull;
 
 import static vazkii.psi.common.Psi.location;
 
-public class BlockModels extends BlockStateProvider {
-	public BlockModels(DataGenerator gen, ExistingFileHelper exFileHelper) {
+public class PsiBlockModelGenerator extends BlockStateProvider {
+	public PsiBlockModelGenerator(DataGenerator gen, ExistingFileHelper exFileHelper) {
 		super(gen, LibMisc.MOD_ID, exFileHelper);
 	}
 

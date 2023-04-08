@@ -1,17 +1,17 @@
 {
   "type": "minecraft:crafting_shaped",
+  "key": {
+    "G": {
+      "tag": "forge:gems/psigem"
+    },
+    "P": {
+      "tag": "forge:ingots/psimetal"
+    }
+  },
   "pattern": [
     "GPG",
     "P P"
   ],
-  "key": {
-    "P": {
-      "tag": "forge:ingots/psimetal"
-    },
-    "G": {
-      "tag": "forge:gems/psigem"
-    }
-  },
   "result": {
     "item": "psi:psimetal_exosuit_helmet"
   }

@@ -1,18 +1,18 @@
 {
   "type": "minecraft:crafting_shaped",
+  "key": {
+    "I": {
+      "tag": "forge:ingots/psimetal"
+    },
+    "S": {
+      "tag": "psi:ivory_substance"
+    }
+  },
   "pattern": [
     "SSS",
     "SIS",
     "SSS"
   ],
-  "key": {
-    "S": {
-      "tag": "psi:ivory_substance"
-    },
-    "I": {
-      "tag": "forge:ingots/psimetal"
-    }
-  },
   "result": {
     "item": "psi:ivory_psimetal"
   }

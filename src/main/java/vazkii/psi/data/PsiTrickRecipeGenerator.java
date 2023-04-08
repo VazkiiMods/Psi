@@ -34,8 +34,8 @@ import javax.annotation.Nonnull;
 
 import java.util.function.Consumer;
 
-public class TrickRecipeGenerator extends RecipeProvider {
-	public TrickRecipeGenerator(DataGenerator generator) {
+public class PsiTrickRecipeGenerator extends RecipeProvider {
+	public PsiTrickRecipeGenerator(DataGenerator generator) {
 		super(generator);
 	}
 

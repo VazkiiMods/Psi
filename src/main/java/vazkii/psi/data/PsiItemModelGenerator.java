@@ -21,8 +21,8 @@ import vazkii.psi.common.lib.LibMisc;
 
 import javax.annotation.Nonnull;
 
-public class ItemModels extends ItemModelProvider {
-	public ItemModels(DataGenerator generator, ExistingFileHelper existingFileHelper) {
+public class PsiItemModelGenerator extends ItemModelProvider {
+	public PsiItemModelGenerator(DataGenerator generator, ExistingFileHelper existingFileHelper) {
 		super(generator, LibMisc.MOD_ID, existingFileHelper);
 	}
 
