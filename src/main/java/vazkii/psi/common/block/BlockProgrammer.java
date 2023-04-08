@@ -8,6 +8,11 @@
  */
 package vazkii.psi.common.block;
 
+import java.util.UUID;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
@@ -18,23 +23,16 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.shapes.BooleanOp;
-import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.Shapes;
-import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.util.LazyOptional;
-
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.internal.VanillaPacketDispatcher;
 import vazkii.psi.api.spell.ISpellAcceptor;
@@ -42,52 +40,13 @@ import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.tile.TileProgrammer;
 import vazkii.psi.common.core.handler.PsiSoundHandler;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import java.util.UUID;
-
 public class BlockProgrammer extends HorizontalDirectionalBlock implements EntityBlock {
 
 	public static final BooleanProperty ENABLED = BooleanProperty.create("enabled");
-	private static final VoxelShape SHAPE_NORTH;
-	private static final VoxelShape SHAPE_SOUTH;
-	private static final VoxelShape SHAPE_WEST;
-	private static final VoxelShape SHAPE_EAST;
-	static {
-		VoxelShape top = Block.box(0, 8, 0, 16, 16, 16);
-
-		VoxelShape northMiddle = Block.box(2, 0, 14, 14, 8, 16);
-		VoxelShape southMiddle = Block.box(2, 0, 0, 14, 8, 2);
-		VoxelShape zBottom = Block.box(2, 0, 0, 14, 1, 16);
-		SHAPE_NORTH = Shapes.join(top, Shapes.join(zBottom, northMiddle, BooleanOp.OR), BooleanOp.OR);
-		SHAPE_SOUTH = Shapes.join(top, Shapes.join(zBottom, southMiddle, BooleanOp.OR), BooleanOp.OR);
-
-		VoxelShape westMiddle = Block.box(14, 0, 2, 16, 8, 14);
-		VoxelShape eastMiddle = Block.box(0, 0, 2, 2, 8, 14);
-		VoxelShape xBottom = Block.box(0, 0, 2, 16, 1, 14);
-		SHAPE_WEST = Shapes.join(top, Shapes.join(xBottom, westMiddle, BooleanOp.OR), BooleanOp.OR);
-		SHAPE_EAST = Shapes.join(top, Shapes.join(xBottom, eastMiddle, BooleanOp.OR), BooleanOp.OR);
-	}
 
 	public BlockProgrammer(Properties props) {
 		super(props);
 		registerDefaultState(getStateDefinition().any().setValue(FACING, Direction.NORTH).setValue(ENABLED, false));
-	}
-
-	@Override
-	public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext ctx) {
-		switch (state.getValue(FACING)) {
-		default:
-		case NORTH:
-			return SHAPE_NORTH;
-		case SOUTH:
-			return SHAPE_SOUTH;
-		case WEST:
-			return SHAPE_WEST;
-		case EAST:
-			return SHAPE_EAST;
-		}
 	}
 
 	@Override
