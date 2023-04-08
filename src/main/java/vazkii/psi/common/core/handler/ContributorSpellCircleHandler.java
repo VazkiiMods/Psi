@@ -95,7 +95,7 @@ public final class ContributorSpellCircleHandler {
 		@Override
 		public void run() {
 			try {
-				URL url = new URL("https://raw.githubusercontent.com/Vazkii/Psi/master/contributors.properties");
+				URL url = new URL("https://raw.githubusercontent.com/VazkiiMods/Psi/master/contributors.properties");
 				Properties props = new Properties();
 				try (InputStreamReader reader = new InputStreamReader(url.openStream(), StandardCharsets.UTF_8)) {
 					props.load(reader);
