@@ -8,59 +8,42 @@
  */
 package vazkii.psi.client.jei.tricks;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.*;
-import com.mojang.math.Matrix4f;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.Tesselator;
 
 import mezz.jei.api.gui.drawable.IDrawableStatic;
+import net.minecraft.client.renderer.MultiBufferSource;
+import vazkii.psi.api.spell.SpellPiece;
 
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-
-/**
- * Like JEI's DrawableSprite, but works for any {@link TextureAtlasSprite}.
- */
-public class DrawableTAS implements IDrawableStatic {
-	private final TextureAtlasSprite sprite;
-
-	public DrawableTAS(TextureAtlasSprite sprite) {
-		this.sprite = sprite;
+public class DrawablePiece implements IDrawableStatic {
+	
+	public final SpellPiece piece;
+	
+	public DrawablePiece(SpellPiece piece) {
+		this.piece = piece;
 	}
 
 	@Override
 	public void draw(PoseStack ms, int xOffset, int yOffset, int maskTop, int maskBottom, int maskLeft, int maskRight) {
-		int textureWidth = sprite.getWidth();
-		int textureHeight = sprite.getHeight();
-		int x = xOffset + maskLeft;
-		int y = yOffset + maskTop;
-		int width = textureWidth - maskRight - maskLeft;
-		int height = textureHeight - maskBottom - maskTop;
-		float uSize = sprite.getU1() - sprite.getU0();
-		float vSize = sprite.getV1() - sprite.getV0();
-		float minU = sprite.getU0() + uSize * ((float) maskLeft / (float) textureWidth);
-		float minV = sprite.getV0() + vSize * ((float) maskTop / (float) textureHeight);
-		float maxU = sprite.getU1() - uSize * ((float) maskRight / (float) textureWidth);
-		float maxV = sprite.getV1() - vSize * ((float) maskBottom / (float) textureHeight);
+		ms.pushPose();
+		ms.translate(xOffset, yOffset, 0);
+		
+		MultiBufferSource.BufferSource buffers = MultiBufferSource.immediate(Tesselator.getInstance().getBuilder());
+		piece.drawBackground(ms, buffers, 0xF000F0);
 
-		Matrix4f matrix = ms.last().pose();
-		RenderSystem.bindTexture(sprite.atlas().getId());
-		Tesselator tessellator = Tesselator.getInstance();
-		BufferBuilder buf = tessellator.getBuilder();
-		buf.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX); //TODO Verify QUADS is correct
-		buf.vertex(matrix, x, y + height, 0.0f).uv(minU, maxV).endVertex();
-		buf.vertex(matrix, x + width, y + height, 0.0f).uv(maxU, maxV).endVertex();
-		buf.vertex(matrix, x + width, y, 0.0f).uv(maxU, minV).endVertex();
-		buf.vertex(matrix, x, y, 0.0f).uv(minU, minV).endVertex();
-		tessellator.end();
+		buffers.endBatch();
+
+		ms.popPose();
 	}
 
 	@Override
 	public int getWidth() {
-		return sprite.getWidth();
+		return 16;
 	}
 
 	@Override
 	public int getHeight() {
-		return sprite.getHeight();
+		return 16;
 	}
 
 	@Override

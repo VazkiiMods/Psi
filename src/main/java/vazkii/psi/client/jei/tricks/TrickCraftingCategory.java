@@ -8,6 +8,14 @@
  */
 package vazkii.psi.client.jei.tricks;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Nonnull;
+
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import mezz.jei.api.constants.VanillaTypes;
@@ -19,22 +27,13 @@ import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
-
 import net.minecraft.client.resources.language.I18n;
-import net.minecraft.client.resources.model.Material;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-
-import vazkii.psi.api.ClientPsiAPI;
 import vazkii.psi.api.recipe.ITrickRecipe;
-import vazkii.psi.common.Psi;
 import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.lib.LibMisc;
-
-import javax.annotation.Nonnull;
-
-import java.util.*;
 
 public class TrickCraftingCategory implements IRecipeCategory<ITrickRecipe> {
 	public static final RecipeType<ITrickRecipe> TYPE = RecipeType.create(LibMisc.MOD_ID, "trick", ITrickRecipe.class);
@@ -84,17 +83,10 @@ public class TrickCraftingCategory implements IRecipeCategory<ITrickRecipe> {
 	public void draw(ITrickRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack poseStack, double mouseX, double mouseY) {
 		if (recipe.getPiece() != null) {
 			IDrawable trickIcon = trickIcons.computeIfAbsent(recipe.getPiece().registryKey,
-					key -> {
-						Material mat = ClientPsiAPI.getSpellPieceMaterial(key);
-						if (mat == null) {
-							Psi.logger.warn("Not rendering complex (or missing) render for {}", key);
-							return helper.createBlankDrawable(16, 16);
-						}
-						return new DrawableTAS(mat.sprite());
-					});
-
+					key -> new DrawablePiece(recipe.getPiece()));
+			
 			trickIcon.draw(poseStack, trickX, trickY);
-
+			
 			if (onTrick(mouseX, mouseY)) {
 				programmerHover.draw(poseStack, trickX, trickY);
 			}
