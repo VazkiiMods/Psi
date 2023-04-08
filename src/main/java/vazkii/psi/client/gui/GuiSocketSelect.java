@@ -43,7 +43,7 @@ import java.util.List;
 
 public class GuiSocketSelect extends Screen {
 
-	int timeIn = 0;
+	float timeIn = 0;
 	int slotSelected = -1;
 
 	ItemStack controllerStack;
@@ -92,9 +92,11 @@ public class GuiSocketSelect extends Screen {
 	}
 
 	@Override
-	public void render(PoseStack ms, int mx, int my, float partialTicks) {
-		super.render(ms, mx, my, partialTicks);
+	public void render(PoseStack ms, int mx, int my, float delta) {
+		super.render(ms, mx, my, delta);
 
+		timeIn += delta;
+		
 		int x = width / 2;
 		int y = height / 2;
 		int maxRadius = 80;
@@ -115,11 +117,12 @@ public class GuiSocketSelect extends Screen {
 		RenderSystem.disableTexture();
 		RenderSystem.enableBlend();
 		RenderSystem.setShader(GameRenderer::getPositionColorShader);
+		
 		buf.begin(VertexFormat.Mode.TRIANGLE_FAN, DefaultVertexFormat.POSITION_COLOR);
-
+		
 		for (int seg = 0; seg < segments; seg++) {
 			boolean mouseInSector = degPer * seg < angle && angle < degPer * (seg + 1);
-			float radius = Math.max(0F, Math.min((timeIn + partialTicks - seg * 6F / segments) * 40F, maxRadius));
+			float radius = Math.max(0F, Math.min((timeIn - ((float) seg * 6F / (float) segments)) * 40F, (float) maxRadius));
 			if (mouseInSector || seg == socketable.getSelectedSlot()) {
 				radius *= 1.025f;
 			}
@@ -178,7 +181,7 @@ public class GuiSocketSelect extends Screen {
 
 		for (int seg = 0; seg < segments; seg++) {
 			boolean mouseInSector = degPer * seg < angle && angle < degPer * (seg + 1);
-			float radius = Math.max(0F, Math.min((timeIn + partialTicks - seg * 6F / segments) * 40F, maxRadius));
+			float radius = Math.max(0F, Math.min((timeIn - ((float) seg * 6F / (float) segments)) * 40F, (float) maxRadius));
 			if (mouseInSector || seg == socketable.getSelectedSlot()) {
 				radius *= 1.025f;
 			}
@@ -225,7 +228,7 @@ public class GuiSocketSelect extends Screen {
 			}
 		}
 
-		float shift = Math.min(5, timeIn + partialTicks) / 5;
+		float shift = Math.min(5, timeIn) / 5;
 		float scale = 3 * shift;
 		RenderSystem.enableBlend();
 		RenderSystem.blendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, 1, 0);
@@ -309,8 +312,6 @@ public class GuiSocketSelect extends Screen {
 		for (KeyMapping k : set) {
 			KeyMapping.set(k.getKey(), isKeyDown(k));
 		}
-
-		timeIn++;
 	}
 
 	public boolean isKeyDown(KeyMapping keybind) {
