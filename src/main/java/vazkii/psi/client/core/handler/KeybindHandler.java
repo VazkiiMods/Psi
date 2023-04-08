@@ -8,6 +8,8 @@
  */
 package vazkii.psi.client.core.handler;
 
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_C;
+
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.InteractionHand;
@@ -18,7 +20,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import vazkii.patchouli.api.PatchouliAPI;
 import vazkii.psi.api.cad.ISocketable;
 import vazkii.psi.api.cad.ISocketableController;
@@ -26,9 +28,7 @@ import vazkii.psi.client.gui.GuiSocketSelect;
 import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.lib.LibResources;
 
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_C;
-
-@Mod.EventBusSubscriber(value = Dist.CLIENT, modid = LibMisc.MOD_ID)
+@Mod.EventBusSubscriber(value = Dist.CLIENT, modid = LibMisc.MOD_ID, bus = Bus.MOD)
 @OnlyIn(Dist.CLIENT)
 public class KeybindHandler {
 	public static KeyMapping keybind = new KeyMapping("psimisc.keybind", GLFW_KEY_C, "key.categories.inventory");
