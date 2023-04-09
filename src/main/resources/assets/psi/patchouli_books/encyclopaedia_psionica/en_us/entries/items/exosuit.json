@@ -2,6 +2,7 @@
   "name": "psi.book.entry.exosuit",
   "category": "psi:items",
   "icon": "psi:exosuit_controller",
+  "priority": true,
   "pages": [
     {
       "type": "text",

@@ -2,6 +2,7 @@
   "name": "psi.book.entry.tools",
   "category": "psi:items",
   "icon": "psi:psimetal_pickaxe",
+  "priority": true,
   "pages": [
     {
       "type": "text",

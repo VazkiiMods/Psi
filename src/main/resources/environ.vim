@@ -15,4 +15,4 @@ inoremap <C-t> $(thing)$(0)<Left><C-o>3h
 vnoremap <C-p> <Esc>m``>a$(0)<Esc>`<i$(piece)<Esc>``8l
 inoremap <C-p> $(piece)$(0)<Left><C-o>3h
 inoremap <C-d> <Left><C-o>A
-let &makeprg="convert.py mappings-en_us.json \\|generate_book.py - en_us_base.json >assets/psi/lang/en_us.json; (cd ../../../; ./gradlew processResources; cd web; php codex.php ../src/main/resources/assets/psi/lang/en_us.json > codex.html)"
+let &makeprg="sh update-book.sh; (cd ../../../; ./gradlew processResources)"

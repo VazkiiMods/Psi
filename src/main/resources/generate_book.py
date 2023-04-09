@@ -42,6 +42,7 @@ page_patterns = [
     ("image",                re_compile(r"@IMAGE\s*(B)?\(([\w,]+)\)(?:: (.*))?"),           lambda match: (match.group(3), {"images": [modpfx + imagepath.format(fn) for fn in match.group(2).split(",")], "border": bool(match.group(1))})),
     ("link",                 re_compile(r"@URL\s*\(([^)]+)\)\s*([^:]+)\s*(?:: (.*))?"),     lambda match: (match.group(3), {"url": match.group(1), "link_text": match.group(2)})),
     ("relations",            re_compile(r"@LIST\s*\((?:([\w/]+):)?([\w,/#]+)\)\s*([^:]+)\s*(?:: (.*))?"), lambda match: (match.group(4), {"entries": [(match.group(1) or "") + it for it in match.group(2).split(",")], "title": match.group(3)})),
+    ("text",                 re_compile("@TITLE\s*\(([^)]*)\):\s*(.*)"),                    lambda match: (match.group(2), {"title": match.group(1)})),
     ("text",                 re_compile(".*"),                          lambda match: (match.group(0), {}))
 ]
 
