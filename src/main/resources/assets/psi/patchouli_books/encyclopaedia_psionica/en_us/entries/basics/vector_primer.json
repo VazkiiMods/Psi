@@ -83,7 +83,8 @@
     },
     {
       "type": "text",
-      "text": "psi.book.page.vectorPrimer.19"
+      "text": "psi.book.page.vectorPrimer.19",
+      "anchor": "ops"
     },
     {
       "type": "text",
@@ -92,19 +93,6 @@
     {
       "type": "text",
       "text": "psi.book.page.vectorPrimer.21"
-    },
-    {
-      "type": "text",
-      "text": "psi.book.page.vectorPrimer.22",
-      "anchor": "ops"
-    },
-    {
-      "type": "text",
-      "text": "psi.book.page.vectorPrimer.23"
-    },
-    {
-      "type": "text",
-      "text": "psi.book.page.vectorPrimer.24"
     }
   ]
 }

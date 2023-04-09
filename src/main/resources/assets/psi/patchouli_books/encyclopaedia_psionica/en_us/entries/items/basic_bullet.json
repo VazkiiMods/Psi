@@ -8,8 +8,12 @@
       "text": "psi.book.page.basicBullet.0"
     },
     {
+      "type": "text",
+      "text": "psi.book.page.basicBullet.1"
+    },
+    {
       "type": "crafting",
-      "text": "psi.book.page.basicBullet.1",
+      "text": "psi.book.page.basicBullet.2",
       "recipe": "psi:spell_bullet_basic"
     }
   ]

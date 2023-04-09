@@ -1,12 +1,13 @@
 {
   "name": "psi.book.entry.tutorial2",
   "category": "psi:basics",
-  "icon": "minecraft:air",
+  "icon": "psi:cad_assembly_iron",
   "priority": true,
   "pages": [
     {
       "type": "text",
-      "text": "psi.book.page.tutorial2.0"
+      "text": "psi.book.page.tutorial2.0",
+      "title": "Casting A Spell"
     },
     {
       "type": "text",

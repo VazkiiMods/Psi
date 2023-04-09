@@ -1,12 +1,13 @@
 {
   "name": "psi.book.entry.tutorial4",
   "category": "psi:basics",
-  "icon": "minecraft:air",
+  "icon": "psi:textures/spell/trick_add_motion.png",
   "priority": true,
   "pages": [
     {
       "type": "text",
-      "text": "psi.book.page.tutorial4.0"
+      "text": "psi.book.page.tutorial4.0",
+      "title": "Move It"
     },
     {
       "type": "text",
