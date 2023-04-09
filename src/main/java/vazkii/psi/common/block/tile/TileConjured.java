@@ -163,8 +163,9 @@ public class TileConjured extends BlockEntity {
 
 	@Override
 	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
-		if(pkt != null && pkt.getTag() != null)
+		if(pkt != null && pkt.getTag() != null) {
 			this.readPacketNBT(pkt.getTag());
+		}
 	}
 
 }
