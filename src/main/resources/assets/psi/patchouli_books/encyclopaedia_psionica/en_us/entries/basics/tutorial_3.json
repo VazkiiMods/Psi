@@ -1,12 +1,13 @@
 {
   "name": "psi.book.entry.tutorial3",
   "category": "psi:basics",
-  "icon": "minecraft:air",
+  "icon": "psi:textures/spell/operator_root.png",
   "priority": true,
   "pages": [
     {
       "type": "text",
-      "text": "psi.book.page.tutorial3.0"
+      "text": "psi.book.page.tutorial3.0",
+      "title": "Types & Numbers"
     },
     {
       "type": "text",

@@ -43,7 +43,7 @@ if __name__ == "__main__":
                     return whole
                 if search(r"/{}(#|$)".format(suffix), data[key]["names"][phrase]):
                     return whole
-                return "$(l:{})$({}){}$(0)$(/l)".format(data[key]["names"][phrase], key, phrase)
+                return "$(l:{})$(o)$({}){}$(0)$(/l)".format(data[key]["names"][phrase], key, phrase)
             print(sub(item_pattern, item_cb, line), file=out)
     with resolve_file(3, "w", stderr) as err:
         if len(unknowns):

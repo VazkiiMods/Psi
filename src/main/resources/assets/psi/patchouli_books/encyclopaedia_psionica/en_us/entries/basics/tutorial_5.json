@@ -1,12 +1,13 @@
 {
   "name": "psi.book.entry.tutorial5",
   "category": "psi:basics",
-  "icon": "minecraft:air",
+  "icon": "psi:cad_assembler",
   "priority": true,
   "pages": [
     {
       "type": "text",
-      "text": "psi.book.page.tutorial5.0"
+      "text": "psi.book.page.tutorial5.0",
+      "title": "Limits"
     },
     {
       "type": "image",

@@ -1,7 +1,7 @@
 {
   "name": "psi.book.entry.evalOrder",
   "category": "psi:basics",
-  "icon": "minecraft:air",
+  "icon": "psi:textures/spell/trick_evaluate.png",
   "pages": [
     {
       "type": "text",
