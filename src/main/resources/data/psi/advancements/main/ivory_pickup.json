@@ -17,7 +17,7 @@
       "conditions": {
         "items": [
           {
-            "item": "psi:ivory_substance"
+            "items": ["psi:ivory_substance"]
           }
         ]
       }

@@ -17,7 +17,7 @@
       "conditions": {
         "items": [
           {
-            "item": "psi:psimetal"
+            "items": ["psi:psimetal"]
           }
         ]
       }
