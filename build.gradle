@@ -106,9 +106,9 @@ dependencies {
     compileOnly fg.deobf("vazkii.patchouli:Patchouli:${config.patchy_version}:api")
     runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:${config.patchy_version}")
 
-    compileOnly fg.deobf("mezz.jei:jei-${mc_version}-common-api:${jei_version}")
-    compileOnly fg.deobf("mezz.jei:jei-${mc_version}-forge-api:${jei_version}")
-    runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}-forge:${jei_version}")
+    compileOnly fg.deobf("mezz.jei:jei-${config.mc_version}-common-api:${config.jei_version}")
+    compileOnly fg.deobf("mezz.jei:jei-${config.mc_version}-forge-api:${config.jei_version}")
+    runtimeOnly fg.deobf("mezz.jei:jei-${config.mc_version}-forge:${config.jei_version}")
 }
 
 if (System.getProperty("idea.sync.active") == "true") {
