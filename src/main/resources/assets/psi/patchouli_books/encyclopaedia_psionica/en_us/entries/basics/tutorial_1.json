@@ -58,12 +58,8 @@
       "text": "psi.book.page.tutorial1.12"
     },
     {
-      "type": "image",
-      "text": "psi.book.page.tutorial1.13",
-      "images": [
-        "psi:textures/gui/entries/tutorial_1_spell.png"
-      ],
-      "border": true
+      "type": "psi:spell_grid",
+      "spell": "{modsRequired:[{modName:\"psi\",modVersion:\"2.0.0\"}],spellList:[{data:{key:\"psi:selector_caster\"},x:4,y:4},{data:{key:\"psi:trick_debug\",params:{_number:0,_target:3}},x:5,y:4}],spellName:\"Debug\",uuidLeast:-8344502881889052755L,uuidMost:8904817452787319960L,validSpell:1b}"
     },
     {
       "type": "text",

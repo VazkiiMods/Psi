@@ -8,11 +8,13 @@
  */
 package vazkii.psi.client.patchouli;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.resources.language.I18n;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.TagParser;
 import net.minecraft.util.StringUtil;
@@ -26,13 +28,13 @@ import vazkii.psi.api.spell.SpellPiece;
 
 import java.util.function.UnaryOperator;
 
+import static vazkii.psi.client.gui.GuiProgrammer.texture;
+
 public class SpellGridComponent implements ICustomComponent {
-	private transient int x, y;
-	private transient boolean isDownscaled;
 	private transient SpellGrid grid;
+	private transient String spellName;
 
 	public IVariable spell;
-	public IVariable halfsize;
 
 	@Override
 	public void build(int componentX, int componentY, int pageNum) {
@@ -47,20 +49,31 @@ public class SpellGridComponent implements ICustomComponent {
 				throw new IllegalArgumentException("Invalid spell string: " + spell);
 			}
 			grid = fromNBT.grid;
+			spellName = fromNBT.name;
 		} catch (CommandSyntaxException e) {
 			throw new IllegalArgumentException("Invalid spell string: " + spell, e);
 		}
-		isDownscaled = halfsize.asBoolean(false);
 	}
 
 	@Override
 	public void render(PoseStack ms, IComponentRenderContext context, float pticks, int mouseX, int mouseY) {
-		float scale = isDownscaled ? 0.5f : 1.0f;
+		float scale = 0.65f;
 
-		MultiBufferSource.BufferSource buffer = MultiBufferSource.immediate(Tesselator.getInstance().getBuilder());
 		ms.pushPose();
-		ms.translate(x, y, 0);
-		ms.scale(scale, scale, scale);
+		ms.scale(scale, scale, 0f);
+
+		// Draw the Programmer BG
+		RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
+		RenderSystem.setShaderTexture(0, texture);
+		context.getGui().blit(ms, 0, 0, 0, 0, 174, 184);
+
+		// Draw the name label and spell name
+		context.getGui().getMinecraft().font.drawShadow(ms, I18n.get("psimisc.name"), 7, 171, 0xFFFFFF);
+		context.getGui().getMinecraft().font.drawShadow(ms, spellName, 44, 170, 0xFFFFFF);
+
+		// Pad the spell pieces and draw them
+		ms.translate(7f, 7f, 0f);
+		MultiBufferSource.BufferSource buffer = MultiBufferSource.immediate(Tesselator.getInstance().getBuilder());
 		grid.draw(ms, buffer, 0xF000F0);
 		buffer.endBatch();
 
@@ -72,7 +85,7 @@ public class SpellGridComponent implements ICustomComponent {
 			SpellPiece[] data = gridData[i];
 			for(int j = 0; j < data.length; j++) {
 				SpellPiece piece = data[j];
-				if(piece != null && context.isAreaHovered(mouseX, mouseY, (int) (x + i * scaledSize), (int) (y + j * scaledSize), scaledHoverSize, scaledHoverSize)) {
+				if(piece != null && context.isAreaHovered(mouseX, mouseY, (int) (4 + i * scaledSize), (int) (4 + j * scaledSize), scaledHoverSize, scaledHoverSize)) {
 					PatchouliUtils.setPieceTooltip(context, piece);
 				}
 			}
@@ -83,6 +96,5 @@ public class SpellGridComponent implements ICustomComponent {
 	@Override
 	public void onVariablesAvailable(UnaryOperator<IVariable> lookup) {
 		spell = lookup.apply(spell);
-		halfsize = lookup.apply(halfsize);
 	}
 }

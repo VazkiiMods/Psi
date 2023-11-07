@@ -16,36 +16,27 @@
       "text": "psi.book.page.evalOrder.2"
     },
     {
-      "type": "image",
-      "text": "psi.book.page.evalOrder.3",
-      "images": [
-        "psi:textures/gui/entries/eval_order_1.png"
-      ],
-      "border": false
+      "type": "psi:spell_grid",
+      "spell": "{modsRequired:[{modName:\"psi\",modVersion:\"2.0.0\"}],spellList:[{data:{key:\"psi:trick_debug\",params:{_number:0,_target:4}},x:1,y:2},{data:{key:\"psi:trick_debug\",params:{_number:0,_target:4}},x:1,y:6},{data:{constantValue:\"1\",key:\"psi:constant_number\"},x:2,y:2},{data:{constantValue:\"3\",key:\"psi:constant_number\"},x:2,y:6},{data:{key:\"psi:trick_debug\",params:{_number:0,_target:4}},x:6,y:2},{data:{key:\"psi:trick_debug\",params:{_number:0,_target:4}},x:6,y:6},{data:{constantValue:\"2\",key:\"psi:constant_number\"},x:7,y:2},{data:{constantValue:\"4\",key:\"psi:constant_number\"},x:7,y:6}],spellName:\"Rule 1\",uuidLeast:-8740135302326498868L,uuidMost:4572508895319312811L,validSpell:1b}",
+      "text": "psi.book.page.evalOrder.3"
     },
     {
       "type": "text",
       "text": "psi.book.page.evalOrder.4"
     },
     {
-      "type": "image",
-      "text": "psi.book.page.evalOrder.5",
-      "images": [
-        "psi:textures/gui/entries/eval_order_2.png"
-      ],
-      "border": false
+      "type": "psi:spell_grid",
+      "spell": "{modsRequired:[{modName:\"psi\",modVersion:\"2.0.0\"}],spellList:[{data:{constantValue:\"1\",key:\"psi:constant_number\"},x:1,y:5},{data:{key:\"psi:operator_entity_look\",params:{_target:1}},x:1,y:6},{data:{constantValue:\"0\",key:\"psi:constant_number\"},x:2,y:2},{data:{key:\"psi:trick_debug\",params:{_number:0,_target:1}},x:2,y:3},{data:{key:\"psi:operator_absolute\",params:{_target:2}},x:2,y:5},{data:{key:\"psi:selector_caster\"},x:2,y:6},{data:{key:\"psi:operator_vector_negate\",params:{_target:2}},x:6,y:2},{data:{key:\"psi:connector\",params:{_target:4}},x:6,y:3},{data:{key:\"psi:selector_caster\"},x:6,y:5},{data:{key:\"psi:operator_divide\",params:{_number1:1,_number2:4,_number3:0}},x:6,y:6},{data:{key:\"psi:connector\",params:{_target:3}},x:7,y:2},{data:{key:\"psi:connector\",params:{_target:1}},x:7,y:3},{data:{key:\"psi:selector_focal_point\"},x:7,y:6}],spellName:\"Undefined Behaviour\",uuidLeast:-8740135302326498868L,uuidMost:4572508895319312811L,validSpell:1b}",
+      "text": "psi.book.page.evalOrder.5"
     },
     {
       "type": "text",
       "text": "psi.book.page.evalOrder.6"
     },
     {
-      "type": "image",
-      "text": "psi.book.page.evalOrder.7",
-      "images": [
-        "psi:textures/gui/entries/eval_order_3.png"
-      ],
-      "border": false
+      "type": "psi:spell_grid",
+      "spell": "{modsRequired:[{modName:\"psi\",modVersion:\"2.0.0\"}],spellList:[{data:{key:\"psi:trick_debug\",params:{_number:0,_target:2}},x:3,y:3},{data:{key:\"psi:connector\",params:{_target:4}},x:3,y:4},{data:{key:\"psi:trick_debug\",params:{_number:0,_target:1}},x:3,y:5},{data:{constantValue:\"1\",key:\"psi:constant_number\"},x:4,y:3},{data:{key:\"psi:operator_random\",params:{_max:1,_min:0}},x:4,y:4},{data:{key:\"psi:trick_debug_spamless\",params:{_number:0,_target:2}},x:5,y:3},{data:{key:\"psi:connector\",params:{_target:3}},x:5,y:4},{data:{key:\"psi:trick_debug_spamless\",params:{_number:0,_target:1}},x:5,y:5}],spellName:\"Rule 3\",uuidLeast:-4674464373897948180L,uuidMost:-1782855518829395229L,validSpell:1b}",
+      "text": "psi.book.page.evalOrder.7"
     }
   ]
 }

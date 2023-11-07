@@ -19,7 +19,7 @@
       "texture_height": 128
     },
     {
-      "type": "custom",
+      "type": "patchouli:custom",
       "class": "vazkii.psi.client.patchouli.SpellPieceComponent",
       "x": 50,
       "y": 15,

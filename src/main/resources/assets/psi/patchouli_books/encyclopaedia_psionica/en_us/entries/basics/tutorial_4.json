@@ -30,12 +30,9 @@
       "text": "psi.book.page.tutorial4.5"
     },
     {
-      "type": "image",
-      "text": "psi.book.page.tutorial4.6",
-      "images": [
-        "psi:textures/gui/entries/tutorial_4_spell.png"
-      ],
-      "border": false
+      "type": "psi:spell_grid",
+      "spell": "{modsRequired:[{modName:\"psi\",modVersion:\"2.0.0\"}],spellList:[{data:{constantValue:\"2\",key:\"psi:constant_number\"},x:3,y:4},{data:{key:\"psi:selector_caster\"},x:4,y:3},{data:{key:\"psi:trick_add_motion\",params:{_direction:4,_speed:3,_target:1}},x:4,y:4},{data:{key:\"psi:connector\",params:{_target:3}},x:5,y:3},{data:{key:\"psi:operator_entity_look\",params:{_target:1}},x:5,y:4}],spellName:\"Add motion\",uuidLeast:-8344502881889052755L,uuidMost:8904817452787319960L,validSpell:1b}",
+      "text": "psi.book.page.tutorial4.6"
     },
     {
       "type": "text",

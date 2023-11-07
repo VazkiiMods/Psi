@@ -18,12 +18,9 @@
       "text": "psi.book.page.tutorial3.2"
     },
     {
-      "type": "image",
-      "text": "psi.book.page.tutorial3.3",
-      "images": [
-        "psi:textures/gui/entries/tutorial_3_tooltip.png"
-      ],
-      "border": false
+      "type": "psi:spellpiece_spotlight",
+      "spellpiece": "psi:selector_caster",
+      "text": "psi.book.page.tutorial3.3"
     },
     {
       "type": "text",
@@ -54,24 +51,16 @@
       "text": "psi.book.page.tutorial3.10"
     },
     {
-      "type": "image",
-      "text": "psi.book.page.tutorial3.11",
-      "images": [
-        "psi:textures/gui/entries/tutorial_3_connector.png"
-      ],
-      "border": false
+      "type": "psi:spell_grid",
+      "spell": "{modsRequired:[{modName:\"psi\",modVersion:\"2.0.0\"}],spellList:[{data:{key:\"psi:trick_debug\",params:{_number:0,_target:4}},x:3,y:4},{data:{key:\"psi:connector\",params:{_target:4}},x:4,y:4},{data:{key:\"psi:selector_caster\"},x:5,y:4}],spellName:\"Bridge to Terabithia\",uuidLeast:-8344502881889052755L,uuidMost:8904817452787319960L,validSpell:1b}"
     },
     {
       "type": "text",
       "text": "psi.book.page.tutorial3.12"
     },
     {
-      "type": "image",
-      "text": "psi.book.page.tutorial3.13",
-      "images": [
-        "psi:textures/gui/entries/tutorial_3_chain.png"
-      ],
-      "border": false
+      "type": "psi:spell_grid",
+      "spell": "{modsRequired:[{modName:\"psi\",modVersion:\"2.0.0\"}],spellList:[{data:{key:\"psi:connector\",params:{_target:2}},x:2,y:3},{data:{constantValue:\"42\",key:\"psi:constant_number\"},x:2,y:4},{data:{key:\"psi:connector\",params:{_target:1}},x:2,y:5},{data:{key:\"psi:connector\",params:{_target:3}},x:3,y:3},{data:{key:\"psi:selector_caster\"},x:3,y:4},{data:{key:\"psi:connector\",params:{_target:3}},x:3,y:5},{data:{key:\"psi:connector\",params:{_target:3}},x:4,y:3},{data:{key:\"psi:connector\",params:{_target:3}},x:4,y:4},{data:{key:\"psi:connector\",params:{_target:3}},x:4,y:5},{data:{key:\"psi:connector\",params:{_target:3}},x:5,y:3},{data:{key:\"psi:trick_debug\",params:{_number:0,_target:3}},x:5,y:4},{data:{key:\"psi:connector\",params:{_target:3}},x:5,y:5},{data:{key:\"psi:connector\",params:{_target:3}},x:6,y:3},{data:{key:\"psi:trick_debug\",params:{_number:1,_target:2}},x:6,y:4},{data:{key:\"psi:connector\",params:{_target:3}},x:6,y:5}],spellName:\"The long way around\",uuidLeast:-8344502881889052755L,uuidMost:8904817452787319960L,validSpell:1b}"
     }
   ]
 }
