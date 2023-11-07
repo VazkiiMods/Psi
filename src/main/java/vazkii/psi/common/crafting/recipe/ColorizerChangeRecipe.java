@@ -37,16 +37,16 @@ public class ColorizerChangeRecipe extends CustomRecipe {
 		boolean foundColorizer = false;
 		boolean foundCAD = false;
 
-		for (int i = 0; i < inv.getContainerSize(); i++) {
+		for(int i = 0; i < inv.getContainerSize(); i++) {
 			ItemStack stack = inv.getItem(i);
-			if (!stack.isEmpty()) {
-				if (stack.getItem() instanceof ICAD) {
-					if (foundCAD) {
+			if(!stack.isEmpty()) {
+				if(stack.getItem() instanceof ICAD) {
+					if(foundCAD) {
 						return false;
 					}
 					foundCAD = true;
-				} else if (stack.getItem() instanceof ICADColorizer) {
-					if (foundColorizer) {
+				} else if(stack.getItem() instanceof ICADColorizer) {
+					if(foundColorizer) {
 						return false;
 					}
 					foundColorizer = true;
@@ -65,10 +65,10 @@ public class ColorizerChangeRecipe extends CustomRecipe {
 		ItemStack colorizer = ItemStack.EMPTY;
 		ItemStack cad = ItemStack.EMPTY;
 
-		for (int i = 0; i < inv.getContainerSize(); i++) {
+		for(int i = 0; i < inv.getContainerSize(); i++) {
 			ItemStack stack = inv.getItem(i);
-			if (!stack.isEmpty()) {
-				if (stack.getItem() instanceof ICADColorizer) {
+			if(!stack.isEmpty()) {
+				if(stack.getItem() instanceof ICADColorizer) {
 					colorizer = stack;
 				} else {
 					cad = stack;
@@ -76,7 +76,7 @@ public class ColorizerChangeRecipe extends CustomRecipe {
 			}
 		}
 
-		if (cad.isEmpty() || colorizer.isEmpty()) {
+		if(cad.isEmpty() || colorizer.isEmpty()) {
 			return ItemStack.EMPTY;
 		}
 
@@ -92,18 +92,18 @@ public class ColorizerChangeRecipe extends CustomRecipe {
 		NonNullList<ItemStack> ret = NonNullList.withSize(inv.getContainerSize(), ItemStack.EMPTY);
 		int dyeIndex = -1;
 		ItemStack cad = ItemStack.EMPTY;
-		for (int i = 0; i < ret.size(); i++) {
+		for(int i = 0; i < ret.size(); i++) {
 			ItemStack stack = inv.getItem(i);
-			if (!stack.isEmpty() && stack.getItem() instanceof ICAD) {
+			if(!stack.isEmpty() && stack.getItem() instanceof ICAD) {
 				cad = stack;
 			} else {
-				if (!stack.isEmpty() && stack.getItem() instanceof ICADColorizer) {
+				if(!stack.isEmpty() && stack.getItem() instanceof ICADColorizer) {
 					dyeIndex = i;
 				}
 				ret.set(i, ForgeHooks.getCraftingRemainingItem(stack));
 			}
 		}
-		if (!cad.isEmpty() && dyeIndex != -1) {
+		if(!cad.isEmpty() && dyeIndex != -1) {
 			ICAD icad = (ICAD) cad.getItem();
 			ret.set(dyeIndex, icad.getComponentInSlot(cad, EnumCADComponent.DYE));
 		}

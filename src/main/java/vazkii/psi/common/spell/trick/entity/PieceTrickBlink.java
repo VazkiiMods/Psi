@@ -47,7 +47,7 @@ public class PieceTrickBlink extends PieceTrick {
 	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
 		super.addToMetadata(meta);
 		Double distanceVal = this.<Double>getParamEvaluation(distance);
-		if (distanceVal == null) {
+		if(distanceVal == null) {
 			distanceVal = 1D;
 		}
 
@@ -67,7 +67,7 @@ public class PieceTrickBlink extends PieceTrick {
 
 	public static void blink(SpellContext context, Entity e, double dist) throws SpellRuntimeException {
 		context.verifyEntity(e);
-		if (!context.isInRadius(e)) {
+		if(!context.isInRadius(e)) {
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 		}
 
@@ -78,7 +78,7 @@ public class PieceTrickBlink extends PieceTrick {
 		double offZ = look.z * dist;
 
 		e.setPos(e.getX() + offX, e.getY() + offY, e.getZ() + offZ);
-		if (e instanceof ServerPlayer) {
+		if(e instanceof ServerPlayer) {
 			MessageRegister.sendToPlayer(new MessageBlink(offX, offY, offZ), (ServerPlayer) e);
 		}
 	}

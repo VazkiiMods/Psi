@@ -161,10 +161,10 @@ public final class SpellContext {
 	 * @see #MAX_DISTANCE
 	 */
 	public boolean isInRadius(Entity e) {
-		if (e == null) {
+		if(e == null) {
 			return false;
 		}
-		if (e == focalPoint || e == caster) {
+		if(e == focalPoint || e == caster) {
 			return true;
 		}
 
@@ -181,27 +181,27 @@ public final class SpellContext {
 	}
 
 	public void verifyEntity(Entity e) throws SpellRuntimeException {
-		if (e == null) {
+		if(e == null) {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_TARGET);
 		}
 
-		if (ISpellImmune.isImmune(e)) {
+		if(ISpellImmune.isImmune(e)) {
 			throw new SpellRuntimeException(SpellRuntimeException.IMMUNE_TARGET);
 		}
 	}
 
 	public int getTargetSlot() throws SpellRuntimeException {
 		int slot;
-		if (customTargetSlot) {
+		if(customTargetSlot) {
 			return targetSlot % 36;
 		}
-		if (shiftTargetSlot) {
+		if(shiftTargetSlot) {
 			int cadSlot = PsiAPI.getPlayerCADSlot(caster);
-			if (cadSlot == -1) {
+			if(cadSlot == -1) {
 				throw new SpellRuntimeException(SpellRuntimeException.NO_CAD);
 			}
 
-			if (Inventory.isHotbarSlot(cadSlot)) {
+			if(Inventory.isHotbarSlot(cadSlot)) {
 				slot = (cadSlot + targetSlot) % 9;
 			} else {
 				slot = (caster.getInventory().selected + targetSlot) % 9;
@@ -210,7 +210,7 @@ public final class SpellContext {
 			slot = (targetSlot - 1) % 9;
 		}
 
-		if (slot < 0) {
+		if(slot < 0) {
 			slot = 10 + slot;
 		}
 		return slot;
@@ -223,12 +223,12 @@ public final class SpellContext {
 	 * @throws SpellRuntimeException NO_CAD
 	 */
 	public ItemStack getHarvestTool() throws SpellRuntimeException {
-		if (!tool.isEmpty()) { //TODO Armor
+		if(!tool.isEmpty()) { //TODO Armor
 			return tool;
 		}
 
 		ItemStack cad = PsiAPI.getPlayerCAD(caster);
-		if (cad.isEmpty()) {
+		if(cad.isEmpty()) {
 			throw new SpellRuntimeException(SpellRuntimeException.NO_CAD);
 		}
 		return cad;

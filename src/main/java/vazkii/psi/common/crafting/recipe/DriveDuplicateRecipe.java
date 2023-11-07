@@ -34,17 +34,17 @@ public class DriveDuplicateRecipe extends CustomRecipe {
 		boolean foundSource = false;
 		boolean foundTarget = false;
 
-		for (int i = 0; i < inv.getContainerSize(); i++) {
+		for(int i = 0; i < inv.getContainerSize(); i++) {
 			ItemStack stack = inv.getItem(i);
-			if (!stack.isEmpty()) {
-				if (stack.getItem() instanceof ItemSpellDrive) {
-					if (ItemSpellDrive.getSpell(stack) == null) {
-						if (foundTarget) {
+			if(!stack.isEmpty()) {
+				if(stack.getItem() instanceof ItemSpellDrive) {
+					if(ItemSpellDrive.getSpell(stack) == null) {
+						if(foundTarget) {
 							return false;
 						}
 						foundTarget = true;
 					} else {
-						if (foundSource) {
+						if(foundSource) {
 							return false;
 						}
 						foundSource = true;
@@ -64,11 +64,11 @@ public class DriveDuplicateRecipe extends CustomRecipe {
 		Spell source = null;
 		ItemStack target = ItemStack.EMPTY;
 
-		for (int i = 0; i < inv.getContainerSize(); i++) {
+		for(int i = 0; i < inv.getContainerSize(); i++) {
 			ItemStack stack = inv.getItem(i);
-			if (!stack.isEmpty()) {
+			if(!stack.isEmpty()) {
 				Spell spell = ItemSpellDrive.getSpell(stack);
-				if (spell != null) {
+				if(spell != null) {
 					source = spell;
 				} else {
 					target = stack;
@@ -85,9 +85,9 @@ public class DriveDuplicateRecipe extends CustomRecipe {
 	public NonNullList<ItemStack> getRemainingItems(CraftingContainer inv) {
 		NonNullList<ItemStack> list = NonNullList.withSize(inv.getContainerSize(), ItemStack.EMPTY);
 
-		for (int i = 0; i < list.size(); ++i) {
+		for(int i = 0; i < list.size(); ++i) {
 			ItemStack item = inv.getItem(i);
-			if (!item.isEmpty() && ItemSpellDrive.getSpell(item) != null) {
+			if(!item.isEmpty() && ItemSpellDrive.getSpell(item) != null) {
 				list.set(i, item.copy());
 				break;
 			}

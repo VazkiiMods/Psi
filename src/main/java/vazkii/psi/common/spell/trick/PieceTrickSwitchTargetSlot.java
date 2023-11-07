@@ -37,7 +37,7 @@ public class PieceTrickSwitchTargetSlot extends PieceTrick {
 
 	@Override
 	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
-		if (paramSides.get(shift) != SpellParam.Side.OFF && paramSides.get(pos) != SpellParam.Side.OFF) {
+		if(paramSides.get(shift) != SpellParam.Side.OFF && paramSides.get(pos) != SpellParam.Side.OFF) {
 			throw new SpellCompilationException("psi.spellerror.exclusiveparams", x, y);
 		}
 
@@ -49,10 +49,10 @@ public class PieceTrickSwitchTargetSlot extends PieceTrick {
 		Number posVal = this.getParamValue(context, pos);
 		Number shiftVal = this.getParamValue(context, shift);
 
-		if (shiftVal != null) {
+		if(shiftVal != null) {
 			context.shiftTargetSlot = true;
 			context.targetSlot = shiftVal.intValue();
-		} else if (posVal != null) {
+		} else if(posVal != null) {
 			context.shiftTargetSlot = false;
 			context.targetSlot = posVal.intValue();
 		} else {

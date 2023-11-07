@@ -43,7 +43,7 @@ public class PieceTrickTill extends PieceTrick {
 	}
 
 	public static InteractionResult tillBlock(Player player, Level world, BlockPos pos) {
-		if (!world.hasChunkAt(pos) || !world.mayInteract(player, pos)) {
+		if(!world.hasChunkAt(pos) || !world.mayInteract(player, pos)) {
 			return InteractionResult.PASS;
 		}
 		BlockHitResult hit = new BlockHitResult(Vec3.ZERO, Direction.UP, pos, false);

@@ -60,7 +60,7 @@ public class BlockCADAssembler extends HorizontalDirectionalBlock implements Ent
 	@SuppressWarnings("deprecation")
 	public int getAnalogOutputSignal(BlockState blockState, Level worldIn, BlockPos pos) {
 		BlockEntity tile = worldIn.getBlockEntity(pos);
-		if (tile != null) {
+		if(tile != null) {
 			return tile.getCapability(ForgeCapabilities.ITEM_HANDLER)
 					.map(ItemHandlerHelper::calcRedstoneFromInventory)
 					.orElse(0);
@@ -71,9 +71,9 @@ public class BlockCADAssembler extends HorizontalDirectionalBlock implements Ent
 
 	@Override
 	public InteractionResult use(BlockState state, Level world, BlockPos pos, Player playerIn, InteractionHand hand, BlockHitResult rayTraceResult) {
-		if (!world.isClientSide) {
+		if(!world.isClientSide) {
 			MenuProvider container = state.getMenuProvider(world, pos);
-			if (container != null) {
+			if(container != null) {
 				NetworkHooks.openScreen((ServerPlayer) playerIn, container, pos);
 				return InteractionResult.SUCCESS;
 			}
@@ -85,7 +85,7 @@ public class BlockCADAssembler extends HorizontalDirectionalBlock implements Ent
 	@Override
 	public MenuProvider getMenuProvider(@Nonnull BlockState state, @Nonnull Level world, @Nonnull BlockPos pos) {
 		BlockEntity te = world.getBlockEntity(pos);
-		if (te instanceof TileCADAssembler) {
+		if(te instanceof TileCADAssembler) {
 			return (MenuProvider) te;
 		}
 		return null;
@@ -98,12 +98,12 @@ public class BlockCADAssembler extends HorizontalDirectionalBlock implements Ent
 
 	@Override
 	public void onRemove(BlockState state, @Nonnull Level world, @Nonnull BlockPos pos, BlockState newState, boolean isMoving) {
-		if (state.getBlock() != newState.getBlock() && !isMoving) {
+		if(state.getBlock() != newState.getBlock() && !isMoving) {
 			TileCADAssembler te = (TileCADAssembler) world.getBlockEntity(pos);
-			if (te != null) {
-				for (int i = 0; i < te.getInventory().getSlots(); i++) {
+			if(te != null) {
+				for(int i = 0; i < te.getInventory().getSlots(); i++) {
 					ItemStack stack = te.getInventory().getStackInSlot(i);
-					if (!stack.isEmpty()) {
+					if(!stack.isEmpty()) {
 						Containers.dropItemStack(world, pos.getX(), pos.getY(), pos.getZ(), stack);
 					}
 				}

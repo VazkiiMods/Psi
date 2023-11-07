@@ -1,11 +1,10 @@
 package vazkii.psi.api.internal.math;
 
-//https://hewgill.com/picomath/java/Gamma.java.html
+// https://hewgill.com/picomath/java/Gamma.java.html
 public class Gamma {
 	// Visit http://www.johndcook.com/stand_alone_code.html for the source of this code and more like it.
 
 	// Note that the functions Gamma and LogGamma are mutually dependent.
-
 
 	/**
 	 *
@@ -13,7 +12,7 @@ public class Gamma {
 	 * @return
 	 */
 	public static double gamma(double x) {
-		if (x <= 0.0) {
+		if(x <= 0.0) {
 			String msg = String.format("Invalid input argument {0}. Argument must be positive.", x);
 			throw new IllegalArgumentException(msg);
 		}
@@ -23,7 +22,6 @@ public class Gamma {
 		 * (0, 0.001), [0.001, 12), and (12, infinity)
 		 */
 
-
 		/*
 		 * First interval: (0, 0.001)
 		 * For small x, 1/Gamma(x) has power series x + gamma x^2  - ...
@@ -31,10 +29,9 @@ public class Gamma {
 		 * The relative error over this interval is less than 6e-7.
 		 */
 
-
 		final double gamma = 0.577215664901532860606512090; // Euler's gamma constant
 
-		if (x < 0.001) {
+		if(x < 0.001) {
 			return 1.0 / (x * (1.0 + gamma * x));
 		}
 
@@ -42,7 +39,7 @@ public class Gamma {
 		 * Second interval: [0.001, 12)
 		 */
 
-		if (x < 12.0) {
+		if(x < 12.0) {
 
 			/*
 			 * The algorithm directly approximates gamma over (1,2) and
@@ -58,10 +55,10 @@ public class Gamma {
 			 * Will correct for this below
 			 */
 
-			if (arg_was_less_than_one) {
+			if(arg_was_less_than_one) {
 				y += 1.0;
 			} else {
-				n = (int)(Math.floor(y)) - 1; // will use n later
+				n = (int) (Math.floor(y)) - 1; // will use n later
 				y -= n;
 			}
 
@@ -94,14 +91,14 @@ public class Gamma {
 			int i;
 
 			double z = y - 1;
-			for (i = 0; i < 8; i++) {
+			for(i = 0; i < 8; i++) {
 				num = (num + p[i]) * z;
 				den = den * z + q[i];
 			}
 			double result = num / den + 1.0;
 
 			// Apply correction if argument was not initially in (1,2)
-			if (arg_was_less_than_one) {
+			if(arg_was_less_than_one) {
 				/*
 				 * Use identity gamma(z) = gamma(z+1)/z
 				 * The variable "result" now holds gamma of the original y + 1
@@ -110,7 +107,7 @@ public class Gamma {
 				result /= (y - 1.0);
 			} else {
 				// Use the identity gamma(z+n) = z*(z+1)* ... *(z+n-1)*gamma(z)
-				for (i = 0; i < n; i++) {
+				for(i = 0; i < n; i++) {
 					result *= y++;
 				}
 			}
@@ -122,7 +119,7 @@ public class Gamma {
 		 * Third interval: [12, infinity)
 		 */
 
-		if (x > 171.624) {
+		if(x > 171.624) {
 			// Correct answer too large to display.
 			return Double.POSITIVE_INFINITY;
 		}
@@ -136,12 +133,12 @@ public class Gamma {
 	 * @return
 	 */
 	public static double logGamma(double x) {
-		if (x <= 0.0) {
+		if(x <= 0.0) {
 			String msg = String.format("Invalid input argument {0}. Argument must be positive.", x);
 			throw new IllegalArgumentException(msg);
 		}
 
-		if (x < 12.0) {
+		if(x < 12.0) {
 			return Math.log(Math.abs(gamma(x)));
 		}
 
@@ -164,7 +161,7 @@ public class Gamma {
 		};
 		double z = 1.0 / (x * x);
 		double sum = c[7];
-		for (int i = 6; i >= 0; i--) {
+		for(int i = 6; i >= 0; i--) {
 			sum *= z;
 			sum += c[i];
 		}

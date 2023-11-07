@@ -49,7 +49,7 @@ public class MessageDeductPsi {
 	public boolean receive(Supplier<NetworkEvent.Context> context) {
 		context.get().enqueueWork(() -> {
 			Player player = Psi.proxy.getClientPlayer();
-			if (player != null) {
+			if(player != null) {
 				PlayerData data = PlayerDataHandler.get(player);
 				data.lastAvailablePsi = data.availablePsi;
 				data.availablePsi = current;

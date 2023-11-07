@@ -47,15 +47,15 @@ public class PieceOperatorClosestToPoint extends PieceOperator {
 	public static Entity closestToPoint(Vector3 position, Iterable<Entity> list) throws SpellRuntimeException {
 		double closest = Double.MAX_VALUE;
 		Entity closestEntity = null;
-		for (Entity e : list) {
+		for(Entity e : list) {
 			double dist = MathHelper.pointDistanceSpace(position.x, position.y, position.z, e.getX(), e.getY(), e.getZ());
-			if (dist < closest) {
+			if(dist < closest) {
 				closest = dist;
 				closestEntity = e;
 			}
 		}
 
-		if (closestEntity == null) {
+		if(closestEntity == null) {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_TARGET);
 		}
 

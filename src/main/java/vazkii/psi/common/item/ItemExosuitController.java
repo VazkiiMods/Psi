@@ -39,8 +39,8 @@ public class ItemExosuitController extends Item implements ISocketableController
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, @Nonnull InteractionHand hand) {
 		ItemStack itemStackIn = playerIn.getItemInHand(hand);
-		if (playerIn.isShiftKeyDown()) {
-			if (!worldIn.isClientSide) {
+		if(playerIn.isShiftKeyDown()) {
+			if(!worldIn.isClientSide) {
 				worldIn.playSound(null, playerIn.getX(), playerIn.getY(), playerIn.getZ(), PsiSoundHandler.compileError, SoundSource.PLAYERS, 0.25F, 1F);
 			} else {
 				playerIn.swing(hand);
@@ -48,7 +48,7 @@ public class ItemExosuitController extends Item implements ISocketableController
 
 			ItemStack[] stacks = getControlledStacks(playerIn, itemStackIn);
 
-			for (ItemStack stack : stacks) {
+			for(ItemStack stack : stacks) {
 				stack.getCapability(PsiAPI.SOCKETABLE_CAPABILITY).ifPresent(c -> c.setSelectedSlot(3));
 			}
 
@@ -61,9 +61,9 @@ public class ItemExosuitController extends Item implements ISocketableController
 	@Override
 	public ItemStack[] getControlledStacks(Player player, ItemStack stack) {
 		List<ItemStack> stacks = new ArrayList<>();
-		for (int i = 0; i < 4; i++) {
+		for(int i = 0; i < 4; i++) {
 			ItemStack armor = player.getInventory().armor.get(3 - i);
-			if (!armor.isEmpty() && ISocketable.isSocketable(armor)) {
+			if(!armor.isEmpty() && ISocketable.isSocketable(armor)) {
 				stacks.add(armor);
 			}
 		}
@@ -81,7 +81,7 @@ public class ItemExosuitController extends Item implements ISocketableController
 		stack.getOrCreateTag().putInt(TAG_SELECTED_CONTROL_SLOT, controlSlot);
 
 		ItemStack[] stacks = getControlledStacks(player, stack);
-		if (controlSlot < stacks.length && !stacks[controlSlot].isEmpty()) {
+		if(controlSlot < stacks.length && !stacks[controlSlot].isEmpty()) {
 			stacks[controlSlot].getCapability(PsiAPI.SOCKETABLE_CAPABILITY).ifPresent(cap -> cap.setSelectedSlot(slot));
 		}
 	}

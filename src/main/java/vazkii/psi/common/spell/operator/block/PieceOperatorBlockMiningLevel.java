@@ -41,7 +41,7 @@ public class PieceOperatorBlockMiningLevel extends PieceOperator {
 		BlockPos pos = SpellHelpers.getBlockPos(this, context, position, false, false);
 		BlockState state = context.caster.level.getBlockState(pos);
 		ItemStack tool = context.tool;
-		if (tool.isEmpty()) {
+		if(tool.isEmpty()) {
 			tool = PsiAPI.getPlayerCAD(context.caster);
 		}
 		//TODO Fix low mining level items returning 1

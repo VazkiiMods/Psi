@@ -63,20 +63,20 @@ public class TileCADAssembler extends BlockEntity implements ITileCADAssembler, 
 		@Override
 		protected void onContentsChanged(int slot) {
 			super.onContentsChanged(slot);
-			if (0 < slot && slot < 6) {
+			if(0 < slot && slot < 6) {
 				clearCachedCAD();
 			}
 		}
 
 		@Override
 		public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-			if (stack.isEmpty()) {
+			if(stack.isEmpty()) {
 				return true;
 			}
 
-			if (slot == 0) {
+			if(slot == 0) {
 				return ISocketable.isSocketable(stack);
-			} else if (slot < 6) {
+			} else if(slot < 6) {
 				return stack.getItem() instanceof ICADComponent &&
 						((ICADComponent) stack.getItem()).getComponentType(stack) == EnumCADComponent.values()[slot - 1];
 			}
@@ -142,9 +142,9 @@ public class TileCADAssembler extends BlockEntity implements ITileCADAssembler, 
 	@Override
 	public ItemStack getCachedCAD(Player player) {
 		ItemStack cad = cachedCAD;
-		if (cad == null) {
+		if(cad == null) {
 			ItemStack assembly = getStackForComponent(EnumCADComponent.ASSEMBLY);
-			if (!assembly.isEmpty()) {
+			if(!assembly.isEmpty()) {
 				List<ItemStack> components = IntStream.range(1, 6).mapToObj(inventory::getStackInSlot).collect(Collectors.toList());
 				cad = ItemCAD.makeCADWithAssembly(assembly, components);
 			} else {
@@ -155,7 +155,7 @@ public class TileCADAssembler extends BlockEntity implements ITileCADAssembler, 
 
 			MinecraftForge.EVENT_BUS.post(assembling);
 
-			if (assembling.isCanceled()) {
+			if(assembling.isCanceled()) {
 				cad = ItemStack.EMPTY;
 			} else {
 				cad = assembling.getCad();
@@ -180,12 +180,12 @@ public class TileCADAssembler extends BlockEntity implements ITileCADAssembler, 
 	@Override
 	public boolean setStackForComponent(EnumCADComponent componentType, ItemStack component) {
 		int slot = getComponentSlot(componentType);
-		if (component.isEmpty()) {
+		if(component.isEmpty()) {
 			inventory.setStackInSlot(slot, component);
 			return true;
-		} else if (component.getItem() instanceof ICADComponent) {
+		} else if(component.getItem() instanceof ICADComponent) {
 			ICADComponent componentItem = (ICADComponent) component.getItem();
-			if (componentItem.getComponentType(component) == componentType) {
+			if(componentItem.getComponentType(component) == componentType) {
 				inventory.setStackInSlot(slot, component);
 				return true;
 			}
@@ -206,7 +206,7 @@ public class TileCADAssembler extends BlockEntity implements ITileCADAssembler, 
 
 	@Override
 	public boolean setSocketableStack(ItemStack stack) {
-		if (stack.isEmpty() || ISocketable.isSocketable(stack)) {
+		if(stack.isEmpty() || ISocketable.isSocketable(stack)) {
 			inventory.setStackInSlot(0, stack);
 			return true;
 		}
@@ -217,17 +217,17 @@ public class TileCADAssembler extends BlockEntity implements ITileCADAssembler, 
 	@Override
 	public void onCraftCAD(ItemStack cad) {
 		MinecraftForge.EVENT_BUS.post(new PostCADCraftEvent(cad, this));
-		for (int i = 1; i < 6; i++) {
+		for(int i = 1; i < 6; i++) {
 			inventory.setStackInSlot(i, ItemStack.EMPTY);
 		}
-		if (!level.isClientSide) {
+		if(!level.isClientSide) {
 			level.playSound(null, getBlockPos().getX() + 0.5, getBlockPos().getY() + 0.5, getBlockPos().getZ() + 0.5, PsiSoundHandler.cadCreate, SoundSource.BLOCKS, 0.5F, 1F);
 		}
 	}
 
 	@Override
 	public boolean isBulletSlotEnabled(int slot) {
-		if (getSocketableStack().isEmpty()) {
+		if(getSocketableStack().isEmpty()) {
 			return false;
 		}
 		ISocketable socketable = getSocketable();
@@ -238,7 +238,7 @@ public class TileCADAssembler extends BlockEntity implements ITileCADAssembler, 
 	protected void saveAdditional(CompoundTag tag) {
 		super.saveAdditional(tag);
 		NonNullList<ItemStack> items = NonNullList.withSize(inventory.getSlots(), ItemStack.EMPTY);
-		for (int i = 0; i < inventory.getSlots(); i++) {
+		for(int i = 0; i < inventory.getSlots(); i++) {
 			items.set(i, inventory.getStackInSlot(i));
 		}
 		ContainerHelper.saveAllItems(tag, items);
@@ -252,41 +252,41 @@ public class TileCADAssembler extends BlockEntity implements ITileCADAssembler, 
 
 	public void readPacketNBT(@Nonnull CompoundTag tag) {
 		// Migrate old CAD assemblers to the new format
-		if (tag.getInt("version") < 1) {
+		if(tag.getInt("version") < 1) {
 			ListTag items = tag.getList("Items", 10);
-			for (int i = 0; i < inventory.getSlots(); i++) {
+			for(int i = 0; i < inventory.getSlots(); i++) {
 				inventory.setStackInSlot(i, ItemStack.EMPTY);
 			}
 
 			LazyOptional<ISocketable> socketable = LazyOptional.empty();
 
-			for (int i = 0; i < items.size(); ++i) {
-				if (i == 0) // Skip the fake CAD slot
+			for(int i = 0; i < items.size(); ++i) {
+				if(i == 0) // Skip the fake CAD slot
 				{
 					continue;
 				}
 
 				ItemStack stack = ItemStack.of(items.getCompound(i));
 
-				if (i == 6) { // Socketable item
+				if(i == 6) { // Socketable item
 					setSocketableStack(stack);
 
-					if (!stack.isEmpty()) {
+					if(!stack.isEmpty()) {
 						socketable = stack.getCapability(PsiAPI.SOCKETABLE_CAPABILITY);
 					}
-				} else if (i == 1) // CORE
+				} else if(i == 1) // CORE
 				{
 					setStackForComponent(EnumCADComponent.CORE, stack);
-				} else if (i == 2) // ASSEMBLY
+				} else if(i == 2) // ASSEMBLY
 				{
 					setStackForComponent(EnumCADComponent.ASSEMBLY, stack);
-				} else if (i == 3) // SOCKET
+				} else if(i == 3) // SOCKET
 				{
 					setStackForComponent(EnumCADComponent.SOCKET, stack);
-				} else if (i == 4) // BATTERY
+				} else if(i == 4) // BATTERY
 				{
 					setStackForComponent(EnumCADComponent.BATTERY, stack);
-				} else if (i == 5) // DYE
+				} else if(i == 5) // DYE
 				{
 					setStackForComponent(EnumCADComponent.DYE, stack);
 				} else { // If we've gotten here, the item is a bullet.

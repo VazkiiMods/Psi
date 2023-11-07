@@ -91,18 +91,18 @@ public class PieceTrickMoveBlockSequence extends PieceTrick {
 		 * Since there are legitimate use cases besides duping when you want to move a block that is in the same
 		 * position that you previously had broken.
 		 */
-		if (context.positionBroken != null) {
+		if(context.positionBroken != null) {
 			immovableBlocks.add(context.positionBroken.getBlockPos());
 		}
 
-		for (BlockPos blockPos : positions) {
+		for(BlockPos blockPos : positions) {
 			BlockState state = world.getBlockState(blockPos);
 
-			if (world.isEmptyBlock(blockPos)) {
+			if(world.isEmptyBlock(blockPos)) {
 				continue;
 			}
 
-			if (world.getBlockEntity(blockPos) != null ||
+			if(world.getBlockEntity(blockPos) != null ||
 					state.getPistonPushReaction() != PushReaction.NORMAL ||
 					state.getDestroySpeed(world, blockPos) == -1 ||
 					!PieceTrickBreakBlock.canHarvestBlock(state, context.caster, world, blockPos, context.getHarvestTool()) ||
@@ -114,56 +114,56 @@ public class PieceTrickMoveBlockSequence extends PieceTrick {
 
 			BlockPos pushToPos = blockPos.offset(directNorm.x, directNorm.y, directNorm.z);
 			boolean isOffWorld = pushToPos.getY() < 0 || pushToPos.getY() > 256;
-			if (isOffWorld) {
+			if(isOffWorld) {
 				immovableBlocks.add(blockPos);
 				continue;
 			}
 
 			BlockEvent.BreakEvent event = new BlockEvent.BreakEvent(world, blockPos, state, context.caster);
 
-			if (MinecraftForge.EVENT_BUS.post(event)) {
+			if(MinecraftForge.EVENT_BUS.post(event)) {
 				immovableBlocks.add(blockPos);
 				continue;
 			}
 			moveableBlocks.add(blockPos);
 		}
 
-		outer: for (BlockPos blockPos : moveableBlocks) {
+		outer: for(BlockPos blockPos : moveableBlocks) {
 			BlockState state = world.getBlockState(blockPos);
 			BlockPos pushToPos = blockPos.offset(directNorm.x, directNorm.y, directNorm.z);
 			BlockState pushToState = world.getBlockState(pushToPos);
-			if (immovableBlocks.contains(pushToPos) || immovableBlocks.contains(blockPos)) {
+			if(immovableBlocks.contains(pushToPos) || immovableBlocks.contains(blockPos)) {
 				continue;
 			}
-			if (moveableBlocks.contains(pushToPos)) {
+			if(moveableBlocks.contains(pushToPos)) {
 				BlockPos nextPos = pushToPos;
-				while (moveableBlocks.contains(nextPos)) {
+				while(moveableBlocks.contains(nextPos)) {
 					BlockPos nextPosPushPos = nextPos.offset(directNorm.x, directNorm.y, directNorm.z);
 					BlockState nextPosPushPosState = world.getBlockState(nextPosPushPos);
 
-					if (moveableBlocks.contains(nextPosPushPos)) {
+					if(moveableBlocks.contains(nextPosPushPos)) {
 						nextPos = nextPosPushPos;
 						continue;
 					}
 
-					if (immovableBlocks.contains(nextPosPushPos) || !(world.isEmptyBlock(nextPosPushPos) || nextPosPushPosState.getMaterial().isReplaceable())) {
+					if(immovableBlocks.contains(nextPosPushPos) || !(world.isEmptyBlock(nextPosPushPos) || nextPosPushPosState.getMaterial().isReplaceable())) {
 						continue outer;
 					}
 					break;
 				}
-			} else if (!(world.isEmptyBlock(pushToPos) || pushToState.getMaterial().isReplaceable())) {
+			} else if(!(world.isEmptyBlock(pushToPos) || pushToState.getMaterial().isReplaceable())) {
 				continue;
 			}
 			toRemove.put(blockPos, state);
 			toSet.put(pushToPos, state);
 		}
 
-		for (Map.Entry<BlockPos, BlockState> pairtoRemove : toRemove.entrySet()) {
+		for(Map.Entry<BlockPos, BlockState> pairtoRemove : toRemove.entrySet()) {
 			context.caster.level.removeBlock(pairtoRemove.getKey(), true);
 			context.caster.level.levelEvent(2001, pairtoRemove.getKey(), Block.getId(pairtoRemove.getValue()));
 		}
 
-		for (Map.Entry<BlockPos, BlockState> pairToSet : toSet.entrySet()) {
+		for(Map.Entry<BlockPos, BlockState> pairToSet : toSet.entrySet()) {
 			context.caster.level.setBlockAndUpdate(pairToSet.getKey(), pairToSet.getValue());
 		}
 

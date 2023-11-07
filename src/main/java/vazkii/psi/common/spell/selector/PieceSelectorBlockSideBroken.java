@@ -28,10 +28,10 @@ public class PieceSelectorBlockSideBroken extends PieceSelector {
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 
-		if (context.positionBroken == null) {
+		if(context.positionBroken == null) {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
 		}
-		if (context.positionBroken.isInside()) {
+		if(context.positionBroken.isInside()) {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
 		}
 		return Vector3.fromDirection(context.positionBroken.getDirection());

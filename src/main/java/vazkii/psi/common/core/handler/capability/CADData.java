@@ -54,7 +54,7 @@ public class CADData implements ICapabilityProvider, ICADData, ISpellAcceptor, I
 	@Nonnull
 	@Override
 	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability, @Nullable Direction facing) {
-		if (capability == PsiAPI.SOCKETABLE_CAPABILITY
+		if(capability == PsiAPI.SOCKETABLE_CAPABILITY
 				|| capability == PsiAPI.CAD_DATA_CAPABILITY
 				|| capability == PsiAPI.PSI_BAR_DISPLAY_CAPABILITY
 				|| capability == PsiAPI.SPELL_ACCEPTOR_CAPABILITY) {
@@ -70,7 +70,7 @@ public class CADData implements ICapabilityProvider, ICADData, ISpellAcceptor, I
 
 	@Override
 	public void setTime(int time) {
-		if (this.time != time) {
+		if(this.time != time) {
 			this.time = time;
 		}
 	}
@@ -87,7 +87,7 @@ public class CADData implements ICapabilityProvider, ICADData, ISpellAcceptor, I
 
 	@Override
 	public Vector3 getSavedVector(int memorySlot) {
-		if (vectors.size() <= memorySlot) {
+		if(vectors.size() <= memorySlot) {
 			return Vector3.zero.copy();
 		}
 
@@ -97,7 +97,7 @@ public class CADData implements ICapabilityProvider, ICADData, ISpellAcceptor, I
 
 	@Override
 	public void setSavedVector(int memorySlot, Vector3 value) {
-		while (vectors.size() <= memorySlot) {
+		while(vectors.size() <= memorySlot) {
 			vectors.add(null);
 		}
 
@@ -118,7 +118,7 @@ public class CADData implements ICapabilityProvider, ICADData, ISpellAcceptor, I
 	public void setSpell(Player player, Spell spell) {
 		int slot = getSelectedSlot();
 		ItemStack bullet = getBulletInSocket(slot);
-		if (!bullet.isEmpty() && ISpellAcceptor.isAcceptor(bullet)) {
+		if(!bullet.isEmpty() && ISpellAcceptor.isAcceptor(bullet)) {
 			ISpellAcceptor.acceptor(bullet).setSpell(player, spell);
 			setBulletInSocket(slot, bullet);
 			player.getCooldowns().addCooldown(cad.getItem(), 10);
@@ -133,7 +133,7 @@ public class CADData implements ICapabilityProvider, ICADData, ISpellAcceptor, I
 	@Override
 	public boolean isSocketSlotAvailable(int slot) {
 		int sockets = ((ICAD) cad.getItem()).getStatValue(cad, EnumCADStat.SOCKETS);
-		if (sockets == -1 || sockets > ItemCADSocket.MAX_SOCKETS) {
+		if(sockets == -1 || sockets > ItemCADSocket.MAX_SOCKETS) {
 			sockets = ItemCADSocket.MAX_SOCKETS;
 		}
 		return slot < sockets && slot >= 0;
@@ -144,7 +144,7 @@ public class CADData implements ICapabilityProvider, ICADData, ISpellAcceptor, I
 		String name = IPsimetalTool.TAG_BULLET_PREFIX + slot;
 		CompoundTag cmp = cad.getOrCreateTag().getCompound(name);
 
-		if (cmp.isEmpty()) {
+		if(cmp.isEmpty()) {
 			return ItemStack.EMPTY;
 		}
 
@@ -156,7 +156,7 @@ public class CADData implements ICapabilityProvider, ICADData, ISpellAcceptor, I
 		String name = IPsimetalTool.TAG_BULLET_PREFIX + slot;
 		CompoundTag cmp = new CompoundTag();
 
-		if (!bullet.isEmpty()) {
+		if(!bullet.isEmpty()) {
 			bullet.save(cmp);
 		}
 
@@ -176,7 +176,7 @@ public class CADData implements ICapabilityProvider, ICADData, ISpellAcceptor, I
 	@Override
 	public int getLastSlot() {
 		int sockets = ((ICAD) cad.getItem()).getStatValue(cad, EnumCADStat.SOCKETS);
-		if (sockets == -1 || sockets > ItemCADSocket.MAX_SOCKETS) {
+		if(sockets == -1 || sockets > ItemCADSocket.MAX_SOCKETS) {
 			sockets = ItemCADSocket.MAX_SOCKETS;
 		}
 		return sockets - 1;
@@ -196,8 +196,8 @@ public class CADData implements ICapabilityProvider, ICADData, ISpellAcceptor, I
 		CompoundTag compound = serializeForSynchronization();
 
 		ListTag memory = new ListTag();
-		for (Vector3 vector : vectors) {
-			if (vector == null) {
+		for(Vector3 vector : vectors) {
+			if(vector == null) {
 				memory.add(new ListTag());
 			} else {
 				ListTag vec = new ListTag();
@@ -214,19 +214,19 @@ public class CADData implements ICapabilityProvider, ICADData, ISpellAcceptor, I
 
 	@Override
 	public void deserializeNBT(CompoundTag nbt) {
-		if (nbt.contains("Time", Tag.TAG_ANY_NUMERIC)) {
+		if(nbt.contains("Time", Tag.TAG_ANY_NUMERIC)) {
 			time = nbt.getInt("Time");
 		}
-		if (nbt.contains("Battery", Tag.TAG_ANY_NUMERIC)) {
+		if(nbt.contains("Battery", Tag.TAG_ANY_NUMERIC)) {
 			battery = nbt.getInt("Battery");
 		}
 
-		if (nbt.contains("Memory", Tag.TAG_LIST)) {
+		if(nbt.contains("Memory", Tag.TAG_LIST)) {
 			ListTag memory = nbt.getList("Memory", Tag.TAG_LIST);
 			List<Vector3> newVectors = Lists.newArrayList();
-			for (int i = 0; i < memory.size(); i++) {
+			for(int i = 0; i < memory.size(); i++) {
 				ListTag vec = (ListTag) memory.get(i);
-				if (vec.getElementType() == Tag.TAG_DOUBLE && vec.size() >= 3) {
+				if(vec.getElementType() == Tag.TAG_DOUBLE && vec.size() >= 3) {
 					newVectors.add(new Vector3(vec.getDouble(0), vec.getDouble(1), vec.getDouble(2)));
 				} else {
 					newVectors.add(null);

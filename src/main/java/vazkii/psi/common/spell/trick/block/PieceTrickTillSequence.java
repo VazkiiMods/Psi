@@ -62,9 +62,9 @@ public class PieceTrickTillSequence extends PieceTrick {
 
 		Vector3 targetNorm = targetVal.copy().normalize();
 
-		for (BlockPos blockPos : MathHelper.getBlocksAlongRay(positionVal.toVec3D(), positionVal.copy().add(targetNorm.copy().multiply(maxBlocksInt)).toVec3D(), maxBlocksInt)) {
+		for(BlockPos blockPos : MathHelper.getBlocksAlongRay(positionVal.toVec3D(), positionVal.copy().add(targetNorm.copy().multiply(maxBlocksInt)).toVec3D(), maxBlocksInt)) {
 
-			if (SpellHelpers.isBlockPosInRadius(context, blockPos)) {
+			if(SpellHelpers.isBlockPosInRadius(context, blockPos)) {
 				PieceTrickTill.tillBlock(context.caster, context.caster.level, blockPos);
 			}
 

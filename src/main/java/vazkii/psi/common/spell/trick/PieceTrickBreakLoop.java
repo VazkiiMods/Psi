@@ -46,9 +46,9 @@ public class PieceTrickBreakLoop extends PieceTrick {
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		double value = this.getParamValue(context, valueParam).doubleValue();
 
-		if (Math.abs(value) < 1.0) {
-			if (context.focalPoint != context.caster) {
-				if (context.focalPoint instanceof EntitySpellCircle) {
+		if(Math.abs(value) < 1.0) {
+			if(context.focalPoint != context.caster) {
+				if(context.focalPoint instanceof EntitySpellCircle) {
 					EntitySpellCircle circle = (EntitySpellCircle) context.focalPoint;
 					CompoundTag circleNBT = new CompoundTag();
 					circle.addAdditionalSaveData(circleNBT);
@@ -59,7 +59,7 @@ public class PieceTrickBreakLoop extends PieceTrick {
 					context.focalPoint.remove(Entity.RemovalReason.DISCARDED);
 				}
 			} else {
-				if (!context.tool.isEmpty() && context.tool.getCapability(PsiAPI.SOCKETABLE_CAPABILITY).isPresent()) {
+				if(!context.tool.isEmpty() && context.tool.getCapability(PsiAPI.SOCKETABLE_CAPABILITY).isPresent()) {
 					ISocketable socketableCap = context.tool.getCapability(PsiAPI.SOCKETABLE_CAPABILITY).orElseThrow(NullPointerException::new);
 					socketableCap.setSelectedSlot(socketableCap.getLastSlot() + 1);
 				}

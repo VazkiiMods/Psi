@@ -66,7 +66,7 @@ public class MessageParticleTrail {
 			Vec3 ray = direction.normalize().scale(1f / STEPS_PER_UNIT);
 			int steps = (int) (length * STEPS_PER_UNIT);
 
-			for (int i = 0; i < steps; i++) {
+			for(int i = 0; i < steps; i++) {
 				double x = position.x + ray.x * i;
 				double y = position.y + ray.y * i;
 				double z = position.z + ray.z * i;

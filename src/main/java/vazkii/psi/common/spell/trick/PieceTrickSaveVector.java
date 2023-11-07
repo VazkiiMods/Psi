@@ -49,7 +49,7 @@ public class PieceTrickSaveVector extends PieceTrick {
 		meta.addStat(EnumSpellStat.COMPLEXITY, 1);
 
 		Double numberVal = this.<Double>getParamEvaluation(number);
-		if (numberVal == null || numberVal <= 0 || numberVal != numberVal.intValue()) {
+		if(numberVal == null || numberVal <= 0 || numberVal != numberVal.intValue()) {
 			throw new SpellCompilationException(SpellCompilationException.NON_POSITIVE_INTEGER, x, y);
 		}
 
@@ -63,12 +63,12 @@ public class PieceTrickSaveVector extends PieceTrick {
 
 		int n = numberVal.intValue() - 1;
 
-		if (context.customData.containsKey(KEY_SLOT_LOCKED + n)) {
+		if(context.customData.containsKey(KEY_SLOT_LOCKED + n)) {
 			return null;
 		}
 
 		ItemStack cadStack = PsiAPI.getPlayerCAD(context.caster);
-		if (cadStack == null || !(cadStack.getItem() instanceof ICAD)) {
+		if(cadStack == null || !(cadStack.getItem() instanceof ICAD)) {
 			throw new SpellRuntimeException(SpellRuntimeException.NO_CAD);
 		}
 		ICAD cad = (ICAD) cadStack.getItem();

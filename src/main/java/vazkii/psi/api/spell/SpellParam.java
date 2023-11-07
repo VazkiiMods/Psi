@@ -119,7 +119,7 @@ public abstract class SpellParam<T> {
 		Class<T> evalType = getRequiredType();
 		String evalStr = evalType == null ? "null" : CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, evalType.getSimpleName());
 		MutableComponent s = Component.translatable("psi.datatype." + evalStr);
-		if (requiresConstant()) {
+		if(requiresConstant()) {
 			s.append(" ").append(Component.translatable("psimisc.constant"));
 		}
 
@@ -195,7 +195,7 @@ public abstract class SpellParam<T> {
 		}
 
 		private Side mapSides(Side whenUp, Side whenDown, Side whenL, Side whenR) {
-			switch (this) {
+			switch(this) {
 			case TOP:
 				return whenUp;
 			case BOTTOM:

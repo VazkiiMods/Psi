@@ -32,12 +32,12 @@ public class CrashReportHandler implements ISystemReportExtender {
 	public String get() {
 		CompiledSpell spell = activeSpell.get();
 		SpellPiece piece = activePiece.get();
-		if (spell == null) {
+		if(spell == null) {
 			return "None";
 		}
 
 		String prefix = "";
-		if (piece != null) {
+		if(piece != null) {
 			prefix = "[" + piece.x + ", " + piece.y + "] in ";
 		}
 

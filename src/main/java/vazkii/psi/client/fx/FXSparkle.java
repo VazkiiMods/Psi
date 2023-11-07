@@ -70,10 +70,10 @@ public class FXSparkle extends TextureSheetParticle {
 		yo = y;
 		zo = z;
 
-		if (age++ >= lifetime) {
+		if(age++ >= lifetime) {
 			remove();
 		}
-//		if (!noClip)
+//		if(!noClip)
 //			pushOutOfBlocks(posX, (getEntityBoundingBox().minY + getEntityBoundingBox().maxY) / 2.0D, posZ);
 
 		x += xd;
@@ -84,7 +84,7 @@ public class FXSparkle extends TextureSheetParticle {
 		yd *= 0.9f;
 		zd *= 0.9f;
 
-		if (onGround) {
+		if(onGround) {
 			xd *= 0.7f;
 			zd *= 0.7f;
 		}

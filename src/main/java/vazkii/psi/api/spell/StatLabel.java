@@ -82,7 +82,7 @@ public class StatLabel {
 	}
 
 	public StatLabel times() {
-		if (order < 2) {
+		if(order < 2) {
 			parenthesize();
 		}
 		order = 2;
@@ -106,7 +106,7 @@ public class StatLabel {
 	}
 
 	public StatLabel div() {
-		if (order < 2) {
+		if(order < 2) {
 			parenthesize();
 		}
 		order = 2;
@@ -247,7 +247,7 @@ public class StatLabel {
 
 	private String formatDouble(double value) {
 		String s = String.valueOf(value);
-		if (s.endsWith(".0")) {
+		if(s.endsWith(".0")) {
 			s = s.substring(0, s.length() - 2);
 		}
 		return s;

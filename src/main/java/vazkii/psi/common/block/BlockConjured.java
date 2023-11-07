@@ -62,7 +62,7 @@ public class BlockConjured extends Block implements EntityBlock, SimpleWaterlogg
 	@OnlyIn(Dist.CLIENT)
 	public void animateTick(BlockState stateIn, Level worldIn, BlockPos pos, RandomSource rand) {
 		BlockEntity inWorld = worldIn.getBlockEntity(pos);
-		if (inWorld instanceof TileConjured) {
+		if(inWorld instanceof TileConjured) {
 			((TileConjured) inWorld).doParticles();
 		}
 	}
@@ -71,7 +71,7 @@ public class BlockConjured extends Block implements EntityBlock, SimpleWaterlogg
 	@Override
 	public float[] getBeaconColorMultiplier(BlockState state, LevelReader world, BlockPos pos, BlockPos beaconPos) {
 		BlockEntity inWorld = world.getBlockEntity(pos);
-		if (inWorld instanceof TileConjured) {
+		if(inWorld instanceof TileConjured) {
 			int color = Psi.proxy.getColorForColorizer(((TileConjured) inWorld).colorizer);
 			return new float[] { PsiRenderHelper.r(color) / 255F, PsiRenderHelper.g(color) / 255F, PsiRenderHelper.b(color) / 255F };
 		}
@@ -97,7 +97,7 @@ public class BlockConjured extends Block implements EntityBlock, SimpleWaterlogg
 	@Override
 	public BlockState updateShape(@Nonnull BlockState state, Direction facing, BlockState facingState, LevelAccessor world, BlockPos currentPos, BlockPos facingPos) {
 		BooleanProperty prop;
-		switch (facing) {
+		switch(facing) {
 		default:
 		case DOWN:
 			prop = BLOCK_DOWN;
@@ -118,10 +118,10 @@ public class BlockConjured extends Block implements EntityBlock, SimpleWaterlogg
 			prop = BLOCK_EAST;
 			break;
 		}
-		if (state.getValue(WATERLOGGED)) {
+		if(state.getValue(WATERLOGGED)) {
 			world.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
 		}
-		if (state.getBlock() == facingState.getBlock() && state.getValue(LIGHT) == facingState.getValue(LIGHT) && state.getValue(SOLID) == facingState.getValue(SOLID)) {
+		if(state.getBlock() == facingState.getBlock() && state.getValue(LIGHT) == facingState.getValue(LIGHT) && state.getValue(SOLID) == facingState.getValue(SOLID)) {
 			return state.setValue(prop, true);
 		} else {
 			return state.setValue(prop, false);

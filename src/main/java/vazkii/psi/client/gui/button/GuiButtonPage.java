@@ -35,14 +35,14 @@ public class GuiButtonPage extends Button {
 
 	@Override
 	public void renderButton(PoseStack ms, int par2, int par3, float pTicks) {
-		if (active) {
+		if(active) {
 			boolean hover = par2 >= x && par3 >= y && par2 < x + width && par3 < y + height;
 
 			RenderSystem.setShaderTexture(0, GuiProgrammer.texture);
 			RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
 			blit(ms, x, y, hover ? 216 : 198, right ? 145 : 155, width, height);
 
-			if (hover) {
+			if(hover) {
 				gui.tooltip.add(Component.translatable(right ? "psimisc.next_page" : "psimisc.prev_page"));
 			}
 		}

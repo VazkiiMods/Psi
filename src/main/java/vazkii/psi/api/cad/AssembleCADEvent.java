@@ -48,7 +48,7 @@ public class AssembleCADEvent extends Event {
 	}
 
 	public void setCad(ItemStack cad) {
-		if (!cad.isEmpty() && !(cad.getItem() instanceof ICAD)) {
+		if(!cad.isEmpty() && !(cad.getItem() instanceof ICAD)) {
 			throw new IllegalStateException("Only a CAD can be crafted by the CAD Assembler!");
 		}
 		this.cad = cad;

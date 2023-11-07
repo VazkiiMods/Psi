@@ -33,10 +33,10 @@ public class SensorRemoveRecipe extends CustomRecipe {
 	public boolean matches(@Nonnull CraftingContainer inv, @Nonnull Level world) {
 		boolean foundHoldable = false;
 
-		for (int i = 0; i < inv.getContainerSize(); i++) {
+		for(int i = 0; i < inv.getContainerSize(); i++) {
 			ItemStack stack = inv.getItem(i);
-			if (!stack.isEmpty()) {
-				if (!foundHoldable && stack.getItem() instanceof ISensorHoldable && !((ISensorHoldable) stack.getItem()).getAttachedSensor(stack).isEmpty()) {
+			if(!stack.isEmpty()) {
+				if(!foundHoldable && stack.getItem() instanceof ISensorHoldable && !((ISensorHoldable) stack.getItem()).getAttachedSensor(stack).isEmpty()) {
 					foundHoldable = true;
 				} else {
 					return false;
@@ -52,9 +52,9 @@ public class SensorRemoveRecipe extends CustomRecipe {
 	public ItemStack assemble(@Nonnull CraftingContainer inv) {
 		ItemStack holdableItem = ItemStack.EMPTY;
 
-		for (int i = 0; i < inv.getContainerSize(); i++) {
+		for(int i = 0; i < inv.getContainerSize(); i++) {
 			ItemStack stack = inv.getItem(i);
-			if (!stack.isEmpty()) {
+			if(!stack.isEmpty()) {
 				holdableItem = stack;
 			}
 		}
@@ -70,9 +70,9 @@ public class SensorRemoveRecipe extends CustomRecipe {
 	public NonNullList<ItemStack> getRemainingItems(CraftingContainer inv) {
 		NonNullList<ItemStack> list = NonNullList.withSize(inv.getContainerSize(), ItemStack.EMPTY);
 
-		for (int i = 0; i < list.size(); ++i) {
+		for(int i = 0; i < list.size(); ++i) {
 			ItemStack item = inv.getItem(i);
-			if (item.getItem() instanceof ISensorHoldable) {
+			if(item.getItem() instanceof ISensorHoldable) {
 				list.set(i, ((ISensorHoldable) item.getItem()).getAttachedSensor(item));
 				break;
 			}

@@ -40,7 +40,7 @@ public class PieceOperatorVectorSum extends PieceOperator {
 		Vector3 v3 = this.getParamValue(context, vec3);
 
 		Vector3 r = v1.copy().add(v2);
-		if (v3 != null) {
+		if(v3 != null) {
 			r.add(v3);
 		}
 

@@ -71,7 +71,7 @@ public class Psi {
 
 	private void loadComplete(FMLLoadCompleteEvent event) {
 		ForgeRegistries.SOUND_EVENTS.forEach(el -> {
-			if (ForgeRegistries.SOUND_EVENTS.getKey(el).getPath().toLowerCase(Locale.ROOT).startsWith("block.note_block")) {
+			if(ForgeRegistries.SOUND_EVENTS.getKey(el).getPath().toLowerCase(Locale.ROOT).startsWith("block.note_block")) {
 				noteblockSoundEvents.add(el);
 			}
 		});

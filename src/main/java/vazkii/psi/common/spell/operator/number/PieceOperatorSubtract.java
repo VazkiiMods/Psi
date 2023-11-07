@@ -37,7 +37,7 @@ public class PieceOperatorSubtract extends PieceOperator {
 		double d1 = this.getParamValue(context, num1).doubleValue();
 		double d2 = this.getParamValue(context, num2).doubleValue();
 		Number d3 = this.getParamValue(context, num3);
-		if (d3 == null) {
+		if(d3 == null) {
 			d3 = 0D;
 		}
 

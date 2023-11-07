@@ -31,17 +31,17 @@ public final class TextHelper {
 		List<List<String>> lines = new ArrayList<>();
 
 		String controlCodes;
-		for (String s : textEntries) {
+		for(String s : textEntries) {
 			List<String> words = new ArrayList<>();
 			String lineStr = "";
 			String[] tokens = s.split(" ");
-			for (String token : tokens) {
+			for(String token : tokens) {
 				String prev = lineStr;
 				String spaced = token + " ";
 				lineStr += spaced;
 
 				controlCodes = toControlCodes(getControlCodes(prev));
-				if (font.width(lineStr) > width) {
+				if(font.width(lineStr) > width) {
 					lines.add(words);
 					lineStr = controlCodes + spaced;
 					words = new ArrayList<>();
@@ -50,7 +50,7 @@ public final class TextHelper {
 				words.add(controlCodes + token);
 			}
 
-			if (!lineStr.isEmpty()) {
+			if(!lineStr.isEmpty()) {
 				lines.add(words);
 			}
 			lines.add(new ArrayList<>());
@@ -59,18 +59,18 @@ public final class TextHelper {
 		List<String> textLines = new ArrayList<>();
 
 		String lastLine = "";
-		for (List<String> words : lines) {
+		for(List<String> words : lines) {
 			words.size();
 			int xi = x;
 			int spacing = 4;
 
 			StringBuilder lineStr = new StringBuilder();
-			for (String s : words) {
+			for(String s : words) {
 				int extra = 0;
 
 				int swidth = font.width(s);
-				if (doit) {
-					if (centered) {
+				if(doit) {
+					if(centered) {
 						font.draw(matrixStack, s, xi + width / 2 - swidth / 2, y, 0xFFFFFF);
 					} else {
 						font.draw(matrixStack, s, xi, y, 0xFFFFFF);
@@ -80,7 +80,7 @@ public final class TextHelper {
 				lineStr.append(s).append(" ");
 			}
 
-			if ((lineStr.length() > 0) || lastLine.isEmpty()) {
+			if((lineStr.length() > 0) || lastLine.isEmpty()) {
 				y += 10;
 				textLines.add(lineStr.toString());
 			}

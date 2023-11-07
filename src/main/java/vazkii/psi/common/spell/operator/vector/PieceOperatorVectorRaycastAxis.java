@@ -45,7 +45,7 @@ public class PieceOperatorVectorRaycastAxis extends PieceOperator {
 		Vector3 originVal = this.getParamValue(context, origin);
 		Vector3 rayVal = this.getParamValue(context, ray);
 
-		if (originVal == null || rayVal == null) {
+		if(originVal == null || rayVal == null) {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
 		}
 
@@ -54,7 +54,7 @@ public class PieceOperatorVectorRaycastAxis extends PieceOperator {
 		Vector3 end = originVal.copy().add(rayVal.copy().normalize().multiply(maxLen));
 
 		BlockHitResult pos = context.caster.getCommandSenderWorld().clip(new ClipContext(originVal.toVec3D(), end.toVec3D(), ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, context.caster));
-		if (pos.getType() == HitResult.Type.MISS) {
+		if(pos.getType() == HitResult.Type.MISS) {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
 		}
 

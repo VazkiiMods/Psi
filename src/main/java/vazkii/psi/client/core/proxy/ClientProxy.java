@@ -115,10 +115,10 @@ public class ClientProxy implements IProxy {
 
 	@Override
 	public boolean hasAdvancement(ResourceLocation advancement, Player playerEntity) {
-		if (playerEntity instanceof LocalPlayer) {
+		if(playerEntity instanceof LocalPlayer) {
 			LocalPlayer clientPlayerEntity = (LocalPlayer) playerEntity;
 			return clientPlayerEntity.connection.getAdvancements().getAdvancements().get(advancement) != null;
-		} else if (playerEntity instanceof ServerPlayer) {
+		} else if(playerEntity instanceof ServerPlayer) {
 			ServerPlayer serverPlayerEntity = (ServerPlayer) playerEntity;
 			return serverPlayerEntity.getServer().getAdvancements().getAdvancement(advancement) != null && serverPlayerEntity.getAdvancements().getOrStartProgress(serverPlayerEntity.getServer().getAdvancements().getAdvancement(advancement)).isDone();
 		}
@@ -158,7 +158,7 @@ public class ClientProxy implements IProxy {
 
 	@Override
 	public int getColorForColorizer(ItemStack colorizer) {
-		if (colorizer.isEmpty() || !(colorizer.getItem() instanceof ICADColorizer)) {
+		if(colorizer.isEmpty() || !(colorizer.getItem() instanceof ICADColorizer)) {
 			return ICADColorizer.DEFAULT_SPELL_COLOR;
 		}
 		ICADColorizer icc = (ICADColorizer) colorizer.getItem();
@@ -167,7 +167,7 @@ public class ClientProxy implements IProxy {
 
 	@Override
 	public void sparkleFX(Level world, double x, double y, double z, float r, float g, float b, float motionx, float motiony, float motionz, float size, int m) {
-		if (m == 0) {
+		if(m == 0) {
 			return;
 		}
 		SparkleParticleData data = new SparkleParticleData(size, r, g, b, m, motionx, motiony, motionz);
@@ -182,7 +182,7 @@ public class ClientProxy implements IProxy {
 
 	@Override
 	public void wispFX(Level world, double x, double y, double z, float r, float g, float b, float size, float motionx, float motiony, float motionz, float maxAgeMul) {
-		if (maxAgeMul == 0) {
+		if(maxAgeMul == 0) {
 			return;
 		}
 		WispParticleData data = new WispParticleData(size, r, g, b, maxAgeMul);

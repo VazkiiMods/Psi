@@ -53,7 +53,7 @@ public class CapabilityHandler {
 	
 		@Override
 		public Tag writeNBT(Capability<T> capability, T instance, Direction side) {
-			if (instance instanceof INBTSerializable) {
+			if(instance instanceof INBTSerializable) {
 				return ((INBTSerializable<?>) instance).serializeNBT();
 			}
 			return null;
@@ -62,7 +62,7 @@ public class CapabilityHandler {
 		@Override
 		@SuppressWarnings("unchecked")
 		public void readNBT(Capability<T> capability, T instance, Direction side, Tag nbt) {
-			if (nbt instanceof CompoundTag) {
+			if(nbt instanceof CompoundTag) {
 				((INBTSerializable<Tag>) instance).deserializeNBT(nbt);
 			}
 		}
@@ -75,14 +75,14 @@ public class CapabilityHandler {
 
 	@SubscribeEvent
 	public static void attachEntityCapabilities(AttachCapabilitiesEvent<Entity> event) {
-		if (event.getObject() instanceof ISpellImmune) {
+		if(event.getObject() instanceof ISpellImmune) {
 			event.addCapability(SPELL_IMMUNE, new SimpleProvider<>(SPELL_IMMUNE_CAPABILITY,
 					(ISpellImmune) event.getObject()));
 		}
-		if (event.getObject() instanceof Player) {
+		if(event.getObject() instanceof Player) {
 			event.addCapability(TRIGGER_SENSOR, new CapabilityTriggerSensor((Player) event.getObject()));
 		}
-		if (event.getObject() instanceof IDetonationHandler) {
+		if(event.getObject() instanceof IDetonationHandler) {
 			event.addCapability(DETONATOR, new SimpleProvider<>(DETONATION_HANDLER_CAPABILITY,
 					(IDetonationHandler) event.getObject()));
 		}

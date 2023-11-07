@@ -38,7 +38,7 @@ public class ColorHandler {
 		double t = (ClientTickHandler.total * speed * n / Math.PI) % n;
 		int phase = (int) t;
 		double dt = t - phase;
-		if (dt == 0) {
+		if(dt == 0) {
 			return color[phase];
 		}
 		int nextPhase = (phase + 1) % n;
@@ -70,9 +70,9 @@ public class ColorHandler {
 
 	public static int slideColorTime(int color, int secondColor, float t) {
 		float shift = (1 - Mth.cos(t)) / 2;
-		if (shift == 0) {
+		if(shift == 0) {
 			return color;
-		} else if (shift == 1) {
+		} else if(shift == 1) {
 			return secondColor;
 		}
 

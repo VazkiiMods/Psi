@@ -91,7 +91,7 @@ public final class SharingHelper {
 
 			HttpResponse res = client.execute(post);
 			JsonObject resJson = new JsonParser().parse(EntityUtils.toString(res.getEntity())).getAsJsonObject();
-			if (resJson.has("success") && resJson.get("success").getAsBoolean()) {
+			if(resJson.has("success") && resJson.get("success").getAsBoolean()) {
 				JsonObject data = resJson.get("data").getAsJsonObject();
 				String id = data.get("id").getAsString();
 

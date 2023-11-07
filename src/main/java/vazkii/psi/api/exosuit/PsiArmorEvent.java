@@ -44,13 +44,13 @@ public class PsiArmorEvent extends PlayerEvent {
 		this.damage = damage;
 		this.attacker = attacker;
 
-		if (type.equals(NONE)) {
+		if(type.equals(NONE)) {
 			throw new IllegalArgumentException("Can't you read?");
 		}
 	}
 
 	public static void post(PsiArmorEvent event) {
-		if (!posting) {
+		if(!posting) {
 			posting = true;
 			MinecraftForge.EVENT_BUS.post(event);
 			posting = false;

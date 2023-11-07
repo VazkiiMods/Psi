@@ -48,20 +48,20 @@ public class SpellCostsWidget extends AbstractWidget {
 
 			SpellMetadata meta = compiledSpell.metadata;
 			ItemStack cad = PsiAPI.getPlayerCAD(parent.getMinecraft().player);
-			for (EnumSpellStat stat : meta.getStatSet()) {
+			for(EnumSpellStat stat : meta.getStatSet()) {
 				int val = meta.getStat(stat);
 				int statY = parent.top + (parent.takingScreenshot ? 40 : 20) + i * 20;
 				EnumCADStat cadStat = stat.getTarget();
 				int cadVal = 0;
 
-				if (cadStat == null) {
+				if(cadStat == null) {
 					cadVal = -1;
-				} else if (!cad.isEmpty()) {
+				} else if(!cad.isEmpty()) {
 					ICAD cadItem = (ICAD) cad.getItem();
 					cadVal = cadItem.getStatValue(cad, cadStat);
 				}
 				String s = "" + val;
-				if (stat == EnumSpellStat.COST) {
+				if(stat == EnumSpellStat.COST) {
 					s += " (" + Math.max(0, ItemCAD.getRealCost(cad, ItemStack.EMPTY, val)) + ")";
 				} else {
 					s += "/" + (cadVal == -1 ? "\u221E" : cadVal);
@@ -72,7 +72,7 @@ public class SpellCostsWidget extends AbstractWidget {
 				blit(ms, statX, statY, (stat.ordinal() + 1) * 12, parent.ySize + 16, 12, 12);
 				parent.getMinecraft().font.draw(ms, s, statX + 16, statY + 2, cadStat != null && cadVal < val && cadVal != -1 ? 0xFF6666 : 0xFFFFFF);
 
-				if (mouseX > statX && mouseY > statY && mouseX < statX + 12 && mouseY < statY + 12 && !parent.panelWidget.panelEnabled) {
+				if(mouseX > statX && mouseY > statY && mouseX < statX + 12 && mouseY < statY + 12 && !parent.panelWidget.panelEnabled) {
 					parent.tooltip.add(Component.translatable(stat.getName()).withStyle(Psi.magical ? ChatFormatting.LIGHT_PURPLE : ChatFormatting.AQUA));
 					parent.tooltip.add(Component.translatable(stat.getDesc()).withStyle(ChatFormatting.GRAY));
 				}

@@ -12,12 +12,13 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
+
 import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.lib.ModTags;
 
 public class PsiItemTagProvider extends ItemTagsProvider {
-	
+
 	public PsiItemTagProvider(DataGenerator generator, PsiBlockTagProvider blockTagProvider, ExistingFileHelper existingFileHelper) {
 		super(generator, blockTagProvider, LibMisc.MOD_ID, existingFileHelper);
 	}

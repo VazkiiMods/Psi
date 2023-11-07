@@ -108,9 +108,9 @@ public class Vector3 {
 	public double dotProduct(Vector3 vec) {
 		double d = vec.x * x + vec.y * y + vec.z * z;
 
-		if (d > 1 && d < 1.00001) {
+		if(d > 1 && d < 1.00001) {
 			d = 1;
-		} else if (d < -1 && d > -1.00001) {
+		} else if(d < -1 && d > -1.00001) {
 			d = -1;
 		}
 		return d;
@@ -197,7 +197,7 @@ public class Vector3 {
 
 	public Vector3 normalize() {
 		double d = mag();
-		if (d != 0) {
+		if(d != 0) {
 			multiply(1 / d);
 		}
 
@@ -211,7 +211,7 @@ public class Vector3 {
 	}
 
 	public Vector3 perpendicular() {
-		if (z == 0) {
+		if(z == 0) {
 			return zCrossProduct();
 		}
 		return xCrossProduct();
@@ -288,7 +288,7 @@ public class Vector3 {
 
 	public Vector3 project(Vector3 b) {
 		double l = b.magSquared();
-		if (l == 0) {
+		if(l == 0) {
 			set(0, 0, 0);
 			return this;
 		}
@@ -305,7 +305,7 @@ public class Vector3 {
 
 	@Override
 	public boolean equals(Object o) {
-		if (!(o instanceof Vector3)) {
+		if(!(o instanceof Vector3)) {
 			return false;
 		}
 

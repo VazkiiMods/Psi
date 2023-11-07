@@ -226,7 +226,7 @@ public class PsiRecipeGenerator extends RecipeProvider implements IConditionBuil
 				.unlockedBy("has_psimetal", hasPsimetal)
 				.save(consumer, Psi.location("cad_battery_ultradense"));
 
-		for (DyeColor color : DyeColor.values()) {
+		for(DyeColor color : DyeColor.values()) {
 			ShapedRecipeBuilder.shaped(Registry.ITEM.get(Psi.location(LibItemNames.CAD_COLORIZER + color.getSerializedName())))
 					.group("psi:colorizer")
 					.define('D', ModTags.PSIDUST)

@@ -56,11 +56,11 @@ public class PieceConnector extends SpellPiece implements IRedirector {
 	public void drawAdditional(PoseStack ms, MultiBufferSource buffers, int light) {
 		drawSide(ms, buffers, light, paramSides.get(target));
 
-		if (isInGrid) {
-			for (SpellParam.Side side : SpellParam.Side.class.getEnumConstants()) {
-				if (side.isEnabled()) {
+		if(isInGrid) {
+			for(SpellParam.Side side : SpellParam.Side.class.getEnumConstants()) {
+				if(side.isEnabled()) {
 					SpellPiece piece = spell.grid.getPieceAtSideSafely(x, y, side);
-					if (piece != null && piece.isInputSide(side.getOpposite())) {
+					if(piece != null && piece.isInputSide(side.getOpposite())) {
 						drawSide(ms, buffers, light, side);
 					}
 				}
@@ -70,13 +70,13 @@ public class PieceConnector extends SpellPiece implements IRedirector {
 
 	@OnlyIn(Dist.CLIENT)
 	private void drawSide(PoseStack ms, MultiBufferSource buffers, int light, SpellParam.Side side) {
-		if (side.isEnabled()) {
+		if(side.isEnabled()) {
 			Material material = new Material(ClientPsiAPI.PSI_PIECE_TEXTURE_ATLAS, LINES_TEXTURE);
 			VertexConsumer buffer = material.buffer(buffers, ignored -> SpellPiece.getLayer());
 
 			float minU = 0;
 			float minV = 0;
-			switch (side) {
+			switch(side) {
 			case LEFT:
 				minU = 0.5f;
 				break;
@@ -112,8 +112,8 @@ public class PieceConnector extends SpellPiece implements IRedirector {
 
 	@Override
 	public void getShownPieces(List<SpellPiece> pieces) {
-		for (SpellParam.Side side : SpellParam.Side.class.getEnumConstants()) {
-			if (side.isEnabled()) {
+		for(SpellParam.Side side : SpellParam.Side.class.getEnumConstants()) {
+			if(side.isEnabled()) {
 				PieceConnector piece = (PieceConnector) SpellPiece.create(PieceConnector.class, new Spell());
 				piece.paramSides.put(piece.target, side);
 				pieces.add(piece);

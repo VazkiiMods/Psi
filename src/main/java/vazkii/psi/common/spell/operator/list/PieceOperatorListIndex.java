@@ -51,7 +51,7 @@ public class PieceOperatorListIndex extends PieceOperator {
 		int num = this.getNonnullParamValue(context, number).intValue();
 		EntityListWrapper listVal = this.getNonnullParamValue(context, list);
 
-		if (num >= 0 && num < listVal.size()) {
+		if(num >= 0 && num < listVal.size()) {
 			return listVal.get(num);
 		} else {
 			throw new SpellRuntimeException(SpellRuntimeException.OUT_OF_BOUNDS);

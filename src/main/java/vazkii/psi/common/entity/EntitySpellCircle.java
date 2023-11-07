@@ -98,14 +98,14 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 	public void addAdditionalSaveData(@Nonnull CompoundTag tagCompound) {
 		CompoundTag colorizerCmp = new CompoundTag();
 		ItemStack colorizer = entityData.get(COLORIZER_DATA);
-		if (!colorizer.isEmpty()) {
+		if(!colorizer.isEmpty()) {
 			colorizerCmp = colorizer.save(colorizerCmp);
 		}
 		tagCompound.put(TAG_COLORIZER, colorizerCmp);
 
 		CompoundTag bulletCmp = new CompoundTag();
 		ItemStack bullet = entityData.get(BULLET_DATA);
-		if (!bullet.isEmpty()) {
+		if(!bullet.isEmpty()) {
 			bulletCmp = bullet.save(bulletCmp);
 		}
 		tagCompound.put(TAG_BULLET, bulletCmp);
@@ -129,7 +129,7 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 		ItemStack bullet = ItemStack.of(bulletCmp);
 		entityData.set(BULLET_DATA, bullet);
 
-		if (tagCompound.contains(TAG_CASTER)) {
+		if(tagCompound.contains(TAG_CASTER)) {
 			entityData.set(CASTER_UUID, Optional.of(UUID.fromString(tagCompound.getString(TAG_CASTER))));
 		}
 		setTimeAlive(tagCompound.getInt(TAG_TIME_ALIVE));
@@ -145,41 +145,41 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 		super.tick();
 
 		int timeAlive = getTimeAlive();
-		if (timeAlive > LIVE_TIME) {
+		if(timeAlive > LIVE_TIME) {
 			remove(RemovalReason.DISCARDED);
 		}
 
 		setTimeAlive(timeAlive + 1);
 		int times = entityData.get(TIMES_CAST);
 
-		if (timeAlive > CAST_DELAY && timeAlive % CAST_DELAY == 0 && times < 20) {
+		if(timeAlive > CAST_DELAY && timeAlive % CAST_DELAY == 0 && times < 20) {
 			SpellContext context = null;
 			Entity thrower = getCaster();
-			if (thrower instanceof Player) {
+			if(thrower instanceof Player) {
 				ItemStack spellContainer = entityData.get(BULLET_DATA);
-				if (!spellContainer.isEmpty() && ISpellAcceptor.isContainer(spellContainer)) {
+				if(!spellContainer.isEmpty() && ISpellAcceptor.isContainer(spellContainer)) {
 					entityData.set(TIMES_CAST, times + 1);
 					Spell spell = ISpellAcceptor.acceptor(spellContainer).getSpell();
-					if (spell != null) {
+					if(spell != null) {
 						context = new SpellContext().setPlayer((Player) thrower).setFocalPoint(this)
 								.setSpell(spell).setLoopcastIndex(times);
 					}
 				}
 			}
 
-			if (context != null) {
+			if(context != null) {
 				context.cspell.safeExecute(context);
 			}
 		}
 
-		if (level.isClientSide) {
+		if(level.isClientSide) {
 			ItemStack colorizer = entityData.get(COLORIZER_DATA);
 			int colorVal = Psi.proxy.getColorForColorizer(colorizer);
 
 			float r = PsiRenderHelper.r(colorVal) / 255F;
 			float g = PsiRenderHelper.g(colorVal) / 255F;
 			float b = PsiRenderHelper.b(colorVal) / 255F;
-			for (int i = 0; i < 5; i++) {
+			for(int i = 0; i < 5; i++) {
 				double x = getX() + (Math.random() - 0.5) * getBbWidth();
 				double y = getY() - getMyRidingOffset();
 				double z = getZ() + (Math.random() - 0.5) * getBbWidth();

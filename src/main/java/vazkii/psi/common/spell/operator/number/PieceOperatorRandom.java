@@ -35,7 +35,7 @@ public class PieceOperatorRandom extends PieceOperator {
 		int maxVal = this.getParamValue(context, max).intValue();
 		int minVal = this.getParamValueOrDefault(context, min, 0).intValue();
 
-		if (maxVal - minVal <= 0) {
+		if(maxVal - minVal <= 0) {
 			throw new SpellRuntimeException(SpellRuntimeException.NEGATIVE_NUMBER);
 		}
 

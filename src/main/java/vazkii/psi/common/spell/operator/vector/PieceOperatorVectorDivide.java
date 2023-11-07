@@ -37,7 +37,7 @@ public class PieceOperatorVectorDivide extends PieceOperator {
 		Vector3 v1 = this.getParamValue(context, vec1);
 		double d = this.getParamValue(context, num2).doubleValue();
 
-		if (d == 0) {
+		if(d == 0) {
 			throw new SpellRuntimeException(SpellRuntimeException.DIVIDE_BY_ZERO);
 		}
 

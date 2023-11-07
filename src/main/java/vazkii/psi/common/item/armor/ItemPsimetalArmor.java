@@ -72,7 +72,7 @@ public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiE
 
 	@Override
 	public void setDamage(ItemStack stack, int damage) {
-		if (damage > stack.getMaxDamage()) {
+		if(damage > stack.getMaxDamage()) {
 			damage = stack.getDamageValue();
 		}
 		super.setDamage(stack, damage);
@@ -81,7 +81,7 @@ public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiE
 	@Override
 	public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
 		Multimap<Attribute, AttributeModifier> modifiers = super.getAttributeModifiers(slot, stack);
-		if (!isEnabled(stack)) {
+		if(!isEnabled(stack)) {
 			modifiers.removeAll(Attributes.ARMOR);
 			modifiers.removeAll(Attributes.ARMOR_TOUGHNESS);
 		}
@@ -93,7 +93,7 @@ public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiE
 	@Override
 	public String getDescriptionId(ItemStack stack) {
 		String name = super.getDescriptionId(stack);
-		if (!isEnabled(stack)) {
+		if(!isEnabled(stack)) {
 			name += ".broken";
 		}
 		return name;
@@ -114,7 +114,7 @@ public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiE
 		PlayerData data = PlayerDataHandler.get(event.getEntity());
 		ItemStack playerCad = PsiAPI.getPlayerCAD(event.getEntity());
 
-		if (isEnabled(stack) && !playerCad.isEmpty()) {
+		if(isEnabled(stack) && !playerCad.isEmpty()) {
 			int timesCast = stack.getOrCreateTag().getInt(TAG_TIMES_CAST);
 
 			ItemStack bullet = ISocketable.socketable(stack).getSelectedBullet();
@@ -131,7 +131,7 @@ public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiE
 
 	@Override
 	public void onEvent(ItemStack stack, PsiArmorEvent event) {
-		if (event.type.equals(getTrueEvent(stack)) && event.getEntity() != null) {
+		if(event.type.equals(getTrueEvent(stack)) && event.getEntity() != null) {
 			cast(stack, event);
 		}
 	}

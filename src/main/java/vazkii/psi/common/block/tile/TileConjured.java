@@ -50,27 +50,27 @@ public class TileConjured extends BlockEntity {
 
 		BlockState state = getLevel().getBlockState(getBlockPos());
 
-		if (state.getBlock() == ModBlocks.conjured && state.getValue(BlockConjured.SOLID)) {
+		if(state.getBlock() == ModBlocks.conjured && state.getValue(BlockConjured.SOLID)) {
 			// http://cns-alumni.bu.edu/~lavanya/Graphics/cs580/p5/web-page/cube_edges.gif
 			boolean[] edges = new boolean[12];
 			Arrays.fill(edges, true);
 
-			if (state.getValue(BlockConjured.BLOCK_DOWN)) {
+			if(state.getValue(BlockConjured.BLOCK_DOWN)) {
 				removeEdges(edges, 0, 1, 2, 3);
 			}
-			if (state.getValue(BlockConjured.BLOCK_UP)) {
+			if(state.getValue(BlockConjured.BLOCK_UP)) {
 				removeEdges(edges, 4, 5, 6, 7);
 			}
-			if (state.getValue(BlockConjured.BLOCK_NORTH)) {
+			if(state.getValue(BlockConjured.BLOCK_NORTH)) {
 				removeEdges(edges, 3, 7, 8, 11);
 			}
-			if (state.getValue(BlockConjured.BLOCK_SOUTH)) {
+			if(state.getValue(BlockConjured.BLOCK_SOUTH)) {
 				removeEdges(edges, 1, 5, 9, 10);
 			}
-			if (state.getValue(BlockConjured.BLOCK_EAST)) {
+			if(state.getValue(BlockConjured.BLOCK_EAST)) {
 				removeEdges(edges, 2, 6, 10, 11);
 			}
-			if (state.getValue(BlockConjured.BLOCK_WEST)) {
+			if(state.getValue(BlockConjured.BLOCK_WEST)) {
 				removeEdges(edges, 0, 4, 8, 9);
 			}
 
@@ -95,7 +95,7 @@ public class TileConjured extends BlockEntity {
 			makeParticle(edges[10], r, g, b, x + 1, y + 0, z + 1, 0, 1, 0);
 			makeParticle(edges[11], r, g, b, x + 1, y + 0, z + 0, 0, 1, 0);
 
-		} else if (Math.random() < 0.5) {
+		} else if(Math.random() < 0.5) {
 			float w = 0.15F;
 			float h = 0.05F;
 			double x = getBlockPos().getX() + 0.5 + (Math.random() - 0.5) * w;
@@ -110,7 +110,7 @@ public class TileConjured extends BlockEntity {
 	}
 
 	public void makeParticle(boolean doit, float r, float g, float b, double xp, double yp, double zp, double xv, double yv, double zv) {
-		if (doit) {
+		if(doit) {
 			float m = 0.1F;
 			xv *= m;
 			yv *= m;
@@ -121,7 +121,7 @@ public class TileConjured extends BlockEntity {
 	}
 
 	public void removeEdges(boolean[] edges, int... posArray) {
-		for (int i : posArray) {
+		for(int i : posArray) {
 			edges[i] = false;
 		}
 	}
@@ -130,7 +130,7 @@ public class TileConjured extends BlockEntity {
 	@Override
 	public void saveAdditional(CompoundTag cmp) {
 		super.saveAdditional(cmp);
-		if (!colorizer.isEmpty()) {
+		if(!colorizer.isEmpty()) {
 			cmp.put(TAG_COLORIZER, colorizer.save(new CompoundTag()));
 		}
 	}
@@ -142,7 +142,7 @@ public class TileConjured extends BlockEntity {
 	}
 
 	public void readPacketNBT(CompoundTag cmp) {
-		if (cmp.contains(TAG_COLORIZER)) {
+		if(cmp.contains(TAG_COLORIZER)) {
 			colorizer = ItemStack.of(cmp.getCompound(TAG_COLORIZER));
 		} else {
 			colorizer = ItemStack.EMPTY;

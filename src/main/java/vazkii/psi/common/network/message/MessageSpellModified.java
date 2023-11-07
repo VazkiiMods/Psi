@@ -42,7 +42,7 @@ public class MessageSpellModified {
 
 	private static void writeSpell(FriendlyByteBuf buf, Spell spell) {
 		CompoundTag cmp = new CompoundTag();
-		if (spell != null) {
+		if(spell != null) {
 			spell.writeToNBT(cmp);
 		}
 
@@ -57,9 +57,9 @@ public class MessageSpellModified {
 	public void receive(Supplier<NetworkEvent.Context> context) {
 		context.get().enqueueWork(() -> {
 			BlockEntity te = context.get().getSender().level.getBlockEntity(pos);
-			if (te instanceof TileProgrammer) {
+			if(te instanceof TileProgrammer) {
 				TileProgrammer tile = (TileProgrammer) te;
-				if (tile.playerLock == null || tile.playerLock.isEmpty() || tile.playerLock.equals(context.get().getSender().getName().getString())) {
+				if(tile.playerLock == null || tile.playerLock.isEmpty() || tile.playerLock.equals(context.get().getSender().getName().getString())) {
 					tile.spell = spell;
 					tile.onSpellChanged();
 					VanillaPacketDispatcher.dispatchTEToNearbyPlayers(tile);

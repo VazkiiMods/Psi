@@ -62,7 +62,7 @@ public class JEICompat implements IModPlugin {
 	public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
 		NonNullList<ItemStack> stacks = NonNullList.create();
 		ModItems.cad.fillItemCategory(CreativeModeTab.TAB_SEARCH, stacks);
-		for (ItemStack stack : stacks) {
+		for(ItemStack stack : stacks) {
 			registration.addRecipeCatalyst(stack, TrickCraftingCategory.TYPE);
 		}
 	}

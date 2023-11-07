@@ -28,14 +28,14 @@ public class ItemLoopcastSpellBullet extends ItemSpellBullet {
 	@Override
 	public ArrayList<Entity> castSpell(ItemStack stack, SpellContext context) {
 		PlayerDataHandler.PlayerData data = PlayerDataHandler.get(context.caster);
-		if (!data.loopcasting || context.castFrom != data.loopcastHand) {
+		if(!data.loopcasting || context.castFrom != data.loopcastHand) {
 			context.cspell.safeExecute(context);
 			data.loopcasting = true;
 			data.loopcastHand = context.castFrom;
 			data.lastTickLoopcastStack = null;
 			data.loopcastTime = 1;
 			data.loopcastAmount = 0;
-			if (context.caster instanceof ServerPlayer) {
+			if(context.caster instanceof ServerPlayer) {
 				LoopcastTrackingHandler.syncForTrackersAndSelf((ServerPlayer) context.caster);
 			}
 		}

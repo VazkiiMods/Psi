@@ -123,7 +123,7 @@ public abstract class SpellPiece {
 		Class<?> evalType = getEvaluationType();
 		String evalStr = evalType == null ? "null" : CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, evalType.getSimpleName());
 		MutableComponent s = Component.translatable("psi.datatype." + evalStr);
-		if (getPieceType() == EnumPieceType.CONSTANT) {
+		if(getPieceType() == EnumPieceType.CONSTANT) {
 			s.append(" ").append(Component.translatable("psimisc.constant"));
 		}
 
@@ -171,7 +171,7 @@ public abstract class SpellPiece {
 	 */
 	public <T> T getNonnullParamValue(SpellContext context, SpellParam<T> param) throws SpellRuntimeException {
 		T v = getParamValue(context, param);
-		if (v == null) {
+		if(v == null) {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_TARGET);
 		}
 		return v;
@@ -183,9 +183,9 @@ public abstract class SpellPiece {
 	@SuppressWarnings("unchecked")
 	public <T> T getParamValue(SpellContext context, SpellParam<T> param) throws SpellRuntimeException {
 		T returnValue = (T) getRawParamValue(context, param);
-		if (returnValue instanceof Number) {
+		if(returnValue instanceof Number) {
 			Number number = (Number) returnValue;
-			if (Double.isNaN(number.doubleValue()) || Double.isInfinite(number.doubleValue())) {
+			if(Double.isNaN(number.doubleValue()) || Double.isInfinite(number.doubleValue())) {
 				throw new SpellRuntimeException(SpellRuntimeException.NAN);
 			}
 		}
@@ -197,13 +197,13 @@ public abstract class SpellPiece {
 	 */
 	public Object getRawParamValue(SpellContext context, SpellParam<?> param) {
 		SpellParam.Side side = paramSides.get(param);
-		if (!side.isEnabled()) {
+		if(!side.isEnabled()) {
 			return null;
 		}
 
 		try {
 			SpellPiece piece = spell.grid.getPieceAtSideWithRedirections(x, y, side);
-			if (piece == null || !param.canAccept(piece)) {
+			if(piece == null || !param.canAccept(piece)) {
 				return null;
 			}
 
@@ -227,7 +227,7 @@ public abstract class SpellPiece {
 	 */
 	public <T> T getNonNullParamEvaluation(SpellParam<T> param) throws SpellCompilationException {
 		T v = getParamEvaluation(param);
-		if (v == null) {
+		if(v == null) {
 			throw new SpellCompilationException(SpellCompilationException.NULL_PARAM, this.x, this.y);
 		}
 		return v;
@@ -240,13 +240,13 @@ public abstract class SpellPiece {
 	@SuppressWarnings("unchecked")
 	public <T> T getParamEvaluation(SpellParam<?> param) throws SpellCompilationException {
 		SpellParam.Side side = paramSides.get(param);
-		if (!side.isEnabled()) {
+		if(!side.isEnabled()) {
 			return null;
 		}
 
 		SpellPiece piece = spell.grid.getPieceAtSideWithRedirections(x, y, side);
 
-		if (piece == null || !param.canAccept(piece)) {
+		if(piece == null || !param.canAccept(piece)) {
 			return null;
 		}
 
@@ -283,7 +283,7 @@ public abstract class SpellPiece {
 		drawBackground(ms, buffers, light);
 		ms.translate(0F, 0F, 0.1F);
 		drawAdditional(ms, buffers, light);
-		if (isInGrid) {
+		if(isInGrid) {
 			ms.translate(0F, 0F, 0.1F);
 			drawParams(ms, buffers, light);
 			ms.translate(0F, 0F, 0.1F);
@@ -295,7 +295,7 @@ public abstract class SpellPiece {
 
 	@OnlyIn(Dist.CLIENT)
 	public static RenderType getLayer() {
-		if (layer == null) {
+		if(layer == null) {
 			RenderType.CompositeState glState = RenderType.CompositeState.builder()
 					.setShaderState(new RenderStateShard.ShaderStateShard(GameRenderer::getPositionColorTexShader))
 					.setTextureState(new RenderStateShard.TextureStateShard(ClientPsiAPI.PSI_PIECE_TEXTURE_ATLAS, false, false))
@@ -354,7 +354,7 @@ public abstract class SpellPiece {
 	 */
 	@OnlyIn(Dist.CLIENT)
 	public void drawComment(PoseStack ms, MultiBufferSource buffers, int light) {
-		if (comment != null && !comment.isEmpty()) {
+		if(comment != null && !comment.isEmpty()) {
 			VertexConsumer buffer = buffers.getBuffer(PsiAPI.internalHandler.getProgrammerLayer());
 
 			float wh = 6F;
@@ -377,7 +377,7 @@ public abstract class SpellPiece {
 	@OnlyIn(Dist.CLIENT)
 	public void drawParams(PoseStack ms, MultiBufferSource buffers, int light) {
 		VertexConsumer buffer = buffers.getBuffer(PsiAPI.internalHandler.getProgrammerLayer());
-		for (SpellParam<?> param : paramSides.keySet()) {
+		for(SpellParam<?> param : paramSides.keySet()) {
 			drawParam(ms, buffer, light, param);
 		}
 	}
@@ -385,23 +385,23 @@ public abstract class SpellPiece {
 	@OnlyIn(Dist.CLIENT)
 	public void drawParam(PoseStack ms, VertexConsumer buffer, int light, SpellParam<?> param) {
 		SpellParam.Side side = paramSides.get(param);
-		if (!side.isEnabled() || param.getArrowType() == ArrowType.NONE) {
+		if(!side.isEnabled() || param.getArrowType() == ArrowType.NONE) {
 			return;
 		}
 
 		int index = getParamArrowIndex(param);
 		int count = getParamArrowCount(side);
 		SpellPiece neighbour = spell.grid.getPieceAtSideSafely(x, y, side);
-		if (neighbour != null) {
+		if(neighbour != null) {
 			int nbcount = neighbour.getParamArrowCount(side.getOpposite());
-			if (side.asInt() > side.getOpposite().asInt()) {
+			if(side.asInt() > side.getOpposite().asInt()) {
 				index += nbcount;
 			}
 			count += nbcount;
 		}
 
 		float percent = 0.5f;
-		if (count > 1) {
+		if(count > 1) {
 			percent = (float) index / (count - 1);
 		}
 		drawParam(ms, buffer, light, side, param.color, param.getArrowType(), percent);
@@ -409,7 +409,7 @@ public abstract class SpellPiece {
 
 	@OnlyIn(Dist.CLIENT)
 	public void drawParam(PoseStack ms, VertexConsumer buffer, int light, SpellParam.Side side, int color, SpellParam.ArrowType arrowType, float percent) {
-		if (arrowType == ArrowType.NONE) {
+		if(arrowType == ArrowType.NONE) {
 			return;
 		}
 
@@ -418,7 +418,7 @@ public abstract class SpellPiece {
 		float maxX = minX + 8;
 		float maxY = minY + 8;
 
-		if (arrowType == ArrowType.OUT) {
+		if(arrowType == ArrowType.OUT) {
 			side = side.getOpposite();
 		}
 		float wh = 8F;
@@ -442,8 +442,8 @@ public abstract class SpellPiece {
 	@OnlyIn(Dist.CLIENT)
 	public int getParamArrowCount(SpellParam.Side side) {
 		int count = 0;
-		for (SpellParam<?> p : paramSides.keySet()) {
-			if (p.getArrowType() != ArrowType.NONE && paramSides.get(p) == side) {
+		for(SpellParam<?> p : paramSides.keySet()) {
+			if(p.getArrowType() != ArrowType.NONE && paramSides.get(p) == side) {
 				count++;
 			}
 		}
@@ -454,11 +454,11 @@ public abstract class SpellPiece {
 	public int getParamArrowIndex(SpellParam<?> param) {
 		SpellParam.Side side = paramSides.get(param);
 		int count = 0;
-		for (SpellParam<?> p : paramSides.keySet()) {
-			if (p == param) {
+		for(SpellParam<?> p : paramSides.keySet()) {
+			if(p == param) {
 				return count;
 			}
-			if (p.getArrowType() != ArrowType.NONE && paramSides.get(p) == side) {
+			if(p.getArrowType() != ArrowType.NONE && paramSides.get(p) == side) {
 				count++;
 			}
 		}
@@ -486,14 +486,14 @@ public abstract class SpellPiece {
 		tooltip.add(Component.translatable(getUnlocalizedName()));
 		tooltip.add(Component.translatable(getUnlocalizedDesc()).withStyle(ChatFormatting.GRAY));
 		TooltipHelper.tooltipIfShift(tooltip, () -> addToTooltipAfterShift(tooltip));
-		if (!statLabels.isEmpty()) {
+		if(!statLabels.isEmpty()) {
 			TooltipHelper.tooltipIfCtrl(tooltip, () -> addToTooltipAfterCtrl(tooltip));
 		}
 
 		String addon = registryKey.getNamespace();
-		if (!addon.equals("psi")) {
+		if(!addon.equals("psi")) {
 
-			if (ModList.get().getModContainerById(addon).isPresent()) {
+			if(ModList.get().getModContainerById(addon).isPresent()) {
 				tooltip.add(Component.translatable("psimisc.provider_mod", ModList.get().getModContainerById(addon).get().getNamespace()));
 			}
 		}
@@ -505,7 +505,7 @@ public abstract class SpellPiece {
 		MutableComponent eval = getEvaluationTypeString().plainCopy().withStyle(ChatFormatting.GOLD);
 		tooltip.add(Component.literal("Output ").append(eval));
 
-		for (SpellParam<?> param : paramSides.keySet()) {
+		for(SpellParam<?> param : paramSides.keySet()) {
 			Component pName = Component.translatable(param.name).withStyle(ChatFormatting.YELLOW);
 			Component pEval = Component.literal(" [").append(param.getRequiredTypeString()).append("]").withStyle(ChatFormatting.YELLOW);
 			tooltip.add(Component.literal(param.canDisable ? "[Input] " : " Input  ").append(pName).append(pEval));
@@ -558,13 +558,13 @@ public abstract class SpellPiece {
 
 	public static SpellPiece createFromNBT(Spell spell, CompoundTag cmp) {
 		String key;
-		if (cmp.contains(TAG_KEY_LEGACY)) {
+		if(cmp.contains(TAG_KEY_LEGACY)) {
 			key = cmp.getString(TAG_KEY_LEGACY);
 		} else {
 			key = cmp.getString(TAG_KEY);
 		}
 
-		if (key.startsWith("_")) {
+		if(key.startsWith("_")) {
 			key = PSI_PREFIX + key.substring(1);
 		}
 		try {
@@ -574,20 +574,20 @@ public abstract class SpellPiece {
 		}
 		boolean exists = false;
 		ResourceLocation rl = new ResourceLocation(key);
-		if (PsiAPI.isPieceRegistered(rl)) {
+		if(PsiAPI.isPieceRegistered(rl)) {
 			exists = true;
 		} else {
 			Set<String> pieceNamespaces = PsiAPI.getSpellPieceRegistry().keySet().stream().map(ResourceLocation::getNamespace).collect(Collectors.toSet());
-			for (String namespace : pieceNamespaces) {
+			for(String namespace : pieceNamespaces) {
 				rl = new ResourceLocation(namespace, key);
-				if (PsiAPI.isPieceRegistered(rl)) {
+				if(PsiAPI.isPieceRegistered(rl)) {
 					exists = true;
 					break;
 				}
 			}
 		}
 
-		if (exists) {
+		if(exists) {
 			Class<? extends SpellPiece> clazz = PsiAPI.getSpellPiece(rl);
 			SpellPiece p = create(clazz, spell);
 			p.readFromNBT(cmp);
@@ -618,14 +618,14 @@ public abstract class SpellPiece {
 
 	public void readFromNBT(CompoundTag cmp) {
 		CompoundTag paramCmp = cmp.getCompound(TAG_PARAMS);
-		for (String s : params.keySet()) {
+		for(String s : params.keySet()) {
 			SpellParam<?> param = params.get(s);
 
 			String key = s;
-			if (paramCmp.contains(key)) {
+			if(paramCmp.contains(key)) {
 				paramSides.put(param, SpellParam.Side.fromInt(paramCmp.getInt(key)));
 			} else {
-				if (key.startsWith(SpellParam.PSI_PREFIX)) {
+				if(key.startsWith(SpellParam.PSI_PREFIX)) {
 					key = "_" + key.substring(SpellParam.PSI_PREFIX.length());
 				}
 				paramSides.put(param, SpellParam.Side.fromInt(paramCmp.getInt(key)));
@@ -636,7 +636,7 @@ public abstract class SpellPiece {
 	}
 
 	public void writeToNBT(CompoundTag cmp) {
-		if (comment == null) {
+		if(comment == null) {
 			comment = "";
 		}
 
@@ -644,17 +644,17 @@ public abstract class SpellPiece {
 
 		int paramCount = 0;
 		CompoundTag paramCmp = new CompoundTag();
-		for (String s : params.keySet()) {
+		for(String s : params.keySet()) {
 			SpellParam<?> param = params.get(s);
 			SpellParam.Side side = paramSides.get(param);
 			paramCmp.putInt(s.replaceAll("^" + SpellParam.PSI_PREFIX, "_"), side.asInt());
 			paramCount++;
 		}
 
-		if (paramCount > 0) {
+		if(paramCount > 0) {
 			cmp.put(TAG_PARAMS, paramCmp);
 		}
-		if (!comment.isEmpty()) {
+		if(!comment.isEmpty()) {
 			cmp.putString(TAG_COMMENT, comment);
 		}
 	}

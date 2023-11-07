@@ -48,7 +48,7 @@ public class PieceTrickCollapseBlockSequence extends PieceTrick {
 		super.addToMetadata(meta);
 
 		Double maxBlocksVal = this.<Double>getParamEvaluation(maxBlocks);
-		if (maxBlocksVal == null || maxBlocksVal <= 0) {
+		if(maxBlocksVal == null || maxBlocksVal <= 0) {
 			throw new SpellCompilationException(SpellCompilationException.NON_POSITIVE_VALUE, x, y);
 		}
 
@@ -62,36 +62,36 @@ public class PieceTrickCollapseBlockSequence extends PieceTrick {
 		Vector3 targetVal = this.getParamValue(context, target);
 		int maxBlocksInt = this.getParamValue(context, maxBlocks).intValue();
 
-		if (positionVal == null) {
+		if(positionVal == null) {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
 		}
 
 		ItemStack tool = context.tool;
-		if (tool.isEmpty()) {
+		if(tool.isEmpty()) {
 			tool = PsiAPI.getPlayerCAD(context.caster);
 		}
 
 		Level world = context.caster.level;
 		Vector3 targetNorm = targetVal.copy().normalize();
-		for (BlockPos blockPos : MathHelper.getBlocksAlongRay(positionVal.toVec3D(), positionVal.copy().add(targetNorm.copy().multiply(maxBlocksInt)).toVec3D(), maxBlocksInt)) {
-			if (!context.isInRadius(Vector3.fromBlockPos(blockPos))) {
+		for(BlockPos blockPos : MathHelper.getBlocksAlongRay(positionVal.toVec3D(), positionVal.copy().add(targetNorm.copy().multiply(maxBlocksInt)).toVec3D(), maxBlocksInt)) {
+			if(!context.isInRadius(Vector3.fromBlockPos(blockPos))) {
 				throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 			}
 			BlockPos posDown = blockPos.below();
 			BlockState state = world.getBlockState(blockPos);
 			BlockState stateDown = world.getBlockState(posDown);
 
-			if (!world.mayInteract(context.caster, blockPos)) {
+			if(!world.mayInteract(context.caster, blockPos)) {
 				return null;
 			}
 
-			if (stateDown.isAir() && state.getDestroySpeed(world, blockPos) != -1 &&
+			if(stateDown.isAir() && state.getDestroySpeed(world, blockPos) != -1 &&
 					PieceTrickBreakBlock.canHarvestBlock(state, context.caster, world, blockPos, tool) &&
 					world.getBlockEntity(blockPos) == null) {
 
 				BlockEvent.BreakEvent event = PieceTrickBreakBlock.createBreakEvent(state, context.caster, world, blockPos, tool);
 				MinecraftForge.EVENT_BUS.post(event);
-				if (event.isCanceled()) {
+				if(event.isCanceled()) {
 					return null;
 				}
 

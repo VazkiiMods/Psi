@@ -42,17 +42,17 @@ public class EntitySpellMine extends EntitySpellGrenade {
 
 		List<LivingEntity> entities = getCommandSenderWorld().getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(1, 1, 1));
 		Entity thrower = getOwner();
-		if (thrower != null && tickCount < 30) {
+		if(thrower != null && tickCount < 30) {
 			entities.remove(thrower);
 		}
 
-		if (!entities.isEmpty()) {
-			if (!triggered) {
+		if(!entities.isEmpty()) {
+			if(!triggered) {
 				playSound(SoundEvents.STONE_PRESSURE_PLATE_CLICK_ON, 0.5F, 0.6F);
 			}
 			triggered = true;
 			entityData.set(ATTACKTARGET_UUID, Optional.of(entities.get(0).getUUID()));
-		} else if (triggered) {
+		} else if(triggered) {
 			doExplosion();
 		}
 	}

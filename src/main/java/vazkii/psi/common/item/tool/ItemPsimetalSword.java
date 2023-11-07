@@ -51,13 +51,13 @@ public class ItemPsimetalSword extends SwordItem implements IPsimetalTool {
 	public boolean hurtEnemy(ItemStack itemstack, LivingEntity target, @Nonnull LivingEntity attacker) {
 		super.hurtEnemy(itemstack, target, attacker);
 
-		if (isEnabled(itemstack) && attacker instanceof Player) {
+		if(isEnabled(itemstack) && attacker instanceof Player) {
 			Player player = (Player) attacker;
 
 			PlayerData data = PlayerDataHandler.get(player);
 			ItemStack playerCad = PsiAPI.getPlayerCAD(player);
 
-			if (!playerCad.isEmpty()) {
+			if(!playerCad.isEmpty()) {
 				ItemStack bullet = ISocketable.socketable(itemstack).getSelectedBullet();
 				ItemCAD.cast(player.getCommandSenderWorld(), player, data, bullet, playerCad, 5, 10, 0.05F,
 						(SpellContext context) -> {
@@ -73,7 +73,7 @@ public class ItemPsimetalSword extends SwordItem implements IPsimetalTool {
 	@Override
 	public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
 		Multimap<Attribute, AttributeModifier> modifiers = super.getAttributeModifiers(slot, stack);
-		if (!isEnabled(stack)) {
+		if(!isEnabled(stack)) {
 			modifiers.removeAll(Attributes.ATTACK_DAMAGE);
 		}
 		return modifiers;
@@ -81,7 +81,7 @@ public class ItemPsimetalSword extends SwordItem implements IPsimetalTool {
 
 	@Override
 	public void setDamage(ItemStack stack, int damage) {
-		if (damage > stack.getMaxDamage()) {
+		if(damage > stack.getMaxDamage()) {
 			damage = stack.getDamageValue();
 		}
 		super.setDamage(stack, damage);
@@ -89,7 +89,7 @@ public class ItemPsimetalSword extends SwordItem implements IPsimetalTool {
 
 	@Override
 	public float getDestroySpeed(ItemStack stack, BlockState state) {
-		if (!isEnabled(stack)) {
+		if(!isEnabled(stack)) {
 			return 1;
 		}
 		return super.getDestroySpeed(stack, state);
@@ -99,7 +99,7 @@ public class ItemPsimetalSword extends SwordItem implements IPsimetalTool {
 	@Override
 	public String getDescriptionId(ItemStack stack) {
 		String name = super.getDescriptionId(stack);
-		if (!isEnabled(stack)) {
+		if(!isEnabled(stack)) {
 			name += ".broken";
 		}
 		return name;

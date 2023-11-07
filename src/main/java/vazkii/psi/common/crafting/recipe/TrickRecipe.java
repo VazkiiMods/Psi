@@ -114,7 +114,7 @@ public class TrickRecipe implements ITrickRecipe {
 			ItemStack cadAssembly = CraftingHelper.getItemStack(GsonHelper.getAsJsonObject(json, "cad"), true);
 
 			PieceCraftingTrick trick = null;
-			if (json.has("trick")) {
+			if(json.has("trick")) {
 				trick = PsiAPI.getSpellPieceRegistry().getOptional(new ResourceLocation(GsonHelper.getAsString(json, "trick")))
 						.filter(PieceCraftingTrick.class::isAssignableFrom)
 						.map(clazz -> (PieceCraftingTrick) SpellPiece.create(clazz, dummySpell))
@@ -130,7 +130,7 @@ public class TrickRecipe implements ITrickRecipe {
 			ItemStack output = buf.readItem();
 			ItemStack cadAssembly = buf.readItem();
 			PieceCraftingTrick trick = null;
-			if (buf.readBoolean()) {
+			if(buf.readBoolean()) {
 				trick = PsiAPI.getSpellPieceRegistry().getOptional(buf.readResourceLocation())
 						.map(clazz -> (PieceCraftingTrick) SpellPiece.create(clazz, dummySpell))
 						.orElse(null);
@@ -143,7 +143,7 @@ public class TrickRecipe implements ITrickRecipe {
 			recipe.input.toNetwork(buf);
 			buf.writeItem(recipe.output);
 			buf.writeItem(recipe.cad);
-			if (recipe.piece != null) {
+			if(recipe.piece != null) {
 				buf.writeBoolean(true);
 				buf.writeResourceLocation(recipe.piece.registryKey);
 			} else {

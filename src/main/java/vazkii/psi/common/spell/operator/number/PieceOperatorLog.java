@@ -34,15 +34,15 @@ public class PieceOperatorLog extends PieceOperator {
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		double d = this.getParamValue(context, num).doubleValue();
 
-		if (d < 0) {
+		if(d < 0) {
 			throw new SpellRuntimeException(SpellRuntimeException.NEGATIVE_NUMBER);
 		}
 
 		double logNum = Math.log10(d);
 
 		Number b = this.getParamValue(context, base);
-		if (b != null) {
-			if (b.doubleValue() < 0) {
+		if(b != null) {
+			if(b.doubleValue() < 0) {
 				throw new SpellRuntimeException(SpellRuntimeException.NEGATIVE_NUMBER);
 			}
 

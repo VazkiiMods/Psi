@@ -31,16 +31,16 @@ public class GuiButtonHelp extends Button {
 
 	@Override
 	public void renderButton(PoseStack ms, int mouseX, int mouseY, float pTicks) {
-		if (!gui.takingScreenshot) {
+		if(!gui.takingScreenshot) {
 			boolean overHelp = mouseX > x && mouseY > y && mouseX < x + 12 && mouseY < y + 12;
 			RenderSystem.setShaderTexture(0, GuiProgrammer.texture);
 			blit(ms, x, y, gui.xSize + (overHelp ? 12 : 0), gui.ySize + 9, 12, 12);
-			if (overHelp && !Screen.hasAltDown()) {
+			if(overHelp && !Screen.hasAltDown()) {
 				gui.tooltip.add(Component.translatable("psimisc.programmer_help"));
 				String ctrl = I18n.get(Minecraft.ON_OSX ? "psimisc.ctrl_mac" : "psimisc.ctrl_windows");
 				TooltipHelper.tooltipIfShift(gui.tooltip, () -> {
 					int i = 0;
-					while (I18n.exists("psi.programmer_reference" + i)) {
+					while(I18n.exists("psi.programmer_reference" + i)) {
 						gui.tooltip.add(Component.translatable("psi.programmer_reference" + i++, ctrl));
 					}
 				});

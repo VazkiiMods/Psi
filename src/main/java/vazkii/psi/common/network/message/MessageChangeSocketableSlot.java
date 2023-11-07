@@ -40,11 +40,11 @@ public class MessageChangeSocketableSlot {
 			ServerPlayer player = context.get().getSender();
 			ItemStack stack = player.getItemInHand(InteractionHand.MAIN_HAND);
 
-			if (!stack.isEmpty() && stack.getCapability(PsiAPI.SOCKETABLE_CAPABILITY).isPresent()) {
+			if(!stack.isEmpty() && stack.getCapability(PsiAPI.SOCKETABLE_CAPABILITY).isPresent()) {
 				stack.getCapability(PsiAPI.SOCKETABLE_CAPABILITY).ifPresent(cap -> cap.setSelectedSlot(slot));
 			} else {
 				stack = player.getItemInHand(InteractionHand.OFF_HAND);
-				if (!stack.isEmpty()) {
+				if(!stack.isEmpty()) {
 					stack.getCapability(PsiAPI.SOCKETABLE_CAPABILITY).ifPresent(cap -> cap.setSelectedSlot(slot));
 				}
 			}

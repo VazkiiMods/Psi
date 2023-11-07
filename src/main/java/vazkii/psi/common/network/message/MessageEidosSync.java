@@ -36,7 +36,7 @@ public class MessageEidosSync {
 	public boolean receive(Supplier<NetworkEvent.Context> context) {
 		context.get().enqueueWork(() -> {
 			Player player = Psi.proxy.getClientPlayer();
-			if (player != null) {
+			if(player != null) {
 				PlayerDataHandler.PlayerData data = PlayerDataHandler.get(player);
 				data.eidosReversionTime = reversionTime;
 				data.isReverting = true;

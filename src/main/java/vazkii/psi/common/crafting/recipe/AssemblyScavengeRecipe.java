@@ -32,22 +32,22 @@ public class AssemblyScavengeRecipe extends CustomRecipe {
 	public boolean matches(@Nonnull CraftingContainer inv, @Nonnull Level world) {
 		boolean foundTarget = false;
 
-		for (int i = 0; i < inv.getContainerSize(); i++) {
+		for(int i = 0; i < inv.getContainerSize(); i++) {
 			ItemStack stack = inv.getItem(i);
-			if (!stack.isEmpty()) {
-				if (stack.getItem() instanceof ICAD) {
-					if (foundTarget) {
+			if(!stack.isEmpty()) {
+				if(stack.getItem() instanceof ICAD) {
+					if(foundTarget) {
 						return false;
 					}
 
-					for (EnumCADComponent comp : EnumCADComponent.class.getEnumConstants()) {
-						if (comp == EnumCADComponent.ASSEMBLY) {
+					for(EnumCADComponent comp : EnumCADComponent.class.getEnumConstants()) {
+						if(comp == EnumCADComponent.ASSEMBLY) {
 							continue;
 						}
 
 						ItemStack compStack = ((ICAD) stack.getItem()).getComponentInSlot(stack, comp);
 
-						if (!compStack.isEmpty()) {
+						if(!compStack.isEmpty()) {
 							return false;
 						}
 					}
@@ -67,9 +67,9 @@ public class AssemblyScavengeRecipe extends CustomRecipe {
 	public ItemStack assemble(@Nonnull CraftingContainer inv) {
 		ItemStack target = ItemStack.EMPTY;
 
-		for (int i = 0; i < inv.getContainerSize(); i++) {
+		for(int i = 0; i < inv.getContainerSize(); i++) {
 			ItemStack stack = inv.getItem(i);
-			if (!stack.isEmpty()) {
+			if(!stack.isEmpty()) {
 				target = stack;
 			}
 		}

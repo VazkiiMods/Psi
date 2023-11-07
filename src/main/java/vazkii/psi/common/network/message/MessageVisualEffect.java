@@ -67,9 +67,9 @@ public class MessageVisualEffect {
 
 		context.get().enqueueWork(() -> {
 			Level world = Psi.proxy.getClientWorld();
-			switch (effectType) {
+			switch(effectType) {
 			case TYPE_CRAFT:
-				for (int i = 0; i < 5; i++) {
+				for(int i = 0; i < 5; i++) {
 					double particleX = x + (Math.random() - 0.5) * 2.1 * width;
 					double particleY = y - offset;
 					double particleZ = z + (Math.random() - 0.5) * 2.1 * width;
@@ -78,7 +78,7 @@ public class MessageVisualEffect {
 
 					double m = 0.01;
 					double d3 = 10.0D;
-					for (int j = 0; j < 3; j++) {
+					for(int j = 0; j < 3; j++) {
 						double d0 = world.random.nextGaussian() * m;
 						double d1 = world.random.nextGaussian() * m;
 						double d2 = world.random.nextGaussian() * m;

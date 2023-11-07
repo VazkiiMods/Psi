@@ -35,16 +35,16 @@ public class BulletToDriveRecipe extends CustomRecipe {
 		boolean foundSource = false;
 		boolean foundTarget = false;
 
-		for (int i = 0; i < inv.getContainerSize(); i++) {
+		for(int i = 0; i < inv.getContainerSize(); i++) {
 			ItemStack stack = inv.getItem(i);
-			if (!stack.isEmpty()) {
-				if (ISpellAcceptor.hasSpell(stack)) {
-					if (foundTarget) {
+			if(!stack.isEmpty()) {
+				if(ISpellAcceptor.hasSpell(stack)) {
+					if(foundTarget) {
 						return false;
 					}
 					foundTarget = true;
-				} else if (stack.getItem() instanceof ItemSpellDrive && ItemSpellDrive.getSpell(stack) == null) {
-					if (foundSource) {
+				} else if(stack.getItem() instanceof ItemSpellDrive && ItemSpellDrive.getSpell(stack) == null) {
+					if(foundSource) {
 						return false;
 					}
 					foundSource = true;
@@ -63,10 +63,10 @@ public class BulletToDriveRecipe extends CustomRecipe {
 		Spell source = null;
 		ItemStack target = ItemStack.EMPTY;
 
-		for (int i = 0; i < inv.getContainerSize(); i++) {
+		for(int i = 0; i < inv.getContainerSize(); i++) {
 			ItemStack stack = inv.getItem(i);
-			if (!stack.isEmpty()) {
-				if (ISpellAcceptor.hasSpell(stack)) {
+			if(!stack.isEmpty()) {
+				if(ISpellAcceptor.hasSpell(stack)) {
 					source = ISpellAcceptor.acceptor(stack).getSpell();
 				} else {
 					target = stack;
@@ -83,9 +83,9 @@ public class BulletToDriveRecipe extends CustomRecipe {
 	public NonNullList<ItemStack> getRemainingItems(CraftingContainer inv) {
 		NonNullList<ItemStack> list = NonNullList.withSize(inv.getContainerSize(), ItemStack.EMPTY);
 
-		for (int i = 0; i < list.size(); ++i) {
+		for(int i = 0; i < list.size(); ++i) {
 			ItemStack item = inv.getItem(i);
-			if (ISpellAcceptor.hasSpell(item)) {
+			if(ISpellAcceptor.hasSpell(item)) {
 				list.set(i, item.copy());
 				break;
 			}

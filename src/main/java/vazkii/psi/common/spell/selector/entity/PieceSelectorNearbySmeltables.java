@@ -42,7 +42,7 @@ public class PieceSelectorNearbySmeltables extends PieceSelectorNearby {
 	}
 
 	public boolean accept(Entity e) {
-		if (e instanceof ItemEntity) {
+		if(e instanceof ItemEntity) {
 			ItemEntity eitem = (ItemEntity) e;
 			return !simulateSmelt(e.getCommandSenderWorld(), eitem.getItem()).isEmpty();
 		}

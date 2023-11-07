@@ -12,13 +12,15 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 
 import mezz.jei.api.gui.drawable.IDrawableStatic;
+
 import net.minecraft.client.renderer.MultiBufferSource;
+
 import vazkii.psi.api.spell.SpellPiece;
 
 public class DrawablePiece implements IDrawableStatic {
-	
+
 	public final SpellPiece piece;
-	
+
 	public DrawablePiece(SpellPiece piece) {
 		this.piece = piece;
 	}
@@ -27,7 +29,7 @@ public class DrawablePiece implements IDrawableStatic {
 	public void draw(PoseStack ms, int xOffset, int yOffset, int maskTop, int maskBottom, int maskLeft, int maskRight) {
 		ms.pushPose();
 		ms.translate(xOffset, yOffset, 0);
-		
+
 		MultiBufferSource.BufferSource buffers = MultiBufferSource.immediate(Tesselator.getInstance().getBuilder());
 		piece.drawBackground(ms, buffers, 0xF000F0);
 

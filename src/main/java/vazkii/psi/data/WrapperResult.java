@@ -52,14 +52,14 @@ public class WrapperResult implements FinishedRecipe {
 	@Override
 	public void serializeRecipeData(JsonObject json) {
 		delegate.serializeRecipeData(json);
-		if (transform != null) {
+		if(transform != null) {
 			transform.accept(json);
 		}
 	}
 
 	@Override
 	public JsonObject serializeRecipe() {
-		if (type == null) {
+		if(type == null) {
 			return FinishedRecipe.super.serializeRecipe();
 		}
 		JsonObject jsonobject = new JsonObject();

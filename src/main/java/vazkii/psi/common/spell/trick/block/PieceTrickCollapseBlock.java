@@ -49,10 +49,10 @@ public class PieceTrickCollapseBlock extends PieceTrick {
 		ItemStack tool = context.getHarvestTool();
 		Vector3 positionVal = this.getParamValue(context, position);
 
-		if (positionVal == null) {
+		if(positionVal == null) {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
 		}
-		if (!context.isInRadius(positionVal)) {
+		if(!context.isInRadius(positionVal)) {
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 		}
 
@@ -62,17 +62,17 @@ public class PieceTrickCollapseBlock extends PieceTrick {
 		BlockState state = world.getBlockState(pos);
 		BlockState stateDown = world.getBlockState(posDown);
 
-		if (!world.mayInteract(context.caster, pos)) {
+		if(!world.mayInteract(context.caster, pos)) {
 			return null;
 		}
 
-		if (stateDown.isAir() && state.getDestroySpeed(world, pos) != -1 &&
+		if(stateDown.isAir() && state.getDestroySpeed(world, pos) != -1 &&
 				PieceTrickBreakBlock.canHarvestBlock(state, context.caster, world, pos, tool) &&
 				world.getBlockEntity(pos) == null) {
 
 			BlockEvent.BreakEvent event = PieceTrickBreakBlock.createBreakEvent(state, context.caster, world, pos, tool);
 			MinecraftForge.EVENT_BUS.post(event);
-			if (event.isCanceled()) {
+			if(event.isCanceled()) {
 				return null;
 			}
 

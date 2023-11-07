@@ -12,6 +12,7 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+
 import vazkii.psi.common.lib.LibMisc;
 
 @Mod.EventBusSubscriber(modid = LibMisc.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -20,16 +21,16 @@ public class DataGenerator {
 	@SubscribeEvent
 	public static void gatherData(GatherDataEvent event) {
 		ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
-		
-		if (event.includeServer()) {
+
+		if(event.includeServer()) {
 			PsiBlockTagProvider blockTagProvider = new PsiBlockTagProvider(event.getGenerator(), existingFileHelper);
 			event.getGenerator().addProvider(true, blockTagProvider);
 			event.getGenerator().addProvider(true, new PsiItemTagProvider(event.getGenerator(), blockTagProvider, existingFileHelper));
-			event.getGenerator().addProvider(true, new PsiRecipeGenerator(event.getGenerator()));	
+			event.getGenerator().addProvider(true, new PsiRecipeGenerator(event.getGenerator()));
 			event.getGenerator().addProvider(true, new PsiTrickRecipeGenerator(event.getGenerator()));
 		}
-		
-		if (event.includeClient()) {
+
+		if(event.includeClient()) {
 			event.getGenerator().addProvider(true, new PsiBlockModelGenerator(event.getGenerator(), event.getExistingFileHelper()));
 			event.getGenerator().addProvider(true, new PsiItemModelGenerator(event.getGenerator(), event.getExistingFileHelper()));
 		}

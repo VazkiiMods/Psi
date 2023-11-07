@@ -40,7 +40,7 @@ public final class ContributorSpellCircleHandler {
 
 	public static void load(Properties props) {
 		Map<String, int[]> m = new HashMap<>();
-		for (String key : props.stringPropertyNames()) {
+		for(String key : props.stringPropertyNames()) {
 			String value = props.getProperty(key).replace("#", "0x");
 			try {
 				int[] values = Stream.of(value.split(",")).mapToInt(el -> Integer.parseInt(el.substring(2), 16)).toArray();
@@ -53,7 +53,7 @@ public final class ContributorSpellCircleHandler {
 	}
 
 	public static void firstStart() {
-		if (!startedLoading) {
+		if(!startedLoading) {
 			new ThreadContributorListLoader();
 			startedLoading = true;
 		}
@@ -69,7 +69,7 @@ public final class ContributorSpellCircleHandler {
 
 	@SubscribeEvent
 	public static void onCadTake(CADTakeEvent event) {
-		if (ContributorSpellCircleHandler.isContributor(event.getPlayer().getName().getString().toLowerCase(Locale.ROOT)) && !((ICAD) event.getCad().getItem()).getComponentInSlot(event.getCad(), EnumCADComponent.DYE).isEmpty()) {
+		if(ContributorSpellCircleHandler.isContributor(event.getPlayer().getName().getString().toLowerCase(Locale.ROOT)) && !((ICAD) event.getCad().getItem()).getComponentInSlot(event.getCad(), EnumCADComponent.DYE).isEmpty()) {
 			ItemStack dyeStack = ((ICAD) event.getCad().getItem()).getComponentInSlot(event.getCad(), EnumCADComponent.DYE);
 			((ICADColorizer) dyeStack.getItem()).setContributorName(dyeStack, event.getPlayer().getName().getString());
 			ItemCAD.setComponent(event.getCad(), dyeStack);
@@ -78,7 +78,7 @@ public final class ContributorSpellCircleHandler {
 
 	@SubscribeEvent
 	public static void craftColorizer(PlayerEvent.ItemCraftedEvent event) {
-		if (ContributorSpellCircleHandler.isContributor(event.getEntity().getName().getString().toLowerCase(Locale.ROOT)) && event.getCrafting().getItem() instanceof ICADColorizer) {
+		if(ContributorSpellCircleHandler.isContributor(event.getEntity().getName().getString().toLowerCase(Locale.ROOT)) && event.getCrafting().getItem() instanceof ICADColorizer) {
 			((ICADColorizer) event.getCrafting().getItem()).setContributorName(event.getCrafting(), event.getEntity().getName().getString());
 		}
 	}

@@ -38,7 +38,7 @@ public class PieceSelectorBlockPresence extends PieceSelector {
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		Vector3 positionVal = this.getParamValue(context, position);
 
-		if (positionVal == null) {
+		if(positionVal == null) {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
 		}
 
@@ -46,9 +46,9 @@ public class PieceSelectorBlockPresence extends PieceSelector {
 		BlockState state = context.caster.getCommandSenderWorld().getBlockState(pos);
 		Block block = state.getBlock();
 
-		if (state.isAir() || state.getMaterial().isReplaceable()) {
+		if(state.isAir() || state.getMaterial().isReplaceable()) {
 			return 0.0;
-		} else if (state.getCollisionShape(context.caster.getCommandSenderWorld(), pos, CollisionContext.of(context.caster)).isEmpty()) {
+		} else if(state.getCollisionShape(context.caster.getCommandSenderWorld(), pos, CollisionContext.of(context.caster)).isEmpty()) {
 			return 1.0;
 		}
 		return 2.0;

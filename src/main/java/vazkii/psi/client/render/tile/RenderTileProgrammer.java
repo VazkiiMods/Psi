@@ -33,7 +33,7 @@ public class RenderTileProgrammer implements BlockEntityRenderer<TileProgrammer>
 
 	@Override
 	public void render(TileProgrammer te, float partialticks, PoseStack ms, MultiBufferSource buffers, int worldLight, int overlay) {
-		if (te.isEnabled()) {
+		if(te.isEnabled()) {
 			ms.pushPose();
 			int light = Psi.magical ? worldLight : 0xF000F0;
 
@@ -45,7 +45,7 @@ public class RenderTileProgrammer implements BlockEntityRenderer<TileProgrammer>
 			BlockState state = te.getBlockState();
 
 			Direction facing = state.getValue(FaceAttachedHorizontalDirectionalBlock.FACING);
-			switch (facing) {
+			switch(facing) {
 			case SOUTH:
 				rot = -90F;
 				break;
@@ -66,7 +66,7 @@ public class RenderTileProgrammer implements BlockEntityRenderer<TileProgrammer>
 			float f = 1F / 300F;
 			ms.scale(f, f, -f);
 
-			if (Psi.magical) {
+			if(Psi.magical) {
 				ms.mulPose(Vector3f.XP.rotationDegrees(90F));
 				ms.translate(70F, -220F, -100F + Math.sin(ClientTickHandler.total / 50) * 10);
 				ms.mulPose(Vector3f.XP.rotationDegrees(-16F + (float) Math.cos(ClientTickHandler.total / 100) * 10F));

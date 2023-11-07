@@ -44,7 +44,7 @@ public final class ShaderHandler {
 
 	public static void init() {
 		useShaders = canUseShaders();
-		if (!useShaders) {
+		if(!useShaders) {
 			return;
 		}
 		Psi.logger.info("Initializing Psi shaders!");
@@ -55,17 +55,17 @@ public final class ShaderHandler {
 	}
 
 	public static void useShader(int shader, Consumer<Integer> callback) {
-		if (!useShaders) {
+		if(!useShaders) {
 			return;
 		}
 
 		ARBShaderObjects.glUseProgramObjectARB(shader);
 
-		if (shader != 0) {
+		if(shader != 0) {
 			int time = ARBShaderObjects.glGetUniformLocationARB(shader, "time");
 			ARBShaderObjects.glUniform1iARB(time, ClientTickHandler.ticksInGame);
 
-			if (callback != null) {
+			if(callback != null) {
 				callback.accept(shader);
 			}
 		}
@@ -97,33 +97,33 @@ public final class ShaderHandler {
 
 	private static int createProgram(String vert, String frag) {
 		int vertId = 0, fragId = 0, program;
-		if (vert != null) {
+		if(vert != null) {
 			vertId = createShader(vert, VERT_ST);
 		}
-		if (frag != null) {
+		if(frag != null) {
 			fragId = createShader(frag, FRAG_ST);
 		}
 
 		program = ARBShaderObjects.glCreateProgramObjectARB();
-		if (program == 0) {
+		if(program == 0) {
 			return 0;
 		}
 
-		if (vert != null) {
+		if(vert != null) {
 			ARBShaderObjects.glAttachObjectARB(program, vertId);
 		}
-		if (frag != null) {
+		if(frag != null) {
 			ARBShaderObjects.glAttachObjectARB(program, fragId);
 		}
 
 		ARBShaderObjects.glLinkProgramARB(program);
-		if (ARBShaderObjects.glGetObjectParameteriARB(program, ARBShaderObjects.GL_OBJECT_LINK_STATUS_ARB) == GL11.GL_FALSE) {
+		if(ARBShaderObjects.glGetObjectParameteriARB(program, ARBShaderObjects.GL_OBJECT_LINK_STATUS_ARB) == GL11.GL_FALSE) {
 			Psi.logger.error(getLogInfo(program));
 			return 0;
 		}
 
 		ARBShaderObjects.glValidateProgramARB(program);
-		if (ARBShaderObjects.glGetObjectParameteriARB(program, ARBShaderObjects.GL_OBJECT_VALIDATE_STATUS_ARB) == GL11.GL_FALSE) {
+		if(ARBShaderObjects.glGetObjectParameteriARB(program, ARBShaderObjects.GL_OBJECT_VALIDATE_STATUS_ARB) == GL11.GL_FALSE) {
 			Psi.logger.error(getLogInfo(program));
 			return 0;
 		}
@@ -136,14 +136,14 @@ public final class ShaderHandler {
 		try {
 			shader = ARBShaderObjects.glCreateShaderObjectARB(shaderType);
 
-			if (shader == 0) {
+			if(shader == 0) {
 				return 0;
 			}
 
 			ARBShaderObjects.glShaderSourceARB(shader, readFileAsString(filename));
 			ARBShaderObjects.glCompileShaderARB(shader);
 
-			if (ARBShaderObjects.glGetObjectParameteriARB(shader, ARBShaderObjects.GL_OBJECT_COMPILE_STATUS_ARB) == GL11.GL_FALSE) {
+			if(ARBShaderObjects.glGetObjectParameteriARB(shader, ARBShaderObjects.GL_OBJECT_COMPILE_STATUS_ARB) == GL11.GL_FALSE) {
 				throw new RuntimeException("Error creating shader: " + getLogInfo(shader));
 			}
 
@@ -161,7 +161,7 @@ public final class ShaderHandler {
 
 	private static String readFileAsString(String filename) throws Exception {
 		try (InputStream in = ShaderHandler.class.getResourceAsStream(filename)) {
-			if (in == null) {
+			if(in == null) {
 				return "";
 			}
 

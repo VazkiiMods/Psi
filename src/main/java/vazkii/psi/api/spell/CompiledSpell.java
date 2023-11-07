@@ -49,7 +49,7 @@ public class CompiledSpell {
 	 */
 	public boolean execute(SpellContext context) throws SpellRuntimeException {
 		IPlayerData data = PsiAPI.internalHandler.getDataForPlayer(context.caster);
-		while (!context.actions.isEmpty()) {
+		while(!context.actions.isEmpty()) {
 			Action a = context.actions.pop();
 			currentAction = a;
 
@@ -59,11 +59,11 @@ public class CompiledSpell {
 
 			currentAction = null;
 
-			if (context.stopped) {
+			if(context.stopped) {
 				return false;
 			}
 
-			if (context.delay > 0) {
+			if(context.delay > 0) {
 				return true;
 			}
 		}
@@ -76,20 +76,20 @@ public class CompiledSpell {
 	 */
 	@SuppressWarnings("unchecked")
 	public void safeExecute(SpellContext context) {
-		if (context.caster.getCommandSenderWorld().isClientSide) {
+		if(context.caster.getCommandSenderWorld().isClientSide) {
 			return;
 		}
 
 		try {
-			if (context.actions == null) {
+			if(context.actions == null) {
 				context.actions = (Stack<Action>) actions.clone();
 			}
 
-			if (context.cspell.execute(context)) {
+			if(context.cspell.execute(context)) {
 				PsiAPI.internalHandler.delayContext(context);
 			}
 		} catch (SpellRuntimeException e) {
-			if (!context.shouldSuppressErrors()) {
+			if(!context.shouldSuppressErrors()) {
 				context.caster.sendSystemMessage(Component.translatable(e.getMessage()).setStyle(Style.EMPTY.withColor(ChatFormatting.RED)));
 
 				int x = context.cspell.currentAction.piece.x + 1;
@@ -101,7 +101,7 @@ public class CompiledSpell {
 	}
 
 	public boolean hasEvaluated(int x, int y) {
-		if (!SpellGrid.exists(x, y)) {
+		if(!SpellGrid.exists(x, y)) {
 			return false;
 		}
 
@@ -122,12 +122,12 @@ public class CompiledSpell {
 				Object o = piece.execute(context);
 
 				Class<?> eval = piece.getEvaluationType();
-				if (eval != null && eval != Void.class) {
+				if(eval != null && eval != Void.class) {
 					context.evaluatedObjects[piece.x][piece.y] = o;
 				}
 			} catch (SpellRuntimeException exception) {
-				if (errorHandlers.containsKey(piece)) {
-					if (!errorHandlers.get(piece).suppress(piece, context, exception)) {
+				if(errorHandlers.containsKey(piece)) {
+					if(!errorHandlers.get(piece).suppress(piece, context, exception)) {
 						throw exception;
 					}
 					return;
@@ -150,9 +150,9 @@ public class CompiledSpell {
 
 		public boolean suppress(SpellPiece piece, SpellContext context, SpellRuntimeException exception) {
 			boolean handled = handler.catchException(piece, context, exception);
-			if (handled) {
+			if(handled) {
 				Class<?> eval = piece.getEvaluationType();
-				if (eval != null && eval != Void.class) {
+				if(eval != null && eval != Void.class) {
 					context.evaluatedObjects[piece.x][piece.y] =
 							handler.supplyReplacementValue(piece, context, exception);
 				}

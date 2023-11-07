@@ -8,14 +8,6 @@
  */
 package vazkii.psi.client.jei.tricks;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Nonnull;
-
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import mezz.jei.api.constants.VanillaTypes;
@@ -27,13 +19,23 @@ import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
+
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+
 import vazkii.psi.api.recipe.ITrickRecipe;
 import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.lib.LibMisc;
+
+import javax.annotation.Nonnull;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class TrickCraftingCategory implements IRecipeCategory<ITrickRecipe> {
 	public static final RecipeType<ITrickRecipe> TYPE = RecipeType.create(LibMisc.MOD_ID, "trick", ITrickRecipe.class);
@@ -81,13 +83,13 @@ public class TrickCraftingCategory implements IRecipeCategory<ITrickRecipe> {
 
 	@Override
 	public void draw(ITrickRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack poseStack, double mouseX, double mouseY) {
-		if (recipe.getPiece() != null) {
+		if(recipe.getPiece() != null) {
 			IDrawable trickIcon = trickIcons.computeIfAbsent(recipe.getPiece().registryKey,
 					key -> new DrawablePiece(recipe.getPiece()));
-			
+
 			trickIcon.draw(poseStack, trickX, trickY);
-			
-			if (onTrick(mouseX, mouseY)) {
+
+			if(onTrick(mouseX, mouseY)) {
 				programmerHover.draw(poseStack, trickX, trickY);
 			}
 		}
@@ -96,7 +98,7 @@ public class TrickCraftingCategory implements IRecipeCategory<ITrickRecipe> {
 	@Nonnull
 	@Override
 	public List<Component> getTooltipStrings(ITrickRecipe recipe, IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
-		if (recipe.getPiece() != null && onTrick(mouseX, mouseY)) {
+		if(recipe.getPiece() != null && onTrick(mouseX, mouseY)) {
 			List<Component> tooltip = new ArrayList<>();
 			recipe.getPiece().getTooltip(tooltip);
 			return tooltip;

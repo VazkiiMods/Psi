@@ -46,7 +46,7 @@ public class SpellPieceComponent implements ICustomComponent {
 		piece.draw(ms, buffer, 0xF000F0);
 		buffer.endBatch();
 
-		if (context.isAreaHovered(mouseX, mouseY, x - 1, y - 1, 16, 16)) {
+		if(context.isAreaHovered(mouseX, mouseY, x - 1, y - 1, 16, 16)) {
 			PatchouliUtils.setPieceTooltip(context, piece);
 		}
 		ms.popPose();

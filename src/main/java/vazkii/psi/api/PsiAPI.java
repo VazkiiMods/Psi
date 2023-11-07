@@ -116,8 +116,8 @@ public final class PsiAPI {
 		advancementGroups.put(resLoc, clazz);
 		advancementGroupsInverse.put(clazz, resLoc);
 
-		if (main) {
-			if (mainPieceForGroup.containsKey(resLoc)) {
+		if(main) {
+			if(mainPieceForGroup.containsKey(resLoc)) {
 				LogManager.getLogger(MOD_ID).info("Group " + resLoc + " already has a main piece!");
 			}
 			mainPieceForGroup.put(resLoc, clazz);
@@ -129,15 +129,15 @@ public final class PsiAPI {
 	 * more than one, this will return null.
 	 */
 	public static ItemStack getPlayerCAD(Player player) {
-		if (player == null) {
+		if(player == null) {
 			return ItemStack.EMPTY;
 		}
 
 		ItemStack cad = ItemStack.EMPTY;
-		for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
+		for(int i = 0; i < player.getInventory().getContainerSize(); i++) {
 			ItemStack stackAt = player.getInventory().getItem(i);
-			if (!stackAt.isEmpty() && stackAt.getItem() instanceof ICAD) {
-				if (!cad.isEmpty()) {
+			if(!stackAt.isEmpty() && stackAt.getItem() instanceof ICAD) {
+				if(!cad.isEmpty()) {
 					return ItemStack.EMPTY; // Player can only have one CAD
 				}
 
@@ -149,15 +149,15 @@ public final class PsiAPI {
 	}
 
 	public static int getPlayerCADSlot(Player player) {
-		if (player == null) {
+		if(player == null) {
 			return -1;
 		}
 
 		int slot = -1;
-		for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
+		for(int i = 0; i < player.getInventory().getContainerSize(); i++) {
 			ItemStack stackAt = player.getInventory().getItem(i);
-			if (!stackAt.isEmpty() && stackAt.getItem() instanceof ICAD) {
-				if (slot != -1) {
+			if(!stackAt.isEmpty() && stackAt.getItem() instanceof ICAD) {
+				if(slot != -1) {
 					return -1; // Player can only have one CAD
 				}
 
@@ -169,11 +169,11 @@ public final class PsiAPI {
 	}
 
 	public static boolean canCADBeUpdated(Player player) {
-		if (player == null) {
+		if(player == null) {
 			return false;
 		}
 
-		if (player.containerMenu == null) {
+		if(player.containerMenu == null) {
 			return true;
 		}
 

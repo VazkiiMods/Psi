@@ -50,11 +50,11 @@ public class PieceTrickPlaySound extends PieceTrick {
 		double dVol = SpellHelpers.ensurePositiveOrZero(this, volume, 1);
 		double dPit = SpellHelpers.ensurePositiveOrZero(this, pitch, 0);
 
-		if (dPit > 24) {
+		if(dPit > 24) {
 			throw new SpellCompilationException(SpellCompilationException.PITCH, x, y);
 		}
 
-		if (dVol > 1) {
+		if(dVol > 1) {
 			throw new SpellCompilationException(SpellCompilationException.VOLUME, x, y);
 		}
 	}

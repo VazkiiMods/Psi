@@ -37,8 +37,8 @@ public class EntityListWrapper implements Iterable<Entity> {
 	 */
 	public static EntityListWrapper make(@Nonnull List<Entity> list) {
 		List<Entity> copy = new ArrayList<>();
-		for (Entity e : list) {
-			if (e != null) {
+		for(Entity e : list) {
+			if(e != null) {
 				copy.add(e);
 			}
 		}
@@ -50,9 +50,9 @@ public class EntityListWrapper implements Iterable<Entity> {
 		List<Entity> l1 = left.list, l2 = right.list;
 		List<Entity> entities = new ArrayList<>(l1.size() + l2.size());
 		int i = 0, j = 0;
-		while (i < l1.size() && j < l2.size()) {
+		while(i < l1.size() && j < l2.size()) {
 			int cmp = compareEntities(l1.get(i), l2.get(j));
-			if (cmp == 0) {
+			if(cmp == 0) {
 				i++;
 				continue;
 			}
@@ -66,8 +66,8 @@ public class EntityListWrapper implements Iterable<Entity> {
 	public static EntityListWrapper exclusion(@Nonnull EntityListWrapper list, @Nonnull EntityListWrapper remove) {
 		List<Entity> result = new ArrayList<>();
 		List<Entity> search = remove.list;
-		for (Entity e : list) {
-			if (Collections.binarySearch(search, e, EntityListWrapper::compareEntities) < 0) {
+		for(Entity e : list) {
+			if(Collections.binarySearch(search, e, EntityListWrapper::compareEntities) < 0) {
 				result.add(e);
 			}
 		}
@@ -78,8 +78,8 @@ public class EntityListWrapper implements Iterable<Entity> {
 	public static EntityListWrapper intersection(@Nonnull EntityListWrapper left, @Nonnull EntityListWrapper right) {
 		List<Entity> result = new ArrayList<>();
 		List<Entity> search = right.list;
-		for (Entity e : left) {
-			if (Collections.binarySearch(search, e, EntityListWrapper::compareEntities) >= 0) {
+		for(Entity e : left) {
+			if(Collections.binarySearch(search, e, EntityListWrapper::compareEntities) >= 0) {
 				result.add(e);
 			}
 		}
@@ -91,7 +91,7 @@ public class EntityListWrapper implements Iterable<Entity> {
 	public static EntityListWrapper withAdded(@Nonnull EntityListWrapper base, @Nonnull Entity toAdd) {
 		List<Entity> list = new ArrayList<>(base.list);
 		int index = Collections.binarySearch(list, toAdd, EntityListWrapper::compareEntities);
-		if (index < 0) {
+		if(index < 0) {
 			list.add(~index, toAdd);
 		}
 		return new EntityListWrapper(list);

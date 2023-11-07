@@ -30,7 +30,7 @@ public final class SpellMetadata {
 	public boolean errorsSuppressed = false;
 
 	public SpellMetadata() {
-		for (EnumSpellStat stat : EnumSpellStat.class.getEnumConstants()) {
+		for(EnumSpellStat stat : EnumSpellStat.class.getEnumConstants()) {
 			stats.put(stat, 0);
 			statMultipliers.put(stat, 1.0);
 		}
@@ -47,7 +47,7 @@ public final class SpellMetadata {
 		} catch (ArithmeticException exception) {
 			overflow = true;
 		}
-		if (overflow) {
+		if(overflow) {
 			throw new SpellCompilationException(SpellCompilationException.STAT_OVERFLOW);
 		}
 	}
@@ -110,7 +110,7 @@ public final class SpellMetadata {
 	 * Sets a flag in the metadata.
 	 */
 	public void setFlag(String flag, boolean val) {
-		if (val) {
+		if(val) {
 			flags.add(flag);
 		} else {
 			flags.remove(flag);
@@ -129,20 +129,20 @@ public final class SpellMetadata {
 	 * of {@link ICAD}). Returns true if the stats are equal to or above the CAD.
 	 */
 	public boolean evaluateAgainst(ItemStack stack) {
-		if (stack == null || !(stack.getItem() instanceof ICAD)) {
+		if(stack == null || !(stack.getItem() instanceof ICAD)) {
 			return false;
 		}
 
 		ICAD cad = (ICAD) stack.getItem();
-		for (EnumSpellStat stat : stats.keySet()) {
+		for(EnumSpellStat stat : stats.keySet()) {
 			EnumCADStat cadStat = stat.getTarget();
-			if (cadStat == null) {
+			if(cadStat == null) {
 				continue;
 			}
 
 			int statVal = (int) Math.ceil(stats.get(stat) * statMultipliers.get(stat));
 			int cadVal = cad.getStatValue(stack, cadStat);
-			if (cadVal != -1 && cadVal < statVal) {
+			if(cadVal != -1 && cadVal < statVal) {
 				return false;
 			}
 		}

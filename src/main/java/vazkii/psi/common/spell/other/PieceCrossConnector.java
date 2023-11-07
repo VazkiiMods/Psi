@@ -89,13 +89,13 @@ public class PieceCrossConnector extends SpellPiece implements IGenericRedirecto
 
 	@OnlyIn(Dist.CLIENT)
 	private void drawSide(PoseStack ms, MultiBufferSource buffers, SpellParam.Side side, int light, int color) {
-		if (side.isEnabled()) {
+		if(side.isEnabled()) {
 			Material material = new Material(ClientPsiAPI.PSI_PIECE_TEXTURE_ATLAS, new ResourceLocation(LibResources.SPELL_CONNECTOR_LINES));
 			VertexConsumer buffer = material.buffer(buffers, ignored -> SpellPiece.getLayer());
 
 			float minU = 0;
 			float minV = 0;
-			switch (side) {
+			switch(side) {
 			case LEFT:
 				minU = 0.5f;
 				break;
@@ -139,9 +139,9 @@ public class PieceCrossConnector extends SpellPiece implements IGenericRedirecto
 
 	@Override
 	public SpellParam.Side remapSide(SpellParam.Side inputSide) {
-		if (paramSides.get(out1).getOpposite() == inputSide) {
+		if(paramSides.get(out1).getOpposite() == inputSide) {
 			return paramSides.get(in1);
-		} else if (paramSides.get(out2).getOpposite() == inputSide) {
+		} else if(paramSides.get(out2).getOpposite() == inputSide) {
 			return paramSides.get(in2);
 		} else {
 			return SpellParam.Side.OFF;

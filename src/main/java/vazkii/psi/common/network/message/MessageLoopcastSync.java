@@ -47,19 +47,19 @@ public class MessageLoopcastSync {
 
 		context.get().enqueueWork(() -> {
 			Player mcPlayer = Psi.proxy.getClientPlayer();
-			if (mcPlayer == null) {
+			if(mcPlayer == null) {
 				return;
 			}
 			Level world = mcPlayer.level;
 
 			Entity player = null;
-			if (world != null) {
+			if(world != null) {
 				player = world.getEntity(entityId);
-			} else if (mcPlayer.getId() == entityId) {
+			} else if(mcPlayer.getId() == entityId) {
 				player = mcPlayer;
 			}
 
-			if (player instanceof Player) {
+			if(player instanceof Player) {
 				PlayerDataHandler.PlayerData data = PlayerDataHandler.get((Player) player);
 				data.loopcasting = isLoopcasting;
 				data.loopcastHand = loopcastHand;

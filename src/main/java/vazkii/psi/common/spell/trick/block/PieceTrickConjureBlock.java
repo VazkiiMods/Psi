@@ -69,10 +69,10 @@ public class PieceTrickConjureBlock extends PieceTrick {
 		Vector3 positionVal = this.getParamValue(context, position);
 		Number timeVal = this.getParamValue(context, time);
 
-		if (positionVal == null) {
+		if(positionVal == null) {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
 		}
-		if (!context.isInRadius(positionVal)) {
+		if(!context.isInRadius(positionVal)) {
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 		}
 
@@ -80,7 +80,7 @@ public class PieceTrickConjureBlock extends PieceTrick {
 
 		Level world = context.focalPoint.getCommandSenderWorld();
 
-		if (!world.mayInteract(context.caster, pos)) {
+		if(!world.mayInteract(context.caster, pos)) {
 			return null;
 		}
 
@@ -90,9 +90,9 @@ public class PieceTrickConjureBlock extends PieceTrick {
 	}
 
 	public static void conjure(SpellContext context, @Nullable Number timeVal, BlockPos pos, Level world, BlockState state) {
-		if (world.getBlockState(pos).getBlock() != state.getBlock()) {
-			if (conjure(world, pos, context.caster, state)) {
-				if (timeVal != null && timeVal.intValue() > 0) {
+		if(world.getBlockState(pos).getBlock() != state.getBlock()) {
+			if(conjure(world, pos, context.caster, state)) {
+				if(timeVal != null && timeVal.intValue() > 0) {
 					int val = timeVal.intValue();
 					world.scheduleTick(pos, state.getBlock(), val);
 				}
@@ -100,7 +100,7 @@ public class PieceTrickConjureBlock extends PieceTrick {
 				BlockEntity tile = world.getBlockEntity(pos);
 
 				ItemStack cad = PsiAPI.getPlayerCAD(context.caster);
-				if (tile instanceof TileConjured && !cad.isEmpty()) {
+				if(tile instanceof TileConjured && !cad.isEmpty()) {
 					((TileConjured) tile).colorizer = ((ICAD) cad.getItem()).getComponentInSlot(cad, EnumCADComponent.DYE);
 				}
 
@@ -109,12 +109,12 @@ public class PieceTrickConjureBlock extends PieceTrick {
 	}
 
 	public static boolean conjure(Level world, BlockPos pos, Player player, BlockState state) {
-		if (!world.hasChunkAt(pos) || !world.mayInteract(player, pos)) {
+		if(!world.hasChunkAt(pos) || !world.mayInteract(player, pos)) {
 			return false;
 		}
 
 		BlockState inWorld = world.getBlockState(pos);
-		if (inWorld.isAir() || inWorld.getMaterial().isReplaceable()) {
+		if(inWorld.isAir() || inWorld.getMaterial().isReplaceable()) {
 			return world.setBlockAndUpdate(pos, state);
 		}
 		return false;

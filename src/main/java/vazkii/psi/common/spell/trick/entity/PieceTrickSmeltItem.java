@@ -51,15 +51,15 @@ public class PieceTrickSmeltItem extends PieceTrick {
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		Entity targetVal = this.getParamValue(context, target);
 
-		if (targetVal instanceof ItemEntity && targetVal.isAlive()) {
+		if(targetVal instanceof ItemEntity && targetVal.isAlive()) {
 			ItemEntity eitem = (ItemEntity) targetVal;
 			ItemStack stack = eitem.getItem();
 			ItemStack result = PieceSelectorNearbySmeltables.simulateSmelt(eitem.getCommandSenderWorld(), stack);
 
-			if (!result.isEmpty()) {
+			if(!result.isEmpty()) {
 				stack.shrink(1);
 				eitem.setItem(stack);
-				if (stack.getCount() == 0) {
+				if(stack.getCount() == 0) {
 					eitem.remove(Entity.RemovalReason.DISCARDED);
 				}
 

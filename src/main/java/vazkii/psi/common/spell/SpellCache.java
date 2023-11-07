@@ -34,7 +34,7 @@ public final class SpellCache implements ISpellCache {
 
 	@Override
 	public CompiledSpell getCompiledSpell(Spell spell) {
-		if (map.containsKey(spell.uuid)) {
+		if(map.containsKey(spell.uuid)) {
 			return map.get(spell.uuid);
 		}
 

@@ -48,30 +48,30 @@ public final class SpellCompiler implements ISpellCompiler {
 	}
 
 	public CompiledSpell doCompile(Spell spell) throws SpellCompilationException {
-		if (spell == null) {
+		if(spell == null) {
 			throw new SpellCompilationException(SpellCompilationException.NO_SPELL);
 		}
 
 		redirectionPieces.clear();
 		compiled = new CompiledSpell(spell);
 
-		for (SpellPiece piece : findPieces(EnumPieceType.ERROR_HANDLER::equals)) {
+		for(SpellPiece piece : findPieces(EnumPieceType.ERROR_HANDLER::equals)) {
 			buildHandler(piece);
 		}
 
 		List<SpellPiece> tricks = findPieces(EnumPieceType::isTrick);
-		if (tricks.isEmpty()) {
+		if(tricks.isEmpty()) {
 			throw new SpellCompilationException(SpellCompilationException.NO_TRICKS);
 		}
-		for (SpellPiece trick : tricks) {
+		for(SpellPiece trick : tricks) {
 			buildPiece(trick);
 		}
 
-		if (compiled.metadata.getStat(EnumSpellStat.COST) < 0 || compiled.metadata.getStat(EnumSpellStat.POTENCY) < 0) {
+		if(compiled.metadata.getStat(EnumSpellStat.COST) < 0 || compiled.metadata.getStat(EnumSpellStat.POTENCY) < 0) {
 			throw new SpellCompilationException(SpellCompilationException.STAT_OVERFLOW);
 		}
 
-		if (spell.name == null || spell.name.isEmpty()) {
+		if(spell.name == null || spell.name.isEmpty()) {
 			throw new SpellCompilationException(SpellCompilationException.NO_NAME);
 		}
 		return compiled;
@@ -82,11 +82,11 @@ public final class SpellCompiler implements ISpellCompiler {
 	}
 
 	public void buildPiece(SpellPiece piece, Set<SpellPiece> visited) throws SpellCompilationException {
-		if (!visited.add(piece)) {
+		if(!visited.add(piece)) {
 			throw new SpellCompilationException(SpellCompilationException.INFINITE_LOOP, piece.x, piece.y);
 		}
 
-		if (compiled.actionMap.containsKey(piece)) { // move to top
+		if(compiled.actionMap.containsKey(piece)) { // move to top
 			Action a = compiled.actionMap.get(piece);
 			compiled.actions.remove(a);
 			compiled.actions.add(a);
@@ -99,7 +99,7 @@ public final class SpellCompiler implements ISpellCompiler {
 
 		// error handler params must be evaluated before the handled piece
 		CatchHandler catchHandler = compiled.errorHandlers.get(piece);
-		if (catchHandler != null) {
+		if(catchHandler != null) {
 			buildPiece(catchHandler.handlerPiece, new HashSet<>(visited));
 		}
 
@@ -107,8 +107,8 @@ public final class SpellCompiler implements ISpellCompiler {
 
 		HashSet<SpellPiece> params = new HashSet<>();
 		HashSet<SpellPiece> handledErrors = new HashSet<>();
-		for (SpellParam<?> param : piece.paramSides.keySet()) {
-			if (checkSideDisabled(param, piece, usedSides)) {
+		for(SpellParam<?> param : piece.paramSides.keySet()) {
+			if(checkSideDisabled(param, piece, usedSides)) {
 				continue;
 			}
 
@@ -116,20 +116,20 @@ public final class SpellCompiler implements ISpellCompiler {
 
 			SpellPiece pieceAt = compiled.sourceSpell.grid.getPieceAtSideWithRedirections(piece.x, piece.y, side, this::buildRedirect);
 
-			if (pieceAt == null) {
+			if(pieceAt == null) {
 				throw new SpellCompilationException(SpellCompilationException.NULL_PARAM, piece.x, piece.y);
 			}
-			if (!param.canAccept(pieceAt)) {
+			if(!param.canAccept(pieceAt)) {
 				throw new SpellCompilationException(SpellCompilationException.INVALID_PARAM, piece.x, piece.y);
 			}
 
-			if (piece instanceof IErrorCatcher && ((IErrorCatcher) piece).catchParam(param)) {
+			if(piece instanceof IErrorCatcher && ((IErrorCatcher) piece).catchParam(param)) {
 				handledErrors.add(pieceAt);
 			} else {
 				params.add(pieceAt);
 			}
 		}
-		for (SpellPiece pieceAt : params) {
+		for(SpellPiece pieceAt : params) {
 			HashSet<SpellPiece> visitedCopy = new HashSet<>(visited);
 			// error handler params can't depend on handled pieces
 			visitedCopy.addAll(handledErrors);
@@ -138,7 +138,7 @@ public final class SpellCompiler implements ISpellCompiler {
 	}
 
 	public void buildHandler(SpellPiece piece) throws SpellCompilationException {
-		if (!(piece instanceof IErrorCatcher)) {
+		if(!(piece instanceof IErrorCatcher)) {
 			return;
 		}
 		IErrorCatcher errorCatcher = (IErrorCatcher) piece;
@@ -146,8 +146,8 @@ public final class SpellCompiler implements ISpellCompiler {
 
 		EnumSet<SpellParam.Side> usedSides = EnumSet.noneOf(SpellParam.Side.class);
 
-		for (SpellParam<?> param : piece.paramSides.keySet()) {
-			if (!errorCatcher.catchParam(param) || checkSideDisabled(param, piece, usedSides)) {
+		for(SpellParam<?> param : piece.paramSides.keySet()) {
+			if(!errorCatcher.catchParam(param) || checkSideDisabled(param, piece, usedSides)) {
 				continue;
 			}
 
@@ -155,10 +155,10 @@ public final class SpellCompiler implements ISpellCompiler {
 
 			SpellPiece pieceAt = compiled.sourceSpell.grid.getPieceAtSideWithRedirections(piece.x, piece.y, side, this::buildRedirect);
 
-			if (pieceAt == null) {
+			if(pieceAt == null) {
 				throw new SpellCompilationException(SpellCompilationException.NULL_PARAM, piece.x, piece.y);
 			}
-			if (!param.canAccept(pieceAt)) {
+			if(!param.canAccept(pieceAt)) {
 				throw new SpellCompilationException(SpellCompilationException.INVALID_PARAM, piece.x, piece.y);
 			}
 
@@ -167,12 +167,12 @@ public final class SpellCompiler implements ISpellCompiler {
 	}
 
 	public void buildRedirect(SpellPiece piece) throws SpellCompilationException {
-		if (redirectionPieces.add(piece)) {
+		if(redirectionPieces.add(piece)) {
 			piece.addToMetadata(compiled.metadata);
 
 			EnumSet<SpellParam.Side> usedSides = EnumSet.noneOf(SpellParam.Side.class);
 
-			for (SpellParam<?> param : piece.paramSides.keySet()) {
+			for(SpellParam<?> param : piece.paramSides.keySet()) {
 				checkSideDisabled(param, piece, usedSides);
 			}
 		}
@@ -181,13 +181,13 @@ public final class SpellCompiler implements ISpellCompiler {
 	/** @return whether this piece should get skipped over */
 	private boolean checkSideDisabled(SpellParam<?> param, SpellPiece parent, EnumSet<SpellParam.Side> seen) throws SpellCompilationException {
 		SpellParam.Side side = parent.paramSides.get(param);
-		if (side.isEnabled()) {
-			if (!seen.add(side)) {
+		if(side.isEnabled()) {
+			if(!seen.add(side)) {
 				throw new SpellCompilationException(SpellCompilationException.SAME_SIDE_PARAMS, parent.x, parent.y);
 			}
 			return false;
 		} else {
-			if (!param.canDisable) {
+			if(!param.canDisable) {
 				throw new SpellCompilationException(SpellCompilationException.UNSET_PARAM, parent.x, parent.y);
 			}
 			return true;
@@ -196,10 +196,10 @@ public final class SpellCompiler implements ISpellCompiler {
 
 	public List<SpellPiece> findPieces(Predicate<EnumPieceType> match) throws SpellCompilationException {
 		List<SpellPiece> results = new LinkedList<>();
-		for (int i = 0; i < SpellGrid.GRID_SIZE; i++) {
-			for (int j = 0; j < SpellGrid.GRID_SIZE; j++) {
+		for(int i = 0; i < SpellGrid.GRID_SIZE; i++) {
+			for(int j = 0; j < SpellGrid.GRID_SIZE; j++) {
 				SpellPiece piece = compiled.sourceSpell.grid.gridData[j][i];
-				if (piece != null && match.test(piece.getPieceType())) {
+				if(piece != null && match.test(piece.getPieceType())) {
 					results.add(0, piece);
 				}
 

@@ -48,9 +48,9 @@ public class PieceConstantWrapper extends SpellPiece {
 		double targetVal = this.getParamValue(context, target).doubleValue();
 		double maxVal = this.getParamValue(context, max).doubleValue();
 
-		if (maxVal > 0) {
+		if(maxVal > 0) {
 			return Math.min(maxVal, Math.abs(targetVal));
-		} else if (maxVal < 0) {
+		} else if(maxVal < 0) {
 			return Math.max(maxVal, -Math.abs(targetVal));
 		} else {
 			return 0.0;
@@ -59,7 +59,7 @@ public class PieceConstantWrapper extends SpellPiece {
 
 	@Override
 	public Object evaluate() throws SpellCompilationException {
-		if (evaluating) {
+		if(evaluating) {
 			return 0.0;
 		}
 

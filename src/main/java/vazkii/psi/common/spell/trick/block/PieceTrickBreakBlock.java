@@ -74,10 +74,10 @@ public class PieceTrickBreakBlock extends PieceTrick {
 		ItemStack tool = context.getHarvestTool();
 		Vector3 positionVal = this.getParamValue(context, position);
 
-		if (positionVal == null) {
+		if(positionVal == null) {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
 		}
-		if (!context.isInRadius(positionVal)) {
+		if(!context.isInRadius(positionVal)) {
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 		}
 
@@ -89,18 +89,18 @@ public class PieceTrickBreakBlock extends PieceTrick {
 
 	public static void removeBlockWithDrops(SpellContext context, Player player, Level world, ItemStack stack, BlockPos pos,
 			Predicate<BlockState> filter) {
-		if (stack.isEmpty()) {
+		if(stack.isEmpty()) {
 			stack = PsiAPI.getPlayerCAD(player);
 		}
 
-		if (!world.hasChunkAt(pos)) {
+		if(!world.hasChunkAt(pos)) {
 			return;
 		}
 
 		BlockState blockstate = world.getBlockState(pos);
 		boolean unminable = blockstate.getDestroySpeed(world, pos) == -1;
 
-		if (!world.isClientSide && !unminable && filter.test(blockstate) && !blockstate.isAir()) {
+		if(!world.isClientSide && !unminable && filter.test(blockstate) && !blockstate.isAir()) {
 			ItemStack save = player.getMainHandItem();
 			boolean wasChecking = doingHarvestCheck.get();
 			doingHarvestCheck.set(true);
@@ -119,7 +119,7 @@ public class PieceTrickBreakBlock extends PieceTrick {
 	 */
 	public static BreakEvent createBreakEvent(BlockState state, Player player, Level world, BlockPos pos, ItemStack tool) {
 		BreakEvent event = new BreakEvent(world, pos, state, player);
-		if (state == null || !canHarvestBlock(state, player, world, pos, tool)) // Handle empty block or player unable to break block scenario
+		if(state == null || !canHarvestBlock(state, player, world, pos, tool)) // Handle empty block or player unable to break block scenario
 		{
 			event.setExpToDrop(0);
 		} else {
@@ -179,13 +179,13 @@ public class PieceTrickBreakBlock extends PieceTrick {
 	}
 
 	private static ItemStack getTool(int harvestLevel, BlockState state) {
-		if (!state.requiresCorrectToolForDrops()) {
+		if(!state.requiresCorrectToolForDrops()) {
 			return HARVEST_TOOLS_BY_LEVEL.get(0).get(0);
 		}
 
 		int idx = Math.min(harvestLevel, HARVEST_TOOLS_BY_LEVEL.size() - 1);
-		for (var tool : HARVEST_TOOLS_BY_LEVEL.get(idx)) {
-			if (tool.isCorrectToolForDrops(state)) {
+		for(var tool : HARVEST_TOOLS_BY_LEVEL.get(idx)) {
+			if(tool.isCorrectToolForDrops(state)) {
 				return tool;
 			}
 		}
@@ -195,12 +195,12 @@ public class PieceTrickBreakBlock extends PieceTrick {
 
 	//TODO Fix mining level on blocks that can be broken by hand.
 	public static int getHarvestLevel(BlockState state) {
-		if (Items.AIR.isCorrectToolForDrops(state)) {
+		if(Items.AIR.isCorrectToolForDrops(state)) {
 			return 0;
 		}
-		for (int i = 0; i < HARVEST_TOOLS_BY_LEVEL.size(); i++) {
-			for (var tool : HARVEST_TOOLS_BY_LEVEL.get(i)) {
-				if (tool.isCorrectToolForDrops(state)) {
+		for(int i = 0; i < HARVEST_TOOLS_BY_LEVEL.size(); i++) {
+			for(var tool : HARVEST_TOOLS_BY_LEVEL.get(i)) {
+				if(tool.isCorrectToolForDrops(state)) {
 					return i + 1;
 				}
 			}

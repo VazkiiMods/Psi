@@ -38,12 +38,12 @@ public class SpellGridComponent implements ICustomComponent {
 	public void build(int componentX, int componentY, int pageNum) {
 		try {
 			String spellstr = spell.asString("");
-			if (StringUtil.isNullOrEmpty(spellstr)) {
+			if(StringUtil.isNullOrEmpty(spellstr)) {
 				throw new IllegalArgumentException("Spell string is missing!");
 			}
 			CompoundTag cmp = TagParser.parseTag(spellstr);
 			Spell fromNBT = Spell.createFromNBT(cmp);
-			if (fromNBT == null) {
+			if(fromNBT == null) {
 				throw new IllegalArgumentException("Invalid spell string: " + spell);
 			}
 			grid = fromNBT.grid;
@@ -68,11 +68,11 @@ public class SpellGridComponent implements ICustomComponent {
 		int scaledHoverSize = (int) (16 * scale);
 
 		SpellPiece[][] gridData = grid.gridData;
-		for (int i = 0; i < gridData.length; i++) {
+		for(int i = 0; i < gridData.length; i++) {
 			SpellPiece[] data = gridData[i];
-			for (int j = 0; j < data.length; j++) {
+			for(int j = 0; j < data.length; j++) {
 				SpellPiece piece = data[j];
-				if (piece != null && context.isAreaHovered(mouseX, mouseY, (int) (x + i * scaledSize), (int) (y + j * scaledSize), scaledHoverSize, scaledHoverSize)) {
+				if(piece != null && context.isAreaHovered(mouseX, mouseY, (int) (x + i * scaledSize), (int) (y + j * scaledSize), scaledHoverSize, scaledHoverSize)) {
 					PatchouliUtils.setPieceTooltip(context, piece);
 				}
 			}

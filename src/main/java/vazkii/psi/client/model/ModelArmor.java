@@ -29,7 +29,7 @@ public class ModelArmor extends HumanoidModel<LivingEntity> {
 	// This fixes the armor "breathing" and helmets always facing south on armor stands
 	@Override
 	public void setupAnim(LivingEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		if (!(entity instanceof ArmorStand entityIn)) {
+		if(!(entity instanceof ArmorStand entityIn)) {
 			super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 			return;
 		}
@@ -67,7 +67,7 @@ public class ModelArmor extends HumanoidModel<LivingEntity> {
 	// [VanillaCopy] HumanoidArmorLayer
 	private void setPartVisibility(EquipmentSlot slot) {
 		setAllVisible(false);
-		switch (slot) {
+		switch(slot) {
 		case HEAD -> {
 			head.visible = true;
 			hat.visible = true;

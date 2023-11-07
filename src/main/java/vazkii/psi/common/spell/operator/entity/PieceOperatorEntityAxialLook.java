@@ -37,7 +37,7 @@ public class PieceOperatorEntityAxialLook extends PieceOperator {
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		Entity e = this.getParamValue(context, target);
 
-		if (e == null) {
+		if(e == null) {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_TARGET);
 		}
 		Vec3 look = e.getViewVector(1F);

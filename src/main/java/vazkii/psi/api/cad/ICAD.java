@@ -31,7 +31,7 @@ public interface ICAD {
 	 */
 
 	static void setComponent(ItemStack stack, ItemStack componentStack) {
-		if (!componentStack.isEmpty() && componentStack.getItem() instanceof ICADComponent) {
+		if(!componentStack.isEmpty() && componentStack.getItem() instanceof ICADComponent) {
 			ICADComponent component = (ICADComponent) componentStack.getItem();
 			EnumCADComponent componentType = component.getComponentType(componentStack);
 			String name = TAG_COMPONENT_PREFIX + componentType.name();

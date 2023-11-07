@@ -65,12 +65,12 @@ public interface IDetonationHandler {
 		List<Entity> charges = world.getEntitiesOfClass(Entity.class,
 				center.getBoundingBox().inflate(range),
 				entity -> {
-					if (entity == null) {
+					if(entity == null) {
 						return false;
 					}
 					return entity.getCapability(PsiAPI.DETONATION_HANDLER_CAPABILITY).map(detonator -> {
 						Vec3 locus = detonator.objectLocus();
-						if (locus == null || locus.distanceToSqr(center.getX(), center.getY(), center.getZ()) > range * range) {
+						if(locus == null || locus.distanceToSqr(center.getX(), center.getY(), center.getZ()) > range * range) {
 							return false;
 						}
 						return filter == null || filter.test(entity);
@@ -81,9 +81,9 @@ public interface IDetonationHandler {
 				.map(e -> e.getCapability(PsiAPI.DETONATION_HANDLER_CAPABILITY).orElseThrow(NullPointerException::new))
 				.collect(Collectors.toList());
 
-		if (!MinecraftForge.EVENT_BUS.post(new DetonationEvent(player, center, range, handlers))) {
-			if (!handlers.isEmpty()) {
-				for (IDetonationHandler handler : handlers) {
+		if(!MinecraftForge.EVENT_BUS.post(new DetonationEvent(player, center, range, handlers))) {
+			if(!handlers.isEmpty()) {
+				for(IDetonationHandler handler : handlers) {
 					handler.detonate();
 				}
 			}

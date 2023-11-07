@@ -48,9 +48,9 @@ public class PieceTrickDebug extends PieceTrick {
 
 		Component component = Component.literal(String.valueOf(targetVal));
 
-		if (numberVal != null) {
+		if(numberVal != null) {
 			String numStr = "" + numberVal;
-			if (numberVal.doubleValue() - numberVal.intValue() == 0) {
+			if(numberVal.doubleValue() - numberVal.intValue() == 0) {
 				int numInt = numberVal.intValue();
 				numStr = "" + numInt;
 			}

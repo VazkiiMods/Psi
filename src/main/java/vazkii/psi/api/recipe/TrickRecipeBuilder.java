@@ -120,7 +120,7 @@ public class TrickRecipeBuilder {
 			json.add("input", input.toJson());
 			json.add("output", serializeStack(output));
 			json.add("cad", serializeStack(cadAssembly));
-			if (trick != null) {
+			if(trick != null) {
 				json.addProperty("trick", trick.toString());
 			}
 		}
@@ -158,7 +158,7 @@ public class TrickRecipeBuilder {
 	private static JsonObject serializeStack(ItemStack stack) {
 		CompoundTag nbt = stack.save(new CompoundTag());
 		byte c = nbt.getByte("Count");
-		if (c != 1) {
+		if(c != 1) {
 			nbt.putByte("count", c);
 		}
 		nbt.remove("Count");
@@ -170,7 +170,7 @@ public class TrickRecipeBuilder {
 
 	private static void renameTag(CompoundTag nbt, String oldName, String newName) {
 		Tag tag = nbt.get(oldName);
-		if (tag != null) {
+		if(tag != null) {
 			nbt.remove(oldName);
 			nbt.put(newName, tag);
 		}

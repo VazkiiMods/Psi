@@ -45,7 +45,7 @@ public class CapabilityTriggerSensor implements IDetonationHandler, ICapabilityP
 		long detonated = playerData.getLong(TRIGGER_TICK);
 		long worldTime = player.level.getGameTime();
 
-		if (detonated != worldTime) {
+		if(detonated != worldTime) {
 			playerData.putLong(TRIGGER_TICK, worldTime);
 
 			PsiArmorEvent.post(new PsiArmorEvent(player, PsiArmorEvent.DETONATE));

@@ -93,8 +93,8 @@ public class ContainerCADAssembler extends AbstractContainerMenu {
 		socketableEnd = slots.size();
 
 		bulletStart = slots.size();
-		for (int row = 0; row < 4; row++) {
-			for (int col = 0; col < 3; col++) {
+		for(int row = 0; row < 4; row++) {
+			for(int col = 0; col < 3; col++) {
 				addSlot(new ValidatorSlot(bullets, col + row * 3, 17 + col * 18, 57 + row * 18));
 			}
 		}
@@ -104,21 +104,21 @@ public class ContainerCADAssembler extends AbstractContainerMenu {
 		int ys = 143;
 
 		playerStart = slots.size();
-		for (int row = 0; row < 3; row++) {
-			for (int col = 0; col < 9; col++) {
+		for(int row = 0; row < 3; row++) {
+			for(int col = 0; col < 9; col++) {
 				addSlot(new Slot(playerInventory, col + row * 9 + 9, xs + col * 18, ys + row * 18));
 			}
 		}
 		playerEnd = slots.size();
 
 		hotbarStart = slots.size();
-		for (int col = 0; col < 9; col++) {
+		for(int col = 0; col < 9; col++) {
 			addSlot(new Slot(playerInventory, col, xs + col * 18, ys + 58));
 		}
 		hotbarEnd = slots.size();
 
 		armorStart = slots.size();
-		for (int armorSlot = 0; armorSlot < 4; armorSlot++) {
+		for(int armorSlot = 0; armorSlot < 4; armorSlot++) {
 			final EquipmentSlot slot = equipmentSlots[armorSlot];
 
 			addSlot(new Slot(playerInventory, playerSize - 2 - armorSlot,
@@ -161,48 +161,48 @@ public class ContainerCADAssembler extends AbstractContainerMenu {
 		ItemStack mergeStack = ItemStack.EMPTY;
 		Slot slot = slots.get(from);
 
-		if (slot != null && slot.hasItem()) {
+		if(slot != null && slot.hasItem()) {
 			ItemStack stackInSlot = slot.getItem();
 			mergeStack = stackInSlot.copy();
 
-			if (from >= playerStart) {
-				if (stackInSlot.getItem() instanceof ICADComponent) {
+			if(from >= playerStart) {
+				if(stackInSlot.getItem() instanceof ICADComponent) {
 					EnumCADComponent componentType = ((ICADComponent) stackInSlot.getItem()).getComponentType(stackInSlot);
 					int componentSlot = cadComponentStart + componentType.ordinal();
-					if (!moveItemStackTo(stackInSlot, componentSlot, componentSlot + 1, false)) {
+					if(!moveItemStackTo(stackInSlot, componentSlot, componentSlot + 1, false)) {
 						return ItemStack.EMPTY;
 					}
-				} else if (ISocketable.isSocketable(stackInSlot)) {
-					if (!moveItemStackTo(stackInSlot, socketableStart, socketableEnd, false)) {
+				} else if(ISocketable.isSocketable(stackInSlot)) {
+					if(!moveItemStackTo(stackInSlot, socketableStart, socketableEnd, false)) {
 						return ItemStack.EMPTY;
 					}
-				} else if (ISpellAcceptor.isContainer(stackInSlot)) {
-					if (!moveItemStackTo(stackInSlot, bulletStart, bulletEnd, false)) {
+				} else if(ISpellAcceptor.isContainer(stackInSlot)) {
+					if(!moveItemStackTo(stackInSlot, bulletStart, bulletEnd, false)) {
 						return ItemStack.EMPTY;
 					}
-				} else if (from < hotbarStart) {
-					if (!moveItemStackTo(stackInSlot, hotbarStart, hotbarEnd, true)) {
+				} else if(from < hotbarStart) {
+					if(!moveItemStackTo(stackInSlot, hotbarStart, hotbarEnd, true)) {
 						return ItemStack.EMPTY;
 					}
-				} else if (!moveItemStackTo(stackInSlot, playerStart, playerEnd, false)) {
+				} else if(!moveItemStackTo(stackInSlot, playerStart, playerEnd, false)) {
 					return ItemStack.EMPTY;
 				}
-			} else if (stackInSlot.getItem() instanceof ArmorItem) {
+			} else if(stackInSlot.getItem() instanceof ArmorItem) {
 				ArmorItem armor = (ArmorItem) stackInSlot.getItem();
 				int armorSlot = armorStart + armor.getSlot().getFilterFlag() - 1;
-				if (!moveItemStackTo(stackInSlot, armorSlot, armorSlot + 1, true) &&
+				if(!moveItemStackTo(stackInSlot, armorSlot, armorSlot + 1, true) &&
 						!moveItemStackTo(stackInSlot, playerStart, hotbarEnd, true)) {
 					return ItemStack.EMPTY;
 				}
-			} else if (!moveItemStackTo(stackInSlot, playerStart, hotbarEnd, true)) {
+			} else if(!moveItemStackTo(stackInSlot, playerStart, hotbarEnd, true)) {
 				return ItemStack.EMPTY;
 			}
 
 			slot.setChanged();
 
-			if (stackInSlot.isEmpty()) {
+			if(stackInSlot.isEmpty()) {
 				slot.set(ItemStack.EMPTY);
-			} else if (stackInSlot.getCount() == mergeStack.getCount()) {
+			} else if(stackInSlot.getCount() == mergeStack.getCount()) {
 				return ItemStack.EMPTY;
 			}
 

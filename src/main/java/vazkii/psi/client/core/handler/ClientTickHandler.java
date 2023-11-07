@@ -44,7 +44,7 @@ public class ClientTickHandler {
 	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
 	public static void renderTick(TickEvent.RenderTickEvent event) {
-		if (event.phase == TickEvent.Phase.START) {
+		if(event.phase == TickEvent.Phase.START) {
 			partialTicks = event.renderTickTime;
 		} else {
 			calcDelta();
@@ -56,25 +56,25 @@ public class ClientTickHandler {
 
 		Minecraft mc = Minecraft.getInstance();
 
-		if (event.phase == TickEvent.Phase.START) {
+		if(event.phase == TickEvent.Phase.START) {
 
 			boolean pressed = mc.options.keyJump.consumeClick();
-			if (mc.player != null && pressed && (!lastJumpKeyState && !mc.player.isOnGround())) {
+			if(mc.player != null && pressed && (!lastJumpKeyState && !mc.player.isOnGround())) {
 				PsiArmorEvent.post(new PsiArmorEvent(mc.player, PsiArmorEvent.JUMP));
 				MessageRegister.HANDLER.sendToServer(new MessageTriggerJumpSpell());
 			}
 			lastJumpKeyState = pressed;
 		}
-		if (event.phase == TickEvent.Phase.END) {
+		if(event.phase == TickEvent.Phase.END) {
 
 			HUDHandler.tick();
 
 			Screen gui = mc.screen;
-			if (gui == null && KeybindHandler.keybind.isDown()) {
+			if(gui == null && KeybindHandler.keybind.isDown()) {
 				KeybindHandler.keyDown();
 			}
 
-			if (!mc.isPaused()) {
+			if(!mc.isPaused()) {
 				++ticksInGame;
 				partialTicks = 0.0F;
 			}

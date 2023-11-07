@@ -44,7 +44,7 @@ public class PieceTrickMassBlink extends PieceTrick {
 	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
 		super.addToMetadata(meta);
 		Double distanceVal = this.<Double>getParamEvaluation(distance);
-		if (distanceVal == null) {
+		if(distanceVal == null) {
 			distanceVal = 1D;
 		}
 
@@ -57,7 +57,7 @@ public class PieceTrickMassBlink extends PieceTrick {
 		EntityListWrapper targetVal = this.getParamValue(context, target);
 		double distanceVal = this.getParamValue(context, distance).doubleValue();
 
-		for (Entity e : targetVal) {
+		for(Entity e : targetVal) {
 			PieceTrickBlink.blink(context, e, distanceVal);
 		}
 

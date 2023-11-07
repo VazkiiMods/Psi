@@ -44,13 +44,13 @@ public interface ISocketable {
 	int MAX_ASSEMBLER_SLOTS = 12;
 
 	static Component getSocketedItemName(ItemStack stack, String fallbackKey) {
-		if (stack.isEmpty() || !isSocketable(stack)) {
+		if(stack.isEmpty() || !isSocketable(stack)) {
 			return Component.translatable(fallbackKey);
 		}
 
 		ISocketable socketable = socketable(stack);
 		ItemStack item = socketable.getSelectedBullet();
-		if (item.isEmpty()) {
+		if(item.isEmpty()) {
 			return Component.translatable(fallbackKey);
 		}
 
@@ -69,8 +69,8 @@ public interface ISocketable {
 
 	default List<Integer> getRadialMenuSlots() {
 		List<Integer> list = new ArrayList<>();
-		for (int i = 0; i < MAX_ASSEMBLER_SLOTS; i++) {
-			if (isSocketSlotAvailable(i)) {
+		for(int i = 0; i < MAX_ASSEMBLER_SLOTS; i++) {
+			if(isSocketSlotAvailable(i)) {
 				list.add(i);
 			}
 		}
@@ -91,7 +91,7 @@ public interface ISocketable {
 
 	default int getLastSlot() {
 		int slot = 0;
-		while (isSocketSlotAvailable(slot + 1)) {
+		while(isSocketSlotAvailable(slot + 1)) {
 			slot++;
 		}
 		return slot;
@@ -102,11 +102,11 @@ public interface ISocketable {
 	}
 
 	default boolean isItemValid(int slot, ItemStack bullet) {
-		if (!isSocketSlotAvailable(slot)) {
+		if(!isSocketSlotAvailable(slot)) {
 			return false;
 		}
 
-		if (!ISpellAcceptor.isContainer(bullet)) {
+		if(!ISpellAcceptor.isContainer(bullet)) {
 			return false;
 		}
 

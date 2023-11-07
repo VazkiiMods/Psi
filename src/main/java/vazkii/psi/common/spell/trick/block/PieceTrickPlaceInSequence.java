@@ -51,7 +51,7 @@ public class PieceTrickPlaceInSequence extends PieceTrick {
 		super.addToMetadata(meta);
 
 		Double maxBlocksVal = this.<Double>getParamEvaluation(maxBlocks);
-		if (maxBlocksVal == null || maxBlocksVal <= 0) {
+		if(maxBlocksVal == null || maxBlocksVal <= 0) {
 			throw new SpellCompilationException(SpellCompilationException.NON_POSITIVE_VALUE, x, y);
 		}
 
@@ -69,18 +69,18 @@ public class PieceTrickPlaceInSequence extends PieceTrick {
 
 		Direction direction = Direction.NORTH;
 		Direction horizontalFacing = Direction.NORTH;
-		if (directionVal != null) {
+		if(directionVal != null) {
 			direction = Direction.getNearest(directionVal.x, directionVal.y, directionVal.z);
 			horizontalFacing = Direction.getNearest(directionVal.x, 0.0, directionVal.z);
 		}
 
-		if (positionVal == null) {
+		if(positionVal == null) {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
 		}
 		Vector3 targetNorm = targetVal.copy().normalize();
 
-		for (BlockPos blockPos : MathHelper.getBlocksAlongRay(positionVal.toVec3D(), positionVal.copy().add(targetNorm.copy().multiply(maxBlocksInt)).toVec3D(), maxBlocksInt)) {
-			if (!context.isInRadius(Vector3.fromBlockPos(blockPos))) {
+		for(BlockPos blockPos : MathHelper.getBlocksAlongRay(positionVal.toVec3D(), positionVal.copy().add(targetNorm.copy().multiply(maxBlocksInt)).toVec3D(), maxBlocksInt)) {
+			if(!context.isInRadius(Vector3.fromBlockPos(blockPos))) {
 				throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 			}
 

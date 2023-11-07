@@ -23,7 +23,7 @@ import vazkii.psi.common.network.message.MessageLoopcastSync;
 public class LoopcastTrackingHandler {
 	@SubscribeEvent
 	public static void onPlayerStartTracking(PlayerEvent.StartTracking event) {
-		if (event.getTarget() instanceof Player) {
+		if(event.getTarget() instanceof Player) {
 			syncDataFor((Player) event.getTarget(), (ServerPlayer) event.getEntity());
 		}
 	}

@@ -46,14 +46,14 @@ public class PieceOperatorVectorRaycast extends PieceOperator {
 		Vector3 originVal = this.getParamValue(context, origin);
 		Vector3 rayVal = this.getParamValue(context, ray);
 
-		if (originVal == null || rayVal == null) {
+		if(originVal == null || rayVal == null) {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
 		}
 
 		double maxLen = SpellHelpers.rangeLimitParam(this, context, max, SpellContext.MAX_DISTANCE);
 
 		BlockHitResult pos = raycast(context.caster, originVal, rayVal, maxLen);
-		if (pos.getType() == HitResult.Type.MISS) {
+		if(pos.getType() == HitResult.Type.MISS) {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
 		}
 

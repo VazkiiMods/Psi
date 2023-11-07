@@ -33,7 +33,7 @@ public class ItemDetonator extends Item {
 	public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, @Nonnull InteractionHand hand) {
 		ItemStack itemStackIn = playerIn.getItemInHand(hand);
 
-		if (!worldIn.isClientSide) {
+		if(!worldIn.isClientSide) {
 			IDetonationHandler.performDetonation(worldIn, playerIn);
 			worldIn.playSound(null, playerIn.getX(), playerIn.getY(), playerIn.getZ(), SoundEvents.UI_BUTTON_CLICK, SoundSource.PLAYERS, 1F, 1F);
 		}

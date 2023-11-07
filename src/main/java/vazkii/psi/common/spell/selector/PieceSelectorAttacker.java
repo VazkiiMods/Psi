@@ -29,7 +29,7 @@ public class PieceSelectorAttacker extends PieceSelector {
 
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
-		if (context.attackingEntity == null || context.attackingEntity instanceof FakePlayer) {
+		if(context.attackingEntity == null || context.attackingEntity instanceof FakePlayer) {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_TARGET);
 		}
 

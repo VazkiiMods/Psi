@@ -52,7 +52,7 @@ public final class Spell {
 
 	@Nullable
 	public static Spell createFromNBT(CompoundTag cmp) {
-		if (cmp == null || !cmp.getBoolean(TAG_VALID)) {
+		if(cmp == null || !cmp.getBoolean(TAG_VALID)) {
 			return null;
 		}
 
@@ -64,10 +64,10 @@ public final class Spell {
 	public void readFromNBT(CompoundTag cmp) {
 		name = cmp.getString(TAG_SPELL_NAME);
 
-		if (cmp.contains(TAG_UUID_MOST)) {
+		if(cmp.contains(TAG_UUID_MOST)) {
 			long uuidMost = cmp.getLong(TAG_UUID_MOST);
 			long uuidLeast = cmp.getLong(TAG_UUID_LEAST);
-			if (uuid.getMostSignificantBits() != uuidMost || uuid.getLeastSignificantBits() != uuidLeast) {
+			if(uuid.getMostSignificantBits() != uuidMost || uuid.getLeastSignificantBits() != uuidLeast) {
 				uuid = new UUID(uuidMost, uuidLeast);
 			}
 		}
@@ -77,9 +77,9 @@ public final class Spell {
 
 	public Set<String> getPieceNamespaces() {
 		Set<String> temp = Collections.newSetFromMap(new HashMap<>());
-		for (SpellPiece[] gridDatum : grid.gridData) {
-			for (SpellPiece spellPiece : gridDatum) {
-				if (spellPiece != null) {
+		for(SpellPiece[] gridDatum : grid.gridData) {
+			for(SpellPiece spellPiece : gridDatum) {
+				if(spellPiece != null) {
 					temp.add(spellPiece.registryKey.getNamespace());
 				}
 			}
@@ -91,10 +91,10 @@ public final class Spell {
 		cmp.putBoolean(TAG_VALID, true);
 		cmp.putString(TAG_SPELL_NAME, name);
 		ListTag modList = new ListTag();
-		for (String namespace : getPieceNamespaces()) {
+		for(String namespace : getPieceNamespaces()) {
 			CompoundTag nbt = new CompoundTag();
 			nbt.putString(TAG_MOD_NAME, namespace);
-			if (ModList.get().getModContainerById(namespace).isPresent()) {
+			if(ModList.get().getModContainerById(namespace).isPresent()) {
 				nbt.putString(TAG_MOD_VERSION, ModList.get().getModContainerById(namespace).get().getModInfo().getVersion().toString());
 			}
 			modList.add(nbt);

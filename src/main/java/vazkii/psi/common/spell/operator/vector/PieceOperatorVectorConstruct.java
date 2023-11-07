@@ -39,13 +39,13 @@ public class PieceOperatorVectorConstruct extends PieceOperator {
 		Number d2 = this.getParamValue(context, num2);
 		Number d3 = this.getParamValue(context, num3);
 
-		if (d1 == null) {
+		if(d1 == null) {
 			d1 = 0D;
 		}
-		if (d2 == null) {
+		if(d2 == null) {
 			d2 = 0D;
 		}
-		if (d3 == null) {
+		if(d3 == null) {
 			d3 = 0D;
 		}
 
