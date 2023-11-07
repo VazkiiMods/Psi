@@ -33,63 +33,63 @@ public class MessageRegister {
 		HANDLER.messageBuilder(MessageLoopcastSync.class, id++)
 				.encoder(MessageLoopcastSync::encode)
 				.decoder(MessageLoopcastSync::new)
-				.consumer(MessageLoopcastSync::receive).add();
+				.consumerMainThread(MessageLoopcastSync::receive).add();
 		HANDLER.messageBuilder(MessageDataSync.class, id++)
 				.encoder(MessageDataSync::encode)
 				.decoder(MessageDataSync::new)
-				.consumer(MessageDataSync::receive).add();
+				.consumerMainThread(MessageDataSync::receive).add();
 		HANDLER.messageBuilder(MessageEidosSync.class, id++)
 				.encoder(MessageEidosSync::encode)
 				.decoder(MessageEidosSync::new)
-				.consumer(MessageEidosSync::receive).add();
+				.consumerMainThread(MessageEidosSync::receive).add();
 		HANDLER.messageBuilder(MessageCADDataSync.class, id++)
 				.encoder(MessageCADDataSync::encode)
 				.decoder(MessageCADDataSync::new)
-				.consumer(MessageCADDataSync::receive).add();
+				.consumerMainThread(MessageCADDataSync::receive).add();
 		HANDLER.messageBuilder(MessageDeductPsi.class, id++)
 				.encoder(MessageDeductPsi::encode)
 				.decoder(MessageDeductPsi::new)
-				.consumer(MessageDeductPsi::receive).add();
+				.consumerMainThread(MessageDeductPsi::receive).add();
 		HANDLER.messageBuilder(MessageChangeSocketableSlot.class, id++)
 				.encoder(MessageChangeSocketableSlot::encode)
 				.decoder(MessageChangeSocketableSlot::new)
-				.consumer(MessageChangeSocketableSlot::receive).add();
+				.consumerMainThread(MessageChangeSocketableSlot::receive).add();
 		HANDLER.messageBuilder(MessageSpellModified.class, id++)
 				.encoder(MessageSpellModified::encode)
 				.decoder(MessageSpellModified::new)
-				.consumer(MessageSpellModified::receive).add();
+				.consumerMainThread(MessageSpellModified::receive).add();
 		HANDLER.messageBuilder(MessageChangeControllerSlot.class, id++)
 				.encoder(MessageChangeControllerSlot::encode)
 				.decoder(MessageChangeControllerSlot::new)
-				.consumer(MessageChangeControllerSlot::receive).add();
+				.consumerMainThread(MessageChangeControllerSlot::receive).add();
 		HANDLER.messageBuilder(MessageTriggerJumpSpell.class, id++)
 				.encoder((msg, buf) -> {})
 				.decoder($ -> new MessageTriggerJumpSpell())
-				.consumer(MessageTriggerJumpSpell::receive).add();
+				.consumerMainThread(MessageTriggerJumpSpell::receive).add();
 		HANDLER.messageBuilder(MessageVisualEffect.class, id++)
 				.encoder(MessageVisualEffect::encode)
 				.decoder(MessageVisualEffect::new)
-				.consumer(MessageVisualEffect::receive).add();
+				.consumerMainThread(MessageVisualEffect::receive).add();
 		HANDLER.messageBuilder(MessageAdditiveMotion.class, id++)
 				.encoder(MessageAdditiveMotion::encode)
 				.decoder(MessageAdditiveMotion::new)
-				.consumer(MessageAdditiveMotion::receive).add();
+				.consumerMainThread(MessageAdditiveMotion::receive).add();
 		HANDLER.messageBuilder(MessageBlink.class, id++)
 				.encoder(MessageBlink::encode)
 				.decoder(MessageBlink::new)
-				.consumer(MessageBlink::receive).add();
+				.consumerMainThread(MessageBlink::receive).add();
 		HANDLER.messageBuilder(MessageSpamlessChat.class, id++)
 				.encoder(MessageSpamlessChat::encode)
 				.decoder(MessageSpamlessChat::new)
-				.consumer(MessageSpamlessChat::receive).add();
+				.consumerMainThread(MessageSpamlessChat::receive).add();
 		HANDLER.messageBuilder(MessageParticleTrail.class, id++)
 				.encoder(MessageParticleTrail::encode)
 				.decoder(MessageParticleTrail::new)
-				.consumer(MessageParticleTrail::receive).add();
+				.consumerMainThread(MessageParticleTrail::receive).add();
 		HANDLER.messageBuilder(MessageSpellError.class, id++)
 				.encoder(MessageSpellError::encode)
 				.decoder(MessageSpellError::new)
-				.consumer(MessageSpellError::receive).add();
+				.consumerMainThread(MessageSpellError::receive).add();
 	}
 
 	public static void writeVec3d(FriendlyByteBuf buf, Vec3 vec3d) {
