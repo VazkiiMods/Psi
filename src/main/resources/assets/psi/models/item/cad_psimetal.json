@@ -3,6 +3,7 @@
 	"ambientocclusion": false,
 	"texture_size": [32, 32],
 	"textures": {
+		"missing": "psi:blocks/empty",
 		"1": "psi:items/cad_color",
 		"2": "psi:items/cad_assembly_0"
 	},
