@@ -55,7 +55,7 @@ public class PieceOperatorEntityRaycast extends PieceOperator {
 
 		double maxLen = SpellHelpers.rangeLimitParam(this, context, max, SpellContext.MAX_DISTANCE);
 
-		Entity entity = rayTraceEntities(context.focalPoint.level, context.caster, originVal.toVec3D(), rayVal.toVec3D(),
+		Entity entity = rayTraceEntities(context.focalPoint.level, originVal.toVec3D(), rayVal.toVec3D(),
 				pred -> !pred.isSpectator() && pred.isAlive() && pred.isPickable() && !(pred instanceof ISpellImmune), maxLen);
 		if(entity == null) {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_TARGET);
@@ -70,13 +70,13 @@ public class PieceOperatorEntityRaycast extends PieceOperator {
 	 * (World, Entity, Vec3, Vec3, AxisAlignedBB, Predicate, double)}
 	 * Some slight tweaks as we don't need an AABB provided to us, we can just make one.
 	 */
-	public static Entity rayTraceEntities(Level world, Entity caster, Vec3 positionVector, Vec3 lookVector, Predicate<Entity> predicate, double maxDistance) {
+	public static Entity rayTraceEntities(Level world, Vec3 positionVector, Vec3 lookVector, Predicate<Entity> predicate, double maxDistance) {
 		double distance = maxDistance;
 		Entity entity = null;
 
 		Vec3 reachVector = positionVector.add(lookVector.scale(maxDistance));
 		AABB aabb = new AABB(positionVector.x, positionVector.y, positionVector.z, reachVector.x, reachVector.y, reachVector.z).inflate(1f, 1f, 1f);
-		for(Entity entity1 : world.getEntities(caster, aabb, predicate)) {
+		for(Entity entity1 : world.getEntities((Entity) null, aabb, predicate)) {
 			float collisionBorderSize = entity1.getPickRadius();
 			AABB axisalignedbb = entity1.getBoundingBox().inflate(collisionBorderSize);
 			Optional<Vec3> optional = axisalignedbb.clip(positionVector, reachVector);
