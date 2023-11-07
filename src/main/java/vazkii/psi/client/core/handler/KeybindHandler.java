@@ -32,7 +32,7 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_C;
 @Mod.EventBusSubscriber(value = Dist.CLIENT, modid = LibMisc.MOD_ID, bus = Bus.MOD)
 @OnlyIn(Dist.CLIENT)
 public class KeybindHandler {
-	public static KeyMapping keybind = new KeyMapping("psimisc.keybind", GLFW_KEY_C, "key.categories.inventory");
+	public static KeyMapping keybind = new KeyMapping("psimisc.keybind", GLFW_KEY_C, "key.categories.psi");
 
 	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
