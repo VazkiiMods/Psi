@@ -45,7 +45,7 @@ public final class ContributorSpellCircleHandler {
 			try {
 				int[] values = Stream.of(value.split(",")).mapToInt(el -> Integer.parseInt(el.substring(2), 16)).toArray();
 				m.put(key, values);
-			} catch (NumberFormatException | StringIndexOutOfBoundsException  e) {
+			} catch (NumberFormatException | StringIndexOutOfBoundsException e) {
 				Psi.logger.error("Contributor " + key + " has an invalid hexcode!");
 			}
 		}
