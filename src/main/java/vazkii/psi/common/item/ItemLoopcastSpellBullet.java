@@ -10,7 +10,6 @@ package vazkii.psi.common.item;
 
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.item.Item.Properties;
 import net.minecraft.world.item.ItemStack;
 
 import vazkii.psi.api.spell.SpellContext;
@@ -29,12 +28,12 @@ public class ItemLoopcastSpellBullet extends ItemSpellBullet {
 	public ArrayList<Entity> castSpell(ItemStack stack, SpellContext context) {
 		PlayerDataHandler.PlayerData data = PlayerDataHandler.get(context.caster);
 		if(!data.loopcasting || context.castFrom != data.loopcastHand) {
-			context.cspell.safeExecute(context);
 			data.loopcasting = true;
 			data.loopcastHand = context.castFrom;
 			data.lastTickLoopcastStack = null;
 			data.loopcastTime = 1;
 			data.loopcastAmount = 0;
+			context.cspell.safeExecute(context);
 			if(context.caster instanceof ServerPlayer) {
 				LoopcastTrackingHandler.syncForTrackersAndSelf((ServerPlayer) context.caster);
 			}
@@ -56,10 +55,5 @@ public class ItemLoopcastSpellBullet extends ItemSpellBullet {
 	@Override
 	public boolean isCADOnlyContainer(ItemStack stack) {
 		return true;
-	}
-
-	@Override
-	public double getCostModifier(ItemStack stack) {
-		return 1.0;
 	}
 }
