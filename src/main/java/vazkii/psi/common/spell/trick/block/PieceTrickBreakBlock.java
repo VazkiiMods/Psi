@@ -92,7 +92,7 @@ public class PieceTrickBreakBlock extends PieceTrick {
 			stack = PsiAPI.getPlayerCAD(player);
 		}
 
-		if(!world.hasChunk(pos.getX(), pos.getY())) {
+		if(!world.hasChunkAt(pos)) {
 			return;
 		}
 

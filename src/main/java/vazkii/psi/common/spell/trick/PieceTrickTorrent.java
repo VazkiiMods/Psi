@@ -76,7 +76,7 @@ public class PieceTrickTorrent extends PieceTrick {
 
 	// [VanillaCopy] BucketItem.tryPlaceContainingLiquid because buckets are dumb
 	public static boolean placeWater(@Nullable Player playerIn, Level worldIn, BlockPos pos) {
-		if(playerIn == null || !worldIn.hasChunk(pos.getX(), pos.getY()) || !worldIn.mayInteract(playerIn, pos)) {
+		if(playerIn == null || !worldIn.hasChunkAt(pos) || !worldIn.mayInteract(playerIn, pos)) {
 			return false;
 		}
 		BlockState blockstate = worldIn.getBlockState(pos);
