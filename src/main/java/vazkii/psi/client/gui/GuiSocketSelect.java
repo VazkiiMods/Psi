@@ -11,7 +11,11 @@ package vazkii.psi.client.gui;
 import com.google.common.collect.ImmutableSet;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.*;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.Tesselator;
+import com.mojang.blaze3d.vertex.VertexFormat;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.KeyMapping;
@@ -24,6 +28,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 
+import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
 import vazkii.psi.api.PsiAPI;
@@ -37,7 +42,6 @@ import vazkii.psi.common.network.MessageRegister;
 import vazkii.psi.common.network.message.MessageChangeControllerSlot;
 import vazkii.psi.common.network.message.MessageChangeSocketableSlot;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -317,7 +321,7 @@ public class GuiSocketSelect extends Screen {
 	public boolean isKeyDown(KeyMapping keybind) {
 		InputConstants.Key key = keybind.getKey();
 		if(key.getType() == InputConstants.Type.MOUSE) {
-			return keybind.isDown();
+			return GLFW.glfwGetMouseButton(Minecraft.getInstance().getWindow().getWindow(), key.getValue()) == 1;
 		}
 		return InputConstants.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), key.getValue());
 	}
