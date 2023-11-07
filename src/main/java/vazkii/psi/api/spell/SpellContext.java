@@ -191,29 +191,32 @@ public final class SpellContext {
 	}
 
 	public int getTargetSlot() throws SpellRuntimeException {
-		int slot;
-		if(customTargetSlot) {
-			return targetSlot % 36;
-		}
-		if(shiftTargetSlot) {
-			int cadSlot = PsiAPI.getPlayerCADSlot(caster);
-			if(cadSlot == -1) {
-				throw new SpellRuntimeException(SpellRuntimeException.NO_CAD);
-			}
+		int slot = targetSlot;
+		int cadSlot = PsiAPI.getPlayerCADSlot(caster);
 
-			if(Inventory.isHotbarSlot(cadSlot)) {
-				slot = (cadSlot + targetSlot) % 9;
-			} else {
-				slot = (caster.getInventory().selected + targetSlot) % 9;
-			}
-		} else {
-			slot = (targetSlot - 1) % 9;
+		if(cadSlot == -1) {
+			throw new SpellRuntimeException(SpellRuntimeException.NO_CAD);
+		}
+
+		if(customTargetSlot) {
+			return targetSlot == 36 ? Inventory.SLOT_OFFHAND : targetSlot % 36;
+		}
+
+		if(shiftTargetSlot) {
+			int originSlot = Inventory.isHotbarSlot(cadSlot) ? cadSlot : caster.getInventory().selected;
+
+			slot = originSlot + targetSlot;
+		}
+
+		if(slot == -1) {
+			return Inventory.SLOT_OFFHAND;
 		}
 
 		if(slot < 0) {
 			slot = 10 + slot;
 		}
-		return slot;
+
+		return slot % 9;
 	}
 
 	/**
