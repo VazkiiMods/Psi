@@ -43,7 +43,7 @@ public class PieceTrickTill extends PieceTrick {
 	}
 
 	public static InteractionResult tillBlock(Player player, Level world, BlockPos pos) {
-		if(!world.hasChunkAt(pos) || !world.mayInteract(player, pos)) {
+		if(!world.hasChunk(pos.getX(), pos.getY()) || !world.mayInteract(player, pos)) {
 			return InteractionResult.PASS;
 		}
 		BlockHitResult hit = new BlockHitResult(Vec3.ZERO, Direction.UP, pos, false);
@@ -70,7 +70,7 @@ public class PieceTrickTill extends PieceTrick {
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		BlockPos pos = SpellHelpers.getBlockPos(this, context, position, true, false);
 
-		return tillBlock(context.caster, context.caster.level, pos);
+		return tillBlock(context.caster, context.focalPoint.level, pos);
 	}
 
 }

@@ -55,7 +55,7 @@ public class PieceOperatorEntityRaycast extends PieceOperator {
 
 		double maxLen = SpellHelpers.rangeLimitParam(this, context, max, SpellContext.MAX_DISTANCE);
 
-		Entity entity = rayTraceEntities(context.caster.level, context.caster, originVal.toVec3D(), rayVal.toVec3D(),
+		Entity entity = rayTraceEntities(context.focalPoint.level, context.caster, originVal.toVec3D(), rayVal.toVec3D(),
 				pred -> !pred.isSpectator() && pred.isAlive() && pred.isPickable() && !(pred instanceof ISpellImmune), maxLen);
 		if(entity == null) {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_TARGET);
@@ -66,8 +66,8 @@ public class PieceOperatorEntityRaycast extends PieceOperator {
 
 	/**
 	 * [VanillaCopy]
-	 * {@link net.minecraft.entity.projectile.ProjectileHelper#rayTraceEntities(World, Entity, Vector3d, Vector3d, AxisAlignedBB, Predicate)}
-	 * (World, Entity, Vector3d, Vector3d, AxisAlignedBB, Predicate, double)}
+	 * {@link net.minecraft.world.entity.projectile.ProjectileUtil#getEntityHitResult(Entity, Vec3, Vec3, AABB, Predicate, double)}
+	 * (World, Entity, Vec3, Vec3, AxisAlignedBB, Predicate, double)}
 	 * Some slight tweaks as we don't need an AABB provided to us, we can just make one.
 	 */
 	public static Entity rayTraceEntities(Level world, Entity caster, Vec3 positionVector, Vec3 lookVector, Predicate<Entity> predicate, double maxDistance) {

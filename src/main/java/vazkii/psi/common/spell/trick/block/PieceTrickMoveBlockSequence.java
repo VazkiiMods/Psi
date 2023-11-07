@@ -71,7 +71,7 @@ public class PieceTrickMoveBlockSequence extends PieceTrick {
 		Vector3 positionVal = SpellHelpers.getVector3(this, context, position, true, false);
 		Vector3 targetVal = SpellHelpers.getVector3(this, context, target, false, false);
 		int maxBlocksVal = this.getParamValue(context, maxBlocks).intValue();
-		Level world = context.caster.level;
+		Level world = context.focalPoint.level;
 
 		Map<BlockPos, BlockState> toSet = new HashMap<>();
 		Map<BlockPos, BlockState> toRemove = new HashMap<>();
@@ -83,7 +83,7 @@ public class PieceTrickMoveBlockSequence extends PieceTrick {
 		LinkedHashSet<BlockPos> moveableBlocks = new LinkedHashSet<>();
 		LinkedHashSet<BlockPos> immovableBlocks = new LinkedHashSet<>();
 
-		/**
+		/*
 		 * TODO: Find a better solution than this bandaid for block duping (see #740)
 		 * A possible solution is moving this logic to {@link PieceTrickBreakBlock}
 		 * As well as passing the spell context to it as a parameter. The Spell Context would need to have a way to
@@ -159,12 +159,12 @@ public class PieceTrickMoveBlockSequence extends PieceTrick {
 		}
 
 		for(Map.Entry<BlockPos, BlockState> pairtoRemove : toRemove.entrySet()) {
-			context.caster.level.removeBlock(pairtoRemove.getKey(), true);
-			context.caster.level.levelEvent(2001, pairtoRemove.getKey(), Block.getId(pairtoRemove.getValue()));
+			context.focalPoint.level.removeBlock(pairtoRemove.getKey(), true);
+			context.focalPoint.level.levelEvent(2001, pairtoRemove.getKey(), Block.getId(pairtoRemove.getValue()));
 		}
 
 		for(Map.Entry<BlockPos, BlockState> pairToSet : toSet.entrySet()) {
-			context.caster.level.setBlockAndUpdate(pairToSet.getKey(), pairToSet.getValue());
+			context.focalPoint.level.setBlockAndUpdate(pairToSet.getKey(), pairToSet.getValue());
 		}
 
 		return null;

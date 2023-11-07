@@ -96,7 +96,7 @@ public class PieceTrickPlaceBlock extends PieceTrick {
 	}
 
 	public static void placeBlock(Player player, Level world, BlockPos pos, int slot, boolean particles, boolean conjure, Direction direction, Direction horizontalDirection) {
-		if(!world.hasChunkAt(pos) || !world.mayInteract(player, pos)) {
+		if(!world.hasChunk(pos.getX(), pos.getY()) || !world.mayInteract(player, pos)) {
 			return;
 		}
 

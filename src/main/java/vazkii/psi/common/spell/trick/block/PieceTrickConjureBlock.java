@@ -109,7 +109,7 @@ public class PieceTrickConjureBlock extends PieceTrick {
 	}
 
 	public static boolean conjure(Level world, BlockPos pos, Player player, BlockState state) {
-		if(!world.hasChunkAt(pos) || !world.mayInteract(player, pos)) {
+		if(!world.hasChunk(pos.getX(), pos.getY()) || !world.mayInteract(player, pos)) {
 			return false;
 		}
 

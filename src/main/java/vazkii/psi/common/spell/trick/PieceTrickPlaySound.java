@@ -69,7 +69,7 @@ public class PieceTrickPlaySound extends PieceTrick {
 		int instrumentId = Mth.clamp((int) instrumentVal, 0, Psi.noteblockSoundEvents.size() - 1);
 
 		float f = (float) Math.pow(2, (pitchVal - 12) / 12.0);
-		context.caster.level.playSound(null, pos, Psi.noteblockSoundEvents.get(instrumentId), SoundSource.RECORDS, (float) volVal, f);
+		context.focalPoint.level.playSound(null, pos, Psi.noteblockSoundEvents.get(instrumentId), SoundSource.RECORDS, (float) volVal, f);
 		return null;
 	}
 }

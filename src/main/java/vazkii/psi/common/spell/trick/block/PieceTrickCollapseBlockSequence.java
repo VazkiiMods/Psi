@@ -71,7 +71,7 @@ public class PieceTrickCollapseBlockSequence extends PieceTrick {
 			tool = PsiAPI.getPlayerCAD(context.caster);
 		}
 
-		Level world = context.caster.level;
+		Level world = context.focalPoint.level;
 		Vector3 targetNorm = targetVal.copy().normalize();
 		for(BlockPos blockPos : MathHelper.getBlocksAlongRay(positionVal.toVec3D(), positionVal.copy().add(targetNorm.copy().multiply(maxBlocksInt)).toVec3D(), maxBlocksInt)) {
 			if(!context.isInRadius(Vector3.fromBlockPos(blockPos))) {

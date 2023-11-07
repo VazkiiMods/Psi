@@ -85,7 +85,7 @@ public class PieceTrickSmeltBlockSequence extends PieceTrick {
 			BlockState state = context.focalPoint.getCommandSenderWorld().getBlockState(blockPos);
 			Block block = state.getBlock();
 			ItemStack stack = new ItemStack(block);
-			BlockEvent.BreakEvent event = PieceTrickBreakBlock.createBreakEvent(state, context.caster, context.caster.level, blockPos, tool);
+			BlockEvent.BreakEvent event = PieceTrickBreakBlock.createBreakEvent(state, context.caster, context.focalPoint.level, blockPos, tool);
 			MinecraftForge.EVENT_BUS.post(event);
 			if(event.isCanceled()) {
 				return null;

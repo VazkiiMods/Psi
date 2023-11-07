@@ -71,12 +71,12 @@ public class PieceTrickTorrent extends PieceTrick {
 		if(placeEvent.isCanceled()) {
 			return null;
 		}
-		return placeWater(context.caster, context.caster.level, pos);
+		return placeWater(context.caster, context.focalPoint.level, pos);
 	}
 
 	// [VanillaCopy] BucketItem.tryPlaceContainingLiquid because buckets are dumb
 	public static boolean placeWater(@Nullable Player playerIn, Level worldIn, BlockPos pos) {
-		if(!worldIn.hasChunkAt(pos) || !worldIn.mayInteract(playerIn, pos)) {
+		if(playerIn == null || !worldIn.hasChunk(pos.getX(), pos.getY()) || !worldIn.mayInteract(playerIn, pos)) {
 			return false;
 		}
 		BlockState blockstate = worldIn.getBlockState(pos);

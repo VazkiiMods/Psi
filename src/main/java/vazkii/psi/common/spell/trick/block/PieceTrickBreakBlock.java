@@ -17,7 +17,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -93,7 +92,7 @@ public class PieceTrickBreakBlock extends PieceTrick {
 			stack = PsiAPI.getPlayerCAD(player);
 		}
 
-		if(!world.hasChunkAt(pos)) {
+		if(!world.hasChunk(pos.getX(), pos.getY())) {
 			return;
 		}
 
@@ -123,8 +122,8 @@ public class PieceTrickBreakBlock extends PieceTrick {
 		{
 			event.setExpToDrop(0);
 		} else {
-			int fortuneLevel = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.BLOCK_FORTUNE, tool);
-			int silkLevel = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SILK_TOUCH, tool);
+			int fortuneLevel = tool.getEnchantmentLevel(Enchantments.BLOCK_FORTUNE);
+			int silkLevel = tool.getEnchantmentLevel(Enchantments.SILK_TOUCH);
 			event.setExpToDrop(state.getExpDrop(world, RandomSource.create(), pos, fortuneLevel, silkLevel));
 		}
 		return event;
@@ -133,7 +132,6 @@ public class PieceTrickBreakBlock extends PieceTrick {
 	/**
 	 * Item stack aware harvest check
 	 * Also sets global state {@link PieceTrickBreakBlock#doingHarvestCheck} to true during the check
-	 * 
 	 * //@see IForgeBlockState#canHarvestBlock(IBlockReader, BlockPos, PlayerEntity)
 	 */
 	public static boolean canHarvestBlock(BlockState state, Player player, Level world, BlockPos pos, ItemStack stack) {
@@ -172,10 +170,6 @@ public class PieceTrickBreakBlock extends PieceTrick {
 
 	public static boolean canHarvest(int harvestLevel, BlockState state) {
 		return !getTool(harvestLevel, state).isEmpty();
-	}
-
-	public static ItemStack getHarvestToolStack(int harvestLevel, BlockState state) {
-		return getTool(harvestLevel, state).copy();
 	}
 
 	private static ItemStack getTool(int harvestLevel, BlockState state) {

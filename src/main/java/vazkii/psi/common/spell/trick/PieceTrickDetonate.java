@@ -56,10 +56,10 @@ public class PieceTrickDetonate extends PieceTrick {
 		double radiusVal = Math.min(MAX_DISTANCE, this.getNonnullParamValue(context, radius).doubleValue());
 
 		if(radiusVal == 0.0) {
-			IDetonationHandler.performDetonation(context.caster.level, context.caster, 0, entity -> entity == context.caster);
+			IDetonationHandler.performDetonation(context.focalPoint.level, context.caster, 0, entity -> entity == context.caster);
 			return null;
 		}
-		IDetonationHandler.performDetonation(context.caster.level, context.caster, context.focalPoint, radiusVal);
+		IDetonationHandler.performDetonation(context.focalPoint.level, context.caster, context.focalPoint, radiusVal);
 		return null;
 	}
 }

@@ -9,10 +9,8 @@
 package vazkii.psi.common.spell.operator.block;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 
-import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
@@ -39,11 +37,8 @@ public class PieceOperatorBlockMiningLevel extends PieceOperator {
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		BlockPos pos = SpellHelpers.getBlockPos(this, context, position, false, false);
-		BlockState state = context.caster.level.getBlockState(pos);
-		ItemStack tool = context.tool;
-		if(tool.isEmpty()) {
-			tool = PsiAPI.getPlayerCAD(context.caster);
-		}
+		BlockState state = context.focalPoint.level.getBlockState(pos);
+
 		//TODO Fix low mining level items returning 1
 		return PieceTrickBreakBlock.getHarvestLevel(state);
 	}

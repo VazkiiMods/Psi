@@ -40,8 +40,8 @@ public class PieceOperatorBlockSideSolidity extends PieceOperator {
 		BlockPos pos = SpellHelpers.getBlockPos(this, context, target, false, false);
 		Direction facing = SpellHelpers.getFacing(this, context, axisParam);
 
-		BlockState state = context.caster.level.getBlockState(pos);
-		return state.isFaceSturdy(context.caster.level, pos, facing) ? 1.0D : 0.D;
+		BlockState state = context.focalPoint.level.getBlockState(pos);
+		return state.isFaceSturdy(context.focalPoint.level, pos, facing) ? 1.0D : 0.D;
 	}
 
 	@Override
