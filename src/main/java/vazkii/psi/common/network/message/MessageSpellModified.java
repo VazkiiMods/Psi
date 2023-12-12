@@ -56,7 +56,7 @@ public class MessageSpellModified {
 
 	public void receive(Supplier<NetworkEvent.Context> context) {
 		context.get().enqueueWork(() -> {
-			BlockEntity te = context.get().getSender().level.getBlockEntity(pos);
+			BlockEntity te = context.get().getSender().level().getBlockEntity(pos);
 			if(te instanceof TileProgrammer) {
 				TileProgrammer tile = (TileProgrammer) te;
 				if(tile.playerLock == null || tile.playerLock.isEmpty() || tile.playerLock.equals(context.get().getSender().getName().getString())) {

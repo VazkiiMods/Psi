@@ -71,7 +71,7 @@ public class PieceTrickTorrent extends PieceTrick {
 		if(placeEvent.isCanceled()) {
 			return null;
 		}
-		return placeWater(context.caster, context.focalPoint.level, pos);
+		return placeWater(context.caster, context.focalPoint.level(), pos);
 	}
 
 	// [VanillaCopy] BucketItem.tryPlaceContainingLiquid because buckets are dumb

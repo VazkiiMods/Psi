@@ -8,9 +8,9 @@
  */
 package vazkii.psi.common.spell.other;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.network.chat.Component;
@@ -80,16 +80,16 @@ public class PieceCrossConnector extends SpellPiece implements IGenericRedirecto
 	}
 
 	@Override
-	public void drawAdditional(PoseStack ms, MultiBufferSource buffers, int light) {
-		drawSide(ms, buffers, paramSides.get(in1), light, LINE_ONE);
-		drawSide(ms, buffers, paramSides.get(out1), light, LINE_ONE);
+	public void drawAdditional(GuiGraphics graphics, MultiBufferSource buffers, int light) {
+		drawSide(graphics, buffers, paramSides.get(in1), light, LINE_ONE);
+		drawSide(graphics, buffers, paramSides.get(out1), light, LINE_ONE);
 
-		drawSide(ms, buffers, paramSides.get(in2), light, LINE_TWO);
-		drawSide(ms, buffers, paramSides.get(out2), light, LINE_TWO);
+		drawSide(graphics, buffers, paramSides.get(in2), light, LINE_TWO);
+		drawSide(graphics, buffers, paramSides.get(out2), light, LINE_TWO);
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	private void drawSide(PoseStack ms, MultiBufferSource buffers, SpellParam.Side side, int light, int color) {
+	private void drawSide(GuiGraphics graphics, MultiBufferSource buffers, SpellParam.Side side, int light, int color) {
 		if(side.isEnabled()) {
 			Material material = new Material(ClientPsiAPI.PSI_PIECE_TEXTURE_ATLAS, new ResourceLocation(LibResources.SPELL_CONNECTOR_LINES));
 			VertexConsumer buffer = material.buffer(buffers, ignored -> SpellPiece.getLayer());
@@ -121,7 +121,7 @@ public class PieceCrossConnector extends SpellPiece implements IGenericRedirecto
 			/*
 			See note in SpellPiece#drawBackground for why this chain needs to be split
 			*/
-			Matrix4f mat = ms.last().pose();
+			Matrix4f mat = graphics.pose().last().pose();
 			buffer.vertex(mat, 0, 16, 0).color(r, g, b, 1F);
 			buffer.uv(minU, maxV).uv2(light).endVertex();
 			buffer.vertex(mat, 16, 16, 0).color(r, g, b, 1F);

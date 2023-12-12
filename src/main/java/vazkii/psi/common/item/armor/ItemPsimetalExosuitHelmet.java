@@ -11,6 +11,7 @@ package vazkii.psi.common.item.armor;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.DyeableLeatherItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -27,8 +28,8 @@ public class ItemPsimetalExosuitHelmet extends ItemPsimetalArmor implements ISen
 
 	private static final String TAG_SENSOR = "sensor";
 
-	public ItemPsimetalExosuitHelmet(EquipmentSlot slotType, Item.Properties properties) {
-		super(slotType, properties);
+	public ItemPsimetalExosuitHelmet(ArmorItem.Type type, Item.Properties properties) {
+		super(type, properties);
 	}
 
 	@Override

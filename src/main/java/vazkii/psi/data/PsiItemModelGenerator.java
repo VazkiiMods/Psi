@@ -8,7 +8,7 @@
  */
 package vazkii.psi.data;
 
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.client.model.generators.ModelFile;
@@ -22,8 +22,8 @@ import vazkii.psi.common.lib.LibMisc;
 import javax.annotation.Nonnull;
 
 public class PsiItemModelGenerator extends ItemModelProvider {
-	public PsiItemModelGenerator(DataGenerator generator, ExistingFileHelper existingFileHelper) {
-		super(generator, LibMisc.MOD_ID, existingFileHelper);
+	public PsiItemModelGenerator(PackOutput output, ExistingFileHelper existingFileHelper) {
+		super(output, LibMisc.MOD_ID, existingFileHelper);
 	}
 
 	private void pointToBlock(Item item) {

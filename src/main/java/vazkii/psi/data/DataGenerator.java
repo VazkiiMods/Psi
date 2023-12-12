@@ -26,14 +26,14 @@ public class DataGenerator {
 			PsiBlockTagProvider blockTagProvider = new PsiBlockTagProvider(event.getGenerator().getPackOutput(), event.getLookupProvider(), existingFileHelper);
 			event.getGenerator().addProvider(true, blockTagProvider);
 			event.getGenerator().addProvider(true, new PsiDamageTypeTagsProvider(event.getGenerator().getPackOutput(), event.getLookupProvider(), existingFileHelper));
-			event.getGenerator().addProvider(true, new PsiItemTagProvider(event.getGenerator(), blockTagProvider, existingFileHelper));
+			event.getGenerator().addProvider(true, new PsiItemTagProvider(event.getGenerator().getPackOutput(), event.getLookupProvider(), blockTagProvider.contentsGetter(), existingFileHelper));
 			event.getGenerator().addProvider(true, new PsiRecipeGenerator(event.getGenerator().getPackOutput()));
-			event.getGenerator().addProvider(true, new PsiTrickRecipeGenerator(event.getGenerator()));
+			event.getGenerator().addProvider(true, new PsiTrickRecipeGenerator(event.getGenerator().getPackOutput()));
 		}
 
 		if(event.includeClient()) {
-			event.getGenerator().addProvider(true, new PsiBlockModelGenerator(event.getGenerator(), event.getExistingFileHelper()));
-			event.getGenerator().addProvider(true, new PsiItemModelGenerator(event.getGenerator(), event.getExistingFileHelper()));
+			event.getGenerator().addProvider(true, new PsiBlockModelGenerator(event.getGenerator().getPackOutput(), event.getExistingFileHelper()));
+			event.getGenerator().addProvider(true, new PsiItemModelGenerator(event.getGenerator().getPackOutput(), event.getExistingFileHelper()));
 		}
 	}
 }

@@ -11,6 +11,7 @@ package vazkii.psi.client.gui.button;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
 
@@ -28,18 +29,8 @@ public class GuiButtonSideConfig extends Button {
 	final int paramIndex;
 	final SpellParam.Side side;
 
-	public GuiButtonSideConfig(GuiProgrammer gui, int gridX, int gridY, int paramIndex, String paramName, SpellParam.Side side, int x, int y) {
-		super(x, y, 8, 8, Component.empty(), Button::onPress);
-		this.gui = gui;
-		this.gridX = gridX;
-		this.gridY = gridY;
-		this.paramIndex = paramIndex;
-		this.paramName = paramName;
-		this.side = side;
-	}
-
 	public GuiButtonSideConfig(GuiProgrammer gui, int gridX, int gridY, int paramIndex, String paramName, SpellParam.Side side, int x, int y, OnPress pressable) {
-		super(x, y, 8, 8, Component.empty(), pressable);
+		super(x, y, 8, 8, Component.empty(), pressable, DEFAULT_NARRATION);
 		this.gui = gui;
 		this.gridX = gridX;
 		this.gridY = gridY;
@@ -49,10 +40,10 @@ public class GuiButtonSideConfig extends Button {
 	}
 
 	@Override
-	public void renderButton(PoseStack ms, int par2, int par3, float pTicks) {
+	public void render(GuiGraphics graphics, int par2, int par3, float pTicks) {
 		if(active && visible && !gui.takingScreenshot) {
-			int minX = x;
-			int minY = y;
+			int minX = getX();
+			int minY = getY();
 			int maxX = minX + 8;
 			int maxY = minY + 8;
 

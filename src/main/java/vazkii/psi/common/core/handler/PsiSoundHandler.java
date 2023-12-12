@@ -20,15 +20,15 @@ import vazkii.psi.common.lib.LibMisc;
 @Mod.EventBusSubscriber(modid = LibMisc.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public final class PsiSoundHandler {
 
-	public static final SoundEvent bulletCreate = new SoundEvent(new ResourceLocation(LibMisc.MOD_ID, "bullet_create"));
-	public static final SoundEvent cadCreate = new SoundEvent(new ResourceLocation(LibMisc.MOD_ID, "cad_create"));
-	public static final SoundEvent cadShoot = new SoundEvent(new ResourceLocation(LibMisc.MOD_ID, "cad_shoot"));
-	public static final SoundEvent compileError = new SoundEvent(new ResourceLocation(LibMisc.MOD_ID, "compile_error"));
-	public static final SoundEvent levelUp = new SoundEvent(new ResourceLocation(LibMisc.MOD_ID, "level_up"));
-	public static final SoundEvent loopcast = new SoundEvent(new ResourceLocation(LibMisc.MOD_ID, "loopcast"));
-	public static final SoundEvent book = new SoundEvent(new ResourceLocation(LibMisc.MOD_ID, "book"));
-	public static final SoundEvent bookFlip = new SoundEvent(new ResourceLocation(LibMisc.MOD_ID, "book_flip"));
-	public static final SoundEvent bookOpen = new SoundEvent(new ResourceLocation(LibMisc.MOD_ID, "book_open"));
+	public static final SoundEvent bulletCreate = SoundEvent.createVariableRangeEvent(new ResourceLocation(LibMisc.MOD_ID, "bullet_create"));
+	public static final SoundEvent cadCreate = SoundEvent.createVariableRangeEvent(new ResourceLocation(LibMisc.MOD_ID, "cad_create"));
+	public static final SoundEvent cadShoot = SoundEvent.createVariableRangeEvent(new ResourceLocation(LibMisc.MOD_ID, "cad_shoot"));
+	public static final SoundEvent compileError = SoundEvent.createVariableRangeEvent(new ResourceLocation(LibMisc.MOD_ID, "compile_error"));
+	public static final SoundEvent levelUp = SoundEvent.createVariableRangeEvent(new ResourceLocation(LibMisc.MOD_ID, "level_up"));
+	public static final SoundEvent loopcast = SoundEvent.createVariableRangeEvent(new ResourceLocation(LibMisc.MOD_ID, "loopcast"));
+	public static final SoundEvent book = SoundEvent.createVariableRangeEvent(new ResourceLocation(LibMisc.MOD_ID, "book"));
+	public static final SoundEvent bookFlip = SoundEvent.createVariableRangeEvent(new ResourceLocation(LibMisc.MOD_ID, "book_flip"));
+	public static final SoundEvent bookOpen = SoundEvent.createVariableRangeEvent(new ResourceLocation(LibMisc.MOD_ID, "book_open"));
 
 	@SubscribeEvent
 	public static void registerSounds(RegisterEvent evt) {

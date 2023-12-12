@@ -50,7 +50,7 @@ public class MessageLoopcastSync {
 			if(mcPlayer == null) {
 				return;
 			}
-			Level world = mcPlayer.level;
+			Level world = mcPlayer.level();
 
 			Entity player = null;
 			if(world != null) {

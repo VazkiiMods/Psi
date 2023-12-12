@@ -8,14 +8,11 @@
  */
 package vazkii.psi.client.gui;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
-
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -44,19 +41,19 @@ public class GuiCADAssembler extends AbstractContainerScreen<ContainerCADAssembl
 	}
 
 	@Override
-	public void render(PoseStack ms, int x, int y, float pTicks) {
-		this.renderBackground(ms);
-		super.render(ms, x, y, pTicks);
-		this.renderTooltip(ms, x, y);
-		this.renderComponentHoverEffect(ms, Style.EMPTY, x, y);
+	public void render(GuiGraphics graphics, int x, int y, float pTicks) {
+		this.renderBackground(graphics);
+		super.render(graphics, x, y, pTicks);
+		this.renderTooltip(graphics, x, y);
+		//this.renderComponentHoverEffect(ms, Style.EMPTY, x, y); TODO(Kamefrede): 1.20 figure out what this breaks
 	}
 
 	@Override
-	protected void renderLabels(PoseStack ms, int mouseX, int mouseY) {
+	protected void renderLabels(GuiGraphics graphics, int mouseX, int mouseY) {
 		int color = 4210752;
 
 		String name = new ItemStack(ModBlocks.cadAssembler).getHoverName().getString();
-		font.draw(ms, name, imageWidth / 2 - font.width(name) / 2, 10, color);
+		graphics.drawString(this.font, name, imageWidth / 2 - font.width(name) / 2, 10, color);
 
 		ItemStack cad = assembler.getCachedCAD(player);
 		if(!cad.isEmpty()) {
@@ -66,27 +63,26 @@ public class GuiCADAssembler extends AbstractContainerScreen<ContainerCADAssembl
 			ICAD cadItem = (ICAD) cad.getItem();
 			String stats = I18n.get("psimisc.stats");
 			String s = ChatFormatting.BOLD + stats;
-			font.drawShadow(ms, s, 213 - font.width(s) / 2f, 32, color);
+			graphics.drawString(this.font, s, 213 - font.width(s) / 2f, 32, color, true);
 
 			for(EnumCADStat stat : EnumCADStat.class.getEnumConstants()) {
 				s = (Psi.magical ? ChatFormatting.LIGHT_PURPLE : ChatFormatting.AQUA) + I18n.get(stat.getName()) + ChatFormatting.RESET + ": " + cadItem.getStatValue(cad, stat);
-				font.drawShadow(ms, s, 179, 45 + i * 10, color);
+				graphics.drawString(this.font, s, 179, 45 + i * 10, color, true);
 				i++;
 			}
 		}
 	}
 
 	@Override
-	protected void renderBg(PoseStack ms, float partialTicks, int mouseX, int mouseY) {
-		RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
-		RenderSystem.setShaderTexture(0, texture);
+	protected void renderBg(GuiGraphics graphics, float partialTicks, int mouseX, int mouseY) {
+		graphics.setColor(1F, 1F, 1F, 1F);
 		int x = (width - imageWidth) / 2;
 		int y = (height - imageHeight) / 2;
-		blit(ms, x, y, 0, 0, imageWidth, imageHeight);
+		graphics.blit(texture, x, y, 0, 0, imageWidth, imageHeight);
 
 		for(int i = 0; i < 12; i++) {
 			if(!assembler.isBulletSlotEnabled(i)) {
-				blit(ms, x + 17 + i % 3 * 18, y + 57 + i / 3 * 18, 16, imageHeight, 16, 16);
+				graphics.blit(texture, x + 17 + i % 3 * 18, y + 57 + i / 3 * 18, 16, imageHeight, 16, 16);
 			}
 		}
 	}

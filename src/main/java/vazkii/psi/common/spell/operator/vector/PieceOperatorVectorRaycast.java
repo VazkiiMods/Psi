@@ -71,7 +71,7 @@ public class PieceOperatorVectorRaycast extends PieceOperator {
 
 	public static BlockHitResult raycast(Entity entity, Vector3 origin, Vector3 ray, double len) {
 		Vector3 end = origin.copy().add(ray.copy().normalize().multiply(len));
-		return entity.level.clip(new ClipContext(origin.toVec3D(), end.toVec3D(), ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, entity));
+		return entity.level().clip(new ClipContext(origin.toVec3D(), end.toVec3D(), ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, entity));
 	}
 
 	@Override

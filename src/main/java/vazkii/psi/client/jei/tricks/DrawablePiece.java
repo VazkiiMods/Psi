@@ -8,7 +8,6 @@
  */
 package vazkii.psi.client.jei.tricks;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 
 import mezz.jei.api.gui.drawable.IDrawableStatic;
@@ -32,7 +31,7 @@ public class DrawablePiece implements IDrawableStatic {
 		graphics.pose().translate(xOffset, yOffset, 0);
 
 		MultiBufferSource.BufferSource buffers = MultiBufferSource.immediate(Tesselator.getInstance().getBuilder());
-		piece.drawBackground(graphics.pose(), buffers, 0xF000F0);
+		piece.drawBackground(graphics, buffers, 0xF000F0);
 
 		buffers.endBatch();
 

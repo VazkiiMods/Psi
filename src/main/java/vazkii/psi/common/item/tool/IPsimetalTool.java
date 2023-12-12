@@ -51,7 +51,7 @@ public interface IPsimetalTool {
 			ItemStack bullet = sockets.getSelectedBullet();
 			ItemCAD.cast(player.getCommandSenderWorld(), player, data, bullet, playerCad, 5, 10, 0.05F, (SpellContext context) -> {
 				context.tool = itemstack;
-				context.positionBroken = raytraceFromEntity(player.getCommandSenderWorld(), player, ClipContext.Fluid.NONE, player.getAttributes().getValue(ForgeMod.REACH_DISTANCE.get()));
+				context.positionBroken = raytraceFromEntity(player.getCommandSenderWorld(), player, ClipContext.Fluid.NONE, player.getAttributes().getValue(ForgeMod.BLOCK_REACH.get()));
 			});
 		}
 	}

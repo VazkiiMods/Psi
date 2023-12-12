@@ -103,7 +103,7 @@ public class PieceTrickPlaceBlock extends PieceTrick {
 		BlockState state = world.getBlockState(pos);
 		BlockEvent.EntityPlaceEvent placeEvent = new BlockEvent.EntityPlaceEvent(BlockSnapshot.create(world.dimension(), world, pos), world.getBlockState(pos.relative(Direction.UP)), player);
 		MinecraftForge.EVENT_BUS.post(placeEvent);
-		if(state.isAir() || state.getMaterial().isReplaceable() && !placeEvent.isCanceled()) {
+		if(state.isAir() || state.canBeReplaced() && !placeEvent.isCanceled()) {
 
 			if(conjure) {
 
@@ -153,7 +153,7 @@ public class PieceTrickPlaceBlock extends PieceTrick {
 		Inventory inv = player.getInventory();
 		for(int i = inv.getContainerSize() - 1; i >= 0; i--) {
 			ItemStack invStack = inv.getItem(i);
-			if(!invStack.isEmpty() && invStack.sameItem(stack) && ItemStack.matches(stack, invStack)) {
+			if(!invStack.isEmpty() && ItemStack.isSameItem(invStack, stack) && ItemStack.matches(stack, invStack)) {
 				ItemStack retStack = invStack.copy();
 				if(!copy) {
 					invStack.shrink(1);

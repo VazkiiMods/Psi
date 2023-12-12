@@ -37,7 +37,7 @@ public class PieceOperatorBlockMiningLevel extends PieceOperator {
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		BlockPos pos = SpellHelpers.getBlockPos(this, context, position, false, false);
-		BlockState state = context.focalPoint.level.getBlockState(pos);
+		BlockState state = context.focalPoint.level().getBlockState(pos);
 
 		//TODO Fix low mining level items returning 1
 		return PieceTrickBreakBlock.getHarvestLevel(state);

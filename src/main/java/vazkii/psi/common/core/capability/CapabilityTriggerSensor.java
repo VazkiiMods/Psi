@@ -43,7 +43,7 @@ public class CapabilityTriggerSensor implements IDetonationHandler, ICapabilityP
 	public void detonate() {
 		CompoundTag playerData = player.getPersistentData();
 		long detonated = playerData.getLong(TRIGGER_TICK);
-		long worldTime = player.level.getGameTime();
+		long worldTime = player.level().getGameTime();
 
 		if(detonated != worldTime) {
 			playerData.putLong(TRIGGER_TICK, worldTime);

@@ -13,13 +13,13 @@ import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.resources.language.I18n;
@@ -96,8 +96,8 @@ public class GuiSocketSelect extends Screen {
 	}
 
 	@Override
-	public void render(PoseStack ms, int mx, int my, float delta) {
-		super.render(ms, mx, my, delta);
+	public void render(GuiGraphics graphics, int mx, int my, float delta) {
+		super.render(graphics, mx, my, delta);
 
 		timeIn += delta;
 
@@ -118,7 +118,7 @@ public class GuiSocketSelect extends Screen {
 		BufferBuilder buf = tess.getBuilder();
 
 		RenderSystem.disableCull();
-		RenderSystem.disableTexture();
+		//RenderSystem.disableTexture();  TODO(Kamefrede): 1.20 figure out what this breaks
 		RenderSystem.enableBlend();
 		RenderSystem.setShader(GameRenderer::getPositionColorShader);
 
@@ -181,7 +181,7 @@ public class GuiSocketSelect extends Screen {
 		}
 		tess.end();
 
-		RenderSystem.enableTexture();
+		// RenderSystem.enableTexture(); TODO(Kamefrede): 1.20 figure out what this breaks
 
 		for(int seg = 0; seg < segments; seg++) {
 			boolean mouseInSector = degPer * seg < angle && angle < degPer * (seg + 1);
@@ -205,7 +205,7 @@ public class GuiSocketSelect extends Screen {
 				int xdp = (int) ((xp - x) * mod + x);
 				int ydp = (int) ((yp - y) * mod + y);
 
-				mc.getItemRenderer().renderGuiItem(stack, xdp - 8, ydp - 8);
+				graphics.renderFakeItem(stack, xdp - 8, ydp - 8);
 
 				if(xsp < x) {
 					xsp -= width - 8;
@@ -214,21 +214,20 @@ public class GuiSocketSelect extends Screen {
 					ysp -= 9;
 				}
 
-				font.drawShadow(ms, name, xsp, ysp, 0xFFFFFF);
+				graphics.drawString(this.font, name, xsp, ysp, 0xFFFFFF, true);
 				if(seg == socketable.getSelectedSlot()) {
 					int color = 0x00FF00;
 					if(!cadStack.isEmpty()) {
 						color = 0xFF0000 - Psi.proxy.getColorForCAD(cadStack);
 					}
-					font.drawShadow(ms, I18n.get("psimisc.selected"), xsp + width / 4, ysp + font.lineHeight, color);
+					graphics.drawString(this.font, I18n.get("psimisc.selected"), xsp + width / 4, ysp + font.lineHeight, color, true);
 				}
 
 				mod = 0.8;
 				xdp = (int) ((xp - x) * mod + x);
 				ydp = (int) ((yp - y) * mod + y);
 
-				RenderSystem.setShaderTexture(0, signs.get(seg));
-				blit(ms, xdp - 8, ydp - 8, 0, 0, 16, 16, 16, 16);
+				graphics.blit(signs.get(seg), xdp - 8, ydp - 8, 0, 0, 16, 16, 16, 16);
 			}
 		}
 
@@ -252,17 +251,17 @@ public class GuiSocketSelect extends Screen {
 				ItemStack stack = controlledStacks[i];
 				int rx = xs + i * 18;
 				float ry = ys + (-yoff * shift);
-				PsiRenderHelper.transferMsToGl(ms, () -> mc.getItemRenderer().renderAndDecorateItem(stack, rx, (int) ry));
+				graphics.renderFakeItem(stack, rx, (int) ry);
 			}
 
 		}
 
 		if(!socketableStack.isEmpty()) {
-			ms.pushPose();
-			ms.scale(scale, scale, scale);
-			PsiRenderHelper.transferMsToGl(ms, () -> mc.getItemRenderer().renderAndDecorateItem(socketableStack,
-					(int) (x / scale) - 8, (int) (y / scale) - 8));
-			ms.popPose();
+			graphics.pose().pushPose();
+			graphics.pose().scale(scale, scale, scale);
+			graphics.renderFakeItem(socketableStack,
+					(int) (x / scale) - 8, (int) (y / scale) - 8);
+			graphics.pose().popPose();
 		}
 		//Lighting.turnOff();
 		RenderSystem.disableBlend();

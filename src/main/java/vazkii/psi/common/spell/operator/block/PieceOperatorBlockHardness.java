@@ -35,8 +35,8 @@ public class PieceOperatorBlockHardness extends PieceOperator {
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		BlockPos pos = SpellHelpers.getBlockPos(this, context, target, false, false);
-		BlockState state = context.focalPoint.level.getBlockState(pos);
-		return state.getDestroySpeed(context.focalPoint.level, pos) * 1.0D;
+		BlockState state = context.focalPoint.level().getBlockState(pos);
+		return state.getDestroySpeed(context.focalPoint.level(), pos) * 1.0D;
 	}
 
 	@Override

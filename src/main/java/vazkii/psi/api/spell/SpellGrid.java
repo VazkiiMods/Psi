@@ -10,8 +10,8 @@ package vazkii.psi.api.spell;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import com.mojang.blaze3d.vertex.PoseStack;
 
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -45,15 +45,15 @@ public final class SpellGrid {
 	private int leftmost, rightmost, topmost, bottommost;
 
 	@OnlyIn(Dist.CLIENT)
-	public void draw(PoseStack ms, MultiBufferSource buffers, int light) {
+	public void draw(GuiGraphics graphics, MultiBufferSource buffers, int light) {
 		for(int i = 0; i < GRID_SIZE; i++) {
 			for(int j = 0; j < GRID_SIZE; j++) {
 				SpellPiece p = gridData[i][j];
 				if(p != null) {
-					ms.pushPose();
-					ms.translate(i * 18, j * 18, 0);
-					p.draw(ms, buffers, light);
-					ms.popPose();
+					graphics.pose().pushPose();
+					graphics.pose().translate(i * 18, j * 18, 0);
+					p.draw(graphics, buffers, light);
+					graphics.pose().popPose();
 				}
 			}
 		}

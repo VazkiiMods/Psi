@@ -8,10 +8,9 @@
  */
 package vazkii.psi.common.core.handler;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
@@ -66,7 +65,7 @@ public final class InternalMethodHandler implements IInternalMethodHandler {
 
 	@Override
 	public void delayContext(SpellContext context) {
-		if(!context.caster.level.isClientSide) {
+		if(!context.caster.level().isClientSide) {
 			PlayerDataHandler.delayedContexts.add(context);
 		}
 	}
@@ -78,12 +77,12 @@ public final class InternalMethodHandler implements IInternalMethodHandler {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void renderTooltip(PoseStack ms, int x, int y, List<Component> tooltipData, int color, int color2, int width, int height) {
+	public void renderTooltip(GuiGraphics graphics, int x, int y, List<Component> tooltipData, int color, int color2, int width, int height) {
 		if(!tooltipData.isEmpty()) {
 			Font fontRenderer = Minecraft.getInstance().font;
 			Screen screen = Minecraft.getInstance().screen;
 			assert screen != null;
-			screen.renderTooltip(ms, tooltipData, java.util.Optional.empty(), x, y, fontRenderer);//TODO Fix color/color2? Is it needed?
+			graphics.renderTooltip(fontRenderer, tooltipData, java.util.Optional.empty(), x, y);//TODO Fix color/color2? Is it needed?
 			//GuiUtils.drawHoveringText(ms, tooltipData, x, y, width, height, -1, color2, color, color, fontRenderer);
 		}
 	}

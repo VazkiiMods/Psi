@@ -8,9 +8,8 @@
  */
 package vazkii.psi.common.spell.constant;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.nbt.CompoundTag;
 
@@ -40,7 +39,7 @@ public class PieceConstantNumber extends SpellPiece {
 	}
 
 	@Override
-	public void drawAdditional(PoseStack ms, MultiBufferSource buffers, int light) {
+	public void drawAdditional(GuiGraphics graphics, MultiBufferSource buffers, int light) {
 		if(valueStr == null || valueStr.isEmpty() || valueStr.length() > 5) {
 			valueStr = "0";
 		}
@@ -55,11 +54,11 @@ public class PieceConstantNumber extends SpellPiece {
 			efflen = mc.font.width(valueStr) / scale;
 		}
 
-		ms.pushPose();
-		ms.scale(1F / scale, 1F / scale, 1F);
-		ms.translate((9 - efflen / 2) * scale, 4 * scale, 0);
-		mc.font.drawInBatch(valueStr, 0, 0, color, false, ms.last().pose(), buffers, false, 0, light);
-		ms.popPose();
+		graphics.pose().pushPose();
+		graphics.pose().scale(1F / scale, 1F / scale, 1F);
+		graphics.pose().translate((9 - efflen / 2) * scale, 4 * scale, 0);
+		graphics.drawString(mc.font, valueStr, 0, 0, color, false); // TODO(Kamefrede): 1.20 check if this is ruight
+		graphics.pose().popPose();
 	}
 
 	@Override

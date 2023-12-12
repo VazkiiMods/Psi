@@ -9,7 +9,6 @@
 package vazkii.psi.client.jei.crafting;
 
 import com.google.common.collect.ImmutableList;
-import com.mojang.blaze3d.vertex.PoseStack;
 
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
@@ -19,7 +18,7 @@ import mezz.jei.api.recipe.category.extensions.vanilla.crafting.ICraftingCategor
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.resources.language.I18n;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
@@ -58,7 +57,7 @@ public class DriveDuplicateExtension implements ICraftingCategoryExtension {
 
 	@Override
 	public void drawInfo(int recipeWidth, int recipeHeight, GuiGraphics graphics, double mouseX, double mouseY) {
-		graphics.drawString(this, I18n.get("jei.psi.spell_copy"), 57, 46, 0x808080);
+		graphics.drawString(Minecraft.getInstance().font, Component.translatable("jei.psi.spell_copy"), 57, 46, 0x808080);
 		//RenderSystem.enableAlphaTest(); // Prevents state leak affecting the shapeless icon
 	}
 }

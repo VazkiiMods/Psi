@@ -51,7 +51,7 @@ public class PieceOperatorBlockComparatorStrength extends PieceOperator {
 		BlockState state = Blocks.COMPARATOR.defaultBlockState()
 				.setValue(HorizontalDirectionalBlock.FACING, whichWay.getOpposite());
 
-		return ((ComparatorBlock) Blocks.COMPARATOR).getInputSignal(context.focalPoint.level, pos.relative(whichWay), state) * 1.0;
+		return ((ComparatorBlock) Blocks.COMPARATOR).getInputSignal(context.focalPoint.level(), pos.relative(whichWay), state) * 1.0;
 	}
 
 	@Override

@@ -70,12 +70,12 @@ public class PieceTrickBlaze extends PieceTrick {
 		if(placeEvent.isCanceled()) {
 			return null;
 		}
-		if(state.isAir() || state.getMaterial().isReplaceable()) {
+		if(state.isAir() || state.canBeReplaced()) {
 			context.focalPoint.getCommandSenderWorld().setBlockAndUpdate(pos, Blocks.FIRE.defaultBlockState());
 		} else {
 			pos = pos.above();
 			state = context.focalPoint.getCommandSenderWorld().getBlockState(pos);
-			if(state.isAir() || state.getMaterial().isReplaceable()) {
+			if(state.isAir() || state.canBeReplaced()) {
 				context.focalPoint.getCommandSenderWorld().setBlockAndUpdate(pos, Blocks.FIRE.defaultBlockState());
 			}
 		}

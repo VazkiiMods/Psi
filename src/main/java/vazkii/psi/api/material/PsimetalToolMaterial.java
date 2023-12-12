@@ -8,7 +8,6 @@
  */
 package vazkii.psi.api.material;
 
-import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.LazyLoadedValue;
 import net.minecraft.world.item.Tier;

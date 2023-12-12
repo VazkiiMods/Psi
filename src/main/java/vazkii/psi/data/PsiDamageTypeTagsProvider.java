@@ -26,7 +26,6 @@ public class PsiDamageTypeTagsProvider extends DamageTypeTagsProvider {
 		this.tag(DamageTypeTags.BYPASSES_ENCHANTMENTS).addTag(ModTags.PSI_OVERLOAD);
 	}
 
-
 	@Override
 	public String getName() {
 		return "Psi damage type tags";

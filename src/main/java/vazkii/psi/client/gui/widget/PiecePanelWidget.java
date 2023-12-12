@@ -69,7 +69,7 @@ public class PiecePanelWidget extends AbstractWidget implements GuiEventListener
 				graphics.fill(panelPieceX - 1, panelPieceY - 1, panelPieceX + 17, panelPieceY + 17, 0x559999FF);
 			}
 
-			graphics.setColor(1f, 1f, 1f ,1f);
+			graphics.setColor(1f, 1f, 1f, 1f);
 			graphics.blit(GuiProgrammer.texture, searchField.getX() - 14, searchField.getY() - 2, 0, parent.ySize + 16, 12, 12);
 
 			String s = Math.min(Math.max(getPageCount(), 1), page + 1) + "/" + Math.max(getPageCount(), 1);
@@ -241,7 +241,7 @@ public class PiecePanelWidget extends AbstractWidget implements GuiEventListener
 			} else if(button instanceof GuiButtonPage) {
 				GuiButtonPage page = (GuiButtonPage) button;
 				if(page.isRight() && this.page < getPageCount() - 1) {
-					page.setX( getX() + width - 22);
+					page.setX(getX() + width - 22);
 					page.setY(getY() + height - 15);
 					page.visible = true;
 					page.active = true;

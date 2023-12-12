@@ -8,10 +8,8 @@
  */
 package vazkii.psi.client.gui.widget;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
-
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
@@ -41,7 +39,7 @@ public class SpellCostsWidget extends AbstractWidget {
 	}
 
 	@Override
-	public void renderButton(PoseStack ms, int mouseX, int mouseY, float pTicks) {
+	public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float pTicks) {
 		parent.compileResult.left().ifPresent(compiledSpell -> {
 			int i = 0;
 			int statX = parent.left + parent.xSize + 3;
@@ -67,10 +65,9 @@ public class SpellCostsWidget extends AbstractWidget {
 					s += "/" + (cadVal == -1 ? "\u221E" : cadVal);
 				}
 
-				RenderSystem.setShaderColor(1f, 1f, 1f, 1F);
-				RenderSystem.setShaderTexture(0, GuiProgrammer.texture);
-				blit(ms, statX, statY, (stat.ordinal() + 1) * 12, parent.ySize + 16, 12, 12);
-				parent.getMinecraft().font.draw(ms, s, statX + 16, statY + 2, cadStat != null && cadVal < val && cadVal != -1 ? 0xFF6666 : 0xFFFFFF);
+				graphics.setColor(1f, 1f, 1f, 1F);
+				graphics.blit(GuiProgrammer.texture, statX, statY, (stat.ordinal() + 1) * 12, parent.ySize + 16, 12, 12);
+				graphics.drawString(this.parent.getMinecraft().font, s, statX + 16, statY + 2, cadStat != null && cadVal < val && cadVal != -1 ? 0xFF6666 : 0xFFFFFF);
 
 				if(mouseX > statX && mouseY > statY && mouseX < statX + 12 && mouseY < statY + 12 && !parent.panelWidget.panelEnabled) {
 					parent.tooltip.add(Component.translatable(stat.getName()).withStyle(Psi.magical ? ChatFormatting.LIGHT_PURPLE : ChatFormatting.AQUA));
@@ -83,7 +80,7 @@ public class SpellCostsWidget extends AbstractWidget {
 	}
 
 	@Override
-	public void updateNarration(NarrationElementOutput p_169152_) {
-		//TODO Narration?
+	protected void updateWidgetNarration(NarrationElementOutput pNarrationElementOutput) {
+		this.defaultButtonNarrationText(pNarrationElementOutput);
 	}
 }

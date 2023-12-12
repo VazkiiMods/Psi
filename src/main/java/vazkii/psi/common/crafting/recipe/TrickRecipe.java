@@ -10,6 +10,7 @@ package vazkii.psi.common.crafting.recipe;
 
 import com.google.gson.JsonObject;
 
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
@@ -62,7 +63,7 @@ public class TrickRecipe implements ITrickRecipe {
 	}
 
 	@Override
-	public ItemStack getResultItem() {
+	public ItemStack getResultItem(RegistryAccess access) {
 		return output;
 	}
 
@@ -77,8 +78,8 @@ public class TrickRecipe implements ITrickRecipe {
 	}
 
 	@Override
-	public ItemStack assemble(RecipeWrapper inv) {
-		return getResultItem();
+	public ItemStack assemble(RecipeWrapper inv, RegistryAccess access) {
+		return getResultItem(access);
 	}
 
 	@Override

@@ -9,7 +9,7 @@
 package vazkii.psi.common.item.base;
 
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -17,7 +17,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegisterEvent;
 
-import vazkii.psi.common.core.PsiCreativeTab;
 import vazkii.psi.common.item.*;
 import vazkii.psi.common.item.armor.ItemPsimetalExosuitBoots;
 import vazkii.psi.common.item.armor.ItemPsimetalExosuitChestplate;
@@ -200,10 +199,10 @@ public final class ModItems {
 			psimetalPickaxe = new ItemPsimetalPickaxe(defaultBuilder());
 			psimetalAxe = new ItemPsimetalAxe(defaultBuilder());
 			psimetalSword = new ItemPsimetalSword(defaultBuilder());
-			psimetalExosuitHelmet = new ItemPsimetalExosuitHelmet(EquipmentSlot.HEAD, defaultBuilder());
-			psimetalExosuitChestplate = new ItemPsimetalExosuitChestplate(EquipmentSlot.CHEST, defaultBuilder());
-			psimetalExosuitLeggings = new ItemPsimetalExosuitLeggings(EquipmentSlot.LEGS, defaultBuilder());
-			psimetalExosuitBoots = new ItemPsimetalExosuitBoots(EquipmentSlot.FEET, defaultBuilder());
+			psimetalExosuitHelmet = new ItemPsimetalExosuitHelmet(ArmorItem.Type.HELMET, defaultBuilder());
+			psimetalExosuitChestplate = new ItemPsimetalExosuitChestplate(ArmorItem.Type.CHESTPLATE, defaultBuilder());
+			psimetalExosuitLeggings = new ItemPsimetalExosuitLeggings(ArmorItem.Type.LEGGINGS, defaultBuilder());
+			psimetalExosuitBoots = new ItemPsimetalExosuitBoots(ArmorItem.Type.BOOTS, defaultBuilder());
 
 			ModSpellPieces.init();
 
@@ -293,7 +292,7 @@ public final class ModItems {
 	}
 
 	public static Item.Properties defaultBuilder() {
-		return new Item.Properties().tab(PsiCreativeTab.INSTANCE);
+		return new Item.Properties(); // TODO(Kamefrede): 1.20 add to tab
 	}
 
 }

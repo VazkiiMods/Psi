@@ -10,6 +10,7 @@ package vazkii.psi.common.entity;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -185,7 +186,7 @@ public class EntitySpellProjectile extends ThrowableProjectile {
 
 			look.normalize().multiply(dist);
 
-			if(level.isClientSide()) {
+			if(level().isClientSide()) {
 				Psi.proxy.sparkleFX(x, y, z, r, g, b, (float) look.x, (float) look.y, (float) look.z, 1.2F, 12);
 			}
 
@@ -265,7 +266,7 @@ public class EntitySpellProjectile extends ThrowableProjectile {
 		return entityData.get(ATTACKTARGET_UUID)
 				.map(u -> {
 					List<LivingEntity> a = getCommandSenderWorld().getEntitiesOfClass(LivingEntity.class, axis, (Entity e) -> e.getUUID().equals(u));
-					if(a.size() > 0) {
+					if(!a.isEmpty()) {
 						return a.get(0);
 					}
 					return null;
@@ -285,7 +286,7 @@ public class EntitySpellProjectile extends ThrowableProjectile {
 
 	@Nonnull
 	@Override
-	public Packet<?> getAddEntityPacket() {
+	public Packet<ClientGamePacketListener> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 }

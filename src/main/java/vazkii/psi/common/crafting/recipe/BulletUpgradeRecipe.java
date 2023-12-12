@@ -11,10 +11,12 @@ package vazkii.psi.common.crafting.recipe;
 import com.google.gson.JsonObject;
 
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -38,8 +40,8 @@ public class BulletUpgradeRecipe implements CraftingRecipe {
 	}
 
 	@Override
-	public ItemStack assemble(CraftingContainer inv) {
-		ItemStack output = compose.assemble(inv);
+	public ItemStack assemble(CraftingContainer inv, RegistryAccess access) {
+		ItemStack output = compose.assemble(inv, access);
 		for(int i = 0; i < inv.getContainerSize(); i++) {
 			ItemStack stack = inv.getItem(i);
 			if(stack.getItem() instanceof ItemSpellBullet) {
@@ -55,8 +57,8 @@ public class BulletUpgradeRecipe implements CraftingRecipe {
 	}
 
 	@Override
-	public ItemStack getResultItem() {
-		return compose.getResultItem();
+	public ItemStack getResultItem(RegistryAccess access) {
+		return compose.getResultItem(access);
 	}
 
 	@Override
@@ -92,6 +94,11 @@ public class BulletUpgradeRecipe implements CraftingRecipe {
 	@Override
 	public RecipeSerializer<?> getSerializer() {
 		return SERIALIZER;
+	}
+
+	@Override
+	public CraftingBookCategory category() {
+		return CraftingBookCategory.MISC;
 	}
 
 	private static class Serializer implements RecipeSerializer<BulletUpgradeRecipe> {

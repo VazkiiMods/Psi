@@ -12,11 +12,11 @@ import com.google.common.base.CaseFormat;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexFormat;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -279,19 +279,19 @@ public abstract class SpellPiece {
 	 * To avoid z-fighting in the TE projection, translations are applied every step.
 	 */
 	@OnlyIn(Dist.CLIENT)
-	public void draw(PoseStack ms, MultiBufferSource buffers, int light) {
-		ms.pushPose();
-		drawBackground(ms, buffers, light);
-		ms.translate(0F, 0F, 0.1F);
-		drawAdditional(ms, buffers, light);
+	public void draw(GuiGraphics graphics, MultiBufferSource buffers, int light) {
+		graphics.pose().pushPose();
+		drawBackground(graphics, buffers, light);
+		graphics.pose().translate(0F, 0F, 0.1F);
+		drawAdditional(graphics, buffers, light);
 		if(isInGrid) {
-			ms.translate(0F, 0F, 0.1F);
-			drawParams(ms, buffers, light);
-			ms.translate(0F, 0F, 0.1F);
-			drawComment(ms, buffers, light);
+			graphics.pose().translate(0F, 0F, 0.1F);
+			drawParams(graphics, buffers, light);
+			graphics.pose().translate(0F, 0F, 0.1F);
+			drawComment(graphics, buffers, light);
 		}
 
-		ms.popPose();
+		graphics.pose().popPose();
 	}
 
 	@OnlyIn(Dist.CLIENT)
@@ -319,10 +319,10 @@ public abstract class SpellPiece {
 	 * Draws this piece's background.
 	 */
 	@OnlyIn(Dist.CLIENT)
-	public void drawBackground(PoseStack ms, MultiBufferSource buffers, int light) {
+	public void drawBackground(GuiGraphics graphics, MultiBufferSource buffers, int light) {
 		Material material = ClientPsiAPI.getSpellPieceMaterial(registryKey);
 		VertexConsumer buffer = material.buffer(buffers, ignored -> getLayer());
-		Matrix4f mat = ms.last().pose();
+		Matrix4f mat = graphics.pose().last().pose();
 		// Cannot call .texture() on the chained object because SpriteAwareVertexBuilder is buggy
 		// and does not return itself, it returns the inner buffer
 		// This leads to .texture() using the implementation of the inner buffer,
@@ -346,7 +346,7 @@ public abstract class SpellPiece {
 	 * to draw the lines.
 	 */
 	@OnlyIn(Dist.CLIENT)
-	public void drawAdditional(PoseStack ms, MultiBufferSource buffers, int light) {
+	public void drawAdditional(GuiGraphics graphics, MultiBufferSource buffers, int light) {
 		// NO-OP
 	}
 
@@ -354,7 +354,7 @@ public abstract class SpellPiece {
 	 * Draws the little comment indicator in this piece, if one exists.
 	 */
 	@OnlyIn(Dist.CLIENT)
-	public void drawComment(PoseStack ms, MultiBufferSource buffers, int light) {
+	public void drawComment(GuiGraphics graphics, MultiBufferSource buffers, int light) {
 		if(comment != null && !comment.isEmpty()) {
 			VertexConsumer buffer = buffers.getBuffer(PsiAPI.internalHandler.getProgrammerLayer());
 
@@ -363,7 +363,7 @@ public abstract class SpellPiece {
 			float minV = 184 / 256F;
 			float maxU = (150 + wh) / 256F;
 			float maxV = (184 + wh) / 256F;
-			Matrix4f mat = ms.last().pose();
+			Matrix4f mat = graphics.pose().last().pose();
 
 			buffer.vertex(mat, -2, 4, 0).color(1F, 1F, 1F, 1F).uv(minU, maxV).uv2(light).endVertex();
 			buffer.vertex(mat, 4, 4, 0).color(1F, 1F, 1F, 1F).uv(maxU, maxV).uv2(light).endVertex();
@@ -376,15 +376,15 @@ public abstract class SpellPiece {
 	 * Draws the parameters coming into this piece.
 	 */
 	@OnlyIn(Dist.CLIENT)
-	public void drawParams(PoseStack ms, MultiBufferSource buffers, int light) {
+	public void drawParams(GuiGraphics graphics, MultiBufferSource buffers, int light) {
 		VertexConsumer buffer = buffers.getBuffer(PsiAPI.internalHandler.getProgrammerLayer());
 		for(SpellParam<?> param : paramSides.keySet()) {
-			drawParam(ms, buffer, light, param);
+			drawParam(graphics, buffer, light, param);
 		}
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	public void drawParam(PoseStack ms, VertexConsumer buffer, int light, SpellParam<?> param) {
+	public void drawParam(GuiGraphics graphics, VertexConsumer buffer, int light, SpellParam<?> param) {
 		SpellParam.Side side = paramSides.get(param);
 		if(!side.isEnabled() || param.getArrowType() == ArrowType.NONE) {
 			return;
@@ -405,11 +405,11 @@ public abstract class SpellPiece {
 		if(count > 1) {
 			percent = (float) index / (count - 1);
 		}
-		drawParam(ms, buffer, light, side, param.color, param.getArrowType(), percent);
+		drawParam(graphics, buffer, light, side, param.color, param.getArrowType(), percent);
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	public void drawParam(PoseStack ms, VertexConsumer buffer, int light, SpellParam.Side side, int color, SpellParam.ArrowType arrowType, float percent) {
+	public void drawParam(GuiGraphics graphics, VertexConsumer buffer, int light, SpellParam.Side side, int color, SpellParam.ArrowType arrowType, float percent) {
 		if(arrowType == ArrowType.NONE) {
 			return;
 		}
@@ -432,7 +432,7 @@ public abstract class SpellPiece {
 		int g = PsiRenderHelper.g(color);
 		int b = PsiRenderHelper.b(color);
 		int a = 255;
-		Matrix4f mat = ms.last().pose();
+		Matrix4f mat = graphics.pose().last().pose();
 
 		buffer.vertex(mat, minX, maxY, 0).color(r, g, b, a).uv(minU, maxV).uv2(light).endVertex();
 		buffer.vertex(mat, maxX, maxY, 0).color(r, g, b, a).uv(maxU, maxV).uv2(light).endVertex();
@@ -470,16 +470,16 @@ public abstract class SpellPiece {
 	 * Draws this piece's tooltip.
 	 */
 	@OnlyIn(Dist.CLIENT)
-	public void drawTooltip(PoseStack ms, int tooltipX, int tooltipY, List<Component> tooltip, Screen screen) {
-		PsiAPI.internalHandler.renderTooltip(ms, tooltipX, tooltipY, tooltip, 0x505000ff, 0xf0100010, screen.width, screen.height);
+	public void drawTooltip(GuiGraphics graphics, int tooltipX, int tooltipY, List<Component> tooltip, Screen screen) {
+		PsiAPI.internalHandler.renderTooltip(graphics, tooltipX, tooltipY, tooltip, 0x505000ff, 0xf0100010, screen.width, screen.height);
 	}
 
 	/**
 	 * Draws this piece's comment tooltip.
 	 */
 	@OnlyIn(Dist.CLIENT)
-	public void drawCommentText(PoseStack ms, int tooltipX, int tooltipY, List<Component> commentText, Screen screen) {
-		PsiAPI.internalHandler.renderTooltip(ms, tooltipX, tooltipY - 9 - commentText.size() * 10, commentText, 0x5000a000, 0xf0001e00, screen.width, screen.height);
+	public void drawCommentText(GuiGraphics graphics, int tooltipX, int tooltipY, List<Component> commentText, Screen screen) {
+		PsiAPI.internalHandler.renderTooltip(graphics, tooltipX, tooltipY - 9 - commentText.size() * 10, commentText, 0x5000a000, 0xf0001e00, screen.width, screen.height);
 	}
 
 	@OnlyIn(Dist.CLIENT)

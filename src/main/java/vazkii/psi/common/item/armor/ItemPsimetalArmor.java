@@ -59,13 +59,13 @@ public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiE
 
 	private static final String TAG_TIMES_CAST = "timesCast";
 
-	public ItemPsimetalArmor(EquipmentSlot type, Properties props) {
+	public ItemPsimetalArmor(ArmorItem.Type type, Properties props) {
 		this(type, PsiAPI.PSIMETAL_ARMOR_MATERIAL, props);
 	}
 
-	public ItemPsimetalArmor(EquipmentSlot type, ArmorMaterial mat, Properties props) {
+	public ItemPsimetalArmor(ArmorItem.Type type, ArmorMaterial mat, Properties props) {
 		super(mat, type, props);
-		this.type = type;
+		this.type = type.getSlot();
 		/*this.model = DistExecutor.runForDist(() -> () -> new LazyLoadedValue<>(() -> this.provideArmorModelForSlot(type)),
 				() -> () -> null);*/
 	}

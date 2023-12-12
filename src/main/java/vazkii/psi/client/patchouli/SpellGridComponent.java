@@ -54,7 +54,6 @@ public class SpellGridComponent implements ICustomComponent {
 		}
 	}
 
-
 	@Override
 	public void render(GuiGraphics graphics, IComponentRenderContext context, float pticks, int mouseX, int mouseY) {
 		float scale = 0.65f;
@@ -73,7 +72,7 @@ public class SpellGridComponent implements ICustomComponent {
 		// Pad the spell pieces and draw them
 		graphics.pose().translate(7f, 7f, 0f);
 		MultiBufferSource.BufferSource buffer = MultiBufferSource.immediate(Tesselator.getInstance().getBuilder());
-		grid.draw(graphics.pose(), buffer, 0xF000F0);
+		grid.draw(graphics, buffer, 0xF000F0);
 		buffer.endBatch();
 
 		float scaledSize = 18 * scale;

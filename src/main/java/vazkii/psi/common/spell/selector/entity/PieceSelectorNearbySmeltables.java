@@ -8,12 +8,12 @@
  */
 package vazkii.psi.common.spell.selector.entity;
 
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.item.crafting.SmeltingRecipe;
 import net.minecraft.world.level.Level;
 
 import vazkii.psi.api.spell.Spell;
@@ -37,7 +37,7 @@ public class PieceSelectorNearbySmeltables extends PieceSelectorNearby {
 		DUMMY_INV.clearContent();
 		DUMMY_INV.setItem(0, input);
 		return world.getRecipeManager().getRecipeFor(RecipeType.SMELTING, DUMMY_INV, world)
-				.map(SmeltingRecipe::getResultItem)
+				.map(foo -> foo.getResultItem(RegistryAccess.EMPTY))
 				.orElse(ItemStack.EMPTY);
 	}
 

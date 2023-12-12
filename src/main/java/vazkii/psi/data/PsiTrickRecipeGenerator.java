@@ -10,7 +10,7 @@ package vazkii.psi.data;
 
 import com.google.gson.JsonObject;
 
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.resources.ResourceKey;
@@ -35,12 +35,12 @@ import javax.annotation.Nonnull;
 import java.util.function.Consumer;
 
 public class PsiTrickRecipeGenerator extends RecipeProvider {
-	public PsiTrickRecipeGenerator(DataGenerator generator) {
-		super(generator);
+	public PsiTrickRecipeGenerator(PackOutput output) {
+		super(output);
 	}
 
 	@Override
-	protected void buildCraftingRecipes(Consumer<FinishedRecipe> consumer) {
+	protected void buildRecipes(Consumer<FinishedRecipe> consumer) {
 		TrickRecipeBuilder.of(ModItems.psidust).input(Tags.Items.DUSTS_REDSTONE).cad(ModItems.cadAssemblyIron).build(consumer);
 		TrickRecipeBuilder.of(PatchouliAPI.get().getBookStack(LibResources.PATCHOULI_BOOK)).input(Items.BOOK).cad(ModItems.cadAssemblyIron).build(consumer);
 
@@ -71,12 +71,6 @@ public class PsiTrickRecipeGenerator extends RecipeProvider {
 				.trick(Psi.location(LibPieceNames.TRICK_EBONY_IVORY))
 				.cad(ModItems.cadAssemblyPsimetal);
 		dimension(builder, consumer, ForgeRegistries.ITEMS.getKey(ModItems.ivorySubstance), Level.END);
-	}
-
-	@Nonnull
-	@Override
-	public String getName() {
-		return "Psi trick crafting recipes";
 	}
 
 	public static void dimension(TrickRecipeBuilder builder, Consumer<FinishedRecipe> parent,

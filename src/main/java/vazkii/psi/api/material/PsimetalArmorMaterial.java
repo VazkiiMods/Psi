@@ -10,7 +10,6 @@ package vazkii.psi.api.material;
 
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.LazyLoadedValue;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -40,7 +39,6 @@ public class PsimetalArmorMaterial implements ArmorMaterial {
 		this.repairMaterial = new LazyLoadedValue<>(repairMaterialSupplier);
 		this.knockbackResistance = knockbackResistance;
 	}
-
 
 	@Override
 	public int getDurabilityForType(ArmorItem.Type pType) {

@@ -8,8 +8,7 @@
  */
 package vazkii.psi.api.internal;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -70,7 +69,7 @@ public interface IInternalMethodHandler {
 	 * Renders a tooltip with the specified colors at the given x,y position
 	 */
 	@OnlyIn(Dist.CLIENT)
-	void renderTooltip(PoseStack ms, int x, int y, List<Component> tooltipData, int color, int color2, int width, int height);
+	void renderTooltip(GuiGraphics graphics, int x, int y, List<Component> tooltipData, int color, int color2, int width, int height);
 
 	/**
 	 * Creates a CAD with the given components

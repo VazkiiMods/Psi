@@ -71,7 +71,7 @@ public class PieceTrickMoveBlockSequence extends PieceTrick {
 		Vector3 positionVal = SpellHelpers.getVector3(this, context, position, true, false);
 		Vector3 targetVal = SpellHelpers.getVector3(this, context, target, false, false);
 		int maxBlocksVal = this.getParamValue(context, maxBlocks).intValue();
-		Level world = context.focalPoint.level;
+		Level world = context.focalPoint.level();
 
 		Map<BlockPos, BlockState> toSet = new HashMap<>();
 		Map<BlockPos, BlockState> toRemove = new HashMap<>();
@@ -112,7 +112,7 @@ public class PieceTrickMoveBlockSequence extends PieceTrick {
 				continue;
 			}
 
-			BlockPos pushToPos = blockPos.offset(directNorm.x, directNorm.y, directNorm.z);
+			BlockPos pushToPos = blockPos.offset((int) directNorm.x, (int) directNorm.y, (int) directNorm.z);
 			boolean isOffWorld = pushToPos.getY() < 0 || pushToPos.getY() > 256;
 			if(isOffWorld) {
 				immovableBlocks.add(blockPos);
@@ -130,7 +130,7 @@ public class PieceTrickMoveBlockSequence extends PieceTrick {
 
 		outer: for(BlockPos blockPos : moveableBlocks) {
 			BlockState state = world.getBlockState(blockPos);
-			BlockPos pushToPos = blockPos.offset(directNorm.x, directNorm.y, directNorm.z);
+			BlockPos pushToPos = blockPos.offset((int) directNorm.x, (int) directNorm.y, (int) directNorm.z);
 			BlockState pushToState = world.getBlockState(pushToPos);
 			if(immovableBlocks.contains(pushToPos) || immovableBlocks.contains(blockPos)) {
 				continue;
@@ -138,7 +138,7 @@ public class PieceTrickMoveBlockSequence extends PieceTrick {
 			if(moveableBlocks.contains(pushToPos)) {
 				BlockPos nextPos = pushToPos;
 				while(moveableBlocks.contains(nextPos)) {
-					BlockPos nextPosPushPos = nextPos.offset(directNorm.x, directNorm.y, directNorm.z);
+					BlockPos nextPosPushPos = nextPos.offset((int) directNorm.x, (int) directNorm.y, (int) directNorm.z);
 					BlockState nextPosPushPosState = world.getBlockState(nextPosPushPos);
 
 					if(moveableBlocks.contains(nextPosPushPos)) {
@@ -146,12 +146,12 @@ public class PieceTrickMoveBlockSequence extends PieceTrick {
 						continue;
 					}
 
-					if(immovableBlocks.contains(nextPosPushPos) || !(world.isEmptyBlock(nextPosPushPos) || nextPosPushPosState.getMaterial().isReplaceable())) {
+					if(immovableBlocks.contains(nextPosPushPos) || !(world.isEmptyBlock(nextPosPushPos) || nextPosPushPosState.canBeReplaced())) {
 						continue outer;
 					}
 					break;
 				}
-			} else if(!(world.isEmptyBlock(pushToPos) || pushToState.getMaterial().isReplaceable())) {
+			} else if(!(world.isEmptyBlock(pushToPos) || pushToState.canBeReplaced())) {
 				continue;
 			}
 			toRemove.put(blockPos, state);
@@ -159,12 +159,12 @@ public class PieceTrickMoveBlockSequence extends PieceTrick {
 		}
 
 		for(Map.Entry<BlockPos, BlockState> pairtoRemove : toRemove.entrySet()) {
-			context.focalPoint.level.removeBlock(pairtoRemove.getKey(), true);
-			context.focalPoint.level.levelEvent(2001, pairtoRemove.getKey(), Block.getId(pairtoRemove.getValue()));
+			context.focalPoint.level().removeBlock(pairtoRemove.getKey(), true);
+			context.focalPoint.level().levelEvent(2001, pairtoRemove.getKey(), Block.getId(pairtoRemove.getValue()));
 		}
 
 		for(Map.Entry<BlockPos, BlockState> pairToSet : toSet.entrySet()) {
-			context.focalPoint.level.setBlockAndUpdate(pairToSet.getKey(), pairToSet.getValue());
+			context.focalPoint.level().setBlockAndUpdate(pairToSet.getKey(), pairToSet.getValue());
 		}
 
 		return null;

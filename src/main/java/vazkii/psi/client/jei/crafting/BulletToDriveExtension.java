@@ -9,7 +9,6 @@
 package vazkii.psi.client.jei.crafting;
 
 import com.google.common.collect.ImmutableList;
-import com.mojang.blaze3d.vertex.PoseStack;
 
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
@@ -17,11 +16,13 @@ import mezz.jei.api.gui.ingredient.ICraftingGridHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.category.extensions.vanilla.crafting.ICraftingCategoryExtension;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.language.I18n;
-import net.minecraft.core.Registry;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import vazkii.psi.api.spell.ISpellAcceptor;
 import vazkii.psi.common.crafting.recipe.BulletToDriveRecipe;
@@ -42,7 +43,7 @@ public class BulletToDriveExtension implements ICraftingCategoryExtension {
 
 		inputs = ImmutableList.of(
 				ImmutableList.of(new ItemStack(ModItems.spellDrive)),
-				Registry.ITEM.stream()
+				ForgeRegistries.ITEMS.getValues().stream()
 						.filter(item -> item instanceof ItemSpellBullet)
 						.map(ItemStack::new)
 						.collect(Collectors.toList()));
@@ -64,8 +65,8 @@ public class BulletToDriveExtension implements ICraftingCategoryExtension {
 	}
 
 	@Override
-	public void drawInfo(int recipeWidth, int recipeHeight, PoseStack matrixStack, double mouseX, double mouseY) {
-		Minecraft.getInstance().font.draw(matrixStack, I18n.get("jei.psi.spell_copy"), 57, 46, 0x808080);
+	public void drawInfo(int recipeWidth, int recipeHeight, GuiGraphics guiGraphics, double mouseX, double mouseY) {
+		guiGraphics.renderTooltip(Minecraft.getInstance().font, Component.translatable("jei.psi.spell_copy").withStyle(ChatFormatting.GRAY), 57, 46); // no color sadge 0x808080
 		//RenderSystem.enableAlphaTest(); // Prevents state leak affecting the shapeless icon
 	}
 

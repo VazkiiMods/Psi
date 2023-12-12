@@ -32,7 +32,7 @@ public class AdditiveMotionHandler {
 		if(x == 0 && y == 0 && z == 0) {
 			return;
 		}
-		if(!entity.level.isClientSide) {
+		if(!entity.level().isClientSide) {
 			Vec3 base = toUpdate.getOrDefault(entity, Vec3.ZERO);
 			toUpdate.put(entity, base.add(x, y, z));
 		}
@@ -53,7 +53,7 @@ public class AdditiveMotionHandler {
 						} else {
 							entity.push(vec.x, vec.y, vec.z);
 						}
-						if(entity.level instanceof ServerLevel) {
+						if(entity.level() instanceof ServerLevel) {
 							MessageRegister.HANDLER.send(PacketDistributor.TRACKING_ENTITY.with(() -> entity), motion);
 						}
 

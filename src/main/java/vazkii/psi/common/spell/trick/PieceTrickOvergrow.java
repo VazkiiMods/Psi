@@ -58,7 +58,7 @@ public class PieceTrickOvergrow extends PieceTrick {
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		BlockPos pos = SpellHelpers.getBlockPos(this, context, position, true, false);
-		return bonemeal(context.caster, context.focalPoint.level, pos);
+		return bonemeal(context.caster, context.focalPoint.level(), pos);
 	}
 
 	public InteractionResult bonemeal(Player player, Level world, BlockPos pos) {

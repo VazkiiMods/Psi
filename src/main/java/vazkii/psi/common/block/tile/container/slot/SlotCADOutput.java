@@ -49,11 +49,11 @@ public class SlotCADOutput extends Slot {
 		if(MinecraftForge.EVENT_BUS.post(event)) {
 			BlockPos assemblerPos = this.assembler.getBlockPos();
 			String cancelMessage = event.getCancellationMessage();
-			if(!playerIn.level.isClientSide) {
+			if(!playerIn.level().isClientSide) {
 				if(cancelMessage != null && !cancelMessage.isEmpty()) {
 					playerIn.sendSystemMessage(Component.translatable(cancelMessage).setStyle(Style.EMPTY.withColor(ChatFormatting.RED)));
 				}
-				playerIn.level.playSound(null, assemblerPos.getX(), assemblerPos.getY(), assemblerPos.getZ(), PsiSoundHandler.compileError, SoundSource.BLOCKS, sound, 1F);
+				playerIn.level().playSound(null, assemblerPos.getX(), assemblerPos.getY(), assemblerPos.getZ(), PsiSoundHandler.compileError, SoundSource.BLOCKS, sound, 1F);
 			}
 			return false;
 		}

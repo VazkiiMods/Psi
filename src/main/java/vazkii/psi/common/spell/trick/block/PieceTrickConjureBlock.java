@@ -114,7 +114,7 @@ public class PieceTrickConjureBlock extends PieceTrick {
 		}
 
 		BlockState inWorld = world.getBlockState(pos);
-		if(inWorld.isAir() || inWorld.getMaterial().isReplaceable()) {
+		if(inWorld.isAir() || inWorld.canBeReplaced()) {
 			return world.setBlockAndUpdate(pos, state);
 		}
 		return false;

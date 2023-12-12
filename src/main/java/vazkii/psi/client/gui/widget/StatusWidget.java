@@ -8,10 +8,8 @@
  */
 package vazkii.psi.client.gui.widget;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
-
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
@@ -20,7 +18,6 @@ import net.minecraft.world.item.ItemStack;
 import org.apache.commons.lang3.tuple.Pair;
 
 import vazkii.psi.api.PsiAPI;
-import vazkii.psi.api.internal.PsiRenderHelper;
 import vazkii.psi.api.spell.SpellCompilationException;
 import vazkii.psi.client.gui.GuiProgrammer;
 
@@ -39,11 +36,10 @@ public class StatusWidget extends AbstractWidget {
 	}
 
 	@Override
-	public void renderButton(PoseStack ms, int mouseX, int mouseY, float pTicks) {
-		RenderSystem.setShaderColor(1f, 1f, 1f, 1F);
-		RenderSystem.setShaderTexture(0, GuiProgrammer.texture);
-		blit(ms, parent.left - 48, parent.top + 5, parent.xSize, 0, 48, 30);
-		blit(ms, parent.left - 16, parent.top + 13, parent.compileResult.right().isPresent() ? 12 : 0, parent.ySize + 28, 12, 12);
+	public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float pTicks) {
+		graphics.setColor(1f, 1f, 1f, 1F);
+		graphics.blit(GuiProgrammer.texture, parent.left - 48, parent.top + 5, parent.xSize, 0, 48, 30);
+		graphics.blit(GuiProgrammer.texture, parent.left - 16, parent.top + 13, parent.compileResult.right().isPresent() ? 12 : 0, parent.ySize + 28, 12, 12);
 
 		if(mouseX > parent.left - 16 - 1 && mouseY > parent.top + 13 - 1 && mouseX < parent.left - 16 + 13 && mouseY < parent.top + 13 + 13) {
 			if(parent.compileResult.right().isPresent()) {
@@ -65,7 +61,7 @@ public class StatusWidget extends AbstractWidget {
 			int cadX = parent.left - 42;
 			int cadY = parent.top + 12;
 
-			PsiRenderHelper.transferMsToGl(ms, () -> parent.getMinecraft().getItemRenderer().renderAndDecorateItem(cad, cadX, cadY));
+			graphics.renderFakeItem(cad, cadX, cadY);
 
 			if(mouseX > cadX && mouseY > cadY && mouseX < cadX + 16 && mouseY < cadY + 16) {
 				parent.tooltip.addAll(cad.getTooltipLines(parent.getMinecraft().player, parent.tooltipFlag));
@@ -74,7 +70,7 @@ public class StatusWidget extends AbstractWidget {
 	}
 
 	@Override
-	public void updateNarration(NarrationElementOutput p_169152_) {
-		//TODO Narration?
+	protected void updateWidgetNarration(NarrationElementOutput pNarrationElementOutput) {
+		this.defaultButtonNarrationText(pNarrationElementOutput);
 	}
 }

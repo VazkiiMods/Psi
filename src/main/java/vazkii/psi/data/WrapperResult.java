@@ -10,10 +10,10 @@ package vazkii.psi.data;
 
 import com.google.gson.JsonObject;
 
-import net.minecraft.core.Registry;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
 
@@ -63,7 +63,7 @@ public class WrapperResult implements FinishedRecipe {
 			return FinishedRecipe.super.serializeRecipe();
 		}
 		JsonObject jsonobject = new JsonObject();
-		jsonobject.addProperty("type", Registry.RECIPE_SERIALIZER.getKey(this.type).toString());
+		jsonobject.addProperty("type", ForgeRegistries.RECIPE_SERIALIZERS.getKey(this.type).toString());
 		this.serializeRecipeData(jsonobject);
 		return jsonobject;
 	}

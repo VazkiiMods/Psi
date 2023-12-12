@@ -332,7 +332,7 @@ public class GuiProgrammer extends Screen {
 		tooltip.clear();
 		graphics.pose().translate(gridLeft, gridTop, 0);
 		MultiBufferSource.BufferSource buffers = MultiBufferSource.immediate(Tesselator.getInstance().getBuilder());
-		spell.draw(graphics.pose(), buffers, 0xF000F0);
+		spell.draw(graphics, buffers, 0xF000F0);
 		buffers.endBatch();
 
 		compileResult.right().ifPresent(ex -> {
@@ -454,12 +454,12 @@ public class GuiProgrammer extends Screen {
 		}
 		if(!takingScreenshot && pieceAtCursor != null && mouseMoved) {
 			if(tooltip != null && !tooltip.isEmpty()) {
-				pieceAtCursor.drawTooltip(graphics.pose(), mouseX, mouseY, tooltip, this);
+				pieceAtCursor.drawTooltip(graphics, mouseX, mouseY, tooltip, this);
 			}
 
 			if(comment != null && !comment.isEmpty()) {
 				List<Component> commentList = Arrays.stream(comment.split(";")).map(Component::literal).collect(Collectors.toList());
-				pieceAtCursor.drawCommentText(graphics.pose(), mouseX, mouseY, commentList, this);
+				pieceAtCursor.drawCommentText(graphics, mouseX, mouseY, commentList, this);
 			}
 		}
 

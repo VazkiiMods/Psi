@@ -68,7 +68,7 @@ public class PieceTrickSmite extends PieceTrick {
 		}
 
 		if(context.focalPoint.getCommandSenderWorld() instanceof ServerLevel) {
-			LightningBolt lightning = new LightningBolt(EntityType.LIGHTNING_BOLT, context.focalPoint.level);
+			LightningBolt lightning = new LightningBolt(EntityType.LIGHTNING_BOLT, context.focalPoint.level());
 			lightning.setPosRaw(positionVal.x, positionVal.y, positionVal.z);
 			context.focalPoint.getCommandSenderWorld().addFreshEntity(lightning);
 		}

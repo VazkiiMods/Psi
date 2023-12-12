@@ -10,7 +10,7 @@ package vazkii.psi.common.item;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
@@ -24,7 +24,6 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
@@ -317,7 +316,7 @@ public class ItemCAD extends Item implements ICAD {
 
 	@Override
 	public boolean craft(ItemStack cad, Player player, PieceCraftingTrick craftingTrick) {
-		Level world = player.level;
+		Level world = player.level();
 		if(world.isClientSide) {
 			return false;
 		}
@@ -339,7 +338,7 @@ public class ItemCAD extends Item implements ICAD {
 			Optional<ITrickRecipe> recipe = world.getRecipeManager().getRecipeFor(ModCraftingRecipes.TRICK_RECIPE_TYPE, inv, world)
 					.filter(predicate);
 			if(recipe.isPresent()) {
-				ItemStack outCopy = recipe.get().getResultItem().copy();
+				ItemStack outCopy = recipe.get().getResultItem(RegistryAccess.EMPTY).copy();
 				int count = stack.getCount() * outCopy.getCount();
 				while(count > 64) {
 					int dropCount = world.getRandom().nextInt(32) + 32;
@@ -572,11 +571,8 @@ public class ItemCAD extends Item implements ICAD {
 		return false;
 	}
 
-	@Override
-	public void fillItemCategory(@Nonnull CreativeModeTab tab, @Nonnull NonNullList<ItemStack> subItems) {
-		if(!allowedIn(tab)) {
-			return;
-		}
+	public static List<ItemStack> getCreativeTabItems() {
+		List<ItemStack> subItems = new ArrayList<>();
 
 		// Basic Iron CAD
 		subItems.add(makeCAD(new ItemStack(ModItems.cadAssemblyIron)));
@@ -617,6 +613,7 @@ public class ItemCAD extends Item implements ICAD {
 				new ItemStack(ModItems.cadSocketTransmissive),
 				new ItemStack(ModItems.cadBatteryUltradense)));
 
+		return subItems;
 	}
 
 	@OnlyIn(Dist.CLIENT)
@@ -657,7 +654,7 @@ public class ItemCAD extends Item implements ICAD {
 
 	@Override
 	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
-		return !oldStack.sameItem(newStack);
+		return !ItemStack.isSameItem(oldStack, newStack);
 	}
 
 }

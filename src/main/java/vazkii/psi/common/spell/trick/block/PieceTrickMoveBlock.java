@@ -109,7 +109,7 @@ public class PieceTrickMoveBlock extends PieceTrick {
 			return null;
 		}
 
-		if(state1.isAir() || state1.getMaterial().isReplaceable()) {
+		if(state1.isAir() || state1.canBeReplaced()) {
 			world.setBlock(pos1, state, 1 | 2);
 			world.removeBlock(pos, false);
 			world.levelEvent(2001, pos, Block.getId(state));

@@ -8,36 +8,38 @@
  */
 package vazkii.psi.common.core;
 
-import net.minecraft.core.NonNullList;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.RegisterEvent;
 
+import vazkii.psi.common.item.ItemCAD;
 import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.lib.LibResources;
 
-import javax.annotation.Nonnull;
+@Mod.EventBusSubscriber(modid = LibMisc.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
+public class PsiCreativeTab {
 
-public class PsiCreativeTab extends CreativeModeTab {
+	public static final ResourceKey<CreativeModeTab> PSI_CREATIVE_TAB = ResourceKey.create(Registries.CREATIVE_MODE_TAB, new ResourceLocation(LibMisc.MOD_ID, "creative_tab"));
 
-	public static final PsiCreativeTab INSTANCE = new PsiCreativeTab();
-	private NonNullList<ItemStack> list;
-
-	public PsiCreativeTab() {
-		super(LibMisc.MOD_ID);
-		hideTitle();
-		setBackgroundSuffix(LibResources.GUI_CREATIVE);
-	}
-
-	@Nonnull
-	@Override
-	public ItemStack makeIcon() {
-		return new ItemStack(ModItems.cadAssemblyIron);
-	}
-
-	@Override
-	public boolean hasSearchBar() {
-		return true;
+	@SubscribeEvent
+	public static void register(RegisterEvent evt) {
+		evt.register(Registries.CREATIVE_MODE_TAB, creativeModeTabRegisterHelper -> {
+			CreativeModeTab psiCreativeTab = CreativeModeTab.builder()
+					.icon(() -> new ItemStack(ModItems.cadAssemblyIron))
+					.displayItems((parameters, output) -> {
+						output.acceptAll(ItemCAD.getCreativeTabItems());
+					})
+					.hideTitle()
+					.withBackgroundLocation(new ResourceLocation(LibMisc.MOD_ID, LibResources.GUI_CREATIVE))
+					.build();
+			creativeModeTabRegisterHelper.register(PSI_CREATIVE_TAB, psiCreativeTab);
+		});
 	}
 
 }

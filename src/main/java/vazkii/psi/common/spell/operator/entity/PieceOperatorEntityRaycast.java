@@ -55,7 +55,7 @@ public class PieceOperatorEntityRaycast extends PieceOperator {
 
 		double maxLen = SpellHelpers.rangeLimitParam(this, context, max, SpellContext.MAX_DISTANCE);
 
-		Entity entity = rayTraceEntities(context.focalPoint.level, originVal.toVec3D(), rayVal.toVec3D(),
+		Entity entity = rayTraceEntities(context.focalPoint.level(), originVal.toVec3D(), rayVal.toVec3D(),
 				pred -> !pred.isSpectator() && pred.isAlive() && pred.isPickable() && !(pred instanceof ISpellImmune), maxLen);
 		if(entity == null) {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_TARGET);

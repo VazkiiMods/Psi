@@ -250,7 +250,9 @@ public class Vector3 {
 		return new Vec3(x, y, z);
 	}
 
-	public Vec3i toVec3i() { return new Vec3i((int) x, (int) y, (int) z); }
+	public Vec3i toVec3i() {
+		return new Vec3i((int) x, (int) y, (int) z);
+	}
 
 	public BlockPos toBlockPos() {
 		return new BlockPos(toVec3i());

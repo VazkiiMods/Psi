@@ -23,7 +23,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
 import org.joml.Matrix4f;
-import org.joml.Vector3f;
+import org.joml.Quaternionf;
 
 import vazkii.psi.api.internal.PsiRenderHelper;
 import vazkii.psi.client.model.ArmorModels;
@@ -82,7 +82,7 @@ public class RenderSpellCircle extends EntityRenderer<EntitySpellCircle> {
 		if(zDir == -1) {
 			ms.mulPose(Axis.XP.rotationDegrees(180));
 		} else if(zDir != 1) {
-			ms.mulPose(new Vector3f(-yDir / mag, xDir / mag, 0).rotate((float) (Math.acos(zDir) * 180 / Math.PI)));
+			ms.mulPose(new Quaternionf().rotateAxis((float) (Math.acos(zDir) * 180 / Math.PI), -yDir / mag, xDir / mag, 0)); //TODO(Kamefrede): 1.20 new Vector3f(-yDir / mag, xDir / mag, 0).rotate((float) (Math.acos(zDir) * 180 / Math.PI) check if this is equivalent
 		}
 		ms.translate(0, 0, 0.1);
 		ms.scale((float) ratio * scale, (float) ratio * scale, (float) ratio);
