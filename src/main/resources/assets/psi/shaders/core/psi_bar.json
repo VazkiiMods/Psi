@@ -1,0 +1,24 @@
+{
+  "__comment": "[VanillaCopy] position_color_tex.json with extra uniforms and custom frag shader",
+  "blend": {
+    "func": "add",
+    "srcrgb": "srcalpha",
+    "dstrgb": "1-srcalpha"
+  },
+  "vertex": "psi:psi_bar",
+  "fragment": "psi:psi_bar",
+  "attributes": [
+    "Position",
+    "Color",
+    "UV0"
+  ],
+  "samplers": [
+    { "name": "Sampler0" },
+    { "name": "Sampler1" }
+  ],
+  "uniforms": [
+    { "name": "GameTime", "type": "float", "count": 1, "values": [ 0.0 ] },
+    { "name": "PsiBarPercentile", "type": "float", "count": 1, "values": [ 0.0 ] },
+    { "name": "PsiBarOverflowed", "type": "int", "count": 1, "values": [ 0 ] }
+  ]
+}

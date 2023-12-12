@@ -15,15 +15,11 @@ public class LibResources {
 	public static final String PREFIX_MOD = "psi:";
 	public static final ResourceLocation PATCHOULI_BOOK = new ResourceLocation(LibMisc.MOD_ID, "encyclopaedia_psionica");
 
-	public static final String PREFIX_SHADER = "/assets/psi/shaders/";
 	public static final String PREFIX_GUI = PREFIX_MOD + "textures/gui/";
 	public static final String PREFIX_MODEL = PREFIX_MOD + "textures/model/";
 	public static final String PREFIX_MISC = PREFIX_MOD + "textures/misc/";
 
-	public static final String SHADER_RAW_COLOR = PREFIX_SHADER + "raw_color";
-	public static final String SHADER_PSI_BAR = PREFIX_SHADER + "psi_bar";
-	public static final String SHADER_SIMPLE_BLOOM = PREFIX_SHADER + "simple_bloom";
-
+	public static final String SHADER_PSI_BAR = "psi_bar";
 	public static final String GUI_CREATIVE = "psi.png";
 	public static final String GUI_CAD_ASSEMBLER = PREFIX_GUI + "cad_assembler.png";
 	public static final String GUI_PSI_BAR = PREFIX_GUI + "psi_bar.png";

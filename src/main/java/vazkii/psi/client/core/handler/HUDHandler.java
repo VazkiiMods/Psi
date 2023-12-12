@@ -27,8 +27,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-import org.lwjgl.opengl.ARBMultitexture;
-import org.lwjgl.opengl.ARBShaderObjects;
 import org.lwjgl.opengl.GL11;
 
 import vazkii.psi.api.PsiAPI;
@@ -46,7 +44,6 @@ import vazkii.psi.common.item.base.IHUDItem;
 import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.lib.LibResources;
 
-import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
 @Mod.EventBusSubscriber(value = Dist.CLIENT, modid = LibMisc.MOD_ID)
@@ -55,8 +52,6 @@ public final class HUDHandler {
 	private static final ResourceLocation psiBar = new ResourceLocation(LibResources.GUI_PSI_BAR);
 	private static final ResourceLocation psiBarMask = new ResourceLocation(LibResources.GUI_PSI_BAR_MASK);
 	private static final ResourceLocation psiBarShatter = new ResourceLocation(LibResources.GUI_PSI_BAR_SHATTER);
-
-	private static final int secondaryTextureUnit = 7;
 
 	private static boolean registeredMask = false;
 	private static final int maxRemainingTicks = 30;
@@ -161,14 +156,6 @@ public final class HUDHandler {
 		int origY = y;
 		int v = 0;
 
-		int texture = 0;
-		boolean shaders = ShaderHandler.useShaders;
-
-		if (shaders) {
-			RenderSystem.activeTexture(ARBMultitexture.GL_TEXTURE0_ARB + secondaryTextureUnit);
-			texture = GL11.glGetInteger(GL11.GL_TEXTURE_BINDING_2D);
-		}
-
 		RenderSystem.enableBlend();
 		RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
@@ -180,7 +167,7 @@ public final class HUDHandler {
 			v = origHeight - effHeight;
 			y = origY + v;
 
-			ShaderHandler.useShader(ShaderHandler.psiBar, generateCallback(a, d.shatter, data.overflowed));
+			usePsiBarShader(a, d.shatter, data.overflowed);
 			GuiComponent.blit(ms, x, y, 32, v, width, height, 64, 256);
 		}
 
@@ -202,16 +189,8 @@ public final class HUDHandler {
 		}
 
 		RenderSystem.setShaderColor(r, g, b, 1F);
-		ShaderHandler.useShader(ShaderHandler.psiBar, generateCallback(1F, false, data.overflowed));
+		usePsiBarShader(1F, false, data.overflowed);
 		GuiComponent.blit(ms, x, y, 32, v, width, height, 64, 256);
-		ShaderHandler.releaseShader();
-
-		if (shaders) {
-			RenderSystem.activeTexture(ARBMultitexture.GL_TEXTURE0_ARB + secondaryTextureUnit);
-			RenderSystem.bindTexture(texture);
-			RenderSystem.activeTexture(ARBMultitexture.GL_TEXTURE0_ARB);
-		}
-
 		RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
 
 		ms.pushPose();
@@ -221,7 +200,7 @@ public final class HUDHandler {
 
 		int storedPsi = cad.getStoredPsi(cadStack);
 
-		String s1 = storedPsi == -1 ? "\u221E" : "" + data.availablePsi;
+		String s1 = storedPsi == -1 ? "∞" : "" + data.availablePsi;
 		String s2 = "" + storedPsi;
 
 		int offBar = 22;
@@ -327,8 +306,8 @@ public final class HUDHandler {
 							+ ChatFormatting.GRAY + max + ChatFormatting.RESET + "+" + ChatFormatting.YELLOW + rem
 							+ ChatFormatting.RESET + ")";
 				}
-			} else if (remainingCount == -1) {
-				text = "\u221E";
+			} else if(remainingCount == -1) {
+				text = "∞";
 			}
 
 			int color = 0x00FFFFFF | (int) (alpha * 0xFF) << 24;
@@ -371,28 +350,13 @@ public final class HUDHandler {
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	private static Consumer<Integer> generateCallback(final float percentile, final boolean shatter, final boolean overflowed) {
-		Minecraft mc = Minecraft.getInstance();
-		return (Integer shader) -> {
-			int percentileUniform = ARBShaderObjects.glGetUniformLocationARB(shader, "percentile");
-			int overflowedUniform = ARBShaderObjects.glGetUniformLocationARB(shader, "overflowed");
-			int imageUniform = ARBShaderObjects.glGetUniformLocationARB(shader, "image");
-			int maskUniform = ARBShaderObjects.glGetUniformLocationARB(shader, "mask");
-
-			RenderSystem.activeTexture(ARBMultitexture.GL_TEXTURE0_ARB);
-			RenderSystem.setShaderTexture(0, psiBar);
-			ARBShaderObjects.glUniform1iARB(imageUniform, 0);
-
-			RenderSystem.activeTexture(ARBMultitexture.GL_TEXTURE0_ARB + secondaryTextureUnit);
-
-			RenderSystem.enableTexture();
-
-			RenderSystem.setShaderTexture(1, shatter ? psiBarShatter : psiBarMask);
-			ARBShaderObjects.glUniform1iARB(maskUniform, secondaryTextureUnit);
-
-			ARBShaderObjects.glUniform1fARB(percentileUniform, percentile);
-			ARBShaderObjects.glUniform1iARB(overflowedUniform, overflowed ? 1 : 0);
-		};
+	public static void usePsiBarShader(final float percentile, final boolean shatter, final boolean overflowed) {
+		var psiBarShader = ShaderHandler.getPsiBarShader();
+		RenderSystem.setShader(ShaderHandler::getPsiBarShader);
+		RenderSystem.setShaderTexture(0, psiBar);
+		RenderSystem.setShaderTexture(1, shatter ? psiBarShatter : psiBarMask);
+		psiBarShader.safeGetUniform("GameTime").set(RenderSystem.getShaderGameTime());
+		psiBarShader.safeGetUniform("PsiBarPercentile").set(percentile);
+		psiBarShader.safeGetUniform("PsiBarOverflowed").set(overflowed ? 1 : 0);
 	}
-
 }
