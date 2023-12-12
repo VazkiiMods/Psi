@@ -59,7 +59,7 @@ public class ClientTickHandler {
 		if(event.phase == TickEvent.Phase.START) {
 
 			boolean pressed = mc.options.keyJump.consumeClick();
-			if(mc.player != null && pressed && (!lastJumpKeyState && !mc.player.isOnGround())) {
+			if(mc.player != null && pressed && (!lastJumpKeyState && !mc.player.onGround())) {
 				PsiArmorEvent.post(new PsiArmorEvent(mc.player, PsiArmorEvent.JUMP));
 				MessageRegister.HANDLER.sendToServer(new MessageTriggerJumpSpell());
 			}

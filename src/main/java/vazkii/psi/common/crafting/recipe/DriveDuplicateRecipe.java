@@ -9,12 +9,14 @@
 package vazkii.psi.common.crafting.recipe;
 
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.SimpleRecipeSerializer;
+import net.minecraft.world.item.crafting.SimpleCraftingRecipeSerializer;
 import net.minecraft.world.level.Level;
 
 import vazkii.psi.api.spell.Spell;
@@ -23,10 +25,10 @@ import vazkii.psi.common.item.ItemSpellDrive;
 import javax.annotation.Nonnull;
 
 public class DriveDuplicateRecipe extends CustomRecipe {
-	public static final SimpleRecipeSerializer<DriveDuplicateRecipe> SERIALIZER = new SimpleRecipeSerializer<>(DriveDuplicateRecipe::new);
+	public static final SimpleCraftingRecipeSerializer<DriveDuplicateRecipe> SERIALIZER = new SimpleCraftingRecipeSerializer<>(DriveDuplicateRecipe::new);
 
-	public DriveDuplicateRecipe(ResourceLocation id) {
-		super(id);
+	public DriveDuplicateRecipe(ResourceLocation id, CraftingBookCategory category) {
+		super(id, category);
 	}
 
 	@Override
@@ -60,7 +62,7 @@ public class DriveDuplicateRecipe extends CustomRecipe {
 
 	@Nonnull
 	@Override
-	public ItemStack assemble(@Nonnull CraftingContainer inv) {
+	public ItemStack assemble(@Nonnull CraftingContainer inv, RegistryAccess access) {
 		Spell source = null;
 		ItemStack target = ItemStack.EMPTY;
 

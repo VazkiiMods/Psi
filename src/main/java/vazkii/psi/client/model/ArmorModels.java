@@ -42,7 +42,7 @@ public class ArmorModels {
 	public static ModelArmor get(ItemStack stack) {
 		Item item = stack.getItem();
 		if(item instanceof ItemPsimetalArmor armor) {
-			return exosuit.get(armor.getSlot());
+			return exosuit.get(armor.getEquipmentSlot());
 		}
 
 		return null;

@@ -14,6 +14,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
+import net.minecraft.client.particle.TextureSheetParticle;
 import net.minecraft.core.particles.ParticleType;
 
 // https://github.com/Vazkii/Botania/blob/1.15/src/main/java/vazkii/botania/client/fx/SparkleParticleType.java
@@ -36,7 +37,7 @@ public class SparkleParticleType extends ParticleType<SparkleParticleData> {
 		}
 
 		@Override
-		public Particle createParticle(SparkleParticleData data, ClientLevel world, double x, double y, double z, double mx, double my, double mz) {
+		public TextureSheetParticle createParticle(SparkleParticleData data, ClientLevel world, double x, double y, double z, double mx, double my, double mz) {
 			return new FXSparkle(world, x, y, z, data.size, data.r, data.g, data.b, data.m, mx, my, mz, sprite);
 		}
 	}

@@ -8,13 +8,10 @@
  */
 package vazkii.psi.client.gui.widget;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
-
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
-import net.minecraft.client.gui.components.Widget;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
@@ -44,7 +41,7 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class PiecePanelWidget extends AbstractWidget implements Widget, GuiEventListener {
+public class PiecePanelWidget extends AbstractWidget implements GuiEventListener {
 
 	public final GuiProgrammer parent;
 	public boolean panelEnabled = false;
@@ -61,24 +58,22 @@ public class PiecePanelWidget extends AbstractWidget implements Widget, GuiEvent
 	}
 
 	@Override
-	public void renderButton(PoseStack ms, int mouseX, int mouseY, float pTicks) {
+	public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float pTicks) {
 		if(panelEnabled) {
-			RenderSystem.setShaderTexture(0, GuiProgrammer.texture);
+			graphics.fill(getX(), getY(), getY() + width, getY() + height, 0x88000000);
 
-			fill(ms, x, y, x + width, y + height, 0x88000000);
-
-			if(visibleButtons.size() > 0) {
+			if(!visibleButtons.isEmpty()) {
 				Button button = visibleButtons.get(Math.max(0, Math.min(panelCursor + (page * PIECES_PER_PAGE), visibleButtons.size() - 1)));
-				int panelPieceX = button.x;
-				int panelPieceY = button.y;
-				fill(ms, panelPieceX - 1, panelPieceY - 1, panelPieceX + 17, panelPieceY + 17, 0x559999FF);
+				int panelPieceX = button.getX();
+				int panelPieceY = button.getY();
+				graphics.fill(panelPieceX - 1, panelPieceY - 1, panelPieceX + 17, panelPieceY + 17, 0x559999FF);
 			}
 
-			RenderSystem.setShaderColor(1F, 1F, 1F, 1F);;
-			blit(ms, searchField.x - 14, searchField.y - 2, 0, parent.ySize + 16, 12, 12);
+			graphics.setColor(1f, 1f, 1f ,1f);
+			graphics.blit(GuiProgrammer.texture, searchField.getX() - 14, searchField.getY() - 2, 0, parent.ySize + 16, 12, 12);
 
 			String s = Math.min(Math.max(getPageCount(), 1), page + 1) + "/" + Math.max(getPageCount(), 1);
-			parent.getMinecraft().font.drawShadow(ms, s, x + width / 2f - parent.getMinecraft().font.width(s) / 2f, y + height - 12, 0xFFFFFF);
+			graphics.drawString(parent.getMinecraft().font, s, getX() + width / 2f - parent.getMinecraft().font.width(s) / 2f, getY() + height - 12, 0xFFFFFF, true);
 		}
 	}
 
@@ -110,13 +105,13 @@ public class PiecePanelWidget extends AbstractWidget implements Widget, GuiEvent
 				closePanel();
 				return true;
 			case GLFW.GLFW_KEY_ENTER:
-				if(visibleButtons.size() >= 1) {
+				if(!visibleButtons.isEmpty()) {
 					visibleButtons.get(panelCursor).onPress();
 					return true;
 				}
 				return false;
 			case GLFW.GLFW_KEY_TAB:
-				if(visibleButtons.size() >= 1) {
+				if(!visibleButtons.isEmpty()) {
 					int newCursor = panelCursor + (Screen.hasAltDown() ? -1 : 1);
 					if(newCursor >= (Math.min(visibleButtons.size(), 25))) {
 						panelCursor = 0;
@@ -246,14 +241,14 @@ public class PiecePanelWidget extends AbstractWidget implements Widget, GuiEvent
 			} else if(button instanceof GuiButtonPage) {
 				GuiButtonPage page = (GuiButtonPage) button;
 				if(page.isRight() && this.page < getPageCount() - 1) {
-					page.x = x + width - 22;
-					page.y = y + height - 15;
+					page.setX( getX() + width - 22);
+					page.setY(getY() + height - 15);
 					page.visible = true;
 					page.active = true;
 
 				} else if(!page.isRight() && this.page > 0) {
-					page.x = x + 4;
-					page.y = y + height - 15;
+					page.setX(getX() + 4);
+					page.setX(getY() + height - 15);
 					page.visible = true;
 					page.active = true;
 				}
@@ -291,8 +286,8 @@ public class PiecePanelWidget extends AbstractWidget implements Widget, GuiEvent
 
 			GuiButtonSpellPiece piece = visibleButtons.get(i);
 			GuiButtonSpellPiece buttonSpellPiece = (GuiButtonSpellPiece) parent.getButtons().stream().filter(el -> el.equals(piece)).findFirst().orElse(null);
-			buttonSpellPiece.x = x + 5 + c % 5 * 18;
-			buttonSpellPiece.y = y + 20 + c / 5 * 18;
+			buttonSpellPiece.setX(getX() + 5 + c % 5 * 18);
+			buttonSpellPiece.setY(getY() + 20 + c / 5 * 18);
 			buttonSpellPiece.visible = true;
 			buttonSpellPiece.active = true;
 		}
@@ -305,7 +300,7 @@ public class PiecePanelWidget extends AbstractWidget implements Widget, GuiEvent
 			return true;
 		}
 
-		if(panelEnabled && (mouseX < x || mouseY < y || mouseX > x + width || mouseY > y + height) && !parent.isSpectator()) {
+		if(panelEnabled && (mouseX < getX() || mouseY < getY() || mouseX > getX() + width || mouseY > getY() + height) && !parent.isSpectator()) {
 			closePanel();
 			return true;
 		}
@@ -444,31 +439,30 @@ public class PiecePanelWidget extends AbstractWidget implements Widget, GuiEvent
 		});
 		searchField.visible = false;
 		searchField.setEditable(false);
-		searchField.setFocus(false);
+		searchField.setFocused(true);
 		parent.setFocused(parent.statusWidget);
-		parent.changeFocus(true);
 	}
 
 	public void openPanel() {
 		closePanel();
 		panelEnabled = true;
 		page = Math.min(page, Math.max(0, getPageCount() - 1));
-		x = parent.gridLeft + (GuiProgrammer.selectedX + 1) * 18;
-		y = parent.gridTop;
+		setX(parent.gridLeft + (GuiProgrammer.selectedX + 1) * 18);
+		setY(parent.gridTop);
 
-		searchField.x = x + 18;
-		searchField.y = y + 4;
+		searchField.setX(getX() + 18);
+		searchField.setY(getY() + 4);
 		searchField.setValue("");
 		searchField.setVisible(true);
 		searchField.active = true;
 		searchField.setEditable(true);
-		searchField.setFocus(true);
+		searchField.setFocused(true);
 		parent.setFocused(searchField);
 		updatePanelButtons();
 	}
 
 	@Override
-	public void updateNarration(NarrationElementOutput p_169152_) {
-
+	protected void updateWidgetNarration(NarrationElementOutput pNarrationElementOutput) {
+		this.defaultButtonNarrationText(pNarrationElementOutput);
 	}
 }

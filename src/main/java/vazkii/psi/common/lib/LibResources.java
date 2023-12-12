@@ -15,6 +15,8 @@ public class LibResources {
 	public static final String PREFIX_MOD = "psi:";
 	public static final ResourceLocation PATCHOULI_BOOK = new ResourceLocation(LibMisc.MOD_ID, "encyclopaedia_psionica");
 
+	public static final ResourceLocation PSI_DAMAGE_TYPE = new ResourceLocation(LibMisc.MOD_ID, "psi_overload");
+
 	public static final String PREFIX_GUI = PREFIX_MOD + "textures/gui/";
 	public static final String PREFIX_MODEL = PREFIX_MOD + "textures/model/";
 	public static final String PREFIX_MISC = PREFIX_MOD + "textures/misc/";

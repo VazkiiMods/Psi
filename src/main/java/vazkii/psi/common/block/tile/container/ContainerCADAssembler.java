@@ -64,7 +64,7 @@ public class ContainerCADAssembler extends AbstractContainerMenu {
 
 	public static ContainerCADAssembler fromNetwork(int windowId, Inventory playerInventory, FriendlyByteBuf buf) {
 		BlockPos pos = buf.readBlockPos();
-		return new ContainerCADAssembler(windowId, playerInventory, (TileCADAssembler) playerInventory.player.level.getBlockEntity(pos));
+		return new ContainerCADAssembler(windowId, playerInventory, (TileCADAssembler) playerInventory.player.level().getBlockEntity(pos));
 	}
 
 	public ContainerCADAssembler(int windowId, Inventory playerInventory, TileCADAssembler assembler) {
@@ -189,7 +189,7 @@ public class ContainerCADAssembler extends AbstractContainerMenu {
 				}
 			} else if(stackInSlot.getItem() instanceof ArmorItem) {
 				ArmorItem armor = (ArmorItem) stackInSlot.getItem();
-				int armorSlot = armorStart + armor.getSlot().getFilterFlag() - 1;
+				int armorSlot = armorStart + armor.getType().ordinal() - 1;
 				if(!moveItemStackTo(stackInSlot, armorSlot, armorSlot + 1, true) &&
 						!moveItemStackTo(stackInSlot, playerStart, hotbarEnd, true)) {
 					return ItemStack.EMPTY;

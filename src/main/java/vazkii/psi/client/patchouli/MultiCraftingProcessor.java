@@ -10,10 +10,12 @@ package vazkii.psi.client.patchouli;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.crafting.IShapedRecipe;
 
 import vazkii.patchouli.api.IComponentProcessor;
@@ -34,7 +36,7 @@ public class MultiCraftingProcessor implements IComponentProcessor {
 	private boolean hasCustomHeading;
 
 	@Override
-	public void setup(IVariableProvider variables) {
+	public void setup(Level level, IVariableProvider variables) {
 		Map<ResourceLocation, CraftingRecipe> recipeMap = Minecraft.getInstance().level.getRecipeManager().byType(RecipeType.CRAFTING);
 		List<String> names = variables.get("recipes").asStream().map(IVariable::asString).collect(Collectors.toList());
 		this.recipes = new ArrayList<>();
@@ -59,13 +61,13 @@ public class MultiCraftingProcessor implements IComponentProcessor {
 	}
 
 	@Override
-	public IVariable process(String key) {
+	public IVariable process(Level level, String key) {
 		if(recipes.isEmpty()) {
 			return null;
 		}
 		if(key.equals("heading")) {
 			if(!hasCustomHeading) {
-				return IVariable.from(recipes.get(0).getResultItem().getHoverName());
+				return IVariable.from(recipes.get(0).getResultItem(RegistryAccess.EMPTY).getHoverName());
 			}
 			return null;
 		}
@@ -93,7 +95,7 @@ public class MultiCraftingProcessor implements IComponentProcessor {
 			return PatchouliUtils.interweaveIngredients(ingredients, longestIngredientSize);
 		}
 		if(key.equals("output")) {
-			return IVariable.wrapList(recipes.stream().map(CraftingRecipe::getResultItem).map(IVariable::from).collect(Collectors.toList()));
+			return IVariable.wrapList(recipes.stream().map(recipe -> recipe.getResultItem(RegistryAccess.EMPTY)).map(IVariable::from).collect(Collectors.toList()));
 		}
 		if(key.equals("shapeless")) {
 			return IVariable.wrap(shapeless);

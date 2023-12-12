@@ -13,12 +13,13 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.LazyLoadedValue;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import vazkii.psi.api.PsiAPI;
 
 public class PsimetalToolMaterial implements Tier {
 	private static final LazyLoadedValue<Ingredient> REPAIR_MATERIAL = new LazyLoadedValue<>(
-			() -> Ingredient.of(Registry.ITEM.get(new ResourceLocation(PsiAPI.MOD_ID, "psimetal"))));
+			() -> Ingredient.of(ForgeRegistries.ITEMS.getValue(new ResourceLocation(PsiAPI.MOD_ID, "psimetal"))));
 
 	@Override
 	public int getUses() {

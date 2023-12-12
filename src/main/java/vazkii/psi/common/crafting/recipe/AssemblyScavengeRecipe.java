@@ -8,12 +8,14 @@
  */
 package vazkii.psi.common.crafting.recipe;
 
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.SimpleRecipeSerializer;
+import net.minecraft.world.item.crafting.SimpleCraftingRecipeSerializer;
 import net.minecraft.world.level.Level;
 
 import vazkii.psi.api.cad.EnumCADComponent;
@@ -22,10 +24,10 @@ import vazkii.psi.api.cad.ICAD;
 import javax.annotation.Nonnull;
 
 public class AssemblyScavengeRecipe extends CustomRecipe {
-	public static final SimpleRecipeSerializer<AssemblyScavengeRecipe> SERIALIZER = new SimpleRecipeSerializer<>(AssemblyScavengeRecipe::new);
+	public static final SimpleCraftingRecipeSerializer<AssemblyScavengeRecipe> SERIALIZER = new SimpleCraftingRecipeSerializer<>(AssemblyScavengeRecipe::new);
 
-	public AssemblyScavengeRecipe(ResourceLocation id) {
-		super(id);
+	public AssemblyScavengeRecipe(ResourceLocation id, CraftingBookCategory category) {
+		super(id, category);
 	}
 
 	@Override
@@ -64,7 +66,7 @@ public class AssemblyScavengeRecipe extends CustomRecipe {
 
 	@Nonnull
 	@Override
-	public ItemStack assemble(@Nonnull CraftingContainer inv) {
+	public ItemStack assemble(@Nonnull CraftingContainer inv, RegistryAccess access) {
 		ItemStack target = ItemStack.EMPTY;
 
 		for(int i = 0; i < inv.getContainerSize(); i++) {

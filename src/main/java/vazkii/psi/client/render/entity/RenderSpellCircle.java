@@ -12,8 +12,7 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexFormat;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderStateShard;
@@ -22,6 +21,9 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+
+import org.joml.Matrix4f;
+import org.joml.Vector3f;
 
 import vazkii.psi.api.internal.PsiRenderHelper;
 import vazkii.psi.client.model.ArmorModels;
@@ -78,9 +80,9 @@ public class RenderSpellCircle extends EntityRenderer<EntitySpellCircle> {
 		zDir /= mag;
 
 		if(zDir == -1) {
-			ms.mulPose(Vector3f.XP.rotationDegrees(180));
+			ms.mulPose(Axis.XP.rotationDegrees(180));
 		} else if(zDir != 1) {
-			ms.mulPose(new Vector3f(-yDir / mag, xDir / mag, 0).rotationDegrees((float) (Math.acos(zDir) * 180 / Math.PI)));
+			ms.mulPose(new Vector3f(-yDir / mag, xDir / mag, 0).rotate((float) (Math.acos(zDir) * 180 / Math.PI)));
 		}
 		ms.translate(0, 0, 0.1);
 		ms.scale((float) ratio * scale, (float) ratio * scale, (float) ratio);
@@ -117,7 +119,7 @@ public class RenderSpellCircle extends EntityRenderer<EntitySpellCircle> {
 			}
 
 			ms.pushPose();
-			ms.mulPose(Vector3f.ZP.rotationDegrees(i == 0 ? -alive : alive));
+			ms.mulPose(Axis.ZP.rotationDegrees(i == 0 ? -alive : alive));
 
 			VertexConsumer buffer = buffers.getBuffer(LAYERS[i]);
 			Matrix4f mat = ms.last().pose();

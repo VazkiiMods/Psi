@@ -16,15 +16,19 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.protocol.game.ClientboundPlayerPositionPacket.RelativeArgument;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageType;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.RelativeMovement;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.dimension.DimensionType;
@@ -40,6 +44,7 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.RegistryManager;
 
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.EnumCADStat;
@@ -66,6 +71,7 @@ import vazkii.psi.client.render.entity.RenderSpellCircle;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.item.ItemCAD;
 import vazkii.psi.common.lib.LibMisc;
+import vazkii.psi.common.lib.LibResources;
 import vazkii.psi.common.network.MessageRegister;
 import vazkii.psi.common.network.message.MessageDataSync;
 import vazkii.psi.common.network.message.MessageDeductPsi;
@@ -91,15 +97,13 @@ public class PlayerDataHandler {
 
 	private static final String DATA_TAG = "PsiData";
 
-	public static final DamageSource damageSourceOverload = new DamageSource("psi-overload").bypassArmor().bypassMagic();
-
 	@Nonnull
 	public static PlayerData get(Player player) {
 		if(player == null) {
 			return new PlayerData();
 		}
 
-		Map<Player, PlayerData> dataMap = player.level.isClientSide ? remotePlayerData : playerData;
+		Map<Player, PlayerData> dataMap = player.level().isClientSide ? remotePlayerData : playerData;
 
 		PlayerData data = dataMap.computeIfAbsent(player, PlayerData::new);
 		if(data.playerWR != null && data.playerWR.get() != player) {
@@ -173,7 +177,7 @@ public class PlayerDataHandler {
 				}
 
 				PsiArmorEvent.post(new PsiArmorEvent(player, PsiArmorEvent.DAMAGE, event.getAmount(), attacker));
-				if(event.getSource().isFire()) {
+				if(event.getSource().is(DamageTypes.ON_FIRE) || event.getSource().is(DamageTypes.IN_FIRE)) {
 					PsiArmorEvent.post(new PsiArmorEvent(player, PsiArmorEvent.ON_FIRE));
 				}
 			}
@@ -189,7 +193,7 @@ public class PlayerDataHandler {
 
 		@SubscribeEvent
 		public static void onEntityJump(LivingJumpEvent event) {
-			if(event.getEntity() instanceof Player && event.getEntity().level.isClientSide && !event.getEntity().isSpectator()) {
+			if(event.getEntity() instanceof Player && event.getEntity().level().isClientSide && !event.getEntity().isSpectator()) {
 				Player player = (Player) event.getEntity();
 				PsiArmorEvent.post(new PsiArmorEvent(player, PsiArmorEvent.JUMP));
 				MessageRegister.HANDLER.sendToServer(new MessageTriggerJumpSpell());
@@ -377,7 +381,7 @@ public class PlayerDataHandler {
 					}
 
 					if(lastTickLoopcastStack != null) {
-						if(!ItemStack.isSame(lastTickLoopcastStack, stackInHand) ||
+						if(!ItemStack.isSameItem(lastTickLoopcastStack, stackInHand) ||
 								!ISocketable.isSocketable(lastTickLoopcastStack)) {
 							stopLoopcast();
 							break loopcast;
@@ -495,7 +499,7 @@ public class PlayerDataHandler {
 						Vector3 vec = eidosChangelog.pop();
 						if(player instanceof ServerPlayer) {
 							ServerPlayer pmp = (ServerPlayer) player;
-							pmp.connection.teleport(vec.x, vec.y, vec.z, 0, 0, ImmutableSet.of(RelativeArgument.X_ROT, RelativeArgument.Y_ROT));
+							pmp.connection.teleport(vec.x, vec.y, vec.z, 0, 0, ImmutableSet.of(RelativeMovement.X_ROT, RelativeMovement.Y_ROT));
 							pmp.connection.resetPosition();
 						} else {
 							player.setPos(vec.x, vec.y, vec.z);
@@ -508,7 +512,7 @@ public class PlayerDataHandler {
 							riding = riding.getVehicle();
 						}
 
-						if(player.level.isClientSide) {
+						if(player.level().isClientSide) {
 							for(int i = 0; i < 5; i++) {
 								double spread = 0.6;
 
@@ -686,7 +690,9 @@ public class PlayerDataHandler {
 				if(!shatter && overflow > 0) {
 					float dmg = (float) overflow / (loopcasting ? 50 : 125);
 					if(!client) {
-						player.hurt(damageSourceOverload, dmg);
+						Holder<DamageType> holder = RegistryManager.VANILLA.getRegistry(Registries.DAMAGE_TYPE).getHolder(LibResources.PSI_DAMAGE_TYPE).get();
+						DamageSource overloadSource = new DamageSource(holder);
+						player.hurt(overloadSource, dmg);
 					}
 					overflowed = true;
 				}

@@ -12,6 +12,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
@@ -101,11 +102,11 @@ public class ItemVectorRuler extends Item implements IHUDItem {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void drawHUD(PoseStack ms, float partTicks, int screenWidth, int screenHeight, ItemStack stack) {
+	public void drawHUD(GuiGraphics graphics, float partTicks, int screenWidth, int screenHeight, ItemStack stack) {
 		String s = getVector(stack).toString();
 
 		Font font = Minecraft.getInstance().font;
 		int w = font.width(s);
-		font.draw(ms, s, screenWidth / 2f - w / 2f, screenHeight / 2f + 10, 0xFFFFFFFF);
+		graphics.drawString(font, s, screenWidth / 2f - w / 2f, screenHeight / 2f + 10, 0xFFFFFFFF, false);
 	}
 }

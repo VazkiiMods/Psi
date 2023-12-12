@@ -37,7 +37,7 @@ public final class MathHelper {
 			return positions;
 		}
 		if(origin.equals(end)) {
-			positions.add(new BlockPos(origin.x, origin.y, origin.z));
+			positions.add(new BlockPos((int) origin.x, (int) origin.y, (int) origin.z));
 		} else {
 			double endX = end.x;
 			double endY = end.y;

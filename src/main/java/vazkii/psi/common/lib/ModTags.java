@@ -9,10 +9,13 @@
 package vazkii.psi.common.lib;
 
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class ModTags {
 
@@ -32,12 +35,17 @@ public class ModTags {
 	public static final TagKey<Item> INGOT_IVORY_PSIMETAL = forgeTag("ingots/ivory_psimetal");
 	public static final TagKey<Item> BLOCK_IVORY_PSIMETAL = forgeTag("storage_blocks/ivory_psimetal");
 
+	public static final TagKey<DamageType> PSI_OVERLOAD = damageTag(LibResources.PSI_DAMAGE_TYPE);
+	private static TagKey<DamageType> damageTag(ResourceLocation rl) {
+		return TagKey.create(Registries.DAMAGE_TYPE, rl);
+	}
+
 	private static TagKey<Item> tag(String name) {
-		return TagKey.create(Registry.ITEM_REGISTRY, prefix(name));
+		return TagKey.create(Registries.ITEM, prefix(name));
 	}
 
 	private static TagKey<Item> forgeTag(String name) {
-		return TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation("forge", name));
+		return TagKey.create(Registries.ITEM, new ResourceLocation("forge", name));
 	}
 
 	public static ResourceLocation prefix(String path) {
@@ -51,7 +59,7 @@ public class ModTags {
 		public static final TagKey<Block> BLOCK_IVORY_PSIMETAL = fromTag(ModTags.BLOCK_IVORY_PSIMETAL);
 
 		private static TagKey<Block> fromTag(TagKey<?> tag) {
-			return TagKey.create(Registry.BLOCK_REGISTRY, tag.location());
+			return TagKey.create(Registries.BLOCK, tag.location());
 		}
 	}
 }

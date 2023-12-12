@@ -42,8 +42,8 @@ public class ModParticles {
 
 		@SubscribeEvent
 		public static void registerFactories(RegisterParticleProvidersEvent evt) {
-			evt.register(ModParticles.WISP, WispParticleType.Factory::new);
-			evt.register(ModParticles.SPARKLE, SparkleParticleType.Factory::new);
+			evt.registerSpriteSet(ModParticles.WISP, WispParticleType.Factory::new);
+			evt.registerSpriteSet(ModParticles.SPARKLE, SparkleParticleType.Factory::new);
 		}
 	}
 }

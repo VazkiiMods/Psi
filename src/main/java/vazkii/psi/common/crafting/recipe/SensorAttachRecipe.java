@@ -8,12 +8,14 @@
  */
 package vazkii.psi.common.crafting.recipe;
 
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.SimpleRecipeSerializer;
+import net.minecraft.world.item.crafting.SimpleCraftingRecipeSerializer;
 import net.minecraft.world.level.Level;
 
 import vazkii.psi.api.exosuit.IExosuitSensor;
@@ -22,10 +24,10 @@ import vazkii.psi.api.exosuit.ISensorHoldable;
 import javax.annotation.Nonnull;
 
 public class SensorAttachRecipe extends CustomRecipe {
-	public static final SimpleRecipeSerializer<SensorAttachRecipe> SERIALIZER = new SimpleRecipeSerializer<>(SensorAttachRecipe::new);
+	public static final SimpleCraftingRecipeSerializer<SensorAttachRecipe> SERIALIZER = new SimpleCraftingRecipeSerializer<>(SensorAttachRecipe::new);
 
-	public SensorAttachRecipe(ResourceLocation id) {
-		super(id);
+	public SensorAttachRecipe(ResourceLocation id, CraftingBookCategory category) {
+		super(id, category);
 	}
 
 	@Override
@@ -57,7 +59,7 @@ public class SensorAttachRecipe extends CustomRecipe {
 
 	@Nonnull
 	@Override
-	public ItemStack assemble(@Nonnull CraftingContainer inv) {
+	public ItemStack assemble(@Nonnull CraftingContainer inv, RegistryAccess access) {
 		ItemStack sensor = ItemStack.EMPTY;
 		ItemStack target = ItemStack.EMPTY;
 

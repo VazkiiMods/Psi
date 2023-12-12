@@ -9,12 +9,14 @@
 package vazkii.psi.common.crafting.recipe;
 
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.SimpleRecipeSerializer;
+import net.minecraft.world.item.crafting.SimpleCraftingRecipeSerializer;
 import net.minecraft.world.level.Level;
 
 import vazkii.psi.api.exosuit.ISensorHoldable;
@@ -23,10 +25,10 @@ import javax.annotation.Nonnull;
 
 public class SensorRemoveRecipe extends CustomRecipe {
 
-	public static final SimpleRecipeSerializer<SensorRemoveRecipe> SERIALIZER = new SimpleRecipeSerializer<>(SensorRemoveRecipe::new);
+	public static final SimpleCraftingRecipeSerializer<SensorRemoveRecipe> SERIALIZER = new SimpleCraftingRecipeSerializer<>(SensorRemoveRecipe::new);
 
-	public SensorRemoveRecipe(ResourceLocation id) {
-		super(id);
+	public SensorRemoveRecipe(ResourceLocation id, CraftingBookCategory category) {
+		super(id, category);
 	}
 
 	@Override
@@ -49,7 +51,7 @@ public class SensorRemoveRecipe extends CustomRecipe {
 
 	@Nonnull
 	@Override
-	public ItemStack assemble(@Nonnull CraftingContainer inv) {
+	public ItemStack assemble(@Nonnull CraftingContainer inv, RegistryAccess access) {
 		ItemStack holdableItem = ItemStack.EMPTY;
 
 		for(int i = 0; i < inv.getContainerSize(); i++) {

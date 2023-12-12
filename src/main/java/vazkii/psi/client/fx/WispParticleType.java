@@ -14,6 +14,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
+import net.minecraft.client.particle.TextureSheetParticle;
 import net.minecraft.core.particles.ParticleType;
 
 // https://github.com/Vazkii/Botania/blob/1.15/src/main/java/vazkii/botania/client/fx/WispParticleType.java
@@ -35,7 +36,7 @@ public class WispParticleType extends ParticleType<WispParticleData> {
 		}
 
 		@Override
-		public Particle createParticle(WispParticleData data, ClientLevel world, double x, double y, double z, double mx, double my, double mz) {
+		public TextureSheetParticle createParticle(WispParticleData data, ClientLevel world, double x, double y, double z, double mx, double my, double mz) {
 			FXWisp ret = new FXWisp(world, x, y, z, mx, my, mz, data.size, data.r, data.g, data.b, data.maxAgeMul);
 			ret.pickSprite(sprite);
 			return ret;

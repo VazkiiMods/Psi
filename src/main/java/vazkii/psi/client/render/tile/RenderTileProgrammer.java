@@ -10,10 +10,10 @@ package vazkii.psi.client.render.tile;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -21,6 +21,8 @@ import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.FaceAttachedHorizontalDirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
+
+import org.joml.Matrix4f;
 
 import vazkii.psi.client.core.handler.ClientTickHandler;
 import vazkii.psi.client.gui.GuiProgrammer;
@@ -38,8 +40,8 @@ public class RenderTileProgrammer implements BlockEntityRenderer<TileProgrammer>
 			int light = Psi.magical ? worldLight : 0xF000F0;
 
 			ms.translate(0, 1.62F, 0);
-			ms.mulPose(Vector3f.ZP.rotationDegrees(180F));
-			ms.mulPose(Vector3f.YP.rotationDegrees(-90F));
+			ms.mulPose(Axis.ZP.rotationDegrees(180F));
+			ms.mulPose(Axis.YP.rotationDegrees(-90F));
 
 			float rot = 90F;
 			BlockState state = te.getBlockState();
@@ -60,16 +62,16 @@ public class RenderTileProgrammer implements BlockEntityRenderer<TileProgrammer>
 			}
 
 			ms.translate(0.5F, 0F, 0.5F);
-			ms.mulPose(Vector3f.YP.rotationDegrees(rot));
+			ms.mulPose(Axis.YP.rotationDegrees(rot));
 			ms.translate(-0.5F, 0F, -0.5F);
 
 			float f = 1F / 300F;
 			ms.scale(f, f, -f);
 
 			if(Psi.magical) {
-				ms.mulPose(Vector3f.XP.rotationDegrees(90F));
+				ms.mulPose(Axis.XP.rotationDegrees(90F));
 				ms.translate(70F, -220F, -100F + Math.sin(ClientTickHandler.total / 50) * 10);
-				ms.mulPose(Vector3f.XP.rotationDegrees(-16F + (float) Math.cos(ClientTickHandler.total / 100) * 10F));
+				ms.mulPose(Axis.XP.rotationDegrees(-16F + (float) Math.cos(ClientTickHandler.total / 100) * 10F));
 			} else {
 				ms.translate(70F, 0F, -200F);
 			}
@@ -94,8 +96,8 @@ public class RenderTileProgrammer implements BlockEntityRenderer<TileProgrammer>
 
 			int color = Psi.magical ? 0 : 0xFFFFFF;
 			Minecraft mc = Minecraft.getInstance();
-			mc.font.drawInBatch(I18n.get("psimisc.name"), 0, 164, color, false, ms.last().pose(), buffers, false, 0, 0xF000F0);
-			mc.font.drawInBatch(te.spell.name, 38, 164, color, false, ms.last().pose(), buffers, false, 0, 0xF000F0);
+			mc.font.drawInBatch(I18n.get("psimisc.name"), 0, 164, color, false, ms.last().pose(), buffers,  Font.DisplayMode.NORMAL, 0, 0xF000F0);
+			mc.font.drawInBatch(te.spell.name, 38, 164, color, false, ms.last().pose(), buffers, Font.DisplayMode.NORMAL, 0, 0xF000F0);
 
 			ms.popPose();
 		}

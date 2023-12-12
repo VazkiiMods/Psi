@@ -9,12 +9,14 @@
 package vazkii.psi.common.crafting.recipe;
 
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.SimpleRecipeSerializer;
+import net.minecraft.world.item.crafting.SimpleCraftingRecipeSerializer;
 import net.minecraft.world.level.Level;
 
 import vazkii.psi.api.spell.ISpellAcceptor;
@@ -24,10 +26,10 @@ import vazkii.psi.common.item.ItemSpellDrive;
 import javax.annotation.Nonnull;
 
 public class BulletToDriveRecipe extends CustomRecipe {
-	public static final SimpleRecipeSerializer<BulletToDriveRecipe> SERIALIZER = new SimpleRecipeSerializer<>(BulletToDriveRecipe::new);
+	public static final SimpleCraftingRecipeSerializer<BulletToDriveRecipe> SERIALIZER = new SimpleCraftingRecipeSerializer<>(BulletToDriveRecipe::new);
 
-	public BulletToDriveRecipe(ResourceLocation id) {
-		super(id);
+	public BulletToDriveRecipe(ResourceLocation resourceLocation, CraftingBookCategory craftingBookCategory) {
+		super(resourceLocation, craftingBookCategory);
 	}
 
 	@Override
@@ -57,14 +59,13 @@ public class BulletToDriveRecipe extends CustomRecipe {
 		return foundSource && foundTarget;
 	}
 
-	@Nonnull
 	@Override
-	public ItemStack assemble(@Nonnull CraftingContainer inv) {
+	public ItemStack assemble(CraftingContainer pContainer, RegistryAccess pRegistryAccess) {
 		Spell source = null;
 		ItemStack target = ItemStack.EMPTY;
 
-		for(int i = 0; i < inv.getContainerSize(); i++) {
-			ItemStack stack = inv.getItem(i);
+		for(int i = 0; i < pContainer.getContainerSize(); i++) {
+			ItemStack stack = pContainer.getItem(i);
 			if(!stack.isEmpty()) {
 				if(ISpellAcceptor.hasSpell(stack)) {
 					source = ISpellAcceptor.acceptor(stack).getSpell();
