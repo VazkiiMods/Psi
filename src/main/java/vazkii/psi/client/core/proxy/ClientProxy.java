@@ -39,7 +39,6 @@ import vazkii.psi.api.cad.ICADColorizer;
 import vazkii.psi.api.spell.SpellPiece;
 import vazkii.psi.client.core.handler.ClientTickHandler;
 import vazkii.psi.client.core.handler.ColorHandler;
-import vazkii.psi.client.core.handler.ShaderHandler;
 import vazkii.psi.client.fx.SparkleParticleData;
 import vazkii.psi.client.fx.WispParticleData;
 import vazkii.psi.client.gui.GuiProgrammer;
@@ -51,7 +50,11 @@ import vazkii.psi.client.render.entity.RenderSpellProjectile;
 import vazkii.psi.client.render.tile.RenderTileProgrammer;
 import vazkii.psi.common.block.tile.TileProgrammer;
 import vazkii.psi.common.core.proxy.IProxy;
-import vazkii.psi.common.entity.*;
+import vazkii.psi.common.entity.EntitySpellCharge;
+import vazkii.psi.common.entity.EntitySpellCircle;
+import vazkii.psi.common.entity.EntitySpellGrenade;
+import vazkii.psi.common.entity.EntitySpellMine;
+import vazkii.psi.common.entity.EntitySpellProjectile;
 import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.lib.LibItemNames;
 import vazkii.psi.common.lib.LibMisc;
@@ -94,7 +97,6 @@ public class ClientProxy implements IProxy {
 			map.put(layer, new BufferBuilder(layer.bufferSize()));
 			map.put(GuiProgrammer.LAYER, new BufferBuilder(GuiProgrammer.LAYER.bufferSize()));
 			ColorHandler.init();
-			ShaderHandler.init();
 		});
 	}
 
