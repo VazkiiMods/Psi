@@ -95,14 +95,14 @@ public class PlayerDataHandler {
 
 	@Nonnull
 	public static PlayerData get(Player player) {
-		if (player == null) {
+		if(player == null) {
 			return new PlayerData();
 		}
 
 		Map<Player, PlayerData> dataMap = player.level.isClientSide ? remotePlayerData : playerData;
 
 		PlayerData data = dataMap.computeIfAbsent(player, PlayerData::new);
-		if (data.playerWR != null && data.playerWR.get() != player) {
+		if(data.playerWR != null && data.playerWR.get() != player) {
 			CompoundTag cmp = new CompoundTag();
 			data.writeToNBT(cmp);
 			dataMap.remove(player);
@@ -115,12 +115,12 @@ public class PlayerDataHandler {
 
 	public static CompoundTag getDataCompoundForPlayer(Player player) {
 		CompoundTag forgeData = player.getPersistentData();
-		if (!forgeData.contains(Player.PERSISTED_NBT_TAG)) {
+		if(!forgeData.contains(Player.PERSISTED_NBT_TAG)) {
 			forgeData.put(Player.PERSISTED_NBT_TAG, new CompoundTag());
 		}
 
 		CompoundTag persistentData = forgeData.getCompound(Player.PERSISTED_NBT_TAG);
-		if (!persistentData.contains(DATA_TAG)) {
+		if(!persistentData.contains(DATA_TAG)) {
 			persistentData.put(DATA_TAG, new CompoundTag());
 		}
 
@@ -132,12 +132,12 @@ public class PlayerDataHandler {
 
 		@SubscribeEvent
 		public static void onServerTick(TickEvent.ServerTickEvent event) {
-			if (event.phase == TickEvent.Phase.END) {
+			if(event.phase == TickEvent.Phase.END) {
 				List<SpellContext> delayedContextsCopy = new ArrayList<>(delayedContexts);
-				for (SpellContext context : delayedContextsCopy) {
+				for(SpellContext context : delayedContextsCopy) {
 					context.delay--;
 
-					if (context.delay <= 0) {
+					if(context.delay <= 0) {
 						delayedContexts.remove(context);
 						context.delay = 0; // Just in case it goes under 0
 						context.cspell.safeExecute(context);
@@ -148,11 +148,11 @@ public class PlayerDataHandler {
 
 		@SubscribeEvent
 		public static void onPlayerTick(LivingUpdateEvent event) {
-			if (event.getEntityLiving() instanceof Player && !event.getEntityLiving().isSpectator()) {
+			if(event.getEntityLiving() instanceof Player && !event.getEntityLiving().isSpectator()) {
 				Player player = (Player) event.getEntityLiving();
 
 				ItemStack cadStack = PsiAPI.getPlayerCAD(player);
-				if (!cadStack.isEmpty() && cadStack.getItem() instanceof ICAD && PsiAPI.canCADBeUpdated(player)) {
+				if(!cadStack.isEmpty() && cadStack.getItem() instanceof ICAD && PsiAPI.canCADBeUpdated(player)) {
 					((ICAD) cadStack.getItem()).incrementTime(cadStack);
 				}
 
@@ -163,17 +163,17 @@ public class PlayerDataHandler {
 
 		@SubscribeEvent
 		public static void onEntityDamage(LivingHurtEvent event) {
-			if (event.getEntityLiving() instanceof Player) {
+			if(event.getEntityLiving() instanceof Player) {
 				Player player = (Player) event.getEntityLiving();
 				PlayerDataHandler.get(player).damage(event.getAmount());
 
 				LivingEntity attacker = null;
-				if (event.getSource().getEntity() != null && event.getSource().getEntity() instanceof LivingEntity) {
+				if(event.getSource().getEntity() != null && event.getSource().getEntity() instanceof LivingEntity) {
 					attacker = (LivingEntity) event.getSource().getEntity();
 				}
 
 				PsiArmorEvent.post(new PsiArmorEvent(player, PsiArmorEvent.DAMAGE, event.getAmount(), attacker));
-				if (event.getSource().isFire()) {
+				if(event.getSource().isFire()) {
 					PsiArmorEvent.post(new PsiArmorEvent(player, PsiArmorEvent.ON_FIRE));
 				}
 			}
@@ -181,7 +181,7 @@ public class PlayerDataHandler {
 
 		@SubscribeEvent
 		public static void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
-			if (event.getPlayer() instanceof ServerPlayer) {
+			if(event.getPlayer() instanceof ServerPlayer) {
 				MessageDataSync message = new MessageDataSync(get(event.getPlayer()));
 				MessageRegister.sendToPlayer(message, event.getPlayer());
 			}
@@ -189,7 +189,7 @@ public class PlayerDataHandler {
 
 		@SubscribeEvent
 		public static void onEntityJump(LivingJumpEvent event) {
-			if (event.getEntityLiving() instanceof Player && event.getEntity().level.isClientSide && !event.getEntityLiving().isSpectator()) {
+			if(event.getEntityLiving() instanceof Player && event.getEntity().level.isClientSide && !event.getEntityLiving().isSpectator()) {
 				Player player = (Player) event.getEntityLiving();
 				PsiArmorEvent.post(new PsiArmorEvent(player, PsiArmorEvent.JUMP));
 				MessageRegister.HANDLER.sendToServer(new MessageTriggerJumpSpell());
@@ -198,13 +198,13 @@ public class PlayerDataHandler {
 
 		@SubscribeEvent
 		public static void onPsiArmorEvent(PsiArmorEvent event) {
-			if (event.getEntityLiving().isSpectator()) {
+			if(event.getEntityLiving().isSpectator()) {
 				return;
 			}
 
-			for (int i = 0; i < 4; i++) {
+			for(int i = 0; i < 4; i++) {
 				ItemStack armor = ((Player) event.getEntityLiving()).getInventory().armor.get(i);
-				if (!armor.isEmpty() && armor.getItem() instanceof IPsiEventArmor) {
+				if(!armor.isEmpty() && armor.getItem() instanceof IPsiEventArmor) {
 					IPsiEventArmor handler = (IPsiEventArmor) armor.getItem();
 					handler.onEvent(armor, event);
 				}
@@ -221,9 +221,9 @@ public class PlayerDataHandler {
 		public static void onRenderWorldLast(RenderLevelLastEvent event) {
 			Minecraft mc = Minecraft.getInstance();
 			Entity cameraEntity = mc.getCameraEntity();
-			if (cameraEntity != null) {
+			if(cameraEntity != null) {
 				float partialTicks = event.getPartialTick();
-				for (Player player : mc.level.players()) {
+				for(Player player : mc.level.players()) {
 					PlayerDataHandler.get(player).render(player, partialTicks, event.getPoseStack());
 				}
 			}
@@ -234,9 +234,9 @@ public class PlayerDataHandler {
 		@OnlyIn(Dist.CLIENT)
 		public static void onFOVUpdate(FOVModifierEvent event) {
 			PlayerData data = get(Minecraft.getInstance().player);
-			if (data.isAnchored) {
+			if(data.isAnchored) {
 				float fov = event.getNewfov();
-				if (data.eidosAnchorTime > 0) {
+				if(data.eidosAnchorTime > 0) {
 					fov *= Math.min(5, data.eidosAnchorTime - ClientTickHandler.partialTicks) / 5;
 				} else {
 					fov *= (10 - Math.min(10, data.postAnchorRecallTime + ClientTickHandler.partialTicks)) / 10;
@@ -315,29 +315,29 @@ public class PlayerDataHandler {
 
 		public void tick() {
 			Player player = playerWR.get();
-			if (player == null) {
+			if(player == null) {
 				return;
 			}
 
 			DimensionType dimension = player.getCommandSenderWorld().dimensionType();
 
-			if (deductTick) {
+			if(deductTick) {
 				deductTick = false;
 			} else {
 				lastAvailablePsi = availablePsi;
 			}
 
 			int max = getTotalPsi();
-			if (availablePsi > max) {
+			if(availablePsi > max) {
 				availablePsi = max;
 			}
 
 			ItemStack cadStack = getCAD();
 
-			if (!cadStack.isEmpty()) {
+			if(!cadStack.isEmpty()) {
 				ICAD cad = (ICAD) cadStack.getItem();
 				int overflow = cad.getStatValue(cadStack, EnumCADStat.OVERFLOW);
-				if (overflow == -1) {
+				if(overflow == -1) {
 					availablePsi = max;
 				} else {
 					applyRegen(player, max, cadStack);
@@ -348,7 +348,7 @@ public class PlayerDataHandler {
 
 			int color = ICADColorizer.DEFAULT_SPELL_COLOR;
 
-			if (!cadStack.isEmpty()) {
+			if(!cadStack.isEmpty()) {
 				color = Psi.proxy.getColorForCAD(cadStack);
 			}
 
@@ -357,26 +357,26 @@ public class PlayerDataHandler {
 			float b = PsiRenderHelper.b(color) / 255F;
 
 			loopcast: {
-				if (player.isSpectator()) {
+				if(player.isSpectator()) {
 					stopLoopcast();
 				}
 
-				if (overflowed) {
+				if(overflowed) {
 					stopLoopcast();
 				}
 
-				if (loopcasting && loopcastHand != null) {
+				if(loopcasting && loopcastHand != null) {
 					ItemStack stackInHand = player.getItemInHand(loopcastHand);
 
-					if (stackInHand.isEmpty() ||
+					if(stackInHand.isEmpty() ||
 							!ISocketable.isSocketable(stackInHand) ||
 							!ISocketable.socketable(stackInHand).canLoopcast()) {
 						stopLoopcast();
 						break loopcast;
 					}
 
-					if (lastTickLoopcastStack != null) {
-						if (!ItemStack.isSame(lastTickLoopcastStack, stackInHand) ||
+					if(lastTickLoopcastStack != null) {
+						if(!ItemStack.isSame(lastTickLoopcastStack, stackInHand) ||
 								!ISocketable.isSocketable(lastTickLoopcastStack)) {
 							stopLoopcast();
 							break loopcast;
@@ -386,14 +386,14 @@ public class PlayerDataHandler {
 
 							int lastSlot = lastTickItem.getSelectedSlot();
 							int thisSlot = thisTickItem.getSelectedSlot();
-							if (lastSlot != thisSlot) {
+							if(lastSlot != thisSlot) {
 								stopLoopcast();
 								break loopcast;
 							}
 
 							ItemStack lastTick = lastTickItem.getBulletInSocket(lastSlot);
 							ItemStack thisTick = thisTickItem.getBulletInSocket(thisSlot);
-							if (!ItemStack.matches(lastTick, thisTick)) {
+							if(!ItemStack.matches(lastTick, thisTick)) {
 								stopLoopcast();
 								break loopcast;
 							}
@@ -404,7 +404,7 @@ public class PlayerDataHandler {
 
 					ISocketable socketable = ISocketable.socketable(stackInHand);
 
-					for (int i = 0; i < 5; i++) {
+					for(int i = 0; i < 5; i++) {
 						double x = player.getX() + (Math.random() - 0.5) * 2.1 * player.getBbWidth();
 						double y = player.getY() - player.getMyRidingOffset();
 						double z = player.getZ() + (Math.random() - 0.5) * 2.1 * player.getBbWidth();
@@ -412,9 +412,9 @@ public class PlayerDataHandler {
 						Psi.proxy.sparkleFX(x, y, z, r, g, b, grav, 0.25F, 15);
 					}
 
-					if (loopcastTime > 0 && loopcastTime % 5 == 0) {
+					if(loopcastTime > 0 && loopcastTime % 5 == 0) {
 						ItemStack bullet = socketable.getSelectedBullet();
-						if (bullet.isEmpty() || !ISpellAcceptor.hasSpell(bullet)) {
+						if(bullet.isEmpty() || !ISpellAcceptor.hasSpell(bullet)) {
 							stopLoopcast();
 							break loopcast;
 						}
@@ -423,21 +423,21 @@ public class PlayerDataHandler {
 						Spell spell = spellContainer.getSpell();
 						SpellContext context = new SpellContext().setPlayer(player).setSpell(spell).setLoopcastIndex(loopcastAmount + 1);
 						context.castFrom = loopcastHand;
-						if (context.isValid()) {
-							if (context.cspell.metadata.evaluateAgainst(cadStack)) {
+						if(context.isValid()) {
+							if(context.cspell.metadata.evaluateAgainst(cadStack)) {
 								int cost = ItemCAD.getRealCost(cadStack, bullet, context.cspell.metadata.getStat(EnumSpellStat.COST));
-								if (cost > 0 || cost == -1) {
-									if (cost != -1) {
+								if(cost > 0 || cost == -1) {
+									if(cost != -1) {
 										deductPsi(cost, 0, true);
 									}
 
-									if (!player.getCommandSenderWorld().isClientSide && loopcastTime % 10 == 0) {
+									if(!player.getCommandSenderWorld().isClientSide && loopcastTime % 10 == 0) {
 										player.getCommandSenderWorld().playSound(null, player.getX(), player.getY(), player.getZ(), PsiSoundHandler.loopcast, SoundSource.PLAYERS, 0.1F, (float) (0.15 + Math.random() * 0.85));
 									}
 								}
 
-								if (!player.getCommandSenderWorld().isClientSide) {
-									if (!spellContainer.loopcastSpell(context)) {
+								if(!player.getCommandSenderWorld().isClientSide) {
+									if(!spellContainer.loopcastSpell(context)) {
 										stopLoopcast();
 										break loopcast;
 									}
@@ -448,12 +448,12 @@ public class PlayerDataHandler {
 					}
 
 					loopcastTime++;
-				} else if (loopcastFadeTime > 0) {
+				} else if(loopcastFadeTime > 0) {
 					loopcastFadeTime--;
 				}
 			}
 
-			if (!player.isAlive() || dimension != lastDimension) {
+			if(!player.isAlive() || dimension != lastDimension) {
 				eidosAnchorTime = 0;
 				eidosReversionTime = 0;
 				eidosChangelog.clear();
@@ -461,14 +461,14 @@ public class PlayerDataHandler {
 				isReverting = false;
 			}
 
-			if (eidosAnchorTime > 0) {
-				if (eidosAnchorTime == 1) {
-					if (player instanceof ServerPlayer) {
+			if(eidosAnchorTime > 0) {
+				if(eidosAnchorTime == 1) {
+					if(player instanceof ServerPlayer) {
 						ServerPlayer pmp = (ServerPlayer) player;
 						pmp.connection.teleport(eidosAnchor.x, eidosAnchor.y, eidosAnchor.z, (float) eidosAnchorYaw, (float) eidosAnchorPitch);
 
 						Entity riding = player.getVehicle();
-						while (riding != null) {
+						while(riding != null) {
 							riding.setPos(eidosAnchor.x, eidosAnchor.y, eidosAnchor.z);
 							riding = riding.getVehicle();
 						}
@@ -476,23 +476,23 @@ public class PlayerDataHandler {
 					postAnchorRecallTime = 0;
 				}
 				eidosAnchorTime--;
-			} else if (postAnchorRecallTime < 5) {
+			} else if(postAnchorRecallTime < 5) {
 				postAnchorRecallTime--;
 				isAnchored = false;
 			}
 
-			if (eidosReversionTime > 0) {
-				if (eidosChangelog.isEmpty()) {
+			if(eidosReversionTime > 0) {
+				if(eidosChangelog.isEmpty()) {
 					eidosReversionTime = 0;
 					isReverting = false;
 				} else {
 					eidosChangelog.pop();
-					if (eidosChangelog.isEmpty()) {
+					if(eidosChangelog.isEmpty()) {
 						eidosReversionTime = 0;
 						isReverting = false;
 					} else {
 						Vector3 vec = eidosChangelog.pop();
-						if (player instanceof ServerPlayer) {
+						if(player instanceof ServerPlayer) {
 							ServerPlayer pmp = (ServerPlayer) player;
 							pmp.connection.teleport(vec.x, vec.y, vec.z, 0, 0, ImmutableSet.of(RelativeArgument.X_ROT, RelativeArgument.Y_ROT));
 							pmp.connection.resetPosition();
@@ -501,14 +501,14 @@ public class PlayerDataHandler {
 						}
 
 						Entity riding = player.getVehicle();
-						while (riding != null) {
+						while(riding != null) {
 							riding.setPos(vec.x, vec.y, vec.z);
 
 							riding = riding.getVehicle();
 						}
 
-						if (player.level.isClientSide) {
-							for (int i = 0; i < 5; i++) {
+						if(player.level.isClientSide) {
+							for(int i = 0; i < 5; i++) {
 								double spread = 0.6;
 
 								double x = player.getX() + (Math.random() - 0.5) * spread;
@@ -525,12 +525,12 @@ public class PlayerDataHandler {
 				}
 
 				eidosReversionTime--;
-				if (eidosReversionTime == 0 || player.isShiftKeyDown()) {
+				if(eidosReversionTime == 0 || player.isShiftKeyDown()) {
 					eidosChangelog.clear();
 					isReverting = false;
 				}
 			} else {
-				if (eidosChangelog.size() > 600) {
+				if(eidosChangelog.size() > 600) {
 					eidosChangelog.remove(0);
 				}
 				eidosChangelog.push(Vector3.fromEntity(player));
@@ -540,26 +540,26 @@ public class PlayerDataHandler {
 			int light = player.getCommandSenderWorld().getLightEngine().getRawBrightness(pos, 0);
 
 			boolean lowLight = light <= 7;
-			if (!this.lowLight && lowLight) {
+			if(!this.lowLight && lowLight) {
 				PsiArmorEvent.post(new PsiArmorEvent(player, PsiArmorEvent.LOW_LIGHT));
 			}
 			this.lowLight = lowLight;
 
 			boolean underwater = player.isInWater();
-			if (!this.underwater && underwater) {
+			if(!this.underwater && underwater) {
 				PsiArmorEvent.post(new PsiArmorEvent(player, PsiArmorEvent.UNDERWATER));
 			}
 			this.underwater = underwater;
 
 			boolean lowHp = player.getHealth() <= 6;
-			if (!this.lowHp && lowHp) {
+			if(!this.lowHp && lowHp) {
 				PsiArmorEvent.post(new PsiArmorEvent(player, PsiArmorEvent.LOW_HP));
 			}
 			this.lowHp = lowHp;
 
 			List<Deduction> remove = new ArrayList<>();
-			for (Deduction d : deductions) {
-				if (d.invalid) {
+			for(Deduction d : deductions) {
+				if(d.invalid) {
 					remove.add(d);
 				} else {
 					d.tick();
@@ -573,30 +573,30 @@ public class PlayerDataHandler {
 		private void applyRegen(Player player, int max, ItemStack cadStack) {
 			RegenPsiEvent event = new RegenPsiEvent(player, this, cadStack);
 
-			if (!MinecraftForge.EVENT_BUS.post(event)) {
-				if (!cadStack.isEmpty()) {
+			if(!MinecraftForge.EVENT_BUS.post(event)) {
+				if(!cadStack.isEmpty()) {
 					ICAD cad = (ICAD) cadStack.getItem();
 					cad.regenPsi(cadStack, event.getCadRegen());
 				}
 
 				boolean anyChange = false;
 
-				if (availablePsi != max && event.getPlayerRegen() > 0) {
+				if(availablePsi != max && event.getPlayerRegen() > 0) {
 					anyChange = true;
 				}
 				availablePsi = Math.min(max, availablePsi + event.getPlayerRegen());
 
-				if (overflowed && event.willHealOverflow()) {
+				if(overflowed && event.willHealOverflow()) {
 					anyChange = true;
 					overflowed = false;
 				}
 
-				if (regenCooldown != event.getRegenCooldown()) {
+				if(regenCooldown != event.getRegenCooldown()) {
 					anyChange = true;
 				}
 				regenCooldown = event.getRegenCooldown();
 
-				if (anyChange) {
+				if(anyChange) {
 					save();
 				}
 			}
@@ -605,7 +605,7 @@ public class PlayerDataHandler {
 		public void stopLoopcast() {
 			Player player = playerWR.get();
 
-			if (loopcasting) {
+			if(loopcasting) {
 				loopcastFadeTime = 5;
 				MinecraftForge.EVENT_BUS.post(new LoopcastEndEvent(player, this, loopcastHand, loopcastAmount));
 			}
@@ -617,7 +617,7 @@ public class PlayerDataHandler {
 			loopcastTime = 1;
 			loopcastAmount = 0;
 
-			if (player instanceof ServerPlayer) {
+			if(player instanceof ServerPlayer) {
 				LoopcastTrackingHandler.syncForTrackersAndSelf((ServerPlayer) player);
 			}
 		}
@@ -628,7 +628,7 @@ public class PlayerDataHandler {
 
 		public void damage(float amount) {
 			int psi = calculateDamageDeduction(amount);
-			if (psi > 0 && availablePsi > 0) {
+			if(psi > 0 && availablePsi > 0) {
 				psi = Math.min(psi, availablePsi);
 				deductPsi(psi, 20, true, true);
 			}
@@ -647,44 +647,44 @@ public class PlayerDataHandler {
 			int currentPsi = availablePsi;
 
 			Player player = playerWR.get();
-			if (player == null) {
+			if(player == null) {
 				return;
 			}
 
 			ItemStack cadStack = getCAD();
 
-			if (!cadStack.isEmpty()) {
+			if(!cadStack.isEmpty()) {
 				ICAD cad = (ICAD) cadStack.getItem();
 				int storedPsi = cad.getStoredPsi(cadStack);
-				if (storedPsi == -1) {
+				if(storedPsi == -1) {
 					return;
 				}
 			}
 
 			availablePsi -= psi;
-			if (regenCooldown < cd) {
+			if(regenCooldown < cd) {
 				regenCooldown = cd;
 			}
 
-			if (availablePsi < 0) {
+			if(availablePsi < 0) {
 				int overflow = -availablePsi;
 				availablePsi = 0;
 
-				if (!cadStack.isEmpty()) {
+				if(!cadStack.isEmpty()) {
 					ICAD cad = (ICAD) cadStack.getItem();
 					overflow = cad.consumePsi(cadStack, overflow);
 				}
 
-				if (!shatter && overflow > 0) {
+				if(!shatter && overflow > 0) {
 					float dmg = (float) overflow / (loopcasting ? 50 : 125);
-					if (!client) {
+					if(!client) {
 						player.hurt(damageSourceOverload, dmg);
 					}
 					overflowed = true;
 				}
 			}
 
-			if (sync && player instanceof ServerPlayer) {
+			if(sync && player instanceof ServerPlayer) {
 				MessageDeductPsi message = new MessageDeductPsi(currentPsi, availablePsi, regenCooldown, shatter);
 				MessageRegister.sendToPlayer(message, player);
 			}
@@ -693,14 +693,14 @@ public class PlayerDataHandler {
 		}
 
 		public void addDeduction(int current, int deduct, boolean shatter) {
-			if (deduct > current) {
+			if(deduct > current) {
 				deduct = current;
 			}
-			if (deduct < 0) {
+			if(deduct < 0) {
 				deduct = 0;
 			}
 
-			if (deduct == 0) {
+			if(deduct == 0) {
 				return;
 			}
 
@@ -745,11 +745,11 @@ public class PlayerDataHandler {
 		@Override
 		public boolean isPieceGroupUnlocked(ResourceLocation group, @Nullable ResourceLocation name) {
 			Player player = playerWR.get();
-			if (player == null) {
+			if(player == null) {
 				return false;
 			}
 
-			if (player.isCreative()) {
+			if(player.isCreative()) {
 				return true;
 			}
 
@@ -757,7 +757,7 @@ public class PlayerDataHandler {
 			PieceKnowledgeEvent event = new PieceKnowledgeEvent(group, name, player, this, hasAdvancement);
 			MinecraftForge.EVENT_BUS.post(event);
 
-			switch (event.getResult()) {
+			switch(event.getResult()) {
 			case DENY:
 				return false;
 			default:
@@ -768,11 +768,11 @@ public class PlayerDataHandler {
 		@Override
 		public void unlockPieceGroup(ResourceLocation resourceLocation) {
 			Player player = playerWR.get();
-			if (player instanceof ServerPlayer) {
+			if(player instanceof ServerPlayer) {
 				ServerPlayer serverPlayer = (ServerPlayer) player;
 				Advancement advancement = serverPlayer.getServer().getAdvancements().getAdvancement(resourceLocation);
-				if (advancement != null && !serverPlayer.getAdvancements().getOrStartProgress(advancement).isDone()) {
-					for (String s : serverPlayer.getAdvancements().getOrStartProgress(advancement).getRemainingCriteria()) {
+				if(advancement != null && !serverPlayer.getAdvancements().getOrStartProgress(advancement).isDone()) {
+					for(String s : serverPlayer.getAdvancements().getOrStartProgress(advancement).getRemainingCriteria()) {
 						serverPlayer.getAdvancements().getOrStartProgress(advancement).grantProgress(s);
 					}
 				}
@@ -784,14 +784,14 @@ public class PlayerDataHandler {
 			PieceExecutedEvent event = new PieceExecutedEvent(piece, playerWR.get());
 			MinecraftForge.EVENT_BUS.post(event);
 			ResourceLocation advancement = PsiAPI.getGroupForPiece(piece.getClass());
-			if (advancement != null && PsiAPI.getMainPieceForGroup(advancement) == piece.getClass() && !hasAdvancement(advancement)) {
+			if(advancement != null && PsiAPI.getMainPieceForGroup(advancement) == piece.getClass() && !hasAdvancement(advancement)) {
 				MinecraftForge.EVENT_BUS.post(new PieceGroupAdvancementComplete(piece, playerWR.get(), advancement));
 			}
 		}
 
 		@Override
 		public CompoundTag getCustomData() {
-			if (customData == null) {
+			if(customData == null) {
 				return customData = new CompoundTag();
 			}
 			return customData;
@@ -799,10 +799,10 @@ public class PlayerDataHandler {
 
 		@Override
 		public void save() {
-			if (!client) {
+			if(!client) {
 				Player player = playerWR.get();
 
-				if (player != null) {
+				if(player != null) {
 					CompoundTag cmp = getDataCompoundForPlayer(player);
 					writeToNBT(cmp);
 				}
@@ -821,16 +821,16 @@ public class PlayerDataHandler {
 			cmp.putDouble(TAG_EIDOS_ANCHOR_YAW, eidosAnchorYaw);
 			cmp.putInt(TAG_EIDOS_ANCHOR_TIME, eidosAnchorTime);
 
-			if (customData != null) {
+			if(customData != null) {
 				cmp.put(TAG_CUSTOM_DATA, customData);
 			}
 		}
 
 		public void load() {
-			if (!client) {
+			if(!client) {
 				Player player = playerWR.get();
 
-				if (player != null) {
+				if(player != null) {
 					CompoundTag cmp = getDataCompoundForPlayer(player);
 					readFromNBT(cmp);
 				}
@@ -860,10 +860,10 @@ public class PlayerDataHandler {
 			double y = player.yOld + (player.getY() - player.yOld) * partTicks - renderManager.camera.getPosition().y;
 			double z = player.zOld + (player.getZ() - player.zOld) * partTicks - renderManager.camera.getPosition().z;
 			float scale = 0.75F;
-			if (loopcasting) {
+			if(loopcasting) {
 				float mul = Math.min(5F, loopcastTime + partTicks) / 5F;
 				scale *= mul;
-			} else if (loopcastFadeTime > 0) {
+			} else if(loopcastFadeTime > 0) {
 				float mul = Math.min(5F, loopcastFadeTime - partTicks) / 5F;
 				scale *= mul;
 			} else {
@@ -872,7 +872,7 @@ public class PlayerDataHandler {
 
 			int color = ICADColorizer.DEFAULT_SPELL_COLOR;
 			ItemStack cad = PsiAPI.getPlayerCAD(playerWR.get());
-			if (!cad.isEmpty() && cad.getItem() instanceof ICAD) {
+			if(!cad.isEmpty() && cad.getItem() instanceof ICAD) {
 				ICAD icad = (ICAD) cad.getItem();
 				color = icad.getSpellColor(cad);
 			}
@@ -906,7 +906,7 @@ public class PlayerDataHandler {
 			public void tick() {
 				elapsed++;
 
-				if (elapsed >= cd) {
+				if(elapsed >= cd) {
 					invalid = true;
 				}
 			}

@@ -30,7 +30,7 @@ public class PieceSelectorTickTime extends PieceSelector {
 
 	public static double getMspt(SpellContext context) {
 		long[] tickTimes = context.focalPoint.getServer().getTickTime(context.focalPoint.level.dimension());
-		if (tickTimes == null) {
+		if(tickTimes == null) {
 			return 0;
 		}
 		return mean(tickTimes) * 1.0E-6D;
@@ -38,7 +38,7 @@ public class PieceSelectorTickTime extends PieceSelector {
 
 	private static long mean(long[] values) {
 		long sum = 0L;
-		for (long val : values) {
+		for(long val : values) {
 			sum = sum + val;
 		}
 

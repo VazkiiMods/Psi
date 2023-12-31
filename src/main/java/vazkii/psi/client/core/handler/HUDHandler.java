@@ -63,20 +63,20 @@ public final class HUDHandler {
 	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
 	public static void onDraw(RenderGameOverlayEvent.Post event) {
-		if (event.getType() == ElementType.LAYER) { //TODO figure out new ElementType.HOTBAR, may need to rewrite to use IIngameOverlay implementation
+		if(event.getType() == ElementType.LAYER) { //TODO figure out new ElementType.HOTBAR, may need to rewrite to use IIngameOverlay implementation
 			Window resolution = event.getWindow();
 			float partialTicks = event.getPartialTicks();
 
-			if (!MinecraftForge.EVENT_BUS.post(new RenderPsiHudEvent(PsiHudElementType.PSI_BAR))) {
+			if(!MinecraftForge.EVENT_BUS.post(new RenderPsiHudEvent(PsiHudElementType.PSI_BAR))) {
 				drawPsiBar(event.getMatrixStack(), resolution, partialTicks);
 			}
-			if (!MinecraftForge.EVENT_BUS.post(new RenderPsiHudEvent(PsiHudElementType.SOCKETABLE_EQUIPPED_NAME))) {
+			if(!MinecraftForge.EVENT_BUS.post(new RenderPsiHudEvent(PsiHudElementType.SOCKETABLE_EQUIPPED_NAME))) {
 				renderSocketableEquippedName(event.getMatrixStack(), resolution, partialTicks);
 			}
-			if (!MinecraftForge.EVENT_BUS.post(new RenderPsiHudEvent(PsiHudElementType.REMAINING_ITEMS))) {
+			if(!MinecraftForge.EVENT_BUS.post(new RenderPsiHudEvent(PsiHudElementType.REMAINING_ITEMS))) {
 				renderRemainingItems(event.getMatrixStack(), resolution, partialTicks);
 			}
-			if (!MinecraftForge.EVENT_BUS.post(new RenderPsiHudEvent(PsiHudElementType.HUD_ITEM))) {
+			if(!MinecraftForge.EVENT_BUS.post(new RenderPsiHudEvent(PsiHudElementType.HUD_ITEM))) {
 				renderHUDItem(event.getMatrixStack(), resolution, partialTicks);
 			}
 		}
@@ -84,13 +84,13 @@ public final class HUDHandler {
 
 	public static void tick() {
 
-		if (remainingTime > 0) {
+		if(remainingTime > 0) {
 			--remainingTime;
 		}
 	}
 
 	private static boolean showsBar(PlayerData data, ItemStack stack) {
-		if (stack.isEmpty()) {
+		if(stack.isEmpty()) {
 			return false;
 		} else {
 			return stack.getCapability(PsiAPI.PSI_BAR_DISPLAY_CAPABILITY).map(c -> c.shouldShow(data)).orElse(false);
@@ -102,7 +102,7 @@ public final class HUDHandler {
 		Minecraft mc = Minecraft.getInstance();
 		ItemStack cadStack = PsiAPI.getPlayerCAD(mc.player);
 
-		if (cadStack.isEmpty()) {
+		if(cadStack.isEmpty()) {
 			return;
 		}
 
@@ -112,7 +112,7 @@ public final class HUDHandler {
 		int totalPsi = data.getTotalPsi();
 		int currPsi = data.getAvailablePsi();
 
-		if (ConfigHandler.CLIENT.contextSensitiveBar.get() && currPsi == totalPsi &&
+		if(ConfigHandler.CLIENT.contextSensitiveBar.get() && currPsi == totalPsi &&
 				!showsBar(data, mc.player.getMainHandItem()) &&
 				!showsBar(data, mc.player.getOffhandItem())) {
 			return;
@@ -127,12 +127,12 @@ public final class HUDHandler {
 		int height = 140;
 
 		int x = -pad;
-		if (right) {
+		if(right) {
 			x = res.getGuiScaledWidth() + pad - width;
 		}
 		int y = res.getGuiScaledHeight() / 2 - height / 2;
 
-		if (!registeredMask) {
+		if(!registeredMask) {
 			RenderSystem.setShaderTexture(0, psiBarMask);
 			RenderSystem.setShaderTexture(1, psiBarShatter);
 			registeredMask = true;
@@ -159,7 +159,7 @@ public final class HUDHandler {
 		RenderSystem.enableBlend();
 		RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
-		for (Deduction d : data.deductions) {
+		for(Deduction d : data.deductions) {
 			float a = d.getPercentile(pticks);
 			RenderSystem.setShaderColor(r, g, b, a);
 			height = (int) Math.ceil(origHeight * (double) d.deduct / totalPsi);
@@ -172,12 +172,12 @@ public final class HUDHandler {
 		}
 
 		float textY = origY;
-		if (totalPsi > 0) {
+		if(totalPsi > 0) {
 			height = (int) ((double) origHeight * (double) data.availablePsi / totalPsi);
 			v = origHeight - height;
 			y = origY + v;
 
-			if (data.availablePsi != data.lastAvailablePsi) {
+			if(data.availablePsi != data.lastAvailablePsi) {
 				float textHeight = (float) (origHeight
 						* (data.availablePsi * pticks + data.lastAvailablePsi * (1.0 - pticks)) / totalPsi);
 				textY = origY + (origHeight - textHeight);
@@ -207,7 +207,7 @@ public final class HUDHandler {
 		int offStr1 = 7 + mc.font.width(s1);
 		int offStr2 = 7 + mc.font.width(s2);
 
-		if (!right) {
+		if(!right) {
 			offBar = 6;
 			offStr1 = -23;
 			offStr2 = -23;
@@ -222,7 +222,7 @@ public final class HUDHandler {
 		mc.font.drawShadow(ms, s1, x - offStr1, -11, 0xFFFFFF);
 		ms.popPose();
 
-		if (storedPsi != -1) {
+		if(storedPsi != -1) {
 			ms.pushPose();
 			ms.translate(0F, Math.max(textY + 3, origY + 100), 0F);
 			mc.font.drawShadow(ms, s2, x - offStr2, 0, 0xFFFFFF);
@@ -236,18 +236,18 @@ public final class HUDHandler {
 	private static void renderSocketableEquippedName(PoseStack ms, Window res, float pticks) {
 		Minecraft mc = Minecraft.getInstance();
 		ItemStack stack = mc.player.getItemInHand(InteractionHand.MAIN_HAND);
-		if (!ISocketable.isSocketable(stack)) {
+		if(!ISocketable.isSocketable(stack)) {
 			return;
 		}
 		String name = ISocketable.getSocketedItemName(stack, "").getString();
-		if (stack.isEmpty() || name.trim().isEmpty()) {
+		if(stack.isEmpty() || name.trim().isEmpty()) {
 			return;
 		}
 
 		int ticks = mc.gui.toolHighlightTimer;
 		ticks -= 10;
 
-		if (ticks > 0) {
+		if(ticks > 0) {
 			ISocketable socketable = ISocketable.socketable(stack);
 			ItemStack bullet = socketable.getSelectedBullet();
 
@@ -256,7 +256,7 @@ public final class HUDHandler {
 
 			int x = res.getGuiScaledWidth() / 2 - mc.font.width(name) / 2;
 			int y = res.getGuiScaledHeight() - 71;
-			if (mc.player.isCreative()) {
+			if(mc.player.isCreative()) {
 				y += 14;
 			}
 
@@ -273,7 +273,7 @@ public final class HUDHandler {
 
 	@OnlyIn(Dist.CLIENT)
 	private static void renderRemainingItems(PoseStack ms, Window resolution, float partTicks) {
-		if (remainingTime > 0 && !remainingDisplayStack.isEmpty()) {
+		if(remainingTime > 0 && !remainingDisplayStack.isEmpty()) {
 			int pos = maxRemainingTicks - remainingTime;
 			Minecraft mc = Minecraft.getInstance();
 			int remainingLeaveTicks = 20;
@@ -294,12 +294,12 @@ public final class HUDHandler {
 			RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
 
 			String text = remainingDisplayStack.getHoverName().plainCopy().withStyle(ChatFormatting.GREEN).getString();
-			if (remainingCount >= 0) {
+			if(remainingCount >= 0) {
 				int max = remainingDisplayStack.getMaxStackSize();
 				int stacks = remainingCount / max;
 				int rem = remainingCount % max;
 
-				if (stacks == 0) {
+				if(stacks == 0) {
 					text = "" + remainingCount;
 				} else {
 					text = remainingCount + " (" + ChatFormatting.AQUA + stacks + ChatFormatting.RESET + "*"
@@ -321,12 +321,12 @@ public final class HUDHandler {
 	private static void renderHUDItem(PoseStack ms, Window resolution, float partTicks) {
 		Minecraft mc = Minecraft.getInstance();
 		ItemStack stack = mc.player.getMainHandItem();
-		if (!stack.isEmpty() && stack.getItem() instanceof IHUDItem) {
+		if(!stack.isEmpty() && stack.getItem() instanceof IHUDItem) {
 			((IHUDItem) stack.getItem()).drawHUD(ms, resolution, partTicks, stack);
 		}
 
 		stack = mc.player.getOffhandItem();
-		if (!stack.isEmpty() && stack.getItem() instanceof IHUDItem) {
+		if(!stack.isEmpty() && stack.getItem() instanceof IHUDItem) {
 			((IHUDItem) stack.getItem()).drawHUD(ms, resolution, partTicks, stack);
 		}
 	}
@@ -339,9 +339,9 @@ public final class HUDHandler {
 
 	public static void setRemaining(Player player, ItemStack displayStack, Pattern pattern) {
 		int count = 0;
-		for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
+		for(int i = 0; i < player.getInventory().getContainerSize(); i++) {
 			ItemStack stack = player.getInventory().getItem(i);
-			if (!stack.isEmpty() && (pattern == null ? ItemStack.isSame(displayStack, stack) : pattern.matcher(stack.getDescriptionId()).find())) {
+			if(!stack.isEmpty() && (pattern == null ? ItemStack.isSame(displayStack, stack) : pattern.matcher(stack.getDescriptionId()).find())) {
 				count += stack.getCount();
 			}
 		}

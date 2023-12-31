@@ -31,7 +31,7 @@ public class PieceOperatorAcos extends PieceOperator {
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		double d = this.getParamValue(context, num).doubleValue();
-		if (d < -1 || d > 1) {
+		if(d < -1 || d > 1) {
 			throw new SpellRuntimeException("psi.spellerror.outsidetrigdomain");
 		}
 

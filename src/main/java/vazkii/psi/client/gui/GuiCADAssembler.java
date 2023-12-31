@@ -59,7 +59,7 @@ public class GuiCADAssembler extends AbstractContainerScreen<ContainerCADAssembl
 		font.draw(ms, name, imageWidth / 2 - font.width(name) / 2, 10, color);
 
 		ItemStack cad = assembler.getCachedCAD(player);
-		if (!cad.isEmpty()) {
+		if(!cad.isEmpty()) {
 			color = 0xFFFFFF;
 
 			int i = 0;
@@ -68,7 +68,7 @@ public class GuiCADAssembler extends AbstractContainerScreen<ContainerCADAssembl
 			String s = ChatFormatting.BOLD + stats;
 			font.drawShadow(ms, s, 213 - font.width(s) / 2f, 34, color);
 
-			for (EnumCADStat stat : EnumCADStat.class.getEnumConstants()) {
+			for(EnumCADStat stat : EnumCADStat.class.getEnumConstants()) {
 				s = (Psi.magical ? ChatFormatting.LIGHT_PURPLE : ChatFormatting.AQUA) + I18n.get(stat.getName()) + ChatFormatting.RESET + ": " + cadItem.getStatValue(cad, stat);
 				font.drawShadow(ms, s, 179, 50 + i * 10, color);
 				i++;
@@ -84,8 +84,8 @@ public class GuiCADAssembler extends AbstractContainerScreen<ContainerCADAssembl
 		int y = (height - imageHeight) / 2;
 		blit(ms, x, y, 0, 0, imageWidth, imageHeight);
 
-		for (int i = 0; i < 12; i++) {
-			if (!assembler.isBulletSlotEnabled(i)) {
+		for(int i = 0; i < 12; i++) {
+			if(!assembler.isBulletSlotEnabled(i)) {
 				blit(ms, x + 17 + i % 3 * 18, y + 57 + i / 3 * 18, 16, imageHeight, 16, 16);
 			}
 		}

@@ -41,7 +41,7 @@ public class PieceConstantNumber extends SpellPiece {
 
 	@Override
 	public void drawAdditional(PoseStack ms, MultiBufferSource buffers, int light) {
-		if (valueStr == null || valueStr.isEmpty() || valueStr.length() > 5) {
+		if(valueStr == null || valueStr.isEmpty() || valueStr.length() > 5) {
 			valueStr = "0";
 		}
 
@@ -50,7 +50,7 @@ public class PieceConstantNumber extends SpellPiece {
 		float efflen = mc.font.width(valueStr);
 		float scale = 1;
 
-		while (efflen > 16) {
+		while(efflen > 16) {
 			scale++;
 			efflen = mc.font.width(valueStr) / scale;
 		}
@@ -69,32 +69,32 @@ public class PieceConstantNumber extends SpellPiece {
 
 	@Override
 	public boolean onCharTyped(char character, int keyCode, boolean doit) {
-		if ("FDfd".indexOf(character) >= 0) {
+		if("FDfd".indexOf(character) >= 0) {
 			return false;
 		}
 
 		String oldStr = valueStr;
 		String newStr = valueStr;
-		if ((newStr.equals("0") || newStr.equals("-0")) && "+-.".indexOf(character) < 0) {
+		if((newStr.equals("0") || newStr.equals("-0")) && "+-.".indexOf(character) < 0) {
 			newStr = newStr.replace("0", "");
 		}
 
-		if (character == '+') {
+		if(character == '+') {
 			newStr = newStr.replace("-", "");
-		} else if (character == '-') {
-			if (!newStr.startsWith("-")) {
+		} else if(character == '-') {
+			if(!newStr.startsWith("-")) {
 				newStr = "-" + newStr;
 			}
 		} else {
 			newStr += character;
 		}
 
-		if (newStr.isEmpty()) {
+		if(newStr.isEmpty()) {
 			newStr = "0";
 		}
 		newStr = newStr.trim();
 
-		if (newStr.length() > 5) {
+		if(newStr.length() > 5) {
 			return false;
 		}
 
@@ -106,7 +106,7 @@ public class PieceConstantNumber extends SpellPiece {
 			return false;
 		}
 
-		if (doit) {
+		if(doit) {
 			valueStr = newValueStr;
 		}
 
@@ -117,22 +117,22 @@ public class PieceConstantNumber extends SpellPiece {
 	public boolean onKeyPressed(int keyCode, int scanCode, boolean doit) {
 		String oldStr = valueStr;
 		String newStr = valueStr;
-		if (keyCode == GLFW.GLFW_KEY_BACKSPACE) {
-			if (newStr.length() == 2 && newStr.startsWith("-")) {
+		if(keyCode == GLFW.GLFW_KEY_BACKSPACE) {
+			if(newStr.length() == 2 && newStr.startsWith("-")) {
 				newStr = "-0";
-			} else if (newStr.equals("-")) {
+			} else if(newStr.equals("-")) {
 				newStr = "0";
-			} else if (!newStr.isEmpty()) {
+			} else if(!newStr.isEmpty()) {
 				newStr = newStr.substring(0, newStr.length() - 1);
 			}
 		}
 
-		if (newStr.isEmpty()) {
+		if(newStr.isEmpty()) {
 			newStr = "0";
 		}
 		newStr = newStr.trim();
 
-		if (newStr.length() > 5) {
+		if(newStr.length() > 5) {
 			return false;
 		}
 
@@ -144,7 +144,7 @@ public class PieceConstantNumber extends SpellPiece {
 			return false;
 		}
 
-		if (doit) {
+		if(doit) {
 			valueStr = newValueStr;
 		}
 
@@ -175,7 +175,7 @@ public class PieceConstantNumber extends SpellPiece {
 
 	@Override
 	public Object evaluate() {
-		if (valueStr == null || valueStr.isEmpty() || valueStr.length() > 5) {
+		if(valueStr == null || valueStr.isEmpty() || valueStr.length() > 5) {
 			valueStr = "0";
 		}
 

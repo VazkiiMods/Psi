@@ -165,7 +165,7 @@ public class GuiProgrammer extends Screen {
 		cursorX = cursorY = -1;
 		tooltipFlag = getMinecraft().options.advancedItemTooltips ? TooltipFlag.Default.ADVANCED : TooltipFlag.Default.NORMAL;
 
-		if (programmer == null) {
+		if(programmer == null) {
 			spectator = false;
 		} else {
 			spectator = !programmer.playerLock.isEmpty() && !programmer.playerLock.equals(getMinecraft().player.getName().getString());
@@ -200,10 +200,10 @@ public class GuiProgrammer extends Screen {
 		panelWidget.searchField.setVisible(false);
 		panelWidget.searchField.setBordered(false);
 
-		if (spell == null) {
+		if(spell == null) {
 			spell = new Spell();
 		}
-		if (programmer != null && programmer.spell == null) {
+		if(programmer != null && programmer.spell == null) {
 			programmer.spell = spell;
 		}
 
@@ -218,9 +218,9 @@ public class GuiProgrammer extends Screen {
 		*/
 
 		addRenderableWidget(new GuiButtonIO(left + xSize + 2, top + ySize - (spectator ? 16 : 32), true, this, button -> {
-			if (hasShiftDown()) {
+			if(hasShiftDown()) {
 				CompoundTag cmp = new CompoundTag();
-				if (spell != null) {
+				if(spell != null) {
 					spell.writeToNBT(cmp);
 				}
 				getMinecraft().keyboardHandler.setClipboard(cmp.toString());
@@ -230,40 +230,40 @@ public class GuiProgrammer extends Screen {
 		/*
 		* Import button
 		*/
-		if (!spectator) {
+		if(!spectator) {
 			addRenderableWidget(new GuiButtonIO(left + xSize + 2, top + ySize - 16, false, this, button -> {
-				if (hasShiftDown()) {
+				if(hasShiftDown()) {
 					String cb = getMinecraft().keyboardHandler.getClipboard();
 					LocalPlayer player = Minecraft.getInstance().player;
 
 					try {
 						cb = cb.replaceAll("([^a-z0-9])\\d+:", "$1"); // backwards compatibility with pre 1.12 nbt json
 						CompoundTag cmp = TagParser.parseTag(cb);
-						if (cmp.contains(Spell.TAG_MODS_REQUIRED)) {
+						if(cmp.contains(Spell.TAG_MODS_REQUIRED)) {
 							ListTag mods = (ListTag) cmp.get(Spell.TAG_MODS_REQUIRED);
-							for (Tag mod : mods) {
+							for(Tag mod : mods) {
 								String modName = ((CompoundTag) mod).getString(Spell.TAG_MOD_NAME);
-								if (!PsiAPI.getSpellPieceRegistry().keySet().stream().map(ResourceLocation::getNamespace).collect(Collectors.toSet()).contains(modName)) {
+								if(!PsiAPI.getSpellPieceRegistry().keySet().stream().map(ResourceLocation::getNamespace).collect(Collectors.toSet()).contains(modName)) {
 									player.sendMessage(new TranslatableComponent("psimisc.modnotfound", modName).setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), Util.NIL_UUID);
 								}
-								if (modName.equals("psi")) {
+								if(modName.equals("psi")) {
 									boolean sendMessage = false;
 									String modVersion = ((CompoundTag) mod).getString(Spell.TAG_MOD_VERSION);
 									int[] versionEntry = Arrays.stream(modVersion.replaceFirst("^\\D+", "").split("\\D+")).mapToInt(Integer::parseInt).toArray();
 									int[] currentVersion = Arrays.stream(ModList.get().getModContainerById("psi").get().getModInfo().getVersion().toString().replaceFirst("^\\D+", "").split("\\D+")).mapToInt(Integer::parseInt).toArray();
-									for (int i = 0; i < versionEntry.length; i++) {
-										if (i + 1 > currentVersion.length) {
+									for(int i = 0; i < versionEntry.length; i++) {
+										if(i + 1 > currentVersion.length) {
 											sendMessage = true;
 											break;
 										}
-										if (currentVersion[i] > versionEntry[i]) {
+										if(currentVersion[i] > versionEntry[i]) {
 											break;
-										} else if (currentVersion[i] < versionEntry[i]) {
+										} else if(currentVersion[i] < versionEntry[i]) {
 											sendMessage = true;
 											break;
 										}
 									}
-									if (sendMessage) {
+									if(sendMessage) {
 										player.sendMessage(new TranslatableComponent("psimisc.spellonnewerversion").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), Util.NIL_UUID);
 									}
 								}
@@ -272,16 +272,16 @@ public class GuiProgrammer extends Screen {
 							player.sendMessage(new TranslatableComponent("psimisc.spellmaynotfunctionasintended").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), Util.NIL_UUID);
 						}
 						spell = Spell.createFromNBT(cmp);
-						if (spell == null) {
+						if(spell == null) {
 							return;
 						}
 						PlayerDataHandler.PlayerData data = PlayerDataHandler.get(player);
-						for (int i = 0; i < SpellGrid.GRID_SIZE; i++) {
-							for (int j = 0; j < SpellGrid.GRID_SIZE; j++) {
+						for(int i = 0; i < SpellGrid.GRID_SIZE; i++) {
+							for(int j = 0; j < SpellGrid.GRID_SIZE; j++) {
 								SpellPiece piece = spell.grid.gridData[i][j];
-								if (piece != null) {
+								if(piece != null) {
 									ResourceLocation group = PsiAPI.getGroupForPiece(piece.getClass());
-									if (!player.isCreative() && (group == null || !data.isPieceGroupUnlocked(group, piece.registryKey))) {
+									if(!player.isCreative() && (group == null || !data.isPieceGroupUnlocked(group, piece.registryKey))) {
 										player.sendMessage(new TranslatableComponent("psimisc.missing_pieces").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), Util.NIL_UUID);
 										return;
 									}
@@ -303,7 +303,7 @@ public class GuiProgrammer extends Screen {
 
 	@Override
 	public void render(PoseStack ms, int mouseX, int mouseY, float partialTicks) {
-		if (programmer != null && (programmer.getLevel().getBlockEntity(programmer.getBlockPos()) != programmer || !programmer.canPlayerInteract(getMinecraft().player))) {
+		if(programmer != null && (programmer.getLevel().getBlockEntity(programmer.getBlockPos()) != programmer || !programmer.canPlayerInteract(getMinecraft().player))) {
 			getMinecraft().setScreen(null);
 			return;
 		}
@@ -321,13 +321,13 @@ public class GuiProgrammer extends Screen {
 
 		//Currently selected piece
 		SpellPiece piece = null;
-		if (SpellGrid.exists(selectedX, selectedY)) {
+		if(SpellGrid.exists(selectedX, selectedY)) {
 			piece = spell.grid.gridData[selectedX][selectedY];
 		}
 
 		cursorX = (mouseX - gridLeft) / 18;
 		cursorY = (mouseY - gridTop) / 18;
-		if (panelWidget.panelEnabled || cursorX > 8 || cursorY > 8 || cursorX < 0 || cursorY < 0 || mouseX < gridLeft || mouseY < gridTop) {
+		if(panelWidget.panelEnabled || cursorX > 8 || cursorY > 8 || cursorX < 0 || cursorY < 0 || mouseX < gridLeft || mouseY < gridTop) {
 			cursorX = -1;
 			cursorY = -1;
 		}
@@ -341,7 +341,7 @@ public class GuiProgrammer extends Screen {
 
 		compileResult.right().ifPresent(ex -> {
 			Pair<Integer, Integer> errorPos = ex.location;
-			if (errorPos != null && errorPos.getRight() != -1 && errorPos.getLeft() != -1) {
+			if(errorPos != null && errorPos.getRight() != -1 && errorPos.getLeft() != -1) {
 				font.drawShadow(ms, "!!", errorPos.getLeft() * 18 + 12, errorPos.getRight() * 18 + 8, 0xFF0000);
 			}
 		});
@@ -350,11 +350,11 @@ public class GuiProgrammer extends Screen {
 		ms.translate(0, 0, 1);
 		RenderSystem.setShaderTexture(0, texture);
 
-		if (selectedX != -1 && selectedY != -1 && !takingScreenshot) {
+		if(selectedX != -1 && selectedY != -1 && !takingScreenshot) {
 			blit(ms, gridLeft + selectedX * 18, gridTop + selectedY * 18, 32, ySize, 16, 16);
 		}
 
-		if (hasAltDown()) {
+		if(hasAltDown()) {
 			tooltip.clear();
 			cursorX = selectedX;
 			cursorY = selectedY;
@@ -362,14 +362,14 @@ public class GuiProgrammer extends Screen {
 			mouseY = gridTop + cursorY * 18 + 8;
 		}
 
-		if (takingScreenshot) {
+		if(takingScreenshot) {
 			Set<String> addons = spell.getPieceNamespaces().stream().filter(namespace -> !namespace.equals("psi")).collect(Collectors.toSet());
-			if (addons.size() > 0) {
+			if(addons.size() > 0) {
 				String requiredAddons = ChatFormatting.GREEN + "Required Addons:";
 				font.drawShadow(ms, requiredAddons, left - font.width(requiredAddons) - 5, top + 40, 0xFFFFFF);
 				int i = 1;
-				for (String addon : addons) {
-					if (ModList.get().getModContainerById(addon).isPresent()) {
+				for(String addon : addons) {
+					if(ModList.get().getModContainerById(addon).isPresent()) {
 						String modName = ModList.get().getModContainerById(addon).get().getModInfo().getDisplayName();
 						font.drawShadow(ms, "* " + modName, left - font.width(requiredAddons) - 5, top + 40 + 10 * i, 0xFFFFFF);
 						i++;
@@ -381,15 +381,15 @@ public class GuiProgrammer extends Screen {
 		}
 
 		SpellPiece pieceAtCursor = null;
-		if (cursorX != -1 && cursorY != -1) {
+		if(cursorX != -1 && cursorY != -1) {
 			pieceAtCursor = spell.grid.gridData[cursorX][cursorY];
-			if (pieceAtCursor != null) {
+			if(pieceAtCursor != null) {
 				pieceAtCursor.getTooltip(tooltip);
 				comment = pieceAtCursor.comment;
 			}
 
-			if (!takingScreenshot) {
-				if (cursorX == selectedX && cursorY == selectedY) {
+			if(!takingScreenshot) {
+				if(cursorX == selectedX && cursorY == selectedY) {
 					blit(ms, gridLeft + cursorX * 18, gridTop + cursorY * 18, 16, ySize, 8, 16);
 				} else {
 					blit(ms, gridLeft + cursorX * 18, gridTop + cursorY * 18, 16, ySize, 16, 16);
@@ -399,26 +399,26 @@ public class GuiProgrammer extends Screen {
 
 		int topY = top - 22;
 
-		if (!takingScreenshot) {
+		if(!takingScreenshot) {
 			int topYText = topY;
-			if (spectator) {
+			if(spectator) {
 				String spectator = ChatFormatting.RED + I18n.get("psimisc.spectator");
 				font.drawShadow(ms, spectator, left + xSize / 2f - font.width(spectator) / 2f, topYText, 0xFFFFFF);
 				topYText -= 10;
 			}
-			if (piece != null) {
+			if(piece != null) {
 				String pieceName = I18n.get(piece.getUnlocalizedName());
 				font.drawShadow(ms, pieceName, left + xSize / 2f - font.width(pieceName) / 2f, topYText, 0xFFFFFF);
 				topYText -= 10;
 			}
-			if (LibMisc.BETA_TESTING) {
+			if(LibMisc.BETA_TESTING) {
 				String betaTest = ChatFormatting.GOLD + I18n.get("psimisc.wip");
 				font.drawShadow(ms, betaTest, left + xSize / 2f - font.width(betaTest) / 2f, topYText, 0xFFFFFF);
 
 			}
 
 			String coords;
-			if (SpellGrid.exists(cursorX, cursorY)) {
+			if(SpellGrid.exists(cursorX, cursorY)) {
 				coords = I18n.get("psimisc.programmer_coords", convertIntToLetter(selectedX + 1), selectedY + 1, convertIntToLetter(cursorX + 1), cursorY + 1);
 			} else {
 				coords = I18n.get("psimisc.programmer_coords_no_cursor", convertIntToLetter(selectedX + 1), selectedY + 1);
@@ -428,14 +428,14 @@ public class GuiProgrammer extends Screen {
 			font.drawShadow(ms, version, left + xSize / 2f - font.width(version) / 2f, topY + ySize + 24 + font.wordWrapHeight(coords, font.width(coords)) + 5, 0x44FFFFFF);
 		}
 
-		if (Psi.magical) {
+		if(Psi.magical) {
 			font.draw(ms, I18n.get("psimisc.name"), left + padLeft, spellNameField.y + 1, color);
 		} else {
 			font.drawShadow(ms, I18n.get("psimisc.name"), left + padLeft, spellNameField.y + 1, color);
 		}
 
 		//Add here comment
-		if (commentEnabled) {
+		if(commentEnabled) {
 			String enterCommit = I18n.get("psimisc.enter_commit");
 			font.drawShadow(ms, enterCommit, left + xSize / 2f - font.width(enterCommit) / 2f, commentField.y + 24, 0xFFFFFF);
 
@@ -444,25 +444,25 @@ public class GuiProgrammer extends Screen {
 		}
 
 		List<Component> legitTooltip = null;
-		if (hasAltDown()) {
+		if(hasAltDown()) {
 			legitTooltip = new ArrayList<>(tooltip);
 		}
 
-		if (hasAltDown()) {
+		if(hasAltDown()) {
 			tooltip = legitTooltip;
 		}
 
 		super.render(ms, mouseX, mouseY, partialTicks);
 
-		if (!takingScreenshot && tooltip != null && !tooltip.isEmpty() && pieceAtCursor == null && mouseMoved) {
+		if(!takingScreenshot && tooltip != null && !tooltip.isEmpty() && pieceAtCursor == null && mouseMoved) {
 			this.renderComponentTooltip(ms, tooltip, mouseX, mouseY);
 		}
-		if (!takingScreenshot && pieceAtCursor != null && mouseMoved) {
-			if (tooltip != null && !tooltip.isEmpty()) {
+		if(!takingScreenshot && pieceAtCursor != null && mouseMoved) {
+			if(tooltip != null && !tooltip.isEmpty()) {
 				pieceAtCursor.drawTooltip(ms, mouseX, mouseY, tooltip, this);
 			}
 
-			if (comment != null && !comment.isEmpty()) {
+			if(comment != null && !comment.isEmpty()) {
 				List<Component> commentList = Arrays.stream(comment.split(";")).map(TextComponent::new).collect(Collectors.toList());
 				pieceAtCursor.drawCommentText(ms, mouseX, mouseY, commentList, this);
 			}
@@ -470,15 +470,15 @@ public class GuiProgrammer extends Screen {
 
 		ms.popPose();
 
-		if (takingScreenshot) {
+		if(takingScreenshot) {
 			String name = spell.name;
 			CompoundTag cmp = new CompoundTag();
-			if (spell != null) {
+			if(spell != null) {
 				spell.writeToNBT(cmp);
 			}
 			String export = cmp.toString();
 
-			if (shareToReddit) {
+			if(shareToReddit) {
 				SharingHelper.uploadAndShare(name, export);
 			} else {
 				SharingHelper.uploadAndOpen(name, export);
@@ -504,18 +504,18 @@ public class GuiProgrammer extends Screen {
 	}
 
 	public void pushState(boolean wipeRedo) {
-		if (wipeRedo) {
+		if(wipeRedo) {
 			redoSteps.clear();
 		}
 		undoSteps.push(spell.copy());
-		if (undoSteps.size() > 25) {
+		if(undoSteps.size() > 25) {
 			undoSteps.remove(0);
 		}
 	}
 
 	public void onSpellChanged(boolean nameOnly) {
-		if (programmer != null) {
-			if (!spectator) {
+		if(programmer != null) {
+			if(!spectator) {
 				MessageSpellModified message = new MessageSpellModified(programmer.getBlockPos(), spell);
 				MessageRegister.HANDLER.sendToServer(message);
 			}
@@ -526,7 +526,7 @@ public class GuiProgrammer extends Screen {
 
 		onSelectedChanged();
 
-		if (!nameOnly || compileResult.right().filter(ex -> ex.getMessage().equals(SpellCompilationException.NO_NAME)).isPresent() || spell.name.isEmpty()) {
+		if(!nameOnly || compileResult.right().filter(ex -> ex.getMessage().equals(SpellCompilationException.NO_NAME)).isPresent() || spell.name.isEmpty()) {
 			compileResult = new SpellCompiler().compile(spell);
 		}
 	}
@@ -537,27 +537,27 @@ public class GuiProgrammer extends Screen {
 		configWidget.configButtons.clear();
 
 		spellNameField.setEditable(!spectator);
-		if (selectedX != -1 && selectedY != -1) {
+		if(selectedX != -1 && selectedY != -1) {
 			SpellPiece piece = spell.grid.gridData[selectedX][selectedY];
-			if (piece != null) {
+			if(piece != null) {
 				boolean intercept = piece.interceptKeystrokes();
 				spellNameField.setEditable(!spectator && !intercept);
 
-				if (piece.hasConfig()) {
+				if(piece.hasConfig()) {
 					int i = 0;
-					for (String paramName : piece.params.keySet()) {
+					for(String paramName : piece.params.keySet()) {
 						SpellParam<?> param = piece.params.get(paramName);
 						int x = left - 17;
 						int y = top + 70 + i * 26;
-						for (SpellParam.Side side : ImmutableSet.of(SpellParam.Side.TOP, SpellParam.Side.BOTTOM, SpellParam.Side.LEFT, SpellParam.Side.RIGHT, SpellParam.Side.OFF)) {
-							if (!side.isEnabled() && !param.canDisable) {
+						for(SpellParam.Side side : ImmutableSet.of(SpellParam.Side.TOP, SpellParam.Side.BOTTOM, SpellParam.Side.LEFT, SpellParam.Side.RIGHT, SpellParam.Side.OFF)) {
+							if(!side.isEnabled() && !param.canDisable) {
 								continue;
 							}
 
 							int xp = x + side.offx * 8;
 							int yp = y + side.offy * 8;
 							configWidget.configButtons.add(new GuiButtonSideConfig(this, selectedX, selectedY, i, paramName, side, xp, yp, button -> {
-								if (!spectator) {
+								if(!spectator) {
 									pushState(true);
 									GuiButtonSideConfig.performAction(this, selectedX, selectedY, paramName, side);
 									onSpellChanged(false);
@@ -577,19 +577,19 @@ public class GuiProgrammer extends Screen {
 
 	@Override
 	public boolean charTyped(char character, int keyCode) {
-		if (programmer != null) {
+		if(programmer != null) {
 			spell = programmer.spell;
 		}
-		if (spectator) {
+		if(spectator) {
 			return false;
 		}
 		super.charTyped(character, keyCode);
-		if (!commentEnabled && !spellNameField.isFocused()) {
+		if(!commentEnabled && !spellNameField.isFocused()) {
 			SpellPiece piece;
-			if (selectedX != -1 && selectedY != -1) {
+			if(selectedX != -1 && selectedY != -1) {
 				piece = spell.grid.gridData[selectedX][selectedY];
-				if (piece != null && piece.interceptKeystrokes()) {
-					if (piece.onCharTyped(character, keyCode, false)) {
+				if(piece != null && piece.interceptKeystrokes()) {
+					if(piece.onCharTyped(character, keyCode, false)) {
 						pushState(true);
 						piece.onCharTyped(character, keyCode, true);
 						onSpellChanged(false);
@@ -604,19 +604,19 @@ public class GuiProgrammer extends Screen {
 	@Override
 	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
 		getMinecraft().keyboardHandler.setSendRepeatsToGui(true);
-		if (programmer != null) {
+		if(programmer != null) {
 			spell = programmer.spell;
 		}
-		if (keyCode == GLFW.GLFW_KEY_ESCAPE && shouldCloseOnEsc()) {
+		if(keyCode == GLFW.GLFW_KEY_ESCAPE && shouldCloseOnEsc()) {
 			this.onClose();
 			return true;
 		}
-		if (spectator) {
+		if(spectator) {
 			return true;
 		}
 
-		if (commentEnabled) {
-			switch (keyCode) {
+		if(commentEnabled) {
+			switch(keyCode) {
 			case GLFW.GLFW_KEY_ENTER:
 				closeComment(true);
 				return true;
@@ -626,10 +626,10 @@ public class GuiProgrammer extends Screen {
 			}
 		}
 		SpellPiece piece = null;
-		if (selectedX != -1 && selectedY != -1) {
+		if(selectedX != -1 && selectedY != -1) {
 			piece = spell.grid.gridData[selectedX][selectedY];
-			if (piece != null && piece.interceptKeystrokes()) {
-				if (piece.onKeyPressed(keyCode, scanCode, false)) {
+			if(piece != null && piece.interceptKeystrokes()) {
+				if(piece.onKeyPressed(keyCode, scanCode, false)) {
 					pushState(true);
 					piece.onKeyPressed(keyCode, scanCode, true);
 					onSpellChanged(false);
@@ -637,22 +637,22 @@ public class GuiProgrammer extends Screen {
 				}
 			}
 		}
-		if (spellNameField.isFocused() && keyCode == GLFW.GLFW_KEY_TAB) {
+		if(spellNameField.isFocused() && keyCode == GLFW.GLFW_KEY_TAB) {
 			spellNameField.setFocus(false);
 			return true;
 		}
-		if (!spellNameField.isFocused() && !panelWidget.panelEnabled && !commentEnabled) {
+		if(!spellNameField.isFocused() && !panelWidget.panelEnabled && !commentEnabled) {
 			int param = -1;
-			for (int i = 0; i < 4; i++) {
-				if (InputConstants.isKeyDown(getMinecraft().getWindow().getWindow(), GLFW.GLFW_KEY_1 + i)) {
+			for(int i = 0; i < 4; i++) {
+				if(InputConstants.isKeyDown(getMinecraft().getWindow().getWindow(), GLFW.GLFW_KEY_1 + i)) {
 					param = i;
 				}
 			}
-			switch (keyCode) {
+			switch(keyCode) {
 			case GLFW.GLFW_KEY_DELETE:
 			case GLFW.GLFW_KEY_BACKSPACE:
-				if (hasControlDown() && hasShiftDown()) {
-					if (!spell.grid.isEmpty()) {
+				if(hasControlDown() && hasShiftDown()) {
+					if(!spell.grid.isEmpty()) {
 						pushState(true);
 						spell = new Spell();
 						spellNameField.setValue("");
@@ -660,7 +660,7 @@ public class GuiProgrammer extends Screen {
 						return true;
 					}
 				}
-				if (piece != null) {
+				if(piece != null) {
 					pushState(true);
 					spell.grid.gridData[selectedX][selectedY] = null;
 					onSpellChanged(false);
@@ -672,23 +672,23 @@ public class GuiProgrammer extends Screen {
 				setInitialFocus(spellNameField);
 				return true;
 			case GLFW.GLFW_KEY_UP:
-				if (hasControlDown()) {
-					if (hasShiftDown()) {
+				if(hasControlDown()) {
+					if(hasShiftDown()) {
 						pushState(true);
 						spell.grid.mirrorVertical();
 						onSpellChanged(false);
 						return true;
-					} else if (spell.grid.shift(SpellParam.Side.TOP, false)) {
+					} else if(spell.grid.shift(SpellParam.Side.TOP, false)) {
 						pushState(true);
 						spell.grid.shift(SpellParam.Side.TOP, true);
 						onSpellChanged(false);
 						return true;
 					}
 				} else {
-					if (!onSideButtonKeybind(piece, param, SpellParam.Side.TOP) && selectedY > 0) {
+					if(!onSideButtonKeybind(piece, param, SpellParam.Side.TOP) && selectedY > 0) {
 						selectedY--;
 						onSelectedChanged();
-						if (hasShiftDown() && spell.grid.gridData[selectedX][selectedY] == null) {
+						if(hasShiftDown() && spell.grid.gridData[selectedX][selectedY] == null) {
 							PieceConnector connector = new PieceConnector(spell);
 							connector.x = selectedX;
 							connector.y = selectedY;
@@ -701,23 +701,23 @@ public class GuiProgrammer extends Screen {
 				}
 				break;
 			case GLFW.GLFW_KEY_LEFT:
-				if (hasControlDown()) {
-					if (hasShiftDown()) {
+				if(hasControlDown()) {
+					if(hasShiftDown()) {
 						pushState(true);
 						spell.grid.rotate(false);
 						onSpellChanged(false);
 						return true;
-					} else if (spell.grid.shift(SpellParam.Side.LEFT, false)) {
+					} else if(spell.grid.shift(SpellParam.Side.LEFT, false)) {
 						pushState(true);
 						spell.grid.shift(SpellParam.Side.LEFT, true);
 						onSpellChanged(false);
 						return true;
 					}
 				} else {
-					if (!onSideButtonKeybind(piece, param, SpellParam.Side.LEFT) && selectedX > 0) {
+					if(!onSideButtonKeybind(piece, param, SpellParam.Side.LEFT) && selectedX > 0) {
 						selectedX--;
 						onSelectedChanged();
-						if (hasShiftDown() && spell.grid.gridData[selectedX][selectedY] == null) {
+						if(hasShiftDown() && spell.grid.gridData[selectedX][selectedY] == null) {
 							PieceConnector connector = new PieceConnector(spell);
 							connector.x = selectedX;
 							connector.y = selectedY;
@@ -730,23 +730,23 @@ public class GuiProgrammer extends Screen {
 				}
 				break;
 			case GLFW.GLFW_KEY_RIGHT:
-				if (hasControlDown()) {
-					if (hasShiftDown()) {
+				if(hasControlDown()) {
+					if(hasShiftDown()) {
 						pushState(true);
 						spell.grid.rotate(true);
 						onSpellChanged(false);
 						return true;
-					} else if (spell.grid.shift(SpellParam.Side.RIGHT, false)) {
+					} else if(spell.grid.shift(SpellParam.Side.RIGHT, false)) {
 						pushState(true);
 						spell.grid.shift(SpellParam.Side.RIGHT, true);
 						onSpellChanged(false);
 						return true;
 					}
 				} else {
-					if (!onSideButtonKeybind(piece, param, SpellParam.Side.RIGHT) && selectedX < SpellGrid.GRID_SIZE - 1) {
+					if(!onSideButtonKeybind(piece, param, SpellParam.Side.RIGHT) && selectedX < SpellGrid.GRID_SIZE - 1) {
 						selectedX++;
 						onSelectedChanged();
-						if (hasShiftDown() && spell.grid.gridData[selectedX][selectedY] == null) {
+						if(hasShiftDown() && spell.grid.gridData[selectedX][selectedY] == null) {
 							PieceConnector connector = new PieceConnector(spell);
 							connector.x = selectedX;
 							connector.y = selectedY;
@@ -759,23 +759,23 @@ public class GuiProgrammer extends Screen {
 				}
 				break;
 			case GLFW.GLFW_KEY_DOWN:
-				if (hasControlDown()) {
-					if (hasShiftDown()) {
+				if(hasControlDown()) {
+					if(hasShiftDown()) {
 						pushState(true);
 						spell.grid.mirrorVertical();
 						onSpellChanged(false);
 						return true;
-					} else if (spell.grid.shift(SpellParam.Side.BOTTOM, false)) {
+					} else if(spell.grid.shift(SpellParam.Side.BOTTOM, false)) {
 						pushState(true);
 						spell.grid.shift(SpellParam.Side.BOTTOM, true);
 						onSpellChanged(false);
 						return true;
 					}
 				} else {
-					if (!onSideButtonKeybind(piece, param, SpellParam.Side.BOTTOM) && selectedY < SpellGrid.GRID_SIZE - 1) {
+					if(!onSideButtonKeybind(piece, param, SpellParam.Side.BOTTOM) && selectedY < SpellGrid.GRID_SIZE - 1) {
 						selectedY++;
 						onSelectedChanged();
-						if (hasShiftDown() && spell.grid.gridData[selectedX][selectedY] == null) {
+						if(hasShiftDown() && spell.grid.gridData[selectedX][selectedY] == null) {
 							PieceConnector connector = new PieceConnector(spell);
 							connector.x = selectedX;
 							connector.y = selectedY;
@@ -788,7 +788,7 @@ public class GuiProgrammer extends Screen {
 				}
 				break;
 			case GLFW.GLFW_KEY_Z:
-				if (hasControlDown() && !undoSteps.isEmpty()) {
+				if(hasControlDown() && !undoSteps.isEmpty()) {
 					redoSteps.add(spell.copy());
 					spell = undoSteps.pop();
 					onSpellChanged(false);
@@ -796,7 +796,7 @@ public class GuiProgrammer extends Screen {
 				}
 				break;
 			case GLFW.GLFW_KEY_Y:
-				if (hasControlDown() && !redoSteps.isEmpty()) {
+				if(hasControlDown() && !redoSteps.isEmpty()) {
 					pushState(false);
 					spell = redoSteps.pop();
 					onSpellChanged(false);
@@ -804,14 +804,14 @@ public class GuiProgrammer extends Screen {
 				}
 				break;
 			case GLFW.GLFW_KEY_C:
-				if (piece != null && hasControlDown()) {
+				if(piece != null && hasControlDown()) {
 					clipboard = piece.copy();
 					return true;
 				}
 
 				break;
 			case GLFW.GLFW_KEY_X:
-				if (piece != null && hasControlDown()) {
+				if(piece != null && hasControlDown()) {
 					clipboard = piece.copy();
 					pushState(true);
 					spell.grid.gridData[selectedX][selectedY] = null;
@@ -820,7 +820,7 @@ public class GuiProgrammer extends Screen {
 				}
 				break;
 			case GLFW.GLFW_KEY_V:
-				if (SpellGrid.exists(selectedX, selectedY) && clipboard != null && hasControlDown()) {
+				if(SpellGrid.exists(selectedX, selectedY) && clipboard != null && hasControlDown()) {
 					SpellPiece copy = clipboard.copy();
 					copy.x = selectedX;
 					copy.y = selectedY;
@@ -832,7 +832,7 @@ public class GuiProgrammer extends Screen {
 				}
 				break;
 			case GLFW.GLFW_KEY_D:
-				if (piece != null && hasControlDown()) {
+				if(piece != null && hasControlDown()) {
 					commentField.setVisible(true);
 					commentField.setFocus(true);
 					commentField.setEditable(true);
@@ -845,18 +845,18 @@ public class GuiProgrammer extends Screen {
 				}
 				break;
 			case GLFW.GLFW_KEY_G:
-				if (hasControlDown()) {
+				if(hasControlDown()) {
 					shareToReddit = false;
-					if (hasShiftDown() && hasAltDown()) {
+					if(hasShiftDown() && hasAltDown()) {
 						takingScreenshot = true;
 					}
 					return true;
 				}
 				break;
 			case GLFW.GLFW_KEY_R:
-				if (hasControlDown()) {
+				if(hasControlDown()) {
 					shareToReddit = true;
-					if (hasShiftDown() && hasAltDown()) {
+					if(hasShiftDown() && hasAltDown()) {
 						takingScreenshot = true;
 					}
 					return true;
@@ -867,24 +867,24 @@ public class GuiProgrammer extends Screen {
 				return true;
 			}
 		}
-		if (panelWidget.panelEnabled) {
+		if(panelWidget.panelEnabled) {
 			panelWidget.keyPressed(keyCode, scanCode, modifiers);
 		}
-		if (commentField.isFocused()) {
+		if(commentField.isFocused()) {
 			commentField.keyPressed(keyCode, scanCode, modifiers);
 		}
-		if (spellNameField.isFocused()) {
+		if(spellNameField.isFocused()) {
 			spellNameField.keyPressed(keyCode, scanCode, modifiers);
 		}
 		return false;
 	}
 
 	public boolean onSideButtonKeybind(SpellPiece piece, int param, SpellParam.Side side) {
-		if (param > -1 && piece != null && piece.params.size() >= param) {
-			for (Button button : configWidget.configButtons) {
+		if(param > -1 && piece != null && piece.params.size() >= param) {
+			for(Button button : configWidget.configButtons) {
 				GuiButtonSideConfig config = ((GuiButtonSideConfig) button);
-				if (config.matches(param, side)) {
-					if (side != SpellParam.Side.OFF && piece.paramSides.get(piece.params.get(config.paramName)) == side) {
+				if(config.matches(param, side)) {
+					if(side != SpellParam.Side.OFF && piece.paramSides.get(piece.params.get(config.paramName)) == side) {
 						side = SpellParam.Side.OFF;
 						continue;
 					}
@@ -899,22 +899,22 @@ public class GuiProgrammer extends Screen {
 
 	@Override
 	public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
-		if (programmer != null) {
+		if(programmer != null) {
 			spell = programmer.spell;
 		}
 
-		if (!commentEnabled) {
+		if(!commentEnabled) {
 			spellNameField.mouseClicked(mouseX, mouseY, mouseButton);
-			if (commentField.isVisible()) {
+			if(commentField.isVisible()) {
 				commentField.mouseClicked(mouseX, mouseY, mouseButton);
 			}
 
-			if (cursorX != -1 && cursorY != -1) {
+			if(cursorX != -1 && cursorY != -1) {
 				selectedX = cursorX;
 				selectedY = cursorY;
 
-				if (mouseButton == 1 && !spectator) {
-					if (hasShiftDown()) {
+				if(mouseButton == 1 && !spectator) {
+					if(hasShiftDown()) {
 						pushState(true);
 						spell.grid.gridData[selectedX][selectedY] = null;
 						onSpellChanged(false);
@@ -933,11 +933,11 @@ public class GuiProgrammer extends Screen {
 
 	private void closeComment(boolean save) {
 		SpellPiece piece = null;
-		if (selectedX != -1 && selectedY != -1) {
+		if(selectedX != -1 && selectedY != -1) {
 			piece = spell.grid.gridData[selectedX][selectedY];
 		}
 
-		if (save && piece != null) {
+		if(save && piece != null) {
 			String text = commentField.getValue();
 			pushState(true);
 			piece.comment = text;
@@ -967,7 +967,7 @@ public class GuiProgrammer extends Screen {
 	}
 
 	public static String convertIntToLetter(int i) {
-		if (!ConfigHandler.CLIENT.changeGridCoordinatesToLetterNumber.get()) {
+		if(!ConfigHandler.CLIENT.changeGridCoordinatesToLetterNumber.get()) {
 			return String.valueOf(i);
 		}
 		return String.valueOf((char) ((i % 27) + 64));

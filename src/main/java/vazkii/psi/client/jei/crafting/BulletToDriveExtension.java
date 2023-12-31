@@ -60,10 +60,10 @@ public class BulletToDriveExtension implements ICustomCraftingCategoryExtension 
 		recipeLayout.getItemStacks().set(ingredients);
 
 		IFocus<ItemStack> focus = recipeLayout.getFocus(VanillaTypes.ITEM);
-		if (focus != null) {
+		if(focus != null) {
 			ItemStack stack = focus.getValue();
 
-			if (stack.getItem() instanceof ItemSpellBullet && ISpellAcceptor.hasSpell(stack)) {
+			if(stack.getItem() instanceof ItemSpellBullet && ISpellAcceptor.hasSpell(stack)) {
 				ItemStack drive = new ItemStack(ModItems.spellDrive);
 				ItemSpellDrive.setSpell(drive, ISpellAcceptor.acceptor(stack).getSpell());
 				recipeLayout.getItemStacks().set(0, drive);

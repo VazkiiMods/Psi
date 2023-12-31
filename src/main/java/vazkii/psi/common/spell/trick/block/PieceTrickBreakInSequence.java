@@ -49,7 +49,7 @@ public class PieceTrickBreakInSequence extends PieceTrick {
 		super.addToMetadata(meta);
 
 		Double maxBlocksVal = this.<Double>getParamEvaluation(maxBlocks);
-		if (maxBlocksVal == null || maxBlocksVal <= 0) {
+		if(maxBlocksVal == null || maxBlocksVal <= 0) {
 			throw new SpellCompilationException(SpellCompilationException.NON_POSITIVE_VALUE, x, y);
 		}
 
@@ -64,13 +64,13 @@ public class PieceTrickBreakInSequence extends PieceTrick {
 		Vector3 targetVal = this.getParamValue(context, target);
 		int maxBlocksInt = this.getParamValue(context, maxBlocks).intValue();
 
-		if (positionVal == null) {
+		if(positionVal == null) {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
 		}
 
 		Vector3 targetNorm = targetVal.copy().normalize();
-		for (BlockPos blockPos : MathHelper.getBlocksAlongRay(positionVal.toVec3D(), positionVal.copy().add(targetNorm.copy().multiply(maxBlocksInt)).toVec3D(), maxBlocksInt)) {
-			if (!context.isInRadius(Vector3.fromBlockPos(blockPos))) {
+		for(BlockPos blockPos : MathHelper.getBlocksAlongRay(positionVal.toVec3D(), positionVal.copy().add(targetNorm.copy().multiply(maxBlocksInt)).toVec3D(), maxBlocksInt)) {
+			if(!context.isInRadius(Vector3.fromBlockPos(blockPos))) {
 				throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 			}
 			PieceTrickBreakBlock.removeBlockWithDrops(context, context.caster, context.focalPoint.getCommandSenderWorld(), tool, blockPos, (v) -> true);

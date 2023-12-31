@@ -61,10 +61,10 @@ public class ItemSpellBullet extends Item {
 	@Nonnull
 	@Override
 	public Component getName(@Nonnull ItemStack stack) {
-		if (ISpellAcceptor.hasSpell(stack)) {
+		if(ISpellAcceptor.hasSpell(stack)) {
 			CompoundTag cmp = stack.getOrCreateTag().getCompound(TAG_SPELL);
 			String name = cmp.getString(Spell.TAG_SPELL_NAME); // We don't need to load the whole spell just for the name
-			if (name.isEmpty()) {
+			if(name.isEmpty()) {
 				return super.getName(stack);
 			}
 			return new TextComponent(name);
@@ -91,8 +91,8 @@ public class ItemSpellBullet extends Item {
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, @Nonnull InteractionHand hand) {
 		ItemStack itemStackIn = playerIn.getItemInHand(hand);
-		if (ItemSpellDrive.getSpell(itemStackIn) != null && playerIn.isShiftKeyDown()) {
-			if (!worldIn.isClientSide) {
+		if(ItemSpellDrive.getSpell(itemStackIn) != null && playerIn.isShiftKeyDown()) {
+			if(!worldIn.isClientSide) {
 				worldIn.playSound(null, playerIn.getX(), playerIn.getY(), playerIn.getZ(), PsiSoundHandler.compileError, SoundSource.PLAYERS, 0.5F, 1F);
 			} else {
 				playerIn.swing(hand);
@@ -148,7 +148,7 @@ public class ItemSpellBullet extends Item {
 
 		@Override
 		public void setSpell(Player player, Spell spell) {
-			if (stack.getCount() == 1) {
+			if(stack.getCount() == 1) {
 				ItemSpellDrive.setSpell(stack, spell);
 				return;
 			}
@@ -156,7 +156,7 @@ public class ItemSpellBullet extends Item {
 			ItemStack newStack = stack.copy();
 			newStack.setCount(1);
 			ItemSpellDrive.setSpell(newStack, spell);
-			if (!player.addItem(newStack)) {
+			if(!player.addItem(newStack)) {
 				player.drop(newStack, false);
 			}
 		}

@@ -60,15 +60,15 @@ public class EntitySpellGrenade extends EntitySpellProjectile {
 	public void tick() {
 		super.tick();
 
-		if (tickCount > 60 && isAlive() && explodes()) {
+		if(tickCount > 60 && isAlive() && explodes()) {
 			doExplosion();
 		}
 	}
 
 	public void doExplosion() {
-		if (getAttackTarget() != null) {
+		if(getAttackTarget() != null) {
 			cast((SpellContext context) -> {
-				if (context != null) {
+				if(context != null) {
 					context.attackedEntity = getAttackTarget();
 				}
 			});
@@ -77,7 +77,7 @@ public class EntitySpellGrenade extends EntitySpellProjectile {
 		}
 		playSound(SoundEvents.GENERIC_EXPLODE, 0.5F, 1F);
 		double m = 0.1;
-		for (int j = 0; j < 40; j++) {
+		for(int j = 0; j < 40; j++) {
 			double d0 = getCommandSenderWorld().random.nextGaussian() * m;
 			double d1 = getCommandSenderWorld().random.nextGaussian() * m;
 			double d2 = getCommandSenderWorld().random.nextGaussian() * m;
@@ -95,23 +95,23 @@ public class EntitySpellGrenade extends EntitySpellProjectile {
 
 	@Override
 	protected void onHit(@Nonnull HitResult ray) {
-		if (ray instanceof EntityHitResult && ((EntityHitResult) ray).getEntity() instanceof LivingEntity) {
+		if(ray instanceof EntityHitResult && ((EntityHitResult) ray).getEntity() instanceof LivingEntity) {
 			entityData.set(ATTACKTARGET_UUID, Optional.of(((EntityHitResult) ray).getEntity().getUUID()));
 		}
-		if (!getCommandSenderWorld().isClientSide && !sound && explodes()) {
+		if(!getCommandSenderWorld().isClientSide && !sound && explodes()) {
 			playSound(SoundEvents.CREEPER_PRIMED, 2F, 1F);
 			sound = true;
 		}
 
-		if (ray.getType() == HitResult.Type.BLOCK) {
+		if(ray.getType() == HitResult.Type.BLOCK) {
 			Direction face = ((BlockHitResult) ray).getDirection();
 			Vector3 position = Vector3.fromVec3d(ray.getLocation());
-			if (face != Direction.UP) {
+			if(face != Direction.UP) {
 				position.add(Vector3.fromDirection(face).multiply(0.1d));
 			}
 			teleportTo(position.x, position.y, position.z);
 			setDeltaMovement(Vec3.ZERO);
-		} else if (ray.getType() == HitResult.Type.ENTITY) {
+		} else if(ray.getType() == HitResult.Type.ENTITY) {
 			teleportTo(ray.getLocation().x, ray.getLocation().y, ray.getLocation().z);
 			setDeltaMovement(Vec3.ZERO);
 		}

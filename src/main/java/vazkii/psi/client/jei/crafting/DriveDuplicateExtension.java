@@ -52,13 +52,13 @@ public class DriveDuplicateExtension implements ICustomCraftingCategoryExtension
 		recipeLayout.getItemStacks().set(ingredients);
 
 		IFocus<ItemStack> focus = recipeLayout.getFocus(VanillaTypes.ITEM);
-		if (focus != null) {
+		if(focus != null) {
 			ItemStack stack = focus.getValue();
 
-			if (stack.getItem() instanceof ItemSpellDrive) {
+			if(stack.getItem() instanceof ItemSpellDrive) {
 				Spell spell = ItemSpellDrive.getSpell(stack);
 
-				if (spell != null) {
+				if(spell != null) {
 					ItemStack drive = new ItemStack(ModItems.spellDrive);
 					ItemSpellDrive.setSpell(drive, spell);
 

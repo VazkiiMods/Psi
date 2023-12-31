@@ -20,7 +20,7 @@ public final class TooltipHelper {
 
 	@OnlyIn(Dist.CLIENT)
 	public static void tooltipIfShift(List<Component> tooltip, Runnable r) {
-		if (Screen.hasShiftDown()) {
+		if(Screen.hasShiftDown()) {
 			r.run();
 		} else {
 			tooltip.add(new TranslatableComponent("psimisc.shift_for_info"));
@@ -29,7 +29,7 @@ public final class TooltipHelper {
 
 	@OnlyIn(Dist.CLIENT)
 	public static void tooltipIfCtrl(List<Component> tooltip, Runnable r) {
-		if (Screen.hasControlDown()) {
+		if(Screen.hasControlDown()) {
 			r.run();
 		} else {
 			tooltip.add(new TranslatableComponent("psimisc.ctrl_for_stats"));

@@ -43,7 +43,7 @@ public class PieceTrickRussianRoulette extends PieceTrick {
 		int targetSlot = getRandomSocketableSlot(capability);
 
 		capability.setSelectedSlot(targetSlot);
-		if (updateLoopcast) {
+		if(updateLoopcast) {
 			PlayerDataHandler.get(context.caster).lastTickLoopcastStack = stack.copy();
 		}
 		return null;

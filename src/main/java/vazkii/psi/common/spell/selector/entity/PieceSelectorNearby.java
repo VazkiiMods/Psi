@@ -46,7 +46,7 @@ public abstract class PieceSelectorNearby extends PieceSelector {
 		super.addToMetadata(meta);
 
 		Double radiusVal = this.getParamEvaluationeOrDefault(radius, 2 * SpellContext.MAX_DISTANCE).doubleValue();
-		if (radiusVal <= 0) {
+		if(radiusVal <= 0) {
 			throw new SpellCompilationException(SpellCompilationException.NON_POSITIVE_VALUE, x, y);
 		}
 	}
@@ -58,7 +58,7 @@ public abstract class PieceSelectorNearby extends PieceSelector {
 
 		Vector3 positionCenter = Vector3.fromVec3d(context.focalPoint.position());
 
-		if (!context.isInRadius(positionVal)) {
+		if(!context.isInRadius(positionVal)) {
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 		}
 

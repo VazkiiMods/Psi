@@ -47,11 +47,11 @@ public class SlotCADOutput extends Slot {
 	public boolean mayPickup(Player playerIn) {
 		CADTakeEvent event = new CADTakeEvent(getItem(), assembler, playerIn);
 		float sound = event.getSound();
-		if (MinecraftForge.EVENT_BUS.post(event)) {
+		if(MinecraftForge.EVENT_BUS.post(event)) {
 			BlockPos assemblerPos = this.assembler.getBlockPos();
 			String cancelMessage = event.getCancellationMessage();
-			if (!playerIn.level.isClientSide) {
-				if (cancelMessage != null && !cancelMessage.isEmpty()) {
+			if(!playerIn.level.isClientSide) {
+				if(cancelMessage != null && !cancelMessage.isEmpty()) {
 					playerIn.sendMessage(new TranslatableComponent(cancelMessage).setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), Util.NIL_UUID);
 				}
 				playerIn.level.playSound(null, assemblerPos.getX(), assemblerPos.getY(), assemblerPos.getZ(), PsiSoundHandler.compileError, SoundSource.BLOCKS, sound, 1F);

@@ -40,16 +40,16 @@ public class MultiCraftingProcessor implements IComponentProcessor {
 		Map<ResourceLocation, Recipe<CraftingContainer>> recipeMap = Minecraft.getInstance().level.getRecipeManager().byType(RecipeType.CRAFTING);
 		List<String> names = variables.get("recipes").asStream().map(IVariable::asString).collect(Collectors.toList());
 		this.recipes = new ArrayList<>();
-		for (String name : names) {
+		for(String name : names) {
 			Recipe<?> recipe = recipeMap.get(new ResourceLocation(name));
-			if (recipe != null) {
+			if(recipe != null) {
 				recipes.add((CraftingRecipe) recipe);
-				if (shapeless) {
+				if(shapeless) {
 					shapeless = !(recipe instanceof IShapedRecipe);
 				}
-				for (Ingredient ingredient : recipe.getIngredients()) {
+				for(Ingredient ingredient : recipe.getIngredients()) {
 					int size = ingredient.getItems().length;
-					if (longestIngredientSize < size) {
+					if(longestIngredientSize < size) {
 						longestIngredientSize = size;
 					}
 				}
@@ -62,24 +62,24 @@ public class MultiCraftingProcessor implements IComponentProcessor {
 
 	@Override
 	public IVariable process(String key) {
-		if (recipes.isEmpty()) {
+		if(recipes.isEmpty()) {
 			return null;
 		}
-		if (key.equals("heading")) {
-			if (!hasCustomHeading) {
+		if(key.equals("heading")) {
+			if(!hasCustomHeading) {
 				return IVariable.from(recipes.get(0).getResultItem().getHoverName());
 			}
 			return null;
 		}
-		if (key.startsWith("input")) {
+		if(key.startsWith("input")) {
 			int index = Integer.parseInt(key.substring(5)) - 1;
 			int shapedX = index % 3;
 			int shapedY = index / 3;
 			List<Ingredient> ingredients = new ArrayList<>();
-			for (CraftingRecipe recipe : recipes) {
-				if (recipe instanceof IShapedRecipe) {
+			for(CraftingRecipe recipe : recipes) {
+				if(recipe instanceof IShapedRecipe) {
 					IShapedRecipe<?> shaped = (IShapedRecipe<?>) recipe;
-					if (shaped.getRecipeWidth() < shapedX + 1) {
+					if(shaped.getRecipeWidth() < shapedX + 1) {
 						ingredients.add(Ingredient.EMPTY);
 					} else {
 						int realIndex = index - (shapedY * (3 - shaped.getRecipeWidth()));
@@ -94,10 +94,10 @@ public class MultiCraftingProcessor implements IComponentProcessor {
 			}
 			return PatchouliUtils.interweaveIngredients(ingredients, longestIngredientSize);
 		}
-		if (key.equals("output")) {
+		if(key.equals("output")) {
 			return IVariable.wrapList(recipes.stream().map(CraftingRecipe::getResultItem).map(IVariable::from).collect(Collectors.toList()));
 		}
-		if (key.equals("shapeless")) {
+		if(key.equals("shapeless")) {
 			return IVariable.wrap(shapeless);
 		}
 		return null;

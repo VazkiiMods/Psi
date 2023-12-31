@@ -33,14 +33,14 @@ public class KeybindHandler {
 	}
 
 	private static boolean isSocketableController(Player player, ItemStack stack) {
-		if (!(stack.getItem() instanceof ISocketableController)) {
+		if(!(stack.getItem() instanceof ISocketableController)) {
 			return false;
 		}
 
 		ItemStack[] stacks = ((ISocketableController) stack.getItem()).getControlledStacks(player, stack);
 
-		for (ItemStack controlled : stacks) {
-			if (!controlled.isEmpty() && ISocketable.isSocketable(controlled)) {
+		for(ItemStack controlled : stacks) {
+			if(!controlled.isEmpty() && ISocketable.isSocketable(controlled)) {
 				return true;
 			}
 		}
@@ -52,12 +52,12 @@ public class KeybindHandler {
 		Minecraft mc = Minecraft.getInstance();
 		ItemStack stack = mc.player.getItemInHand(InteractionHand.MAIN_HAND);
 
-		if (mc.screen == null) {
-			if (!stack.isEmpty() && (ISocketable.isSocketable(stack) || isSocketableController(mc.player, stack))) {
+		if(mc.screen == null) {
+			if(!stack.isEmpty() && (ISocketable.isSocketable(stack) || isSocketableController(mc.player, stack))) {
 				mc.setScreen(new GuiSocketSelect(stack));
 			} else {
 				stack = mc.player.getItemInHand(InteractionHand.OFF_HAND);
-				if (!stack.isEmpty() && (ISocketable.isSocketable(stack) || isSocketableController(mc.player, stack))) {
+				if(!stack.isEmpty() && (ISocketable.isSocketable(stack) || isSocketableController(mc.player, stack))) {
 					mc.setScreen(new GuiSocketSelect(stack));
 				} else {
 					PatchouliAPI.get().openBookGUI(LibResources.PATCHOULI_BOOK);

@@ -120,8 +120,8 @@ public class DefaultStats {
 		ItemStack cad = event.getCad();
 		ICAD cadItem = (ICAD) cad.getItem();
 		ItemStack assembly = cadItem.getComponentInSlot(cad, EnumCADComponent.ASSEMBLY);
-		if (!assembly.isEmpty() && assembly.getItem() == ModItems.cadAssemblyCreative) {
-			switch (event.getStat()) {
+		if(!assembly.isEmpty() && assembly.getItem() == ModItems.cadAssemblyCreative) {
+			switch(event.getStat()) {
 			case BANDWIDTH:
 				event.setStatValue(9);
 				break;

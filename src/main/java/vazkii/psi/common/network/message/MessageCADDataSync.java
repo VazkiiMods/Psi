@@ -38,7 +38,7 @@ public class MessageCADDataSync {
 	public boolean receive(Supplier<NetworkEvent.Context> context) {
 		context.get().enqueueWork(() -> {
 			ItemStack cad = PsiAPI.getPlayerCAD(Psi.proxy.getClientPlayer());
-			if (!cad.isEmpty()) {
+			if(!cad.isEmpty()) {
 				cad.getCapability(PsiAPI.CAD_DATA_CAPABILITY).ifPresent(d -> d.deserializeNBT(cmp));
 			}
 		});

@@ -39,14 +39,14 @@ public class GuiButtonIO extends Button {
 
 	@Override
 	public void renderButton(PoseStack ms, int par2, int par3, float pticks) {
-		if (active && !gui.takingScreenshot) {
+		if(active && !gui.takingScreenshot) {
 			boolean hover = par2 >= x && par3 >= y && par2 < x + width && par3 < y + height;
 
 			RenderSystem.setShaderTexture(0, GuiProgrammer.texture);
 			RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
 			blit(ms, x, y, hover ? 186 : 174, out ? 169 : 181, width, height);
 
-			if (hover) {
+			if(hover) {
 				String key = out ? "psimisc.export_to_clipboard" : "psimisc.import_from_clipboard";
 				ChatFormatting color = out ? ChatFormatting.RED : ChatFormatting.BLUE;
 				Component tip = new TranslatableComponent(key).withStyle(color);

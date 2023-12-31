@@ -48,8 +48,8 @@ public abstract class ItemCADComponent extends Item implements ICADComponent {
 
 			TranslatableComponent componentName = new TranslatableComponent(componentType.getName());
 			tooltip.add(new TranslatableComponent("psimisc.component_type", componentName));
-			for (EnumCADStat stat : EnumCADStat.class.getEnumConstants()) {
-				if (stat.getSourceType() == componentType) {
+			for(EnumCADStat stat : EnumCADStat.class.getEnumConstants()) {
+				if(stat.getSourceType() == componentType) {
 					int statVal = getCADStatValue(stack, stat);
 					String statValStr = statVal == -1 ? "\u221E" : "" + statVal;
 
@@ -69,7 +69,7 @@ public abstract class ItemCADComponent extends Item implements ICADComponent {
 	}
 
 	public static void addStatToStack(ItemStack stack, EnumCADStat stat, int value) {
-		if (stack.getItem() instanceof ItemCADComponent) {
+		if(stack.getItem() instanceof ItemCADComponent) {
 			((ItemCADComponent) stack.getItem()).addStat(stat, value);
 		} else {
 			Psi.logger.error("Tried to add stats to non-component Item: " + stack.getItem().getDescription());
@@ -77,7 +77,7 @@ public abstract class ItemCADComponent extends Item implements ICADComponent {
 	}
 
 	public static void addStatToStack(Item item, EnumCADStat stat, int value) {
-		if (item instanceof ItemCADComponent) {
+		if(item instanceof ItemCADComponent) {
 			((ItemCADComponent) item).addStat(stat, value);
 		} else {
 			Psi.logger.error("Tried to add stats to non-component Item: " + item.getDescription());
@@ -86,7 +86,7 @@ public abstract class ItemCADComponent extends Item implements ICADComponent {
 
 	@Override
 	public int getCADStatValue(ItemStack stack, EnumCADStat stat) {
-		if (stats.containsKey(stat)) {
+		if(stats.containsKey(stat)) {
 			return stats.get(stat);
 		}
 

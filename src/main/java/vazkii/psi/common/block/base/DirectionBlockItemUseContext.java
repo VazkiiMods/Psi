@@ -35,7 +35,7 @@ public class DirectionBlockItemUseContext extends BlockPlaceContext {
 
 	@Override
 	public Direction @NotNull [] getNearestLookingDirections() {
-		switch (getHitResult().getDirection()) {
+		switch(getHitResult().getDirection()) {
 		case DOWN:
 		default:
 			return new Direction[] { Direction.DOWN, Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST, Direction.UP };

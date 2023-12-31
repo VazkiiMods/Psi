@@ -39,14 +39,14 @@ public interface IPsimetalTool {
 	String TAG_SELECTED_SLOT = "selectedSlot";
 
 	default void castOnBlockBreak(ItemStack itemstack, Player player) {
-		if (!isEnabled(itemstack) || PieceTrickBreakBlock.doingHarvestCheck.get()) { //TODO Harvest Check dirty hack, why does this get triggered during TrickBreakBlock?
+		if(!isEnabled(itemstack) || PieceTrickBreakBlock.doingHarvestCheck.get()) { //TODO Harvest Check dirty hack, why does this get triggered during TrickBreakBlock?
 			return;
 		}
 
 		PlayerDataHandler.PlayerData data = PlayerDataHandler.get(player);
 		ItemStack playerCad = PsiAPI.getPlayerCAD(player);
 
-		if (!playerCad.isEmpty()) {
+		if(!playerCad.isEmpty()) {
 			ISocketable sockets = ISocketable.socketable(itemstack);
 			ItemStack bullet = sockets.getSelectedBullet();
 			ItemCAD.cast(player.getCommandSenderWorld(), player, data, bullet, playerCad, 5, 10, 0.05F, (SpellContext context) -> {
@@ -77,12 +77,12 @@ public interface IPsimetalTool {
 	}
 
 	static void regen(ItemStack stack, Entity entityIn) {
-		if (isItemValidForRegen(stack, entityIn)) {
+		if(isItemValidForRegen(stack, entityIn)) {
 			Player player = (Player) entityIn;
 			PlayerDataHandler.PlayerData data = PlayerDataHandler.get(player);
 			int regenTime = stack.getOrCreateTag().getInt(TAG_REGEN_TIME);
 
-			if (!data.overflowed && regenTime % 16 == 0 && (float) data.getAvailablePsi() / (float) data.getTotalPsi() > 0.5F) {
+			if(!data.overflowed && regenTime % 16 == 0 && (float) data.getAvailablePsi() / (float) data.getTotalPsi() > 0.5F) {
 				data.deductPsi(150, 0, true);
 				stack.setDamageValue(stack.getDamageValue() - 1);
 			}
@@ -91,7 +91,7 @@ public interface IPsimetalTool {
 	}
 
 	static boolean isItemValidForRegen(ItemStack stack, Entity entityIn) {
-		if (!(entityIn instanceof Player)) {
+		if(!(entityIn instanceof Player)) {
 			return false;
 		}
 		Player player = (Player) entityIn;

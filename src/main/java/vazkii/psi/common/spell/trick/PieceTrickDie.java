@@ -41,7 +41,7 @@ public class PieceTrickDie extends PieceTrick {
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		double timeVal = this.getParamValue(context, target).doubleValue();
-		if (Math.abs(timeVal) < 1) {
+		if(Math.abs(timeVal) < 1) {
 			context.stopped = true;
 		}
 

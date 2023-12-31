@@ -36,12 +36,12 @@ public class PieceOperatorEntityPosition extends PieceOperator {
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		Entity e = this.getParamValue(context, target);
 
-		if (e == null) {
+		if(e == null) {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_TARGET);
 		}
 
 		Vector3 vec = Vector3.fromEntity(e);
-		if (e instanceof Player) {
+		if(e instanceof Player) {
 			vec.add(0, e.getEyeHeight(), 0);
 		}
 

@@ -41,9 +41,9 @@ public class BulletUpgradeRecipe implements CraftingRecipe {
 	@Override
 	public ItemStack assemble(CraftingContainer inv) {
 		ItemStack output = compose.assemble(inv);
-		for (int i = 0; i < inv.getContainerSize(); i++) {
+		for(int i = 0; i < inv.getContainerSize(); i++) {
 			ItemStack stack = inv.getItem(i);
-			if (stack.getItem() instanceof ItemSpellBullet) {
+			if(stack.getItem() instanceof ItemSpellBullet) {
 				output.setTag(stack.getTag());
 			}
 		}

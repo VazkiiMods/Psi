@@ -42,12 +42,12 @@ public class PieceOperatorFocusedEntity extends PieceOperator {
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		Entity e = this.getParamValue(context, target);
 
-		if (e == null) {
+		if(e == null) {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_TARGET);
 		}
 
 		Entity looked = getEntityLookedAt(e);
-		if (looked == null) {
+		if(looked == null) {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_TARGET);
 		}
 
@@ -61,11 +61,11 @@ public class PieceOperatorFocusedEntity extends PieceOperator {
 		double distance = finalDistance;
 		HitResult pos = PieceOperatorVectorRaycast.raycast(e, finalDistance);
 		Vec3 positionVector = e.position();
-		if (e instanceof Player) {
+		if(e instanceof Player) {
 			positionVector = positionVector.add(0, e.getEyeHeight(), 0);
 		}
 
-		if (pos != null) {
+		if(pos != null) {
 			distance = pos.getLocation().distanceTo(positionVector);
 		}
 
@@ -76,28 +76,28 @@ public class PieceOperatorFocusedEntity extends PieceOperator {
 		List<Entity> entitiesInBoundingBox = e.getCommandSenderWorld().getEntities(e, e.getBoundingBox().inflate(lookVector.x * finalDistance, lookVector.y * finalDistance, lookVector.z * finalDistance).inflate(1F, 1F, 1F));
 		double minDistance = distance;
 
-		for (Entity entity : entitiesInBoundingBox) {
-			if (entity.isPickable()) {
+		for(Entity entity : entitiesInBoundingBox) {
+			if(entity.isPickable()) {
 				float collisionBorderSize = entity.getPickRadius();
 				AABB hitbox = entity.getBoundingBox().inflate(collisionBorderSize, collisionBorderSize, collisionBorderSize);
 				Optional<Vec3> interceptPosition = hitbox.clip(positionVector, reachVector);
 
-				if (hitbox.contains(positionVector)) {
-					if (0.0D < minDistance || minDistance == 0.0D) {
+				if(hitbox.contains(positionVector)) {
+					if(0.0D < minDistance || minDistance == 0.0D) {
 						lookedEntity = entity;
 						minDistance = 0.0D;
 					}
-				} else if (interceptPosition.isPresent()) {
+				} else if(interceptPosition.isPresent()) {
 					double distanceToEntity = positionVector.distanceTo(interceptPosition.get());
 
-					if (distanceToEntity < minDistance || minDistance == 0.0D) {
+					if(distanceToEntity < minDistance || minDistance == 0.0D) {
 						lookedEntity = entity;
 						minDistance = distanceToEntity;
 					}
 				}
 			}
 
-			if (lookedEntity != null && (minDistance < distance || pos == null)) {
+			if(lookedEntity != null && (minDistance < distance || pos == null)) {
 				foundEntity = lookedEntity;
 			}
 		}

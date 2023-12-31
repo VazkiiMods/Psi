@@ -73,15 +73,15 @@ public class PieceTrickPlaceBlock extends PieceTrick {
 
 		Direction facing = Direction.NORTH;
 		Direction horizontalFacing = Direction.NORTH;
-		if (directionVal != null) {
+		if(directionVal != null) {
 			facing = Direction.getNearest(directionVal.x, directionVal.y, directionVal.z);
 			horizontalFacing = Direction.getNearest(directionVal.x, 0.0, directionVal.z);
 		}
 
-		if (positionVal == null) {
+		if(positionVal == null) {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
 		}
-		if (!context.isInRadius(positionVal)) {
+		if(!context.isInRadius(positionVal)) {
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 		}
 
@@ -96,21 +96,21 @@ public class PieceTrickPlaceBlock extends PieceTrick {
 	}
 
 	public static void placeBlock(Player player, Level world, BlockPos pos, int slot, boolean particles, boolean conjure, Direction direction, Direction horizontalDirection) {
-		if (!world.hasChunkAt(pos) || !world.mayInteract(player, pos)) {
+		if(!world.hasChunkAt(pos) || !world.mayInteract(player, pos)) {
 			return;
 		}
 
 		BlockState state = world.getBlockState(pos);
 		BlockEvent.EntityPlaceEvent placeEvent = new BlockEvent.EntityPlaceEvent(BlockSnapshot.create(world.dimension(), world, pos), world.getBlockState(pos.relative(Direction.UP)), player);
 		MinecraftForge.EVENT_BUS.post(placeEvent);
-		if (state.isAir() || state.getMaterial().isReplaceable() && !placeEvent.isCanceled()) {
+		if(state.isAir() || state.getMaterial().isReplaceable() && !placeEvent.isCanceled()) {
 
-			if (conjure) {
+			if(conjure) {
 
 				world.setBlockAndUpdate(pos, ModBlocks.conjured.defaultBlockState());
 			} else {
 				ItemStack stack = player.getInventory().getItem(slot);
-				if (!stack.isEmpty() && stack.getItem() instanceof BlockItem) {
+				if(!stack.isEmpty() && stack.getItem() instanceof BlockItem) {
 					ItemStack rem = removeFromInventory(player, stack, true);
 					BlockItem iblock = (BlockItem) rem.getItem();
 
@@ -126,9 +126,9 @@ public class PieceTrickPlaceBlock extends PieceTrick {
 
 					InteractionResult result = iblock.place(new DirectionBlockItemUseContext(newCtx, horizontalDirection));
 
-					if (result != InteractionResult.FAIL) {
+					if(result != InteractionResult.FAIL) {
 						removeFromInventory(player, stack, false);
-						if (player.isCreative()) {
+						if(player.isCreative()) {
 							HUDHandler.setRemaining(rem, -1);
 						} else {
 							HUDHandler.setRemaining(player, rem, null);
@@ -137,25 +137,25 @@ public class PieceTrickPlaceBlock extends PieceTrick {
 				}
 			}
 
-			if (particles) {
+			if(particles) {
 				world.levelEvent(2001, pos, Block.getId(world.getBlockState(pos)));
 			}
 		}
 	}
 
 	public static ItemStack removeFromInventory(Player player, ItemStack stack, boolean copy) {
-		if (player.isCreative()) {
+		if(player.isCreative()) {
 			return stack.copy();
 		}
 
 		Inventory inv = player.getInventory();
-		for (int i = inv.getContainerSize() - 1; i >= 0; i--) {
+		for(int i = inv.getContainerSize() - 1; i >= 0; i--) {
 			ItemStack invStack = inv.getItem(i);
-			if (!invStack.isEmpty() && invStack.sameItem(stack) && ItemStack.matches(stack, invStack)) {
+			if(!invStack.isEmpty() && invStack.sameItem(stack) && ItemStack.matches(stack, invStack)) {
 				ItemStack retStack = invStack.copy();
-				if (!copy) {
+				if(!copy) {
 					invStack.shrink(1);
-					if (invStack.getCount() == 0) {
+					if(invStack.getCount() == 0) {
 						inv.setItem(i, ItemStack.EMPTY);
 					}
 				}

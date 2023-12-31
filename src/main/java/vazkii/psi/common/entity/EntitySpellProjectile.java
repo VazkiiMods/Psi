@@ -105,14 +105,14 @@ public class EntitySpellProjectile extends ThrowableProjectile {
 
 		CompoundTag colorizerCmp = new CompoundTag();
 		ItemStack colorizer = entityData.get(COLORIZER_DATA);
-		if (!colorizer.isEmpty()) {
+		if(!colorizer.isEmpty()) {
 			colorizerCmp = colorizer.save(colorizerCmp);
 		}
 		tagCompound.put(TAG_COLORIZER, colorizerCmp);
 
 		CompoundTag bulletCmp = new CompoundTag();
 		ItemStack bullet = entityData.get(BULLET_DATA);
-		if (!bullet.isEmpty()) {
+		if(!bullet.isEmpty()) {
 			bulletCmp = bullet.save(bulletCmp);
 		}
 		tagCompound.put(TAG_BULLET, bulletCmp);
@@ -137,7 +137,7 @@ public class EntitySpellProjectile extends ThrowableProjectile {
 		entityData.set(BULLET_DATA, bullet);
 
 		Entity thrower = getOwner();
-		if (thrower instanceof Player) {
+		if(thrower instanceof Player) {
 			entityData.set(CASTER_UUID, Optional.of(thrower.getUUID()));
 		}
 
@@ -154,7 +154,7 @@ public class EntitySpellProjectile extends ThrowableProjectile {
 		super.tick();
 
 		int timeAlive = tickCount;
-		if (timeAlive > getLiveTime()) {
+		if(timeAlive > getLiveTime()) {
 			remove(RemovalReason.DISCARDED);
 		}
 
@@ -170,11 +170,11 @@ public class EntitySpellProjectile extends ThrowableProjectile {
 		double z = getZ();
 
 		Vector3 lookOrig = new Vector3(getDeltaMovement()).normalize();
-		for (int i = 0; i < getParticleCount(); i++) {
+		for(int i = 0; i < getParticleCount(); i++) {
 			Vector3 look = lookOrig.copy();
 			double spread = 0.6;
 			double dist = 0.15;
-			if (this instanceof EntitySpellGrenade) {
+			if(this instanceof EntitySpellGrenade) {
 				look.y += 1;
 				dist = 0.05;
 			}
@@ -185,7 +185,7 @@ public class EntitySpellProjectile extends ThrowableProjectile {
 
 			look.normalize().multiply(dist);
 
-			if (level.isClientSide()) {
+			if(level.isClientSide()) {
 				Psi.proxy.sparkleFX(x, y, z, r, g, b, (float) look.x, (float) look.y, (float) look.z, 1.2F, 12);
 			}
 
@@ -202,9 +202,9 @@ public class EntitySpellProjectile extends ThrowableProjectile {
 
 	@Override
 	protected void onHit(@Nonnull HitResult pos) {
-		if (pos instanceof EntityHitResult && ((EntityHitResult) pos).getEntity() instanceof LivingEntity) {
+		if(pos instanceof EntityHitResult && ((EntityHitResult) pos).getEntity() instanceof LivingEntity) {
 			cast((SpellContext context) -> {
-				if (context != null) {
+				if(context != null) {
 					context.attackedEntity = (LivingEntity) ((EntityHitResult) pos).getEntity();
 				}
 			});
@@ -221,13 +221,13 @@ public class EntitySpellProjectile extends ThrowableProjectile {
 		Entity thrower = getOwner();
 		boolean canCast = false;
 
-		if (thrower instanceof Player) {
+		if(thrower instanceof Player) {
 			ItemStack spellContainer = entityData.get(BULLET_DATA);
-			if (!spellContainer.isEmpty() && ISpellAcceptor.isContainer(spellContainer)) {
+			if(!spellContainer.isEmpty() && ISpellAcceptor.isContainer(spellContainer)) {
 				Spell spell = ISpellAcceptor.acceptor(spellContainer).getSpell();
-				if (spell != null) {
+				if(spell != null) {
 					canCast = true;
-					if (context == null) {
+					if(context == null) {
 						context = new SpellContext().setPlayer((Player) thrower).setFocalPoint(this).setSpell(spell);
 					}
 					context.setFocalPoint(this);
@@ -235,11 +235,11 @@ public class EntitySpellProjectile extends ThrowableProjectile {
 			}
 		}
 
-		if (callback != null) {
+		if(callback != null) {
 			callback.accept(context);
 		}
 
-		if (canCast && context != null) {
+		if(canCast && context != null) {
 			context.cspell.safeExecute(context);
 		}
 
@@ -249,7 +249,7 @@ public class EntitySpellProjectile extends ThrowableProjectile {
 	@Override
 	public Entity getOwner() {
 		Entity superThrower = super.getOwner();
-		if (superThrower != null) {
+		if(superThrower != null) {
 			return superThrower;
 		}
 
@@ -265,7 +265,7 @@ public class EntitySpellProjectile extends ThrowableProjectile {
 		return entityData.get(ATTACKTARGET_UUID)
 				.map(u -> {
 					List<LivingEntity> a = getCommandSenderWorld().getEntitiesOfClass(LivingEntity.class, axis, (Entity e) -> e.getUUID().equals(u));
-					if (a.size() > 0) {
+					if(a.size() > 0) {
 						return a.get(0);
 					}
 					return null;

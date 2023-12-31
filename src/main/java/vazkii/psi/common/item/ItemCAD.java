@@ -123,7 +123,7 @@ public class ItemCAD extends Item implements ICAD {
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
 		CADData data = new CADData(stack);
-		if (nbt != null && nbt.contains("Parent", Tag.TAG_COMPOUND)) {
+		if(nbt != null && nbt.contains("Parent", Tag.TAG_COMPOUND)) {
 			data.deserializeNBT(nbt.getCompound("Parent"));
 		}
 		return data;
@@ -140,7 +140,7 @@ public class ItemCAD extends Item implements ICAD {
 	public void readShareTag(ItemStack stack, @Nullable CompoundTag nbt) {
 		super.readShareTag(stack, nbt);
 
-		if (nbt != null) {
+		if(nbt != null) {
 			stack.getCapability(PsiAPI.CAD_DATA_CAPABILITY).ifPresent(data -> data.deserializeNBT(nbt.getCompound("CapabilityData")));
 		}
 	}
@@ -150,13 +150,13 @@ public class ItemCAD extends Item implements ICAD {
 		CompoundTag compound = stack.getOrCreateTag();
 
 		stack.getCapability(PsiAPI.CAD_DATA_CAPABILITY).ifPresent(data -> {
-			if (compound.contains(TAG_TIME_LEGACY, Tag.TAG_ANY_NUMERIC)) {
+			if(compound.contains(TAG_TIME_LEGACY, Tag.TAG_ANY_NUMERIC)) {
 				data.setTime(compound.getInt(TAG_TIME_LEGACY));
 				data.markDirty(true);
 				compound.remove(TAG_TIME_LEGACY);
 			}
 
-			if (compound.contains(TAG_STORED_PSI_LEGACY, Tag.TAG_ANY_NUMERIC)) {
+			if(compound.contains(TAG_STORED_PSI_LEGACY, Tag.TAG_ANY_NUMERIC)) {
 				data.setBattery(compound.getInt(TAG_STORED_PSI_LEGACY));
 				data.markDirty(true);
 				compound.remove(TAG_STORED_PSI_LEGACY);
@@ -164,9 +164,9 @@ public class ItemCAD extends Item implements ICAD {
 
 			Set<String> keys = new HashSet<>(compound.getAllKeys());
 
-			for (String key : keys) {
+			for(String key : keys) {
 				Matcher matcher = VECTOR_PREFIX_PATTERN.matcher(key);
-				if (matcher.find()) {
+				if(matcher.find()) {
 					CompoundTag vec = compound.getCompound(key);
 					compound.remove(key);
 					int memory = Integer.parseInt(matcher.group(1));
@@ -177,7 +177,7 @@ public class ItemCAD extends Item implements ICAD {
 				}
 			}
 
-			if (entityIn instanceof ServerPlayer && data.isDirty()) {
+			if(entityIn instanceof ServerPlayer && data.isDirty()) {
 				ServerPlayer player = (ServerPlayer) entityIn;
 				MessageRegister.sendToPlayer(new MessageCADDataSync(data), player);
 				data.markDirty(false);
@@ -202,8 +202,8 @@ public class ItemCAD extends Item implements ICAD {
 		ItemStack itemStackIn = playerIn.getItemInHand(hand);
 		PlayerData data = PlayerDataHandler.get(playerIn);
 		ItemStack playerCad = PsiAPI.getPlayerCAD(playerIn);
-		if (playerCad != itemStackIn) {
-			if (!worldIn.isClientSide) {
+		if(playerCad != itemStackIn) {
+			if(!worldIn.isClientSide) {
 				playerIn.sendMessage(new TranslatableComponent("psimisc.multiple_cads").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), Util.NIL_UUID);
 			}
 			return new InteractionResultHolder<>(InteractionResult.CONSUME, itemStackIn);
@@ -211,20 +211,20 @@ public class ItemCAD extends Item implements ICAD {
 		ISocketable sockets = getSocketable(playerCad);
 
 		ItemStack bullet = sockets.getSelectedBullet();
-		if (!getComponentInSlot(playerCad, EnumCADComponent.DYE).isEmpty() && ContributorSpellCircleHandler.isContributor(playerIn.getName().getString().toLowerCase(Locale.ROOT))) {
+		if(!getComponentInSlot(playerCad, EnumCADComponent.DYE).isEmpty() && ContributorSpellCircleHandler.isContributor(playerIn.getName().getString().toLowerCase(Locale.ROOT))) {
 			ItemStack dyeStack = getComponentInSlot(playerCad, EnumCADComponent.DYE);
-			if (!((ICADColorizer) dyeStack.getItem()).getContributorName(dyeStack).equalsIgnoreCase(playerIn.getName().getString())) {
+			if(!((ICADColorizer) dyeStack.getItem()).getContributorName(dyeStack).equalsIgnoreCase(playerIn.getName().getString())) {
 				((ICADColorizer) dyeStack.getItem()).setContributorName(dyeStack, playerIn.getName().getString());
 				setCADComponent(playerCad, dyeStack);
 			}
 		}
 		boolean did = cast(worldIn, playerIn, data, bullet, itemStackIn, 40, 25, 0.5F, ctx -> ctx.castFrom = hand).isPresent();
 
-		if (!data.overflowed && bullet.isEmpty() && craft(playerCad, playerIn, null)) {
+		if(!data.overflowed && bullet.isEmpty() && craft(playerCad, playerIn, null)) {
 			worldIn.playSound(null, playerIn.getX(), playerIn.getY(), playerIn.getZ(), PsiSoundHandler.cadShoot, SoundSource.PLAYERS, 0.5F, (float) (0.5 + Math.random() * 0.5));
 			data.deductPsi(100, 60, true);
 
-			if (!data.hasAdvancement(LibPieceGroups.FAKE_LEVEL_PSIDUST)) {
+			if(!data.hasAdvancement(LibPieceGroups.FAKE_LEVEL_PSIDUST)) {
 				MinecraftForge.EVENT_BUS.post(new PieceGroupAdvancementComplete(null, playerIn, LibPieceGroups.FAKE_LEVEL_PSIDUST));
 			}
 			did = true;
@@ -238,21 +238,21 @@ public class ItemCAD extends Item implements ICAD {
 	}
 
 	public static Optional<ArrayList<Entity>> cast(Level world, Player player, PlayerData data, ItemStack bullet, ItemStack cad, int cd, int particles, float sound, Consumer<SpellContext> predicate, int reservoir) {
-		if (!data.overflowed && data.getAvailablePsi() > 0 && !cad.isEmpty() && !bullet.isEmpty() && ISpellAcceptor.hasSpell(bullet) && isTruePlayer(player)) {
+		if(!data.overflowed && data.getAvailablePsi() > 0 && !cad.isEmpty() && !bullet.isEmpty() && ISpellAcceptor.hasSpell(bullet) && isTruePlayer(player)) {
 			ISpellAcceptor spellContainer = ISpellAcceptor.acceptor(bullet);
 			Spell spell = spellContainer.getSpell();
 			SpellContext context = new SpellContext().setPlayer(player).setSpell(spell);
-			if (predicate != null) {
+			if(predicate != null) {
 				predicate.accept(context);
 			}
 
-			if (context.isValid()) {
-				if (context.cspell.metadata.evaluateAgainst(cad)) {
+			if(context.isValid()) {
+				if(context.cspell.metadata.evaluateAgainst(cad)) {
 					int cost = Math.max(getRealCost(cad, bullet, context.cspell.metadata.getStat(EnumSpellStat.COST)) - reservoir, 0);
 					PreSpellCastEvent event = new PreSpellCastEvent(cost, sound, particles, cd, spell, context, player, data, cad, bullet);
-					if (MinecraftForge.EVENT_BUS.post(event)) {
+					if(MinecraftForge.EVENT_BUS.post(event)) {
 						String cancelMessage = event.getCancellationMessage();
-						if (cancelMessage != null && !cancelMessage.isEmpty()) {
+						if(cancelMessage != null && !cancelMessage.isEmpty()) {
 							player.sendMessage(new TranslatableComponent(cancelMessage).setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), Util.NIL_UUID);
 						}
 						return Optional.empty();
@@ -266,19 +266,19 @@ public class ItemCAD extends Item implements ICAD {
 					spell = event.getSpell();
 					context = event.getContext();
 
-					if (cost > 0) {
+					if(cost > 0) {
 						data.deductPsi(cost, cd, true);
 					}
 
-					if (cost != 0 && sound > 0) {
-						if (!world.isClientSide) {
+					if(cost != 0 && sound > 0) {
+						if(!world.isClientSide) {
 							world.playSound(null, player.getX(), player.getY(), player.getZ(), PsiSoundHandler.cadShoot, SoundSource.PLAYERS, sound, (float) (0.5 + Math.random() * 0.5));
 						} else {
 							int color = Psi.proxy.getColorForCAD(cad);
 							float r = PsiRenderHelper.r(color) / 255F;
 							float g = PsiRenderHelper.g(color) / 255F;
 							float b = PsiRenderHelper.b(color) / 255F;
-							for (int i = 0; i < particles; i++) {
+							for(int i = 0; i < particles; i++) {
 								double x = player.getX() + (Math.random() - 0.5) * 2.1 * player.getBbWidth();
 								double y = player.getY() - player.getMyRidingOffset();
 								double z = player.getZ() + (Math.random() - 0.5) * 2.1 * player.getBbWidth();
@@ -290,7 +290,7 @@ public class ItemCAD extends Item implements ICAD {
 							double y = player.getY() + player.getEyeHeight() - 0.1;
 							double z = player.getZ();
 							Vector3 lookOrig = new Vector3(player.getLookAngle());
-							for (int i = 0; i < 25; i++) {
+							for(int i = 0; i < 25; i++) {
 								Vector3 look = lookOrig.copy();
 								double spread = 0.25;
 								look.x += (Math.random() - 0.5) * spread;
@@ -303,12 +303,12 @@ public class ItemCAD extends Item implements ICAD {
 						}
 					}
 					ArrayList<Entity> SpellEntities = new ArrayList<>();
-					if (!world.isClientSide) {
+					if(!world.isClientSide) {
 						SpellEntities = spellContainer.castSpell(context);
 					}
 					MinecraftForge.EVENT_BUS.post(new SpellCastEvent(spell, context, player, data, cad, bullet));
 					return Optional.of(SpellEntities);
-				} else if (!world.isClientSide) {
+				} else if(!world.isClientSide) {
 					player.sendMessage(new TranslatableComponent("psimisc.weak_cad").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), Util.NIL_UUID);
 				}
 			}
@@ -320,7 +320,7 @@ public class ItemCAD extends Item implements ICAD {
 	@Override
 	public boolean craft(ItemStack cad, Player player, PieceCraftingTrick craftingTrick) {
 		Level world = player.level;
-		if (world.isClientSide) {
+		if(world.isClientSide) {
 			return false;
 		}
 
@@ -330,20 +330,20 @@ public class ItemCAD extends Item implements ICAD {
 
 		CraftingWrapper inv = new CraftingWrapper();
 		boolean did = false;
-		for (ItemEntity item : items) {
+		for(ItemEntity item : items) {
 			ItemStack stack = item.getItem();
 			inv.setStack(stack);
 			Predicate<ITrickRecipe> predicate = r -> r.getPiece() == null;
-			if (craftingTrick != null) {
+			if(craftingTrick != null) {
 				predicate = r -> r.getPiece() == null || r.getPiece().canCraft(craftingTrick);
 			}
 
 			Optional<ITrickRecipe> recipe = world.getRecipeManager().getRecipeFor(ModCraftingRecipes.TRICK_RECIPE_TYPE, inv, world)
 					.filter(predicate);
-			if (recipe.isPresent()) {
+			if(recipe.isPresent()) {
 				ItemStack outCopy = recipe.get().getResultItem().copy();
 				int count = stack.getCount() * outCopy.getCount();
-				while (count > 64) {
+				while(count > 64) {
 					int dropCount = world.getRandom().nextInt(32) + 32;
 					ItemEntity drop = new ItemEntity(world, item.getX(), item.getY(), item.getZ(),
 							new ItemStack(outCopy.getItem(), dropCount));
@@ -379,18 +379,18 @@ public class ItemCAD extends Item implements ICAD {
 	}
 
 	public static int getRealCost(ItemStack stack, ItemStack bullet, int cost) {
-		if (!stack.isEmpty() && stack.getItem() instanceof ICAD) {
+		if(!stack.isEmpty() && stack.getItem() instanceof ICAD) {
 			int eff = ((ICAD) stack.getItem()).getStatValue(stack, EnumCADStat.EFFICIENCY);
-			if (eff == -1) {
+			if(eff == -1) {
 				return -1;
 			}
-			if (eff == 0) {
+			if(eff == 0) {
 				return cost;
 			}
 
 			double effPercentile = (double) eff / 100;
 			double procCost = cost / effPercentile;
-			if (!bullet.isEmpty() && ISpellAcceptor.isContainer(bullet)) {
+			if(!bullet.isEmpty() && ISpellAcceptor.isContainer(bullet)) {
 				procCost *= ISpellAcceptor.acceptor(bullet).getCostModifier();
 			}
 
@@ -401,7 +401,7 @@ public class ItemCAD extends Item implements ICAD {
 	}
 
 	public static boolean isTruePlayer(Entity e) {
-		if (!(e instanceof Player)) {
+		if(!(e instanceof Player)) {
 			return false;
 		}
 
@@ -412,7 +412,7 @@ public class ItemCAD extends Item implements ICAD {
 	}
 
 	public static void setComponent(ItemStack stack, ItemStack componentStack) {
-		if (stack.getItem() instanceof ICAD) {
+		if(stack.getItem() instanceof ICAD) {
 			((ICAD) stack.getItem()).setCADComponent(stack, componentStack);
 		}
 	}
@@ -433,7 +433,7 @@ public class ItemCAD extends Item implements ICAD {
 
 	public static ItemStack makeCAD(ItemStack base, List<ItemStack> components) {
 		ItemStack stack = base.copy();
-		for (ItemStack component : components) {
+		for(ItemStack component : components) {
 			setComponent(stack, component);
 		}
 		return stack;
@@ -444,7 +444,7 @@ public class ItemCAD extends Item implements ICAD {
 		String name = TAG_COMPONENT_PREFIX + type.name();
 		CompoundTag cmp = stack.getOrCreateTag().getCompound(name);
 
-		if (cmp.isEmpty()) {
+		if(cmp.isEmpty()) {
 			return ItemStack.EMPTY;
 		}
 
@@ -455,7 +455,7 @@ public class ItemCAD extends Item implements ICAD {
 	public int getStatValue(ItemStack stack, EnumCADStat stat) {
 		int statValue = 0;
 		ItemStack componentStack = getComponentInSlot(stack, stat.getSourceType());
-		if (!componentStack.isEmpty() && componentStack.getItem() instanceof ICADComponent) {
+		if(!componentStack.isEmpty() && componentStack.getItem() instanceof ICADComponent) {
 			ICADComponent component = (ICADComponent) componentStack.getItem();
 			statValue = component.getCADStatValue(componentStack, stat);
 		}
@@ -469,7 +469,7 @@ public class ItemCAD extends Item implements ICAD {
 	@OnlyIn(Dist.CLIENT)
 	public int getSpellColor(ItemStack stack) {
 		ItemStack dye = getComponentInSlot(stack, EnumCADComponent.DYE);
-		if (!dye.isEmpty() && dye.getItem() instanceof ICADColorizer) {
+		if(!dye.isEmpty() && dye.getItem() instanceof ICADColorizer) {
 			return ((ICADColorizer) dye.getItem()).getColor(dye);
 		}
 		return ICADColorizer.DEFAULT_SPELL_COLOR;
@@ -496,14 +496,14 @@ public class ItemCAD extends Item implements ICAD {
 	@Override
 	public void regenPsi(ItemStack stack, int psi) {
 		int maxPsi = getStatValue(stack, EnumCADStat.OVERFLOW);
-		if (maxPsi == -1) {
+		if(maxPsi == -1) {
 			return;
 		}
 
 		int currPsi = getStoredPsi(stack);
 		int endPsi = Math.min(currPsi + psi, maxPsi);
 
-		if (endPsi != currPsi) {
+		if(endPsi != currPsi) {
 			ICADData data = getCADData(stack);
 			data.setBattery(endPsi);
 			data.markDirty(true);
@@ -512,19 +512,19 @@ public class ItemCAD extends Item implements ICAD {
 
 	@Override
 	public int consumePsi(ItemStack stack, int psi) {
-		if (psi == 0) {
+		if(psi == 0) {
 			return 0;
 		}
 
 		int currPsi = getStoredPsi(stack);
 
-		if (currPsi == -1) {
+		if(currPsi == -1) {
 			return 0;
 		}
 
 		ICADData data = getCADData(stack);
 
-		if (currPsi >= psi) {
+		if(currPsi >= psi) {
 			data.setBattery(currPsi - psi);
 			data.markDirty(true);
 			return 0;
@@ -538,7 +538,7 @@ public class ItemCAD extends Item implements ICAD {
 	@Override
 	public int getMemorySize(ItemStack stack) {
 		int vectors = getStatValue(stack, EnumCADStat.SAVED_VECTORS);
-		if (vectors == -1) {
+		if(vectors == -1) {
 			return 0xFF;
 		}
 		return vectors;
@@ -547,7 +547,7 @@ public class ItemCAD extends Item implements ICAD {
 	@Override
 	public void setStoredVector(ItemStack stack, int memorySlot, Vector3 vec) throws SpellRuntimeException {
 		int size = getMemorySize(stack);
-		if (memorySlot < 0 || memorySlot >= size) {
+		if(memorySlot < 0 || memorySlot >= size) {
 			throw new SpellRuntimeException(SpellRuntimeException.MEMORY_OUT_OF_BOUNDS);
 		}
 		getCADData(stack).setSavedVector(memorySlot, vec);
@@ -556,7 +556,7 @@ public class ItemCAD extends Item implements ICAD {
 	@Override
 	public Vector3 getStoredVector(ItemStack stack, int memorySlot) throws SpellRuntimeException {
 		int size = getMemorySize(stack);
-		if (memorySlot < 0 || memorySlot >= size) {
+		if(memorySlot < 0 || memorySlot >= size) {
 			throw new SpellRuntimeException(SpellRuntimeException.MEMORY_OUT_OF_BOUNDS);
 		}
 		return getCADData(stack).getSavedVector(memorySlot);
@@ -564,11 +564,11 @@ public class ItemCAD extends Item implements ICAD {
 
 	@Override
 	public boolean isCorrectToolForDrops(ItemStack stack, @Nonnull BlockState state) {
-		if (!PieceTrickBreakBlock.doingHarvestCheck.get()) {
+		if(!PieceTrickBreakBlock.doingHarvestCheck.get()) {
 			return super.isCorrectToolForDrops(stack, state);
 		}
 		int level = ConfigHandler.COMMON.cadHarvestLevel.get(); //TODO revisit for better checking of harvestability
-		if (level >= 0) {
+		if(level >= 0) {
 			return PieceTrickBreakBlock.canHarvest(level, state);
 		}
 		return false;
@@ -576,7 +576,7 @@ public class ItemCAD extends Item implements ICAD {
 
 	@Override
 	public void fillItemCategory(@Nonnull CreativeModeTab tab, @Nonnull NonNullList<ItemStack> subItems) {
-		if (!allowdedIn(tab)) {
+		if(!allowdedIn(tab)) {
 			return;
 		}
 
@@ -628,18 +628,18 @@ public class ItemCAD extends Item implements ICAD {
 			Component componentName = ISocketable.getSocketedItemName(stack, "psimisc.none");
 			tooltip.add(new TranslatableComponent("psimisc.spell_selected", componentName));
 
-			for (EnumCADComponent componentType : EnumCADComponent.class.getEnumConstants()) {
+			for(EnumCADComponent componentType : EnumCADComponent.class.getEnumConstants()) {
 				ItemStack componentStack = getComponentInSlot(stack, componentType);
 				Component name = new TranslatableComponent("psimisc.none");
-				if (!componentStack.isEmpty()) {
+				if(!componentStack.isEmpty()) {
 					name = componentStack.getHoverName();
 				}
 
 				MutableComponent componentTypeName = new TranslatableComponent(componentType.getName()).withStyle(ChatFormatting.GREEN);
 				tooltip.add(componentTypeName.append(": ").append(name));
 
-				for (EnumCADStat stat : EnumCADStat.class.getEnumConstants()) {
-					if (stat.getSourceType() == componentType) {
+				for(EnumCADStat stat : EnumCADStat.class.getEnumConstants()) {
+					if(stat.getSourceType() == componentType) {
 						String shrt = stat.getName();
 						int statVal = getStatValue(stack, stat);
 						String statValStr = statVal == -1 ? "\u221E" : "" + statVal;

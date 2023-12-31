@@ -43,11 +43,11 @@ public class BookSoundHandler {
 
 	@SubscribeEvent
 	public static void clientTick(TickEvent.ClientTickEvent evt) {
-		if (bookTime > 0) {
+		if(bookTime > 0) {
 			bookTime--;
 		}
 
-		if (!isBookOpen()) {
+		if(!isBookOpen()) {
 			nextLetter = 0;
 		}
 	}
@@ -55,10 +55,10 @@ public class BookSoundHandler {
 	@SubscribeEvent
 	public static void handleInput(InputEvent.KeyInputEvent evt) {
 		Minecraft mc = Minecraft.getInstance();
-		if (evt.getModifiers() == 0 && evt.getAction() == GLFW.GLFW_PRESS && isBookOpen()) {
-			if (bookTime == 0 && evt.getKey() == SECRET_CODE[nextLetter]) {
+		if(evt.getModifiers() == 0 && evt.getAction() == GLFW.GLFW_PRESS && isBookOpen()) {
+			if(bookTime == 0 && evt.getKey() == SECRET_CODE[nextLetter]) {
 				nextLetter++;
-				if (nextLetter >= SECRET_CODE.length) {
+				if(nextLetter >= SECRET_CODE.length) {
 					mc.getSoundManager().play(SimpleSoundInstance.forUI(PsiSoundHandler.book, 1.0F));
 					nextLetter = 0;
 					bookTime = 320;

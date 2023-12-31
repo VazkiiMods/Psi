@@ -47,14 +47,14 @@ public class StatusWidget extends AbstractWidget {
 		blit(ms, parent.left - 48, parent.top + 5, parent.xSize, 0, 48, 30);
 		blit(ms, parent.left - 16, parent.top + 13, parent.compileResult.right().isPresent() ? 12 : 0, parent.ySize + 28, 12, 12);
 
-		if (mouseX > parent.left - 16 - 1 && mouseY > parent.top + 13 - 1 && mouseX < parent.left - 16 + 13 && mouseY < parent.top + 13 + 13) {
-			if (parent.compileResult.right().isPresent()) {
+		if(mouseX > parent.left - 16 - 1 && mouseY > parent.top + 13 - 1 && mouseX < parent.left - 16 + 13 && mouseY < parent.top + 13 + 13) {
+			if(parent.compileResult.right().isPresent()) {
 				// no such thing as ifPresentOrElse in J8, sadly
 				SpellCompilationException ex = parent.compileResult.right().get();
 				parent.tooltip.add(new TranslatableComponent("psimisc.errored").withStyle(ChatFormatting.RED));
 				parent.tooltip.add(new TranslatableComponent(ex.getMessage()).withStyle(ChatFormatting.GRAY));
 				Pair<Integer, Integer> errorPos = ex.location;
-				if (errorPos != null && errorPos.getRight() != -1 && errorPos.getLeft() != -1) {
+				if(errorPos != null && errorPos.getRight() != -1 && errorPos.getLeft() != -1) {
 					parent.tooltip.add(new TextComponent("[" + GuiProgrammer.convertIntToLetter((errorPos.getLeft() + 1)) + ", " + (errorPos.getRight() + 1) + "]").withStyle(ChatFormatting.GRAY));
 				}
 			} else {
@@ -63,13 +63,13 @@ public class StatusWidget extends AbstractWidget {
 		}
 
 		ItemStack cad = PsiAPI.getPlayerCAD(parent.getMinecraft().player);
-		if (!cad.isEmpty()) {
+		if(!cad.isEmpty()) {
 			int cadX = parent.left - 42;
 			int cadY = parent.top + 12;
 
 			PsiRenderHelper.transferMsToGl(ms, () -> parent.getMinecraft().getItemRenderer().renderAndDecorateItem(cad, cadX, cadY));
 
-			if (mouseX > cadX && mouseY > cadY && mouseX < cadX + 16 && mouseY < cadY + 16) {
+			if(mouseX > cadX && mouseY > cadY && mouseX < cadX + 16 && mouseY < cadY + 16) {
 				parent.tooltip.addAll(cad.getTooltipLines(parent.getMinecraft().player, parent.tooltipFlag));
 			}
 		}

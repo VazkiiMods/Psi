@@ -37,7 +37,7 @@ public class PieceOperatorModulus extends PieceOperator {
 		double d1 = this.getParamValue(context, num1).doubleValue();
 		double d2 = this.getParamValue(context, num2).doubleValue();
 
-		if (d2 == 0) {
+		if(d2 == 0) {
 			throw new SpellRuntimeException(SpellRuntimeException.DIVIDE_BY_ZERO);
 		}
 

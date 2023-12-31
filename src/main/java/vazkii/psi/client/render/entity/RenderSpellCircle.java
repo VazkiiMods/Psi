@@ -35,7 +35,7 @@ public class RenderSpellCircle extends EntityRenderer<EntitySpellCircle> {
 
 	private static final RenderType[] LAYERS = new RenderType[3];
 	static {
-		for (int i = 0; i < LAYERS.length; i++) {
+		for(int i = 0; i < LAYERS.length; i++) {
 			ResourceLocation texture = new ResourceLocation(String.format(LibResources.MISC_SPELL_CIRCLE, i));
 			RenderType.CompositeState glState = RenderType.CompositeState.builder().setTextureState(new RenderStateShard.TextureStateShard(texture, false, false))
 					.setCullState(new RenderStateShard.CullStateShard(false))
@@ -62,7 +62,7 @@ public class RenderSpellCircle extends EntityRenderer<EntitySpellCircle> {
 		int color = Psi.proxy.getColorForColorizer(colorizer);
 		float alive = entity.getTimeAlive() + partialTicks;
 		float scale = Math.min(1F, alive / EntitySpellCircle.CAST_DELAY);
-		if (alive > EntitySpellCircle.LIVE_TIME - EntitySpellCircle.CAST_DELAY) {
+		if(alive > EntitySpellCircle.LIVE_TIME - EntitySpellCircle.CAST_DELAY) {
 			scale = 1F - Math.min(1F, Math.max(0, alive - (EntitySpellCircle.LIVE_TIME - EntitySpellCircle.CAST_DELAY)) / EntitySpellCircle.CAST_DELAY);
 		}
 		renderSpellCircle(alive, scale, 1, 0, 1, 0, color, ms, buffers);
@@ -77,9 +77,9 @@ public class RenderSpellCircle extends EntityRenderer<EntitySpellCircle> {
 		float mag = xDir * xDir + yDir * yDir + zDir * zDir;
 		zDir /= mag;
 
-		if (zDir == -1) {
+		if(zDir == -1) {
 			ms.mulPose(Vector3f.XP.rotationDegrees(180));
-		} else if (zDir != 1) {
+		} else if(zDir != 1) {
 			ms.mulPose(new Vector3f(-yDir / mag, xDir / mag, 0).rotationDegrees((float) (Math.acos(zDir) * 180 / Math.PI)));
 		}
 		ms.translate(0, 0, 0.1);
@@ -89,25 +89,25 @@ public class RenderSpellCircle extends EntityRenderer<EntitySpellCircle> {
 		int g = PsiRenderHelper.g(color);
 		int b = PsiRenderHelper.b(color);
 
-		for (int i = 0; i < LAYERS.length; i++) {
+		for(int i = 0; i < LAYERS.length; i++) {
 			int rValue = r;
 			int gValue = g;
 			int bValue = b;
 
-			if (i == 1) {
+			if(i == 1) {
 				rValue = gValue = bValue = 0xFF;
-			} else if (i == 2) {
+			} else if(i == 2) {
 				int minBrightness = (int) (1 / (1 - BRIGHTNESS_FACTOR));
-				if (rValue == 0 && gValue == 0 && bValue == 0) {
+				if(rValue == 0 && gValue == 0 && bValue == 0) {
 					rValue = gValue = bValue = minBrightness;
 				}
-				if (rValue > 0 && rValue < minBrightness) {
+				if(rValue > 0 && rValue < minBrightness) {
 					rValue = minBrightness;
 				}
-				if (gValue > 0 && gValue < minBrightness) {
+				if(gValue > 0 && gValue < minBrightness) {
 					gValue = minBrightness;
 				}
-				if (bValue > 0 && bValue < minBrightness) {
+				if(bValue > 0 && bValue < minBrightness) {
 					bValue = minBrightness;
 				}
 

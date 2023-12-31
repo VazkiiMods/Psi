@@ -37,7 +37,7 @@ public class GuiButtonSpellPiece extends Button {
 
 	@Override
 	public void renderButton(PoseStack ms, int mouseX, int mouseY, float pTicks) {
-		if (active && visible) {
+		if(active && visible) {
 			boolean hover = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
 
 			MultiBufferSource.BufferSource buffers = MultiBufferSource.immediate(Tesselator.getInstance().getBuilder());
@@ -47,7 +47,7 @@ public class GuiButtonSpellPiece extends Button {
 			buffers.endBatch();
 			ms.popPose();
 			RenderSystem.setShaderTexture(0, GuiProgrammer.texture);
-			if (hover) {
+			if(hover) {
 				piece.getTooltip(gui.tooltip);
 				blit(ms, x, y, 16, gui.ySize, 16, 16);
 			}

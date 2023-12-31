@@ -77,7 +77,7 @@ public class BlockProgrammer extends HorizontalDirectionalBlock implements Entit
 
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext ctx) {
-		switch (state.getValue(FACING)) {
+		switch(state.getValue(FACING)) {
 		default:
 		case NORTH:
 			return SHAPE_NORTH;
@@ -94,24 +94,24 @@ public class BlockProgrammer extends HorizontalDirectionalBlock implements Entit
 	public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand hand, BlockHitResult rayTraceResult) {
 		ItemStack heldItem = player.getItemInHand(hand);
 		TileProgrammer programmer = (TileProgrammer) worldIn.getBlockEntity(pos);
-		if (programmer == null) {
+		if(programmer == null) {
 			return InteractionResult.PASS;
 		}
 
 		InteractionResult result = setSpell(worldIn, pos, player, heldItem);
-		if (result == InteractionResult.SUCCESS) {
+		if(result == InteractionResult.SUCCESS) {
 			return InteractionResult.SUCCESS;
 		}
 
 		boolean enabled = programmer.isEnabled();
-		if (!enabled || programmer.playerLock.isEmpty()) {
+		if(!enabled || programmer.playerLock.isEmpty()) {
 			programmer.playerLock = player.getName().getString();
 		}
 
-		if (player instanceof ServerPlayer) {
+		if(player instanceof ServerPlayer) {
 			VanillaPacketDispatcher.dispatchTEToPlayer(programmer, (ServerPlayer) player);
 		}
-		if (worldIn.isClientSide) {
+		if(worldIn.isClientSide) {
 			Psi.proxy.openProgrammerGUI(programmer);
 		}
 		return InteractionResult.SUCCESS;
@@ -119,27 +119,27 @@ public class BlockProgrammer extends HorizontalDirectionalBlock implements Entit
 
 	public InteractionResult setSpell(Level worldIn, BlockPos pos, Player playerIn, ItemStack heldItem) {
 		TileProgrammer programmer = (TileProgrammer) worldIn.getBlockEntity(pos);
-		if (programmer == null) {
+		if(programmer == null) {
 			return InteractionResult.FAIL;
 		}
 
 		boolean enabled = programmer.isEnabled();
 
 		LazyOptional<ISpellAcceptor> settable = heldItem.getCapability(PsiAPI.SPELL_ACCEPTOR_CAPABILITY);
-		if (enabled && !heldItem.isEmpty() && settable.isPresent() && programmer.spell != null && (playerIn.isShiftKeyDown() || !settable.orElse(null).requiresSneakForSpellSet())) {
-			if (programmer.canCompile()) {
-				if (!worldIn.isClientSide) {
+		if(enabled && !heldItem.isEmpty() && settable.isPresent() && programmer.spell != null && (playerIn.isShiftKeyDown() || !settable.orElse(null).requiresSneakForSpellSet())) {
+			if(programmer.canCompile()) {
+				if(!worldIn.isClientSide) {
 					worldIn.playSound(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, PsiSoundHandler.bulletCreate, SoundSource.BLOCKS, 0.5F, 1F);
 				}
 
 				programmer.spell.uuid = UUID.randomUUID();
 				settable.ifPresent(c -> c.setSpell(playerIn, programmer.spell));
-				if (playerIn instanceof ServerPlayer) {
+				if(playerIn instanceof ServerPlayer) {
 					VanillaPacketDispatcher.dispatchTEToPlayer(programmer, (ServerPlayer) playerIn);
 				}
 				return InteractionResult.SUCCESS;
 			} else {
-				if (!worldIn.isClientSide) {
+				if(!worldIn.isClientSide) {
 					worldIn.playSound(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, PsiSoundHandler.compileError, SoundSource.BLOCKS, 0.5F, 1F);
 				}
 				return InteractionResult.FAIL;
@@ -175,12 +175,12 @@ public class BlockProgrammer extends HorizontalDirectionalBlock implements Entit
 	@SuppressWarnings("deprecation")
 	public int getAnalogOutputSignal(BlockState blockState, Level worldIn, BlockPos pos) {
 		BlockEntity tile = worldIn.getBlockEntity(pos);
-		if (tile instanceof TileProgrammer) {
+		if(tile instanceof TileProgrammer) {
 			TileProgrammer programmer = (TileProgrammer) tile;
 
-			if (programmer.canCompile()) {
+			if(programmer.canCompile()) {
 				return 2;
-			} else if (programmer.isEnabled()) {
+			} else if(programmer.isEnabled()) {
 				return 1;
 			} else {
 				return 0;

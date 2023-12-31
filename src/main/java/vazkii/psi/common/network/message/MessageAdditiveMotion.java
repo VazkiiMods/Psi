@@ -49,9 +49,9 @@ public class MessageAdditiveMotion {
 	public boolean receive(Supplier<NetworkEvent.Context> context) {
 		context.get().enqueueWork(() -> {
 			Level world = Psi.proxy.getClientWorld();
-			if (world != null) {
+			if(world != null) {
 				Entity entity = world.getEntity(entityID);
-				if (entity != null) {
+				if(entity != null) {
 					entity.setDeltaMovement(entity.getDeltaMovement().add(motionX, motionY, motionZ));
 				}
 			}

@@ -47,24 +47,24 @@ public class SideConfigWidget extends AbstractWidget {
 	@Override
 	public void renderButton(PoseStack ms, int mouseX, int mouseY, float pTicks) {
 		SpellPiece piece = null;
-		if (SpellGrid.exists(GuiProgrammer.selectedX, GuiProgrammer.selectedY)) {
+		if(SpellGrid.exists(GuiProgrammer.selectedX, GuiProgrammer.selectedY)) {
 			piece = parent.spell.grid.gridData[GuiProgrammer.selectedX][GuiProgrammer.selectedY];
 		}
-		if (configEnabled && !parent.takingScreenshot) {
+		if(configEnabled && !parent.takingScreenshot) {
 			blit(ms, parent.left - 81, parent.top + 55, parent.xSize, 30, 81, 115);
 			String configStr = I18n.get("psimisc.config");
 			parent.getMinecraft().font.draw(ms, configStr, parent.left - parent.getMinecraft().font.width(configStr) - 2, parent.top + 45, 0xFFFFFF);
 
 			int i = 0;
-			if (piece != null) {
+			if(piece != null) {
 				int param = -1;
-				for (int j = 0; j < 4; j++) {
-					if (InputConstants.isKeyDown(parent.getMinecraft().getWindow().getWindow(), GLFW.GLFW_KEY_1 + j)) {
+				for(int j = 0; j < 4; j++) {
+					if(InputConstants.isKeyDown(parent.getMinecraft().getWindow().getWindow(), GLFW.GLFW_KEY_1 + j)) {
 						param = j;
 					}
 				}
 
-				for (String s : piece.params.keySet()) {
+				for(String s : piece.params.keySet()) {
 					int x = parent.left - 75;
 					int y = parent.top + 70 + i * 26;
 
@@ -73,7 +73,7 @@ public class SideConfigWidget extends AbstractWidget {
 					blit(ms, x + 50, y - 8, parent.xSize, 145, 24, 24);
 
 					String localized = I18n.get(s);
-					if (i == param) {
+					if(i == param) {
 						localized = ChatFormatting.UNDERLINE + localized;
 					}
 

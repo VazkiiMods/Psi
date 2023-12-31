@@ -54,20 +54,20 @@ public class PieceTrickSmite extends PieceTrick {
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		Vector3 positionVal = this.getParamValue(context, position);
 
-		if (positionVal == null) {
+		if(positionVal == null) {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
 		}
-		if (!context.isInRadius(positionVal)) {
+		if(!context.isInRadius(positionVal)) {
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 		}
 
 		BlockEvent.EntityPlaceEvent placeEvent = new BlockEvent.EntityPlaceEvent(BlockSnapshot.create(context.focalPoint.getCommandSenderWorld().dimension(), context.focalPoint.getCommandSenderWorld(), positionVal.toBlockPos()), context.focalPoint.getCommandSenderWorld().getBlockState(positionVal.toBlockPos().relative(Direction.UP)), context.caster);
 		MinecraftForge.EVENT_BUS.post(placeEvent);
-		if (placeEvent.isCanceled()) {
+		if(placeEvent.isCanceled()) {
 			return null;
 		}
 
-		if (context.focalPoint.getCommandSenderWorld() instanceof ServerLevel) {
+		if(context.focalPoint.getCommandSenderWorld() instanceof ServerLevel) {
 			LightningBolt lightning = new LightningBolt(EntityType.LIGHTNING_BOLT, context.caster.level);
 			lightning.setPosRaw(positionVal.x, positionVal.y, positionVal.z);
 			((ServerLevel) context.focalPoint.getCommandSenderWorld()).addFreshEntity(lightning);

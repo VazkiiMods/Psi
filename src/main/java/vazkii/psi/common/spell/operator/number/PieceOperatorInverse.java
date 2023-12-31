@@ -32,7 +32,7 @@ public class PieceOperatorInverse extends PieceOperator {
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		double d = this.getParamValue(context, num).doubleValue();
 
-		if (d == 0) {
+		if(d == 0) {
 			throw new SpellRuntimeException(SpellRuntimeException.DIVIDE_BY_ZERO);
 		}
 

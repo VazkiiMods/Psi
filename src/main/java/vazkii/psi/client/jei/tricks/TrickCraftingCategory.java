@@ -100,11 +100,11 @@ public class TrickCraftingCategory implements IRecipeCategory<ITrickRecipe> {
 
 	@Override
 	public void draw(ITrickRecipe recipe, PoseStack matrixStack, double mouseX, double mouseY) {
-		if (recipe.getPiece() != null) {
+		if(recipe.getPiece() != null) {
 			IDrawable trickIcon = trickIcons.computeIfAbsent(recipe.getPiece().registryKey,
 					key -> {
 						Material mat = ClientPsiAPI.getSpellPieceMaterial(key);
-						if (mat == null) {
+						if(mat == null) {
 							Psi.logger.warn("Not rendering complex (or missing) render for {}", key);
 							return helper.createBlankDrawable(16, 16);
 						}
@@ -113,7 +113,7 @@ public class TrickCraftingCategory implements IRecipeCategory<ITrickRecipe> {
 
 			trickIcon.draw(matrixStack, trickX, trickY);
 
-			if (onTrick(mouseX, mouseY)) {
+			if(onTrick(mouseX, mouseY)) {
 				programmerHover.draw(matrixStack, trickX, trickY);
 			}
 		}
@@ -122,7 +122,7 @@ public class TrickCraftingCategory implements IRecipeCategory<ITrickRecipe> {
 	@Nonnull
 	@Override
 	public List<Component> getTooltipStrings(ITrickRecipe recipe, double mouseX, double mouseY) {
-		if (recipe.getPiece() != null && onTrick(mouseX, mouseY)) {
+		if(recipe.getPiece() != null && onTrick(mouseX, mouseY)) {
 			List<Component> tooltip = new ArrayList<>();
 			recipe.getPiece().getTooltip(tooltip);
 			return tooltip;

@@ -32,7 +32,7 @@ public class InventorySocketable implements Container, Nameable, ContainerData {
 	private ISocketable socketable;
 
 	public InventorySocketable(ItemStack stack) {
-		if (stack.isEmpty()) {
+		if(stack.isEmpty()) {
 			socketable = null;
 		} else {
 			socketable = ISocketable.socketable(stack);
@@ -40,7 +40,7 @@ public class InventorySocketable implements Container, Nameable, ContainerData {
 	}
 
 	public void setStack(ItemStack stack) {
-		if (stack.isEmpty()) {
+		if(stack.isEmpty()) {
 			socketable = null;
 		} else {
 			socketable = ISocketable.socketable(stack);
@@ -48,7 +48,7 @@ public class InventorySocketable implements Container, Nameable, ContainerData {
 	}
 
 	private Iterator<ItemStack> getSockerator() {
-		if (socketable == null) {
+		if(socketable == null) {
 			return Collections.emptyIterator();
 		}
 		return new IteratorSocketable(socketable);
@@ -63,8 +63,8 @@ public class InventorySocketable implements Container, Nameable, ContainerData {
 	@Override
 	public boolean isEmpty() {
 		Iterator<ItemStack> sockerator = getSockerator();
-		while (sockerator.hasNext()) {
-			if (!sockerator.next().isEmpty()) {
+		while(sockerator.hasNext()) {
+			if(!sockerator.next().isEmpty()) {
 				return false;
 			}
 		}
@@ -74,7 +74,7 @@ public class InventorySocketable implements Container, Nameable, ContainerData {
 	@Nonnull
 	@Override
 	public ItemStack getItem(int index) {
-		if (socketable == null) {
+		if(socketable == null) {
 			return ItemStack.EMPTY;
 		}
 		return socketable.getBulletInSocket(index);
@@ -83,12 +83,12 @@ public class InventorySocketable implements Container, Nameable, ContainerData {
 	@Nonnull
 	@Override
 	public ItemStack removeItem(int index, int count) {
-		if (socketable == null) {
+		if(socketable == null) {
 			return ItemStack.EMPTY;
 		}
 
 		ItemStack bullet = socketable.getBulletInSocket(index);
-		if (!bullet.isEmpty()) {
+		if(!bullet.isEmpty()) {
 			socketable.setBulletInSocket(index, ItemStack.EMPTY);
 		}
 		return bullet;
@@ -102,7 +102,7 @@ public class InventorySocketable implements Container, Nameable, ContainerData {
 
 	@Override
 	public void setItem(int index, @Nonnull ItemStack bullet) {
-		if (socketable == null) {
+		if(socketable == null) {
 			return;
 		}
 
@@ -157,7 +157,7 @@ public class InventorySocketable implements Container, Nameable, ContainerData {
 	@Override
 	public void clearContent() {
 		Iterator<ItemStack> sockerator = getSockerator();
-		while (sockerator.hasNext()) {
+		while(sockerator.hasNext()) {
 			sockerator.next();
 			sockerator.remove();
 		}

@@ -62,12 +62,12 @@ public class PiecePanelWidget extends AbstractWidget implements Widget, GuiEvent
 
 	@Override
 	public void renderButton(PoseStack ms, int mouseX, int mouseY, float pTicks) {
-		if (panelEnabled) {
+		if(panelEnabled) {
 			RenderSystem.setShaderTexture(0, GuiProgrammer.texture);
 
 			fill(ms, x, y, x + width, y + height, 0x88000000);
 
-			if (visibleButtons.size() > 0) {
+			if(visibleButtons.size() > 0) {
 				Button button = visibleButtons.get(Math.max(0, Math.min(panelCursor + (page * PIECES_PER_PAGE), visibleButtons.size() - 1)));
 				int panelPieceX = button.x;
 				int panelPieceY = button.y;
@@ -84,9 +84,9 @@ public class PiecePanelWidget extends AbstractWidget implements Widget, GuiEvent
 
 	@Override
 	public boolean mouseScrolled(double par1, double par2, double par3) {
-		if (panelEnabled && par3 != 0) {
+		if(panelEnabled && par3 != 0) {
 			int next = (int) (page - par3 / Math.abs(par3));
-			if (next >= 0 && next < getPageCount()) {
+			if(next >= 0 && next < getPageCount()) {
 				page = next;
 				updatePanelButtons();
 			}
@@ -96,7 +96,7 @@ public class PiecePanelWidget extends AbstractWidget implements Widget, GuiEvent
 
 	@Override
 	public boolean charTyped(char p_charTyped_1_, int p_charTyped_2_) {
-		if (panelEnabled) {
+		if(panelEnabled) {
 			return searchField.charTyped(p_charTyped_1_, p_charTyped_2_);
 		}
 		return false;
@@ -104,21 +104,21 @@ public class PiecePanelWidget extends AbstractWidget implements Widget, GuiEvent
 
 	@Override
 	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-		if (panelEnabled) {
-			switch (keyCode) {
+		if(panelEnabled) {
+			switch(keyCode) {
 			case GLFW.GLFW_KEY_ESCAPE:
 				closePanel();
 				return true;
 			case GLFW.GLFW_KEY_ENTER:
-				if (visibleButtons.size() >= 1) {
+				if(visibleButtons.size() >= 1) {
 					visibleButtons.get(panelCursor).onPress();
 					return true;
 				}
 				return false;
 			case GLFW.GLFW_KEY_TAB:
-				if (visibleButtons.size() >= 1) {
+				if(visibleButtons.size() >= 1) {
 					int newCursor = panelCursor + (Screen.hasAltDown() ? -1 : 1);
-					if (newCursor >= (Math.min(visibleButtons.size(), 25))) {
+					if(newCursor >= (Math.min(visibleButtons.size(), 25))) {
 						panelCursor = 0;
 
 						return true;
@@ -142,30 +142,30 @@ public class PiecePanelWidget extends AbstractWidget implements Widget, GuiEvent
 		ProgrammerPopulateEvent event = new ProgrammerPopulateEvent(parent.getMinecraft().player, PsiAPI.getSpellPieceRegistry());
 		List<SpellPiece> shownPieces = new ArrayList<>();
 		MinecraftForge.EVENT_BUS.post(event);
-		for (ResourceLocation key : event.getSpellPieceRegistry().keySet()) {
+		for(ResourceLocation key : event.getSpellPieceRegistry().keySet()) {
 			Class<? extends SpellPiece> clazz = event.getSpellPieceRegistry().getOptional(key).get();
 			ResourceLocation group = PsiAPI.getGroupForPiece(clazz);
 
-			if (!parent.getMinecraft().player.isCreative() && (group == null || !playerData.isPieceGroupUnlocked(group, key))) {
+			if(!parent.getMinecraft().player.isCreative() && (group == null || !playerData.isPieceGroupUnlocked(group, key))) {
 				continue;
 			}
 
 			SpellPiece piece = SpellPiece.create(clazz, parent.spell);
 			shownPieces.clear();
 			piece.getShownPieces(shownPieces);
-			for (SpellPiece shownPiece : shownPieces) {
+			for(SpellPiece shownPiece : shownPieces) {
 				GuiButtonSpellPiece spellPieceButton = new GuiButtonSpellPiece(parent, shownPiece, 0, 0, button -> {
-					if (parent.isSpectator()) {
+					if(parent.isSpectator()) {
 						return;
 					}
 					parent.pushState(true);
 					SpellPiece piece1 = ((GuiButtonSpellPiece) button).piece.copyFromSpell(parent.spell);
-					if (piece1.getPieceType() == EnumPieceType.TRICK && parent.spellNameField.getValue().isEmpty()) {
+					if(piece1.getPieceType() == EnumPieceType.TRICK && parent.spellNameField.getValue().isEmpty()) {
 						String pieceName = I18n.get(piece1.getUnlocalizedName());
 						String patternStr = I18n.get("psimisc.trick_pattern");
 						Pattern pattern = Pattern.compile(patternStr);
 						Matcher matcher = pattern.matcher(pieceName);
-						if (matcher.matches()) {
+						if(matcher.matches()) {
 							String spellName = matcher.group(1);
 							parent.spellNameField.setValue(spellName);
 							parent.spell.name = spellName;
@@ -192,7 +192,7 @@ public class PiecePanelWidget extends AbstractWidget implements Widget, GuiEvent
 			int max = getPageCount();
 			int next = page + (((GuiButtonPage) button).right ? 1 : -1);
 
-			if (next >= 0 && next < max) {
+			if(next >= 0 && next < max) {
 				page = next;
 				updatePanelButtons();
 			}
@@ -201,7 +201,7 @@ public class PiecePanelWidget extends AbstractWidget implements Widget, GuiEvent
 			int max = getPageCount();
 			int next = page + (((GuiButtonPage) button).right ? 1 : -1);
 
-			if (next >= 0 && next < max) {
+			if(next >= 0 && next < max) {
 				page = next;
 				updatePanelButtons();
 			}
@@ -219,7 +219,7 @@ public class PiecePanelWidget extends AbstractWidget implements Widget, GuiEvent
 		panelCursor = 0;
 		visibleButtons.clear();
 		parent.getButtons().forEach(button -> {
-			if (button instanceof GuiButtonPage || button instanceof GuiButtonSpellPiece) {
+			if(button instanceof GuiButtonPage || button instanceof GuiButtonSpellPiece) {
 				((Button) button).active = false;
 				((Button) button).visible = false;
 			}
@@ -231,27 +231,27 @@ public class PiecePanelWidget extends AbstractWidget implements Widget, GuiEvent
 		boolean noSearchTerms = text.isEmpty();
 
 		parent.getButtons().forEach(button -> {
-			if (button instanceof GuiButtonSpellPiece) {
+			if(button instanceof GuiButtonSpellPiece) {
 				SpellPiece piece = ((GuiButtonSpellPiece) button).getPiece();
 
-				if (noSearchTerms) {
+				if(noSearchTerms) {
 					visibleButtons.add((GuiButtonSpellPiece) button);
 				} else {
 					int rank = ranking(text, piece);
-					if (rank > 0) {
+					if(rank > 0) {
 						pieceRankings.put(piece.getClass(), rank);
 						visibleButtons.add((GuiButtonSpellPiece) button);
 					}
 				}
-			} else if (button instanceof GuiButtonPage) {
+			} else if(button instanceof GuiButtonPage) {
 				GuiButtonPage page = (GuiButtonPage) button;
-				if (page.isRight() && this.page < getPageCount() - 1) {
+				if(page.isRight() && this.page < getPageCount() - 1) {
 					page.x = x + width - 22;
 					page.y = y + height - 15;
 					page.visible = true;
 					page.active = true;
 
-				} else if (!page.isRight() && this.page > 0) {
+				} else if(!page.isRight() && this.page > 0) {
 					page.x = x + 4;
 					page.y = y + height - 15;
 					page.visible = true;
@@ -262,7 +262,7 @@ public class PiecePanelWidget extends AbstractWidget implements Widget, GuiEvent
 
 		Comparator<GuiButtonSpellPiece> comparator;
 
-		if (noSearchTerms) {
+		if(noSearchTerms) {
 			comparator = Comparator.comparing(GuiButtonSpellPiece::getPieceSortingName);
 		} else {
 			comparator = Comparator.comparingInt((p) -> -pieceRankings.get(p.getPiece().getClass()));
@@ -270,9 +270,9 @@ public class PiecePanelWidget extends AbstractWidget implements Widget, GuiEvent
 		}
 
 		visibleButtons.sort(comparator);
-		if ((!text.isEmpty() && text.length() <= 5 && (text.matches("^-?\\d+(?:\\.\\d*)?") || text.matches("^-?\\d*(?:\\.\\d+)?")))) {
+		if((!text.isEmpty() && text.length() <= 5 && (text.matches("^-?\\d+(?:\\.\\d*)?") || text.matches("^-?\\d*(?:\\.\\d+)?")))) {
 			GuiButtonSpellPiece constantPiece = (GuiButtonSpellPiece) parent.getButtons().stream().filter(el -> {
-				if (el instanceof GuiButtonSpellPiece) {
+				if(el instanceof GuiButtonSpellPiece) {
 					return ((GuiButtonSpellPiece) el).getPiece() instanceof PieceConstantNumber;
 				}
 				return false;
@@ -283,9 +283,9 @@ public class PiecePanelWidget extends AbstractWidget implements Widget, GuiEvent
 		}
 
 		int start = page * PIECES_PER_PAGE;
-		for (int i = start; i < visibleButtons.size(); i++) {
+		for(int i = start; i < visibleButtons.size(); i++) {
 			int c = i - start;
-			if (c >= PIECES_PER_PAGE) {
+			if(c >= PIECES_PER_PAGE) {
 				break;
 			}
 
@@ -300,12 +300,12 @@ public class PiecePanelWidget extends AbstractWidget implements Widget, GuiEvent
 
 	@Override
 	public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
-		if (parent.cursorX != -1 && parent.cursorY != -1 && !parent.commentEnabled && !parent.isSpectator() && mouseButton == 1 && !panelEnabled) {
+		if(parent.cursorX != -1 && parent.cursorY != -1 && !parent.commentEnabled && !parent.isSpectator() && mouseButton == 1 && !panelEnabled) {
 			openPanel();
 			return true;
 		}
 
-		if (panelEnabled && (mouseX < x || mouseY < y || mouseX > x + width || mouseY > y + height) && !parent.isSpectator()) {
+		if(panelEnabled && (mouseX < x || mouseY < y || mouseX > x + width || mouseY > y + height) && !parent.isSpectator()) {
 			closePanel();
 			return true;
 		}
@@ -321,49 +321,49 @@ public class PiecePanelWidget extends AbstractWidget implements Widget, GuiEvent
 		String name = I18n.get(p.getUnlocalizedName()).toLowerCase(Locale.ROOT);
 		String desc = I18n.get(p.getUnlocalizedDesc()).toLowerCase(Locale.ROOT);
 
-		for (String nameToken : token.split("\\s+")) {
-			if (nameToken.isEmpty()) {
+		for(String nameToken : token.split("\\s+")) {
+			if(nameToken.isEmpty()) {
 				continue;
 			}
 
-			if (nameToken.startsWith("in:")) {
+			if(nameToken.startsWith("in:")) {
 				String clippedToken = nameToken.substring(3);
-				if (clippedToken.isEmpty()) {
+				if(clippedToken.isEmpty()) {
 					continue;
 				}
 
 				int maxRank = 0;
-				for (SpellParam<?> param : p.params.values()) {
+				for(SpellParam<?> param : p.params.values()) {
 					String type = param.getRequiredTypeString().getString().toLowerCase(Locale.ROOT);
 					maxRank = Math.max(maxRank, rankTextToken(type, clippedToken));
 				}
 
-				if (maxRank <= 0) {
+				if(maxRank <= 0) {
 					return 0;
 				}
 				rank += maxRank;
-			} else if (nameToken.startsWith("out:")) {
+			} else if(nameToken.startsWith("out:")) {
 				String clippedToken = nameToken.substring(4);
-				if (clippedToken.isEmpty()) {
+				if(clippedToken.isEmpty()) {
 					continue;
 				}
 
 				String type = p.getEvaluationTypeString().getString().toLowerCase(Locale.ROOT);
 
-				if (rankTextToken(type, clippedToken) <= 0) {
+				if(rankTextToken(type, clippedToken) <= 0) {
 					return 0;
 				}
 				rank += rankTextToken(type, clippedToken);
-			} else if (nameToken.startsWith("@")) {
+			} else if(nameToken.startsWith("@")) {
 				String clippedToken = nameToken.substring(1);
-				if (clippedToken.isEmpty()) {
+				if(clippedToken.isEmpty()) {
 					continue;
 				}
 
 				String mod = PsiAPI.getSpellPieceKey(p.getClass()).getNamespace();
-				if (mod != null) {
+				if(mod != null) {
 					int modRank = rankTextToken(mod, clippedToken);
-					if (modRank <= 0) {
+					if(modRank <= 0) {
 						return 0;
 					}
 					rank += modRank;
@@ -373,7 +373,7 @@ public class PiecePanelWidget extends AbstractWidget implements Widget, GuiEvent
 			} else {
 				int nameRank = rankTextToken(name, nameToken);
 				rank += nameRank;
-				if (nameRank <= 0 && rankTextToken(desc, nameToken) <= 0) {
+				if(nameRank <= 0 && rankTextToken(desc, nameToken) <= 0) {
 					return 0;
 				} else {
 					rank += rankTextToken(desc, nameToken) / 2;
@@ -385,44 +385,44 @@ public class PiecePanelWidget extends AbstractWidget implements Widget, GuiEvent
 	}
 
 	private int rankTextToken(String haystack, String token) {
-		if (token.isEmpty()) {
+		if(token.isEmpty()) {
 			return 0;
 		}
 
-		if (token.startsWith("_")) {
+		if(token.startsWith("_")) {
 			String clippedToken = token.substring(1);
-			if (clippedToken.isEmpty()) {
+			if(clippedToken.isEmpty()) {
 				return 0;
 			}
-			if (haystack.endsWith(clippedToken)) {
-				if (!Character.isLetterOrDigit(haystack.charAt(haystack.length() - clippedToken.length() - 1))) {
+			if(haystack.endsWith(clippedToken)) {
+				if(!Character.isLetterOrDigit(haystack.charAt(haystack.length() - clippedToken.length() - 1))) {
 					return clippedToken.length() * 3 / 2;
 				}
 				return clippedToken.length();
 			}
-		} else if (token.endsWith("_")) {
+		} else if(token.endsWith("_")) {
 			String clippedToken = token.substring(0, token.length() - 1);
-			if (clippedToken.isEmpty()) {
+			if(clippedToken.isEmpty()) {
 				return 0;
 			}
-			if (haystack.startsWith(clippedToken)) {
-				if (haystack.length() >= clippedToken.length() + 1 && !Character.isLetterOrDigit(haystack.charAt(clippedToken.length() + 1))) {
+			if(haystack.startsWith(clippedToken)) {
+				if(haystack.length() >= clippedToken.length() + 1 && !Character.isLetterOrDigit(haystack.charAt(clippedToken.length() + 1))) {
 					return clippedToken.length() * 2;
 				}
 				return clippedToken.length();
 			}
 		} else {
-			if (token.startsWith("has:")) {
+			if(token.startsWith("has:")) {
 				token = token.substring(4);
 			}
 
 			int idx = haystack.indexOf(token);
-			if (idx >= 0) {
+			if(idx >= 0) {
 				int multiplier = 2;
-				if (idx == 0 || !Character.isLetterOrDigit(haystack.charAt(idx - 1))) {
+				if(idx == 0 || !Character.isLetterOrDigit(haystack.charAt(idx - 1))) {
 					multiplier += 2;
 				}
-				if (idx + token.length() + 1 >= haystack.length() ||
+				if(idx + token.length() + 1 >= haystack.length() ||
 						!Character.isLetterOrDigit(haystack.charAt(idx + token.length() + 1))) {
 					multiplier++;
 				}
@@ -437,7 +437,7 @@ public class PiecePanelWidget extends AbstractWidget implements Widget, GuiEvent
 	public void closePanel() {
 		panelEnabled = false;
 		parent.getButtons().forEach(button -> {
-			if (button instanceof GuiButtonSpellPiece || button instanceof GuiButtonPage) {
+			if(button instanceof GuiButtonSpellPiece || button instanceof GuiButtonPage) {
 				((Button) button).visible = false;
 				((Button) button).active = false;
 			}

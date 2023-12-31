@@ -60,7 +60,7 @@ public class RegenPsiEvent extends Event {
 		this.previousRegenCooldown = playerData.getRegenCooldown();
 		this.regenCooldown = Math.max(0, this.previousRegenCooldown - 1);
 
-		if (!cad.isEmpty()) {
+		if(!cad.isEmpty()) {
 			ICAD cadItem = (ICAD) cad.getItem();
 			this.cadPsiCapacity = cadItem.getStatValue(cad, EnumCADStat.OVERFLOW);
 			this.cadPsi = cadItem.getStoredPsi(cad);
@@ -264,7 +264,7 @@ public class RegenPsiEvent extends Event {
 	}
 
 	private void applyRegen() {
-		if (regenCooldown != 0) {
+		if(regenCooldown != 0) {
 			return;
 		}
 
@@ -274,22 +274,22 @@ public class RegenPsiEvent extends Event {
 
 		int regenLeft = regenRate;
 
-		if (regenCadFirst) {
+		if(regenCadFirst) {
 			regenLeft = applyCadRegen(regenLeft);
 		}
 		regenLeft = applyPlayerRegen(regenLeft);
-		if (!regenCadFirst) {
+		if(!regenCadFirst) {
 			applyCadRegen(regenLeft);
 		}
 	}
 
 	private int applyPlayerRegen(int regenLeft) {
 		int playerRegenTotal = Math.min(playerPsiCapacity - playerPsi, regenLeft);
-		if (maxPlayerRegen >= 0) {
+		if(maxPlayerRegen >= 0) {
 			playerRegenTotal = Math.min(maxPlayerRegen, playerRegenTotal);
 		}
 
-		if (regenLeft > 0 && playerRegenTotal > 0) {
+		if(regenLeft > 0 && playerRegenTotal > 0) {
 			playerRegen = playerRegenTotal;
 			regenLeft -= playerRegenTotal;
 		} else {
@@ -297,7 +297,7 @@ public class RegenPsiEvent extends Event {
 		}
 
 		healOverflow = regenLeft > 0;
-		if (healOverflow && wasOverflowed) {
+		if(healOverflow && wasOverflowed) {
 			regenLeft--;
 		}
 
@@ -306,13 +306,13 @@ public class RegenPsiEvent extends Event {
 
 	private int applyCadRegen(int regenLeft) {
 		int cadRegenTotal = cadPsiCapacity - cadPsi;
-		if (maxCadRegen >= 0) {
+		if(maxCadRegen >= 0) {
 			cadRegenTotal = Math.min(maxCadRegen, cadRegenTotal);
 		}
 
 		cadRegenCost = Math.min(regenLeft, cadRegenTotal * 2);
 
-		if (cadRegenCost > 0) {
+		if(cadRegenCost > 0) {
 			cadRegen = Math.min(Math.max(1, cadRegenCost / 2), cadRegenTotal);
 			regenLeft -= cadRegenCost;
 		} else {

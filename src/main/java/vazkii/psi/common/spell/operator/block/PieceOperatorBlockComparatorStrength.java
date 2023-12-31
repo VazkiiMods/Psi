@@ -44,7 +44,7 @@ public class PieceOperatorBlockComparatorStrength extends PieceOperator {
 		BlockPos pos = SpellHelpers.getBlockPos(this, context, target, false, false);
 
 		Direction whichWay = SpellHelpers.getFacing(this, context, axisParam);
-		if (whichWay == Direction.UP || whichWay == Direction.DOWN) {
+		if(whichWay == Direction.UP || whichWay == Direction.DOWN) {
 			throw new SpellRuntimeException(SpellRuntimeException.COMPARATOR);
 		}
 

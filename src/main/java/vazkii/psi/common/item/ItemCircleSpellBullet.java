@@ -34,7 +34,7 @@ public class ItemCircleSpellBullet extends ItemSpellBullet {
 		ItemStack colorizer = ((ICAD) cad.getItem()).getComponentInSlot(cad, EnumCADComponent.DYE);
 		HitResult pos = PieceOperatorVectorRaycast.raycast(context.caster, 32);
 		ArrayList<Entity> spellEntities = new ArrayList<>();
-		if (pos != null) {
+		if(pos != null) {
 			EntitySpellCircle circle = new EntitySpellCircle(EntitySpellCircle.TYPE, context.caster.getCommandSenderWorld());
 			circle.setInfo(context.caster, colorizer, stack);
 			circle.setPos(pos.getLocation().x, pos.getLocation().y, pos.getLocation().z);

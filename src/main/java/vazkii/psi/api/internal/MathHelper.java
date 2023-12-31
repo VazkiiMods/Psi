@@ -33,10 +33,10 @@ public final class MathHelper {
 	 */
 	public static LinkedHashSet<BlockPos> getBlocksAlongRay(Vec3 origin, Vec3 end, int maxBlocks) {
 		LinkedHashSet<BlockPos> positions = new LinkedHashSet<>();
-		if (maxBlocks == 0) {
+		if(maxBlocks == 0) {
 			return positions;
 		}
-		if (origin.equals(end)) {
+		if(origin.equals(end)) {
 			positions.add(new BlockPos(origin.x, origin.y, origin.z));
 		} else {
 			double endX = end.x;
@@ -63,16 +63,16 @@ public final class MathHelper {
 			double totalStepsY = stepSizeY * (signumY > 0 ? 1.0D - net.minecraft.util.Mth.frac(originY) : net.minecraft.util.Mth.frac(originY));
 			double totalStepsZ = stepSizeZ * (signumZ > 0 ? 1.0D - net.minecraft.util.Mth.frac(originZ) : net.minecraft.util.Mth.frac(originZ));
 
-			while ((totalStepsX <= 1.0D || totalStepsY <= 1.0D || totalStepsZ <= 1.0D) && positions.size() != maxBlocks) {
-				if (totalStepsX < totalStepsY) {
-					if (totalStepsX < totalStepsZ) {
+			while((totalStepsX <= 1.0D || totalStepsY <= 1.0D || totalStepsZ <= 1.0D) && positions.size() != maxBlocks) {
+				if(totalStepsX < totalStepsY) {
+					if(totalStepsX < totalStepsZ) {
 						blockX += signumX;
 						totalStepsX += stepSizeX;
 					} else {
 						blockZ += signumZ;
 						totalStepsZ += stepSizeZ;
 					}
-				} else if (totalStepsY < totalStepsZ) {
+				} else if(totalStepsY < totalStepsZ) {
 					blockY += signumY;
 					totalStepsY += stepSizeY;
 				} else {

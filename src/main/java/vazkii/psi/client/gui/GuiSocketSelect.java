@@ -63,14 +63,14 @@ public class GuiSocketSelect extends Screen {
 		controllerStack = ItemStack.EMPTY;
 		socketableStack = ItemStack.EMPTY;
 
-		if (ISocketable.isSocketable(stack)) {
+		if(ISocketable.isSocketable(stack)) {
 			setSocketable(stack);
-		} else if (stack.getItem() instanceof ISocketableController) {
+		} else if(stack.getItem() instanceof ISocketableController) {
 			controllerStack = stack;
 			controller = (ISocketableController) stack.getItem();
 			controlledStacks = controller.getControlledStacks(mc.player, stack);
 			controlSlot = controller.getDefaultControlSlot(controllerStack);
-			if (controlSlot >= controlledStacks.length) {
+			if(controlSlot >= controlledStacks.length) {
 				controlSlot = 0;
 			}
 
@@ -79,7 +79,7 @@ public class GuiSocketSelect extends Screen {
 	}
 
 	public void setSocketable(ItemStack stack) {
-		if (stack.isEmpty()) {
+		if(stack.isEmpty()) {
 			slots = new ArrayList<>();
 			return;
 		}
@@ -116,15 +116,15 @@ public class GuiSocketSelect extends Screen {
 		RenderSystem.setShader(GameRenderer::getPositionColorShader);
 		buf.begin(VertexFormat.Mode.TRIANGLE_FAN, DefaultVertexFormat.POSITION_COLOR);
 
-		for (int seg = 0; seg < segments; seg++) {
+		for(int seg = 0; seg < segments; seg++) {
 			boolean mouseInSector = degPer * seg < angle && angle < degPer * (seg + 1);
 			float radius = Math.max(0F, Math.min((timeIn + partialTicks - seg * 6F / segments) * 40F, maxRadius));
-			if (mouseInSector || seg == socketable.getSelectedSlot()) {
+			if(mouseInSector || seg == socketable.getSelectedSlot()) {
 				radius *= 1.025f;
 			}
 
 			int gs = 0x40;
-			if (seg % 2 == 0) {
+			if(seg % 2 == 0) {
 				gs += 0x19;
 			}
 			int r = gs;
@@ -132,14 +132,14 @@ public class GuiSocketSelect extends Screen {
 			int b = gs;
 			int a = 0x66;
 
-			if (seg == 0) {
+			if(seg == 0) {
 				buf.vertex(x, y, 0).color(r, g, b, a).endVertex();
 			}
 
-			if (mouseInSector) {
+			if(mouseInSector) {
 				slotSelected = seg;
 
-				if (!cadStack.isEmpty()) {
+				if(!cadStack.isEmpty()) {
 					int color = Psi.proxy.getColorForCAD(cadStack);
 					r = PsiRenderHelper.r(color);
 					g = PsiRenderHelper.g(color);
@@ -147,8 +147,8 @@ public class GuiSocketSelect extends Screen {
 				} else {
 					r = g = b = 0xFF;
 				}
-			} else if (seg == socketable.getSelectedSlot()) {
-				if (!cadStack.isEmpty()) {
+			} else if(seg == socketable.getSelectedSlot()) {
+				if(!cadStack.isEmpty()) {
 					int color = Psi.proxy.getColorForCAD(cadStack);
 					r = 0xFF - PsiRenderHelper.r(color);
 					g = 0xFF - PsiRenderHelper.g(color);
@@ -160,12 +160,12 @@ public class GuiSocketSelect extends Screen {
 				}
 			}
 
-			for (float i = 0; i < degPer + step / 2; i += step) {
+			for(float i = 0; i < degPer + step / 2; i += step) {
 				float rad = i + seg * degPer;
 				float xp = x + Mth.cos(rad) * radius;
 				float yp = y + Mth.sin(rad) * radius;
 
-				if (i == 0) {
+				if(i == 0) {
 					buf.vertex(xp, yp, 0).color(r, g, b, a).endVertex();
 				}
 				buf.vertex(xp, yp, 0).color(r, g, b, a).endVertex();
@@ -175,10 +175,10 @@ public class GuiSocketSelect extends Screen {
 
 		RenderSystem.enableTexture();
 
-		for (int seg = 0; seg < segments; seg++) {
+		for(int seg = 0; seg < segments; seg++) {
 			boolean mouseInSector = degPer * seg < angle && angle < degPer * (seg + 1);
 			float radius = Math.max(0F, Math.min((timeIn + partialTicks - seg * 6F / segments) * 40F, maxRadius));
-			if (mouseInSector || seg == socketable.getSelectedSlot()) {
+			if(mouseInSector || seg == socketable.getSelectedSlot()) {
 				radius *= 1.025f;
 			}
 
@@ -187,7 +187,7 @@ public class GuiSocketSelect extends Screen {
 			float yp = y + Mth.sin(rad) * radius;
 
 			ItemStack stack = socketable.getBulletInSocket(seg);
-			if (!stack.isEmpty()) {
+			if(!stack.isEmpty()) {
 				float xsp = xp - 4;
 				float ysp = yp;
 				String name = (mouseInSector ? ChatFormatting.UNDERLINE : ChatFormatting.RESET) + stack.getHoverName().getString();
@@ -199,17 +199,17 @@ public class GuiSocketSelect extends Screen {
 
 				mc.getItemRenderer().renderGuiItem(stack, xdp - 8, ydp - 8);
 
-				if (xsp < x) {
+				if(xsp < x) {
 					xsp -= width - 8;
 				}
-				if (ysp < y) {
+				if(ysp < y) {
 					ysp -= 9;
 				}
 
 				font.drawShadow(ms, name, xsp, ysp, 0xFFFFFF);
-				if (seg == socketable.getSelectedSlot()) {
+				if(seg == socketable.getSelectedSlot()) {
 					int color = 0x00FF00;
-					if (!cadStack.isEmpty()) {
+					if(!cadStack.isEmpty()) {
 						color = 0xFF0000 - Psi.proxy.getColorForCAD(cadStack);
 					}
 					font.drawShadow(ms, I18n.get("psimisc.selected"), xsp + width / 4, ysp + font.lineHeight, color);
@@ -231,13 +231,13 @@ public class GuiSocketSelect extends Screen {
 		//RenderSystem.enableLighting();
 		//RenderSystem.enableColorMaterial();
 
-		if (controlledStacks != null && controlledStacks.length > 0) {
+		if(controlledStacks != null && controlledStacks.length > 0) {
 			int xs = width / 2 - 18 * controlledStacks.length / 2 + 1;
 			int ys = height / 2;
 
-			for (int i = 0; i < controlledStacks.length; i++) {
+			for(int i = 0; i < controlledStacks.length; i++) {
 				float yoff = 20F + maxRadius;
-				if (i == controlSlot) {
+				if(i == controlSlot) {
 					yoff += 5F;
 				}
 
@@ -249,7 +249,7 @@ public class GuiSocketSelect extends Screen {
 
 		}
 
-		if (!socketableStack.isEmpty()) {
+		if(!socketableStack.isEmpty()) {
 			ms.pushPose();
 			ms.scale(scale, scale, scale);
 			PsiRenderHelper.transferMsToGl(ms, () -> mc.getItemRenderer().renderAndDecorateItem(socketableStack,
@@ -266,15 +266,15 @@ public class GuiSocketSelect extends Screen {
 	public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
 		super.mouseClicked(mouseX, mouseY, mouseButton);
 
-		if (!controllerStack.isEmpty() && controlledStacks.length > 0) {
-			if (mouseButton == 0) {
+		if(!controllerStack.isEmpty() && controlledStacks.length > 0) {
+			if(mouseButton == 0) {
 				controlSlot++;
-				if (controlSlot >= controlledStacks.length) {
+				if(controlSlot >= controlledStacks.length) {
 					controlSlot = 0;
 				}
-			} else if (mouseButton == 1) {
+			} else if(mouseButton == 1) {
 				controlSlot--;
-				if (controlSlot < 0) {
+				if(controlSlot < 0) {
 					controlSlot = controlledStacks.length - 1;
 				}
 			}
@@ -288,14 +288,14 @@ public class GuiSocketSelect extends Screen {
 	@Override
 	public void tick() {
 		super.tick();
-		if (!isKeyDown(KeybindHandler.keybind)) {
+		if(!isKeyDown(KeybindHandler.keybind)) {
 			mc.setScreen(null);
-			if (slotSelected != -1) {
+			if(slotSelected != -1) {
 				int slot = slots.get(slotSelected);
 				PlayerDataHandler.get(mc.player).stopLoopcast();
 
 				Object message;
-				if (!controllerStack.isEmpty()) {
+				if(!controllerStack.isEmpty()) {
 					message = new MessageChangeControllerSlot(controlSlot, slot);
 				} else {
 					message = new MessageChangeSocketableSlot(slot);
@@ -305,7 +305,7 @@ public class GuiSocketSelect extends Screen {
 		}
 
 		ImmutableSet<KeyMapping> set = ImmutableSet.of(mc.options.keyUp, mc.options.keyLeft, mc.options.keyDown, mc.options.keyRight, mc.options.keyShift, mc.options.keySprint, mc.options.keyJump);
-		for (KeyMapping k : set) {
+		for(KeyMapping k : set) {
 			KeyMapping.set(k.getKey(), isKeyDown(k));
 		}
 
@@ -314,7 +314,7 @@ public class GuiSocketSelect extends Screen {
 
 	public boolean isKeyDown(KeyMapping keybind) {
 		InputConstants.Key key = keybind.getKey();
-		if (key.getType() == InputConstants.Type.MOUSE) {
+		if(key.getType() == InputConstants.Type.MOUSE) {
 			return keybind.isDown();
 		}
 		return InputConstants.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), key.getValue());

@@ -33,16 +33,16 @@ public class SensorAttachRecipe extends CustomRecipe {
 		boolean foundSensor = false;
 		boolean foundTarget = false;
 
-		for (int i = 0; i < inv.getContainerSize(); i++) {
+		for(int i = 0; i < inv.getContainerSize(); i++) {
 			ItemStack stack = inv.getItem(i);
-			if (!stack.isEmpty()) {
-				if (stack.getItem() instanceof ISensorHoldable && ((ISensorHoldable) stack.getItem()).getAttachedSensor(stack).isEmpty()) {
-					if (foundTarget) {
+			if(!stack.isEmpty()) {
+				if(stack.getItem() instanceof ISensorHoldable && ((ISensorHoldable) stack.getItem()).getAttachedSensor(stack).isEmpty()) {
+					if(foundTarget) {
 						return false;
 					}
 					foundTarget = true;
-				} else if (stack.getItem() instanceof IExosuitSensor) {
-					if (foundSensor) {
+				} else if(stack.getItem() instanceof IExosuitSensor) {
+					if(foundSensor) {
 						return false;
 					}
 					foundSensor = true;
@@ -61,10 +61,10 @@ public class SensorAttachRecipe extends CustomRecipe {
 		ItemStack sensor = ItemStack.EMPTY;
 		ItemStack target = ItemStack.EMPTY;
 
-		for (int i = 0; i < inv.getContainerSize(); i++) {
+		for(int i = 0; i < inv.getContainerSize(); i++) {
 			ItemStack stack = inv.getItem(i);
-			if (!stack.isEmpty()) {
-				if (stack.getItem() instanceof IExosuitSensor) {
+			if(!stack.isEmpty()) {
+				if(stack.getItem() instanceof IExosuitSensor) {
 					sensor = stack;
 				} else {
 					target = stack;

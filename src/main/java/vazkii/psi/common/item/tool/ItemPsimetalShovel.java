@@ -48,7 +48,7 @@ public class ItemPsimetalShovel extends ShovelItem implements IPsimetalTool {
 	@Override
 	public boolean mineBlock(ItemStack itemstack, Level world, BlockState state, BlockPos pos, LivingEntity player) {
 		super.mineBlock(itemstack, world, state, pos, player);
-		if (!(player instanceof Player)) {
+		if(!(player instanceof Player)) {
 			return false;
 		}
 		castOnBlockBreak(itemstack, (Player) player);
@@ -58,7 +58,7 @@ public class ItemPsimetalShovel extends ShovelItem implements IPsimetalTool {
 
 	@Override
 	public void setDamage(ItemStack stack, int damage) {
-		if (damage > stack.getMaxDamage()) {
+		if(damage > stack.getMaxDamage()) {
 			damage = stack.getDamageValue();
 		}
 		super.setDamage(stack, damage);
@@ -67,7 +67,7 @@ public class ItemPsimetalShovel extends ShovelItem implements IPsimetalTool {
 	@Override
 	public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
 		Multimap<Attribute, AttributeModifier> modifiers = super.getAttributeModifiers(slot, stack);
-		if (!isEnabled(stack)) {
+		if(!isEnabled(stack)) {
 			modifiers.removeAll(Attributes.ATTACK_DAMAGE);
 		}
 		return modifiers;
@@ -77,7 +77,7 @@ public class ItemPsimetalShovel extends ShovelItem implements IPsimetalTool {
 	@Override
 	public String getDescriptionId(ItemStack stack) {
 		String name = super.getDescriptionId(stack);
-		if (!isEnabled(stack)) {
+		if(!isEnabled(stack)) {
 			name += ".broken";
 		}
 		return name;
@@ -85,7 +85,7 @@ public class ItemPsimetalShovel extends ShovelItem implements IPsimetalTool {
 
 	@Override
 	public float getDestroySpeed(ItemStack stack, BlockState state) {
-		if (!isEnabled(stack)) {
+		if(!isEnabled(stack)) {
 			return 1;
 		}
 		return super.getDestroySpeed(stack, state);

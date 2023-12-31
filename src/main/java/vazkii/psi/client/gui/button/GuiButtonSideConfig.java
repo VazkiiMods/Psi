@@ -51,7 +51,7 @@ public class GuiButtonSideConfig extends Button {
 
 	@Override
 	public void renderButton(PoseStack ms, int par2, int par3, float pTicks) {
-		if (active && visible && !gui.takingScreenshot) {
+		if(active && visible && !gui.takingScreenshot) {
 			int minX = x;
 			int minY = y;
 			int maxX = minX + 8;
@@ -59,17 +59,17 @@ public class GuiButtonSideConfig extends Button {
 
 			RenderSystem.setShaderTexture(0, GuiProgrammer.texture);
 			SpellPiece piece = gui.spell.grid.gridData[gridX][gridY];
-			if (piece == null) {
+			if(piece == null) {
 				return;
 			}
 
 			SpellParam<?> param = piece.params.get(paramName);
-			if (param == null) {
+			if(param == null) {
 				return;
 			}
 
 			SpellParam.Side currSide = piece.paramSides.get(param);
-			if (currSide == side) {
+			if(currSide == side) {
 				RenderSystem.setShaderColor(PsiRenderHelper.r(param.color) / 255F,
 						PsiRenderHelper.g(param.color) / 255F,
 						PsiRenderHelper.b(param.color) / 255F, 1F);
@@ -100,12 +100,12 @@ public class GuiButtonSideConfig extends Button {
 
 	public static void performAction(GuiProgrammer gui, int gridX, int gridY, String paramName, SpellParam.Side side) {
 		SpellPiece piece = gui.spell.grid.gridData[gridX][gridY];
-		if (piece == null) {
+		if(piece == null) {
 			return;
 		}
 
 		SpellParam<?> param = piece.params.get(paramName);
-		if (param == null) {
+		if(param == null) {
 			return;
 		}
 

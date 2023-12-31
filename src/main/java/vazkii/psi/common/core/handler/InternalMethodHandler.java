@@ -66,7 +66,7 @@ public final class InternalMethodHandler implements IInternalMethodHandler {
 
 	@Override
 	public void delayContext(SpellContext context) {
-		if (!context.caster.level.isClientSide) {
+		if(!context.caster.level.isClientSide) {
 			PlayerDataHandler.delayedContexts.add(context);
 		}
 	}
@@ -79,7 +79,7 @@ public final class InternalMethodHandler implements IInternalMethodHandler {
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public void renderTooltip(PoseStack ms, int x, int y, List<Component> tooltipData, int color, int color2, int width, int height) {
-		if (!tooltipData.isEmpty()) {
+		if(!tooltipData.isEmpty()) {
 			Font fontRenderer = Minecraft.getInstance().font;
 			Screen screen = Minecraft.getInstance().screen;
 			assert screen != null;

@@ -49,7 +49,7 @@ public class PieceOperatorEntityRaycast extends PieceOperator {
 		Vector3 originVal = this.getParamValue(context, origin);
 		Vector3 rayVal = this.getParamValue(context, ray);
 
-		if (originVal == null || rayVal == null) {
+		if(originVal == null || rayVal == null) {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
 		}
 
@@ -57,7 +57,7 @@ public class PieceOperatorEntityRaycast extends PieceOperator {
 
 		Entity entity = rayTraceEntities(context.caster.level, context.caster, originVal.toVec3D(), rayVal.toVec3D(),
 				pred -> !pred.isSpectator() && pred.isAlive() && pred.isPickable() && !(pred instanceof ISpellImmune), maxLen);
-		if (entity == null) {
+		if(entity == null) {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_TARGET);
 		}
 
@@ -76,18 +76,18 @@ public class PieceOperatorEntityRaycast extends PieceOperator {
 
 		Vec3 reachVector = positionVector.add(lookVector.scale(maxDistance));
 		AABB aabb = new AABB(positionVector.x, positionVector.y, positionVector.z, reachVector.x, reachVector.y, reachVector.z).inflate(1f, 1f, 1f);
-		for (Entity entity1 : world.getEntities(caster, aabb, predicate)) {
+		for(Entity entity1 : world.getEntities(caster, aabb, predicate)) {
 			float collisionBorderSize = entity1.getPickRadius();
 			AABB axisalignedbb = entity1.getBoundingBox().inflate(collisionBorderSize);
 			Optional<Vec3> optional = axisalignedbb.clip(positionVector, reachVector);
-			if (axisalignedbb.contains(positionVector)) {
-				if (0.0D < distance || distance == 0.0D) {
+			if(axisalignedbb.contains(positionVector)) {
+				if(0.0D < distance || distance == 0.0D) {
 					entity = entity1;
 					distance = 0.0D;
 				}
-			} else if (optional.isPresent()) {
+			} else if(optional.isPresent()) {
 				double distanceTo = positionVector.distanceTo(optional.get());
-				if (distanceTo < distance) {
+				if(distanceTo < distance) {
 					entity = entity1;
 					distance = distanceTo;
 				}

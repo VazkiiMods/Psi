@@ -60,7 +60,7 @@ public class FXWisp extends TextureSheetParticle {
 	@Override
 	public float getQuadSize(float scaleFactor) {
 		float agescale = (float) age / (float) moteHalfLife;
-		if (agescale > 1F) {
+		if(agescale > 1F) {
 			agescale = 2 - agescale;
 		}
 
@@ -86,7 +86,7 @@ public class FXWisp extends TextureSheetParticle {
 		this.yo = this.y;
 		this.zo = this.z;
 
-		if (this.age++ >= this.lifetime) {
+		if(this.age++ >= this.lifetime) {
 			this.remove();
 		}
 

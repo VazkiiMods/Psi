@@ -46,10 +46,10 @@ public class PieceTrickSpinChamber extends PieceTrick {
 
 	public static int getNextSlotFromOffset(ISocketable socketable, int offset) {
 		int currentSlot = socketable.getSelectedSlot();
-		if (offset > 0) {
+		if(offset > 0) {
 			return socketable.isSocketSlotAvailable(currentSlot + 1) ? currentSlot + 1 : 0;
 		}
-		if (socketable.isSocketSlotAvailable(currentSlot - 1)) {
+		if(socketable.isSocketSlotAvailable(currentSlot - 1)) {
 			return currentSlot - 1;
 		}
 		return socketable.getLastSlot();
@@ -59,7 +59,7 @@ public class PieceTrickSpinChamber extends PieceTrick {
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		double num = this.getParamValue(context, number).doubleValue();
 
-		if (num == 0) {
+		if(num == 0) {
 			return null;
 		}
 
@@ -71,7 +71,7 @@ public class PieceTrickSpinChamber extends PieceTrick {
 
 		capability.setSelectedSlot(targetSlot);
 
-		if (updateLoopcast) {
+		if(updateLoopcast) {
 			PlayerDataHandler.get(context.caster).lastTickLoopcastStack = stack.copy();
 		}
 		return null;

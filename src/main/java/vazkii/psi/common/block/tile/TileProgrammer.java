@@ -53,7 +53,7 @@ public class TileProgrammer extends BlockEntity {
 	public void onSpellChanged() {
 		boolean wasEnabled = enabled;
 		enabled = isEnabled();
-		if (wasEnabled != enabled) {
+		if(wasEnabled != enabled) {
 			getLevel().setBlockAndUpdate(worldPosition, getBlockState().setValue(BlockProgrammer.ENABLED, enabled));
 		}
 		setChanged();
@@ -71,7 +71,7 @@ public class TileProgrammer extends BlockEntity {
 		super.saveAdditional(cmp);
 
 		CompoundTag spellCmp = new CompoundTag();
-		if (spell != null) {
+		if(spell != null) {
 			spell.writeToNBT(spellCmp);
 		}
 		cmp.put(TAG_SPELL, spellCmp);
@@ -80,7 +80,7 @@ public class TileProgrammer extends BlockEntity {
 
 	public void readPacketNBT(CompoundTag cmp) {
 		CompoundTag spellCmp = cmp.getCompound(TAG_SPELL);
-		if (spell == null) {
+		if(spell == null) {
 			spell = Spell.createFromNBT(spellCmp);
 		} else {
 			spell.readFromNBT(spellCmp);

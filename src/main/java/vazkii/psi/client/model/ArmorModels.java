@@ -27,7 +27,7 @@ public class ArmorModels {
 
 	private static Map<EquipmentSlot, ModelArmor> make(EntityRendererProvider.Context ctx, ModelLayerLocation inner, ModelLayerLocation outer) {
 		Map<EquipmentSlot, ModelArmor> ret = new EnumMap<>(EquipmentSlot.class);
-		for (var slot : EquipmentSlot.values()) {
+		for(var slot : EquipmentSlot.values()) {
 			var mesh = ctx.bakeLayer(slot == EquipmentSlot.LEGS ? inner : outer);
 			ret.put(slot, new ModelArmor(mesh, slot));
 		}
@@ -41,7 +41,7 @@ public class ArmorModels {
 	@Nullable
 	public static ModelArmor get(ItemStack stack) {
 		Item item = stack.getItem();
-		if (item instanceof ItemPsimetalArmor armor) {
+		if(item instanceof ItemPsimetalArmor armor) {
 			return exosuit.get(armor.getSlot());
 		}
 

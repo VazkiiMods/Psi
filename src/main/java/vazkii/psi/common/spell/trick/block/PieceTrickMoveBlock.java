@@ -60,10 +60,10 @@ public class PieceTrickMoveBlock extends PieceTrick {
 		Vector3 positionVal = this.getParamValue(context, position);
 		Vector3 targetVal = this.getParamValue(context, target);
 
-		if (positionVal == null) {
+		if(positionVal == null) {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
 		}
-		if (!context.isInRadius(positionVal)) {
+		if(!context.isInRadius(positionVal)) {
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 		}
 
@@ -78,11 +78,11 @@ public class PieceTrickMoveBlock extends PieceTrick {
 		 * Since there are legitimate use cases besides duping when you want to move a block that is in the same
 		 * position that you previously had broken.
 		 */
-		if (context.positionBroken != null && context.positionBroken.getBlockPos().equals(pos)) {
+		if(context.positionBroken != null && context.positionBroken.getBlockPos().equals(pos)) {
 			return null;
 		}
 		BlockState state = world.getBlockState(pos);
-		if (world.getBlockEntity(pos) != null || state.getPistonPushReaction() != PushReaction.NORMAL ||
+		if(world.getBlockEntity(pos) != null || state.getPistonPushReaction() != PushReaction.NORMAL ||
 				state.getDestroySpeed(world, pos) == -1 ||
 				!PieceTrickBreakBlock.canHarvestBlock(state, context.caster, world, pos, tool)) {
 			return null;
@@ -90,11 +90,11 @@ public class PieceTrickMoveBlock extends PieceTrick {
 
 		BlockEvent.BreakEvent event = PieceTrickBreakBlock.createBreakEvent(state, context.caster, world, pos, tool);
 		MinecraftForge.EVENT_BUS.post(event);
-		if (event.isCanceled()) {
+		if(event.isCanceled()) {
 			return null;
 		}
 
-		if (!targetVal.isAxial() || targetVal.isZero()) {
+		if(!targetVal.isAxial() || targetVal.isZero()) {
 			return null;
 		}
 
@@ -105,11 +105,11 @@ public class PieceTrickMoveBlock extends PieceTrick {
 		BlockPos pos1 = new BlockPos(x, y, z);
 		BlockState state1 = world.getBlockState(pos1);
 
-		if (!world.mayInteract(context.caster, pos) || !world.mayInteract(context.caster, pos1)) {
+		if(!world.mayInteract(context.caster, pos) || !world.mayInteract(context.caster, pos1)) {
 			return null;
 		}
 
-		if (state1.isAir() || state1.getMaterial().isReplaceable()) {
+		if(state1.isAir() || state1.getMaterial().isReplaceable()) {
 			world.setBlock(pos1, state, 1 | 2);
 			world.removeBlock(pos, false);
 			world.levelEvent(2001, pos, Block.getId(state));

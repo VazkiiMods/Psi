@@ -39,7 +39,7 @@ public class PieceOperatorListAdd extends PieceOperator {
 		Entity targetVal = this.getParamValue(context, target);
 		EntityListWrapper listVal = this.getParamValueOrDefault(context, list, EntityListWrapper.EMPTY);
 
-		if (targetVal == null) {
+		if(targetVal == null) {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_TARGET);
 		}
 

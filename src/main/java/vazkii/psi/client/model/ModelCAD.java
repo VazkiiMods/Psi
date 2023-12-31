@@ -44,7 +44,7 @@ public class ModelCAD implements BakedModel {
 		public BakedModel resolve(BakedModel model, ItemStack stack, @Nullable ClientLevel world, @Nullable LivingEntity entity, int mode) {
 			ICAD cad = (ICAD) stack.getItem();
 			ItemStack assemblyStack = cad.getComponentInSlot(stack, EnumCADComponent.ASSEMBLY);
-			if (assemblyStack.isEmpty()) {
+			if(assemblyStack.isEmpty()) {
 				return Minecraft.getInstance().getModelManager().getMissingModel();
 			}
 			ResourceLocation cadModel = ((ICADAssembly) assemblyStack.getItem()).getCADModel(assemblyStack, stack);

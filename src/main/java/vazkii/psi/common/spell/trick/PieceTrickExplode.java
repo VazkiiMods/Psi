@@ -47,7 +47,7 @@ public class PieceTrickExplode extends PieceTrick {
 		super.addToMetadata(meta);
 
 		Double powerVal = this.<Double>getParamEvaluation(power);
-		if (powerVal == null || powerVal <= 0) {
+		if(powerVal == null || powerVal <= 0) {
 			throw new SpellCompilationException(SpellCompilationException.NON_POSITIVE_VALUE, x, y);
 		}
 
@@ -62,10 +62,10 @@ public class PieceTrickExplode extends PieceTrick {
 		Vector3 positionVal = this.getParamValue(context, position);
 		double powerVal = this.getParamValue(context, power).doubleValue();
 
-		if (positionVal == null) {
+		if(positionVal == null) {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
 		}
-		if (!context.isInRadius(positionVal)) {
+		if(!context.isInRadius(positionVal)) {
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 		}
 

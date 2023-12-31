@@ -34,7 +34,7 @@ public class ItemPsimetalExosuitHelmet extends ItemPsimetalArmor implements ISen
 	@Override
 	public String getEvent(ItemStack stack) {
 		ItemStack sensor = getAttachedSensor(stack);
-		if (!sensor.isEmpty() && sensor.getItem() instanceof IExosuitSensor) {
+		if(!sensor.isEmpty() && sensor.getItem() instanceof IExosuitSensor) {
 			return ((IExosuitSensor) sensor.getItem()).getEventType(sensor);
 		}
 
@@ -50,7 +50,7 @@ public class ItemPsimetalExosuitHelmet extends ItemPsimetalArmor implements ISen
 	@OnlyIn(Dist.CLIENT)
 	public int getColor(@Nonnull ItemStack stack) {
 		ItemStack sensor = getAttachedSensor(stack);
-		if (!sensor.isEmpty() && sensor.getItem() instanceof IExosuitSensor) {
+		if(!sensor.isEmpty() && sensor.getItem() instanceof IExosuitSensor) {
 			return ((IExosuitSensor) sensor.getItem()).getColor(sensor);
 		}
 
@@ -72,7 +72,7 @@ public class ItemPsimetalExosuitHelmet extends ItemPsimetalArmor implements ISen
 	@Override
 	public void attachSensor(ItemStack stack, ItemStack sensor) {
 		CompoundTag cmp = new CompoundTag();
-		if (!sensor.isEmpty()) {
+		if(!sensor.isEmpty()) {
 			sensor.save(cmp);
 		}
 		stack.getOrCreateTag().put(TAG_SENSOR, cmp);

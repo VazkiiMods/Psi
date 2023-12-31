@@ -39,7 +39,7 @@ public class PieceOperatorEntityHealth extends PieceOperator {
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		Entity entity = this.getNonnullParamValue(context, target);
-		if (!(entity instanceof LivingEntity)) {
+		if(!(entity instanceof LivingEntity)) {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_TARGET);
 		}
 

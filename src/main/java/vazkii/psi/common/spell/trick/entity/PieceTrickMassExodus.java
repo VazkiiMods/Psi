@@ -48,7 +48,7 @@ public class PieceTrickMassExodus extends PieceTrick {
 	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
 		super.addToMetadata(meta);
 		Double speedVal = this.<Double>getParamEvaluation(speed);
-		if (speedVal == null) {
+		if(speedVal == null) {
 			speedVal = 1D;
 		}
 
@@ -63,7 +63,7 @@ public class PieceTrickMassExodus extends PieceTrick {
 		Vector3 positionVal = this.getParamValue(context, position);
 		double speedVal = this.getParamValue(context, speed).doubleValue();
 
-		for (Entity e : targetVal) {
+		for(Entity e : targetVal) {
 			Vector3 vec = positionVal.copy().sub(Vector3.fromEntity(e));
 			PieceTrickAddMotion.addMotion(context, e, vec, speedVal);
 		}

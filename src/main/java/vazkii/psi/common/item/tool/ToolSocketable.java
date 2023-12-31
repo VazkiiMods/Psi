@@ -45,7 +45,7 @@ public class ToolSocketable implements ICapabilityProvider, ISocketable, IPsiBar
 	@Nonnull
 	@Override
 	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-		if (cap == PsiAPI.SOCKETABLE_CAPABILITY
+		if(cap == PsiAPI.SOCKETABLE_CAPABILITY
 				|| cap == PsiAPI.PSI_BAR_DISPLAY_CAPABILITY
 				|| cap == PsiAPI.SPELL_ACCEPTOR_CAPABILITY) {
 			return capOptional.cast();
@@ -61,7 +61,7 @@ public class ToolSocketable implements ICapabilityProvider, ISocketable, IPsiBar
 	@Override
 	public List<Integer> getRadialMenuSlots() {
 		List<Integer> list = new ArrayList<>();
-		for (int i = 0; i <= slots; i++) {
+		for(int i = 0; i <= slots; i++) {
 			list.add(i);
 		}
 		return list;
@@ -72,7 +72,7 @@ public class ToolSocketable implements ICapabilityProvider, ISocketable, IPsiBar
 		String name = IPsimetalTool.TAG_BULLET_PREFIX + slot;
 		CompoundTag cmp = tool.getOrCreateTag().getCompound(name);
 
-		if (cmp.isEmpty()) {
+		if(cmp.isEmpty()) {
 			return ItemStack.EMPTY;
 		}
 
@@ -84,7 +84,7 @@ public class ToolSocketable implements ICapabilityProvider, ISocketable, IPsiBar
 		String name = IPsimetalTool.TAG_BULLET_PREFIX + slot;
 		CompoundTag cmp = new CompoundTag();
 
-		if (!bullet.isEmpty()) {
+		if(!bullet.isEmpty()) {
 			cmp = bullet.save(cmp);
 		}
 
@@ -115,7 +115,7 @@ public class ToolSocketable implements ICapabilityProvider, ISocketable, IPsiBar
 	public void setSpell(Player player, Spell spell) {
 		int slot = getSelectedSlot();
 		ItemStack bullet = getBulletInSocket(slot);
-		if (!bullet.isEmpty() && ISpellAcceptor.isAcceptor(bullet)) {
+		if(!bullet.isEmpty() && ISpellAcceptor.isAcceptor(bullet)) {
 			ISpellAcceptor.acceptor(bullet).setSpell(player, spell);
 			setBulletInSocket(slot, bullet);
 		}

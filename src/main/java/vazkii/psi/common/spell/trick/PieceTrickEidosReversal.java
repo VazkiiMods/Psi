@@ -45,7 +45,7 @@ public class PieceTrickEidosReversal extends PieceTrick {
 		super.addToMetadata(meta);
 		Double timeVal = this.<Double>getParamEvaluation(time);
 
-		if (timeVal == null || timeVal <= 0 || timeVal != timeVal.intValue()) {
+		if(timeVal == null || timeVal <= 0 || timeVal != timeVal.intValue()) {
 			throw new SpellCompilationException(SpellCompilationException.NON_POSITIVE_INTEGER, x, y);
 		}
 
@@ -57,10 +57,10 @@ public class PieceTrickEidosReversal extends PieceTrick {
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		int timeVal = this.getParamValue(context, time).intValue();
 		PlayerData data = PlayerDataHandler.get(context.caster);
-		if (timeVal > 0 && !data.isReverting) {
+		if(timeVal > 0 && !data.isReverting) {
 			data.eidosReversionTime = timeVal * 10;
 			data.isReverting = true;
-			if (context.caster instanceof ServerPlayer) {
+			if(context.caster instanceof ServerPlayer) {
 				MessageRegister.sendToPlayer(new MessageEidosSync(data.eidosReversionTime), context.caster);
 			}
 		}

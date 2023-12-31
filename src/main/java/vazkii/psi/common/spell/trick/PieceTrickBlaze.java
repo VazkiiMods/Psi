@@ -54,10 +54,10 @@ public class PieceTrickBlaze extends PieceTrick {
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		Vector3 positionVal = this.getParamValue(context, position);
 
-		if (positionVal == null) {
+		if(positionVal == null) {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
 		}
-		if (!context.isInRadius(positionVal)) {
+		if(!context.isInRadius(positionVal)) {
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 		}
 
@@ -67,15 +67,15 @@ public class PieceTrickBlaze extends PieceTrick {
 		BlockState state = context.focalPoint.getCommandSenderWorld().getBlockState(pos);
 		BlockEvent.EntityPlaceEvent placeEvent = new BlockEvent.EntityPlaceEvent(BlockSnapshot.create(context.focalPoint.getCommandSenderWorld().dimension(), context.focalPoint.getCommandSenderWorld(), pos), context.focalPoint.getCommandSenderWorld().getBlockState(pos.relative(Direction.UP)), context.caster);
 		MinecraftForge.EVENT_BUS.post(placeEvent);
-		if (placeEvent.isCanceled()) {
+		if(placeEvent.isCanceled()) {
 			return null;
 		}
-		if (state.isAir() || state.getMaterial().isReplaceable()) {
+		if(state.isAir() || state.getMaterial().isReplaceable()) {
 			context.focalPoint.getCommandSenderWorld().setBlockAndUpdate(pos, Blocks.FIRE.defaultBlockState());
 		} else {
 			pos = pos.above();
 			state = context.focalPoint.getCommandSenderWorld().getBlockState(pos);
-			if (state.isAir() || state.getMaterial().isReplaceable()) {
+			if(state.isAir() || state.getMaterial().isReplaceable()) {
 				context.focalPoint.getCommandSenderWorld().setBlockAndUpdate(pos, Blocks.FIRE.defaultBlockState());
 			}
 		}

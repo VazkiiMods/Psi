@@ -36,12 +36,12 @@ public class PieceSelectorEidosChangelog extends PieceSelector {
 		int i = this.getParamValue(context, number).intValue();
 		PlayerData data = PlayerDataHandler.get(context.caster);
 
-		if (i <= 0 || i > data.eidosChangelog.size()) {
+		if(i <= 0 || i > data.eidosChangelog.size()) {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
 		}
 
 		Vector3 vec = data.eidosChangelog.get(data.eidosChangelog.size() - i);
-		if (vec == null) {
+		if(vec == null) {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
 		}
 

@@ -34,22 +34,22 @@ public class PatchouliUtils {
 	 * @return Serialized Patchouli ingredient string
 	 */
 	public static IVariable interweaveIngredients(List<Ingredient> ingredients, int longestIngredientSize) {
-		if (ingredients.size() == 1) {
+		if(ingredients.size() == 1) {
 			return IVariable.wrapList(Arrays.stream(ingredients.get(0).getItems()).map(IVariable::from).collect(Collectors.toList()));
 		}
 
 		ItemStack[] empty = { ItemStack.EMPTY };
 		List<ItemStack[]> stacks = new ArrayList<>();
-		for (Ingredient ingredient : ingredients) {
-			if (ingredient != null && !ingredient.isEmpty()) {
+		for(Ingredient ingredient : ingredients) {
+			if(ingredient != null && !ingredient.isEmpty()) {
 				stacks.add(ingredient.getItems());
 			} else {
 				stacks.add(empty);
 			}
 		}
 		List<IVariable> list = new ArrayList<>(stacks.size() * longestIngredientSize);
-		for (int i = 0; i < longestIngredientSize; i++) {
-			for (ItemStack[] stack : stacks) {
+		for(int i = 0; i < longestIngredientSize; i++) {
+			for(ItemStack[] stack : stacks) {
 				list.add(IVariable.from(stack[i % stack.length]));
 			}
 		}

@@ -43,8 +43,8 @@ public class SocketWheel implements ISocketable, INBTSerializable<CompoundTag> {
 	@Override
 	public List<Integer> getRadialMenuSlots() {
 		List<Integer> list = new ArrayList<>();
-		for (int i = 0; i < size; i++) {
-			if (isSocketSlotAvailable(i)) {
+		for(int i = 0; i < size; i++) {
+			if(isSocketSlotAvailable(i)) {
 				list.add(i);
 			}
 		}

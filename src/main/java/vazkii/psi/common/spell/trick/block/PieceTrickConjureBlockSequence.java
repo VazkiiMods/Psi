@@ -54,7 +54,7 @@ public class PieceTrickConjureBlockSequence extends PieceTrick {
 		super.addToMetadata(meta);
 
 		Double maxBlocksVal = this.<Double>getParamEvaluation(maxBlocks);
-		if (maxBlocksVal == null || maxBlocksVal <= 0) {
+		if(maxBlocksVal == null || maxBlocksVal <= 0) {
 			throw new SpellCompilationException(SpellCompilationException.NON_POSITIVE_VALUE, x, y);
 		}
 
@@ -69,19 +69,19 @@ public class PieceTrickConjureBlockSequence extends PieceTrick {
 		int maxBlocksInt = this.getParamValue(context, maxBlocks).intValue();
 		Number timeVal = this.getParamValue(context, time);
 
-		if (positionVal == null) {
+		if(positionVal == null) {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
 		}
 
 		Vector3 targetNorm = targetVal.copy().normalize();
 		Level world = context.focalPoint.getCommandSenderWorld();
 
-		for (BlockPos blockPos : MathHelper.getBlocksAlongRay(positionVal.toVec3D(), positionVal.copy().add(targetNorm.copy().multiply(maxBlocksInt)).toVec3D(), maxBlocksInt)) {
-			if (!context.isInRadius(Vector3.fromBlockPos(blockPos))) {
+		for(BlockPos blockPos : MathHelper.getBlocksAlongRay(positionVal.toVec3D(), positionVal.copy().add(targetNorm.copy().multiply(maxBlocksInt)).toVec3D(), maxBlocksInt)) {
+			if(!context.isInRadius(Vector3.fromBlockPos(blockPos))) {
 				throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 			}
 
-			if (!world.mayInteract(context.caster, blockPos)) {
+			if(!world.mayInteract(context.caster, blockPos)) {
 				continue;
 			}
 

@@ -28,7 +28,7 @@ public class PieceSelectorAttackTarget extends PieceSelector {
 
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
-		if (context.attackedEntity == null) {
+		if(context.attackedEntity == null) {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_TARGET);
 		}
 
