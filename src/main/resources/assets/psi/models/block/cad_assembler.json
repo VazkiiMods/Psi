@@ -2,11 +2,11 @@
 	"credit": "Made with Blockbench",
 	"parent": "block/block",
 	"textures": {
-		"0": "psi:blocks/cad_assembler_top",
-		"1": "psi:blocks/cad_assembler_side",
-		"2": "psi:blocks/cad_assembler_bottom",
-		"3": "psi:blocks/cad_assembler_bottom_top",
-		"particle": "psi:blocks/cad_assembler_top"
+		"0": "psi:block/cad_assembler_top",
+		"1": "psi:block/cad_assembler_side",
+		"2": "psi:block/cad_assembler_bottom",
+		"3": "psi:block/cad_assembler_bottom_top",
+		"particle": "psi:block/cad_assembler_top"
 	},
 	"elements": [
 		{

@@ -60,7 +60,7 @@ public class PiecePanelWidget extends AbstractWidget implements GuiEventListener
 	@Override
 	public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float pTicks) {
 		if(panelEnabled) {
-			graphics.fill(getX(), getY(), getY() + width, getY() + height, 0x88000000);
+			graphics.fill(getX(), getY(), getX() + width, getY() + height, 0x88000000);
 
 			if(!visibleButtons.isEmpty()) {
 				Button button = visibleButtons.get(Math.max(0, Math.min(panelCursor + (page * PIECES_PER_PAGE), visibleButtons.size() - 1)));
@@ -248,7 +248,7 @@ public class PiecePanelWidget extends AbstractWidget implements GuiEventListener
 
 				} else if(!page.isRight() && this.page > 0) {
 					page.setX(getX() + 4);
-					page.setX(getY() + height - 15);
+					page.setY(getY() + height - 15);
 					page.visible = true;
 					page.active = true;
 				}
@@ -439,7 +439,7 @@ public class PiecePanelWidget extends AbstractWidget implements GuiEventListener
 		});
 		searchField.visible = false;
 		searchField.setEditable(false);
-		searchField.setFocused(true);
+		searchField.setFocused(false);
 		parent.setFocused(parent.statusWidget);
 	}
 

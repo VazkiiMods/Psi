@@ -67,7 +67,7 @@ public class SpellCostsWidget extends AbstractWidget {
 
 				graphics.setColor(1f, 1f, 1f, 1F);
 				graphics.blit(GuiProgrammer.texture, statX, statY, (stat.ordinal() + 1) * 12, parent.ySize + 16, 12, 12);
-				graphics.drawString(this.parent.getMinecraft().font, s, statX + 16, statY + 2, cadStat != null && cadVal < val && cadVal != -1 ? 0xFF6666 : 0xFFFFFF);
+				graphics.drawString(this.parent.getMinecraft().font, s, statX + 16, statY + 2, cadStat != null && cadVal < val && cadVal != -1 ? 0xFF6666 : 0xFFFFFF, false);
 
 				if(mouseX > statX && mouseY > statY && mouseX < statX + 12 && mouseY < statY + 12 && !parent.panelWidget.panelEnabled) {
 					parent.tooltip.add(Component.translatable(stat.getName()).withStyle(Psi.magical ? ChatFormatting.LIGHT_PURPLE : ChatFormatting.AQUA));

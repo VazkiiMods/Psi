@@ -106,7 +106,7 @@ public final class PsiAPI {
 	 */
 	public static void registerSpellPieceAndTexture(ResourceLocation id, Class<? extends SpellPiece> clazz) {
 		registerSpellPiece(id, clazz);
-		DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> () -> ClientPsiAPI.registerPieceTexture(id, new ResourceLocation(id.getNamespace(), "spell/" + id.getPath())));
+		DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> ClientPsiAPI.registerPieceTexture(id, new ResourceLocation(id.getNamespace(), "spell/" + id.getPath())));
 	}
 
 	/**

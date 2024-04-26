@@ -78,8 +78,7 @@ public class RenderTileProgrammer implements BlockEntityRenderer<TileProgrammer>
 				ms.translate(70F, 0F, -200F);
 			}
 
-			GuiGraphics guigraphics = new GuiGraphics(Minecraft.getInstance(), MultiBufferSource.immediate(Tesselator.getInstance().getBuilder())); // TODO(Kamefrede): 1.20 check if this is correct
-			te.spell.draw(guigraphics, buffers, light);
+			te.spell.draw(ms, buffers, light);
 
 			ms.pushPose();
 			ms.translate(0F, 0F, -0.01F);

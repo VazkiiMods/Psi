@@ -1,6 +1,6 @@
 {
 	"parent": "minecraft:item/generated",
 	"textures": { 
-		"layer0": "psi:items/psimetal_exosuit_boots"
+		"layer0": "psi:item/psimetal_exosuit_boots"
 	}
 }

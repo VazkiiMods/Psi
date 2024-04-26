@@ -8,6 +8,7 @@
  */
 package vazkii.psi.api.spell;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.nbt.CompoundTag;
@@ -45,8 +46,8 @@ public final class Spell {
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	public void draw(GuiGraphics graphics, MultiBufferSource buffers, int light) {
-		grid.draw(graphics, buffers, light);
+	public void draw(PoseStack pPoseStack, MultiBufferSource buffers, int light) {
+		grid.draw(pPoseStack, buffers, light);
 	}
 
 	@Nullable
