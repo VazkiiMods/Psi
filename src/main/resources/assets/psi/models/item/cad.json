@@ -1,9 +1,9 @@
 {
     "__comment": "_model generated using _mr_crayfish's _model _creator (http://mrcrayfish.com/modelcreator/)",
     "textures": {
-        "layer0": "psi:blocks/empty",
-        "-1": "psi:blocks/empty",
-        "layer1": "psi:items/cad_color"
+        "layer0": "psi:block/empty",
+        "-1": "psi:block/empty",
+        "layer1": "psi:item/cad_color"
     },
     "gui_light": "front",
     "elements": [

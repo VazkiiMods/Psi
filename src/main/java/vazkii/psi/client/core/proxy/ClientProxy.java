@@ -99,8 +99,8 @@ public class ClientProxy implements IProxy {
 		});
 	}
 
-	private void modelBake(ModelEvent.BakingCompleted event) {
-		event.getModels().put(new ModelResourceLocation(ForgeRegistries.ITEMS.getKey(ModItems.cad), "inventory"), new ModelCAD());
+	private void modelBake(ModelEvent.ModifyBakingResult event) {
+		event.getModels().computeIfPresent(new ModelResourceLocation(ForgeRegistries.ITEMS.getKey(ModItems.cad), "inventory"), (k, oldModel) -> new ModelCAD());
 	}
 
 	private void addCADModels(ModelEvent.RegisterAdditional event) {
@@ -109,13 +109,7 @@ public class ClientProxy implements IProxy {
 		event.register(new ResourceLocation(LibMisc.MOD_ID, "item/" + LibItemNames.CAD_PSIMETAL));
 		event.register(new ResourceLocation(LibMisc.MOD_ID, "item/" + LibItemNames.CAD_EBONY_PSIMETAL));
 		event.register(new ResourceLocation(LibMisc.MOD_ID, "item/" + LibItemNames.CAD_IVORY_PSIMETAL));
-		event.register(new ResourceLocation(LibMisc.MOD_ID, "item/" + LibItemNames.CAD_CREATIVE)); //TODO models
-		//ModelBakery.UNREFERENCED_TEXTURES.addAll(ClientPsiAPI.getAllSpellPieceMaterial());
-		//ModelBakery.UNREFERENCED_TEXTURES.add(new Material(ClientPsiAPI.PSI_PIECE_TEXTURE_ATLAS, PieceConnector.LINES_TEXTURE));
-		for(Material spellpieceMaterial : ClientPsiAPI.getAllSpellPieceMaterial()) {
-			event.register(spellpieceMaterial.texture());
-		}
-		event.register(PieceConnector.LINES_TEXTURE);
+		event.register(new ResourceLocation(LibMisc.MOD_ID, "item/" + LibItemNames.CAD_CREATIVE));
 	}
 
 	@Override

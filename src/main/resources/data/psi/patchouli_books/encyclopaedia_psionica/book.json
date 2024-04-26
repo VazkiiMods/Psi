@@ -7,7 +7,7 @@
   "subtitle": "psi.book.subtitle",
   "open_sound": "psi:book_open",
   "flip_sound": "psi:book_flip",
-  "creative_tab": "psi",
+  "creative_tab": "psi:creative_tab",
   "use_resource_pack": true,
   "model": "psi:encyclopaedia_psionica",
   "macros": {

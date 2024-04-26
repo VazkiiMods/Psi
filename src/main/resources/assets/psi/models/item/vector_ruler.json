@@ -1,6 +1,6 @@
 {
 	"parent": "minecraft:item/generated",
 	"textures": { 
-		"layer0": "psi:items/vector_ruler"
+		"layer0": "psi:item/vector_ruler"
 	}
 }

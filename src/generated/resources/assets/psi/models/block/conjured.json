@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/block",
   "textures": {
-    "particle": "psi:blocks/empty"
+    "particle": "psi:block/empty"
   }
 }

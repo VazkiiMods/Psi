@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "psi:blocks/psidust_block"
+    "all": "psi:block/psidust_block"
   }
 }

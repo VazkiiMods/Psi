@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "psi:blocks/ivory_psimetal_block"
+    "all": "psi:block/ivory_psimetal_block"
   }
 }
