@@ -9,6 +9,7 @@
 package vazkii.psi.common.core;
 
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
@@ -31,7 +32,7 @@ public class PsiCreativeTab {
 	@SubscribeEvent
 	public static void register(RegisterEvent evt) {
 		evt.register(Registries.CREATIVE_MODE_TAB, creativeModeTabRegisterHelper -> {
-			CreativeModeTab psiCreativeTab = CreativeModeTab.builder()
+			CreativeModeTab psiCreativeTab = CreativeModeTab.builder().title(Component.translatable("itemGroup.psi"))
 					.icon(() -> new ItemStack(ModItems.cadAssemblyIron))
 					.displayItems((parameters, output) -> {
 						output.accept(ModItems.psidust);
