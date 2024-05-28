@@ -50,13 +50,12 @@ public class ItemVectorRuler extends Item implements IHUDItem {
 		BlockPos pos = ctx.getClickedPos();
 
 		ItemStack stack = ctx.getPlayer().getItemInHand(ctx.getHand());
-		int srcY = stack.getOrCreateTag().contains(TAG_SRC_Y) ? stack.getOrCreateTag().getInt(TAG_SRC_Y) : -1;
 
-		if(srcY == -1 || ctx.getPlayer().isShiftKeyDown()) {
+		if(!stack.getOrCreateTag().contains(TAG_SRC_Y) || ctx.getPlayer().isShiftKeyDown()) {
 			stack.getOrCreateTag().putInt(TAG_SRC_X, pos.getX());
 			stack.getOrCreateTag().putInt(TAG_SRC_Y, pos.getY());
 			stack.getOrCreateTag().putInt(TAG_SRC_Z, pos.getZ());
-			stack.getOrCreateTag().putInt(TAG_DST_Y, -1);
+			stack.removeTagKey(TAG_DST_Y);
 		} else {
 			stack.getOrCreateTag().putInt(TAG_DST_X, pos.getX());
 			stack.getOrCreateTag().putInt(TAG_DST_Y, pos.getY());
@@ -77,12 +76,12 @@ public class ItemVectorRuler extends Item implements IHUDItem {
 		int srcY = stack.getOrCreateTag().getInt(TAG_SRC_Y);
 		int srcZ = stack.getOrCreateTag().getInt(TAG_SRC_Z);
 
-		int dstY = stack.getOrCreateTag().contains(TAG_DST_Y) ? stack.getOrCreateTag().getInt(TAG_DST_Y) : -1;
-		if(dstY == -1) {
+		if(!stack.getOrCreateTag().contains(TAG_DST_Y)) {
 			return new Vector3(srcX, srcY, srcZ);
 		}
 
 		int dstX = stack.getOrCreateTag().getInt(TAG_DST_X);
+		int dstY = stack.getOrCreateTag().getInt(TAG_DST_Y);
 		int dstZ = stack.getOrCreateTag().getInt(TAG_DST_Z);
 
 		return new Vector3(dstX - srcX, dstY - srcY, dstZ - srcZ);
