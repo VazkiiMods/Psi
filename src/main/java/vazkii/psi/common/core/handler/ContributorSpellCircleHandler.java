@@ -69,7 +69,7 @@ public final class ContributorSpellCircleHandler {
 
 	@SubscribeEvent
 	public static void onCadTake(CADTakeEvent event) {
-		if(ContributorSpellCircleHandler.isContributor(event.getPlayer().getName().getString().toLowerCase(Locale.ROOT)) && !((ICAD) event.getCad().getItem()).getComponentInSlot(event.getCad(), EnumCADComponent.DYE).isEmpty()) {
+		if(ContributorSpellCircleHandler.isContributor(event.getPlayer().getName().getString().toLowerCase(Locale.ROOT)) && !event.getCad().isEmpty() && !((ICAD) event.getCad().getItem()).getComponentInSlot(event.getCad(), EnumCADComponent.DYE).isEmpty()) {
 			ItemStack dyeStack = ((ICAD) event.getCad().getItem()).getComponentInSlot(event.getCad(), EnumCADComponent.DYE);
 			((ICADColorizer) dyeStack.getItem()).setContributorName(dyeStack, event.getPlayer().getName().getString());
 			ItemCAD.setComponent(event.getCad(), dyeStack);
