@@ -1,6 +1,6 @@
 {
 	"parent": "minecraft:item/generated",
 	"textures": { 
-		"layer0": "psi:items/cad_assembly_creative"
+		"layer0": "psi:item/cad_assembly_creative"
 	}
 }

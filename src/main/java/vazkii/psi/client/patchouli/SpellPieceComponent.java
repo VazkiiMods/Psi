@@ -43,7 +43,7 @@ public class SpellPieceComponent implements ICustomComponent {
 		MultiBufferSource.BufferSource buffer = MultiBufferSource.immediate(Tesselator.getInstance().getBuilder());
 		graphics.pose().pushPose();
 		graphics.pose().translate(x, y, 0);
-		piece.draw(graphics, buffer, 0xF000F0);
+		piece.draw(graphics.pose(), buffer, 0xF000F0);
 		buffer.endBatch();
 
 		if(context.isAreaHovered(mouseX, mouseY, x - 1, y - 1, 16, 16)) {
