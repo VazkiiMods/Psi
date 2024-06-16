@@ -20,7 +20,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.Tiers;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -87,7 +86,7 @@ public final class PsiAPI {
 	private static final Map<ResourceLocation, Class<? extends SpellPiece>> mainPieceForGroup = new HashMap<>();
 
 	public static final PsimetalArmorMaterial PSIMETAL_ARMOR_MATERIAL = new PsimetalArmorMaterial("psimetal", 18, new int[] { 2, 5, 6, 2 },
-			12, SoundEvents.ARMOR_EQUIP_IRON, 0F, () -> Ingredient.of(ForgeRegistries.ITEMS.getValue(new ResourceLocation(MOD_ID, "psimetal"))), 0.0f);
+			12, SoundEvents.ARMOR_EQUIP_IRON, 0F, () -> Ingredient.of(Registry.ITEM.get(new ResourceLocation(MOD_ID, "psimetal"))), 0.0f);
 	public static final Tier PSIMETAL_TOOL_MATERIAL = TierSortingRegistry.registerTier(
 			new ForgeTier(3, 900, 7.8F, 2F, 12, BlockTags.NEEDS_DIAMOND_TOOL, () -> Ingredient.of(ModItems.psimetal)),
 			new ResourceLocation(MOD_ID, "psimetal_tier"),
