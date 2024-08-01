@@ -64,18 +64,18 @@ public class ModBlocks {
 	@SubscribeEvent
 	public static void register(RegisterEvent evt) {
 		evt.register(ForgeRegistries.Keys.BLOCKS, helper -> {
-			cadAssembler = new BlockCADAssembler(Block.Properties.of().mapColor(MapColor.METAL).instrument(NoteBlockInstrument.IRON_XYLOPHONE).requiresCorrectToolForDrops().strength(5, 10).sound(SoundType.METAL).noOcclusion());
-			programmer = new BlockProgrammer(Block.Properties.of().mapColor(MapColor.METAL).instrument(NoteBlockInstrument.IRON_XYLOPHONE).requiresCorrectToolForDrops().strength(5, 10).sound(SoundType.METAL).noOcclusion());
-			conjured = new BlockConjured(Block.Properties.of().mapColor(MapColor.NONE).instrument(NoteBlockInstrument.HAT).strength(0.3F).sound(SoundType.GLASS).noOcclusion().noLootTable().lightLevel(state -> state.getValue(BlockConjured.LIGHT) ? 15 : 0).noOcclusion().isValidSpawn(NO_SPAWN).isRedstoneConductor(NO_SUFFOCATION).isSuffocating(NO_SUFFOCATION).isViewBlocking(NO_SUFFOCATION));
-			psidustBlock = new Block(Block.Properties.of().mapColor(MapColor.METAL).instrument(NoteBlockInstrument.IRON_XYLOPHONE).requiresCorrectToolForDrops().strength(5, 10).sound(SoundType.METAL));
-			psimetalBlock = new Block(Block.Properties.of().mapColor(MapColor.METAL).instrument(NoteBlockInstrument.IRON_XYLOPHONE).requiresCorrectToolForDrops().strength(5, 10).sound(SoundType.METAL));
-			psigemBlock = new Block(Block.Properties.of().mapColor(MapColor.METAL).instrument(NoteBlockInstrument.IRON_XYLOPHONE).requiresCorrectToolForDrops().strength(5, 10).sound(SoundType.METAL));
-			psimetalPlateBlack = new Block(Block.Properties.of().mapColor(MapColor.METAL).instrument(NoteBlockInstrument.IRON_XYLOPHONE).requiresCorrectToolForDrops().strength(5, 10).sound(SoundType.METAL));
-			psimetalPlateBlackLight = new Block(Block.Properties.of().mapColor(MapColor.METAL).instrument(NoteBlockInstrument.IRON_XYLOPHONE).requiresCorrectToolForDrops().strength(5, 10).sound(SoundType.METAL).lightLevel((blockState) -> 15));
-			psimetalPlateWhite = new Block(Block.Properties.of().mapColor(MapColor.METAL).instrument(NoteBlockInstrument.IRON_XYLOPHONE).requiresCorrectToolForDrops().strength(5, 10).sound(SoundType.METAL));
-			psimetalPlateWhiteLight = new Block(Block.Properties.of().mapColor(MapColor.METAL).instrument(NoteBlockInstrument.IRON_XYLOPHONE).requiresCorrectToolForDrops().strength(5, 10).sound(SoundType.METAL).lightLevel((blockstate) -> 15));
-			psimetalEbony = new Block(Block.Properties.of().mapColor(MapColor.METAL).instrument(NoteBlockInstrument.IRON_XYLOPHONE).requiresCorrectToolForDrops().strength(5, 10).sound(SoundType.METAL));
-			psimetalIvory = new Block(Block.Properties.of().mapColor(MapColor.METAL).instrument(NoteBlockInstrument.IRON_XYLOPHONE).requiresCorrectToolForDrops().strength(5, 10).sound(SoundType.METAL));
+			cadAssembler = new BlockCADAssembler(Block.Properties.of().mapColor(MapColor.METAL).instrument(NoteBlockInstrument.IRON_XYLOPHONE).strength(5, 10).sound(SoundType.METAL).noOcclusion());
+			programmer = new BlockProgrammer(Block.Properties.of().mapColor(MapColor.METAL).instrument(NoteBlockInstrument.IRON_XYLOPHONE).strength(5, 10).sound(SoundType.METAL).noOcclusion());
+			conjured = new BlockConjured(Block.Properties.of().mapColor(MapColor.NONE).instrument(NoteBlockInstrument.HAT).instabreak().sound(SoundType.GLASS).noOcclusion().noLootTable().lightLevel(state -> state.getValue(BlockConjured.LIGHT) ? 15 : 0).noOcclusion().isValidSpawn(NO_SPAWN).isRedstoneConductor(NO_SUFFOCATION).isSuffocating(NO_SUFFOCATION).isViewBlocking(NO_SUFFOCATION));
+			psidustBlock = new Block(Block.Properties.of().mapColor(MapColor.METAL).instrument(NoteBlockInstrument.IRON_XYLOPHONE).strength(5, 10).sound(SoundType.METAL));
+			psimetalBlock = new Block(Block.Properties.of().mapColor(MapColor.METAL).instrument(NoteBlockInstrument.IRON_XYLOPHONE).strength(5, 10).sound(SoundType.METAL));
+			psigemBlock = new Block(Block.Properties.of().mapColor(MapColor.METAL).instrument(NoteBlockInstrument.IRON_XYLOPHONE).strength(5, 10).sound(SoundType.METAL));
+			psimetalPlateBlack = new Block(Block.Properties.of().mapColor(MapColor.METAL).instrument(NoteBlockInstrument.IRON_XYLOPHONE).strength(5, 10).sound(SoundType.METAL));
+			psimetalPlateBlackLight = new Block(Block.Properties.of().mapColor(MapColor.METAL).instrument(NoteBlockInstrument.IRON_XYLOPHONE).strength(5, 10).sound(SoundType.METAL).lightLevel((blockState) -> 15));
+			psimetalPlateWhite = new Block(Block.Properties.of().mapColor(MapColor.METAL).instrument(NoteBlockInstrument.IRON_XYLOPHONE).strength(5, 10).sound(SoundType.METAL));
+			psimetalPlateWhiteLight = new Block(Block.Properties.of().mapColor(MapColor.METAL).instrument(NoteBlockInstrument.IRON_XYLOPHONE).strength(5, 10).sound(SoundType.METAL).lightLevel((blockstate) -> 15));
+			psimetalEbony = new Block(Block.Properties.of().mapColor(MapColor.METAL).instrument(NoteBlockInstrument.IRON_XYLOPHONE).strength(5, 10).sound(SoundType.METAL));
+			psimetalIvory = new Block(Block.Properties.of().mapColor(MapColor.METAL).instrument(NoteBlockInstrument.IRON_XYLOPHONE).strength(5, 10).sound(SoundType.METAL));
 
 			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibBlockNames.CAD_ASSEMBLER), cadAssembler);
 			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibBlockNames.PROGRAMMER), programmer);
