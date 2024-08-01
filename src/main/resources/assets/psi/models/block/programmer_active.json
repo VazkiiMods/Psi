@@ -1,7 +1,7 @@
 {
   "parent": "psi:block/programmer_shape",
   "textures": {
-    "3": "psi:blocks/programmer_side",
-    "4": "psi:blocks/programmer_top"
+    "3": "psi:block/programmer_side",
+    "4": "psi:block/programmer_top"
   }
 }

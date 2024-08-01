@@ -36,7 +36,7 @@ public class GuiButtonSpellPiece extends Button {
 			MultiBufferSource.BufferSource buffers = MultiBufferSource.immediate(Tesselator.getInstance().getBuilder());
 			graphics.pose().pushPose();
 			graphics.pose().translate(getX(), getY(), 0);
-			piece.draw(graphics, buffers, 0xF000F0);
+			piece.draw(graphics.pose(), buffers, 0xF000F0);
 			buffers.endBatch();
 			graphics.pose().popPose();
 

@@ -292,7 +292,7 @@ public final class ModItems {
 	}
 
 	public static Item.Properties defaultBuilder() {
-		return new Item.Properties(); // TODO(Kamefrede): 1.20 add to tab
+		return new Item.Properties();
 	}
 
 }
