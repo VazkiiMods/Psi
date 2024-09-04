@@ -8,10 +8,12 @@
  */
 package vazkii.psi.common.spell.other;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -54,15 +56,15 @@ public class PieceConnector extends SpellPiece implements IRedirector {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void drawAdditional(GuiGraphics graphics, MultiBufferSource buffers, int light) {
-		drawSide(graphics, buffers, light, paramSides.get(target));
+	public void drawAdditional(PoseStack pPoseStack, MultiBufferSource buffers, int light) {
+		drawSide(pPoseStack, buffers, light, paramSides.get(target));
 
 		if(isInGrid) {
 			for(SpellParam.Side side : SpellParam.Side.class.getEnumConstants()) {
 				if(side.isEnabled()) {
 					SpellPiece piece = spell.grid.getPieceAtSideSafely(x, y, side);
 					if(piece != null && piece.isInputSide(side.getOpposite())) {
-						drawSide(graphics, buffers, light, side);
+						drawSide(pPoseStack, buffers, light, side);
 					}
 				}
 			}
@@ -70,9 +72,9 @@ public class PieceConnector extends SpellPiece implements IRedirector {
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	private void drawSide(GuiGraphics graphics, MultiBufferSource buffers, int light, SpellParam.Side side) {
+	private void drawSide(PoseStack pPoseStack, MultiBufferSource buffers, int light, SpellParam.Side side) {
 		if(side.isEnabled()) {
-			Material material = new Material(ClientPsiAPI.PSI_PIECE_TEXTURE_ATLAS, LINES_TEXTURE);
+			Material material = new Material(TextureAtlas.LOCATION_BLOCKS, LINES_TEXTURE);
 			VertexConsumer buffer = material.buffer(buffers, ignored -> SpellPiece.getLayer());
 
 			float minU = 0;
@@ -99,7 +101,7 @@ public class PieceConnector extends SpellPiece implements IRedirector {
 			/*
 			See note in SpellPiece#drawBackground for why this chain needs to be split
 			*/
-			Matrix4f mat = graphics.pose().last().pose();
+			Matrix4f mat = pPoseStack.last().pose();
 			buffer.vertex(mat, 0, 16, 0).color(1F, 1F, 1F, 1F);
 			buffer.uv(minU, maxV).uv2(light).endVertex();
 			buffer.vertex(mat, 16, 16, 0).color(1F, 1F, 1F, 1F);

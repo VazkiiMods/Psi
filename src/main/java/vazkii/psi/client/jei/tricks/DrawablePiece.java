@@ -31,7 +31,7 @@ public class DrawablePiece implements IDrawableStatic {
 		graphics.pose().translate(xOffset, yOffset, 0);
 
 		MultiBufferSource.BufferSource buffers = MultiBufferSource.immediate(Tesselator.getInstance().getBuilder());
-		piece.drawBackground(graphics, buffers, 0xF000F0);
+		piece.drawBackground(graphics.pose(), buffers, 0xF000F0);
 
 		buffers.endBatch();
 

@@ -42,12 +42,6 @@ public class GuiButtonSideConfig extends Button {
 	@Override
 	public void render(GuiGraphics graphics, int par2, int par3, float pTicks) {
 		if(active && visible && !gui.takingScreenshot) {
-			int minX = getX();
-			int minY = getY();
-			int maxX = minX + 8;
-			int maxY = minY + 8;
-
-			RenderSystem.setShaderTexture(0, GuiProgrammer.texture);
 			SpellPiece piece = gui.spell.grid.gridData[gridX][gridY];
 			if(piece == null) {
 				return;
@@ -60,27 +54,15 @@ public class GuiButtonSideConfig extends Button {
 
 			SpellParam.Side currSide = piece.paramSides.get(param);
 			if(currSide == side) {
-				RenderSystem.setShaderColor(PsiRenderHelper.r(param.color) / 255F,
+				graphics.setColor(PsiRenderHelper.r(param.color) / 255F,
 						PsiRenderHelper.g(param.color) / 255F,
 						PsiRenderHelper.b(param.color) / 255F, 1F);
 			} else {
-				RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
+				graphics.setColor(1f, 1f, 1f, 1F);
 			}
 
-			float wh = 8F;
-			float minU = side.u / 256F;
-			float minV = side.v / 256F;
-			float maxU = (side.u + wh) / 256F;
-			float maxV = (side.v + wh) / 256F;
-			//RenderSystem.enableAlphaTest(); //TODO Alpha Test?
-			BufferBuilder wr = Tesselator.getInstance().getBuilder();
-			wr.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX); //TODO Check if QUADS is correct
-			wr.vertex(minX, maxY, 0).uv(minU, maxV).endVertex();
-			wr.vertex(maxX, maxY, 0).uv(maxU, maxV).endVertex();
-			wr.vertex(maxX, minY, 0).uv(maxU, minV).endVertex();
-			wr.vertex(minX, minY, 0).uv(minU, minV).endVertex();
-			Tesselator.getInstance().end();
-			//RenderSystem.disableAlphaTest();
+			graphics.blit(GuiProgrammer.texture, getX(), getY(), 8, 8, side.u, side.v, 8, 8, 256, 256);
+			graphics.setColor(1f, 1f, 1f, 1F);
 		}
 	}
 

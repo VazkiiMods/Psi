@@ -12,13 +12,13 @@
       "type": "relations",
       "text": "psi.book.page.spellBullet.1",
       "entries": [
-        "items/spell_bullet",
-        "items/projectile_bullet",
-        "items/loopcast_bullet",
-        "items/circle_bullet",
-        "items/grenade_bullet",
-        "items/charge_bullet",
-        "items/mine_bullet"
+        "psi:items/spell_bullet",
+        "psi:items/projectile_bullet",
+        "psi:items/loopcast_bullet",
+        "psi:items/circle_bullet",
+        "psi:items/grenade_bullet",
+        "psi:items/charge_bullet",
+        "psi:items/mine_bullet"
       ],
       "title": "Types of Bullets"
     },

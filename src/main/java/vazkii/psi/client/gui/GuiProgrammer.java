@@ -332,7 +332,7 @@ public class GuiProgrammer extends Screen {
 		tooltip.clear();
 		graphics.pose().translate(gridLeft, gridTop, 0);
 		MultiBufferSource.BufferSource buffers = MultiBufferSource.immediate(Tesselator.getInstance().getBuilder());
-		spell.draw(graphics, buffers, 0xF000F0);
+		spell.draw(graphics.pose(), buffers, 0xF000F0);
 		buffers.endBatch();
 
 		compileResult.right().ifPresent(ex -> {
