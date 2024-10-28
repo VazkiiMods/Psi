@@ -90,7 +90,7 @@ public final class PsiAPI {
 	public static final PsimetalArmorMaterial PSIMETAL_ARMOR_MATERIAL = new PsimetalArmorMaterial("psimetal", 18, new int[] { 2, 5, 6, 2 },
 			12, SoundEvents.ARMOR_EQUIP_IRON, 0F, () -> Ingredient.of(ForgeRegistries.ITEMS.getValue(new ResourceLocation(MOD_ID, "psimetal"))), 0.0f);
 	public static final Tier PSIMETAL_TOOL_MATERIAL = TierSortingRegistry.registerTier(
-			new ForgeTier(3, 900, 7.8F, 2F, 12, BlockTags.NEEDS_DIAMOND_TOOL, () -> Ingredient.of(ModItems.psimetal)),
+			new ForgeTier(3, 900, 7.8F, 2F, 12, BlockTags.create(new ResourceLocation(MOD_ID, "needs_psimetal_tool")), () -> Ingredient.of(ModItems.psimetal)),
 			new ResourceLocation(MOD_ID, "psimetal_tier"),
 			List.of(Tiers.DIAMOND), List.of(Tiers.NETHERITE));
 
