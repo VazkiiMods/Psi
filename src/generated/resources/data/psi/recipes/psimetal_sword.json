@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "equipment",
   "key": {
     "G": {
       "tag": "forge:gems/psigem"
@@ -18,5 +19,6 @@
   ],
   "result": {
     "item": "psi:psimetal_sword"
-  }
+  },
+  "show_notification": true
 }

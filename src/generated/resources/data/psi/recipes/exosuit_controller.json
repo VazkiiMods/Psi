@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "equipment",
   "key": {
     "G": {
       "tag": "forge:glass"
@@ -18,5 +19,6 @@
   ],
   "result": {
     "item": "psi:exosuit_controller"
-  }
+  },
+  "show_notification": true
 }

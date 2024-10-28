@@ -28,7 +28,6 @@ public class DataGenerator {
 			event.getGenerator().addProvider(true, new PsiDamageTypeTagsProvider(event.getGenerator().getPackOutput(), event.getLookupProvider(), existingFileHelper));
 			event.getGenerator().addProvider(true, new PsiItemTagProvider(event.getGenerator().getPackOutput(), event.getLookupProvider(), blockTagProvider.contentsGetter(), existingFileHelper));
 			event.getGenerator().addProvider(true, new PsiRecipeGenerator(event.getGenerator().getPackOutput()));
-			event.getGenerator().addProvider(true, new PsiTrickRecipeGenerator(event.getGenerator().getPackOutput()));
 		}
 
 		if(event.includeClient()) {

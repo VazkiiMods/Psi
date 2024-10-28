@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "C": {
       "tag": "forge:gems/quartz"
@@ -15,5 +16,6 @@
   ],
   "result": {
     "item": "psi:white_psimetal_plate"
-  }
+  },
+  "show_notification": true
 }
