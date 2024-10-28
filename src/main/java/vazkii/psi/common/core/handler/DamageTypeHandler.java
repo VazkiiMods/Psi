@@ -24,7 +24,7 @@ public class DamageTypeHandler {
 	@SubscribeEvent
 	public static void registerSerializers(RegisterEvent event) {
 		event.register(Registries.DAMAGE_TYPE, helper -> {
-			helper.register(LibResources.PSI_DAMAGE_TYPE, psiDamageType);
+			helper.register(LibResources.PSI_OVERLOAD, psiDamageType);
 		});
 	}
 }

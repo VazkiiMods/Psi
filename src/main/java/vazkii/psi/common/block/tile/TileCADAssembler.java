@@ -59,31 +59,8 @@ public class TileCADAssembler extends BlockEntity implements ITileCADAssembler, 
 	@ObjectHolder(registryName = "minecraft:block_entity_type", value = LibMisc.PREFIX_MOD + LibBlockNames.CAD_ASSEMBLER)
 	public static BlockEntityType<TileCADAssembler> TYPE;
 
-	private final IItemHandlerModifiable inventory = new ItemStackHandler(6) {
-		@Override
-		protected void onContentsChanged(int slot) {
-			super.onContentsChanged(slot);
-			if(0 < slot && slot < 6) {
-				clearCachedCAD();
-			}
-		}
+	private final CADStackHandler inventory = new CADStackHandler(6);
 
-		@Override
-		public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-			if(stack.isEmpty()) {
-				return true;
-			}
-
-			if(slot == 0) {
-				return ISocketable.isSocketable(stack);
-			} else if(slot < 6) {
-				return stack.getItem() instanceof ICADComponent &&
-						((ICADComponent) stack.getItem()).getComponentType(stack) == EnumCADComponent.values()[slot - 1];
-			}
-
-			return false;
-		}
-	};
 	private final IItemHandler publicInv = new IItemHandler() {
 		@Override
 		public int getSlots() {
@@ -237,11 +214,7 @@ public class TileCADAssembler extends BlockEntity implements ITileCADAssembler, 
 	@Override
 	protected void saveAdditional(CompoundTag tag) {
 		super.saveAdditional(tag);
-		NonNullList<ItemStack> items = NonNullList.withSize(inventory.getSlots(), ItemStack.EMPTY);
-		for(int i = 0; i < inventory.getSlots(); i++) {
-			items.set(i, inventory.getStackInSlot(i));
-		}
-		ContainerHelper.saveAllItems(tag, items);
+		ContainerHelper.saveAllItems(tag, inventory.getItems());
 	}
 
 	@Override
@@ -250,10 +223,13 @@ public class TileCADAssembler extends BlockEntity implements ITileCADAssembler, 
 		readPacketNBT(cmp);
 	}
 
+
+
 	public void readPacketNBT(@Nonnull CompoundTag tag) {
 		// Migrate old CAD assemblers to the new format
-		if(tag.getInt("version") < 1) {
-			ListTag items = tag.getList("Items", 10);
+		ListTag items = tag.getList("Items", 10);
+		if(items.size() == 19) {
+
 			for(int i = 0; i < inventory.getSlots(); i++) {
 				inventory.setStackInSlot(i, ItemStack.EMPTY);
 			}
@@ -295,7 +271,7 @@ public class TileCADAssembler extends BlockEntity implements ITileCADAssembler, 
 				}
 			}
 		} else {
-			//CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.readNBT(inventory, null, tag.getList("Items", Tag.TAG_COMPOUND)); //TODO Fix this but we need answers
+			ContainerHelper.loadAllItems(tag, inventory.getItems());
 		}
 	}
 
@@ -323,5 +299,46 @@ public class TileCADAssembler extends BlockEntity implements ITileCADAssembler, 
 	@Override
 	public AbstractContainerMenu createMenu(int i, Inventory playerInventory, Player playerEntity) {
 		return new ContainerCADAssembler(i, playerInventory, this);
+	}
+
+	private class CADStackHandler extends ItemStackHandler {
+
+
+		private CADStackHandler(int size) {
+			super(size);
+		}
+
+		private NonNullList<ItemStack> getItems() {
+			return this.stacks;
+		}
+
+		private void setItems(NonNullList<ItemStack> pItems) {
+			this.stacks = pItems;
+		}
+
+		@Override
+		protected void onContentsChanged(int slot) {
+			super.onContentsChanged(slot);
+			if (0 < slot && slot < 6) {
+				clearCachedCAD();
+			}
+			setChanged();
+		}
+
+		@Override
+		public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
+			if (stack.isEmpty()) {
+				return true;
+			}
+
+			if (slot == 0) {
+				return ISocketable.isSocketable(stack);
+			} else if (slot < 6) {
+				return stack.getItem() instanceof ICADComponent &&
+						((ICADComponent) stack.getItem()).getComponentType(stack).ordinal() == slot - 1;
+			}
+
+			return false;
+		}
 	}
 }

@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "equipment",
   "key": {
     "A": {
       "tag": "forge:dusts/redstone"
@@ -16,5 +17,6 @@
   ],
   "result": {
     "item": "psi:spell_bullet_charge"
-  }
+  },
+  "show_notification": true
 }

@@ -1,5 +1,6 @@
 {
   "type": "psi:bullet_upgrade",
+  "category": "equipment",
   "ingredients": [
     {
       "item": "psi:spell_bullet"

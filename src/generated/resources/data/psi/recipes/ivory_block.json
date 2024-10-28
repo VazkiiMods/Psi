@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "building",
   "key": {
     "I": {
       "item": "psi:ivory_psimetal"
@@ -12,5 +13,6 @@
   ],
   "result": {
     "item": "psi:ivory_psimetal_block"
-  }
+  },
+  "show_notification": true
 }

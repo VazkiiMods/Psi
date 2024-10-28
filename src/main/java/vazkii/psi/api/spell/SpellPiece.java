@@ -12,6 +12,7 @@ import com.google.common.base.CaseFormat;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexFormat;
 
@@ -22,6 +23,7 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -279,19 +281,19 @@ public abstract class SpellPiece {
 	 * To avoid z-fighting in the TE projection, translations are applied every step.
 	 */
 	@OnlyIn(Dist.CLIENT)
-	public void draw(GuiGraphics graphics, MultiBufferSource buffers, int light) {
-		graphics.pose().pushPose();
-		drawBackground(graphics, buffers, light);
-		graphics.pose().translate(0F, 0F, 0.1F);
-		drawAdditional(graphics, buffers, light);
+	public void draw(PoseStack pPoseStack, MultiBufferSource buffers, int light) {
+		pPoseStack.pushPose();
+		drawBackground(pPoseStack, buffers, light);
+		pPoseStack.translate(0F, 0F, 0.1F);
+		drawAdditional(pPoseStack, buffers, light);
 		if(isInGrid) {
-			graphics.pose().translate(0F, 0F, 0.1F);
-			drawParams(graphics, buffers, light);
-			graphics.pose().translate(0F, 0F, 0.1F);
-			drawComment(graphics, buffers, light);
+			pPoseStack.translate(0F, 0F, 0.1F);
+			drawParams(pPoseStack, buffers, light);
+			pPoseStack.translate(0F, 0F, 0.1F);
+			drawComment(pPoseStack, buffers, light);
 		}
 
-		graphics.pose().popPose();
+		pPoseStack.popPose();
 	}
 
 	@OnlyIn(Dist.CLIENT)
@@ -299,7 +301,7 @@ public abstract class SpellPiece {
 		if(layer == null) {
 			RenderType.CompositeState glState = RenderType.CompositeState.builder()
 					.setShaderState(new RenderStateShard.ShaderStateShard(GameRenderer::getPositionColorTexShader))
-					.setTextureState(new RenderStateShard.TextureStateShard(ClientPsiAPI.PSI_PIECE_TEXTURE_ATLAS, false, false))
+					.setTextureState(new RenderStateShard.TextureStateShard(TextureAtlas.LOCATION_BLOCKS, false, false))
 					.setLightmapState(new RenderStateShard.LightmapStateShard(true))
 					.setTransparencyState(new RenderStateShard.TransparencyStateShard("translucent_transparency", () -> {
 						RenderSystem.enableBlend();
@@ -310,7 +312,7 @@ public abstract class SpellPiece {
 					}))
 					.setCullState(new RenderStateShard.CullStateShard(false))
 					.createCompositeState(false);
-			layer = RenderType.create(ClientPsiAPI.PSI_PIECE_TEXTURE_ATLAS.toString(), DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP, VertexFormat.Mode.QUADS, 64, glState);
+			layer = RenderType.create(TextureAtlas.LOCATION_BLOCKS.toString(), DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP, VertexFormat.Mode.QUADS, 64, glState);
 		}
 		return layer;
 	}
@@ -319,10 +321,10 @@ public abstract class SpellPiece {
 	 * Draws this piece's background.
 	 */
 	@OnlyIn(Dist.CLIENT)
-	public void drawBackground(GuiGraphics graphics, MultiBufferSource buffers, int light) {
+	public void drawBackground(PoseStack pPoseStack, MultiBufferSource buffers, int light) {
 		Material material = ClientPsiAPI.getSpellPieceMaterial(registryKey);
 		VertexConsumer buffer = material.buffer(buffers, ignored -> getLayer());
-		Matrix4f mat = graphics.pose().last().pose();
+		Matrix4f mat = pPoseStack.last().pose();
 		// Cannot call .texture() on the chained object because SpriteAwareVertexBuilder is buggy
 		// and does not return itself, it returns the inner buffer
 		// This leads to .texture() using the implementation of the inner buffer,
@@ -346,7 +348,7 @@ public abstract class SpellPiece {
 	 * to draw the lines.
 	 */
 	@OnlyIn(Dist.CLIENT)
-	public void drawAdditional(GuiGraphics graphics, MultiBufferSource buffers, int light) {
+	public void drawAdditional(PoseStack pPoseStack, MultiBufferSource buffers, int light) {
 		// NO-OP
 	}
 
@@ -354,7 +356,7 @@ public abstract class SpellPiece {
 	 * Draws the little comment indicator in this piece, if one exists.
 	 */
 	@OnlyIn(Dist.CLIENT)
-	public void drawComment(GuiGraphics graphics, MultiBufferSource buffers, int light) {
+	public void drawComment(PoseStack pPoseStack, MultiBufferSource buffers, int light) {
 		if(comment != null && !comment.isEmpty()) {
 			VertexConsumer buffer = buffers.getBuffer(PsiAPI.internalHandler.getProgrammerLayer());
 
@@ -363,7 +365,7 @@ public abstract class SpellPiece {
 			float minV = 184 / 256F;
 			float maxU = (150 + wh) / 256F;
 			float maxV = (184 + wh) / 256F;
-			Matrix4f mat = graphics.pose().last().pose();
+			Matrix4f mat = pPoseStack.last().pose();
 
 			buffer.vertex(mat, -2, 4, 0).color(1F, 1F, 1F, 1F).uv(minU, maxV).uv2(light).endVertex();
 			buffer.vertex(mat, 4, 4, 0).color(1F, 1F, 1F, 1F).uv(maxU, maxV).uv2(light).endVertex();
@@ -376,15 +378,15 @@ public abstract class SpellPiece {
 	 * Draws the parameters coming into this piece.
 	 */
 	@OnlyIn(Dist.CLIENT)
-	public void drawParams(GuiGraphics graphics, MultiBufferSource buffers, int light) {
+	public void drawParams(PoseStack pPoseStack, MultiBufferSource buffers, int light) {
 		VertexConsumer buffer = buffers.getBuffer(PsiAPI.internalHandler.getProgrammerLayer());
 		for(SpellParam<?> param : paramSides.keySet()) {
-			drawParam(graphics, buffer, light, param);
+			drawParam(pPoseStack, buffer, light, param);
 		}
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	public void drawParam(GuiGraphics graphics, VertexConsumer buffer, int light, SpellParam<?> param) {
+	public void drawParam(PoseStack pPoseStack, VertexConsumer buffer, int light, SpellParam<?> param) {
 		SpellParam.Side side = paramSides.get(param);
 		if(!side.isEnabled() || param.getArrowType() == ArrowType.NONE) {
 			return;
@@ -405,11 +407,11 @@ public abstract class SpellPiece {
 		if(count > 1) {
 			percent = (float) index / (count - 1);
 		}
-		drawParam(graphics, buffer, light, side, param.color, param.getArrowType(), percent);
+		drawParam(pPoseStack, buffer, light, side, param.color, param.getArrowType(), percent);
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	public void drawParam(GuiGraphics graphics, VertexConsumer buffer, int light, SpellParam.Side side, int color, SpellParam.ArrowType arrowType, float percent) {
+	public void drawParam(PoseStack pPoseStack, VertexConsumer buffer, int light, SpellParam.Side side, int color, SpellParam.ArrowType arrowType, float percent) {
 		if(arrowType == ArrowType.NONE) {
 			return;
 		}
@@ -432,7 +434,7 @@ public abstract class SpellPiece {
 		int g = PsiRenderHelper.g(color);
 		int b = PsiRenderHelper.b(color);
 		int a = 255;
-		Matrix4f mat = graphics.pose().last().pose();
+		Matrix4f mat = pPoseStack.last().pose();
 
 		buffer.vertex(mat, minX, maxY, 0).color(r, g, b, a).uv(minU, maxV).uv2(light).endVertex();
 		buffer.vertex(mat, maxX, maxY, 0).color(r, g, b, a).uv(maxU, maxV).uv2(light).endVertex();

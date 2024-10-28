@@ -1,6 +1,6 @@
 {
 	"parent": "minecraft:item/generated",
 	"textures": { 
-		"layer0": "psi:items/ivory_substance"
+		"layer0": "psi:item/ivory_substance"
 	}
 }

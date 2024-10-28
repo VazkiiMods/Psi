@@ -17,10 +17,15 @@ import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.Tiers;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.common.ForgeTier;
+import net.minecraftforge.common.TierSortingRegistry;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
@@ -36,14 +41,15 @@ import vazkii.psi.api.cad.ISocketable;
 import vazkii.psi.api.internal.DummyMethodHandler;
 import vazkii.psi.api.internal.IInternalMethodHandler;
 import vazkii.psi.api.material.PsimetalArmorMaterial;
-import vazkii.psi.api.material.PsimetalToolMaterial;
 import vazkii.psi.api.spell.ISpellAcceptor;
 import vazkii.psi.api.spell.ISpellImmune;
 import vazkii.psi.api.spell.SpellPiece;
 import vazkii.psi.api.spell.detonator.IDetonationHandler;
+import vazkii.psi.common.item.base.ModItems;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -83,7 +89,11 @@ public final class PsiAPI {
 
 	public static final PsimetalArmorMaterial PSIMETAL_ARMOR_MATERIAL = new PsimetalArmorMaterial("psimetal", 18, new int[] { 2, 5, 6, 2 },
 			12, SoundEvents.ARMOR_EQUIP_IRON, 0F, () -> Ingredient.of(ForgeRegistries.ITEMS.getValue(new ResourceLocation(MOD_ID, "psimetal"))), 0.0f);
-	public static final PsimetalToolMaterial PSIMETAL_TOOL_MATERIAL = new PsimetalToolMaterial();
+	public static final Tier PSIMETAL_TOOL_MATERIAL = TierSortingRegistry.registerTier(
+			new ForgeTier(3, 900, 7.8F, 2F, 12, BlockTags.create(new ResourceLocation(MOD_ID, "needs_psimetal_tool")), () -> Ingredient.of(ModItems.psimetal)),
+			new ResourceLocation(MOD_ID, "psimetal_tier"),
+			List.of(Tiers.DIAMOND), List.of(Tiers.NETHERITE));
+
 
 	/**
 	 * Registers a Spell Piece.
@@ -106,7 +116,7 @@ public final class PsiAPI {
 	 */
 	public static void registerSpellPieceAndTexture(ResourceLocation id, Class<? extends SpellPiece> clazz) {
 		registerSpellPiece(id, clazz);
-		DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> () -> ClientPsiAPI.registerPieceTexture(id, new ResourceLocation(id.getNamespace(), "spell/" + id.getPath())));
+		DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> ClientPsiAPI.registerPieceTexture(id, new ResourceLocation(id.getNamespace(), "spell/" + id.getPath())));
 	}
 
 	/**

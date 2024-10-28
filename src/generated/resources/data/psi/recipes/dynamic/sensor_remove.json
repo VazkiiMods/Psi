@@ -1,3 +1,4 @@
 {
-  "type": "psi:sensor_remove"
+  "type": "psi:sensor_remove",
+  "category": "misc"
 }

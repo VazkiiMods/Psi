@@ -8,14 +8,17 @@
  */
 package vazkii.psi.common.lib;
 
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.damagesource.DamageType;
 
 public class LibResources {
 
 	public static final String PREFIX_MOD = "psi:";
 	public static final ResourceLocation PATCHOULI_BOOK = new ResourceLocation(LibMisc.MOD_ID, "encyclopaedia_psionica");
 
-	public static final ResourceLocation PSI_DAMAGE_TYPE = new ResourceLocation(LibMisc.MOD_ID, "psi_overload");
+	public static final ResourceKey<DamageType> PSI_OVERLOAD = ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(LibMisc.MOD_ID, "psi_overload"));
 
 	public static final String PREFIX_GUI = PREFIX_MOD + "textures/gui/";
 	public static final String PREFIX_MODEL = PREFIX_MOD + "textures/model/";

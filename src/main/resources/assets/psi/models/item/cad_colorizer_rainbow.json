@@ -1,6 +1,6 @@
 {
 	"parent": "psi:item/_standard_colorizer",
 	"textures": { 
-        "layer1": "psi:items/dye_cannister_special_rainbow"
+        "layer1": "psi:item/dye_cannister_special_rainbow"
     }
 }

@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "equipment",
   "key": {
     "D": {
       "tag": "forge:ingots/psimetal"
@@ -18,5 +19,6 @@
   ],
   "result": {
     "item": "psi:cad_battery_extended"
-  }
+  },
+  "show_notification": true
 }

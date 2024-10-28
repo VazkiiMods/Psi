@@ -33,12 +33,6 @@ public class ModTags {
 	public static final TagKey<Item> INGOT_IVORY_PSIMETAL = forgeTag("ingots/ivory_psimetal");
 	public static final TagKey<Item> BLOCK_IVORY_PSIMETAL = forgeTag("storage_blocks/ivory_psimetal");
 
-	public static final TagKey<DamageType> PSI_OVERLOAD = damageTag(LibResources.PSI_DAMAGE_TYPE);
-
-	private static TagKey<DamageType> damageTag(ResourceLocation rl) {
-		return TagKey.create(Registries.DAMAGE_TYPE, rl);
-	}
-
 	private static TagKey<Item> tag(String name) {
 		return TagKey.create(Registries.ITEM, prefix(name));
 	}

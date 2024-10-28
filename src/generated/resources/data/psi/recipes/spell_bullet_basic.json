@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "equipment",
   "key": {
     "D": {
       "tag": "psi:psidust"
@@ -13,5 +14,6 @@
   ],
   "result": {
     "item": "psi:spell_bullet"
-  }
+  },
+  "show_notification": true
 }
