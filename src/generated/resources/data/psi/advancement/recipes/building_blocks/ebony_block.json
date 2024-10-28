@@ -1,0 +1,33 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_ebony_psimetal": {
+      "conditions": {
+        "items": [
+          {
+            "items": "#c:ingots/ebony_psimetal"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "psi:ebony_block"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_ebony_psimetal"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "psi:ebony_block"
+    ]
+  },
+  "sends_telemetry_event": false
+}

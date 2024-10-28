@@ -8,76 +8,67 @@
  */
 package vazkii.psi.common.spell.constant;
 
-import vazkii.psi.api.spell.EnumPieceType;
-import vazkii.psi.api.spell.EnumSpellStat;
-import vazkii.psi.api.spell.Spell;
-import vazkii.psi.api.spell.SpellCompilationException;
-import vazkii.psi.api.spell.SpellContext;
-import vazkii.psi.api.spell.SpellMetadata;
-import vazkii.psi.api.spell.SpellParam;
-import vazkii.psi.api.spell.SpellPiece;
-import vazkii.psi.api.spell.SpellRuntimeException;
-import vazkii.psi.api.spell.StatLabel;
+import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.param.ParamNumber;
 
 public class PieceConstantWrapper extends SpellPiece {
 
-	SpellParam<Number> target;
-	SpellParam<Number> max;
+    SpellParam<Number> target;
+    SpellParam<Number> max;
 
-	boolean evaluating = false;
+    boolean evaluating = false;
 
-	public PieceConstantWrapper(Spell spell) {
-		super(spell);
-		setStatLabel(EnumSpellStat.COMPLEXITY, new StatLabel(1));
-	}
+    public PieceConstantWrapper(Spell spell) {
+        super(spell);
+        setStatLabel(EnumSpellStat.COMPLEXITY, new StatLabel(1));
+    }
 
-	@Override
-	public void initParams() {
-		addParam(target = new ParamNumber(SpellParam.GENERIC_NAME_TARGET, SpellParam.RED, false, false));
-		addParam(max = new ParamNumber("psi.spellparam.constant", SpellParam.GREEN, false, true));
-	}
+    @Override
+    public void initParams() {
+        addParam(target = new ParamNumber(SpellParam.GENERIC_NAME_TARGET, SpellParam.RED, false, false));
+        addParam(max = new ParamNumber("psi.spellparam.constant", SpellParam.GREEN, false, true));
+    }
 
-	@Override
-	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
-		meta.addStat(EnumSpellStat.COMPLEXITY, 1);
-	}
+    @Override
+    public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
+        meta.addStat(EnumSpellStat.COMPLEXITY, 1);
+    }
 
-	@Override
-	public Object execute(SpellContext context) throws SpellRuntimeException {
-		double targetVal = this.getParamValue(context, target).doubleValue();
-		double maxVal = this.getParamValue(context, max).doubleValue();
+    @Override
+    public Object execute(SpellContext context) throws SpellRuntimeException {
+        double targetVal = this.getParamValue(context, target).doubleValue();
+        double maxVal = this.getParamValue(context, max).doubleValue();
 
-		if(maxVal > 0) {
-			return Math.min(maxVal, Math.abs(targetVal));
-		} else if(maxVal < 0) {
-			return Math.max(maxVal, -Math.abs(targetVal));
-		} else {
-			return 0.0;
-		}
-	}
+        if (maxVal > 0) {
+            return Math.min(maxVal, Math.abs(targetVal));
+        } else if (maxVal < 0) {
+            return Math.max(maxVal, -Math.abs(targetVal));
+        } else {
+            return 0.0;
+        }
+    }
 
-	@Override
-	public Object evaluate() throws SpellCompilationException {
-		if(evaluating) {
-			return 0.0;
-		}
+    @Override
+    public Object evaluate() throws SpellCompilationException {
+        if (evaluating) {
+            return 0.0;
+        }
 
-		evaluating = true;
-		Object ret = getParamEvaluation(max);
-		evaluating = false;
+        evaluating = true;
+        Object ret = getParamEvaluation(max);
+        evaluating = false;
 
-		return ret;
-	}
+        return ret;
+    }
 
-	@Override
-	public EnumPieceType getPieceType() {
-		return EnumPieceType.CONSTANT;
-	}
+    @Override
+    public EnumPieceType getPieceType() {
+        return EnumPieceType.CONSTANT;
+    }
 
-	@Override
-	public Class<?> getEvaluationType() {
-		return Double.class;
-	}
+    @Override
+    public Class<?> getEvaluationType() {
+        return Double.class;
+    }
 
 }

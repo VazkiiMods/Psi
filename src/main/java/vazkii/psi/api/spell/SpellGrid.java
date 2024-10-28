@@ -11,12 +11,11 @@ package vazkii.psi.api.spell;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.mojang.blaze3d.vertex.PoseStack;
-
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
 import java.util.List;
 
@@ -25,302 +24,301 @@ import java.util.List;
  */
 public final class SpellGrid {
 
-	private static final String TAG_SPELL_LIST = "spellList";
+    public static final int GRID_SIZE = 9;
+    public static final int GRID_CENTER = (GRID_SIZE - 1) / 2;
+    private static final String TAG_SPELL_LIST = "spellList";
+    private static final String TAG_SPELL_POS_X_LEGACY = "spellPosX";
+    private static final String TAG_SPELL_POS_Y_LEGACY = "spellPosY";
+    private static final String TAG_SPELL_DATA_LEGACY = "spellData";
+    private static final String TAG_SPELL_POS_X = "x";
+    private static final String TAG_SPELL_POS_Y = "y";
+    private static final String TAG_SPELL_DATA = "data";
+    public final Spell spell;
+    public SpellPiece[][] gridData;
 
-	private static final String TAG_SPELL_POS_X_LEGACY = "spellPosX";
-	private static final String TAG_SPELL_POS_Y_LEGACY = "spellPosY";
-	private static final String TAG_SPELL_DATA_LEGACY = "spellData";
+    private boolean empty;
+    private int leftmost, rightmost, topmost, bottommost;
 
-	private static final String TAG_SPELL_POS_X = "x";
-	private static final String TAG_SPELL_POS_Y = "y";
-	private static final String TAG_SPELL_DATA = "data";
+    public SpellGrid(Spell spell) {
+        this.spell = spell;
+        gridData = new SpellPiece[GRID_SIZE][GRID_SIZE];
+    }
 
-	public static final int GRID_SIZE = 9;
-	public static final int GRID_CENTER = (GRID_SIZE - 1) / 2;
+    public static boolean exists(int x, int y) {
+        return x >= 0 && y >= 0 && x < GRID_SIZE && y < GRID_SIZE;
+    }
 
-	public final Spell spell;
-	public SpellPiece[][] gridData;
+    @OnlyIn(Dist.CLIENT)
+    public void draw(PoseStack pPoseStack, MultiBufferSource buffers, int light) {
+        for (int i = 0; i < GRID_SIZE; i++) {
+            for (int j = 0; j < GRID_SIZE; j++) {
+                SpellPiece p = gridData[i][j];
+                if (p != null) {
+                    pPoseStack.pushPose();
+                    pPoseStack.translate(i * 18, j * 18, 0);
+                    p.draw(pPoseStack, buffers, light);
+                    pPoseStack.popPose();
+                }
+            }
+        }
+    }
 
-	private boolean empty;
-	private int leftmost, rightmost, topmost, bottommost;
+    private void recalculateBoundaries() {
+        empty = true;
+        leftmost = GRID_SIZE;
+        rightmost = -1;
+        topmost = GRID_SIZE;
+        bottommost = -1;
 
-	@OnlyIn(Dist.CLIENT)
-	public void draw(PoseStack pPoseStack, MultiBufferSource buffers, int light) {
-		for(int i = 0; i < GRID_SIZE; i++) {
-			for(int j = 0; j < GRID_SIZE; j++) {
-				SpellPiece p = gridData[i][j];
-				if(p != null) {
-					pPoseStack.pushPose();
-					pPoseStack.translate(i * 18, j * 18, 0);
-					p.draw(pPoseStack, buffers, light);
-					pPoseStack.popPose();
-				}
-			}
-		}
-	}
+        for (int i = 0; i < GRID_SIZE; i++) {
+            for (int j = 0; j < GRID_SIZE; j++) {
+                SpellPiece p = gridData[i][j];
+                if (p != null) {
+                    empty = false;
+                    if (i < leftmost) {
+                        leftmost = i;
+                    }
+                    if (i > rightmost) {
+                        rightmost = i;
+                    }
+                    if (j < topmost) {
+                        topmost = j;
+                    }
+                    if (j > bottommost) {
+                        bottommost = j;
+                    }
+                }
+            }
+        }
+    }
 
-	private void recalculateBoundaries() {
-		empty = true;
-		leftmost = GRID_SIZE;
-		rightmost = -1;
-		topmost = GRID_SIZE;
-		bottommost = -1;
+    public int getSize() {
+        recalculateBoundaries();
 
-		for(int i = 0; i < GRID_SIZE; i++) {
-			for(int j = 0; j < GRID_SIZE; j++) {
-				SpellPiece p = gridData[i][j];
-				if(p != null) {
-					empty = false;
-					if(i < leftmost) {
-						leftmost = i;
-					}
-					if(i > rightmost) {
-						rightmost = i;
-					}
-					if(j < topmost) {
-						topmost = j;
-					}
-					if(j > bottommost) {
-						bottommost = j;
-					}
-				}
-			}
-		}
-	}
+        if (empty) {
+            return 0;
+        }
 
-	public int getSize() {
-		recalculateBoundaries();
+        return Math.max(rightmost - leftmost + 1, bottommost - topmost + 1);
+    }
 
-		if(empty) {
-			return 0;
-		}
+    public void mirrorVertical() {
+        recalculateBoundaries();
+        if (empty) {
+            return;
+        }
 
-		return Math.max(rightmost - leftmost + 1, bottommost - topmost + 1);
-	}
+        SpellPiece[][] newGrid = new SpellPiece[GRID_SIZE][GRID_SIZE];
 
-	public void mirrorVertical() {
-		recalculateBoundaries();
-		if(empty) {
-			return;
-		}
+        for (int i = 0; i < GRID_SIZE; i++) {
+            for (int j = 0; j < GRID_SIZE; j++) {
+                SpellPiece p = gridData[i][j];
 
-		SpellPiece[][] newGrid = new SpellPiece[GRID_SIZE][GRID_SIZE];
+                if (p != null) {
+                    int newY = GRID_SIZE - j - 1;
 
-		for(int i = 0; i < GRID_SIZE; i++) {
-			for(int j = 0; j < GRID_SIZE; j++) {
-				SpellPiece p = gridData[i][j];
+                    newGrid[i][newY] = p;
+                    p.y = newY;
 
-				if(p != null) {
-					int newY = GRID_SIZE - j - 1;
+                    p.paramSides.replaceAll((k, v) -> p.paramSides.get(k).mirrorVertical());
+                }
+            }
+        }
 
-					newGrid[i][newY] = p;
-					p.y = newY;
+        gridData = newGrid;
+    }
 
-					p.paramSides.replaceAll((k, v) -> p.paramSides.get(k).mirrorVertical());
-				}
-			}
-		}
+    public void rotate(boolean ccw) {
+        recalculateBoundaries();
+        if (empty) {
+            return;
+        }
 
-		gridData = newGrid;
-	}
+        int xMod = ccw ? -1 : 1;
+        int yMod = ccw ? 1 : -1;
 
-	public void rotate(boolean ccw) {
-		recalculateBoundaries();
-		if(empty) {
-			return;
-		}
+        SpellPiece[][] newGrid = new SpellPiece[GRID_SIZE][GRID_SIZE];
 
-		int xMod = ccw ? -1 : 1;
-		int yMod = ccw ? 1 : -1;
+        for (int i = 0; i < GRID_SIZE; i++) {
+            for (int j = 0; j < GRID_SIZE; j++) {
+                SpellPiece p = gridData[i][j];
 
-		SpellPiece[][] newGrid = new SpellPiece[GRID_SIZE][GRID_SIZE];
+                if (p != null) {
+                    int newX = xMod * (j - GRID_CENTER) + GRID_CENTER;
+                    int newY = yMod * (i - GRID_CENTER) + GRID_CENTER;
 
-		for(int i = 0; i < GRID_SIZE; i++) {
-			for(int j = 0; j < GRID_SIZE; j++) {
-				SpellPiece p = gridData[i][j];
+                    newGrid[newX][newY] = p;
+                    p.x = newX;
+                    p.y = newY;
 
-				if(p != null) {
-					int newX = xMod * (j - GRID_CENTER) + GRID_CENTER;
-					int newY = yMod * (i - GRID_CENTER) + GRID_CENTER;
+                    for (SpellParam<?> param : p.paramSides.keySet()) {
+                        SpellParam.Side side = p.paramSides.get(param);
+                        p.paramSides.put(param, ccw ? side.rotateCCW() : side.rotateCW());
+                    }
+                }
+            }
+        }
 
-					newGrid[newX][newY] = p;
-					p.x = newX;
-					p.y = newY;
+        gridData = newGrid;
+    }
 
-					for(SpellParam<?> param : p.paramSides.keySet()) {
-						SpellParam.Side side = p.paramSides.get(param);
-						p.paramSides.put(param, ccw ? side.rotateCCW() : side.rotateCW());
-					}
-				}
-			}
-		}
+    public boolean shift(SpellParam.Side side, boolean doit) {
+        recalculateBoundaries();
 
-		gridData = newGrid;
-	}
+        if (empty) {
+            return false;
+        }
 
-	public boolean shift(SpellParam.Side side, boolean doit) {
-		recalculateBoundaries();
+        if (exists(leftmost + side.offx, topmost + side.offy) && exists(rightmost + side.offx, bottommost + side.offy)) {
+            if (!doit) {
+                return true;
+            }
 
-		if(empty) {
-			return false;
-		}
+            SpellPiece[][] newGrid = new SpellPiece[GRID_SIZE][GRID_SIZE];
 
-		if(exists(leftmost + side.offx, topmost + side.offy) && exists(rightmost + side.offx, bottommost + side.offy)) {
-			if(!doit) {
-				return true;
-			}
+            for (int i = 0; i < GRID_SIZE; i++) {
+                for (int j = 0; j < GRID_SIZE; j++) {
+                    SpellPiece p = gridData[i][j];
 
-			SpellPiece[][] newGrid = new SpellPiece[GRID_SIZE][GRID_SIZE];
+                    if (p != null) {
+                        int newX = i + side.offx;
+                        int newY = j + side.offy;
+                        newGrid[newX][newY] = p;
+                        p.x = newX;
+                        p.y = newY;
+                    }
+                }
+            }
 
-			for(int i = 0; i < GRID_SIZE; i++) {
-				for(int j = 0; j < GRID_SIZE; j++) {
-					SpellPiece p = gridData[i][j];
+            gridData = newGrid;
+            return true;
+        }
+        return false;
+    }
 
-					if(p != null) {
-						int newX = i + side.offx;
-						int newY = j + side.offy;
-						newGrid[newX][newY] = p;
-						p.x = newX;
-						p.y = newY;
-					}
-				}
-			}
+    private SpellPiece getPieceAtSide(Multimap<SpellPiece, SpellParam.Side> traversed, int x, int y, SpellParam.Side side) throws SpellCompilationException {
+        SpellPiece atSide = getPieceAtSideSafely(x, y, side);
+        if (!traversed.put(atSide, side)) {
+            throw new SpellCompilationException(SpellCompilationException.INFINITE_LOOP);
+        }
 
-			gridData = newGrid;
-			return true;
-		}
-		return false;
-	}
+        return atSide;
+    }
 
-	public static boolean exists(int x, int y) {
-		return x >= 0 && y >= 0 && x < GRID_SIZE && y < GRID_SIZE;
-	}
+    @Deprecated
+    @SuppressWarnings("unused")
+    public SpellPiece getPieceAtSideWithRedirections(List<SpellPiece> unused, int x, int y, SpellParam.Side side) throws SpellCompilationException {
+        return getPieceAtSideWithRedirections(x, y, side);
+    }
 
-	private SpellPiece getPieceAtSide(Multimap<SpellPiece, SpellParam.Side> traversed, int x, int y, SpellParam.Side side) throws SpellCompilationException {
-		SpellPiece atSide = getPieceAtSideSafely(x, y, side);
-		if(!traversed.put(atSide, side)) {
-			throw new SpellCompilationException(SpellCompilationException.INFINITE_LOOP);
-		}
+    public SpellPiece getPieceAtSideWithRedirections(int x, int y, SpellParam.Side side) throws SpellCompilationException {
+        return getPieceAtSideWithRedirections(x, y, side, piece -> {
+        });
+    }
 
-		return atSide;
-	}
+    /**
+     * @param walker a callback that incrementally gets called on each redirector reached
+     */
+    public SpellPiece getPieceAtSideWithRedirections(int x, int y, SpellParam.Side side, SpellPieceConsumer walker) throws SpellCompilationException {
+        SpellPiece atSide;
+        Multimap<SpellPiece, SpellParam.Side> traversed = HashMultimap.create();
+        while ((atSide = getPieceAtSide(traversed, x, y, side)) instanceof IGenericRedirector) {
+            IGenericRedirector redirector = (IGenericRedirector) atSide;
+            walker.accept(atSide);
+            SpellParam.Side rside = redirector.remapSide(side);
+            if (!rside.isEnabled()) {
+                return null;
+            }
+            side = rside;
+            x = atSide.x;
+            y = atSide.y;
+        }
 
-	@Deprecated
-	@SuppressWarnings("unused")
-	public SpellPiece getPieceAtSideWithRedirections(List<SpellPiece> unused, int x, int y, SpellParam.Side side) throws SpellCompilationException {
-		return getPieceAtSideWithRedirections(x, y, side);
-	}
+        return atSide;
+    }
 
-	public SpellPiece getPieceAtSideWithRedirections(int x, int y, SpellParam.Side side) throws SpellCompilationException {
-		return getPieceAtSideWithRedirections(x, y, side, piece -> {});
-	}
+    public SpellPiece getPieceAtSideSafely(int x, int y, SpellParam.Side side) {
+        int xp = x + side.offx;
+        int yp = y + side.offy;
+        if (!exists(xp, yp)) {
+            return null;
+        }
 
-	/** @param walker a callback that incrementally gets called on each redirector reached */
-	public SpellPiece getPieceAtSideWithRedirections(int x, int y, SpellParam.Side side, SpellPieceConsumer walker) throws SpellCompilationException {
-		SpellPiece atSide;
-		Multimap<SpellPiece, SpellParam.Side> traversed = HashMultimap.create();
-		while((atSide = getPieceAtSide(traversed, x, y, side)) instanceof IGenericRedirector) {
-			IGenericRedirector redirector = (IGenericRedirector) atSide;
-			walker.accept(atSide);
-			SpellParam.Side rside = redirector.remapSide(side);
-			if(!rside.isEnabled()) {
-				return null;
-			}
-			side = rside;
-			x = atSide.x;
-			y = atSide.y;
-		}
+        return gridData[xp][yp];
+    }
 
-		return atSide;
-	}
+    public boolean isEmpty() {
+        for (int i = 0; i < GRID_SIZE; i++) {
+            for (int j = 0; j < GRID_SIZE; j++) {
+                SpellPiece piece = gridData[i][j];
+                if (piece != null) {
+                    return false;
+                }
+            }
+        }
 
-	public SpellPiece getPieceAtSideSafely(int x, int y, SpellParam.Side side) {
-		int xp = x + side.offx;
-		int yp = y + side.offy;
-		if(!exists(xp, yp)) {
-			return null;
-		}
+        return true;
+    }
 
-		return gridData[xp][yp];
-	}
+    public void readFromNBT(CompoundTag cmp) {
+        gridData = new SpellPiece[GRID_SIZE][GRID_SIZE];
 
-	public SpellGrid(Spell spell) {
-		this.spell = spell;
-		gridData = new SpellPiece[GRID_SIZE][GRID_SIZE];
-	}
+        ListTag list = cmp.getList(TAG_SPELL_LIST, 10);
+        int len = list.size();
+        for (int i = 0; i < len; i++) {
+            CompoundTag lcmp = list.getCompound(i);
+            int posX, posY;
 
-	public boolean isEmpty() {
-		for(int i = 0; i < GRID_SIZE; i++) {
-			for(int j = 0; j < GRID_SIZE; j++) {
-				SpellPiece piece = gridData[i][j];
-				if(piece != null) {
-					return false;
-				}
-			}
-		}
+            if (lcmp.contains(TAG_SPELL_POS_X_LEGACY)) {
+                posX = lcmp.getInt(TAG_SPELL_POS_X_LEGACY);
+                posY = lcmp.getInt(TAG_SPELL_POS_Y_LEGACY);
+            } else {
+                posX = lcmp.getInt(TAG_SPELL_POS_X);
+                posY = lcmp.getInt(TAG_SPELL_POS_Y);
+            }
 
-		return true;
-	}
+            CompoundTag data;
+            if (lcmp.contains(TAG_SPELL_DATA_LEGACY)) {
+                data = lcmp.getCompound(TAG_SPELL_DATA_LEGACY);
+            } else {
+                data = lcmp.getCompound(TAG_SPELL_DATA);
+            }
 
-	public void readFromNBT(CompoundTag cmp) {
-		gridData = new SpellPiece[GRID_SIZE][GRID_SIZE];
+            SpellPiece piece = SpellPiece.createFromNBT(spell, data);
+            if (piece != null) {
+                gridData[posX][posY] = piece;
+                piece.isInGrid = true;
+                piece.x = posX;
+                piece.y = posY;
+            }
+        }
+    }
 
-		ListTag list = cmp.getList(TAG_SPELL_LIST, 10);
-		int len = list.size();
-		for(int i = 0; i < len; i++) {
-			CompoundTag lcmp = list.getCompound(i);
-			int posX, posY;
+    public void writeToNBT(CompoundTag cmp) {
+        ListTag list = new ListTag();
+        for (int i = 0; i < GRID_SIZE; i++) {
+            for (int j = 0; j < GRID_SIZE; j++) {
+                SpellPiece piece = gridData[i][j];
+                if (piece != null) {
+                    CompoundTag lcmp = new CompoundTag();
+                    lcmp.putInt(TAG_SPELL_POS_X, i);
+                    lcmp.putInt(TAG_SPELL_POS_Y, j);
 
-			if(lcmp.contains(TAG_SPELL_POS_X_LEGACY)) {
-				posX = lcmp.getInt(TAG_SPELL_POS_X_LEGACY);
-				posY = lcmp.getInt(TAG_SPELL_POS_Y_LEGACY);
-			} else {
-				posX = lcmp.getInt(TAG_SPELL_POS_X);
-				posY = lcmp.getInt(TAG_SPELL_POS_Y);
-			}
+                    CompoundTag data = new CompoundTag();
+                    piece.writeToNBT(data);
+                    lcmp.put(TAG_SPELL_DATA, data);
 
-			CompoundTag data;
-			if(lcmp.contains(TAG_SPELL_DATA_LEGACY)) {
-				data = lcmp.getCompound(TAG_SPELL_DATA_LEGACY);
-			} else {
-				data = lcmp.getCompound(TAG_SPELL_DATA);
-			}
+                    list.add(lcmp);
+                }
+            }
+        }
 
-			SpellPiece piece = SpellPiece.createFromNBT(spell, data);
-			if(piece != null) {
-				gridData[posX][posY] = piece;
-				piece.isInGrid = true;
-				piece.x = posX;
-				piece.y = posY;
-			}
-		}
-	}
+        cmp.put(TAG_SPELL_LIST, list);
+    }
 
-	public void writeToNBT(CompoundTag cmp) {
-		ListTag list = new ListTag();
-		for(int i = 0; i < GRID_SIZE; i++) {
-			for(int j = 0; j < GRID_SIZE; j++) {
-				SpellPiece piece = gridData[i][j];
-				if(piece != null) {
-					CompoundTag lcmp = new CompoundTag();
-					lcmp.putInt(TAG_SPELL_POS_X, i);
-					lcmp.putInt(TAG_SPELL_POS_Y, j);
-
-					CompoundTag data = new CompoundTag();
-					piece.writeToNBT(data);
-					lcmp.put(TAG_SPELL_DATA, data);
-
-					list.add(lcmp);
-				}
-			}
-		}
-
-		cmp.put(TAG_SPELL_LIST, list);
-	}
-
-	// TODO: Put this somewhere nicer, or track down a library? Not sure where
-	@FunctionalInterface
-	public interface SpellPieceConsumer {
-		void accept(SpellPiece piece) throws SpellCompilationException;
-	}
+    // TODO: Put this somewhere nicer, or track down a library? Not sure where
+    @FunctionalInterface
+    public interface SpellPieceConsumer {
+        void accept(SpellPiece piece) throws SpellCompilationException;
+    }
 }

@@ -8,103 +8,72 @@
  */
 package vazkii.psi.common.network;
 
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.network.NetworkRegistry;
-import net.minecraftforge.network.PacketDistributor;
-import net.minecraftforge.network.simple.SimpleChannel;
-
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.network.message.*;
 
 public class MessageRegister {
-	private static final String VERSION = "3";
+    public static final StreamCodec<RegistryFriendlyByteBuf, Vec3> VEC3 = new StreamCodec<RegistryFriendlyByteBuf, Vec3>() {
+        public Vec3 decode(RegistryFriendlyByteBuf pBuffer) {
+            return pBuffer.readVec3();
+        }
 
-	public static final SimpleChannel HANDLER = NetworkRegistry.newSimpleChannel(new ResourceLocation(LibMisc.MOD_ID, "main"),
-			() -> VERSION,
-			VERSION::equals,
-			VERSION::equals);
+        public void encode(RegistryFriendlyByteBuf pBuffer, Vec3 pVec3) {
+            pBuffer.writeVec3(pVec3);
+        }
+    };
+    private static final String VERSION = "3";
 
-	public static void init() {
-		int id = 0;
-		HANDLER.messageBuilder(MessageLoopcastSync.class, id++)
-				.encoder(MessageLoopcastSync::encode)
-				.decoder(MessageLoopcastSync::new)
-				.consumerMainThread(MessageLoopcastSync::receive).add();
-		HANDLER.messageBuilder(MessageDataSync.class, id++)
-				.encoder(MessageDataSync::encode)
-				.decoder(MessageDataSync::new)
-				.consumerMainThread(MessageDataSync::receive).add();
-		HANDLER.messageBuilder(MessageEidosSync.class, id++)
-				.encoder(MessageEidosSync::encode)
-				.decoder(MessageEidosSync::new)
-				.consumerMainThread(MessageEidosSync::receive).add();
-		HANDLER.messageBuilder(MessageCADDataSync.class, id++)
-				.encoder(MessageCADDataSync::encode)
-				.decoder(MessageCADDataSync::new)
-				.consumerMainThread(MessageCADDataSync::receive).add();
-		HANDLER.messageBuilder(MessageDeductPsi.class, id++)
-				.encoder(MessageDeductPsi::encode)
-				.decoder(MessageDeductPsi::new)
-				.consumerMainThread(MessageDeductPsi::receive).add();
-		HANDLER.messageBuilder(MessageChangeSocketableSlot.class, id++)
-				.encoder(MessageChangeSocketableSlot::encode)
-				.decoder(MessageChangeSocketableSlot::new)
-				.consumerMainThread(MessageChangeSocketableSlot::receive).add();
-		HANDLER.messageBuilder(MessageSpellModified.class, id++)
-				.encoder(MessageSpellModified::encode)
-				.decoder(MessageSpellModified::new)
-				.consumerMainThread(MessageSpellModified::receive).add();
-		HANDLER.messageBuilder(MessageChangeControllerSlot.class, id++)
-				.encoder(MessageChangeControllerSlot::encode)
-				.decoder(MessageChangeControllerSlot::new)
-				.consumerMainThread(MessageChangeControllerSlot::receive).add();
-		HANDLER.messageBuilder(MessageTriggerJumpSpell.class, id++)
-				.encoder((msg, buf) -> {})
-				.decoder($ -> new MessageTriggerJumpSpell())
-				.consumerMainThread(MessageTriggerJumpSpell::receive).add();
-		HANDLER.messageBuilder(MessageVisualEffect.class, id++)
-				.encoder(MessageVisualEffect::encode)
-				.decoder(MessageVisualEffect::new)
-				.consumerMainThread(MessageVisualEffect::receive).add();
-		HANDLER.messageBuilder(MessageAdditiveMotion.class, id++)
-				.encoder(MessageAdditiveMotion::encode)
-				.decoder(MessageAdditiveMotion::new)
-				.consumerMainThread(MessageAdditiveMotion::receive).add();
-		HANDLER.messageBuilder(MessageBlink.class, id++)
-				.encoder(MessageBlink::encode)
-				.decoder(MessageBlink::new)
-				.consumerMainThread(MessageBlink::receive).add();
-		HANDLER.messageBuilder(MessageSpamlessChat.class, id++)
-				.encoder(MessageSpamlessChat::encode)
-				.decoder(MessageSpamlessChat::new)
-				.consumerMainThread(MessageSpamlessChat::receive).add();
-		HANDLER.messageBuilder(MessageParticleTrail.class, id++)
-				.encoder(MessageParticleTrail::encode)
-				.decoder(MessageParticleTrail::new)
-				.consumerMainThread(MessageParticleTrail::receive).add();
-		HANDLER.messageBuilder(MessageSpellError.class, id++)
-				.encoder(MessageSpellError::encode)
-				.decoder(MessageSpellError::new)
-				.consumerMainThread(MessageSpellError::receive).add();
-	}
+    @SubscribeEvent
+    public static void onRegisterPayloadHandler(RegisterPayloadHandlersEvent event) {
+        final PayloadRegistrar registrar = event.registrar(LibMisc.MOD_ID)
+                .versioned(VERSION)
+                .optional();
+        registrar.playBidirectional(MessageAdditiveMotion.TYPE, MessageAdditiveMotion.CODEC, MessageAdditiveMotion::handle);
+        registrar.playBidirectional(MessageBlink.TYPE, MessageBlink.CODEC, MessageBlink::handle);
+        registrar.playBidirectional(MessageCADDataSync.TYPE, MessageCADDataSync.CODEC, MessageCADDataSync::handle);
+        registrar.playBidirectional(MessageChangeControllerSlot.TYPE, MessageChangeControllerSlot.CODEC, MessageChangeControllerSlot::handle);
+        registrar.playBidirectional(MessageChangeSocketableSlot.TYPE, MessageChangeSocketableSlot.CODEC, MessageChangeSocketableSlot::handle);
+        registrar.playBidirectional(MessageDataSync.TYPE, MessageDataSync.CODEC, MessageDataSync::handle);
+        registrar.playBidirectional(MessageDeductPsi.TYPE, MessageDeductPsi.CODEC, MessageDeductPsi::handle);
+        registrar.playBidirectional(MessageEidosSync.TYPE, MessageEidosSync.CODEC, MessageEidosSync::handle);
+        registrar.playBidirectional(MessageLoopcastSync.TYPE, MessageLoopcastSync.CODEC, MessageLoopcastSync::handle);
+        registrar.playBidirectional(MessageParticleTrail.TYPE, MessageParticleTrail.CODEC, MessageParticleTrail::handle);
+        registrar.playBidirectional(MessageSpamlessChat.TYPE, MessageSpamlessChat.CODEC, MessageSpamlessChat::handle);
+        registrar.playBidirectional(MessageSpellError.TYPE, MessageSpellError.CODEC, MessageSpellError::handle);
+        registrar.playBidirectional(MessageSpellModified.TYPE, MessageSpellModified.CODEC, MessageSpellModified::handle);
+        registrar.playBidirectional(MessageTriggerJumpSpell.TYPE, MessageTriggerJumpSpell.CODEC, MessageTriggerJumpSpell::handle);
+        registrar.playBidirectional(MessageVisualEffect.TYPE, MessageVisualEffect.CODEC, MessageVisualEffect::handle);
 
-	public static void writeVec3d(FriendlyByteBuf buf, Vec3 vec3d) {
-		buf.writeDouble(vec3d.x);
-		buf.writeDouble(vec3d.y);
-		buf.writeDouble(vec3d.z);
-	}
+    }
 
-	public static Vec3 readVec3d(FriendlyByteBuf buf) {
-		return new Vec3(buf.readDouble(), buf.readDouble(), buf.readDouble());
-	}
+    public static <MSG extends CustomPacketPayload> void sendToServer(MSG message) {
+        PacketDistributor.sendToServer(message);
+    }
 
-	public static void sendToPlayer(Object msg, Player player) {
-		ServerPlayer serverPlayer = (ServerPlayer) player;
-		HANDLER.send(PacketDistributor.PLAYER.with(() -> serverPlayer), msg);
-	}
+    public static <MSG extends CustomPacketPayload> void sendToPlayer(ServerPlayer player, MSG message) {
+        PacketDistributor.sendToPlayer(player, message);
+    }
 
+    public static <MSG extends CustomPacketPayload> void sendToPlayersTrackingEntity(Entity entity, MSG message) {
+        PacketDistributor.sendToPlayersTrackingEntity(entity, message);
+    }
+
+    public static <MSG extends CustomPacketPayload> void sendToPlayersTrackingEntityAndSelf(Entity entity, MSG message) {
+        PacketDistributor.sendToPlayersTrackingEntityAndSelf(entity, message);
+    }
+
+    public static <MSG extends CustomPacketPayload> void sendToPlayersInDimension(ServerLevel level, MSG message) {
+        PacketDistributor.sendToPlayersInDimension(level, message);
+    }
 }

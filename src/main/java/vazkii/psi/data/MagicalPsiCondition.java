@@ -8,54 +8,29 @@
  */
 package vazkii.psi.data;
 
-import com.google.gson.JsonObject;
-
-import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.common.crafting.conditions.ICondition;
-import net.minecraftforge.common.crafting.conditions.IConditionSerializer;
-
+import com.mojang.serialization.MapCodec;
+import net.neoforged.neoforge.common.conditions.ICondition;
 import vazkii.psi.common.Psi;
-import vazkii.psi.common.lib.LibMisc;
 
-public class MagicalPsiCondition implements ICondition {
-	public static final MagicalPsiCondition INSTANCE = new MagicalPsiCondition();
-	public static final ResourceLocation NAME = new ResourceLocation(LibMisc.MOD_ID, "magipsi_enabled");
+public final class MagicalPsiCondition implements ICondition {
+    public static final MagicalPsiCondition INSTANCE = new MagicalPsiCondition();
 
-	@Override
-	public ResourceLocation getID() {
-		return NAME;
-	}
+    public static final MapCodec<MagicalPsiCondition> CODEC = MapCodec.unit(INSTANCE).stable();
 
-	@Override
-	public boolean test(IContext context) {
-		return Psi.magical;
-	}
+    private MagicalPsiCondition() {
+    }
 
-	public MagicalPsiCondition() {
-		//NOOP
-	}
+    @Override
+    public boolean test(IContext condition) {
+        return Psi.magical;
+    }
 
-	@Override
-	public String toString() {
-		return "magipsi_enabled";
-	}
+    @Override
+    public MapCodec<? extends ICondition> codec() {
+        return CODEC;
+    }
 
-	public static class Serializer implements IConditionSerializer<MagicalPsiCondition> {
-		public static final MagicalPsiCondition.Serializer INSTANCE = new MagicalPsiCondition.Serializer();
-
-		@Override
-		public void write(JsonObject json, MagicalPsiCondition value) {
-			//NOOP
-		}
-
-		@Override
-		public MagicalPsiCondition read(JsonObject json) {
-			return MagicalPsiCondition.INSTANCE;
-		}
-
-		@Override
-		public ResourceLocation getID() {
-			return MagicalPsiCondition.NAME;
-		}
-	}
+    public String toString() {
+        return "magipsi_enabled";
+    }
 }

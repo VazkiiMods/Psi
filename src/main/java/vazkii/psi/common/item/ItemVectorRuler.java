@@ -8,102 +8,98 @@
  */
 package vazkii.psi.common.item;
 
+import com.mojang.serialization.Codec;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponentType;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
-import net.minecraft.world.level.Level;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.common.item.base.IHUDItem;
+import vazkii.psi.common.item.base.ModItems;
 
 import javax.annotation.Nullable;
-
 import java.util.List;
 
 public class ItemVectorRuler extends Item implements IHUDItem {
 
-	private static final String TAG_SRC_X = "srcX";
-	private static final String TAG_SRC_Y = "srcY";
-	private static final String TAG_SRC_Z = "srcZ";
 
-	private static final String TAG_DST_X = "dstX";
-	private static final String TAG_DST_Y = "dstY";
-	private static final String TAG_DST_Z = "dstZ";
+    public ItemVectorRuler(Item.Properties properties) {
+        super(properties.stacksTo(1));
+    }
 
-	public ItemVectorRuler(Item.Properties properties) {
-		super(properties.stacksTo(1));
-	}
+    public static Vector3 getRulerVector(Player player) {
+        for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
+            ItemStack stack = player.getInventory().getItem(i);
+            if (!stack.isEmpty() && stack.getItem() instanceof ItemVectorRuler) {
+                return ((ItemVectorRuler) stack.getItem()).getVector(stack);
+            }
+        }
 
-	@Override
-	public InteractionResult useOn(UseOnContext ctx) {
-		BlockPos pos = ctx.getClickedPos();
+        return Vector3.zero;
+    }
 
-		ItemStack stack = ctx.getPlayer().getItemInHand(ctx.getHand());
+    @Override
+    public InteractionResult useOn(UseOnContext ctx) {
+        BlockPos pos = ctx.getClickedPos();
 
-		if(!stack.getOrCreateTag().contains(TAG_SRC_Y) || ctx.getPlayer().isShiftKeyDown()) {
-			stack.getOrCreateTag().putInt(TAG_SRC_X, pos.getX());
-			stack.getOrCreateTag().putInt(TAG_SRC_Y, pos.getY());
-			stack.getOrCreateTag().putInt(TAG_SRC_Z, pos.getZ());
-			stack.removeTagKey(TAG_DST_Y);
-		} else {
-			stack.getOrCreateTag().putInt(TAG_DST_X, pos.getX());
-			stack.getOrCreateTag().putInt(TAG_DST_Y, pos.getY());
-			stack.getOrCreateTag().putInt(TAG_DST_Z, pos.getZ());
-		}
+        ItemStack stack = ctx.getPlayer().getItemInHand(ctx.getHand());
 
-		return InteractionResult.SUCCESS;
-	}
+        if (!stack.has(ModItems.TAG_SRC_Y) || ctx.getPlayer().isShiftKeyDown()) {
+            stack.set(ModItems.TAG_SRC_X, pos.getX());
+            stack.set(ModItems.TAG_SRC_Y, pos.getY());
+            stack.set(ModItems.TAG_SRC_Z, pos.getZ());
+            stack.remove(ModItems.TAG_DST_Y);
+        } else {
+            stack.set(ModItems.TAG_DST_X, pos.getX());
+            stack.set(ModItems.TAG_DST_Y, pos.getY());
+            stack.set(ModItems.TAG_DST_Z, pos.getZ());
+        }
 
-	@Override
-	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag advanced) {
-		tooltip.add(Component.literal(getVector(stack).toString()));
-	}
+        return InteractionResult.SUCCESS;
+    }
 
-	public Vector3 getVector(ItemStack stack) {
-		int srcX = stack.getOrCreateTag().getInt(TAG_SRC_X);
-		int srcY = stack.getOrCreateTag().getInt(TAG_SRC_Y);
-		int srcZ = stack.getOrCreateTag().getInt(TAG_SRC_Z);
+    @Override
+    @OnlyIn(Dist.CLIENT)
+    public void appendHoverText(ItemStack stack, @Nullable TooltipContext context, List<Component> tooltip, TooltipFlag advanced) {
+        tooltip.add(Component.literal(getVector(stack).toString()));
+    }
 
-		if(!stack.getOrCreateTag().contains(TAG_DST_Y)) {
-			return new Vector3(srcX, srcY, srcZ);
-		}
+    public Vector3 getVector(ItemStack stack) {
+        int srcX = stack.getOrDefault(ModItems.TAG_SRC_X, 0);
+        int srcY = stack.getOrDefault(ModItems.TAG_SRC_Y, 0);
+        int srcZ = stack.getOrDefault(ModItems.TAG_SRC_Z, 0);
 
-		int dstX = stack.getOrCreateTag().getInt(TAG_DST_X);
-		int dstY = stack.getOrCreateTag().getInt(TAG_DST_Y);
-		int dstZ = stack.getOrCreateTag().getInt(TAG_DST_Z);
+        if (!stack.has(ModItems.TAG_DST_Y)) {
+            return new Vector3(srcX, srcY, srcZ);
+        }
 
-		return new Vector3(dstX - srcX, dstY - srcY, dstZ - srcZ);
-	}
+        int dstX = stack.getOrDefault(ModItems.TAG_DST_X, 0);
+        int dstY = stack.getOrDefault(ModItems.TAG_DST_Y, 0);
+        int dstZ = stack.getOrDefault(ModItems.TAG_DST_Z, 0);
 
-	public static Vector3 getRulerVector(Player player) {
-		for(int i = 0; i < player.getInventory().getContainerSize(); i++) {
-			ItemStack stack = player.getInventory().getItem(i);
-			if(!stack.isEmpty() && stack.getItem() instanceof ItemVectorRuler) {
-				return ((ItemVectorRuler) stack.getItem()).getVector(stack);
-			}
-		}
+        return new Vector3(dstX - srcX, dstY - srcY, dstZ - srcZ);
+    }
 
-		return Vector3.zero;
-	}
+    @Override
+    @OnlyIn(Dist.CLIENT)
+    public void drawHUD(GuiGraphics graphics, float partTicks, int screenWidth, int screenHeight, ItemStack stack) {
+        String s = getVector(stack).toString();
 
-	@Override
-	@OnlyIn(Dist.CLIENT)
-	public void drawHUD(GuiGraphics graphics, float partTicks, int screenWidth, int screenHeight, ItemStack stack) {
-		String s = getVector(stack).toString();
-
-		Font font = Minecraft.getInstance().font;
-		int w = font.width(s);
-		graphics.drawString(font, s, screenWidth / 2f - w / 2f, screenHeight / 2f + 10, 0xFFFFFFFF, false);
-	}
+        Font font = Minecraft.getInstance().font;
+        int w = font.width(s);
+        graphics.drawString(font, s, screenWidth / 2f - w / 2f, screenHeight / 2f + 10, 0xFFFFFFFF, false);
+    }
 }

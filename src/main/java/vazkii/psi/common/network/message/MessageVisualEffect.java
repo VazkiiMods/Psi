@@ -9,91 +9,85 @@
 package vazkii.psi.common.network.message;
 
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.network.NetworkEvent;
-
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 import vazkii.psi.common.Psi;
+import vazkii.psi.common.lib.LibMisc;
 
-import java.util.function.Supplier;
+public record MessageVisualEffect(int color, double x, double y, double z, double width, double height, double offset,
+                                  int effectType) implements CustomPacketPayload {
 
-public class MessageVisualEffect {
+    public static final int TYPE_CRAFT = 0;
 
-	public static final int TYPE_CRAFT = 0;
+    public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, "message_visual_effect");
+    public static final CustomPacketPayload.Type<MessageVisualEffect> TYPE = new Type<>(ID);
 
-	private final int color;
-	private final double x, y, z;
-	private final double width, height, offset;
+    public static final StreamCodec<RegistryFriendlyByteBuf, MessageVisualEffect> CODEC = new StreamCodec<RegistryFriendlyByteBuf, MessageVisualEffect>() {
+        public MessageVisualEffect decode(RegistryFriendlyByteBuf pBuffer) {
+            return new MessageVisualEffect(
+                    pBuffer.readInt(),
+                    pBuffer.readDouble(),
+                    pBuffer.readDouble(),
+                    pBuffer.readDouble(),
+                    pBuffer.readDouble(),
+                    pBuffer.readDouble(),
+                    pBuffer.readDouble(),
+                    pBuffer.readInt()
+            );
+        }
 
-	private final int effectType;
+        public void encode(RegistryFriendlyByteBuf pBuffer, MessageVisualEffect message) {
+            pBuffer.writeInt(message.color());
+            pBuffer.writeDouble(message.x());
+            pBuffer.writeDouble(message.y());
+            pBuffer.writeDouble(message.z());
+            pBuffer.writeDouble(message.width());
+            pBuffer.writeDouble(message.height());
+            pBuffer.writeDouble(message.offset());
+            pBuffer.writeInt(message.effectType());
+        }
+    };
 
-	public MessageVisualEffect(int color, double x, double y, double z, double width, double height, double offset, int effectType) {
-		this.color = color;
-		this.x = x;
-		this.y = y;
-		this.z = z;
-		this.width = width;
-		this.height = height;
-		this.offset = offset;
-		this.effectType = effectType;
-	}
+    @Override
+    public Type<? extends CustomPacketPayload> type() {
+        return TYPE;
+    }
 
-	public MessageVisualEffect(FriendlyByteBuf buf) {
-		this.color = buf.readInt();
-		this.x = buf.readDouble();
-		this.y = buf.readDouble();
-		this.z = buf.readDouble();
-		this.width = buf.readDouble();
-		this.height = buf.readDouble();
-		this.offset = buf.readDouble();
-		this.effectType = buf.readVarInt();
-	}
+    public void handle(IPayloadContext ctx) {
+        float r = ((color >> 16) & 0xFF) / 255f;
+        float g = ((color >> 8) & 0xFF) / 255f;
+        float b = (color & 0xFF) / 255f;
 
-	public void encode(FriendlyByteBuf buf) {
-		buf.writeInt(color);
-		buf.writeDouble(x);
-		buf.writeDouble(y);
-		buf.writeDouble(z);
-		buf.writeDouble(width);
-		buf.writeDouble(height);
-		buf.writeDouble(offset);
-		buf.writeVarInt(effectType);
-	}
+        ctx.enqueueWork(() -> {
+            Level world = Psi.proxy.getClientWorld();
+            switch (effectType) {
+                case TYPE_CRAFT:
+                    for (int i = 0; i < 5; i++) {
+                        double particleX = x + (Math.random() - 0.5) * 2.1 * width;
+                        double particleY = y - offset;
+                        double particleZ = z + (Math.random() - 0.5) * 2.1 * width;
+                        float grav = -0.05F - (float) Math.random() * 0.01F;
+                        Psi.proxy.sparkleFX(particleX, particleY, particleZ, r, g, b, grav, 3.5F, 15);
 
-	public boolean receive(Supplier<NetworkEvent.Context> context) {
-		float r = ((color >> 16) & 0xFF) / 255f;
-		float g = ((color >> 8) & 0xFF) / 255f;
-		float b = (color & 0xFF) / 255f;
+                        double m = 0.01;
+                        double d3 = 10.0D;
+                        for (int j = 0; j < 3; j++) {
+                            double d0 = world.random.nextGaussian() * m;
+                            double d1 = world.random.nextGaussian() * m;
+                            double d2 = world.random.nextGaussian() * m;
 
-		context.get().enqueueWork(() -> {
-			Level world = Psi.proxy.getClientWorld();
-			switch(effectType) {
-			case TYPE_CRAFT:
-				for(int i = 0; i < 5; i++) {
-					double particleX = x + (Math.random() - 0.5) * 2.1 * width;
-					double particleY = y - offset;
-					double particleZ = z + (Math.random() - 0.5) * 2.1 * width;
-					float grav = -0.05F - (float) Math.random() * 0.01F;
-					Psi.proxy.sparkleFX(world, particleX, particleY, particleZ, r, g, b, grav, 3.5F, 15);
-
-					double m = 0.01;
-					double d3 = 10.0D;
-					for(int j = 0; j < 3; j++) {
-						double d0 = world.random.nextGaussian() * m;
-						double d1 = world.random.nextGaussian() * m;
-						double d2 = world.random.nextGaussian() * m;
-
-						world.addParticle(ParticleTypes.EXPLOSION,
-								x + world.random.nextFloat() * width * 2.0F - width - d0 * d3,
-								y + world.random.nextFloat() * height - d1 * d3,
-								z + world.random.nextFloat() * width * 2.0F - width - d2 * d3, d0, d1, d2);
-					}
-				}
-				break;
-			}
-		});
-
-		return true;
-	}
-
+                            world.addParticle(ParticleTypes.EXPLOSION,
+                                    x + world.random.nextFloat() * width * 2.0F - width - d0 * d3,
+                                    y + world.random.nextFloat() * height - d1 * d3,
+                                    z + world.random.nextFloat() * width * 2.0F - width - d2 * d3, d0, d1, d2);
+                        }
+                    }
+                    break;
+            }
+        });
+    }
 }

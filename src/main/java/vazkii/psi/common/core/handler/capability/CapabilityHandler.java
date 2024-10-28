@@ -8,23 +8,23 @@
  */
 package vazkii.psi.common.core.handler.capability;
 
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.event.AttachCapabilitiesEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-
-import vazkii.psi.api.spell.ISpellImmune;
-import vazkii.psi.api.spell.detonator.IDetonationHandler;
+import net.minecraft.world.entity.EntityType;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.items.ComponentItemHandler;
+import vazkii.psi.api.PsiAPI;
+import vazkii.psi.api.cad.EnumCADComponent;
 import vazkii.psi.common.core.capability.CapabilityTriggerSensor;
-import vazkii.psi.common.core.handler.capability.wrappers.SimpleProvider;
+import vazkii.psi.common.entity.ModEntities;
+import vazkii.psi.common.item.ItemSpellBullet;
+import vazkii.psi.common.item.armor.ItemPsimetalArmor;
+import vazkii.psi.common.item.base.ModItems;
+import vazkii.psi.common.item.tool.ToolSocketable;
 import vazkii.psi.common.lib.LibMisc;
 
-import static vazkii.psi.api.PsiAPI.DETONATION_HANDLER_CAPABILITY;
-import static vazkii.psi.api.PsiAPI.SPELL_IMMUNE_CAPABILITY;
-
-@Mod.EventBusSubscriber(modid = LibMisc.MOD_ID)
+@EventBusSubscriber(modid = LibMisc.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
 public class CapabilityHandler {
 	/* //TODO Does this need reimplimentation?
 	public static void register() {
@@ -69,23 +69,98 @@ public class CapabilityHandler {
 	
 	}
 	*/
-	private static final ResourceLocation SPELL_IMMUNE = new ResourceLocation(LibMisc.MOD_ID, "immune");
-	private static final ResourceLocation DETONATOR = new ResourceLocation(LibMisc.MOD_ID, "detonator");
-	public static final ResourceLocation TRIGGER_SENSOR = new ResourceLocation(LibMisc.MOD_ID, "trigger_sensor");
+    @SubscribeEvent
+    private static void registerCapabilities(RegisterCapabilitiesEvent event) {
+        event.registerEntity(
+                PsiAPI.SPELL_IMMUNE_CAPABILITY,
+                ModEntities.spellCircle,
+                (entity, ctx) -> entity);
 
-	@SubscribeEvent
-	public static void attachEntityCapabilities(AttachCapabilitiesEvent<Entity> event) {
-		if(event.getObject() instanceof ISpellImmune) {
-			event.addCapability(SPELL_IMMUNE, new SimpleProvider<>(SPELL_IMMUNE_CAPABILITY,
-					(ISpellImmune) event.getObject()));
-		}
-		if(event.getObject() instanceof Player) {
-			event.addCapability(TRIGGER_SENSOR, new CapabilityTriggerSensor((Player) event.getObject()));
-		}
-		if(event.getObject() instanceof IDetonationHandler) {
-			event.addCapability(DETONATOR, new SimpleProvider<>(DETONATION_HANDLER_CAPABILITY,
-					(IDetonationHandler) event.getObject()));
-		}
-	}
+        event.registerEntity(
+                PsiAPI.DETONATION_HANDLER_CAPABILITY,
+                EntityType.PLAYER,
+                (player, ctx) -> new CapabilityTriggerSensor(player));
+        event.registerEntity(
+                PsiAPI.DETONATION_HANDLER_CAPABILITY,
+                ModEntities.spellCharge,
+                (entity, ctx) -> entity);
+
+        event.registerItem(
+                Capabilities.ItemHandler.ITEM,
+                (itemStack, context) -> new ComponentItemHandler(itemStack, ModItems.COMPONENTS.get(), EnumCADComponent.values().length),
+                ModItems.cad);
+
+        event.registerItem(
+                PsiAPI.PSI_BAR_DISPLAY_CAPABILITY,
+                (cad, ctx) -> new CADData(cad),
+                ModItems.cad);
+        event.registerItem(
+                PsiAPI.PSI_BAR_DISPLAY_CAPABILITY,
+                (tool, ctx) -> new ToolSocketable(tool, 3),
+                ModItems.psimetalShovel,
+                ModItems.psimetalPickaxe,
+                ModItems.psimetalAxe,
+                ModItems.psimetalSword);
+        event.registerItem(
+                PsiAPI.PSI_BAR_DISPLAY_CAPABILITY,
+                (tool, ctx) -> new ItemPsimetalArmor.ArmorSocketable(tool, 3),
+                ModItems.psimetalExosuitHelmet,
+                ModItems.psimetalExosuitChestplate,
+                ModItems.psimetalExosuitLeggings,
+                ModItems.psimetalExosuitBoots);
+
+        event.registerItem(
+                PsiAPI.SPELL_ACCEPTOR_CAPABILITY,
+                (cad, ctx) -> new CADData(cad),
+                ModItems.cad);
+        event.registerItem(
+                PsiAPI.SPELL_ACCEPTOR_CAPABILITY,
+                (tool, ctx) -> new ToolSocketable(tool, 3),
+                ModItems.psimetalShovel,
+                ModItems.psimetalPickaxe,
+                ModItems.psimetalAxe,
+                ModItems.psimetalSword);
+        event.registerItem(
+                PsiAPI.SPELL_ACCEPTOR_CAPABILITY,
+                (tool, ctx) -> new ItemPsimetalArmor.ArmorSocketable(tool, 3),
+                ModItems.psimetalExosuitHelmet,
+                ModItems.psimetalExosuitChestplate,
+                ModItems.psimetalExosuitLeggings,
+                ModItems.psimetalExosuitBoots);
+        event.registerItem(
+                PsiAPI.SPELL_ACCEPTOR_CAPABILITY,
+                (stack, ctx) -> new ItemSpellBullet.SpellAcceptor(stack),
+                ModItems.spellBullet,
+                ModItems.projectileSpellBullet,
+                ModItems.loopSpellBullet,
+                ModItems.circleSpellBullet,
+                ModItems.grenadeSpellBullet,
+                ModItems.chargeSpellBullet,
+                ModItems.mineSpellBullet);
+
+        event.registerItem(
+                PsiAPI.CAD_DATA_CAPABILITY,
+                (cad, ctx) -> new CADData(cad),
+                ModItems.cad);
+
+        event.registerItem(
+                PsiAPI.SOCKETABLE_CAPABILITY,
+                (cad, ctx) -> new CADData(cad),
+                ModItems.cad);
+        event.registerItem(
+                PsiAPI.SOCKETABLE_CAPABILITY,
+                (tool, ctx) -> new ToolSocketable(tool, 3),
+                ModItems.psimetalShovel,
+                ModItems.psimetalPickaxe,
+                ModItems.psimetalAxe,
+                ModItems.psimetalSword);
+        event.registerItem(
+                PsiAPI.SOCKETABLE_CAPABILITY,
+                (tool, ctx) -> new ItemPsimetalArmor.ArmorSocketable(tool, 3),
+                ModItems.psimetalExosuitHelmet,
+                ModItems.psimetalExosuitChestplate,
+                ModItems.psimetalExosuitLeggings,
+                ModItems.psimetalExosuitBoots);
+    }
 
 }

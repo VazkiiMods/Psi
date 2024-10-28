@@ -8,24 +8,22 @@
  */
 package vazkii.psi.common.item;
 
-import net.minecraft.world.item.Item.Properties;
 import net.minecraft.world.item.ItemStack;
-
 import vazkii.psi.api.exosuit.PsiArmorEvent;
 
 public class ItemHeatExosuitSensor extends ItemExosuitSensor {
 
-	public ItemHeatExosuitSensor(Properties properties) {
-		super(properties);
-	}
+    public ItemHeatExosuitSensor(Properties properties) {
+        super(properties);
+    }
 
-	@Override
-	public int getColor(ItemStack stack) {
-		return ItemExosuitSensor.fireColor;
-	}
+    @Override
+    public int getColor(ItemStack stack) {
+        return ItemExosuitSensor.fireColor;
+    }
 
-	@Override
-	public String getEventType(ItemStack stack) {
-		return PsiArmorEvent.ON_FIRE;
-	}
+    @Override
+    public String getEventType(ItemStack stack) {
+        return PsiArmorEvent.ON_FIRE;
+    }
 }

@@ -1,0 +1,33 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_psimetal": {
+      "conditions": {
+        "items": [
+          {
+            "items": "#c:ingots/psimetal"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "psi:psimetal_exosuit_boots"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_psimetal"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "psi:psimetal_exosuit_boots"
+    ]
+  },
+  "sends_telemetry_event": false
+}

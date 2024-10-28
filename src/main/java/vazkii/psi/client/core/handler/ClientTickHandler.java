@@ -10,77 +10,81 @@ package vazkii.psi.client.core.handler;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.ClientTickEvent;
+import net.neoforged.neoforge.client.event.RenderFrameEvent;
 import vazkii.psi.api.exosuit.PsiArmorEvent;
 import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.network.MessageRegister;
 import vazkii.psi.common.network.message.MessageTriggerJumpSpell;
 
 @OnlyIn(Dist.CLIENT)
-@Mod.EventBusSubscriber(value = Dist.CLIENT, modid = LibMisc.MOD_ID)
+@EventBusSubscriber(value = Dist.CLIENT, modid = LibMisc.MOD_ID)
 public class ClientTickHandler {
 
-	public static int ticksInGame = 0;
-	public static float partialTicks = 0.0F;
-	public static float delta = 0.0F;
-	public static float total = 0.0F;
+    public static int ticksInGame = 0;
+    public static float partialTicks = 0.0F;
+    public static float delta = 0.0F;
+    public static float total = 0.0F;
 
-	private static boolean lastJumpKeyState = false;
+    private static boolean lastJumpKeyState = false;
 
-	public ClientTickHandler() {}
+    public ClientTickHandler() {
+    }
 
-	@OnlyIn(Dist.CLIENT)
-	private static void calcDelta() {
-		float oldTotal = total;
-		total = (float) ticksInGame + partialTicks;
-		delta = total - oldTotal;
-	}
+    @OnlyIn(Dist.CLIENT)
+    private static void calcDelta() {
+        float oldTotal = total;
+        total = (float) ticksInGame + partialTicks;
+        delta = total - oldTotal;
+    }
 
-	@SubscribeEvent
-	@OnlyIn(Dist.CLIENT)
-	public static void renderTick(TickEvent.RenderTickEvent event) {
-		if(event.phase == TickEvent.Phase.START) {
-			partialTicks = event.renderTickTime;
-		} else {
-			calcDelta();
-		}
-	}
+    @SubscribeEvent
+    @OnlyIn(Dist.CLIENT)
+    public static void renderTick(RenderFrameEvent.Pre event) {
+        partialTicks = event.getPartialTick().getGameTimeDeltaPartialTick(false);
 
-	@SubscribeEvent
-	public static void clientTick(TickEvent.ClientTickEvent event) {
+    }
 
-		Minecraft mc = Minecraft.getInstance();
+    @SubscribeEvent
+    @OnlyIn(Dist.CLIENT)
+    public static void renderTick(RenderFrameEvent.Post event) {
+        calcDelta();
+    }
 
-		if(event.phase == TickEvent.Phase.START) {
+    @SubscribeEvent
+    public static void clientTick(ClientTickEvent.Pre event) {
 
-			boolean pressed = mc.options.keyJump.consumeClick();
-			if(mc.player != null && pressed && (!lastJumpKeyState && !mc.player.onGround())) {
-				PsiArmorEvent.post(new PsiArmorEvent(mc.player, PsiArmorEvent.JUMP));
-				MessageRegister.HANDLER.sendToServer(new MessageTriggerJumpSpell());
-			}
-			lastJumpKeyState = pressed;
-		}
-		if(event.phase == TickEvent.Phase.END) {
+        Minecraft mc = Minecraft.getInstance();
 
-			HUDHandler.tick();
+        boolean pressed = mc.options.keyJump.consumeClick();
+        if (mc.player != null && pressed && (!lastJumpKeyState && !mc.player.onGround())) {
+            PsiArmorEvent.post(new PsiArmorEvent(mc.player, PsiArmorEvent.JUMP));
+            MessageRegister.sendToServer(new MessageTriggerJumpSpell());
+        }
+        lastJumpKeyState = pressed;
+    }
 
-			Screen gui = mc.screen;
-			if(gui == null && KeybindHandler.keybind.isDown()) {
-				KeybindHandler.keyDown();
-			}
+    @SubscribeEvent
+    public static void clientTick(ClientTickEvent.Post event) {
 
-			if(!mc.isPaused()) {
-				++ticksInGame;
-				partialTicks = 0.0F;
-			}
+        Minecraft mc = Minecraft.getInstance();
 
-			calcDelta();
-		}
-	}
+        HUDHandler.tick();
+
+        Screen gui = mc.screen;
+        if (gui == null && KeybindHandler.keybind.isDown()) {
+            KeybindHandler.keyDown();
+        }
+
+        if (!mc.isPaused()) {
+            ++ticksInGame;
+            partialTicks = 0.0F;
+        }
+        calcDelta();
+    }
 
 }

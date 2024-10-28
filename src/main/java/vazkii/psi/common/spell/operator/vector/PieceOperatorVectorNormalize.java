@@ -18,27 +18,27 @@ import vazkii.psi.api.spell.piece.PieceOperator;
 
 public class PieceOperatorVectorNormalize extends PieceOperator {
 
-	SpellParam<Vector3> vec1;
+    SpellParam<Vector3> vec1;
 
-	public PieceOperatorVectorNormalize(Spell spell) {
-		super(spell);
-	}
+    public PieceOperatorVectorNormalize(Spell spell) {
+        super(spell);
+    }
 
-	@Override
-	public void initParams() {
-		addParam(vec1 = new ParamVector(SpellParam.GENERIC_NAME_TARGET, SpellParam.BLUE, false, false));
-	}
+    @Override
+    public void initParams() {
+        addParam(vec1 = new ParamVector(SpellParam.GENERIC_NAME_TARGET, SpellParam.BLUE, false, false));
+    }
 
-	@Override
-	public Object execute(SpellContext context) throws SpellRuntimeException {
-		Vector3 v1 = this.getParamValue(context, vec1);
+    @Override
+    public Object execute(SpellContext context) throws SpellRuntimeException {
+        Vector3 v1 = this.getParamValue(context, vec1);
 
-		return v1.copy().normalize();
-	}
+        return v1.copy().normalize();
+    }
 
-	@Override
-	public Class<?> getEvaluationType() {
-		return Vector3.class;
-	}
+    @Override
+    public Class<?> getEvaluationType() {
+        return Vector3.class;
+    }
 
 }

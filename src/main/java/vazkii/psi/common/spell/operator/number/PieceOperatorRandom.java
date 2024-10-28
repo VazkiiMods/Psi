@@ -17,34 +17,34 @@ import vazkii.psi.api.spell.piece.PieceOperator;
 
 public class PieceOperatorRandom extends PieceOperator {
 
-	SpellParam<Number> max;
-	SpellParam<Number> min;
+    SpellParam<Number> max;
+    SpellParam<Number> min;
 
-	public PieceOperatorRandom(Spell spell) {
-		super(spell);
-	}
+    public PieceOperatorRandom(Spell spell) {
+        super(spell);
+    }
 
-	@Override
-	public void initParams() {
-		addParam(max = new ParamNumber(SpellParam.GENERIC_NAME_MAX, SpellParam.BLUE, false, false));
-		addParam(min = new ParamNumber(SpellParam.GENERIC_NAME_MIN, SpellParam.RED, true, false));
-	}
+    @Override
+    public void initParams() {
+        addParam(max = new ParamNumber(SpellParam.GENERIC_NAME_MAX, SpellParam.BLUE, false, false));
+        addParam(min = new ParamNumber(SpellParam.GENERIC_NAME_MIN, SpellParam.RED, true, false));
+    }
 
-	@Override
-	public Object execute(SpellContext context) throws SpellRuntimeException {
-		int maxVal = this.getParamValue(context, max).intValue();
-		int minVal = this.getParamValueOrDefault(context, min, 0).intValue();
+    @Override
+    public Object execute(SpellContext context) throws SpellRuntimeException {
+        int maxVal = this.getParamValue(context, max).intValue();
+        int minVal = this.getParamValueOrDefault(context, min, 0).intValue();
 
-		if(maxVal - minVal <= 0) {
-			throw new SpellRuntimeException(SpellRuntimeException.NEGATIVE_NUMBER);
-		}
+        if (maxVal - minVal <= 0) {
+            throw new SpellRuntimeException(SpellRuntimeException.NEGATIVE_NUMBER);
+        }
 
-		return (double) (context.caster.getCommandSenderWorld().random.nextInt(maxVal - minVal) + minVal);
-	}
+        return (double) (context.caster.getCommandSenderWorld().random.nextInt(maxVal - minVal) + minVal);
+    }
 
-	@Override
-	public Class<?> getEvaluationType() {
-		return Double.class;
-	}
+    @Override
+    public Class<?> getEvaluationType() {
+        return Double.class;
+    }
 
 }

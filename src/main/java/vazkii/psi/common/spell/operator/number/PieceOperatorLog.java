@@ -17,44 +17,44 @@ import vazkii.psi.api.spell.piece.PieceOperator;
 
 public class PieceOperatorLog extends PieceOperator {
 
-	SpellParam<Number> num;
-	SpellParam<Number> base;
+    SpellParam<Number> num;
+    SpellParam<Number> base;
 
-	public PieceOperatorLog(Spell spell) {
-		super(spell);
-	}
+    public PieceOperatorLog(Spell spell) {
+        super(spell);
+    }
 
-	@Override
-	public void initParams() {
-		addParam(num = new ParamNumber(SpellParam.GENERIC_NAME_TARGET, SpellParam.BLUE, false, false));
-		addParam(base = new ParamNumber(SpellParam.GENERIC_NAME_BASE, SpellParam.RED, true, false));
-	}
+    @Override
+    public void initParams() {
+        addParam(num = new ParamNumber(SpellParam.GENERIC_NAME_TARGET, SpellParam.BLUE, false, false));
+        addParam(base = new ParamNumber(SpellParam.GENERIC_NAME_BASE, SpellParam.RED, true, false));
+    }
 
-	@Override
-	public Object execute(SpellContext context) throws SpellRuntimeException {
-		double d = this.getParamValue(context, num).doubleValue();
+    @Override
+    public Object execute(SpellContext context) throws SpellRuntimeException {
+        double d = this.getParamValue(context, num).doubleValue();
 
-		if(d < 0) {
-			throw new SpellRuntimeException(SpellRuntimeException.NEGATIVE_NUMBER);
-		}
+        if (d < 0) {
+            throw new SpellRuntimeException(SpellRuntimeException.NEGATIVE_NUMBER);
+        }
 
-		double logNum = Math.log10(d);
+        double logNum = Math.log10(d);
 
-		Number b = this.getParamValue(context, base);
-		if(b != null) {
-			if(b.doubleValue() < 0) {
-				throw new SpellRuntimeException(SpellRuntimeException.NEGATIVE_NUMBER);
-			}
+        Number b = this.getParamValue(context, base);
+        if (b != null) {
+            if (b.doubleValue() < 0) {
+                throw new SpellRuntimeException(SpellRuntimeException.NEGATIVE_NUMBER);
+            }
 
-			logNum /= Math.log10(b.doubleValue());
-		}
+            logNum /= Math.log10(b.doubleValue());
+        }
 
-		return logNum;
-	}
+        return logNum;
+    }
 
-	@Override
-	public Class<?> getEvaluationType() {
-		return Double.class;
-	}
+    @Override
+    public Class<?> getEvaluationType() {
+        return Double.class;
+    }
 
 }

@@ -8,48 +8,45 @@
  */
 package vazkii.psi.client.jei.tricks;
 
-import com.mojang.blaze3d.vertex.Tesselator;
-
+import com.mojang.blaze3d.vertex.ByteBufferBuilder;
 import mezz.jei.api.gui.drawable.IDrawableStatic;
-
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.MultiBufferSource;
-
 import vazkii.psi.api.spell.SpellPiece;
 
 public class DrawablePiece implements IDrawableStatic {
 
-	public final SpellPiece piece;
+    public final SpellPiece piece;
 
-	public DrawablePiece(SpellPiece piece) {
-		this.piece = piece;
-	}
+    public DrawablePiece(SpellPiece piece) {
+        this.piece = piece;
+    }
 
-	@Override
-	public void draw(GuiGraphics graphics, int xOffset, int yOffset, int maskTop, int maskBottom, int maskLeft, int maskRight) {
-		graphics.pose().pushPose();
-		graphics.pose().translate(xOffset, yOffset, 0);
+    @Override
+    public void draw(GuiGraphics graphics, int xOffset, int yOffset, int maskTop, int maskBottom, int maskLeft, int maskRight) {
+        graphics.pose().pushPose();
+        graphics.pose().translate(xOffset, yOffset, 0);
 
-		MultiBufferSource.BufferSource buffers = MultiBufferSource.immediate(Tesselator.getInstance().getBuilder());
-		piece.drawBackground(graphics.pose(), buffers, 0xF000F0);
+        MultiBufferSource.BufferSource buffers = MultiBufferSource.immediate(new ByteBufferBuilder(1536));
+        piece.drawBackground(graphics.pose(), buffers, 0xF000F0);
 
-		buffers.endBatch();
+        buffers.endBatch();
 
-		graphics.pose().popPose();
-	}
+        graphics.pose().popPose();
+    }
 
-	@Override
-	public int getWidth() {
-		return 16;
-	}
+    @Override
+    public int getWidth() {
+        return 16;
+    }
 
-	@Override
-	public int getHeight() {
-		return 16;
-	}
+    @Override
+    public int getHeight() {
+        return 16;
+    }
 
-	@Override
-	public void draw(GuiGraphics graphics, int xOff, int yOff) {
-		draw(graphics, xOff, yOff, 0, 0, 0, 0);
-	}
+    @Override
+    public void draw(GuiGraphics graphics, int xOff, int yOff) {
+        draw(graphics, xOff, yOff, 0, 0, 0, 0);
+    }
 }

@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "group": "psi:colorizer",
+  "key": {
+    "C": {
+      "tag": "c:dyes/red"
+    },
+    "D": {
+      "tag": "psi:psidust"
+    },
+    "G": {
+      "tag": "c:glass_blocks"
+    },
+    "I": {
+      "tag": "c:ingots/iron"
+    }
+  },
+  "pattern": [
+    " D ",
+    "GCG",
+    " I "
+  ],
+  "result": {
+    "count": 1,
+    "id": "psi:cad_colorizer_red"
+  }
+}

@@ -1,6 +1,6 @@
 {
-	"parent": "minecraft:item/generated",
-	"textures": { 
-		"layer0": "psi:item/cad_assembly_ebony_psimetal"
-	}
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "psi:item/cad_assembly_ebony_psimetal"
+  }
 }

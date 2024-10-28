@@ -10,26 +10,25 @@ package vazkii.psi.api.cad;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import vazkii.psi.api.PsiAPI;
 
 import java.util.List;
 
 public interface ICADAssembly {
 
-	default ItemStack createCADStack(ItemStack stack, List<ItemStack> allComponents) {
-		return PsiAPI.internalHandler.createDefaultCAD(allComponents);
-	}
+    default ItemStack createCADStack(ItemStack stack, List<ItemStack> allComponents) {
+        return PsiAPI.internalHandler.createDefaultCAD(allComponents);
+    }
 
-	/**
-	 * @return Path to a model json file, e.g. <code>psi:item/cad_iron</code>
-	 */
-	@OnlyIn(Dist.CLIENT)
-	ResourceLocation getCADModel(ItemStack stack, ItemStack cad);
+    /**
+     * @return Path to a model json file, e.g. <code>psi:item/cad_iron</code>
+     */
+    @OnlyIn(Dist.CLIENT)
+    ResourceLocation getCADModel(ItemStack stack, ItemStack cad);
 
-	@OnlyIn(Dist.CLIENT)
-	ResourceLocation getCadTexture(ItemStack stack, ItemStack cad);
+    @OnlyIn(Dist.CLIENT)
+    ResourceLocation getCadTexture(ItemStack stack, ItemStack cad);
 
 }

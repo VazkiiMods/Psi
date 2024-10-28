@@ -18,30 +18,30 @@ import vazkii.psi.api.spell.piece.PieceOperator;
 
 public class PieceOperatorVectorDotProduct extends PieceOperator {
 
-	SpellParam<Vector3> vec1;
-	SpellParam<Vector3> vec2;
+    SpellParam<Vector3> vec1;
+    SpellParam<Vector3> vec2;
 
-	public PieceOperatorVectorDotProduct(Spell spell) {
-		super(spell);
-	}
+    public PieceOperatorVectorDotProduct(Spell spell) {
+        super(spell);
+    }
 
-	@Override
-	public void initParams() {
-		addParam(vec1 = new ParamVector(SpellParam.GENERIC_NAME_VECTOR1, SpellParam.RED, false, false));
-		addParam(vec2 = new ParamVector(SpellParam.GENERIC_NAME_VECTOR2, SpellParam.GREEN, false, false));
-	}
+    @Override
+    public void initParams() {
+        addParam(vec1 = new ParamVector(SpellParam.GENERIC_NAME_VECTOR1, SpellParam.RED, false, false));
+        addParam(vec2 = new ParamVector(SpellParam.GENERIC_NAME_VECTOR2, SpellParam.GREEN, false, false));
+    }
 
-	@Override
-	public Object execute(SpellContext context) throws SpellRuntimeException {
-		Vector3 v1 = this.getParamValue(context, vec1);
-		Vector3 v2 = this.getParamValue(context, vec2);
+    @Override
+    public Object execute(SpellContext context) throws SpellRuntimeException {
+        Vector3 v1 = this.getParamValue(context, vec1);
+        Vector3 v2 = this.getParamValue(context, vec2);
 
-		return v1.copy().dotProduct(v2);
-	}
+        return v1.copy().dotProduct(v2);
+    }
 
-	@Override
-	public Class<?> getEvaluationType() {
-		return Double.class;
-	}
+    @Override
+    public Class<?> getEvaluationType() {
+        return Double.class;
+    }
 
 }

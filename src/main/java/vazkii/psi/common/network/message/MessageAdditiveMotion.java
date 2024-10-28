@@ -8,55 +8,44 @@
  */
 package vazkii.psi.common.network.message;
 
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.network.NetworkEvent;
-
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 import vazkii.psi.common.Psi;
+import vazkii.psi.common.lib.LibMisc;
 
-import java.util.function.Supplier;
+public record MessageAdditiveMotion(int entityID, double motionX, double motionY,
+                                    double motionZ) implements CustomPacketPayload {
 
-public class MessageAdditiveMotion {
+    public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, "message_additive_motion");
+    public static final CustomPacketPayload.Type<MessageAdditiveMotion> TYPE = new Type<>(ID);
 
-	private final int entityID;
-	private final double motionX;
-	private final double motionY;
-	private final double motionZ;
+    public static final StreamCodec<RegistryFriendlyByteBuf, MessageAdditiveMotion> CODEC = StreamCodec.composite(
+            ByteBufCodecs.INT, MessageAdditiveMotion::entityID,
+            ByteBufCodecs.DOUBLE, MessageAdditiveMotion::motionX,
+            ByteBufCodecs.DOUBLE, MessageAdditiveMotion::motionY,
+            ByteBufCodecs.DOUBLE, MessageAdditiveMotion::motionZ,
+            MessageAdditiveMotion::new);
 
-	public MessageAdditiveMotion(int entityID, double motionX, double motionY, double motionZ) {
-		this.entityID = entityID;
+    @Override
+    public Type<? extends CustomPacketPayload> type() {
+        return TYPE;
+    }
 
-		this.motionX = motionX;
-		this.motionY = motionY;
-		this.motionZ = motionZ;
-	}
-
-	public MessageAdditiveMotion(FriendlyByteBuf buf) {
-		entityID = buf.readVarInt();
-		motionX = buf.readDouble();
-		motionY = buf.readDouble();
-		motionZ = buf.readDouble();
-	}
-
-	public void encode(FriendlyByteBuf buf) {
-		buf.writeVarInt(entityID);
-		buf.writeDouble(motionX);
-		buf.writeDouble(motionY);
-		buf.writeDouble(motionZ);
-	}
-
-	public boolean receive(Supplier<NetworkEvent.Context> context) {
-		context.get().enqueueWork(() -> {
-			Level world = Psi.proxy.getClientWorld();
-			if(world != null) {
-				Entity entity = world.getEntity(entityID);
-				if(entity != null) {
-					entity.setDeltaMovement(entity.getDeltaMovement().add(motionX, motionY, motionZ));
-				}
-			}
-		});
-
-		return true;
-	}
+    public void handle(IPayloadContext ctx) {
+        ctx.enqueueWork(() -> {
+            Level world = Psi.proxy.getClientWorld();
+            if (world != null) {
+                Entity entity = world.getEntity(entityID);
+                if (entity != null) {
+                    entity.setDeltaMovement(entity.getDeltaMovement().add(motionX, motionY, motionZ));
+                }
+            }
+        });
+    }
 }

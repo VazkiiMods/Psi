@@ -9,44 +9,46 @@
 package vazkii.psi.common.network.message;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.network.NetworkEvent;
-
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
+import vazkii.psi.common.lib.LibMisc;
 
-import java.util.function.Supplier;
+public record MessageDataSync(CompoundTag cmp) implements CustomPacketPayload {
 
-public class MessageDataSync {
+    public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, "message_data_sync");
+    public static final CustomPacketPayload.Type<MessageDataSync> TYPE = new CustomPacketPayload.Type<>(ID);
+    public static final StreamCodec<RegistryFriendlyByteBuf, MessageDataSync> CODEC = StreamCodec.composite(
+            ByteBufCodecs.COMPOUND_TAG, MessageDataSync::cmp,
+            MessageDataSync::new);
 
-	private final CompoundTag cmp;
+    public MessageDataSync(PlayerData data) {
+        this(new CompoundTag());
+        data.writeToNBT(cmp);
+    }
 
-	public MessageDataSync(PlayerData data) {
-		cmp = new CompoundTag();
-		data.writeToNBT(cmp);
-	}
+    @Override
+    public CustomPacketPayload.Type<? extends CustomPacketPayload> type() {
+        return TYPE;
+    }
 
-	public MessageDataSync(FriendlyByteBuf buf) {
-		cmp = buf.readNbt();
-	}
+    public void handle(IPayloadContext ctx) {
+        ctx.enqueueWork(() -> {
+            Player player = Psi.proxy.getClientPlayer();
+            if (player != null) {
+                PlayerData data = PlayerDataHandler.get(player);
+                data.lastAvailablePsi = data.availablePsi;
+                data.readFromNBT(cmp);
+            }
+        });
 
-	public void encode(FriendlyByteBuf buf) {
-		buf.writeNbt(cmp);
-	}
-
-	public boolean receive(Supplier<NetworkEvent.Context> context) {
-		context.get().enqueueWork(() -> {
-			Player player = Psi.proxy.getClientPlayer();
-			if(player != null) {
-				PlayerData data = PlayerDataHandler.get(player);
-				data.lastAvailablePsi = data.availablePsi;
-				data.readFromNBT(cmp);
-			}
-		});
-
-		return true;
-	}
+    }
 
 }

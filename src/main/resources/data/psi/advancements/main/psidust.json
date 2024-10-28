@@ -17,7 +17,9 @@
       "conditions": {
         "items": [
           {
-            "items": ["psi:psidust"]
+            "items": [
+              "psi:psidust"
+            ]
           }
         ]
       }

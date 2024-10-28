@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "D": {
+      "tag": "c:gems/psigem"
+    },
+    "G": {
+      "tag": "c:ingots/gold"
+    },
+    "I": {
+      "tag": "c:ingots/iron"
+    }
+  },
+  "pattern": [
+    "I",
+    "D",
+    "G"
+  ],
+  "result": {
+    "count": 1,
+    "id": "psi:cad_battery_ultradense"
+  }
+}

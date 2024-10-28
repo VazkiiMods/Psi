@@ -1,0 +1,17 @@
+{
+  "type": "psi:trick_crafting",
+  "cad": {
+    "count": 1,
+    "id": "psi:cad_assembly_iron"
+  },
+  "input": {
+    "item": "minecraft:book"
+  },
+  "output": {
+    "components": {
+      "patchouli:book": "psi:encyclopaedia_psionica"
+    },
+    "count": 1,
+    "id": "patchouli:guide_book"
+  }
+}

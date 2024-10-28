@@ -9,27 +9,26 @@
 package vazkii.psi.client.core.handler;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
-import net.minecraftforge.client.gui.overlay.IGuiOverlay;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
+import net.neoforged.neoforge.common.NeoForge;
 import org.lwjgl.opengl.GL11;
-
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.cad.ICADColorizer;
+import vazkii.psi.api.cad.IPsiBarDisplay;
 import vazkii.psi.api.cad.ISocketable;
 import vazkii.psi.api.gui.PsiHudElementType;
 import vazkii.psi.api.gui.RenderPsiHudEvent;
@@ -44,334 +43,332 @@ import vazkii.psi.common.lib.LibResources;
 
 import java.util.regex.Pattern;
 
-@Mod.EventBusSubscriber(value = Dist.CLIENT, modid = LibMisc.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(value = Dist.CLIENT, modid = LibMisc.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
 public final class HUDHandler {
 
-	private static final ResourceLocation psiBar = new ResourceLocation(LibResources.GUI_PSI_BAR);
-	private static final ResourceLocation psiBarMask = new ResourceLocation(LibResources.GUI_PSI_BAR_MASK);
-	private static final ResourceLocation psiBarShatter = new ResourceLocation(LibResources.GUI_PSI_BAR_SHATTER);
+    public static final LayeredDraw.Layer SOCKETABLE_EQUIPPED_NAME = (graphics, deltatracker) -> {
+        if (!NeoForge.EVENT_BUS.post(new RenderPsiHudEvent(PsiHudElementType.SOCKETABLE_EQUIPPED_NAME)).isCanceled()) {
+            renderSocketableEquippedName(graphics, deltatracker);
+        }
+    };
+    public static final LayeredDraw.Layer HUD_ITEM = (graphics, deltatracker) -> {
+        if (!NeoForge.EVENT_BUS.post(new RenderPsiHudEvent(PsiHudElementType.HUD_ITEM)).isCanceled()) {
+            renderHUDItem(graphics, deltatracker);
+        }
+    };
+    private static final ResourceLocation psiBar = ResourceLocation.parse(LibResources.GUI_PSI_BAR);
+    private static final ResourceLocation psiBarMask = ResourceLocation.parse(LibResources.GUI_PSI_BAR_MASK);
+    private static final ResourceLocation psiBarShatter = ResourceLocation.parse(LibResources.GUI_PSI_BAR_SHATTER);
+    private static final int maxRemainingTicks = 30;
+    private static boolean registeredMask = false;
+    public static final LayeredDraw.Layer PSI_BAR = (graphics, deltatracker) -> {
+        if (!NeoForge.EVENT_BUS.post(new RenderPsiHudEvent(PsiHudElementType.PSI_BAR)).isCanceled()) {
+            drawPsiBar(graphics, deltatracker);
+        }
+    };
+    private static ItemStack remainingDisplayStack;
+    private static int remainingTime;
+    private static int remainingCount;
+    public static final LayeredDraw.Layer REMAINING_ITEMS = (graphics, deltatracker) -> {
+        if (!NeoForge.EVENT_BUS.post(new RenderPsiHudEvent(PsiHudElementType.REMAINING_ITEMS)).isCanceled()) {
+            renderRemainingItems(graphics, deltatracker);
+        }
+    };
 
-	private static boolean registeredMask = false;
-	private static final int maxRemainingTicks = 30;
+    @SubscribeEvent
+    @OnlyIn(Dist.CLIENT)
+    public static void register(RegisterGuiLayersEvent event) {
+        event.registerAboveAll(ResourceLocation.fromNamespaceAndPath(PsiAPI.MOD_ID, "psi_bar"), PSI_BAR);
+        event.registerAboveAll(ResourceLocation.fromNamespaceAndPath(PsiAPI.MOD_ID, "socketable_equipped_name"), SOCKETABLE_EQUIPPED_NAME);
+        event.registerAboveAll(ResourceLocation.fromNamespaceAndPath(PsiAPI.MOD_ID, "remaining_items"), REMAINING_ITEMS);
+        event.registerAboveAll(ResourceLocation.fromNamespaceAndPath(PsiAPI.MOD_ID, "hud_item"), HUD_ITEM);
+    }
 
-	private static ItemStack remainingDisplayStack;
-	private static int remainingTime;
-	private static int remainingCount;
+    public static void tick() {
 
-	public static final IGuiOverlay PSI_BAR = (gui, poseStack, partialTick, screenWidth, screenHeight) -> {
-		if(!MinecraftForge.EVENT_BUS.post(new RenderPsiHudEvent(PsiHudElementType.PSI_BAR))) {
-			drawPsiBar(poseStack, partialTick, screenWidth, screenHeight);
-		}
-	};
+        if (remainingTime > 0) {
+            --remainingTime;
+        }
+    }
 
-	public static final IGuiOverlay SOCKETABLE_EQUIPPED_NAME = (gui, poseStack, partialTick, screenWidth, screenHeight) -> {
-		if(!MinecraftForge.EVENT_BUS.post(new RenderPsiHudEvent(PsiHudElementType.SOCKETABLE_EQUIPPED_NAME))) {
-			renderSocketableEquippedName(poseStack, partialTick, screenWidth, screenHeight);
-		}
-	};
+    private static boolean showsBar(PlayerData data, ItemStack stack) {
+        if (stack.isEmpty()) {
+            return false;
+        } else {
+            IPsiBarDisplay display = stack.getCapability(PsiAPI.PSI_BAR_DISPLAY_CAPABILITY);
+            if (display != null)
+                return display.shouldShow(data);
+            return false;
+        }
+    }
 
-	public static final IGuiOverlay REMAINING_ITEMS = (gui, poseStack, partialTick, screenWidth, screenHeight) -> {
-		if(!MinecraftForge.EVENT_BUS.post(new RenderPsiHudEvent(PsiHudElementType.REMAINING_ITEMS))) {
-			renderRemainingItems(poseStack, partialTick, screenWidth, screenHeight);
-		}
-	};
+    @OnlyIn(Dist.CLIENT)
+    public static void drawPsiBar(GuiGraphics graphics, DeltaTracker deltatracker) {
+        Minecraft mc = Minecraft.getInstance();
+        ItemStack cadStack = PsiAPI.getPlayerCAD(mc.player);
 
-	public static final IGuiOverlay HUD_ITEM = (gui, poseStack, partialTick, screenWidth, screenHeight) -> {
-		if(!MinecraftForge.EVENT_BUS.post(new RenderPsiHudEvent(PsiHudElementType.HUD_ITEM))) {
-			renderHUDItem(poseStack, partialTick, screenWidth, screenHeight);
-		}
-	};
+        if (cadStack.isEmpty()) {
+            return;
+        }
 
-	@SubscribeEvent
-	@OnlyIn(Dist.CLIENT)
-	public static void register(RegisterGuiOverlaysEvent event) {
-		event.registerAboveAll("psi_bar", PSI_BAR);
-		event.registerAboveAll("socketable_equipped_name", SOCKETABLE_EQUIPPED_NAME);
-		event.registerAboveAll("remaining_items", REMAINING_ITEMS);
-		event.registerAboveAll("hud_item", HUD_ITEM);
-	}
+        ICAD cad = (ICAD) cadStack.getItem();
+        PlayerData data = PlayerDataHandler.get(mc.player);
 
-	public static void tick() {
+        int totalPsi = data.getTotalPsi();
+        int currPsi = data.getAvailablePsi();
 
-		if(remainingTime > 0) {
-			--remainingTime;
-		}
-	}
+        if (ConfigHandler.CLIENT.contextSensitiveBar.get() && currPsi == totalPsi &&
+                !showsBar(data, mc.player.getMainHandItem()) &&
+                !showsBar(data, mc.player.getOffhandItem())) {
+            return;
+        }
 
-	private static boolean showsBar(PlayerData data, ItemStack stack) {
-		if(stack.isEmpty()) {
-			return false;
-		} else {
-			return stack.getCapability(PsiAPI.PSI_BAR_DISPLAY_CAPABILITY).map(c -> c.shouldShow(data)).orElse(false);
-		}
-	}
+        graphics.pose().pushPose();
 
-	@OnlyIn(Dist.CLIENT)
-	public static void drawPsiBar(GuiGraphics graphics, float partialTick, int screenWidth, int screenHeight) {
-		Minecraft mc = Minecraft.getInstance();
-		ItemStack cadStack = PsiAPI.getPlayerCAD(mc.player);
+        boolean right = ConfigHandler.CLIENT.psiBarOnRight.get();
 
-		if(cadStack.isEmpty()) {
-			return;
-		}
+        int pad = 3;
+        int width = 32;
+        int height = 140;
 
-		ICAD cad = (ICAD) cadStack.getItem();
-		PlayerData data = PlayerDataHandler.get(mc.player);
+        int x = -pad;
+        if (right) {
+            x = graphics.guiWidth() + pad - width;
+        }
+        int y = graphics.guiHeight() / 2 - height / 2;
 
-		int totalPsi = data.getTotalPsi();
-		int currPsi = data.getAvailablePsi();
+        if (!registeredMask) {
+            RenderSystem.setShaderTexture(0, psiBarMask);
+            RenderSystem.setShaderTexture(1, psiBarShatter);
+            registeredMask = true;
+        }
 
-		if(ConfigHandler.CLIENT.contextSensitiveBar.get() && currPsi == totalPsi &&
-				!showsBar(data, mc.player.getMainHandItem()) &&
-				!showsBar(data, mc.player.getOffhandItem())) {
-			return;
-		}
+        RenderSystem.enableBlend();
+        graphics.blit(psiBar, x, y, 0, 0, width, height, 64, 256);
 
-		graphics.pose().pushPose();
+        x += 8;
+        y += 26;
 
-		boolean right = ConfigHandler.CLIENT.psiBarOnRight.get();
+        width = 16;
+        height = 106;
 
-		int pad = 3;
-		int width = 32;
-		int height = 140;
+        float r = 0.6F;
+        float g = 0.65F;
+        float b = 1F;
 
-		int x = -pad;
-		if(right) {
-			x = screenWidth + pad - width;
-		}
-		int y = screenHeight / 2 - height / 2;
+        if (data.isOverflowed()) {
+            r = 1F;
+            g = 0.6F;
+            b = 0.6F;
+        }
 
-		if(!registeredMask) {
-			RenderSystem.setShaderTexture(0, psiBarMask);
-			RenderSystem.setShaderTexture(1, psiBarShatter);
-			registeredMask = true;
-		}
+        int origHeight = height;
+        int origY = y;
+        int v = 0;
 
-		RenderSystem.enableBlend();
-		graphics.blit(psiBar, x, y, 0, 0, width, height, 64, 256);
+        RenderSystem.enableBlend();
+        RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
-		x += 8;
-		y += 26;
+        for (Deduction d : data.deductions) {
+            float a = d.getPercentile(deltatracker.getGameTimeDeltaPartialTick(false));
+            RenderSystem.setShaderColor(r, g, b, a);
+            height = (int) Math.ceil(origHeight * (double) d.deduct / totalPsi);
+            int effHeight = (int) (origHeight * (double) d.current / totalPsi);
+            v = origHeight - effHeight;
+            y = origY + v;
 
-		width = 16;
-		height = 106;
+            usePsiBarShader(a, d.shatter, data.overflowed);
+            graphics.blit(psiBar, x, y, 32, v, width, height, 64, 256);
+        }
 
-		float r = 0.6F;
-		float g = 0.65F;
-		float b = 1F;
+        float textY = origY;
+        if (totalPsi > 0) {
+            height = (int) ((double) origHeight * (double) data.availablePsi / totalPsi);
+            v = origHeight - height;
+            y = origY + v;
 
-		if(data.isOverflowed()) {
-			r = 1F;
-			g = 0.6F;
-			b = 0.6F;
-		}
+            if (data.availablePsi != data.lastAvailablePsi) {
+                float textHeight = (float) (origHeight
+                        * (data.availablePsi * deltatracker.getGameTimeDeltaPartialTick(false) + data.lastAvailablePsi * (1.0 - deltatracker.getGameTimeDeltaPartialTick(false))) / totalPsi);
+                textY = origY + (origHeight - textHeight);
+            } else {
+                textY = y;
+            }
+        } else {
+            height = 0;
+        }
 
-		int origHeight = height;
-		int origY = y;
-		int v = 0;
+        RenderSystem.setShaderColor(r, g, b, 1F);
+        usePsiBarShader(1F, false, data.overflowed);
+        graphics.blit(psiBar, x, y, 32, v, width, height, 64, 256);
 
-		RenderSystem.enableBlend();
-		RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
 
-		for(Deduction d : data.deductions) {
-			float a = d.getPercentile(partialTick);
-			RenderSystem.setShaderColor(r, g, b, a);
-			height = (int) Math.ceil(origHeight * (double) d.deduct / totalPsi);
-			int effHeight = (int) (origHeight * (double) d.current / totalPsi);
-			v = origHeight - effHeight;
-			y = origY + v;
+        graphics.pose().pushPose();
+        graphics.pose().translate(0F, textY, 0F);
+        width = 44;
+        height = 3;
 
-			usePsiBarShader(a, d.shatter, data.overflowed);
-			graphics.blit(psiBar, x, y, 32, v, width, height, 64, 256);
-		}
+        int storedPsi = cad.getStoredPsi(cadStack);
 
-		float textY = origY;
-		if(totalPsi > 0) {
-			height = (int) ((double) origHeight * (double) data.availablePsi / totalPsi);
-			v = origHeight - height;
-			y = origY + v;
+        String s1 = storedPsi == -1 ? "∞" : "" + data.availablePsi;
+        String s2 = "" + storedPsi;
 
-			if(data.availablePsi != data.lastAvailablePsi) {
-				float textHeight = (float) (origHeight
-						* (data.availablePsi * partialTick + data.lastAvailablePsi * (1.0 - partialTick)) / totalPsi);
-				textY = origY + (origHeight - textHeight);
-			} else {
-				textY = y;
-			}
-		} else {
-			height = 0;
-		}
+        int offBar = 22;
+        int offStr1 = 7 + mc.font.width(s1);
+        int offStr2 = 7 + mc.font.width(s2);
 
-		RenderSystem.setShaderColor(r, g, b, 1F);
-		usePsiBarShader(1F, false, data.overflowed);
-		graphics.blit(psiBar, x, y, 32, v, width, height, 64, 256);
+        if (!right) {
+            offBar = 6;
+            offStr1 = -23;
+            offStr2 = -23;
+        }
 
-		RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
+        int color = cad.getSpellColor(cadStack);
+        RenderSystem.setShaderColor(PsiRenderHelper.r(color) / 255F,
+                PsiRenderHelper.g(color) / 255F,
+                PsiRenderHelper.b(color) / 255F, 1F);
 
-		graphics.pose().pushPose();
-		graphics.pose().translate(0F, textY, 0F);
-		width = 44;
-		height = 3;
+        graphics.blit(psiBar, x - offBar, -2, 0, 140, width, height, 64, 256);
+        graphics.drawString(mc.font, s1, x - offStr1, -11, 0xFFFFFF, true);
+        graphics.pose().popPose();
 
-		int storedPsi = cad.getStoredPsi(cadStack);
+        if (storedPsi != -1) {
+            graphics.pose().pushPose();
+            graphics.pose().translate(0F, Math.max(textY + 3, origY + 100), 0F);
+            graphics.drawString(mc.font, s2, x - offStr2, 0, 0xFFFFFF, true);
+            graphics.pose().popPose();
+        }
+        RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
+        RenderSystem.disableBlend();
+        graphics.pose().popPose();
+    }
 
-		String s1 = storedPsi == -1 ? "∞" : "" + data.availablePsi;
-		String s2 = "" + storedPsi;
+    @OnlyIn(Dist.CLIENT)
+    private static void renderSocketableEquippedName(GuiGraphics graphics, DeltaTracker deltatracker) {
+        Minecraft mc = Minecraft.getInstance();
+        ItemStack stack = mc.player.getItemInHand(InteractionHand.MAIN_HAND);
+        if (!ISocketable.isSocketable(stack)) {
+            return;
+        }
+        String name = ISocketable.getSocketedItemName(stack, "").getString();
+        if (stack.isEmpty() || name.trim().isEmpty()) {
+            return;
+        }
 
-		int offBar = 22;
-		int offStr1 = 7 + mc.font.width(s1);
-		int offStr2 = 7 + mc.font.width(s2);
+        int ticks = mc.gui.toolHighlightTimer;
+        ticks -= 10;
 
-		if(!right) {
-			offBar = 6;
-			offStr1 = -23;
-			offStr2 = -23;
-		}
+        if (ticks > 0) {
+            ISocketable socketable = ISocketable.socketable(stack);
+            ItemStack bullet = socketable.getSelectedBullet();
 
-		int color = cad.getSpellColor(cadStack);
-		RenderSystem.setShaderColor(PsiRenderHelper.r(color) / 255F,
-				PsiRenderHelper.g(color) / 255F,
-				PsiRenderHelper.b(color) / 255F, 1F);
+            int alpha = Math.min(255, (int) ((ticks - deltatracker.getGameTimeDeltaPartialTick(false)) * 256.0F / 10.0F));
+            int color = ICADColorizer.DEFAULT_SPELL_COLOR + (alpha << 24);
 
-		graphics.blit(psiBar, x - offBar, -2, 0, 140, width, height, 64, 256);
-		graphics.drawString(mc.font, s1, x - offStr1, -11, 0xFFFFFF, true);
-		graphics.pose().popPose();
+            int x = graphics.guiWidth() / 2 - mc.font.width(name) / 2;
+            int y = graphics.guiHeight() - 71;
+            if (mc.player.isCreative()) {
+                y += 14;
+            }
 
-		if(storedPsi != -1) {
-			graphics.pose().pushPose();
-			graphics.pose().translate(0F, Math.max(textY + 3, origY + 100), 0F);
-			graphics.drawString(mc.font, s2, x - offStr2, 0, 0xFFFFFF, true);
-			graphics.pose().popPose();
-		}
-		RenderSystem.disableBlend();
-		graphics.pose().popPose();
-	}
+            graphics.drawString(mc.font, name, x, y, color, true);
 
-	@OnlyIn(Dist.CLIENT)
-	private static void renderSocketableEquippedName(GuiGraphics graphics, float partialTick, int screenWidth, int screenHeight) {
-		Minecraft mc = Minecraft.getInstance();
-		ItemStack stack = mc.player.getItemInHand(InteractionHand.MAIN_HAND);
-		if(!ISocketable.isSocketable(stack)) {
-			return;
-		}
-		String name = ISocketable.getSocketedItemName(stack, "").getString();
-		if(stack.isEmpty() || name.trim().isEmpty()) {
-			return;
-		}
+            int w = mc.font.width(name);
+            graphics.pose().pushPose();
+            graphics.pose().translate(x + w, y - 6, 0);
+            graphics.pose().scale(alpha / 255F, 1F, 1);
+            graphics.renderFakeItem(bullet, 0, 0);
+            graphics.pose().popPose();
+        }
+    }
 
-		int ticks = mc.gui.toolHighlightTimer;
-		ticks -= 10;
+    @OnlyIn(Dist.CLIENT)
+    private static void renderRemainingItems(GuiGraphics graphics, DeltaTracker deltatracker) {
+        if (remainingTime > 0 && !remainingDisplayStack.isEmpty()) {
+            int pos = maxRemainingTicks - remainingTime;
+            Minecraft mc = Minecraft.getInstance();
+            int remainingLeaveTicks = 20;
+            int x = graphics.guiWidth() / 2 + 10 + Math.max(0, pos - remainingLeaveTicks);
+            int y = graphics.guiHeight() / 2;
 
-		if(ticks > 0) {
-			ISocketable socketable = ISocketable.socketable(stack);
-			ItemStack bullet = socketable.getSelectedBullet();
+            int start = maxRemainingTicks - remainingLeaveTicks;
+            float alpha = remainingTime + deltatracker.getGameTimeDeltaPartialTick(false) > start ? 1F : (remainingTime + deltatracker.getGameTimeDeltaPartialTick(false)) / start;
 
-			int alpha = Math.min(255, (int) ((ticks - partialTick) * 256.0F / 10.0F));
-			int color = ICADColorizer.DEFAULT_SPELL_COLOR + (alpha << 24);
+            RenderSystem.setShaderColor(1F, 1F, 1F, alpha);
+            int xp = x + (int) (16F * (1F - alpha));
+            graphics.pose().pushPose();
+            graphics.pose().translate(xp, y, 0F);
+            graphics.pose().scale(alpha, 1F, 1F);
+            graphics.renderFakeItem(remainingDisplayStack, 0, 0);
+            graphics.pose().scale(1F / alpha, 1F, 1F);
+            graphics.pose().translate(-xp, -y, 0F);
+            RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
 
-			int x = screenWidth / 2 - mc.font.width(name) / 2;
-			int y = screenHeight - 71;
-			if(mc.player.isCreative()) {
-				y += 14;
-			}
+            String text = remainingDisplayStack.getHoverName().plainCopy().withStyle(ChatFormatting.GREEN).getString();
+            if (remainingCount >= 0) {
+                int max = remainingDisplayStack.getMaxStackSize();
+                int stacks = remainingCount / max;
+                int rem = remainingCount % max;
 
-			graphics.drawString(mc.font, name, x, y, color, true);
+                if (stacks == 0) {
+                    text = "" + remainingCount;
+                } else {
+                    text = remainingCount + " (" + ChatFormatting.AQUA + stacks + ChatFormatting.RESET + "*"
+                            + ChatFormatting.GRAY + max + ChatFormatting.RESET + "+" + ChatFormatting.YELLOW + rem
+                            + ChatFormatting.RESET + ")";
+                }
+            } else if (remainingCount == -1) {
+                text = "∞";
+            }
 
-			int w = mc.font.width(name);
-			graphics.pose().pushPose();
-			graphics.pose().translate(x + w, y - 6, 0);
-			graphics.pose().scale(alpha / 255F, 1F, 1);
-			graphics.renderFakeItem(bullet, 0, 0);
-			graphics.pose().popPose();
-		}
-	}
+            int color = 0x00FFFFFF | (int) (alpha * 0xFF) << 24;
+            graphics.drawString(mc.font, text, x + 20, y + 6, color, true);
 
-	@OnlyIn(Dist.CLIENT)
-	private static void renderRemainingItems(GuiGraphics graphics, float partialTick, int screenWidth, int screenHeight) {
-		if(remainingTime > 0 && !remainingDisplayStack.isEmpty()) {
-			int pos = maxRemainingTicks - remainingTime;
-			Minecraft mc = Minecraft.getInstance();
-			int remainingLeaveTicks = 20;
-			int x = screenWidth / 2 + 10 + Math.max(0, pos - remainingLeaveTicks);
-			int y = screenHeight / 2;
+            graphics.pose().popPose();
+        }
+    }
 
-			int start = maxRemainingTicks - remainingLeaveTicks;
-			float alpha = remainingTime + partialTick > start ? 1F : (remainingTime + partialTick) / start;
+    @OnlyIn(Dist.CLIENT)
+    private static void renderHUDItem(GuiGraphics graphics, DeltaTracker deltatracker) {
+        Minecraft mc = Minecraft.getInstance();
+        ItemStack stack = mc.player.getMainHandItem();
+        if (!stack.isEmpty() && stack.getItem() instanceof IHUDItem) {
+            ((IHUDItem) stack.getItem()).drawHUD(graphics, deltatracker.getGameTimeDeltaPartialTick(false), graphics.guiWidth(), graphics.guiHeight(), stack);
+        }
 
-			RenderSystem.setShaderColor(1F, 1F, 1F, alpha);
-			int xp = x + (int) (16F * (1F - alpha));
-			graphics.pose().pushPose();
-			graphics.pose().translate(xp, y, 0F);
-			graphics.pose().scale(alpha, 1F, 1F);
-			graphics.renderFakeItem(remainingDisplayStack, 0, 0);
-			graphics.pose().scale(1F / alpha, 1F, 1F);
-			graphics.pose().translate(-xp, -y, 0F);
-			RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
+        stack = mc.player.getOffhandItem();
+        if (!stack.isEmpty() && stack.getItem() instanceof IHUDItem) {
+            ((IHUDItem) stack.getItem()).drawHUD(graphics, deltatracker.getGameTimeDeltaPartialTick(false), graphics.guiWidth(), graphics.guiHeight(), stack);
+        }
+    }
 
-			String text = remainingDisplayStack.getHoverName().plainCopy().withStyle(ChatFormatting.GREEN).getString();
-			if(remainingCount >= 0) {
-				int max = remainingDisplayStack.getMaxStackSize();
-				int stacks = remainingCount / max;
-				int rem = remainingCount % max;
+    public static void setRemaining(ItemStack stack, int count) {
+        HUDHandler.remainingDisplayStack = stack;
+        HUDHandler.remainingCount = count;
+        remainingTime = stack.isEmpty() ? 0 : maxRemainingTicks;
+    }
 
-				if(stacks == 0) {
-					text = "" + remainingCount;
-				} else {
-					text = remainingCount + " (" + ChatFormatting.AQUA + stacks + ChatFormatting.RESET + "*"
-							+ ChatFormatting.GRAY + max + ChatFormatting.RESET + "+" + ChatFormatting.YELLOW + rem
-							+ ChatFormatting.RESET + ")";
-				}
-			} else if(remainingCount == -1) {
-				text = "∞";
-			}
+    public static void setRemaining(Player player, ItemStack displayStack, Pattern pattern) {
+        int count = 0;
+        for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
+            ItemStack stack = player.getInventory().getItem(i);
+            if (!stack.isEmpty() && (pattern == null ? ItemStack.isSameItem(displayStack, stack) : pattern.matcher(stack.getDescriptionId()).find())) {
+                count += stack.getCount();
+            }
+        }
 
-			int color = 0x00FFFFFF | (int) (alpha * 0xFF) << 24;
-			graphics.drawString(mc.font, text, x + 20, y + 6, color, true);
+        setRemaining(displayStack, count);
+    }
 
-			graphics.pose().popPose();
-		}
-	}
-
-	@OnlyIn(Dist.CLIENT)
-	private static void renderHUDItem(GuiGraphics graphics, float partialTicks, int screenWidth, int screenHeight) {
-		Minecraft mc = Minecraft.getInstance();
-		ItemStack stack = mc.player.getMainHandItem();
-		if(!stack.isEmpty() && stack.getItem() instanceof IHUDItem) {
-			((IHUDItem) stack.getItem()).drawHUD(graphics, partialTicks, screenWidth, screenHeight, stack);
-		}
-
-		stack = mc.player.getOffhandItem();
-		if(!stack.isEmpty() && stack.getItem() instanceof IHUDItem) {
-			((IHUDItem) stack.getItem()).drawHUD(graphics, partialTicks, screenWidth, screenHeight, stack);
-		}
-	}
-
-	public static void setRemaining(ItemStack stack, int count) {
-		HUDHandler.remainingDisplayStack = stack;
-		HUDHandler.remainingCount = count;
-		remainingTime = stack.isEmpty() ? 0 : maxRemainingTicks;
-	}
-
-	public static void setRemaining(Player player, ItemStack displayStack, Pattern pattern) {
-		int count = 0;
-		for(int i = 0; i < player.getInventory().getContainerSize(); i++) {
-			ItemStack stack = player.getInventory().getItem(i);
-			if(!stack.isEmpty() && (pattern == null ? ItemStack.isSameItem(displayStack, stack) : pattern.matcher(stack.getDescriptionId()).find())) {
-				count += stack.getCount();
-			}
-		}
-
-		setRemaining(displayStack, count);
-	}
-
-	@OnlyIn(Dist.CLIENT)
-	public static void usePsiBarShader(final float percentile, final boolean shatter, final boolean overflowed) {
-		var psiBarShader = ShaderHandler.getPsiBarShader();
-		RenderSystem.setShader(ShaderHandler::getPsiBarShader);
-		RenderSystem.setShaderTexture(0, psiBar);
-		RenderSystem.setShaderTexture(1, shatter ? psiBarShatter : psiBarMask);
-		psiBarShader.safeGetUniform("GameTime").set(RenderSystem.getShaderGameTime());
-		psiBarShader.safeGetUniform("PsiBarPercentile").set(percentile);
-		psiBarShader.safeGetUniform("PsiBarOverflowed").set(overflowed ? 1 : 0);
-	}
+    @OnlyIn(Dist.CLIENT)
+    public static void usePsiBarShader(final float percentile, final boolean shatter, final boolean overflowed) {
+        var psiBarShader = ShaderHandler.getPsiBarShader();
+        RenderSystem.setShader(ShaderHandler::getPsiBarShader);
+        RenderSystem.setShaderTexture(0, psiBar);
+        RenderSystem.setShaderTexture(1, shatter ? psiBarShatter : psiBarMask);
+        psiBarShader.safeGetUniform("GameTime").set(RenderSystem.getShaderGameTime());
+        psiBarShader.safeGetUniform("PsiBarPercentile").set(percentile);
+        psiBarShader.safeGetUniform("PsiBarOverflowed").set(overflowed ? 1 : 0);
+    }
 }

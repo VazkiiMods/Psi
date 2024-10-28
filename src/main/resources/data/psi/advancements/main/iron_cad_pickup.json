@@ -17,7 +17,9 @@
       "conditions": {
         "items": [
           {
-            "items": ["psi:cad_assembly_iron"]
+            "items": [
+              "psi:cad_assembly_iron"
+            ]
           }
         ]
       }

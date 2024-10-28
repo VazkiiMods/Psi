@@ -1,0 +1,16 @@
+{
+  "type": "psi:bullet_upgrade",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "c:dusts/glowstone"
+    },
+    {
+      "item": "psi:white_psimetal_plate"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "psi:lit_white_psimetal_plate"
+  }
+}

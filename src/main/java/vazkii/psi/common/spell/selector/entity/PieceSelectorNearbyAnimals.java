@@ -12,7 +12,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.WaterAnimal;
 import net.minecraft.world.entity.monster.Enemy;
-
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 
@@ -20,14 +19,14 @@ import java.util.function.Predicate;
 
 public class PieceSelectorNearbyAnimals extends PieceSelectorNearby {
 
-	public PieceSelectorNearbyAnimals(Spell spell) {
-		super(spell);
-	}
+    public PieceSelectorNearbyAnimals(Spell spell) {
+        super(spell);
+    }
 
-	@Override
-	public Predicate<Entity> getTargetPredicate(SpellContext context) {
-		// for which classes to check, see ServerWorld despawning when spawn-animals server property is false
-		return (Entity e) -> (e instanceof Animal || e instanceof WaterAnimal) && !(e instanceof Enemy);
-	}
+    @Override
+    public Predicate<Entity> getTargetPredicate(SpellContext context) {
+        // for which classes to check, see ServerWorld despawning when spawn-animals server property is false
+        return (Entity e) -> (e instanceof Animal || e instanceof WaterAnimal) && !(e instanceof Enemy);
+    }
 
 }

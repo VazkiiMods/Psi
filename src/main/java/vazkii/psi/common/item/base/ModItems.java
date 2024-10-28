@@ -8,28 +8,34 @@
  */
 package vazkii.psi.common.item.base;
 
+import com.mojang.serialization.Codec;
+import net.minecraft.Util;
+import net.minecraft.core.component.DataComponentType;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.DyeColor;
-import net.minecraft.world.item.Item;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegisterEvent;
-
+import net.minecraft.world.item.*;
+import net.minecraft.world.item.component.DyedItemColor;
+import net.minecraft.world.item.component.ItemContainerContents;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.block.Blocks;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredRegister;
+import net.neoforged.neoforge.registries.RegisterEvent;
+import vazkii.psi.api.PsiAPI;
+import vazkii.psi.api.cad.EnumCADComponent;
+import vazkii.psi.api.cad.ICADColorizer;
 import vazkii.psi.common.item.*;
 import vazkii.psi.common.item.armor.ItemPsimetalExosuitBoots;
 import vazkii.psi.common.item.armor.ItemPsimetalExosuitChestplate;
 import vazkii.psi.common.item.armor.ItemPsimetalExosuitHelmet;
 import vazkii.psi.common.item.armor.ItemPsimetalExosuitLeggings;
-import vazkii.psi.common.item.component.ItemCADAssembly;
-import vazkii.psi.common.item.component.ItemCADBattery;
-import vazkii.psi.common.item.component.ItemCADColorizer;
-import vazkii.psi.common.item.component.ItemCADColorizerEmpty;
-import vazkii.psi.common.item.component.ItemCADColorizerPsi;
-import vazkii.psi.common.item.component.ItemCADColorizerRainbow;
-import vazkii.psi.common.item.component.ItemCADCore;
-import vazkii.psi.common.item.component.ItemCADSocket;
+import vazkii.psi.common.item.component.*;
 import vazkii.psi.common.item.tool.ItemPsimetalAxe;
 import vazkii.psi.common.item.tool.ItemPsimetalPickaxe;
 import vazkii.psi.common.item.tool.ItemPsimetalShovel;
@@ -38,261 +44,284 @@ import vazkii.psi.common.lib.LibItemNames;
 import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.spell.base.ModSpellPieces;
 
-@Mod.EventBusSubscriber(modid = LibMisc.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
+import java.util.EnumMap;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.Locale;
+
+@EventBusSubscriber(modid = LibMisc.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
 public final class ModItems {
 
-	public static Item psidust;
-	public static Item psimetal;
-	public static Item psigem;
-	public static Item ebonyPsimetal;
-	public static Item ivoryPsimetal;
-	public static Item ebonySubstance;
-	public static Item ivorySubstance;
+    public static final DeferredRegister.DataComponents DATA_COMPONENT_TYPES = DeferredRegister.createDataComponents(PsiAPI.MOD_ID);
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<ItemContainerContents>> COMPONENTS = DATA_COMPONENT_TYPES.registerComponentType("components", builder -> builder.persistent(ItemContainerContents.CODEC).networkSynchronized(ItemContainerContents.STREAM_CODEC).cacheEncoding());
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> TAG_REGEN_TIME = DATA_COMPONENT_TYPES.registerComponentType("regen_time", builder -> builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.INT));
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> TAG_SELECTED_SLOT = DATA_COMPONENT_TYPES.registerComponentType("selected_slot", builder -> builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.INT));
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<ItemContainerContents>> TAG_BULLETS = DATA_COMPONENT_TYPES.registerComponentType("bullets", builder -> builder.persistent(ItemContainerContents.CODEC).networkSynchronized(ItemContainerContents.STREAM_CODEC).cacheEncoding());
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<String>> TAG_CONTRIBUTOR = DATA_COMPONENT_TYPES.registerComponentType("psi_contributor_name", builder -> builder.persistent(Codec.STRING).networkSynchronized(ByteBufCodecs.STRING_UTF8));
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> TAG_SELECTED_CONTROL_SLOT = DATA_COMPONENT_TYPES.registerComponentType("selected_control_slot", builder -> builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.INT));
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> TAG_TIMES_CAST = DATA_COMPONENT_TYPES.registerComponentType("times_cast", builder -> builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.INT));
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Item>> TAG_SENSOR = DATA_COMPONENT_TYPES.registerComponentType("sensor", builder -> builder.persistent(BuiltInRegistries.ITEM.byNameCodec().orElse(Items.AIR)).networkSynchronized(ByteBufCodecs.registry(Registries.ITEM)).cacheEncoding());
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Boolean>> HAS_SPELL = DATA_COMPONENT_TYPES.registerComponentType("has_spell", builder -> builder.persistent(Codec.BOOL).networkSynchronized(ByteBufCodecs.BOOL));
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<CompoundTag>> TAG_SPELL = DATA_COMPONENT_TYPES.registerComponentType("spell", builder -> builder.persistent(CompoundTag.CODEC).networkSynchronized(ByteBufCodecs.COMPOUND_TAG));
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> TAG_SRC_X = DATA_COMPONENT_TYPES.registerComponentType("src_x", builder -> builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.INT));
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> TAG_SRC_Y = DATA_COMPONENT_TYPES.registerComponentType("src_y", builder -> builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.INT));
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> TAG_SRC_Z = DATA_COMPONENT_TYPES.registerComponentType("src_z", builder -> builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.INT));
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> TAG_DST_X = DATA_COMPONENT_TYPES.registerComponentType("dst_x", builder -> builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.INT));
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> TAG_DST_Y = DATA_COMPONENT_TYPES.registerComponentType("dst_y", builder -> builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.INT));
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> TAG_DST_Z = DATA_COMPONENT_TYPES.registerComponentType("dst_z", builder -> builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.INT));
 
-	public static Item cadAssemblyIron;
-	public static Item cadAssemblyGold;
-	public static Item cadAssemblyPsimetal;
-	public static Item cadAssemblyIvory;
-	public static Item cadAssemblyEbony;
-	public static Item cadAssemblyCreative;
+    public static Item psidust;
+    public static Item psimetal;
+    public static Item psigem;
+    public static Item ebonyPsimetal;
+    public static Item ivoryPsimetal;
+    public static Item ebonySubstance;
+    public static Item ivorySubstance;
 
-	public static Item cadCoreBasic;
-	public static Item cadCoreOverclocked;
-	public static Item cadCoreConductive;
-	public static Item cadCoreHyperClocked;
-	public static Item cadCoreRadiative;
+    public static Item cadAssemblyIron;
+    public static Item cadAssemblyGold;
+    public static Item cadAssemblyPsimetal;
+    public static Item cadAssemblyIvory;
+    public static Item cadAssemblyEbony;
+    public static Item cadAssemblyCreative;
 
-	public static Item cadSocketBasic;
-	public static Item cadSocketSignaling;
-	public static Item cadSocketLarge;
-	public static Item cadSocketTransmissive;
-	public static Item cadSocketHuge;
+    public static Item cadCoreBasic;
+    public static Item cadCoreOverclocked;
+    public static Item cadCoreConductive;
+    public static Item cadCoreHyperClocked;
+    public static Item cadCoreRadiative;
 
-	public static Item cadBatteryBasic;
-	public static Item cadBatteryExtended;
-	public static Item cadBatteryUltradense;
+    public static Item cadSocketBasic;
+    public static Item cadSocketSignaling;
+    public static Item cadSocketLarge;
+    public static Item cadSocketTransmissive;
+    public static Item cadSocketHuge;
 
-	public static Item cadColorizerWhite;
-	public static Item cadColorizerOrange;
-	public static Item cadColorizerMagenta;
-	public static Item cadColorizerLightBlue;
-	public static Item cadColorizerYellow;
-	public static Item cadColorizerLime;
-	public static Item cadColorizerPink;
-	public static Item cadColorizerGray;
-	public static Item cadColorizerLightGray;
-	public static Item cadColorizerCyan;
-	public static Item cadColorizerPurple;
-	public static Item cadColorizerBlue;
-	public static Item cadColorizerBrown;
-	public static Item cadColorizerGreen;
-	public static Item cadColorizerRed;
-	public static Item cadColorizerBlack;
-	public static Item cadColorizerRainbow;
-	public static Item cadColorizerPsi;
-	public static Item cadColorizerEmpty;
+    public static Item cadBatteryBasic;
+    public static Item cadBatteryExtended;
+    public static Item cadBatteryUltradense;
 
-	public static Item spellBullet;
-	public static Item projectileSpellBullet;
-	public static Item loopSpellBullet;
-	public static Item circleSpellBullet;
-	public static Item grenadeSpellBullet;
-	public static Item chargeSpellBullet;
-	public static Item mineSpellBullet;
+    public static Item cadColorizerWhite;
+    public static Item cadColorizerOrange;
+    public static Item cadColorizerMagenta;
+    public static Item cadColorizerLightBlue;
+    public static Item cadColorizerYellow;
+    public static Item cadColorizerLime;
+    public static Item cadColorizerPink;
+    public static Item cadColorizerGray;
+    public static Item cadColorizerLightGray;
+    public static Item cadColorizerCyan;
+    public static Item cadColorizerPurple;
+    public static Item cadColorizerBlue;
+    public static Item cadColorizerBrown;
+    public static Item cadColorizerGreen;
+    public static Item cadColorizerRed;
+    public static Item cadColorizerBlack;
+    public static Item cadColorizerRainbow;
+    public static Item cadColorizerPsi;
+    public static Item cadColorizerEmpty;
 
-	public static Item spellDrive;
-	public static Item detonator;
-	public static Item exosuitController;
+    public static Item spellBullet;
+    public static Item projectileSpellBullet;
+    public static Item loopSpellBullet;
+    public static Item circleSpellBullet;
+    public static Item grenadeSpellBullet;
+    public static Item chargeSpellBullet;
+    public static Item mineSpellBullet;
 
-	public static Item exosuitSensorLight;
-	public static Item exosuitSensorHeat;
-	public static Item exosuitSensorStress;
-	public static Item exosuitSensorWater;
-	public static Item exosuitSensorTrigger;
-	public static Item cad;
+    public static Item spellDrive;
+    public static Item detonator;
+    public static Item exosuitController;
 
-	public static Item vectorRuler;
-	public static Item psimetalShovel;
-	public static Item psimetalPickaxe;
-	public static Item psimetalAxe;
-	public static Item psimetalSword;
-	public static Item psimetalExosuitHelmet;
-	public static Item psimetalExosuitChestplate;
-	public static Item psimetalExosuitLeggings;
-	public static Item psimetalExosuitBoots;
+    public static Item exosuitSensorLight;
+    public static Item exosuitSensorHeat;
+    public static Item exosuitSensorStress;
+    public static Item exosuitSensorWater;
+    public static Item exosuitSensorTrigger;
+    public static Item cad;
 
-	@SubscribeEvent
-	public static void register(RegisterEvent evt) {
-		evt.register(ForgeRegistries.Keys.ITEMS, helper -> {
-			psidust = new Item(defaultBuilder());
-			psimetal = new Item(defaultBuilder());
-			psigem = new Item(defaultBuilder());
-			ebonyPsimetal = new Item(defaultBuilder());
-			ivoryPsimetal = new Item(defaultBuilder());
-			ebonySubstance = new Item(defaultBuilder());
-			ivorySubstance = new Item(defaultBuilder());
+    public static Item vectorRuler;
+    public static Item psimetalShovel;
+    public static Item psimetalPickaxe;
+    public static Item psimetalAxe;
+    public static Item psimetalSword;
+    public static Item psimetalExosuitHelmet;
+    public static Item psimetalExosuitChestplate;
+    public static Item psimetalExosuitLeggings;
+    public static Item psimetalExosuitBoots;
 
-			cadAssemblyIron = new ItemCADAssembly(defaultBuilder(), LibItemNames.CAD_IRON);
-			cadAssemblyGold = new ItemCADAssembly(defaultBuilder(), LibItemNames.CAD_GOLD);
-			cadAssemblyPsimetal = new ItemCADAssembly(defaultBuilder(), LibItemNames.CAD_PSIMETAL);
-			cadAssemblyIvory = new ItemCADAssembly(defaultBuilder(), LibItemNames.CAD_IVORY_PSIMETAL);
-			cadAssemblyEbony = new ItemCADAssembly(defaultBuilder(), LibItemNames.CAD_EBONY_PSIMETAL);
-			cadAssemblyCreative = new ItemCADAssembly(defaultBuilder(), LibItemNames.CAD_CREATIVE);
+    @SubscribeEvent
+    public static void register(RegisterEvent evt) {
+        evt.register(Registries.ITEM, helper -> {
+            psidust = new Item(defaultBuilder());
+            psimetal = new Item(defaultBuilder());
+            psigem = new Item(defaultBuilder());
+            ebonyPsimetal = new Item(defaultBuilder());
+            ivoryPsimetal = new Item(defaultBuilder());
+            ebonySubstance = new Item(defaultBuilder());
+            ivorySubstance = new Item(defaultBuilder());
 
-			cadCoreBasic = new ItemCADCore(defaultBuilder());
-			cadCoreOverclocked = new ItemCADCore(defaultBuilder());
-			cadCoreConductive = new ItemCADCore(defaultBuilder());
-			cadCoreHyperClocked = new ItemCADCore(defaultBuilder());
-			cadCoreRadiative = new ItemCADCore(defaultBuilder());
+            cadAssemblyIron = new ItemCADAssembly(defaultBuilder(), LibItemNames.CAD_IRON);
+            cadAssemblyGold = new ItemCADAssembly(defaultBuilder(), LibItemNames.CAD_GOLD);
+            cadAssemblyPsimetal = new ItemCADAssembly(defaultBuilder(), LibItemNames.CAD_PSIMETAL);
+            cadAssemblyIvory = new ItemCADAssembly(defaultBuilder(), LibItemNames.CAD_IVORY_PSIMETAL);
+            cadAssemblyEbony = new ItemCADAssembly(defaultBuilder(), LibItemNames.CAD_EBONY_PSIMETAL);
+            cadAssemblyCreative = new ItemCADAssembly(defaultBuilder(), LibItemNames.CAD_CREATIVE);
 
-			cadSocketBasic = new ItemCADSocket(defaultBuilder());
-			cadSocketSignaling = new ItemCADSocket(defaultBuilder());
-			cadSocketLarge = new ItemCADSocket(defaultBuilder());
-			cadSocketTransmissive = new ItemCADSocket(defaultBuilder());
-			cadSocketHuge = new ItemCADSocket(defaultBuilder());
+            cadCoreBasic = new ItemCADCore(defaultBuilder());
+            cadCoreOverclocked = new ItemCADCore(defaultBuilder());
+            cadCoreConductive = new ItemCADCore(defaultBuilder());
+            cadCoreHyperClocked = new ItemCADCore(defaultBuilder());
+            cadCoreRadiative = new ItemCADCore(defaultBuilder());
 
-			cadBatteryBasic = new ItemCADBattery(defaultBuilder());
-			cadBatteryExtended = new ItemCADBattery(defaultBuilder());
-			cadBatteryUltradense = new ItemCADBattery(defaultBuilder());
+            cadSocketBasic = new ItemCADSocket(defaultBuilder());
+            cadSocketSignaling = new ItemCADSocket(defaultBuilder());
+            cadSocketLarge = new ItemCADSocket(defaultBuilder());
+            cadSocketTransmissive = new ItemCADSocket(defaultBuilder());
+            cadSocketHuge = new ItemCADSocket(defaultBuilder());
 
-			cadColorizerWhite = new ItemCADColorizer(defaultBuilder(), DyeColor.WHITE);
-			cadColorizerOrange = new ItemCADColorizer(defaultBuilder(), DyeColor.ORANGE);
-			cadColorizerMagenta = new ItemCADColorizer(defaultBuilder(), DyeColor.MAGENTA);
-			cadColorizerLightBlue = new ItemCADColorizer(defaultBuilder(), DyeColor.LIGHT_BLUE);
-			cadColorizerYellow = new ItemCADColorizer(defaultBuilder(), DyeColor.YELLOW);
-			cadColorizerLime = new ItemCADColorizer(defaultBuilder(), DyeColor.LIME);
-			cadColorizerPink = new ItemCADColorizer(defaultBuilder(), DyeColor.PINK);
-			cadColorizerGray = new ItemCADColorizer(defaultBuilder(), DyeColor.GRAY);
-			cadColorizerLightGray = new ItemCADColorizer(defaultBuilder(), DyeColor.LIGHT_GRAY);
-			cadColorizerCyan = new ItemCADColorizer(defaultBuilder(), DyeColor.CYAN);
-			cadColorizerPurple = new ItemCADColorizer(defaultBuilder(), DyeColor.PURPLE);
-			cadColorizerBlue = new ItemCADColorizer(defaultBuilder(), DyeColor.BLUE);
-			cadColorizerBrown = new ItemCADColorizer(defaultBuilder(), DyeColor.BROWN);
-			cadColorizerGreen = new ItemCADColorizer(defaultBuilder(), DyeColor.GREEN);
-			cadColorizerRed = new ItemCADColorizer(defaultBuilder(), DyeColor.RED);
-			cadColorizerBlack = new ItemCADColorizer(defaultBuilder(), DyeColor.BLACK);
-			cadColorizerRainbow = new ItemCADColorizerRainbow(defaultBuilder());
-			cadColorizerPsi = new ItemCADColorizerPsi(defaultBuilder());
-			cadColorizerEmpty = new ItemCADColorizerEmpty(defaultBuilder());
+            cadBatteryBasic = new ItemCADBattery(defaultBuilder());
+            cadBatteryExtended = new ItemCADBattery(defaultBuilder());
+            cadBatteryUltradense = new ItemCADBattery(defaultBuilder());
 
-			spellBullet = new ItemSpellBullet(defaultBuilder());
-			projectileSpellBullet = new ItemProjectileSpellBullet(defaultBuilder());
-			loopSpellBullet = new ItemLoopcastSpellBullet(defaultBuilder());
-			circleSpellBullet = new ItemCircleSpellBullet(defaultBuilder());
-			grenadeSpellBullet = new ItemGrenadeSpellBullet(defaultBuilder());
-			chargeSpellBullet = new ItemChargeSpellBullet(defaultBuilder());
-			mineSpellBullet = new ItemMineSpellBullet(defaultBuilder());
+            cadColorizerWhite = new ItemCADColorizer(defaultBuilder(), DyeColor.WHITE);
+            cadColorizerOrange = new ItemCADColorizer(defaultBuilder(), DyeColor.ORANGE);
+            cadColorizerMagenta = new ItemCADColorizer(defaultBuilder(), DyeColor.MAGENTA);
+            cadColorizerLightBlue = new ItemCADColorizer(defaultBuilder(), DyeColor.LIGHT_BLUE);
+            cadColorizerYellow = new ItemCADColorizer(defaultBuilder(), DyeColor.YELLOW);
+            cadColorizerLime = new ItemCADColorizer(defaultBuilder(), DyeColor.LIME);
+            cadColorizerPink = new ItemCADColorizer(defaultBuilder(), DyeColor.PINK);
+            cadColorizerGray = new ItemCADColorizer(defaultBuilder(), DyeColor.GRAY);
+            cadColorizerLightGray = new ItemCADColorizer(defaultBuilder(), DyeColor.LIGHT_GRAY);
+            cadColorizerCyan = new ItemCADColorizer(defaultBuilder(), DyeColor.CYAN);
+            cadColorizerPurple = new ItemCADColorizer(defaultBuilder(), DyeColor.PURPLE);
+            cadColorizerBlue = new ItemCADColorizer(defaultBuilder(), DyeColor.BLUE);
+            cadColorizerBrown = new ItemCADColorizer(defaultBuilder(), DyeColor.BROWN);
+            cadColorizerGreen = new ItemCADColorizer(defaultBuilder(), DyeColor.GREEN);
+            cadColorizerRed = new ItemCADColorizer(defaultBuilder(), DyeColor.RED);
+            cadColorizerBlack = new ItemCADColorizer(defaultBuilder(), DyeColor.BLACK);
+            cadColorizerRainbow = new ItemCADColorizerRainbow(defaultBuilder());
+            cadColorizerPsi = new ItemCADColorizerPsi(defaultBuilder());
+            cadColorizerEmpty = new ItemCADColorizerEmpty(defaultBuilder());
 
-			spellDrive = new ItemSpellDrive(defaultBuilder());
-			detonator = new ItemDetonator(defaultBuilder());
-			exosuitController = new ItemExosuitController(defaultBuilder());
+            spellBullet = new ItemSpellBullet(defaultBuilder());
+            projectileSpellBullet = new ItemProjectileSpellBullet(defaultBuilder());
+            loopSpellBullet = new ItemLoopcastSpellBullet(defaultBuilder());
+            circleSpellBullet = new ItemCircleSpellBullet(defaultBuilder());
+            grenadeSpellBullet = new ItemGrenadeSpellBullet(defaultBuilder());
+            chargeSpellBullet = new ItemChargeSpellBullet(defaultBuilder());
+            mineSpellBullet = new ItemMineSpellBullet(defaultBuilder());
 
-			exosuitSensorLight = new ItemLightExosuitSensor(defaultBuilder());
-			exosuitSensorHeat = new ItemHeatExosuitSensor(defaultBuilder());
-			exosuitSensorStress = new ItemStressExosuitSensor(defaultBuilder());
-			exosuitSensorWater = new ItemWaterExosuitSensor(defaultBuilder());
-			exosuitSensorTrigger = new ItemTriggerExosuitSensor(defaultBuilder());
-			cad = new ItemCAD(defaultBuilder());
+            spellDrive = new ItemSpellDrive(defaultBuilder());
+            detonator = new ItemDetonator(defaultBuilder());
+            exosuitController = new ItemExosuitController(defaultBuilder());
 
-			vectorRuler = new ItemVectorRuler(defaultBuilder());
-			psimetalShovel = new ItemPsimetalShovel(defaultBuilder());
-			psimetalPickaxe = new ItemPsimetalPickaxe(defaultBuilder());
-			psimetalAxe = new ItemPsimetalAxe(defaultBuilder());
-			psimetalSword = new ItemPsimetalSword(defaultBuilder());
-			psimetalExosuitHelmet = new ItemPsimetalExosuitHelmet(ArmorItem.Type.HELMET, defaultBuilder());
-			psimetalExosuitChestplate = new ItemPsimetalExosuitChestplate(ArmorItem.Type.CHESTPLATE, defaultBuilder());
-			psimetalExosuitLeggings = new ItemPsimetalExosuitLeggings(ArmorItem.Type.LEGGINGS, defaultBuilder());
-			psimetalExosuitBoots = new ItemPsimetalExosuitBoots(ArmorItem.Type.BOOTS, defaultBuilder());
+            exosuitSensorLight = new ItemLightExosuitSensor(defaultBuilder());
+            exosuitSensorHeat = new ItemHeatExosuitSensor(defaultBuilder());
+            exosuitSensorStress = new ItemStressExosuitSensor(defaultBuilder());
+            exosuitSensorWater = new ItemWaterExosuitSensor(defaultBuilder());
+            exosuitSensorTrigger = new ItemTriggerExosuitSensor(defaultBuilder());
+            cad = new ItemCAD(defaultBuilder());
 
-			ModSpellPieces.init();
+            vectorRuler = new ItemVectorRuler(defaultBuilder());
+            psimetalShovel = new ItemPsimetalShovel(defaultBuilder());
+            psimetalPickaxe = new ItemPsimetalPickaxe(defaultBuilder());
+            psimetalAxe = new ItemPsimetalAxe(defaultBuilder());
+            psimetalSword = new ItemPsimetalSword(defaultBuilder());
+            psimetalExosuitHelmet = new ItemPsimetalExosuitHelmet(ArmorItem.Type.HELMET, defaultBuilder().durability(ArmorItem.Type.HELMET.getDurability(18)));
+            psimetalExosuitChestplate = new ItemPsimetalExosuitChestplate(ArmorItem.Type.CHESTPLATE, defaultBuilder().durability(ArmorItem.Type.CHESTPLATE.getDurability(18)));
+            psimetalExosuitLeggings = new ItemPsimetalExosuitLeggings(ArmorItem.Type.LEGGINGS, defaultBuilder().durability(ArmorItem.Type.LEGGINGS.getDurability(18)));
+            psimetalExosuitBoots = new ItemPsimetalExosuitBoots(ArmorItem.Type.BOOTS, defaultBuilder().durability(ArmorItem.Type.BOOTS.getDurability(18)));
 
-			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibItemNames.PSIDUST), psidust);
-			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibItemNames.PSIMETAL), psimetal);
-			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibItemNames.PSIGEM), psigem);
-			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibItemNames.EBONY_PSIMETAL), ebonyPsimetal);
-			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibItemNames.IVORY_PSIMETAL), ivoryPsimetal);
-			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibItemNames.EBONY_SUBSTANCE), ebonySubstance);
-			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibItemNames.IVORY_SUBSTANCE), ivorySubstance);
-			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibItemNames.CAD_ASSEMBLY_CREATIVE), cadAssemblyCreative);
+            ModSpellPieces.init();
 
-			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibItemNames.CAD_ASSEMBLY_IRON), cadAssemblyIron);
-			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibItemNames.CAD_ASSEMBLY_GOLD), cadAssemblyGold);
-			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibItemNames.CAD_ASSEMBLY_PSIMETAL), cadAssemblyPsimetal);
-			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibItemNames.CAD_ASSEMBLY_IVORY_PSIMETAL), cadAssemblyIvory);
-			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibItemNames.CAD_ASSEMBLY_EBONY_PSIMETAL), cadAssemblyEbony);
+            helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.PSIDUST), psidust);
+            helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.PSIMETAL), psimetal);
+            helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.PSIGEM), psigem);
+            helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.EBONY_PSIMETAL), ebonyPsimetal);
+            helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.IVORY_PSIMETAL), ivoryPsimetal);
+            helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.EBONY_SUBSTANCE), ebonySubstance);
+            helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.IVORY_SUBSTANCE), ivorySubstance);
+            helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_ASSEMBLY_CREATIVE), cadAssemblyCreative);
 
-			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibItemNames.CAD_CORE_BASIC), cadCoreBasic);
-			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibItemNames.CAD_CORE_OVERCLOCKED), cadCoreOverclocked);
-			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibItemNames.CAD_CORE_CONDUCTIVE), cadCoreConductive);
-			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibItemNames.CAD_CORE_HYPERCLOCKED), cadCoreHyperClocked);
-			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibItemNames.CAD_CORE_RADIATIVE), cadCoreRadiative);
+            helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_ASSEMBLY_IRON), cadAssemblyIron);
+            helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_ASSEMBLY_GOLD), cadAssemblyGold);
+            helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_ASSEMBLY_PSIMETAL), cadAssemblyPsimetal);
+            helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_ASSEMBLY_IVORY_PSIMETAL), cadAssemblyIvory);
+            helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_ASSEMBLY_EBONY_PSIMETAL), cadAssemblyEbony);
 
-			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibItemNames.CAD_SOCKET_BASIC), cadSocketBasic);
-			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibItemNames.CAD_SOCKET_SIGNALING), cadSocketSignaling);
-			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibItemNames.CAD_SOCKET_LARGE), cadSocketLarge);
-			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibItemNames.CAD_SOCKET_TRANSMISSIVE), cadSocketTransmissive);
-			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibItemNames.CAD_SOCKET_HUGE), cadSocketHuge);
+            helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_CORE_BASIC), cadCoreBasic);
+            helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_CORE_OVERCLOCKED), cadCoreOverclocked);
+            helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_CORE_CONDUCTIVE), cadCoreConductive);
+            helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_CORE_HYPERCLOCKED), cadCoreHyperClocked);
+            helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_CORE_RADIATIVE), cadCoreRadiative);
 
-			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibItemNames.CAD_BATTERY_BASIC), cadBatteryBasic);
-			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibItemNames.CAD_BATTERY_EXTENDED), cadBatteryExtended);
-			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibItemNames.CAD_BATTERY_ULTRADENSE), cadBatteryUltradense);
+            helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_SOCKET_BASIC), cadSocketBasic);
+            helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_SOCKET_SIGNALING), cadSocketSignaling);
+            helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_SOCKET_LARGE), cadSocketLarge);
+            helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_SOCKET_TRANSMISSIVE), cadSocketTransmissive);
+            helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_SOCKET_HUGE), cadSocketHuge);
 
-			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibItemNames.CAD_COLORIZER_WHITE), cadColorizerWhite);
-			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibItemNames.CAD_COLORIZER_ORANGE), cadColorizerOrange);
-			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibItemNames.CAD_COLORIZER_MAGENTA), cadColorizerMagenta);
-			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibItemNames.CAD_COLORIZER_LIGHT_BLUE), cadColorizerLightBlue);
-			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibItemNames.CAD_COLORIZER_YELLOW), cadColorizerYellow);
-			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibItemNames.CAD_COLORIZER_LIME), cadColorizerLime);
-			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibItemNames.CAD_COLORIZER_PINK), cadColorizerPink);
-			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibItemNames.CAD_COLORIZER_GRAY), cadColorizerGray);
-			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibItemNames.CAD_COLORIZER_LIGHT_GRAY), cadColorizerLightGray);
-			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibItemNames.CAD_COLORIZER_CYAN), cadColorizerCyan);
-			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibItemNames.CAD_COLORIZER_PURPLE), cadColorizerPurple);
-			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibItemNames.CAD_COLORIZER_BLUE), cadColorizerBlue);
-			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibItemNames.CAD_COLORIZER_BROWN), cadColorizerBrown);
-			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibItemNames.CAD_COLORIZER_GREEN), cadColorizerGreen);
-			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibItemNames.CAD_COLORIZER_RED), cadColorizerRed);
-			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibItemNames.CAD_COLORIZER_BLACK), cadColorizerBlack);
-			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibItemNames.CAD_COLORIZER_RAINBOW), cadColorizerRainbow);
-			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibItemNames.CAD_COLORIZER_PSI), cadColorizerPsi);
-			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibItemNames.CAD_COLORIZER_EMPTY), cadColorizerEmpty);
+            helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_BATTERY_BASIC), cadBatteryBasic);
+            helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_BATTERY_EXTENDED), cadBatteryExtended);
+            helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_BATTERY_ULTRADENSE), cadBatteryUltradense);
 
-			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibItemNames.SPELL_BULLET), spellBullet);
-			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibItemNames.SPELL_BULLET_PROJECTILE), projectileSpellBullet);
-			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibItemNames.SPELL_BULLET_LOOP), loopSpellBullet);
-			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibItemNames.SPELL_BULLET_CIRCLE), circleSpellBullet);
-			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibItemNames.SPELL_BULLET_GRENADE), grenadeSpellBullet);
-			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibItemNames.SPELL_BULLET_CHARGE), chargeSpellBullet);
-			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibItemNames.SPELL_BULLET_MINE), mineSpellBullet);
+            helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_COLORIZER_WHITE), cadColorizerWhite);
+            helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_COLORIZER_ORANGE), cadColorizerOrange);
+            helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_COLORIZER_MAGENTA), cadColorizerMagenta);
+            helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_COLORIZER_LIGHT_BLUE), cadColorizerLightBlue);
+            helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_COLORIZER_YELLOW), cadColorizerYellow);
+            helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_COLORIZER_LIME), cadColorizerLime);
+            helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_COLORIZER_PINK), cadColorizerPink);
+            helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_COLORIZER_GRAY), cadColorizerGray);
+            helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_COLORIZER_LIGHT_GRAY), cadColorizerLightGray);
+            helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_COLORIZER_CYAN), cadColorizerCyan);
+            helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_COLORIZER_PURPLE), cadColorizerPurple);
+            helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_COLORIZER_BLUE), cadColorizerBlue);
+            helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_COLORIZER_BROWN), cadColorizerBrown);
+            helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_COLORIZER_GREEN), cadColorizerGreen);
+            helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_COLORIZER_RED), cadColorizerRed);
+            helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_COLORIZER_BLACK), cadColorizerBlack);
+            helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_COLORIZER_RAINBOW), cadColorizerRainbow);
+            helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_COLORIZER_PSI), cadColorizerPsi);
+            helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_COLORIZER_EMPTY), cadColorizerEmpty);
 
-			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibItemNames.SPELL_DRIVE), spellDrive);
-			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibItemNames.DETONATOR), detonator);
-			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibItemNames.EXOSUIT_CONTROLLER), exosuitController);
+            helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.SPELL_BULLET), spellBullet);
+            helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.SPELL_BULLET_PROJECTILE), projectileSpellBullet);
+            helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.SPELL_BULLET_LOOP), loopSpellBullet);
+            helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.SPELL_BULLET_CIRCLE), circleSpellBullet);
+            helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.SPELL_BULLET_GRENADE), grenadeSpellBullet);
+            helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.SPELL_BULLET_CHARGE), chargeSpellBullet);
+            helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.SPELL_BULLET_MINE), mineSpellBullet);
 
-			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibItemNames.EXOSUIT_SENSOR_LIGHT), exosuitSensorLight);
-			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibItemNames.EXOSUIT_SENSOR_HEAT), exosuitSensorHeat);
-			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibItemNames.EXOSUIT_SENSOR_STRESS), exosuitSensorStress);
-			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibItemNames.EXOSUIT_SENSOR_WATER), exosuitSensorWater);
-			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibItemNames.EXOSUIT_SENSOR_TRIGGER), exosuitSensorTrigger);
+            helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.SPELL_DRIVE), spellDrive);
+            helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.DETONATOR), detonator);
+            helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.EXOSUIT_CONTROLLER), exosuitController);
 
-			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibItemNames.CAD), cad);
+            helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.EXOSUIT_SENSOR_LIGHT), exosuitSensorLight);
+            helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.EXOSUIT_SENSOR_HEAT), exosuitSensorHeat);
+            helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.EXOSUIT_SENSOR_STRESS), exosuitSensorStress);
+            helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.EXOSUIT_SENSOR_WATER), exosuitSensorWater);
+            helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.EXOSUIT_SENSOR_TRIGGER), exosuitSensorTrigger);
 
-			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibItemNames.VECTOR_RULER), vectorRuler);
+            helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD), cad);
 
-			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibItemNames.PSIMETAL_SHOVEL), psimetalShovel);
-			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibItemNames.PSIMETAL_PICKAXE), psimetalPickaxe);
-			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibItemNames.PSIMETAL_AXE), psimetalAxe);
-			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibItemNames.PSIMETAL_SWORD), psimetalSword);
+            helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.VECTOR_RULER), vectorRuler);
 
-			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibItemNames.PSIMETAL_EXOSUIT_HELMET), psimetalExosuitHelmet);
-			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibItemNames.PSIMETAL_EXOSUIT_CHESTPLATE), psimetalExosuitChestplate);
-			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibItemNames.PSIMETAL_EXOSUIT_LEGGINGS), psimetalExosuitLeggings);
-			helper.register(new ResourceLocation(LibMisc.MOD_ID, LibItemNames.PSIMETAL_EXOSUIT_BOOTS), psimetalExosuitBoots);
-		});
-	}
+            helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.PSIMETAL_SHOVEL), psimetalShovel);
+            helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.PSIMETAL_PICKAXE), psimetalPickaxe);
+            helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.PSIMETAL_AXE), psimetalAxe);
+            helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.PSIMETAL_SWORD), psimetalSword);
 
-	public static Item.Properties defaultBuilder() {
-		return new Item.Properties();
-	}
+            helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.PSIMETAL_EXOSUIT_HELMET), psimetalExosuitHelmet);
+            helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.PSIMETAL_EXOSUIT_CHESTPLATE), psimetalExosuitChestplate);
+            helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.PSIMETAL_EXOSUIT_LEGGINGS), psimetalExosuitLeggings);
+            helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.PSIMETAL_EXOSUIT_BOOTS), psimetalExosuitBoots);
+        });
+    }
+
+    public static Item.Properties defaultBuilder() {
+        return new Item.Properties();
+    }
 
 }

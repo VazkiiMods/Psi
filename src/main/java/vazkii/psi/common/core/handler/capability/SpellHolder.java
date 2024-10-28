@@ -10,52 +10,50 @@ package vazkii.psi.common.core.handler.capability;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-
 import vazkii.psi.api.spell.ISpellAcceptor;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 
 import javax.annotation.Nullable;
-
 import java.util.ArrayList;
 
 public class SpellHolder implements ISpellAcceptor {
-	private Spell spell;
+    private Spell spell;
 
-	@Override
-	public void setSpell(Player player, Spell spell) {
-		this.spell = spell;
-	}
+    @Override
+    public void setSpell(Player player, Spell spell) {
+        this.spell = spell;
+    }
 
-	@Override
-	public boolean castableFromSocket() {
-		return false;
-	}
+    @Override
+    public boolean castableFromSocket() {
+        return false;
+    }
 
-	@Nullable
-	@Override
-	public Spell getSpell() {
-		return spell;
-	}
+    @Nullable
+    @Override
+    public Spell getSpell() {
+        return spell;
+    }
 
-	@Override
-	public boolean containsSpell() {
-		return spell != null;
-	}
+    @Override
+    public boolean containsSpell() {
+        return spell != null;
+    }
 
-	@Override
-	public ArrayList<Entity> castSpell(SpellContext context) {
-		// NO-OP
-		return null;
-	}
+    @Override
+    public ArrayList<Entity> castSpell(SpellContext context) {
+        // NO-OP
+        return null;
+    }
 
-	@Override
-	public double getCostModifier() {
-		return 1;
-	}
+    @Override
+    public double getCostModifier() {
+        return 1;
+    }
 
-	@Override
-	public boolean isCADOnlyContainer() {
-		return false;
-	}
+    @Override
+    public boolean isCADOnlyContainer() {
+        return false;
+    }
 }

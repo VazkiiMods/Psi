@@ -1,0 +1,15 @@
+{
+  "type": "psi:trick_crafting",
+  "cad": {
+    "count": 1,
+    "id": "psi:cad_assembly_iron"
+  },
+  "input": {
+    "item": "psi:cad_assembly_gold"
+  },
+  "output": {
+    "count": 1,
+    "id": "psi:cad_assembly_psimetal"
+  },
+  "piece": "psi:trick_infusion"
+}

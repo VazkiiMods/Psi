@@ -13,16 +13,16 @@ package vazkii.psi.api.spell;
  */
 public enum EnumPieceType {
 
-	SELECTOR,
-	OPERATOR,
-	CONSTANT,
-	CONNECTOR,
-	MODIFIER, // eg: Error Suppressor
-	TRICK,
-	ERROR_HANDLER;
+    SELECTOR,
+    OPERATOR,
+    CONSTANT,
+    CONNECTOR,
+    MODIFIER, // eg: Error Suppressor
+    TRICK,
+    ERROR_HANDLER;
 
-	public boolean isTrick() {
-		return this == TRICK || this == MODIFIER;
-	}
+    public boolean isTrick() {
+        return this == TRICK || this == MODIFIER;
+    }
 
 }

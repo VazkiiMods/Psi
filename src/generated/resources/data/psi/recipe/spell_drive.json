@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "I": {
+      "tag": "c:ingots/psimetal"
+    },
+    "R": {
+      "tag": "c:dusts/redstone"
+    }
+  },
+  "pattern": [
+    "I",
+    "R",
+    "I"
+  ],
+  "result": {
+    "count": 1,
+    "id": "psi:spell_drive"
+  }
+}

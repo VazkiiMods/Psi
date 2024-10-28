@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "I": {
+      "tag": "c:ingots/psimetal"
+    },
+    "S": {
+      "tag": "psi:ebony_substance"
+    }
+  },
+  "pattern": [
+    "SSS",
+    "SIS",
+    "SSS"
+  ],
+  "result": {
+    "count": 1,
+    "id": "psi:ebony_psimetal"
+  }
+}

@@ -18,26 +18,26 @@ import vazkii.psi.api.spell.piece.PieceOperator;
 
 public class PieceOperatorVectorSignum extends PieceOperator {
 
-	SpellParam<Vector3> vector;
+    SpellParam<Vector3> vector;
 
-	public PieceOperatorVectorSignum(Spell spell) {
-		super(spell);
-	}
+    public PieceOperatorVectorSignum(Spell spell) {
+        super(spell);
+    }
 
-	@Override
-	public void initParams() {
-		addParam(vector = new ParamVector(SpellParam.GENERIC_NAME_TARGET, SpellParam.BLUE, false, false));
-	}
+    @Override
+    public void initParams() {
+        addParam(vector = new ParamVector(SpellParam.GENERIC_NAME_TARGET, SpellParam.BLUE, false, false));
+    }
 
-	@Override
-	public Object execute(SpellContext context) throws SpellRuntimeException {
-		Vector3 vec = this.getParamValue(context, vector);
+    @Override
+    public Object execute(SpellContext context) throws SpellRuntimeException {
+        Vector3 vec = this.getParamValue(context, vector);
 
-		return new Vector3(Math.signum(vec.x), Math.signum(vec.y), Math.signum(vec.z));
-	}
+        return new Vector3(Math.signum(vec.x), Math.signum(vec.y), Math.signum(vec.z));
+    }
 
-	@Override
-	public Class<?> getEvaluationType() {
-		return Vector3.class;
-	}
+    @Override
+    public Class<?> getEvaluationType() {
+        return Vector3.class;
+    }
 }

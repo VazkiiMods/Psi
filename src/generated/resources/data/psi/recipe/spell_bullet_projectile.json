@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "A": {
+      "tag": "minecraft:arrows"
+    },
+    "D": {
+      "tag": "psi:psidust"
+    },
+    "I": {
+      "tag": "c:ingots/iron"
+    }
+  },
+  "pattern": [
+    "AID"
+  ],
+  "result": {
+    "count": 1,
+    "id": "psi:spell_bullet_projectile"
+  }
+}

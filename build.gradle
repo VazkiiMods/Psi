@@ -1,94 +1,25 @@
-buildscript {
-    repositories {
-        maven { url = 'https://maven.minecraftforge.net' }
-        maven { url = 'https://repo.spongepowered.org/maven' }
-        mavenCentral()
-        maven { url = 'https://maven.parchmentmc.org' }
-    }
-    dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1+', changing: true
-        classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
-        classpath 'org.parchmentmc:librarian:1.+'
-    }
-}
-
 plugins {
-    id 'com.diffplug.spotless' version '6.22.0'
+    id 'java-library'
+    id 'eclipse'
+    id 'idea'
+    id 'maven-publish'
+    id 'net.neoforged.gradle.userdev' version '7.0.145'
 }
 
-apply plugin: 'net.minecraftforge.gradle'
-apply plugin: 'org.parchmentmc.librarian.forgegradle'
-apply plugin: 'org.spongepowered.mixin'
-apply plugin: 'eclipse'
-apply plugin: 'maven-publish'
-apply plugin: 'pmd'
-
-ext.configFile = file('build.properties')
-ext.config = parseConfig(configFile)
-
-version = "${config.version}-${config.build_number}"
-group = "vazkii.${config.mod_id}" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = config.mod_name
-
-compileJava.options.compilerArgs << "-Xlint:all,-classfile,-processing,-deprecation"
-
-java.toolchain.languageVersion = JavaLanguageVersion.of(17)
-println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
-
-if (System.getenv('BUILD_NUMBER') != null) {
-    version += "." + System.getenv('BUILD_NUMBER')
+tasks.named('wrapper', Wrapper).configure {
+    // Define wrapper values here so as to not have to always do so when updating gradlew.properties.
+    // Switching this to Wrapper.DistributionType.ALL will download the full gradle sources that comes with
+    // documentation attached on cursor hover of gradle classes and methods. However, this comes with increased
+    // file size for Gradle. If you do switch this to ALL, run the Gradle wrapper task twice afterwards.
+    // (Verify by checking gradle/wrapper/gradle-wrapper.properties to see if distributionUrl now points to `-all`)
+    distributionType = Wrapper.DistributionType.BIN
 }
 
-minecraft {
-    mappings channel: "${config.mapping_channel}", version: "${config.mapping_version}"
-    // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
-
-    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
-
-    // Default run configurations.
-    // These can be tweaked, removed, or duplicated as needed.
-    runs {
-        client {
-            workingDirectory project.file('run')
-            mods {
-                psi {
-                    source sourceSets.main
-                }
-            }
-        }
-
-        server {
-            workingDirectory project.file('run')
-            mods {
-                psi {
-                    source sourceSets.main
-                }
-            }
-        }
-
-        data {
-            properties 'forge.logging.console.level': 'debug'
-            properties 'fml.earlyprogresswindow': 'false'
-            workingDirectory project.file('run')
-            mods {
-                psi {
-                    source sourceSets.main
-                }
-            }
-            args '--mod', 'psi', '--all',
-                    '--existing', file('src/main/resources/'),
-                    '--output', file('src/generated/resources/')
-        }
-    }
-}
-
-mixin {
-    add sourceSets.main, 'psi.refmap.json'
-    config 'psi.mixins.json'
-}
+version = mod_version
+group = mod_group_id
 
 repositories {
-    mavenCentral()
+    mavenLocal()
     maven {
         // for Patchouli and JEI
         name "blamejared"
@@ -100,185 +31,154 @@ repositories {
     }
 }
 
+base {
+    archivesName = mod_id
+}
+
+// Mojang ships Java 21 to end users starting in 1.20.5, so mods should target Java 21.
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+
+minecraft.accessTransformers.file file('src/main/resources/META-INF/accesstransformer.cfg')
+
+// Default run configurations.
+// These can be tweaked, removed, or duplicated as needed.
+runs {
+    // applies to all the run configs below
+    configureEach {
+        // Recommended logging data for a userdev environment
+        // The markers can be added/remove as needed separated by commas.
+        // "SCAN": For mods scan.
+        // "REGISTRIES": For firing of registry events.
+        // "REGISTRYDUMP": For getting the contents of all registries.
+        systemProperty 'forge.logging.markers', 'REGISTRIES'
+
+        // Recommended logging level for the console
+        // You can set various levels here.
+        // Please read: https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels
+        systemProperty 'forge.logging.console.level', 'debug'
+
+        modSource project.sourceSets.main
+    }
+
+    client {
+        // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
+        systemProperty 'forge.enabledGameTestNamespaces', project.mod_id
+    }
+
+    server {
+        systemProperty 'forge.enabledGameTestNamespaces', project.mod_id
+        programArgument '--nogui'
+    }
+
+    // This run config launches GameTestServer and runs all registered gametests, then exits.
+    // By default, the server will crash when no gametests are provided.
+    // The gametest system is also enabled by default for other run configs under the /test command.
+    gameTestServer {
+        systemProperty 'forge.enabledGameTestNamespaces', project.mod_id
+    }
+
+    data {
+        // example of overriding the workingDirectory set in configureEach above, uncomment if you want to use it
+        // workingDirectory project.file('run-data')
+
+        // Specify the modid for data generation, where to output the resulting resource, and where to look for existing resources.
+        programArguments.addAll '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
+    }
+}
+
+// Include resources generated by data generators.
+sourceSets.main.resources { srcDir 'src/generated/resources' }
+
+// Sets up a dependency configuration called 'localRuntime'.
+// This configuration should be used instead of 'runtimeOnly' to declare
+// a dependency that will be present for runtime testing but that is
+// "optional", meaning it will not be pulled by dependents of this mod.
+configurations {
+    runtimeClasspath.extendsFrom localRuntime
+}
 
 dependencies {
-    minecraft "net.minecraftforge:forge:${config.mc_version}-${config.forge_version}"
+    // Specify the version of Minecraft to use.
+    // Depending on the plugin applied there are several options. We will assume you applied the userdev plugin as shown above.
+    // The group for userdev is net.neoforged, the module name is neoforge, and the version is the same as the neoforge version.
+    // You can however also use the vanilla plugin (net.neoforged.gradle.vanilla) to use a version of Minecraft without the neoforge loader.
+    // And its provides the option to then use net.minecraft as the group, and one of; client, server or joined as the module name, plus the game version as version.
+    // For all intends and purposes: You can treat this dependency as if it is a normal library you would use.
+    implementation "net.neoforged:neoforge:${neo_version}"
 
-    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+    // Example optional mod dependency with JEI
+    // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime
+    compileOnly "mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"
+    compileOnly "mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}"
+    // We add the full version to localRuntime, not runtimeOnly, so that we do not publish a dependency on it
+    localRuntime "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
 
-    compileOnly fg.deobf("vazkii.patchouli:Patchouli:${config.patchy_version}:api")
-    runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:${config.patchy_version}")
+    compileOnly "vazkii.patchouli:Patchouli:1.21-87-NEOFORGE:api"
+    runtimeOnly "vazkii.patchouli:Patchouli:1.21-87-NEOFORGE"
 
-    compileOnly fg.deobf("mezz.jei:jei-${config.mc_version}-common-api:${config.jei_version}")
-    compileOnly fg.deobf("mezz.jei:jei-${config.mc_version}-forge-api:${config.jei_version}")
-    runtimeOnly fg.deobf("mezz.jei:jei-${config.mc_version}-forge:${config.jei_version}")
+    // Example mod dependency using a mod jar from ./libs with a flat dir repository
+    // This maps to ./libs/coolmod-${mc_version}-${coolmod_version}.jar
+    // The group id is ignored when searching -- in this case, it is "blank"
+    // implementation "blank:coolmod-${mc_version}:${coolmod_version}"
+
+    // Example mod dependency using a file as dependency
+    // implementation files("libs/coolmod-${mc_version}-${coolmod_version}.jar")
+
+    // Example project dependency using a sister or child project:
+    // implementation project(":myproject")
+
+    // For more info:
+    // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
+    // http://www.gradle.org/docs/current/userguide/dependency_management.html
 }
 
-if (System.getProperty("idea.sync.active") == "true") {
-    afterEvaluate {
-        tasks.withType(JavaCompile).all {
-            it.options.annotationProcessorPath = files()
-        }
+// This block of code expands all declared replace properties in the specified resource targets.
+// A missing property will result in an error. Properties are expanded using ${} Groovy notation.
+// When "copyIdeResources" is enabled, this will also run before the game launches in IDE environments.
+// See https://docs.gradle.org/current/dsl/org.gradle.language.jvm.tasks.ProcessResources.html
+tasks.withType(ProcessResources).configureEach {
+    var replaceProperties = [
+            minecraft_version      : minecraft_version,
+            minecraft_version_range: minecraft_version_range,
+            neo_version            : neo_version,
+            neo_version_range      : neo_version_range,
+            loader_version_range   : loader_version_range,
+            mod_id                 : mod_id,
+            mod_name               : mod_name,
+            mod_license            : mod_license,
+            mod_version            : mod_version,
+            mod_authors            : mod_authors,
+            mod_description        : mod_description
+    ]
+    inputs.properties replaceProperties
+
+    filesMatching(['META-INF/neoforge.mods.toml']) {
+        expand replaceProperties
     }
 }
 
-spotless {
-    enforceCheck = false // workaround around jenkins having wrong line endings in some files
-    java {
-        target project.fileTree(dir: 'src/main/java/vazkii/psi', include: '**/*.java')
-        //indentWithTabs()
-        eclipse().configFile 'spotless/eclipseformat.xml'
-        removeUnusedImports()
-        importOrderFile 'spotless/eclipse.importorder'
-        replaceRegex 'Too much space after if', '(if|for|while|switch) +\\(', '$1('
-    }
-}
-
-pmd {
-    toolVersion '6.42.0'
-    incrementalAnalysis.set(true)
-    ruleSets.clear()
-    ruleSetFiles = files("spotless/pmd-ruleset.xml")
-}
-
-task checkSyntax (group: "verification") {
-    // Replace the following line when Spotless is setup
-    //dependsOn spotlessJavaCheck, pmdMain
-    dependsOn pmdMain
-}
-
-sourceSets.main.resources {
-    srcDir 'src/generated/resources'
-}
-
-processResources {
-    // copy everything excluding psd files
-    from(sourceSets.main.resources.srcDirs) {
-        exclude '**/psd/**'
-        duplicatesStrategy 'include'
-    }
-}
-
-task incrementBuildNumber {
-    doFirst {
-        config.build_number = (config.build_number.toString().toInteger()) + 1
-        configFile.withWriter {
-            config.toProperties().store(it, "")
-        }
-    }
-
-    //file('web/versions.ini').append("\n${version}=${minecraft.version}")
-    //file("${config.dir_repo}/version/${minecraft.version}.txt").write("${version}")
-}
-
-import java.util.regex.Pattern
-task sortArtifacts(type: Copy) {
-    from jar.destinationDir
-    into config.dir_output
-    //Put each jar with a classifier in a subfolder with the classifier as its name
-    eachFile {
-        //This matcher is used to get the classifier of the jar
-        def matcher = Pattern.compile(Pattern.quote("$config.mod_name-$version") + "-(?<classifier>\\w+).jar").matcher(it.name)
-        //Only change the destination for full matches, i.e jars with classifiers
-        if (matcher.matches())
-        {
-            def classifier = matcher.group('classifier')
-            /* Set the relative path to change the destination, since
-             * Gradle doesn't seem to like the absolute path being set*/
-            it.relativePath = it.relativePath.parent.append(false, classifier, it.name)
-        }
-    }
-}
-
-def parseConfig(File config) {
-    config.withReader {
-        def prop = new Properties()
-        prop.load(it)
-        return (new ConfigSlurper().parse(prop))
-    }
-}
-
-jar {
-    //rename the default output, for some better... sanity with scipts
-    archiveName = "${baseName}-${version}.${extension}"
-
-     manifest {
-        attributes([
-            "Specification-Title": "${config.mod_id}",
-            "Specification-Vendor": "vazkii",
-            "Specification-Version": "1", // We are version 1 of ourselves
-            "Implementation-Title": "${config.mod_id}",
-            "Implementation-Version": "${version}",
-            "Implementation-Vendor" :"vazkii",
-            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-            "MixinConfigs": "psi.mixins.json"
-        ])
-    }
-
-    exclude "**/*.bat"
-    exclude "**/*.psd"
-    exclude "**/*.exe"
-    exclude "**/unused"
-    exclude "**/genscripts"
-}
-
-task sourcesJar(type: Jar) {
-    classifier = "sources"
-    from sourceSets.main.allJava
-}
-
-task deobfJar(type: Jar) {
-    classifier = "deobf"
-    from sourceSets.main.output
-}
-
-artifacts {
-    archives sourcesJar
-    archives deobfJar
-}
-
-publish.dependsOn(project.tasks.getByName("assemble"))
-publish.mustRunAfter(project.tasks.getByName("build"))
-
+// Example configuration to allow publishing using the maven-publish plugin
 publishing {
-
     publications {
-
-        mavenJava(MavenPublication) {
-
-            groupId project.group
-            artifactId project.archivesBaseName
-            version project.version
+        register('mavenJava', MavenPublication) {
             from components.java
-
-            // Allows the maven pom file to be modified.
-            pom.withXml {
-
-                // Go through all the dependencies.
-                asNode().dependencies.dependency.each { dep ->
-
-                    println 'Surpressing artifact ' + dep.artifactId.last().value().last() + ' from maven dependencies.'
-                    assert dep.parent().remove(dep)
-                }
-            }
-
-            artifact sourcesJar {
-                classifier 'sources'
-            }
         }
     }
-
     repositories {
         maven {
-            url "file://" + System.getenv("local_maven")
+            url "file://${project.projectDir}/repo"
         }
     }
 }
 
-// Disables Gradle's custom module metadata from being published to maven. The
-// metadata includes mapped dependencies which are not reasonably consumable by
-// other mod developers.
-tasks.withType(GenerateModuleMetadata) {
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
+}
 
-    enabled = false
+// IDEA no longer automatically downloads sources/javadoc jars for dependencies, so we need to explicitly enable the behavior.
+idea {
+    module {
+        downloadSources = true
+        downloadJavadoc = true
+    }
 }

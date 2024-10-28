@@ -1,6 +1,6 @@
 {
-	"parent": "minecraft:item/generated",
-	"textures": { 
-		"layer0": "psi:item/spell_bullet_grenade_active"
-	}
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "psi:item/spell_bullet_grenade_active"
+  }
 }

@@ -8,24 +8,22 @@
  */
 package vazkii.psi.common.item.component;
 
-import net.minecraft.world.item.Item.Properties;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import vazkii.psi.client.core.handler.ClientTickHandler;
 
 import java.awt.*;
 
 public class ItemCADColorizerRainbow extends ItemCADColorizer {
-	public ItemCADColorizerRainbow(Properties properties) {
-		super(properties);
-	}
+    public ItemCADColorizerRainbow(Properties properties) {
+        super(properties);
+    }
 
-	@Override
-	@OnlyIn(Dist.CLIENT)
-	public int getColor(ItemStack stack) {
-		float time = ClientTickHandler.total;
-		return Color.HSBtoRGB(time * 0.005F, 1F, 1F);
-	}
+    @Override
+    @OnlyIn(Dist.CLIENT)
+    public int getColor(ItemStack stack) {
+        float time = ClientTickHandler.total;
+        return Color.HSBtoRGB(time * 0.005F, 1F, 1F);
+    }
 }

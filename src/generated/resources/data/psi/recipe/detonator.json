@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "B": {
+      "tag": "minecraft:buttons"
+    },
+    "I": {
+      "tag": "c:ingots/iron"
+    },
+    "P": {
+      "tag": "psi:psidust"
+    }
+  },
+  "pattern": [
+    " B ",
+    "IPI"
+  ],
+  "result": {
+    "count": 1,
+    "id": "psi:detonator"
+  }
+}

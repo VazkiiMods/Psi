@@ -10,9 +10,8 @@ package vazkii.psi.api.spell;
 
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.eventbus.api.Cancelable;
-import net.minecraftforge.eventbus.api.Event;
-
+import net.neoforged.bus.api.Event;
+import net.neoforged.bus.api.ICancellableEvent;
 import vazkii.psi.api.internal.IPlayerData;
 
 import javax.annotation.Nullable;
@@ -20,111 +19,107 @@ import javax.annotation.Nullable;
 /**
  * Posted before a spell executes.
  * <p>
- * This event is {@link Cancelable}.
+ * This event is {@link ICancellableEvent}.
  */
-@Cancelable
-public class PreSpellCastEvent extends Event {
+public class PreSpellCastEvent extends Event implements ICancellableEvent {
 
-	private int cost;
-	private float sound;
-	private int particles;
-	private int cooldown;
+    private final Player player;
+    private final IPlayerData playerData;
+    private final ItemStack cad;
+    private final ItemStack bullet;
+    private int cost;
+    private float sound;
+    private int particles;
+    private int cooldown;
+    private Spell spell;
+    private SpellContext context;
+    @Nullable
+    private String cancellationMessage = "psimisc.canceled_spell";
 
-	private Spell spell;
-	private SpellContext context;
+    public PreSpellCastEvent(int cost, float sound, int particles, int cooldown, Spell spell, SpellContext context, Player player, IPlayerData playerData, ItemStack cad, ItemStack bullet) {
+        this.cost = cost;
+        this.sound = sound;
+        this.particles = particles;
+        this.cooldown = cooldown;
+        this.spell = spell;
+        this.context = context;
+        this.player = player;
+        this.playerData = playerData;
+        this.cad = cad;
+        this.bullet = bullet;
+    }
 
-	private final Player player;
-	private final IPlayerData playerData;
-	private final ItemStack cad;
-	private final ItemStack bullet;
+    @Nullable
+    public String getCancellationMessage() {
+        return cancellationMessage;
+    }
 
-	@Nullable
-	private String cancellationMessage = "psimisc.canceled_spell";
+    public void setCancellationMessage(@Nullable String cancellationMessage) {
+        this.cancellationMessage = cancellationMessage;
+    }
 
-	public PreSpellCastEvent(int cost, float sound, int particles, int cooldown, Spell spell, SpellContext context, Player player, IPlayerData playerData, ItemStack cad, ItemStack bullet) {
-		this.cost = cost;
-		this.sound = sound;
-		this.particles = particles;
-		this.cooldown = cooldown;
-		this.spell = spell;
-		this.context = context;
-		this.player = player;
-		this.playerData = playerData;
-		this.cad = cad;
-		this.bullet = bullet;
-	}
+    public int getCost() {
+        return cost;
+    }
 
-	@Nullable
-	public String getCancellationMessage() {
-		return cancellationMessage;
-	}
+    public void setCost(int cost) {
+        this.cost = cost;
+    }
 
-	public void setCancellationMessage(@Nullable String cancellationMessage) {
-		this.cancellationMessage = cancellationMessage;
-	}
+    public float getSound() {
+        return sound;
+    }
 
-	public int getCost() {
-		return cost;
-	}
+    public void setSound(float sound) {
+        this.sound = sound;
+    }
 
-	public void setCost(int cost) {
-		this.cost = cost;
-	}
+    public int getParticles() {
+        return particles;
+    }
 
-	public float getSound() {
-		return sound;
-	}
+    public void setParticles(int particles) {
+        this.particles = particles;
+    }
 
-	public void setSound(float sound) {
-		this.sound = sound;
-	}
+    public int getCooldown() {
+        return cooldown;
+    }
 
-	public int getParticles() {
-		return particles;
-	}
+    public void setCooldown(int cooldown) {
+        this.cooldown = cooldown;
+    }
 
-	public void setParticles(int particles) {
-		this.particles = particles;
-	}
+    public Spell getSpell() {
+        return spell;
+    }
 
-	public int getCooldown() {
-		return cooldown;
-	}
+    public void setSpell(Spell spell) {
+        this.spell = spell;
+        this.context.setSpell(spell);
+    }
 
-	public void setCooldown(int cooldown) {
-		this.cooldown = cooldown;
-	}
+    public SpellContext getContext() {
+        return context;
+    }
 
-	public Spell getSpell() {
-		return spell;
-	}
+    public void setContext(SpellContext context) {
+        this.context = context;
+    }
 
-	public void setSpell(Spell spell) {
-		this.spell = spell;
-		this.context.setSpell(spell);
-	}
+    public Player getPlayer() {
+        return player;
+    }
 
-	public SpellContext getContext() {
-		return context;
-	}
+    public IPlayerData getPlayerData() {
+        return playerData;
+    }
 
-	public void setContext(SpellContext context) {
-		this.context = context;
-	}
+    public ItemStack getCad() {
+        return cad;
+    }
 
-	public Player getPlayer() {
-		return player;
-	}
-
-	public IPlayerData getPlayerData() {
-		return playerData;
-	}
-
-	public ItemStack getCad() {
-		return cad;
-	}
-
-	public ItemStack getBullet() {
-		return bullet;
-	}
+    public ItemStack getBullet() {
+        return bullet;
+    }
 }

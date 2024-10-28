@@ -11,44 +11,43 @@ package vazkii.psi.common.block.base;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
-
 import org.jetbrains.annotations.NotNull;
 
 public class DirectionBlockItemUseContext extends BlockPlaceContext {
 
-	private Direction horizontalFacing;
+    private final Direction horizontalFacing;
 
-	public DirectionBlockItemUseContext(UseOnContext itemUseContext, Direction horizontalFacing) {
-		super(itemUseContext);
-		this.horizontalFacing = horizontalFacing;
-	}
+    public DirectionBlockItemUseContext(UseOnContext itemUseContext, Direction horizontalFacing) {
+        super(itemUseContext);
+        this.horizontalFacing = horizontalFacing;
+    }
 
-	@Override
-	public @NotNull Direction getHorizontalDirection() {
-		return horizontalFacing.getAxis() == Direction.Axis.Y ? Direction.NORTH : horizontalFacing;
-	}
+    @Override
+    public @NotNull Direction getHorizontalDirection() {
+        return horizontalFacing.getAxis() == Direction.Axis.Y ? Direction.NORTH : horizontalFacing;
+    }
 
-	@Override
-	public @NotNull Direction getNearestLookingDirection() {
-		return getHitResult().getDirection();
-	}
+    @Override
+    public @NotNull Direction getNearestLookingDirection() {
+        return getHitResult().getDirection();
+    }
 
-	@Override
-	public Direction @NotNull [] getNearestLookingDirections() {
-		switch(getHitResult().getDirection()) {
-		case DOWN:
-		default:
-			return new Direction[] { Direction.DOWN, Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST, Direction.UP };
-		case UP:
-			return new Direction[] { Direction.DOWN, Direction.UP, Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST };
-		case NORTH:
-			return new Direction[] { Direction.DOWN, Direction.NORTH, Direction.EAST, Direction.WEST, Direction.UP, Direction.SOUTH };
-		case SOUTH:
-			return new Direction[] { Direction.DOWN, Direction.SOUTH, Direction.EAST, Direction.WEST, Direction.UP, Direction.NORTH };
-		case WEST:
-			return new Direction[] { Direction.DOWN, Direction.WEST, Direction.SOUTH, Direction.UP, Direction.NORTH, Direction.EAST };
-		case EAST:
-			return new Direction[] { Direction.DOWN, Direction.EAST, Direction.SOUTH, Direction.UP, Direction.NORTH, Direction.WEST };
-		}
-	}
+    @Override
+    public Direction @NotNull [] getNearestLookingDirections() {
+        switch (getHitResult().getDirection()) {
+            case DOWN:
+            default:
+                return new Direction[]{Direction.DOWN, Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST, Direction.UP};
+            case UP:
+                return new Direction[]{Direction.DOWN, Direction.UP, Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST};
+            case NORTH:
+                return new Direction[]{Direction.DOWN, Direction.NORTH, Direction.EAST, Direction.WEST, Direction.UP, Direction.SOUTH};
+            case SOUTH:
+                return new Direction[]{Direction.DOWN, Direction.SOUTH, Direction.EAST, Direction.WEST, Direction.UP, Direction.NORTH};
+            case WEST:
+                return new Direction[]{Direction.DOWN, Direction.WEST, Direction.SOUTH, Direction.UP, Direction.NORTH, Direction.EAST};
+            case EAST:
+                return new Direction[]{Direction.DOWN, Direction.EAST, Direction.SOUTH, Direction.UP, Direction.NORTH, Direction.WEST};
+        }
+    }
 }

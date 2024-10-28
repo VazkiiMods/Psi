@@ -1,6 +1,6 @@
 {
-	"parent": "minecraft:item/generated",
-	"textures": { 
-		"layer0": "psi:item/cad_battery_extended"
-	}
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "psi:item/cad_battery_extended"
+  }
 }

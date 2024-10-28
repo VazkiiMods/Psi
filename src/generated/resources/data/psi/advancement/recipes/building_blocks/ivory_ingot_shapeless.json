@@ -1,0 +1,33 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_ivory_psimetal": {
+      "conditions": {
+        "items": [
+          {
+            "items": "#c:ingots/ivory_psimetal"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "psi:ivory_ingot_shapeless"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_ivory_psimetal"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "psi:ivory_ingot_shapeless"
+    ]
+  },
+  "sends_telemetry_event": false
+}

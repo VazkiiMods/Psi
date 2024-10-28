@@ -1,0 +1,31 @@
+modLoader = "javafml"
+loaderVersion = "${loader_version_range}"
+issueTrackerURL = "https://github.com/Vazkii/Psi"
+license = "https://psi.vazkii.net/license.php"
+
+[[mods]]
+modId = "psi"
+displayName = "Psi"
+version = "2.0.0"
+authors = "Vazkii, Wiiv, WireSegal, Kamefrede, Williewillus, Hubry, Dudblockman"
+description = '''
+Psionic Spellcasting Instruments
+'''
+
+[[mixins]]
+config = "psi.mixins.json"
+
+[[dependencies.psi]]
+modId = "patchouli"
+mandatory = true
+versionRange = "[1.21-87,)"
+side = "BOTH"
+
+
+[[dependencies.psi]]
+modId = "neoforge"
+mandatory = true
+versionRange = "[21.0.31-beta,)"
+ordering = "AFTER"
+side = "BOTH"
+

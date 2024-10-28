@@ -1,0 +1,13 @@
+{
+  "type": "psi:bullet_upgrade",
+  "category": "building",
+  "ingredients": [
+    {
+      "item": "psi:psigem_block"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "id": "psi:psigem"
+  }
+}

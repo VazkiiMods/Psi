@@ -17,7 +17,9 @@
       "conditions": {
         "items": [
           {
-            "items": ["psi:cad_assembly_gold"]
+            "items": [
+              "psi:cad_assembly_gold"
+            ]
           }
         ]
       }

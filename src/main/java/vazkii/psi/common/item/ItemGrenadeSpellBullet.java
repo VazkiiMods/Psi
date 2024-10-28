@@ -9,9 +9,7 @@
 package vazkii.psi.common.item;
 
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.item.Item.Properties;
 import net.minecraft.world.item.ItemStack;
-
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.EnumCADComponent;
 import vazkii.psi.api.cad.ICAD;
@@ -23,37 +21,37 @@ import java.util.ArrayList;
 
 public class ItemGrenadeSpellBullet extends ItemSpellBullet {
 
-	public ItemGrenadeSpellBullet(Properties properties) {
-		super(properties);
-	}
+    public ItemGrenadeSpellBullet(Properties properties) {
+        super(properties);
+    }
 
-	@Override
-	public ArrayList<Entity> castSpell(ItemStack stack, SpellContext context) {
-		ItemStack cad = PsiAPI.getPlayerCAD(context.caster);
-		ItemStack colorizer = ((ICAD) cad.getItem()).getComponentInSlot(cad, EnumCADComponent.DYE);
+    @Override
+    public ArrayList<Entity> castSpell(ItemStack stack, SpellContext context) {
+        ItemStack cad = PsiAPI.getPlayerCAD(context.caster);
+        ItemStack colorizer = ((ICAD) cad.getItem()).getComponentInSlot(cad, EnumCADComponent.DYE);
 
-		EntitySpellProjectile projectile = new EntitySpellGrenade(context.caster.getCommandSenderWorld(), context.caster);
-		projectile.setInfo(context.caster, colorizer, stack);
-		projectile.context = context;
-		projectile.getCommandSenderWorld().addFreshEntity(projectile);
-		ArrayList<Entity> spellEntities = new ArrayList<>();
-		spellEntities.add(projectile);
-		return spellEntities;
-	}
+        EntitySpellProjectile projectile = new EntitySpellGrenade(context.caster.getCommandSenderWorld(), context.caster);
+        projectile.setInfo(context.caster, colorizer, stack);
+        projectile.context = context;
+        projectile.getCommandSenderWorld().addFreshEntity(projectile);
+        ArrayList<Entity> spellEntities = new ArrayList<>();
+        spellEntities.add(projectile);
+        return spellEntities;
+    }
 
-	@Override
-	public boolean isCADOnlyContainer(ItemStack stack) {
-		return false;
-	}
+    @Override
+    public boolean isCADOnlyContainer(ItemStack stack) {
+        return false;
+    }
 
-	@Override
-	public double getCostModifier(ItemStack stack) {
-		return 1.05;
-	}
+    @Override
+    public double getCostModifier(ItemStack stack) {
+        return 1.05;
+    }
 
-	@Override
-	public String getBulletType() {
-		return "grenade";
-	}
+    @Override
+    public String getBulletType() {
+        return "grenade";
+    }
 
 }

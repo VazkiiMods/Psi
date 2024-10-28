@@ -10,65 +10,58 @@ package vazkii.psi.common.spell.trick;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
-
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ISocketable;
-import vazkii.psi.api.spell.Spell;
-import vazkii.psi.api.spell.SpellCompilationException;
-import vazkii.psi.api.spell.SpellContext;
-import vazkii.psi.api.spell.SpellMetadata;
-import vazkii.psi.api.spell.SpellParam;
-import vazkii.psi.api.spell.SpellRuntimeException;
+import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.piece.PieceTrick;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.entity.EntitySpellCircle;
 
+import java.util.Objects;
+
 public class PieceTrickBreakLoop extends PieceTrick {
 
-	SpellParam<Number> valueParam;
+    SpellParam<Number> valueParam;
 
-	public PieceTrickBreakLoop(Spell spell) {
-		super(spell);
-	}
+    public PieceTrickBreakLoop(Spell spell) {
+        super(spell);
+    }
 
-	@Override
-	public void initParams() {
-		addParam(valueParam = new ParamNumber(SpellParam.GENERIC_NAME_NUMBER, SpellParam.BLUE, false, false));
-	}
+    @Override
+    public void initParams() {
+        addParam(valueParam = new ParamNumber(SpellParam.GENERIC_NAME_NUMBER, SpellParam.BLUE, false, false));
+    }
 
-	@Override
-	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
-		// NO-OP
-	}
+    @Override
+    public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
+        // NO-OP
+    }
 
-	@Override
-	public Object execute(SpellContext context) throws SpellRuntimeException {
-		double value = this.getParamValue(context, valueParam).doubleValue();
+    @Override
+    public Object execute(SpellContext context) throws SpellRuntimeException {
+        double value = this.getParamValue(context, valueParam).doubleValue();
 
-		if(Math.abs(value) < 1.0) {
-			if(context.focalPoint != context.caster) {
-				if(context.focalPoint instanceof EntitySpellCircle) {
-					EntitySpellCircle circle = (EntitySpellCircle) context.focalPoint;
-					CompoundTag circleNBT = new CompoundTag();
-					circle.addAdditionalSaveData(circleNBT);
-					circleNBT.putInt("timesCast", 20);
-					circleNBT.putInt("timesAlive", 100);
-					circle.load(circleNBT);
-				} else {
-					context.focalPoint.remove(Entity.RemovalReason.DISCARDED);
-				}
-			} else {
-				if(!context.tool.isEmpty() && context.tool.getCapability(PsiAPI.SOCKETABLE_CAPABILITY).isPresent()) {
-					ISocketable socketableCap = context.tool.getCapability(PsiAPI.SOCKETABLE_CAPABILITY).orElseThrow(NullPointerException::new);
-					socketableCap.setSelectedSlot(socketableCap.getLastSlot() + 1);
-				}
-				if(context.castFrom == PlayerDataHandler.get(context.caster).loopcastHand) {
-					PlayerDataHandler.PlayerData data = PlayerDataHandler.get(context.caster);
-					data.stopLoopcast();
-				}
-			}
-		}
-		return null;
-	}
+        if (Math.abs(value) < 1.0) {
+            if (context.focalPoint != context.caster) {
+                if (context.focalPoint instanceof EntitySpellCircle circle) {
+                    CompoundTag circleNBT = new CompoundTag();
+                    circle.addAdditionalSaveData(circleNBT);
+                    circleNBT.putInt("timesCast", 20);
+                    circleNBT.putInt("timesAlive", 100);
+                    circle.load(circleNBT);
+                } else {
+                    context.focalPoint.remove(Entity.RemovalReason.DISCARDED);
+                }
+            } else {
+                if (!context.tool.isEmpty() && Objects.nonNull(context.tool.getCapability(PsiAPI.SOCKETABLE_CAPABILITY))) {
+                    ISocketable socketableCap = Objects.requireNonNull(context.tool.getCapability(PsiAPI.SOCKETABLE_CAPABILITY));
+                    socketableCap.setSelectedSlot(socketableCap.getLastSlot() + 1);
+                }
+                PlayerDataHandler.PlayerData data = PlayerDataHandler.get(context.caster);
+                data.stopLoopcast();
+            }
+        }
+        return null;
+    }
 }

@@ -8,20 +8,20 @@
  */
 package vazkii.psi.common.spell.trick.potion;
 
+import net.minecraft.core.Holder;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffects;
-
 import vazkii.psi.api.spell.Spell;
 
 public class PieceTrickSlowness extends PieceTrickPotionBase {
 
-	public PieceTrickSlowness(Spell spell) {
-		super(spell);
-	}
+    public PieceTrickSlowness(Spell spell) {
+        super(spell);
+    }
 
-	@Override
-	public MobEffect getPotion() {
-		return MobEffects.MOVEMENT_SLOWDOWN;
-	}
+    @Override
+    public Holder<MobEffect> getPotion() {
+        return MobEffects.MOVEMENT_SLOWDOWN;
+    }
 
 }

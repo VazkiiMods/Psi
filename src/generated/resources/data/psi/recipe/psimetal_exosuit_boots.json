@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "G": {
+      "tag": "c:gems/psigem"
+    },
+    "P": {
+      "tag": "c:ingots/psimetal"
+    }
+  },
+  "pattern": [
+    "G G",
+    "P P"
+  ],
+  "result": {
+    "count": 1,
+    "id": "psi:psimetal_exosuit_boots"
+  }
+}

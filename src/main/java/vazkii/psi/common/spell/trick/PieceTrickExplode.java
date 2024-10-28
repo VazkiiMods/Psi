@@ -12,73 +12,65 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-
 import vazkii.psi.api.internal.Vector3;
-import vazkii.psi.api.spell.EnumSpellStat;
-import vazkii.psi.api.spell.Spell;
-import vazkii.psi.api.spell.SpellCompilationException;
-import vazkii.psi.api.spell.SpellContext;
-import vazkii.psi.api.spell.SpellMetadata;
-import vazkii.psi.api.spell.SpellParam;
-import vazkii.psi.api.spell.SpellRuntimeException;
-import vazkii.psi.api.spell.StatLabel;
+import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.param.ParamVector;
 import vazkii.psi.api.spell.piece.PieceTrick;
 
 public class PieceTrickExplode extends PieceTrick {
 
-	SpellParam<Vector3> position;
-	SpellParam<Number> power;
+    SpellParam<Vector3> position;
+    SpellParam<Number> power;
 
-	public PieceTrickExplode(Spell spell) {
-		super(spell);
-		setStatLabel(EnumSpellStat.POTENCY, new StatLabel(SpellParam.GENERIC_NAME_POWER, true).max(0.5).mul(70).floor());
-		setStatLabel(EnumSpellStat.COST, new StatLabel(SpellParam.GENERIC_NAME_POWER, true).max(0.5).mul(210).floor());
-	}
+    public PieceTrickExplode(Spell spell) {
+        super(spell);
+        setStatLabel(EnumSpellStat.POTENCY, new StatLabel(SpellParam.GENERIC_NAME_POWER, true).max(0.5).mul(70).floor());
+        setStatLabel(EnumSpellStat.COST, new StatLabel(SpellParam.GENERIC_NAME_POWER, true).max(0.5).mul(210).floor());
+    }
 
-	@Override
-	public void initParams() {
-		addParam(position = new ParamVector(SpellParam.GENERIC_NAME_POSITION, SpellParam.BLUE, false, false));
-		addParam(power = new ParamNumber(SpellParam.GENERIC_NAME_POWER, SpellParam.RED, false, true));
-	}
+    private static boolean isLiquid(BlockState pState) {
+        return pState == Blocks.WATER.defaultBlockState() || pState == Blocks.LAVA.defaultBlockState();
+    }
 
-	@Override
-	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
-		super.addToMetadata(meta);
+    @Override
+    public void initParams() {
+        addParam(position = new ParamVector(SpellParam.GENERIC_NAME_POSITION, SpellParam.BLUE, false, false));
+        addParam(power = new ParamNumber(SpellParam.GENERIC_NAME_POWER, SpellParam.RED, false, true));
+    }
 
-		Double powerVal = this.<Double>getParamEvaluation(power);
-		if(powerVal == null || powerVal <= 0) {
-			throw new SpellCompilationException(SpellCompilationException.NON_POSITIVE_VALUE, x, y);
-		}
+    @Override
+    public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
+        super.addToMetadata(meta);
 
-		powerVal = Math.max(0.5, powerVal);
+        Double powerVal = this.<Double>getParamEvaluation(power);
+        if (powerVal == null || powerVal <= 0) {
+            throw new SpellCompilationException(SpellCompilationException.NON_POSITIVE_VALUE, x, y);
+        }
 
-		meta.addStat(EnumSpellStat.POTENCY, (int) (powerVal * 70));
-		meta.addStat(EnumSpellStat.COST, (int) (powerVal * 210));
-	}
+        powerVal = Math.max(0.5, powerVal);
 
-	@Override
-	public Object execute(SpellContext context) throws SpellRuntimeException {
-		Vector3 positionVal = this.getParamValue(context, position);
-		double powerVal = this.getParamValue(context, power).doubleValue();
+        meta.addStat(EnumSpellStat.POTENCY, (int) (powerVal * 70));
+        meta.addStat(EnumSpellStat.COST, (int) (powerVal * 210));
+    }
 
-		if(positionVal == null) {
-			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
-		}
-		if(!context.isInRadius(positionVal)) {
-			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
-		}
+    @Override
+    public Object execute(SpellContext context) throws SpellRuntimeException {
+        Vector3 positionVal = this.getParamValue(context, position);
+        double powerVal = this.getParamValue(context, power).doubleValue();
 
-		BlockPos pos = positionVal.toBlockPos();
-		BlockState state = context.focalPoint.getCommandSenderWorld().getBlockState(pos);
+        if (positionVal == null) {
+            throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
+        }
+        if (!context.isInRadius(positionVal)) {
+            throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
+        }
 
-		context.focalPoint.getCommandSenderWorld().explode(context.focalPoint, positionVal.x, positionVal.y, positionVal.z, (float) powerVal, isLiquid(state) ? Level.ExplosionInteraction.NONE : Level.ExplosionInteraction.TNT);
-		return null;
-	}
+        BlockPos pos = positionVal.toBlockPos();
+        BlockState state = context.focalPoint.getCommandSenderWorld().getBlockState(pos);
 
-	private static boolean isLiquid(BlockState pState) {
-		return pState == Blocks.WATER.defaultBlockState() || pState == Blocks.LAVA.defaultBlockState();
-	}
+        context.focalPoint.getCommandSenderWorld().explode(context.focalPoint, positionVal.x, positionVal.y, positionVal.z, (float) powerVal, isLiquid(state) ? Level.ExplosionInteraction.NONE : Level.ExplosionInteraction.TNT);
+        return null;
+    }
 
 }

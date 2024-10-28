@@ -9,7 +9,6 @@
 package vazkii.psi.common.spell.operator.entity;
 
 import net.minecraft.world.entity.Entity;
-
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellParam;
@@ -21,34 +20,34 @@ import vazkii.psi.api.spell.wrapper.EntityListWrapper;
 
 public class PieceOperatorListRemove extends PieceOperator {
 
-	SpellParam<Entity> target;
-	SpellParam<EntityListWrapper> list;
+    SpellParam<Entity> target;
+    SpellParam<EntityListWrapper> list;
 
-	public PieceOperatorListRemove(Spell spell) {
-		super(spell);
-	}
+    public PieceOperatorListRemove(Spell spell) {
+        super(spell);
+    }
 
-	@Override
-	public void initParams() {
-		addParam(target = new ParamEntity(SpellParam.GENERIC_NAME_TARGET, SpellParam.BLUE, false, false));
-		addParam(list = new ParamEntityListWrapper("psi.spellparam.list", SpellParam.YELLOW, false, false));
-	}
+    @Override
+    public void initParams() {
+        addParam(target = new ParamEntity(SpellParam.GENERIC_NAME_TARGET, SpellParam.BLUE, false, false));
+        addParam(list = new ParamEntityListWrapper("psi.spellparam.list", SpellParam.YELLOW, false, false));
+    }
 
-	@Override
-	public Object execute(SpellContext context) throws SpellRuntimeException {
-		Entity targetVal = this.getParamValue(context, target);
-		EntityListWrapper listVal = this.getParamValue(context, list);
+    @Override
+    public Object execute(SpellContext context) throws SpellRuntimeException {
+        Entity targetVal = this.getParamValue(context, target);
+        EntityListWrapper listVal = this.getParamValue(context, list);
 
-		if(targetVal == null) {
-			throw new SpellRuntimeException(SpellRuntimeException.NULL_TARGET);
-		}
+        if (targetVal == null) {
+            throw new SpellRuntimeException(SpellRuntimeException.NULL_TARGET);
+        }
 
-		return EntityListWrapper.withRemoved(listVal, targetVal);
-	}
+        return EntityListWrapper.withRemoved(listVal, targetVal);
+    }
 
-	@Override
-	public Class<?> getEvaluationType() {
-		return EntityListWrapper.class;
-	}
+    @Override
+    public Class<?> getEvaluationType() {
+        return EntityListWrapper.class;
+    }
 
 }
