@@ -8,72 +8,59 @@
  */
 package vazkii.psi.common.network.message;
 
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.network.NetworkEvent;
-
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 import vazkii.psi.api.internal.PsiRenderHelper;
 import vazkii.psi.common.Psi;
+import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.network.MessageRegister;
 
-import java.util.function.Supplier;
+public record MessageParticleTrail(Vec3 position, Vec3 direction, double length, int time,
+                                   ItemStack cad) implements CustomPacketPayload {
 
-public class MessageParticleTrail {
-	private static final int STEPS_PER_UNIT = 4;
+    public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, "message_particle_trail");
+    public static final CustomPacketPayload.Type<MessageParticleTrail> TYPE = new Type<>(ID);
+    public static final StreamCodec<RegistryFriendlyByteBuf, MessageParticleTrail> CODEC = StreamCodec.composite(
+            MessageRegister.VEC3, MessageParticleTrail::position,
+            MessageRegister.VEC3, MessageParticleTrail::direction,
+            ByteBufCodecs.DOUBLE, MessageParticleTrail::length,
+            ByteBufCodecs.INT, MessageParticleTrail::time,
+            ItemStack.STREAM_CODEC, MessageParticleTrail::cad,
+            MessageParticleTrail::new);
+    private static final int STEPS_PER_UNIT = 4;
 
-	private final Vec3 position;
-	private final Vec3 direction;
-	private final double length;
-	private final int time;
-	private final ItemStack cad;
+    @Override
+    public Type<? extends CustomPacketPayload> type() {
+        return TYPE;
+    }
 
-	public MessageParticleTrail(Vec3 position, Vec3 direction, double length, int time, ItemStack cad) {
-		this.position = position;
-		this.direction = direction;
-		this.length = length;
-		this.time = time;
-		this.cad = cad;
-	}
+    public void handle(IPayloadContext ctx) {
+        ctx.enqueueWork(() -> {
+            Level world = Psi.proxy.getClientWorld();
 
-	public MessageParticleTrail(FriendlyByteBuf buf) {
-		this.position = MessageRegister.readVec3d(buf);
-		this.direction = MessageRegister.readVec3d(buf);
-		this.length = buf.readDouble();
-		this.time = buf.readVarInt();
-		this.cad = buf.readItem();
-	}
+            int color = Psi.proxy.getColorForCAD(cad);
 
-	public void encode(FriendlyByteBuf buf) {
-		MessageRegister.writeVec3d(buf, position);
-		MessageRegister.writeVec3d(buf, direction);
-		buf.writeDouble(length);
-		buf.writeVarInt(time);
-		buf.writeItem(cad);
-	}
+            float red = PsiRenderHelper.r(color);
+            float green = PsiRenderHelper.g(color);
+            float blue = PsiRenderHelper.b(color);
 
-	public boolean receive(Supplier<NetworkEvent.Context> context) {
-		context.get().enqueueWork(() -> {
-			Level world = Psi.proxy.getClientWorld();
+            Vec3 ray = direction.normalize().scale(1f / STEPS_PER_UNIT);
+            int steps = (int) (length * STEPS_PER_UNIT);
 
-			int color = Psi.proxy.getColorForCAD(cad);
+            for (int i = 0; i < steps; i++) {
+                double x = position.x + ray.x * i;
+                double y = position.y + ray.y * i;
+                double z = position.z + ray.z * i;
 
-			float red = PsiRenderHelper.r(color);
-			float green = PsiRenderHelper.g(color);
-			float blue = PsiRenderHelper.b(color);
-
-			Vec3 ray = direction.normalize().scale(1f / STEPS_PER_UNIT);
-			int steps = (int) (length * STEPS_PER_UNIT);
-
-			for(int i = 0; i < steps; i++) {
-				double x = position.x + ray.x * i;
-				double y = position.y + ray.y * i;
-				double z = position.z + ray.z * i;
-
-				Psi.proxy.sparkleFX(world, x, y, z, red, green, blue, 0, 0, 0, 1f, time);
-			}
-		});
-		return true;
-	}
+                Psi.proxy.sparkleFX(world, x, y, z, red, green, blue, 0, 0, 0, 1f, time);
+            }
+        });
+    }
 }

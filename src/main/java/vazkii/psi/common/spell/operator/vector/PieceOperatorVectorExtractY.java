@@ -18,27 +18,27 @@ import vazkii.psi.api.spell.piece.PieceOperator;
 
 public class PieceOperatorVectorExtractY extends PieceOperator {
 
-	SpellParam<Vector3> vec1;
+    SpellParam<Vector3> vec1;
 
-	public PieceOperatorVectorExtractY(Spell spell) {
-		super(spell);
-	}
+    public PieceOperatorVectorExtractY(Spell spell) {
+        super(spell);
+    }
 
-	@Override
-	public void initParams() {
-		addParam(vec1 = new ParamVector(SpellParam.GENERIC_NAME_TARGET, SpellParam.BLUE, false, false));
-	}
+    @Override
+    public void initParams() {
+        addParam(vec1 = new ParamVector(SpellParam.GENERIC_NAME_TARGET, SpellParam.BLUE, false, false));
+    }
 
-	@Override
-	public Object execute(SpellContext context) throws SpellRuntimeException {
-		Vector3 v1 = this.getParamValue(context, vec1);
+    @Override
+    public Object execute(SpellContext context) throws SpellRuntimeException {
+        Vector3 v1 = this.getParamValue(context, vec1);
 
-		return v1.y;
-	}
+        return v1.y;
+    }
 
-	@Override
-	public Class<?> getEvaluationType() {
-		return Double.class;
-	}
+    @Override
+    public Class<?> getEvaluationType() {
+        return Double.class;
+    }
 
 }

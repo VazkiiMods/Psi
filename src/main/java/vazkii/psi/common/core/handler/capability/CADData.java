@@ -9,235 +9,221 @@
 package vazkii.psi.common.core.handler.capability;
 
 import com.google.common.collect.Lists;
-
-import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.DoubleTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.common.util.LazyOptional;
-
+import net.neoforged.neoforge.capabilities.ICapabilityProvider;
+import net.neoforged.neoforge.capabilities.ItemCapability;
+import net.neoforged.neoforge.items.ComponentItemHandler;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.*;
 import vazkii.psi.api.internal.IPlayerData;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.ISpellAcceptor;
 import vazkii.psi.api.spell.Spell;
+import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.item.component.ItemCADSocket;
-import vazkii.psi.common.item.tool.IPsimetalTool;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
+import java.util.Arrays;
 import java.util.List;
 
-public class CADData implements ICapabilityProvider, ICADData, ISpellAcceptor, ISocketable, IPsiBarDisplay {
+public class CADData implements ICapabilityProvider<ItemCapability<?, Void>, Void, CADData>, ICADData, ISpellAcceptor, ISocketable, IPsiBarDisplay {
 
-	private final ItemStack cad;
-	private int time;
-	private int battery;
-	private List<Vector3> vectors = Lists.newArrayList();
+    private final ItemStack cad;
+    private final ComponentItemHandler cadHandler;
+    private int time;
+    private int battery;
+    private List<Vector3> vectors = Lists.newArrayList();
 
-	private boolean dirty;
+    private boolean dirty;
 
-	private final LazyOptional<?> optional;
+    public CADData(ItemStack cad) {
+        this.cad = cad;
+        this.cadHandler = new ComponentItemHandler(this.cad, ModItems.TAG_BULLETS.get(), getLastSlot() + 1);
+    }
 
-	public CADData(ItemStack cad) {
-		this.cad = cad;
-		optional = LazyOptional.of(() -> this);
-	}
+    @Nullable
+    @Override
+    public CADData getCapability(@Nonnull ItemCapability<?, Void> capability, @Nullable Void facing) {
+        if (capability == PsiAPI.SOCKETABLE_CAPABILITY
+                || capability == PsiAPI.CAD_DATA_CAPABILITY
+                || capability == PsiAPI.PSI_BAR_DISPLAY_CAPABILITY
+                || capability == PsiAPI.SPELL_ACCEPTOR_CAPABILITY) {
+            return this;
+        }
+        return null;
+    }
 
-	@Nonnull
-	@Override
-	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability, @Nullable Direction facing) {
-		if(capability == PsiAPI.SOCKETABLE_CAPABILITY
-				|| capability == PsiAPI.CAD_DATA_CAPABILITY
-				|| capability == PsiAPI.PSI_BAR_DISPLAY_CAPABILITY
-				|| capability == PsiAPI.SPELL_ACCEPTOR_CAPABILITY) {
-			return optional.cast();
-		}
-		return LazyOptional.empty();
-	}
+    @Override
+    public int getTime() {
+        return time;
+    }
 
-	@Override
-	public int getTime() {
-		return time;
-	}
+    @Override
+    public void setTime(int time) {
+        if (this.time != time) {
+            this.time = time;
+        }
+    }
 
-	@Override
-	public void setTime(int time) {
-		if(this.time != time) {
-			this.time = time;
-		}
-	}
+    @Override
+    public int getBattery() {
+        return battery;
+    }
 
-	@Override
-	public int getBattery() {
-		return battery;
-	}
+    @Override
+    public void setBattery(int battery) {
+        this.battery = battery;
+    }
 
-	@Override
-	public void setBattery(int battery) {
-		this.battery = battery;
-	}
+    @Override
+    public Vector3 getSavedVector(int memorySlot) {
+        if (vectors.size() <= memorySlot) {
+            return Vector3.zero.copy();
+        }
 
-	@Override
-	public Vector3 getSavedVector(int memorySlot) {
-		if(vectors.size() <= memorySlot) {
-			return Vector3.zero.copy();
-		}
+        Vector3 vec = vectors.get(memorySlot);
+        return (vec == null ? Vector3.zero : vec).copy();
+    }
 
-		Vector3 vec = vectors.get(memorySlot);
-		return (vec == null ? Vector3.zero : vec).copy();
-	}
+    @Override
+    public void setSavedVector(int memorySlot, Vector3 value) {
+        while (vectors.size() <= memorySlot) {
+            vectors.add(null);
+        }
 
-	@Override
-	public void setSavedVector(int memorySlot, Vector3 value) {
-		while(vectors.size() <= memorySlot) {
-			vectors.add(null);
-		}
+        vectors.set(memorySlot, value);
+    }
 
-		vectors.set(memorySlot, value);
-	}
+    @Override
+    public boolean isDirty() {
+        return dirty;
+    }
 
-	@Override
-	public boolean isDirty() {
-		return dirty;
-	}
+    @Override
+    public void markDirty(boolean isDirty) {
+        dirty = isDirty;
+    }
 
-	@Override
-	public void markDirty(boolean isDirty) {
-		dirty = isDirty;
-	}
+    @Override
+    public void setSpell(Player player, Spell spell) {
+        int slot = getSelectedSlot();
+        ItemStack bullet = getBulletInSocket(slot);
+        if (!bullet.isEmpty() && ISpellAcceptor.isAcceptor(bullet)) {
+            ISpellAcceptor.acceptor(bullet).setSpell(player, spell);
+            setBulletInSocket(slot, bullet);
+            player.getCooldowns().addCooldown(cad.getItem(), 10);
+        }
+    }
 
-	@Override
-	public void setSpell(Player player, Spell spell) {
-		int slot = getSelectedSlot();
-		ItemStack bullet = getBulletInSocket(slot);
-		if(!bullet.isEmpty() && ISpellAcceptor.isAcceptor(bullet)) {
-			ISpellAcceptor.acceptor(bullet).setSpell(player, spell);
-			setBulletInSocket(slot, bullet);
-			player.getCooldowns().addCooldown(cad.getItem(), 10);
-		}
-	}
+    @Override
+    public boolean requiresSneakForSpellSet() {
+        return true;
+    }
 
-	@Override
-	public boolean requiresSneakForSpellSet() {
-		return true;
-	}
+    @Override
+    public boolean isSocketSlotAvailable(int slot) {
+        int sockets = ((ICAD) cad.getItem()).getStatValue(cad, EnumCADStat.SOCKETS);
+        if (sockets == -1 || sockets > ItemCADSocket.MAX_SOCKETS) {
+            sockets = ItemCADSocket.MAX_SOCKETS;
+        }
+        return slot < sockets && slot >= 0;
+    }
 
-	@Override
-	public boolean isSocketSlotAvailable(int slot) {
-		int sockets = ((ICAD) cad.getItem()).getStatValue(cad, EnumCADStat.SOCKETS);
-		if(sockets == -1 || sockets > ItemCADSocket.MAX_SOCKETS) {
-			sockets = ItemCADSocket.MAX_SOCKETS;
-		}
-		return slot < sockets && slot >= 0;
-	}
+    @Override
+    public ItemStack getBulletInSocket(int slot) {
+        if (isSocketSlotAvailable(slot))
+            return cadHandler.getStackInSlot(slot);
+        return ItemStack.EMPTY;
+    }
 
-	@Override
-	public ItemStack getBulletInSocket(int slot) {
-		String name = IPsimetalTool.TAG_BULLET_PREFIX + slot;
-		CompoundTag cmp = cad.getOrCreateTag().getCompound(name);
+    @Override
+    public void setBulletInSocket(int slot, ItemStack bullet) {
+        if (isSocketSlotAvailable(slot))
+            cadHandler.setStackInSlot(slot, bullet);
+    }
 
-		if(cmp.isEmpty()) {
-			return ItemStack.EMPTY;
-		}
+    @Override
+    public int getSelectedSlot() {
+        return cad.getOrDefault(ModItems.TAG_SELECTED_SLOT, 0);
+    }
 
-		return ItemStack.of(cmp);
-	}
+    @Override
+    public void setSelectedSlot(int slot) {
+        cad.set(ModItems.TAG_SELECTED_SLOT, slot);
+    }
 
-	@Override
-	public void setBulletInSocket(int slot, ItemStack bullet) {
-		String name = IPsimetalTool.TAG_BULLET_PREFIX + slot;
-		CompoundTag cmp = new CompoundTag();
+    @Override
+    public int getLastSlot() {
+        int sockets = ((ICAD) cad.getItem()).getStatValue(cad, EnumCADStat.SOCKETS);
+        if (sockets == -1 || sockets > ItemCADSocket.MAX_SOCKETS) {
+            sockets = ItemCADSocket.MAX_SOCKETS;
+        }
+        return sockets - 1;
+    }
 
-		if(!bullet.isEmpty()) {
-			bullet.save(cmp);
-		}
+    @Override
+    public CompoundTag serializeForSynchronization() {
+        CompoundTag compound = new CompoundTag();
+        compound.putInt("Time", time);
+        compound.putInt("Battery", battery);
 
-		cad.getOrCreateTag().put(name, cmp);
-	}
+        return compound;
+    }
 
-	@Override
-	public int getSelectedSlot() {
-		return cad.getOrCreateTag().getInt(IPsimetalTool.TAG_SELECTED_SLOT);
-	}
+    @Override
+    public CompoundTag serializeNBT(HolderLookup.Provider provider) {
+        CompoundTag compound = serializeForSynchronization();
 
-	@Override
-	public void setSelectedSlot(int slot) {
-		cad.getOrCreateTag().putInt(IPsimetalTool.TAG_SELECTED_SLOT, slot);
-	}
+        ListTag memory = new ListTag();
+        for (Vector3 vector : vectors) {
+            if (vector == null) {
+                memory.add(new ListTag());
+            } else {
+                ListTag vec = new ListTag();
+                vec.add(DoubleTag.valueOf(vector.x));
+                vec.add(DoubleTag.valueOf(vector.y));
+                vec.add(DoubleTag.valueOf(vector.z));
+                memory.add(vec);
+            }
+        }
+        compound.put("Memory", memory);
 
-	@Override
-	public int getLastSlot() {
-		int sockets = ((ICAD) cad.getItem()).getStatValue(cad, EnumCADStat.SOCKETS);
-		if(sockets == -1 || sockets > ItemCADSocket.MAX_SOCKETS) {
-			sockets = ItemCADSocket.MAX_SOCKETS;
-		}
-		return sockets - 1;
-	}
+        return compound;
+    }
 
-	@Override
-	public CompoundTag serializeForSynchronization() {
-		CompoundTag compound = new CompoundTag();
-		compound.putInt("Time", time);
-		compound.putInt("Battery", battery);
+    @Override
+    public void deserializeNBT(HolderLookup.Provider provider, CompoundTag nbt) {
+        if (nbt.contains("Time", Tag.TAG_ANY_NUMERIC)) {
+            time = nbt.getInt("Time");
+        }
+        if (nbt.contains("Battery", Tag.TAG_ANY_NUMERIC)) {
+            battery = nbt.getInt("Battery");
+        }
 
-		return compound;
-	}
+        if (nbt.contains("Memory", Tag.TAG_LIST)) {
+            ListTag memory = nbt.getList("Memory", Tag.TAG_LIST);
+            List<Vector3> newVectors = Lists.newArrayList();
+            for (int i = 0; i < memory.size(); i++) {
+                ListTag vec = (ListTag) memory.get(i);
+                if (vec.getElementType() == Tag.TAG_DOUBLE && vec.size() >= 3) {
+                    newVectors.add(new Vector3(vec.getDouble(0), vec.getDouble(1), vec.getDouble(2)));
+                } else {
+                    newVectors.add(null);
+                }
+            }
+            vectors = newVectors;
+        }
+    }
 
-	@Override
-	public CompoundTag serializeNBT() {
-		CompoundTag compound = serializeForSynchronization();
-
-		ListTag memory = new ListTag();
-		for(Vector3 vector : vectors) {
-			if(vector == null) {
-				memory.add(new ListTag());
-			} else {
-				ListTag vec = new ListTag();
-				vec.add(DoubleTag.valueOf(vector.x));
-				vec.add(DoubleTag.valueOf(vector.y));
-				vec.add(DoubleTag.valueOf(vector.z));
-				memory.add(vec);
-			}
-		}
-		compound.put("Memory", memory);
-
-		return compound;
-	}
-
-	@Override
-	public void deserializeNBT(CompoundTag nbt) {
-		if(nbt.contains("Time", Tag.TAG_ANY_NUMERIC)) {
-			time = nbt.getInt("Time");
-		}
-		if(nbt.contains("Battery", Tag.TAG_ANY_NUMERIC)) {
-			battery = nbt.getInt("Battery");
-		}
-
-		if(nbt.contains("Memory", Tag.TAG_LIST)) {
-			ListTag memory = nbt.getList("Memory", Tag.TAG_LIST);
-			List<Vector3> newVectors = Lists.newArrayList();
-			for(int i = 0; i < memory.size(); i++) {
-				ListTag vec = (ListTag) memory.get(i);
-				if(vec.getElementType() == Tag.TAG_DOUBLE && vec.size() >= 3) {
-					newVectors.add(new Vector3(vec.getDouble(0), vec.getDouble(1), vec.getDouble(2)));
-				} else {
-					newVectors.add(null);
-				}
-			}
-			vectors = newVectors;
-		}
-	}
-
-	@Override
-	public boolean shouldShow(IPlayerData data) {
-		return true;
-	}
+    @Override
+    public boolean shouldShow(IPlayerData data) {
+        return true;
+    }
 }

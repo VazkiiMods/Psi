@@ -8,53 +8,49 @@
  */
 package vazkii.psi.common.network.message;
 
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.network.NetworkEvent;
-
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 import vazkii.psi.api.cad.ISocketableController;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
+import vazkii.psi.common.lib.LibMisc;
 
-import java.util.function.Supplier;
+public record MessageChangeControllerSlot(int controlSlot, int slot) implements CustomPacketPayload {
 
-public class MessageChangeControllerSlot {
+    public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, "message_change_controller_slot");
+    public static final CustomPacketPayload.Type<MessageChangeControllerSlot> TYPE = new Type<>(ID);
 
-	private final int controlSlot;
-	private final int slot;
+    public static final StreamCodec<RegistryFriendlyByteBuf, MessageChangeControllerSlot> CODEC = StreamCodec.composite(
+            ByteBufCodecs.INT, MessageChangeControllerSlot::controlSlot,
+            ByteBufCodecs.INT, MessageChangeControllerSlot::slot,
+            MessageChangeControllerSlot::new);
 
-	public MessageChangeControllerSlot(int controlSlot, int slot) {
-		this.controlSlot = controlSlot;
-		this.slot = slot;
-	}
+    @Override
+    public Type<? extends CustomPacketPayload> type() {
+        return TYPE;
+    }
 
-	public MessageChangeControllerSlot(FriendlyByteBuf buf) {
-		this.controlSlot = buf.readVarInt();
-		this.slot = buf.readVarInt();
-	}
+    public void handle(IPayloadContext ctx) {
+        ctx.enqueueWork(() -> {
+            Player player = ctx.player();
+            ItemStack stack = player.getItemInHand(InteractionHand.MAIN_HAND);
+            if (!stack.isEmpty() && stack.getItem() instanceof ISocketableController) {
+                ((ISocketableController) stack.getItem()).setSelectedSlot(player, stack, controlSlot, slot);
+            } else {
+                stack = player.getItemInHand(InteractionHand.OFF_HAND);
+                if (!stack.isEmpty() && stack.getItem() instanceof ISocketableController) {
+                    ((ISocketableController) stack.getItem()).setSelectedSlot(player, stack, controlSlot, slot);
+                }
+            }
+            PlayerDataHandler.get(player).stopLoopcast();
+        });
 
-	public void encode(FriendlyByteBuf buf) {
-		buf.writeVarInt(controlSlot);
-		buf.writeVarInt(slot);
-	}
-
-	public boolean receive(Supplier<NetworkEvent.Context> context) {
-		context.get().enqueueWork(() -> {
-			ServerPlayer player = context.get().getSender();
-			ItemStack stack = player.getItemInHand(InteractionHand.MAIN_HAND);
-			if(!stack.isEmpty() && stack.getItem() instanceof ISocketableController) {
-				((ISocketableController) stack.getItem()).setSelectedSlot(player, stack, controlSlot, slot);
-			} else {
-				stack = player.getItemInHand(InteractionHand.OFF_HAND);
-				if(!stack.isEmpty() && stack.getItem() instanceof ISocketableController) {
-					((ISocketableController) stack.getItem()).setSelectedSlot(player, stack, controlSlot, slot);
-				}
-			}
-			PlayerDataHandler.get(player).stopLoopcast();
-		});
-
-		return true;
-	}
+    }
 
 }

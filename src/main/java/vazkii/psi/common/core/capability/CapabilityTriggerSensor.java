@@ -8,14 +8,11 @@
  */
 package vazkii.psi.common.core.capability;
 
-import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.common.util.LazyOptional;
-
+import net.neoforged.neoforge.capabilities.EntityCapability;
+import net.neoforged.neoforge.capabilities.ICapabilityProvider;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.exosuit.PsiArmorEvent;
 import vazkii.psi.api.spell.detonator.IDetonationHandler;
@@ -24,36 +21,39 @@ import vazkii.psi.common.lib.LibMisc;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class CapabilityTriggerSensor implements IDetonationHandler, ICapabilityProvider {
+public class CapabilityTriggerSensor implements IDetonationHandler, ICapabilityProvider<EntityCapability<?, Void>, Void, CapabilityTriggerSensor> {
 
-	public final Player player;
-	public static final String TRIGGER_TICK = LibMisc.MOD_ID + ":LastTriggeredDetonation";
+    public static final String TRIGGER_TICK = LibMisc.MOD_ID + ":LastTriggeredDetonation";
+    public final Player player;
 
-	public CapabilityTriggerSensor(Player player) {
-		this.player = player;
-	}
+    public CapabilityTriggerSensor(Player player) {
+        this.player = player;
+    }
 
-	@Override
-	@SuppressWarnings("ConstantConditions")
-	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability, @Nullable Direction facing) {
-		return PsiAPI.DETONATION_HANDLER_CAPABILITY.orEmpty(capability, LazyOptional.of(() -> this));
-	}
+    @Nullable
+    @Override
+    public CapabilityTriggerSensor getCapability(@Nonnull EntityCapability<?, Void> capability, @Nullable Void facing) {
+        if (capability == PsiAPI.DETONATION_HANDLER_CAPABILITY) {
+            return this;
+        }
+        return null;
+    }
 
-	@Override
-	public void detonate() {
-		CompoundTag playerData = player.getPersistentData();
-		long detonated = playerData.getLong(TRIGGER_TICK);
-		long worldTime = player.level().getGameTime();
+    @Override
+    public void detonate() {
+        CompoundTag playerData = player.getPersistentData();
+        long detonated = playerData.getLong(TRIGGER_TICK);
+        long worldTime = player.level().getGameTime();
 
-		if(detonated != worldTime) {
-			playerData.putLong(TRIGGER_TICK, worldTime);
+        if (detonated != worldTime) {
+            playerData.putLong(TRIGGER_TICK, worldTime);
 
-			PsiArmorEvent.post(new PsiArmorEvent(player, PsiArmorEvent.DETONATE));
-		}
-	}
+            PsiArmorEvent.post(new PsiArmorEvent(player, PsiArmorEvent.DETONATE));
+        }
+    }
 
-	@Override
-	public Vec3 objectLocus() {
-		return player.position();
-	}
+    @Override
+    public Vec3 objectLocus() {
+        return player.position();
+    }
 }

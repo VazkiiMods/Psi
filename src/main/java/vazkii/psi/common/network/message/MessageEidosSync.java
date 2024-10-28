@@ -8,42 +8,39 @@
  */
 package vazkii.psi.common.network.message;
 
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.network.NetworkEvent;
-
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
+import vazkii.psi.common.lib.LibMisc;
 
-import java.util.function.Supplier;
+public record MessageEidosSync(int reversionTime) implements CustomPacketPayload {
 
-public class MessageEidosSync {
+    public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, "message_eidos_sync");
+    public static final CustomPacketPayload.Type<MessageEidosSync> TYPE = new Type<>(ID);
 
-	private final int reversionTime;
+    public static final StreamCodec<RegistryFriendlyByteBuf, MessageEidosSync> CODEC = StreamCodec.composite(
+            ByteBufCodecs.INT, MessageEidosSync::reversionTime,
+            MessageEidosSync::new);
 
-	public MessageEidosSync(int reversionTime) {
-		this.reversionTime = reversionTime;
-	}
+    @Override
+    public Type<? extends CustomPacketPayload> type() {
+        return TYPE;
+    }
 
-	public MessageEidosSync(FriendlyByteBuf buf) {
-		this.reversionTime = buf.readInt();
-	}
-
-	public void encode(FriendlyByteBuf buf) {
-		buf.writeInt(reversionTime);
-	}
-
-	public boolean receive(Supplier<NetworkEvent.Context> context) {
-		context.get().enqueueWork(() -> {
-			Player player = Psi.proxy.getClientPlayer();
-			if(player != null) {
-				PlayerDataHandler.PlayerData data = PlayerDataHandler.get(player);
-				data.eidosReversionTime = reversionTime;
-				data.isReverting = true;
-			}
-		});
-
-		return true;
-	}
-
+    public void handle(IPayloadContext ctx) {
+        ctx.enqueueWork(() -> {
+            Player player = Psi.proxy.getClientPlayer();
+            if (player != null) {
+                PlayerDataHandler.PlayerData data = PlayerDataHandler.get(player);
+                data.eidosReversionTime = reversionTime;
+                data.isReverting = true;
+            }
+        });
+    }
 }

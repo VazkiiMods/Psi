@@ -8,58 +8,47 @@
  */
 package vazkii.psi.common.network.message;
 
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.network.NetworkEvent;
-
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
+import vazkii.psi.common.lib.LibMisc;
 
-import java.util.function.Supplier;
+public record MessageDeductPsi(int prev, int current, int cd, boolean shatter) implements CustomPacketPayload {
 
-public class MessageDeductPsi {
+    public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, "message_deduct_psi");
+    public static final CustomPacketPayload.Type<MessageDeductPsi> TYPE = new Type<>(ID);
 
-	private final int prev;
-	private final int current;
-	private final int cd;
-	private final boolean shatter;
+    public static final StreamCodec<RegistryFriendlyByteBuf, MessageDeductPsi> CODEC = StreamCodec.composite(
+            ByteBufCodecs.INT, MessageDeductPsi::prev,
+            ByteBufCodecs.INT, MessageDeductPsi::current,
+            ByteBufCodecs.INT, MessageDeductPsi::cd,
+            ByteBufCodecs.BOOL, MessageDeductPsi::shatter,
+            MessageDeductPsi::new);
 
-	public MessageDeductPsi(int prev, int current, int cd, boolean shatter) {
-		this.prev = prev;
-		this.current = current;
-		this.cd = cd;
-		this.shatter = shatter;
-	}
+    @Override
+    public Type<? extends CustomPacketPayload> type() {
+        return TYPE;
+    }
 
-	public MessageDeductPsi(FriendlyByteBuf buf) {
-		this.prev = buf.readVarInt();
-		this.current = buf.readVarInt();
-		this.cd = buf.readVarInt();
-		this.shatter = buf.readBoolean();
-	}
-
-	public void encode(FriendlyByteBuf buf) {
-		buf.writeVarInt(prev);
-		buf.writeVarInt(current);
-		buf.writeVarInt(cd);
-		buf.writeBoolean(shatter);
-	}
-
-	public boolean receive(Supplier<NetworkEvent.Context> context) {
-		context.get().enqueueWork(() -> {
-			Player player = Psi.proxy.getClientPlayer();
-			if(player != null) {
-				PlayerData data = PlayerDataHandler.get(player);
-				data.lastAvailablePsi = data.availablePsi;
-				data.availablePsi = current;
-				data.regenCooldown = cd;
-				data.deductTick = true;
-				data.addDeduction(prev, prev - current, shatter);
-			}
-		});
-
-		return true;
-	}
+    public void handle(IPayloadContext ctx) {
+        ctx.enqueueWork(() -> {
+            Player player = Psi.proxy.getClientPlayer();
+            if (player != null) {
+                PlayerData data = PlayerDataHandler.get(player);
+                data.lastAvailablePsi = data.availablePsi;
+                data.availablePsi = current;
+                data.regenCooldown = cd;
+                data.deductTick = true;
+                data.addDeduction(prev, prev - current, shatter);
+            }
+        });
+    }
 
 }

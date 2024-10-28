@@ -17,32 +17,29 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-
 import vazkii.psi.api.spell.detonator.IDetonationHandler;
 
 import javax.annotation.Nonnull;
 
 public class ItemDetonator extends Item {
 
-	public ItemDetonator(Item.Properties properties) {
-		super(properties.stacksTo(1));
-	}
+    public ItemDetonator(Item.Properties properties) {
+        super(properties.stacksTo(1));
+    }
 
-	@Nonnull
-	@Override
-	public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, @Nonnull InteractionHand hand) {
-		ItemStack itemStackIn = playerIn.getItemInHand(hand);
+    @Nonnull
+    @Override
+    public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, @Nonnull InteractionHand hand) {
+        ItemStack itemStackIn = playerIn.getItemInHand(hand);
 
-		if(!worldIn.isClientSide) {
-			IDetonationHandler.performDetonation(worldIn, playerIn);
-			worldIn.playSound(null, playerIn.getX(), playerIn.getY(), playerIn.getZ(), SoundEvents.UI_BUTTON_CLICK.value(), SoundSource.PLAYERS, 1F, 1F);
-		}
+        if (!worldIn.isClientSide) {
+            IDetonationHandler.performDetonation(worldIn, playerIn);
+            worldIn.playSound(null, playerIn.getX(), playerIn.getY(), playerIn.getZ(), SoundEvents.UI_BUTTON_CLICK.value(), SoundSource.PLAYERS, 1F, 1F);
+        } else {
+            playerIn.swing(hand);
+        }
 
-		else {
-			playerIn.swing(hand);
-		}
-
-		return new InteractionResultHolder<>(InteractionResult.SUCCESS, itemStackIn);
-	}
+        return new InteractionResultHolder<>(InteractionResult.SUCCESS, itemStackIn);
+    }
 
 }

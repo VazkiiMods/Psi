@@ -9,7 +9,7 @@
 package vazkii.psi.api.spell;
 
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.eventbus.api.Event;
+import net.neoforged.bus.api.Event;
 
 import javax.annotation.Nonnull;
 
@@ -20,24 +20,24 @@ import javax.annotation.Nonnull;
  */
 public class PieceExecutedEvent extends Event {
 
-	@Nonnull
-	private final SpellPiece piece;
+    @Nonnull
+    private final SpellPiece piece;
 
-	@Nonnull
-	private final Player playerEntity;
+    @Nonnull
+    private final Player playerEntity;
 
-	public PieceExecutedEvent(@Nonnull SpellPiece piece, @Nonnull Player playerEntity) {
-		this.piece = piece;
-		this.playerEntity = playerEntity;
-	}
+    public PieceExecutedEvent(@Nonnull SpellPiece piece, @Nonnull Player playerEntity) {
+        this.piece = piece;
+        this.playerEntity = playerEntity;
+    }
 
-	@Nonnull
-	public SpellPiece getPiece() {
-		return piece;
-	}
+    @Nonnull
+    public SpellPiece getPiece() {
+        return piece;
+    }
 
-	@Nonnull
-	public Player getPlayerEntity() {
-		return playerEntity;
-	}
+    @Nonnull
+    public Player getPlayerEntity() {
+        return playerEntity;
+    }
 }

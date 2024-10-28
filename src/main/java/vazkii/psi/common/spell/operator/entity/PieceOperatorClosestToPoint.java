@@ -9,7 +9,6 @@
 package vazkii.psi.common.spell.operator.entity;
 
 import net.minecraft.world.entity.Entity;
-
 import vazkii.psi.api.internal.MathHelper;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.Spell;
@@ -23,48 +22,48 @@ import vazkii.psi.api.spell.wrapper.EntityListWrapper;
 
 public class PieceOperatorClosestToPoint extends PieceOperator {
 
-	SpellParam<Vector3> position;
-	SpellParam<EntityListWrapper> list;
+    SpellParam<Vector3> position;
+    SpellParam<EntityListWrapper> list;
 
-	public PieceOperatorClosestToPoint(Spell spell) {
-		super(spell);
-	}
+    public PieceOperatorClosestToPoint(Spell spell) {
+        super(spell);
+    }
 
-	@Override
-	public void initParams() {
-		addParam(position = new ParamVector(SpellParam.GENERIC_NAME_POSITION, SpellParam.BLUE, false, false));
-		addParam(list = new ParamEntityListWrapper(SpellParam.GENERIC_NAME_TARGET, SpellParam.YELLOW, false, false));
-	}
+    public static Entity closestToPoint(Vector3 position, Iterable<Entity> list) throws SpellRuntimeException {
+        double closest = Double.MAX_VALUE;
+        Entity closestEntity = null;
+        for (Entity e : list) {
+            double dist = MathHelper.pointDistanceSpace(position.x, position.y, position.z, e.getX(), e.getY(), e.getZ());
+            if (dist < closest) {
+                closest = dist;
+                closestEntity = e;
+            }
+        }
 
-	@Override
-	public Object execute(SpellContext context) throws SpellRuntimeException {
-		EntityListWrapper listVal = this.getParamValue(context, list);
-		Vector3 positionVal = this.getParamValue(context, position);
+        if (closestEntity == null) {
+            throw new SpellRuntimeException(SpellRuntimeException.NULL_TARGET);
+        }
 
-		return closestToPoint(positionVal, listVal);
-	}
+        return closestEntity;
+    }
 
-	public static Entity closestToPoint(Vector3 position, Iterable<Entity> list) throws SpellRuntimeException {
-		double closest = Double.MAX_VALUE;
-		Entity closestEntity = null;
-		for(Entity e : list) {
-			double dist = MathHelper.pointDistanceSpace(position.x, position.y, position.z, e.getX(), e.getY(), e.getZ());
-			if(dist < closest) {
-				closest = dist;
-				closestEntity = e;
-			}
-		}
+    @Override
+    public void initParams() {
+        addParam(position = new ParamVector(SpellParam.GENERIC_NAME_POSITION, SpellParam.BLUE, false, false));
+        addParam(list = new ParamEntityListWrapper(SpellParam.GENERIC_NAME_TARGET, SpellParam.YELLOW, false, false));
+    }
 
-		if(closestEntity == null) {
-			throw new SpellRuntimeException(SpellRuntimeException.NULL_TARGET);
-		}
+    @Override
+    public Object execute(SpellContext context) throws SpellRuntimeException {
+        EntityListWrapper listVal = this.getParamValue(context, list);
+        Vector3 positionVal = this.getParamValue(context, position);
 
-		return closestEntity;
-	}
+        return closestToPoint(positionVal, listVal);
+    }
 
-	@Override
-	public Class<?> getEvaluationType() {
-		return Entity.class;
-	}
+    @Override
+    public Class<?> getEvaluationType() {
+        return Entity.class;
+    }
 
 }

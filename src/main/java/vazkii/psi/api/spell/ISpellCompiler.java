@@ -16,5 +16,5 @@ import com.mojang.datafixers.util.Either;
  * to be used, as {@link ISpellCache} compiles spells if they're missing.
  */
 public interface ISpellCompiler {
-	Either<CompiledSpell, SpellCompilationException> compile(Spell in);
+    Either<CompiledSpell, SpellCompilationException> compile(Spell in);
 }

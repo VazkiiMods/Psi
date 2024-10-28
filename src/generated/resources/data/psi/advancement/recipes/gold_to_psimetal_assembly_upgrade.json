@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_cad_assembly_gold": {
+      "conditions": {
+        "items": [
+          {
+            "items": "psi:cad_assembly_gold"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "psi:gold_to_psimetal_assembly_upgrade"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_cad_assembly_gold"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "psi:gold_to_psimetal_assembly_upgrade"
+    ]
+  }
+}

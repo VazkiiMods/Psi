@@ -17,7 +17,9 @@
       "conditions": {
         "items": [
           {
-            "items": ["psi:cad_assembly_ebony_psimetal"]
+            "items": [
+              "psi:cad_assembly_ebony_psimetal"
+            ]
           }
         ]
       }

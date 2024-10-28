@@ -3,11 +3,11 @@
     "frametime": 4,
     "frames": [
       {
-                "index": 0,
-                "time": 8
-            },
+        "index": 0,
+        "time": 8
+      },
       1,
-	  0
+      0
     ]
   }
 }

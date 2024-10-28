@@ -9,22 +9,21 @@
 package vazkii.psi.api.spell;
 
 import net.minecraft.world.entity.Entity;
-
 import vazkii.psi.api.PsiAPI;
 
 /**
  * This interface defines an entity that's immune to spells. Any bosses (IBossDisplayData)
  * will also be immune.
- *
+ * <p>
  * If an entity provides a capability of type ISpellImmune,
  * they will also be immune if that returns true.
  */
 public interface ISpellImmune {
 
-	boolean isImmune();
+    static boolean isImmune(Entity e) {
+        return !e.canUsePortal(false) || e.getCapability(PsiAPI.SPELL_IMMUNE_CAPABILITY).isImmune();
+    }
 
-	static boolean isImmune(Entity e) {
-		return !e.canChangeDimensions() || e.getCapability(PsiAPI.SPELL_IMMUNE_CAPABILITY).map(ISpellImmune::isImmune).orElse(false);
-	}
+    boolean isImmune();
 
 }

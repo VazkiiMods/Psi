@@ -13,6 +13,6 @@ package vazkii.psi.api.spell;
  */
 public interface IGenericRedirector {
 
-	SpellParam.Side remapSide(SpellParam.Side inputSide);
+    SpellParam.Side remapSide(SpellParam.Side inputSide);
 
 }

@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "G": {
+      "tag": "c:gems/psigem"
+    },
+    "I": {
+      "tag": "c:ingots/iron"
+    },
+    "P": {
+      "tag": "c:ingots/psimetal"
+    }
+  },
+  "pattern": [
+    "GP",
+    "PI",
+    " I"
+  ],
+  "result": {
+    "count": 1,
+    "id": "psi:psimetal_axe"
+  }
+}

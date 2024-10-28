@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "D": {
+      "tag": "c:dusts/glowstone"
+    },
+    "G": {
+      "tag": "c:gems/psigem"
+    },
+    "I": {
+      "tag": "c:ingots/psimetal"
+    }
+  },
+  "pattern": [
+    "DI ",
+    "IG "
+  ],
+  "result": {
+    "count": 1,
+    "id": "psi:cad_socket_huge"
+  }
+}

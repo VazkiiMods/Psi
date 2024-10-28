@@ -17,27 +17,27 @@ import vazkii.psi.api.spell.piece.PieceOperator;
 
 public class PieceOperatorSin extends PieceOperator {
 
-	SpellParam<Number> num;
+    SpellParam<Number> num;
 
-	public PieceOperatorSin(Spell spell) {
-		super(spell);
-	}
+    public PieceOperatorSin(Spell spell) {
+        super(spell);
+    }
 
-	@Override
-	public void initParams() {
-		addParam(num = new ParamNumber(SpellParam.GENERIC_NAME_TARGET, SpellParam.BLUE, false, false));
-	}
+    @Override
+    public void initParams() {
+        addParam(num = new ParamNumber(SpellParam.GENERIC_NAME_TARGET, SpellParam.BLUE, false, false));
+    }
 
-	@Override
-	public Object execute(SpellContext context) throws SpellRuntimeException {
-		double d = this.getParamValue(context, num).doubleValue();
+    @Override
+    public Object execute(SpellContext context) throws SpellRuntimeException {
+        double d = this.getParamValue(context, num).doubleValue();
 
-		return Math.sin(d);
-	}
+        return Math.sin(d);
+    }
 
-	@Override
-	public Class<?> getEvaluationType() {
-		return Double.class;
-	}
+    @Override
+    public Class<?> getEvaluationType() {
+        return Double.class;
+    }
 
 }

@@ -1,0 +1,15 @@
+{
+  "type": "psi:trick_crafting",
+  "cad": {
+    "count": 1,
+    "id": "psi:cad_assembly_psimetal"
+  },
+  "input": {
+    "tag": "c:gems/diamond"
+  },
+  "output": {
+    "count": 1,
+    "id": "psi:psigem"
+  },
+  "piece": "psi:trick_greater_infusion"
+}

@@ -1,0 +1,16 @@
+{
+  "type": "psi:bullet_upgrade",
+  "category": "equipment",
+  "ingredients": [
+    {
+      "item": "psi:spell_bullet"
+    },
+    {
+      "tag": "minecraft:arrows"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "psi:spell_bullet_projectile"
+  }
+}

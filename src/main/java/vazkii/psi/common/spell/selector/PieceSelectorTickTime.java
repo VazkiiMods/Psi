@@ -14,34 +14,34 @@ import vazkii.psi.api.spell.piece.PieceSelector;
 
 public class PieceSelectorTickTime extends PieceSelector {
 
-	public PieceSelectorTickTime(Spell spell) {
-		super(spell);
-	}
+    public PieceSelectorTickTime(Spell spell) {
+        super(spell);
+    }
 
-	@Override
-	public Class<?> getEvaluationType() {
-		return Double.class;
-	}
+    public static double getMspt(SpellContext context) {
+        long[] tickTimes = context.focalPoint.getServer().getTickTime(context.focalPoint.level().dimension());
+        if (tickTimes == null) {
+            return 0;
+        }
+        return mean(tickTimes) * 1.0E-6D;
+    }
 
-	@Override
-	public Object execute(SpellContext context) {
-		return getMspt(context);
-	}
+    private static long mean(long[] values) {
+        long sum = 0L;
+        for (long val : values) {
+            sum = sum + val;
+        }
 
-	public static double getMspt(SpellContext context) {
-		long[] tickTimes = context.focalPoint.getServer().getTickTime(context.focalPoint.level().dimension());
-		if(tickTimes == null) {
-			return 0;
-		}
-		return mean(tickTimes) * 1.0E-6D;
-	}
+        return sum / values.length;
+    }
 
-	private static long mean(long[] values) {
-		long sum = 0L;
-		for(long val : values) {
-			sum = sum + val;
-		}
+    @Override
+    public Class<?> getEvaluationType() {
+        return Double.class;
+    }
 
-		return sum / values.length;
-	}
+    @Override
+    public Object execute(SpellContext context) {
+        return getMspt(context);
+    }
 }

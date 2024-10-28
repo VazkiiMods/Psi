@@ -8,47 +8,41 @@
  */
 package vazkii.psi.common.network.message;
 
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
-import net.minecraftforge.network.NetworkEvent;
-
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 import vazkii.psi.common.Psi;
-
-import java.util.function.Supplier;
+import vazkii.psi.common.lib.LibMisc;
 
 /**
  * This is needed instead of a serverside position set to avoid jittering, especially under lag.
  */
-public class MessageBlink {
-	private final double offX;
-	private final double offY;
-	private final double offZ;
+public record MessageBlink(double offX, double offY, double offZ) implements CustomPacketPayload {
 
-	public MessageBlink(double offX, double offY, double offZ) {
-		this.offX = offX;
-		this.offY = offY;
-		this.offZ = offZ;
-	}
+    public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, "message_blink");
+    public static final CustomPacketPayload.Type<MessageBlink> TYPE = new Type<>(ID);
 
-	public MessageBlink(FriendlyByteBuf buf) {
-		this.offX = buf.readDouble();
-		this.offY = buf.readDouble();
-		this.offZ = buf.readDouble();
-	}
+    public static final StreamCodec<RegistryFriendlyByteBuf, MessageBlink> CODEC = StreamCodec.composite(
+            ByteBufCodecs.DOUBLE, MessageBlink::offX,
+            ByteBufCodecs.DOUBLE, MessageBlink::offY,
+            ByteBufCodecs.DOUBLE, MessageBlink::offZ,
+            MessageBlink::new);
 
-	public void encode(FriendlyByteBuf buf) {
-		buf.writeDouble(offX);
-		buf.writeDouble(offY);
-		buf.writeDouble(offZ);
-	}
+    @Override
+    public Type<? extends CustomPacketPayload> type() {
+        return TYPE;
+    }
 
-	public boolean receive(Supplier<NetworkEvent.Context> context) {
-		context.get().enqueueWork(() -> {
-			Entity entity = Psi.proxy.getClientPlayer();
-			if(entity != null) {
-				entity.setPos(entity.getX() + offX, entity.getY() + offY, entity.getZ() + offZ);
-			}
-		});
-		return true;
-	}
+    public void handle(IPayloadContext ctx) {
+        ctx.enqueueWork(() -> {
+            Entity entity = Psi.proxy.getClientPlayer();
+            if (entity != null) {
+                entity.setPos(entity.getX() + offX, entity.getY() + offY, entity.getZ() + offZ);
+            }
+        });
+    }
 }

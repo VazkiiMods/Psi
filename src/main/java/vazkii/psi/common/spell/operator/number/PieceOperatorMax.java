@@ -17,36 +17,36 @@ import vazkii.psi.api.spell.piece.PieceOperator;
 
 public class PieceOperatorMax extends PieceOperator {
 
-	SpellParam<Number> num1;
-	SpellParam<Number> num2;
-	SpellParam<Number> num3;
+    SpellParam<Number> num1;
+    SpellParam<Number> num2;
+    SpellParam<Number> num3;
 
-	public PieceOperatorMax(Spell spell) {
-		super(spell);
-	}
+    public PieceOperatorMax(Spell spell) {
+        super(spell);
+    }
 
-	@Override
-	public void initParams() {
-		addParam(num1 = new ParamNumber(SpellParam.GENERIC_NAME_NUMBER1, SpellParam.GREEN, false, false));
-		addParam(num2 = new ParamNumber(SpellParam.GENERIC_NAME_NUMBER2, SpellParam.GREEN, false, false));
-		addParam(num3 = new ParamNumber(SpellParam.GENERIC_NAME_NUMBER3, SpellParam.GREEN, true, false));
-	}
+    @Override
+    public void initParams() {
+        addParam(num1 = new ParamNumber(SpellParam.GENERIC_NAME_NUMBER1, SpellParam.GREEN, false, false));
+        addParam(num2 = new ParamNumber(SpellParam.GENERIC_NAME_NUMBER2, SpellParam.GREEN, false, false));
+        addParam(num3 = new ParamNumber(SpellParam.GENERIC_NAME_NUMBER3, SpellParam.GREEN, true, false));
+    }
 
-	@Override
-	public Object execute(SpellContext context) throws SpellRuntimeException {
-		double d1 = this.getParamValue(context, num1).doubleValue();
-		double d2 = this.getParamValue(context, num2).doubleValue();
-		Number d3 = this.getParamValue(context, num3);
-		if(d3 == null) {
-			d3 = Double.NEGATIVE_INFINITY;
-		}
+    @Override
+    public Object execute(SpellContext context) throws SpellRuntimeException {
+        double d1 = this.getParamValue(context, num1).doubleValue();
+        double d2 = this.getParamValue(context, num2).doubleValue();
+        Number d3 = this.getParamValue(context, num3);
+        if (d3 == null) {
+            d3 = Double.NEGATIVE_INFINITY;
+        }
 
-		return Math.max(d1, Math.max(d2, d3.doubleValue()));
-	}
+        return Math.max(d1, Math.max(d2, d3.doubleValue()));
+    }
 
-	@Override
-	public Class<?> getEvaluationType() {
-		return Double.class;
-	}
+    @Override
+    public Class<?> getEvaluationType() {
+        return Double.class;
+    }
 
 }

@@ -11,60 +11,55 @@ package vazkii.psi.common.spell.trick;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
-
-import vazkii.psi.api.spell.Spell;
-import vazkii.psi.api.spell.SpellContext;
-import vazkii.psi.api.spell.SpellMetadata;
-import vazkii.psi.api.spell.SpellParam;
-import vazkii.psi.api.spell.SpellRuntimeException;
+import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.param.ParamAny;
 import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.piece.PieceTrick;
 
 public class PieceTrickDebug extends PieceTrick {
 
-	SpellParam<SpellParam.Any> target;
-	SpellParam<Number> number;
+    SpellParam<SpellParam.Any> target;
+    SpellParam<Number> number;
 
-	public PieceTrickDebug(Spell spell) {
-		super(spell);
-	}
+    public PieceTrickDebug(Spell spell) {
+        super(spell);
+    }
 
-	@Override
-	public void initParams() {
-		addParam(target = new ParamAny(SpellParam.GENERIC_NAME_TARGET, SpellParam.BLUE, false));
-		addParam(number = new ParamNumber(SpellParam.GENERIC_NAME_NUMBER, SpellParam.RED, true, false));
-	}
+    @Override
+    public void initParams() {
+        addParam(target = new ParamAny(SpellParam.GENERIC_NAME_TARGET, SpellParam.BLUE, false));
+        addParam(number = new ParamNumber(SpellParam.GENERIC_NAME_NUMBER, SpellParam.RED, true, false));
+    }
 
-	@Override
-	public void addToMetadata(SpellMetadata meta) {
-		// NO-OP
-	}
+    @Override
+    public void addToMetadata(SpellMetadata meta) {
+        // NO-OP
+    }
 
-	@Override
-	public Object execute(SpellContext context) throws SpellRuntimeException {
-		Number numberVal = this.getParamValue(context, number);
-		Object targetVal = getParamValue(context, target);
+    @Override
+    public Object execute(SpellContext context) throws SpellRuntimeException {
+        Number numberVal = this.getParamValue(context, number);
+        Object targetVal = getParamValue(context, target);
 
-		Component component = Component.literal(String.valueOf(targetVal));
+        Component component = Component.literal(String.valueOf(targetVal));
 
-		if(numberVal != null) {
-			String numStr = "" + numberVal;
-			if(numberVal.doubleValue() - numberVal.intValue() == 0) {
-				int numInt = numberVal.intValue();
-				numStr = "" + numInt;
-			}
+        if (numberVal != null) {
+            String numStr = "" + numberVal;
+            if (numberVal.doubleValue() - numberVal.intValue() == 0) {
+                int numInt = numberVal.intValue();
+                numStr = "" + numInt;
+            }
 
-			component = Component.literal("[" + numStr + "]")
-					.setStyle(Style.EMPTY.withColor(ChatFormatting.AQUA))
-					.append(Component.literal(" ")
-							.setStyle(Style.EMPTY.withColor(ChatFormatting.RESET)))
-					.append(component);
-		}
+            component = Component.literal("[" + numStr + "]")
+                    .setStyle(Style.EMPTY.withColor(ChatFormatting.AQUA))
+                    .append(Component.literal(" ")
+                            .setStyle(Style.EMPTY.withColor(ChatFormatting.RESET)))
+                    .append(component);
+        }
 
-		context.caster.sendSystemMessage(component);
+        context.caster.sendSystemMessage(component);
 
-		return null;
-	}
+        return null;
+    }
 
 }

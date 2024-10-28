@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "D": {
+      "tag": "psi:psidust"
+    },
+    "I": {
+      "tag": "c:ingots/iron"
+    }
+  },
+  "pattern": [
+    "DI ",
+    "I  "
+  ],
+  "result": {
+    "count": 1,
+    "id": "psi:cad_socket_basic"
+  }
+}

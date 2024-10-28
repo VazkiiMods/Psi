@@ -11,28 +11,27 @@ package vazkii.psi.common.item.armor;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-
 import vazkii.psi.api.exosuit.PsiArmorEvent;
 
 public class ItemPsimetalExosuitLeggings extends ItemPsimetalArmor {
 
-	public ItemPsimetalExosuitLeggings(ArmorItem.Type type, Item.Properties properties) {
-		super(type, properties);
-	}
+    public ItemPsimetalExosuitLeggings(ArmorItem.Type type, Item.Properties properties) {
+        super(type, properties);
+    }
 
-	@Override
-	public String getEvent(ItemStack stack) {
-		return PsiArmorEvent.TICK;
-	}
+    @Override
+    public String getEvent(ItemStack stack) {
+        return PsiArmorEvent.TICK;
+    }
 
-	@Override
-	public int getCastCooldown(ItemStack stack) {
-		return 0;
-	}
+    @Override
+    public int getCastCooldown(ItemStack stack) {
+        return 0;
+    }
 
-	@Override
-	public float getCastVolume() {
-		return 0F;
-	}
+    @Override
+    public float getCastVolume() {
+        return 0F;
+    }
 
 }

@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "G": {
+      "tag": "c:gems/psigem"
+    },
+    "P": {
+      "tag": "c:ingots/psimetal"
+    }
+  },
+  "pattern": [
+    "P P",
+    "GPG",
+    "PPP"
+  ],
+  "result": {
+    "count": 1,
+    "id": "psi:psimetal_exosuit_chestplate"
+  }
+}

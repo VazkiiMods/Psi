@@ -16,18 +16,18 @@ import vazkii.psi.common.core.handler.PlayerDataHandler;
 
 public class PieceSelectorCasterEnergy extends PieceSelector {
 
-	public PieceSelectorCasterEnergy(Spell spell) {
-		super(spell);
-	}
+    public PieceSelectorCasterEnergy(Spell spell) {
+        super(spell);
+    }
 
-	@Override
-	public Object execute(SpellContext context) throws SpellRuntimeException {
-		PlayerDataHandler.PlayerData data = PlayerDataHandler.get(context.caster);
-		return 1.0 * data.availablePsi;
-	}
+    @Override
+    public Object execute(SpellContext context) throws SpellRuntimeException {
+        PlayerDataHandler.PlayerData data = PlayerDataHandler.get(context.caster);
+        return 1.0 * data.availablePsi;
+    }
 
-	@Override
-	public Class<?> getEvaluationType() {
-		return Double.class;
-	}
+    @Override
+    public Class<?> getEvaluationType() {
+        return Double.class;
+    }
 }

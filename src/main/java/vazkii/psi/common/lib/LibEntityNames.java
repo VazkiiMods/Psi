@@ -10,10 +10,10 @@ package vazkii.psi.common.lib;
 
 public final class LibEntityNames {
 
-	public static final String SPELL_PROJECTILE = "spell_projectile";
-	public static final String SPELL_CIRCLE = "spell_circle";
-	public static final String SPELL_GRENADE = "spell_grenade";
-	public static final String SPELL_CHARGE = "spell_charge";
-	public static final String SPELL_MINE = "spell_mine";
+    public static final String SPELL_PROJECTILE = "spell_projectile";
+    public static final String SPELL_CIRCLE = "spell_circle";
+    public static final String SPELL_GRENADE = "spell_grenade";
+    public static final String SPELL_CHARGE = "spell_charge";
+    public static final String SPELL_MINE = "spell_mine";
 
 }

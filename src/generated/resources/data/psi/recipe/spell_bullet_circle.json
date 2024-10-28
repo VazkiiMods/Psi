@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "A": [
+      {
+        "tag": "c:slimeballs"
+      },
+      {
+        "item": "minecraft:snowball"
+      }
+    ],
+    "D": {
+      "tag": "psi:psidust"
+    },
+    "I": {
+      "tag": "c:ingots/iron"
+    }
+  },
+  "pattern": [
+    "AID"
+  ],
+  "result": {
+    "count": 1,
+    "id": "psi:spell_bullet_circle"
+  }
+}

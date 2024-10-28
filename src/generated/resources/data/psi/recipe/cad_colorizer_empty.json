@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "D": {
+      "tag": "psi:psidust"
+    },
+    "G": {
+      "tag": "c:glass_blocks"
+    },
+    "I": {
+      "tag": "c:ingots/iron"
+    }
+  },
+  "pattern": [
+    " D ",
+    "G G",
+    " I "
+  ],
+  "result": {
+    "count": 1,
+    "id": "psi:cad_colorizer_empty"
+  }
+}

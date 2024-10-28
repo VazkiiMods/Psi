@@ -1,10 +1,10 @@
 {
-	"values": [
-		"psi:cad_assembly_iron",
-		"psi:cad_assembly_gold",
-		"psi:cad_assembly_psimetal",
-		"psi:cad_assembly_ebony_psimetal",
-		"psi:cad_assembly_ivory_psimetal",
-		"psi:cad_assembly_creative"
-	]
+  "values": [
+    "psi:cad_assembly_iron",
+    "psi:cad_assembly_gold",
+    "psi:cad_assembly_psimetal",
+    "psi:cad_assembly_ebony_psimetal",
+    "psi:cad_assembly_ivory_psimetal",
+    "psi:cad_assembly_creative"
+  ]
 }

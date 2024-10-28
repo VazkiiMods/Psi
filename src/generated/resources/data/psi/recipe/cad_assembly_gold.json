@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "I": {
+      "tag": "c:ingots/gold"
+    }
+  },
+  "pattern": [
+    "III",
+    "I  "
+  ],
+  "result": {
+    "count": 1,
+    "id": "psi:cad_assembly_gold"
+  }
+}

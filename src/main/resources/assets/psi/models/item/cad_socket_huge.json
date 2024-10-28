@@ -1,6 +1,6 @@
 {
-	"parent": "minecraft:item/generated",
-	"textures": { 
-		"layer0": "psi:item/cad_socket_huge"
-	}
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "psi:item/cad_socket_huge"
+  }
 }

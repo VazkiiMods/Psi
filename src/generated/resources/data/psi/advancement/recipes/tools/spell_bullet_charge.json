@@ -1,0 +1,33 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_psidust": {
+      "conditions": {
+        "items": [
+          {
+            "items": "#psi:psidust"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "psi:spell_bullet_charge"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_psidust"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "psi:spell_bullet_charge"
+    ]
+  },
+  "sends_telemetry_event": false
+}

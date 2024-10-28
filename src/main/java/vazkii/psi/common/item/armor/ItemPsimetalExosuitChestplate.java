@@ -11,18 +11,17 @@ package vazkii.psi.common.item.armor;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-
 import vazkii.psi.api.exosuit.PsiArmorEvent;
 
 public class ItemPsimetalExosuitChestplate extends ItemPsimetalArmor {
 
-	public ItemPsimetalExosuitChestplate(ArmorItem.Type type, Item.Properties properties) {
-		super(type, properties);
-	}
+    public ItemPsimetalExosuitChestplate(ArmorItem.Type type, Item.Properties properties) {
+        super(type, properties);
+    }
 
-	@Override
-	public String getEvent(ItemStack stack) {
-		return PsiArmorEvent.DAMAGE;
-	}
+    @Override
+    public String getEvent(ItemStack stack) {
+        return PsiArmorEvent.DAMAGE;
+    }
 
 }

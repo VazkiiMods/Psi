@@ -15,8 +15,8 @@ import vazkii.psi.api.internal.IPlayerData;
  */
 public interface IPsiBarDisplay {
 
-	/**
-	 * Whether the PSI bar should be shown while holding this stack.
-	 */
-	boolean shouldShow(IPlayerData data);
+    /**
+     * Whether the PSI bar should be shown while holding this stack.
+     */
+    boolean shouldShow(IPlayerData data);
 }

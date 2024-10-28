@@ -8,10 +8,10 @@
  */
 package vazkii.psi.api.gui;
 
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.eventbus.api.Cancelable;
-import net.minecraftforge.eventbus.api.Event;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.bus.api.Event;
+import net.neoforged.bus.api.ICancellableEvent;
 
 import javax.annotation.Nonnull;
 
@@ -22,18 +22,17 @@ import javax.annotation.Nonnull;
  * Canceling it will result in that HUD part not being rendered
  */
 @OnlyIn(Dist.CLIENT)
-@Cancelable
-public class RenderPsiHudEvent extends Event {
+public class RenderPsiHudEvent extends Event implements ICancellableEvent {
 
-	@Nonnull
-	private final PsiHudElementType type;
+    @Nonnull
+    private final PsiHudElementType type;
 
-	public RenderPsiHudEvent(@Nonnull PsiHudElementType type) {
-		this.type = type;
-	}
+    public RenderPsiHudEvent(@Nonnull PsiHudElementType type) {
+        this.type = type;
+    }
 
-	@Nonnull
-	public PsiHudElementType getType() {
-		return type;
-	}
+    @Nonnull
+    public PsiHudElementType getType() {
+        return type;
+    }
 }

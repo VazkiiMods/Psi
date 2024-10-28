@@ -11,44 +11,38 @@ package vazkii.psi.common.network.message;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.ChatComponent;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
-import net.minecraftforge.network.NetworkEvent;
-
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 import vazkii.psi.client.gui.GuiProgrammer;
+import vazkii.psi.common.lib.LibMisc;
 
-import java.util.function.Supplier;
+public record MessageSpellError(String message, int x, int y) implements CustomPacketPayload {
 
-public class MessageSpellError {
-	private final String message;
-	private final int x;
-	private final int y;
+    public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, "message_spell_error");
+    public static final CustomPacketPayload.Type<MessageSpellError> TYPE = new Type<>(ID);
 
-	public MessageSpellError(String message, int x, int y) {
-		this.message = message;
-		this.x = x;
-		this.y = y;
-	}
+    public static final StreamCodec<RegistryFriendlyByteBuf, MessageSpellError> CODEC = StreamCodec.composite(
+            ByteBufCodecs.STRING_UTF8, MessageSpellError::message,
+            ByteBufCodecs.INT, MessageSpellError::x,
+            ByteBufCodecs.INT, MessageSpellError::y,
+            MessageSpellError::new);
 
-	public MessageSpellError(FriendlyByteBuf buf) {
-		this.message = buf.readUtf();
-		this.x = buf.readInt();
-		this.y = buf.readInt();
-	}
+    @Override
+    public Type<? extends CustomPacketPayload> type() {
+        return TYPE;
+    }
 
-	public void encode(FriendlyByteBuf buf) {
-		buf.writeUtf(message);
-		buf.writeInt(x);
-		buf.writeInt(y);
-	}
-
-	public boolean receive(Supplier<NetworkEvent.Context> context) {
-		context.get().enqueueWork(() -> {
-			ChatComponent chatGui = Minecraft.getInstance().gui.getChat();
-			Component chatMessage = Component.translatable(message, GuiProgrammer.convertIntToLetter(x), y).setStyle(Style.EMPTY.withColor(ChatFormatting.RED));
-			chatGui.addMessage(chatMessage);
-		});
-		return true;
-	}
+    public void handle(IPayloadContext ctx) {
+        ctx.enqueueWork(() -> {
+            ChatComponent chatGui = Minecraft.getInstance().gui.getChat();
+            Component chatMessage = Component.translatable(message, GuiProgrammer.convertIntToLetter(x), y).setStyle(Style.EMPTY.withColor(ChatFormatting.RED));
+            chatGui.addMessage(chatMessage);
+        });
+    }
 }

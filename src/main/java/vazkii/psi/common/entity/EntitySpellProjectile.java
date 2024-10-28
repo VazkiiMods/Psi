@@ -9,8 +9,7 @@
 package vazkii.psi.common.entity;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -25,268 +24,252 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.network.NetworkHooks;
-import net.minecraftforge.registries.ObjectHolder;
-
 import vazkii.psi.api.internal.PsiRenderHelper;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.ISpellAcceptor;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.common.Psi;
-import vazkii.psi.common.lib.LibEntityNames;
-import vazkii.psi.common.lib.LibResources;
 
 import javax.annotation.Nonnull;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
 
 public class EntitySpellProjectile extends ThrowableProjectile {
-	@ObjectHolder(registryName = "minecraft:entity_type", value = LibResources.PREFIX_MOD + LibEntityNames.SPELL_PROJECTILE)
-	public static EntityType<EntitySpellProjectile> TYPE;
+    protected static final EntityDataAccessor<Optional<UUID>> ATTACKTARGET_UUID = SynchedEntityData.defineId(EntitySpellProjectile.class, EntityDataSerializers.OPTIONAL_UUID);
+    private static final String TAG_COLORIZER = "colorizer";
+    private static final String TAG_BULLET = "bullet";
+    private static final String TAG_TIME_ALIVE = "timeAlive";
 
-	private static final String TAG_COLORIZER = "colorizer";
-	private static final String TAG_BULLET = "bullet";
-	private static final String TAG_TIME_ALIVE = "timeAlive";
+    private static final String TAG_LAST_MOTION_X = "lastMotionX";
+    private static final String TAG_LAST_MOTION_Y = "lastMotionY";
+    private static final String TAG_LAST_MOTION_Z = "lastMotionZ";
 
-	private static final String TAG_LAST_MOTION_X = "lastMotionX";
-	private static final String TAG_LAST_MOTION_Y = "lastMotionY";
-	private static final String TAG_LAST_MOTION_Z = "lastMotionZ";
+    private static final EntityDataAccessor<ItemStack> COLORIZER_DATA = SynchedEntityData.defineId(EntitySpellProjectile.class, EntityDataSerializers.ITEM_STACK);
+    private static final EntityDataAccessor<ItemStack> BULLET_DATA = SynchedEntityData.defineId(EntitySpellProjectile.class, EntityDataSerializers.ITEM_STACK);
+    private static final EntityDataAccessor<Optional<UUID>> CASTER_UUID = SynchedEntityData.defineId(EntitySpellProjectile.class, EntityDataSerializers.OPTIONAL_UUID);
+    public SpellContext context;
+    public int timeAlive;
 
-	private static final EntityDataAccessor<ItemStack> COLORIZER_DATA = SynchedEntityData.defineId(EntitySpellProjectile.class, EntityDataSerializers.ITEM_STACK);
-	private static final EntityDataAccessor<ItemStack> BULLET_DATA = SynchedEntityData.defineId(EntitySpellProjectile.class, EntityDataSerializers.ITEM_STACK);
-	private static final EntityDataAccessor<Optional<UUID>> CASTER_UUID = SynchedEntityData.defineId(EntitySpellProjectile.class, EntityDataSerializers.OPTIONAL_UUID);
-	protected static final EntityDataAccessor<Optional<UUID>> ATTACKTARGET_UUID = SynchedEntityData.defineId(EntitySpellProjectile.class, EntityDataSerializers.OPTIONAL_UUID);
+    public EntitySpellProjectile(EntityType<? extends ThrowableProjectile> type, Level worldIn) {
+        super(type, worldIn);
+    }
 
-	public SpellContext context;
-	public int timeAlive;
+    protected EntitySpellProjectile(EntityType<? extends ThrowableProjectile> type, Level world, LivingEntity thrower) {
+        super(type, thrower, world);
 
-	public EntitySpellProjectile(EntityType<? extends ThrowableProjectile> type, Level worldIn) {
-		super(type, worldIn);
-	}
+        setOwner(thrower);
+        setRot(thrower.getYRot() + 180, -thrower.getXRot());
+        float f = 1.5F;
+        double mx = Mth.sin(getYRot() / 180.0F * (float) Math.PI) * Mth.cos(getXRot() / 180.0F * (float) Math.PI) * f / 2D;
+        double mz = -(Mth.cos(getYRot() / 180.0F * (float) Math.PI) * Mth.cos(getXRot() / 180.0F * (float) Math.PI) * f) / 2D;
+        double my = Mth.sin(getXRot() / 180.0F * (float) Math.PI) * f / 2D;
+        this.push(mx, my, mz);
+    }
 
-	protected EntitySpellProjectile(EntityType<? extends ThrowableProjectile> type, Level world, LivingEntity thrower) {
-		super(type, thrower, world);
+    public EntitySpellProjectile(Level world, LivingEntity thrower) {
+        this(ModEntities.spellProjectile, world, thrower);
+    }
 
-		setOwner(thrower);
-		setRot(thrower.getYRot() + 180, -thrower.getXRot());
-		float f = 1.5F;
-		double mx = Mth.sin(getYRot() / 180.0F * (float) Math.PI) * Mth.cos(getXRot() / 180.0F * (float) Math.PI) * f / 2D;
-		double mz = -(Mth.cos(getYRot() / 180.0F * (float) Math.PI) * Mth.cos(getXRot() / 180.0F * (float) Math.PI) * f) / 2D;
-		double my = Mth.sin(getXRot() / 180.0F * (float) Math.PI) * f / 2D;
-		this.push(mx, my, mz);
-	}
+    public EntitySpellProjectile setInfo(Player player, ItemStack colorizer, ItemStack bullet) {
+        entityData.set(COLORIZER_DATA, colorizer);
+        entityData.set(BULLET_DATA, bullet.copy());
+        entityData.set(CASTER_UUID, Optional.of(player.getUUID()));
+        entityData.set(ATTACKTARGET_UUID, Optional.empty());
+        return this;
+    }
 
-	public EntitySpellProjectile(Level world, LivingEntity thrower) {
-		this(TYPE, world, thrower);
-	}
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder pBuilder) {
+        pBuilder.define(COLORIZER_DATA, ItemStack.EMPTY);
+        pBuilder.define(BULLET_DATA, ItemStack.EMPTY);
+        pBuilder.define(CASTER_UUID, Optional.empty());
+        pBuilder.define(ATTACKTARGET_UUID, Optional.empty());
+    }
 
-	public EntitySpellProjectile setInfo(Player player, ItemStack colorizer, ItemStack bullet) {
-		entityData.set(COLORIZER_DATA, colorizer);
-		entityData.set(BULLET_DATA, bullet.copy());
-		entityData.set(CASTER_UUID, Optional.of(player.getUUID()));
-		entityData.set(ATTACKTARGET_UUID, Optional.empty());
-		return this;
-	}
+    @Override
+    public void addAdditionalSaveData(CompoundTag tagCompound) {
+        super.addAdditionalSaveData(tagCompound);
 
-	@Override
-	protected void defineSynchedData() {
-		entityData.define(COLORIZER_DATA, ItemStack.EMPTY);
-		entityData.define(BULLET_DATA, ItemStack.EMPTY);
-		entityData.define(CASTER_UUID, Optional.empty());
-		entityData.define(ATTACKTARGET_UUID, Optional.empty());
-	}
+        Tag colorizerCmp = new CompoundTag();
+        ItemStack colorizer = entityData.get(COLORIZER_DATA);
+        if (!colorizer.isEmpty()) {
+            colorizerCmp = colorizer.save(this.registryAccess(), colorizerCmp);
+        }
+        tagCompound.put(TAG_COLORIZER, colorizerCmp);
 
-	@Override
-	public void addAdditionalSaveData(CompoundTag tagCompound) {
-		super.addAdditionalSaveData(tagCompound);
+        Tag bulletCmp = new CompoundTag();
+        ItemStack bullet = entityData.get(BULLET_DATA);
+        if (!bullet.isEmpty()) {
+            bulletCmp = bullet.save(this.registryAccess(), bulletCmp);
+        }
+        tagCompound.put(TAG_BULLET, bulletCmp);
 
-		CompoundTag colorizerCmp = new CompoundTag();
-		ItemStack colorizer = entityData.get(COLORIZER_DATA);
-		if(!colorizer.isEmpty()) {
-			colorizerCmp = colorizer.save(colorizerCmp);
-		}
-		tagCompound.put(TAG_COLORIZER, colorizerCmp);
+        tagCompound.putInt(TAG_TIME_ALIVE, timeAlive);
 
-		CompoundTag bulletCmp = new CompoundTag();
-		ItemStack bullet = entityData.get(BULLET_DATA);
-		if(!bullet.isEmpty()) {
-			bulletCmp = bullet.save(bulletCmp);
-		}
-		tagCompound.put(TAG_BULLET, bulletCmp);
+        tagCompound.putDouble(TAG_LAST_MOTION_X, getDeltaMovement().x());
+        tagCompound.putDouble(TAG_LAST_MOTION_Y, getDeltaMovement().y());
+        tagCompound.putDouble(TAG_LAST_MOTION_Z, getDeltaMovement().z());
+    }
 
-		tagCompound.putInt(TAG_TIME_ALIVE, timeAlive);
+    @Override
+    public void readAdditionalSaveData(CompoundTag tagCompound) {
+        super.readAdditionalSaveData(tagCompound);
 
-		tagCompound.putDouble(TAG_LAST_MOTION_X, getDeltaMovement().x());
-		tagCompound.putDouble(TAG_LAST_MOTION_Y, getDeltaMovement().y());
-		tagCompound.putDouble(TAG_LAST_MOTION_Z, getDeltaMovement().z());
-	}
+        CompoundTag colorizerCmp = tagCompound.getCompound(TAG_COLORIZER);
+        ItemStack colorizer = ItemStack.parseOptional(this.registryAccess(), colorizerCmp);
+        entityData.set(COLORIZER_DATA, colorizer);
 
-	@Override
-	public void readAdditionalSaveData(CompoundTag tagCompound) {
-		super.readAdditionalSaveData(tagCompound);
+        CompoundTag bulletCmp = tagCompound.getCompound(TAG_BULLET);
+        ItemStack bullet = ItemStack.parseOptional(this.registryAccess(), bulletCmp);
+        entityData.set(BULLET_DATA, bullet);
 
-		CompoundTag colorizerCmp = tagCompound.getCompound(TAG_COLORIZER);
-		ItemStack colorizer = ItemStack.of(colorizerCmp);
-		entityData.set(COLORIZER_DATA, colorizer);
+        Entity thrower = getOwner();
+        if (thrower instanceof Player) {
+            entityData.set(CASTER_UUID, Optional.of(thrower.getUUID()));
+        }
 
-		CompoundTag bulletCmp = tagCompound.getCompound(TAG_BULLET);
-		ItemStack bullet = ItemStack.of(bulletCmp);
-		entityData.set(BULLET_DATA, bullet);
+        timeAlive = tagCompound.getInt(TAG_TIME_ALIVE);
 
-		Entity thrower = getOwner();
-		if(thrower instanceof Player) {
-			entityData.set(CASTER_UUID, Optional.of(thrower.getUUID()));
-		}
+        double lastMotionX = tagCompound.getDouble(TAG_LAST_MOTION_X);
+        double lastMotionY = tagCompound.getDouble(TAG_LAST_MOTION_Y);
+        double lastMotionZ = tagCompound.getDouble(TAG_LAST_MOTION_Z);
+        setDeltaMovement(lastMotionX, lastMotionY, lastMotionZ);
+    }
 
-		timeAlive = tagCompound.getInt(TAG_TIME_ALIVE);
+    @Override
+    public void tick() {
+        super.tick();
 
-		double lastMotionX = tagCompound.getDouble(TAG_LAST_MOTION_X);
-		double lastMotionY = tagCompound.getDouble(TAG_LAST_MOTION_Y);
-		double lastMotionZ = tagCompound.getDouble(TAG_LAST_MOTION_Z);
-		setDeltaMovement(lastMotionX, lastMotionY, lastMotionZ);
-	}
+        int timeAlive = tickCount;
+        if (timeAlive > getLiveTime()) {
+            remove(RemovalReason.DISCARDED);
+        }
 
-	@Override
-	public void tick() {
-		super.tick();
+        ItemStack colorizer = entityData.get(COLORIZER_DATA);
+        int colorVal = Psi.proxy.getColorForColorizer(colorizer);
 
-		int timeAlive = tickCount;
-		if(timeAlive > getLiveTime()) {
-			remove(RemovalReason.DISCARDED);
-		}
+        float r = PsiRenderHelper.r(colorVal) / 255F;
+        float g = PsiRenderHelper.g(colorVal) / 255F;
+        float b = PsiRenderHelper.b(colorVal) / 255F;
 
-		ItemStack colorizer = entityData.get(COLORIZER_DATA);
-		int colorVal = Psi.proxy.getColorForColorizer(colorizer);
+        double x = getX();
+        double y = getY();
+        double z = getZ();
 
-		float r = PsiRenderHelper.r(colorVal) / 255F;
-		float g = PsiRenderHelper.g(colorVal) / 255F;
-		float b = PsiRenderHelper.b(colorVal) / 255F;
+        Vector3 lookOrig = new Vector3(getDeltaMovement()).normalize();
+        for (int i = 0; i < getParticleCount(); i++) {
+            Vector3 look = lookOrig.copy();
+            double spread = 0.6;
+            double dist = 0.15;
+            if (this instanceof EntitySpellGrenade) {
+                look.y += 1;
+                dist = 0.05;
+            }
 
-		double x = getX();
-		double y = getY();
-		double z = getZ();
+            look.x += (Math.random() - 0.5) * spread;
+            look.y += (Math.random() - 0.5) * spread;
+            look.z += (Math.random() - 0.5) * spread;
 
-		Vector3 lookOrig = new Vector3(getDeltaMovement()).normalize();
-		for(int i = 0; i < getParticleCount(); i++) {
-			Vector3 look = lookOrig.copy();
-			double spread = 0.6;
-			double dist = 0.15;
-			if(this instanceof EntitySpellGrenade) {
-				look.y += 1;
-				dist = 0.05;
-			}
+            look.normalize().multiply(dist);
 
-			look.x += (Math.random() - 0.5) * spread;
-			look.y += (Math.random() - 0.5) * spread;
-			look.z += (Math.random() - 0.5) * spread;
+            if (level().isClientSide()) {
+                Psi.proxy.sparkleFX(x, y, z, r, g, b, (float) look.x, (float) look.y, (float) look.z, 1.2F, 12);
+            }
 
-			look.normalize().multiply(dist);
+        }
+    }
 
-			if(level().isClientSide()) {
-				Psi.proxy.sparkleFX(level(), x, y, z, r, g, b, (float) look.x, (float) look.y, (float) look.z, 1.2F, 12);
-			}
+    public int getLiveTime() {
+        return 600;
+    }
 
-		}
-	}
+    public int getParticleCount() {
+        return 5;
+    }
 
-	public int getLiveTime() {
-		return 600;
-	}
+    @Override
+    protected void onHit(@Nonnull HitResult pos) {
+        if (pos instanceof EntityHitResult && ((EntityHitResult) pos).getEntity() instanceof LivingEntity) {
+            cast((SpellContext context) -> {
+                if (context != null) {
+                    context.attackedEntity = (LivingEntity) ((EntityHitResult) pos).getEntity();
+                }
+            });
+        } else {
+            cast();
+        }
+    }
 
-	public int getParticleCount() {
-		return 5;
-	}
+    public void cast() {
+        cast(null);
+    }
 
-	@Override
-	protected void onHit(@Nonnull HitResult pos) {
-		if(pos instanceof EntityHitResult && ((EntityHitResult) pos).getEntity() instanceof LivingEntity) {
-			cast((SpellContext context) -> {
-				if(context != null) {
-					context.attackedEntity = (LivingEntity) ((EntityHitResult) pos).getEntity();
-				}
-			});
-		} else {
-			cast();
-		}
-	}
+    public void cast(Consumer<SpellContext> callback) {
+        Entity thrower = getOwner();
+        boolean canCast = false;
 
-	public void cast() {
-		cast(null);
-	}
+        if (thrower instanceof Player) {
+            ItemStack spellContainer = entityData.get(BULLET_DATA);
+            if (!spellContainer.isEmpty() && ISpellAcceptor.isContainer(spellContainer)) {
+                Spell spell = ISpellAcceptor.acceptor(spellContainer).getSpell();
+                if (spell != null) {
+                    canCast = true;
+                    if (context == null) {
+                        context = new SpellContext().setPlayer((Player) thrower).setFocalPoint(this).setSpell(spell);
+                    }
+                    context.setFocalPoint(this);
+                }
+            }
+        }
 
-	public void cast(Consumer<SpellContext> callback) {
-		Entity thrower = getOwner();
-		boolean canCast = false;
+        if (callback != null) {
+            callback.accept(context);
+        }
 
-		if(thrower instanceof Player) {
-			ItemStack spellContainer = entityData.get(BULLET_DATA);
-			if(!spellContainer.isEmpty() && ISpellAcceptor.isContainer(spellContainer)) {
-				Spell spell = ISpellAcceptor.acceptor(spellContainer).getSpell();
-				if(spell != null) {
-					canCast = true;
-					if(context == null) {
-						context = new SpellContext().setPlayer((Player) thrower).setFocalPoint(this).setSpell(spell);
-					}
-					context.setFocalPoint(this);
-				}
-			}
-		}
+        if (canCast && context != null) {
+            context.cspell.safeExecute(context);
+        }
 
-		if(callback != null) {
-			callback.accept(context);
-		}
+        remove(RemovalReason.DISCARDED);
+    }
 
-		if(canCast && context != null) {
-			context.cspell.safeExecute(context);
-		}
+    @Override
+    public Entity getOwner() {
+        Entity superThrower = super.getOwner();
+        if (superThrower != null) {
+            return superThrower;
+        }
 
-		remove(RemovalReason.DISCARDED);
-	}
+        return entityData.get(CASTER_UUID)
+                .map(u -> getCommandSenderWorld().getPlayerByUUID(u))
+                .orElse(null);
+    }
 
-	@Override
-	public Entity getOwner() {
-		Entity superThrower = super.getOwner();
-		if(superThrower != null) {
-			return superThrower;
-		}
+    public LivingEntity getAttackTarget() {
+        double radiusVal = SpellContext.MAX_DISTANCE;
+        Vector3 positionVal = Vector3.fromVec3d(this.position());
+        AABB axis = new AABB(positionVal.x - radiusVal, positionVal.y - radiusVal, positionVal.z - radiusVal, positionVal.x + radiusVal, positionVal.y + radiusVal, positionVal.z + radiusVal);
+        return entityData.get(ATTACKTARGET_UUID)
+                .map(u -> {
+                    List<LivingEntity> a = getCommandSenderWorld().getEntitiesOfClass(LivingEntity.class, axis, (Entity e) -> e.getUUID().equals(u));
+                    if (!a.isEmpty()) {
+                        return a.get(0);
+                    }
+                    return null;
+                })
+                .orElse(null);
+    }
 
-		return entityData.get(CASTER_UUID)
-				.map(u -> getCommandSenderWorld().getPlayerByUUID(u))
-				.orElse(null);
-	}
+    @Override
+    protected double getDefaultGravity() {
+        return 0D;
+    }
 
-	public LivingEntity getAttackTarget() {
-		double radiusVal = SpellContext.MAX_DISTANCE;
-		Vector3 positionVal = Vector3.fromVec3d(this.position());
-		AABB axis = new AABB(positionVal.x - radiusVal, positionVal.y - radiusVal, positionVal.z - radiusVal, positionVal.x + radiusVal, positionVal.y + radiusVal, positionVal.z + radiusVal);
-		return entityData.get(ATTACKTARGET_UUID)
-				.map(u -> {
-					List<LivingEntity> a = getCommandSenderWorld().getEntitiesOfClass(LivingEntity.class, axis, (Entity e) -> e.getUUID().equals(u));
-					if(!a.isEmpty()) {
-						return a.get(0);
-					}
-					return null;
-				})
-				.orElse(null);
-	}
-
-	@Override
-	protected float getGravity() {
-		return 0F;
-	}
-
-	@Override
-	public boolean isIgnoringBlockTriggers() {
-		return true;
-	}
-
-	@Nonnull
-	@Override
-	public Packet<ClientGamePacketListener> getAddEntityPacket() {
-		return NetworkHooks.getEntitySpawningPacket(this);
-	}
+    @Override
+    public boolean isIgnoringBlockTriggers() {
+        return true;
+    }
 }

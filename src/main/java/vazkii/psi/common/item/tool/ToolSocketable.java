@@ -8,121 +8,105 @@
  */
 package vazkii.psi.common.item.tool;
 
-import net.minecraft.core.Direction;
+import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.common.util.LazyOptional;
-
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.neoforged.neoforge.capabilities.ICapabilityProvider;
+import net.neoforged.neoforge.capabilities.ItemCapability;
+import net.neoforged.neoforge.items.ComponentItemHandler;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.IPsiBarDisplay;
 import vazkii.psi.api.cad.ISocketable;
 import vazkii.psi.api.internal.IPlayerData;
 import vazkii.psi.api.spell.ISpellAcceptor;
 import vazkii.psi.api.spell.Spell;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import vazkii.psi.common.item.base.ModItems;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-public class ToolSocketable implements ICapabilityProvider, ISocketable, IPsiBarDisplay, ISpellAcceptor {
-	protected final ItemStack tool;
-	protected final int slots;
+public class ToolSocketable implements ICapabilityProvider<ItemCapability<?, Void>, Void, ToolSocketable>, ISocketable, IPsiBarDisplay, ISpellAcceptor {
+    protected final ItemStack tool;
+    private final ComponentItemHandler toolHandler;;
+    protected final int slots;
 
-	private final LazyOptional<?> capOptional;
+    public ToolSocketable(ItemStack tool, int slots) {
+        this.tool = tool;
+        this.slots = Mth.clamp(slots, 1, MAX_ASSEMBLER_SLOTS - 1);
+        this.toolHandler = new ComponentItemHandler(this.tool, ModItems.TAG_BULLETS.get(), this.slots);
+    }
 
-	public ToolSocketable(ItemStack tool, int slots) {
-		this.tool = tool;
-		this.slots = Mth.clamp(slots, 1, MAX_ASSEMBLER_SLOTS - 1);
-		this.capOptional = LazyOptional.of(() -> this);
-	}
+    @Override
+    public ToolSocketable getCapability(ItemCapability<?, Void> capability, Void facing) {
+        if (capability == PsiAPI.SOCKETABLE_CAPABILITY
+                || capability == PsiAPI.PSI_BAR_DISPLAY_CAPABILITY
+                || capability == PsiAPI.SPELL_ACCEPTOR_CAPABILITY) {
+            return this;
+        }
+        return null;
+    }
 
-	@Nonnull
-	@Override
-	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-		if(cap == PsiAPI.SOCKETABLE_CAPABILITY
-				|| cap == PsiAPI.PSI_BAR_DISPLAY_CAPABILITY
-				|| cap == PsiAPI.SPELL_ACCEPTOR_CAPABILITY) {
-			return capOptional.cast();
-		}
-		return LazyOptional.empty();
-	}
+    @Override
+    public boolean isSocketSlotAvailable(int slot) {
+        return slot < slots && slot >= 0;
+    }
 
-	@Override
-	public boolean isSocketSlotAvailable(int slot) {
-		return slot < slots && slot >= 0;
-	}
+    @Override
+    public List<Integer> getRadialMenuSlots() {
+        List<Integer> list = new ArrayList<>();
+        for (int i = 0; i <= slots; i++) {
+            list.add(i);
+        }
+        return list;
+    }
 
-	@Override
-	public List<Integer> getRadialMenuSlots() {
-		List<Integer> list = new ArrayList<>();
-		for(int i = 0; i <= slots; i++) {
-			list.add(i);
-		}
-		return list;
-	}
+    @Override
+    public ItemStack getBulletInSocket(int slot) {
+        return toolHandler.getStackInSlot(slot);
+    }
 
-	@Override
-	public ItemStack getBulletInSocket(int slot) {
-		String name = IPsimetalTool.TAG_BULLET_PREFIX + slot;
-		CompoundTag cmp = tool.getOrCreateTag().getCompound(name);
+    @Override
+    public void setBulletInSocket(int slot, ItemStack bullet) {
+        toolHandler.setStackInSlot(slot, bullet);
+    }
 
-		if(cmp.isEmpty()) {
-			return ItemStack.EMPTY;
-		}
+    @Override
+    public int getSelectedSlot() {
+        return tool.getOrDefault(ModItems.TAG_SELECTED_SLOT, 0);
+    }
 
-		return ItemStack.of(cmp);
-	}
+    @Override
+    public void setSelectedSlot(int slot) {
+        tool.set(ModItems.TAG_SELECTED_SLOT, slot);
+    }
 
-	@Override
-	public void setBulletInSocket(int slot, ItemStack bullet) {
-		String name = IPsimetalTool.TAG_BULLET_PREFIX + slot;
-		CompoundTag cmp = new CompoundTag();
+    @Override
+    public int getLastSlot() {
+        return slots - 1;
+    }
 
-		if(!bullet.isEmpty()) {
-			cmp = bullet.save(cmp);
-		}
+    @Override
+    public boolean shouldShow(IPlayerData data) {
+        return false;
+    }
 
-		tool.getOrCreateTag().put(name, cmp);
-	}
+    @Override
+    public void setSpell(Player player, Spell spell) {
+        int slot = getSelectedSlot();
+        ItemStack bullet = getBulletInSocket(slot);
+        if (!bullet.isEmpty() && ISpellAcceptor.isAcceptor(bullet)) {
+            ISpellAcceptor.acceptor(bullet).setSpell(player, spell);
+            setBulletInSocket(slot, bullet);
+        }
+    }
 
-	@Override
-	public int getSelectedSlot() {
-		return tool.getOrCreateTag().getInt(IPsimetalTool.TAG_SELECTED_SLOT);
-	}
-
-	@Override
-	public void setSelectedSlot(int slot) {
-		tool.getOrCreateTag().putInt(IPsimetalTool.TAG_SELECTED_SLOT, slot);
-	}
-
-	@Override
-	public int getLastSlot() {
-		return slots - 1;
-	}
-
-	@Override
-	public boolean shouldShow(IPlayerData data) {
-		return false;
-	}
-
-	@Override
-	public void setSpell(Player player, Spell spell) {
-		int slot = getSelectedSlot();
-		ItemStack bullet = getBulletInSocket(slot);
-		if(!bullet.isEmpty() && ISpellAcceptor.isAcceptor(bullet)) {
-			ISpellAcceptor.acceptor(bullet).setSpell(player, spell);
-			setBulletInSocket(slot, bullet);
-		}
-	}
-
-	@Override
-	public boolean castableFromSocket() {
-		return false;
-	}
+    @Override
+    public boolean castableFromSocket() {
+        return false;
+    }
 }

@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "D": {
+      "tag": "c:dusts/redstone"
+    },
+    "I": {
+      "tag": "c:ingots/psimetal"
+    }
+  },
+  "pattern": [
+    " I ",
+    "IDI",
+    " I "
+  ],
+  "result": {
+    "count": 1,
+    "id": "psi:cad_core_overclocked"
+  }
+}

@@ -9,63 +9,42 @@
 package vazkii.psi.common.network.message;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.network.NetworkEvent;
-
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 import vazkii.psi.api.internal.VanillaPacketDispatcher;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.common.block.tile.TileProgrammer;
+import vazkii.psi.common.lib.LibMisc;
 
-import java.util.function.Supplier;
+public record MessageSpellModified(BlockPos pos, Spell spell) implements CustomPacketPayload {
 
-public class MessageSpellModified {
+    public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, "message_spell_modified");
+    public static final CustomPacketPayload.Type<MessageSpellModified> TYPE = new Type<>(ID);
 
-	private final BlockPos pos;
-	private final Spell spell;
+    public static final StreamCodec<RegistryFriendlyByteBuf, MessageSpellModified> CODEC = StreamCodec.composite(
+            BlockPos.STREAM_CODEC, MessageSpellModified::pos,
+            Spell.STREAM_CODEC, MessageSpellModified::spell,
+            MessageSpellModified::new);
 
-	public MessageSpellModified(BlockPos pos, Spell spell) {
-		this.pos = pos;
-		this.spell = spell;
-	}
+    @Override
+    public Type<? extends CustomPacketPayload> type() {
+        return TYPE;
+    }
 
-	public MessageSpellModified(FriendlyByteBuf buf) {
-		this.pos = buf.readBlockPos();
-		this.spell = readSpell(buf);
-	}
-
-	private static Spell readSpell(FriendlyByteBuf buf) {
-		CompoundTag cmp = buf.readNbt();
-		return Spell.createFromNBT(cmp);
-	}
-
-	private static void writeSpell(FriendlyByteBuf buf, Spell spell) {
-		CompoundTag cmp = new CompoundTag();
-		if(spell != null) {
-			spell.writeToNBT(cmp);
-		}
-
-		buf.writeNbt(cmp);
-	}
-
-	public void encode(FriendlyByteBuf buf) {
-		buf.writeBlockPos(pos);
-		writeSpell(buf, spell);
-	}
-
-	public void receive(Supplier<NetworkEvent.Context> context) {
-		context.get().enqueueWork(() -> {
-			BlockEntity te = context.get().getSender().level().getBlockEntity(pos);
-			if(te instanceof TileProgrammer) {
-				TileProgrammer tile = (TileProgrammer) te;
-				if(tile.playerLock == null || tile.playerLock.isEmpty() || tile.playerLock.equals(context.get().getSender().getName().getString())) {
-					tile.spell = spell;
-					tile.onSpellChanged();
-					VanillaPacketDispatcher.dispatchTEToNearbyPlayers(tile);
-				}
-			}
-		});
-	}
-
+    public void handle(IPayloadContext ctx) {
+        ctx.enqueueWork(() -> {
+            BlockEntity te = ctx.player().level().getBlockEntity(pos);
+            if (te instanceof TileProgrammer tile) {
+                if (tile.playerLock == null || tile.playerLock.isEmpty() || tile.playerLock.equals(ctx.player().getName().getString())) {
+                    tile.spell = spell;
+                    tile.onSpellChanged();
+                    VanillaPacketDispatcher.dispatchTEToNearbyPlayers(tile);
+                }
+            }
+        });
+    }
 }

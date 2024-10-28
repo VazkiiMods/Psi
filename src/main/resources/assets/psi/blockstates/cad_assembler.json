@@ -1,8 +1,19 @@
 {
   "variants": {
-    "facing=north": { "model": "psi:block/cad_assembler", "y": 180 },
-    "facing=south": { "model": "psi:block/cad_assembler" },
-    "facing=west": { "model": "psi:block/cad_assembler", "y": 90 },
-    "facing=east": { "model": "psi:block/cad_assembler", "y": 270 }
+    "facing=north": {
+      "model": "psi:block/cad_assembler",
+      "y": 180
+    },
+    "facing=south": {
+      "model": "psi:block/cad_assembler"
+    },
+    "facing=west": {
+      "model": "psi:block/cad_assembler",
+      "y": 90
+    },
+    "facing=east": {
+      "model": "psi:block/cad_assembler",
+      "y": 270
+    }
   }
 }

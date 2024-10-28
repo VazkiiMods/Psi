@@ -11,17 +11,9 @@ package vazkii.psi.common.spell.trick.block;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-
 import vazkii.psi.api.internal.MathHelper;
 import vazkii.psi.api.internal.Vector3;
-import vazkii.psi.api.spell.EnumSpellStat;
-import vazkii.psi.api.spell.Spell;
-import vazkii.psi.api.spell.SpellCompilationException;
-import vazkii.psi.api.spell.SpellContext;
-import vazkii.psi.api.spell.SpellMetadata;
-import vazkii.psi.api.spell.SpellParam;
-import vazkii.psi.api.spell.SpellRuntimeException;
-import vazkii.psi.api.spell.StatLabel;
+import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.param.ParamVector;
 import vazkii.psi.api.spell.piece.PieceTrick;
@@ -30,69 +22,69 @@ import vazkii.psi.common.block.base.ModBlocks;
 
 public class PieceTrickConjureBlockSequence extends PieceTrick {
 
-	SpellParam<Vector3> position;
-	SpellParam<Vector3> target;
-	SpellParam<Number> maxBlocks;
-	SpellParam<Number> time;
+    SpellParam<Vector3> position;
+    SpellParam<Vector3> target;
+    SpellParam<Number> maxBlocks;
+    SpellParam<Number> time;
 
-	public PieceTrickConjureBlockSequence(Spell spell) {
-		super(spell);
-		setStatLabel(EnumSpellStat.POTENCY, new StatLabel(SpellParam.GENERIC_NAME_MAX, true).add(15));
-		setStatLabel(EnumSpellStat.COST, new StatLabel(SpellParam.GENERIC_NAME_MAX, true).sub(1).parenthesize().mul(14).sub(24));
-	}
+    public PieceTrickConjureBlockSequence(Spell spell) {
+        super(spell);
+        setStatLabel(EnumSpellStat.POTENCY, new StatLabel(SpellParam.GENERIC_NAME_MAX, true).add(15));
+        setStatLabel(EnumSpellStat.COST, new StatLabel(SpellParam.GENERIC_NAME_MAX, true).sub(1).parenthesize().mul(14).sub(24));
+    }
 
-	@Override
-	public void initParams() {
-		addParam(position = new ParamVector(SpellParam.GENERIC_NAME_POSITION, SpellParam.BLUE, false, false));
-		addParam(target = new ParamVector(SpellParam.GENERIC_NAME_TARGET, SpellParam.GREEN, false, false));
-		addParam(maxBlocks = new ParamNumber(SpellParam.GENERIC_NAME_MAX, SpellParam.RED, false, true));
-		addParam(time = new ParamNumber(SpellParam.GENERIC_NAME_TIME, SpellParam.PURPLE, true, false));
-	}
+    @Override
+    public void initParams() {
+        addParam(position = new ParamVector(SpellParam.GENERIC_NAME_POSITION, SpellParam.BLUE, false, false));
+        addParam(target = new ParamVector(SpellParam.GENERIC_NAME_TARGET, SpellParam.GREEN, false, false));
+        addParam(maxBlocks = new ParamNumber(SpellParam.GENERIC_NAME_MAX, SpellParam.RED, false, true));
+        addParam(time = new ParamNumber(SpellParam.GENERIC_NAME_TIME, SpellParam.PURPLE, true, false));
+    }
 
-	@Override
-	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
-		super.addToMetadata(meta);
+    @Override
+    public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
+        super.addToMetadata(meta);
 
-		Double maxBlocksVal = this.<Double>getParamEvaluation(maxBlocks);
-		if(maxBlocksVal == null || maxBlocksVal <= 0) {
-			throw new SpellCompilationException(SpellCompilationException.NON_POSITIVE_VALUE, x, y);
-		}
+        Double maxBlocksVal = this.<Double>getParamEvaluation(maxBlocks);
+        if (maxBlocksVal == null || maxBlocksVal <= 0) {
+            throw new SpellCompilationException(SpellCompilationException.NON_POSITIVE_VALUE, x, y);
+        }
 
-		meta.addStat(EnumSpellStat.POTENCY, (int) (maxBlocksVal * 15));
-		meta.addStat(EnumSpellStat.COST, (int) ((24 + (maxBlocksVal - 1) * 14)));
-	}
+        meta.addStat(EnumSpellStat.POTENCY, (int) (maxBlocksVal * 15));
+        meta.addStat(EnumSpellStat.COST, (int) ((24 + (maxBlocksVal - 1) * 14)));
+    }
 
-	@Override
-	public Object execute(SpellContext context) throws SpellRuntimeException {
-		Vector3 positionVal = this.getParamValue(context, position);
-		Vector3 targetVal = this.getParamValue(context, target);
-		int maxBlocksInt = this.getParamValue(context, maxBlocks).intValue();
-		Number timeVal = this.getParamValue(context, time);
+    @Override
+    public Object execute(SpellContext context) throws SpellRuntimeException {
+        Vector3 positionVal = this.getParamValue(context, position);
+        Vector3 targetVal = this.getParamValue(context, target);
+        int maxBlocksInt = this.getParamValue(context, maxBlocks).intValue();
+        Number timeVal = this.getParamValue(context, time);
 
-		if(positionVal == null) {
-			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
-		}
+        if (positionVal == null) {
+            throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
+        }
 
-		Vector3 targetNorm = targetVal.copy().normalize();
-		Level world = context.focalPoint.getCommandSenderWorld();
+        Vector3 targetNorm = targetVal.copy().normalize();
+        Level world = context.focalPoint.getCommandSenderWorld();
 
-		for(BlockPos blockPos : MathHelper.getBlocksAlongRay(positionVal.toVec3D(), positionVal.copy().add(targetNorm.copy().multiply(maxBlocksInt)).toVec3D(), maxBlocksInt)) {
-			if(!context.isInRadius(Vector3.fromBlockPos(blockPos))) {
-				throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
-			}
+        for (BlockPos blockPos : MathHelper.getBlocksAlongRay(positionVal.toVec3D(), positionVal.copy().add(targetNorm.copy().multiply(maxBlocksInt)).toVec3D(), maxBlocksInt)) {
+            if (!context.isInRadius(Vector3.fromBlockPos(blockPos))) {
+                throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
+            }
 
-			if(!world.mayInteract(context.caster, blockPos)) {
-				continue;
-			}
+            if (!world.mayInteract(context.caster, blockPos)) {
+                continue;
+            }
 
-			PieceTrickConjureBlock.conjure(context, timeVal, blockPos, world, messWithState(ModBlocks.conjured.defaultBlockState()));
-		}
+            PieceTrickConjureBlock.conjure(context, timeVal, blockPos, world, messWithState(ModBlocks.conjured.defaultBlockState()));
+        }
 
-		return null;
-	}
+        return null;
+    }
 
-	public BlockState messWithState(BlockState state) {
-		return state.setValue(BlockConjured.SOLID, true);
-	}
+    public BlockState messWithState(BlockState state) {
+        return state.setValue(BlockConjured.SOLID, true);
+    }
 
 }

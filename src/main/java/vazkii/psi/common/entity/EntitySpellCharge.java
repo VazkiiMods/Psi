@@ -13,46 +13,40 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.registries.ObjectHolder;
-
 import vazkii.psi.api.spell.detonator.IDetonationHandler;
-import vazkii.psi.common.lib.LibEntityNames;
-import vazkii.psi.common.lib.LibResources;
 
 public class EntitySpellCharge extends EntitySpellGrenade implements IDetonationHandler {
-	@ObjectHolder(registryName = "minecraft:entity_type", value = LibResources.PREFIX_MOD + LibEntityNames.SPELL_CHARGE)
-	public static EntityType<EntitySpellCharge> TYPE;
 
-	public EntitySpellCharge(EntityType<? extends ThrowableProjectile> type, Level worldIn) {
-		super(type, worldIn);
-	}
+    public EntitySpellCharge(EntityType<? extends ThrowableProjectile> type, Level worldIn) {
+        super(type, worldIn);
+    }
 
-	public EntitySpellCharge(Level worldIn, LivingEntity throwerIn) {
-		super(TYPE, worldIn, throwerIn);
-	}
+    public EntitySpellCharge(Level worldIn, LivingEntity throwerIn) {
+        super(ModEntities.spellCharge, worldIn, throwerIn);
+    }
 
-	@Override
-	public int getParticleCount() {
-		return 2;
-	}
+    @Override
+    public int getParticleCount() {
+        return 2;
+    }
 
-	@Override
-	public int getLiveTime() {
-		return 6000;
-	}
+    @Override
+    public int getLiveTime() {
+        return 6000;
+    }
 
-	@Override
-	public boolean explodes() {
-		return false;
-	}
+    @Override
+    public boolean explodes() {
+        return false;
+    }
 
-	@Override
-	public Vec3 objectLocus() {
-		return position();
-	}
+    @Override
+    public Vec3 objectLocus() {
+        return position();
+    }
 
-	@Override
-	public void detonate() {
-		doExplosion();
-	}
+    @Override
+    public void detonate() {
+        doExplosion();
+    }
 }

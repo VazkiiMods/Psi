@@ -1,19 +1,19 @@
 {
   "variants": {
     "enabled=false,facing=north": {
-        "model": "psi:block/programmer",
-        "y": 180
+      "model": "psi:block/programmer",
+      "y": 180
     },
     "enabled=false,facing=south": {
-        "model": "psi:block/programmer"
+      "model": "psi:block/programmer"
     },
     "enabled=false,facing=west": {
-        "model": "psi:block/programmer",
-        "y": 90
+      "model": "psi:block/programmer",
+      "y": 90
     },
     "enabled=false,facing=east": {
-        "model": "psi:block/programmer",
-        "y": 270
+      "model": "psi:block/programmer",
+      "y": 270
     },
     "enabled=true,facing=north": {
       "model": "psi:block/programmer_active",

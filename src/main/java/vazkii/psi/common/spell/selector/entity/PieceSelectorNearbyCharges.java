@@ -9,7 +9,6 @@
 package vazkii.psi.common.spell.selector.entity;
 
 import net.minecraft.world.entity.Entity;
-
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellRuntimeException;
@@ -21,23 +20,23 @@ import java.util.function.Predicate;
 
 public class PieceSelectorNearbyCharges extends PieceSelectorNearby {
 
-	public PieceSelectorNearbyCharges(Spell spell) {
-		super(spell);
-	}
+    public PieceSelectorNearbyCharges(Spell spell) {
+        super(spell);
+    }
 
-	@Override
-	public Predicate<Entity> getTargetPredicate(SpellContext context) {
-		return (Entity e) -> e instanceof EntitySpellCharge && (Objects.requireNonNull(((EntitySpellCharge) e).getOwner()).getName().equals(context.caster.getName()));
-	}
+    @Override
+    public Predicate<Entity> getTargetPredicate(SpellContext context) {
+        return (Entity e) -> e instanceof EntitySpellCharge && (Objects.requireNonNull(((EntitySpellCharge) e).getOwner()).getName().equals(context.caster.getName()));
+    }
 
-	@Override
-	public Object execute(SpellContext context) throws SpellRuntimeException {
-		return (double) ((EntityListWrapper) super.execute(context)).size();
-	}
+    @Override
+    public Object execute(SpellContext context) throws SpellRuntimeException {
+        return (double) ((EntityListWrapper) super.execute(context)).size();
+    }
 
-	@Override
-	public Class<?> getEvaluationType() {
-		return Double.class;
-	}
+    @Override
+    public Class<?> getEvaluationType() {
+        return Double.class;
+    }
 
 }

@@ -18,7 +18,9 @@
       "conditions": {
         "items": [
           {
-            "items": ["patchouli:guide_book"],
+            "items": [
+              "patchouli:guide_book"
+            ],
             "nbt": "{\"patchouli:book\": \"psi:encyclopaedia_psionica\"}"
           }
         ]

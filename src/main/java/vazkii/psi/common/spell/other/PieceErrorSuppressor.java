@@ -8,46 +8,42 @@
  */
 package vazkii.psi.common.spell.other;
 
-import vazkii.psi.api.spell.EnumPieceType;
-import vazkii.psi.api.spell.Spell;
-import vazkii.psi.api.spell.SpellContext;
-import vazkii.psi.api.spell.SpellMetadata;
-import vazkii.psi.api.spell.SpellPiece;
+import vazkii.psi.api.spell.*;
 
 public class PieceErrorSuppressor extends SpellPiece {
 
-	public PieceErrorSuppressor(Spell spell) {
-		super(spell);
-	}
+    public PieceErrorSuppressor(Spell spell) {
+        super(spell);
+    }
 
-	@Override
-	public String getSortingName() {
-		return "00000000001";
-	}
+    @Override
+    public String getSortingName() {
+        return "00000000001";
+    }
 
-	@Override
-	public void addToMetadata(SpellMetadata meta) {
-		meta.errorsSuppressed = true;
-	}
+    @Override
+    public void addToMetadata(SpellMetadata meta) {
+        meta.errorsSuppressed = true;
+    }
 
-	@Override
-	public EnumPieceType getPieceType() {
-		return EnumPieceType.MODIFIER;
-	}
+    @Override
+    public EnumPieceType getPieceType() {
+        return EnumPieceType.MODIFIER;
+    }
 
-	@Override
-	public Class<?> getEvaluationType() {
-		return Void.class;
-	}
+    @Override
+    public Class<?> getEvaluationType() {
+        return Void.class;
+    }
 
-	@Override
-	public Object evaluate() {
-		return null;
-	}
+    @Override
+    public Object evaluate() {
+        return null;
+    }
 
-	@Override
-	public Object execute(SpellContext context) {
-		return null;
-	}
+    @Override
+    public Object execute(SpellContext context) {
+        return null;
+    }
 
 }

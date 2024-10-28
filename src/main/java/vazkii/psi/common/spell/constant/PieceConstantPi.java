@@ -15,28 +15,28 @@ import vazkii.psi.api.spell.SpellPiece;
 
 public class PieceConstantPi extends SpellPiece {
 
-	public PieceConstantPi(Spell spell) {
-		super(spell);
-	}
+    public PieceConstantPi(Spell spell) {
+        super(spell);
+    }
 
-	@Override
-	public EnumPieceType getPieceType() {
-		return EnumPieceType.CONSTANT;
-	}
+    @Override
+    public EnumPieceType getPieceType() {
+        return EnumPieceType.CONSTANT;
+    }
 
-	@Override
-	public Class<?> getEvaluationType() {
-		return Double.class;
-	}
+    @Override
+    public Class<?> getEvaluationType() {
+        return Double.class;
+    }
 
-	@Override
-	public Object evaluate() {
-		return Math.PI;
-	}
+    @Override
+    public Object evaluate() {
+        return Math.PI;
+    }
 
-	@Override
-	public Object execute(SpellContext context) {
-		return evaluate();
-	}
+    @Override
+    public Object execute(SpellContext context) {
+        return evaluate();
+    }
 
 }

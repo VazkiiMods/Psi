@@ -14,19 +14,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.EnumCADComponent;
 import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.internal.Vector3;
-import vazkii.psi.api.spell.EnumSpellStat;
-import vazkii.psi.api.spell.Spell;
-import vazkii.psi.api.spell.SpellCompilationException;
-import vazkii.psi.api.spell.SpellContext;
-import vazkii.psi.api.spell.SpellMetadata;
-import vazkii.psi.api.spell.SpellParam;
-import vazkii.psi.api.spell.SpellRuntimeException;
-import vazkii.psi.api.spell.StatLabel;
+import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.param.ParamVector;
 import vazkii.psi.api.spell.piece.PieceTrick;
@@ -38,90 +30,90 @@ import javax.annotation.Nullable;
 
 public class PieceTrickConjureBlock extends PieceTrick {
 
-	SpellParam<Vector3> position;
-	SpellParam<Number> time;
+    SpellParam<Vector3> position;
+    SpellParam<Number> time;
 
-	public PieceTrickConjureBlock(Spell spell) {
-		super(spell);
-		setStatLabel(EnumSpellStat.POTENCY, new StatLabel(15));
-		setStatLabel(EnumSpellStat.COST, new StatLabel(20));
-	}
+    public PieceTrickConjureBlock(Spell spell) {
+        super(spell);
+        setStatLabel(EnumSpellStat.POTENCY, new StatLabel(15));
+        setStatLabel(EnumSpellStat.COST, new StatLabel(20));
+    }
 
-	@Override
-	public void initParams() {
-		addParam(position = new ParamVector(SpellParam.GENERIC_NAME_POSITION, SpellParam.BLUE, false, false));
-		addParam(time = new ParamNumber(SpellParam.GENERIC_NAME_TIME, SpellParam.RED, true, false));
-	}
+    public static void conjure(SpellContext context, @Nullable Number timeVal, BlockPos pos, Level world, BlockState state) {
+        if (world.getBlockState(pos).getBlock() != state.getBlock()) {
+            if (conjure(world, pos, context.caster, state)) {
+                if (timeVal != null && timeVal.intValue() > 0) {
+                    int val = timeVal.intValue();
+                    world.scheduleTick(pos, state.getBlock(), val);
+                }
 
-	@Override
-	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
-		super.addToMetadata(meta);
-		addStats(meta);
-	}
+                BlockEntity tile = world.getBlockEntity(pos);
 
-	public void addStats(SpellMetadata meta) throws SpellCompilationException {
-		meta.addStat(EnumSpellStat.POTENCY, 15);
-		meta.addStat(EnumSpellStat.COST, 20);
-	}
+                ItemStack cad = PsiAPI.getPlayerCAD(context.caster);
+                if (tile instanceof TileConjured && !cad.isEmpty()) {
+                    ((TileConjured) tile).colorizer = ((ICAD) cad.getItem()).getComponentInSlot(cad, EnumCADComponent.DYE);
+                }
 
-	@Override
-	public Object execute(SpellContext context) throws SpellRuntimeException {
-		Vector3 positionVal = this.getParamValue(context, position);
-		Number timeVal = this.getParamValue(context, time);
+            }
+        }
+    }
 
-		if(positionVal == null) {
-			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
-		}
-		if(!context.isInRadius(positionVal)) {
-			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
-		}
+    public static boolean conjure(Level world, BlockPos pos, Player player, BlockState state) {
+        if (!world.hasChunkAt(pos) || !world.mayInteract(player, pos)) {
+            return false;
+        }
 
-		BlockPos pos = positionVal.toBlockPos();
+        BlockState inWorld = world.getBlockState(pos);
+        if (inWorld.isAir() || inWorld.canBeReplaced()) {
+            return world.setBlockAndUpdate(pos, state);
+        }
+        return false;
+    }
 
-		Level world = context.focalPoint.getCommandSenderWorld();
+    @Override
+    public void initParams() {
+        addParam(position = new ParamVector(SpellParam.GENERIC_NAME_POSITION, SpellParam.BLUE, false, false));
+        addParam(time = new ParamNumber(SpellParam.GENERIC_NAME_TIME, SpellParam.RED, true, false));
+    }
 
-		if(!world.mayInteract(context.caster, pos)) {
-			return null;
-		}
+    @Override
+    public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
+        super.addToMetadata(meta);
+        addStats(meta);
+    }
 
-		conjure(context, timeVal, pos, world, messWithState(ModBlocks.conjured.defaultBlockState()));
+    public void addStats(SpellMetadata meta) throws SpellCompilationException {
+        meta.addStat(EnumSpellStat.POTENCY, 15);
+        meta.addStat(EnumSpellStat.COST, 20);
+    }
 
-		return null;
-	}
+    @Override
+    public Object execute(SpellContext context) throws SpellRuntimeException {
+        Vector3 positionVal = this.getParamValue(context, position);
+        Number timeVal = this.getParamValue(context, time);
 
-	public static void conjure(SpellContext context, @Nullable Number timeVal, BlockPos pos, Level world, BlockState state) {
-		if(world.getBlockState(pos).getBlock() != state.getBlock()) {
-			if(conjure(world, pos, context.caster, state)) {
-				if(timeVal != null && timeVal.intValue() > 0) {
-					int val = timeVal.intValue();
-					world.scheduleTick(pos, state.getBlock(), val);
-				}
+        if (positionVal == null) {
+            throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
+        }
+        if (!context.isInRadius(positionVal)) {
+            throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
+        }
 
-				BlockEntity tile = world.getBlockEntity(pos);
+        BlockPos pos = positionVal.toBlockPos();
 
-				ItemStack cad = PsiAPI.getPlayerCAD(context.caster);
-				if(tile instanceof TileConjured && !cad.isEmpty()) {
-					((TileConjured) tile).colorizer = ((ICAD) cad.getItem()).getComponentInSlot(cad, EnumCADComponent.DYE);
-				}
+        Level world = context.focalPoint.getCommandSenderWorld();
 
-			}
-		}
-	}
+        if (!world.mayInteract(context.caster, pos)) {
+            return null;
+        }
 
-	public static boolean conjure(Level world, BlockPos pos, Player player, BlockState state) {
-		if(!world.hasChunkAt(pos) || !world.mayInteract(player, pos)) {
-			return false;
-		}
+        conjure(context, timeVal, pos, world, messWithState(ModBlocks.conjured.defaultBlockState()));
 
-		BlockState inWorld = world.getBlockState(pos);
-		if(inWorld.isAir() || inWorld.canBeReplaced()) {
-			return world.setBlockAndUpdate(pos, state);
-		}
-		return false;
-	}
+        return null;
+    }
 
-	public BlockState messWithState(BlockState state) {
-		return state.setValue(BlockConjured.SOLID, true);
-	}
+    public BlockState messWithState(BlockState state) {
+        return state.setValue(BlockConjured.SOLID, true);
+    }
 
 }
