@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "equipment",
   "key": {
     "D": {
       "tag": "forge:dusts/glowstone"
@@ -18,5 +19,6 @@
   ],
   "result": {
     "item": "psi:cad_core_radiative"
-  }
+  },
+  "show_notification": true
 }

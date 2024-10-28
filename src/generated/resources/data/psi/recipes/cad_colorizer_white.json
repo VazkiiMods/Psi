@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "equipment",
   "group": "psi:colorizer",
   "key": {
     "C": {
@@ -22,5 +23,6 @@
   ],
   "result": {
     "item": "psi:cad_colorizer_white"
-  }
+  },
+  "show_notification": true
 }

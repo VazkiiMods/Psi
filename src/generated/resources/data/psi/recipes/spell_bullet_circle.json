@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "equipment",
   "key": {
     "A": [
       {
@@ -21,5 +22,6 @@
   ],
   "result": {
     "item": "psi:spell_bullet_circle"
-  }
+  },
+  "show_notification": true
 }

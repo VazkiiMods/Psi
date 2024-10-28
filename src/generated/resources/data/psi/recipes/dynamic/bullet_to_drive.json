@@ -1,3 +1,4 @@
 {
-  "type": "psi:bullet_to_drive"
+  "type": "psi:bullet_to_drive",
+  "category": "misc"
 }

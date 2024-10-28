@@ -1,3 +1,4 @@
 {
-  "type": "psi:colorizer_change"
+  "type": "psi:colorizer_change",
+  "category": "misc"
 }

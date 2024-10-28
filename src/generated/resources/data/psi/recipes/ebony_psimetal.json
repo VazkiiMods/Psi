@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "I": {
       "tag": "forge:ingots/psimetal"
@@ -15,5 +16,6 @@
   ],
   "result": {
     "item": "psi:ebony_psimetal"
-  }
+  },
+  "show_notification": true
 }

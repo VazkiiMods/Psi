@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "I": {
       "tag": "forge:ingots/psimetal"
@@ -18,5 +19,6 @@
   ],
   "result": {
     "item": "psi:exosuit_sensor_water"
-  }
+  },
+  "show_notification": true
 }
