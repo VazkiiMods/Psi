@@ -4,23 +4,30 @@ issueTrackerURL="https://github.com/Vazkii/Psi"
 license="https://psi.vazkii.net/license.php"
 
 [[mods]]
-modId="psi"
-displayName="Psi"
-version="2.0.0"
-authors="Vazkii, Wiiv, WireSegal, Kamefrede, Williewillus, Hubry, Dudblockman"
-description='''
-Psionic Spellcasting Instruments
-'''
+    modId="psi"
+    displayName="Psi"
+    version="2.0.0"
+    authors="Vazkii, Wiiv, WireSegal, Kamefrede, Williewillus, Hubry, Dudblockman"
+    description='''
+    Psionic Spellcasting Instruments
+    '''
+
 [[dependencies.psi]]
     modId="patchouli"
     mandatory=true
     versionRange="[1.19.2-77,)"
     side="BOTH"
 
-
 [[dependencies.psi]]
     modId="forge"
     mandatory=true
-    versionRange="[42.2.0,)"
+    versionRange="[43.3.0,)"
     ordering="AFTER"
+    side="BOTH"
+
+[[dependencies.psi]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.19,1.19.2]"
+    ordering="NONE"
     side="BOTH"

@@ -134,7 +134,7 @@ public class PiecePanelWidget extends AbstractWidget implements Widget, GuiEvent
 	}
 
 	public int getPageCount() {
-		return (visibleButtons.size() / PIECES_PER_PAGE) + 1;
+		return (int) Math.ceil((float) visibleButtons.size() / PIECES_PER_PAGE);
 	}
 
 	public void populatePanelButtons() {
