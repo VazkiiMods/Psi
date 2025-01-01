@@ -8,13 +8,10 @@
  */
 package vazkii.psi.common.item.tool;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.Ingredient;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.ICapabilityProvider;
 import net.neoforged.neoforge.capabilities.ItemCapability;
 import net.neoforged.neoforge.items.ComponentItemHandler;
@@ -27,7 +24,6 @@ import vazkii.psi.api.spell.Spell;
 import vazkii.psi.common.item.base.ModItems;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class ToolSocketable implements ICapabilityProvider<ItemCapability<?, Void>, Void, ToolSocketable>, ISocketable, IPsiBarDisplay, ISpellAcceptor {
@@ -38,7 +34,7 @@ public class ToolSocketable implements ICapabilityProvider<ItemCapability<?, Voi
     public ToolSocketable(ItemStack tool, int slots) {
         this.tool = tool;
         this.slots = Mth.clamp(slots, 1, MAX_ASSEMBLER_SLOTS - 1);
-        this.toolHandler = new ComponentItemHandler(this.tool, ModItems.TAG_BULLETS.get(), this.slots);
+        this.toolHandler = (ComponentItemHandler)tool.getCapability(Capabilities.ItemHandler.ITEM);
     }
 
     @Override

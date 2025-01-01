@@ -8,15 +8,19 @@
  */
 package vazkii.psi.common.item;
 
+import com.google.common.collect.Lists;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.RegistryAccess;
-import net.minecraft.core.component.DataComponentType;
+import net.minecraft.core.component.DataComponentPatch;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -25,6 +29,8 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.component.CustomData;
+import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
@@ -34,11 +40,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
-import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.util.FakePlayer;
-import net.neoforged.neoforge.items.ComponentItemHandler;
-import net.neoforged.neoforge.items.IItemHandler;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.*;
 import vazkii.psi.api.internal.PsiRenderHelper;
@@ -60,7 +63,6 @@ import vazkii.psi.common.crafting.ModCraftingRecipes;
 import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.lib.LibPieceGroups;
 import vazkii.psi.common.network.MessageRegister;
-import vazkii.psi.common.network.message.MessageCADDataSync;
 import vazkii.psi.common.network.message.MessageVisualEffect;
 import vazkii.psi.common.spell.trick.block.PieceTrickBreakBlock;
 
@@ -69,15 +71,113 @@ import javax.annotation.Nullable;
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ItemCAD extends Item implements ICAD {
+    // Legacy tags
+    private static final String TAG_TIME_LEGACY = "time";
+    private static final String TAG_STORED_PSI_LEGACY = "storedPsi";
+
+    private static final String TAG_X_LEGACY = "x";
+    private static final String TAG_Y_LEGACY = "y";
+    private static final String TAG_Z_LEGACY = "z";
+    private static final Pattern VECTOR_PREFIX_PATTERN = Pattern.compile("^storedVector(\\d+)$");
+
     private static final Pattern FAKE_PLAYER_PATTERN = Pattern.compile("^(?:\\[.*])|(?:ComputerCraft)$");
+
+    private String contributorName = "";
 
     public ItemCAD(Item.Properties properties) {
         super(properties
-                .stacksTo(1).rarity(Rarity.RARE)
+                .stacksTo(1).rarity(Rarity.RARE).component(ModItems.TAG_BULLETS.get(), ItemContainerContents.EMPTY).component(ModItems.CAD_DATA, new CADData.Data(0, 0, Lists.newArrayList()))
         );
+    }
+
+    @Override
+    public void verifyComponentsAfterLoad(ItemStack pStack) {
+        if (pStack.has(DataComponents.CUSTOM_DATA)) {
+            CustomData patch = pStack.get(DataComponents.CUSTOM_DATA);
+            CompoundTag compound = patch.copyTag();
+
+            ICADData data = pStack.getCapability(PsiAPI.CAD_DATA_CAPABILITY);
+            if(data != null){
+                if (compound.contains(TAG_TIME_LEGACY)) {
+                    data.setTime(compound.getInt(TAG_TIME_LEGACY));
+                    compound.remove(TAG_TIME_LEGACY);
+                }
+
+                if (compound.contains(TAG_STORED_PSI_LEGACY)) {
+                    data.setBattery(compound.getInt(TAG_STORED_PSI_LEGACY));
+                    compound.remove(TAG_STORED_PSI_LEGACY);
+                }
+
+                HashSet<String> keys = new HashSet<>(compound.getAllKeys());
+
+                for (String key : keys) {
+                    Matcher matcher = VECTOR_PREFIX_PATTERN.matcher(key);
+                    if (matcher.find()) {
+                        CompoundTag vec = compound.getCompound(key);
+                        compound.remove(key);
+                        int memory = Integer.parseInt(matcher.group(1));
+                        Vector3 vector = new Vector3(vec.getDouble(TAG_X_LEGACY),
+                                vec.getDouble(TAG_Y_LEGACY),
+                                vec.getDouble(TAG_Z_LEGACY));
+                        data.setSavedVector(memory, vector);
+                    }
+                }
+
+                if (compound.contains("CapabilityData")) {
+                    CompoundTag capability = compound.getCompound("CapabilityData");
+                    compound.remove("CapabilityData");
+
+                    if (capability.contains("Time")) {
+                        data.setTime(capability.getInt("Time"));
+                    }
+
+                    if (capability.contains("Battery")) {
+                        data.setBattery(capability.getInt("Battery"));
+                    }
+
+                    if (capability.contains("Memory")) {
+                        ListTag memory = capability.getList("Memory", Tag.TAG_LIST);
+                        for (int i = 0; i < memory.size(); i++) {
+                            ListTag vec = (ListTag) memory.get(i);
+                            if (vec.getElementType() == Tag.TAG_DOUBLE && vec.size() >= 3) {
+                                data.setSavedVector(i, new Vector3(vec.getDouble(0), vec.getDouble(1), vec.getDouble(2)));
+                            } else {
+                                data.setSavedVector(i, null);
+                            }
+                        }
+                    }
+                }
+            }
+
+            ISocketable sockets = getSocketable(pStack);
+            if(sockets != null && Minecraft.getInstance().level != null) {
+                for (EnumCADComponent components : EnumCADComponent.values()) {
+                    if (compound.contains("component" + components.name())) {
+                        ItemStack component = ItemStack.parseOptional(Minecraft.getInstance().level.registryAccess(), compound.getCompound("component" + components.name()));
+                        component.applyComponents(DataComponentPatch.builder().set(DataComponents.CUSTOM_DATA, CustomData.of(compound.getCompound("component" + components.name()).getCompound("tag"))).build());
+                        ItemCAD.setComponent(pStack, component);
+                        compound.remove("component" + components.name());
+                    }
+                }
+                for (int i = 0; i < ISocketable.MAX_ASSEMBLER_SLOTS; i++) {
+                    if (compound.contains("bullet" + i)) {
+                        ItemStack bullet = ItemStack.parseOptional(Minecraft.getInstance().level.registryAccess(), compound.getCompound("bullet" + i));
+                        bullet.applyComponents(DataComponentPatch.builder().set(DataComponents.CUSTOM_DATA, CustomData.of(compound.getCompound("bullet" + i).getCompound("tag"))).build());
+                        sockets.setBulletInSocket(i, bullet);
+                        compound.remove("bullet" + i);
+                    }
+                }
+                if (compound.contains("selectedSlot")) {
+                    sockets.setSelectedSlot(compound.getInt("selectedSlot"));
+                    compound.remove("selectedSlot");
+                }
+            }
+            CustomData.set(DataComponents.CUSTOM_DATA, pStack, compound);
+        }
     }
 
     public static Optional<ArrayList<Entity>> cast(Level world, Player player, PlayerData data, ItemStack bullet, ItemStack cad, int cd, int particles, float sound, Consumer<SpellContext> predicate) {
@@ -276,41 +376,11 @@ public class ItemCAD extends Item implements ICAD {
         return Objects.requireNonNullElse(stack.getCapability(PsiAPI.SOCKETABLE_CAPABILITY), new CADData(stack));
     }
 
-    @Override //TODO TheidenHD add Datafixer
-    public void inventoryTick(ItemStack stack, Level world, Entity entityIn, int itemSlot, boolean isSelected) {
-        ICADData data = stack.getCapability(PsiAPI.CAD_DATA_CAPABILITY);
-         if(data != null){
-//            if (stack.has(TAG_TIME_LEGACY)) {
-//                data.setTime(stack.getOrDefault(TAG_TIME_LEGACY, 0));
-//                data.markDirty(true);
-//                stack.remove(TAG_TIME_LEGACY);
-//            }
-//
-//            if (stack.has(TAG_STORED_PSI_LEGACY)) {
-//                data.setBattery(stack.getOrDefault(TAG_STORED_PSI_LEGACY, 0));
-//                data.markDirty(true);
-//                stack.remove(TAG_STORED_PSI_LEGACY);
-//            }
-//
-//            HashSet<DataComponentType<?>> keys = new HashSet<>(compound.keySet());
-//
-//            for (DataComponentType<?> key : keys) {
-//                Matcher matcher = VECTOR_PREFIX_PATTERN.matcher(key);
-//                if (matcher.find()) {
-//                    CompoundTag vec = compound.getCompound(key);
-//                    compound.remove(key);
-//                    int memory = Integer.parseInt(matcher.group(1));
-//                    Vector3 vector = new Vector3(vec.getDouble(TAG_X_LEGACY),
-//                            vec.getDouble(TAG_Y_LEGACY),
-//                            vec.getDouble(TAG_Z_LEGACY));
-//                    data.setSavedVector(memory, vector);
-//                }
-//            }
-
-            if (entityIn instanceof ServerPlayer && data.isDirty()) {
-                ServerPlayer player = (ServerPlayer) entityIn;
-                MessageRegister.sendToPlayer(player, new MessageCADDataSync(data.serializeForSynchronization()));
-                data.markDirty(false);
+    @Override
+    public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
+        if (!getComponentInSlot(stack, EnumCADComponent.DYE).isEmpty() && ContributorSpellCircleHandler.isContributor(entity.getName().getString().toLowerCase(Locale.ROOT))) {
+            if (this.contributorName.equalsIgnoreCase(entity.getName().getString())) {
+                this.contributorName = entity.getName().getString();
             }
         }
     }
@@ -341,13 +411,6 @@ public class ItemCAD extends Item implements ICAD {
         ISocketable sockets = getSocketable(playerCad);
 
         ItemStack bullet = sockets.getSelectedBullet();
-        if (!getComponentInSlot(playerCad, EnumCADComponent.DYE).isEmpty() && ContributorSpellCircleHandler.isContributor(playerIn.getName().getString().toLowerCase(Locale.ROOT))) {
-            ItemStack dyeStack = getComponentInSlot(playerCad, EnumCADComponent.DYE);
-            if (!((ICADColorizer) dyeStack.getItem()).getContributorName(dyeStack).equalsIgnoreCase(playerIn.getName().getString())) {
-                ((ICADColorizer) dyeStack.getItem()).setContributorName(dyeStack, playerIn.getName().getString());
-                setCADComponent(playerCad, dyeStack);
-            }
-        }
         boolean did = cast(worldIn, playerIn, data, bullet, itemStackIn, 40, 25, 0.5F, ctx -> ctx.castFrom = hand).isPresent();
 
         if (!data.overflowed && bullet.isEmpty() && craft(playerCad, playerIn, null)) {
@@ -418,11 +481,12 @@ public class ItemCAD extends Item implements ICAD {
 
     @Override
     public ItemStack getComponentInSlot(ItemStack stack, EnumCADComponent type) {
-        IItemHandler itemHandler = stack.getCapability(Capabilities.ItemHandler.ITEM);
-        if (itemHandler instanceof ComponentItemHandler componentItemHandler) {
-            return componentItemHandler.getStackInSlot(type.ordinal());
+        List<Item> items = stack.getOrDefault(ModItems.COMPONENTS, new ArrayList<>(Collections.nCopies(EnumCADComponent.values().length, Items.AIR)));
+        ItemStack component = new ItemStack(items.get(type.ordinal()));
+        if (type == EnumCADComponent.DYE && !component.isEmpty() && !this.contributorName.isEmpty()) {
+            ((ICADColorizer) items.get(type.ordinal())).setContributorName(component, this.contributorName);
         }
-        return ItemStack.EMPTY;
+        return component;
     }
 
     @Override
@@ -479,7 +543,6 @@ public class ItemCAD extends Item implements ICAD {
         if (endPsi != currPsi) {
             ICADData data = getCADData(stack);
             data.setBattery(endPsi);
-            data.markDirty(true);
         }
     }
 
@@ -499,12 +562,10 @@ public class ItemCAD extends Item implements ICAD {
 
         if (currPsi >= psi) {
             data.setBattery(currPsi - psi);
-            data.markDirty(true);
             return 0;
         }
 
         data.setBattery(0);
-        data.markDirty(true);
         return psi - currPsi;
     }
 

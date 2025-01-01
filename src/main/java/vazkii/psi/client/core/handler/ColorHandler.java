@@ -58,13 +58,13 @@ public class ColorHandler {
 
     public static int pulseColor(int source, float multiplier, float speed, int magnitude) {
         int add = (int) (Mth.sin(ClientTickHandler.ticksInGame * speed) * magnitude);
-        int red = (0xFF0000 & source) >> 16;
-        int green = (0x00FF00 & source) >> 8;
-        int blue = 0x0000FF & source;
+        int red = (0x00FF0000 & source) >> 16;
+        int green = (0x0000FF00 & source) >> 8;
+        int blue = 0x000000FF & source;
         int addedRed = Mth.clamp((int) (multiplier * (red + add)), 0, 255);
         int addedGreen = Mth.clamp((int) (multiplier * (green + add)), 0, 255);
         int addedBlue = Mth.clamp((int) (multiplier * (blue + add)), 0, 255);
-        return (addedRed << 16) | (addedGreen << 8) | addedBlue;
+        return 0xFF000000 | (addedRed << 16) | (addedGreen << 8) | addedBlue;
     }
 
     public static int slideColorTime(int color, int secondColor, float t) {
@@ -75,17 +75,17 @@ public class ColorHandler {
             return secondColor;
         }
 
-        int redA = (0xFF0000 & color) >> 16;
-        int greenA = (0x00FF00 & color) >> 8;
-        int blueA = 0x0000FF & color;
-        int redB = (0xFF0000 & secondColor) >> 16;
-        int greenB = (0x00FF00 & secondColor) >> 8;
-        int blueB = 0x0000FF & secondColor;
+        int redA = (0x00FF0000 & color) >> 16;
+        int greenA = (0x0000FF00 & color) >> 8;
+        int blueA = 0x000000FF & color;
+        int redB = (0x00FF0000 & secondColor) >> 16;
+        int greenB = (0x0000FF00 & secondColor) >> 8;
+        int blueB = 0x000000FF & secondColor;
 
         int newRed = (int) (redA * (1 - shift) + redB * shift);
         int newGreen = (int) (greenA * (1 - shift) + greenB * shift);
         int newBlue = (int) (blueA * (1 - shift) + blueB * shift);
-        return (newRed << 16) | (newGreen << 8) | newBlue;
+        return 0xFF000000 | (newRed << 16) | (newGreen << 8) | newBlue;
     }
 
 }
