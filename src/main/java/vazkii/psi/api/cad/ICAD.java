@@ -8,42 +8,37 @@
  */
 package vazkii.psi.api.cad;
 
-import net.minecraft.Util;
-import net.minecraft.core.component.DataComponentType;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
-import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.items.ComponentItemHandler;
-import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import vazkii.psi.api.PsiAPI;
+import org.jetbrains.annotations.Nullable;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.api.spell.piece.PieceCraftingTrick;
 import vazkii.psi.common.item.base.ModItems;
 
-import java.util.EnumMap;
-import java.util.EnumSet;
-import java.util.Locale;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Base interface for a CAD. You probably shouldn't implement this,
  * unless you absolutely know what you are doing.
  */
 public interface ICAD {
-    //TODO add Datafixer
-
     /**
      * Sets the component stack inside the CAD's respective component slot
      */
 
     static void setComponent(ItemStack stack, ItemStack componentStack) {
-        IItemHandler itemHandler = stack.getCapability(Capabilities.ItemHandler.ITEM);
-        if (!componentStack.isEmpty() && componentStack.getItem() instanceof ICADComponent component && itemHandler instanceof ComponentItemHandler componentItemHandler) {
+        @Nullable List<Item> items = stack.getOrDefault(ModItems.COMPONENTS, new ArrayList<>(Collections.nCopies(EnumCADComponent.values().length, Items.AIR)));
+        if (!componentStack.isEmpty() && componentStack.getItem() instanceof ICADComponent component) {
             EnumCADComponent componentType = component.getComponentType(componentStack);
-            componentItemHandler.setStackInSlot(componentType.ordinal(), componentStack);
+            items.set(componentType.ordinal(), componentStack.getItem());
+            stack.set(ModItems.COMPONENTS, items);
         }
     }
 

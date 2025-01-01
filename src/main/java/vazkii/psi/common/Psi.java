@@ -28,7 +28,6 @@ import vazkii.psi.client.fx.ModParticles;
 import vazkii.psi.common.core.handler.ConfigHandler;
 import vazkii.psi.common.core.handler.ContributorSpellCircleHandler;
 import vazkii.psi.common.core.handler.InternalMethodHandler;
-import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.proxy.IProxy;
 import vazkii.psi.common.core.proxy.ServerProxy;
 import vazkii.psi.common.crafting.ModCraftingRecipes;

@@ -8,6 +8,7 @@
  */
 package vazkii.psi.common.item;
 
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundSource;
@@ -20,6 +21,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.capabilities.ICapabilityProvider;
 import net.neoforged.neoforge.capabilities.ItemCapability;
@@ -40,6 +42,24 @@ public class ItemSpellBullet extends Item {
 
     public ItemSpellBullet(Item.Properties properties) {
         super(properties.stacksTo(16).rarity(Rarity.COMMON));
+    }
+
+    public void verifyComponentsAfterLoad(ItemStack pStack) {
+        if (pStack.has(DataComponents.CUSTOM_DATA)) {
+            CustomData patch = pStack.get(DataComponents.CUSTOM_DATA);
+            CompoundTag compound = patch.copyTag();
+
+            if (compound.contains("has_spell")) {
+                pStack.set(ModItems.HAS_SPELL, compound.getBoolean("has_spell"));
+                pStack.set(DataComponents.RARITY, compound.getBoolean("has_spell") ? Rarity.RARE : Rarity.COMMON);
+                compound.remove("has_spell");
+            }
+            if (compound.contains("spell")) {
+                pStack.set(ModItems.TAG_SPELL, compound.getCompound("spell"));
+                compound.remove("spell");
+            }
+            CustomData.set(DataComponents.CUSTOM_DATA, pStack, compound);
+        }
     }
 
     @Nonnull

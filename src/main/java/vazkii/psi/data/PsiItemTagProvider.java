@@ -12,7 +12,6 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.data.tags.TagsProvider;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
@@ -30,8 +29,6 @@ public class PsiItemTagProvider extends ItemTagsProvider {
 
     @Override
     protected void addTags(HolderLookup.Provider pProvider) {
-        tag(ItemTags.DYEABLE).add(ModItems.psimetalExosuitHelmet);
-
         tag(Tags.Items.DUSTS).add(ModItems.psidust);
         tag(Tags.Items.INGOTS).add(ModItems.psimetal);
         tag(Tags.Items.INGOTS).add(ModItems.ebonyPsimetal);

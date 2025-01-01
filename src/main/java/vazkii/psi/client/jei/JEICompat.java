@@ -11,7 +11,7 @@ package vazkii.psi.client.jei;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.helpers.IJeiHelpers;
-import mezz.jei.api.ingredients.subtypes.IIngredientSubtypeInterpreter;
+import mezz.jei.api.ingredients.subtypes.ISubtypeInterpreter;
 import mezz.jei.api.ingredients.subtypes.UidContext;
 import mezz.jei.api.registration.*;
 import net.minecraft.client.Minecraft;
@@ -76,13 +76,13 @@ public class JEICompat implements IModPlugin {
         registration.registerSubtypeInterpreter(ModItems.cad, Cad.INSTANCE);
     }
 
-    private static class Cad implements IIngredientSubtypeInterpreter<ItemStack> {
+    private static class Cad implements ISubtypeInterpreter<ItemStack> {
         public static final Cad INSTANCE = new Cad();
 
         private Cad() {
         }
 
-        public String apply(ItemStack itemStack, UidContext context) {
+        public String getSubtypeData(ItemStack itemStack, UidContext context) {
             ItemCAD cad = (ItemCAD) itemStack.getItem();
 
             List<String> strings = new ArrayList<>();
@@ -97,6 +97,11 @@ public class JEICompat implements IModPlugin {
                 joiner.add(s);
             }
             return joiner.toString();
+        }
+
+        @Override
+        public String getLegacyStringSubtypeInfo(ItemStack ingredient, UidContext context) {
+            return "";
         }
     }
 }

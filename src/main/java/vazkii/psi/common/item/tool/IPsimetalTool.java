@@ -8,11 +8,7 @@
  */
 package vazkii.psi.common.item.tool;
 
-import com.mojang.serialization.Codec;
-import net.minecraft.Util;
-import net.minecraft.core.component.DataComponentType;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -23,7 +19,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.capabilities.ICapabilityProvider;
-import net.neoforged.neoforge.registries.DeferredHolder;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.IPsiBarDisplay;
 import vazkii.psi.api.cad.ISocketable;
@@ -35,15 +30,9 @@ import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.spell.trick.block.PieceTrickBreakBlock;
 
 import javax.annotation.Nullable;
-import java.util.HashMap;
 
 public interface IPsimetalTool {
     //TODO TheidenHD add Datafixer
-
-    @Deprecated // todo remove in 1.17? Provide the proper tool material in your tools for other materials instead
-    static boolean isRepairableBy(ItemStack stack) {
-        return stack.getItem() == ModItems.psimetal;
-    }
 
     static BlockHitResult raytraceFromEntity(Level worldIn, Player player, ClipContext.Fluid fluidMode, double range) {
         float f = player.getXRot();

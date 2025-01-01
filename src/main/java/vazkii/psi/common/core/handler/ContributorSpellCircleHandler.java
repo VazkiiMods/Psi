@@ -8,16 +8,11 @@
  */
 package vazkii.psi.common.core.handler;
 
-import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
-import vazkii.psi.api.cad.CADTakeEvent;
-import vazkii.psi.api.cad.EnumCADComponent;
-import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.cad.ICADColorizer;
 import vazkii.psi.common.Psi;
-import vazkii.psi.common.item.ItemCAD;
 import vazkii.psi.common.lib.LibMisc;
 
 import java.io.IOException;
@@ -60,15 +55,6 @@ public final class ContributorSpellCircleHandler {
 
     public static boolean isContributor(String name) {
         return colormap.containsKey(name);
-    }
-
-    @SubscribeEvent
-    public static void onCadTake(CADTakeEvent event) {
-        if (ContributorSpellCircleHandler.isContributor(event.getPlayer().getName().getString().toLowerCase(Locale.ROOT)) && !event.getCad().isEmpty() && !((ICAD) event.getCad().getItem()).getComponentInSlot(event.getCad(), EnumCADComponent.DYE).isEmpty()) {
-            ItemStack dyeStack = ((ICAD) event.getCad().getItem()).getComponentInSlot(event.getCad(), EnumCADComponent.DYE);
-            ((ICADColorizer) dyeStack.getItem()).setContributorName(dyeStack, event.getPlayer().getName().getString());
-            ItemCAD.setComponent(event.getCad(), dyeStack);
-        }
     }
 
     @SubscribeEvent

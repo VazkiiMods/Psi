@@ -78,7 +78,6 @@ public class BlockCADAssembler extends HorizontalDirectionalBlock implements Ent
             MenuProvider container = state.getMenuProvider(world, pos);
             if (container != null) {
                 playerIn.openMenu(container, pos);
-                //playerIn.awardStat(Stats.); //TODO TheidenHD add Stats
             }
         }
         return InteractionResult.CONSUME;

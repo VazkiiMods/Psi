@@ -9,13 +9,19 @@
 package vazkii.psi.common.core.handler.capability;
 
 import com.google.common.collect.Lists;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.DoubleTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.ICapabilityProvider;
 import net.neoforged.neoforge.capabilities.ItemCapability;
 import net.neoforged.neoforge.items.ComponentItemHandler;
@@ -30,22 +36,19 @@ import vazkii.psi.common.item.component.ItemCADSocket;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class CADData implements ICapabilityProvider<ItemCapability<?, Void>, Void, CADData>, ICADData, ISpellAcceptor, ISocketable, IPsiBarDisplay {
 
     private final ItemStack cad;
     private final ComponentItemHandler cadHandler;
-    private int time;
-    private int battery;
-    private List<Vector3> vectors = Lists.newArrayList();
-
-    private boolean dirty;
+    private Data data;
 
     public CADData(ItemStack cad) {
         this.cad = cad;
-        this.cadHandler = new ComponentItemHandler(this.cad, ModItems.TAG_BULLETS.get(), getLastSlot() + 1);
+        this.cadHandler = (ComponentItemHandler)cad.getCapability(Capabilities.ItemHandler.ITEM);
+        this.data = cad.get(ModItems.CAD_DATA.get());
     }
 
     @Nullable
@@ -62,53 +65,43 @@ public class CADData implements ICapabilityProvider<ItemCapability<?, Void>, Voi
 
     @Override
     public int getTime() {
-        return time;
+        return data.time;
     }
 
     @Override
     public void setTime(int time) {
-        if (this.time != time) {
-            this.time = time;
+        if (this.data.time != time) {
+            this.data.time = time;
         }
     }
 
     @Override
     public int getBattery() {
-        return battery;
+        return data.battery;
     }
 
     @Override
     public void setBattery(int battery) {
-        this.battery = battery;
+        this.data.battery = battery;
     }
 
     @Override
     public Vector3 getSavedVector(int memorySlot) {
-        if (vectors.size() <= memorySlot) {
+        if (data.vectors.size() <= memorySlot) {
             return Vector3.zero.copy();
         }
 
-        Vector3 vec = vectors.get(memorySlot);
+        Vector3 vec = data.vectors.get(memorySlot);
         return (vec == null ? Vector3.zero : vec).copy();
     }
 
     @Override
     public void setSavedVector(int memorySlot, Vector3 value) {
-        while (vectors.size() <= memorySlot) {
-            vectors.add(null);
+        while (data.vectors.size() <= memorySlot) {
+            data.vectors.add(null);
         }
 
-        vectors.set(memorySlot, value);
-    }
-
-    @Override
-    public boolean isDirty() {
-        return dirty;
-    }
-
-    @Override
-    public void markDirty(boolean isDirty) {
-        dirty = isDirty;
+        data.vectors.set(memorySlot, value);
     }
 
     @Override
@@ -171,8 +164,8 @@ public class CADData implements ICapabilityProvider<ItemCapability<?, Void>, Voi
     @Override
     public CompoundTag serializeForSynchronization() {
         CompoundTag compound = new CompoundTag();
-        compound.putInt("Time", time);
-        compound.putInt("Battery", battery);
+        compound.putInt("Time", data.time);
+        compound.putInt("Battery", data.battery);
 
         return compound;
     }
@@ -182,7 +175,7 @@ public class CADData implements ICapabilityProvider<ItemCapability<?, Void>, Voi
         CompoundTag compound = serializeForSynchronization();
 
         ListTag memory = new ListTag();
-        for (Vector3 vector : vectors) {
+        for (Vector3 vector : data.vectors) {
             if (vector == null) {
                 memory.add(new ListTag());
             } else {
@@ -201,10 +194,10 @@ public class CADData implements ICapabilityProvider<ItemCapability<?, Void>, Voi
     @Override
     public void deserializeNBT(HolderLookup.Provider provider, CompoundTag nbt) {
         if (nbt.contains("Time", Tag.TAG_ANY_NUMERIC)) {
-            time = nbt.getInt("Time");
+            data.time = nbt.getInt("Time");
         }
         if (nbt.contains("Battery", Tag.TAG_ANY_NUMERIC)) {
-            battery = nbt.getInt("Battery");
+            data.battery = nbt.getInt("Battery");
         }
 
         if (nbt.contains("Memory", Tag.TAG_LIST)) {
@@ -218,12 +211,57 @@ public class CADData implements ICapabilityProvider<ItemCapability<?, Void>, Voi
                     newVectors.add(null);
                 }
             }
-            vectors = newVectors;
+            data.vectors = newVectors;
         }
     }
 
     @Override
     public boolean shouldShow(IPlayerData data) {
         return true;
+    }
+
+    public static class Data {
+        public int time;
+        public int battery;
+        public List<Vector3> vectors;
+
+        public static final Codec<Data> CODEC = RecordCodecBuilder.create(
+                builder -> builder.group(
+                                Codec.INT.fieldOf("time").forGetter(data -> data.time),
+                                Codec.INT.fieldOf("battery").forGetter(data -> data.battery),
+                                Codec.list(Vector3.CODEC).fieldOf("vectors").forGetter(data -> data.vectors)
+                        ).apply(builder, Data::new));
+
+        public static final StreamCodec<RegistryFriendlyByteBuf, Data> STREAM_CODEC = StreamCodec.composite(
+                ByteBufCodecs.INT, data -> data.time,
+                ByteBufCodecs.INT, data -> data.battery,
+                Vector3.STREAM_CODEC.apply((ByteBufCodecs.list())), data -> data.vectors,
+                Data::new);
+
+        public Data(int time, int battery, List<Vector3> vectors) {
+            this.time = time;
+            this.battery = battery;
+            this.vectors = vectors;
+        }
+
+        @Override
+        public boolean equals(Object other) {
+            if (this == other) {
+                return true;
+            }
+            if (other == null) {
+                return false;
+            }
+            if (!(other instanceof Data)) {
+                return false;
+            }
+            Data data = (Data) other;
+            return data.time == this.time && data.battery == this.battery && data.vectors.equals(this.vectors);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(time, battery, vectors);
+        }
     }
 }

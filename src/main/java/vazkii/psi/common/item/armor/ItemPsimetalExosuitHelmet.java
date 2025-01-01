@@ -8,27 +8,19 @@
  */
 package vazkii.psi.common.item.armor;
 
-import net.minecraft.core.component.DataComponentType;
-import net.minecraft.core.component.DataComponents;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.item.*;
-import net.minecraft.world.item.component.DyedItemColor;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import vazkii.psi.api.PsiAPI;
-import vazkii.psi.api.cad.ICADColorizer;
 import vazkii.psi.api.exosuit.IExosuitSensor;
 import vazkii.psi.api.exosuit.ISensorHoldable;
 import vazkii.psi.common.item.base.ModItems;
-import vazkii.psi.common.lib.LibResources;
 
 import javax.annotation.Nonnull;
 
 public class ItemPsimetalExosuitHelmet extends ItemPsimetalArmor implements ISensorHoldable {
-
 
     public ItemPsimetalExosuitHelmet(ArmorItem.Type type, Item.Properties properties) {
         super(type, properties);
@@ -69,11 +61,4 @@ public class ItemPsimetalExosuitHelmet extends ItemPsimetalArmor implements ISen
     public void attachSensor(ItemStack stack, ItemStack sensor) {
         stack.set(ModItems.TAG_SENSOR, sensor.getItem());
     }
-
-    @Override
-    public ResourceLocation getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, ArmorMaterial.Layer layer, boolean innerModel) {
-        return layer.dyeable() ? LibResources.MODEL_PSIMETAL_EXOSUIT_SENSOR : LibResources.MODEL_PSIMETAL_EXOSUIT;
-    }
-
-
 }

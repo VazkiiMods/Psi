@@ -10,6 +10,7 @@ package vazkii.psi.client.jei.tricks;
 
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
+import mezz.jei.api.gui.builder.ITooltipBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
@@ -28,7 +29,10 @@ import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.lib.LibMisc;
 
 import javax.annotation.Nonnull;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class TrickCraftingCategory implements IRecipeCategory<ITrickRecipe> {
     public static final RecipeType<ITrickRecipe> TYPE = RecipeType.create(LibMisc.MOD_ID, "trick", ITrickRecipe.class);
@@ -92,15 +96,13 @@ public class TrickCraftingCategory implements IRecipeCategory<ITrickRecipe> {
         }
     }
 
-    @Nonnull
     @Override
-    public List<Component> getTooltipStrings(ITrickRecipe recipe, IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
+    public void getTooltip(ITooltipBuilder tooltip, ITrickRecipe recipe, IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
         if (recipe.getPiece() != null && onTrick(mouseX, mouseY)) {
-            List<Component> tooltip = new ArrayList<>();
-            recipe.getPiece().getTooltip(tooltip);
-            return tooltip;
+            List<Component> tooltips = new ArrayList<>();
+            recipe.getPiece().getTooltip(tooltips);
+            tooltip.addAll(tooltips);
         }
-        return Collections.emptyList();
     }
 
     @Override

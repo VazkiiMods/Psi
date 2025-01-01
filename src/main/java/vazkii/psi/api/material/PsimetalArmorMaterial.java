@@ -28,8 +28,7 @@ public class PsimetalArmorMaterial {
             12,
             SoundEvents.ARMOR_EQUIP_IRON,
             () -> Ingredient.of(BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(PsiAPI.MOD_ID, "psimetal"))),
-            List.of(new ArmorMaterial.Layer(ResourceLocation.withDefaultNamespace(""), "", true),
-                    new ArmorMaterial.Layer(ResourceLocation.withDefaultNamespace(""), "", false)),
+            List.of(new ArmorMaterial.Layer(ResourceLocation.withDefaultNamespace(""), "", true)),
             0.0F,
             0.0F));
 }

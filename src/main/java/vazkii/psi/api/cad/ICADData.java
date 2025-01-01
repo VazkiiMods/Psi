@@ -45,16 +45,6 @@ public interface ICADData extends INBTSerializable<CompoundTag> {
     void setSavedVector(int memorySlot, Vector3 value);
 
     /**
-     * Checks if the CAD should be updated
-     */
-    boolean isDirty();
-
-    /**
-     * Marks the CAD as ready to be updated
-     */
-    void markDirty(boolean isDirty);
-
-    /**
      * Serializes the CAD data to be synchronized
      */
     CompoundTag serializeForSynchronization();

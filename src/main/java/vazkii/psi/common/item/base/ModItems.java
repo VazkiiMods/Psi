@@ -9,27 +9,29 @@
 package vazkii.psi.common.item.base;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.Util;
+import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponentType;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.*;
-import net.minecraft.world.item.component.DyedItemColor;
 import net.minecraft.world.item.component.ItemContainerContents;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.level.block.Blocks;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
+import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.RegisterEvent;
+import org.jetbrains.annotations.NotNull;
 import vazkii.psi.api.PsiAPI;
-import vazkii.psi.api.cad.EnumCADComponent;
-import vazkii.psi.api.cad.ICADColorizer;
+import vazkii.psi.client.model.ArmorModels;
+import vazkii.psi.common.core.handler.capability.CADData;
 import vazkii.psi.common.item.*;
 import vazkii.psi.common.item.armor.ItemPsimetalExosuitBoots;
 import vazkii.psi.common.item.armor.ItemPsimetalExosuitChestplate;
@@ -44,31 +46,24 @@ import vazkii.psi.common.lib.LibItemNames;
 import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.spell.base.ModSpellPieces;
 
-import java.util.EnumMap;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.Locale;
+import java.util.List;
 
 @EventBusSubscriber(modid = LibMisc.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
 public final class ModItems {
-
     public static final DeferredRegister.DataComponents DATA_COMPONENT_TYPES = DeferredRegister.createDataComponents(PsiAPI.MOD_ID);
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<ItemContainerContents>> COMPONENTS = DATA_COMPONENT_TYPES.registerComponentType("components", builder -> builder.persistent(ItemContainerContents.CODEC).networkSynchronized(ItemContainerContents.STREAM_CODEC).cacheEncoding());
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<List<Item>>> COMPONENTS = DATA_COMPONENT_TYPES.registerComponentType("components", builder -> builder.persistent(Codec.list(BuiltInRegistries.ITEM.byNameCodec().orElse(Items.AIR))).networkSynchronized(ByteBufCodecs.registry(Registries.ITEM).apply(ByteBufCodecs.list())).cacheEncoding());
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> TAG_REGEN_TIME = DATA_COMPONENT_TYPES.registerComponentType("regen_time", builder -> builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.INT));
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> TAG_SELECTED_SLOT = DATA_COMPONENT_TYPES.registerComponentType("selected_slot", builder -> builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.INT));
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<ItemContainerContents>> TAG_BULLETS = DATA_COMPONENT_TYPES.registerComponentType("bullets", builder -> builder.persistent(ItemContainerContents.CODEC).networkSynchronized(ItemContainerContents.STREAM_CODEC).cacheEncoding());
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<CADData.Data>> CAD_DATA = DATA_COMPONENT_TYPES.registerComponentType("cad_data", builder -> builder.persistent(CADData.Data.CODEC).networkSynchronized(CADData.Data.STREAM_CODEC));
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<String>> TAG_CONTRIBUTOR = DATA_COMPONENT_TYPES.registerComponentType("psi_contributor_name", builder -> builder.persistent(Codec.STRING).networkSynchronized(ByteBufCodecs.STRING_UTF8));
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> TAG_SELECTED_CONTROL_SLOT = DATA_COMPONENT_TYPES.registerComponentType("selected_control_slot", builder -> builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.INT));
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> TAG_TIMES_CAST = DATA_COMPONENT_TYPES.registerComponentType("times_cast", builder -> builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.INT));
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<Item>> TAG_SENSOR = DATA_COMPONENT_TYPES.registerComponentType("sensor", builder -> builder.persistent(BuiltInRegistries.ITEM.byNameCodec().orElse(Items.AIR)).networkSynchronized(ByteBufCodecs.registry(Registries.ITEM)).cacheEncoding());
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<Boolean>> HAS_SPELL = DATA_COMPONENT_TYPES.registerComponentType("has_spell", builder -> builder.persistent(Codec.BOOL).networkSynchronized(ByteBufCodecs.BOOL));
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<CompoundTag>> TAG_SPELL = DATA_COMPONENT_TYPES.registerComponentType("spell", builder -> builder.persistent(CompoundTag.CODEC).networkSynchronized(ByteBufCodecs.COMPOUND_TAG));
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> TAG_SRC_X = DATA_COMPONENT_TYPES.registerComponentType("src_x", builder -> builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.INT));
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> TAG_SRC_Y = DATA_COMPONENT_TYPES.registerComponentType("src_y", builder -> builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.INT));
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> TAG_SRC_Z = DATA_COMPONENT_TYPES.registerComponentType("src_z", builder -> builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.INT));
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> TAG_DST_X = DATA_COMPONENT_TYPES.registerComponentType("dst_x", builder -> builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.INT));
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> TAG_DST_Y = DATA_COMPONENT_TYPES.registerComponentType("dst_y", builder -> builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.INT));
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> TAG_DST_Z = DATA_COMPONENT_TYPES.registerComponentType("dst_z", builder -> builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.INT));
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<BlockPos>> TAG_SRC_POS = DATA_COMPONENT_TYPES.registerComponentType("src_z", builder -> builder.persistent(BlockPos.CODEC).networkSynchronized(BlockPos.STREAM_CODEC));
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<BlockPos>> TAG_DST_POS = DATA_COMPONENT_TYPES.registerComponentType("dst_x", builder -> builder.persistent(BlockPos.CODEC).networkSynchronized(BlockPos.STREAM_CODEC));
 
     public static Item psidust;
     public static Item psimetal;
@@ -242,8 +237,8 @@ public final class ModItems {
             helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.IVORY_PSIMETAL), ivoryPsimetal);
             helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.EBONY_SUBSTANCE), ebonySubstance);
             helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.IVORY_SUBSTANCE), ivorySubstance);
-            helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_ASSEMBLY_CREATIVE), cadAssemblyCreative);
 
+            helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_ASSEMBLY_CREATIVE), cadAssemblyCreative);
             helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_ASSEMBLY_IRON), cadAssemblyIron);
             helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_ASSEMBLY_GOLD), cadAssemblyGold);
             helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_ASSEMBLY_PSIMETAL), cadAssemblyPsimetal);
@@ -318,6 +313,16 @@ public final class ModItems {
             helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.PSIMETAL_EXOSUIT_LEGGINGS), psimetalExosuitLeggings);
             helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.PSIMETAL_EXOSUIT_BOOTS), psimetalExosuitBoots);
         });
+    }
+
+    @SubscribeEvent
+    public static void initializeClient(RegisterClientExtensionsEvent event) {
+        event.registerItem(new IClientItemExtensions() {
+            @Override
+            public @NotNull HumanoidModel<?> getHumanoidArmorModel(LivingEntity livingEntity, ItemStack itemStack, EquipmentSlot equipmentSlot, HumanoidModel<?> original) {
+                return ArmorModels.get(itemStack);
+            }
+        }, psimetalExosuitHelmet, psimetalExosuitChestplate, psimetalExosuitLeggings, psimetalExosuitBoots);
     }
 
     public static Item.Properties defaultBuilder() {

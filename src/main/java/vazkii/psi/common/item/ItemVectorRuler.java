@@ -8,14 +8,11 @@
  */
 package vazkii.psi.common.item;
 
-import com.mojang.serialization.Codec;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.component.DataComponentType;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -24,8 +21,6 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.common.item.base.IHUDItem;
 import vazkii.psi.common.item.base.ModItems;
@@ -57,15 +52,11 @@ public class ItemVectorRuler extends Item implements IHUDItem {
 
         ItemStack stack = ctx.getPlayer().getItemInHand(ctx.getHand());
 
-        if (!stack.has(ModItems.TAG_SRC_Y) || ctx.getPlayer().isShiftKeyDown()) {
-            stack.set(ModItems.TAG_SRC_X, pos.getX());
-            stack.set(ModItems.TAG_SRC_Y, pos.getY());
-            stack.set(ModItems.TAG_SRC_Z, pos.getZ());
-            stack.remove(ModItems.TAG_DST_Y);
+        if (!stack.has(ModItems.TAG_SRC_POS) || ctx.getPlayer().isShiftKeyDown()) {
+            stack.set(ModItems.TAG_SRC_POS, pos);
+            stack.remove(ModItems.TAG_DST_POS);
         } else {
-            stack.set(ModItems.TAG_DST_X, pos.getX());
-            stack.set(ModItems.TAG_DST_Y, pos.getY());
-            stack.set(ModItems.TAG_DST_Z, pos.getZ());
+            stack.set(ModItems.TAG_DST_POS, pos);
         }
 
         return InteractionResult.SUCCESS;
@@ -78,19 +69,15 @@ public class ItemVectorRuler extends Item implements IHUDItem {
     }
 
     public Vector3 getVector(ItemStack stack) {
-        int srcX = stack.getOrDefault(ModItems.TAG_SRC_X, 0);
-        int srcY = stack.getOrDefault(ModItems.TAG_SRC_Y, 0);
-        int srcZ = stack.getOrDefault(ModItems.TAG_SRC_Z, 0);
+        BlockPos src = stack.getOrDefault(ModItems.TAG_SRC_POS, BlockPos.ZERO);
 
-        if (!stack.has(ModItems.TAG_DST_Y)) {
-            return new Vector3(srcX, srcY, srcZ);
+        if (!stack.has(ModItems.TAG_DST_POS)) {
+            return Vector3.fromBlockPos(src);
         }
 
-        int dstX = stack.getOrDefault(ModItems.TAG_DST_X, 0);
-        int dstY = stack.getOrDefault(ModItems.TAG_DST_Y, 0);
-        int dstZ = stack.getOrDefault(ModItems.TAG_DST_Z, 0);
+        BlockPos dst = stack.getOrDefault(ModItems.TAG_DST_POS, BlockPos.ZERO);
 
-        return new Vector3(dstX - srcX, dstY - srcY, dstZ - srcZ);
+        return Vector3.fromBlockPos(dst.subtract(src));
     }
 
     @Override

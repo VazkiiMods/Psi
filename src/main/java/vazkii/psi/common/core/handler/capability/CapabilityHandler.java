@@ -15,7 +15,7 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.items.ComponentItemHandler;
 import vazkii.psi.api.PsiAPI;
-import vazkii.psi.api.cad.EnumCADComponent;
+import vazkii.psi.api.cad.ISocketable;
 import vazkii.psi.common.core.capability.CapabilityTriggerSensor;
 import vazkii.psi.common.entity.ModEntities;
 import vazkii.psi.common.item.ItemSpellBullet;
@@ -26,49 +26,7 @@ import vazkii.psi.common.lib.LibMisc;
 
 @EventBusSubscriber(modid = LibMisc.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
 public class CapabilityHandler {
-	/* //TODO Does this need reimplimentation?
-	public static void register() {
-		register(ICADData.class, CapabilityHandler::noDefault);
-		register(ISocketable.class, SocketWheel::new);
-		register(ISpellAcceptor.class, SpellHolder::new);
-	
-		registerSingleDefault(IDetonationHandler.class, () -> {});
-		registerSingleDefault(IPsiBarDisplay.class, data -> false);
-		registerSingleDefault(ISpellImmune.class, () -> false);
-	}
-	
-	private static <T> void registerSingleDefault(Class<T> clazz, T provided) {
-		register(clazz, () -> provided);
-	}
-	
-	private static <T> void register(Class<T> clazz, Callable<T> provider) {
-		CapabilityManager.INSTANCE.register(clazz, new CapabilityFactory<>(), provider);
-	}
-	
-	private static <T> T noDefault() {
-		throw new UnsupportedOperationException("No default instance!");
-	}
-	
-	private static class CapabilityFactory<T> implements Capability.IStorage<T> {
-	
-		@Override
-		public Tag writeNBT(Capability<T> capability, T instance, Direction side) {
-			if(instance instanceof INBTSerializable) {
-				return ((INBTSerializable<?>) instance).serializeNBT();
-			}
-			return null;
-		}
-	
-		@Override
-		@SuppressWarnings("unchecked")
-		public void readNBT(Capability<T> capability, T instance, Direction side, Tag nbt) {
-			if(nbt instanceof CompoundTag) {
-				((INBTSerializable<Tag>) instance).deserializeNBT(nbt);
-			}
-		}
-	
-	}
-	*/
+
     @SubscribeEvent
     private static void registerCapabilities(RegisterCapabilitiesEvent event) {
         event.registerEntity(
@@ -87,8 +45,22 @@ public class CapabilityHandler {
 
         event.registerItem(
                 Capabilities.ItemHandler.ITEM,
-                (itemStack, context) -> new ComponentItemHandler(itemStack, ModItems.COMPONENTS.get(), EnumCADComponent.values().length),
+                (itemStack, context) -> new ComponentItemHandler(itemStack, ModItems.TAG_BULLETS.get(), ISocketable.MAX_ASSEMBLER_SLOTS),
                 ModItems.cad);
+        event.registerItem(
+                Capabilities.ItemHandler.ITEM,
+                (itemStack, context) -> new ComponentItemHandler(itemStack, ModItems.TAG_BULLETS.get(), 3),
+                ModItems.psimetalShovel,
+                ModItems.psimetalPickaxe,
+                ModItems.psimetalAxe,
+                ModItems.psimetalSword);
+        event.registerItem(
+                Capabilities.ItemHandler.ITEM,
+                (itemStack, context) -> new ComponentItemHandler(itemStack, ModItems.TAG_BULLETS.get(), 3),
+                ModItems.psimetalExosuitHelmet,
+                ModItems.psimetalExosuitChestplate,
+                ModItems.psimetalExosuitLeggings,
+                ModItems.psimetalExosuitBoots);
 
         event.registerItem(
                 PsiAPI.PSI_BAR_DISPLAY_CAPABILITY,
