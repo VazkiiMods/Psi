@@ -188,7 +188,7 @@ public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiE
 		consumer.accept(new IClientItemExtensions() {
 			@Override
 			public @NotNull HumanoidModel<?> getHumanoidArmorModel(LivingEntity livingEntity, ItemStack itemStack, EquipmentSlot equipmentSlot, HumanoidModel<?> original) {
-				return ArmorModels.get(itemStack);
+				return ArmorModels.get(equipmentSlot);
 			}
 		});
 	}
