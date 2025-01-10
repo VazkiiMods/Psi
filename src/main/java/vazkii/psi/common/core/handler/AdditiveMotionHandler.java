@@ -50,6 +50,7 @@ public class AdditiveMotionHandler {
 						//Otherwise it feels jerky.
 						if(entity instanceof ServerPlayer) {
 							MessageRegister.sendToPlayer(motion, (ServerPlayer) entity);
+							((ServerPlayer) entity).connection.aboveGroundTickCount = -80; //Improve "Kicked for Flying"
 						} else {
 							entity.push(vec.x, vec.y, vec.z);
 						}

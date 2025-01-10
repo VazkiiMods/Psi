@@ -214,6 +214,7 @@ public class ContainerCADAssembler extends AbstractContainerMenu {
 
 	@Override
 	public void removed(Player playerIn) {
+		super.removed(playerIn);
 		assembler.clearCachedCAD();
 	}
 }
