@@ -690,8 +690,7 @@ public class PlayerDataHandler {
 				if(!shatter && overflow > 0) {
 					float dmg = (float) overflow / (loopcasting ? 50 : 125);
 					if(!client) {
-						Holder<DamageType> holder = RegistryManager.VANILLA.getRegistry(Registries.DAMAGE_TYPE).getHolder(LibResources.PSI_OVERLOAD).get();
-						DamageSource overloadSource = new DamageSource(holder);
+						DamageSource overloadSource = new DamageSource(player.getCommandSenderWorld().registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(LibResources.PSI_OVERLOAD));
 						player.hurt(overloadSource, dmg);
 					}
 					overflowed = true;
