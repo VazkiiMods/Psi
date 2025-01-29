@@ -1,3 +1,4 @@
 {
-  "type": "psi:scavenge"
+  "type": "psi:scavenge",
+  "category": "misc"
 }

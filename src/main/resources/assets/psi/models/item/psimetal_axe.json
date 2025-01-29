@@ -1,6 +1,6 @@
 {
 	"parent": "minecraft:item/handheld",
 	"textures": { 
-		"layer0": "psi:items/psimetal_axe"
+		"layer0": "psi:item/psimetal_axe"
 	}
 }

@@ -180,12 +180,15 @@ public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiE
 		return ICADColorizer.DEFAULT_SPELL_COLOR;
 	}
 
+	public void setColor(ItemStack stack, int color) {
+	}
+
 	@Override
 	public void initializeClient(Consumer<IClientItemExtensions> consumer) {
 		consumer.accept(new IClientItemExtensions() {
 			@Override
 			public @NotNull HumanoidModel<?> getHumanoidArmorModel(LivingEntity livingEntity, ItemStack itemStack, EquipmentSlot equipmentSlot, HumanoidModel<?> original) {
-				return ArmorModels.get(itemStack);
+				return ArmorModels.get(equipmentSlot);
 			}
 		});
 	}

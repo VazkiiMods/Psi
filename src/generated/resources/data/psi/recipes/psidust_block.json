@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "building",
   "key": {
     "I": {
       "item": "psi:psidust"
@@ -12,5 +13,6 @@
   ],
   "result": {
     "item": "psi:psidust_block"
-  }
+  },
+  "show_notification": true
 }

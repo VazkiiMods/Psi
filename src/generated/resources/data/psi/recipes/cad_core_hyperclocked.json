@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "equipment",
   "key": {
     "D": {
       "tag": "forge:dusts/redstone"
@@ -18,5 +19,6 @@
   ],
   "result": {
     "item": "psi:cad_core_hyperclocked"
-  }
+  },
+  "show_notification": true
 }

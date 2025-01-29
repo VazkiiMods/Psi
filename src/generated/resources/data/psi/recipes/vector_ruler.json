@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "equipment",
   "key": {
     "D": {
       "tag": "psi:psidust"
@@ -15,5 +16,6 @@
   ],
   "result": {
     "item": "psi:vector_ruler"
-  }
+  },
+  "show_notification": true
 }

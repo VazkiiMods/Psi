@@ -1,3 +1,4 @@
 {
-  "type": "psi:drive_duplicate"
+  "type": "psi:drive_duplicate",
+  "category": "misc"
 }

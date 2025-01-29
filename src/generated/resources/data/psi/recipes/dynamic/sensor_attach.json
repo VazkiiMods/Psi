@@ -1,3 +1,4 @@
 {
-  "type": "psi:sensor_attach"
+  "type": "psi:sensor_attach",
+  "category": "misc"
 }

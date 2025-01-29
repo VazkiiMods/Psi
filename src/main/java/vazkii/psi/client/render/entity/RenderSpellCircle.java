@@ -53,8 +53,6 @@ public class RenderSpellCircle extends EntityRenderer<EntitySpellCircle> {
 
 	public RenderSpellCircle(EntityRendererProvider.Context ctx) {
 		super(ctx);
-		// Ugly hack to get context
-		ArmorModels.init(ctx);
 	}
 
 	@Override
