@@ -63,7 +63,7 @@ public class IntervalNumber implements Interval<Number> {
 	}
 	public IntervalNumber abs() {
 		if (min >= 0) return this;
-		if (max < 0) return invert();
+		if (max < 0) return negate();
 		return new IntervalNumber(0, Math.max(-min, max));
 	}
 	public IntervalNumber sign() {
