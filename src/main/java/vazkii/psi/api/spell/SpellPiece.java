@@ -106,9 +106,10 @@ public abstract class SpellPiece {
 
 	/**
 	 * Evaluates this piece for the purpose of spell metadata calculation.
-	 * Return {@link Interval} if not applicable or not implemented.
+	 * Use {@link Interval#unboundedValues} when not implemented.
+	 * Only return null for connectors and pieces with {@link Void} return type.
 	 */
-	public abstract @Nonnull Interval<?> evaluate() throws SpellCompilationException;
+	public abstract Interval<?> evaluate() throws SpellCompilationException;
 
 	/**
 	 * Executes this piece and returns the value of this piece for later pieces to pick up
@@ -238,7 +239,7 @@ public abstract class SpellPiece {
 	 * {@link #evaluate()} and should only be used for {@link #addToMetadata(SpellMetadata)}
 	 */
 	@SuppressWarnings("unchecked")
-	public <T, U extends Interval<T>> @Nullable U getParamEvaluation(SpellParam<?> param) throws SpellCompilationException {
+	public <T, U extends Interval<T>> @Nullable U getParamEvaluation(SpellParam<T> param) throws SpellCompilationException {
 		SpellParam.Side side = paramSides.get(param);
 		if(!side.isEnabled()) {
 			return null;

@@ -60,7 +60,8 @@ public class PieceConstantWrapper extends SpellPiece {
 
 	@Override
 	public @NotNull Interval<?> evaluate() throws SpellCompilationException {
-		IntervalNumber absValue = this.<Number, IntervalNumber>getNonNullParamEvaluation(target).abs();
+		IntervalNumber value = getParamEvaluation(target);
+		IntervalNumber absValue = value == null ? IntervalNumber.unbounded : value.abs();
 		IntervalNumber bound = getNonNullParamEvaluation(max);
 		if (bound.min > 0) bound = IntervalNumber.fromRange(0, bound.max);
 		if (bound.max < 0) bound = IntervalNumber.fromRange(bound.min, 0);

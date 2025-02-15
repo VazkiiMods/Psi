@@ -39,7 +39,7 @@ public abstract class PieceOperator extends SpellPiece {
 
 	@Override
 	public @NotNull Interval<?> evaluate() throws SpellCompilationException {
-		return Interval.unbounded();
+		return Interval.unboundedValues.get(getEvaluationType());
 	}
 
 	@Override

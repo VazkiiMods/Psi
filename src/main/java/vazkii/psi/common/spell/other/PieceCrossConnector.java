@@ -158,7 +158,7 @@ public class PieceCrossConnector extends SpellPiece implements IGenericRedirecto
 
 	@Override
 	public @NotNull Interval<?> evaluate() {
-		return Interval.unbounded();
+		return null;
 	}
 
 	@Override

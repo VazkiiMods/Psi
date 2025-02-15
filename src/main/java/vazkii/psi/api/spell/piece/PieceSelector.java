@@ -39,7 +39,7 @@ public abstract class PieceSelector extends SpellPiece {
 
 	@Override
 	public @NotNull Interval<?> evaluate() {
-		return Interval.unbounded();
+		return Interval.unboundedValues.get(getEvaluationType());
 	}
 
 	@Override
