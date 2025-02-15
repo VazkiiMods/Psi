@@ -50,12 +50,7 @@ public class PieceTrickAddMotion extends PieceTrick {
 	@Override
 	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
 		super.addToMetadata(meta);
-		IntervalNumber speedVal = this.getParamEvaluation(speed);
-		if(speedVal == null) {
-			speedVal = IntervalNumber.one;
-		}
-
-		double absSpeed = speedVal.abs().max;
+		double absSpeed = this.<Number, IntervalNumber>getNonNullParamEvaluation(speed).abs().max;
 		int dc = 0;
 		if(!meta.getFlag("psi.addmotion")) {
 			meta.setFlag("psi.addmotion", true);

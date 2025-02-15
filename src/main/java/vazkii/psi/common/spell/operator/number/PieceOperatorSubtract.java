@@ -8,6 +8,7 @@
  */
 package vazkii.psi.common.spell.operator.number;
 
+import org.jetbrains.annotations.NotNull;
 import vazkii.psi.api.interval.IntervalNumber;
 import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.param.ParamNumber;
@@ -31,8 +32,8 @@ public class PieceOperatorSubtract extends PieceOperator {
 	}
 	
 	@Override
-	public IntervalNumber evaluate() throws SpellCompilationException {
-		return this.<Number, IntervalNumber>getParamEvaluation(num1).subtract(getParamEvaluation(num2)).subtract(getParamEvaluationeOrDefault(num3, IntervalNumber.zero));
+	public @NotNull IntervalNumber evaluate() throws SpellCompilationException {
+		return this.<Number, IntervalNumber>getNonNullParamEvaluation(num1).subtract(getNonNullParamEvaluation(num2)).subtract(getParamEvaluationeOrDefault(num3, IntervalNumber.zero));
 	}
 
 	@Override

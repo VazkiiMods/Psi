@@ -10,6 +10,7 @@ package vazkii.psi.common.spell.operator.block;
 
 import net.minecraft.core.BlockPos;
 
+import org.jetbrains.annotations.NotNull;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.interval.IntervalNumber;
 import vazkii.psi.api.spell.Spell;
@@ -34,7 +35,7 @@ public class PieceOperatorBlockLightLevel extends PieceOperator {
 	}
 	
 	@Override
-	public IntervalNumber evaluate() {
+	public @NotNull IntervalNumber evaluate() {
 		return IntervalNumber.fromRange(0, 15);
 	}
 

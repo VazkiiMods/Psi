@@ -14,6 +14,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.nbt.CompoundTag;
 
+import org.jetbrains.annotations.NotNull;
 import org.lwjgl.glfw.GLFW;
 
 import vazkii.psi.api.interval.Interval;
@@ -188,7 +189,7 @@ public class PieceConstantNumber extends SpellPiece {
 	}
 	
 	@Override
-	public Interval<?> evaluate() {
+	public @NotNull Interval<?> evaluate() {
 		return IntervalNumber.fromValue(value());
 	}
 

@@ -44,12 +44,7 @@ public class PieceTrickMassBlink extends PieceTrick {
 	@Override
 	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
 		super.addToMetadata(meta);
-		IntervalNumber distanceVal = this.getParamEvaluation(distance);
-		if(distanceVal == null) {
-			distanceVal = IntervalNumber.one;
-		}
-		
-		double absDistance = distanceVal.abs().max;
+		double absDistance = this.<Number, IntervalNumber>getNonNullParamEvaluation(distance).abs().max;
 		meta.addStat(EnumSpellStat.POTENCY, (int) (absDistance * 80));
 		meta.addStat(EnumSpellStat.COST, (int) (absDistance * 100));
 	}

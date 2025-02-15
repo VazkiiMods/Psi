@@ -12,6 +12,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
 
+import org.jetbrains.annotations.NotNull;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.interval.IntervalNumber;
 import vazkii.psi.api.spell.Spell;
@@ -37,7 +38,7 @@ public class PieceOperatorBlockSideSolidity extends PieceOperator {
 	}
 	
 	@Override
-	public IntervalNumber evaluate() {
+	public @NotNull IntervalNumber evaluate() {
 		return IntervalNumber.zeroToOne;
 	}
 

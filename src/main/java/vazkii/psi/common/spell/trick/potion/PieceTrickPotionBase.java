@@ -50,10 +50,10 @@ public abstract class PieceTrickPotionBase extends PieceTrick {
 	@Override
 	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
 		super.addToMetadata(meta);
-		IntervalNumber powerVal = hasPower() ? this.getParamEvaluation(power) : IntervalNumber.one;
-		IntervalNumber timeVal = getParamEvaluation(time);
+		IntervalNumber powerVal = hasPower() ? this.getNonNullParamEvaluation(power) : IntervalNumber.one;
+		IntervalNumber timeVal = getNonNullParamEvaluation(time);
 
-		if(powerVal.min < 1 || timeVal.min < 1) {
+		if(powerVal.max < 1 || timeVal.max < 1) {
 			throw new SpellCompilationException(SpellCompilationException.NON_POSITIVE_INTEGER, x, y);
 		}
 

@@ -8,7 +8,9 @@
  */
 package vazkii.psi.api.spell.piece;
 
+import org.jetbrains.annotations.NotNull;
 import vazkii.psi.api.interval.Interval;
+import vazkii.psi.api.interval.IntervalVoid;
 import vazkii.psi.api.spell.EnumPieceType;
 import vazkii.psi.api.spell.EnumSpellStat;
 import vazkii.psi.api.spell.Spell;
@@ -44,8 +46,8 @@ public abstract class PieceTrick extends SpellPiece {
 	}
 
 	@Override
-	public Interval<?> evaluate() {
-		return null;
+	public @NotNull Interval<?> evaluate() {
+		return IntervalVoid.instance;
 	}
 
 	@Override

@@ -41,7 +41,7 @@ public class PieceTrickEidosAnchor extends PieceTrick {
 	@Override
 	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
 		super.addToMetadata(meta);
-		double timeVal = this.<Number, IntervalNumber>getParamEvaluation(time).max;
+		double timeVal = this.<Number, IntervalNumber>getNonNullParamEvaluation(time).max;
 		
 		if(timeVal < 1) {
 			throw new SpellCompilationException(SpellCompilationException.NON_POSITIVE_INTEGER, x, y);

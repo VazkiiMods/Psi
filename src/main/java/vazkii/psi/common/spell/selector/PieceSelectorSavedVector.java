@@ -44,7 +44,7 @@ public class PieceSelectorSavedVector extends PieceSelector {
 	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
 		super.addToMetadata(meta);
 
-		double numberVal = this.<Number, IntervalNumber>getParamEvaluation(number).max;
+		double numberVal = this.<Number, IntervalNumber>getNonNullParamEvaluation(number).max;
 		if(numberVal < 1) {
 			throw new SpellCompilationException(SpellCompilationException.NON_POSITIVE_INTEGER, x, y);
 		}

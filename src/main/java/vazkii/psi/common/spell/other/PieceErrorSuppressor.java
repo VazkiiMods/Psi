@@ -8,7 +8,9 @@
  */
 package vazkii.psi.common.spell.other;
 
+import org.jetbrains.annotations.NotNull;
 import vazkii.psi.api.interval.Interval;
+import vazkii.psi.api.interval.IntervalVoid;
 import vazkii.psi.api.spell.EnumPieceType;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
@@ -42,8 +44,8 @@ public class PieceErrorSuppressor extends SpellPiece {
 	}
 
 	@Override
-	public Interval<?> evaluate() {
-		return null;
+	public @NotNull Interval<?> evaluate() {
+		return IntervalVoid.instance;
 	}
 
 	@Override

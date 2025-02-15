@@ -12,7 +12,6 @@ import com.google.common.base.CaseFormat;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import vazkii.psi.api.interval.Interval;
 
 /**
  * Base abstract class for a spell parameter. See implementations
@@ -105,41 +104,21 @@ public abstract class SpellParam<T> {
 	protected abstract Class<T> getRequiredType();
 
 	/**
-	 * Gets if this parameter requires a constant ({@link EnumPieceType#CONSTANT}). Similarly to
-	 * {@link #getRequiredType()} this
-	 * is for internal use only.
-	 */
-	protected boolean requiresConstant() {
-		return false;
-	}
-
-	/**
 	 * Gets the string for display for the required type.
 	 */
 	public Component getRequiredTypeString() {
 		Class<T> evalType = getRequiredType();
 		String evalStr = evalType == null ? "null" : CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, evalType.getSimpleName());
 		MutableComponent s = Component.translatable("psi.datatype." + evalStr);
-		if(requiresConstant()) {
-			s.append(" ").append(Component.translatable("psimisc.constant"));
-		}
 
 		return s;
 	}
 
 	/**
 	 * Gets if this paramtere can accept the piece passed in. Default implementation
-	 * checks against {@link #getRequiredType()} and {@link #requiresConstant()}.
+	 * checks against {@link #getRequiredType()}.
 	 */
 	public boolean canAccept(SpellPiece piece) {
-		if (requiresConstant()) {
-			try {
-				Interval<?> value = piece.evaluate();
-				if (value == null || !value.isValid()) return false;
-			} catch (SpellCompilationException | NullPointerException e) {
-				return false;
-			}
-		}
 		return (getRequiredType() == Any.class || getRequiredType().isAssignableFrom(piece.getEvaluationType()));
 	}
 

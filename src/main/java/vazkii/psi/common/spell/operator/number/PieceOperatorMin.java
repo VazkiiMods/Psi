@@ -8,6 +8,7 @@
  */
 package vazkii.psi.common.spell.operator.number;
 
+import org.jetbrains.annotations.NotNull;
 import vazkii.psi.api.interval.IntervalNumber;
 import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.param.ParamNumber;
@@ -31,11 +32,10 @@ public class PieceOperatorMin extends PieceOperator {
 	}
 	
 	@Override
-	public IntervalNumber evaluate() throws SpellCompilationException {
-		var res = this.<Number, IntervalNumber>getParamEvaluation(num1).min(getParamEvaluation(num2));
+	public @NotNull IntervalNumber evaluate() throws SpellCompilationException {
+		var res = this.<Number, IntervalNumber>getNonNullParamEvaluation(num1).min(getNonNullParamEvaluation(num2));
 		IntervalNumber trd = getParamEvaluation(num3);
-		if (trd != null) res = res.min(trd);
-		return res;
+		return trd == null ? res : res.min(trd);
 	}
 
 	@Override

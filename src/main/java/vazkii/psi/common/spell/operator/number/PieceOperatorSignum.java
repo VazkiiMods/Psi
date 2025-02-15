@@ -8,6 +8,7 @@
  */
 package vazkii.psi.common.spell.operator.number;
 
+import org.jetbrains.annotations.NotNull;
 import vazkii.psi.api.interval.IntervalNumber;
 import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.param.ParamNumber;
@@ -26,8 +27,8 @@ public class PieceOperatorSignum extends PieceOperator {
 	}
 	
 	@Override
-	public IntervalNumber evaluate() throws SpellCompilationException {
-		return this.<Number, IntervalNumber>getParamEvaluation(num).sign();
+	public @NotNull IntervalNumber evaluate() throws SpellCompilationException {
+		return this.<Number, IntervalNumber>getNonNullParamEvaluation(num).sign();
 	}
 
 	@Override

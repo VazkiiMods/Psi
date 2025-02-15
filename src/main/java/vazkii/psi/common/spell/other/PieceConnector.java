@@ -19,6 +19,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+import org.jetbrains.annotations.NotNull;
 import vazkii.psi.api.ClientPsiAPI;
 import vazkii.psi.api.interval.Interval;
 import vazkii.psi.api.spell.EnumPieceType;
@@ -144,8 +145,8 @@ public class PieceConnector extends SpellPiece implements IRedirector {
 	}
 
 	@Override
-	public Interval<?> evaluate() {
-		return null;
+	public @NotNull Interval<?> evaluate() {
+		return Interval.unbounded();
 	}
 
 	@Override

@@ -48,12 +48,7 @@ public class PieceTrickMassAddMotion extends PieceTrick {
 	@Override
 	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
 		super.addToMetadata(meta);
-		IntervalNumber speedVal = this.getParamEvaluation(speed);
-		if(speedVal == null) {
-			speedVal = IntervalNumber.one;
-		}
-		
-		double absSpeed = speedVal.abs().max;
+		double absSpeed = this.<Number, IntervalNumber>getNonNullParamEvaluation(speed).abs().max;
 		meta.addStat(EnumSpellStat.POTENCY, (int) (absSpeed * 90));
 		meta.addStat(EnumSpellStat.COST, (int) Math.max(1, absSpeed * 105));
 	}

@@ -8,6 +8,7 @@
  */
 package vazkii.psi.common.spell.constant;
 
+import org.jetbrains.annotations.NotNull;
 import vazkii.psi.api.interval.Interval;
 import vazkii.psi.api.interval.IntervalNumber;
 import vazkii.psi.api.spell.EnumPieceType;
@@ -32,7 +33,7 @@ public class PieceConstantTau extends SpellPiece {
 	}
 
 	@Override
-	public Interval<?> evaluate() {
+	public @NotNull Interval<?> evaluate() {
 		return IntervalNumber.fromValue(2 * Math.PI);
 	}
 

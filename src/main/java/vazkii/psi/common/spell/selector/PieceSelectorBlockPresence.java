@@ -13,6 +13,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 
+import org.jetbrains.annotations.NotNull;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.interval.IntervalNumber;
 import vazkii.psi.api.spell.Spell;
@@ -36,7 +37,7 @@ public class PieceSelectorBlockPresence extends PieceSelector {
 	}
 	
 	@Override
-	public IntervalNumber evaluate() {
+	public @NotNull IntervalNumber evaluate() {
 		return IntervalNumber.fromRange(0, 2);
 	}
 

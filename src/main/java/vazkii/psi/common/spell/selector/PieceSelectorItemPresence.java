@@ -10,6 +10,7 @@ package vazkii.psi.common.spell.selector;
 
 import net.minecraft.world.item.ItemStack;
 
+import org.jetbrains.annotations.NotNull;
 import vazkii.psi.api.interval.IntervalNumber;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
@@ -32,7 +33,7 @@ public class PieceSelectorItemPresence extends PieceSelector {
 	}
 	
 	@Override
-	public IntervalNumber evaluate() {
+	public @NotNull IntervalNumber evaluate() {
 		return IntervalNumber.fromRange(0, 64);
 	}
 

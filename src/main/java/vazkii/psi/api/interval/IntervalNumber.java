@@ -1,13 +1,17 @@
 package vazkii.psi.api.interval;
 
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
+
+import java.util.List;
 import java.util.function.DoubleUnaryOperator;
 
 public class IntervalNumber implements Interval<Number> {
 	
-	public static final IntervalNumber invalid = new IntervalNumber(Double.NaN, Double.NaN);
 	public static final IntervalNumber zero = fromValue(0);
 	public static final IntervalNumber one = fromValue(1);
 	public static final IntervalNumber zeroToOne = new IntervalNumber(0, 1);
+	public static final IntervalNumber unbounded = new IntervalNumber(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
 	
 	public final double min, max;
 	
@@ -18,22 +22,35 @@ public class IntervalNumber implements Interval<Number> {
 	
 	@Override
 	public Interval<Number> combine(Interval<Number> with) {
-		if (!(with instanceof IntervalNumber n)) return null;
+		if (!(with instanceof IntervalNumber n)) return unbounded;
 		return new IntervalNumber(Math.min(min, n.min), Math.max(max, n.max));
 	}
 	
+	private static String format(double value) {
+		if (Double.isInfinite(value)) return (value > 0 ? "+" : "-") + "\u221E";
+		String s = String.valueOf(value);
+		return s.endsWith(".0") ? s.substring(0, s.length() - 2) : s;
+	}
+	
 	@Override
-	public boolean isValid() {
-		return min <= max && Double.isFinite(min) && Double.isFinite(max);
+	public List<Component> getTooltip() {
+		if (min == max) return List.of(Component.literal("{").withStyle(ChatFormatting.DARK_GRAY)
+				.append(Component.literal(format(min)).withStyle(Double.isFinite(min) ? ChatFormatting.WHITE : ChatFormatting.RED))
+				.append("}"));
+		return List.of(Component.literal(Double.isFinite(min) ? "[" : "(").withStyle(Double.isFinite(min) && Double.isFinite(max) ? ChatFormatting.DARK_AQUA : ChatFormatting.GOLD)
+				.append(Component.literal(format(min)).withStyle(Double.isFinite(min) ? ChatFormatting.AQUA : ChatFormatting.YELLOW))
+				.append(", ")
+				.append(Component.literal(format(max)).withStyle(Double.isFinite(max) ? ChatFormatting.AQUA : ChatFormatting.YELLOW))
+				.append(Double.isFinite(max) ? "]" : ")"));
 	}
 	
 	public static IntervalNumber fromValue(double value) {
-		if (!Double.isFinite(value)) return invalid;
+		if (!Double.isFinite(value)) return unbounded;
 		return new IntervalNumber(value, value);
 	}
 	
 	public static IntervalNumber fromRange(double min, double max) {
-		if (!Double.isFinite(min) || !Double.isFinite(max) || min > max) return invalid;
+		if (!(min <= max)) return unbounded; // Also checks min, max != NaN implicitly
 		return new IntervalNumber(min, max);
 	}
 	
@@ -41,8 +58,8 @@ public class IntervalNumber implements Interval<Number> {
 		return new IntervalNumber(-max, -min);
 	}
 	public IntervalNumber invert() {
-		if (min <= 0 && max >= 0) return invalid;
-		return new IntervalNumber(1 / max, 1 / min);
+		if (min < 0 && max > 0) return unbounded;
+		return new IntervalNumber(1 / max, 1 / min); // Floating point division takes care of the [0, x] and [x, 0] cases
 	}
 	public IntervalNumber abs() {
 		if (min >= 0) return this;

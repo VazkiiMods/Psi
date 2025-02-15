@@ -49,7 +49,7 @@ public class PieceTrickSaveVector extends PieceTrick {
 	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
 		meta.addStat(EnumSpellStat.COMPLEXITY, 1);
 		
-		double numberVal = this.<Number, IntervalNumber>getParamEvaluation(number).max;
+		double numberVal = this.<Number, IntervalNumber>getNonNullParamEvaluation(number).max;
 		if(numberVal < 1) {
 			throw new SpellCompilationException(SpellCompilationException.NON_POSITIVE_INTEGER, x, y);
 		}

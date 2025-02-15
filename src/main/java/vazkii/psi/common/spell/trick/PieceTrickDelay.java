@@ -39,7 +39,7 @@ public class PieceTrickDelay extends PieceTrick {
 	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
 		meta.addStat(EnumSpellStat.COMPLEXITY, 1);
 
-		double timeVal = this.<Number, IntervalNumber>getParamEvaluation(time).max;
+		double timeVal = this.<Number, IntervalNumber>getNonNullParamEvaluation(time).max;
 		if(timeVal < 1) {
 			throw new SpellCompilationException(SpellCompilationException.NON_POSITIVE_INTEGER, x, y);
 		}
