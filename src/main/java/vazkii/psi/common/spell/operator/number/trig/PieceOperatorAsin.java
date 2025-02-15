@@ -30,7 +30,7 @@ public class PieceOperatorAsin extends PieceOperator {
 	@Override
 	public @NotNull IntervalNumber evaluate() throws SpellCompilationException {
 		IntervalNumber iv = getNonNullParamEvaluation(num);
-		return iv.clamp(IntervalNumber.fromRange(-1, 1)).preservingMonotonicMap(Math::acos);
+		return iv.clamp(IntervalNumber.fromRange(-1, 1)).preservingMonotonicMap(Math::asin);
 	}
 
 	@Override
