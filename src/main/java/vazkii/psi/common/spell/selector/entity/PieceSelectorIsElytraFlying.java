@@ -8,6 +8,8 @@
  */
 package vazkii.psi.common.spell.selector.entity;
 
+import org.jetbrains.annotations.NotNull;
+import vazkii.psi.api.interval.IntervalNumber;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellRuntimeException;
@@ -17,6 +19,11 @@ public class PieceSelectorIsElytraFlying extends PieceSelector {
 
 	public PieceSelectorIsElytraFlying(Spell spell) {
 		super(spell);
+	}
+	
+	@Override
+	public @NotNull IntervalNumber evaluate() {
+		return IntervalNumber.zeroToOne;
 	}
 
 	@Override

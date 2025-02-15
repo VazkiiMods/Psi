@@ -11,7 +11,9 @@ package vazkii.psi.common.spell.operator.block;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 
+import org.jetbrains.annotations.NotNull;
 import vazkii.psi.api.internal.Vector3;
+import vazkii.psi.api.interval.IntervalNumber;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellHelpers;
@@ -32,6 +34,11 @@ public class PieceOperatorBlockMiningLevel extends PieceOperator {
 	@Override
 	public void initParams() {
 		addParam(position = new ParamVector(SpellParam.GENERIC_NAME_POSITION, SpellParam.BLUE, false));
+	}
+	
+	@Override
+	public @NotNull IntervalNumber evaluate() {
+		return IntervalNumber.fromRange(0, Double.POSITIVE_INFINITY);
 	}
 
 	@Override

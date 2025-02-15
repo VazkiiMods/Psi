@@ -8,7 +8,9 @@
  */
 package vazkii.psi.common.spell.operator.vector;
 
+import org.jetbrains.annotations.NotNull;
 import vazkii.psi.api.internal.Vector3;
+import vazkii.psi.api.interval.IntervalNumber;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellParam;
@@ -27,6 +29,11 @@ public class PieceOperatorVectorMagnitude extends PieceOperator {
 	@Override
 	public void initParams() {
 		addParam(vec1 = new ParamVector(SpellParam.GENERIC_NAME_TARGET, SpellParam.BLUE, false));
+	}
+	
+	@Override
+	public @NotNull IntervalNumber evaluate() {
+		return IntervalNumber.fromRange(0, Double.POSITIVE_INFINITY);
 	}
 
 	@Override

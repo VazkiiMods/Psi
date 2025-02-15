@@ -5,6 +5,7 @@ import net.minecraft.network.chat.Component;
 
 import java.util.List;
 import java.util.function.DoubleUnaryOperator;
+import java.util.function.Function;
 
 public class IntervalNumber implements Interval<Number> {
 	
@@ -54,6 +55,10 @@ public class IntervalNumber implements Interval<Number> {
 		return new IntervalNumber(min, max);
 	}
 	
+	public boolean includes(double value) {
+		return min <= value && max >= value;
+	}
+	
 	public IntervalNumber negate() {
 		return new IntervalNumber(-max, -min);
 	}
@@ -75,8 +80,14 @@ public class IntervalNumber implements Interval<Number> {
 	public IntervalNumber add(IntervalNumber n) {
 		return new IntervalNumber(min + n.min, max + n.max);
 	}
+	public IntervalNumber add(double n) {
+		return new IntervalNumber(min + n, max + n);
+	}
 	public IntervalNumber subtract(IntervalNumber n) {
 		return new IntervalNumber(min - n.max, max - n.min);
+	}
+	public IntervalNumber subtract(double n) {
+		return new IntervalNumber(min - n, max - n);
 	}
 	public IntervalNumber multiply(IntervalNumber n) {
 		return new IntervalNumber(
@@ -113,6 +124,18 @@ public class IntervalNumber implements Interval<Number> {
 	}
 	public IntervalNumber max(IntervalNumber n) {
 		return new IntervalNumber(Math.max(min, n.min), Math.max(max, n.max));
+	}
+	
+	public IntervalNumber periodicFn(Function<IntervalNumber, IntervalNumber> fn, double period, boolean precise) {
+		if (max - min >= period) return fn.apply(new IntervalNumber(0, period));
+		double mMin = min >= 0 ? min % period : period - (-min % period);
+		double mMax = max >= 0 ? max % period : period - (-max % period);
+		if (mMax < mMin) {
+			if (!precise) return fn.apply(new IntervalNumber(0, period));
+			return (IntervalNumber) fn.apply(new IntervalNumber(mMin, period))
+					.combine(fn.apply(new IntervalNumber(0, mMax)));
+		}
+		return fn.apply(new IntervalNumber(mMin, mMax));
 	}
 	
 }

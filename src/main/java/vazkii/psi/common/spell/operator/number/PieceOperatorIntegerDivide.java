@@ -8,10 +8,9 @@
  */
 package vazkii.psi.common.spell.operator.number;
 
-import vazkii.psi.api.spell.Spell;
-import vazkii.psi.api.spell.SpellContext;
-import vazkii.psi.api.spell.SpellParam;
-import vazkii.psi.api.spell.SpellRuntimeException;
+import org.jetbrains.annotations.NotNull;
+import vazkii.psi.api.interval.IntervalNumber;
+import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.piece.PieceOperator;
 
@@ -30,6 +29,15 @@ public class PieceOperatorIntegerDivide extends PieceOperator {
 		addParam(num1 = new ParamNumber(SpellParam.GENERIC_NAME_NUMBER1, SpellParam.RED, false));
 		addParam(num2 = new ParamNumber(SpellParam.GENERIC_NAME_NUMBER2, SpellParam.GREEN, false));
 		addParam(num3 = new ParamNumber(SpellParam.GENERIC_NAME_NUMBER3, SpellParam.YELLOW, true));
+	}
+	
+	@Override
+	public @NotNull IntervalNumber evaluate() throws SpellCompilationException {
+		IntervalNumber i1 = getNonNullParamEvaluation(num1);
+		IntervalNumber i2 = getNonNullParamEvaluation(num2);
+		IntervalNumber i3 = getParamEvaluation(num3);
+		IntervalNumber iv = i3 == null ? i1.divide(i2) : i1.divide(i2.multiply(i3));
+		return iv.preservingMonotonicMap(v -> v < 0 ? Math.ceil(v) : Math.floor(v));
 	}
 
 	@Override
