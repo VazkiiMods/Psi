@@ -106,7 +106,7 @@ public class IntervalNumber implements Interval<Number> {
 	}
 	
 	public IntervalNumber clamp(IntervalNumber n) {
-		return new IntervalNumber(Math.max(min, n.min), Math.min(max, n.max));
+		return new IntervalNumber(Math.min(Math.max(min, n.min), n.max), Math.min(Math.max(max, n.min), n.max));
 	}
 	public IntervalNumber min(IntervalNumber n) {
 		return new IntervalNumber(Math.min(min, n.min), Math.min(max, n.max));
