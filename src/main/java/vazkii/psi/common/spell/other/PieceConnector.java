@@ -20,6 +20,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import vazkii.psi.api.ClientPsiAPI;
+import vazkii.psi.api.interval.Interval;
 import vazkii.psi.api.spell.EnumPieceType;
 import vazkii.psi.api.spell.IRedirector;
 import vazkii.psi.api.spell.Spell;
@@ -143,7 +144,7 @@ public class PieceConnector extends SpellPiece implements IRedirector {
 	}
 
 	@Override
-	public Object evaluate() {
+	public Interval<?> evaluate() {
 		return null;
 	}
 

@@ -21,6 +21,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 import vazkii.psi.api.ClientPsiAPI;
 import vazkii.psi.api.internal.PsiRenderHelper;
+import vazkii.psi.api.interval.Interval;
 import vazkii.psi.api.spell.EnumPieceType;
 import vazkii.psi.api.spell.EnumSpellStat;
 import vazkii.psi.api.spell.IGenericRedirector;
@@ -155,7 +156,7 @@ public class PieceCrossConnector extends SpellPiece implements IGenericRedirecto
 	}
 
 	@Override
-	public Object evaluate() {
+	public Interval<?> evaluate() {
 		return null;
 	}
 

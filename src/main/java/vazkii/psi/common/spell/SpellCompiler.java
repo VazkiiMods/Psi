@@ -94,7 +94,11 @@ public final class SpellCompiler implements ISpellCompiler {
 			Action a = compiled.new Action(piece);
 			compiled.actions.add(a);
 			compiled.actionMap.put(piece, a);
-			piece.addToMetadata(compiled.metadata);
+			try {
+				piece.addToMetadata(compiled.metadata);
+			} catch (NullPointerException e) {
+				throw new SpellCompilationException(SpellCompilationException.NULL_PARAM, piece.x, piece.y);
+			}
 		}
 
 		// error handler params must be evaluated before the handled piece
@@ -168,7 +172,11 @@ public final class SpellCompiler implements ISpellCompiler {
 
 	public void buildRedirect(SpellPiece piece) throws SpellCompilationException {
 		if(redirectionPieces.add(piece)) {
-			piece.addToMetadata(compiled.metadata);
+			try {
+				piece.addToMetadata(compiled.metadata);
+			} catch (NullPointerException e) {
+				throw new SpellCompilationException(SpellCompilationException.NULL_PARAM, piece.x, piece.y);
+			}
 
 			EnumSet<SpellParam.Side> usedSides = EnumSet.noneOf(SpellParam.Side.class);
 

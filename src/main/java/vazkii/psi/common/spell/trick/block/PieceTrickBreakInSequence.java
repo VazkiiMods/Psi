@@ -13,14 +13,7 @@ import net.minecraft.world.item.ItemStack;
 
 import vazkii.psi.api.internal.MathHelper;
 import vazkii.psi.api.internal.Vector3;
-import vazkii.psi.api.spell.EnumSpellStat;
-import vazkii.psi.api.spell.Spell;
-import vazkii.psi.api.spell.SpellCompilationException;
-import vazkii.psi.api.spell.SpellContext;
-import vazkii.psi.api.spell.SpellMetadata;
-import vazkii.psi.api.spell.SpellParam;
-import vazkii.psi.api.spell.SpellRuntimeException;
-import vazkii.psi.api.spell.StatLabel;
+import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.param.ParamVector;
 import vazkii.psi.api.spell.piece.PieceTrick;
@@ -47,12 +40,9 @@ public class PieceTrickBreakInSequence extends PieceTrick {
 	@Override
 	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
 		super.addToMetadata(meta);
-
-		Double maxBlocksVal = this.<Double>getParamEvaluation(maxBlocks);
-		if(maxBlocksVal == null || maxBlocksVal <= 0) {
-			throw new SpellCompilationException(SpellCompilationException.NON_POSITIVE_VALUE, x, y);
-		}
-
+		
+		double maxBlocksVal = SpellHelpers.ensurePositiveAndNonzero(this, maxBlocks);
+		
 		meta.addStat(EnumSpellStat.POTENCY, (int) (maxBlocksVal * 20));
 		meta.addStat(EnumSpellStat.COST, (int) ((60 + (maxBlocksVal - 1) * 35)));
 	}

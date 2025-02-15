@@ -47,11 +47,8 @@ public class PieceTrickSmeltBlockSequence extends PieceTrick {
 	@Override
 	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
 		super.addToMetadata(meta);
-
-		Double maxBlocksVal = this.<Double>getParamEvaluation(maxBlocks);
-		if(maxBlocksVal == null || maxBlocksVal <= 0) {
-			throw new SpellCompilationException(SpellCompilationException.NON_POSITIVE_VALUE, x, y);
-		}
+		
+		double maxBlocksVal = SpellHelpers.ensurePositiveAndNonzero(this, maxBlocks);
 
 		meta.addStat(EnumSpellStat.POTENCY, (int) (maxBlocksVal * 20));
 		meta.addStat(EnumSpellStat.COST, (int) ((96 + (maxBlocksVal - 1) * 64)));

@@ -11,6 +11,7 @@ package vazkii.psi.common.spell.trick.entity;
 import net.minecraft.world.entity.Entity;
 
 import vazkii.psi.api.internal.Vector3;
+import vazkii.psi.api.interval.IntervalNumber;
 import vazkii.psi.api.spell.EnumSpellStat;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellCompilationException;
@@ -47,12 +48,12 @@ public class PieceTrickMassExodus extends PieceTrick {
 	@Override
 	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
 		super.addToMetadata(meta);
-		Double speedVal = this.<Double>getParamEvaluation(speed);
+		IntervalNumber speedVal = this.getParamEvaluation(speed);
 		if(speedVal == null) {
-			speedVal = 1D;
+			speedVal = IntervalNumber.one;
 		}
-
-		double absSpeed = Math.abs(speedVal);
+		
+		double absSpeed = speedVal.abs().max;
 		meta.addStat(EnumSpellStat.POTENCY, (int) (absSpeed * 100));
 		meta.addStat(EnumSpellStat.COST, (int) Math.max(1, absSpeed * 100));
 	}

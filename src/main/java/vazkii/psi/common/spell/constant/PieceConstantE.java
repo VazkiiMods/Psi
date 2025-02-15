@@ -8,6 +8,8 @@
  */
 package vazkii.psi.common.spell.constant;
 
+import vazkii.psi.api.interval.Interval;
+import vazkii.psi.api.interval.IntervalNumber;
 import vazkii.psi.api.spell.EnumPieceType;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
@@ -30,13 +32,13 @@ public class PieceConstantE extends SpellPiece {
 	}
 
 	@Override
-	public Object evaluate() {
-		return Math.E;
+	public Interval<?> evaluate() {
+		return IntervalNumber.fromValue(Math.E);
 	}
 
 	@Override
 	public Object execute(SpellContext context) {
-		return evaluate();
+		return Math.E;
 	}
 
 }

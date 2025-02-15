@@ -8,10 +8,8 @@
  */
 package vazkii.psi.common.spell.operator.number;
 
-import vazkii.psi.api.spell.Spell;
-import vazkii.psi.api.spell.SpellContext;
-import vazkii.psi.api.spell.SpellParam;
-import vazkii.psi.api.spell.SpellRuntimeException;
+import vazkii.psi.api.interval.IntervalNumber;
+import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.piece.PieceOperator;
 
@@ -28,6 +26,13 @@ public class PieceOperatorRandom extends PieceOperator {
 	public void initParams() {
 		addParam(max = new ParamNumber(SpellParam.GENERIC_NAME_MAX, SpellParam.BLUE, false, false));
 		addParam(min = new ParamNumber(SpellParam.GENERIC_NAME_MIN, SpellParam.RED, true, false));
+	}
+	
+	@Override
+	public IntervalNumber evaluate() throws SpellCompilationException {
+		IntervalNumber min = this.getParamEvaluation(this.min);
+		IntervalNumber max = this.getParamEvaluation(this.max);
+		return IntervalNumber.fromRange(min.min, max.max);
 	}
 
 	@Override

@@ -8,10 +8,8 @@
  */
 package vazkii.psi.common.spell.operator.number;
 
-import vazkii.psi.api.spell.Spell;
-import vazkii.psi.api.spell.SpellContext;
-import vazkii.psi.api.spell.SpellParam;
-import vazkii.psi.api.spell.SpellRuntimeException;
+import vazkii.psi.api.interval.IntervalNumber;
+import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.piece.PieceOperator;
 
@@ -25,6 +23,11 @@ public class PieceOperatorSignum extends PieceOperator {
 	@Override
 	public void initParams() {
 		addParam(num = new ParamNumber(SpellParam.GENERIC_NAME_TARGET, SpellParam.BLUE, false, false));
+	}
+	
+	@Override
+	public IntervalNumber evaluate() throws SpellCompilationException {
+		return this.<Number, IntervalNumber>getParamEvaluation(num).sign();
 	}
 
 	@Override

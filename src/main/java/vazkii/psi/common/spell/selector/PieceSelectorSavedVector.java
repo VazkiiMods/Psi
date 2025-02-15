@@ -13,6 +13,7 @@ import net.minecraft.world.item.ItemStack;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.internal.Vector3;
+import vazkii.psi.api.interval.IntervalNumber;
 import vazkii.psi.api.spell.EnumSpellStat;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellCompilationException;
@@ -43,12 +44,12 @@ public class PieceSelectorSavedVector extends PieceSelector {
 	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
 		super.addToMetadata(meta);
 
-		Double numberVal = this.<Double>getParamEvaluation(number);
-		if(numberVal == null || numberVal <= 0 || numberVal != numberVal.intValue()) {
+		double numberVal = this.<Number, IntervalNumber>getParamEvaluation(number).max;
+		if(numberVal < 1) {
 			throw new SpellCompilationException(SpellCompilationException.NON_POSITIVE_INTEGER, x, y);
 		}
 
-		meta.addStat(EnumSpellStat.POTENCY, numberVal.intValue() * 6);
+		meta.addStat(EnumSpellStat.POTENCY, ((int) numberVal) * 6);
 	}
 
 	@Override

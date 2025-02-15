@@ -8,6 +8,7 @@
  */
 package vazkii.psi.common.spell.trick;
 
+import vazkii.psi.api.interval.IntervalNumber;
 import vazkii.psi.api.spell.EnumSpellStat;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellCompilationException;
@@ -38,12 +39,12 @@ public class PieceTrickDelay extends PieceTrick {
 	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
 		meta.addStat(EnumSpellStat.COMPLEXITY, 1);
 
-		Double timeVal = this.<Double>getParamEvaluation(time);
-		if(timeVal == null || timeVal <= 0 || timeVal != timeVal.intValue()) {
+		double timeVal = this.<Number, IntervalNumber>getParamEvaluation(time).max;
+		if(timeVal < 1) {
 			throw new SpellCompilationException(SpellCompilationException.NON_POSITIVE_INTEGER, x, y);
 		}
 
-		meta.addStat(EnumSpellStat.POTENCY, timeVal.intValue());
+		meta.addStat(EnumSpellStat.POTENCY, (int) timeVal);
 	}
 
 	@Override

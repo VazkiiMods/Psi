@@ -12,6 +12,7 @@ import com.google.common.base.CaseFormat;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import vazkii.psi.api.interval.Interval;
 
 /**
  * Base abstract class for a spell parameter. See implementations
@@ -131,7 +132,15 @@ public abstract class SpellParam<T> {
 	 * checks against {@link #getRequiredType()} and {@link #requiresConstant()}.
 	 */
 	public boolean canAccept(SpellPiece piece) {
-		return (getRequiredType() == Any.class || getRequiredType().isAssignableFrom(piece.getEvaluationType())) && (!requiresConstant() || piece.getPieceType() == EnumPieceType.CONSTANT);
+		if (requiresConstant()) {
+			try {
+				Interval<?> value = piece.evaluate();
+				if (value == null || !value.isValid()) return false;
+			} catch (SpellCompilationException | NullPointerException e) {
+				return false;
+			}
+		}
+		return (getRequiredType() == Any.class || getRequiredType().isAssignableFrom(piece.getEvaluationType()));
 	}
 
 	/**

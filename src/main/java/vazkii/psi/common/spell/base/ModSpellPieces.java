@@ -19,7 +19,6 @@ import vazkii.psi.common.spell.constant.PieceConstantE;
 import vazkii.psi.common.spell.constant.PieceConstantNumber;
 import vazkii.psi.common.spell.constant.PieceConstantPi;
 import vazkii.psi.common.spell.constant.PieceConstantTau;
-import vazkii.psi.common.spell.constant.PieceConstantWrapper;
 import vazkii.psi.common.spell.operator.block.PieceOperatorBlockComparatorStrength;
 import vazkii.psi.common.spell.operator.block.PieceOperatorBlockHardness;
 import vazkii.psi.common.spell.operator.block.PieceOperatorBlockLightLevel;
@@ -191,7 +190,6 @@ public final class ModSpellPieces {
 	public static PieceContainer constantNumber;
 	public static PieceContainer constantPi;
 	public static PieceContainer constantE;
-	public static PieceContainer constantWrapper;
 
 	public static PieceContainer connector;
 	public static PieceContainer crossConnector;
@@ -372,8 +370,6 @@ public final class ModSpellPieces {
 		constantPi = register(PieceConstantPi.class, LibPieceNames.CONSTANT_PI, LibPieceGroups.TRIGONOMETRY, true);
 		constantE = register(PieceConstantE.class, LibPieceNames.CONSTANT_E, LibPieceGroups.SECONDARY_OPERATORS);
 		constantTau = register(PieceConstantTau.class, LibPieceNames.CONSTANT_TAU, LibPieceGroups.TRIGONOMETRY);
-
-		constantWrapper = register(PieceConstantWrapper.class, LibPieceNames.CONSTANT_WRAPPER, LibPieceGroups.FLOW_CONTROL);
 
 		connector = register(PieceConnector.class, LibPieceNames.CONNECTOR, LibPieceGroups.TUTORIAL_2);
 		crossConnector = register(PieceCrossConnector.class, LibPieceNames.CROSS_CONNECTOR, LibPieceGroups.MEMORY_MANAGEMENT);

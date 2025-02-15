@@ -13,6 +13,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
 
 import vazkii.psi.api.internal.Vector3;
+import vazkii.psi.api.interval.IntervalNumber;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellHelpers;
@@ -33,6 +34,11 @@ public class PieceOperatorBlockSideSolidity extends PieceOperator {
 	public void initParams() {
 		addParam(target = new ParamVector(SpellParam.GENERIC_NAME_TARGET, SpellParam.RED, false, false));
 		addParam(axisParam = new ParamVector(SpellParam.GENERIC_NAME_VECTOR, SpellParam.BLUE, false, false));
+	}
+	
+	@Override
+	public IntervalNumber evaluate() {
+		return IntervalNumber.zeroToOne;
 	}
 
 	@Override

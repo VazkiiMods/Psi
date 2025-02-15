@@ -8,6 +8,7 @@
  */
 package vazkii.psi.api.spell.piece;
 
+import vazkii.psi.api.interval.Interval;
 import vazkii.psi.api.spell.EnumPieceType;
 import vazkii.psi.api.spell.EnumSpellStat;
 import vazkii.psi.api.spell.IErrorCatcher;
@@ -45,7 +46,7 @@ public abstract class PieceErrorHandler extends SpellPiece implements IErrorCatc
 	}
 
 	@Override
-	public Object evaluate() {
+	public Interval<?> evaluate() {
 		return null;
 	}
 

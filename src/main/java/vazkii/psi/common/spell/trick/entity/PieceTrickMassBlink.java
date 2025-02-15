@@ -10,6 +10,7 @@ package vazkii.psi.common.spell.trick.entity;
 
 import net.minecraft.world.entity.Entity;
 
+import vazkii.psi.api.interval.IntervalNumber;
 import vazkii.psi.api.spell.EnumSpellStat;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellCompilationException;
@@ -43,13 +44,14 @@ public class PieceTrickMassBlink extends PieceTrick {
 	@Override
 	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
 		super.addToMetadata(meta);
-		Double distanceVal = this.<Double>getParamEvaluation(distance);
+		IntervalNumber distanceVal = this.getParamEvaluation(distance);
 		if(distanceVal == null) {
-			distanceVal = 1D;
+			distanceVal = IntervalNumber.one;
 		}
-
-		meta.addStat(EnumSpellStat.POTENCY, (int) (Math.abs(distanceVal) * 80));
-		meta.addStat(EnumSpellStat.COST, (int) (Math.abs(distanceVal) * 100));
+		
+		double absDistance = distanceVal.abs().max;
+		meta.addStat(EnumSpellStat.POTENCY, (int) (absDistance * 80));
+		meta.addStat(EnumSpellStat.COST, (int) (absDistance * 100));
 	}
 
 	@Override
