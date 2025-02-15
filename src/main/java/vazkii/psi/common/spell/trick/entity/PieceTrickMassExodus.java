@@ -40,9 +40,9 @@ public class PieceTrickMassExodus extends PieceTrick {
 
 	@Override
 	public void initParams() {
-		addParam(target = new ParamEntityListWrapper(SpellParam.GENERIC_NAME_TARGET, SpellParam.YELLOW, false, false));
-		addParam(position = new ParamVector(SpellParam.GENERIC_NAME_POSITION, SpellParam.GREEN, false, false));
-		addParam(speed = new ParamNumber("psi.spellparam.speed", SpellParam.RED, false, true));
+		addParam(target = new ParamEntityListWrapper(SpellParam.GENERIC_NAME_TARGET, SpellParam.YELLOW, false));
+		addParam(position = new ParamVector(SpellParam.GENERIC_NAME_POSITION, SpellParam.GREEN, false));
+		addParam(speed = new ParamNumber("psi.spellparam.speed", SpellParam.RED, false));
 	}
 
 	@Override

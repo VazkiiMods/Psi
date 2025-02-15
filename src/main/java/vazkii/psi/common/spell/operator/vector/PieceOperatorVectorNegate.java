@@ -26,7 +26,7 @@ public class PieceOperatorVectorNegate extends PieceOperator {
 
 	@Override
 	public void initParams() {
-		addParam(vec1 = new ParamVector(SpellParam.GENERIC_NAME_TARGET, SpellParam.BLUE, false, false));
+		addParam(vec1 = new ParamVector(SpellParam.GENERIC_NAME_TARGET, SpellParam.BLUE, false));
 	}
 
 	@Override

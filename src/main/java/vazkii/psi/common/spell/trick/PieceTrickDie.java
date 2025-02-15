@@ -30,7 +30,7 @@ public class PieceTrickDie extends PieceTrick {
 
 	@Override
 	public void initParams() {
-		addParam(target = new ParamNumber(SpellParam.GENERIC_NAME_TARGET, SpellParam.BLUE, false, false));
+		addParam(target = new ParamNumber(SpellParam.GENERIC_NAME_TARGET, SpellParam.BLUE, false));
 	}
 
 	@Override

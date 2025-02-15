@@ -26,7 +26,7 @@ public class PieceOperatorVectorSignum extends PieceOperator {
 
 	@Override
 	public void initParams() {
-		addParam(vector = new ParamVector(SpellParam.GENERIC_NAME_TARGET, SpellParam.BLUE, false, false));
+		addParam(vector = new ParamVector(SpellParam.GENERIC_NAME_TARGET, SpellParam.BLUE, false));
 	}
 
 	@Override

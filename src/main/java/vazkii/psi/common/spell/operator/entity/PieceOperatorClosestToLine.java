@@ -36,9 +36,9 @@ public class PieceOperatorClosestToLine extends PieceOperator {
 	@Override
 	public void initParams() {
 		super.initParams();
-		addParam(rayStartParam = new ParamVector(SpellParam.GENERIC_NAME_RAY_START, SpellParam.RED, false, false));
-		addParam(rayEndParam = new ParamVector(SpellParam.GENERIC_NAME_RAY_END, SpellParam.BLUE, false, false));
-		addParam(entList = new ParamEntityListWrapper(SpellParam.GENERIC_NAME_LIST, SpellParam.GREEN, false, false));
+		addParam(rayStartParam = new ParamVector(SpellParam.GENERIC_NAME_RAY_START, SpellParam.RED, false));
+		addParam(rayEndParam = new ParamVector(SpellParam.GENERIC_NAME_RAY_END, SpellParam.BLUE, false));
+		addParam(entList = new ParamEntityListWrapper(SpellParam.GENERIC_NAME_LIST, SpellParam.GREEN, false));
 	}
 
 	@Override

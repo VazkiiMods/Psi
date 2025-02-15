@@ -28,7 +28,7 @@ public class PieceOperatorRandomEntity extends PieceOperator {
 
 	@Override
 	public void initParams() {
-		addParam(list = new ParamEntityListWrapper(SpellParam.GENERIC_NAME_TARGET, SpellParam.YELLOW, false, false));
+		addParam(list = new ParamEntityListWrapper(SpellParam.GENERIC_NAME_TARGET, SpellParam.YELLOW, false));
 	}
 
 	@Override

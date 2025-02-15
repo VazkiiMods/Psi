@@ -26,8 +26,8 @@ public class PieceOperatorRoot extends PieceOperator {
 
 	@Override
 	public void initParams() {
-		addParam(num = new ParamNumber(SpellParam.GENERIC_NAME_NUMBER, SpellParam.GREEN, false, false));
-		addParam(root = new ParamNumber(SpellParam.GENERIC_NAME_ROOT, SpellParam.RED, false, false));
+		addParam(num = new ParamNumber(SpellParam.GENERIC_NAME_NUMBER, SpellParam.GREEN, false));
+		addParam(root = new ParamNumber(SpellParam.GENERIC_NAME_ROOT, SpellParam.RED, false));
 	}
 
 	@Override

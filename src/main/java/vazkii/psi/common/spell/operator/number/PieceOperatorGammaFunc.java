@@ -31,7 +31,7 @@ public class PieceOperatorGammaFunc extends PieceOperator {
 
 	@Override
 	public void initParams() {
-		addParam(num1 = new ParamNumber(SpellParam.GENERIC_NAME_NUMBER1, SpellParam.GREEN, false, false));
+		addParam(num1 = new ParamNumber(SpellParam.GENERIC_NAME_NUMBER1, SpellParam.GREEN, false));
 	}
 
 	@Override

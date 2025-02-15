@@ -42,9 +42,9 @@ public class PieceTrickAddMotion extends PieceTrick {
 
 	@Override
 	public void initParams() {
-		addParam(target = new ParamEntity(SpellParam.GENERIC_NAME_TARGET, SpellParam.YELLOW, false, false));
-		addParam(direction = new ParamVector("psi.spellparam.direction", SpellParam.GREEN, false, false));
-		addParam(speed = new ParamNumber("psi.spellparam.speed", SpellParam.RED, false, true));
+		addParam(target = new ParamEntity(SpellParam.GENERIC_NAME_TARGET, SpellParam.YELLOW, false));
+		addParam(direction = new ParamVector("psi.spellparam.direction", SpellParam.GREEN, false));
+		addParam(speed = new ParamNumber("psi.spellparam.speed", SpellParam.RED, false));
 	}
 
 	@Override

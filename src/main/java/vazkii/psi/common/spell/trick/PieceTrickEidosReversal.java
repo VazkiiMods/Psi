@@ -38,7 +38,7 @@ public class PieceTrickEidosReversal extends PieceTrick {
 
 	@Override
 	public void initParams() {
-		addParam(time = new ParamNumber(SpellParam.GENERIC_NAME_TIME, SpellParam.RED, false, true));
+		addParam(time = new ParamNumber(SpellParam.GENERIC_NAME_TIME, SpellParam.RED, false));
 	}
 
 	@Override

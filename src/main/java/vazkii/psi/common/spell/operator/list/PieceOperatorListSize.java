@@ -26,7 +26,7 @@ public class PieceOperatorListSize extends PieceOperator {
 
 	@Override
 	public void initParams() {
-		addParam(list = new ParamEntityListWrapper(SpellParam.GENERIC_NAME_LIST, SpellParam.RED, false, false));
+		addParam(list = new ParamEntityListWrapper(SpellParam.GENERIC_NAME_LIST, SpellParam.RED, false));
 	}
 
 	@Override

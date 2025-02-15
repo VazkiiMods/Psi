@@ -26,7 +26,7 @@ public class PieceOperatorPlanarNormalVector extends PieceOperator {
 
 	@Override
 	public void initParams() {
-		addParam(vector = new ParamVector(SpellParam.GENERIC_NAME_VECTOR1, SpellParam.BLUE, false, false));
+		addParam(vector = new ParamVector(SpellParam.GENERIC_NAME_VECTOR1, SpellParam.BLUE, false));
 	}
 
 	@Override

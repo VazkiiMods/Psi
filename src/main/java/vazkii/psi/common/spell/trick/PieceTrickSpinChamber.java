@@ -35,7 +35,7 @@ public class PieceTrickSpinChamber extends PieceTrick {
 
 	@Override
 	public void initParams() {
-		addParam(number = new ParamNumber(SpellParam.GENERIC_NAME_NUMBER, SpellParam.RED, false, false));
+		addParam(number = new ParamNumber(SpellParam.GENERIC_NAME_NUMBER, SpellParam.RED, false));
 	}
 
 	@Override

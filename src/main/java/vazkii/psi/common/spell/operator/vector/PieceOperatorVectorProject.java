@@ -27,8 +27,8 @@ public class PieceOperatorVectorProject extends PieceOperator {
 
 	@Override
 	public void initParams() {
-		addParam(target = new ParamVector(SpellParam.GENERIC_NAME_VECTOR1, SpellParam.RED, false, false));
-		addParam(axis = new ParamVector(SpellParam.GENERIC_NAME_VECTOR2, SpellParam.GREEN, false, false));
+		addParam(target = new ParamVector(SpellParam.GENERIC_NAME_VECTOR1, SpellParam.RED, false));
+		addParam(axis = new ParamVector(SpellParam.GENERIC_NAME_VECTOR2, SpellParam.GREEN, false));
 	}
 
 	@Override

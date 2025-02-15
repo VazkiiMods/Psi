@@ -32,7 +32,7 @@ public class PieceTrickDelay extends PieceTrick {
 
 	@Override
 	public void initParams() {
-		addParam(time = new ParamNumber(SpellParam.GENERIC_NAME_TIME, SpellParam.BLUE, false, true));
+		addParam(time = new ParamNumber(SpellParam.GENERIC_NAME_TIME, SpellParam.BLUE, false));
 	}
 
 	@Override

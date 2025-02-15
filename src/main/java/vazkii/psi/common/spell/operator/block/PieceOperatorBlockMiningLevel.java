@@ -31,7 +31,7 @@ public class PieceOperatorBlockMiningLevel extends PieceOperator {
 
 	@Override
 	public void initParams() {
-		addParam(position = new ParamVector(SpellParam.GENERIC_NAME_POSITION, SpellParam.BLUE, false, false));
+		addParam(position = new ParamVector(SpellParam.GENERIC_NAME_POSITION, SpellParam.BLUE, false));
 	}
 
 	@Override

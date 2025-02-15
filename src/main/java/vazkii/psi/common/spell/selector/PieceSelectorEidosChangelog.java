@@ -28,7 +28,7 @@ public class PieceSelectorEidosChangelog extends PieceSelector {
 
 	@Override
 	public void initParams() {
-		addParam(number = new ParamNumber(SpellParam.GENERIC_NAME_NUMBER, SpellParam.BLUE, false, false));
+		addParam(number = new ParamNumber(SpellParam.GENERIC_NAME_NUMBER, SpellParam.BLUE, false));
 	}
 
 	@Override

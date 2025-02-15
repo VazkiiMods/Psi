@@ -34,7 +34,7 @@ public class PieceTrickBreakLoop extends PieceTrick {
 
 	@Override
 	public void initParams() {
-		addParam(valueParam = new ParamNumber(SpellParam.GENERIC_NAME_NUMBER, SpellParam.BLUE, false, false));
+		addParam(valueParam = new ParamNumber(SpellParam.GENERIC_NAME_NUMBER, SpellParam.BLUE, false));
 	}
 
 	@Override

@@ -12,8 +12,8 @@ import vazkii.psi.api.internal.Vector3;
 
 public class ParamVector extends ParamSpecific<Vector3> {
 
-	public ParamVector(String name, int color, boolean canDisable, boolean constant) {
-		super(name, color, canDisable, constant);
+	public ParamVector(String name, int color, boolean canDisable) {
+		super(name, color, canDisable);
 	}
 
 	@Override

@@ -29,7 +29,7 @@ public class PieceTrickChangeSlot extends PieceTrick {
 
 	@Override
 	public void initParams() {
-		addParam(slot = new ParamNumber(SpellParam.GENERIC_NAME_SLOT, SpellParam.RED, false, false));
+		addParam(slot = new ParamNumber(SpellParam.GENERIC_NAME_SLOT, SpellParam.RED, false));
 	}
 
 	@Override

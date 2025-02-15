@@ -26,8 +26,8 @@ public class PieceOperatorPower extends PieceOperator {
 
 	@Override
 	public void initParams() {
-		addParam(num = new ParamNumber(SpellParam.GENERIC_NAME_BASE, SpellParam.GREEN, false, false));
-		addParam(power = new ParamNumber(SpellParam.GENERIC_NAME_POWER, SpellParam.RED, false, false));
+		addParam(num = new ParamNumber(SpellParam.GENERIC_NAME_BASE, SpellParam.GREEN, false));
+		addParam(power = new ParamNumber(SpellParam.GENERIC_NAME_POWER, SpellParam.RED, false));
 	}
 
 	@Override

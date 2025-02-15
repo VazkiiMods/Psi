@@ -31,7 +31,7 @@ public class PieceOperatorBlockLightLevel extends PieceOperator {
 
 	@Override
 	public void initParams() {
-		addParam(target = new ParamVector(SpellParam.GENERIC_NAME_TARGET, SpellParam.RED, false, false));
+		addParam(target = new ParamVector(SpellParam.GENERIC_NAME_TARGET, SpellParam.RED, false));
 	}
 	
 	@Override

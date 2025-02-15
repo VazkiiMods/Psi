@@ -40,10 +40,10 @@ public class PieceTrickParticleTrail extends PieceTrick {
 
 	@Override
 	public void initParams() {
-		addParam(positionParam = new ParamVector(SpellParam.GENERIC_NAME_POSITION, SpellParam.BLUE, false, false));
-		addParam(rayParam = new ParamVector(SpellParam.GENERIC_NAME_RAY, SpellParam.GREEN, false, false));
-		addParam(lengthParam = new ParamNumber(SpellParam.GENERIC_NAME_DISTANCE, SpellParam.CYAN, false, true));
-		addParam(timeParam = new ParamNumber(SpellParam.GENERIC_NAME_TIME, SpellParam.PURPLE, true, true));
+		addParam(positionParam = new ParamVector(SpellParam.GENERIC_NAME_POSITION, SpellParam.BLUE, false));
+		addParam(rayParam = new ParamVector(SpellParam.GENERIC_NAME_RAY, SpellParam.GREEN, false));
+		addParam(lengthParam = new ParamNumber(SpellParam.GENERIC_NAME_DISTANCE, SpellParam.CYAN, false));
+		addParam(timeParam = new ParamNumber(SpellParam.GENERIC_NAME_TIME, SpellParam.PURPLE, true));
 
 	}
 
