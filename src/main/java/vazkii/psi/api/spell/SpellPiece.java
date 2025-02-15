@@ -492,10 +492,13 @@ public abstract class SpellPiece {
 		}
 		
 		try {
-			List<Component> iv = evaluate().getTooltip();
-			if (!iv.isEmpty()) {
-				tooltip.add(Component.translatable("psimisc.interval").append(iv.get(0)));
-				tooltip.addAll(iv.subList(1, iv.size()));
+			Interval<?> iv = evaluate();
+			if (iv != null) {
+				List<Component> text = iv.getTooltip();
+				if (!text.isEmpty()) {
+					tooltip.add(Component.translatable("psimisc.interval").append(text.get(0)));
+					tooltip.addAll(text.subList(1, text.size()));
+				}
 			}
 		} catch (SpellCompilationException ignored) {}
 
