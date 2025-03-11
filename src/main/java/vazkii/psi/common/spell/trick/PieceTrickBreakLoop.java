@@ -63,8 +63,10 @@ public class PieceTrickBreakLoop extends PieceTrick {
 					ISocketable socketableCap = context.tool.getCapability(PsiAPI.SOCKETABLE_CAPABILITY).orElseThrow(NullPointerException::new);
 					socketableCap.setSelectedSlot(socketableCap.getLastSlot() + 1);
 				}
-				PlayerDataHandler.PlayerData data = PlayerDataHandler.get(context.caster);
-				data.stopLoopcast();
+				if(context.castFrom == PlayerDataHandler.get(context.caster).loopcastHand) {
+					PlayerDataHandler.PlayerData data = PlayerDataHandler.get(context.caster);
+					data.stopLoopcast();
+				}
 			}
 		}
 		return null;
