@@ -13,6 +13,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -41,7 +42,7 @@ public class TileConjured extends BlockEntity {
 		super(TYPE, pos, state);
 	}
 
-	public void doParticles() {
+	public void doParticles(Level worldIn) {
 		int color = Psi.proxy.getColorForColorizer(colorizer);
 
 		float r = PsiRenderHelper.r(color) / 255F;
@@ -78,22 +79,22 @@ public class TileConjured extends BlockEntity {
 			double y = getBlockPos().getY();
 			double z = getBlockPos().getZ();
 
-			makeParticle(edges[0], r, g, b, x + 0, y + 0, z + 0, 0, 0, 1);
-			makeParticle(edges[1], r, g, b, x + 0, y + 0, z + 1, 1, 0, 0);
-			makeParticle(edges[2], r, g, b, x + 1, y + 0, z + 0, 0, 0, 1);
-			makeParticle(edges[3], r, g, b, x + 0, y + 0, z + 0, 1, 0, 0);
+			makeParticle(worldIn, edges[0], r, g, b, x + 0, y + 0, z + 0, 0, 0, 1);
+			makeParticle(worldIn, edges[1], r, g, b, x + 0, y + 0, z + 1, 1, 0, 0);
+			makeParticle(worldIn, edges[2], r, g, b, x + 1, y + 0, z + 0, 0, 0, 1);
+			makeParticle(worldIn, edges[3], r, g, b, x + 0, y + 0, z + 0, 1, 0, 0);
 
 			// Top
-			makeParticle(edges[4], r, g, b, x + 0, y + 1, z + 0, 0, 0, 1);
-			makeParticle(edges[5], r, g, b, x + 0, y + 1, z + 1, 1, 0, 0);
-			makeParticle(edges[6], r, g, b, x + 1, y + 1, z + 0, 0, 0, 1);
-			makeParticle(edges[7], r, g, b, x + 0, y + 1, z + 0, 1, 0, 0);
+			makeParticle(worldIn, edges[4], r, g, b, x + 0, y + 1, z + 0, 0, 0, 1);
+			makeParticle(worldIn, edges[5], r, g, b, x + 0, y + 1, z + 1, 1, 0, 0);
+			makeParticle(worldIn, edges[6], r, g, b, x + 1, y + 1, z + 0, 0, 0, 1);
+			makeParticle(worldIn, edges[7], r, g, b, x + 0, y + 1, z + 0, 1, 0, 0);
 
 			// Sides
-			makeParticle(edges[8], r, g, b, x + 0, y + 0, z + 0, 0, 1, 0);
-			makeParticle(edges[9], r, g, b, x + 0, y + 0, z + 1, 0, 1, 0);
-			makeParticle(edges[10], r, g, b, x + 1, y + 0, z + 1, 0, 1, 0);
-			makeParticle(edges[11], r, g, b, x + 1, y + 0, z + 0, 0, 1, 0);
+			makeParticle(worldIn, edges[8], r, g, b, x + 0, y + 0, z + 0, 0, 1, 0);
+			makeParticle(worldIn, edges[9], r, g, b, x + 0, y + 0, z + 1, 0, 1, 0);
+			makeParticle(worldIn, edges[10], r, g, b, x + 1, y + 0, z + 1, 0, 1, 0);
+			makeParticle(worldIn, edges[11], r, g, b, x + 1, y + 0, z + 0, 0, 1, 0);
 
 		} else if(Math.random() < 0.5) {
 			float w = 0.15F;
@@ -105,18 +106,18 @@ public class TileConjured extends BlockEntity {
 			float s = 0.2F + (float) Math.random() * 0.1F;
 			float m = 0.01F + (float) Math.random() * 0.015F;
 
-			Psi.proxy.wispFX(x, y, z, r, g, b, s, -m);
+			Psi.proxy.wispFX(worldIn, x, y, z, r, g, b, s, -m);
 		}
 	}
 
-	public void makeParticle(boolean doit, float r, float g, float b, double xp, double yp, double zp, double xv, double yv, double zv) {
+	public void makeParticle(Level worldIn, boolean doit, float r, float g, float b, double xp, double yp, double zp, double xv, double yv, double zv) {
 		if(doit) {
 			float m = 0.1F;
 			xv *= m;
 			yv *= m;
 			zv *= m;
 
-			Psi.proxy.sparkleFX(xp, yp, zp, r, g, b, (float) xv, (float) yv, (float) zv, 2.75f, 15);
+			Psi.proxy.sparkleFX(worldIn, xp, yp, zp, r, g, b, (float) xv, (float) yv, (float) zv, 2.75f, 15);
 		}
 	}
 

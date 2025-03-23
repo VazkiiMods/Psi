@@ -187,7 +187,7 @@ public class EntitySpellProjectile extends ThrowableProjectile {
 			look.normalize().multiply(dist);
 
 			if(level().isClientSide()) {
-				Psi.proxy.sparkleFX(x, y, z, r, g, b, (float) look.x, (float) look.y, (float) look.z, 1.2F, 12);
+				Psi.proxy.sparkleFX(level(), x, y, z, r, g, b, (float) look.x, (float) look.y, (float) look.z, 1.2F, 12);
 			}
 
 		}

@@ -58,23 +58,20 @@ public interface IProxy {
 
 	void sparkleFX(Level world, double x, double y, double z, float r, float g, float b, float motionx, float motiony, float motionz, float size, int m);
 
-	default void sparkleFX(double x, double y, double z, float r, float g, float b, float gravity, float size, int m) {
-		sparkleFX(x, y, z, r, g, b, 0, -gravity, 0, size, m);
+	default void sparkleFX(Level world, double x, double y, double z, float r, float g, float b, float gravity, float size, int m) {
+		sparkleFX(world, x, y, z, r, g, b, 0, -gravity, 0, size, m);
 	}
-
-	void sparkleFX(double x, double y, double z, float r, float g, float b, float motionx, float motiony, float motionz, float size, int m);
 
 	void wispFX(Level world, double x, double y, double z, float r, float g, float b, float size, float motionx, float motiony, float motionz, float maxAgeMul);
 
-	default void wispFX(double x, double y, double z, float r, float g, float b, float size, float gravity) {
-		wispFX(x, y, z, r, g, b, size, gravity, 1F);
+	default void wispFX(Level world, double x, double y, double z, float r, float g, float b, float size, float gravity) {
+		wispFX(world, x, y, z, r, g, b, size, gravity, 1F);
 	}
 
-	default void wispFX(double x, double y, double z, float r, float g, float b, float size, float gravity, float maxAgeMul) {
-		wispFX(x, y, z, r, g, b, size, 0, -gravity, 0, maxAgeMul);
+	default void wispFX(Level world, double x, double y, double z, float r, float g, float b, float size, float gravity, float maxAgeMul) {
+		wispFX(world, x, y, z, r, g, b, size, 0, -gravity, 0, maxAgeMul);
 	}
 
-	void wispFX(double x, double y, double z, float r, float g, float b, float size, float motionx, float motiony, float motionz, float maxAgeMul);
 
 	void openProgrammerGUI(TileProgrammer programmer);
 

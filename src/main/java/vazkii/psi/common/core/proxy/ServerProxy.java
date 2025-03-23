@@ -38,17 +38,7 @@ public class ServerProxy implements IProxy {
 	}
 
 	@Override
-	public void sparkleFX(double x, double y, double z, float r, float g, float b, float motionx, float motiony, float motionz, float size, int m) {
-		//NOOP
-	}
-
-	@Override
 	public void wispFX(Level world, double x, double y, double z, float r, float g, float b, float size, float motionx, float motiony, float motionz, float maxAgeMul) {
-		//NOOP
-	}
-
-	@Override
-	public void wispFX(double x, double y, double z, float r, float g, float b, float size, float motionx, float motiony, float motionz, float maxAgeMul) {
 		//NOOP
 	}
 
