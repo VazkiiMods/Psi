@@ -63,7 +63,7 @@ public class BlockConjured extends Block implements EntityBlock, SimpleWaterlogg
 	public void animateTick(BlockState stateIn, Level worldIn, BlockPos pos, RandomSource rand) {
 		BlockEntity inWorld = worldIn.getBlockEntity(pos);
 		if(inWorld instanceof TileConjured) {
-			((TileConjured) inWorld).doParticles();
+			((TileConjured) inWorld).doParticles(worldIn);
 		}
 	}
 

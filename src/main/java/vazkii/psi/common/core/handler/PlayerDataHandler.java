@@ -414,7 +414,7 @@ public class PlayerDataHandler {
 						double y = player.getY() - player.getMyRidingOffset();
 						double z = player.getZ() + (Math.random() - 0.5) * 2.1 * player.getBbWidth();
 						float grav = -0.15F - (float) Math.random() * 0.03F;
-						Psi.proxy.sparkleFX(x, y, z, r, g, b, grav, 0.25F, 15);
+						Psi.proxy.sparkleFX(player.level(), x, y, z, r, g, b, grav, 0.25F, 15);
 					}
 
 					if(loopcastTime > 0 && loopcastTime % 5 == 0) {
@@ -520,7 +520,7 @@ public class PlayerDataHandler {
 								double y = player.getY() + (Math.random() - 0.5) * spread;
 								double z = player.getZ() + (Math.random() - 0.5) * spread;
 
-								Psi.proxy.sparkleFX(x, y, z, r, g, b, 0, 0, 0, 1.2F, 12);
+								Psi.proxy.sparkleFX(player.level(), x, y, z, r, g, b, 0, 0, 0, 1.2F, 12);
 							}
 						}
 

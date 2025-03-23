@@ -280,7 +280,7 @@ public class ItemCAD extends Item implements ICAD {
 								double y = player.getY() - player.getMyRidingOffset();
 								double z = player.getZ() + (Math.random() - 0.5) * 2.1 * player.getBbWidth();
 								float grav = -0.15F - (float) Math.random() * 0.03F;
-								Psi.proxy.sparkleFX(x, y, z, r, g, b, grav, 0.25F, 15);
+								Psi.proxy.sparkleFX(world, x, y, z, r, g, b, grav, 0.25F, 15);
 							}
 
 							double x = player.getX();
@@ -295,7 +295,7 @@ public class ItemCAD extends Item implements ICAD {
 								look.z += (Math.random() - 0.5) * spread;
 								look.normalize().multiply(0.15);
 
-								Psi.proxy.sparkleFX(x, y, z, r, g, b, (float) look.x, (float) look.y, (float) look.z, 0.3F, 5);
+								Psi.proxy.sparkleFX(world, x, y, z, r, g, b, (float) look.x, (float) look.y, (float) look.z, 0.3F, 5);
 							}
 						}
 					}

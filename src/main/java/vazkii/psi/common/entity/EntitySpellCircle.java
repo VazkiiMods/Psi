@@ -185,7 +185,7 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 				double y = getY() - getMyRidingOffset();
 				double z = getZ() + (Math.random() - 0.5) * getBbWidth();
 				float grav = -0.15F - (float) Math.random() * 0.03F;
-				Psi.proxy.sparkleFX(x, y, z, r, g, b, grav, 0.25F, 15);
+				Psi.proxy.sparkleFX(level(), x, y, z, r, g, b, grav, 0.25F, 15);
 			}
 		}
 

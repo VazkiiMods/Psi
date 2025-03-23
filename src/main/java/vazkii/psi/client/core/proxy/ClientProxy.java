@@ -175,22 +175,12 @@ public class ClientProxy implements IProxy {
 	}
 
 	@Override
-	public void sparkleFX(double x, double y, double z, float r, float g, float b, float motionx, float motiony, float motionz, float size, int m) {
-		sparkleFX(Minecraft.getInstance().level, x, y, z, r, g, b, motionx, motiony, motionz, size, m);
-	}
-
-	@Override
 	public void wispFX(Level world, double x, double y, double z, float r, float g, float b, float size, float motionx, float motiony, float motionz, float maxAgeMul) {
 		if(maxAgeMul == 0) {
 			return;
 		}
 		WispParticleData data = new WispParticleData(size, r, g, b, maxAgeMul);
 		addParticleForce(world, data, x, y, z, motionx, motiony, motionz);
-	}
-
-	@Override
-	public void wispFX(double x, double y, double z, float r, float g, float b, float size, float motionx, float motiony, float motionz, float maxAgeMul) {
-		wispFX(Minecraft.getInstance().level, x, y, z, r, g, b, size, motionx, motiony, motionz, maxAgeMul);
 	}
 
 	@Override

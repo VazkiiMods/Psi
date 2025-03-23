@@ -74,7 +74,7 @@ public class MessageVisualEffect {
 					double particleY = y - offset;
 					double particleZ = z + (Math.random() - 0.5) * 2.1 * width;
 					float grav = -0.05F - (float) Math.random() * 0.01F;
-					Psi.proxy.sparkleFX(particleX, particleY, particleZ, r, g, b, grav, 3.5F, 15);
+					Psi.proxy.sparkleFX(world, particleX, particleY, particleZ, r, g, b, grav, 3.5F, 15);
 
 					double m = 0.01;
 					double d3 = 10.0D;
