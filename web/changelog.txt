@@ -1,4 +1,4 @@
-1.20.1-103
+1.20.1-102
 * Updated to 1.20! Massive shoutout to TheidenHD as without them this port would not have been possible.
 * No real feature changes, only bug fixes.
 * The author of this changelog was gone for too long that they have no idea what the hell they missed.

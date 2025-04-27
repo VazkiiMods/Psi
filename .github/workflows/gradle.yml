@@ -31,7 +31,7 @@ jobs:
         run: |
           MC=$(awk -F '=' '/mc_version/ { print $2; }' build.properties)
           BUILD=$(awk -F '=' '/build_number/ { print $2; }' build.properties)
-          echo "jar=build/libs/Psi-${MC}-${BUILD}.jar" >> "$GITHUB_OUTPUT"
+          echo "forge=build/libs/Psi-${MC}-${BUILD}.jar" >> "$GITHUB_OUTPUT"
 
       - name: Build with Gradle
         run: |
@@ -54,22 +54,22 @@ jobs:
         run: |
           echo "${SIGNING_KEY}" | gpg --import -
           gpg --local-user "Violet Moon Signing Key" --armor \
-            --detach-sign ${{ steps.calculate_artifact_names.outputs.jar }}
+            --detach-sign ${{ steps.calculate_artifact_names.outputs.forge }}
 
       - name: Archive Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: Forge
           path: |
-            ${{ steps.calculate_artifact_names.outputs.jar }}
-            ${{ steps.calculate_artifact_names.outputs.jar }}.asc
+            ${{ steps.calculate_artifact_names.outputs.forge }}
+            ${{ steps.calculate_artifact_names.outputs.forge }}.asc
 
       - name: Upload Releases
         if: startsWith(github.ref, 'refs/tags/release-')
         env:
           GH_TOKEN: ${{ github.token }}
           GIT_REF: ${{ github.ref }}
-          JAR: ${{ steps.calculate_artifact_names.outputs.jar }}
+          FORGE_JAR: ${{ steps.calculate_artifact_names.outputs.forge }}
           CURSEFORGE_TOKEN: ${{ secrets.VAZKII_CURSEFORGE_TOKEN }}
           MODRINTH_TOKEN: ${{ secrets.VAZKII_MODRINTH_TOKEN }}
         run: |
