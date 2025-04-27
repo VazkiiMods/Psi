@@ -16,6 +16,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.RenderFrameEvent;
+
 import vazkii.psi.api.exosuit.PsiArmorEvent;
 import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.network.MessageRegister;
@@ -25,66 +26,65 @@ import vazkii.psi.common.network.message.MessageTriggerJumpSpell;
 @EventBusSubscriber(value = Dist.CLIENT, modid = LibMisc.MOD_ID)
 public class ClientTickHandler {
 
-    public static int ticksInGame = 0;
-    public static float partialTicks = 0.0F;
-    public static float delta = 0.0F;
-    public static float total = 0.0F;
+	public static int ticksInGame = 0;
+	public static float partialTicks = 0.0F;
+	public static float delta = 0.0F;
+	public static float total = 0.0F;
 
-    private static boolean lastJumpKeyState = false;
+	private static boolean lastJumpKeyState = false;
 
-    public ClientTickHandler() {
-    }
+	public ClientTickHandler() {}
 
-    @OnlyIn(Dist.CLIENT)
-    private static void calcDelta() {
-        float oldTotal = total;
-        total = (float) ticksInGame + partialTicks;
-        delta = total - oldTotal;
-    }
+	@OnlyIn(Dist.CLIENT)
+	private static void calcDelta() {
+		float oldTotal = total;
+		total = (float) ticksInGame + partialTicks;
+		delta = total - oldTotal;
+	}
 
-    @SubscribeEvent
-    @OnlyIn(Dist.CLIENT)
-    public static void renderTick(RenderFrameEvent.Pre event) {
-        partialTicks = event.getPartialTick().getGameTimeDeltaPartialTick(false);
+	@SubscribeEvent
+	@OnlyIn(Dist.CLIENT)
+	public static void renderTick(RenderFrameEvent.Pre event) {
+		partialTicks = event.getPartialTick().getGameTimeDeltaPartialTick(false);
 
-    }
+	}
 
-    @SubscribeEvent
-    @OnlyIn(Dist.CLIENT)
-    public static void renderTick(RenderFrameEvent.Post event) {
-        calcDelta();
-    }
+	@SubscribeEvent
+	@OnlyIn(Dist.CLIENT)
+	public static void renderTick(RenderFrameEvent.Post event) {
+		calcDelta();
+	}
 
-    @SubscribeEvent
-    public static void clientTick(ClientTickEvent.Pre event) {
+	@SubscribeEvent
+	public static void clientTick(ClientTickEvent.Pre event) {
 
-        Minecraft mc = Minecraft.getInstance();
+		Minecraft mc = Minecraft.getInstance();
 
-        boolean pressed = mc.options.keyJump.consumeClick();
-        if (mc.player != null && pressed && (!lastJumpKeyState && !mc.player.onGround())) {
-            PsiArmorEvent.post(new PsiArmorEvent(mc.player, PsiArmorEvent.JUMP));
-            MessageRegister.sendToServer(new MessageTriggerJumpSpell());
-        }
-        lastJumpKeyState = pressed;
-    }
+		boolean pressed = mc.options.keyJump.consumeClick();
+		if(mc.player != null && pressed && (!lastJumpKeyState && !mc.player.onGround())) {
+			PsiArmorEvent.post(new PsiArmorEvent(mc.player, PsiArmorEvent.JUMP));
+			MessageRegister.sendToServer(new MessageTriggerJumpSpell());
+		}
+		lastJumpKeyState = pressed;
+	}
 
-    @SubscribeEvent
-    public static void clientTick(ClientTickEvent.Post event) {
+	@SubscribeEvent
+	public static void clientTick(ClientTickEvent.Post event) {
 
-        Minecraft mc = Minecraft.getInstance();
+		Minecraft mc = Minecraft.getInstance();
 
-        HUDHandler.tick();
+		HUDHandler.tick();
 
-        Screen gui = mc.screen;
-        if (gui == null && KeybindHandler.keybind.isDown()) {
-            KeybindHandler.keyDown();
-        }
+		Screen gui = mc.screen;
+		if(gui == null && KeybindHandler.keybind.isDown()) {
+			KeybindHandler.keyDown();
+		}
 
-        if (!mc.isPaused()) {
-            ++ticksInGame;
-            partialTicks = 0.0F;
-        }
-        calcDelta();
-    }
+		if(!mc.isPaused()) {
+			++ticksInGame;
+			partialTicks = 0.0F;
+		}
+		calcDelta();
+	}
 
 }

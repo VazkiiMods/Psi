@@ -17,28 +17,28 @@ import java.util.Locale;
  */
 public enum EnumSpellStat {
 
-    COMPLEXITY(EnumCADStat.COMPLEXITY),
-    POTENCY(EnumCADStat.POTENCY),
-    COST(null),
-    PROJECTION(EnumCADStat.PROJECTION),
-    BANDWIDTH(EnumCADStat.BANDWIDTH);
+	COMPLEXITY(EnumCADStat.COMPLEXITY),
+	POTENCY(EnumCADStat.POTENCY),
+	COST(null),
+	PROJECTION(EnumCADStat.PROJECTION),
+	BANDWIDTH(EnumCADStat.BANDWIDTH);
 
-    private final EnumCADStat target;
+	private final EnumCADStat target;
 
-    EnumSpellStat(EnumCADStat target) {
-        this.target = target;
-    }
+	EnumSpellStat(EnumCADStat target) {
+		this.target = target;
+	}
 
-    public EnumCADStat getTarget() {
-        return target;
-    }
+	public EnumCADStat getTarget() {
+		return target;
+	}
 
-    public String getName() {
-        return "psi.spellstat." + name().toLowerCase(Locale.ROOT);
-    }
+	public String getName() {
+		return "psi.spellstat." + name().toLowerCase(Locale.ROOT);
+	}
 
-    public String getDesc() {
-        return getName() + ".desc";
-    }
+	public String getDesc() {
+		return getName() + ".desc";
+	}
 
 }

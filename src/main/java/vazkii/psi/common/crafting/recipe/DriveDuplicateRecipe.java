@@ -13,98 +13,99 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
+
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.common.item.ItemSpellDrive;
 
 import javax.annotation.Nonnull;
 
 public class DriveDuplicateRecipe extends CustomRecipe {
-    public static final SimpleCraftingRecipeSerializer<DriveDuplicateRecipe> SERIALIZER = new SimpleCraftingRecipeSerializer<>(DriveDuplicateRecipe::new);
+	public static final SimpleCraftingRecipeSerializer<DriveDuplicateRecipe> SERIALIZER = new SimpleCraftingRecipeSerializer<>(DriveDuplicateRecipe::new);
 
-    public DriveDuplicateRecipe(CraftingBookCategory category) {
-        super(category);
-    }
+	public DriveDuplicateRecipe(CraftingBookCategory category) {
+		super(category);
+	}
 
-    @Override
-    public boolean matches(@Nonnull CraftingInput inv, @Nonnull Level world) {
-        boolean foundSource = false;
-        boolean foundTarget = false;
+	@Override
+	public boolean matches(@Nonnull CraftingInput inv, @Nonnull Level world) {
+		boolean foundSource = false;
+		boolean foundTarget = false;
 
-        for (int i = 0; i < inv.size(); i++) {
-            ItemStack stack = inv.getItem(i);
-            if (!stack.isEmpty()) {
-                if (stack.getItem() instanceof ItemSpellDrive) {
-                    if (ItemSpellDrive.getSpell(stack) == null) {
-                        if (foundTarget) {
-                            return false;
-                        }
-                        foundTarget = true;
-                    } else {
-                        if (foundSource) {
-                            return false;
-                        }
-                        foundSource = true;
-                    }
-                } else {
-                    return false;
-                }
-            }
-        }
+		for(int i = 0; i < inv.size(); i++) {
+			ItemStack stack = inv.getItem(i);
+			if(!stack.isEmpty()) {
+				if(stack.getItem() instanceof ItemSpellDrive) {
+					if(ItemSpellDrive.getSpell(stack) == null) {
+						if(foundTarget) {
+							return false;
+						}
+						foundTarget = true;
+					} else {
+						if(foundSource) {
+							return false;
+						}
+						foundSource = true;
+					}
+				} else {
+					return false;
+				}
+			}
+		}
 
-        return foundSource && foundTarget;
-    }
+		return foundSource && foundTarget;
+	}
 
-    @Nonnull
-    @Override
-    public ItemStack assemble(@Nonnull CraftingInput inv, HolderLookup.Provider pRegistries) {
-        Spell source = null;
-        ItemStack target = ItemStack.EMPTY;
+	@Nonnull
+	@Override
+	public ItemStack assemble(@Nonnull CraftingInput inv, HolderLookup.Provider pRegistries) {
+		Spell source = null;
+		ItemStack target = ItemStack.EMPTY;
 
-        for (int i = 0; i < inv.size(); i++) {
-            ItemStack stack = inv.getItem(i);
-            if (!stack.isEmpty()) {
-                Spell spell = ItemSpellDrive.getSpell(stack);
-                if (spell != null) {
-                    source = spell;
-                } else {
-                    target = stack;
-                }
-            }
-        }
+		for(int i = 0; i < inv.size(); i++) {
+			ItemStack stack = inv.getItem(i);
+			if(!stack.isEmpty()) {
+				Spell spell = ItemSpellDrive.getSpell(stack);
+				if(spell != null) {
+					source = spell;
+				} else {
+					target = stack;
+				}
+			}
+		}
 
-        ItemStack copy = target.copy();
-        ItemSpellDrive.setSpell(copy, source);
-        return copy;
-    }
+		ItemStack copy = target.copy();
+		ItemSpellDrive.setSpell(copy, source);
+		return copy;
+	}
 
-    @Override
-    public NonNullList<ItemStack> getRemainingItems(CraftingInput inv) {
-        NonNullList<ItemStack> list = NonNullList.withSize(inv.size(), ItemStack.EMPTY);
+	@Override
+	public NonNullList<ItemStack> getRemainingItems(CraftingInput inv) {
+		NonNullList<ItemStack> list = NonNullList.withSize(inv.size(), ItemStack.EMPTY);
 
-        for (int i = 0; i < list.size(); ++i) {
-            ItemStack item = inv.getItem(i);
-            if (!item.isEmpty() && ItemSpellDrive.getSpell(item) != null) {
-                list.set(i, item.copy());
-                break;
-            }
-        }
+		for(int i = 0; i < list.size(); ++i) {
+			ItemStack item = inv.getItem(i);
+			if(!item.isEmpty() && ItemSpellDrive.getSpell(item) != null) {
+				list.set(i, item.copy());
+				break;
+			}
+		}
 
-        return list;
-    }
+		return list;
+	}
 
-    @Nonnull
-    @Override
-    public RecipeSerializer<?> getSerializer() {
-        return SERIALIZER;
-    }
+	@Nonnull
+	@Override
+	public RecipeSerializer<?> getSerializer() {
+		return SERIALIZER;
+	}
 
-    @Override
-    public boolean canCraftInDimensions(int width, int height) {
-        return true;
-    }
+	@Override
+	public boolean canCraftInDimensions(int width, int height) {
+		return true;
+	}
 
-    @Override
-    public boolean isSpecial() {
-        return true;
-    }
+	@Override
+	public boolean isSpecial() {
+		return true;
+	}
 }

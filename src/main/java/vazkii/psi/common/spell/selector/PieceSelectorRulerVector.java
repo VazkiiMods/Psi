@@ -16,18 +16,18 @@ import vazkii.psi.common.item.ItemVectorRuler;
 
 public class PieceSelectorRulerVector extends PieceSelector {
 
-    public PieceSelectorRulerVector(Spell spell) {
-        super(spell);
-    }
+	public PieceSelectorRulerVector(Spell spell) {
+		super(spell);
+	}
 
-    @Override
-    public Class<?> getEvaluationType() {
-        return Vector3.class;
-    }
+	@Override
+	public Class<?> getEvaluationType() {
+		return Vector3.class;
+	}
 
-    @Override
-    public Object execute(SpellContext context) {
-        return ItemVectorRuler.getRulerVector(context.caster);
-    }
+	@Override
+	public Object execute(SpellContext context) {
+		return ItemVectorRuler.getRulerVector(context.caster);
+	}
 
 }

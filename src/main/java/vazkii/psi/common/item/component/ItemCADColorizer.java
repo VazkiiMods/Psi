@@ -13,41 +13,41 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
+
 import vazkii.psi.api.cad.ICADColorizer;
 import vazkii.psi.common.item.base.ModItems;
 
 public class ItemCADColorizer extends ItemCADComponent implements ICADColorizer {
 
+	private final DyeColor color;
 
-    private final DyeColor color;
+	public ItemCADColorizer(Properties properties, DyeColor color) {
+		super(properties);
+		this.color = color;
+	}
 
-    public ItemCADColorizer(Properties properties, DyeColor color) {
-        super(properties);
-        this.color = color;
-    }
+	public ItemCADColorizer(Properties properties) {
+		super(properties);
+		color = DyeColor.BLACK;
+	}
 
-    public ItemCADColorizer(Properties properties) {
-        super(properties);
-        color = DyeColor.BLACK;
-    }
+	private static String getProperDyeName(DyeColor color) {
+		return color.getSerializedName();
+	}
 
-    private static String getProperDyeName(DyeColor color) {
-        return color.getSerializedName();
-    }
+	@Override
+	@OnlyIn(Dist.CLIENT)
+	public int getColor(ItemStack stack) {
+		return FastColor.ARGB32.opaque(color.getTextColor());
+	} //TODO check if text color is proper
 
-    @Override
-    @OnlyIn(Dist.CLIENT)
-    public int getColor(ItemStack stack) {
-        return FastColor.ARGB32.opaque(color.getTextColor());
-    } //TODO check if text color is proper
+	@Override
+	public String getContributorName(ItemStack stack) {
+		return stack.getOrDefault(ModItems.TAG_CONTRIBUTOR, "");
+	}
 
-    @Override
-    public String getContributorName(ItemStack stack) {
-        return stack.getOrDefault(ModItems.TAG_CONTRIBUTOR, "");
-    }
-
-    @Override
-    public void setContributorName(ItemStack stack, String name) {
-        stack.set(ModItems.TAG_CONTRIBUTOR, name);
-    }
+	@Override
+	public void setContributorName(ItemStack stack, String name) {
+		stack.set(ModItems.TAG_CONTRIBUTOR, name);
+	}
 }

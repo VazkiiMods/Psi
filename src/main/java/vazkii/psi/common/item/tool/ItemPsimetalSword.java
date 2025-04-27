@@ -24,6 +24,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.capabilities.ICapabilityProvider;
 import net.neoforged.neoforge.event.ItemAttributeModifierEvent;
+
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ISocketable;
 import vazkii.psi.api.spell.SpellContext;
@@ -35,85 +36,86 @@ import vazkii.psi.common.lib.LibMisc;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
 import java.util.List;
 
 @EventBusSubscriber(modid = LibMisc.MOD_ID, bus = EventBusSubscriber.Bus.GAME)
 public class ItemPsimetalSword extends SwordItem implements IPsimetalTool {
 
-    public ItemPsimetalSword(Item.Properties properties) {
-        super(PsiAPI.PSIMETAL_TOOL_MATERIAL, properties.attributes(AxeItem.createAttributes(PsiAPI.PSIMETAL_TOOL_MATERIAL, 3, -2.4F)).component(ModItems.TAG_BULLETS.get(), ItemContainerContents.EMPTY));
-    }
+	public ItemPsimetalSword(Item.Properties properties) {
+		super(PsiAPI.PSIMETAL_TOOL_MATERIAL, properties.attributes(AxeItem.createAttributes(PsiAPI.PSIMETAL_TOOL_MATERIAL, 3, -2.4F)).component(ModItems.TAG_BULLETS.get(), ItemContainerContents.EMPTY));
+	}
 
-    @SubscribeEvent
-    public static void adjustAttributes(ItemAttributeModifierEvent event) {
-        if (!IPsimetalTool.isEnabled(event.getItemStack())) {
-            event.removeAllModifiersFor(Attributes.ATTACK_DAMAGE);
-        }
-    }
+	@SubscribeEvent
+	public static void adjustAttributes(ItemAttributeModifierEvent event) {
+		if(!IPsimetalTool.isEnabled(event.getItemStack())) {
+			event.removeAllModifiersFor(Attributes.ATTACK_DAMAGE);
+		}
+	}
 
-    @Override
-    public boolean hurtEnemy(ItemStack itemstack, LivingEntity target, @Nonnull LivingEntity attacker) {
-        super.hurtEnemy(itemstack, target, attacker);
+	@Override
+	public boolean hurtEnemy(ItemStack itemstack, LivingEntity target, @Nonnull LivingEntity attacker) {
+		super.hurtEnemy(itemstack, target, attacker);
 
-        if (IPsimetalTool.isEnabled(itemstack) && attacker instanceof Player player) {
+		if(IPsimetalTool.isEnabled(itemstack) && attacker instanceof Player player) {
 
-            PlayerData data = PlayerDataHandler.get(player);
-            ItemStack playerCad = PsiAPI.getPlayerCAD(player);
+			PlayerData data = PlayerDataHandler.get(player);
+			ItemStack playerCad = PsiAPI.getPlayerCAD(player);
 
-            if (!playerCad.isEmpty()) {
-                ItemStack bullet = ISocketable.socketable(itemstack).getSelectedBullet();
-                ItemCAD.cast(player.getCommandSenderWorld(), player, data, bullet, playerCad, 5, 10, 0.05F,
-                        (SpellContext context) -> {
-                            context.attackedEntity = target;
-                            context.tool = itemstack;
-                        });
-            }
-        }
+			if(!playerCad.isEmpty()) {
+				ItemStack bullet = ISocketable.socketable(itemstack).getSelectedBullet();
+				ItemCAD.cast(player.getCommandSenderWorld(), player, data, bullet, playerCad, 5, 10, 0.05F,
+						(SpellContext context) -> {
+							context.attackedEntity = target;
+							context.tool = itemstack;
+						});
+			}
+		}
 
-        return true;
-    }
+		return true;
+	}
 
-    @Override
-    public void setDamage(ItemStack stack, int damage) {
-        if (damage > stack.getMaxDamage()) {
-            damage = stack.getDamageValue();
-        }
-        super.setDamage(stack, damage);
-    }
+	@Override
+	public void setDamage(ItemStack stack, int damage) {
+		if(damage > stack.getMaxDamage()) {
+			damage = stack.getDamageValue();
+		}
+		super.setDamage(stack, damage);
+	}
 
-    @Override
-    public float getDestroySpeed(ItemStack stack, BlockState state) {
-        if (!IPsimetalTool.isEnabled(stack)) {
-            return 1;
-        }
-        return super.getDestroySpeed(stack, state);
-    }
+	@Override
+	public float getDestroySpeed(ItemStack stack, BlockState state) {
+		if(!IPsimetalTool.isEnabled(stack)) {
+			return 1;
+		}
+		return super.getDestroySpeed(stack, state);
+	}
 
-    @Nonnull
-    @Override
-    public String getDescriptionId(ItemStack stack) {
-        String name = super.getDescriptionId(stack);
-        if (!IPsimetalTool.isEnabled(stack)) {
-            name += ".broken";
-        }
-        return name;
-    }
+	@Nonnull
+	@Override
+	public String getDescriptionId(ItemStack stack) {
+		String name = super.getDescriptionId(stack);
+		if(!IPsimetalTool.isEnabled(stack)) {
+			name += ".broken";
+		}
+		return name;
+	}
 
-    @Override
-    public void inventoryTick(ItemStack stack, Level worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
-        IPsimetalTool.regen(stack, entityIn);
-    }
+	@Override
+	public void inventoryTick(ItemStack stack, Level worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
+		IPsimetalTool.regen(stack, entityIn);
+	}
 
-    @OnlyIn(Dist.CLIENT)
-    @Override
-    public void appendHoverText(ItemStack stack, @Nullable TooltipContext context, List<Component> tooltip, TooltipFlag advanced) {
-        Component componentName = ISocketable.getSocketedItemName(stack, "psimisc.none");
-        tooltip.add(Component.translatable("psimisc.spell_selected", componentName));
-    }
+	@OnlyIn(Dist.CLIENT)
+	@Override
+	public void appendHoverText(ItemStack stack, @Nullable TooltipContext context, List<Component> tooltip, TooltipFlag advanced) {
+		Component componentName = ISocketable.getSocketedItemName(stack, "psimisc.none");
+		tooltip.add(Component.translatable("psimisc.spell_selected", componentName));
+	}
 
-    @Nullable
-    @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
-        return IPsimetalTool.super.initCapabilities(stack, nbt);
-    }
+	@Nullable
+	@Override
+	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
+		return IPsimetalTool.super.initCapabilities(stack, nbt);
+	}
 }

@@ -14,46 +14,46 @@ import vazkii.psi.api.spell.piece.PieceTrick;
 
 public class PieceTrickSwitchTargetSlot extends PieceTrick {
 
-    SpellParam<Number> pos;
-    SpellParam<Number> shift;
+	SpellParam<Number> pos;
+	SpellParam<Number> shift;
 
-    public PieceTrickSwitchTargetSlot(Spell spell) {
-        super(spell);
-        setStatLabel(EnumSpellStat.COMPLEXITY, new StatLabel(2));
-    }
+	public PieceTrickSwitchTargetSlot(Spell spell) {
+		super(spell);
+		setStatLabel(EnumSpellStat.COMPLEXITY, new StatLabel(2));
+	}
 
-    @Override
-    public void initParams() {
-        addParam(pos = new ParamNumber(SpellParam.GENERIC_NAME_POSITION, SpellParam.BLUE, true, false));
-        addParam(shift = new ParamNumber("psi.spellparam.shift", SpellParam.GREEN, true, false));
-    }
+	@Override
+	public void initParams() {
+		addParam(pos = new ParamNumber(SpellParam.GENERIC_NAME_POSITION, SpellParam.BLUE, true, false));
+		addParam(shift = new ParamNumber("psi.spellparam.shift", SpellParam.GREEN, true, false));
+	}
 
-    @Override
-    public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
-        if (paramSides.get(shift) != SpellParam.Side.OFF && paramSides.get(pos) != SpellParam.Side.OFF) {
-            throw new SpellCompilationException("psi.spellerror.exclusiveparams", x, y);
-        }
+	@Override
+	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
+		if(paramSides.get(shift) != SpellParam.Side.OFF && paramSides.get(pos) != SpellParam.Side.OFF) {
+			throw new SpellCompilationException("psi.spellerror.exclusiveparams", x, y);
+		}
 
-        meta.addStat(EnumSpellStat.COMPLEXITY, 1);
-    }
+		meta.addStat(EnumSpellStat.COMPLEXITY, 1);
+	}
 
-    @Override
-    public Object execute(SpellContext context) throws SpellRuntimeException {
-        Number posVal = this.getParamValue(context, pos);
-        Number shiftVal = this.getParamValue(context, shift);
+	@Override
+	public Object execute(SpellContext context) throws SpellRuntimeException {
+		Number posVal = this.getParamValue(context, pos);
+		Number shiftVal = this.getParamValue(context, shift);
 
-        if (shiftVal != null) {
-            context.shiftTargetSlot = true;
-            context.targetSlot = shiftVal.intValue();
-        } else if (posVal != null) {
-            context.shiftTargetSlot = false;
-            context.targetSlot = posVal.intValue();
-        } else {
-            context.shiftTargetSlot = true;
-            context.targetSlot = 1;
-        }
+		if(shiftVal != null) {
+			context.shiftTargetSlot = true;
+			context.targetSlot = shiftVal.intValue();
+		} else if(posVal != null) {
+			context.shiftTargetSlot = false;
+			context.targetSlot = posVal.intValue();
+		} else {
+			context.shiftTargetSlot = true;
+			context.targetSlot = 1;
+		}
 
-        return null;
-    }
+		return null;
+	}
 
 }

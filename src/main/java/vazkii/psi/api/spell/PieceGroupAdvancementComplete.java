@@ -22,33 +22,33 @@ import javax.annotation.Nullable;
  */
 public class PieceGroupAdvancementComplete extends Event {
 
-    @Nullable
-    private final SpellPiece piece;
+	@Nullable
+	private final SpellPiece piece;
 
-    @Nonnull
-    private final Player playerEntity;
+	@Nonnull
+	private final Player playerEntity;
 
-    @Nonnull
-    private final ResourceLocation pieceGroup;
+	@Nonnull
+	private final ResourceLocation pieceGroup;
 
-    public PieceGroupAdvancementComplete(@Nullable SpellPiece piece, @Nonnull Player playerEntity, @Nonnull ResourceLocation pieceGroup) {
-        this.piece = piece;
-        this.playerEntity = playerEntity;
-        this.pieceGroup = pieceGroup;
-    }
+	public PieceGroupAdvancementComplete(@Nullable SpellPiece piece, @Nonnull Player playerEntity, @Nonnull ResourceLocation pieceGroup) {
+		this.piece = piece;
+		this.playerEntity = playerEntity;
+		this.pieceGroup = pieceGroup;
+	}
 
-    @Nonnull
-    public ResourceLocation getPieceGroup() {
-        return pieceGroup;
-    }
+	@Nonnull
+	public ResourceLocation getPieceGroup() {
+		return pieceGroup;
+	}
 
-    @Nullable
-    public SpellPiece getPiece() {
-        return piece;
-    }
+	@Nullable
+	public SpellPiece getPiece() {
+		return piece;
+	}
 
-    @Nonnull
-    public Player getPlayerEntity() {
-        return playerEntity;
-    }
+	@Nonnull
+	public Player getPlayerEntity() {
+		return playerEntity;
+	}
 }

@@ -14,18 +14,18 @@ import vazkii.psi.api.spell.piece.PieceSelector;
 
 public class PieceSelectorDamageTaken extends PieceSelector {
 
-    public PieceSelectorDamageTaken(Spell spell) {
-        super(spell);
-    }
+	public PieceSelectorDamageTaken(Spell spell) {
+		super(spell);
+	}
 
-    @Override
-    public Class<?> getEvaluationType() {
-        return Double.class;
-    }
+	@Override
+	public Class<?> getEvaluationType() {
+		return Double.class;
+	}
 
-    @Override
-    public Object execute(SpellContext context) {
-        return context.damageTaken;
-    }
+	@Override
+	public Object execute(SpellContext context) {
+		return context.damageTaken;
+	}
 
 }

@@ -11,7 +11,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: '17'
+          java-version: '21'
 
       - name: Validate gradlew integrity
         uses: gradle/actions/wrapper-validation@v3
@@ -24,19 +24,23 @@ jobs:
             ~/.gradle/wrapper
             ./.gradle/loom-cache/remapped-mods
             ./build/moddev
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/build.gradle', './build.properties', './settings.gradle', '**/gradle-wrapper.properties') }}
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/build.gradle', './gradle.properties', './settings.gradle', '**/gradle-wrapper.properties') }}
 
       - name: Calculate artifact names
         id: calculate_artifact_names
         run: |
-          MC=$(awk -F '=' '/mc_version/ { print $2; }' build.properties)
-          BUILD=$(awk -F '=' '/build_number/ { print $2; }' build.properties)
+          MC=$(awk -F '=' '/mc_version/ { print $2; }' gradle.properties)
+          BUILD=$(awk -F '=' '/build_number/ { print $2; }' gradle.properties)
           echo "forge=build/libs/Psi-${MC}-${BUILD}.jar" >> "$GITHUB_OUTPUT"
 
-      - name: Build with Gradle
+      - name: Lint files
+        run : |
+          ./gradlew checkSyntax
+
+      - name: Build
         run: |
           RELEASE_MODE=${{ startsWith(github.ref, 'refs/tags/release-') && '1' || '0' }} \
-          ./gradlew pmdMain spotlessJavaCheck build
+          ./gradlew build
 
       - name: PMD report
         uses: jwgmeligmeyling/pmd-github-action@v1

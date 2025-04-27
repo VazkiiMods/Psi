@@ -13,29 +13,29 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
+
 import vazkii.psi.api.exosuit.PsiArmorEvent;
 import vazkii.psi.common.lib.LibMisc;
 
 public record MessageTriggerJumpSpell() implements CustomPacketPayload {
 
-    public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, "message_trigger_jump_spell");
-    public static final CustomPacketPayload.Type<MessageTriggerJumpSpell> TYPE = new Type<>(ID);
+	public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, "message_trigger_jump_spell");
+	public static final CustomPacketPayload.Type<MessageTriggerJumpSpell> TYPE = new Type<>(ID);
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, MessageTriggerJumpSpell> CODEC = new StreamCodec<RegistryFriendlyByteBuf, MessageTriggerJumpSpell>() {
-        public MessageTriggerJumpSpell decode(RegistryFriendlyByteBuf pBuffer) {
-            return new MessageTriggerJumpSpell();
-        }
+	public static final StreamCodec<RegistryFriendlyByteBuf, MessageTriggerJumpSpell> CODEC = new StreamCodec<RegistryFriendlyByteBuf, MessageTriggerJumpSpell>() {
+		public MessageTriggerJumpSpell decode(RegistryFriendlyByteBuf pBuffer) {
+			return new MessageTriggerJumpSpell();
+		}
 
-        public void encode(RegistryFriendlyByteBuf pBuffer, MessageTriggerJumpSpell message) {
-        }
-    };
+		public void encode(RegistryFriendlyByteBuf pBuffer, MessageTriggerJumpSpell message) {}
+	};
 
-    @Override
-    public Type<? extends CustomPacketPayload> type() {
-        return TYPE;
-    }
+	@Override
+	public Type<? extends CustomPacketPayload> type() {
+		return TYPE;
+	}
 
-    public void handle(IPayloadContext ctx) {
-        ctx.enqueueWork(() -> PsiArmorEvent.post(new PsiArmorEvent(ctx.player(), PsiArmorEvent.JUMP)));
-    }
+	public void handle(IPayloadContext ctx) {
+		ctx.enqueueWork(() -> PsiArmorEvent.post(new PsiArmorEvent(ctx.player(), PsiArmorEvent.JUMP)));
+	}
 }

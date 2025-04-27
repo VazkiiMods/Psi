@@ -11,35 +11,36 @@ package vazkii.psi.api.spell.programmer;
 import net.minecraft.core.MappedRegistry;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.Event;
+
 import vazkii.psi.api.spell.SpellPiece;
 
 import javax.annotation.Nonnull;
 
 public class ProgrammerPopulateEvent extends Event {
 
-    @Nonnull
-    private final Player entity;
-    @Nonnull
-    private MappedRegistry<Class<? extends SpellPiece>> spellPieceRegistry;
+	@Nonnull
+	private final Player entity;
+	@Nonnull
+	private MappedRegistry<Class<? extends SpellPiece>> spellPieceRegistry;
 
-    public ProgrammerPopulateEvent(Player entity, MappedRegistry<Class<? extends SpellPiece>> registry) {
-        this.entity = entity;
-        this.spellPieceRegistry = registry;
-    }
+	public ProgrammerPopulateEvent(Player entity, MappedRegistry<Class<? extends SpellPiece>> registry) {
+		this.entity = entity;
+		this.spellPieceRegistry = registry;
+	}
 
-    @Nonnull
-    public Player getPlayer() {
-        return entity;
-    }
+	@Nonnull
+	public Player getPlayer() {
+		return entity;
+	}
 
-    @Nonnull
-    public MappedRegistry<Class<? extends SpellPiece>> getSpellPieceRegistry() {
-        return spellPieceRegistry;
-    }
+	@Nonnull
+	public MappedRegistry<Class<? extends SpellPiece>> getSpellPieceRegistry() {
+		return spellPieceRegistry;
+	}
 
-    @Nonnull
-    public void setSpellPieceRegistry(MappedRegistry<Class<? extends SpellPiece>> registry) {
-        spellPieceRegistry = registry;
-    }
+	@Nonnull
+	public void setSpellPieceRegistry(MappedRegistry<Class<? extends SpellPiece>> registry) {
+		spellPieceRegistry = registry;
+	}
 
 }

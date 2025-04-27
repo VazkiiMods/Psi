@@ -17,25 +17,25 @@ import vazkii.psi.api.spell.piece.PieceTrick;
 
 public class PieceTrickEvaluate extends PieceTrick {
 
-    SpellParam<SpellParam.Any> target;
+	SpellParam<SpellParam.Any> target;
 
-    public PieceTrickEvaluate(Spell spell) {
-        super(spell);
-    }
+	public PieceTrickEvaluate(Spell spell) {
+		super(spell);
+	}
 
-    @Override
-    public void initParams() {
-        addParam(target = new ParamAny(SpellParam.GENERIC_NAME_TARGET, SpellParam.BLUE, false));
-    }
+	@Override
+	public void initParams() {
+		addParam(target = new ParamAny(SpellParam.GENERIC_NAME_TARGET, SpellParam.BLUE, false));
+	}
 
-    @Override
-    public void addToMetadata(SpellMetadata meta) {
-        // NO-OP
-    }
+	@Override
+	public void addToMetadata(SpellMetadata meta) {
+		// NO-OP
+	}
 
-    @Override
-    public Object execute(SpellContext context) {
-        return null;
-    }
+	@Override
+	public Object execute(SpellContext context) {
+		return null;
+	}
 
 }

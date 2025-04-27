@@ -9,6 +9,7 @@
 package vazkii.psi.api.spell;
 
 import net.minecraft.world.entity.Entity;
+
 import vazkii.psi.api.PsiAPI;
 
 /**
@@ -20,10 +21,10 @@ import vazkii.psi.api.PsiAPI;
  */
 public interface ISpellImmune {
 
-    static boolean isImmune(Entity e) {
-        return !e.canUsePortal(false) || e.getCapability(PsiAPI.SPELL_IMMUNE_CAPABILITY).isImmune();
-    }
+	static boolean isImmune(Entity e) {
+		return !e.canUsePortal(false) || e.getCapability(PsiAPI.SPELL_IMMUNE_CAPABILITY).isImmune();
+	}
 
-    boolean isImmune();
+	boolean isImmune();
 
 }

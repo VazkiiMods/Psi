@@ -10,6 +10,7 @@ package vazkii.psi.common.spell.selector.entity;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
+
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 
@@ -17,13 +18,13 @@ import java.util.function.Predicate;
 
 public class PieceSelectorNearbyItems extends PieceSelectorNearby {
 
-    public PieceSelectorNearbyItems(Spell spell) {
-        super(spell);
-    }
+	public PieceSelectorNearbyItems(Spell spell) {
+		super(spell);
+	}
 
-    @Override
-    public Predicate<Entity> getTargetPredicate(SpellContext context) {
-        return (Entity e) -> e instanceof ItemEntity;
-    }
+	@Override
+	public Predicate<Entity> getTargetPredicate(SpellContext context) {
+		return (Entity e) -> e instanceof ItemEntity;
+	}
 
 }

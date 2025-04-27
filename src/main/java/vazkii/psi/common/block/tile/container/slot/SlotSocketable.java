@@ -11,6 +11,7 @@ package vazkii.psi.common.block.tile.container.slot;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import net.neoforged.neoforge.items.SlotItemHandler;
+
 import vazkii.psi.api.cad.ISocketable;
 import vazkii.psi.api.inventory.InventorySocketable;
 
@@ -18,20 +19,20 @@ import javax.annotation.Nonnull;
 
 public class SlotSocketable extends SlotItemHandler {
 
-    private final InventorySocketable bullets;
+	private final InventorySocketable bullets;
 
-    public SlotSocketable(IItemHandlerModifiable inventoryIn, InventorySocketable bullets, int index, int xPosition, int yPosition) {
-        super(inventoryIn, index, xPosition, yPosition);
-        this.bullets = bullets;
-    }
+	public SlotSocketable(IItemHandlerModifiable inventoryIn, InventorySocketable bullets, int index, int xPosition, int yPosition) {
+		super(inventoryIn, index, xPosition, yPosition);
+		this.bullets = bullets;
+	}
 
-    @Override
-    public boolean mayPlace(@Nonnull ItemStack stack) {
-        return ISocketable.isSocketable(stack);
-    }
+	@Override
+	public boolean mayPlace(@Nonnull ItemStack stack) {
+		return ISocketable.isSocketable(stack);
+	}
 
-    @Override
-    public void setChanged() {
-        bullets.setStack(getItem());
-    }
+	@Override
+	public void setChanged() {
+		bullets.setStack(getItem());
+	}
 }

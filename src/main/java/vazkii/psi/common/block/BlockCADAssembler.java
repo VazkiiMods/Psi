@@ -9,6 +9,7 @@
 package vazkii.psi.common.block;
 
 import com.mojang.serialization.MapCodec;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionResult;
@@ -27,92 +28,93 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
+
 import vazkii.psi.common.block.tile.TileCADAssembler;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class BlockCADAssembler extends HorizontalDirectionalBlock implements EntityBlock {
-    public static final MapCodec<BlockCADAssembler> CODEC = simpleCodec(BlockCADAssembler::new);
+	public static final MapCodec<BlockCADAssembler> CODEC = simpleCodec(BlockCADAssembler::new);
 
-    public BlockCADAssembler(Properties props) {
-        super(props);
-    }
+	public BlockCADAssembler(Properties props) {
+		super(props);
+	}
 
-    @Override
-    public MapCodec<BlockCADAssembler> codec() {
-        return CODEC;
-    }
+	@Override
+	public MapCodec<BlockCADAssembler> codec() {
+		return CODEC;
+	}
 
-    @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(FACING);
-    }
+	@Override
+	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+		builder.add(FACING);
+	}
 
-    @Override
-    public BlockState getStateForPlacement(BlockPlaceContext ctx) {
-        return defaultBlockState().setValue(FACING, ctx.getHorizontalDirection().getOpposite());
-    }
+	@Override
+	public BlockState getStateForPlacement(BlockPlaceContext ctx) {
+		return defaultBlockState().setValue(FACING, ctx.getHorizontalDirection().getOpposite());
+	}
 
-    @Override
-    @SuppressWarnings("deprecation")
-    public boolean hasAnalogOutputSignal(BlockState state) {
-        return true;
-    }
+	@Override
+	@SuppressWarnings("deprecation")
+	public boolean hasAnalogOutputSignal(BlockState state) {
+		return true;
+	}
 
-    @Override
-    @SuppressWarnings("deprecation")
-    public int getAnalogOutputSignal(BlockState blockState, Level worldIn, BlockPos pos) {
-        IItemHandler handler = worldIn.getCapability(Capabilities.ItemHandler.BLOCK, pos, null);
-        if (handler != null) {
-            return ItemHandlerHelper.calcRedstoneFromInventory(handler);
-        }
-        return 0;
-    }
+	@Override
+	@SuppressWarnings("deprecation")
+	public int getAnalogOutputSignal(BlockState blockState, Level worldIn, BlockPos pos) {
+		IItemHandler handler = worldIn.getCapability(Capabilities.ItemHandler.BLOCK, pos, null);
+		if(handler != null) {
+			return ItemHandlerHelper.calcRedstoneFromInventory(handler);
+		}
+		return 0;
+	}
 
-    @Override
-    public InteractionResult useWithoutItem(BlockState state, Level world, BlockPos pos, Player playerIn, BlockHitResult rayTraceResult) {
-        if (world.isClientSide) {
-            return InteractionResult.SUCCESS;
-        } else {
-            MenuProvider container = state.getMenuProvider(world, pos);
-            if (container != null) {
-                playerIn.openMenu(container, pos);
-            }
-        }
-        return InteractionResult.CONSUME;
-    }
+	@Override
+	public InteractionResult useWithoutItem(BlockState state, Level world, BlockPos pos, Player playerIn, BlockHitResult rayTraceResult) {
+		if(world.isClientSide) {
+			return InteractionResult.SUCCESS;
+		} else {
+			MenuProvider container = state.getMenuProvider(world, pos);
+			if(container != null) {
+				playerIn.openMenu(container, pos);
+			}
+		}
+		return InteractionResult.CONSUME;
+	}
 
-    @Nullable
-    @Override
-    public MenuProvider getMenuProvider(@Nonnull BlockState state, @Nonnull Level world, @Nonnull BlockPos pos) {
-        BlockEntity te = world.getBlockEntity(pos);
-        if (te instanceof TileCADAssembler) {
-            return (MenuProvider) te;
-        }
-        return null;
-    }
+	@Nullable
+	@Override
+	public MenuProvider getMenuProvider(@Nonnull BlockState state, @Nonnull Level world, @Nonnull BlockPos pos) {
+		BlockEntity te = world.getBlockEntity(pos);
+		if(te instanceof TileCADAssembler) {
+			return (MenuProvider) te;
+		}
+		return null;
+	}
 
-    @Override
-    public BlockEntity newBlockEntity(@Nonnull BlockPos pos, @Nonnull BlockState state) {
-        return new TileCADAssembler(pos, state);
-    }
+	@Override
+	public BlockEntity newBlockEntity(@Nonnull BlockPos pos, @Nonnull BlockState state) {
+		return new TileCADAssembler(pos, state);
+	}
 
-    @Override
-    public void onRemove(BlockState state, @Nonnull Level world, @Nonnull BlockPos pos, BlockState newState, boolean isMoving) {
-        if (state.getBlock() != newState.getBlock() && !isMoving) {
-            TileCADAssembler te = (TileCADAssembler) world.getBlockEntity(pos);
-            if (te != null) {
-                for (int i = 0; i < te.getInventory().getSlots(); i++) {
-                    ItemStack stack = te.getInventory().getStackInSlot(i);
-                    if (!stack.isEmpty()) {
-                        Containers.dropItemStack(world, pos.getX(), pos.getY(), pos.getZ(), stack);
-                    }
-                }
-            }
-        }
+	@Override
+	public void onRemove(BlockState state, @Nonnull Level world, @Nonnull BlockPos pos, BlockState newState, boolean isMoving) {
+		if(state.getBlock() != newState.getBlock() && !isMoving) {
+			TileCADAssembler te = (TileCADAssembler) world.getBlockEntity(pos);
+			if(te != null) {
+				for(int i = 0; i < te.getInventory().getSlots(); i++) {
+					ItemStack stack = te.getInventory().getStackInSlot(i);
+					if(!stack.isEmpty()) {
+						Containers.dropItemStack(world, pos.getX(), pos.getY(), pos.getZ(), stack);
+					}
+				}
+			}
+		}
 
-        super.onRemove(state, world, pos, newState, isMoving);
-    }
+		super.onRemove(state, world, pos, newState, isMoving);
+	}
 
 }

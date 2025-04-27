@@ -16,8 +16,8 @@ import net.minecraft.world.item.ItemStack;
  */
 public interface ISensorHoldable {
 
-    ItemStack getAttachedSensor(ItemStack stack);
+	ItemStack getAttachedSensor(ItemStack stack);
 
-    void attachSensor(ItemStack stack, ItemStack sensor);
+	void attachSensor(ItemStack stack, ItemStack sensor);
 
 }

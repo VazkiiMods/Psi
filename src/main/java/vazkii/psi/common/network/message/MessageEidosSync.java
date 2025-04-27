@@ -15,32 +15,33 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
+
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.lib.LibMisc;
 
 public record MessageEidosSync(int reversionTime) implements CustomPacketPayload {
 
-    public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, "message_eidos_sync");
-    public static final CustomPacketPayload.Type<MessageEidosSync> TYPE = new Type<>(ID);
+	public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, "message_eidos_sync");
+	public static final CustomPacketPayload.Type<MessageEidosSync> TYPE = new Type<>(ID);
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, MessageEidosSync> CODEC = StreamCodec.composite(
-            ByteBufCodecs.INT, MessageEidosSync::reversionTime,
-            MessageEidosSync::new);
+	public static final StreamCodec<RegistryFriendlyByteBuf, MessageEidosSync> CODEC = StreamCodec.composite(
+			ByteBufCodecs.INT, MessageEidosSync::reversionTime,
+			MessageEidosSync::new);
 
-    @Override
-    public Type<? extends CustomPacketPayload> type() {
-        return TYPE;
-    }
+	@Override
+	public Type<? extends CustomPacketPayload> type() {
+		return TYPE;
+	}
 
-    public void handle(IPayloadContext ctx) {
-        ctx.enqueueWork(() -> {
-            Player player = Psi.proxy.getClientPlayer();
-            if (player != null) {
-                PlayerDataHandler.PlayerData data = PlayerDataHandler.get(player);
-                data.eidosReversionTime = reversionTime;
-                data.isReverting = true;
-            }
-        });
-    }
+	public void handle(IPayloadContext ctx) {
+		ctx.enqueueWork(() -> {
+			Player player = Psi.proxy.getClientPlayer();
+			if(player != null) {
+				PlayerDataHandler.PlayerData data = PlayerDataHandler.get(player);
+				data.eidosReversionTime = reversionTime;
+				data.isReverting = true;
+			}
+		});
+	}
 }

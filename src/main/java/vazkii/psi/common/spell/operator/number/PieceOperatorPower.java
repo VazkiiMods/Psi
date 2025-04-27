@@ -17,30 +17,30 @@ import vazkii.psi.api.spell.piece.PieceOperator;
 
 public class PieceOperatorPower extends PieceOperator {
 
-    SpellParam<Number> num;
-    SpellParam<Number> power;
+	SpellParam<Number> num;
+	SpellParam<Number> power;
 
-    public PieceOperatorPower(Spell spell) {
-        super(spell);
-    }
+	public PieceOperatorPower(Spell spell) {
+		super(spell);
+	}
 
-    @Override
-    public void initParams() {
-        addParam(num = new ParamNumber(SpellParam.GENERIC_NAME_BASE, SpellParam.GREEN, false, false));
-        addParam(power = new ParamNumber(SpellParam.GENERIC_NAME_POWER, SpellParam.RED, false, false));
-    }
+	@Override
+	public void initParams() {
+		addParam(num = new ParamNumber(SpellParam.GENERIC_NAME_BASE, SpellParam.GREEN, false, false));
+		addParam(power = new ParamNumber(SpellParam.GENERIC_NAME_POWER, SpellParam.RED, false, false));
+	}
 
-    @Override
-    public Object execute(SpellContext context) throws SpellRuntimeException {
-        double d = this.getParamValue(context, num).doubleValue();
-        double pow = this.getParamValue(context, power).doubleValue();
+	@Override
+	public Object execute(SpellContext context) throws SpellRuntimeException {
+		double d = this.getParamValue(context, num).doubleValue();
+		double pow = this.getParamValue(context, power).doubleValue();
 
-        return Math.pow(d, pow);
-    }
+		return Math.pow(d, pow);
+	}
 
-    @Override
-    public Class<?> getEvaluationType() {
-        return Double.class;
-    }
+	@Override
+	public Class<?> getEvaluationType() {
+		return Double.class;
+	}
 
 }

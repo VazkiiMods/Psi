@@ -16,21 +16,21 @@ import net.minecraft.world.item.ItemStack;
  */
 public interface ITileCADAssembler {
 
-    ItemStack getCachedCAD(Player player);
+	ItemStack getCachedCAD(Player player);
 
-    void clearCachedCAD();
+	void clearCachedCAD();
 
-    ItemStack getStackForComponent(EnumCADComponent componentType);
+	ItemStack getStackForComponent(EnumCADComponent componentType);
 
-    boolean setStackForComponent(EnumCADComponent componentType, ItemStack component);
+	boolean setStackForComponent(EnumCADComponent componentType, ItemStack component);
 
-    ItemStack getSocketableStack();
+	ItemStack getSocketableStack();
 
-    ISocketable getSocketable();
+	ISocketable getSocketable();
 
-    boolean setSocketableStack(ItemStack stack);
+	boolean setSocketableStack(ItemStack stack);
 
-    void onCraftCAD(ItemStack cad);
+	void onCraftCAD(ItemStack cad);
 
-    boolean isBulletSlotEnabled(int slot);
+	boolean isBulletSlotEnabled(int slot);
 }

@@ -14,18 +14,18 @@ import vazkii.psi.api.spell.piece.PieceSelector;
 
 public class PieceSelectorSneakStatus extends PieceSelector {
 
-    public PieceSelectorSneakStatus(Spell spell) {
-        super(spell);
-    }
+	public PieceSelectorSneakStatus(Spell spell) {
+		super(spell);
+	}
 
-    @Override
-    public Class<?> getEvaluationType() {
-        return Double.class;
-    }
+	@Override
+	public Class<?> getEvaluationType() {
+		return Double.class;
+	}
 
-    @Override
-    public Object execute(SpellContext context) {
-        return context.caster.isShiftKeyDown() ? 0D : 1D;
-    }
+	@Override
+	public Object execute(SpellContext context) {
+		return context.caster.isShiftKeyDown() ? 0D : 1D;
+	}
 
 }

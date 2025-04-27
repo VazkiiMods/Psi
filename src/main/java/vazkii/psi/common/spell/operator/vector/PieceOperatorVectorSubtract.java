@@ -18,38 +18,38 @@ import vazkii.psi.api.spell.piece.PieceOperator;
 
 public class PieceOperatorVectorSubtract extends PieceOperator {
 
-    SpellParam<Vector3> vec1;
-    SpellParam<Vector3> vec2;
-    SpellParam<Vector3> vec3;
+	SpellParam<Vector3> vec1;
+	SpellParam<Vector3> vec2;
+	SpellParam<Vector3> vec3;
 
-    public PieceOperatorVectorSubtract(Spell spell) {
-        super(spell);
-    }
+	public PieceOperatorVectorSubtract(Spell spell) {
+		super(spell);
+	}
 
-    @Override
-    public void initParams() {
-        addParam(vec1 = new ParamVector(SpellParam.GENERIC_NAME_VECTOR1, SpellParam.RED, false, false));
-        addParam(vec2 = new ParamVector(SpellParam.GENERIC_NAME_VECTOR2, SpellParam.GREEN, false, false));
-        addParam(vec3 = new ParamVector(SpellParam.GENERIC_NAME_VECTOR3, SpellParam.GREEN, true, false));
-    }
+	@Override
+	public void initParams() {
+		addParam(vec1 = new ParamVector(SpellParam.GENERIC_NAME_VECTOR1, SpellParam.RED, false, false));
+		addParam(vec2 = new ParamVector(SpellParam.GENERIC_NAME_VECTOR2, SpellParam.GREEN, false, false));
+		addParam(vec3 = new ParamVector(SpellParam.GENERIC_NAME_VECTOR3, SpellParam.GREEN, true, false));
+	}
 
-    @Override
-    public Object execute(SpellContext context) throws SpellRuntimeException {
-        Vector3 v1 = this.getParamValue(context, vec1);
-        Vector3 v2 = this.getParamValue(context, vec2);
-        Vector3 v3 = this.getParamValue(context, vec3);
+	@Override
+	public Object execute(SpellContext context) throws SpellRuntimeException {
+		Vector3 v1 = this.getParamValue(context, vec1);
+		Vector3 v2 = this.getParamValue(context, vec2);
+		Vector3 v3 = this.getParamValue(context, vec3);
 
-        Vector3 r = v1.copy().sub(v2);
-        if (v3 != null) {
-            r.sub(v3);
-        }
+		Vector3 r = v1.copy().sub(v2);
+		if(v3 != null) {
+			r.sub(v3);
+		}
 
-        return r;
-    }
+		return r;
+	}
 
-    @Override
-    public Class<?> getEvaluationType() {
-        return Vector3.class;
-    }
+	@Override
+	public Class<?> getEvaluationType() {
+		return Vector3.class;
+	}
 
 }

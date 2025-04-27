@@ -14,6 +14,7 @@ import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
+
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.base.ModBlocks;
 import vazkii.psi.common.lib.LibMisc;
@@ -21,32 +22,32 @@ import vazkii.psi.common.lib.LibMisc;
 import javax.annotation.Nonnull;
 
 public class PsiItemModelGenerator extends ItemModelProvider {
-    public PsiItemModelGenerator(PackOutput output, ExistingFileHelper existingFileHelper) {
-        super(output, LibMisc.MOD_ID, existingFileHelper);
-    }
+	public PsiItemModelGenerator(PackOutput output, ExistingFileHelper existingFileHelper) {
+		super(output, LibMisc.MOD_ID, existingFileHelper);
+	}
 
-    private void pointToBlock(Item item) {
-        String name = BuiltInRegistries.ITEM.getKey(item).getPath();
-        getBuilder(name).parent(new ModelFile.UncheckedModelFile(Psi.location("block/" + name)));
-    }
+	private void pointToBlock(Item item) {
+		String name = BuiltInRegistries.ITEM.getKey(item).getPath();
+		getBuilder(name).parent(new ModelFile.UncheckedModelFile(Psi.location("block/" + name)));
+	}
 
-    @Override
-    protected void registerModels() {
-        pointToBlock(ModBlocks.psidustBlock.asItem());
-        pointToBlock(ModBlocks.psimetalBlock.asItem());
-        pointToBlock(ModBlocks.psigemBlock.asItem());
-        pointToBlock(ModBlocks.psimetalPlateBlack.asItem());
-        pointToBlock(ModBlocks.psimetalPlateWhite.asItem());
-        pointToBlock(ModBlocks.psimetalPlateBlackLight.asItem());
-        pointToBlock(ModBlocks.psimetalPlateWhiteLight.asItem());
-        pointToBlock(ModBlocks.psimetalEbony.asItem());
-        pointToBlock(ModBlocks.psimetalIvory.asItem());
-        pointToBlock(ModBlocks.conjured.asItem());
-    }
+	@Override
+	protected void registerModels() {
+		pointToBlock(ModBlocks.psidustBlock.asItem());
+		pointToBlock(ModBlocks.psimetalBlock.asItem());
+		pointToBlock(ModBlocks.psigemBlock.asItem());
+		pointToBlock(ModBlocks.psimetalPlateBlack.asItem());
+		pointToBlock(ModBlocks.psimetalPlateWhite.asItem());
+		pointToBlock(ModBlocks.psimetalPlateBlackLight.asItem());
+		pointToBlock(ModBlocks.psimetalPlateWhiteLight.asItem());
+		pointToBlock(ModBlocks.psimetalEbony.asItem());
+		pointToBlock(ModBlocks.psimetalIvory.asItem());
+		pointToBlock(ModBlocks.conjured.asItem());
+	}
 
-    @Nonnull
-    @Override
-    public String getName() {
-        return "Psi item models";
-    }
+	@Nonnull
+	@Override
+	public String getName() {
+		return "Psi item models";
+	}
 }

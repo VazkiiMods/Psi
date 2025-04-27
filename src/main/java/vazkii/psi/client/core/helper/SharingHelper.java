@@ -11,9 +11,11 @@ package vazkii.psi.client.core.helper;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mojang.blaze3d.platform.NativeImage;
+
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Screenshot;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -33,82 +35,82 @@ import java.util.List;
 
 public final class SharingHelper {
 
-    private static final String CLIENT_ID = "d5d2258f3526156";
+	private static final String CLIENT_ID = "d5d2258f3526156";
 
-    private static IntBuffer pixelBuffer;
-    private static int[] pixelValues;
+	private static IntBuffer pixelBuffer;
+	private static int[] pixelValues;
 
-    public static void uploadAndShare(String title, String export) {
-        String url = uploadImage(title, export);
+	public static void uploadAndShare(String title, String export) {
+		String url = uploadImage(title, export);
 
-        try {
-            String contents = "## " + title + "  \n" +
-                    "### [Image + Code](" + url + ")\n" +
-                    "(to get the code click the link, RES won't show it)\n" +
-                    "\n" +
-                    "---" +
-                    "\n" +
-                    "*REPLACE THIS WITH A DESCRIPTION OF YOUR SPELL  \n" +
-                    "Make sure you read the rules before posting. Look on the sidebar: https://www.reddit.com/r/psispellcompendium/  \n" +
-                    "Delete this part before you submit.*";
+		try {
+			String contents = "## " + title + "  \n" +
+					"### [Image + Code](" + url + ")\n" +
+					"(to get the code click the link, RES won't show it)\n" +
+					"\n" +
+					"---" +
+					"\n" +
+					"*REPLACE THIS WITH A DESCRIPTION OF YOUR SPELL  \n" +
+					"Make sure you read the rules before posting. Look on the sidebar: https://www.reddit.com/r/psispellcompendium/  \n" +
+					"Delete this part before you submit.*";
 
-            String encodedContents = URLEncoder.encode(contents, StandardCharsets.UTF_8);
-            String encodedTitle = URLEncoder.encode(title, StandardCharsets.UTF_8);
+			String encodedContents = URLEncoder.encode(contents, StandardCharsets.UTF_8);
+			String encodedTitle = URLEncoder.encode(title, StandardCharsets.UTF_8);
 
-            String redditUrl = "https://old.reddit.com/r/psispellcompendium/submit?title=" + encodedTitle + "&text=" + encodedContents;
-            Util.getPlatform().openUri(new URI(redditUrl));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+			String redditUrl = "https://old.reddit.com/r/psispellcompendium/submit?title=" + encodedTitle + "&text=" + encodedContents;
+			Util.getPlatform().openUri(new URI(redditUrl));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
-    public static void uploadAndOpen(String title, String export) {
-        String url = uploadImage(title, export);
-        try {
-            Util.getPlatform().openUri(new URI(url));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+	public static void uploadAndOpen(String title, String export) {
+		String url = uploadImage(title, export);
+		try {
+			Util.getPlatform().openUri(new URI(url));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
-    public static String uploadImage(String title, String export) {
-        try {
-            String desc = "Spell Code:\n\n" + export;
-            HttpClient client = HttpClients.createDefault();
+	public static String uploadImage(String title, String export) {
+		try {
+			String desc = "Spell Code:\n\n" + export;
+			HttpClient client = HttpClients.createDefault();
 
-            String url = "https://api.imgur.com/3/image";
-            HttpPost post = new HttpPost(url);
+			String url = "https://api.imgur.com/3/image";
+			HttpPost post = new HttpPost(url);
 
-            List<NameValuePair> list = new ArrayList<>();
-            list.add(new BasicNameValuePair("type", "base64"));
-            list.add(new BasicNameValuePair("image", takeScreenshot()));
-            list.add(new BasicNameValuePair("name", title));
-            list.add(new BasicNameValuePair("description", desc));
+			List<NameValuePair> list = new ArrayList<>();
+			list.add(new BasicNameValuePair("type", "base64"));
+			list.add(new BasicNameValuePair("image", takeScreenshot()));
+			list.add(new BasicNameValuePair("name", title));
+			list.add(new BasicNameValuePair("description", desc));
 
-            post.setEntity(new UrlEncodedFormEntity(list));
-            post.addHeader("Authorization", "Client-ID " + CLIENT_ID);
+			post.setEntity(new UrlEncodedFormEntity(list));
+			post.addHeader("Authorization", "Client-ID " + CLIENT_ID);
 
-            HttpResponse res = client.execute(post);
-            JsonObject resJson = new JsonParser().parse(EntityUtils.toString(res.getEntity())).getAsJsonObject();
-            if (resJson.has("success") && resJson.get("success").getAsBoolean()) {
-                JsonObject data = resJson.get("data").getAsJsonObject();
-                String id = data.get("id").getAsString();
+			HttpResponse res = client.execute(post);
+			JsonObject resJson = new JsonParser().parse(EntityUtils.toString(res.getEntity())).getAsJsonObject();
+			if(resJson.has("success") && resJson.get("success").getAsBoolean()) {
+				JsonObject data = resJson.get("data").getAsJsonObject();
+				String id = data.get("id").getAsString();
 
-                return "https://imgur.com/" + id;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+				return "https://imgur.com/" + id;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
-        return "N/A";
-    }
+		return "N/A";
+	}
 
-    public static String takeScreenshot() throws Exception {
-        Minecraft mc = Minecraft.getInstance();
+	public static String takeScreenshot() throws Exception {
+		Minecraft mc = Minecraft.getInstance();
 
-        NativeImage image = Screenshot.takeScreenshot(mc.getMainRenderTarget());
-        byte[] bArray = image.asByteArray();
-        return Base64.getEncoder().encodeToString(bArray);
-    }
+		NativeImage image = Screenshot.takeScreenshot(mc.getMainRenderTarget());
+		byte[] bArray = image.asByteArray();
+		return Base64.getEncoder().encodeToString(bArray);
+	}
 
 }

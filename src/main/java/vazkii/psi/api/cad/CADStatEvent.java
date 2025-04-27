@@ -22,63 +22,63 @@ import net.neoforged.bus.api.Event;
  */
 public class CADStatEvent extends Event {
 
-    private final EnumCADComponent statProvider;
-    private final EnumCADStat stat;
+	private final EnumCADComponent statProvider;
+	private final EnumCADStat stat;
 
-    private final ItemStack cad;
-    private final ItemStack component;
+	private final ItemStack cad;
+	private final ItemStack component;
 
-    private int statValue;
+	private int statValue;
 
-    public CADStatEvent(EnumCADStat stat, ItemStack cad, ItemStack component, int statValue) {
-        this.statProvider = stat.getSourceType();
-        this.stat = stat;
-        this.cad = cad;
-        this.component = component;
-        this.statValue = statValue;
-    }
+	public CADStatEvent(EnumCADStat stat, ItemStack cad, ItemStack component, int statValue) {
+		this.statProvider = stat.getSourceType();
+		this.stat = stat;
+		this.cad = cad;
+		this.component = component;
+		this.statValue = statValue;
+	}
 
-    /**
-     * The type of CAD Component the {@link #getComponent()} is.
-     */
-    public EnumCADComponent getStatProvider() {
-        return statProvider;
-    }
+	/**
+	 * The type of CAD Component the {@link #getComponent()} is.
+	 */
+	public EnumCADComponent getStatProvider() {
+		return statProvider;
+	}
 
-    /**
-     * The stat being evaluated.
-     */
-    public EnumCADStat getStat() {
-        return stat;
-    }
+	/**
+	 * The stat being evaluated.
+	 */
+	public EnumCADStat getStat() {
+		return stat;
+	}
 
-    /**
-     * The CAD which is having its stats evaluated.
-     */
-    public ItemStack getCad() {
-        return cad;
-    }
+	/**
+	 * The CAD which is having its stats evaluated.
+	 */
+	public ItemStack getCad() {
+		return cad;
+	}
 
-    /**
-     * The component stack the initial stat value comes from.
-     * <p>
-     * This stack <i>can</i> be empty.
-     */
-    public ItemStack getComponent() {
-        return component;
-    }
+	/**
+	 * The component stack the initial stat value comes from.
+	 * <p>
+	 * This stack <i>can</i> be empty.
+	 */
+	public ItemStack getComponent() {
+		return component;
+	}
 
-    /**
-     * The value of the CAD's stat of type {@link #getStat()}.
-     */
-    public int getStatValue() {
-        return statValue;
-    }
+	/**
+	 * The value of the CAD's stat of type {@link #getStat()}.
+	 */
+	public int getStatValue() {
+		return statValue;
+	}
 
-    /**
-     * Modify the value that the CAD has as its stat of type {@link #getStat()}.
-     */
-    public void setStatValue(int statValue) {
-        this.statValue = statValue;
-    }
+	/**
+	 * Modify the value that the CAD has as its stat of type {@link #getStat()}.
+	 */
+	public void setStatValue(int statValue) {
+		this.statValue = statValue;
+	}
 }

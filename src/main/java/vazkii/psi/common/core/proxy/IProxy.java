@@ -14,70 +14,69 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.neoforged.bus.api.IEventBus;
+
 import vazkii.psi.common.block.tile.TileProgrammer;
 
 import java.awt.*;
 
 public interface IProxy {
-    default void registerHandlers(IEventBus bus) {
-    }
+	default void registerHandlers(IEventBus bus) {}
 
-    Player getClientPlayer();
+	Player getClientPlayer();
 
-    default Level getClientWorld() {
-        return null;
-    }
+	default Level getClientWorld() {
+		return null;
+	}
 
-    long getWorldElapsedTicks();
+	long getWorldElapsedTicks();
 
-    int getClientRenderDistance();
+	int getClientRenderDistance();
 
-    // Side-safe version of world.addParticle with noDistanceLimit flag set to true
-    default void addParticleForce(Level world, ParticleOptions particleData, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-    }
+	// Side-safe version of world.addParticle with noDistanceLimit flag set to true
+	default void addParticleForce(Level world, ParticleOptions particleData, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {}
 
-    default boolean hasAdvancement(ResourceLocation advancement, Player playerEntity) {
-        return false;
-    }
+	default boolean hasAdvancement(ResourceLocation advancement, Player playerEntity) {
+		return false;
+	}
 
-    default int getColorForCAD(ItemStack cadStack) {
-        return -1;
-    }
+	default int getColorForCAD(ItemStack cadStack) {
+		return -1;
+	}
 
-    default int getColorForColorizer(ItemStack colorizer) {
-        return -1;
-    }
+	default int getColorForColorizer(ItemStack colorizer) {
+		return -1;
+	}
 
-    @Deprecated
-    default Color getCADColor(ItemStack cadStack) {
-        return new Color(getColorForCAD(cadStack));
-    }
+	@Deprecated
+	default Color getCADColor(ItemStack cadStack) {
+		return new Color(getColorForCAD(cadStack));
+	}
 
-    @Deprecated
-    default Color getColorizerColor(ItemStack colorizer) {
-        return new Color(getColorForColorizer(colorizer));
-    }
+	@Deprecated
+	default Color getColorizerColor(ItemStack colorizer) {
+		return new Color(getColorForColorizer(colorizer));
+	}
 
-    void sparkleFX(Level world, double x, double y, double z, float r, float g, float b, float motionx, float motiony, float motionz, float size, int m);
+	void sparkleFX(Level world, double x, double y, double z, float r, float g, float b, float motionx, float motiony, float motionz, float size, int m);
 
-    default void sparkleFX(double x, double y, double z, float r, float g, float b, float gravity, float size, int m) {
-        sparkleFX(x, y, z, r, g, b, 0, -gravity, 0, size, m);
-    }
+	default void sparkleFX(double x, double y, double z, float r, float g, float b, float gravity, float size, int m) {
+		sparkleFX(x, y, z, r, g, b, 0, -gravity, 0, size, m);
+	}
 
-    void sparkleFX(double x, double y, double z, float r, float g, float b, float motionx, float motiony, float motionz, float size, int m);
+	void sparkleFX(double x, double y, double z, float r, float g, float b, float motionx, float motiony, float motionz, float size, int m);
 
-    void wispFX(Level world, double x, double y, double z, float r, float g, float b, float size, float motionx, float motiony, float motionz, float maxAgeMul);
+	void wispFX(Level world, double x, double y, double z, float r, float g, float b, float size, float motionx, float motiony, float motionz, float maxAgeMul);
 
-    default void wispFX(double x, double y, double z, float r, float g, float b, float size, float gravity) {
-        wispFX(x, y, z, r, g, b, size, gravity, 1F);
-    }
+	default void wispFX(double x, double y, double z, float r, float g, float b, float size, float gravity) {
+		wispFX(x, y, z, r, g, b, size, gravity, 1F);
+	}
 
-    default void wispFX(double x, double y, double z, float r, float g, float b, float size, float gravity, float maxAgeMul) {
-        wispFX(x, y, z, r, g, b, size, 0, -gravity, 0, maxAgeMul);
-    }
+	default void wispFX(double x, double y, double z, float r, float g, float b, float size, float gravity, float maxAgeMul) {
+		wispFX(x, y, z, r, g, b, size, 0, -gravity, 0, maxAgeMul);
+	}
 
-    void wispFX(double x, double y, double z, float r, float g, float b, float size, float motionx, float motiony, float motionz, float maxAgeMul);
+	void wispFX(double x, double y, double z, float r, float g, float b, float size, float motionx, float motiony, float motionz, float maxAgeMul);
 
-    void openProgrammerGUI(TileProgrammer programmer);
+	void openProgrammerGUI(TileProgrammer programmer);
 
 }

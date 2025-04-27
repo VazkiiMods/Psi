@@ -28,6 +28,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import net.neoforged.neoforge.items.ItemStackHandler;
+
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.*;
 import vazkii.psi.common.block.base.ModBlocks;
@@ -37,249 +38,248 @@ import vazkii.psi.common.item.ItemCAD;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class TileCADAssembler extends BlockEntity implements ITileCADAssembler, MenuProvider {
-    private ItemStack cachedCAD = null;
-    private final CADStackHandler inventory = new CADStackHandler(6);
+	private ItemStack cachedCAD = null;
+	private final CADStackHandler inventory = new CADStackHandler(6);
 
-    public TileCADAssembler(BlockPos pos, BlockState state) {
-        super(ModBlocks.cadAssemblerType, pos, state);
-    }
+	public TileCADAssembler(BlockPos pos, BlockState state) {
+		super(ModBlocks.cadAssemblerType, pos, state);
+	}
 
-    public IItemHandlerModifiable getInventory() {
-        return inventory;
-    }
+	public IItemHandlerModifiable getInventory() {
+		return inventory;
+	}
 
-    @Override
-    public void clearCachedCAD() {
-        cachedCAD = null;
-    }
+	@Override
+	public void clearCachedCAD() {
+		cachedCAD = null;
+	}
 
-    @Override
-    public ItemStack getCachedCAD(Player player) {
-        ItemStack cad = cachedCAD;
-        if (cad == null) {
-            ItemStack assembly = getStackForComponent(EnumCADComponent.ASSEMBLY);
-            if (!assembly.isEmpty()) {
-                List<ItemStack> components = IntStream.range(1, 6).mapToObj(inventory::getStackInSlot).collect(Collectors.toList());
-                cad = ItemCAD.makeCADWithAssembly(assembly, components);
-            } else {
-                cad = ItemStack.EMPTY;
-            }
+	@Override
+	public ItemStack getCachedCAD(Player player) {
+		ItemStack cad = cachedCAD;
+		if(cad == null) {
+			ItemStack assembly = getStackForComponent(EnumCADComponent.ASSEMBLY);
+			if(!assembly.isEmpty()) {
+				List<ItemStack> components = IntStream.range(1, 6).mapToObj(inventory::getStackInSlot).collect(Collectors.toList());
+				cad = ItemCAD.makeCADWithAssembly(assembly, components);
+			} else {
+				cad = ItemStack.EMPTY;
+			}
 
-            AssembleCADEvent assembling = new AssembleCADEvent(cad, this, player);
+			AssembleCADEvent assembling = new AssembleCADEvent(cad, this, player);
 
-            NeoForge.EVENT_BUS.post(assembling);
+			NeoForge.EVENT_BUS.post(assembling);
 
-            if (assembling.isCanceled()) {
-                cad = ItemStack.EMPTY;
-            } else {
-                cad = assembling.getCad();
-            }
+			if(assembling.isCanceled()) {
+				cad = ItemStack.EMPTY;
+			} else {
+				cad = assembling.getCad();
+			}
 
-            cachedCAD = cad;
-        }
+			cachedCAD = cad;
+		}
 
-        return cad;
-    }
+		return cad;
+	}
 
-    @Override
-    public ItemStack getStackForComponent(EnumCADComponent componentType) {
-        return inventory.getStackInSlot(componentType.ordinal() + 1);
-    }
+	@Override
+	public ItemStack getStackForComponent(EnumCADComponent componentType) {
+		return inventory.getStackInSlot(componentType.ordinal() + 1);
+	}
 
-    @Override
-    public boolean setStackForComponent(EnumCADComponent componentType, ItemStack component) {
-        int slot = componentType.ordinal() + 1;
-        if (component.isEmpty()) {
-            inventory.setStackInSlot(slot, component);
-            return true;
-        } else if (component.getItem() instanceof ICADComponent componentItem) {
-            if (componentItem.getComponentType(component) == componentType) {
-                inventory.setStackInSlot(slot, component);
-                return true;
-            }
-        }
+	@Override
+	public boolean setStackForComponent(EnumCADComponent componentType, ItemStack component) {
+		int slot = componentType.ordinal() + 1;
+		if(component.isEmpty()) {
+			inventory.setStackInSlot(slot, component);
+			return true;
+		} else if(component.getItem() instanceof ICADComponent componentItem) {
+			if(componentItem.getComponentType(component) == componentType) {
+				inventory.setStackInSlot(slot, component);
+				return true;
+			}
+		}
 
-        return false;
-    }
+		return false;
+	}
 
-    @Override
-    public ItemStack getSocketableStack() {
-        return inventory.getStackInSlot(0);
-    }
+	@Override
+	public ItemStack getSocketableStack() {
+		return inventory.getStackInSlot(0);
+	}
 
-    @Override
-    public ISocketable getSocketable() {
-        return ISocketable.socketable(getSocketableStack());
-    }
+	@Override
+	public ISocketable getSocketable() {
+		return ISocketable.socketable(getSocketableStack());
+	}
 
-    @Override
-    public boolean setSocketableStack(ItemStack stack) {
-        if (stack.isEmpty() || ISocketable.isSocketable(stack)) {
-            inventory.setStackInSlot(0, stack);
-            return true;
-        }
+	@Override
+	public boolean setSocketableStack(ItemStack stack) {
+		if(stack.isEmpty() || ISocketable.isSocketable(stack)) {
+			inventory.setStackInSlot(0, stack);
+			return true;
+		}
 
-        return false;
-    }
+		return false;
+	}
 
-    @Override
-    public void onCraftCAD(ItemStack cad) {
-        NeoForge.EVENT_BUS.post(new PostCADCraftEvent(cad, this));
-        for (int i = 1; i < 6; i++) {
-            inventory.setStackInSlot(i, ItemStack.EMPTY);
-        }
-        if (!level.isClientSide) {
-            level.playSound(null, getBlockPos().getX() + 0.5, getBlockPos().getY() + 0.5, getBlockPos().getZ() + 0.5, PsiSoundHandler.cadCreate, SoundSource.BLOCKS, 0.5F, 1F);
-        }
-    }
+	@Override
+	public void onCraftCAD(ItemStack cad) {
+		NeoForge.EVENT_BUS.post(new PostCADCraftEvent(cad, this));
+		for(int i = 1; i < 6; i++) {
+			inventory.setStackInSlot(i, ItemStack.EMPTY);
+		}
+		if(!level.isClientSide) {
+			level.playSound(null, getBlockPos().getX() + 0.5, getBlockPos().getY() + 0.5, getBlockPos().getZ() + 0.5, PsiSoundHandler.cadCreate, SoundSource.BLOCKS, 0.5F, 1F);
+		}
+	}
 
-    @Override
-    public boolean isBulletSlotEnabled(int slot) {
-        if (getSocketableStack().isEmpty()) {
-            return false;
-        }
-        ISocketable socketable = getSocketable();
-        return socketable != null && socketable.isSocketSlotAvailable(slot);
-    }
+	@Override
+	public boolean isBulletSlotEnabled(int slot) {
+		if(getSocketableStack().isEmpty()) {
+			return false;
+		}
+		ISocketable socketable = getSocketable();
+		return socketable != null && socketable.isSocketSlotAvailable(slot);
+	}
 
-    @Override
-    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-        super.saveAdditional(tag, provider);
-        ContainerHelper.saveAllItems(tag, inventory.getItems(), provider);
-    }
+	@Override
+	protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
+		super.saveAdditional(tag, provider);
+		ContainerHelper.saveAllItems(tag, inventory.getItems(), provider);
+	}
 
-    @Override
-    public void loadAdditional(CompoundTag cmp, HolderLookup.Provider provider) {
-        super.loadAdditional(cmp, provider);
-        readPacketNBT(cmp, provider);
-    }
+	@Override
+	public void loadAdditional(CompoundTag cmp, HolderLookup.Provider provider) {
+		super.loadAdditional(cmp, provider);
+		readPacketNBT(cmp, provider);
+	}
 
-    public void readPacketNBT(@Nonnull CompoundTag tag, HolderLookup.Provider provider) {
-        // Migrate old CAD assemblers to the new format
-        ListTag items = tag.getList("Items", 10);
-        if(items.size() == 19) {
-            for(int i = 0; i < inventory.getSlots(); i++) {
-                inventory.setStackInSlot(i, ItemStack.EMPTY);
-            }
+	public void readPacketNBT(@Nonnull CompoundTag tag, HolderLookup.Provider provider) {
+		// Migrate old CAD assemblers to the new format
+		ListTag items = tag.getList("Items", 10);
+		if(items.size() == 19) {
+			for(int i = 0; i < inventory.getSlots(); i++) {
+				inventory.setStackInSlot(i, ItemStack.EMPTY);
+			}
 
-            ISocketable socketable = null;
+			ISocketable socketable = null;
 
-            for(int i = 0; i < items.size(); ++i) {
-                if(i == 0) // Skip the fake CAD slot
-                {
-                    continue;
-                }
+			for(int i = 0; i < items.size(); ++i) {
+				if(i == 0) // Skip the fake CAD slot
+				{
+					continue;
+				}
 
-                ItemStack stack = ItemStack.parseOptional(provider, items.getCompound(i));
+				ItemStack stack = ItemStack.parseOptional(provider, items.getCompound(i));
 
-                if(i == 6) { // Socketable item
-                    setSocketableStack(stack);
+				if(i == 6) { // Socketable item
+					setSocketableStack(stack);
 
-                    if(!stack.isEmpty()) {
-                        socketable = stack.getCapability(PsiAPI.SOCKETABLE_CAPABILITY);
-                    }
-                } else if(i == 1) // CORE
-                {
-                    setStackForComponent(EnumCADComponent.CORE, stack);
-                } else if(i == 2) // ASSEMBLY
-                {
-                    setStackForComponent(EnumCADComponent.ASSEMBLY, stack);
-                } else if(i == 3) // SOCKET
-                {
-                    setStackForComponent(EnumCADComponent.SOCKET, stack);
-                } else if(i == 4) // BATTERY
-                {
-                    setStackForComponent(EnumCADComponent.BATTERY, stack);
-                } else if(i == 5) // DYE
-                {
-                    setStackForComponent(EnumCADComponent.DYE, stack);
-                } else { // If we've gotten here, the item is a bullet.
-                    int idx = i - 7;
-                    if(socketable != null)
-                        socketable.setBulletInSocket(idx, stack);
-                }
-            }
-        } else {
-            for (int i = 0; i < items.size(); i++) {
-                CompoundTag compoundtag = items.getCompound(i);
-                int j = compoundtag.getByte("Slot") & 255;
-                if (j >= 0 && j < inventory.getItems().size()) {
-                    inventory.getItems().set(j, ItemStack.parse(provider, compoundtag).orElse(ItemStack.EMPTY));
-                }
-            }
-        }
-    }
+					if(!stack.isEmpty()) {
+						socketable = stack.getCapability(PsiAPI.SOCKETABLE_CAPABILITY);
+					}
+				} else if(i == 1) // CORE
+				{
+					setStackForComponent(EnumCADComponent.CORE, stack);
+				} else if(i == 2) // ASSEMBLY
+				{
+					setStackForComponent(EnumCADComponent.ASSEMBLY, stack);
+				} else if(i == 3) // SOCKET
+				{
+					setStackForComponent(EnumCADComponent.SOCKET, stack);
+				} else if(i == 4) // BATTERY
+				{
+					setStackForComponent(EnumCADComponent.BATTERY, stack);
+				} else if(i == 5) // DYE
+				{
+					setStackForComponent(EnumCADComponent.DYE, stack);
+				} else { // If we've gotten here, the item is a bullet.
+					int idx = i - 7;
+					if(socketable != null)
+						socketable.setBulletInSocket(idx, stack);
+				}
+			}
+		} else {
+			for(int i = 0; i < items.size(); i++) {
+				CompoundTag compoundtag = items.getCompound(i);
+				int j = compoundtag.getByte("Slot") & 255;
+				if(j >= 0 && j < inventory.getItems().size()) {
+					inventory.getItems().set(j, ItemStack.parse(provider, compoundtag).orElse(ItemStack.EMPTY));
+				}
+			}
+		}
+	}
 
+	@Override
+	public ClientboundBlockEntityDataPacket getUpdatePacket() {
+		return ClientboundBlockEntityDataPacket.create(this, (BlockEntity e, RegistryAccess provider) -> getUpdateTag(provider));
+		//return new ClientboundBlockEntityDataPacket(getBlockPos(), -1, getUpdateTag());
+	}//TODO Hopefully fixed?
 
-    @Override
-    public ClientboundBlockEntityDataPacket getUpdatePacket() {
-        return ClientboundBlockEntityDataPacket.create(this, (BlockEntity e, RegistryAccess provider) -> getUpdateTag(provider));
-        //return new ClientboundBlockEntityDataPacket(getBlockPos(), -1, getUpdateTag());
-    }//TODO Hopefully fixed?
+	@Nonnull
+	@Override
+	public CompoundTag getUpdateTag(HolderLookup.Provider provider) {
+		CompoundTag cmp = new CompoundTag();
+		saveAdditional(cmp, provider);
+		return cmp;
+	}
 
-    @Nonnull
-    @Override
-    public CompoundTag getUpdateTag(HolderLookup.Provider provider) {
-        CompoundTag cmp = new CompoundTag();
-        saveAdditional(cmp, provider);
-        return cmp;
-    }
+	@Nonnull
+	@Override
+	public Component getDisplayName() {
+		return Component.translatable(ModBlocks.cadAssembler.getDescriptionId());
+	}
 
-    @Nonnull
-    @Override
-    public Component getDisplayName() {
-        return Component.translatable(ModBlocks.cadAssembler.getDescriptionId());
-    }
+	@Nullable
+	@Override
+	public AbstractContainerMenu createMenu(int i, Inventory playerInventory, Player playerEntity) {
+		return new ContainerCADAssembler(i, playerInventory, this);
+	}
 
-    @Nullable
-    @Override
-    public AbstractContainerMenu createMenu(int i, Inventory playerInventory, Player playerEntity) {
-        return new ContainerCADAssembler(i, playerInventory, this);
-    }
+	private class CADStackHandler extends ItemStackHandler {
 
-    private class CADStackHandler extends ItemStackHandler {
+		private CADStackHandler(int size) {
+			super(size);
+		}
 
+		private NonNullList<ItemStack> getItems() {
+			return this.stacks;
+		}
 
-        private CADStackHandler(int size) {
-            super(size);
-        }
+		private void setItems(NonNullList<ItemStack> pItems) {
+			this.stacks = pItems;
+		}
 
-        private NonNullList<ItemStack> getItems() {
-            return this.stacks;
-        }
+		@Override
+		protected void onContentsChanged(int slot) {
+			super.onContentsChanged(slot);
+			if(0 < slot && slot < 6) {
+				clearCachedCAD();
+			}
+			setChanged();
+		}
 
-        private void setItems(NonNullList<ItemStack> pItems) {
-            this.stacks = pItems;
-        }
+		@Override
+		public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
+			if(stack.isEmpty()) {
+				return true;
+			}
 
-        @Override
-        protected void onContentsChanged(int slot) {
-            super.onContentsChanged(slot);
-            if (0 < slot && slot < 6) {
-                clearCachedCAD();
-            }
-            setChanged();
-        }
+			if(slot == 0) {
+				return ISocketable.isSocketable(stack);
+			} else if(slot < 6) {
+				return stack.getItem() instanceof ICADComponent &&
+						((ICADComponent) stack.getItem()).getComponentType(stack).ordinal() == slot - 1;
+			}
 
-        @Override
-        public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-            if (stack.isEmpty()) {
-                return true;
-            }
-
-            if (slot == 0) {
-                return ISocketable.isSocketable(stack);
-            } else if (slot < 6) {
-                return stack.getItem() instanceof ICADComponent &&
-                        ((ICADComponent) stack.getItem()).getComponentType(stack).ordinal() == slot - 1;
-            }
-
-            return false;
-        }
-    }
+			return false;
+		}
+	}
 }

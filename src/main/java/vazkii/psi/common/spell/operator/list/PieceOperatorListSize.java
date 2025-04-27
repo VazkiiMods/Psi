@@ -18,25 +18,25 @@ import vazkii.psi.api.spell.wrapper.EntityListWrapper;
 
 public class PieceOperatorListSize extends PieceOperator {
 
-    SpellParam<EntityListWrapper> list;
+	SpellParam<EntityListWrapper> list;
 
-    public PieceOperatorListSize(Spell spell) {
-        super(spell);
-    }
+	public PieceOperatorListSize(Spell spell) {
+		super(spell);
+	}
 
-    @Override
-    public void initParams() {
-        addParam(list = new ParamEntityListWrapper(SpellParam.GENERIC_NAME_LIST, SpellParam.RED, false, false));
-    }
+	@Override
+	public void initParams() {
+		addParam(list = new ParamEntityListWrapper(SpellParam.GENERIC_NAME_LIST, SpellParam.RED, false, false));
+	}
 
-    @Override
-    public Object execute(SpellContext context) throws SpellRuntimeException {
-        EntityListWrapper l1 = this.getNonnullParamValue(context, list);
-        return l1.size();
-    }
+	@Override
+	public Object execute(SpellContext context) throws SpellRuntimeException {
+		EntityListWrapper l1 = this.getNonnullParamValue(context, list);
+		return l1.size();
+	}
 
-    @Override
-    public Class<?> getEvaluationType() {
-        return Double.class;
-    }
+	@Override
+	public Class<?> getEvaluationType() {
+		return Double.class;
+	}
 }

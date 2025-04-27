@@ -16,6 +16,7 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
+
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
@@ -23,32 +24,32 @@ import vazkii.psi.common.lib.LibMisc;
 
 public record MessageDataSync(CompoundTag cmp) implements CustomPacketPayload {
 
-    public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, "message_data_sync");
-    public static final CustomPacketPayload.Type<MessageDataSync> TYPE = new CustomPacketPayload.Type<>(ID);
-    public static final StreamCodec<RegistryFriendlyByteBuf, MessageDataSync> CODEC = StreamCodec.composite(
-            ByteBufCodecs.COMPOUND_TAG, MessageDataSync::cmp,
-            MessageDataSync::new);
+	public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, "message_data_sync");
+	public static final CustomPacketPayload.Type<MessageDataSync> TYPE = new CustomPacketPayload.Type<>(ID);
+	public static final StreamCodec<RegistryFriendlyByteBuf, MessageDataSync> CODEC = StreamCodec.composite(
+			ByteBufCodecs.COMPOUND_TAG, MessageDataSync::cmp,
+			MessageDataSync::new);
 
-    public MessageDataSync(PlayerData data) {
-        this(new CompoundTag());
-        data.writeToNBT(cmp);
-    }
+	public MessageDataSync(PlayerData data) {
+		this(new CompoundTag());
+		data.writeToNBT(cmp);
+	}
 
-    @Override
-    public CustomPacketPayload.Type<? extends CustomPacketPayload> type() {
-        return TYPE;
-    }
+	@Override
+	public CustomPacketPayload.Type<? extends CustomPacketPayload> type() {
+		return TYPE;
+	}
 
-    public void handle(IPayloadContext ctx) {
-        ctx.enqueueWork(() -> {
-            Player player = Psi.proxy.getClientPlayer();
-            if (player != null) {
-                PlayerData data = PlayerDataHandler.get(player);
-                data.lastAvailablePsi = data.availablePsi;
-                data.readFromNBT(cmp);
-            }
-        });
+	public void handle(IPayloadContext ctx) {
+		ctx.enqueueWork(() -> {
+			Player player = Psi.proxy.getClientPlayer();
+			if(player != null) {
+				PlayerData data = PlayerDataHandler.get(player);
+				data.lastAvailablePsi = data.availablePsi;
+				data.readFromNBT(cmp);
+			}
+		});
 
-    }
+	}
 
 }

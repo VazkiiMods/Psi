@@ -5,7 +5,7 @@ from jproperties import Properties
 
 def main():
     build = Properties()
-    with open("build.properties", "rb") as f:
+    with open("gradle.properties", "rb") as f:
         build.load(f, "utf-8")
 
     mc_version, mcv_meta = build["mc_version"]
@@ -39,7 +39,7 @@ def main():
         print("Created tag")
 
     build["build_number"] = str(int(build_number) + 1)
-    with open("build.properties", "wb") as f:
+    with open("gradle.properties", "wb") as f:
         build.store(f, encoding="utf-8")
 
     os.system("git commit -a -m build")

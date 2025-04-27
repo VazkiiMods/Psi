@@ -12,6 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.Event;
 import net.neoforged.bus.api.ICancellableEvent;
+
 import vazkii.psi.api.internal.IPlayerData;
 
 import javax.annotation.Nonnull;
@@ -27,65 +28,65 @@ import javax.annotation.Nullable;
  * Canceling it will result in no CAD being assembled.
  */
 public class PieceKnowledgeEvent extends Event implements ICancellableEvent {
-    @Nonnull
-    private final ResourceLocation pieceGroup;
+	@Nonnull
+	private final ResourceLocation pieceGroup;
 
-    @Nullable
-    private final ResourceLocation pieceName;
+	@Nullable
+	private final ResourceLocation pieceName;
 
-    @Nonnull
-    private final Player player;
+	@Nonnull
+	private final Player player;
 
-    @Nonnull
-    private final IPlayerData data;
+	@Nonnull
+	private final IPlayerData data;
 
-    private final boolean isUnlocked;
+	private final boolean isUnlocked;
 
-    public PieceKnowledgeEvent(@Nonnull ResourceLocation pieceGroup, @Nullable ResourceLocation pieceName, @Nonnull Player player, @Nonnull IPlayerData data, boolean isUnlocked) {
-        this.pieceGroup = pieceGroup;
-        this.pieceName = pieceName;
-        this.player = player;
-        this.data = data;
-        this.isUnlocked = isUnlocked;
-    }
+	public PieceKnowledgeEvent(@Nonnull ResourceLocation pieceGroup, @Nullable ResourceLocation pieceName, @Nonnull Player player, @Nonnull IPlayerData data, boolean isUnlocked) {
+		this.pieceGroup = pieceGroup;
+		this.pieceName = pieceName;
+		this.player = player;
+		this.data = data;
+		this.isUnlocked = isUnlocked;
+	}
 
-    /**
-     * The group which is being checked for.
-     */
-    @Nonnull
-    public ResourceLocation getPieceGroup() {
-        return pieceGroup;
-    }
+	/**
+	 * The group which is being checked for.
+	 */
+	@Nonnull
+	public ResourceLocation getPieceGroup() {
+		return pieceGroup;
+	}
 
-    /**
-     * The piece name which is being checked for.
-     * May be null if called from legacy code or in a situation where only the group's presence matters.
-     */
-    @Nullable
-    public ResourceLocation getPieceName() {
-        return pieceName;
-    }
+	/**
+	 * The piece name which is being checked for.
+	 * May be null if called from legacy code or in a situation where only the group's presence matters.
+	 */
+	@Nullable
+	public ResourceLocation getPieceName() {
+		return pieceName;
+	}
 
-    /**
-     * The player who is being checked.
-     */
-    @Nonnull
-    public Player getPlayer() {
-        return player;
-    }
+	/**
+	 * The player who is being checked.
+	 */
+	@Nonnull
+	public Player getPlayer() {
+		return player;
+	}
 
-    /**
-     * The player data which is being checked.
-     */
-    @Nonnull
-    public IPlayerData getData() {
-        return data;
-    }
+	/**
+	 * The player data which is being checked.
+	 */
+	@Nonnull
+	public IPlayerData getData() {
+		return data;
+	}
 
-    /**
-     * Whether, under default behavior, the piece would be unlocked.
-     */
-    public boolean isUnlocked() {
-        return isUnlocked;
-    }
+	/**
+	 * Whether, under default behavior, the piece would be unlocked.
+	 */
+	public boolean isUnlocked() {
+		return isUnlocked;
+	}
 }

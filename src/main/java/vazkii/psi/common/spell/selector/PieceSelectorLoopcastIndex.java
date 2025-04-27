@@ -14,18 +14,18 @@ import vazkii.psi.api.spell.piece.PieceSelector;
 
 public class PieceSelectorLoopcastIndex extends PieceSelector {
 
-    public PieceSelectorLoopcastIndex(Spell spell) {
-        super(spell);
-    }
+	public PieceSelectorLoopcastIndex(Spell spell) {
+		super(spell);
+	}
 
-    @Override
-    public Class<?> getEvaluationType() {
-        return Double.class;
-    }
+	@Override
+	public Class<?> getEvaluationType() {
+		return Double.class;
+	}
 
-    @Override
-    public Object execute(SpellContext context) {
-        return (double) context.loopcastIndex;
-    }
+	@Override
+	public Object execute(SpellContext context) {
+		return (double) context.loopcastIndex;
+	}
 
 }

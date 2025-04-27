@@ -17,14 +17,14 @@ import net.minecraft.world.item.ItemStack;
  */
 public interface ISocketableController {
 
-    /**
-     * Returns an array of stacks this item can control. Can't be null.
-     * Elements can be empty. The item of every non-empty stack must provide an ISocketableCapability.
-     */
-    ItemStack[] getControlledStacks(Player player, ItemStack stack);
+	/**
+	 * Returns an array of stacks this item can control. Can't be null.
+	 * Elements can be empty. The item of every non-empty stack must provide an ISocketableCapability.
+	 */
+	ItemStack[] getControlledStacks(Player player, ItemStack stack);
 
-    int getDefaultControlSlot(ItemStack stack);
+	int getDefaultControlSlot(ItemStack stack);
 
-    void setSelectedSlot(Player player, ItemStack stack, int controlSlot, int slot);
+	void setSelectedSlot(Player player, ItemStack stack, int controlSlot, int slot);
 
 }

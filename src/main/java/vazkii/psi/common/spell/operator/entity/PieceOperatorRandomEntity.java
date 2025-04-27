@@ -9,6 +9,7 @@
 package vazkii.psi.common.spell.operator.entity;
 
 import net.minecraft.world.entity.Entity;
+
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellParam;
@@ -19,30 +20,30 @@ import vazkii.psi.api.spell.wrapper.EntityListWrapper;
 
 public class PieceOperatorRandomEntity extends PieceOperator {
 
-    SpellParam<EntityListWrapper> list;
+	SpellParam<EntityListWrapper> list;
 
-    public PieceOperatorRandomEntity(Spell spell) {
-        super(spell);
-    }
+	public PieceOperatorRandomEntity(Spell spell) {
+		super(spell);
+	}
 
-    @Override
-    public void initParams() {
-        addParam(list = new ParamEntityListWrapper(SpellParam.GENERIC_NAME_TARGET, SpellParam.YELLOW, false, false));
-    }
+	@Override
+	public void initParams() {
+		addParam(list = new ParamEntityListWrapper(SpellParam.GENERIC_NAME_TARGET, SpellParam.YELLOW, false, false));
+	}
 
-    @Override
-    public Object execute(SpellContext context) throws SpellRuntimeException {
-        EntityListWrapper listVal = this.getParamValue(context, list);
-        if (listVal.size() == 0) {
-            throw new SpellRuntimeException(SpellRuntimeException.NULL_TARGET);
-        }
+	@Override
+	public Object execute(SpellContext context) throws SpellRuntimeException {
+		EntityListWrapper listVal = this.getParamValue(context, list);
+		if(listVal.size() == 0) {
+			throw new SpellRuntimeException(SpellRuntimeException.NULL_TARGET);
+		}
 
-        return listVal.get(context.caster.getCommandSenderWorld().random.nextInt(listVal.size()));
-    }
+		return listVal.get(context.caster.getCommandSenderWorld().random.nextInt(listVal.size()));
+	}
 
-    @Override
-    public Class<?> getEvaluationType() {
-        return Entity.class;
-    }
+	@Override
+	public Class<?> getEvaluationType() {
+		return Entity.class;
+	}
 
 }

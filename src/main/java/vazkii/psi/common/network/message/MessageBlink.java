@@ -15,6 +15,7 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
+
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.lib.LibMisc;
 
@@ -23,26 +24,26 @@ import vazkii.psi.common.lib.LibMisc;
  */
 public record MessageBlink(double offX, double offY, double offZ) implements CustomPacketPayload {
 
-    public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, "message_blink");
-    public static final CustomPacketPayload.Type<MessageBlink> TYPE = new Type<>(ID);
+	public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, "message_blink");
+	public static final CustomPacketPayload.Type<MessageBlink> TYPE = new Type<>(ID);
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, MessageBlink> CODEC = StreamCodec.composite(
-            ByteBufCodecs.DOUBLE, MessageBlink::offX,
-            ByteBufCodecs.DOUBLE, MessageBlink::offY,
-            ByteBufCodecs.DOUBLE, MessageBlink::offZ,
-            MessageBlink::new);
+	public static final StreamCodec<RegistryFriendlyByteBuf, MessageBlink> CODEC = StreamCodec.composite(
+			ByteBufCodecs.DOUBLE, MessageBlink::offX,
+			ByteBufCodecs.DOUBLE, MessageBlink::offY,
+			ByteBufCodecs.DOUBLE, MessageBlink::offZ,
+			MessageBlink::new);
 
-    @Override
-    public Type<? extends CustomPacketPayload> type() {
-        return TYPE;
-    }
+	@Override
+	public Type<? extends CustomPacketPayload> type() {
+		return TYPE;
+	}
 
-    public void handle(IPayloadContext ctx) {
-        ctx.enqueueWork(() -> {
-            Entity entity = Psi.proxy.getClientPlayer();
-            if (entity != null) {
-                entity.setPos(entity.getX() + offX, entity.getY() + offY, entity.getZ() + offZ);
-            }
-        });
-    }
+	public void handle(IPayloadContext ctx) {
+		ctx.enqueueWork(() -> {
+			Entity entity = Psi.proxy.getClientPlayer();
+			if(entity != null) {
+				entity.setPos(entity.getX() + offX, entity.getY() + offY, entity.getZ() + offZ);
+			}
+		});
+	}
 }

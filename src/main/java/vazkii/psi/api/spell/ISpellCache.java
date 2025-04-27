@@ -15,10 +15,10 @@ package vazkii.psi.api.spell;
  */
 public interface ISpellCache {
 
-    /**
-     * Gets a {@link CompiledSpell} for the {@link Spell} passed in, checking the cache for it. If it's
-     * not present, a compiler is created to provide the spell.
-     */
-    CompiledSpell getCompiledSpell(Spell spell);
+	/**
+	 * Gets a {@link CompiledSpell} for the {@link Spell} passed in, checking the cache for it. If it's
+	 * not present, a compiler is created to provide the spell.
+	 */
+	CompiledSpell getCompiledSpell(Spell spell);
 
 }

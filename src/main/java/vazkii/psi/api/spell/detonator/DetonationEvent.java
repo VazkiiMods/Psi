@@ -23,39 +23,39 @@ import java.util.List;
  */
 public class DetonationEvent extends Event implements ICancellableEvent {
 
-    private final Player player;
-    private final Entity focalPoint;
-    private final double range;
-    private final List<IDetonationHandler> charges;
+	private final Player player;
+	private final Entity focalPoint;
+	private final double range;
+	private final List<IDetonationHandler> charges;
 
-    public DetonationEvent(Player player, Entity focalPoint, double range, List<IDetonationHandler> charges) {
-        this.player = player;
-        this.focalPoint = focalPoint;
-        this.range = range;
-        this.charges = charges;
-    }
+	public DetonationEvent(Player player, Entity focalPoint, double range, List<IDetonationHandler> charges) {
+		this.player = player;
+		this.focalPoint = focalPoint;
+		this.range = range;
+		this.charges = charges;
+	}
 
-    public Player getPlayer() {
-        return player;
-    }
+	public Player getPlayer() {
+		return player;
+	}
 
-    public Entity getFocalPoint() {
-        return focalPoint;
-    }
+	public Entity getFocalPoint() {
+		return focalPoint;
+	}
 
-    public double getRange() {
-        return range;
-    }
+	public double getRange() {
+		return range;
+	}
 
-    public List<IDetonationHandler> getCharges() {
-        return charges;
-    }
+	public List<IDetonationHandler> getCharges() {
+		return charges;
+	}
 
-    public void addCharge(IDetonationHandler charge) {
-        charges.add(charge);
-    }
+	public void addCharge(IDetonationHandler charge) {
+		charges.add(charge);
+	}
 
-    public void removeCharge(IDetonationHandler charge) {
-        charges.remove(charge);
-    }
+	public void removeCharge(IDetonationHandler charge) {
+		charges.remove(charge);
+	}
 }

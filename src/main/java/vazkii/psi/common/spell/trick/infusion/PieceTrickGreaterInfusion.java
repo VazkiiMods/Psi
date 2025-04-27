@@ -12,20 +12,20 @@ import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.piece.PieceCraftingTrick;
 
 public class PieceTrickGreaterInfusion extends PieceTrickInfusion {
-    public PieceTrickGreaterInfusion(Spell spell) {
-        super(spell);
-        setStatLabel(EnumSpellStat.POTENCY, new StatLabel(250));
-        setStatLabel(EnumSpellStat.COST, new StatLabel(2600));
-    }
+	public PieceTrickGreaterInfusion(Spell spell) {
+		super(spell);
+		setStatLabel(EnumSpellStat.POTENCY, new StatLabel(250));
+		setStatLabel(EnumSpellStat.COST, new StatLabel(2600));
+	}
 
-    @Override
-    protected void addPotencyAndCost(SpellMetadata meta) throws SpellCompilationException {
-        meta.addStat(EnumSpellStat.POTENCY, 250);
-        meta.addStat(EnumSpellStat.COST, 2600);
-    }
+	@Override
+	protected void addPotencyAndCost(SpellMetadata meta) throws SpellCompilationException {
+		meta.addStat(EnumSpellStat.POTENCY, 250);
+		meta.addStat(EnumSpellStat.COST, 2600);
+	}
 
-    @Override
-    public boolean canCraft(PieceCraftingTrick trick) {
-        return trick instanceof PieceTrickGreaterInfusion;
-    }
+	@Override
+	public boolean canCraft(PieceCraftingTrick trick) {
+		return trick instanceof PieceTrickGreaterInfusion;
+	}
 }
