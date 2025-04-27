@@ -24,13 +24,13 @@ jobs:
             ~/.gradle/wrapper
             ./.gradle/loom-cache/remapped-mods
             ./build/moddev
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/build.gradle', './gradle.properties', './settings.gradle', '**/gradle-wrapper.properties') }}
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/build.gradle', './build.properties', './settings.gradle', '**/gradle-wrapper.properties') }}
 
       - name: Calculate artifact names
         id: calculate_artifact_names
         run: |
-          MC=$(awk -F '=' '/minecraft_version/ { print $2; }' gradle.properties)
-          BUILD=$(awk -F '=' '/build_number/ { print $2; }' gradle.properties)
+          MC=$(awk -F '=' '/minecraft_version/ { print $2; }' build.properties)
+          BUILD=$(awk -F '=' '/build_number/ { print $2; }' build.properties)
           echo "jar=build/libs/Psi-${MC}-${BUILD}.jar" >> "$GITHUB_OUTPUT"
 
       - name: Build with Gradle
