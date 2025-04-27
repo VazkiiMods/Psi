@@ -1,21 +1,42 @@
-name: CI
+name: Java CI
 
-on: [push, pull_request, workflow_dispatch]
+on: [push, pull_request]
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-java@v2
+      - uses: actions/checkout@v4
+      - name: Set up JDK
+        uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Gradle build
-        uses: gradle/gradle-build-action@v2
+      - name: Validate gradlew integrity
+        uses: gradle/actions/wrapper-validation@v3
+
+      - name: Cache gradle build artifacts
+        uses: actions/cache@v4
         with:
-          arguments: pmdMain spotlessJavaCheck build
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+            ./.gradle/loom-cache/remapped-mods
+            ./build/moddev
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/build.gradle', './gradle.properties', './settings.gradle', '**/gradle-wrapper.properties') }}
+
+      - name: Calculate artifact names
+        id: calculate_artifact_names
+        run: |
+          MC=$(awk -F '=' '/minecraft_version/ { print $2; }' gradle.properties)
+          BUILD=$(awk -F '=' '/build_number/ { print $2; }' gradle.properties)
+          echo "jar=build/libs/Psi-${MC}-${BUILD}.jar" >> "$GITHUB_OUTPUT"
+
+      - name: Build with Gradle
+        run: |
+          RELEASE_MODE=${{ startsWith(github.ref, 'refs/tags/release-') && '1' || '0' }} \
+          ./gradlew pmdMain spotlessJavaCheck build
 
       - name: PMD report
         uses: jwgmeligmeyling/pmd-github-action@v1
@@ -23,8 +44,33 @@ jobs:
         with:
           path: '**/reports/pmd/main.xml'
 
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v2
+      - name: Stop Gradle
+        run: ./gradlew --stop
+
+      - name: Sign jars
+        env:
+          SIGNING_KEY: ${{ secrets.VIOLET_MOON_SIGNING_KEY }}
+        if: ${{ env.SIGNING_KEY != '' }}
+        run: |
+          echo "${SIGNING_KEY}" | gpg --import -
+          gpg --local-user "Violet Moon Signing Key" --armor \
+            --detach-sign ${{ steps.calculate_artifact_names.outputs.jar }}
+
+      - name: Archive Artifacts
+        uses: actions/upload-artifact@v4
         with:
-          name: Artifacts
-          path: build/libs/
+          name: Forge
+          path: |
+            ${{ steps.calculate_artifact_names.outputs.jar }}
+            ${{ steps.calculate_artifact_names.outputs.jar }}.asc
+
+      - name: Upload Releases
+        if: startsWith(github.ref, 'refs/tags/release-')
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GIT_REF: ${{ github.ref }}
+          JAR: ${{ steps.calculate_artifact_names.outputs.jar }}
+          CURSEFORGE_TOKEN: ${{ secrets.VAZKII_CURSEFORGE_TOKEN }}
+          MODRINTH_TOKEN: ${{ secrets.VAZKII_MODRINTH_TOKEN }}
+        run: |
+          scripts/upload_releases.sh
