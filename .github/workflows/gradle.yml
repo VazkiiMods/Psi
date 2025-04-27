@@ -29,8 +29,8 @@ jobs:
       - name: Calculate artifact names
         id: calculate_artifact_names
         run: |
-          MC=$(awk -F '=' '/minecraft_version/ { print $2; }' gradle.properties)
-          BUILD=$(awk -F '=' '/mod_version/ { print $2; }' gradle.properties)
+          MC=$(awk -F '=' '$1 == "minecraft_version" { print $2 }' gradle.properties)
+          BUILD=$(awk -F '=' '$1 == "mod_version" { print $2 }' gradle.properties)
           echo "forge=build/libs/Psi-${MC}-${BUILD}.jar" >> "$GITHUB_OUTPUT"
 
       - name: Lint files
