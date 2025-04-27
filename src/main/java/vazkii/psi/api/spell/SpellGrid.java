@@ -10,9 +10,8 @@ package vazkii.psi.api.spell;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.gui.GuiGraphics;
+
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;

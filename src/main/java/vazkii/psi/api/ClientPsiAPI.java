@@ -18,8 +18,6 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static vazkii.psi.api.PsiAPI.MOD_ID;
-
 @OnlyIn(Dist.CLIENT)
 public class ClientPsiAPI {
 

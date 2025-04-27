@@ -9,6 +9,7 @@
 package vazkii.psi.data;
 
 import com.google.gson.JsonObject;
+
 import net.minecraft.advancements.CriterionTriggerInstance;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.FinishedRecipe;
@@ -43,6 +44,7 @@ import vazkii.psi.common.lib.LibResources;
 import vazkii.psi.common.lib.ModTags;
 
 import javax.annotation.Nonnull;
+
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
@@ -632,7 +634,7 @@ public class PsiRecipeGenerator extends RecipeProvider implements IConditionBuil
 	}
 
 	public static void dimension(TrickRecipeBuilder builder, Consumer<FinishedRecipe> parent,
-								 ResourceLocation id, ResourceKey<Level> dimensionKey) {
+			ResourceLocation id, ResourceKey<Level> dimensionKey) {
 		parent.accept(new DimensionResult(id, builder, dimensionKey));
 	}
 

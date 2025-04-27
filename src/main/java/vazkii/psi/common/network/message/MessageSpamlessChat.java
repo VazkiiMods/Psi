@@ -59,7 +59,7 @@ public class MessageSpamlessChat {
 
 		while(listiterator.hasNext()) {
 			GuiMessage guimessage = listiterator.next();
-			if (pMessageSignature.equals(guimessage.signature())) {
+			if(pMessageSignature.equals(guimessage.signature())) {
 				listiterator.remove();
 				break;
 			}

@@ -11,7 +11,6 @@ package vazkii.psi.common.spell.other;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.resources.model.Material;
@@ -22,7 +21,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 import org.joml.Matrix4f;
 
-import vazkii.psi.api.ClientPsiAPI;
 import vazkii.psi.api.spell.EnumPieceType;
 import vazkii.psi.api.spell.IRedirector;
 import vazkii.psi.api.spell.Spell;

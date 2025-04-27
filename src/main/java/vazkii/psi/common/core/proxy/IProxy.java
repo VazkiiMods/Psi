@@ -72,7 +72,6 @@ public interface IProxy {
 		wispFX(world, x, y, z, r, g, b, size, 0, -gravity, 0, maxAgeMul);
 	}
 
-
 	void openProgrammerGUI(TileProgrammer programmer);
 
 }

@@ -94,7 +94,6 @@ public final class PsiAPI {
 			new ResourceLocation(MOD_ID, "psimetal_tier"),
 			List.of(Tiers.DIAMOND), List.of(Tiers.NETHERITE));
 
-
 	/**
 	 * Registers a Spell Piece.
 	 */

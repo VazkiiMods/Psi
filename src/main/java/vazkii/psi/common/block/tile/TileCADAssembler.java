@@ -223,8 +223,6 @@ public class TileCADAssembler extends BlockEntity implements ITileCADAssembler, 
 		readPacketNBT(cmp);
 	}
 
-
-
 	public void readPacketNBT(@Nonnull CompoundTag tag) {
 		// Migrate old CAD assemblers to the new format
 		ListTag items = tag.getList("Items", 10);
@@ -303,7 +301,6 @@ public class TileCADAssembler extends BlockEntity implements ITileCADAssembler, 
 
 	private class CADStackHandler extends ItemStackHandler {
 
-
 		private CADStackHandler(int size) {
 			super(size);
 		}
@@ -319,7 +316,7 @@ public class TileCADAssembler extends BlockEntity implements ITileCADAssembler, 
 		@Override
 		protected void onContentsChanged(int slot) {
 			super.onContentsChanged(slot);
-			if (0 < slot && slot < 6) {
+			if(0 < slot && slot < 6) {
 				clearCachedCAD();
 			}
 			setChanged();
@@ -327,13 +324,13 @@ public class TileCADAssembler extends BlockEntity implements ITileCADAssembler, 
 
 		@Override
 		public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-			if (stack.isEmpty()) {
+			if(stack.isEmpty()) {
 				return true;
 			}
 
-			if (slot == 0) {
+			if(slot == 0) {
 				return ISocketable.isSocketable(stack);
-			} else if (slot < 6) {
+			} else if(slot < 6) {
 				return stack.getItem() instanceof ICADComponent &&
 						((ICADComponent) stack.getItem()).getComponentType(stack).ordinal() == slot - 1;
 			}

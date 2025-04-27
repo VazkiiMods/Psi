@@ -8,7 +8,6 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 
 import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.lib.LibResources;
-import vazkii.psi.common.lib.ModTags;
 
 import java.util.concurrent.CompletableFuture;
 

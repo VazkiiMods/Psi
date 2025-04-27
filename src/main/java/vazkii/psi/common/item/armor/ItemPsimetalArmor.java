@@ -180,8 +180,7 @@ public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiE
 		return ICADColorizer.DEFAULT_SPELL_COLOR;
 	}
 
-	public void setColor(ItemStack stack, int color) {
-	}
+	public void setColor(ItemStack stack, int color) {}
 
 	@Override
 	public void initializeClient(Consumer<IClientItemExtensions> consumer) {

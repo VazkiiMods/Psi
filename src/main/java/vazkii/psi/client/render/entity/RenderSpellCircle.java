@@ -26,7 +26,6 @@ import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 
 import vazkii.psi.api.internal.PsiRenderHelper;
-import vazkii.psi.client.model.ArmorModels;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.entity.EntitySpellCircle;
 import vazkii.psi.common.lib.LibMisc;
