@@ -19,34 +19,34 @@ import vazkii.psi.api.spell.piece.PieceOperator;
 
 public class PieceOperatorVectorDivide extends PieceOperator {
 
-    SpellParam<Vector3> vec1;
-    SpellParam<Number> num2;
+	SpellParam<Vector3> vec1;
+	SpellParam<Number> num2;
 
-    public PieceOperatorVectorDivide(Spell spell) {
-        super(spell);
-    }
+	public PieceOperatorVectorDivide(Spell spell) {
+		super(spell);
+	}
 
-    @Override
-    public void initParams() {
-        addParam(vec1 = new ParamVector(SpellParam.GENERIC_NAME_VECTOR1, SpellParam.RED, false, false));
-        addParam(num2 = new ParamNumber(SpellParam.GENERIC_NAME_NUMBER2, SpellParam.GREEN, false, false));
-    }
+	@Override
+	public void initParams() {
+		addParam(vec1 = new ParamVector(SpellParam.GENERIC_NAME_VECTOR1, SpellParam.RED, false, false));
+		addParam(num2 = new ParamNumber(SpellParam.GENERIC_NAME_NUMBER2, SpellParam.GREEN, false, false));
+	}
 
-    @Override
-    public Object execute(SpellContext context) throws SpellRuntimeException {
-        Vector3 v1 = this.getParamValue(context, vec1);
-        double d = this.getParamValue(context, num2).doubleValue();
+	@Override
+	public Object execute(SpellContext context) throws SpellRuntimeException {
+		Vector3 v1 = this.getParamValue(context, vec1);
+		double d = this.getParamValue(context, num2).doubleValue();
 
-        if (d == 0) {
-            throw new SpellRuntimeException(SpellRuntimeException.DIVIDE_BY_ZERO);
-        }
+		if(d == 0) {
+			throw new SpellRuntimeException(SpellRuntimeException.DIVIDE_BY_ZERO);
+		}
 
-        return v1.copy().multiply(1.0 / d);
-    }
+		return v1.copy().multiply(1.0 / d);
+	}
 
-    @Override
-    public Class<?> getEvaluationType() {
-        return Vector3.class;
-    }
+	@Override
+	public Class<?> getEvaluationType() {
+		return Vector3.class;
+	}
 
 }

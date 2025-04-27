@@ -28,32 +28,32 @@ import net.neoforged.bus.api.ICancellableEvent;
  */
 public class AssembleCADEvent extends Event implements ICancellableEvent {
 
-    private final ITileCADAssembler assembler;
-    private final Player player;
-    private ItemStack cad;
+	private final ITileCADAssembler assembler;
+	private final Player player;
+	private ItemStack cad;
 
-    public AssembleCADEvent(ItemStack cad, ITileCADAssembler assembler, Player player) {
-        this.cad = cad;
-        this.assembler = assembler;
-        this.player = player;
-    }
+	public AssembleCADEvent(ItemStack cad, ITileCADAssembler assembler, Player player) {
+		this.cad = cad;
+		this.assembler = assembler;
+		this.player = player;
+	}
 
-    public ITileCADAssembler getAssembler() {
-        return assembler;
-    }
+	public ITileCADAssembler getAssembler() {
+		return assembler;
+	}
 
-    public ItemStack getCad() {
-        return cad;
-    }
+	public ItemStack getCad() {
+		return cad;
+	}
 
-    public void setCad(ItemStack cad) {
-        if (!cad.isEmpty() && !(cad.getItem() instanceof ICAD)) {
-            throw new IllegalStateException("Only a CAD can be crafted by the CAD Assembler!");
-        }
-        this.cad = cad;
-    }
+	public void setCad(ItemStack cad) {
+		if(!cad.isEmpty() && !(cad.getItem() instanceof ICAD)) {
+			throw new IllegalStateException("Only a CAD can be crafted by the CAD Assembler!");
+		}
+		this.cad = cad;
+	}
 
-    public Player getPlayer() {
-        return player;
-    }
+	public Player getPlayer() {
+		return player;
+	}
 }

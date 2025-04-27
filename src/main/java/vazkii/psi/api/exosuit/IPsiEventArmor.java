@@ -15,6 +15,6 @@ import net.minecraft.world.item.ItemStack;
  */
 public interface IPsiEventArmor {
 
-    void onEvent(ItemStack stack, PsiArmorEvent event);
+	void onEvent(ItemStack stack, PsiArmorEvent event);
 
 }

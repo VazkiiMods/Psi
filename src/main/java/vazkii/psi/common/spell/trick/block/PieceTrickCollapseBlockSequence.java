@@ -15,6 +15,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.level.BlockEvent;
+
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.internal.MathHelper;
 import vazkii.psi.api.internal.Vector3;
@@ -25,79 +26,79 @@ import vazkii.psi.api.spell.piece.PieceTrick;
 
 public class PieceTrickCollapseBlockSequence extends PieceTrick {
 
-    SpellParam<Vector3> position;
-    SpellParam<Vector3> target;
-    SpellParam<Number> maxBlocks;
+	SpellParam<Vector3> position;
+	SpellParam<Vector3> target;
+	SpellParam<Number> maxBlocks;
 
-    public PieceTrickCollapseBlockSequence(Spell spell) {
-        super(spell);
-        setStatLabel(EnumSpellStat.POTENCY, new StatLabel(SpellParam.GENERIC_NAME_MAX, true).mul(20));
-        setStatLabel(EnumSpellStat.COST, new StatLabel(SpellParam.GENERIC_NAME_MAX, true).sub(1).parenthesize().mul(150).add(100));
-    }
+	public PieceTrickCollapseBlockSequence(Spell spell) {
+		super(spell);
+		setStatLabel(EnumSpellStat.POTENCY, new StatLabel(SpellParam.GENERIC_NAME_MAX, true).mul(20));
+		setStatLabel(EnumSpellStat.COST, new StatLabel(SpellParam.GENERIC_NAME_MAX, true).sub(1).parenthesize().mul(150).add(100));
+	}
 
-    @Override
-    public void initParams() {
-        addParam(position = new ParamVector(SpellParam.GENERIC_NAME_POSITION, SpellParam.BLUE, false, false));
-        addParam(target = new ParamVector(SpellParam.GENERIC_NAME_TARGET, SpellParam.GREEN, false, false));
-        addParam(maxBlocks = new ParamNumber(SpellParam.GENERIC_NAME_MAX, SpellParam.RED, false, true));
-    }
+	@Override
+	public void initParams() {
+		addParam(position = new ParamVector(SpellParam.GENERIC_NAME_POSITION, SpellParam.BLUE, false, false));
+		addParam(target = new ParamVector(SpellParam.GENERIC_NAME_TARGET, SpellParam.GREEN, false, false));
+		addParam(maxBlocks = new ParamNumber(SpellParam.GENERIC_NAME_MAX, SpellParam.RED, false, true));
+	}
 
-    @Override
-    public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
-        super.addToMetadata(meta);
+	@Override
+	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
+		super.addToMetadata(meta);
 
-        Double maxBlocksVal = this.<Double>getParamEvaluation(maxBlocks);
-        if (maxBlocksVal == null || maxBlocksVal <= 0) {
-            throw new SpellCompilationException(SpellCompilationException.NON_POSITIVE_VALUE, x, y);
-        }
+		Double maxBlocksVal = this.<Double>getParamEvaluation(maxBlocks);
+		if(maxBlocksVal == null || maxBlocksVal <= 0) {
+			throw new SpellCompilationException(SpellCompilationException.NON_POSITIVE_VALUE, x, y);
+		}
 
-        meta.addStat(EnumSpellStat.POTENCY, (int) (maxBlocksVal * 20));
-        meta.addStat(EnumSpellStat.COST, (int) ((150 + (maxBlocksVal - 1) * 100)));
-    }
+		meta.addStat(EnumSpellStat.POTENCY, (int) (maxBlocksVal * 20));
+		meta.addStat(EnumSpellStat.COST, (int) ((150 + (maxBlocksVal - 1) * 100)));
+	}
 
-    @Override
-    public Object execute(SpellContext context) throws SpellRuntimeException {
-        Vector3 positionVal = this.getParamValue(context, position);
-        Vector3 targetVal = this.getParamValue(context, target);
-        int maxBlocksInt = this.getParamValue(context, maxBlocks).intValue();
+	@Override
+	public Object execute(SpellContext context) throws SpellRuntimeException {
+		Vector3 positionVal = this.getParamValue(context, position);
+		Vector3 targetVal = this.getParamValue(context, target);
+		int maxBlocksInt = this.getParamValue(context, maxBlocks).intValue();
 
-        if (positionVal == null) {
-            throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
-        }
+		if(positionVal == null) {
+			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
+		}
 
-        ItemStack tool = context.tool;
-        if (tool.isEmpty()) {
-            tool = PsiAPI.getPlayerCAD(context.caster);
-        }
+		ItemStack tool = context.tool;
+		if(tool.isEmpty()) {
+			tool = PsiAPI.getPlayerCAD(context.caster);
+		}
 
-        Level world = context.focalPoint.level();
-        Vector3 targetNorm = targetVal.copy().normalize();
-        for (BlockPos blockPos : MathHelper.getBlocksAlongRay(positionVal.toVec3D(), positionVal.copy().add(targetNorm.copy().multiply(maxBlocksInt)).toVec3D(), maxBlocksInt)) {
-            if (!context.isInRadius(Vector3.fromBlockPos(blockPos))) {
-                throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
-            }
-            BlockPos posDown = blockPos.below();
-            BlockState state = world.getBlockState(blockPos);
-            BlockState stateDown = world.getBlockState(posDown);
+		Level world = context.focalPoint.level();
+		Vector3 targetNorm = targetVal.copy().normalize();
+		for(BlockPos blockPos : MathHelper.getBlocksAlongRay(positionVal.toVec3D(), positionVal.copy().add(targetNorm.copy().multiply(maxBlocksInt)).toVec3D(), maxBlocksInt)) {
+			if(!context.isInRadius(Vector3.fromBlockPos(blockPos))) {
+				throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
+			}
+			BlockPos posDown = blockPos.below();
+			BlockState state = world.getBlockState(blockPos);
+			BlockState stateDown = world.getBlockState(posDown);
 
-            if (!world.mayInteract(context.caster, blockPos)) {
-                return null;
-            }
+			if(!world.mayInteract(context.caster, blockPos)) {
+				return null;
+			}
 
-            if (stateDown.isAir() && state.getDestroySpeed(world, blockPos) != -1 &&
-                    PieceTrickBreakBlock.canHarvestBlock(state, context.caster, world, blockPos, tool) &&
-                    world.getBlockEntity(blockPos) == null) {
+			if(stateDown.isAir() && state.getDestroySpeed(world, blockPos) != -1 &&
+					PieceTrickBreakBlock.canHarvestBlock(state, context.caster, world, blockPos, tool) &&
+					world.getBlockEntity(blockPos) == null) {
 
-                BlockEvent.BreakEvent event = PieceTrickBreakBlock.createBreakEvent(state, context.caster, world, blockPos, tool);
-                NeoForge.EVENT_BUS.post(event);
-                if (event.isCanceled()) {
-                    return null;
-                }
+				BlockEvent.BreakEvent event = PieceTrickBreakBlock.createBreakEvent(state, context.caster, world, blockPos, tool);
+				NeoForge.EVENT_BUS.post(event);
+				if(event.isCanceled()) {
+					return null;
+				}
 
-                FallingBlockEntity.fall(world, blockPos, state);
-            }
-        }
+				FallingBlockEntity.fall(world, blockPos, state);
+			}
+		}
 
-        return null;
-    }
+		return null;
+	}
 }

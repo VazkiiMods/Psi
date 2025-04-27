@@ -14,7 +14,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
+
 import org.jetbrains.annotations.Nullable;
+
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.api.spell.piece.PieceCraftingTrick;
@@ -29,81 +31,82 @@ import java.util.List;
  * unless you absolutely know what you are doing.
  */
 public interface ICAD {
-    /**
-     * Sets the component stack inside the CAD's respective component slot
-     */
+	/**
+	 * Sets the component stack inside the CAD's respective component slot
+	 */
 
-    static void setComponent(ItemStack stack, ItemStack componentStack) {
-        @Nullable List<Item> items = stack.getOrDefault(ModItems.COMPONENTS, new ArrayList<>(Collections.nCopies(EnumCADComponent.values().length, Items.AIR)));
-        if (!componentStack.isEmpty() && componentStack.getItem() instanceof ICADComponent component) {
-            EnumCADComponent componentType = component.getComponentType(componentStack);
-            items.set(componentType.ordinal(), componentStack.getItem());
-            stack.set(ModItems.COMPONENTS, items);
-        }
-    }
+	static void setComponent(ItemStack stack, ItemStack componentStack) {
+		@Nullable
+		List<Item> items = stack.getOrDefault(ModItems.COMPONENTS, new ArrayList<>(Collections.nCopies(EnumCADComponent.values().length, Items.AIR)));
+		if(!componentStack.isEmpty() && componentStack.getItem() instanceof ICADComponent component) {
+			EnumCADComponent componentType = component.getComponentType(componentStack);
+			items.set(componentType.ordinal(), componentStack.getItem());
+			stack.set(ModItems.COMPONENTS, items);
+		}
+	}
 
-    /**
-     * Sets the component in this slot for the CAD.
-     */
-    default void setCADComponent(ItemStack stack, ItemStack component) {
-        setComponent(stack, component);
-    }
+	/**
+	 * Sets the component in this slot for the CAD.
+	 */
+	default void setCADComponent(ItemStack stack, ItemStack component) {
+		setComponent(stack, component);
+	}
 
-    /**
-     * Gets the component used for this CAD in the given slot.
-     */
-    ItemStack getComponentInSlot(ItemStack stack, EnumCADComponent type);
+	/**
+	 * Gets the component used for this CAD in the given slot.
+	 */
+	ItemStack getComponentInSlot(ItemStack stack, EnumCADComponent type);
 
-    /**
-     * Gets the value of a given CAD stat.
-     */
-    int getStatValue(ItemStack stack, EnumCADStat stat);
+	/**
+	 * Gets the value of a given CAD stat.
+	 */
+	int getStatValue(ItemStack stack, EnumCADStat stat);
 
-    /**
-     * Gets how much Psi is stored in this CAD's battery.
-     */
-    int getStoredPsi(ItemStack stack);
+	/**
+	 * Gets how much Psi is stored in this CAD's battery.
+	 */
+	int getStoredPsi(ItemStack stack);
 
-    /**
-     * Has the CAD regen psi equal to the amount passed in. Will never go above
-     * the value of the CAD's OVERFLOW stat.
-     */
-    void regenPsi(ItemStack stack, int psi);
+	/**
+	 * Has the CAD regen psi equal to the amount passed in. Will never go above
+	 * the value of the CAD's OVERFLOW stat.
+	 */
+	void regenPsi(ItemStack stack, int psi);
 
-    /**
-     * Consumes psi from the CAD's battery equal to the amount passed in. Returns
-     * the remainder that couldn't be consumed. Used to prevent damage.
-     */
-    int consumePsi(ItemStack stack, int psi);
+	/**
+	 * Consumes psi from the CAD's battery equal to the amount passed in. Returns
+	 * the remainder that couldn't be consumed. Used to prevent damage.
+	 */
+	int consumePsi(ItemStack stack, int psi);
 
-    /**
-     * Gets how many vectors this CAD can store in memory.
-     */
-    int getMemorySize(ItemStack stack);
+	/**
+	 * Gets how many vectors this CAD can store in memory.
+	 */
+	int getMemorySize(ItemStack stack);
 
-    void setStoredVector(ItemStack stack, int memorySlot, Vector3 vec) throws SpellRuntimeException;
+	void setStoredVector(ItemStack stack, int memorySlot, Vector3 vec) throws SpellRuntimeException;
 
-    Vector3 getStoredVector(ItemStack stack, int memorySlot) throws SpellRuntimeException;
+	Vector3 getStoredVector(ItemStack stack, int memorySlot) throws SpellRuntimeException;
 
-    int getTime(ItemStack stack);
+	int getTime(ItemStack stack);
 
-    void incrementTime(ItemStack stack);
+	void incrementTime(ItemStack stack);
 
-    /**
-     * Gets the color of the spells projected by this CAD. Usually just goes back
-     * to ICADColorizer.getColor().
-     */
-    @OnlyIn(Dist.CLIENT)
-    int getSpellColor(ItemStack stack);
+	/**
+	 * Gets the color of the spells projected by this CAD. Usually just goes back
+	 * to ICADColorizer.getColor().
+	 */
+	@OnlyIn(Dist.CLIENT)
+	int getSpellColor(ItemStack stack);
 
-    /**
-     * Performs crafting around the player using this CAD.
-     *
-     * @param cad    Stack casting the spell
-     * @param entity Player casting the spell
-     * @param trick  The trick used to craft
-     * @return Whether crafting was successful
-     */
-    boolean craft(ItemStack cad, Player entity, PieceCraftingTrick trick);
+	/**
+	 * Performs crafting around the player using this CAD.
+	 *
+	 * @param cad    Stack casting the spell
+	 * @param entity Player casting the spell
+	 * @param trick  The trick used to craft
+	 * @return Whether crafting was successful
+	 */
+	boolean craft(ItemStack cad, Player entity, PieceCraftingTrick trick);
 
 }

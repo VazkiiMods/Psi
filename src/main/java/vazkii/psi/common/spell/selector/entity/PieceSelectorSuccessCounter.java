@@ -16,20 +16,20 @@ import vazkii.psi.api.spell.piece.PieceSelector;
 import vazkii.psi.common.item.base.ModItems;
 
 public class PieceSelectorSuccessCounter extends PieceSelector {
-    public PieceSelectorSuccessCounter(Spell spell) {
-        super(spell);
-    }
+	public PieceSelectorSuccessCounter(Spell spell) {
+		super(spell);
+	}
 
-    @Override
-    public Object execute(SpellContext context) throws SpellRuntimeException {
-        if (!(context.tool.getItem() instanceof IPsiEventArmor)) {
-            throw new SpellRuntimeException(SpellRuntimeException.ARMOR);
-        }
-        return context.tool.getOrDefault(ModItems.TAG_TIMES_CAST, 0) * 1.0;
-    }
+	@Override
+	public Object execute(SpellContext context) throws SpellRuntimeException {
+		if(!(context.tool.getItem() instanceof IPsiEventArmor)) {
+			throw new SpellRuntimeException(SpellRuntimeException.ARMOR);
+		}
+		return context.tool.getOrDefault(ModItems.TAG_TIMES_CAST, 0) * 1.0;
+	}
 
-    @Override
-    public Class<?> getEvaluationType() {
-        return Double.class;
-    }
+	@Override
+	public Class<?> getEvaluationType() {
+		return Double.class;
+	}
 }

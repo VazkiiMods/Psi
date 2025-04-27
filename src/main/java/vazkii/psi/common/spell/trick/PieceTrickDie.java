@@ -14,31 +14,31 @@ import vazkii.psi.api.spell.piece.PieceTrick;
 
 public class PieceTrickDie extends PieceTrick {
 
-    SpellParam<Number> target;
+	SpellParam<Number> target;
 
-    public PieceTrickDie(Spell spell) {
-        super(spell);
-        setStatLabel(EnumSpellStat.COMPLEXITY, new StatLabel(1));
-    }
+	public PieceTrickDie(Spell spell) {
+		super(spell);
+		setStatLabel(EnumSpellStat.COMPLEXITY, new StatLabel(1));
+	}
 
-    @Override
-    public void initParams() {
-        addParam(target = new ParamNumber(SpellParam.GENERIC_NAME_TARGET, SpellParam.BLUE, false, false));
-    }
+	@Override
+	public void initParams() {
+		addParam(target = new ParamNumber(SpellParam.GENERIC_NAME_TARGET, SpellParam.BLUE, false, false));
+	}
 
-    @Override
-    public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
-        meta.addStat(EnumSpellStat.COMPLEXITY, 1);
-    }
+	@Override
+	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
+		meta.addStat(EnumSpellStat.COMPLEXITY, 1);
+	}
 
-    @Override
-    public Object execute(SpellContext context) throws SpellRuntimeException {
-        double timeVal = this.getParamValue(context, target).doubleValue();
-        if (Math.abs(timeVal) < 1) {
-            context.stopped = true;
-        }
+	@Override
+	public Object execute(SpellContext context) throws SpellRuntimeException {
+		double timeVal = this.getParamValue(context, target).doubleValue();
+		if(Math.abs(timeVal) < 1) {
+			context.stopped = true;
+		}
 
-        return null;
-    }
+		return null;
+	}
 
 }

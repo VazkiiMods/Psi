@@ -25,6 +25,7 @@ import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+
 import vazkii.psi.api.internal.VanillaPacketDispatcher;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.common.block.tile.TileProgrammer;
@@ -35,104 +36,102 @@ import javax.annotation.Nonnull;
 
 public class ItemSpellDrive extends Item {
 
+	public ItemSpellDrive(Item.Properties properties) {
+		super(properties.stacksTo(1));
+	}
 
+	public static void setSpell(ItemStack stack, Spell spell) {
+		CompoundTag cmp = new CompoundTag();
+		if(spell != null) {
+			spell.writeToNBT(cmp);
+			stack.set(ModItems.TAG_SPELL, cmp);
+			stack.set(ModItems.HAS_SPELL, true);
+			stack.set(DataComponents.RARITY, Rarity.RARE);
+		} else {
+			stack.remove(ModItems.TAG_SPELL);
+			stack.remove(ModItems.HAS_SPELL);
+			stack.set(DataComponents.RARITY, Rarity.COMMON);
+		}
 
-    public ItemSpellDrive(Item.Properties properties) {
-        super(properties.stacksTo(1));
-    }
+	}
 
-    public static void setSpell(ItemStack stack, Spell spell) {
-        CompoundTag cmp = new CompoundTag();
-        if (spell != null) {
-            spell.writeToNBT(cmp);
-            stack.set(ModItems.TAG_SPELL, cmp);
-            stack.set(ModItems.HAS_SPELL, true);
-            stack.set(DataComponents.RARITY, Rarity.RARE);
-        } else {
-            stack.remove(ModItems.TAG_SPELL);
-            stack.remove(ModItems.HAS_SPELL);
-            stack.set(DataComponents.RARITY, Rarity.COMMON);
-        }
+	public static Spell getSpell(ItemStack stack) {
+		CompoundTag cmp = stack.getOrDefault(ModItems.TAG_SPELL, new CompoundTag());
+		return Spell.createFromNBT(cmp);
+	}
 
-    }
+	@Nonnull
+	@Override
+	public Component getName(ItemStack stack) {
+		String name = super.getName(stack).getString();
+		CompoundTag cmp = stack.getOrDefault(ModItems.TAG_SPELL, new CompoundTag());
+		String spellName = cmp.getString(Spell.TAG_SPELL_NAME); // We don't need to load the whole spell just for the name
+		if(spellName.isEmpty()) {
+			return Component.literal(name);
+		}
 
-    public static Spell getSpell(ItemStack stack) {
-        CompoundTag cmp = stack.getOrDefault(ModItems.TAG_SPELL, new CompoundTag());
-        return Spell.createFromNBT(cmp);
-    }
+		return Component.literal(name + " (" + ChatFormatting.GREEN + spellName + ChatFormatting.RESET + ")");
+	}
 
-    @Nonnull
-    @Override
-    public Component getName(ItemStack stack) {
-        String name = super.getName(stack).getString();
-        CompoundTag cmp = stack.getOrDefault(ModItems.TAG_SPELL, new CompoundTag());
-        String spellName = cmp.getString(Spell.TAG_SPELL_NAME); // We don't need to load the whole spell just for the name
-        if (spellName.isEmpty()) {
-            return Component.literal(name);
-        }
+	@Nonnull
+	@Override
+	public InteractionResult useOn(UseOnContext ctx) {
+		Player playerIn = ctx.getPlayer();
+		InteractionHand hand = ctx.getHand();
+		Level worldIn = ctx.getLevel();
+		BlockPos pos = ctx.getClickedPos();
+		ItemStack stack = playerIn.getItemInHand(hand);
+		BlockEntity tile = worldIn.getBlockEntity(pos);
+		if(tile instanceof TileProgrammer programmer) {
+			Spell spell = getSpell(stack);
+			if(spell == null && programmer.canCompile()) {
+				setSpell(stack, programmer.spell);
+				if(!worldIn.isClientSide) {
+					worldIn.playSound(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, PsiSoundHandler.bulletCreate, SoundSource.PLAYERS, 0.5F, 1F);
+				}
+				return InteractionResult.SUCCESS;
+			} else if(spell != null) {
+				boolean enabled = programmer.isEnabled();
+				if(enabled && !programmer.playerLock.isEmpty()) {
+					if(!programmer.playerLock.equals(playerIn.getName().getString())) {
+						if(!worldIn.isClientSide) {
+							playerIn.sendSystemMessage(Component.translatable("psimisc.not_your_programmer").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)));
+						}
+						return InteractionResult.SUCCESS;
+					}
+				} else {
+					programmer.playerLock = playerIn.getName().getString();
+				}
 
-        return Component.literal(name + " (" + ChatFormatting.GREEN + spellName + ChatFormatting.RESET + ")");
-    }
+				programmer.spell = spell;
+				programmer.onSpellChanged();
+				if(!worldIn.isClientSide) {
+					worldIn.playSound(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, PsiSoundHandler.bulletCreate, SoundSource.PLAYERS, 0.5F, 1F);
+					VanillaPacketDispatcher.dispatchTEToNearbyPlayers(programmer);
+				}
+				return InteractionResult.SUCCESS;
+			}
+		}
 
-    @Nonnull
-    @Override
-    public InteractionResult useOn(UseOnContext ctx) {
-        Player playerIn = ctx.getPlayer();
-        InteractionHand hand = ctx.getHand();
-        Level worldIn = ctx.getLevel();
-        BlockPos pos = ctx.getClickedPos();
-        ItemStack stack = playerIn.getItemInHand(hand);
-        BlockEntity tile = worldIn.getBlockEntity(pos);
-        if (tile instanceof TileProgrammer programmer) {
-            Spell spell = getSpell(stack);
-            if (spell == null && programmer.canCompile()) {
-                setSpell(stack, programmer.spell);
-                if (!worldIn.isClientSide) {
-                    worldIn.playSound(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, PsiSoundHandler.bulletCreate, SoundSource.PLAYERS, 0.5F, 1F);
-                }
-                return InteractionResult.SUCCESS;
-            } else if (spell != null) {
-                boolean enabled = programmer.isEnabled();
-                if (enabled && !programmer.playerLock.isEmpty()) {
-                    if (!programmer.playerLock.equals(playerIn.getName().getString())) {
-                        if (!worldIn.isClientSide) {
-                            playerIn.sendSystemMessage(Component.translatable("psimisc.not_your_programmer").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)));
-                        }
-                        return InteractionResult.SUCCESS;
-                    }
-                } else {
-                    programmer.playerLock = playerIn.getName().getString();
-                }
+		return InteractionResult.PASS;
+	}
 
-                programmer.spell = spell;
-                programmer.onSpellChanged();
-                if (!worldIn.isClientSide) {
-                    worldIn.playSound(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, PsiSoundHandler.bulletCreate, SoundSource.PLAYERS, 0.5F, 1F);
-                    VanillaPacketDispatcher.dispatchTEToNearbyPlayers(programmer);
-                }
-                return InteractionResult.SUCCESS;
-            }
-        }
+	@Nonnull
+	@Override
+	public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, @Nonnull InteractionHand hand) {
+		ItemStack itemStackIn = playerIn.getItemInHand(hand);
+		if(getSpell(itemStackIn) != null && playerIn.isShiftKeyDown()) {
+			if(!worldIn.isClientSide) {
+				worldIn.playSound(null, playerIn.getX(), playerIn.getY(), playerIn.getZ(), PsiSoundHandler.compileError, SoundSource.PLAYERS, 0.5F, 1F);
+			} else {
+				playerIn.swing(hand);
+			}
+			setSpell(itemStackIn, null);
 
-        return InteractionResult.PASS;
-    }
+			return new InteractionResultHolder<>(InteractionResult.SUCCESS, itemStackIn);
+		}
 
-    @Nonnull
-    @Override
-    public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, @Nonnull InteractionHand hand) {
-        ItemStack itemStackIn = playerIn.getItemInHand(hand);
-        if (getSpell(itemStackIn) != null && playerIn.isShiftKeyDown()) {
-            if (!worldIn.isClientSide) {
-                worldIn.playSound(null, playerIn.getX(), playerIn.getY(), playerIn.getZ(), PsiSoundHandler.compileError, SoundSource.PLAYERS, 0.5F, 1F);
-            } else {
-                playerIn.swing(hand);
-            }
-            setSpell(itemStackIn, null);
-
-            return new InteractionResultHolder<>(InteractionResult.SUCCESS, itemStackIn);
-        }
-
-        return new InteractionResultHolder<>(InteractionResult.PASS, itemStackIn);
-    }
+		return new InteractionResultHolder<>(InteractionResult.PASS, itemStackIn);
+	}
 
 }

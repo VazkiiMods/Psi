@@ -15,7 +15,7 @@ import net.neoforged.api.distmarker.OnlyIn;
 
 public interface IHUDItem {
 
-    @OnlyIn(Dist.CLIENT)
-    void drawHUD(GuiGraphics graphics, float partTicks, int screenWidth, int screenHeight, ItemStack stack);
+	@OnlyIn(Dist.CLIENT)
+	void drawHUD(GuiGraphics graphics, float partTicks, int screenWidth, int screenHeight, ItemStack stack);
 
 }

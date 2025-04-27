@@ -19,8 +19,10 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.material.PsimetalArmorMaterial;
 import vazkii.psi.client.core.proxy.ClientProxy;
@@ -43,48 +45,48 @@ import java.util.Locale;
 @Mod(LibMisc.MOD_ID)
 public class Psi {
 
-    public static final Logger logger = LogManager.getLogger(LibMisc.MOD_ID);
+	public static final Logger logger = LogManager.getLogger(LibMisc.MOD_ID);
 
-    public static Psi instance;
-    public static boolean magical;
-    public static IProxy proxy;
-    public static List<SoundEvent> noteblockSoundEvents = new ArrayList<>();
+	public static Psi instance;
+	public static boolean magical;
+	public static IProxy proxy;
+	public static List<SoundEvent> noteblockSoundEvents = new ArrayList<>();
 
-    public Psi(IEventBus bus, Dist dist, ModContainer container) {
-        instance = this;
-        ModItems.DATA_COMPONENT_TYPES.register(bus);
-        PsimetalArmorMaterial.ARMOR_MATERIALS.register(bus);
-        ModCraftingRecipes.CONDITION_CODECS.register(bus);
-        ModParticles.PARTICLE_TYPES.register(bus);
-        bus.addListener(this::commonSetup);
-        bus.addListener(MessageRegister::onRegisterPayloadHandler);
-        bus.addListener(this::loadComplete);
-        container.registerConfig(ModConfig.Type.CLIENT, ConfigHandler.CLIENT_SPEC);
-        container.registerConfig(ModConfig.Type.COMMON, ConfigHandler.COMMON_SPEC);
-        proxy = dist.isClient() ? new ClientProxy() : new ServerProxy();
-        proxy.registerHandlers(bus);
-    }
+	public Psi(IEventBus bus, Dist dist, ModContainer container) {
+		instance = this;
+		ModItems.DATA_COMPONENT_TYPES.register(bus);
+		PsimetalArmorMaterial.ARMOR_MATERIALS.register(bus);
+		ModCraftingRecipes.CONDITION_CODECS.register(bus);
+		ModParticles.PARTICLE_TYPES.register(bus);
+		bus.addListener(this::commonSetup);
+		bus.addListener(MessageRegister::onRegisterPayloadHandler);
+		bus.addListener(this::loadComplete);
+		container.registerConfig(ModConfig.Type.CLIENT, ConfigHandler.CLIENT_SPEC);
+		container.registerConfig(ModConfig.Type.COMMON, ConfigHandler.COMMON_SPEC);
+		proxy = dist.isClient() ? new ClientProxy() : new ServerProxy();
+		proxy.registerHandlers(bus);
+	}
 
-    public static ResourceLocation location(String path) {
-        return ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, path);
-    }
+	public static ResourceLocation location(String path) {
+		return ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, path);
+	}
 
-    private void commonSetup(FMLCommonSetupEvent event) {
-        magical = ModList.get().isLoaded("magipsi");
-        PsiAPI.internalHandler = new InternalMethodHandler();
+	private void commonSetup(FMLCommonSetupEvent event) {
+		magical = ModList.get().isLoaded("magipsi");
+		PsiAPI.internalHandler = new InternalMethodHandler();
 
-        //CrashReportExtender.registerCrashCallable(new CrashReportHandler());
+		//CrashReportExtender.registerCrashCallable(new CrashReportHandler());
 
-        ContributorSpellCircleHandler.firstStart();
-        DefaultStats.registerStats();
-    }
+		ContributorSpellCircleHandler.firstStart();
+		DefaultStats.registerStats();
+	}
 
-    private void loadComplete(FMLLoadCompleteEvent event) {
-        BuiltInRegistries.SOUND_EVENT.forEach(el -> {
-            if (BuiltInRegistries.SOUND_EVENT.getKey(el).getPath().toLowerCase(Locale.ROOT).startsWith("block.note_block")) {
-                noteblockSoundEvents.add(el);
-            }
-        });
-    }
+	private void loadComplete(FMLLoadCompleteEvent event) {
+		BuiltInRegistries.SOUND_EVENT.forEach(el -> {
+			if(BuiltInRegistries.SOUND_EVENT.getKey(el).getPath().toLowerCase(Locale.ROOT).startsWith("block.note_block")) {
+				noteblockSoundEvents.add(el);
+			}
+		});
+	}
 
 }

@@ -18,29 +18,29 @@ import net.neoforged.api.distmarker.OnlyIn;
  */
 public interface ICADColorizer extends ICADComponent {
 
-    int DEFAULT_SPELL_COLOR = 0xFF13C5FF;
+	int DEFAULT_SPELL_COLOR = 0xFF13C5FF;
 
-    /**
-     * Gets the color of the spells projected by the CAD that has
-     * this colorizer.
-     */
-    @OnlyIn(Dist.CLIENT)
-    int getColor(ItemStack stack);
+	/**
+	 * Gets the color of the spells projected by the CAD that has
+	 * this colorizer.
+	 */
+	@OnlyIn(Dist.CLIENT)
+	int getColor(ItemStack stack);
 
-    @Override
-    default EnumCADComponent getComponentType(ItemStack stack) {
-        return EnumCADComponent.DYE;
-    }
+	@Override
+	default EnumCADComponent getComponentType(ItemStack stack) {
+		return EnumCADComponent.DYE;
+	}
 
-    /**
-     * Gets the contributor name in the stack
-     * Used for contributor rewards
-     */
-    String getContributorName(ItemStack stack);
+	/**
+	 * Gets the contributor name in the stack
+	 * Used for contributor rewards
+	 */
+	String getContributorName(ItemStack stack);
 
-    /**
-     * Sets the contributor name in the stack
-     * Used for contributor rewards
-     */
-    void setContributorName(ItemStack stack, String name);
+	/**
+	 * Sets the contributor name in the stack
+	 * Used for contributor rewards
+	 */
+	void setContributorName(ItemStack stack, String name);
 }

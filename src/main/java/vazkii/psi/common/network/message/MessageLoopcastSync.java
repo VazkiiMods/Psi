@@ -18,55 +18,55 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
+
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.lib.LibMisc;
 
-
 public record MessageLoopcastSync(int entityId, byte loopcastState) implements CustomPacketPayload {
 
-    public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, "message_loopcast_sync");
-    public static final CustomPacketPayload.Type<MessageLoopcastSync> TYPE = new Type<>(ID);
+	public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, "message_loopcast_sync");
+	public static final CustomPacketPayload.Type<MessageLoopcastSync> TYPE = new Type<>(ID);
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, MessageLoopcastSync> CODEC = StreamCodec.composite(
-            ByteBufCodecs.INT, MessageLoopcastSync::entityId,
-            ByteBufCodecs.BYTE, MessageLoopcastSync::loopcastState,
-            MessageLoopcastSync::new);
+	public static final StreamCodec<RegistryFriendlyByteBuf, MessageLoopcastSync> CODEC = StreamCodec.composite(
+			ByteBufCodecs.INT, MessageLoopcastSync::entityId,
+			ByteBufCodecs.BYTE, MessageLoopcastSync::loopcastState,
+			MessageLoopcastSync::new);
 
-    public MessageLoopcastSync(int entityId, boolean isLoopcasting, InteractionHand hand) {
-        this(entityId, (byte) ((isLoopcasting ? 1 : 0) | (hand == null ? 0 : hand.ordinal() << 1)));
-    }
+	public MessageLoopcastSync(int entityId, boolean isLoopcasting, InteractionHand hand) {
+		this(entityId, (byte) ((isLoopcasting ? 1 : 0) | (hand == null ? 0 : hand.ordinal() << 1)));
+	}
 
-    @Override
-    public Type<? extends CustomPacketPayload> type() {
-        return TYPE;
-    }
+	@Override
+	public Type<? extends CustomPacketPayload> type() {
+		return TYPE;
+	}
 
-    public void handle(IPayloadContext ctx) {
-        boolean isLoopcasting = (loopcastState & 0b1) != 0;
+	public void handle(IPayloadContext ctx) {
+		boolean isLoopcasting = (loopcastState & 0b1) != 0;
 
-        InteractionHand loopcastHand = isLoopcasting ? ((loopcastState & 0b10) != 0 ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND) : null;
+		InteractionHand loopcastHand = isLoopcasting ? ((loopcastState & 0b10) != 0 ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND) : null;
 
-        ctx.enqueueWork(() -> {
-            Player mcPlayer = Psi.proxy.getClientPlayer();
-            if (mcPlayer == null) {
-                return;
-            }
-            Level world = mcPlayer.level();
+		ctx.enqueueWork(() -> {
+			Player mcPlayer = Psi.proxy.getClientPlayer();
+			if(mcPlayer == null) {
+				return;
+			}
+			Level world = mcPlayer.level();
 
-            Entity player = null;
-            if (world != null) {
-                player = world.getEntity(entityId);
-            } else if (mcPlayer.getId() == entityId) {
-                player = mcPlayer;
-            }
+			Entity player = null;
+			if(world != null) {
+				player = world.getEntity(entityId);
+			} else if(mcPlayer.getId() == entityId) {
+				player = mcPlayer;
+			}
 
-            if (player instanceof Player) {
-                PlayerDataHandler.PlayerData data = PlayerDataHandler.get((Player) player);
-                data.loopcasting = isLoopcasting;
-                data.loopcastHand = loopcastHand;
-            }
-        });
+			if(player instanceof Player) {
+				PlayerDataHandler.PlayerData data = PlayerDataHandler.get((Player) player);
+				data.loopcasting = isLoopcasting;
+				data.loopcastHand = loopcastHand;
+			}
+		});
 
-    }
+	}
 }

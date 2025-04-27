@@ -20,29 +20,29 @@ import java.util.UUID;
 
 public final class SpellCache implements ISpellCache {
 
-    public static final SpellCache instance = new SpellCache();
+	public static final SpellCache instance = new SpellCache();
 
-    @SuppressWarnings("serial")
-    public static final Map<UUID, CompiledSpell> map = new LinkedHashMap<UUID, CompiledSpell>() {
+	@SuppressWarnings("serial")
+	public static final Map<UUID, CompiledSpell> map = new LinkedHashMap<UUID, CompiledSpell>() {
 
-        @Override
-        protected boolean removeEldestEntry(Map.Entry<UUID, CompiledSpell> eldest) {
-            return size() > ConfigHandler.COMMON.spellCacheSize.get();
-        }
+		@Override
+		protected boolean removeEldestEntry(Map.Entry<UUID, CompiledSpell> eldest) {
+			return size() > ConfigHandler.COMMON.spellCacheSize.get();
+		}
 
-    };
+	};
 
-    @Override
-    public CompiledSpell getCompiledSpell(Spell spell) {
-        if (map.containsKey(spell.uuid)) {
-            return map.get(spell.uuid);
-        }
+	@Override
+	public CompiledSpell getCompiledSpell(Spell spell) {
+		if(map.containsKey(spell.uuid)) {
+			return map.get(spell.uuid);
+		}
 
-        Optional<CompiledSpell> result = new SpellCompiler().compile(spell).left();
-        return result.map(compSpell -> {
-            map.put(spell.uuid, compSpell);
-            return compSpell;
-        }).orElse(null);
-    }
+		Optional<CompiledSpell> result = new SpellCompiler().compile(spell).left();
+		return result.map(compSpell -> {
+			map.put(spell.uuid, compSpell);
+			return compSpell;
+		}).orElse(null);
+	}
 
 }

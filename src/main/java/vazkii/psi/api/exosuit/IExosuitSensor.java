@@ -17,9 +17,9 @@ import net.neoforged.api.distmarker.OnlyIn;
  */
 public interface IExosuitSensor {
 
-    String getEventType(ItemStack stack);
+	String getEventType(ItemStack stack);
 
-    @OnlyIn(Dist.CLIENT)
-    int getColor(ItemStack stack);
+	@OnlyIn(Dist.CLIENT)
+	int getColor(ItemStack stack);
 
 }

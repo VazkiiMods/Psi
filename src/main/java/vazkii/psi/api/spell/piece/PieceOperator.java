@@ -12,29 +12,29 @@ import vazkii.psi.api.spell.*;
 
 public abstract class PieceOperator extends SpellPiece {
 
-    public PieceOperator(Spell spell) {
-        super(spell);
-        setStatLabel(EnumSpellStat.COMPLEXITY, new StatLabel(1));
-    }
+	public PieceOperator(Spell spell) {
+		super(spell);
+		setStatLabel(EnumSpellStat.COMPLEXITY, new StatLabel(1));
+	}
 
-    @Override
-    public EnumPieceType getPieceType() {
-        return EnumPieceType.SELECTOR;
-    }
+	@Override
+	public EnumPieceType getPieceType() {
+		return EnumPieceType.SELECTOR;
+	}
 
-    @Override
-    public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
-        meta.addStat(EnumSpellStat.COMPLEXITY, 1);
-    }
+	@Override
+	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
+		meta.addStat(EnumSpellStat.COMPLEXITY, 1);
+	}
 
-    @Override
-    public Object evaluate() {
-        return null;
-    }
+	@Override
+	public Object evaluate() {
+		return null;
+	}
 
-    @Override
-    public Object execute(SpellContext context) throws SpellRuntimeException {
-        return null;
-    }
+	@Override
+	public Object execute(SpellContext context) throws SpellRuntimeException {
+		return null;
+	}
 
 }

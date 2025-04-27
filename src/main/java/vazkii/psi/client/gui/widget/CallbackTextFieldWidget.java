@@ -17,37 +17,37 @@ import net.neoforged.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class CallbackTextFieldWidget extends EditBox {
-    protected final CallbackTextFieldWidget.IPressable pressable;
+	protected final CallbackTextFieldWidget.IPressable pressable;
 
-    public CallbackTextFieldWidget(Font font, int x, int y, int width, int height, CallbackTextFieldWidget.IPressable pressable) {
-        super(font, x, y, width, height, null, Component.empty());
-        this.pressable = pressable;
-    }
+	public CallbackTextFieldWidget(Font font, int x, int y, int width, int height, CallbackTextFieldWidget.IPressable pressable) {
+		super(font, x, y, width, height, null, Component.empty());
+		this.pressable = pressable;
+	}
 
-    @Override
-    public void insertText(String textToWrite) {
-        super.insertText(textToWrite);
-        onPress();
-    }
+	@Override
+	public void insertText(String textToWrite) {
+		super.insertText(textToWrite);
+		onPress();
+	}
 
-    @Override
-    public void deleteChars(int num) {
-        super.deleteChars(num);
-        onPress();
-    }
+	@Override
+	public void deleteChars(int num) {
+		super.deleteChars(num);
+		onPress();
+	}
 
-    @Override
-    public void deleteWords(int num) {
-        super.deleteWords(num);
-        onPress();
-    }
+	@Override
+	public void deleteWords(int num) {
+		super.deleteWords(num);
+		onPress();
+	}
 
-    public void onPress() {
-        pressable.onPress(this);
-    }
+	public void onPress() {
+		pressable.onPress(this);
+	}
 
-    @OnlyIn(Dist.CLIENT)
-    public interface IPressable {
-        void onPress(AbstractWidget p_onPress_1_);
-    }
+	@OnlyIn(Dist.CLIENT)
+	public interface IPressable {
+		void onPress(AbstractWidget p_onPress_1_);
+	}
 }

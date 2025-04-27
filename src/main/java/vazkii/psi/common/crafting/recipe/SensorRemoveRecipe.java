@@ -13,84 +13,85 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
+
 import vazkii.psi.api.exosuit.ISensorHoldable;
 
 import javax.annotation.Nonnull;
 
 public class SensorRemoveRecipe extends CustomRecipe {
 
-    public static final SimpleCraftingRecipeSerializer<SensorRemoveRecipe> SERIALIZER = new SimpleCraftingRecipeSerializer<>(SensorRemoveRecipe::new);
+	public static final SimpleCraftingRecipeSerializer<SensorRemoveRecipe> SERIALIZER = new SimpleCraftingRecipeSerializer<>(SensorRemoveRecipe::new);
 
-    public SensorRemoveRecipe(CraftingBookCategory category) {
-        super(category);
-    }
+	public SensorRemoveRecipe(CraftingBookCategory category) {
+		super(category);
+	}
 
-    @Override
-    public boolean matches(@Nonnull CraftingInput inv, @Nonnull Level world) {
-        boolean foundHoldable = false;
+	@Override
+	public boolean matches(@Nonnull CraftingInput inv, @Nonnull Level world) {
+		boolean foundHoldable = false;
 
-        for (int i = 0; i < inv.size(); i++) {
-            ItemStack stack = inv.getItem(i);
-            if (!stack.isEmpty()) {
-                if (!foundHoldable && stack.getItem() instanceof ISensorHoldable && !((ISensorHoldable) stack.getItem()).getAttachedSensor(stack).isEmpty()) {
-                    foundHoldable = true;
-                } else {
-                    return false;
-                }
-            }
-        }
+		for(int i = 0; i < inv.size(); i++) {
+			ItemStack stack = inv.getItem(i);
+			if(!stack.isEmpty()) {
+				if(!foundHoldable && stack.getItem() instanceof ISensorHoldable && !((ISensorHoldable) stack.getItem()).getAttachedSensor(stack).isEmpty()) {
+					foundHoldable = true;
+				} else {
+					return false;
+				}
+			}
+		}
 
-        return foundHoldable;
-    }
+		return foundHoldable;
+	}
 
-    @Nonnull
-    @Override
-    public ItemStack assemble(@Nonnull CraftingInput inv, HolderLookup.Provider pRegistries) {
-        ItemStack holdableItem = ItemStack.EMPTY;
+	@Nonnull
+	@Override
+	public ItemStack assemble(@Nonnull CraftingInput inv, HolderLookup.Provider pRegistries) {
+		ItemStack holdableItem = ItemStack.EMPTY;
 
-        for (int i = 0; i < inv.size(); i++) {
-            ItemStack stack = inv.getItem(i);
-            if (!stack.isEmpty()) {
-                holdableItem = stack;
-            }
-        }
+		for(int i = 0; i < inv.size(); i++) {
+			ItemStack stack = inv.getItem(i);
+			if(!stack.isEmpty()) {
+				holdableItem = stack;
+			}
+		}
 
-        ItemStack copy = holdableItem.copy();
-        ISensorHoldable holdable = (ISensorHoldable) holdableItem.getItem();
-        holdable.attachSensor(copy, ItemStack.EMPTY);
+		ItemStack copy = holdableItem.copy();
+		ISensorHoldable holdable = (ISensorHoldable) holdableItem.getItem();
+		holdable.attachSensor(copy, ItemStack.EMPTY);
 
-        return copy;
-    }
+		return copy;
+	}
 
-    @Override
-    public NonNullList<ItemStack> getRemainingItems(CraftingInput inv) {
-        NonNullList<ItemStack> list = NonNullList.withSize(inv.size(), ItemStack.EMPTY);
+	@Override
+	public NonNullList<ItemStack> getRemainingItems(CraftingInput inv) {
+		NonNullList<ItemStack> list = NonNullList.withSize(inv.size(), ItemStack.EMPTY);
 
-        for (int i = 0; i < list.size(); ++i) {
-            ItemStack item = inv.getItem(i);
-            if (item.getItem() instanceof ISensorHoldable) {
-                list.set(i, ((ISensorHoldable) item.getItem()).getAttachedSensor(item));
-                break;
-            }
-        }
+		for(int i = 0; i < list.size(); ++i) {
+			ItemStack item = inv.getItem(i);
+			if(item.getItem() instanceof ISensorHoldable) {
+				list.set(i, ((ISensorHoldable) item.getItem()).getAttachedSensor(item));
+				break;
+			}
+		}
 
-        return list;
-    }
+		return list;
+	}
 
-    @Nonnull
-    @Override
-    public RecipeSerializer<?> getSerializer() {
-        return SERIALIZER;
-    }
+	@Nonnull
+	@Override
+	public RecipeSerializer<?> getSerializer() {
+		return SERIALIZER;
+	}
 
-    @Override
-    public boolean canCraftInDimensions(int width, int height) {
-        return true;
-    }
+	@Override
+	public boolean canCraftInDimensions(int width, int height) {
+		return true;
+	}
 
-    @Override
-    public boolean isSpecial() {
-        return true;
-    }
+	@Override
+	public boolean isSpecial() {
+		return true;
+	}
 
 }

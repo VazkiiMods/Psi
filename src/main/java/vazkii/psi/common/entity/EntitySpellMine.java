@@ -19,50 +19,50 @@ import java.util.List;
 import java.util.Optional;
 
 public class EntitySpellMine extends EntitySpellGrenade {
-    boolean triggered = false;
+	boolean triggered = false;
 
-    public EntitySpellMine(EntityType<? extends ThrowableProjectile> type, Level worldIn) {
-        super(type, worldIn);
-    }
+	public EntitySpellMine(EntityType<? extends ThrowableProjectile> type, Level worldIn) {
+		super(type, worldIn);
+	}
 
-    public EntitySpellMine(Level worldIn, LivingEntity throwerIn) {
-        super(ModEntities.spellMine, worldIn, throwerIn);
-    }
+	public EntitySpellMine(Level worldIn, LivingEntity throwerIn) {
+		super(ModEntities.spellMine, worldIn, throwerIn);
+	}
 
-    @Override
-    public void tick() {
-        super.tick();
+	@Override
+	public void tick() {
+		super.tick();
 
-        List<LivingEntity> entities = getCommandSenderWorld().getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(1, 1, 1));
-        Entity thrower = getOwner();
-        if (thrower != null && tickCount < 30) {
-            entities.remove(thrower);
-        }
+		List<LivingEntity> entities = getCommandSenderWorld().getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(1, 1, 1));
+		Entity thrower = getOwner();
+		if(thrower != null && tickCount < 30) {
+			entities.remove(thrower);
+		}
 
-        if (!entities.isEmpty()) {
-            if (!triggered) {
-                playSound(SoundEvents.STONE_PRESSURE_PLATE_CLICK_ON, 0.5F, 0.6F);
-            }
-            triggered = true;
-            entityData.set(ATTACKTARGET_UUID, Optional.of(entities.get(0).getUUID()));
-        } else if (triggered) {
-            doExplosion();
-        }
-    }
+		if(!entities.isEmpty()) {
+			if(!triggered) {
+				playSound(SoundEvents.STONE_PRESSURE_PLATE_CLICK_ON, 0.5F, 0.6F);
+			}
+			triggered = true;
+			entityData.set(ATTACKTARGET_UUID, Optional.of(entities.get(0).getUUID()));
+		} else if(triggered) {
+			doExplosion();
+		}
+	}
 
-    @Override
-    public int getParticleCount() {
-        return 1;
-    }
+	@Override
+	public int getParticleCount() {
+		return 1;
+	}
 
-    @Override
-    public int getLiveTime() {
-        return 6000;
-    }
+	@Override
+	public int getLiveTime() {
+		return 6000;
+	}
 
-    @Override
-    public boolean explodes() {
-        return false;
-    }
+	@Override
+	public boolean explodes() {
+		return false;
+	}
 
 }

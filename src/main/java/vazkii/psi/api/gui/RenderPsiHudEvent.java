@@ -24,15 +24,15 @@ import javax.annotation.Nonnull;
 @OnlyIn(Dist.CLIENT)
 public class RenderPsiHudEvent extends Event implements ICancellableEvent {
 
-    @Nonnull
-    private final PsiHudElementType type;
+	@Nonnull
+	private final PsiHudElementType type;
 
-    public RenderPsiHudEvent(@Nonnull PsiHudElementType type) {
-        this.type = type;
-    }
+	public RenderPsiHudEvent(@Nonnull PsiHudElementType type) {
+		this.type = type;
+	}
 
-    @Nonnull
-    public PsiHudElementType getType() {
-        return type;
-    }
+	@Nonnull
+	public PsiHudElementType getType() {
+		return type;
+	}
 }

@@ -9,10 +9,12 @@
 package vazkii.psi.client.patchouli;
 
 import com.mojang.blaze3d.vertex.ByteBufferBuilder;
+
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.resources.ResourceLocation;
+
 import vazkii.patchouli.api.IComponentRenderContext;
 import vazkii.patchouli.api.ICustomComponent;
 import vazkii.patchouli.api.IVariable;
@@ -23,36 +25,36 @@ import vazkii.psi.api.spell.SpellPiece;
 import java.util.function.UnaryOperator;
 
 public class SpellPieceComponent implements ICustomComponent {
-    private transient int x, y;
-    private transient SpellPiece piece;
+	private transient int x, y;
+	private transient SpellPiece piece;
 
-    private IVariable name;
+	private IVariable name;
 
-    @Override
-    public void build(int componentX, int componentY, int pageNum) {
-        this.x = componentX;
-        this.y = componentY;
-        this.piece = PsiAPI.getSpellPieceRegistry().getOptional(ResourceLocation.parse(name.asString()))
-                .map(clazz -> SpellPiece.create(clazz, new Spell()))
-                .orElseThrow(() -> new IllegalArgumentException("Invalid spell piece name: " + name));
-    }
+	@Override
+	public void build(int componentX, int componentY, int pageNum) {
+		this.x = componentX;
+		this.y = componentY;
+		this.piece = PsiAPI.getSpellPieceRegistry().getOptional(ResourceLocation.parse(name.asString()))
+				.map(clazz -> SpellPiece.create(clazz, new Spell()))
+				.orElseThrow(() -> new IllegalArgumentException("Invalid spell piece name: " + name));
+	}
 
-    @Override
-    public void render(GuiGraphics graphics, IComponentRenderContext context, float pticks, int mouseX, int mouseY) {
-        MultiBufferSource.BufferSource buffer = MultiBufferSource.immediate(new ByteBufferBuilder(1536));
-        graphics.pose().pushPose();
-        graphics.pose().translate(x, y, 0);
-        piece.draw(graphics.pose(), buffer, 0xF000F0);
-        buffer.endBatch();
+	@Override
+	public void render(GuiGraphics graphics, IComponentRenderContext context, float pticks, int mouseX, int mouseY) {
+		MultiBufferSource.BufferSource buffer = MultiBufferSource.immediate(new ByteBufferBuilder(1536));
+		graphics.pose().pushPose();
+		graphics.pose().translate(x, y, 0);
+		piece.draw(graphics.pose(), buffer, 0xF000F0);
+		buffer.endBatch();
 
-        if (context.isAreaHovered(mouseX, mouseY, x - 1, y - 1, 16, 16)) {
-            PatchouliUtils.setPieceTooltip(context, piece);
-        }
-        graphics.pose().popPose();
-    }
+		if(context.isAreaHovered(mouseX, mouseY, x - 1, y - 1, 16, 16)) {
+			PatchouliUtils.setPieceTooltip(context, piece);
+		}
+		graphics.pose().popPose();
+	}
 
-    @Override
-    public void onVariablesAvailable(UnaryOperator<IVariable> function, HolderLookup.Provider registries) {
-        name = function.apply(name);
-    }
+	@Override
+	public void onVariablesAvailable(UnaryOperator<IVariable> function, HolderLookup.Provider registries) {
+		name = function.apply(name);
+	}
 }

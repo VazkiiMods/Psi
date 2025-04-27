@@ -16,21 +16,21 @@ import vazkii.psi.api.spell.piece.PieceSelector;
 
 public class PieceSelectorBlockBroken extends PieceSelector {
 
-    public PieceSelectorBlockBroken(Spell spell) {
-        super(spell);
-    }
+	public PieceSelectorBlockBroken(Spell spell) {
+		super(spell);
+	}
 
-    @Override
-    public Class<?> getEvaluationType() {
-        return Vector3.class;
-    }
+	@Override
+	public Class<?> getEvaluationType() {
+		return Vector3.class;
+	}
 
-    @Override
-    public Object execute(SpellContext context) throws SpellRuntimeException {
-        if (context.positionBroken == null) {
-            throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
-        }
-        return Vector3.fromBlockPos(context.positionBroken.getBlockPos());
-    }
+	@Override
+	public Object execute(SpellContext context) throws SpellRuntimeException {
+		if(context.positionBroken == null) {
+			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
+		}
+		return Vector3.fromBlockPos(context.positionBroken.getBlockPos());
+	}
 
 }

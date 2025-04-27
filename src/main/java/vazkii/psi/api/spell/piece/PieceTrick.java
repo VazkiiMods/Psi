@@ -12,48 +12,48 @@ import vazkii.psi.api.spell.*;
 
 public abstract class PieceTrick extends SpellPiece {
 
-    public PieceTrick(Spell spell) {
-        super(spell);
-        setStatLabel(EnumSpellStat.COMPLEXITY, new StatLabel(1));
-        setStatLabel(EnumSpellStat.PROJECTION, new StatLabel(1));
-    }
+	public PieceTrick(Spell spell) {
+		super(spell);
+		setStatLabel(EnumSpellStat.COMPLEXITY, new StatLabel(1));
+		setStatLabel(EnumSpellStat.PROJECTION, new StatLabel(1));
+	}
 
-    @Override
-    public EnumPieceType getPieceType() {
-        return EnumPieceType.TRICK;
-    }
+	@Override
+	public EnumPieceType getPieceType() {
+		return EnumPieceType.TRICK;
+	}
 
-    @Override
-    public void addToMetadata(SpellMetadata meta) throws SpellCompilationException, ArithmeticException {
-        meta.addStat(EnumSpellStat.COMPLEXITY, 1);
-        meta.addStat(EnumSpellStat.PROJECTION, 1);
-    }
+	@Override
+	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException, ArithmeticException {
+		meta.addStat(EnumSpellStat.COMPLEXITY, 1);
+		meta.addStat(EnumSpellStat.PROJECTION, 1);
+	}
 
-    @Override
-    public Class<?> getEvaluationType() {
-        return Void.class;
-    }
+	@Override
+	public Class<?> getEvaluationType() {
+		return Void.class;
+	}
 
-    @Override
-    public Object evaluate() {
-        return null;
-    }
+	@Override
+	public Object evaluate() {
+		return null;
+	}
 
-    @Override
-    public Object execute(SpellContext context) throws SpellRuntimeException {
-        return null;
-    }
+	@Override
+	public Object execute(SpellContext context) throws SpellRuntimeException {
+		return null;
+	}
 
-    public double multiplySafe(double v1, double... arr) throws SpellCompilationException {
-        double a = v1;
-        for (double b : arr) {
-            a = a * b;
-            if ((int) a < 0 || (int) a == Integer.MAX_VALUE) {
-                throw new SpellCompilationException(SpellCompilationException.STAT_OVERFLOW);
-            }
-        }
+	public double multiplySafe(double v1, double... arr) throws SpellCompilationException {
+		double a = v1;
+		for(double b : arr) {
+			a = a * b;
+			if((int) a < 0 || (int) a == Integer.MAX_VALUE) {
+				throw new SpellCompilationException(SpellCompilationException.STAT_OVERFLOW);
+			}
+		}
 
-        return a;
-    }
+		return a;
+	}
 
 }

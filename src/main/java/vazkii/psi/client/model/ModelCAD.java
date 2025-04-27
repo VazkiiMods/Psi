@@ -25,67 +25,69 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
+
 import vazkii.psi.api.cad.EnumCADComponent;
 import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.cad.ICADAssembly;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
 import java.util.Collections;
 import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
 public class ModelCAD implements BakedModel {
 
-    private final ItemOverrides itemHandler = new ItemOverrides() {
-        @Nullable
-        @Override
-        public BakedModel resolve(BakedModel model, ItemStack stack, @Nullable ClientLevel world, @Nullable LivingEntity entity, int mode) {
-            ICAD cad = (ICAD) stack.getItem();
-            ItemStack assemblyStack = cad.getComponentInSlot(stack, EnumCADComponent.ASSEMBLY);
-            if (assemblyStack.isEmpty()) {
-                return Minecraft.getInstance().getModelManager().getMissingModel();
-            }
-            ResourceLocation cadModel = ((ICADAssembly) assemblyStack.getItem()).getCADModel(assemblyStack, stack);
-            return Minecraft.getInstance().getModelManager().getModel(ModelResourceLocation.standalone(cadModel));
-        }
-    };
+	private final ItemOverrides itemHandler = new ItemOverrides() {
+		@Nullable
+		@Override
+		public BakedModel resolve(BakedModel model, ItemStack stack, @Nullable ClientLevel world, @Nullable LivingEntity entity, int mode) {
+			ICAD cad = (ICAD) stack.getItem();
+			ItemStack assemblyStack = cad.getComponentInSlot(stack, EnumCADComponent.ASSEMBLY);
+			if(assemblyStack.isEmpty()) {
+				return Minecraft.getInstance().getModelManager().getMissingModel();
+			}
+			ResourceLocation cadModel = ((ICADAssembly) assemblyStack.getItem()).getCADModel(assemblyStack, stack);
+			return Minecraft.getInstance().getModelManager().getModel(ModelResourceLocation.standalone(cadModel));
+		}
+	};
 
-    @Override
-    public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, RandomSource random) {
-        return Collections.emptyList();
-    }
+	@Override
+	public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, RandomSource random) {
+		return Collections.emptyList();
+	}
 
-    @Override
-    public boolean useAmbientOcclusion() {
-        return true;
-    }
+	@Override
+	public boolean useAmbientOcclusion() {
+		return true;
+	}
 
-    @Override
-    public boolean isGui3d() {
-        return true;
-    }
+	@Override
+	public boolean isGui3d() {
+		return true;
+	}
 
-    @Override
-    public boolean usesBlockLight() {
-        return true;
-    }
+	@Override
+	public boolean usesBlockLight() {
+		return true;
+	}
 
-    @Override
-    public boolean isCustomRenderer() {
-        return false;
-    }
+	@Override
+	public boolean isCustomRenderer() {
+		return false;
+	}
 
-    @Nonnull
-    @Override
-    public TextureAtlasSprite getParticleIcon() {
-        return Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS).apply(MissingTextureAtlasSprite.getLocation());
-    }
+	@Nonnull
+	@Override
+	public TextureAtlasSprite getParticleIcon() {
+		return Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS).apply(MissingTextureAtlasSprite.getLocation());
+	}
 
-    @Nonnull
-    @Override
-    public ItemOverrides getOverrides() {
-        return itemHandler;
-    }
+	@Nonnull
+	@Override
+	public ItemOverrides getOverrides() {
+		return itemHandler;
+	}
 
 }

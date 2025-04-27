@@ -14,6 +14,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
+
 import vazkii.psi.api.exosuit.IExosuitSensor;
 import vazkii.psi.api.exosuit.ISensorHoldable;
 import vazkii.psi.common.item.base.ModItems;
@@ -22,43 +23,43 @@ import javax.annotation.Nonnull;
 
 public class ItemPsimetalExosuitHelmet extends ItemPsimetalArmor implements ISensorHoldable {
 
-    public ItemPsimetalExosuitHelmet(ArmorItem.Type type, Item.Properties properties) {
-        super(type, properties);
-    }
+	public ItemPsimetalExosuitHelmet(ArmorItem.Type type, Item.Properties properties) {
+		super(type, properties);
+	}
 
-    @Override
-    public String getEvent(ItemStack stack) {
-        ItemStack sensor = getAttachedSensor(stack);
-        if (!sensor.isEmpty() && sensor.getItem() instanceof IExosuitSensor) {
-            return ((IExosuitSensor) sensor.getItem()).getEventType(sensor);
-        }
+	@Override
+	public String getEvent(ItemStack stack) {
+		ItemStack sensor = getAttachedSensor(stack);
+		if(!sensor.isEmpty() && sensor.getItem() instanceof IExosuitSensor) {
+			return ((IExosuitSensor) sensor.getItem()).getEventType(sensor);
+		}
 
-        return super.getEvent(stack);
-    }
+		return super.getEvent(stack);
+	}
 
-    @Override
-    public int getCastCooldown(ItemStack stack) {
-        return 40;
-    }
+	@Override
+	public int getCastCooldown(ItemStack stack) {
+		return 40;
+	}
 
-    @Override
-    @OnlyIn(Dist.CLIENT)
-    public int getColor(@Nonnull ItemStack stack) {
-        ItemStack sensor = getAttachedSensor(stack);
-        if (!sensor.isEmpty() && sensor.getItem() instanceof IExosuitSensor) {
-            return ((IExosuitSensor) sensor.getItem()).getColor(sensor);
-        }
+	@Override
+	@OnlyIn(Dist.CLIENT)
+	public int getColor(@Nonnull ItemStack stack) {
+		ItemStack sensor = getAttachedSensor(stack);
+		if(!sensor.isEmpty() && sensor.getItem() instanceof IExosuitSensor) {
+			return ((IExosuitSensor) sensor.getItem()).getColor(sensor);
+		}
 
-        return super.getColor(stack);
-    }
+		return super.getColor(stack);
+	}
 
-    @Override
-    public ItemStack getAttachedSensor(ItemStack stack) {
-        return new ItemStack(stack.getOrDefault(ModItems.TAG_SENSOR, Items.AIR));
-    }
+	@Override
+	public ItemStack getAttachedSensor(ItemStack stack) {
+		return new ItemStack(stack.getOrDefault(ModItems.TAG_SENSOR, Items.AIR));
+	}
 
-    @Override
-    public void attachSensor(ItemStack stack, ItemStack sensor) {
-        stack.set(ModItems.TAG_SENSOR, sensor.getItem());
-    }
+	@Override
+	public void attachSensor(ItemStack stack, ItemStack sensor) {
+		stack.set(ModItems.TAG_SENSOR, sensor.getItem());
+	}
 }

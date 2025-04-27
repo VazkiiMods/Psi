@@ -15,6 +15,7 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
+
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
@@ -22,33 +23,33 @@ import vazkii.psi.common.lib.LibMisc;
 
 public record MessageDeductPsi(int prev, int current, int cd, boolean shatter) implements CustomPacketPayload {
 
-    public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, "message_deduct_psi");
-    public static final CustomPacketPayload.Type<MessageDeductPsi> TYPE = new Type<>(ID);
+	public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, "message_deduct_psi");
+	public static final CustomPacketPayload.Type<MessageDeductPsi> TYPE = new Type<>(ID);
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, MessageDeductPsi> CODEC = StreamCodec.composite(
-            ByteBufCodecs.INT, MessageDeductPsi::prev,
-            ByteBufCodecs.INT, MessageDeductPsi::current,
-            ByteBufCodecs.INT, MessageDeductPsi::cd,
-            ByteBufCodecs.BOOL, MessageDeductPsi::shatter,
-            MessageDeductPsi::new);
+	public static final StreamCodec<RegistryFriendlyByteBuf, MessageDeductPsi> CODEC = StreamCodec.composite(
+			ByteBufCodecs.INT, MessageDeductPsi::prev,
+			ByteBufCodecs.INT, MessageDeductPsi::current,
+			ByteBufCodecs.INT, MessageDeductPsi::cd,
+			ByteBufCodecs.BOOL, MessageDeductPsi::shatter,
+			MessageDeductPsi::new);
 
-    @Override
-    public Type<? extends CustomPacketPayload> type() {
-        return TYPE;
-    }
+	@Override
+	public Type<? extends CustomPacketPayload> type() {
+		return TYPE;
+	}
 
-    public void handle(IPayloadContext ctx) {
-        ctx.enqueueWork(() -> {
-            Player player = Psi.proxy.getClientPlayer();
-            if (player != null) {
-                PlayerData data = PlayerDataHandler.get(player);
-                data.lastAvailablePsi = data.availablePsi;
-                data.availablePsi = current;
-                data.regenCooldown = cd;
-                data.deductTick = true;
-                data.addDeduction(prev, prev - current, shatter);
-            }
-        });
-    }
+	public void handle(IPayloadContext ctx) {
+		ctx.enqueueWork(() -> {
+			Player player = Psi.proxy.getClientPlayer();
+			if(player != null) {
+				PlayerData data = PlayerDataHandler.get(player);
+				data.lastAvailablePsi = data.availablePsi;
+				data.availablePsi = current;
+				data.regenCooldown = cd;
+				data.deductTick = true;
+				data.addDeduction(prev, prev - current, shatter);
+			}
+		});
+	}
 
 }
