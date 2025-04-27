@@ -17,7 +17,7 @@ def main():
     print("Build Number", build_number)
 
     changelog = ""
-    with open("changelog.txt", "r") as f:
+    with open("./web/changelog.txt", "r") as f:
         content = f.read()
         content = content.replace('"', "'")
         lines = content.splitlines()
