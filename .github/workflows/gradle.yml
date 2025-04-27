@@ -29,7 +29,7 @@ jobs:
       - name: Calculate artifact names
         id: calculate_artifact_names
         run: |
-          MC=$(awk -F '=' '/minecraft_version/ { print $2; }' build.properties)
+          MC=$(awk -F '=' '/mc_version/ { print $2; }' build.properties)
           BUILD=$(awk -F '=' '/build_number/ { print $2; }' build.properties)
           echo "jar=build/libs/Psi-${MC}-${BUILD}.jar" >> "$GITHUB_OUTPUT"
 
