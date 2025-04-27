@@ -8,6 +8,8 @@
  */
 package vazkii.psi.common.spell.selector;
 
+import org.jetbrains.annotations.NotNull;
+import vazkii.psi.api.interval.IntervalNumber;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.piece.PieceSelector;
@@ -21,6 +23,11 @@ public class PieceSelectorDamageTaken extends PieceSelector {
 	@Override
 	public Class<?> getEvaluationType() {
 		return Double.class;
+	}
+	
+	@Override
+	public @NotNull IntervalNumber evaluate() {
+		return IntervalNumber.fromRange(0, Double.POSITIVE_INFINITY);
 	}
 
 	@Override

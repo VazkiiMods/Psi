@@ -13,14 +13,7 @@ import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.block.state.BlockState;
 
 import vazkii.psi.api.internal.Vector3;
-import vazkii.psi.api.spell.EnumSpellStat;
-import vazkii.psi.api.spell.Spell;
-import vazkii.psi.api.spell.SpellCompilationException;
-import vazkii.psi.api.spell.SpellContext;
-import vazkii.psi.api.spell.SpellMetadata;
-import vazkii.psi.api.spell.SpellParam;
-import vazkii.psi.api.spell.SpellRuntimeException;
-import vazkii.psi.api.spell.StatLabel;
+import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.param.ParamVector;
 import vazkii.psi.api.spell.piece.PieceTrick;
@@ -38,18 +31,15 @@ public class PieceTrickExplode extends PieceTrick {
 
 	@Override
 	public void initParams() {
-		addParam(position = new ParamVector(SpellParam.GENERIC_NAME_POSITION, SpellParam.BLUE, false, false));
-		addParam(power = new ParamNumber(SpellParam.GENERIC_NAME_POWER, SpellParam.RED, false, true));
+		addParam(position = new ParamVector(SpellParam.GENERIC_NAME_POSITION, SpellParam.BLUE, false));
+		addParam(power = new ParamNumber(SpellParam.GENERIC_NAME_POWER, SpellParam.RED, false));
 	}
 
 	@Override
 	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
 		super.addToMetadata(meta);
-
-		Double powerVal = this.<Double>getParamEvaluation(power);
-		if(powerVal == null || powerVal <= 0) {
-			throw new SpellCompilationException(SpellCompilationException.NON_POSITIVE_VALUE, x, y);
-		}
+		
+		double powerVal = SpellHelpers.ensurePositiveAndNonzero(this, power);
 
 		powerVal = Math.max(0.5, powerVal);
 

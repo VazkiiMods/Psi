@@ -12,24 +12,25 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 
 import vazkii.psi.api.internal.Vector3;
+import vazkii.psi.api.interval.IntervalNumber;
 
 public class SpellHelpers {
 
 	public static double ensurePositiveOrZero(SpellPiece piece, SpellParam<Number> param) throws SpellCompilationException {
-		double val = piece.getNonNullParamEvaluation(param).doubleValue();
-		if(val < 0) {
+		IntervalNumber iv = piece.getNonNullParamEvaluation(param);
+		if(iv.min < 0) {
 			throw new SpellCompilationException(SpellCompilationException.NON_POSITIVE_VALUE, piece.x, piece.y);
 		}
-		return val;
+		return iv.max;
 	}
 
 	public static double ensurePositiveAndNonzero(SpellPiece piece, SpellParam<Number> param) throws SpellCompilationException {
-		double val = piece.getNonNullParamEvaluation(param).doubleValue();
-		if(val <= 0) {
+		IntervalNumber iv = piece.getNonNullParamEvaluation(param);
+		if(iv.min <= 0) {
 			throw new SpellCompilationException(SpellCompilationException.NON_POSITIVE_VALUE, piece.x, piece.y);
 		}
 
-		return val;
+		return iv.max;
 	}
 
 	public static double rangeLimitParam(SpellPiece piece, SpellContext context, SpellParam<Number> param, double max) throws SpellRuntimeException {
@@ -58,20 +59,20 @@ public class SpellHelpers {
 	}
 
 	public static double ensurePositiveOrZero(SpellPiece piece, SpellParam<Number> param, double def) throws SpellCompilationException {
-		double val = piece.getParamEvaluationeOrDefault(param, def).doubleValue();
-		if(val < 0) {
+		IntervalNumber iv = piece.getParamEvaluationeOrDefault(param, IntervalNumber.fromValue(def));
+		if(iv.min < 0) {
 			throw new SpellCompilationException(SpellCompilationException.NON_POSITIVE_VALUE, piece.x, piece.y);
 		}
-		return val;
+		return iv.max;
 	}
 
 	public static double ensurePositiveAndNonzero(SpellPiece piece, SpellParam<Number> param, double def) throws SpellCompilationException {
-		double val = piece.getParamEvaluationeOrDefault(param, def).doubleValue();
-		if(val <= 0) {
+		IntervalNumber iv = piece.getParamEvaluationeOrDefault(param, IntervalNumber.fromValue(def));
+		if(iv.min <= 0) {
 			throw new SpellCompilationException(SpellCompilationException.NON_POSITIVE_VALUE, piece.x, piece.y);
 		}
 
-		return val;
+		return iv.max;
 	}
 
 	public static BlockPos getBlockPos(SpellPiece piece, SpellContext context, SpellParam<Vector3> param) throws SpellRuntimeException {

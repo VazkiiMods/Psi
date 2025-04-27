@@ -27,7 +27,7 @@ public class PieceOperatorVectorAbsolute extends PieceOperator {
 
 	@Override
 	public void initParams() {
-		addParam(vec = new ParamVector(SpellParam.GENERIC_NAME_VECTOR, SpellParam.RED, false, false));
+		addParam(vec = new ParamVector(SpellParam.GENERIC_NAME_VECTOR, SpellParam.RED, false));
 	}
 
 	@Override

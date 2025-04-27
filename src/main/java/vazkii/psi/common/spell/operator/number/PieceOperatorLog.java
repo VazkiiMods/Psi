@@ -8,10 +8,9 @@
  */
 package vazkii.psi.common.spell.operator.number;
 
-import vazkii.psi.api.spell.Spell;
-import vazkii.psi.api.spell.SpellContext;
-import vazkii.psi.api.spell.SpellParam;
-import vazkii.psi.api.spell.SpellRuntimeException;
+import org.jetbrains.annotations.NotNull;
+import vazkii.psi.api.interval.IntervalNumber;
+import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.piece.PieceOperator;
 
@@ -26,8 +25,15 @@ public class PieceOperatorLog extends PieceOperator {
 
 	@Override
 	public void initParams() {
-		addParam(num = new ParamNumber(SpellParam.GENERIC_NAME_TARGET, SpellParam.BLUE, false, false));
-		addParam(base = new ParamNumber(SpellParam.GENERIC_NAME_BASE, SpellParam.RED, true, false));
+		addParam(num = new ParamNumber(SpellParam.GENERIC_NAME_TARGET, SpellParam.BLUE, false));
+		addParam(base = new ParamNumber(SpellParam.GENERIC_NAME_BASE, SpellParam.RED, true));
+	}
+	
+	@Override
+	public @NotNull IntervalNumber evaluate() throws SpellCompilationException {
+		IntervalNumber in = this.<Number, IntervalNumber>getNonNullParamEvaluation(num).preservingMonotonicMap(Math::log10);
+		IntervalNumber ib = getParamEvaluation(base);
+		return ib == null ? in : in.divide(ib.preservingMonotonicMap(Math::log10));
 	}
 
 	@Override

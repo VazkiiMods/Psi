@@ -13,7 +13,9 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 
+import org.jetbrains.annotations.NotNull;
 import vazkii.psi.api.internal.Vector3;
+import vazkii.psi.api.interval.IntervalNumber;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellParam;
@@ -31,7 +33,12 @@ public class PieceSelectorBlockPresence extends PieceSelector {
 
 	@Override
 	public void initParams() {
-		addParam(position = new ParamVector(SpellParam.GENERIC_NAME_POSITION, SpellParam.BLUE, false, false));
+		addParam(position = new ParamVector(SpellParam.GENERIC_NAME_POSITION, SpellParam.BLUE, false));
+	}
+	
+	@Override
+	public @NotNull IntervalNumber evaluate() {
+		return IntervalNumber.fromRange(0, 2);
 	}
 
 	@Override

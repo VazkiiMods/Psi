@@ -38,10 +38,10 @@ public class PieceTrickPlaySound extends PieceTrick {
 
 	@Override
 	public void initParams() {
-		addParam(position = new ParamVector(SpellParam.GENERIC_NAME_POSITION, SpellParam.BLUE, false, false));
-		addParam(instrument = new ParamNumber(SpellParam.GENERIC_NAME_INSTRUMENT, SpellParam.RED, false, false));
-		addParam(pitch = new ParamNumber(SpellParam.GENERIC_NAME_PITCH, SpellParam.GREEN, true, false));
-		addParam(volume = new ParamNumber(SpellParam.GENERIC_NAME_VOLUME, SpellParam.YELLOW, true, false));
+		addParam(position = new ParamVector(SpellParam.GENERIC_NAME_POSITION, SpellParam.BLUE, false));
+		addParam(instrument = new ParamNumber(SpellParam.GENERIC_NAME_INSTRUMENT, SpellParam.RED, false));
+		addParam(pitch = new ParamNumber(SpellParam.GENERIC_NAME_PITCH, SpellParam.GREEN, true));
+		addParam(volume = new ParamNumber(SpellParam.GENERIC_NAME_VOLUME, SpellParam.YELLOW, true));
 	}
 
 	@Override

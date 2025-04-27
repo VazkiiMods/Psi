@@ -33,7 +33,7 @@ public class PieceTrickDebug extends PieceTrick {
 	@Override
 	public void initParams() {
 		addParam(target = new ParamAny(SpellParam.GENERIC_NAME_TARGET, SpellParam.BLUE, false));
-		addParam(number = new ParamNumber(SpellParam.GENERIC_NAME_NUMBER, SpellParam.RED, true, false));
+		addParam(number = new ParamNumber(SpellParam.GENERIC_NAME_NUMBER, SpellParam.RED, true));
 	}
 
 	@Override

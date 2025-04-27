@@ -12,6 +12,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 
+import vazkii.psi.api.interval.IntervalNumber;
 import vazkii.psi.api.spell.EnumSpellStat;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellCompilationException;
@@ -39,20 +40,16 @@ public class PieceTrickBlink extends PieceTrick {
 
 	@Override
 	public void initParams() {
-		addParam(target = new ParamEntity(SpellParam.GENERIC_NAME_TARGET, SpellParam.YELLOW, false, false));
-		addParam(distance = new ParamNumber(SpellParam.GENERIC_NAME_DISTANCE, SpellParam.RED, false, true));
+		addParam(target = new ParamEntity(SpellParam.GENERIC_NAME_TARGET, SpellParam.YELLOW, false));
+		addParam(distance = new ParamNumber(SpellParam.GENERIC_NAME_DISTANCE, SpellParam.RED, false));
 	}
 
 	@Override
 	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
 		super.addToMetadata(meta);
-		Double distanceVal = this.<Double>getParamEvaluation(distance);
-		if(distanceVal == null) {
-			distanceVal = 1D;
-		}
-
-		meta.addStat(EnumSpellStat.POTENCY, (int) (Math.abs(distanceVal) * 30));
-		meta.addStat(EnumSpellStat.COST, (int) (Math.abs(distanceVal) * 40));
+		double absDistance = this.<Number, IntervalNumber>getNonNullParamEvaluation(distance).abs().max;
+		meta.addStat(EnumSpellStat.POTENCY, (int) (absDistance * 30));
+		meta.addStat(EnumSpellStat.COST, (int) (absDistance * 40));
 	}
 
 	@Override

@@ -56,6 +56,7 @@
   "psimisc.requiredaddons": "Required Addons: ",
   "psimisc.modnotfound": "The spell you tried to import will not be imported in its entirety, since it uses pieces from the non-installed mod %d",
   "psimisc.spellonnewerversion": "This spell was created on a newer version of Psi; it may or may not work as intended.",
+  "psimisc.interval": "\u00a77Interval: \u00a7r",
   "psi.container.socketable": "Sockets",
   "psi.subtitle.bullet_create": "Spell stored",
   "psi.subtitle.cad_create": "CAD assembled",

@@ -28,7 +28,7 @@ public class PieceOperatorEntityHealth extends PieceOperator {
 
 	@Override
 	public void initParams() {
-		addParam(target = new ParamEntity(SpellParam.GENERIC_NAME_TARGET, SpellParam.YELLOW, false, false));
+		addParam(target = new ParamEntity(SpellParam.GENERIC_NAME_TARGET, SpellParam.YELLOW, false));
 	}
 
 	@Override

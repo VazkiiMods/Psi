@@ -10,6 +10,8 @@ package vazkii.psi.common.spell.selector;
 
 import net.minecraft.world.item.ItemStack;
 
+import org.jetbrains.annotations.NotNull;
+import vazkii.psi.api.interval.IntervalNumber;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellParam;
@@ -27,7 +29,12 @@ public class PieceSelectorItemPresence extends PieceSelector {
 
 	@Override
 	public void initParams() {
-		addParam(slot = new ParamNumber("psi.spellparam.slot", SpellParam.BLUE, true, false));
+		addParam(slot = new ParamNumber("psi.spellparam.slot", SpellParam.BLUE, true));
+	}
+	
+	@Override
+	public @NotNull IntervalNumber evaluate() {
+		return IntervalNumber.fromRange(0, 64);
 	}
 
 	@Override

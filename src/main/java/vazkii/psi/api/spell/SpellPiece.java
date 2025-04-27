@@ -32,12 +32,15 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.ModList;
 
+import org.jetbrains.annotations.Nullable;
 import vazkii.psi.api.ClientPsiAPI;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.internal.PsiRenderHelper;
 import vazkii.psi.api.internal.TooltipHelper;
+import vazkii.psi.api.interval.Interval;
 import vazkii.psi.api.spell.SpellParam.ArrowType;
 
+import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -102,10 +105,11 @@ public abstract class SpellPiece {
 	public abstract Class<?> getEvaluationType();
 
 	/**
-	 * Evaluates this piece for the purpose of spell metadata calculation. If the piece
-	 * is not a constant, you can safely return null.
+	 * Evaluates this piece for the purpose of spell metadata calculation.
+	 * Use {@link Interval#unboundedValues} when not implemented.
+	 * Only return null for connectors and pieces with {@link Void} return type.
 	 */
-	public abstract Object evaluate() throws SpellCompilationException;
+	public abstract Interval<?> evaluate() throws SpellCompilationException;
 
 	/**
 	 * Executes this piece and returns the value of this piece for later pieces to pick up
@@ -123,9 +127,6 @@ public abstract class SpellPiece {
 		Class<?> evalType = getEvaluationType();
 		String evalStr = evalType == null ? "null" : CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, evalType.getSimpleName());
 		MutableComponent s = Component.translatable("psi.datatype." + evalStr);
-		if(getPieceType() == EnumPieceType.CONSTANT) {
-			s.append(" ").append(Component.translatable("psimisc.constant"));
-		}
 
 		return s;
 	}
@@ -217,16 +218,16 @@ public abstract class SpellPiece {
 	 * Defaulted version of getParamEvaluation
 	 * Should be used for optional params
 	 */
-	public <T> T getParamEvaluationeOrDefault(SpellParam<T> param, T def) throws SpellCompilationException {
-		T v = getParamEvaluation(param);
+	public <T, U extends Interval<T>> @Nonnull U getParamEvaluationeOrDefault(SpellParam<T> param, U def) throws SpellCompilationException {
+		U v = getParamEvaluation(param);
 		return v == null ? def : v;
 	}
 
 	/**
 	 * Null safe version of getParamEvaluation()
 	 */
-	public <T> T getNonNullParamEvaluation(SpellParam<T> param) throws SpellCompilationException {
-		T v = getParamEvaluation(param);
+	public <T, U extends Interval<T>> @Nonnull U getNonNullParamEvaluation(SpellParam<T> param) throws SpellCompilationException {
+		U v = getParamEvaluation(param);
 		if(v == null) {
 			throw new SpellCompilationException(SpellCompilationException.NULL_PARAM, this.x, this.y);
 		}
@@ -238,7 +239,7 @@ public abstract class SpellPiece {
 	 * {@link #evaluate()} and should only be used for {@link #addToMetadata(SpellMetadata)}
 	 */
 	@SuppressWarnings("unchecked")
-	public <T> T getParamEvaluation(SpellParam<?> param) throws SpellCompilationException {
+	public <T, U extends Interval<T>> @Nullable U getParamEvaluation(SpellParam<T> param) throws SpellCompilationException {
 		SpellParam.Side side = paramSides.get(param);
 		if(!side.isEnabled()) {
 			return null;
@@ -250,7 +251,7 @@ public abstract class SpellPiece {
 			return null;
 		}
 
-		return (T) piece.evaluate();
+		return (U) piece.evaluate();
 	}
 
 	public String getUnlocalizedName() {
@@ -489,6 +490,17 @@ public abstract class SpellPiece {
 		if(!statLabels.isEmpty()) {
 			TooltipHelper.tooltipIfCtrl(tooltip, () -> addToTooltipAfterCtrl(tooltip));
 		}
+		
+		try {
+			Interval<?> iv = evaluate();
+			if (iv != null) {
+				List<Component> text = iv.getTooltip();
+				if (!text.isEmpty()) {
+					tooltip.add(Component.translatable("psimisc.interval").append(text.get(0)));
+					tooltip.addAll(text.subList(1, text.size()));
+				}
+			}
+		} catch (SpellCompilationException ignored) {}
 
 		String addon = registryKey.getNamespace();
 		if(!addon.equals("psi")) {

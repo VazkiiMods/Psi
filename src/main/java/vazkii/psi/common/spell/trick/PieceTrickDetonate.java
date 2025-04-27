@@ -36,7 +36,7 @@ public class PieceTrickDetonate extends PieceTrick {
 
 	@Override
 	public void initParams() {
-		addParam(radius = new ParamNumber(SpellParam.GENERIC_NAME_RADIUS, SpellParam.GREEN, false, true));
+		addParam(radius = new ParamNumber(SpellParam.GENERIC_NAME_RADIUS, SpellParam.GREEN, false));
 	}
 
 	@Override

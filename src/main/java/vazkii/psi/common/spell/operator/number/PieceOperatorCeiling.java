@@ -8,10 +8,9 @@
  */
 package vazkii.psi.common.spell.operator.number;
 
-import vazkii.psi.api.spell.Spell;
-import vazkii.psi.api.spell.SpellContext;
-import vazkii.psi.api.spell.SpellParam;
-import vazkii.psi.api.spell.SpellRuntimeException;
+import org.jetbrains.annotations.NotNull;
+import vazkii.psi.api.interval.IntervalNumber;
+import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.piece.PieceOperator;
 
@@ -25,7 +24,12 @@ public class PieceOperatorCeiling extends PieceOperator {
 
 	@Override
 	public void initParams() {
-		addParam(num = new ParamNumber(SpellParam.GENERIC_NAME_NUMBER, SpellParam.GREEN, false, false));
+		addParam(num = new ParamNumber(SpellParam.GENERIC_NAME_NUMBER, SpellParam.GREEN, false));
+	}
+	
+	@Override
+	public @NotNull IntervalNumber evaluate() throws SpellCompilationException {
+		return this.<Number, IntervalNumber>getNonNullParamEvaluation(num).ceil();
 	}
 
 	@Override

@@ -28,9 +28,9 @@ public class PieceOperatorVectorConstruct extends PieceOperator {
 
 	@Override
 	public void initParams() {
-		addParam(num1 = new ParamNumber(SpellParam.GENERIC_NAME_X, SpellParam.RED, true, false));
-		addParam(num2 = new ParamNumber(SpellParam.GENERIC_NAME_Y, SpellParam.GREEN, true, false));
-		addParam(num3 = new ParamNumber(SpellParam.GENERIC_NAME_Z, SpellParam.BLUE, true, false));
+		addParam(num1 = new ParamNumber(SpellParam.GENERIC_NAME_X, SpellParam.RED, true));
+		addParam(num2 = new ParamNumber(SpellParam.GENERIC_NAME_Y, SpellParam.GREEN, true));
+		addParam(num3 = new ParamNumber(SpellParam.GENERIC_NAME_Z, SpellParam.BLUE, true));
 	}
 
 	@Override

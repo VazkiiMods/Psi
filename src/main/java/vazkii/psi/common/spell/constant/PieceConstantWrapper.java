@@ -8,6 +8,9 @@
  */
 package vazkii.psi.common.spell.constant;
 
+import org.jetbrains.annotations.NotNull;
+import vazkii.psi.api.interval.Interval;
+import vazkii.psi.api.interval.IntervalNumber;
 import vazkii.psi.api.spell.EnumPieceType;
 import vazkii.psi.api.spell.EnumSpellStat;
 import vazkii.psi.api.spell.Spell;
@@ -25,8 +28,6 @@ public class PieceConstantWrapper extends SpellPiece {
 	SpellParam<Number> target;
 	SpellParam<Number> max;
 
-	boolean evaluating = false;
-
 	public PieceConstantWrapper(Spell spell) {
 		super(spell);
 		setStatLabel(EnumSpellStat.COMPLEXITY, new StatLabel(1));
@@ -34,8 +35,8 @@ public class PieceConstantWrapper extends SpellPiece {
 
 	@Override
 	public void initParams() {
-		addParam(target = new ParamNumber(SpellParam.GENERIC_NAME_TARGET, SpellParam.RED, false, false));
-		addParam(max = new ParamNumber("psi.spellparam.constant", SpellParam.GREEN, false, true));
+		addParam(target = new ParamNumber(SpellParam.GENERIC_NAME_TARGET, SpellParam.RED, false));
+		addParam(max = new ParamNumber("psi.spellparam.constant", SpellParam.GREEN, false));
 	}
 
 	@Override
@@ -58,16 +59,13 @@ public class PieceConstantWrapper extends SpellPiece {
 	}
 
 	@Override
-	public Object evaluate() throws SpellCompilationException {
-		if(evaluating) {
-			return 0.0;
-		}
-
-		evaluating = true;
-		Object ret = getParamEvaluation(max);
-		evaluating = false;
-
-		return ret;
+	public @NotNull Interval<?> evaluate() throws SpellCompilationException {
+		IntervalNumber value = getParamEvaluation(target);
+		IntervalNumber absValue = value == null ? IntervalNumber.unbounded : value.abs();
+		IntervalNumber bound = getNonNullParamEvaluation(max);
+		if (bound.min > 0) bound = IntervalNumber.fromRange(0, bound.max);
+		if (bound.max < 0) bound = IntervalNumber.fromRange(bound.min, 0);
+		return IntervalNumber.fromRange(-absValue.max, absValue.max).clamp(bound);
 	}
 
 	@Override

@@ -10,9 +10,11 @@ package vazkii.psi.common.spell.selector.entity;
 
 import net.minecraft.world.item.ItemStack;
 
+import org.jetbrains.annotations.NotNull;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.EnumCADStat;
 import vazkii.psi.api.cad.ICAD;
+import vazkii.psi.api.interval.IntervalNumber;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellRuntimeException;
@@ -22,6 +24,11 @@ public class PieceSelectorCasterBattery extends PieceSelector {
 
 	public PieceSelectorCasterBattery(Spell spell) {
 		super(spell);
+	}
+	
+	@Override
+	public @NotNull IntervalNumber evaluate() {
+		return IntervalNumber.fromRange(0, Double.POSITIVE_INFINITY);
 	}
 
 	@Override

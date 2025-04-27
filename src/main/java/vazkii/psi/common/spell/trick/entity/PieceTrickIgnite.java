@@ -10,6 +10,7 @@ package vazkii.psi.common.spell.trick.entity;
 
 import net.minecraft.world.entity.Entity;
 
+import vazkii.psi.api.interval.IntervalNumber;
 import vazkii.psi.api.spell.EnumSpellStat;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellCompilationException;
@@ -35,21 +36,21 @@ public class PieceTrickIgnite extends PieceTrick {
 
 	@Override
 	public void initParams() {
-		addParam(target = new ParamEntity(SpellParam.GENERIC_NAME_TARGET, SpellParam.YELLOW, false, false));
-		addParam(time = new ParamNumber(SpellParam.GENERIC_NAME_TIME, SpellParam.RED, false, true));
+		addParam(target = new ParamEntity(SpellParam.GENERIC_NAME_TARGET, SpellParam.YELLOW, false));
+		addParam(time = new ParamNumber(SpellParam.GENERIC_NAME_TIME, SpellParam.RED, false));
 	}
 
 	@Override
 	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
 		super.addToMetadata(meta);
-		Double timeVal = this.<Double>getParamEvaluation(time);
-
-		if(timeVal == null || timeVal <= 0 || timeVal != timeVal.intValue()) {
+		double timeVal = this.<Number, IntervalNumber>getNonNullParamEvaluation(time).max;
+		
+		if(timeVal < 1) {
 			throw new SpellCompilationException(SpellCompilationException.NON_POSITIVE_INTEGER, x, y);
 		}
 
-		meta.addStat(EnumSpellStat.POTENCY, timeVal.intValue() * 40);
-		meta.addStat(EnumSpellStat.COST, timeVal.intValue() * 65);
+		meta.addStat(EnumSpellStat.POTENCY, ((int) timeVal) * 40);
+		meta.addStat(EnumSpellStat.COST, ((int) timeVal) * 65);
 	}
 
 	@Override

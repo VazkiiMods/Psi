@@ -19,6 +19,7 @@ import vazkii.psi.api.spell.piece.PieceErrorHandler;
 
 import javax.annotation.Nonnull;
 
+// TODO Prevent escaping intervals
 public class PieceErrorCatch extends PieceErrorHandler {
 	SpellParam<SpellParam.Any> fallback;
 

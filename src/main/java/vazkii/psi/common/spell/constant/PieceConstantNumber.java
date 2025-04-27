@@ -14,8 +14,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.nbt.CompoundTag;
 
+import org.jetbrains.annotations.NotNull;
 import org.lwjgl.glfw.GLFW;
 
+import vazkii.psi.api.interval.Interval;
+import vazkii.psi.api.interval.IntervalNumber;
 import vazkii.psi.api.spell.EnumPieceType;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
@@ -173,22 +176,26 @@ public class PieceConstantNumber extends SpellPiece {
 		return Double.class;
 	}
 
-	@Override
-	public Object evaluate() {
+	private double value() {
 		if(valueStr == null || valueStr.isEmpty() || valueStr.length() > 5) {
 			valueStr = "0";
 		}
-
+		
 		try {
 			return Double.parseDouble(valueStr);
 		} catch (NumberFormatException e) {
 			return 0D;
 		}
 	}
+	
+	@Override
+	public @NotNull Interval<?> evaluate() {
+		return IntervalNumber.fromValue(value());
+	}
 
 	@Override
 	public Object execute(SpellContext context) {
-		return evaluate();
+		return value();
 	}
 
 }

@@ -8,6 +8,8 @@
  */
 package vazkii.psi.api.spell.piece;
 
+import org.jetbrains.annotations.NotNull;
+import vazkii.psi.api.interval.Interval;
 import vazkii.psi.api.spell.EnumPieceType;
 import vazkii.psi.api.spell.EnumSpellStat;
 import vazkii.psi.api.spell.Spell;
@@ -36,8 +38,8 @@ public abstract class PieceSelector extends SpellPiece {
 	}
 
 	@Override
-	public Object evaluate() {
-		return null;
+	public @NotNull Interval<?> evaluate() {
+		return Interval.unboundedValues.get(getEvaluationType());
 	}
 
 	@Override

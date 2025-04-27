@@ -11,6 +11,8 @@ package vazkii.psi.common.spell.base;
 import net.minecraft.resources.ResourceLocation;
 
 import vazkii.psi.api.PsiAPI;
+import vazkii.psi.api.interval.Interval;
+import vazkii.psi.api.interval.IntervalNumber;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellPiece;
 import vazkii.psi.common.lib.LibPieceGroups;
@@ -261,6 +263,9 @@ public final class ModSpellPieces {
 	public static PieceContainer trickRussianRoulette;
 
 	public static void init() {
+		Interval.unboundedValues.put(Number.class, IntervalNumber.unbounded);
+		Interval.unboundedValues.put(Double.class, IntervalNumber.unbounded);
+		
 		selectorCaster = register(PieceSelectorCaster.class, LibPieceNames.SELECTOR_CASTER, LibPieceGroups.TUTORIAL_1);
 		selectorFocalPoint = register(PieceSelectorFocalPoint.class, LibPieceNames.SELECTOR_FOCAL_POINT, LibPieceGroups.PROJECTILES, true);
 		selectorNearbyItems = register(PieceSelectorNearbyItems.class, LibPieceNames.SELECTOR_NEARBY_ITEMS, LibPieceGroups.ENTITIES_INTRO);

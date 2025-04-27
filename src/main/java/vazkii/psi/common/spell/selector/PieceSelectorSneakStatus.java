@@ -8,6 +8,8 @@
  */
 package vazkii.psi.common.spell.selector;
 
+import org.jetbrains.annotations.NotNull;
+import vazkii.psi.api.interval.IntervalNumber;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.piece.PieceSelector;
@@ -23,6 +25,11 @@ public class PieceSelectorSneakStatus extends PieceSelector {
 		return Double.class;
 	}
 
+	@Override
+	public @NotNull IntervalNumber evaluate() {
+		return IntervalNumber.zeroToOne;
+	}
+	
 	@Override
 	public Object execute(SpellContext context) {
 		return context.caster.isShiftKeyDown() ? 0D : 1D;

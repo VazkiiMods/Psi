@@ -14,14 +14,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import vazkii.psi.api.internal.MathHelper;
 import vazkii.psi.api.internal.Vector3;
-import vazkii.psi.api.spell.EnumSpellStat;
-import vazkii.psi.api.spell.Spell;
-import vazkii.psi.api.spell.SpellCompilationException;
-import vazkii.psi.api.spell.SpellContext;
-import vazkii.psi.api.spell.SpellMetadata;
-import vazkii.psi.api.spell.SpellParam;
-import vazkii.psi.api.spell.SpellRuntimeException;
-import vazkii.psi.api.spell.StatLabel;
+import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.param.ParamVector;
 import vazkii.psi.api.spell.piece.PieceTrick;
@@ -43,20 +36,17 @@ public class PieceTrickConjureBlockSequence extends PieceTrick {
 
 	@Override
 	public void initParams() {
-		addParam(position = new ParamVector(SpellParam.GENERIC_NAME_POSITION, SpellParam.BLUE, false, false));
-		addParam(target = new ParamVector(SpellParam.GENERIC_NAME_TARGET, SpellParam.GREEN, false, false));
-		addParam(maxBlocks = new ParamNumber(SpellParam.GENERIC_NAME_MAX, SpellParam.RED, false, true));
-		addParam(time = new ParamNumber(SpellParam.GENERIC_NAME_TIME, SpellParam.PURPLE, true, false));
+		addParam(position = new ParamVector(SpellParam.GENERIC_NAME_POSITION, SpellParam.BLUE, false));
+		addParam(target = new ParamVector(SpellParam.GENERIC_NAME_TARGET, SpellParam.GREEN, false));
+		addParam(maxBlocks = new ParamNumber(SpellParam.GENERIC_NAME_MAX, SpellParam.RED, false));
+		addParam(time = new ParamNumber(SpellParam.GENERIC_NAME_TIME, SpellParam.PURPLE, true));
 	}
 
 	@Override
 	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
 		super.addToMetadata(meta);
-
-		Double maxBlocksVal = this.<Double>getParamEvaluation(maxBlocks);
-		if(maxBlocksVal == null || maxBlocksVal <= 0) {
-			throw new SpellCompilationException(SpellCompilationException.NON_POSITIVE_VALUE, x, y);
-		}
+		
+		double maxBlocksVal = SpellHelpers.ensurePositiveAndNonzero(this, maxBlocks);
 
 		meta.addStat(EnumSpellStat.POTENCY, (int) (maxBlocksVal * 15));
 		meta.addStat(EnumSpellStat.COST, (int) ((24 + (maxBlocksVal - 1) * 14)));

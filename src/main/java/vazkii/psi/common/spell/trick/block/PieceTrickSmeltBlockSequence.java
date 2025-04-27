@@ -39,19 +39,16 @@ public class PieceTrickSmeltBlockSequence extends PieceTrick {
 
 	@Override
 	public void initParams() {
-		addParam(position = new ParamVector(SpellParam.GENERIC_NAME_POSITION, SpellParam.BLUE, false, false));
-		addParam(target = new ParamVector(SpellParam.GENERIC_NAME_TARGET, SpellParam.GREEN, false, false));
-		addParam(maxBlocks = new ParamNumber(SpellParam.GENERIC_NAME_MAX, SpellParam.RED, false, true));
+		addParam(position = new ParamVector(SpellParam.GENERIC_NAME_POSITION, SpellParam.BLUE, false));
+		addParam(target = new ParamVector(SpellParam.GENERIC_NAME_TARGET, SpellParam.GREEN, false));
+		addParam(maxBlocks = new ParamNumber(SpellParam.GENERIC_NAME_MAX, SpellParam.RED, false));
 	}
 
 	@Override
 	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
 		super.addToMetadata(meta);
-
-		Double maxBlocksVal = this.<Double>getParamEvaluation(maxBlocks);
-		if(maxBlocksVal == null || maxBlocksVal <= 0) {
-			throw new SpellCompilationException(SpellCompilationException.NON_POSITIVE_VALUE, x, y);
-		}
+		
+		double maxBlocksVal = SpellHelpers.ensurePositiveAndNonzero(this, maxBlocks);
 
 		meta.addStat(EnumSpellStat.POTENCY, (int) (maxBlocksVal * 20));
 		meta.addStat(EnumSpellStat.COST, (int) ((96 + (maxBlocksVal - 1) * 64)));

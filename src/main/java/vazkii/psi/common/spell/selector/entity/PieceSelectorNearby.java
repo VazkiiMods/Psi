@@ -12,12 +12,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.AABB;
 
 import vazkii.psi.api.internal.Vector3;
-import vazkii.psi.api.spell.Spell;
-import vazkii.psi.api.spell.SpellCompilationException;
-import vazkii.psi.api.spell.SpellContext;
-import vazkii.psi.api.spell.SpellMetadata;
-import vazkii.psi.api.spell.SpellParam;
-import vazkii.psi.api.spell.SpellRuntimeException;
+import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.param.ParamVector;
 import vazkii.psi.api.spell.piece.PieceSelector;
@@ -37,18 +32,15 @@ public abstract class PieceSelectorNearby extends PieceSelector {
 
 	@Override
 	public void initParams() {
-		addParam(position = new ParamVector(SpellParam.GENERIC_NAME_POSITION, SpellParam.BLUE, true, false));
-		addParam(radius = new ParamNumber(SpellParam.GENERIC_NAME_RADIUS, SpellParam.GREEN, true, true));
+		addParam(position = new ParamVector(SpellParam.GENERIC_NAME_POSITION, SpellParam.BLUE, true));
+		addParam(radius = new ParamNumber(SpellParam.GENERIC_NAME_RADIUS, SpellParam.GREEN, true));
 	}
 
 	@Override
 	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
 		super.addToMetadata(meta);
 
-		Double radiusVal = this.getParamEvaluationeOrDefault(radius, 2 * SpellContext.MAX_DISTANCE).doubleValue();
-		if(radiusVal <= 0) {
-			throw new SpellCompilationException(SpellCompilationException.NON_POSITIVE_VALUE, x, y);
-		}
+		SpellHelpers.ensurePositiveAndNonzero(this, radius, 2 * SpellContext.MAX_DISTANCE);
 	}
 
 	@Override

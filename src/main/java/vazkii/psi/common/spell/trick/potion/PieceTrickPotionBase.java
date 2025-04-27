@@ -13,6 +13,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 
+import vazkii.psi.api.interval.IntervalNumber;
 import vazkii.psi.api.spell.EnumSpellStat;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellCompilationException;
@@ -39,28 +40,25 @@ public abstract class PieceTrickPotionBase extends PieceTrick {
 
 	@Override
 	public void initParams() {
-		addParam(target = new ParamEntity(SpellParam.GENERIC_NAME_TARGET, SpellParam.YELLOW, false, false));
+		addParam(target = new ParamEntity(SpellParam.GENERIC_NAME_TARGET, SpellParam.YELLOW, false));
 		if(hasPower()) {
-			addParam(power = new ParamNumber(SpellParam.GENERIC_NAME_POWER, SpellParam.RED, false, true));
+			addParam(power = new ParamNumber(SpellParam.GENERIC_NAME_POWER, SpellParam.RED, false));
 		}
-		addParam(time = new ParamNumber(SpellParam.GENERIC_NAME_TIME, SpellParam.BLUE, false, true));
+		addParam(time = new ParamNumber(SpellParam.GENERIC_NAME_TIME, SpellParam.BLUE, false));
 	}
 
 	@Override
 	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
 		super.addToMetadata(meta);
-		Double powerVal = 1D;
-		if(hasPower()) {
-			powerVal = this.<Double>getParamEvaluation(power);
-		}
-		Double timeVal = this.<Double>getParamEvaluation(time);
+		IntervalNumber powerVal = hasPower() ? this.getNonNullParamEvaluation(power) : IntervalNumber.one;
+		IntervalNumber timeVal = getNonNullParamEvaluation(time);
 
-		if(powerVal == null || timeVal == null || powerVal <= 0 || powerVal != powerVal.intValue() || timeVal <= 0 || timeVal != timeVal.intValue()) {
+		if(powerVal.max < 1 || timeVal.max < 1) {
 			throw new SpellCompilationException(SpellCompilationException.NON_POSITIVE_INTEGER, x, y);
 		}
 
-		meta.addStat(EnumSpellStat.POTENCY, 20 + getPotency(powerVal.intValue(), timeVal.intValue()));
-		meta.addStat(EnumSpellStat.COST, 40 + getCost(powerVal.intValue(), timeVal.intValue()));
+		meta.addStat(EnumSpellStat.POTENCY, 20 + getPotency((int) powerVal.max, (int) timeVal.max));
+		meta.addStat(EnumSpellStat.COST, 40 + getCost((int) powerVal.max, (int) timeVal.max));
 	}
 
 	@Override

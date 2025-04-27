@@ -31,8 +31,8 @@ public class PieceTrickSwitchTargetSlot extends PieceTrick {
 
 	@Override
 	public void initParams() {
-		addParam(pos = new ParamNumber(SpellParam.GENERIC_NAME_POSITION, SpellParam.BLUE, true, false));
-		addParam(shift = new ParamNumber("psi.spellparam.shift", SpellParam.GREEN, true, false));
+		addParam(pos = new ParamNumber(SpellParam.GENERIC_NAME_POSITION, SpellParam.BLUE, true));
+		addParam(shift = new ParamNumber("psi.spellparam.shift", SpellParam.GREEN, true));
 	}
 
 	@Override

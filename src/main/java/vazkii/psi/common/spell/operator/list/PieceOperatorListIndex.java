@@ -36,8 +36,8 @@ public class PieceOperatorListIndex extends PieceOperator {
 
 	@Override
 	public void initParams() {
-		addParam(list = new ParamEntityListWrapper(SpellParam.GENERIC_NAME_LIST, SpellParam.CYAN, false, false));
-		addParam(number = new ParamNumber(SpellParam.GENERIC_NAME_NUMBER, SpellParam.PURPLE, false, false));
+		addParam(list = new ParamEntityListWrapper(SpellParam.GENERIC_NAME_LIST, SpellParam.CYAN, false));
+		addParam(number = new ParamNumber(SpellParam.GENERIC_NAME_NUMBER, SpellParam.PURPLE, false));
 	}
 
 	@Override

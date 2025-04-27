@@ -30,8 +30,8 @@ public class PieceOperatorListRemove extends PieceOperator {
 
 	@Override
 	public void initParams() {
-		addParam(target = new ParamEntity(SpellParam.GENERIC_NAME_TARGET, SpellParam.BLUE, false, false));
-		addParam(list = new ParamEntityListWrapper("psi.spellparam.list", SpellParam.YELLOW, false, false));
+		addParam(target = new ParamEntity(SpellParam.GENERIC_NAME_TARGET, SpellParam.BLUE, false));
+		addParam(list = new ParamEntityListWrapper("psi.spellparam.list", SpellParam.YELLOW, false));
 	}
 
 	@Override

@@ -10,6 +10,8 @@ package vazkii.psi.common.spell.selector.entity;
 
 import net.minecraft.world.entity.Entity;
 
+import org.jetbrains.annotations.NotNull;
+import vazkii.psi.api.interval.IntervalNumber;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellRuntimeException;
@@ -28,6 +30,11 @@ public class PieceSelectorNearbyCharges extends PieceSelectorNearby {
 	@Override
 	public Predicate<Entity> getTargetPredicate(SpellContext context) {
 		return (Entity e) -> e instanceof EntitySpellCharge && (Objects.requireNonNull(((EntitySpellCharge) e).getOwner()).getName().equals(context.caster.getName()));
+	}
+	
+	@Override
+	public @NotNull IntervalNumber evaluate() {
+		return IntervalNumber.fromRange(0, Double.POSITIVE_INFINITY);
 	}
 
 	@Override
