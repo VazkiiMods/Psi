@@ -119,7 +119,30 @@ tasks.withType(ProcessResources).configureEach {
     filesMatching(['META-INF/neoforge.mods.toml']) {
         expand replaceProperties
     }
+
+    from(sourceSets.main.resources.srcDirs) {
+        exclude '**/psd/**'
+        duplicatesStrategy 'include'
+    }
 }
+
+jar {
+    archiveFileName = "${mod_name}-${minecraft_version}-${mod_version}.jar"
+
+    manifest {
+        attributes([
+                "Specification-Title": "${mod_id}",
+                "Specification-Vendor": "vazkii",
+                "Specification-Version": "1",
+                "Implementation-Title": "${mod_id}",
+                "Implementation-Version": "${mod_version}",
+                "Implementation-Vendor" :"vazkii",
+                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+                "MixinConfigs": "psi.mixins.json"
+        ])
+    }
+}
+
 
 
 tasks.withType(JavaCompile).configureEach {
