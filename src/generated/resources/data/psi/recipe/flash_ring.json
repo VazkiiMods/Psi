@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "E": {
+      "tag": "c:ingots/ebony_psimetal"
+    },
+    "G": {
+      "tag": "c:dusts/glowstone"
+    },
+    "P": {
+      "tag": "c:gems/psigem"
+    }
+  },
+  "pattern": [
+    " E ",
+    "EGE",
+    " P "
+  ],
+  "result": {
+    "count": 1,
+    "id": "psi:flash_ring"
+  }
+}

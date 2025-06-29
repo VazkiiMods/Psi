@@ -28,6 +28,5 @@
     "recipes": [
       "psi:cad_assembly_gold"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

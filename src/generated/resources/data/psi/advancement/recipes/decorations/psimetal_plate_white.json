@@ -28,6 +28,5 @@
     "recipes": [
       "psi:psimetal_plate_white"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

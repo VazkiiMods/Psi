@@ -28,6 +28,5 @@
     "recipes": [
       "psi:vector_ruler"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

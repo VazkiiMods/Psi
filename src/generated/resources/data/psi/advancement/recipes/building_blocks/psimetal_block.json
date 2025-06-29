@@ -28,6 +28,5 @@
     "recipes": [
       "psi:psimetal_block"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

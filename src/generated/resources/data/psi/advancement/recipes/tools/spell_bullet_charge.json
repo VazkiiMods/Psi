@@ -28,6 +28,5 @@
     "recipes": [
       "psi:spell_bullet_charge"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

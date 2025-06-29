@@ -86,6 +86,8 @@ public class PsiCreativeTab {
 						output.accept(ModItems.cadColorizerPsi);
 						output.accept(ModItems.cadColorizerEmpty);
 
+						output.accept(ModItems.flashRing);
+
 						output.accept(ModItems.spellBullet);
 						output.accept(ModItems.projectileSpellBullet);
 						output.accept(ModItems.loopSpellBullet);

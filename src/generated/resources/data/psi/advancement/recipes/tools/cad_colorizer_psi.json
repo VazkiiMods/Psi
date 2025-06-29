@@ -28,6 +28,5 @@
     "recipes": [
       "psi:cad_colorizer_psi"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

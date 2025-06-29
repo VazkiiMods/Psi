@@ -28,6 +28,5 @@
     "recipes": [
       "psi:spell_drive"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

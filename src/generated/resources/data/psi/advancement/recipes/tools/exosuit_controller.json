@@ -28,6 +28,5 @@
     "recipes": [
       "psi:exosuit_controller"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

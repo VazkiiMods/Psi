@@ -19,6 +19,7 @@ import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ISocketable;
 import vazkii.psi.common.core.capability.CapabilityTriggerSensor;
 import vazkii.psi.common.entity.ModEntities;
+import vazkii.psi.common.item.ItemFlashRing;
 import vazkii.psi.common.item.ItemSpellBullet;
 import vazkii.psi.common.item.armor.ItemPsimetalArmor;
 import vazkii.psi.common.item.base.ModItems;
@@ -110,6 +111,10 @@ public class CapabilityHandler {
 				ModItems.grenadeSpellBullet,
 				ModItems.chargeSpellBullet,
 				ModItems.mineSpellBullet);
+
+		event.registerItem(PsiAPI.SPELL_ACCEPTOR_CAPABILITY,
+				(stack, ctx) -> new ItemFlashRing.SpellAcceptor(stack),
+				ModItems.flashRing);
 
 		event.registerItem(
 				PsiAPI.CAD_DATA_CAPABILITY,

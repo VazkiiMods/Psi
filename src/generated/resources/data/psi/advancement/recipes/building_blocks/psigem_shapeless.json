@@ -28,6 +28,5 @@
     "recipes": [
       "psi:psigem_shapeless"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

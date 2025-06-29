@@ -28,6 +28,5 @@
     "recipes": [
       "psi:cad_core_radiative"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

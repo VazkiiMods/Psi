@@ -80,6 +80,8 @@ public final class LibItemNames {
 	public static final String CAD_COLORIZER_BLACK = "cad_colorizer_black";
 	public static final String CAD_COLORIZER_RAINBOW = "cad_colorizer_rainbow";
 	public static final String CAD_COLORIZER_PSI = "cad_colorizer_psi";
+	public static final String FLASH_RING = "flash_ring";
+	public static final String FLASH_RING_ACTIVE = "flash_ring_active";
 	public static final String SPELL_BULLET = "spell_bullet";
 	public static final String SPELL_BULLET_ACTIVE = "spell_bullet_active";
 	public static final String SPELL_BULLET_PROJECTILE = "spell_bullet_projectile";

@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_psidust": {
+    "has_ebony_psimetal": {
       "conditions": {
         "items": [
           {
-            "items": "#psi:psidust"
+            "items": "#c:ingots/ebony_psimetal"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "psi:spell_bullet_projectile"
+        "recipe": "psi:flash_ring"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -21,12 +21,12 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_psidust"
+      "has_ebony_psimetal"
     ]
   ],
   "rewards": {
     "recipes": [
-      "psi:spell_bullet_projectile"
+      "psi:flash_ring"
     ]
   }
 }

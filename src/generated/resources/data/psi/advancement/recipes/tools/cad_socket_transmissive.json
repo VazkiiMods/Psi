@@ -28,6 +28,5 @@
     "recipes": [
       "psi:cad_socket_transmissive"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

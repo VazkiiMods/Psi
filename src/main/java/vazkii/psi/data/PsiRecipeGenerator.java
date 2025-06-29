@@ -430,6 +430,15 @@ public class PsiRecipeGenerator extends RecipeProvider {
 				.pattern("P P")
 				.unlockedBy("has_psimetal", hasPsimetal)
 				.save(consumer, Psi.location("psimetal_exosuit_boots"));
+		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.flashRing)
+				.define('E', ModTags.INGOT_EBONY_PSIMETAL)
+				.define('G', Tags.Items.DUSTS_GLOWSTONE)
+				.define('P', ModTags.GEM_PSIGEM)
+				.pattern(" E ")
+				.pattern("EGE")
+				.pattern(" P ")
+				.unlockedBy("has_ebony_psimetal", hasEbonyPsimetal)
+				.save(consumer, Psi.location("flash_ring"));
 		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.detonator)
 				.define('P', ModTags.PSIDUST)
 				.define('B', ItemTags.BUTTONS)

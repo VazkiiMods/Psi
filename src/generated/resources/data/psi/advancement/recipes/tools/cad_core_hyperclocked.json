@@ -28,6 +28,5 @@
     "recipes": [
       "psi:cad_core_hyperclocked"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

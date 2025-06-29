@@ -28,6 +28,5 @@
     "recipes": [
       "psi:exosuit_sensor_stress"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -28,6 +28,5 @@
     "recipes": [
       "psi:cad_battery_extended"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

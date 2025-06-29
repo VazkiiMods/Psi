@@ -28,6 +28,5 @@
     "recipes": [
       "psi:ivory_ingot_shapeless"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -28,6 +28,5 @@
     "recipes": [
       "psi:psimetal_exosuit_chestplate"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -28,6 +28,5 @@
     "recipes": [
       "psi:cad_colorizer_yellow"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

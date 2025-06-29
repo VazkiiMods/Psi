@@ -2,5 +2,13 @@
   "parent": "minecraft:item/generated",
   "textures": {
     "layer0": "psi:item/spell_bullet_charge"
-  }
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "psi:active": 1.0
+      },
+      "model": "psi:item/spell_bullet_charge_active"
+    }
+  ]
 }

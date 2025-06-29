@@ -28,6 +28,5 @@
     "recipes": [
       "psi:psidust_block"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

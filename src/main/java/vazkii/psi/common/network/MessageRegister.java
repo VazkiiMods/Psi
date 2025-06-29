@@ -52,6 +52,7 @@ public class MessageRegister {
 		registrar.playBidirectional(MessageSpamlessChat.TYPE, MessageSpamlessChat.CODEC, MessageSpamlessChat::handle);
 		registrar.playBidirectional(MessageSpellError.TYPE, MessageSpellError.CODEC, MessageSpellError::handle);
 		registrar.playBidirectional(MessageSpellModified.TYPE, MessageSpellModified.CODEC, MessageSpellModified::handle);
+		registrar.playBidirectional(MessageFlashRingSync.TYPE, MessageFlashRingSync.CODEC, MessageFlashRingSync::handle);
 		registrar.playBidirectional(MessageTriggerJumpSpell.TYPE, MessageTriggerJumpSpell.CODEC, MessageTriggerJumpSpell::handle);
 		registrar.playBidirectional(MessageVisualEffect.TYPE, MessageVisualEffect.CODEC, MessageVisualEffect::handle);
 

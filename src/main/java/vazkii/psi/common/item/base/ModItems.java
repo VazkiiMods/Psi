@@ -11,6 +11,7 @@ package vazkii.psi.common.item.base;
 import com.mojang.serialization.Codec;
 
 import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -33,6 +34,7 @@ import net.neoforged.neoforge.registries.RegisterEvent;
 import org.jetbrains.annotations.NotNull;
 
 import vazkii.psi.api.PsiAPI;
+import vazkii.psi.api.spell.ISpellAcceptor;
 import vazkii.psi.client.model.ArmorModels;
 import vazkii.psi.common.core.handler.capability.CADData;
 import vazkii.psi.common.item.*;
@@ -119,6 +121,8 @@ public final class ModItems {
 	public static Item cadColorizerPsi;
 	public static Item cadColorizerEmpty;
 
+	public static Item flashRing;
+
 	public static Item spellBullet;
 	public static Item projectileSpellBullet;
 	public static Item loopSpellBullet;
@@ -202,6 +206,8 @@ public final class ModItems {
 			cadColorizerPsi = new ItemCADColorizerPsi(defaultBuilder());
 			cadColorizerEmpty = new ItemCADColorizerEmpty(defaultBuilder());
 
+			flashRing = new ItemFlashRing(defaultBuilder());
+
 			spellBullet = new ItemSpellBullet(defaultBuilder());
 			projectileSpellBullet = new ItemProjectileSpellBullet(defaultBuilder());
 			loopSpellBullet = new ItemLoopcastSpellBullet(defaultBuilder());
@@ -284,6 +290,8 @@ public final class ModItems {
 			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_COLORIZER_PSI), cadColorizerPsi);
 			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_COLORIZER_EMPTY), cadColorizerEmpty);
 
+			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.FLASH_RING), flashRing);
+
 			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.SPELL_BULLET), spellBullet);
 			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.SPELL_BULLET_PROJECTILE), projectileSpellBullet);
 			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.SPELL_BULLET_LOOP), loopSpellBullet);
@@ -326,6 +334,15 @@ public final class ModItems {
 				return ArmorModels.get(itemStack);
 			}
 		}, psimetalExosuitHelmet, psimetalExosuitChestplate, psimetalExosuitLeggings, psimetalExosuitBoots);
+
+		ResourceLocation activeProperty = ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, "active");
+		ItemProperties.register(spellBullet, activeProperty, (stack, level, entity, seed) -> ISpellAcceptor.hasSpell(stack) ? 1.0F : 0.0F);
+		ItemProperties.register(chargeSpellBullet, activeProperty, (stack, level, entity, seed) -> ISpellAcceptor.hasSpell(stack) ? 1.0F : 0.0F);
+		ItemProperties.register(projectileSpellBullet, activeProperty, (stack, level, entity, seed) -> ISpellAcceptor.hasSpell(stack) ? 1.0F : 0.0F);
+		ItemProperties.register(loopSpellBullet, activeProperty, (stack, level, entity, seed) -> ISpellAcceptor.hasSpell(stack) ? 1.0F : 0.0F);
+		ItemProperties.register(circleSpellBullet, activeProperty, (stack, level, entity, seed) -> ISpellAcceptor.hasSpell(stack) ? 1.0F : 0.0F);
+		ItemProperties.register(mineSpellBullet, activeProperty, (stack, level, entity, seed) -> ISpellAcceptor.hasSpell(stack) ? 1.0F : 0.0F);
+		ItemProperties.register(flashRing, activeProperty, (stack, level, entity, seed) -> ISpellAcceptor.hasSpell(stack) ? 1.0F : 0.0F);
 	}
 
 	public static Item.Properties defaultBuilder() {

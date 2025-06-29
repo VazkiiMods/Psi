@@ -28,6 +28,5 @@
     "recipes": [
       "psi:exosuit_sensor_water"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

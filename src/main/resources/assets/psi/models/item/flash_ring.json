@@ -1,14 +1,14 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "psi:item/spell_bullet_loop"
+    "layer0": "psi:item/flash_ring"
   },
   "overrides": [
     {
       "predicate": {
         "psi:active": 1.0
       },
-      "model": "psi:item/spell_bullet_loop_active"
+      "model": "psi:item/flash_ring_active"
     }
   ]
 }
