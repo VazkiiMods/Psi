@@ -36,7 +36,7 @@ def main():
     else:
         print("Created tag")
 
-    build["mod_version"] = str(int(mod_version) + 1)
+    build["mod_version"] = str(int(version) + 1)
     with open("gradle.properties", "wb") as f:
         build.store(f, encoding="utf-8")
 
