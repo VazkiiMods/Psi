@@ -10,8 +10,8 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v4
         with:
-          distribution: 'temurin'
-          java-version: '21'
+          distribution: "temurin"
+          java-version: "21"
 
       - name: Validate gradlew integrity
         uses: gradle/actions/wrapper-validation@v3
@@ -31,10 +31,10 @@ jobs:
         run: |
           MC=$(awk -F '=' '$1 == "minecraft_version" { print $2 }' gradle.properties)
           BUILD=$(awk -F '=' '$1 == "mod_version" { print $2 }' gradle.properties)
-          echo "forge=build/libs/Psi-${MC}-${BUILD}.jar" >> "$GITHUB_OUTPUT"
+          echo "neoforge=build/libs/Psi-${MC}-${BUILD}.jar" >> "$GITHUB_OUTPUT"
 
       - name: Lint files
-        run : |
+        run: |
           ./gradlew checkSyntax
 
       - name: Build
@@ -46,7 +46,7 @@ jobs:
         uses: jwgmeligmeyling/pmd-github-action@v1
         if: failure()
         with:
-          path: '**/reports/pmd/main.xml'
+          path: "**/reports/pmd/main.xml"
 
       - name: Stop Gradle
         run: ./gradlew --stop
@@ -58,22 +58,22 @@ jobs:
         run: |
           echo "${SIGNING_KEY}" | gpg --import -
           gpg --local-user "Violet Moon Signing Key" --armor \
-            --detach-sign ${{ steps.calculate_artifact_names.outputs.forge }}
+            --detach-sign ${{ steps.calculate_artifact_names.outputs.neoforge }}
 
       - name: Archive Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: Forge
+          name: Neoforge
           path: |
-            ${{ steps.calculate_artifact_names.outputs.forge }}
-            ${{ steps.calculate_artifact_names.outputs.forge }}.asc
+            ${{ steps.calculate_artifact_names.outputs.neoforge }}
+            ${{ steps.calculate_artifact_names.outputs.neoforge }}.asc
 
       - name: Upload Releases
         if: startsWith(github.ref, 'refs/tags/release-')
         env:
           GH_TOKEN: ${{ github.token }}
           GIT_REF: ${{ github.ref }}
-          FORGE_JAR: ${{ steps.calculate_artifact_names.outputs.forge }}
+          NEOFORGE_JAR: ${{ steps.calculate_artifact_names.outputs.neoforge }}
           CURSEFORGE_TOKEN: ${{ secrets.VAZKII_CURSEFORGE_TOKEN }}
           MODRINTH_TOKEN: ${{ secrets.VAZKII_MODRINTH_TOKEN }}
         run: |
