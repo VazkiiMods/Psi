@@ -8,7 +8,7 @@
       "predicate": {
         "psi:active": 1.0
       },
-      "model": "psi:item/spell_bullet_active_active"
+      "model": "psi:item/spell_bullet_mine_active"
     }
   ]
 }
