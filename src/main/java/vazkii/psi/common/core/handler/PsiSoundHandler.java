@@ -13,6 +13,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.registries.RegisterEvent;
+
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.lib.LibMisc;
 

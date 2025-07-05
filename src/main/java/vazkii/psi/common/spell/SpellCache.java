@@ -25,12 +25,12 @@ public final class SpellCache implements ISpellCache {
 	@SuppressWarnings("serial")
 	public static final Map<UUID, CompiledSpell> map = new LinkedHashMap<>() {
 
-        @Override
-        protected boolean removeEldestEntry(Map.Entry<UUID, CompiledSpell> eldest) {
-            return size() > ConfigHandler.COMMON.spellCacheSize.get();
-        }
+		@Override
+		protected boolean removeEldestEntry(Map.Entry<UUID, CompiledSpell> eldest) {
+			return size() > ConfigHandler.COMMON.spellCacheSize.get();
+		}
 
-    };
+	};
 
 	@Override
 	public CompiledSpell getCompiledSpell(Spell spell) {

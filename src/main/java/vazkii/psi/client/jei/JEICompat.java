@@ -14,11 +14,14 @@ import mezz.jei.api.helpers.IJeiHelpers;
 import mezz.jei.api.ingredients.subtypes.ISubtypeInterpreter;
 import mezz.jei.api.ingredients.subtypes.UidContext;
 import mezz.jei.api.registration.*;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
+
 import org.jetbrains.annotations.NotNull;
+
 import vazkii.psi.api.cad.EnumCADComponent;
 import vazkii.psi.client.jei.crafting.BulletToDriveExtension;
 import vazkii.psi.client.jei.crafting.DriveDuplicateExtension;

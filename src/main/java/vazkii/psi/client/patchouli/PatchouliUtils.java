@@ -12,6 +12,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+
 import vazkii.patchouli.api.IComponentRenderContext;
 import vazkii.patchouli.api.IVariable;
 import vazkii.psi.api.spell.SpellPiece;

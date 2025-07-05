@@ -11,6 +11,7 @@ package vazkii.psi.api;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.mojang.serialization.Lifecycle;
+
 import net.minecraft.core.MappedRegistry;
 import net.minecraft.core.RegistrationInfo;
 import net.minecraft.core.Registry;
@@ -25,8 +26,9 @@ import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.capabilities.EntityCapability;
 import net.neoforged.neoforge.capabilities.ItemCapability;
 import net.neoforged.neoforge.common.SimpleTier;
+
 import org.apache.logging.log4j.LogManager;
-import org.jetbrains.annotations.Nullable;
+
 import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.cad.ICADData;
 import vazkii.psi.api.cad.IPsiBarDisplay;
@@ -108,7 +110,7 @@ public final class PsiAPI {
 
 		if(main) {
 			if(mainPieceForGroup.containsKey(resLoc)) {
-                LogManager.getLogger(MOD_ID).info("Group {} already has a main piece!", resLoc);
+				LogManager.getLogger(MOD_ID).info("Group {} already has a main piece!", resLoc);
 			}
 			mainPieceForGroup.put(resLoc, clazz);
 		}

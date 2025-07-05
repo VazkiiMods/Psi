@@ -9,10 +9,12 @@
 package vazkii.psi.client.patchouli;
 
 import com.mojang.blaze3d.vertex.ByteBufferBuilder;
+
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.resources.ResourceLocation;
+
 import vazkii.patchouli.api.IComponentRenderContext;
 import vazkii.patchouli.api.ICustomComponent;
 import vazkii.patchouli.api.IVariable;

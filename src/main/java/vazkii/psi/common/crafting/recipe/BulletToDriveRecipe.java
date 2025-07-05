@@ -14,11 +14,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 
+import org.jetbrains.annotations.NotNull;
+
 import vazkii.psi.api.spell.ISpellAcceptor;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.common.item.ItemSpellDrive;
-
-import org.jetbrains.annotations.NotNull;
 
 public class BulletToDriveRecipe extends CustomRecipe {
 	public static final SimpleCraftingRecipeSerializer<BulletToDriveRecipe> SERIALIZER = new SimpleCraftingRecipeSerializer<>(BulletToDriveRecipe::new);

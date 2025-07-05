@@ -9,6 +9,7 @@
 package vazkii.psi.common.spell.trick.entity;
 
 import net.minecraft.world.entity.Entity;
+
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.param.ParamEntity;

@@ -9,11 +9,13 @@
 package vazkii.psi.client.core.handler;
 
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+
 import net.minecraft.client.renderer.ShaderInstance;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RegisterShadersEvent;
+
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.lib.LibResources;

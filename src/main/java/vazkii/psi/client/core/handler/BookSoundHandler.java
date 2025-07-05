@@ -15,7 +15,9 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.InputEvent;
+
 import org.lwjgl.glfw.GLFW;
+
 import vazkii.patchouli.api.PatchouliAPI;
 import vazkii.psi.common.core.handler.PsiSoundHandler;
 import vazkii.psi.common.lib.LibMisc;

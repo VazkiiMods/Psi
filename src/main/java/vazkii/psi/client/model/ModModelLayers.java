@@ -9,6 +9,7 @@
 package vazkii.psi.client.model;
 
 import net.minecraft.client.model.geom.ModelLayerLocation;
+
 import vazkii.psi.common.Psi;
 
 public class ModModelLayers {

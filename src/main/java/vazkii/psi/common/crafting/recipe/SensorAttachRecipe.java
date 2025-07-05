@@ -13,10 +13,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 
+import org.jetbrains.annotations.NotNull;
+
 import vazkii.psi.api.exosuit.IExosuitSensor;
 import vazkii.psi.api.exosuit.ISensorHoldable;
-
-import org.jetbrains.annotations.NotNull;
 
 public class SensorAttachRecipe extends CustomRecipe {
 	public static final SimpleCraftingRecipeSerializer<SensorAttachRecipe> SERIALIZER = new SimpleCraftingRecipeSerializer<>(SensorAttachRecipe::new);

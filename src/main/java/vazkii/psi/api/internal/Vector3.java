@@ -9,7 +9,7 @@
 package vazkii.psi.api.internal;
 
 import com.mojang.serialization.Codec;
-import io.netty.buffer.ByteBuf;
+
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -21,12 +21,15 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
+
 import org.lwjgl.opengl.GL11;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
 import java.util.List;
+
+import io.netty.buffer.ByteBuf;
 
 public class Vector3 {
 	public static final Vector3 zero = new Vector3();
@@ -51,16 +54,16 @@ public class Vector3 {
 					from -> List.of(from.x, from.y, from.z)
 			);
 	public static final StreamCodec<ByteBuf, Vector3> STREAM_CODEC = new StreamCodec<>() {
-        public Vector3 decode(ByteBuf buffer) {
-            return new Vector3(buffer.readDouble(), buffer.readDouble(), buffer.readDouble());
-        }
+		public Vector3 decode(ByteBuf buffer) {
+			return new Vector3(buffer.readDouble(), buffer.readDouble(), buffer.readDouble());
+		}
 
-        public void encode(ByteBuf buffer, Vector3 vector3) {
-            buffer.writeDouble(vector3.x);
-            buffer.writeDouble(vector3.y);
-            buffer.writeDouble(vector3.z);
-        }
-    };
+		public void encode(ByteBuf buffer, Vector3 vector3) {
+			buffer.writeDouble(vector3.x);
+			buffer.writeDouble(vector3.y);
+			buffer.writeDouble(vector3.z);
+		}
+	};
 
 	public Vector3() {}
 

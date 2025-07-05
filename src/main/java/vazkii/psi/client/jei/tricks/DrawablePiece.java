@@ -9,9 +9,12 @@
 package vazkii.psi.client.jei.tricks;
 
 import com.mojang.blaze3d.vertex.ByteBufferBuilder;
+
 import mezz.jei.api.gui.drawable.IDrawableStatic;
+
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.MultiBufferSource;
+
 import vazkii.psi.api.spell.SpellPiece;
 
 public class DrawablePiece implements IDrawableStatic {

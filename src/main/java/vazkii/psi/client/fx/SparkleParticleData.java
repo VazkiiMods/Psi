@@ -11,10 +11,12 @@ package vazkii.psi.client.fx;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
+
 import org.jetbrains.annotations.NotNull;
 
 public record SparkleParticleData(float size, float r, float g, float b, int m, double mx, double my,
@@ -32,30 +34,30 @@ public record SparkleParticleData(float size, float r, float g, float b, int m, 
 	).apply(instance, SparkleParticleData::new));
 
 	public static StreamCodec<? super RegistryFriendlyByteBuf, SparkleParticleData> STREAM_CODEC = new StreamCodec<>() {
-        public SparkleParticleData decode(RegistryFriendlyByteBuf pBuffer) {
-            return new SparkleParticleData(
-                    pBuffer.readFloat(),
-                    pBuffer.readFloat(),
-                    pBuffer.readFloat(),
-                    pBuffer.readFloat(),
-                    pBuffer.readInt(),
-                    pBuffer.readDouble(),
-                    pBuffer.readDouble(),
-                    pBuffer.readDouble()
-            );
-        }
+		public SparkleParticleData decode(RegistryFriendlyByteBuf pBuffer) {
+			return new SparkleParticleData(
+					pBuffer.readFloat(),
+					pBuffer.readFloat(),
+					pBuffer.readFloat(),
+					pBuffer.readFloat(),
+					pBuffer.readInt(),
+					pBuffer.readDouble(),
+					pBuffer.readDouble(),
+					pBuffer.readDouble()
+			);
+		}
 
-        public void encode(RegistryFriendlyByteBuf pBuffer, SparkleParticleData data) {
-            pBuffer.writeFloat(data.size());
-            pBuffer.writeFloat(data.r());
-            pBuffer.writeFloat(data.g());
-            pBuffer.writeFloat(data.b());
-            pBuffer.writeInt(data.m());
-            pBuffer.writeDouble(data.mx());
-            pBuffer.writeDouble(data.my());
-            pBuffer.writeDouble(data.mz());
-        }
-    };
+		public void encode(RegistryFriendlyByteBuf pBuffer, SparkleParticleData data) {
+			pBuffer.writeFloat(data.size());
+			pBuffer.writeFloat(data.r());
+			pBuffer.writeFloat(data.g());
+			pBuffer.writeFloat(data.b());
+			pBuffer.writeInt(data.m());
+			pBuffer.writeDouble(data.mx());
+			pBuffer.writeDouble(data.my());
+			pBuffer.writeDouble(data.mz());
+		}
+	};
 
 	@NotNull
 	@Override

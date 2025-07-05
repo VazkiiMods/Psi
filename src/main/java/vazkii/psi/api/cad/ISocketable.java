@@ -11,6 +11,7 @@ package vazkii.psi.api.cad;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.spell.ISpellAcceptor;
 import vazkii.psi.common.lib.LibResources;

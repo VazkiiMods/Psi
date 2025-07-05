@@ -31,15 +31,15 @@ public class MessageSpamlessChat implements CustomPacketPayload {
 	public static final ResourceLocation ID = Psi.location("message_spamless_chat");
 	public static final CustomPacketPayload.Type<MessageSpamlessChat> TYPE = new Type<>(ID);
 	public static final StreamCodec<RegistryFriendlyByteBuf, MessageSpamlessChat> CODEC = new StreamCodec<>() {
-        public MessageSpamlessChat decode(RegistryFriendlyByteBuf pBuffer) {
-            return new MessageSpamlessChat(ComponentSerialization.TRUSTED_STREAM_CODEC.decode(pBuffer), pBuffer.readInt());
-        }
+		public MessageSpamlessChat decode(RegistryFriendlyByteBuf pBuffer) {
+			return new MessageSpamlessChat(ComponentSerialization.TRUSTED_STREAM_CODEC.decode(pBuffer), pBuffer.readInt());
+		}
 
-        public void encode(RegistryFriendlyByteBuf pBuffer, MessageSpamlessChat message) {
-            ComponentSerialization.TRUSTED_STREAM_CODEC.encode(pBuffer, message.message);
-            pBuffer.writeInt(message.magic);
-        }
-    };
+		public void encode(RegistryFriendlyByteBuf pBuffer, MessageSpamlessChat message) {
+			ComponentSerialization.TRUSTED_STREAM_CODEC.encode(pBuffer, message.message);
+			pBuffer.writeInt(message.magic);
+		}
+	};
 	private static final int BASE_MAGIC = 696969;
 	private final Component message;
 	private final MessageSignature signature;

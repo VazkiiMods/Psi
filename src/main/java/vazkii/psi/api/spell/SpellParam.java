@@ -9,6 +9,7 @@
 package vazkii.psi.api.spell;
 
 import com.google.common.base.CaseFormat;
+
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 
@@ -191,13 +192,13 @@ public abstract class SpellParam<T> {
 		}
 
 		private Side mapSides(Side whenUp, Side whenDown, Side whenL, Side whenR) {
-            return switch (this) {
-                case TOP -> whenUp;
-                case BOTTOM -> whenDown;
-                case LEFT -> whenL;
-                case RIGHT -> whenR;
-                default -> OFF;
-            };
+			return switch(this) {
+			case TOP -> whenUp;
+			case BOTTOM -> whenDown;
+			case LEFT -> whenL;
+			case RIGHT -> whenR;
+			default -> OFF;
+			};
 		}
 	}
 

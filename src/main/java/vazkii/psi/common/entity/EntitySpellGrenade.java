@@ -20,10 +20,10 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
+import org.jetbrains.annotations.NotNull;
+
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.SpellContext;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 

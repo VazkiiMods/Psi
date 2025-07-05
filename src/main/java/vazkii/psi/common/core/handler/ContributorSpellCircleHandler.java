@@ -11,6 +11,7 @@ package vazkii.psi.common.core.handler;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+
 import vazkii.psi.api.cad.ICADColorizer;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.lib.LibMisc;
@@ -87,8 +88,8 @@ public final class ContributorSpellCircleHandler {
 			} catch (IOException e) {
 				Psi.logger.info("Could not load contributors list. Either you're offline or github is down. Nothing to worry about, carry on~");
 			} catch (URISyntaxException e) {
-                throw new RuntimeException(e);
-            }
-        }
+				throw new RuntimeException(e);
+			}
+		}
 	}
 }

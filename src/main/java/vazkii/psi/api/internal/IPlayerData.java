@@ -10,7 +10,9 @@ package vazkii.psi.api.internal;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+
 import org.jetbrains.annotations.Nullable;
+
 import vazkii.psi.api.spell.SpellPiece;
 
 public interface IPlayerData {

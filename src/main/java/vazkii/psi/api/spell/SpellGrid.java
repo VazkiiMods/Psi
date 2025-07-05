@@ -11,6 +11,7 @@ package vazkii.psi.api.spell;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.mojang.blaze3d.vertex.PoseStack;
+
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -152,7 +153,7 @@ public final class SpellGrid {
 					p.y = newY;
 
 					for(SpellParam<?> param : p.paramSides.keySet()) {
-                        p.paramSides.compute(param, (k, side) -> ccw ? side.rotateCCW() : side.rotateCW());
+						p.paramSides.compute(param, (k, side) -> ccw ? side.rotateCCW() : side.rotateCW());
 					}
 				}
 			}
