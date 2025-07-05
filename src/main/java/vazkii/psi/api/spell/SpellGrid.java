@@ -11,6 +11,9 @@ package vazkii.psi.api.spell;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.nbt.CompoundTag;
@@ -18,6 +21,7 @@ import net.minecraft.nbt.ListTag;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -291,6 +295,36 @@ public final class SpellGrid {
 				piece.y = posY;
 			}
 		}
+	}
+
+	public static final MapCodec<SpellGrid> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+			Codec.lazyInitialized(() -> Codec.list(PieceWithPosition.CODEC.codec())).fieldOf(TAG_SPELL_LIST).forGetter((SpellGrid g) -> {
+				List<PieceWithPosition> pieces = new ArrayList<>();
+				for(int i = 0; i < GRID_SIZE; i++) {
+					for(int j = 0; j < GRID_SIZE; j++) {
+						SpellPiece piece = g.gridData[i][j];
+						if(piece != null) {
+							pieces.add(new PieceWithPosition(piece, i, j));
+						}
+					}
+				}
+				return pieces;
+			})
+	).apply(instance, (spellList) -> {
+		var grid = new SpellGrid(new Spell());
+		for(var piece : spellList) {
+			grid.gridData[piece.x][piece.y] = piece.piece;
+		}
+		grid.empty = spellList.isEmpty();
+		return grid;
+	}));
+
+	record PieceWithPosition(SpellPiece piece, int x, int y) {
+		public static final MapCodec<PieceWithPosition> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+				Codec.lazyInitialized(SpellPiece.CODEC::codec).fieldOf(TAG_SPELL_DATA).forGetter(PieceWithPosition::piece),
+				Codec.INT.fieldOf(TAG_SPELL_POS_X).forGetter(PieceWithPosition::x),
+				Codec.INT.fieldOf(TAG_SPELL_POS_Y).forGetter(PieceWithPosition::y)
+		).apply(instance, PieceWithPosition::new));
 	}
 
 	public void writeToNBT(CompoundTag cmp) {

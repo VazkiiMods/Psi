@@ -14,6 +14,7 @@ import com.mojang.blaze3d.vertex.ByteBufferBuilder;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.datafixers.util.Either;
+import com.mojang.serialization.JsonOps;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -449,11 +450,7 @@ public class GuiProgrammer extends Screen {
 
 		if(takingScreenshot) {
 			String name = spell.name;
-			CompoundTag cmp = new CompoundTag();
-			if(spell != null) {
-				spell.writeToNBT(cmp);
-			}
-			String export = cmp.toString();
+			String export = Spell.CODEC.encode(spell, JsonOps.INSTANCE, JsonOps.INSTANCE.mapBuilder()).toString();
 
 			if(shareToReddit) {
 				SharingHelper.uploadAndShare(name, export);
