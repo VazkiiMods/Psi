@@ -13,7 +13,7 @@ import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.api.spell.piece.PieceSelector;
-import vazkii.psi.common.item.base.ModItems;
+import vazkii.psi.common.item.base.ModDataComponents;
 
 public class PieceSelectorSuccessCounter extends PieceSelector {
 	public PieceSelectorSuccessCounter(Spell spell) {
@@ -25,7 +25,7 @@ public class PieceSelectorSuccessCounter extends PieceSelector {
 		if(!(context.tool.getItem() instanceof IPsiEventArmor)) {
 			throw new SpellRuntimeException(SpellRuntimeException.ARMOR);
 		}
-		return context.tool.getOrDefault(ModItems.TAG_TIMES_CAST, 0) * 1.0;
+		return context.tool.getOrDefault(ModDataComponents.TIMES_CAST, 0) * 1.0;
 	}
 
 	@Override

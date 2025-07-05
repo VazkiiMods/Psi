@@ -32,7 +32,7 @@ import vazkii.psi.api.internal.VanillaPacketDispatcher;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.common.block.tile.TileProgrammer;
 import vazkii.psi.common.core.handler.PsiSoundHandler;
-import vazkii.psi.common.item.base.ModItems;
+import vazkii.psi.common.item.base.ModDataComponents;
 
 public class ItemSpellDrive extends Item {
 
@@ -44,19 +44,17 @@ public class ItemSpellDrive extends Item {
 		CompoundTag cmp = new CompoundTag();
 		if(spell != null) {
 			spell.writeToNBT(cmp);
-			stack.set(ModItems.TAG_SPELL, cmp);
-			stack.set(ModItems.HAS_SPELL, true);
+			stack.set(ModDataComponents.SPELL, cmp);
 			stack.set(DataComponents.RARITY, Rarity.RARE);
 		} else {
-			stack.remove(ModItems.TAG_SPELL);
-			stack.remove(ModItems.HAS_SPELL);
+			stack.remove(ModDataComponents.SPELL);
 			stack.set(DataComponents.RARITY, Rarity.COMMON);
 		}
 
 	}
 
 	public static Spell getSpell(ItemStack stack) {
-		CompoundTag cmp = stack.getOrDefault(ModItems.TAG_SPELL, new CompoundTag());
+		CompoundTag cmp = stack.getOrDefault(ModDataComponents.SPELL, new CompoundTag());
 		return Spell.createFromNBT(cmp);
 	}
 
@@ -64,7 +62,7 @@ public class ItemSpellDrive extends Item {
 	@Override
 	public Component getName(ItemStack stack) {
 		String name = super.getName(stack).getString();
-		CompoundTag cmp = stack.getOrDefault(ModItems.TAG_SPELL, new CompoundTag());
+		CompoundTag cmp = stack.getOrDefault(ModDataComponents.SPELL, new CompoundTag());
 		String spellName = cmp.getString(Spell.TAG_SPELL_NAME); // We don't need to load the whole spell just for the name
 		if(spellName.isEmpty()) {
 			return Component.literal(name);

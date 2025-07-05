@@ -65,6 +65,7 @@ import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
 import vazkii.psi.common.core.handler.PsiSoundHandler;
 import vazkii.psi.common.core.handler.capability.CADData;
 import vazkii.psi.common.crafting.ModCraftingRecipes;
+import vazkii.psi.common.item.base.ModDataComponents;
 import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.lib.LibPieceGroups;
 import vazkii.psi.common.network.MessageRegister;
@@ -93,7 +94,7 @@ public class ItemCAD extends Item implements ICAD {
 
 	public ItemCAD(Item.Properties properties) {
 		super(properties
-				.stacksTo(1).rarity(Rarity.RARE).component(ModItems.TAG_BULLETS.get(), ItemContainerContents.EMPTY).component(ModItems.CAD_DATA, new CADData.Data(0, 0, Lists.newArrayList()))
+				.stacksTo(1).rarity(Rarity.RARE).component(ModDataComponents.BULLETS.get(), ItemContainerContents.EMPTY).component(ModDataComponents.CAD_DATA, new CADData.Data(0, 0, Lists.newArrayList()))
 		);
 	}
 
@@ -483,7 +484,7 @@ public class ItemCAD extends Item implements ICAD {
 
 	@Override
 	public ItemStack getComponentInSlot(ItemStack stack, EnumCADComponent type) {
-		List<Item> items = stack.getOrDefault(ModItems.COMPONENTS, new ArrayList<>(Collections.nCopies(EnumCADComponent.values().length, Items.AIR)));
+		List<Item> items = stack.getOrDefault(ModDataComponents.COMPONENTS, new ArrayList<>(Collections.nCopies(EnumCADComponent.values().length, Items.AIR)));
 		ItemStack component = new ItemStack(items.get(type.ordinal()));
 		if(type == EnumCADComponent.DYE && !component.isEmpty() && !this.contributorName.isEmpty()) {
 			((ICADColorizer) items.get(type.ordinal())).setContributorName(component, this.contributorName);

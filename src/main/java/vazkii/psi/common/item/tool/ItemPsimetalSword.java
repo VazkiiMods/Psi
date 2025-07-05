@@ -34,7 +34,7 @@ import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
 import vazkii.psi.common.item.ItemCAD;
-import vazkii.psi.common.item.base.ModItems;
+import vazkii.psi.common.item.base.ModDataComponents;
 import vazkii.psi.common.lib.LibMisc;
 
 import java.util.List;
@@ -43,7 +43,7 @@ import java.util.List;
 public class ItemPsimetalSword extends SwordItem implements IPsimetalTool {
 
 	public ItemPsimetalSword(Item.Properties properties) {
-		super(PsiAPI.PSIMETAL_TOOL_MATERIAL, properties.attributes(AxeItem.createAttributes(PsiAPI.PSIMETAL_TOOL_MATERIAL, 3, -2.4F)).component(ModItems.TAG_BULLETS.get(), ItemContainerContents.EMPTY));
+		super(PsiAPI.PSIMETAL_TOOL_MATERIAL, properties.attributes(AxeItem.createAttributes(PsiAPI.PSIMETAL_TOOL_MATERIAL, 3, -2.4F)).component(ModDataComponents.BULLETS.get(), ItemContainerContents.EMPTY));
 	}
 
 	@SubscribeEvent

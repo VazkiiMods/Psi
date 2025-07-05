@@ -22,6 +22,7 @@ import vazkii.psi.common.entity.ModEntities;
 import vazkii.psi.common.item.ItemFlashRing;
 import vazkii.psi.common.item.ItemSpellBullet;
 import vazkii.psi.common.item.armor.ItemPsimetalArmor;
+import vazkii.psi.common.item.base.ModDataComponents;
 import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.item.tool.ToolSocketable;
 import vazkii.psi.common.lib.LibMisc;
@@ -47,18 +48,18 @@ public class CapabilityHandler {
 
 		event.registerItem(
 				Capabilities.ItemHandler.ITEM,
-				(itemStack, context) -> new ComponentItemHandler(itemStack, ModItems.TAG_BULLETS.get(), ISocketable.MAX_ASSEMBLER_SLOTS),
+				(itemStack, context) -> new ComponentItemHandler(itemStack, ModDataComponents.BULLETS.get(), ISocketable.MAX_ASSEMBLER_SLOTS),
 				ModItems.cad);
 		event.registerItem(
 				Capabilities.ItemHandler.ITEM,
-				(itemStack, context) -> new ComponentItemHandler(itemStack, ModItems.TAG_BULLETS.get(), 3),
+				(itemStack, context) -> new ComponentItemHandler(itemStack, ModDataComponents.BULLETS.get(), 3),
 				ModItems.psimetalShovel,
 				ModItems.psimetalPickaxe,
 				ModItems.psimetalAxe,
 				ModItems.psimetalSword);
 		event.registerItem(
 				Capabilities.ItemHandler.ITEM,
-				(itemStack, context) -> new ComponentItemHandler(itemStack, ModItems.TAG_BULLETS.get(), 3),
+				(itemStack, context) -> new ComponentItemHandler(itemStack, ModDataComponents.BULLETS.get(), 3),
 				ModItems.psimetalExosuitHelmet,
 				ModItems.psimetalExosuitChestplate,
 				ModItems.psimetalExosuitLeggings,

@@ -31,7 +31,7 @@ import org.jetbrains.annotations.Nullable;
 
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ISocketable;
-import vazkii.psi.common.item.base.ModItems;
+import vazkii.psi.common.item.base.ModDataComponents;
 import vazkii.psi.common.lib.LibMisc;
 
 import java.util.List;
@@ -40,7 +40,7 @@ import java.util.List;
 public class ItemPsimetalPickaxe extends PickaxeItem implements IPsimetalTool {
 
 	public ItemPsimetalPickaxe(Item.Properties properties) {
-		super(PsiAPI.PSIMETAL_TOOL_MATERIAL, properties.attributes(AxeItem.createAttributes(PsiAPI.PSIMETAL_TOOL_MATERIAL, 1, -2.8F)).component(ModItems.TAG_BULLETS.get(), ItemContainerContents.EMPTY));
+		super(PsiAPI.PSIMETAL_TOOL_MATERIAL, properties.attributes(AxeItem.createAttributes(PsiAPI.PSIMETAL_TOOL_MATERIAL, 1, -2.8F)).component(ModDataComponents.BULLETS.get(), ItemContainerContents.EMPTY));
 	}
 
 	@SubscribeEvent

@@ -19,7 +19,7 @@ import org.jetbrains.annotations.NotNull;
 
 import vazkii.psi.api.exosuit.IExosuitSensor;
 import vazkii.psi.api.exosuit.ISensorHoldable;
-import vazkii.psi.common.item.base.ModItems;
+import vazkii.psi.common.item.base.ModDataComponents;
 
 public class ItemPsimetalExosuitHelmet extends ItemPsimetalArmor implements ISensorHoldable {
 
@@ -55,11 +55,11 @@ public class ItemPsimetalExosuitHelmet extends ItemPsimetalArmor implements ISen
 
 	@Override
 	public ItemStack getAttachedSensor(ItemStack stack) {
-		return new ItemStack(stack.getOrDefault(ModItems.TAG_SENSOR, Items.AIR));
+		return new ItemStack(stack.getOrDefault(ModDataComponents.SENSOR, Items.AIR));
 	}
 
 	@Override
 	public void attachSensor(ItemStack stack, ItemStack sensor) {
-		stack.set(ModItems.TAG_SENSOR, sensor.getItem());
+		stack.set(ModDataComponents.SENSOR, sensor.getItem());
 	}
 }

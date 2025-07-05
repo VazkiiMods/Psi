@@ -36,7 +36,7 @@ import vazkii.psi.api.internal.IPlayerData;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.ISpellAcceptor;
 import vazkii.psi.api.spell.Spell;
-import vazkii.psi.common.item.base.ModItems;
+import vazkii.psi.common.item.base.ModDataComponents;
 import vazkii.psi.common.item.component.ItemCADSocket;
 
 import java.util.List;
@@ -51,7 +51,7 @@ public class CADData implements ICapabilityProvider<ItemCapability<?, Void>, Voi
 	public CADData(ItemStack cad) {
 		this.cad = cad;
 		this.cadHandler = (ComponentItemHandler) cad.getCapability(Capabilities.ItemHandler.ITEM);
-		this.data = cad.get(ModItems.CAD_DATA.get());
+		this.data = cad.get(ModDataComponents.CAD_DATA.get());
 	}
 
 	@Nullable
@@ -147,12 +147,12 @@ public class CADData implements ICapabilityProvider<ItemCapability<?, Void>, Voi
 
 	@Override
 	public int getSelectedSlot() {
-		return cad.getOrDefault(ModItems.TAG_SELECTED_SLOT, 0);
+		return cad.getOrDefault(ModDataComponents.SELECTED_SLOT, 0);
 	}
 
 	@Override
 	public void setSelectedSlot(int slot) {
-		cad.set(ModItems.TAG_SELECTED_SLOT, slot);
+		cad.set(ModDataComponents.SELECTED_SLOT, slot);
 	}
 
 	@Override
