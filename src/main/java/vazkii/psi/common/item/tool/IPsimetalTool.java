@@ -29,7 +29,7 @@ import vazkii.psi.api.spell.ISpellAcceptor;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.item.ItemCAD;
-import vazkii.psi.common.item.base.ModItems;
+import vazkii.psi.common.item.base.ModDataComponents;
 import vazkii.psi.common.spell.trick.block.PieceTrickBreakBlock;
 
 public interface IPsimetalTool {
@@ -54,13 +54,13 @@ public interface IPsimetalTool {
 		if(isItemValidForRegen(stack, entityIn)) {
 			Player player = (Player) entityIn;
 			PlayerDataHandler.PlayerData data = PlayerDataHandler.get(player);
-			int regenTime = stack.getOrDefault(ModItems.TAG_REGEN_TIME, 0);
+			int regenTime = stack.getOrDefault(ModDataComponents.REGEN_TIME, 0);
 
 			if(!data.overflowed && regenTime % 16 == 0 && (float) data.getAvailablePsi() / (float) data.getTotalPsi() > 0.5F) {
 				data.deductPsi(150, 0, true);
 				stack.setDamageValue(stack.getDamageValue() - 1);
 			}
-			stack.set(ModItems.TAG_REGEN_TIME, regenTime + 1);
+			stack.set(ModDataComponents.REGEN_TIME, regenTime + 1);
 		}
 	}
 

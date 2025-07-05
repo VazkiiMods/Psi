@@ -28,7 +28,7 @@ import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.client.gui.GuiFlashRing;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
-import vazkii.psi.common.item.base.ModItems;
+import vazkii.psi.common.item.base.ModDataComponents;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,14 +44,12 @@ public class ItemFlashRing extends Item {
 			CustomData patch = pStack.get(DataComponents.CUSTOM_DATA);
 			CompoundTag compound = patch.copyTag();
 
-			if(compound.contains("has_spell")) {
-				pStack.set(ModItems.HAS_SPELL, compound.getBoolean("has_spell"));
-				pStack.set(DataComponents.RARITY, compound.getBoolean("has_spell") ? Rarity.RARE : Rarity.COMMON);
-				compound.remove("has_spell");
-			}
 			if(compound.contains("spell")) {
-				pStack.set(ModItems.TAG_SPELL, compound.getCompound("spell"));
+				pStack.set(DataComponents.RARITY, Rarity.RARE);
+				pStack.set(ModDataComponents.SPELL, compound.getCompound("spell"));
 				compound.remove("spell");
+			} else {
+				pStack.set(DataComponents.RARITY, Rarity.COMMON);
 			}
 			CustomData.set(DataComponents.CUSTOM_DATA, pStack, compound);
 		}
@@ -64,7 +62,7 @@ public class ItemFlashRing extends Item {
 			return super.getName(stack);
 		}
 
-		CompoundTag cmp = stack.getOrDefault(ModItems.TAG_SPELL, new CompoundTag());
+		CompoundTag cmp = stack.getOrDefault(ModDataComponents.SPELL, new CompoundTag());
 		String name = cmp.getString(Spell.TAG_SPELL_NAME);
 
 		if(name.isEmpty()) {
@@ -132,7 +130,7 @@ public class ItemFlashRing extends Item {
 
 		@Override
 		public boolean containsSpell() {
-			return stack.getOrDefault(ModItems.HAS_SPELL, false);
+			return stack.has(ModDataComponents.SPELL);
 		}
 
 		@Override

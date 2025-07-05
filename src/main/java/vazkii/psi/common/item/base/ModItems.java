@@ -8,36 +8,24 @@
  */
 package vazkii.psi.common.item.base;
 
-import com.mojang.serialization.Codec;
-
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.item.ItemProperties;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.component.DataComponentType;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.*;
-import net.minecraft.world.item.component.ItemContainerContents;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.RegisterEvent;
 
 import org.jetbrains.annotations.NotNull;
 
-import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.spell.ISpellAcceptor;
 import vazkii.psi.client.model.ArmorModels;
 import vazkii.psi.common.Psi;
-import vazkii.psi.common.core.handler.capability.CADData;
 import vazkii.psi.common.item.*;
 import vazkii.psi.common.item.armor.ItemPsimetalExosuitBoots;
 import vazkii.psi.common.item.armor.ItemPsimetalExosuitChestplate;
@@ -52,25 +40,8 @@ import vazkii.psi.common.lib.LibItemNames;
 import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.spell.base.ModSpellPieces;
 
-import java.util.List;
-
 @EventBusSubscriber(modid = LibMisc.MOD_ID)
 public final class ModItems {
-	public static final DeferredRegister.DataComponents DATA_COMPONENT_TYPES = DeferredRegister.createDataComponents(Registries.DATA_COMPONENT_TYPE, PsiAPI.MOD_ID);
-	public static final DeferredHolder<DataComponentType<?>, DataComponentType<List<Item>>> COMPONENTS = DATA_COMPONENT_TYPES.registerComponentType("components", builder -> builder.persistent(Codec.list(BuiltInRegistries.ITEM.byNameCodec().orElse(Items.AIR))).networkSynchronized(ByteBufCodecs.registry(Registries.ITEM).apply(ByteBufCodecs.list())).cacheEncoding());
-	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> TAG_REGEN_TIME = DATA_COMPONENT_TYPES.registerComponentType("regen_time", builder -> builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.INT));
-	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> TAG_SELECTED_SLOT = DATA_COMPONENT_TYPES.registerComponentType("selected_slot", builder -> builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.INT));
-	public static final DeferredHolder<DataComponentType<?>, DataComponentType<ItemContainerContents>> TAG_BULLETS = DATA_COMPONENT_TYPES.registerComponentType("bullets", builder -> builder.persistent(ItemContainerContents.CODEC).networkSynchronized(ItemContainerContents.STREAM_CODEC).cacheEncoding());
-	public static final DeferredHolder<DataComponentType<?>, DataComponentType<CADData.Data>> CAD_DATA = DATA_COMPONENT_TYPES.registerComponentType("cad_data", builder -> builder.persistent(CADData.Data.CODEC).networkSynchronized(CADData.Data.STREAM_CODEC));
-	public static final DeferredHolder<DataComponentType<?>, DataComponentType<String>> TAG_CONTRIBUTOR = DATA_COMPONENT_TYPES.registerComponentType("psi_contributor_name", builder -> builder.persistent(Codec.STRING).networkSynchronized(ByteBufCodecs.STRING_UTF8));
-	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> TAG_SELECTED_CONTROL_SLOT = DATA_COMPONENT_TYPES.registerComponentType("selected_control_slot", builder -> builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.INT));
-	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> TAG_TIMES_CAST = DATA_COMPONENT_TYPES.registerComponentType("times_cast", builder -> builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.INT));
-	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Item>> TAG_SENSOR = DATA_COMPONENT_TYPES.registerComponentType("sensor", builder -> builder.persistent(BuiltInRegistries.ITEM.byNameCodec().orElse(Items.AIR)).networkSynchronized(ByteBufCodecs.registry(Registries.ITEM)).cacheEncoding());
-	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Boolean>> HAS_SPELL = DATA_COMPONENT_TYPES.registerComponentType("has_spell", builder -> builder.persistent(Codec.BOOL).networkSynchronized(ByteBufCodecs.BOOL));
-	public static final DeferredHolder<DataComponentType<?>, DataComponentType<CompoundTag>> TAG_SPELL = DATA_COMPONENT_TYPES.registerComponentType("spell", builder -> builder.persistent(CompoundTag.CODEC).networkSynchronized(ByteBufCodecs.COMPOUND_TAG));
-	public static final DeferredHolder<DataComponentType<?>, DataComponentType<BlockPos>> TAG_SRC_POS = DATA_COMPONENT_TYPES.registerComponentType("src_z", builder -> builder.persistent(BlockPos.CODEC).networkSynchronized(BlockPos.STREAM_CODEC));
-	public static final DeferredHolder<DataComponentType<?>, DataComponentType<BlockPos>> TAG_DST_POS = DATA_COMPONENT_TYPES.registerComponentType("dst_x", builder -> builder.persistent(BlockPos.CODEC).networkSynchronized(BlockPos.STREAM_CODEC));
-
 	public static Item psidust;
 	public static Item psimetal;
 	public static Item psigem;
