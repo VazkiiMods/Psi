@@ -10,24 +10,23 @@ package vazkii.psi.client.jei;
 
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
+import mezz.jei.api.constants.RecipeTypes;
 import mezz.jei.api.helpers.IJeiHelpers;
 import mezz.jei.api.ingredients.subtypes.ISubtypeInterpreter;
 import mezz.jei.api.ingredients.subtypes.UidContext;
 import mezz.jei.api.registration.*;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
-
 import org.jetbrains.annotations.NotNull;
-
 import vazkii.psi.api.cad.EnumCADComponent;
+import vazkii.psi.api.recipe.ITrickRecipe;
 import vazkii.psi.client.jei.crafting.BulletToDriveExtension;
 import vazkii.psi.client.jei.crafting.DriveDuplicateExtension;
 import vazkii.psi.client.jei.tricks.TrickCraftingCategory;
 import vazkii.psi.common.Psi;
-import vazkii.psi.common.crafting.ModCraftingRecipes;
 import vazkii.psi.common.crafting.recipe.BulletToDriveRecipe;
 import vazkii.psi.common.crafting.recipe.DriveDuplicateRecipe;
 import vazkii.psi.common.item.ItemCAD;
@@ -63,7 +62,20 @@ public class JEICompat implements IModPlugin {
 
 	@Override
 	public void registerRecipes(IRecipeRegistration registration) {
-		registration.addRecipes(TrickCraftingCategory.TYPE, Minecraft.getInstance().level.getRecipeManager().getAllRecipesFor(ModCraftingRecipes.TRICK_RECIPE_TYPE).stream().map(RecipeHolder::value).toList());
+		List<ITrickRecipe> trickRecipes = new ArrayList<>();
+		List<RecipeHolder<CraftingRecipe>> craftingExtensions = new ArrayList<>();
+
+		for (var holder : Minecraft.getInstance().level.getRecipeManager().getRecipes()) {
+			switch (holder.value()) {
+				case ITrickRecipe recipe -> trickRecipes.add(recipe);
+				case BulletToDriveRecipe recipe -> craftingExtensions.add(new RecipeHolder<>(holder.id(), recipe));
+				case DriveDuplicateRecipe recipe -> craftingExtensions.add(new RecipeHolder<>(holder.id(), recipe));
+                default -> {}
+            }
+		}
+
+		registration.addRecipes(TrickCraftingCategory.TYPE, trickRecipes);
+		registration.addRecipes(RecipeTypes.CRAFTING, craftingExtensions);
 	}
 
 	@Override

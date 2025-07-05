@@ -15,7 +15,8 @@ import net.neoforged.neoforge.data.event.GatherDataEvent;
 
 import vazkii.psi.common.lib.LibMisc;
 
-@EventBusSubscriber(modid = LibMisc.MOD_ID)
+@SuppressWarnings("removal")
+@EventBusSubscriber(modid = LibMisc.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
 public class DataGenerator {
 
 	@SubscribeEvent

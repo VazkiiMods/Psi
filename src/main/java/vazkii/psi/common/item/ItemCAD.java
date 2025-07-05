@@ -451,7 +451,7 @@ public class ItemCAD extends Item implements ICAD {
 				predicate = r -> r.getPiece() == null;
 			}
 
-			Optional<RecipeHolder<ITrickRecipe>> recipe = world.getRecipeManager().getRecipeFor(ModCraftingRecipes.TRICK_RECIPE_TYPE, inv, world)
+			Optional<RecipeHolder<ITrickRecipe>> recipe = world.getRecipeManager().getRecipeFor(ModCraftingRecipes.TRICK_RECIPE_TYPE.get(), inv, world)
 					.filter(r -> predicate.test(r.value()));
 			if(recipe.isPresent()) {
 				ItemStack outCopy = recipe.get().value().getResultItem(RegistryAccess.EMPTY).copy();

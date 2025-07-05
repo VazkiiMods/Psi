@@ -17,12 +17,11 @@ import org.jetbrains.annotations.NotNull;
 
 import vazkii.psi.api.cad.EnumCADComponent;
 import vazkii.psi.api.cad.ICAD;
+import vazkii.psi.common.crafting.ModCraftingRecipes;
 
 import java.util.EnumSet;
 
 public class AssemblyScavengeRecipe extends CustomRecipe {
-	public static final SimpleCraftingRecipeSerializer<AssemblyScavengeRecipe> SERIALIZER = new SimpleCraftingRecipeSerializer<>(AssemblyScavengeRecipe::new);
-
 	public AssemblyScavengeRecipe(CraftingBookCategory category) {
 		super(category);
 	}
@@ -77,10 +76,15 @@ public class AssemblyScavengeRecipe extends CustomRecipe {
 		return compStack.copy();
 	}
 
+	@Override
+	public @NotNull RecipeType<?> getType() {
+		return ModCraftingRecipes.SCAVENGE_TYPE.get();
+	}
+
 	@NotNull
 	@Override
 	public RecipeSerializer<?> getSerializer() {
-		return SERIALIZER;
+		return ModCraftingRecipes.SCAVENGE_SERIALIZER.get();
 	}
 
 	@Override

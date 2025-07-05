@@ -56,6 +56,8 @@ public class Psi {
 		instance = this;
 		ModItems.DATA_COMPONENT_TYPES.register(bus);
 		PsimetalArmorMaterial.ARMOR_MATERIALS.register(bus);
+		ModCraftingRecipes.RECIPE_TYPES.register(bus);
+		ModCraftingRecipes.RECIPE_SERIALIZERS.register(bus);
 		ModCraftingRecipes.CONDITION_CODECS.register(bus);
 		ModParticles.PARTICLE_TYPES.register(bus);
 		bus.addListener(this::commonSetup);
