@@ -260,7 +260,7 @@ public abstract class SpellPiece {
 		T returnValue = (T) getRawParamValue(context, param);
 		if(returnValue instanceof Number number) {
 			if(Double.isNaN(number.doubleValue()) || Double.isInfinite(number.doubleValue())) {
-				throw new SpellRuntimeException(SpellRuntimeException.NAN);
+				throw new SpellRuntimeException(SpellRuntimeException.NAN, Component.translatable(param.name));
 			}
 		}
 		return returnValue;
