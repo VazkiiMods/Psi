@@ -93,7 +93,17 @@ public final class Spell {
 		var spell = new Spell();
 		spell.name = spellName;
 		spell.uuid = new UUID(uuidMost, uuidLeast);
-		spell.grid.gridData = grid.gridData;
+		spell.grid.gridData = new SpellPiece[SpellGrid.GRID_SIZE][SpellGrid.GRID_SIZE];
+		for (int i = 0; i < SpellGrid.GRID_SIZE; i++) {
+			for (int j = 0; j < SpellGrid.GRID_SIZE; j++) {
+				SpellPiece piece = grid.gridData[i][j];
+				if (piece != null) {
+					spell.grid.gridData[i][j] = piece.copyFromSpell(spell);
+					spell.grid.gridData[i][j].x = i;
+					spell.grid.gridData[i][j].y = j;
+				}
+			}
+		}
 		return spell;
 	}
 
