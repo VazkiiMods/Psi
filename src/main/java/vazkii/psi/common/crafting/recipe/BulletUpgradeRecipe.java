@@ -67,12 +67,12 @@ public class BulletUpgradeRecipe extends ShapelessRecipe {
 
     @Override
     public @NotNull RecipeType<?> getType() {
-        return DatagenModLoader.isRunningDataGen() ? ModCraftingRecipes.BULLET_UPGRADE_TYPE.get() : RecipeType.CRAFTING;
+        return !DatagenModLoader.isRunningDataGen() ? RecipeType.CRAFTING : ModCraftingRecipes.BULLET_UPGRADE_TYPE.get();
     }
 
     @Override
     public @NotNull RecipeSerializer<?> getSerializer() {
-        return DatagenModLoader.isRunningDataGen() ? ModCraftingRecipes.BULLET_UPGRADE_SERIALIZER.get() : RecipeSerializer.SHAPELESS_RECIPE;
+        return !DatagenModLoader.isRunningDataGen() ? RecipeSerializer.SHAPELESS_RECIPE : ModCraftingRecipes.BULLET_UPGRADE_SERIALIZER.get();
     }
 
     public static class Builder implements RecipeBuilder {

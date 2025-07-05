@@ -14,6 +14,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 
+import net.neoforged.neoforge.data.loading.DatagenModLoader;
 import org.jetbrains.annotations.NotNull;
 
 import vazkii.psi.api.spell.Spell;
@@ -94,7 +95,7 @@ public class DriveDuplicateRecipe extends CustomRecipe {
 
 	@Override
 	public @NotNull RecipeType<?> getType() {
-		return ModCraftingRecipes.DRIVE_DUPLICATE_TYPE.get();
+		return !DatagenModLoader.isRunningDataGen() ? RecipeType.CRAFTING : ModCraftingRecipes.DRIVE_DUPLICATE_TYPE.get();
 	}
 
 	@NotNull

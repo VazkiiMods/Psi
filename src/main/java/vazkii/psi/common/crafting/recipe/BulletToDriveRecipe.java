@@ -14,6 +14,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 
+import net.neoforged.neoforge.data.loading.DatagenModLoader;
 import org.jetbrains.annotations.NotNull;
 
 import vazkii.psi.api.spell.ISpellAcceptor;
@@ -81,7 +82,7 @@ public class BulletToDriveRecipe extends CustomRecipe {
 		for(int i = 0; i < list.size(); ++i) {
 			ItemStack item = inv.getItem(i);
 			if(ISpellAcceptor.hasSpell(item)) {
-				list.set(i, item.copy());
+				list.set(i, item.copyWithCount(1));
 				break;
 			}
 		}
@@ -91,7 +92,7 @@ public class BulletToDriveRecipe extends CustomRecipe {
 
 	@Override
 	public @NotNull RecipeType<?> getType() {
-		return ModCraftingRecipes.BULLET_TO_DRIVE_TYPE.get();
+		return !DatagenModLoader.isRunningDataGen() ? RecipeType.CRAFTING : ModCraftingRecipes.BULLET_TO_DRIVE_TYPE.get();
 	}
 
 	@NotNull
