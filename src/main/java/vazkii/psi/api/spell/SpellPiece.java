@@ -720,4 +720,8 @@ public abstract class SpellPiece {
 		}
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		return super.equals(obj) || obj instanceof SpellPiece o && this.x == o.x && this.y == o.y && Objects.equals(this.comment, o.comment) && Objects.equals(this.registryKey, o.registryKey) && Objects.equals(this.paramSides, o.paramSides);
+	}
 }

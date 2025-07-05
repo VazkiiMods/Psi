@@ -26,6 +26,7 @@ import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.network.codec.NeoForgeStreamCodecs;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -373,5 +374,15 @@ public final class SpellGrid {
 	@FunctionalInterface
 	public interface SpellPieceConsumer {
 		void accept(SpellPiece piece) throws SpellCompilationException;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return super.equals(obj) || obj instanceof SpellGrid o && Arrays.deepEquals(this.gridData, o.gridData);
+	}
+
+	@Override
+	public int hashCode() {
+		return this.gridData == null ? 0 : Arrays.deepHashCode(this.gridData);
 	}
 }
