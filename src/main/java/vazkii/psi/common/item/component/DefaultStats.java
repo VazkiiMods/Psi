@@ -19,7 +19,7 @@ import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.lib.LibMisc;
 
-@EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME, modid = LibMisc.MOD_ID)
+@EventBusSubscriber(modid = LibMisc.MOD_ID)
 public class DefaultStats {
 
 	public static void registerStats() {

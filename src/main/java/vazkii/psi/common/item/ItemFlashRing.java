@@ -19,6 +19,7 @@ import net.neoforged.neoforge.capabilities.ICapabilityProvider;
 import net.neoforged.neoforge.capabilities.ItemCapability;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.internal.TooltipHelper;
@@ -27,10 +28,7 @@ import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.client.gui.GuiFlashRing;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
-import vazkii.psi.common.item.base.ModItems;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import vazkii.psi.common.item.base.ModDataComponents;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,28 +44,27 @@ public class ItemFlashRing extends Item {
 			CustomData patch = pStack.get(DataComponents.CUSTOM_DATA);
 			CompoundTag compound = patch.copyTag();
 
-			if(compound.contains("has_spell")) {
-				pStack.set(ModItems.HAS_SPELL, compound.getBoolean("has_spell"));
-				pStack.set(DataComponents.RARITY, compound.getBoolean("has_spell") ? Rarity.RARE : Rarity.COMMON);
-				compound.remove("has_spell");
-			}
 			if(compound.contains("spell")) {
-				pStack.set(ModItems.TAG_SPELL, compound.getCompound("spell"));
+				pStack.set(DataComponents.RARITY, Rarity.RARE);
+				Spell spell = Spell.createFromNBT(compound.getCompound("spell"));
+				pStack.set(ModDataComponents.SPELL, spell);
 				compound.remove("spell");
+			} else {
+				pStack.set(DataComponents.RARITY, Rarity.COMMON);
 			}
 			CustomData.set(DataComponents.CUSTOM_DATA, pStack, compound);
 		}
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
-	public Component getName(@Nonnull ItemStack stack) {
+	public Component getName(@NotNull ItemStack stack) {
 		if(!ISpellAcceptor.hasSpell(stack)) {
 			return super.getName(stack);
 		}
 
-		CompoundTag cmp = stack.getOrDefault(ModItems.TAG_SPELL, new CompoundTag());
-		String name = cmp.getString(Spell.TAG_SPELL_NAME);
+		Spell cmp = stack.getOrDefault(ModDataComponents.SPELL, new Spell());
+		String name = cmp.name;
 
 		if(name.isEmpty()) {
 			return super.getName(stack);
@@ -78,9 +75,7 @@ public class ItemFlashRing extends Item {
 
 	@Override
 	public void appendHoverText(@NotNull ItemStack stack, @Nullable TooltipContext context, @NotNull List<Component> tooltip, @NotNull TooltipFlag advanced) {
-		TooltipHelper.tooltipIfShift(tooltip, () -> {
-			tooltip.add(Component.translatable("psimisc.bullet_cost", (int) (ISpellAcceptor.acceptor(stack).getCostModifier() * 100)));
-		});
+		TooltipHelper.tooltipIfShift(tooltip, () -> tooltip.add(Component.translatable("psimisc.bullet_cost", (int) (ISpellAcceptor.acceptor(stack).getCostModifier() * 100))));
 	}
 
 	@Override
@@ -136,7 +131,7 @@ public class ItemFlashRing extends Item {
 
 		@Override
 		public boolean containsSpell() {
-			return stack.getOrDefault(ModItems.HAS_SPELL, false);
+			return stack.has(ModDataComponents.SPELL);
 		}
 
 		@Override

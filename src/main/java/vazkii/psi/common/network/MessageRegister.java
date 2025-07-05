@@ -24,7 +24,7 @@ import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.network.message.*;
 
 public class MessageRegister {
-	public static final StreamCodec<RegistryFriendlyByteBuf, Vec3> VEC3 = new StreamCodec<RegistryFriendlyByteBuf, Vec3>() {
+	public static final StreamCodec<RegistryFriendlyByteBuf, Vec3> VEC3 = new StreamCodec<>() {
 		public Vec3 decode(RegistryFriendlyByteBuf pBuffer) {
 			return pBuffer.readVec3();
 		}

@@ -45,7 +45,7 @@ public class PieceTrickDetonate extends PieceTrick {
 
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
-		double radiusVal = Math.min(MAX_DISTANCE, this.getNonnullParamValue(context, radius).doubleValue());
+		double radiusVal = Math.min(MAX_DISTANCE, this.getNotNullParamValue(context, radius).doubleValue());
 
 		if(radiusVal == 0.0) {
 			IDetonationHandler.performDetonation(context.focalPoint.level(), context.caster, 0, entity -> entity == context.caster);

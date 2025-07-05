@@ -41,8 +41,8 @@ public class PieceOperatorListIndex extends PieceOperator {
 
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
-		int num = this.getNonnullParamValue(context, number).intValue();
-		EntityListWrapper listVal = this.getNonnullParamValue(context, list);
+		int num = this.getNotNullParamValue(context, number).intValue();
+		EntityListWrapper listVal = this.getNotNullParamValue(context, list);
 
 		if(num >= 0 && num < listVal.size()) {
 			return listVal.get(num);

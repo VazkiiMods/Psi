@@ -28,11 +28,6 @@ public class PieceOperatorGammaFunc extends PieceOperator {
 	}
 
 	@Override
-	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
-		meta.addStat(EnumSpellStat.COMPLEXITY, 1);
-	}
-
-	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		double d1 = this.getParamValue(context, num1).doubleValue();
 		if(d1 <= 0) {

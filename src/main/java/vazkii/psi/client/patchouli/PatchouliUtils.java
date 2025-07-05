@@ -36,7 +36,7 @@ public class PatchouliUtils {
 	 */
 	public static IVariable interweaveIngredients(List<Ingredient> ingredients, int longestIngredientSize, HolderLookup.Provider registries) {
 		if(ingredients.size() == 1) {
-			return IVariable.wrapList(Arrays.stream(ingredients.get(0).getItems()).map(d -> IVariable.from(d, registries)).collect(Collectors.toList()), registries);
+			return IVariable.wrapList(Arrays.stream(ingredients.getFirst().getItems()).map(d -> IVariable.from(d, registries)).collect(Collectors.toList()), registries);
 		}
 
 		ItemStack[] empty = { ItemStack.EMPTY };

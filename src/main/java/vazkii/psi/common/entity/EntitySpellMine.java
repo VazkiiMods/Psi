@@ -44,7 +44,7 @@ public class EntitySpellMine extends EntitySpellGrenade {
 				playSound(SoundEvents.STONE_PRESSURE_PLATE_CLICK_ON, 0.5F, 0.6F);
 			}
 			triggered = true;
-			entityData.set(ATTACKTARGET_UUID, Optional.of(entities.get(0).getUUID()));
+			entityData.set(ATTACKTARGET_UUID, Optional.of(entities.getFirst().getUUID()));
 		} else if(triggered) {
 			doExplosion();
 		}

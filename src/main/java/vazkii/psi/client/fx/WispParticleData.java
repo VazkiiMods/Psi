@@ -18,7 +18,7 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 public record WispParticleData(float size, float r, float g, float b, float maxAgeMul) implements ParticleOptions {
 
@@ -38,7 +38,7 @@ public record WispParticleData(float size, float r, float g, float b, float maxA
 			ByteBufCodecs.FLOAT, WispParticleData::maxAgeMul,
 			WispParticleData::new);
 
-	@Nonnull
+	@NotNull
 	@Override
 	public ParticleType<WispParticleData> getType() {
 		return ModParticles.WISP.get();

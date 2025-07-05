@@ -49,8 +49,4 @@ public class ItemChargeSpellBullet extends ItemSpellBullet {
 		return 1.151;
 	}
 
-	@Override
-	public boolean isCADOnlyContainer(ItemStack stack) {
-		return false;
-	}
 }

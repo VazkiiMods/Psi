@@ -46,7 +46,7 @@ import vazkii.psi.common.lib.LibResources;
 
 import java.util.regex.Pattern;
 
-@EventBusSubscriber(value = Dist.CLIENT, modid = LibMisc.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = LibMisc.MOD_ID)
 public final class HUDHandler {
 
 	public static final LayeredDraw.Layer SOCKETABLE_EQUIPPED_NAME = (graphics, deltatracker) -> {
@@ -81,10 +81,10 @@ public final class HUDHandler {
 	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
 	public static void register(RegisterGuiLayersEvent event) {
-		event.registerAboveAll(ResourceLocation.fromNamespaceAndPath(PsiAPI.MOD_ID, "psi_bar"), PSI_BAR);
-		event.registerAboveAll(ResourceLocation.fromNamespaceAndPath(PsiAPI.MOD_ID, "socketable_equipped_name"), SOCKETABLE_EQUIPPED_NAME);
-		event.registerAboveAll(ResourceLocation.fromNamespaceAndPath(PsiAPI.MOD_ID, "remaining_items"), REMAINING_ITEMS);
-		event.registerAboveAll(ResourceLocation.fromNamespaceAndPath(PsiAPI.MOD_ID, "hud_item"), HUD_ITEM);
+		event.registerAboveAll(PsiAPI.location("psi_bar"), PSI_BAR);
+		event.registerAboveAll(PsiAPI.location("socketable_equipped_name"), SOCKETABLE_EQUIPPED_NAME);
+		event.registerAboveAll(PsiAPI.location("remaining_items"), REMAINING_ITEMS);
+		event.registerAboveAll(PsiAPI.location("hud_item"), HUD_ITEM);
 	}
 
 	public static void tick() {

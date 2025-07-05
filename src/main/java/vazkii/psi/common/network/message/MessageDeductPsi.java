@@ -19,11 +19,10 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
-import vazkii.psi.common.lib.LibMisc;
 
 public record MessageDeductPsi(int prev, int current, int cd, boolean shatter) implements CustomPacketPayload {
 
-	public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, "message_deduct_psi");
+	public static final ResourceLocation ID = Psi.location("message_deduct_psi");
 	public static final CustomPacketPayload.Type<MessageDeductPsi> TYPE = new Type<>(ID);
 
 	public static final StreamCodec<RegistryFriendlyByteBuf, MessageDeductPsi> CODEC = StreamCodec.composite(

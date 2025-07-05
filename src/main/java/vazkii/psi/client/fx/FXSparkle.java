@@ -24,9 +24,8 @@ import net.minecraft.client.renderer.texture.AbstractTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureManager;
 
+import org.jetbrains.annotations.NotNull;
 import org.lwjgl.opengl.GL11;
-
-import javax.annotation.Nonnull;
 
 // https://github.com/Vazkii/Botania/blob/1.15/src/main/java/vazkii/botania/client/fx/FXSparkle.java
 public class FXSparkle extends TextureSheetParticle {
@@ -114,7 +113,7 @@ public class FXSparkle extends TextureSheetParticle {
 		}
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
 	public ParticleRenderType getRenderType() {
 		return NORMAL_RENDER;

@@ -5,7 +5,7 @@ plugins {
     id 'maven-publish'
     id 'pmd'
     id 'com.diffplug.spotless' version '7.0.3'
-    id 'net.neoforged.gradle.userdev' version '7.0.152'
+    id 'net.neoforged.moddev' version '2.0.91'
 }
 
 tasks.named('wrapper', Wrapper).configure {
@@ -53,30 +53,49 @@ tasks.register('checkSyntax') {
 // Mojang ships Java 21 to end users starting in 1.20.5, so mods should target Java 21.
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
-minecraft.accessTransformers.file file('src/main/resources/META-INF/accesstransformer.cfg')
+neoForge {
+    version = project.neo_version
+    validateAccessTransformers = true
 
-runs {
-    configureEach {
-        systemProperty 'forge.logging.markers', 'REGISTRIES'
-        systemProperty 'forge.logging.console.level', 'debug'
-        modSource project.sourceSets.main
+    runs {
+        configureEach {
+            systemProperty 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+            systemProperty 'forge.logging.console.level', 'debug'
+        }
+
+        client {
+            client()
+            gameDirectory = project.file('runs/client')
+            systemProperty 'forge.enabledGameTestNamespaces', project.mod_id
+        }
+
+        server {
+            server()
+            gameDirectory = project.file('runs/server')
+            systemProperty 'forge.enabledGameTestNamespaces', project.mod_id
+            programArguments.addAll('--nogui')
+        }
+
+        data {
+            data()
+            gameDirectory = project.file('runs/data')
+            // example of overriding the workingDirectory set in configureEach above, uncomment if you want to use it
+            // workingDirectory project.file('run-data')
+
+            // Specify the modid for data generation, where to output the resulting resource, and where to look for existing resources.
+            programArguments.addAll('--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath())
+        }
     }
 
-    client {
-        systemProperty 'forge.enabledGameTestNamespaces', project.mod_id
+    mods {
+        testproject {
+            sourceSet sourceSets.main
+        }
     }
 
-    server {
-        systemProperty 'forge.enabledGameTestNamespaces', project.mod_id
-        programArgument '--nogui'
-    }
-
-    data {
-        // example of overriding the workingDirectory set in configureEach above, uncomment if you want to use it
-        // workingDirectory project.file('run-data')
-
-        // Specify the modid for data generation, where to output the resulting resource, and where to look for existing resources.
-        programArguments.addAll '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
+    parchment {
+        minecraftVersion = project.minecraft_version
+        mappingsVersion = project.parchment_version
     }
 }
 
@@ -86,7 +105,7 @@ configurations {
 }
 
 dependencies {
-    implementation "net.neoforged:neoforge:${neo_version}"
+    compileOnly('org.jetbrains:annotations:26.0.2')
 
     // Example optional mod dependency with JEI
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime
@@ -98,7 +117,6 @@ dependencies {
     compileOnly "vazkii.patchouli:Patchouli:${patchouli_version}-NEOFORGE:api"
     runtimeOnly "vazkii.patchouli:Patchouli:${patchouli_version}-NEOFORGE"
 }
-
 
 tasks.withType(ProcessResources).configureEach {
     var replaceProperties = [

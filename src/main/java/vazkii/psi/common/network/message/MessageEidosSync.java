@@ -18,11 +18,10 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
-import vazkii.psi.common.lib.LibMisc;
 
 public record MessageEidosSync(int reversionTime) implements CustomPacketPayload {
 
-	public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, "message_eidos_sync");
+	public static final ResourceLocation ID = Psi.location("message_eidos_sync");
 	public static final CustomPacketPayload.Type<MessageEidosSync> TYPE = new Type<>(ID);
 
 	public static final StreamCodec<RegistryFriendlyByteBuf, MessageEidosSync> CODEC = StreamCodec.composite(

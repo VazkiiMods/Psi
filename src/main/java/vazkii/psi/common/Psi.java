@@ -33,7 +33,7 @@ import vazkii.psi.common.core.handler.InternalMethodHandler;
 import vazkii.psi.common.core.proxy.IProxy;
 import vazkii.psi.common.core.proxy.ServerProxy;
 import vazkii.psi.common.crafting.ModCraftingRecipes;
-import vazkii.psi.common.item.base.ModItems;
+import vazkii.psi.common.item.base.ModDataComponents;
 import vazkii.psi.common.item.component.DefaultStats;
 import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.network.MessageRegister;
@@ -54,8 +54,10 @@ public class Psi {
 
 	public Psi(IEventBus bus, Dist dist, ModContainer container) {
 		instance = this;
-		ModItems.DATA_COMPONENT_TYPES.register(bus);
+		ModDataComponents.DATA_COMPONENT_TYPES.register(bus);
 		PsimetalArmorMaterial.ARMOR_MATERIALS.register(bus);
+		ModCraftingRecipes.RECIPE_TYPES.register(bus);
+		ModCraftingRecipes.RECIPE_SERIALIZERS.register(bus);
 		ModCraftingRecipes.CONDITION_CODECS.register(bus);
 		ModParticles.PARTICLE_TYPES.register(bus);
 		bus.addListener(this::commonSetup);

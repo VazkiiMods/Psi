@@ -20,13 +20,12 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 import vazkii.psi.api.internal.PsiRenderHelper;
 import vazkii.psi.common.Psi;
-import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.network.MessageRegister;
 
 public record MessageParticleTrail(Vec3 position, Vec3 direction, double length, int time,
 		ItemStack cad) implements CustomPacketPayload {
 
-	public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, "message_particle_trail");
+	public static final ResourceLocation ID = Psi.location("message_particle_trail");
 	public static final CustomPacketPayload.Type<MessageParticleTrail> TYPE = new Type<>(ID);
 	public static final StreamCodec<RegistryFriendlyByteBuf, MessageParticleTrail> CODEC = StreamCodec.composite(
 			MessageRegister.VEC3, MessageParticleTrail::position,

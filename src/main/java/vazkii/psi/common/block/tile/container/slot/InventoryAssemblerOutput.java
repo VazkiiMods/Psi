@@ -12,9 +12,9 @@ import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
-import vazkii.psi.common.block.tile.TileCADAssembler;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
+import vazkii.psi.common.block.tile.TileCADAssembler;
 
 /**
  * @author WireSegal
@@ -44,26 +44,26 @@ public class InventoryAssemblerOutput implements Container {
 		return getStack().isEmpty();
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
 	public ItemStack getItem(int index) {
 		return getStack();
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
 	public ItemStack removeItem(int index, int count) {
 		return getStack();
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
 	public ItemStack removeItemNoUpdate(int index) {
 		return getStack();
 	}
 
 	@Override
-	public void setItem(int index, @Nonnull ItemStack stack) {
+	public void setItem(int index, @NotNull ItemStack stack) {
 		// NO-OP
 	}
 
@@ -78,22 +78,22 @@ public class InventoryAssemblerOutput implements Container {
 	}
 
 	@Override
-	public boolean stillValid(@Nonnull Player player) {
+	public boolean stillValid(@NotNull Player player) {
 		return true;
 	}
 
 	@Override
-	public void startOpen(@Nonnull Player player) {
+	public void startOpen(@NotNull Player player) {
 		// NO-OP
 	}
 
 	@Override
-	public void stopOpen(@Nonnull Player player) {
+	public void stopOpen(@NotNull Player player) {
 		// NO-OP
 	}
 
 	@Override
-	public boolean canPlaceItem(int index, @Nonnull ItemStack stack) {
+	public boolean canPlaceItem(int index, @NotNull ItemStack stack) {
 		return false;
 	}
 

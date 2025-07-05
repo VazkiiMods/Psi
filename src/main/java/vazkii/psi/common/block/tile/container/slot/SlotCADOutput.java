@@ -19,11 +19,11 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.common.NeoForge;
 
+import org.jetbrains.annotations.NotNull;
+
 import vazkii.psi.api.cad.CADTakeEvent;
 import vazkii.psi.common.block.tile.TileCADAssembler;
 import vazkii.psi.common.core.handler.PsiSoundHandler;
-
-import javax.annotation.Nonnull;
 
 public class SlotCADOutput extends Slot {
 
@@ -34,9 +34,9 @@ public class SlotCADOutput extends Slot {
 		this.assembler = assembler;
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
-	public void onTake(Player playerIn, @Nonnull ItemStack stack) {
+	public void onTake(Player playerIn, @NotNull ItemStack stack) {
 		super.onTake(playerIn, stack);
 		assembler.onCraftCAD(stack);
 		//return stack;

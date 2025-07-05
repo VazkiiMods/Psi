@@ -15,7 +15,7 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 
 import vazkii.psi.api.cad.ICADColorizer;
-import vazkii.psi.common.item.base.ModItems;
+import vazkii.psi.common.item.base.ModDataComponents;
 
 public class ItemCADColorizer extends ItemCADComponent implements ICADColorizer {
 
@@ -43,11 +43,11 @@ public class ItemCADColorizer extends ItemCADComponent implements ICADColorizer 
 
 	@Override
 	public String getContributorName(ItemStack stack) {
-		return stack.getOrDefault(ModItems.TAG_CONTRIBUTOR, "");
+		return stack.getOrDefault(ModDataComponents.CONTRIBUTOR, "");
 	}
 
 	@Override
 	public void setContributorName(ItemStack stack, String name) {
-		stack.set(ModItems.TAG_CONTRIBUTOR, name);
+		stack.set(ModDataComponents.CONTRIBUTOR, name);
 	}
 }

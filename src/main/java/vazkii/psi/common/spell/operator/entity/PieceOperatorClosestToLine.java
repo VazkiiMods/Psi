@@ -77,7 +77,7 @@ public class PieceOperatorClosestToLine extends PieceOperator {
 	public Object execute(SpellContext context) throws SpellRuntimeException {
 		Vector3 rayStart = SpellHelpers.getVector3(this, context, rayStartParam, false, false);
 		Vector3 rayEnd = SpellHelpers.getVector3(this, context, rayEndParam, false, false);
-		EntityListWrapper list = this.getNonnullParamValue(context, entList);
+		EntityListWrapper list = this.getNotNullParamValue(context, entList);
 		if(list.size() == 0) {
 			return null;
 		}

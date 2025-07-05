@@ -8,6 +8,9 @@
  */
 package vazkii.psi.api.spell;
 
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+
 /**
  * An exception thrown on spell runtime. This is caught by the relevant spell
  * execution code and adds the localized value of the exception's message to
@@ -15,6 +18,7 @@ package vazkii.psi.api.spell;
  */
 @SuppressWarnings("serial")
 public class SpellRuntimeException extends Exception {
+	public Object[] arguments;
 
 	public static final String DIVIDE_BY_ZERO = "psi.spellerror.dividebyzero";
 	public static final String NULL_TARGET = "psi.spellerror.nulltarget";
@@ -37,8 +41,12 @@ public class SpellRuntimeException extends Exception {
 	public static final String COMPARATOR = "psi.spellerror.comparator";
 	public static final String NAN = "psi.spellerror.nan";
 
-	public SpellRuntimeException(String s) {
+	public SpellRuntimeException(String s, Object... arguments) {
 		super(s);
+		this.arguments = arguments;
 	}
 
+	public MutableComponent toComponent() {
+		return Component.translatable(this.getMessage(), arguments);
+	}
 }

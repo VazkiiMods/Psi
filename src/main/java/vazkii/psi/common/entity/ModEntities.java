@@ -9,18 +9,18 @@
 package vazkii.psi.common.entity;
 
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.registries.RegisterEvent;
 
+import vazkii.psi.common.Psi;
 import vazkii.psi.common.lib.LibEntityNames;
 import vazkii.psi.common.lib.LibMisc;
 
 import static net.minecraft.world.entity.MobCategory.MISC;
 
-@EventBusSubscriber(modid = LibMisc.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = LibMisc.MOD_ID)
 public final class ModEntities {
 	public static EntityType<EntitySpellProjectile> spellProjectile;
 	public static EntityType<EntitySpellCircle> spellCircle;
@@ -63,11 +63,11 @@ public final class ModEntities {
 					.sized(0, 0)
 					.build("");
 
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibEntityNames.SPELL_PROJECTILE), spellProjectile);
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibEntityNames.SPELL_CIRCLE), spellCircle);
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibEntityNames.SPELL_GRENADE), spellGrenade);
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibEntityNames.SPELL_CHARGE), spellCharge);
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibEntityNames.SPELL_MINE), spellMine);
+			helper.register(Psi.location(LibEntityNames.SPELL_PROJECTILE), spellProjectile);
+			helper.register(Psi.location(LibEntityNames.SPELL_CIRCLE), spellCircle);
+			helper.register(Psi.location(LibEntityNames.SPELL_GRENADE), spellGrenade);
+			helper.register(Psi.location(LibEntityNames.SPELL_CHARGE), spellCharge);
+			helper.register(Psi.location(LibEntityNames.SPELL_MINE), spellMine);
 		});
 	}
 }

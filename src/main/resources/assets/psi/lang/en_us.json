@@ -668,6 +668,7 @@
   "psi.spellerror.no_message": "ERROR: CAD has not picked up a broadcasted message",
   "psi.spellerror.comparator": "ERROR: Comparators can only measure in the 4 cardinal directions",
   "psi.spellerror.cad_casting_only": "ERROR: This trick must be cast from a CAD",
+  "psi.spellerror.nan": "ERROR: %s parameter is not a number.",
   "command.psi.learn.usage": "/psi-learn <group> [player]",
   "command.psi.learn.success": "Successfully taught %s %s",
   "command.psi.learn.success.all": "Successfully taught %s all of Psi",

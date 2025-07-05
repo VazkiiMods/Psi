@@ -15,6 +15,8 @@ import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 
+import vazkii.psi.common.Psi;
+
 public class ModTags {
 
 	public static final TagKey<Item> PSIDUST = tag("psidust");
@@ -46,7 +48,7 @@ public class ModTags {
 	}
 
 	public static ResourceLocation prefix(String path) {
-		return ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, path);
+		return Psi.location(path);
 	}
 
 	public static class Blocks {

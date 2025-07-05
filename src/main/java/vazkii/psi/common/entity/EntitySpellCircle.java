@@ -21,15 +21,15 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import vazkii.psi.api.internal.PsiRenderHelper;
 import vazkii.psi.api.spell.ISpellAcceptor;
 import vazkii.psi.api.spell.ISpellImmune;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.common.Psi;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -85,7 +85,7 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 	}
 
 	@Override
-	public void addAdditionalSaveData(@Nonnull CompoundTag tagCompound) {
+	public void addAdditionalSaveData(@NotNull CompoundTag tagCompound) {
 		Tag colorizerCmp = new CompoundTag();
 		ItemStack colorizer = entityData.get(COLORIZER_DATA);
 		if(!colorizer.isEmpty()) {
@@ -110,7 +110,7 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 	}
 
 	@Override
-	public void readAdditionalSaveData(@Nonnull CompoundTag tagCompound) {
+	public void readAdditionalSaveData(@NotNull CompoundTag tagCompound) {
 		CompoundTag colorizerCmp = tagCompound.getCompound(TAG_COLORIZER);
 		ItemStack colorizer = ItemStack.parseOptional(this.registryAccess(), colorizerCmp);
 		entityData.set(COLORIZER_DATA, colorizer);

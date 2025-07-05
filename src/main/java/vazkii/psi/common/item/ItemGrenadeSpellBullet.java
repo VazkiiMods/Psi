@@ -41,11 +41,6 @@ public class ItemGrenadeSpellBullet extends ItemSpellBullet {
 	}
 
 	@Override
-	public boolean isCADOnlyContainer(ItemStack stack) {
-		return false;
-	}
-
-	@Override
 	public double getCostModifier(ItemStack stack) {
 		return 1.05;
 	}

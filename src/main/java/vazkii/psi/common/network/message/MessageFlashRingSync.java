@@ -12,12 +12,12 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.spell.ISpellAcceptor;
 import vazkii.psi.api.spell.Spell;
+import vazkii.psi.common.Psi;
 import vazkii.psi.common.item.ItemFlashRing;
-import vazkii.psi.common.lib.LibMisc;
 
 public record MessageFlashRingSync(Spell spell) implements CustomPacketPayload {
 
-	public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, "message_flash_ring_sync");
+	public static final ResourceLocation ID = Psi.location("message_flash_ring_sync");
 	public static final CustomPacketPayload.Type<MessageFlashRingSync> TYPE = new CustomPacketPayload.Type<>(ID);
 
 	public static final StreamCodec<RegistryFriendlyByteBuf, MessageFlashRingSync> CODEC = StreamCodec.composite(

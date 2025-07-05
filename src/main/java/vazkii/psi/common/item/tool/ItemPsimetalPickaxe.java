@@ -26,21 +26,21 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.capabilities.ICapabilityProvider;
 import net.neoforged.neoforge.event.ItemAttributeModifierEvent;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ISocketable;
-import vazkii.psi.common.item.base.ModItems;
+import vazkii.psi.common.item.base.ModDataComponents;
 import vazkii.psi.common.lib.LibMisc;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import java.util.List;
 
-@EventBusSubscriber(modid = LibMisc.MOD_ID, bus = EventBusSubscriber.Bus.GAME)
+@EventBusSubscriber(modid = LibMisc.MOD_ID)
 public class ItemPsimetalPickaxe extends PickaxeItem implements IPsimetalTool {
 
 	public ItemPsimetalPickaxe(Item.Properties properties) {
-		super(PsiAPI.PSIMETAL_TOOL_MATERIAL, properties.attributes(AxeItem.createAttributes(PsiAPI.PSIMETAL_TOOL_MATERIAL, 1, -2.8F)).component(ModItems.TAG_BULLETS.get(), ItemContainerContents.EMPTY));
+		super(PsiAPI.PSIMETAL_TOOL_MATERIAL, properties.attributes(AxeItem.createAttributes(PsiAPI.PSIMETAL_TOOL_MATERIAL, 1, -2.8F)).component(ModDataComponents.BULLETS.get(), ItemContainerContents.EMPTY));
 	}
 
 	@SubscribeEvent
@@ -69,7 +69,7 @@ public class ItemPsimetalPickaxe extends PickaxeItem implements IPsimetalTool {
 		super.setDamage(stack, damage);
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
 	public String getDescriptionId(ItemStack stack) {
 		String name = super.getDescriptionId(stack);
@@ -93,7 +93,7 @@ public class ItemPsimetalPickaxe extends PickaxeItem implements IPsimetalTool {
 	}
 
 	@Override
-	public boolean shouldCauseReequipAnimation(ItemStack oldStack, @Nonnull ItemStack newStack, boolean slotChanged) {
+	public boolean shouldCauseReequipAnimation(ItemStack oldStack, @NotNull ItemStack newStack, boolean slotChanged) {
 		return slotChanged;
 	}
 

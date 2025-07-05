@@ -35,7 +35,6 @@ import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.cad.ICADColorizer;
 import vazkii.psi.api.spell.SpellPiece;
 import vazkii.psi.client.core.handler.ClientTickHandler;
-import vazkii.psi.client.core.handler.ColorHandler;
 import vazkii.psi.client.fx.SparkleParticleData;
 import vazkii.psi.client.fx.WispParticleData;
 import vazkii.psi.client.gui.GuiProgrammer;
@@ -45,6 +44,7 @@ import vazkii.psi.client.model.ModelPsimetalExosuit;
 import vazkii.psi.client.render.entity.RenderSpellCircle;
 import vazkii.psi.client.render.entity.RenderSpellProjectile;
 import vazkii.psi.client.render.tile.RenderTileProgrammer;
+import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.base.ModBlocks;
 import vazkii.psi.common.block.tile.TileProgrammer;
 import vazkii.psi.common.core.proxy.IProxy;
@@ -57,7 +57,7 @@ import vazkii.psi.mixin.client.AccessorRenderBuffers;
 import java.util.SequencedMap;
 
 @OnlyIn(Dist.CLIENT)
-@EventBusSubscriber(value = Dist.CLIENT, modid = LibMisc.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(value = Dist.CLIENT, modid = LibMisc.MOD_ID)
 public class ClientProxy implements IProxy {
 
 	@SubscribeEvent
@@ -89,7 +89,6 @@ public class ClientProxy implements IProxy {
 			RenderType layer = SpellPiece.getLayer();
 			map.put(layer, new ByteBufferBuilder(layer.bufferSize()));
 			map.put(GuiProgrammer.LAYER, new ByteBufferBuilder(GuiProgrammer.LAYER.bufferSize()));
-			ColorHandler.init();
 		});
 	}
 
@@ -98,12 +97,12 @@ public class ClientProxy implements IProxy {
 	}
 
 	private void addCADModels(ModelEvent.RegisterAdditional event) {
-		event.register(ModelResourceLocation.standalone(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, "item/" + LibItemNames.CAD_IRON)));
-		event.register(ModelResourceLocation.standalone(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, "item/" + LibItemNames.CAD_GOLD)));
-		event.register(ModelResourceLocation.standalone(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, "item/" + LibItemNames.CAD_PSIMETAL)));
-		event.register(ModelResourceLocation.standalone(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, "item/" + LibItemNames.CAD_EBONY_PSIMETAL)));
-		event.register(ModelResourceLocation.standalone(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, "item/" + LibItemNames.CAD_IVORY_PSIMETAL)));
-		event.register(ModelResourceLocation.standalone(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, "item/" + LibItemNames.CAD_CREATIVE)));
+		event.register(ModelResourceLocation.standalone(Psi.location("item/" + LibItemNames.CAD_IRON)));
+		event.register(ModelResourceLocation.standalone(Psi.location("item/" + LibItemNames.CAD_GOLD)));
+		event.register(ModelResourceLocation.standalone(Psi.location("item/" + LibItemNames.CAD_PSIMETAL)));
+		event.register(ModelResourceLocation.standalone(Psi.location("item/" + LibItemNames.CAD_EBONY_PSIMETAL)));
+		event.register(ModelResourceLocation.standalone(Psi.location("item/" + LibItemNames.CAD_IVORY_PSIMETAL)));
+		event.register(ModelResourceLocation.standalone(Psi.location("item/" + LibItemNames.CAD_CREATIVE)));
 	}
 
 	@Override

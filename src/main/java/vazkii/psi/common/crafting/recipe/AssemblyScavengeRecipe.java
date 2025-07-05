@@ -13,22 +13,21 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 
+import org.jetbrains.annotations.NotNull;
+
 import vazkii.psi.api.cad.EnumCADComponent;
 import vazkii.psi.api.cad.ICAD;
-
-import javax.annotation.Nonnull;
+import vazkii.psi.common.crafting.ModCraftingRecipes;
 
 import java.util.EnumSet;
 
 public class AssemblyScavengeRecipe extends CustomRecipe {
-	public static final SimpleCraftingRecipeSerializer<AssemblyScavengeRecipe> SERIALIZER = new SimpleCraftingRecipeSerializer<>(AssemblyScavengeRecipe::new);
-
 	public AssemblyScavengeRecipe(CraftingBookCategory category) {
 		super(category);
 	}
 
 	@Override
-	public boolean matches(@Nonnull CraftingInput inv, @Nonnull Level world) {
+	public boolean matches(@NotNull CraftingInput inv, @NotNull Level world) {
 		boolean foundTarget = false;
 
 		for(int i = 0; i < inv.size(); i++) {
@@ -61,9 +60,9 @@ public class AssemblyScavengeRecipe extends CustomRecipe {
 		return foundTarget;
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
-	public ItemStack assemble(@Nonnull CraftingInput inv, HolderLookup.Provider access) {
+	public ItemStack assemble(@NotNull CraftingInput inv, HolderLookup.Provider access) {
 		ItemStack target = ItemStack.EMPTY;
 
 		for(int i = 0; i < inv.size(); i++) {
@@ -77,10 +76,15 @@ public class AssemblyScavengeRecipe extends CustomRecipe {
 		return compStack.copy();
 	}
 
-	@Nonnull
+	@Override
+	public @NotNull RecipeType<?> getType() {
+		return ModCraftingRecipes.SCAVENGE_TYPE.get();
+	}
+
+	@NotNull
 	@Override
 	public RecipeSerializer<?> getSerializer() {
-		return SERIALIZER;
+		return ModCraftingRecipes.SCAVENGE_SERIALIZER.get();
 	}
 
 	@Override
@@ -88,8 +92,4 @@ public class AssemblyScavengeRecipe extends CustomRecipe {
 		return true;
 	}
 
-	@Override
-	public boolean isSpecial() {
-		return true;
-	}
 }

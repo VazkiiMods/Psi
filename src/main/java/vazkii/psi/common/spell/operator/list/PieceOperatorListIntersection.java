@@ -33,8 +33,8 @@ public class PieceOperatorListIntersection extends PieceOperator {
 
 	@Override
 	public Object execute(SpellContext context) throws SpellRuntimeException {
-		EntityListWrapper l1 = this.getNonnullParamValue(context, list1);
-		EntityListWrapper l2 = this.getNonnullParamValue(context, list2);
+		EntityListWrapper l1 = this.getNotNullParamValue(context, list1);
+		EntityListWrapper l2 = this.getNotNullParamValue(context, list2);
 
 		return EntityListWrapper.intersection(l1, l2);
 	}

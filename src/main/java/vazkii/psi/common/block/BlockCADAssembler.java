@@ -29,10 +29,10 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 
-import vazkii.psi.common.block.tile.TileCADAssembler;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import vazkii.psi.common.block.tile.TileCADAssembler;
 
 public class BlockCADAssembler extends HorizontalDirectionalBlock implements EntityBlock {
 	public static final MapCodec<BlockCADAssembler> CODEC = simpleCodec(BlockCADAssembler::new);
@@ -87,7 +87,7 @@ public class BlockCADAssembler extends HorizontalDirectionalBlock implements Ent
 
 	@Nullable
 	@Override
-	public MenuProvider getMenuProvider(@Nonnull BlockState state, @Nonnull Level world, @Nonnull BlockPos pos) {
+	public MenuProvider getMenuProvider(@NotNull BlockState state, @NotNull Level world, @NotNull BlockPos pos) {
 		BlockEntity te = world.getBlockEntity(pos);
 		if(te instanceof TileCADAssembler) {
 			return (MenuProvider) te;
@@ -96,12 +96,12 @@ public class BlockCADAssembler extends HorizontalDirectionalBlock implements Ent
 	}
 
 	@Override
-	public BlockEntity newBlockEntity(@Nonnull BlockPos pos, @Nonnull BlockState state) {
+	public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
 		return new TileCADAssembler(pos, state);
 	}
 
 	@Override
-	public void onRemove(BlockState state, @Nonnull Level world, @Nonnull BlockPos pos, BlockState newState, boolean isMoving) {
+	public void onRemove(BlockState state, @NotNull Level world, @NotNull BlockPos pos, BlockState newState, boolean isMoving) {
 		if(state.getBlock() != newState.getBlock() && !isMoving) {
 			TileCADAssembler te = (TileCADAssembler) world.getBlockEntity(pos);
 			if(te != null) {

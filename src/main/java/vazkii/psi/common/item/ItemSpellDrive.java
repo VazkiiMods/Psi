@@ -11,7 +11,6 @@ package vazkii.psi.common.item;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.sounds.SoundSource;
@@ -26,13 +25,13 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
+import org.jetbrains.annotations.NotNull;
+
 import vazkii.psi.api.internal.VanillaPacketDispatcher;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.common.block.tile.TileProgrammer;
 import vazkii.psi.common.core.handler.PsiSoundHandler;
-import vazkii.psi.common.item.base.ModItems;
-
-import javax.annotation.Nonnull;
+import vazkii.psi.common.item.base.ModDataComponents;
 
 public class ItemSpellDrive extends Item {
 
@@ -41,31 +40,26 @@ public class ItemSpellDrive extends Item {
 	}
 
 	public static void setSpell(ItemStack stack, Spell spell) {
-		CompoundTag cmp = new CompoundTag();
 		if(spell != null) {
-			spell.writeToNBT(cmp);
-			stack.set(ModItems.TAG_SPELL, cmp);
-			stack.set(ModItems.HAS_SPELL, true);
+			stack.set(ModDataComponents.SPELL, spell);
 			stack.set(DataComponents.RARITY, Rarity.RARE);
 		} else {
-			stack.remove(ModItems.TAG_SPELL);
-			stack.remove(ModItems.HAS_SPELL);
+			stack.remove(ModDataComponents.SPELL);
 			stack.set(DataComponents.RARITY, Rarity.COMMON);
 		}
 
 	}
 
 	public static Spell getSpell(ItemStack stack) {
-		CompoundTag cmp = stack.getOrDefault(ModItems.TAG_SPELL, new CompoundTag());
-		return Spell.createFromNBT(cmp);
+		return stack.getOrDefault(ModDataComponents.SPELL, new Spell());
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
 	public Component getName(ItemStack stack) {
 		String name = super.getName(stack).getString();
-		CompoundTag cmp = stack.getOrDefault(ModItems.TAG_SPELL, new CompoundTag());
-		String spellName = cmp.getString(Spell.TAG_SPELL_NAME); // We don't need to load the whole spell just for the name
+		Spell cmp = stack.getOrDefault(ModDataComponents.SPELL, new Spell());
+		String spellName = cmp.name;
 		if(spellName.isEmpty()) {
 			return Component.literal(name);
 		}
@@ -73,7 +67,7 @@ public class ItemSpellDrive extends Item {
 		return Component.literal(name + " (" + ChatFormatting.GREEN + spellName + ChatFormatting.RESET + ")");
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
 	public InteractionResult useOn(UseOnContext ctx) {
 		Player playerIn = ctx.getPlayer();
@@ -116,9 +110,9 @@ public class ItemSpellDrive extends Item {
 		return InteractionResult.PASS;
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
-	public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, @Nonnull InteractionHand hand) {
+	public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, @NotNull InteractionHand hand) {
 		ItemStack itemStackIn = playerIn.getItemInHand(hand);
 		if(getSpell(itemStackIn) != null && playerIn.isShiftKeyDown()) {
 			if(!worldIn.isClientSide) {

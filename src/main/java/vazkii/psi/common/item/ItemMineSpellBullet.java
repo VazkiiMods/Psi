@@ -49,8 +49,4 @@ public class ItemMineSpellBullet extends ItemSpellBullet {
 		return "mine";
 	}
 
-	@Override
-	public boolean isCADOnlyContainer(ItemStack stack) {
-		return false;
-	}
 }

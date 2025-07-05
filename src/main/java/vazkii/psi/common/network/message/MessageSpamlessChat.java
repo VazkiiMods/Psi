@@ -21,16 +21,16 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
-import vazkii.psi.common.lib.LibMisc;
+import vazkii.psi.common.Psi;
 
 import java.nio.ByteBuffer;
 import java.util.ListIterator;
 
 public class MessageSpamlessChat implements CustomPacketPayload {
 
-	public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, "message_spamless_chat");
+	public static final ResourceLocation ID = Psi.location("message_spamless_chat");
 	public static final CustomPacketPayload.Type<MessageSpamlessChat> TYPE = new Type<>(ID);
-	public static final StreamCodec<RegistryFriendlyByteBuf, MessageSpamlessChat> CODEC = new StreamCodec<RegistryFriendlyByteBuf, MessageSpamlessChat>() {
+	public static final StreamCodec<RegistryFriendlyByteBuf, MessageSpamlessChat> CODEC = new StreamCodec<>() {
 		public MessageSpamlessChat decode(RegistryFriendlyByteBuf pBuffer) {
 			return new MessageSpamlessChat(ComponentSerialization.TRUSTED_STREAM_CODEC.decode(pBuffer), pBuffer.readInt());
 		}

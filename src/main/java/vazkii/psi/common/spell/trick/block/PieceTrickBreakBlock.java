@@ -123,7 +123,7 @@ public class PieceTrickBreakBlock extends PieceTrick {
 
 	private static ItemStack getTool(int harvestLevel, BlockState state) {
 		if(!state.requiresCorrectToolForDrops()) {
-			return HARVEST_TOOLS_BY_LEVEL.get(0).get(0);
+			return HARVEST_TOOLS_BY_LEVEL.getFirst().getFirst();
 		}
 
 		int idx = Math.min(harvestLevel, HARVEST_TOOLS_BY_LEVEL.size() - 1);

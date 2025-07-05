@@ -35,10 +35,10 @@ public abstract class HumanoidArmorLayerMixin<T extends LivingEntity, M extends 
 		super(pRenderer);
 	}
 
-	@Inject(method = "renderArmorPiece", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;get(Lnet/minecraft/core/component/DataComponentType;)Ljava/lang/Object;"))
-	private void render(PoseStack poseStack, MultiBufferSource bufferSource, T pLivingEntity, EquipmentSlot pSlot, int packedLight, A pModel, CallbackInfo ci, @Local ItemStack itemStack) {
+	@Inject(method = "renderArmorPiece(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/entity/EquipmentSlot;ILnet/minecraft/client/model/HumanoidModel;FFFFFF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;get(Lnet/minecraft/core/component/DataComponentType;)Ljava/lang/Object;"))
+	private void render(PoseStack poseStack, MultiBufferSource bufferSource, T livingEntity, EquipmentSlot slot, int packedLight, A p_model, float limbSwing, float limbSwingAmount, float partialTick, float ageInTicks, float netHeadYaw, float headPitch, CallbackInfo ci, @Local ItemStack itemStack) {
 		if(itemStack.getItem() instanceof ItemPsimetalArmor psiArmorItem) {
-			net.minecraft.client.model.Model model = this.getArmorModelHook(pLivingEntity, itemStack, pSlot, pModel);
+			net.minecraft.client.model.Model model = this.getArmorModelHook(livingEntity, itemStack, slot, p_model);
 			this.renderModel(poseStack, bufferSource, packedLight, model, psiArmorItem.getColor(itemStack), LibResources.MODEL_PSIMETAL_EXOSUIT_SENSOR);
 		}
 	}

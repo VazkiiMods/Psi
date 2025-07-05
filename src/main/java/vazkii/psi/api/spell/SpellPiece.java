@@ -15,6 +15,7 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexFormat;
+import com.mojang.serialization.Codec;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
@@ -23,12 +24,14 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.inventory.InventoryMenu;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.fml.ModList;
@@ -43,6 +46,8 @@ import vazkii.psi.api.spell.SpellParam.ArrowType;
 
 import java.util.*;
 import java.util.stream.Collectors;
+
+import io.netty.buffer.ByteBuf;
 
 /**
  * A basic abstract piece of a spell. Instances of this class are created as needed
@@ -78,7 +83,7 @@ public abstract class SpellPiece {
 		if(layer == null) {
 			RenderType.CompositeState glState = RenderType.CompositeState.builder()
 					.setShaderState(new RenderStateShard.ShaderStateShard(GameRenderer::getPositionColorTexLightmapShader))
-					.setTextureState(new RenderStateShard.TextureStateShard(TextureAtlas.LOCATION_BLOCKS, false, false))
+					.setTextureState(new RenderStateShard.TextureStateShard(InventoryMenu.BLOCK_ATLAS, false, false))
 					.setLightmapState(new RenderStateShard.LightmapStateShard(true))
 					.setTransparencyState(new RenderStateShard.TransparencyStateShard("translucent_transparency", () -> {
 						RenderSystem.enableBlend();
@@ -89,7 +94,7 @@ public abstract class SpellPiece {
 					}))
 					.setCullState(new RenderStateShard.CullStateShard(false))
 					.createCompositeState(false);
-			layer = RenderType.create(TextureAtlas.LOCATION_BLOCKS.toString(), DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP, VertexFormat.Mode.QUADS, 64, glState);
+			layer = RenderType.create(InventoryMenu.BLOCK_ATLAS.toString(), DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP, VertexFormat.Mode.QUADS, 64, glState);
 		}
 		return layer;
 	}
@@ -239,7 +244,7 @@ public abstract class SpellPiece {
 	/**
 	 * Null safe version of getParamValue
 	 */
-	public <T> T getNonnullParamValue(SpellContext context, SpellParam<T> param) throws SpellRuntimeException {
+	public <T> T getNotNullParamValue(SpellContext context, SpellParam<T> param) throws SpellRuntimeException {
 		T v = getParamValue(context, param);
 		if(v == null) {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_TARGET);
@@ -255,7 +260,7 @@ public abstract class SpellPiece {
 		T returnValue = (T) getRawParamValue(context, param);
 		if(returnValue instanceof Number number) {
 			if(Double.isNaN(number.doubleValue()) || Double.isInfinite(number.doubleValue())) {
-				throw new SpellRuntimeException(SpellRuntimeException.NAN);
+				throw new SpellRuntimeException(SpellRuntimeException.NAN, Component.translatable(param.name));
 			}
 		}
 		return returnValue;
@@ -294,7 +299,7 @@ public abstract class SpellPiece {
 	/**
 	 * Null safe version of getParamEvaluation()
 	 */
-	public <T> T getNonNullParamEvaluation(SpellParam<T> param) throws SpellCompilationException {
+	public <T> T getNotNullParamEvaluation(SpellParam<T> param) throws SpellCompilationException {
 		T v = getParamEvaluation(param);
 		if(v == null) {
 			throw new SpellCompilationException(SpellCompilationException.NULL_PARAM, this.x, this.y);
@@ -635,6 +640,18 @@ public abstract class SpellPiece {
 		comment = cmp.getString(TAG_COMMENT);
 	}
 
+	public static final Codec<SpellPiece> CODEC = CompoundTag.CODEC.xmap(t -> SpellPiece.createFromNBT(dummySpell, t), p -> {
+		var tag = new CompoundTag();
+		p.writeToNBT(tag);
+		return tag;
+	});
+
+	public static final StreamCodec<ByteBuf, SpellPiece> STREAM_CODEC = ByteBufCodecs.COMPOUND_TAG.map(t -> SpellPiece.createFromNBT(dummySpell, t), p -> {
+		var tag = new CompoundTag();
+		p.writeToNBT(tag);
+		return tag;
+	});
+
 	public void writeToNBT(CompoundTag cmp) {
 		if(comment == null) {
 			comment = "";
@@ -658,5 +675,4 @@ public abstract class SpellPiece {
 			cmp.putString(TAG_COMMENT, comment);
 		}
 	}
-
 }

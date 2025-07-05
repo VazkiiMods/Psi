@@ -26,7 +26,7 @@ public class ModParticles {
 	public static DeferredHolder<ParticleType<?>, WispParticleData.Type> WISP = PARTICLE_TYPES.register("wisp", () -> new WispParticleData.Type(false));
 	public static DeferredHolder<ParticleType<?>, SparkleParticleData.Type> SPARKLE = PARTICLE_TYPES.register("sparkle", () -> new SparkleParticleData.Type(false));
 
-	@EventBusSubscriber(value = Dist.CLIENT, modid = LibMisc.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
+	@EventBusSubscriber(value = Dist.CLIENT, modid = LibMisc.MOD_ID)
 	public static class FactoryHandler {
 
 		@SubscribeEvent

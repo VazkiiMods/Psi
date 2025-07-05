@@ -18,9 +18,9 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
-import vazkii.psi.api.spell.detonator.IDetonationHandler;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
+import vazkii.psi.api.spell.detonator.IDetonationHandler;
 
 public class ItemDetonator extends Item {
 
@@ -28,9 +28,9 @@ public class ItemDetonator extends Item {
 		super(properties.stacksTo(1));
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
-	public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, @Nonnull InteractionHand hand) {
+	public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, @NotNull InteractionHand hand) {
 		ItemStack itemStackIn = playerIn.getItemInHand(hand);
 
 		if(!worldIn.isClientSide) {

@@ -13,21 +13,20 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
+import net.neoforged.neoforge.data.loading.DatagenModLoader;
+
+import org.jetbrains.annotations.NotNull;
 
 import vazkii.psi.api.exosuit.ISensorHoldable;
-
-import javax.annotation.Nonnull;
+import vazkii.psi.common.crafting.ModCraftingRecipes;
 
 public class SensorRemoveRecipe extends CustomRecipe {
-
-	public static final SimpleCraftingRecipeSerializer<SensorRemoveRecipe> SERIALIZER = new SimpleCraftingRecipeSerializer<>(SensorRemoveRecipe::new);
-
 	public SensorRemoveRecipe(CraftingBookCategory category) {
 		super(category);
 	}
 
 	@Override
-	public boolean matches(@Nonnull CraftingInput inv, @Nonnull Level world) {
+	public boolean matches(@NotNull CraftingInput inv, @NotNull Level world) {
 		boolean foundHoldable = false;
 
 		for(int i = 0; i < inv.size(); i++) {
@@ -44,9 +43,9 @@ public class SensorRemoveRecipe extends CustomRecipe {
 		return foundHoldable;
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
-	public ItemStack assemble(@Nonnull CraftingInput inv, HolderLookup.Provider pRegistries) {
+	public ItemStack assemble(@NotNull CraftingInput inv, HolderLookup.Provider pRegistries) {
 		ItemStack holdableItem = ItemStack.EMPTY;
 
 		for(int i = 0; i < inv.size(); i++) {
@@ -78,19 +77,19 @@ public class SensorRemoveRecipe extends CustomRecipe {
 		return list;
 	}
 
-	@Nonnull
+	@Override
+	public @NotNull RecipeType<?> getType() {
+		return !DatagenModLoader.isRunningDataGen() ? RecipeType.CRAFTING : ModCraftingRecipes.SENSOR_REMOVE_TYPE.get();
+	}
+
+	@NotNull
 	@Override
 	public RecipeSerializer<?> getSerializer() {
-		return SERIALIZER;
+		return ModCraftingRecipes.SENSOR_REMOVE_SERIALIZER.get();
 	}
 
 	@Override
 	public boolean canCraftInDimensions(int width, int height) {
-		return true;
-	}
-
-	@Override
-	public boolean isSpecial() {
 		return true;
 	}
 

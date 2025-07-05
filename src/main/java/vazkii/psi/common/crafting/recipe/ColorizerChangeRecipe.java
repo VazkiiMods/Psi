@@ -14,23 +14,23 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.common.CommonHooks;
+import net.neoforged.neoforge.data.loading.DatagenModLoader;
+
+import org.jetbrains.annotations.NotNull;
 
 import vazkii.psi.api.cad.EnumCADComponent;
 import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.cad.ICADColorizer;
+import vazkii.psi.common.crafting.ModCraftingRecipes;
 import vazkii.psi.common.item.ItemCAD;
 
-import javax.annotation.Nonnull;
-
 public class ColorizerChangeRecipe extends CustomRecipe {
-	public static final SimpleCraftingRecipeSerializer<ColorizerChangeRecipe> SERIALIZER = new SimpleCraftingRecipeSerializer<>(ColorizerChangeRecipe::new);
-
 	public ColorizerChangeRecipe(CraftingBookCategory category) {
 		super(category);
 	}
 
 	@Override
-	public boolean matches(@Nonnull CraftingInput inv, @Nonnull Level world) {
+	public boolean matches(@NotNull CraftingInput inv, @NotNull Level world) {
 		boolean foundColorizer = false;
 		boolean foundCAD = false;
 
@@ -56,9 +56,9 @@ public class ColorizerChangeRecipe extends CustomRecipe {
 		return foundColorizer && foundCAD;
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
-	public ItemStack assemble(@Nonnull CraftingInput inv, HolderLookup.Provider access) {
+	public ItemStack assemble(@NotNull CraftingInput inv, HolderLookup.Provider access) {
 		ItemStack colorizer = ItemStack.EMPTY;
 		ItemStack cad = ItemStack.EMPTY;
 
@@ -78,12 +78,13 @@ public class ColorizerChangeRecipe extends CustomRecipe {
 		}
 
 		ItemStack copy = cad.copy();
+		ICAD.copyComponents(cad, copy);
 		ItemCAD.setComponent(copy, colorizer);
 
 		return copy;
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
 	public NonNullList<ItemStack> getRemainingItems(CraftingInput inv) {
 		NonNullList<ItemStack> ret = NonNullList.withSize(inv.size(), ItemStack.EMPTY);
@@ -108,19 +109,19 @@ public class ColorizerChangeRecipe extends CustomRecipe {
 		return ret;
 	}
 
-	@Nonnull
+	@Override
+	public @NotNull RecipeType<?> getType() {
+		return !DatagenModLoader.isRunningDataGen() ? RecipeType.CRAFTING : ModCraftingRecipes.COLORIZER_CHANGE_TYPE.get();
+	}
+
+	@NotNull
 	@Override
 	public RecipeSerializer<?> getSerializer() {
-		return SERIALIZER;
+		return ModCraftingRecipes.COLORIZER_CHANGE_SERIALIZER.get();
 	}
 
 	@Override
 	public boolean canCraftInDimensions(int width, int height) {
-		return true;
-	}
-
-	@Override
-	public boolean isSpecial() {
 		return true;
 	}
 

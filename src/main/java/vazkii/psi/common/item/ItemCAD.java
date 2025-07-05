@@ -44,6 +44,9 @@ import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.util.FakePlayer;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.*;
 import vazkii.psi.api.internal.PsiRenderHelper;
@@ -62,14 +65,12 @@ import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
 import vazkii.psi.common.core.handler.PsiSoundHandler;
 import vazkii.psi.common.core.handler.capability.CADData;
 import vazkii.psi.common.crafting.ModCraftingRecipes;
+import vazkii.psi.common.item.base.ModDataComponents;
 import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.lib.LibPieceGroups;
 import vazkii.psi.common.network.MessageRegister;
 import vazkii.psi.common.network.message.MessageVisualEffect;
 import vazkii.psi.common.spell.trick.block.PieceTrickBreakBlock;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -93,7 +94,7 @@ public class ItemCAD extends Item implements ICAD {
 
 	public ItemCAD(Item.Properties properties) {
 		super(properties
-				.stacksTo(1).rarity(Rarity.RARE).component(ModItems.TAG_BULLETS.get(), ItemContainerContents.EMPTY).component(ModItems.CAD_DATA, new CADData.Data(0, 0, Lists.newArrayList()))
+				.stacksTo(1).rarity(Rarity.RARE).component(ModDataComponents.BULLETS.get(), ItemContainerContents.EMPTY).component(ModDataComponents.CAD_DATA, new CADData.Data(0, 0, Lists.newArrayList()))
 		);
 	}
 
@@ -399,9 +400,9 @@ public class ItemCAD extends Item implements ICAD {
 		return block == ModBlocks.programmer ? ((BlockProgrammer) block).setSpell(worldIn, pos, playerIn, stack) : InteractionResult.PASS;
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
-	public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, @Nonnull InteractionHand hand) {
+	public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, @NotNull InteractionHand hand) {
 		ItemStack itemStackIn = playerIn.getItemInHand(hand);
 		PlayerData data = PlayerDataHandler.get(playerIn);
 		ItemStack playerCad = PsiAPI.getPlayerCAD(playerIn);
@@ -451,7 +452,7 @@ public class ItemCAD extends Item implements ICAD {
 				predicate = r -> r.getPiece() == null;
 			}
 
-			Optional<RecipeHolder<ITrickRecipe>> recipe = world.getRecipeManager().getRecipeFor(ModCraftingRecipes.TRICK_RECIPE_TYPE, inv, world)
+			Optional<RecipeHolder<ITrickRecipe>> recipe = world.getRecipeManager().getRecipeFor(ModCraftingRecipes.TRICK_RECIPE_TYPE.get(), inv, world)
 					.filter(r -> predicate.test(r.value()));
 			if(recipe.isPresent()) {
 				ItemStack outCopy = recipe.get().value().getResultItem(RegistryAccess.EMPTY).copy();
@@ -483,7 +484,7 @@ public class ItemCAD extends Item implements ICAD {
 
 	@Override
 	public ItemStack getComponentInSlot(ItemStack stack, EnumCADComponent type) {
-		List<Item> items = stack.getOrDefault(ModItems.COMPONENTS, new ArrayList<>(Collections.nCopies(EnumCADComponent.values().length, Items.AIR)));
+		List<Item> items = stack.getOrDefault(ModDataComponents.COMPONENTS, new ArrayList<>(Collections.nCopies(EnumCADComponent.values().length, Items.AIR)));
 		ItemStack component = new ItemStack(items.get(type.ordinal()));
 		if(type == EnumCADComponent.DYE && !component.isEmpty() && !this.contributorName.isEmpty()) {
 			((ICADColorizer) items.get(type.ordinal())).setContributorName(component, this.contributorName);
@@ -599,7 +600,7 @@ public class ItemCAD extends Item implements ICAD {
 	}
 
 	@Override
-	public boolean isCorrectToolForDrops(ItemStack stack, @Nonnull BlockState state) {
+	public boolean isCorrectToolForDrops(ItemStack stack, @NotNull BlockState state) {
 		if(!PieceTrickBreakBlock.doingHarvestCheck.get()) {
 			return super.isCorrectToolForDrops(stack, state);
 		}

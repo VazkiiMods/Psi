@@ -18,7 +18,7 @@ import net.neoforged.bus.api.Event;
  * The firing of an {@link CADStatEvent} does not necessarily mean that
  * anything has changed, meaning you shouldn't take in-world actions based on this event.
  * <p>
- * This event is not {@link Cancelable}.
+ * This event is not {@link net.neoforged.bus.api.ICancellableEvent}.
  */
 public class CADStatEvent extends Event {
 

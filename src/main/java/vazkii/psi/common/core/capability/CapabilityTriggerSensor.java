@@ -14,13 +14,13 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.capabilities.EntityCapability;
 import net.neoforged.neoforge.capabilities.ICapabilityProvider;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.exosuit.PsiArmorEvent;
 import vazkii.psi.api.spell.detonator.IDetonationHandler;
 import vazkii.psi.common.lib.LibMisc;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 public class CapabilityTriggerSensor implements IDetonationHandler, ICapabilityProvider<EntityCapability<?, Void>, Void, CapabilityTriggerSensor> {
 
@@ -33,7 +33,7 @@ public class CapabilityTriggerSensor implements IDetonationHandler, ICapabilityP
 
 	@Nullable
 	@Override
-	public CapabilityTriggerSensor getCapability(@Nonnull EntityCapability<?, Void> capability, @Nullable Void facing) {
+	public CapabilityTriggerSensor getCapability(@NotNull EntityCapability<?, Void> capability, @Nullable Void facing) {
 		if(capability == PsiAPI.DETONATION_HANDLER_CAPABILITY) {
 			return this;
 		}

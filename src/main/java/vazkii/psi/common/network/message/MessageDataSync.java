@@ -20,11 +20,10 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
-import vazkii.psi.common.lib.LibMisc;
 
 public record MessageDataSync(CompoundTag cmp) implements CustomPacketPayload {
 
-	public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, "message_data_sync");
+	public static final ResourceLocation ID = Psi.location("message_data_sync");
 	public static final CustomPacketPayload.Type<MessageDataSync> TYPE = new CustomPacketPayload.Type<>(ID);
 	public static final StreamCodec<RegistryFriendlyByteBuf, MessageDataSync> CODEC = StreamCodec.composite(
 			ByteBufCodecs.COMPOUND_TAG, MessageDataSync::cmp,

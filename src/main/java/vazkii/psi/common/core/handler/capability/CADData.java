@@ -27,17 +27,17 @@ import net.neoforged.neoforge.capabilities.ICapabilityProvider;
 import net.neoforged.neoforge.capabilities.ItemCapability;
 import net.neoforged.neoforge.items.ComponentItemHandler;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.*;
 import vazkii.psi.api.internal.IPlayerData;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.ISpellAcceptor;
 import vazkii.psi.api.spell.Spell;
-import vazkii.psi.common.item.base.ModItems;
+import vazkii.psi.common.item.base.ModDataComponents;
 import vazkii.psi.common.item.component.ItemCADSocket;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import java.util.List;
 import java.util.Objects;
@@ -51,12 +51,12 @@ public class CADData implements ICapabilityProvider<ItemCapability<?, Void>, Voi
 	public CADData(ItemStack cad) {
 		this.cad = cad;
 		this.cadHandler = (ComponentItemHandler) cad.getCapability(Capabilities.ItemHandler.ITEM);
-		this.data = cad.get(ModItems.CAD_DATA.get());
+		this.data = cad.get(ModDataComponents.CAD_DATA.get());
 	}
 
 	@Nullable
 	@Override
-	public CADData getCapability(@Nonnull ItemCapability<?, Void> capability, @Nullable Void facing) {
+	public CADData getCapability(@NotNull ItemCapability<?, Void> capability, @Nullable Void facing) {
 		if(capability == PsiAPI.SOCKETABLE_CAPABILITY
 				|| capability == PsiAPI.CAD_DATA_CAPABILITY
 				|| capability == PsiAPI.PSI_BAR_DISPLAY_CAPABILITY
@@ -147,12 +147,12 @@ public class CADData implements ICapabilityProvider<ItemCapability<?, Void>, Voi
 
 	@Override
 	public int getSelectedSlot() {
-		return cad.getOrDefault(ModItems.TAG_SELECTED_SLOT, 0);
+		return cad.getOrDefault(ModDataComponents.SELECTED_SLOT, 0);
 	}
 
 	@Override
 	public void setSelectedSlot(int slot) {
-		cad.set(ModItems.TAG_SELECTED_SLOT, slot);
+		cad.set(ModDataComponents.SELECTED_SLOT, slot);
 	}
 
 	@Override
@@ -255,10 +255,9 @@ public class CADData implements ICapabilityProvider<ItemCapability<?, Void>, Voi
 			if(other == null) {
 				return false;
 			}
-			if(!(other instanceof Data)) {
+			if(!(other instanceof Data data)) {
 				return false;
 			}
-			Data data = (Data) other;
 			return data.time == this.time && data.battery == this.battery && data.vectors.equals(this.vectors);
 		}
 

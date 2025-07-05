@@ -14,13 +14,13 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 
+import org.jetbrains.annotations.Nullable;
+
 import vazkii.psi.api.cad.EnumCADComponent;
 import vazkii.psi.api.cad.EnumCADStat;
 import vazkii.psi.api.cad.ICADComponent;
 import vazkii.psi.api.internal.TooltipHelper;
 import vazkii.psi.common.Psi;
-
-import javax.annotation.Nullable;
 
 import java.util.HashMap;
 import java.util.List;
@@ -38,7 +38,7 @@ public abstract class ItemCADComponent extends Item implements ICADComponent {
 		if(stack.getItem() instanceof ItemCADComponent) {
 			((ItemCADComponent) stack.getItem()).addStat(stat, value);
 		} else {
-			Psi.logger.error("Tried to add stats to non-component Item: " + stack.getItem().getDescription());
+			Psi.logger.error("Tried to add stats to non-component ItemStack: {}", stack.getItem().getDescription());
 		}
 	}
 
@@ -46,7 +46,7 @@ public abstract class ItemCADComponent extends Item implements ICADComponent {
 		if(item instanceof ItemCADComponent) {
 			((ItemCADComponent) item).addStat(stat, value);
 		} else {
-			Psi.logger.error("Tried to add stats to non-component Item: " + item.getDescription());
+			Psi.logger.error("Tried to add stats to non-component Item: {}", item.getDescription());
 		}
 	}
 

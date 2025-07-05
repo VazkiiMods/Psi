@@ -17,7 +17,7 @@ import net.minecraft.core.particles.ParticleType;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 public record SparkleParticleData(float size, float r, float g, float b, int m, double mx, double my,
 		double mz) implements ParticleOptions {
@@ -33,7 +33,7 @@ public record SparkleParticleData(float size, float r, float g, float b, int m, 
 			Codec.DOUBLE.fieldOf("mz").forGetter(d -> d.mz)
 	).apply(instance, SparkleParticleData::new));
 
-	public static StreamCodec<? super RegistryFriendlyByteBuf, SparkleParticleData> STREAM_CODEC = new StreamCodec<RegistryFriendlyByteBuf, SparkleParticleData>() {
+	public static StreamCodec<? super RegistryFriendlyByteBuf, SparkleParticleData> STREAM_CODEC = new StreamCodec<>() {
 		public SparkleParticleData decode(RegistryFriendlyByteBuf pBuffer) {
 			return new SparkleParticleData(
 					pBuffer.readFloat(),
@@ -59,7 +59,7 @@ public record SparkleParticleData(float size, float r, float g, float b, int m, 
 		}
 	};
 
-	@Nonnull
+	@NotNull
 	@Override
 	public ParticleType<SparkleParticleData> getType() {
 		return ModParticles.SPARKLE.get();

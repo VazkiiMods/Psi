@@ -17,13 +17,13 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
+import org.jetbrains.annotations.NotNull;
+
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ISocketable;
 import vazkii.psi.api.cad.ISocketableController;
 import vazkii.psi.common.core.handler.PsiSoundHandler;
-import vazkii.psi.common.item.base.ModItems;
-
-import javax.annotation.Nonnull;
+import vazkii.psi.common.item.base.ModDataComponents;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,9 +34,9 @@ public class ItemExosuitController extends Item implements ISocketableController
 		super(properties.stacksTo(1));
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
-	public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, @Nonnull InteractionHand hand) {
+	public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, @NotNull InteractionHand hand) {
 		ItemStack itemStackIn = playerIn.getItemInHand(hand);
 		if(playerIn.isShiftKeyDown()) {
 			if(!worldIn.isClientSide) {
@@ -73,12 +73,12 @@ public class ItemExosuitController extends Item implements ISocketableController
 
 	@Override
 	public int getDefaultControlSlot(ItemStack stack) {
-		return stack.getOrDefault(ModItems.TAG_SELECTED_CONTROL_SLOT, 0);
+		return stack.getOrDefault(ModDataComponents.SELECTED_CONTROL_SLOT, 0);
 	}
 
 	@Override
 	public void setSelectedSlot(Player player, ItemStack stack, int controlSlot, int slot) {
-		stack.set(ModItems.TAG_SELECTED_CONTROL_SLOT, controlSlot);
+		stack.set(ModDataComponents.SELECTED_CONTROL_SLOT, controlSlot);
 
 		ItemStack[] stacks = getControlledStacks(player, stack);
 		if(controlSlot < stacks.length && !stacks[controlSlot].isEmpty()) {

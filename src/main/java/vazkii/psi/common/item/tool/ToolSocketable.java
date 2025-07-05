@@ -22,14 +22,14 @@ import vazkii.psi.api.cad.ISocketable;
 import vazkii.psi.api.internal.IPlayerData;
 import vazkii.psi.api.spell.ISpellAcceptor;
 import vazkii.psi.api.spell.Spell;
-import vazkii.psi.common.item.base.ModItems;
+import vazkii.psi.common.item.base.ModDataComponents;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ToolSocketable implements ICapabilityProvider<ItemCapability<?, Void>, Void, ToolSocketable>, ISocketable, IPsiBarDisplay, ISpellAcceptor {
 	protected final ItemStack tool;
-	private final ComponentItemHandler toolHandler;;
+	private final ComponentItemHandler toolHandler;
 	protected final int slots;
 
 	public ToolSocketable(ItemStack tool, int slots) {
@@ -74,12 +74,12 @@ public class ToolSocketable implements ICapabilityProvider<ItemCapability<?, Voi
 
 	@Override
 	public int getSelectedSlot() {
-		return tool.getOrDefault(ModItems.TAG_SELECTED_SLOT, 0);
+		return tool.getOrDefault(ModDataComponents.SELECTED_SLOT, 0);
 	}
 
 	@Override
 	public void setSelectedSlot(int slot) {
-		tool.set(ModItems.TAG_SELECTED_SLOT, slot);
+		tool.set(ModDataComponents.SELECTED_SLOT, slot);
 	}
 
 	@Override
@@ -102,8 +102,4 @@ public class ToolSocketable implements ICapabilityProvider<ItemCapability<?, Voi
 		}
 	}
 
-	@Override
-	public boolean castableFromSocket() {
-		return false;
-	}
 }

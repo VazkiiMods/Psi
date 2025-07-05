@@ -50,10 +50,10 @@ public class Vector3 {
 	public static final Codec<Vector3> CODEC = Codec.DOUBLE
 			.listOf()
 			.comapFlatMap(
-					to -> Util.fixedSize((List<Double>) to, 3).map(list -> new Vector3(list.get(0), list.get(1), list.get(2))),
+					to -> Util.fixedSize(to, 3).map(list -> new Vector3(list.getFirst(), list.get(1), list.get(2))),
 					from -> List.of(from.x, from.y, from.z)
 			);
-	public static final StreamCodec<ByteBuf, Vector3> STREAM_CODEC = new StreamCodec<ByteBuf, Vector3>() {
+	public static final StreamCodec<ByteBuf, Vector3> STREAM_CODEC = new StreamCodec<>() {
 		public Vector3 decode(ByteBuf buffer) {
 			return new Vector3(buffer.readDouble(), buffer.readDouble(), buffer.readDouble());
 		}

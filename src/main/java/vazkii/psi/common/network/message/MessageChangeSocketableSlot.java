@@ -19,12 +19,12 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 import vazkii.psi.api.PsiAPI;
+import vazkii.psi.common.Psi;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
-import vazkii.psi.common.lib.LibMisc;
 
 public record MessageChangeSocketableSlot(int slot) implements CustomPacketPayload {
 
-	public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, "message_change_socketable_slot");
+	public static final ResourceLocation ID = Psi.location("message_change_socketable_slot");
 	public static final CustomPacketPayload.Type<MessageChangeSocketableSlot> TYPE = new Type<>(ID);
 
 	public static final StreamCodec<RegistryFriendlyByteBuf, MessageChangeSocketableSlot> CODEC = StreamCodec.composite(

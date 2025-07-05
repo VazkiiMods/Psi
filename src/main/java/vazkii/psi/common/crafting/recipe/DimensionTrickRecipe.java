@@ -20,15 +20,17 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
 
-import vazkii.psi.api.spell.piece.PieceCraftingTrick;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
+import vazkii.psi.api.spell.piece.PieceCraftingTrick;
+import vazkii.psi.common.crafting.ModCraftingRecipes;
 
 public class DimensionTrickRecipe extends TrickRecipe {
-	public static final RecipeSerializer<DimensionTrickRecipe> SERIALIZER = new Serializer();
 	private final ResourceKey<Level> dimensionKey;
 
 	public DimensionTrickRecipe(@Nullable PieceCraftingTrick piece, Ingredient input, ItemStack output, ItemStack cad, ResourceKey<Level> dimensionKey) {
@@ -46,8 +48,13 @@ public class DimensionTrickRecipe extends TrickRecipe {
 	}
 
 	@Override
-	public boolean isSpecial() {
-		return true;
+	public @NotNull RecipeType<?> getType() {
+		return ModCraftingRecipes.DIMENSION_TRICK_RECIPE_TYPE.get();
+	}
+
+	@Override
+	public @NotNull RecipeSerializer<?> getSerializer() {
+		return ModCraftingRecipes.DIMENSION_TRICK_RECIPE_SERIALIZER.get();
 	}
 
 	public static class Serializer implements RecipeSerializer<DimensionTrickRecipe> {
@@ -56,20 +63,20 @@ public class DimensionTrickRecipe extends TrickRecipe {
 		);
 		private static final MapCodec<DimensionTrickRecipe> CODEC = RecordCodecBuilder.mapCodec(
 				instance -> instance.group(
-						TrickRecipe.SERIALIZER.codec().forGetter(d -> d),
+						ModCraftingRecipes.TRICK_RECIPE_SERIALIZER.get().codec().forGetter(d -> d),
 						ResourceLocation.CODEC.fieldOf("dimensionKey").forGetter(d -> d.dimensionKey.location())
 				)
 						.apply(instance, (recipe, dimensionId) -> new DimensionTrickRecipe(recipe.getPiece(), recipe.getInput(), recipe.getResultItem(RegistryAccess.EMPTY), recipe.getAssembly(), dimensionId))
 		);
 
 		private static DimensionTrickRecipe fromNetwork(RegistryFriendlyByteBuf buf) {
-			TrickRecipe recipe = TrickRecipe.SERIALIZER.streamCodec().decode(buf);
+			TrickRecipe recipe = ModCraftingRecipes.TRICK_RECIPE_SERIALIZER.get().streamCodec().decode(buf);
 			ResourceLocation dimensionId = ResourceLocation.STREAM_CODEC.decode(buf);
 			return new DimensionTrickRecipe(recipe.getPiece(), recipe.getInput(), recipe.getResultItem(RegistryAccess.EMPTY), recipe.getAssembly(), dimensionId);
 		}
 
 		private static void toNetwork(RegistryFriendlyByteBuf buf, DimensionTrickRecipe recipe) {
-			TrickRecipe.SERIALIZER.streamCodec().encode(buf, recipe);
+			ModCraftingRecipes.TRICK_RECIPE_SERIALIZER.get().streamCodec().encode(buf, recipe);
 			ResourceLocation.STREAM_CODEC.encode(buf, recipe.dimensionKey.location());
 		}
 

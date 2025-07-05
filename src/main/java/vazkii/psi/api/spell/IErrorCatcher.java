@@ -8,7 +8,7 @@
  */
 package vazkii.psi.api.spell;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Interface for a SpellPiece that can catch exceptions of pieces it's attached to.
@@ -44,7 +44,7 @@ public interface IErrorCatcher {
 	 * @param exception  The exception.
 	 * @return Whether to suppress the exception.
 	 */
-	@Nonnull
+	@NotNull
 	Object supplyReplacementValue(SpellPiece errorPiece, SpellContext context, SpellRuntimeException exception);
 
 	/**

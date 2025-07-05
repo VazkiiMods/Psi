@@ -13,9 +13,9 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.Event;
 import net.neoforged.bus.api.ICancellableEvent;
 
-import vazkii.psi.api.internal.IPlayerData;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
+import vazkii.psi.api.internal.IPlayerData;
 
 /**
  * Posted before a spell executes.

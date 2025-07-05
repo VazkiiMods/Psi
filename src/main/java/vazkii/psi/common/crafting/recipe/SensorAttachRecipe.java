@@ -12,21 +12,21 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
+import net.neoforged.neoforge.data.loading.DatagenModLoader;
+
+import org.jetbrains.annotations.NotNull;
 
 import vazkii.psi.api.exosuit.IExosuitSensor;
 import vazkii.psi.api.exosuit.ISensorHoldable;
-
-import javax.annotation.Nonnull;
+import vazkii.psi.common.crafting.ModCraftingRecipes;
 
 public class SensorAttachRecipe extends CustomRecipe {
-	public static final SimpleCraftingRecipeSerializer<SensorAttachRecipe> SERIALIZER = new SimpleCraftingRecipeSerializer<>(SensorAttachRecipe::new);
-
 	public SensorAttachRecipe(CraftingBookCategory category) {
 		super(category);
 	}
 
 	@Override
-	public boolean matches(@Nonnull CraftingInput inv, @Nonnull Level world) {
+	public boolean matches(@NotNull CraftingInput inv, @NotNull Level world) {
 		boolean foundSensor = false;
 		boolean foundTarget = false;
 
@@ -52,9 +52,9 @@ public class SensorAttachRecipe extends CustomRecipe {
 		return foundSensor && foundTarget;
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
-	public ItemStack assemble(@Nonnull CraftingInput inv, HolderLookup.Provider pRegistries) {
+	public ItemStack assemble(@NotNull CraftingInput inv, HolderLookup.Provider pRegistries) {
 		ItemStack sensor = ItemStack.EMPTY;
 		ItemStack target = ItemStack.EMPTY;
 
@@ -76,10 +76,15 @@ public class SensorAttachRecipe extends CustomRecipe {
 		return copy;
 	}
 
-	@Nonnull
+	@Override
+	public @NotNull RecipeType<?> getType() {
+		return !DatagenModLoader.isRunningDataGen() ? RecipeType.CRAFTING : ModCraftingRecipes.SENSOR_ATTACH_TYPE.get();
+	}
+
+	@NotNull
 	@Override
 	public RecipeSerializer<?> getSerializer() {
-		return SERIALIZER;
+		return ModCraftingRecipes.SENSOR_ATTACH_SERIALIZER.get();
 	}
 
 	@Override
@@ -87,8 +92,4 @@ public class SensorAttachRecipe extends CustomRecipe {
 		return true;
 	}
 
-	@Override
-	public boolean isSpecial() {
-		return true;
-	}
 }

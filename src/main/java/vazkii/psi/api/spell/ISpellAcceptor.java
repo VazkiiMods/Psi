@@ -12,9 +12,9 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
-import vazkii.psi.api.PsiAPI;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
+import vazkii.psi.api.PsiAPI;
 
 import java.util.ArrayList;
 import java.util.Objects;

@@ -12,10 +12,10 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.inventory.InventoryMenu;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 
@@ -81,7 +81,7 @@ public class PieceCrossConnector extends SpellPiece implements IGenericRedirecto
 	@OnlyIn(Dist.CLIENT)
 	private void drawSide(PoseStack pPoseStack, MultiBufferSource buffers, SpellParam.Side side, int light, int color) {
 		if(side.isEnabled()) {
-			Material material = new Material(TextureAtlas.LOCATION_BLOCKS, ResourceLocation.parse(LibResources.SPELL_CONNECTOR_LINES));
+			Material material = new Material(InventoryMenu.BLOCK_ATLAS, ResourceLocation.parse(LibResources.SPELL_CONNECTOR_LINES));
 			VertexConsumer buffer = material.buffer(buffers, ignored -> SpellPiece.getLayer());
 
 			float minU = 0;
