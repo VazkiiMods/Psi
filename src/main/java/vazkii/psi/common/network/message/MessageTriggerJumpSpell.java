@@ -23,13 +23,12 @@ public record MessageTriggerJumpSpell() implements CustomPacketPayload {
 	public static final CustomPacketPayload.Type<MessageTriggerJumpSpell> TYPE = new Type<>(ID);
 
 	public static final StreamCodec<RegistryFriendlyByteBuf, MessageTriggerJumpSpell> CODEC = new StreamCodec<>() {
-        public MessageTriggerJumpSpell decode(RegistryFriendlyByteBuf pBuffer) {
-            return new MessageTriggerJumpSpell();
-        }
+		public MessageTriggerJumpSpell decode(RegistryFriendlyByteBuf pBuffer) {
+			return new MessageTriggerJumpSpell();
+		}
 
-        public void encode(RegistryFriendlyByteBuf pBuffer, MessageTriggerJumpSpell message) {
-        }
-    };
+		public void encode(RegistryFriendlyByteBuf pBuffer, MessageTriggerJumpSpell message) {}
+	};
 
 	@Override
 	public Type<? extends CustomPacketPayload> type() {

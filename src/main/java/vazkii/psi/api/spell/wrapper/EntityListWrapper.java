@@ -9,6 +9,7 @@
 package vazkii.psi.api.spell.wrapper;
 
 import net.minecraft.world.entity.Entity;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;

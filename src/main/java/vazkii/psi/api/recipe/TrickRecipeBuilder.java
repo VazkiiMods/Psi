@@ -23,6 +23,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
+
 import vazkii.psi.api.spell.SpellPiece;
 import vazkii.psi.api.spell.piece.PieceCraftingTrick;
 import vazkii.psi.common.crafting.recipe.DimensionTrickRecipe;

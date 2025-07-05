@@ -9,6 +9,7 @@
 package vazkii.psi.api.spell;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -17,6 +18,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.fml.ModList;
+
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
@@ -36,19 +38,19 @@ public final class Spell {
 	public static final String TAG_MOD_VERSION = "modVersion";
 	private static final String TAG_VALID = "validSpell";
 	public static final StreamCodec<RegistryFriendlyByteBuf, Spell> STREAM_CODEC = new StreamCodec<>() {
-        public Spell decode(RegistryFriendlyByteBuf buf) {
-            return Spell.createFromNBT(buf.readNbt());
-        }
+		public Spell decode(RegistryFriendlyByteBuf buf) {
+			return Spell.createFromNBT(buf.readNbt());
+		}
 
-        public void encode(RegistryFriendlyByteBuf buf, Spell pSpell) {
-            CompoundTag cmp = new CompoundTag();
-            if (pSpell != null) {
-                pSpell.writeToNBT(cmp);
-            }
+		public void encode(RegistryFriendlyByteBuf buf, Spell pSpell) {
+			CompoundTag cmp = new CompoundTag();
+			if(pSpell != null) {
+				pSpell.writeToNBT(cmp);
+			}
 
-            buf.writeNbt(cmp);
-        }
-    };
+			buf.writeNbt(cmp);
+		}
+	};
 	public final SpellGrid grid = new SpellGrid(this);
 	public String name = "";
 	public UUID uuid;

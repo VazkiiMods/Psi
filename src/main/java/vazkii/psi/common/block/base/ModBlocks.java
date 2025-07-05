@@ -25,6 +25,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.common.extensions.IMenuTypeExtension;
 import net.neoforged.neoforge.registries.RegisterEvent;
+
 import vazkii.psi.client.gui.GuiCADAssembler;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.BlockCADAssembler;

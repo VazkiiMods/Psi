@@ -11,6 +11,7 @@ package vazkii.psi.common.item;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
+
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.common.core.handler.LoopcastTrackingHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler;

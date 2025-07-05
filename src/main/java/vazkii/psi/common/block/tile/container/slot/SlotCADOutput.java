@@ -18,7 +18,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.common.NeoForge;
+
 import org.jetbrains.annotations.NotNull;
+
 import vazkii.psi.api.cad.CADTakeEvent;
 import vazkii.psi.common.block.tile.TileCADAssembler;
 import vazkii.psi.common.core.handler.PsiSoundHandler;

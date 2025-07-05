@@ -9,6 +9,7 @@
 package vazkii.psi.common.lib;
 
 import net.minecraft.resources.ResourceLocation;
+
 import vazkii.psi.common.Psi;
 
 public final class LibPieceGroups {

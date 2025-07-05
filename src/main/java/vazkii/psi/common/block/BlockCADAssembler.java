@@ -9,6 +9,7 @@
 package vazkii.psi.common.block;
 
 import com.mojang.serialization.MapCodec;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionResult;
@@ -27,8 +28,10 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
 import vazkii.psi.common.block.tile.TileCADAssembler;
 
 public class BlockCADAssembler extends HorizontalDirectionalBlock implements EntityBlock {

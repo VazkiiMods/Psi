@@ -10,6 +10,7 @@ package vazkii.psi.api.spell;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+
 import vazkii.psi.api.internal.Vector3;
 
 public class SpellHelpers {

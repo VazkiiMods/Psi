@@ -19,8 +19,10 @@ import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.common.NeoForge;
+
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.glfw.GLFW;
+
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.spell.EnumPieceType;
 import vazkii.psi.api.spell.SpellParam;
@@ -280,7 +282,7 @@ public class PiecePanelWidget extends AbstractWidget implements GuiEventListener
 
 			GuiButtonSpellPiece piece = visibleButtons.get(i);
 			GuiButtonSpellPiece buttonSpellPiece = (GuiButtonSpellPiece) parent.getButtons().stream().filter(el -> el.equals(piece)).findFirst().orElse(null);
-			if (buttonSpellPiece == null) {
+			if(buttonSpellPiece == null) {
 				continue;
 			}
 			buttonSpellPiece.setX(getX() + 5 + c % 5 * 18);

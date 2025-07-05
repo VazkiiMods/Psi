@@ -9,6 +9,7 @@
 package vazkii.psi.common.spell.trick.block;
 
 import net.minecraft.world.level.block.state.BlockState;
+
 import vazkii.psi.api.spell.*;
 import vazkii.psi.common.block.BlockConjured;
 

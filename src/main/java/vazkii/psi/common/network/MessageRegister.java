@@ -25,14 +25,14 @@ import vazkii.psi.common.network.message.*;
 
 public class MessageRegister {
 	public static final StreamCodec<RegistryFriendlyByteBuf, Vec3> VEC3 = new StreamCodec<>() {
-        public Vec3 decode(RegistryFriendlyByteBuf pBuffer) {
-            return pBuffer.readVec3();
-        }
+		public Vec3 decode(RegistryFriendlyByteBuf pBuffer) {
+			return pBuffer.readVec3();
+		}
 
-        public void encode(RegistryFriendlyByteBuf pBuffer, Vec3 pVec3) {
-            pBuffer.writeVec3(pVec3);
-        }
-    };
+		public void encode(RegistryFriendlyByteBuf pBuffer, Vec3 pVec3) {
+			pBuffer.writeVec3(pVec3);
+		}
+	};
 	private static final String VERSION = "3";
 
 	@SubscribeEvent

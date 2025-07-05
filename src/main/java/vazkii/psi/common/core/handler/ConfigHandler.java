@@ -9,6 +9,7 @@
 package vazkii.psi.common.core.handler;
 
 import net.neoforged.neoforge.common.ModConfigSpec;
+
 import org.apache.commons.lang3.tuple.Pair;
 
 public class ConfigHandler {

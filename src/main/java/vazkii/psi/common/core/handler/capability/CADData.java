@@ -11,6 +11,7 @@ package vazkii.psi.common.core.handler.capability;
 import com.google.common.collect.Lists;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.DoubleTag;
@@ -25,8 +26,10 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.ICapabilityProvider;
 import net.neoforged.neoforge.capabilities.ItemCapability;
 import net.neoforged.neoforge.items.ComponentItemHandler;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.*;
 import vazkii.psi.api.internal.IPlayerData;
@@ -255,7 +258,7 @@ public class CADData implements ICapabilityProvider<ItemCapability<?, Void>, Voi
 			if(!(other instanceof Data data)) {
 				return false;
 			}
-            return data.time == this.time && data.battery == this.battery && data.vectors.equals(this.vectors);
+			return data.time == this.time && data.battery == this.battery && data.vectors.equals(this.vectors);
 		}
 
 		@Override

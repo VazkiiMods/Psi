@@ -23,13 +23,13 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
 
+import org.jetbrains.annotations.Nullable;
+
 import vazkii.psi.api.recipe.ITrickRecipe;
 import vazkii.psi.api.spell.SpellPiece;
 import vazkii.psi.api.spell.piece.PieceCraftingTrick;
 import vazkii.psi.common.crafting.ModCraftingRecipes;
 import vazkii.psi.common.item.base.ModItems;
-
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 

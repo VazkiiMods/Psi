@@ -9,6 +9,7 @@
 package vazkii.psi.common.spell.trick;
 
 import net.minecraft.world.item.ItemStack;
+
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.cad.ISocketable;

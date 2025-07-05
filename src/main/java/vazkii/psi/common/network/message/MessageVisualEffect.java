@@ -27,30 +27,30 @@ public record MessageVisualEffect(int color, double x, double y, double z, doubl
 	public static final CustomPacketPayload.Type<MessageVisualEffect> TYPE = new Type<>(ID);
 
 	public static final StreamCodec<RegistryFriendlyByteBuf, MessageVisualEffect> CODEC = new StreamCodec<>() {
-        public MessageVisualEffect decode(RegistryFriendlyByteBuf pBuffer) {
-            return new MessageVisualEffect(
-                    pBuffer.readInt(),
-                    pBuffer.readDouble(),
-                    pBuffer.readDouble(),
-                    pBuffer.readDouble(),
-                    pBuffer.readDouble(),
-                    pBuffer.readDouble(),
-                    pBuffer.readDouble(),
-                    pBuffer.readInt()
-            );
-        }
+		public MessageVisualEffect decode(RegistryFriendlyByteBuf pBuffer) {
+			return new MessageVisualEffect(
+					pBuffer.readInt(),
+					pBuffer.readDouble(),
+					pBuffer.readDouble(),
+					pBuffer.readDouble(),
+					pBuffer.readDouble(),
+					pBuffer.readDouble(),
+					pBuffer.readDouble(),
+					pBuffer.readInt()
+			);
+		}
 
-        public void encode(RegistryFriendlyByteBuf pBuffer, MessageVisualEffect message) {
-            pBuffer.writeInt(message.color());
-            pBuffer.writeDouble(message.x());
-            pBuffer.writeDouble(message.y());
-            pBuffer.writeDouble(message.z());
-            pBuffer.writeDouble(message.width());
-            pBuffer.writeDouble(message.height());
-            pBuffer.writeDouble(message.offset());
-            pBuffer.writeInt(message.effectType());
-        }
-    };
+		public void encode(RegistryFriendlyByteBuf pBuffer, MessageVisualEffect message) {
+			pBuffer.writeInt(message.color());
+			pBuffer.writeDouble(message.x());
+			pBuffer.writeDouble(message.y());
+			pBuffer.writeDouble(message.z());
+			pBuffer.writeDouble(message.width());
+			pBuffer.writeDouble(message.height());
+			pBuffer.writeDouble(message.offset());
+			pBuffer.writeInt(message.effectType());
+		}
+	};
 
 	@Override
 	public Type<? extends CustomPacketPayload> type() {

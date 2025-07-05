@@ -11,6 +11,7 @@ package vazkii.psi.api.spell;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.Event;
+
 import vazkii.psi.api.internal.IPlayerData;
 
 /**

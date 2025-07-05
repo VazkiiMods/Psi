@@ -11,6 +11,7 @@ package vazkii.psi.common.item.armor;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+
 import vazkii.psi.api.exosuit.PsiArmorEvent;
 
 public class ItemPsimetalExosuitBoots extends ItemPsimetalArmor {

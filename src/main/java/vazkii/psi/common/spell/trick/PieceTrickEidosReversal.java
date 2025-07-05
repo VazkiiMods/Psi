@@ -9,6 +9,7 @@
 package vazkii.psi.common.spell.trick;
 
 import net.minecraft.server.level.ServerPlayer;
+
 import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.piece.PieceTrick;

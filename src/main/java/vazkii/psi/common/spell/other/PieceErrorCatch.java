@@ -9,6 +9,7 @@
 package vazkii.psi.common.spell.other;
 
 import org.jetbrains.annotations.NotNull;
+
 import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.param.ParamAny;
 import vazkii.psi.api.spell.piece.PieceErrorHandler;

@@ -1,6 +1,7 @@
 package vazkii.psi.client.gui;
 
 import net.minecraft.world.item.ItemStack;
+
 import vazkii.psi.api.spell.SpellCompilationException;
 import vazkii.psi.common.item.ItemSpellDrive;
 import vazkii.psi.common.network.MessageRegister;
