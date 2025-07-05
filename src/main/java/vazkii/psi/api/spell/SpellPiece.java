@@ -15,6 +15,12 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexFormat;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+
+import it.unimi.dsi.fastutil.Pair;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
@@ -634,6 +640,42 @@ public abstract class SpellPiece {
 
 		comment = cmp.getString(TAG_COMMENT);
 	}
+
+	public static final MapCodec<SpellPiece> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+			Codec.STRING.optionalFieldOf(TAG_COMMENT).forGetter((SpellPiece p) -> Optional.ofNullable(p.comment)),
+			Codec.STRING.fieldOf(TAG_KEY).forGetter((SpellPiece s) -> s.registryKey.toString().replaceAll("^" + PSI_PREFIX, "_")),
+			Codec.unboundedMap(Codec.STRING, Codec.INT).optionalFieldOf(TAG_PARAMS).forGetter((SpellPiece s) -> {
+				Map<String, Integer> map = s.params.entrySet().stream().map(e -> Pair.of(e.getKey().replaceAll("^" + SpellParam.PSI_PREFIX, "_"), s.paramSides.get(e.getValue()).asInt())).collect(Collectors.toMap(Pair::first, Pair::second, (a, b) -> b, Object2IntOpenHashMap::new));
+				if(map.isEmpty()) {
+					return Optional.empty();
+				}
+				return Optional.of(map);
+			})
+	).apply(instance, (comment, tagKey, params) -> {
+		Class<? extends SpellPiece> clazz = PsiAPI.getSpellPiece(ResourceLocation.parse(tagKey.replaceFirst("^_", PSI_PREFIX)));
+		SpellPiece p = create(clazz, new Spell());
+		if(params.isPresent()) {
+			for(var entry : p.params.entrySet()) {
+				var key = entry.getKey();
+				var param = entry.getValue();
+
+				var side = params.get().getOrDefault(key, Integer.MIN_VALUE);
+
+				if(side != Integer.MIN_VALUE) {
+					p.paramSides.put(param, SpellParam.Side.fromInt(side));
+				} else {
+					if(key.startsWith(SpellParam.PSI_PREFIX)) {
+						key = "_" + key.substring(SpellParam.PSI_PREFIX.length());
+					}
+					p.paramSides.put(param, SpellParam.Side.fromInt(params.get().get(key)));
+				}
+			}
+		}
+
+		comment.ifPresent(s -> p.comment = s);
+
+		return p;
+	}));
 
 	public void writeToNBT(CompoundTag cmp) {
 		if(comment == null) {
