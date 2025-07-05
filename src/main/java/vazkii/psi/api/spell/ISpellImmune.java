@@ -22,8 +22,13 @@ import vazkii.psi.api.PsiAPI;
 public interface ISpellImmune {
 
 	static boolean isImmune(Entity e) {
-		return !e.canUsePortal(false) || e.getCapability(PsiAPI.SPELL_IMMUNE_CAPABILITY).isImmune();
-	}
+        if (!e.canUsePortal(false)) {
+            return true;
+        }
+
+		var cap = e.getCapability(PsiAPI.SPELL_IMMUNE_CAPABILITY);
+        return cap != null && cap.isImmune();
+    }
 
 	boolean isImmune();
 

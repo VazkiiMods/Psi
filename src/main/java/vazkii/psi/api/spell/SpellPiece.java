@@ -16,12 +16,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
-
-import it.unimi.dsi.fastutil.Pair;
-import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
-
+import io.netty.buffer.ByteBuf;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
@@ -31,7 +26,6 @@ import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -41,9 +35,7 @@ import net.minecraft.world.inventory.InventoryMenu;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.fml.ModList;
-
 import org.joml.Matrix4f;
-
 import vazkii.psi.api.ClientPsiAPI;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.internal.PsiRenderHelper;
@@ -644,57 +636,17 @@ public abstract class SpellPiece {
 		comment = cmp.getString(TAG_COMMENT);
 	}
 
-	private Optional<Map<String, Integer>> paramsToMap() {
-		Map<String, Integer> map = this.params.entrySet().stream().map(e -> Pair.of(e.getKey().replaceAll("^" + SpellParam.PSI_PREFIX, "_"), this.paramSides.get(e.getValue()).asInt())).collect(Collectors.toMap(Pair::first, Pair::second, (a, b) -> b, Object2IntOpenHashMap::new));
-		if(map.isEmpty()) {
-			return Optional.empty();
-		}
-		return Optional.of(map);
-	}
+	public static final Codec<SpellPiece> CODEC = CompoundTag.CODEC.xmap(t -> SpellPiece.createFromNBT(dummySpell, t), p -> {
+		var tag = new CompoundTag();
+		p.writeToNBT(tag);
+		return tag;
+	});
 
-	private void loadParamsMap(Map<String, Integer> params) {
-		for(var entry : this.params.entrySet()) {
-			var key = entry.getKey();
-			var param = entry.getValue();
-
-			var side = params.getOrDefault(key, Integer.MIN_VALUE);
-
-			if(side != Integer.MIN_VALUE) {
-				this.paramSides.put(param, SpellParam.Side.fromInt(side));
-			} else {
-				if(key.startsWith(SpellParam.PSI_PREFIX)) {
-					key = "_" + key.substring(SpellParam.PSI_PREFIX.length());
-				}
-				this.paramSides.put(param, SpellParam.Side.fromInt(params.get(key)));
-			}
-		}
-	}
-
-	public String getShortenedKey() {
-		return this.registryKey.toString().replaceAll("^" + PSI_PREFIX, "_");
-	}
-
-	private static SpellPiece fromCodecData(Optional<String> comment, String tagKey, Optional<Map<String, Integer>> params) {
-		Class<? extends SpellPiece> clazz = PsiAPI.getSpellPiece(ResourceLocation.parse(tagKey.replaceFirst("^_", PSI_PREFIX)));
-		SpellPiece p = create(clazz, new Spell());
-		params.ifPresent(p::loadParamsMap);
-		comment.ifPresent(s -> p.comment = s);
-
-		return p;
-	}
-
-	public static final MapCodec<SpellPiece> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-			Codec.STRING.optionalFieldOf(TAG_COMMENT).forGetter(p -> Optional.ofNullable(p.comment)),
-			Codec.STRING.fieldOf(TAG_KEY).forGetter(SpellPiece::getShortenedKey),
-			Codec.unboundedMap(Codec.STRING, Codec.INT).optionalFieldOf(TAG_PARAMS).forGetter(SpellPiece::paramsToMap)
-	).apply(instance, SpellPiece::fromCodecData));
-
-	public static final StreamCodec<RegistryFriendlyByteBuf, SpellPiece> STREAM_CODEC = StreamCodec.composite(
-			ByteBufCodecs.optional(ByteBufCodecs.STRING_UTF8), p -> Optional.ofNullable(p.comment),
-			ByteBufCodecs.STRING_UTF8, SpellPiece::getShortenedKey,
-			ByteBufCodecs.optional(ByteBufCodecs.map(Object2IntOpenHashMap::new, ByteBufCodecs.STRING_UTF8, ByteBufCodecs.VAR_INT)), SpellPiece::paramsToMap,
-			SpellPiece::fromCodecData
-	);
+	public static final StreamCodec<ByteBuf, SpellPiece> STREAM_CODEC = ByteBufCodecs.COMPOUND_TAG.map(t -> SpellPiece.createFromNBT(dummySpell, t), p -> {
+		var tag = new CompoundTag();
+		p.writeToNBT(tag);
+		return tag;
+	});
 
 	public void writeToNBT(CompoundTag cmp) {
 		if(comment == null) {
@@ -718,10 +670,5 @@ public abstract class SpellPiece {
 		if(!comment.isEmpty()) {
 			cmp.putString(TAG_COMMENT, comment);
 		}
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		return super.equals(obj) || obj instanceof SpellPiece o && this.x == o.x && this.y == o.y && Objects.equals(this.comment, o.comment) && Objects.equals(this.registryKey, o.registryKey) && Objects.equals(this.paramSides, o.paramSides);
 	}
 }

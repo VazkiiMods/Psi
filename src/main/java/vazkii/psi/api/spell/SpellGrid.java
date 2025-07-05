@@ -14,7 +14,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -26,7 +25,6 @@ import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.network.codec.NeoForgeStreamCodecs;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -318,6 +316,8 @@ public final class SpellGrid {
 	private static SpellGrid fromCodecData(List<PieceWithPosition> spellList) {
 		var grid = new SpellGrid(new Spell());
 		for(var piece : spellList) {
+			piece.piece.x = piece.x;
+			piece.piece.y = piece.y;
 			grid.gridData[piece.x][piece.y] = piece.piece;
 		}
 		grid.empty = spellList.isEmpty();
@@ -335,7 +335,7 @@ public final class SpellGrid {
 
 	record PieceWithPosition(SpellPiece piece, int x, int y) {
 		public static final MapCodec<PieceWithPosition> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-				Codec.lazyInitialized(SpellPiece.CODEC::codec).fieldOf(TAG_SPELL_DATA).forGetter(PieceWithPosition::piece),
+				Codec.lazyInitialized(() -> SpellPiece.CODEC).fieldOf(TAG_SPELL_DATA).forGetter(PieceWithPosition::piece),
 				Codec.INT.fieldOf(TAG_SPELL_POS_X).forGetter(PieceWithPosition::x),
 				Codec.INT.fieldOf(TAG_SPELL_POS_Y).forGetter(PieceWithPosition::y)
 		).apply(instance, PieceWithPosition::new));
@@ -374,15 +374,5 @@ public final class SpellGrid {
 	@FunctionalInterface
 	public interface SpellPieceConsumer {
 		void accept(SpellPiece piece) throws SpellCompilationException;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		return super.equals(obj) || obj instanceof SpellGrid o && Arrays.deepEquals(this.gridData, o.gridData);
-	}
-
-	@Override
-	public int hashCode() {
-		return this.gridData == null ? 0 : Arrays.deepHashCode(this.gridData);
 	}
 }
