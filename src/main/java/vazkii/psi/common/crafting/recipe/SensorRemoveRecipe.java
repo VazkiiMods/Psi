@@ -17,11 +17,9 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
 import vazkii.psi.api.exosuit.ISensorHoldable;
+import vazkii.psi.common.crafting.ModCraftingRecipes;
 
 public class SensorRemoveRecipe extends CustomRecipe {
-
-	public static final SimpleCraftingRecipeSerializer<SensorRemoveRecipe> SERIALIZER = new SimpleCraftingRecipeSerializer<>(SensorRemoveRecipe::new);
-
 	public SensorRemoveRecipe(CraftingBookCategory category) {
 		super(category);
 	}
@@ -78,10 +76,15 @@ public class SensorRemoveRecipe extends CustomRecipe {
 		return list;
 	}
 
+	@Override
+	public @NotNull RecipeType<?> getType() {
+		return ModCraftingRecipes.SENSOR_REMOVE_TYPE.get();
+	}
+
 	@NotNull
 	@Override
 	public RecipeSerializer<?> getSerializer() {
-		return SERIALIZER;
+		return ModCraftingRecipes.SENSOR_REMOVE_SERIALIZER.get();
 	}
 
 	@Override

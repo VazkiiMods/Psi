@@ -17,10 +17,9 @@ import org.jetbrains.annotations.NotNull;
 
 import vazkii.psi.api.exosuit.IExosuitSensor;
 import vazkii.psi.api.exosuit.ISensorHoldable;
+import vazkii.psi.common.crafting.ModCraftingRecipes;
 
 public class SensorAttachRecipe extends CustomRecipe {
-	public static final SimpleCraftingRecipeSerializer<SensorAttachRecipe> SERIALIZER = new SimpleCraftingRecipeSerializer<>(SensorAttachRecipe::new);
-
 	public SensorAttachRecipe(CraftingBookCategory category) {
 		super(category);
 	}
@@ -76,10 +75,15 @@ public class SensorAttachRecipe extends CustomRecipe {
 		return copy;
 	}
 
+	@Override
+	public @NotNull RecipeType<?> getType() {
+		return ModCraftingRecipes.SENSOR_ATTACH_TYPE.get();
+	}
+
 	@NotNull
 	@Override
 	public RecipeSerializer<?> getSerializer() {
-		return SERIALIZER;
+		return ModCraftingRecipes.SENSOR_ATTACH_SERIALIZER.get();
 	}
 
 	@Override

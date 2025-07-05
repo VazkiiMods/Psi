@@ -4,6 +4,7 @@
   "compatibilityLevel": "JAVA_17",
   "package": "vazkii.psi.mixin",
   "mixins": [
+    "server.ServerPlaceRecipeMixin"
   ],
   "client": [
     "client.AccessorRenderBuffers",

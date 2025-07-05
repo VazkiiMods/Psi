@@ -23,6 +23,7 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import vazkii.psi.api.recipe.ITrickRecipe;
@@ -34,8 +35,6 @@ import vazkii.psi.common.item.base.ModItems;
 import java.util.Optional;
 
 public class TrickRecipe implements ITrickRecipe {
-	public static final RecipeSerializer<TrickRecipe> SERIALIZER = new Serializer();
-
 	@Nullable
 	protected final PieceCraftingTrick piece;
 	protected final Ingredient input;
@@ -86,8 +85,8 @@ public class TrickRecipe implements ITrickRecipe {
 	}
 
 	@Override
-	public RecipeSerializer<?> getSerializer() {
-		return SERIALIZER;
+	public @NotNull RecipeSerializer<?> getSerializer() {
+		return ModCraftingRecipes.TRICK_RECIPE_SERIALIZER.get();
 	}
 
 	@Override
@@ -96,8 +95,8 @@ public class TrickRecipe implements ITrickRecipe {
 	}
 
 	@Override
-	public RecipeType<?> getType() {
-		return ModCraftingRecipes.TRICK_RECIPE_TYPE;
+	public @NotNull RecipeType<?> getType() {
+		return ModCraftingRecipes.TRICK_RECIPE_TYPE.get();
 	}
 
 	@Override

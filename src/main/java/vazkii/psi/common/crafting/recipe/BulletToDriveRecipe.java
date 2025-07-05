@@ -18,11 +18,10 @@ import org.jetbrains.annotations.NotNull;
 
 import vazkii.psi.api.spell.ISpellAcceptor;
 import vazkii.psi.api.spell.Spell;
+import vazkii.psi.common.crafting.ModCraftingRecipes;
 import vazkii.psi.common.item.ItemSpellDrive;
 
 public class BulletToDriveRecipe extends CustomRecipe {
-	public static final SimpleCraftingRecipeSerializer<BulletToDriveRecipe> SERIALIZER = new SimpleCraftingRecipeSerializer<>(BulletToDriveRecipe::new);
-
 	public BulletToDriveRecipe(CraftingBookCategory craftingBookCategory) {
 		super(craftingBookCategory);
 	}
@@ -90,10 +89,15 @@ public class BulletToDriveRecipe extends CustomRecipe {
 		return list;
 	}
 
+	@Override
+	public @NotNull RecipeType<?> getType() {
+		return ModCraftingRecipes.BULLET_TO_DRIVE_TYPE.get();
+	}
+
 	@NotNull
 	@Override
 	public RecipeSerializer<?> getSerializer() {
-		return SERIALIZER;
+		return ModCraftingRecipes.BULLET_TO_DRIVE_SERIALIZER.get();
 	}
 
 	@Override

@@ -22,13 +22,16 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.common.Tags;
 
+import net.neoforged.neoforge.registries.DeferredHolder;
 import vazkii.patchouli.api.PatchouliAPI;
 import vazkii.psi.api.recipe.TrickRecipeBuilder;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.base.ModBlocks;
+import vazkii.psi.common.crafting.ModCraftingRecipes;
 import vazkii.psi.common.crafting.recipe.*;
 import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.lib.LibItemNames;
@@ -46,20 +49,20 @@ public class PsiRecipeGenerator extends RecipeProvider {
 		super(pOutput, pRegistries);
 	}
 
-	protected void specialRecipe(RecipeOutput recipeOutput, Function<CraftingBookCategory, Recipe<?>> factory, CraftingBookCategory category) {
+	protected <R extends Recipe<?>> void specialRecipe(RecipeOutput recipeOutput, DeferredHolder<RecipeType<?>, RecipeType<R>> type, Function<CraftingBookCategory, Recipe<?>> factory, CraftingBookCategory category) {
 		Recipe<?> recipe = factory.apply(category);
-		ResourceLocation serializerKey = BuiltInRegistries.RECIPE_SERIALIZER.getKey(recipe.getSerializer());
-		recipeOutput.accept(ResourceLocation.fromNamespaceAndPath(serializerKey.getNamespace(), "dynamic/" + serializerKey.getPath()), recipe, null);
+		ResourceLocation id = type.getId();
+		recipeOutput.accept(ResourceLocation.fromNamespaceAndPath(id.getNamespace(), "dynamic/" + id.getPath()), recipe, null);
 	}
 
 	@Override
 	protected void buildRecipes(RecipeOutput consumer) {
-		specialRecipe(consumer, AssemblyScavengeRecipe::new, CraftingBookCategory.MISC);
-		specialRecipe(consumer, BulletToDriveRecipe::new, CraftingBookCategory.MISC);
-		specialRecipe(consumer, ColorizerChangeRecipe::new, CraftingBookCategory.MISC);
-		specialRecipe(consumer, DriveDuplicateRecipe::new, CraftingBookCategory.MISC);
-		specialRecipe(consumer, SensorAttachRecipe::new, CraftingBookCategory.MISC);
-		specialRecipe(consumer, SensorRemoveRecipe::new, CraftingBookCategory.MISC);
+		specialRecipe(consumer, ModCraftingRecipes.SCAVENGE_TYPE, AssemblyScavengeRecipe::new, CraftingBookCategory.MISC);
+		specialRecipe(consumer, ModCraftingRecipes.BULLET_TO_DRIVE_TYPE, BulletToDriveRecipe::new, CraftingBookCategory.MISC);
+		specialRecipe(consumer, ModCraftingRecipes.COLORIZER_CHANGE_TYPE, ColorizerChangeRecipe::new, CraftingBookCategory.MISC);
+		specialRecipe(consumer, ModCraftingRecipes.DRIVE_DUPLICATE_TYPE, DriveDuplicateRecipe::new, CraftingBookCategory.MISC);
+		specialRecipe(consumer, ModCraftingRecipes.SENSOR_ATTACH_TYPE, SensorAttachRecipe::new, CraftingBookCategory.MISC);
+		specialRecipe(consumer, ModCraftingRecipes.SENSOR_REMOVE_TYPE, SensorRemoveRecipe::new, CraftingBookCategory.MISC);
 
 		Criterion<InventoryChangeTrigger.TriggerInstance> hasIron = has(Tags.Items.INGOTS_IRON);
 		Criterion<InventoryChangeTrigger.TriggerInstance> hasPsimetal = has(ModTags.INGOT_PSIMETAL);
@@ -286,9 +289,9 @@ public class PsiRecipeGenerator extends RecipeProvider {
 				.pattern("AID")
 				.unlockedBy("has_psidust", hasPsidust)
 				.save(consumer, Psi.location("spell_bullet_projectile"));
-		ShapelessRecipeBuilder.shapeless(RecipeCategory.TOOLS, ModItems.projectileSpellBullet)
+		new BulletUpgradeRecipe.Builder(ModItems.projectileSpellBullet)
 				.requires(ModItems.spellBullet)
-				.requires(ItemTags.ARROWS)
+				.requires(Ingredient.of(ItemTags.ARROWS))
 				.unlockedBy("has_psidust", has(ModItems.psidust))
 				.save(consumer, Psi.location("spell_bullet_projectile_upgrade"));
 
@@ -299,9 +302,9 @@ public class PsiRecipeGenerator extends RecipeProvider {
 				.pattern("AID")
 				.unlockedBy("has_psidust", hasPsidust)
 				.save(consumer, Psi.location("spell_bullet_loopcast"));
-		ShapelessRecipeBuilder.shapeless(RecipeCategory.TOOLS, ModItems.loopSpellBullet)
+		new BulletUpgradeRecipe.Builder(ModItems.loopSpellBullet)
 				.requires(ModItems.spellBullet)
-				.requires(Tags.Items.STRINGS)
+				.requires(Ingredient.of(Tags.Items.STRINGS))
 				.unlockedBy("has_psidust", has(ModItems.psidust))
 				.save(consumer, Psi.location("spell_bullet_loopcast_upgrade"));
 		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.circleSpellBullet)
@@ -313,7 +316,7 @@ public class PsiRecipeGenerator extends RecipeProvider {
 				.pattern("AID")
 				.unlockedBy("has_psidust", hasPsidust)
 				.save(consumer, Psi.location("spell_bullet_circle"));
-		ShapelessRecipeBuilder.shapeless(RecipeCategory.TOOLS, ModItems.circleSpellBullet)
+		new BulletUpgradeRecipe.Builder(ModItems.circleSpellBullet)
 				.requires(ModItems.spellBullet)
 				.requires(Ingredient.fromValues(Stream.of(
 						new Ingredient.TagValue(Tags.Items.SLIME_BALLS),
@@ -327,9 +330,9 @@ public class PsiRecipeGenerator extends RecipeProvider {
 				.pattern("AID")
 				.unlockedBy("has_psidust", hasPsidust)
 				.save(consumer, Psi.location("spell_bullet_grenade"));
-		ShapelessRecipeBuilder.shapeless(RecipeCategory.TOOLS, ModItems.grenadeSpellBullet)
+		new BulletUpgradeRecipe.Builder(ModItems.grenadeSpellBullet)
 				.requires(ModItems.spellBullet)
-				.requires(Tags.Items.GUNPOWDERS)
+				.requires(Ingredient.of(Tags.Items.GUNPOWDERS))
 				.unlockedBy("has_psidust", has(ModItems.psidust))
 				.save(consumer, Psi.location("spell_bullet_grenade_upgrade"));
 		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.chargeSpellBullet)
@@ -339,9 +342,9 @@ public class PsiRecipeGenerator extends RecipeProvider {
 				.pattern("AID")
 				.unlockedBy("has_psidust", hasPsidust)
 				.save(consumer, Psi.location("spell_bullet_charge"));
-		ShapelessRecipeBuilder.shapeless(RecipeCategory.TOOLS, ModItems.chargeSpellBullet)
+		new BulletUpgradeRecipe.Builder(ModItems.chargeSpellBullet)
 				.requires(ModItems.spellBullet)
-				.requires(Tags.Items.DUSTS_REDSTONE)
+				.requires(Ingredient.of(Tags.Items.DUSTS_REDSTONE))
 				.unlockedBy("has_psidust", has(ModItems.psidust))
 				.save(consumer, Psi.location("spell_bullet_charge_upgrade"));
 		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.mineSpellBullet)
@@ -351,9 +354,9 @@ public class PsiRecipeGenerator extends RecipeProvider {
 				.pattern("AID")
 				.unlockedBy("has_psidust", hasPsidust)
 				.save(consumer, Psi.location("spell_bullet_mine"));
-		ShapelessRecipeBuilder.shapeless(RecipeCategory.TOOLS, ModItems.mineSpellBullet)
+		new BulletUpgradeRecipe.Builder(ModItems.mineSpellBullet)
 				.requires(ModItems.spellBullet)
-				.requires(ItemTags.BUTTONS)
+				.requires(Ingredient.of(ItemTags.BUTTONS))
 				.unlockedBy("has_psidust", has(ModItems.psidust))
 				.save(consumer, Psi.location("spell_bullet_mine_upgrade"));
 

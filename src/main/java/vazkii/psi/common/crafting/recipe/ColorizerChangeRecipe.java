@@ -20,11 +20,10 @@ import org.jetbrains.annotations.NotNull;
 import vazkii.psi.api.cad.EnumCADComponent;
 import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.cad.ICADColorizer;
+import vazkii.psi.common.crafting.ModCraftingRecipes;
 import vazkii.psi.common.item.ItemCAD;
 
 public class ColorizerChangeRecipe extends CustomRecipe {
-	public static final SimpleCraftingRecipeSerializer<ColorizerChangeRecipe> SERIALIZER = new SimpleCraftingRecipeSerializer<>(ColorizerChangeRecipe::new);
-
 	public ColorizerChangeRecipe(CraftingBookCategory category) {
 		super(category);
 	}
@@ -108,10 +107,15 @@ public class ColorizerChangeRecipe extends CustomRecipe {
 		return ret;
 	}
 
+	@Override
+	public @NotNull RecipeType<?> getType() {
+		return ModCraftingRecipes.COLORIZER_CHANGE_TYPE.get();
+	}
+
 	@NotNull
 	@Override
 	public RecipeSerializer<?> getSerializer() {
-		return SERIALIZER;
+		return ModCraftingRecipes.COLORIZER_CHANGE_SERIALIZER.get();
 	}
 
 	@Override

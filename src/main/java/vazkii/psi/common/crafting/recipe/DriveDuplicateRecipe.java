@@ -17,11 +17,10 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
 import vazkii.psi.api.spell.Spell;
+import vazkii.psi.common.crafting.ModCraftingRecipes;
 import vazkii.psi.common.item.ItemSpellDrive;
 
 public class DriveDuplicateRecipe extends CustomRecipe {
-	public static final SimpleCraftingRecipeSerializer<DriveDuplicateRecipe> SERIALIZER = new SimpleCraftingRecipeSerializer<>(DriveDuplicateRecipe::new);
-
 	public DriveDuplicateRecipe(CraftingBookCategory category) {
 		super(category);
 	}
@@ -93,10 +92,15 @@ public class DriveDuplicateRecipe extends CustomRecipe {
 		return list;
 	}
 
+	@Override
+	public @NotNull RecipeType<?> getType() {
+		return ModCraftingRecipes.DRIVE_DUPLICATE_TYPE.get();
+	}
+
 	@NotNull
 	@Override
 	public RecipeSerializer<?> getSerializer() {
-		return SERIALIZER;
+		return ModCraftingRecipes.DRIVE_DUPLICATE_SERIALIZER.get();
 	}
 
 	@Override
