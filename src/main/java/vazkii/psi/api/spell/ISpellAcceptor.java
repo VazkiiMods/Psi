@@ -11,10 +11,8 @@ package vazkii.psi.api.spell;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-
+import org.jetbrains.annotations.Nullable;
 import vazkii.psi.api.PsiAPI;
-
-import javax.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.Objects;

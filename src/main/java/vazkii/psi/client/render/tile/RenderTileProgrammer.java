@@ -11,7 +11,6 @@ package vazkii.psi.client.render.tile;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -21,9 +20,7 @@ import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.FaceAttachedHorizontalDirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
-
 import org.joml.Matrix4f;
-
 import vazkii.psi.client.core.handler.ClientTickHandler;
 import vazkii.psi.client.gui.GuiProgrammer;
 import vazkii.psi.common.Psi;

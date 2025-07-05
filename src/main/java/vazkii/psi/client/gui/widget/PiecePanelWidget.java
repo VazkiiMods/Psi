@@ -19,9 +19,8 @@ import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.common.NeoForge;
-
+import org.jetbrains.annotations.NotNull;
 import org.lwjgl.glfw.GLFW;
-
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.spell.EnumPieceType;
 import vazkii.psi.api.spell.SpellParam;
@@ -54,7 +53,7 @@ public class PiecePanelWidget extends AbstractWidget implements GuiEventListener
 	}
 
 	@Override
-	public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float pTicks) {
+	public void renderWidget(@NotNull GuiGraphics graphics, int mouseX, int mouseY, float pTicks) {
 		if(panelEnabled) {
 			graphics.fill(getX(), getY(), getX() + width, getY() + height, 0x88000000);
 
@@ -134,7 +133,7 @@ public class PiecePanelWidget extends AbstractWidget implements GuiEventListener
 		List<SpellPiece> shownPieces = new ArrayList<>();
 		NeoForge.EVENT_BUS.post(event);
 		for(ResourceLocation key : event.getSpellPieceRegistry().keySet()) {
-			Class<? extends SpellPiece> clazz = event.getSpellPieceRegistry().getOptional(key).get();
+			Class<? extends SpellPiece> clazz = event.getSpellPieceRegistry().get(key);
 			ResourceLocation group = PsiAPI.getGroupForPiece(clazz);
 
 			if(!parent.getMinecraft().player.isCreative() && (group == null || !playerData.isPieceGroupUnlocked(group, key))) {
@@ -222,16 +221,16 @@ public class PiecePanelWidget extends AbstractWidget implements GuiEventListener
 		boolean noSearchTerms = text.isEmpty();
 
 		parent.getButtons().forEach(button -> {
-			if(button instanceof GuiButtonSpellPiece) {
-				SpellPiece piece = ((GuiButtonSpellPiece) button).getPiece();
+			if(button instanceof GuiButtonSpellPiece guiButtonSpellPiece) {
+				SpellPiece piece = guiButtonSpellPiece.getPiece();
 
 				if(noSearchTerms) {
-					visibleButtons.add((GuiButtonSpellPiece) button);
+					visibleButtons.add(guiButtonSpellPiece);
 				} else {
 					int rank = ranking(text, piece);
 					if(rank > 0) {
 						pieceRankings.put(piece.getClass(), rank);
-						visibleButtons.add((GuiButtonSpellPiece) button);
+						visibleButtons.add(guiButtonSpellPiece);
 					}
 				}
 			} else if(button instanceof GuiButtonPage page) {
@@ -269,7 +268,7 @@ public class PiecePanelWidget extends AbstractWidget implements GuiEventListener
 			}).findFirst().orElse(null);
 			visibleButtons.remove(constantPiece);
 			((PieceConstantNumber) constantPiece.getPiece()).valueStr = text;
-			visibleButtons.add(0, constantPiece);
+			visibleButtons.addFirst(constantPiece);
 		}
 
 		int start = page * PIECES_PER_PAGE;
@@ -281,6 +280,9 @@ public class PiecePanelWidget extends AbstractWidget implements GuiEventListener
 
 			GuiButtonSpellPiece piece = visibleButtons.get(i);
 			GuiButtonSpellPiece buttonSpellPiece = (GuiButtonSpellPiece) parent.getButtons().stream().filter(el -> el.equals(piece)).findFirst().orElse(null);
+			if (buttonSpellPiece == null) {
+				continue;
+			}
 			buttonSpellPiece.setX(getX() + 5 + c % 5 * 18);
 			buttonSpellPiece.setY(getY() + 20 + c / 5 * 18);
 			buttonSpellPiece.visible = true;
@@ -350,9 +352,9 @@ public class PiecePanelWidget extends AbstractWidget implements GuiEventListener
 					continue;
 				}
 
-				String mod = PsiAPI.getSpellPieceKey(p.getClass()).getNamespace();
+				ResourceLocation mod = PsiAPI.getSpellPieceKey(p.getClass());
 				if(mod != null) {
-					int modRank = rankTextToken(mod, clippedToken);
+					int modRank = rankTextToken(mod.getNamespace(), clippedToken);
 					if(modRank <= 0) {
 						return 0;
 					}
@@ -457,7 +459,7 @@ public class PiecePanelWidget extends AbstractWidget implements GuiEventListener
 	}
 
 	@Override
-	protected void updateWidgetNarration(NarrationElementOutput pNarrationElementOutput) {
+	protected void updateWidgetNarration(@NotNull NarrationElementOutput pNarrationElementOutput) {
 		this.defaultButtonNarrationText(pNarrationElementOutput);
 	}
 }

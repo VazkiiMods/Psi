@@ -34,12 +34,12 @@ import vazkii.psi.common.item.ItemCAD;
 import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.lib.LibMisc;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-@EventBusSubscriber(modid = LibMisc.MOD_ID, bus = EventBusSubscriber.Bus.GAME)
+@EventBusSubscriber(modid = LibMisc.MOD_ID)
 public class ItemPsimetalSword extends SwordItem implements IPsimetalTool {
 
 	public ItemPsimetalSword(Item.Properties properties) {
@@ -54,7 +54,7 @@ public class ItemPsimetalSword extends SwordItem implements IPsimetalTool {
 	}
 
 	@Override
-	public boolean hurtEnemy(ItemStack itemstack, LivingEntity target, @Nonnull LivingEntity attacker) {
+	public boolean hurtEnemy(ItemStack itemstack, LivingEntity target, @NotNull LivingEntity attacker) {
 		super.hurtEnemy(itemstack, target, attacker);
 
 		if(IPsimetalTool.isEnabled(itemstack) && attacker instanceof Player player) {
@@ -91,7 +91,7 @@ public class ItemPsimetalSword extends SwordItem implements IPsimetalTool {
 		return super.getDestroySpeed(stack, state);
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
 	public String getDescriptionId(ItemStack stack) {
 		String name = super.getDescriptionId(stack);

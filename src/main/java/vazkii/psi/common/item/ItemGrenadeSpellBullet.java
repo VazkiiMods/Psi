@@ -10,7 +10,6 @@ package vazkii.psi.common.item;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
-
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.EnumCADComponent;
 import vazkii.psi.api.cad.ICAD;
@@ -40,12 +39,7 @@ public class ItemGrenadeSpellBullet extends ItemSpellBullet {
 		return spellEntities;
 	}
 
-	@Override
-	public boolean isCADOnlyContainer(ItemStack stack) {
-		return false;
-	}
-
-	@Override
+    @Override
 	public double getCostModifier(ItemStack stack) {
 		return 1.05;
 	}

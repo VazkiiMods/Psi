@@ -12,7 +12,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
-
 import vazkii.psi.client.gui.GuiProgrammer;
 
 public class GuiButtonIO extends Button {

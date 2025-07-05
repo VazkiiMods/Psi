@@ -25,14 +25,12 @@ import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-
+import org.jetbrains.annotations.NotNull;
 import vazkii.psi.api.internal.VanillaPacketDispatcher;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.common.block.tile.TileProgrammer;
 import vazkii.psi.common.core.handler.PsiSoundHandler;
 import vazkii.psi.common.item.base.ModItems;
-
-import javax.annotation.Nonnull;
 
 public class ItemSpellDrive extends Item {
 
@@ -60,7 +58,7 @@ public class ItemSpellDrive extends Item {
 		return Spell.createFromNBT(cmp);
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
 	public Component getName(ItemStack stack) {
 		String name = super.getName(stack).getString();
@@ -73,7 +71,7 @@ public class ItemSpellDrive extends Item {
 		return Component.literal(name + " (" + ChatFormatting.GREEN + spellName + ChatFormatting.RESET + ")");
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
 	public InteractionResult useOn(UseOnContext ctx) {
 		Player playerIn = ctx.getPlayer();
@@ -116,9 +114,9 @@ public class ItemSpellDrive extends Item {
 		return InteractionResult.PASS;
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
-	public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, @Nonnull InteractionHand hand) {
+	public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, @NotNull InteractionHand hand) {
 		ItemStack itemStackIn = playerIn.getItemInHand(hand);
 		if(getSpell(itemStackIn) != null && playerIn.isShiftKeyDown()) {
 			if(!worldIn.isClientSide) {

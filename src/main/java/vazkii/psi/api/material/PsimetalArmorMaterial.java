@@ -10,7 +10,6 @@ import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.neoforged.neoforge.registries.DeferredRegister;
-
 import vazkii.psi.api.PsiAPI;
 
 import java.util.EnumMap;
@@ -28,7 +27,7 @@ public class PsimetalArmorMaterial {
 			}),
 			12,
 			SoundEvents.ARMOR_EQUIP_IRON,
-			() -> Ingredient.of(BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(PsiAPI.MOD_ID, "psimetal"))),
+			() -> Ingredient.of(BuiltInRegistries.ITEM.get(PsiAPI.location("psimetal"))),
 			List.of(new ArmorMaterial.Layer(ResourceLocation.withDefaultNamespace(""), "", true)),
 			0.0F,
 			0.0F));

@@ -9,9 +9,7 @@
 package vazkii.psi.client.model;
 
 import net.minecraft.client.model.geom.ModelLayerLocation;
-import net.minecraft.resources.ResourceLocation;
-
-import vazkii.psi.common.lib.LibMisc;
+import vazkii.psi.common.Psi;
 
 public class ModModelLayers {
 
@@ -25,7 +23,7 @@ public class ModModelLayers {
 	private static ModelLayerLocation make(String name, String layer) {
 		// Don't add to vanilla's ModelLayers. It seems to only be used for error checking
 		// And would be annoying to do under Forge's parallel mod loading
-		return new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, name), layer);
+		return new ModelLayerLocation(Psi.location(name), layer);
 	}
 
 	public static void init() {}

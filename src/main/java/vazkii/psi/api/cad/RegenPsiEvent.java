@@ -12,7 +12,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.Event;
 import net.neoforged.bus.api.ICancellableEvent;
-
 import vazkii.psi.api.internal.IPlayerData;
 
 /**
@@ -21,7 +20,7 @@ import vazkii.psi.api.internal.IPlayerData;
  * This event is posted even when the player is on regen cooldown,
  * and can be used to control the cooldown time.
  * <p>
- * This event is {@link Cancelable}.
+ * This event is {@link ICancellableEvent}.
  * If canceled, no regen will occur and the regen cooldown will not change.
  */
 public class RegenPsiEvent extends Event implements ICancellableEvent {

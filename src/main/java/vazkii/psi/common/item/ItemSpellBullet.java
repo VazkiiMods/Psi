@@ -25,7 +25,8 @@ import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.capabilities.ICapabilityProvider;
 import net.neoforged.neoforge.capabilities.ItemCapability;
-
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.internal.TooltipHelper;
 import vazkii.psi.api.spell.ISpellAcceptor;
@@ -33,9 +34,6 @@ import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.common.core.handler.PsiSoundHandler;
 import vazkii.psi.common.item.base.ModItems;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,9 +62,9 @@ public class ItemSpellBullet extends Item {
 		}
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
-	public Component getName(@Nonnull ItemStack stack) {
+	public Component getName(@NotNull ItemStack stack) {
 		if(ISpellAcceptor.hasSpell(stack)) {
 			CompoundTag cmp = stack.getOrDefault(ModItems.TAG_SPELL, new CompoundTag());
 			String name = cmp.getString(Spell.TAG_SPELL_NAME); // We don't need to load the whole spell just for the name
@@ -86,9 +84,9 @@ public class ItemSpellBullet extends Item {
 		});
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
-	public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, @Nonnull InteractionHand hand) {
+	public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, @NotNull InteractionHand hand) {
 		ItemStack itemStackIn = playerIn.getItemInHand(hand);
 		if(ItemSpellDrive.getSpell(itemStackIn) != null && playerIn.isShiftKeyDown()) {
 			if(!worldIn.isClientSide) {
@@ -192,10 +190,6 @@ public class ItemSpellBullet extends Item {
 			return bulletItem().isCADOnlyContainer(stack);
 		}
 
-		@Override
-		public boolean requiresSneakForSpellSet() {
-			return false;
-		}
-	}
+    }
 
 }

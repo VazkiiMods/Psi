@@ -34,12 +34,12 @@ import vazkii.psi.api.cad.ISocketable;
 import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.lib.LibMisc;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-@EventBusSubscriber(modid = LibMisc.MOD_ID, bus = EventBusSubscriber.Bus.GAME)
+@EventBusSubscriber(modid = LibMisc.MOD_ID)
 public class ItemPsimetalAxe extends AxeItem implements IPsimetalTool {
 
 	public ItemPsimetalAxe(Item.Properties properties) {
@@ -78,7 +78,7 @@ public class ItemPsimetalAxe extends AxeItem implements IPsimetalTool {
 		super.setDamage(stack, damage);
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
 	public String getDescriptionId(ItemStack stack) {
 		String name = super.getDescriptionId(stack);
@@ -102,7 +102,7 @@ public class ItemPsimetalAxe extends AxeItem implements IPsimetalTool {
 	}
 
 	@Override
-	public boolean shouldCauseReequipAnimation(ItemStack oldStack, @Nonnull ItemStack newStack, boolean slotChanged) {
+	public boolean shouldCauseReequipAnimation(ItemStack oldStack, @NotNull ItemStack newStack, boolean slotChanged) {
 		return slotChanged;
 	}
 

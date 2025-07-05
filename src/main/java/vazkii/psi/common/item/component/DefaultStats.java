@@ -11,7 +11,6 @@ package vazkii.psi.common.item.component;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-
 import vazkii.psi.api.cad.CADStatEvent;
 import vazkii.psi.api.cad.EnumCADComponent;
 import vazkii.psi.api.cad.EnumCADStat;
@@ -19,7 +18,7 @@ import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.lib.LibMisc;
 
-@EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME, modid = LibMisc.MOD_ID)
+@EventBusSubscriber(modid = LibMisc.MOD_ID)
 public class DefaultStats {
 
 	public static void registerStats() {

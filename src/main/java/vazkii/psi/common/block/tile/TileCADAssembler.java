@@ -28,16 +28,14 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import net.neoforged.neoforge.items.ItemStackHandler;
-
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.*;
 import vazkii.psi.common.block.base.ModBlocks;
 import vazkii.psi.common.block.tile.container.ContainerCADAssembler;
 import vazkii.psi.common.core.handler.PsiSoundHandler;
 import vazkii.psi.common.item.ItemCAD;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -161,7 +159,7 @@ public class TileCADAssembler extends BlockEntity implements ITileCADAssembler, 
 		readPacketNBT(cmp, provider);
 	}
 
-	public void readPacketNBT(@Nonnull CompoundTag tag, HolderLookup.Provider provider) {
+	public void readPacketNBT(@NotNull CompoundTag tag, HolderLookup.Provider provider) {
 		// Migrate old CAD assemblers to the new format
 		ListTag items = tag.getList("Items", 10);
 		if(items.size() == 19) {
@@ -223,7 +221,7 @@ public class TileCADAssembler extends BlockEntity implements ITileCADAssembler, 
 		//return new ClientboundBlockEntityDataPacket(getBlockPos(), -1, getUpdateTag());
 	}//TODO Hopefully fixed?
 
-	@Nonnull
+	@NotNull
 	@Override
 	public CompoundTag getUpdateTag(HolderLookup.Provider provider) {
 		CompoundTag cmp = new CompoundTag();
@@ -231,7 +229,7 @@ public class TileCADAssembler extends BlockEntity implements ITileCADAssembler, 
 		return cmp;
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
 	public Component getDisplayName() {
 		return Component.translatable(ModBlocks.cadAssembler.getDescriptionId());
@@ -267,7 +265,7 @@ public class TileCADAssembler extends BlockEntity implements ITileCADAssembler, 
 		}
 
 		@Override
-		public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
+		public boolean isItemValid(int slot, @NotNull ItemStack stack) {
 			if(stack.isEmpty()) {
 				return true;
 			}

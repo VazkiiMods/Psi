@@ -9,7 +9,6 @@
 package vazkii.psi.api.inventory;
 
 import net.minecraft.world.item.ItemStack;
-
 import vazkii.psi.api.cad.ISocketable;
 
 import java.util.Iterator;

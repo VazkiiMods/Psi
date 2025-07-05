@@ -10,10 +10,8 @@ package vazkii.psi.api.internal;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
-
+import org.jetbrains.annotations.Nullable;
 import vazkii.psi.api.spell.SpellPiece;
-
-import javax.annotation.Nullable;
 
 /**
  * This is a dummy class. You'll never interact with it, it's just here so

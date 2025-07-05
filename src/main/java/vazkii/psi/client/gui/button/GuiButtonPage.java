@@ -11,7 +11,6 @@ package vazkii.psi.client.gui.button;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
-
 import vazkii.psi.client.gui.GuiProgrammer;
 
 public class GuiButtonPage extends Button {

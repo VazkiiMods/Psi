@@ -10,7 +10,6 @@ package vazkii.psi.common.core.handler;
 
 import com.google.common.collect.ImmutableSet;
 import com.mojang.blaze3d.vertex.PoseStack;
-
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -43,7 +42,8 @@ import net.neoforged.neoforge.event.entity.living.LivingEvent.LivingJumpEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
-
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.*;
 import vazkii.psi.api.exosuit.IPsiEventArmor;
@@ -63,9 +63,6 @@ import vazkii.psi.common.network.message.MessageDataSync;
 import vazkii.psi.common.network.message.MessageDeductPsi;
 import vazkii.psi.common.network.message.MessageTriggerJumpSpell;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import java.lang.ref.WeakReference;
 import java.util.*;
 
@@ -76,7 +73,7 @@ public class PlayerDataHandler {
 	private static final WeakHashMap<Player, PlayerData> playerData = new WeakHashMap<>();
 	private static final String DATA_TAG = "PsiData";
 
-	@Nonnull
+	@NotNull
 	public static PlayerData get(Player player) {
 		if(player == null) {
 			return new PlayerData();
@@ -499,7 +496,7 @@ public class PlayerDataHandler {
 				}
 			} else {
 				if(eidosChangelog.size() > 600) {
-					eidosChangelog.remove(0);
+					eidosChangelog.removeFirst();
 				}
 				eidosChangelog.push(Vector3.fromEntity(player));
 			}

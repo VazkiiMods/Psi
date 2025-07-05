@@ -12,7 +12,6 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-
 import vazkii.patchouli.api.IComponentRenderContext;
 import vazkii.patchouli.api.IVariable;
 import vazkii.psi.api.spell.SpellPiece;
@@ -36,7 +35,7 @@ public class PatchouliUtils {
 	 */
 	public static IVariable interweaveIngredients(List<Ingredient> ingredients, int longestIngredientSize, HolderLookup.Provider registries) {
 		if(ingredients.size() == 1) {
-			return IVariable.wrapList(Arrays.stream(ingredients.get(0).getItems()).map(d -> IVariable.from(d, registries)).collect(Collectors.toList()), registries);
+			return IVariable.wrapList(Arrays.stream(ingredients.getFirst().getItems()).map(d -> IVariable.from(d, registries)).collect(Collectors.toList()), registries);
 		}
 
 		ItemStack[] empty = { ItemStack.EMPTY };

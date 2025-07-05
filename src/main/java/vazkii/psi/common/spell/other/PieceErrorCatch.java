@@ -8,11 +8,10 @@
  */
 package vazkii.psi.common.spell.other;
 
+import org.jetbrains.annotations.NotNull;
 import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.param.ParamAny;
 import vazkii.psi.api.spell.piece.PieceErrorHandler;
-
-import javax.annotation.Nonnull;
 
 public class PieceErrorCatch extends PieceErrorHandler {
 	SpellParam<SpellParam.Any> fallback;
@@ -54,7 +53,7 @@ public class PieceErrorCatch extends PieceErrorHandler {
 		}
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
 	public Object supplyReplacementValue(SpellPiece errorPiece, SpellContext context, SpellRuntimeException exception) {
 		return getRawParamValue(context, fallback);

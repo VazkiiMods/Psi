@@ -14,7 +14,6 @@ import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
-
 import vazkii.patchouli.api.IComponentProcessor;
 import vazkii.patchouli.api.IVariable;
 import vazkii.patchouli.api.IVariableProvider;
@@ -35,7 +34,7 @@ public class MultiCraftingProcessor implements IComponentProcessor {
 	@Override
 	public void setup(Level level, IVariableProvider variables) {
 		List<RecipeHolder<CraftingRecipe>> recipeMap = Minecraft.getInstance().level.getRecipeManager().getAllRecipesFor(RecipeType.CRAFTING);
-		List<String> names = variables.get("recipes", level.registryAccess()).asStream(level.registryAccess()).map(IVariable::asString).collect(Collectors.toList());
+		List<String> names = variables.get("recipes", level.registryAccess()).asStream(level.registryAccess()).map(IVariable::asString).toList();
 		this.recipes = new ArrayList<>();
 		for(String name : names) {
 			Optional<RecipeHolder<CraftingRecipe>> recipe = recipeMap.stream().filter(x -> x.id() == ResourceLocation.parse(name)).findFirst();
@@ -51,7 +50,7 @@ public class MultiCraftingProcessor implements IComponentProcessor {
 					}
 				}
 			} else {
-				Psi.logger.warn("Missing crafting recipe " + name);
+				Psi.logger.warn("Missing crafting recipe {}", name);
 			}
 		}
 		this.hasCustomHeading = variables.has("heading");
@@ -64,7 +63,7 @@ public class MultiCraftingProcessor implements IComponentProcessor {
 		}
 		if(key.equals("heading")) {
 			if(!hasCustomHeading) {
-				return IVariable.from(recipes.get(0).getResultItem(RegistryAccess.EMPTY).getHoverName(), level.registryAccess());
+				return IVariable.from(recipes.getFirst().getResultItem(RegistryAccess.EMPTY).getHoverName(), level.registryAccess());
 			}
 			return null;
 		}
@@ -94,7 +93,7 @@ public class MultiCraftingProcessor implements IComponentProcessor {
 			return IVariable.wrapList(recipes.stream().map(recipe -> recipe.getResultItem(RegistryAccess.EMPTY)).map(d -> IVariable.from(d, level.registryAccess())).collect(Collectors.toList()), level.registryAccess());
 		}
 		if(key.equals("shapeless")) {
-			return IVariable.wrap(shapeless);
+			return IVariable.wrap(shapeless, level.registryAccess());
 		}
 		return null;
 	}

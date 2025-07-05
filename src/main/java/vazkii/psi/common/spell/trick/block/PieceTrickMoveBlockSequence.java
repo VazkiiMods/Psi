@@ -15,7 +15,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.PushReaction;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.level.BlockEvent;
-
 import vazkii.psi.api.internal.MathHelper;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.*;

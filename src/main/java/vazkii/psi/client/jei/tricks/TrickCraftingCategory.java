@@ -18,19 +18,17 @@ import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
-
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-
+import org.jetbrains.annotations.NotNull;
 import vazkii.psi.api.recipe.ITrickRecipe;
+import vazkii.psi.common.Psi;
 import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.lib.LibMisc;
-
-import javax.annotation.Nonnull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -53,9 +51,9 @@ public class TrickCraftingCategory implements IRecipeCategory<ITrickRecipe> {
 
 	public TrickCraftingCategory(IGuiHelper helper) {
 		this.helper = helper;
-		background = helper.createDrawable(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, "textures/gui/jei/trick.png"), 0, 0, 96, 41);
+		background = helper.createDrawable(Psi.location("textures/gui/jei/trick.png"), 0, 0, 96, 41);
 		icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ModItems.psidust));
-		programmerHover = helper.createDrawable(ResourceLocation.fromNamespaceAndPath("psi", "textures/gui/programmer.png"), 16, 184, 16, 16);
+		programmerHover = helper.createDrawable(Psi.location("textures/gui/programmer.png"), 16, 184, 16, 16);
 	}
 
 	private static boolean onTrick(double mouseX, double mouseY) {
@@ -67,19 +65,19 @@ public class TrickCraftingCategory implements IRecipeCategory<ITrickRecipe> {
 		return TYPE;
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
 	public Component getTitle() {
 		return Component.literal(I18n.get("jei." + LibMisc.MOD_ID + ".category.trick"));
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
 	public IDrawable getBackground() {
 		return background;
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
 	public IDrawable getIcon() {
 		return icon;

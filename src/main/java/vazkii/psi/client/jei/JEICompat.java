@@ -14,24 +14,21 @@ import mezz.jei.api.helpers.IJeiHelpers;
 import mezz.jei.api.ingredients.subtypes.ISubtypeInterpreter;
 import mezz.jei.api.ingredients.subtypes.UidContext;
 import mezz.jei.api.registration.*;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
-
+import org.jetbrains.annotations.NotNull;
 import vazkii.psi.api.cad.EnumCADComponent;
 import vazkii.psi.client.jei.crafting.BulletToDriveExtension;
 import vazkii.psi.client.jei.crafting.DriveDuplicateExtension;
 import vazkii.psi.client.jei.tricks.TrickCraftingCategory;
+import vazkii.psi.common.Psi;
 import vazkii.psi.common.crafting.ModCraftingRecipes;
 import vazkii.psi.common.crafting.recipe.BulletToDriveRecipe;
 import vazkii.psi.common.crafting.recipe.DriveDuplicateRecipe;
 import vazkii.psi.common.item.ItemCAD;
 import vazkii.psi.common.item.base.ModItems;
-import vazkii.psi.common.lib.LibMisc;
-
-import javax.annotation.Nonnull;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -40,10 +37,10 @@ import java.util.StringJoiner;
 
 @JeiPlugin
 public class JEICompat implements IModPlugin {
-	private static final ResourceLocation UID = ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, "main");
+	private static final ResourceLocation UID = Psi.location("main");
 	public static IJeiHelpers helpers;
 
-	@Nonnull
+	@NotNull
 	@Override
 	public ResourceLocation getPluginUid() {
 		return UID;
@@ -101,8 +98,9 @@ public class JEICompat implements IModPlugin {
 			return joiner.toString();
 		}
 
+		@Deprecated(since = "19.9.0")
 		@Override
-		public String getLegacyStringSubtypeInfo(ItemStack ingredient, UidContext context) {
+		public @NotNull String getLegacyStringSubtypeInfo(@NotNull ItemStack ingredient, @NotNull UidContext context) {
 			return "";
 		}
 	}

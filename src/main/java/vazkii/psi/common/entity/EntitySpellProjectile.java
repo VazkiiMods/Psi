@@ -32,7 +32,7 @@ import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.common.Psi;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Optional;
@@ -193,7 +193,7 @@ public class EntitySpellProjectile extends ThrowableProjectile {
 	}
 
 	@Override
-	protected void onHit(@Nonnull HitResult pos) {
+	protected void onHit(@NotNull HitResult pos) {
 		if(pos instanceof EntityHitResult && ((EntityHitResult) pos).getEntity() instanceof LivingEntity) {
 			cast((SpellContext context) -> {
 				if(context != null) {
@@ -258,7 +258,7 @@ public class EntitySpellProjectile extends ThrowableProjectile {
 				.map(u -> {
 					List<LivingEntity> a = getCommandSenderWorld().getEntitiesOfClass(LivingEntity.class, axis, (Entity e) -> e.getUUID().equals(u));
 					if(!a.isEmpty()) {
-						return a.get(0);
+						return a.getFirst();
 					}
 					return null;
 				})

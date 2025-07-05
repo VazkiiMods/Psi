@@ -11,7 +11,6 @@ package vazkii.psi.common.item.component;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
-
 import vazkii.psi.client.core.handler.ClientTickHandler;
 
 import java.awt.*;

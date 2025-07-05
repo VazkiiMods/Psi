@@ -11,9 +11,8 @@ package vazkii.psi.api.spell;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.Event;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Posted after a piece executed.
@@ -25,19 +24,19 @@ public class PieceGroupAdvancementComplete extends Event {
 	@Nullable
 	private final SpellPiece piece;
 
-	@Nonnull
+	@NotNull
 	private final Player playerEntity;
 
-	@Nonnull
+	@NotNull
 	private final ResourceLocation pieceGroup;
 
-	public PieceGroupAdvancementComplete(@Nullable SpellPiece piece, @Nonnull Player playerEntity, @Nonnull ResourceLocation pieceGroup) {
+	public PieceGroupAdvancementComplete(@Nullable SpellPiece piece, @NotNull Player playerEntity, @NotNull ResourceLocation pieceGroup) {
 		this.piece = piece;
 		this.playerEntity = playerEntity;
 		this.pieceGroup = pieceGroup;
 	}
 
-	@Nonnull
+	@NotNull
 	public ResourceLocation getPieceGroup() {
 		return pieceGroup;
 	}
@@ -47,7 +46,7 @@ public class PieceGroupAdvancementComplete extends Event {
 		return piece;
 	}
 
-	@Nonnull
+	@NotNull
 	public Player getPlayerEntity() {
 		return playerEntity;
 	}

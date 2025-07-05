@@ -9,12 +9,10 @@
 package vazkii.psi.client.gui.button;
 
 import com.mojang.blaze3d.vertex.ByteBufferBuilder;
-
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.network.chat.Component;
-
 import vazkii.psi.api.spell.SpellPiece;
 import vazkii.psi.client.gui.GuiProgrammer;
 

@@ -10,7 +10,6 @@ package vazkii.psi.common.item.component;
 
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-
 import vazkii.psi.api.cad.EnumCADComponent;
 
 public class ItemCADSocket extends ItemCADComponent {

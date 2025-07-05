@@ -9,7 +9,6 @@
 package vazkii.psi.api.spell.piece;
 
 import net.minecraft.world.item.ItemStack;
-
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;

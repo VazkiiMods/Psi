@@ -17,9 +17,8 @@ import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.capabilities.ICapabilityProvider;
 import net.neoforged.neoforge.capabilities.ItemCapability;
-
 import org.jetbrains.annotations.NotNull;
-
+import org.jetbrains.annotations.Nullable;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.internal.TooltipHelper;
 import vazkii.psi.api.spell.ISpellAcceptor;
@@ -28,9 +27,6 @@ import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.client.gui.GuiFlashRing;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.item.base.ModItems;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,9 +55,9 @@ public class ItemFlashRing extends Item {
 		}
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
-	public Component getName(@Nonnull ItemStack stack) {
+	public Component getName(@NotNull ItemStack stack) {
 		if(!ISpellAcceptor.hasSpell(stack)) {
 			return super.getName(stack);
 		}
@@ -78,9 +74,7 @@ public class ItemFlashRing extends Item {
 
 	@Override
 	public void appendHoverText(@NotNull ItemStack stack, @Nullable TooltipContext context, @NotNull List<Component> tooltip, @NotNull TooltipFlag advanced) {
-		TooltipHelper.tooltipIfShift(tooltip, () -> {
-			tooltip.add(Component.translatable("psimisc.bullet_cost", (int) (ISpellAcceptor.acceptor(stack).getCostModifier() * 100)));
-		});
+		TooltipHelper.tooltipIfShift(tooltip, () -> tooltip.add(Component.translatable("psimisc.bullet_cost", (int) (ISpellAcceptor.acceptor(stack).getCostModifier() * 100))));
 	}
 
 	@Override

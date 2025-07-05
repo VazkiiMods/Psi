@@ -17,41 +17,40 @@ import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 import vazkii.psi.common.Psi;
-import vazkii.psi.common.lib.LibMisc;
 
 public record MessageVisualEffect(int color, double x, double y, double z, double width, double height, double offset,
 		int effectType) implements CustomPacketPayload {
 
 	public static final int TYPE_CRAFT = 0;
 
-	public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, "message_visual_effect");
+	public static final ResourceLocation ID = Psi.location("message_visual_effect");
 	public static final CustomPacketPayload.Type<MessageVisualEffect> TYPE = new Type<>(ID);
 
-	public static final StreamCodec<RegistryFriendlyByteBuf, MessageVisualEffect> CODEC = new StreamCodec<RegistryFriendlyByteBuf, MessageVisualEffect>() {
-		public MessageVisualEffect decode(RegistryFriendlyByteBuf pBuffer) {
-			return new MessageVisualEffect(
-					pBuffer.readInt(),
-					pBuffer.readDouble(),
-					pBuffer.readDouble(),
-					pBuffer.readDouble(),
-					pBuffer.readDouble(),
-					pBuffer.readDouble(),
-					pBuffer.readDouble(),
-					pBuffer.readInt()
-			);
-		}
+	public static final StreamCodec<RegistryFriendlyByteBuf, MessageVisualEffect> CODEC = new StreamCodec<>() {
+        public MessageVisualEffect decode(RegistryFriendlyByteBuf pBuffer) {
+            return new MessageVisualEffect(
+                    pBuffer.readInt(),
+                    pBuffer.readDouble(),
+                    pBuffer.readDouble(),
+                    pBuffer.readDouble(),
+                    pBuffer.readDouble(),
+                    pBuffer.readDouble(),
+                    pBuffer.readDouble(),
+                    pBuffer.readInt()
+            );
+        }
 
-		public void encode(RegistryFriendlyByteBuf pBuffer, MessageVisualEffect message) {
-			pBuffer.writeInt(message.color());
-			pBuffer.writeDouble(message.x());
-			pBuffer.writeDouble(message.y());
-			pBuffer.writeDouble(message.z());
-			pBuffer.writeDouble(message.width());
-			pBuffer.writeDouble(message.height());
-			pBuffer.writeDouble(message.offset());
-			pBuffer.writeInt(message.effectType());
-		}
-	};
+        public void encode(RegistryFriendlyByteBuf pBuffer, MessageVisualEffect message) {
+            pBuffer.writeInt(message.color());
+            pBuffer.writeDouble(message.x());
+            pBuffer.writeDouble(message.y());
+            pBuffer.writeDouble(message.z());
+            pBuffer.writeDouble(message.width());
+            pBuffer.writeDouble(message.height());
+            pBuffer.writeDouble(message.offset());
+            pBuffer.writeInt(message.effectType());
+        }
+    };
 
 	@Override
 	public Type<? extends CustomPacketPayload> type() {

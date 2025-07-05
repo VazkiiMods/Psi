@@ -29,7 +29,7 @@ import java.util.List;
 
 public class ToolSocketable implements ICapabilityProvider<ItemCapability<?, Void>, Void, ToolSocketable>, ISocketable, IPsiBarDisplay, ISpellAcceptor {
 	protected final ItemStack tool;
-	private final ComponentItemHandler toolHandler;;
+	private final ComponentItemHandler toolHandler;
 	protected final int slots;
 
 	public ToolSocketable(ItemStack tool, int slots) {
@@ -102,8 +102,4 @@ public class ToolSocketable implements ICapabilityProvider<ItemCapability<?, Voi
 		}
 	}
 
-	@Override
-	public boolean castableFromSocket() {
-		return false;
-	}
 }

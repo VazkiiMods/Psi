@@ -21,11 +21,10 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
-import vazkii.psi.common.lib.LibMisc;
 
 public record MessageLoopcastSync(int entityId, byte loopcastState) implements CustomPacketPayload {
 
-	public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, "message_loopcast_sync");
+	public static final ResourceLocation ID = Psi.location("message_loopcast_sync");
 	public static final CustomPacketPayload.Type<MessageLoopcastSync> TYPE = new Type<>(ID);
 
 	public static final StreamCodec<RegistryFriendlyByteBuf, MessageLoopcastSync> CODEC = StreamCodec.composite(

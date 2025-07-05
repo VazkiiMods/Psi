@@ -17,9 +17,7 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.fml.common.EventBusSubscriber.Bus;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
-
 import vazkii.patchouli.api.PatchouliAPI;
 import vazkii.psi.api.cad.ISocketable;
 import vazkii.psi.api.cad.ISocketableController;
@@ -29,7 +27,7 @@ import vazkii.psi.common.lib.LibResources;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_C;
 
-@EventBusSubscriber(value = Dist.CLIENT, modid = LibMisc.MOD_ID, bus = Bus.MOD)
+@EventBusSubscriber(value = Dist.CLIENT, modid = LibMisc.MOD_ID)
 @OnlyIn(Dist.CLIENT)
 public class KeybindHandler {
 	public static KeyMapping keybind = new KeyMapping("psimisc.keybind", GLFW_KEY_C, "key.categories.psi");

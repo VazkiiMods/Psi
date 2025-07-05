@@ -16,7 +16,6 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
-
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.common.lib.LibMisc;
 
@@ -26,7 +25,7 @@ public class ModParticles {
 	public static DeferredHolder<ParticleType<?>, WispParticleData.Type> WISP = PARTICLE_TYPES.register("wisp", () -> new WispParticleData.Type(false));
 	public static DeferredHolder<ParticleType<?>, SparkleParticleData.Type> SPARKLE = PARTICLE_TYPES.register("sparkle", () -> new SparkleParticleData.Type(false));
 
-	@EventBusSubscriber(value = Dist.CLIENT, modid = LibMisc.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
+	@EventBusSubscriber(value = Dist.CLIENT, modid = LibMisc.MOD_ID)
 	public static class FactoryHandler {
 
 		@SubscribeEvent

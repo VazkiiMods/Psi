@@ -9,19 +9,16 @@
 package vazkii.psi.api.inventory;
 
 import com.google.common.collect.Iterators;
-
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.Container;
 import net.minecraft.world.Nameable;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
-
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import vazkii.psi.api.cad.ISocketable;
 import vazkii.psi.common.block.tile.TileCADAssembler;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import java.util.Collections;
 import java.util.Iterator;
@@ -73,7 +70,7 @@ public class InventorySocketable implements Container, Nameable, ContainerData {
 		return true;
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
 	public ItemStack getItem(int index) {
 		if(socketable == null) {
@@ -82,7 +79,7 @@ public class InventorySocketable implements Container, Nameable, ContainerData {
 		return socketable.getBulletInSocket(index);
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
 	public ItemStack removeItem(int index, int count) {
 		if(socketable == null) {
@@ -97,14 +94,14 @@ public class InventorySocketable implements Container, Nameable, ContainerData {
 		return bullet;
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
 	public ItemStack removeItemNoUpdate(int index) {
 		return removeItem(index, 1);
 	}
 
 	@Override
-	public void setItem(int index, @Nonnull ItemStack bullet) {
+	public void setItem(int index, @NotNull ItemStack bullet) {
 		if(socketable == null) {
 			return;
 		}
@@ -124,22 +121,22 @@ public class InventorySocketable implements Container, Nameable, ContainerData {
 	}
 
 	@Override
-	public boolean stillValid(@Nonnull Player player) {
+	public boolean stillValid(@NotNull Player player) {
 		return true;
 	}
 
 	@Override
-	public void startOpen(@Nonnull Player player) {
+	public void startOpen(@NotNull Player player) {
 		// NO-OP
 	}
 
 	@Override
-	public void stopOpen(@Nonnull Player player) {
+	public void stopOpen(@NotNull Player player) {
 		// NO-OP
 	}
 
 	@Override
-	public boolean canPlaceItem(int index, @Nonnull ItemStack stack) {
+	public boolean canPlaceItem(int index, @NotNull ItemStack stack) {
 		return socketable != null && socketable.isItemValid(index, stack);
 	}
 
@@ -167,7 +164,7 @@ public class InventorySocketable implements Container, Nameable, ContainerData {
 		}
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
 	public Component getName() {
 		return Component.translatable("psi.container.socketable");

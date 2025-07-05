@@ -9,8 +9,7 @@
 package vazkii.psi.api.spell.wrapper;
 
 import net.minecraft.world.entity.Entity;
-
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
@@ -23,14 +22,14 @@ public class EntityListWrapper implements Iterable<Entity> {
 	public static final EntityListWrapper EMPTY = new EntityListWrapper(Collections.emptyList());
 	private final List<Entity> list;
 
-	private EntityListWrapper(@Nonnull List<Entity> list) {
+	private EntityListWrapper(@NotNull List<Entity> list) {
 		this.list = Objects.requireNonNull(list);
 	}
 
 	/**
 	 * Constructs an EntityListWrapper from an arbitrary list of entities.
 	 */
-	public static EntityListWrapper make(@Nonnull List<Entity> list) {
+	public static EntityListWrapper make(@NotNull List<Entity> list) {
 		List<Entity> copy = new ArrayList<>();
 		for(Entity e : list) {
 			if(e != null) {
@@ -41,7 +40,7 @@ public class EntityListWrapper implements Iterable<Entity> {
 		return new EntityListWrapper(copy);
 	}
 
-	public static EntityListWrapper union(@Nonnull EntityListWrapper left, @Nonnull EntityListWrapper right) {
+	public static EntityListWrapper union(@NotNull EntityListWrapper left, @NotNull EntityListWrapper right) {
 		List<Entity> l1 = left.list, l2 = right.list;
 		List<Entity> entities = new ArrayList<>(l1.size() + l2.size());
 		int i = 0, j = 0;
@@ -58,7 +57,7 @@ public class EntityListWrapper implements Iterable<Entity> {
 		return new EntityListWrapper(entities);
 	}
 
-	public static EntityListWrapper exclusion(@Nonnull EntityListWrapper list, @Nonnull EntityListWrapper remove) {
+	public static EntityListWrapper exclusion(@NotNull EntityListWrapper list, @NotNull EntityListWrapper remove) {
 		List<Entity> result = new ArrayList<>();
 		List<Entity> search = remove.list;
 		for(Entity e : list) {
@@ -70,7 +69,7 @@ public class EntityListWrapper implements Iterable<Entity> {
 		return new EntityListWrapper(result);
 	}
 
-	public static EntityListWrapper intersection(@Nonnull EntityListWrapper left, @Nonnull EntityListWrapper right) {
+	public static EntityListWrapper intersection(@NotNull EntityListWrapper left, @NotNull EntityListWrapper right) {
 		List<Entity> result = new ArrayList<>();
 		List<Entity> search = right.list;
 		for(Entity e : left) {
@@ -83,7 +82,7 @@ public class EntityListWrapper implements Iterable<Entity> {
 	}
 
 	//TODO this can probably be implemented lazily with a wrapper-list but w/e
-	public static EntityListWrapper withAdded(@Nonnull EntityListWrapper base, @Nonnull Entity toAdd) {
+	public static EntityListWrapper withAdded(@NotNull EntityListWrapper base, @NotNull Entity toAdd) {
 		List<Entity> list = new ArrayList<>(base.list);
 		int index = Collections.binarySearch(list, toAdd, EntityListWrapper::compareEntities);
 		if(index < 0) {
@@ -92,7 +91,7 @@ public class EntityListWrapper implements Iterable<Entity> {
 		return new EntityListWrapper(list);
 	}
 
-	public static EntityListWrapper withRemoved(@Nonnull EntityListWrapper base, @Nonnull Entity toRemove) {
+	public static EntityListWrapper withRemoved(@NotNull EntityListWrapper base, @NotNull Entity toRemove) {
 		List<Entity> list = new ArrayList<>(base.list);
 		list.remove(toRemove);
 		return new EntityListWrapper(list);
@@ -127,7 +126,7 @@ public class EntityListWrapper implements Iterable<Entity> {
 		return list.toString();
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
 	public Iterator<Entity> iterator() {
 		return list.iterator();

@@ -16,7 +16,7 @@ import net.minecraft.world.level.Level;
 import vazkii.psi.api.exosuit.IExosuitSensor;
 import vazkii.psi.api.exosuit.ISensorHoldable;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 public class SensorAttachRecipe extends CustomRecipe {
 	public static final SimpleCraftingRecipeSerializer<SensorAttachRecipe> SERIALIZER = new SimpleCraftingRecipeSerializer<>(SensorAttachRecipe::new);
@@ -26,7 +26,7 @@ public class SensorAttachRecipe extends CustomRecipe {
 	}
 
 	@Override
-	public boolean matches(@Nonnull CraftingInput inv, @Nonnull Level world) {
+	public boolean matches(@NotNull CraftingInput inv, @NotNull Level world) {
 		boolean foundSensor = false;
 		boolean foundTarget = false;
 
@@ -52,9 +52,9 @@ public class SensorAttachRecipe extends CustomRecipe {
 		return foundSensor && foundTarget;
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
-	public ItemStack assemble(@Nonnull CraftingInput inv, HolderLookup.Provider pRegistries) {
+	public ItemStack assemble(@NotNull CraftingInput inv, HolderLookup.Provider pRegistries) {
 		ItemStack sensor = ItemStack.EMPTY;
 		ItemStack target = ItemStack.EMPTY;
 
@@ -76,7 +76,7 @@ public class SensorAttachRecipe extends CustomRecipe {
 		return copy;
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
 	public RecipeSerializer<?> getSerializer() {
 		return SERIALIZER;
@@ -87,8 +87,4 @@ public class SensorAttachRecipe extends CustomRecipe {
 		return true;
 	}
 
-	@Override
-	public boolean isSpecial() {
-		return true;
-	}
 }

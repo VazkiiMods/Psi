@@ -29,7 +29,7 @@ import vazkii.psi.api.spell.piece.PieceCraftingTrick;
 import vazkii.psi.common.crafting.ModCraftingRecipes;
 import vazkii.psi.common.item.base.ModItems;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 

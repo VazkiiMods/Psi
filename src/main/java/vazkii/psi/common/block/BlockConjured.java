@@ -31,11 +31,9 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
-
+import org.jetbrains.annotations.NotNull;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.tile.TileConjured;
-
-import javax.annotation.Nonnull;
 
 public class BlockConjured extends Block implements EntityBlock, SimpleWaterloggedBlock {
 
@@ -89,32 +87,18 @@ public class BlockConjured extends Block implements EntityBlock, SimpleWaterlogg
 		return true;
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
-	public BlockState updateShape(@Nonnull BlockState state, Direction facing, BlockState facingState, LevelAccessor world, BlockPos currentPos, BlockPos facingPos) {
-		BooleanProperty prop;
-		switch(facing) {
-		default:
-		case DOWN:
-			prop = BLOCK_DOWN;
-			break;
-		case UP:
-			prop = BLOCK_UP;
-			break;
-		case NORTH:
-			prop = BLOCK_NORTH;
-			break;
-		case SOUTH:
-			prop = BLOCK_SOUTH;
-			break;
-		case WEST:
-			prop = BLOCK_WEST;
-			break;
-		case EAST:
-			prop = BLOCK_EAST;
-			break;
-		}
-		if(state.getValue(WATERLOGGED)) {
+	public BlockState updateShape(@NotNull BlockState state, Direction facing, BlockState facingState, LevelAccessor world, BlockPos currentPos, BlockPos facingPos) {
+		BooleanProperty prop = switch (facing) {
+            default -> BLOCK_DOWN;
+            case UP -> BLOCK_UP;
+            case NORTH -> BLOCK_NORTH;
+            case SOUTH -> BLOCK_SOUTH;
+            case WEST -> BLOCK_WEST;
+            case EAST -> BLOCK_EAST;
+        };
+        if(state.getValue(WATERLOGGED)) {
 			world.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
 		}
 		if(state.getBlock() == facingState.getBlock() && state.getValue(LIGHT) == facingState.getValue(LIGHT) && state.getValue(SOLID) == facingState.getValue(SOLID)) {
@@ -129,7 +113,7 @@ public class BlockConjured extends Block implements EntityBlock, SimpleWaterlogg
 		return state.getValue(LIGHT) ? 15 : 0;
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
 	public VoxelShape getCollisionShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
 		return state.getValue(SOLID) ? Shapes.block() : Shapes.empty();
@@ -162,7 +146,7 @@ public class BlockConjured extends Block implements EntityBlock, SimpleWaterlogg
 	}
 
 	@Override
-	public BlockEntity newBlockEntity(@Nonnull BlockPos pos, @Nonnull BlockState state) {
+	public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
 		return new TileConjured(pos, state);
 	}
 

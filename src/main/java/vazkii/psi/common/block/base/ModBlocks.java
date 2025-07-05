@@ -10,7 +10,6 @@ package vazkii.psi.common.block.base;
 
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
@@ -26,8 +25,8 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.common.extensions.IMenuTypeExtension;
 import net.neoforged.neoforge.registries.RegisterEvent;
-
 import vazkii.psi.client.gui.GuiCADAssembler;
+import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.BlockCADAssembler;
 import vazkii.psi.common.block.BlockConjured;
 import vazkii.psi.common.block.BlockProgrammer;
@@ -40,7 +39,7 @@ import vazkii.psi.common.lib.LibMisc;
 
 import static vazkii.psi.common.item.base.ModItems.defaultBuilder;
 
-@EventBusSubscriber(modid = LibMisc.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = LibMisc.MOD_ID)
 public class ModBlocks {
 	public static final MenuType<ContainerCADAssembler> containerCADAssembler = IMenuTypeExtension.create(ContainerCADAssembler::fromNetwork);
 	private static final BlockBehaviour.StateArgumentPredicate<EntityType<?>> NO_SPAWN = (state, world, pos, et) -> false;
@@ -77,18 +76,18 @@ public class ModBlocks {
 			psimetalEbony = new Block(Block.Properties.of().mapColor(MapColor.METAL).instrument(NoteBlockInstrument.IRON_XYLOPHONE).requiresCorrectToolForDrops().strength(5, 10).sound(SoundType.METAL));
 			psimetalIvory = new Block(Block.Properties.of().mapColor(MapColor.METAL).instrument(NoteBlockInstrument.IRON_XYLOPHONE).requiresCorrectToolForDrops().strength(5, 10).sound(SoundType.METAL));
 
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibBlockNames.CAD_ASSEMBLER), cadAssembler);
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibBlockNames.PROGRAMMER), programmer);
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibBlockNames.CONJURED), conjured);
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibBlockNames.PSIDUST_BLOCK), psidustBlock);
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibBlockNames.PSIMETAL_BLOCK), psimetalBlock);
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibBlockNames.PSIGEM_BLOCK), psigemBlock);
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibBlockNames.PSIMETAL_PLATE_BLACK), psimetalPlateBlack);
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibBlockNames.PSIMETAL_PLATE_BLACK_LIGHT), psimetalPlateBlackLight);
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibBlockNames.PSIMETAL_PLATE_WHITE), psimetalPlateWhite);
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibBlockNames.PSIMETAL_PLATE_WHITE_LIGHT), psimetalPlateWhiteLight);
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibBlockNames.EBONY_PSIMETAL_BLOCK), psimetalEbony);
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibBlockNames.IVORY_PSIMETAL_BLOCK), psimetalIvory);
+			helper.register(Psi.location(LibBlockNames.CAD_ASSEMBLER), cadAssembler);
+			helper.register(Psi.location(LibBlockNames.PROGRAMMER), programmer);
+			helper.register(Psi.location(LibBlockNames.CONJURED), conjured);
+			helper.register(Psi.location(LibBlockNames.PSIDUST_BLOCK), psidustBlock);
+			helper.register(Psi.location(LibBlockNames.PSIMETAL_BLOCK), psimetalBlock);
+			helper.register(Psi.location(LibBlockNames.PSIGEM_BLOCK), psigemBlock);
+			helper.register(Psi.location(LibBlockNames.PSIMETAL_PLATE_BLACK), psimetalPlateBlack);
+			helper.register(Psi.location(LibBlockNames.PSIMETAL_PLATE_BLACK_LIGHT), psimetalPlateBlackLight);
+			helper.register(Psi.location(LibBlockNames.PSIMETAL_PLATE_WHITE), psimetalPlateWhite);
+			helper.register(Psi.location(LibBlockNames.PSIMETAL_PLATE_WHITE_LIGHT), psimetalPlateWhiteLight);
+			helper.register(Psi.location(LibBlockNames.EBONY_PSIMETAL_BLOCK), psimetalEbony);
+			helper.register(Psi.location(LibBlockNames.IVORY_PSIMETAL_BLOCK), psimetalIvory);
 		});
 
 		evt.register(Registries.ITEM, helper -> {
@@ -115,9 +114,7 @@ public class ModBlocks {
 			helper.register(BuiltInRegistries.BLOCK.getKey(conjured), conjuredType);
 		});
 
-		evt.register(Registries.MENU, helper -> {
-			helper.register(BuiltInRegistries.BLOCK.getKey(cadAssembler), containerCADAssembler);
-		});
+		evt.register(Registries.MENU, helper -> helper.register(BuiltInRegistries.BLOCK.getKey(cadAssembler), containerCADAssembler));
 	}
 
 	@SubscribeEvent

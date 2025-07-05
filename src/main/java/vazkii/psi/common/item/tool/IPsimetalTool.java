@@ -30,7 +30,7 @@ import vazkii.psi.common.item.ItemCAD;
 import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.spell.trick.block.PieceTrickBreakBlock;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public interface IPsimetalTool {
 	//TODO TheidenHD add Datafixer

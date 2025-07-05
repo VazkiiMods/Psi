@@ -18,7 +18,7 @@ import vazkii.psi.api.spell.ISpellAcceptor;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.common.item.ItemSpellDrive;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 public class BulletToDriveRecipe extends CustomRecipe {
 	public static final SimpleCraftingRecipeSerializer<BulletToDriveRecipe> SERIALIZER = new SimpleCraftingRecipeSerializer<>(BulletToDriveRecipe::new);
@@ -28,7 +28,7 @@ public class BulletToDriveRecipe extends CustomRecipe {
 	}
 
 	@Override
-	public boolean matches(@Nonnull CraftingInput inv, @Nonnull Level world) {
+	public boolean matches(@NotNull CraftingInput inv, @NotNull Level world) {
 		boolean foundSource = false;
 		boolean foundTarget = false;
 
@@ -90,7 +90,7 @@ public class BulletToDriveRecipe extends CustomRecipe {
 		return list;
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
 	public RecipeSerializer<?> getSerializer() {
 		return SERIALIZER;
@@ -98,11 +98,6 @@ public class BulletToDriveRecipe extends CustomRecipe {
 
 	@Override
 	public boolean canCraftInDimensions(int width, int height) {
-		return true;
-	}
-
-	@Override
-	public boolean isSpecial() {
 		return true;
 	}
 

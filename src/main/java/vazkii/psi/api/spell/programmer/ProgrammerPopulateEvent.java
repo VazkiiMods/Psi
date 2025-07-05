@@ -11,16 +11,14 @@ package vazkii.psi.api.spell.programmer;
 import net.minecraft.core.MappedRegistry;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.Event;
-
+import org.jetbrains.annotations.NotNull;
 import vazkii.psi.api.spell.SpellPiece;
-
-import javax.annotation.Nonnull;
 
 public class ProgrammerPopulateEvent extends Event {
 
-	@Nonnull
+	@NotNull
 	private final Player entity;
-	@Nonnull
+	@NotNull
 	private MappedRegistry<Class<? extends SpellPiece>> spellPieceRegistry;
 
 	public ProgrammerPopulateEvent(Player entity, MappedRegistry<Class<? extends SpellPiece>> registry) {
@@ -28,17 +26,17 @@ public class ProgrammerPopulateEvent extends Event {
 		this.spellPieceRegistry = registry;
 	}
 
-	@Nonnull
+	@NotNull
 	public Player getPlayer() {
 		return entity;
 	}
 
-	@Nonnull
+	@NotNull
 	public MappedRegistry<Class<? extends SpellPiece>> getSpellPieceRegistry() {
 		return spellPieceRegistry;
 	}
 
-	@Nonnull
+	@NotNull
 	public void setSpellPieceRegistry(MappedRegistry<Class<? extends SpellPiece>> registry) {
 		spellPieceRegistry = registry;
 	}

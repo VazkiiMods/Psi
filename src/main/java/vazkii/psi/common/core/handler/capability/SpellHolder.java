@@ -10,12 +10,10 @@ package vazkii.psi.common.core.handler.capability;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-
+import org.jetbrains.annotations.Nullable;
 import vazkii.psi.api.spell.ISpellAcceptor;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
-
-import javax.annotation.Nullable;
 
 import java.util.ArrayList;
 
@@ -27,12 +25,7 @@ public class SpellHolder implements ISpellAcceptor {
 		this.spell = spell;
 	}
 
-	@Override
-	public boolean castableFromSocket() {
-		return false;
-	}
-
-	@Nullable
+    @Nullable
 	@Override
 	public Spell getSpell() {
 		return spell;
@@ -54,8 +47,4 @@ public class SpellHolder implements ISpellAcceptor {
 		return 1;
 	}
 
-	@Override
-	public boolean isCADOnlyContainer() {
-		return false;
-	}
 }

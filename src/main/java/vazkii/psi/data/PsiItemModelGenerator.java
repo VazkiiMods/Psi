@@ -14,12 +14,10 @@ import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
-
+import org.jetbrains.annotations.NotNull;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.base.ModBlocks;
 import vazkii.psi.common.lib.LibMisc;
-
-import javax.annotation.Nonnull;
 
 public class PsiItemModelGenerator extends ItemModelProvider {
 	public PsiItemModelGenerator(PackOutput output, ExistingFileHelper existingFileHelper) {
@@ -45,7 +43,7 @@ public class PsiItemModelGenerator extends ItemModelProvider {
 		pointToBlock(ModBlocks.conjured.asItem());
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
 	public String getName() {
 		return "Psi item models";

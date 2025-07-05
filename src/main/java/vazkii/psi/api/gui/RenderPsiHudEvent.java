@@ -12,26 +12,25 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.Event;
 import net.neoforged.bus.api.ICancellableEvent;
-
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Posted when a part of the HUD is about to be rendered
  * <p>
- * This event is {@link Cancelable}.
+ * This event is {@link ICancellableEvent}.
  * Canceling it will result in that HUD part not being rendered
  */
 @OnlyIn(Dist.CLIENT)
 public class RenderPsiHudEvent extends Event implements ICancellableEvent {
 
-	@Nonnull
+	@NotNull
 	private final PsiHudElementType type;
 
-	public RenderPsiHudEvent(@Nonnull PsiHudElementType type) {
+	public RenderPsiHudEvent(@NotNull PsiHudElementType type) {
 		this.type = type;
 	}
 
-	@Nonnull
+	@NotNull
 	public PsiHudElementType getType() {
 		return type;
 	}
