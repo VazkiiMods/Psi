@@ -11,7 +11,6 @@ package vazkii.psi.common.spell.trick.potion;
 import net.minecraft.core.Holder;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffects;
-
 import vazkii.psi.api.spell.*;
 
 public class PieceTrickStrength extends PieceTrickPotionBase {

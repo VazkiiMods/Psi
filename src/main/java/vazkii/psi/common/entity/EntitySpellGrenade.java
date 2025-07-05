@@ -23,7 +23,7 @@ import net.minecraft.world.phys.Vec3;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.SpellContext;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
@@ -88,7 +88,7 @@ public class EntitySpellGrenade extends EntitySpellProjectile {
 	}
 
 	@Override
-	protected void onHit(@Nonnull HitResult ray) {
+	protected void onHit(@NotNull HitResult ray) {
 		if(ray instanceof EntityHitResult && ((EntityHitResult) ray).getEntity() instanceof LivingEntity) {
 			entityData.set(ATTACKTARGET_UUID, Optional.of(((EntityHitResult) ray).getEntity().getUUID()));
 		}

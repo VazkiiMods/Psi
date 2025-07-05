@@ -11,10 +11,9 @@ package vazkii.psi.common.item.component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-
 import vazkii.psi.api.cad.EnumCADComponent;
 import vazkii.psi.api.cad.ICADAssembly;
-import vazkii.psi.common.lib.LibMisc;
+import vazkii.psi.common.Psi;
 
 public class ItemCADAssembly extends ItemCADComponent implements ICADAssembly {
 
@@ -32,12 +31,12 @@ public class ItemCADAssembly extends ItemCADComponent implements ICADAssembly {
 
 	@Override
 	public ResourceLocation getCADModel(ItemStack stack, ItemStack cad) {
-		return ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, "item/" + model);
+		return Psi.location("item/" + model);
 	}
 
 	@Override
 	public ResourceLocation getCadTexture(ItemStack stack, ItemStack cad) {
-		return ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, model);
+		return Psi.location(model);
 	}
 
 }

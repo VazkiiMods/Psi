@@ -9,7 +9,6 @@
 package vazkii.psi.common.spell.trick;
 
 import net.minecraft.server.level.ServerLevel;
-
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.*;

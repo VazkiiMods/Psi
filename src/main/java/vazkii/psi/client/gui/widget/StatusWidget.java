@@ -15,9 +15,7 @@ import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-
 import org.apache.commons.lang3.tuple.Pair;
-
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.spell.SpellCompilationException;
 import vazkii.psi.client.gui.GuiProgrammer;

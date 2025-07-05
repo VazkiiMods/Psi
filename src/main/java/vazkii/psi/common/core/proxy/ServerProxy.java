@@ -13,7 +13,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
-
 import vazkii.psi.common.block.tile.TileProgrammer;
 
 public class ServerProxy implements IProxy {

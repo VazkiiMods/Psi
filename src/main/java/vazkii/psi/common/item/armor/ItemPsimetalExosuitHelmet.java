@@ -14,12 +14,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
-
+import org.jetbrains.annotations.NotNull;
 import vazkii.psi.api.exosuit.IExosuitSensor;
 import vazkii.psi.api.exosuit.ISensorHoldable;
 import vazkii.psi.common.item.base.ModItems;
-
-import javax.annotation.Nonnull;
 
 public class ItemPsimetalExosuitHelmet extends ItemPsimetalArmor implements ISensorHoldable {
 
@@ -44,7 +42,7 @@ public class ItemPsimetalExosuitHelmet extends ItemPsimetalArmor implements ISen
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public int getColor(@Nonnull ItemStack stack) {
+	public int getColor(@NotNull ItemStack stack) {
 		ItemStack sensor = getAttachedSensor(stack);
 		if(!sensor.isEmpty() && sensor.getItem() instanceof IExosuitSensor) {
 			return ((IExosuitSensor) sensor.getItem()).getColor(sensor);

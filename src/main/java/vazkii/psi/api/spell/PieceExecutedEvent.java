@@ -10,8 +10,7 @@ package vazkii.psi.api.spell;
 
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.Event;
-
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Posted after a piece executed.
@@ -20,23 +19,23 @@ import javax.annotation.Nonnull;
  */
 public class PieceExecutedEvent extends Event {
 
-	@Nonnull
+	@NotNull
 	private final SpellPiece piece;
 
-	@Nonnull
+	@NotNull
 	private final Player playerEntity;
 
-	public PieceExecutedEvent(@Nonnull SpellPiece piece, @Nonnull Player playerEntity) {
+	public PieceExecutedEvent(@NotNull SpellPiece piece, @NotNull Player playerEntity) {
 		this.piece = piece;
 		this.playerEntity = playerEntity;
 	}
 
-	@Nonnull
+	@NotNull
 	public SpellPiece getPiece() {
 		return piece;
 	}
 
-	@Nonnull
+	@NotNull
 	public Player getPlayerEntity() {
 		return playerEntity;
 	}

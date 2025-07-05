@@ -11,7 +11,6 @@ package vazkii.psi.api;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.mojang.serialization.Lifecycle;
-
 import net.minecraft.core.MappedRegistry;
 import net.minecraft.core.RegistrationInfo;
 import net.minecraft.core.Registry;
@@ -26,9 +25,8 @@ import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.capabilities.EntityCapability;
 import net.neoforged.neoforge.capabilities.ItemCapability;
 import net.neoforged.neoforge.common.SimpleTier;
-
 import org.apache.logging.log4j.LogManager;
-
+import org.jetbrains.annotations.Nullable;
 import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.cad.ICADData;
 import vazkii.psi.api.cad.IPsiBarDisplay;
@@ -49,14 +47,14 @@ import java.util.stream.Collectors;
 public final class PsiAPI {
 
 	public static final String MOD_ID = "psi";
-	public static final EntityCapability<ISpellImmune, Void> SPELL_IMMUNE_CAPABILITY = EntityCapability.createVoid(ResourceLocation.fromNamespaceAndPath(MOD_ID, "spell_immune"), ISpellImmune.class);
-	public static final EntityCapability<IDetonationHandler, Void> DETONATION_HANDLER_CAPABILITY = EntityCapability.createVoid(ResourceLocation.fromNamespaceAndPath(MOD_ID, "detonation_handler"), IDetonationHandler.class);
-	public static final ItemCapability<IPsiBarDisplay, Void> PSI_BAR_DISPLAY_CAPABILITY = ItemCapability.createVoid(ResourceLocation.fromNamespaceAndPath(MOD_ID, "psi_bar_display"), IPsiBarDisplay.class);
-	public static final ItemCapability<ISpellAcceptor, Void> SPELL_ACCEPTOR_CAPABILITY = ItemCapability.createVoid(ResourceLocation.fromNamespaceAndPath(MOD_ID, "spell_acceptor"), ISpellAcceptor.class);
-	public static final ItemCapability<ICADData, Void> CAD_DATA_CAPABILITY = ItemCapability.createVoid(ResourceLocation.fromNamespaceAndPath(MOD_ID, "cad_data"), ICADData.class);
-	public static final ItemCapability<ISocketable, Void> SOCKETABLE_CAPABILITY = ItemCapability.createVoid(ResourceLocation.fromNamespaceAndPath(MOD_ID, "socketable"), ISocketable.class);
+	public static final EntityCapability<ISpellImmune, Void> SPELL_IMMUNE_CAPABILITY = EntityCapability.createVoid(PsiAPI.location("spell_immune"), ISpellImmune.class);
+	public static final EntityCapability<IDetonationHandler, Void> DETONATION_HANDLER_CAPABILITY = EntityCapability.createVoid(PsiAPI.location("detonation_handler"), IDetonationHandler.class);
+	public static final ItemCapability<IPsiBarDisplay, Void> PSI_BAR_DISPLAY_CAPABILITY = ItemCapability.createVoid(PsiAPI.location("psi_bar_display"), IPsiBarDisplay.class);
+	public static final ItemCapability<ISpellAcceptor, Void> SPELL_ACCEPTOR_CAPABILITY = ItemCapability.createVoid(PsiAPI.location("spell_acceptor"), ISpellAcceptor.class);
+	public static final ItemCapability<ICADData, Void> CAD_DATA_CAPABILITY = ItemCapability.createVoid(PsiAPI.location("cad_data"), ICADData.class);
+	public static final ItemCapability<ISocketable, Void> SOCKETABLE_CAPABILITY = ItemCapability.createVoid(PsiAPI.location("socketable"), ISocketable.class);
 
-	public static final ResourceKey<Registry<Class<? extends SpellPiece>>> SPELL_PIECE_REGISTRY_TYPE_KEY = ResourceKey.createRegistryKey(ResourceLocation.fromNamespaceAndPath(MOD_ID, "spell_piece_registry_type_key"));
+	public static final ResourceKey<Registry<Class<? extends SpellPiece>>> SPELL_PIECE_REGISTRY_TYPE_KEY = ResourceKey.createRegistryKey(PsiAPI.location("spell_piece_registry_type_key"));
 
 	private static final MappedRegistry<Class<? extends SpellPiece>> spellPieceRegistry = new MappedRegistry<>(SPELL_PIECE_REGISTRY_TYPE_KEY, Lifecycle.stable()); //TODO (circa 1.18.2): un-duct-tape this
 	public static final Tier PSIMETAL_TOOL_MATERIAL = new SimpleTier(BlockTags.INCORRECT_FOR_DIAMOND_TOOL, 900, 7.8F, 2F, 12, () -> Ingredient.of(ModItems.psimetal));
@@ -110,7 +108,7 @@ public final class PsiAPI {
 
 		if(main) {
 			if(mainPieceForGroup.containsKey(resLoc)) {
-				LogManager.getLogger(MOD_ID).info("Group " + resLoc + " already has a main piece!");
+                LogManager.getLogger(MOD_ID).info("Group {} already has a main piece!", resLoc);
 			}
 			mainPieceForGroup.put(resLoc, clazz);
 		}
@@ -207,5 +205,9 @@ public final class PsiAPI {
 
 	public static MappedRegistry<Class<? extends SpellPiece>> getSpellPieceRegistry() {
 		return spellPieceRegistry;
+	}
+
+	public static ResourceLocation location(String path) {
+		return ResourceLocation.fromNamespaceAndPath(MOD_ID, path);
 	}
 }

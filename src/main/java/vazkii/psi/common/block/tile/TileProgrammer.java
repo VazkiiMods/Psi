@@ -16,13 +16,11 @@ import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-
+import org.jetbrains.annotations.NotNull;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.common.block.BlockProgrammer;
 import vazkii.psi.common.block.base.ModBlocks;
 import vazkii.psi.common.spell.SpellCompiler;
-
-import javax.annotation.Nonnull;
 
 public class TileProgrammer extends BlockEntity {
 	private static final String TAG_SPELL = "spell";
@@ -59,7 +57,7 @@ public class TileProgrammer extends BlockEntity {
 		readPacketNBT(cmp);
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
 	public void saveAdditional(CompoundTag cmp, HolderLookup.Provider pRegistries) {
 		super.saveAdditional(cmp, pRegistries);

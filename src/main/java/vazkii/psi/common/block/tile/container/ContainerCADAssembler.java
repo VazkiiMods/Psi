@@ -9,7 +9,6 @@
 package vazkii.psi.common.block.tile.container;
 
 import com.mojang.datafixers.util.Pair;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -25,7 +24,7 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import net.neoforged.neoforge.items.SlotItemHandler;
-
+import org.jetbrains.annotations.NotNull;
 import vazkii.psi.api.cad.EnumCADComponent;
 import vazkii.psi.api.cad.ICADComponent;
 import vazkii.psi.api.cad.ISocketable;
@@ -37,8 +36,6 @@ import vazkii.psi.common.block.tile.container.slot.InventoryAssemblerOutput;
 import vazkii.psi.common.block.tile.container.slot.SlotCADOutput;
 import vazkii.psi.common.block.tile.container.slot.SlotSocketable;
 import vazkii.psi.common.block.tile.container.slot.ValidatorSlot;
-
-import javax.annotation.Nonnull;
 
 public class ContainerCADAssembler extends AbstractContainerMenu {
 	private static final EquipmentSlot[] equipmentSlots = new EquipmentSlot[] { EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET };
@@ -144,11 +141,11 @@ public class ContainerCADAssembler extends AbstractContainerMenu {
 	}
 
 	@Override
-	public boolean stillValid(@Nonnull Player playerIn) {
+	public boolean stillValid(@NotNull Player playerIn) {
 		return !playerIn.isRemoved() && assembler.getBlockPos().distToCenterSqr(playerIn.position()) <= 64;
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
 	public ItemStack quickMoveStack(Player playerIn, int from) {
 		ItemStack mergeStack = ItemStack.EMPTY;

@@ -25,7 +25,6 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.util.BlockSnapshot;
 import net.neoforged.neoforge.event.level.BlockEvent;
-
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.param.ParamVector;
@@ -49,7 +48,8 @@ public class PieceTrickPlaceBlock extends PieceTrick {
 		placeBlock(player, world, pos, slot, particles, false, direction, horizontalDirection);
 	}
 
-	public static void placeBlock(Player player, Level world, BlockPos pos, int slot, boolean particles, boolean conjure, Direction direction, Direction horizontalDirection) {
+	@SuppressWarnings("deprecation")
+    public static void placeBlock(Player player, Level world, BlockPos pos, int slot, boolean particles, boolean conjure, Direction direction, Direction horizontalDirection) {
 		if(!world.hasChunkAt(pos) || !world.mayInteract(player, pos)) {
 			return;
 		}

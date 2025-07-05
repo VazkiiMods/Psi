@@ -9,6 +9,7 @@
 package vazkii.psi.data;
 
 import net.minecraft.advancements.Criterion;
+import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
@@ -23,7 +24,6 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.common.Tags;
-
 import vazkii.patchouli.api.PatchouliAPI;
 import vazkii.psi.api.recipe.TrickRecipeBuilder;
 import vazkii.psi.common.Psi;
@@ -48,7 +48,7 @@ public class PsiRecipeGenerator extends RecipeProvider {
 	protected void specialRecipe(RecipeOutput recipeOutput, Function<CraftingBookCategory, Recipe<?>> factory, CraftingBookCategory category) {
 		Recipe<?> recipe = factory.apply(category);
 		ResourceLocation serializerKey = BuiltInRegistries.RECIPE_SERIALIZER.getKey(recipe.getSerializer());
-		recipeOutput.accept(ResourceLocation.fromNamespaceAndPath(serializerKey.getNamespace(), "dynamic/" + serializerKey.getPath()), recipe, null);
+        recipeOutput.accept(ResourceLocation.fromNamespaceAndPath(serializerKey.getNamespace(), "dynamic/" + serializerKey.getPath()), recipe, null);
 	}
 
 	@Override
@@ -60,11 +60,11 @@ public class PsiRecipeGenerator extends RecipeProvider {
 		specialRecipe(consumer, SensorAttachRecipe::new, CraftingBookCategory.MISC);
 		specialRecipe(consumer, SensorRemoveRecipe::new, CraftingBookCategory.MISC);
 
-		Criterion hasIron = has(Tags.Items.INGOTS_IRON);
-		Criterion hasPsimetal = has(ModTags.INGOT_PSIMETAL);
-		Criterion hasEbonyPsimetal = has(ModTags.INGOT_EBONY_PSIMETAL);
-		Criterion hasIvoryPsimetal = has(ModTags.INGOT_IVORY_PSIMETAL);
-		Criterion hasPsidust = has(ModTags.PSIDUST);
+		Criterion<InventoryChangeTrigger.TriggerInstance> hasIron = has(Tags.Items.INGOTS_IRON);
+		Criterion<InventoryChangeTrigger.TriggerInstance> hasPsimetal = has(ModTags.INGOT_PSIMETAL);
+		Criterion<InventoryChangeTrigger.TriggerInstance> hasEbonyPsimetal = has(ModTags.INGOT_EBONY_PSIMETAL);
+		Criterion<InventoryChangeTrigger.TriggerInstance> hasIvoryPsimetal = has(ModTags.INGOT_IVORY_PSIMETAL);
+		Criterion<InventoryChangeTrigger.TriggerInstance> hasPsidust = has(ModTags.PSIDUST);
 
 		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.cadAssembler)
 				.define('I', Tags.Items.INGOTS_IRON)
@@ -307,7 +307,7 @@ public class PsiRecipeGenerator extends RecipeProvider {
 				.define('I', Tags.Items.INGOTS_IRON)
 				.define('D', ModTags.PSIDUST)
 				.define('A', Ingredient.fromValues(Stream.of(
-						new Ingredient.TagValue(Tags.Items.SLIMEBALLS),
+						new Ingredient.TagValue(Tags.Items.SLIME_BALLS),
 						new Ingredient.ItemValue(new ItemStack(Items.SNOWBALL)))))
 				.pattern("AID")
 				.unlockedBy("has_psidust", hasPsidust)
@@ -315,7 +315,7 @@ public class PsiRecipeGenerator extends RecipeProvider {
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.TOOLS, ModItems.circleSpellBullet)
 				.requires(ModItems.spellBullet)
 				.requires(Ingredient.fromValues(Stream.of(
-						new Ingredient.TagValue(Tags.Items.SLIMEBALLS),
+						new Ingredient.TagValue(Tags.Items.SLIME_BALLS),
 						new Ingredient.ItemValue(new ItemStack(Items.SNOWBALL)))))
 				.unlockedBy("has_psidust", has(ModItems.psidust))
 				.save(consumer, Psi.location("spell_bullet_circle_upgrade"));

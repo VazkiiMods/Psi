@@ -21,11 +21,11 @@ import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 import vazkii.psi.client.gui.GuiProgrammer;
-import vazkii.psi.common.lib.LibMisc;
+import vazkii.psi.common.Psi;
 
 public record MessageSpellError(String message, int x, int y) implements CustomPacketPayload {
 
-	public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, "message_spell_error");
+	public static final ResourceLocation ID = Psi.location("message_spell_error");
 	public static final CustomPacketPayload.Type<MessageSpellError> TYPE = new Type<>(ID);
 
 	public static final StreamCodec<RegistryFriendlyByteBuf, MessageSpellError> CODEC = StreamCodec.composite(

@@ -27,7 +27,8 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.capabilities.ICapabilityProvider;
 import net.neoforged.neoforge.event.ItemAttributeModifierEvent;
-
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ICADColorizer;
 import vazkii.psi.api.cad.ISocketable;
@@ -45,12 +46,9 @@ import vazkii.psi.common.item.tool.ToolSocketable;
 import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.lib.LibResources;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import java.util.List;
 
-@EventBusSubscriber(modid = LibMisc.MOD_ID, bus = EventBusSubscriber.Bus.GAME)
+@EventBusSubscriber(modid = LibMisc.MOD_ID)
 public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiEventArmor {
 
 	//private final LazyLoadedValue<HumanoidModel<?>> model;
@@ -83,7 +81,7 @@ public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiE
 		super.setDamage(stack, damage);
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
 	public String getDescriptionId(ItemStack stack) {
 		String name = super.getDescriptionId(stack);
@@ -162,11 +160,11 @@ public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiE
 		return LibResources.MODEL_PSIMETAL_EXOSUIT;
 	}
 
-	public boolean hasCustomColor(@Nonnull ItemStack stack) {
+	public boolean hasCustomColor(@NotNull ItemStack stack) {
 		return true;
 	}
 
-	public int getColor(@Nonnull ItemStack stack) {
+	public int getColor(@NotNull ItemStack stack) {
 		return ICADColorizer.DEFAULT_SPELL_COLOR;
 	}
 

@@ -40,7 +40,7 @@ public abstract class PieceSelectorNearby extends PieceSelector {
 	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
 		super.addToMetadata(meta);
 
-		Double radiusVal = this.getParamEvaluationeOrDefault(radius, 2 * SpellContext.MAX_DISTANCE).doubleValue();
+		double radiusVal = this.getParamEvaluationeOrDefault(radius, 2 * SpellContext.MAX_DISTANCE).doubleValue();
 		if(radiusVal <= 0) {
 			throw new SpellCompilationException(SpellCompilationException.NON_POSITIVE_VALUE, x, y);
 		}

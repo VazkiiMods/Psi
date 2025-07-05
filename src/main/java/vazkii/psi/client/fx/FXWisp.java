@@ -13,7 +13,6 @@ import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.ParticleProvider;
@@ -23,10 +22,8 @@ import net.minecraft.client.particle.TextureSheetParticle;
 import net.minecraft.client.renderer.texture.AbstractTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureManager;
-
+import org.jetbrains.annotations.NotNull;
 import org.lwjgl.opengl.GL11;
-
-import javax.annotation.Nonnull;
 
 // https://github.com/Vazkii/Botania/blob/1.15/src/main/java/vazkii/botania/client/fx/FXWisp.java
 public class FXWisp extends TextureSheetParticle {
@@ -105,7 +102,7 @@ public class FXWisp extends TextureSheetParticle {
 		return 0xF000F0;
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
 	public ParticleRenderType getRenderType() {
 		return NORMAL_RENDER;

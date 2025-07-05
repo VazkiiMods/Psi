@@ -25,7 +25,7 @@ import net.minecraft.world.level.Level;
 
 import vazkii.psi.api.spell.piece.PieceCraftingTrick;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class DimensionTrickRecipe extends TrickRecipe {
 	public static final RecipeSerializer<DimensionTrickRecipe> SERIALIZER = new Serializer();
@@ -45,12 +45,7 @@ public class DimensionTrickRecipe extends TrickRecipe {
 		return super.matches(inv, world) && world.dimension() == dimensionKey;
 	}
 
-	@Override
-	public boolean isSpecial() {
-		return true;
-	}
-
-	public static class Serializer implements RecipeSerializer<DimensionTrickRecipe> {
+    public static class Serializer implements RecipeSerializer<DimensionTrickRecipe> {
 		public static final StreamCodec<RegistryFriendlyByteBuf, DimensionTrickRecipe> STREAM_CODEC = StreamCodec.of(
 				DimensionTrickRecipe.Serializer::toNetwork, DimensionTrickRecipe.Serializer::fromNetwork
 		);

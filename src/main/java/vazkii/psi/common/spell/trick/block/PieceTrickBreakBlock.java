@@ -21,7 +21,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.event.level.BlockEvent.BreakEvent;
-
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.*;
@@ -123,7 +122,7 @@ public class PieceTrickBreakBlock extends PieceTrick {
 
 	private static ItemStack getTool(int harvestLevel, BlockState state) {
 		if(!state.requiresCorrectToolForDrops()) {
-			return HARVEST_TOOLS_BY_LEVEL.get(0).get(0);
+			return HARVEST_TOOLS_BY_LEVEL.getFirst().getFirst();
 		}
 
 		int idx = Math.min(harvestLevel, HARVEST_TOOLS_BY_LEVEL.size() - 1);

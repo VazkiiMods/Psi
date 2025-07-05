@@ -16,7 +16,7 @@ import net.minecraft.world.level.Level;
 import vazkii.psi.api.cad.EnumCADComponent;
 import vazkii.psi.api.cad.ICAD;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.EnumSet;
 
@@ -28,7 +28,7 @@ public class AssemblyScavengeRecipe extends CustomRecipe {
 	}
 
 	@Override
-	public boolean matches(@Nonnull CraftingInput inv, @Nonnull Level world) {
+	public boolean matches(@NotNull CraftingInput inv, @NotNull Level world) {
 		boolean foundTarget = false;
 
 		for(int i = 0; i < inv.size(); i++) {
@@ -61,9 +61,9 @@ public class AssemblyScavengeRecipe extends CustomRecipe {
 		return foundTarget;
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
-	public ItemStack assemble(@Nonnull CraftingInput inv, HolderLookup.Provider access) {
+	public ItemStack assemble(@NotNull CraftingInput inv, HolderLookup.Provider access) {
 		ItemStack target = ItemStack.EMPTY;
 
 		for(int i = 0; i < inv.size(); i++) {
@@ -77,7 +77,7 @@ public class AssemblyScavengeRecipe extends CustomRecipe {
 		return compStack.copy();
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
 	public RecipeSerializer<?> getSerializer() {
 		return SERIALIZER;
@@ -88,8 +88,4 @@ public class AssemblyScavengeRecipe extends CustomRecipe {
 		return true;
 	}
 
-	@Override
-	public boolean isSpecial() {
-		return true;
-	}
 }

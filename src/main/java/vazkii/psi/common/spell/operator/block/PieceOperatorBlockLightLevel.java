@@ -9,7 +9,6 @@
 package vazkii.psi.common.spell.operator.block;
 
 import net.minecraft.core.BlockPos;
-
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.param.ParamVector;

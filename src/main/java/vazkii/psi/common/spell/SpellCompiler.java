@@ -189,7 +189,7 @@ public final class SpellCompiler implements ISpellCompiler {
 			for(int j = 0; j < SpellGrid.GRID_SIZE; j++) {
 				SpellPiece piece = compiled.sourceSpell.grid.gridData[j][i];
 				if(piece != null && match.test(piece.getPieceType())) {
-					results.add(0, piece);
+					results.addFirst(piece);
 				}
 
 			}

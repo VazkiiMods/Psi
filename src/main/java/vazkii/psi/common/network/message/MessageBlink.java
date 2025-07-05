@@ -17,14 +17,13 @@ import net.minecraft.world.entity.Entity;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 import vazkii.psi.common.Psi;
-import vazkii.psi.common.lib.LibMisc;
 
 /**
  * This is needed instead of a serverside position set to avoid jittering, especially under lag.
  */
 public record MessageBlink(double offX, double offY, double offZ) implements CustomPacketPayload {
 
-	public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, "message_blink");
+	public static final ResourceLocation ID = Psi.location("message_blink");
 	public static final CustomPacketPayload.Type<MessageBlink> TYPE = new Type<>(ID);
 
 	public static final StreamCodec<RegistryFriendlyByteBuf, MessageBlink> CODEC = StreamCodec.composite(

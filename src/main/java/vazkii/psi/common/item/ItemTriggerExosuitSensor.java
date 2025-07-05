@@ -9,7 +9,6 @@
 package vazkii.psi.common.item;
 
 import net.minecraft.world.item.ItemStack;
-
 import vazkii.psi.api.exosuit.PsiArmorEvent;
 import vazkii.psi.client.core.handler.ColorHandler;
 

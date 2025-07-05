@@ -19,12 +19,12 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 import vazkii.psi.api.cad.ISocketableController;
+import vazkii.psi.common.Psi;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
-import vazkii.psi.common.lib.LibMisc;
 
 public record MessageChangeControllerSlot(int controlSlot, int slot) implements CustomPacketPayload {
 
-	public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, "message_change_controller_slot");
+	public static final ResourceLocation ID = Psi.location("message_change_controller_slot");
 	public static final CustomPacketPayload.Type<MessageChangeControllerSlot> TYPE = new Type<>(ID);
 
 	public static final StreamCodec<RegistryFriendlyByteBuf, MessageChangeControllerSlot> CODEC = StreamCodec.composite(

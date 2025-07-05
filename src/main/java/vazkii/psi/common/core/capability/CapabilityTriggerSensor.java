@@ -19,8 +19,8 @@ import vazkii.psi.api.exosuit.PsiArmorEvent;
 import vazkii.psi.api.spell.detonator.IDetonationHandler;
 import vazkii.psi.common.lib.LibMisc;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class CapabilityTriggerSensor implements IDetonationHandler, ICapabilityProvider<EntityCapability<?, Void>, Void, CapabilityTriggerSensor> {
 
@@ -33,7 +33,7 @@ public class CapabilityTriggerSensor implements IDetonationHandler, ICapabilityP
 
 	@Nullable
 	@Override
-	public CapabilityTriggerSensor getCapability(@Nonnull EntityCapability<?, Void> capability, @Nullable Void facing) {
+	public CapabilityTriggerSensor getCapability(@NotNull EntityCapability<?, Void> capability, @Nullable Void facing) {
 		if(capability == PsiAPI.DETONATION_HANDLER_CAPABILITY) {
 			return this;
 		}

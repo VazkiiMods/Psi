@@ -12,11 +12,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.Event;
 import net.neoforged.bus.api.ICancellableEvent;
-
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import vazkii.psi.api.internal.IPlayerData;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * Posted when a piece's unlocked status is checked.
@@ -28,21 +26,21 @@ import javax.annotation.Nullable;
  * Canceling it will result in no CAD being assembled.
  */
 public class PieceKnowledgeEvent extends Event implements ICancellableEvent {
-	@Nonnull
+	@NotNull
 	private final ResourceLocation pieceGroup;
 
 	@Nullable
 	private final ResourceLocation pieceName;
 
-	@Nonnull
+	@NotNull
 	private final Player player;
 
-	@Nonnull
+	@NotNull
 	private final IPlayerData data;
 
 	private final boolean isUnlocked;
 
-	public PieceKnowledgeEvent(@Nonnull ResourceLocation pieceGroup, @Nullable ResourceLocation pieceName, @Nonnull Player player, @Nonnull IPlayerData data, boolean isUnlocked) {
+	public PieceKnowledgeEvent(@NotNull ResourceLocation pieceGroup, @Nullable ResourceLocation pieceName, @NotNull Player player, @NotNull IPlayerData data, boolean isUnlocked) {
 		this.pieceGroup = pieceGroup;
 		this.pieceName = pieceName;
 		this.player = player;
@@ -53,7 +51,7 @@ public class PieceKnowledgeEvent extends Event implements ICancellableEvent {
 	/**
 	 * The group which is being checked for.
 	 */
-	@Nonnull
+	@NotNull
 	public ResourceLocation getPieceGroup() {
 		return pieceGroup;
 	}
@@ -70,7 +68,7 @@ public class PieceKnowledgeEvent extends Event implements ICancellableEvent {
 	/**
 	 * The player who is being checked.
 	 */
-	@Nonnull
+	@NotNull
 	public Player getPlayer() {
 		return player;
 	}
@@ -78,7 +76,7 @@ public class PieceKnowledgeEvent extends Event implements ICancellableEvent {
 	/**
 	 * The player data which is being checked.
 	 */
-	@Nonnull
+	@NotNull
 	public IPlayerData getData() {
 		return data;
 	}

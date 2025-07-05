@@ -15,20 +15,21 @@ import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 import vazkii.psi.api.exosuit.PsiArmorEvent;
-import vazkii.psi.common.lib.LibMisc;
+import vazkii.psi.common.Psi;
 
 public record MessageTriggerJumpSpell() implements CustomPacketPayload {
 
-	public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, "message_trigger_jump_spell");
+	public static final ResourceLocation ID = Psi.location("message_trigger_jump_spell");
 	public static final CustomPacketPayload.Type<MessageTriggerJumpSpell> TYPE = new Type<>(ID);
 
-	public static final StreamCodec<RegistryFriendlyByteBuf, MessageTriggerJumpSpell> CODEC = new StreamCodec<RegistryFriendlyByteBuf, MessageTriggerJumpSpell>() {
-		public MessageTriggerJumpSpell decode(RegistryFriendlyByteBuf pBuffer) {
-			return new MessageTriggerJumpSpell();
-		}
+	public static final StreamCodec<RegistryFriendlyByteBuf, MessageTriggerJumpSpell> CODEC = new StreamCodec<>() {
+        public MessageTriggerJumpSpell decode(RegistryFriendlyByteBuf pBuffer) {
+            return new MessageTriggerJumpSpell();
+        }
 
-		public void encode(RegistryFriendlyByteBuf pBuffer, MessageTriggerJumpSpell message) {}
-	};
+        public void encode(RegistryFriendlyByteBuf pBuffer, MessageTriggerJumpSpell message) {
+        }
+    };
 
 	@Override
 	public Type<? extends CustomPacketPayload> type() {

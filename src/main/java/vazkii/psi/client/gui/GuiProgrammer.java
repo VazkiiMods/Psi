@@ -14,7 +14,6 @@ import com.mojang.blaze3d.vertex.ByteBufferBuilder;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.datafixers.util.Either;
-
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -38,10 +37,8 @@ import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.TooltipFlag;
 import net.neoforged.fml.ModList;
-
 import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.glfw.GLFW;
-
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.SpellParam.Side;
@@ -486,7 +483,7 @@ public class GuiProgrammer extends Screen {
 		}
 		undoSteps.push(spell.copy());
 		if(undoSteps.size() > 25) {
-			undoSteps.remove(0);
+			undoSteps.removeFirst();
 		}
 	}
 

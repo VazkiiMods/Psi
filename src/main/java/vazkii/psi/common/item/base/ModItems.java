@@ -36,6 +36,7 @@ import org.jetbrains.annotations.NotNull;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.spell.ISpellAcceptor;
 import vazkii.psi.client.model.ArmorModels;
+import vazkii.psi.common.Psi;
 import vazkii.psi.common.core.handler.capability.CADData;
 import vazkii.psi.common.item.*;
 import vazkii.psi.common.item.armor.ItemPsimetalExosuitBoots;
@@ -53,9 +54,9 @@ import vazkii.psi.common.spell.base.ModSpellPieces;
 
 import java.util.List;
 
-@EventBusSubscriber(modid = LibMisc.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = LibMisc.MOD_ID)
 public final class ModItems {
-	public static final DeferredRegister.DataComponents DATA_COMPONENT_TYPES = DeferredRegister.createDataComponents(PsiAPI.MOD_ID);
+	public static final DeferredRegister.DataComponents DATA_COMPONENT_TYPES = DeferredRegister.createDataComponents(Registries.DATA_COMPONENT_TYPE, PsiAPI.MOD_ID);
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<List<Item>>> COMPONENTS = DATA_COMPONENT_TYPES.registerComponentType("components", builder -> builder.persistent(Codec.list(BuiltInRegistries.ITEM.byNameCodec().orElse(Items.AIR))).networkSynchronized(ByteBufCodecs.registry(Registries.ITEM).apply(ByteBufCodecs.list())).cacheEncoding());
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> TAG_REGEN_TIME = DATA_COMPONENT_TYPES.registerComponentType("regen_time", builder -> builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.INT));
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> TAG_SELECTED_SLOT = DATA_COMPONENT_TYPES.registerComponentType("selected_slot", builder -> builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.INT));
@@ -239,90 +240,90 @@ public final class ModItems {
 
 			ModSpellPieces.init();
 
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.PSIDUST), psidust);
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.PSIMETAL), psimetal);
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.PSIGEM), psigem);
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.EBONY_PSIMETAL), ebonyPsimetal);
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.IVORY_PSIMETAL), ivoryPsimetal);
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.EBONY_SUBSTANCE), ebonySubstance);
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.IVORY_SUBSTANCE), ivorySubstance);
+			helper.register(Psi.location(LibItemNames.PSIDUST), psidust);
+			helper.register(Psi.location(LibItemNames.PSIMETAL), psimetal);
+			helper.register(Psi.location(LibItemNames.PSIGEM), psigem);
+			helper.register(Psi.location(LibItemNames.EBONY_PSIMETAL), ebonyPsimetal);
+			helper.register(Psi.location(LibItemNames.IVORY_PSIMETAL), ivoryPsimetal);
+			helper.register(Psi.location(LibItemNames.EBONY_SUBSTANCE), ebonySubstance);
+			helper.register(Psi.location(LibItemNames.IVORY_SUBSTANCE), ivorySubstance);
 
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_ASSEMBLY_CREATIVE), cadAssemblyCreative);
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_ASSEMBLY_IRON), cadAssemblyIron);
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_ASSEMBLY_GOLD), cadAssemblyGold);
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_ASSEMBLY_PSIMETAL), cadAssemblyPsimetal);
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_ASSEMBLY_IVORY_PSIMETAL), cadAssemblyIvory);
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_ASSEMBLY_EBONY_PSIMETAL), cadAssemblyEbony);
+			helper.register(Psi.location(LibItemNames.CAD_ASSEMBLY_CREATIVE), cadAssemblyCreative);
+			helper.register(Psi.location(LibItemNames.CAD_ASSEMBLY_IRON), cadAssemblyIron);
+			helper.register(Psi.location(LibItemNames.CAD_ASSEMBLY_GOLD), cadAssemblyGold);
+			helper.register(Psi.location(LibItemNames.CAD_ASSEMBLY_PSIMETAL), cadAssemblyPsimetal);
+			helper.register(Psi.location(LibItemNames.CAD_ASSEMBLY_IVORY_PSIMETAL), cadAssemblyIvory);
+			helper.register(Psi.location(LibItemNames.CAD_ASSEMBLY_EBONY_PSIMETAL), cadAssemblyEbony);
 
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_CORE_BASIC), cadCoreBasic);
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_CORE_OVERCLOCKED), cadCoreOverclocked);
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_CORE_CONDUCTIVE), cadCoreConductive);
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_CORE_HYPERCLOCKED), cadCoreHyperClocked);
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_CORE_RADIATIVE), cadCoreRadiative);
+			helper.register(Psi.location(LibItemNames.CAD_CORE_BASIC), cadCoreBasic);
+			helper.register(Psi.location(LibItemNames.CAD_CORE_OVERCLOCKED), cadCoreOverclocked);
+			helper.register(Psi.location(LibItemNames.CAD_CORE_CONDUCTIVE), cadCoreConductive);
+			helper.register(Psi.location(LibItemNames.CAD_CORE_HYPERCLOCKED), cadCoreHyperClocked);
+			helper.register(Psi.location(LibItemNames.CAD_CORE_RADIATIVE), cadCoreRadiative);
 
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_SOCKET_BASIC), cadSocketBasic);
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_SOCKET_SIGNALING), cadSocketSignaling);
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_SOCKET_LARGE), cadSocketLarge);
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_SOCKET_TRANSMISSIVE), cadSocketTransmissive);
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_SOCKET_HUGE), cadSocketHuge);
+			helper.register(Psi.location(LibItemNames.CAD_SOCKET_BASIC), cadSocketBasic);
+			helper.register(Psi.location(LibItemNames.CAD_SOCKET_SIGNALING), cadSocketSignaling);
+			helper.register(Psi.location(LibItemNames.CAD_SOCKET_LARGE), cadSocketLarge);
+			helper.register(Psi.location(LibItemNames.CAD_SOCKET_TRANSMISSIVE), cadSocketTransmissive);
+			helper.register(Psi.location(LibItemNames.CAD_SOCKET_HUGE), cadSocketHuge);
 
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_BATTERY_BASIC), cadBatteryBasic);
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_BATTERY_EXTENDED), cadBatteryExtended);
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_BATTERY_ULTRADENSE), cadBatteryUltradense);
+			helper.register(Psi.location(LibItemNames.CAD_BATTERY_BASIC), cadBatteryBasic);
+			helper.register(Psi.location(LibItemNames.CAD_BATTERY_EXTENDED), cadBatteryExtended);
+			helper.register(Psi.location(LibItemNames.CAD_BATTERY_ULTRADENSE), cadBatteryUltradense);
 
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_COLORIZER_WHITE), cadColorizerWhite);
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_COLORIZER_ORANGE), cadColorizerOrange);
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_COLORIZER_MAGENTA), cadColorizerMagenta);
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_COLORIZER_LIGHT_BLUE), cadColorizerLightBlue);
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_COLORIZER_YELLOW), cadColorizerYellow);
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_COLORIZER_LIME), cadColorizerLime);
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_COLORIZER_PINK), cadColorizerPink);
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_COLORIZER_GRAY), cadColorizerGray);
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_COLORIZER_LIGHT_GRAY), cadColorizerLightGray);
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_COLORIZER_CYAN), cadColorizerCyan);
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_COLORIZER_PURPLE), cadColorizerPurple);
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_COLORIZER_BLUE), cadColorizerBlue);
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_COLORIZER_BROWN), cadColorizerBrown);
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_COLORIZER_GREEN), cadColorizerGreen);
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_COLORIZER_RED), cadColorizerRed);
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_COLORIZER_BLACK), cadColorizerBlack);
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_COLORIZER_RAINBOW), cadColorizerRainbow);
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_COLORIZER_PSI), cadColorizerPsi);
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD_COLORIZER_EMPTY), cadColorizerEmpty);
+			helper.register(Psi.location(LibItemNames.CAD_COLORIZER_WHITE), cadColorizerWhite);
+			helper.register(Psi.location(LibItemNames.CAD_COLORIZER_ORANGE), cadColorizerOrange);
+			helper.register(Psi.location(LibItemNames.CAD_COLORIZER_MAGENTA), cadColorizerMagenta);
+			helper.register(Psi.location(LibItemNames.CAD_COLORIZER_LIGHT_BLUE), cadColorizerLightBlue);
+			helper.register(Psi.location(LibItemNames.CAD_COLORIZER_YELLOW), cadColorizerYellow);
+			helper.register(Psi.location(LibItemNames.CAD_COLORIZER_LIME), cadColorizerLime);
+			helper.register(Psi.location(LibItemNames.CAD_COLORIZER_PINK), cadColorizerPink);
+			helper.register(Psi.location(LibItemNames.CAD_COLORIZER_GRAY), cadColorizerGray);
+			helper.register(Psi.location(LibItemNames.CAD_COLORIZER_LIGHT_GRAY), cadColorizerLightGray);
+			helper.register(Psi.location(LibItemNames.CAD_COLORIZER_CYAN), cadColorizerCyan);
+			helper.register(Psi.location(LibItemNames.CAD_COLORIZER_PURPLE), cadColorizerPurple);
+			helper.register(Psi.location(LibItemNames.CAD_COLORIZER_BLUE), cadColorizerBlue);
+			helper.register(Psi.location(LibItemNames.CAD_COLORIZER_BROWN), cadColorizerBrown);
+			helper.register(Psi.location(LibItemNames.CAD_COLORIZER_GREEN), cadColorizerGreen);
+			helper.register(Psi.location(LibItemNames.CAD_COLORIZER_RED), cadColorizerRed);
+			helper.register(Psi.location(LibItemNames.CAD_COLORIZER_BLACK), cadColorizerBlack);
+			helper.register(Psi.location(LibItemNames.CAD_COLORIZER_RAINBOW), cadColorizerRainbow);
+			helper.register(Psi.location(LibItemNames.CAD_COLORIZER_PSI), cadColorizerPsi);
+			helper.register(Psi.location(LibItemNames.CAD_COLORIZER_EMPTY), cadColorizerEmpty);
 
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.FLASH_RING), flashRing);
+			helper.register(Psi.location(LibItemNames.FLASH_RING), flashRing);
 
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.SPELL_BULLET), spellBullet);
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.SPELL_BULLET_PROJECTILE), projectileSpellBullet);
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.SPELL_BULLET_LOOP), loopSpellBullet);
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.SPELL_BULLET_CIRCLE), circleSpellBullet);
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.SPELL_BULLET_GRENADE), grenadeSpellBullet);
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.SPELL_BULLET_CHARGE), chargeSpellBullet);
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.SPELL_BULLET_MINE), mineSpellBullet);
+			helper.register(Psi.location(LibItemNames.SPELL_BULLET), spellBullet);
+			helper.register(Psi.location(LibItemNames.SPELL_BULLET_PROJECTILE), projectileSpellBullet);
+			helper.register(Psi.location(LibItemNames.SPELL_BULLET_LOOP), loopSpellBullet);
+			helper.register(Psi.location(LibItemNames.SPELL_BULLET_CIRCLE), circleSpellBullet);
+			helper.register(Psi.location(LibItemNames.SPELL_BULLET_GRENADE), grenadeSpellBullet);
+			helper.register(Psi.location(LibItemNames.SPELL_BULLET_CHARGE), chargeSpellBullet);
+			helper.register(Psi.location(LibItemNames.SPELL_BULLET_MINE), mineSpellBullet);
 
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.SPELL_DRIVE), spellDrive);
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.DETONATOR), detonator);
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.EXOSUIT_CONTROLLER), exosuitController);
+			helper.register(Psi.location(LibItemNames.SPELL_DRIVE), spellDrive);
+			helper.register(Psi.location(LibItemNames.DETONATOR), detonator);
+			helper.register(Psi.location(LibItemNames.EXOSUIT_CONTROLLER), exosuitController);
 
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.EXOSUIT_SENSOR_LIGHT), exosuitSensorLight);
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.EXOSUIT_SENSOR_HEAT), exosuitSensorHeat);
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.EXOSUIT_SENSOR_STRESS), exosuitSensorStress);
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.EXOSUIT_SENSOR_WATER), exosuitSensorWater);
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.EXOSUIT_SENSOR_TRIGGER), exosuitSensorTrigger);
+			helper.register(Psi.location(LibItemNames.EXOSUIT_SENSOR_LIGHT), exosuitSensorLight);
+			helper.register(Psi.location(LibItemNames.EXOSUIT_SENSOR_HEAT), exosuitSensorHeat);
+			helper.register(Psi.location(LibItemNames.EXOSUIT_SENSOR_STRESS), exosuitSensorStress);
+			helper.register(Psi.location(LibItemNames.EXOSUIT_SENSOR_WATER), exosuitSensorWater);
+			helper.register(Psi.location(LibItemNames.EXOSUIT_SENSOR_TRIGGER), exosuitSensorTrigger);
 
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.CAD), cad);
+			helper.register(Psi.location(LibItemNames.CAD), cad);
 
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.VECTOR_RULER), vectorRuler);
+			helper.register(Psi.location(LibItemNames.VECTOR_RULER), vectorRuler);
 
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.PSIMETAL_SHOVEL), psimetalShovel);
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.PSIMETAL_PICKAXE), psimetalPickaxe);
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.PSIMETAL_AXE), psimetalAxe);
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.PSIMETAL_SWORD), psimetalSword);
+			helper.register(Psi.location(LibItemNames.PSIMETAL_SHOVEL), psimetalShovel);
+			helper.register(Psi.location(LibItemNames.PSIMETAL_PICKAXE), psimetalPickaxe);
+			helper.register(Psi.location(LibItemNames.PSIMETAL_AXE), psimetalAxe);
+			helper.register(Psi.location(LibItemNames.PSIMETAL_SWORD), psimetalSword);
 
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.PSIMETAL_EXOSUIT_HELMET), psimetalExosuitHelmet);
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.PSIMETAL_EXOSUIT_CHESTPLATE), psimetalExosuitChestplate);
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.PSIMETAL_EXOSUIT_LEGGINGS), psimetalExosuitLeggings);
-			helper.register(ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, LibItemNames.PSIMETAL_EXOSUIT_BOOTS), psimetalExosuitBoots);
+			helper.register(Psi.location(LibItemNames.PSIMETAL_EXOSUIT_HELMET), psimetalExosuitHelmet);
+			helper.register(Psi.location(LibItemNames.PSIMETAL_EXOSUIT_CHESTPLATE), psimetalExosuitChestplate);
+			helper.register(Psi.location(LibItemNames.PSIMETAL_EXOSUIT_LEGGINGS), psimetalExosuitLeggings);
+			helper.register(Psi.location(LibItemNames.PSIMETAL_EXOSUIT_BOOTS), psimetalExosuitBoots);
 		});
 	}
 
@@ -335,7 +336,7 @@ public final class ModItems {
 			}
 		}, psimetalExosuitHelmet, psimetalExosuitChestplate, psimetalExosuitLeggings, psimetalExosuitBoots);
 
-		ResourceLocation activeProperty = ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, "active");
+		ResourceLocation activeProperty = Psi.location("active");
 		ItemProperties.register(spellBullet, activeProperty, (stack, level, entity, seed) -> ISpellAcceptor.hasSpell(stack) ? 1.0F : 0.0F);
 		ItemProperties.register(chargeSpellBullet, activeProperty, (stack, level, entity, seed) -> ISpellAcceptor.hasSpell(stack) ? 1.0F : 0.0F);
 		ItemProperties.register(projectileSpellBullet, activeProperty, (stack, level, entity, seed) -> ISpellAcceptor.hasSpell(stack) ? 1.0F : 0.0F);

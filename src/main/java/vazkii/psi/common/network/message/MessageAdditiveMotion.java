@@ -18,12 +18,11 @@ import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 import vazkii.psi.common.Psi;
-import vazkii.psi.common.lib.LibMisc;
 
 public record MessageAdditiveMotion(int entityID, double motionX, double motionY,
 		double motionZ) implements CustomPacketPayload {
 
-	public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, "message_additive_motion");
+	public static final ResourceLocation ID = Psi.location("message_additive_motion");
 	public static final CustomPacketPayload.Type<MessageAdditiveMotion> TYPE = new Type<>(ID);
 
 	public static final StreamCodec<RegistryFriendlyByteBuf, MessageAdditiveMotion> CODEC = StreamCodec.composite(

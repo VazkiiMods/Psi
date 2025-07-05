@@ -10,7 +10,6 @@ package vazkii.psi.common.item;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
-
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.EnumCADComponent;
 import vazkii.psi.api.cad.ICAD;
@@ -49,8 +48,4 @@ public class ItemMineSpellBullet extends ItemSpellBullet {
 		return "mine";
 	}
 
-	@Override
-	public boolean isCADOnlyContainer(ItemStack stack) {
-		return false;
-	}
 }

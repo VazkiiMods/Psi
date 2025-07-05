@@ -13,10 +13,8 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-
+import org.jetbrains.annotations.Nullable;
 import vazkii.psi.common.item.armor.ItemPsimetalArmor;
-
-import javax.annotation.Nullable;
 
 import java.util.Collections;
 import java.util.EnumMap;

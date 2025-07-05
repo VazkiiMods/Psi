@@ -17,18 +17,16 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
-
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.spell.piece.PieceCraftingTrick;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 public interface ITrickRecipe extends Recipe<SingleRecipeInput> {
 	/**
 	 * ID of the trick recipe type and the base recipe serializer.
 	 */
-	ResourceLocation TYPE_ID = ResourceLocation.fromNamespaceAndPath(PsiAPI.MOD_ID, "trick_crafting");
+	ResourceLocation TYPE_ID = PsiAPI.location("trick_crafting");
 
 	/**
 	 * Returns the piece that can craft this recipe.
@@ -41,7 +39,7 @@ public interface ITrickRecipe extends Recipe<SingleRecipeInput> {
 	@Nullable
 	PieceCraftingTrick getPiece();
 
-	@Nonnull
+	@NotNull
 	Ingredient getInput();
 
 	@Override
@@ -52,13 +50,13 @@ public interface ITrickRecipe extends Recipe<SingleRecipeInput> {
 	 */
 	ItemStack getAssembly();
 
-	@Nonnull
+	@NotNull
 	@Override
 	default RecipeType<?> getType() {
 		return BuiltInRegistries.RECIPE_TYPE.get(TYPE_ID);
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
 	default NonNullList<Ingredient> getIngredients() {
 		return NonNullList.withSize(1, getInput());

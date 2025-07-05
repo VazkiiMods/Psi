@@ -20,7 +20,7 @@ import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.cad.ICADColorizer;
 import vazkii.psi.common.item.ItemCAD;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 public class ColorizerChangeRecipe extends CustomRecipe {
 	public static final SimpleCraftingRecipeSerializer<ColorizerChangeRecipe> SERIALIZER = new SimpleCraftingRecipeSerializer<>(ColorizerChangeRecipe::new);
@@ -30,7 +30,7 @@ public class ColorizerChangeRecipe extends CustomRecipe {
 	}
 
 	@Override
-	public boolean matches(@Nonnull CraftingInput inv, @Nonnull Level world) {
+	public boolean matches(@NotNull CraftingInput inv, @NotNull Level world) {
 		boolean foundColorizer = false;
 		boolean foundCAD = false;
 
@@ -56,9 +56,9 @@ public class ColorizerChangeRecipe extends CustomRecipe {
 		return foundColorizer && foundCAD;
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
-	public ItemStack assemble(@Nonnull CraftingInput inv, HolderLookup.Provider access) {
+	public ItemStack assemble(@NotNull CraftingInput inv, HolderLookup.Provider access) {
 		ItemStack colorizer = ItemStack.EMPTY;
 		ItemStack cad = ItemStack.EMPTY;
 
@@ -83,7 +83,7 @@ public class ColorizerChangeRecipe extends CustomRecipe {
 		return copy;
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
 	public NonNullList<ItemStack> getRemainingItems(CraftingInput inv) {
 		NonNullList<ItemStack> ret = NonNullList.withSize(inv.size(), ItemStack.EMPTY);
@@ -108,7 +108,7 @@ public class ColorizerChangeRecipe extends CustomRecipe {
 		return ret;
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
 	public RecipeSerializer<?> getSerializer() {
 		return SERIALIZER;
@@ -116,11 +116,6 @@ public class ColorizerChangeRecipe extends CustomRecipe {
 
 	@Override
 	public boolean canCraftInDimensions(int width, int height) {
-		return true;
-	}
-
-	@Override
-	public boolean isSpecial() {
 		return true;
 	}
 

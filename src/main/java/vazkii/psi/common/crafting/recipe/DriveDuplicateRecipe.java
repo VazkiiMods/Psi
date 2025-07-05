@@ -17,7 +17,7 @@ import net.minecraft.world.level.Level;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.common.item.ItemSpellDrive;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 public class DriveDuplicateRecipe extends CustomRecipe {
 	public static final SimpleCraftingRecipeSerializer<DriveDuplicateRecipe> SERIALIZER = new SimpleCraftingRecipeSerializer<>(DriveDuplicateRecipe::new);
@@ -27,7 +27,7 @@ public class DriveDuplicateRecipe extends CustomRecipe {
 	}
 
 	@Override
-	public boolean matches(@Nonnull CraftingInput inv, @Nonnull Level world) {
+	public boolean matches(@NotNull CraftingInput inv, @NotNull Level world) {
 		boolean foundSource = false;
 		boolean foundTarget = false;
 
@@ -55,9 +55,9 @@ public class DriveDuplicateRecipe extends CustomRecipe {
 		return foundSource && foundTarget;
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
-	public ItemStack assemble(@Nonnull CraftingInput inv, HolderLookup.Provider pRegistries) {
+	public ItemStack assemble(@NotNull CraftingInput inv, HolderLookup.Provider pRegistries) {
 		Spell source = null;
 		ItemStack target = ItemStack.EMPTY;
 
@@ -93,7 +93,7 @@ public class DriveDuplicateRecipe extends CustomRecipe {
 		return list;
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
 	public RecipeSerializer<?> getSerializer() {
 		return SERIALIZER;
@@ -104,8 +104,4 @@ public class DriveDuplicateRecipe extends CustomRecipe {
 		return true;
 	}
 
-	@Override
-	public boolean isSpecial() {
-		return true;
-	}
 }
