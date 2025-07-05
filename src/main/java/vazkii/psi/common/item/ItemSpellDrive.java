@@ -11,7 +11,6 @@ package vazkii.psi.common.item;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.sounds.SoundSource;
@@ -25,9 +24,7 @@ import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-
 import org.jetbrains.annotations.NotNull;
-
 import vazkii.psi.api.internal.VanillaPacketDispatcher;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.common.block.tile.TileProgrammer;
@@ -41,10 +38,8 @@ public class ItemSpellDrive extends Item {
 	}
 
 	public static void setSpell(ItemStack stack, Spell spell) {
-		CompoundTag cmp = new CompoundTag();
 		if(spell != null) {
-			spell.writeToNBT(cmp);
-			stack.set(ModDataComponents.SPELL, cmp);
+			stack.set(ModDataComponents.SPELL, spell);
 			stack.set(DataComponents.RARITY, Rarity.RARE);
 		} else {
 			stack.remove(ModDataComponents.SPELL);
@@ -54,16 +49,15 @@ public class ItemSpellDrive extends Item {
 	}
 
 	public static Spell getSpell(ItemStack stack) {
-		CompoundTag cmp = stack.getOrDefault(ModDataComponents.SPELL, new CompoundTag());
-		return Spell.createFromNBT(cmp);
+		return stack.getOrDefault(ModDataComponents.SPELL, new Spell());
 	}
 
 	@NotNull
 	@Override
 	public Component getName(ItemStack stack) {
 		String name = super.getName(stack).getString();
-		CompoundTag cmp = stack.getOrDefault(ModDataComponents.SPELL, new CompoundTag());
-		String spellName = cmp.getString(Spell.TAG_SPELL_NAME); // We don't need to load the whole spell just for the name
+		Spell cmp = stack.getOrDefault(ModDataComponents.SPELL, new Spell());
+		String spellName = cmp.name;
 		if(spellName.isEmpty()) {
 			return Component.literal(name);
 		}

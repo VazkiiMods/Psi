@@ -31,8 +31,11 @@ import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.neoforged.api.distmarker.Dist;
@@ -641,41 +644,57 @@ public abstract class SpellPiece {
 		comment = cmp.getString(TAG_COMMENT);
 	}
 
-	public static final MapCodec<SpellPiece> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-			Codec.STRING.optionalFieldOf(TAG_COMMENT).forGetter((SpellPiece p) -> Optional.ofNullable(p.comment)),
-			Codec.STRING.fieldOf(TAG_KEY).forGetter((SpellPiece s) -> s.registryKey.toString().replaceAll("^" + PSI_PREFIX, "_")),
-			Codec.unboundedMap(Codec.STRING, Codec.INT).optionalFieldOf(TAG_PARAMS).forGetter((SpellPiece s) -> {
-				Map<String, Integer> map = s.params.entrySet().stream().map(e -> Pair.of(e.getKey().replaceAll("^" + SpellParam.PSI_PREFIX, "_"), s.paramSides.get(e.getValue()).asInt())).collect(Collectors.toMap(Pair::first, Pair::second, (a, b) -> b, Object2IntOpenHashMap::new));
-				if(map.isEmpty()) {
-					return Optional.empty();
-				}
-				return Optional.of(map);
-			})
-	).apply(instance, (comment, tagKey, params) -> {
-		Class<? extends SpellPiece> clazz = PsiAPI.getSpellPiece(ResourceLocation.parse(tagKey.replaceFirst("^_", PSI_PREFIX)));
-		SpellPiece p = create(clazz, new Spell());
-		if(params.isPresent()) {
-			for(var entry : p.params.entrySet()) {
-				var key = entry.getKey();
-				var param = entry.getValue();
+	private Optional<Map<String, Integer>> paramsToMap() {
+		Map<String, Integer> map = this.params.entrySet().stream().map(e -> Pair.of(e.getKey().replaceAll("^" + SpellParam.PSI_PREFIX, "_"), this.paramSides.get(e.getValue()).asInt())).collect(Collectors.toMap(Pair::first, Pair::second, (a, b) -> b, Object2IntOpenHashMap::new));
+		if(map.isEmpty()) {
+			return Optional.empty();
+		}
+		return Optional.of(map);
+	}
 
-				var side = params.get().getOrDefault(key, Integer.MIN_VALUE);
+	private void loadParamsMap(Map<String, Integer> params) {
+		for(var entry : this.params.entrySet()) {
+			var key = entry.getKey();
+			var param = entry.getValue();
 
-				if(side != Integer.MIN_VALUE) {
-					p.paramSides.put(param, SpellParam.Side.fromInt(side));
-				} else {
-					if(key.startsWith(SpellParam.PSI_PREFIX)) {
-						key = "_" + key.substring(SpellParam.PSI_PREFIX.length());
-					}
-					p.paramSides.put(param, SpellParam.Side.fromInt(params.get().get(key)));
+			var side = params.getOrDefault(key, Integer.MIN_VALUE);
+
+			if(side != Integer.MIN_VALUE) {
+				this.paramSides.put(param, SpellParam.Side.fromInt(side));
+			} else {
+				if(key.startsWith(SpellParam.PSI_PREFIX)) {
+					key = "_" + key.substring(SpellParam.PSI_PREFIX.length());
 				}
+				this.paramSides.put(param, SpellParam.Side.fromInt(params.get(key)));
 			}
 		}
+	}
 
+	public String getShortenedKey() {
+		return this.registryKey.toString().replaceAll("^" + PSI_PREFIX, "_");
+	}
+
+	private static SpellPiece fromCodecData(Optional<String> comment, String tagKey, Optional<Map<String, Integer>> params) {
+		Class<? extends SpellPiece> clazz = PsiAPI.getSpellPiece(ResourceLocation.parse(tagKey.replaceFirst("^_", PSI_PREFIX)));
+		SpellPiece p = create(clazz, new Spell());
+		params.ifPresent(p::loadParamsMap);
 		comment.ifPresent(s -> p.comment = s);
 
 		return p;
-	}));
+	}
+
+	public static final MapCodec<SpellPiece> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+			Codec.STRING.optionalFieldOf(TAG_COMMENT).forGetter(p -> Optional.ofNullable(p.comment)),
+			Codec.STRING.fieldOf(TAG_KEY).forGetter(SpellPiece::getShortenedKey),
+			Codec.unboundedMap(Codec.STRING, Codec.INT).optionalFieldOf(TAG_PARAMS).forGetter(SpellPiece::paramsToMap)
+	).apply(instance, SpellPiece::fromCodecData));
+
+	public static final StreamCodec<RegistryFriendlyByteBuf, SpellPiece> STREAM_CODEC = StreamCodec.composite(
+			ByteBufCodecs.optional(ByteBufCodecs.STRING_UTF8), p -> Optional.ofNullable(p.comment),
+			ByteBufCodecs.STRING_UTF8, SpellPiece::getShortenedKey,
+			ByteBufCodecs.optional(ByteBufCodecs.map(Object2IntOpenHashMap::new, ByteBufCodecs.STRING_UTF8, ByteBufCodecs.VAR_INT)), SpellPiece::paramsToMap,
+			SpellPiece::fromCodecData
+	);
 
 	public void writeToNBT(CompoundTag cmp) {
 		if(comment == null) {

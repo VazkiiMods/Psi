@@ -53,7 +53,8 @@ public class ItemSpellBullet extends Item {
 
 			if(compound.contains("spell")) {
 				pStack.set(DataComponents.RARITY, Rarity.RARE);
-				pStack.set(ModDataComponents.SPELL, compound.getCompound("spell"));
+				Spell spell = Spell.createFromNBT(compound.getCompound("spell"));
+				pStack.set(ModDataComponents.SPELL, spell);
 				compound.remove("spell");
 			} else {
 				pStack.set(DataComponents.RARITY, Rarity.COMMON);
@@ -66,8 +67,8 @@ public class ItemSpellBullet extends Item {
 	@Override
 	public Component getName(@NotNull ItemStack stack) {
 		if(ISpellAcceptor.hasSpell(stack)) {
-			CompoundTag cmp = stack.getOrDefault(ModDataComponents.SPELL, new CompoundTag());
-			String name = cmp.getString(Spell.TAG_SPELL_NAME); // We don't need to load the whole spell just for the name
+			Spell cmp = stack.getOrDefault(ModDataComponents.SPELL, new Spell());
+			String name = cmp.name;
 			if(name.isEmpty()) {
 				return super.getName(stack);
 			}

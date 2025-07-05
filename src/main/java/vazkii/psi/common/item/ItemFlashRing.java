@@ -46,7 +46,8 @@ public class ItemFlashRing extends Item {
 
 			if(compound.contains("spell")) {
 				pStack.set(DataComponents.RARITY, Rarity.RARE);
-				pStack.set(ModDataComponents.SPELL, compound.getCompound("spell"));
+				Spell spell = Spell.createFromNBT(compound.getCompound("spell"));
+				pStack.set(ModDataComponents.SPELL, spell);
 				compound.remove("spell");
 			} else {
 				pStack.set(DataComponents.RARITY, Rarity.COMMON);
@@ -62,8 +63,8 @@ public class ItemFlashRing extends Item {
 			return super.getName(stack);
 		}
 
-		CompoundTag cmp = stack.getOrDefault(ModDataComponents.SPELL, new CompoundTag());
-		String name = cmp.getString(Spell.TAG_SPELL_NAME);
+		Spell cmp = stack.getOrDefault(ModDataComponents.SPELL, new Spell());
+		String name = cmp.name;
 
 		if(name.isEmpty()) {
 			return super.getName(stack);

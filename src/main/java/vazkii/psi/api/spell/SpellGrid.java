@@ -18,8 +18,12 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.neoforge.network.codec.NeoForgeStreamCodecs;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -297,27 +301,36 @@ public final class SpellGrid {
 		}
 	}
 
-	public static final MapCodec<SpellGrid> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-			Codec.lazyInitialized(() -> Codec.list(PieceWithPosition.CODEC.codec())).fieldOf(TAG_SPELL_LIST).forGetter((SpellGrid g) -> {
-				List<PieceWithPosition> pieces = new ArrayList<>();
-				for(int i = 0; i < GRID_SIZE; i++) {
-					for(int j = 0; j < GRID_SIZE; j++) {
-						SpellPiece piece = g.gridData[i][j];
-						if(piece != null) {
-							pieces.add(new PieceWithPosition(piece, i, j));
-						}
-					}
+	private List<PieceWithPosition> getPiecesAsFlattenedList() {
+		List<PieceWithPosition> pieces = new ArrayList<>();
+		for(int i = 0; i < GRID_SIZE; i++) {
+			for(int j = 0; j < GRID_SIZE; j++) {
+				SpellPiece piece = this.gridData[i][j];
+				if(piece != null) {
+					pieces.add(new PieceWithPosition(piece, i, j));
 				}
-				return pieces;
-			})
-	).apply(instance, (spellList) -> {
+			}
+		}
+		return pieces;
+	}
+
+	private static SpellGrid fromCodecData(List<PieceWithPosition> spellList) {
 		var grid = new SpellGrid(new Spell());
 		for(var piece : spellList) {
 			grid.gridData[piece.x][piece.y] = piece.piece;
 		}
 		grid.empty = spellList.isEmpty();
 		return grid;
-	}));
+	}
+
+	public static final MapCodec<SpellGrid> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+			Codec.lazyInitialized(() -> Codec.list(PieceWithPosition.CODEC.codec())).fieldOf(TAG_SPELL_LIST).forGetter(SpellGrid::getPiecesAsFlattenedList)
+	).apply(instance, SpellGrid::fromCodecData));
+
+	public static final StreamCodec<RegistryFriendlyByteBuf, SpellGrid> STREAM_CODEC = StreamCodec.composite(
+			NeoForgeStreamCodecs.lazy(() -> PieceWithPosition.STREAM_CODEC.apply(ByteBufCodecs.list())), SpellGrid::getPiecesAsFlattenedList,
+			SpellGrid::fromCodecData
+	);
 
 	record PieceWithPosition(SpellPiece piece, int x, int y) {
 		public static final MapCodec<PieceWithPosition> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
@@ -325,6 +338,13 @@ public final class SpellGrid {
 				Codec.INT.fieldOf(TAG_SPELL_POS_X).forGetter(PieceWithPosition::x),
 				Codec.INT.fieldOf(TAG_SPELL_POS_Y).forGetter(PieceWithPosition::y)
 		).apply(instance, PieceWithPosition::new));
+
+		public static final StreamCodec<RegistryFriendlyByteBuf, PieceWithPosition> STREAM_CODEC = StreamCodec.composite(
+				NeoForgeStreamCodecs.lazy(() -> SpellPiece.STREAM_CODEC), PieceWithPosition::piece,
+				ByteBufCodecs.VAR_INT, PieceWithPosition::x,
+				ByteBufCodecs.VAR_INT, PieceWithPosition::y,
+				PieceWithPosition::new
+		);
 	}
 
 	public void writeToNBT(CompoundTag cmp) {
