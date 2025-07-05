@@ -25,8 +25,8 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.common.Tags;
-
 import net.neoforged.neoforge.registries.DeferredHolder;
+
 import vazkii.patchouli.api.PatchouliAPI;
 import vazkii.psi.api.recipe.TrickRecipeBuilder;
 import vazkii.psi.common.Psi;

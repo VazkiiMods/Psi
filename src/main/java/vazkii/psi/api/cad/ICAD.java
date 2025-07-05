@@ -14,7 +14,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
+
 import org.jetbrains.annotations.Nullable;
+
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.api.spell.piece.PieceCraftingTrick;
@@ -38,7 +40,7 @@ public interface ICAD {
 		@Nullable
 		List<Item> items = stack.getOrDefault(ModItems.COMPONENTS, new ArrayList<>(Collections.nCopies(EnumCADComponent.values().length, Items.AIR)));
 		if(!componentStack.isEmpty() && componentStack.getItem() instanceof ICADComponent component) {
-			if (!(items instanceof ArrayList<Item>)) {
+			if(!(items instanceof ArrayList<Item>)) {
 				items = new ArrayList<>(items);
 			}
 
@@ -57,16 +59,17 @@ public interface ICAD {
 
 	/**
 	 * Creates a copy of two CADs' component lists in order to disassociate them.
+	 * 
 	 * @param from The CAD to copy components from
-	 * @param to The CAD to copy components to
+	 * @param to   The CAD to copy components to
 	 */
 	static void copyComponents(ItemStack from, ItemStack to) {
-		if (!(from.getItem() instanceof ICAD && to.getItem() instanceof ICAD)) {
+		if(!(from.getItem() instanceof ICAD && to.getItem() instanceof ICAD)) {
 			return;
 		}
 
 		List<Item> fromComponents = from.get(ModItems.COMPONENTS);
-        to.set(ModItems.COMPONENTS, new ArrayList<>(Objects.requireNonNullElseGet(fromComponents, () -> Collections.nCopies(EnumCADComponent.values().length, Items.AIR))));
+		to.set(ModItems.COMPONENTS, new ArrayList<>(Objects.requireNonNullElseGet(fromComponents, () -> Collections.nCopies(EnumCADComponent.values().length, Items.AIR))));
 	}
 
 	/**

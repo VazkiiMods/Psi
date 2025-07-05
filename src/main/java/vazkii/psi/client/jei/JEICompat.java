@@ -10,17 +10,17 @@ package vazkii.psi.client.jei;
 
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
-import mezz.jei.api.constants.RecipeTypes;
 import mezz.jei.api.helpers.IJeiHelpers;
 import mezz.jei.api.ingredients.subtypes.ISubtypeInterpreter;
 import mezz.jei.api.ingredients.subtypes.UidContext;
 import mezz.jei.api.registration.*;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.CraftingRecipe;
-import net.minecraft.world.item.crafting.RecipeHolder;
+
 import org.jetbrains.annotations.NotNull;
+
 import vazkii.psi.api.cad.EnumCADComponent;
 import vazkii.psi.api.recipe.ITrickRecipe;
 import vazkii.psi.client.jei.crafting.BulletToDriveExtension;
@@ -64,11 +64,12 @@ public class JEICompat implements IModPlugin {
 	public void registerRecipes(IRecipeRegistration registration) {
 		List<ITrickRecipe> trickRecipes = new ArrayList<>();
 
-		for (var holder : Minecraft.getInstance().level.getRecipeManager().getRecipes()) {
-			switch (holder.value()) {
-				case ITrickRecipe recipe -> trickRecipes.add(recipe);
-                default -> {}
-            }
+		for(var holder : Minecraft.getInstance().level.getRecipeManager().getRecipes()) {
+			switch(holder.value()) {
+			case ITrickRecipe recipe -> trickRecipes.add(recipe);
+			default -> {
+			}
+			}
 		}
 
 		registration.addRecipes(TrickCraftingCategory.TYPE, trickRecipes);
