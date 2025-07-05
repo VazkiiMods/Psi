@@ -15,6 +15,7 @@ import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.common.CommonHooks;
 
+import net.neoforged.neoforge.data.loading.DatagenModLoader;
 import org.jetbrains.annotations.NotNull;
 
 import vazkii.psi.api.cad.EnumCADComponent;
@@ -77,6 +78,7 @@ public class ColorizerChangeRecipe extends CustomRecipe {
 		}
 
 		ItemStack copy = cad.copy();
+		ICAD.copyComponents(cad, copy);
 		ItemCAD.setComponent(copy, colorizer);
 
 		return copy;
@@ -109,7 +111,7 @@ public class ColorizerChangeRecipe extends CustomRecipe {
 
 	@Override
 	public @NotNull RecipeType<?> getType() {
-		return ModCraftingRecipes.COLORIZER_CHANGE_TYPE.get();
+		return !DatagenModLoader.isRunningDataGen() ? RecipeType.CRAFTING : ModCraftingRecipes.COLORIZER_CHANGE_TYPE.get();
 	}
 
 	@NotNull

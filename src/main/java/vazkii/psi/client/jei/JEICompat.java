@@ -63,19 +63,15 @@ public class JEICompat implements IModPlugin {
 	@Override
 	public void registerRecipes(IRecipeRegistration registration) {
 		List<ITrickRecipe> trickRecipes = new ArrayList<>();
-		List<RecipeHolder<CraftingRecipe>> craftingExtensions = new ArrayList<>();
 
 		for (var holder : Minecraft.getInstance().level.getRecipeManager().getRecipes()) {
 			switch (holder.value()) {
 				case ITrickRecipe recipe -> trickRecipes.add(recipe);
-				case BulletToDriveRecipe recipe -> craftingExtensions.add(new RecipeHolder<>(holder.id(), recipe));
-				case DriveDuplicateRecipe recipe -> craftingExtensions.add(new RecipeHolder<>(holder.id(), recipe));
                 default -> {}
             }
 		}
 
 		registration.addRecipes(TrickCraftingCategory.TYPE, trickRecipes);
-		registration.addRecipes(RecipeTypes.CRAFTING, craftingExtensions);
 	}
 
 	@Override

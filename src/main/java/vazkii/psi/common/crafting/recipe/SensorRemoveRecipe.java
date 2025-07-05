@@ -14,6 +14,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 
+import net.neoforged.neoforge.data.loading.DatagenModLoader;
 import org.jetbrains.annotations.NotNull;
 
 import vazkii.psi.api.exosuit.ISensorHoldable;
@@ -78,7 +79,7 @@ public class SensorRemoveRecipe extends CustomRecipe {
 
 	@Override
 	public @NotNull RecipeType<?> getType() {
-		return ModCraftingRecipes.SENSOR_REMOVE_TYPE.get();
+		return !DatagenModLoader.isRunningDataGen() ? RecipeType.CRAFTING : ModCraftingRecipes.SENSOR_REMOVE_TYPE.get();
 	}
 
 	@NotNull
