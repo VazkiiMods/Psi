@@ -89,9 +89,6 @@ public class PiecePanelWidget extends AbstractWidget implements GuiEventListener
 	@Override
 	public boolean charTyped(char p_charTyped_1_, int p_charTyped_2_) {
 		if(panelEnabled) {
-			if(searchField.isActive()) {
-				searchField.setFocused(true);
-			}
 			return searchField.charTyped(p_charTyped_1_, p_charTyped_2_);
 		}
 		return false;
