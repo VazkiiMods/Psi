@@ -38,6 +38,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.TooltipFlag;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.fml.ModList;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -66,6 +68,7 @@ import vazkii.psi.common.spell.other.PieceConnector;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@OnlyIn(Dist.CLIENT)
 public class GuiProgrammer extends Screen {
 
 	public static final ResourceLocation texture = ResourceLocation.parse(LibResources.GUI_PROGRAMMER);
@@ -462,15 +465,6 @@ public class GuiProgrammer extends Screen {
 			shareToReddit = false;
 		}
 
-	}
-
-	public void removeButtons(List<Button> list) {
-		removeButtonList(list);
-	}
-
-	private void removeButtonList(List<Button> list) {
-		renderables.removeAll(list);
-		//children.removeAll(list);
 	}
 
 	public void addButtons(List<Button> list) {

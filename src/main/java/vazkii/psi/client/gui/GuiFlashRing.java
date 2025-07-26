@@ -1,6 +1,8 @@
 package vazkii.psi.client.gui;
 
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
 import vazkii.psi.api.spell.SpellCompilationException;
 import vazkii.psi.common.item.ItemSpellDrive;
@@ -10,6 +12,7 @@ import vazkii.psi.common.spell.SpellCompiler;
 
 import java.util.UUID;
 
+@OnlyIn(Dist.CLIENT)
 public class GuiFlashRing extends GuiProgrammer {
 	public GuiFlashRing(ItemStack stack) {
 		super(null, ItemSpellDrive.getSpell(stack));

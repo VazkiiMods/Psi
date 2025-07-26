@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -23,22 +23,25 @@ import net.minecraft.client.particle.TextureSheetParticle;
 import net.minecraft.client.renderer.texture.AbstractTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureManager;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.opengl.GL11;
 
 // https://github.com/Vazkii/Botania/blob/1.15/src/main/java/vazkii/botania/client/fx/FXWisp.java
+@OnlyIn(Dist.CLIENT)
 public class FXWisp extends TextureSheetParticle {
 
 	private static final ParticleRenderType NORMAL_RENDER = new ParticleRenderType() {
 		@Override
-		public BufferBuilder begin(Tesselator tessellator, TextureManager textureManager) {
+		public BufferBuilder begin(@NotNull Tesselator tessellator, @NotNull TextureManager textureManager) {
 			return beginRenderCommon(tessellator, textureManager);
 		}
 
 		@Override
 		public String toString() {
-			return "botania:wisp";
+			return "psi:wisp";
 		}
 	};
 	private final float moteParticleScale;
@@ -81,21 +84,14 @@ public class FXWisp extends TextureSheetParticle {
 		return tessellator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
 	}
 
-	private static void endRenderCommon() {
-		Minecraft.getInstance().getTextureManager().getTexture(TextureAtlas.LOCATION_PARTICLES).restoreLastBlurMipmap();
-		//RenderSystem.alphaFunc(GL11.GL_GREATER, 0.1F);
-		RenderSystem.disableBlend();
-		RenderSystem.depthMask(true);
-	}
-
 	@Override
 	public float getQuadSize(float scaleFactor) {
-		float agescale = (float) age / (float) moteHalfLife;
-		if(agescale > 1F) {
-			agescale = 2 - agescale;
+		float ageScale = (float) age / (float) moteHalfLife;
+		if(ageScale > 1F) {
+			ageScale = 2 - ageScale;
 		}
 
-		quadSize = moteParticleScale * agescale * 0.5F;
+		quadSize = moteParticleScale * ageScale * 0.5F;
 		return quadSize;
 	}
 
@@ -113,23 +109,20 @@ public class FXWisp extends TextureSheetParticle {
 	// [VanillaCopy] of super, without drag when onGround is true
 	@Override
 	public void tick() {
+		if(this.age++ >= this.lifetime) {
+			this.remove();
+			return;
+		}
+
 		this.xo = this.x;
 		this.yo = this.y;
 		this.zo = this.z;
-
-		if(this.age++ >= this.lifetime) {
-			this.remove();
-		}
 
 		this.yd -= 0.04D * (double) this.gravity;
 		this.move(this.xd, this.yd, this.zd);
 		this.xd *= 0.9800000190734863D;
 		this.yd *= 0.9800000190734863D;
 		this.zd *= 0.9800000190734863D;
-	}
-
-	public void setGravity(float value) {
-		gravity = value;
 	}
 
 	public static class Factory implements ParticleProvider<WispParticleData> {
@@ -140,7 +133,7 @@ public class FXWisp extends TextureSheetParticle {
 		}
 
 		@Override
-		public TextureSheetParticle createParticle(WispParticleData data, ClientLevel world, double x, double y, double z, double mx, double my, double mz) {
+		public TextureSheetParticle createParticle(WispParticleData data, @NotNull ClientLevel world, double x, double y, double z, double mx, double my, double mz) {
 			FXWisp ret = new FXWisp(world, x, y, z, mx, my, mz, data.size(), data.r(), data.g(), data.b(), data.maxAgeMul());
 			ret.pickSprite(sprite);
 			return ret;

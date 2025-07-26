@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -9,6 +9,8 @@
 package vazkii.psi.client.core.handler;
 
 import net.minecraft.util.Mth;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
@@ -20,7 +22,8 @@ import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.item.component.ItemCADColorizer;
 import vazkii.psi.common.lib.LibMisc;
 
-@EventBusSubscriber(modid = LibMisc.MOD_ID)
+@OnlyIn(Dist.CLIENT)
+@EventBusSubscriber(value = Dist.CLIENT, modid = LibMisc.MOD_ID)
 public class ColorHandler {
 
 	@SubscribeEvent
@@ -46,14 +49,6 @@ public class ColorHandler {
 		}
 		int nextPhase = (phase + 1) % n;
 		return slideColorTime(color[phase], color[nextPhase], (float) (dt * Math.PI));
-	}
-
-	public static int slideColor(int color, int secondColor, double speed) {
-		return slideColorTime(color, secondColor, (float) (ClientTickHandler.total * speed));
-	}
-
-	public static int pulseColor(int source) {
-		return pulseColor(source, 1f, 0.2f, 24);
 	}
 
 	public static int pulseColor(int source, float speed, int magnitude) {

@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -8,23 +8,12 @@
  */
 package vazkii.psi.common.item.base;
 
-import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.*;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
-import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.registries.RegisterEvent;
 
-import org.jetbrains.annotations.NotNull;
-
-import vazkii.psi.api.spell.ISpellAcceptor;
-import vazkii.psi.client.model.ArmorModels;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.item.*;
 import vazkii.psi.common.item.armor.ItemPsimetalExosuitBoots;
@@ -296,25 +285,6 @@ public final class ModItems {
 			helper.register(Psi.location(LibItemNames.PSIMETAL_EXOSUIT_LEGGINGS), psimetalExosuitLeggings);
 			helper.register(Psi.location(LibItemNames.PSIMETAL_EXOSUIT_BOOTS), psimetalExosuitBoots);
 		});
-	}
-
-	@SubscribeEvent
-	public static void initializeClient(RegisterClientExtensionsEvent event) {
-		event.registerItem(new IClientItemExtensions() {
-			@Override
-			public @NotNull HumanoidModel<?> getHumanoidArmorModel(LivingEntity livingEntity, ItemStack itemStack, EquipmentSlot equipmentSlot, HumanoidModel<?> original) {
-				return ArmorModels.get(itemStack);
-			}
-		}, psimetalExosuitHelmet, psimetalExosuitChestplate, psimetalExosuitLeggings, psimetalExosuitBoots);
-
-		ResourceLocation activeProperty = Psi.location("active");
-		ItemProperties.register(spellBullet, activeProperty, (stack, level, entity, seed) -> ISpellAcceptor.hasSpell(stack) ? 1.0F : 0.0F);
-		ItemProperties.register(chargeSpellBullet, activeProperty, (stack, level, entity, seed) -> ISpellAcceptor.hasSpell(stack) ? 1.0F : 0.0F);
-		ItemProperties.register(projectileSpellBullet, activeProperty, (stack, level, entity, seed) -> ISpellAcceptor.hasSpell(stack) ? 1.0F : 0.0F);
-		ItemProperties.register(loopSpellBullet, activeProperty, (stack, level, entity, seed) -> ISpellAcceptor.hasSpell(stack) ? 1.0F : 0.0F);
-		ItemProperties.register(circleSpellBullet, activeProperty, (stack, level, entity, seed) -> ISpellAcceptor.hasSpell(stack) ? 1.0F : 0.0F);
-		ItemProperties.register(mineSpellBullet, activeProperty, (stack, level, entity, seed) -> ISpellAcceptor.hasSpell(stack) ? 1.0F : 0.0F);
-		ItemProperties.register(flashRing, activeProperty, (stack, level, entity, seed) -> ISpellAcceptor.hasSpell(stack) ? 1.0F : 0.0F);
 	}
 
 	public static Item.Properties defaultBuilder() {

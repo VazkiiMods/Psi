@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -23,16 +23,19 @@ import net.minecraft.client.particle.TextureSheetParticle;
 import net.minecraft.client.renderer.texture.AbstractTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureManager;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.opengl.GL11;
 
 // https://github.com/Vazkii/Botania/blob/1.15/src/main/java/vazkii/botania/client/fx/FXSparkle.java
+@OnlyIn(Dist.CLIENT)
 public class FXSparkle extends TextureSheetParticle {
 
 	private static final ParticleRenderType NORMAL_RENDER = new ParticleRenderType() {
 		@Override
-		public BufferBuilder begin(Tesselator tessellator, TextureManager textureManager) {
+		public BufferBuilder begin(@NotNull Tesselator tessellator, @NotNull TextureManager textureManager) {
 			return beginRenderCommon(tessellator, textureManager);
 		}
 
@@ -41,9 +44,6 @@ public class FXSparkle extends TextureSheetParticle {
 			return "psi:sparkle";
 		}
 	};
-	public final int particle = 16;
-	private final SpriteSet sprite;
-	public int multipler;
 
 	public FXSparkle(ClientLevel world, double x, double y, double z, float size,
 			float red, float green, float blue, int m, double mx, double my, double mz, SpriteSet sprite) {
@@ -58,7 +58,7 @@ public class FXSparkle extends TextureSheetParticle {
 		zd = mz;
 		quadSize *= size;
 		lifetime = 3 * m;
-		multipler = m;
+
 		setSize(0.01F, 0.01F);
 		// 10 is the sum of the infinite geometric series defined by the drag value of 0.9
 		// This is expanding the AABB to contain everywhere the particle will travel
@@ -66,7 +66,6 @@ public class FXSparkle extends TextureSheetParticle {
 		xo = x;
 		yo = y;
 		zo = z;
-		this.sprite = sprite;
 		setSpriteFromAge(sprite);
 	}
 
@@ -89,15 +88,14 @@ public class FXSparkle extends TextureSheetParticle {
 
 	@Override
 	public void tick() {
+		if(age++ >= lifetime) {
+			remove();
+			return;
+		}
+
 		xo = x;
 		yo = y;
 		zo = z;
-
-		if(age++ >= lifetime) {
-			remove();
-		}
-//		if(!noClip)
-//			pushOutOfBlocks(posX, (getEntityBoundingBox().minY + getEntityBoundingBox().maxY) / 2.0D, posZ);
 
 		x += xd;
 		y += yd;
@@ -127,7 +125,7 @@ public class FXSparkle extends TextureSheetParticle {
 		}
 
 		@Override
-		public TextureSheetParticle createParticle(SparkleParticleData data, ClientLevel world, double x, double y, double z, double mx, double my, double mz) {
+		public TextureSheetParticle createParticle(SparkleParticleData data, @NotNull ClientLevel world, double x, double y, double z, double mx, double my, double mz) {
 			return new FXSparkle(world, x, y, z, data.size(), data.r(), data.g(), data.b(), data.m(), mx, my, mz, sprite);
 		}
 	}

@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -46,7 +46,7 @@ import vazkii.psi.common.lib.LibResources;
 
 import java.util.regex.Pattern;
 
-@EventBusSubscriber(modid = LibMisc.MOD_ID)
+@EventBusSubscriber(modid = LibMisc.MOD_ID, value = Dist.CLIENT)
 public final class HUDHandler {
 
 	public static final LayeredDraw.Layer SOCKETABLE_EQUIPPED_NAME = (graphics, deltatracker) -> {
@@ -88,21 +88,22 @@ public final class HUDHandler {
 	}
 
 	public static void tick() {
-
-		if(remainingTime > 0) {
-			--remainingTime;
+		if(remainingTime < 0) {
+			return;
 		}
+
+		--remainingTime;
 	}
 
 	private static boolean showsBar(PlayerData data, ItemStack stack) {
 		if(stack.isEmpty()) {
 			return false;
-		} else {
-			IPsiBarDisplay display = stack.getCapability(PsiAPI.PSI_BAR_DISPLAY_CAPABILITY);
-			if(display != null)
-				return display.shouldShow(data);
-			return false;
 		}
+
+		IPsiBarDisplay display = stack.getCapability(PsiAPI.PSI_BAR_DISPLAY_CAPABILITY);
+		if(display != null)
+			return display.shouldShow(data);
+		return false;
 	}
 
 	@OnlyIn(Dist.CLIENT)
@@ -250,99 +251,104 @@ public final class HUDHandler {
 	@OnlyIn(Dist.CLIENT)
 	private static void renderSocketableEquippedName(GuiGraphics graphics, DeltaTracker deltatracker) {
 		Minecraft mc = Minecraft.getInstance();
+		if(mc.player == null || mc.gui.toolHighlightTimer - 10 <= 0) {
+			return;
+		}
+
 		ItemStack stack = mc.player.getItemInHand(InteractionHand.MAIN_HAND);
 		if(!ISocketable.isSocketable(stack)) {
 			return;
 		}
+
 		String name = ISocketable.getSocketedItemName(stack, "").getString();
 		if(stack.isEmpty() || name.trim().isEmpty()) {
 			return;
 		}
 
-		int ticks = mc.gui.toolHighlightTimer;
-		ticks -= 10;
+		ISocketable socketable = ISocketable.socketable(stack);
+		ItemStack bullet = socketable.getSelectedBullet();
 
-		if(ticks > 0) {
-			ISocketable socketable = ISocketable.socketable(stack);
-			ItemStack bullet = socketable.getSelectedBullet();
-
-			int alpha = Math.min(255, (int) ((ticks - deltatracker.getGameTimeDeltaPartialTick(false)) * 256.0F / 10.0F));
-			int color = ICADColorizer.DEFAULT_SPELL_COLOR + (alpha << 24);
-
-			int x = graphics.guiWidth() / 2 - mc.font.width(name) / 2;
-			int y = graphics.guiHeight() - 71;
-			if(mc.player.isCreative()) {
-				y += 14;
-			}
-
-			graphics.drawString(mc.font, name, x, y, color, true);
-
-			int w = mc.font.width(name);
-			graphics.pose().pushPose();
-			graphics.pose().translate(x + w, y - 6, 0);
-			graphics.pose().scale(alpha / 255F, 1F, 1);
-			graphics.renderFakeItem(bullet, 0, 0);
-			graphics.pose().popPose();
+		int ticks = mc.gui.toolHighlightTimer - 10;
+		int alpha = Math.min(255, (int) ((ticks - deltatracker.getGameTimeDeltaPartialTick(false)) * 256.0F / 10.0F));
+		int color = ICADColorizer.DEFAULT_SPELL_COLOR + (alpha << 24);
+		int x = graphics.guiWidth() / 2 - mc.font.width(name) / 2;
+		int y = graphics.guiHeight() - 71;
+		int w = mc.font.width(name);
+		if(mc.player.isCreative()) {
+			y += 14;
 		}
+
+		graphics.drawString(mc.font, name, x, y, color, true);
+		graphics.pose().pushPose();
+		graphics.pose().translate(x + w, y - 6, 0);
+		graphics.pose().scale(alpha / 255F, 1F, 1);
+		graphics.renderFakeItem(bullet, 0, 0);
+		graphics.pose().popPose();
 	}
 
 	@OnlyIn(Dist.CLIENT)
 	private static void renderRemainingItems(GuiGraphics graphics, DeltaTracker deltatracker) {
-		if(remainingTime > 0 && !remainingDisplayStack.isEmpty()) {
-			int pos = maxRemainingTicks - remainingTime;
-			Minecraft mc = Minecraft.getInstance();
-			int remainingLeaveTicks = 20;
-			int x = graphics.guiWidth() / 2 + 10 + Math.max(0, pos - remainingLeaveTicks);
-			int y = graphics.guiHeight() / 2;
-
-			int start = maxRemainingTicks - remainingLeaveTicks;
-			float alpha = remainingTime + deltatracker.getGameTimeDeltaPartialTick(false) > start ? 1F : (remainingTime + deltatracker.getGameTimeDeltaPartialTick(false)) / start;
-
-			RenderSystem.setShaderColor(1F, 1F, 1F, alpha);
-			int xp = x + (int) (16F * (1F - alpha));
-			graphics.pose().pushPose();
-			graphics.pose().translate(xp, y, 0F);
-			graphics.pose().scale(alpha, 1F, 1F);
-			graphics.renderFakeItem(remainingDisplayStack, 0, 0);
-			graphics.pose().scale(1F / alpha, 1F, 1F);
-			graphics.pose().translate(-xp, -y, 0F);
-			RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
-
-			String text = remainingDisplayStack.getHoverName().plainCopy().withStyle(ChatFormatting.GREEN).getString();
-			if(remainingCount >= 0) {
-				int max = remainingDisplayStack.getMaxStackSize();
-				int stacks = remainingCount / max;
-				int rem = remainingCount % max;
-
-				if(stacks == 0) {
-					text = "" + remainingCount;
-				} else {
-					text = remainingCount + " (" + ChatFormatting.AQUA + stacks + ChatFormatting.RESET + "*"
-							+ ChatFormatting.GRAY + max + ChatFormatting.RESET + "+" + ChatFormatting.YELLOW + rem
-							+ ChatFormatting.RESET + ")";
-				}
-			} else if(remainingCount == -1) {
-				text = "∞";
-			}
-
-			int color = 0x00FFFFFF | (int) (alpha * 0xFF) << 24;
-			graphics.drawString(mc.font, text, x + 20, y + 6, color, true);
-
-			graphics.pose().popPose();
+		if(remainingTime <= 0 || remainingDisplayStack.isEmpty()) {
+			return;
 		}
+
+		int pos = maxRemainingTicks - remainingTime;
+		Minecraft mc = Minecraft.getInstance();
+		int remainingLeaveTicks = 20;
+		int x = graphics.guiWidth() / 2 + 10 + Math.max(0, pos - remainingLeaveTicks);
+		int y = graphics.guiHeight() / 2;
+
+		int start = maxRemainingTicks - remainingLeaveTicks;
+		float alpha = remainingTime + deltatracker.getGameTimeDeltaPartialTick(false) > start ? 1F : (remainingTime + deltatracker.getGameTimeDeltaPartialTick(false)) / start;
+
+		RenderSystem.setShaderColor(1F, 1F, 1F, alpha);
+		int xp = x + (int) (16F * (1F - alpha));
+		graphics.pose().pushPose();
+		graphics.pose().translate(xp, y, 0F);
+		graphics.pose().scale(alpha, 1F, 1F);
+		graphics.renderFakeItem(remainingDisplayStack, 0, 0);
+		graphics.pose().scale(1F / alpha, 1F, 1F);
+		graphics.pose().translate(-xp, -y, 0F);
+		RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
+
+		String text = remainingDisplayStack.getHoverName().plainCopy().withStyle(ChatFormatting.GREEN).getString();
+		if(remainingCount >= 0) {
+			int max = remainingDisplayStack.getMaxStackSize();
+			int stacks = remainingCount / max;
+			int rem = remainingCount % max;
+
+			if(stacks == 0) {
+				text = "" + remainingCount;
+			} else {
+				text = remainingCount + " (" + ChatFormatting.AQUA + stacks + ChatFormatting.RESET + "*"
+						+ ChatFormatting.GRAY + max + ChatFormatting.RESET + "+" + ChatFormatting.YELLOW + rem
+						+ ChatFormatting.RESET + ")";
+			}
+		} else if(remainingCount == -1) {
+			text = "∞";
+		}
+
+		int color = 0x00FFFFFF | (int) (alpha * 0xFF) << 24;
+
+		graphics.drawString(mc.font, text, x + 20, y + 6, color, true);
+		graphics.pose().popPose();
 	}
 
 	@OnlyIn(Dist.CLIENT)
 	private static void renderHUDItem(GuiGraphics graphics, DeltaTracker deltatracker) {
 		Minecraft mc = Minecraft.getInstance();
+		if(mc.player == null) {
+			return;
+		}
+
 		ItemStack stack = mc.player.getMainHandItem();
-		if(!stack.isEmpty() && stack.getItem() instanceof IHUDItem) {
-			((IHUDItem) stack.getItem()).drawHUD(graphics, deltatracker.getGameTimeDeltaPartialTick(false), graphics.guiWidth(), graphics.guiHeight(), stack);
+		if(!stack.isEmpty() && stack.getItem() instanceof IHUDItem hudItem) {
+			hudItem.drawHUD(graphics, deltatracker.getGameTimeDeltaPartialTick(false), graphics.guiWidth(), graphics.guiHeight(), stack);
 		}
 
 		stack = mc.player.getOffhandItem();
-		if(!stack.isEmpty() && stack.getItem() instanceof IHUDItem) {
-			((IHUDItem) stack.getItem()).drawHUD(graphics, deltatracker.getGameTimeDeltaPartialTick(false), graphics.guiWidth(), graphics.guiHeight(), stack);
+		if(!stack.isEmpty() && stack.getItem() instanceof IHUDItem hudItem) {
+			hudItem.drawHUD(graphics, deltatracker.getGameTimeDeltaPartialTick(false), graphics.guiWidth(), graphics.guiHeight(), stack);
 		}
 	}
 
@@ -356,7 +362,11 @@ public final class HUDHandler {
 		int count = 0;
 		for(int i = 0; i < player.getInventory().getContainerSize(); i++) {
 			ItemStack stack = player.getInventory().getItem(i);
-			if(!stack.isEmpty() && (pattern == null ? ItemStack.isSameItem(displayStack, stack) : pattern.matcher(stack.getDescriptionId()).find())) {
+			if(stack.isEmpty()) {
+				continue;
+			}
+
+			if(pattern == null ? ItemStack.isSameItem(displayStack, stack) : pattern.matcher(stack.getDescriptionId()).find()) {
 				count += stack.getCount();
 			}
 		}

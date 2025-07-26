@@ -1,3 +1,8 @@
+1.21-106
+* Updated to newer NeoForge versions
+* Fixed crash when launching server
+* Added flash ring
+* Misc cleanups & performance improvements
 1.21-103
 * Updated to 1.21! Massive shoutout to TheidenHD as without them this port
 would not have been possible.

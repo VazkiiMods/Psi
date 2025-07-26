@@ -1,6 +1,5 @@
 package vazkii.psi.common.item;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -26,7 +25,7 @@ import vazkii.psi.api.internal.TooltipHelper;
 import vazkii.psi.api.spell.ISpellAcceptor;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
-import vazkii.psi.client.gui.GuiFlashRing;
+import vazkii.psi.common.Psi;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.item.base.ModDataComponents;
 
@@ -42,6 +41,10 @@ public class ItemFlashRing extends Item {
 	public void verifyComponentsAfterLoad(ItemStack pStack) {
 		if(pStack.has(DataComponents.CUSTOM_DATA)) {
 			CustomData patch = pStack.get(DataComponents.CUSTOM_DATA);
+			if(patch == null) {
+				return;
+			}
+
 			CompoundTag compound = patch.copyTag();
 
 			if(compound.contains("spell")) {
@@ -79,13 +82,13 @@ public class ItemFlashRing extends Item {
 	}
 
 	@Override
-	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
+	public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, Player player, @NotNull InteractionHand usedHand) {
 		ItemStack held = player.getItemInHand(usedHand);
 		boolean isSneaking = player.isShiftKeyDown();
 
 		// Open GUI if sneaking
 		if(isSneaking && level.isClientSide) {
-			Minecraft.getInstance().setScreen(new GuiFlashRing(held));
+			Psi.proxy.openFlashRingGUI(held);
 
 			return new InteractionResultHolder<>(InteractionResult.SUCCESS, held);
 		}
@@ -115,7 +118,7 @@ public class ItemFlashRing extends Item {
 		}
 
 		@Override
-		public SpellAcceptor getCapability(ItemCapability<?, Void> capability, Void facing) {
+		public SpellAcceptor getCapability(@NotNull ItemCapability<?, Void> capability, Void facing) {
 			return capability == PsiAPI.SPELL_ACCEPTOR_CAPABILITY ? this : null;
 		}
 

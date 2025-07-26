@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -35,7 +35,6 @@ public class ClientTickHandler {
 
 	public ClientTickHandler() {}
 
-	@OnlyIn(Dist.CLIENT)
 	private static void calcDelta() {
 		float oldTotal = total;
 		total = (float) ticksInGame + partialTicks;
@@ -43,39 +42,36 @@ public class ClientTickHandler {
 	}
 
 	@SubscribeEvent
-	@OnlyIn(Dist.CLIENT)
 	public static void renderTick(RenderFrameEvent.Pre event) {
 		partialTicks = event.getPartialTick().getGameTimeDeltaPartialTick(false);
 
 	}
 
 	@SubscribeEvent
-	@OnlyIn(Dist.CLIENT)
 	public static void renderTick(RenderFrameEvent.Post event) {
 		calcDelta();
 	}
 
 	@SubscribeEvent
 	public static void clientTick(ClientTickEvent.Pre event) {
-
 		Minecraft mc = Minecraft.getInstance();
-
 		boolean pressed = mc.options.keyJump.consumeClick();
+
 		if(mc.player != null && pressed && (!lastJumpKeyState && !mc.player.onGround())) {
 			PsiArmorEvent.post(new PsiArmorEvent(mc.player, PsiArmorEvent.JUMP));
 			MessageRegister.sendToServer(new MessageTriggerJumpSpell());
 		}
+
 		lastJumpKeyState = pressed;
 	}
 
 	@SubscribeEvent
 	public static void clientTick(ClientTickEvent.Post event) {
-
 		Minecraft mc = Minecraft.getInstance();
 
 		HUDHandler.tick();
-
 		Screen gui = mc.screen;
+
 		if(gui == null && KeybindHandler.keybind.isDown()) {
 			KeybindHandler.keyDown();
 		}
@@ -84,6 +80,7 @@ public class ClientTickHandler {
 			++ticksInGame;
 			partialTicks = 0.0F;
 		}
+
 		calcDelta();
 	}
 

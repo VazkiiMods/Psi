@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -22,11 +22,9 @@ import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.common.extensions.IMenuTypeExtension;
 import net.neoforged.neoforge.registries.RegisterEvent;
 
-import vazkii.psi.client.gui.GuiCADAssembler;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.BlockCADAssembler;
 import vazkii.psi.common.block.BlockConjured;
@@ -116,10 +114,5 @@ public class ModBlocks {
 		});
 
 		evt.register(Registries.MENU, helper -> helper.register(BuiltInRegistries.BLOCK.getKey(cadAssembler), containerCADAssembler));
-	}
-
-	@SubscribeEvent
-	public static void register(RegisterMenuScreensEvent evt) {
-		evt.register(containerCADAssembler, GuiCADAssembler::new);
 	}
 }
