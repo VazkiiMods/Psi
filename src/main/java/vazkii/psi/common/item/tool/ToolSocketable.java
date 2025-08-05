@@ -56,7 +56,7 @@ public class ToolSocketable implements ICapabilityProvider<ItemCapability<?, Voi
 	@Override
 	public List<Integer> getRadialMenuSlots() {
 		List<Integer> list = new ArrayList<>();
-		for(int i = 0; i <= slots; i++) {
+		for(int i = 0; i < slots; i++) {
 			list.add(i);
 		}
 		return list;
