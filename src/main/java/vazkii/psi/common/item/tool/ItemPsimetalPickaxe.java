@@ -45,7 +45,7 @@ public class ItemPsimetalPickaxe extends PickaxeItem implements IPsimetalTool {
 
 	@SubscribeEvent
 	public static void adjustAttributes(ItemAttributeModifierEvent event) {
-		if(!IPsimetalTool.isEnabled(event.getItemStack())) {
+		if(event.getItemStack().getItem() instanceof ItemPsimetalPickaxe && !IPsimetalTool.isEnabled(event.getItemStack())) {
 			event.removeAllModifiersFor(Attributes.ATTACK_DAMAGE);
 		}
 	}

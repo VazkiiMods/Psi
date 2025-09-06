@@ -69,7 +69,7 @@ public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiE
 
 	@SubscribeEvent
 	public static void adjustAttributes(ItemAttributeModifierEvent event) {
-		if(!IPsimetalTool.isEnabled(event.getItemStack())) {
+		if(event.getItemStack().getItem() instanceof ItemPsimetalArmor && !IPsimetalTool.isEnabled(event.getItemStack())) {
 			event.removeAllModifiersFor(Attributes.ARMOR);
 			event.removeAllModifiersFor(Attributes.ARMOR_TOUGHNESS);
 		}
