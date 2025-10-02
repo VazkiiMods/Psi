@@ -56,7 +56,7 @@ public class ToolSocketable implements ICapabilityProvider<ItemCapability<?, Voi
 	@Override
 	public List<Integer> getRadialMenuSlots() {
 		List<Integer> list = new ArrayList<>();
-		for(int i = 0; i <= slots; i++) {
+		for(int i = 0; i < slots; i++) {
 			list.add(i);
 		}
 		return list;
@@ -64,12 +64,18 @@ public class ToolSocketable implements ICapabilityProvider<ItemCapability<?, Voi
 
 	@Override
 	public ItemStack getBulletInSocket(int slot) {
+		if(!isSocketSlotAvailable(slot)) {
+			return ItemStack.EMPTY;
+		}
+
 		return toolHandler.getStackInSlot(slot);
 	}
 
 	@Override
 	public void setBulletInSocket(int slot, ItemStack bullet) {
-		toolHandler.setStackInSlot(slot, bullet);
+		if(isSocketSlotAvailable(slot)) {
+			toolHandler.setStackInSlot(slot, bullet);
+		}
 	}
 
 	@Override
