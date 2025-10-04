@@ -48,7 +48,7 @@ public class ItemPsimetalSword extends SwordItem implements IPsimetalTool {
 
 	@SubscribeEvent
 	public static void adjustAttributes(ItemAttributeModifierEvent event) {
-		if(!IPsimetalTool.isEnabled(event.getItemStack())) {
+		if(event.getItemStack().getItem() instanceof ItemPsimetalSword && !IPsimetalTool.isEnabled(event.getItemStack())) {
 			event.removeAllModifiersFor(Attributes.ATTACK_DAMAGE);
 		}
 	}

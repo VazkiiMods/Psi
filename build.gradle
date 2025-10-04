@@ -4,8 +4,8 @@ plugins {
     id 'idea'
     id 'maven-publish'
     id 'pmd'
-    id 'com.diffplug.spotless' version '7.0.3'
-    id 'net.neoforged.moddev' version '2.0.91'
+    id 'com.diffplug.spotless' version '7.2.1'
+    id 'net.neoforged.moddev' version '2.0.107'
 }
 
 tasks.named('wrapper', Wrapper).configure {

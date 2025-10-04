@@ -50,10 +50,7 @@ public class TrickCraftingCategory implements IRecipeCategory<ITrickRecipe> {
 	private final IDrawable icon;
 	private final IDrawable programmerHover;
 
-	private final IGuiHelper helper;
-
 	public TrickCraftingCategory(IGuiHelper helper) {
-		this.helper = helper;
 		background = helper.createDrawable(Psi.location("textures/gui/jei/trick.png"), 0, 0, 96, 41);
 		icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ModItems.psidust));
 		programmerHover = helper.createDrawable(Psi.location("textures/gui/programmer.png"), 16, 184, 16, 16);
@@ -74,10 +71,14 @@ public class TrickCraftingCategory implements IRecipeCategory<ITrickRecipe> {
 		return Component.literal(I18n.get("jei." + LibMisc.MOD_ID + ".category.trick"));
 	}
 
-	@NotNull
 	@Override
-	public IDrawable getBackground() {
-		return background;
+	public int getWidth() {
+		return 96;
+	}
+
+	@Override
+	public int getHeight() {
+		return 41;
 	}
 
 	@NotNull
@@ -88,6 +89,8 @@ public class TrickCraftingCategory implements IRecipeCategory<ITrickRecipe> {
 
 	@Override
 	public void draw(ITrickRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
+		background.draw(guiGraphics);
+
 		if(recipe.getPiece() != null) {
 			IDrawable trickIcon = trickIcons.computeIfAbsent(recipe.getPiece().registryKey,
 					key -> new DrawablePiece(recipe.getPiece()));

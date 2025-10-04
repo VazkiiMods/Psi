@@ -45,7 +45,7 @@ public class ItemPsimetalShovel extends ShovelItem implements IPsimetalTool {
 
 	@SubscribeEvent
 	public static void adjustAttributes(ItemAttributeModifierEvent event) {
-		if(!IPsimetalTool.isEnabled(event.getItemStack())) {
+		if(event.getItemStack().getItem() instanceof ItemPsimetalShovel && !IPsimetalTool.isEnabled(event.getItemStack())) {
 			event.removeAllModifiersFor(Attributes.ATTACK_DAMAGE);
 		}
 	}
