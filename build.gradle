@@ -184,16 +184,6 @@ artifacts {
     archives sourcesJar
 }
 
-
-task sourcesJar(type: Jar) {
-    archiveClassifier = "sources"
-    from sourceSets.main.allJava
-}
-
-artifacts {
-    archives sourcesJar
-}
-
 publish.dependsOn(project.tasks.getByName("assemble"))
 publish.mustRunAfter(project.tasks.getByName("build"))
 
