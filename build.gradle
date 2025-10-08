@@ -173,3 +173,67 @@ idea {
         downloadJavadoc = true
     }
 }
+
+task sourcesJar(type: Jar) {
+    classifier "sources"
+    from sourceSets.main.allJava
+}
+
+task deobfJar(type: Jar) {
+    classifier "deobf"
+    from sourceSets.main.output
+}
+
+artifacts {
+    archives sourcesJar
+    archives deobfJar
+}
+
+publish.dependsOn(project.tasks.getByName("assemble"))
+publish.mustRunAfter(project.tasks.getByName("build"))
+
+publishing {
+
+    publications {
+
+        mavenJava(MavenPublication) {
+
+            groupId project.group
+            artifactId project.archivesBaseName
+            version project.version
+            from components.java
+
+            // Allows the maven pom file to be modified.
+            pom.withXml {
+
+                // Go through all the dependencies.
+                asNode().dependencies.dependency.each { dep ->
+
+                    println 'Surpressing artifact ' + dep.artifactId.last().value().last() + ' from maven dependencies.'
+                    assert dep.parent().remove(dep)
+                }
+            }
+
+            artifact sourcesJar {
+                classifier 'sources'
+            }
+
+            jar.component(it)
+        }
+    }
+
+    repositories {
+        maven {
+            url "file://" + System.getenv("local_maven")
+        }
+
+    }
+}
+
+// Disables Gradle's custom module metadata from being published to maven. The
+// metadata includes mapped dependencies which are not reasonably consumable by
+// other mod developers.
+tasks.withType(GenerateModuleMetadata) {
+
+    enabled = false
+}
