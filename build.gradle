@@ -174,19 +174,24 @@ idea {
     }
 }
 
-task sourcesJar(type: Jar) {
-    classifier "sources"
-    from sourceSets.main.allJava
-}
 
-task deobfJar(type: Jar) {
-    classifier "deobf"
-    from sourceSets.main.output
+task sourcesJar(type: Jar) {
+    archiveClassifier = "sources"
+    from sourceSets.main.allJava
 }
 
 artifacts {
     archives sourcesJar
-    archives deobfJar
+}
+
+
+task sourcesJar(type: Jar) {
+    archiveClassifier = "sources"
+    from sourceSets.main.allJava
+}
+
+artifacts {
+    archives sourcesJar
 }
 
 publish.dependsOn(project.tasks.getByName("assemble"))
@@ -215,10 +220,8 @@ publishing {
             }
 
             artifact sourcesJar {
-                classifier 'sources'
+                archiveClassifier = 'sources'
             }
-
-            jar.component(it)
         }
     }
 
