@@ -14,7 +14,7 @@ def main():
     print("MC Version:", mc_version)
     print("Version:", version)
 
-    changelog = ""
+    changelog = '-m "\n"'
     with open("./web/changelog.txt", "r") as f:
         content = f.read()
         content = content.replace('"', "'")
@@ -25,7 +25,7 @@ def main():
             changelog = changelog + '-m "' + line + '\n" '
 
     tag_success = os.system(
-        "git tag -a release-{}-{} -m {}".format(
+        "git tag -a release-{}-{} {}".format(
             mc_version, version, changelog
         )
     )
