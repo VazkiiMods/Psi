@@ -331,6 +331,10 @@ public final class ModSpellPieces {
 			SPELL_PIECES.register(LibPieceNames.OPERATOR_FLOOR, () -> PieceOperatorFloor.class);
 	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceOperatorRound>> OPERATOR_ROUND =
 			SPELL_PIECES.register(LibPieceNames.OPERATOR_ROUND, () -> PieceOperatorRound.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceOperatorMax>> OPERATOR_MAX =
+			SPELL_PIECES.register(LibPieceNames.OPERATOR_MAX, () -> PieceOperatorMax.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceOperatorMin>> OPERATOR_MIN =
+			SPELL_PIECES.register(LibPieceNames.OPERATOR_MIN, () -> PieceOperatorMin.class);
 	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceConstantE>> CONSTANT_E =
 			SPELL_PIECES.register(LibPieceNames.CONSTANT_E, () -> PieceConstantE.class);
 
@@ -345,6 +349,8 @@ public final class ModSpellPieces {
 							PieceOperatorCeiling.class,
 							PieceOperatorFloor.class,
 							PieceOperatorRound.class,
+							PieceOperatorMax.class,
+							PieceOperatorMin.class,
 							PieceConstantE.class
 					));
 

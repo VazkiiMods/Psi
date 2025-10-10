@@ -23,12 +23,14 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.RelativeMovement;
+import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.dimension.DimensionType;
@@ -42,6 +44,7 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEvent.LivingJumpEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
 
@@ -158,6 +161,29 @@ public class PlayerDataHandler {
 					PsiArmorEvent.post(new PsiArmorEvent(player, PsiArmorEvent.ON_FIRE));
 				}
 			}
+		}
+
+		@SubscribeEvent
+		public static void onPlayerInteractArmorStand(PlayerInteractEvent.EntityInteractSpecific event) {
+			Player player = event.getEntity();
+
+			if(!player.isSecondaryUseActive()) {
+				return;
+			}
+
+			if(!(event.getTarget() instanceof ArmorStand)) {
+				return;
+			}
+
+			ItemStack itemStackIn = player.getItemInHand(event.getHand());
+			ItemStack playerCad = PsiAPI.getPlayerCAD(player);
+
+			if(playerCad != itemStackIn) {
+				return;
+			}
+
+			event.setCanceled(true);
+			event.setCancellationResult(InteractionResult.PASS);
 		}
 
 		@SubscribeEvent

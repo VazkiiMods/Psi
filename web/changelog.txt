@@ -2,6 +2,7 @@
 * [API] Completely redone how spell pieces are registered. This will break ALL the addons.
 * Fixed Entity Axial Look not existing.
 * Fixed scavenge recipe not working.
+* Fixed not being able to cast while looking at an armor stand.
 * Improved the measures to not get kicked for flying when a player is sent upwards.
 * Fixed ebony and ivory not being craftable
 * Fixed all blocks being unbreakable and not dropping anything.

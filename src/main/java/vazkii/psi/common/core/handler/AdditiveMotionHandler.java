@@ -49,9 +49,9 @@ public class AdditiveMotionHandler {
 						//We want a player's motion to be handled client-side to ensure movement consistency
 						//Otherwise it feels jerky.
 						if(entity instanceof ServerPlayer) {
-							((ServerPlayer) entity).connection.aboveGroundTickCount += - 2 * getMaximumFlyingTicks(entity);
+							((ServerPlayer) entity).connection.aboveGroundTickCount += -2 * getMaximumFlyingTicks(entity);
 							MessageRegister.sendToPlayer((ServerPlayer) entity, motion);
-							((ServerPlayer) entity).connection.aboveGroundTickCount += - 2 * getMaximumFlyingTicks(entity);
+							((ServerPlayer) entity).connection.aboveGroundTickCount += -2 * getMaximumFlyingTicks(entity);
 						} else {
 							entity.push(vec.x, vec.y, vec.z);
 						}
@@ -68,13 +68,13 @@ public class AdditiveMotionHandler {
 	}
 
 	/**
-	 * [VanillaCopy] of {@linkplain  net.minecraft.server.network.ServerGamePacketListenerImpl#getMaximumFlyingTicks}
+	 * [VanillaCopy] of {@linkplain net.minecraft.server.network.ServerGamePacketListenerImpl#getMaximumFlyingTicks}
 	 * but without the extra processing and endpoint bumping
 	 */
 
 	private static int getMaximumFlyingTicks(Entity entity) {
 		double d0 = entity.getGravity();
-		if (d0 < 1.0E-5F) {
+		if(d0 < 1.0E-5F) {
 			return Integer.MAX_VALUE;
 		} else {
 			double d1 = 0.08 / d0;

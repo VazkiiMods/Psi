@@ -189,6 +189,10 @@ public final class SpellPieceMaterial {
 			SPELL_PIECE_MATERIAL.register(LibPieceNames.OPERATOR_FLOOR, () -> new Material(InventoryMenu.BLOCK_ATLAS, ResourceLocation.fromNamespaceAndPath(PsiAPI.MOD_ID, "spell/" + LibPieceNames.OPERATOR_FLOOR)));
 	public static final DeferredHolder<Material, Material> OPERATOR_ROUND =
 			SPELL_PIECE_MATERIAL.register(LibPieceNames.OPERATOR_ROUND, () -> new Material(InventoryMenu.BLOCK_ATLAS, ResourceLocation.fromNamespaceAndPath(PsiAPI.MOD_ID, "spell/" + LibPieceNames.OPERATOR_ROUND)));
+	public static final DeferredHolder<Material, Material> OPERATOR_MAX =
+			SPELL_PIECE_MATERIAL.register(LibPieceNames.OPERATOR_MAX, () -> new Material(InventoryMenu.BLOCK_ATLAS, ResourceLocation.fromNamespaceAndPath(PsiAPI.MOD_ID, "spell/" + LibPieceNames.OPERATOR_MAX)));
+	public static final DeferredHolder<Material, Material> OPERATOR_MIN =
+			SPELL_PIECE_MATERIAL.register(LibPieceNames.OPERATOR_MIN, () -> new Material(InventoryMenu.BLOCK_ATLAS, ResourceLocation.fromNamespaceAndPath(PsiAPI.MOD_ID, "spell/" + LibPieceNames.OPERATOR_MIN)));
 	public static final DeferredHolder<Material, Material> CONSTANT_E =
 			SPELL_PIECE_MATERIAL.register(LibPieceNames.CONSTANT_E, () -> new Material(InventoryMenu.BLOCK_ATLAS, ResourceLocation.fromNamespaceAndPath(PsiAPI.MOD_ID, "spell/" + LibPieceNames.CONSTANT_E)));
 

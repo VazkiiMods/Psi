@@ -236,6 +236,11 @@ public class GuiProgrammer extends Screen {
 									int[] versionEntry = Arrays.stream(modVersion.replaceFirst("^\\D+", "").split("\\D+")).mapToInt(Integer::parseInt).toArray();
 									int[] currentVersion = Arrays.stream(ModList.get().getModContainerById("psi").get().getModInfo().getVersion().toString().replaceFirst("^\\D+", "").split("\\D+")).mapToInt(Integer::parseInt).toArray();
 									for(int i = 0; i < versionEntry.length; i++) {
+										if(versionEntry.length != currentVersion.length) {
+											// Newer versions have four digits.
+											break;
+										}
+
 										if(i + 1 > currentVersion.length) {
 											sendMessage = true;
 											break;
