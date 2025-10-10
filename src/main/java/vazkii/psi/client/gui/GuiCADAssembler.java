@@ -52,7 +52,7 @@ public class GuiCADAssembler extends AbstractContainerScreen<ContainerCADAssembl
 	protected void renderLabels(GuiGraphics graphics, int mouseX, int mouseY) {
 		int color = 4210752;
 
-		String name = new ItemStack(ModBlocks.cadAssembler).getHoverName().getString();
+		String name = new ItemStack(ModBlocks.cadAssembler.get()).getHoverName().getString();
 		graphics.drawString(this.font, name, imageWidth / 2 - font.width(name) / 2, 10, color, false);
 
 		ItemStack cad = assembler.getCachedCAD(player);

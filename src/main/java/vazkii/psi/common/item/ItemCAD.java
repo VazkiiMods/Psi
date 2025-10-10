@@ -310,13 +310,13 @@ public class ItemCAD extends Item implements ICAD {
 	}
 
 	public static ItemStack makeCADWithAssembly(ItemStack assembly, List<ItemStack> components) {
-		ItemStack cad = assembly.getItem() instanceof ICADAssembly ? ((ICADAssembly) assembly.getItem()).createCADStack(assembly, components) : new ItemStack(ModItems.cad);
+		ItemStack cad = assembly.getItem() instanceof ICADAssembly ? ((ICADAssembly) assembly.getItem()).createCADStack(assembly, components) : new ItemStack(ModItems.cad.get());
 
 		return makeCAD(cad, components);
 	}
 
 	public static ItemStack makeCAD(List<ItemStack> components) {
-		return makeCAD(new ItemStack(ModItems.cad), components);
+		return makeCAD(new ItemStack(ModItems.cad.get()), components);
 	}
 
 	public static ItemStack makeCAD(ItemStack base, List<ItemStack> components) {
@@ -331,43 +331,43 @@ public class ItemCAD extends Item implements ICAD {
 		List<ItemStack> subItems = new ArrayList<>();
 
 		// Basic Iron CAD
-		subItems.add(makeCAD(new ItemStack(ModItems.cadAssemblyIron)));
+		subItems.add(makeCAD(new ItemStack(ModItems.cadAssemblyIron.get())));
 
 		// Iron CAD
-		subItems.add(makeCAD(new ItemStack(ModItems.cadAssemblyIron),
-				new ItemStack(ModItems.cadCoreBasic),
-				new ItemStack(ModItems.cadSocketBasic),
-				new ItemStack(ModItems.cadBatteryBasic)));
+		subItems.add(makeCAD(new ItemStack(ModItems.cadAssemblyIron.get()),
+				new ItemStack(ModItems.cadCoreBasic.get()),
+				new ItemStack(ModItems.cadSocketBasic.get()),
+				new ItemStack(ModItems.cadBatteryBasic.get())));
 
 		// Gold CAD
-		subItems.add(makeCAD(new ItemStack(ModItems.cadAssemblyGold),
-				new ItemStack(ModItems.cadCoreBasic),
-				new ItemStack(ModItems.cadSocketBasic),
-				new ItemStack(ModItems.cadBatteryBasic)));
+		subItems.add(makeCAD(new ItemStack(ModItems.cadAssemblyGold.get()),
+				new ItemStack(ModItems.cadCoreBasic.get()),
+				new ItemStack(ModItems.cadSocketBasic.get()),
+				new ItemStack(ModItems.cadBatteryBasic.get())));
 
 		// Psimetal CAD
-		subItems.add(makeCAD(new ItemStack(ModItems.cadAssemblyPsimetal),
-				new ItemStack(ModItems.cadCoreOverclocked),
-				new ItemStack(ModItems.cadSocketSignaling),
-				new ItemStack(ModItems.cadBatteryExtended)));
+		subItems.add(makeCAD(new ItemStack(ModItems.cadAssemblyPsimetal.get()),
+				new ItemStack(ModItems.cadCoreOverclocked.get()),
+				new ItemStack(ModItems.cadSocketSignaling.get()),
+				new ItemStack(ModItems.cadBatteryExtended.get())));
 
 		// Ebony Psimetal CAD
-		subItems.add(makeCAD(new ItemStack(ModItems.cadAssemblyEbony),
-				new ItemStack(ModItems.cadCoreHyperClocked),
-				new ItemStack(ModItems.cadSocketTransmissive),
-				new ItemStack(ModItems.cadBatteryUltradense)));
+		subItems.add(makeCAD(new ItemStack(ModItems.cadAssemblyEbony.get()),
+				new ItemStack(ModItems.cadCoreHyperClocked.get()),
+				new ItemStack(ModItems.cadSocketTransmissive.get()),
+				new ItemStack(ModItems.cadBatteryUltradense.get())));
 
 		// Ivory Psimetal CAD
-		subItems.add(makeCAD(new ItemStack(ModItems.cadAssemblyIvory),
-				new ItemStack(ModItems.cadCoreHyperClocked),
-				new ItemStack(ModItems.cadSocketTransmissive),
-				new ItemStack(ModItems.cadBatteryUltradense)));
+		subItems.add(makeCAD(new ItemStack(ModItems.cadAssemblyIvory.get()),
+				new ItemStack(ModItems.cadCoreHyperClocked.get()),
+				new ItemStack(ModItems.cadSocketTransmissive.get()),
+				new ItemStack(ModItems.cadBatteryUltradense.get())));
 
 		// Creative CAD
-		subItems.add(makeCAD(new ItemStack(ModItems.cadAssemblyCreative),
-				new ItemStack(ModItems.cadCoreHyperClocked),
-				new ItemStack(ModItems.cadSocketTransmissive),
-				new ItemStack(ModItems.cadBatteryUltradense)));
+		subItems.add(makeCAD(new ItemStack(ModItems.cadAssemblyCreative.get()),
+				new ItemStack(ModItems.cadCoreHyperClocked.get()),
+				new ItemStack(ModItems.cadSocketTransmissive.get()),
+				new ItemStack(ModItems.cadBatteryUltradense.get())));
 
 		return subItems;
 	}
@@ -397,7 +397,7 @@ public class ItemCAD extends Item implements ICAD {
 		Player playerIn = ctx.getPlayer();
 		ItemStack stack = playerIn.getItemInHand(hand);
 		Block block = worldIn.getBlockState(pos).getBlock();
-		return block == ModBlocks.programmer ? ((BlockProgrammer) block).setSpell(worldIn, pos, playerIn, stack) : InteractionResult.PASS;
+		return block == ModBlocks.programmer.get() ? ((BlockProgrammer) block).setSpell(worldIn, pos, playerIn, stack) : InteractionResult.PASS;
 	}
 
 	@NotNull

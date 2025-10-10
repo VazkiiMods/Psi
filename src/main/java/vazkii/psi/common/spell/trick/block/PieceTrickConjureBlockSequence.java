@@ -78,7 +78,7 @@ public class PieceTrickConjureBlockSequence extends PieceTrick {
 				continue;
 			}
 
-			PieceTrickConjureBlock.conjure(context, timeVal, blockPos, world, messWithState(ModBlocks.conjured.defaultBlockState()));
+			PieceTrickConjureBlock.conjure(context, timeVal, blockPos, world, messWithState(ModBlocks.conjured.get().defaultBlockState()));
 		}
 
 		return null;

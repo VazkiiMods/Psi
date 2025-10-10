@@ -18,6 +18,7 @@ import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
@@ -748,10 +749,20 @@ public class PlayerDataHandler {
 
 		@Override
 		public void markPieceExecuted(SpellPiece piece) {
+			if(playerWR.get() == null) {
+				return;
+			}
+
 			PieceExecutedEvent event = new PieceExecutedEvent(piece, playerWR.get());
 			NeoForge.EVENT_BUS.post(event);
-			ResourceLocation advancement = PsiAPI.getGroupForPiece(piece.getClass());
-			if(advancement != null && PsiAPI.getMainPieceForGroup(advancement) == piece.getClass() && !hasAdvancement(advancement)) {
+			Optional<Map.Entry<ResourceKey<Collection<Class<? extends SpellPiece>>>, Collection<Class<? extends SpellPiece>>>> advancementEntry = PsiAPI.ADVANCEMENT_GROUP_REGISTRY.entrySet().stream().filter((entry) -> entry.getValue().contains(piece.getClass())).findFirst();
+			if(!advancementEntry.isPresent()) {
+				return;
+			}
+
+			ResourceLocation advancement = advancementEntry.get().getKey().location();
+			Object advancementMainPieceClass = advancementEntry.get().getValue().toArray()[0];
+			if(advancementMainPieceClass == piece.getClass() && !hasAdvancement(advancement)) {
 				NeoForge.EVENT_BUS.post(new PieceGroupAdvancementComplete(piece, playerWR.get(), advancement));
 			}
 		}

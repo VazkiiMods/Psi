@@ -32,7 +32,7 @@ public class DriveDuplicateExtension implements ICraftingCategoryExtension<Drive
 
 	@Override
 	public void setRecipe(RecipeHolder<DriveDuplicateRecipe> recipeHolder, IRecipeLayoutBuilder builder, ICraftingGridHelper helper, IFocusGroup focuses) {
-		ItemStack drive = new ItemStack(ModItems.spellDrive);
+		ItemStack drive = new ItemStack(ModItems.spellDrive.get());
 
 		focuses.getFocuses(VanillaTypes.ITEM_STACK)
 				.filter(focus -> focus.getTypedValue().getIngredient().getItem() instanceof ItemSpellDrive)
@@ -41,7 +41,7 @@ public class DriveDuplicateExtension implements ICraftingCategoryExtension<Drive
 				.flatMap(stack -> Optional.ofNullable(ItemSpellDrive.getSpell(stack)))
 				.ifPresent(spell -> ItemSpellDrive.setSpell(drive, spell));
 
-		helper.createAndSetInputs(builder, ImmutableList.of(ImmutableList.of(drive), ImmutableList.of(new ItemStack(ModItems.spellDrive))), 0, 0);
+		helper.createAndSetInputs(builder, ImmutableList.of(ImmutableList.of(drive), ImmutableList.of(new ItemStack(ModItems.spellDrive.get()))), 0, 0);
 		helper.createAndSetOutputs(builder, ImmutableList.of(drive));
 	}
 

@@ -52,7 +52,7 @@ public class TrickCraftingCategory implements IRecipeCategory<ITrickRecipe> {
 
 	public TrickCraftingCategory(IGuiHelper helper) {
 		background = helper.createDrawable(Psi.location("textures/gui/jei/trick.png"), 0, 0, 96, 41);
-		icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ModItems.psidust));
+		icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ModItems.psidust.get()));
 		programmerHover = helper.createDrawable(Psi.location("textures/gui/programmer.png"), 16, 184, 16, 16);
 	}
 

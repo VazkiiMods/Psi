@@ -17,6 +17,7 @@ import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.common.NeoForge;
 
@@ -131,14 +132,17 @@ public class PiecePanelWidget extends AbstractWidget implements GuiEventListener
 
 	public void populatePanelButtons() {
 		PlayerDataHandler.PlayerData playerData = PlayerDataHandler.get(parent.getMinecraft().player);
-		ProgrammerPopulateEvent event = new ProgrammerPopulateEvent(parent.getMinecraft().player, PsiAPI.getSpellPieceRegistry());
+		ProgrammerPopulateEvent event = new ProgrammerPopulateEvent(parent.getMinecraft().player, PsiAPI.SPELL_PIECE_REGISTRY);
 		List<SpellPiece> shownPieces = new ArrayList<>();
 		NeoForge.EVENT_BUS.post(event);
 		for(ResourceLocation key : event.getSpellPieceRegistry().keySet()) {
 			Class<? extends SpellPiece> clazz = event.getSpellPieceRegistry().get(key);
-			ResourceLocation group = PsiAPI.getGroupForPiece(clazz);
+			Optional<Map.Entry<ResourceKey<Collection<Class<? extends SpellPiece>>>, Collection<Class<? extends SpellPiece>>>> advancementEntry = PsiAPI.ADVANCEMENT_GROUP_REGISTRY.entrySet().stream().filter((entry) -> entry.getValue().contains(clazz)).findFirst();
+			if(!advancementEntry.isPresent()) {
+				continue;
+			}
 
-			if(!parent.getMinecraft().player.isCreative() && (group == null || !playerData.isPieceGroupUnlocked(group, key))) {
+			if(!parent.getMinecraft().player.isCreative() && !playerData.isPieceGroupUnlocked(advancementEntry.get().getKey().location(), key)) {
 				continue;
 			}
 
@@ -354,7 +358,7 @@ public class PiecePanelWidget extends AbstractWidget implements GuiEventListener
 					continue;
 				}
 
-				ResourceLocation mod = PsiAPI.getSpellPieceKey(p.getClass());
+				ResourceLocation mod = PsiAPI.SPELL_PIECE_REGISTRY.getKey(p.getClass());
 				if(mod != null) {
 					int modRank = rankTextToken(mod.getNamespace(), clippedToken);
 					if(modRank <= 0) {
@@ -454,10 +458,10 @@ public class PiecePanelWidget extends AbstractWidget implements GuiEventListener
 		searchField.setValue("");
 		searchField.setVisible(true);
 		searchField.active = true;
+		updatePanelButtons();
 		searchField.setEditable(true);
 		searchField.setFocused(true);
 		parent.setFocused(searchField);
-		updatePanelButtons();
 	}
 
 	@Override

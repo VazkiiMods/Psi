@@ -22,6 +22,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.Renderable;
+import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.GameRenderer;
@@ -36,6 +37,7 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.nbt.TagParser;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.TooltipFlag;
 import net.neoforged.api.distmarker.Dist;
@@ -225,7 +227,7 @@ public class GuiProgrammer extends Screen {
 							ListTag mods = (ListTag) cmp.get(Spell.TAG_MODS_REQUIRED);
 							for(Tag mod : mods) {
 								String modName = ((CompoundTag) mod).getString(Spell.TAG_MOD_NAME);
-								if(!PsiAPI.getSpellPieceRegistry().keySet().stream().map(ResourceLocation::getNamespace).collect(Collectors.toSet()).contains(modName)) {
+								if(!PsiAPI.SPELL_PIECE_REGISTRY.keySet().stream().map(ResourceLocation::getNamespace).collect(Collectors.toSet()).contains(modName)) {
 									player.sendSystemMessage(Component.translatable("psimisc.modnotfound", modName).setStyle(Style.EMPTY.withColor(ChatFormatting.RED)));
 								}
 								if(modName.equals("psi")) {
@@ -262,8 +264,12 @@ public class GuiProgrammer extends Screen {
 							for(int j = 0; j < SpellGrid.GRID_SIZE; j++) {
 								SpellPiece piece = spell.grid.gridData[i][j];
 								if(piece != null) {
-									ResourceLocation group = PsiAPI.getGroupForPiece(piece.getClass());
-									if(!player.isCreative() && (group == null || !data.isPieceGroupUnlocked(group, piece.registryKey))) {
+									Optional<Map.Entry<ResourceKey<Collection<Class<? extends SpellPiece>>>, Collection<Class<? extends SpellPiece>>>> advancementEntry = PsiAPI.ADVANCEMENT_GROUP_REGISTRY.entrySet().stream().filter((entry) -> entry.getValue().contains(piece.getClass())).findFirst();
+									if(!advancementEntry.isPresent()) {
+										continue;
+									}
+
+									if(!player.isCreative() && !data.isPieceGroupUnlocked(advancementEntry.get().getKey().location(), piece.registryKey)) {
 										player.sendSystemMessage(Component.translatable("psimisc.missing_pieces").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)));
 										return;
 									}
@@ -893,7 +899,18 @@ public class GuiProgrammer extends Screen {
 				onSelectedChanged();
 			}
 		}
-		return super.mouseClicked(mouseX, mouseY, mouseButton);
+
+		for(GuiEventListener guieventlistener : this.children()) {
+			if(guieventlistener.mouseClicked(mouseX, mouseY, mouseButton)) {
+				if(mouseButton == 0) {
+					this.setDragging(true);
+				}
+
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	public boolean isSpectator() {

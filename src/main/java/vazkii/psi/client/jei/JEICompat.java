@@ -85,7 +85,7 @@ public class JEICompat implements IModPlugin {
 
 	@Override
 	public void registerItemSubtypes(ISubtypeRegistration registration) {
-		registration.registerSubtypeInterpreter(ModItems.cad, Cad.INSTANCE);
+		registration.registerSubtypeInterpreter(ModItems.cad.get(), Cad.INSTANCE);
 	}
 
 	private static class Cad implements ISubtypeInterpreter<ItemStack> {

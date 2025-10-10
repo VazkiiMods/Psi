@@ -12,6 +12,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
+import net.neoforged.neoforge.data.loading.DatagenModLoader;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -78,7 +79,7 @@ public class AssemblyScavengeRecipe extends CustomRecipe {
 
 	@Override
 	public @NotNull RecipeType<?> getType() {
-		return ModCraftingRecipes.SCAVENGE_TYPE.get();
+		return !DatagenModLoader.isRunningDataGen() ? RecipeType.CRAFTING : ModCraftingRecipes.SCAVENGE_TYPE.get();
 	}
 
 	@NotNull

@@ -81,7 +81,7 @@ public class TrickRecipe implements ITrickRecipe {
 
 	@Override
 	public ItemStack getToastSymbol() {
-		return new ItemStack(ModItems.cad);
+		return new ItemStack(ModItems.cad.get());
 	}
 
 	@Override

@@ -9,6 +9,7 @@
 package vazkii.psi.common.spell.trick;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 
@@ -17,7 +18,6 @@ import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.param.ParamVector;
 import vazkii.psi.api.spell.piece.PieceTrick;
-import vazkii.psi.common.Psi;
 
 public class PieceTrickPlaySound extends PieceTrick {
 
@@ -60,10 +60,10 @@ public class PieceTrickPlaySound extends PieceTrick {
 		double volVal = this.getParamValueOrDefault(context, volume, 1).doubleValue();
 		double pitchVal = this.getParamValueOrDefault(context, pitch, 0).doubleValue();
 
-		int instrumentId = Mth.clamp((int) instrumentVal, 0, Psi.noteblockSoundEvents.size() - 1);
+		int instrumentId = Mth.clamp((int) instrumentVal, 0, BuiltInRegistries.INSTRUMENT.size() - 1);
 
 		float f = (float) Math.pow(2, (pitchVal - 12) / 12.0);
-		context.focalPoint.level().playSound(null, pos, Psi.noteblockSoundEvents.get(instrumentId), SoundSource.RECORDS, (float) volVal, f);
+		context.focalPoint.level().playSound(null, pos, BuiltInRegistries.INSTRUMENT.stream().toList().get(instrumentId).soundEvent().value(), SoundSource.RECORDS, (float) volVal, f);
 		return null;
 	}
 }

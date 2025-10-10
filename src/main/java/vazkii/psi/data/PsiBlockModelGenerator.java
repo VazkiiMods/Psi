@@ -27,18 +27,18 @@ public class PsiBlockModelGenerator extends BlockStateProvider {
 
 	@Override
 	protected void registerStatesAndModels() {
-		simpleBlock(ModBlocks.psidustBlock, models().cubeAll(BuiltInRegistries.BLOCK.getKey(ModBlocks.psidustBlock).getPath(), location("block/psidust_block")));
-		simpleBlock(ModBlocks.psimetalBlock, models().cubeAll(BuiltInRegistries.BLOCK.getKey(ModBlocks.psimetalBlock).getPath(), location("block/psimetal_block")));
-		simpleBlock(ModBlocks.psigemBlock, models().cubeAll(BuiltInRegistries.BLOCK.getKey(ModBlocks.psigemBlock).getPath(), location("block/psigem_block")));
-		simpleBlock(ModBlocks.psimetalPlateBlack, models().cubeAll(BuiltInRegistries.BLOCK.getKey(ModBlocks.psimetalPlateBlack).getPath(), location("block/psimetal_plate_black")));
-		simpleBlock(ModBlocks.psimetalPlateWhite, models().cubeAll(BuiltInRegistries.BLOCK.getKey(ModBlocks.psimetalPlateWhite).getPath(), location("block/psimetal_plate_white")));
-		simpleBlock(ModBlocks.psimetalPlateBlackLight, models().cubeBottomTop(BuiltInRegistries.BLOCK.getKey(ModBlocks.psimetalPlateBlackLight).getPath(),
+		simpleBlock(ModBlocks.psidustBlock.get(), models().cubeAll(BuiltInRegistries.BLOCK.getKey(ModBlocks.psidustBlock.get()).getPath(), location("block/psidust_block")));
+		simpleBlock(ModBlocks.psimetalBlock.get(), models().cubeAll(BuiltInRegistries.BLOCK.getKey(ModBlocks.psimetalBlock.get()).getPath(), location("block/psimetal_block")));
+		simpleBlock(ModBlocks.psigemBlock.get(), models().cubeAll(BuiltInRegistries.BLOCK.getKey(ModBlocks.psigemBlock.get()).getPath(), location("block/psigem_block")));
+		simpleBlock(ModBlocks.psimetalPlateBlack.get(), models().cubeAll(BuiltInRegistries.BLOCK.getKey(ModBlocks.psimetalPlateBlack.get()).getPath(), location("block/psimetal_plate_black")));
+		simpleBlock(ModBlocks.psimetalPlateWhite.get(), models().cubeAll(BuiltInRegistries.BLOCK.getKey(ModBlocks.psimetalPlateWhite.get()).getPath(), location("block/psimetal_plate_white")));
+		simpleBlock(ModBlocks.psimetalPlateBlackLight.get(), models().cubeBottomTop(BuiltInRegistries.BLOCK.getKey(ModBlocks.psimetalPlateBlackLight.get()).getPath(),
 				location("block/psimetal_plate_black_light"), location("block/psimetal_plate_black"), location("block/psimetal_plate_black")));
-		simpleBlock(ModBlocks.psimetalPlateWhiteLight, models().cubeBottomTop(BuiltInRegistries.BLOCK.getKey(ModBlocks.psimetalPlateWhiteLight).getPath(),
+		simpleBlock(ModBlocks.psimetalPlateWhiteLight.get(), models().cubeBottomTop(BuiltInRegistries.BLOCK.getKey(ModBlocks.psimetalPlateWhiteLight.get()).getPath(),
 				location("block/psimetal_plate_white_light"), location("block/psimetal_plate_white"), location("block/psimetal_plate_white")));
-		simpleBlock(ModBlocks.psimetalEbony, models().cubeAll(BuiltInRegistries.BLOCK.getKey(ModBlocks.psimetalEbony).getPath(), location("block/ebony_psimetal_block")));
-		simpleBlock(ModBlocks.psimetalIvory, models().cubeAll(BuiltInRegistries.BLOCK.getKey(ModBlocks.psimetalIvory).getPath(), location("block/ivory_psimetal_block")));
-		simpleBlock(ModBlocks.conjured, models().withExistingParent(BuiltInRegistries.BLOCK.getKey(ModBlocks.conjured).getPath(), "block/block").texture("particle", location("block/empty")));
+		simpleBlock(ModBlocks.psimetalEbony.get(), models().cubeAll(BuiltInRegistries.BLOCK.getKey(ModBlocks.psimetalEbony.get()).getPath(), location("block/ebony_psimetal_block")));
+		simpleBlock(ModBlocks.psimetalIvory.get(), models().cubeAll(BuiltInRegistries.BLOCK.getKey(ModBlocks.psimetalIvory.get()).getPath(), location("block/ivory_psimetal_block")));
+		simpleBlock(ModBlocks.conjured.get(), models().withExistingParent(BuiltInRegistries.BLOCK.getKey(ModBlocks.conjured.get()).getPath(), "block/block").texture("particle", location("block/empty")));
 	}
 
 	@NotNull

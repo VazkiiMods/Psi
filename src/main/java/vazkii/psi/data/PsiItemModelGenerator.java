@@ -33,16 +33,16 @@ public class PsiItemModelGenerator extends ItemModelProvider {
 
 	@Override
 	protected void registerModels() {
-		pointToBlock(ModBlocks.psidustBlock.asItem());
-		pointToBlock(ModBlocks.psimetalBlock.asItem());
-		pointToBlock(ModBlocks.psigemBlock.asItem());
-		pointToBlock(ModBlocks.psimetalPlateBlack.asItem());
-		pointToBlock(ModBlocks.psimetalPlateWhite.asItem());
-		pointToBlock(ModBlocks.psimetalPlateBlackLight.asItem());
-		pointToBlock(ModBlocks.psimetalPlateWhiteLight.asItem());
-		pointToBlock(ModBlocks.psimetalEbony.asItem());
-		pointToBlock(ModBlocks.psimetalIvory.asItem());
-		pointToBlock(ModBlocks.conjured.asItem());
+		pointToBlock(ModBlocks.psidustBlock.get().asItem());
+		pointToBlock(ModBlocks.psimetalBlock.get().asItem());
+		pointToBlock(ModBlocks.psigemBlock.get().asItem());
+		pointToBlock(ModBlocks.psimetalPlateBlack.get().asItem());
+		pointToBlock(ModBlocks.psimetalPlateWhite.get().asItem());
+		pointToBlock(ModBlocks.psimetalPlateBlackLight.get().asItem());
+		pointToBlock(ModBlocks.psimetalPlateWhiteLight.get().asItem());
+		pointToBlock(ModBlocks.psimetalEbony.get().asItem());
+		pointToBlock(ModBlocks.psimetalIvory.get().asItem());
+		pointToBlock(ModBlocks.conjured.get().asItem());
 	}
 
 	@NotNull

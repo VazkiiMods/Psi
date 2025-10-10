@@ -30,25 +30,25 @@ public class PsiItemTagProvider extends ItemTagsProvider {
 
 	@Override
 	protected void addTags(HolderLookup.Provider pProvider) {
-		tag(Tags.Items.DUSTS).add(ModItems.psidust);
-		tag(Tags.Items.INGOTS).add(ModItems.psimetal);
-		tag(Tags.Items.INGOTS).add(ModItems.ebonyPsimetal);
-		tag(Tags.Items.INGOTS).add(ModItems.ivoryPsimetal);
-		tag(Tags.Items.GEMS).add(ModItems.psigem);
+		tag(Tags.Items.DUSTS).add(ModItems.psidust.get());
+		tag(Tags.Items.INGOTS).add(ModItems.psimetal.get());
+		tag(Tags.Items.INGOTS).add(ModItems.ebonyPsimetal.get());
+		tag(Tags.Items.INGOTS).add(ModItems.ivoryPsimetal.get());
+		tag(Tags.Items.GEMS).add(ModItems.psigem.get());
 
-		tag(ModTags.PSIDUST).add(ModItems.psidust);
-		tag(ModTags.EBONY_SUBSTANCE).add(ModItems.ebonySubstance);
-		tag(ModTags.IVORY_SUBSTANCE).add(ModItems.ivorySubstance);
+		tag(ModTags.PSIDUST).add(ModItems.psidust.get());
+		tag(ModTags.EBONY_SUBSTANCE).add(ModItems.ebonySubstance.get());
+		tag(ModTags.IVORY_SUBSTANCE).add(ModItems.ivorySubstance.get());
 
-		tag(ModTags.INGOT_PSIMETAL).add(ModItems.psimetal);
+		tag(ModTags.INGOT_PSIMETAL).add(ModItems.psimetal.get());
 		copy(ModTags.Blocks.BLOCK_PSIMETAL, ModTags.BLOCK_PSIMETAL);
 
-		tag(ModTags.GEM_PSIGEM).add(ModItems.psigem);
+		tag(ModTags.GEM_PSIGEM).add(ModItems.psigem.get());
 		copy(ModTags.Blocks.BLOCK_PSIGEM, ModTags.BLOCK_PSIGEM);
 
-		tag(ModTags.INGOT_EBONY_PSIMETAL).add(ModItems.ebonyPsimetal);
+		tag(ModTags.INGOT_EBONY_PSIMETAL).add(ModItems.ebonyPsimetal.get());
 		copy(ModTags.Blocks.BLOCK_EBONY_PSIMETAL, ModTags.BLOCK_EBONY_PSIMETAL);
-		tag(ModTags.INGOT_IVORY_PSIMETAL).add(ModItems.ivoryPsimetal);
+		tag(ModTags.INGOT_IVORY_PSIMETAL).add(ModItems.ivoryPsimetal.get());
 		copy(ModTags.Blocks.BLOCK_IVORY_PSIMETAL, ModTags.BLOCK_IVORY_PSIMETAL);
 		copy(Tags.Blocks.STORAGE_BLOCKS, Tags.Items.STORAGE_BLOCKS);
 	}

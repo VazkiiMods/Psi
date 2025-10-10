@@ -28,15 +28,15 @@ public class ColorHandler {
 
 	@SubscribeEvent
 	public static void init(RegisterColorHandlersEvent.Item event) {
-		event.register((stack, tintIndex) -> tintIndex == 1 ? ((ItemPsimetalArmor) stack.getItem()).getColor(stack) : 0xFFFFFFFF, ModItems.psimetalExosuitBoots, ModItems.psimetalExosuitChestplate, ModItems.psimetalExosuitHelmet, ModItems.psimetalExosuitLeggings);
+		event.register((stack, tintIndex) -> tintIndex == 1 ? ((ItemPsimetalArmor) stack.getItem()).getColor(stack) : 0xFFFFFFFF, ModItems.psimetalExosuitBoots.get(), ModItems.psimetalExosuitChestplate.get(), ModItems.psimetalExosuitHelmet.get(), ModItems.psimetalExosuitLeggings.get());
 
-		event.register((stack, tintIndex) -> tintIndex == 1 ? ((ItemExosuitSensor) stack.getItem()).getColor(stack) : 0xFFFFFFFF, ModItems.exosuitSensorHeat, ModItems.exosuitSensorLight, ModItems.exosuitSensorStress, ModItems.exosuitSensorWater, ModItems.exosuitSensorTrigger);
+		event.register((stack, tintIndex) -> tintIndex == 1 ? ((ItemExosuitSensor) stack.getItem()).getColor(stack) : 0xFFFFFFFF, ModItems.exosuitSensorHeat.get(), ModItems.exosuitSensorLight.get(), ModItems.exosuitSensorStress.get(), ModItems.exosuitSensorWater.get(), ModItems.exosuitSensorTrigger.get());
 
-		event.register((stack, tintIndex) -> tintIndex == 1 ? ((ItemCAD) stack.getItem()).getSpellColor(stack) : 0xFFFFFFFF, ModItems.cad);
+		event.register((stack, tintIndex) -> tintIndex == 1 ? ((ItemCAD) stack.getItem()).getSpellColor(stack) : 0xFFFFFFFF, ModItems.cad.get());
 
-		event.register((stack, tintIndex) -> tintIndex != 1 ? -1 : ((ItemCADColorizer) stack.getItem()).getColor(stack), ModItems.cadColorizerWhite, ModItems.cadColorizerOrange, ModItems.cadColorizerMagenta, ModItems.cadColorizerLightBlue,
-				ModItems.cadColorizerYellow, ModItems.cadColorizerLime, ModItems.cadColorizerPink, ModItems.cadColorizerGray, ModItems.cadColorizerLightGray, ModItems.cadColorizerCyan, ModItems.cadColorizerPurple, ModItems.cadColorizerBlue,
-				ModItems.cadColorizerBrown, ModItems.cadColorizerGreen, ModItems.cadColorizerRed, ModItems.cadColorizerBlack);
+		event.register((stack, tintIndex) -> tintIndex != 1 ? -1 : ((ItemCADColorizer) stack.getItem()).getColor(stack), ModItems.cadColorizerWhite.get(), ModItems.cadColorizerOrange.get(), ModItems.cadColorizerMagenta.get(), ModItems.cadColorizerLightBlue.get(),
+				ModItems.cadColorizerYellow.get(), ModItems.cadColorizerLime.get(), ModItems.cadColorizerPink.get(), ModItems.cadColorizerGray.get(), ModItems.cadColorizerLightGray.get(), ModItems.cadColorizerCyan.get(), ModItems.cadColorizerPurple.get(), ModItems.cadColorizerBlue.get(),
+				ModItems.cadColorizerBrown.get(), ModItems.cadColorizerGreen.get(), ModItems.cadColorizerRed.get(), ModItems.cadColorizerBlack.get());
 	}
 
 	public static int slideColor(int[] color, float speed) {

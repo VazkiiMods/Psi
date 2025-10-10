@@ -16,6 +16,7 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.client.renderer.item.ItemPropertyFunction;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -38,9 +39,11 @@ import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
+import net.neoforged.neoforge.registries.NewRegistryEvent;
 
 import org.jetbrains.annotations.NotNull;
 
+import vazkii.psi.api.ClientPsiAPI;
 import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.cad.ICADColorizer;
 import vazkii.psi.api.spell.ISpellAcceptor;
@@ -55,6 +58,7 @@ import vazkii.psi.client.model.ModelCAD;
 import vazkii.psi.client.model.ModelPsimetalExosuit;
 import vazkii.psi.client.render.entity.RenderSpellCircle;
 import vazkii.psi.client.render.entity.RenderSpellProjectile;
+import vazkii.psi.client.render.spell.SpellPieceMaterial;
 import vazkii.psi.client.render.tile.RenderTileProgrammer;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.base.ModBlocks;
@@ -78,7 +82,7 @@ public class ClientProxy implements IProxy {
 
 	@SubscribeEvent
 	public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers evt) {
-		evt.registerBlockEntityRenderer(ModBlocks.programmerType, RenderTileProgrammer::new);
+		evt.registerBlockEntityRenderer(ModBlocks.programmerType.get(), RenderTileProgrammer::new);
 		evt.registerEntityRenderer(ModEntities.spellCircle, RenderSpellCircle::new);
 		evt.registerEntityRenderer(ModEntities.spellCharge, RenderSpellProjectile::new);
 		evt.registerEntityRenderer(ModEntities.spellGrenade, RenderSpellProjectile::new);
@@ -100,7 +104,7 @@ public class ClientProxy implements IProxy {
 
 	@SubscribeEvent
 	public static void registerMenuScreens(RegisterMenuScreensEvent evt) {
-		evt.register(containerCADAssembler, GuiCADAssembler::new);
+		evt.register(containerCADAssembler.get(), GuiCADAssembler::new);
 	}
 
 	@OnlyIn(Dist.CLIENT)
@@ -114,13 +118,14 @@ public class ClientProxy implements IProxy {
 		}, psimetalExosuitHelmet, psimetalExosuitChestplate, psimetalExosuitLeggings, psimetalExosuitBoots);
 
 		ResourceLocation activeProperty = Psi.location("active");
-		ItemProperties.register(spellBullet, activeProperty, (stack, level, entity, seed) -> ISpellAcceptor.hasSpell(stack) ? 1.0F : 0.0F);
-		ItemProperties.register(chargeSpellBullet, activeProperty, (stack, level, entity, seed) -> ISpellAcceptor.hasSpell(stack) ? 1.0F : 0.0F);
-		ItemProperties.register(projectileSpellBullet, activeProperty, (stack, level, entity, seed) -> ISpellAcceptor.hasSpell(stack) ? 1.0F : 0.0F);
-		ItemProperties.register(loopSpellBullet, activeProperty, (stack, level, entity, seed) -> ISpellAcceptor.hasSpell(stack) ? 1.0F : 0.0F);
-		ItemProperties.register(circleSpellBullet, activeProperty, (stack, level, entity, seed) -> ISpellAcceptor.hasSpell(stack) ? 1.0F : 0.0F);
-		ItemProperties.register(mineSpellBullet, activeProperty, (stack, level, entity, seed) -> ISpellAcceptor.hasSpell(stack) ? 1.0F : 0.0F);
-		ItemProperties.register(flashRing, activeProperty, (stack, level, entity, seed) -> ISpellAcceptor.hasSpell(stack) ? 1.0F : 0.0F);
+		ItemPropertyFunction hasSpellPredicate = (stack, level, entity, seed) -> ISpellAcceptor.hasSpell(stack) ? 1.0F : 0.0F;
+		ItemProperties.register(spellBullet.get(), activeProperty, hasSpellPredicate);
+		ItemProperties.register(chargeSpellBullet.get(), activeProperty, hasSpellPredicate);
+		ItemProperties.register(projectileSpellBullet.get(), activeProperty, hasSpellPredicate);
+		ItemProperties.register(loopSpellBullet.get(), activeProperty, hasSpellPredicate);
+		ItemProperties.register(circleSpellBullet.get(), activeProperty, hasSpellPredicate);
+		ItemProperties.register(mineSpellBullet.get(), activeProperty, hasSpellPredicate);
+		ItemProperties.register(flashRing.get(), activeProperty, hasSpellPredicate);
 	}
 
 	@Override
@@ -128,6 +133,13 @@ public class ClientProxy implements IProxy {
 		bus.addListener(this::modelBake);
 		bus.addListener(this::addCADModels);
 		bus.addListener(this::loadComplete);
+		bus.addListener(this::registerRegistries);
+
+		SpellPieceMaterial.SPELL_PIECE_MATERIAL.register(bus);
+	}
+
+	private void registerRegistries(NewRegistryEvent event) {
+		event.register(ClientPsiAPI.SPELL_PIECE_MATERIAL_REGISTRY);
 	}
 
 	private void loadComplete(FMLLoadCompleteEvent event) {
@@ -140,7 +152,7 @@ public class ClientProxy implements IProxy {
 	}
 
 	private void modelBake(ModelEvent.ModifyBakingResult event) {
-		event.getModels().computeIfPresent(ModelResourceLocation.inventory(BuiltInRegistries.ITEM.getKey(ModItems.cad)), (k, oldModel) -> new ModelCAD());
+		event.getModels().computeIfPresent(ModelResourceLocation.inventory(BuiltInRegistries.ITEM.getKey(ModItems.cad.get())), (k, oldModel) -> new ModelCAD());
 	}
 
 	private void addCADModels(ModelEvent.RegisterAdditional event) {

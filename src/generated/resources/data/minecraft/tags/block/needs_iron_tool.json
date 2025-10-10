@@ -1,0 +1,12 @@
+{
+  "values": [
+    "psi:psimetal_block",
+    "psi:psigem_block",
+    "psi:black_psimetal_plate",
+    "psi:lit_black_psimetal_plate",
+    "psi:white_psimetal_plate",
+    "psi:lit_white_psimetal_plate",
+    "psi:ebony_psimetal_block",
+    "psi:ivory_psimetal_block"
+  ]
+}

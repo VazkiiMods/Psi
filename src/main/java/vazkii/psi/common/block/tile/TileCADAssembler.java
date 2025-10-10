@@ -48,7 +48,7 @@ public class TileCADAssembler extends BlockEntity implements ITileCADAssembler, 
 	private final CADStackHandler inventory = new CADStackHandler(6);
 
 	public TileCADAssembler(BlockPos pos, BlockState state) {
-		super(ModBlocks.cadAssemblerType, pos, state);
+		super(ModBlocks.cadAssemblerType.get(), pos, state);
 	}
 
 	public IItemHandlerModifiable getInventory() {
@@ -234,7 +234,7 @@ public class TileCADAssembler extends BlockEntity implements ITileCADAssembler, 
 	@NotNull
 	@Override
 	public Component getDisplayName() {
-		return Component.translatable(ModBlocks.cadAssembler.getDescriptionId());
+		return Component.translatable(ModBlocks.cadAssembler.get().getDescriptionId());
 	}
 
 	@Nullable

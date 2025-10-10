@@ -8,9 +8,7 @@
  */
 package vazkii.psi.common;
 
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundEvent;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
@@ -18,7 +16,7 @@ import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
+import net.neoforged.neoforge.registries.NewRegistryEvent;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -27,6 +25,7 @@ import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.material.PsimetalArmorMaterial;
 import vazkii.psi.client.core.proxy.ClientProxy;
 import vazkii.psi.client.fx.ModParticles;
+import vazkii.psi.common.block.base.ModBlocks;
 import vazkii.psi.common.core.handler.ConfigHandler;
 import vazkii.psi.common.core.handler.ContributorSpellCircleHandler;
 import vazkii.psi.common.core.handler.InternalMethodHandler;
@@ -34,13 +33,11 @@ import vazkii.psi.common.core.proxy.IProxy;
 import vazkii.psi.common.core.proxy.ServerProxy;
 import vazkii.psi.common.crafting.ModCraftingRecipes;
 import vazkii.psi.common.item.base.ModDataComponents;
+import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.item.component.DefaultStats;
 import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.network.MessageRegister;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
+import vazkii.psi.common.spell.base.ModSpellPieces;
 
 @Mod(LibMisc.MOD_ID)
 public class Psi {
@@ -50,7 +47,6 @@ public class Psi {
 	public static Psi instance;
 	public static boolean magical;
 	public static IProxy proxy;
-	public static List<SoundEvent> noteblockSoundEvents = new ArrayList<>();
 
 	public Psi(IEventBus bus, Dist dist, ModContainer container) {
 		instance = this;
@@ -60,9 +56,15 @@ public class Psi {
 		ModCraftingRecipes.RECIPE_SERIALIZERS.register(bus);
 		ModCraftingRecipes.CONDITION_CODECS.register(bus);
 		ModParticles.PARTICLE_TYPES.register(bus);
+		ModBlocks.BLOCKS.register(bus);
+		ModBlocks.BLOCK_TYPES.register(bus);
+		ModBlocks.MENU.register(bus);
+		ModItems.ITEMS.register(bus);
+		ModSpellPieces.SPELL_PIECES.register(bus);
+		ModSpellPieces.ADVANCEMENT_GROUPS.register(bus);
+		bus.addListener(this::registerRegistries);
 		bus.addListener(this::commonSetup);
 		bus.addListener(MessageRegister::onRegisterPayloadHandler);
-		bus.addListener(this::loadComplete);
 		container.registerConfig(ModConfig.Type.CLIENT, ConfigHandler.CLIENT_SPEC);
 		container.registerConfig(ModConfig.Type.COMMON, ConfigHandler.COMMON_SPEC);
 		proxy = dist.isClient() ? new ClientProxy() : new ServerProxy();
@@ -73,6 +75,11 @@ public class Psi {
 		return ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, path);
 	}
 
+	private void registerRegistries(NewRegistryEvent event) {
+		event.register(PsiAPI.SPELL_PIECE_REGISTRY);
+		event.register(PsiAPI.ADVANCEMENT_GROUP_REGISTRY);
+	}
+
 	private void commonSetup(FMLCommonSetupEvent event) {
 		magical = ModList.get().isLoaded("magipsi");
 		PsiAPI.internalHandler = new InternalMethodHandler();
@@ -81,14 +88,6 @@ public class Psi {
 
 		ContributorSpellCircleHandler.firstStart();
 		DefaultStats.registerStats();
-	}
-
-	private void loadComplete(FMLLoadCompleteEvent event) {
-		BuiltInRegistries.SOUND_EVENT.forEach(el -> {
-			if(BuiltInRegistries.SOUND_EVENT.getKey(el).getPath().toLowerCase(Locale.ROOT).startsWith("block.note_block")) {
-				noteblockSoundEvents.add(el);
-			}
-		});
 	}
 
 }

@@ -56,7 +56,7 @@ public class ContainerCADAssembler extends AbstractContainerMenu {
 	private final int armorStart;
 
 	public ContainerCADAssembler(int windowId, Inventory playerInventory, TileCADAssembler assembler) {
-		super(ModBlocks.containerCADAssembler, windowId);
+		super(ModBlocks.containerCADAssembler.get(), windowId);
 		Player player = playerInventory.player;
 		int playerSize = playerInventory.getContainerSize();
 

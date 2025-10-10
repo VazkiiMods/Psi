@@ -70,7 +70,7 @@ public class PsiRecipeGenerator extends RecipeProvider {
 		Criterion<InventoryChangeTrigger.TriggerInstance> hasIvoryPsimetal = has(ModTags.INGOT_IVORY_PSIMETAL);
 		Criterion<InventoryChangeTrigger.TriggerInstance> hasPsidust = has(ModTags.PSIDUST);
 
-		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.cadAssembler)
+		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.cadAssembler.get())
 				.define('I', Tags.Items.INGOTS_IRON)
 				.define('P', Items.PISTON)
 				.pattern("IPI")
@@ -78,7 +78,7 @@ public class PsiRecipeGenerator extends RecipeProvider {
 				.pattern(" I ")
 				.unlockedBy("has_iron", hasIron)
 				.save(consumer, Psi.location("assembler"));
-		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.programmer)
+		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.programmer.get())
 				.define('I', Tags.Items.INGOTS_IRON)
 				.define('D', ModTags.PSIDUST)
 				.pattern("IDI")
@@ -86,53 +86,53 @@ public class PsiRecipeGenerator extends RecipeProvider {
 				.pattern(" I ")
 				.unlockedBy("has_psidust", hasPsidust)
 				.save(consumer, Psi.location("programmer"));
-		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.ebonyPsimetal)
+		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.ebonyPsimetal.get())
 				.define('S', ModTags.EBONY_SUBSTANCE)
 				.define('I', ModTags.INGOT_PSIMETAL)
 				.pattern("SSS")
 				.pattern("SIS")
 				.pattern("SSS")
-				.unlockedBy("has_ebony_substance", has(ModItems.ebonySubstance))
+				.unlockedBy("has_ebony_substance", has(ModItems.ebonySubstance.get()))
 				.save(consumer, Psi.location("ebony_psimetal"));
-		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.ivoryPsimetal)
+		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.ivoryPsimetal.get())
 				.define('S', ModTags.IVORY_SUBSTANCE)
 				.define('I', ModTags.INGOT_PSIMETAL)
 				.pattern("SSS")
 				.pattern("SIS")
 				.pattern("SSS")
-				.unlockedBy("has_ivory_substance", has(ModItems.ivorySubstance))
+				.unlockedBy("has_ivory_substance", has(ModItems.ivorySubstance.get()))
 				.save(consumer, Psi.location("ivory_psimetal"));
-		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.cadAssemblyIron)
+		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.cadAssemblyIron.get())
 				.define('I', Tags.Items.INGOTS_IRON)
 				.pattern("III")
 				.pattern("I  ")
 				.unlockedBy("has_iron", hasIron)
 				.save(consumer, Psi.location("cad_assembly_iron"));
-		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.cadAssemblyGold)
+		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.cadAssemblyGold.get())
 				.define('I', Tags.Items.INGOTS_GOLD)
 				.pattern("III")
 				.pattern("I  ")
 				.unlockedBy("has_gold", has(Tags.Items.INGOTS_GOLD))
 				.save(consumer, Psi.location("cad_assembly_gold"));
-		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.cadAssemblyPsimetal)
+		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.cadAssemblyPsimetal.get())
 				.define('I', ModTags.INGOT_PSIMETAL)
 				.pattern("III")
 				.pattern("I  ")
 				.unlockedBy("has_psimetal", hasPsimetal)
 				.save(consumer, Psi.location("cad_assembly_psimetal"));
-		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.cadAssemblyEbony)
+		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.cadAssemblyEbony.get())
 				.define('I', ModTags.INGOT_EBONY_PSIMETAL)
 				.pattern("III")
 				.pattern("I  ")
 				.unlockedBy("has_ebony_psimetal", hasEbonyPsimetal)
 				.save(consumer, Psi.location("cad_assembly_ebony"));
-		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.cadAssemblyIvory)
+		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.cadAssemblyIvory.get())
 				.define('I', ModTags.INGOT_IVORY_PSIMETAL)
 				.pattern("III")
 				.pattern("I  ")
 				.unlockedBy("has_ivory_psimetal", hasIvoryPsimetal)
 				.save(consumer, Psi.location("cad_assembly_ivory"));
-		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.cadCoreBasic)
+		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.cadCoreBasic.get())
 				.define('I', Tags.Items.INGOTS_IRON)
 				.define('D', ModTags.PSIDUST)
 				.pattern(" I ")
@@ -140,7 +140,7 @@ public class PsiRecipeGenerator extends RecipeProvider {
 				.pattern(" I ")
 				.unlockedBy("has_psidust", hasPsidust)
 				.save(consumer, Psi.location("cad_core_basic"));
-		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.cadCoreOverclocked)
+		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.cadCoreOverclocked.get())
 				.define('I', ModTags.INGOT_PSIMETAL)
 				.define('D', Tags.Items.DUSTS_REDSTONE)
 				.pattern(" I ")
@@ -148,7 +148,7 @@ public class PsiRecipeGenerator extends RecipeProvider {
 				.pattern(" I ")
 				.unlockedBy("has_psimetal", hasPsimetal)
 				.save(consumer, Psi.location("cad_core_overclocked"));
-		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.cadCoreConductive)
+		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.cadCoreConductive.get())
 				.define('I', ModTags.INGOT_PSIMETAL)
 				.define('D', Tags.Items.DUSTS_GLOWSTONE)
 				.pattern(" I ")
@@ -156,7 +156,7 @@ public class PsiRecipeGenerator extends RecipeProvider {
 				.pattern(" I ")
 				.unlockedBy("has_psimetal", hasPsimetal)
 				.save(consumer, Psi.location("cad_core_conductive"));
-		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.cadCoreHyperClocked)
+		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.cadCoreHyperClocked.get())
 				.define('I', ModTags.INGOT_PSIMETAL)
 				.define('D', Tags.Items.DUSTS_REDSTONE)
 				.define('G', ModTags.GEM_PSIGEM)
@@ -165,7 +165,7 @@ public class PsiRecipeGenerator extends RecipeProvider {
 				.pattern(" G ")
 				.unlockedBy("has_psimetal", hasPsimetal)
 				.save(consumer, Psi.location("cad_core_hyperclocked"));
-		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.cadCoreRadiative)
+		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.cadCoreRadiative.get())
 				.define('I', ModTags.INGOT_PSIMETAL)
 				.define('D', Tags.Items.DUSTS_GLOWSTONE)
 				.define('G', ModTags.GEM_PSIGEM)
@@ -174,28 +174,28 @@ public class PsiRecipeGenerator extends RecipeProvider {
 				.pattern(" G ")
 				.unlockedBy("has_psimetal", hasPsimetal)
 				.save(consumer, Psi.location("cad_core_radiative"));
-		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.cadSocketBasic)
+		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.cadSocketBasic.get())
 				.define('I', Tags.Items.INGOTS_IRON)
 				.define('D', ModTags.PSIDUST)
 				.pattern("DI ")
 				.pattern("I  ")
 				.unlockedBy("has_psidust", hasPsidust)
 				.save(consumer, Psi.location("cad_socket_basic"));
-		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.cadSocketSignaling)
+		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.cadSocketSignaling.get())
 				.define('I', ModTags.INGOT_PSIMETAL)
 				.define('D', Tags.Items.DUSTS_REDSTONE)
 				.pattern("DI ")
 				.pattern("I  ")
 				.unlockedBy("has_psimetal", hasPsimetal)
 				.save(consumer, Psi.location("cad_socket_signaling"));
-		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.cadSocketLarge)
+		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.cadSocketLarge.get())
 				.define('I', ModTags.INGOT_PSIMETAL)
 				.define('D', Tags.Items.DUSTS_GLOWSTONE)
 				.pattern("DI ")
 				.pattern("I  ")
 				.unlockedBy("has_psimetal", hasPsimetal)
 				.save(consumer, Psi.location("cad_socket_large"));
-		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.cadSocketTransmissive)
+		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.cadSocketTransmissive.get())
 				.define('I', ModTags.INGOT_PSIMETAL)
 				.define('D', Tags.Items.DUSTS_REDSTONE)
 				.define('G', ModTags.GEM_PSIGEM)
@@ -203,7 +203,7 @@ public class PsiRecipeGenerator extends RecipeProvider {
 				.pattern("IG ")
 				.unlockedBy("has_psimetal", hasPsimetal)
 				.save(consumer, Psi.location("cad_socket_transmissive"));
-		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.cadSocketHuge)
+		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.cadSocketHuge.get())
 				.define('I', ModTags.INGOT_PSIMETAL)
 				.define('D', Tags.Items.DUSTS_GLOWSTONE)
 				.define('G', ModTags.GEM_PSIGEM)
@@ -211,7 +211,7 @@ public class PsiRecipeGenerator extends RecipeProvider {
 				.pattern("IG ")
 				.unlockedBy("has_psimetal", hasPsimetal)
 				.save(consumer, Psi.location("cad_socket_huge"));
-		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.cadBatteryBasic)
+		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.cadBatteryBasic.get())
 				.define('I', Tags.Items.INGOTS_IRON)
 				.define('D', ModTags.PSIDUST)
 				.define('G', Tags.Items.INGOTS_GOLD)
@@ -220,7 +220,7 @@ public class PsiRecipeGenerator extends RecipeProvider {
 				.pattern("G")
 				.unlockedBy("has_psidust", hasPsidust)
 				.save(consumer, Psi.location("cad_battery_basic"));
-		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.cadBatteryExtended)
+		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.cadBatteryExtended.get())
 				.define('I', Tags.Items.INGOTS_IRON)
 				.define('D', ModTags.INGOT_PSIMETAL)
 				.define('G', Tags.Items.INGOTS_GOLD)
@@ -229,7 +229,7 @@ public class PsiRecipeGenerator extends RecipeProvider {
 				.pattern("G")
 				.unlockedBy("has_psimetal", hasPsimetal)
 				.save(consumer, Psi.location("cad_battery_extended"));
-		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.cadBatteryUltradense)
+		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.cadBatteryUltradense.get())
 				.define('I', Tags.Items.INGOTS_IRON)
 				.define('D', ModTags.GEM_PSIGEM)
 				.define('G', Tags.Items.INGOTS_GOLD)
@@ -253,7 +253,7 @@ public class PsiRecipeGenerator extends RecipeProvider {
 					.save(consumer, Psi.location(LibItemNames.CAD_COLORIZER + color.getSerializedName()));
 		}
 
-		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.cadColorizerRainbow)
+		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.cadColorizerRainbow.get())
 				.group("psi:colorizer")
 				.define('D', ModTags.PSIDUST)
 				.define('I', Tags.Items.INGOTS_IRON)
@@ -264,7 +264,7 @@ public class PsiRecipeGenerator extends RecipeProvider {
 				.pattern(" I ")
 				.unlockedBy("has_psidust", hasPsidust)
 				.save(consumer, Psi.location("cad_colorizer_rainbow"));
-		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.cadColorizerPsi)
+		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.cadColorizerPsi.get())
 				.group("psi:colorizer")
 				.define('D', ModTags.PSIDUST)
 				.define('I', Tags.Items.INGOTS_IRON)
@@ -276,38 +276,38 @@ public class PsiRecipeGenerator extends RecipeProvider {
 				.unlockedBy("has_psidust", hasPsidust)
 				.save(consumer, Psi.location("cad_colorizer_psi"));
 
-		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.spellBullet)
+		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.spellBullet.get())
 				.define('I', Tags.Items.INGOTS_IRON)
 				.define('D', ModTags.PSIDUST)
 				.pattern("ID")
 				.unlockedBy("has_psidust", hasPsidust)
 				.save(consumer, Psi.location("spell_bullet_basic"));
-		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.projectileSpellBullet)
+		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.projectileSpellBullet.get())
 				.define('I', Tags.Items.INGOTS_IRON)
 				.define('D', ModTags.PSIDUST)
 				.define('A', ItemTags.ARROWS)
 				.pattern("AID")
 				.unlockedBy("has_psidust", hasPsidust)
 				.save(consumer, Psi.location("spell_bullet_projectile"));
-		new BulletUpgradeRecipe.Builder(ModItems.projectileSpellBullet)
-				.requires(ModItems.spellBullet)
+		new BulletUpgradeRecipe.Builder(ModItems.projectileSpellBullet.get())
+				.requires(ModItems.spellBullet.get())
 				.requires(Ingredient.of(ItemTags.ARROWS))
-				.unlockedBy("has_psidust", has(ModItems.psidust))
+				.unlockedBy("has_psidust", has(ModItems.psidust.get()))
 				.save(consumer, Psi.location("spell_bullet_projectile_upgrade"));
 
-		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.loopSpellBullet)
+		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.loopSpellBullet.get())
 				.define('I', Tags.Items.INGOTS_IRON)
 				.define('D', ModTags.PSIDUST)
 				.define('A', Tags.Items.STRINGS)
 				.pattern("AID")
 				.unlockedBy("has_psidust", hasPsidust)
 				.save(consumer, Psi.location("spell_bullet_loopcast"));
-		new BulletUpgradeRecipe.Builder(ModItems.loopSpellBullet)
-				.requires(ModItems.spellBullet)
+		new BulletUpgradeRecipe.Builder(ModItems.loopSpellBullet.get())
+				.requires(ModItems.spellBullet.get())
 				.requires(Ingredient.of(Tags.Items.STRINGS))
-				.unlockedBy("has_psidust", has(ModItems.psidust))
+				.unlockedBy("has_psidust", has(ModItems.psidust.get()))
 				.save(consumer, Psi.location("spell_bullet_loopcast_upgrade"));
-		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.circleSpellBullet)
+		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.circleSpellBullet.get())
 				.define('I', Tags.Items.INGOTS_IRON)
 				.define('D', ModTags.PSIDUST)
 				.define('A', Ingredient.fromValues(Stream.of(
@@ -316,51 +316,51 @@ public class PsiRecipeGenerator extends RecipeProvider {
 				.pattern("AID")
 				.unlockedBy("has_psidust", hasPsidust)
 				.save(consumer, Psi.location("spell_bullet_circle"));
-		new BulletUpgradeRecipe.Builder(ModItems.circleSpellBullet)
-				.requires(ModItems.spellBullet)
+		new BulletUpgradeRecipe.Builder(ModItems.circleSpellBullet.get())
+				.requires(ModItems.spellBullet.get())
 				.requires(Ingredient.fromValues(Stream.of(
 						new Ingredient.TagValue(Tags.Items.SLIME_BALLS),
 						new Ingredient.ItemValue(new ItemStack(Items.SNOWBALL)))))
-				.unlockedBy("has_psidust", has(ModItems.psidust))
+				.unlockedBy("has_psidust", has(ModItems.psidust.get()))
 				.save(consumer, Psi.location("spell_bullet_circle_upgrade"));
-		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.grenadeSpellBullet)
+		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.grenadeSpellBullet.get())
 				.define('I', Tags.Items.INGOTS_IRON)
 				.define('D', ModTags.PSIDUST)
 				.define('A', Tags.Items.GUNPOWDERS)
 				.pattern("AID")
 				.unlockedBy("has_psidust", hasPsidust)
 				.save(consumer, Psi.location("spell_bullet_grenade"));
-		new BulletUpgradeRecipe.Builder(ModItems.grenadeSpellBullet)
-				.requires(ModItems.spellBullet)
+		new BulletUpgradeRecipe.Builder(ModItems.grenadeSpellBullet.get())
+				.requires(ModItems.spellBullet.get())
 				.requires(Ingredient.of(Tags.Items.GUNPOWDERS))
-				.unlockedBy("has_psidust", has(ModItems.psidust))
+				.unlockedBy("has_psidust", has(ModItems.psidust.get()))
 				.save(consumer, Psi.location("spell_bullet_grenade_upgrade"));
-		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.chargeSpellBullet)
+		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.chargeSpellBullet.get())
 				.define('I', Tags.Items.INGOTS_IRON)
 				.define('D', ModTags.PSIDUST)
 				.define('A', Tags.Items.DUSTS_REDSTONE)
 				.pattern("AID")
 				.unlockedBy("has_psidust", hasPsidust)
 				.save(consumer, Psi.location("spell_bullet_charge"));
-		new BulletUpgradeRecipe.Builder(ModItems.chargeSpellBullet)
-				.requires(ModItems.spellBullet)
+		new BulletUpgradeRecipe.Builder(ModItems.chargeSpellBullet.get())
+				.requires(ModItems.spellBullet.get())
 				.requires(Ingredient.of(Tags.Items.DUSTS_REDSTONE))
-				.unlockedBy("has_psidust", has(ModItems.psidust))
+				.unlockedBy("has_psidust", has(ModItems.psidust.get()))
 				.save(consumer, Psi.location("spell_bullet_charge_upgrade"));
-		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.mineSpellBullet)
+		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.mineSpellBullet.get())
 				.define('I', Tags.Items.INGOTS_IRON)
 				.define('D', ModTags.PSIDUST)
 				.define('A', ItemTags.BUTTONS)
 				.pattern("AID")
 				.unlockedBy("has_psidust", hasPsidust)
 				.save(consumer, Psi.location("spell_bullet_mine"));
-		new BulletUpgradeRecipe.Builder(ModItems.mineSpellBullet)
-				.requires(ModItems.spellBullet)
+		new BulletUpgradeRecipe.Builder(ModItems.mineSpellBullet.get())
+				.requires(ModItems.spellBullet.get())
 				.requires(Ingredient.of(ItemTags.BUTTONS))
-				.unlockedBy("has_psidust", has(ModItems.psidust))
+				.unlockedBy("has_psidust", has(ModItems.psidust.get()))
 				.save(consumer, Psi.location("spell_bullet_mine_upgrade"));
 
-		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.spellDrive)
+		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.spellDrive.get())
 				.define('I', ModTags.INGOT_PSIMETAL)
 				.define('R', Tags.Items.DUSTS_REDSTONE)
 				.pattern("I")
@@ -368,7 +368,7 @@ public class PsiRecipeGenerator extends RecipeProvider {
 				.pattern("I")
 				.unlockedBy("has_psimetal", hasPsimetal)
 				.save(consumer, Psi.location("spell_drive"));
-		ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.psimetalShovel)
+		ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.psimetalShovel.get())
 				.define('P', ModTags.INGOT_PSIMETAL)
 				.define('G', ModTags.GEM_PSIGEM)
 				.define('I', Tags.Items.INGOTS_IRON)
@@ -377,7 +377,7 @@ public class PsiRecipeGenerator extends RecipeProvider {
 				.pattern(" I")
 				.unlockedBy("has_psimetal", hasPsimetal)
 				.save(consumer, Psi.location("psimetal_shovel"));
-		ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.psimetalPickaxe)
+		ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.psimetalPickaxe.get())
 				.define('P', ModTags.INGOT_PSIMETAL)
 				.define('G', ModTags.GEM_PSIGEM)
 				.define('I', Tags.Items.INGOTS_IRON)
@@ -386,7 +386,7 @@ public class PsiRecipeGenerator extends RecipeProvider {
 				.pattern(" I ")
 				.unlockedBy("has_psimetal", hasPsimetal)
 				.save(consumer, Psi.location("psimetal_pickaxe"));
-		ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.psimetalAxe)
+		ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.psimetalAxe.get())
 				.define('P', ModTags.INGOT_PSIMETAL)
 				.define('G', ModTags.GEM_PSIGEM)
 				.define('I', Tags.Items.INGOTS_IRON)
@@ -395,7 +395,7 @@ public class PsiRecipeGenerator extends RecipeProvider {
 				.pattern(" I")
 				.unlockedBy("has_psimetal", hasPsimetal)
 				.save(consumer, Psi.location("psimetal_axe"));
-		ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.psimetalSword)
+		ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.psimetalSword.get())
 				.define('P', ModTags.INGOT_PSIMETAL)
 				.define('G', ModTags.GEM_PSIGEM)
 				.define('I', Tags.Items.INGOTS_IRON)
@@ -404,14 +404,14 @@ public class PsiRecipeGenerator extends RecipeProvider {
 				.pattern("I")
 				.unlockedBy("has_psimetal", hasPsimetal)
 				.save(consumer, Psi.location("psimetal_sword"));
-		ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.psimetalExosuitHelmet)
+		ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.psimetalExosuitHelmet.get())
 				.define('P', ModTags.INGOT_PSIMETAL)
 				.define('G', ModTags.GEM_PSIGEM)
 				.pattern("GPG")
 				.pattern("P P")
 				.unlockedBy("has_psimetal", hasPsimetal)
 				.save(consumer, Psi.location("psimetal_exosuit_helmet"));
-		ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.psimetalExosuitChestplate)
+		ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.psimetalExosuitChestplate.get())
 				.define('P', ModTags.INGOT_PSIMETAL)
 				.define('G', ModTags.GEM_PSIGEM)
 				.pattern("P P")
@@ -419,7 +419,7 @@ public class PsiRecipeGenerator extends RecipeProvider {
 				.pattern("PPP")
 				.unlockedBy("has_psimetal", hasPsimetal)
 				.save(consumer, Psi.location("psimetal_exosuit_chestplate"));
-		ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.psimetalExosuitLeggings)
+		ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.psimetalExosuitLeggings.get())
 				.define('P', ModTags.INGOT_PSIMETAL)
 				.define('G', ModTags.GEM_PSIGEM)
 				.pattern("GPG")
@@ -427,14 +427,14 @@ public class PsiRecipeGenerator extends RecipeProvider {
 				.pattern("P P")
 				.unlockedBy("has_psimetal", hasPsimetal)
 				.save(consumer, Psi.location("psimetal_exosuit_leggings"));
-		ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.psimetalExosuitBoots)
+		ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.psimetalExosuitBoots.get())
 				.define('P', ModTags.INGOT_PSIMETAL)
 				.define('G', ModTags.GEM_PSIGEM)
 				.pattern("G G")
 				.pattern("P P")
 				.unlockedBy("has_psimetal", hasPsimetal)
 				.save(consumer, Psi.location("psimetal_exosuit_boots"));
-		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.flashRing)
+		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.flashRing.get())
 				.define('E', ModTags.INGOT_EBONY_PSIMETAL)
 				.define('G', Tags.Items.DUSTS_GLOWSTONE)
 				.define('P', ModTags.GEM_PSIGEM)
@@ -443,7 +443,7 @@ public class PsiRecipeGenerator extends RecipeProvider {
 				.pattern(" P ")
 				.unlockedBy("has_ebony_psimetal", hasEbonyPsimetal)
 				.save(consumer, Psi.location("flash_ring"));
-		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.detonator)
+		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.detonator.get())
 				.define('P', ModTags.PSIDUST)
 				.define('B', ItemTags.BUTTONS)
 				.define('I', Tags.Items.INGOTS_IRON)
@@ -451,7 +451,7 @@ public class PsiRecipeGenerator extends RecipeProvider {
 				.pattern("IPI")
 				.unlockedBy("has_psimetal", hasPsimetal)
 				.save(consumer, Psi.location("detonator"));
-		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.exosuitController)
+		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.exosuitController.get())
 				.define('R', Tags.Items.DUSTS_REDSTONE)
 				.define('G', Tags.Items.GLASS_BLOCKS)
 				.define('I', ModTags.INGOT_PSIMETAL)
@@ -460,7 +460,7 @@ public class PsiRecipeGenerator extends RecipeProvider {
 				.pattern("I")
 				.unlockedBy("has_psimetal", hasPsimetal)
 				.save(consumer, Psi.location("exosuit_controller"));
-		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.vectorRuler)
+		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.vectorRuler.get())
 				.define('D', ModTags.PSIDUST)
 				.define('I', Tags.Items.INGOTS_IRON)
 				.pattern("D")
@@ -468,7 +468,7 @@ public class PsiRecipeGenerator extends RecipeProvider {
 				.pattern("I")
 				.unlockedBy("has_psidust", hasPsidust)
 				.save(consumer, Psi.location("vector_ruler"));
-		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.exosuitSensorLight)
+		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.exosuitSensorLight.get())
 				.define('M', Tags.Items.DUSTS_GLOWSTONE)
 				.define('R', Tags.Items.INGOTS_IRON)
 				.define('I', ModTags.INGOT_PSIMETAL)
@@ -477,7 +477,7 @@ public class PsiRecipeGenerator extends RecipeProvider {
 				.pattern(" R ")
 				.unlockedBy("has_psimetal", hasPsimetal)
 				.save(consumer, Psi.location("exosuit_sensor_light"));
-		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.exosuitSensorWater)
+		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.exosuitSensorWater.get())
 				.define('M', Tags.Items.GEMS_PRISMARINE)
 				.define('R', Tags.Items.INGOTS_IRON)
 				.define('I', ModTags.INGOT_PSIMETAL)
@@ -486,7 +486,7 @@ public class PsiRecipeGenerator extends RecipeProvider {
 				.pattern(" R ")
 				.unlockedBy("has_psimetal", hasPsimetal)
 				.save(consumer, Psi.location("exosuit_sensor_water"));
-		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.exosuitSensorHeat)
+		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.exosuitSensorHeat.get())
 				.define('M', Items.FIRE_CHARGE)
 				.define('R', Tags.Items.INGOTS_IRON)
 				.define('I', ModTags.INGOT_PSIMETAL)
@@ -495,7 +495,7 @@ public class PsiRecipeGenerator extends RecipeProvider {
 				.pattern(" R ")
 				.unlockedBy("has_psimetal", hasPsimetal)
 				.save(consumer, Psi.location("exosuit_sensor_heat"));
-		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.exosuitSensorStress)
+		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.exosuitSensorStress.get())
 				.define('M', Items.GLISTERING_MELON_SLICE)
 				.define('R', Tags.Items.INGOTS_IRON)
 				.define('I', ModTags.INGOT_PSIMETAL)
@@ -504,7 +504,7 @@ public class PsiRecipeGenerator extends RecipeProvider {
 				.pattern(" R ")
 				.unlockedBy("has_psimetal", hasPsimetal)
 				.save(consumer, Psi.location("exosuit_sensor_stress"));
-		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.exosuitSensorTrigger)
+		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.exosuitSensorTrigger.get())
 				.define('M', Items.GUNPOWDER)
 				.define('R', Tags.Items.INGOTS_IRON)
 				.define('I', ModTags.INGOT_PSIMETAL)
@@ -513,7 +513,7 @@ public class PsiRecipeGenerator extends RecipeProvider {
 				.pattern(" R ")
 				.unlockedBy("has_psimetal", hasPsimetal)
 				.save(consumer, Psi.location("exosuit_sensor_trigger"));
-		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.cadColorizerEmpty)
+		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.cadColorizerEmpty.get())
 				.define('D', ModTags.PSIDUST)
 				.define('G', Tags.Items.GLASS_BLOCKS)
 				.define('I', Tags.Items.INGOTS_IRON)
@@ -522,62 +522,62 @@ public class PsiRecipeGenerator extends RecipeProvider {
 				.pattern(" I ")
 				.unlockedBy("has_psidust", hasPsidust)
 				.save(consumer, Psi.location("cad_colorizer_empty"));
-		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.psidustBlock.asItem())
-				.define('I', ModItems.psidust)
+		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.psidustBlock.get().asItem())
+				.define('I', ModItems.psidust.get())
 				.pattern("III")
 				.pattern("III")
 				.pattern("III")
 				.unlockedBy("has_psidust", hasPsidust)
 				.save(consumer, Psi.location("psidust_block"));
-		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.psimetalBlock.asItem())
-				.define('I', ModItems.psimetal)
+		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.psimetalBlock.get().asItem())
+				.define('I', ModItems.psimetal.get())
 				.pattern("III")
 				.pattern("III")
 				.pattern("III")
 				.unlockedBy("has_psimetal", hasPsimetal)
 				.save(consumer, Psi.location("psimetal_block"));
-		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.psigemBlock.asItem())
-				.define('I', ModItems.psigem)
+		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.psigemBlock.get().asItem())
+				.define('I', ModItems.psigem.get())
 				.pattern("III")
 				.pattern("III")
 				.pattern("III")
-				.unlockedBy("has_psigem", has(ModItems.psigem))
+				.unlockedBy("has_psigem", has(ModItems.psigem.get()))
 				.save(consumer, Psi.location("psigem_block"));
-		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.psimetalEbony.asItem())
-				.define('I', ModItems.ebonyPsimetal)
+		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.psimetalEbony.get().asItem())
+				.define('I', ModItems.ebonyPsimetal.get())
 				.pattern("III")
 				.pattern("III")
 				.pattern("III")
 				.unlockedBy("has_ebony_psimetal", hasEbonyPsimetal)
 				.save(consumer, Psi.location("ebony_block"));
-		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.psimetalIvory.asItem())
-				.define('I', ModItems.ivoryPsimetal)
+		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.psimetalIvory.get().asItem())
+				.define('I', ModItems.ivoryPsimetal.get())
 				.pattern("III")
 				.pattern("III")
 				.pattern("III")
 				.unlockedBy("has_ivory_psimetal", hasIvoryPsimetal)
 				.save(consumer, Psi.location("ivory_block"));
-		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, ModItems.psidust, 9)
-				.requires(ModBlocks.psidustBlock.asItem())
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, ModItems.psidust.get(), 9)
+				.requires(ModBlocks.psidustBlock.get().asItem())
 				.unlockedBy("has_psidust", hasPsidust)
 				.save(consumer, Psi.location("psidust_shapeless"));
-		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, ModItems.psimetal, 9)
-				.requires(ModBlocks.psimetalBlock.asItem())
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, ModItems.psimetal.get(), 9)
+				.requires(ModBlocks.psimetalBlock.get().asItem())
 				.unlockedBy("has_psimetal", hasPsimetal)
 				.save(consumer, Psi.location("psimetal_shapeless"));
-		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, ModItems.psigem, 9)
-				.requires(ModBlocks.psigemBlock.asItem())
-				.unlockedBy("has_psigem", has(ModItems.psigem))
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, ModItems.psigem.get(), 9)
+				.requires(ModBlocks.psigemBlock.get().asItem())
+				.unlockedBy("has_psigem", has(ModItems.psigem.get()))
 				.save(consumer, Psi.location("psigem_shapeless"));
-		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, ModItems.ebonyPsimetal, 9)
-				.requires(ModBlocks.psimetalEbony.asItem())
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, ModItems.ebonyPsimetal.get(), 9)
+				.requires(ModBlocks.psimetalEbony.get().asItem())
 				.unlockedBy("has_ebony_psimetal", hasEbonyPsimetal)
 				.save(consumer, Psi.location("ebony_ingot_shapeless"));
-		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, ModItems.ivoryPsimetal, 9)
-				.requires(ModBlocks.psimetalIvory.asItem())
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, ModItems.ivoryPsimetal.get(), 9)
+				.requires(ModBlocks.psimetalIvory.get().asItem())
 				.unlockedBy("has_ivory_psimetal", hasIvoryPsimetal)
 				.save(consumer, Psi.location("ivory_ingot_shapeless"));
-		ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, ModBlocks.psimetalPlateBlack.asItem())
+		ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, ModBlocks.psimetalPlateBlack.get().asItem())
 				.define('C', ItemTags.COALS)
 				.define('I', ModTags.INGOT_PSIMETAL)
 				.pattern(" C ")
@@ -585,7 +585,7 @@ public class PsiRecipeGenerator extends RecipeProvider {
 				.pattern(" C ")
 				.unlockedBy("has_psimetal", hasPsimetal)
 				.save(consumer, Psi.location("psimetal_plate_black"));
-		ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, ModBlocks.psimetalPlateWhite.asItem())
+		ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, ModBlocks.psimetalPlateWhite.get().asItem())
 				.define('C', Tags.Items.GEMS_QUARTZ)
 				.define('I', ModTags.INGOT_PSIMETAL)
 				.pattern(" C ")
@@ -593,56 +593,56 @@ public class PsiRecipeGenerator extends RecipeProvider {
 				.pattern(" C ")
 				.unlockedBy("has_psimetal", hasPsimetal)
 				.save(consumer, Psi.location("psimetal_plate_white"));
-		ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS, ModBlocks.psimetalPlateBlackLight.asItem())
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS, ModBlocks.psimetalPlateBlackLight.get().asItem())
 				.requires(Tags.Items.DUSTS_GLOWSTONE)
-				.requires(ModBlocks.psimetalPlateBlack.asItem())
+				.requires(ModBlocks.psimetalPlateBlack.get().asItem())
 				.unlockedBy("has_psimetal", hasPsimetal)
 				.save(consumer, Psi.location("psimetal_plate_black_light"));
-		ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS, ModBlocks.psimetalPlateWhiteLight.asItem())
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS, ModBlocks.psimetalPlateWhiteLight.get().asItem())
 				.requires(Tags.Items.DUSTS_GLOWSTONE)
-				.requires(ModBlocks.psimetalPlateWhite.asItem())
+				.requires(ModBlocks.psimetalPlateWhite.get().asItem())
 				.unlockedBy("has_psimetal", hasPsimetal)
 				.save(consumer, Psi.location("psimetal_plate_white_light"));
 		this.buildTrickRecipes(consumer);
 	}
 
 	protected void buildTrickRecipes(RecipeOutput consumer) {
-		TrickRecipeBuilder.of(ModItems.psidust).input(Tags.Items.DUSTS_REDSTONE).cad(ModItems.cadAssemblyIron).build(consumer);
-		TrickRecipeBuilder.of(PatchouliAPI.get().getBookStack(LibResources.PATCHOULI_BOOK)).input(Items.BOOK).cad(ModItems.cadAssemblyIron).build(consumer);
+		TrickRecipeBuilder.of(ModItems.psidust.get()).input(Tags.Items.DUSTS_REDSTONE).cad(ModItems.cadAssemblyIron.get()).build(consumer);
+		TrickRecipeBuilder.of(PatchouliAPI.get().getBookStack(LibResources.PATCHOULI_BOOK)).input(Items.BOOK).cad(ModItems.cadAssemblyIron.get()).build(consumer);
 
-		TrickRecipeBuilder.of(ModItems.cadAssemblyPsimetal)
-				.input(ModItems.cadAssemblyGold)
+		TrickRecipeBuilder.of(ModItems.cadAssemblyPsimetal.get())
+				.input(ModItems.cadAssemblyGold.get())
 				.trick(Psi.location(LibPieceNames.TRICK_INFUSION))
-				.cad(ModItems.cadAssemblyIron)
-				.unlockedBy(getHasName(ModItems.cadAssemblyGold), has(ModItems.cadAssemblyGold))
+				.cad(ModItems.cadAssemblyIron.get())
+				.unlockedBy(getHasName(ModItems.cadAssemblyGold.get()), has(ModItems.cadAssemblyGold.get()))
 				.build(consumer, Psi.location("gold_to_psimetal_assembly_upgrade"));
 
-		TrickRecipeBuilder.of(ModItems.psimetal)
+		TrickRecipeBuilder.of(ModItems.psimetal.get())
 				.input(Tags.Items.INGOTS_GOLD)
 				.trick(Psi.location(LibPieceNames.TRICK_INFUSION))
-				.cad(ModItems.cadAssemblyIron)
+				.cad(ModItems.cadAssemblyIron.get())
 				.unlockedBy("has_gold_ingot", has(Tags.Items.INGOTS_GOLD))
 				.build(consumer);
 
-		TrickRecipeBuilder.of(ModItems.psigem)
+		TrickRecipeBuilder.of(ModItems.psigem.get())
 				.input(Tags.Items.GEMS_DIAMOND)
 				.trick(Psi.location(LibPieceNames.TRICK_GREATER_INFUSION))
-				.cad(ModItems.cadAssemblyPsimetal)
+				.cad(ModItems.cadAssemblyPsimetal.get())
 				.unlockedBy("has_diamond", has(Tags.Items.GEMS_DIAMOND))
 				.build(consumer);
 
-		TrickRecipeBuilder.of(ModItems.ebonySubstance)
+		TrickRecipeBuilder.of(ModItems.ebonySubstance.get())
 				.input(ItemTags.COALS)
 				.trick(Psi.location(LibPieceNames.TRICK_EBONY_IVORY))
-				.cad(ModItems.cadAssemblyPsimetal)
+				.cad(ModItems.cadAssemblyPsimetal.get())
 				.dimension(Level.END)
 				.unlockedBy("has_coal", has(ItemTags.COALS))
 				.build(consumer);
 
-		TrickRecipeBuilder.of(ModItems.ivorySubstance)
+		TrickRecipeBuilder.of(ModItems.ivorySubstance.get())
 				.input(Tags.Items.GEMS_QUARTZ)
 				.trick(Psi.location(LibPieceNames.TRICK_EBONY_IVORY))
-				.cad(ModItems.cadAssemblyPsimetal)
+				.cad(ModItems.cadAssemblyPsimetal.get())
 				.dimension(Level.END)
 				.unlockedBy("has_quartz", has(Tags.Items.GEMS_QUARTZ))
 				.build(consumer);

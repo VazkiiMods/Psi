@@ -39,7 +39,7 @@ public class BulletToDriveExtension implements ICraftingCategoryExtension<Bullet
 
 	public BulletToDriveExtension() {
 		inputs = ImmutableList.of(
-				ImmutableList.of(new ItemStack(ModItems.spellDrive)),
+				ImmutableList.of(new ItemStack(ModItems.spellDrive.get())),
 				BuiltInRegistries.ITEM.stream()
 						.filter(item -> item instanceof ItemSpellBullet)
 						.map(ItemStack::new)
@@ -48,7 +48,7 @@ public class BulletToDriveExtension implements ICraftingCategoryExtension<Bullet
 
 	@Override
 	public void setRecipe(RecipeHolder<BulletToDriveRecipe> recipeHolder, IRecipeLayoutBuilder builder, ICraftingGridHelper helper, IFocusGroup focuses) {
-		ItemStack drive = new ItemStack(ModItems.spellDrive);
+		ItemStack drive = new ItemStack(ModItems.spellDrive.get());
 
 		focuses.getFocuses(VanillaTypes.ITEM_STACK)
 				.filter(focus -> focus.getTypedValue().getIngredient().getItem() instanceof ItemSpellBullet)

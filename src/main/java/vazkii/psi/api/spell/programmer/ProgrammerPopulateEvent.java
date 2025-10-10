@@ -8,7 +8,7 @@
  */
 package vazkii.psi.api.spell.programmer;
 
-import net.minecraft.core.MappedRegistry;
+import net.minecraft.core.Registry;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.Event;
 
@@ -21,9 +21,9 @@ public class ProgrammerPopulateEvent extends Event {
 	@NotNull
 	private final Player entity;
 	@NotNull
-	private MappedRegistry<Class<? extends SpellPiece>> spellPieceRegistry;
+	private Registry<Class<? extends SpellPiece>> spellPieceRegistry;
 
-	public ProgrammerPopulateEvent(Player entity, MappedRegistry<Class<? extends SpellPiece>> registry) {
+	public ProgrammerPopulateEvent(Player entity, Registry<Class<? extends SpellPiece>> registry) {
 		this.entity = entity;
 		this.spellPieceRegistry = registry;
 	}
@@ -34,12 +34,12 @@ public class ProgrammerPopulateEvent extends Event {
 	}
 
 	@NotNull
-	public MappedRegistry<Class<? extends SpellPiece>> getSpellPieceRegistry() {
+	public Registry<Class<? extends SpellPiece>> getSpellPieceRegistry() {
 		return spellPieceRegistry;
 	}
 
 	@NotNull
-	public void setSpellPieceRegistry(MappedRegistry<Class<? extends SpellPiece>> registry) {
+	public void setSpellPieceRegistry(Registry<Class<? extends SpellPiece>> registry) {
 		spellPieceRegistry = registry;
 	}
 

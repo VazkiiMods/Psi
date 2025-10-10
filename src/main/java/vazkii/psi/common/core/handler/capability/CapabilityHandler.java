@@ -49,97 +49,97 @@ public class CapabilityHandler {
 		event.registerItem(
 				Capabilities.ItemHandler.ITEM,
 				(itemStack, context) -> new ComponentItemHandler(itemStack, ModDataComponents.BULLETS.get(), ISocketable.MAX_ASSEMBLER_SLOTS),
-				ModItems.cad);
+				ModItems.cad.get());
 		event.registerItem(
 				Capabilities.ItemHandler.ITEM,
 				(itemStack, context) -> new ComponentItemHandler(itemStack, ModDataComponents.BULLETS.get(), 3),
-				ModItems.psimetalShovel,
-				ModItems.psimetalPickaxe,
-				ModItems.psimetalAxe,
-				ModItems.psimetalSword);
+				ModItems.psimetalShovel.get(),
+				ModItems.psimetalPickaxe.get(),
+				ModItems.psimetalAxe.get(),
+				ModItems.psimetalSword.get());
 		event.registerItem(
 				Capabilities.ItemHandler.ITEM,
 				(itemStack, context) -> new ComponentItemHandler(itemStack, ModDataComponents.BULLETS.get(), 3),
-				ModItems.psimetalExosuitHelmet,
-				ModItems.psimetalExosuitChestplate,
-				ModItems.psimetalExosuitLeggings,
-				ModItems.psimetalExosuitBoots);
+				ModItems.psimetalExosuitHelmet.get(),
+				ModItems.psimetalExosuitChestplate.get(),
+				ModItems.psimetalExosuitLeggings.get(),
+				ModItems.psimetalExosuitBoots.get());
 
 		event.registerItem(
 				PsiAPI.PSI_BAR_DISPLAY_CAPABILITY,
 				(cad, ctx) -> new CADData(cad),
-				ModItems.cad);
+				ModItems.cad.get());
 		event.registerItem(
 				PsiAPI.PSI_BAR_DISPLAY_CAPABILITY,
 				(tool, ctx) -> new ToolSocketable(tool, 3),
-				ModItems.psimetalShovel,
-				ModItems.psimetalPickaxe,
-				ModItems.psimetalAxe,
-				ModItems.psimetalSword);
+				ModItems.psimetalShovel.get(),
+				ModItems.psimetalPickaxe.get(),
+				ModItems.psimetalAxe.get(),
+				ModItems.psimetalSword.get());
 		event.registerItem(
 				PsiAPI.PSI_BAR_DISPLAY_CAPABILITY,
 				(tool, ctx) -> new ItemPsimetalArmor.ArmorSocketable(tool, 3),
-				ModItems.psimetalExosuitHelmet,
-				ModItems.psimetalExosuitChestplate,
-				ModItems.psimetalExosuitLeggings,
-				ModItems.psimetalExosuitBoots);
+				ModItems.psimetalExosuitHelmet.get(),
+				ModItems.psimetalExosuitChestplate.get(),
+				ModItems.psimetalExosuitLeggings.get(),
+				ModItems.psimetalExosuitBoots.get());
 
 		event.registerItem(
 				PsiAPI.SPELL_ACCEPTOR_CAPABILITY,
 				(cad, ctx) -> new CADData(cad),
-				ModItems.cad);
+				ModItems.cad.get());
 		event.registerItem(
 				PsiAPI.SPELL_ACCEPTOR_CAPABILITY,
 				(tool, ctx) -> new ToolSocketable(tool, 3),
-				ModItems.psimetalShovel,
-				ModItems.psimetalPickaxe,
-				ModItems.psimetalAxe,
-				ModItems.psimetalSword);
+				ModItems.psimetalShovel.get(),
+				ModItems.psimetalPickaxe.get(),
+				ModItems.psimetalAxe.get(),
+				ModItems.psimetalSword.get());
 		event.registerItem(
 				PsiAPI.SPELL_ACCEPTOR_CAPABILITY,
 				(tool, ctx) -> new ItemPsimetalArmor.ArmorSocketable(tool, 3),
-				ModItems.psimetalExosuitHelmet,
-				ModItems.psimetalExosuitChestplate,
-				ModItems.psimetalExosuitLeggings,
-				ModItems.psimetalExosuitBoots);
+				ModItems.psimetalExosuitHelmet.get(),
+				ModItems.psimetalExosuitChestplate.get(),
+				ModItems.psimetalExosuitLeggings.get(),
+				ModItems.psimetalExosuitBoots.get());
 		event.registerItem(
 				PsiAPI.SPELL_ACCEPTOR_CAPABILITY,
 				(stack, ctx) -> new ItemSpellBullet.SpellAcceptor(stack),
-				ModItems.spellBullet,
-				ModItems.projectileSpellBullet,
-				ModItems.loopSpellBullet,
-				ModItems.circleSpellBullet,
-				ModItems.grenadeSpellBullet,
-				ModItems.chargeSpellBullet,
-				ModItems.mineSpellBullet);
+				ModItems.spellBullet.get(),
+				ModItems.projectileSpellBullet.get(),
+				ModItems.loopSpellBullet.get(),
+				ModItems.circleSpellBullet.get(),
+				ModItems.grenadeSpellBullet.get(),
+				ModItems.chargeSpellBullet.get(),
+				ModItems.mineSpellBullet.get());
 
 		event.registerItem(PsiAPI.SPELL_ACCEPTOR_CAPABILITY,
 				(stack, ctx) -> new ItemFlashRing.SpellAcceptor(stack),
-				ModItems.flashRing);
+				ModItems.flashRing.get());
 
 		event.registerItem(
 				PsiAPI.CAD_DATA_CAPABILITY,
 				(cad, ctx) -> new CADData(cad),
-				ModItems.cad);
+				ModItems.cad.get());
 
 		event.registerItem(
 				PsiAPI.SOCKETABLE_CAPABILITY,
 				(cad, ctx) -> new CADData(cad),
-				ModItems.cad);
+				ModItems.cad.get());
 		event.registerItem(
 				PsiAPI.SOCKETABLE_CAPABILITY,
 				(tool, ctx) -> new ToolSocketable(tool, 3),
-				ModItems.psimetalShovel,
-				ModItems.psimetalPickaxe,
-				ModItems.psimetalAxe,
-				ModItems.psimetalSword);
+				ModItems.psimetalShovel.get(),
+				ModItems.psimetalPickaxe.get(),
+				ModItems.psimetalAxe.get(),
+				ModItems.psimetalSword.get());
 		event.registerItem(
 				PsiAPI.SOCKETABLE_CAPABILITY,
 				(tool, ctx) -> new ItemPsimetalArmor.ArmorSocketable(tool, 3),
-				ModItems.psimetalExosuitHelmet,
-				ModItems.psimetalExosuitChestplate,
-				ModItems.psimetalExosuitLeggings,
-				ModItems.psimetalExosuitBoots);
+				ModItems.psimetalExosuitHelmet.get(),
+				ModItems.psimetalExosuitChestplate.get(),
+				ModItems.psimetalExosuitLeggings.get(),
+				ModItems.psimetalExosuitBoots.get());
 	}
 
 }

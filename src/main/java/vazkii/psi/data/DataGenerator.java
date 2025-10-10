@@ -8,6 +8,10 @@
  */
 package vazkii.psi.data;
 
+import net.minecraft.core.HolderLookup;
+import net.minecraft.data.PackOutput;
+import net.minecraft.data.loot.LootTableProvider;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
@@ -15,6 +19,9 @@ import net.neoforged.neoforge.data.event.GatherDataEvent;
 
 import vazkii.psi.common.lib.LibMisc;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @EventBusSubscriber(modid = LibMisc.MOD_ID)
 public class DataGenerator {
@@ -22,18 +29,23 @@ public class DataGenerator {
 	@SubscribeEvent
 	public static void gatherData(GatherDataEvent event) {
 		ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
+		net.minecraft.data.DataGenerator generator = event.getGenerator();
+		CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
+		PackOutput packOutput = generator.getPackOutput();
 
 		if(event.includeServer()) {
-			PsiBlockTagProvider blockTagProvider = new PsiBlockTagProvider(event.getGenerator().getPackOutput(), event.getLookupProvider(), existingFileHelper);
-			event.getGenerator().addProvider(true, blockTagProvider);
-			event.getGenerator().addProvider(true, new PsiDamageTypeTagsProvider(event.getGenerator().getPackOutput(), event.getLookupProvider(), existingFileHelper));
-			event.getGenerator().addProvider(true, new PsiItemTagProvider(event.getGenerator().getPackOutput(), event.getLookupProvider(), blockTagProvider.contentsGetter(), existingFileHelper));
-			event.getGenerator().addProvider(true, new PsiRecipeGenerator(event.getGenerator().getPackOutput(), event.getLookupProvider()));
+			PsiBlockTagProvider blockTagProvider = new PsiBlockTagProvider(packOutput, lookupProvider, existingFileHelper);
+			generator.addProvider(true, blockTagProvider);
+			generator.addProvider(true, new PsiDamageTypeTagsProvider(packOutput, lookupProvider, existingFileHelper));
+			generator.addProvider(true, new PsiItemTagProvider(packOutput, lookupProvider, blockTagProvider.contentsGetter(), existingFileHelper));
+			generator.addProvider(true, new PsiRecipeGenerator(packOutput, lookupProvider));
+			generator.addProvider(true, new LootTableProvider(packOutput, Collections.emptySet(),
+					List.of(new LootTableProvider.SubProviderEntry(PsiBlockLootProvider::new, LootContextParamSets.BLOCK)), lookupProvider));
 		}
 
 		if(event.includeClient()) {
-			event.getGenerator().addProvider(true, new PsiBlockModelGenerator(event.getGenerator().getPackOutput(), event.getExistingFileHelper()));
-			event.getGenerator().addProvider(true, new PsiItemModelGenerator(event.getGenerator().getPackOutput(), event.getExistingFileHelper()));
+			generator.addProvider(true, new PsiBlockModelGenerator(packOutput, existingFileHelper));
+			generator.addProvider(true, new PsiItemModelGenerator(packOutput, existingFileHelper));
 		}
 	}
 }

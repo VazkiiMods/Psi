@@ -74,7 +74,7 @@ public abstract class SpellPiece {
 
 	public SpellPiece(Spell spell) {
 		this.spell = spell;
-		registryKey = PsiAPI.getSpellPieceKey(getClass());
+		registryKey = PsiAPI.SPELL_PIECE_REGISTRY.getKey(getClass());
 		initParams();
 	}
 
@@ -117,13 +117,13 @@ public abstract class SpellPiece {
 		}
 		boolean exists = false;
 		ResourceLocation rl = ResourceLocation.parse(key);
-		if(PsiAPI.isPieceRegistered(rl)) {
+		if(PsiAPI.SPELL_PIECE_REGISTRY.containsKey(rl)) {
 			exists = true;
 		} else {
-			Set<String> pieceNamespaces = PsiAPI.getSpellPieceRegistry().keySet().stream().map(ResourceLocation::getNamespace).collect(Collectors.toSet());
+			Set<String> pieceNamespaces = PsiAPI.SPELL_PIECE_REGISTRY.keySet().stream().map(ResourceLocation::getNamespace).collect(Collectors.toSet());
 			for(String namespace : pieceNamespaces) {
 				rl = ResourceLocation.fromNamespaceAndPath(namespace, key);
-				if(PsiAPI.isPieceRegistered(rl)) {
+				if(PsiAPI.SPELL_PIECE_REGISTRY.containsKey(rl)) {
 					exists = true;
 					break;
 				}
@@ -131,7 +131,7 @@ public abstract class SpellPiece {
 		}
 
 		if(exists) {
-			Class<? extends SpellPiece> clazz = PsiAPI.getSpellPiece(rl);
+			Class<? extends SpellPiece> clazz = PsiAPI.SPELL_PIECE_REGISTRY.get(rl);
 			SpellPiece p = create(clazz, spell);
 			p.readFromNBT(cmp);
 			return p;
@@ -148,7 +148,7 @@ public abstract class SpellPiece {
 	}
 
 	public static SpellPiece create(ResourceLocation location) {
-		return PsiAPI.getSpellPieceRegistry().getOptional(location)
+		return PsiAPI.SPELL_PIECE_REGISTRY.getOptional(location)
 				.map(clazz -> SpellPiece.create(clazz, dummySpell))
 				.orElse(null);
 	}
@@ -372,7 +372,7 @@ public abstract class SpellPiece {
 	 */
 	@OnlyIn(Dist.CLIENT)
 	public void drawBackground(PoseStack pPoseStack, MultiBufferSource buffers, int light) {
-		Material material = ClientPsiAPI.getSpellPieceMaterial(registryKey);
+		Material material = ClientPsiAPI.SPELL_PIECE_MATERIAL_REGISTRY.get(registryKey);
 		VertexConsumer buffer = material.buffer(buffers, ignored -> getLayer());
 		Matrix4f mat = pPoseStack.last().pose();
 		// Cannot call .texture() on the chained object because SpriteAwareVertexBuilder is buggy

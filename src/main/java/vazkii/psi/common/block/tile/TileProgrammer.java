@@ -33,7 +33,7 @@ public class TileProgrammer extends BlockEntity {
 	public String playerLock = "";
 
 	public TileProgrammer(BlockPos pos, BlockState state) {
-		super(ModBlocks.programmerType, pos, state);
+		super(ModBlocks.programmerType.get(), pos, state);
 	}
 
 	public boolean isEnabled() {

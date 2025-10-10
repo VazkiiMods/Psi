@@ -31,7 +31,7 @@ public class TileConjured extends BlockEntity {
 	public ItemStack colorizer = ItemStack.EMPTY;
 
 	public TileConjured(BlockPos pos, BlockState state) {
-		super(ModBlocks.conjuredType, pos, state);
+		super(ModBlocks.conjuredType.get(), pos, state);
 	}
 
 	public void doParticles() {
@@ -43,7 +43,7 @@ public class TileConjured extends BlockEntity {
 
 		BlockState state = getLevel().getBlockState(getBlockPos());
 
-		if(state.getBlock() == ModBlocks.conjured && state.getValue(BlockConjured.SOLID)) {
+		if(state.getBlock() == ModBlocks.conjured.get() && state.getValue(BlockConjured.SOLID)) {
 			// http://cns-alumni.bu.edu/~lavanya/Graphics/cs580/p5/web-page/cube_edges.gif
 			boolean[] edges = new boolean[12];
 			Arrays.fill(edges, true);

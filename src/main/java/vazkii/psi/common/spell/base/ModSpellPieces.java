@@ -8,11 +8,12 @@
  */
 package vazkii.psi.common.spell.base;
 
-import net.minecraft.resources.ResourceLocation;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredRegister;
 
 import vazkii.psi.api.PsiAPI;
-import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellPiece;
+import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.lib.LibPieceGroups;
 import vazkii.psi.common.lib.LibPieceNames;
 import vazkii.psi.common.spell.constant.*;
@@ -39,378 +40,728 @@ import vazkii.psi.common.spell.trick.infusion.PieceTrickGreaterInfusion;
 import vazkii.psi.common.spell.trick.infusion.PieceTrickInfusion;
 import vazkii.psi.common.spell.trick.potion.*;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+
+@SuppressWarnings("unused")
 public final class ModSpellPieces {
 
-	public static PieceContainer selectorCaster;
-	public static PieceContainer selectorFocalPoint;
-	public static PieceContainer selectorNearbyItems;
-	public static PieceContainer selectorNearbyLiving;
-	public static PieceContainer selectorNearbyEnemies;
-	public static PieceContainer selectorNearbyAnimals;
-	public static PieceContainer selectorNearbyProjectiles;
-	public static PieceContainer selectorNearbySmeltables;
-	public static PieceContainer selectorLoopcastIndex;
-	public static PieceContainer selectorBlockBroken;
-	public static PieceContainer selectorBlockSideBroken;
-	public static PieceContainer selectorAttackTarget;
-	public static PieceContainer selectorSneakStatus;
-	public static PieceContainer selectorTime;
-	public static PieceContainer selectorAttacker;
-	public static PieceContainer selectorDamageTaken;
-	public static PieceContainer selectorRulerVector;
-	public static PieceContainer selectorIsElytraFlying;
-	public static PieceContainer selectorItemPresence;
-	public static PieceContainer selectorBlockPresence;
-	public static PieceContainer selectorSaveVector;
-	public static PieceContainer selectorEidosChangelog;
-	public static PieceContainer selectorNearbyCharges;
-	public static PieceContainer selectorNearbyFallingBlocks;
-	public static PieceContainer selectorNearbyGlowing;
-	public static PieceContainer selectorNearbyPlayers;
-	public static PieceContainer selectorNearbyVehicles;
-	public static PieceContainer selectorCasterBattery;
-	public static PieceContainer selectorCasterEnergy;
-	public static PieceContainer selectorSuccessCounter;
-	//public static PieceContainer selectorTransmission;
-	public static PieceContainer selectorItemCount;
-	public static PieceContainer selectorTickTime;
-	public static PieceContainer selectorTps;
+	// ========== REGISTRIES ==========
+	public static final DeferredRegister<Class<? extends SpellPiece>> SPELL_PIECES =
+			DeferredRegister.create(PsiAPI.SPELL_PIECE_REGISTRY_TYPE_KEY, LibMisc.MOD_ID);
+	public static final DeferredRegister<Collection<Class<? extends SpellPiece>>> ADVANCEMENT_GROUPS =
+			DeferredRegister.create(PsiAPI.ADVANCEMENT_GROUP_REGISTRY_KEY, LibMisc.MOD_ID);
 
-	public static PieceContainer operatorSum;
-	public static PieceContainer operatorSubtract;
-	public static PieceContainer operatorMultiply;
-	public static PieceContainer operatorDivide;
-	public static PieceContainer operatorAbsolute;
-	public static PieceContainer operatorInverse;
-	public static PieceContainer operatorModulus;
-	public static PieceContainer operatorRandom;
-	public static PieceContainer operatorIntegerDivide;
-	public static PieceContainer operatorSin;
-	public static PieceContainer operatorCos;
-	public static PieceContainer operatorAsin;
-	public static PieceContainer operatorAcos;
-	public static PieceContainer operatorMin;
-	public static PieceContainer operatorMax;
-	public static PieceContainer operatorSquare;
-	public static PieceContainer operatorCube;
-	public static PieceContainer operatorPower;
-	public static PieceContainer operatorSquareRoot;
-	public static PieceContainer operatorLog;
-	public static PieceContainer operatorCeiling;
-	public static PieceContainer operatorFloor;
-	public static PieceContainer operatorRound;
-	public static PieceContainer operatorEntityPosition;
-	public static PieceContainer operatorEntityLook;
-	public static PieceContainer operatorEntityMotion;
-	public static PieceContainer operatorClosestToPoint;
-	public static PieceContainer operatorRandomEntity;
-	public static PieceContainer operatorFocusedEntity;
-	public static PieceContainer operatorListAdd;
-	public static PieceContainer operatorListRemove;
-	public static PieceContainer operatorListIndex;
-	public static PieceContainer operatorVectorRaycast;
-	public static PieceContainer operatorVectorSum;
-	public static PieceContainer operatorVectorSubtract;
-	public static PieceContainer operatorVectorMultiply;
-	public static PieceContainer operatorVectorDivide;
-	public static PieceContainer operatorVectorCrossProduct;
-	public static PieceContainer operatorVectorNormalize;
-	public static PieceContainer operatorVectorNegate;
-	public static PieceContainer operatorVectorMagnitude;
-	public static PieceContainer operatorVectorConstruct;
-	public static PieceContainer operatorVectorExtractX;
-	public static PieceContainer operatorVectorExtractY;
-	public static PieceContainer operatorVectorExtractZ;
-	public static PieceContainer operatorVectorRaycastAxis;
-	public static PieceContainer operatorVectorProject;
-	public static PieceContainer operatorVectorDotProduct;
-	public static PieceContainer operatorGammFunction;
-	public static PieceContainer operatorPlanarNormalVector;
-	public static PieceContainer operatorListExclusion;
-	public static PieceContainer operatorListIntersection;
-	public static PieceContainer operatorListSize;
-	public static PieceContainer operatorListUnion;
-	public static PieceContainer operatorRoot;
-	public static PieceContainer operatorSignum;
-	public static PieceContainer operatorClosestToLine;
-	public static PieceContainer operatorEntityHealth;
-	public static PieceContainer operatorVectorAbsolute;
-	public static PieceContainer operatorEntityRaycast;
-	public static PieceContainer operatorBlockLight;
-	public static PieceContainer operatorBlockHardness;
-	public static PieceContainer operatorBlockComparatorStrength;
-	public static PieceContainer operatorBlockSideSolidity;
-	public static PieceContainer operatorBlockMiningLevel;
-	public static PieceContainer operatorVectorMaximum;
-	public static PieceContainer operatorVectorMinimum;
-	public static PieceContainer operatorEntityHeight;
-	public static PieceContainer operatorVectorSignum;
+	// ========== MEMORY MANAGEMENT ==========
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceCrossConnector>> CROSS_CONNECTOR =
+			SPELL_PIECES.register(LibPieceNames.CROSS_CONNECTOR, () -> PieceCrossConnector.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceSelectorSavedVector>> SELECTOR_SAVED_VECTOR =
+			SPELL_PIECES.register(LibPieceNames.SELECTOR_SAVED_VECTOR, () -> PieceSelectorSavedVector.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceTrickDetonate>> TRICK_DETONATE =
+			SPELL_PIECES.register(LibPieceNames.TRICK_DETONATE, () -> PieceTrickDetonate.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceTrickSaveVector>> TRICK_SAVE_VECTOR =
+			SPELL_PIECES.register(LibPieceNames.TRICK_SAVE_VECTOR, () -> PieceTrickSaveVector.class);
 
-	public static PieceContainer constantNumber;
-	public static PieceContainer constantPi;
-	public static PieceContainer constantE;
-	public static PieceContainer constantWrapper;
+	public static final DeferredHolder<Collection<Class<? extends SpellPiece>>, Collection<Class<? extends SpellPiece>>> MEMORY_MANAGEMENT =
+			ADVANCEMENT_GROUPS.register(LibPieceGroups.MEMORY_MANAGEMENT,
+					() -> Arrays.asList(
+							PieceTrickSaveVector.class,
+							PieceTrickDetonate.class,
+							PieceSelectorSavedVector.class,
+							PieceCrossConnector.class
+					));
 
-	public static PieceContainer connector;
-	public static PieceContainer crossConnector;
-	public static PieceContainer errorSuppressor;
-	public static PieceContainer errorCatch;
+	// ========== TUTORIAL_1 ==========
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceSelectorCaster>> SELECTOR_CASTER =
+			SPELL_PIECES.register(LibPieceNames.SELECTOR_CASTER, () -> PieceSelectorCaster.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceTrickDebug>> TRICK_DEBUG =
+			SPELL_PIECES.register(LibPieceNames.TRICK_DEBUG, () -> PieceTrickDebug.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceTrickDebugSpamless>> TRICK_DEBUG_SPAMLESS =
+			SPELL_PIECES.register(LibPieceNames.TRICK_DEBUG_SPAMLESS, () -> PieceTrickDebugSpamless.class);
 
-	public static PieceContainer trickDebug;
-	public static PieceContainer trickDelay;
-	public static PieceContainer trickDie;
-	public static PieceContainer trickEvaluate;
-	public static PieceContainer trickAddMotion;
-	public static PieceContainer trickExplode;
-	public static PieceContainer trickBreakBlock;
-	public static PieceContainer trickBreakInSequence;
-	public static PieceContainer trickPlaceBlock;
-	public static PieceContainer trickPlaceInSequence;
-	public static PieceContainer trickInfusion;
-	public static PieceContainer trickBlink;
-	public static PieceContainer trickMassBlink;
-	public static PieceContainer trickMassAddMotion;
-	public static PieceContainer trickMassExodus;
-	public static PieceContainer trickMoveBlock;
-	public static PieceContainer trickCollapseBlock;
-	public static PieceContainer trickSmite;
-	public static PieceContainer trickBlaze;
-	public static PieceContainer trickTorrent;
-	public static PieceContainer trickOvergrow;
-	public static PieceContainer trickGreaterInfusion;
-	public static PieceContainer trickEbonyIvory;
-	public static PieceContainer trickSpeed;
-	public static PieceContainer trickHaste;
-	public static PieceContainer trickStrength;
-	public static PieceContainer trickJumpBoost;
-	public static PieceContainer trickWaterBreathing;
-	public static PieceContainer trickFireResistance;
-	public static PieceContainer trickInvisibility;
-	public static PieceContainer trickRegeneration;
-	public static PieceContainer trickResistance;
-	public static PieceContainer trickSlowness;
-	public static PieceContainer trickWeakness;
-	public static PieceContainer trickWither;
-	public static PieceContainer trickIgnite;
-	public static PieceContainer trickEidosAnchor;
-	public static PieceContainer trickEidosReversal;
-	public static PieceContainer trickSmeltBlock;
-	public static PieceContainer trickSmeltItem;
-	public static PieceContainer trickConjureBlock;
-	public static PieceContainer trickConjureLight;
-	public static PieceContainer trickConjureBlockSequence;
-	public static PieceContainer trickSwitchTargetSlot;
-	public static PieceContainer trickSaveVector;
-	public static PieceContainer trickBreakLoop;
-	public static PieceContainer operatorVectorRotate;
-	public static PieceContainer constantTau;
-	public static PieceContainer trickPlaySound;
-	public static PieceContainer trickDetonate;
-	public static PieceContainer trickMoveBlockSequence;
-	public static PieceContainer trickTill;
-	public static PieceContainer trickTillSequence;
-	public static PieceContainer trickSpinChamber;
-	public static PieceContainer trickChangeSlot;
-	public static PieceContainer trickSmeltBlockSequence;
-	public static PieceContainer trickCollapseBlockSequence;
-	public static PieceContainer trickDebugSpamless;
-	public static PieceContainer trickNightVision;
-	public static PieceContainer trickParticleTrail;
-	public static PieceContainer trickRussianRoulette;
+	public static final DeferredHolder<Collection<Class<? extends SpellPiece>>, Collection<Class<? extends SpellPiece>>> TUTORIAL_1 =
+			ADVANCEMENT_GROUPS.register(LibPieceGroups.TUTORIAL_1,
+					() -> Arrays.asList(
+							PieceSelectorCaster.class,
+							PieceTrickDebug.class,
+							PieceTrickDebugSpamless.class
+					));
 
-	public static void init() {
-		selectorCaster = register(PieceSelectorCaster.class, LibPieceNames.SELECTOR_CASTER, LibPieceGroups.TUTORIAL_1);
-		selectorFocalPoint = register(PieceSelectorFocalPoint.class, LibPieceNames.SELECTOR_FOCAL_POINT, LibPieceGroups.PROJECTILES, true);
-		selectorNearbyItems = register(PieceSelectorNearbyItems.class, LibPieceNames.SELECTOR_NEARBY_ITEMS, LibPieceGroups.ENTITIES_INTRO);
-		selectorNearbyLiving = register(PieceSelectorNearbyLiving.class, LibPieceNames.SELECTOR_NEARBY_LIVING, LibPieceGroups.ENTITIES_INTRO);
-		selectorNearbyEnemies = register(PieceSelectorNearbyEnemies.class, LibPieceNames.SELECTOR_NEARBY_ENEMIES, LibPieceGroups.ENTITIES_INTRO);
-		selectorNearbyAnimals = register(PieceSelectorNearbyAnimals.class, LibPieceNames.SELECTOR_NEARBY_ANIMALS, LibPieceGroups.ENTITIES_INTRO);
-		selectorNearbyProjectiles = register(PieceSelectorNearbyProjectiles.class, LibPieceNames.SELECTOR_NEARBY_PROJECTILES, LibPieceGroups.ENTITIES_INTRO);
-		selectorNearbySmeltables = register(PieceSelectorNearbySmeltables.class, LibPieceNames.SELECTOR_NEARBY_SMELTABLES, LibPieceGroups.SMELTERY);
-		selectorLoopcastIndex = register(PieceSelectorLoopcastIndex.class, LibPieceNames.SELECTOR_LOOPCAST_INDEX, LibPieceGroups.LOOPCASTING, true);
-		selectorBlockBroken = register(PieceSelectorBlockBroken.class, LibPieceNames.SELECTOR_BLOCK_BROKEN, LibPieceGroups.TOOL_CASTING, true);
-		selectorBlockSideBroken = register(PieceSelectorBlockSideBroken.class, LibPieceNames.SELECTOR_BLOCK_SIDE_BROKEN, LibPieceGroups.TOOL_CASTING);
-		selectorAttackTarget = register(PieceSelectorAttackTarget.class, LibPieceNames.SELECTOR_ATTACK_TARGET, LibPieceGroups.TOOL_CASTING);
-		selectorSneakStatus = register(PieceSelectorSneakStatus.class, LibPieceNames.SELECTOR_SNEAK_STATUS, LibPieceGroups.FLOW_CONTROL);
-		selectorTime = register(PieceSelectorTime.class, LibPieceNames.SELECTOR_TIME, LibPieceGroups.EXOSUIT_CASTING, true);
-		selectorAttacker = register(PieceSelectorAttacker.class, LibPieceNames.SELECTOR_ATTACKER, LibPieceGroups.EXOSUIT_CASTING);
-		selectorDamageTaken = register(PieceSelectorDamageTaken.class, LibPieceNames.SELECTOR_DAMAGE_TAKEN, LibPieceGroups.EXOSUIT_CASTING);
-		selectorRulerVector = register(PieceSelectorRulerVector.class, LibPieceNames.SELECTOR_RULER_VECTOR, LibPieceGroups.PROJECTILES);
-		selectorItemPresence = register(PieceSelectorItemPresence.class, LibPieceNames.SELECTOR_ITEM_PRESENCE, LibPieceGroups.DETECTION_DYNAMICS);
-		selectorBlockPresence = register(PieceSelectorBlockPresence.class, LibPieceNames.SELECTOR_BLOCK_PRESENCE, LibPieceGroups.DETECTION_DYNAMICS);
-		selectorSaveVector = register(PieceSelectorSavedVector.class, LibPieceNames.SELECTOR_SAVED_VECTOR, LibPieceGroups.MEMORY_MANAGEMENT);
-		selectorEidosChangelog = register(PieceSelectorEidosChangelog.class, LibPieceNames.SELECTOR_EIDOS_CHANGELOG, LibPieceGroups.EIDOS_REVERSAL);
-		selectorNearbyCharges = register(PieceSelectorNearbyCharges.class, LibPieceNames.SELECTOR_NEARBY_CHARGES, LibPieceGroups.ENTITIES_INTRO);
-		selectorNearbyFallingBlocks = register(PieceSelectorNearbyFallingBlocks.class, LibPieceNames.SELECTOR_NEARBY_FALLING_BLOCKS, LibPieceGroups.ENTITIES_INTRO);
-		selectorNearbyGlowing = register(PieceSelectorNearbyGlowing.class, LibPieceNames.SELECTOR_NEARBY_GLOWING, LibPieceGroups.ENTITIES_INTRO);
-		selectorNearbyPlayers = register(PieceSelectorNearbyPlayers.class, LibPieceNames.SELECTOR_NEARBY_PLAYERS, LibPieceGroups.ENTITIES_INTRO);
-		selectorNearbyVehicles = register(PieceSelectorNearbyVehicles.class, LibPieceNames.SELECTOR_NEARBY_VEHICLES, LibPieceGroups.ENTITIES_INTRO);
-		selectorSuccessCounter = register(PieceSelectorSuccessCounter.class, LibPieceNames.SELECTOR_SUCCESS_COUNTER, LibPieceGroups.EXOSUIT_CASTING);
-		selectorCasterBattery = register(PieceSelectorCasterBattery.class, LibPieceNames.SELECTOR_CASTER_BATTERY, LibPieceGroups.EXOSUIT_CASTING);
-		selectorCasterEnergy = register(PieceSelectorCasterEnergy.class, LibPieceNames.SELECTOR_CASTER_ENERGY, LibPieceGroups.EXOSUIT_CASTING);
-		selectorIsElytraFlying = register(PieceSelectorIsElytraFlying.class, LibPieceNames.SELECTOR_IS_ELYTRA_FLYING, LibPieceGroups.MOVEMENT);
-		//selectorTransmission = register(PieceSelectorTransmission.class, LibPieceNames.SELECTOR_TRANSMISSION, LibPieceGroups.FLOW_CONTROL);
-		selectorItemCount = register(PieceSelectorItemCount.class, LibPieceNames.SELECTOR_ITEM_COUNT, LibPieceGroups.TOOL_CASTING);
-		selectorTickTime = register(PieceSelectorTickTime.class, LibPieceNames.SELECTOR_TICK_TIME, LibPieceGroups.FLOW_CONTROL);
-		selectorTps = register(PieceSelectorTps.class, LibPieceNames.SELECTOR_TPS, LibPieceGroups.FLOW_CONTROL);
+	// ========== TUTORIAL_2 ==========
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceConstantNumber>> CONSTANT_NUMBER =
+			SPELL_PIECES.register(LibPieceNames.CONSTANT_NUMBER, () -> PieceConstantNumber.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceConnector>> CONNECTOR =
+			SPELL_PIECES.register(LibPieceNames.CONNECTOR, () -> PieceConnector.class);
 
-		operatorSum = register(PieceOperatorSum.class, LibPieceNames.OPERATOR_SUM, LibPieceGroups.NUMBERS_INTRO, true);
-		operatorSubtract = register(PieceOperatorSubtract.class, LibPieceNames.OPERATOR_SUBTRACT, LibPieceGroups.NUMBERS_INTRO);
-		operatorMultiply = register(PieceOperatorMultiply.class, LibPieceNames.OPERATOR_MULTIPLY, LibPieceGroups.NUMBERS_INTRO);
-		operatorDivide = register(PieceOperatorDivide.class, LibPieceNames.OPERATOR_DIVIDE, LibPieceGroups.NUMBERS_INTRO);
-		operatorAbsolute = register(PieceOperatorAbsolute.class, LibPieceNames.OPERATOR_ABSOLUTE, LibPieceGroups.NUMBERS_INTRO);
-		operatorInverse = register(PieceOperatorInverse.class, LibPieceNames.OPERATOR_INVERSE, LibPieceGroups.NUMBERS_INTRO);
-		operatorModulus = register(PieceOperatorModulus.class, LibPieceNames.OPERATOR_MODULUS, LibPieceGroups.LOOPCASTING);
-		operatorRandom = register(PieceOperatorRandom.class, LibPieceNames.OPERATOR_RANDOM, LibPieceGroups.ELEMENTAL_ARTS);
-		operatorIntegerDivide = register(PieceOperatorIntegerDivide.class, LibPieceNames.OPERATOR_INTEGER_DIVIDE, LibPieceGroups.LOOPCASTING);
-		operatorSin = register(PieceOperatorSin.class, LibPieceNames.OPERATOR_SIN, LibPieceGroups.TRIGONOMETRY);
-		operatorCos = register(PieceOperatorCos.class, LibPieceNames.OPERATOR_COS, LibPieceGroups.TRIGONOMETRY);
-		operatorAsin = register(PieceOperatorAsin.class, LibPieceNames.OPERATOR_ASIN, LibPieceGroups.TRIGONOMETRY);
-		operatorAcos = register(PieceOperatorAcos.class, LibPieceNames.OPERATOR_ACOS, LibPieceGroups.TRIGONOMETRY);
-		operatorMin = register(PieceOperatorMin.class, LibPieceNames.OPERATOR_MIN, LibPieceGroups.SECONDARY_OPERATORS);
-		operatorMax = register(PieceOperatorMax.class, LibPieceNames.OPERATOR_MAX, LibPieceGroups.SECONDARY_OPERATORS);
-		operatorSquare = register(PieceOperatorSquare.class, LibPieceNames.OPERATOR_SQUARE, LibPieceGroups.SECONDARY_OPERATORS, true);
-		operatorCube = register(PieceOperatorCube.class, LibPieceNames.OPERATOR_CUBE, LibPieceGroups.SECONDARY_OPERATORS);
-		operatorPower = register(PieceOperatorPower.class, LibPieceNames.OPERATOR_POWER, LibPieceGroups.SECONDARY_OPERATORS);
-		operatorSquareRoot = register(PieceOperatorSquareRoot.class, LibPieceNames.OPERATOR_SQUARE_ROOT, LibPieceGroups.SECONDARY_OPERATORS);
-		operatorLog = register(PieceOperatorLog.class, LibPieceNames.OPERATOR_LOG, LibPieceGroups.SECONDARY_OPERATORS);
-		operatorCeiling = register(PieceOperatorCeiling.class, LibPieceNames.OPERATOR_CEILING, LibPieceGroups.SECONDARY_OPERATORS);
-		operatorFloor = register(PieceOperatorFloor.class, LibPieceNames.OPERATOR_FLOOR, LibPieceGroups.SECONDARY_OPERATORS);
-		operatorRound = register(PieceOperatorRound.class, LibPieceNames.OPERATOR_ROUND, LibPieceGroups.SECONDARY_OPERATORS);
-		operatorEntityPosition = register(PieceOperatorEntityPosition.class, LibPieceNames.OPERATOR_ENTITY_POSITION, LibPieceGroups.TUTORIAL_4);
-		operatorEntityLook = register(PieceOperatorEntityLook.class, LibPieceNames.OPERATOR_ENTITY_LOOK, LibPieceGroups.TUTORIAL_3);
-		operatorEntityMotion = register(PieceOperatorEntityMotion.class, LibPieceNames.OPERATOR_ENTITY_MOTION, LibPieceGroups.ENTITIES_INTRO);
-		operatorEntityMotion = register(PieceOperatorEntityAxialLook.class, LibPieceNames.OPERATOR_ENTITY_AXIAL_LOOK, LibPieceGroups.BLOCK_WORKS);
-		operatorClosestToPoint = register(PieceOperatorClosestToPoint.class, LibPieceNames.OPERATOR_CLOSEST_TO_POINT, LibPieceGroups.ENTITIES_INTRO, true);
-		operatorRandomEntity = register(PieceOperatorRandomEntity.class, LibPieceNames.OPERATOR_RANDOM_ENTITY, LibPieceGroups.ENTITIES_INTRO);
-		operatorFocusedEntity = register(PieceOperatorFocusedEntity.class, LibPieceNames.OPERATOR_FOCUSED_ENTITY, LibPieceGroups.ENTITIES_INTRO);
-		operatorListAdd = register(PieceOperatorListAdd.class, LibPieceNames.OPERATOR_LIST_ADD, LibPieceGroups.ENTITIES_INTRO);
-		operatorListRemove = register(PieceOperatorListRemove.class, LibPieceNames.OPERATOR_LIST_REMOVE, LibPieceGroups.ENTITIES_INTRO);
-		operatorVectorRaycast = register(PieceOperatorVectorRaycast.class, LibPieceNames.OPERATOR_VECTOR_RAYCAST, LibPieceGroups.TUTORIAL_4);
-		operatorVectorSum = register(PieceOperatorVectorSum.class, LibPieceNames.OPERATOR_VECTOR_SUM, LibPieceGroups.VECTORS_INTRO);
-		operatorVectorSubtract = register(PieceOperatorVectorSubtract.class, LibPieceNames.OPERATOR_VECTOR_SUBTRACT, LibPieceGroups.VECTORS_INTRO);
-		operatorVectorMultiply = register(PieceOperatorVectorMultiply.class, LibPieceNames.OPERATOR_VECTOR_MULTIPLY, LibPieceGroups.VECTORS_INTRO);
-		operatorVectorDivide = register(PieceOperatorVectorDivide.class, LibPieceNames.OPERATOR_VECTOR_DIVIDE, LibPieceGroups.VECTORS_INTRO);
-		operatorVectorCrossProduct = register(PieceOperatorVectorCrossProduct.class, LibPieceNames.OPERATOR_VECTOR_CROSS_PRODUCT, LibPieceGroups.VECTORS_INTRO);
-		operatorVectorNormalize = register(PieceOperatorVectorNormalize.class, LibPieceNames.OPERATOR_VECTOR_NORMALIZE, LibPieceGroups.VECTORS_INTRO);
-		operatorVectorNegate = register(PieceOperatorVectorNegate.class, LibPieceNames.OPERATOR_VECTOR_NEGATE, LibPieceGroups.VECTORS_INTRO);
-		operatorVectorMagnitude = register(PieceOperatorVectorMagnitude.class, LibPieceNames.OPERATOR_VECTOR_MAGNITUDE, LibPieceGroups.VECTORS_INTRO);
-		operatorVectorConstruct = register(PieceOperatorVectorConstruct.class, LibPieceNames.OPERATOR_VECTOR_CONSTRUCT, LibPieceGroups.VECTORS_INTRO, true);
-		operatorVectorExtractX = register(PieceOperatorVectorExtractX.class, LibPieceNames.OPERATOR_VECTOR_EXTRACT_X, LibPieceGroups.VECTORS_INTRO);
-		operatorVectorExtractY = register(PieceOperatorVectorExtractY.class, LibPieceNames.OPERATOR_VECTOR_EXTRACT_Y, LibPieceGroups.VECTORS_INTRO);
-		operatorVectorExtractZ = register(PieceOperatorVectorExtractZ.class, LibPieceNames.OPERATOR_VECTOR_EXTRACT_Z, LibPieceGroups.VECTORS_INTRO);
-		operatorVectorRaycastAxis = register(PieceOperatorVectorRaycastAxis.class, LibPieceNames.OPERATOR_VECTOR_RAYCAST_AXIS, LibPieceGroups.BLOCK_WORKS);
-		operatorVectorProject = register(PieceOperatorVectorProject.class, LibPieceNames.OPERATOR_VECTOR_PROJECT, LibPieceGroups.BLOCK_WORKS);
-		operatorVectorDotProduct = register(PieceOperatorVectorDotProduct.class, LibPieceNames.OPERATOR_VECTOR_DOT_PRODUCT, LibPieceGroups.TRIGONOMETRY);
-		operatorGammFunction = register(PieceOperatorGammaFunc.class, LibPieceNames.OPERATOR_GAMMA_FUNCTION, LibPieceGroups.TRIGONOMETRY);
-		operatorPlanarNormalVector = register(PieceOperatorPlanarNormalVector.class, LibPieceNames.OPERATOR_PLANAR_NORMAL_VECTOR, LibPieceGroups.TRIGONOMETRY);
-		operatorVectorRotate = register(PieceOperatorVectorRotate.class, LibPieceNames.OPERATOR_VECTOR_ROTATE, LibPieceGroups.TRIGONOMETRY);
-		operatorListExclusion = register(PieceOperatorListExclusion.class, LibPieceNames.OPERATOR_LIST_EXCLUSION, LibPieceGroups.LIST_OPERATIONS);
-		operatorListIntersection = register(PieceOperatorListIntersection.class, LibPieceNames.OPERATOR_LIST_INTERSECTION, LibPieceGroups.LIST_OPERATIONS);
-		operatorListSize = register(PieceOperatorListSize.class, LibPieceNames.OPERATOR_LIST_SIZE, LibPieceGroups.LIST_OPERATIONS);
-		operatorListUnion = register(PieceOperatorListUnion.class, LibPieceNames.OPERATOR_LIST_UNION, LibPieceGroups.LIST_OPERATIONS);
-		operatorRoot = register(PieceOperatorRoot.class, LibPieceNames.OPERATOR_ROOT, LibPieceGroups.NUMBERS_INTRO);
-		operatorSignum = register(PieceOperatorSignum.class, LibPieceNames.OPERATOR_SIGNUM, LibPieceGroups.TRIGONOMETRY);
-		operatorListIndex = register(PieceOperatorListIndex.class, LibPieceNames.OPERATOR_LIST_INDEX, LibPieceGroups.LIST_OPERATIONS);
-		operatorClosestToLine = register(PieceOperatorClosestToLine.class, LibPieceNames.OPERATOR_CLOSEST_TO_LINE, LibPieceGroups.ENTITIES_INTRO);
-		operatorEntityHealth = register(PieceOperatorEntityHealth.class, LibPieceNames.OPERATOR_ENTITY_HEALTH, LibPieceGroups.ENTITIES_INTRO);
-		operatorVectorAbsolute = register(PieceOperatorVectorAbsolute.class, LibPieceNames.OPERATOR_VECTOR_ABSOLUTE, LibPieceGroups.TRIGONOMETRY);
-		operatorEntityRaycast = register(PieceOperatorEntityRaycast.class, LibPieceNames.OPERATOR_ENTITY_RAYCAST, LibPieceGroups.ENTITIES_INTRO);
-		operatorBlockLight = register(PieceOperatorBlockLightLevel.class, LibPieceNames.OPERATOR_BLOCK_LIGHT, LibPieceGroups.BLOCK_WORKS);
-		operatorBlockHardness = register(PieceOperatorBlockHardness.class, LibPieceNames.OPERATOR_BLOCK_HARDNESS, LibPieceGroups.BLOCK_WORKS);
-		operatorBlockComparatorStrength = register(PieceOperatorBlockComparatorStrength.class, LibPieceNames.OPERATOR_BLOCK_COMPARATOR_STRENGTH, LibPieceGroups.BLOCK_WORKS);
-		operatorBlockSideSolidity = register(PieceOperatorBlockSideSolidity.class, LibPieceNames.OPERATOR_BLOCK_SIDE_SOLIDITY, LibPieceGroups.BLOCK_WORKS);
-		operatorBlockMiningLevel = register(PieceOperatorBlockMiningLevel.class, LibPieceNames.OPERATOR_BLOCK_MINING_LEVEL, LibPieceGroups.BLOCK_WORKS);
-		operatorVectorMaximum = register(PieceOperatorVectorMaximum.class, LibPieceNames.OPERATOR_VECTOR_MAXIMUM, LibPieceGroups.VECTORS_INTRO);
-		operatorVectorMinimum = register(PieceOperatorVectorMinimum.class, LibPieceNames.OPERATOR_VECTOR_MINIMUM, LibPieceGroups.VECTORS_INTRO);
-		operatorEntityHeight = register(PieceOperatorEntityHeight.class, LibPieceNames.OPERATOR_ENTITY_HEIGHT, LibPieceGroups.ENTITIES_INTRO);
-		operatorVectorSignum = register(PieceOperatorVectorSignum.class, LibPieceNames.OPERATOR_VECTOR_SIGNUM, LibPieceGroups.VECTORS_INTRO);
+	public static final DeferredHolder<Collection<Class<? extends SpellPiece>>, Collection<Class<? extends SpellPiece>>> TUTORIAL_2 =
+			ADVANCEMENT_GROUPS.register(LibPieceGroups.TUTORIAL_2,
+					() -> Arrays.asList(
+							PieceConstantNumber.class,
+							PieceConnector.class
+					));
 
-		constantNumber = register(PieceConstantNumber.class, LibPieceNames.CONSTANT_NUMBER, LibPieceGroups.TUTORIAL_2, true);
-		constantPi = register(PieceConstantPi.class, LibPieceNames.CONSTANT_PI, LibPieceGroups.TRIGONOMETRY, true);
-		constantE = register(PieceConstantE.class, LibPieceNames.CONSTANT_E, LibPieceGroups.SECONDARY_OPERATORS);
-		constantTau = register(PieceConstantTau.class, LibPieceNames.CONSTANT_TAU, LibPieceGroups.TRIGONOMETRY);
+	// ========== TUTORIAL_3 ==========
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceOperatorEntityLook>> OPERATOR_ENTITY_LOOK =
+			SPELL_PIECES.register(LibPieceNames.OPERATOR_ENTITY_LOOK, () -> PieceOperatorEntityLook.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceTrickAddMotion>> TRICK_ADD_MOTION =
+			SPELL_PIECES.register(LibPieceNames.TRICK_ADD_MOTION, () -> PieceTrickAddMotion.class);
 
-		constantWrapper = register(PieceConstantWrapper.class, LibPieceNames.CONSTANT_WRAPPER, LibPieceGroups.FLOW_CONTROL);
+	public static final DeferredHolder<Collection<Class<? extends SpellPiece>>, Collection<Class<? extends SpellPiece>>> TUTORIAL_3 =
+			ADVANCEMENT_GROUPS.register(LibPieceGroups.TUTORIAL_3,
+					() -> Arrays.asList(
+							PieceTrickAddMotion.class,
+							PieceOperatorEntityLook.class
+					));
 
-		connector = register(PieceConnector.class, LibPieceNames.CONNECTOR, LibPieceGroups.TUTORIAL_2);
-		crossConnector = register(PieceCrossConnector.class, LibPieceNames.CROSS_CONNECTOR, LibPieceGroups.MEMORY_MANAGEMENT);
-		errorSuppressor = register(PieceErrorSuppressor.class, LibPieceNames.ERROR_SUPPRESSOR, LibPieceGroups.TUTORIAL_4);
-		errorCatch = register(PieceErrorCatch.class, LibPieceNames.ERROR_CATCH, LibPieceGroups.TUTORIAL_4);
+	// ========== TUTORIAL_4 ==========
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceOperatorEntityPosition>> OPERATOR_ENTITY_POSITION =
+			SPELL_PIECES.register(LibPieceNames.OPERATOR_ENTITY_POSITION, () -> PieceOperatorEntityPosition.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceOperatorVectorRaycast>> OPERATOR_VECTOR_RAYCAST =
+			SPELL_PIECES.register(LibPieceNames.OPERATOR_VECTOR_RAYCAST, () -> PieceOperatorVectorRaycast.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceTrickExplode>> TRICK_EXPLODE =
+			SPELL_PIECES.register(LibPieceNames.TRICK_EXPLODE, () -> PieceTrickExplode.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceErrorSuppressor>> ERROR_SUPPRESSOR =
+			SPELL_PIECES.register(LibPieceNames.ERROR_SUPPRESSOR, () -> PieceErrorSuppressor.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceErrorCatch>> ERROR_CATCH =
+			SPELL_PIECES.register(LibPieceNames.ERROR_CATCH, () -> PieceErrorCatch.class);
 
-		trickDebug = register(PieceTrickDebug.class, LibPieceNames.TRICK_DEBUG, LibPieceGroups.TUTORIAL_1, true);
-		trickDelay = register(PieceTrickDelay.class, LibPieceNames.TRICK_DELAY, LibPieceGroups.FLOW_CONTROL, true);
-		trickDie = register(PieceTrickDie.class, LibPieceNames.TRICK_DIE, LibPieceGroups.FLOW_CONTROL);
-		trickEvaluate = register(PieceTrickEvaluate.class, LibPieceNames.TRICK_EVALUATE, LibPieceGroups.FLOW_CONTROL);
-		trickAddMotion = register(PieceTrickAddMotion.class, LibPieceNames.TRICK_ADD_MOTION, LibPieceGroups.TUTORIAL_3, true);
-		trickExplode = register(PieceTrickExplode.class, LibPieceNames.TRICK_EXPLODE, LibPieceGroups.TUTORIAL_4, true);
-		trickBreakBlock = register(PieceTrickBreakBlock.class, LibPieceNames.TRICK_BREAK_BLOCK, LibPieceGroups.BLOCK_WORKS);
-		trickBreakInSequence = register(PieceTrickBreakInSequence.class, LibPieceNames.TRICK_BREAK_IN_SEQUENCE, LibPieceGroups.BLOCK_WORKS, true);
-		trickPlaceBlock = register(PieceTrickPlaceBlock.class, LibPieceNames.TRICK_PLACE_BLOCK, LibPieceGroups.BLOCK_WORKS);
-		trickPlaceInSequence = register(PieceTrickPlaceInSequence.class, LibPieceNames.TRICK_PLACE_IN_SEQUENCE, LibPieceGroups.BLOCK_WORKS);
-		trickInfusion = register(PieceTrickInfusion.class, LibPieceNames.TRICK_INFUSION, LibPieceGroups.INFUSION, true);
-		trickBlink = register(PieceTrickBlink.class, LibPieceNames.TRICK_BLINK, LibPieceGroups.MOVEMENT, true);
-		trickMassBlink = register(PieceTrickMassBlink.class, LibPieceNames.TRICK_MASS_BLINK, LibPieceGroups.MOVEMENT);
-		trickMassAddMotion = register(PieceTrickMassAddMotion.class, LibPieceNames.TRICK_MASS_ADD_MOTION, LibPieceGroups.MOVEMENT);
-		trickMassExodus = register(PieceTrickMassExodus.class, LibPieceNames.TRICK_MASS_EXODUS, LibPieceGroups.MOVEMENT);
-		trickMoveBlock = register(PieceTrickMoveBlock.class, LibPieceNames.TRICK_MOVE_BLOCK, LibPieceGroups.BLOCK_MOVEMENT, true);
-		trickCollapseBlock = register(PieceTrickCollapseBlock.class, LibPieceNames.TRICK_COLLAPSE_BLOCK, LibPieceGroups.BLOCK_MOVEMENT);
-		trickSmite = register(PieceTrickSmite.class, LibPieceNames.TRICK_SMITE, LibPieceGroups.ELEMENTAL_ARTS, true);
-		trickBlaze = register(PieceTrickBlaze.class, LibPieceNames.TRICK_BLAZE, LibPieceGroups.ELEMENTAL_ARTS);
-		trickTorrent = register(PieceTrickTorrent.class, LibPieceNames.TRICK_TORRENT, LibPieceGroups.ELEMENTAL_ARTS);
-		trickOvergrow = register(PieceTrickOvergrow.class, LibPieceNames.TRICK_OVERGROW, LibPieceGroups.ELEMENTAL_ARTS);
-		trickGreaterInfusion = register(PieceTrickGreaterInfusion.class, LibPieceNames.TRICK_GREATER_INFUSION, LibPieceGroups.GREATER_INFUSION, true);
-		trickEbonyIvory = register(PieceTrickEbonyIvory.class, LibPieceNames.TRICK_EBONY_IVORY, LibPieceGroups.GREATER_INFUSION);
-		trickSpeed = register(PieceTrickSpeed.class, LibPieceNames.TRICK_SPEED, LibPieceGroups.POSITIVE_EFFECTS, true);
-		trickHaste = register(PieceTrickHaste.class, LibPieceNames.TRICK_HASTE, LibPieceGroups.POSITIVE_EFFECTS);
-		trickStrength = register(PieceTrickStrength.class, LibPieceNames.TRICK_STRENGTH, LibPieceGroups.POSITIVE_EFFECTS);
-		trickJumpBoost = register(PieceTrickJumpBoost.class, LibPieceNames.TRICK_JUMP_BOOST, LibPieceGroups.POSITIVE_EFFECTS);
-		trickWaterBreathing = register(PieceTrickWaterBreathing.class, LibPieceNames.TRICK_WATER_BREATHING, LibPieceGroups.POSITIVE_EFFECTS);
-		trickFireResistance = register(PieceTrickFireResistance.class, LibPieceNames.TRICK_FIRE_RESISTANCE, LibPieceGroups.POSITIVE_EFFECTS);
-		trickInvisibility = register(PieceTrickInvisibility.class, LibPieceNames.TRICK_INVISIBILITY, LibPieceGroups.POSITIVE_EFFECTS);
-		trickRegeneration = register(PieceTrickRegeneration.class, LibPieceNames.TRICK_REGENERATION, LibPieceGroups.POSITIVE_EFFECTS);
-		trickResistance = register(PieceTrickResistance.class, LibPieceNames.TRICK_RESISTANCE, LibPieceGroups.POSITIVE_EFFECTS);
-		trickSlowness = register(PieceTrickSlowness.class, LibPieceNames.TRICK_SLOWNESS, LibPieceGroups.NEGATIVE_EFFECTS);
-		trickWeakness = register(PieceTrickWeakness.class, LibPieceNames.TRICK_WEAKNESS, LibPieceGroups.NEGATIVE_EFFECTS);
-		trickWither = register(PieceTrickWither.class, LibPieceNames.TRICK_WITHER, LibPieceGroups.NEGATIVE_EFFECTS, true);
-		trickIgnite = register(PieceTrickIgnite.class, LibPieceNames.TRICK_IGNITE, LibPieceGroups.NEGATIVE_EFFECTS);
-		trickEidosAnchor = register(PieceTrickEidosAnchor.class, LibPieceNames.TRICK_EIDOS_ANCHOR, LibPieceGroups.EIDOS_REVERSAL);
-		trickEidosReversal = register(PieceTrickEidosReversal.class, LibPieceNames.TRICK_EIDOS_REVERSAL, LibPieceGroups.EIDOS_REVERSAL, true);
-		trickSmeltBlock = register(PieceTrickSmeltBlock.class, LibPieceNames.TRICK_SMELT_BLOCK, LibPieceGroups.SMELTERY);
-		trickSmeltItem = register(PieceTrickSmeltItem.class, LibPieceNames.TRICK_SMELT_ITEM, LibPieceGroups.SMELTERY, true);
-		trickConjureBlock = register(PieceTrickConjureBlock.class, LibPieceNames.TRICK_CONJURE_BLOCK, LibPieceGroups.BLOCK_CONJURATION, true);
-		trickConjureLight = register(PieceTrickConjureLight.class, LibPieceNames.TRICK_CONJURE_LIGHT, LibPieceGroups.BLOCK_CONJURATION);
-		trickConjureBlockSequence = register(PieceTrickConjureBlockSequence.class, LibPieceNames.TRICK_CONJURE_BLOCK_SEQUENCE, LibPieceGroups.BLOCK_CONJURATION);
-		trickSwitchTargetSlot = register(PieceTrickSwitchTargetSlot.class, LibPieceNames.TRICK_SWITCH_TARGET_SLOT, LibPieceGroups.DETECTION_DYNAMICS, true);
-		trickSaveVector = register(PieceTrickSaveVector.class, LibPieceNames.TRICK_SAVE_VECTOR, LibPieceGroups.MEMORY_MANAGEMENT, true);
-		trickBreakLoop = register(PieceTrickBreakLoop.class, LibPieceNames.TRICK_BREAK_LOOP, LibPieceGroups.FLOW_CONTROL);
-		trickPlaySound = register(PieceTrickPlaySound.class, LibPieceNames.TRICK_PLAY_SOUND, LibPieceGroups.MISC_TRICKS);
-		trickDetonate = register(PieceTrickDetonate.class, LibPieceNames.TRICK_DETONATE, LibPieceGroups.MEMORY_MANAGEMENT);
-		trickMoveBlockSequence = register(PieceTrickMoveBlockSequence.class, LibPieceNames.TRICK_MOVE_BLOCK_SEQUENCE, LibPieceGroups.BLOCK_MOVEMENT);
-		trickTill = register(PieceTrickTill.class, LibPieceNames.TRICK_TILL, LibPieceGroups.MISC_TRICKS);
-		trickTillSequence = register(PieceTrickTillSequence.class, LibPieceNames.TRICK_TILL_SEQUENCE, LibPieceGroups.MISC_TRICKS);
-		trickSpinChamber = register(PieceTrickSpinChamber.class, LibPieceNames.TRICK_SPIN_CHAMBER, LibPieceGroups.MISC_TRICKS);
-		trickChangeSlot = register(PieceTrickChangeSlot.class, LibPieceNames.TRICK_CHANGE_SLOT, LibPieceGroups.DETECTION_DYNAMICS);
-		trickSmeltBlockSequence = register(PieceTrickSmeltBlockSequence.class, LibPieceNames.TRICK_SMELT_BLOCK_SEQUENCE, LibPieceGroups.SMELTERY);
-		trickCollapseBlockSequence = register(PieceTrickCollapseBlockSequence.class, LibPieceNames.TRICK_COLLAPSE_BLOCK_SEQUENCE, LibPieceGroups.BLOCK_MOVEMENT);
-		trickDebugSpamless = register(PieceTrickDebugSpamless.class, LibPieceNames.TRICK_DEBUG_SPAMLESS, LibPieceGroups.TUTORIAL_1);
-		trickNightVision = register(PieceTrickNightVision.class, LibPieceNames.TRICK_NIGHT_VISION, LibPieceGroups.POSITIVE_EFFECTS);
-		trickParticleTrail = register(PieceTrickParticleTrail.class, LibPieceNames.TRICK_PARTICLE_TRAIL, LibPieceGroups.BLOCK_CONJURATION);
-		trickRussianRoulette = register(PieceTrickRussianRoulette.class, LibPieceNames.TRICK_RUSSIAN_ROULETTE, LibPieceGroups.FLOW_CONTROL);
-	}
+	public static final DeferredHolder<Collection<Class<? extends SpellPiece>>, Collection<Class<? extends SpellPiece>>> TUTORIAL_4 =
+			ADVANCEMENT_GROUPS.register(LibPieceGroups.TUTORIAL_4,
+					() -> Arrays.asList(
+							PieceTrickExplode.class,
+							PieceOperatorEntityPosition.class,
+							PieceOperatorVectorRaycast.class,
+							PieceErrorSuppressor.class,
+							PieceErrorCatch.class
+					));
 
-	public static PieceContainer register(Class<? extends SpellPiece> clazz, String name, String group) {
-		return register(clazz, name, group, false);
-	}
+	// ========== PROJECTILES ==========
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceSelectorFocalPoint>> SELECTOR_FOCAL_POINT =
+			SPELL_PIECES.register(LibPieceNames.SELECTOR_FOCAL_POINT, () -> PieceSelectorFocalPoint.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceSelectorRulerVector>> SELECTOR_RULER_VECTOR =
+			SPELL_PIECES.register(LibPieceNames.SELECTOR_RULER_VECTOR, () -> PieceSelectorRulerVector.class);
 
-	public static PieceContainer register(Class<? extends SpellPiece> clazz, String name, String group, boolean main) {
-		PsiAPI.registerSpellPieceAndTexture(ResourceLocation.fromNamespaceAndPath("psi", name), clazz);
-		PsiAPI.addPieceToGroup(clazz, ResourceLocation.fromNamespaceAndPath("psi", group), main);
-		return (Spell s) -> SpellPiece.create(clazz, s);
-	}
+	public static final DeferredHolder<Collection<Class<? extends SpellPiece>>, Collection<Class<? extends SpellPiece>>> PROJECTILES =
+			ADVANCEMENT_GROUPS.register(LibPieceGroups.PROJECTILES,
+					() -> Arrays.asList(
+							PieceSelectorFocalPoint.class,
+							PieceSelectorRulerVector.class
+					));
 
-	public interface PieceContainer {
-		SpellPiece get(Spell s);
-	}
+	// ========== ENTITIES_INTRO ==========
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceSelectorNearbyItems>> SELECTOR_NEARBY_ITEMS =
+			SPELL_PIECES.register(LibPieceNames.SELECTOR_NEARBY_ITEMS, () -> PieceSelectorNearbyItems.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceSelectorNearbyLiving>> SELECTOR_NEARBY_LIVING =
+			SPELL_PIECES.register(LibPieceNames.SELECTOR_NEARBY_LIVING, () -> PieceSelectorNearbyLiving.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceSelectorNearbyEnemies>> SELECTOR_NEARBY_ENEMIES =
+			SPELL_PIECES.register(LibPieceNames.SELECTOR_NEARBY_ENEMIES, () -> PieceSelectorNearbyEnemies.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceSelectorNearbyAnimals>> SELECTOR_NEARBY_ANIMALS =
+			SPELL_PIECES.register(LibPieceNames.SELECTOR_NEARBY_ANIMALS, () -> PieceSelectorNearbyAnimals.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceSelectorNearbyProjectiles>> SELECTOR_NEARBY_PROJECTILES =
+			SPELL_PIECES.register(LibPieceNames.SELECTOR_NEARBY_PROJECTILES, () -> PieceSelectorNearbyProjectiles.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceSelectorNearbyCharges>> SELECTOR_NEARBY_CHARGES =
+			SPELL_PIECES.register(LibPieceNames.SELECTOR_NEARBY_CHARGES, () -> PieceSelectorNearbyCharges.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceSelectorNearbyFallingBlocks>> SELECTOR_NEARBY_FALLING_BLOCKS =
+			SPELL_PIECES.register(LibPieceNames.SELECTOR_NEARBY_FALLING_BLOCKS, () -> PieceSelectorNearbyFallingBlocks.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceSelectorNearbyGlowing>> SELECTOR_NEARBY_GLOWING =
+			SPELL_PIECES.register(LibPieceNames.SELECTOR_NEARBY_GLOWING, () -> PieceSelectorNearbyGlowing.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceSelectorNearbyPlayers>> SELECTOR_NEARBY_PLAYERS =
+			SPELL_PIECES.register(LibPieceNames.SELECTOR_NEARBY_PLAYERS, () -> PieceSelectorNearbyPlayers.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceSelectorNearbyVehicles>> SELECTOR_NEARBY_VEHICLES =
+			SPELL_PIECES.register(LibPieceNames.SELECTOR_NEARBY_VEHICLES, () -> PieceSelectorNearbyVehicles.class);
 
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceOperatorEntityMotion>> OPERATOR_ENTITY_MOTION =
+			SPELL_PIECES.register(LibPieceNames.OPERATOR_ENTITY_MOTION, () -> PieceOperatorEntityMotion.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceOperatorEntityAxialLook>> OPERATOR_ENTITY_AXIAL_LOOK =
+			SPELL_PIECES.register(LibPieceNames.OPERATOR_ENTITY_AXIAL_LOOK, () -> PieceOperatorEntityAxialLook.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceOperatorClosestToPoint>> OPERATOR_CLOSEST_TO_POINT =
+			SPELL_PIECES.register(LibPieceNames.OPERATOR_CLOSEST_TO_POINT, () -> PieceOperatorClosestToPoint.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceOperatorRandomEntity>> OPERATOR_RANDOM_ENTITY =
+			SPELL_PIECES.register(LibPieceNames.OPERATOR_RANDOM_ENTITY, () -> PieceOperatorRandomEntity.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceOperatorFocusedEntity>> OPERATOR_FOCUSED_ENTITY =
+			SPELL_PIECES.register(LibPieceNames.OPERATOR_FOCUSED_ENTITY, () -> PieceOperatorFocusedEntity.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceOperatorListAdd>> OPERATOR_LIST_ADD =
+			SPELL_PIECES.register(LibPieceNames.OPERATOR_LIST_ADD, () -> PieceOperatorListAdd.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceOperatorListRemove>> OPERATOR_LIST_REMOVE =
+			SPELL_PIECES.register(LibPieceNames.OPERATOR_LIST_REMOVE, () -> PieceOperatorListRemove.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceOperatorClosestToLine>> OPERATOR_CLOSEST_TO_LINE =
+			SPELL_PIECES.register(LibPieceNames.OPERATOR_CLOSEST_TO_LINE, () -> PieceOperatorClosestToLine.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceOperatorEntityHealth>> OPERATOR_ENTITY_HEALTH =
+			SPELL_PIECES.register(LibPieceNames.OPERATOR_ENTITY_HEALTH, () -> PieceOperatorEntityHealth.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceOperatorEntityRaycast>> OPERATOR_ENTITY_RAYCAST =
+			SPELL_PIECES.register(LibPieceNames.OPERATOR_ENTITY_RAYCAST, () -> PieceOperatorEntityRaycast.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceOperatorEntityHeight>> OPERATOR_ENTITY_HEIGHT =
+			SPELL_PIECES.register(LibPieceNames.OPERATOR_ENTITY_HEIGHT, () -> PieceOperatorEntityHeight.class);
+
+	public static final DeferredHolder<Collection<Class<? extends SpellPiece>>, Collection<Class<? extends SpellPiece>>> ENTITIES_INTRO =
+			ADVANCEMENT_GROUPS.register(LibPieceGroups.ENTITIES_INTRO,
+					() -> Arrays.asList(
+							PieceOperatorClosestToPoint.class,
+							PieceSelectorNearbyItems.class,
+							PieceSelectorNearbyLiving.class,
+							PieceSelectorNearbyEnemies.class,
+							PieceSelectorNearbyAnimals.class,
+							PieceSelectorNearbyProjectiles.class,
+							PieceSelectorNearbyCharges.class,
+							PieceSelectorNearbyFallingBlocks.class,
+							PieceSelectorNearbyGlowing.class,
+							PieceSelectorNearbyPlayers.class,
+							PieceSelectorNearbyVehicles.class,
+							PieceOperatorEntityMotion.class,
+							PieceOperatorEntityAxialLook.class,
+							PieceOperatorRandomEntity.class,
+							PieceOperatorFocusedEntity.class,
+							PieceOperatorListAdd.class,
+							PieceOperatorListRemove.class,
+							PieceOperatorClosestToLine.class,
+							PieceOperatorEntityHealth.class,
+							PieceOperatorEntityRaycast.class,
+							PieceOperatorEntityHeight.class
+					));
+
+	// ========== TOOL_CASTING ==========
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceSelectorBlockBroken>> SELECTOR_BLOCK_BROKEN =
+			SPELL_PIECES.register(LibPieceNames.SELECTOR_BLOCK_BROKEN, () -> PieceSelectorBlockBroken.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceSelectorBlockSideBroken>> SELECTOR_BLOCK_SIDE_BROKEN =
+			SPELL_PIECES.register(LibPieceNames.SELECTOR_BLOCK_SIDE_BROKEN, () -> PieceSelectorBlockSideBroken.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceSelectorAttackTarget>> SELECTOR_ATTACK_TARGET =
+			SPELL_PIECES.register(LibPieceNames.SELECTOR_ATTACK_TARGET, () -> PieceSelectorAttackTarget.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceSelectorItemCount>> SELECTOR_ITEM_COUNT =
+			SPELL_PIECES.register(LibPieceNames.SELECTOR_ITEM_COUNT, () -> PieceSelectorItemCount.class);
+
+	public static final DeferredHolder<Collection<Class<? extends SpellPiece>>, Collection<Class<? extends SpellPiece>>> TOOL_CASTING =
+			ADVANCEMENT_GROUPS.register(LibPieceGroups.TOOL_CASTING,
+					() -> Arrays.asList(
+							PieceSelectorBlockBroken.class,
+							PieceSelectorBlockSideBroken.class,
+							PieceSelectorAttackTarget.class,
+							PieceSelectorItemCount.class
+					));
+
+	// ========== LOOPCASTING ==========
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceSelectorLoopcastIndex>> SELECTOR_LOOPCAST_INDEX =
+			SPELL_PIECES.register(LibPieceNames.SELECTOR_LOOPCAST_INDEX, () -> PieceSelectorLoopcastIndex.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceOperatorModulus>> OPERATOR_MODULUS =
+			SPELL_PIECES.register(LibPieceNames.OPERATOR_MODULUS, () -> PieceOperatorModulus.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceOperatorIntegerDivide>> OPERATOR_INTEGER_DIVIDE =
+			SPELL_PIECES.register(LibPieceNames.OPERATOR_INTEGER_DIVIDE, () -> PieceOperatorIntegerDivide.class);
+
+	public static final DeferredHolder<Collection<Class<? extends SpellPiece>>, Collection<Class<? extends SpellPiece>>> LOOPCASTING =
+			ADVANCEMENT_GROUPS.register(LibPieceGroups.LOOPCASTING,
+					() -> Arrays.asList(
+							PieceSelectorLoopcastIndex.class,
+							PieceOperatorModulus.class,
+							PieceOperatorIntegerDivide.class
+					));
+
+	// ========== FLOW_CONTROL ==========
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceSelectorSneakStatus>> SELECTOR_SNEAK_STATUS =
+			SPELL_PIECES.register(LibPieceNames.SELECTOR_SNEAK_STATUS, () -> PieceSelectorSneakStatus.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceSelectorTickTime>> SELECTOR_TICK_TIME =
+			SPELL_PIECES.register(LibPieceNames.SELECTOR_TICK_TIME, () -> PieceSelectorTickTime.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceSelectorTps>> SELECTOR_TPS =
+			SPELL_PIECES.register(LibPieceNames.SELECTOR_TPS, () -> PieceSelectorTps.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceTrickDelay>> TRICK_DELAY =
+			SPELL_PIECES.register(LibPieceNames.TRICK_DELAY, () -> PieceTrickDelay.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceTrickDie>> TRICK_DIE =
+			SPELL_PIECES.register(LibPieceNames.TRICK_DIE, () -> PieceTrickDie.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceTrickEvaluate>> TRICK_EVALUATE =
+			SPELL_PIECES.register(LibPieceNames.TRICK_EVALUATE, () -> PieceTrickEvaluate.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceTrickBreakLoop>> TRICK_BREAK_LOOP =
+			SPELL_PIECES.register(LibPieceNames.TRICK_BREAK_LOOP, () -> PieceTrickBreakLoop.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceConstantWrapper>> CONSTANT_WRAPPER =
+			SPELL_PIECES.register(LibPieceNames.CONSTANT_WRAPPER, () -> PieceConstantWrapper.class);
+
+	public static final DeferredHolder<Collection<Class<? extends SpellPiece>>, Collection<Class<? extends SpellPiece>>> FLOW_CONTROL =
+			ADVANCEMENT_GROUPS.register(LibPieceGroups.FLOW_CONTROL,
+					() -> Arrays.asList(
+							PieceTrickDelay.class,
+							PieceSelectorSneakStatus.class,
+							PieceSelectorTickTime.class,
+							PieceSelectorTps.class,
+							PieceTrickDie.class,
+							PieceTrickEvaluate.class,
+							PieceTrickBreakLoop.class,
+							PieceConstantWrapper.class
+					));
+
+	// ========== NUMBERS_INTRO ==========
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceOperatorSum>> OPERATOR_SUM =
+			SPELL_PIECES.register(LibPieceNames.OPERATOR_SUM, () -> PieceOperatorSum.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceOperatorSubtract>> OPERATOR_SUBTRACT =
+			SPELL_PIECES.register(LibPieceNames.OPERATOR_SUBTRACT, () -> PieceOperatorSubtract.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceOperatorMultiply>> OPERATOR_MULTIPLY =
+			SPELL_PIECES.register(LibPieceNames.OPERATOR_MULTIPLY, () -> PieceOperatorMultiply.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceOperatorDivide>> OPERATOR_DIVIDE =
+			SPELL_PIECES.register(LibPieceNames.OPERATOR_DIVIDE, () -> PieceOperatorDivide.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceOperatorAbsolute>> OPERATOR_ABSOLUTE =
+			SPELL_PIECES.register(LibPieceNames.OPERATOR_ABSOLUTE, () -> PieceOperatorAbsolute.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceOperatorInverse>> OPERATOR_INVERSE =
+			SPELL_PIECES.register(LibPieceNames.OPERATOR_INVERSE, () -> PieceOperatorInverse.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceOperatorRoot>> OPERATOR_ROOT =
+			SPELL_PIECES.register(LibPieceNames.OPERATOR_ROOT, () -> PieceOperatorRoot.class);
+
+	public static final DeferredHolder<Collection<Class<? extends SpellPiece>>, Collection<Class<? extends SpellPiece>>> NUMBERS_INTRO =
+			ADVANCEMENT_GROUPS.register(LibPieceGroups.NUMBERS_INTRO,
+					() -> Arrays.asList(
+							PieceOperatorSum.class,
+							PieceOperatorSubtract.class,
+							PieceOperatorMultiply.class,
+							PieceOperatorDivide.class,
+							PieceOperatorAbsolute.class,
+							PieceOperatorInverse.class,
+							PieceOperatorRoot.class
+					));
+
+	// ========== SECONDARY_OPERATORS ==========
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceOperatorSquare>> OPERATOR_SQUARE =
+			SPELL_PIECES.register(LibPieceNames.OPERATOR_SQUARE, () -> PieceOperatorSquare.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceOperatorCube>> OPERATOR_CUBE =
+			SPELL_PIECES.register(LibPieceNames.OPERATOR_CUBE, () -> PieceOperatorCube.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceOperatorPower>> OPERATOR_POWER =
+			SPELL_PIECES.register(LibPieceNames.OPERATOR_POWER, () -> PieceOperatorPower.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceOperatorSquareRoot>> OPERATOR_SQUARE_ROOT =
+			SPELL_PIECES.register(LibPieceNames.OPERATOR_SQUARE_ROOT, () -> PieceOperatorSquareRoot.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceOperatorLog>> OPERATOR_LOG =
+			SPELL_PIECES.register(LibPieceNames.OPERATOR_LOG, () -> PieceOperatorLog.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceOperatorCeiling>> OPERATOR_CEILING =
+			SPELL_PIECES.register(LibPieceNames.OPERATOR_CEILING, () -> PieceOperatorCeiling.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceOperatorFloor>> OPERATOR_FLOOR =
+			SPELL_PIECES.register(LibPieceNames.OPERATOR_FLOOR, () -> PieceOperatorFloor.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceOperatorRound>> OPERATOR_ROUND =
+			SPELL_PIECES.register(LibPieceNames.OPERATOR_ROUND, () -> PieceOperatorRound.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceConstantE>> CONSTANT_E =
+			SPELL_PIECES.register(LibPieceNames.CONSTANT_E, () -> PieceConstantE.class);
+
+	public static final DeferredHolder<Collection<Class<? extends SpellPiece>>, Collection<Class<? extends SpellPiece>>> SECONDARY_OPERATORS =
+			ADVANCEMENT_GROUPS.register(LibPieceGroups.SECONDARY_OPERATORS,
+					() -> Arrays.asList(
+							PieceOperatorSquare.class,
+							PieceOperatorCube.class,
+							PieceOperatorPower.class,
+							PieceOperatorSquareRoot.class,
+							PieceOperatorLog.class,
+							PieceOperatorCeiling.class,
+							PieceOperatorFloor.class,
+							PieceOperatorRound.class,
+							PieceConstantE.class
+					));
+
+	// ========== TRIGONOMETRY ==========
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceOperatorSin>> OPERATOR_SIN =
+			SPELL_PIECES.register(LibPieceNames.OPERATOR_SIN, () -> PieceOperatorSin.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceOperatorCos>> OPERATOR_COS =
+			SPELL_PIECES.register(LibPieceNames.OPERATOR_COS, () -> PieceOperatorCos.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceOperatorAsin>> OPERATOR_ASIN =
+			SPELL_PIECES.register(LibPieceNames.OPERATOR_ASIN, () -> PieceOperatorAsin.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceOperatorAcos>> OPERATOR_ACOS =
+			SPELL_PIECES.register(LibPieceNames.OPERATOR_ACOS, () -> PieceOperatorAcos.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceOperatorVectorDotProduct>> OPERATOR_VECTOR_DOT_PRODUCT =
+			SPELL_PIECES.register(LibPieceNames.OPERATOR_VECTOR_DOT_PRODUCT, () -> PieceOperatorVectorDotProduct.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceOperatorGammaFunc>> OPERATOR_GAMMA_FUNCTION =
+			SPELL_PIECES.register(LibPieceNames.OPERATOR_GAMMA_FUNCTION, () -> PieceOperatorGammaFunc.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceOperatorPlanarNormalVector>> OPERATOR_PLANAR_NORMAL_VECTOR =
+			SPELL_PIECES.register(LibPieceNames.OPERATOR_PLANAR_NORMAL_VECTOR, () -> PieceOperatorPlanarNormalVector.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceOperatorVectorRotate>> OPERATOR_VECTOR_ROTATE =
+			SPELL_PIECES.register(LibPieceNames.OPERATOR_VECTOR_ROTATE, () -> PieceOperatorVectorRotate.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceConstantPi>> CONSTANT_PI =
+			SPELL_PIECES.register(LibPieceNames.CONSTANT_PI, () -> PieceConstantPi.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceConstantTau>> CONSTANT_TAU =
+			SPELL_PIECES.register(LibPieceNames.CONSTANT_TAU, () -> PieceConstantTau.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceOperatorSignum>> OPERATOR_SIGNUM =
+			SPELL_PIECES.register(LibPieceNames.OPERATOR_SIGNUM, () -> PieceOperatorSignum.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceOperatorVectorAbsolute>> OPERATOR_VECTOR_ABSOLUTE =
+			SPELL_PIECES.register(LibPieceNames.OPERATOR_VECTOR_ABSOLUTE, () -> PieceOperatorVectorAbsolute.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceOperatorVectorSignum>> OPERATOR_VECTOR_SIGNUM =
+			SPELL_PIECES.register(LibPieceNames.OPERATOR_VECTOR_SIGNUM, () -> PieceOperatorVectorSignum.class);
+
+	public static final DeferredHolder<Collection<Class<? extends SpellPiece>>, Collection<Class<? extends SpellPiece>>> TRIGONOMETRY =
+			ADVANCEMENT_GROUPS.register(LibPieceGroups.TRIGONOMETRY,
+					() -> Arrays.asList(
+							PieceConstantPi.class,
+							PieceOperatorSin.class,
+							PieceOperatorCos.class,
+							PieceOperatorAsin.class,
+							PieceOperatorAcos.class,
+							PieceOperatorVectorDotProduct.class,
+							PieceOperatorGammaFunc.class,
+							PieceOperatorPlanarNormalVector.class,
+							PieceOperatorVectorRotate.class,
+							PieceConstantTau.class,
+							PieceOperatorSignum.class,
+							PieceOperatorVectorAbsolute.class,
+							PieceOperatorVectorSignum.class
+					));
+
+	// ========== VECTORS_INTRO ==========
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceOperatorVectorSum>> OPERATOR_VECTOR_SUM =
+			SPELL_PIECES.register(LibPieceNames.OPERATOR_VECTOR_SUM, () -> PieceOperatorVectorSum.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceOperatorVectorSubtract>> OPERATOR_VECTOR_SUBTRACT =
+			SPELL_PIECES.register(LibPieceNames.OPERATOR_VECTOR_SUBTRACT, () -> PieceOperatorVectorSubtract.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceOperatorVectorMultiply>> OPERATOR_VECTOR_MULTIPLY =
+			SPELL_PIECES.register(LibPieceNames.OPERATOR_VECTOR_MULTIPLY, () -> PieceOperatorVectorMultiply.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceOperatorVectorDivide>> OPERATOR_VECTOR_DIVIDE =
+			SPELL_PIECES.register(LibPieceNames.OPERATOR_VECTOR_DIVIDE, () -> PieceOperatorVectorDivide.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceOperatorVectorCrossProduct>> OPERATOR_VECTOR_CROSS_PRODUCT =
+			SPELL_PIECES.register(LibPieceNames.OPERATOR_VECTOR_CROSS_PRODUCT, () -> PieceOperatorVectorCrossProduct.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceOperatorVectorNormalize>> OPERATOR_VECTOR_NORMALIZE =
+			SPELL_PIECES.register(LibPieceNames.OPERATOR_VECTOR_NORMALIZE, () -> PieceOperatorVectorNormalize.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceOperatorVectorNegate>> OPERATOR_VECTOR_NEGATE =
+			SPELL_PIECES.register(LibPieceNames.OPERATOR_VECTOR_NEGATE, () -> PieceOperatorVectorNegate.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceOperatorVectorMagnitude>> OPERATOR_VECTOR_MAGNITUDE =
+			SPELL_PIECES.register(LibPieceNames.OPERATOR_VECTOR_MAGNITUDE, () -> PieceOperatorVectorMagnitude.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceOperatorVectorConstruct>> OPERATOR_VECTOR_CONSTRUCT =
+			SPELL_PIECES.register(LibPieceNames.OPERATOR_VECTOR_CONSTRUCT, () -> PieceOperatorVectorConstruct.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceOperatorVectorExtractX>> OPERATOR_VECTOR_EXTRACT_X =
+			SPELL_PIECES.register(LibPieceNames.OPERATOR_VECTOR_EXTRACT_X, () -> PieceOperatorVectorExtractX.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceOperatorVectorExtractY>> OPERATOR_VECTOR_EXTRACT_Y =
+			SPELL_PIECES.register(LibPieceNames.OPERATOR_VECTOR_EXTRACT_Y, () -> PieceOperatorVectorExtractY.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceOperatorVectorExtractZ>> OPERATOR_VECTOR_EXTRACT_Z =
+			SPELL_PIECES.register(LibPieceNames.OPERATOR_VECTOR_EXTRACT_Z, () -> PieceOperatorVectorExtractZ.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceOperatorVectorMaximum>> OPERATOR_VECTOR_MAXIMUM =
+			SPELL_PIECES.register(LibPieceNames.OPERATOR_VECTOR_MAXIMUM, () -> PieceOperatorVectorMaximum.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceOperatorVectorMinimum>> OPERATOR_VECTOR_MINIMUM =
+			SPELL_PIECES.register(LibPieceNames.OPERATOR_VECTOR_MINIMUM, () -> PieceOperatorVectorMinimum.class);
+
+	public static final DeferredHolder<Collection<Class<? extends SpellPiece>>, Collection<Class<? extends SpellPiece>>> VECTORS_INTRO =
+			ADVANCEMENT_GROUPS.register(LibPieceGroups.VECTORS_INTRO,
+					() -> Arrays.asList(
+							PieceOperatorVectorConstruct.class,
+							PieceOperatorVectorSum.class,
+							PieceOperatorVectorSubtract.class,
+							PieceOperatorVectorMultiply.class,
+							PieceOperatorVectorDivide.class,
+							PieceOperatorVectorCrossProduct.class,
+							PieceOperatorVectorNormalize.class,
+							PieceOperatorVectorNegate.class,
+							PieceOperatorVectorMagnitude.class,
+							PieceOperatorVectorExtractX.class,
+							PieceOperatorVectorExtractY.class,
+							PieceOperatorVectorExtractZ.class,
+							PieceOperatorVectorMaximum.class,
+							PieceOperatorVectorMinimum.class
+					));
+
+	// ========== BLOCK_WORKS ==========
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceOperatorVectorRaycastAxis>> OPERATOR_VECTOR_RAYCAST_AXIS =
+			SPELL_PIECES.register(LibPieceNames.OPERATOR_VECTOR_RAYCAST_AXIS, () -> PieceOperatorVectorRaycastAxis.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceOperatorVectorProject>> OPERATOR_VECTOR_PROJECT =
+			SPELL_PIECES.register(LibPieceNames.OPERATOR_VECTOR_PROJECT, () -> PieceOperatorVectorProject.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceOperatorBlockLightLevel>> OPERATOR_BLOCK_LIGHT =
+			SPELL_PIECES.register(LibPieceNames.OPERATOR_BLOCK_LIGHT, () -> PieceOperatorBlockLightLevel.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceOperatorBlockHardness>> OPERATOR_BLOCK_HARDNESS =
+			SPELL_PIECES.register(LibPieceNames.OPERATOR_BLOCK_HARDNESS, () -> PieceOperatorBlockHardness.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceOperatorBlockComparatorStrength>> OPERATOR_BLOCK_COMPARATOR_STRENGTH =
+			SPELL_PIECES.register(LibPieceNames.OPERATOR_BLOCK_COMPARATOR_STRENGTH, () -> PieceOperatorBlockComparatorStrength.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceOperatorBlockSideSolidity>> OPERATOR_BLOCK_SIDE_SOLIDITY =
+			SPELL_PIECES.register(LibPieceNames.OPERATOR_BLOCK_SIDE_SOLIDITY, () -> PieceOperatorBlockSideSolidity.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceOperatorBlockMiningLevel>> OPERATOR_BLOCK_MINING_LEVEL =
+			SPELL_PIECES.register(LibPieceNames.OPERATOR_BLOCK_MINING_LEVEL, () -> PieceOperatorBlockMiningLevel.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceTrickBreakBlock>> TRICK_BREAK_BLOCK =
+			SPELL_PIECES.register(LibPieceNames.TRICK_BREAK_BLOCK, () -> PieceTrickBreakBlock.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceTrickBreakInSequence>> TRICK_BREAK_IN_SEQUENCE =
+			SPELL_PIECES.register(LibPieceNames.TRICK_BREAK_IN_SEQUENCE, () -> PieceTrickBreakInSequence.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceTrickPlaceBlock>> TRICK_PLACE_BLOCK =
+			SPELL_PIECES.register(LibPieceNames.TRICK_PLACE_BLOCK, () -> PieceTrickPlaceBlock.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceTrickPlaceInSequence>> TRICK_PLACE_IN_SEQUENCE =
+			SPELL_PIECES.register(LibPieceNames.TRICK_PLACE_IN_SEQUENCE, () -> PieceTrickPlaceInSequence.class);
+
+	public static final DeferredHolder<Collection<Class<? extends SpellPiece>>, Collection<Class<? extends SpellPiece>>> BLOCK_WORKS =
+			ADVANCEMENT_GROUPS.register(LibPieceGroups.BLOCK_WORKS,
+					() -> Arrays.asList(
+							PieceTrickBreakInSequence.class,
+							PieceOperatorVectorRaycastAxis.class,
+							PieceOperatorVectorProject.class,
+							PieceOperatorBlockLightLevel.class,
+							PieceOperatorBlockHardness.class,
+							PieceOperatorBlockComparatorStrength.class,
+							PieceOperatorBlockSideSolidity.class,
+							PieceOperatorBlockMiningLevel.class,
+							PieceTrickBreakBlock.class,
+							PieceTrickPlaceBlock.class,
+							PieceTrickPlaceInSequence.class
+					));
+
+	// ========== BLOCK_MOVEMENT ==========
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceTrickMoveBlock>> TRICK_MOVE_BLOCK =
+			SPELL_PIECES.register(LibPieceNames.TRICK_MOVE_BLOCK, () -> PieceTrickMoveBlock.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceTrickCollapseBlock>> TRICK_COLLAPSE_BLOCK =
+			SPELL_PIECES.register(LibPieceNames.TRICK_COLLAPSE_BLOCK, () -> PieceTrickCollapseBlock.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceTrickMoveBlockSequence>> TRICK_MOVE_BLOCK_SEQUENCE =
+			SPELL_PIECES.register(LibPieceNames.TRICK_MOVE_BLOCK_SEQUENCE, () -> PieceTrickMoveBlockSequence.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceTrickCollapseBlockSequence>> TRICK_COLLAPSE_BLOCK_SEQUENCE =
+			SPELL_PIECES.register(LibPieceNames.TRICK_COLLAPSE_BLOCK_SEQUENCE, () -> PieceTrickCollapseBlockSequence.class);
+
+	public static final DeferredHolder<Collection<Class<? extends SpellPiece>>, Collection<Class<? extends SpellPiece>>> BLOCK_MOVEMENT =
+			ADVANCEMENT_GROUPS.register(LibPieceGroups.BLOCK_MOVEMENT,
+					() -> Arrays.asList(
+							PieceTrickMoveBlock.class,
+							PieceTrickCollapseBlock.class,
+							PieceTrickMoveBlockSequence.class,
+							PieceTrickCollapseBlockSequence.class
+					));
+
+	// ========== BLOCK_CONJURATION ==========
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceTrickConjureBlock>> TRICK_CONJURE_BLOCK =
+			SPELL_PIECES.register(LibPieceNames.TRICK_CONJURE_BLOCK, () -> PieceTrickConjureBlock.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceTrickConjureLight>> TRICK_CONJURE_LIGHT =
+			SPELL_PIECES.register(LibPieceNames.TRICK_CONJURE_LIGHT, () -> PieceTrickConjureLight.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceTrickConjureBlockSequence>> TRICK_CONJURE_BLOCK_SEQUENCE =
+			SPELL_PIECES.register(LibPieceNames.TRICK_CONJURE_BLOCK_SEQUENCE, () -> PieceTrickConjureBlockSequence.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceTrickParticleTrail>> TRICK_PARTICLE_TRAIL =
+			SPELL_PIECES.register(LibPieceNames.TRICK_PARTICLE_TRAIL, () -> PieceTrickParticleTrail.class);
+
+	public static final DeferredHolder<Collection<Class<? extends SpellPiece>>, Collection<Class<? extends SpellPiece>>> BLOCK_CONJURATION =
+			ADVANCEMENT_GROUPS.register(LibPieceGroups.BLOCK_CONJURATION,
+					() -> Arrays.asList(
+							PieceTrickConjureBlock.class,
+							PieceTrickConjureLight.class,
+							PieceTrickConjureBlockSequence.class,
+							PieceTrickParticleTrail.class
+					));
+
+	// ========== MOVEMENT ==========
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceTrickBlink>> TRICK_BLINK =
+			SPELL_PIECES.register(LibPieceNames.TRICK_BLINK, () -> PieceTrickBlink.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceTrickMassBlink>> TRICK_MASS_BLINK =
+			SPELL_PIECES.register(LibPieceNames.TRICK_MASS_BLINK, () -> PieceTrickMassBlink.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceTrickMassAddMotion>> TRICK_MASS_ADD_MOTION =
+			SPELL_PIECES.register(LibPieceNames.TRICK_MASS_ADD_MOTION, () -> PieceTrickMassAddMotion.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceTrickMassExodus>> TRICK_MASS_EXODUS =
+			SPELL_PIECES.register(LibPieceNames.TRICK_MASS_EXODUS, () -> PieceTrickMassExodus.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceSelectorIsElytraFlying>> SELECTOR_IS_ELYTRA_FLYING =
+			SPELL_PIECES.register(LibPieceNames.SELECTOR_IS_ELYTRA_FLYING, () -> PieceSelectorIsElytraFlying.class);
+
+	public static final DeferredHolder<Collection<Class<? extends SpellPiece>>, Collection<Class<? extends SpellPiece>>> MOVEMENT =
+			ADVANCEMENT_GROUPS.register(LibPieceGroups.MOVEMENT,
+					() -> Arrays.asList(
+							PieceTrickBlink.class,
+							PieceTrickMassBlink.class,
+							PieceTrickMassAddMotion.class,
+							PieceTrickMassExodus.class,
+							PieceSelectorIsElytraFlying.class
+					));
+
+	// ========== ELEMENTAL_ARTS ==========
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceOperatorRandom>> OPERATOR_RANDOM =
+			SPELL_PIECES.register(LibPieceNames.OPERATOR_RANDOM, () -> PieceOperatorRandom.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceTrickSmite>> TRICK_SMITE =
+			SPELL_PIECES.register(LibPieceNames.TRICK_SMITE, () -> PieceTrickSmite.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceTrickBlaze>> TRICK_BLAZE =
+			SPELL_PIECES.register(LibPieceNames.TRICK_BLAZE, () -> PieceTrickBlaze.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceTrickTorrent>> TRICK_TORRENT =
+			SPELL_PIECES.register(LibPieceNames.TRICK_TORRENT, () -> PieceTrickTorrent.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceTrickOvergrow>> TRICK_OVERGROW =
+			SPELL_PIECES.register(LibPieceNames.TRICK_OVERGROW, () -> PieceTrickOvergrow.class);
+
+	public static final DeferredHolder<Collection<Class<? extends SpellPiece>>, Collection<Class<? extends SpellPiece>>> ELEMENTAL_ARTS =
+			ADVANCEMENT_GROUPS.register(LibPieceGroups.ELEMENTAL_ARTS,
+					() -> Arrays.asList(
+							PieceTrickSmite.class,
+							PieceOperatorRandom.class,
+							PieceTrickBlaze.class,
+							PieceTrickTorrent.class,
+							PieceTrickOvergrow.class
+					));
+
+	// ========== POSITIVE_EFFECTS ==========
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceTrickSpeed>> TRICK_SPEED =
+			SPELL_PIECES.register(LibPieceNames.TRICK_SPEED, () -> PieceTrickSpeed.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceTrickHaste>> TRICK_HASTE =
+			SPELL_PIECES.register(LibPieceNames.TRICK_HASTE, () -> PieceTrickHaste.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceTrickStrength>> TRICK_STRENGTH =
+			SPELL_PIECES.register(LibPieceNames.TRICK_STRENGTH, () -> PieceTrickStrength.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceTrickJumpBoost>> TRICK_JUMP_BOOST =
+			SPELL_PIECES.register(LibPieceNames.TRICK_JUMP_BOOST, () -> PieceTrickJumpBoost.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceTrickWaterBreathing>> TRICK_WATER_BREATHING =
+			SPELL_PIECES.register(LibPieceNames.TRICK_WATER_BREATHING, () -> PieceTrickWaterBreathing.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceTrickFireResistance>> TRICK_FIRE_RESISTANCE =
+			SPELL_PIECES.register(LibPieceNames.TRICK_FIRE_RESISTANCE, () -> PieceTrickFireResistance.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceTrickInvisibility>> TRICK_INVISIBILITY =
+			SPELL_PIECES.register(LibPieceNames.TRICK_INVISIBILITY, () -> PieceTrickInvisibility.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceTrickRegeneration>> TRICK_REGENERATION =
+			SPELL_PIECES.register(LibPieceNames.TRICK_REGENERATION, () -> PieceTrickRegeneration.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceTrickResistance>> TRICK_RESISTANCE =
+			SPELL_PIECES.register(LibPieceNames.TRICK_RESISTANCE, () -> PieceTrickResistance.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceTrickNightVision>> TRICK_NIGHT_VISION =
+			SPELL_PIECES.register(LibPieceNames.TRICK_NIGHT_VISION, () -> PieceTrickNightVision.class);
+
+	public static final DeferredHolder<Collection<Class<? extends SpellPiece>>, Collection<Class<? extends SpellPiece>>> POSITIVE_EFFECTS =
+			ADVANCEMENT_GROUPS.register(LibPieceGroups.POSITIVE_EFFECTS,
+					() -> Arrays.asList(
+							PieceTrickSpeed.class,
+							PieceTrickHaste.class,
+							PieceTrickStrength.class,
+							PieceTrickJumpBoost.class,
+							PieceTrickWaterBreathing.class,
+							PieceTrickFireResistance.class,
+							PieceTrickInvisibility.class,
+							PieceTrickRegeneration.class,
+							PieceTrickResistance.class,
+							PieceTrickNightVision.class
+					));
+
+	// ========== NEGATIVE_EFFECTS ==========
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceTrickWither>> TRICK_WITHER =
+			SPELL_PIECES.register(LibPieceNames.TRICK_WITHER, () -> PieceTrickWither.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceTrickSlowness>> TRICK_SLOWNESS =
+			SPELL_PIECES.register(LibPieceNames.TRICK_SLOWNESS, () -> PieceTrickSlowness.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceTrickWeakness>> TRICK_WEAKNESS =
+			SPELL_PIECES.register(LibPieceNames.TRICK_WEAKNESS, () -> PieceTrickWeakness.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceTrickIgnite>> TRICK_IGNITE =
+			SPELL_PIECES.register(LibPieceNames.TRICK_IGNITE, () -> PieceTrickIgnite.class);
+
+	public static final DeferredHolder<Collection<Class<? extends SpellPiece>>, Collection<Class<? extends SpellPiece>>> NEGATIVE_EFFECTS =
+			ADVANCEMENT_GROUPS.register(LibPieceGroups.NEGATIVE_EFFECTS,
+					() -> Arrays.asList(
+							PieceTrickWither.class,
+							PieceTrickSlowness.class,
+							PieceTrickWeakness.class,
+							PieceTrickIgnite.class
+					));
+
+	// ========== EIDOS_REVERSAL ==========
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceSelectorEidosChangelog>> SELECTOR_EIDOS_CHANGELOG =
+			SPELL_PIECES.register(LibPieceNames.SELECTOR_EIDOS_CHANGELOG, () -> PieceSelectorEidosChangelog.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceTrickEidosAnchor>> TRICK_EIDOS_ANCHOR =
+			SPELL_PIECES.register(LibPieceNames.TRICK_EIDOS_ANCHOR, () -> PieceTrickEidosAnchor.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceTrickEidosReversal>> TRICK_EIDOS_REVERSAL =
+			SPELL_PIECES.register(LibPieceNames.TRICK_EIDOS_REVERSAL, () -> PieceTrickEidosReversal.class);
+
+	public static final DeferredHolder<Collection<Class<? extends SpellPiece>>, Collection<Class<? extends SpellPiece>>> EIDOS_REVERSAL =
+			ADVANCEMENT_GROUPS.register(LibPieceGroups.EIDOS_REVERSAL,
+					() -> Arrays.asList(
+							PieceTrickEidosReversal.class,
+							PieceSelectorEidosChangelog.class,
+							PieceTrickEidosAnchor.class
+					));
+
+	// ========== EXOSUIT_CASTING ==========
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceSelectorTime>> SELECTOR_TIME =
+			SPELL_PIECES.register(LibPieceNames.SELECTOR_TIME, () -> PieceSelectorTime.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceSelectorAttacker>> SELECTOR_ATTACKER =
+			SPELL_PIECES.register(LibPieceNames.SELECTOR_ATTACKER, () -> PieceSelectorAttacker.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceSelectorDamageTaken>> SELECTOR_DAMAGE_TAKEN =
+			SPELL_PIECES.register(LibPieceNames.SELECTOR_DAMAGE_TAKEN, () -> PieceSelectorDamageTaken.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceSelectorSuccessCounter>> SELECTOR_SUCCESS_COUNTER =
+			SPELL_PIECES.register(LibPieceNames.SELECTOR_SUCCESS_COUNTER, () -> PieceSelectorSuccessCounter.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceSelectorCasterBattery>> SELECTOR_CASTER_BATTERY =
+			SPELL_PIECES.register(LibPieceNames.SELECTOR_CASTER_BATTERY, () -> PieceSelectorCasterBattery.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceSelectorCasterEnergy>> SELECTOR_CASTER_ENERGY =
+			SPELL_PIECES.register(LibPieceNames.SELECTOR_CASTER_ENERGY, () -> PieceSelectorCasterEnergy.class);
+
+	public static final DeferredHolder<Collection<Class<? extends SpellPiece>>, Collection<Class<? extends SpellPiece>>> EXOSUIT_CASTING =
+			ADVANCEMENT_GROUPS.register(LibPieceGroups.EXOSUIT_CASTING,
+					() -> Arrays.asList(
+							PieceSelectorTime.class,
+							PieceSelectorAttacker.class,
+							PieceSelectorDamageTaken.class,
+							PieceSelectorSuccessCounter.class,
+							PieceSelectorCasterBattery.class,
+							PieceSelectorCasterEnergy.class
+					));
+
+	// ========== DETECTION_DYNAMICS ==========
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceSelectorItemPresence>> SELECTOR_ITEM_PRESENCE =
+			SPELL_PIECES.register(LibPieceNames.SELECTOR_ITEM_PRESENCE, () -> PieceSelectorItemPresence.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceSelectorBlockPresence>> SELECTOR_BLOCK_PRESENCE =
+			SPELL_PIECES.register(LibPieceNames.SELECTOR_BLOCK_PRESENCE, () -> PieceSelectorBlockPresence.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceTrickSwitchTargetSlot>> TRICK_SWITCH_TARGET_SLOT =
+			SPELL_PIECES.register(LibPieceNames.TRICK_SWITCH_TARGET_SLOT, () -> PieceTrickSwitchTargetSlot.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceTrickChangeSlot>> TRICK_CHANGE_SLOT =
+			SPELL_PIECES.register(LibPieceNames.TRICK_CHANGE_SLOT, () -> PieceTrickChangeSlot.class);
+
+	public static final DeferredHolder<Collection<Class<? extends SpellPiece>>, Collection<Class<? extends SpellPiece>>> DETECTION_DYNAMICS =
+			ADVANCEMENT_GROUPS.register(LibPieceGroups.DETECTION_DYNAMICS,
+					() -> Arrays.asList(
+							PieceTrickSwitchTargetSlot.class,
+							PieceSelectorItemPresence.class,
+							PieceSelectorBlockPresence.class,
+							PieceTrickChangeSlot.class
+					));
+
+	// ========== SMELTERY ==========
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceSelectorNearbySmeltables>> SELECTOR_NEARBY_SMELTABLES =
+			SPELL_PIECES.register(LibPieceNames.SELECTOR_NEARBY_SMELTABLES, () -> PieceSelectorNearbySmeltables.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceTrickSmeltBlock>> TRICK_SMELT_BLOCK =
+			SPELL_PIECES.register(LibPieceNames.TRICK_SMELT_BLOCK, () -> PieceTrickSmeltBlock.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceTrickSmeltItem>> TRICK_SMELT_ITEM =
+			SPELL_PIECES.register(LibPieceNames.TRICK_SMELT_ITEM, () -> PieceTrickSmeltItem.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceTrickSmeltBlockSequence>> TRICK_SMELT_BLOCK_SEQUENCE =
+			SPELL_PIECES.register(LibPieceNames.TRICK_SMELT_BLOCK_SEQUENCE, () -> PieceTrickSmeltBlockSequence.class);
+
+	public static final DeferredHolder<Collection<Class<? extends SpellPiece>>, Collection<Class<? extends SpellPiece>>> SMELTERY =
+			ADVANCEMENT_GROUPS.register(LibPieceGroups.SMELTERY,
+					() -> Arrays.asList(
+							PieceTrickSmeltItem.class,
+							PieceSelectorNearbySmeltables.class,
+							PieceTrickSmeltBlock.class,
+							PieceTrickSmeltBlockSequence.class
+					));
+
+	// ========== INFUSION / GREATER_INFUSION ==========
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceTrickInfusion>> TRICK_INFUSION =
+			SPELL_PIECES.register(LibPieceNames.TRICK_INFUSION, () -> PieceTrickInfusion.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceTrickGreaterInfusion>> TRICK_GREATER_INFUSION =
+			SPELL_PIECES.register(LibPieceNames.TRICK_GREATER_INFUSION, () -> PieceTrickGreaterInfusion.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceTrickEbonyIvory>> TRICK_EBONY_IVORY =
+			SPELL_PIECES.register(LibPieceNames.TRICK_EBONY_IVORY, () -> PieceTrickEbonyIvory.class);
+
+	public static final DeferredHolder<Collection<Class<? extends SpellPiece>>, Collection<Class<? extends SpellPiece>>> INFUSION =
+			ADVANCEMENT_GROUPS.register(LibPieceGroups.INFUSION,
+					() -> List.of(
+							PieceTrickInfusion.class
+					));
+
+	public static final DeferredHolder<Collection<Class<? extends SpellPiece>>, Collection<Class<? extends SpellPiece>>> GREATER_INFUSION =
+			ADVANCEMENT_GROUPS.register(LibPieceGroups.GREATER_INFUSION,
+					() -> Arrays.asList(
+							PieceTrickGreaterInfusion.class,
+							PieceTrickEbonyIvory.class
+					));
+
+	// ========== LIST_OPERATIONS ==========
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceOperatorListExclusion>> OPERATOR_LIST_EXCLUSION =
+			SPELL_PIECES.register(LibPieceNames.OPERATOR_LIST_EXCLUSION, () -> PieceOperatorListExclusion.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceOperatorListIntersection>> OPERATOR_LIST_INTERSECTION =
+			SPELL_PIECES.register(LibPieceNames.OPERATOR_LIST_INTERSECTION, () -> PieceOperatorListIntersection.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceOperatorListSize>> OPERATOR_LIST_SIZE =
+			SPELL_PIECES.register(LibPieceNames.OPERATOR_LIST_SIZE, () -> PieceOperatorListSize.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceOperatorListUnion>> OPERATOR_LIST_UNION =
+			SPELL_PIECES.register(LibPieceNames.OPERATOR_LIST_UNION, () -> PieceOperatorListUnion.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceOperatorListIndex>> OPERATOR_LIST_INDEX =
+			SPELL_PIECES.register(LibPieceNames.OPERATOR_LIST_INDEX, () -> PieceOperatorListIndex.class);
+
+	public static final DeferredHolder<Collection<Class<? extends SpellPiece>>, Collection<Class<? extends SpellPiece>>> LIST_OPERATIONS =
+			ADVANCEMENT_GROUPS.register(LibPieceGroups.LIST_OPERATIONS,
+					() -> Arrays.asList(
+							PieceOperatorListExclusion.class,
+							PieceOperatorListIntersection.class,
+							PieceOperatorListSize.class,
+							PieceOperatorListUnion.class,
+							PieceOperatorListIndex.class
+					));
+
+	// ========== EIDOS / MISC / RUSSIAN ROULETTE & OTHERS ==========
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceTrickPlaySound>> TRICK_PLAY_SOUND =
+			SPELL_PIECES.register(LibPieceNames.TRICK_PLAY_SOUND, () -> PieceTrickPlaySound.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceTrickTill>> TRICK_TILL =
+			SPELL_PIECES.register(LibPieceNames.TRICK_TILL, () -> PieceTrickTill.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceTrickTillSequence>> TRICK_TILL_SEQUENCE =
+			SPELL_PIECES.register(LibPieceNames.TRICK_TILL_SEQUENCE, () -> PieceTrickTillSequence.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceTrickSpinChamber>> TRICK_SPIN_CHAMBER =
+			SPELL_PIECES.register(LibPieceNames.TRICK_SPIN_CHAMBER, () -> PieceTrickSpinChamber.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceTrickRussianRoulette>> TRICK_RUSSIAN_ROULETTE =
+			SPELL_PIECES.register(LibPieceNames.TRICK_RUSSIAN_ROULETTE, () -> PieceTrickRussianRoulette.class);
+
+	public static final DeferredHolder<Collection<Class<? extends SpellPiece>>, Collection<Class<? extends SpellPiece>>> MISC_TRICKS =
+			ADVANCEMENT_GROUPS.register(LibPieceGroups.MISC_TRICKS,
+					() -> Arrays.asList(
+							PieceTrickPlaySound.class,
+							PieceTrickTill.class,
+							PieceTrickTillSequence.class,
+							PieceTrickSpinChamber.class,
+							PieceTrickRussianRoulette.class
+					));
 }
