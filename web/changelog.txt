@@ -1,4 +1,15 @@
 1.21-106
+* [API] Completely redone how spell pieces are registered. This will break ALL the addons.
+* Fixed Entity Axial Look not existing.
+* Fixed scavenge recipe not working.
+* Improved the measures to not get kicked for flying when a player is sent upwards.
+* Fixed ebony and ivory not being craftable
+* Fixed all blocks being unbreakable and not dropping anything.
+* Updated JEI, Gradle, ModDev and NeoForge (unilock)
+* Fixed Psi items removing attributes from other weapons/armors (unilock)
+* Fixed crash when pressing Master button with Psimetal armor (lightlike)
+* Fixed crash when inserting spells in the last slot of tools and armors (lightlike)
+1.21-105
 * Updated to newer NeoForge versions
 * Fixed crash when launching server
 * Added flash ring

@@ -10,6 +10,7 @@ package vazkii.psi.common.core.handler;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -48,8 +49,9 @@ public class AdditiveMotionHandler {
 						//We want a player's motion to be handled client-side to ensure movement consistency
 						//Otherwise it feels jerky.
 						if(entity instanceof ServerPlayer) {
+							((ServerPlayer) entity).connection.aboveGroundTickCount += - 2 * getMaximumFlyingTicks(entity);
 							MessageRegister.sendToPlayer((ServerPlayer) entity, motion);
-							((ServerPlayer) entity).connection.aboveGroundTickCount = -80; //Improve "Kicked for Flying"
+							((ServerPlayer) entity).connection.aboveGroundTickCount += - 2 * getMaximumFlyingTicks(entity);
 						} else {
 							entity.push(vec.x, vec.y, vec.z);
 						}
@@ -64,4 +66,20 @@ public class AdditiveMotionHandler {
 			toUpdate.clear();
 		}
 	}
+
+	/**
+	 * [VanillaCopy] of {@linkplain  net.minecraft.server.network.ServerGamePacketListenerImpl#getMaximumFlyingTicks}
+	 * but without the extra processing and endpoint bumping
+	 */
+
+	private static int getMaximumFlyingTicks(Entity entity) {
+		double d0 = entity.getGravity();
+		if (d0 < 1.0E-5F) {
+			return Integer.MAX_VALUE;
+		} else {
+			double d1 = 0.08 / d0;
+			return Mth.ceil(80.0 * Math.max(d1, 1.0));
+		}
+	}
+
 }

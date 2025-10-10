@@ -25,7 +25,7 @@ def main():
             changelog = changelog + '-m "' + line + '\n" '
 
     tag_success = os.system(
-        "git tag -a release-{}-{} {}".format(
+        "git tag -a release-{}-{} -m {}".format(
             mc_version, version, changelog
         )
     )
