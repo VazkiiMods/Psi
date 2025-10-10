@@ -51,16 +51,23 @@ public class ModCraftingRecipes {
 	public static final DeferredHolder<RecipeType<?>, RecipeType<SensorRemoveRecipe>> SENSOR_REMOVE_TYPE = RECIPE_TYPES.register("sensor_remove", PsiRecipeType::new);
 	public static final DeferredHolder<RecipeSerializer<?>, SimpleCraftingRecipeSerializer<SensorRemoveRecipe>> SENSOR_REMOVE_SERIALIZER = RECIPE_SERIALIZERS.register("sensor_remove", () -> new SimpleCraftingRecipeSerializer<>(SensorRemoveRecipe::new));
 
-	public static final DeferredHolder<RecipeType<?>, RecipeType<ITrickRecipe>> TRICK_RECIPE_TYPE = RECIPE_TYPES.register("trick_crafting", PsiRecipeType::new);
+	public static final DeferredHolder<RecipeType<?>, PsiTrickRecipeType<ITrickRecipe>> TRICK_RECIPE_TYPE = RECIPE_TYPES.register("trick_crafting", PsiTrickRecipeType::new);
 	public static final DeferredHolder<RecipeSerializer<?>, TrickRecipe.Serializer> TRICK_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("trick_crafting", TrickRecipe.Serializer::new);
 
-	public static final DeferredHolder<RecipeType<?>, RecipeType<DimensionTrickRecipe>> DIMENSION_TRICK_RECIPE_TYPE = RECIPE_TYPES.register("dimension_trick_crafting", PsiRecipeType::new);
+	public static final DeferredHolder<RecipeType<?>, PsiTrickRecipeType<DimensionTrickRecipe>> DIMENSION_TRICK_RECIPE_TYPE = RECIPE_TYPES.register("dimension_trick_crafting", PsiTrickRecipeType::new);
 	public static final DeferredHolder<RecipeSerializer<?>, DimensionTrickRecipe.Serializer> DIMENSION_TRICK_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("dimension_trick_crafting", DimensionTrickRecipe.Serializer::new);
 
 	public static final DeferredRegister<MapCodec<? extends ICondition>> CONDITION_CODECS = DeferredRegister.create(NeoForgeRegistries.Keys.CONDITION_CODECS, PsiAPI.MOD_ID);
 	public static DeferredHolder<MapCodec<? extends ICondition>, MapCodec<MagicalPsiCondition>> MAGICALPSI_CONDITION = CONDITION_CODECS.register("magipsi_enabled", () -> MagicalPsiCondition.CODEC);
 
-	private static class PsiRecipeType<T extends Recipe<?>> implements RecipeType<T> {
+	public static class PsiRecipeType<T extends Recipe<?>> implements RecipeType<T> {
+		@Override
+		public String toString() {
+			return BuiltInRegistries.RECIPE_TYPE.getKey(this).toString();
+		}
+	}
+
+	public static class PsiTrickRecipeType<T extends ITrickRecipe> implements RecipeType<T> {
 		@Override
 		public String toString() {
 			return BuiltInRegistries.RECIPE_TYPE.getKey(this).toString();

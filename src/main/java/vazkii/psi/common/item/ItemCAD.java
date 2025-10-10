@@ -452,8 +452,16 @@ public class ItemCAD extends Item implements ICAD {
 				predicate = r -> r.getPiece() == null;
 			}
 
-			Optional<RecipeHolder<ITrickRecipe>> recipe = world.getRecipeManager().getRecipeFor(ModCraftingRecipes.TRICK_RECIPE_TYPE.get(), inv, world)
-					.filter(r -> predicate.test(r.value()));
+			// I can't be bothered to properly deal with generics.
+			@SuppressWarnings("unchecked")
+			Optional<RecipeHolder<ITrickRecipe>> recipe =
+					ModCraftingRecipes.RECIPE_TYPES.getEntries().stream()
+							.filter(ro -> ro.get() instanceof ModCraftingRecipes.PsiTrickRecipeType)
+							.map(ro -> world.getRecipeManager().getRecipeFor((ModCraftingRecipes.PsiTrickRecipeType<ITrickRecipe>) ro.get(), inv, world))
+							.flatMap(Optional::stream)
+							.filter(r -> predicate.test(r.value()))
+							.findFirst();
+
 			if(recipe.isPresent()) {
 				ItemStack outCopy = recipe.get().value().getResultItem(RegistryAccess.EMPTY).copy();
 				int count = stack.getCount() * outCopy.getCount();
