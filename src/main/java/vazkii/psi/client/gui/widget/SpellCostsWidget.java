@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -14,6 +14,8 @@ import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
+
+import org.jetbrains.annotations.NotNull;
 
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.EnumCADStat;
@@ -39,7 +41,7 @@ public class SpellCostsWidget extends AbstractWidget {
 	}
 
 	@Override
-	public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float pTicks) {
+	public void renderWidget(@NotNull GuiGraphics graphics, int mouseX, int mouseY, float pTicks) {
 		parent.compileResult.left().ifPresent(compiledSpell -> {
 			int i = 0;
 			int statX = parent.left + parent.xSize + 3;
@@ -62,7 +64,7 @@ public class SpellCostsWidget extends AbstractWidget {
 				if(stat == EnumSpellStat.COST) {
 					s += " (" + Math.max(0, ItemCAD.getRealCost(cad, ItemStack.EMPTY, val)) + ")";
 				} else {
-					s += "/" + (cadVal == -1 ? "\u221E" : cadVal);
+					s += "/" + (cadVal == -1 ? "∞" : cadVal);
 				}
 
 				graphics.setColor(1f, 1f, 1f, 1F);
@@ -80,7 +82,7 @@ public class SpellCostsWidget extends AbstractWidget {
 	}
 
 	@Override
-	protected void updateWidgetNarration(NarrationElementOutput pNarrationElementOutput) {
+	protected void updateWidgetNarration(@NotNull NarrationElementOutput pNarrationElementOutput) {
 		this.defaultButtonNarrationText(pNarrationElementOutput);
 	}
 }

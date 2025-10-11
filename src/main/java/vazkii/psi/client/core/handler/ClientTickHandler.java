@@ -17,18 +17,17 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.RenderFrameEvent;
 
+import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.exosuit.PsiArmorEvent;
-import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.network.MessageRegister;
 import vazkii.psi.common.network.message.MessageTriggerJumpSpell;
 
 @OnlyIn(Dist.CLIENT)
-@EventBusSubscriber(value = Dist.CLIENT, modid = LibMisc.MOD_ID)
+@EventBusSubscriber(value = Dist.CLIENT, modid = PsiAPI.MOD_ID)
 public class ClientTickHandler {
 
 	public static int ticksInGame = 0;
 	public static float partialTicks = 0.0F;
-	public static float delta = 0.0F;
 	public static float total = 0.0F;
 
 	private static boolean lastJumpKeyState = false;
@@ -36,9 +35,7 @@ public class ClientTickHandler {
 	public ClientTickHandler() {}
 
 	private static void calcDelta() {
-		float oldTotal = total;
 		total = (float) ticksInGame + partialTicks;
-		delta = total - oldTotal;
 	}
 
 	@SubscribeEvent

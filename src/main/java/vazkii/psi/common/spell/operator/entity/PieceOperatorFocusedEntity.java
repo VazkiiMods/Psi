@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -37,16 +37,14 @@ public class PieceOperatorFocusedEntity extends PieceOperator {
 		Entity foundEntity = null;
 
 		final double finalDistance = 32;
-		double distance = finalDistance;
+		double distance;
 		HitResult pos = PieceOperatorVectorRaycast.raycast(e, finalDistance);
 		Vec3 positionVector = e.position();
 		if(e instanceof Player) {
 			positionVector = positionVector.add(0, e.getEyeHeight(), 0);
 		}
 
-		if(pos != null) {
-			distance = pos.getLocation().distanceTo(positionVector);
-		}
+		distance = pos.getLocation().distanceTo(positionVector);
 
 		Vec3 lookVector = e.getLookAngle();
 		Vec3 reachVector = positionVector.add(lookVector.x * finalDistance, lookVector.y * finalDistance, lookVector.z * finalDistance);
@@ -76,7 +74,7 @@ public class PieceOperatorFocusedEntity extends PieceOperator {
 				}
 			}
 
-			if(lookedEntity != null && (minDistance < distance || pos == null)) {
+			if(lookedEntity != null && minDistance < distance) {
 				foundEntity = lookedEntity;
 			}
 		}

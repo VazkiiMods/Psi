@@ -9,6 +9,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
+import org.jetbrains.annotations.NotNull;
+
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.spell.ISpellAcceptor;
 import vazkii.psi.api.spell.Spell;
@@ -25,7 +27,7 @@ public record MessageFlashRingSync(Spell spell) implements CustomPacketPayload {
 			MessageFlashRingSync::new);
 
 	@Override
-	public CustomPacketPayload.Type<? extends CustomPacketPayload> type() {
+	public CustomPacketPayload.@NotNull Type<? extends CustomPacketPayload> type() {
 		return TYPE;
 	}
 

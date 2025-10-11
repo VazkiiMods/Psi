@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -17,7 +17,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.level.BlockEvent;
 
-import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.internal.MathHelper;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.*;
@@ -67,11 +66,6 @@ public class PieceTrickSmeltBlockSequence extends PieceTrick {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
 		}
 
-		ItemStack tool = context.tool;
-		if(tool.isEmpty()) {
-			tool = PsiAPI.getPlayerCAD(context.caster);
-		}
-
 		Vector3 targetNorm = targetVal.copy().normalize();
 		for(BlockPos blockPos : MathHelper.getBlocksAlongRay(positionVal.toVec3D(), positionVal.copy().add(targetNorm.copy().multiply(maxBlocksInt)).toVec3D(), maxBlocksInt)) {
 			if(!context.isInRadius(Vector3.fromBlockPos(blockPos))) {
@@ -85,7 +79,7 @@ public class PieceTrickSmeltBlockSequence extends PieceTrick {
 			BlockState state = context.focalPoint.getCommandSenderWorld().getBlockState(blockPos);
 			Block block = state.getBlock();
 			ItemStack stack = new ItemStack(block);
-			BlockEvent.BreakEvent event = PieceTrickBreakBlock.createBreakEvent(state, context.caster, context.focalPoint.level(), blockPos, tool);
+			BlockEvent.BreakEvent event = PieceTrickBreakBlock.createBreakEvent(state, context.caster, context.focalPoint.level(), blockPos);
 			NeoForge.EVENT_BUS.post(event);
 			if(event.isCanceled()) {
 				return null;

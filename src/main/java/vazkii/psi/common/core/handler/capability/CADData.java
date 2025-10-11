@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -174,7 +174,7 @@ public class CADData implements ICapabilityProvider<ItemCapability<?, Void>, Voi
 	}
 
 	@Override
-	public CompoundTag serializeNBT(HolderLookup.Provider provider) {
+	public CompoundTag serializeNBT(HolderLookup.@NotNull Provider provider) {
 		CompoundTag compound = serializeForSynchronization();
 
 		ListTag memory = new ListTag();
@@ -195,7 +195,7 @@ public class CADData implements ICapabilityProvider<ItemCapability<?, Void>, Voi
 	}
 
 	@Override
-	public void deserializeNBT(HolderLookup.Provider provider, CompoundTag nbt) {
+	public void deserializeNBT(HolderLookup.@NotNull Provider provider, CompoundTag nbt) {
 		if(nbt.contains("Time", Tag.TAG_ANY_NUMERIC)) {
 			data.time = nbt.getInt("Time");
 		}
@@ -206,8 +206,8 @@ public class CADData implements ICapabilityProvider<ItemCapability<?, Void>, Voi
 		if(nbt.contains("Memory", Tag.TAG_LIST)) {
 			ListTag memory = nbt.getList("Memory", Tag.TAG_LIST);
 			List<Vector3> newVectors = Lists.newArrayList();
-			for(int i = 0; i < memory.size(); i++) {
-				ListTag vec = (ListTag) memory.get(i);
+			for(Tag tag : memory) {
+				ListTag vec = (ListTag) tag;
 				if(vec.getElementType() == Tag.TAG_DOUBLE && vec.size() >= 3) {
 					newVectors.add(new Vector3(vec.getDouble(0), vec.getDouble(1), vec.getDouble(2)));
 				} else {
@@ -224,22 +224,20 @@ public class CADData implements ICapabilityProvider<ItemCapability<?, Void>, Voi
 	}
 
 	public static class Data {
-		public int time;
-		public int battery;
-		public List<Vector3> vectors;
-
 		public static final Codec<Data> CODEC = RecordCodecBuilder.create(
 				builder -> builder.group(
 						Codec.INT.fieldOf("time").forGetter(data -> data.time),
 						Codec.INT.fieldOf("battery").forGetter(data -> data.battery),
 						Codec.list(Vector3.CODEC).fieldOf("vectors").forGetter(data -> data.vectors)
 				).apply(builder, Data::new));
-
 		public static final StreamCodec<RegistryFriendlyByteBuf, Data> STREAM_CODEC = StreamCodec.composite(
 				ByteBufCodecs.INT, data -> data.time,
 				ByteBufCodecs.INT, data -> data.battery,
 				Vector3.STREAM_CODEC.apply((ByteBufCodecs.list())), data -> data.vectors,
 				Data::new);
+		public int time;
+		public int battery;
+		public List<Vector3> vectors;
 
 		public Data(int time, int battery, List<Vector3> vectors) {
 			this.time = time;

@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -20,11 +20,11 @@ import vazkii.psi.api.exosuit.PsiArmorEvent;
 public abstract class ItemExosuitSensor extends Item implements IExosuitSensor {
 
 	// This should be modifiable, for the purposes of cosmetic addons like Magical Psi.
-	public static int defaultColor = ICADColorizer.DEFAULT_SPELL_COLOR;
-	public static int lightColor = 0xFFFFEC13;
-	public static int underwaterColor = 0xFF1350FF;
-	public static int fireColor = 0xFFFF1E13;
-	public static int lowHealthColor = 0xFFFF8CC5;
+	public static final int defaultColor = ICADColorizer.DEFAULT_SPELL_COLOR;
+	public static final int lightColor = 0xFFFFEC13;
+	public static final int underwaterColor = 0xFF1350FF;
+	public static final int fireColor = 0xFFFF1E13;
+	public static final int lowHealthColor = 0xFFFF8CC5;
 
 	public ItemExosuitSensor(Item.Properties properties) {
 		super(properties.stacksTo(1));

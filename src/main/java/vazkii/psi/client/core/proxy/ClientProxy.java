@@ -44,6 +44,7 @@ import net.neoforged.neoforge.registries.NewRegistryEvent;
 import org.jetbrains.annotations.NotNull;
 
 import vazkii.psi.api.ClientPsiAPI;
+import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.cad.ICADColorizer;
 import vazkii.psi.api.spell.ISpellAcceptor;
@@ -67,7 +68,6 @@ import vazkii.psi.common.core.proxy.IProxy;
 import vazkii.psi.common.entity.ModEntities;
 import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.lib.LibItemNames;
-import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.mixin.client.AccessorRenderBuffers;
 
 import java.util.Objects;
@@ -77,7 +77,7 @@ import static vazkii.psi.common.block.base.ModBlocks.containerCADAssembler;
 import static vazkii.psi.common.item.base.ModItems.*;
 
 @OnlyIn(Dist.CLIENT)
-@EventBusSubscriber(value = Dist.CLIENT, modid = LibMisc.MOD_ID)
+@EventBusSubscriber(value = Dist.CLIENT, modid = PsiAPI.MOD_ID)
 public class ClientProxy implements IProxy {
 
 	@SubscribeEvent

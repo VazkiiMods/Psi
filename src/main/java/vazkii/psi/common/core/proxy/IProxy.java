@@ -17,8 +17,6 @@ import net.neoforged.bus.api.IEventBus;
 
 import vazkii.psi.common.block.tile.TileProgrammer;
 
-import java.awt.*;
-
 public interface IProxy {
 	default void registerHandlers(IEventBus bus) {}
 
@@ -41,16 +39,6 @@ public interface IProxy {
 
 	default int getColorForColorizer(ItemStack colorizer) {
 		return -1;
-	}
-
-	@Deprecated
-	default Color getCADColor(ItemStack cadStack) {
-		return new Color(getColorForCAD(cadStack));
-	}
-
-	@Deprecated
-	default Color getColorizerColor(ItemStack colorizer) {
-		return new Color(getColorForColorizer(colorizer));
 	}
 
 	void sparkleFX(Level world, double x, double y, double z, float r, float g, float b, float motionX, float motionY, float motionZ, float size, int m);

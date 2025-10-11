@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -18,6 +18,8 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
+
+import org.jetbrains.annotations.NotNull;
 
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
@@ -37,7 +39,7 @@ public record MessageLoopcastSync(int entityId, byte loopcastState) implements C
 	}
 
 	@Override
-	public Type<? extends CustomPacketPayload> type() {
+	public @NotNull Type<? extends CustomPacketPayload> type() {
 		return TYPE;
 	}
 
@@ -51,12 +53,11 @@ public record MessageLoopcastSync(int entityId, byte loopcastState) implements C
 			if(mcPlayer == null) {
 				return;
 			}
+
 			Level world = mcPlayer.level();
 
-			Entity player = null;
-			if(world != null) {
-				player = world.getEntity(entityId);
-			} else if(mcPlayer.getId() == entityId) {
+			Entity player = world.getEntity(entityId);
+			if(mcPlayer.getId() == entityId) {
 				player = mcPlayer;
 			}
 

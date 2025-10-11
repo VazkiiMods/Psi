@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -35,7 +35,7 @@ public class PieceTrickBreakLoop extends PieceTrick {
 	}
 
 	@Override
-	public void addToMetadata(SpellMetadata meta) throws SpellCompilationException {
+	public void addToMetadata(SpellMetadata meta) {
 		// NO-OP
 	}
 

@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -51,15 +51,8 @@ public interface ICAD {
 	}
 
 	/**
-	 * Sets the component in this slot for the CAD.
-	 */
-	default void setCADComponent(ItemStack stack, ItemStack component) {
-		setComponent(stack, component);
-	}
-
-	/**
 	 * Creates a copy of two CADs' component lists in order to disassociate them.
-	 * 
+	 *
 	 * @param from The CAD to copy components from
 	 * @param to   The CAD to copy components to
 	 */
@@ -70,6 +63,13 @@ public interface ICAD {
 
 		List<Item> fromComponents = from.get(ModDataComponents.COMPONENTS);
 		to.set(ModDataComponents.COMPONENTS, new ArrayList<>(Objects.requireNonNullElseGet(fromComponents, () -> Collections.nCopies(EnumCADComponent.values().length, Items.AIR))));
+	}
+
+	/**
+	 * Sets the component in this slot for the CAD.
+	 */
+	default void setCADComponent(ItemStack stack, ItemStack component) {
+		setComponent(stack, component);
 	}
 
 	/**

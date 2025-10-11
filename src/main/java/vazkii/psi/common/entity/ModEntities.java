@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -14,13 +14,13 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.registries.RegisterEvent;
 
+import vazkii.psi.api.PsiAPI;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.lib.LibEntityNames;
-import vazkii.psi.common.lib.LibMisc;
 
 import static net.minecraft.world.entity.MobCategory.MISC;
 
-@EventBusSubscriber(modid = LibMisc.MOD_ID)
+@EventBusSubscriber(modid = PsiAPI.MOD_ID)
 public final class ModEntities {
 	public static EntityType<EntitySpellProjectile> spellProjectile;
 	public static EntityType<EntitySpellCircle> spellCircle;

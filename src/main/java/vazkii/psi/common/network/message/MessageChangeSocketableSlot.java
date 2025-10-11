@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -18,7 +18,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
+import org.jetbrains.annotations.NotNull;
+
 import vazkii.psi.api.PsiAPI;
+import vazkii.psi.api.cad.ISocketable;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 
@@ -32,7 +35,7 @@ public record MessageChangeSocketableSlot(int slot) implements CustomPacketPaylo
 			MessageChangeSocketableSlot::new);
 
 	@Override
-	public Type<? extends CustomPacketPayload> type() {
+	public @NotNull Type<? extends CustomPacketPayload> type() {
 		return TYPE;
 	}
 
@@ -40,13 +43,14 @@ public record MessageChangeSocketableSlot(int slot) implements CustomPacketPaylo
 		ctx.enqueueWork(() -> {
 			Player player = ctx.player();
 			ItemStack stack = player.getItemInHand(InteractionHand.MAIN_HAND);
-
-			if(!stack.isEmpty() && stack.getCapability(PsiAPI.SOCKETABLE_CAPABILITY) != null) {
-				stack.getCapability(PsiAPI.SOCKETABLE_CAPABILITY).setSelectedSlot(slot);
+			ISocketable socketable = stack.getCapability(PsiAPI.SOCKETABLE_CAPABILITY);
+			if(!stack.isEmpty() && socketable != null) {
+				socketable.setSelectedSlot(slot);
 			} else {
 				stack = player.getItemInHand(InteractionHand.OFF_HAND);
-				if(!stack.isEmpty() && stack.getCapability(PsiAPI.SOCKETABLE_CAPABILITY) != null) {
-					stack.getCapability(PsiAPI.SOCKETABLE_CAPABILITY).setSelectedSlot(slot);
+				socketable = stack.getCapability(PsiAPI.SOCKETABLE_CAPABILITY);
+				if(!stack.isEmpty() && socketable != null) {
+					socketable.setSelectedSlot(slot);
 				}
 			}
 			PlayerDataHandler.get(player).stopLoopcast();

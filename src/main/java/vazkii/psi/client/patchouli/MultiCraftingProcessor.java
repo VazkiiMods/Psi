@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -14,6 +14,8 @@ import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
+
+import org.jetbrains.annotations.NotNull;
 
 import vazkii.patchouli.api.IComponentProcessor;
 import vazkii.patchouli.api.IVariable;
@@ -34,6 +36,10 @@ public class MultiCraftingProcessor implements IComponentProcessor {
 
 	@Override
 	public void setup(Level level, IVariableProvider variables) {
+		if(Minecraft.getInstance().level == null) {
+			return;
+		}
+
 		List<RecipeHolder<CraftingRecipe>> recipeMap = Minecraft.getInstance().level.getRecipeManager().getAllRecipesFor(RecipeType.CRAFTING);
 		List<String> names = variables.get("recipes", level.registryAccess()).asStream(level.registryAccess()).map(IVariable::asString).toList();
 		this.recipes = new ArrayList<>();
@@ -58,7 +64,7 @@ public class MultiCraftingProcessor implements IComponentProcessor {
 	}
 
 	@Override
-	public IVariable process(Level level, String key) {
+	public @NotNull IVariable process(Level level, String key) {
 		if(recipes.isEmpty()) {
 			return null;
 		}

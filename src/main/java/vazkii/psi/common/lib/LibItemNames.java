@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -17,12 +17,7 @@ public final class LibItemNames {
 	public static final String IVORY_PSIMETAL = "ivory_psimetal";
 	public static final String EBONY_SUBSTANCE = "ebony_substance";
 	public static final String IVORY_SUBSTANCE = "ivory_substance";
-	public static final String MATERIAL = "material";
 	public static final String CAD = "cad";
-	public static final String CAD_ASSEMBLY = "cad_assembly";
-	public static final String CAD_CORE = "cad_core";
-	public static final String CAD_SOCKET = "cad_socket";
-	public static final String CAD_BATTERY = "cad_battery";
 	public static final String CAD_COLORIZER = "cad_colorizer_";
 	public static final String SPELL_DRIVE = "spell_drive";
 	public static final String PSIMETAL_SHOVEL = "psimetal_shovel";
@@ -35,7 +30,6 @@ public final class LibItemNames {
 	public static final String PSIMETAL_EXOSUIT_LEGGINGS = "psimetal_exosuit_leggings";
 	public static final String PSIMETAL_EXOSUIT_BOOTS = "psimetal_exosuit_boots";
 	public static final String EXOSUIT_CONTROLLER = "exosuit_controller";
-	public static final String EXOSUIT_SENSOR = "exosuit_sensor";
 	public static final String VECTOR_RULER = "vector_ruler";
 	public static final String CAD_ASSEMBLY_IRON = "cad_assembly_iron";
 	public static final String CAD_ASSEMBLY_GOLD = "cad_assembly_gold";
@@ -81,21 +75,13 @@ public final class LibItemNames {
 	public static final String CAD_COLORIZER_RAINBOW = "cad_colorizer_rainbow";
 	public static final String CAD_COLORIZER_PSI = "cad_colorizer_psi";
 	public static final String FLASH_RING = "flash_ring";
-	public static final String FLASH_RING_ACTIVE = "flash_ring_active";
 	public static final String SPELL_BULLET = "spell_bullet";
-	public static final String SPELL_BULLET_ACTIVE = "spell_bullet_active";
 	public static final String SPELL_BULLET_PROJECTILE = "spell_bullet_projectile";
-	public static final String SPELL_BULLET_PROJECTILE_ACTIVE = "spell_bullet_projectile_active";
 	public static final String SPELL_BULLET_LOOP = "spell_bullet_loop";
-	public static final String SPELL_BULLET_LOOP_ACTIVE = "spell_bullet_loop_active";
 	public static final String SPELL_BULLET_CIRCLE = "spell_bullet_circle";
-	public static final String SPELL_BULLET_CIRCLE_ACTIVE = "spell_bullet_circle_active";
 	public static final String SPELL_BULLET_GRENADE = "spell_bullet_grenade";
-	public static final String SPELL_BULLET_GRENADE_ACTIVE = "spell_bullet_grenade_active";
 	public static final String SPELL_BULLET_CHARGE = "spell_bullet_charge";
-	public static final String SPELL_BULLET_CHARGE_ACTIVE = "spell_bullet_charge_active";
 	public static final String SPELL_BULLET_MINE = "spell_bullet_mine";
-	public static final String SPELL_BULLET_MINE_ACTIVE = "spell_bullet_mine_active";
 	public static final String EXOSUIT_SENSOR_LIGHT = "exosuit_sensor_light";
 	public static final String EXOSUIT_SENSOR_WATER = "exosuit_sensor_water";
 	public static final String EXOSUIT_SENSOR_HEAT = "exosuit_sensor_heat";

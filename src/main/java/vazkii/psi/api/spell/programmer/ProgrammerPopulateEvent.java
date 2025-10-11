@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -23,7 +23,7 @@ public class ProgrammerPopulateEvent extends Event {
 	@NotNull
 	private Registry<Class<? extends SpellPiece>> spellPieceRegistry;
 
-	public ProgrammerPopulateEvent(Player entity, Registry<Class<? extends SpellPiece>> registry) {
+	public ProgrammerPopulateEvent(@NotNull Player entity, @NotNull Registry<Class<? extends SpellPiece>> registry) {
 		this.entity = entity;
 		this.spellPieceRegistry = registry;
 	}
@@ -38,8 +38,7 @@ public class ProgrammerPopulateEvent extends Event {
 		return spellPieceRegistry;
 	}
 
-	@NotNull
-	public void setSpellPieceRegistry(Registry<Class<? extends SpellPiece>> registry) {
+	public void setSpellPieceRegistry(@NotNull Registry<Class<? extends SpellPiece>> registry) {
 		spellPieceRegistry = registry;
 	}
 

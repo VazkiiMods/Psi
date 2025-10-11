@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -47,6 +47,10 @@ public class TileProgrammer extends BlockEntity {
 	public void onSpellChanged() {
 		boolean wasEnabled = enabled;
 		enabled = isEnabled();
+		if(getLevel() == null) {
+			return;
+		}
+
 		if(wasEnabled != enabled) {
 			getLevel().setBlockAndUpdate(worldPosition, getBlockState().setValue(BlockProgrammer.ENABLED, enabled));
 		}
@@ -54,14 +58,13 @@ public class TileProgrammer extends BlockEntity {
 	}
 
 	@Override
-	public void loadAdditional(CompoundTag cmp, HolderLookup.Provider pRegistries) {
+	public void loadAdditional(@NotNull CompoundTag cmp, HolderLookup.@NotNull Provider pRegistries) {
 		super.loadAdditional(cmp, pRegistries);
 		readPacketNBT(cmp);
 	}
 
-	@NotNull
 	@Override
-	public void saveAdditional(CompoundTag cmp, HolderLookup.Provider pRegistries) {
+	public void saveAdditional(@NotNull CompoundTag cmp, HolderLookup.@NotNull Provider pRegistries) {
 		super.saveAdditional(cmp, pRegistries);
 
 		CompoundTag spellCmp = new CompoundTag();
@@ -88,7 +91,7 @@ public class TileProgrammer extends BlockEntity {
 	}
 
 	@Override
-	public CompoundTag getUpdateTag(HolderLookup.Provider pRegistries) {
+	public @NotNull CompoundTag getUpdateTag(HolderLookup.@NotNull Provider pRegistries) {
 		CompoundTag cmp = new CompoundTag();
 		saveAdditional(cmp, pRegistries);
 		return cmp;
@@ -99,7 +102,7 @@ public class TileProgrammer extends BlockEntity {
 	}
 
 	@Override
-	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt, HolderLookup.Provider pRegistries) {
+	public void onDataPacket(@NotNull Connection net, ClientboundBlockEntityDataPacket pkt, HolderLookup.@NotNull Provider pRegistries) {
 		this.readPacketNBT(pkt.getTag());
 	}
 }

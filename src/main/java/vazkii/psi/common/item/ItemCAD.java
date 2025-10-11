@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -89,7 +89,7 @@ public class ItemCAD extends Item implements ICAD {
 	private static final String TAG_Z_LEGACY = "z";
 	private static final Pattern VECTOR_PREFIX_PATTERN = Pattern.compile("^storedVector(\\d+)$");
 
-	private static final Pattern FAKE_PLAYER_PATTERN = Pattern.compile("^(?:\\[.*])|(?:ComputerCraft)$");
+	private static final Pattern FAKE_PLAYER_PATTERN = Pattern.compile("^\\[.*]|ComputerCraft$");
 
 	private String contributorName = "";
 
@@ -97,92 +97,6 @@ public class ItemCAD extends Item implements ICAD {
 		super(properties
 				.stacksTo(1).rarity(Rarity.RARE).component(ModDataComponents.BULLETS.get(), ItemContainerContents.EMPTY).component(ModDataComponents.CAD_DATA, new CADData.Data(0, 0, Lists.newArrayList()))
 		);
-	}
-
-	@Override
-	public void verifyComponentsAfterLoad(ItemStack pStack) {
-		if(pStack.has(DataComponents.CUSTOM_DATA)) {
-			CustomData patch = pStack.get(DataComponents.CUSTOM_DATA);
-			CompoundTag compound = patch.copyTag();
-
-			ICADData data = pStack.getCapability(PsiAPI.CAD_DATA_CAPABILITY);
-			if(data != null) {
-				if(compound.contains(TAG_TIME_LEGACY)) {
-					data.setTime(compound.getInt(TAG_TIME_LEGACY));
-					compound.remove(TAG_TIME_LEGACY);
-				}
-
-				if(compound.contains(TAG_STORED_PSI_LEGACY)) {
-					data.setBattery(compound.getInt(TAG_STORED_PSI_LEGACY));
-					compound.remove(TAG_STORED_PSI_LEGACY);
-				}
-
-				HashSet<String> keys = new HashSet<>(compound.getAllKeys());
-
-				for(String key : keys) {
-					Matcher matcher = VECTOR_PREFIX_PATTERN.matcher(key);
-					if(matcher.find()) {
-						CompoundTag vec = compound.getCompound(key);
-						compound.remove(key);
-						int memory = Integer.parseInt(matcher.group(1));
-						Vector3 vector = new Vector3(vec.getDouble(TAG_X_LEGACY),
-								vec.getDouble(TAG_Y_LEGACY),
-								vec.getDouble(TAG_Z_LEGACY));
-						data.setSavedVector(memory, vector);
-					}
-				}
-
-				if(compound.contains("CapabilityData")) {
-					CompoundTag capability = compound.getCompound("CapabilityData");
-					compound.remove("CapabilityData");
-
-					if(capability.contains("Time")) {
-						data.setTime(capability.getInt("Time"));
-					}
-
-					if(capability.contains("Battery")) {
-						data.setBattery(capability.getInt("Battery"));
-					}
-
-					if(capability.contains("Memory")) {
-						ListTag memory = capability.getList("Memory", Tag.TAG_LIST);
-						for(int i = 0; i < memory.size(); i++) {
-							ListTag vec = (ListTag) memory.get(i);
-							if(vec.getElementType() == Tag.TAG_DOUBLE && vec.size() >= 3) {
-								data.setSavedVector(i, new Vector3(vec.getDouble(0), vec.getDouble(1), vec.getDouble(2)));
-							} else {
-								data.setSavedVector(i, null);
-							}
-						}
-					}
-				}
-			}
-
-			ISocketable sockets = getSocketable(pStack);
-			if(sockets != null && Minecraft.getInstance().level != null) {
-				for(EnumCADComponent components : EnumCADComponent.values()) {
-					if(compound.contains("component" + components.name())) {
-						ItemStack component = ItemStack.parseOptional(Minecraft.getInstance().level.registryAccess(), compound.getCompound("component" + components.name()));
-						component.applyComponents(DataComponentPatch.builder().set(DataComponents.CUSTOM_DATA, CustomData.of(compound.getCompound("component" + components.name()).getCompound("tag"))).build());
-						ItemCAD.setComponent(pStack, component);
-						compound.remove("component" + components.name());
-					}
-				}
-				for(int i = 0; i < ISocketable.MAX_ASSEMBLER_SLOTS; i++) {
-					if(compound.contains("bullet" + i)) {
-						ItemStack bullet = ItemStack.parseOptional(Minecraft.getInstance().level.registryAccess(), compound.getCompound("bullet" + i));
-						bullet.applyComponents(DataComponentPatch.builder().set(DataComponents.CUSTOM_DATA, CustomData.of(compound.getCompound("bullet" + i).getCompound("tag"))).build());
-						sockets.setBulletInSocket(i, bullet);
-						compound.remove("bullet" + i);
-					}
-				}
-				if(compound.contains("selectedSlot")) {
-					sockets.setSelectedSlot(compound.getInt("selectedSlot"));
-					compound.remove("selectedSlot");
-				}
-			}
-			CustomData.set(DataComponents.CUSTOM_DATA, pStack, compound);
-		}
 	}
 
 	public static Optional<ArrayList<Entity>> cast(Level world, Player player, PlayerData data, ItemStack bullet, ItemStack cad, int cd, int particles, float sound, Consumer<SpellContext> predicate) {
@@ -373,6 +287,96 @@ public class ItemCAD extends Item implements ICAD {
 		return subItems;
 	}
 
+	@Override
+	public void verifyComponentsAfterLoad(ItemStack pStack) {
+		if(pStack.has(DataComponents.CUSTOM_DATA)) {
+			CustomData patch = pStack.get(DataComponents.CUSTOM_DATA);
+			if(patch == null) {
+				return;
+			}
+
+			CompoundTag compound = patch.copyTag();
+
+			ICADData data = pStack.getCapability(PsiAPI.CAD_DATA_CAPABILITY);
+			if(data != null) {
+				if(compound.contains(TAG_TIME_LEGACY)) {
+					data.setTime(compound.getInt(TAG_TIME_LEGACY));
+					compound.remove(TAG_TIME_LEGACY);
+				}
+
+				if(compound.contains(TAG_STORED_PSI_LEGACY)) {
+					data.setBattery(compound.getInt(TAG_STORED_PSI_LEGACY));
+					compound.remove(TAG_STORED_PSI_LEGACY);
+				}
+
+				HashSet<String> keys = new HashSet<>(compound.getAllKeys());
+
+				for(String key : keys) {
+					Matcher matcher = VECTOR_PREFIX_PATTERN.matcher(key);
+					if(matcher.find()) {
+						CompoundTag vec = compound.getCompound(key);
+						compound.remove(key);
+						int memory = Integer.parseInt(matcher.group(1));
+						Vector3 vector = new Vector3(vec.getDouble(TAG_X_LEGACY),
+								vec.getDouble(TAG_Y_LEGACY),
+								vec.getDouble(TAG_Z_LEGACY));
+						data.setSavedVector(memory, vector);
+					}
+				}
+
+				if(compound.contains("CapabilityData")) {
+					CompoundTag capability = compound.getCompound("CapabilityData");
+					compound.remove("CapabilityData");
+
+					if(capability.contains("Time")) {
+						data.setTime(capability.getInt("Time"));
+					}
+
+					if(capability.contains("Battery")) {
+						data.setBattery(capability.getInt("Battery"));
+					}
+
+					if(capability.contains("Memory")) {
+						ListTag memory = capability.getList("Memory", Tag.TAG_LIST);
+						for(int i = 0; i < memory.size(); i++) {
+							ListTag vec = (ListTag) memory.get(i);
+							if(vec.getElementType() == Tag.TAG_DOUBLE && vec.size() >= 3) {
+								data.setSavedVector(i, new Vector3(vec.getDouble(0), vec.getDouble(1), vec.getDouble(2)));
+							} else {
+								data.setSavedVector(i, null);
+							}
+						}
+					}
+				}
+			}
+
+			ISocketable sockets = getSocketable(pStack);
+			if(sockets != null && Minecraft.getInstance().level != null) {
+				for(EnumCADComponent components : EnumCADComponent.values()) {
+					if(compound.contains("component" + components.name())) {
+						ItemStack component = ItemStack.parseOptional(Minecraft.getInstance().level.registryAccess(), compound.getCompound("component" + components.name()));
+						component.applyComponents(DataComponentPatch.builder().set(DataComponents.CUSTOM_DATA, CustomData.of(compound.getCompound("component" + components.name()).getCompound("tag"))).build());
+						ItemCAD.setComponent(pStack, component);
+						compound.remove("component" + components.name());
+					}
+				}
+				for(int i = 0; i < ISocketable.MAX_ASSEMBLER_SLOTS; i++) {
+					if(compound.contains("bullet" + i)) {
+						ItemStack bullet = ItemStack.parseOptional(Minecraft.getInstance().level.registryAccess(), compound.getCompound("bullet" + i));
+						bullet.applyComponents(DataComponentPatch.builder().set(DataComponents.CUSTOM_DATA, CustomData.of(compound.getCompound("bullet" + i).getCompound("tag"))).build());
+						sockets.setBulletInSocket(i, bullet);
+						compound.remove("bullet" + i);
+					}
+				}
+				if(compound.contains("selectedSlot")) {
+					sockets.setSelectedSlot(compound.getInt("selectedSlot"));
+					compound.remove("selectedSlot");
+				}
+			}
+			CustomData.set(DataComponents.CUSTOM_DATA, pStack, compound);
+		}
+	}
+
 	private ICADData getCADData(ItemStack stack) {
 		return Objects.requireNonNullElse(stack.getCapability(PsiAPI.CAD_DATA_CAPABILITY), new CADData(stack));
 	}
@@ -382,7 +386,7 @@ public class ItemCAD extends Item implements ICAD {
 	}
 
 	@Override
-	public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
+	public void inventoryTick(@NotNull ItemStack stack, @NotNull Level level, @NotNull Entity entity, int slotId, boolean isSelected) {
 		if(!getComponentInSlot(stack, EnumCADComponent.DYE).isEmpty() && ContributorSpellCircleHandler.isContributor(entity.getName().getString().toLowerCase(Locale.ROOT))) {
 			if(this.contributorName.equalsIgnoreCase(entity.getName().getString())) {
 				this.contributorName = entity.getName().getString();
@@ -391,11 +395,14 @@ public class ItemCAD extends Item implements ICAD {
 	}
 
 	@Override
-	public InteractionResult useOn(UseOnContext ctx) {
+	public @NotNull InteractionResult useOn(UseOnContext ctx) {
 		Level worldIn = ctx.getLevel();
 		InteractionHand hand = ctx.getHand();
 		BlockPos pos = ctx.getClickedPos();
 		Player playerIn = ctx.getPlayer();
+		if(playerIn == null) {
+			return InteractionResult.FAIL;
+		}
 		ItemStack stack = playerIn.getItemInHand(hand);
 		Block block = worldIn.getBlockState(pos).getBlock();
 		return block == ModBlocks.programmer.get() ? ((BlockProgrammer) block).setSpell(worldIn, pos, playerIn, stack) : InteractionResult.PASS;
@@ -618,7 +625,7 @@ public class ItemCAD extends Item implements ICAD {
 	}
 
 	@Override
-	public boolean isCorrectToolForDrops(ItemStack stack, @NotNull BlockState state) {
+	public boolean isCorrectToolForDrops(@NotNull ItemStack stack, @NotNull BlockState state) {
 		if(!PieceTrickBreakBlock.doingHarvestCheck.get()) {
 			return super.isCorrectToolForDrops(stack, state);
 		}
@@ -631,7 +638,7 @@ public class ItemCAD extends Item implements ICAD {
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public void appendHoverText(ItemStack stack, @Nullable TooltipContext context, List<Component> tooltip, TooltipFlag advanced) {
+	public void appendHoverText(@NotNull ItemStack stack, @Nullable TooltipContext context, @NotNull List<Component> tooltip, @NotNull TooltipFlag advanced) {
 		TooltipHelper.tooltipIfShift(tooltip, () -> {
 			Component componentName = ISocketable.getSocketedItemName(stack, "psimisc.none");
 			tooltip.add(Component.translatable("psimisc.spell_selected", componentName));
@@ -648,11 +655,11 @@ public class ItemCAD extends Item implements ICAD {
 
 				for(EnumCADStat stat : EnumCADStat.class.getEnumConstants()) {
 					if(stat.getSourceType() == componentType) {
-						String shrt = stat.getName();
+						String statName = stat.getName();
 						int statVal = getStatValue(stack, stat);
-						String statValStr = statVal == -1 ? "\u221E" : "" + statVal;
+						String statValStr = statVal == -1 ? "∞" : "" + statVal;
 
-						tooltip.add(Component.translatable(shrt).withStyle(ChatFormatting.AQUA).append(": " + statValStr));
+						tooltip.add(Component.translatable(statName).withStyle(ChatFormatting.AQUA).append(": " + statValStr));
 					}
 				}
 			}
@@ -660,7 +667,7 @@ public class ItemCAD extends Item implements ICAD {
 	}
 
 	@Override
-	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+	public boolean shouldCauseReequipAnimation(@NotNull ItemStack oldStack, @NotNull ItemStack newStack, boolean slotChanged) {
 		return !ItemStack.isSameItem(oldStack, newStack);
 	}
 }

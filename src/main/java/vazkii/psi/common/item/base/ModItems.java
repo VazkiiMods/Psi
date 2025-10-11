@@ -13,6 +13,7 @@ import net.minecraft.world.item.*;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
+import vazkii.psi.api.PsiAPI;
 import vazkii.psi.common.block.base.ModBlocks;
 import vazkii.psi.common.item.*;
 import vazkii.psi.common.item.armor.ItemPsimetalExosuitBoots;
@@ -26,11 +27,10 @@ import vazkii.psi.common.item.tool.ItemPsimetalShovel;
 import vazkii.psi.common.item.tool.ItemPsimetalSword;
 import vazkii.psi.common.lib.LibBlockNames;
 import vazkii.psi.common.lib.LibItemNames;
-import vazkii.psi.common.lib.LibMisc;
 
 @SuppressWarnings("unused")
 public final class ModItems {
-	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(BuiltInRegistries.ITEM, LibMisc.MOD_ID);
+	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(BuiltInRegistries.ITEM, PsiAPI.MOD_ID);
 
 	public static final DeferredHolder<Item, Item> cadAssemblerItem = ITEMS.register(LibBlockNames.CAD_ASSEMBLER, () -> new BlockItem(ModBlocks.cadAssembler.get(), defaultBuilder().rarity(Rarity.UNCOMMON)));
 	public static final DeferredHolder<Item, Item> programmerItem = ITEMS.register(LibBlockNames.PROGRAMMER, () -> new BlockItem(ModBlocks.programmer.get(), defaultBuilder().rarity(Rarity.UNCOMMON)));

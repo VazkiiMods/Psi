@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -13,24 +13,10 @@ import java.util.Locale;
 
 public class Quat {
 
-	public double x;
-	public double y;
-	public double z;
-	public double s;
-
-	public Quat() {
-		s = 1.0D;
-		x = 0.0D;
-		y = 0.0D;
-		z = 0.0D;
-	}
-
-	public Quat(Quat quat) {
-		x = quat.x;
-		y = quat.y;
-		z = quat.z;
-		s = quat.s;
-	}
+	public final double x;
+	public final double y;
+	public final double z;
+	public final double s;
 
 	public Quat(double d, double d1, double d2, double d3) {
 		x = d1;
@@ -47,50 +33,6 @@ public class Quat {
 
 	public static Quat aroundAxis(Vector3 axis, double angle) {
 		return aroundAxis(axis.x, axis.y, axis.z, angle);
-	}
-
-	public void set(Quat quat) {
-		x = quat.x;
-		y = quat.y;
-		z = quat.z;
-		s = quat.s;
-	}
-
-	public void multiply(Quat quat) {
-		double d = s * quat.s - x * quat.x - y * quat.y - z * quat.z;
-		double d1 = s * quat.x + x * quat.s - y * quat.z + z * quat.y;
-		double d2 = s * quat.y + x * quat.z + y * quat.s - z * quat.x;
-		double d3 = s * quat.z - x * quat.y + y * quat.x + z * quat.s;
-		s = d;
-		x = d1;
-		y = d2;
-		z = d3;
-	}
-
-	public void rightMultiply(Quat quat) {
-		double d = s * quat.s - x * quat.x - y * quat.y - z * quat.z;
-		double d1 = s * quat.x + x * quat.s + y * quat.z - z * quat.y;
-		double d2 = s * quat.y - x * quat.z + y * quat.s + z * quat.x;
-		double d3 = s * quat.z + x * quat.y - y * quat.x + z * quat.s;
-		s = d;
-		x = d1;
-		y = d2;
-		z = d3;
-	}
-
-	public double mag() {
-		return Math.sqrt(x * x + y * y + z * z + s * s);
-	}
-
-	public void normalize() {
-		double d = mag();
-		if(d == 0.0D) {} else {
-			d = 1.0D / d;
-			x *= d;
-			y *= d;
-			z *= d;
-			s *= d;
-		}
 	}
 
 	public void rotate(Vector3 vec) {

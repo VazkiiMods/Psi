@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -22,6 +22,7 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import vazkii.psi.api.internal.Vector3;
@@ -48,8 +49,12 @@ public class ItemVectorRuler extends Item implements IHUDItem {
 	}
 
 	@Override
-	public InteractionResult useOn(UseOnContext ctx) {
+	public @NotNull InteractionResult useOn(UseOnContext ctx) {
 		BlockPos pos = ctx.getClickedPos();
+
+		if(ctx.getPlayer() == null) {
+			return InteractionResult.FAIL;
+		}
 
 		ItemStack stack = ctx.getPlayer().getItemInHand(ctx.getHand());
 
@@ -65,7 +70,7 @@ public class ItemVectorRuler extends Item implements IHUDItem {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable TooltipContext context, List<Component> tooltip, TooltipFlag advanced) {
+	public void appendHoverText(@NotNull ItemStack stack, @Nullable TooltipContext context, List<Component> tooltip, @NotNull TooltipFlag advanced) {
 		tooltip.add(Component.literal(getVector(stack).toString()));
 	}
 

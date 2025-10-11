@@ -8,7 +8,9 @@ import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageType;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
-import vazkii.psi.common.lib.LibMisc;
+import org.jetbrains.annotations.NotNull;
+
+import vazkii.psi.api.PsiAPI;
 import vazkii.psi.common.lib.LibResources;
 
 import java.util.concurrent.CompletableFuture;
@@ -16,7 +18,7 @@ import java.util.concurrent.CompletableFuture;
 public class PsiDamageTypeTagsProvider extends TagsProvider<DamageType> {
 
 	public PsiDamageTypeTagsProvider(PackOutput pOutput, CompletableFuture<HolderLookup.Provider> pLookupProvider, ExistingFileHelper existingFileHelper) {
-		super(pOutput, Registries.DAMAGE_TYPE, pLookupProvider, LibMisc.MOD_ID, existingFileHelper);
+		super(pOutput, Registries.DAMAGE_TYPE, pLookupProvider, PsiAPI.MOD_ID, existingFileHelper);
 	}
 
 	@Override
@@ -29,7 +31,7 @@ public class PsiDamageTypeTagsProvider extends TagsProvider<DamageType> {
 	}
 
 	@Override
-	public String getName() {
+	public @NotNull String getName() {
 		return "Psi damage type tags";
 	}
 }

@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -40,6 +40,10 @@ public class TileConjured extends BlockEntity {
 		float r = PsiRenderHelper.r(color) / 255F;
 		float g = PsiRenderHelper.g(color) / 255F;
 		float b = PsiRenderHelper.b(color) / 255F;
+
+		if(getLevel() == null) {
+			return;
+		}
 
 		BlockState state = getLevel().getBlockState(getBlockPos());
 
@@ -119,9 +123,8 @@ public class TileConjured extends BlockEntity {
 		}
 	}
 
-	@NotNull
 	@Override
-	public void saveAdditional(CompoundTag cmp, HolderLookup.Provider pRegistries) {
+	public void saveAdditional(@NotNull CompoundTag cmp, HolderLookup.@NotNull Provider pRegistries) {
 		super.saveAdditional(cmp, pRegistries);
 		if(!colorizer.isEmpty()) {
 			cmp.put(TAG_COLORIZER, colorizer.save(pRegistries, new CompoundTag()));
@@ -129,7 +132,7 @@ public class TileConjured extends BlockEntity {
 	}
 
 	@Override
-	public void loadAdditional(CompoundTag cmp, HolderLookup.Provider pRegistries) {
+	public void loadAdditional(@NotNull CompoundTag cmp, HolderLookup.@NotNull Provider pRegistries) {
 		super.loadAdditional(cmp, pRegistries);
 		this.readPacketNBT(cmp, pRegistries);
 	}
@@ -148,17 +151,15 @@ public class TileConjured extends BlockEntity {
 	}
 
 	@Override
-	public CompoundTag getUpdateTag(HolderLookup.Provider pRegistries) {
+	public @NotNull CompoundTag getUpdateTag(HolderLookup.@NotNull Provider pRegistries) {
 		CompoundTag cmp = new CompoundTag();
 		saveAdditional(cmp, pRegistries);
 		return cmp;
 	}
 
 	@Override
-	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt, HolderLookup.Provider pRegistries) {
-		if(pkt != null && pkt.getTag() != null) {
-			this.readPacketNBT(pkt.getTag(), pRegistries);
-		}
+	public void onDataPacket(@NotNull Connection net, @NotNull ClientboundBlockEntityDataPacket pkt, HolderLookup.@NotNull Provider pRegistries) {
+		this.readPacketNBT(pkt.getTag(), pRegistries);
 	}
 
 }

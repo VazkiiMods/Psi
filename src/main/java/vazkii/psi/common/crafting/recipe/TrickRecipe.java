@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -55,12 +55,12 @@ public class TrickRecipe implements ITrickRecipe {
 	}
 
 	@Override
-	public Ingredient getInput() {
+	public @NotNull Ingredient getInput() {
 		return input;
 	}
 
 	@Override
-	public ItemStack getResultItem(HolderLookup.Provider pRegistries) {
+	public @NotNull ItemStack getResultItem(HolderLookup.Provider pRegistries) {
 		return output;
 	}
 
@@ -75,12 +75,12 @@ public class TrickRecipe implements ITrickRecipe {
 	}
 
 	@Override
-	public ItemStack assemble(SingleRecipeInput inv, HolderLookup.Provider pRegistries) {
+	public @NotNull ItemStack assemble(SingleRecipeInput inv, HolderLookup.Provider pRegistries) {
 		return getResultItem(pRegistries);
 	}
 
 	@Override
-	public ItemStack getToastSymbol() {
+	public @NotNull ItemStack getToastSymbol() {
 		return new ItemStack(ModItems.cad.get());
 	}
 
@@ -142,12 +142,12 @@ public class TrickRecipe implements ITrickRecipe {
 		}
 
 		@Override
-		public MapCodec<TrickRecipe> codec() {
+		public @NotNull MapCodec<TrickRecipe> codec() {
 			return CODEC;
 		}
 
 		@Override
-		public StreamCodec<RegistryFriendlyByteBuf, TrickRecipe> streamCodec() {
+		public @NotNull StreamCodec<RegistryFriendlyByteBuf, TrickRecipe> streamCodec() {
 			return STREAM_CODEC;
 		}
 	}

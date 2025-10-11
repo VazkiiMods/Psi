@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -15,6 +15,8 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 
+import org.jetbrains.annotations.NotNull;
+
 import vazkii.psi.api.internal.TooltipHelper;
 import vazkii.psi.client.gui.GuiProgrammer;
 
@@ -28,7 +30,7 @@ public class GuiButtonHelp extends Button {
 	}
 
 	@Override
-	public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float pTicks) {
+	public void renderWidget(@NotNull GuiGraphics graphics, int mouseX, int mouseY, float pTicks) {
 		if(!gui.takingScreenshot) {
 			boolean overHelp = mouseX > getX() && mouseY > getY() && mouseX < getX() + 12 && mouseY < getY() + 12;
 			graphics.blit(GuiProgrammer.texture, getX(), getY(), gui.xSize + (overHelp ? 12 : 0), gui.ySize + 9, 12, 12);

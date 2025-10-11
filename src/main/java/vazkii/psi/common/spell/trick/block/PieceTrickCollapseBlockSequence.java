@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -89,7 +89,7 @@ public class PieceTrickCollapseBlockSequence extends PieceTrick {
 					PieceTrickBreakBlock.canHarvestBlock(state, context.caster, world, blockPos, tool) &&
 					world.getBlockEntity(blockPos) == null) {
 
-				BlockEvent.BreakEvent event = PieceTrickBreakBlock.createBreakEvent(state, context.caster, world, blockPos, tool);
+				BlockEvent.BreakEvent event = PieceTrickBreakBlock.createBreakEvent(state, context.caster, world, blockPos);
 				NeoForge.EVENT_BUS.post(event);
 				if(event.isCanceled()) {
 					return null;

@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -66,14 +66,14 @@ public abstract class SpellParam<T> {
 	public static final String GENERIC_NAME_RAY_START = PSI_PREFIX + "ray_start";
 	// Colors
 	// These are modifiable for a reason, but you still shouldn't do it
-	public static int RED = 0xD22A2A;
-	public static int GREEN = 0x3ED22A;
-	public static int BLUE = 0x2A55D2;
-	public static int PURPLE = 0x752AD2;
-	public static int CYAN = 0x2AD0D2;
-	public static int YELLOW = 0xD2CC2A; // For entities
-	public static int GRAY = 0x767676; // For connectors
-	public static int BROWN = 0x664000; // For suppressors
+	public static final int RED = 0xD22A2A;
+	public static final int GREEN = 0x3ED22A;
+	public static final int BLUE = 0x2A55D2;
+	public static final int PURPLE = 0x752AD2;
+	public static final int CYAN = 0x2AD0D2;
+	public static final int YELLOW = 0xD2CC2A; // For entities
+	public static final int GRAY = 0x767676; // For connectors
+	public static final int BROWN = 0x664000; // For suppressors
 	public final String name;
 	public final int color;
 	public final boolean canDisable;

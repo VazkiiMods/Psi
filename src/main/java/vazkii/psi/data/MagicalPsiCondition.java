@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -11,6 +11,8 @@ package vazkii.psi.data;
 import com.mojang.serialization.MapCodec;
 
 import net.neoforged.neoforge.common.conditions.ICondition;
+
+import org.jetbrains.annotations.NotNull;
 
 import vazkii.psi.common.Psi;
 
@@ -27,7 +29,7 @@ public final class MagicalPsiCondition implements ICondition {
 	}
 
 	@Override
-	public MapCodec<? extends ICondition> codec() {
+	public @NotNull MapCodec<? extends ICondition> codec() {
 		return CODEC;
 	}
 

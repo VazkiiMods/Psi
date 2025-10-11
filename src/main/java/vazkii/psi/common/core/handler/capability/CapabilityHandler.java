@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -25,9 +25,8 @@ import vazkii.psi.common.item.armor.ItemPsimetalArmor;
 import vazkii.psi.common.item.base.ModDataComponents;
 import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.item.tool.ToolSocketable;
-import vazkii.psi.common.lib.LibMisc;
 
-@EventBusSubscriber(modid = LibMisc.MOD_ID)
+@EventBusSubscriber(modid = PsiAPI.MOD_ID)
 public class CapabilityHandler {
 
 	@SubscribeEvent

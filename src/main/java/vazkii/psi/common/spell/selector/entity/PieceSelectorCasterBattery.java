@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -15,7 +15,6 @@ import vazkii.psi.api.cad.EnumCADStat;
 import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
-import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.api.spell.piece.PieceSelector;
 
 public class PieceSelectorCasterBattery extends PieceSelector {
@@ -25,7 +24,7 @@ public class PieceSelectorCasterBattery extends PieceSelector {
 	}
 
 	@Override
-	public Object execute(SpellContext context) throws SpellRuntimeException {
+	public Object execute(SpellContext context) {
 		ItemStack cad = PsiAPI.getPlayerCAD(context.caster);
 		if(cad != null && cad.getItem() instanceof ICAD icad) {
 			return icad.getStatValue(cad, EnumCADStat.OVERFLOW) * 1.0;

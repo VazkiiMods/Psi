@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -9,6 +9,7 @@
 package vazkii.psi.common.spell.trick.block;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.SectionPos;
 import net.minecraft.network.protocol.game.ClientboundLevelEventPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -20,6 +21,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.status.ChunkStatus;
 import net.neoforged.neoforge.event.level.BlockEvent.BreakEvent;
 
 import vazkii.psi.api.PsiAPI;
@@ -36,6 +38,7 @@ import java.util.stream.Stream;
 
 public class PieceTrickBreakBlock extends PieceTrick {
 
+	public static final ThreadLocal<Boolean> doingHarvestCheck = ThreadLocal.withInitial(() -> false);
 	private static final List<List<ItemStack>> HARVEST_TOOLS_BY_LEVEL = List.of(
 			stacks(Items.WOODEN_PICKAXE, Items.WOODEN_AXE, Items.WOODEN_HOE, Items.WOODEN_SHOVEL),
 			stacks(Items.STONE_PICKAXE, Items.STONE_AXE, Items.STONE_HOE, Items.STONE_SHOVEL),
@@ -43,7 +46,6 @@ public class PieceTrickBreakBlock extends PieceTrick {
 			stacks(Items.DIAMOND_PICKAXE, Items.DIAMOND_AXE, Items.DIAMOND_HOE, Items.DIAMOND_SHOVEL),
 			stacks(Items.NETHERITE_PICKAXE, Items.NETHERITE_AXE, Items.NETHERITE_HOE, Items.NETHERITE_SHOVEL)
 	);
-	public static ThreadLocal<Boolean> doingHarvestCheck = ThreadLocal.withInitial(() -> false);
 	SpellParam<Vector3> position;
 
 	public PieceTrickBreakBlock(Spell spell) {
@@ -58,7 +60,7 @@ public class PieceTrickBreakBlock extends PieceTrick {
 			stack = PsiAPI.getPlayerCAD(player);
 		}
 
-		if(!world.hasChunkAt(pos)) {
+		if(world.getChunk(SectionPos.blockToSectionCoord(pos.getX()), SectionPos.blockToSectionCoord(pos.getZ()), ChunkStatus.FULL, false) == null) {
 			return;
 		}
 
@@ -82,7 +84,7 @@ public class PieceTrickBreakBlock extends PieceTrick {
 	 * Based on {//@link BreakEvent#BreakEvent(World, BlockPos, BlockState, PlayerEntity)}.
 	 * Allows a tool that isn't your mainhand tool to harvest the blocks.
 	 */
-	public static BreakEvent createBreakEvent(BlockState state, Player player, Level world, BlockPos pos, ItemStack tool) {
+	public static BreakEvent createBreakEvent(BlockState state, Player player, Level world, BlockPos pos) {
 		return new BreakEvent(world, pos, state, player);
 	}
 

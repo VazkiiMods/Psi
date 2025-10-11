@@ -11,6 +11,8 @@ package vazkii.psi.common.spell.selector.entity;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.AABB;
 
+import org.jetbrains.annotations.NotNull;
+
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.param.ParamNumber;
@@ -28,6 +30,12 @@ public abstract class PieceSelectorNearby extends PieceSelector {
 
 	public PieceSelectorNearby(Spell spell) {
 		super(spell);
+	}
+
+	private static @NotNull AABB getArea(Vector3 positionVal, double radiusVal, Vector3 positionCenter) {
+		AABB axis = new AABB(positionVal.x - radiusVal, positionVal.y - radiusVal, positionVal.z - radiusVal, positionVal.x + radiusVal, positionVal.y + radiusVal, positionVal.z + radiusVal);
+		AABB eris = new AABB(positionCenter.x - SpellContext.MAX_DISTANCE, positionCenter.y - SpellContext.MAX_DISTANCE, positionCenter.z - SpellContext.MAX_DISTANCE, positionCenter.x + SpellContext.MAX_DISTANCE, positionCenter.y + SpellContext.MAX_DISTANCE, positionCenter.z + SpellContext.MAX_DISTANCE);
+		return axis.intersect(eris);
 	}
 
 	@Override
@@ -57,9 +65,7 @@ public abstract class PieceSelectorNearby extends PieceSelector {
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 		}
 
-		AABB axis = new AABB(positionVal.x - radiusVal, positionVal.y - radiusVal, positionVal.z - radiusVal, positionVal.x + radiusVal, positionVal.y + radiusVal, positionVal.z + radiusVal);
-		AABB eris = new AABB(positionCenter.x - SpellContext.MAX_DISTANCE, positionCenter.y - SpellContext.MAX_DISTANCE, positionCenter.z - SpellContext.MAX_DISTANCE, positionCenter.x + SpellContext.MAX_DISTANCE, positionCenter.y + SpellContext.MAX_DISTANCE, positionCenter.z + SpellContext.MAX_DISTANCE);
-		AABB area = axis.intersect(eris);
+		AABB area = getArea(positionVal, radiusVal, positionCenter);
 
 		Predicate<Entity> pred = getTargetPredicate(context);
 

@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -58,7 +58,7 @@ public class BlockConjured extends Block implements EntityBlock, SimpleWaterlogg
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void animateTick(BlockState stateIn, Level worldIn, BlockPos pos, RandomSource rand) {
+	public void animateTick(@NotNull BlockState stateIn, Level worldIn, @NotNull BlockPos pos, @NotNull RandomSource rand) {
 		BlockEntity inWorld = worldIn.getBlockEntity(pos);
 		if(inWorld instanceof TileConjured) {
 			((TileConjured) inWorld).doParticles();
@@ -66,7 +66,7 @@ public class BlockConjured extends Block implements EntityBlock, SimpleWaterlogg
 	}
 
 	@Override
-	public Integer getBeaconColorMultiplier(BlockState state, LevelReader world, BlockPos pos, BlockPos beaconPos) {
+	public Integer getBeaconColorMultiplier(@NotNull BlockState state, LevelReader world, @NotNull BlockPos pos, @NotNull BlockPos beaconPos) {
 		BlockEntity inWorld = world.getBlockEntity(pos);
 		if(inWorld instanceof TileConjured) {
 			return Psi.proxy.getColorForColorizer(((TileConjured) inWorld).colorizer);
@@ -75,7 +75,7 @@ public class BlockConjured extends Block implements EntityBlock, SimpleWaterlogg
 	}
 
 	@Override
-	public void tick(BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
+	public void tick(@NotNull BlockState state, ServerLevel world, @NotNull BlockPos pos, @NotNull RandomSource random) {
 		world.removeBlock(pos, false);
 	}
 
@@ -85,20 +85,20 @@ public class BlockConjured extends Block implements EntityBlock, SimpleWaterlogg
 	}
 
 	@Override
-	public boolean useShapeForLightOcclusion(BlockState state) {
+	public boolean useShapeForLightOcclusion(@NotNull BlockState state) {
 		return true;
 	}
 
 	@NotNull
 	@Override
-	public BlockState updateShape(@NotNull BlockState state, Direction facing, BlockState facingState, LevelAccessor world, BlockPos currentPos, BlockPos facingPos) {
+	public BlockState updateShape(@NotNull BlockState state, Direction facing, @NotNull BlockState facingState, @NotNull LevelAccessor world, @NotNull BlockPos currentPos, @NotNull BlockPos facingPos) {
 		BooleanProperty prop = switch(facing) {
-		default -> BLOCK_DOWN;
 		case UP -> BLOCK_UP;
 		case NORTH -> BLOCK_NORTH;
 		case SOUTH -> BLOCK_SOUTH;
 		case WEST -> BLOCK_WEST;
 		case EAST -> BLOCK_EAST;
+		default -> BLOCK_DOWN;
 		};
 		if(state.getValue(WATERLOGGED)) {
 			world.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
@@ -111,39 +111,39 @@ public class BlockConjured extends Block implements EntityBlock, SimpleWaterlogg
 	}
 
 	@Override
-	public int getLightEmission(BlockState state, BlockGetter world, BlockPos pos) {
+	public int getLightEmission(BlockState state, @NotNull BlockGetter world, @NotNull BlockPos pos) {
 		return state.getValue(LIGHT) ? 15 : 0;
 	}
 
 	@NotNull
 	@Override
-	public VoxelShape getCollisionShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
+	public VoxelShape getCollisionShape(BlockState state, @NotNull BlockGetter world, @NotNull BlockPos pos, @NotNull CollisionContext context) {
 		return state.getValue(SOLID) ? Shapes.block() : Shapes.empty();
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
+	public @NotNull VoxelShape getShape(BlockState state, @NotNull BlockGetter world, @NotNull BlockPos pos, @NotNull CollisionContext context) {
 		return state.getValue(SOLID) ? Shapes.block() : LIGHT_SHAPE;
 	}
 
 	@Override
-	public FluidState getFluidState(BlockState state) {
+	public @NotNull FluidState getFluidState(BlockState state) {
 		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
 	}
 
 	@Override
-	public VoxelShape getVisualShape(BlockState state, BlockGetter reader, BlockPos pos, CollisionContext context) {
+	public @NotNull VoxelShape getVisualShape(@NotNull BlockState state, @NotNull BlockGetter reader, @NotNull BlockPos pos, @NotNull CollisionContext context) {
 		return Shapes.empty();
 	}
 
 	@Override
-	public boolean propagatesSkylightDown(BlockState state, BlockGetter reader, BlockPos pos) {
+	public boolean propagatesSkylightDown(@NotNull BlockState state, @NotNull BlockGetter reader, @NotNull BlockPos pos) {
 		return true;
 	}
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public float getShadeBrightness(BlockState state, BlockGetter worldIn, BlockPos pos) {
+	public float getShadeBrightness(@NotNull BlockState state, @NotNull BlockGetter worldIn, @NotNull BlockPos pos) {
 		return 1.0F;
 	}
 

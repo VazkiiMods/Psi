@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -61,6 +61,16 @@ public abstract class SpellPiece {
 	private static final String TAG_PARAMS = "params";
 	private static final String TAG_COMMENT = "comment";
 	private static final String PSI_PREFIX = "psi.spellparam.";
+	public static final Codec<SpellPiece> CODEC = CompoundTag.CODEC.xmap(t -> SpellPiece.createFromNBT(dummySpell, t), p -> {
+		var tag = new CompoundTag();
+		p.writeToNBT(tag);
+		return tag;
+	});
+	public static final StreamCodec<ByteBuf, SpellPiece> STREAM_CODEC = ByteBufCodecs.COMPOUND_TAG.map(t -> SpellPiece.createFromNBT(dummySpell, t), p -> {
+		var tag = new CompoundTag();
+		p.writeToNBT(tag);
+		return tag;
+	});
 	@OnlyIn(Dist.CLIENT)
 	private static RenderType layer;
 	public final ResourceLocation registryKey;
@@ -232,7 +242,7 @@ public abstract class SpellPiece {
 	 * Defaulted version of getParamValue
 	 * Should be used for optional params
 	 */
-	public <T> T getParamValueOrDefault(SpellContext context, SpellParam<T> param, T def) throws SpellRuntimeException {
+	public <T> T getParamValueOrDefault(SpellContext context, SpellParam<T> param, T def) {
 		try {
 			T v = getParamValue(context, param);
 			return v == null ? def : v;
@@ -373,6 +383,10 @@ public abstract class SpellPiece {
 	@OnlyIn(Dist.CLIENT)
 	public void drawBackground(PoseStack pPoseStack, MultiBufferSource buffers, int light) {
 		Material material = ClientPsiAPI.SPELL_PIECE_MATERIAL_REGISTRY.get(registryKey);
+		if(material == null) {
+			return;
+		}
+
 		VertexConsumer buffer = material.buffer(buffers, ignored -> getLayer());
 		Matrix4f mat = pPoseStack.last().pose();
 		// Cannot call .texture() on the chained object because SpriteAwareVertexBuilder is buggy
@@ -639,18 +653,6 @@ public abstract class SpellPiece {
 
 		comment = cmp.getString(TAG_COMMENT);
 	}
-
-	public static final Codec<SpellPiece> CODEC = CompoundTag.CODEC.xmap(t -> SpellPiece.createFromNBT(dummySpell, t), p -> {
-		var tag = new CompoundTag();
-		p.writeToNBT(tag);
-		return tag;
-	});
-
-	public static final StreamCodec<ByteBuf, SpellPiece> STREAM_CODEC = ByteBufCodecs.COMPOUND_TAG.map(t -> SpellPiece.createFromNBT(dummySpell, t), p -> {
-		var tag = new CompoundTag();
-		p.writeToNBT(tag);
-		return tag;
-	});
 
 	public void writeToNBT(CompoundTag cmp) {
 		if(comment == null) {

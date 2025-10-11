@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -35,21 +35,18 @@ import vazkii.psi.common.crafting.ModCraftingRecipes;
 import vazkii.psi.common.item.base.ModDataComponents;
 import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.item.component.DefaultStats;
-import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.network.MessageRegister;
 import vazkii.psi.common.spell.base.ModSpellPieces;
 
-@Mod(LibMisc.MOD_ID)
+@Mod(PsiAPI.MOD_ID)
 public class Psi {
 
-	public static final Logger logger = LogManager.getLogger(LibMisc.MOD_ID);
+	public static final Logger logger = LogManager.getLogger(PsiAPI.MOD_ID);
 
-	public static Psi instance;
 	public static boolean magical;
 	public static IProxy proxy;
 
 	public Psi(IEventBus bus, Dist dist, ModContainer container) {
-		instance = this;
 		ModDataComponents.DATA_COMPONENT_TYPES.register(bus);
 		PsimetalArmorMaterial.ARMOR_MATERIALS.register(bus);
 		ModCraftingRecipes.RECIPE_TYPES.register(bus);
@@ -72,7 +69,7 @@ public class Psi {
 	}
 
 	public static ResourceLocation location(String path) {
-		return ResourceLocation.fromNamespaceAndPath(LibMisc.MOD_ID, path);
+		return ResourceLocation.fromNamespaceAndPath(PsiAPI.MOD_ID, path);
 	}
 
 	private void registerRegistries(NewRegistryEvent event) {
@@ -83,8 +80,6 @@ public class Psi {
 	private void commonSetup(FMLCommonSetupEvent event) {
 		magical = ModList.get().isLoaded("magipsi");
 		PsiAPI.internalHandler = new InternalMethodHandler();
-
-		//CrashReportExtender.registerCrashCallable(new CrashReportHandler());
 
 		ContributorSpellCircleHandler.firstStart();
 		DefaultStats.registerStats();

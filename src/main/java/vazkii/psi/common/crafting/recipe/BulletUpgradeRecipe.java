@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -80,10 +80,10 @@ public class BulletUpgradeRecipe extends ShapelessRecipe {
 
 	public static class Builder implements RecipeBuilder {
 		private final Map<String, Criterion<?>> criteria = new LinkedHashMap<>();
-		@Nullable
-		private String group;
 		private final Item result;
 		private final NonNullList<Ingredient> ingredients = NonNullList.create();
+		@Nullable
+		private String group;
 
 		public Builder(Item result) {
 			this.result = result;
@@ -144,6 +144,9 @@ public class BulletUpgradeRecipe extends ShapelessRecipe {
 	}
 
 	public static class Serializer implements RecipeSerializer<BulletUpgradeRecipe> {
+		public static final StreamCodec<RegistryFriendlyByteBuf, BulletUpgradeRecipe> STREAM_CODEC = StreamCodec.of(
+				BulletUpgradeRecipe.Serializer::toNetwork, BulletUpgradeRecipe.Serializer::fromNetwork
+		);
 		private static final MapCodec<BulletUpgradeRecipe> CODEC = RecordCodecBuilder.mapCodec(
 				instance -> instance.group(
 						Codec.STRING.optionalFieldOf("group", "").forGetter(r -> r.group),
@@ -170,20 +173,6 @@ public class BulletUpgradeRecipe extends ShapelessRecipe {
 						.apply(instance, BulletUpgradeRecipe::new)
 		);
 
-		public static final StreamCodec<RegistryFriendlyByteBuf, BulletUpgradeRecipe> STREAM_CODEC = StreamCodec.of(
-				BulletUpgradeRecipe.Serializer::toNetwork, BulletUpgradeRecipe.Serializer::fromNetwork
-		);
-
-		@Override
-		public @NotNull MapCodec<BulletUpgradeRecipe> codec() {
-			return CODEC;
-		}
-
-		@Override
-		public StreamCodec<RegistryFriendlyByteBuf, BulletUpgradeRecipe> streamCodec() {
-			return STREAM_CODEC;
-		}
-
 		private static BulletUpgradeRecipe fromNetwork(RegistryFriendlyByteBuf buffer) {
 			String s = buffer.readUtf();
 			CraftingBookCategory craftingbookcategory = buffer.readEnum(CraftingBookCategory.class);
@@ -204,6 +193,16 @@ public class BulletUpgradeRecipe extends ShapelessRecipe {
 			}
 
 			ItemStack.STREAM_CODEC.encode(buffer, recipe.result);
+		}
+
+		@Override
+		public @NotNull MapCodec<BulletUpgradeRecipe> codec() {
+			return CODEC;
+		}
+
+		@Override
+		public @NotNull StreamCodec<RegistryFriendlyByteBuf, BulletUpgradeRecipe> streamCodec() {
+			return STREAM_CODEC;
 		}
 	}
 }

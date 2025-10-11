@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -15,14 +15,14 @@ import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 import org.jetbrains.annotations.NotNull;
 
+import vazkii.psi.api.PsiAPI;
 import vazkii.psi.common.block.base.ModBlocks;
-import vazkii.psi.common.lib.LibMisc;
 
 import static vazkii.psi.common.Psi.location;
 
 public class PsiBlockModelGenerator extends BlockStateProvider {
 	public PsiBlockModelGenerator(PackOutput output, ExistingFileHelper exFileHelper) {
-		super(output, LibMisc.MOD_ID, exFileHelper);
+		super(output, PsiAPI.MOD_ID, exFileHelper);
 	}
 
 	@Override

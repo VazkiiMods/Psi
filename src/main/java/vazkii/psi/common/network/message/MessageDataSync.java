@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -16,6 +16,8 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
+
+import org.jetbrains.annotations.NotNull;
 
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
@@ -35,7 +37,7 @@ public record MessageDataSync(CompoundTag cmp) implements CustomPacketPayload {
 	}
 
 	@Override
-	public CustomPacketPayload.Type<? extends CustomPacketPayload> type() {
+	public CustomPacketPayload.@NotNull Type<? extends CustomPacketPayload> type() {
 		return TYPE;
 	}
 

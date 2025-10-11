@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -16,13 +16,13 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RegisterShadersEvent;
 
+import vazkii.psi.api.PsiAPI;
 import vazkii.psi.common.Psi;
-import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.lib.LibResources;
 
 import java.io.IOException;
 
-@EventBusSubscriber(modid = LibMisc.MOD_ID, value = Dist.CLIENT)
+@EventBusSubscriber(modid = PsiAPI.MOD_ID, value = Dist.CLIENT)
 public final class ShaderHandler {
 
 	private static ShaderInstance psiBarShader;

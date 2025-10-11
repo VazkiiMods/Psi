@@ -6,6 +6,8 @@ import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
+import org.jetbrains.annotations.NotNull;
+
 import vazkii.psi.common.block.base.ModBlocks;
 
 import java.util.Set;
@@ -33,7 +35,7 @@ public class PsiBlockLootProvider extends BlockLootSubProvider {
 	}
 
 	@Override
-	protected Iterable<Block> getKnownBlocks() {
+	protected @NotNull Iterable<Block> getKnownBlocks() {
 		return ModBlocks.BLOCKS.getEntries().stream().map(DeferredHolder::get).collect(Collectors.toList());
 	}
 }

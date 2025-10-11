@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -72,9 +72,8 @@ public class EntityListWrapper implements Iterable<Entity> {
 
 	public static EntityListWrapper intersection(@NotNull EntityListWrapper left, @NotNull EntityListWrapper right) {
 		List<Entity> result = new ArrayList<>();
-		List<Entity> search = right.list;
 		for(Entity e : left) {
-			if(Collections.binarySearch(search, e, EntityListWrapper::compareEntities) >= 0) {
+			if(Collections.binarySearch(right.list, e, EntityListWrapper::compareEntities) >= 0) {
 				result.add(e);
 			}
 		}
@@ -103,15 +102,6 @@ public class EntityListWrapper implements Iterable<Entity> {
 	 */
 	public static int compareEntities(Entity l, Entity r) {
 		return Integer.compare(l.getId(), r.getId());
-	}
-
-	/**
-	 * Returns the underlying list for this ELW. Unsafe, as clients are able to modify the list so that it doesn't
-	 * maintain its guarantees.
-	 */
-	@Deprecated
-	private List<Entity> unwrap() {
-		return list;
 	}
 
 	public int size() {

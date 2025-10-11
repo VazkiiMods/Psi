@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -40,7 +40,6 @@ public final class LibPieceNames {
 	public static final String SELECTOR_CASTER_ENERGY = "selector_caster_energy";
 	public static final String SELECTOR_CASTER_BATTERY = "selector_caster_battery";
 	public static final String SELECTOR_IS_ELYTRA_FLYING = "selector_is_elytra_flying";
-	public static final String SELECTOR_TRANSMISSION = "selector_transmission";
 	public static final String SELECTOR_ITEM_COUNT = "selector_item_count";
 	public static final String SELECTOR_TICK_TIME = "selector_tick_time";
 	public static final String SELECTOR_TPS = "selector_tps";

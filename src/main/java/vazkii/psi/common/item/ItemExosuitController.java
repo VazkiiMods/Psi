@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -36,7 +36,7 @@ public class ItemExosuitController extends Item implements ISocketableController
 
 	@NotNull
 	@Override
-	public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, @NotNull InteractionHand hand) {
+	public InteractionResultHolder<ItemStack> use(@NotNull Level worldIn, Player playerIn, @NotNull InteractionHand hand) {
 		ItemStack itemStackIn = playerIn.getItemInHand(hand);
 		if(playerIn.isShiftKeyDown()) {
 			if(!worldIn.isClientSide) {
@@ -48,8 +48,10 @@ public class ItemExosuitController extends Item implements ISocketableController
 			ItemStack[] stacks = getControlledStacks(playerIn, itemStackIn);
 
 			for(ItemStack stack : stacks) {
-				if(stack.getCapability(PsiAPI.SOCKETABLE_CAPABILITY) != null)
-					stack.getCapability(PsiAPI.SOCKETABLE_CAPABILITY).setSelectedSlot(3);
+				ISocketable socketable = stack.getCapability(PsiAPI.SOCKETABLE_CAPABILITY);
+				if(socketable != null) {
+					socketable.setSelectedSlot(3);
+				}
 			}
 
 			return new InteractionResultHolder<>(InteractionResult.SUCCESS, itemStackIn);
@@ -82,8 +84,9 @@ public class ItemExosuitController extends Item implements ISocketableController
 
 		ItemStack[] stacks = getControlledStacks(player, stack);
 		if(controlSlot < stacks.length && !stacks[controlSlot].isEmpty()) {
-			if(stacks[controlSlot].getCapability(PsiAPI.SOCKETABLE_CAPABILITY) != null)
-				stacks[controlSlot].getCapability(PsiAPI.SOCKETABLE_CAPABILITY).setSelectedSlot(slot);
+			ISocketable socketable = stacks[controlSlot].getCapability(PsiAPI.SOCKETABLE_CAPABILITY);
+			if(socketable != null)
+				socketable.setSelectedSlot(slot);
 		}
 	}
 

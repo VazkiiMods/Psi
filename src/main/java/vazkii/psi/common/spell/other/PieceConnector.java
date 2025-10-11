@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -76,15 +76,14 @@ public class PieceConnector extends SpellPiece implements IRedirector {
 			case LEFT:
 				minU = 0.5f;
 				break;
-			default:
-			case RIGHT:
-				break;
 			case TOP:
 				minV = 0.5f;
 				break;
 			case BOTTOM:
 				minU = 0.5f;
 				minV = 0.5f;
+				break;
+			default:
 				break;
 			}
 

@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -45,6 +45,7 @@ import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.fml.ModList;
 
 import org.apache.commons.lang3.tuple.Pair;
+import org.jetbrains.annotations.NotNull;
 import org.lwjgl.glfw.GLFW;
 
 import vazkii.psi.api.PsiAPI;
@@ -60,7 +61,6 @@ import vazkii.psi.common.block.tile.TileProgrammer;
 import vazkii.psi.common.core.handler.ConfigHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.lib.LibBlockNames;
-import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.lib.LibResources;
 import vazkii.psi.common.network.MessageRegister;
 import vazkii.psi.common.network.message.MessageSpellModified;
@@ -86,7 +86,7 @@ public class GuiProgrammer extends Screen {
 				.setCullState(new RenderStateShard.CullStateShard(false))
 				.setTransparencyState(RenderType.TRANSLUCENT_TRANSPARENCY)
 				.createCompositeState(false);
-		LAYER = RenderType.create(LibMisc.PREFIX_MOD + LibBlockNames.PROGRAMMER, DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP, VertexFormat.Mode.QUADS, 128, false, false, glState);
+		LAYER = RenderType.create(PsiAPI.MOD_ID + ":" + LibBlockNames.PROGRAMMER, DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP, VertexFormat.Mode.QUADS, 128, false, false, glState);
 	}
 
 	public final TileProgrammer programmer;
@@ -152,7 +152,7 @@ public class GuiProgrammer extends Screen {
 		if(programmer == null) {
 			spectator = false;
 		} else {
-			spectator = !programmer.playerLock.isEmpty() && !programmer.playerLock.equals(getMinecraft().player.getName().getString());
+			spectator = !programmer.playerLock.isEmpty() && getMinecraft().player != null && !programmer.playerLock.equals(getMinecraft().player.getName().getString());
 		}
 
 		statusWidget = addRenderableWidget(new StatusWidget(left - 48, top + 5, 48, 30, "", this));
@@ -219,12 +219,19 @@ public class GuiProgrammer extends Screen {
 				if(hasShiftDown()) {
 					String cb = getMinecraft().keyboardHandler.getClipboard();
 					LocalPlayer player = Minecraft.getInstance().player;
+					if(player == null) {
+						return;
+					}
 
 					try {
 						cb = cb.replaceAll("([^a-z0-9])\\d+:", "$1"); // backwards compatibility with pre 1.12 nbt json
 						CompoundTag cmp = TagParser.parseTag(cb);
 						if(cmp.contains(Spell.TAG_MODS_REQUIRED)) {
 							ListTag mods = (ListTag) cmp.get(Spell.TAG_MODS_REQUIRED);
+							if(mods == null) {
+								return;
+							}
+
 							for(Tag mod : mods) {
 								String modName = ((CompoundTag) mod).getString(Spell.TAG_MOD_NAME);
 								if(!PsiAPI.SPELL_PIECE_REGISTRY.keySet().stream().map(ResourceLocation::getNamespace).collect(Collectors.toSet()).contains(modName)) {
@@ -270,7 +277,7 @@ public class GuiProgrammer extends Screen {
 								SpellPiece piece = spell.grid.gridData[i][j];
 								if(piece != null) {
 									Optional<Map.Entry<ResourceKey<Collection<Class<? extends SpellPiece>>>, Collection<Class<? extends SpellPiece>>>> advancementEntry = PsiAPI.ADVANCEMENT_GROUP_REGISTRY.entrySet().stream().filter((entry) -> entry.getValue().contains(piece.getClass())).findFirst();
-									if(!advancementEntry.isPresent()) {
+									if(advancementEntry.isEmpty()) {
 										continue;
 									}
 
@@ -295,8 +302,8 @@ public class GuiProgrammer extends Screen {
 	}
 
 	@Override
-	public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
-		if(programmer != null && (programmer.getLevel().getBlockEntity(programmer.getBlockPos()) != programmer || !programmer.canPlayerInteract(getMinecraft().player))) {
+	public void render(@NotNull GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+		if(programmer != null && programmer.getLevel() != null && getMinecraft().player != null && (programmer.getLevel().getBlockEntity(programmer.getBlockPos()) != programmer || !programmer.canPlayerInteract(getMinecraft().player))) {
 			getMinecraft().setScreen(null);
 			return;
 		}
@@ -399,12 +406,6 @@ public class GuiProgrammer extends Screen {
 			if(piece != null) {
 				String pieceName = I18n.get(piece.getUnlocalizedName());
 				graphics.drawString(getMinecraft().font, pieceName, left + xSize / 2f - font.width(pieceName) / 2f, topYText, 0xFFFFFF, true);
-				topYText -= 10;
-			}
-			if(LibMisc.BETA_TESTING) {
-				String betaTest = ChatFormatting.GOLD + I18n.get("psimisc.wip");
-				graphics.drawString(getMinecraft().font, betaTest, left + xSize / 2f - font.width(betaTest) / 2f, topYText, 0xFFFFFF, true);
-
 			}
 
 			String coords;

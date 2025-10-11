@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -37,8 +37,8 @@ import java.util.Map;
  */
 public class TrickRecipeBuilder {
 	private final Map<String, Criterion<?>> criteria = new LinkedHashMap<>();
-	private Ingredient input;
 	private final ItemStack output;
+	private Ingredient input;
 	private ItemStack cadAssembly;
 	private ResourceLocation trick;
 	private ResourceKey<Level> dimensionKey = null;

@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -9,10 +9,8 @@
 package vazkii.psi.common.lib;
 
 public final class LibBlockNames {
-
 	public static final String CAD_ASSEMBLER = "cad_assembler";
 	public static final String PROGRAMMER = "programmer";
-	public static final String PSI_DECORATIVE = "psi_decorative";
 	public static final String CONJURED = "conjured";
 	public static final String PSIDUST_BLOCK = "psidust_block";
 	public static final String PSIMETAL_BLOCK = "psimetal_block";

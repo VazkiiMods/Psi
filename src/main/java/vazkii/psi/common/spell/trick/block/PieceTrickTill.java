@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -10,6 +10,7 @@ package vazkii.psi.common.spell.trick.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.SectionPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -17,6 +18,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.chunk.status.ChunkStatus;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 
@@ -35,7 +37,7 @@ public class PieceTrickTill extends PieceTrick {
 	}
 
 	public static InteractionResult tillBlock(Player player, Level world, BlockPos pos) {
-		if(!world.hasChunkAt(pos) || !world.mayInteract(player, pos)) {
+		if(world.getChunk(SectionPos.blockToSectionCoord(pos.getX()), SectionPos.blockToSectionCoord(pos.getZ()), ChunkStatus.FULL, false) == null || !world.mayInteract(player, pos)) {
 			return InteractionResult.PASS;
 		}
 		BlockHitResult hit = new BlockHitResult(Vec3.ZERO, Direction.UP, pos, false);

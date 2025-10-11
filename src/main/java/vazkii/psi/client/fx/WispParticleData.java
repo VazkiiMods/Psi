@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -30,7 +30,7 @@ public record WispParticleData(float size, float r, float g, float b, float maxA
 			Codec.FLOAT.fieldOf("maxAgeMul").forGetter(d -> d.maxAgeMul)
 	).apply(instance, WispParticleData::new));
 
-	public static StreamCodec<? super RegistryFriendlyByteBuf, WispParticleData> STREAM_CODEC = StreamCodec.composite(
+	public static final StreamCodec<? super RegistryFriendlyByteBuf, WispParticleData> STREAM_CODEC = StreamCodec.composite(
 			ByteBufCodecs.FLOAT, WispParticleData::size,
 			ByteBufCodecs.FLOAT, WispParticleData::r,
 			ByteBufCodecs.FLOAT, WispParticleData::g,
@@ -46,17 +46,17 @@ public record WispParticleData(float size, float r, float g, float b, float maxA
 
 	public static class Type extends ParticleType<WispParticleData> {
 
-		protected Type(boolean pOverrideLimitter) {
-			super(pOverrideLimitter);
+		protected Type() {
+			super(false);
 		}
 
 		@Override
-		public MapCodec<WispParticleData> codec() {
+		public @NotNull MapCodec<WispParticleData> codec() {
 			return WispParticleData.CODEC;
 		}
 
 		@Override
-		public StreamCodec<? super RegistryFriendlyByteBuf, WispParticleData> streamCodec() {
+		public @NotNull StreamCodec<? super RegistryFriendlyByteBuf, WispParticleData> streamCodec() {
 			return WispParticleData.STREAM_CODEC;
 		}
 	}

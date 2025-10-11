@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -17,13 +17,13 @@ import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 import org.jetbrains.annotations.NotNull;
 
+import vazkii.psi.api.PsiAPI;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.base.ModBlocks;
-import vazkii.psi.common.lib.LibMisc;
 
 public class PsiItemModelGenerator extends ItemModelProvider {
 	public PsiItemModelGenerator(PackOutput output, ExistingFileHelper existingFileHelper) {
-		super(output, LibMisc.MOD_ID, existingFileHelper);
+		super(output, PsiAPI.MOD_ID, existingFileHelper);
 	}
 
 	private void pointToBlock(Item item) {

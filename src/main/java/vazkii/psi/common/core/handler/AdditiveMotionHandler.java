@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -17,14 +17,14 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.tick.LevelTickEvent;
 
-import vazkii.psi.common.lib.LibMisc;
+import vazkii.psi.api.PsiAPI;
 import vazkii.psi.common.network.MessageRegister;
 import vazkii.psi.common.network.message.MessageAdditiveMotion;
 
 import java.util.Map;
 import java.util.WeakHashMap;
 
-@EventBusSubscriber(modid = LibMisc.MOD_ID)
+@EventBusSubscriber(modid = PsiAPI.MOD_ID)
 public class AdditiveMotionHandler {
 	private static final Map<Entity, Vec3> toUpdate = new WeakHashMap<>();
 
@@ -68,7 +68,7 @@ public class AdditiveMotionHandler {
 	}
 
 	/**
-	 * [VanillaCopy] of {@linkplain net.minecraft.server.network.ServerGamePacketListenerImpl#getMaximumFlyingTicks}
+	 * [VanillaCopy] of {@see net.minecraft.server.network.ServerGamePacketListenerImpl#getMaximumFlyingTicks}
 	 * but without the extra processing and endpoint bumping
 	 */
 

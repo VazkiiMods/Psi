@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -15,6 +15,8 @@ import net.minecraft.network.chat.Component;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 
+import org.jetbrains.annotations.NotNull;
+
 @OnlyIn(Dist.CLIENT)
 public class CallbackTextFieldWidget extends EditBox {
 	protected final CallbackTextFieldWidget.IPressable pressable;
@@ -25,7 +27,7 @@ public class CallbackTextFieldWidget extends EditBox {
 	}
 
 	@Override
-	public void insertText(String textToWrite) {
+	public void insertText(@NotNull String textToWrite) {
 		super.insertText(textToWrite);
 		onPress();
 	}

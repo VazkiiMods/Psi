@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -181,7 +181,7 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 	}
 
 	@Override
-	public Vec3 getLookAngle() {
+	public @NotNull Vec3 getLookAngle() {
 		float x = entityData.get(LOOK_X);
 		float y = entityData.get(LOOK_Y);
 		float z = entityData.get(LOOK_Z);

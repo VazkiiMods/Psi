@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -15,8 +15,10 @@ import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
+import org.jetbrains.annotations.NotNull;
+
+import vazkii.psi.api.PsiAPI;
 import vazkii.psi.common.block.base.ModBlocks;
-import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.lib.ModTags;
 
 import java.util.concurrent.CompletableFuture;
@@ -24,11 +26,11 @@ import java.util.concurrent.CompletableFuture;
 public class PsiBlockTagProvider extends BlockTagsProvider {
 
 	public PsiBlockTagProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, ExistingFileHelper existingFileHelper) {
-		super(output, lookupProvider, LibMisc.MOD_ID, existingFileHelper);
+		super(output, lookupProvider, PsiAPI.MOD_ID, existingFileHelper);
 	}
 
 	@Override
-	public String getName() {
+	public @NotNull String getName() {
 		return "Psi block tags";
 	}
 

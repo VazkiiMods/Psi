@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -81,12 +81,12 @@ public class DimensionTrickRecipe extends TrickRecipe {
 		}
 
 		@Override
-		public MapCodec<DimensionTrickRecipe> codec() {
+		public @NotNull MapCodec<DimensionTrickRecipe> codec() {
 			return CODEC;
 		}
 
 		@Override
-		public StreamCodec<RegistryFriendlyByteBuf, DimensionTrickRecipe> streamCodec() {
+		public @NotNull StreamCodec<RegistryFriendlyByteBuf, DimensionTrickRecipe> streamCodec() {
 			return STREAM_CODEC;
 		}
 	}

@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -23,12 +23,11 @@ import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.recipe.ITrickRecipe;
 import vazkii.psi.common.crafting.recipe.*;
-import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.data.MagicalPsiCondition;
 
 public class ModCraftingRecipes {
-	public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(BuiltInRegistries.RECIPE_SERIALIZER, LibMisc.MOD_ID);
-	public static final DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(BuiltInRegistries.RECIPE_TYPE, LibMisc.MOD_ID);
+	public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(BuiltInRegistries.RECIPE_SERIALIZER, PsiAPI.MOD_ID);
+	public static final DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(BuiltInRegistries.RECIPE_TYPE, PsiAPI.MOD_ID);
 
 	public static final DeferredHolder<RecipeType<?>, RecipeType<AssemblyScavengeRecipe>> SCAVENGE_TYPE = RECIPE_TYPES.register("scavenge", PsiRecipeType::new);
 	public static final DeferredHolder<RecipeSerializer<?>, SimpleCraftingRecipeSerializer<AssemblyScavengeRecipe>> SCAVENGE_SERIALIZER = RECIPE_SERIALIZERS.register("scavenge", () -> new SimpleCraftingRecipeSerializer<>(AssemblyScavengeRecipe::new));

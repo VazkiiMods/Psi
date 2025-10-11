@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -99,12 +99,28 @@ public class CompiledSpell {
 		}
 	}
 
-	public boolean hasEvaluated(int x, int y) {
-		if(!SpellGrid.exists(x, y)) {
-			return false;
+	public static class CatchHandler {
+
+		public final SpellPiece handlerPiece;
+		public final IErrorCatcher handler;
+
+		public CatchHandler(SpellPiece handlerPiece) {
+			this.handlerPiece = handlerPiece;
+			this.handler = (IErrorCatcher) handlerPiece;
 		}
 
-		return spotsEvaluated[x][y];
+		public boolean suppress(SpellPiece piece, SpellContext context, SpellRuntimeException exception) {
+			boolean handled = handler.catchException(piece, context, exception);
+			if(handled) {
+				Class<?> eval = piece.getEvaluationType();
+				if(eval != null && eval != Void.class) {
+					context.evaluatedObjects[piece.x][piece.y] =
+							handler.supplyReplacementValue(piece, context, exception);
+				}
+			}
+
+			return handled;
+		}
 	}
 
 	public class Action {
@@ -135,30 +151,6 @@ public class CompiledSpell {
 			}
 		}
 
-	}
-
-	public class CatchHandler {
-
-		public final SpellPiece handlerPiece;
-		public final IErrorCatcher handler;
-
-		public CatchHandler(SpellPiece handlerPiece) {
-			this.handlerPiece = handlerPiece;
-			this.handler = (IErrorCatcher) handlerPiece;
-		}
-
-		public boolean suppress(SpellPiece piece, SpellContext context, SpellRuntimeException exception) {
-			boolean handled = handler.catchException(piece, context, exception);
-			if(handled) {
-				Class<?> eval = piece.getEvaluationType();
-				if(eval != null && eval != Void.class) {
-					context.evaluatedObjects[piece.x][piece.y] =
-							handler.supplyReplacementValue(piece, context, exception);
-				}
-			}
-
-			return handled;
-		}
 	}
 
 }

@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -19,14 +19,14 @@ import net.neoforged.neoforge.client.event.InputEvent;
 import org.lwjgl.glfw.GLFW;
 
 import vazkii.patchouli.api.PatchouliAPI;
+import vazkii.psi.api.PsiAPI;
 import vazkii.psi.common.core.handler.PsiSoundHandler;
-import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.lib.LibResources;
 
 import java.util.Objects;
 
 // https://github.com/Vazkii/Botania/blob/faeaf7285b0c9ef0918ad1cb2cbff88ed3ea1d65/src/main/java/vazkii/botania/client/core/handler/KonamiHandler.java
-@EventBusSubscriber(modid = LibMisc.MOD_ID, value = Dist.CLIENT)
+@EventBusSubscriber(modid = PsiAPI.MOD_ID, value = Dist.CLIENT)
 public class BookSoundHandler {
 	private static final int[] SECRET_CODE = {
 			GLFW.GLFW_KEY_Q, GLFW.GLFW_KEY_U,

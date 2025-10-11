@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -14,6 +14,8 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
+import org.jetbrains.annotations.NotNull;
+
 import vazkii.psi.api.exosuit.PsiArmorEvent;
 import vazkii.psi.common.Psi;
 
@@ -23,15 +25,15 @@ public record MessageTriggerJumpSpell() implements CustomPacketPayload {
 	public static final CustomPacketPayload.Type<MessageTriggerJumpSpell> TYPE = new Type<>(ID);
 
 	public static final StreamCodec<RegistryFriendlyByteBuf, MessageTriggerJumpSpell> CODEC = new StreamCodec<>() {
-		public MessageTriggerJumpSpell decode(RegistryFriendlyByteBuf pBuffer) {
+		public @NotNull MessageTriggerJumpSpell decode(@NotNull RegistryFriendlyByteBuf pBuffer) {
 			return new MessageTriggerJumpSpell();
 		}
 
-		public void encode(RegistryFriendlyByteBuf pBuffer, MessageTriggerJumpSpell message) {}
+		public void encode(@NotNull RegistryFriendlyByteBuf pBuffer, @NotNull MessageTriggerJumpSpell message) {}
 	};
 
 	@Override
-	public Type<? extends CustomPacketPayload> type() {
+	public @NotNull Type<? extends CustomPacketPayload> type() {
 		return TYPE;
 	}
 

@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -12,6 +12,8 @@ import net.minecraft.world.Container;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 
+import org.jetbrains.annotations.NotNull;
+
 public class ValidatorSlot extends Slot {
 
 	public ValidatorSlot(Container inventoryIn, int index, int xPosition, int yPosition) {
@@ -19,7 +21,7 @@ public class ValidatorSlot extends Slot {
 	}
 
 	@Override
-	public boolean mayPlace(ItemStack stack) {
+	public boolean mayPlace(@NotNull ItemStack stack) {
 		return container.canPlaceItem(getSlotIndex(), stack);
 	}
 }

@@ -8,11 +8,10 @@ public class Gamma {
 
 	/**
 	 * @param x must be greater than 0
-	 * @return
 	 */
 	public static double gamma(double x) {
 		if(x <= 0.0) {
-			String msg = String.format("Invalid input argument {0}. Argument must be positive.", x);
+			String msg = String.format("Invalid input argument %f. Argument must be positive.", x);
 			throw new IllegalArgumentException(msg);
 		}
 
@@ -128,11 +127,10 @@ public class Gamma {
 
 	/**
 	 * @param x must be a positive integer
-	 * @return
 	 */
 	public static double logGamma(double x) {
 		if(x <= 0.0) {
-			String msg = String.format("Invalid input argument {0}. Argument must be positive.", x);
+			String msg = String.format("Invalid input argument %f. Argument must be positive.", x);
 			throw new IllegalArgumentException(msg);
 		}
 
@@ -166,8 +164,7 @@ public class Gamma {
 		double series = sum / x;
 
 		double halfLogTwoPi = 0.91893853320467274178032973640562;
-		double logGamma = (x - 0.5) * Math.log(x) - x + halfLogTwoPi + series;
-		return logGamma;
+		return (x - 0.5) * Math.log(x) - x + halfLogTwoPi + series;
 	}
 
 }

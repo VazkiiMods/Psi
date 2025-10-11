@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -36,8 +36,6 @@ public class DirectionBlockItemUseContext extends BlockPlaceContext {
 	@Override
 	public Direction @NotNull [] getNearestLookingDirections() {
 		return switch(getHitResult().getDirection()) {
-		default ->
-			new Direction[] { Direction.DOWN, Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST, Direction.UP };
 		case UP ->
 			new Direction[] { Direction.DOWN, Direction.UP, Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST };
 		case NORTH ->
@@ -48,6 +46,8 @@ public class DirectionBlockItemUseContext extends BlockPlaceContext {
 			new Direction[] { Direction.DOWN, Direction.WEST, Direction.SOUTH, Direction.UP, Direction.NORTH, Direction.EAST };
 		case EAST ->
 			new Direction[] { Direction.DOWN, Direction.EAST, Direction.SOUTH, Direction.UP, Direction.NORTH, Direction.WEST };
+		default ->
+			new Direction[] { Direction.DOWN, Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST, Direction.UP };
 		};
 	}
 }

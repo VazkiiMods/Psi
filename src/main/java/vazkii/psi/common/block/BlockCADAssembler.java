@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -42,7 +42,7 @@ public class BlockCADAssembler extends HorizontalDirectionalBlock implements Ent
 	}
 
 	@Override
-	public MapCodec<BlockCADAssembler> codec() {
+	public @NotNull MapCodec<BlockCADAssembler> codec() {
 		return CODEC;
 	}
 
@@ -57,14 +57,12 @@ public class BlockCADAssembler extends HorizontalDirectionalBlock implements Ent
 	}
 
 	@Override
-	@SuppressWarnings("deprecation")
-	public boolean hasAnalogOutputSignal(BlockState state) {
+	public boolean hasAnalogOutputSignal(@NotNull BlockState state) {
 		return true;
 	}
 
 	@Override
-	@SuppressWarnings("deprecation")
-	public int getAnalogOutputSignal(BlockState blockState, Level worldIn, BlockPos pos) {
+	public int getAnalogOutputSignal(@NotNull BlockState blockState, Level worldIn, @NotNull BlockPos pos) {
 		IItemHandler handler = worldIn.getCapability(Capabilities.ItemHandler.BLOCK, pos, null);
 		if(handler != null) {
 			return ItemHandlerHelper.calcRedstoneFromInventory(handler);
@@ -73,7 +71,7 @@ public class BlockCADAssembler extends HorizontalDirectionalBlock implements Ent
 	}
 
 	@Override
-	public InteractionResult useWithoutItem(BlockState state, Level world, BlockPos pos, Player playerIn, BlockHitResult rayTraceResult) {
+	public @NotNull InteractionResult useWithoutItem(@NotNull BlockState state, Level world, @NotNull BlockPos pos, @NotNull Player playerIn, @NotNull BlockHitResult rayTraceResult) {
 		if(world.isClientSide) {
 			return InteractionResult.SUCCESS;
 		} else {

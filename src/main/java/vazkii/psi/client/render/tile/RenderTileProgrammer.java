@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -22,6 +22,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.FaceAttachedHorizontalDirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
+import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
 
 import vazkii.psi.client.core.handler.ClientTickHandler;
@@ -30,11 +31,10 @@ import vazkii.psi.common.Psi;
 import vazkii.psi.common.block.tile.TileProgrammer;
 
 public class RenderTileProgrammer implements BlockEntityRenderer<TileProgrammer> {
-
 	public RenderTileProgrammer(BlockEntityRendererProvider.Context ctx) {}
 
 	@Override
-	public void render(TileProgrammer te, float partialticks, PoseStack ms, MultiBufferSource buffers, int worldLight, int overlay) {
+	public void render(TileProgrammer te, float partialticks, @NotNull PoseStack ms, @NotNull MultiBufferSource buffers, int worldLight, int overlay) {
 		if(te.isEnabled()) {
 			ms.pushPose();
 			int light = Psi.magical ? worldLight : 0xF000F0;

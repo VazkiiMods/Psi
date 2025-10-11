@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -19,7 +19,7 @@ public abstract class PieceOperator extends SpellPiece {
 
 	@Override
 	public EnumPieceType getPieceType() {
-		return EnumPieceType.SELECTOR;
+		return EnumPieceType.OPERATOR;
 	}
 
 	@Override

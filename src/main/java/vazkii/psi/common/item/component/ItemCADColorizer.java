@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -29,10 +29,6 @@ public class ItemCADColorizer extends ItemCADComponent implements ICADColorizer 
 	public ItemCADColorizer(Properties properties) {
 		super(properties);
 		color = DyeColor.BLACK;
-	}
-
-	private static String getProperDyeName(DyeColor color) {
-		return color.getSerializedName();
 	}
 
 	@Override

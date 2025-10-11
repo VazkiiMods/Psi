@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -32,11 +32,10 @@ import org.jetbrains.annotations.Nullable;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ISocketable;
 import vazkii.psi.common.item.base.ModDataComponents;
-import vazkii.psi.common.lib.LibMisc;
 
 import java.util.List;
 
-@EventBusSubscriber(modid = LibMisc.MOD_ID)
+@EventBusSubscriber(modid = PsiAPI.MOD_ID)
 public class ItemPsimetalShovel extends ShovelItem implements IPsimetalTool {
 
 	public ItemPsimetalShovel(Item.Properties properties) {
@@ -51,7 +50,7 @@ public class ItemPsimetalShovel extends ShovelItem implements IPsimetalTool {
 	}
 
 	@Override
-	public boolean mineBlock(ItemStack itemstack, Level world, BlockState state, BlockPos pos, LivingEntity player) {
+	public boolean mineBlock(@NotNull ItemStack itemstack, @NotNull Level world, @NotNull BlockState state, @NotNull BlockPos pos, @NotNull LivingEntity player) {
 		super.mineBlock(itemstack, world, state, pos, player);
 		if(!(player instanceof Player)) {
 			return false;
@@ -71,7 +70,7 @@ public class ItemPsimetalShovel extends ShovelItem implements IPsimetalTool {
 
 	@NotNull
 	@Override
-	public String getDescriptionId(ItemStack stack) {
+	public String getDescriptionId(@NotNull ItemStack stack) {
 		String name = super.getDescriptionId(stack);
 		if(!IPsimetalTool.isEnabled(stack)) {
 			name += ".broken";
@@ -80,7 +79,7 @@ public class ItemPsimetalShovel extends ShovelItem implements IPsimetalTool {
 	}
 
 	@Override
-	public float getDestroySpeed(ItemStack stack, BlockState state) {
+	public float getDestroySpeed(@NotNull ItemStack stack, @NotNull BlockState state) {
 		if(!IPsimetalTool.isEnabled(stack)) {
 			return 1;
 		}
@@ -88,18 +87,18 @@ public class ItemPsimetalShovel extends ShovelItem implements IPsimetalTool {
 	}
 
 	@Override
-	public void inventoryTick(ItemStack stack, Level worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
+	public void inventoryTick(@NotNull ItemStack stack, @NotNull Level worldIn, @NotNull Entity entityIn, int itemSlot, boolean isSelected) {
 		IPsimetalTool.regen(stack, entityIn);
 	}
 
 	@Override
-	public boolean shouldCauseReequipAnimation(ItemStack oldStack, @NotNull ItemStack newStack, boolean slotChanged) {
+	public boolean shouldCauseReequipAnimation(@NotNull ItemStack oldStack, @NotNull ItemStack newStack, boolean slotChanged) {
 		return slotChanged;
 	}
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public void appendHoverText(ItemStack stack, @Nullable TooltipContext context, List<Component> tooltip, TooltipFlag advanced) {
+	public void appendHoverText(@NotNull ItemStack stack, @Nullable TooltipContext context, List<Component> tooltip, @NotNull TooltipFlag advanced) {
 		Component componentName = ISocketable.getSocketedItemName(stack, "psimisc.none");
 		tooltip.add(Component.translatable("psimisc.spell_selected", componentName));
 	}

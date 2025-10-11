@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -9,11 +9,13 @@
 package vazkii.psi.common.spell.trick.block;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.SectionPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.status.ChunkStatus;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -60,7 +62,7 @@ public class PieceTrickConjureBlock extends PieceTrick {
 	}
 
 	public static boolean conjure(Level world, BlockPos pos, Player player, BlockState state) {
-		if(!world.hasChunkAt(pos) || !world.mayInteract(player, pos)) {
+		if(world.getChunk(SectionPos.blockToSectionCoord(pos.getX()), SectionPos.blockToSectionCoord(pos.getZ()), ChunkStatus.FULL, false) == null || !world.mayInteract(player, pos)) {
 			return false;
 		}
 

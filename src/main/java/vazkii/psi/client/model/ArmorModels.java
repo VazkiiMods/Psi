@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -8,7 +8,6 @@
  */
 package vazkii.psi.client.model;
 
-import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.Item;
@@ -25,17 +24,17 @@ import java.util.Map;
 public class ArmorModels {
 	private static Map<EquipmentSlot, ModelArmor> exosuit = Collections.emptyMap();
 
-	private static Map<EquipmentSlot, ModelArmor> make(EntityRendererProvider.Context ctx, ModelLayerLocation inner, ModelLayerLocation outer) {
+	private static Map<EquipmentSlot, ModelArmor> make(EntityRendererProvider.Context ctx) {
 		Map<EquipmentSlot, ModelArmor> ret = new EnumMap<>(EquipmentSlot.class);
 		for(var slot : EquipmentSlot.values()) {
-			var mesh = ctx.bakeLayer(slot == EquipmentSlot.LEGS ? inner : outer);
-			ret.put(slot, new ModelArmor(mesh, slot));
+			var mesh = ctx.bakeLayer(slot == EquipmentSlot.LEGS ? ModModelLayers.PSIMETAL_EXOSUIT_INNER_ARMOR : ModModelLayers.PSIMETAL_EXOSUIT_OUTER_ARMOR);
+			ret.put(slot, new ModelArmor(mesh));
 		}
 		return ret;
 	}
 
 	public static void init(EntityRendererProvider.Context ctx) {
-		exosuit = make(ctx, ModModelLayers.PSIMETAL_EXOSUIT_INNER_ARMOR, ModModelLayers.PSIMETAL_EXOSUIT_OUTER_ARMOR);
+		exosuit = make(ctx);
 	}
 
 	@Nullable

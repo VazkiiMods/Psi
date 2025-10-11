@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -22,7 +22,7 @@ import org.jetbrains.annotations.NotNull;
 public record SparkleParticleData(float size, float r, float g, float b, int m, double mx, double my,
 		double mz) implements ParticleOptions {
 
-	public static MapCodec<SparkleParticleData> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+	public static final MapCodec<SparkleParticleData> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
 			Codec.FLOAT.fieldOf("size").forGetter(d -> d.size),
 			Codec.FLOAT.fieldOf("r").forGetter(d -> d.r),
 			Codec.FLOAT.fieldOf("g").forGetter(d -> d.g),
@@ -33,8 +33,8 @@ public record SparkleParticleData(float size, float r, float g, float b, int m, 
 			Codec.DOUBLE.fieldOf("mz").forGetter(d -> d.mz)
 	).apply(instance, SparkleParticleData::new));
 
-	public static StreamCodec<? super RegistryFriendlyByteBuf, SparkleParticleData> STREAM_CODEC = new StreamCodec<>() {
-		public SparkleParticleData decode(RegistryFriendlyByteBuf pBuffer) {
+	public static final StreamCodec<? super RegistryFriendlyByteBuf, SparkleParticleData> STREAM_CODEC = new StreamCodec<>() {
+		public @NotNull SparkleParticleData decode(RegistryFriendlyByteBuf pBuffer) {
 			return new SparkleParticleData(
 					pBuffer.readFloat(),
 					pBuffer.readFloat(),
@@ -67,17 +67,17 @@ public record SparkleParticleData(float size, float r, float g, float b, int m, 
 
 	public static class Type extends ParticleType<SparkleParticleData> {
 
-		protected Type(boolean pOverrideLimitter) {
-			super(pOverrideLimitter);
+		protected Type() {
+			super(false);
 		}
 
 		@Override
-		public MapCodec<SparkleParticleData> codec() {
+		public @NotNull MapCodec<SparkleParticleData> codec() {
 			return SparkleParticleData.CODEC;
 		}
 
 		@Override
-		public StreamCodec<? super RegistryFriendlyByteBuf, SparkleParticleData> streamCodec() {
+		public @NotNull StreamCodec<? super RegistryFriendlyByteBuf, SparkleParticleData> streamCodec() {
 			return SparkleParticleData.STREAM_CODEC;
 		}
 	}

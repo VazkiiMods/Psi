@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -11,7 +11,6 @@ package vazkii.psi.common.lib;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 
@@ -34,10 +33,6 @@ public class ModTags {
 
 	public static final TagKey<Item> INGOT_IVORY_PSIMETAL = forgeTag("ingots/ivory_psimetal");
 	public static final TagKey<Item> BLOCK_IVORY_PSIMETAL = forgeTag("storage_blocks/ivory_psimetal");
-
-	private static TagKey<DamageType> damageTag(ResourceLocation rl) {
-		return TagKey.create(Registries.DAMAGE_TYPE, rl);
-	}
 
 	private static TagKey<Item> tag(String name) {
 		return TagKey.create(Registries.ITEM, prefix(name));

@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -20,16 +20,11 @@ import org.jetbrains.annotations.Nullable;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.exosuit.PsiArmorEvent;
 import vazkii.psi.api.spell.detonator.IDetonationHandler;
-import vazkii.psi.common.lib.LibMisc;
 
-public class CapabilityTriggerSensor implements IDetonationHandler, ICapabilityProvider<EntityCapability<?, Void>, Void, CapabilityTriggerSensor> {
+public record CapabilityTriggerSensor(
+		Player player) implements IDetonationHandler, ICapabilityProvider<EntityCapability<?, Void>, Void, CapabilityTriggerSensor> {
 
-	public static final String TRIGGER_TICK = LibMisc.MOD_ID + ":LastTriggeredDetonation";
-	public final Player player;
-
-	public CapabilityTriggerSensor(Player player) {
-		this.player = player;
-	}
+	public static final String TRIGGER_TICK = PsiAPI.MOD_ID + ":LastTriggeredDetonation";
 
 	@Nullable
 	@Override

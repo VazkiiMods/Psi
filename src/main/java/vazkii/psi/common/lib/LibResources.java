@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -23,13 +23,13 @@ public class LibResources {
 	public static final ResourceKey<DamageType> PSI_OVERLOAD = ResourceKey.create(Registries.DAMAGE_TYPE, Psi.location("psi_overload"));
 
 	public static final String PREFIX_GUI = PREFIX_MOD + "textures/gui/";
-	public static final String GUI_CREATIVE = "psi.png";
 	public static final String GUI_CAD_ASSEMBLER = PREFIX_GUI + "cad_assembler.png";
 	public static final String GUI_PSI_BAR = PREFIX_GUI + "psi_bar.png";
 	public static final String GUI_PSI_BAR_MASK = PREFIX_GUI + "psi_bar_mask.png";
 	public static final String GUI_PSI_BAR_SHATTER = PREFIX_GUI + "psi_bar_shatter.png";
 	public static final String GUI_SIGN = PREFIX_GUI + "signs/sign%d.png";
 	public static final String GUI_PROGRAMMER = PREFIX_GUI + "programmer.png";
+	public static final String GUI_CREATIVE = "psi.png";
 	public static final String PREFIX_MODEL = "textures/model/";
 	public static final ResourceLocation MODEL_PSIMETAL_EXOSUIT = Psi.location(PREFIX_MODEL + "psimetal_exosuit.png");
 	public static final ResourceLocation MODEL_PSIMETAL_EXOSUIT_SENSOR = Psi.location(PREFIX_MODEL + "psimetal_exosuit_sensor.png");

@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -18,8 +18,6 @@ import net.minecraft.network.chat.MutableComponent;
  */
 @SuppressWarnings("serial")
 public class SpellRuntimeException extends Exception {
-	public Object[] arguments;
-
 	public static final String DIVIDE_BY_ZERO = "psi.spellerror.dividebyzero";
 	public static final String NULL_TARGET = "psi.spellerror.nulltarget";
 	public static final String NULL_VECTOR = "psi.spellerror.nullvector";
@@ -40,6 +38,7 @@ public class SpellRuntimeException extends Exception {
 	public static final String NO_MESSAGE = "psi.spellerror.no_message";
 	public static final String COMPARATOR = "psi.spellerror.comparator";
 	public static final String NAN = "psi.spellerror.nan";
+	public final Object[] arguments;
 
 	public SpellRuntimeException(String s, Object... arguments) {
 		super(s);

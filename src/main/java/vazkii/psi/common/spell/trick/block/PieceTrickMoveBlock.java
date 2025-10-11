@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -63,7 +63,7 @@ public class PieceTrickMoveBlock extends PieceTrick {
 		Level world = context.focalPoint.getCommandSenderWorld();
 		BlockPos pos = positionVal.toBlockPos();
 
-		/**
+		/*
 		 * TODO: Find a better solution than this bandaid for block duping (see #740)
 		 * A possible solution is moving this logic to {@link PieceTrickBreakBlock}
 		 * As well as passing the spell context to it as a parameter. The Spell Context would need to have a way to
@@ -81,7 +81,7 @@ public class PieceTrickMoveBlock extends PieceTrick {
 			return null;
 		}
 
-		BlockEvent.BreakEvent event = PieceTrickBreakBlock.createBreakEvent(state, context.caster, world, pos, tool);
+		BlockEvent.BreakEvent event = PieceTrickBreakBlock.createBreakEvent(state, context.caster, world, pos);
 		NeoForge.EVENT_BUS.post(event);
 		if(event.isCanceled()) {
 			return null;

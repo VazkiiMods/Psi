@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -16,6 +16,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
+import org.jetbrains.annotations.NotNull;
+
 import vazkii.psi.common.Psi;
 
 public record MessageVisualEffect(int color, double x, double y, double z, double width, double height, double offset,
@@ -27,7 +29,7 @@ public record MessageVisualEffect(int color, double x, double y, double z, doubl
 	public static final CustomPacketPayload.Type<MessageVisualEffect> TYPE = new Type<>(ID);
 
 	public static final StreamCodec<RegistryFriendlyByteBuf, MessageVisualEffect> CODEC = new StreamCodec<>() {
-		public MessageVisualEffect decode(RegistryFriendlyByteBuf pBuffer) {
+		public @NotNull MessageVisualEffect decode(RegistryFriendlyByteBuf pBuffer) {
 			return new MessageVisualEffect(
 					pBuffer.readInt(),
 					pBuffer.readDouble(),
@@ -53,7 +55,7 @@ public record MessageVisualEffect(int color, double x, double y, double z, doubl
 	};
 
 	@Override
-	public Type<? extends CustomPacketPayload> type() {
+	public @NotNull Type<? extends CustomPacketPayload> type() {
 		return TYPE;
 	}
 
@@ -64,8 +66,7 @@ public record MessageVisualEffect(int color, double x, double y, double z, doubl
 
 		ctx.enqueueWork(() -> {
 			Level world = Psi.proxy.getClientWorld();
-			switch(effectType) {
-			case TYPE_CRAFT:
+			if(effectType == TYPE_CRAFT) {
 				for(int i = 0; i < 5; i++) {
 					double particleX = x + (Math.random() - 0.5) * 2.1 * width;
 					double particleY = y - offset;
@@ -86,7 +87,6 @@ public record MessageVisualEffect(int color, double x, double y, double z, doubl
 								z + world.random.nextFloat() * width * 2.0F - width - d2 * d3, d0, d1, d2);
 					}
 				}
-				break;
 			}
 		});
 	}

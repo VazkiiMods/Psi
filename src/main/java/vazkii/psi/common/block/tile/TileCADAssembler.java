@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -44,8 +44,8 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class TileCADAssembler extends BlockEntity implements ITileCADAssembler, MenuProvider {
+	private final CADStackHandler inventory = new CADStackHandler();
 	private ItemStack cachedCAD = null;
-	private final CADStackHandler inventory = new CADStackHandler(6);
 
 	public TileCADAssembler(BlockPos pos, BlockState state) {
 		super(ModBlocks.cadAssemblerType.get(), pos, state);
@@ -135,6 +135,11 @@ public class TileCADAssembler extends BlockEntity implements ITileCADAssembler, 
 		for(int i = 1; i < 6; i++) {
 			inventory.setStackInSlot(i, ItemStack.EMPTY);
 		}
+
+		if(level == null) {
+			return;
+		}
+
 		if(!level.isClientSide) {
 			level.playSound(null, getBlockPos().getX() + 0.5, getBlockPos().getY() + 0.5, getBlockPos().getZ() + 0.5, PsiSoundHandler.cadCreate, SoundSource.BLOCKS, 0.5F, 1F);
 		}
@@ -150,13 +155,13 @@ public class TileCADAssembler extends BlockEntity implements ITileCADAssembler, 
 	}
 
 	@Override
-	protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
+	protected void saveAdditional(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider provider) {
 		super.saveAdditional(tag, provider);
 		ContainerHelper.saveAllItems(tag, inventory.getItems(), provider);
 	}
 
 	@Override
-	public void loadAdditional(CompoundTag cmp, HolderLookup.Provider provider) {
+	public void loadAdditional(@NotNull CompoundTag cmp, HolderLookup.@NotNull Provider provider) {
 		super.loadAdditional(cmp, provider);
 		readPacketNBT(cmp, provider);
 	}
@@ -210,7 +215,7 @@ public class TileCADAssembler extends BlockEntity implements ITileCADAssembler, 
 			for(int i = 0; i < items.size(); i++) {
 				CompoundTag compoundtag = items.getCompound(i);
 				int j = compoundtag.getByte("Slot") & 255;
-				if(j >= 0 && j < inventory.getItems().size()) {
+				if(j < inventory.getItems().size()) {
 					inventory.getItems().set(j, ItemStack.parse(provider, compoundtag).orElse(ItemStack.EMPTY));
 				}
 			}
@@ -225,7 +230,7 @@ public class TileCADAssembler extends BlockEntity implements ITileCADAssembler, 
 
 	@NotNull
 	@Override
-	public CompoundTag getUpdateTag(HolderLookup.Provider provider) {
+	public CompoundTag getUpdateTag(HolderLookup.@NotNull Provider provider) {
 		CompoundTag cmp = new CompoundTag();
 		saveAdditional(cmp, provider);
 		return cmp;
@@ -239,22 +244,18 @@ public class TileCADAssembler extends BlockEntity implements ITileCADAssembler, 
 
 	@Nullable
 	@Override
-	public AbstractContainerMenu createMenu(int i, Inventory playerInventory, Player playerEntity) {
+	public AbstractContainerMenu createMenu(int i, @NotNull Inventory playerInventory, @NotNull Player playerEntity) {
 		return new ContainerCADAssembler(i, playerInventory, this);
 	}
 
 	private class CADStackHandler extends ItemStackHandler {
 
-		private CADStackHandler(int size) {
-			super(size);
+		private CADStackHandler() {
+			super(6);
 		}
 
 		private NonNullList<ItemStack> getItems() {
 			return this.stacks;
-		}
-
-		private void setItems(NonNullList<ItemStack> pItems) {
-			this.stacks = pItems;
 		}
 
 		@Override

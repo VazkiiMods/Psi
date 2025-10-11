@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -10,7 +10,6 @@ package vazkii.psi.common.spell.selector.entity;
 
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
-import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.api.spell.piece.PieceSelector;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 
@@ -21,7 +20,7 @@ public class PieceSelectorCasterEnergy extends PieceSelector {
 	}
 
 	@Override
-	public Object execute(SpellContext context) throws SpellRuntimeException {
+	public Object execute(SpellContext context) {
 		PlayerDataHandler.PlayerData data = PlayerDataHandler.get(context.caster);
 		return 1.0 * data.availablePsi;
 	}

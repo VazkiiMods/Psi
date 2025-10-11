@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -53,12 +53,12 @@ public class BlockProgrammer extends HorizontalDirectionalBlock implements Entit
 	}
 
 	@Override
-	public MapCodec<BlockProgrammer> codec() {
+	public @NotNull MapCodec<BlockProgrammer> codec() {
 		return CODEC;
 	}
 
 	@Override
-	protected ItemInteractionResult useItemOn(ItemStack pStack, BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHitResult) {
+	protected @NotNull ItemInteractionResult useItemOn(@NotNull ItemStack pStack, @NotNull BlockState pState, @NotNull Level pLevel, @NotNull BlockPos pPos, @NotNull Player pPlayer, @NotNull InteractionHand pHand, @NotNull BlockHitResult pHitResult) {
 		if(setSpell(pLevel, pPos, pPlayer, pStack) == InteractionResult.SUCCESS) {
 			return ItemInteractionResult.SUCCESS;
 		}
@@ -67,7 +67,7 @@ public class BlockProgrammer extends HorizontalDirectionalBlock implements Entit
 	}
 
 	@Override
-	protected InteractionResult useWithoutItem(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, BlockHitResult pHitResult) {
+	protected @NotNull InteractionResult useWithoutItem(@NotNull BlockState pState, Level pLevel, @NotNull BlockPos pPos, @NotNull Player pPlayer, @NotNull BlockHitResult pHitResult) {
 		TileProgrammer programmer = (TileProgrammer) pLevel.getBlockEntity(pPos);
 		if(programmer == null) {
 			return InteractionResult.PASS;
@@ -133,14 +133,12 @@ public class BlockProgrammer extends HorizontalDirectionalBlock implements Entit
 	}
 
 	@Override
-	@SuppressWarnings("deprecation")
-	public boolean hasAnalogOutputSignal(BlockState state) {
+	public boolean hasAnalogOutputSignal(@NotNull BlockState state) {
 		return true;
 	}
 
 	@Override
-	@SuppressWarnings("deprecation")
-	public int getAnalogOutputSignal(BlockState blockState, Level worldIn, BlockPos pos) {
+	public int getAnalogOutputSignal(@NotNull BlockState blockState, Level worldIn, @NotNull BlockPos pos) {
 		BlockEntity tile = worldIn.getBlockEntity(pos);
 		if(tile instanceof TileProgrammer programmer) {
 
@@ -158,7 +156,7 @@ public class BlockProgrammer extends HorizontalDirectionalBlock implements Entit
 
 	@Nullable
 	@Override
-	public MenuProvider getMenuProvider(BlockState state, Level worldIn, BlockPos pos) {
+	public MenuProvider getMenuProvider(@NotNull BlockState state, @NotNull Level worldIn, @NotNull BlockPos pos) {
 		return super.getMenuProvider(state, worldIn, pos);
 	}
 

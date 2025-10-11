@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -20,16 +20,18 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 
-import vazkii.psi.common.lib.LibMisc;
+import org.jetbrains.annotations.NotNull;
+
+import vazkii.psi.api.PsiAPI;
 import vazkii.psi.common.network.message.*;
 
 public class MessageRegister {
 	public static final StreamCodec<RegistryFriendlyByteBuf, Vec3> VEC3 = new StreamCodec<>() {
-		public Vec3 decode(RegistryFriendlyByteBuf pBuffer) {
+		public @NotNull Vec3 decode(RegistryFriendlyByteBuf pBuffer) {
 			return pBuffer.readVec3();
 		}
 
-		public void encode(RegistryFriendlyByteBuf pBuffer, Vec3 pVec3) {
+		public void encode(RegistryFriendlyByteBuf pBuffer, @NotNull Vec3 pVec3) {
 			pBuffer.writeVec3(pVec3);
 		}
 	};
@@ -37,7 +39,7 @@ public class MessageRegister {
 
 	@SubscribeEvent
 	public static void onRegisterPayloadHandler(RegisterPayloadHandlersEvent event) {
-		final PayloadRegistrar registrar = event.registrar(LibMisc.MOD_ID)
+		final PayloadRegistrar registrar = event.registrar(PsiAPI.MOD_ID)
 				.versioned(VERSION)
 				.optional();
 		registrar.playBidirectional(MessageAdditiveMotion.TYPE, MessageAdditiveMotion.CODEC, MessageAdditiveMotion::handle);

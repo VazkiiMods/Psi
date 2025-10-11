@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -14,18 +14,12 @@ import vazkii.psi.common.Psi;
 
 public class ModModelLayers {
 
-	public static final ModelLayerLocation PSIMETAL_EXOSUIT_INNER_ARMOR = make("psimetal_exosuit", "inner_armor");
-	public static final ModelLayerLocation PSIMETAL_EXOSUIT_OUTER_ARMOR = make("psimetal_exosuit", "outer_armor");
+	public static final ModelLayerLocation PSIMETAL_EXOSUIT_INNER_ARMOR = make("inner_armor");
+	public static final ModelLayerLocation PSIMETAL_EXOSUIT_OUTER_ARMOR = make("outer_armor");
 
-	private static ModelLayerLocation make(String name) {
-		return make(name, "main");
-	}
-
-	private static ModelLayerLocation make(String name, String layer) {
+	private static ModelLayerLocation make(String layer) {
 		// Don't add to vanilla's ModelLayers. It seems to only be used for error checking
 		// And would be annoying to do under Forge's parallel mod loading
-		return new ModelLayerLocation(Psi.location(name), layer);
+		return new ModelLayerLocation(Psi.location("psimetal_exosuit"), layer);
 	}
-
-	public static void init() {}
 }

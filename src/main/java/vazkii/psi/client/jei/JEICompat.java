@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -61,14 +61,16 @@ public class JEICompat implements IModPlugin {
 	}
 
 	@Override
-	public void registerRecipes(IRecipeRegistration registration) {
+	public void registerRecipes(@NotNull IRecipeRegistration registration) {
 		List<ITrickRecipe> trickRecipes = new ArrayList<>();
 
+		if(Minecraft.getInstance().level == null) {
+			return;
+		}
+
 		for(var holder : Minecraft.getInstance().level.getRecipeManager().getRecipes()) {
-			switch(holder.value()) {
-			case ITrickRecipe recipe -> trickRecipes.add(recipe);
-			default -> {
-			}
+			if(holder.value() instanceof ITrickRecipe recipe) {
+				trickRecipes.add(recipe);
 			}
 		}
 
@@ -76,7 +78,7 @@ public class JEICompat implements IModPlugin {
 	}
 
 	@Override
-	public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
+	public void registerRecipeCatalysts(@NotNull IRecipeCatalystRegistration registration) {
 		List<ItemStack> stacks = ItemCAD.getCreativeTabItems();
 		for(ItemStack stack : stacks) {
 			registration.addRecipeCatalyst(stack, TrickCraftingCategory.TYPE);
@@ -93,7 +95,7 @@ public class JEICompat implements IModPlugin {
 
 		private Cad() {}
 
-		public String getSubtypeData(ItemStack itemStack, UidContext context) {
+		public String getSubtypeData(ItemStack itemStack, @NotNull UidContext context) {
 			ItemCAD cad = (ItemCAD) itemStack.getItem();
 
 			List<String> strings = new ArrayList<>();

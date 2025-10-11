@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -63,7 +63,6 @@ import vazkii.psi.client.core.handler.ClientTickHandler;
 import vazkii.psi.client.render.entity.RenderSpellCircle;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.item.ItemCAD;
-import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.lib.LibResources;
 import vazkii.psi.common.network.MessageRegister;
 import vazkii.psi.common.network.message.MessageDataSync;
@@ -114,7 +113,7 @@ public class PlayerDataHandler {
 		return persistentData.getCompound(DATA_TAG);
 	}
 
-	@EventBusSubscriber(modid = LibMisc.MOD_ID)
+	@EventBusSubscriber(modid = PsiAPI.MOD_ID)
 	public static class EventHandler {
 
 		@SubscribeEvent
@@ -227,7 +226,7 @@ public class PlayerDataHandler {
 			if(event.getStage() == RenderLevelStageEvent.Stage.AFTER_PARTICLES) {
 				Minecraft mc = Minecraft.getInstance();
 				Entity cameraEntity = mc.getCameraEntity();
-				if(cameraEntity != null) {
+				if(cameraEntity != null && mc.level != null) {
 					float partialTicks = event.getPartialTick().getGameTimeDeltaPartialTick(false);
 					for(Player player : mc.level.players()) {
 						PlayerDataHandler.get(player).render(player, partialTicks, event.getPoseStack());
@@ -271,9 +270,9 @@ public class PlayerDataHandler {
 		public final Stack<Vector3> eidosChangelog = new Stack<>();
 		public final List<Deduction> deductions = new ArrayList<>();
 		public final WeakReference<Player> playerWR;
+		public final int totalPsi = 5000;
+		public final int regen = 25;
 		private final boolean client;
-		public int totalPsi = 5000;
-		public int regen = 25;
 		public int availablePsi;
 		public int lastAvailablePsi;
 		public int regenCooldown;
@@ -764,6 +763,10 @@ public class PlayerDataHandler {
 		public void unlockPieceGroup(ResourceLocation resourceLocation) {
 			Player player = playerWR.get();
 			if(player instanceof ServerPlayer serverPlayer) {
+				if(serverPlayer.getServer() == null) {
+					return;
+				}
+
 				AdvancementHolder advancement = serverPlayer.getServer().getAdvancements().get(resourceLocation);
 				if(advancement != null && !serverPlayer.getAdvancements().getOrStartProgress(advancement).isDone()) {
 					for(String s : serverPlayer.getAdvancements().getOrStartProgress(advancement).getRemainingCriteria()) {
@@ -775,21 +778,22 @@ public class PlayerDataHandler {
 
 		@Override
 		public void markPieceExecuted(SpellPiece piece) {
-			if(playerWR.get() == null) {
+			Player player = playerWR.get();
+			if(player == null) {
 				return;
 			}
 
-			PieceExecutedEvent event = new PieceExecutedEvent(piece, playerWR.get());
+			PieceExecutedEvent event = new PieceExecutedEvent(piece, player);
 			NeoForge.EVENT_BUS.post(event);
 			Optional<Map.Entry<ResourceKey<Collection<Class<? extends SpellPiece>>>, Collection<Class<? extends SpellPiece>>>> advancementEntry = PsiAPI.ADVANCEMENT_GROUP_REGISTRY.entrySet().stream().filter((entry) -> entry.getValue().contains(piece.getClass())).findFirst();
-			if(!advancementEntry.isPresent()) {
+			if(advancementEntry.isEmpty()) {
 				return;
 			}
 
 			ResourceLocation advancement = advancementEntry.get().getKey().location();
 			Object advancementMainPieceClass = advancementEntry.get().getValue().toArray()[0];
 			if(advancementMainPieceClass == piece.getClass() && !hasAdvancement(advancement)) {
-				NeoForge.EVENT_BUS.post(new PieceGroupAdvancementComplete(piece, playerWR.get(), advancement));
+				NeoForge.EVENT_BUS.post(new PieceGroupAdvancementComplete(piece, player, advancement));
 			}
 		}
 

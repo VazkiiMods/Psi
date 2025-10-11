@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -17,6 +17,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
 import org.apache.commons.lang3.tuple.Pair;
+import org.jetbrains.annotations.NotNull;
 
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.spell.SpellCompilationException;
@@ -71,7 +72,7 @@ public class StatusWidget extends AbstractWidget {
 	}
 
 	@Override
-	protected void updateWidgetNarration(NarrationElementOutput pNarrationElementOutput) {
+	protected void updateWidgetNarration(@NotNull NarrationElementOutput pNarrationElementOutput) {
 		this.defaultButtonNarrationText(pNarrationElementOutput);
 	}
 }

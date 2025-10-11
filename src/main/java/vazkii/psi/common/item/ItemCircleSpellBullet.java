@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -34,13 +34,13 @@ public class ItemCircleSpellBullet extends ItemSpellBullet {
 		ItemStack colorizer = ((ICAD) cad.getItem()).getComponentInSlot(cad, EnumCADComponent.DYE);
 		HitResult pos = PieceOperatorVectorRaycast.raycast(context.caster, 32);
 		ArrayList<Entity> spellEntities = new ArrayList<>();
-		if(pos != null) {
-			EntitySpellCircle circle = new EntitySpellCircle(ModEntities.spellCircle, context.caster.getCommandSenderWorld());
-			circle.setInfo(context.caster, colorizer, stack);
-			circle.setPos(pos.getLocation().x, pos.getLocation().y, pos.getLocation().z);
-			circle.getCommandSenderWorld().addFreshEntity(circle);
-			spellEntities.add(circle);
-		}
+
+		EntitySpellCircle circle = new EntitySpellCircle(ModEntities.spellCircle, context.caster.getCommandSenderWorld());
+		circle.setInfo(context.caster, colorizer, stack);
+		circle.setPos(pos.getLocation().x, pos.getLocation().y, pos.getLocation().z);
+		circle.getCommandSenderWorld().addFreshEntity(circle);
+		spellEntities.add(circle);
+
 		return spellEntities;
 	}
 

@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -76,7 +76,7 @@ public class PieceTrickPlaceBlock extends PieceTrick {
 					save = player.getItemInHand(ctx.getHand());
 					player.setItemInHand(ctx.getHand(), rem);
 					UseOnContext newCtx;
-					newCtx = new UseOnContext(ctx.getPlayer(), ctx.getHand(), hit);
+					newCtx = new UseOnContext(player, ctx.getHand(), hit);
 					player.setItemInHand(newCtx.getHand(), save);
 
 					InteractionResult result = iblock.place(new DirectionBlockItemUseContext(newCtx, horizontalDirection));

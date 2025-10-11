@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -13,7 +13,6 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.spell.SpellPiece;
-import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.lib.LibPieceGroups;
 import vazkii.psi.common.lib.LibPieceNames;
 import vazkii.psi.common.spell.constant.*;
@@ -49,9 +48,9 @@ public final class ModSpellPieces {
 
 	// ========== REGISTRIES ==========
 	public static final DeferredRegister<Class<? extends SpellPiece>> SPELL_PIECES =
-			DeferredRegister.create(PsiAPI.SPELL_PIECE_REGISTRY_TYPE_KEY, LibMisc.MOD_ID);
+			DeferredRegister.create(PsiAPI.SPELL_PIECE_REGISTRY_TYPE_KEY, PsiAPI.MOD_ID);
 	public static final DeferredRegister<Collection<Class<? extends SpellPiece>>> ADVANCEMENT_GROUPS =
-			DeferredRegister.create(PsiAPI.ADVANCEMENT_GROUP_REGISTRY_KEY, LibMisc.MOD_ID);
+			DeferredRegister.create(PsiAPI.ADVANCEMENT_GROUP_REGISTRY_KEY, PsiAPI.MOD_ID);
 
 	// ========== MEMORY MANAGEMENT ==========
 	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceCrossConnector>> CROSS_CONNECTOR =

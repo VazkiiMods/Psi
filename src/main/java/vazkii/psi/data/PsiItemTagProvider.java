@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -16,8 +16,10 @@ import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
+import org.jetbrains.annotations.NotNull;
+
+import vazkii.psi.api.PsiAPI;
 import vazkii.psi.common.item.base.ModItems;
-import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.lib.ModTags;
 
 import java.util.concurrent.CompletableFuture;
@@ -25,7 +27,7 @@ import java.util.concurrent.CompletableFuture;
 public class PsiItemTagProvider extends ItemTagsProvider {
 
 	public PsiItemTagProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> pLookupProvider, CompletableFuture<TagsProvider.TagLookup<Block>> pBlockTags, ExistingFileHelper existingFileHelper) {
-		super(output, pLookupProvider, pBlockTags, LibMisc.MOD_ID, existingFileHelper);
+		super(output, pLookupProvider, pBlockTags, PsiAPI.MOD_ID, existingFileHelper);
 	}
 
 	@Override
@@ -54,7 +56,7 @@ public class PsiItemTagProvider extends ItemTagsProvider {
 	}
 
 	@Override
-	public String getName() {
+	public @NotNull String getName() {
 		return "Psi item tags";
 	}
 

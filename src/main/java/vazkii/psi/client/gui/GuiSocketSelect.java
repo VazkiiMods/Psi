@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -26,6 +26,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 
+import org.jetbrains.annotations.NotNull;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
@@ -96,7 +97,7 @@ public class GuiSocketSelect extends Screen {
 	}
 
 	@Override
-	public void render(GuiGraphics graphics, int mx, int my, float delta) {
+	public void render(@NotNull GuiGraphics graphics, int mx, int my, float delta) {
 		super.render(graphics, mx, my, delta);
 
 		timeIn += delta;
@@ -180,7 +181,6 @@ public class GuiSocketSelect extends Screen {
 			}
 			BufferUploader.drawWithShader(buf.buildOrThrow());
 		}
-		// RenderSystem.enableTexture(); TODO(Kamefrede): 1.20 figure out what this breaks
 
 		for(int seg = 0; seg < segments; seg++) {
 			boolean mouseInSector = degPer * seg < angle && angle < degPer * (seg + 1);
@@ -219,7 +219,7 @@ public class GuiSocketSelect extends Screen {
 					if(!cadStack.isEmpty()) {
 						color = 0xFF0000 - Psi.proxy.getColorForCAD(cadStack);
 					}
-					graphics.drawString(this.font, I18n.get("psimisc.selected"), xsp + width / 4, ysp + font.lineHeight, color, true);
+					graphics.drawString(this.font, I18n.get("psimisc.selected"), xsp + width / 4.0f, ysp + font.lineHeight, color, true);
 				}
 
 				mod = 0.8;
@@ -234,8 +234,6 @@ public class GuiSocketSelect extends Screen {
 		float scale = 3 * shift;
 		RenderSystem.enableBlend();
 		RenderSystem.blendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, 1, 0);
-		//RenderSystem.enableLighting();
-		//RenderSystem.enableColorMaterial();
 
 		if(controlledStacks != null && controlledStacks.length > 0) {
 			int xs = width / 2 - 18 * controlledStacks.length / 2 + 1;

@@ -41,12 +41,11 @@ import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData;
 import vazkii.psi.common.core.handler.PlayerDataHandler.PlayerData.Deduction;
 import vazkii.psi.common.item.base.IHUDItem;
-import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.lib.LibResources;
 
 import java.util.regex.Pattern;
 
-@EventBusSubscriber(modid = LibMisc.MOD_ID, value = Dist.CLIENT)
+@EventBusSubscriber(modid = PsiAPI.MOD_ID, value = Dist.CLIENT)
 public final class HUDHandler {
 
 	public static final LayeredDraw.Layer SOCKETABLE_EQUIPPED_NAME = (graphics, deltatracker) -> {

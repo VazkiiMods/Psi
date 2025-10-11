@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -19,6 +19,10 @@ public class PieceSelectorTickTime extends PieceSelector {
 	}
 
 	public static double getMspt(SpellContext context) {
+		if(context.focalPoint.getServer() == null) {
+			return 0;
+		}
+
 		long[] tickTimes = context.focalPoint.getServer().getTickTime(context.focalPoint.level().dimension());
 		if(tickTimes == null) {
 			return 0;

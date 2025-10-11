@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -14,11 +14,11 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 
-import vazkii.psi.common.lib.LibMisc;
+import vazkii.psi.api.PsiAPI;
 import vazkii.psi.common.network.MessageRegister;
 import vazkii.psi.common.network.message.MessageLoopcastSync;
 
-@EventBusSubscriber(modid = LibMisc.MOD_ID)
+@EventBusSubscriber(modid = PsiAPI.MOD_ID)
 public class LoopcastTrackingHandler {
 	@SubscribeEvent
 	public static void onPlayerStartTracking(PlayerEvent.StartTracking event) {
@@ -46,13 +46,6 @@ public class LoopcastTrackingHandler {
 		PlayerDataHandler.PlayerData data = PlayerDataHandler.get(player);
 
 		MessageRegister.sendToPlayer(receiver, new MessageLoopcastSync(player.getId(), data.loopcasting, data.loopcastHand));
-	}
-
-	public static void syncForTrackers(ServerPlayer player) {
-
-		PlayerDataHandler.PlayerData data = PlayerDataHandler.get(player);
-		MessageRegister.sendToPlayersTrackingEntity(player, new MessageLoopcastSync(player.getId(), data.loopcasting, data.loopcastHand));
-
 	}
 
 	public static void syncForTrackersAndSelf(ServerPlayer playerEntity) {

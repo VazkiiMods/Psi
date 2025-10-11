@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -117,7 +117,7 @@ public class ContainerCADAssembler extends AbstractContainerMenu {
 				}
 
 				@Override
-				public boolean mayPlace(ItemStack stack) {
+				public boolean mayPlace(@NotNull ItemStack stack) {
 					return !stack.isEmpty() && stack.getItem().canEquip(stack, slot, player);
 				}
 
@@ -150,11 +150,15 @@ public class ContainerCADAssembler extends AbstractContainerMenu {
 
 	@NotNull
 	@Override
-	public ItemStack quickMoveStack(Player playerIn, int from) {
+	public ItemStack quickMoveStack(@NotNull Player playerIn, int from) {
 		ItemStack mergeStack = ItemStack.EMPTY;
+		if(from > slots.size() - 1 || from < 0) {
+			return mergeStack;
+		}
+
 		Slot slot = slots.get(from);
 
-		if(slot != null && slot.hasItem()) {
+		if(slot.hasItem()) {
 			ItemStack stackInSlot = slot.getItem();
 			mergeStack = stackInSlot.copy();
 
@@ -205,7 +209,7 @@ public class ContainerCADAssembler extends AbstractContainerMenu {
 	}
 
 	@Override
-	public void removed(Player playerIn) {
+	public void removed(@NotNull Player playerIn) {
 		super.removed(playerIn);
 		assembler.clearCachedCAD();
 	}

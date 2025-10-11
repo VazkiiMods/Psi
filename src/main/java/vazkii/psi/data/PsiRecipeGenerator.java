@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -49,20 +49,20 @@ public class PsiRecipeGenerator extends RecipeProvider {
 		super(pOutput, pRegistries);
 	}
 
-	protected <R extends Recipe<?>> void specialRecipe(RecipeOutput recipeOutput, DeferredHolder<RecipeType<?>, RecipeType<R>> type, Function<CraftingBookCategory, Recipe<?>> factory, CraftingBookCategory category) {
-		Recipe<?> recipe = factory.apply(category);
+	protected <R extends Recipe<?>> void specialRecipe(RecipeOutput recipeOutput, DeferredHolder<RecipeType<?>, RecipeType<R>> type, Function<CraftingBookCategory, Recipe<?>> factory) {
+		Recipe<?> recipe = factory.apply(CraftingBookCategory.MISC);
 		ResourceLocation id = type.getId();
 		recipeOutput.accept(ResourceLocation.fromNamespaceAndPath(id.getNamespace(), "dynamic/" + id.getPath()), recipe, null);
 	}
 
 	@Override
 	protected void buildRecipes(RecipeOutput consumer) {
-		specialRecipe(consumer, ModCraftingRecipes.SCAVENGE_TYPE, AssemblyScavengeRecipe::new, CraftingBookCategory.MISC);
-		specialRecipe(consumer, ModCraftingRecipes.BULLET_TO_DRIVE_TYPE, BulletToDriveRecipe::new, CraftingBookCategory.MISC);
-		specialRecipe(consumer, ModCraftingRecipes.COLORIZER_CHANGE_TYPE, ColorizerChangeRecipe::new, CraftingBookCategory.MISC);
-		specialRecipe(consumer, ModCraftingRecipes.DRIVE_DUPLICATE_TYPE, DriveDuplicateRecipe::new, CraftingBookCategory.MISC);
-		specialRecipe(consumer, ModCraftingRecipes.SENSOR_ATTACH_TYPE, SensorAttachRecipe::new, CraftingBookCategory.MISC);
-		specialRecipe(consumer, ModCraftingRecipes.SENSOR_REMOVE_TYPE, SensorRemoveRecipe::new, CraftingBookCategory.MISC);
+		specialRecipe(consumer, ModCraftingRecipes.SCAVENGE_TYPE, AssemblyScavengeRecipe::new);
+		specialRecipe(consumer, ModCraftingRecipes.BULLET_TO_DRIVE_TYPE, BulletToDriveRecipe::new);
+		specialRecipe(consumer, ModCraftingRecipes.COLORIZER_CHANGE_TYPE, ColorizerChangeRecipe::new);
+		specialRecipe(consumer, ModCraftingRecipes.DRIVE_DUPLICATE_TYPE, DriveDuplicateRecipe::new);
+		specialRecipe(consumer, ModCraftingRecipes.SENSOR_ATTACH_TYPE, SensorAttachRecipe::new);
+		specialRecipe(consumer, ModCraftingRecipes.SENSOR_REMOVE_TYPE, SensorRemoveRecipe::new);
 
 		Criterion<InventoryChangeTrigger.TriggerInstance> hasIron = has(Tags.Items.INGOTS_IRON);
 		Criterion<InventoryChangeTrigger.TriggerInstance> hasPsimetal = has(ModTags.INGOT_PSIMETAL);

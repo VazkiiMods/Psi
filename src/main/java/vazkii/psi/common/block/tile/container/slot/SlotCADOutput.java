@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -34,16 +34,15 @@ public class SlotCADOutput extends Slot {
 		this.assembler = assembler;
 	}
 
-	@NotNull
 	@Override
-	public void onTake(Player playerIn, @NotNull ItemStack stack) {
+	public void onTake(@NotNull Player playerIn, @NotNull ItemStack stack) {
 		super.onTake(playerIn, stack);
 		assembler.onCraftCAD(stack);
 		//return stack;
 	}
 
 	@Override
-	public boolean mayPickup(Player playerIn) {
+	public boolean mayPickup(@NotNull Player playerIn) {
 		CADTakeEvent event = new CADTakeEvent(getItem(), assembler, playerIn);
 		float sound = event.getSound();
 		if(NeoForge.EVENT_BUS.post(event).isCanceled()) {
@@ -61,7 +60,7 @@ public class SlotCADOutput extends Slot {
 	}
 
 	@Override
-	public boolean mayPlace(ItemStack stack) {
+	public boolean mayPlace(@NotNull ItemStack stack) {
 		return false;
 	}
 }

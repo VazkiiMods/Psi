@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -22,14 +22,15 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
+import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 
+import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.internal.PsiRenderHelper;
 import vazkii.psi.client.model.ArmorModels;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.entity.EntitySpellCircle;
-import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.lib.LibResources;
 
 public class RenderSpellCircle extends EntityRenderer<EntitySpellCircle> {
@@ -46,7 +47,7 @@ public class RenderSpellCircle extends EntityRenderer<EntitySpellCircle> {
 					.setShaderState(RenderStateShard.POSITION_COLOR_TEX_LIGHTMAP_SHADER)
 					.setLightmapState(new RenderStateShard.LightmapStateShard(true))
 					.createCompositeState(true);
-			LAYERS[i] = RenderType.create(LibMisc.MOD_ID + ":spell_circle_" + i, DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP, VertexFormat.Mode.QUADS, 64, false, false, glState);
+			LAYERS[i] = RenderType.create(PsiAPI.MOD_ID + ":spell_circle_" + i, DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP, VertexFormat.Mode.QUADS, 64, false, false, glState);
 		}
 	}
 
@@ -122,7 +123,7 @@ public class RenderSpellCircle extends EntityRenderer<EntitySpellCircle> {
 	}
 
 	@Override
-	public void render(EntitySpellCircle entity, float entityYaw, float partialTicks, PoseStack ms, MultiBufferSource buffers, int light) {
+	public void render(EntitySpellCircle entity, float entityYaw, float partialTicks, PoseStack ms, @NotNull MultiBufferSource buffers, int light) {
 		ms.pushPose();
 		ItemStack colorizer = entity.getEntityData().get(EntitySpellCircle.COLORIZER_DATA);
 		int color = Psi.proxy.getColorForColorizer(colorizer);
@@ -136,7 +137,7 @@ public class RenderSpellCircle extends EntityRenderer<EntitySpellCircle> {
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(EntitySpellCircle entitySpellCircle) {
-		return null;
+	public @NotNull ResourceLocation getTextureLocation(@NotNull EntitySpellCircle entitySpellCircle) {
+		return PsiAPI.location("spell_circle");
 	}
 }

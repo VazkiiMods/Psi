@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -18,6 +18,7 @@ import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 
+import org.jetbrains.annotations.NotNull;
 import org.lwjgl.glfw.GLFW;
 
 import vazkii.psi.api.spell.SpellGrid;
@@ -44,7 +45,7 @@ public class SideConfigWidget extends AbstractWidget {
 	}
 
 	@Override
-	public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float pTicks) {
+	public void renderWidget(@NotNull GuiGraphics graphics, int mouseX, int mouseY, float pTicks) {
 		SpellPiece piece = null;
 		if(SpellGrid.exists(GuiProgrammer.selectedX, GuiProgrammer.selectedY)) {
 			piece = parent.spell.grid.gridData[GuiProgrammer.selectedX][GuiProgrammer.selectedY];
@@ -84,7 +85,7 @@ public class SideConfigWidget extends AbstractWidget {
 	}
 
 	@Override
-	protected void updateWidgetNarration(NarrationElementOutput pNarrationElementOutput) {
+	protected void updateWidgetNarration(@NotNull NarrationElementOutput pNarrationElementOutput) {
 		this.defaultButtonNarrationText(pNarrationElementOutput);
 	}
 }

@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -8,7 +8,6 @@
  */
 package vazkii.psi.api.internal;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.server.level.ServerPlayer;
@@ -20,19 +19,16 @@ public final class VanillaPacketDispatcher {
 
 	public static void dispatchTEToNearbyPlayers(BlockEntity tile) {
 		Level world = tile.getLevel();
+		if(world == null) {
+			return;
+		}
+
 		for(Player player : world.players()) {
 			if(player instanceof ServerPlayer mp) {
 				if(MathHelper.pointDistancePlane(mp.getX(), mp.getZ(), tile.getBlockPos().getX() + 0.5, tile.getBlockPos().getZ() + 0.5) < 64) {
 					dispatchTEToPlayer(tile, mp);
 				}
 			}
-		}
-	}
-
-	public static void dispatchTEToNearbyPlayers(Level world, BlockPos pos) {
-		BlockEntity tile = world.getBlockEntity(pos);
-		if(tile != null) {
-			dispatchTEToNearbyPlayers(tile);
 		}
 	}
 

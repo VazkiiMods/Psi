@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -92,7 +92,7 @@ public class EntitySpellProjectile extends ThrowableProjectile {
 	}
 
 	@Override
-	public void addAdditionalSaveData(CompoundTag tagCompound) {
+	public void addAdditionalSaveData(@NotNull CompoundTag tagCompound) {
 		super.addAdditionalSaveData(tagCompound);
 
 		Tag colorizerCmp = new CompoundTag();
@@ -117,7 +117,7 @@ public class EntitySpellProjectile extends ThrowableProjectile {
 	}
 
 	@Override
-	public void readAdditionalSaveData(CompoundTag tagCompound) {
+	public void readAdditionalSaveData(@NotNull CompoundTag tagCompound) {
 		super.readAdditionalSaveData(tagCompound);
 
 		CompoundTag colorizerCmp = tagCompound.getCompound(TAG_COLORIZER);

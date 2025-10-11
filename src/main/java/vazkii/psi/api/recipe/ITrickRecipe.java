@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -45,7 +45,8 @@ public interface ITrickRecipe extends Recipe<SingleRecipeInput> {
 	Ingredient getInput();
 
 	@Override
-	ItemStack getResultItem(HolderLookup.Provider pRegistries);
+	@NotNull
+	ItemStack getResultItem(HolderLookup.@NotNull Provider pRegistries);
 
 	/**
 	 * @return a recommended minimum CAD assembly that can craft this recipe, for JEI display purposes.

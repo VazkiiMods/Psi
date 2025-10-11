@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -15,12 +15,14 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.network.chat.Component;
 
+import org.jetbrains.annotations.NotNull;
+
 import vazkii.psi.api.spell.SpellPiece;
 import vazkii.psi.client.gui.GuiProgrammer;
 
 public class GuiButtonSpellPiece extends Button {
+	public final SpellPiece piece;
 	final GuiProgrammer gui;
-	public SpellPiece piece;
 
 	public GuiButtonSpellPiece(GuiProgrammer gui, SpellPiece piece, int x, int y, Button.OnPress pressable) {
 		super(x, y, 16, 16, Component.empty(), pressable, DEFAULT_NARRATION);
@@ -29,7 +31,7 @@ public class GuiButtonSpellPiece extends Button {
 	}
 
 	@Override
-	public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float pTicks) {
+	public void renderWidget(@NotNull GuiGraphics graphics, int mouseX, int mouseY, float pTicks) {
 		if(active && visible) {
 			boolean hover = mouseX >= getX() && mouseY >= getY() && mouseX < getX() + width && mouseY < getY() + height;
 
@@ -50,10 +52,6 @@ public class GuiButtonSpellPiece extends Button {
 
 	public SpellPiece getPiece() {
 		return piece;
-	}
-
-	public void setPiece(SpellPiece piece) {
-		this.piece = piece;
 	}
 
 	public String getPieceSortingName() {

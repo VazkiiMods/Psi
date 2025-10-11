@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -44,7 +44,7 @@ public class ModelCAD implements BakedModel {
 	private final ItemOverrides itemHandler = new ItemOverrides() {
 		@Nullable
 		@Override
-		public BakedModel resolve(BakedModel model, ItemStack stack, @Nullable ClientLevel world, @Nullable LivingEntity entity, int mode) {
+		public BakedModel resolve(@NotNull BakedModel model, ItemStack stack, @Nullable ClientLevel world, @Nullable LivingEntity entity, int mode) {
 			ICAD cad = (ICAD) stack.getItem();
 			ItemStack assemblyStack = cad.getComponentInSlot(stack, EnumCADComponent.ASSEMBLY);
 			if(assemblyStack.isEmpty()) {
@@ -62,12 +62,12 @@ public class ModelCAD implements BakedModel {
 	 */
 	@Deprecated
 	@Override
-	public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, RandomSource random) {
+	public @NotNull List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @NotNull RandomSource random) {
 		return Collections.emptyList();
 	}
 
 	@Override
-	public @NotNull List<BakedQuad> getQuads(@Nullable BlockState state, @org.jetbrains.annotations.Nullable Direction side, RandomSource rand, ModelData data, @org.jetbrains.annotations.Nullable RenderType renderType) {
+	public @NotNull List<BakedQuad> getQuads(@Nullable BlockState state, @org.jetbrains.annotations.Nullable Direction side, @NotNull RandomSource rand, @NotNull ModelData data, @org.jetbrains.annotations.Nullable RenderType renderType) {
 		return Collections.emptyList();
 	}
 
@@ -91,7 +91,9 @@ public class ModelCAD implements BakedModel {
 		return false;
 	}
 
-	/** @deprecated Forge: Use {@link #getParticleIcon(net.neoforged.neoforge.client.model.data.ModelData)} */
+	/**
+	 * @deprecated Forge: Use {@link #getParticleIcon(net.neoforged.neoforge.client.model.data.ModelData)}
+	 */
 	@NotNull
 	@Override
 	@Deprecated

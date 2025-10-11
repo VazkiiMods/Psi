@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -138,7 +138,7 @@ public class PiecePanelWidget extends AbstractWidget implements GuiEventListener
 		for(ResourceLocation key : event.getSpellPieceRegistry().keySet()) {
 			Class<? extends SpellPiece> clazz = event.getSpellPieceRegistry().get(key);
 			Optional<Map.Entry<ResourceKey<Collection<Class<? extends SpellPiece>>>, Collection<Class<? extends SpellPiece>>>> advancementEntry = PsiAPI.ADVANCEMENT_GROUP_REGISTRY.entrySet().stream().filter((entry) -> entry.getValue().contains(clazz)).findFirst();
-			if(!advancementEntry.isPresent()) {
+			if(advancementEntry.isEmpty()) {
 				continue;
 			}
 
@@ -239,18 +239,18 @@ public class PiecePanelWidget extends AbstractWidget implements GuiEventListener
 						visibleButtons.add(guiButtonSpellPiece);
 					}
 				}
-			} else if(button instanceof GuiButtonPage page) {
-				if(page.isRight() && this.page < getPageCount() - 1) {
-					page.setX(getX() + width - 22);
-					page.setY(getY() + height - 15);
-					page.visible = true;
-					page.active = true;
+			} else if(button instanceof GuiButtonPage otherPage) {
+				if(otherPage.isRight() && this.page < getPageCount() - 1) {
+					otherPage.setX(getX() + width - 22);
+					otherPage.setY(getY() + height - 15);
+					otherPage.visible = true;
+					otherPage.active = true;
 
-				} else if(!page.isRight() && this.page > 0) {
-					page.setX(getX() + 4);
-					page.setY(getY() + height - 15);
-					page.visible = true;
-					page.active = true;
+				} else if(!otherPage.isRight() && this.page > 0) {
+					otherPage.setX(getX() + 4);
+					otherPage.setY(getY() + height - 15);
+					otherPage.visible = true;
+					otherPage.active = true;
 				}
 			}
 		});
@@ -266,15 +266,18 @@ public class PiecePanelWidget extends AbstractWidget implements GuiEventListener
 
 		visibleButtons.sort(comparator);
 		if((!text.isEmpty() && text.length() <= 5 && (text.matches("^-?\\d+(?:\\.\\d*)?") || text.matches("^-?\\d*(?:\\.\\d+)?")))) {
-			GuiButtonSpellPiece constantPiece = (GuiButtonSpellPiece) parent.getButtons().stream().filter(el -> {
+			parent.getButtons().stream().filter(el -> {
 				if(el instanceof GuiButtonSpellPiece) {
 					return ((GuiButtonSpellPiece) el).getPiece() instanceof PieceConstantNumber;
 				}
 				return false;
-			}).findFirst().orElse(null);
-			visibleButtons.remove(constantPiece);
-			((PieceConstantNumber) constantPiece.getPiece()).valueStr = text;
-			visibleButtons.addFirst(constantPiece);
+			}).findFirst().ifPresent(renderable -> {
+				GuiButtonSpellPiece constantPiece = (GuiButtonSpellPiece) renderable;
+
+				visibleButtons.remove(constantPiece);
+				((PieceConstantNumber) constantPiece.getPiece()).valueStr = text;
+				visibleButtons.addFirst(constantPiece);
+			});
 		}
 
 		int start = page * PIECES_PER_PAGE;
@@ -336,7 +339,7 @@ public class PiecePanelWidget extends AbstractWidget implements GuiEventListener
 					maxRank = Math.max(maxRank, rankTextToken(type, clippedToken));
 				}
 
-				if(maxRank <= 0) {
+				if(maxRank == 0) {
 					return 0;
 				}
 				rank += maxRank;

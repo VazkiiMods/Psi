@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -13,6 +13,9 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
+import org.jetbrains.annotations.NotNull;
+
+import vazkii.psi.api.PsiAPI;
 import vazkii.psi.common.entity.EntitySpellProjectile;
 
 public class RenderSpellProjectile extends EntityRenderer<EntitySpellProjectile> {
@@ -22,12 +25,12 @@ public class RenderSpellProjectile extends EntityRenderer<EntitySpellProjectile>
 	}
 
 	@Override
-	public boolean shouldRender(EntitySpellProjectile livingEntityIn, Frustum camera, double camX, double camY, double camZ) {
+	public boolean shouldRender(@NotNull EntitySpellProjectile livingEntityIn, @NotNull Frustum camera, double camX, double camY, double camZ) {
 		return false;
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(EntitySpellProjectile entity) {
-		return null;
+	public @NotNull ResourceLocation getTextureLocation(@NotNull EntitySpellProjectile entity) {
+		return PsiAPI.location("spell_projectile");
 	}
 }

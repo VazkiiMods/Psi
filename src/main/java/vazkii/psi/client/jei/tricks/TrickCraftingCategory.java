@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -28,10 +28,10 @@ import net.minecraft.world.item.ItemStack;
 
 import org.jetbrains.annotations.NotNull;
 
+import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.recipe.ITrickRecipe;
 import vazkii.psi.common.Psi;
 import vazkii.psi.common.item.base.ModItems;
-import vazkii.psi.common.lib.LibMisc;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,7 +39,7 @@ import java.util.List;
 import java.util.Map;
 
 public class TrickCraftingCategory implements IRecipeCategory<ITrickRecipe> {
-	public static final RecipeType<ITrickRecipe> TYPE = RecipeType.create(LibMisc.MOD_ID, "trick", ITrickRecipe.class);
+	public static final RecipeType<ITrickRecipe> TYPE = RecipeType.create(PsiAPI.MOD_ID, "trick", ITrickRecipe.class);
 
 	private static final int trickX = 43;
 	private static final int trickY = 24;
@@ -61,14 +61,14 @@ public class TrickCraftingCategory implements IRecipeCategory<ITrickRecipe> {
 	}
 
 	@Override
-	public RecipeType<ITrickRecipe> getRecipeType() {
+	public @NotNull RecipeType<ITrickRecipe> getRecipeType() {
 		return TYPE;
 	}
 
 	@NotNull
 	@Override
 	public Component getTitle() {
-		return Component.literal(I18n.get("jei." + LibMisc.MOD_ID + ".category.trick"));
+		return Component.literal(I18n.get("jei." + PsiAPI.MOD_ID + ".category.trick"));
 	}
 
 	@Override
@@ -88,7 +88,7 @@ public class TrickCraftingCategory implements IRecipeCategory<ITrickRecipe> {
 	}
 
 	@Override
-	public void draw(ITrickRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
+	public void draw(ITrickRecipe recipe, @NotNull IRecipeSlotsView recipeSlotsView, @NotNull GuiGraphics guiGraphics, double mouseX, double mouseY) {
 		background.draw(guiGraphics);
 
 		if(recipe.getPiece() != null) {
@@ -104,7 +104,7 @@ public class TrickCraftingCategory implements IRecipeCategory<ITrickRecipe> {
 	}
 
 	@Override
-	public void getTooltip(ITooltipBuilder tooltip, ITrickRecipe recipe, IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
+	public void getTooltip(@NotNull ITooltipBuilder tooltip, ITrickRecipe recipe, @NotNull IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
 		if(recipe.getPiece() != null && onTrick(mouseX, mouseY)) {
 			List<Component> tooltips = new ArrayList<>();
 			recipe.getPiece().getTooltip(tooltips);
@@ -113,7 +113,7 @@ public class TrickCraftingCategory implements IRecipeCategory<ITrickRecipe> {
 	}
 
 	@Override
-	public void setRecipe(IRecipeLayoutBuilder builder, ITrickRecipe recipe, IFocusGroup focuses) {
+	public void setRecipe(IRecipeLayoutBuilder builder, ITrickRecipe recipe, @NotNull IFocusGroup focuses) {
 		builder.addSlot(RecipeIngredientRole.INPUT, 1, 6).addIngredients(recipe.getInput());
 		builder.addSlot(RecipeIngredientRole.CATALYST, 22, 24).addItemStack(recipe.getAssembly());
 		builder.addSlot(RecipeIngredientRole.OUTPUT, 74, 6).addItemStack(recipe.getResultItem(RegistryAccess.EMPTY));

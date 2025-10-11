@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -28,9 +28,9 @@ import java.util.Iterator;
 
 public class InventorySocketable implements Container, Nameable, ContainerData {
 
+	private final TileCADAssembler assembler;
 	@Nullable
 	private ISocketable socketable;
-	private final TileCADAssembler assembler;
 
 	public InventorySocketable(TileCADAssembler assembler, ItemStack stack) {
 		this.assembler = assembler;

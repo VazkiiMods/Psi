@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -55,13 +55,6 @@ public class PatchouliUtils {
 			}
 		}
 		return IVariable.wrapList(list, registries);
-	}
-
-	/**
-	 * Overload of the method above that uses the provided list's longest ingredient size.
-	 */
-	public static IVariable interweaveIngredients(List<Ingredient> ingredients, HolderLookup.Provider registries) {
-		return interweaveIngredients(ingredients, ingredients.stream().mapToInt(ingr -> ingr.getItems().length).max().orElse(1), registries);
 	}
 
 	/**

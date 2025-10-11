@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -53,7 +53,7 @@ public final class PsiAPI {
 	public static final Tier PSIMETAL_TOOL_MATERIAL = new SimpleTier(BlockTags.INCORRECT_FOR_DIAMOND_TOOL, 900, 7.8F, 2F, 12, () -> Ingredient.of(ModItems.psimetal.get()));
 	/**
 	 * The internal method handler in use. This object allows the API to interact with the mod.
-	 * By default this is a dummy. In the mod itself, this is replaced with an implementation that
+	 * By default, this is a dummy. In the mod itself, this is replaced with an implementation that
 	 * can handle all of its queries.<br>
 	 * <br>
 	 *

@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -16,6 +16,8 @@ import net.neoforged.neoforge.capabilities.ICapabilityProvider;
 import net.neoforged.neoforge.capabilities.ItemCapability;
 import net.neoforged.neoforge.items.ComponentItemHandler;
 
+import org.jetbrains.annotations.NotNull;
+
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.IPsiBarDisplay;
 import vazkii.psi.api.cad.ISocketable;
@@ -29,8 +31,8 @@ import java.util.List;
 
 public class ToolSocketable implements ICapabilityProvider<ItemCapability<?, Void>, Void, ToolSocketable>, ISocketable, IPsiBarDisplay, ISpellAcceptor {
 	protected final ItemStack tool;
-	private final ComponentItemHandler toolHandler;
 	protected final int slots;
+	private final ComponentItemHandler toolHandler;
 
 	public ToolSocketable(ItemStack tool, int slots) {
 		this.tool = tool;
@@ -39,7 +41,7 @@ public class ToolSocketable implements ICapabilityProvider<ItemCapability<?, Voi
 	}
 
 	@Override
-	public ToolSocketable getCapability(ItemCapability<?, Void> capability, Void facing) {
+	public ToolSocketable getCapability(@NotNull ItemCapability<?, Void> capability, Void facing) {
 		if(capability == PsiAPI.SOCKETABLE_CAPABILITY
 				|| capability == PsiAPI.PSI_BAR_DISPLAY_CAPABILITY
 				|| capability == PsiAPI.SPELL_ACCEPTOR_CAPABILITY) {

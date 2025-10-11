@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -45,16 +45,12 @@ import vazkii.psi.common.item.ItemCAD;
 import vazkii.psi.common.item.base.ModDataComponents;
 import vazkii.psi.common.item.tool.IPsimetalTool;
 import vazkii.psi.common.item.tool.ToolSocketable;
-import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.lib.LibResources;
 
 import java.util.List;
 
-@EventBusSubscriber(modid = LibMisc.MOD_ID)
+@EventBusSubscriber(modid = PsiAPI.MOD_ID)
 public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiEventArmor {
-
-	//private final LazyLoadedValue<HumanoidModel<?>> model;
-	public final EquipmentSlot type;
 
 	public ItemPsimetalArmor(ArmorItem.Type type, Properties props) {
 		this(type, PsimetalArmorMaterial.PSIMETAL_ARMOR_MATERIAL, props);
@@ -62,9 +58,6 @@ public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiE
 
 	public ItemPsimetalArmor(ArmorItem.Type type, Holder<ArmorMaterial> mat, Properties props) {
 		super(mat, type, props.component(ModDataComponents.BULLETS.get(), ItemContainerContents.EMPTY));
-		this.type = type.getSlot();
-		/*this.model = DistExecutor.runForDist(() -> () -> new LazyLoadedValue<>(() -> this.provideArmorModelForSlot(type)),
-				() -> () -> null);*/
 	}
 
 	@SubscribeEvent
@@ -85,7 +78,7 @@ public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiE
 
 	@NotNull
 	@Override
-	public String getDescriptionId(ItemStack stack) {
+	public String getDescriptionId(@NotNull ItemStack stack) {
 		String name = super.getDescriptionId(stack);
 		if(!IPsimetalTool.isEnabled(stack)) {
 			name += ".broken";
@@ -94,7 +87,7 @@ public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiE
 	}
 
 	@Override
-	public void inventoryTick(ItemStack stack, Level worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
+	public void inventoryTick(@NotNull ItemStack stack, @NotNull Level worldIn, @NotNull Entity entityIn, int itemSlot, boolean isSelected) {
 		IPsimetalTool.regen(stack, entityIn);
 	}
 
@@ -125,7 +118,7 @@ public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiE
 
 	@Override
 	public void onEvent(ItemStack stack, PsiArmorEvent event) {
-		if(event.type.equals(getEvent(stack)) && event.getEntity() != null) {
+		if(event.type.equals(getEvent(stack))) {
 			cast(stack, event);
 		}
 	}
@@ -144,7 +137,7 @@ public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiE
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public void appendHoverText(ItemStack stack, @Nullable TooltipContext context, List<Component> tooltip, TooltipFlag advanced) {
+	public void appendHoverText(@NotNull ItemStack stack, @Nullable TooltipContext context, @NotNull List<Component> tooltip, @NotNull TooltipFlag advanced) {
 		TooltipHelper.tooltipIfShift(tooltip, () -> {
 			Component componentName = ISocketable.getSocketedItemName(stack, "psimisc.none");
 			tooltip.add(Component.translatable("psimisc.spell_selected", componentName));
@@ -153,17 +146,13 @@ public class ItemPsimetalArmor extends ArmorItem implements IPsimetalTool, IPsiE
 	}
 
 	@Override
-	public boolean isRepairable(ItemStack stack) {
+	public boolean isRepairable(@NotNull ItemStack stack) {
 		return super.isRepairable(stack);
 	}
 
 	@Override
-	public ResourceLocation getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, ArmorMaterial.Layer layer, boolean innerModel) {
+	public ResourceLocation getArmorTexture(@NotNull ItemStack stack, @NotNull Entity entity, @NotNull EquipmentSlot slot, ArmorMaterial.@NotNull Layer layer, boolean innerModel) {
 		return LibResources.MODEL_PSIMETAL_EXOSUIT;
-	}
-
-	public boolean hasCustomColor(@NotNull ItemStack stack) {
-		return true;
 	}
 
 	public int getColor(@NotNull ItemStack stack) {

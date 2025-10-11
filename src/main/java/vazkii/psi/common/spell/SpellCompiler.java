@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -129,7 +129,7 @@ public final class SpellCompiler implements ISpellCompiler {
 		if(!(piece instanceof IErrorCatcher errorCatcher)) {
 			return;
 		}
-		CompiledSpell.CatchHandler errorHandler = compiled.new CatchHandler(piece);
+		CompiledSpell.CatchHandler errorHandler = new CatchHandler(piece);
 
 		EnumSet<SpellParam.Side> usedSides = EnumSet.noneOf(SpellParam.Side.class);
 
@@ -183,7 +183,7 @@ public final class SpellCompiler implements ISpellCompiler {
 		}
 	}
 
-	public List<SpellPiece> findPieces(Predicate<EnumPieceType> match) throws SpellCompilationException {
+	public List<SpellPiece> findPieces(Predicate<EnumPieceType> match) {
 		List<SpellPiece> results = new LinkedList<>();
 		for(int i = 0; i < SpellGrid.GRID_SIZE; i++) {
 			for(int j = 0; j < SpellGrid.GRID_SIZE; j++) {

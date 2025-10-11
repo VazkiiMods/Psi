@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -17,6 +17,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+
+import org.jetbrains.annotations.NotNull;
 
 import vazkii.psi.api.cad.EnumCADStat;
 import vazkii.psi.api.cad.ICAD;
@@ -41,7 +43,7 @@ public class GuiCADAssembler extends AbstractContainerScreen<ContainerCADAssembl
 	}
 
 	@Override
-	public void render(GuiGraphics graphics, int x, int y, float pTicks) {
+	public void render(@NotNull GuiGraphics graphics, int x, int y, float pTicks) {
 		this.renderBackground(graphics, x, y, pTicks);
 		super.render(graphics, x, y, pTicks);
 		this.renderTooltip(graphics, x, y);

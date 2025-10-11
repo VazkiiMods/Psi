@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -26,11 +26,11 @@ public final class SpellMetadata {
 
 	private final Map<EnumSpellStat, Integer> stats = new EnumMap<>(EnumSpellStat.class);
 	private final Map<EnumSpellStat, Double> statMultipliers = new EnumMap<>(EnumSpellStat.class);
+	private final Set<String> flags = new HashSet<>();
 	/**
 	 * Should errors from this spell not be sent to the player's chat?
 	 */
 	public boolean errorsSuppressed = false;
-	private final Set<String> flags = new HashSet<>();
 
 	public SpellMetadata() {
 		for(EnumSpellStat stat : EnumSpellStat.class.getEnumConstants()) {

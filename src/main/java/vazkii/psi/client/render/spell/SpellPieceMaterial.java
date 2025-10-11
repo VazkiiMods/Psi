@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -18,7 +18,6 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 
 import vazkii.psi.api.ClientPsiAPI;
 import vazkii.psi.api.PsiAPI;
-import vazkii.psi.common.lib.LibMisc;
 import vazkii.psi.common.lib.LibPieceNames;
 
 @SuppressWarnings("unused")
@@ -27,7 +26,7 @@ public final class SpellPieceMaterial {
 
 	// ========== REGISTRIES ==========
 	public static final DeferredRegister<Material> SPELL_PIECE_MATERIAL =
-			DeferredRegister.create(ClientPsiAPI.SPELL_PIECE_MATERIAL, LibMisc.MOD_ID);
+			DeferredRegister.create(ClientPsiAPI.SPELL_PIECE_MATERIAL, PsiAPI.MOD_ID);
 
 	// ========== MEMORY MANAGEMENT ==========
 	public static final DeferredHolder<Material, Material> CROSS_CONNECTOR =

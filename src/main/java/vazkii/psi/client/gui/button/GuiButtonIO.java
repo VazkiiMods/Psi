@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -12,6 +12,8 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
+
+import org.jetbrains.annotations.NotNull;
 
 import vazkii.psi.client.gui.GuiProgrammer;
 
@@ -27,7 +29,7 @@ public class GuiButtonIO extends Button {
 	}
 
 	@Override
-	public void renderWidget(GuiGraphics graphics, int par2, int par3, float pticks) {
+	public void renderWidget(@NotNull GuiGraphics graphics, int par2, int par3, float pticks) {
 		if(active && !gui.takingScreenshot) {
 			boolean hover = par2 >= getX() && par3 >= getY() && par2 < getX() + width && par3 < getY() + height;
 

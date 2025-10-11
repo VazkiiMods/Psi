@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -15,15 +15,11 @@ import mezz.jei.api.gui.drawable.IDrawableStatic;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.MultiBufferSource;
 
+import org.jetbrains.annotations.NotNull;
+
 import vazkii.psi.api.spell.SpellPiece;
 
-public class DrawablePiece implements IDrawableStatic {
-
-	public final SpellPiece piece;
-
-	public DrawablePiece(SpellPiece piece) {
-		this.piece = piece;
-	}
+public record DrawablePiece(SpellPiece piece) implements IDrawableStatic {
 
 	@Override
 	public void draw(GuiGraphics graphics, int xOffset, int yOffset, int maskTop, int maskBottom, int maskLeft, int maskRight) {
@@ -49,7 +45,7 @@ public class DrawablePiece implements IDrawableStatic {
 	}
 
 	@Override
-	public void draw(GuiGraphics graphics, int xOff, int yOff) {
+	public void draw(@NotNull GuiGraphics graphics, int xOff, int yOff) {
 		draw(graphics, xOff, yOff, 0, 0, 0, 0);
 	}
 }

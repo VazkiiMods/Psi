@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -10,6 +10,7 @@ package vazkii.psi.common.spell.trick;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.SectionPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -18,6 +19,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlockContainer;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.status.ChunkStatus;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.util.BlockSnapshot;
@@ -42,7 +44,7 @@ public class PieceTrickTorrent extends PieceTrick {
 
 	// [VanillaCopy] BucketItem.tryPlaceContainingLiquid because buckets are dumb
 	public static boolean placeWater(@Nullable Player playerIn, Level worldIn, BlockPos pos) {
-		if(playerIn == null || !worldIn.hasChunkAt(pos) || !worldIn.mayInteract(playerIn, pos)) {
+		if(playerIn == null || worldIn.getChunk(SectionPos.blockToSectionCoord(pos.getX()), SectionPos.blockToSectionCoord(pos.getZ()), ChunkStatus.FULL, false) == null || !worldIn.mayInteract(playerIn, pos)) {
 			return false;
 		}
 		BlockState blockstate = worldIn.getBlockState(pos);

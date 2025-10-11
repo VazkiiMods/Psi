@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -10,22 +10,20 @@ package vazkii.psi.client.model;
 
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.decoration.ArmorStand;
 
-public class ModelArmor extends HumanoidModel<LivingEntity> {
-	protected final EquipmentSlot slot;
+import org.jetbrains.annotations.NotNull;
 
-	public ModelArmor(ModelPart root, EquipmentSlot slot) {
+public class ModelArmor extends HumanoidModel<LivingEntity> {
+	public ModelArmor(ModelPart root) {
 		super(root);
-		this.slot = slot;
 	}
 
 	// [VanillaCopy] ArmorStandArmorModel.setupAnim because armor stands are dumb
 	// This fixes the armor "breathing" and helmets always facing south on armor stands
 	@Override
-	public void setupAnim(LivingEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setupAnim(@NotNull LivingEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		if(!(entity instanceof ArmorStand entityIn)) {
 			super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 			return;

@@ -15,15 +15,15 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 
+import vazkii.psi.api.PsiAPI;
 import vazkii.psi.common.item.ItemCAD;
 import vazkii.psi.common.item.ItemExosuitSensor;
 import vazkii.psi.common.item.armor.ItemPsimetalArmor;
 import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.item.component.ItemCADColorizer;
-import vazkii.psi.common.lib.LibMisc;
 
 @OnlyIn(Dist.CLIENT)
-@EventBusSubscriber(value = Dist.CLIENT, modid = LibMisc.MOD_ID)
+@EventBusSubscriber(value = Dist.CLIENT, modid = PsiAPI.MOD_ID)
 public class ColorHandler {
 
 	@SubscribeEvent

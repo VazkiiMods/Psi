@@ -1,6 +1,6 @@
 /*
  * This class is distributed as part of the Psi Mod.
- * Get the Source Code in github:
+ * Get the Source Code in GitHub:
  * https://github.com/Vazkii/Psi
  *
  * Psi is Open Source and distributed under the
@@ -16,13 +16,9 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 
-import org.lwjgl.opengl.GL11;
+import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
@@ -33,20 +29,6 @@ import io.netty.buffer.ByteBuf;
 
 public class Vector3 {
 	public static final Vector3 zero = new Vector3();
-	public static Vector3 one = new Vector3(1, 1, 1);
-	public static Vector3 center = new Vector3(0.5, 0.5, 0.5);
-
-	public static Vector3 up = new Vector3(0, 1, 0);
-	public static Vector3 down = new Vector3(0, -1, 0);
-	public static Vector3 forward = new Vector3(0, 0, 1);
-	public static Vector3 back = new Vector3(0, 0, -1);
-	public static Vector3 right = new Vector3(1, 0, 0);
-	public static Vector3 left = new Vector3(-1, 0, 0);
-
-	public double x;
-	public double y;
-	public double z;
-
 	public static final Codec<Vector3> CODEC = Codec.DOUBLE
 			.listOf()
 			.comapFlatMap(
@@ -54,7 +36,7 @@ public class Vector3 {
 					from -> List.of(from.x, from.y, from.z)
 			);
 	public static final StreamCodec<ByteBuf, Vector3> STREAM_CODEC = new StreamCodec<>() {
-		public Vector3 decode(ByteBuf buffer) {
+		public @NotNull Vector3 decode(ByteBuf buffer) {
 			return new Vector3(buffer.readDouble(), buffer.readDouble(), buffer.readDouble());
 		}
 
@@ -64,6 +46,9 @@ public class Vector3 {
 			buffer.writeDouble(vector3.z);
 		}
 	};
+	public double x;
+	public double y;
+	public double z;
 
 	public Vector3() {}
 
@@ -87,14 +72,6 @@ public class Vector3 {
 
 	public static Vector3 fromEntity(Entity e) {
 		return new Vector3(e.getX(), e.getY(), e.getZ());
-	}
-
-	public static Vector3 fromTileEntity(BlockEntity e) {
-		return fromBlockPos(e.getBlockPos());
-	}
-
-	public static Vector3 fromTileEntityCenter(BlockEntity e) {
-		return fromTileEntity(e).add(0.5, 0.5, 0.5);
 	}
 
 	public static Vector3 fromBlockPos(BlockPos pos) {
@@ -138,10 +115,6 @@ public class Vector3 {
 		return d;
 	}
 
-	public double dotProduct(double d, double d1, double d2) {
-		return d * x + d1 * y + d2 * z;
-	}
-
 	public Vector3 crossProduct(Vector3 vec) {
 		double d = y * vec.z - z * vec.y;
 		double d1 = z * vec.x - x * vec.z;
@@ -166,10 +139,6 @@ public class Vector3 {
 		return this;
 	}
 
-	public Vector3 add(double d) {
-		return add(d, d, d);
-	}
-
 	public Vector3 sub(Vector3 vec) {
 		return subtract(vec);
 	}
@@ -181,31 +150,10 @@ public class Vector3 {
 		return this;
 	}
 
-	public Vector3 negate(Vector3 vec) {
-		x = -x;
-		y = -y;
-		z = -z;
-		return this;
-	}
-
 	public Vector3 multiply(double d) {
 		x *= d;
 		y *= d;
 		z *= d;
-		return this;
-	}
-
-	public Vector3 multiply(Vector3 f) {
-		x *= f.x;
-		y *= f.y;
-		z *= f.z;
-		return this;
-	}
-
-	public Vector3 multiply(double fx, double fy, double fz) {
-		x *= fx;
-		y *= fy;
-		z *= fz;
 		return this;
 	}
 
@@ -232,41 +180,6 @@ public class Vector3 {
 		return "Vector[" + new BigDecimal(x, cont) + ", " + new BigDecimal(y, cont) + ", " + new BigDecimal(z, cont) + "]";
 	}
 
-	public Vector3 perpendicular() {
-		if(z == 0) {
-			return zCrossProduct();
-		}
-		return xCrossProduct();
-	}
-
-	public Vector3 xCrossProduct() {
-		double d = z;
-		double d1 = -y;
-		x = 0;
-		y = d;
-		z = d1;
-		return this;
-	}
-
-	public Vector3 zCrossProduct() {
-		double d = y;
-
-		double d1 = -x;
-		x = d;
-		y = d1;
-		z = 0;
-		return this;
-	}
-
-	public Vector3 yCrossProduct() {
-		double d = -z;
-		double d1 = x;
-		x = d;
-		y = 0;
-		z = d1;
-		return this;
-	}
-
 	public Vec3 toVec3D() {
 		return new Vec3(x, y, z);
 	}
@@ -279,14 +192,6 @@ public class Vector3 {
 		return new BlockPos(toVec3i());
 	}
 
-	public double angle(Vector3 vec) {
-		return Math.acos(copy().normalize().dotProduct(vec.copy().normalize()));
-	}
-
-	public boolean isInside(AABB aabb) {
-		return x >= aabb.minX && y >= aabb.maxY && z >= aabb.minZ && x < aabb.maxX && y < aabb.maxY && z < aabb.maxZ;
-	}
-
 	public boolean isZero() {
 		return x == 0 && y == 0 && z == 0;
 	}
@@ -295,21 +200,11 @@ public class Vector3 {
 		return x == 0 ? y == 0 || z == 0 : y == 0 && z == 0;
 	}
 
-	@OnlyIn(Dist.CLIENT)
-	public void glVertex() {
-		GL11.glVertex3d(x, y, z);
-	}
-
 	public Vector3 negate() {
 		x = -x;
 		y = -y;
 		z = -z;
 		return this;
-	}
-
-	public double scalarProject(Vector3 b) {
-		double l = b.mag();
-		return l == 0 ? 0 : dotProduct(b) / l;
 	}
 
 	public Vector3 project(Vector3 b) {
