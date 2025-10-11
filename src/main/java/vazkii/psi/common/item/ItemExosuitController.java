@@ -82,8 +82,8 @@ public class ItemExosuitController extends Item implements ISocketableController
 
 		ItemStack[] stacks = getControlledStacks(player, stack);
 		if(controlSlot < stacks.length && !stacks[controlSlot].isEmpty()) {
-			if(stack.getCapability(PsiAPI.SOCKETABLE_CAPABILITY) != null)
-				stack.getCapability(PsiAPI.SOCKETABLE_CAPABILITY).setSelectedSlot(slot);
+			if(stacks[controlSlot].getCapability(PsiAPI.SOCKETABLE_CAPABILITY) != null)
+				stacks[controlSlot].getCapability(PsiAPI.SOCKETABLE_CAPABILITY).setSelectedSlot(slot);
 		}
 	}
 
