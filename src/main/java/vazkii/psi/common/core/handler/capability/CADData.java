@@ -46,7 +46,7 @@ public class CADData implements ICapabilityProvider<ItemCapability<?, Void>, Voi
 
 	private final ItemStack cad;
 	private final ComponentItemHandler cadHandler;
-	private Data data;
+	private final Data data;
 
 	public CADData(ItemStack cad) {
 		this.cad = cad;

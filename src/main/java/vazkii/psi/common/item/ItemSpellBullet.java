@@ -49,6 +49,10 @@ public class ItemSpellBullet extends Item {
 	public void verifyComponentsAfterLoad(ItemStack pStack) {
 		if(pStack.has(DataComponents.CUSTOM_DATA)) {
 			CustomData patch = pStack.get(DataComponents.CUSTOM_DATA);
+			if(patch == null) {
+				return;
+			}
+
 			CompoundTag compound = patch.copyTag();
 
 			if(compound.contains("spell")) {
@@ -78,7 +82,7 @@ public class ItemSpellBullet extends Item {
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, @Nullable TooltipContext context, List<Component> tooltip, TooltipFlag advanced) {
+	public void appendHoverText(@NotNull ItemStack stack, @Nullable TooltipContext context, @NotNull List<Component> tooltip, @NotNull TooltipFlag advanced) {
 		TooltipHelper.tooltipIfShift(tooltip, () -> {
 			tooltip.add(Component.translatable("psimisc.bullet_type", Component.translatable("psi.bullet_type_" + getBulletType())));
 			tooltip.add(Component.translatable("psimisc.bullet_cost", (int) (ISpellAcceptor.acceptor(stack).getCostModifier() * 100)));
@@ -87,7 +91,7 @@ public class ItemSpellBullet extends Item {
 
 	@NotNull
 	@Override
-	public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, @NotNull InteractionHand hand) {
+	public InteractionResultHolder<ItemStack> use(@NotNull Level worldIn, Player playerIn, @NotNull InteractionHand hand) {
 		ItemStack itemStackIn = playerIn.getItemInHand(hand);
 		if(ItemSpellDrive.getSpell(itemStackIn) != null && playerIn.isShiftKeyDown()) {
 			if(!worldIn.isClientSide) {
@@ -137,7 +141,7 @@ public class ItemSpellBullet extends Item {
 		}
 
 		@Override
-		public SpellAcceptor getCapability(ItemCapability<?, Void> capability, Void facing) {
+		public SpellAcceptor getCapability(@NotNull ItemCapability<?, Void> capability, Void facing) {
 			return capability == PsiAPI.SPELL_ACCEPTOR_CAPABILITY ? this : null;
 		}
 

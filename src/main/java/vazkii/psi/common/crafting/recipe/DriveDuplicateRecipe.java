@@ -79,7 +79,7 @@ public class DriveDuplicateRecipe extends CustomRecipe {
 	}
 
 	@Override
-	public NonNullList<ItemStack> getRemainingItems(CraftingInput inv) {
+	public @NotNull NonNullList<ItemStack> getRemainingItems(CraftingInput inv) {
 		NonNullList<ItemStack> list = NonNullList.withSize(inv.size(), ItemStack.EMPTY);
 
 		for(int i = 0; i < list.size(); ++i) {

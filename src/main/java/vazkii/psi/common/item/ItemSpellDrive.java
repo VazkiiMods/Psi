@@ -27,6 +27,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 
 import org.jetbrains.annotations.NotNull;
 
+import org.jetbrains.annotations.Nullable;
 import vazkii.psi.api.internal.VanillaPacketDispatcher;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.common.block.tile.TileProgrammer;
@@ -50,15 +51,20 @@ public class ItemSpellDrive extends Item {
 
 	}
 
+	@Nullable
 	public static Spell getSpell(ItemStack stack) {
-		return stack.getOrDefault(ModDataComponents.SPELL, new Spell());
+		return stack.has(ModDataComponents.SPELL) ? stack.get(ModDataComponents.SPELL) : null;
 	}
 
 	@NotNull
 	@Override
-	public Component getName(ItemStack stack) {
+	public Component getName(@NotNull ItemStack stack) {
 		String name = super.getName(stack).getString();
-		Spell cmp = stack.getOrDefault(ModDataComponents.SPELL, new Spell());
+		Spell cmp = getSpell(stack);
+		if(cmp == null) {
+			return Component.literal(name);
+		}
+
 		String spellName = cmp.name;
 		if(spellName.isEmpty()) {
 			return Component.literal(name);
@@ -71,6 +77,10 @@ public class ItemSpellDrive extends Item {
 	@Override
 	public InteractionResult useOn(UseOnContext ctx) {
 		Player playerIn = ctx.getPlayer();
+		if(playerIn == null) {
+			return InteractionResult.FAIL;
+		}
+
 		InteractionHand hand = ctx.getHand();
 		Level worldIn = ctx.getLevel();
 		BlockPos pos = ctx.getClickedPos();
@@ -112,7 +122,7 @@ public class ItemSpellDrive extends Item {
 
 	@NotNull
 	@Override
-	public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, @NotNull InteractionHand hand) {
+	public InteractionResultHolder<ItemStack> use(@NotNull Level worldIn, Player playerIn, @NotNull InteractionHand hand) {
 		ItemStack itemStackIn = playerIn.getItemInHand(hand);
 		if(getSpell(itemStackIn) != null && playerIn.isShiftKeyDown()) {
 			if(!worldIn.isClientSide) {

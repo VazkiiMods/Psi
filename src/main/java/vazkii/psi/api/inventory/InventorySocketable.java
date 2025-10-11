@@ -30,7 +30,7 @@ public class InventorySocketable implements Container, Nameable, ContainerData {
 
 	@Nullable
 	private ISocketable socketable;
-	private TileCADAssembler assembler;
+	private final TileCADAssembler assembler;
 
 	public InventorySocketable(TileCADAssembler assembler, ItemStack stack) {
 		this.assembler = assembler;

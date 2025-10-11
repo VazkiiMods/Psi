@@ -44,11 +44,11 @@ public final class PsiAPI {
 	public static final ItemCapability<ICADData, Void> CAD_DATA_CAPABILITY = ItemCapability.createVoid(PsiAPI.location("cad_data"), ICADData.class);
 	public static final ItemCapability<ISocketable, Void> SOCKETABLE_CAPABILITY = ItemCapability.createVoid(PsiAPI.location("socketable"), ISocketable.class);
 	public static final ResourceKey<Registry<Class<? extends SpellPiece>>> SPELL_PIECE_REGISTRY_TYPE_KEY = ResourceKey.createRegistryKey(PsiAPI.location("spell_piece_registry_type_key"));
-	public static final Registry<Class<? extends SpellPiece>> SPELL_PIECE_REGISTRY = (new RegistryBuilder(SPELL_PIECE_REGISTRY_TYPE_KEY)).create();
+	public static final Registry<Class<? extends SpellPiece>> SPELL_PIECE_REGISTRY = (new RegistryBuilder<>(SPELL_PIECE_REGISTRY_TYPE_KEY)).create();
 
 	// The main piece for the group is the one that comes first.
 	public static final ResourceKey<Registry<Collection<Class<? extends SpellPiece>>>> ADVANCEMENT_GROUP_REGISTRY_KEY = ResourceKey.createRegistryKey(PsiAPI.location("advancement_group_registry_key"));
-	public static final Registry<Collection<Class<? extends SpellPiece>>> ADVANCEMENT_GROUP_REGISTRY = (new RegistryBuilder(ADVANCEMENT_GROUP_REGISTRY_KEY)).create();
+	public static final Registry<Collection<Class<? extends SpellPiece>>> ADVANCEMENT_GROUP_REGISTRY = (new RegistryBuilder<>(ADVANCEMENT_GROUP_REGISTRY_KEY)).create();
 
 	public static final Tier PSIMETAL_TOOL_MATERIAL = new SimpleTier(BlockTags.INCORRECT_FOR_DIAMOND_TOOL, 900, 7.8F, 2F, 12, () -> Ingredient.of(ModItems.psimetal.get()));
 	/**

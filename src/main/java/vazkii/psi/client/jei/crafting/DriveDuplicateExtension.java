@@ -26,8 +26,6 @@ import vazkii.psi.common.crafting.recipe.DriveDuplicateRecipe;
 import vazkii.psi.common.item.ItemSpellDrive;
 import vazkii.psi.common.item.base.ModItems;
 
-import java.util.Optional;
-
 public class DriveDuplicateExtension implements ICraftingCategoryExtension<DriveDuplicateRecipe> {
 
 	@Override
@@ -38,8 +36,8 @@ public class DriveDuplicateExtension implements ICraftingCategoryExtension<Drive
 				.filter(focus -> focus.getTypedValue().getIngredient().getItem() instanceof ItemSpellDrive)
 				.findFirst()
 				.map(focus -> focus.getTypedValue().getIngredient())
-				.flatMap(stack -> Optional.ofNullable(ItemSpellDrive.getSpell(stack)))
-				.ifPresent(spell -> ItemSpellDrive.setSpell(drive, spell));
+				.filter(stack -> ItemSpellDrive.getSpell(stack) != null)
+				.ifPresent(stack -> ItemSpellDrive.setSpell(drive, ItemSpellDrive.getSpell(stack)));
 
 		helper.createAndSetInputs(builder, ImmutableList.of(ImmutableList.of(drive), ImmutableList.of(new ItemStack(ModItems.spellDrive.get()))), 0, 0);
 		helper.createAndSetOutputs(builder, ImmutableList.of(drive));
