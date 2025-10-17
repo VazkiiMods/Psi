@@ -650,7 +650,7 @@ public class GuiProgrammer extends Screen {
 				break;
 			case GLFW.GLFW_KEY_TAB:
 				spellNameField.setFocused(!spellNameField.isFocused());
-				setInitialFocus(spellNameField);
+				this.setFocused(spellNameField);
 				return true;
 			case GLFW.GLFW_KEY_UP:
 				if(hasControlDown()) {
@@ -819,8 +819,7 @@ public class GuiProgrammer extends Screen {
 					commentField.setEditable(true);
 					spellNameField.setEditable(false);
 					commentField.setValue(piece.comment);
-					commentField.setFocused(true);
-					setInitialFocus(commentField);
+					this.setFocused(commentField);
 					commentEnabled = true;
 					return true;
 				}
@@ -885,7 +884,11 @@ public class GuiProgrammer extends Screen {
 		}
 
 		if(!commentEnabled) {
-			spellNameField.mouseClicked(mouseX, mouseY, mouseButton);
+			boolean did = spellNameField.mouseClicked(mouseX, mouseY, mouseButton);
+            if (did) {
+                spellNameField.setFocused(true);
+                this.setFocused(spellNameField);
+            }
 			if(commentField.isVisible()) {
 				commentField.mouseClicked(mouseX, mouseY, mouseButton);
 			}
