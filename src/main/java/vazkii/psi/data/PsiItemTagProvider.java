@@ -12,6 +12,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.data.tags.TagsProvider;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
@@ -44,6 +45,41 @@ public class PsiItemTagProvider extends ItemTagsProvider {
 
 		tag(ModTags.INGOT_PSIMETAL).add(ModItems.psimetal.get());
 		copy(ModTags.Blocks.BLOCK_PSIMETAL, ModTags.BLOCK_PSIMETAL);
+
+		tag(Tags.Items.ENCHANTABLES).add(
+				ModItems.psimetalSword.get(),
+				ModItems.psimetalAxe.get(),
+				ModItems.psimetalPickaxe.get(),
+				ModItems.psimetalShovel.get(),
+				ModItems.psimetalExosuitHelmet.get(),
+				ModItems.psimetalExosuitChestplate.get(),
+				ModItems.psimetalExosuitLeggings.get(),
+				ModItems.psimetalExosuitBoots.get()
+		);
+
+		tag(ItemTags.SWORDS).add(ModItems.psimetalSword.get());
+		tag(ItemTags.SWORD_ENCHANTABLE).add(ModItems.psimetalSword.get());
+
+		tag(ItemTags.AXES).add(ModItems.psimetalAxe.get());
+		tag(ItemTags.PICKAXES).add(ModItems.psimetalPickaxe.get());
+		tag(ItemTags.SHOVELS).add(ModItems.psimetalShovel.get());
+		tag(ItemTags.MINING_ENCHANTABLE).add(
+				ModItems.psimetalAxe.get(),
+				ModItems.psimetalPickaxe.get(),
+				ModItems.psimetalShovel.get()
+		);
+
+		tag(ItemTags.HEAD_ARMOR).add(ModItems.psimetalExosuitHelmet.get());
+		tag(ItemTags.HEAD_ARMOR_ENCHANTABLE).add(ModItems.psimetalExosuitHelmet.get());
+
+		tag(ItemTags.CHEST_ARMOR).add(ModItems.psimetalExosuitChestplate.get());
+		tag(ItemTags.CHEST_ARMOR_ENCHANTABLE).add(ModItems.psimetalExosuitChestplate.get());
+
+		tag(ItemTags.LEG_ARMOR).add(ModItems.psimetalExosuitLeggings.get());
+		tag(ItemTags.LEG_ARMOR_ENCHANTABLE).add(ModItems.psimetalExosuitLeggings.get());
+
+		tag(ItemTags.FOOT_ARMOR).add(ModItems.psimetalExosuitBoots.get());
+		tag(ItemTags.FOOT_ARMOR_ENCHANTABLE).add(ModItems.psimetalExosuitBoots.get());
 
 		tag(ModTags.GEM_PSIGEM).add(ModItems.psigem.get());
 		copy(ModTags.Blocks.BLOCK_PSIGEM, ModTags.BLOCK_PSIGEM);
