@@ -888,6 +888,8 @@ public class GuiProgrammer extends Screen {
             if (did) {
                 spellNameField.setFocused(true);
                 this.setFocused(spellNameField);
+            } else {
+                spellNameField.setFocused(false);
             }
 			if(commentField.isVisible()) {
 				commentField.mouseClicked(mouseX, mouseY, mouseButton);
