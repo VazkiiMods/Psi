@@ -67,6 +67,7 @@ import vazkii.psi.common.lib.LibResources;
 import vazkii.psi.common.network.MessageRegister;
 import vazkii.psi.common.network.message.MessageDataSync;
 import vazkii.psi.common.network.message.MessageDeductPsi;
+import vazkii.psi.common.network.message.MessagePsiOverflow;
 import vazkii.psi.common.network.message.MessageTriggerJumpSpell;
 
 import java.lang.ref.WeakReference;
@@ -680,6 +681,10 @@ public class PlayerDataHandler {
 						player.hurt(overloadSource, dmg);
 					}
 					overflowed = true;
+                    if(sync && player instanceof ServerPlayer) {
+                        MessagePsiOverflow message = new MessagePsiOverflow(true);
+                        MessageRegister.sendToPlayer((ServerPlayer) player, message);
+                    }
 				}
 			}
 
