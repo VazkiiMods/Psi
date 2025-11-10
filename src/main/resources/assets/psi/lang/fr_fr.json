@@ -68,6 +68,8 @@
   "psi.versioning.downloading_already": "The update is already downloading, give it some time, will you?",
   "psi.versioning.error": "Woah! It seems like something went wrong while trying to download the Psi update. Is psi.vazkii.us down?",
   "psi.versioning.disabled": "Sorry. This feature is currently disabled due to server host problems, it should be back soon.",
+  "attribute.psi.total_psi": "Psi total",
+  "attribute.psi.regen": "Régénération de Psi",
   "block.psi.cad_assembler": "CAD Assembler",
   "block.psi.programmer": "Spell Programmer",
   "block.psi.psidust_block": "Psidust Block",

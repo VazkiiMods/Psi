@@ -59,6 +59,8 @@
   "psi.subtitle.cad_create": "CAD配装成功",
   "psi.subtitle.spell_cast": "魔法式发动",
   "psi.subtitle.loopcast": "循环演算",
+  "attribute.psi.total_psi": "Psi 总量",
+  "attribute.psi.regen": "Psi 回复速度",
   "block.psi.cad_assembler": "CAD装配器",
   "block.psi.programmer": "术式编写台",
   "block.psi.psidust_block": "Psi粉末块",
