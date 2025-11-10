@@ -68,6 +68,8 @@
   "psi.versioning.downloading_already": "アップデートのダウンロードは完了しています。アップデートのために時間を割いてくれませんか？",
   "psi.versioning.error": "ぐげ！Psiアップデートのダウンロードを試みましたが、問題が発生したようです。psi.vazkii.usがダウンしていますか？",
   "psi.versioning.disabled": "申し訳ありません。 この機能はサーバホストの問題により現在無効になっています。近いうちに復旧するはずです。",
+  "attribute.psi.total_psi": "最大Psi",
+  "attribute.psi.regen": "Psi再生速度",
   "block.psi.cad_assembler": "CAD組立機",
   "block.psi.programmer": "魔法構築機",
   "block.psi.psidust_block": "サイダスト ブロック",

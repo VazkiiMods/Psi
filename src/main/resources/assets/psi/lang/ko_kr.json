@@ -60,6 +60,8 @@
   "psi.subtitle.cad_create": "CAD 조립됨",
   "psi.subtitle.spell_cast": "CAD 주문 시전됨",
   "psi.subtitle.loopcast": "CAD 반복 주문 시전됨",
+  "attribute.psi.total_psi": "Psi 최대치",
+  "attribute.psi.regen": "Psi 재생 속도",
   "block.psi.cad_assembler": "CAD 조립기",
   "block.psi.programmer": "주문 프로그래머",
   "block.psi.psidust_block": "프사이 가루 블록",

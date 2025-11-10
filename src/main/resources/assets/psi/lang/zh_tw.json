@@ -68,6 +68,8 @@
   "psi.versioning.downloading_already": "拜託請再給我們一點時間，最新版正在下載中了！",
   "psi.versioning.error": "不！看來下載過程出了點問題，魔法科高中的伺服器正在維修嗎？",
   "psi.versioning.disabled": "抱歉，因為伺服器的問題，這個功能暫時停用，很快就會再開放的。",
+  "attribute.psi.total_psi": "Psi 總量",
+  "attribute.psi.regen": "Psi 回復速度",
   "block.psi.cad_assembler": "CAD配裝台",
   "block.psi.programmer": "術式編輯台",
   "block.psi.psidust_block": "Psi粉磚",

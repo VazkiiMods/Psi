@@ -68,6 +68,8 @@
   "psi.versioning.downloading_already": "Das Update wird schon heruntergeladen. Ein bisschen mehr Geduld bitte.",
   "psi.versioning.error": "Wow! Es scheint, als sei etwas beim Herunterladen schiefgegangen. Ist psi.vazkii.us defekt?",
   "psi.versioning.disabled": "Verzeihung. Diese Funktion ist zu Zeit wegen Serverproblemen nicht verfügbar, sie sollte bald wieder da sein.",
+  "attribute.psi.total_psi": "Psi-Gesamtkapazität",
+  "attribute.psi.regen": "Psi-Regeneration",
   "block.psi.cad_assembler": "CAD Erbauer",
   "block.psi.programmer": "Spruchprogrammierer",
   "block.psi.psidust_block": "Psistaubblock",
