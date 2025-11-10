@@ -62,6 +62,7 @@ import vazkii.psi.api.spell.*;
 import vazkii.psi.client.core.handler.ClientTickHandler;
 import vazkii.psi.client.render.entity.RenderSpellCircle;
 import vazkii.psi.common.Psi;
+import vazkii.psi.common.attribute.base.ModAttributes;
 import vazkii.psi.common.item.ItemCAD;
 import vazkii.psi.common.lib.LibResources;
 import vazkii.psi.common.network.MessageRegister;
@@ -270,8 +271,6 @@ public class PlayerDataHandler {
 		public final Stack<Vector3> eidosChangelog = new Stack<>();
 		public final List<Deduction> deductions = new ArrayList<>();
 		public final WeakReference<Player> playerWR;
-		public final int totalPsi = 5000;
-		public final int regen = 25;
 		private final boolean client;
 		public int availablePsi;
 		public int lastAvailablePsi;
@@ -718,12 +717,20 @@ public class PlayerDataHandler {
 
 		@Override
 		public int getTotalPsi() {
-			return totalPsi;
+			Player player = playerWR.get();
+			if(player != null) {
+				return (int) player.getAttributeValue(ModAttributes.TOTAL_PSI);
+			}
+			return (int) ModAttributes.TOTAL_PSI.get().getDefaultValue();
 		}
 
 		@Override
 		public int getRegenPerTick() {
-			return regen;
+			Player player = playerWR.get();
+			if(player != null) {
+				return (int) player.getAttributeValue(ModAttributes.REGEN);
+			}
+			return (int) ModAttributes.REGEN.get().getDefaultValue();
 		}
 
 		@Override
