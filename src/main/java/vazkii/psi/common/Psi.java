@@ -25,6 +25,7 @@ import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.material.PsimetalArmorMaterial;
 import vazkii.psi.client.core.proxy.ClientProxy;
 import vazkii.psi.client.fx.ModParticles;
+import vazkii.psi.common.attribute.base.ModAttributes;
 import vazkii.psi.common.block.base.ModBlocks;
 import vazkii.psi.common.core.handler.ConfigHandler;
 import vazkii.psi.common.core.handler.ContributorSpellCircleHandler;
@@ -47,6 +48,7 @@ public class Psi {
 	public static IProxy proxy;
 
 	public Psi(IEventBus bus, Dist dist, ModContainer container) {
+		ModAttributes.ATTRIBUTES.register(bus);
 		ModDataComponents.DATA_COMPONENT_TYPES.register(bus);
 		PsimetalArmorMaterial.ARMOR_MATERIALS.register(bus);
 		ModCraftingRecipes.RECIPE_TYPES.register(bus);
