@@ -1,3 +1,9 @@
+1.21-107
+* [API] Make Total PSI and PSI Regeneration configurable attributes (lightsing)
+* Fixed Trick: Break Block not playing particles correctly (zhichaoxi2006)
+* Fixed PSI overflow state desync (zhichaoxi2006)
+* Fixed Psimetal items and armor not being enchantable (zhichaoxi2006)
+* Fixed a bug where you could not type a spell name and comment (zhichaoxi2006)
 1.21-106
 * [API] Completely redone how spell pieces are registered. This will break ALL the addons.
 * Fixed Entity Axial Look not existing.

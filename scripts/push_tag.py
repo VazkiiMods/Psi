@@ -14,7 +14,7 @@ def main():
     print("MC Version:", mc_version)
     print("Version:", version)
 
-    changelog = '-m "\n"'
+    changelog = f'-m "{mc_version}-{version}\n"'
     with open("./web/changelog.txt", "r") as f:
         content = f.read()
         content = content.replace('"', "'")
