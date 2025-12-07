@@ -14,7 +14,7 @@ jobs:
           java-version: "21"
 
       - name: Validate gradlew integrity
-        uses: gradle/actions/wrapper-validation@v3
+        uses: gradle/actions/wrapper-validation@v5
 
       - name: Cache gradle build artifacts
         uses: actions/cache@v4
