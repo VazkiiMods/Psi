@@ -8,7 +8,8 @@
   ],
   "client": [
     "client.AccessorRenderBuffers",
-    "client.HumanoidArmorLayerMixin"
+    "client.HumanoidArmorLayerMixin",
+    "client.ParticleEngineMixin"
   ],
   "injectors": {
     "defaultRequire": 1
