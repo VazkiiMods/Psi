@@ -186,5 +186,5 @@ public final class LibPieceNames {
 	public static final String TRICK_NIGHT_VISION = "trick_night_vision";
 	public static final String TRICK_PARTICLE_TRAIL = "trick_particle_trail";
 	public static final String TRICK_RUSSIAN_ROULETTE = "trick_russian_roulette";
-
+	public static final String TRICK_CONJURE_CIRCLE = "trick_conjure_circle";
 }

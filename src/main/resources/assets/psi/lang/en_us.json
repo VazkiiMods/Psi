@@ -575,6 +575,8 @@
   "psi.spellpiece.trick_spin_chamber.desc": "Selects the next or previous bullet depending on the sign of the input",
   "psi.spellpiece.trick_russian_roulette": "Trick: Russian Roulette",
   "psi.spellpiece.trick_russian_roulette.desc": "Selects a random bullet",
+  "psi.spellpiece.trick_conjure_circle": "Trick: Conjure Circle",
+  "psi.spellpiece.trick_conjure_circle.desc": "Conjures a spell circle at the given position",
   "psi.spellparam.target": "Target",
   "psi.spellparam.number": "Number",
   "psi.spellparam.root": "Root",

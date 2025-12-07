@@ -37,17 +37,21 @@ import java.util.UUID;
 public class EntitySpellCircle extends Entity implements ISpellImmune {
 	public static final int CAST_TIMES = 20;
 	public static final int CAST_DELAY = 5;
-	public static final int LIVE_TIME = (CAST_TIMES + 2) * CAST_DELAY;
 	public static final EntityDataAccessor<ItemStack> COLORIZER_DATA = SynchedEntityData.defineId(EntitySpellCircle.class, EntityDataSerializers.ITEM_STACK);
 	private static final String TAG_COLORIZER = "colorizer";
 	private static final String TAG_BULLET = "bullet";
 	private static final String TAG_CASTER = "caster";
 	private static final String TAG_TIME_ALIVE = "timeAlive";
 	private static final String TAG_TIMES_CAST = "timesCast";
-
 	private static final String TAG_LOOK_X = "savedLookX";
 	private static final String TAG_LOOK_Y = "savedLookY";
 	private static final String TAG_LOOK_Z = "savedLookZ";
+	private static final String TAG_DIRECTION_X = "directionX";
+	private static final String TAG_DIRECTION_Y = "directionY";
+	private static final String TAG_DIRECTION_Z = "directionZ";
+	private static final String TAG_SCALE = "scale";
+	private static final String TAG_LIFETIME = "lifetime";
+
 	private static final EntityDataAccessor<ItemStack> BULLET_DATA = SynchedEntityData.defineId(EntitySpellCircle.class, EntityDataSerializers.ITEM_STACK);
 	private static final EntityDataAccessor<Optional<UUID>> CASTER_UUID = SynchedEntityData.defineId(EntitySpellCircle.class, EntityDataSerializers.OPTIONAL_UUID);
 	private static final EntityDataAccessor<Integer> TIME_ALIVE = SynchedEntityData.defineId(EntitySpellCircle.class, EntityDataSerializers.INT);
@@ -55,6 +59,11 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 	private static final EntityDataAccessor<Float> LOOK_X = SynchedEntityData.defineId(EntitySpellCircle.class, EntityDataSerializers.FLOAT);
 	private static final EntityDataAccessor<Float> LOOK_Y = SynchedEntityData.defineId(EntitySpellCircle.class, EntityDataSerializers.FLOAT);
 	private static final EntityDataAccessor<Float> LOOK_Z = SynchedEntityData.defineId(EntitySpellCircle.class, EntityDataSerializers.FLOAT);
+	public static final EntityDataAccessor<Float> DIRECTION_X = SynchedEntityData.defineId(EntitySpellCircle.class, EntityDataSerializers.FLOAT);
+	public static final EntityDataAccessor<Float> DIRECTION_Y = SynchedEntityData.defineId(EntitySpellCircle.class, EntityDataSerializers.FLOAT);
+	public static final EntityDataAccessor<Float> DIRECTION_Z = SynchedEntityData.defineId(EntitySpellCircle.class, EntityDataSerializers.FLOAT);
+	public static final EntityDataAccessor<Float> SCALE = SynchedEntityData.defineId(EntitySpellCircle.class, EntityDataSerializers.FLOAT);
+	public static final EntityDataAccessor<Integer> LIFETIME = SynchedEntityData.defineId(EntitySpellCircle.class, EntityDataSerializers.INT);
 
 	public EntitySpellCircle(EntityType<?> type, Level worldIn) {
 		super(type, worldIn);
@@ -82,6 +91,11 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 		pBuilder.define(LOOK_X, 0F);
 		pBuilder.define(LOOK_Y, 0F);
 		pBuilder.define(LOOK_Z, 0F);
+		pBuilder.define(DIRECTION_X, 0F);
+		pBuilder.define(DIRECTION_Y, 1F);
+		pBuilder.define(DIRECTION_Z, 0F);
+		pBuilder.define(SCALE, 1F);
+		pBuilder.define(LIFETIME, (CAST_TIMES + 2) * CAST_DELAY);
 	}
 
 	@Override
@@ -107,6 +121,12 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 		tagCompound.putFloat(TAG_LOOK_X, entityData.get(LOOK_X));
 		tagCompound.putFloat(TAG_LOOK_Y, entityData.get(LOOK_Y));
 		tagCompound.putFloat(TAG_LOOK_Z, entityData.get(LOOK_Z));
+
+		tagCompound.putFloat(TAG_DIRECTION_X, entityData.get(DIRECTION_X));
+		tagCompound.putFloat(TAG_DIRECTION_Y, entityData.get(DIRECTION_Y));
+		tagCompound.putFloat(TAG_DIRECTION_Z, entityData.get(DIRECTION_Z));
+		tagCompound.putFloat(TAG_SCALE, entityData.get(SCALE));
+		tagCompound.putInt(TAG_LIFETIME, entityData.get(LIFETIME));
 	}
 
 	@Override
@@ -128,6 +148,13 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 		entityData.set(LOOK_X, tagCompound.getFloat(TAG_LOOK_X));
 		entityData.set(LOOK_Y, tagCompound.getFloat(TAG_LOOK_Y));
 		entityData.set(LOOK_Z, tagCompound.getFloat(TAG_LOOK_Z));
+
+		entityData.set(DIRECTION_X, tagCompound.getFloat(TAG_DIRECTION_X));
+		entityData.set(DIRECTION_Y, tagCompound.getFloat(TAG_DIRECTION_Y));
+		entityData.set(DIRECTION_Z, tagCompound.getFloat(TAG_DIRECTION_Z));
+
+		entityData.set(SCALE, tagCompound.getFloat(TAG_SCALE));
+		entityData.set(LIFETIME, tagCompound.getInt(TAG_LIFETIME));
 	}
 
 	@Override
@@ -135,7 +162,7 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 		super.tick();
 
 		int timeAlive = getTimeAlive();
-		if(timeAlive > LIVE_TIME) {
+		if(timeAlive > entityData.get(LIFETIME)) {
 			remove(RemovalReason.DISCARDED);
 		}
 
@@ -188,12 +215,32 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 		return new Vec3(x, y, z);
 	}
 
+	public void setLookAngle(Vec3 direction) {
+		entityData.set(LOOK_X, (float) direction.x);
+		entityData.set(LOOK_Y, (float) direction.y);
+		entityData.set(LOOK_Z, (float) direction.z);
+	}
+
+	public void setDirection(Vec3 direction) {
+		entityData.set(DIRECTION_X, (float) direction.x);
+		entityData.set(DIRECTION_Y, (float) direction.y);
+		entityData.set(DIRECTION_Z, (float) direction.z);
+	}
+
+	public void setScale(float scale) {
+		entityData.set(SCALE, scale);
+	}
+
 	public int getTimeAlive() {
 		return entityData.get(TIME_ALIVE);
 	}
 
 	public void setTimeAlive(int i) {
 		entityData.set(TIME_ALIVE, i);
+	}
+
+	public void setLifetime(int i) {
+		entityData.set(LIFETIME, i);
 	}
 
 	@Nullable

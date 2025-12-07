@@ -15,6 +15,11 @@ import vazkii.psi.api.internal.Vector3;
 
 public class SpellHelpers {
 
+	public static Number getBoundedNumber(SpellPiece piece, SpellContext context, SpellParam<Number> param, double def) {
+		double val = piece.getParamValueOrDefault(context, param, def).doubleValue();
+		return Math.min(val, def);
+	}
+
 	public static double ensurePositiveOrZero(SpellPiece piece, SpellParam<Number> param) throws SpellCompilationException {
 		double val = piece.getNotNullParamEvaluation(param).doubleValue();
 		if(val < 0) {
@@ -85,6 +90,16 @@ public class SpellHelpers {
 			throw new SpellRuntimeException(SpellRuntimeException.NON_AXIAL_VECTOR);
 		}
 		return position;
+	}
+
+	public static Vector3 getDefaultedVector(SpellPiece piece, SpellContext context, SpellParam<Vector3> param, boolean check, boolean shouldBeAxial, Vector3 def) throws SpellRuntimeException {
+		Vector3 position = piece.getParamValue(context, param);
+		if(position == null || position.isZero()) {
+			if(def == null || def.isZero())
+				throw new SpellRuntimeException(SpellRuntimeException.NULL_VECTOR);
+			return def;
+		} else
+			return checkPos(piece, context, param, false, check, shouldBeAxial);
 	}
 
 }

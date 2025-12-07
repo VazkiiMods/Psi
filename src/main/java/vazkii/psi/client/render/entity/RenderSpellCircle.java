@@ -21,6 +21,7 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.Vec3;
 
 import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
@@ -58,18 +59,28 @@ public class RenderSpellCircle extends EntityRenderer<EntitySpellCircle> {
 	}
 
 	public static void renderSpellCircle(float alive, float scale, float horizontalScale, float xDir, float yDir, float zDir, int color, PoseStack ms, MultiBufferSource buffers) {
-
 		ms.pushPose();
 		double ratio = 0.0625 * horizontalScale;
 
-		float mag = xDir * xDir + yDir * yDir + zDir * zDir;
-		zDir /= mag;
+		Vec3 direction = new Vec3(xDir, yDir, zDir);
+		Vec3 normal = new Vec3(0f, 0f, 1f);
+		Vec3 axis = normal.cross(direction);
+		double dot = normal.dot(direction);
 
-		if(zDir == -1) {
-			ms.mulPose(Axis.XP.rotationDegrees(180));
-		} else if(zDir != 1) {
-			ms.mulPose(new Quaternionf().rotateAxis((float) (Math.acos(zDir) * 180 / Math.PI), -yDir / mag, xDir / mag, 0)); //TODO(Kamefrede): 1.20 new Vector3f(-yDir / mag, xDir / mag, 0).rotate((float) (Math.acos(zDir) * 180 / Math.PI) check if this is equivalent
+		// Rotate the model so that it's normal matches the normal
+		ms.mulPose(Axis.YP.rotationDegrees(90));
+
+		// Very small threshold to see if it's parallel or not.
+		if(axis.length() < 1e-6) {
+			// If it's parallel but the dot product is negative we flip it.
+			if(dot < 0) {
+				ms.mulPose(Axis.XP.rotationDegrees(180f));
+			}
+		} else {
+			float angle = (float) Math.acos(dot);
+			ms.mulPose(new Quaternionf().fromAxisAngleRad((float) axis.x, (float) axis.y, (float) axis.z, angle));
 		}
+
 		ms.translate(0, 0, 0.1);
 		ms.scale((float) ratio * scale, (float) ratio * scale, (float) ratio);
 
@@ -128,11 +139,13 @@ public class RenderSpellCircle extends EntityRenderer<EntitySpellCircle> {
 		ItemStack colorizer = entity.getEntityData().get(EntitySpellCircle.COLORIZER_DATA);
 		int color = Psi.proxy.getColorForColorizer(colorizer);
 		float alive = entity.getTimeAlive() + partialTicks;
-		float scale = Math.min(1F, alive / EntitySpellCircle.CAST_DELAY);
-		if(alive > EntitySpellCircle.LIVE_TIME - EntitySpellCircle.CAST_DELAY) {
-			scale = 1F - Math.min(1F, Math.max(0, alive - (EntitySpellCircle.LIVE_TIME - EntitySpellCircle.CAST_DELAY)) / EntitySpellCircle.CAST_DELAY);
+		float scale = Math.min(entity.getEntityData().get(EntitySpellCircle.SCALE), alive / EntitySpellCircle.CAST_DELAY);
+		int lifetime = entity.getEntityData().get(EntitySpellCircle.LIFETIME);
+		if(alive > lifetime - EntitySpellCircle.CAST_DELAY) {
+			scale = 1F - Math.min(1F, Math.max(0, alive - (lifetime - EntitySpellCircle.CAST_DELAY)) / EntitySpellCircle.CAST_DELAY);
 		}
-		renderSpellCircle(alive, scale, 1, 0, 1, 0, color, ms, buffers);
+
+		renderSpellCircle(alive, scale, 1, entity.getEntityData().get(EntitySpellCircle.DIRECTION_X), entity.getEntityData().get(EntitySpellCircle.DIRECTION_Y), entity.getEntityData().get(EntitySpellCircle.DIRECTION_Z), color, ms, buffers);
 		ms.popPose();
 	}
 

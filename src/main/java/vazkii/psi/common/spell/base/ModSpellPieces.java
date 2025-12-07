@@ -759,6 +759,8 @@ public final class ModSpellPieces {
 			SPELL_PIECES.register(LibPieceNames.TRICK_SPIN_CHAMBER, () -> PieceTrickSpinChamber.class);
 	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceTrickRussianRoulette>> TRICK_RUSSIAN_ROULETTE =
 			SPELL_PIECES.register(LibPieceNames.TRICK_RUSSIAN_ROULETTE, () -> PieceTrickRussianRoulette.class);
+	public static final DeferredHolder<Class<? extends SpellPiece>, Class<PieceTrickConjureCircle>> TRICK_CONJURE_CIRCLE =
+			SPELL_PIECES.register(LibPieceNames.TRICK_CONJURE_CIRCLE, () -> PieceTrickConjureCircle.class);
 
 	public static final DeferredHolder<Collection<Class<? extends SpellPiece>>, Collection<Class<? extends SpellPiece>>> MISC_TRICKS =
 			ADVANCEMENT_GROUPS.register(LibPieceGroups.MISC_TRICKS,
@@ -767,6 +769,7 @@ public final class ModSpellPieces {
 							PieceTrickTill.class,
 							PieceTrickTillSequence.class,
 							PieceTrickSpinChamber.class,
-							PieceTrickRussianRoulette.class
+							PieceTrickRussianRoulette.class,
+							PieceTrickConjureCircle.class
 					));
 }

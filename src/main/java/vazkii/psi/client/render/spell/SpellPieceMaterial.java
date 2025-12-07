@@ -428,4 +428,6 @@ public final class SpellPieceMaterial {
 			SPELL_PIECE_MATERIAL.register(LibPieceNames.TRICK_SPIN_CHAMBER, () -> new Material(InventoryMenu.BLOCK_ATLAS, ResourceLocation.fromNamespaceAndPath(PsiAPI.MOD_ID, "spell/" + LibPieceNames.TRICK_SPIN_CHAMBER)));
 	public static final DeferredHolder<Material, Material> TRICK_RUSSIAN_ROULETTE =
 			SPELL_PIECE_MATERIAL.register(LibPieceNames.TRICK_RUSSIAN_ROULETTE, () -> new Material(InventoryMenu.BLOCK_ATLAS, ResourceLocation.fromNamespaceAndPath(PsiAPI.MOD_ID, "spell/" + LibPieceNames.TRICK_RUSSIAN_ROULETTE)));
+	public static final DeferredHolder<Material, Material> TRICK_CONJURE_CIRCLE =
+			SPELL_PIECE_MATERIAL.register(LibPieceNames.TRICK_CONJURE_CIRCLE, () -> new Material(InventoryMenu.BLOCK_ATLAS, ResourceLocation.fromNamespaceAndPath(PsiAPI.MOD_ID, "spell/" + LibPieceNames.TRICK_CONJURE_CIRCLE)));
 }
