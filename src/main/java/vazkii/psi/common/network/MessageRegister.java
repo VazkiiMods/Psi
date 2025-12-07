@@ -57,7 +57,7 @@ public class MessageRegister {
 		registrar.playBidirectional(MessageFlashRingSync.TYPE, MessageFlashRingSync.CODEC, MessageFlashRingSync::handle);
 		registrar.playBidirectional(MessageTriggerJumpSpell.TYPE, MessageTriggerJumpSpell.CODEC, MessageTriggerJumpSpell::handle);
 		registrar.playBidirectional(MessageVisualEffect.TYPE, MessageVisualEffect.CODEC, MessageVisualEffect::handle);
-        registrar.playBidirectional(MessagePsiOverflow.TYPE, MessagePsiOverflow.CODEC, MessagePsiOverflow::handle);
+		registrar.playBidirectional(MessagePsiOverflow.TYPE, MessagePsiOverflow.CODEC, MessagePsiOverflow::handle);
 
 	}
 

@@ -680,10 +680,10 @@ public class PlayerDataHandler {
 						player.hurt(overloadSource, dmg);
 					}
 					overflowed = true;
-                    if(sync && player instanceof ServerPlayer) {
-                        MessagePsiOverflow message = new MessagePsiOverflow(true);
-                        MessageRegister.sendToPlayer((ServerPlayer) player, message);
-                    }
+					if(sync && player instanceof ServerPlayer) {
+						MessagePsiOverflow message = new MessagePsiOverflow(true);
+						MessageRegister.sendToPlayer((ServerPlayer) player, message);
+					}
 				}
 			}
 

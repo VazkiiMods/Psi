@@ -72,13 +72,12 @@ public class PieceTrickBreakBlock extends PieceTrick {
 			boolean wasChecking = doingHarvestCheck.get();
 			doingHarvestCheck.set(true);
 			player.setItemInHand(InteractionHand.MAIN_HAND, stack);
-            ServerPlayer serverPlayer = (ServerPlayer) player;
-            boolean did = serverPlayer.gameMode.destroyBlock(pos);
-            if (did) {
-                serverPlayer.connection.send(
-                        new ClientboundLevelEventPacket(LevelEvent.PARTICLES_DESTROY_BLOCK, pos
-                                , Block.getId(blockstate), false));
-            }
+			ServerPlayer serverPlayer = (ServerPlayer) player;
+			boolean did = serverPlayer.gameMode.destroyBlock(pos);
+			if(did) {
+				serverPlayer.connection.send(
+						new ClientboundLevelEventPacket(LevelEvent.PARTICLES_DESTROY_BLOCK, pos, Block.getId(blockstate), false));
+			}
 			doingHarvestCheck.set(wasChecking);
 			player.setItemInHand(InteractionHand.MAIN_HAND, save);
 		}
