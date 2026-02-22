@@ -8,8 +8,6 @@
  */
 package vazkii.psi.common.item;
 
-import com.google.common.collect.Lists;
-
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -95,7 +93,7 @@ public class ItemCAD extends Item implements ICAD {
 
 	public ItemCAD(Item.Properties properties) {
 		super(properties
-				.stacksTo(1).rarity(Rarity.RARE).component(ModDataComponents.BULLETS.get(), ItemContainerContents.EMPTY).component(ModDataComponents.CAD_DATA, new CADData.Data(0, 0, Lists.newArrayList()))
+				.stacksTo(1).rarity(Rarity.RARE).component(ModDataComponents.BULLETS.get(), ItemContainerContents.EMPTY)
 		);
 	}
 

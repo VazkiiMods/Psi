@@ -39,6 +39,7 @@ import vazkii.psi.api.spell.Spell;
 import vazkii.psi.common.item.base.ModDataComponents;
 import vazkii.psi.common.item.component.ItemCADSocket;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -51,7 +52,14 @@ public class CADData implements ICapabilityProvider<ItemCapability<?, Void>, Voi
 	public CADData(ItemStack cad) {
 		this.cad = cad;
 		this.cadHandler = (ComponentItemHandler) cad.getCapability(Capabilities.ItemHandler.ITEM);
-		this.data = cad.get(ModDataComponents.CAD_DATA.get());
+		Data cadData = cad.get(ModDataComponents.CAD_DATA);
+
+		if(cadData == null) {
+			cadData = new Data(0, 0, new ArrayList<>());
+			cad.set(ModDataComponents.CAD_DATA, cadData);
+		}
+
+		this.data = cadData;
 	}
 
 	@Nullable
@@ -230,9 +238,9 @@ public class CADData implements ICapabilityProvider<ItemCapability<?, Void>, Voi
 	public static class Data {
 		public static final Codec<Data> CODEC = RecordCodecBuilder.create(
 				builder -> builder.group(
-						Codec.INT.fieldOf("time").forGetter(data -> data.time),
-						Codec.INT.fieldOf("battery").forGetter(data -> data.battery),
-						Codec.list(Vector3.CODEC).fieldOf("vectors").forGetter(data -> data.vectors)
+						Codec.INT.fieldOf("Time").forGetter(data -> data.time),
+						Codec.INT.fieldOf("Battery").forGetter(data -> data.battery),
+						Codec.list(Vector3.CODEC).fieldOf("Memory").forGetter(data -> data.vectors)
 				).apply(builder, Data::new));
 		public static final StreamCodec<RegistryFriendlyByteBuf, Data> STREAM_CODEC = StreamCodec.composite(
 				ByteBufCodecs.INT, data -> data.time,
