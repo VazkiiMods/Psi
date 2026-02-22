@@ -162,7 +162,7 @@
   "item.psi.exosuit_sensor_stress": "Сенсор нагрузки экзокостюма",
   "item.psi.exosuit_sensor_trigger": "Сенсор детонации экзокостюма",
   "item.psi.vector_ruler": "Векторная линейка",
-  "death.attack.psi-overload": "%s превысил(а) лимит псионической энергии",
+  "death.attack.psi_overload": "%s превысил(а) лимит псионической энергии",
   "psi.component.assembly": "Сборка",
   "psi.component.core": "Ядро",
   "psi.component.socket": "Разъём",

@@ -160,7 +160,7 @@
   "item.psi.exosuit_sensor_stress": "应激传感器",
   "item.psi.exosuit_sensor_trigger": "引信传感器",
   "item.psi.vector_ruler": "矢量尺",
-  "death.attack.psi-overload": "%s耗尽了他的ψ能量",
+  "death.attack.psi_overload": "%s耗尽了他的ψ能量",
   "psi.component.assembly": "机体",
   "psi.component.core": "核心",
   "psi.component.socket": "弹夹",

@@ -157,7 +157,7 @@
   "item.psi.exosuit_sensor_heat": "Exoskelett Hitzesensor",
   "item.psi.exosuit_sensor_stress": "Exoskelett Stresssensor",
   "item.psi.vector_ruler": "Vektorenlineal",
-  "death.attack.psi-overload": "%s hat seine psionische Energie überzogen",
+  "death.attack.psi_overload": "%s hat seine psionische Energie überzogen",
   "psi.component.assembly": "Assembly",
   "psi.component.core": "Core",
   "psi.component.socket": "Socket",

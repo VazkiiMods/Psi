@@ -161,7 +161,7 @@
   "item.psi.exosuit_sensor_stress": "엑소수트 체력 센서",
   "item.psi.exosuit_sensor_trigger": "엑소수트 뇌관 센서",
   "item.psi.vector_ruler": "벡터 자",
-  "death.attack.psi-overload": "%s(이)가 넘쳐 흐른 프사이 에너지에 감전되었습니다.",
+  "death.attack.psi_overload": "%s(이)가 넘쳐 흐른 프사이 에너지에 감전되었습니다.",
   "psi.component.assembly": "조립틀",
   "psi.component.core": "코어",
   "psi.component.socket": "소켓",

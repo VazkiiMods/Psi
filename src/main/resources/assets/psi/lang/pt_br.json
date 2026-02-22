@@ -157,7 +157,7 @@
   "item.psi.exosuit_sensor_heat": "Sensor de Calor da Exoarmadura",
   "item.psi.exosuit_sensor_stress": "Sensor de Estresse da Exoarmadura",
   "item.psi.vector_ruler": "Régua de Vetor",
-  "death.attack.psi-overload": "%s sofreu sobrecarga de Energia Psionica",
+  "death.attack.psi_overload": "%s sofreu sobrecarga de Energia Psionica",
   "psi.component.assembly": "Base",
   "psi.component.core": "Núcleo",
   "psi.component.socket": "Soquete",

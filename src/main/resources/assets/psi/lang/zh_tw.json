@@ -157,7 +157,7 @@
   "item.psi.exosuit_sensor_heat": "溫度感測器",
   "item.psi.exosuit_sensor_stress": "壓力感測器",
   "item.psi.vector_ruler": "向量尺",
-  "death.attack.psi-overload": "%s 耗盡了他的想子。",
+  "death.attack.psi_overload": "%s 耗盡了他的想子。",
   "psi.component.assembly": "機體",
   "psi.component.core": "核心",
   "psi.component.socket": "彈匣",

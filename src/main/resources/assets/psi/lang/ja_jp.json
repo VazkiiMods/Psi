@@ -157,7 +157,7 @@
   "item.psi.exosuit_sensor_heat": "外装用 熱センサー",
   "item.psi.exosuit_sensor_stress": "外装用 ストレスセンサー",
   "item.psi.vector_ruler": "ベクトル定規",
-  "death.attack.psi-overload": "Psiエネルギーを %s 超過した。",
+  "death.attack.psi_overload": "Psiエネルギーを %s 超過した。",
   "psi.component.assembly": "素体",
   "psi.component.core": "コア",
   "psi.component.socket": "弾倉",
