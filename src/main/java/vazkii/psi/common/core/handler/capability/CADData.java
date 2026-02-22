@@ -125,6 +125,10 @@ public class CADData implements ICapabilityProvider<ItemCapability<?, Void>, Voi
 
 	@Override
 	public boolean isSocketSlotAvailable(int slot) {
+		if(!(cad.getItem() instanceof ICAD)) {
+			return false;
+		}
+
 		int sockets = ((ICAD) cad.getItem()).getStatValue(cad, EnumCADStat.SOCKETS);
 		if(sockets == -1 || sockets > ItemCADSocket.MAX_SOCKETS) {
 			sockets = ItemCADSocket.MAX_SOCKETS;

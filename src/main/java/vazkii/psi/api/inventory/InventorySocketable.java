@@ -79,6 +79,7 @@ public class InventorySocketable implements Container, Nameable, ContainerData {
 		if(socketable == null) {
 			return ItemStack.EMPTY;
 		}
+
 		return socketable.getBulletInSocket(index);
 	}
 
