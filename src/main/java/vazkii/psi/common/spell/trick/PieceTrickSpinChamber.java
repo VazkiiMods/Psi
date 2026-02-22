@@ -18,8 +18,6 @@ import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.piece.PieceTrick;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 
-import java.util.Objects;
-
 public class PieceTrickSpinChamber extends PieceTrick {
 	private SpellParam<Number> number;
 
@@ -60,7 +58,12 @@ public class PieceTrickSpinChamber extends PieceTrick {
 
 		ItemStack stack = context.tool.isEmpty() ? PsiAPI.getPlayerCAD(context.caster) : context.tool;
 		boolean updateLoopcast = (stack.getItem() instanceof ICAD) && (context.castFrom == PlayerDataHandler.get(context.caster).loopcastHand);
-		ISocketable capability = Objects.requireNonNull(stack.getCapability(PsiAPI.SOCKETABLE_CAPABILITY));
+		ISocketable capability = stack.getCapability(PsiAPI.SOCKETABLE_CAPABILITY);
+
+		if(capability == null) {
+			return null;
+		}
+
 		int offset = num > 0 ? 1 : -1;
 		int targetSlot = getNextSlotFromOffset(capability, offset);
 

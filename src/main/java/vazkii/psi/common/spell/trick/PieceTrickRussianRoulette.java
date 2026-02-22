@@ -20,8 +20,6 @@ import vazkii.psi.api.spell.SpellMetadata;
 import vazkii.psi.api.spell.piece.PieceTrick;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 
-import java.util.Objects;
-
 public class PieceTrickRussianRoulette extends PieceTrick {
 	public PieceTrickRussianRoulette(Spell spell) {
 		super(spell);
@@ -40,7 +38,12 @@ public class PieceTrickRussianRoulette extends PieceTrick {
 	public Object execute(SpellContext context) {
 		ItemStack stack = context.tool.isEmpty() ? PsiAPI.getPlayerCAD(context.caster) : context.tool;
 		boolean updateLoopcast = (stack.getItem() instanceof ICAD) && (context.castFrom == PlayerDataHandler.get(context.caster).loopcastHand);
-		ISocketable capability = Objects.requireNonNull(stack.getCapability(PsiAPI.SOCKETABLE_CAPABILITY));
+		ISocketable capability = stack.getCapability(PsiAPI.SOCKETABLE_CAPABILITY);
+
+		if(capability == null) {
+			return null;
+		}
+
 		int targetSlot = getRandomSocketableSlot(capability);
 
 		capability.setSelectedSlot(targetSlot);

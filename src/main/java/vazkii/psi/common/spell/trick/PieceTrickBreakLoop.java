@@ -19,8 +19,6 @@ import vazkii.psi.api.spell.piece.PieceTrick;
 import vazkii.psi.common.core.handler.PlayerDataHandler;
 import vazkii.psi.common.entity.EntitySpellCircle;
 
-import java.util.Objects;
-
 public class PieceTrickBreakLoop extends PieceTrick {
 
 	SpellParam<Number> valueParam;
@@ -55,10 +53,15 @@ public class PieceTrickBreakLoop extends PieceTrick {
 					context.focalPoint.remove(Entity.RemovalReason.DISCARDED);
 				}
 			} else {
-				if(!context.tool.isEmpty() && Objects.nonNull(context.tool.getCapability(PsiAPI.SOCKETABLE_CAPABILITY))) {
-					ISocketable socketableCap = Objects.requireNonNull(context.tool.getCapability(PsiAPI.SOCKETABLE_CAPABILITY));
-					socketableCap.setSelectedSlot(socketableCap.getLastSlot() + 1);
+				if(!context.tool.isEmpty()) {
+					ISocketable socketableCap = context.tool.getCapability(PsiAPI.SOCKETABLE_CAPABILITY);
+
+					if(socketableCap != null) {
+						socketableCap.setSelectedSlot(socketableCap.getLastSlot() + 1);
+
+					}
 				}
+
 				PlayerDataHandler.PlayerData data = PlayerDataHandler.get(context.caster);
 				data.stopLoopcast();
 			}
