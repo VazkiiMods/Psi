@@ -32,6 +32,8 @@ import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.param.ParamVector;
 import vazkii.psi.api.spell.piece.PieceTrick;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 public class PieceTrickTorrent extends PieceTrick {
 
 	SpellParam<Vector3> position;
@@ -54,7 +56,7 @@ public class PieceTrickTorrent extends PieceTrick {
 				int i = pos.getX();
 				int j = pos.getY();
 				int k = pos.getZ();
-				worldIn.playSound(playerIn, pos, SoundEvents.FIRE_EXTINGUISH, SoundSource.BLOCKS, 0.5F, 2.6F + (worldIn.random.nextFloat() - worldIn.random.nextFloat()) * 0.8F);
+				worldIn.playSound(playerIn, pos, SoundEvents.FIRE_EXTINGUISH, SoundSource.BLOCKS, 0.5F, 2.6F + (ThreadLocalRandom.current().nextFloat() - ThreadLocalRandom.current().nextFloat()) * 0.8F);
 
 				for(int l = 0; l < 8; ++l) {
 					worldIn.addParticle(ParticleTypes.LARGE_SMOKE, (double) i + Math.random(), (double) j + Math.random(), (double) k + Math.random(), 0.0D, 0.0D, 0.0D);

@@ -72,6 +72,7 @@ import vazkii.psi.common.network.message.MessageVisualEffect;
 import vazkii.psi.common.spell.trick.block.PieceTrickBreakBlock;
 
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.regex.Matcher;
@@ -481,13 +482,13 @@ public class ItemCAD extends Item implements ICAD {
 				ItemStack outCopy = recipe.get().value().getResultItem(RegistryAccess.EMPTY).copy();
 				int count = stack.getCount() * outCopy.getCount();
 				while(count > 64) {
-					int dropCount = world.getRandom().nextInt(32) + 32;
+					int dropCount = ThreadLocalRandom.current().nextInt(32) + 32;
 					ItemEntity drop = new ItemEntity(world, item.getX(), item.getY(), item.getZ(),
 							new ItemStack(outCopy.getItem(), dropCount));
 					Vec3 motion = item.getDeltaMovement();
-					drop.setDeltaMovement(motion.x() + (world.getRandom().nextFloat() - 0.5D) / 5,
-							motion.y() + (world.getRandom().nextFloat()) / 10,
-							motion.z() + (world.getRandom().nextFloat() - 0.5D) / 5);
+					drop.setDeltaMovement(motion.x() + (ThreadLocalRandom.current().nextFloat() - 0.5D) / 5,
+							motion.y() + (ThreadLocalRandom.current().nextFloat()) / 10,
+							motion.z() + (ThreadLocalRandom.current().nextFloat() - 0.5D) / 5);
 					world.addFreshEntity(drop);
 					count -= dropCount;
 				}

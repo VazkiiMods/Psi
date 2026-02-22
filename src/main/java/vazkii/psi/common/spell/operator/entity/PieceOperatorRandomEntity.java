@@ -18,6 +18,8 @@ import vazkii.psi.api.spell.param.ParamEntityListWrapper;
 import vazkii.psi.api.spell.piece.PieceOperator;
 import vazkii.psi.api.spell.wrapper.EntityListWrapper;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 public class PieceOperatorRandomEntity extends PieceOperator {
 
 	SpellParam<EntityListWrapper> list;
@@ -38,7 +40,7 @@ public class PieceOperatorRandomEntity extends PieceOperator {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_TARGET);
 		}
 
-		return listVal.get(context.caster.getCommandSenderWorld().random.nextInt(listVal.size()));
+		return listVal.get(ThreadLocalRandom.current().nextInt(listVal.size()));
 	}
 
 	@Override

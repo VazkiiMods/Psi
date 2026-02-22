@@ -15,6 +15,8 @@ import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.piece.PieceOperator;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 public class PieceOperatorRandom extends PieceOperator {
 
 	SpellParam<Number> max;
@@ -39,7 +41,7 @@ public class PieceOperatorRandom extends PieceOperator {
 			throw new SpellRuntimeException(SpellRuntimeException.NEGATIVE_NUMBER);
 		}
 
-		return (double) (context.caster.getCommandSenderWorld().random.nextInt(maxVal - minVal) + minVal);
+		return (double) (ThreadLocalRandom.current().nextInt(maxVal - minVal) + minVal);
 	}
 
 	@Override

@@ -20,6 +20,8 @@ import org.jetbrains.annotations.NotNull;
 
 import vazkii.psi.common.Psi;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 public record MessageVisualEffect(int color, double x, double y, double z, double width, double height, double offset,
 		int effectType) implements CustomPacketPayload {
 
@@ -82,9 +84,9 @@ public record MessageVisualEffect(int color, double x, double y, double z, doubl
 						double d2 = world.random.nextGaussian() * m;
 
 						world.addParticle(ParticleTypes.EXPLOSION,
-								x + world.random.nextFloat() * width * 2.0F - width - d0 * d3,
-								y + world.random.nextFloat() * height - d1 * d3,
-								z + world.random.nextFloat() * width * 2.0F - width - d2 * d3, d0, d1, d2);
+								x + ThreadLocalRandom.current().nextFloat() * width * 2.0F - width - d0 * d3,
+								y + ThreadLocalRandom.current().nextFloat() * height - d1 * d3,
+								z + ThreadLocalRandom.current().nextFloat() * width * 2.0F - width - d2 * d3, d0, d1, d2);
 					}
 				}
 			}

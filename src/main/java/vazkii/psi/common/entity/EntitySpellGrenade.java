@@ -26,6 +26,7 @@ import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.SpellContext;
 
 import java.util.Optional;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class EntitySpellGrenade extends EntitySpellProjectile {
 	boolean sound = false;
@@ -76,9 +77,9 @@ public class EntitySpellGrenade extends EntitySpellProjectile {
 			double d1 = getCommandSenderWorld().random.nextGaussian() * m;
 			double d2 = getCommandSenderWorld().random.nextGaussian() * m;
 
-			double x = getX() + 0.75 * getCommandSenderWorld().random.nextFloat() - 0.375;
-			double y = getY() + 0.5 * getCommandSenderWorld().random.nextFloat();
-			double z = getZ() + 0.75 * getCommandSenderWorld().random.nextFloat() - 0.375;
+			double x = getX() + 0.75 * ThreadLocalRandom.current().nextFloat() - 0.375;
+			double y = getY() + 0.5 * ThreadLocalRandom.current().nextFloat();
+			double z = getZ() + 0.75 * ThreadLocalRandom.current().nextFloat() - 0.375;
 			getCommandSenderWorld().addParticle(ParticleTypes.EXPLOSION, x, y, z, d0, d1, d2);
 		}
 	}

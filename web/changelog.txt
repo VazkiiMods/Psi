@@ -1,3 +1,11 @@
+1.21-108
+* Fixed random operations not being thread-safe (Kamefrede)
+* Fixed Spell Import message from old versions not having the correct text (Kamefrede)
+* Fixed CAD Data being wrongly shared between all CADs (Kamefrede)
+* Fixed Vector3 conversion to BlockPos truncating instead of rounding (Kamefrede)
+* Fixed Psi Overload death message not having the correct text (Kamefrede)
+* Fixed crash when moving CAD in inventory while loopcast is active (Kamefrede)
+* Fixed crash when a player removes a CAD from an assembbler with another player looking at it (Kamefrede)
 1.21-107
 * [API] Make Total PSI and PSI Regeneration configurable attributes (lightsing)
 * Fixed Trick: Break Block not playing particles correctly (zhichaoxi2006)
