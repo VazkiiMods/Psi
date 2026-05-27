@@ -25,6 +25,8 @@ public class PieceTrickBreakLoop extends PieceTrick {
 
 	public PieceTrickBreakLoop(Spell spell) {
 		super(spell);
+		setStatLabel(EnumSpellStat.COMPLEXITY, null);
+		setStatLabel(EnumSpellStat.PROJECTION, null);
 	}
 
 	@Override

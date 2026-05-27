@@ -30,8 +30,8 @@ public class PieceTrickConjureBlockSequence extends PieceTrick {
 
 	public PieceTrickConjureBlockSequence(Spell spell) {
 		super(spell);
-		setStatLabel(EnumSpellStat.POTENCY, new StatLabel(SpellParam.GENERIC_NAME_MAX, true).add(15));
-		setStatLabel(EnumSpellStat.COST, new StatLabel(SpellParam.GENERIC_NAME_MAX, true).sub(1).parenthesize().mul(14).sub(24));
+		setStatLabel(EnumSpellStat.POTENCY, new StatLabel(SpellParam.GENERIC_NAME_MAX, true).mul(15));
+		setStatLabel(EnumSpellStat.COST, new StatLabel(SpellParam.GENERIC_NAME_MAX, true).sub(1).parenthesize().mul(14).add(24));
 	}
 
 	@Override

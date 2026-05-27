@@ -18,6 +18,7 @@ public class PieceTrickChangeSlot extends PieceTrick {
 
 	public PieceTrickChangeSlot(Spell spell) {
 		super(spell);
+		setStatLabel(EnumSpellStat.COMPLEXITY, new StatLabel(2));
 	}
 
 	@Override

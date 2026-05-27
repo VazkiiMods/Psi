@@ -19,6 +19,7 @@ public class PieceTrickDie extends PieceTrick {
 	public PieceTrickDie(Spell spell) {
 		super(spell);
 		setStatLabel(EnumSpellStat.COMPLEXITY, new StatLabel(1));
+		setStatLabel(EnumSpellStat.PROJECTION, null);
 	}
 
 	@Override

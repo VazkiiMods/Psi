@@ -19,7 +19,8 @@ public class PieceTrickSwitchTargetSlot extends PieceTrick {
 
 	public PieceTrickSwitchTargetSlot(Spell spell) {
 		super(spell);
-		setStatLabel(EnumSpellStat.COMPLEXITY, new StatLabel(2));
+		setStatLabel(EnumSpellStat.COMPLEXITY, new StatLabel(1));
+		setStatLabel(EnumSpellStat.PROJECTION, null);
 	}
 
 	@Override

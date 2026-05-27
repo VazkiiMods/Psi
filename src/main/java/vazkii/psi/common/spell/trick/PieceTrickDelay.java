@@ -18,8 +18,9 @@ public class PieceTrickDelay extends PieceTrick {
 
 	public PieceTrickDelay(Spell spell) {
 		super(spell);
-		setStatLabel(EnumSpellStat.COMPLEXITY, new StatLabel(2));
+		setStatLabel(EnumSpellStat.COMPLEXITY, new StatLabel(1));
 		setStatLabel(EnumSpellStat.POTENCY, new StatLabel(SpellParam.GENERIC_NAME_TIME, true));
+		setStatLabel(EnumSpellStat.PROJECTION, null);
 	}
 
 	@Override
