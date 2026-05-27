@@ -87,6 +87,7 @@ public final class Spell {
 					spell.grid.gridData[i][j] = piece.copyFromSpell(spell);
 					spell.grid.gridData[i][j].x = i;
 					spell.grid.gridData[i][j].y = j;
+					spell.grid.gridData[i][j].isInGrid = piece.isInGrid;
 				}
 			}
 		}

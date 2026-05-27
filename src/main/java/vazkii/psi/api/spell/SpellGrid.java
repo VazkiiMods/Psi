@@ -68,6 +68,7 @@ public final class SpellGrid {
 		for(var piece : spellList) {
 			piece.piece.x = piece.x;
 			piece.piece.y = piece.y;
+			piece.piece.isInGrid = true;
 			grid.gridData[piece.x][piece.y] = piece.piece;
 		}
 		grid.empty = spellList.isEmpty();
