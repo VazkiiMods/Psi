@@ -27,8 +27,13 @@ public abstract class PieceTrickPotionBase extends PieceTrick {
 
 	public PieceTrickPotionBase(Spell spell) {
 		super(spell);
-		setStatLabel(EnumSpellStat.POTENCY, new StatLabel(SpellParam.GENERIC_NAME_TIME, true).mul(SpellParam.GENERIC_NAME_POWER, true).square().mul(5));
-		setStatLabel(EnumSpellStat.COST, new StatLabel(SpellParam.GENERIC_NAME_TIME, true).mul(SpellParam.GENERIC_NAME_POWER, true).square().mul(5).square());
+		if(hasPower()) {
+			setStatLabel(EnumSpellStat.POTENCY, new StatLabel(SpellParam.GENERIC_NAME_TIME, true).mul(new StatLabel(SpellParam.GENERIC_NAME_POWER, true).square().mul(5).add(20)));
+			setStatLabel(EnumSpellStat.COST, new StatLabel(SpellParam.GENERIC_NAME_TIME, true).mul(new StatLabel(SpellParam.GENERIC_NAME_POWER, true).square().mul(25).add(40)));
+		} else {
+			setStatLabel(EnumSpellStat.POTENCY, new StatLabel(SpellParam.GENERIC_NAME_TIME, true).mul(5).add(20));
+			setStatLabel(EnumSpellStat.COST, new StatLabel(SpellParam.GENERIC_NAME_TIME, true).mul(25).add(40));
+		}
 	}
 
 	@Override

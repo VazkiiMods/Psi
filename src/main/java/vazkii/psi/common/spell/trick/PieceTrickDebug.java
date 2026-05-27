@@ -24,6 +24,8 @@ public class PieceTrickDebug extends PieceTrick {
 
 	public PieceTrickDebug(Spell spell) {
 		super(spell);
+		setStatLabel(EnumSpellStat.COMPLEXITY, null);
+		setStatLabel(EnumSpellStat.PROJECTION, null);
 	}
 
 	@Override

@@ -23,8 +23,8 @@ public class PieceTrickMassBlink extends PieceTrick {
 
 	public PieceTrickMassBlink(Spell spell) {
 		super(spell);
-		setStatLabel(EnumSpellStat.POTENCY, new StatLabel(SpellParam.GENERIC_NAME_DISTANCE, true).abs().mul(90));
-		setStatLabel(EnumSpellStat.COST, new StatLabel(SpellParam.GENERIC_NAME_DISTANCE, true).abs().mul(105).max(1));
+		setStatLabel(EnumSpellStat.POTENCY, new StatLabel(SpellParam.GENERIC_NAME_DISTANCE, true).abs().mul(80));
+		setStatLabel(EnumSpellStat.COST, new StatLabel(SpellParam.GENERIC_NAME_DISTANCE, true).abs().mul(100));
 	}
 
 	@Override

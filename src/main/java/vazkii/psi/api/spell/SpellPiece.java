@@ -353,7 +353,11 @@ public abstract class SpellPiece {
 	 * Sets a {@link StatLabel}'s value.
 	 */
 	public void setStatLabel(EnumSpellStat type, StatLabel descriptor) {
-		statLabels.put(type, descriptor);
+		if(descriptor == null) {
+			statLabels.remove(type);
+		} else {
+			statLabels.put(type, descriptor);
+		}
 	}
 
 	/**

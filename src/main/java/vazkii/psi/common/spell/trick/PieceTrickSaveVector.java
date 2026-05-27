@@ -29,6 +29,7 @@ public class PieceTrickSaveVector extends PieceTrick {
 		super(spell);
 		setStatLabel(EnumSpellStat.COMPLEXITY, new StatLabel(2));
 		setStatLabel(EnumSpellStat.POTENCY, new StatLabel(SpellParam.GENERIC_NAME_NUMBER, true).mul(8));
+		setStatLabel(EnumSpellStat.PROJECTION, null);
 	}
 
 	@Override

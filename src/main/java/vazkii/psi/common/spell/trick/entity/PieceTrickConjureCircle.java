@@ -22,6 +22,7 @@ public class PieceTrickConjureCircle extends PieceTrick {
 
 	public PieceTrickConjureCircle(Spell spell) {
 		super(spell);
+		setStatLabel(EnumSpellStat.POTENCY, new StatLabel(SpellParam.GENERIC_NAME_RADIUS, true).mul(SpellParam.GENERIC_NAME_TIME, true).parenthesize().div(100));
 	}
 
 	@Override

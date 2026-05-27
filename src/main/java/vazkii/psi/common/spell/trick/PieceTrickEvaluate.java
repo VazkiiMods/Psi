@@ -8,10 +8,7 @@
  */
 package vazkii.psi.common.spell.trick;
 
-import vazkii.psi.api.spell.Spell;
-import vazkii.psi.api.spell.SpellContext;
-import vazkii.psi.api.spell.SpellMetadata;
-import vazkii.psi.api.spell.SpellParam;
+import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.param.ParamAny;
 import vazkii.psi.api.spell.piece.PieceTrick;
 
@@ -21,6 +18,8 @@ public class PieceTrickEvaluate extends PieceTrick {
 
 	public PieceTrickEvaluate(Spell spell) {
 		super(spell);
+		setStatLabel(EnumSpellStat.COMPLEXITY, null);
+		setStatLabel(EnumSpellStat.PROJECTION, null);
 	}
 
 	@Override

@@ -27,6 +27,8 @@ public class PieceTrickDebugSpamless extends PieceTrick {
 
 	public PieceTrickDebugSpamless(Spell spell) {
 		super(spell);
+		setStatLabel(EnumSpellStat.COMPLEXITY, null);
+		setStatLabel(EnumSpellStat.PROJECTION, null);
 	}
 
 	@Override
