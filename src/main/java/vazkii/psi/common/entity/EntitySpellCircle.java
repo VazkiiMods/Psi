@@ -13,9 +13,8 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -24,6 +23,8 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import org.joml.Vector3d;
+import org.joml.Vector3f;
 import vazkii.psi.api.internal.PsiRenderHelper;
 import vazkii.psi.api.spell.ISpellAcceptor;
 import vazkii.psi.api.spell.ISpellImmune;
@@ -197,11 +198,24 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 			float g = PsiRenderHelper.g(colorVal) / 255F;
 			float b = PsiRenderHelper.b(colorVal) / 255F;
 			for(int i = 0; i < 5; i++) {
-				double x = getX() + (Math.random() - 0.5) * getBbWidth();
-				double y = getY();
-				double z = getZ() + (Math.random() - 0.5) * getBbWidth();
+				Vector3d direction = new Vector3d(entityData.get(DIRECTION_X), entityData.get(DIRECTION_Y), entityData.get(DIRECTION_Z)).normalize();
+				// rotate to match RenderSpellCircle
+				direction.rotateAxis(Mth.HALF_PI, 0, 1, 0);
+				Vector3d localX, localZ;
+				if(direction.equals(0, 1, 0) || direction.equals(0, -1, 0)) {
+					localX = new Vector3d(1, 0, 0);
+					localZ = new Vector3d(0, 0, 1);
+				} else {
+					localX = direction.cross(0, -1, 0, new Vector3d()).normalize();
+					localZ = direction.cross(localX, new Vector3d()).normalize();
+				}
 				float grav = -0.15F - (float) Math.random() * 0.03F;
-				Psi.proxy.sparkleFX(x, y, z, r, g, b, grav, 0.25F, 15);
+				direction.mul(-grav);
+				Vector3d position = new Vector3d()
+						.add(localX.mul(((Math.random() - 0.5) * getBbWidth() * getScale())))
+						.add(localZ.mul(((Math.random() - 0.5) * getBbWidth() * getScale())))
+						.add(getX(), getY(), getZ());
+				Psi.proxy.sparkleFX(position.x, position.y, position.z, r, g, b, (float)direction.x, (float)direction.y, (float)direction.z, 0.25F, 15);
 			}
 		}
 
@@ -227,6 +241,14 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 		entityData.set(DIRECTION_Z, (float) direction.z);
 	}
 
+	public @NotNull EntityDimensions getDimensions(@NotNull Pose pose){
+		return super.getDimensions(pose).scale(getScale());
+	}
+	
+	public float getScale() {
+		return entityData.get(SCALE);
+	}
+	
 	public void setScale(float scale) {
 		entityData.set(SCALE, scale);
 	}
