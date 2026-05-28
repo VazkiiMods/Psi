@@ -199,8 +199,6 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 			float b = PsiRenderHelper.b(colorVal) / 255F;
 			for(int i = 0; i < 5; i++) {
 				Vector3d direction = new Vector3d(entityData.get(DIRECTION_X), entityData.get(DIRECTION_Y), entityData.get(DIRECTION_Z)).normalize();
-				// rotate to match RenderSpellCircle
-				direction.rotateAxis(Mth.HALF_PI, 0, 1, 0);
 				Vector3d localX, localZ;
 				if(direction.equals(0, 1, 0) || direction.equals(0, -1, 0)) {
 					localX = new Vector3d(1, 0, 0);
