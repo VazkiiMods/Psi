@@ -67,9 +67,6 @@ public class RenderSpellCircle extends EntityRenderer<EntitySpellCircle> {
 		Vec3 axis = normal.cross(direction);
 		double dot = normal.dot(direction);
 
-		// Rotate the model so that it's normal matches the normal
-		ms.mulPose(Axis.YP.rotationDegrees(90));
-
 		// Very small threshold to see if it's parallel or not.
 		if(axis.length() < 1e-6) {
 			// If it's parallel but the dot product is negative we flip it.
