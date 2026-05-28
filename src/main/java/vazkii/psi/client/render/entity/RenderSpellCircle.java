@@ -139,10 +139,11 @@ public class RenderSpellCircle extends EntityRenderer<EntitySpellCircle> {
 		ItemStack colorizer = entity.getEntityData().get(EntitySpellCircle.COLORIZER_DATA);
 		int color = Psi.proxy.getColorForColorizer(colorizer);
 		float alive = entity.getTimeAlive() + partialTicks;
-		float scale = Math.min(entity.getEntityData().get(EntitySpellCircle.SCALE), alive / EntitySpellCircle.CAST_DELAY);
+		float entityScale = entity.getEntityData().get(EntitySpellCircle.SCALE);
+		float scale = Math.min(entityScale, alive / EntitySpellCircle.CAST_DELAY);
 		int lifetime = entity.getEntityData().get(EntitySpellCircle.LIFETIME);
 		if(alive > lifetime - EntitySpellCircle.CAST_DELAY) {
-			scale = 1F - Math.min(1F, Math.max(0, alive - (lifetime - EntitySpellCircle.CAST_DELAY)) / EntitySpellCircle.CAST_DELAY);
+			scale = entityScale - Math.min(entityScale, Math.max(0, alive - (lifetime - EntitySpellCircle.CAST_DELAY)) / EntitySpellCircle.CAST_DELAY);
 		}
 
 		renderSpellCircle(alive, scale, 1, entity.getEntityData().get(EntitySpellCircle.DIRECTION_X), entity.getEntityData().get(EntitySpellCircle.DIRECTION_Y), entity.getEntityData().get(EntitySpellCircle.DIRECTION_Z), color, ms, buffers);
