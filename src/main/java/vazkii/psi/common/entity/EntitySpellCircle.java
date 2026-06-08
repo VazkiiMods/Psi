@@ -13,7 +13,6 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -22,9 +21,8 @@ import net.minecraft.world.phys.Vec3;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
 import org.joml.Vector3d;
-import org.joml.Vector3f;
+
 import vazkii.psi.api.internal.PsiRenderHelper;
 import vazkii.psi.api.spell.ISpellAcceptor;
 import vazkii.psi.api.spell.ISpellImmune;
@@ -213,7 +211,7 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 						.add(localX.mul(((Math.random() - 0.5) * getBbWidth() * getScale())))
 						.add(localZ.mul(((Math.random() - 0.5) * getBbWidth() * getScale())))
 						.add(getX(), getY(), getZ());
-				Psi.proxy.sparkleFX(position.x, position.y, position.z, r, g, b, (float)direction.x, (float)direction.y, (float)direction.z, 0.25F, 15);
+				Psi.proxy.sparkleFX(position.x, position.y, position.z, r, g, b, (float) direction.x, (float) direction.y, (float) direction.z, 0.25F, 15);
 			}
 		}
 
@@ -239,14 +237,14 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 		entityData.set(DIRECTION_Z, (float) direction.z);
 	}
 
-	public @NotNull EntityDimensions getDimensions(@NotNull Pose pose){
+	public @NotNull EntityDimensions getDimensions(@NotNull Pose pose) {
 		return super.getDimensions(pose).scale(getScale());
 	}
-	
+
 	public float getScale() {
 		return entityData.get(SCALE);
 	}
-	
+
 	public void setScale(float scale) {
 		entityData.set(SCALE, scale);
 	}
