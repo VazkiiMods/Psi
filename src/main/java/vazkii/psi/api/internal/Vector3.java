@@ -15,6 +15,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 
@@ -185,7 +186,7 @@ public class Vector3 {
 	}
 
 	public Vec3i toVec3i() {
-		return new Vec3i((int) Math.round(x), (int) Math.round(y), (int) Math.round(z));
+		return new Vec3i(Mth.floor(x), Mth.floor(y), Mth.floor(z));
 	}
 
 	public BlockPos toBlockPos() {
