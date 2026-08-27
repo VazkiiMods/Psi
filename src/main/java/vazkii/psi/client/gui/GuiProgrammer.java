@@ -520,9 +520,6 @@ public class GuiProgrammer extends Screen {
 		if(selectedX != -1 && selectedY != -1) {
 			SpellPiece piece = spell.grid.gridData[selectedX][selectedY];
 			if(piece != null) {
-				boolean intercept = piece.interceptKeystrokes();
-				spellNameField.setEditable(!spectator && !intercept);
-
 				if(piece.hasConfig()) {
 					int i = 0;
 					for(String paramName : piece.params.keySet()) {
@@ -563,7 +560,9 @@ public class GuiProgrammer extends Screen {
 		if(spectator) {
 			return false;
 		}
-		super.charTyped(character, keyCode);
+		if(super.charTyped(character, keyCode)) {
+			return true;
+		}
 		if(!commentEnabled && !spellNameField.isFocused()) {
 			SpellPiece piece;
 			if(selectedX != -1 && selectedY != -1) {
@@ -605,6 +604,9 @@ public class GuiProgrammer extends Screen {
 				closeComment(false);
 				return true;
 			}
+		}
+		if(getFocused() instanceof EditBox editBox && editBox.keyPressed(keyCode, scanCode, modifiers)) {
+			return true;
 		}
 		SpellPiece piece = null;
 		if(selectedX != -1 && selectedY != -1) {
@@ -941,7 +943,7 @@ public class GuiProgrammer extends Screen {
 			onSpellChanged(false);
 		}
 
-		spellNameField.setEditable(!spectator && (piece == null || !piece.interceptKeystrokes()));
+		spellNameField.setEditable(!spectator);
 		commentField.setFocused(false);
 		commentField.setVisible(false);
 		commentField.setEditable(false);
