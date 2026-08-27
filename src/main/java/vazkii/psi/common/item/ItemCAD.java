@@ -90,8 +90,6 @@ public class ItemCAD extends Item implements ICAD {
 
 	private static final Pattern FAKE_PLAYER_PATTERN = Pattern.compile("^\\[.*]|ComputerCraft$");
 
-	private String contributorName = "";
-
 	public ItemCAD(Item.Properties properties) {
 		super(properties
 				.stacksTo(1).rarity(Rarity.RARE).component(ModDataComponents.BULLETS.get(), ItemContainerContents.EMPTY)
@@ -386,10 +384,11 @@ public class ItemCAD extends Item implements ICAD {
 
 	@Override
 	public void inventoryTick(@NotNull ItemStack stack, @NotNull Level level, @NotNull Entity entity, int slotId, boolean isSelected) {
-		if(!getComponentInSlot(stack, EnumCADComponent.DYE).isEmpty() && ContributorSpellCircleHandler.isContributor(entity.getName().getString().toLowerCase(Locale.ROOT))) {
-			if(this.contributorName.equalsIgnoreCase(entity.getName().getString())) {
-				this.contributorName = entity.getName().getString();
-			}
+		String name = entity.getName().getString();
+		if(!level.isClientSide && !getComponentInSlot(stack, EnumCADComponent.DYE).isEmpty()
+				&& ContributorSpellCircleHandler.isContributor(name.toLowerCase(Locale.ROOT))
+				&& !name.equalsIgnoreCase(stack.getOrDefault(ModDataComponents.CONTRIBUTOR, ""))) {
+			stack.set(ModDataComponents.CONTRIBUTOR, name);
 		}
 	}
 
@@ -510,8 +509,9 @@ public class ItemCAD extends Item implements ICAD {
 	public ItemStack getComponentInSlot(ItemStack stack, EnumCADComponent type) {
 		List<Item> items = stack.getOrDefault(ModDataComponents.COMPONENTS, new ArrayList<>(Collections.nCopies(EnumCADComponent.values().length, Items.AIR)));
 		ItemStack component = new ItemStack(items.get(type.ordinal()));
-		if(type == EnumCADComponent.DYE && !component.isEmpty() && !this.contributorName.isEmpty()) {
-			((ICADColorizer) items.get(type.ordinal())).setContributorName(component, this.contributorName);
+		String contributorName = stack.getOrDefault(ModDataComponents.CONTRIBUTOR, "");
+		if(type == EnumCADComponent.DYE && component.getItem() instanceof ICADColorizer colorizer && !contributorName.isEmpty()) {
+			colorizer.setContributorName(component, contributorName);
 		}
 		return component;
 	}
