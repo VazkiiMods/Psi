@@ -105,7 +105,7 @@ public class PieceTrickMoveBlockSequence extends PieceTrick {
 			}
 
 			BlockPos pushToPos = blockPos.offset((int) directNorm.x, (int) directNorm.y, (int) directNorm.z);
-			boolean isOffWorld = pushToPos.getY() < 0 || pushToPos.getY() > 256;
+			boolean isOffWorld = world.isOutsideBuildHeight(pushToPos);
 			if(isOffWorld) {
 				immovableBlocks.add(blockPos);
 				continue;
