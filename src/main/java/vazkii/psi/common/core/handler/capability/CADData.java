@@ -254,7 +254,7 @@ public class CADData implements ICapabilityProvider<ItemCapability<?, Void>, Voi
 		public Data(int time, int battery, List<Vector3> vectors) {
 			this.time = time;
 			this.battery = battery;
-			this.vectors = vectors;
+			this.vectors = new ArrayList<>(vectors);
 		}
 
 		@Override
