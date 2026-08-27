@@ -63,6 +63,12 @@ public record MessageLoopcastSync(int entityId, byte loopcastState) implements C
 
 			if(player instanceof Player) {
 				PlayerDataHandler.PlayerData data = PlayerDataHandler.get((Player) player);
+				if(data.loopcasting != isLoopcasting || data.loopcastHand != loopcastHand) {
+					data.lastTickLoopcastStack = null;
+					data.loopcastTime = 1;
+					data.loopcastAmount = 0;
+					data.loopcastFadeTime = isLoopcasting ? 0 : 5;
+				}
 				data.loopcasting = isLoopcasting;
 				data.loopcastHand = loopcastHand;
 			}

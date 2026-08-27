@@ -33,6 +33,7 @@ public class ItemLoopcastSpellBullet extends ItemSpellBullet {
 			data.lastTickLoopcastStack = null;
 			data.loopcastTime = 1;
 			data.loopcastAmount = 0;
+			data.loopcastFadeTime = 0;
 			context.cspell.safeExecute(context);
 			if(context.caster instanceof ServerPlayer) {
 				LoopcastTrackingHandler.syncForTrackersAndSelf((ServerPlayer) context.caster);
