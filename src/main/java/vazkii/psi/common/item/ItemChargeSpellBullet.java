@@ -40,6 +40,9 @@ public class ItemChargeSpellBullet extends ItemSpellBullet {
 	}
 
 	@Override
+	public void predictSpell(ItemStack stack, SpellContext context) {}
+
+	@Override
 	public String getBulletType() {
 		return "charge";
 	}

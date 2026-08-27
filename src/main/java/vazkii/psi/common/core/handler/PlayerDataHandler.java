@@ -434,11 +434,14 @@ public class PlayerDataHandler {
 									}
 								}
 
-								if(!player.getCommandSenderWorld().isClientSide) {
-									if(!spellContainer.loopcastSpell(context)) {
+								if(player.getCommandSenderWorld().isClientSide) {
+									if(!spellContainer.predictLoopcastSpell(context)) {
 										stopLoopcast();
 										break loopcast;
 									}
+								} else if(!spellContainer.loopcastSpell(context)) {
+									stopLoopcast();
+									break loopcast;
 								}
 								loopcastAmount++;
 							}

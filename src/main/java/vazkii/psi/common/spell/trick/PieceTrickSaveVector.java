@@ -18,7 +18,7 @@ import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.param.ParamVector;
 import vazkii.psi.api.spell.piece.PieceTrick;
 
-public class PieceTrickSaveVector extends PieceTrick {
+public class PieceTrickSaveVector extends PieceTrick implements IClientPredictable {
 
 	public static final String KEY_SLOT_LOCKED = "psi:SlotLocked";
 
@@ -70,6 +70,11 @@ public class PieceTrickSaveVector extends PieceTrick {
 		context.customData.put(KEY_SLOT_LOCKED + n, 0);
 
 		return null;
+	}
+
+	@Override
+	public Object executePrediction(SpellContext context) throws SpellRuntimeException {
+		return execute(context);
 	}
 
 }

@@ -84,6 +84,7 @@ public final class SpellContext {
 	public boolean shiftTargetSlot = true;
 	public boolean customTargetSlot = false;
 	public Stack<Action> actions = null;
+	public Action currentAction = null;
 
 	public boolean stopped = false;
 	public int delay = 0;

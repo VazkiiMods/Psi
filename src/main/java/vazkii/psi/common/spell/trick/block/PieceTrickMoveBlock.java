@@ -22,7 +22,7 @@ import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.param.ParamVector;
 import vazkii.psi.api.spell.piece.PieceTrick;
 
-public class PieceTrickMoveBlock extends PieceTrick {
+public class PieceTrickMoveBlock extends PieceTrick implements IClientPredictable {
 
 	SpellParam<Vector3> position;
 	SpellParam<Vector3> target;
@@ -109,6 +109,11 @@ public class PieceTrickMoveBlock extends PieceTrick {
 		}
 
 		return null;
+	}
+
+	@Override
+	public Object executePrediction(SpellContext context) throws SpellRuntimeException {
+		return execute(context);
 	}
 
 }

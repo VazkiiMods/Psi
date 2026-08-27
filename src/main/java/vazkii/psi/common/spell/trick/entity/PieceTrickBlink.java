@@ -16,10 +16,11 @@ import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.param.ParamEntity;
 import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.piece.PieceTrick;
+import vazkii.psi.common.Psi;
 import vazkii.psi.common.network.MessageRegister;
 import vazkii.psi.common.network.message.MessageBlink;
 
-public class PieceTrickBlink extends PieceTrick {
+public class PieceTrickBlink extends PieceTrick implements IClientPredictable {
 
 	SpellParam<Entity> target;
 	SpellParam<Number> distance;
@@ -43,8 +44,11 @@ public class PieceTrickBlink extends PieceTrick {
 		double offZ = look.z * dist;
 
 		e.setPos(e.getX() + offX, e.getY() + offY, e.getZ() + offZ);
-		if(e instanceof ServerPlayer) {
-			MessageRegister.sendToPlayer((ServerPlayer) e, new MessageBlink(offX, offY, offZ));
+		boolean predictionEligible = e == context.caster && context.focalPoint == context.caster;
+		if(e.level().isClientSide && predictionEligible) {
+			Psi.proxy.recordPredictedBlink(new Vec3(offX, offY, offZ));
+		} else if(e instanceof ServerPlayer player) {
+			MessageRegister.sendToPlayer(player, new MessageBlink(offX, offY, offZ, predictionEligible));
 		}
 	}
 
@@ -73,6 +77,16 @@ public class PieceTrickBlink extends PieceTrick {
 
 		blink(context, targetVal, distanceVal);
 
+		return null;
+	}
+
+	@Override
+	public Object executePrediction(SpellContext context) throws SpellRuntimeException {
+		Entity targetVal = this.getParamValue(context, target);
+		if(targetVal == context.caster) {
+			double distanceVal = this.getParamValue(context, distance).doubleValue();
+			blink(context, targetVal, distanceVal);
+		}
 		return null;
 	}
 

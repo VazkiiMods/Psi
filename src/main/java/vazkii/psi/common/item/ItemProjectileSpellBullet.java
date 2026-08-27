@@ -39,6 +39,9 @@ public class ItemProjectileSpellBullet extends ItemSpellBullet {
 	}
 
 	@Override
+	public void predictSpell(ItemStack stack, SpellContext context) {}
+
+	@Override
 	public double getCostModifier(ItemStack stack) {
 		return 1.02;
 	}

@@ -144,6 +144,11 @@ public class ItemFlashRing extends Item {
 		}
 
 		@Override
+		public void predictSpell(SpellContext context) {
+			context.cspell.safePredict(context);
+		}
+
+		@Override
 		public boolean loopcastSpell(SpellContext context) {
 			return false;
 		}

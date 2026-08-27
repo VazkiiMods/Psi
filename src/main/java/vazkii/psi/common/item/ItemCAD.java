@@ -166,7 +166,9 @@ public class ItemCAD extends Item implements ICAD {
 						}
 					}
 					ArrayList<Entity> SpellEntities = new ArrayList<>();
-					if(!world.isClientSide) {
+					if(world.isClientSide) {
+						spellContainer.predictSpell(context);
+					} else {
 						SpellEntities = spellContainer.castSpell(context);
 					}
 					NeoForge.EVENT_BUS.post(new SpellCastEvent(spell, context, player, data, cad, bullet));

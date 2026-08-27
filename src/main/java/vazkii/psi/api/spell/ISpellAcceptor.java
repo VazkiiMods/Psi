@@ -80,12 +80,27 @@ public interface ISpellAcceptor {
 	}
 
 	/**
+	 * Predicts an immediate cast on the client. Containers whose spell executes later,
+	 * such as projectile bullets, should leave this as a no-op.
+	 */
+	default void predictSpell(SpellContext context) {}
+
+	/**
 	 * Casts this spell in a loopcast.
 	 *
 	 * @return whether to continue loopcasting
 	 */
 	default boolean loopcastSpell(SpellContext context) {
 		castSpell(context);
+		return false;
+	}
+
+	/**
+	 * Predicts one loopcast iteration on the client.
+	 *
+	 * @return whether to continue predicting the loopcast
+	 */
+	default boolean predictLoopcastSpell(SpellContext context) {
 		return false;
 	}
 

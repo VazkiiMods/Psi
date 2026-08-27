@@ -18,7 +18,7 @@ import vazkii.psi.api.spell.param.ParamVector;
 import vazkii.psi.api.spell.piece.PieceTrick;
 import vazkii.psi.common.core.handler.AdditiveMotionHandler;
 
-public class PieceTrickAddMotion extends PieceTrick {
+public class PieceTrickAddMotion extends PieceTrick implements IClientPredictable {
 
 	public static final double MULTIPLIER = 0.3;
 
@@ -33,6 +33,15 @@ public class PieceTrickAddMotion extends PieceTrick {
 	}
 
 	public static void addMotion(SpellContext context, Entity e, Vector3 dir, double speed) throws SpellRuntimeException {
+		addMotion(context, e, dir, speed, false);
+	}
+
+	static void addPredictedMotion(SpellContext context, Entity e, Vector3 dir, double speed) throws SpellRuntimeException {
+		addMotion(context, e, dir, speed, true);
+	}
+
+	private static void addMotion(SpellContext context, Entity e, Vector3 dir, double speed,
+			boolean predicted) throws SpellRuntimeException {
 		context.verifyEntity(e);
 		if(!context.isInRadius(e)) {
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
@@ -53,7 +62,8 @@ public class PieceTrickAddMotion extends PieceTrick {
 			}
 		}
 
-		AdditiveMotionHandler.addMotion(e, dir.x, dir.y, dir.z);
+		boolean predictionEligible = predicted && e == context.caster && context.focalPoint == context.caster;
+		AdditiveMotionHandler.addMotion(e, dir.x, dir.y, dir.z, predictionEligible);
 
 	}
 
@@ -88,8 +98,19 @@ public class PieceTrickAddMotion extends PieceTrick {
 		Vector3 directionVal = this.getParamValue(context, direction);
 		double speedVal = this.getParamValue(context, speed).doubleValue();
 
-		addMotion(context, targetVal, directionVal, speedVal);
+		addPredictedMotion(context, targetVal, directionVal, speedVal);
 
+		return null;
+	}
+
+	@Override
+	public Object executePrediction(SpellContext context) throws SpellRuntimeException {
+		Entity targetVal = this.getParamValue(context, target);
+		if(targetVal == context.caster) {
+			Vector3 directionVal = this.getParamValue(context, direction);
+			double speedVal = this.getParamValue(context, speed).doubleValue();
+			addPredictedMotion(context, targetVal, directionVal, speedVal);
+		}
 		return null;
 	}
 

@@ -15,6 +15,7 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 import org.jetbrains.annotations.NotNull;
@@ -22,7 +23,7 @@ import org.jetbrains.annotations.NotNull;
 import vazkii.psi.common.Psi;
 
 public record MessageAdditiveMotion(int entityID, double motionX, double motionY,
-		double motionZ) implements CustomPacketPayload {
+		double motionZ, boolean predictionEligible) implements CustomPacketPayload {
 
 	public static final ResourceLocation ID = Psi.location("message_additive_motion");
 	public static final CustomPacketPayload.Type<MessageAdditiveMotion> TYPE = new Type<>(ID);
@@ -32,6 +33,7 @@ public record MessageAdditiveMotion(int entityID, double motionX, double motionY
 			ByteBufCodecs.DOUBLE, MessageAdditiveMotion::motionX,
 			ByteBufCodecs.DOUBLE, MessageAdditiveMotion::motionY,
 			ByteBufCodecs.DOUBLE, MessageAdditiveMotion::motionZ,
+			ByteBufCodecs.BOOL, MessageAdditiveMotion::predictionEligible,
 			MessageAdditiveMotion::new);
 
 	@Override
@@ -45,7 +47,11 @@ public record MessageAdditiveMotion(int entityID, double motionX, double motionY
 			if(world != null) {
 				Entity entity = world.getEntity(entityID);
 				if(entity != null) {
-					entity.setDeltaMovement(entity.getDeltaMovement().add(motionX, motionY, motionZ));
+					Vec3 motion = new Vec3(motionX, motionY, motionZ);
+					if(predictionEligible) {
+						motion = Psi.proxy.reconcilePredictedMotion(motion);
+					}
+					entity.setDeltaMovement(entity.getDeltaMovement().add(motion));
 				}
 			}
 		});

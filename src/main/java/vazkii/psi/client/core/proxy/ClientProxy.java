@@ -27,6 +27,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.IEventBus;
@@ -49,6 +50,7 @@ import vazkii.psi.api.cad.ICAD;
 import vazkii.psi.api.cad.ICADColorizer;
 import vazkii.psi.api.spell.ISpellAcceptor;
 import vazkii.psi.api.spell.SpellPiece;
+import vazkii.psi.client.core.handler.ClientSpellPredictionHandler;
 import vazkii.psi.client.fx.*;
 import vazkii.psi.client.gui.GuiCADAssembler;
 import vazkii.psi.client.gui.GuiFlashRing;
@@ -211,6 +213,26 @@ public class ClientProxy implements IProxy {
 			return ICADColorizer.DEFAULT_SPELL_COLOR;
 		}
 		return icc.getColor(colorizer);
+	}
+
+	@Override
+	public void recordPredictedMotion(Vec3 motion) {
+		ClientSpellPredictionHandler.recordMotion(motion);
+	}
+
+	@Override
+	public Vec3 reconcilePredictedMotion(Vec3 authoritativeMotion) {
+		return ClientSpellPredictionHandler.reconcileMotion(authoritativeMotion);
+	}
+
+	@Override
+	public void recordPredictedBlink(Vec3 offset) {
+		ClientSpellPredictionHandler.recordBlink(offset);
+	}
+
+	@Override
+	public Vec3 reconcilePredictedBlink(Vec3 authoritativeOffset) {
+		return ClientSpellPredictionHandler.reconcileBlink(authoritativeOffset);
 	}
 
 	@Override

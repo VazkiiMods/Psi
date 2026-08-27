@@ -35,7 +35,7 @@ public class MessageRegister {
 			pBuffer.writeVec3(pVec3);
 		}
 	};
-	private static final String VERSION = "3";
+	private static final String VERSION = "4";
 
 	@SubscribeEvent
 	public static void onRegisterPayloadHandler(RegisterPayloadHandlersEvent event) {

@@ -16,7 +16,7 @@ import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.piece.PieceTrick;
 import vazkii.psi.api.spell.wrapper.EntityListWrapper;
 
-public class PieceTrickMassBlink extends PieceTrick {
+public class PieceTrickMassBlink extends PieceTrick implements IClientPredictable {
 
 	SpellParam<EntityListWrapper> target;
 	SpellParam<Number> distance;
@@ -54,6 +54,19 @@ public class PieceTrickMassBlink extends PieceTrick {
 			PieceTrickBlink.blink(context, e, distanceVal);
 		}
 
+		return null;
+	}
+
+	@Override
+	public Object executePrediction(SpellContext context) throws SpellRuntimeException {
+		EntityListWrapper targetVal = this.getParamValue(context, target);
+		for(Entity entity : targetVal) {
+			if(entity == context.caster) {
+				double distanceVal = this.getParamValue(context, distance).doubleValue();
+				PieceTrickBlink.blink(context, context.caster, distanceVal);
+				break;
+			}
+		}
 		return null;
 	}
 

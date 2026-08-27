@@ -18,7 +18,7 @@ import vazkii.psi.api.spell.param.ParamVector;
 import vazkii.psi.api.spell.piece.PieceTrick;
 import vazkii.psi.api.spell.wrapper.EntityListWrapper;
 
-public class PieceTrickMassAddMotion extends PieceTrick {
+public class PieceTrickMassAddMotion extends PieceTrick implements IClientPredictable {
 
 	SpellParam<EntityListWrapper> target;
 	SpellParam<Vector3> direction;
@@ -57,9 +57,23 @@ public class PieceTrickMassAddMotion extends PieceTrick {
 		double speedVal = this.getParamValue(context, speed).doubleValue();
 
 		for(Entity e : targetVal) {
-			PieceTrickAddMotion.addMotion(context, e, directionVal, speedVal);
+			PieceTrickAddMotion.addPredictedMotion(context, e, directionVal, speedVal);
 		}
 
+		return null;
+	}
+
+	@Override
+	public Object executePrediction(SpellContext context) throws SpellRuntimeException {
+		EntityListWrapper targetVal = this.getParamValue(context, target);
+		for(Entity entity : targetVal) {
+			if(entity == context.caster) {
+				Vector3 directionVal = this.getParamValue(context, direction);
+				double speedVal = this.getParamValue(context, speed).doubleValue();
+				PieceTrickAddMotion.addPredictedMotion(context, context.caster, directionVal, speedVal);
+				break;
+			}
+		}
 		return null;
 	}
 

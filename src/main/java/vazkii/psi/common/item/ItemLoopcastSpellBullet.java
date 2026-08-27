@@ -43,8 +43,28 @@ public class ItemLoopcastSpellBullet extends ItemSpellBullet {
 	}
 
 	@Override
+	public void predictSpell(ItemStack stack, SpellContext context) {
+		PlayerDataHandler.PlayerData data = PlayerDataHandler.get(context.caster);
+		if(!data.loopcasting || context.castFrom != data.loopcastHand) {
+			data.loopcasting = true;
+			data.loopcastHand = context.castFrom;
+			data.lastTickLoopcastStack = null;
+			data.loopcastTime = 1;
+			data.loopcastAmount = 0;
+			data.loopcastFadeTime = 0;
+			context.cspell.safePredict(context);
+		}
+	}
+
+	@Override
 	public boolean loopcastSpell(ItemStack stack, SpellContext context) {
 		context.cspell.safeExecute(context);
+		return true;
+	}
+
+	@Override
+	public boolean predictLoopcastSpell(ItemStack stack, SpellContext context) {
+		context.cspell.safePredict(context);
 		return true;
 	}
 

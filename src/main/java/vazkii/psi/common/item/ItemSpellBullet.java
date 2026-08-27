@@ -116,8 +116,16 @@ public class ItemSpellBullet extends Item {
 		return new ArrayList<>();
 	}
 
+	public void predictSpell(ItemStack stack, SpellContext context) {
+		context.cspell.safePredict(context);
+	}
+
 	public boolean loopcastSpell(ItemStack stack, SpellContext context) {
 		castSpell(stack, context);
+		return false;
+	}
+
+	public boolean predictLoopcastSpell(ItemStack stack, SpellContext context) {
 		return false;
 	}
 
@@ -176,8 +184,18 @@ public class ItemSpellBullet extends Item {
 		}
 
 		@Override
+		public void predictSpell(SpellContext context) {
+			bulletItem().predictSpell(stack, context);
+		}
+
+		@Override
 		public boolean loopcastSpell(SpellContext context) {
 			return bulletItem().loopcastSpell(stack, context);
+		}
+
+		@Override
+		public boolean predictLoopcastSpell(SpellContext context) {
+			return bulletItem().predictLoopcastSpell(stack, context);
 		}
 
 		@Override

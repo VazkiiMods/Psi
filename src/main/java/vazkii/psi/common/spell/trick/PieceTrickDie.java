@@ -12,7 +12,7 @@ import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.piece.PieceTrick;
 
-public class PieceTrickDie extends PieceTrick {
+public class PieceTrickDie extends PieceTrick implements IClientPredictable {
 
 	SpellParam<Number> target;
 
@@ -40,6 +40,11 @@ public class PieceTrickDie extends PieceTrick {
 		}
 
 		return null;
+	}
+
+	@Override
+	public Object executePrediction(SpellContext context) throws SpellRuntimeException {
+		return execute(context);
 	}
 
 }

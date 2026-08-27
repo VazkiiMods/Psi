@@ -45,6 +45,9 @@ public class ItemCircleSpellBullet extends ItemSpellBullet {
 	}
 
 	@Override
+	public void predictSpell(ItemStack stack, SpellContext context) {}
+
+	@Override
 	public double getCostModifier(ItemStack stack) {
 		return EntitySpellCircle.CAST_TIMES * 0.75;
 	}

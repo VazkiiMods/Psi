@@ -51,12 +51,14 @@ public class CompiledSpell {
 		while(!context.actions.isEmpty()) {
 			Action a = context.actions.pop();
 			currentAction = a;
+			context.currentAction = a;
 
 			PsiAPI.internalHandler.setCrashData(this, a.piece);
 			a.execute(data, context);
 			PsiAPI.internalHandler.setCrashData(null, null);
 
 			currentAction = null;
+			context.currentAction = null;
 
 			if(context.stopped) {
 				return false;
@@ -91,11 +93,42 @@ public class CompiledSpell {
 			if(!context.shouldSuppressErrors()) {
 				context.caster.sendSystemMessage(e.toComponent().setStyle(Style.EMPTY.withColor(ChatFormatting.RED)));
 
-				int x = context.cspell.currentAction.piece.x + 1;
-				int y = context.cspell.currentAction.piece.y + 1;
+				int x = context.currentAction.piece.x + 1;
+				int y = context.currentAction.piece.y + 1;
 				MessageSpellError message = new MessageSpellError("psi.spellerror.position", x, y);
 				MessageRegister.sendToPlayer((ServerPlayer) context.caster, message);
 			}
+		}
+	}
+
+	/**
+	 * Speculatively executes the prediction-safe prefix of this spell on the casting client.
+	 * The server still executes the complete spell authoritatively.
+	 */
+	@SuppressWarnings("unchecked")
+	public void safePredict(SpellContext context) {
+		if(!context.caster.getCommandSenderWorld().isClientSide) {
+			return;
+		}
+
+		try {
+			context.actions = (Stack<Action>) actions.clone();
+			while(!context.actions.isEmpty()) {
+				Action action = context.actions.pop();
+				context.currentAction = action;
+				if(!action.executePrediction(context)) {
+					return;
+				}
+				context.currentAction = null;
+
+				if(context.stopped || context.delay > 0) {
+					return;
+				}
+			}
+		} catch (SpellRuntimeException ignored) {
+			// The authoritative execution reports errors and restores divergent state.
+		} finally {
+			context.currentAction = null;
 		}
 	}
 
@@ -149,6 +182,33 @@ public class CompiledSpell {
 				}
 				throw exception;
 			}
+		}
+
+		public boolean executePrediction(SpellContext context) throws SpellRuntimeException {
+			if(piece.getPieceType() == EnumPieceType.TRICK && !(piece instanceof IClientPredictable)) {
+				return false;
+			}
+
+			try {
+				Object value = piece instanceof IClientPredictable predictable
+						? predictable.executePrediction(context)
+						: piece.execute(context);
+
+				Class<?> eval = piece.getEvaluationType();
+				if(eval != null && eval != Void.class) {
+					context.evaluatedObjects[piece.x][piece.y] = value;
+				}
+			} catch (SpellRuntimeException exception) {
+				if(errorHandlers.containsKey(piece)) {
+					if(!errorHandlers.get(piece).suppress(piece, context, exception)) {
+						throw exception;
+					}
+					return true;
+				}
+				throw exception;
+			}
+
+			return true;
 		}
 
 	}
