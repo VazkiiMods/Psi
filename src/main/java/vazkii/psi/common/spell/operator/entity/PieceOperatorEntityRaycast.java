@@ -9,8 +9,10 @@
 package vazkii.psi.common.spell.operator.entity;
 
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 
 import vazkii.psi.api.internal.Vector3;
@@ -19,7 +21,6 @@ import vazkii.psi.api.spell.param.ParamNumber;
 import vazkii.psi.api.spell.param.ParamVector;
 import vazkii.psi.api.spell.piece.PieceOperator;
 
-import java.util.Optional;
 import java.util.function.Predicate;
 
 public class PieceOperatorEntityRaycast extends PieceOperator {
@@ -32,36 +33,17 @@ public class PieceOperatorEntityRaycast extends PieceOperator {
 		super(spell);
 	}
 
-	/**
-	 * [VanillaCopy]
-	 * {@link net.minecraft.world.entity.projectile.ProjectileUtil#getEntityHitResult(Entity, Vec3, Vec3, AABB, Predicate, double)}
-	 * (World, Entity, Vec3, Vec3, AxisAlignedBB, Predicate, double)}
-	 * Some slight tweaks as we don't need an AABB provided to us, we can just make one.
-	 */
 	public static Entity rayTraceEntities(Level world, Vec3 positionVector, Vec3 lookVector, Predicate<Entity> predicate, double maxDistance) {
-		double distance = maxDistance;
-		Entity entity = null;
-
-		Vec3 reachVector = positionVector.add(lookVector.scale(maxDistance));
-		AABB aabb = new AABB(positionVector.x, positionVector.y, positionVector.z, reachVector.x, reachVector.y, reachVector.z).inflate(1f, 1f, 1f);
-		for(Entity entity1 : world.getEntities((Entity) null, aabb, predicate)) {
-			float collisionBorderSize = entity1.getPickRadius();
-			AABB axisalignedbb = entity1.getBoundingBox().inflate(collisionBorderSize);
-			Optional<Vec3> optional = axisalignedbb.clip(positionVector, reachVector);
-			if(axisalignedbb.contains(positionVector)) {
-				if(0.0D < distance || distance == 0.0D) {
-					entity = entity1;
-					distance = 0.0D;
-				}
-			} else if(optional.isPresent()) {
-				double distanceTo = positionVector.distanceTo(optional.get());
-				if(distanceTo < distance) {
-					entity = entity1;
-					distance = distanceTo;
-				}
-			}
+		if(maxDistance < 0) {
+			return null;
 		}
-		return entity;
+
+		double rayLength = lookVector.length();
+		double scale = rayLength > 1 ? maxDistance / rayLength : maxDistance;
+		Vec3 reachVector = positionVector.add(lookVector.scale(scale));
+		AABB aabb = new AABB(positionVector.x, positionVector.y, positionVector.z, reachVector.x, reachVector.y, reachVector.z).inflate(1f, 1f, 1f);
+		EntityHitResult hit = ProjectileUtil.getEntityHitResult(world, null, positionVector, reachVector, aabb, predicate, 0);
+		return hit == null ? null : hit.getEntity();
 	}
 
 	@Override

@@ -10,7 +10,7 @@ package vazkii.psi.common.spell.operator.entity;
 
 import net.minecraft.world.entity.Entity;
 
-import vazkii.psi.api.internal.MathHelper;
+import vazkii.psi.api.internal.SpatialHelper;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
@@ -30,11 +30,11 @@ public class PieceOperatorClosestToPoint extends PieceOperator {
 		super(spell);
 	}
 
-	public static Entity closestToPoint(Vector3 position, Iterable<Entity> list) throws SpellRuntimeException {
+	public static Entity closestToPoint(SpellContext context, Vector3 position, Iterable<Entity> list) throws SpellRuntimeException {
 		double closest = Double.MAX_VALUE;
 		Entity closestEntity = null;
 		for(Entity e : list) {
-			double dist = MathHelper.pointDistanceSpace(position.x, position.y, position.z, e.getX(), e.getY(), e.getZ());
+			double dist = SpatialHelper.distanceSquared(context.focalPoint.level(), position.x, position.y, position.z, e.position());
 			if(dist < closest) {
 				closest = dist;
 				closestEntity = e;
@@ -59,7 +59,7 @@ public class PieceOperatorClosestToPoint extends PieceOperator {
 		EntityListWrapper listVal = this.getParamValue(context, list);
 		Vector3 positionVal = this.getParamValue(context, position);
 
-		return closestToPoint(positionVal, listVal);
+		return closestToPoint(context, positionVal, listVal);
 	}
 
 	@Override

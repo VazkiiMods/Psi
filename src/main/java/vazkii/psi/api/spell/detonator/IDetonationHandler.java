@@ -15,6 +15,7 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.NeoForge;
 
 import vazkii.psi.api.PsiAPI;
+import vazkii.psi.api.internal.SpatialHelper;
 
 import java.util.List;
 import java.util.Objects;
@@ -72,7 +73,7 @@ public interface IDetonationHandler {
 					IDetonationHandler detonator = entity.getCapability(PsiAPI.DETONATION_HANDLER_CAPABILITY);
 					if(detonator != null) {
 						Vec3 locus = detonator.objectLocus();
-						if(locus == null || locus.distanceToSqr(center.getX(), center.getY(), center.getZ()) > range * range) {
+						if(locus == null || SpatialHelper.distanceSquared(world, locus, center.position()) > range * range) {
 							return false;
 						}
 						return filter == null || filter.test(entity);

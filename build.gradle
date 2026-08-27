@@ -17,6 +17,17 @@ group = mod_group_id
 
 repositories {
     mavenLocal()
+    exclusiveContent {
+        forRepository {
+            maven {
+                name "sableCompanion"
+                url "https://maven.ryanhcode.dev/releases"
+            }
+        }
+        filter {
+            includeGroup "dev.ryanhcode.sable-companion"
+        }
+    }
     maven {
         // for Patchouli and JEI
         name "blamejared"
@@ -106,6 +117,12 @@ configurations {
 
 dependencies {
     compileOnly('org.jetbrains:annotations:26.0.2')
+
+    jarJar(api("dev.ryanhcode.sable-companion:sable-companion-common-1.21.1:[${sable_companion_version},)")) {
+        version {
+            prefer sable_companion_version
+        }
+    }
 
     // Example optional mod dependency with JEI
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime

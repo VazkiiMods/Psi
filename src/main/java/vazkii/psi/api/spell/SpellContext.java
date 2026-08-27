@@ -17,7 +17,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.BlockHitResult;
 
 import vazkii.psi.api.PsiAPI;
-import vazkii.psi.api.internal.MathHelper;
+import vazkii.psi.api.internal.SpatialHelper;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.CompiledSpell.Action;
 
@@ -168,7 +168,7 @@ public final class SpellContext {
 	 * @see #MAX_DISTANCE
 	 */
 	public boolean isInRadius(double x, double y, double z) {
-		return MathHelper.pointDistanceSpace(x, y, z, focalPoint.getX(), focalPoint.getY(), focalPoint.getZ()) <= MAX_DISTANCE;
+		return SpatialHelper.distanceSquared(focalPoint.level(), x, y, z, focalPoint.position()) <= MAX_DISTANCE * MAX_DISTANCE;
 	}
 
 	public void verifyEntity(Entity e) throws SpellRuntimeException {

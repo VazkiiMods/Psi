@@ -11,6 +11,7 @@ package vazkii.psi.common.spell.operator.entity;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 
+import vazkii.psi.api.internal.SpatialHelper;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.param.ParamEntityListWrapper;
@@ -29,12 +30,12 @@ public class PieceOperatorClosestToLine extends PieceOperator {
 		super(spell);
 	}
 
-	public static Entity closestToLineSegment(Vector3 a, Vector3 b, Iterable<Entity> list) throws SpellRuntimeException {
+	public static Entity closestToLineSegment(SpellContext context, Vector3 a, Vector3 b, Iterable<Entity> list) throws SpellRuntimeException {
 		if(a.equals(b)) {
-			return closestToPoint(a, list);
+			return closestToPoint(context, a, list);
 		}
-		Vec3 start = a.toVec3D();
-		Vec3 end = b.toVec3D();
+		Vec3 start = SpatialHelper.project(context.focalPoint.level(), a.x, a.y, a.z);
+		Vec3 end = SpatialHelper.project(context.focalPoint.level(), b.x, b.y, b.z);
 		Vec3 diff = end.subtract(start).normalize();
 		double minDot = diff.dot(start);
 		double maxDot = diff.dot(end);
@@ -43,7 +44,7 @@ public class PieceOperatorClosestToLine extends PieceOperator {
 		Entity found = null;
 
 		for(Entity e : list) {
-			Vec3 pos = e.position();
+			Vec3 pos = SpatialHelper.project(e.level(), e.position());
 			double dot = diff.dot(pos);
 			double dist;
 			if(dot <= minDot) {
@@ -82,7 +83,7 @@ public class PieceOperatorClosestToLine extends PieceOperator {
 			return null;
 		}
 
-		return closestToLineSegment(rayStart, rayEnd, list);
+		return closestToLineSegment(context, rayStart, rayEnd, list);
 	}
 
 	@Override

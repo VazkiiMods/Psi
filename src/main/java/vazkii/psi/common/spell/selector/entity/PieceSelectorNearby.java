@@ -13,6 +13,7 @@ import net.minecraft.world.phys.AABB;
 
 import org.jetbrains.annotations.NotNull;
 
+import vazkii.psi.api.internal.SpatialHelper;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.param.ParamNumber;
@@ -32,10 +33,10 @@ public abstract class PieceSelectorNearby extends PieceSelector {
 		super(spell);
 	}
 
-	private static @NotNull AABB getArea(Vector3 positionVal, double radiusVal, Vector3 positionCenter) {
-		AABB axis = new AABB(positionVal.x - radiusVal, positionVal.y - radiusVal, positionVal.z - radiusVal, positionVal.x + radiusVal, positionVal.y + radiusVal, positionVal.z + radiusVal);
-		AABB eris = new AABB(positionCenter.x - SpellContext.MAX_DISTANCE, positionCenter.y - SpellContext.MAX_DISTANCE, positionCenter.z - SpellContext.MAX_DISTANCE, positionCenter.x + SpellContext.MAX_DISTANCE, positionCenter.y + SpellContext.MAX_DISTANCE, positionCenter.z + SpellContext.MAX_DISTANCE);
-		return axis.intersect(eris);
+	private static @NotNull AABB getArea(Vector3 positionVal, double radiusVal) {
+		radiusVal = Math.min(radiusVal, 2 * SpellContext.MAX_DISTANCE);
+		return new AABB(positionVal.x - radiusVal, positionVal.y - radiusVal, positionVal.z - radiusVal,
+				positionVal.x + radiusVal, positionVal.y + radiusVal, positionVal.z + radiusVal);
 	}
 
 	@Override
@@ -59,17 +60,18 @@ public abstract class PieceSelectorNearby extends PieceSelector {
 		Vector3 positionVal = this.getParamValueOrDefault(context, position, Vector3.fromVec3d(context.focalPoint.position()));
 		double radiusVal = this.getParamValueOrDefault(context, radius, 2 * SpellContext.MAX_DISTANCE).doubleValue();
 
-		Vector3 positionCenter = Vector3.fromVec3d(context.focalPoint.position());
-
 		if(!context.isInRadius(positionVal)) {
 			throw new SpellRuntimeException(SpellRuntimeException.OUTSIDE_RADIUS);
 		}
 
-		AABB area = getArea(positionVal, radiusVal, positionCenter);
+		AABB area = getArea(positionVal, radiusVal);
 
 		Predicate<Entity> pred = getTargetPredicate(context);
 
-		List<Entity> list = context.caster.getCommandSenderWorld().getEntitiesOfClass(Entity.class, area, (Entity e) -> e != null && pred.test(e) && e != context.caster && e != context.focalPoint && context.isInRadius(e));
+		List<Entity> list = context.caster.getCommandSenderWorld().getEntitiesOfClass(Entity.class, area,
+				e -> e != null && pred.test(e) && e != context.caster && e != context.focalPoint
+						&& SpatialHelper.rectilinearDistance(e.level(), positionVal.x, positionVal.y, positionVal.z, e.position()) <= radiusVal
+						&& context.isInRadius(e));
 
 		return EntityListWrapper.make(list);
 	}

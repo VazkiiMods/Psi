@@ -10,10 +10,13 @@ package vazkii.psi.common.spell.operator.entity;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
+import vazkii.psi.api.internal.SpatialHelper;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellParam;
@@ -21,9 +24,6 @@ import vazkii.psi.api.spell.SpellRuntimeException;
 import vazkii.psi.api.spell.param.ParamEntity;
 import vazkii.psi.api.spell.piece.PieceOperator;
 import vazkii.psi.common.spell.operator.vector.PieceOperatorVectorRaycast;
-
-import java.util.List;
-import java.util.Optional;
 
 public class PieceOperatorFocusedEntity extends PieceOperator {
 
@@ -34,52 +34,19 @@ public class PieceOperatorFocusedEntity extends PieceOperator {
 	}
 
 	public static Entity getEntityLookedAt(Entity e) {
-		Entity foundEntity = null;
-
 		final double finalDistance = 32;
-		double distance;
 		HitResult pos = PieceOperatorVectorRaycast.raycast(e, finalDistance);
 		Vec3 positionVector = e.position();
 		if(e instanceof Player) {
 			positionVector = positionVector.add(0, e.getEyeHeight(), 0);
 		}
 
-		distance = pos.getLocation().distanceTo(positionVector);
-
 		Vec3 lookVector = e.getLookAngle();
 		Vec3 reachVector = positionVector.add(lookVector.x * finalDistance, lookVector.y * finalDistance, lookVector.z * finalDistance);
-
-		Entity lookedEntity = null;
-		List<Entity> entitiesInBoundingBox = e.getCommandSenderWorld().getEntities(e, e.getBoundingBox().inflate(lookVector.x * finalDistance, lookVector.y * finalDistance, lookVector.z * finalDistance).inflate(1F, 1F, 1F));
-		double minDistance = distance;
-
-		for(Entity entity : entitiesInBoundingBox) {
-			if(entity.isPickable()) {
-				float collisionBorderSize = entity.getPickRadius();
-				AABB hitbox = entity.getBoundingBox().inflate(collisionBorderSize, collisionBorderSize, collisionBorderSize);
-				Optional<Vec3> interceptPosition = hitbox.clip(positionVector, reachVector);
-
-				if(hitbox.contains(positionVector)) {
-					if(0.0D < minDistance || minDistance == 0.0D) {
-						lookedEntity = entity;
-						minDistance = 0.0D;
-					}
-				} else if(interceptPosition.isPresent()) {
-					double distanceToEntity = positionVector.distanceTo(interceptPosition.get());
-
-					if(distanceToEntity < minDistance || minDistance == 0.0D) {
-						lookedEntity = entity;
-						minDistance = distanceToEntity;
-					}
-				}
-			}
-
-			if(lookedEntity != null && minDistance < distance) {
-				foundEntity = lookedEntity;
-			}
-		}
-
-		return foundEntity;
+		AABB area = e.getBoundingBox().expandTowards(lookVector.scale(finalDistance)).inflate(1);
+		double blockDistance = SpatialHelper.distanceSquared(e.level(), positionVector, pos.getLocation());
+		EntityHitResult hit = ProjectileUtil.getEntityHitResult(e, positionVector, reachVector, area, Entity::isPickable, blockDistance);
+		return hit == null ? null : hit.getEntity();
 	}
 
 	@Override
