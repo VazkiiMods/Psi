@@ -1,0 +1,145 @@
+plugins {
+	id 'java-library'
+	id 'maven-publish'
+	id 'pmd'
+	id 'com.diffplug.spotless'
+	id 'net.fabricmc.fabric-loom-remap'
+}
+
+base {
+	archivesName = 'Psi-fabric'
+}
+
+java {
+	toolchain.languageVersion = JavaLanguageVersion.of(21)
+	withSourcesJar()
+}
+
+loom {
+	splitEnvironmentSourceSets()
+
+	mods {
+		psi {
+			sourceSet sourceSets.main
+			sourceSet sourceSets.client
+		}
+	}
+
+	runs {
+		configureEach {
+			runDir '../runs/fabric'
+			ideConfigGenerated true
+		}
+		server {
+			server()
+			programArg '--nogui'
+		}
+		client {
+			client()
+		}
+		xplatDatagen {
+			client()
+			vmArg '-Dfabric-api.datagen'
+			vmArg '-Dfabric-api.datagen.modid=psi'
+			vmArg "-Dfabric-api.datagen.output-dir=${project(':Xplat').file('src/generated/resources')}"
+		}
+	}
+}
+
+sourceSets {
+	main {
+		java.setSrcDirs(['src/main/java', project(':Xplat').file('src/main/java')])
+		resources.setSrcDirs([
+				'src/main/resources',
+				project(':Xplat').file('src/main/resources'),
+				project(':Xplat').file('src/generated/resources')])
+		resources.exclude '.cache/**', '**/*.psd'
+	}
+	client {
+		java.setSrcDirs(['src/client/java', project(':Xplat').file('src/client/java')])
+		resources.setSrcDirs(['src/client/resources', project(':Xplat').file('src/client/resources')])
+	}
+}
+
+repositories {
+	maven {
+		name = 'Modmuss'
+		url = 'https://maven.modmuss50.me/'
+		content {
+			includeGroup 'me.zeroeightsix'
+		}
+	}
+}
+
+dependencies {
+	minecraft "com.mojang:minecraft:${minecraft_version}"
+	mappings loom.layered() {
+		officialMojangMappings()
+		parchment "org.parchmentmc.data:parchment-${minecraft_version}:${parchment_version}@zip"
+	}
+
+	modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
+	modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_api_version}"
+	modImplementation "vazkii.patchouli:Patchouli:${patchouli_version}-FABRIC"
+	modImplementation 'me.zeroeightsix:fiber:0.23.0-2'
+	include 'me.zeroeightsix:fiber:0.23.0-2'
+
+	include(modApi("dev.ryanhcode.sable-companion:sable-companion-fabric-1.21.1:${sable_companion_version}"))
+
+	modCompileOnly "mezz.jei:jei-${minecraft_version}-fabric-api:${jei_version}"
+}
+
+spotless {
+	java {
+		target 'src/main/java/**/*.java', 'src/client/java/**/*.java'
+		eclipse().configFile rootProject.file('spotless/eclipseformat.xml')
+		removeUnusedImports()
+		importOrderFile rootProject.file('spotless/eclipse.importorder')
+		replaceRegex 'Too much space after if', '(if|for|while|switch) +\\(', '$1('
+	}
+}
+
+pmd {
+	toolVersion = '6.55.0'
+	ruleSetFiles = rootProject.files('spotless/pmd-ruleset.xml')
+}
+
+tasks.register('checkSyntax') {
+	group = 'verification'
+	dependsOn spotlessJavaCheck, pmdMain, pmdClient
+}
+
+tasks.withType(ProcessResources).configureEach {
+	def replaceProperties = [
+			fabric_loader_version: fabric_loader_version,
+			fabric_api_version   : fabric_api_version,
+			minecraft_version    : minecraft_version,
+			mod_id               : mod_id,
+			mod_name             : mod_name,
+			mod_license          : mod_license,
+			mod_version          : project.version,
+			mod_authors          : mod_authors,
+			mod_description      : mod_description
+	]
+	inputs.properties replaceProperties
+	filesMatching('fabric.mod.json') {
+		expand replaceProperties
+	}
+}
+
+tasks.named('remapJar').configure {
+	archiveFileName = "${mod_name}-fabric-${project.version}.jar"
+}
+
+tasks.withType(JavaCompile).configureEach {
+	options.encoding = 'UTF-8'
+}
+
+publishing {
+	publications {
+		mavenJava(MavenPublication) {
+			artifactId = 'Psi-fabric'
+			from components.java
+		}
+	}
+}

@@ -1,0 +1,177 @@
+plugins {
+	id 'java-library'
+	id 'maven-publish'
+	id 'pmd'
+	id 'com.diffplug.spotless'
+	id 'net.neoforged.moddev'
+}
+
+base {
+	archivesName = 'Psi-neoforge'
+}
+
+java {
+	toolchain.languageVersion = JavaLanguageVersion.of(21)
+	withSourcesJar()
+}
+
+sourceSets.main {
+	java.setSrcDirs([
+			'src/main/java',
+			project(':Xplat').file('src/main/java'),
+			project(':Xplat').file('src/client/java')])
+	resources.setSrcDirs([
+			'src/main/resources',
+			project(':Xplat').file('src/main/resources'),
+			project(':Xplat').file('src/generated/resources'),
+			project(':Xplat').file('src/client/resources')])
+	resources.exclude '.cache/**', '**/*.psd'
+}
+
+configurations {
+	runtimeClasspath.extendsFrom localRuntime
+}
+
+neoForge {
+	version = project.neo_version
+	validateAccessTransformers = true
+
+	runs {
+		configureEach {
+			systemProperty 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+			systemProperty 'forge.logging.console.level', 'debug'
+		}
+
+		client {
+			client()
+			gameDirectory = rootProject.file('runs/client')
+			systemProperty 'forge.enabledGameTestNamespaces', project.mod_id
+		}
+
+		server {
+			server()
+			gameDirectory = rootProject.file('runs/server')
+			systemProperty 'forge.enabledGameTestNamespaces', project.mod_id
+			programArguments.addAll '--nogui'
+		}
+
+		data {
+			data()
+			gameDirectory = rootProject.file('runs/data')
+			programArguments.addAll '--mod', project.mod_id, '--all',
+					'--output', rootProject.project(':Xplat').file('src/generated/resources/').getAbsolutePath(),
+					'--existing', rootProject.project(':Xplat').file('src/main/resources/').getAbsolutePath()
+		}
+	}
+
+	mods {
+		testproject {
+			sourceSet sourceSets.main
+		}
+	}
+
+	parchment {
+		minecraftVersion = project.minecraft_version
+		mappingsVersion = project.parchment_version
+	}
+}
+
+dependencies {
+	compileOnly 'org.jetbrains:annotations:26.0.2'
+
+	jarJar(api("dev.ryanhcode.sable-companion:sable-companion-common-1.21.1:[${sable_companion_version},)")) {
+		version {
+			prefer sable_companion_version
+		}
+	}
+
+	compileOnly "mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"
+	compileOnly "mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}"
+	localRuntime "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
+
+	compileOnly "vazkii.patchouli:Patchouli:${patchouli_version}-NEOFORGE:api"
+	runtimeOnly "vazkii.patchouli:Patchouli:${patchouli_version}-NEOFORGE"
+}
+
+spotless {
+	java {
+		target project.fileTree(dir: 'src/main/java', include: '**/*.java')
+		eclipse().configFile rootProject.file('spotless/eclipseformat.xml')
+		removeUnusedImports()
+		importOrderFile rootProject.file('spotless/eclipse.importorder')
+		replaceRegex 'Too much space after if', '(if|for|while|switch) +\\(', '$1('
+	}
+}
+
+pmd {
+	toolVersion = '6.55.0'
+	ruleSetFiles = rootProject.files('spotless/pmd-ruleset.xml')
+}
+
+tasks.register('checkSyntax') {
+	group = 'verification'
+	dependsOn spotlessJavaCheck, pmdMain
+}
+
+tasks.withType(ProcessResources).configureEach {
+	def replaceProperties = [
+			minecraft_version      : minecraft_version,
+			minecraft_version_range: minecraft_version_range,
+			neo_version            : neo_version,
+			neo_version_range      : neo_version_range,
+			loader_version_range   : loader_version_range,
+			mod_id                 : mod_id,
+			mod_name               : mod_name,
+			mod_license            : mod_license,
+			mod_version            : project.version,
+			mod_authors            : mod_authors,
+			mod_description        : mod_description
+	]
+	inputs.properties replaceProperties
+
+	filesMatching('META-INF/neoforge.mods.toml') {
+		expand replaceProperties
+	}
+
+	from(sourceSets.main.resources.srcDirs) {
+		exclude '.cache/**', '**/*.psd'
+		duplicatesStrategy 'include'
+	}
+}
+
+tasks.named('jar', Jar).configure {
+	archiveFileName = "${mod_name}-neoforge-${project.version}.jar"
+	manifest {
+		attributes([
+				'Specification-Title'      : mod_id,
+				'Specification-Vendor'     : 'vazkii',
+				'Specification-Version'    : '1',
+				'Implementation-Title'     : mod_id,
+				'Implementation-Version'   : project.version,
+				'Implementation-Vendor'    : 'vazkii',
+				'Implementation-Timestamp' : new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+		])
+	}
+}
+
+tasks.withType(JavaCompile).configureEach {
+	options.encoding = 'UTF-8'
+}
+
+publishing {
+	publications {
+		mavenJava(MavenPublication) {
+			artifactId = 'Psi-neoforge'
+			from components.java
+			pom.withXml {
+				asNode().dependencies.dependency.each { dependency ->
+					assert dependency.parent().remove(dependency)
+				}
+			}
+		}
+	}
+}
+
+tasks.withType(GenerateModuleMetadata).configureEach {
+	enabled = false
+}

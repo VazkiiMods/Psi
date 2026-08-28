@@ -1,11 +1,25 @@
 pluginManagement {
-    repositories {
-        mavenLocal()
-        gradlePluginPortal()
-        maven { url = 'https://maven.neoforged.net/releases' }
-    }
+	repositories {
+		mavenLocal()
+		gradlePluginPortal()
+		mavenCentral()
+		maven {
+			name = 'Fabric'
+			url = 'https://maven.fabricmc.net/'
+		}
+		maven {
+			name = 'NeoForged'
+			url = 'https://maven.neoforged.net/releases'
+			content {
+				includeGroup 'net.neoforged'
+			}
+		}
+	}
 }
 
 plugins {
-    id 'org.gradle.toolchains.foojay-resolver-convention' version '1.0.0'
+	id 'org.gradle.toolchains.foojay-resolver-convention' version '1.0.0'
 }
+
+rootProject.name = 'Psi'
+include 'Xplat', 'Fabric', 'NeoForge'

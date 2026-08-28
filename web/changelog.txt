@@ -1,3 +1,16 @@
+1.21.1-109
+* Added Fabric support (Kamefrede)
+* Added Vietnamese localization (hienpro00123)
+* Fixed missing connectors and comments in the Flash Ring programmer, incorrect spell-stat labels, and scaled or rotated spell-circle rendering (l-Luna)
+* Added client-side prediction for movement spells (Kamefrede)
+* Fixed contributor CAD colors and a related empty-hand crash (Kamefrede)
+* Fixed conjured block placement and break behavior (Kamefrede)
+* Added spatial compatibility with Sable (Kamefrede)
+* Fixed Break Loop cancelling unrelated loopcasts (Kamefrede)
+* Fixed Move Block Sequence below Y=0 (Kamefrede)
+* Fixed Backspace deleting spell pieces while editing programmer text (Kamefrede)
+* Fixed saved-vector crashes on dedicated servers and after joining a world (Kamefrede)
+* Fixed loopcast particles crashing with the Decreased particle setting (Kamefrede)
 1.21-108
 * Fixed random operations not being thread-safe (Kamefrede)
 * Fixed Spell Import message from old versions not having the correct text (Kamefrede)

@@ -1,0 +1,168 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_type:
+        description: Release type on Modrinth and CurseForge
+        required: true
+        default: release
+        type: choice
+        options:
+          - release
+          - beta
+          - alpha
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate release
+        id: release
+        run: |
+          if [[ "${GITHUB_REF}" != "refs/heads/master" ]]; then
+            echo "Releases must be dispatched from master." >&2
+            exit 1
+          fi
+
+          release_mc="$(awk -F '=' '$1 == "minecraft_version" { print $2 }' gradle.properties)"
+          release_build="$(awk -F '=' '$1 == "mod_version" { print $2 }' gradle.properties)"
+          release_version="${release_mc}-${release_build}"
+          release_tag="release-${release_version}"
+          release_changelog="${RUNNER_TEMP}/Psi-${release_version}-changelog.txt"
+
+          if ! awk -v version="${release_version}" '
+            $0 == version {
+              found = 1
+              next
+            }
+            found && substr($0, 1, 1) != "*" { exit }
+            found { print }
+            END { if (!found) exit 1 }
+          ' web/changelog.txt > "${release_changelog}"; then
+            echo "Missing ${release_version} in web/changelog.txt." >&2
+            exit 1
+          fi
+
+          if git ls-remote --exit-code --tags origin "refs/tags/${release_tag}" >/dev/null 2>&1; then
+            echo "Tag ${release_tag} already exists." >&2
+            exit 1
+          fi
+
+          echo "minecraft_version=${release_mc}" >> "$GITHUB_OUTPUT"
+          echo "version=${release_version}" >> "$GITHUB_OUTPUT"
+          echo "tag=${release_tag}" >> "$GITHUB_OUTPUT"
+          echo "changelog=${release_changelog}" >> "$GITHUB_OUTPUT"
+          echo "fabric_jar=Fabric/build/libs/Psi-fabric-${release_version}.jar" >> "$GITHUB_OUTPUT"
+          echo "neoforge_jar=NeoForge/build/libs/Psi-neoforge-${release_version}.jar" >> "$GITHUB_OUTPUT"
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - name: Validate gradlew integrity
+        uses: gradle/actions/wrapper-validation@v5
+
+      - name: Cache Gradle build artifacts
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+            ./.gradle/loom-cache/remapped-mods
+            ./NeoForge/build/moddev
+            ./Xplat/build/moddev
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/build.gradle', './gradle.properties', './settings.gradle', '**/gradle-wrapper.properties') }}
+
+      - name: Check and build
+        run: ./gradlew checkSyntax buildAll checkDatagen
+
+      - name: Inspect artifacts
+        run: scripts/check_artifacts.sh
+
+      - name: Boot dedicated servers
+        run: scripts/check_server_boot.sh
+
+      - name: Sign jars
+        env:
+          SIGNING_KEY: ${{ secrets.VIOLET_MOON_SIGNING_KEY }}
+        if: ${{ env.SIGNING_KEY != '' }}
+        run: |
+          echo "${SIGNING_KEY}" | gpg --import -
+          gpg --local-user "Violet Moon Signing Key" --armor \
+            --detach-sign "${{ steps.release.outputs.fabric_jar }}"
+          gpg --local-user "Violet Moon Signing Key" --armor \
+            --detach-sign "${{ steps.release.outputs.neoforge_jar }}"
+
+      - name: Publish Fabric
+        uses: Kir-Antipov/mc-publish@v3.3.1
+        with:
+          modrinth-id: pOeA0exL
+          modrinth-token: ${{ secrets.VAZKII_MODRINTH_TOKEN }}
+          modrinth-featured: false
+          curseforge-id: 241665
+          curseforge-token: ${{ secrets.VAZKII_CURSEFORGE_TOKEN }}
+          files: ${{ steps.release.outputs.fabric_jar }}
+          name: Psi ${{ steps.release.outputs.version }} (Fabric)
+          version: ${{ steps.release.outputs.version }}-fabric
+          version-type: ${{ inputs.release_type }}
+          changelog-file: ${{ steps.release.outputs.changelog }}
+          loaders: fabric
+          game-versions: ${{ steps.release.outputs.minecraft_version }}
+          game-version-filter: none
+          java: 21
+          environment: client | server
+          dependencies: |
+            fabric-api(required){modrinth:P7dR8mSH}{curseforge:fabric-api}
+            patchouli(required){modrinth:nU0bVIaL}{curseforge:patchouli}
+
+      - name: Publish NeoForge
+        uses: Kir-Antipov/mc-publish@v3.3.1
+        with:
+          modrinth-id: pOeA0exL
+          modrinth-token: ${{ secrets.VAZKII_MODRINTH_TOKEN }}
+          modrinth-featured: false
+          curseforge-id: 241665
+          curseforge-token: ${{ secrets.VAZKII_CURSEFORGE_TOKEN }}
+          files: ${{ steps.release.outputs.neoforge_jar }}
+          name: Psi ${{ steps.release.outputs.version }} (NeoForge)
+          version: ${{ steps.release.outputs.version }}-neoforge
+          version-type: ${{ inputs.release_type }}
+          changelog-file: ${{ steps.release.outputs.changelog }}
+          loaders: neoforge
+          game-versions: ${{ steps.release.outputs.minecraft_version }}
+          game-version-filter: none
+          java: 21
+          environment: client | server
+          dependencies: |
+            patchouli(required){modrinth:nU0bVIaL}{curseforge:patchouli}
+
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v3.0.2
+        with:
+          name: Psi ${{ steps.release.outputs.version }}
+          tag_name: ${{ steps.release.outputs.tag }}
+          target_commitish: ${{ github.sha }}
+          body_path: ${{ steps.release.outputs.changelog }}
+          prerelease: ${{ inputs.release_type != 'release' }}
+          make_latest: ${{ inputs.release_type == 'release' }}
+          files: |
+            ${{ steps.release.outputs.fabric_jar }}
+            ${{ steps.release.outputs.fabric_jar }}.asc
+            ${{ steps.release.outputs.neoforge_jar }}
+            ${{ steps.release.outputs.neoforge_jar }}.asc
+
+      - name: Stop Gradle
+        if: always()
+        run: ./gradlew --stop
