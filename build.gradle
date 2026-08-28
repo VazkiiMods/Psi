@@ -1,249 +1,130 @@
 plugins {
-    id 'java-library'
-    id 'eclipse'
-    id 'idea'
-    id 'maven-publish'
-    id 'pmd'
-    id 'com.diffplug.spotless' version '7.2.1'
-    id 'net.neoforged.moddev' version '2.0.107'
+	id 'base'
+	id 'idea'
+	id 'com.diffplug.spotless' version '7.2.1'
+	id 'net.neoforged.moddev' version '2.0.142' apply false
+	id 'net.fabricmc.fabric-loom-remap' version '1.15.5' apply false
+}
+
+version = minecraft_version + '-' + mod_version
+group = mod_group_id
+
+allprojects {
+	version = rootProject.version
+	group = rootProject.group
+
+	repositories {
+		mavenLocal()
+		mavenCentral()
+		maven {
+			name = 'Sponge'
+			url = 'https://repo.spongepowered.org/repository/maven-public/'
+			content {
+				includeGroup 'org.spongepowered'
+			}
+		}
+
+		exclusiveContent {
+			forRepository {
+				maven {
+					name = 'sableCompanion'
+					url = 'https://maven.ryanhcode.dev/releases'
+				}
+			}
+			filter {
+				includeGroup 'dev.ryanhcode.sable-companion'
+			}
+		}
+
+		maven {
+			name = 'blamejared'
+			url = 'https://maven.blamejared.com/'
+			content {
+				includeGroup 'vazkii.patchouli'
+				includeGroup 'mezz.jei'
+			}
+		}
+
+		maven {
+			name = 'ParchmentMC'
+			url = 'https://maven.parchmentmc.org/'
+			content {
+				includeGroup 'org.parchmentmc.data'
+			}
+		}
+	}
 }
 
 tasks.named('wrapper', Wrapper).configure {
-    distributionType = Wrapper.DistributionType.BIN
-}
-
-version = minecraft_version + "-" + mod_version
-group = mod_group_id
-
-repositories {
-    mavenLocal()
-    exclusiveContent {
-        forRepository {
-            maven {
-                name "sableCompanion"
-                url "https://maven.ryanhcode.dev/releases"
-            }
-        }
-        filter {
-            includeGroup "dev.ryanhcode.sable-companion"
-        }
-    }
-    maven {
-        // for Patchouli and JEI
-        name "blamejared"
-        url "https://maven.blamejared.com/"
-        content {
-            includeGroup "vazkii.patchouli"
-            includeGroup "mezz.jei"
-        }
-    }
-}
-
-base {
-    archivesName = mod_id
+	distributionType = Wrapper.DistributionType.BIN
 }
 
 spotless {
-    java {
-        target project.fileTree(dir: 'src/main/java/vazkii/psi', include: '**/*.java')
-        eclipse().configFile 'spotless/eclipseformat.xml'
-        removeUnusedImports()
-        importOrderFile 'spotless/eclipse.importorder'
-        replaceRegex 'Too much space after if', '(if|for|while|switch) +\\(', '$1('
-    }
-}
-
-pmd {
-    ruleSetFiles = files("spotless/pmd-ruleset.xml")
+	java {
+		target fileTree(dir: 'src/main/java/vazkii/psi', include: '**/*.java')
+		eclipse().configFile 'spotless/eclipseformat.xml'
+		removeUnusedImports()
+		importOrderFile 'spotless/eclipse.importorder'
+		replaceRegex 'Too much space after if', '(if|for|while|switch) +\\(', '$1('
+	}
 }
 
 tasks.register('checkSyntax') {
-    dependsOn spotlessJavaCheck, pmdMain
+	group = 'verification'
+	dependsOn spotlessJavaCheck
+	dependsOn ':Xplat:checkSyntax', ':Fabric:checkSyntax', ':NeoForge:checkSyntax'
 }
 
-// Mojang ships Java 21 to end users starting in 1.20.5, so mods should target Java 21.
-java.toolchain.languageVersion = JavaLanguageVersion.of(21)
-
-neoForge {
-    version = project.neo_version
-    validateAccessTransformers = true
-
-    runs {
-        configureEach {
-            systemProperty 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
-            systemProperty 'forge.logging.console.level', 'debug'
-        }
-
-        client {
-            client()
-            gameDirectory = project.file('runs/client')
-            systemProperty 'forge.enabledGameTestNamespaces', project.mod_id
-        }
-
-        server {
-            server()
-            gameDirectory = project.file('runs/server')
-            systemProperty 'forge.enabledGameTestNamespaces', project.mod_id
-            programArguments.addAll('--nogui')
-        }
-
-        data {
-            data()
-            gameDirectory = project.file('runs/data')
-            // example of overriding the workingDirectory set in configureEach above, uncomment if you want to use it
-            // workingDirectory project.file('run-data')
-
-            // Specify the modid for data generation, where to output the resulting resource, and where to look for existing resources.
-            programArguments.addAll('--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath())
-        }
-    }
-
-    mods {
-        testproject {
-            sourceSet sourceSets.main
-        }
-    }
-
-    parchment {
-        minecraftVersion = project.minecraft_version
-        mappingsVersion = project.parchment_version
-    }
+tasks.register('buildAll') {
+	group = 'build'
+	dependsOn ':Xplat:build', ':Fabric:build', ':NeoForge:build'
 }
 
-sourceSets.main.resources { srcDir 'src/generated/resources' }
-configurations {
-    runtimeClasspath.extendsFrom localRuntime
+def datagenFingerprint = { File directory ->
+	if(!directory.exists()) {
+		return [:]
+	}
+
+	def root = directory.toPath()
+	fileTree(directory) {
+		exclude '.cache/**'
+	}.files.sort().collectEntries { file ->
+		def digest = java.security.MessageDigest.getInstance('SHA-256').digest(file.bytes).encodeHex().toString()
+		[(root.relativize(file.toPath()).toString()): digest]
+	}
 }
 
-dependencies {
-    compileOnly('org.jetbrains:annotations:26.0.2')
-
-    jarJar(api("dev.ryanhcode.sable-companion:sable-companion-common-1.21.1:[${sable_companion_version},)")) {
-        version {
-            prefer sable_companion_version
-        }
-    }
-
-    // Example optional mod dependency with JEI
-    // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime
-    compileOnly "mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"
-    compileOnly "mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}"
-    // We add the full version to localRuntime, not runtimeOnly, so that we do not publish a dependency on it
-    localRuntime "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
-
-    compileOnly "vazkii.patchouli:Patchouli:${patchouli_version}-NEOFORGE:api"
-    runtimeOnly "vazkii.patchouli:Patchouli:${patchouli_version}-NEOFORGE"
+def datagenBaseline = [:]
+def snapshotDatagen = tasks.register('snapshotDatagen') {
+	doLast {
+		datagenBaseline.clear()
+		datagenBaseline.putAll(datagenFingerprint(file('Xplat/src/generated/resources')))
+	}
 }
 
-tasks.withType(ProcessResources).configureEach {
-    var replaceProperties = [
-            minecraft_version      : minecraft_version,
-            minecraft_version_range: minecraft_version_range,
-            neo_version            : neo_version,
-            neo_version_range      : neo_version_range,
-            loader_version_range   : loader_version_range,
-            mod_id                 : mod_id,
-            mod_name               : mod_name,
-            mod_license            : mod_license,
-            mod_version            : version,
-            mod_authors            : mod_authors,
-            mod_description        : mod_description
-    ]
-    inputs.properties replaceProperties
-
-    filesMatching(['META-INF/neoforge.mods.toml']) {
-        expand replaceProperties
-    }
-
-    from(sourceSets.main.resources.srcDirs) {
-        exclude '**/psd/**'
-        duplicatesStrategy 'include'
-    }
+def checkDatagen = tasks.register('checkDatagen') {
+	group = 'verification'
+	description = 'Runs both loader datagens and verifies that generated resources do not change.'
+	dependsOn snapshotDatagen, ':NeoForge:runData', ':Fabric:runXplatDatagen'
+	doLast {
+		def generated = datagenFingerprint(file('Xplat/src/generated/resources'))
+		if(generated != datagenBaseline) {
+			throw new GradleException('Datagen changed Xplat/src/generated/resources')
+		}
+	}
 }
 
-jar {
-    archiveFileName = "${mod_name}-${version}.jar"
-
-    manifest {
-        attributes([
-                "Specification-Title": "${mod_id}",
-                "Specification-Vendor": "vazkii",
-                "Specification-Version": "1",
-                "Implementation-Title": "${mod_id}",
-                "Implementation-Version": "${version}",
-                "Implementation-Vendor" :"vazkii",
-                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-                "MixinConfigs": "psi.mixins.json"
-        ])
-    }
-}
-
-
-
-tasks.withType(JavaCompile).configureEach {
-    options.encoding = 'UTF-8'
+gradle.projectsEvaluated {
+	def neoForgeDatagen = project(':NeoForge').tasks.named('runData')
+	def fabricDatagen = project(':Fabric').tasks.named('runXplatDatagen')
+	neoForgeDatagen.configure { mustRunAfter snapshotDatagen }
+	fabricDatagen.configure { mustRunAfter neoForgeDatagen }
+	checkDatagen.configure { mustRunAfter fabricDatagen }
 }
 
 idea {
-    module {
-        downloadSources = true
-        downloadJavadoc = true
-    }
-}
-
-
-task sourcesJar(type: Jar) {
-    archiveClassifier = "sources"
-    from sourceSets.main.allJava
-}
-
-artifacts {
-    archives sourcesJar
-}
-
-publish.dependsOn(project.tasks.getByName("assemble"))
-publish.mustRunAfter(project.tasks.getByName("build"))
-
-publishing {
-
-    publications {
-
-        mavenJava(MavenPublication) {
-
-            groupId project.group
-            artifactId project.archivesBaseName
-            version project.version
-            from components.java
-
-            // Allows the maven pom file to be modified.
-            pom.withXml {
-
-                // Go through all the dependencies.
-                asNode().dependencies.dependency.each { dep ->
-
-                    println 'Surpressing artifact ' + dep.artifactId.last().value().last() + ' from maven dependencies.'
-                    assert dep.parent().remove(dep)
-                }
-            }
-
-            artifact sourcesJar {
-                archiveClassifier = 'sources'
-            }
-        }
-    }
-
-    repositories {
-        maven {
-            url "file://" + System.getenv("local_maven")
-        }
-
-    }
-}
-
-// Disables Gradle's custom module metadata from being published to maven. The
-// metadata includes mapped dependencies which are not reasonably consumable by
-// other mod developers.
-tasks.withType(GenerateModuleMetadata) {
-
-    enabled = false
+	module {
+		downloadSources = true
+		downloadJavadoc = true
+	}
 }

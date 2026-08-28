@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "minVersion": "0.8.3",
+  "compatibilityLevel": "JAVA_21",
+  "package": "vazkii.psi.neoforge.mixin",
+  "mixins": [
+    "MixinNeoForgeItemStack"
+  ],
+  "client": [
+    "client.MixinHumanoidArmorLayer",
+    "client.MixinParticleEngine"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "required": true,
+  "minVersion": "0.8.3",
+  "compatibilityLevel": "JAVA_21",
+  "package": "vazkii.psi.mixin",
+  "mixins": [
+    "AccessorServerGamePacketListenerImpl",
+    "MixinArmorStand",
+    "MixinItemStack",
+    "MixinLivingEntity",
+    "MixinPlayer",
+    "ServerPlaceRecipeMixin"
+  ],
+  "client": [
+    "client.AccessorAbstractTexture",
+    "client.AccessorChatComponent",
+    "client.AccessorGui",
+    "client.AccessorKeyMapping",
+    "client.AccessorRenderBuffers",
+    "client.AccessorScreen",
+    "client.MixinAbstractClientPlayer",
+    "client.MixinItemRenderer",
+    "client.MixinKeyboardHandler"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

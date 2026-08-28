@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "minVersion": "0.8.3",
+  "compatibilityLevel": "JAVA_21",
+  "package": "vazkii.psi.fabric.mixin",
+  "mixins": [
+    "MixinLivingEntityDamage"
+  ],
+  "client": [
+    "client.MixinParticleEngine"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

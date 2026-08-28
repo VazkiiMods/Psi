@@ -1,0 +1,34 @@
+modLoader = "javafml"
+loaderVersion = "${loader_version_range}"
+issueTrackerURL = "https://github.com/VazkiiMods/Psi/issues"
+license = "https://psi.vazkii.net/license.php"
+
+[[mods]]
+modId = "${mod_id}"
+displayName = "${mod_name}"
+version = "${mod_version}"
+authors = "${mod_authors}"
+description = '''
+${mod_description}
+'''
+
+[[mixins]]
+config = "psi-xplat-client.mixins.json"
+
+[[mixins]]
+config = "psi-neoforge.mixins.json"
+
+[[dependencies.psi]]
+modId = "patchouli"
+type = "required"
+versionRange = "[1.21-87,)"
+
+[[dependencies.psi]]
+modId = "neoforge"
+type = "required"
+versionRange = "${neo_version_range}"
+
+[[dependencies.psi]]
+modId = "minecraft"
+type = "required"
+versionRange = "${minecraft_version_range}"

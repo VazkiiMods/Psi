@@ -2,8 +2,8 @@
 Thumbs.db
 
 ## gradle
-/.gradle
-/build
+**/.gradle/
+**/build/
 
 ## ForgeGradle
 /run
@@ -63,5 +63,5 @@ Temporary Items
 .apdisk
 
 # Data Generator cache
-/src/generated/resources/.cache/
+/Xplat/src/generated/resources/.cache/
 *.pyc
