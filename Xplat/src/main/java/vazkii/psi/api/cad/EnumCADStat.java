@@ -8,12 +8,16 @@
  */
 package vazkii.psi.api.cad;
 
+import com.mojang.serialization.Codec;
+
+import net.minecraft.util.StringRepresentable;
+
 import java.util.Locale;
 
 /**
  * An Enum defining all CAD stats and what Components provide them.
  */
-public enum EnumCADStat {
+public enum EnumCADStat implements StringRepresentable {
 
 	EFFICIENCY(EnumCADComponent.ASSEMBLY),
 	POTENCY(EnumCADComponent.ASSEMBLY),
@@ -23,6 +27,8 @@ public enum EnumCADStat {
 	SOCKETS(EnumCADComponent.SOCKET),
 	SAVED_VECTORS(EnumCADComponent.SOCKET),
 	OVERFLOW(EnumCADComponent.BATTERY);
+
+	public static final Codec<EnumCADStat> CODEC = StringRepresentable.fromEnum(EnumCADStat::values);
 
 	private final EnumCADComponent source;
 
@@ -34,8 +40,13 @@ public enum EnumCADStat {
 		return source;
 	}
 
+	@Override
+	public String getSerializedName() {
+		return name().toLowerCase(Locale.ROOT);
+	}
+
 	public String getName() {
-		return "psi.cadstat." + name().toLowerCase(Locale.ROOT);
+		return "psi.cadstat." + getSerializedName();
 	}
 
 }

@@ -8,19 +8,10 @@
  */
 package vazkii.psi.common.core.handler.capability;
 
-import com.google.common.collect.Lists;
-
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.DoubleTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemContainerContents;
-
-import org.jetbrains.annotations.NotNull;
 
 import vazkii.psi.api.cad.*;
 import vazkii.psi.api.internal.IPlayerData;
@@ -31,65 +22,64 @@ import vazkii.psi.common.item.base.ModDataComponents;
 import vazkii.psi.common.item.component.ItemCADSocket;
 import vazkii.psi.common.item.data.CADDataValue;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class CADData implements ICADData, ISpellAcceptor, ISocketable, IPsiBarDisplay {
 
 	private final ItemStack cad;
-	private final CADDataValue data;
 
 	public CADData(ItemStack cad) {
 		this.cad = cad;
-		CADDataValue cadData = cad.get(ModDataComponents.CAD_DATA.get());
+	}
 
-		if(cadData == null) {
-			cadData = new CADDataValue(0, 0, new ArrayList<>());
-			cad.set(ModDataComponents.CAD_DATA.get(), cadData);
-		}
+	private CADDataValue data() {
+		return cad.getOrDefault(ModDataComponents.CAD_DATA.get(), CADDataValue.EMPTY);
+	}
 
-		this.data = cadData;
+	private void setData(CADDataValue data) {
+		cad.set(ModDataComponents.CAD_DATA.get(), data);
 	}
 
 	@Override
 	public int getTime() {
-		return data.time;
+		return data().time();
 	}
 
 	@Override
 	public void setTime(int time) {
-		if(this.data.time != time) {
-			this.data.time = time;
+		CADDataValue data = data();
+		if(data.time() == time) {
+			return;
 		}
+		setData(data.withTime(time));
 	}
 
 	@Override
 	public int getBattery() {
-		return data.battery;
+		return data().battery();
 	}
 
 	@Override
 	public void setBattery(int battery) {
-		this.data.battery = battery;
+		CADDataValue data = data();
+		if(data.battery() == battery) {
+			return;
+		}
+		setData(data.withBattery(battery));
 	}
 
 	@Override
 	public Vector3 getSavedVector(int memorySlot) {
-		if(data.vectors.size() <= memorySlot) {
+		List<Vector3> vectors = data().vectors();
+		if(vectors.size() <= memorySlot) {
 			return Vector3.zero.copy();
 		}
-
-		Vector3 vec = data.vectors.get(memorySlot);
-		return (vec == null ? Vector3.zero : vec).copy();
+		return vectors.get(memorySlot).copy();
 	}
 
 	@Override
 	public void setSavedVector(int memorySlot, Vector3 value) {
-		while(data.vectors.size() <= memorySlot) {
-			data.vectors.add(null);
-		}
-
-		data.vectors.set(memorySlot, value);
+		setData(data().withSavedVector(memorySlot, value));
 	}
 
 	@Override
@@ -160,60 +150,6 @@ public class CADData implements ICADData, ISpellAcceptor, ISocketable, IPsiBarDi
 			sockets = ItemCADSocket.MAX_SOCKETS;
 		}
 		return sockets - 1;
-	}
-
-	@Override
-	public CompoundTag serializeForSynchronization() {
-		CompoundTag compound = new CompoundTag();
-		compound.putInt("Time", data.time);
-		compound.putInt("Battery", data.battery);
-
-		return compound;
-	}
-
-	@Override
-	public CompoundTag serializeNBT(HolderLookup.@NotNull Provider provider) {
-		CompoundTag compound = serializeForSynchronization();
-
-		ListTag memory = new ListTag();
-		for(Vector3 vector : data.vectors) {
-			if(vector == null) {
-				memory.add(new ListTag());
-			} else {
-				ListTag vec = new ListTag();
-				vec.add(DoubleTag.valueOf(vector.x));
-				vec.add(DoubleTag.valueOf(vector.y));
-				vec.add(DoubleTag.valueOf(vector.z));
-				memory.add(vec);
-			}
-		}
-		compound.put("Memory", memory);
-
-		return compound;
-	}
-
-	@Override
-	public void deserializeNBT(HolderLookup.@NotNull Provider provider, CompoundTag nbt) {
-		if(nbt.contains("Time", Tag.TAG_ANY_NUMERIC)) {
-			data.time = nbt.getInt("Time");
-		}
-		if(nbt.contains("Battery", Tag.TAG_ANY_NUMERIC)) {
-			data.battery = nbt.getInt("Battery");
-		}
-
-		if(nbt.contains("Memory", Tag.TAG_LIST)) {
-			ListTag memory = nbt.getList("Memory", Tag.TAG_LIST);
-			List<Vector3> newVectors = Lists.newArrayList();
-			for(Tag tag : memory) {
-				ListTag vec = (ListTag) tag;
-				if(vec.getElementType() == Tag.TAG_DOUBLE && vec.size() >= 3) {
-					newVectors.add(new Vector3(vec.getDouble(0), vec.getDouble(1), vec.getDouble(2)));
-				} else {
-					newVectors.add(null);
-				}
-			}
-			data.vectors = newVectors;
-		}
 	}
 
 	@Override

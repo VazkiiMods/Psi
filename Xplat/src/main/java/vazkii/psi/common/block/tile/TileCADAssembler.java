@@ -37,6 +37,7 @@ import vazkii.psi.common.block.base.ModCADAssemblerBlock;
 import vazkii.psi.common.block.tile.container.ContainerCADAssembler;
 import vazkii.psi.common.core.handler.PsiSoundHandler;
 import vazkii.psi.common.item.ItemCAD;
+import vazkii.psi.common.item.base.LegacyItemStacks;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -66,7 +67,7 @@ public class TileCADAssembler extends BlockEntity implements ITileCADAssembler, 
 			ItemStack assembly = getStackForComponent(EnumCADComponent.ASSEMBLY);
 			if(!assembly.isEmpty()) {
 				List<ItemStack> components = IntStream.range(1, 6).mapToObj(inventory::getItem).collect(Collectors.toList());
-				cad = ItemCAD.makeCADWithAssembly(assembly, components);
+				cad = ItemCAD.makeCADWithAssembly(player.level().registryAccess(), assembly, components);
 			} else {
 				cad = ItemStack.EMPTY;
 			}
@@ -95,14 +96,9 @@ public class TileCADAssembler extends BlockEntity implements ITileCADAssembler, 
 	@Override
 	public boolean setStackForComponent(EnumCADComponent componentType, ItemStack component) {
 		int slot = componentType.ordinal() + 1;
-		if(component.isEmpty()) {
+		if(component.isEmpty() || CADComponentLookup.isComponent(registries(), component, componentType)) {
 			inventory.setItem(slot, component);
 			return true;
-		} else if(component.getItem() instanceof ICADComponent componentItem) {
-			if(componentItem.getComponentType(component) == componentType) {
-				inventory.setItem(slot, component);
-				return true;
-			}
 		}
 
 		return false;
@@ -181,7 +177,7 @@ public class TileCADAssembler extends BlockEntity implements ITileCADAssembler, 
 					continue;
 				}
 
-				ItemStack stack = ItemStack.parseOptional(provider, items.getCompound(i));
+				ItemStack stack = LegacyItemStacks.parse(provider, items.getCompound(i));
 
 				if(i == 6) { // Socketable item
 					setSocketableStack(stack);
@@ -224,8 +220,7 @@ public class TileCADAssembler extends BlockEntity implements ITileCADAssembler, 
 	@Override
 	public ClientboundBlockEntityDataPacket getUpdatePacket() {
 		return ClientboundBlockEntityDataPacket.create(this, (BlockEntity e, RegistryAccess provider) -> getUpdateTag(provider));
-		//return new ClientboundBlockEntityDataPacket(getBlockPos(), -1, getUpdateTag());
-	}//TODO Hopefully fixed?
+	}
 
 	@NotNull
 	@Override
@@ -292,6 +287,11 @@ public class TileCADAssembler extends BlockEntity implements ITileCADAssembler, 
 		inventory.clearContent();
 	}
 
+	@Nullable
+	private HolderLookup.Provider registries() {
+		return level == null ? null : level.registryAccess();
+	}
+
 	private class CADStackHandler extends SimpleContainer {
 
 		private CADStackHandler() {
@@ -314,8 +314,7 @@ public class TileCADAssembler extends BlockEntity implements ITileCADAssembler, 
 			if(slot == 0) {
 				return ISocketable.isSocketable(stack);
 			} else if(slot < 6) {
-				return stack.getItem() instanceof ICADComponent &&
-						((ICADComponent) stack.getItem()).getComponentType(stack).ordinal() == slot - 1;
+				return CADComponentLookup.isComponent(registries(), stack, EnumCADComponent.values()[slot - 1]);
 			}
 
 			return false;

@@ -113,7 +113,7 @@ public class TrickRecipe implements ITrickRecipe {
 						Ingredient.CODEC.fieldOf("input").forGetter(d -> d.input),
 						ItemStack.CODEC.fieldOf("output").forGetter(d -> d.output),
 						ItemStack.CODEC.fieldOf("cad").forGetter(d -> d.cad),
-						ResourceLocation.CODEC.optionalFieldOf("piece").forGetter(d -> d.piece != null ? Optional.of(d.piece.registryKey) : Optional.empty())
+						ResourceLocation.CODEC.optionalFieldOf("piece").forGetter(d -> d.piece != null ? Optional.of(d.piece.getRegistryKey()) : Optional.empty())
 				)
 						.apply(instance, (ingredient, output, cadAssembly, trick) -> new TrickRecipe((PieceCraftingTrick) SpellPiece.create(trick.orElse(null)), ingredient, output, cadAssembly))
 		);
@@ -135,7 +135,7 @@ public class TrickRecipe implements ITrickRecipe {
 			ItemStack.STREAM_CODEC.encode(buf, recipe.cad);
 			if(recipe.piece != null) {
 				ByteBufCodecs.BOOL.encode(buf, true);
-				ResourceLocation.STREAM_CODEC.encode(buf, recipe.piece.registryKey);
+				ResourceLocation.STREAM_CODEC.encode(buf, recipe.piece.getRegistryKey());
 			} else {
 				ByteBufCodecs.BOOL.encode(buf, false);
 			}

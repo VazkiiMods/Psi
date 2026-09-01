@@ -8,9 +8,12 @@
  */
 package vazkii.psi.neoforge.platform;
 
+import com.mojang.serialization.Codec;
+
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.neoforged.neoforge.registries.DataPackRegistryEvent;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NewRegistryEvent;
 import net.neoforged.neoforge.registries.RegistryBuilder;
@@ -39,6 +42,11 @@ public final class NeoForgePsiRegistryService implements PsiRegistryService {
 		DeferredRegister<T> register = registerFor(registry, id.getNamespace());
 		var holder = register.register(id.getPath(), factory);
 		return new RegistryEntry<>(id, holder, () -> holder);
+	}
+
+	@Override
+	public <T> void registerSyncedDatapackRegistry(ResourceKey<Registry<T>> key, Codec<T> codec) {
+		NeoForgePsiPlatform.modBus().addListener((DataPackRegistryEvent.NewRegistry event) -> event.dataPackRegistry(key, codec, codec));
 	}
 
 	@SuppressWarnings("unchecked")

@@ -8,6 +8,7 @@
  */
 package vazkii.psi.api.cad;
 
+import net.minecraft.core.HolderLookup;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
@@ -17,8 +18,8 @@ import java.util.List;
 
 public interface ICADAssembly {
 
-	default ItemStack createCADStack(ItemStack stack, List<ItemStack> allComponents) {
-		return PsiAPI.internalHandler.createDefaultCAD(allComponents);
+	default ItemStack createCADStack(HolderLookup.Provider registries, ItemStack stack, List<ItemStack> allComponents) {
+		return PsiAPI.internalHandler.createDefaultCAD(registries, allComponents);
 	}
 
 	/**

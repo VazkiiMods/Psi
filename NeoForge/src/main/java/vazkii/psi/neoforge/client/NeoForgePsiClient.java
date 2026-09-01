@@ -35,6 +35,7 @@ import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 import net.neoforged.neoforge.client.event.RegisterShadersEvent;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
+import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -60,6 +61,7 @@ import vazkii.psi.client.render.spell.SpellPieceRenderLayer;
 import vazkii.psi.client.render.tile.RenderTileProgrammer;
 import vazkii.psi.common.block.base.ModBlocks;
 import vazkii.psi.common.entity.ModEntities;
+import vazkii.psi.common.item.component.ItemCADComponent;
 import vazkii.psi.mixin.client.AccessorRenderBuffers;
 
 import java.io.IOException;
@@ -85,6 +87,11 @@ public final class NeoForgePsiClient {
 		bus.addListener((RegisterKeyMappingsEvent event) -> event.register(KeybindHandler.keybind));
 		bus.addListener(NeoForgePsiClient::addCadModels);
 		bus.addListener(NeoForgePsiClient::loadComplete);
+	}
+
+	@SubscribeEvent
+	public static void onItemTooltip(ItemTooltipEvent event) {
+		ItemCADComponent.appendForeignHoverText(event.getContext().registries(), event.getItemStack(), event.getToolTip());
 	}
 
 	@SubscribeEvent

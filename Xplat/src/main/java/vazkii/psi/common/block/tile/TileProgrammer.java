@@ -17,6 +17,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import vazkii.psi.api.internal.VanillaPacketDispatcher;
 import vazkii.psi.api.spell.Spell;
@@ -41,8 +42,9 @@ public class TileProgrammer extends BlockEntity implements SpellProgrammer {
 		return spell != null && !spell.grid.isEmpty();
 	}
 
-	public boolean canCompile() {
-		return isEnabled() && new SpellCompiler().compile(spell).left().isPresent();
+	@Override
+	public boolean canCompile(@Nullable Player player) {
+		return isEnabled() && new SpellCompiler().compile(spell, getLevel().registryAccess(), player).left().isPresent();
 	}
 
 	@Override

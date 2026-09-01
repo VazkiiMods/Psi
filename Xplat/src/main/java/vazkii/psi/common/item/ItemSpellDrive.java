@@ -87,7 +87,7 @@ public class ItemSpellDrive extends Item {
 		BlockEntity tile = worldIn.getBlockEntity(pos);
 		if(tile instanceof SpellProgrammer programmer) {
 			Spell spell = getSpell(stack);
-			if(spell == null && programmer.canCompile()) {
+			if(spell == null && programmer.canCompile(playerIn)) {
 				setSpell(stack, programmer.getSpellForDrive());
 				if(!worldIn.isClientSide) {
 					worldIn.playSound(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, PsiSoundHandler.bulletCreate.get(), SoundSource.PLAYERS, 0.5F, 1F);

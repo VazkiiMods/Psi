@@ -8,9 +8,9 @@
  */
 package vazkii.psi.api.internal;
 
+import net.minecraft.core.HolderLookup;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
@@ -18,6 +18,7 @@ import net.minecraft.world.level.Level;
 
 import org.jetbrains.annotations.Nullable;
 
+import vazkii.psi.api.cad.CADComponentSlot;
 import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.piece.PieceCraftingTrick;
 
@@ -54,16 +55,16 @@ public interface IInternalMethodHandler {
 	/**
 	 * Creates a CAD with the given components
 	 */
-	ItemStack createDefaultCAD(List<ItemStack> components);
+	ItemStack createDefaultCAD(HolderLookup.Provider registries, List<ItemStack> components);
 
 	/**
 	 * Creates a CAD with the Assembly ItemStack as a base and the components array as its components
 	 */
-	ItemStack createCAD(ItemStack base, List<ItemStack> components);
+	ItemStack createCAD(HolderLookup.Provider registries, ItemStack base, List<ItemStack> components);
 
-	List<Item> getCADComponents(ItemStack cad);
+	List<CADComponentSlot> getCADComponents(ItemStack cad);
 
-	void setCADComponents(ItemStack cad, List<Item> components);
+	void setCADComponents(ItemStack cad, List<CADComponentSlot> components);
 
 	void sendSpellError(Player player, int x, int y);
 

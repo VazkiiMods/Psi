@@ -75,7 +75,7 @@ public class PieceCrossConnector extends SpellPiece implements IGenericRedirecto
 	// Since this class implements IGenericRedirector we don't need this
 	@Override
 	public Class<?> getEvaluationType() {
-		return null;
+		return Void.class;
 	}
 
 	@Override

@@ -1,0 +1,28 @@
+{
+  "display": {
+    "icon": {
+      "id": "psi:ebony_substance"
+    },
+    "title": {
+      "translate": "advancement.psi:ebony_pickup"
+    },
+    "description": {
+      "translate": "advancement.psi:ebony_pickup.desc"
+    }
+  },
+  "parent": "psi:main/psimetal_assembly_pickup",
+  "criteria": {
+    "flower": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "psi:ebony_substance"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

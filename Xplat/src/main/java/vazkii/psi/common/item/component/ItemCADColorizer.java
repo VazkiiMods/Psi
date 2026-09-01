@@ -9,11 +9,16 @@
 package vazkii.psi.common.item.component;
 
 import net.minecraft.util.FastColor;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 
 import vazkii.psi.api.cad.ICADColorizer;
+import vazkii.psi.common.core.handler.ContributorSpellCircleHandler;
 import vazkii.psi.common.item.base.ModDataComponents;
+
+import java.util.Locale;
 
 public class ItemCADColorizer extends ItemCADComponent implements ICADColorizer {
 
@@ -33,6 +38,15 @@ public class ItemCADColorizer extends ItemCADComponent implements ICADColorizer 
 	public int getColor(ItemStack stack) {
 		return FastColor.ARGB32.opaque(color.getTextColor());
 	} //TODO check if text color is proper
+
+	@Override
+	public void onCraftedBy(ItemStack stack, Level level, Player player) {
+		super.onCraftedBy(stack, level, player);
+		String playerName = player.getName().getString();
+		if(ContributorSpellCircleHandler.isContributor(playerName.toLowerCase(Locale.ROOT))) {
+			setContributorName(stack, playerName);
+		}
+	}
 
 	@Override
 	public String getContributorName(ItemStack stack) {

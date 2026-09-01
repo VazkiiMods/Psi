@@ -25,6 +25,7 @@ import vazkii.psi.common.lib.LibItemNames;
 import vazkii.psi.common.registry.PsiRegistries;
 import vazkii.psi.common.registry.RegistryEntry;
 
+import java.util.List;
 import java.util.function.Supplier;
 
 public final class ModCADComponents {
@@ -71,6 +72,20 @@ public final class ModCADComponents {
 	public static final RegistryEntry<ItemCADColorizerRainbow> cadColorizerRainbow = item(LibItemNames.CAD_COLORIZER_RAINBOW, () -> new ItemCADColorizerRainbow(properties()));
 	public static final RegistryEntry<ItemCADColorizerPsi> cadColorizerPsi = item(LibItemNames.CAD_COLORIZER_PSI, () -> new ItemCADColorizerPsi(properties()));
 	public static final RegistryEntry<ItemCADColorizerEmpty> cadColorizerEmpty = item(LibItemNames.CAD_COLORIZER_EMPTY, () -> new ItemCADColorizerEmpty(properties()));
+
+	public static final List<RegistryEntry<ItemCADAssembly>> assemblies = List.of(cadAssemblyIron, cadAssemblyGold,
+			cadAssemblyPsimetal, cadAssemblyIvory, cadAssemblyEbony, cadAssemblyCreative);
+	public static final List<RegistryEntry<ItemCADCore>> cores = List.of(cadCoreBasic, cadCoreOverclocked,
+			cadCoreConductive, cadCoreHyperClocked, cadCoreRadiative);
+	public static final List<RegistryEntry<ItemCADSocket>> sockets = List.of(cadSocketBasic, cadSocketSignaling,
+			cadSocketLarge, cadSocketTransmissive, cadSocketHuge);
+	public static final List<RegistryEntry<ItemCADBattery>> batteries = List.of(cadBatteryBasic, cadBatteryExtended,
+			cadBatteryUltradense);
+	public static final List<RegistryEntry<? extends ItemCADColorizer>> colorizers = List.of(cadColorizerWhite,
+			cadColorizerOrange, cadColorizerMagenta, cadColorizerLightBlue, cadColorizerYellow, cadColorizerLime,
+			cadColorizerPink, cadColorizerGray, cadColorizerLightGray, cadColorizerCyan, cadColorizerPurple,
+			cadColorizerBlue, cadColorizerBrown, cadColorizerGreen, cadColorizerRed, cadColorizerBlack,
+			cadColorizerRainbow, cadColorizerPsi, cadColorizerEmpty);
 
 	private ModCADComponents() {}
 

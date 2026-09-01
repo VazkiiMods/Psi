@@ -14,6 +14,7 @@ import net.neoforged.neoforge.common.conditions.ICondition;
 
 import org.jetbrains.annotations.NotNull;
 
+import vazkii.psi.common.platform.PsiConfig;
 import vazkii.psi.common.platform.PsiEnvironment;
 
 public final class MagicalPsiCondition implements ICondition {
@@ -25,7 +26,7 @@ public final class MagicalPsiCondition implements ICondition {
 
 	@Override
 	public boolean test(IContext condition) {
-		return PsiEnvironment.isMagical();
+		return PsiEnvironment.isMagical() && !PsiConfig.common().magiPsiClientSide();
 	}
 
 	@Override

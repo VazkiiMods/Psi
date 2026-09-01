@@ -24,8 +24,8 @@ import net.minecraft.world.item.ItemStack;
 
 import org.jetbrains.annotations.NotNull;
 
+import vazkii.psi.api.cad.CADComponentLookup;
 import vazkii.psi.api.cad.EnumCADComponent;
-import vazkii.psi.api.cad.ICADComponent;
 import vazkii.psi.api.cad.ISocketable;
 import vazkii.psi.api.inventory.InventorySocketable;
 import vazkii.psi.api.spell.ISpellAcceptor;
@@ -35,6 +35,8 @@ import vazkii.psi.common.block.tile.container.slot.InventoryAssemblerOutput;
 import vazkii.psi.common.block.tile.container.slot.SlotCADOutput;
 import vazkii.psi.common.block.tile.container.slot.SlotSocketable;
 import vazkii.psi.common.block.tile.container.slot.ValidatorSlot;
+
+import java.util.Optional;
 
 public class ContainerCADAssembler extends AbstractContainerMenu {
 	private static final EquipmentSlot[] equipmentSlots = new EquipmentSlot[] { EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET };
@@ -167,9 +169,9 @@ public class ContainerCADAssembler extends AbstractContainerMenu {
 			mergeStack = stackInSlot.copy();
 
 			if(from >= playerStart) {
-				if(stackInSlot.getItem() instanceof ICADComponent) {
-					EnumCADComponent componentType = ((ICADComponent) stackInSlot.getItem()).getComponentType(stackInSlot);
-					int componentSlot = cadComponentStart + componentType.ordinal();
+				Optional<EnumCADComponent> componentType = CADComponentLookup.componentType(playerIn.level().registryAccess(), stackInSlot);
+				if(componentType.isPresent()) {
+					int componentSlot = cadComponentStart + componentType.get().ordinal();
 					if(!moveItemStackTo(stackInSlot, componentSlot, componentSlot + 1, false)) {
 						return ItemStack.EMPTY;
 					}

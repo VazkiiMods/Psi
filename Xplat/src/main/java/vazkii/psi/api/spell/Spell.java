@@ -111,7 +111,7 @@ public final class Spell {
 		for(SpellPiece[] gridDatum : grid.gridData) {
 			for(SpellPiece spellPiece : gridDatum) {
 				if(spellPiece != null) {
-					temp.add(spellPiece.registryKey.getNamespace());
+					temp.add(spellPiece.getRegistryKey().getNamespace());
 				}
 			}
 		}

@@ -18,6 +18,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import org.jetbrains.annotations.NotNull;
 
+import vazkii.psi.api.cad.CADComponentLookup;
 import vazkii.psi.api.internal.PsiRenderHelper;
 import vazkii.psi.common.block.BlockConjured;
 import vazkii.psi.common.block.base.ModConjuredBlock;
@@ -34,15 +35,15 @@ public class TileConjured extends BlockEntity {
 	}
 
 	public void doParticles() {
-		int color = PsiClientRuntime.colorForColorizer(colorizer);
+		if(getLevel() == null) {
+			return;
+		}
+
+		int color = CADComponentLookup.color(getLevel().registryAccess(), colorizer);
 
 		float r = PsiRenderHelper.r(color) / 255F;
 		float g = PsiRenderHelper.g(color) / 255F;
 		float b = PsiRenderHelper.b(color) / 255F;
-
-		if(getLevel() == null) {
-			return;
-		}
 
 		BlockState state = getLevel().getBlockState(getBlockPos());
 

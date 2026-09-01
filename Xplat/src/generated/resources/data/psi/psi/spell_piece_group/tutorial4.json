@@ -1,0 +1,9 @@
+{
+  "main": "psi:trick_explode",
+  "pieces": [
+    "psi:operator_entity_position",
+    "psi:operator_vector_raycast",
+    "psi:error_suppressor",
+    "psi:error_catch"
+  ]
+}

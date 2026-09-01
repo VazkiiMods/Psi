@@ -79,7 +79,7 @@ public class JEICompat implements IModPlugin {
 
 	@Override
 	public void registerRecipeCatalysts(@NotNull IRecipeCatalystRegistration registration) {
-		List<ItemStack> stacks = ItemCAD.getCreativeTabItems();
+		List<ItemStack> stacks = ItemCAD.getCreativeTabItems(Minecraft.getInstance().level.registryAccess());
 		for(ItemStack stack : stacks) {
 			registration.addRecipeCatalyst(stack, TrickCraftingCategory.TYPE);
 		}

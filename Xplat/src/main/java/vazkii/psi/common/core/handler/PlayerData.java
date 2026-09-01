@@ -13,10 +13,10 @@ import com.mojang.serialization.Codec;
 
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
@@ -548,13 +548,14 @@ public class PlayerData implements IPlayerData {
 		return regenCooldown;
 	}
 
-	public boolean hasAdvancement(ResourceLocation group) {
+	@Override
+	public boolean hasAdvancement(ResourceLocation advancement) {
 		Player player = playerWR.get();
 		if(player instanceof ServerPlayer serverPlayer && serverPlayer.getServer() != null) {
-			AdvancementHolder advancement = serverPlayer.getServer().getAdvancements().get(group);
-			return advancement != null && serverPlayer.getAdvancements().getOrStartProgress(advancement).isDone();
+			AdvancementHolder holder = serverPlayer.getServer().getAdvancements().get(advancement);
+			return holder != null && serverPlayer.getAdvancements().getOrStartProgress(holder).isDone();
 		}
-		return player != null && PsiClientRuntime.hasAdvancement(player, group);
+		return player != null && PsiClientRuntime.hasAdvancement(player, advancement);
 	}
 
 	@Override
@@ -601,14 +602,13 @@ public class PlayerData implements IPlayerData {
 
 		PieceExecutedEvent event = new PieceExecutedEvent(piece, player);
 		PsiEvents.post(event);
-		Optional<Map.Entry<ResourceKey<Collection<Class<? extends SpellPiece>>>, Collection<Class<? extends SpellPiece>>>> advancementEntry = PsiAPI.ADVANCEMENT_GROUP_REGISTRY.entrySet().stream().filter((entry) -> entry.getValue().contains(piece.getClass())).findFirst();
-		if(advancementEntry.isEmpty()) {
+		Optional<Holder.Reference<SpellPieceGroup>> group = PsiAPI.getPieceGroup(player.registryAccess(), piece.getRegistryKey());
+		if(group.isEmpty() || !(group.get().value().unlock() instanceof SpellPieceGroup.Unlock.ExecuteMain)) {
 			return;
 		}
 
-		ResourceLocation advancement = advancementEntry.get().getKey().location();
-		Object advancementMainPieceClass = advancementEntry.get().getValue().toArray()[0];
-		if(advancementMainPieceClass == piece.getClass() && !hasAdvancement(advancement)) {
+		ResourceLocation advancement = group.get().key().location();
+		if(group.get().value().main().equals(piece.getRegistryKey()) && !hasAdvancement(advancement)) {
 			PsiEvents.post(new PieceGroupAdvancementComplete(piece, player, advancement));
 		}
 	}

@@ -37,6 +37,5 @@ public final class PsiCommonRuntime {
 		prepare();
 		PsiEvents.register(CADStatEvent.class, DefaultStats::modifyCreativeAssemblyStats);
 		PsiEvents.register(PsiArmorEvent.class, PsiArmorHandler::onEvent);
-		DefaultStats.registerStats();
 	}
 }

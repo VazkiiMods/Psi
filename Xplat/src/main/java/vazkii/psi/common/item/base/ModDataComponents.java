@@ -12,6 +12,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.ItemContainerContents;
 
 import vazkii.psi.api.PsiAPI;
+import vazkii.psi.api.cad.CADComponentSlot;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.common.item.data.CADDataValue;
 import vazkii.psi.common.registry.PsiRegistries;
@@ -45,9 +46,9 @@ public final class ModDataComponents {
 			builder -> builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.INT));
 	public static final RegistryEntry<DataComponentType<Integer>> REGEN_TIME = register("regen_time",
 			builder -> builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.INT));
-	public static final RegistryEntry<DataComponentType<List<Item>>> COMPONENTS = register("components",
-			builder -> builder.persistent(Codec.list(BuiltInRegistries.ITEM.byNameCodec().orElse(Items.AIR)))
-					.networkSynchronized(ByteBufCodecs.registry(Registries.ITEM).apply(ByteBufCodecs.list())).cacheEncoding());
+	public static final RegistryEntry<DataComponentType<List<CADComponentSlot>>> COMPONENTS = register("components",
+			builder -> builder.persistent(CADComponentSlot.CODEC.listOf())
+					.networkSynchronized(CADComponentSlot.STREAM_CODEC.apply(ByteBufCodecs.list())).cacheEncoding());
 
 	private ModDataComponents() {}
 

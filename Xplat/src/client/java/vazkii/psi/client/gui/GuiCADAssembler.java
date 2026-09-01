@@ -47,7 +47,6 @@ public class GuiCADAssembler extends AbstractContainerScreen<ContainerCADAssembl
 		this.renderBackground(graphics, x, y, pTicks);
 		super.render(graphics, x, y, pTicks);
 		this.renderTooltip(graphics, x, y);
-		//this.renderComponentHoverEffect(ms, Style.EMPTY, x, y); TODO(Kamefrede): 1.20 figure out what this breaks
 	}
 
 	@Override

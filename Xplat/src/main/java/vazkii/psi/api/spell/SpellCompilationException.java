@@ -33,17 +33,24 @@ public class SpellCompilationException extends Exception {
 	public static final String PITCH = "psi.spellerror.pitch";
 	public static final String VOLUME = "psi.spellerror.volume";
 	public static final String INSTRUMENTS = "psi.spellerror.instruments";
+	public static final String DISABLED_PIECE = "psi.spellerror.disabled_piece";
+	public static final String LOCKED_PIECE = "psi.spellerror.locked_piece";
 
 	public final Pair<Integer, Integer> location;
+	/**
+	 * Arguments for the translation of {@link #getMessage()}.
+	 */
+	public final Object[] args;
 
 	public SpellCompilationException(String s) {
 		this(s, -1, -1);
 	}
 
 	@SuppressWarnings("SuspiciousNameCombination")
-	public SpellCompilationException(String s, int x, int y) {
+	public SpellCompilationException(String s, int x, int y, Object... args) {
 		super(s);
 		location = Pair.of(x, y);
+		this.args = args;
 	}
 
 }

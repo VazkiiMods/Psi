@@ -23,6 +23,12 @@ public class ModTags {
 	public static final TagKey<Item> IVORY_SUBSTANCE = tag("ivory_substance");
 	public static final TagKey<Item> EBONY_SUBSTANCE = tag("ebony_substance");
 
+	public static final TagKey<Item> CAD_ASSEMBLIES = tag("cad_component/assembly");
+	public static final TagKey<Item> CAD_CORES = tag("cad_component/core");
+	public static final TagKey<Item> CAD_SOCKETS = tag("cad_component/socket");
+	public static final TagKey<Item> CAD_BATTERIES = tag("cad_component/battery");
+	public static final TagKey<Item> CAD_DYES = tag("cad_component/dye");
+
 	public static final TagKey<Item> DUSTS = commonItemTag("dusts");
 	public static final TagKey<Item> DUSTS_GLOWSTONE = commonItemTag("dusts/glowstone");
 	public static final TagKey<Item> DUSTS_REDSTONE = commonItemTag("dusts/redstone");

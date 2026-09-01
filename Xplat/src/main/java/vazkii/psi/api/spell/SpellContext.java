@@ -121,7 +121,7 @@ public final class SpellContext {
 	 * This will compile a spell or poll the spell cache for it.
 	 */
 	public SpellContext setSpell(Spell spell) {
-		setCompiledSpell(PsiAPI.internalHandler.getSpellCache().getCompiledSpell(spell));
+		setCompiledSpell(PsiAPI.internalHandler.getSpellCache().getCompiledSpell(spell, caster));
 		return this;
 	}
 

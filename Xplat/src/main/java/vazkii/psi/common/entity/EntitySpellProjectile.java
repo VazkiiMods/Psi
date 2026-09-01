@@ -27,6 +27,7 @@ import net.minecraft.world.phys.HitResult;
 
 import org.jetbrains.annotations.NotNull;
 
+import vazkii.psi.api.cad.CADComponentLookup;
 import vazkii.psi.api.internal.PsiRenderHelper;
 import vazkii.psi.api.internal.Vector3;
 import vazkii.psi.api.spell.ISpellAcceptor;
@@ -151,7 +152,7 @@ public class EntitySpellProjectile extends ThrowableProjectile {
 		}
 
 		ItemStack colorizer = entityData.get(COLORIZER_DATA);
-		int colorVal = PsiClientRuntime.colorForColorizer(colorizer);
+		int colorVal = CADComponentLookup.color(level().registryAccess(), colorizer);
 
 		float r = PsiRenderHelper.r(colorVal) / 255F;
 		float g = PsiRenderHelper.g(colorVal) / 255F;

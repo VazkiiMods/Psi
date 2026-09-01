@@ -8,16 +8,9 @@
  */
 package vazkii.psi.api.cad;
 
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
-
 import vazkii.psi.api.internal.Vector3;
 
 public interface ICADData {
-
-	CompoundTag serializeNBT(HolderLookup.Provider registries);
-
-	void deserializeNBT(HolderLookup.Provider registries, CompoundTag tag);
 
 	/**
 	 * Gets the total amount of the CAD has been on the player's inventory
@@ -48,9 +41,4 @@ public interface ICADData {
 	 * Sets the vector in the respective memory slot
 	 */
 	void setSavedVector(int memorySlot, Vector3 value);
-
-	/**
-	 * Serializes the CAD data to be synchronized
-	 */
-	CompoundTag serializeForSynchronization();
 }

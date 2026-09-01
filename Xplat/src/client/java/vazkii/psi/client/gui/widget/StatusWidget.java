@@ -48,7 +48,7 @@ public class StatusWidget extends AbstractWidget {
 				// no such thing as ifPresentOrElse in J8, sadly
 				SpellCompilationException ex = parent.compileResult.right().get();
 				parent.tooltip.add(Component.translatable("psimisc.errored").withStyle(ChatFormatting.RED));
-				parent.tooltip.add(Component.translatable(ex.getMessage()).withStyle(ChatFormatting.GRAY));
+				parent.tooltip.add(Component.translatable(ex.getMessage(), ex.args).withStyle(ChatFormatting.GRAY));
 				Pair<Integer, Integer> errorPos = ex.location;
 				if(errorPos != null && errorPos.getRight() != -1 && errorPos.getLeft() != -1) {
 					parent.tooltip.add(Component.literal("[" + GuiProgrammer.convertIntToLetter((errorPos.getLeft() + 1)) + ", " + (errorPos.getRight() + 1) + "]").withStyle(ChatFormatting.GRAY));

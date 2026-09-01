@@ -9,6 +9,7 @@
 package vazkii.psi.neoforge.data;
 
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.loot.LootTableProvider;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
@@ -35,7 +36,7 @@ public class NeoForgePsiDataGenerator {
 
 	@SubscribeEvent
 	public static void gatherData(GatherDataEvent event) {
-		event.createDatapackRegistryObjects(PsiDataRegistries.builder());
+		event.createDatapackRegistryObjects(PsiDataRegistries.configure(new RegistrySetBuilder()));
 		net.minecraft.data.DataGenerator generator = event.getGenerator();
 		CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
 		PackOutput packOutput = generator.getPackOutput();

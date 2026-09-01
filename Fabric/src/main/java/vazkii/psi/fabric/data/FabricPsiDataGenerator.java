@@ -11,7 +11,6 @@ package vazkii.psi.fabric.data;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.minecraft.core.RegistrySetBuilder;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 
 import vazkii.psi.data.PsiBlockModelGenerator;
@@ -39,6 +38,6 @@ public class FabricPsiDataGenerator implements DataGeneratorEntrypoint {
 
 	@Override
 	public void buildRegistry(RegistrySetBuilder builder) {
-		builder.add(Registries.DAMAGE_TYPE, PsiDataRegistries::bootstrapDamageTypes);
+		PsiDataRegistries.configure(builder);
 	}
 }

@@ -14,6 +14,7 @@ import net.minecraft.resources.ResourceLocation;
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.param.ParamAny;
+import vazkii.psi.common.spell.base.ModSpellPieces;
 
 import java.util.List;
 
@@ -41,7 +42,7 @@ public class PieceConnector extends SpellPiece implements IRedirector {
 	public void getShownPieces(List<SpellPiece> pieces) {
 		for(SpellParam.Side side : SpellParam.Side.class.getEnumConstants()) {
 			if(side.isEnabled()) {
-				PieceConnector piece = (PieceConnector) SpellPiece.create(PieceConnector.class, new Spell());
+				PieceConnector piece = (PieceConnector) ModSpellPieces.CONNECTOR.get().create(new Spell());
 				piece.paramSides.put(piece.target, side);
 				pieces.add(piece);
 			}
@@ -66,7 +67,7 @@ public class PieceConnector extends SpellPiece implements IRedirector {
 	// Dist this class implements IRedirector we don't need this
 	@Override
 	public Class<?> getEvaluationType() {
-		return null;
+		return Void.class;
 	}
 
 	@Override

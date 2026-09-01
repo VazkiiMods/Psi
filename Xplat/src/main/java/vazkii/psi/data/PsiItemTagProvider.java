@@ -13,11 +13,16 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 
+import vazkii.psi.common.item.base.ModCADComponents;
 import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.lib.ModTags;
+import vazkii.psi.common.registry.RegistryEntry;
 
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public class PsiItemTagProvider extends ItemTagsProvider {
@@ -84,6 +89,19 @@ public class PsiItemTagProvider extends ItemTagsProvider {
 		tag(ModTags.INGOT_IVORY_PSIMETAL).add(ModItems.ivoryPsimetal.get());
 		copy(ModTags.Blocks.BLOCK_IVORY_PSIMETAL, ModTags.BLOCK_IVORY_PSIMETAL);
 		copy(ModTags.Blocks.STORAGE_BLOCKS, ModTags.STORAGE_BLOCKS);
+
+		components(ModTags.CAD_ASSEMBLIES, ModCADComponents.assemblies);
+		components(ModTags.CAD_CORES, ModCADComponents.cores);
+		components(ModTags.CAD_SOCKETS, ModCADComponents.sockets);
+		components(ModTags.CAD_BATTERIES, ModCADComponents.batteries);
+		components(ModTags.CAD_DYES, ModCADComponents.colorizers);
+	}
+
+	private void components(TagKey<Item> tag, List<? extends RegistryEntry<? extends Item>> entries) {
+		IntrinsicTagAppender<Item> appender = tag(tag);
+		for(RegistryEntry<? extends Item> entry : entries) {
+			appender.add(entry.get());
+		}
 	}
 
 }

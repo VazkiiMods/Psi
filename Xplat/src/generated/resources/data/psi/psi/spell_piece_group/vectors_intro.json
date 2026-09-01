@@ -1,0 +1,18 @@
+{
+  "main": "psi:operator_vector_construct",
+  "pieces": [
+    "psi:operator_vector_sum",
+    "psi:operator_vector_subtract",
+    "psi:operator_vector_multiply",
+    "psi:operator_vector_divide",
+    "psi:operator_vector_cross_product",
+    "psi:operator_vector_normalize",
+    "psi:operator_vector_negate",
+    "psi:operator_vector_magnitude",
+    "psi:operator_vector_extract_x",
+    "psi:operator_vector_extract_y",
+    "psi:operator_vector_extract_z",
+    "psi:operator_vector_piecewise_maximum",
+    "psi:operator_vector_piecewise_minimum"
+  ]
+}

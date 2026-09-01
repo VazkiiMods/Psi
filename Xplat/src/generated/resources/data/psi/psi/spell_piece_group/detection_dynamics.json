@@ -1,0 +1,8 @@
+{
+  "main": "psi:trick_switch_target_slot",
+  "pieces": [
+    "psi:selector_item_presence",
+    "psi:selector_block_presence",
+    "psi:trick_change_slot"
+  ]
+}

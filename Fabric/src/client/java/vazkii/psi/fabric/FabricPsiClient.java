@@ -13,6 +13,7 @@ import com.mojang.blaze3d.vertex.ByteBufferBuilder;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.model.loading.v1.FabricBakedModelManager;
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
@@ -60,6 +61,7 @@ import vazkii.psi.common.block.base.ModBlocks;
 import vazkii.psi.common.entity.ModEntities;
 import vazkii.psi.common.item.armor.ItemPsimetalArmor;
 import vazkii.psi.common.item.base.ModItems;
+import vazkii.psi.common.item.component.ItemCADComponent;
 import vazkii.psi.common.lib.LibResources;
 import vazkii.psi.fabric.platform.FabricPsiNetworkService;
 import vazkii.psi.fabric.platform.FabricPsiNetworkService.ClientboundRegistration;
@@ -96,6 +98,7 @@ public final class FabricPsiClient implements ClientModInitializer {
 		WorldRenderEvents.START.register(context -> ClientTickHandler.renderTick(context.tickCounter().getGameTimeDeltaPartialTick(false)));
 		WorldRenderEvents.AFTER_TRANSLUCENT.register(context -> PlayerDataRenderHandler.renderAll(
 				context.tickCounter().getGameTimeDeltaPartialTick(false), context.matrixStack()));
+		ItemTooltipCallback.EVENT.register((stack, context, type, lines) -> ItemCADComponent.appendForeignHoverText(context.registries(), stack, lines));
 		network.clientboundRegistrations().forEach(FabricPsiClient::registerClientbound);
 		network.installClientSender(ClientPlayNetworking::send);
 	}

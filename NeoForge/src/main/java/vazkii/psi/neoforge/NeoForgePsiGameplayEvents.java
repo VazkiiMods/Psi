@@ -13,6 +13,7 @@ import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
+import net.neoforged.neoforge.event.entity.player.AdvancementEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.tick.LevelTickEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
@@ -48,6 +49,17 @@ public final class NeoForgePsiGameplayEvents {
 		if(event.getEntity() instanceof ServerPlayer player) {
 			PlayerDataHandler.onPlayerLogin(player);
 			LoopcastTrackingHandler.syncDataFor(player, player);
+		}
+	}
+
+	@SubscribeEvent
+	public static void onAdvancementProgress(AdvancementEvent.AdvancementProgressEvent event) {
+		if(event.getProgressType() != AdvancementEvent.AdvancementProgressEvent.ProgressType.GRANT || !event.getAdvancementProgress().isDone()) {
+			return;
+		}
+
+		if(event.getEntity() instanceof ServerPlayer player) {
+			PlayerDataHandler.onAdvancementCompleted(player, event.getAdvancement().id());
 		}
 	}
 

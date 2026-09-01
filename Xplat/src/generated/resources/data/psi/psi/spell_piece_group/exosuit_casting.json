@@ -1,0 +1,10 @@
+{
+  "main": "psi:selector_time",
+  "pieces": [
+    "psi:selector_attacker",
+    "psi:selector_damage_taken",
+    "psi:selector_sucession_counter",
+    "psi:selector_caster_battery",
+    "psi:selector_caster_energy"
+  ]
+}

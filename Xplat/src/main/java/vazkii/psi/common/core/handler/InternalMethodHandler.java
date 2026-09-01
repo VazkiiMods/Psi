@@ -8,10 +8,10 @@
  */
 package vazkii.psi.common.core.handler;
 
+import net.minecraft.core.HolderLookup;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
@@ -19,6 +19,7 @@ import net.minecraft.world.level.Level;
 
 import org.jetbrains.annotations.Nullable;
 
+import vazkii.psi.api.cad.CADComponentSlot;
 import vazkii.psi.api.internal.IInternalMethodHandler;
 import vazkii.psi.api.internal.IPlayerData;
 import vazkii.psi.api.spell.*;
@@ -64,22 +65,22 @@ public final class InternalMethodHandler implements IInternalMethodHandler {
 	}
 
 	@Override
-	public ItemStack createDefaultCAD(List<ItemStack> components) {
-		return ItemCAD.makeCAD(components);
+	public ItemStack createDefaultCAD(HolderLookup.Provider registries, List<ItemStack> components) {
+		return ItemCAD.makeCAD(registries, components);
 	}
 
 	@Override
-	public ItemStack createCAD(ItemStack base, List<ItemStack> components) {
-		return ItemCAD.makeCAD(base, components);
+	public ItemStack createCAD(HolderLookup.Provider registries, ItemStack base, List<ItemStack> components) {
+		return ItemCAD.makeCAD(registries, base, components);
 	}
 
 	@Override
-	public List<Item> getCADComponents(ItemStack cad) {
+	public List<CADComponentSlot> getCADComponents(ItemStack cad) {
 		return cad.get(ModDataComponents.COMPONENTS.get());
 	}
 
 	@Override
-	public void setCADComponents(ItemStack cad, List<Item> components) {
+	public void setCADComponents(ItemStack cad, List<CADComponentSlot> components) {
 		cad.set(ModDataComponents.COMPONENTS.get(), components);
 	}
 

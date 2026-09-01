@@ -8,6 +8,8 @@
  */
 package vazkii.psi.common.registry;
 
+import com.mojang.serialization.Codec;
+
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -29,6 +31,10 @@ public final class PsiRegistries {
 	public static <T, I extends T> RegistryEntry<I> register(
 			Registry<T> registry, ResourceLocation id, Supplier<I> factory) {
 		return SERVICE.register(registry, id, factory);
+	}
+
+	public static <T> void registerSyncedDatapackRegistry(ResourceKey<Registry<T>> key, Codec<T> codec) {
+		SERVICE.registerSyncedDatapackRegistry(key, codec);
 	}
 
 }

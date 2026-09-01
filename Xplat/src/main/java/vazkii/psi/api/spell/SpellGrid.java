@@ -23,6 +23,7 @@ import net.minecraft.network.codec.StreamCodec;
 import vazkii.psi.common.network.LazyStreamCodec;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -213,12 +214,6 @@ public final class SpellGrid {
 		return atSide;
 	}
 
-	@Deprecated
-	@SuppressWarnings("unused")
-	public SpellPiece getPieceAtSideWithRedirections(List<SpellPiece> unused, int x, int y, SpellParam.Side side) throws SpellCompilationException {
-		return getPieceAtSideWithRedirections(x, y, side);
-	}
-
 	public SpellPiece getPieceAtSideWithRedirections(int x, int y, SpellParam.Side side) throws SpellCompilationException {
 		return getPieceAtSideWithRedirections(x, y, side, piece -> {});
 	}
@@ -334,6 +329,16 @@ public final class SpellGrid {
 		}
 
 		cmp.put(TAG_SPELL_LIST, list);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return this == obj || obj instanceof SpellGrid other && Arrays.deepEquals(gridData, other.gridData);
+	}
+
+	@Override
+	public int hashCode() {
+		return Arrays.deepHashCode(gridData);
 	}
 
 	// TODO: Put this somewhere nicer, or track down a library? Not sure where

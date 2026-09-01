@@ -59,13 +59,9 @@ public final class PsiConfig {
 
 	public interface ClientConfigAccess {
 
-		boolean useShaders();
-
 		boolean psiBarOnRight();
 
 		boolean contextSensitiveBar();
-
-		int maxPsiBarScale();
 
 		boolean pauseGameInProgrammer();
 

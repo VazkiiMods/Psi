@@ -84,29 +84,19 @@ public final class FiberPsiConfig {
 
 	private static final class Client implements PsiConfig.ClientConfigAccess {
 
-		private static final NumberConfigType<Integer> PSI_BAR_SCALE = INTEGER.withMinimum(1).withMaximum(5);
-
-		private final PropertyMirror<Boolean> useShaders = PropertyMirror.create(BOOLEAN);
 		private final PropertyMirror<Boolean> psiBarOnRight = PropertyMirror.create(BOOLEAN);
 		private final PropertyMirror<Boolean> contextSensitiveBar = PropertyMirror.create(BOOLEAN);
-		private final PropertyMirror<Integer> maxPsiBarScale = PropertyMirror.create(PSI_BAR_SCALE);
 		private final PropertyMirror<Boolean> pauseGameInProgrammer = PropertyMirror.create(BOOLEAN);
 		private final PropertyMirror<Boolean> letterNumberGridCoordinates = PropertyMirror.create(BOOLEAN);
 
 		private ConfigTree configure(ConfigTreeBuilder builder) {
 			builder.fork("client")
-					.beginValue("useShaders", BOOLEAN, true)
-					.withComment("Controls whether Psi's shaders are used.")
-					.finishValue(useShaders::mirror)
 					.beginValue("psiBarOnRight", BOOLEAN, true)
 					.withComment("Controls whether the Psi Bar is rendered on the right of the screen.")
 					.finishValue(psiBarOnRight::mirror)
 					.beginValue("contextSensitiveBar", BOOLEAN, true)
 					.withComment("Controls whether a full Psi Bar is hidden while holding an item that uses Psi.")
 					.finishValue(contextSensitiveBar::mirror)
-					.beginValue("maxPsiBarScale", PSI_BAR_SCALE, 3)
-					.withComment("The maximum Psi Bar scale. Range: 1 through 5.")
-					.finishValue(maxPsiBarScale::mirror)
 					.beginValue("pauseGameInProgrammer", BOOLEAN, true)
 					.withComment("Controls whether the Spell Programmer pauses a singleplayer game.")
 					.finishValue(pauseGameInProgrammer::mirror)
@@ -118,11 +108,6 @@ public final class FiberPsiConfig {
 		}
 
 		@Override
-		public boolean useShaders() {
-			return useShaders.getValue();
-		}
-
-		@Override
 		public boolean psiBarOnRight() {
 			return psiBarOnRight.getValue();
 		}
@@ -130,11 +115,6 @@ public final class FiberPsiConfig {
 		@Override
 		public boolean contextSensitiveBar() {
 			return contextSensitiveBar.getValue();
-		}
-
-		@Override
-		public int maxPsiBarScale() {
-			return maxPsiBarScale.getValue();
 		}
 
 		@Override

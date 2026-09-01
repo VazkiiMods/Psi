@@ -1,0 +1,7 @@
+{
+  "main": "psi:selector_caster",
+  "pieces": [
+    "psi:trick_debug",
+    "psi:trick_debug_spamless"
+  ]
+}

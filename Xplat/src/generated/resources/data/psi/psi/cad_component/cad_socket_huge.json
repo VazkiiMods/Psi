@@ -1,0 +1,8 @@
+{
+  "type": "socket",
+  "stats": {
+    "bandwidth": 8,
+    "saved_vectors": 21,
+    "sockets": 12
+  }
+}

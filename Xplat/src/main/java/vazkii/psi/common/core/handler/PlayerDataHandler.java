@@ -8,7 +8,10 @@
  */
 package vazkii.psi.common.core.handler;
 
+import net.minecraft.core.Holder;
+import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
@@ -23,10 +26,15 @@ import org.jetbrains.annotations.NotNull;
 
 import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.cad.ICAD;
+import vazkii.psi.api.event.PsiEvents;
 import vazkii.psi.api.exosuit.PsiArmorEvent;
+import vazkii.psi.api.spell.PieceGroupAdvancementComplete;
+import vazkii.psi.api.spell.SpellPieceGroup;
 import vazkii.psi.common.network.PsiNetwork;
 import vazkii.psi.common.network.message.MessageTriggerJumpSpell;
 import vazkii.psi.common.platform.PsiPlayerDataSync;
+
+import java.util.function.Predicate;
 
 public final class PlayerDataHandler {
 	private PlayerDataHandler() {}
@@ -75,6 +83,26 @@ public final class PlayerDataHandler {
 		CompoundTag dataTag = new CompoundTag();
 		get(player).writeToNBT(dataTag);
 		PsiPlayerDataSync.sendFull(player, dataTag);
+		postAdvancementUnlocks(player, get(player)::hasAdvancement);
+	}
+
+	public static void onAdvancementCompleted(ServerPlayer player, ResourceLocation advancement) {
+		postAdvancementUnlocks(player, advancement::equals);
+	}
+
+	private static void postAdvancementUnlocks(ServerPlayer player, Predicate<ResourceLocation> completed) {
+		PlayerData data = get(player);
+		Registry<SpellPieceGroup> groups = player.registryAccess().registryOrThrow(PsiAPI.SPELL_PIECE_GROUP_REGISTRY_KEY);
+		for(Holder.Reference<SpellPieceGroup> group : groups.holders().toList()) {
+			if(!(group.value().unlock() instanceof SpellPieceGroup.Unlock.Advancement(ResourceLocation required)) || !completed.test(required)) {
+				continue;
+			}
+
+			ResourceLocation groupId = group.key().location();
+			if(!data.hasAdvancement(groupId)) {
+				PsiEvents.post(new PieceGroupAdvancementComplete(null, player, groupId));
+			}
+		}
 	}
 
 	public static void onEntityJump(Player player) {

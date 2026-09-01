@@ -1,0 +1,8 @@
+{
+  "main": "psi:trick_conjure_block",
+  "pieces": [
+    "psi:trick_conjure_light",
+    "psi:trick_conjure_block_sequence",
+    "psi:trick_particle_trail"
+  ]
+}

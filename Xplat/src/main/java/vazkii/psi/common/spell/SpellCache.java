@@ -8,9 +8,14 @@
  */
 package vazkii.psi.common.spell;
 
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.world.entity.player.Player;
+
+import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.spell.CompiledSpell;
 import vazkii.psi.api.spell.ISpellCache;
 import vazkii.psi.api.spell.Spell;
+import vazkii.psi.api.spell.SpellPiece;
 import vazkii.psi.common.platform.PsiConfig;
 
 import java.util.LinkedHashMap;
@@ -33,16 +38,29 @@ public final class SpellCache implements ISpellCache {
 	};
 
 	@Override
-	public CompiledSpell getCompiledSpell(Spell spell) {
-		if(map.containsKey(spell.uuid)) {
-			return map.get(spell.uuid);
+	public CompiledSpell getCompiledSpell(Spell spell, Player player) {
+		CompiledSpell cached = map.get(spell.uuid);
+		if(cached != null) {
+			return allPiecesAvailable(spell, player) ? cached : null;
 		}
 
-		Optional<CompiledSpell> result = new SpellCompiler().compile(spell).left();
+		Optional<CompiledSpell> result = new SpellCompiler().compile(spell, player.registryAccess(), player).left();
 		return result.map(compSpell -> {
 			map.put(spell.uuid, compSpell);
 			return compSpell;
 		}).orElse(null);
+	}
+
+	private static boolean allPiecesAvailable(Spell spell, Player player) {
+		RegistryAccess registries = player.registryAccess();
+		for(SpellPiece[] row : spell.grid.gridData) {
+			for(SpellPiece piece : row) {
+				if(piece != null && !PsiAPI.isPieceAvailable(player, registries, piece.getRegistryKey())) {
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 
 }

@@ -1,0 +1,11 @@
+{
+  "main": "psi:operator_sum",
+  "pieces": [
+    "psi:operator_subtract",
+    "psi:operator_multiply",
+    "psi:operator_divide",
+    "psi:operator_absolute",
+    "psi:operator_inverse",
+    "psi:operator_root"
+  ]
+}

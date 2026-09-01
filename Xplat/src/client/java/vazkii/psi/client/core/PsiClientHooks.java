@@ -8,8 +8,11 @@
  */
 package vazkii.psi.client.core;
 
+import net.minecraft.advancements.AdvancementHolder;
+import net.minecraft.advancements.AdvancementProgress;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.multiplayer.ClientAdvancements;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -29,6 +32,7 @@ import vazkii.psi.client.gui.GuiProgrammer;
 import vazkii.psi.client.network.PsiClientMessageHandler;
 import vazkii.psi.common.block.tile.TileProgrammer;
 import vazkii.psi.common.client.PsiClientRuntime;
+import vazkii.psi.mixin.client.AccessorClientAdvancements;
 
 public final class PsiClientHooks implements PsiClientRuntime.Hooks {
 
@@ -58,7 +62,14 @@ public final class PsiClientHooks implements PsiClientRuntime.Hooks {
 	@Override
 	public boolean hasAdvancement(ResourceLocation advancementLocation, Player player) {
 		if(player instanceof LocalPlayer localPlayer) {
-			return localPlayer.connection.getAdvancements().get(advancementLocation) != null;
+			ClientAdvancements advancements = localPlayer.connection.getAdvancements();
+			AdvancementHolder holder = advancements.get(advancementLocation);
+			if(holder == null) {
+				return false;
+			}
+
+			AdvancementProgress progress = ((AccessorClientAdvancements) advancements).psi$getProgress().get(holder);
+			return progress != null && progress.isDone();
 		}
 
 		if(!(player instanceof ServerPlayer serverPlayer) || serverPlayer.getServer() == null) {

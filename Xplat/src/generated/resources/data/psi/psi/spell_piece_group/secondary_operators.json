@@ -1,0 +1,15 @@
+{
+  "main": "psi:operator_square",
+  "pieces": [
+    "psi:operator_cube",
+    "psi:operator_power",
+    "psi:operator_square_root",
+    "psi:operator_log",
+    "psi:operator_ceiling",
+    "psi:operator_floor",
+    "psi:operator_round",
+    "psi:operator_max",
+    "psi:operator_min",
+    "psi:constant_e"
+  ]
+}

@@ -74,8 +74,6 @@
   "block.psi.ebony_psimetal_block": "흑단 프사이 금속 블록",
   "block.psi.ivory_psimetal_block": "상아 프사이 금속 블록",
   "block.psi.conjured": "소환된 블록",
-  "block.psi.psimetal_plate_white": "밝은 프사이 금속 판",
-  "block.psi.psimetal_plate_white_light": "밝은 프사이 금속 흐름 판",
   "item.psi.psidust": "프사이 가루",
   "item.psi.psimetal": "프사이 금속 주괴",
   "item.psi.psigem": "Psigem",
@@ -123,19 +121,12 @@
   "item.psi.cad_colorizer_psi": "프사이 CAD 염색제",
   "item.psi.cad_colorizer_empty": "빈 CAD 염색제",
   "item.psi.spell_bullet": "주문 탄환",
-  "item.psi.spell_bullet_active": "프로그램된 주문 탄환",
   "item.psi.spell_bullet_projectile": "발사체형 주문 탄환",
-  "item.psi.spell_bullet_projectile_active": "프로그램된 발사체형 주문 탄환",
   "item.psi.spell_bullet_loop": "반복형 주문 탄환",
-  "item.psi.spell_bullet_loop_active": "프로그램된 반복형 주문 탄환",
   "item.psi.spell_bullet_circle": "주문 원 탄환",
-  "item.psi.spell_bullet_circle_active": "프로그램된 주문 원 탄환",
   "item.psi.spell_bullet_grenade": "수류탄형 주문 탄환",
-  "item.psi.spell_bullet_grenade_active": "프로그램된 수류탄형 주문 탄환",
   "item.psi.spell_bullet_charge": "충전형 주문 탄환",
-  "item.psi.spell_bullet_charge_active": "프로그램된 충전형 주문 탄환",
   "item.psi.spell_bullet_mine": "지뢰형 주문 탄환",
-  "item.psi.spell_bullet_mine_active": "프로그램된 지뢰형 주문 탄환",
   "item.psi.spell_drive": "주문 드라이브",
   "item.psi.psimetal_shovel": "프사이 금속 삽",
   "item.psi.psimetal_pickaxe": "프사이 금속 곡괭이",
@@ -684,36 +675,6 @@
   "command.psi.unlearn.console": "콘솔이 Psi를 학습할 수 없습니다. 플레이어를 지정해 보십시오! /psi-unlearn <group> [player]",
   "command.psi.unlearn.not_a_group": "'%s'은(는) 유효한 프사이 조각 그룹이 아닙니다.",
   "command.psi.unlearn.unknown": "이 플레이어에는 프사이 데이터가 없습니다. 모드 작성자에게 보고하십시오.",
-  "psi.tutorial1": "튜토리얼 1",
-  "psi.tutorial2": "튜토리얼 2",
-  "psi.tutorial3": "튜토리얼 3",
-  "psi.tutorial4": "튜토리얼 4",
-  "psi.numbers_intro": "숫자 101",
-  "psi.vectors_intro": "벡터 101",
-  "psi.entities_intro": "엔티티 101",
-  "psi.projectiles": "대안 시전",
-  "psi.block_works": "블록 작업",
-  "psi.infusion": "프사이 금속 주입",
-  "psi.movement": "이동 진전",
-  "psi.loopcasting": "반복 시전",
-  "psi.block_movement": "블록 이동",
-  "psi.elemental_arts": "기초 예술",
-  "psi.greater_infusion": "대형 주입",
-  "psi.tool_casting": "도구 시전",
-  "psi.positive_effects": "긍정적 효과",
-  "psi.negative_effects": "부정적 효과",
-  "psi.exosuit_casting": "엑소수트 시전",
-  "psi.trignometry": "삼각법",
-  "psi.smeltery": "제련",
-  "psi.flow_control": "흐름 제어",
-  "psi.block_conjuration": "블록 소환",
-  "psi.eidos_ceversal": "형상 조작",
-  "psi.detection_dynamics": "감지 및 초점",
-  "psi.memory_management": "메모리 관리",
-  "psi.secondary_operators": "보조 연산자",
-  "psi.misc_tricks": "기타 동작",
-  "psi.list_operations": "목록 연산",
-  "psi.fake_level_psidust": "프사이 가루 주입",
   "jei.psi.category.trick": "주문 주입",
   "jei.psi.spell_copy": "주문 복사",
   "psi.subtitle.book": "귀여운 알렉숨은 멀리서 연주해요.",
@@ -738,7 +699,7 @@
   "advancement.psi:ebony_pickup.desc": "석탄에서 첫 흑단 물질 주입",
   "advancement.psi:ivory_pickup": "다른 가치",
   "advancement.psi:ivory_pickup.desc": "석영에서 첫 상아 물질 주입",
-  "advancement.psi:encyclopaedia_psionica": "내 태블릿에 저장,
+  "advancement.psi:encyclopaedia_psionica": "내 태블릿에 저장",
   "advancement.psi:encyclopaedia_psionica.desc": "Psi에 대한 가이드인 프사이 백과사전을 제작",
   "psi.book.subtitle": "주문 101",
   "psi.book.name": "프사이 백과사전",
@@ -826,75 +787,9 @@
   "psi.book.page.tutorial4.0": "알았어요, 알았어요 네가 무슨 생각하는지 알아요: \"지루해요. 우리 언제부터 멋있는 거 해요?\" 자... 지금요!$(p)세상과 실제로 상호작용하는 $(thing)동작$(0)을 소개하겠습니다: $(piece)동작: 움직임 추가$(0).$(p)이 $(thing)동작$(0)은 엔티티를 가져와서 특정 방향으로 움직임을 추가합니다(즉, 밀어넣기).",
   "psi.book.page.tutorial4.1": "예를 들어 시전자인 당신, 닭, 좀비, 마인카트, 떨어지는 모래 블록, 화살, 위더 등이 있습니다.$(p)이 $(thing)동작$(0)은 엔티티(이동할 엔티티를 나타냄), 벡터(밀어넣기 방향) 및 숫자 상수($(thing)동작$(0)이 엔티티를 얼마나 세게 밀어넣어야 하는지)의 매개 변수로 사용됩니다.$(p)$(o)참고: \"벡터\"라는 단어가 무엇을 의미하는지 잘 모를 경우 $(l:basics/vector_primer)이 항목$(/l)이 좋은 소개가 되어야 합니다.$()",
   "psi.book.page.tutorial4.2": "시전 시 $(piece)동작: 움직임 추가$(0)을 사용하여 시전자를 앞으로 올리는 $(thing)주문$(0)을 작성해 보겠습니다.$(p)앞서 언급한 것처럼 $(piece)선택: 시전자$(0)는 엔티티(즉, 시전자)를 반환하므로, 이 엔티티를 $(piece)동작: 움직임 추가$(0)에 대한 첫 번째 매개 변수로 사용할 수 있습니다.$(p)$(thing)동작$(0)이 당신을 $(o)앞으로$() 나아가게 하고 싶어요. $(o)당신이 보고 있는 방향으로요$(). 그러기 위해 다음 조각을 소개하겠습니다: $(piece)연산자: 엔티티의 시선$(0).",
-  "psi.book.page.tutorial4.3": 어떤
-  $(thing)연산자$(0)
-  조각도
-  주변의
-  세계를
-  어떤
-  식으로든
-  변화시키지
-  않으며
-  일부
-  예외를
-  제외하고는
-  정보를
-  수집하지도
-  않습니다.
-  대신,
-  그들은
-  단지
-  정보를
-  더
-  유용한
-  형태로
-  $(o)변환$()합니다.$(p)특히
-  $(piece)연산자: 엔티티의
-  시선$(0)은
-  엔티티를
-  수락하고
-  단위
-  벡터(엔티티가
-  보고
-  있는
-  방향)를
-  반환합니다.$(p)따라서,
-  $(piece)선택: 시전자$(0)에
-  연결된
-  이들
-  중
-  하나가
-  여러분이
-  보고
-  있는
-  모든
-  곳을
-  가리키는
-  벡터를
-  반환합니다.
-  ",
+  "psi.book.page.tutorial4.3": "어떤 $(thing)연산자$(0) 조각도 주변의 세계를 어떤 식으로든 변화시키지 않으며 일부 예외를 제외하고는 정보를 수집하지도 않습니다. 대신, 그들은 단지 정보를 더 유용한 형태로 $(o)변환$()합니다.$(p)특히 $(piece)연산자: 엔티티의 시선$(0)은 엔티티를 수락하고 단위 벡터(엔티티가 보고 있는 방향)를 반환합니다.$(p)따라서, $(piece)선택: 시전자$(0)에 연결된 이들 중 하나가 여러분이 보고 있는 모든 곳을 가리키는 벡터를 반환합니다.",
   "psi.book.page.tutorial4.4": "마지막으로, $(piece)동작: 움직임 추가$(0)의 마지막 매개 변수를 위해 간단한 $(piece)상수: 숫자$(0)가 할 것입니다.$(p)이 $(thing)주문$(0)을 모두 함께 적용해 보겠습니다: 먼저 $(l:basics/spell_programmer)$(item)주문 프로그래머$(0)$(/l)를 열고 현재 프로그래머에 있는 $(thing)주문$(0)을 삭제하십시오. 그런 다음, $(piece)동작: 움직임 추가$(0)를 그리드 근처에 놓습니다.",
-  "psi.book.page.tutorial4.5": "$(piece)선택: 시전자$(0)를 $(thing)동작$(0) 바로 위에 배치하십시오. $(piece)연산자: 엔티티의 시선$(0)은 오른쪽을 보고 $(piece)상수: 숫자$(0)를 표시합니다. 왼쪽에 숫자가 있습니다.$(p)$(thing)상수$(0) 값을 입력합니다(숫자 3을 권장합니다).$(p)$(thing)연산자$(0)와 $(thing)"
-  선택$(0)
-  사이에
-  $(piece)연결기$(0)를
-  배치한
-  후
-  $(thing)주문$(0)이
-  컴파일되도록
-  $(thing)연산자$(0)와
-  $(thing)동작$(0)에
-  대한
-  모든
-  매개
-  변수를
-  설정합니다.
-  그러면
-  다음
-  페이지의
-  이미지처럼
-  표시됩니다.
-  ",
+  "psi.book.page.tutorial4.5": "$(piece)선택: 시전자$(0)를 $(thing)동작$(0) 바로 위에 배치하십시오. $(piece)연산자: 엔티티의 시선$(0)은 오른쪽을 보고 $(piece)상수: 숫자$(0)를 표시합니다. 왼쪽에 숫자가 있습니다.$(p)$(thing)상수$(0) 값을 입력합니다(숫자 3을 권장합니다).$(p)$(thing)연산자$(0)와 $(thing)선택$(0) 사이에 $(piece)연결기$(0)를 배치한 후 $(thing)주문$(0)이 컴파일되도록 $(thing)연산자$(0)와 $(thing)동작$(0)에 대한 모든 매개 변수를 설정합니다. 그러면 다음 페이지의 이미지처럼 표시됩니다.",
   "psi.book.page.tutorial4.6": "밀어넣기를 시작할 때",
   "psi.book.page.tutorial4.7": "$(thing)CAD$(0)에 $(thing)주문$(0)을 복사하여 정면을 보고 시전하십시오. 만약 여러분이 앞으로 나가게 된다면, 축하합니다! 첫 번째 실제 $(thing)주문$(0)작성을 마쳤습니다!$(p)$(o)참고: 새로운 $(thing)주문$(0)을 연속으로 너무 많이 하면 건강에 좋지 않을 수 있습니다. 이에 대한 자세한 내용은 $(l:basics/tutorial_5)다음 튜토리얼$(/l)에서 확인할 수 있습니다.$()",
   "psi.book.entry.tutorial5": "튜토리얼 (5): 한계",

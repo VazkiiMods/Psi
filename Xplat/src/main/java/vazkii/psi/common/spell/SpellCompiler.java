@@ -10,6 +10,13 @@ package vazkii.psi.common.spell;
 
 import com.mojang.datafixers.util.Either;
 
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.player.Player;
+
+import org.jetbrains.annotations.Nullable;
+
+import vazkii.psi.api.PsiAPI;
 import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.CompiledSpell.Action;
 import vazkii.psi.api.spell.CompiledSpell.CatchHandler;
@@ -27,21 +34,25 @@ public final class SpellCompiler implements ISpellCompiler {
 	private CompiledSpell compiled;
 
 	@Override
-	public Either<CompiledSpell, SpellCompilationException> compile(Spell in) {
+	public Either<CompiledSpell, SpellCompilationException> compile(Spell in, RegistryAccess registries, @Nullable Player player) {
 		try {
-			return Either.left(doCompile(in));
+			return Either.left(doCompile(in, registries, player));
 		} catch (SpellCompilationException e) {
 			return Either.right(e);
 		}
 	}
 
-	public CompiledSpell doCompile(Spell spell) throws SpellCompilationException {
+	public CompiledSpell doCompile(Spell spell, RegistryAccess registries, @Nullable Player player) throws SpellCompilationException {
 		if(spell == null) {
 			throw new SpellCompilationException(SpellCompilationException.NO_SPELL);
 		}
 
 		redirectionPieces.clear();
 		compiled = new CompiledSpell(spell);
+
+		for(SpellPiece piece : findPieces(ignored -> true)) {
+			checkPieceAvailable(piece, registries, player);
+		}
 
 		for(SpellPiece piece : findPieces(EnumPieceType.ERROR_HANDLER::equals)) {
 			buildHandler(piece);
@@ -63,6 +74,18 @@ public final class SpellCompiler implements ISpellCompiler {
 			throw new SpellCompilationException(SpellCompilationException.NO_NAME);
 		}
 		return compiled;
+	}
+
+	private static void checkPieceAvailable(SpellPiece piece, RegistryAccess registries, @Nullable Player player) throws SpellCompilationException {
+		if(!PsiAPI.isPieceEnabled(registries, piece.getRegistryKey())) {
+			throw new SpellCompilationException(SpellCompilationException.DISABLED_PIECE, piece.x, piece.y,
+					Component.translatable(piece.getUnlocalizedName()));
+		}
+
+		if(player != null && PsiAPI.isPieceLocked(player, registries, piece.getRegistryKey())) {
+			throw new SpellCompilationException(SpellCompilationException.LOCKED_PIECE, piece.x, piece.y,
+					Component.translatable(piece.getUnlocalizedName()));
+		}
 	}
 
 	public void buildPiece(SpellPiece piece) throws SpellCompilationException {

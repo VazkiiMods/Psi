@@ -110,7 +110,7 @@ public class PsiCreativeTab {
 					output.accept(ModItems.exosuitSensorWater.get());
 					output.accept(ModItems.exosuitSensorTrigger.get());
 
-					output.acceptAll(ItemCAD.getCreativeTabItems());
+					output.acceptAll(ItemCAD.getCreativeTabItems(parameters.holders()));
 
 					output.accept(ModItems.vectorRuler.get());
 					output.accept(ModItems.psimetalShovel.get());

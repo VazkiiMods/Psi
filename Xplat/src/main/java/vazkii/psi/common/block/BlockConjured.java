@@ -32,8 +32,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 import org.jetbrains.annotations.NotNull;
 
+import vazkii.psi.api.cad.CADComponentLookup;
 import vazkii.psi.common.block.tile.TileConjured;
-import vazkii.psi.common.client.PsiClientRuntime;
 
 public class BlockConjured extends Block implements EntityBlock, SimpleWaterloggedBlock {
 
@@ -65,7 +65,7 @@ public class BlockConjured extends Block implements EntityBlock, SimpleWaterlogg
 	public Integer getBeaconColorMultiplier(@NotNull BlockState state, LevelReader world, @NotNull BlockPos pos, @NotNull BlockPos beaconPos) {
 		BlockEntity inWorld = world.getBlockEntity(pos);
 		if(inWorld instanceof TileConjured) {
-			return PsiClientRuntime.colorForColorizer(((TileConjured) inWorld).colorizer);
+			return CADComponentLookup.color(world.registryAccess(), ((TileConjured) inWorld).colorizer);
 		}
 		return null;
 	}

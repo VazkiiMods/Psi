@@ -22,8 +22,13 @@ public interface ICADComponent {
 	EnumCADComponent getComponentType(ItemStack stack);
 
 	/**
-	 * Gets the stat value for the respective stat of the stack
+	 * Gets the stat value for the respective stat of the stack.
+	 *
+	 * @deprecated Stats are read from the {@code psi:cad_component} datapack registry
+	 *             (see {@link CADComponentLookup}); this method is only consulted for
+	 *             items without a registry entry.
 	 */
+	@Deprecated
 	int getCADStatValue(ItemStack stack, EnumCADStat stat);
 
 }

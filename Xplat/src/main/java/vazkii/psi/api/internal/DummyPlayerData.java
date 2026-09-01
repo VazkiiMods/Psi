@@ -57,6 +57,11 @@ public class DummyPlayerData implements IPlayerData {
 	}
 
 	@Override
+	public boolean hasAdvancement(ResourceLocation advancement) {
+		return false;
+	}
+
+	@Override
 	public boolean isPieceGroupUnlocked(ResourceLocation group, @Nullable ResourceLocation piece) {
 		return false;
 	}

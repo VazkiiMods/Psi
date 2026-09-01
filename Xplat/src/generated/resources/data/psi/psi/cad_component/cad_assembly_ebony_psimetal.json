@@ -1,0 +1,8 @@
+{
+  "type": "assembly",
+  "model": "psi:item/cad_ebony_psimetal",
+  "stats": {
+    "efficiency": 90,
+    "potency": 350
+  }
+}

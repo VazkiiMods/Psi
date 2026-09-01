@@ -48,7 +48,7 @@ public abstract class SpellPiece {
 		p.writeToNBT(tag);
 		return tag;
 	});
-	public final ResourceLocation registryKey;
+	ResourceLocation registryKey;
 	public final Spell spell;
 	public final Map<String, SpellParam<?>> params = new LinkedHashMap<>();
 	public final Map<SpellParam<?>, SpellParam.Side> paramSides = new LinkedHashMap<>();
@@ -59,7 +59,6 @@ public abstract class SpellPiece {
 
 	public SpellPiece(Spell spell) {
 		this.spell = spell;
-		registryKey = PsiAPI.SPELL_PIECE_REGISTRY.getKey(getClass());
 		initParams();
 	}
 
@@ -95,26 +94,24 @@ public abstract class SpellPiece {
 		}
 
 		if(exists) {
-			Class<? extends SpellPiece> clazz = PsiAPI.SPELL_PIECE_REGISTRY.get(rl);
-			SpellPiece p = create(clazz, spell);
+			SpellPiece p = PsiAPI.SPELL_PIECE_REGISTRY.get(rl).create(spell);
 			p.readFromNBT(cmp);
 			return p;
 		}
 		return null;
 	}
 
-	public static SpellPiece create(Class<? extends SpellPiece> clazz, Spell spell) {
-		try {
-			return clazz.getConstructor(Spell.class).newInstance(spell);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
-
 	public static SpellPiece create(ResourceLocation location) {
 		return PsiAPI.SPELL_PIECE_REGISTRY.getOptional(location)
-				.map(clazz -> SpellPiece.create(clazz, dummySpell))
+				.map(type -> type.create(dummySpell))
 				.orElse(null);
+	}
+
+	/**
+	 * The id this piece's {@link SpellPieceType} is registered under.
+	 */
+	public ResourceLocation getRegistryKey() {
+		return registryKey;
 	}
 
 	/**
@@ -159,8 +156,8 @@ public abstract class SpellPiece {
 	 * @see #getEvaluationType()
 	 */
 	public Component getEvaluationTypeString() {
-		Class<?> evalType = getEvaluationType();
-		String evalStr = evalType == null ? "null" : CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, evalType.getSimpleName());
+		Class<?> evalType = Objects.requireNonNullElse(getEvaluationType(), Void.class);
+		String evalStr = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, evalType.getSimpleName());
 		MutableComponent s = Component.translatable("psi.datatype." + evalStr);
 		if(getPieceType() == EnumPieceType.CONSTANT) {
 			s.append(" ").append(Component.translatable("psimisc.constant"));
@@ -424,5 +421,28 @@ public abstract class SpellPiece {
 		if(!comment.isEmpty()) {
 			cmp.putString(TAG_COMMENT, comment);
 		}
+	}
+
+	private CompoundTag toNBT() {
+		CompoundTag cmp = new CompoundTag();
+		writeToNBT(cmp);
+		return cmp;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if(this == obj) {
+			return true;
+		}
+		if(obj == null || getClass() != obj.getClass()) {
+			return false;
+		}
+		SpellPiece other = (SpellPiece) obj;
+		return x == other.x && y == other.y && toNBT().equals(other.toNBT());
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(x, y, toNBT());
 	}
 }

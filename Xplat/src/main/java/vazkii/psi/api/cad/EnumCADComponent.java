@@ -8,12 +8,16 @@
  */
 package vazkii.psi.api.cad;
 
+import com.mojang.serialization.Codec;
+
+import net.minecraft.util.StringRepresentable;
+
 import java.util.Locale;
 
 /**
  * An Enum defining all types of CAD components.
  */
-public enum EnumCADComponent {
+public enum EnumCADComponent implements StringRepresentable {
 
 	/**
 	 * If you define an item using this component, it must implement ICADAssembly
@@ -27,8 +31,15 @@ public enum EnumCADComponent {
 	 */
 	DYE;
 
+	public static final Codec<EnumCADComponent> CODEC = StringRepresentable.fromEnum(EnumCADComponent::values);
+
+	@Override
+	public String getSerializedName() {
+		return name().toLowerCase(Locale.ROOT);
+	}
+
 	public String getName() {
-		return "psi.component." + name().toLowerCase(Locale.ROOT);
+		return "psi.component." + getSerializedName();
 	}
 
 }

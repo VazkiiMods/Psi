@@ -23,6 +23,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3d;
 
+import vazkii.psi.api.cad.CADComponentLookup;
 import vazkii.psi.api.internal.PsiRenderHelper;
 import vazkii.psi.api.spell.ISpellAcceptor;
 import vazkii.psi.api.spell.ISpellImmune;
@@ -190,7 +191,7 @@ public class EntitySpellCircle extends Entity implements ISpellImmune {
 
 		if(level().isClientSide) {
 			ItemStack colorizer = entityData.get(COLORIZER_DATA);
-			int colorVal = PsiClientRuntime.colorForColorizer(colorizer);
+			int colorVal = CADComponentLookup.color(level().registryAccess(), colorizer);
 
 			float r = PsiRenderHelper.r(colorVal) / 255F;
 			float g = PsiRenderHelper.g(colorVal) / 255F;

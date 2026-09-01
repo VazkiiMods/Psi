@@ -15,9 +15,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 
 import vazkii.psi.api.PsiAPI;
+import vazkii.psi.api.cad.CADComponentLookup;
 import vazkii.psi.api.cad.EnumCADComponent;
 import vazkii.psi.api.cad.ICAD;
-import vazkii.psi.api.cad.ICADAssembly;
 import vazkii.psi.api.spell.ISpellAcceptor;
 import vazkii.psi.common.item.base.ModItems;
 import vazkii.psi.common.lib.LibItemNames;
@@ -52,13 +52,13 @@ public final class ClientModelHandler {
 	public static BakedModel resolveCadModel(net.minecraft.world.item.ItemStack stack) {
 		ICAD cad = (ICAD) stack.getItem();
 		var assemblyStack = cad.getComponentInSlot(stack, EnumCADComponent.ASSEMBLY);
-		if(assemblyStack.isEmpty() || !(assemblyStack.getItem() instanceof ICADAssembly assembly)) {
+		if(assemblyStack.isEmpty()) {
 			return Minecraft.getInstance().getModelManager().getMissingModel();
 		}
 		if(cadModelLookup == null) {
 			throw new IllegalStateException("CAD model lookup has not been installed");
 		}
-		return cadModelLookup.apply(assembly.getCADModel(assemblyStack, stack));
+		return cadModelLookup.apply(CADComponentLookup.cadModel(cad.getComponentSlot(stack, EnumCADComponent.ASSEMBLY), assemblyStack, stack));
 	}
 
 	public static void registerItemProperties(ItemPropertyRegistrar registrar) {

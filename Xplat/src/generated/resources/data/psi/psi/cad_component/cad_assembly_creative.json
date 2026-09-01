@@ -1,0 +1,8 @@
+{
+  "type": "assembly",
+  "model": "psi:item/cad_creative",
+  "stats": {
+    "efficiency": -1,
+    "potency": -1
+  }
+}

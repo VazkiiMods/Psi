@@ -16,9 +16,9 @@ import net.minecraft.world.level.Level;
 
 import org.jetbrains.annotations.NotNull;
 
+import vazkii.psi.api.cad.CADComponentLookup;
 import vazkii.psi.api.cad.EnumCADComponent;
 import vazkii.psi.api.cad.ICAD;
-import vazkii.psi.api.cad.ICADColorizer;
 import vazkii.psi.common.crafting.ModCraftingRecipes;
 import vazkii.psi.common.platform.PsiEnvironment;
 import vazkii.psi.common.platform.PsiWorldInteractions;
@@ -41,7 +41,7 @@ public class ColorizerChangeRecipe extends CustomRecipe {
 						return false;
 					}
 					foundCAD = true;
-				} else if(stack.getItem() instanceof ICADColorizer) {
+				} else if(CADComponentLookup.isComponent(world.registryAccess(), stack, EnumCADComponent.DYE)) {
 					if(foundColorizer) {
 						return false;
 					}
@@ -64,7 +64,7 @@ public class ColorizerChangeRecipe extends CustomRecipe {
 		for(int i = 0; i < inv.size(); i++) {
 			ItemStack stack = inv.getItem(i);
 			if(!stack.isEmpty()) {
-				if(stack.getItem() instanceof ICADColorizer) {
+				if(CADComponentLookup.isComponent(access, stack, EnumCADComponent.DYE)) {
 					colorizer = stack;
 				} else {
 					cad = stack;
@@ -78,7 +78,7 @@ public class ColorizerChangeRecipe extends CustomRecipe {
 
 		ItemStack copy = cad.copy();
 		ICAD.copyComponents(cad, copy);
-		((ICAD) copy.getItem()).setCADComponent(copy, colorizer);
+		((ICAD) copy.getItem()).setCADComponent(access, copy, colorizer);
 
 		return copy;
 	}
@@ -94,7 +94,7 @@ public class ColorizerChangeRecipe extends CustomRecipe {
 			if(!stack.isEmpty() && stack.getItem() instanceof ICAD) {
 				cad = stack;
 			} else {
-				if(!stack.isEmpty() && stack.getItem() instanceof ICADColorizer) {
+				if(!stack.isEmpty()) {
 					dyeIndex = i;
 				}
 				ret.set(i, PsiWorldInteractions.craftingRemainingItem(stack));

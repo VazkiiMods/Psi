@@ -32,3 +32,10 @@ versionRange = "${neo_version_range}"
 modId = "minecraft"
 type = "required"
 versionRange = "${minecraft_version_range}"
+
+[[dependencies.psi]]
+modId = "kubejs"
+type = "optional"
+versionRange = "[2101.7.0,)"
+ordering = "NONE"
+side = "BOTH"

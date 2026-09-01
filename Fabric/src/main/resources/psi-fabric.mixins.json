@@ -4,7 +4,8 @@
   "compatibilityLevel": "JAVA_21",
   "package": "vazkii.psi.fabric.mixin",
   "mixins": [
-    "MixinLivingEntityDamage"
+    "MixinLivingEntityDamage",
+    "MixinPlayerAdvancements"
   ],
   "client": [
     "client.MixinParticleEngine"

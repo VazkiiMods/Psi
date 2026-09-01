@@ -16,8 +16,9 @@ import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.language.I18n;
+import net.minecraft.core.Holder;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 
 import org.jetbrains.annotations.NotNull;
@@ -28,6 +29,7 @@ import vazkii.psi.api.event.PsiEvents;
 import vazkii.psi.api.spell.EnumPieceType;
 import vazkii.psi.api.spell.SpellParam;
 import vazkii.psi.api.spell.SpellPiece;
+import vazkii.psi.api.spell.SpellPieceGroup;
 import vazkii.psi.api.spell.programmer.ProgrammerPopulateEvent;
 import vazkii.psi.client.gui.GuiProgrammer;
 import vazkii.psi.client.gui.button.GuiButtonPage;
@@ -136,18 +138,22 @@ public class PiecePanelWidget extends AbstractWidget implements GuiEventListener
 		ProgrammerPopulateEvent event = new ProgrammerPopulateEvent(parent.getMinecraft().player, PsiAPI.SPELL_PIECE_REGISTRY);
 		List<SpellPiece> shownPieces = new ArrayList<>();
 		PsiEvents.post(event);
+		RegistryAccess registries = parent.getMinecraft().player.registryAccess();
 		for(ResourceLocation key : event.getSpellPieceRegistry().keySet()) {
-			Class<? extends SpellPiece> clazz = event.getSpellPieceRegistry().get(key);
-			Optional<Map.Entry<ResourceKey<Collection<Class<? extends SpellPiece>>>, Collection<Class<? extends SpellPiece>>>> advancementEntry = PsiAPI.ADVANCEMENT_GROUP_REGISTRY.entrySet().stream().filter((entry) -> entry.getValue().contains(clazz)).findFirst();
-			if(advancementEntry.isEmpty()) {
+			if(!PsiAPI.isPieceAvailable(parent.getMinecraft().player, registries, key)) {
 				continue;
 			}
 
-			if(!parent.getMinecraft().player.isCreative() && !playerData.isPieceGroupUnlocked(advancementEntry.get().getKey().location(), key)) {
+			Optional<Holder.Reference<SpellPieceGroup>> group = PsiAPI.getPieceGroup(registries, key);
+			if(group.isEmpty()) {
 				continue;
 			}
 
-			SpellPiece piece = SpellPiece.create(clazz, parent.spell);
+			if(!parent.getMinecraft().player.isCreative() && !playerData.isPieceGroupUnlocked(group.get().key().location(), key)) {
+				continue;
+			}
+
+			SpellPiece piece = event.getSpellPieceRegistry().get(key).create(parent.spell);
 			shownPieces.clear();
 			piece.getShownPieces(shownPieces);
 			for(SpellPiece shownPiece : shownPieces) {
@@ -222,7 +228,7 @@ public class PiecePanelWidget extends AbstractWidget implements GuiEventListener
 			}
 		});
 
-		HashMap<Class<? extends SpellPiece>, Integer> pieceRankings = new HashMap<>();
+		HashMap<ResourceLocation, Integer> pieceRankings = new HashMap<>();
 
 		String text = searchField.getValue().toLowerCase(Locale.ROOT).trim();
 		boolean noSearchTerms = text.isEmpty();
@@ -236,7 +242,7 @@ public class PiecePanelWidget extends AbstractWidget implements GuiEventListener
 				} else {
 					int rank = ranking(text, piece);
 					if(rank > 0) {
-						pieceRankings.put(piece.getClass(), rank);
+						pieceRankings.put(piece.getRegistryKey(), rank);
 						visibleButtons.add(guiButtonSpellPiece);
 					}
 				}
@@ -261,7 +267,7 @@ public class PiecePanelWidget extends AbstractWidget implements GuiEventListener
 		if(noSearchTerms) {
 			comparator = Comparator.comparing(GuiButtonSpellPiece::getPieceSortingName);
 		} else {
-			comparator = Comparator.comparingInt((p) -> -pieceRankings.get(p.getPiece().getClass()));
+			comparator = Comparator.comparingInt((p) -> -pieceRankings.get(p.getPiece().getRegistryKey()));
 			comparator = comparator.thenComparing(GuiButtonSpellPiece::getPieceSortingName);
 		}
 
@@ -362,7 +368,7 @@ public class PiecePanelWidget extends AbstractWidget implements GuiEventListener
 					continue;
 				}
 
-				ResourceLocation mod = PsiAPI.SPELL_PIECE_REGISTRY.getKey(p.getClass());
+				ResourceLocation mod = p.getRegistryKey();
 				if(mod != null) {
 					int modRank = rankTextToken(mod.getNamespace(), clippedToken);
 					if(modRank <= 0) {

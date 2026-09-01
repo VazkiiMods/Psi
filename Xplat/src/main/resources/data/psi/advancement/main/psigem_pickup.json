@@ -1,0 +1,28 @@
+{
+  "display": {
+    "icon": {
+      "id": "psi:psigem"
+    },
+    "title": {
+      "translate": "advancement.psi:psigem_pickup"
+    },
+    "description": {
+      "translate": "advancement.psi:psigem_pickup.desc"
+    }
+  },
+  "parent": "psi:main/psimetal_assembly_pickup",
+  "criteria": {
+    "flower": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "psi:psigem"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

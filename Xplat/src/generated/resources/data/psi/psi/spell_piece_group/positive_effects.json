@@ -1,0 +1,14 @@
+{
+  "main": "psi:trick_speed",
+  "pieces": [
+    "psi:trick_haste",
+    "psi:trick_strength",
+    "psi:trick_jump_boost",
+    "psi:trick_water_breathing",
+    "psi:trick_fire_resistance",
+    "psi:trick_invisibility",
+    "psi:trick_regeneration",
+    "psi:trick_resistance",
+    "psi:trick_night_vision"
+  ]
+}

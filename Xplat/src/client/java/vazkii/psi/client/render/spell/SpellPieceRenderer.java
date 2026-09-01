@@ -29,8 +29,7 @@ import vazkii.psi.api.ClientPsiAPI;
 import vazkii.psi.api.internal.PsiRenderHelper;
 import vazkii.psi.api.spell.*;
 import vazkii.psi.api.spell.SpellParam.ArrowType;
-import vazkii.psi.common.platform.PsiPlatform;
-import vazkii.psi.common.platform.PsiServices;
+import vazkii.psi.common.platform.PsiEnvironment;
 import vazkii.psi.common.spell.constant.PieceConstantNumber;
 import vazkii.psi.common.spell.other.PieceConnector;
 import vazkii.psi.common.spell.other.PieceCrossConnector;
@@ -78,9 +77,9 @@ public final class SpellPieceRenderer {
 
 	public static void drawBackground(
 			SpellPiece piece, PoseStack poseStack, MultiBufferSource buffers, int light) {
-		Material material = ClientPsiAPI.SPELL_PIECE_MATERIAL_REGISTRY.get(piece.registryKey);
+		Material material = ClientPsiAPI.SPELL_PIECE_MATERIAL_REGISTRY.get(piece.getRegistryKey());
 		if(material == null) {
-			return;
+			material = new Material(InventoryMenu.BLOCK_ATLAS, piece.getRegistryKey().withPrefix("spell/"));
 		}
 
 		VertexConsumer buffer = material.buffer(buffers, ignored -> SpellPieceRenderLayer.get());
@@ -227,7 +226,7 @@ public final class SpellPieceRenderer {
 			number.valueStr = "0";
 		}
 		Minecraft minecraft = Minecraft.getInstance();
-		int color = PsiServices.load(PsiPlatform.class).findMod("magipsi").isPresent() ? 0 : 0xFFFFFF;
+		int color = PsiEnvironment.isMagical() ? 0 : 0xFFFFFF;
 		float effectiveLength = minecraft.font.width(number.valueStr);
 		float scale = 1;
 		while(effectiveLength > 16) {
@@ -258,9 +257,9 @@ public final class SpellPieceRenderer {
 			}
 		}
 
-		String addon = piece.registryKey.getNamespace();
+		String addon = piece.getRegistryKey().getNamespace();
 		if(!addon.equals("psi")) {
-			PsiServices.load(PsiPlatform.class).findMod(addon)
+			PsiEnvironment.findMod(addon)
 					.ifPresent(mod -> tooltip.add(Component.translatable("psimisc.provider_mod", mod.name())));
 		}
 	}

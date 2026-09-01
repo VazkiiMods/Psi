@@ -60,6 +60,11 @@ public interface IPlayerData {
 	void deductPsi(int psi, int cd, boolean sync, boolean shatter);
 
 	/**
+	 * Gets whether the player has completed the given advancement.
+	 */
+	boolean hasAdvancement(ResourceLocation advancement);
+
+	/**
 	 * Gets if the piece group name is unlocked.
 	 */
 	default boolean isPieceGroupUnlocked(ResourceLocation group) {

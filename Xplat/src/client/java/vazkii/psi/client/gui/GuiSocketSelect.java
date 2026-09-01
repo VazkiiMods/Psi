@@ -118,7 +118,6 @@ public class GuiSocketSelect extends Screen {
 
 		Tesselator tess = Tesselator.getInstance();
 		RenderSystem.disableCull();
-		//RenderSystem.disableTexture();  TODO(Kamefrede): 1.20 figure out what this breaks
 		RenderSystem.enableBlend();
 		RenderSystem.setShader(GameRenderer::getPositionColorShader);
 

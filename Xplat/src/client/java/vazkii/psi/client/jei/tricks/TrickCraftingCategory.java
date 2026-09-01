@@ -92,7 +92,7 @@ public class TrickCraftingCategory implements IRecipeCategory<ITrickRecipe> {
 		background.draw(guiGraphics);
 
 		if(recipe.getPiece() != null) {
-			IDrawable trickIcon = trickIcons.computeIfAbsent(recipe.getPiece().registryKey,
+			IDrawable trickIcon = trickIcons.computeIfAbsent(recipe.getPiece().getRegistryKey(),
 					key -> new DrawablePiece(recipe.getPiece()));
 
 			trickIcon.draw(guiGraphics, trickX, trickY);

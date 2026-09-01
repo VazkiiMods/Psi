@@ -1,0 +1,6 @@
+{
+  "main": "psi:trick_add_motion",
+  "pieces": [
+    "psi:operator_entity_look"
+  ]
+}

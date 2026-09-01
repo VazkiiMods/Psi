@@ -1,0 +1,28 @@
+{
+  "display": {
+    "icon": {
+      "id": "psi:cad_assembly_iron"
+    },
+    "title": {
+      "translate": "advancement.psi:iron_cad_pickup"
+    },
+    "description": {
+      "translate": "advancement.psi:iron_cad_pickup.desc"
+    }
+  },
+  "parent": "psi:main/root",
+  "criteria": {
+    "flower": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "psi:cad_assembly_iron"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

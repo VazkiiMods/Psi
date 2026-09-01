@@ -8,10 +8,9 @@
  */
 package vazkii.psi.api.cad;
 
+import net.minecraft.core.HolderLookup;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -24,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * Base interface for a CAD. You probably shouldn't implement this,
@@ -31,24 +31,25 @@ import java.util.Objects;
  */
 public interface ICAD {
 	/**
-	 * Sets the component stack inside the CAD's respective component slot
+	 * Sets the component stack inside the CAD's respective component slot. The slot is
+	 * resolved through {@link CADComponentLookup}: with a registry entry it stores the
+	 * entry's holder, otherwise the bare item. {@code registries} may be null only when
+	 * the component is known to implement {@link ICADComponent}, since a null provider
+	 * skips the registry and the slot keeps no stats.
 	 */
-
-	static void setComponent(ItemStack stack, ItemStack componentStack) {
-		@Nullable
-		List<Item> storedItems = PsiAPI.internalHandler.getCADComponents(stack);
-		List<Item> items = storedItems == null
-				? new ArrayList<>(Collections.nCopies(EnumCADComponent.values().length, Items.AIR))
-				: storedItems;
-		if(!componentStack.isEmpty() && componentStack.getItem() instanceof ICADComponent component) {
-			if(!(items instanceof ArrayList<Item>)) {
-				items = new ArrayList<>(items);
-			}
-
-			EnumCADComponent componentType = component.getComponentType(componentStack);
-			items.set(componentType.ordinal(), componentStack.getItem());
-			PsiAPI.internalHandler.setCADComponents(stack, items);
+	static void setComponent(@Nullable HolderLookup.Provider registries, ItemStack stack, ItemStack componentStack) {
+		Optional<EnumCADComponent> componentType = CADComponentLookup.componentType(registries, componentStack);
+		if(componentType.isEmpty()) {
+			return;
 		}
+
+		@Nullable
+		List<CADComponentSlot> storedSlots = PsiAPI.internalHandler.getCADComponents(stack);
+		List<CADComponentSlot> slots = storedSlots == null
+				? new ArrayList<>(Collections.nCopies(EnumCADComponent.values().length, CADComponentSlot.EMPTY))
+				: new ArrayList<>(storedSlots);
+		slots.set(componentType.get().ordinal(), CADComponentSlot.of(registries, componentStack));
+		PsiAPI.internalHandler.setCADComponents(stack, slots);
 	}
 
 	/**
@@ -62,23 +63,33 @@ public interface ICAD {
 			return;
 		}
 
-		List<Item> fromComponents = PsiAPI.internalHandler.getCADComponents(from);
+		List<CADComponentSlot> fromComponents = PsiAPI.internalHandler.getCADComponents(from);
 		PsiAPI.internalHandler.setCADComponents(to,
 				new ArrayList<>(Objects.requireNonNullElseGet(fromComponents,
-						() -> Collections.nCopies(EnumCADComponent.values().length, Items.AIR))));
+						() -> Collections.nCopies(EnumCADComponent.values().length, CADComponentSlot.EMPTY))));
 	}
 
 	/**
 	 * Sets the component in this slot for the CAD.
 	 */
-	default void setCADComponent(ItemStack stack, ItemStack component) {
-		setComponent(stack, component);
+	default void setCADComponent(@Nullable HolderLookup.Provider registries, ItemStack stack, ItemStack component) {
+		setComponent(registries, stack, component);
 	}
 
 	/**
 	 * Gets the component used for this CAD in the given slot.
 	 */
 	ItemStack getComponentInSlot(ItemStack stack, EnumCADComponent type);
+
+	/**
+	 * Gets the stored slot for the given component type, holding the component's
+	 * registry definition when it has one.
+	 */
+	default CADComponentSlot getComponentSlot(ItemStack stack, EnumCADComponent type) {
+		@Nullable
+		List<CADComponentSlot> slots = PsiAPI.internalHandler.getCADComponents(stack);
+		return slots == null ? CADComponentSlot.EMPTY : slots.get(type.ordinal());
+	}
 
 	/**
 	 * Gets the value of a given CAD stat.

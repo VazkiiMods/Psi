@@ -1,0 +1,15 @@
+{
+  "main": "psi:trick_break_in_sequence",
+  "pieces": [
+    "psi:operator_vector_raycast_axis",
+    "psi:operator_vector_project",
+    "psi:operator_block_light",
+    "psi:operator_block_hardness",
+    "psi:operator_block_comparator_strength",
+    "psi:operator_block_side_solidity",
+    "psi:operator_block_mining_level",
+    "psi:trick_break_block",
+    "psi:trick_place_block",
+    "psi:trick_place_in_sequence"
+  ]
+}

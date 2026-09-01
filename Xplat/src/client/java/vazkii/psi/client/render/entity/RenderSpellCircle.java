@@ -26,9 +26,9 @@ import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 
 import vazkii.psi.api.PsiAPI;
+import vazkii.psi.api.cad.CADComponentLookup;
 import vazkii.psi.api.internal.PsiRenderHelper;
 import vazkii.psi.client.model.ArmorModels;
-import vazkii.psi.common.client.PsiClientRuntime;
 import vazkii.psi.common.entity.EntitySpellCircle;
 import vazkii.psi.common.lib.LibResources;
 
@@ -135,7 +135,7 @@ public class RenderSpellCircle extends EntityRenderer<EntitySpellCircle> {
 	public void render(EntitySpellCircle entity, float entityYaw, float partialTicks, PoseStack ms, @NotNull MultiBufferSource buffers, int light) {
 		ms.pushPose();
 		ItemStack colorizer = entity.getEntityData().get(EntitySpellCircle.COLORIZER_DATA);
-		int color = PsiClientRuntime.colorForColorizer(colorizer);
+		int color = CADComponentLookup.color(entity.level().registryAccess(), colorizer);
 		float alive = entity.getTimeAlive() + partialTicks;
 		float entityScale = entity.getEntityData().get(EntitySpellCircle.SCALE);
 		float scale = Math.min(entityScale, alive / EntitySpellCircle.CAST_DELAY);

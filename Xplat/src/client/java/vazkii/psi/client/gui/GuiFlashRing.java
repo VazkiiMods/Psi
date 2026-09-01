@@ -1,5 +1,6 @@
 package vazkii.psi.client.gui;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.world.item.ItemStack;
 
 import vazkii.psi.api.spell.SpellCompilationException;
@@ -25,7 +26,7 @@ public class GuiFlashRing extends GuiProgrammer {
 		if(!nameOnly ||
 				(compileResult.right().isPresent() && compileResult.right().get().getMessage().equals(SpellCompilationException.NO_NAME)) ||
 				spell.name.isEmpty()) {
-			compileResult = new SpellCompiler().compile(spell);
+			compileResult = new SpellCompiler().compile(spell, Minecraft.getInstance().level.registryAccess(), Minecraft.getInstance().player);
 		}
 	}
 }

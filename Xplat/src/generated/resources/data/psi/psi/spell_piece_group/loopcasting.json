@@ -1,0 +1,7 @@
+{
+  "main": "psi:selector_loopcast_index",
+  "pieces": [
+    "psi:operator_modulus",
+    "psi:operator_integer_divide"
+  ]
+}

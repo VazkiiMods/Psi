@@ -75,31 +75,20 @@ public final class NeoForgePsiConfig {
 
 	private static final class Client implements PsiConfig.ClientConfigAccess {
 
-		private final ModConfigSpec.BooleanValue useShaders;
 		private final ModConfigSpec.BooleanValue psiBarOnRight;
 		private final ModConfigSpec.BooleanValue contextSensitiveBar;
 		private final ModConfigSpec.BooleanValue pauseGameInProgrammer;
-		private final ModConfigSpec.IntValue maxPsiBarScale;
 		private final ModConfigSpec.BooleanValue changeGridCoordinatesToLetterNumber;
 
 		private Client(ModConfigSpec.Builder builder) {
-			useShaders = builder.comment("Controls whether Psi's shaders are used. If you're using the GLSL Shaders mod and are having graphical troubles with Psi stuff, you may want to turn this off.")
-					.define("client.useShaders", true);
 			psiBarOnRight = builder.comment("Controls whether the Psi Bar should be rendered on the right of the screen or not.")
 					.define("client.psiBarOnRight", true);
 			contextSensitiveBar = builder.comment("Controls whether the Psi Bar should be hidden if it's full and the player is holding an item that uses Psi.")
 					.define("client.contextSensitiveBar", true);
-			maxPsiBarScale = builder.comment("The maximum scale your Psi bar can be. This prevents it from being too large on a bigger GUI scale. This is maximum amount of \"on screen pixels\" each actual pixel can take.")
-					.defineInRange("client.maxPsiBarScale", 3, 1, 5);
 			pauseGameInProgrammer = builder.comment("Controls whether the Spell Programmer screen will pause the game in singleplayer.")
 					.define("client.pauseGameInProgrammer", true);
 			changeGridCoordinatesToLetterNumber = builder.comment("Controls whether or not the Programmer will display the coordinates as a pair of two numbers or as a letter and a number")
 					.define("client.changeGridCoordinatesToLetterNumber", false);
-		}
-
-		@Override
-		public boolean useShaders() {
-			return useShaders.get();
 		}
 
 		@Override
@@ -110,11 +99,6 @@ public final class NeoForgePsiConfig {
 		@Override
 		public boolean contextSensitiveBar() {
 			return contextSensitiveBar.get();
-		}
-
-		@Override
-		public int maxPsiBarScale() {
-			return maxPsiBarScale.get();
 		}
 
 		@Override

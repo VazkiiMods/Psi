@@ -27,13 +27,14 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.resources.language.I18n;
+import net.minecraft.core.Holder;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.nbt.TagParser;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.TooltipFlag;
 
@@ -61,6 +62,7 @@ import vazkii.psi.common.network.message.MessageSpellModified;
 import vazkii.psi.common.platform.PsiConfig;
 import vazkii.psi.common.platform.PsiEnvironment;
 import vazkii.psi.common.spell.SpellCompiler;
+import vazkii.psi.common.spell.base.ModSpellPieces;
 import vazkii.psi.common.spell.other.PieceConnector;
 import vazkii.psi.mixin.client.AccessorScreen;
 
@@ -107,7 +109,7 @@ public class GuiProgrammer extends Screen {
 		super(Component.empty());
 		programmer = tile;
 		this.spell = spell;
-		compileResult = new SpellCompiler().compile(spell);
+		compileResult = new SpellCompiler().compile(spell, Minecraft.getInstance().level.registryAccess(), Minecraft.getInstance().player);
 	}
 
 	private static String psiVersion() {
@@ -266,16 +268,27 @@ public class GuiProgrammer extends Screen {
 							return;
 						}
 						PlayerData data = PlayerDataHandler.get(player);
+						RegistryAccess registries = player.registryAccess();
 						for(int i = 0; i < SpellGrid.GRID_SIZE; i++) {
 							for(int j = 0; j < SpellGrid.GRID_SIZE; j++) {
 								SpellPiece piece = spell.grid.gridData[i][j];
 								if(piece != null) {
-									Optional<Map.Entry<ResourceKey<Collection<Class<? extends SpellPiece>>>, Collection<Class<? extends SpellPiece>>>> advancementEntry = PsiAPI.ADVANCEMENT_GROUP_REGISTRY.entrySet().stream().filter((entry) -> entry.getValue().contains(piece.getClass())).findFirst();
-									if(advancementEntry.isEmpty()) {
+									if(!PsiAPI.isPieceEnabled(registries, piece.getRegistryKey())) {
+										player.sendSystemMessage(Component.translatable("psimisc.disabled_piece", Component.translatable(piece.getUnlocalizedName())).setStyle(Style.EMPTY.withColor(ChatFormatting.RED)));
+										return;
+									}
+
+									if(PsiAPI.isPieceLocked(player, registries, piece.getRegistryKey())) {
+										player.sendSystemMessage(Component.translatable("psimisc.locked_piece", Component.translatable(piece.getUnlocalizedName())).setStyle(Style.EMPTY.withColor(ChatFormatting.RED)));
+										return;
+									}
+
+									Optional<Holder.Reference<SpellPieceGroup>> group = PsiAPI.getPieceGroup(registries, piece.getRegistryKey());
+									if(group.isEmpty()) {
 										continue;
 									}
 
-									if(!player.isCreative() && !data.isPieceGroupUnlocked(advancementEntry.get().getKey().location(), piece.registryKey)) {
+									if(!player.isCreative() && !data.isPieceGroupUnlocked(group.get().key().location(), piece.getRegistryKey())) {
 										player.sendSystemMessage(Component.translatable("psimisc.missing_pieces").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)));
 										return;
 									}
@@ -501,7 +514,7 @@ public class GuiProgrammer extends Screen {
 		onSelectedChanged();
 
 		if(!nameOnly || compileResult.right().filter(ex -> ex.getMessage().equals(SpellCompilationException.NO_NAME)).isPresent() || spell.name.isEmpty()) {
-			compileResult = new SpellCompiler().compile(spell);
+			compileResult = new SpellCompiler().compile(spell, Minecraft.getInstance().level.registryAccess(), Minecraft.getInstance().player);
 		}
 	}
 
@@ -576,8 +589,6 @@ public class GuiProgrammer extends Screen {
 
 	@Override
 	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-		//TODO(Kamefrede): 1.20 find alternative to this
-		//getMinecraft().keyboardHandler.setSendRepeatsToGui(true);
 		if(programmer != null) {
 			spell = programmer.spell;
 		}
@@ -666,7 +677,7 @@ public class GuiProgrammer extends Screen {
 						selectedY--;
 						onSelectedChanged();
 						if(hasShiftDown() && spell.grid.gridData[selectedX][selectedY] == null) {
-							PieceConnector connector = new PieceConnector(spell);
+							PieceConnector connector = (PieceConnector) ModSpellPieces.CONNECTOR.get().create(spell);
 							connector.x = selectedX;
 							connector.y = selectedY;
 							connector.paramSides.put(connector.target, Side.BOTTOM);
@@ -695,7 +706,7 @@ public class GuiProgrammer extends Screen {
 						selectedX--;
 						onSelectedChanged();
 						if(hasShiftDown() && spell.grid.gridData[selectedX][selectedY] == null) {
-							PieceConnector connector = new PieceConnector(spell);
+							PieceConnector connector = (PieceConnector) ModSpellPieces.CONNECTOR.get().create(spell);
 							connector.x = selectedX;
 							connector.y = selectedY;
 							connector.paramSides.put(connector.target, Side.RIGHT);
@@ -724,7 +735,7 @@ public class GuiProgrammer extends Screen {
 						selectedX++;
 						onSelectedChanged();
 						if(hasShiftDown() && spell.grid.gridData[selectedX][selectedY] == null) {
-							PieceConnector connector = new PieceConnector(spell);
+							PieceConnector connector = (PieceConnector) ModSpellPieces.CONNECTOR.get().create(spell);
 							connector.x = selectedX;
 							connector.y = selectedY;
 							connector.paramSides.put(connector.target, Side.LEFT);
@@ -753,7 +764,7 @@ public class GuiProgrammer extends Screen {
 						selectedY++;
 						onSelectedChanged();
 						if(hasShiftDown() && spell.grid.gridData[selectedX][selectedY] == null) {
-							PieceConnector connector = new PieceConnector(spell);
+							PieceConnector connector = (PieceConnector) ModSpellPieces.CONNECTOR.get().create(spell);
 							connector.x = selectedX;
 							connector.y = selectedY;
 							connector.paramSides.put(connector.target, Side.TOP);

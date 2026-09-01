@@ -8,6 +8,9 @@
  */
 package vazkii.psi.fabric.platform;
 
+import com.mojang.serialization.Codec;
+
+import net.fabricmc.fabric.api.event.registry.DynamicRegistries;
 import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
 import net.fabricmc.fabric.api.event.registry.RegistryAttribute;
 import net.minecraft.core.Registry;
@@ -34,6 +37,11 @@ public final class FabricPsiRegistryService implements PsiRegistryService {
 			Registry<T> registry, ResourceLocation id, Supplier<I> factory) {
 		I value = Registry.register(registry, id, factory.get());
 		return new RegistryEntry<>(id, () -> value, () -> registry.wrapAsHolder(value));
+	}
+
+	@Override
+	public <T> void registerSyncedDatapackRegistry(ResourceKey<Registry<T>> key, Codec<T> codec) {
+		DynamicRegistries.registerSynced(key, codec);
 	}
 
 }

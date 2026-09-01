@@ -16,7 +16,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 import vazkii.psi.api.cad.ICAD;
-import vazkii.psi.api.cad.ICADColorizer;
 import vazkii.psi.common.block.tile.TileProgrammer;
 
 import java.util.Objects;
@@ -49,13 +48,6 @@ public final class PsiClientRuntime {
 
 	public static float clientTicks() {
 		return hooks.clientTicks();
-	}
-
-	public static int colorForColorizer(ItemStack colorizer) {
-		if(colorizer.isEmpty() || !(colorizer.getItem() instanceof ICADColorizer cadColorizer)) {
-			return ICADColorizer.DEFAULT_SPELL_COLOR;
-		}
-		return cadColorizer.getColor(colorizer);
 	}
 
 	public static int colorForCAD(ItemStack stack) {

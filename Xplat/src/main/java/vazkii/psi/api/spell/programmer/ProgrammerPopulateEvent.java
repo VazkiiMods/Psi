@@ -14,16 +14,16 @@ import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;
 
 import vazkii.psi.api.event.PsiEvent;
-import vazkii.psi.api.spell.SpellPiece;
+import vazkii.psi.api.spell.SpellPieceType;
 
 public class ProgrammerPopulateEvent extends PsiEvent {
 
 	@NotNull
 	private final Player entity;
 	@NotNull
-	private Registry<Class<? extends SpellPiece>> spellPieceRegistry;
+	private Registry<SpellPieceType> spellPieceRegistry;
 
-	public ProgrammerPopulateEvent(@NotNull Player entity, @NotNull Registry<Class<? extends SpellPiece>> registry) {
+	public ProgrammerPopulateEvent(@NotNull Player entity, @NotNull Registry<SpellPieceType> registry) {
 		this.entity = entity;
 		this.spellPieceRegistry = registry;
 	}
@@ -34,11 +34,11 @@ public class ProgrammerPopulateEvent extends PsiEvent {
 	}
 
 	@NotNull
-	public Registry<Class<? extends SpellPiece>> getSpellPieceRegistry() {
+	public Registry<SpellPieceType> getSpellPieceRegistry() {
 		return spellPieceRegistry;
 	}
 
-	public void setSpellPieceRegistry(@NotNull Registry<Class<? extends SpellPiece>> registry) {
+	public void setSpellPieceRegistry(@NotNull Registry<SpellPieceType> registry) {
 		spellPieceRegistry = registry;
 	}
 

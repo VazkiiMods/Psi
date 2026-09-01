@@ -95,7 +95,7 @@ public class BlockProgrammer extends HorizontalDirectionalBlock implements Entit
 
 		ISpellAcceptor settable = PsiCapabilities.spellAcceptor(pStack);
 		if(enabled && !pStack.isEmpty() && settable != null && programmer.spell != null && (pPlayer.isShiftKeyDown() || !settable.requiresSneakForSpellSet())) {
-			if(programmer.canCompile()) {
+			if(programmer.canCompile(pPlayer)) {
 				if(!pLevel.isClientSide) {
 					pLevel.playSound(null, pPos.getX() + 0.5, pPos.getY() + 0.5, pPos.getZ() + 0.5, PsiSoundHandler.bulletCreate.get(), SoundSource.BLOCKS, 0.5F, 1F);
 				}
@@ -142,7 +142,7 @@ public class BlockProgrammer extends HorizontalDirectionalBlock implements Entit
 		BlockEntity tile = worldIn.getBlockEntity(pos);
 		if(tile instanceof TileProgrammer programmer) {
 
-			if(programmer.canCompile()) {
+			if(programmer.canCompile(null)) {
 				return 2;
 			} else if(programmer.isEnabled()) {
 				return 1;

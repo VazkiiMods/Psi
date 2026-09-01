@@ -61,6 +61,7 @@ public final class PsiContent {
 		PsiPlayerDataStorage.initialize();
 		PsiPackets.register();
 		ModSpellPieces.register();
+		PsiDatapackRegistries.register();
 		ContributorSpellCircleHandler.firstStart();
 	}
 

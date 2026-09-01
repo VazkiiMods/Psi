@@ -1,0 +1,6 @@
+{
+  "main": "psi:selector_focal_point",
+  "pieces": [
+    "psi:selector_ruler_vector"
+  ]
+}

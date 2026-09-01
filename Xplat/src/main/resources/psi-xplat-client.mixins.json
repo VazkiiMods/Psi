@@ -14,6 +14,7 @@
   "client": [
     "client.AccessorAbstractTexture",
     "client.AccessorChatComponent",
+    "client.AccessorClientAdvancements",
     "client.AccessorGui",
     "client.AccessorKeyMapping",
     "client.AccessorRenderBuffers",

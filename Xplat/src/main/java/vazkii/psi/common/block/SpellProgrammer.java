@@ -10,13 +10,15 @@ package vazkii.psi.common.block;
 
 import net.minecraft.world.entity.player.Player;
 
+import org.jetbrains.annotations.Nullable;
+
 import vazkii.psi.api.spell.Spell;
 
 public interface SpellProgrammer {
 
 	void setSpellFromEditor(Player player, Spell spell);
 
-	boolean canCompile();
+	boolean canCompile(@Nullable Player player);
 
 	Spell getSpellForDrive();
 

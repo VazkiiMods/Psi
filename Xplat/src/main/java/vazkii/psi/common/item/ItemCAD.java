@@ -10,8 +10,8 @@ package vazkii.psi.common.item;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistryAccess;
-import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
@@ -62,6 +62,7 @@ import vazkii.psi.common.core.handler.PsiPlayerData;
 import vazkii.psi.common.core.handler.PsiSoundHandler;
 import vazkii.psi.common.core.handler.capability.CADData;
 import vazkii.psi.common.crafting.ModCraftingRecipes;
+import vazkii.psi.common.item.base.LegacyItemStacks;
 import vazkii.psi.common.item.base.ModCADComponents;
 import vazkii.psi.common.item.base.ModCADItem;
 import vazkii.psi.common.item.base.ModDataComponents;
@@ -215,72 +216,72 @@ public class ItemCAD extends Item implements ICAD {
 		return !(PsiWorldInteractions.isFakePlayer(player) || FAKE_PLAYER_PATTERN.matcher(name).matches());
 	}
 
-	public static void setComponent(ItemStack stack, ItemStack componentStack) {
+	public static void setComponent(@Nullable HolderLookup.Provider registries, ItemStack stack, ItemStack componentStack) {
 		if(stack.getItem() instanceof ICAD) {
-			((ICAD) stack.getItem()).setCADComponent(stack, componentStack);
+			((ICAD) stack.getItem()).setCADComponent(registries, stack, componentStack);
 		}
 	}
 
-	public static ItemStack makeCAD(ItemStack... components) {
-		return makeCAD(Arrays.asList(components));
+	public static ItemStack makeCAD(HolderLookup.Provider registries, ItemStack... components) {
+		return makeCAD(registries, Arrays.asList(components));
 	}
 
-	public static ItemStack makeCADWithAssembly(ItemStack assembly, List<ItemStack> components) {
-		ItemStack cad = assembly.getItem() instanceof ICADAssembly ? ((ICADAssembly) assembly.getItem()).createCADStack(assembly, components) : new ItemStack(ModCADItem.CAD.get());
+	public static ItemStack makeCADWithAssembly(HolderLookup.Provider registries, ItemStack assembly, List<ItemStack> components) {
+		ItemStack cad = assembly.getItem() instanceof ICADAssembly ? ((ICADAssembly) assembly.getItem()).createCADStack(registries, assembly, components) : new ItemStack(ModCADItem.CAD.get());
 
-		return makeCAD(cad, components);
+		return makeCAD(registries, cad, components);
 	}
 
-	public static ItemStack makeCAD(List<ItemStack> components) {
-		return makeCAD(new ItemStack(ModCADItem.CAD.get()), components);
+	public static ItemStack makeCAD(HolderLookup.Provider registries, List<ItemStack> components) {
+		return makeCAD(registries, new ItemStack(ModCADItem.CAD.get()), components);
 	}
 
-	public static ItemStack makeCAD(ItemStack base, List<ItemStack> components) {
+	public static ItemStack makeCAD(HolderLookup.Provider registries, ItemStack base, List<ItemStack> components) {
 		ItemStack stack = base.copy();
 		for(ItemStack component : components) {
-			setComponent(stack, component);
+			setComponent(registries, stack, component);
 		}
 		return stack;
 	}
 
-	public static List<ItemStack> getCreativeTabItems() {
+	public static List<ItemStack> getCreativeTabItems(HolderLookup.Provider registries) {
 		List<ItemStack> subItems = new ArrayList<>();
 
 		// Basic Iron CAD
-		subItems.add(makeCAD(new ItemStack(ModCADComponents.cadAssemblyIron.get())));
+		subItems.add(makeCAD(registries, new ItemStack(ModCADComponents.cadAssemblyIron.get())));
 
 		// Iron CAD
-		subItems.add(makeCAD(new ItemStack(ModCADComponents.cadAssemblyIron.get()),
+		subItems.add(makeCAD(registries, new ItemStack(ModCADComponents.cadAssemblyIron.get()),
 				new ItemStack(ModCADComponents.cadCoreBasic.get()),
 				new ItemStack(ModCADComponents.cadSocketBasic.get()),
 				new ItemStack(ModCADComponents.cadBatteryBasic.get())));
 
 		// Gold CAD
-		subItems.add(makeCAD(new ItemStack(ModCADComponents.cadAssemblyGold.get()),
+		subItems.add(makeCAD(registries, new ItemStack(ModCADComponents.cadAssemblyGold.get()),
 				new ItemStack(ModCADComponents.cadCoreBasic.get()),
 				new ItemStack(ModCADComponents.cadSocketBasic.get()),
 				new ItemStack(ModCADComponents.cadBatteryBasic.get())));
 
 		// Psimetal CAD
-		subItems.add(makeCAD(new ItemStack(ModCADComponents.cadAssemblyPsimetal.get()),
+		subItems.add(makeCAD(registries, new ItemStack(ModCADComponents.cadAssemblyPsimetal.get()),
 				new ItemStack(ModCADComponents.cadCoreOverclocked.get()),
 				new ItemStack(ModCADComponents.cadSocketSignaling.get()),
 				new ItemStack(ModCADComponents.cadBatteryExtended.get())));
 
 		// Ebony Psimetal CAD
-		subItems.add(makeCAD(new ItemStack(ModCADComponents.cadAssemblyEbony.get()),
+		subItems.add(makeCAD(registries, new ItemStack(ModCADComponents.cadAssemblyEbony.get()),
 				new ItemStack(ModCADComponents.cadCoreHyperClocked.get()),
 				new ItemStack(ModCADComponents.cadSocketTransmissive.get()),
 				new ItemStack(ModCADComponents.cadBatteryUltradense.get())));
 
 		// Ivory Psimetal CAD
-		subItems.add(makeCAD(new ItemStack(ModCADComponents.cadAssemblyIvory.get()),
+		subItems.add(makeCAD(registries, new ItemStack(ModCADComponents.cadAssemblyIvory.get()),
 				new ItemStack(ModCADComponents.cadCoreHyperClocked.get()),
 				new ItemStack(ModCADComponents.cadSocketTransmissive.get()),
 				new ItemStack(ModCADComponents.cadBatteryUltradense.get())));
 
 		// Creative CAD
-		subItems.add(makeCAD(new ItemStack(ModCADComponents.cadAssemblyCreative.get()),
+		subItems.add(makeCAD(registries, new ItemStack(ModCADComponents.cadAssemblyCreative.get()),
 				new ItemStack(ModCADComponents.cadCoreHyperClocked.get()),
 				new ItemStack(ModCADComponents.cadSocketTransmissive.get()),
 				new ItemStack(ModCADComponents.cadBatteryUltradense.get())));
@@ -343,8 +344,6 @@ public class ItemCAD extends Item implements ICAD {
 							ListTag vec = (ListTag) memory.get(i);
 							if(vec.getElementType() == Tag.TAG_DOUBLE && vec.size() >= 3) {
 								data.setSavedVector(i, new Vector3(vec.getDouble(0), vec.getDouble(1), vec.getDouble(2)));
-							} else {
-								data.setSavedVector(i, null);
 							}
 						}
 					}
@@ -356,16 +355,14 @@ public class ItemCAD extends Item implements ICAD {
 			if(sockets != null) {
 				for(EnumCADComponent components : EnumCADComponent.values()) {
 					if(compound.contains("component" + components.name())) {
-						ItemStack component = ItemStack.parseOptional(registries, compound.getCompound("component" + components.name()));
-						component.applyComponents(DataComponentPatch.builder().set(DataComponents.CUSTOM_DATA, CustomData.of(compound.getCompound("component" + components.name()).getCompound("tag"))).build());
-						ItemCAD.setComponent(pStack, component);
+						ItemStack component = LegacyItemStacks.parse(registries, compound.getCompound("component" + components.name()));
+						ItemCAD.setComponent(registries, pStack, component);
 						compound.remove("component" + components.name());
 					}
 				}
 				for(int i = 0; i < ISocketable.MAX_ASSEMBLER_SLOTS; i++) {
 					if(compound.contains("bullet" + i)) {
-						ItemStack bullet = ItemStack.parseOptional(registries, compound.getCompound("bullet" + i));
-						bullet.applyComponents(DataComponentPatch.builder().set(DataComponents.CUSTOM_DATA, CustomData.of(compound.getCompound("bullet" + i).getCompound("tag"))).build());
+						ItemStack bullet = LegacyItemStacks.parse(registries, compound.getCompound("bullet" + i));
 						sockets.setBulletInSocket(i, bullet);
 						compound.remove("bullet" + i);
 					}
@@ -517,8 +514,7 @@ public class ItemCAD extends Item implements ICAD {
 
 	@Override
 	public ItemStack getComponentInSlot(ItemStack stack, EnumCADComponent type) {
-		List<Item> items = stack.getOrDefault(ModDataComponents.COMPONENTS.get(), new ArrayList<>(Collections.nCopies(EnumCADComponent.values().length, Items.AIR)));
-		ItemStack component = new ItemStack(items.get(type.ordinal()));
+		ItemStack component = new ItemStack(getComponentSlot(stack, type).item());
 		String contributorName = stack.getOrDefault(ModDataComponents.CONTRIBUTOR.get(), "");
 		if(type == EnumCADComponent.DYE && component.getItem() instanceof ICADColorizer colorizer && !contributorName.isEmpty()) {
 			colorizer.setContributorName(component, contributorName);
@@ -528,11 +524,8 @@ public class ItemCAD extends Item implements ICAD {
 
 	@Override
 	public int getStatValue(ItemStack stack, EnumCADStat stat) {
-		int statValue = 0;
 		ItemStack componentStack = getComponentInSlot(stack, stat.getSourceType());
-		if(!componentStack.isEmpty() && componentStack.getItem() instanceof ICADComponent component) {
-			statValue = component.getCADStatValue(componentStack, stat);
-		}
+		int statValue = CADComponentLookup.statValue(getComponentSlot(stack, stat.getSourceType()), componentStack, stat);
 
 		CADStatEvent event = new CADStatEvent(stat, stack, componentStack, statValue);
 		PsiEvents.post(event);
@@ -542,10 +535,7 @@ public class ItemCAD extends Item implements ICAD {
 	@Override
 	public int getSpellColor(ItemStack stack) {
 		ItemStack dye = getComponentInSlot(stack, EnumCADComponent.DYE);
-		if(!dye.isEmpty() && dye.getItem() instanceof ICADColorizer) {
-			return ((ICADColorizer) dye.getItem()).getColor(dye);
-		}
-		return ICADColorizer.DEFAULT_SPELL_COLOR;
+		return CADComponentLookup.color(getComponentSlot(stack, EnumCADComponent.DYE), dye);
 	}
 
 	@Override

@@ -13,6 +13,8 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricDynamicRegistryProvider
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 
+import vazkii.psi.api.PsiAPI;
+import vazkii.psi.api.cad.CADComponentLookup;
 import vazkii.psi.common.lib.LibResources;
 
 import java.util.concurrent.CompletableFuture;
@@ -26,6 +28,8 @@ public class FabricPsiDynamicRegistryProvider extends FabricDynamicRegistryProvi
 	@Override
 	protected void configure(HolderLookup.Provider registries, Entries entries) {
 		entries.add(registries.lookupOrThrow(Registries.DAMAGE_TYPE), LibResources.PSI_OVERLOAD);
+		entries.addAll(registries.lookupOrThrow(PsiAPI.SPELL_PIECE_GROUP_REGISTRY_KEY));
+		entries.addAll(registries.lookupOrThrow(CADComponentLookup.REGISTRY));
 	}
 
 	@Override

@@ -32,6 +32,16 @@ configurations {
 	runtimeClasspath.extendsFrom localRuntime
 }
 
+repositories {
+	maven {
+		name = 'latvian'
+		url = 'https://maven.latvian.dev/releases'
+		content {
+			includeGroup 'dev.latvian.mods'
+		}
+	}
+}
+
 neoForge {
 	version = project.neo_version
 	validateAccessTransformers = true
@@ -91,6 +101,9 @@ dependencies {
 
 	compileOnly "vazkii.patchouli:Patchouli:${patchouli_version}-NEOFORGE:api"
 	runtimeOnly "vazkii.patchouli:Patchouli:${patchouli_version}-NEOFORGE"
+
+	compileOnly("dev.latvian.mods:kubejs-neoforge:${kubejs_version}") { transitive = false }
+	compileOnly("dev.latvian.mods:rhino:${rhino_version}") { transitive = false }
 }
 
 spotless {

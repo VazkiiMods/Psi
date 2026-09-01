@@ -1,0 +1,8 @@
+{
+  "type": "assembly",
+  "model": "psi:item/cad_psimetal",
+  "stats": {
+    "efficiency": 85,
+    "potency": 250
+  }
+}
