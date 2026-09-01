@@ -1,3 +1,6 @@
+1.21.1-110
+* Added KubeJS support for NeoForge (Kamefrede)
+* Added support for datapacks to define cad component stats (Kamefrede)
 1.21.1-109
 * Added Fabric support (Kamefrede)
 * Added Vietnamese localization (hienpro00123)
