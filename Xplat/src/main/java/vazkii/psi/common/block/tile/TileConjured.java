@@ -24,8 +24,6 @@ import vazkii.psi.common.block.BlockConjured;
 import vazkii.psi.common.block.base.ModConjuredBlock;
 import vazkii.psi.common.client.PsiClientRuntime;
 
-import java.util.Arrays;
-
 public class TileConjured extends BlockEntity {
 	private static final String TAG_COLORIZER = "colorizer";
 	public ItemStack colorizer = ItemStack.EMPTY;
@@ -48,50 +46,7 @@ public class TileConjured extends BlockEntity {
 		BlockState state = getLevel().getBlockState(getBlockPos());
 
 		if(state.getBlock() == ModConjuredBlock.BLOCK.get() && state.getValue(BlockConjured.SOLID)) {
-			// http://cns-alumni.bu.edu/~lavanya/Graphics/cs580/p5/web-page/cube_edges.gif
-			boolean[] edges = new boolean[12];
-			Arrays.fill(edges, true);
-
-			if(state.getValue(BlockConjured.BLOCK_DOWN)) {
-				removeEdges(edges, 0, 1, 2, 3);
-			}
-			if(state.getValue(BlockConjured.BLOCK_UP)) {
-				removeEdges(edges, 4, 5, 6, 7);
-			}
-			if(state.getValue(BlockConjured.BLOCK_NORTH)) {
-				removeEdges(edges, 3, 7, 8, 11);
-			}
-			if(state.getValue(BlockConjured.BLOCK_SOUTH)) {
-				removeEdges(edges, 1, 5, 9, 10);
-			}
-			if(state.getValue(BlockConjured.BLOCK_EAST)) {
-				removeEdges(edges, 2, 6, 10, 11);
-			}
-			if(state.getValue(BlockConjured.BLOCK_WEST)) {
-				removeEdges(edges, 0, 4, 8, 9);
-			}
-
-			double x = getBlockPos().getX();
-			double y = getBlockPos().getY();
-			double z = getBlockPos().getZ();
-
-			makeParticle(edges[0], r, g, b, x + 0, y + 0, z + 0, 0, 0, 1);
-			makeParticle(edges[1], r, g, b, x + 0, y + 0, z + 1, 1, 0, 0);
-			makeParticle(edges[2], r, g, b, x + 1, y + 0, z + 0, 0, 0, 1);
-			makeParticle(edges[3], r, g, b, x + 0, y + 0, z + 0, 1, 0, 0);
-
-			// Top
-			makeParticle(edges[4], r, g, b, x + 0, y + 1, z + 0, 0, 0, 1);
-			makeParticle(edges[5], r, g, b, x + 0, y + 1, z + 1, 1, 0, 0);
-			makeParticle(edges[6], r, g, b, x + 1, y + 1, z + 0, 0, 0, 1);
-			makeParticle(edges[7], r, g, b, x + 0, y + 1, z + 0, 1, 0, 0);
-
-			// Sides
-			makeParticle(edges[8], r, g, b, x + 0, y + 0, z + 0, 0, 1, 0);
-			makeParticle(edges[9], r, g, b, x + 0, y + 0, z + 1, 0, 1, 0);
-			makeParticle(edges[10], r, g, b, x + 1, y + 0, z + 1, 0, 1, 0);
-			makeParticle(edges[11], r, g, b, x + 1, y + 0, z + 0, 0, 1, 0);
-
+			return;
 		} else if(Math.random() < 0.5) {
 			float w = 0.15F;
 			float h = 0.05F;
@@ -103,24 +58,6 @@ public class TileConjured extends BlockEntity {
 			float m = 0.01F + (float) Math.random() * 0.015F;
 
 			PsiClientRuntime.wisp(getLevel(), x, y, z, r, g, b, s, 0, m, 0, 1);
-		}
-	}
-
-	public void makeParticle(boolean doit, float r, float g, float b, double xp, double yp, double zp, double xv, double yv, double zv) {
-		if(doit) {
-			float m = 0.1F;
-			xv *= m;
-			yv *= m;
-			zv *= m;
-
-			PsiClientRuntime.sparkle(getLevel(), xp, yp, zp, r, g, b,
-					(float) xv, (float) yv, (float) zv, 2.75f, 15);
-		}
-	}
-
-	public void removeEdges(boolean[] edges, int... posArray) {
-		for(int i : posArray) {
-			edges[i] = false;
 		}
 	}
 

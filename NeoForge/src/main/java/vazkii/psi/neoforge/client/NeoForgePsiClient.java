@@ -33,6 +33,7 @@ import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 import net.neoforged.neoforge.client.event.RegisterShadersEvent;
+import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
@@ -54,6 +55,7 @@ import vazkii.psi.client.model.ArmorModels;
 import vazkii.psi.client.model.ClientModelHandler;
 import vazkii.psi.client.model.ModModelLayers;
 import vazkii.psi.client.model.ModelPsimetalExosuit;
+import vazkii.psi.client.render.ConjuredOutlineRenderer;
 import vazkii.psi.client.render.entity.RenderSpellCircle;
 import vazkii.psi.client.render.entity.RenderSpellProjectile;
 import vazkii.psi.client.render.spell.SpellPieceMaterial;
@@ -102,6 +104,15 @@ public final class NeoForgePsiClient {
 		event.registerEntityRenderer(ModEntities.spellGrenade.get(), RenderSpellProjectile::new);
 		event.registerEntityRenderer(ModEntities.spellProjectile.get(), RenderSpellProjectile::new);
 		event.registerEntityRenderer(ModEntities.spellMine.get(), RenderSpellProjectile::new);
+	}
+
+	@SubscribeEvent
+	public static void onRenderLevelStage(RenderLevelStageEvent event) {
+		if(event.getStage() == RenderLevelStageEvent.Stage.AFTER_BLOCK_ENTITIES) {
+			ConjuredOutlineRenderer.fillPass(event.getModelViewMatrix(), event.getProjectionMatrix(), event.getCamera());
+		} else if(event.getStage() == RenderLevelStageEvent.Stage.AFTER_LEVEL) {
+			ConjuredOutlineRenderer.compositePass(event.getPartialTick().getGameTimeDeltaTicks());
+		}
 	}
 
 	@SubscribeEvent

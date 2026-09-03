@@ -52,6 +52,7 @@ import vazkii.psi.client.model.ClientModelHandler;
 import vazkii.psi.client.model.ModModelLayers;
 import vazkii.psi.client.model.ModelArmor;
 import vazkii.psi.client.model.ModelPsimetalExosuit;
+import vazkii.psi.client.render.ConjuredOutlineRenderer;
 import vazkii.psi.client.render.entity.RenderSpellCircle;
 import vazkii.psi.client.render.entity.RenderSpellProjectile;
 import vazkii.psi.client.render.spell.SpellPieceMaterial;
@@ -98,6 +99,11 @@ public final class FabricPsiClient implements ClientModInitializer {
 		WorldRenderEvents.START.register(context -> ClientTickHandler.renderTick(context.tickCounter().getGameTimeDeltaPartialTick(false)));
 		WorldRenderEvents.AFTER_TRANSLUCENT.register(context -> PlayerDataRenderHandler.renderAll(
 				context.tickCounter().getGameTimeDeltaPartialTick(false), context.matrixStack()));
+		WorldRenderEvents.BEFORE_BLOCK_OUTLINE.register((context, hitResult) -> {
+			ConjuredOutlineRenderer.fillPass(context.positionMatrix(), context.projectionMatrix(), context.camera());
+			return true;
+		});
+		WorldRenderEvents.LAST.register(context -> ConjuredOutlineRenderer.compositePass(context.tickCounter().getGameTimeDeltaTicks()));
 		ItemTooltipCallback.EVENT.register((stack, context, type, lines) -> ItemCADComponent.appendForeignHoverText(context.registries(), stack, lines));
 		network.clientboundRegistrations().forEach(FabricPsiClient::registerClientbound);
 		network.installClientSender(ClientPlayNetworking::send);
