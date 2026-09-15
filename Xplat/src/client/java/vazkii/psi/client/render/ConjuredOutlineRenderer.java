@@ -25,7 +25,9 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.PostChain;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.phys.Vec3;
@@ -121,6 +123,7 @@ public final class ConjuredOutlineRenderer {
 		fillTarget.bindWrite(false);
 		drawTiles(tiles, modelViewMatrix, projectionMatrix, camera);
 		fillTarget.unbindWrite();
+
 		mainTarget.bindWrite(false);
 		return true;
 	}
@@ -197,6 +200,9 @@ public final class ConjuredOutlineRenderer {
 		RenderSystem.enableDepthTest();
 		RenderSystem.depthFunc(515);
 		RenderSystem.depthMask(true);
+		RenderSystem.polygonOffset(-1.0F, -10.0F);
+		RenderSystem.enablePolygonOffset();
+		RenderSystem.disableBlend();
 		RenderSystem.setShader(GameRenderer::getPositionColorShader);
 		BufferBuilder buffer = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
 
@@ -214,17 +220,19 @@ public final class ConjuredOutlineRenderer {
 			double x = pos.getX() - camPos.x;
 			double y = pos.getY() - camPos.y;
 			double z = pos.getZ() - camPos.z;
-			addCube(buffer, x, y, z, r, g, b);
+			addCube(buffer, tile.getLevel(), pos, x, y, z, r, g, b);
 		}
 
 		BufferUploader.drawWithShader(buffer.buildOrThrow());
 		RenderSystem.enableCull();
+		RenderSystem.enableBlend();
+		RenderSystem.disablePolygonOffset();
 
 		modelView.popMatrix();
 		RenderSystem.applyModelViewMatrix();
 	}
 
-	private static void addCube(BufferBuilder buffer, double x, double y, double z, float r, float g, float b) {
+	private static void addCube(BufferBuilder buffer, Level level, BlockPos pos, double x, double y, double z, float r, float g, float b) {
 		float x0 = (float) x;
 		float y0 = (float) y;
 		float z0 = (float) z;
@@ -232,12 +240,35 @@ public final class ConjuredOutlineRenderer {
 		float y1 = y0 + 1F;
 		float z1 = z0 + 1F;
 
-		quad(buffer, r, g, b, x0, y0, z0, x0, y0, z1, x0, y1, z1, x0, y1, z0); // west
-		quad(buffer, r, g, b, x1, y0, z0, x1, y1, z0, x1, y1, z1, x1, y0, z1); // east
-		quad(buffer, r, g, b, x0, y0, z0, x1, y0, z0, x1, y0, z1, x0, y0, z1); // down
-		quad(buffer, r, g, b, x0, y1, z0, x0, y1, z1, x1, y1, z1, x1, y1, z0); // up
-		quad(buffer, r, g, b, x0, y0, z0, x0, y1, z0, x1, y1, z0, x1, y0, z0); // north
-		quad(buffer, r, g, b, x0, y0, z1, x1, y0, z1, x1, y1, z1, x0, y1, z1); // south
+		if(!isFaceHidden(level, pos, Direction.WEST)) {
+			quad(buffer, packNormalBits(r, 0), packNormalBits(g, 1), packNormalBits(b, 1), x0, y0, z0, x0, y0, z1, x0, y1, z1, x0, y1, z0); // west  -X
+		}
+		if(!isFaceHidden(level, pos, Direction.EAST)) {
+			quad(buffer, packNormalBits(r, 1), packNormalBits(g, 0), packNormalBits(b, 0), x1, y0, z0, x1, y1, z0, x1, y1, z1, x1, y0, z1); // east  +X
+		}
+		if(!isFaceHidden(level, pos, Direction.DOWN)) {
+			quad(buffer, packNormalBits(r, 1), packNormalBits(g, 0), packNormalBits(b, 1), x0, y0, z0, x1, y0, z0, x1, y0, z1, x0, y0, z1); // down  -Y
+		}
+		if(!isFaceHidden(level, pos, Direction.UP)) {
+			quad(buffer, packNormalBits(r, 0), packNormalBits(g, 1), packNormalBits(b, 0), x0, y1, z0, x0, y1, z1, x1, y1, z1, x1, y1, z0); // up    +Y
+		}
+		if(!isFaceHidden(level, pos, Direction.NORTH)) {
+			quad(buffer, packNormalBits(r, 1), packNormalBits(g, 1), packNormalBits(b, 0), x0, y0, z0, x0, y1, z0, x1, y1, z0, x1, y0, z0); // north -Z
+		}
+		if(!isFaceHidden(level, pos, Direction.SOUTH)) {
+			quad(buffer, packNormalBits(r, 0), packNormalBits(g, 0), packNormalBits(b, 1), x0, y0, z1, x1, y0, z1, x1, y1, z1, x0, y1, z1); // south +Z
+		}
+	}
+
+	private static boolean isFaceHidden(Level level, BlockPos pos, Direction direction) {
+		BlockPos neighborPos = pos.relative(direction);
+		return level.getBlockState(neighborPos).isFaceSturdy(level, neighborPos, direction.getOpposite());
+	}
+
+	private static float packNormalBits(float channel, int bit) {
+		int byteVal = (int) (channel * 255.0F);
+		int packed = (byteVal & 0xFE) | (bit & 1);
+		return (packed + 0.5F) / 255.0F;
 	}
 
 	private static void quad(BufferBuilder buffer, float r, float g, float b,
