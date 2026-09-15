@@ -240,24 +240,29 @@ public final class ConjuredOutlineRenderer {
 		float y1 = y0 + 1F;
 		float z1 = z0 + 1F;
 
-		if(!isFaceHidden(level, pos, Direction.WEST)) {
-			quad(buffer, packNormalBits(r, 0), packNormalBits(g, 1), packNormalBits(b, 1), x0, y0, z0, x0, y0, z1, x0, y1, z1, x0, y1, z0); // west  -X
+		quadForFace(buffer, level, pos, Direction.WEST, r, g, b, x0, y0, z0, x0, y0, z1, x0, y1, z1, x0, y1, z0);
+		quadForFace(buffer, level, pos, Direction.EAST, r, g, b, x1, y0, z0, x1, y1, z0, x1, y1, z1, x1, y0, z1);
+		quadForFace(buffer, level, pos, Direction.DOWN, r, g, b, x0, y0, z0, x1, y0, z0, x1, y0, z1, x0, y0, z1);
+		quadForFace(buffer, level, pos, Direction.UP, r, g, b, x0, y1, z0, x0, y1, z1, x1, y1, z1, x1, y1, z0);
+		quadForFace(buffer, level, pos, Direction.NORTH, r, g, b, x0, y0, z0, x0, y1, z0, x1, y1, z0, x1, y0, z0);
+		quadForFace(buffer, level, pos, Direction.SOUTH, r, g, b, x0, y0, z1, x1, y0, z1, x1, y1, z1, x0, y1, z1);
+	}
+
+	private static void quadForFace(BufferBuilder buffer, Level level, BlockPos pos, Direction direction, float r, float g, float b,
+			float x0, float y0, float z0, float x1, float y1, float z1,
+			float x2, float y2, float z2, float x3, float y3, float z3) {
+		if(isFaceHidden(level, pos, direction)) {
+			return;
 		}
-		if(!isFaceHidden(level, pos, Direction.EAST)) {
-			quad(buffer, packNormalBits(r, 1), packNormalBits(g, 0), packNormalBits(b, 0), x1, y0, z0, x1, y1, z0, x1, y1, z1, x1, y0, z1); // east  +X
-		}
-		if(!isFaceHidden(level, pos, Direction.DOWN)) {
-			quad(buffer, packNormalBits(r, 1), packNormalBits(g, 0), packNormalBits(b, 1), x0, y0, z0, x1, y0, z0, x1, y0, z1, x0, y0, z1); // down  -Y
-		}
-		if(!isFaceHidden(level, pos, Direction.UP)) {
-			quad(buffer, packNormalBits(r, 0), packNormalBits(g, 1), packNormalBits(b, 0), x0, y1, z0, x0, y1, z1, x1, y1, z1, x1, y1, z0); // up    +Y
-		}
-		if(!isFaceHidden(level, pos, Direction.NORTH)) {
-			quad(buffer, packNormalBits(r, 1), packNormalBits(g, 1), packNormalBits(b, 0), x0, y0, z0, x0, y1, z0, x1, y1, z0, x1, y0, z0); // north -Z
-		}
-		if(!isFaceHidden(level, pos, Direction.SOUTH)) {
-			quad(buffer, packNormalBits(r, 0), packNormalBits(g, 0), packNormalBits(b, 1), x0, y0, z1, x1, y0, z1, x1, y1, z1, x0, y1, z1); // south +Z
-		}
+
+		quad(buffer, packNormalBits(r, faceBit(direction, Direction.Axis.X)), packNormalBits(g, faceBit(direction, Direction.Axis.Y)),
+				packNormalBits(b, faceBit(direction, Direction.Axis.Z)), x0, y0, z0, x1, y1, z1, x2, y2, z2, x3, y3, z3);
+	}
+
+	// The channel matching the face's own axis (R=X, G=Y, B=Z) encodes its sign; the other two channels encode the complement.
+	private static int faceBit(Direction direction, Direction.Axis channelAxis) {
+		int sign = direction.getAxisDirection() == Direction.AxisDirection.POSITIVE ? 1 : 0;
+		return direction.getAxis() == channelAxis ? sign : 1 - sign;
 	}
 
 	private static boolean isFaceHidden(Level level, BlockPos pos, Direction direction) {
