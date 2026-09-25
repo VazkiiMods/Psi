@@ -10,8 +10,6 @@
     "psi:operator_planar_normal_vector",
     "psi:operator_vector_rotate",
     "psi:constant_tau",
-    "psi:operator_extract_sign",
-    "psi:operator_vector_absolute",
-    "psi:operator_vector_extract_sign"
+    "psi:operator_extract_sign"
   ]
 }
