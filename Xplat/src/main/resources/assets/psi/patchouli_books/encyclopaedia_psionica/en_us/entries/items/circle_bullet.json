@@ -51,7 +51,7 @@
     },
     {
       "type": "psi:spell_grid",
-      "spell": "{modsRequired:[{modName:\"psi\",modVersion:\"2.0.0\"}],spellList:[{data:{key:\"psi:trick_die\",params:{_target:4}},x:3,y:3},{data:{key:\"psi:selector_ruler_vector\"},x:3,y:4},{data:{key:\"psi:selector_block_presence\",params:{_position:2}},x:4,y:3},{data:{key:\"psi:operator_vector_sum\",params:{_vector1:4,_vector2:3,_vector3:0}},x:4,y:4},{data:{key:\"psi:selector_loopcast_index\"},x:5,y:3},{data:{key:\"psi:operator_vector_construct\",params:{_x:0,_y:1,_z:0}},x:5,y:4}],spellName:\"20-Bit Tower\",uuidLeast:-6418013341378361091L,uuidMost:8665330167676028379L,validSpell:1b}",
+      "spell": "{modsRequired:[{modName:\"psi\",modVersion:\"2.0.0\"}],spellList:[{data:{key:\"psi:trick_die\",params:{_target:4}},x:3,y:3},{data:{key:\"psi:selector_ruler_vector\"},x:3,y:4},{data:{key:\"psi:selector_block_presence\",params:{_position:2}},x:4,y:3},{data:{key:\"psi:operator_sum\",params:{_number1:4,_number2:3,_number3:0}},x:4,y:4},{data:{key:\"psi:selector_loopcast_index\"},x:5,y:3},{data:{key:\"psi:operator_vector_construct\",params:{_x:0,_y:1,_z:0}},x:5,y:4}],spellName:\"20-Bit Tower\",uuidLeast:-6418013341378361091L,uuidMost:8665330167676028379L,validSpell:1b}",
       "text": "psi.book.page.circleBullet.10"
     }
   ]

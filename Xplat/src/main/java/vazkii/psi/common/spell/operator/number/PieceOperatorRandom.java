@@ -8,19 +8,20 @@
  */
 package vazkii.psi.common.spell.operator.number;
 
+import vazkii.psi.api.spell.NumberOrVector;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellParam;
 import vazkii.psi.api.spell.SpellRuntimeException;
-import vazkii.psi.api.spell.param.ParamNumber;
-import vazkii.psi.api.spell.piece.PieceOperator;
+import vazkii.psi.api.spell.param.ParamNumberOrVector;
+import vazkii.psi.api.spell.piece.PieceOperatorNumberOrVector;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-public class PieceOperatorRandom extends PieceOperator {
+public class PieceOperatorRandom extends PieceOperatorNumberOrVector {
 
-	SpellParam<Number> max;
-	SpellParam<Number> min;
+	ParamNumberOrVector max;
+	ParamNumberOrVector min;
 
 	public PieceOperatorRandom(Spell spell) {
 		super(spell);
@@ -28,25 +29,21 @@ public class PieceOperatorRandom extends PieceOperator {
 
 	@Override
 	public void initParams() {
-		addParam(max = new ParamNumber(SpellParam.GENERIC_NAME_MAX, SpellParam.BLUE, false, false));
-		addParam(min = new ParamNumber(SpellParam.GENERIC_NAME_MIN, SpellParam.RED, true, false));
+		addParam(max = new ParamNumberOrVector(SpellParam.GENERIC_NAME_MAX, SpellParam.BLUE, false, false));
+		addParam(min = new ParamNumberOrVector(SpellParam.GENERIC_NAME_MIN, SpellParam.RED, true, false));
 	}
 
 	@Override
-	public Object execute(SpellContext context) throws SpellRuntimeException {
-		int maxVal = this.getParamValue(context, max).intValue();
-		int minVal = this.getParamValueOrDefault(context, min, 0).intValue();
+	protected NumberOrVector compute(SpellContext context) throws SpellRuntimeException {
+		return getNumberOrVector(context, max).combine((mx, mn) -> {
+			int maxVal = (int) mx;
+			int minVal = (int) mn;
+			if(maxVal - minVal <= 0) {
+				throw new SpellRuntimeException(SpellRuntimeException.NEGATIVE_NUMBER);
+			}
 
-		if(maxVal - minVal <= 0) {
-			throw new SpellRuntimeException(SpellRuntimeException.NEGATIVE_NUMBER);
-		}
-
-		return (double) (ThreadLocalRandom.current().nextInt(maxVal - minVal) + minVal);
-	}
-
-	@Override
-	public Class<?> getEvaluationType() {
-		return Double.class;
+			return ThreadLocalRandom.current().nextInt(maxVal - minVal) + minVal;
+		}, NumberOrVector.of(this.getParamValueOrDefault(context, min, 0.0)));
 	}
 
 }

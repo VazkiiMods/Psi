@@ -38,6 +38,15 @@ public abstract class SpellPiece {
 	private static final String TAG_PARAMS = "params";
 	private static final String TAG_COMMENT = "comment";
 	private static final String PSI_PREFIX = "psi.spellparam.";
+	private static final Map<String, Alias> ALIASES = Map.of(
+			"operator_vector_sum", new Alias("operator_sum", Map.of("vector1", "number1", "vector2", "number2", "vector3", "number3")),
+			"operator_vector_subtract", new Alias("operator_subtract", Map.of("vector1", "number1", "vector2", "number2", "vector3", "number3")),
+			"operator_vector_multiply", new Alias("operator_multiply", Map.of("vector1", "number1")),
+			"operator_vector_divide", new Alias("operator_divide", Map.of("vector1", "number1")),
+			"operator_vector_piecewise_maximum", new Alias("operator_max", Map.of("vector1", "number1", "vector2", "number2")),
+			"operator_vector_piecewise_minimum", new Alias("operator_min", Map.of("vector1", "number1", "vector2", "number2")),
+			"operator_vector_absolute", new Alias("operator_absolute", Map.of("vector", "target")),
+			"operator_vector_extract_sign", new Alias("operator_extract_sign", Map.of()));
 	public static final Codec<SpellPiece> CODEC = CompoundTag.CODEC.xmap(t -> SpellPiece.createFromNBT(dummySpell, t), p -> {
 		var tag = new CompoundTag();
 		p.writeToNBT(tag);
@@ -77,6 +86,19 @@ public abstract class SpellPiece {
 			key = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, key);
 		} catch (Exception e) {
 			//Haha yes
+		}
+		Alias alias = ALIASES.get(key.startsWith("psi:") ? key.substring(4) : key);
+		if(alias != null) {
+			key = "psi:" + alias.id();
+			cmp = cmp.copy();
+			CompoundTag oldParams = cmp.getCompound(TAG_PARAMS);
+			CompoundTag newParams = new CompoundTag();
+			for(String paramKey : oldParams.getAllKeys()) {
+				String prefix = paramKey.startsWith(SpellParam.PSI_PREFIX) ? SpellParam.PSI_PREFIX : paramKey.startsWith("_") ? "_" : "";
+				String name = paramKey.substring(prefix.length());
+				newParams.put(prefix + alias.params().getOrDefault(name, name), oldParams.get(paramKey));
+			}
+			cmp.put(TAG_PARAMS, newParams);
 		}
 		boolean exists = false;
 		ResourceLocation rl = ResourceLocation.parse(key);
@@ -231,13 +253,8 @@ public abstract class SpellPiece {
 	 * Gets the value of one of this piece's params in the given context.
 	 */
 	public Object getRawParamValue(SpellContext context, SpellParam<?> param) {
-		SpellParam.Side side = paramSides.get(param);
-		if(!side.isEnabled()) {
-			return null;
-		}
-
 		try {
-			SpellPiece piece = spell.grid.getPieceAtSideWithRedirections(x, y, side);
+			SpellPiece piece = getConnectedPiece(param);
 			if(piece == null || !param.canAccept(piece)) {
 				return null;
 			}
@@ -274,18 +291,25 @@ public abstract class SpellPiece {
 	 */
 	@SuppressWarnings("unchecked")
 	public <T> T getParamEvaluation(SpellParam<?> param) throws SpellCompilationException {
-		SpellParam.Side side = paramSides.get(param);
-		if(!side.isEnabled()) {
-			return null;
-		}
-
-		SpellPiece piece = spell.grid.getPieceAtSideWithRedirections(x, y, side);
-
+		SpellPiece piece = getConnectedPiece(param);
 		if(piece == null || !param.canAccept(piece)) {
 			return null;
 		}
 
 		return (T) piece.evaluate();
+	}
+
+	/**
+	 * Gets the piece connected to the given param, following redirections, or null if the param is disabled or
+	 * nothing is connected. Does not check {@link SpellParam#canAccept(SpellPiece)}.
+	 */
+	protected SpellPiece getConnectedPiece(SpellParam<?> param) throws SpellCompilationException {
+		SpellParam.Side side = paramSides.get(param);
+		if(!side.isEnabled()) {
+			return null;
+		}
+
+		return spell.grid.getPieceAtSideWithRedirections(x, y, side);
 	}
 
 	public String getUnlocalizedName() {
@@ -444,5 +468,8 @@ public abstract class SpellPiece {
 	@Override
 	public int hashCode() {
 		return Objects.hash(x, y, toNBT());
+	}
+
+	private record Alias(String id, Map<String, String> params) {
 	}
 }
