@@ -8,17 +8,18 @@
  */
 package vazkii.psi.common.spell.operator.number;
 
+import vazkii.psi.api.spell.NumberOrVector;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellParam;
 import vazkii.psi.api.spell.SpellRuntimeException;
-import vazkii.psi.api.spell.param.ParamNumber;
-import vazkii.psi.api.spell.piece.PieceOperator;
+import vazkii.psi.api.spell.param.ParamNumberOrVector;
+import vazkii.psi.api.spell.piece.PieceOperatorNumberOrVector;
 
-public class PieceOperatorPower extends PieceOperator {
+public class PieceOperatorPower extends PieceOperatorNumberOrVector {
 
-	SpellParam<Number> num;
-	SpellParam<Number> power;
+	ParamNumberOrVector num;
+	ParamNumberOrVector power;
 
 	public PieceOperatorPower(Spell spell) {
 		super(spell);
@@ -26,21 +27,13 @@ public class PieceOperatorPower extends PieceOperator {
 
 	@Override
 	public void initParams() {
-		addParam(num = new ParamNumber(SpellParam.GENERIC_NAME_BASE, SpellParam.GREEN, false, false));
-		addParam(power = new ParamNumber(SpellParam.GENERIC_NAME_POWER, SpellParam.RED, false, false));
+		addParam(num = new ParamNumberOrVector(SpellParam.GENERIC_NAME_BASE, SpellParam.GREEN, false, false));
+		addParam(power = new ParamNumberOrVector(SpellParam.GENERIC_NAME_POWER, SpellParam.RED, false, false));
 	}
 
 	@Override
-	public Object execute(SpellContext context) throws SpellRuntimeException {
-		double d = this.getParamValue(context, num).doubleValue();
-		double pow = this.getParamValue(context, power).doubleValue();
-
-		return Math.pow(d, pow);
-	}
-
-	@Override
-	public Class<?> getEvaluationType() {
-		return Double.class;
+	protected NumberOrVector compute(SpellContext context) throws SpellRuntimeException {
+		return getNumberOrVector(context, num).combine(Math::pow, getNumberOrVector(context, power));
 	}
 
 }

@@ -8,18 +8,19 @@
  */
 package vazkii.psi.common.spell.operator.number;
 
+import vazkii.psi.api.spell.NumberOrVector;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellParam;
 import vazkii.psi.api.spell.SpellRuntimeException;
-import vazkii.psi.api.spell.param.ParamNumber;
-import vazkii.psi.api.spell.piece.PieceOperator;
+import vazkii.psi.api.spell.param.ParamNumberOrVector;
+import vazkii.psi.api.spell.piece.PieceOperatorNumberOrVector;
 
-public class PieceOperatorMin extends PieceOperator {
+public class PieceOperatorMin extends PieceOperatorNumberOrVector {
 
-	SpellParam<Number> num1;
-	SpellParam<Number> num2;
-	SpellParam<Number> num3;
+	ParamNumberOrVector num1;
+	ParamNumberOrVector num2;
+	ParamNumberOrVector num3;
 
 	public PieceOperatorMin(Spell spell) {
 		super(spell);
@@ -27,26 +28,17 @@ public class PieceOperatorMin extends PieceOperator {
 
 	@Override
 	public void initParams() {
-		addParam(num1 = new ParamNumber(SpellParam.GENERIC_NAME_NUMBER1, SpellParam.GREEN, false, false));
-		addParam(num2 = new ParamNumber(SpellParam.GENERIC_NAME_NUMBER2, SpellParam.GREEN, false, false));
-		addParam(num3 = new ParamNumber(SpellParam.GENERIC_NAME_NUMBER3, SpellParam.GREEN, true, false));
+		addParam(num1 = new ParamNumberOrVector(SpellParam.GENERIC_NAME_NUMBER1, SpellParam.GREEN, false, false));
+		addParam(num2 = new ParamNumberOrVector(SpellParam.GENERIC_NAME_NUMBER2, SpellParam.GREEN, false, false));
+		addParam(num3 = new ParamNumberOrVector(SpellParam.GENERIC_NAME_NUMBER3, SpellParam.GREEN, true, false));
 	}
 
 	@Override
-	public Object execute(SpellContext context) throws SpellRuntimeException {
-		double d1 = this.getParamValue(context, num1).doubleValue();
-		double d2 = this.getParamValue(context, num2).doubleValue();
-		Number d3 = this.getParamValue(context, num3);
-		if(d3 == null) {
-			d3 = Double.MAX_VALUE;
-		}
-
-		return Math.min(d1, Math.min(d2, d3.doubleValue()));
-	}
-
-	@Override
-	public Class<?> getEvaluationType() {
-		return Double.class;
+	protected NumberOrVector compute(SpellContext context) throws SpellRuntimeException {
+		NumberOrVector.BinaryOp op = Math::min;
+		NumberOrVector result = getNumberOrVector(context, num1).combine(op, getNumberOrVector(context, num2));
+		NumberOrVector third = getNumberOrVector(context, num3);
+		return third == null ? result : result.combine(op, third);
 	}
 
 }

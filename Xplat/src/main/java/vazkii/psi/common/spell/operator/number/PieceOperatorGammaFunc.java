@@ -10,12 +10,12 @@ package vazkii.psi.common.spell.operator.number;
 
 import vazkii.psi.api.internal.math.Gamma;
 import vazkii.psi.api.spell.*;
-import vazkii.psi.api.spell.param.ParamNumber;
-import vazkii.psi.api.spell.piece.PieceOperator;
+import vazkii.psi.api.spell.param.ParamNumberOrVector;
+import vazkii.psi.api.spell.piece.PieceOperatorNumberOrVector;
 
-public class PieceOperatorGammaFunc extends PieceOperator {
+public class PieceOperatorGammaFunc extends PieceOperatorNumberOrVector {
 
-	SpellParam<Number> num1;
+	ParamNumberOrVector num1;
 
 	public PieceOperatorGammaFunc(Spell spell) {
 		super(spell);
@@ -24,20 +24,17 @@ public class PieceOperatorGammaFunc extends PieceOperator {
 
 	@Override
 	public void initParams() {
-		addParam(num1 = new ParamNumber(SpellParam.GENERIC_NAME_NUMBER1, SpellParam.GREEN, false, false));
+		addParam(num1 = new ParamNumberOrVector(SpellParam.GENERIC_NAME_NUMBER1, SpellParam.GREEN, false, false));
 	}
 
 	@Override
-	public Object execute(SpellContext context) throws SpellRuntimeException {
-		double d1 = this.getParamValue(context, num1).doubleValue();
-		if(d1 <= 0) {
-			throw new SpellRuntimeException(SpellRuntimeException.NON_POSITIVE_VALUE);
-		}
-		return Gamma.gamma(d1);
-	}
+	protected NumberOrVector compute(SpellContext context) throws SpellRuntimeException {
+		return getNumberOrVector(context, num1).map(d -> {
+			if(d <= 0) {
+				throw new SpellRuntimeException(SpellRuntimeException.NON_POSITIVE_VALUE);
+			}
 
-	@Override
-	public Class<?> getEvaluationType() {
-		return Double.class;
+			return Gamma.gamma(d);
+		});
 	}
 }
