@@ -615,6 +615,7 @@
   "psi.datatype.integer": "Number",
   "psi.datatype.number": "Number",
   "psi.datatype.vector3": "Vector",
+  "psi.datatype.number_or_vector": "Number or Vector",
   "psi.datatype.entity": "Entity",
   "psi.datatype.living_entity": "Entity (Living)",
   "psi.datatype.living_entity_base": "Entity (Living)",

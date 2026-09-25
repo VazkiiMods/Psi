@@ -231,13 +231,8 @@ public abstract class SpellPiece {
 	 * Gets the value of one of this piece's params in the given context.
 	 */
 	public Object getRawParamValue(SpellContext context, SpellParam<?> param) {
-		SpellParam.Side side = paramSides.get(param);
-		if(!side.isEnabled()) {
-			return null;
-		}
-
 		try {
-			SpellPiece piece = spell.grid.getPieceAtSideWithRedirections(x, y, side);
+			SpellPiece piece = getConnectedPiece(param);
 			if(piece == null || !param.canAccept(piece)) {
 				return null;
 			}
@@ -274,18 +269,25 @@ public abstract class SpellPiece {
 	 */
 	@SuppressWarnings("unchecked")
 	public <T> T getParamEvaluation(SpellParam<?> param) throws SpellCompilationException {
-		SpellParam.Side side = paramSides.get(param);
-		if(!side.isEnabled()) {
-			return null;
-		}
-
-		SpellPiece piece = spell.grid.getPieceAtSideWithRedirections(x, y, side);
-
+		SpellPiece piece = getConnectedPiece(param);
 		if(piece == null || !param.canAccept(piece)) {
 			return null;
 		}
 
 		return (T) piece.evaluate();
+	}
+
+	/**
+	 * Gets the piece connected to the given param, following redirections, or null if the param is disabled or
+	 * nothing is connected. Does not check {@link SpellParam#canAccept(SpellPiece)}.
+	 */
+	protected SpellPiece getConnectedPiece(SpellParam<?> param) throws SpellCompilationException {
+		SpellParam.Side side = paramSides.get(param);
+		if(!side.isEnabled()) {
+			return null;
+		}
+
+		return spell.grid.getPieceAtSideWithRedirections(x, y, side);
 	}
 
 	public String getUnlocalizedName() {
