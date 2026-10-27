@@ -65,14 +65,16 @@ public final class NeoForgePsiGameplayEvents {
 
 	@SubscribeEvent
 	public static void onPlayerChangeDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
-		Player player = event.getEntity();
+		ServerPlayer player = (ServerPlayer) event.getEntity();
 		PlayerDataHandler.onChangeDimension(player);
-		LoopcastTrackingHandler.syncDataFor(player, (ServerPlayer) player);
+		LoopcastTrackingHandler.syncDataFor(player, player);
 	}
 
 	@SubscribeEvent
 	public static void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event) {
-		LoopcastTrackingHandler.syncDataFor(event.getEntity(), (ServerPlayer) event.getEntity());
+		ServerPlayer player = (ServerPlayer) event.getEntity();
+		PlayerDataHandler.syncData(player);
+		LoopcastTrackingHandler.syncDataFor(player, player);
 	}
 
 	@SubscribeEvent

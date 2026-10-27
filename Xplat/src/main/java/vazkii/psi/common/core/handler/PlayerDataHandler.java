@@ -80,10 +80,14 @@ public final class PlayerDataHandler {
 	}
 
 	public static void onPlayerLogin(ServerPlayer player) {
+		syncData(player);
+		postAdvancementUnlocks(player, get(player)::hasAdvancement);
+	}
+
+	public static void syncData(ServerPlayer player) {
 		CompoundTag dataTag = new CompoundTag();
 		get(player).writeToNBT(dataTag);
 		PsiPlayerDataSync.sendFull(player, dataTag);
-		postAdvancementUnlocks(player, get(player)::hasAdvancement);
 	}
 
 	public static void onAdvancementCompleted(ServerPlayer player, ResourceLocation advancement) {
@@ -112,7 +116,8 @@ public final class PlayerDataHandler {
 		}
 	}
 
-	public static void onChangeDimension(Player player) {
+	public static void onChangeDimension(ServerPlayer player) {
 		get(player).eidosChangelog.clear();
+		syncData(player);
 	}
 }
