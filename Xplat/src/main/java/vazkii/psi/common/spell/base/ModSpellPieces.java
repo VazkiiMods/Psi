@@ -233,20 +233,8 @@ public final class ModSpellPieces {
 			PsiRegistries.register(PsiAPI.SPELL_PIECE_REGISTRY, PsiAPI.location(LibPieceNames.CONSTANT_TAU), () -> SpellPieceType.ofClass(PieceConstantTau.class));
 	public static final RegistryEntry<SpellPieceType> OPERATOR_SIGNUM =
 			PsiRegistries.register(PsiAPI.SPELL_PIECE_REGISTRY, PsiAPI.location(LibPieceNames.OPERATOR_SIGNUM), () -> SpellPieceType.ofClass(PieceOperatorSignum.class));
-	public static final RegistryEntry<SpellPieceType> OPERATOR_VECTOR_ABSOLUTE =
-			PsiRegistries.register(PsiAPI.SPELL_PIECE_REGISTRY, PsiAPI.location(LibPieceNames.OPERATOR_VECTOR_ABSOLUTE), () -> SpellPieceType.ofClass(PieceOperatorVectorAbsolute.class));
-	public static final RegistryEntry<SpellPieceType> OPERATOR_VECTOR_SIGNUM =
-			PsiRegistries.register(PsiAPI.SPELL_PIECE_REGISTRY, PsiAPI.location(LibPieceNames.OPERATOR_VECTOR_SIGNUM), () -> SpellPieceType.ofClass(PieceOperatorVectorSignum.class));
 
 	// ========== VECTORS_INTRO ==========
-	public static final RegistryEntry<SpellPieceType> OPERATOR_VECTOR_SUM =
-			PsiRegistries.register(PsiAPI.SPELL_PIECE_REGISTRY, PsiAPI.location(LibPieceNames.OPERATOR_VECTOR_SUM), () -> SpellPieceType.ofClass(PieceOperatorVectorSum.class));
-	public static final RegistryEntry<SpellPieceType> OPERATOR_VECTOR_SUBTRACT =
-			PsiRegistries.register(PsiAPI.SPELL_PIECE_REGISTRY, PsiAPI.location(LibPieceNames.OPERATOR_VECTOR_SUBTRACT), () -> SpellPieceType.ofClass(PieceOperatorVectorSubtract.class));
-	public static final RegistryEntry<SpellPieceType> OPERATOR_VECTOR_MULTIPLY =
-			PsiRegistries.register(PsiAPI.SPELL_PIECE_REGISTRY, PsiAPI.location(LibPieceNames.OPERATOR_VECTOR_MULTIPLY), () -> SpellPieceType.ofClass(PieceOperatorVectorMultiply.class));
-	public static final RegistryEntry<SpellPieceType> OPERATOR_VECTOR_DIVIDE =
-			PsiRegistries.register(PsiAPI.SPELL_PIECE_REGISTRY, PsiAPI.location(LibPieceNames.OPERATOR_VECTOR_DIVIDE), () -> SpellPieceType.ofClass(PieceOperatorVectorDivide.class));
 	public static final RegistryEntry<SpellPieceType> OPERATOR_VECTOR_CROSS_PRODUCT =
 			PsiRegistries.register(PsiAPI.SPELL_PIECE_REGISTRY, PsiAPI.location(LibPieceNames.OPERATOR_VECTOR_CROSS_PRODUCT), () -> SpellPieceType.ofClass(PieceOperatorVectorCrossProduct.class));
 	public static final RegistryEntry<SpellPieceType> OPERATOR_VECTOR_NORMALIZE =
@@ -263,10 +251,6 @@ public final class ModSpellPieces {
 			PsiRegistries.register(PsiAPI.SPELL_PIECE_REGISTRY, PsiAPI.location(LibPieceNames.OPERATOR_VECTOR_EXTRACT_Y), () -> SpellPieceType.ofClass(PieceOperatorVectorExtractY.class));
 	public static final RegistryEntry<SpellPieceType> OPERATOR_VECTOR_EXTRACT_Z =
 			PsiRegistries.register(PsiAPI.SPELL_PIECE_REGISTRY, PsiAPI.location(LibPieceNames.OPERATOR_VECTOR_EXTRACT_Z), () -> SpellPieceType.ofClass(PieceOperatorVectorExtractZ.class));
-	public static final RegistryEntry<SpellPieceType> OPERATOR_VECTOR_MAXIMUM =
-			PsiRegistries.register(PsiAPI.SPELL_PIECE_REGISTRY, PsiAPI.location(LibPieceNames.OPERATOR_VECTOR_MAXIMUM), () -> SpellPieceType.ofClass(PieceOperatorVectorMaximum.class));
-	public static final RegistryEntry<SpellPieceType> OPERATOR_VECTOR_MINIMUM =
-			PsiRegistries.register(PsiAPI.SPELL_PIECE_REGISTRY, PsiAPI.location(LibPieceNames.OPERATOR_VECTOR_MINIMUM), () -> SpellPieceType.ofClass(PieceOperatorVectorMinimum.class));
 
 	// ========== BLOCK_WORKS ==========
 	public static final RegistryEntry<SpellPieceType> OPERATOR_VECTOR_RAYCAST_AXIS =

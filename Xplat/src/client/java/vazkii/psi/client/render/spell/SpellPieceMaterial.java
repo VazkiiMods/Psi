@@ -128,14 +128,8 @@ public final class SpellPieceMaterial {
 	public static final RegistryEntry<Material> CONSTANT_PI = register(LibPieceNames.CONSTANT_PI);
 	public static final RegistryEntry<Material> CONSTANT_TAU = register(LibPieceNames.CONSTANT_TAU);
 	public static final RegistryEntry<Material> OPERATOR_SIGNUM = register(LibPieceNames.OPERATOR_SIGNUM);
-	public static final RegistryEntry<Material> OPERATOR_VECTOR_ABSOLUTE = register(LibPieceNames.OPERATOR_VECTOR_ABSOLUTE);
-	public static final RegistryEntry<Material> OPERATOR_VECTOR_SIGNUM = register(LibPieceNames.OPERATOR_VECTOR_SIGNUM);
 
 	// ========== VECTORS_INTRO ==========
-	public static final RegistryEntry<Material> OPERATOR_VECTOR_SUM = register(LibPieceNames.OPERATOR_VECTOR_SUM);
-	public static final RegistryEntry<Material> OPERATOR_VECTOR_SUBTRACT = register(LibPieceNames.OPERATOR_VECTOR_SUBTRACT);
-	public static final RegistryEntry<Material> OPERATOR_VECTOR_MULTIPLY = register(LibPieceNames.OPERATOR_VECTOR_MULTIPLY);
-	public static final RegistryEntry<Material> OPERATOR_VECTOR_DIVIDE = register(LibPieceNames.OPERATOR_VECTOR_DIVIDE);
 	public static final RegistryEntry<Material> OPERATOR_VECTOR_CROSS_PRODUCT = register(LibPieceNames.OPERATOR_VECTOR_CROSS_PRODUCT);
 	public static final RegistryEntry<Material> OPERATOR_VECTOR_NORMALIZE = register(LibPieceNames.OPERATOR_VECTOR_NORMALIZE);
 	public static final RegistryEntry<Material> OPERATOR_VECTOR_NEGATE = register(LibPieceNames.OPERATOR_VECTOR_NEGATE);
@@ -144,8 +138,6 @@ public final class SpellPieceMaterial {
 	public static final RegistryEntry<Material> OPERATOR_VECTOR_EXTRACT_X = register(LibPieceNames.OPERATOR_VECTOR_EXTRACT_X);
 	public static final RegistryEntry<Material> OPERATOR_VECTOR_EXTRACT_Y = register(LibPieceNames.OPERATOR_VECTOR_EXTRACT_Y);
 	public static final RegistryEntry<Material> OPERATOR_VECTOR_EXTRACT_Z = register(LibPieceNames.OPERATOR_VECTOR_EXTRACT_Z);
-	public static final RegistryEntry<Material> OPERATOR_VECTOR_MAXIMUM = register(LibPieceNames.OPERATOR_VECTOR_MAXIMUM);
-	public static final RegistryEntry<Material> OPERATOR_VECTOR_MINIMUM = register(LibPieceNames.OPERATOR_VECTOR_MINIMUM);
 
 	// ========== BLOCK_WORKS ==========
 	public static final RegistryEntry<Material> OPERATOR_VECTOR_RAYCAST_AXIS = register(LibPieceNames.OPERATOR_VECTOR_RAYCAST_AXIS);

@@ -77,10 +77,6 @@ public final class LibPieceNames {
 	public static final String OPERATOR_LIST_ADD = "operator_list_add";
 	public static final String OPERATOR_LIST_REMOVE = "operator_list_remove";
 	public static final String OPERATOR_VECTOR_RAYCAST = "operator_vector_raycast";
-	public static final String OPERATOR_VECTOR_SUM = "operator_vector_sum";
-	public static final String OPERATOR_VECTOR_SUBTRACT = "operator_vector_subtract";
-	public static final String OPERATOR_VECTOR_MULTIPLY = "operator_vector_multiply";
-	public static final String OPERATOR_VECTOR_DIVIDE = "operator_vector_divide";
 	public static final String OPERATOR_VECTOR_CROSS_PRODUCT = "operator_vector_cross_product";
 	public static final String OPERATOR_VECTOR_NORMALIZE = "operator_vector_normalize";
 	public static final String OPERATOR_VECTOR_NEGATE = "operator_vector_negate";
@@ -104,17 +100,13 @@ public final class LibPieceNames {
 	public static final String OPERATOR_SIGNUM = "operator_extract_sign";
 	public static final String OPERATOR_CLOSEST_TO_LINE = "operator_closest_to_line";
 	public static final String OPERATOR_ENTITY_HEALTH = "operator_entity_health";
-	public static final String OPERATOR_VECTOR_ABSOLUTE = "operator_vector_absolute";
 	public static final String OPERATOR_ENTITY_RAYCAST = "operator_entity_raycast";
 	public static final String OPERATOR_BLOCK_LIGHT = "operator_block_light";
 	public static final String OPERATOR_BLOCK_HARDNESS = "operator_block_hardness";
 	public static final String OPERATOR_BLOCK_COMPARATOR_STRENGTH = "operator_block_comparator_strength";
 	public static final String OPERATOR_BLOCK_SIDE_SOLIDITY = "operator_block_side_solidity";
 	public static final String OPERATOR_BLOCK_MINING_LEVEL = "operator_block_mining_level";
-	public static final String OPERATOR_VECTOR_MAXIMUM = "operator_vector_piecewise_maximum";
-	public static final String OPERATOR_VECTOR_MINIMUM = "operator_vector_piecewise_minimum";
 	public static final String OPERATOR_ENTITY_HEIGHT = "operator_entity_height";
-	public static final String OPERATOR_VECTOR_SIGNUM = "operator_vector_extract_sign";
 
 	public static final String CONSTANT_NUMBER = "constant_number";
 	public static final String CONSTANT_PI = "constant_pi";
