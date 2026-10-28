@@ -43,18 +43,24 @@ public class PieceOperatorEntityMotion extends PieceOperator {
 			throw new SpellRuntimeException(SpellRuntimeException.NULL_TARGET);
 		}
 
-		if(e instanceof Player player) {
-			PlayerData data = PsiPlayerDataStorage.get(player);
-			if(data.eidosChangelog.size() >= 2) {
-				Vector3 last = data.eidosChangelog.get(data.eidosChangelog.size() - 2);
-				Vector3 vec = Vector3.fromEntity(e).sub(last).multiply(1.0 / PieceTrickAddMotion.MULTIPLIER);
-				if(vec.mag() < 10) {
-					return vec;
-				}
+		return getRawMotion(context, e).multiply(1.0 / PieceTrickAddMotion.MULTIPLIER);
+	}
+
+	public static Vector3 getRawMotion(SpellContext context, Entity e) {
+		if(!(e instanceof Player player) || (e.level().isClientSide && e == context.caster)) {
+			return new Vector3(e.getDeltaMovement());
+		}
+
+		PlayerData data = PsiPlayerDataStorage.get(player);
+		if(data.eidosChangelog.size() >= 2) {
+			Vector3 last = data.eidosChangelog.get(data.eidosChangelog.size() - 2);
+			Vector3 vec = Vector3.fromEntity(e).sub(last);
+			if(vec.mag() < 10 * PieceTrickAddMotion.MULTIPLIER) {
+				return vec;
 			}
 		}
 
-		return new Vector3(e.getDeltaMovement()).multiply(1.0 / PieceTrickAddMotion.MULTIPLIER);
+		return new Vector3(e.getDeltaMovement());
 	}
 
 	@Override
