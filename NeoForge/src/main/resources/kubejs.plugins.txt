@@ -1,0 +1,1 @@
+vazkii.psi.neoforge.compat.kubejs.PsiKubeJSPlugin kubejs

@@ -1,0 +1,9 @@
+{
+  "main": "psi:trick_blink",
+  "pieces": [
+    "psi:trick_mass_blink",
+    "psi:trick_mass_add_motion",
+    "psi:trick_mass_exodus",
+    "psi:selector_is_elytra_flying"
+  ]
+}

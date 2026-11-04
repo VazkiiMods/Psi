@@ -1,0 +1,27 @@
+/*
+ * This class is distributed as part of the Psi Mod.
+ * Get the Source Code in GitHub:
+ * https://github.com/VazkiiMods/Psi
+ *
+ * Psi is Open Source and distributed under the
+ * Psi License: https://psi.vazkii.net/license.php
+ */
+package vazkii.psi.common.platform;
+
+import net.minecraft.core.Holder;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+
+import java.util.List;
+
+public final class PsiAttributes {
+
+	private static final PsiAttributeService SERVICE = PsiServices.load(PsiAttributeService.class);
+
+	private PsiAttributes() {}
+
+	@SafeVarargs
+	public static void addToPlayer(Holder<Attribute>... attributes) {
+		SERVICE.addPlayerAttributes(List.of(attributes));
+	}
+
+}

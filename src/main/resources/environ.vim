@@ -15,4 +15,4 @@ inoremap <C-t> $(thing)$(0)<Left><C-o>3h
 vnoremap <C-p> <Esc>m``>a$(0)<Esc>`<i$(piece)<Esc>``8l
 inoremap <C-p> $(piece)$(0)<Left><C-o>3h
 inoremap <C-d> <Left><C-o>A
-let &makeprg="sh update-book.sh; (cd ../../../; ./gradlew processResources)"
+let &makeprg="sh update-book.sh; (cd ../../../; ./gradlew :Xplat:processResources)"

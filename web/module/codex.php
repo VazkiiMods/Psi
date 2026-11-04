@@ -6,13 +6,13 @@
 <div class='warning-txt'>
 	<ul>
 		<li>This page is a verbatim copy of the Taurus Silver's Codex you can access ingame by pressing the Psi master keybind. It does not, however, contain any recipes or images. Usage of the in-game guide is encouraged.</li>
-		<li>The contents of this page are fed from the <a href="https://github.com/Vazkii/Psi/blob/master/src/main/resources/assets/psi/lang/en_us.json">bleeding-edge lang file</a> and may be ahead of the Psi version currently out.</li>
+		<li>The contents of this page are fed from the <a href="https://github.com/Vazkii/Psi/blob/master/Xplat/src/main/resources/assets/psi/lang/en_us.json">bleeding-edge lang file</a> and may be ahead of the Psi version currently out.</li>
 		<li>This page contains spoilers for unlockables!</li>
 	</ul>
 </div>
 
 <?php
-	$file = file_get_contents(count($argv) >= 2 ? $argv[1] : "https://raw.githubusercontent.com/Vazkii/Psi/master/src/main/resources/assets/psi/lang/en_us.json");
+	$file = file_get_contents(count($argv) >= 2 ? $argv[1] : "https://raw.githubusercontent.com/Vazkii/Psi/master/Xplat/src/main/resources/assets/psi/lang/en_us.json");
 	$json = json_decode($file, true);
 	$default_keys = [
 		'psimisc.keybind' => 'c',

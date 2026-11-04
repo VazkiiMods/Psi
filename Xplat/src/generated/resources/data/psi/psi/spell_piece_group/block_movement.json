@@ -1,0 +1,8 @@
+{
+  "main": "psi:trick_move_block",
+  "pieces": [
+    "psi:trick_collapse_block",
+    "psi:trick_move_block_sequence",
+    "psi:trick_collapse_block_sequence"
+  ]
+}

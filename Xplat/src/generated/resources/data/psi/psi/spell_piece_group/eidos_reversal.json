@@ -1,0 +1,7 @@
+{
+  "main": "psi:trick_eidos_reversal",
+  "pieces": [
+    "psi:selector_eidos_changelog",
+    "psi:trick_eidos_anchor"
+  ]
+}

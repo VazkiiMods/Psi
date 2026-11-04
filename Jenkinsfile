@@ -6,7 +6,7 @@ pipeline {
     }
     agent any
     tools {
-        jdk "jdk-17.0.1"
+        jdk "jdk-21"
     }
     stages {
         stage('Clean') {
@@ -19,13 +19,14 @@ pipeline {
         stage('Build and Deploy') {
             steps {
                 echo 'Building and Deploying to Maven'
-					sh './gradlew build publish'
+					sh './gradlew checkSyntax buildAll checkDatagen :Xplat:publish :Fabric:publish :NeoForge:publish'
+					sh 'scripts/check_server_boot.sh'
                 }
             }
         }
     post {
         always {
-            archive 'build/libs/**.jar'
+            archiveArtifacts artifacts: 'Fabric/build/libs/Psi-fabric-*.jar,NeoForge/build/libs/Psi-neoforge-*.jar,Xplat/build/libs/Psi-xplat-*.jar'
         }
     }
 }

@@ -1,0 +1,125 @@
+plugins {
+	id 'java-library'
+	id 'maven-publish'
+	id 'pmd'
+	id 'com.diffplug.spotless'
+	id 'net.neoforged.moddev'
+}
+
+base {
+	archivesName = 'Psi-xplat'
+}
+
+java {
+	toolchain.languageVersion = JavaLanguageVersion.of(21)
+	withSourcesJar()
+}
+
+neoForge {
+	neoFormVersion = project.neo_form_version
+	parchment {
+		minecraftVersion = project.minecraft_version
+		mappingsVersion = project.parchment_version
+	}
+}
+
+sourceSets {
+	main {
+		resources.setSrcDirs(['src/main/resources', 'src/generated/resources'])
+		resources.exclude '.cache/**', '**/*.psd'
+	}
+	client {
+		java.setSrcDirs(['src/client/java'])
+		resources.setSrcDirs(['src/client/resources'])
+		compileClasspath += main.output + main.compileClasspath
+		runtimeClasspath += main.output + main.runtimeClasspath
+	}
+}
+
+configurations {
+	clientImplementation.extendsFrom implementation
+	clientCompileOnly.extendsFrom compileOnly
+	clientAnnotationProcessor.extendsFrom annotationProcessor
+}
+
+dependencies {
+	compileOnly 'org.jetbrains:annotations:26.0.2'
+	compileOnly 'org.spongepowered:mixin:0.8.7'
+	compileOnly "dev.ryanhcode.sable-companion:sable-companion-common-1.21.1:${sable_companion_version}"
+	compileOnly "vazkii.patchouli:Patchouli-xplat:${patchouli_version}"
+	compileOnly "mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"
+}
+
+spotless {
+	java {
+		target 'src/main/java/**/*.java', 'src/client/java/**/*.java'
+		eclipse().configFile rootProject.file('spotless/eclipseformat.xml')
+		removeUnusedImports()
+		importOrderFile rootProject.file('spotless/eclipse.importorder')
+		replaceRegex 'Too much space after if', '(if|for|while|switch) +\\(', '$1('
+	}
+}
+
+pmd {
+	toolVersion = '6.55.0'
+	ruleSetFiles = rootProject.files('spotless/pmd-ruleset.xml')
+}
+
+tasks.register('checkLoaderNeutrality') {
+	group = 'verification'
+	inputs.files sourceSets.main.allJava, sourceSets.client.allJava
+	doLast {
+		def violations = []
+		def clientViolations = []
+		inputs.files.files.findAll { it.name.endsWith('.java') }.sort().each { source ->
+			source.eachLine { line, number ->
+				if(line ==~ /\s*import\s+net\.(neoforged|fabricmc)\..*/) {
+					violations << "${source}:${number}: ${line.trim()}"
+				}
+			}
+		}
+		sourceSets.main.allJava.files.sort().each { source ->
+			source.eachLine { line, number ->
+				if(line ==~ /\s*import\s+(net\.minecraft\.client|com\.mojang\.blaze3d|org\.lwjgl)\..*/) {
+					clientViolations << "${source}:${number}: ${line.trim()}"
+				}
+			}
+		}
+		if(!violations.empty) {
+			throw new GradleException("Loader imports are forbidden in Xplat:\n${violations.join('\n')}")
+		}
+		if(!clientViolations.empty) {
+			throw new GradleException("Client imports are forbidden in Xplat main:\n${clientViolations.join('\n')}")
+		}
+	}
+}
+
+tasks.register('checkSyntax') {
+	group = 'verification'
+	dependsOn spotlessJavaCheck, pmdMain, pmdClient, checkLoaderNeutrality
+}
+
+tasks.named('check').configure {
+	dependsOn checkLoaderNeutrality
+}
+
+tasks.named('sourcesJar', Jar).configure {
+	from sourceSets.client.allSource
+}
+
+tasks.named('jar', Jar).configure {
+	from sourceSets.client.output
+}
+
+tasks.withType(JavaCompile).configureEach {
+	options.encoding = 'UTF-8'
+}
+
+publishing {
+	publications {
+		mavenJava(MavenPublication) {
+			artifactId = 'Psi-xplat'
+			from components.java
+		}
+	}
+}

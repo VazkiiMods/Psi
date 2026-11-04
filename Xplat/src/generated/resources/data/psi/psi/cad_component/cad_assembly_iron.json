@@ -1,0 +1,8 @@
+{
+  "type": "assembly",
+  "model": "psi:item/cad_iron",
+  "stats": {
+    "efficiency": 70,
+    "potency": 100
+  }
+}

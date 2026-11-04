@@ -1,9 +1,0 @@
-{
-  "values": [
-    "psi:cad_socket_basic",
-    "psi:cad_socket_large",
-    "psi:cad_socket_signaling",
-    "psi:cad_socket_huge",
-    "psi:cad_socket_transmissive"
-  ]
-}

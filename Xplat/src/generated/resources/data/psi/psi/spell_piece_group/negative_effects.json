@@ -1,0 +1,8 @@
+{
+  "main": "psi:trick_wither",
+  "pieces": [
+    "psi:trick_slowness",
+    "psi:trick_weakness",
+    "psi:trick_ignite"
+  ]
+}

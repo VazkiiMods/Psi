@@ -1,0 +1,8 @@
+{
+  "main": "psi:trick_save_vector",
+  "pieces": [
+    "psi:trick_detonate",
+    "psi:selector_saved_vector",
+    "psi:cross_connector"
+  ]
+}

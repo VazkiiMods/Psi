@@ -1,0 +1,35 @@
+/*
+ * This class is distributed as part of the Psi Mod.
+ * Get the Source Code in GitHub:
+ * https://github.com/Vazkii/Psi
+ *
+ * Psi is Open Source and distributed under the
+ * Psi License: https://psi.vazkii.net/license.php
+ */
+package vazkii.psi.api.spell;
+
+import net.minecraft.world.entity.Entity;
+
+import vazkii.psi.api.capability.PsiCapabilities;
+
+/**
+ * This interface defines an entity that's immune to spells. Any bosses (IBossDisplayData)
+ * will also be immune.
+ * <p>
+ * If an entity provides a capability of type ISpellImmune,
+ * they will also be immune if that returns true.
+ */
+public interface ISpellImmune {
+
+	static boolean isImmune(Entity e) {
+		if(!e.canUsePortal(false)) {
+			return true;
+		}
+
+		var cap = PsiCapabilities.spellImmune(e);
+		return cap != null && cap.isImmune();
+	}
+
+	boolean isImmune();
+
+}

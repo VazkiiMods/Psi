@@ -1,0 +1,9 @@
+{
+  "main": "psi:operator_list_exclusion",
+  "pieces": [
+    "psi:operator_list_intersection",
+    "psi:operator_list_size",
+    "psi:operator_list_union",
+    "psi:operator_list_index"
+  ]
+}

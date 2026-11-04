@@ -1,0 +1,10 @@
+{
+  "main": "psi:trick_play_sound",
+  "pieces": [
+    "psi:trick_till",
+    "psi:trick_till_sequence",
+    "psi:trick_spin_chamber",
+    "psi:trick_russian_roulette",
+    "psi:trick_conjure_circle"
+  ]
+}

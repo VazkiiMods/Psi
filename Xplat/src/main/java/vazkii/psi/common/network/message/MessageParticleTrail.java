@@ -1,0 +1,66 @@
+/*
+ * This class is distributed as part of the Psi Mod.
+ * Get the Source Code in GitHub:
+ * https://github.com/Vazkii/Psi
+ *
+ * Psi is Open Source and distributed under the
+ * Psi License: https://psi.vazkii.net/license.php
+ */
+package vazkii.psi.common.network.message;
+
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
+
+import org.jetbrains.annotations.NotNull;
+
+import vazkii.psi.api.PsiAPI;
+import vazkii.psi.api.cad.ICAD;
+import vazkii.psi.api.cad.ICADColorizer;
+import vazkii.psi.api.internal.PsiRenderHelper;
+import vazkii.psi.common.client.PsiClientRuntime;
+import vazkii.psi.common.network.PsiPacketCodecs;
+
+public record MessageParticleTrail(Vec3 position, Vec3 direction, double length, int time,
+		ItemStack cad) implements CustomPacketPayload {
+
+	public static final ResourceLocation ID = PsiAPI.location("message_particle_trail");
+	public static final CustomPacketPayload.Type<MessageParticleTrail> TYPE = new Type<>(ID);
+	public static final StreamCodec<RegistryFriendlyByteBuf, MessageParticleTrail> CODEC = StreamCodec.composite(
+			PsiPacketCodecs.VEC3, MessageParticleTrail::position,
+			PsiPacketCodecs.VEC3, MessageParticleTrail::direction,
+			ByteBufCodecs.DOUBLE, MessageParticleTrail::length,
+			ByteBufCodecs.INT, MessageParticleTrail::time,
+			ItemStack.STREAM_CODEC, MessageParticleTrail::cad,
+			MessageParticleTrail::new);
+	private static final int STEPS_PER_UNIT = 4;
+
+	@Override
+	public @NotNull Type<? extends CustomPacketPayload> type() {
+		return TYPE;
+	}
+
+	public void handle(Player player) {
+		Level world = player.level();
+		int color = cad.getItem() instanceof ICAD cadItem
+				? cadItem.getSpellColor(cad)
+				: ICADColorizer.DEFAULT_SPELL_COLOR;
+		float red = PsiRenderHelper.r(color);
+		float green = PsiRenderHelper.g(color);
+		float blue = PsiRenderHelper.b(color);
+		Vec3 ray = direction.normalize().scale(1f / STEPS_PER_UNIT);
+		int steps = (int) (length * STEPS_PER_UNIT);
+		for(int i = 0; i < steps; i++) {
+			double x = position.x + ray.x * i;
+			double y = position.y + ray.y * i;
+			double z = position.z + ray.z * i;
+			PsiClientRuntime.sparkle(world, x, y, z, red, green, blue, 0, 0, 0, 1f, time);
+		}
+	}
+}

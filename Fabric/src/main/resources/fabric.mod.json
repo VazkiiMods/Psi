@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "id": "${mod_id}",
+  "version": "${mod_version}",
+  "name": "${mod_name}",
+  "description": "${mod_description}",
+  "authors": [
+    "Vazkii",
+    "Wiiv",
+    "WireSegal",
+    "Kamefrede",
+    "Williewillus",
+    "Hubry",
+    "Dudblockman",
+    "TheidenHD"
+  ],
+  "contact": {
+    "homepage": "https://psi.vazkii.net/",
+    "sources": "https://github.com/VazkiiMods/Psi",
+    "issues": "https://github.com/VazkiiMods/Psi/issues"
+  },
+  "license": "${mod_license}",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "vazkii.psi.fabric.FabricPsi"
+    ],
+    "client": [
+      "vazkii.psi.fabric.FabricPsiClient"
+    ],
+    "fabric-datagen": [
+      "vazkii.psi.fabric.data.FabricPsiDataGenerator"
+    ],
+    "jei_mod_plugin": [
+      "vazkii.psi.client.jei.JEICompat"
+    ]
+  },
+  "mixins": [
+    "psi-xplat-client.mixins.json",
+    "psi-fabric.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${fabric_loader_version}",
+    "fabric-api": ">=${fabric_api_version}",
+    "java": ">=21",
+    "minecraft": "${minecraft_version}",
+    "patchouli": ">=1.21-87"
+  }
+}

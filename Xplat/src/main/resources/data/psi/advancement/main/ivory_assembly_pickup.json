@@ -1,0 +1,28 @@
+{
+  "display": {
+    "icon": {
+      "id": "psi:cad_assembly_ivory_psimetal"
+    },
+    "title": {
+      "translate": "advancement.psi:ivory_assembly_pickup"
+    },
+    "description": {
+      "translate": "advancement.psi:ivory_assembly_pickup.desc"
+    }
+  },
+  "parent": "psi:main/ivory_pickup",
+  "criteria": {
+    "flower": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "psi:cad_assembly_ivory_psimetal"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

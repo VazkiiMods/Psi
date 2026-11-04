@@ -1,0 +1,8 @@
+{
+  "main": "psi:trick_smelt_item",
+  "pieces": [
+    "psi:selector_nearby_smeltables",
+    "psi:trick_smelt_block",
+    "psi:trick_smelt_block_sequence"
+  ]
+}

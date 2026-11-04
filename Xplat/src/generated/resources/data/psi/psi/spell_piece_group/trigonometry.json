@@ -1,0 +1,17 @@
+{
+  "main": "psi:constant_pi",
+  "pieces": [
+    "psi:operator_sin",
+    "psi:operator_cos",
+    "psi:operator_asin",
+    "psi:operator_acos",
+    "psi:operator_vector_dot_product",
+    "psi:operator_gamma_function",
+    "psi:operator_planar_normal_vector",
+    "psi:operator_vector_rotate",
+    "psi:constant_tau",
+    "psi:operator_extract_sign",
+    "psi:operator_vector_absolute",
+    "psi:operator_vector_extract_sign"
+  ]
+}

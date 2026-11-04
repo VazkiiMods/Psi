@@ -1,0 +1,8 @@
+{
+  "main": "psi:selector_block_broken",
+  "pieces": [
+    "psi:selector_block_side_broken",
+    "psi:selector_attack_target",
+    "psi:selector_item_count"
+  ]
+}

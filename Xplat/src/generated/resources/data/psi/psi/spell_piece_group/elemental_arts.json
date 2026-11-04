@@ -1,0 +1,9 @@
+{
+  "main": "psi:trick_smite",
+  "pieces": [
+    "psi:operator_random",
+    "psi:trick_blaze",
+    "psi:trick_torrent",
+    "psi:trick_overgrow"
+  ]
+}

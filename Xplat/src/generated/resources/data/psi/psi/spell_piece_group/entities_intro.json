@@ -1,0 +1,25 @@
+{
+  "main": "psi:operator_closest_to_point",
+  "pieces": [
+    "psi:selector_nearby_items",
+    "psi:selector_nearby_living",
+    "psi:selector_nearby_enemies",
+    "psi:selector_nearby_animals",
+    "psi:selector_nearby_projectiles",
+    "psi:selector_nearby_charges",
+    "psi:selector_nearby_falling_blocks",
+    "psi:selector_nearby_glowing",
+    "psi:selector_nearby_players",
+    "psi:selector_nearby_vehicles",
+    "psi:operator_entity_motion",
+    "psi:operator_entity_axial_look",
+    "psi:operator_random_entity",
+    "psi:operator_focused_entity",
+    "psi:operator_list_add",
+    "psi:operator_list_remove",
+    "psi:operator_closest_to_line",
+    "psi:operator_entity_health",
+    "psi:operator_entity_raycast",
+    "psi:operator_entity_height"
+  ]
+}

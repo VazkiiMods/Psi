@@ -1,0 +1,28 @@
+{
+  "display": {
+    "icon": {
+      "id": "psi:psimetal"
+    },
+    "title": {
+      "translate": "advancement.psi:psimetal_pickup"
+    },
+    "description": {
+      "translate": "advancement.psi:psimetal_pickup.desc"
+    }
+  },
+  "parent": "psi:main/psidust",
+  "criteria": {
+    "flower": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "psi:psimetal"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

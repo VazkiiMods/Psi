@@ -1,0 +1,6 @@
+{
+  "type": "battery",
+  "stats": {
+    "overflow": 200
+  }
+}

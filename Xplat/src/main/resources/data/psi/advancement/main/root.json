@@ -1,0 +1,30 @@
+{
+  "display": {
+    "icon": {
+      "id": "psi:programmer"
+    },
+    "title": {
+      "translate": "itemGroup.psi"
+    },
+    "description": {
+      "translate": "psi.desc"
+    },
+    "background": "psi:textures/block/psimetal_plate_white.png",
+    "show_toast": false,
+    "announce_to_chat": false
+  },
+  "criteria": {
+    "flower": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "psi:cad_assembly_iron"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,76 @@
+/*
+ * This class is distributed as part of the Psi Mod.
+ * Get the Source Code in GitHub:
+ * https://github.com/VazkiiMods/Psi
+ *
+ * Psi is Open Source and distributed under the
+ * Psi License: https://psi.vazkii.net/license.php
+ */
+package vazkii.psi.common.spell.trick;
+
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.Entity;
+
+import vazkii.psi.api.cad.ISocketable;
+import vazkii.psi.api.capability.PsiCapabilities;
+import vazkii.psi.api.spell.*;
+import vazkii.psi.api.spell.param.ParamNumber;
+import vazkii.psi.api.spell.piece.PieceTrick;
+import vazkii.psi.common.core.handler.PlayerData;
+import vazkii.psi.common.entity.EntitySpellCircle;
+import vazkii.psi.common.platform.PsiPlayerDataStorage;
+
+public class PieceTrickBreakLoop extends PieceTrick {
+
+	SpellParam<Number> valueParam;
+
+	public PieceTrickBreakLoop(Spell spell) {
+		super(spell);
+		setStatLabel(EnumSpellStat.COMPLEXITY, null);
+		setStatLabel(EnumSpellStat.PROJECTION, null);
+	}
+
+	@Override
+	public void initParams() {
+		addParam(valueParam = new ParamNumber(SpellParam.GENERIC_NAME_NUMBER, SpellParam.BLUE, false, false));
+	}
+
+	@Override
+	public void addToMetadata(SpellMetadata meta) {
+		// NO-OP
+	}
+
+	@Override
+	public Object execute(SpellContext context) throws SpellRuntimeException {
+		double value = this.getParamValue(context, valueParam).doubleValue();
+
+		if(Math.abs(value) < 1.0) {
+			if(context.focalPoint != context.caster) {
+				if(context.focalPoint instanceof EntitySpellCircle circle) {
+					CompoundTag circleNBT = new CompoundTag();
+					circle.addAdditionalSaveData(circleNBT);
+					circleNBT.putInt("timesCast", 20);
+					circleNBT.putInt("timesAlive", 100);
+					circle.load(circleNBT);
+				} else {
+					context.focalPoint.remove(Entity.RemovalReason.DISCARDED);
+				}
+			} else {
+				if(!context.tool.isEmpty()) {
+					ISocketable socketableCap = PsiCapabilities.socketable(context.tool);
+
+					if(socketableCap != null) {
+						socketableCap.setSelectedSlot(socketableCap.getLastSlot() + 1);
+
+					}
+				}
+
+				PlayerData data = PsiPlayerDataStorage.get(context.caster);
+				if(context.castFrom == data.loopcastHand) {
+					data.stopLoopcast();
+				}
+			}
+		}
+		return null;
+	}
+}

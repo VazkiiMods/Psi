@@ -1,0 +1,12 @@
+{
+  "main": "psi:trick_delay",
+  "pieces": [
+    "psi:selector_sneak_status",
+    "psi:selector_tick_time",
+    "psi:selector_tps",
+    "psi:trick_die",
+    "psi:trick_evaluate",
+    "psi:trick_break_loop",
+    "psi:constant_wrapper"
+  ]
+}
