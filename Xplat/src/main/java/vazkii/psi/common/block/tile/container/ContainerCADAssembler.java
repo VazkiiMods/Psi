@@ -35,6 +35,7 @@ import vazkii.psi.common.block.tile.container.slot.InventoryAssemblerOutput;
 import vazkii.psi.common.block.tile.container.slot.SlotCADOutput;
 import vazkii.psi.common.block.tile.container.slot.SlotSocketable;
 import vazkii.psi.common.block.tile.container.slot.ValidatorSlot;
+import vazkii.psi.common.lib.ModTags;
 
 import java.util.Optional;
 
@@ -68,11 +69,36 @@ public class ContainerCADAssembler extends AbstractContainerMenu {
 		addSlot(new SlotCADOutput(output, assembler, 120, 35));
 
 		cadComponentStart = slots.size();
-		addSlot(new Slot(assemblerInv, EnumCADComponent.ASSEMBLY.ordinal() + 1, 120, 91));
-		addSlot(new Slot(assemblerInv, EnumCADComponent.CORE.ordinal() + 1, 100, 91));
-		addSlot(new Slot(assemblerInv, EnumCADComponent.SOCKET.ordinal() + 1, 140, 91));
-		addSlot(new Slot(assemblerInv, EnumCADComponent.BATTERY.ordinal() + 1, 110, 111));
-		addSlot(new Slot(assemblerInv, EnumCADComponent.DYE.ordinal() + 1, 130, 111));
+		addSlot(new Slot(assemblerInv, EnumCADComponent.ASSEMBLY.ordinal() + 1, 120, 91) {
+			@Override
+			public boolean mayPlace(ItemStack stack) {
+				return stack.is(ModTags.CAD_ASSEMBLIES) && super.mayPlace(stack);
+			}
+		});
+		addSlot(new Slot(assemblerInv, EnumCADComponent.CORE.ordinal() + 1, 100, 91) {
+			@Override
+			public boolean mayPlace(ItemStack stack) {
+				return stack.is(ModTags.CAD_CORES) && super.mayPlace(stack);
+			}
+		});
+		addSlot(new Slot(assemblerInv, EnumCADComponent.SOCKET.ordinal() + 1, 140, 91) {
+			@Override
+			public boolean mayPlace(ItemStack stack) {
+				return stack.is(ModTags.CAD_SOCKETS) && super.mayPlace(stack);
+			}
+		});
+		addSlot(new Slot(assemblerInv, EnumCADComponent.BATTERY.ordinal() + 1, 110, 111) {
+			@Override
+			public boolean mayPlace(ItemStack stack) {
+				return stack.is(ModTags.CAD_BATTERIES) && super.mayPlace(stack);
+			}
+		});
+		addSlot(new Slot(assemblerInv, EnumCADComponent.DYE.ordinal() + 1, 130, 111) {
+			@Override
+			public boolean mayPlace(ItemStack stack) {
+				return stack.is(ModTags.CAD_DYES) && super.mayPlace(stack);
+			}
+		});
 
 		socketableStart = slots.size();
 		addSlot(new SlotSocketable(assemblerInv, bullets, 0, 35, 21));
