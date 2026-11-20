@@ -8,17 +8,18 @@
  */
 package vazkii.psi.common.spell.operator.number;
 
+import vazkii.psi.api.spell.NumberOrVector;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellParam;
 import vazkii.psi.api.spell.SpellRuntimeException;
-import vazkii.psi.api.spell.param.ParamNumber;
-import vazkii.psi.api.spell.piece.PieceOperator;
+import vazkii.psi.api.spell.param.ParamNumberOrVector;
+import vazkii.psi.api.spell.piece.PieceOperatorNumberOrVector;
 
-public class PieceOperatorLog extends PieceOperator {
+public class PieceOperatorLog extends PieceOperatorNumberOrVector {
 
-	SpellParam<Number> num;
-	SpellParam<Number> base;
+	ParamNumberOrVector num;
+	ParamNumberOrVector base;
 
 	public PieceOperatorLog(Spell spell) {
 		super(spell);
@@ -26,35 +27,27 @@ public class PieceOperatorLog extends PieceOperator {
 
 	@Override
 	public void initParams() {
-		addParam(num = new ParamNumber(SpellParam.GENERIC_NAME_TARGET, SpellParam.BLUE, false, false));
-		addParam(base = new ParamNumber(SpellParam.GENERIC_NAME_BASE, SpellParam.RED, true, false));
+		addParam(num = new ParamNumberOrVector(SpellParam.GENERIC_NAME_TARGET, SpellParam.BLUE, false, false));
+		addParam(base = new ParamNumberOrVector(SpellParam.GENERIC_NAME_BASE, SpellParam.RED, true, false));
 	}
 
 	@Override
-	public Object execute(SpellContext context) throws SpellRuntimeException {
-		double d = this.getParamValue(context, num).doubleValue();
-
-		if(d < 0) {
-			throw new SpellRuntimeException(SpellRuntimeException.NEGATIVE_NUMBER);
-		}
-
-		double logNum = Math.log10(d);
-
-		Number b = this.getParamValue(context, base);
-		if(b != null) {
-			if(b.doubleValue() < 0) {
+	protected NumberOrVector compute(SpellContext context) throws SpellRuntimeException {
+		NumberOrVector.UnaryOp log = d -> {
+			if(d < 0) {
 				throw new SpellRuntimeException(SpellRuntimeException.NEGATIVE_NUMBER);
 			}
 
-			logNum /= Math.log10(b.doubleValue());
+			return Math.log10(d);
+		};
+
+		NumberOrVector value = getNumberOrVector(context, num);
+		NumberOrVector b = getNumberOrVector(context, base);
+		if(b == null) {
+			return value.map(log);
 		}
 
-		return logNum;
-	}
-
-	@Override
-	public Class<?> getEvaluationType() {
-		return Double.class;
+		return value.combine((d, bd) -> log.apply(d) / log.apply(bd), b);
 	}
 
 }

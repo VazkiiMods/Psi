@@ -8,16 +8,17 @@
  */
 package vazkii.psi.common.spell.operator.number;
 
+import vazkii.psi.api.spell.NumberOrVector;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellParam;
 import vazkii.psi.api.spell.SpellRuntimeException;
-import vazkii.psi.api.spell.param.ParamNumber;
-import vazkii.psi.api.spell.piece.PieceOperator;
+import vazkii.psi.api.spell.param.ParamNumberOrVector;
+import vazkii.psi.api.spell.piece.PieceOperatorNumberOrVector;
 
-public class PieceOperatorAbsolute extends PieceOperator {
+public class PieceOperatorAbsolute extends PieceOperatorNumberOrVector {
 
-	SpellParam<Number> num;
+	ParamNumberOrVector num;
 
 	public PieceOperatorAbsolute(Spell spell) {
 		super(spell);
@@ -25,19 +26,12 @@ public class PieceOperatorAbsolute extends PieceOperator {
 
 	@Override
 	public void initParams() {
-		addParam(num = new ParamNumber(SpellParam.GENERIC_NAME_TARGET, SpellParam.BLUE, false, false));
+		addParam(num = new ParamNumberOrVector(SpellParam.GENERIC_NAME_TARGET, SpellParam.BLUE, false, false));
 	}
 
 	@Override
-	public Object execute(SpellContext context) throws SpellRuntimeException {
-		double d = this.getParamValue(context, num).doubleValue();
-
-		return Math.abs(d);
-	}
-
-	@Override
-	public Class<?> getEvaluationType() {
-		return Double.class;
+	protected NumberOrVector compute(SpellContext context) throws SpellRuntimeException {
+		return getNumberOrVector(context, num).map(Math::abs);
 	}
 
 }

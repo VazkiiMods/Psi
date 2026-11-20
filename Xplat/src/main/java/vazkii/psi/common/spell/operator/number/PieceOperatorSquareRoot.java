@@ -8,16 +8,17 @@
  */
 package vazkii.psi.common.spell.operator.number;
 
+import vazkii.psi.api.spell.NumberOrVector;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellParam;
 import vazkii.psi.api.spell.SpellRuntimeException;
-import vazkii.psi.api.spell.param.ParamNumber;
-import vazkii.psi.api.spell.piece.PieceOperator;
+import vazkii.psi.api.spell.param.ParamNumberOrVector;
+import vazkii.psi.api.spell.piece.PieceOperatorNumberOrVector;
 
-public class PieceOperatorSquareRoot extends PieceOperator {
+public class PieceOperatorSquareRoot extends PieceOperatorNumberOrVector {
 
-	SpellParam<Number> num;
+	ParamNumberOrVector num;
 
 	public PieceOperatorSquareRoot(Spell spell) {
 		super(spell);
@@ -25,23 +26,18 @@ public class PieceOperatorSquareRoot extends PieceOperator {
 
 	@Override
 	public void initParams() {
-		addParam(num = new ParamNumber(SpellParam.GENERIC_NAME_NUMBER, SpellParam.GREEN, false, false));
+		addParam(num = new ParamNumberOrVector(SpellParam.GENERIC_NAME_NUMBER, SpellParam.GREEN, false, false));
 	}
 
 	@Override
-	public Object execute(SpellContext context) throws SpellRuntimeException {
-		double d = this.getParamValue(context, num).doubleValue();
+	protected NumberOrVector compute(SpellContext context) throws SpellRuntimeException {
+		return getNumberOrVector(context, num).map(d -> {
+			if(d < 0) {
+				throw new SpellRuntimeException(SpellRuntimeException.NEGATIVE_NUMBER);
+			}
 
-		if(d < 0) {
-			throw new SpellRuntimeException(SpellRuntimeException.NEGATIVE_NUMBER);
-		}
-
-		return Math.sqrt(d);
-	}
-
-	@Override
-	public Class<?> getEvaluationType() {
-		return Double.class;
+			return Math.sqrt(d);
+		});
 	}
 
 }

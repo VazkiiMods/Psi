@@ -8,17 +8,18 @@
  */
 package vazkii.psi.common.spell.operator.number;
 
+import vazkii.psi.api.spell.NumberOrVector;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellParam;
 import vazkii.psi.api.spell.SpellRuntimeException;
-import vazkii.psi.api.spell.param.ParamNumber;
-import vazkii.psi.api.spell.piece.PieceOperator;
+import vazkii.psi.api.spell.param.ParamNumberOrVector;
+import vazkii.psi.api.spell.piece.PieceOperatorNumberOrVector;
 
-public class PieceOperatorRoot extends PieceOperator {
+public class PieceOperatorRoot extends PieceOperatorNumberOrVector {
 
-	SpellParam<Number> num;
-	SpellParam<Number> root;
+	ParamNumberOrVector num;
+	ParamNumberOrVector root;
 
 	public PieceOperatorRoot(Spell spell) {
 		super(spell);
@@ -26,23 +27,18 @@ public class PieceOperatorRoot extends PieceOperator {
 
 	@Override
 	public void initParams() {
-		addParam(num = new ParamNumber(SpellParam.GENERIC_NAME_NUMBER, SpellParam.GREEN, false, false));
-		addParam(root = new ParamNumber(SpellParam.GENERIC_NAME_ROOT, SpellParam.RED, false, false));
+		addParam(num = new ParamNumberOrVector(SpellParam.GENERIC_NAME_NUMBER, SpellParam.GREEN, false, false));
+		addParam(root = new ParamNumberOrVector(SpellParam.GENERIC_NAME_ROOT, SpellParam.RED, false, false));
 	}
 
 	@Override
-	public Object execute(SpellContext context) throws SpellRuntimeException {
-		double base = this.getParamValue(context, num).doubleValue();
-		double r = this.getParamValue(context, root).doubleValue();
-		if(base < 0 && r % 2 == 0) {
-			throw new SpellRuntimeException(SpellRuntimeException.EVEN_ROOT_NEGATIVE_NUMBER);
-		}
-		return Math.pow(base, 1.0 / r);
+	protected NumberOrVector compute(SpellContext context) throws SpellRuntimeException {
+		return getNumberOrVector(context, num).combine((b, r) -> {
+			if(b < 0 && r % 2 == 0) {
+				throw new SpellRuntimeException(SpellRuntimeException.EVEN_ROOT_NEGATIVE_NUMBER);
+			}
 
-	}
-
-	@Override
-	public Class<?> getEvaluationType() {
-		return Double.class;
+			return Math.pow(b, 1.0 / r);
+		}, getNumberOrVector(context, root));
 	}
 }

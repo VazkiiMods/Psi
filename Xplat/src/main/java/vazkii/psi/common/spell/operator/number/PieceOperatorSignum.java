@@ -8,15 +8,16 @@
  */
 package vazkii.psi.common.spell.operator.number;
 
+import vazkii.psi.api.spell.NumberOrVector;
 import vazkii.psi.api.spell.Spell;
 import vazkii.psi.api.spell.SpellContext;
 import vazkii.psi.api.spell.SpellParam;
 import vazkii.psi.api.spell.SpellRuntimeException;
-import vazkii.psi.api.spell.param.ParamNumber;
-import vazkii.psi.api.spell.piece.PieceOperator;
+import vazkii.psi.api.spell.param.ParamNumberOrVector;
+import vazkii.psi.api.spell.piece.PieceOperatorNumberOrVector;
 
-public class PieceOperatorSignum extends PieceOperator {
-	SpellParam<Number> num;
+public class PieceOperatorSignum extends PieceOperatorNumberOrVector {
+	ParamNumberOrVector num;
 
 	public PieceOperatorSignum(Spell spell) {
 		super(spell);
@@ -24,17 +25,11 @@ public class PieceOperatorSignum extends PieceOperator {
 
 	@Override
 	public void initParams() {
-		addParam(num = new ParamNumber(SpellParam.GENERIC_NAME_TARGET, SpellParam.BLUE, false, false));
+		addParam(num = new ParamNumberOrVector(SpellParam.GENERIC_NAME_TARGET, SpellParam.BLUE, false, false));
 	}
 
 	@Override
-	public Object execute(SpellContext context) throws SpellRuntimeException {
-		double number = this.getParamValue(context, num).doubleValue();
-		return Math.signum(number);
-	}
-
-	@Override
-	public Class<?> getEvaluationType() {
-		return Double.class;
+	protected NumberOrVector compute(SpellContext context) throws SpellRuntimeException {
+		return getNumberOrVector(context, num).map(Math::signum);
 	}
 }
