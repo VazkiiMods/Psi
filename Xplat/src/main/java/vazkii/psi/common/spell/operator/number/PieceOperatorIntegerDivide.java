@@ -38,7 +38,7 @@ public class PieceOperatorIntegerDivide extends PieceOperator {
 		Number d2 = this.getParamValue(context, num2).doubleValue();
 		Number d3 = this.getParamValue(context, num3);
 
-		if((d2.doubleValue() == 0 || d2.intValue() == 0) || (d3 != null && (d3.doubleValue() == 0 || d3.intValue() == 0))) {
+		if(d2.doubleValue() == 0 || (d3 != null && d3.doubleValue() == 0)) {
 			throw new SpellRuntimeException(SpellRuntimeException.DIVIDE_BY_ZERO);
 		}
 		double d4 = d3 != null ? (d1 / (d2.doubleValue() * d3.doubleValue())) : (d1 / d2.doubleValue());
